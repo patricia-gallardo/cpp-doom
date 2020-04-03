@@ -25,6 +25,7 @@
 #include <assert.h>
 #include "SDL.h"
 #include "SDL_mixer.h"
+#include <vector>
 
 #ifdef HAVE_LIBSAMPLERATE
 #include <samplerate.h>
@@ -212,7 +213,7 @@ static allocated_sound_t *AllocateSound(sfxinfo_t *sfxinfo, size_t len)
 
     do
     {
-        snd = malloc(sizeof(allocated_sound_t) + len);
+        snd = static_cast<allocated_sound_t *>(malloc(sizeof(allocated_sound_t) + len));
 
         // Out of memory?  Try to free an old sound, then loop round
         // and try again.
@@ -407,7 +408,6 @@ static boolean ExpandSoundData_SRC(sfxinfo_t *sfxinfo,
                                    int length)
 {
     SRC_DATA src_data;
-    float *data_in;
     uint32_t i, abuf_index=0, clipped=0;
 //    uint32_t alen;
     int retn;
@@ -417,13 +417,14 @@ static boolean ExpandSoundData_SRC(sfxinfo_t *sfxinfo,
     uint32_t samplecount = length / (bits / 8);
 
     src_data.input_frames = samplecount;
-    data_in = malloc(samplecount * sizeof(float));
-    src_data.data_in = data_in;
+    std::vector<float> data_in(samplecount);
+    src_data.data_in = data_in.data();
     src_data.src_ratio = (double)mixer_freq / samplerate;
 
     // We include some extra space here in case of rounding-up.
     src_data.output_frames = src_data.src_ratio * samplecount + (mixer_freq / 4);
-    src_data.data_out = malloc(src_data.output_frames * sizeof(float));
+    std::vector<float> data_out(src_data.output_frames);
+    src_data.data_out = data_out.data();
 
     assert(src_data.data_in != NULL && src_data.data_out != NULL);
 
@@ -513,9 +514,6 @@ static boolean ExpandSoundData_SRC(sfxinfo_t *sfxinfo,
         expanded[abuf_index++] = cvtval_i;
         expanded[abuf_index++] = cvtval_i;
     }
-
-    free(data_in);
-    free(src_data.data_out);
 
     if (clipped > 0)
     {

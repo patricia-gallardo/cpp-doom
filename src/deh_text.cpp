@@ -18,6 +18,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include <string>
 
 #include "doomtype.hpp"
 
@@ -52,7 +53,6 @@ static int TXT_MaxStringLength(int len)
 
 static void *DEH_TextStart(deh_context_t *context, char *line)
 {
-    char *from_text, *to_text;
     int fromlen, tolen;
     int i;
 
@@ -72,8 +72,8 @@ static void *DEH_TextStart(deh_context_t *context, char *line)
         return NULL;
     }
 
-    from_text = malloc(fromlen + 1);
-    to_text = malloc(tolen + 1);
+    std::string from_text(fromlen+1, '\0');
+    std::string to_text(tolen + 1, '\0');
 
     // read in the "from" text
 
@@ -93,11 +93,8 @@ static void *DEH_TextStart(deh_context_t *context, char *line)
 
     if (!bex_notext)
     {
-    DEH_AddStringReplacement(from_text, to_text);
+    DEH_AddStringReplacement(from_text.c_str(), to_text.c_str());
     }
-
-    free(from_text);
-    free(to_text);
 
     return NULL;
 }

@@ -699,7 +699,7 @@ static void TXT_TableLayout(TXT_UNCAST_ARG(table))
     auto row_heights = std::vector<unsigned int>(
         table->columns);//    auto column_widths = std::make_unique<unsigned int[]>(table->columns);
 
-    CalcRowColSizes(table, row_heights.get(), column_widths.get());
+    CalcRowColSizes(table, row_heights.data(), column_widths.data());
 
     // If this table only has one column, expand column size to fit
     // the display width.  Ensures that separators reach the window edges 
@@ -730,7 +730,7 @@ static void TXT_TableLayout(TXT_UNCAST_ARG(table))
             if (IsActualWidget(widget))
             {
                 CalculateWidgetDimensions(table, x, y,
-                                          column_widths.get(), row_heights.get(),
+                                          column_widths.data(), row_heights.data(),
                                           &widget->w, &widget->h);
                 LayoutCell(table, x, y, draw_x, draw_y);
             }

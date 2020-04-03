@@ -23,6 +23,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include <string>
 
 #include "doomtype.hpp"
 
@@ -33,6 +34,7 @@
 #include "v_diskicon.hpp"
 #include "z_zone.hpp"
 
+#include "../utils/memory.hpp"
 #include "w_wad.hpp"
 
 typedef PACKED_STRUCT (
@@ -149,7 +151,7 @@ wad_file_t *W_AddFile (const char *filename)
         // them back.  Effectively we're constructing a "fake WAD directory"
         // here, as it would appear on disk.
 
-	fileinfo = Z_Malloc(sizeof(filelump_t), PU_STATIC, 0);
+	fileinfo = zmalloc<decltype(fileinfo)>(sizeof(filelump_t), PU_STATIC, 0);
 	fileinfo->filepos = LONG(0);
 	fileinfo->size = LONG(wad_file->length);
 
@@ -191,14 +193,14 @@ wad_file_t *W_AddFile (const char *filename)
 
 	header.infotableofs = LONG(header.infotableofs);
 	length = header.numlumps*sizeof(filelump_t);
-	fileinfo = Z_Malloc(length, PU_STATIC, 0);
+	fileinfo = zmalloc<decltype(fileinfo)>(length, PU_STATIC, 0);
 
         W_Read(wad_file, header.infotableofs, fileinfo, length);
 	numfilelumps = header.numlumps;
     }
 
     // Increase size of numlumps array to accomodate the new file.
-    filelumps = calloc(numfilelumps, sizeof(lumpinfo_t));
+    filelumps = static_cast<decltype(filelumps)>(calloc(numfilelumps, sizeof(lumpinfo_t)));
     if (filelumps == NULL)
     {
         W_CloseFile(wad_file);
@@ -207,7 +209,7 @@ wad_file_t *W_AddFile (const char *filename)
 
     startlump = numlumps;
     numlumps += numfilelumps;
-    lumpinfo = I_Realloc(lumpinfo, numlumps * sizeof(lumpinfo_t *));
+    lumpinfo = static_cast<decltype(lumpinfo)>(I_Realloc(lumpinfo, numlumps * sizeof(lumpinfo_t *)));
     filerover = fileinfo;
 
     for (i = startlump; i < numlumps; ++i)
@@ -398,7 +400,7 @@ void W_ReadLump(lumpindex_t lump, void *dest)
 
 void *W_CacheLumpNum(lumpindex_t lumpnum, int tag)
 {
-    byte *result;
+    void *result;
     lumpinfo_t *lump;
 
     if ((unsigned)lumpnum >= numlumps)
@@ -430,7 +432,7 @@ void *W_CacheLumpNum(lumpindex_t lumpnum, int tag)
     {
         // Not yet loaded, so load it now
 
-        lump->cache = Z_Malloc(W_LumpLength(lumpnum), tag, &lump->cache);
+        lump->cache = zmalloc<decltype(lump->cache)>(W_LumpLength(lumpnum), tag, &lump->cache);
 	W_ReadLump (lumpnum, lump->cache);
         result = lump->cache;
     }
@@ -565,7 +567,7 @@ void W_GenerateHashTable(void)
     // Generate hash table
     if (numlumps > 0)
     {
-        lumphash = Z_Malloc(sizeof(lumpindex_t) * numlumps, PU_STATIC, NULL);
+        lumphash = zmalloc<decltype(lumphash)>(sizeof(lumpindex_t) * numlumps, PU_STATIC, NULL);
 
         for (i = 0; i < numlumps; ++i)
         {
@@ -646,11 +648,7 @@ boolean W_IsIWADLump(const lumpinfo_t *lump)
 // [crispy] dump lump data into a new LMP file
 int W_LumpDump (const char *lumpname)
 {
-    FILE *fp;
-    char *filename, *lump_p;
-    int i;
-
-    i = W_CheckNumForName(lumpname);
+    const auto i = W_CheckNumForName(lumpname);
 
     if (i < 0 || !lumpinfo[i]->size)
     {
@@ -658,19 +656,17 @@ int W_LumpDump (const char *lumpname)
     }
 
     // [crispy] open file for writing
-    filename = M_StringJoin(lumpname, ".lmp", NULL);
-    M_ForceLowercase(filename);
-    fp = fopen(filename, "wb");
+    std::string filename = std::string(lumpname) + ".lmp";
+    M_ForceLowercase(filename.data());
+    FILE *fp = fopen(filename.c_str(), "wb");
     if (!fp)
     {
-	I_Error("W_LumpDump: Failed writing to file '%s'!", filename);
+	I_Error("W_LumpDump: Failed writing to file '%s'!", filename.c_str());
     }
-    free(filename);
 
-    lump_p = malloc(lumpinfo[i]->size);
-    W_ReadLump(i, lump_p);
-    fwrite(lump_p, 1, lumpinfo[i]->size, fp);
-    free(lump_p);
+    std::string lump_p(lumpinfo[i]->size, 0);
+    W_ReadLump(i, lump_p.data());
+    fwrite(lump_p.data(), 1, lumpinfo[i]->size, fp);
 
     fclose(fp);
 

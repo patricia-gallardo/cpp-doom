@@ -2,6 +2,7 @@
 #define CRISPY_DOOM_MEMORY_HPP
 
 #include <new>
+#include <cstdlib>
 #include "../src/z_zone.hpp"
 
 // todo fix me

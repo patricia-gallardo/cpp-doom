@@ -15,25 +15,24 @@
 //      Network packet manipulation (net_packet_t)
 //
 
+#include "net_packet.hpp"
+#include "../utils/memory.hpp"
+#include "m_misc.hpp"
+#include "z_zone.hpp"
 #include <ctype.h>
 #include <string.h>
-#include "m_misc.hpp"
-#include "net_packet.hpp"
-#include "z_zone.hpp"
 
 static int total_packet_memory = 0;
 
 net_packet_t *NET_NewPacket(int initial_size)
 {
-    net_packet_t *packet;
-
-    packet = (net_packet_t *) Z_Malloc(sizeof(net_packet_t), PU_STATIC, 0);
+    net_packet_t *packet = zmalloc<net_packet_t *>(sizeof(net_packet_t), PU_STATIC, 0);
     
     if (initial_size == 0)
         initial_size = 256;
 
     packet->alloced = initial_size;
-    packet->data = Z_Malloc(initial_size, PU_STATIC, 0);
+    packet->data = zmalloc<byte *>(initial_size, PU_STATIC, 0);
     packet->len = 0;
     packet->pos = 0;
 
@@ -238,13 +237,11 @@ char *NET_ReadSafeString(net_packet_t *packet)
 
 static void NET_IncreasePacket(net_packet_t *packet)
 {
-    byte *newdata;
-
     total_packet_memory -= packet->alloced;
    
     packet->alloced *= 2;
 
-    newdata = Z_Malloc(packet->alloced, PU_STATIC, 0);
+    auto *newdata = zmalloc<byte *>(packet->alloced, PU_STATIC, 0);
 
     memcpy(newdata, packet->data, packet->len);
 

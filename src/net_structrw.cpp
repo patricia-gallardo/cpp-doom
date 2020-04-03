@@ -670,7 +670,7 @@ void NET_WriteProtocolList(net_packet_t *packet)
 
     for (i = 0; i < NET_NUM_PROTOCOLS; ++i)
     {
-        NET_WriteProtocol(packet, i);
+        NET_WriteProtocol(packet, static_cast<net_protocol_t>(i));
     }
 }
 

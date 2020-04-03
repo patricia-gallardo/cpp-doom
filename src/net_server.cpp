@@ -719,10 +719,10 @@ static void NET_SV_ParseSYN(net_packet_t *packet, net_client_t *client,
                 data.gamemode, sv_gamemode, data.gamemission, sv_gamemission);
         M_snprintf(msg, sizeof(msg),
                    "Game mismatch: server is %s (%s), client is %s (%s)",
-                   D_GameMissionString(sv_gamemission),
-                   D_GameModeString(sv_gamemode),
-                   D_GameMissionString(data.gamemission),
-                   D_GameModeString(data.gamemode));
+                   D_GameMissionString(static_cast<GameMission_t>(sv_gamemission)),
+                   D_GameModeString(static_cast<GameMode_t>(sv_gamemode)),
+                   D_GameMissionString(static_cast<GameMission_t>(data.gamemission)),
+                   D_GameModeString(static_cast<GameMode_t>(data.gamemode)));
 
         NET_SV_SendReject(addr, msg);
         return;
@@ -978,7 +978,8 @@ static void NET_SV_ParseGameStart(net_packet_t *packet, net_client_t *client)
 
         // Check the game settings are valid
 
-        if (!NET_ValidGameSettings(sv_gamemode, sv_gamemission, &settings))
+        if (!NET_ValidGameSettings(static_cast<GameMode_t>(sv_gamemode),
+                                   static_cast<GameMission_t>(sv_gamemission), &settings))
         {
             NET_Log("server: error: invalid game settings");
             return;

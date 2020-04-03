@@ -17,7 +17,7 @@
 //
 
 #include "SDL.h"
-#include "string.hpp"
+#include <cstring>
 
 #include "doomtype.hpp"
 #include "i_timer.hpp"

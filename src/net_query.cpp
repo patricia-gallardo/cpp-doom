@@ -226,7 +226,7 @@ static query_target_t *GetTargetForAddr(net_addr_t *addr, boolean create)
         return NULL;
     }
 
-    targets = I_Realloc(targets, sizeof(query_target_t) * (num_targets + 1));
+    targets = static_cast<query_target_t *>(I_Realloc(targets, sizeof(query_target_t) * (num_targets + 1)));
 
     target = &targets[num_targets];
     target->type = QUERY_TARGET_SERVER;
@@ -699,7 +699,7 @@ static void formatted_printf(int wide, const char *s, ...)
     }
 }
 
-static const char *GameDescription(GameMode_t mode, GameMission_t mission)
+static constexpr const char *GameDescription(int mode, int mission)
 {
     switch (mission)
     {

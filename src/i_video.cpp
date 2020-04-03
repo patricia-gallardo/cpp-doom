@@ -18,7 +18,7 @@
 
 
 #include "SDL.h"
-#include "SDL_opengl.hpp"
+#include "SDL_opengl.h"
 
 #ifdef _WIN32
 #ifndef WIN32_LEAN_AND_MEAN
