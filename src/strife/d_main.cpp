@@ -78,6 +78,7 @@
 #include "p_setup.hpp"
 #include "r_local.hpp"
 
+#include "../../utils/memory.hpp"
 #include "d_main.hpp"
 
 //
@@ -791,20 +792,20 @@ static char *GetGameName(char *gamename)
             // number
             // We also need to cut off spaces to get the basic name
 
-            gamename_size = strlen(deh_sub) + 10;
-            gamename = Z_Malloc(gamename_size, PU_STATIC, 0);
-            M_snprintf(gamename, gamename_size, deh_sub,
+            const auto newgamename_size = strlen(deh_sub) + 10;
+            auto *newgamename = zmalloc<char *>(newgamename_size, PU_STATIC, 0);
+            M_snprintf(newgamename, newgamename_size, deh_sub,
                        STRIFE_VERSION / 100, STRIFE_VERSION % 100);
 
-            while (gamename[0] != '\0' && isspace(gamename[0]))
+            while (newgamename[0] != '\0' && isspace(newgamename[0]))
             {
-                memmove(gamename, gamename + 1, gamename_size - 1);
+                memmove(newgamename, newgamename + 1, newgamename_size - 1);
             }
 
-            while (gamename[0] != '\0' && isspace(gamename[strlen(gamename)-1]))
-                gamename[strlen(gamename) - 1] = '\0';
+            while (newgamename[0] != '\0' && isspace(newgamename[strlen(newgamename)-1]))
+                newgamename[strlen(newgamename) - 1] = '\0';
 
-            return gamename;
+            return newgamename;
         }
     }
 

@@ -1444,7 +1444,7 @@ typedef struct
     int	mass;
     int	damage;
     int	activesound;
-    int	flags;
+    unsigned int flags;
     int	raisestate;
     // [crispy] height of the spawnstate's first sprite in pixels
     int	actualheight;

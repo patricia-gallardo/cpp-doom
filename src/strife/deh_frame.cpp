@@ -125,16 +125,9 @@ static void DEH_FrameParseLine(deh_context_t *context, char *line, void *tag)
 
     ivalue = atoi(value);
     
-    if (state == &states[NUMSTATES - 1])
-    {
-        DEH_FrameOverflow(context, variable_name, ivalue);
-    }
-    else
-    {
-        // set the appropriate field
+    // set the appropriate field
 
-        DEH_SetMapping(context, &state_mapping, state, variable_name, ivalue);
-    }
+    DEH_SetMapping(context, &state_mapping, state, variable_name, ivalue);
 }
 
 static void DEH_FrameSHA1Sum(sha1_context_t *context)

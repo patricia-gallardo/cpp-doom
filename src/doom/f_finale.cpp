@@ -246,7 +246,7 @@ void F_Ticker (void)
     {
 	finalecount = 0;
 	finalestage = F_STAGE_ARTSCREEN;
-	wipegamestate = -1;		// force a wipe
+	wipegamestate = gamestate_t::GS_FORCE_WIPE;		// force a wipe
 	if (gameepisode == 3)
 	    S_StartMusic (mus_bunny);
     }
@@ -258,6 +258,7 @@ void F_Ticker (void)
 // F_TextWrite
 //
 
+#include "../../utils/lump.hpp"
 #include "hu_stuff.hpp"
 extern	patch_t *hu_font[HU_FONTSIZE];
 
@@ -283,9 +284,6 @@ static inline boolean F_AddLineBreak (char *c)
 
 void F_TextWrite (void)
 {
-    byte*	src;
-    pixel_t*	dest;
-    
     int		x,y,w;
     signed int	count;
     char *ch; // [crispy] un-const
@@ -294,8 +292,8 @@ void F_TextWrite (void)
     int		cy;
     
     // erase the entire screen to a tiled background
-    src = W_CacheLumpName ( finaleflat , PU_CACHE);
-    dest = I_VideoBuffer;
+    auto *src = cache_lump_name<byte *>( finaleflat , PU_CACHE);
+    auto *dest = I_VideoBuffer;
 	
     for (y=0 ; y<SCREENHEIGHT ; y++)
     {
@@ -399,7 +397,7 @@ castinfo_t	castorder[] = {
     {CC_CYBER, MT_CYBORG},
     {CC_HERO, MT_PLAYER},
 
-    {NULL,0}
+    {NULL,{}}
 };
 
 int		castnum;
@@ -473,7 +471,7 @@ extern void A_VileTarget();
 
 typedef struct
 {
-	void *const action;
+	void (*action) ();
 	const int sound;
 	const boolean early;
 } actionsound_t;
@@ -539,7 +537,7 @@ static int F_SoundForState (int st)
 //
 void F_StartCast (void)
 {
-    wipegamestate = -1;		// force a screen wipe
+    wipegamestate = gamestate_t::GS_FORCE_WIPE;		// force a screen wipe
     castnum = 0;
     caststate = &states[mobjinfo[castorder[castnum].type].seestate];
     casttics = caststate->tics;
@@ -592,7 +590,7 @@ void F_CastTicker (void)
 	    goto stopattack;	// Oh, gross hack!
 	*/
 	// [crispy] Allow A_RandomJump() in deaths in cast sequence
-	if (caststate->action.acp1 == A_RandomJump && Crispy_Random() < caststate->misc2)
+	if (caststate->action.acv == A_RandomJump && Crispy_Random() < caststate->misc2)
 	{
 	    st = caststate->misc1;
 	}
@@ -685,7 +683,7 @@ void F_CastTicker (void)
     if (casttics == -1)
     {
 	// [crispy] Allow A_RandomJump() in deaths in cast sequence
-	if (caststate->action.acp1 == A_RandomJump)
+	if (caststate->action.acv == A_RandomJump)
 	{
 	    if (Crispy_Random() < caststate->misc2)
 	    {
@@ -760,7 +758,7 @@ boolean F_CastResponder (event_t* ev)
     caststate = &states[mobjinfo[castorder[castnum].type].deathstate];
     casttics = caststate->tics;
     // [crispy] Allow A_RandomJump() in deaths in cast sequence
-    if (casttics == -1 && caststate->action.acp1 == A_RandomJump)
+    if (casttics == -1 && caststate->action.acv == A_RandomJump)
     {
         if (Crispy_Random() < caststate->misc2)
         {
@@ -854,7 +852,7 @@ void F_CastDrawer (void)
     patch_t*		patch;
     
     // erase the entire screen to a background
-    V_DrawPatchFullScreen (W_CacheLumpName (DEH_String("BOSSBACK"), PU_CACHE), false);
+    V_DrawPatchFullScreen (cache_lump_name<patch_t *>(DEH_String("BOSSBACK"), PU_CACHE), false);
 
     F_CastPrint (DEH_String(castorder[castnum].name));
     
@@ -869,7 +867,7 @@ void F_CastDrawer (void)
     lump = sprframe->lump[castangle]; // [crispy] turnable cast
     flip = (boolean)sprframe->flip[castangle] ^ castflip; // [crispy] turnable cast, flippable death sequence
 			
-    patch = W_CacheLumpNum (lump+firstspritelump, PU_CACHE);
+    patch = cache_lump_num<patch_t*>(lump+firstspritelump, PU_CACHE);
     if (flip)
 	V_DrawPatchFlipped(ORIGWIDTH/2, 170, patch);
     else
@@ -923,8 +921,6 @@ void F_BunnyScroll (void)
 {
     signed int  scrolled;
     int		x;
-    patch_t*	p1;
-    patch_t*	p2;
     char	name[10];
     int		stage;
     static int	laststage;
@@ -939,8 +935,8 @@ void F_BunnyScroll (void)
 	V_DrawFilledBox(0, 0, SCREENWIDTH, SCREENHEIGHT, 0);
     }
 
-    p1 = W_CacheLumpName (DEH_String("PFUB2"), PU_LEVEL);
-    p2 = W_CacheLumpName (DEH_String("PFUB1"), PU_LEVEL);
+    auto *p1 = cache_lump_name<patch_t *>(DEH_String("PFUB2"), PU_LEVEL);
+    auto *p2 = cache_lump_name<patch_t *>(DEH_String("PFUB1"), PU_LEVEL);
 
     V_MarkRect (0, 0, SCREENWIDTH, SCREENHEIGHT);
 	
@@ -982,7 +978,7 @@ void F_BunnyScroll (void)
     DEH_snprintf(name, 10, "END%i", stage);
     V_DrawPatch((ORIGWIDTH - 13 * 8) / 2,
                 (ORIGHEIGHT - 8 * 8) / 2,
-                W_CacheLumpName (name,PU_CACHE));
+                cache_lump_name<patch_t *>(name,PU_CACHE));
 }
 
 static void F_ArtScreenDrawer(void)
@@ -1027,7 +1023,7 @@ static void F_ArtScreenDrawer(void)
 
         lumpname = DEH_String(lumpname);
 
-        V_DrawPatchFullScreen (W_CacheLumpName(lumpname, PU_CACHE), false);
+        V_DrawPatchFullScreen (cache_lump_name<patch_t *>(lumpname, PU_CACHE), false);
     }
 }
 

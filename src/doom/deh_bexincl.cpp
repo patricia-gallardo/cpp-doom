@@ -72,23 +72,19 @@ static void *DEH_BEXInclStart(deh_context_t *context, char *line)
 	// second, try loading the file in the directory of the current file
 	char *dir;
 	dir = M_DirName(deh_file);
-	try_path = M_StringJoin(dir, DIR_SEPARATOR_S, inc_file, NULL);
+	try_path = std::string(dir) + DIR_SEPARATOR_S + inc_file;
 	free(dir);
     }
 
     bex_nested = true;
 
-    if (!M_FileExists(try_path) || !DEH_LoadFile(try_path))
+    if (!M_FileExists(try_path.c_str()) || !DEH_LoadFile(try_path.c_str()))
     {
-	DEH_Warning(context, "Could not include \"%s\"", inc_file);
+	DEH_Warning(context, "Could not include \"%s\"", inc_file.c_str());
     }
 
     bex_nested = false;
     bex_notext = false;
-
-    if (try_path != inc_file)
-	free(try_path);
-    free(inc_file);
 
     return NULL;
 }

@@ -27,7 +27,7 @@
 #include <windows.h>
 #endif
 
-#include "icon.c"
+#include "icon.cpp"
 
 #include "crispy.hpp"
 
@@ -273,13 +273,13 @@ void I_DisplayFPSDots(boolean dots_on)
     display_fps_dots = dots_on;
 }
 
-static void SetShowCursor(boolean show)
+static void SetShowCursor(bool show)
 {
     if (!screensaver_mode)
     {
         // When the cursor is hidden, grab the input.
         // Relative mode implicitly hides the cursor.
-        SDL_SetRelativeMouseMode(!show);
+        SDL_SetRelativeMouseMode(static_cast<SDL_bool>(!show));
         SDL_GetRelativeMouseState(NULL, NULL);
     }
 }
@@ -900,7 +900,7 @@ void I_SetGammaTable (void)
 {
 	int i;
 
-	gamma2table = malloc(9 * sizeof(*gamma2table));
+	gamma2table = static_cast<byte **>(malloc(9 * sizeof(*gamma2table)));
 
 	// [crispy] 5 original gamma levels
 	for (i = 0; i < 5; i++)
@@ -913,7 +913,7 @@ void I_SetGammaTable (void)
 	{
 		int j;
 
-		gamma2table[2*i+1] = malloc(256 * sizeof(**gamma2table));
+		gamma2table[2*i+1] = static_cast<byte *>(malloc(256 * sizeof(**gamma2table)));
 
 		for (j = 0; j < 256; j++)
 		{
@@ -1439,7 +1439,7 @@ static void SetVideoMode(void)
     // Force integer scales for resolution-independent rendering.
 
 #if SDL_VERSION_ATLEAST(2, 0, 5)
-    SDL_RenderSetIntegerScale(renderer, integer_scaling);
+    SDL_RenderSetIntegerScale(renderer, static_cast<SDL_bool>(integer_scaling));
 #endif
 
     // Blank out the full screen area in case there is any junk in

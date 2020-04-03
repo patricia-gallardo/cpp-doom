@@ -649,7 +649,7 @@ static boolean ExpandSoundData_SDL(sfxinfo_t *sfxinfo,
                           mixer_format, mixer_channels, mixer_freq))
     {
         convertor.len = length;
-        convertor.buf = malloc(convertor.len * convertor.len_mult);
+        convertor.buf = static_cast<Uint8 *>(malloc(convertor.len * convertor.len_mult));
         assert(convertor.buf != NULL);
         memcpy(convertor.buf, data, length);
 
