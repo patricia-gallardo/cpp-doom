@@ -1,71 +1,71 @@
 set(STRIFE_SOURCES
-    am_map.c        am_map.h
-    deh_ammo.c
-    deh_cheat.c
-    deh_strife.c
-    deh_frame.c
-    deh_misc.c      deh_misc.h
-    deh_ptr.c
-    deh_sound.c
-    deh_thing.c
-    deh_weapon.c
-                    d_englsh.h
-    d_items.c       d_items.h
-    d_main.c        d_main.h
-    d_net.c
-                    doomdata.h
-    doomdef.c       doomdef.h
-    doomstat.c      doomstat.h
-                    d_player.h
-    dstrings.c      dstrings.h
-                    d_textur.h
-                    d_think.h
-    f_finale.c      f_finale.h
-    f_wipe.c        f_wipe.h
-    g_game.c        g_game.h
-    hu_lib.c        hu_lib.h
-    hu_stuff.c      hu_stuff.h
-    info.c          info.h
-    m_menu.c        m_menu.h
-    m_random.c      m_random.h
-    m_saves.c       m_saves.h
-    p_ceilng.c
-    p_dialog.c      p_dialog.h
-    p_doors.c
-    p_enemy.c
-    p_floor.c
-    p_inter.c       p_inter.h
-    p_lights.c
-                    p_local.h
-    p_map.c
-    p_maputl.c
-    p_mobj.c        p_mobj.h
-    p_plats.c
-    p_pspr.c        p_pspr.h
-    p_saveg.c       p_saveg.h
-    p_setup.c       p_setup.h
-    p_sight.c
-    p_spec.c        p_spec.h
-    p_switch.c
-    p_telept.c
-    p_tick.c        p_tick.h
-    p_user.c
-    r_bsp.c         r_bsp.h
-    r_data.c        r_data.h
-                    r_defs.h
-    r_draw.c        r_draw.h
-                    r_local.h
-    r_main.c        r_main.h
-    r_plane.c       r_plane.h
-    r_segs.c        r_segs.h
-    r_sky.c         r_sky.h
-                    r_state.h
-    r_things.c      r_things.h
-    s_sound.c       s_sound.h
-    sounds.c        sounds.h
-    st_lib.c        st_lib.h
-    st_stuff.c      st_stuff.h
-    wi_stuff.c      wi_stuff.h)
+    am_map.cpp        am_map.hpp
+    deh_ammo.cpp
+    deh_cheat.cpp
+    deh_strife.cpp
+    deh_frame.cpp
+    deh_misc.cpp      deh_misc.hpp
+    deh_ptr.cpp
+    deh_sound.cpp
+    deh_thing.cpp
+    deh_weapon.cpp
+                    d_englsh.hpp
+    d_items.cpp       d_items.hpp
+    d_main.cpp        d_main.hpp
+    d_net.cpp
+                    doomdata.hpp
+    doomdef.cpp       doomdef.hpp
+    doomstat.cpp      doomstat.hpp
+                    d_player.hpp
+    dstrings.cpp      dstrings.hpp
+                    d_textur.hpp
+                    d_think.hpp
+    f_finale.cpp      f_finale.hpp
+    f_wipe.cpp        f_wipe.hpp
+    g_game.cpp        g_game.hpp
+    hu_lib.cpp        hu_lib.hpp
+    hu_stuff.cpp      hu_stuff.hpp
+    info.cpp          info.hpp
+    m_menu.cpp        m_menu.hpp
+    m_random.cpp      m_random.hpp
+    m_saves.cpp       m_saves.hpp
+    p_ceilng.cpp
+    p_dialog.cpp      p_dialog.hpp
+    p_doors.cpp
+    p_enemy.cpp
+    p_floor.cpp
+    p_inter.cpp       p_inter.hpp
+    p_lights.cpp
+                    p_local.hpp
+    p_map.cpp
+    p_maputl.cpp
+    p_mobj.cpp        p_mobj.hpp
+    p_plats.cpp
+    p_pspr.cpp        p_pspr.hpp
+    p_saveg.cpp       p_saveg.hpp
+    p_setup.cpp       p_setup.hpp
+    p_sight.cpp
+    p_spec.cpp        p_spec.hpp
+    p_switch.cpp
+    p_telept.cpp
+    p_tick.cpp        p_tick.hpp
+    p_user.cpp
+    r_bsp.cpp         r_bsp.hpp
+    r_data.cpp        r_data.hpp
+                    r_defs.hpp
+    r_draw.cpp        r_draw.hpp
+                    r_local.hpp
+    r_main.cpp        r_main.hpp
+    r_plane.cpp       r_plane.hpp
+    r_segs.cpp        r_segs.hpp
+    r_sky.cpp         r_sky.hpp
+                    r_state.hpp
+    r_things.cpp      r_things.hpp
+    s_sound.cpp       s_sound.hpp
+    sounds.cpp        sounds.hpp
+    st_lib.cpp        st_lib.hpp
+    st_stuff.cpp      st_stuff.hpp
+    wi_stuff.cpp      wi_stuff.hpp)
 
 add_library(strife STATIC ${STRIFE_SOURCES})
 

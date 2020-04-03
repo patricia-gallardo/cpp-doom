@@ -1,27 +1,27 @@
 add_library(textscreen STATIC
-            textscreen.h
-            txt_conditional.c   txt_conditional.h
-            txt_checkbox.c      txt_checkbox.h
-            txt_desktop.c       txt_desktop.h
-            txt_dropdown.c      txt_dropdown.h
-            txt_fileselect.c    txt_fileselect.h
-            txt_gui.c           txt_gui.h
-            txt_inputbox.c      txt_inputbox.h
-            txt_io.c            txt_io.h
-                                txt_main.h
-            txt_button.c        txt_button.h
-            txt_label.c         txt_label.h
-            txt_radiobutton.c   txt_radiobutton.h
-            txt_scrollpane.c    txt_scrollpane.h
-            txt_separator.c     txt_separator.h
-            txt_spinctrl.c      txt_spinctrl.h
-            txt_sdl.c           txt_sdl.h
-            txt_strut.c         txt_strut.h
-            txt_table.c         txt_table.h
-            txt_utf8.c          txt_utf8.h
-            txt_widget.c        txt_widget.h
-            txt_window.c        txt_window.h
-            txt_window_action.c txt_window_action.h)
+            textscreen.hpp
+            txt_conditional.cpp   txt_conditional.hpp
+            txt_checkbox.cpp      txt_checkbox.hpp
+            txt_desktop.cpp       txt_desktop.hpp
+            txt_dropdown.cpp      txt_dropdown.hpp
+            txt_fileselect.cpp    txt_fileselect.hpp
+            txt_gui.cpp           txt_gui.hpp
+            txt_inputbox.cpp      txt_inputbox.hpp
+            txt_io.cpp            txt_io.hpp
+                                txt_main.hpp
+            txt_button.cpp        txt_button.hpp
+            txt_label.cpp         txt_label.hpp
+            txt_radiobutton.cpp   txt_radiobutton.hpp
+            txt_scrollpane.cpp    txt_scrollpane.hpp
+            txt_separator.cpp     txt_separator.hpp
+            txt_spinctrl.cpp      txt_spinctrl.hpp
+            txt_sdl.cpp           txt_sdl.hpp
+            txt_strut.cpp         txt_strut.hpp
+            txt_table.cpp         txt_table.hpp
+            txt_utf8.cpp          txt_utf8.hpp
+            txt_widget.cpp        txt_widget.hpp
+            txt_window.cpp        txt_window.hpp
+            txt_window_action.cpp txt_window_action.hpp)
 target_include_directories(textscreen
                            INTERFACE "."
                            PRIVATE "../src/")
