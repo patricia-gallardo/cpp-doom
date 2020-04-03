@@ -20,10 +20,11 @@
 
 #include "doomkeys.hpp"
 
-#include "txt_spinctrl.hpp"
+#include "../utils/memory.hpp"
 #include "txt_gui.hpp"
 #include "txt_io.hpp"
 #include "txt_main.hpp"
+#include "txt_spinctrl.hpp"
 #include "txt_utf8.hpp"
 #include "txt_window.hpp"
 
@@ -127,13 +128,13 @@ static void SetBuffer(txt_spincontrol_t *spincontrol)
     {
         case TXT_SPINCONTROL_INT:
             TXT_snprintf(spincontrol->buffer, spincontrol->buffer_len,
-                         "%i", spincontrol->value->i);
+                         "%i", *spincontrol->value.i);
             break;
 
         case TXT_SPINCONTROL_FLOAT:
             FloatFormatString(spincontrol->step.f, format, sizeof(format));
             TXT_snprintf(spincontrol->buffer, spincontrol->buffer_len,
-                         format, spincontrol->value->f);
+                         format, *spincontrol->value.f);
             break;
     }
 }
@@ -227,17 +228,17 @@ static void EnforceLimits(txt_spincontrol_t *spincontrol)
     switch (spincontrol->type)
     {
         case TXT_SPINCONTROL_INT:
-            if (spincontrol->value->i > spincontrol->max.i)
-                spincontrol->value->i = spincontrol->max.i;
-            else if (spincontrol->value->i < spincontrol->min.i)
-                spincontrol->value->i = spincontrol->min.i;
+            if (*spincontrol->value.i > spincontrol->max.i)
+                *spincontrol->value.i = spincontrol->max.i;
+            else if (*spincontrol->value.i < spincontrol->min.i)
+                *spincontrol->value.i = spincontrol->min.i;
             break;
 
         case TXT_SPINCONTROL_FLOAT:
-            if (spincontrol->value->f > spincontrol->max.f)
-                spincontrol->value->f = spincontrol->max.f;
-            else if (spincontrol->value->f < spincontrol->min.f)
-                spincontrol->value->f = spincontrol->min.f;
+            if (*spincontrol->value.f > spincontrol->max.f)
+                *spincontrol->value.f = spincontrol->max.f;
+            else if (*spincontrol->value.f < spincontrol->min.f)
+                *spincontrol->value.f = spincontrol->min.f;
             break;
     }
 }
@@ -247,11 +248,11 @@ static void FinishEditing(txt_spincontrol_t *spincontrol)
     switch (spincontrol->type)
     {
         case TXT_SPINCONTROL_INT:
-            spincontrol->value->i = atoi(spincontrol->buffer);
+            *spincontrol->value.i = atoi(spincontrol->buffer);
             break;
 
         case TXT_SPINCONTROL_FLOAT:
-            spincontrol->value->f = (float) atof(spincontrol->buffer);
+            *spincontrol->value.f = static_cast<float>(atof(spincontrol->buffer));
             break;
     }
 
@@ -307,11 +308,11 @@ static int TXT_SpinControlKeyPress(TXT_UNCAST_ARG(spincontrol), int key)
             switch (spincontrol->type)
             {
                 case TXT_SPINCONTROL_INT:
-                    spincontrol->value->i -= spincontrol->step.i;
+                    *spincontrol->value.i -= spincontrol->step.i;
                     break;
 
                 case TXT_SPINCONTROL_FLOAT:
-                    spincontrol->value->f -= spincontrol->step.f;
+                    *spincontrol->value.f -= spincontrol->step.f;
                     break;
             }
 
@@ -325,11 +326,11 @@ static int TXT_SpinControlKeyPress(TXT_UNCAST_ARG(spincontrol), int key)
             switch (spincontrol->type)
             {
                 case TXT_SPINCONTROL_INT:
-                    spincontrol->value->i += spincontrol->step.i;
+                    *spincontrol->value.i += spincontrol->step.i;
                     break;
 
                 case TXT_SPINCONTROL_FLOAT:
-                    spincontrol->value->f += spincontrol->step.f;
+                    *spincontrol->value.f += spincontrol->step.f;
                     break;
             }
 
@@ -379,15 +380,13 @@ txt_widget_class_t txt_spincontrol_class =
     TXT_SpinControlFocused,
 };
 
-static txt_spincontrol_t *TXT_BaseSpinControl(void)
+static txt_spincontrol_t *TXT_BaseSpinControl()
 {
-    txt_spincontrol_t *spincontrol;
-
-    spincontrol = malloc(sizeof(txt_spincontrol_t));
+    auto *spincontrol = create_struct<txt_spincontrol_t>();
 
     TXT_InitWidget(spincontrol, &txt_spincontrol_class);
     spincontrol->buffer_len = 25;
-    spincontrol->buffer = malloc(spincontrol->buffer_len);
+    spincontrol->buffer = static_cast<char *>(malloc(spincontrol->buffer_len));
     TXT_StringCopy(spincontrol->buffer, "", spincontrol->buffer_len);
     spincontrol->editing = 0;
 
@@ -400,7 +399,7 @@ txt_spincontrol_t *TXT_NewSpinControl(int *value, int min, int max)
 
     spincontrol = TXT_BaseSpinControl();
     spincontrol->type = TXT_SPINCONTROL_INT;
-    spincontrol->value = (void *) value;
+    spincontrol->value.i = value;
     spincontrol->min.i = min;
     spincontrol->max.i = max;
     spincontrol->step.i = 1;
@@ -414,7 +413,7 @@ txt_spincontrol_t *TXT_NewFloatSpinControl(float *value, float min, float max)
 
     spincontrol = TXT_BaseSpinControl();
     spincontrol->type = TXT_SPINCONTROL_FLOAT;
-    spincontrol->value = (void *) value;
+    spincontrol->value.f = value;
     spincontrol->min.f = min;
     spincontrol->max.f = max;
     spincontrol->step.f = 0.1f;

@@ -19,7 +19,7 @@
 #include <stdlib.h>
 #include <string.h>
 
-#include "config.hpp"
+#include "config.h"
 #include "pcsound.hpp"
 #include "pcsound_internal.hpp"
 

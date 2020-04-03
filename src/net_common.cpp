@@ -25,6 +25,7 @@
 #include "i_timer.hpp"
 #include "m_argv.hpp"
 
+#include "../utils/memory.hpp"
 #include "net_common.hpp"
 #include "net_io.hpp"
 #include "net_packet.hpp"
@@ -370,7 +371,6 @@ void NET_Conn_Run(net_connection_t *conn)
 net_packet_t *NET_Conn_NewReliable(net_connection_t *conn, int packet_type)
 {
     net_packet_t *packet;
-    net_reliable_packet_t *rp;
     net_reliable_packet_t **listend;
 
     // Generate a packet with the right header
@@ -385,7 +385,7 @@ net_packet_t *NET_Conn_NewReliable(net_connection_t *conn, int packet_type)
 
     // Add to the list of reliable packets
 
-    rp = malloc(sizeof(net_reliable_packet_t));
+    auto *rp = create_struct<net_reliable_packet_t>();
     rp->packet = packet;
     rp->next = NULL;
     rp->seq = conn->reliable_send_seq;
@@ -414,8 +414,8 @@ unsigned int NET_ExpandTicNum(unsigned int relative, unsigned int b)
     unsigned int l, h;
     unsigned int result;
 
-    h = relative & ~0xff;
-    l = relative & 0xff;
+    h = relative & ~0xffu;
+    l = relative & 0xffu;
 
     result = h | b;
 
@@ -444,7 +444,7 @@ boolean NET_ValidGameSettings(GameMode_t mode, GameMission_t mission,
     if (settings->skill < sk_noitems || settings->skill > sk_nightmare)
         return false;
 
-    if (!D_ValidGameVersion(mission, settings->gameversion))
+    if (!D_ValidGameVersion(mission, static_cast<GameVersion_t>(settings->gameversion)))
         return false;
 
     if (!D_ValidEpisodeMap(mission, mode, settings->episode, settings->map))

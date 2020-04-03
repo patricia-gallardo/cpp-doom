@@ -25,9 +25,9 @@
 #include <errno.h>
 #include <assert.h>
 
-#include "SDL_filesystem.hpp"
+#include "SDL_filesystem.h"
 
-#include "config.hpp"
+#include "config.h"
 
 #include "doomtype.hpp"
 #include "doomkeys.hpp"

@@ -15,9 +15,10 @@
 #include <stdlib.h>
 #include <string.h>
 
-#include "txt_label.hpp"
+#include "../utils/memory.hpp"
 #include "txt_gui.hpp"
 #include "txt_io.hpp"
+#include "txt_label.hpp"
 #include "txt_main.hpp"
 #include "txt_utf8.hpp"
 #include "txt_window.hpp"
@@ -141,7 +142,7 @@ void TXT_SetLabel(txt_label_t *label, const char *value)
 
     // Split into lines
 
-    label->lines = malloc(sizeof(char *) * label->h);
+    label->lines = static_cast<char **>(malloc(sizeof(char *) * label->h));
     label->lines[0] = label->label;
     y = 1;
 
@@ -170,9 +171,7 @@ void TXT_SetLabel(txt_label_t *label, const char *value)
 
 txt_label_t *TXT_NewLabel(const char *text)
 {
-    txt_label_t *label;
-
-    label = malloc(sizeof(txt_label_t));
+    auto *label = create_struct<txt_label_t>();
 
     TXT_InitWidget(label, &txt_label_class);
     label->label = NULL;
@@ -180,8 +179,8 @@ txt_label_t *TXT_NewLabel(const char *text)
 
     // Default colors
 
-    label->bgcolor = -1;
-    label->fgcolor = -1;
+    label->bgcolor = TXT_COLOR_BLACK;
+    label->fgcolor = TXT_COLOR_BLACK;
 
     TXT_SetLabel(label, text);
 

@@ -17,6 +17,7 @@
 
 #include "doomkeys.hpp"
 
+#include "../utils/memory.hpp"
 #include "txt_button.hpp"
 #include "txt_dropdown.hpp"
 #include "txt_gui.hpp"
@@ -24,6 +25,7 @@
 #include "txt_main.hpp"
 #include "txt_utf8.hpp"
 #include "txt_window.hpp"
+#include <new>
 
 typedef struct
 {
@@ -150,7 +152,6 @@ static void OpenSelectorWindow(txt_dropdown_list_t *list)
     for (i=0; i<list->num_values; ++i)
     {
         txt_button_t *button;
-        callback_data_t *data;
 
         button = TXT_NewButton(list->values[i]);
 
@@ -158,7 +159,8 @@ static void OpenSelectorWindow(txt_dropdown_list_t *list)
 
         // Callback struct
 
-        data = malloc(sizeof(callback_data_t));
+        auto *mem = malloc(sizeof(callback_data_t));
+        auto *data = new (mem) callback_data_t{};
         data->list = list;
         data->window = window;
         data->item = i;
@@ -291,9 +293,7 @@ txt_widget_class_t txt_dropdown_list_class =
 txt_dropdown_list_t *TXT_NewDropdownList(int *variable, const char **values,
                                          int num_values)
 {
-    txt_dropdown_list_t *list;
-
-    list = malloc(sizeof(txt_dropdown_list_t));
+    auto *list = create_struct<txt_dropdown_list_t>();
 
     TXT_InitWidget(list, &txt_dropdown_list_class);
     list->variable = variable;

@@ -30,9 +30,9 @@
 #include <unistd.h>
 #endif
 
-#include "SDL.hpp"
+#include "SDL.h"
 
-#include "config.hpp"
+#include "config.h"
 
 #include "deh_str.hpp"
 #include "doomtype.hpp"
@@ -46,6 +46,7 @@
 
 #include "i_system.hpp"
 
+#include "../utils/memory.hpp"
 #include "w_wad.hpp"
 #include "z_zone.hpp"
 
@@ -66,9 +67,7 @@ static atexit_listentry_t *exit_funcs = NULL;
 
 void I_AtExit(atexit_func_t func, boolean run_on_error)
 {
-    atexit_listentry_t *entry;
-
-    entry = malloc(sizeof(*entry));
+    auto *entry = create_struct<atexit_listentry_t>();
 
     entry->func = func;
     entry->run_on_error = run_on_error;
@@ -110,7 +109,7 @@ static byte *AutoAllocMemory(int *size, int default_ram, int min_ram)
 
         *size = default_ram * 1024 * 1024;
 
-        zonemem = malloc(*size);
+        zonemem = static_cast<byte *>(malloc(*size));
 
         // Failed to allocate?  Reduce zone size until we reach a size
         // that is acceptable.

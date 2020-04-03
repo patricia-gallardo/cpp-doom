@@ -40,6 +40,7 @@
 
 #include "deh_str.hpp"
 
+#include "../utils/memory.hpp"
 #include "i_swap.hpp"
 #include "i_system.hpp"
 #include "i_video.hpp"
@@ -217,7 +218,7 @@ int M_ReadFile(const char *name, byte **buffer)
 
     length = M_FileLength(handle);
     
-    buf = Z_Malloc (length + 1, PU_STATIC, NULL);
+    buf = zmalloc<byte *>(length + 1, PU_STATIC, NULL);
     count = fread(buf, 1, length, handle);
     fclose (handle);
 	
@@ -271,16 +272,14 @@ boolean M_StrToInt(const char *str, int *result)
 // and must be freed by the caller after use.
 char *M_DirName(const char *path)
 {
-    char *p, *result;
-
-    p = strrchr(path, DIR_SEPARATOR);
-    if (p == NULL)
+    const auto *p = strrchr(path, DIR_SEPARATOR);
+    if (p == nullptr)
     {
         return M_StringDuplicate(".");
     }
     else
     {
-        result = M_StringDuplicate(path);
+        auto *result = M_StringDuplicate(path);
         result[p - path] = '\0';
         return result;
     }
@@ -462,7 +461,7 @@ char *M_StringReplace(const char *haystack, const char *needle,
 
     // Construct new string.
 
-    result = malloc(result_len);
+    result = static_cast<char *>(malloc(result_len));
     if (result == NULL)
     {
         I_Error("M_StringReplace: Failed to allocate new string");
@@ -572,7 +571,7 @@ char *M_StringJoin(const char *s, ...)
     }
     va_end(args);
 
-    result = malloc(result_len);
+    result = static_cast<char *>(malloc(result_len));
 
     if (result == NULL)
     {

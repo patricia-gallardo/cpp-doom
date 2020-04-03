@@ -1110,19 +1110,19 @@ void R_FillBackScreen (void)
 
     V_UseBuffer(background_buffer);
 
-    patch = W_CacheLumpName(DEH_String("brdr_t"),PU_CACHE);
+    patch = cache_lump_name<patch_t *>(DEH_String("brdr_t"),PU_CACHE);
 
     for (x=0 ; x<(scaledviewwidth >> crispy->hires) ; x+=8)
 	V_DrawPatch((viewwindowx >> crispy->hires)+x, (viewwindowy >> crispy->hires)-8, patch);
-    patch = W_CacheLumpName(DEH_String("brdr_b"),PU_CACHE);
+    patch = cache_lump_name<patch_t *>(DEH_String("brdr_b"),PU_CACHE);
 
     for (x=0 ; x<(scaledviewwidth >> crispy->hires) ; x+=8)
 	V_DrawPatch((viewwindowx >> crispy->hires)+x, (viewwindowy >> crispy->hires)+(viewheight >> crispy->hires), patch);
-    patch = W_CacheLumpName(DEH_String("brdr_l"),PU_CACHE);
+    patch = cache_lump_name<patch_t *>(DEH_String("brdr_l"),PU_CACHE);
 
     for (y=0 ; y<(viewheight >> crispy->hires) ; y+=8)
 	V_DrawPatch((viewwindowx >> crispy->hires)-8, (viewwindowy >> crispy->hires)+y, patch);
-    patch = W_CacheLumpName(DEH_String("brdr_r"),PU_CACHE);
+    patch = cache_lump_name<patch_t *>(DEH_String("brdr_r"),PU_CACHE);
 
     for (y=0 ; y<(viewheight >> crispy->hires) ; y+=8)
 	V_DrawPatch((viewwindowx >> crispy->hires)+(scaledviewwidth >> crispy->hires), (viewwindowy >> crispy->hires)+y, patch);
@@ -1130,19 +1130,19 @@ void R_FillBackScreen (void)
     // Draw beveled edge. 
     V_DrawPatch((viewwindowx >> crispy->hires)-8,
                 (viewwindowy >> crispy->hires)-8,
-                W_CacheLumpName(DEH_String("brdr_tl"),PU_CACHE));
+                cache_lump_name<patch_t *>(DEH_String("brdr_tl"),PU_CACHE));
     
     V_DrawPatch((viewwindowx >> crispy->hires)+(scaledviewwidth >> crispy->hires),
                 (viewwindowy >> crispy->hires)-8,
-                W_CacheLumpName(DEH_String("brdr_tr"),PU_CACHE));
+                cache_lump_name<patch_t *>(DEH_String("brdr_tr"),PU_CACHE));
     
     V_DrawPatch((viewwindowx >> crispy->hires)-8,
                 (viewwindowy >> crispy->hires)+(viewheight >> crispy->hires),
-                W_CacheLumpName(DEH_String("brdr_bl"),PU_CACHE));
+                cache_lump_name<patch_t *>(DEH_String("brdr_bl"),PU_CACHE));
     
     V_DrawPatch((viewwindowx >> crispy->hires)+(scaledviewwidth >> crispy->hires),
                 (viewwindowy >> crispy->hires)+(viewheight >> crispy->hires),
-                W_CacheLumpName(DEH_String("brdr_br"),PU_CACHE));
+                cache_lump_name<patch_t *>(DEH_String("brdr_br"),PU_CACHE));
 
     V_RestoreBuffer();
 } 

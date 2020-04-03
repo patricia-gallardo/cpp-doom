@@ -25,6 +25,7 @@
 #include "txt_main.hpp"
 #include "txt_utf8.hpp"
 #include "txt_window.hpp"
+#include "../utils/memory.hpp"
 
 extern txt_widget_class_t txt_inputbox_class;
 extern txt_widget_class_t txt_int_inputbox_class;
@@ -318,9 +319,7 @@ txt_widget_class_t txt_int_inputbox_class =
 static txt_inputbox_t *NewInputBox(txt_widget_class_t *widget_class,
                                    void *value, int size)
 {
-    txt_inputbox_t *inputbox;
-
-    inputbox = malloc(sizeof(txt_inputbox_t));
+    auto *inputbox = create_struct<txt_inputbox_t>();
 
     TXT_InitWidget(inputbox, widget_class);
     inputbox->value = value;
@@ -329,7 +328,7 @@ static txt_inputbox_t *NewInputBox(txt_widget_class_t *widget_class,
     // but for a UTF-8 string, each character can take up to four
     // characters.
     inputbox->buffer_len = size * 4 + 1;
-    inputbox->buffer = malloc(inputbox->buffer_len);
+    inputbox->buffer = static_cast<char *>(malloc(inputbox->buffer_len));
     inputbox->editing = 0;
 
     return inputbox;

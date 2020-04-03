@@ -411,7 +411,7 @@ void AM_loadPics(void)
     M_snprintf(namebuf, sizeof(namebuf), "AMMNUM%d", i);
     marknums[i] = W_CacheLumpName(namebuf, PU_STATIC);
   }*/
-    maplump = W_CacheLumpName(DEH_String("AUTOPAGE"), PU_STATIC);
+    maplump = cache_lump_name<patch_t *>(DEH_String("AUTOPAGE"), PU_STATIC);
 }
 
 /*void AM_unloadPics(void)

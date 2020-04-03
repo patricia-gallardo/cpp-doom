@@ -53,7 +53,7 @@ patch_t*		sttminus;
 void STlib_init(void)
 {
     if (W_CheckNumForName(DEH_String("STTMINUS")) >= 0)
-        sttminus = (patch_t *) W_CacheLumpName(DEH_String("STTMINUS"), PU_STATIC);
+        sttminus = (patch_t *) cache_lump_name<patch_t *>(DEH_String("STTMINUS"), PU_STATIC);
     else
         sttminus = NULL;
 }

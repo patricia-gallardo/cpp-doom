@@ -1041,7 +1041,7 @@ void ST_doRefresh(void)
 
             lumpnum = W_CheckNumForName(iconname);
             if(lumpnum == -1)
-                patch = W_CacheLumpName(DEH_String("STCFN063"), PU_CACHE);
+                patch = cache_lump_name<patch_t *>(DEH_String("STCFN063"), PU_CACHE);
             else
                 patch = W_CacheLumpNum(lumpnum, PU_STATIC);
 
@@ -1373,32 +1373,32 @@ boolean ST_DrawExternal(void)
          if(plyr->weaponowned[wp_elecbow])
          {
              V_DrawPatchDirect(38, 86, 
-                 W_CacheLumpName(DEH_String("CBOWA0"), PU_CACHE));
+                 cache_lump_name<patch_t *>(DEH_String("CBOWA0"), PU_CACHE));
          }
          if(plyr->weaponowned[wp_rifle])
          {
              V_DrawPatchDirect(40, 107, 
-                 W_CacheLumpName(DEH_String("RIFLA0"), PU_CACHE));
+                 cache_lump_name<patch_t *>(DEH_String("RIFLA0"), PU_CACHE));
          }
          if(plyr->weaponowned[wp_missile])
          {
              V_DrawPatchDirect(39, 131, 
-                 W_CacheLumpName(DEH_String("MMSLA0"), PU_CACHE));
+                 cache_lump_name<patch_t *>(DEH_String("MMSLA0"), PU_CACHE));
          }
          if(plyr->weaponowned[wp_hegrenade])
          {
              V_DrawPatchDirect(78, 87, 
-                 W_CacheLumpName(DEH_String("GRNDA0"), PU_CACHE));
+                 cache_lump_name<patch_t *>(DEH_String("GRNDA0"), PU_CACHE));
          }
          if(plyr->weaponowned[wp_flame])
          {
              V_DrawPatchDirect(80, 117, 
-                 W_CacheLumpName(DEH_String("FLAMA0"), PU_CACHE));
+                 cache_lump_name<patch_t *>(DEH_String("FLAMA0"), PU_CACHE));
          }
          if(plyr->weaponowned[wp_mauler])
          {
              V_DrawPatchDirect(75, 142, 
-                 W_CacheLumpName(DEH_String("TRPDA0"), PU_CACHE));
+                 cache_lump_name<patch_t *>(DEH_String("TRPDA0"), PU_CACHE));
          }
          
          // haleyjd 20110213: draw ammo
@@ -1414,7 +1414,7 @@ boolean ST_DrawExternal(void)
          if(plyr->powers[pw_communicator])
          {
              V_DrawPatchDirect(280, 130, 
-                 W_CacheLumpName(DEH_String("I_COMM"), PU_CACHE));
+                 cache_lump_name<patch_t *>(DEH_String("I_COMM"), PU_CACHE));
          }
     }
 

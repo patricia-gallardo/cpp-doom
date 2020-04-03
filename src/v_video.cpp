@@ -44,7 +44,7 @@
 #include "z_zone.hpp"
 #include "crispy.hpp"
 
-#include "config.hpp"
+#include "config.h"
 #ifdef HAVE_LIBPNG
 #include <png.h>
 #endif
@@ -682,7 +682,7 @@ void V_DrawShadowedPatch(int x, int y, patch_t *patch)
 
 void V_LoadTintTable(void)
 {
-    tinttable = W_CacheLumpName("TINTTAB", PU_STATIC);
+    tinttable = cache_lump_name<patch_t *>("TINTTAB", PU_STATIC);
 }
 
 //
@@ -693,7 +693,7 @@ void V_LoadTintTable(void)
 
 void V_LoadXlaTable(void)
 {
-    xlatab = W_CacheLumpName("XLATAB", PU_STATIC);
+    xlatab = cache_lump_name<patch_t *>("XLATAB", PU_STATIC);
 }
 
 //

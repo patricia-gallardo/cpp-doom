@@ -17,7 +17,7 @@
 //
 
 
-#include "SDL.hpp"
+#include "SDL.h"
 #include "SDL_opengl.hpp"
 
 #ifdef _WIN32
@@ -31,7 +31,7 @@
 
 #include "crispy.hpp"
 
-#include "config.hpp"
+#include "config.h"
 #include "d_loop.hpp"
 #include "deh_str.hpp"
 #include "doomtype.hpp"
@@ -1633,7 +1633,7 @@ void I_InitGraphics(void)
 
     // Set the palette
 
-    doompal = W_CacheLumpName(DEH_String("PLAYPAL"), PU_CACHE);
+    doompal = cache_lump_name<patch_t *>(DEH_String("PLAYPAL"), PU_CACHE);
     I_SetPalette(doompal);
     SDL_SetPaletteColors(screenbuffer->format->palette, palette, 0, 256);
 #endif

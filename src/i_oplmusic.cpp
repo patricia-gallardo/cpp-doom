@@ -31,8 +31,10 @@
 #include "w_wad.hpp"
 #include "z_zone.hpp"
 
-#include "opl.hpp"
+#include "../utils/lump.hpp"
+#include "../utils/memory.hpp"
 #include "midifile.hpp"
+#include "opl.hpp"
 
 // #define OPL_MIDI_DEBUG
 
@@ -362,9 +364,7 @@ static boolean opl_stereo_correct = false;
 
 static boolean LoadInstrumentTable(void)
 {
-    byte *lump;
-
-    lump = W_CacheLumpName(DEH_String("genmidi"), PU_STATIC);
+    auto *lump = cache_lump_name<byte *>(DEH_String("genmidi"), PU_STATIC);
 
     // DMX does not check header
 
@@ -458,7 +458,7 @@ static void ReleaseVoice(int index)
 
 // Load data to the specified operator
 
-static void LoadOperatorData(int operator, genmidi_op_t *data,
+static void LoadOperatorData(int op, genmidi_op_t *data,
                              boolean max_level, unsigned int *volume)
 {
     int level;
@@ -479,11 +479,11 @@ static void LoadOperatorData(int operator, genmidi_op_t *data,
 
     *volume = level;
 
-    OPL_WriteRegister(OPL_REGS_LEVEL + operator, level);
-    OPL_WriteRegister(OPL_REGS_TREMOLO + operator, data->tremolo);
-    OPL_WriteRegister(OPL_REGS_ATTACK + operator, data->attack);
-    OPL_WriteRegister(OPL_REGS_SUSTAIN + operator, data->sustain);
-    OPL_WriteRegister(OPL_REGS_WAVEFORM + operator, data->waveform);
+    OPL_WriteRegister(OPL_REGS_LEVEL + op, level);
+    OPL_WriteRegister(OPL_REGS_TREMOLO + op, data->tremolo);
+    OPL_WriteRegister(OPL_REGS_ATTACK + op, data->attack);
+    OPL_WriteRegister(OPL_REGS_SUSTAIN + op, data->sustain);
+    OPL_WriteRegister(OPL_REGS_WAVEFORM + op, data->waveform);
 }
 
 // Set the instrument for a particular voice.
@@ -1385,7 +1385,7 @@ static void RestartSong(void *unused)
 
 static void TrackTimerCallback(void *arg)
 {
-    opl_track_data_t *track = arg;
+    auto *track = static_cast<opl_track_data_t *>(arg);
     midi_event_t *event;
 
     // Get the next event and process it.
@@ -1475,7 +1475,6 @@ static void StartTrack(midi_file_t *file, unsigned int track_num)
 
 static void I_OPL_PlaySong(void *handle, boolean looping)
 {
-    midi_file_t *file;
     unsigned int i;
 
     if (!music_initialized || handle == NULL)
@@ -1483,11 +1482,11 @@ static void I_OPL_PlaySong(void *handle, boolean looping)
         return;
     }
 
-    file = handle;
+    auto *file = static_cast<midi_file_t *>(handle);
 
     // Allocate track data.
 
-    tracks = malloc(MIDI_NumTracks(file) * sizeof(opl_track_data_t));
+    tracks = create_struct<opl_track_data_t>(MIDI_NumTracks(file));
 
     num_tracks = MIDI_NumTracks(file);
     running_tracks = num_tracks;
@@ -1601,7 +1600,7 @@ static void I_OPL_UnRegisterSong(void *handle)
 
     if (handle != NULL)
     {
-        MIDI_FreeFile(handle);
+        MIDI_FreeFile(static_cast<midi_file_t *>(handle));
     }
 }
 
@@ -1654,7 +1653,7 @@ static void *I_OPL_RegisterSong(void *data, int len)
     filename = M_TempFile("doom.mid");
 
     // [crispy] remove MID file size limit
-    if (IsMid(data, len) /* && len < MAXMIDLENGTH */)
+    if (IsMid(static_cast<byte *>(data), len) /* && len < MAXMIDLENGTH */)
     {
         M_WriteFile(filename, data, len);
     }
@@ -1662,7 +1661,7 @@ static void *I_OPL_RegisterSong(void *data, int len)
     {
         // Assume a MUS file and try to convert
 
-        ConvertMus(data, len, filename);
+        ConvertMus(static_cast<byte*>(data), len, filename);
     }
 
     result = MIDI_LoadFile(filename);
@@ -1716,7 +1715,7 @@ static void I_OPL_ShutdownMusic(void)
 
 static boolean I_OPL_InitMusic(void)
 {
-    char *dmxoption;
+
     opl_init_result_t chip_type;
 
     OPL_SetSampleRate(snd_samplerate);
@@ -1730,7 +1729,7 @@ static boolean I_OPL_InitMusic(void)
 
     // The DMXOPTION variable must be set to enable OPL3 support.
     // As an extension, we also allow it to be set from the config file.
-    dmxoption = getenv("DMXOPTION");
+    const char *dmxoption = getenv("DMXOPTION");
     if (dmxoption == NULL)
     {
         dmxoption = snd_dmxoption != NULL ? snd_dmxoption : "";

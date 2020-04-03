@@ -20,7 +20,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-#include "config.hpp"
+#include "config.h"
 #include "doomstat.hpp"
 #include "doomtype.hpp"
 #include "m_misc.hpp"

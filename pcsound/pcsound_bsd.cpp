@@ -16,7 +16,7 @@
 //    (Should be NetBSD as well, but untested).
 //
 
-#include "config.hpp"
+#include "config.h"
 
 // OpenBSD/NetBSD:
 
@@ -47,7 +47,7 @@
 #include <unistd.h>
 #include <fcntl.h>
 
-#include "SDL.hpp"
+#include "SDL.h"
 #include "SDL_thread.hpp"
 
 #include "pcsound.hpp"

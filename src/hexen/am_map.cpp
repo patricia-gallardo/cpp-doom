@@ -330,7 +330,7 @@ void AM_initVariables(void)
 
 void AM_loadPics(void)
 {
-    maplump = W_CacheLumpName("AUTOPAGE", PU_STATIC);
+    maplump = cache_lump_name<patch_t *>("AUTOPAGE", PU_STATIC);
 }
 
 

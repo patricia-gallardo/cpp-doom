@@ -16,19 +16,19 @@
 //	System interface for music.
 //
 
-
+#include <ctype.h>
+#include <memory>
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
-#include <ctype.h>
 
-#include "SDL.hpp"
-#include "SDL_mixer.hpp"
+#include "SDL.h"
+#include "SDL_mixer.h"
 
 #include "i_glob.hpp"
 #include "i_midipipe.hpp"
 
-#include "config.hpp"
+#include "config.h"
 #include "doomtype.hpp"
 #include "memio.hpp"
 #include "mus2mid.hpp"
@@ -401,7 +401,6 @@ static void ParseVorbisComments(file_metadata_t *metadata, FILE *fs)
 {
     uint32_t buf;
     unsigned int num_comments, i, comment_len;
-    char *comment;
 
     // We must have read the sample rate already from an earlier header.
     if (metadata->samplerate_hz == 0)
@@ -438,17 +437,14 @@ static void ParseVorbisComments(file_metadata_t *metadata, FILE *fs)
         comment_len = LONG(buf);
 
         // Read actual comment data into string buffer.
-        comment = calloc(1, comment_len + 1);
-        if (comment == NULL
-         || fread(comment, 1, comment_len, fs) < comment_len)
+        auto comment = std::string(comment_len, '\0');
+        if (fread(comment.data(), 1, comment_len, fs) < comment_len)
         {
-            free(comment);
             break;
         }
 
         // Parse comment string.
-        ParseVorbisComment(metadata, comment);
-        free(comment);
+        ParseVorbisComment(metadata, comment.data());
     }
 }
 

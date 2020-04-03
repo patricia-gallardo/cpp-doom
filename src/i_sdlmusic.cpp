@@ -22,12 +22,12 @@
 #include <string.h>
 #include <ctype.h>
 
-#include "SDL.hpp"
-#include "SDL_mixer.hpp"
+#include "SDL.h"
+#include "SDL_mixer.h"
 
 #include "i_midipipe.hpp"
 
-#include "config.hpp"
+#include "config.h"
 #include "doomtype.hpp"
 #include "memio.hpp"
 #include "mus2mid.hpp"
@@ -429,7 +429,7 @@ static void *I_SDL_RegisterSong(void *data, int len)
     {
 	// Assume a MUS file and try to convert
 
-        ConvertMus(data, len, filename);
+        ConvertMus(static_cast<byte *>(data), len, filename);
     }
 
     // Load the MIDI. In an ideal world we'd be using Mix_LoadMUS_RW()

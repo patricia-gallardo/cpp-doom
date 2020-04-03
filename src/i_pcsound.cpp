@@ -15,7 +15,7 @@
 //	System interface for PC speaker sound.
 //
 
-#include "SDL.hpp"
+#include "SDL.h"
 #include <string.h>
 
 #include "doomtype.hpp"
@@ -26,6 +26,7 @@
 #include "w_wad.hpp"
 #include "z_zone.hpp"
 
+#include "../utils/lump.hpp"
 #include "pcsound.hpp"
 
 #define TIMER_FREQ 1193181 /* hz */
@@ -118,7 +119,7 @@ static boolean CachePCSLump(sfxinfo_t *sfxinfo)
 
     // Load from WAD
 
-    current_sound_lump = W_CacheLumpNum(sfxinfo->lumpnum, PU_STATIC);
+    current_sound_lump = cache_lump_num<uint8_t *>(sfxinfo->lumpnum, PU_STATIC);
     lumplen = W_LumpLength(sfxinfo->lumpnum);
 
     // Read header

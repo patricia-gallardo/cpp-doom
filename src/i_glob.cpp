@@ -22,7 +22,7 @@
 
 #include "i_glob.hpp"
 #include "m_misc.hpp"
-#include "config.hpp"
+#include "config.h"
 
 #if defined(_MSC_VER)
 // For Visual C++, we need to include the win_opendir module.

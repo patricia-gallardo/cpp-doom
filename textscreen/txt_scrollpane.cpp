@@ -25,6 +25,7 @@
 #include "txt_table.hpp"
 
 #include "doomkeys.hpp"
+#include "../utils/memory.hpp"
 
 #define SCROLLBAR_VERTICAL   (1 << 0)
 #define SCROLLBAR_HORIZONTAL (1 << 1)
@@ -565,9 +566,8 @@ txt_widget_class_t txt_scrollpane_class =
 txt_scrollpane_t *TXT_NewScrollPane(int w, int h, TXT_UNCAST_ARG(target))
 {
     TXT_CAST_ARG(txt_widget_t, target);
-    txt_scrollpane_t *scrollpane;
+    auto *scrollpane = create_struct<txt_scrollpane_t>();
 
-    scrollpane = malloc(sizeof(txt_scrollpane_t));
     TXT_InitWidget(scrollpane, &txt_scrollpane_class);
     scrollpane->w = w;
     scrollpane->h = h;

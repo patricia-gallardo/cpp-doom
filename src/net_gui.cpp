@@ -21,7 +21,7 @@
 #include <stdlib.h>
 #include <ctype.h>
 
-#include "config.hpp"
+#include "config.h"
 #include "doomkeys.hpp"
 
 #include "i_system.hpp"

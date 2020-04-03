@@ -38,7 +38,7 @@
 
 #include "textscreen.hpp"
 
-#include "config.hpp"
+#include "config.h"
 #include "execute.hpp"
 #include "mode.hpp"
 #include "m_argv.hpp"

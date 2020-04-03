@@ -103,7 +103,7 @@ boolean F_Responder(event_t * event)
         /*
         memset((byte *) 0xa0000, 0, SCREENWIDTH * SCREENHEIGHT);
         memset(I_VideoBuffer, 0, SCREENWIDTH * SCREENHEIGHT);
-        I_SetPalette(W_CacheLumpName("PLAYPAL", PU_CACHE));
+        I_SetPalette(cache_lump_name<patch_t *>("PLAYPAL", PU_CACHE));
         */
         return true;
     }
@@ -265,8 +265,8 @@ void F_DemonScroll(void)
     {
         return;
     }
-    p1 = W_CacheLumpName(DEH_String("FINAL1"), PU_LEVEL);
-    p2 = W_CacheLumpName(DEH_String("FINAL2"), PU_LEVEL);
+    p1 = cache_lump_name<patch_t *>(DEH_String("FINAL1"), PU_LEVEL);
+    p2 = cache_lump_name<patch_t *>(DEH_String("FINAL2"), PU_LEVEL);
     if (finalecount < 70)
     {
         V_CopyScaledBuffer(I_VideoBuffer, p1, ORIGHEIGHT * ORIGWIDTH);
@@ -317,7 +317,7 @@ void F_DrawUnderwater(void)
                 palette = W_CacheLumpName(lumpname, PU_STATIC);
                 I_SetPalette(palette);
                 W_ReleaseLumpName(lumpname);
-                V_DrawRawScreen(W_CacheLumpName(DEH_String("E2END"), PU_CACHE));
+                V_DrawRawScreen(cache_lump_name<patch_t *>(DEH_String("E2END"), PU_CACHE));
             }
             paused = false;
             MenuActive = false;
@@ -333,7 +333,7 @@ void F_DrawUnderwater(void)
                 W_ReleaseLumpName(lumpname);
                 underwawa = false;
             }
-            V_DrawRawScreen(W_CacheLumpName(DEH_String("TITLE"), PU_CACHE));
+            V_DrawRawScreen(cache_lump_name<patch_t *>(DEH_String("TITLE"), PU_CACHE));
             //D_StartTitle(); // go to intro/demo mode.
     }
 }
@@ -356,8 +356,8 @@ void F_BunnyScroll(void)
     int stage;
     static int laststage;
 
-    p1 = W_CacheLumpName("PFUB2", PU_LEVEL);
-    p2 = W_CacheLumpName("PFUB1", PU_LEVEL);
+    p1 = cache_lump_name<patch_t *>("PFUB2", PU_LEVEL);
+    p2 = cache_lump_name<patch_t *>("PFUB1", PU_LEVEL);
 
     V_MarkRect(0, 0, SCREENWIDTH, SCREENHEIGHT);
 
@@ -380,7 +380,7 @@ void F_BunnyScroll(void)
     if (finalecount < 1180)
     {
         V_DrawPatch((SCREENWIDTH - 13 * 8) / 2, (SCREENHEIGHT - 8 * 8) / 2, 0,
-                    W_CacheLumpName("END0", PU_CACHE));
+                    cache_lump_name<patch_t *>("END0", PU_CACHE));
         laststage = 0;
         return;
     }
@@ -420,11 +420,11 @@ void F_Drawer(void)
             case 1:
                 if (gamemode == shareware)
                 {
-                    V_DrawRawScreen(W_CacheLumpName("ORDER", PU_CACHE));
+                    V_DrawRawScreen(cache_lump_name<patch_t *>("ORDER", PU_CACHE));
                 }
                 else
                 {
-                    V_DrawRawScreen(W_CacheLumpName("CREDIT", PU_CACHE));
+                    V_DrawRawScreen(cache_lump_name<patch_t *>("CREDIT", PU_CACHE));
                 }
                 break;
             case 2:
@@ -435,7 +435,7 @@ void F_Drawer(void)
                 break;
             case 4:            // Just show credits screen for extended episodes
             case 5:
-                V_DrawRawScreen(W_CacheLumpName("CREDIT", PU_CACHE));
+                V_DrawRawScreen(cache_lump_name<patch_t *>("CREDIT", PU_CACHE));
                 break;
         }
     }

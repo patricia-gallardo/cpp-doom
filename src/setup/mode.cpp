@@ -17,7 +17,7 @@
 
 #include "doomtype.hpp"
 
-#include "config.hpp"
+#include "config.h"
 #include "textscreen.hpp"
 
 #include "doomtype.hpp"

@@ -15,7 +15,7 @@
 //     OPL Win32 native interface.
 //
 
-#include "config.hpp"
+#include "config.h"
 
 #ifdef _WIN32
 

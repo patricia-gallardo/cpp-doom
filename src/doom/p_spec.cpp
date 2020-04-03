@@ -160,7 +160,7 @@ void P_InitPicAnims (void)
 
     if (from_lump)
     {
-	animdefs = W_CacheLumpName("ANIMATED", PU_STATIC);
+	animdefs = cache_lump_name<patch_t *>("ANIMATED", PU_STATIC);
     }
     else
     {

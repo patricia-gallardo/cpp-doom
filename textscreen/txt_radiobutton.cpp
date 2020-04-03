@@ -23,6 +23,7 @@
 #include "txt_main.hpp"
 #include "txt_utf8.hpp"
 #include "txt_window.hpp"
+#include "../utils/memory.hpp"
 
 static void TXT_RadioButtonSizeCalc(TXT_UNCAST_ARG(radiobutton))
 {
@@ -123,9 +124,7 @@ txt_widget_class_t txt_radiobutton_class =
 
 txt_radiobutton_t *TXT_NewRadioButton(const char *label, int *variable, int value)
 {
-    txt_radiobutton_t *radiobutton;
-
-    radiobutton = malloc(sizeof(txt_radiobutton_t));
+    auto *radiobutton = create_struct<txt_radiobutton_t>();
 
     TXT_InitWidget(radiobutton, &txt_radiobutton_class);
     radiobutton->label = strdup(label);

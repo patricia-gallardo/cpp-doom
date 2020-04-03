@@ -491,7 +491,7 @@ void S_UpdateSounds(mobj_t * listener)
                 dist = 0;
 
 // calculate the volume based upon the distance from the sound origin.
-//          vol = (*((byte *)W_CacheLumpName("SNDCURVE", PU_CACHE)+dist)*(snd_MaxVolume*8))>>7;
+//          vol = (*((byte *)cache_lump_name<patch_t *>("SNDCURVE", PU_CACHE)+dist)*(snd_MaxVolume*8))>>7;
             vol = soundCurve[dist];
 
             angle = R_PointToAngle2(listener->x, listener->y,
@@ -568,7 +568,7 @@ void S_SetMaxVolume(boolean fullprocess)
     if (!fullprocess)
     {
         soundCurve[0] =
-            (*((byte *) W_CacheLumpName("SNDCURVE", PU_CACHE)) *
+            (*((byte *) cache_lump_name<patch_t *>("SNDCURVE", PU_CACHE)) *
              (snd_MaxVolume * 8)) >> 7;
     }
     else
@@ -576,7 +576,7 @@ void S_SetMaxVolume(boolean fullprocess)
         for (i = 0; i < MAX_SND_DIST; i++)
         {
             soundCurve[i] =
-                (*((byte *) W_CacheLumpName("SNDCURVE", PU_CACHE) + i) *
+                (*((byte *) cache_lump_name<patch_t *>("SNDCURVE", PU_CACHE) + i) *
                  (snd_MaxVolume * 8)) >> 7;
         }
     }

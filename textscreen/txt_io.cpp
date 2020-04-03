@@ -138,11 +138,11 @@ void TXT_FGColor(txt_color_t color)
     fgcolor = color;
 }
 
-void TXT_BGColor(int color, int blinking)
+void TXT_BGColor(txt_color_t color, int blinking)
 {
     bgcolor = color;
     if (blinking)
-        bgcolor |= TXT_COLOR_BLINKING;
+        bgcolor = static_cast<txt_color_t>( bgcolor | TXT_COLOR_BLINKING);
 }
 
 void TXT_SaveColors(txt_saved_colors_t *save)

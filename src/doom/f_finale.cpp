@@ -965,7 +965,7 @@ void F_BunnyScroll (void)
     {
         V_DrawPatch((ORIGWIDTH - 13 * 8) / 2,
                     (ORIGHEIGHT - 8 * 8) / 2,
-                    W_CacheLumpName(DEH_String("END0"), PU_CACHE));
+                    cache_lump_name<patch_t *>(DEH_String("END0"), PU_CACHE));
 	laststage = 0;
 	return;
     }

@@ -15,10 +15,13 @@
 #include <stdlib.h>
 #include <string.h>
 
+#include "../utils/memory.hpp"
 #include "txt_gui.hpp"
 #include "txt_io.hpp"
 #include "txt_main.hpp"
 #include "txt_utf8.hpp"
+
+#include <new>
 
 typedef struct txt_cliparea_s txt_cliparea_t;
 
@@ -416,24 +419,23 @@ void TXT_DrawVertScrollbar(int x, int y, int h, int cursor, int range)
     TXT_RestoreColors(&colors);
 }
 
-void TXT_InitClipArea(void)
+void TXT_InitClipArea()
 {
-    if (cliparea == NULL)
+    if (cliparea == nullptr)
     {
-        cliparea = malloc(sizeof(txt_cliparea_t));
+        auto *mem = malloc(sizeof(txt_cliparea_t));
+        cliparea = new (mem) txt_cliparea_t{};
         cliparea->x1 = 0;
         cliparea->x2 = TXT_SCREEN_W;
         cliparea->y1 = 0;
         cliparea->y2 = TXT_SCREEN_H;
-        cliparea->next = NULL;
+        cliparea->next = nullptr;
     }
 }
 
 void TXT_PushClipArea(int x1, int x2, int y1, int y2)
 {
-    txt_cliparea_t *newarea;
-
-    newarea = malloc(sizeof(txt_cliparea_t));
+    auto *newarea = create_struct<txt_cliparea_t>();
 
     // Set the new clip area to the intersection of the old
     // area and the new one.

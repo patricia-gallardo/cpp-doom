@@ -16,7 +16,7 @@
 //     for Hexen startup loading screen.
 //
 
-#include "SDL.hpp"
+#include "SDL.h"
 #include "string.hpp"
 
 #include "doomtype.hpp"

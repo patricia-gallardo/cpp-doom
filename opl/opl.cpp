@@ -15,12 +15,12 @@
 //     OPL interface.
 //
 
-#include "config.hpp"
+#include "config.h"
 
 #include <stdio.h>
 #include <stdlib.h>
 
-#include "SDL.hpp"
+#include "SDL.h"
 
 #include "opl.hpp"
 #include "opl_internal.hpp"
@@ -130,7 +130,6 @@ opl_init_result_t OPL_Init(unsigned int port_base)
 {
     char *driver_name;
     int i;
-    int result;
 
     driver_name = getenv("OPL_DRIVER");
 
@@ -142,8 +141,8 @@ opl_init_result_t OPL_Init(unsigned int port_base)
         {
             if (!strcmp(driver_name, drivers[i]->name))
             {
-                result = InitDriver(drivers[i], port_base);
-                if (result)
+                const auto result = InitDriver(drivers[i], port_base);
+                if (result != 0)
                 {
                     return result;
                 }
@@ -450,18 +449,17 @@ void OPL_Unlock(void)
     }
 }
 
-typedef struct
+struct delay_data_t
 {
     int finished;
 
     SDL_mutex *mutex;
     SDL_cond *cond;
-} delay_data_t;
+};
 
-static void DelayCallback(void *_delay_data)
+static void DelayCallback(void *delay_data_)
 {
-    delay_data_t *delay_data = _delay_data;
-
+    auto *delay_data = static_cast<delay_data_t *>(delay_data_);
     SDL_LockMutex(delay_data->mutex);
     delay_data->finished = 1;
 

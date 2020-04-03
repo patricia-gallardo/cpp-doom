@@ -1031,7 +1031,7 @@ static void R_InitTranMap()
     else
     {
 	// Compose a default transparent filter map based on PLAYPAL.
-	unsigned char *playpal = W_CacheLumpName("PLAYPAL", PU_STATIC);
+	unsigned char *playpal = cache_lump_name<patch_t *>("PLAYPAL", PU_STATIC);
 	FILE *cachefp;
 	char *fname = NULL;
 	extern char *configdir;
@@ -1153,7 +1153,7 @@ void R_InitColormaps (void)
 		I_SetGammaTable();
 	}
 
-	playpal = W_CacheLumpName("PLAYPAL", PU_STATIC);
+	playpal = cache_lump_name<patch_t *>("PLAYPAL", PU_STATIC);
 
 	if (!colormaps)
 	{
@@ -1190,7 +1190,7 @@ void R_InitColormaps (void)
 	}
 	else
 	{
-		byte *const colormap = W_CacheLumpName("COLORMAP", PU_STATIC);
+		byte *const colormap = cache_lump_name<patch_t *>("COLORMAP", PU_STATIC);
 
 		for (c = 0; c <= NUMCOLORMAPS; c++)
 		{
@@ -1210,7 +1210,7 @@ void R_InitColormaps (void)
 
     // [crispy] initialize color translation and color strings tables
     {
-	byte *playpal = W_CacheLumpName("PLAYPAL", PU_STATIC);
+	byte *playpal = cache_lump_name<patch_t *>("PLAYPAL", PU_STATIC);
 	char c[3];
 	int i, j;
 	boolean keepgray = false;

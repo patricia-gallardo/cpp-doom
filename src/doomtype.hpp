@@ -21,7 +21,7 @@
 #ifndef __DOOMTYPE__
 #define __DOOMTYPE__
 
-#include "config.hpp"
+#include "config.h"
 
 #if defined(_MSC_VER) && !defined(__cplusplus)
 #define inline __inline

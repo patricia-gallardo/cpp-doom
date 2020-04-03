@@ -17,7 +17,7 @@
 //     waking up to invoke callbacks set using OPL_Timer_SetCallback.
 //
 
-#include "SDL.hpp"
+#include "SDL.h"
 
 #include "opl_timer.hpp"
 #include "opl_queue.hpp"

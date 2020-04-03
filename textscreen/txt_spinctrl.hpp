@@ -43,7 +43,8 @@ struct txt_spincontrol_s
 {
     txt_widget_t widget;
     txt_spincontrol_type_t type;
-    union { float f; int i; } min, max, *value, step; 
+    union { float f; int i; } min, max, step;
+    union { float *f; int *i; } value;
     int editing;
     char *buffer;
     size_t buffer_len;

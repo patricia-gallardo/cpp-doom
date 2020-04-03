@@ -15,10 +15,13 @@
 #include <stdlib.h>
 #include <string.h>
 
+#include "../utils/memory.hpp"
+#include "txt_desktop.hpp"
+#include "txt_gui.hpp"
 #include "txt_io.hpp"
 #include "txt_widget.hpp"
-#include "txt_gui.hpp"
-#include "txt_desktop.hpp"
+#include <vector>
+#include <memory>
 
 typedef struct
 {
@@ -29,47 +32,20 @@ typedef struct
 
 struct txt_callback_table_s
 {
-    int refcount;
-    txt_callback_t *callbacks;
-    int num_callbacks;
+    std::vector<txt_callback_t> callbacks;
+
+    ~txt_callback_table_s() {
+      for (auto &callback : callbacks) {
+        free(callback.signal_name);
+      }
+    }
 };
 
-txt_callback_table_t *TXT_NewCallbackTable(void)
+std::shared_ptr<txt_callback_table_t> TXT_NewCallbackTable()
 {
-    txt_callback_table_t *table;
-
-    table = malloc(sizeof(txt_callback_table_t));
-    table->callbacks = NULL;
-    table->num_callbacks = 0;
-    table->refcount = 1;
-
-    return table;
+    return std::make_shared<txt_callback_table_t>();
 }
 
-void TXT_RefCallbackTable(txt_callback_table_t *table)
-{
-    ++table->refcount;
-}
-
-void TXT_UnrefCallbackTable(txt_callback_table_t *table)
-{
-    int i;
-
-    --table->refcount;
-
-    if (table->refcount == 0)
-    {
-        // No more references to this table
-
-        for (i=0; i<table->num_callbacks; ++i)
-        {
-            free(table->callbacks[i].signal_name);
-        }
-    
-        free(table->callbacks);
-        free(table);
-    }
-}
 
 void TXT_InitWidget(TXT_UNCAST_ARG(widget), txt_widget_class_t *widget_class)
 {

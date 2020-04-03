@@ -116,7 +116,7 @@ void P_InitSwitchList(void)
 
     if ((from_lump = (W_CheckNumForName("SWITCHES") != -1)))
     {
-	alphSwitchList = W_CacheLumpName("SWITCHES", PU_STATIC);
+	alphSwitchList = cache_lump_name<patch_t *>("SWITCHES", PU_STATIC);
     }
     else
     {

@@ -15,6 +15,7 @@
 #include <stdarg.h>
 #include <stdlib.h>
 #include <string.h>
+#include <vector>
 
 #include "doomkeys.hpp"
 
@@ -25,6 +26,7 @@
 #include "txt_separator.hpp"
 #include "txt_strut.hpp"
 #include "txt_table.hpp"
+#include "../utils/memory.hpp"
 
 txt_widget_t txt_table_overflow_right;
 txt_widget_t txt_table_overflow_down;
@@ -256,8 +258,8 @@ static void TXT_CalcTableSize(TXT_UNCAST_ARG(table))
 
     rows = TableRows(table);
 
-    row_heights = malloc(sizeof(int) * rows);
-    column_widths = malloc(sizeof(int) * table->columns);
+    row_heights = create_struct<unsigned int>(rows);
+    column_widths = create_struct<unsigned int>(table->columns);
 
     CalcRowColSizes(table, row_heights, column_widths);
 
@@ -340,8 +342,9 @@ void TXT_AddWidget(TXT_UNCAST_ARG(table), TXT_UNCAST_ARG(widget))
         FillRowToEnd(table);
     }
 
-    table->widgets = realloc(table->widgets,
-                             sizeof(txt_widget_t *) * (table->num_widgets + 1));
+    // todo make this a vector or something
+    table->widgets = static_cast<txt_widget_t **>(realloc(table->widgets,
+                             sizeof(txt_widget_t *) * (table->num_widgets + 1)));
     table->widgets[table->num_widgets] = widget;
     ++table->num_widgets;
 
@@ -687,22 +690,16 @@ static void LayoutCell(txt_table_t *table, int x, int y,
 static void TXT_TableLayout(TXT_UNCAST_ARG(table))
 {
     TXT_CAST_ARG(txt_table_t, table);
-    unsigned int *column_widths;
-    unsigned int *row_heights;
-    txt_widget_t *widget;
-    int draw_x, draw_y;
-    int x, y;
-    int i;
-    int rows;
 
     // Work out the column widths and row heights
 
-    rows = TableRows(table);
+    const auto rows = TableRows(table);
 
-    column_widths = malloc(sizeof(int) * table->columns);
-    row_heights = malloc(sizeof(int) * rows);
+    auto column_widths = std::vector<unsigned int>(table->columns);
+    auto row_heights = std::vector<unsigned int>(
+        table->columns);//    auto column_widths = std::make_unique<unsigned int[]>(table->columns);
 
-    CalcRowColSizes(table, row_heights, column_widths);
+    CalcRowColSizes(table, row_heights.get(), column_widths.get());
 
     // If this table only has one column, expand column size to fit
     // the display width.  Ensures that separators reach the window edges 
@@ -715,25 +712,25 @@ static void TXT_TableLayout(TXT_UNCAST_ARG(table))
 
     // Draw all cells
 
-    draw_y = table->widget.y;
+    auto draw_y = table->widget.y;
 
-    for (y=0; y<rows; ++y)
+    for (int y=0; y<rows; ++y)
     {
-        draw_x = table->widget.x;
+        auto draw_x = table->widget.x;
 
-        for (x=0; x<table->columns; ++x)
+        for (int x=0; x<table->columns; ++x)
         {
-            i = y * table->columns + x;
+            const auto i = y * table->columns + x;
 
             if (i >= table->num_widgets)
                 break;
 
-            widget = table->widgets[i];
+            const auto widget = table->widgets[i];
 
             if (IsActualWidget(widget))
             {
                 CalculateWidgetDimensions(table, x, y,
-                                          column_widths, row_heights,
+                                          column_widths.get(), row_heights.get(),
                                           &widget->w, &widget->h);
                 LayoutCell(table, x, y, draw_x, draw_y);
             }
@@ -743,9 +740,6 @@ static void TXT_TableLayout(TXT_UNCAST_ARG(table))
 
         draw_y += row_heights[y];
     }
-
-    free(row_heights);
-    free(column_widths);
 }
 
 static void TXT_TableDrawer(TXT_UNCAST_ARG(table))

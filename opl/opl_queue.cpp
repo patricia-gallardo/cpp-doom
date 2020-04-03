@@ -20,6 +20,7 @@
 #include <stdlib.h>
 #include <string.h>
 
+#include "../utils/memory.hpp"
 #include "opl_queue.hpp"
 
 #define MAX_OPL_QUEUE 64
@@ -39,9 +40,8 @@ struct opl_callback_queue_s
 
 opl_callback_queue_t *OPL_Queue_Create(void)
 {
-    opl_callback_queue_t *queue;
+    auto *queue = create_struct<opl_callback_queue_t>();
 
-    queue = malloc(sizeof(opl_callback_queue_t));
     queue->num_entries = 0;
 
     return queue;

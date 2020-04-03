@@ -36,7 +36,7 @@ typedef void (*txt_joystick_axis_callback_t)(void);
 #include "txt_widget.hpp"
 #include "txt_window.hpp"
 
-#include "SDL.hpp"
+#include "SDL.h"
 
 //
 // A joystick axis.

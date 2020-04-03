@@ -15,15 +15,15 @@
 //     OPL SDL interface.
 //
 
-#include "config.hpp"
+#include "config.h"
 
 #include <stdio.h>
 #include <string.h>
 #include <errno.h>
 #include <assert.h>
 
-#include "SDL.hpp"
-#include "SDL_mixer.hpp"
+#include "SDL.h"
+#include "SDL_mixer.h"
 
 #include "opl3.hpp"
 
@@ -337,7 +337,7 @@ static int OPL_SDL_Init(unsigned int port_base)
     }
 
     // Mix buffer: four bytes per sample (16 bits * 2 channels):
-    mix_buffer = malloc(mixing_freq * 4);
+    mix_buffer = static_cast<uint8_t *>(malloc(mixing_freq * 4));
 
     // Create the emulator structure:
 
