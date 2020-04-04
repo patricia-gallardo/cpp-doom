@@ -633,7 +633,7 @@ static const char *GetSubstituteMusicFile(void *data, size_t data_len)
     }
 
     SHA1_Init(&context);
-    SHA1_Update(&context, data, data_len);
+    SHA1_Update(&context, static_cast<byte *>(data), data_len);
     SHA1_Final(hash, &context);
 
     // Build a string representation of the hash.
@@ -747,8 +747,7 @@ static void AddSubstituteMusic(const char *musicdir, const char *hash_prefix,
     }
 
     ++subst_music_len;
-    subst_music =
-        I_Realloc(subst_music, sizeof(subst_music_t) * subst_music_len);
+    subst_music = static_cast<decltype(subst_music)>(I_Realloc(subst_music, sizeof(subst_music_t) * subst_music_len));
     s = &subst_music[subst_music_len - 1];
     s->hash_prefix = hash_prefix;
     s->filename = path;
@@ -774,7 +773,7 @@ static const char *ReadHashPrefix(char *line)
         return NULL;
     }
 
-    result = malloc(len + 1);
+    result = static_cast<char *>(malloc(len + 1));
     if (result == NULL)
     {
         return NULL;
@@ -991,7 +990,7 @@ static boolean IsMusicLump(int lumpnum)
         return false;
     }
 
-    data = W_CacheLumpNum(lumpnum, PU_STATIC);
+    data = static_cast<byte *>(W_CacheLumpNum(lumpnum, PU_STATIC));
 
     result = memcmp(data, MUS_HEADER_MAGIC, 4) == 0
           || memcmp(data, MID_HEADER_MAGIC, 4) == 0;
@@ -1036,7 +1035,7 @@ static void DumpSubstituteConfig(char *filename)
         }
 
         // Calculate hash.
-        data = W_CacheLumpNum(lumpnum, PU_STATIC);
+        data = static_cast<byte *>(W_CacheLumpNum(lumpnum, PU_STATIC));
         SHA1_Init(&context);
         SHA1_Update(&context, data, W_LumpLength(lumpnum));
         SHA1_Final(digest, &context);

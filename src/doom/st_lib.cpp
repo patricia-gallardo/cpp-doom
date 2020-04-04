@@ -35,6 +35,7 @@
 #include "st_lib.hpp"
 #include "r_local.hpp"
 
+#include "../../utils/lump.hpp"
 #include "v_trans.hpp" // [crispy] colored status bar widgets
 
 // in AM_map.c
@@ -53,7 +54,7 @@ patch_t*		sttminus;
 void STlib_init(void)
 {
     if (W_CheckNumForName(DEH_String("STTMINUS")) >= 0)
-        sttminus = (patch_t *) cache_lump_name<patch_t *>(DEH_String("STTMINUS"), PU_STATIC);
+        sttminus = cache_lump_name<patch_t *>(DEH_String("STTMINUS"), PU_STATIC);
     else
         sttminus = NULL;
 }

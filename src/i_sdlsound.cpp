@@ -40,6 +40,7 @@
 #include "w_wad.hpp"
 #include "z_zone.hpp"
 
+#include "../utils/lump.hpp"
 #include "doomtype.hpp"
 
 #define LOW_PASS_FILTER
@@ -743,12 +744,11 @@ static boolean CacheSFX(sfxinfo_t *sfxinfo)
     int samplerate;
     unsigned int bits;
     unsigned int length;
-    byte *data;
 
     // need to load the sound
 
     lumpnum = sfxinfo->lumpnum;
-    data = W_CacheLumpNum(lumpnum, PU_STATIC);
+    auto *data = cache_lump_num<byte *>(lumpnum, PU_STATIC);
     lumplen = W_LumpLength(lumpnum);
 
     // [crispy] Check if this is a valid RIFF wav file

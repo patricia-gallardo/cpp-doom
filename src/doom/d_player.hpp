@@ -167,7 +167,7 @@ typedef struct player_s
     angle_t		oldviewz;
 
     // [crispy] show centered "Secret Revealed!" message
-    char	*centermessage;
+    const char	*centermessage;
 
     // [crispy] free look / mouse look
     int	lookdir, oldlookdir;

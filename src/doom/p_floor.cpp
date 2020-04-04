@@ -28,9 +28,10 @@
 #include "doomstat.hpp"
 #include "r_state.hpp"
 // Data.
+#include "../../utils/memory.hpp"
 #include "sounds.hpp"
 
-//e6y
+// e6y
 #define STAIRS_UNINITIALIZED_CRUSH_FIELD_VALUE 10
 
 //
@@ -297,12 +298,12 @@ void EV_DoGoobers (void)
 	// [crispy] remove thinker for sectors that are already moving
 	if (sec->specialdata)
 	{
-	    floor = sec->specialdata;
+	    floor = static_cast<floormove_t *>(sec->specialdata);
 	    P_RemoveThinker(&floor->thinker);
 	    sec->specialdata = NULL;
 	}
 
-	floor = Z_Malloc(sizeof(*floor), PU_LEVSPEC, 0);
+	floor = zmalloc<decltype(floor)>(sizeof(*floor), PU_LEVSPEC, 0);
 	P_AddThinker(&floor->thinker);
 	sec->specialdata = floor;
 	floor->thinker.function.acp1 = (actionf_p1) T_MoveGoobers;
@@ -345,7 +346,7 @@ EV_DoFloor
 	
 	// new floor thinker
 	rtn = 1;
-	floor = Z_Malloc (sizeof(*floor), PU_LEVSPEC, 0);
+	floor = zmalloc<decltype(floor)> (sizeof(*floor), PU_LEVSPEC, 0);
 	P_AddThinker (&floor->thinker);
 	sec->specialdata = floor;
 	floor->thinker.function.acp1 = (actionf_p1) T_MoveFloor;
@@ -549,7 +550,7 @@ EV_BuildStairs
 	
 	// new floor thinker
 	rtn = 1;
-	floor = Z_Malloc (sizeof(*floor), PU_LEVSPEC, 0);
+	floor = zmalloc<decltype(floor)> (sizeof(*floor), PU_LEVSPEC, 0);
 	P_AddThinker (&floor->thinker);
 	sec->specialdata = floor;
 	floor->thinker.function.acp1 = (actionf_p1) T_MoveFloor;
@@ -608,7 +609,7 @@ EV_BuildStairs
 					
 		sec = tsec;
 		secnum = newsecnum;
-		floor = Z_Malloc (sizeof(*floor), PU_LEVSPEC, 0);
+		floor = zmalloc<decltype(floor)> (sizeof(*floor), PU_LEVSPEC, 0);
 
 		P_AddThinker (&floor->thinker);
 

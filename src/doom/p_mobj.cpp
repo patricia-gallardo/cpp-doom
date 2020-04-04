@@ -32,8 +32,8 @@
 #include "s_sound.hpp"
 #include "s_musinfo.hpp" // [crispy] S_ParseMusInfo()
 
+#include "../../utils/memory.hpp"
 #include "doomstat.hpp"
-
 
 void G_PlayerReborn (int player);
 void P_SpawnMapThing (mapthing_t*	mthing);
@@ -131,7 +131,10 @@ static void P_ExplodeMissileSafe (mobj_t* mo, boolean safe)
 {
     mo->momx = mo->momy = mo->momz = 0;
 
-    P_SetMobjState (mo, safe ? P_LatestSafeState(mobjinfo[mo->type].deathstate) : mobjinfo[mo->type].deathstate);
+    P_SetMobjState (mo, static_cast<statenum_t>(
+                           safe ? P_LatestSafeState(static_cast<statenum_t>(
+                                      mobjinfo[mo->type].deathstate))
+                                : mobjinfo[mo->type].deathstate));
 
     mo->tics -= safe ? Crispy_Random()&3 : P_Random()&3;
 
@@ -173,7 +176,7 @@ void P_XYMovement (mobj_t* mo)
 	    mo->flags &= ~MF_SKULLFLY;
 	    mo->momx = mo->momy = mo->momz = 0;
 
-	    P_SetMobjState (mo, mo->info->spawnstate);
+	    P_SetMobjState (mo, static_cast<statenum_t>(mo->info->spawnstate));
 	}
 	return;
     }
@@ -628,7 +631,7 @@ P_SpawnMobjSafe
     state_t*	st;
     mobjinfo_t*	info;
 	
-    mobj = Z_Malloc (sizeof(*mobj), PU_LEVEL, NULL);
+    mobj = zmalloc<decltype(mobj)> (sizeof(*mobj), PU_LEVEL, NULL);
     memset (mobj, 0, sizeof (*mobj));
     info = &mobjinfo[type];
 	
@@ -647,7 +650,8 @@ P_SpawnMobjSafe
     mobj->lastlook = safe ? Crispy_Random () % MAXPLAYERS : P_Random () % MAXPLAYERS;
     // do not set the state with P_SetMobjState,
     // because action routines can not be called yet
-    st = &states[safe ? P_LatestSafeState(info->spawnstate) : info->spawnstate];
+    st = &states[safe ? P_LatestSafeState(
+                            static_cast<statenum_t>(info->spawnstate)) : info->spawnstate];
 
     mobj->state = st;
     mobj->tics = st->tics;
@@ -803,7 +807,7 @@ void P_RespawnSpecials (void)
     else
 	z = ONFLOORZ;
 
-    mo = P_SpawnMobj (x,y,z, i);
+    mo = P_SpawnMobj (x,y,z, static_cast<mobjtype_t>(i));
     mo->spawnpoint = *mthing;	
     mo->angle = ANG45 * (mthing->angle/45);
 
@@ -1005,7 +1009,7 @@ void P_SpawnMapThing (mapthing_t* mthing)
     else
 	z = ONFLOORZ;
     
-    mobj = P_SpawnMobj (x,y,z, i);
+    mobj = P_SpawnMobj (x,y,z, static_cast<mobjtype_t>(i));
     mobj->spawnpoint = *mthing;
 
     if (mobj->tics > 0)

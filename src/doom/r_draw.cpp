@@ -35,8 +35,9 @@
 #include "v_trans.hpp"
 
 // State.
+#include "../../utils/lump.hpp"
+#include "../../utils/memory.hpp"
 #include "doomstat.hpp"
-
 
 // ?
 //#define MAXWIDTH			1120
@@ -741,7 +742,7 @@ void R_InitTranslationTables (void)
 {
     int		i;
 	
-    translationtables = Z_Malloc (256*3, PU_STATIC, 0);
+    translationtables = zmalloc<decltype(translationtables)> (256*3, PU_STATIC, 0);
     
     // translate just the 16 green colors
     for (i=0 ; i<256 ; i++)
@@ -1072,7 +1073,7 @@ void R_FillBackScreen (void)
 	
     if (background_buffer == NULL)
     {
-        background_buffer = Z_Malloc(MAXWIDTH * (MAXHEIGHT - SBARHEIGHT) * sizeof(*background_buffer),
+        background_buffer = zmalloc<decltype(background_buffer)>(MAXWIDTH * (MAXHEIGHT - SBARHEIGHT) * sizeof(*background_buffer),
                                      PU_STATIC, NULL);
     }
 
@@ -1081,7 +1082,7 @@ void R_FillBackScreen (void)
     else
 	name = name1;
     
-    src = W_CacheLumpName(name, PU_CACHE); 
+    src = cache_lump_name<byte *>(name, PU_CACHE);
     dest = background_buffer;
 	 
     for (y=0 ; y<SCREENHEIGHT-SBARHEIGHT ; y++) 

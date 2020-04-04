@@ -44,6 +44,7 @@
 // Needs access to LFB.
 #include "v_video.hpp"
 
+#include "../../utils/lump.hpp"
 #include "st_stuff.hpp" // [crispy] ST_DrawDemoTimer()
 #include "wi_stuff.hpp"
 
@@ -1890,7 +1891,7 @@ static void WI_loadCallback(const char *name, patch_t **variable)
 {
   // [crispy] prevent crashes with maps without map title graphics lump
   if (W_CheckNumForName(name) != -1)
-    *variable = W_CacheLumpName(name, PU_STATIC);
+    *variable = cache_lump_name<patch_t *>(name, PU_STATIC);
   else
     *variable = NULL;
 }

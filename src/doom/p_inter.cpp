@@ -634,7 +634,7 @@ P_TouchSpecialThing
 	    player->backpack = true;
 	}
 	for (i=0 ; i<NUMAMMO ; i++)
-	    P_GiveAmmo (player, i, 1, false);
+	    P_GiveAmmo (player, static_cast<ammotype_t>(i), 1, false);
 	player->message = DEH_String(GOTBACKPACK);
 	break;
 	
@@ -775,10 +775,11 @@ P_KillMobj
     if (target->health < -target->info->spawnhealth 
 	&& target->info->xdeathstate)
     {
-	P_SetMobjState (target, target->info->xdeathstate);
+	P_SetMobjState (target,
+                     static_cast<statenum_t>(target->info->xdeathstate));
     }
     else
-	P_SetMobjState (target, target->info->deathstate);
+	P_SetMobjState (target, static_cast<statenum_t>(target->info->deathstate));
     target->tics -= P_Random()&3;
 
     // [crispy] randomly flip corpse, blood and death animation sprites
@@ -968,7 +969,8 @@ P_DamageMobj
     {
 	target->flags |= MF_JUSTHIT;	// fight back!
 	
-	P_SetMobjState (target, target->info->painstate);
+	P_SetMobjState (target,
+                       static_cast<statenum_t>(target->info->painstate));
     }
 			
     target->reactiontime = 0;		// we're awake now...	
@@ -983,7 +985,8 @@ P_DamageMobj
 	target->threshold = BASETHRESHOLD;
 	if (target->state == &states[target->info->spawnstate]
 	    && target->info->seestate != S_NULL)
-	    P_SetMobjState (target, target->info->seestate);
+	    P_SetMobjState (target,
+                         static_cast<statenum_t>(target->info->seestate));
     }
 			
 }

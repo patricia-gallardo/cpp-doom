@@ -31,6 +31,7 @@
 
 #include "crispy.hpp"
 
+#include "../utils/lump.hpp"
 #include "config.h"
 #include "d_loop.hpp"
 #include "deh_str.hpp"
@@ -1633,7 +1634,7 @@ void I_InitGraphics(void)
 
     // Set the palette
 
-    doompal = cache_lump_name<patch_t *>(DEH_String("PLAYPAL"), PU_CACHE);
+    doompal = cache_lump_name<byte *>(DEH_String("PLAYPAL"), PU_CACHE);
     I_SetPalette(doompal);
     SDL_SetPaletteColors(screenbuffer->format->palette, palette, 0, 256);
 #endif
@@ -1657,7 +1658,7 @@ void I_InitGraphics(void)
     // finally rendered into our window or full screen in I_FinishUpdate().
 
 #ifndef CRISPY_TRUECOLOR
-    I_VideoBuffer = screenbuffer->pixels;
+    I_VideoBuffer = static_cast<pixel_t *>(screenbuffer->pixels);
 #else
     I_VideoBuffer = argbbuffer->pixels;
 #endif
@@ -1713,7 +1714,7 @@ void I_ReInitGraphics (int reinit)
 		                                  rmask, gmask, bmask, amask);
 #ifndef CRISPY_TRUECOLOR
 		// [crispy] re-set the framebuffer pointer
-		I_VideoBuffer = screenbuffer->pixels;
+		I_VideoBuffer = static_cast<pixel_t *>(screenbuffer->pixels);
 #else
 		I_VideoBuffer = argbbuffer->pixels;
 #endif
@@ -1787,7 +1788,7 @@ void I_ReInitGraphics (int reinit)
 		}
 
 		#if SDL_VERSION_ATLEAST(2, 0, 5)
-		SDL_RenderSetIntegerScale(renderer, integer_scaling);
+		SDL_RenderSetIntegerScale(renderer, static_cast<SDL_bool>(integer_scaling));
 		#endif
 	}
 
@@ -1867,7 +1868,7 @@ void I_RenderReadPixels(byte **data, int *w, int *h, int *p)
 	}
 
 	// [crispy] allocate memory for screenshot image
-	pixels = malloc(rect.h * temp);
+	pixels = static_cast<byte *>(malloc(rect.h * temp));
 	SDL_RenderReadPixels(renderer, &rect, format->format, pixels, temp);
 
 	*data = pixels;

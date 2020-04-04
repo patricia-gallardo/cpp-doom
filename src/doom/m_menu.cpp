@@ -240,7 +240,7 @@ static void M_DrawThermo(int x,int y,int thermWidth,int thermDot);
 static void M_WriteText(int x, int y, const char *string);
 int  M_StringWidth(const char *string); // [crispy] un-static
 static int  M_StringHeight(const char *string);
-static void M_StartMessage(const char *string, void *routine, boolean input);
+static void M_StartMessage(const char *string, void (*routine)(int), boolean input);
 static void M_ClearMenus (void);
 
 // [crispy] Crispness menu
@@ -1317,7 +1317,7 @@ void M_VerifyNightmare(int key)
     if (key != key_menu_confirm)
 	return;
 		
-    G_DeferedInitNew(nightmare,epi+1,1);
+    G_DeferedInitNew(static_cast<skill_t>(nightmare),epi+1,1);
     M_ClearMenus ();
 }
 
@@ -1325,11 +1325,11 @@ void M_ChooseSkill(int choice)
 {
     if (choice == nightmare)
     {
-	M_StartMessage(DEH_String(NIGHTMARE),M_VerifyNightmare,true);
+	M_StartMessage(DEH_String(NIGHTMARE), M_VerifyNightmare,true);
 	return;
     }
 	
-    G_DeferedInitNew(choice,epi+1,1);
+    G_DeferedInitNew(static_cast<skill_t>(choice),epi+1,1);
     M_ClearMenus ();
 }
 
@@ -1703,7 +1703,7 @@ void M_EndGame(int choice)
 	return;
     }
 	
-    M_StartMessage(DEH_String(ENDGAME),M_EndGameResponse,true);
+    M_StartMessage(DEH_String(ENDGAME), M_EndGameResponse,true);
 }
 
 
@@ -1812,7 +1812,7 @@ void M_QuitDOOM(int choice)
     DEH_snprintf(endstring, sizeof(endstring), "%s\n\n" DOSY,
                  DEH_String(M_SelectEndMessage()));
 
-    M_StartMessage(endstring,M_QuitResponse,true);
+    M_StartMessage(endstring, M_QuitResponse, true);
 }
 
 
@@ -1969,7 +1969,7 @@ M_DrawThermo
 void
 M_StartMessage
 ( const char	*string,
-  void*		routine,
+  void (*routine)(int),
   boolean	input )
 {
     messageLastMenuActive = menuactive;
@@ -2645,7 +2645,7 @@ boolean M_Responder (event_t* ev)
 		usegamma = 0;
 	    players[consoleplayer].message = DEH_String(gammamsg[usegamma]);
 #ifndef CRISPY_TRUECOLOR
-            I_SetPalette (W_CacheLumpName (DEH_String("PLAYPAL"),PU_CACHE));
+            I_SetPalette (cache_lump_name<byte *>(DEH_String("PLAYPAL"),PU_CACHE));
 #else
             {
 		extern void R_InitColormaps (void);
@@ -3005,7 +3005,7 @@ void M_Drawer (void)
 		    M_WriteText(x, y+8-(M_StringHeight(alttext)/2), alttext);
 	    }
 	    else if (W_CheckNumForName(name) > 0) // [crispy] ...here
-	    V_DrawPatchDirect (x, y, W_CacheLumpName(name, PU_CACHE));
+	    V_DrawPatchDirect (x, y, cache_lump_name<patch_t *>(name, PU_CACHE));
 
 	    dp_translation = NULL;
 	}
@@ -3278,7 +3278,7 @@ void M_ConfirmDeleteGame ()
 // [crispy] indicate game version mismatch
 void M_LoadGameVerMismatch ()
 {
-	M_StartMessage("Game Version Mismatch\n\n"PRESSKEY, NULL, false);
+	M_StartMessage("Game Version Mismatch\n\n" PRESSKEY, nullptr, false);
 	messageToPrint = 2;
 	S_StartSound(NULL,sfx_swtchn);
 }

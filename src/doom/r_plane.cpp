@@ -227,7 +227,7 @@ static void R_RaiseVisplanes (visplane_t** vp)
 	visplane_t* visplanes_old = visplanes;
 
 	numvisplanes = numvisplanes ? 2 * numvisplanes : MAXVISPLANES;
-	visplanes = I_Realloc(visplanes, numvisplanes * sizeof(*visplanes));
+	visplanes = static_cast<decltype(visplanes)>(I_Realloc(visplanes, numvisplanes * sizeof(*visplanes)));
 	memset(visplanes + numvisplanes_old, 0, (numvisplanes - numvisplanes_old) * sizeof(*visplanes));
 
 	lastvisplane = visplanes + numvisplanes_old;
@@ -496,7 +496,9 @@ void R_DrawPlanes (void)
 	// regular flat
         lumpnum = firstflat + (swirling ? pl->picnum : flattranslation[pl->picnum]);
 	// [crispy] add support for SMMU swirling flats
-	ds_source = swirling ? R_DistortedFlat(lumpnum) : W_CacheLumpNum(lumpnum, PU_STATIC);
+	ds_source =
+            static_cast<byte *>(swirling ? R_DistortedFlat(lumpnum)
+                                         : W_CacheLumpNum(lumpnum, PU_STATIC));
 	ds_brightmap = R_BrightmapForFlatNum(lumpnum-firstflat);
 	
 	planeheight = abs(pl->height-viewz);
