@@ -893,7 +893,7 @@ txt_table_t *TXT_NewTable(int columns)
 {
     txt_table_t *table;
 
-    table = malloc(sizeof(txt_table_t));
+    table = create_struct<txt_table_t>();
 
     TXT_InitTable(table, columns);
 
@@ -1084,7 +1084,7 @@ void TXT_SetTableColumns(TXT_UNCAST_ARG(table), int new_columns)
     // remainder from the last row.
     new_num_widgets = (table->num_widgets / table->columns) * new_columns
                     + (table->num_widgets % table->columns);
-    new_widgets = calloc(new_num_widgets, sizeof(txt_widget_t *));
+    new_widgets = static_cast<txt_widget_t **>(calloc(new_num_widgets, sizeof(txt_widget_t *)));
 
     // Reset and add one by one from the old table.
     new_num_widgets = 0;
@@ -1161,17 +1161,15 @@ void TXT_SetColumnWidths(TXT_UNCAST_ARG(table), ...)
 int TXT_PageTable(TXT_UNCAST_ARG(table), int pagex, int pagey)
 {
     TXT_CAST_ARG(txt_table_t, table);
-    unsigned int *column_widths;
-    unsigned int *row_heights;
-    int rows;
     int changed = 0;
 
-    rows = TableRows(table);
+    const auto rows = TableRows(table);
 
-    row_heights = malloc(sizeof(int) * rows);
-    column_widths = malloc(sizeof(int) * table->columns);
 
-    CalcRowColSizes(table, row_heights, column_widths);
+    std::vector<unsigned int> row_heights(rows, 0);
+    std::vector<unsigned int> column_widths(table->columns, 0);
+
+    CalcRowColSizes(table, row_heights.data(), column_widths.data());
 
     if (pagex)
     {
@@ -1229,9 +1227,6 @@ int TXT_PageTable(TXT_UNCAST_ARG(table), int pagex, int pagey)
             }
         }
     }
-
-    free(row_heights);
-    free(column_widths);
 
     return changed;
 }
