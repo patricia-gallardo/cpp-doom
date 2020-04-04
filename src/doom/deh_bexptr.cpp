@@ -112,7 +112,7 @@ extern void A_Turn();
 extern void A_Face();
 extern void A_Scratch();
 extern void A_PlaySound();
-extern void A_RandomJump();
+extern void A_RandomJump(mobj_t *mo, player_t *player, pspdef_t *psp);
 extern void A_LineEffect();
 
 typedef struct {
@@ -210,7 +210,7 @@ static const bex_codeptr_t bex_codeptrtable[] = {
     {"PlaySound", {A_PlaySound}},
     {"RandomJump", {A_RandomJump}},
     {"LineEffect", {A_LineEffect}},
-    {"NULL", {NULL}},
+    {"NULL", {}},
 };
 
 extern actionf_t codeptrs[NUMSTATES];
