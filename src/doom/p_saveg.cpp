@@ -314,10 +314,10 @@ static void saveg_read_mobj_t(mobj_t *str)
     str->z = saveg_read32();
 
     // struct mobj_s* snext;
-    str->snext = static_cast<mobj_s *>(saveg_readp());
+    str->snext = static_cast<mobj_t *>(saveg_readp());
 
     // struct mobj_s* sprev;
-    str->sprev = static_cast<mobj_s *>(saveg_readp());
+    str->sprev = static_cast<mobj_t *>(saveg_readp());
 
     // angle_t angle;
     str->angle = saveg_read32();
@@ -329,10 +329,10 @@ static void saveg_read_mobj_t(mobj_t *str)
     str->frame = saveg_read32();
 
     // struct mobj_s* bnext;
-    str->bnext = static_cast<mobj_s *>(saveg_readp());
+    str->bnext = static_cast<mobj_t *>(saveg_readp());
 
     // struct mobj_s* bprev;
-    str->bprev = static_cast<mobj_s *>(saveg_readp());
+    str->bprev = static_cast<mobj_t *>(saveg_readp());
 
     // struct subsector_s* subsector;
     str->subsector = static_cast<subsector_s *>(saveg_readp());
@@ -386,7 +386,7 @@ static void saveg_read_mobj_t(mobj_t *str)
     str->movecount = saveg_read32();
 
     // struct mobj_s* target;
-    str->target = static_cast<mobj_s *>(saveg_readp());
+    str->target = static_cast<mobj_t *>(saveg_readp());
 
     // int reactiontime;
     str->reactiontime = saveg_read32();
@@ -415,7 +415,7 @@ static void saveg_read_mobj_t(mobj_t *str)
     saveg_read_mapthing_t(&str->spawnpoint);
 
     // struct mobj_s* tracer;
-    str->tracer = static_cast<mobj_s *>(saveg_readp());
+    str->tracer = static_cast<mobj_t *>(saveg_readp());
 }
 
 // [crispy] enumerate all thinker pointers

@@ -39,6 +39,7 @@
 #include "m_controls.hpp" // [crispy] key_*
 #include "m_misc.hpp" // [crispy] M_StringDuplicate()
 #include "m_random.hpp" // [crispy] Crispy_Random()
+#include "event_function_decls.hpp"
 
 typedef enum
 {
@@ -110,7 +111,6 @@ void	F_CastTicker (void);
 boolean F_CastResponder (event_t *ev);
 void	F_CastDrawer (void);
 
-extern void A_RandomJump();
 
 //
 // F_StartFinale
@@ -449,29 +449,9 @@ static int F_RandomizeSound (int sound)
 	}
 }
 
-extern void A_BruisAttack();
-extern void A_BspiAttack();
-extern void A_CPosAttack();
-extern void A_CPosRefire();
-extern void A_CyberAttack();
-extern void A_FatAttack1();
-extern void A_FatAttack2();
-extern void A_FatAttack3();
-extern void A_HeadAttack();
-extern void A_PainAttack();
-extern void A_PosAttack();
-extern void A_SargAttack();
-extern void A_SkelFist();
-extern void A_SkelMissile();
-extern void A_SkelWhoosh();
-extern void A_SkullAttack();
-extern void A_SPosAttack();
-extern void A_TroopAttack();
-extern void A_VileTarget();
-
 typedef struct
 {
-	void (*action) ();
+	actionf_t action;
 	const int sound;
 	const boolean early;
 } actionsound_t;
@@ -521,8 +501,8 @@ static int F_SoundForState (int st)
 		{
 			const actionsound_t *const as = &actionsounds[i];
 
-			if ((!as->early && castaction == as->action) ||
-			    (as->early && nextaction == as->action))
+			if ((!as->early && castaction == as->action.acv) ||
+			    (as->early && nextaction == as->action.acv))
 			{
 				return as->sound;
 			}
@@ -590,7 +570,7 @@ void F_CastTicker (void)
 	    goto stopattack;	// Oh, gross hack!
 	*/
 	// [crispy] Allow A_RandomJump() in deaths in cast sequence
-	if (caststate->action.acv == A_RandomJump && Crispy_Random() < caststate->misc2)
+	if (caststate->action.acp3 == A_RandomJump && Crispy_Random() < caststate->misc2)
 	{
 	    st = caststate->misc1;
 	}
@@ -683,7 +663,7 @@ void F_CastTicker (void)
     if (casttics == -1)
     {
 	// [crispy] Allow A_RandomJump() in deaths in cast sequence
-	if (caststate->action.acv == A_RandomJump)
+	if (caststate->action.acp3 == A_RandomJump)
 	{
 	    if (Crispy_Random() < caststate->misc2)
 	    {
@@ -758,7 +738,7 @@ boolean F_CastResponder (event_t* ev)
     caststate = &states[mobjinfo[castorder[castnum].type].deathstate];
     casttics = caststate->tics;
     // [crispy] Allow A_RandomJump() in deaths in cast sequence
-    if (casttics == -1 && caststate->action.acv == A_RandomJump)
+    if (casttics == -1 && caststate->action.acp3 == A_RandomJump)
     {
         if (Crispy_Random() < caststate->misc2)
         {
