@@ -161,19 +161,6 @@ P_GiveAmmo
 }
 
 
-// [crispy] show weapon pickup messages in multiplayer games
-const char *const WeaponPickupMessages[NUMWEAPONS] =
-{
-	NULL, // wp_fist
-	NULL, // wp_pistol
-	GOTSHOTGUN,
-	GOTCHAINGUN,
-	GOTLAUNCHER,
-	GOTPLASMA,
-	GOTBFG9000,
-	GOTCHAINSAW,
-	GOTSHOTGUN2,
-};
 
 //
 // P_GiveWeapon

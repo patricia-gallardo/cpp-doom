@@ -53,6 +53,9 @@ check_symbol_exists(strcasecmp "strings.h" HAVE_DECL_STRCASECMP)
 check_symbol_exists(strncasecmp "strings.h" HAVE_DECL_STRNCASECMP)
 #check_include_file("dirent.h" HAVE_DIRENT_H)
 
+set(HAVE_DIRENT_H True)
+
+
 string(CONCAT WINDOWS_RC_VERSION "${PROJECT_VERSION_MAJOR}, "
     "${PROJECT_VERSION_MINOR}, ${PROJECT_VERSION_PATCH}, 0")
 

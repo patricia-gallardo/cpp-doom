@@ -1068,7 +1068,6 @@ ST_Responder (event_t* ev)
 	    if (!plyr->weaponowned[w])
 	    {
 		extern boolean P_GiveWeapon (player_t* player, weapontype_t weapon, boolean dropped);
-		extern const char *const WeaponPickupMessages[NUMWEAPONS];
 
 		P_GiveWeapon(plyr, static_cast<weapontype_t>(w), false);
 		S_StartSound(NULL, sfx_wpnup);
