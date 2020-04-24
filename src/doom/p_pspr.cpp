@@ -115,13 +115,11 @@ P_SetPsprite
 	
 	// Call action routine.
 	// Modified handling.
-	if (state->action.acp3)
-	{
-	    state->action.acp3(player->mo, player, psp); // [crispy] let mobj action pointers get called from pspr states
-	    if (!psp->state)
-		break;
-	}
-	
+        if (state->action.call_if(player->mo, player, psp)) {
+          if (!psp->state)
+            break;
+        }
+
 	stnum = psp->state->nextstate;
 	
     } while (!psp->tics);
@@ -1015,14 +1013,14 @@ void P_MovePsprites (player_t* player)
     {
 	// [crispy] don't center vertically during lowering and raising states
 	if (psp->state->misc1 ||
-	    psp->state->action.acp3 == (actionf_p3)A_Lower ||
-	    psp->state->action.acp3 == (actionf_p3)A_Raise)
+	    psp->state->action == A_Lower ||
+	    psp->state->action == A_Raise)
 	{
 		psp->sx2 = psp->sx;
 		psp->sy2 = psp->sy;
 	}
 	else
-	if (psp->state->action.acp3 == (actionf_p3)A_WeaponReady ||
+	if (psp->state->action == A_WeaponReady ||
 	    crispy->centerweapon == CENTERWEAPON_BOB)
 	{
 		angle_t angle = (128 * leveltime) & FINEMASK;

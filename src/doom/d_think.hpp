@@ -22,7 +22,7 @@
 #ifndef __D_THINK__
 #define __D_THINK__
 
-
+#include <tuple>
 
 
 
@@ -36,26 +36,84 @@
 struct mobj_t;
 struct player_t;
 struct pspdef_t;
+struct ceiling_t;
+struct fire_t;
+struct vldoor_t;
+struct fireflicker_t;
+struct plat_t;
+struct lightflash_t;
+struct floormove_t;
+struct strobe_t;
+struct glow_t;
+struct thinker_t;
 
-typedef  void (*actionf_v)();
-typedef  void (*actionf_p1)(mobj_t *mo );
-typedef  void (*actionf_p2)(player_t *player, pspdef_t *psp );
-typedef  void (*actionf_p3)(mobj_t *mo, player_t *player, pspdef_t *psp); // [crispy] let pspr action pointers get called from mobj states
+typedef void (*actionf_v)();
+typedef void (*actionf_f1)(fire_t *mo);
+typedef void (*actionf_fm1)(floormove_t *mo);
+typedef void (*actionf_c1)(ceiling_t *mo);
+typedef void (*actionf_g1)(glow_t *mo);
+typedef void (*actionf_s1)(strobe_t *mo);
+typedef void (*actionf_v1)(vldoor_t *mo);
+typedef void (*actionf_pp1)(plat_t *mo);
+typedef void (*actionf_lf1)(lightflash_t *mo);
+typedef void (*actionf_ff1)(fireflicker_t *mo);
+typedef void (*actionf_t1)(thinker_t *mo);
+typedef void (*actionf_p1)(mobj_t *mo);
+typedef void (*actionf_p2)(player_t *player, pspdef_t *psp );
+typedef void (*actionf_p3)(mobj_t *mo, player_t *player, pspdef_t *psp); // [crispy] let pspr action pointers get called from mobj states
 
-union actionf_t
-{
-  actionf_v	acv;
-  actionf_p1	acp1;
-  actionf_p2	acp2;
-  actionf_p3	acp3; // [crispy] let pspr action pointers get called from mobj states
+struct actionf_t {
+  constexpr actionf_t() = default;
 
-  actionf_t() : acv{nullptr} {}
-  actionf_t(actionf_v f) : acv{f} {}
-  actionf_t(actionf_p1 f) : acp1{f} {}
-  actionf_t(actionf_p2 f) : acp2{f} {}
-  actionf_t(actionf_p3 f) : acp3{f} {}
+  template<typename Ret, typename ... Param>
+  explicit constexpr actionf_t(Ret (*p)(Param...))
+  {
+    std::get<decltype(p)>(data) = p;
+  }
+
+  template <typename Ret, typename... Param>
+  constexpr actionf_t &operator=(Ret (*p)(Param...)) {
+    data = actionf_t{p}.data;
+    return *this;
+  }
+
+  constexpr actionf_t &operator=(const void *p) {
+    data = actionf_t{}.data;
+    std::get<const void *>(data) = p;
+    return *this;
+  }
+
+  [[nodiscard]] constexpr explicit operator const void *() {
+    return std::get<const void *>(data);
+  }
+
+  template <typename Ret, typename... Param>
+  [[nodiscard]] constexpr bool operator==(Ret (*p)(Param...)) const {
+    return std::get<decltype(p)>(data) == p;
+  }
+
+  template <typename... Param> constexpr bool call_if(Param... param) {
+    const auto func = std::get<void (*)(Param...)>(data);
+    if (func) {
+      func(param...);
+      return true;
+    } else {
+      return false;
+    }
+  }
+
+  constexpr explicit operator bool() const {
+    return *this != actionf_t{};
+  }
+
+  constexpr bool operator==(const actionf_t &) const = default;
+
+private:
+  std::tuple<const void *, actionf_t1, actionf_g1, actionf_s1, actionf_fm1, actionf_v, actionf_c1, actionf_f1,
+             actionf_lf1, actionf_ff1, actionf_v1, actionf_p1, actionf_pp1,
+             actionf_p2, actionf_p3>
+      data{};
 };
-
 
 
 
@@ -67,13 +125,13 @@ typedef actionf_t  think_t;
 
 
 // Doubly linked list of actors.
-typedef struct thinker_s
+struct thinker_t
 {
-    struct thinker_s*	prev;
-    struct thinker_s*	next;
+    struct thinker_t*	prev;
+    struct thinker_t*	next;
     think_t		function;
     
-} thinker_t;
+};
 
 
 

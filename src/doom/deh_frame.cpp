@@ -40,8 +40,7 @@ DEH_END_MAPPING
 static void *DEH_FrameStart(deh_context_t *context, char *line)
 {
     int frame_number = 0;
-    state_t *state;
-    
+
     if (sscanf(line, "Frame %i", &frame_number) != 1)
     {
         DEH_Warning(context, "Parse error on section start");
@@ -60,9 +59,7 @@ static void *DEH_FrameStart(deh_context_t *context, char *line)
                              "problems in Vanilla dehacked.", frame_number);
     }
 
-    state = &states[frame_number];
-
-    return state;
+    return &states[frame_number];
 }
 
 // Simulate a frame overflow: Doom has 967 frames in the states[] array, but

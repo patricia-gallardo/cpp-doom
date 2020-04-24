@@ -19,7 +19,6 @@
 #include <stdlib.h>
 #include <string.h>
 
-#include "doomtype.hpp"
 #include "info.hpp"
 
 #include "deh_defs.hpp"
@@ -49,8 +48,9 @@ static void DEH_PointerInit(void)
     
     // Initialize list of dehacked pointers
 
-    for (i=0; i<EXTRASTATES; ++i)
-        codeptrs[i] = states[i].action;
+    for (i=0; i<EXTRASTATES; ++i) {
+      codeptrs[i] = states[i].action;
+    }
 
     // [BH] Initialize extra dehacked states
     for (; i < NUMSTATES; i++)
@@ -58,7 +58,6 @@ static void DEH_PointerInit(void)
 	states[i].sprite = SPR_TNT1;
 	states[i].frame = 0;
 	states[i].tics = -1;
-	states[i].action.acv = (actionf_v) NULL;
 	states[i].nextstate = static_cast<statenum_t>(i);
 	states[i].misc1 = 0;
 	states[i].misc2 = 0;

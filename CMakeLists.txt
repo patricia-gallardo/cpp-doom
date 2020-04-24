@@ -1,7 +1,7 @@
 set(CMAKE_MODULE_PATH "${CMAKE_CURRENT_SOURCE_DIR}/cmake")
 
 cmake_minimum_required(VERSION 3.7.2)
-project("Crispy Doom" VERSION 5.7.2 LANGUAGES CXX)
+project("C++ Doom" VERSION 0.0.0 LANGUAGES CXX)
 set(CMAKE_CXX_STANDARD 20)
 
 # Autotools variables
@@ -10,10 +10,10 @@ set(top_builddir ${CMAKE_CURRENT_BINARY_DIR})
 
 # AC_INIT variables
 set(PACKAGE_NAME "${PROJECT_NAME}")
-set(PACKAGE_TARNAME "crispy-doom")
+set(PACKAGE_TARNAME "cpp-doom")
 set(PACKAGE_VERSION "${PROJECT_VERSION}")
 set(PACKAGE_STRING "${PROJECT_NAME} ${PROJECT_VERSION}")
-set(PACKAGE_BUGREPORT "https://github.com/fabiangreffrath/crispy-doom/issues")
+set(PACKAGE_BUGREPORT "https://github.com/lefticus/cpp-doom/issues")
 
 string(REGEX REPLACE " Doom$" "" PACKAGE_SHORTNAME "${PACKAGE_NAME}")
 set(PACKAGE_COPYRIGHT "Copyright (C) 1993-2020")

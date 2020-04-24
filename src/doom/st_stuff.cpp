@@ -510,7 +510,7 @@ static int ST_cheat_massacre()
 
     for (th = thinkercap.next; th != &thinkercap; th = th->next)
     {
-	if (th->function.acp1 == (actionf_p1)P_MobjThinker)
+	if (th->function == P_MobjThinker)
 	{
 	    mobj_t *mo = (mobj_t *)th;
 
@@ -957,7 +957,7 @@ ST_Responder (event_t* ev)
 		// [crispy] let mobjs forget their target and tracer
 		for (th = thinkercap.next; th != &thinkercap; th = th->next)
 		{
-			if (th->function.acp1 == (actionf_p1)P_MobjThinker)
+			if (th->function == P_MobjThinker)
 			{
 				mobj_t *const mo = (mobj_t *)th;
 

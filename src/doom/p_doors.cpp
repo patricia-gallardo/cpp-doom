@@ -21,7 +21,6 @@
 #include "doomdef.hpp"
 #include "deh_main.hpp"
 #include "p_local.hpp"
-#include "i_system.hpp"
 
 #include "s_sound.hpp"
 
@@ -286,7 +285,7 @@ EV_DoDoor
 	P_AddThinker (&door->thinker);
 	sec->specialdata = door;
 
-	door->thinker.function.acp1 = (actionf_p1) T_VerticalDoor;
+	door->thinker.function = T_VerticalDoor;
 	door->sector = sec;
 	door->type = type;
 	door->topwait = VDOORWAIT;
@@ -441,7 +440,7 @@ EV_VerticalDoor
 	    {
 		door->direction = 1;	// go back up
 		// [crispy] play sound effect when the door is opened again while going down
-		if (crispy->soundfix && door->thinker.function.acp1 == (actionf_p1) T_VerticalDoor)
+		if (crispy->soundfix && door->thinker.function == T_VerticalDoor)
 		S_StartSound(&door->sector->soundorg, line->special == 117 ? sfx_bdopn : sfx_doropn);
 	    }
 	    else
@@ -453,14 +452,14 @@ EV_VerticalDoor
                 // In Vanilla, door->direction is set, even though
                 // "specialdata" might not actually point at a door.
 
-                if (door->thinker.function.acp1 == (actionf_p1) T_VerticalDoor)
+                if (door->thinker.function == T_VerticalDoor)
                 {
                     door->direction = -1;	// start going down immediately
                     // [crispy] play sound effect when the door is closed manually
                     if (crispy->soundfix)
                     S_StartSound(&door->sector->soundorg, line->special == 117 ? sfx_bdcls : sfx_dorcls);
                 }
-                else if (door->thinker.function.acp1 == (actionf_p1) T_PlatRaise)
+                else if (door->thinker.function == T_PlatRaise)
                 {
                     // Erm, this is a plat, not a door.
                     // This notably causes a problem in ep1-0500.lmp where
@@ -514,7 +513,7 @@ EV_VerticalDoor
     door = zmalloc<decltype(door)> (sizeof(*door), PU_LEVSPEC, 0);
     P_AddThinker (&door->thinker);
     sec->specialdata = door;
-    door->thinker.function.acp1 = (actionf_p1) T_VerticalDoor;
+    door->thinker.function = T_VerticalDoor;
     door->sector = sec;
     door->direction = 1;
     door->speed = VDOORSPEED;
@@ -568,7 +567,7 @@ void P_SpawnDoorCloseIn30 (sector_t* sec)
     sec->specialdata = door;
     sec->special = 0;
 
-    door->thinker.function.acp1 = (actionf_p1)T_VerticalDoor;
+    door->thinker.function = T_VerticalDoor;
     door->sector = sec;
     door->direction = 0;
     door->type = vld_normal;
@@ -593,7 +592,7 @@ P_SpawnDoorRaiseIn5Mins
     sec->specialdata = door;
     sec->special = 0;
 
-    door->thinker.function.acp1 = (actionf_p1)T_VerticalDoor;
+    door->thinker.function = T_VerticalDoor;
     door->sector = sec;
     door->direction = 2;
     door->type = vld_raiseIn5Mins;
