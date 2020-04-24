@@ -98,7 +98,7 @@ extern void AM_Stop(void);
 void IN_Start(void)
 {
     int i;
-    I_SetPalette(W_CacheLumpName("PLAYPAL", PU_CACHE));
+    I_SetPalette(cache_lump_name<patch_t *>("PLAYPAL", PU_CACHE));
     InitStats();
     LoadPics();
     intermission = true;
@@ -255,18 +255,18 @@ static void LoadPics(void)
 
     if (HubCount || gametype == DEATHMATCH)
     {
-        patchINTERPIC = W_CacheLumpName("INTERPIC", PU_STATIC);
+        patchINTERPIC = cache_lump_name<patch_t *>("INTERPIC", PU_STATIC);
         FontBLumpBase = W_GetNumForName("FONTB16");
         for (i = 0; i < 10; i++)
         {
             FontBNumbers[i] = W_CacheLumpNum(FontBLumpBase + i, PU_STATIC);
         }
         FontBLump = W_GetNumForName("FONTB_S") + 1;
-        FontBNegative = W_CacheLumpName("FONTB13", PU_STATIC);
+        FontBNegative = cache_lump_name<patch_t *>("FONTB13", PU_STATIC);
         FontABaseLump = W_GetNumForName("FONTA_S") + 1;
 
-        FontBSlash = W_CacheLumpName("FONTB15", PU_STATIC);
-        FontBPercent = W_CacheLumpName("FONTB05", PU_STATIC);
+        FontBSlash = cache_lump_name<patch_t *>("FONTB15", PU_STATIC);
+        FontBPercent = cache_lump_name<patch_t *>("FONTB05", PU_STATIC);
     }
 }
 
@@ -284,7 +284,7 @@ static void UnloadPics(void)
     {
         W_ReleaseLumpName("INTERPIC");
 
-        patchINTERPIC = W_CacheLumpName("INTERPIC", PU_STATIC);
+        patchINTERPIC = cache_lump_name<patch_t *>("INTERPIC", PU_STATIC);
         FontBLumpBase = W_GetNumForName("FONTB16");
         for (i = 0; i < 10; i++)
         {
@@ -449,9 +449,9 @@ static void DrDeathTally(void)
     int temp;
 
     V_DrawPatch(TALLY_TOP_X, TALLY_TOP_Y,
-                W_CacheLumpName("tallytop", PU_CACHE));
+                cache_lump_name<patch_t *>("tallytop", PU_CACHE));
     V_DrawPatch(TALLY_LEFT_X, TALLY_LEFT_Y,
-                W_CacheLumpName("tallylft", PU_CACHE));
+                cache_lump_name<patch_t *>("tallylft", PU_CACHE));
     if (intertime < TALLY_EFFECT_TICKS)
     {
         showTotals = false;

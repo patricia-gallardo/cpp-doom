@@ -60,6 +60,7 @@
 #include "dstrings.hpp"
 #include "sounds.hpp"
 
+#include "../../utils/lump.hpp"
 #include "v_trans.hpp" // [crispy] colored cheat messages
 
 extern int screenblocks; // [crispy] for the Crispy HUD
@@ -1067,9 +1068,8 @@ ST_Responder (event_t* ev)
 	    if (!plyr->weaponowned[w])
 	    {
 		extern boolean P_GiveWeapon (player_t* player, weapontype_t weapon, boolean dropped);
-		extern const char *const WeaponPickupMessages[NUMWEAPONS];
 
-		P_GiveWeapon(plyr, w, false);
+		P_GiveWeapon(plyr, static_cast<weapontype_t>(w), false);
 		S_StartSound(NULL, sfx_wpnup);
 
 		if (w > 1)
@@ -1561,7 +1561,7 @@ void ST_updateWidgets(void)
 			st_firsttime = true;
 		}
 #endif
-		plyr->tryopen[i]--;
+		plyr->tryopen[i] = false;
 #if !defined(CRISPY_KEYBLINK_IN_CLASSIC_HUD)
 		if (st_crispyhud)
 #endif
@@ -1817,7 +1817,7 @@ static inline void ST_DrawGibbedPlayerSprites (void)
 	}
 
 	sprframe = &sprdef->spriteframes[state->frame & FF_FRAMEMASK];
-	patch = W_CacheLumpNum(sprframe->lump[0] + firstspritelump, PU_CACHE);
+	patch = cache_lump_num<patch_t *>(sprframe->lump[0] + firstspritelump, PU_CACHE);
 
 	if (plyr->mo->flags & MF_TRANSLATION)
 	{
@@ -1863,7 +1863,7 @@ void ST_drawWidgets(boolean refresh)
 			}
 		}
 
-		patch = W_CacheLumpNum(lump, PU_CACHE);
+		patch = cache_lump_num<patch_t *>(lump, PU_CACHE);
 
 		// [crispy] (23,179) is the center of the Ammo widget
 		V_DrawPatch(ST_AMMOX - 21 - SHORT(patch->width)/2 + SHORT(patch->leftoffset),
@@ -2074,7 +2074,7 @@ static void ST_loadUnloadGraphics(load_callback_t callback)
 
 static void ST_loadCallback(const char *lumpname, patch_t **variable)
 {
-    *variable = W_CacheLumpName(lumpname, PU_STATIC);
+    *variable = cache_lump_name<patch_t *>(lumpname, PU_STATIC);
 }
 
 void ST_loadGraphics(void)
@@ -2099,7 +2099,8 @@ void ST_loadData(void)
 	DEH_snprintf(lumpname, 9, "STKEYS%d", i);
 	lumpnum = W_CheckNumForName(lumpname);
 
-	keys[i] = (lumpnum != -1) ? W_CacheLumpNum(lumpnum, PU_STATIC) : keys[i-3];
+	keys[i] = static_cast<patch_t *>(
+            (lumpnum != -1) ? cache_lump_num<patch_t *>(lumpnum, PU_STATIC) : keys[i - 3]);
     }
 }
 
@@ -2338,7 +2339,7 @@ void ST_Start (void)
 	char namebuf[8];
 
 	DEH_snprintf(namebuf, 7, "STFB%d", consoleplayer);
-	faceback = W_CacheLumpName(namebuf, PU_STATIC);
+	faceback = static_cast<patch_t *>(W_CacheLumpName(namebuf, PU_STATIC));
     }
 }
 
@@ -2348,7 +2349,7 @@ void ST_Stop (void)
 	return;
 
 #ifndef CRISPY_TRUECOLOR
-    I_SetPalette (W_CacheLumpNum (lu_palette, PU_CACHE));
+    I_SetPalette (cache_lump_num<byte *>(lu_palette, PU_CACHE));
 #else
     I_SetPalette (0);
 #endif

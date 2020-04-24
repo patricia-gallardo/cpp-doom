@@ -17,14 +17,15 @@
 //	System interface for sound.
 //
 
-#include "config.hpp"
+#include "config.h"
 
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
 #include <assert.h>
-#include "SDL.hpp"
-#include "SDL_mixer.hpp"
+#include "SDL.h"
+#include "SDL_mixer.h"
+#include <vector>
 
 #ifdef HAVE_LIBSAMPLERATE
 #include <samplerate.h>
@@ -39,6 +40,7 @@
 #include "w_wad.hpp"
 #include "z_zone.hpp"
 
+#include "../utils/lump.hpp"
 #include "doomtype.hpp"
 
 #define LOW_PASS_FILTER
@@ -212,7 +214,7 @@ static allocated_sound_t *AllocateSound(sfxinfo_t *sfxinfo, size_t len)
 
     do
     {
-        snd = malloc(sizeof(allocated_sound_t) + len);
+        snd = static_cast<allocated_sound_t *>(malloc(sizeof(allocated_sound_t) + len));
 
         // Out of memory?  Try to free an old sound, then loop round
         // and try again.
@@ -407,7 +409,6 @@ static boolean ExpandSoundData_SRC(sfxinfo_t *sfxinfo,
                                    int length)
 {
     SRC_DATA src_data;
-    float *data_in;
     uint32_t i, abuf_index=0, clipped=0;
 //    uint32_t alen;
     int retn;
@@ -417,13 +418,14 @@ static boolean ExpandSoundData_SRC(sfxinfo_t *sfxinfo,
     uint32_t samplecount = length / (bits / 8);
 
     src_data.input_frames = samplecount;
-    data_in = malloc(samplecount * sizeof(float));
-    src_data.data_in = data_in;
+    std::vector<float> data_in(samplecount);
+    src_data.data_in = data_in.data();
     src_data.src_ratio = (double)mixer_freq / samplerate;
 
     // We include some extra space here in case of rounding-up.
     src_data.output_frames = src_data.src_ratio * samplecount + (mixer_freq / 4);
-    src_data.data_out = malloc(src_data.output_frames * sizeof(float));
+    std::vector<float> data_out(src_data.output_frames);
+    src_data.data_out = data_out.data();
 
     assert(src_data.data_in != NULL && src_data.data_out != NULL);
 
@@ -513,9 +515,6 @@ static boolean ExpandSoundData_SRC(sfxinfo_t *sfxinfo,
         expanded[abuf_index++] = cvtval_i;
         expanded[abuf_index++] = cvtval_i;
     }
-
-    free(data_in);
-    free(src_data.data_out);
 
     if (clipped > 0)
     {
@@ -651,7 +650,7 @@ static boolean ExpandSoundData_SDL(sfxinfo_t *sfxinfo,
                           mixer_format, mixer_channels, mixer_freq))
     {
         convertor.len = length;
-        convertor.buf = malloc(convertor.len * convertor.len_mult);
+        convertor.buf = static_cast<Uint8 *>(malloc(convertor.len * convertor.len_mult));
         assert(convertor.buf != NULL);
         memcpy(convertor.buf, data, length);
 
@@ -745,12 +744,11 @@ static boolean CacheSFX(sfxinfo_t *sfxinfo)
     int samplerate;
     unsigned int bits;
     unsigned int length;
-    byte *data;
 
     // need to load the sound
 
     lumpnum = sfxinfo->lumpnum;
-    data = W_CacheLumpNum(lumpnum, PU_STATIC);
+    auto *data = cache_lump_num<byte *>(lumpnum, PU_STATIC);
     lumplen = W_LumpLength(lumpnum);
 
     // [crispy] Check if this is a valid RIFF wav file

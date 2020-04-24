@@ -19,6 +19,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include <string>
 
 #include "m_misc.hpp"
 
@@ -29,7 +30,7 @@ static boolean bex_nested = false;
 
 static void *DEH_BEXInclStart(deh_context_t *context, char *line)
 {
-    char *deh_file, *inc_file, *try_path;
+    char *deh_file;
     extern boolean bex_notext;
 
     if (!DEH_FileName(context))
@@ -46,49 +47,44 @@ static void *DEH_BEXInclStart(deh_context_t *context, char *line)
 	return NULL;
     }
 
-    inc_file = malloc(strlen(line) + 1);
+    std::string inc_file(strlen(line) + 1, '\0');
 
-    if (sscanf(line, "INCLUDE NOTEXT %32s", inc_file) == 1)
+    if (sscanf(line, "INCLUDE NOTEXT %32s", inc_file.data()) == 1)
     {
 	bex_notext = true;
     }
     else
-    if (sscanf(line, "INCLUDE %32s", inc_file) == 1)
+    if (sscanf(line, "INCLUDE %32s", inc_file.data()) == 1)
     {
 	// well, fine
     }
     else
     {
 	DEH_Warning(context, "Parse error on section start");
-	free(inc_file);
 	return NULL;
     }
 
     // first, try loading the file right away
-    try_path = inc_file;
+    std::string try_path = inc_file;
 
-    if (!M_FileExists(try_path))
+    if (!M_FileExists(try_path.c_str()))
     {
 	// second, try loading the file in the directory of the current file
 	char *dir;
 	dir = M_DirName(deh_file);
-	try_path = M_StringJoin(dir, DIR_SEPARATOR_S, inc_file, NULL);
+	try_path = std::string(dir) + DIR_SEPARATOR_S + inc_file;
 	free(dir);
     }
 
     bex_nested = true;
 
-    if (!M_FileExists(try_path) || !DEH_LoadFile(try_path))
+    if (!M_FileExists(try_path.c_str()) || !DEH_LoadFile(try_path.c_str()))
     {
-	DEH_Warning(context, "Could not include \"%s\"", inc_file);
+	DEH_Warning(context, "Could not include \"%s\"", inc_file.c_str());
     }
 
     bex_nested = false;
     bex_notext = false;
-
-    if (try_path != inc_file)
-	free(try_path);
-    free(inc_file);
 
     return NULL;
 }

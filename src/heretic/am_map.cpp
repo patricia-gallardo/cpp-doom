@@ -411,7 +411,7 @@ void AM_loadPics(void)
     M_snprintf(namebuf, sizeof(namebuf), "AMMNUM%d", i);
     marknums[i] = W_CacheLumpName(namebuf, PU_STATIC);
   }*/
-    maplump = W_CacheLumpName(DEH_String("AUTOPAGE"), PU_STATIC);
+    maplump = cache_lump_name<patch_t *>(DEH_String("AUTOPAGE"), PU_STATIC);
 }
 
 /*void AM_unloadPics(void)
@@ -955,7 +955,7 @@ boolean AM_clipMline(mline_t * ml, fline_t * fl)
 void AM_drawFline(fline_t * fl, int color)
 {
 
-    register int x, y, dx, dy, sx, sy, ax, ay, d;
+    int x, y, dx, dy, sx, sy, ax, ay, d;
     static int fuck = 0;
 
     switch (color)

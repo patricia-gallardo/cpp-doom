@@ -35,9 +35,9 @@
 #include "sounds.hpp"
 
 // State.
+#include "../../utils/lump.hpp"
 #include "doomstat.hpp"
 #include "r_state.hpp"
-
 
 //
 // CHANGE THE TEXTURE OF A WALL SWITCH TO ITS OPPOSITE
@@ -116,7 +116,7 @@ void P_InitSwitchList(void)
 
     if ((from_lump = (W_CheckNumForName("SWITCHES") != -1)))
     {
-	alphSwitchList = W_CacheLumpName("SWITCHES", PU_STATIC);
+	alphSwitchList = cache_lump_name<switchlist_t *>("SWITCHES", PU_STATIC);
     }
     else
     {
@@ -152,7 +152,7 @@ void P_InitSwitchList(void)
 	if (slindex + 1 >= maxswitches)
 	{
 	    size_t newmax = maxswitches ? 2 * maxswitches : MAXSWITCHES;
-	    switchlist = I_Realloc(switchlist, newmax * sizeof(*switchlist));
+	    switchlist = static_cast<decltype(switchlist)>(I_Realloc(switchlist, newmax * sizeof(*switchlist)));
 	    maxswitches = newmax;
 	}
 
@@ -190,7 +190,7 @@ void P_InitSwitchList(void)
     }
 
     // [crispy] pre-allocate some memory for the buttonlist[] array
-    buttonlist = I_Realloc(NULL, sizeof(*buttonlist) * (maxbuttons = MAXBUTTONS));
+    buttonlist = static_cast<decltype(buttonlist)>(I_Realloc(NULL, sizeof(*buttonlist) * (maxbuttons = MAXBUTTONS)));
     memset(buttonlist, 0, sizeof(*buttonlist) * maxbuttons);
 }
 
@@ -240,7 +240,7 @@ P_StartButton
     // [crispy] remove MAXBUTTONS limit
     {
 	maxbuttons = 2 * maxbuttons;
-	buttonlist = I_Realloc(buttonlist, sizeof(*buttonlist) * maxbuttons);
+	buttonlist = static_cast<decltype(buttonlist)>(I_Realloc(buttonlist, sizeof(*buttonlist) * maxbuttons));
 	memset(buttonlist + maxbuttons/2, 0, sizeof(*buttonlist) * maxbuttons/2);
 	return P_StartButton(line, w, texture, time);
     }

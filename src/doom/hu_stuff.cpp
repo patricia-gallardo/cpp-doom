@@ -45,9 +45,10 @@
 #include "dstrings.hpp"
 #include "sounds.hpp"
 
+#include "../../utils/lump.hpp"
 #include "r_state.hpp" // [crispy] colormaps
-#include "v_video.hpp" // [crispy] V_DrawPatch() et al.
 #include "v_trans.hpp" // [crispy] colored kills/items/secret/etc. messages
+#include "v_video.hpp" // [crispy] V_DrawPatch() et al.
 
 //
 // Locally used constants, shortcuts.
@@ -475,7 +476,7 @@ void HU_Init(void)
 		DEH_snprintf(buffer, 9, "STCFN%.3d", toupper(laserpatch[i].c));
 		laserpatch[i].l = W_GetNumForName(buffer);
 
-		patch = W_CacheLumpNum(laserpatch[i].l, PU_STATIC);
+		patch = cache_lump_num<patch_t *>(laserpatch[i].l, PU_STATIC);
 
 		laserpatch[i].w -= SHORT(patch->leftoffset);
 		laserpatch[i].h -= SHORT(patch->topoffset);
@@ -489,7 +490,7 @@ void HU_Init(void)
 
 	if (!patch)
 	{
-		patch = W_CacheLumpNum(laserpatch[i].l, PU_STATIC);
+		patch = cache_lump_num<patch_t *>(laserpatch[i].l, PU_STATIC);
 	}
 
 	laserpatch[i].w += SHORT(patch->width)/2;
@@ -805,7 +806,7 @@ static void HU_DrawCrosshair (void)
     if (lump != laserpatch[crispy->crosshairtype].l)
     {
 	lump = laserpatch[crispy->crosshairtype].l;
-	patch = W_CacheLumpNum(lump, PU_STATIC);
+	patch = cache_lump_num<patch_t *>(lump, PU_STATIC);
     }
 
     dp_translucent = true;

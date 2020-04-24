@@ -19,10 +19,11 @@
 
 #include "doomkeys.hpp"
 
-#include "txt_label.hpp"
+#include "../utils/memory.hpp"
 #include "txt_desktop.hpp"
 #include "txt_gui.hpp"
 #include "txt_io.hpp"
+#include "txt_label.hpp"
 #include "txt_main.hpp"
 #include "txt_separator.hpp"
 #include "txt_window.hpp"
@@ -58,9 +59,7 @@ txt_window_t *TXT_NewWindow(const char *title)
 {
     int i;
 
-    txt_window_t *win;
-
-    win = malloc(sizeof(txt_window_t));
+    auto *win = create_struct<txt_window_t>();
 
     TXT_InitTable(&win->table, 1);
 
@@ -536,7 +535,7 @@ void TXT_OpenURL(const char *url)
     int retval;
 
     cmd_len = strlen(url) + 30;
-    cmd = malloc(cmd_len);
+    cmd = static_cast<char *>(malloc(cmd_len));
 
 #if defined(__MACOSX__)
     TXT_snprintf(cmd, cmd_len, "open \"%s\"", url);

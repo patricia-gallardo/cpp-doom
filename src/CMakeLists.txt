@@ -28,7 +28,7 @@ set(DEDSERV_FILES
     net_query.cpp         net_query.hpp
     net_server.cpp        net_server.hpp
     net_structrw.cpp      net_structrw.hpp
-    z_native.cpp          z_zone.hpp)
+    z_native.cpp          z_zone.hpp ../utils/lump.hpp)
 
 add_executable("${PROGRAM_PREFIX}server" WIN32 ${COMMON_SOURCE_FILES} ${DEDSERV_FILES})
 target_include_directories("${PROGRAM_PREFIX}server"

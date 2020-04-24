@@ -22,6 +22,7 @@
 // text mode screen API:
 
 #include "txt_sdl.hpp"
+#include <cstdint>
 
 // textscreen key values:
 // Key values are difficult because we have to support multiple conflicting
@@ -73,7 +74,7 @@
 
 #define TXT_COLOR_BLINKING (1 << 3)
 
-typedef enum
+enum txt_color_t
 {
     TXT_COLOR_BLACK,
     TXT_COLOR_BLUE,
@@ -91,7 +92,7 @@ typedef enum
     TXT_COLOR_BRIGHT_MAGENTA,
     TXT_COLOR_YELLOW,
     TXT_COLOR_BRIGHT_WHITE,
-} txt_color_t;
+};
 
 // Modifier keys.
 
@@ -150,7 +151,8 @@ void TXT_UpdateScreenArea(int x, int y, int w, int h);
 void TXT_UpdateScreen(void);
 
 // Set the RGB value for a particular entry in the color palette:
-void TXT_SetColor(txt_color_t color, int r, int g, int b);
+void TXT_SetColor(txt_color_t color, std::uint8_t r, std::uint8_t g,
+                  std::uint8_t b);
 
 // Read a character from the keyboard
 int TXT_GetChar(void);

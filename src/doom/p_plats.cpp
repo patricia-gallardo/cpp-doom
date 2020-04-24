@@ -32,8 +32,8 @@
 #include "r_state.hpp"
 
 // Data.
+#include "../../utils/memory.hpp"
 #include "sounds.hpp"
-
 
 plat_t*		activeplats[MAXPLATS];
 
@@ -160,7 +160,7 @@ EV_DoPlat
 	
 	// Find lowest & highest floors around sector
 	rtn = 1;
-	plat = Z_Malloc( sizeof(*plat), PU_LEVSPEC, 0);
+	plat = zmalloc<decltype(plat)>( sizeof(*plat), PU_LEVSPEC, 0);
 	P_AddThinker(&plat->thinker);
 		
 	plat->type = type;
@@ -233,7 +233,7 @@ EV_DoPlat
 		plat->high = sec->floorheight;
 
 	    plat->wait = TICRATE*PLATWAIT;
-	    plat->status = P_Random()&1;
+	    plat->status = static_cast<plat_e>(P_Random() & 1);
 
 	    S_StartSound(&sec->soundorg,sfx_pstart);
 	    break;

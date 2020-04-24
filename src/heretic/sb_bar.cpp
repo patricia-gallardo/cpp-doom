@@ -190,44 +190,44 @@ void SB_Init(void)
     int i;
     int startLump;
 
-    PatchLTFACE = W_CacheLumpName(DEH_String("LTFACE"), PU_STATIC);
-    PatchRTFACE = W_CacheLumpName(DEH_String("RTFACE"), PU_STATIC);
-    PatchBARBACK = W_CacheLumpName(DEH_String("BARBACK"), PU_STATIC);
-    PatchINVBAR = W_CacheLumpName(DEH_String("INVBAR"), PU_STATIC);
-    PatchCHAIN = W_CacheLumpName(DEH_String("CHAIN"), PU_STATIC);
+    PatchLTFACE = cache_lump_name<patch_t *>(DEH_String("LTFACE"), PU_STATIC);
+    PatchRTFACE = cache_lump_name<patch_t *>(DEH_String("RTFACE"), PU_STATIC);
+    PatchBARBACK = cache_lump_name<patch_t *>(DEH_String("BARBACK"), PU_STATIC);
+    PatchINVBAR = cache_lump_name<patch_t *>(DEH_String("INVBAR"), PU_STATIC);
+    PatchCHAIN = cache_lump_name<patch_t *>(DEH_String("CHAIN"), PU_STATIC);
     if (deathmatch)
     {
-        PatchSTATBAR = W_CacheLumpName(DEH_String("STATBAR"), PU_STATIC);
+        PatchSTATBAR = cache_lump_name<patch_t *>(DEH_String("STATBAR"), PU_STATIC);
     }
     else
     {
-        PatchSTATBAR = W_CacheLumpName(DEH_String("LIFEBAR"), PU_STATIC);
+        PatchSTATBAR = cache_lump_name<patch_t *>(DEH_String("LIFEBAR"), PU_STATIC);
     }
     if (!netgame)
     {                           // single player game uses red life gem
-        PatchLIFEGEM = W_CacheLumpName(DEH_String("LIFEGEM2"), PU_STATIC);
+        PatchLIFEGEM = cache_lump_name<patch_t *>(DEH_String("LIFEGEM2"), PU_STATIC);
     }
     else
     {
         PatchLIFEGEM = W_CacheLumpNum(W_GetNumForName(DEH_String("LIFEGEM0"))
                                       + consoleplayer, PU_STATIC);
     }
-    PatchLTFCTOP = W_CacheLumpName(DEH_String("LTFCTOP"), PU_STATIC);
-    PatchRTFCTOP = W_CacheLumpName(DEH_String("RTFCTOP"), PU_STATIC);
-    PatchSELECTBOX = W_CacheLumpName(DEH_String("SELECTBOX"), PU_STATIC);
-    PatchINVLFGEM1 = W_CacheLumpName(DEH_String("INVGEML1"), PU_STATIC);
-    PatchINVLFGEM2 = W_CacheLumpName(DEH_String("INVGEML2"), PU_STATIC);
-    PatchINVRTGEM1 = W_CacheLumpName(DEH_String("INVGEMR1"), PU_STATIC);
-    PatchINVRTGEM2 = W_CacheLumpName(DEH_String("INVGEMR2"), PU_STATIC);
-    PatchBLACKSQ = W_CacheLumpName(DEH_String("BLACKSQ"), PU_STATIC);
-    PatchARMCLEAR = W_CacheLumpName(DEH_String("ARMCLEAR"), PU_STATIC);
-    PatchCHAINBACK = W_CacheLumpName(DEH_String("CHAINBACK"), PU_STATIC);
+    PatchLTFCTOP = cache_lump_name<patch_t *>(DEH_String("LTFCTOP"), PU_STATIC);
+    PatchRTFCTOP = cache_lump_name<patch_t *>(DEH_String("RTFCTOP"), PU_STATIC);
+    PatchSELECTBOX = cache_lump_name<patch_t *>(DEH_String("SELECTBOX"), PU_STATIC);
+    PatchINVLFGEM1 = cache_lump_name<patch_t *>(DEH_String("INVGEML1"), PU_STATIC);
+    PatchINVLFGEM2 = cache_lump_name<patch_t *>(DEH_String("INVGEML2"), PU_STATIC);
+    PatchINVRTGEM1 = cache_lump_name<patch_t *>(DEH_String("INVGEMR1"), PU_STATIC);
+    PatchINVRTGEM2 = cache_lump_name<patch_t *>(DEH_String("INVGEMR2"), PU_STATIC);
+    PatchBLACKSQ = cache_lump_name<patch_t *>(DEH_String("BLACKSQ"), PU_STATIC);
+    PatchARMCLEAR = cache_lump_name<patch_t *>(DEH_String("ARMCLEAR"), PU_STATIC);
+    PatchCHAINBACK = cache_lump_name<patch_t *>(DEH_String("CHAINBACK"), PU_STATIC);
     startLump = W_GetNumForName(DEH_String("IN0"));
     for (i = 0; i < 10; i++)
     {
         PatchINumbers[i] = W_CacheLumpNum(startLump + i, PU_STATIC);
     }
-    PatchNEGATIVE = W_CacheLumpName(DEH_String("NEGNUM"), PU_STATIC);
+    PatchNEGATIVE = cache_lump_name<patch_t *>(DEH_String("NEGNUM"), PU_STATIC);
     FontBNumBase = W_GetNumForName(DEH_String("FONTB16"));
     startLump = W_GetNumForName(DEH_String("SMALLIN0"));
     for (i = 0; i < 10; i++)
@@ -305,7 +305,7 @@ static void DrINumber(signed int val, int x, int y)
     {
         if (val < -9)
         {
-            V_DrawPatch(x + 1, y + 1, W_CacheLumpName(DEH_String("LAME"), PU_CACHE));
+            V_DrawPatch(x + 1, y + 1, cache_lump_name<patch_t *>(DEH_String("LAME"), PU_CACHE));
         }
         else
         {
@@ -571,9 +571,9 @@ void SB_Drawer(void)
             if (players[consoleplayer].cheats & CF_GODMODE)
             {
                 V_DrawPatch(16, 167,
-                            W_CacheLumpName(DEH_String("GOD1"), PU_CACHE));
+                            cache_lump_name<patch_t *>(DEH_String("GOD1"), PU_CACHE));
                 V_DrawPatch(287, 167,
-                            W_CacheLumpName(DEH_String("GOD2"), PU_CACHE));
+                            cache_lump_name<patch_t *>(DEH_String("GOD2"), PU_CACHE));
             }
             oldhealth = -1;
         }
@@ -674,7 +674,7 @@ void SB_Drawer(void)
 		if(CPlayer->powers[pw_weaponlevel2] > BLINKTHRESHOLD
 			|| (CPlayer->powers[pw_weaponlevel2]&8))
 		{
-			V_DrawPatch(291, 0, W_CacheLumpName("ARTIPWBK", PU_CACHE));
+			V_DrawPatch(291, 0, cache_lump_name<patch_t *>("ARTIPWBK", PU_CACHE));
 		}
 		else
 		{
@@ -793,7 +793,7 @@ void DrawMainBar(void)
         if (CPlayer->readyArtifact > 0)
         {
             V_DrawPatch(179, 160,
-                        W_CacheLumpName(DEH_String(patcharti[CPlayer->readyArtifact]),
+                        cache_lump_name<patch_t *>(DEH_String(patcharti[CPlayer->readyArtifact]),
                                         PU_CACHE));
             DrSmallNumber(CPlayer->inventory[inv_ptr].count, 201, 182);
         }
@@ -843,15 +843,15 @@ void DrawMainBar(void)
     {
         if (CPlayer->keys[key_yellow])
         {
-            V_DrawPatch(153, 164, W_CacheLumpName(DEH_String("ykeyicon"), PU_CACHE));
+            V_DrawPatch(153, 164, cache_lump_name<patch_t *>(DEH_String("ykeyicon"), PU_CACHE));
         }
         if (CPlayer->keys[key_green])
         {
-            V_DrawPatch(153, 172, W_CacheLumpName(DEH_String("gkeyicon"), PU_CACHE));
+            V_DrawPatch(153, 172, cache_lump_name<patch_t *>(DEH_String("gkeyicon"), PU_CACHE));
         }
         if (CPlayer->keys[key_blue])
         {
-            V_DrawPatch(153, 180, W_CacheLumpName(DEH_String("bkeyicon"), PU_CACHE));
+            V_DrawPatch(153, 180, cache_lump_name<patch_t *>(DEH_String("bkeyicon"), PU_CACHE));
         }
         oldkeys = playerkeys;
         UpdateState |= I_STATBAR;
@@ -865,7 +865,7 @@ void DrawMainBar(void)
         {
             DrINumber(temp, 109, 162);
             V_DrawPatch(111, 172,
-                        W_CacheLumpName(DEH_String(ammopic[CPlayer->readyweapon - 1]),
+                        cache_lump_name<patch_t *>(DEH_String(ammopic[CPlayer->readyweapon - 1]),
                                         PU_CACHE));
         }
         oldammo = temp;
@@ -900,7 +900,7 @@ void DrawInventoryBar(void)
     V_DrawPatch(34, 160, PatchINVBAR);
     for (i = 0; i < 7; i++)
     {
-        //V_DrawPatch(50+i*31, 160, W_CacheLumpName("ARTIBOX", PU_CACHE));
+        //V_DrawPatch(50+i*31, 160, cache_lump_name<patch_t *>("ARTIBOX", PU_CACHE));
         if (CPlayer->inventorySlotNum > x + i
             && CPlayer->inventory[x + i].type != arti_none)
         {
@@ -956,7 +956,7 @@ void DrawFullScreenStuff(void)
         if (CPlayer->readyArtifact > 0)
         {
             patch = DEH_String(patcharti[CPlayer->readyArtifact]);
-            V_DrawTLPatch(286, 170, W_CacheLumpName(DEH_String("ARTIBOX"), PU_CACHE));
+            V_DrawTLPatch(286, 170, cache_lump_name<patch_t *>(DEH_String("ARTIBOX"), PU_CACHE));
             V_DrawPatch(286, 170, W_CacheLumpName(patch, PU_CACHE));
             DrSmallNumber(CPlayer->inventory[inv_ptr].count, 307, 192);
         }
@@ -967,7 +967,7 @@ void DrawFullScreenStuff(void)
         for (i = 0; i < 7; i++)
         {
             V_DrawTLPatch(50 + i * 31, 168,
-                          W_CacheLumpName(DEH_String("ARTIBOX"), PU_CACHE));
+                          cache_lump_name<patch_t *>(DEH_String("ARTIBOX"), PU_CACHE));
             if (CPlayer->inventorySlotNum > x + i
                 && CPlayer->inventory[x + i].type != arti_none)
             {

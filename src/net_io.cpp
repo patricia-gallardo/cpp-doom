@@ -18,6 +18,7 @@
 
 #include <stdio.h>
 
+#include "../utils/memory.hpp"
 #include "i_system.hpp"
 #include "net_defs.hpp"
 #include "net_io.hpp"
@@ -35,9 +36,7 @@ net_addr_t net_broadcast_addr;
 
 net_context_t *NET_NewContext(void)
 {
-    net_context_t *context;
-
-    context = Z_Malloc(sizeof(net_context_t), PU_STATIC, 0);
+    auto *context = zmalloc<net_context_t*>(sizeof(net_context_t), PU_STATIC, 0);
     context->num_modules = 0;
 
     return context;

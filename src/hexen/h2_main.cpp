@@ -22,7 +22,7 @@
 #include <stdlib.h>
 #include <time.h>
 
-#include "config.hpp"
+#include "config.h"
 
 #include "h2def.hpp"
 #include "ct_chat.hpp"
@@ -912,12 +912,12 @@ static void DrawAndBlit(void)
     {
         if (!netgame)
         {
-            V_DrawPatch(160, (viewwindowy >> crispy->hires) + 5, W_CacheLumpName("PAUSED",
+            V_DrawPatch(160, (viewwindowy >> crispy->hires) + 5, cache_lump_name<patch_t *>("PAUSED",
                                                               PU_CACHE));
         }
         else
         {
-            V_DrawPatch(160, 70, W_CacheLumpName("PAUSED", PU_CACHE));
+            V_DrawPatch(160, 70, cache_lump_name<patch_t *>("PAUSED", PU_CACHE));
         }
     }
 
@@ -986,7 +986,7 @@ static void PageDrawer(void)
     V_DrawRawScreen(W_CacheLumpName(pagename, PU_CACHE));
     if (demosequence == 1)
     {
-        V_DrawPatch(4, 160, W_CacheLumpName("ADVISOR", PU_CACHE));
+        V_DrawPatch(4, 160, cache_lump_name<patch_t *>("ADVISOR", PU_CACHE));
     }
     UpdateState |= I_FULLSCRN;
 }

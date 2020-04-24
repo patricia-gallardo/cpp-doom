@@ -28,11 +28,11 @@
 #include "p_mobj.hpp" // [crispy] MF_*
 
 typedef struct {
-    char *flag;
-    int bits;
+    const char *flag;
+    unsigned int bits;
 } bex_thingbits_t;
 
-static const bex_thingbits_t bex_thingbitstable[] = {
+static constexpr bex_thingbits_t bex_thingbitstable[] = {
     {"SPECIAL", MF_SPECIAL},
     {"SOLID", MF_SOLID},
     {"SHOOTABLE", MF_SHOOTABLE},

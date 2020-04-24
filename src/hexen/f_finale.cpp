@@ -176,7 +176,7 @@ static void TextWrite(void)
     {                           // Chess pic, draw the correct character graphic
         if (netgame)
         {
-            V_DrawPatch(20, 0, W_CacheLumpName("chessall", PU_CACHE));
+            V_DrawPatch(20, 0, cache_lump_name<patch_t *>("chessall", PU_CACHE));
         }
         else if (PlayerClass[consoleplayer])
         {
@@ -254,7 +254,7 @@ static void InitializeFade(boolean fadeIn)
         for (i = 0; i < 768; i++)
         {
             Palette[i] = 0;
-            PaletteDelta[i] = FixedDiv((*((byte *) W_CacheLumpName("playpal",
+            PaletteDelta[i] = FixedDiv((*((byte *) cache_lump_name<patch_t *>("playpal",
                                                                    PU_CACHE) +
                                           i)) << FRACBITS, 70 * FRACUNIT);
         }
@@ -264,7 +264,7 @@ static void InitializeFade(boolean fadeIn)
         for (i = 0; i < 768; i++)
         {
             RealPalette[i] =
-                *((byte *) W_CacheLumpName("playpal", PU_CACHE) + i);
+                *((byte *) cache_lump_name<patch_t *>("playpal", PU_CACHE) + i);
             Palette[i] = RealPalette[i] << FRACBITS;
             PaletteDelta[i] = FixedDiv(Palette[i], -70 * FRACUNIT);
         }
@@ -317,7 +317,7 @@ static void DrawPic(void)
     {                           // Chess pic, draw the correct character graphic
         if (netgame)
         {
-            V_DrawPatch(20, 0, W_CacheLumpName("chessall", PU_CACHE));
+            V_DrawPatch(20, 0, cache_lump_name<patch_t *>("chessall", PU_CACHE));
         }
         else if (PlayerClass[consoleplayer])
         {

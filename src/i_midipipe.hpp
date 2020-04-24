@@ -21,7 +21,7 @@
 
 #if _WIN32
 
-#include "SDL_mixer.hpp"
+#include "SDL_mixer.h"
 
 #include "doomtype.hpp"
 

@@ -599,7 +599,7 @@ static void DrawMainMenu(void)
     int frame;
 
     frame = (MenuTime / 3) % 18;
-    V_DrawPatch(88, 0, W_CacheLumpName(DEH_String("M_HTIC"), PU_CACHE));
+    V_DrawPatch(88, 0, cache_lump_name<patch_t *>(DEH_String("M_HTIC"), PU_CACHE));
     V_DrawPatch(40, 10, W_CacheLumpNum(SkullBaseLump + (17 - frame),
                                        PU_CACHE));
     V_DrawPatch(232, 10, W_CacheLumpNum(SkullBaseLump + frame, PU_CACHE));
@@ -729,7 +729,7 @@ static void DrawFileSlots(Menu_t * menu)
     y = menu->y;
     for (i = 0; i < 6; i++)
     {
-        V_DrawPatch(x, y, W_CacheLumpName(DEH_String("M_FSLOT"), PU_CACHE));
+        V_DrawPatch(x, y, cache_lump_name<patch_t *>(DEH_String("M_FSLOT"), PU_CACHE));
         if (SlotStatus[i])
         {
             MN_DrTextA(SlotText[i], x + 5, y + 5);
@@ -1460,7 +1460,7 @@ boolean MN_Responder(event_t * event)
             {
                 usegamma = 0;
             }
-            I_SetPalette((byte *) W_CacheLumpName("PLAYPAL", PU_CACHE));
+            I_SetPalette((byte *) cache_lump_name<patch_t *>("PLAYPAL", PU_CACHE));
             return true;
         }
 
@@ -1730,7 +1730,7 @@ void MN_DeactivateMenu(void)
 
 void MN_DrawInfo(void)
 {
-    I_SetPalette(W_CacheLumpName("PLAYPAL", PU_CACHE));
+    I_SetPalette(cache_lump_name<patch_t *>("PLAYPAL", PU_CACHE));
     V_DrawRawScreen(W_CacheLumpNum(W_GetNumForName("TITLE") + InfoType,
                                    PU_CACHE));
 //      V_DrawPatch(0, 0, W_CacheLumpNum(W_GetNumForName("TITLE")+InfoType,
@@ -1766,15 +1766,15 @@ static void DrawSlider(Menu_t * menu, int item, int width, int slot)
 
     x = menu->x + 24;
     y = menu->y + 2 + (item * ITEM_HEIGHT);
-    V_DrawPatch(x - 32, y, W_CacheLumpName(DEH_String("M_SLDLT"), PU_CACHE));
+    V_DrawPatch(x - 32, y, cache_lump_name<patch_t *>(DEH_String("M_SLDLT"), PU_CACHE));
     for (x2 = x, count = width; count--; x2 += 8)
     {
-        V_DrawPatch(x2, y, W_CacheLumpName(DEH_String(count & 1 ? "M_SLDMD1"
+        V_DrawPatch(x2, y, cache_lump_name<patch_t *>(DEH_String(count & 1 ? "M_SLDMD1"
                                            : "M_SLDMD2"), PU_CACHE));
     }
-    V_DrawPatch(x2, y, W_CacheLumpName(DEH_String("M_SLDRT"), PU_CACHE));
+    V_DrawPatch(x2, y, cache_lump_name<patch_t *>(DEH_String("M_SLDRT"), PU_CACHE));
     V_DrawPatch(x + 4 + slot * 8, y + 7,
-                W_CacheLumpName(DEH_String("M_SLDKB"), PU_CACHE));
+                cache_lump_name<patch_t *>(DEH_String("M_SLDKB"), PU_CACHE));
 }
 
 //---------------------------------------------------------------------------

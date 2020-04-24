@@ -16,19 +16,19 @@
 //	System interface for music.
 //
 
-
+#include <ctype.h>
+#include <memory>
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
-#include <ctype.h>
 
-#include "SDL.hpp"
-#include "SDL_mixer.hpp"
+#include "SDL.h"
+#include "SDL_mixer.h"
 
 #include "i_glob.hpp"
 #include "i_midipipe.hpp"
 
-#include "config.hpp"
+#include "config.h"
 #include "doomtype.hpp"
 #include "memio.hpp"
 #include "mus2mid.hpp"
@@ -401,7 +401,6 @@ static void ParseVorbisComments(file_metadata_t *metadata, FILE *fs)
 {
     uint32_t buf;
     unsigned int num_comments, i, comment_len;
-    char *comment;
 
     // We must have read the sample rate already from an earlier header.
     if (metadata->samplerate_hz == 0)
@@ -438,17 +437,14 @@ static void ParseVorbisComments(file_metadata_t *metadata, FILE *fs)
         comment_len = LONG(buf);
 
         // Read actual comment data into string buffer.
-        comment = calloc(1, comment_len + 1);
-        if (comment == NULL
-         || fread(comment, 1, comment_len, fs) < comment_len)
+        auto comment = std::string(comment_len, '\0');
+        if (fread(comment.data(), 1, comment_len, fs) < comment_len)
         {
-            free(comment);
             break;
         }
 
         // Parse comment string.
-        ParseVorbisComment(metadata, comment);
-        free(comment);
+        ParseVorbisComment(metadata, comment.data());
     }
 }
 
@@ -637,7 +633,7 @@ static const char *GetSubstituteMusicFile(void *data, size_t data_len)
     }
 
     SHA1_Init(&context);
-    SHA1_Update(&context, data, data_len);
+    SHA1_Update(&context, static_cast<byte *>(data), data_len);
     SHA1_Final(hash, &context);
 
     // Build a string representation of the hash.
@@ -751,8 +747,7 @@ static void AddSubstituteMusic(const char *musicdir, const char *hash_prefix,
     }
 
     ++subst_music_len;
-    subst_music =
-        I_Realloc(subst_music, sizeof(subst_music_t) * subst_music_len);
+    subst_music = static_cast<decltype(subst_music)>(I_Realloc(subst_music, sizeof(subst_music_t) * subst_music_len));
     s = &subst_music[subst_music_len - 1];
     s->hash_prefix = hash_prefix;
     s->filename = path;
@@ -778,7 +773,7 @@ static const char *ReadHashPrefix(char *line)
         return NULL;
     }
 
-    result = malloc(len + 1);
+    result = static_cast<char *>(malloc(len + 1));
     if (result == NULL)
     {
         return NULL;
@@ -995,7 +990,7 @@ static boolean IsMusicLump(int lumpnum)
         return false;
     }
 
-    data = W_CacheLumpNum(lumpnum, PU_STATIC);
+    data = static_cast<byte *>(W_CacheLumpNum(lumpnum, PU_STATIC));
 
     result = memcmp(data, MUS_HEADER_MAGIC, 4) == 0
           || memcmp(data, MID_HEADER_MAGIC, 4) == 0;
@@ -1040,7 +1035,7 @@ static void DumpSubstituteConfig(char *filename)
         }
 
         // Calculate hash.
-        data = W_CacheLumpNum(lumpnum, PU_STATIC);
+        data = static_cast<byte *>(W_CacheLumpNum(lumpnum, PU_STATIC));
         SHA1_Init(&context);
         SHA1_Update(&context, data, W_LumpLength(lumpnum));
         SHA1_Final(digest, &context);

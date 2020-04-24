@@ -330,7 +330,7 @@ void AM_initVariables(void)
 
 void AM_loadPics(void)
 {
-    maplump = W_CacheLumpName("AUTOPAGE", PU_STATIC);
+    maplump = cache_lump_name<patch_t *>("AUTOPAGE", PU_STATIC);
 }
 
 
@@ -854,7 +854,7 @@ boolean AM_clipMline(mline_t * ml, fline_t * fl)
 
 void AM_drawFline(fline_t * fl, int color)
 {
-    register int x, y, dx, dy, sx, sy, ax, ay, d;
+    int x, y, dx, dy, sx, sy, ax, ay, d;
     //static fuck = 0;
 
     switch (color)

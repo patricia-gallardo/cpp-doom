@@ -363,7 +363,7 @@ void CT_Drawer(void)
                 x += patch->width;
             }
         }
-        V_DrawPatch(x, 10, W_CacheLumpName(DEH_String("FONTA59"), PU_CACHE));
+        V_DrawPatch(x, 10, cache_lump_name<patch_t *>(DEH_String("FONTA59"), PU_CACHE));
         BorderTopRefresh = true;
         UpdateState |= I_MESSAGES;
     }

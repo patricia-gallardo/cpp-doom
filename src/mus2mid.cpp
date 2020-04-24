@@ -30,7 +30,7 @@
 #define MUS_PERCUSSION_CHAN 15
 
 // MUS event codes
-typedef enum
+enum musevent
 {
     mus_releasekey = 0x00,
     mus_presskey = 0x10,
@@ -38,7 +38,7 @@ typedef enum
     mus_systemevent = 0x30,
     mus_changecontroller = 0x40,
     mus_scoreend = 0x60
-} musevent;
+};
 
 // MIDI event codes
 typedef enum
@@ -522,8 +522,8 @@ boolean mus2mid(MEMFILE *musinput, MEMFILE *midioutput)
                 return true;
             }
 
-            channel = GetMIDIChannel(eventdescriptor & 0x0F, midioutput);
-            event = eventdescriptor & 0x70;
+            channel = GetMIDIChannel(eventdescriptor & 0x0Fu, midioutput);
+            event = static_cast<musevent>(eventdescriptor & 0x70u);
 
             switch (event)
             {

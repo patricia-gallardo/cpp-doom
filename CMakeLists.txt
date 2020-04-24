@@ -1,7 +1,8 @@
 set(CMAKE_MODULE_PATH "${CMAKE_CURRENT_SOURCE_DIR}/cmake")
 
 cmake_minimum_required(VERSION 3.7.2)
-project("Crispy Doom" VERSION 5.7.2 LANGUAGES C)
+project("Crispy Doom" VERSION 5.7.2 LANGUAGES CXX)
+set(CMAKE_CXX_STANDARD 20)
 
 # Autotools variables
 set(top_srcdir ${CMAKE_CURRENT_SOURCE_DIR})
@@ -50,7 +51,10 @@ include(CheckSymbolExists)
 include(CheckIncludeFile)
 check_symbol_exists(strcasecmp "strings.h" HAVE_DECL_STRCASECMP)
 check_symbol_exists(strncasecmp "strings.h" HAVE_DECL_STRNCASECMP)
-check_include_file("dirent.h" HAVE_DIRENT_H)
+#check_include_file("dirent.h" HAVE_DIRENT_H)
+
+set(HAVE_DIRENT_H True)
+
 
 string(CONCAT WINDOWS_RC_VERSION "${PROJECT_VERSION_MAJOR}, "
     "${PROJECT_VERSION_MINOR}, ${PROJECT_VERSION_PATCH}, 0")

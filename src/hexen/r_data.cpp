@@ -308,7 +308,7 @@ void R_InitTextures(void)
 //
 // load the patch names from pnames.lmp
 //
-    names = W_CacheLumpName("PNAMES", PU_STATIC);
+    names = cache_lump_name<patch_t *>("PNAMES", PU_STATIC);
     nummappatches = LONG(*((int *) names));
     name_p = names + 4;
     patchlookup = Z_Malloc(nummappatches * sizeof(*patchlookup), PU_STATIC, NULL);
@@ -322,14 +322,14 @@ void R_InitTextures(void)
 //
 // load the map texture definitions from textures.lmp
 //
-    maptex = maptex1 = W_CacheLumpName("TEXTURE1", PU_STATIC);
+    maptex = maptex1 = cache_lump_name<patch_t *>("TEXTURE1", PU_STATIC);
     numtextures1 = LONG(*maptex);
     maxoff = W_LumpLength(W_GetNumForName("TEXTURE1"));
     directory = maptex + 1;
 
     if (W_CheckNumForName("TEXTURE2") != -1)
     {
-        maptex2 = W_CacheLumpName("TEXTURE2", PU_STATIC);
+        maptex2 = cache_lump_name<patch_t *>("TEXTURE2", PU_STATIC);
         numtextures2 = LONG(*maptex2);
         maxoff2 = W_LumpLength(W_GetNumForName("TEXTURE2"));
     }

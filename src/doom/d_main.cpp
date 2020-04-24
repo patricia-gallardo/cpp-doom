@@ -26,7 +26,7 @@
 #include <string.h>
 #include <time.h> // [crispy] time_t, time(), struct tm, localtime()
 
-#include "config.hpp"
+#include "config.h"
 #include "deh_main.hpp"
 #include "doomdef.hpp"
 #include "doomstat.hpp"
@@ -74,7 +74,8 @@
 #include "r_local.hpp"
 #include "statdump.hpp"
 
-
+#include "../../utils/lump.hpp"
+#include "../../utils/memory.hpp"
 #include "d_main.hpp"
 
 //
@@ -174,7 +175,7 @@ boolean D_Display (void)
     static  boolean		menuactivestate = false;
     static  boolean		inhelpscreensstate = false;
     static  boolean		fullscreen = false;
-    static  gamestate_t		oldgamestate = -1;
+    static  gamestate_t		oldgamestate{GS_FORCE_WIPE};
     static  int			borderdrawcount;
     int				y;
     boolean			wipe;
@@ -186,7 +187,7 @@ boolean D_Display (void)
     if (setsizeneeded)
     {
 	R_ExecuteSetViewSize ();
-	oldgamestate = -1;                      // force background redraw
+	oldgamestate = GS_FORCE_WIPE;                      // force background redraw
 	borderdrawcount = 3;
     }
 
@@ -233,6 +234,10 @@ boolean D_Display (void)
       case GS_DEMOSCREEN:
 	D_PageDrawer ();
 	break;
+
+      case GS_FORCE_WIPE:
+        // theoretically this just caused a background redraw (see above)
+        break;
     }
     
     // draw buffered stuff to screen
@@ -256,7 +261,7 @@ boolean D_Display (void)
     // clean up border stuff
     if (gamestate != oldgamestate && gamestate != GS_LEVEL)
 #ifndef CRISPY_TRUECOLOR
-	I_SetPalette (W_CacheLumpName (DEH_String("PLAYPAL"),PU_CACHE));
+	I_SetPalette (cache_lump_name<byte*>(DEH_String("PLAYPAL"),PU_CACHE));
 #else
 	I_SetPalette (0);
 #endif
@@ -319,7 +324,7 @@ boolean D_Display (void)
 	else
 	    y = (viewwindowy >> crispy->hires)+4;
 	V_DrawPatchDirect((viewwindowx >> crispy->hires) + ((scaledviewwidth >> crispy->hires) - 68) / 2 - DELTAWIDTH, y,
-                          W_CacheLumpName (DEH_String("M_PAUSE"), PU_CACHE));
+                          cache_lump_name<patch_t*>(DEH_String("M_PAUSE"), PU_CACHE));
     }
 
 
@@ -610,7 +615,7 @@ void D_PageTicker (void)
 //
 void D_PageDrawer (void)
 {
-    V_DrawPatchFullScreen (W_CacheLumpName(pagename, PU_CACHE), crispy->fliplevels);
+    V_DrawPatchFullScreen (cache_lump_name<patch_t *>(pagename, PU_CACHE), crispy->fliplevels);
 }
 
 
@@ -781,7 +786,7 @@ static const char *banners[] =
 // Otherwise, use the name given
 // 
 
-static char *GetGameName(char *gamename)
+static const char *GetGameName(const char *gamename)
 {
     size_t i;
     const char *deh_sub;
@@ -794,30 +799,29 @@ static char *GetGameName(char *gamename)
         
         if (deh_sub != banners[i])
         {
-            size_t gamename_size;
             int version;
 
             // Has been replaced.
             // We need to expand via printf to include the Doom version number
             // We also need to cut off spaces to get the basic name
 
-            gamename_size = strlen(deh_sub) + 10;
-            gamename = Z_Malloc(gamename_size, PU_STATIC, 0);
+            const auto newgamename_size = strlen(deh_sub) + 10;
+            auto *newgamename = zmalloc<char *>(newgamename_size, PU_STATIC, 0);
             version = G_VanillaVersionCode();
-            M_snprintf(gamename, gamename_size, deh_sub,
+            M_snprintf(newgamename, newgamename_size, deh_sub,
                        version / 100, version % 100);
 
-            while (gamename[0] != '\0' && isspace(gamename[0]))
+            while (newgamename[0] != '\0' && isspace(newgamename[0]))
             {
-                memmove(gamename, gamename + 1, gamename_size - 1);
+                memmove(newgamename, newgamename + 1, newgamename_size - 1);
             }
 
-            while (gamename[0] != '\0' && isspace(gamename[strlen(gamename)-1]))
+            while (newgamename[0] != '\0' && isspace(newgamename[strlen(newgamename)-1]))
             {
-                gamename[strlen(gamename) - 1] = '\0';
+                newgamename[strlen(newgamename) - 1] = '\0';
             }
 
-            return gamename;
+            return newgamename;
         }
     }
 
@@ -826,31 +830,30 @@ static char *GetGameName(char *gamename)
 
 static void SetMissionForPackName(const char *pack_name)
 {
-    int i;
-    static const struct
+    static constexpr struct
     {
         const char *name;
-        int mission;
+        GameMission_t mission;
     } packs[] = {
         { "doom2",    doom2 },
         { "tnt",      pack_tnt },
         { "plutonia", pack_plut },
     };
 
-    for (i = 0; i < arrlen(packs); ++i)
+    for (const auto &pack : packs)
     {
-        if (!strcasecmp(pack_name, packs[i].name))
+        if (!strcasecmp(pack_name, pack.name))
         {
-            gamemission = packs[i].mission;
+            gamemission = pack.mission;
             return;
         }
     }
 
     printf("Valid mission packs are:\n");
 
-    for (i = 0; i < arrlen(packs); ++i)
+    for (const auto &pack : packs)
     {
-        printf("\t%s\n", packs[i].name);
+        printf("\t%s\n", pack.name);
     }
 
     I_Error("Unknown mission pack name: %s", pack_name);
@@ -1069,7 +1072,7 @@ void PrintDehackedBanners(void)
     }
 }
 
-static struct 
+static constexpr struct
 {
     const char *description;
     const char *cmdline;
@@ -1085,7 +1088,7 @@ static struct
     {"Final Doom",           "final",      exe_final},
     {"Final Doom (alt)",     "final2",     exe_final2},
     {"Chex Quest",           "chex",       exe_chex},
-    { NULL,                  NULL,         0},
+    { NULL,                  NULL,         static_cast<GameVersion_t>(0)},
 };
 
 // Initialize the game version
@@ -1162,7 +1165,7 @@ static void InitGameVersion(void)
                 M_snprintf(demolumpname, 6, "demo%i", i);
                 if (W_CheckNumForName(demolumpname) > 0)
                 {
-                    demolump = W_CacheLumpName(demolumpname, PU_STATIC);
+                    demolump = cache_lump_name<byte *>(demolumpname, PU_STATIC);
                     demoversion = demolump[0];
                     W_ReleaseLumpName(demolumpname);
                     status = true;
@@ -1267,7 +1270,7 @@ static void D_Endoom(void)
         return;
     }
 
-    endoom = W_CacheLumpName(DEH_String("ENDOOM"), PU_STATIC);
+    endoom = cache_lump_name<byte *>(DEH_String("ENDOOM"), PU_STATIC);
 
     I_Endoom(endoom);
 }
@@ -1336,9 +1339,9 @@ static void LoadSigilWad(void)
 {
     int i;
 
-    struct {
+    static constexpr struct {
         const char *name;
-        const char new_name[8];
+        const char new_name[9];
     } sigil_lumps [] = {
         {"CREDIT",   "SIGCREDI"},
         {"HELP1",    "SIGHELP1"},
@@ -2102,7 +2105,7 @@ void D_DoomMain (void)
     {
 	// These are the lumps that will be checked in IWAD,
 	// if any one is not present, execution will be aborted.
-	char name[23][8]=
+	char name[23][9]=
 	{
 	    "e2m1","e2m2","e2m3","e2m4","e2m5","e2m6","e2m7","e2m8","e2m9",
 	    "e3m1","e3m3","e3m3","e3m4","e3m5","e3m6","e3m7","e3m8","e3m9",
@@ -2204,7 +2207,8 @@ void D_DoomMain (void)
 
     if (p)
     {
-	startskill = myargv[p+1][0]-'1';
+        // todo does this need error handling?
+	startskill = static_cast<skill_t>(myargv[p+1][0]-'1');
 	autostart = true;
     }
 

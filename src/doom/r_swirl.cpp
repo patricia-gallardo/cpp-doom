@@ -19,12 +19,13 @@
 
 // [crispy] adapted from smmu/r_ripple.c, by Simon Howard
 
-#include <tables.h>
+#include <tables.hpp>
 
-#include <i_system.h>
-#include <w_wad.h>
-#include <z_zone.h>
+#include <i_system.hpp>
+#include <w_wad.hpp>
+#include <z_zone.hpp>
 
+#include "../../utils/lump.hpp"
 #include "doomstat.hpp"
 
 // swirl factors determine the number of waves per flat width
@@ -51,7 +52,7 @@ void R_InitDistortedFlats()
 	{
 		int i;
 
-		offsets = I_Realloc(NULL, SEQUENCE * FLATSIZE * sizeof(*offsets));
+		offsets = static_cast<decltype(offsets)>(I_Realloc(NULL, SEQUENCE * FLATSIZE * sizeof(*offsets)));
 		offset = offsets;
 
 		for (i = 0; i < SEQUENCE; i++)
@@ -105,10 +106,9 @@ char *R_DistortedFlat(int flatnum)
 
 	if (swirlflat != flatnum)
 	{
-		char *normalflat;
 		int i;
 
-		normalflat = W_CacheLumpNum(flatnum, PU_STATIC);
+		auto *normalflat = cache_lump_num<char *>(flatnum, PU_STATIC);
 
 		for (i = 0; i < FLATSIZE; i++)
 		{

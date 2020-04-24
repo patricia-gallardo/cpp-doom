@@ -49,7 +49,7 @@ static struct
 
 // Check that a gamemode+gamemission received over the network is valid.
 
-boolean D_ValidGameMode(GameMission_t mission, GameMode_t mode)
+boolean D_ValidGameMode(int mission, int mode)
 {
     int i;
 

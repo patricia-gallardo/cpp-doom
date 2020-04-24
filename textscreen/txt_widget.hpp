@@ -33,6 +33,8 @@
 
 #endif
 
+#include <memory>
+
 typedef enum
 {
     TXT_VERT_TOP,
@@ -88,7 +90,7 @@ struct txt_widget_class_s
 struct txt_widget_s
 {
     txt_widget_class_t *widget_class;
-    txt_callback_table_t *callback_table;
+    std::shared_ptr<txt_callback_table_t> callback_table;
     int visible;
     txt_horiz_align_t align;
     int focused;

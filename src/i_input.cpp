@@ -17,8 +17,8 @@
 //
 
 
-#include "SDL.hpp"
-#include "SDL_keycode.hpp"
+#include "SDL.h"
+#include "SDL_keycode.h"
 
 #include "doomkeys.hpp"
 #include "doomtype.hpp"

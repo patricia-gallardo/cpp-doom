@@ -77,7 +77,7 @@ typedef enum
 //
 // Extended player object info: player_t
 //
-typedef struct player_s
+struct player_t
 {
     mobj_t*		mo;
     playerstate_t	playerstate;
@@ -167,7 +167,7 @@ typedef struct player_s
     angle_t		oldviewz;
 
     // [crispy] show centered "Secret Revealed!" message
-    char	*centermessage;
+    const char	*centermessage;
 
     // [crispy] free look / mouse look
     int	lookdir, oldlookdir;
@@ -193,7 +193,7 @@ typedef struct player_s
 
     // [crispy] negative player health
     int			neghealth;
-} player_t;
+};
 
 
 //

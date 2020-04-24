@@ -18,7 +18,7 @@
 #include <stdio.h>
 #include <string.h>
 
-#include "config.hpp"
+#include "config.h"
 #include "doomtype.hpp"
 #include "i_video.hpp"
 

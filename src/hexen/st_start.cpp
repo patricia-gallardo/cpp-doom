@@ -20,7 +20,7 @@
 
 #include <stdarg.h>
 
-#include "config.hpp"
+#include "config.h"
 
 #include "h2def.hpp"
 #include "i_system.hpp"

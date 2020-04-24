@@ -637,7 +637,7 @@ void M_DrawLoad(void)
     int             i;
 
     V_DrawPatchDirect(72, 28, 
-                      W_CacheLumpName(DEH_String("M_LOADG"), PU_CACHE));
+                      cache_lump_name<patch_t *>(DEH_String("M_LOADG"), PU_CACHE));
 
     for (i = 0;i < load_end; i++)
     {
@@ -656,17 +656,17 @@ void M_DrawSaveLoadBorder(int x,int y)
     int             i;
 
     V_DrawPatchDirect(x - 8, y + 7,
-                      W_CacheLumpName(DEH_String("M_LSLEFT"), PU_CACHE));
+                      cache_lump_name<patch_t *>(DEH_String("M_LSLEFT"), PU_CACHE));
 
     for (i = 0;i < 24;i++)
     {
         V_DrawPatchDirect(x, y + 7,
-                          W_CacheLumpName(DEH_String("M_LSCNTR"), PU_CACHE));
+                          cache_lump_name<patch_t *>(DEH_String("M_LSCNTR"), PU_CACHE));
         x += 8;
     }
 
     V_DrawPatchDirect(x, y + 7, 
-                      W_CacheLumpName(DEH_String("M_LSRGHT"), PU_CACHE));
+                      cache_lump_name<patch_t *>(DEH_String("M_LSRGHT"), PU_CACHE));
 }
 
 
@@ -717,7 +717,7 @@ void M_DrawSave(void)
 {
     int             i;
 
-    V_DrawPatchDirect(72, 28, W_CacheLumpName(DEH_String("M_SAVEG"), PU_CACHE));
+    V_DrawPatchDirect(72, 28, cache_lump_name<patch_t *>(DEH_String("M_SAVEG"), PU_CACHE));
     for (i = 0;i < load_end; i++)
     {
         M_DrawSaveLoadBorder(LoadDef.x,LoadDef.y+LINEHEIGHT*i);
@@ -909,7 +909,7 @@ void M_DrawReadThis1(void)
 {
     inhelpscreens = true;
 
-    V_DrawPatchDirect (0, 0, W_CacheLumpName(DEH_String("HELP1"), PU_CACHE));
+    V_DrawPatchDirect (0, 0, cache_lump_name<patch_t *>(DEH_String("HELP1"), PU_CACHE));
 }
 
 
@@ -922,7 +922,7 @@ void M_DrawReadThis2(void)
 {
     inhelpscreens = true;
 
-    V_DrawPatchDirect(0, 0, W_CacheLumpName(DEH_String("HELP2"), PU_CACHE));
+    V_DrawPatchDirect(0, 0, cache_lump_name<patch_t *>(DEH_String("HELP2"), PU_CACHE));
 }
 
 
@@ -934,7 +934,7 @@ void M_DrawReadThis3(void)
 {
     inhelpscreens = true;
     
-    V_DrawPatchDirect(0, 0, W_CacheLumpName(DEH_String("HELP3"), PU_CACHE));
+    V_DrawPatchDirect(0, 0, cache_lump_name<patch_t *>(DEH_String("HELP3"), PU_CACHE));
 }
 
 //
@@ -946,7 +946,7 @@ void M_DrawReadThis3(void)
 //
 void M_DrawSound(void)
 {
-    V_DrawPatchDirect (100, 10, W_CacheLumpName(DEH_String("M_SVOL"), PU_CACHE));
+    V_DrawPatchDirect (100, 10, cache_lump_name<patch_t *>(DEH_String("M_SVOL"), PU_CACHE));
 
     M_DrawThermo(SoundDef.x,SoundDef.y+LINEHEIGHT*(sfx_vol+1),
                  16,sfxVolume);
@@ -1034,7 +1034,7 @@ void M_MusicVol(int choice)
 void M_DrawMainMenu(void)
 {
     V_DrawPatchDirect(84, 2,
-                      W_CacheLumpName(DEH_String("M_STRIFE"), PU_CACHE));
+                      cache_lump_name<patch_t *>(DEH_String("M_STRIFE"), PU_CACHE));
 }
 
 
@@ -1047,8 +1047,8 @@ void M_DrawMainMenu(void)
 //
 void M_DrawNewGame(void)
 {
-    V_DrawPatchDirect(96, 14, W_CacheLumpName(DEH_String("M_NGAME"), PU_CACHE));
-    V_DrawPatchDirect(54, 38, W_CacheLumpName(DEH_String("M_SKILL"), PU_CACHE));
+    V_DrawPatchDirect(96, 14, cache_lump_name<patch_t *>(DEH_String("M_NGAME"), PU_CACHE));
+    V_DrawPatchDirect(54, 38, cache_lump_name<patch_t *>(DEH_String("M_SKILL"), PU_CACHE));
 }
 
 void M_NewGame(int choice)
@@ -1075,7 +1075,7 @@ int     epi;
 
 void M_DrawEpisode(void)
 {
-    V_DrawPatchDirect(54, 38, W_CacheLumpName(DEH_String("M_EPISOD"), PU_CACHE));
+    V_DrawPatchDirect(54, 38, cache_lump_name<patch_t *>(DEH_String("M_EPISOD"), PU_CACHE));
 }
 
 void M_VerifyNightmare(int key)
@@ -1136,7 +1136,7 @@ void M_DrawOptions(void)
 {
     // haleyjd 08/27/10: [STRIFE] M_OPTTTL -> M_OPTION
     V_DrawPatchDirect(108, 15, 
-                      W_CacheLumpName(DEH_String("M_OPTION"), PU_CACHE));
+                      cache_lump_name<patch_t *>(DEH_String("M_OPTION"), PU_CACHE));
 
     // haleyjd 08/26/10: [STRIFE] Removed messages, sensitivity, detail.
 
@@ -1429,18 +1429,18 @@ M_DrawThermo
 
     xx = x;
     yy = y + 6; // [STRIFE] +6 to y coordinate
-    V_DrawPatchDirect(xx, yy, W_CacheLumpName(DEH_String("M_THERML"), PU_CACHE));
+    V_DrawPatchDirect(xx, yy, cache_lump_name<patch_t *>(DEH_String("M_THERML"), PU_CACHE));
     xx += 8;
     for (i=0;i<thermWidth;i++)
     {
-        V_DrawPatchDirect(xx, yy, W_CacheLumpName(DEH_String("M_THERMM"), PU_CACHE));
+        V_DrawPatchDirect(xx, yy, cache_lump_name<patch_t *>(DEH_String("M_THERMM"), PU_CACHE));
         xx += 8;
     }
-    V_DrawPatchDirect(xx, yy, W_CacheLumpName(DEH_String("M_THERMR"), PU_CACHE));
+    V_DrawPatchDirect(xx, yy, cache_lump_name<patch_t *>(DEH_String("M_THERMR"), PU_CACHE));
 
     // [STRIFE] +2 to initial y coordinate
     V_DrawPatchDirect((x + 8) + thermDot * 8, y + 2,
-                      W_CacheLumpName(DEH_String("M_THERMO"), PU_CACHE));
+                      cache_lump_name<patch_t *>(DEH_String("M_THERMO"), PU_CACHE));
 }
 
 
@@ -1452,7 +1452,7 @@ M_DrawEmptyCell
   int		item )
 {
     V_DrawPatchDirect(menu->x - 10, menu->y + item * LINEHEIGHT - 1, 
-                      W_CacheLumpName(DEH_String("M_CELL1"), PU_CACHE));
+                      cache_lump_name<patch_t *>(DEH_String("M_CELL1"), PU_CACHE));
 }
 
 void
@@ -1461,7 +1461,7 @@ M_DrawSelCell
   int		item )
 {
     V_DrawPatchDirect(menu->x - 10, menu->y + item * LINEHEIGHT - 1,
-                      W_CacheLumpName(DEH_String("M_CELL2"), PU_CACHE));
+                      cache_lump_name<patch_t *>(DEH_String("M_CELL2"), PU_CACHE));
 }
 
 
@@ -2369,7 +2369,7 @@ void M_Drawer (void)
     // haleyjd 08/27/10: [STRIFE] Adjust to draw spinning Sigil
     // DRAW SIGIL
     V_DrawPatchDirect(x + CURSORXOFF, currentMenu->y - 5 + itemOn*LINEHEIGHT,
-                      W_CacheLumpName(DEH_String(cursorName[whichCursor]),
+                      cache_lump_name<patch_t *>(DEH_String(cursorName[whichCursor]),
                                       PU_CACHE));
 
 }

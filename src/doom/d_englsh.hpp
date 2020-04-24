@@ -36,29 +36,29 @@
 #define PRESSKEY 	"press a key."
 #define PRESSYN 	"press y or n."
 #define QUITMSG	"are you sure you want to\nquit this great game?"
-#define LOADNET 	"you can't do load while in a net game!\n\n"PRESSKEY
-#define QLOADNET	"you can't quickload during a netgame!\n\n"PRESSKEY
-#define QSAVESPOT	"you haven't picked a quicksave slot yet!\n\n"PRESSKEY
-#define SAVEDEAD 	"you can't save if you aren't playing!\n\n"PRESSKEY
-#define QSPROMPT 	"quicksave over your game named\n\n'%s'?\n\n"PRESSYN
-#define QLPROMPT	"do you want to quickload the game named\n\n'%s'?\n\n"PRESSYN
+#define LOADNET 	"you can't do load while in a net game!\n\n" PRESSKEY
+#define QLOADNET	"you can't quickload during a netgame!\n\n" PRESSKEY
+#define QSAVESPOT	"you haven't picked a quicksave slot yet!\n\n" PRESSKEY
+#define SAVEDEAD 	"you can't save if you aren't playing!\n\n" PRESSKEY
+#define QSPROMPT 	"quicksave over your game named\n\n'%s'?\n\n" PRESSYN
+#define QLPROMPT	"do you want to quickload the game named\n\n'%s'?\n\n" PRESSYN
 
 #define NEWGAME	\
 "you can't start a new game\n"\
-"while in a network game.\n\n"PRESSKEY
+"while in a network game.\n\n" PRESSKEY
 
 #define NIGHTMARE	\
 "are you sure? this skill level\n"\
-"isn't even remotely fair.\n\n"PRESSYN
+"isn't even remotely fair.\n\n" PRESSYN
 
 #define SWSTRING	\
 "this is the shareware version of doom.\n\n"\
-"you need to order the entire trilogy.\n\n"PRESSKEY
+"you need to order the entire trilogy.\n\n" PRESSKEY
 
 #define MSGOFF	"Messages OFF"
 #define MSGON		"Messages ON"
-#define NETEND	"you can't end a netgame!\n\n"PRESSKEY
-#define ENDGAME	"are you sure you want to end the game?\n\n"PRESSYN
+#define NETEND	"you can't end a netgame!\n\n" PRESSKEY
+#define ENDGAME	"are you sure you want to end the game?\n\n" PRESSYN
 
 #define DOSY		"(press y to quit.)" // [crispy] remove " to dos.)"
 
@@ -742,7 +742,7 @@
 "PERSONAL AMUSEMENT PARK, AND MAKE EARTH\nTHE TICKET BOOTH.\n\n"\
 "WELL THAT HALF-ROBOT FREAK SHOW DIDN'T\n"\
 "KNOW WHO WAS COMING TO THE FAIR. THERE'S\n"\
-"NOTHING LIKE A SHOOTING GALLERY FULL OF\n"\
+ "NOTHING LIKE A SHOOTING GALLERY FULL OF\n"\
 "HELLSPAWN TO GET THE BLOOD PUMPING...\n\n"\
 "NOW THE WALLS OF THE DEMON'S LABYRINTH\n"\
 "ECHO WITH THE SOUND OF HIS METALLIC LIMBS\n"\

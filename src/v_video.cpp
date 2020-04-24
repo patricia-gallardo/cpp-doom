@@ -19,7 +19,7 @@
 //	Functions to blit a block to the screen.
 //
 
-#include "SDL_version.hpp" // [crispy]
+#include "SDL_version.h" // [crispy]
 
 #include <stdio.h>
 #include <stdlib.h>
@@ -44,7 +44,9 @@
 #include "z_zone.hpp"
 #include "crispy.hpp"
 
-#include "config.hpp"
+#include "../utils/lump.hpp"
+#include "../utils/memory.hpp"
+#include "config.h"
 #ifdef HAVE_LIBPNG
 #include <png.h>
 #endif
@@ -682,7 +684,7 @@ void V_DrawShadowedPatch(int x, int y, patch_t *patch)
 
 void V_LoadTintTable(void)
 {
-    tinttable = W_CacheLumpName("TINTTAB", PU_STATIC);
+    tinttable = cache_lump_name<byte *>("TINTTAB", PU_STATIC);
 }
 
 //
@@ -693,7 +695,7 @@ void V_LoadTintTable(void)
 
 void V_LoadXlaTable(void)
 {
-    xlatab = W_CacheLumpName("XLATAB", PU_STATIC);
+    xlatab = cache_lump_name<byte *>("XLATAB", PU_STATIC);
 }
 
 //
@@ -923,7 +925,7 @@ void WritePCXfile(char *filename, pixel_t *data,
     pcx_t*	pcx;
     byte*	pack;
 	
-    pcx = Z_Malloc (width*height*2+1000, PU_STATIC, NULL);
+    pcx = zmalloc<decltype(pcx)> (width*height*2+1000, PU_STATIC, NULL);
 
     pcx->manufacturer = 0x0a;		// PCX id
     pcx->version = 5;			// 256 color
@@ -1164,7 +1166,7 @@ void V_ScreenShot(const char *format)
     {
     WritePNGfile(lbmname, I_VideoBuffer,
                  SCREENWIDTH, SCREENHEIGHT,
-                 W_CacheLumpName (DEH_String("PLAYPAL"), PU_CACHE));
+                 cache_lump_name<byte *>(DEH_String("PLAYPAL"), PU_CACHE));
     }
     else
 #endif
@@ -1172,7 +1174,7 @@ void V_ScreenShot(const char *format)
     // save the pcx file
     WritePCXfile(lbmname, I_VideoBuffer,
                  SCREENWIDTH, SCREENHEIGHT,
-                 W_CacheLumpName (DEH_String("PLAYPAL"), PU_CACHE));
+                 cache_lump_name<byte *>(DEH_String("PLAYPAL"), PU_CACHE));
     }
 }
 

@@ -129,10 +129,7 @@ boolean DEH_SetMapping(deh_context_t *context, deh_mapping_t *mapping,
 boolean DEH_SetStringMapping(deh_context_t *context, deh_mapping_t *mapping,
                              void *structptr, char *name, char *value)
 {
-    deh_mapping_entry_t *entry;
-    void *location;
-
-    entry = GetMappingEntryByName(context, mapping, name);
+    deh_mapping_entry_t *entry = GetMappingEntryByName(context, mapping, name);
 
     if (entry == NULL)
     {
@@ -147,7 +144,7 @@ boolean DEH_SetStringMapping(deh_context_t *context, deh_mapping_t *mapping,
         return false;
     }
 
-    location = GetStructField(structptr, mapping, entry);
+    auto *location = static_cast<char *>(GetStructField(structptr, mapping, entry));
 
     // Copy value into field:
 

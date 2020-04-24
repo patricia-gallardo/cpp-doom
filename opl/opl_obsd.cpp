@@ -15,7 +15,7 @@
 //     OPL OpenBSD interface (also NetBSD)
 //
 
-#include "config.hpp"
+#include "config.h"
 
 // OpenBSD has a i386_iopl on i386 and amd64_iopl on x86_64,
 // even though they do the same thing.  Take care of this

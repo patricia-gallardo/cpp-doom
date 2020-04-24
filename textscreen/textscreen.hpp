@@ -15,9 +15,6 @@
 #ifndef TEXTSCREEN_H
 #define TEXTSCREEN_H
 
-#ifdef __cplusplus
-extern "C" {
-#endif
 
 #include "../src/doomkeys.hpp"
 #include "txt_main.hpp"
@@ -40,9 +37,6 @@ extern "C" {
 #include "txt_window_action.hpp"
 #include "txt_window.hpp"
 
-#ifdef __cplusplus
-}
-#endif
 
 #endif /* #ifndef TEXTSCREEN_H */
 

@@ -18,7 +18,7 @@
 
 #include <stdio.h>
 
-#include "config.hpp"
+#include "config.h"
 
 #include "doomtype.hpp"
 #include "m_argv.hpp"

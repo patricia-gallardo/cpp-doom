@@ -47,6 +47,8 @@
 #include "r_state.hpp"
 
 // Data.
+#include "../../utils/lump.hpp"
+#include "../../utils/memory.hpp"
 #include "sounds.hpp"
 
 #define HUSTR_SECRETFOUND	"A secret is revealed!"
@@ -160,7 +162,7 @@ void P_InitPicAnims (void)
 
     if (from_lump)
     {
-	animdefs = W_CacheLumpName("ANIMATED", PU_STATIC);
+	animdefs = cache_lump_name<animdef_t *>("ANIMATED", PU_STATIC);
     }
     else
     {
@@ -177,7 +179,7 @@ void P_InitPicAnims (void)
 	if (lastanim >= anims + maxanims)
 	{
 	    size_t newmax = maxanims ? 2 * maxanims : MAXANIMS;
-	    anims = I_Realloc(anims, newmax * sizeof(*anims));
+	    anims = static_cast<decltype(anims)>(I_Realloc(anims, newmax * sizeof(*anims)));
 	    lastanim = anims + maxanims;
 	    maxanims = newmax;
 	}
@@ -394,7 +396,7 @@ P_FindNextHighestFloor
 	{
 	    heightlist_size = heightlist_size ? 2 * heightlist_size : MAX_ADJOINING_SECTORS;
 	} while (sec->linecount > heightlist_size);
-	heightlist = I_Realloc(heightlist, heightlist_size * sizeof(*heightlist));
+	heightlist = static_cast<decltype(heightlist)>(I_Realloc(heightlist, heightlist_size * sizeof(*heightlist)));
     }
 
     for (i=0, h=0; i < sec->linecount; i++)
@@ -1511,7 +1513,7 @@ int EV_DoDonut(line_t*	line)
             }
 
 	    //	Spawn rising slime
-	    floor = Z_Malloc (sizeof(*floor), PU_LEVSPEC, 0);
+	    floor = zmalloc<decltype(floor)> (sizeof(*floor), PU_LEVSPEC, 0);
 	    P_AddThinker (&floor->thinker);
 	    s2->specialdata = floor;
 	    floor->thinker.function.acp1 = (actionf_p1) T_MoveFloor;
@@ -1525,7 +1527,7 @@ int EV_DoDonut(line_t*	line)
 	    floor->floordestheight = s3_floorheight;
 	    
 	    //	Spawn lowering donut-hole
-	    floor = Z_Malloc (sizeof(*floor), PU_LEVSPEC, 0);
+	    floor = zmalloc<decltype(floor)> (sizeof(*floor), PU_LEVSPEC, 0);
 	    P_AddThinker (&floor->thinker);
 	    s1->specialdata = floor;
 	    floor->thinker.function.acp1 = (actionf_p1) T_MoveFloor;

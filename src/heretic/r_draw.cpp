@@ -403,11 +403,11 @@ void R_DrawViewBorder(void)
 
     if (gamemode == shareware)
     {
-        src = W_CacheLumpName(DEH_String("FLOOR04"), PU_CACHE);
+        src = cache_lump_name<patch_t *>(DEH_String("FLOOR04"), PU_CACHE);
     }
     else
     {
-        src = W_CacheLumpName(DEH_String("FLAT513"), PU_CACHE);
+        src = cache_lump_name<patch_t *>(DEH_String("FLAT513"), PU_CACHE);
     }
     dest = I_VideoBuffer;
 
@@ -427,25 +427,25 @@ void R_DrawViewBorder(void)
     for (x = (viewwindowx >> crispy->hires); x < ((viewwindowx >> crispy->hires) + (viewwidth >> crispy->hires)); x += 16)
     {
         V_DrawPatch(x, (viewwindowy >> crispy->hires) - 4,
-                    W_CacheLumpName(DEH_String("bordt"), PU_CACHE));
+                    cache_lump_name<patch_t *>(DEH_String("bordt"), PU_CACHE));
         V_DrawPatch(x, (viewwindowy >> crispy->hires) + (viewheight >> crispy->hires),
-                    W_CacheLumpName(DEH_String("bordb"), PU_CACHE));
+                    cache_lump_name<patch_t *>(DEH_String("bordb"), PU_CACHE));
     }
     for (y = (viewwindowy >> crispy->hires); y < ((viewwindowy >> crispy->hires) + (viewheight >> crispy->hires)); y += 16)
     {
         V_DrawPatch((viewwindowx >> crispy->hires) - 4, y,
-                    W_CacheLumpName(DEH_String("bordl"), PU_CACHE));
+                    cache_lump_name<patch_t *>(DEH_String("bordl"), PU_CACHE));
         V_DrawPatch((viewwindowx >> crispy->hires) + (viewwidth >> crispy->hires), y,
-                    W_CacheLumpName(DEH_String("bordr"), PU_CACHE));
+                    cache_lump_name<patch_t *>(DEH_String("bordr"), PU_CACHE));
     }
     V_DrawPatch((viewwindowx >> crispy->hires) - 4, (viewwindowy >> crispy->hires) - 4,
-                W_CacheLumpName(DEH_String("bordtl"), PU_CACHE));
+                cache_lump_name<patch_t *>(DEH_String("bordtl"), PU_CACHE));
     V_DrawPatch((viewwindowx >> crispy->hires) + (viewwidth >> crispy->hires), (viewwindowy >> crispy->hires) - 4,
-                W_CacheLumpName(DEH_String("bordtr"), PU_CACHE));
+                cache_lump_name<patch_t *>(DEH_String("bordtr"), PU_CACHE));
     V_DrawPatch((viewwindowx >> crispy->hires) + (viewwidth >> crispy->hires), (viewwindowy >> crispy->hires) + (viewheight >> crispy->hires),
-                W_CacheLumpName(DEH_String("bordbr"), PU_CACHE));
+                cache_lump_name<patch_t *>(DEH_String("bordbr"), PU_CACHE));
     V_DrawPatch((viewwindowx >> crispy->hires) - 4, (viewwindowy >> crispy->hires) + (viewheight >> crispy->hires),
-                W_CacheLumpName(DEH_String("bordbl"), PU_CACHE));
+                cache_lump_name<patch_t *>(DEH_String("bordbl"), PU_CACHE));
 }
 
 /*
@@ -469,11 +469,11 @@ void R_DrawTopBorder(void)
 
     if (gamemode == shareware)
     {
-        src = W_CacheLumpName(DEH_String("FLOOR04"), PU_CACHE);
+        src = cache_lump_name<patch_t *>(DEH_String("FLOOR04"), PU_CACHE);
     }
     else
     {
-        src = W_CacheLumpName(DEH_String("FLAT513"), PU_CACHE);
+        src = cache_lump_name<patch_t *>(DEH_String("FLAT513"), PU_CACHE);
     }
     dest = I_VideoBuffer;
 
@@ -495,20 +495,20 @@ void R_DrawTopBorder(void)
         for (x = (viewwindowx >> crispy->hires); x < ((viewwindowx >> crispy->hires) + (viewwidth >> crispy->hires)); x += 16)
         {
             V_DrawPatch(x, (viewwindowy >> crispy->hires) - 4,
-                        W_CacheLumpName(DEH_String("bordt"), PU_CACHE));
+                        cache_lump_name<patch_t *>(DEH_String("bordt"), PU_CACHE));
         }
         V_DrawPatch((viewwindowx >> crispy->hires) - 4, (viewwindowy >> crispy->hires),
-                    W_CacheLumpName(DEH_String("bordl"), PU_CACHE));
+                    cache_lump_name<patch_t *>(DEH_String("bordl"), PU_CACHE));
         V_DrawPatch((viewwindowx >> crispy->hires) + (viewwidth >> crispy->hires), (viewwindowy >> crispy->hires),
-                    W_CacheLumpName(DEH_String("bordr"), PU_CACHE));
+                    cache_lump_name<patch_t *>(DEH_String("bordr"), PU_CACHE));
         V_DrawPatch((viewwindowx >> crispy->hires) - 4, (viewwindowy >> crispy->hires) + 16,
-                    W_CacheLumpName(DEH_String("bordl"), PU_CACHE));
+                    cache_lump_name<patch_t *>(DEH_String("bordl"), PU_CACHE));
         V_DrawPatch((viewwindowx >> crispy->hires) + (viewwidth >> crispy->hires), (viewwindowy >> crispy->hires) + 16,
-                    W_CacheLumpName(DEH_String("bordr"), PU_CACHE));
+                    cache_lump_name<patch_t *>(DEH_String("bordr"), PU_CACHE));
 
         V_DrawPatch((viewwindowx >> crispy->hires) - 4, (viewwindowy >> crispy->hires) - 4,
-                    W_CacheLumpName(DEH_String("bordtl"), PU_CACHE));
+                    cache_lump_name<patch_t *>(DEH_String("bordtl"), PU_CACHE));
         V_DrawPatch((viewwindowx >> crispy->hires) + (viewwidth >> crispy->hires), (viewwindowy >> crispy->hires) - 4,
-                    W_CacheLumpName(DEH_String("bordtr"), PU_CACHE));
+                    cache_lump_name<patch_t *>(DEH_String("bordtr"), PU_CACHE));
     }
 }

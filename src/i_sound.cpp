@@ -18,9 +18,9 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-#include "SDL_mixer.hpp"
+#include "SDL_mixer.h"
 
-#include "config.hpp"
+#include "config.h"
 #include "doomtype.hpp"
 
 #include "gusconf.hpp"
@@ -52,8 +52,8 @@ char *snd_musiccmd = "";
 
 int snd_pitchshift = -1;
 
-int snd_musicdevice = SNDDEVICE_SB;
-int snd_sfxdevice = SNDDEVICE_SB;
+snddevice_t snd_musicdevice = SNDDEVICE_SB;
+snddevice_t snd_sfxdevice = SNDDEVICE_SB;
 
 // Low-level sound and music modules we are using
 static sound_module_t *sound_module;
@@ -161,7 +161,7 @@ static void InitSfxModule(boolean use_sfx_prefix)
 
 // Initialize music according to snd_musicdevice.
 
-static void InitMusicModule(void)
+static void InitMusicModule()
 {
     int i;
 
@@ -490,8 +490,8 @@ void I_BindSoundVariables(void)
     extern int use_libsamplerate;
     extern float libsamplerate_scale;
 
-    M_BindIntVariable("snd_musicdevice",         &snd_musicdevice);
-    M_BindIntVariable("snd_sfxdevice",           &snd_sfxdevice);
+    M_BindIntVariable("snd_musicdevice",         reinterpret_cast<int*>(&snd_musicdevice));
+    M_BindIntVariable("snd_sfxdevice", reinterpret_cast<int*>(&snd_sfxdevice));
     M_BindIntVariable("snd_sbport",              &snd_sbport);
     M_BindIntVariable("snd_sbirq",               &snd_sbirq);
     M_BindIntVariable("snd_sbdma",               &snd_sbdma);

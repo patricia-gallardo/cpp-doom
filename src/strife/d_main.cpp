@@ -25,7 +25,7 @@
 #include <stdlib.h>
 #include <string.h>
 
-#include "config.hpp"
+#include "config.h"
 #include "deh_main.hpp"
 #include "doomdef.hpp"
 #include "doomstat.hpp"
@@ -78,6 +78,7 @@
 #include "p_setup.hpp"
 #include "r_local.hpp"
 
+#include "../../utils/memory.hpp"
 #include "d_main.hpp"
 
 //
@@ -791,20 +792,20 @@ static char *GetGameName(char *gamename)
             // number
             // We also need to cut off spaces to get the basic name
 
-            gamename_size = strlen(deh_sub) + 10;
-            gamename = Z_Malloc(gamename_size, PU_STATIC, 0);
-            M_snprintf(gamename, gamename_size, deh_sub,
+            const auto newgamename_size = strlen(deh_sub) + 10;
+            auto *newgamename = zmalloc<char *>(newgamename_size, PU_STATIC, 0);
+            M_snprintf(newgamename, newgamename_size, deh_sub,
                        STRIFE_VERSION / 100, STRIFE_VERSION % 100);
 
-            while (gamename[0] != '\0' && isspace(gamename[0]))
+            while (newgamename[0] != '\0' && isspace(newgamename[0]))
             {
-                memmove(gamename, gamename + 1, gamename_size - 1);
+                memmove(newgamename, newgamename + 1, newgamename_size - 1);
             }
 
-            while (gamename[0] != '\0' && isspace(gamename[strlen(gamename)-1]))
-                gamename[strlen(gamename) - 1] = '\0';
+            while (newgamename[0] != '\0' && isspace(newgamename[strlen(newgamename)-1]))
+                newgamename[strlen(newgamename) - 1] = '\0';
 
-            return gamename;
+            return newgamename;
         }
     }
 
@@ -896,7 +897,7 @@ void DoTimeBomb(void)
     int serial_year;
     int serial_month;
 
-    serial = W_CacheLumpName("serial", PU_CACHE);
+    serial = cache_lump_name<patch_t *>("serial", PU_CACHE);
     serialnum = atoi(serial);
 
     // Rogue, much like Governor Mourel, were lousy liars. These deceptive
@@ -1096,7 +1097,7 @@ static void D_Endoom(void)
     }
 
     // haleyjd 08/27/10: [STRIFE] ENDOOM -> ENDSTRF
-    endoom = W_CacheLumpName(DEH_String("ENDSTRF"), PU_STATIC);
+    endoom = cache_lump_name<patch_t *>(DEH_String("ENDSTRF"), PU_STATIC);
 
     I_Endoom(endoom);
 }
@@ -1286,14 +1287,14 @@ static void D_InitIntroSequence(void)
         V_RestoreBuffer(); // make the V_ routines work
 
         // Load all graphics
-        rawgfx_startup0   = W_CacheLumpName("STARTUP0", PU_STATIC);
-        rawgfx_startp[0]  = W_CacheLumpName("STRTPA1",  PU_STATIC);
-        rawgfx_startp[1]  = W_CacheLumpName("STRTPB1",  PU_STATIC);
-        rawgfx_startp[2]  = W_CacheLumpName("STRTPC1",  PU_STATIC);
-        rawgfx_startp[3]  = W_CacheLumpName("STRTPD1",  PU_STATIC);
-        rawgfx_startlz[0] = W_CacheLumpName("STRTLZ1",  PU_STATIC);
-        rawgfx_startlz[1] = W_CacheLumpName("STRTLZ2",  PU_STATIC);
-        rawgfx_startbot   = W_CacheLumpName("STRTBOT",  PU_STATIC);
+        rawgfx_startup0   = cache_lump_name<patch_t *>("STARTUP0", PU_STATIC);
+        rawgfx_startp[0]  = cache_lump_name<patch_t *>("STRTPA1",  PU_STATIC);
+        rawgfx_startp[1]  = cache_lump_name<patch_t *>("STRTPB1",  PU_STATIC);
+        rawgfx_startp[2]  = cache_lump_name<patch_t *>("STRTPC1",  PU_STATIC);
+        rawgfx_startp[3]  = cache_lump_name<patch_t *>("STRTPD1",  PU_STATIC);
+        rawgfx_startlz[0] = cache_lump_name<patch_t *>("STRTLZ1",  PU_STATIC);
+        rawgfx_startlz[1] = cache_lump_name<patch_t *>("STRTLZ2",  PU_STATIC);
+        rawgfx_startbot   = cache_lump_name<patch_t *>("STRTBOT",  PU_STATIC);
 
         // Draw the background
         D_IntroBackground();
@@ -1759,7 +1760,7 @@ void D_DoomMain (void)
     if(devparm)
     {
         char msgbuf[80];
-        char *serial  = W_CacheLumpName("SERIAL", PU_CACHE);
+        char *serial  = cache_lump_name<patch_t *>("SERIAL", PU_CACHE);
         int serialnum = atoi(serial);
 
         DEH_snprintf(msgbuf, sizeof(msgbuf), "Wad Serial Number: %d:", serialnum);

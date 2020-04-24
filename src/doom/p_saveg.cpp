@@ -28,6 +28,7 @@
 #include "p_saveg.hpp"
 
 // State.
+#include "../../utils/memory.hpp"
 #include "doomstat.hpp"
 #include "g_game.hpp"
 #include "m_misc.hpp"
@@ -65,7 +66,7 @@ char *P_SaveGameFile(int slot)
     if (filename == NULL)
     {
         filename_size = strlen(savegamedir) + 32;
-        filename = malloc(filename_size);
+        filename = static_cast<char *>(malloc(filename_size));
     }
 
     DEH_snprintf(basename, 32, SAVEGAMENAME "%d.dsg", slot);
@@ -246,13 +247,13 @@ static void saveg_write_mapthing_t(mapthing_t *str)
 static void saveg_read_actionf_t(actionf_t *str)
 {
     // actionf_p1 acp1;
-    str->acp1 = saveg_readp();
+    str->acp1 = reinterpret_cast<actionf_p1>(saveg_readp());
 }
 
 static void saveg_write_actionf_t(actionf_t *str)
 {
     // actionf_p1 acp1;
-    saveg_writep(str->acp1);
+  saveg_writep(reinterpret_cast<const void *>(str->acp1));
 }
 
 //
@@ -271,10 +272,10 @@ static void saveg_write_actionf_t(actionf_t *str)
 static void saveg_read_thinker_t(thinker_t *str)
 {
     // struct thinker_s* prev;
-    str->prev = saveg_readp();
+    str->prev = static_cast<thinker_s *>(saveg_readp());
 
     // struct thinker_s* next;
-    str->next = saveg_readp();
+    str->next = static_cast<thinker_s *>(saveg_readp());
 
     // think_t function;
     saveg_read_think_t(&str->function);
@@ -313,28 +314,28 @@ static void saveg_read_mobj_t(mobj_t *str)
     str->z = saveg_read32();
 
     // struct mobj_s* snext;
-    str->snext = saveg_readp();
+    str->snext = static_cast<mobj_t *>(saveg_readp());
 
     // struct mobj_s* sprev;
-    str->sprev = saveg_readp();
+    str->sprev = static_cast<mobj_t *>(saveg_readp());
 
     // angle_t angle;
     str->angle = saveg_read32();
 
     // spritenum_t sprite;
-    str->sprite = saveg_read_enum();
+    str->sprite = static_cast<spritenum_t>(saveg_read_enum());
 
     // int frame;
     str->frame = saveg_read32();
 
     // struct mobj_s* bnext;
-    str->bnext = saveg_readp();
+    str->bnext = static_cast<mobj_t *>(saveg_readp());
 
     // struct mobj_s* bprev;
-    str->bprev = saveg_readp();
+    str->bprev = static_cast<mobj_t *>(saveg_readp());
 
     // struct subsector_s* subsector;
-    str->subsector = saveg_readp();
+    str->subsector = static_cast<subsector_s *>(saveg_readp());
 
     // fixed_t floorz;
     str->floorz = saveg_read32();
@@ -361,10 +362,10 @@ static void saveg_read_mobj_t(mobj_t *str)
     str->validcount = saveg_read32();
 
     // mobjtype_t type;
-    str->type = saveg_read_enum();
+    str->type = static_cast<mobjtype_t>(saveg_read_enum());
 
     // mobjinfo_t* info;
-    str->info = saveg_readp();
+    str->info = static_cast<mobjinfo_t *>(saveg_readp());
 
     // int tics;
     str->tics = saveg_read32();
@@ -385,7 +386,7 @@ static void saveg_read_mobj_t(mobj_t *str)
     str->movecount = saveg_read32();
 
     // struct mobj_s* target;
-    str->target = saveg_readp();
+    str->target = static_cast<mobj_t *>(saveg_readp());
 
     // int reactiontime;
     str->reactiontime = saveg_read32();
@@ -414,7 +415,7 @@ static void saveg_read_mobj_t(mobj_t *str)
     saveg_read_mapthing_t(&str->spawnpoint);
 
     // struct mobj_s* tracer;
-    str->tracer = saveg_readp();
+    str->tracer = static_cast<mobj_t *>(saveg_readp());
 }
 
 // [crispy] enumerate all thinker pointers
@@ -697,10 +698,10 @@ static void saveg_read_player_t(player_t *str)
     int i;
 
     // mobj_t* mo;
-    str->mo = saveg_readp();
+    str->mo = static_cast<mobj_t *>(saveg_readp());
 
     // playerstate_t playerstate;
-    str->playerstate = saveg_read_enum();
+    str->playerstate = static_cast<playerstate_t>(saveg_read_enum());
 
     // ticcmd_t cmd;
     saveg_read_ticcmd_t(&str->cmd);
@@ -752,10 +753,10 @@ static void saveg_read_player_t(player_t *str)
     }
 
     // weapontype_t readyweapon;
-    str->readyweapon = saveg_read_enum();
+    str->readyweapon = static_cast<weapontype_t>(saveg_read_enum());
 
     // weapontype_t pendingweapon;
-    str->pendingweapon = saveg_read_enum();
+    str->pendingweapon = static_cast<weapontype_t>(saveg_read_enum());
 
     // boolean weaponowned[NUMWEAPONS];
     for (i=0; i<NUMWEAPONS; ++i)
@@ -797,7 +798,7 @@ static void saveg_read_player_t(player_t *str)
     str->secretcount = saveg_read32();
 
     // char* message;
-    str->message = saveg_readp();
+    str->message = static_cast<const char *>(saveg_readp());
 
     // int damagecount;
     str->damagecount = saveg_read32();
@@ -806,7 +807,7 @@ static void saveg_read_player_t(player_t *str)
     str->bonuscount = saveg_read32();
 
     // mobj_t* attacker;
-    str->attacker = saveg_readp();
+    str->attacker = static_cast<mobj_t *>(saveg_readp());
 
     // int extralight;
     str->extralight = saveg_read32();
@@ -971,7 +972,7 @@ static void saveg_read_ceiling_t(ceiling_t *str)
     saveg_read_thinker_t(&str->thinker);
 
     // ceiling_e type;
-    str->type = saveg_read_enum();
+    str->type = static_cast<ceiling_e>(saveg_read_enum());
 
     // sector_t* sector;
     sector = saveg_read32();
@@ -1044,7 +1045,7 @@ static void saveg_read_vldoor_t(vldoor_t *str)
     saveg_read_thinker_t(&str->thinker);
 
     // vldoor_e type;
-    str->type = saveg_read_enum();
+    str->type = static_cast<vldoor_e>(saveg_read_enum());
 
     // sector_t* sector;
     sector = saveg_read32();
@@ -1105,7 +1106,7 @@ static void saveg_read_floormove_t(floormove_t *str)
     saveg_read_thinker_t(&str->thinker);
 
     // floor_e type;
-    str->type = saveg_read_enum();
+    str->type = static_cast<floor_e>(saveg_read_enum());
 
     // boolean crush;
     str->crush = saveg_read32();
@@ -1191,10 +1192,10 @@ static void saveg_read_plat_t(plat_t *str)
     str->count = saveg_read32();
 
     // plat_e status;
-    str->status = saveg_read_enum();
+    str->status = static_cast<plat_e>(saveg_read_enum());
 
     // plat_e oldstatus;
-    str->oldstatus = saveg_read_enum();
+    str->oldstatus = static_cast<plat_e>(saveg_read_enum());
 
     // boolean crush;
     str->crush = saveg_read32();
@@ -1203,7 +1204,7 @@ static void saveg_read_plat_t(plat_t *str)
     str->tag = saveg_read32();
 
     // plattype_e type;
-    str->type = saveg_read_enum();
+    str->type = static_cast<plattype_e>(saveg_read_enum());
 }
 
 static void saveg_write_plat_t(plat_t *str)
@@ -1454,7 +1455,7 @@ boolean P_ReadSaveGameHeader(void)
     if (strcmp(read_vcheck, vcheck) != 0)
 	return false;				// bad version 
 
-    gameskill = saveg_read8();
+    gameskill = static_cast<skill_t>(saveg_read8());
     gameepisode = saveg_read8();
     gamemap = saveg_read8();
 
@@ -1720,7 +1721,7 @@ void P_UnArchiveThinkers (void)
 			
 	  case tc_mobj:
 	    saveg_read_pad();
-	    mobj = Z_Malloc (sizeof(*mobj), PU_LEVEL, NULL);
+	    mobj = zmalloc<decltype(mobj)> (sizeof(*mobj), PU_LEVEL, NULL);
             saveg_read_mobj_t(mobj);
 
 	    // [crispy] restore mobj->target and mobj->tracer fields
@@ -1920,7 +1921,7 @@ void P_UnArchiveSpecials (void)
 			
 	  case tc_ceiling:
 	    saveg_read_pad();
-	    ceiling = Z_Malloc (sizeof(*ceiling), PU_LEVEL, NULL);
+	    ceiling = zmalloc<decltype(ceiling)> (sizeof(*ceiling), PU_LEVEL, NULL);
             saveg_read_ceiling_t(ceiling);
 	    ceiling->sector->specialdata = ceiling;
 
@@ -1933,7 +1934,7 @@ void P_UnArchiveSpecials (void)
 				
 	  case tc_door:
 	    saveg_read_pad();
-	    door = Z_Malloc (sizeof(*door), PU_LEVEL, NULL);
+	    door = zmalloc<decltype(door)> (sizeof(*door), PU_LEVEL, NULL);
             saveg_read_vldoor_t(door);
 	    door->sector->specialdata = door;
 	    door->thinker.function.acp1 = (actionf_p1)T_VerticalDoor;
@@ -1942,7 +1943,7 @@ void P_UnArchiveSpecials (void)
 				
 	  case tc_floor:
 	    saveg_read_pad();
-	    floor = Z_Malloc (sizeof(*floor), PU_LEVEL, NULL);
+	    floor = zmalloc<decltype(floor)> (sizeof(*floor), PU_LEVEL, NULL);
             saveg_read_floormove_t(floor);
 	    floor->sector->specialdata = floor;
 	    floor->thinker.function.acp1 = (actionf_p1)T_MoveFloor;
@@ -1951,7 +1952,7 @@ void P_UnArchiveSpecials (void)
 				
 	  case tc_plat:
 	    saveg_read_pad();
-	    plat = Z_Malloc (sizeof(*plat), PU_LEVEL, NULL);
+	    plat = zmalloc<decltype(plat)> (sizeof(*plat), PU_LEVEL, NULL);
             saveg_read_plat_t(plat);
 	    plat->sector->specialdata = plat;
 
@@ -1964,7 +1965,7 @@ void P_UnArchiveSpecials (void)
 				
 	  case tc_flash:
 	    saveg_read_pad();
-	    flash = Z_Malloc (sizeof(*flash), PU_LEVEL, NULL);
+	    flash = zmalloc<decltype(flash)> (sizeof(*flash), PU_LEVEL, NULL);
             saveg_read_lightflash_t(flash);
 	    flash->thinker.function.acp1 = (actionf_p1)T_LightFlash;
 	    P_AddThinker (&flash->thinker);
@@ -1972,7 +1973,7 @@ void P_UnArchiveSpecials (void)
 				
 	  case tc_strobe:
 	    saveg_read_pad();
-	    strobe = Z_Malloc (sizeof(*strobe), PU_LEVEL, NULL);
+	    strobe = zmalloc<decltype(strobe)> (sizeof(*strobe), PU_LEVEL, NULL);
             saveg_read_strobe_t(strobe);
 	    strobe->thinker.function.acp1 = (actionf_p1)T_StrobeFlash;
 	    P_AddThinker (&strobe->thinker);
@@ -1980,7 +1981,7 @@ void P_UnArchiveSpecials (void)
 				
 	  case tc_glow:
 	    saveg_read_pad();
-	    glow = Z_Malloc (sizeof(*glow), PU_LEVEL, NULL);
+	    glow = zmalloc<decltype(glow)> (sizeof(*glow), PU_LEVEL, NULL);
             saveg_read_glow_t(glow);
 	    glow->thinker.function.acp1 = (actionf_p1)T_Glow;
 	    P_AddThinker (&glow->thinker);

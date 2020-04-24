@@ -15,7 +15,7 @@
 //    PC speaker driver for Linux.
 //
 
-#include "config.hpp"
+#include "config.h"
 
 #ifdef HAVE_LINUX_KD_H
 
@@ -28,7 +28,7 @@
 #include <unistd.h>
 #include <fcntl.h>
 
-#include "SDL.hpp"
+#include "SDL.h"
 #include "SDL_thread.hpp"
 
 #include "pcsound.hpp"

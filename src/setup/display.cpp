@@ -26,7 +26,7 @@
 #include "mode.hpp"
 
 #include "display.hpp"
-#include "config.hpp"
+#include "config.h"
 
 #define WINDOW_HELP_URL "https://www.chocolate-doom.org/setup-display"
 

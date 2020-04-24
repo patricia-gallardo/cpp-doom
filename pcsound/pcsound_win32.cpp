@@ -17,7 +17,7 @@
 
 #ifdef _WIN32
 
-#include "SDL.hpp"
+#include "SDL.h"
 #include "SDL_thread.hpp"
 #include <windows.h>
 

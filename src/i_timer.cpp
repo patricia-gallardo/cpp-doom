@@ -16,7 +16,7 @@
 //      Timer functions.
 //
 
-#include "SDL.hpp"
+#include "SDL.h"
 
 #include "i_timer.hpp"
 #include "doomtype.hpp"

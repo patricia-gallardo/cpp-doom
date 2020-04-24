@@ -463,7 +463,7 @@ static void F_DoSlideShow(void)
     finalecount = 0;
     if(gameversion != exe_strife_1_31) // See above. This was removed in 1.31.
     {
-       patch = (patch_t *)W_CacheLumpName(DEH_String("PANEL0"), PU_CACHE);
+       patch = (patch_t *)cache_lump_name<patch_t *>(DEH_String("PANEL0"), PU_CACHE);
        V_DrawPatch(0, 0, patch);
     }
 }
@@ -1034,7 +1034,7 @@ void F_Drawer (void)
         if(gamemap <= 29)
         {
             // draw credits
-            patch_t *credits = W_CacheLumpName(DEH_String("CREDIT"), PU_CACHE);
+            patch_t *credits = cache_lump_name<patch_t *>(DEH_String("CREDIT"), PU_CACHE);
             V_DrawPatch(0, 0, credits);
         }
         else if(gamemap == 34)

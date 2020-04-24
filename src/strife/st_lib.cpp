@@ -51,7 +51,7 @@ patch_t*		sttminus;
 void STlib_init(void)
 {
     // haleyjd 08/28/10: [STRIFE] STTMINUS -> STCFN045
-    sttminus = (patch_t *) W_CacheLumpName(DEH_String("STCFN045"), PU_STATIC);
+    sttminus = (patch_t *) cache_lump_name<patch_t *>(DEH_String("STCFN045"), PU_STATIC);
 }
 
 

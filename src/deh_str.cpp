@@ -24,6 +24,7 @@
 #include "deh_str.hpp"
 #include "m_misc.hpp"
 
+#include "../utils/memory.hpp"
 #include "z_zone.hpp"
 
 typedef struct 
@@ -109,7 +110,7 @@ static void InitHashTable(void)
     
     hash_table_entries = 0;
     hash_table_length = 16;
-    hash_table = Z_Malloc(sizeof(deh_substitution_t *) * hash_table_length,
+    hash_table = zmalloc<decltype(hash_table)>(sizeof(deh_substitution_t *) * hash_table_length,
                           PU_STATIC, NULL);
     memset(hash_table, 0, sizeof(deh_substitution_t *) * hash_table_length);
 }
@@ -130,7 +131,7 @@ static void IncreaseHashtable(void)
     // double the size 
 
     hash_table_length *= 2;
-    hash_table = Z_Malloc(sizeof(deh_substitution_t *) * hash_table_length,
+    hash_table = zmalloc<decltype(hash_table)>(sizeof(deh_substitution_t *) * hash_table_length,
                           PU_STATIC, NULL);
     memset(hash_table, 0, sizeof(deh_substitution_t *) * hash_table_length);
 
@@ -191,21 +192,21 @@ void DEH_AddStringReplacement(const char *from_text, const char *to_text)
         Z_Free(sub->to_text);
 
         len = strlen(to_text) + 1;
-        sub->to_text = Z_Malloc(len, PU_STATIC, NULL);
+        sub->to_text = zmalloc<char *>(len, PU_STATIC, NULL);
         memcpy(sub->to_text, to_text, len);
     }
     else
     {
         // We need to allocate a new substitution.
-        sub = Z_Malloc(sizeof(*sub), PU_STATIC, 0);
+        sub = zmalloc<decltype(sub)>(sizeof(*sub), PU_STATIC, 0);
 
         // We need to create our own duplicates of the provided strings.
         len = strlen(from_text) + 1;
-        sub->from_text = Z_Malloc(len, PU_STATIC, NULL);
+        sub->from_text = zmalloc<char *>(len, PU_STATIC, NULL);
         memcpy(sub->from_text, from_text, len);
 
         len = strlen(to_text) + 1;
-        sub->to_text = Z_Malloc(len, PU_STATIC, NULL);
+        sub->to_text = zmalloc<char *>(len, PU_STATIC, NULL);
         memcpy(sub->to_text, to_text, len);
 
         DEH_AddToHashtable(sub);
@@ -337,7 +338,6 @@ static boolean ValidFormatReplacement(const char *original, const char *replacem
 {
     const char *rover1;
     const char *rover2;
-    int argtype1, argtype2;
 
     // Check each argument in turn and compare types.
 
@@ -345,8 +345,8 @@ static boolean ValidFormatReplacement(const char *original, const char *replacem
 
     for (;;)
     {
-        argtype1 = NextFormatArgument(&rover1);
-        argtype2 = NextFormatArgument(&rover2);
+        const auto argtype1 = NextFormatArgument(&rover1);
+        const auto argtype2 = NextFormatArgument(&rover2);
 
         if (argtype2 == FORMAT_ARG_INVALID)
         {

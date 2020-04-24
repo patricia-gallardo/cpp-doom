@@ -24,7 +24,7 @@
 
 #include "net_client.hpp"
 
-#include "config.hpp"
+#include "config.h"
 #include "ct_chat.hpp"
 #include "doomdef.hpp"
 #include "deh_main.hpp"
@@ -237,12 +237,12 @@ void D_Display(void)
     {
         if (!netgame)
         {
-            V_DrawPatch(160, (viewwindowy >> crispy->hires) + 5, W_CacheLumpName(DEH_String("PAUSED"),
+            V_DrawPatch(160, (viewwindowy >> crispy->hires) + 5, cache_lump_name<patch_t *>(DEH_String("PAUSED"),
                                                               PU_CACHE));
         }
         else
         {
-            V_DrawPatch(160, 70, W_CacheLumpName(DEH_String("PAUSED"), PU_CACHE));
+            V_DrawPatch(160, 70, cache_lump_name<patch_t *>(DEH_String("PAUSED"), PU_CACHE));
         }
     }
     // Handle player messages
@@ -354,7 +354,7 @@ void D_PageDrawer(void)
     V_DrawRawScreen(W_CacheLumpName(pagename, PU_CACHE));
     if (demosequence == 1)
     {
-        V_DrawPatch(4, 160, W_CacheLumpName(DEH_String("ADVISOR"), PU_CACHE));
+        V_DrawPatch(4, 160, cache_lump_name<patch_t *>(DEH_String("ADVISOR"), PU_CACHE));
     }
     UpdateState |= I_FULLSCRN;
 }
@@ -636,7 +636,7 @@ void initStartup(void)
 
     // Blit main screen
     textScreen = TXT_GetScreenData();
-    loading = W_CacheLumpName(DEH_String("LOADING"), PU_CACHE);
+    loading = cache_lump_name<patch_t *>(DEH_String("LOADING"), PU_CACHE);
     memcpy(textScreen, loading, 4000);
 
     // Print version string
@@ -769,7 +769,7 @@ static void D_Endoom(void)
         return;
     }
 
-    endoom_data = W_CacheLumpName(DEH_String("ENDTEXT"), PU_STATIC);
+    endoom_data = cache_lump_name<patch_t *>(DEH_String("ENDTEXT"), PU_STATIC);
 
     I_Endoom(endoom_data);
 }

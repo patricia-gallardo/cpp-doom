@@ -27,6 +27,7 @@
 #include "txt_io.hpp"
 #include "txt_main.hpp"
 #include "txt_widget.hpp"
+#include "../utils/memory.hpp"
 
 struct txt_fileselect_s {
     txt_widget_t widget;
@@ -101,8 +102,8 @@ static char *ExecReadOutput(char **argv)
         }
         else
         {
-            char *new_result = realloc(result, result_len + bytes + 1);
-            if (new_result == NULL)
+            char *new_result = static_cast<char *>(realloc(result, result_len + bytes + 1));
+            if (new_result == nullptr)
             {
                 break;
             }
@@ -588,7 +589,7 @@ static char *ExpandExtension(const char *orig)
 
     oldlen = strlen(orig);
     newlen = oldlen * 4; // pathological case: 'w' => '[Ww]'
-    newext = malloc(newlen+1);
+    newext = static_cast<char *>(malloc(newlen+1));
 
     if (newext == NULL)
     {
@@ -627,7 +628,7 @@ char *TXT_SelectFile(const char *window_title, const char **extensions)
         return NULL;
     }
 
-    argv = calloc(5 + NumExtensions(extensions), sizeof(char *));
+    argv = static_cast<char **>(std::calloc(5 + NumExtensions(extensions), sizeof(char *)));
     argv[0] = strdup(ZENITY_BINARY);
     argv[1] = strdup("--file-selection");
     argc = 2;
@@ -635,7 +636,7 @@ char *TXT_SelectFile(const char *window_title, const char **extensions)
     if (window_title != NULL)
     {
         len = 10 + strlen(window_title);
-        argv[argc] = malloc(len);
+        argv[argc] = static_cast<char *>(malloc(len));
         TXT_snprintf(argv[argc], len, "--title=%s", window_title);
         ++argc;
     }
@@ -653,7 +654,7 @@ char *TXT_SelectFile(const char *window_title, const char **extensions)
             if (newext)
             {
                 len = 30 + strlen(extensions[i]) + strlen(newext);
-                argv[argc] = malloc(len);
+                argv[argc] = static_cast<char *>(malloc(len));
                 TXT_snprintf(argv[argc], len, "--file-filter=.%s | *.%s",
                              extensions[i], newext);
                 ++argc;
@@ -721,7 +722,6 @@ static void TXT_FileSelectDestructor(TXT_UNCAST_ARG(fileselect))
 static int DoSelectFile(txt_fileselect_t *fileselect)
 {
     char *path;
-    char **var;
 
     if (TXT_CanSelectFiles())
     {
@@ -737,7 +737,7 @@ static int DoSelectFile(txt_fileselect_t *fileselect)
             path = strdup("");
         }
 
-        var = fileselect->inputbox->value;
+        char **var = static_cast<char **>(fileselect->inputbox->value);
         free(*var);
         *var = path;
         return 1;
@@ -817,9 +817,8 @@ static void InputBoxChanged(TXT_UNCAST_ARG(widget), TXT_UNCAST_ARG(fileselect))
 txt_fileselect_t *TXT_NewFileSelector(char **variable, int size,
                                       const char *prompt, const char **extensions)
 {
-    txt_fileselect_t *fileselect;
+    auto *fileselect = create_struct<txt_fileselect_t>();
 
-    fileselect = malloc(sizeof(txt_fileselect_t));
     TXT_InitWidget(fileselect, &txt_fileselect_class);
     fileselect->inputbox = TXT_NewInputBox(variable, 1024);
     fileselect->inputbox->widget.parent = &fileselect->widget;

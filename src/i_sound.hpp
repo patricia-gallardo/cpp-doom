@@ -87,7 +87,7 @@ typedef struct
 
 } musicinfo_t;
 
-typedef enum 
+enum snddevice_t : int
 {
     SNDDEVICE_NONE = 0,
     SNDDEVICE_PCSPEAKER = 1,
@@ -100,7 +100,7 @@ typedef enum
     SNDDEVICE_GENMIDI = 8,
     SNDDEVICE_AWE32 = 9,
     SNDDEVICE_CD = 10,
-} snddevice_t;
+};
 
 // Interface for sound modules
 
@@ -227,8 +227,8 @@ void I_PlaySong(void *handle, boolean looping);
 void I_StopSong(void);
 boolean I_MusicIsPlaying(void);
 
-extern int snd_sfxdevice;
-extern int snd_musicdevice;
+extern snddevice_t snd_sfxdevice;
+extern snddevice_t snd_musicdevice;
 extern int snd_samplerate;
 extern int snd_cachesize;
 extern int snd_maxslicetime_ms;

@@ -21,9 +21,10 @@
 #include <ctype.h>
 #include <string.h>
 
+#include "../utils/memory.hpp"
+#include "d_iwad.hpp"
 #include "deh_str.hpp"
 #include "doomkeys.hpp"
-#include "d_iwad.hpp"
 #include "i_system.hpp"
 #include "m_argv.hpp"
 #include "m_config.hpp"
@@ -890,12 +891,12 @@ char *D_FindIWAD(int mask, GameMission_t *mission)
 
 const iwad_t **D_FindAllIWADs(int mask)
 {
-    const iwad_t **result;
     int result_len;
     char *filename;
     int i;
 
-    result = malloc(sizeof(iwad_t *) * (arrlen(iwads) + 1));
+    auto result = create_struct<iwad_t const *[arrlen(iwads) + 1]>();
+//    result = malloc(sizeof(iwad_t *) * (arrlen(iwads) + 1));
     result_len = 0;
 
     // Try to find all IWADs

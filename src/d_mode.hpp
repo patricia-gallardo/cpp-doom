@@ -98,7 +98,7 @@ typedef enum
     sk_nightmare
 } skill_t;
 
-boolean D_ValidGameMode(GameMission_t mission, GameMode_t mode);
+boolean D_ValidGameMode(int mission, int mode);
 boolean D_ValidGameVersion(GameMission_t mission, GameVersion_t version);
 boolean D_ValidEpisodeMap(GameMission_t mission, GameMode_t mode,
                           int episode, int map);

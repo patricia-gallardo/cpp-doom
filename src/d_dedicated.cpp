@@ -18,7 +18,7 @@
 #include <stdlib.h>
 #include <stdarg.h>
 
-#include "config.hpp"
+#include "config.h"
 
 #include "m_argv.hpp"
 #include "net_defs.hpp"

@@ -26,6 +26,7 @@
 #include <string.h>
 #include <ctype.h>
 
+#include "../utils/memory.hpp"
 #include "m_misc.hpp"
 #include "w_wad.hpp"
 #include "z_zone.hpp"
@@ -217,7 +218,7 @@ static char *ReadDMXConfig(void)
     }
 
     len = W_LumpLength(lumpnum);
-    data = Z_Malloc(len + 1, PU_STATIC, NULL);
+    data = zmalloc<char *>(len + 1, PU_STATIC, NULL);
     W_ReadLump(lumpnum, data);
 
     data[len] = '\0';
