@@ -697,7 +697,7 @@ static void TXT_TableLayout(TXT_UNCAST_ARG(table))
 
     auto column_widths = std::vector<unsigned int>(table->columns);
     auto row_heights = std::vector<unsigned int>(
-        table->columns);//    auto column_widths = std::make_unique<unsigned int[]>(table->columns);
+        rows);//    auto column_widths = std::make_unique<unsigned int[]>(table->columns);
 
     CalcRowColSizes(table, row_heights.data(), column_widths.data());
 
