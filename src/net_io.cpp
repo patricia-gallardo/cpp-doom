@@ -26,17 +26,16 @@
 
 #define MAX_MODULES 16
 
-struct _net_context_s
-{
+struct _net_context_s {
     net_module_t *modules[MAX_MODULES];
-    int num_modules;
+    int           num_modules;
 };
 
 net_addr_t net_broadcast_addr;
 
 net_context_t *NET_NewContext(void)
 {
-    auto *context = zmalloc<net_context_t*>(sizeof(net_context_t), PU_STATIC, 0);
+    auto *context        = zmalloc<net_context_t *>(sizeof(net_context_t), PU_STATIC, 0);
     context->num_modules = 0;
 
     return context;
@@ -48,17 +47,17 @@ void NET_AddModule(net_context_t *context, net_module_t *module)
     {
         I_Error("NET_AddModule: No more modules for context");
     }
-    
+
     context->modules[context->num_modules] = module;
     ++context->num_modules;
 }
 
 net_addr_t *NET_ResolveAddress(net_context_t *context, const char *addr)
 {
-    int i;
+    int         i;
     net_addr_t *result;
 
-    for (i=0; i<context->num_modules; ++i)
+    for (i = 0; i < context->num_modules; ++i)
     {
         result = context->modules[i]->ResolveAddress(addr);
 
@@ -81,21 +80,21 @@ void NET_SendBroadcast(net_context_t *context, net_packet_t *packet)
 {
     int i;
 
-    for (i=0; i<context->num_modules; ++i)
+    for (i = 0; i < context->num_modules; ++i)
     {
         context->modules[i]->SendPacket(&net_broadcast_addr, packet);
     }
 }
 
-boolean NET_RecvPacket(net_context_t *context, 
-                       net_addr_t **addr, 
-                       net_packet_t **packet)
+boolean NET_RecvPacket(net_context_t *context,
+    net_addr_t **                     addr,
+    net_packet_t **                   packet)
 {
     int i;
-    
+
     // check all modules for new packets
-    
-    for (i=0; i<context->num_modules; ++i)
+
+    for (i = 0; i < context->num_modules; ++i)
     {
         if (context->modules[i]->RecvPacket(addr, packet))
         {
@@ -143,4 +142,3 @@ void NET_ReleaseAddress(net_addr_t *addr)
         addr->module->FreeAddress(addr);
     }
 }
-

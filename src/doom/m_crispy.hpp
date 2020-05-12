@@ -22,7 +22,7 @@
 
 typedef struct
 {
-    int value;
+    int   value;
     char *name;
 } multiitem_t;
 

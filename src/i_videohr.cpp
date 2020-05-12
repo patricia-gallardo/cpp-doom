@@ -27,12 +27,12 @@
 
 #define FADE_TIME 2000
 
-#define HR_SCREENWIDTH 640
+#define HR_SCREENWIDTH  640
 #define HR_SCREENHEIGHT 480
 
-static SDL_Window *hr_screen = NULL;
-static SDL_Surface *hr_surface = NULL;
-static const char *window_title = "";
+static SDL_Window * hr_screen    = NULL;
+static SDL_Surface *hr_surface   = NULL;
+static const char * window_title = "";
 
 boolean I_SetVideoModeHR(void)
 {
@@ -59,7 +59,7 @@ boolean I_SetVideoModeHR(void)
 
     // We do all actual drawing into an intermediate surface.
     hr_surface = SDL_CreateRGBSurface(0, HR_SCREENWIDTH, HR_SCREENHEIGHT,
-                                      8, 0, 0, 0, 0);
+        8, 0, 0, 0, 0);
 
     return true;
 }
@@ -89,18 +89,18 @@ void I_ClearScreenHR(void)
 
 void I_SlamBlockHR(int x, int y, int w, int h, const byte *src)
 {
-    SDL_Rect blit_rect;
+    SDL_Rect    blit_rect;
     const byte *srcptrs[4];
-    byte srcbits[4];
-    byte *dest;
-    int x1, y1;
-    int i;
-    int bit;
+    byte        srcbits[4];
+    byte *      dest;
+    int         x1, y1;
+    int         i;
+    int         bit;
 
-    // Set up source pointers to read from source buffer - each 4-bit 
+    // Set up source pointers to read from source buffer - each 4-bit
     // pixel has its bits split into four sub-buffers
 
-    for (i=0; i<4; ++i)
+    for (i = 0; i < 4; ++i)
     {
         srcptrs[i] = src + (i * w * h / 8);
     }
@@ -114,27 +114,27 @@ void I_SlamBlockHR(int x, int y, int w, int h, const byte *src)
 
     bit = 0;
 
-    for (y1=y; y1<y+h; ++y1)
+    for (y1 = y; y1 < y + h; ++y1)
     {
-        dest = ((byte *) hr_surface->pixels) + y1 * hr_surface->pitch + x;
+        dest = ((byte *)hr_surface->pixels) + y1 * hr_surface->pitch + x;
 
-        for (x1=x; x1<x+w; ++x1)
+        for (x1 = x; x1 < x + w; ++x1)
         {
             // Get the bits for this pixel
             // For each bit, find the byte containing it, shift down
             // and mask out the specific bit wanted.
 
-            for (i=0; i<4; ++i)
+            for (i = 0; i < 4; ++i)
             {
                 srcbits[i] = (srcptrs[i][bit / 8] >> (7 - (bit % 8))) & 0x1;
             }
 
             // Reassemble the pixel value
 
-            *dest = (srcbits[0] << 0) 
-                  | (srcbits[1] << 1)
-                  | (srcbits[2] << 2)
-                  | (srcbits[3] << 3);
+            *dest = (srcbits[0] << 0)
+                    | (srcbits[1] << 1)
+                    | (srcbits[2] << 2)
+                    | (srcbits[3] << 3);
 
             // Next pixel!
 
@@ -151,7 +151,7 @@ void I_SlamBlockHR(int x, int y, int w, int h, const byte *src)
     blit_rect.w = w;
     blit_rect.h = h;
     SDL_BlitSurface(hr_surface, &blit_rect,
-                    SDL_GetWindowSurface(hr_screen), &blit_rect);
+        SDL_GetWindowSurface(hr_screen), &blit_rect);
     SDL_UpdateWindowSurfaceRects(hr_screen, &blit_rect, 1);
 }
 
@@ -167,11 +167,11 @@ void I_InitPaletteHR(void)
 
 void I_SetPaletteHR(const byte *palette)
 {
-    SDL_Rect screen_rect = {0, 0, HR_SCREENWIDTH, HR_SCREENHEIGHT};
+    SDL_Rect  screen_rect = { 0, 0, HR_SCREENWIDTH, HR_SCREENHEIGHT };
     SDL_Color sdlpal[16];
-    int i;
+    int       i;
 
-    for (i=0; i<16; ++i)
+    for (i = 0; i < 16; ++i)
     {
         sdlpal[i].r = palette[i * 3 + 0] * 4;
         sdlpal[i].g = palette[i * 3 + 1] * 4;
@@ -181,16 +181,16 @@ void I_SetPaletteHR(const byte *palette)
     // After setting colors, update the screen.
     SDL_SetPaletteColors(hr_surface->format->palette, sdlpal, 0, 16);
     SDL_BlitSurface(hr_surface, &screen_rect,
-                    SDL_GetWindowSurface(hr_screen), &screen_rect);
+        SDL_GetWindowSurface(hr_screen), &screen_rect);
     SDL_UpdateWindowSurfaceRects(hr_screen, &screen_rect, 1);
 }
 
 void I_FadeToPaletteHR(const byte *palette)
 {
     byte tmppal[16 * 3];
-    int starttime;
-    int elapsed;
-    int i;
+    int  starttime;
+    int  elapsed;
+    int  i;
 
     starttime = I_GetTimeMS();
 
@@ -205,7 +205,7 @@ void I_FadeToPaletteHR(const byte *palette)
 
         // Generate the fake palette
 
-        for (i=0; i<16 * 3; ++i) 
+        for (i = 0; i < 16 * 3; ++i)
         {
             tmppal[i] = (palette[i] * elapsed) / FADE_TIME;
         }
@@ -236,7 +236,7 @@ void I_BlackPaletteHR(void)
 boolean I_CheckAbortHR(void)
 {
     SDL_Event ev;
-    boolean result = false;
+    boolean   result = false;
 
     // Not initialized?
     if (hr_surface == NULL)
@@ -254,4 +254,3 @@ boolean I_CheckAbortHR(void)
 
     return result;
 }
-

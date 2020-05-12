@@ -16,7 +16,7 @@
 //
 
 #ifndef NET_DEFS_H
-#define NET_DEFS_H 
+#define NET_DEFS_H
 
 #include <stdio.h>
 
@@ -44,21 +44,19 @@
 
 #define BACKUPTICS 128
 
-typedef struct _net_module_s net_module_t;
-typedef struct _net_packet_s net_packet_t;
-typedef struct _net_addr_s net_addr_t;
+typedef struct _net_module_s  net_module_t;
+typedef struct _net_packet_s  net_packet_t;
+typedef struct _net_addr_s    net_addr_t;
 typedef struct _net_context_s net_context_t;
 
-struct _net_packet_s
-{
-    byte *data;
-    size_t len;
-    size_t alloced;
+struct _net_packet_s {
+    byte *       data;
+    size_t       len;
+    size_t       alloced;
     unsigned int pos;
 };
 
-struct _net_module_s
-{
+struct _net_module_s {
     // Initialize this module for use as a client
 
     boolean (*InitClient)(void);
@@ -92,15 +90,14 @@ struct _net_module_s
 
 // net_addr_t
 
-struct _net_addr_s
-{
+struct _net_addr_s {
     net_module_t *module;
-    int refcount;
-    void *handle;
+    int           refcount;
+    void *        handle;
 };
 
 // Magic number sent when connecting to check this is a valid client
-#define NET_MAGIC_NUMBER     1454104972U
+#define NET_MAGIC_NUMBER 1454104972U
 
 // Old magic number used by Chocolate Doom versions before v3.0:
 #define NET_OLD_MAGIC_NUMBER 3436803284U
@@ -173,15 +170,15 @@ typedef enum
 
 typedef struct
 {
-    int gamemode;
-    int gamemission;
-    int lowres_turn;
-    int drone;
-    int max_players;
-    int is_freedoom;
+    int           gamemode;
+    int           gamemission;
+    int           lowres_turn;
+    int           drone;
+    int           max_players;
+    int           is_freedoom;
     sha1_digest_t wad_sha1sum;
     sha1_digest_t deh_sha1sum;
-    int player_class;
+    int           player_class;
 } net_connect_data_t;
 
 // Game settings sent by client to server when initiating game start,
@@ -203,7 +200,7 @@ typedef struct
     int new_sync;
     int timelimit;
     int loadgame;
-    int random;  // [Strife only]
+    int random; // [Strife only]
 
     // These fields are only used by the server when sending a game
     // start message:
@@ -217,28 +214,28 @@ typedef struct
 
 } net_gamesettings_t;
 
-#define NET_TICDIFF_FORWARD      (1 << 0)
-#define NET_TICDIFF_SIDE         (1 << 1)
-#define NET_TICDIFF_TURN         (1 << 2)
-#define NET_TICDIFF_BUTTONS      (1 << 3)
-#define NET_TICDIFF_CONSISTANCY  (1 << 4)
-#define NET_TICDIFF_CHATCHAR     (1 << 5)
-#define NET_TICDIFF_RAVEN        (1 << 6)
-#define NET_TICDIFF_STRIFE       (1 << 7)
+#define NET_TICDIFF_FORWARD     (1 << 0)
+#define NET_TICDIFF_SIDE        (1 << 1)
+#define NET_TICDIFF_TURN        (1 << 2)
+#define NET_TICDIFF_BUTTONS     (1 << 3)
+#define NET_TICDIFF_CONSISTANCY (1 << 4)
+#define NET_TICDIFF_CHATCHAR    (1 << 5)
+#define NET_TICDIFF_RAVEN       (1 << 6)
+#define NET_TICDIFF_STRIFE      (1 << 7)
 
 typedef struct
 {
     unsigned int diff;
-    ticcmd_t cmd;
+    ticcmd_t     cmd;
 } net_ticdiff_t;
 
 // Complete set of ticcmds from all players
 
-typedef struct 
+typedef struct
 {
-    signed int latency;
-    unsigned int seq;
-    boolean playeringame[NET_MAXPLAYERS];
+    signed int    latency;
+    unsigned int  seq;
+    boolean       playeringame[NET_MAXPLAYERS];
     net_ticdiff_t cmds[NET_MAXPLAYERS];
 } net_full_ticcmd_t;
 
@@ -246,13 +243,13 @@ typedef struct
 
 typedef struct
 {
-    const char *version;
-    int server_state;
-    int num_players;
-    int max_players;
-    int gamemode;
-    int gamemission;
-    const char *description;
+    const char *   version;
+    int            server_state;
+    int            num_players;
+    int            max_players;
+    int            gamemode;
+    int            gamemission;
+    const char *   description;
     net_protocol_t protocol;
 } net_querydata_t;
 
@@ -260,17 +257,17 @@ typedef struct
 
 typedef struct
 {
-    int num_players;
-    int num_drones;
-    int ready_players;
-    int max_players;
-    int is_controller;
-    int consoleplayer;
-    char player_names[NET_MAXPLAYERS][MAXPLAYERNAME];
-    char player_addrs[NET_MAXPLAYERS][MAXPLAYERNAME];
+    int           num_players;
+    int           num_drones;
+    int           ready_players;
+    int           max_players;
+    int           is_controller;
+    int           consoleplayer;
+    char          player_names[NET_MAXPLAYERS][MAXPLAYERNAME];
+    char          player_addrs[NET_MAXPLAYERS][MAXPLAYERNAME];
     sha1_digest_t wad_sha1sum;
     sha1_digest_t deh_sha1sum;
-    int is_freedoom;
+    int           is_freedoom;
 } net_waitdata_t;
 
 #endif /* #ifndef NET_DEFS_H */

@@ -16,7 +16,7 @@
 
 #ifndef __M_CONTROLS_H__
 #define __M_CONTROLS_H__
- 
+
 extern int key_right;
 extern int key_left;
 extern int key_reverse;
@@ -37,7 +37,7 @@ extern int key_speed;
 extern int key_jump;
 extern int key_toggleautorun;
 extern int key_togglenovert;
- 
+
 extern int key_flyup;
 extern int key_flydown;
 extern int key_flycenter;
@@ -141,9 +141,9 @@ extern int key_menu_incscreen;
 extern int key_menu_decscreen;
 extern int key_menu_screenshot;
 extern int key_menu_cleanscreenshot; // [crispy]
-extern int key_menu_del; // [crispy]
-extern int key_menu_nextlevel; // [crispy]
-extern int key_menu_reloadlevel; // [crispy]
+extern int key_menu_del;             // [crispy]
+extern int key_menu_nextlevel;       // [crispy]
+extern int key_menu_reloadlevel;     // [crispy]
 
 extern int mousebfire;
 extern int mousebstrafe;
@@ -191,4 +191,3 @@ void M_BindChatControls(unsigned int num_players);
 void M_ApplyPlatformDefaults(void);
 
 #endif /* #ifndef __M_CONTROLS_H__ */
-

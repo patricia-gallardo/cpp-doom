@@ -27,12 +27,12 @@
 typedef void (*atexit_func_t)(void);
 
 // Called by DoomMain.
-void I_Init (void);
+void I_Init(void);
 
 // Called by startup code
 // to get the ammount of memory to malloc
 // for the zone management.
-byte*	I_ZoneBase (int *size);
+byte *I_ZoneBase(int *size);
 
 boolean I_ConsoleStdout(void);
 
@@ -45,16 +45,16 @@ boolean I_ConsoleStdout(void);
 // or calls a loadable driver to build it.
 // This ticcmd will then be modified by the gameloop
 // for normal input.
-ticcmd_t* I_BaseTiccmd (void);
+ticcmd_t *I_BaseTiccmd(void);
 
 
 // Called by M_Responder when quit is selected.
 // Clean exit, displays sell blurb.
-void I_Quit (void) NORETURN;
+void I_Quit(void) NORETURN;
 
-void I_Error (const char *error, ...) NORETURN PRINTF_ATTR(1, 2);
+void I_Error(const char *error, ...) NORETURN PRINTF_ATTR(1, 2);
 
-void I_Tactile (int on, int off, int total);
+void I_Tactile(int on, int off, int total);
 
 void *I_Realloc(void *ptr, size_t size);
 
@@ -83,4 +83,3 @@ void I_PrintBanner(const char *text);
 void I_PrintDivider(void);
 
 #endif
-

@@ -27,23 +27,23 @@
 #include "../utils/memory.hpp"
 #include "z_zone.hpp"
 
-typedef struct 
+typedef struct
 {
     char *from_text;
     char *to_text;
 } deh_substitution_t;
 
 static deh_substitution_t **hash_table = NULL;
-static int hash_table_entries;
-static int hash_table_length = -1;
+static int                  hash_table_entries;
+static int                  hash_table_length = -1;
 
 // This is the algorithm used by glib
 
 static unsigned int strhash(const char *s)
 {
-    const char *p = s;
+    const char * p = s;
     unsigned int h = *p;
-  
+
     if (h)
     {
         for (p += 1; *p; p++)
@@ -59,7 +59,7 @@ static deh_substitution_t *SubstitutionForString(const char *s)
 
     // Fallback if we have not initialized the hash table yet
     if (hash_table_length < 0)
-	return NULL;
+        return NULL;
 
     entry = strhash(s) % hash_table_length;
 
@@ -107,11 +107,11 @@ boolean DEH_HasStringReplacement(const char *s)
 static void InitHashTable(void)
 {
     // init hash table
-    
+
     hash_table_entries = 0;
-    hash_table_length = 16;
-    hash_table = zmalloc<decltype(hash_table)>(sizeof(deh_substitution_t *) * hash_table_length,
-                          PU_STATIC, NULL);
+    hash_table_length  = 16;
+    hash_table         = zmalloc<decltype(hash_table)>(sizeof(deh_substitution_t *) * hash_table_length,
+        PU_STATIC, NULL);
     memset(hash_table, 0, sizeof(deh_substitution_t *) * hash_table_length);
 }
 
@@ -120,24 +120,24 @@ static void DEH_AddToHashtable(deh_substitution_t *sub);
 static void IncreaseHashtable(void)
 {
     deh_substitution_t **old_table;
-    int old_table_length;
-    int i;
-    
+    int                  old_table_length;
+    int                  i;
+
     // save the old table
 
-    old_table = hash_table;
+    old_table        = hash_table;
     old_table_length = hash_table_length;
-    
-    // double the size 
+
+    // double the size
 
     hash_table_length *= 2;
     hash_table = zmalloc<decltype(hash_table)>(sizeof(deh_substitution_t *) * hash_table_length,
-                          PU_STATIC, NULL);
+        PU_STATIC, NULL);
     memset(hash_table, 0, sizeof(deh_substitution_t *) * hash_table_length);
 
     // go through the old table and insert all the old entries
 
-    for (i=0; i<old_table_length; ++i)
+    for (i = 0; i < old_table_length; ++i)
     {
         if (old_table[i] != NULL)
         {
@@ -176,7 +176,7 @@ static void DEH_AddToHashtable(deh_substitution_t *sub)
 void DEH_AddStringReplacement(const char *from_text, const char *to_text)
 {
     deh_substitution_t *sub;
-    size_t len;
+    size_t              len;
 
     // Initialize the hash table if this is the first time
     if (hash_table_length < 0)
@@ -191,7 +191,7 @@ void DEH_AddStringReplacement(const char *from_text, const char *to_text)
     {
         Z_Free(sub->to_text);
 
-        len = strlen(to_text) + 1;
+        len          = strlen(to_text) + 1;
         sub->to_text = zmalloc<char *>(len, PU_STATIC, NULL);
         memcpy(sub->to_text, to_text, len);
     }
@@ -201,11 +201,11 @@ void DEH_AddStringReplacement(const char *from_text, const char *to_text)
         sub = zmalloc<decltype(sub)>(sizeof(*sub), PU_STATIC, 0);
 
         // We need to create our own duplicates of the provided strings.
-        len = strlen(from_text) + 1;
+        len            = strlen(from_text) + 1;
         sub->from_text = zmalloc<char *>(len, PU_STATIC, NULL);
         memcpy(sub->from_text, from_text, len);
 
-        len = strlen(to_text) + 1;
+        len          = strlen(to_text) + 1;
         sub->to_text = zmalloc<char *>(len, PU_STATIC, NULL);
         memcpy(sub->to_text, to_text, len);
 
@@ -232,27 +232,40 @@ static format_arg_t FormatArgumentType(char c)
 {
     switch (c)
     {
-        case 'd': case 'i': case 'o': case 'u': case 'x': case 'X':
-            return FORMAT_ARG_INT;
+    case 'd':
+    case 'i':
+    case 'o':
+    case 'u':
+    case 'x':
+    case 'X':
+        return FORMAT_ARG_INT;
 
-        case 'e': case 'E': case 'f': case 'F': case 'g': case 'G':
-        case 'a': case 'A':
-            return FORMAT_ARG_FLOAT;
+    case 'e':
+    case 'E':
+    case 'f':
+    case 'F':
+    case 'g':
+    case 'G':
+    case 'a':
+    case 'A':
+        return FORMAT_ARG_FLOAT;
 
-        case 'c': case 'C':
-            return FORMAT_ARG_CHAR;
+    case 'c':
+    case 'C':
+        return FORMAT_ARG_CHAR;
 
-        case 's': case 'S':
-            return FORMAT_ARG_STRING;
+    case 's':
+    case 'S':
+        return FORMAT_ARG_STRING;
 
-        case 'p':
-            return FORMAT_ARG_PTR;
+    case 'p':
+        return FORMAT_ARG_PTR;
 
-        case 'n':
-            return FORMAT_ARG_SAVE_POS;
+    case 'n':
+        return FORMAT_ARG_SAVE_POS;
 
-        default:
-            return FORMAT_ARG_INVALID;
+    default:
+        return FORMAT_ARG_INVALID;
     }
 }
 
@@ -309,7 +322,7 @@ static format_arg_t NextFormatArgument(const char **str)
 // the original.
 
 static boolean ValidArgumentReplacement(format_arg_t original,
-                                        format_arg_t replacement)
+    format_arg_t                                     replacement)
 {
     // In general, the original and replacement types should be
     // identical.  However, there are some cases where the replacement
@@ -341,7 +354,8 @@ static boolean ValidFormatReplacement(const char *original, const char *replacem
 
     // Check each argument in turn and compare types.
 
-    rover1 = original; rover2 = replacement;
+    rover1 = original;
+    rover2 = replacement;
 
     for (;;)
     {
@@ -382,7 +396,8 @@ static const char *FormatStringReplacement(const char *s)
     if (!ValidFormatReplacement(s, repl))
     {
         printf("WARNING: Unsafe dehacked replacement provided for "
-               "printf format string: %s\n", s);
+               "printf format string: %s\n",
+            s);
 
         return s;
     }
@@ -394,7 +409,7 @@ static const char *FormatStringReplacement(const char *s)
 
 void DEH_printf(const char *fmt, ...)
 {
-    va_list args;
+    va_list     args;
     const char *repl;
 
     repl = FormatStringReplacement(fmt);
@@ -410,7 +425,7 @@ void DEH_printf(const char *fmt, ...)
 
 void DEH_fprintf(FILE *fstream, const char *fmt, ...)
 {
-    va_list args;
+    va_list     args;
     const char *repl;
 
     repl = FormatStringReplacement(fmt);
@@ -426,7 +441,7 @@ void DEH_fprintf(FILE *fstream, const char *fmt, ...)
 
 void DEH_snprintf(char *buffer, size_t len, const char *fmt, ...)
 {
-    va_list args;
+    va_list     args;
     const char *repl;
 
     repl = FormatStringReplacement(fmt);
@@ -437,4 +452,3 @@ void DEH_snprintf(char *buffer, size_t len, const char *fmt, ...)
 
     va_end(args);
 }
-

@@ -24,21 +24,20 @@
 #include "r_defs.hpp"
 #include "r_state.hpp"
 
-#define LOOKDIRMIN	110 // [crispy] -110, actually
-#define LOOKDIRMAX	90
-#define LOOKDIRS	(LOOKDIRMIN+1+LOOKDIRMAX) // [crispy] lookdir range: -110..0..90
+#define LOOKDIRMIN 110 // [crispy] -110, actually
+#define LOOKDIRMAX 90
+#define LOOKDIRS   (LOOKDIRMIN + 1 + LOOKDIRMAX) // [crispy] lookdir range: -110..0..90
 
 // Retrieve column data for span blitting.
-byte*
-R_GetColumn
-( int		tex,
-  int		col,
-  boolean	opaque );
+byte *
+    R_GetColumn(int tex,
+        int         col,
+        boolean     opaque);
 
 
 // I/O, setting up the stuff.
-void R_InitData (void);
-void R_PrecacheLevel (void);
+void R_InitData(void);
+void R_PrecacheLevel(void);
 
 
 // Retrieval.

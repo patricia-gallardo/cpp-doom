@@ -35,14 +35,14 @@
 
 typedef struct
 {
-    char *patch_names[MAX_INSTRUMENTS];
-    int used[MAX_INSTRUMENTS];
-    int mapping[MAX_INSTRUMENTS];
+    char *       patch_names[MAX_INSTRUMENTS];
+    int          used[MAX_INSTRUMENTS];
+    int          mapping[MAX_INSTRUMENTS];
     unsigned int count;
 } gus_config_t;
 
 char *gus_patch_path = "";
-int gus_ram_kb = 1024;
+int   gus_ram_kb     = 1024;
 
 static unsigned int MappingIndex(void)
 {
@@ -65,9 +65,9 @@ static unsigned int MappingIndex(void)
 static int SplitLine(char *line, char **fields, unsigned int max_fields)
 {
     unsigned int num_fields;
-    char *p;
+    char *       p;
 
-    fields[0] = line;
+    fields[0]  = line;
     num_fields = 1;
 
     for (p = line; *p != '\0'; ++p)
@@ -111,7 +111,7 @@ static int SplitLine(char *line, char **fields, unsigned int max_fields)
 
 static void ParseLine(gus_config_t *config, char *line)
 {
-    char *fields[6];
+    char *       fields[6];
     unsigned int i;
     unsigned int num_fields;
     unsigned int instr_id, mapped_id;
@@ -140,14 +140,14 @@ static void ParseLine(gus_config_t *config, char *line)
             break;
         }
     }
-    
+
     if (i == config->count)
     {
         // DMX uses wrong patch name (we should use name of 'mapped_id'
         // instrument, but DMX uses name of 'instr_id' instead).
         free(config->patch_names[i]);
         config->patch_names[i] = M_StringDuplicate(fields[5]);
-        config->used[i] = mapped_id;
+        config->used[i]        = mapped_id;
         config->count++;
     }
     config->mapping[instr_id] = i;
@@ -155,7 +155,7 @@ static void ParseLine(gus_config_t *config, char *line)
 
 static void ParseDMXConfig(char *dmxconf, gus_config_t *config)
 {
-    char *p, *newline;
+    char *       p, *newline;
     unsigned int i;
 
     memset(config, 0, sizeof(gus_config_t));
@@ -163,7 +163,7 @@ static void ParseDMXConfig(char *dmxconf, gus_config_t *config)
     for (i = 0; i < MAX_INSTRUMENTS; ++i)
     {
         config->mapping[i] = -1;
-        config->used[i] = -1;
+        config->used[i]    = -1;
     }
 
     config->count = 0;
@@ -204,9 +204,9 @@ static void FreeDMXConfig(gus_config_t *config)
 
 static char *ReadDMXConfig(void)
 {
-    int lumpnum;
+    int          lumpnum;
     unsigned int len;
-    char *data;
+    char *       data;
 
     // TODO: This should be chosen based on gamemode == commercial:
 
@@ -217,7 +217,7 @@ static char *ReadDMXConfig(void)
         lumpnum = W_GetNumForName("DMXGUSC");
     }
 
-    len = W_LumpLength(lumpnum);
+    len  = W_LumpLength(lumpnum);
     data = zmalloc<char *>(len + 1, PU_STATIC, NULL);
     W_ReadLump(lumpnum, data);
 
@@ -227,7 +227,7 @@ static char *ReadDMXConfig(void)
 
 static boolean WriteTimidityConfig(char *path, gus_config_t *config)
 {
-    FILE *fstream;
+    FILE *       fstream;
     unsigned int i;
 
     fstream = fopen(path, "w");
@@ -246,22 +246,22 @@ static boolean WriteTimidityConfig(char *path, gus_config_t *config)
     for (i = 0; i < 128; ++i)
     {
         if (config->mapping[i] >= 0 && config->mapping[i] < MAX_INSTRUMENTS
-         && config->patch_names[config->mapping[i]] != NULL)
+            && config->patch_names[config->mapping[i]] != NULL)
         {
             fprintf(fstream, "%u %s\n",
-                    i, config->patch_names[config->mapping[i]]);
+                i, config->patch_names[config->mapping[i]]);
         }
     }
 
     fprintf(fstream, "\ndrumset 0\n\n");
-    
+
     for (i = 128 + 35; i <= 128 + 81; ++i)
     {
         if (config->mapping[i] >= 0 && config->mapping[i] < MAX_INSTRUMENTS
-         && config->patch_names[config->mapping[i]] != NULL)
+            && config->patch_names[config->mapping[i]] != NULL)
         {
             fprintf(fstream, "%u %s\n",
-                    i - 128, config->patch_names[config->mapping[i]]);
+                i - 128, config->patch_names[config->mapping[i]]);
         }
     }
 
@@ -274,8 +274,8 @@ static boolean WriteTimidityConfig(char *path, gus_config_t *config)
 
 boolean GUS_WriteConfig(char *path)
 {
-    boolean result;
-    char *dmxconf;
+    boolean      result;
+    char *       dmxconf;
     gus_config_t config;
 
     if (!strcmp(gus_patch_path, ""))
@@ -299,4 +299,3 @@ boolean GUS_WriteConfig(char *path)
 
     return result;
 }
-

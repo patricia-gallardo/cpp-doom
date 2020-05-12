@@ -26,7 +26,7 @@
 // should return true, or return false to abort startup.
 
 typedef boolean (*netgame_startup_callback_t)(int ready_players,
-                                              int num_players);
+    int                                           num_players);
 
 typedef struct
 {
@@ -52,14 +52,14 @@ typedef struct
 void D_RegisterLoopCallbacks(loop_interface_t *i);
 
 // Create any new ticcmds and broadcast to other players.
-void NetUpdate (void);
+void NetUpdate(void);
 
 // Broadcasts special packets to other players
 //  to notify of game exit
-void D_QuitNetGame (void);
+void D_QuitNetGame(void);
 
 //? how many ticks to run?
-void TryRunTics (void);
+void TryRunTics(void);
 
 // Called at start of game loop to initialize timers
 void D_StartGameLoop(void);
@@ -72,18 +72,17 @@ boolean D_InitNetGame(net_connect_data_t *connect_data);
 // with the actual settings for the game.
 
 void D_StartNetGame(net_gamesettings_t *settings,
-                    netgame_startup_callback_t callback);
+    netgame_startup_callback_t          callback);
 
 extern boolean singletics;
-extern int gametic, ticdup;
-extern int oldleveltime; // [crispy] check if leveltime keeps tickin'
+extern int     gametic, ticdup;
+extern int     oldleveltime; // [crispy] check if leveltime keeps tickin'
 
 // Check if it is permitted to record a demo with a non-vanilla feature.
 boolean D_NonVanillaRecord(boolean conditional, const char *feature);
 
 // Check if it is permitted to play back a demo with a non-vanilla feature.
 boolean D_NonVanillaPlayback(boolean conditional, int lumpnum,
-                             const char *feature);
+    const char *feature);
 
 #endif
-

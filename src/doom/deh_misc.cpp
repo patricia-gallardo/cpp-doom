@@ -24,7 +24,7 @@
 #include "deh_main.hpp"
 #include "deh_misc.hpp"
 
-// Dehacked: "Initial Health" 
+// Dehacked: "Initial Health"
 // This is the initial health a player has when starting anew.
 // See G_PlayerReborn in g_game.c
 
@@ -49,7 +49,7 @@ int deh_max_health = DEH_DEFAULT_MAX_HEALTH;
 int deh_max_armor = DEH_DEFAULT_MAX_ARMOR;
 
 // Dehacked: "Green Armor Class"
-// This is the armor class that is given when picking up the green 
+// This is the armor class that is given when picking up the green
 // armor or an armor helmet. See P_TouchSpecialThing in p_inter.c
 //
 // DOS dehacked only modifies the behavior of the green armor shirt,
@@ -58,7 +58,7 @@ int deh_max_armor = DEH_DEFAULT_MAX_ARMOR;
 int deh_green_armor_class = DEH_DEFAULT_GREEN_ARMOR_CLASS;
 
 // Dehacked: "Blue Armor Class"
-// This is the armor class that is given when picking up the blue 
+// This is the armor class that is given when picking up the blue
 // armor or a megasphere. See P_TouchSpecialThing in p_inter.c
 //
 // DOS dehacked only modifies the MegaArmor behavior and not
@@ -79,7 +79,7 @@ int deh_max_soulsphere = DEH_DEFAULT_MAX_SOULSPHERE;
 int deh_soulsphere_health = DEH_DEFAULT_SOULSPHERE_HEALTH;
 
 // Dehacked: "Megasphere health"
-// This is what the health is set to after picking up a 
+// This is what the health is set to after picking up a
 // megasphere.  See P_TouchSpecialThing in p_inter.c
 
 int deh_megasphere_health = DEH_DEFAULT_MEGASPHERE_HEALTH;
@@ -121,7 +121,7 @@ int deh_idkfa_armor_class = DEH_DEFAULT_IDKFA_ARMOR_CLASS;
 int deh_bfg_cells_per_shot = DEH_DEFAULT_BFG_CELLS_PER_SHOT;
 
 // Dehacked: "Monsters infight"
-// This controls whether monsters can harm other monsters of the same 
+// This controls whether monsters can harm other monsters of the same
 // species.  For example, whether an imp fireball will damage other
 // imps.  The value of this in dehacked patches is weird - '202' means
 // off, while '221' means on.
@@ -133,23 +133,23 @@ int deh_species_infighting = DEH_DEFAULT_SPECIES_INFIGHTING;
 static struct
 {
     const char *deh_name;
-    int *value;
+    int *       value;
 } misc_settings[] = {
-    {"Initial Health",      &deh_initial_health},
-    {"Initial Bullets",     &deh_initial_bullets},
-    {"Max Health",          &deh_max_health},
-    {"Max Armor",           &deh_max_armor},
-    {"Green Armor Class",   &deh_green_armor_class},
-    {"Blue Armor Class",    &deh_blue_armor_class},
-    {"Max Soulsphere",      &deh_max_soulsphere},
-    {"Soulsphere Health",   &deh_soulsphere_health},
-    {"Megasphere Health",   &deh_megasphere_health},
-    {"God Mode Health",     &deh_god_mode_health},
-    {"IDFA Armor",          &deh_idfa_armor},
-    {"IDFA Armor Class",    &deh_idfa_armor_class},
-    {"IDKFA Armor",         &deh_idkfa_armor},
-    {"IDKFA Armor Class",   &deh_idkfa_armor_class},
-    {"BFG Cells/Shot",      &deh_bfg_cells_per_shot},
+    { "Initial Health", &deh_initial_health },
+    { "Initial Bullets", &deh_initial_bullets },
+    { "Max Health", &deh_max_health },
+    { "Max Armor", &deh_max_armor },
+    { "Green Armor Class", &deh_green_armor_class },
+    { "Blue Armor Class", &deh_blue_armor_class },
+    { "Max Soulsphere", &deh_max_soulsphere },
+    { "Soulsphere Health", &deh_soulsphere_health },
+    { "Megasphere Health", &deh_megasphere_health },
+    { "God Mode Health", &deh_god_mode_health },
+    { "IDFA Armor", &deh_idfa_armor },
+    { "IDFA Armor Class", &deh_idfa_armor_class },
+    { "IDKFA Armor", &deh_idkfa_armor },
+    { "IDKFA Armor Class", &deh_idkfa_armor_class },
+    { "BFG Cells/Shot", &deh_bfg_cells_per_shot },
 };
 
 static void *DEH_MiscStart(deh_context_t *context, char *line)
@@ -159,8 +159,8 @@ static void *DEH_MiscStart(deh_context_t *context, char *line)
 
 static void DEH_MiscParseLine(deh_context_t *context, char *line, void *tag)
 {
-    char *variable_name, *value;
-    int ivalue;
+    char * variable_name, *value;
+    int    ivalue;
     size_t i;
 
     if (!DEH_ParseAssignment(line, &variable_name, &value))
@@ -176,7 +176,7 @@ static void DEH_MiscParseLine(deh_context_t *context, char *line, void *tag)
     if (!strcasecmp(variable_name, "Monsters Infight"))
     {
         // See notes above.
- 
+
         if (ivalue == 202)
         {
             deh_species_infighting = 0;
@@ -187,14 +187,14 @@ static void DEH_MiscParseLine(deh_context_t *context, char *line, void *tag)
         }
         else
         {
-            DEH_Warning(context, 
-                        "Invalid value for 'Monsters Infight': %i", ivalue);
+            DEH_Warning(context,
+                "Invalid value for 'Monsters Infight': %i", ivalue);
         }
-        
+
         return;
     }
 
-    for (i=0; i<arrlen(misc_settings); ++i)
+    for (i = 0; i < arrlen(misc_settings); ++i)
     {
         if (!strcasecmp(variable_name, misc_settings[i].deh_name))
         {
@@ -210,14 +210,13 @@ static void DEH_MiscSHA1Sum(sha1_context_t *context)
 {
     unsigned int i;
 
-    for (i=0; i<arrlen(misc_settings); ++i)
+    for (i = 0; i < arrlen(misc_settings); ++i)
     {
         SHA1_UpdateInt32(context, *misc_settings[i].value);
     }
 }
 
-deh_section_t deh_section_misc =
-{
+deh_section_t deh_section_misc = {
     "Misc",
     NULL,
     DEH_MiscStart,
@@ -225,4 +224,3 @@ deh_section_t deh_section_misc =
     NULL,
     DEH_MiscSHA1Sum,
 };
-

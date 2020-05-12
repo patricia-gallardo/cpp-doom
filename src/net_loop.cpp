@@ -30,13 +30,13 @@
 typedef struct
 {
     net_packet_t *packets[MAX_QUEUE_SIZE];
-    int head, tail;
+    int           head, tail;
 } packet_queue_t;
 
 static packet_queue_t client_queue;
 static packet_queue_t server_queue;
-static net_addr_t client_addr;
-static net_addr_t server_addr;
+static net_addr_t     client_addr;
+static net_addr_t     server_addr;
 
 static void QueueInit(packet_queue_t *queue)
 {
@@ -52,18 +52,18 @@ static void QueuePush(packet_queue_t *queue, net_packet_t *packet)
     if (new_tail == queue->head)
     {
         // queue is full
-        
+
         return;
     }
 
     queue->packets[queue->tail] = packet;
-    queue->tail = new_tail;
+    queue->tail                 = new_tail;
 }
 
 static net_packet_t *QueuePop(packet_queue_t *queue)
 {
     net_packet_t *packet;
-    
+
     if (queue->tail == queue->head)
     {
         // queue empty
@@ -71,7 +71,7 @@ static net_packet_t *QueuePop(packet_queue_t *queue)
         return NULL;
     }
 
-    packet = queue->packets[queue->head];
+    packet      = queue->packets[queue->head];
     queue->head = (queue->head + 1) % MAX_QUEUE_SIZE;
 
     return packet;
@@ -109,10 +109,10 @@ static boolean NET_CL_RecvPacket(net_addr_t **addr, net_packet_t **packet)
 
     if (popped != NULL)
     {
-        *packet = popped;
-        *addr = &client_addr;
+        *packet            = popped;
+        *addr              = &client_addr;
         client_addr.module = &net_loop_client_module;
-        
+
         return true;
     }
 
@@ -142,8 +142,7 @@ static net_addr_t *NET_CL_ResolveAddress(const char *address)
     }
 }
 
-net_module_t net_loop_client_module =
-{
+net_module_t net_loop_client_module = {
     NET_CL_InitClient,
     NET_CL_InitServer,
     NET_CL_SendPacket,
@@ -185,10 +184,10 @@ static boolean NET_SV_RecvPacket(net_addr_t **addr, net_packet_t **packet)
 
     if (popped != NULL)
     {
-        *packet = popped;
-        *addr = &server_addr;
+        *packet            = popped;
+        *addr              = &server_addr;
         server_addr.module = &net_loop_server_module;
-        
+
         return true;
     }
 
@@ -217,8 +216,7 @@ static net_addr_t *NET_SV_ResolveAddress(const char *address)
     }
 }
 
-net_module_t net_loop_server_module =
-{
+net_module_t net_loop_server_module = {
     NET_SV_InitClient,
     NET_SV_InitServer,
     NET_SV_SendPacket,
@@ -227,5 +225,3 @@ net_module_t net_loop_server_module =
     NET_SV_FreeAddress,
     NET_SV_ResolveAddress,
 };
-
-

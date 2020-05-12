@@ -28,7 +28,7 @@
 
 static Uint32 basetime = 0;
 
-int  I_GetTime (void)
+int I_GetTime(void)
 {
     Uint32 ticks;
 
@@ -39,7 +39,7 @@ int  I_GetTime (void)
 
     ticks -= basetime;
 
-    return (ticks * TICRATE) / 1000;    
+    return (ticks * TICRATE) / 1000;
 }
 
 //
@@ -80,4 +80,3 @@ void I_InitTimer(void)
 #endif
     SDL_Init(SDL_INIT_TIMER);
 }
-

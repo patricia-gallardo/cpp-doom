@@ -27,13 +27,13 @@
 // a warning is displayed.
 
 #define DEH_VANILLA_NUMSTATES 966
-#define DEH_VANILLA_NUMSFX 107
+#define DEH_VANILLA_NUMSFX    107
 
 void DEH_ParseCommandLine(void);
-int DEH_LoadFile(const char *filename);
+int  DEH_LoadFile(const char *filename);
 void DEH_AutoLoadPatches(const char *path);
-int DEH_LoadLump(int lumpnum, boolean allow_long, boolean allow_error);
-int DEH_LoadLumpByName(const char *name, boolean allow_long, boolean allow_error);
+int  DEH_LoadLump(int lumpnum, boolean allow_long, boolean allow_error);
+int  DEH_LoadLumpByName(const char *name, boolean allow_long, boolean allow_error);
 
 boolean DEH_ParseAssignment(char *line, char **variable_name, char **value);
 
@@ -45,4 +45,3 @@ extern boolean deh_allow_long_cheats;
 extern boolean deh_apply_cheats;
 
 #endif /* #ifndef DEH_MAIN_H */
-

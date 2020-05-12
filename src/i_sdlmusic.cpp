@@ -48,13 +48,13 @@
 
 static boolean music_initialized = false;
 
-// If this is true, this module initialized SDL sound and has the 
+// If this is true, this module initialized SDL sound and has the
 // responsibility to shut it down
 
 static boolean sdl_was_initialized = false;
 
 static boolean musicpaused = false;
-static int current_music_volume;
+static int     current_music_volume;
 
 char *timidity_cfg_path = "";
 
@@ -94,7 +94,7 @@ static boolean WriteWrapperTimidityConfig(char *write_path)
 
 void I_InitTimidityConfig(void)
 {
-    char *env_string;
+    char *  env_string;
     boolean success;
 
     temp_timidity_cfg = M_TempFile("timidity.cfg");
@@ -157,7 +157,7 @@ static void I_SDL_ShutdownMusic(void)
 
 static boolean SDLIsInitialized(void)
 {
-    int freq, channels;
+    int    freq, channels;
     Uint16 format;
 
     return Mix_QuerySpec(&freq, &format, &channels) != 0;
@@ -182,7 +182,7 @@ static boolean I_SDL_InitMusic(void)
         else if (Mix_OpenAudio(snd_samplerate, AUDIO_S16SYS, 2, 1024) < 0)
         {
             fprintf(stderr, "Error initializing SDL_mixer: %s\n",
-                    Mix_GetError());
+                Mix_GetError());
             SDL_QuitSubSystem(SDL_INIT_AUDIO);
         }
         else
@@ -190,12 +190,12 @@ static boolean I_SDL_InitMusic(void)
             SDL_PauseAudio(0);
 
             sdl_was_initialized = true;
-            music_initialized = true;
+            music_initialized   = true;
         }
     }
 
 #if defined(SDL_MIXER_VERSION_ATLEAST)
-#if SDL_MIXER_VERSION_ATLEAST(2,0,2)
+#if SDL_MIXER_VERSION_ATLEAST(2, 0, 2)
     // Initialize SDL_Mixer for MIDI music playback
     Mix_Init(MIX_INIT_MID | MIX_INIT_FLAC | MIX_INIT_OGG | MIX_INIT_MP3); // [crispy] initialize some more audio formats
 #endif
@@ -293,7 +293,7 @@ static void I_SDL_PlaySong(void *handle, boolean looping)
     else
 #endif
     {
-        Mix_PlayMusic((Mix_Music *) handle, loops);
+        Mix_PlayMusic((Mix_Music *)handle, loops);
     }
 }
 
@@ -342,7 +342,7 @@ static void I_SDL_StopSong(void)
 
 static void I_SDL_UnRegisterSong(void *handle)
 {
-    Mix_Music *music = (Mix_Music *) handle;
+    Mix_Music *music = (Mix_Music *)handle;
 
     if (!music_initialized)
     {
@@ -364,7 +364,7 @@ static void I_SDL_UnRegisterSong(void *handle)
     }
 }
 
-// Determine whether memory block is a .mid file 
+// Determine whether memory block is a .mid file
 
 // [crispy] Reverse Choco's logic from "if (MIDI)" to "if (not MUS)"
 /*
@@ -378,11 +378,11 @@ static boolean ConvertMus(byte *musdata, int len, const char *filename)
 {
     MEMFILE *instream;
     MEMFILE *outstream;
-    void *outbuf;
-    size_t outbuf_len;
-    int result;
+    void *   outbuf;
+    size_t   outbuf_len;
+    int      result;
 
-    instream = mem_fopen_read(musdata, len);
+    instream  = mem_fopen_read(musdata, len);
     outstream = mem_fopen_write();
 
     result = mus2mid(instream, outstream);
@@ -402,7 +402,7 @@ static boolean ConvertMus(byte *musdata, int len, const char *filename)
 
 static void *I_SDL_RegisterSong(void *data, int len)
 {
-    char *filename;
+    char *     filename;
     Mix_Music *music;
 
     if (!music_initialized)
@@ -418,7 +418,7 @@ static void *I_SDL_RegisterSong(void *data, int len)
     // [crispy] Reverse Choco's logic from "if (MIDI)" to "if (not MUS)"
     // MUS is the only format that requires conversion,
     // let SDL_Mixer figure out the others
-/*
+    /*
     if (IsMid(data, len) && len < MAXMIDLENGTH)
 */
     if (len < 4 || memcmp(data, "MUS\x1a", 4)) // [crispy] MUS_HEADER_MAGIC
@@ -427,7 +427,7 @@ static void *I_SDL_RegisterSong(void *data, int len)
     }
     else
     {
-	// Assume a MUS file and try to convert
+        // Assume a MUS file and try to convert
 
         ConvertMus(static_cast<byte *>(data), len, filename);
     }
@@ -485,8 +485,7 @@ static boolean I_SDL_MusicIsPlaying(void)
     return Mix_PlayingMusic();
 }
 
-static snddevice_t music_sdl_devices[] =
-{
+static snddevice_t music_sdl_devices[] = {
     SNDDEVICE_PAS,
     SNDDEVICE_GUS,
     SNDDEVICE_WAVEBLASTER,
@@ -495,8 +494,7 @@ static snddevice_t music_sdl_devices[] =
     SNDDEVICE_AWE32,
 };
 
-music_module_t music_sdl_module =
-{
+music_module_t music_sdl_module = {
     music_sdl_devices,
     arrlen(music_sdl_devices),
     I_SDL_InitMusic,
@@ -509,6 +507,5 @@ music_module_t music_sdl_module =
     I_SDL_PlaySong,
     I_SDL_StopSong,
     I_SDL_MusicIsPlaying,
-    NULL,  // Poll
+    NULL, // Poll
 };
-

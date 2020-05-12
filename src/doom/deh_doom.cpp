@@ -19,8 +19,7 @@
 #include "deh_defs.hpp"
 #include "deh_main.hpp"
 
-const char *deh_signatures[] =
-{
+const char *deh_signatures[] = {
     "Patch File for DeHackEd v2.3",
     "Patch File for DeHackEd v3.0",
     NULL
@@ -57,8 +56,7 @@ extern deh_section_t deh_section_bexincl;
 // List of section types:
 //
 
-deh_section_t *deh_section_types[] =
-{
+deh_section_t *deh_section_types[] = {
     &deh_section_ammo,
     &deh_section_cheat,
     &deh_section_frame,
@@ -74,4 +72,3 @@ deh_section_t *deh_section_types[] =
     &deh_section_bexincl,
     NULL
 };
-

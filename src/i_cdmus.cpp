@@ -76,4 +76,3 @@ int I_CDMusTrackLength(int track_num)
 {
     return 0;
 }
-

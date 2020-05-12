@@ -15,7 +15,7 @@
 // DESCRIPTION:
 //	Simple basic typedefs, isolated here to make it easier
 //	 separating modules.
-//    
+//
 
 
 #ifndef __DOOMTYPE__
@@ -49,7 +49,7 @@
 
 
 //
-// The packed attribute forces structures to be packed into the minimum 
+// The packed attribute forces structures to be packed into the minimum
 // space necessary.  If this is not done, the compiler may align structure
 // fields differently to optimize memory access, inflating the overall
 // structure size.  It is important to use the packed attribute on certain
@@ -60,14 +60,14 @@
 #ifdef __GNUC__
 
 #if defined(_WIN32) && !defined(__clang__)
-#define PACKEDATTR __attribute__((packed,gcc_struct))
+#define PACKEDATTR __attribute__((packed, gcc_struct))
 #else
 #define PACKEDATTR __attribute__((packed))
 #endif
 
 #define PRINTF_ATTR(fmt, first) __attribute__((format(printf, fmt, first)))
-#define PRINTF_ARG_ATTR(x) __attribute__((format_arg(x)))
-#define NORETURN __attribute__((noreturn))
+#define PRINTF_ARG_ATTR(x)      __attribute__((format_arg(x)))
+#define NORETURN                __attribute__((noreturn))
 
 #else
 #if defined(_MSC_VER)
@@ -83,7 +83,7 @@
 #ifdef __WATCOMC__
 #define PACKEDPREFIX _Packed
 #elif defined(_MSC_VER)
-#define PACKEDPREFIX __pragma(pack(push,1))
+#define PACKEDPREFIX __pragma(pack(push, 1))
 #else
 #define PACKEDPREFIX
 #endif
@@ -94,9 +94,9 @@
 // should add conditional statements that define the C99 types.
 
 // What is really wanted here is stdint.h; however, some old versions
-// of Solaris don't have stdint.h and only have inttypes.h (the 
-// pre-standardisation version).  inttypes.h is also in the C99 
-// standard and defined to include stdint.h, so include this. 
+// of Solaris don't have stdint.h and only have inttypes.h (the
+// pre-standardisation version).  inttypes.h is also in the C99
+// standard and defined to include stdint.h, so include this.
 
 #include <inttypes.h>
 
@@ -108,9 +108,9 @@ typedef bool boolean;
 
 #else
 
-typedef enum 
+typedef enum
 {
-    false, 
+    false,
     true
 } boolean;
 
@@ -122,26 +122,25 @@ typedef uint8_t pixel_t;
 typedef int16_t dpixel_t;
 #else
 typedef uint32_t pixel_t;
-typedef int64_t dpixel_t;
+typedef int64_t  dpixel_t;
 #endif
 
 #include <limits.h>
 
 #ifdef _WIN32
 
-#define DIR_SEPARATOR '\\'
+#define DIR_SEPARATOR   '\\'
 #define DIR_SEPARATOR_S "\\"
-#define PATH_SEPARATOR ';'
+#define PATH_SEPARATOR  ';'
 
 #else
 
-#define DIR_SEPARATOR '/'
+#define DIR_SEPARATOR   '/'
 #define DIR_SEPARATOR_S "/"
-#define PATH_SEPARATOR ':'
+#define PATH_SEPARATOR  ':'
 
 #endif
 
 #define arrlen(array) (sizeof(array) / sizeof(*array))
 
 #endif
-

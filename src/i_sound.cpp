@@ -53,7 +53,7 @@ char *snd_musiccmd = "";
 int snd_pitchshift = -1;
 
 snddevice_t snd_musicdevice = SNDDEVICE_SB;
-snddevice_t snd_sfxdevice = SNDDEVICE_SB;
+snddevice_t snd_sfxdevice   = SNDDEVICE_SB;
 
 // Low-level sound and music modules we are using
 static sound_module_t *sound_module;
@@ -68,7 +68,7 @@ static music_module_t *active_music_module;
 
 // Sound modules
 
-extern void I_InitTimidityConfig(void);
+extern void           I_InitTimidityConfig(void);
 extern sound_module_t sound_sdl_module;
 extern sound_module_t sound_pcsound_module;
 extern music_module_t music_sdl_module;
@@ -78,7 +78,7 @@ extern music_module_t music_pack_module;
 // For OPL module:
 
 extern opl_driver_ver_t opl_drv_ver;
-extern int opl_io_port;
+extern int              opl_io_port;
 
 // For native music module:
 
@@ -90,14 +90,13 @@ extern char *timidity_cfg_path;
 // doom and doom.exe
 
 static int snd_sbport = 0;
-static int snd_sbirq = 0;
-static int snd_sbdma = 0;
-static int snd_mport = 0;
+static int snd_sbirq  = 0;
+static int snd_sbdma  = 0;
+static int snd_mport  = 0;
 
 // Compiled-in sound modules:
 
-static sound_module_t *sound_modules[] = 
-{
+static sound_module_t *sound_modules[] = {
     &sound_sdl_module,
     &sound_pcsound_module,
     NULL,
@@ -105,8 +104,7 @@ static sound_module_t *sound_modules[] =
 
 // Compiled-in music modules:
 
-static music_module_t *music_modules[] =
-{
+static music_module_t *music_modules[] = {
     &music_sdl_module,
     &music_opl_module,
     NULL,
@@ -115,11 +113,11 @@ static music_module_t *music_modules[] =
 // Check if a sound device is in the given list of devices
 
 static boolean SndDeviceInList(snddevice_t device, snddevice_t *list,
-                               int len)
+    int len)
 {
     int i;
 
-    for (i=0; i<len; ++i)
+    for (i = 0; i < len; ++i)
     {
         if (device == list[i])
         {
@@ -139,14 +137,14 @@ static void InitSfxModule(boolean use_sfx_prefix)
 
     sound_module = NULL;
 
-    for (i=0; sound_modules[i] != NULL; ++i)
+    for (i = 0; sound_modules[i] != NULL; ++i)
     {
         // Is the sfx device in the list of devices supported by
         // this module?
 
-        if (SndDeviceInList(snd_sfxdevice, 
-                            sound_modules[i]->sound_devices,
-                            sound_modules[i]->num_sound_devices))
+        if (SndDeviceInList(snd_sfxdevice,
+                sound_modules[i]->sound_devices,
+                sound_modules[i]->num_sound_devices))
         {
             // Initialize the module
 
@@ -167,14 +165,14 @@ static void InitMusicModule()
 
     music_module = NULL;
 
-    for (i=0; music_modules[i] != NULL; ++i)
+    for (i = 0; music_modules[i] != NULL; ++i)
     {
         // Is the music device in the list of devices supported
         // by this module?
 
-        if (SndDeviceInList(snd_musicdevice, 
-                            music_modules[i]->sound_devices,
-                            music_modules[i]->num_sound_devices))
+        if (SndDeviceInList(snd_musicdevice,
+                music_modules[i]->sound_devices,
+                music_modules[i]->num_sound_devices))
         {
             // Initialize the module
 
@@ -208,7 +206,7 @@ void I_InitSound(boolean use_sfx_prefix)
     //!
     // @vanilla
     //
-    // Disable sound effects. 
+    // Disable sound effects.
     //
 
     nosfx = M_CheckParm("-nosfx") > 0;
@@ -240,8 +238,8 @@ void I_InitSound(boolean use_sfx_prefix)
         // is opened.
 
         if (!nomusic
-         && (snd_musicdevice == SNDDEVICE_GENMIDI
-          || snd_musicdevice == SNDDEVICE_GUS))
+            && (snd_musicdevice == SNDDEVICE_GENMIDI
+                || snd_musicdevice == SNDDEVICE_GUS))
         {
             I_InitTimidityConfig();
         }
@@ -265,9 +263,9 @@ void I_InitSound(boolean use_sfx_prefix)
     }
     // [crispy] print the SDL audio backend
     {
-	const char *driver_name = SDL_GetCurrentAudioDriver();
+        const char *driver_name = SDL_GetCurrentAudioDriver();
 
-	fprintf(stderr, "I_InitSound: SDL audio driver is %s\n", driver_name ? driver_name : "none");
+        fprintf(stderr, "I_InitSound: SDL audio driver is %s\n", driver_name ? driver_name : "none");
     }
 }
 
@@ -391,7 +389,6 @@ void I_InitMusic(void)
 
 void I_ShutdownMusic(void)
 {
-
 }
 
 void I_SetMusicVolume(int volume)
@@ -487,29 +484,28 @@ boolean I_MusicIsPlaying(void)
 void I_BindSoundVariables(void)
 {
     extern char *snd_dmxoption;
-    extern int use_libsamplerate;
+    extern int   use_libsamplerate;
     extern float libsamplerate_scale;
 
-    M_BindIntVariable("snd_musicdevice",         reinterpret_cast<int*>(&snd_musicdevice));
-    M_BindIntVariable("snd_sfxdevice", reinterpret_cast<int*>(&snd_sfxdevice));
-    M_BindIntVariable("snd_sbport",              &snd_sbport);
-    M_BindIntVariable("snd_sbirq",               &snd_sbirq);
-    M_BindIntVariable("snd_sbdma",               &snd_sbdma);
-    M_BindIntVariable("snd_mport",               &snd_mport);
-    M_BindIntVariable("snd_maxslicetime_ms",     &snd_maxslicetime_ms);
-    M_BindStringVariable("snd_musiccmd",         &snd_musiccmd);
-    M_BindStringVariable("snd_dmxoption",        &snd_dmxoption);
-    M_BindIntVariable("snd_samplerate",          &snd_samplerate);
-    M_BindIntVariable("snd_cachesize",           &snd_cachesize);
-    M_BindIntVariable("opl_io_port",             &opl_io_port);
-    M_BindIntVariable("snd_pitchshift",          &snd_pitchshift);
+    M_BindIntVariable("snd_musicdevice", reinterpret_cast<int *>(&snd_musicdevice));
+    M_BindIntVariable("snd_sfxdevice", reinterpret_cast<int *>(&snd_sfxdevice));
+    M_BindIntVariable("snd_sbport", &snd_sbport);
+    M_BindIntVariable("snd_sbirq", &snd_sbirq);
+    M_BindIntVariable("snd_sbdma", &snd_sbdma);
+    M_BindIntVariable("snd_mport", &snd_mport);
+    M_BindIntVariable("snd_maxslicetime_ms", &snd_maxslicetime_ms);
+    M_BindStringVariable("snd_musiccmd", &snd_musiccmd);
+    M_BindStringVariable("snd_dmxoption", &snd_dmxoption);
+    M_BindIntVariable("snd_samplerate", &snd_samplerate);
+    M_BindIntVariable("snd_cachesize", &snd_cachesize);
+    M_BindIntVariable("opl_io_port", &opl_io_port);
+    M_BindIntVariable("snd_pitchshift", &snd_pitchshift);
 
-    M_BindStringVariable("music_pack_path",      &music_pack_path);
-    M_BindStringVariable("timidity_cfg_path",    &timidity_cfg_path);
-    M_BindStringVariable("gus_patch_path",       &gus_patch_path);
-    M_BindIntVariable("gus_ram_kb",              &gus_ram_kb);
+    M_BindStringVariable("music_pack_path", &music_pack_path);
+    M_BindStringVariable("timidity_cfg_path", &timidity_cfg_path);
+    M_BindStringVariable("gus_patch_path", &gus_patch_path);
+    M_BindIntVariable("gus_ram_kb", &gus_ram_kb);
 
-    M_BindIntVariable("use_libsamplerate",       &use_libsamplerate);
-    M_BindFloatVariable("libsamplerate_scale",   &libsamplerate_scale);
+    M_BindIntVariable("use_libsamplerate", &use_libsamplerate);
+    M_BindFloatVariable("libsamplerate_scale", &libsamplerate_scale);
 }
-

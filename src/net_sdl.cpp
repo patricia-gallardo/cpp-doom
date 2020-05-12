@@ -39,19 +39,19 @@
 
 #define DEFAULT_PORT 2342
 
-static boolean initted = false;
-static int port = DEFAULT_PORT;
-static UDPsocket udpsocket;
+static boolean    initted = false;
+static int        port    = DEFAULT_PORT;
+static UDPsocket  udpsocket;
 static UDPpacket *recvpacket;
 
 typedef struct
 {
     net_addr_t net_addr;
-    IPaddress sdl_addr;
+    IPaddress  sdl_addr;
 } addrpair_t;
 
 static addrpair_t **addr_table;
-static int addr_table_size = -1;
+static int          addr_table_size = -1;
 
 // Initializes the address table
 
@@ -60,14 +60,14 @@ static void NET_SDL_InitAddrTable(void)
     addr_table_size = 16;
 
     addr_table = zmalloc<decltype(addr_table)>(sizeof(addrpair_t *) * addr_table_size,
-                          PU_STATIC, 0);
+        PU_STATIC, 0);
     memset(addr_table, 0, sizeof(addrpair_t *) * addr_table_size);
 }
 
 static boolean AddressesEqual(IPaddress *a, IPaddress *b)
 {
     return a->host == b->host
-        && a->port == b->port;
+           && a->port == b->port;
 }
 
 // Finds an address by searching the table.  If the address is not found,
@@ -76,18 +76,18 @@ static boolean AddressesEqual(IPaddress *a, IPaddress *b)
 static net_addr_t *NET_SDL_FindAddress(IPaddress *addr)
 {
     addrpair_t *new_entry;
-    int empty_entry = -1;
-    int i;
+    int         empty_entry = -1;
+    int         i;
 
     if (addr_table_size < 0)
     {
         NET_SDL_InitAddrTable();
     }
 
-    for (i=0; i<addr_table_size; ++i)
+    for (i = 0; i < addr_table_size; ++i)
     {
         if (addr_table[i] != NULL
-         && AddressesEqual(addr, &addr_table[i]->sdl_addr))
+            && AddressesEqual(addr, &addr_table[i]->sdl_addr))
         {
             return &addr_table[i]->net_addr;
         }
@@ -103,35 +103,35 @@ static net_addr_t *NET_SDL_FindAddress(IPaddress *addr)
     if (empty_entry < 0)
     {
         addrpair_t **new_addr_table;
-        int new_addr_table_size;
+        int          new_addr_table_size;
 
         // after reallocing, we will add this in as the first entry
         // in the new block of memory
 
         empty_entry = addr_table_size;
-        
-        // allocate a new array twice the size, init to 0 and copy 
+
+        // allocate a new array twice the size, init to 0 and copy
         // the existing table in.  replace the old table.
 
         new_addr_table_size = addr_table_size * 2;
-        new_addr_table = zmalloc<decltype(new_addr_table)>(sizeof(addrpair_t *) * new_addr_table_size,
-                                  PU_STATIC, 0);
+        new_addr_table      = zmalloc<decltype(new_addr_table)>(sizeof(addrpair_t *) * new_addr_table_size,
+            PU_STATIC, 0);
         memset(new_addr_table, 0, sizeof(addrpair_t *) * new_addr_table_size);
-        memcpy(new_addr_table, addr_table, 
-               sizeof(addrpair_t *) * addr_table_size);
+        memcpy(new_addr_table, addr_table,
+            sizeof(addrpair_t *) * addr_table_size);
         Z_Free(addr_table);
-        addr_table = new_addr_table;
+        addr_table      = new_addr_table;
         addr_table_size = new_addr_table_size;
     }
 
     // Add a new entry
-    
+
     new_entry = zmalloc<decltype(new_entry)>(sizeof(addrpair_t), PU_STATIC, 0);
 
-    new_entry->sdl_addr = *addr;
+    new_entry->sdl_addr          = *addr;
     new_entry->net_addr.refcount = 0;
-    new_entry->net_addr.handle = &new_entry->sdl_addr;
-    new_entry->net_addr.module = &net_sdl_module;
+    new_entry->net_addr.handle   = &new_entry->sdl_addr;
+    new_entry->net_addr.module   = &net_sdl_module;
 
     addr_table[empty_entry] = new_entry;
 
@@ -141,8 +141,8 @@ static net_addr_t *NET_SDL_FindAddress(IPaddress *addr)
 static void NET_SDL_FreeAddress(net_addr_t *addr)
 {
     int i;
-    
-    for (i=0; i<addr_table_size; ++i)
+
+    for (i = 0; i < addr_table_size; ++i)
     {
         if (addr == &addr_table[i]->net_addr)
         {
@@ -166,13 +166,13 @@ static boolean NET_SDL_InitClient(void)
     // @category net
     // @arg <n>
     //
-    // Use the specified UDP port for communications, instead of 
+    // Use the specified UDP port for communications, instead of
     // the default (2342).
     //
 
     p = M_CheckParmWithArgs("-port", 1);
     if (p > 0)
-        port = atoi(myargv[p+1]);
+        port = atoi(myargv[p + 1]);
 
     SDLNet_Init();
 
@@ -182,7 +182,7 @@ static boolean NET_SDL_InitClient(void)
     {
         I_Error("NET_SDL_InitClient: Unable to open a socket!");
     }
-    
+
     recvpacket = SDLNet_AllocPacket(1500);
 
 #ifdef DROP_PACKETS
@@ -203,7 +203,7 @@ static boolean NET_SDL_InitServer(void)
 
     p = M_CheckParmWithArgs("-port", 1);
     if (p > 0)
-        port = atoi(myargv[p+1]);
+        port = atoi(myargv[p + 1]);
 
     SDLNet_Init();
 
@@ -228,7 +228,7 @@ static void NET_SDL_SendPacket(net_addr_t *addr, net_packet_t *packet)
 {
     UDPpacket sdl_packet;
     IPaddress ip;
-   
+
     if (addr == &net_broadcast_addr)
     {
         SDLNet_ResolveHost(&ip, NULL, port);
@@ -236,7 +236,7 @@ static void NET_SDL_SendPacket(net_addr_t *addr, net_packet_t *packet)
     }
     else
     {
-        ip = *((IPaddress *) addr->handle);
+        ip = *((IPaddress *)addr->handle);
     }
 
 #if 0
@@ -261,14 +261,14 @@ static void NET_SDL_SendPacket(net_addr_t *addr, net_packet_t *packet)
 #endif
 
     sdl_packet.channel = 0;
-    sdl_packet.data = packet->data;
-    sdl_packet.len = packet->len;
+    sdl_packet.data    = packet->data;
+    sdl_packet.len     = packet->len;
     sdl_packet.address = ip;
 
     if (!SDLNet_UDP_Send(udpsocket, -1, &sdl_packet))
     {
         I_Error("NET_SDL_SendPacket: Error transmitting packet: %s",
-                SDLNet_GetError());
+            SDLNet_GetError());
     }
 }
 
@@ -281,7 +281,7 @@ static boolean NET_SDL_RecvPacket(net_addr_t **addr, net_packet_t **packet)
     if (result < 0)
     {
         I_Error("NET_SDL_RecvPacket: Error receiving packet: %s",
-                SDLNet_GetError());
+            SDLNet_GetError());
     }
 
     // no packets received
@@ -305,16 +305,16 @@ static boolean NET_SDL_RecvPacket(net_addr_t **addr, net_packet_t **packet)
 void NET_SDL_AddrToString(net_addr_t *addr, char *buffer, int buffer_len)
 {
     IPaddress *ip;
-    uint32_t host;
-    uint16_t port;
+    uint32_t   host;
+    uint16_t   port;
 
-    ip = (IPaddress *) addr->handle;
+    ip   = (IPaddress *)addr->handle;
     host = SDLNet_Read32(&ip->host);
     port = SDLNet_Read16(&ip->port);
 
     M_snprintf(buffer, buffer_len, "%i.%i.%i.%i",
-               (host >> 24) & 0xff, (host >> 16) & 0xff,
-               (host >> 8) & 0xff, host & 0xff);
+        (host >> 24) & 0xff, (host >> 16) & 0xff,
+        (host >> 8) & 0xff, host & 0xff);
 
     // If we are using the default port we just need to show the IP address,
     // but otherwise we need to include the port. This is important because
@@ -331,23 +331,23 @@ void NET_SDL_AddrToString(net_addr_t *addr, char *buffer, int buffer_len)
 net_addr_t *NET_SDL_ResolveAddress(const char *address)
 {
     IPaddress ip;
-    char *addr_hostname;
-    int addr_port;
-    int result;
+    char *    addr_hostname;
+    int       addr_port;
+    int       result;
 
     const auto *colon = std::strchr(address, ':');
 
     addr_hostname = M_StringDuplicate(address);
     if (colon != NULL)
     {
-	addr_hostname[colon - address] = '\0';
-	addr_port = atoi(colon + 1);
+        addr_hostname[colon - address] = '\0';
+        addr_port                      = atoi(colon + 1);
     }
     else
     {
-	addr_port = port;
+        addr_port = port;
     }
-    
+
     result = SDLNet_ResolveHost(&ip, addr_hostname, addr_port);
 
     free(addr_hostname);
@@ -366,8 +366,7 @@ net_addr_t *NET_SDL_ResolveAddress(const char *address)
 
 // Complete module
 
-net_module_t net_sdl_module =
-{
+net_module_t net_sdl_module = {
     NET_SDL_InitClient,
     NET_SDL_InitServer,
     NET_SDL_SendPacket,
@@ -376,4 +375,3 @@ net_module_t net_sdl_module =
     NET_SDL_FreeAddress,
     NET_SDL_ResolveAddress,
 };
-

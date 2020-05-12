@@ -17,9 +17,8 @@
 //  wall, wrapping around. A 1024 columns equal 360 degrees.
 //  The default sky map is 256 columns and repeats 4 times
 //  on a 320 screen?
-//  
 //
-
+//
 
 
 // Needed for FRACUNIT.
@@ -34,19 +33,18 @@
 //
 // sky mapping
 //
-int			skyflatnum;
-int			skytexture = -1; // [crispy] initialize
-int			skytexturemid;
-
+int skyflatnum;
+int skytexture = -1; // [crispy] initialize
+int skytexturemid;
 
 
 //
 // R_InitSkyMap
 // Called whenever the view size changes.
 //
-void R_InitSkyMap (void)
+void R_InitSkyMap(void)
 {
-  // skyflatnum = R_FlatNumForName ( SKYFLATNAME );
+    // skyflatnum = R_FlatNumForName ( SKYFLATNAME );
     // [crispy] stretch sky
     if (skytexture == -1)
     {
@@ -54,9 +52,8 @@ void R_InitSkyMap (void)
     }
     if ((crispy->stretchsky = crispy->freelook || crispy->mouselook || crispy->pitch))
     {
-        skytexturemid = -28*FRACUNIT * (textureheight[skytexture] >> FRACBITS) / SKYSTRETCH_HEIGHT;
+        skytexturemid = -28 * FRACUNIT * (textureheight[skytexture] >> FRACBITS) / SKYSTRETCH_HEIGHT;
     }
     else
-    skytexturemid = ORIGHEIGHT/2*FRACUNIT;
+        skytexturemid = ORIGHEIGHT / 2 * FRACUNIT;
 }
-

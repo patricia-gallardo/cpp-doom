@@ -20,7 +20,6 @@
 //
 
 
-
 #ifndef __Z_ZONE__
 #define __Z_ZONE__
 
@@ -32,13 +31,13 @@
 
 enum
 {
-    PU_STATIC = 1,                  // static entire execution time
-    PU_SOUND,                       // static while playing
-    PU_MUSIC,                       // static while playing
-    PU_FREE,                        // a free block
-    PU_LEVEL,                       // static until level exited
-    PU_LEVSPEC,                     // a special thinker in a level
-    
+    PU_STATIC = 1, // static entire execution time
+    PU_SOUND,      // static while playing
+    PU_MUSIC,      // static while playing
+    PU_FREE,       // a free block
+    PU_LEVEL,      // static until level exited
+    PU_LEVSPEC,    // a special thinker in a level
+
     // Tags >= PU_PURGELEVEL are purgable whenever needed.
 
     PU_PURGELEVEL,
@@ -48,25 +47,25 @@ enum
 
     PU_NUM_TAGS
 };
-        
 
-void	Z_Init (void);
-void*	Z_Malloc (int size, int tag, void *ptr);
-void    Z_Free (void *ptr);
-void    Z_FreeTags (int lowtag, int hightag);
-void    Z_DumpHeap (int lowtag, int hightag);
-void    Z_FileDumpHeap (FILE *f);
-void    Z_CheckHeap (void);
-void    Z_ChangeTag2 (void *ptr, int tag, const char *file, int line);
-void    Z_ChangeUser(void *ptr, void **user);
-int     Z_FreeMemory (void);
+
+void         Z_Init(void);
+void *       Z_Malloc(int size, int tag, void *ptr);
+void         Z_Free(void *ptr);
+void         Z_FreeTags(int lowtag, int hightag);
+void         Z_DumpHeap(int lowtag, int hightag);
+void         Z_FileDumpHeap(FILE *f);
+void         Z_CheckHeap(void);
+void         Z_ChangeTag2(void *ptr, int tag, const char *file, int line);
+void         Z_ChangeUser(void *ptr, void **user);
+int          Z_FreeMemory(void);
 unsigned int Z_ZoneSize(void);
 
 //
 // This is used to get the local FILE:LINE info from CPP
 // prior to really call the function in question.
 //
-#define Z_ChangeTag(p,t)                                       \
+#define Z_ChangeTag(p, t) \
     Z_ChangeTag2((p), (t), __FILE__, __LINE__)
 
 

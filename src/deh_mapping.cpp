@@ -28,12 +28,12 @@
 #include "deh_mapping.hpp"
 
 static deh_mapping_entry_t *GetMappingEntryByName(deh_context_t *context,
-                                                  deh_mapping_t *mapping,
-                                                  char *name)
+    deh_mapping_t *                                              mapping,
+    char *                                                       name)
 {
     int i;
 
-    for (i=0; mapping->entries[i].name != NULL; ++i)
+    for (i = 0; mapping->entries[i].name != NULL; ++i)
     {
         deh_mapping_entry_t *entry = &mapping->entries[i];
 
@@ -61,8 +61,8 @@ static deh_mapping_entry_t *GetMappingEntryByName(deh_context_t *context,
 //
 
 static void *GetStructField(void *structptr,
-                            deh_mapping_t *mapping,
-                            deh_mapping_entry_t *entry)
+    deh_mapping_t *               mapping,
+    deh_mapping_entry_t *         entry)
 {
     unsigned int offset;
 
@@ -76,10 +76,10 @@ static void *GetStructField(void *structptr,
 //
 
 boolean DEH_SetMapping(deh_context_t *context, deh_mapping_t *mapping,
-                       void *structptr, char *name, int value)
+    void *structptr, char *name, int value)
 {
     deh_mapping_entry_t *entry;
-    void *location;
+    void *               location;
 
     entry = GetMappingEntryByName(context, mapping, name);
 
@@ -105,18 +105,18 @@ boolean DEH_SetMapping(deh_context_t *context, deh_mapping_t *mapping,
 
     switch (entry->size)
     {
-        case 1:
-            * ((uint8_t *) location) = value;
-            break;
-        case 2:
-            * ((uint16_t *) location) = value;
-            break;
-        case 4:
-            * ((uint32_t *) location) = value;
-            break;
-        default:
-            DEH_Error(context, "Unknown field type for '%s' (BUG)", name);
-            return false;
+    case 1:
+        *((uint8_t *)location) = value;
+        break;
+    case 2:
+        *((uint16_t *)location) = value;
+        break;
+    case 4:
+        *((uint32_t *)location) = value;
+        break;
+    default:
+        DEH_Error(context, "Unknown field type for '%s' (BUG)", name);
+        return false;
     }
 
     return true;
@@ -127,7 +127,7 @@ boolean DEH_SetMapping(deh_context_t *context, deh_mapping_t *mapping,
 //
 
 boolean DEH_SetStringMapping(deh_context_t *context, deh_mapping_t *mapping,
-                             void *structptr, char *name, char *value)
+    void *structptr, char *name, char *value)
 {
     deh_mapping_entry_t *entry = GetMappingEntryByName(context, mapping, name);
 
@@ -154,16 +154,16 @@ boolean DEH_SetStringMapping(deh_context_t *context, deh_mapping_t *mapping,
 }
 
 void DEH_StructSHA1Sum(sha1_context_t *context, deh_mapping_t *mapping,
-                       void *structptr)
+    void *structptr)
 {
     int i;
 
     // Go through each mapping
 
-    for (i=0; mapping->entries[i].name != NULL; ++i)
+    for (i = 0; mapping->entries[i].name != NULL; ++i)
     {
         deh_mapping_entry_t *entry = &mapping->entries[i];
-        void *location;
+        void *               location;
 
         if (entry->location == NULL)
         {
@@ -178,20 +178,19 @@ void DEH_StructSHA1Sum(sha1_context_t *context, deh_mapping_t *mapping,
 
         switch (entry->size)
         {
-            case 1:
-                SHA1_UpdateInt32(context, *((uint8_t *) location));
-                break;
-            case 2:
-                SHA1_UpdateInt32(context, *((uint16_t *) location));
-                break;
-            case 4:
-                SHA1_UpdateInt32(context, *((uint32_t *) location));
-                break;
-            default:
-                I_Error("Unknown dehacked mapping field type for '%s' (BUG)", 
-                        entry->name);
-                break;
+        case 1:
+            SHA1_UpdateInt32(context, *((uint8_t *)location));
+            break;
+        case 2:
+            SHA1_UpdateInt32(context, *((uint16_t *)location));
+            break;
+        case 4:
+            SHA1_UpdateInt32(context, *((uint32_t *)location));
+            break;
+        default:
+            I_Error("Unknown dehacked mapping field type for '%s' (BUG)",
+                entry->name);
+            break;
         }
     }
 }
-

@@ -32,10 +32,9 @@
 void S_Init(int sfxVolume, int musicVolume);
 
 
-// Shut down sound 
+// Shut down sound
 
 void S_Shutdown(void);
-
 
 
 //
@@ -88,8 +87,7 @@ void S_SetSfxVolume(int volume);
 
 extern int snd_channels;
 
-void S_UpdateSndChannels (void);
-void S_UpdateStereoSeparation (void);
+void S_UpdateSndChannels(void);
+void S_UpdateStereoSeparation(void);
 
 #endif
-

@@ -27,15 +27,15 @@
 #define ENDOOM_W 80
 #define ENDOOM_H 25
 
-// 
+//
 // Displays the text mode ending screen after the game quits
 //
 
 void I_Endoom(byte *endoom_data)
 {
     unsigned char *screendata;
-    int y;
-    int indent;
+    int            y;
+    int            indent;
 
     // Set up text mode screen
 
@@ -51,11 +51,11 @@ void I_Endoom(byte *endoom_data)
 
     indent = (ENDOOM_W - TXT_SCREEN_W) / 2;
 
-    for (y=0; y<TXT_SCREEN_H; ++y)
+    for (y = 0; y < TXT_SCREEN_H; ++y)
     {
         memcpy(screendata + (y * TXT_SCREEN_W * 2),
-               endoom_data + (y * ENDOOM_W + indent) * 2,
-               TXT_SCREEN_W * 2);
+            endoom_data + (y * ENDOOM_W + indent) * 2,
+            TXT_SCREEN_W * 2);
     }
 
     // Wait for a keypress
@@ -76,4 +76,3 @@ void I_Endoom(byte *endoom_data)
 
     TXT_Shutdown();
 }
-

@@ -39,7 +39,7 @@ void NET_SendBroadcast(net_context_t *context, net_packet_t *packet);
 // stored in *addr, with an implicit reference added. The packet must be freed
 // by the caller and the reference releasd.
 boolean NET_RecvPacket(net_context_t *context, net_addr_t **addr,
-                       net_packet_t **packet);
+    net_packet_t **packet);
 
 // Return a string representation of the given address. The result points to a
 // static buffer and will become invalid with the next call.
@@ -57,5 +57,4 @@ void NET_ReleaseAddress(net_addr_t *addr);
 // caller when it is no longer needed.
 net_addr_t *NET_ResolveAddress(net_context_t *context, const char *address);
 
-#endif  /* #ifndef NET_IO_H */
-
+#endif /* #ifndef NET_IO_H */

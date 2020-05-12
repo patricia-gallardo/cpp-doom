@@ -60,10 +60,10 @@ boolean midi_server_registered = false;
 
 #define MIDIPIPE_MAX_WAIT 1000 // Max amount of ms to wait for expected data.
 
-static HANDLE  midi_process_in_reader;  // Input stream for midi process.
-static HANDLE  midi_process_in_writer;
-static HANDLE  midi_process_out_reader; // Output stream for midi process.
-static HANDLE  midi_process_out_writer;
+static HANDLE midi_process_in_reader; // Input stream for midi process.
+static HANDLE midi_process_in_writer;
+static HANDLE midi_process_out_reader; // Output stream for midi process.
+static HANDLE midi_process_out_writer;
 
 //=============================================================================
 //
@@ -131,8 +131,8 @@ static boolean UsingNativeMidi()
 static boolean WritePipe(net_packet_t *packet)
 {
     DWORD bytes_written;
-    BOOL ok = WriteFile(midi_process_in_writer, packet->data, packet->len,
-                        &bytes_written, NULL);
+    BOOL  ok = WriteFile(midi_process_in_writer, packet->data, packet->len,
+        &bytes_written, NULL);
 
     return ok;
 }
@@ -146,9 +146,9 @@ static boolean WritePipe(net_packet_t *packet)
 //
 static boolean ExpectPipe(net_packet_t *packet)
 {
-    int start;
-    BOOL ok;
-    CHAR pipe_buffer[8192];
+    int   start;
+    BOOL  ok;
+    CHAR  pipe_buffer[8192];
     DWORD pipe_buffer_read = 0;
 
     if (packet->len > sizeof(pipe_buffer))
@@ -164,7 +164,7 @@ static boolean ExpectPipe(net_packet_t *packet)
     {
         // Wait until we see exactly the amount of data we expect on the pipe.
         ok = PeekNamedPipe(midi_process_out_reader, NULL, 0, NULL,
-                           &pipe_buffer_read, NULL);
+            &pipe_buffer_read, NULL);
         if (!ok)
         {
             break;
@@ -177,7 +177,7 @@ static boolean ExpectPipe(net_packet_t *packet)
 
         // Read precisely the number of bytes we're expecting, and no more.
         ok = ReadFile(midi_process_out_reader, pipe_buffer, packet->len,
-                      &pipe_buffer_read, NULL);
+            &pipe_buffer_read, NULL);
         if (!ok || pipe_buffer_read != packet->len)
         {
             break;
@@ -217,7 +217,7 @@ void RemoveFileSpec(TCHAR *path, size_t size)
 
 static boolean BlockForAck(void)
 {
-    boolean ok;
+    boolean       ok;
     net_packet_t *packet;
 
     packet = NET_NewPacket(2);
@@ -241,7 +241,7 @@ static boolean BlockForAck(void)
 //
 boolean I_MidiPipe_RegisterSong(char *filename)
 {
-    boolean ok;
+    boolean       ok;
     net_packet_t *packet;
 
     packet = NET_NewPacket(64);
@@ -272,7 +272,7 @@ boolean I_MidiPipe_RegisterSong(char *filename)
 //
 void I_MidiPipe_UnregisterSong(void)
 {
-    boolean ok;
+    boolean       ok;
     net_packet_t *packet;
 
     packet = NET_NewPacket(64);
@@ -299,7 +299,7 @@ void I_MidiPipe_UnregisterSong(void)
 //
 void I_MidiPipe_SetVolume(int vol)
 {
-    boolean ok;
+    boolean       ok;
     net_packet_t *packet;
 
     packet = NET_NewPacket(6);
@@ -325,7 +325,7 @@ void I_MidiPipe_SetVolume(int vol)
 //
 void I_MidiPipe_PlaySong(int loops)
 {
-    boolean ok;
+    boolean       ok;
     net_packet_t *packet;
 
     packet = NET_NewPacket(6);
@@ -351,7 +351,7 @@ void I_MidiPipe_PlaySong(int loops)
 //
 void I_MidiPipe_StopSong()
 {
-    boolean ok;
+    boolean       ok;
     net_packet_t *packet;
 
     packet = NET_NewPacket(2);
@@ -376,7 +376,7 @@ void I_MidiPipe_StopSong()
 //
 void I_MidiPipe_ShutdownServer()
 {
-    boolean ok;
+    boolean       ok;
     net_packet_t *packet;
 
     packet = NET_NewPacket(2);
@@ -410,15 +410,15 @@ void I_MidiPipe_ShutdownServer()
 //
 boolean I_MidiPipe_InitServer()
 {
-    TCHAR dirname[MAX_PATH + 1];
-    DWORD dirname_len;
-    char *module = NULL;
-    char *cmdline = NULL;
-    char params_buf[128];
+    TCHAR               dirname[MAX_PATH + 1];
+    DWORD               dirname_len;
+    char *              module  = NULL;
+    char *              cmdline = NULL;
+    char                params_buf[128];
     SECURITY_ATTRIBUTES sec_attrs;
     PROCESS_INFORMATION proc_info;
-    STARTUPINFO startup_info;
-    BOOL ok;
+    STARTUPINFO         startup_info;
+    BOOL                ok;
 
     if (!UsingNativeMidi() || strlen(snd_musiccmd) > 0)
     {
@@ -441,8 +441,8 @@ boolean I_MidiPipe_InitServer()
 
     // Set up pipes
     memset(&sec_attrs, 0, sizeof(SECURITY_ATTRIBUTES));
-    sec_attrs.nLength = sizeof(SECURITY_ATTRIBUTES);
-    sec_attrs.bInheritHandle = TRUE;
+    sec_attrs.nLength              = sizeof(SECURITY_ATTRIBUTES);
+    sec_attrs.bInheritHandle       = TRUE;
     sec_attrs.lpSecurityDescriptor = NULL;
 
     if (!CreatePipe(&midi_process_in_reader, &midi_process_in_writer, &sec_attrs, 0))
@@ -472,7 +472,7 @@ boolean I_MidiPipe_InitServer()
     // Define the command line.  Version, Sample Rate, and handles follow
     // the executable name.
     M_snprintf(params_buf, sizeof(params_buf), "%d %Iu %Iu",
-        snd_samplerate, (size_t) midi_process_in_reader, (size_t) midi_process_out_writer);
+        snd_samplerate, (size_t)midi_process_in_reader, (size_t)midi_process_out_writer);
     cmdline = M_StringJoin(module, " \"" PACKAGE_STRING "\"", " ", params_buf, NULL);
 
     // Launch the subprocess
@@ -481,7 +481,7 @@ boolean I_MidiPipe_InitServer()
     startup_info.cb = sizeof(startup_info);
 
     ok = CreateProcess(TEXT(module), TEXT(cmdline), NULL, NULL, TRUE,
-                       0, NULL, dirname, &startup_info, &proc_info);
+        0, NULL, dirname, &startup_info, &proc_info);
 
     if (!ok)
     {
@@ -502,4 +502,3 @@ boolean I_MidiPipe_InitServer()
 }
 
 #endif
-

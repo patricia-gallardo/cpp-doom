@@ -28,7 +28,7 @@
 // For Visual C++, we need to include the win_opendir module.
 #include <win_opendir.h>
 #include <sys/stat.h>
-#define S_ISDIR(m)      (((m)& S_IFMT) == S_IFDIR)
+#define S_ISDIR(m) (((m)&S_IFMT) == S_IFDIR)
 #elif defined(HAVE_DIRENT_H)
 #include <dirent.h>
 #include <sys/stat.h>
@@ -55,12 +55,12 @@ static boolean IsDirectory(char *dir, struct dirent *de)
     else
 #endif
     {
-        char *filename;
+        char *      filename;
         struct stat sb;
-        int result;
+        int         result;
 
         filename = M_StringJoin(dir, DIR_SEPARATOR_S, de->d_name, NULL);
-        result = stat(filename, &sb);
+        result   = stat(filename, &sb);
         free(filename);
 
         if (result != 0)
@@ -72,18 +72,17 @@ static boolean IsDirectory(char *dir, struct dirent *de)
     }
 }
 
-struct glob_s
-{
+struct glob_s {
     char **globs;
-    int num_globs;
-    int flags;
-    DIR *dir;
-    char *directory;
-    char *last_filename;
+    int    num_globs;
+    int    flags;
+    DIR *  dir;
+    char * directory;
+    char * last_filename;
     // These fields are only used when the GLOB_FLAG_SORTED flag is set:
     char **filenames;
-    int filenames_len;
-    int next_index;
+    int    filenames_len;
+    int    next_index;
 };
 
 static void FreeStringList(char **globs, int num_globs)
@@ -97,10 +96,10 @@ static void FreeStringList(char **globs, int num_globs)
 }
 
 glob_t *I_StartMultiGlob(const char *directory, int flags,
-                         const char *glob, ...)
+    const char *glob, ...)
 {
-    char **globs;
-    int num_globs;
+    char ** globs;
+    int     num_globs;
     glob_t *result;
     va_list args;
 
@@ -109,14 +108,14 @@ glob_t *I_StartMultiGlob(const char *directory, int flags,
     {
         return NULL;
     }
-    globs[0] = M_StringDuplicate(glob);
+    globs[0]  = M_StringDuplicate(glob);
     num_globs = 1;
 
     va_start(args, glob);
     for (;;)
     {
         const char *arg = va_arg(args, const char *);
-        char **new_globs;
+        char **     new_globs;
 
         if (arg == NULL)
         {
@@ -129,7 +128,7 @@ glob_t *I_StartMultiGlob(const char *directory, int flags,
         {
             FreeStringList(globs, num_globs);
         }
-        globs = new_globs;
+        globs            = new_globs;
         globs[num_globs] = M_StringDuplicate(arg);
         ++num_globs;
     }
@@ -150,14 +149,14 @@ glob_t *I_StartMultiGlob(const char *directory, int flags,
         return NULL;
     }
 
-    result->directory = M_StringDuplicate(directory);
-    result->globs = globs;
-    result->num_globs = num_globs;
-    result->flags = flags;
+    result->directory     = M_StringDuplicate(directory);
+    result->globs         = globs;
+    result->num_globs     = num_globs;
+    result->flags         = flags;
     result->last_filename = NULL;
-    result->filenames = NULL;
+    result->filenames     = NULL;
     result->filenames_len = 0;
-    result->next_index = -1;
+    result->next_index    = -1;
     return result;
 }
 
@@ -178,7 +177,7 @@ void I_EndGlob(glob_t *glob)
 
     free(glob->directory);
     free(glob->last_filename);
-    (void) closedir(glob->dir);
+    (void)closedir(glob->dir);
     free(glob);
 }
 
@@ -253,7 +252,7 @@ static char *NextGlob(glob_t *glob)
             return NULL;
         }
     } while (IsDirectory(glob->directory, de)
-          || !MatchesAnyGlob(de->d_name, glob));
+             || !MatchesAnyGlob(de->d_name, glob));
 
     // Return the fully-qualified path, not just the bare filename.
     return M_StringJoin(glob->directory, DIR_SEPARATOR_S, de->d_name, NULL);
@@ -263,9 +262,9 @@ static void ReadAllFilenames(glob_t *glob)
 {
     char *name;
 
-    glob->filenames = NULL;
+    glob->filenames     = NULL;
     glob->filenames_len = 0;
-    glob->next_index = 0;
+    glob->next_index    = 0;
 
     for (;;)
     {
@@ -274,7 +273,7 @@ static void ReadAllFilenames(glob_t *glob)
         {
             break;
         }
-        glob->filenames = static_cast<char **>(realloc(
+        glob->filenames                      = static_cast<char **>(realloc(
             glob->filenames, (glob->filenames_len + 1) * sizeof(char *)));
         glob->filenames[glob->filenames_len] = name;
         ++glob->filenames_len;
@@ -284,15 +283,15 @@ static void ReadAllFilenames(glob_t *glob)
 static void SortFilenames(char **filenames, int len, int flags)
 {
     char *pivot, *tmp;
-    int i, left_len, cmp;
+    int   i, left_len, cmp;
 
     if (len <= 1)
     {
         return;
     }
-    pivot = filenames[len - 1];
+    pivot    = filenames[len - 1];
     left_len = 0;
-    for (i = 0; i < len-1; ++i)
+    for (i = 0; i < len - 1; ++i)
     {
         if ((flags & GLOB_FLAG_NOCASE) != 0)
         {
@@ -305,13 +304,13 @@ static void SortFilenames(char **filenames, int len, int flags)
 
         if (cmp < 0)
         {
-            tmp = filenames[i];
-            filenames[i] = filenames[left_len];
+            tmp                 = filenames[i];
+            filenames[i]        = filenames[left_len];
             filenames[left_len] = tmp;
             ++left_len;
         }
     }
-    filenames[len - 1] = filenames[left_len];
+    filenames[len - 1]  = filenames[left_len];
     filenames[left_len] = pivot;
 
     SortFilenames(filenames, left_len, flags);
@@ -371,4 +370,3 @@ const char *I_NextGlob(glob_t *glob)
 }
 
 #endif /* #ifdef NO_DIRENT_IMPLEMENTATION */
-

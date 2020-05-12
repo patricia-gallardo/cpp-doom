@@ -31,7 +31,7 @@
 // [crispy] support INCLUDE NOTEXT directive in BEX files
 boolean bex_notext = false;
 
-// Given a string length, find the maximum length of a 
+// Given a string length, find the maximum length of a
 // string that can replace it.
 
 static int TXT_MaxStringLength(int len)
@@ -45,7 +45,7 @@ static int TXT_MaxStringLength(int len)
     // Extend up to the next 4-byte boundary
 
     len += (4 - (len % 4)) % 4;
-            
+
     // Less one for the NUL terminator.
 
     return len - 1;
@@ -62,7 +62,7 @@ static void *DEH_TextStart(deh_context_t *context, char *line)
         return NULL;
     }
 
-    // Only allow string replacements that are possible in Vanilla Doom.  
+    // Only allow string replacements that are possible in Vanilla Doom.
     // Chocolate Doom is unforgiving!
 
     if (!deh_allow_long_strings && tolen > TXT_MaxStringLength(fromlen))
@@ -72,12 +72,12 @@ static void *DEH_TextStart(deh_context_t *context, char *line)
         return NULL;
     }
 
-    std::string from_text(fromlen+1, '\0');
+    std::string from_text(fromlen + 1, '\0');
     std::string to_text(tolen + 1, '\0');
 
     // read in the "from" text
 
-    for (i=0; i<fromlen; ++i)
+    for (i = 0; i < fromlen; ++i)
     {
         from_text[i] = DEH_GetChar(context);
     }
@@ -85,7 +85,7 @@ static void *DEH_TextStart(deh_context_t *context, char *line)
 
     // read in the "to" text
 
-    for (i=0; i<tolen; ++i)
+    for (i = 0; i < tolen; ++i)
     {
         to_text[i] = DEH_GetChar(context);
     }
@@ -93,7 +93,7 @@ static void *DEH_TextStart(deh_context_t *context, char *line)
 
     if (!bex_notext)
     {
-    DEH_AddStringReplacement(from_text.c_str(), to_text.c_str());
+        DEH_AddStringReplacement(from_text.c_str(), to_text.c_str());
     }
 
     return NULL;
@@ -104,8 +104,7 @@ static void DEH_TextParseLine(deh_context_t *context, char *line, void *tag)
     // not used
 }
 
-deh_section_t deh_section_text =
-{
+deh_section_t deh_section_text = {
     "Text",
     NULL,
     DEH_TextStart,
@@ -113,4 +112,3 @@ deh_section_t deh_section_text =
     NULL,
     NULL,
 };
-

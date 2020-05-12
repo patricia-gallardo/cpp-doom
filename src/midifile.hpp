@@ -18,7 +18,7 @@
 #ifndef MIDIFILE_H
 #define MIDIFILE_H
 
-typedef struct midi_file_s midi_file_t;
+typedef struct midi_file_s       midi_file_t;
 typedef struct midi_track_iter_s midi_track_iter_t;
 
 #define MIDI_CHANNELS_PER_TRACK 16
@@ -33,46 +33,46 @@ typedef enum
     MIDI_EVENT_CHAN_AFTERTOUCH = 0xd0,
     MIDI_EVENT_PITCH_BEND      = 0xe0,
 
-    MIDI_EVENT_SYSEX           = 0xf0,
-    MIDI_EVENT_SYSEX_SPLIT     = 0xf7,
-    MIDI_EVENT_META            = 0xff,
+    MIDI_EVENT_SYSEX       = 0xf0,
+    MIDI_EVENT_SYSEX_SPLIT = 0xf7,
+    MIDI_EVENT_META        = 0xff,
 } midi_event_type_t;
 
 typedef enum
 {
-    MIDI_CONTROLLER_BANK_SELECT     = 0x0,
-    MIDI_CONTROLLER_MODULATION      = 0x1,
-    MIDI_CONTROLLER_BREATH_CONTROL  = 0x2,
-    MIDI_CONTROLLER_FOOT_CONTROL    = 0x3,
-    MIDI_CONTROLLER_PORTAMENTO      = 0x4,
-    MIDI_CONTROLLER_DATA_ENTRY      = 0x5,
+    MIDI_CONTROLLER_BANK_SELECT    = 0x0,
+    MIDI_CONTROLLER_MODULATION     = 0x1,
+    MIDI_CONTROLLER_BREATH_CONTROL = 0x2,
+    MIDI_CONTROLLER_FOOT_CONTROL   = 0x3,
+    MIDI_CONTROLLER_PORTAMENTO     = 0x4,
+    MIDI_CONTROLLER_DATA_ENTRY     = 0x5,
 
-    MIDI_CONTROLLER_MAIN_VOLUME     = 0x7,
-    MIDI_CONTROLLER_PAN             = 0xa,
+    MIDI_CONTROLLER_MAIN_VOLUME = 0x7,
+    MIDI_CONTROLLER_PAN         = 0xa,
 
-    MIDI_CONTROLLER_ALL_NOTES_OFF   = 0x7b,
+    MIDI_CONTROLLER_ALL_NOTES_OFF = 0x7b,
 } midi_controller_t;
 
 typedef enum
 {
-    MIDI_META_SEQUENCE_NUMBER       = 0x0,
+    MIDI_META_SEQUENCE_NUMBER = 0x0,
 
-    MIDI_META_TEXT                  = 0x1,
-    MIDI_META_COPYRIGHT             = 0x2,
-    MIDI_META_TRACK_NAME            = 0x3,
-    MIDI_META_INSTR_NAME            = 0x4,
-    MIDI_META_LYRICS                = 0x5,
-    MIDI_META_MARKER                = 0x6,
-    MIDI_META_CUE_POINT             = 0x7,
+    MIDI_META_TEXT       = 0x1,
+    MIDI_META_COPYRIGHT  = 0x2,
+    MIDI_META_TRACK_NAME = 0x3,
+    MIDI_META_INSTR_NAME = 0x4,
+    MIDI_META_LYRICS     = 0x5,
+    MIDI_META_MARKER     = 0x6,
+    MIDI_META_CUE_POINT  = 0x7,
 
-    MIDI_META_CHANNEL_PREFIX        = 0x20,
-    MIDI_META_END_OF_TRACK          = 0x2f,
+    MIDI_META_CHANNEL_PREFIX = 0x20,
+    MIDI_META_END_OF_TRACK   = 0x2f,
 
-    MIDI_META_SET_TEMPO             = 0x51,
-    MIDI_META_SMPTE_OFFSET          = 0x54,
-    MIDI_META_TIME_SIGNATURE        = 0x58,
-    MIDI_META_KEY_SIGNATURE         = 0x59,
-    MIDI_META_SEQUENCER_SPECIFIC    = 0x7f,
+    MIDI_META_SET_TEMPO          = 0x51,
+    MIDI_META_SMPTE_OFFSET       = 0x54,
+    MIDI_META_TIME_SIGNATURE     = 0x58,
+    MIDI_META_KEY_SIGNATURE      = 0x59,
+    MIDI_META_SEQUENCER_SPECIFIC = 0x7f,
 } midi_meta_event_type_t;
 
 typedef struct
@@ -121,11 +121,10 @@ typedef struct
     // Type of event:
     midi_event_type_t event_type;
 
-    union
-    {
+    union {
         midi_channel_event_data_t channel;
-        midi_meta_event_data_t meta;
-        midi_sysex_event_data_t sysex;
+        midi_meta_event_data_t    meta;
+        midi_sysex_event_data_t   sysex;
     } data;
 } midi_event_t;
 
@@ -166,4 +165,3 @@ int MIDI_GetNextEvent(midi_track_iter_t *iter, midi_event_t **event);
 void MIDI_RestartIterator(midi_track_iter_t *iter);
 
 #endif /* #ifndef MIDIFILE_H */
-

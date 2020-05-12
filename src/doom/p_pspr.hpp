@@ -36,14 +36,12 @@
 #include "info.hpp"
 
 
-
 //
 // Frame flags:
 // handles maximum brightness (torches, muzzle flare, light sources)
 //
-#define FF_FULLBRIGHT	0x8000	// flag in thing->frame
-#define FF_FRAMEMASK	0x7fff
-
+#define FF_FULLBRIGHT 0x8000 // flag in thing->frame
+#define FF_FRAMEMASK  0x7fff
 
 
 //
@@ -59,18 +57,17 @@ typedef enum
 
 } psprnum_t;
 
-struct pspdef_t
-{
-    state_t*	state;	// a NULL state means not active
-    int		tics;
-    fixed_t	sx;
-    fixed_t	sy;
+struct pspdef_t {
+    state_t *state; // a NULL state means not active
+    int      tics;
+    fixed_t  sx;
+    fixed_t  sy;
 
     // [crispy] squat down weapon sprite
-    fixed_t	dy;
+    fixed_t dy;
     // [crispy] variable weapon sprite bob
-    fixed_t	sx2;
-    fixed_t	sy2;
+    fixed_t sx2;
+    fixed_t sy2;
 };
 
 #endif

@@ -28,10 +28,9 @@
 //
 // SoundFX struct.
 //
-typedef struct sfxinfo_struct	sfxinfo_t;
+typedef struct sfxinfo_struct sfxinfo_t;
 
-struct sfxinfo_struct
-{
+struct sfxinfo_struct {
     // tag name, used for hexen.
     const char *tagname;
 
@@ -60,7 +59,7 @@ struct sfxinfo_struct
     // lump number of sfx
     int lumpnum;
 
-    // Maximum number of channels that the sound can be played on 
+    // Maximum number of channels that the sound can be played on
     // (Heretic)
     int numchannels;
 
@@ -89,17 +88,17 @@ typedef struct
 
 enum snddevice_t : int
 {
-    SNDDEVICE_NONE = 0,
-    SNDDEVICE_PCSPEAKER = 1,
-    SNDDEVICE_ADLIB = 2,
-    SNDDEVICE_SB = 3,
-    SNDDEVICE_PAS = 4,
-    SNDDEVICE_GUS = 5,
+    SNDDEVICE_NONE        = 0,
+    SNDDEVICE_PCSPEAKER   = 1,
+    SNDDEVICE_ADLIB       = 2,
+    SNDDEVICE_SB          = 3,
+    SNDDEVICE_PAS         = 4,
+    SNDDEVICE_GUS         = 5,
     SNDDEVICE_WAVEBLASTER = 6,
     SNDDEVICE_SOUNDCANVAS = 7,
-    SNDDEVICE_GENMIDI = 8,
-    SNDDEVICE_AWE32 = 9,
-    SNDDEVICE_CD = 10,
+    SNDDEVICE_GENMIDI     = 8,
+    SNDDEVICE_AWE32       = 9,
+    SNDDEVICE_CD          = 10,
 };
 
 // Interface for sound modules
@@ -109,7 +108,7 @@ typedef struct
     // List of sound devices that this sound module is used for.
 
     snddevice_t *sound_devices;
-    int num_sound_devices;
+    int          num_sound_devices;
 
     // Initialise sound module
     // Returns true if successfully initialised
@@ -151,15 +150,15 @@ typedef struct
 
 } sound_module_t;
 
-void I_InitSound(boolean use_sfx_prefix);
-void I_ShutdownSound(void);
-int I_GetSfxLumpNum(sfxinfo_t *sfxinfo);
-void I_UpdateSound(void);
-void I_UpdateSoundParams(int channel, int vol, int sep);
-int I_StartSound(sfxinfo_t *sfxinfo, int channel, int vol, int sep, int pitch);
-void I_StopSound(int channel);
+void    I_InitSound(boolean use_sfx_prefix);
+void    I_ShutdownSound(void);
+int     I_GetSfxLumpNum(sfxinfo_t *sfxinfo);
+void    I_UpdateSound(void);
+void    I_UpdateSoundParams(int channel, int vol, int sep);
+int     I_StartSound(sfxinfo_t *sfxinfo, int channel, int vol, int sep, int pitch);
+void    I_StopSound(int channel);
 boolean I_SoundIsPlaying(int channel);
-void I_PrecacheSounds(sfxinfo_t *sounds, int num_sounds);
+void    I_PrecacheSounds(sfxinfo_t *sounds, int num_sounds);
 
 // Interface for music modules
 
@@ -168,7 +167,7 @@ typedef struct
     // List of sound devices that this music module is used for.
 
     snddevice_t *sound_devices;
-    int num_sound_devices;
+    int          num_sound_devices;
 
     // Initialise the music subsystem
 
@@ -216,35 +215,35 @@ typedef struct
     void (*Poll)(void);
 } music_module_t;
 
-void I_InitMusic(void);
-void I_ShutdownMusic(void);
-void I_SetMusicVolume(int volume);
-void I_PauseSong(void);
-void I_ResumeSong(void);
-void *I_RegisterSong(void *data, int len);
-void I_UnRegisterSong(void *handle);
-void I_PlaySong(void *handle, boolean looping);
-void I_StopSong(void);
+void    I_InitMusic(void);
+void    I_ShutdownMusic(void);
+void    I_SetMusicVolume(int volume);
+void    I_PauseSong(void);
+void    I_ResumeSong(void);
+void *  I_RegisterSong(void *data, int len);
+void    I_UnRegisterSong(void *handle);
+void    I_PlaySong(void *handle, boolean looping);
+void    I_StopSong(void);
 boolean I_MusicIsPlaying(void);
 
 extern snddevice_t snd_sfxdevice;
 extern snddevice_t snd_musicdevice;
-extern int snd_samplerate;
-extern int snd_cachesize;
-extern int snd_maxslicetime_ms;
-extern char *snd_musiccmd;
-extern int snd_pitchshift;
+extern int         snd_samplerate;
+extern int         snd_cachesize;
+extern int         snd_maxslicetime_ms;
+extern char *      snd_musiccmd;
+extern int         snd_pitchshift;
 
 void I_BindSoundVariables(void);
 
 // DMX version to emulate for OPL emulation:
-typedef enum {
-    opl_doom1_1_666,    // Doom 1 v1.666
-    opl_doom2_1_666,    // Doom 2 v1.666, Hexen, Heretic
-    opl_doom_1_9        // Doom v1.9, Strife
+typedef enum
+{
+    opl_doom1_1_666, // Doom 1 v1.666
+    opl_doom2_1_666, // Doom 2 v1.666, Hexen, Heretic
+    opl_doom_1_9     // Doom v1.9, Strife
 } opl_driver_ver_t;
 
 void I_SetOPLDriverVer(opl_driver_ver_t ver);
 
 #endif
-

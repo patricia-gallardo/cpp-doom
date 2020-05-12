@@ -14,7 +14,7 @@
 //
 // DESCRIPTION:
 //
-//    
+//
 
 
 #ifndef __D_EVENT__
@@ -76,38 +76,38 @@ typedef struct
     int data1, data2, data3, data4, data5;
 } event_t;
 
- 
+
 //
 // Button/action code definitions.
 //
 typedef enum
 {
     // Press "Fire".
-    BT_ATTACK		= 1,
+    BT_ATTACK = 1,
     // Use button, to open doors, activate switches.
-    BT_USE		= 2,
+    BT_USE = 2,
 
     // Flag: game events, not really buttons.
-    BT_SPECIAL		= 128,
-    BT_SPECIALMASK	= 3,
-    
+    BT_SPECIAL     = 128,
+    BT_SPECIALMASK = 3,
+
     // Flag, weapon change pending.
     // If true, the next 3 bits hold weapon num.
-    BT_CHANGE		= 4,
+    BT_CHANGE = 4,
     // The 3bit weapon mask and shift, convenience.
-    BT_WEAPONMASK	= (8+16+32),
-    BT_WEAPONSHIFT	= 3,
+    BT_WEAPONMASK  = (8 + 16 + 32),
+    BT_WEAPONSHIFT = 3,
 
     // Pause the game.
-    BTS_PAUSE		= 1,
+    BTS_PAUSE = 1,
     // Save the game at each console.
-    BTS_SAVEGAME	= 2,
+    BTS_SAVEGAME = 2,
 
     // Savegame slot numbers
-    //  occupy the second byte of buttons.    
-    BTS_SAVEMASK	= (4+8+16),
-    BTS_SAVESHIFT 	= 2,
-  
+    //  occupy the second byte of buttons.
+    BTS_SAVEMASK  = (4 + 8 + 16),
+    BTS_SAVESHIFT = 2,
+
 } buttoncode_t;
 
 // villsa [STRIFE] Strife specific buttons
@@ -115,27 +115,25 @@ typedef enum
 typedef enum
 {
     // Player view look up
-    BT2_LOOKUP          = 1,
+    BT2_LOOKUP = 1,
     // Player view look down
-    BT2_LOOKDOWN        = 2,
+    BT2_LOOKDOWN = 2,
     // Center player's view
-    BT2_CENTERVIEW      = 4,
+    BT2_CENTERVIEW = 4,
     // Use inventory item
-    BT2_INVUSE          = 8,
+    BT2_INVUSE = 8,
     // Drop inventory item
-    BT2_INVDROP         = 16,
+    BT2_INVDROP = 16,
     // Jump up and down
-    BT2_JUMP            = 32,
+    BT2_JUMP = 32,
     // Use medkit
-    BT2_HEALTH          = 128,
-  
+    BT2_HEALTH = 128,
+
 } buttoncode2_t;
 
 
-
-
 // Called by IO functions when input is detected.
-void D_PostEvent (event_t *ev);
+void D_PostEvent(event_t *ev);
 
 // Read an event from the event queue
 
@@ -143,4 +141,3 @@ event_t *D_PopEvent(void);
 
 
 #endif
-

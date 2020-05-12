@@ -33,14 +33,13 @@ typedef struct
     // Close the specified file.
     void (*CloseFile)(wad_file_t *file);
 
-    // Read data from the specified position in the file into the 
+    // Read data from the specified position in the file into the
     // provided buffer.  Returns the number of bytes read.
     size_t (*Read)(wad_file_t *file, unsigned int offset,
-                   void *buffer, size_t buffer_len);
+        void *buffer, size_t buffer_len);
 } wad_file_class_t;
 
-struct _wad_file_s
-{
+struct _wad_file_s {
     // Class of this file.
     wad_file_class_t *file_class;
 
@@ -55,7 +54,7 @@ struct _wad_file_s
     char *path; // [crispy] un-const
 };
 
-// Open the specified file. Returns a pointer to a new wad_file_t 
+// Open the specified file. Returns a pointer to a new wad_file_t
 // handle for the WAD file, or NULL if it could not be opened.
 
 wad_file_t *W_OpenFile(const char *path);
@@ -69,6 +68,6 @@ void W_CloseFile(wad_file_t *wad);
 // Returns the number of bytes read.
 
 size_t W_Read(wad_file_t *wad, unsigned int offset,
-              void *buffer, size_t buffer_len);
+    void *buffer, size_t buffer_len);
 
 #endif /* #ifndef __W_FILE__ */
