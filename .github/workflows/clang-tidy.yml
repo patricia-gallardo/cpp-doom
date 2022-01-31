@@ -41,6 +41,6 @@ jobs:
       working-directory: build
       run: cmake -DCMAKE_EXPORT_COMPILE_COMMANDS=ON ..
 
-    - name: Run clang-tidy
-      working-directory: build
-      run: run-clang-tidy
+#    - name: Run clang-tidy
+#      working-directory: build
+#      run: run-clang-tidy
