@@ -70,4 +70,4 @@ set(STRIFE_SOURCES
 add_library(strife STATIC ${STRIFE_SOURCES})
 
 target_include_directories(strife PRIVATE "../" "../../win32/" "${CMAKE_CURRENT_BINARY_DIR}/../../")
-target_link_libraries(strife textscreen SDL2::SDL2 SDL2::mixer SDL2::net)
+target_link_libraries(strife textscreen SDL2::SDL2 SDL2::SDL2_mixer SDL2::SDL2_net)

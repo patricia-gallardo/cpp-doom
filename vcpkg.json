@@ -1,0 +1,12 @@
+{
+    "$schema": "https://raw.githubusercontent.com/microsoft/vcpkg/master/scripts/vcpkg.schema.json",
+    "name": "doom",
+    "version": "0.1",
+    "dependencies": [
+        "libpng",
+        "libsamplerate",
+        "sdl2",
+        "sdl2-mixer",
+        "sdl2-net"
+    ]
+}

@@ -80,4 +80,4 @@ add_library(doom STATIC
             wi_stuff.cpp      wi_stuff.hpp event_function_decls.hpp)
 
 target_include_directories(doom PRIVATE "../" "${CMAKE_CURRENT_BINARY_DIR}/../../")
-target_link_libraries(doom SDL2::SDL2 SDL2::mixer SDL2::net)
+target_link_libraries(doom SDL2::SDL2 SDL2::SDL2_mixer SDL2::SDL2_net)

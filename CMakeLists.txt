@@ -1,6 +1,9 @@
 set(CMAKE_MODULE_PATH "${CMAKE_CURRENT_SOURCE_DIR}/cmake")
 
 cmake_minimum_required(VERSION 3.7.2)
+
+include(cmake/vcpkg.cmake)
+
 project("Crispy Doom" VERSION 5.7.2 LANGUAGES CXX)
 set(CMAKE_CXX_STANDARD 20)
 
@@ -29,12 +32,11 @@ else()
                         "-Wredundant-decls")
 endif()
 
-find_package(SDL2 2.0.1)
-find_package(SDL2_mixer 2.0.0)
-find_package(SDL2_net 2.0.0)
+find_package(SDL2 CONFIG REQUIRED)
+find_package(sdl2-mixer CONFIG REQUIRED)
+find_package(sdl2-net CONFIG REQUIRED)
 
-# Check for libsamplerate.
-find_package(samplerate)
+find_package(SampleRate CONFIG REQUIRED)
 if(SAMPLERATE_FOUND)
     set(HAVE_LIBSAMPLERATE TRUE)
 endif()
@@ -44,8 +46,6 @@ find_package(PNG)
 if(PNG_FOUND)
     set(HAVE_LIBPNG TRUE)
 endif()
-
-find_package(m)
 
 include(CheckSymbolExists)
 include(CheckIncludeFile)

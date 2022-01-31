@@ -15,4 +15,4 @@ add_library(setup STATIC
             txt_mouseinput.cpp    txt_mouseinput.hpp)
 
 target_include_directories(setup PRIVATE "../" "${CMAKE_CURRENT_BINARY_DIR}/../../")
-target_link_libraries(setup textscreen SDL2::SDL2 SDL2::mixer)
+target_link_libraries(setup textscreen SDL2::SDL2 SDL2::SDL2_mixer)
