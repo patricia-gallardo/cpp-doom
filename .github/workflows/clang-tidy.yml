@@ -2,9 +2,9 @@ name: Clang Tidy
 
 on:
   push:
-    branches: [ main ]
+    branches: [ cpp-doom ]
   pull_request:
-    branches: [ main ]
+    branches: [ cpp-doom ]
 
 jobs:
   build:
