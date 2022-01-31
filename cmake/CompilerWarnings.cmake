@@ -47,6 +47,7 @@ function(set_project_warnings)
             -Wdouble-promotion # warn if float is implicit promoted to double
             -Wformat=2 # warn on security issues around functions that format output (ie printf)
             -Wno-unused-lambda-capture # We like explicit capture
+            -Wno-unused-parameter
             )
 
     if (WARNINGS_AS_ERRORS)
