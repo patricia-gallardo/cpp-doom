@@ -1,37 +1,87 @@
 name: CMake
 
+env:
+  VCPKG_BINARY_SOURCES: 'clear;nuget,GitHub,readwrite'
+
+
 on:
   push:
     branches: [ cpp-doom ]
   pull_request:
     branches: [ cpp-doom ]
 
-env:
-  # Customize the CMake build type here (Release, Debug, RelWithDebInfo, etc.)
-  BUILD_TYPE: Release
+  workflow_dispatch:
 
 jobs:
   build:
-    # The CMake configure and build commands are platform agnostic and should work equally well on Windows or Mac.
-    # You can convert this to a matrix build if you need cross-platform coverage.
-    # See: https://docs.github.com/en/free-pro-team@latest/actions/learn-github-actions/managing-complex-workflows#using-a-build-matrix
-    runs-on: ubuntu-latest
+    name: "${{ matrix.configurations.name }} | ${{ matrix.cmake-build-type }}"
+    runs-on: ${{ matrix.configurations.os }}
+    strategy:
+      fail-fast: false
+      matrix:
+        configurations:
+          - name: Ubuntu 20.04
+            os: ubuntu-20.04
+            cmake_env:
+              CC: clang-12
+              CXX: clang++-12
+          - name: Windows 2022
+            os: windows-2022
+            cmake_env: {}
+          - name: MacOS 11
+            os: macos-11
+            cmake_env: {}
+        cmake-build-type: [Debug, Release]
 
     steps:
     - uses: actions/checkout@v2
 
+    - name: Create vcpkg build folder
+      run: |
+        mkdir -p ${{runner.workspace}}/build/vcpkg_installed
+        mkdir -p ${{runner.workspace}}/build/_deps
+
+    - name: Cache vcpkg
+      uses: actions/cache@v2
+      env:
+        cache-name: vcpkg-modules
+      with:
+        path: |
+          ${{runner.workspace}}/build/vcpkg_installed
+          ${{runner.workspace}}/build/_deps
+        key: ${{ matrix.configurations.os }}-${{ matrix.cmake-build-type }}-${{ hashFiles('vcpkg.json') }}-${{ hashFiles('cmake/vcpkg.cmake') }}
+
+    - name: Fix Path on Ubuntu
+      if: matrix.configurations.os == 'ubuntu-20.04'
+      run: echo "/home/runner/.local/bin" >> $GITHUB_PATH
+
+    - name: Install Linux dependencies
+      if: matrix.configurations.os == 'ubuntu-20.04'
+      run: sudo apt-get update && sudo apt-get install -y libx11-dev libxrandr-dev libxi-dev libgl1-mesa-dev libudev-dev clang-12 make ninja-build cmake
+
+    - name: Create Build Environment
+      # Some projects don't allow in-source building, so create a separate build directory
+      # We'll use this as our working directory for all subsequent commands
+      run: cmake -E make_directory ${{runner.workspace}}/build
+
     - name: Configure CMake
-      # Configure CMake in a 'build' subdirectory. `CMAKE_BUILD_TYPE` is only required if you are using a single-configuration generator such as make.
-      # See https://cmake.org/cmake/help/latest/variable/CMAKE_BUILD_TYPE.html?highlight=cmake_build_type
-      run: cmake -B ${{github.workspace}}/build -DCMAKE_BUILD_TYPE=${{env.BUILD_TYPE}}
+      working-directory: ${{runner.workspace}}/build
+      # Use a bash shell so we can use the same syntax for environment variable
+      # access regardless of the host operating system
+      shell: bash
+      run: cmake $GITHUB_WORKSPACE -DCMAKE_BUILD_TYPE=${{ matrix.cmake-build-type }}
+      env: ${{ matrix.configurations.cmake_env }}
 
     - name: Build
-      # Build your program with the given configuration
-      run: cmake --build ${{github.workspace}}/build --config ${{env.BUILD_TYPE}}
+      working-directory: ${{runner.workspace}}/build
+      shell: bash
+      # Execute the build.  You can specify a specific target with "--target <NAME>"
+      run: cmake --build . --config ${{ matrix.cmake-build-type }}
+      env: ${{ matrix.configurations.cmake_env }}
 
     - name: Test
-      working-directory: ${{github.workspace}}/build
-      # Execute tests defined by the CMake configuration.  
+      working-directory: ${{runner.workspace}}/build
+      shell: bash
+      # Execute tests defined by the CMake configuration.
       # See https://cmake.org/cmake/help/latest/manual/ctest.1.html for more detail
-      run: ctest -C ${{env.BUILD_TYPE}}
-      
+      run: ctest -C ${{ matrix.cmake-build-type }}
