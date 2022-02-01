@@ -89,7 +89,7 @@ void P_ExplodeMissile (mobj_t* mo)
 {
     mo->momx = mo->momy = mo->momz = 0;
 
-    P_SetMobjState (mo, mobjinfo[mo->type].deathstate);
+    P_SetMobjState (mo, static_cast<statenum_t>(mobjinfo[mo->type].deathstate));
 
     // villsa [STRIFE] removed tics randomization
 
@@ -627,7 +627,7 @@ P_SpawnMobj
     state_t*	st;
     mobjinfo_t*	info;
 
-    mobj = Z_Malloc (sizeof(*mobj), PU_LEVEL, NULL);
+    mobj = static_cast<mobj_t *>(Z_Malloc(sizeof(*mobj), PU_LEVEL, NULL));
     memset (mobj, 0, sizeof (*mobj));
     info = &mobjinfo[type];
 
@@ -795,7 +795,7 @@ void P_RespawnSpecials (void)
     else
         z = ONFLOORZ;
 
-    mo = P_SpawnMobj (x,y,z, i);
+    mo = P_SpawnMobj (x,y,z, static_cast<mobjtype_t>(i));
     mo->spawnpoint = *mthing;
     mo->angle = ANG45 * (mthing->angle/45);
 
@@ -988,7 +988,7 @@ void P_SpawnMapThing (mapthing_t* mthing)
     else
         z = ONFLOORZ;
     
-    mobj = P_SpawnMobj (x,y,z, i);
+    mobj = P_SpawnMobj (x,y,z, static_cast<mobjtype_t>(i));
     mobj->spawnpoint = *mthing;
 
     if (mobj->tics > 0)

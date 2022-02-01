@@ -393,7 +393,7 @@ int EV_DoDoor(line_t* line, vldoor_e type)
 
         // new door thinker
         rtn = 1;
-        door = Z_Malloc (sizeof(*door), PU_LEVSPEC, 0);
+        door = static_cast<vldoor_t *>(Z_Malloc(sizeof(*door), PU_LEVSPEC, 0));
         P_AddThinker (&door->thinker);
         sec->specialdata = door;
 
@@ -721,7 +721,7 @@ void EV_VerticalDoor(line_t* line, mobj_t* thing)
 
     if (sec->specialdata)
     {
-        door = sec->specialdata;
+        door = static_cast<vldoor_t *>(sec->specialdata);
         // [STRIFE] Adjusted to handle linetypes handled here by Strife.
         // BUG: Not all door types are checked here. This means that certain 
         // door lines are allowed to fall through and start a new thinker on the
@@ -796,7 +796,7 @@ void EV_VerticalDoor(line_t* line, mobj_t* thing)
     // haleyjd 09/15/10: [STRIFE] Removed DOOM door sounds
 
     // new door thinker
-    door = Z_Malloc (sizeof(*door), PU_LEVSPEC, 0);
+    door = static_cast<vldoor_t *>(Z_Malloc(sizeof(*door), PU_LEVSPEC, 0));
     P_AddThinker (&door->thinker);
     sec->specialdata = door;
     door->thinker.function.acp1 = (actionf_p1) T_VerticalDoor;
@@ -870,7 +870,7 @@ void P_SpawnDoorCloseIn30 (sector_t* sec)
 {
     vldoor_t*   door;
 
-    door = Z_Malloc ( sizeof(*door), PU_LEVSPEC, 0);
+    door = static_cast<vldoor_t *>(Z_Malloc(sizeof(*door), PU_LEVSPEC, 0));
 
     P_AddThinker (&door->thinker);
 
@@ -895,7 +895,7 @@ P_SpawnDoorRaiseIn5Mins
 {
     vldoor_t*	door;
 	
-    door = Z_Malloc ( sizeof(*door), PU_LEVSPEC, 0);
+    door = static_cast<vldoor_t *>(Z_Malloc(sizeof(*door), PU_LEVSPEC, 0));
     
     P_AddThinker (&door->thinker);
 
@@ -1292,7 +1292,7 @@ void EV_SlidingDoor(line_t* line, mobj_t* thing)
         if (!thing->player)
             return;
 
-        door = sec->specialdata;
+        door = static_cast<slidedoor_t *>(sec->specialdata);
         if(door->type == sdt_openAndClose)
         {
             if(door->status == sd_waiting)
@@ -1308,7 +1308,7 @@ void EV_SlidingDoor(line_t* line, mobj_t* thing)
     // Init sliding door vars
     if(!door)
     {
-        door = Z_Malloc (sizeof(*door), PU_LEVSPEC, 0);
+        door = static_cast<slidedoor_t *>(Z_Malloc(sizeof(*door), PU_LEVSPEC, 0));
         P_AddThinker (&door->thinker);
 
         sec->specialdata = door;

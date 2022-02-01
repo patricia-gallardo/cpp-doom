@@ -147,13 +147,13 @@ int EV_DoPlat(line_t * line, plattype_e type, int amount)
         // Find lowest & highest floors around sector
         //
         rtn = 1;
-        plat = Z_Malloc(sizeof(*plat), PU_LEVSPEC, 0);
+        plat = static_cast<plat_t *>(Z_Malloc(sizeof(*plat), PU_LEVSPEC, 0));
         P_AddThinker(&plat->thinker);
 
         plat->type = type;
         plat->sector = sec;
         plat->sector->specialdata = plat;
-        plat->thinker.function = T_PlatRaise;
+        plat->thinker.function = reinterpret_cast<think_t>(T_PlatRaise);
         plat->crush = false;
         plat->tag = line->tag;
         switch (type)
@@ -194,7 +194,7 @@ int EV_DoPlat(line_t * line, plattype_e type, int amount)
                 if (plat->high < sec->floorheight)
                     plat->high = sec->floorheight;
                 plat->wait = 35 * PLATWAIT;
-                plat->status = P_Random() & 1;
+                plat->status = static_cast<plat_e>(P_Random() & 1);
                 S_StartSound(&sec->soundorg, sfx_pstart);
                 break;
         }
@@ -213,7 +213,7 @@ void P_ActivateInStasis(int tag)
             (activeplats[i])->status == in_stasis)
         {
             (activeplats[i])->status = (activeplats[i])->oldstatus;
-            (activeplats[i])->thinker.function = T_PlatRaise;
+            (activeplats[i])->thinker.function = reinterpret_cast<think_t>(T_PlatRaise);
         }
 }
 

@@ -156,7 +156,7 @@ void R_InitSpriteDefs(const char **namelist)
     if (!numsprites)
         return;
 
-    sprites = Z_Malloc(numsprites * sizeof(*sprites), PU_STATIC, NULL);
+    sprites = static_cast<spritedef_t *>(Z_Malloc(numsprites * sizeof(*sprites), PU_STATIC, NULL));
 
     start = firstspritelump - 1;
     end = lastspritelump + 1;
@@ -226,7 +226,7 @@ void R_InitSpriteDefs(const char **namelist)
         //
         sprites[i].numframes = maxframe;
         sprites[i].spriteframes =
-            Z_Malloc(maxframe * sizeof(spriteframe_t), PU_STATIC, NULL);
+            static_cast<spriteframe_t *>(Z_Malloc(maxframe * sizeof(spriteframe_t), PU_STATIC, NULL));
         memcpy(sprites[i].spriteframes, sprtemp,
                maxframe * sizeof(spriteframe_t));
     }
@@ -313,7 +313,7 @@ vissprite_t *R_NewVisSprite(void)
         return &overflowsprite;
 
 	numvissprites = numvissprites ? 2 * numvissprites : MAXVISSPRITES;
-	vissprites = I_Realloc(vissprites, numvissprites * sizeof(*vissprites));
+	vissprites = static_cast<vissprite_t *>(I_Realloc(vissprites, numvissprites * sizeof(*vissprites)));
 	memset(vissprites + numvissprites_old, 0, (numvissprites - numvissprites_old) * sizeof(*vissprites));
 
 	vissprite_p = vissprites + numvissprites_old;
@@ -397,7 +397,7 @@ void R_DrawVisSprite(vissprite_t * vis, int x1, int x2)
     fixed_t baseclip;
 
 
-    patch = W_CacheLumpNum(vis->patch + firstspritelump, PU_CACHE);
+    patch = static_cast<patch_t *>(W_CacheLumpNum(vis->patch + firstspritelump, PU_CACHE));
 
     dc_colormap = vis->colormap;
 
@@ -481,7 +481,7 @@ void R_DrawVisSprite(vissprite_t * vis, int x1, int x2)
 
 void R_ProjectSprite(mobj_t * thing)
 {
-    fixed_t trx, try;
+    fixed_t trx, tr_y;
     fixed_t gxt, gyt;
     fixed_t tx, tz;
     fixed_t xscale;
@@ -505,10 +505,10 @@ void R_ProjectSprite(mobj_t * thing)
 // transform the origin point
 //
     trx = thing->x - viewx;
-    try = thing->y - viewy;
+    tr_y = thing->y - viewy;
 
     gxt = FixedMul(trx, viewcos);
-    gyt = -FixedMul(try, viewsin);
+    gyt = -FixedMul(tr_y, viewsin);
     tz = gxt - gyt;
 
     if (tz < MINZ)
@@ -516,7 +516,7 @@ void R_ProjectSprite(mobj_t * thing)
     xscale = FixedDiv(projection, tz);
 
     gxt = -FixedMul(trx, viewsin);
-    gyt = FixedMul(try, viewcos);
+    gyt = FixedMul(tr_y, viewcos);
     tx = -(gyt + gxt);
 
     if (abs(tx) > (tz << 2))

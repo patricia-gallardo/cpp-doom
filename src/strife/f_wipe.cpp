@@ -223,11 +223,11 @@ wipe_exitMelt
 int
 wipe_StartScreen
 ( int	x,
-  int	y,
+  int	y_pos,
   int	width,
   int	height )
 {
-    wipe_scr_start = Z_Malloc(SCREENWIDTH * SCREENHEIGHT, PU_STATIC, NULL);
+    wipe_scr_start = static_cast<byte *>(Z_Malloc(SCREENWIDTH * SCREENHEIGHT, PU_STATIC, NULL));
     I_ReadScreen(wipe_scr_start);
     return 0;
 }
@@ -236,13 +236,13 @@ wipe_StartScreen
 int
 wipe_EndScreen
 ( int	x,
-  int	y,
+  int	y_pos,
   int	width,
   int	height )
 {
-    wipe_scr_end = Z_Malloc(SCREENWIDTH * SCREENHEIGHT, PU_STATIC, NULL);
+    wipe_scr_end = static_cast<byte *>(Z_Malloc(SCREENWIDTH * SCREENHEIGHT, PU_STATIC, NULL));
     I_ReadScreen(wipe_scr_end);
-    V_DrawBlock(x, y, width, height, wipe_scr_start); // restore start scr.
+    V_DrawBlock(x, y_pos, width, height, wipe_scr_start); // restore start scr.
     return 0;
 }
 
@@ -251,7 +251,7 @@ int
 wipe_ScreenWipe
 ( int	wipeno,
   int	x,
-  int	y,
+  int	y_pos,
   int	width,
   int	height,
   int	ticks )
@@ -270,7 +270,7 @@ wipe_ScreenWipe
     {
 	go = 1;
         // haleyjd 20110629 [STRIFE]: We *must* use a temp buffer here.
-	wipe_scr = (byte *) Z_Malloc(width*height, PU_STATIC, 0); // DEBUG
+	wipe_scr = static_cast<byte *>(Z_Malloc(width * height, PU_STATIC, 0)); // DEBUG
 	//wipe_scr = I_VideoBuffer;
 	(*wipes[wipeno*3])(width, height, ticks);
     }
@@ -280,7 +280,7 @@ wipe_ScreenWipe
     rc = (*wipes[wipeno*3+1])(width, height, ticks);
 
     // haleyjd 20110629 [STRIFE]: Copy temp buffer to the real screen.
-    V_DrawBlock(x, y, width, height, wipe_scr);
+    V_DrawBlock(x, y_pos, width, height, wipe_scr);
 
     // final stuff
     if (rc)

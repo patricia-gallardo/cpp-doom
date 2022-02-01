@@ -49,6 +49,7 @@ function(set_project_warnings)
             -Wno-unused-lambda-capture # We like explicit capture
             -Wno-unused-parameter
             -Wno-unused-variable # TODO turn it back on (patricia)
+            -Wno-unused-function # TODO turn it back on (patricia)
             -Wunused-function # TODO turn it back on (patricia)
             -Wno-reserved-user-defined-literal # TODO turn it back on (patricia)?
             -Wno-shorten-64-to-32 # TODO turn it back on (patricia)

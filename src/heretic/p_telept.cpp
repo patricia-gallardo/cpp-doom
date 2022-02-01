@@ -143,7 +143,7 @@ boolean EV_Teleport(line_t * line, int side, mobj_t * thing)
             for (thinker = thinkercap.next; thinker != &thinkercap;
                  thinker = thinker->next)
             {
-                if (thinker->function != P_MobjThinker)
+                if (thinker->function != reinterpret_cast<think_t>(P_MobjThinker))
                 {               // Not a mobj
                     continue;
                 }

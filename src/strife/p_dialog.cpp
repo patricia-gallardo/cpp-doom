@@ -398,7 +398,7 @@ static void P_ParseDialogLump(byte *lump, mapdialog_t **dialogs,
     int i;
     byte *rover = lump;
 
-    *dialogs = Z_Malloc(numdialogs * sizeof(mapdialog_t), tag, NULL);
+    *dialogs = static_cast<mapdialog_t *>(Z_Malloc(numdialogs * sizeof(mapdialog_t), tag, NULL));
 
     for(i = 0; i < numdialogs; i++)
     {
@@ -454,7 +454,7 @@ void P_DialogLoad(void)
         numleveldialogs = 0;
     else
     {
-        byte *leveldialogptr = W_CacheLumpNum(lumpnum, PU_STATIC);
+        byte *leveldialogptr = static_cast<byte *>(W_CacheLumpNum(lumpnum, PU_STATIC));
         numleveldialogs = W_LumpLength(lumpnum) / ORIG_MAPDIALOG_SIZE;
         P_ParseDialogLump(leveldialogptr, &leveldialogs, numleveldialogs, 
                           PU_LEVEL);
@@ -469,7 +469,7 @@ void P_DialogLoad(void)
         script0loaded = true; 
         // BUG: Rogue should have used W_GetNumForName here...
         lumpnum = W_CheckNumForName(DEH_String("script00")); 
-        script0ptr = W_CacheLumpNum(lumpnum, PU_STATIC);
+        script0ptr = static_cast<byte *>(W_CacheLumpNum(lumpnum, PU_STATIC));
         numscript0dialogs = W_LumpLength(lumpnum) / ORIG_MAPDIALOG_SIZE;
         P_ParseDialogLump(script0ptr, &script0dialogs, numscript0dialogs,
                           PU_STATIC);
@@ -613,7 +613,7 @@ boolean P_GiveInventoryItem(player_t *player, int sprnum, mobjtype_t type)
     int curinv = 0;
     int i;
     boolean ok = false;
-    mobjtype_t item = 0;
+    mobjtype_t item = static_cast<mobjtype_t>(0);
     inventory_t* invtail;
 
     // repaint the status bar due to inventory changing
@@ -625,7 +625,7 @@ boolean P_GiveInventoryItem(player_t *player, int sprnum, mobjtype_t type)
         if(curinv > player->numinventory)
             return true;
 
-        item = player->inventory[curinv].type;
+        item = static_cast<mobjtype_t>(player->inventory[curinv].type);
         if(type < item)
         {
             if(curinv != MAXINVENTORYSLOTS)
@@ -703,7 +703,7 @@ boolean P_GiveItemToPlayer(player_t *player, int sprnum, mobjtype_t type)
     // check for keys
     if(type >= MT_KEY_BASE && type <= MT_NEWKEY5)
     {
-        P_GiveCard(player, type - MT_KEY_BASE);
+        P_GiveCard(player, static_cast<card_t>(type - MT_KEY_BASE));
         return true;
     }
 

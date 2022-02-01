@@ -45,8 +45,8 @@ static const char *cfg_extension[] = { "cfg", NULL };
 
 // Config file variables:
 
-int snd_sfxdevice = SNDDEVICE_SB;
-int snd_musicdevice = SNDDEVICE_SB;
+int snd_sfxdevice_local = SNDDEVICE_SB;
+int snd_musicdevice_local = SNDDEVICE_SB;
 int snd_samplerate = 44100;
 int opl_io_port = 0x388;
 int snd_cachesize = 64 * 1024 * 1024;
@@ -145,41 +145,41 @@ void ConfigSound(TXT_UNCAST_ARG(widget), void *user_data)
 
     TXT_AddWidgets(window,
         TXT_NewSeparator("Sound effects"),
-        TXT_NewRadioButton("Disabled", &snd_sfxdevice, SNDDEVICE_NONE),
+        TXT_NewRadioButton("Disabled", static_cast<int *>(&snd_sfxdevice_local), SNDDEVICE_NONE),
         TXT_If(gamemission == doom,
-            TXT_NewRadioButton("PC speaker effects", &snd_sfxdevice,
+            TXT_NewRadioButton("PC speaker effects", &snd_sfxdevice_local,
                                SNDDEVICE_PCSPEAKER)),
         TXT_NewRadioButton("Digital sound effects",
-                           &snd_sfxdevice,
+                           &snd_sfxdevice_local,
                            SNDDEVICE_SB),
         TXT_If(gamemission == doom || gamemission == heretic
             || gamemission == hexen,
-            TXT_NewConditional(&snd_sfxdevice, SNDDEVICE_SB,
+            TXT_NewConditional(&snd_sfxdevice_local, SNDDEVICE_SB,
                 TXT_NewHorizBox(
                     TXT_NewStrut(4, 0),
                     TXT_NewCheckBox("Pitch-shifted sounds", &snd_pitchshift),
                     NULL))),
         TXT_If(gamemission == strife,
-            TXT_NewConditional(&snd_sfxdevice, SNDDEVICE_SB,
+            TXT_NewConditional(&snd_sfxdevice_local, SNDDEVICE_SB,
                 TXT_NewHorizBox(
                     TXT_NewStrut(4, 0),
                     TXT_NewCheckBox("Show text with voices", &show_talk),
                     NULL))),
 
         TXT_NewSeparator("Music"),
-        TXT_NewRadioButton("Disabled", &snd_musicdevice, SNDDEVICE_NONE),
+        TXT_NewRadioButton("Disabled", &snd_musicdevice_local, SNDDEVICE_NONE),
 
-        TXT_NewRadioButton("OPL (Adlib/Soundblaster)", &snd_musicdevice,
+        TXT_NewRadioButton("OPL (Adlib/Soundblaster)", &snd_musicdevice_local,
                            SNDDEVICE_SB),
-        TXT_NewConditional(&snd_musicdevice, SNDDEVICE_SB,
+        TXT_NewConditional(&snd_musicdevice_local, SNDDEVICE_SB,
             TXT_NewHorizBox(
                 TXT_NewStrut(4, 0),
                 TXT_NewLabel("Chip type: "),
                 OPLTypeSelector(),
                 NULL)),
 
-        TXT_NewRadioButton("GUS (emulated)", &snd_musicdevice, SNDDEVICE_GUS),
-        TXT_NewConditional(&snd_musicdevice, SNDDEVICE_GUS,
+        TXT_NewRadioButton("GUS (emulated)", &snd_musicdevice_local, SNDDEVICE_GUS),
+        TXT_NewConditional(&snd_musicdevice_local, SNDDEVICE_GUS,
             TXT_MakeTable(2,
                 TXT_NewStrut(4, 0),
                 TXT_NewLabel("Path to patch files: "),
@@ -189,8 +189,8 @@ void ConfigSound(TXT_UNCAST_ARG(widget), void *user_data)
                                     TXT_DIRECTORY),
                 NULL)),
 
-        TXT_NewRadioButton("MIDI/MP3/OGG/FLAC", &snd_musicdevice, SNDDEVICE_GENMIDI), // [crispy] improve ambigious music backend name
-        TXT_NewConditional(&snd_musicdevice, SNDDEVICE_GENMIDI,
+        TXT_NewRadioButton("MIDI/MP3/OGG/FLAC", &snd_musicdevice_local, SNDDEVICE_GENMIDI), // [crispy] improve ambigious music backend name
+        TXT_NewConditional(&snd_musicdevice_local, SNDDEVICE_GENMIDI,
             TXT_MakeTable(2,
                 TXT_NewStrut(4, 0),
                 TXT_NewLabel("Timidity configuration file: "),
@@ -204,8 +204,8 @@ void ConfigSound(TXT_UNCAST_ARG(widget), void *user_data)
 
 void BindSoundVariables(void)
 {
-    M_BindIntVariable("snd_sfxdevice",            &snd_sfxdevice);
-    M_BindIntVariable("snd_musicdevice",          &snd_musicdevice);
+    M_BindIntVariable("snd_sfxdevice",            &snd_sfxdevice_local);
+    M_BindIntVariable("snd_musicdevice",          &snd_musicdevice_local);
     M_BindIntVariable("snd_channels",             &numChannels);
     M_BindIntVariable("snd_samplerate",           &snd_samplerate);
     M_BindIntVariable("sfx_volume",               &sfxVolume);

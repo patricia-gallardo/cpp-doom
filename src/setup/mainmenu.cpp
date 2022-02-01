@@ -82,7 +82,7 @@ static void SensibleDefaults(void)
     key_multi_msgplayer[7] = 'm';
     mousebprevweapon = 4;           // Scroll wheel = weapon cycle
     mousebnextweapon = 3;
-    snd_musicdevice = 3;
+    snd_musicdevice = static_cast<snddevice_t>(3);
     joybspeed = 29;                 // Always run
     vanilla_savegame_limit = 0;
     vanilla_keyboard_mapping = 0;

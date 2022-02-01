@@ -175,7 +175,7 @@ txt_key_input_t *TXT_NewKeyInput(int *variable)
 {
     txt_key_input_t *key_input;
 
-    key_input = malloc(sizeof(txt_key_input_t));
+    key_input = static_cast<txt_key_input_t *>(malloc(sizeof(txt_key_input_t)));
 
     TXT_InitWidget(key_input, &txt_key_input_class);
     key_input->variable = variable;

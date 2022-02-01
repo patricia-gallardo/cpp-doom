@@ -355,7 +355,7 @@ boolean PIT_CheckThing(mobj_t * thing)
         P_DamageMobj(thing, tmthing, tmthing, damage);
         tmthing->flags &= ~MF_SKULLFLY;
         tmthing->momx = tmthing->momy = tmthing->momz = 0;
-        P_SetMobjState(tmthing, tmthing->info->seestate);
+        P_SetMobjState(tmthing, static_cast<statenum_t>(tmthing->info->seestate));
         return (false);
     }
     // Check for missile
