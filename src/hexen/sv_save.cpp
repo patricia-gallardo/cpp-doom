@@ -22,6 +22,7 @@
 #include "m_misc.hpp"
 #include "i_swap.hpp"
 #include "p_local.hpp"
+#include "../../utils/memory.hpp"
 
 // MACROS ------------------------------------------------------------------
 
@@ -2626,14 +2627,14 @@ static void UnarchiveMobjs(void)
     mobj_t *mobj;
 
     AssertSegment(ASEG_MOBJS);
-    TargetPlayerAddrs = static_cast<mobj_t ***>(Z_Malloc(MAX_TARGET_PLAYERS * sizeof(mobj_t **),
-        PU_STATIC, NULL));
+    TargetPlayerAddrs = zmalloc<mobj_t ***>(MAX_TARGET_PLAYERS * sizeof(mobj_t **),
+        PU_STATIC, NULL);
     TargetPlayerCount = 0;
     MobjCount = SV_ReadLong();
-    MobjList = static_cast<mobj_t **>(Z_Malloc(MobjCount * sizeof(mobj_t *), PU_STATIC, NULL));
+    MobjList = zmalloc<mobj_t **>(MobjCount * sizeof(mobj_t *), PU_STATIC, NULL);
     for (i = 0; i < MobjCount; i++)
     {
-        MobjList[i] = static_cast<mobj_t *>(Z_Malloc(sizeof(mobj_t), PU_LEVEL, NULL));
+        MobjList[i] = zmalloc<mobj_t *>(sizeof(mobj_t), PU_LEVEL, NULL);
     }
     for (i = 0; i < MobjCount; i++)
     {
@@ -2858,7 +2859,7 @@ static void UnarchiveThinkers(void)
         {
             if (tClass == info->tClass)
             {
-                thinker = static_cast<thinker_t *>(Z_Malloc(info->size, PU_LEVEL, NULL));
+                thinker = zmalloc<thinker_t *>(info->size, PU_LEVEL, NULL);
                 info->readFunc(thinker);
                 thinker->function = info->thinkerFunc;
                 if (info->restoreFunc)
@@ -3277,7 +3278,7 @@ static void CopyFile(char *source_name, char *dest_name)
 
     if (vanilla_savegame_limit)
     {
-        buffer = static_cast<byte *>(Z_Malloc(file_length, PU_STATIC, NULL));
+        buffer = zmalloc<byte *>(file_length, PU_STATIC, NULL);
         Z_Free(buffer);
     }
 
@@ -3287,7 +3288,7 @@ static void CopyFile(char *source_name, char *dest_name)
         I_Error ("Couldn't read file %s", dest_name);
     }
 
-    buffer = static_cast<byte *>(Z_Malloc(BUFFER_CHUNK_SIZE, PU_STATIC, NULL));
+    buffer = zmalloc<byte *>(BUFFER_CHUNK_SIZE, PU_STATIC, NULL);
 
     do
     {

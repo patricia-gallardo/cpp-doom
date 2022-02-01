@@ -23,6 +23,7 @@
 #include "i_system.hpp"
 #include "i_sound.hpp"
 #include "s_sound.hpp"
+#include "../../utils/memory.hpp"
 
 // MACROS ------------------------------------------------------------------
 
@@ -197,7 +198,7 @@ void SN_InitSequenceScript(void)
             {
                 SC_ScriptError("SN_InitSequenceScript:  Nested Script Error");
             }
-            tempDataStart = (int *) Z_Malloc(SS_TEMPBUFFER_SIZE,
+            tempDataStart = zmalloc<int *>(SS_TEMPBUFFER_SIZE,
                                              PU_STATIC, NULL);
             memset(tempDataStart, 0, SS_TEMPBUFFER_SIZE);
             tempDataPtr = tempDataStart;
@@ -288,7 +289,7 @@ void SN_InitSequenceScript(void)
 
             *tempDataPtr++ = SS_CMD_END;
             dataSize = (tempDataPtr - tempDataStart) * sizeof(int);
-            SequenceData[i] = (int *) Z_Malloc(dataSize, PU_STATIC, NULL);
+            SequenceData[i] = zmalloc<int *>(dataSize, PU_STATIC, NULL);
             memcpy(SequenceData[i], tempDataStart, dataSize);
             Z_Free(tempDataStart);
             inSequence = -1;
@@ -318,7 +319,7 @@ void SN_StartSequence(mobj_t * mobj, int sequence)
     seqnode_t *node;
 
     SN_StopSequence(mobj);      // Stop any previous sequence
-    node = (seqnode_t *) Z_Malloc(sizeof(seqnode_t), PU_STATIC, NULL);
+    node = zmalloc<seqnode_t *>(sizeof(seqnode_t), PU_STATIC, NULL);
     node->sequencePtr = SequenceData[SequenceTranslate[sequence].scriptNum];
     node->sequence = sequence;
     node->mobj = mobj;

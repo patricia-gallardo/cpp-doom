@@ -21,6 +21,7 @@
 #include "p_local.hpp"
 #include "s_sound.hpp"
 #include "v_video.hpp"
+#include "../../utils/memory.hpp"
 
 //==================================================================
 //==================================================================
@@ -158,7 +159,7 @@ int EV_DoDoor(line_t * line, vldoor_e type, fixed_t speed)
         }
         // Add new door thinker
         retcode = 1;
-        door = static_cast<vldoor_t *>(Z_Malloc(sizeof(*door), PU_LEVSPEC, 0));
+        door = zmalloc<vldoor_t *>(sizeof(*door), PU_LEVSPEC, 0);
         P_AddThinker(&door->thinker);
         sec->specialdata = door;
         door->thinker.function = reinterpret_cast<think_t>(T_VerticalDoor);
@@ -301,7 +302,7 @@ void EV_VerticalDoor(line_t * line, mobj_t * thing)
     //
     // new door thinker
     //
-    door = static_cast<vldoor_t *>(Z_Malloc(sizeof(*door), PU_LEVSPEC, 0));
+    door = zmalloc<vldoor_t *>(sizeof(*door), PU_LEVSPEC, 0);
     P_AddThinker(&door->thinker);
     sec->specialdata = door;
     door->thinker.function = reinterpret_cast<think_t>(T_VerticalDoor);
@@ -342,7 +343,7 @@ void P_SpawnDoorCloseIn30(sector_t * sec)
 {
     vldoor_t *door;
 
-    door = static_cast<vldoor_t *>(Z_Malloc(sizeof(*door), PU_LEVSPEC, 0));
+    door = zmalloc<vldoor_t *>(sizeof(*door), PU_LEVSPEC, 0);
     P_AddThinker(&door->thinker);
     sec->specialdata = door;
     sec->special = 0;
@@ -363,7 +364,7 @@ void P_SpawnDoorRaiseIn5Mins(sector_t * sec, int secnum)
 {
     vldoor_t *door;
 
-    door = static_cast<vldoor_t *>(Z_Malloc(sizeof(*door), PU_LEVSPEC, 0));
+    door = zmalloc<vldoor_t *>(sizeof(*door), PU_LEVSPEC, 0);
     P_AddThinker(&door->thinker);
     sec->specialdata = door;
     sec->special = 0;

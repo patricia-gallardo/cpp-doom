@@ -61,6 +61,7 @@
 
 #include "../../utils/lump.hpp"
 #include "v_trans.hpp" // [crispy] colored cheat messages
+#include "../../utils/memory.hpp"
 
 extern int     screenblocks;  // [crispy] for the Crispy HUD
 extern boolean inhelpscreens; // [crispy] prevent palette changes
@@ -2341,7 +2342,7 @@ void ST_Init(void)
     }
 
     ST_loadData();
-    st_backing_screen = (pixel_t *)Z_Malloc(MAXWIDTH * (ST_HEIGHT << 1) * sizeof(*st_backing_screen), PU_STATIC, 0);
+    st_backing_screen = zmalloc<pixel_t *>(MAXWIDTH * (ST_HEIGHT << 1) * sizeof(*st_backing_screen), PU_STATIC, 0);
 }
 
 // [crispy] Demo Timer widget

@@ -18,6 +18,7 @@
 #include "h2def.hpp"
 #include "i_system.hpp"
 #include "p_local.hpp"
+#include "../../utils/memory.hpp"
 
 extern fixed_t FloatBobOffsets[64];
 
@@ -294,7 +295,7 @@ int EV_DoFloor(line_t * line, byte * args, floor_e floortype)
         //      new floor thinker
         //
         rtn = 1;
-        floor = static_cast<floormove_t *>(Z_Malloc(sizeof(*floor), PU_LEVSPEC, 0));
+        floor = zmalloc<floormove_t *>(sizeof(*floor), PU_LEVSPEC, 0);
         memset(floor, 0, sizeof(*floor));
         P_AddThinker(&floor->thinker);
         sec->specialdata = floor;
@@ -516,7 +517,7 @@ static void ProcessStairSector(sector_t * sec, int type, int height,
     // new floor thinker
     //
     height += StepDelta;
-    floor = static_cast<floormove_t *>(Z_Malloc(sizeof(*floor), PU_LEVSPEC, 0));
+    floor = zmalloc<floormove_t *>(sizeof(*floor), PU_LEVSPEC, 0);
     memset(floor, 0, sizeof(*floor));
     P_AddThinker(&floor->thinker);
     sec->specialdata = floor;
@@ -710,7 +711,7 @@ int EV_BuildPillar(line_t * line, byte * args, boolean crush)
             newHeight = sec->floorheight + (args[2] << FRACBITS);
         }
 
-        pillar = static_cast<pillar_t *>(Z_Malloc(sizeof(*pillar), PU_LEVSPEC, 0));
+        pillar = zmalloc<pillar_t *>(sizeof(*pillar), PU_LEVSPEC, 0);
         sec->specialdata = pillar;
         P_AddThinker(&pillar->thinker);
         pillar->thinker.function = reinterpret_cast<think_t>(T_BuildPillar);
@@ -772,7 +773,7 @@ int EV_OpenPillar(line_t * line, byte * args)
             continue;
         }
         rtn = 1;
-        pillar = static_cast<pillar_t *>(Z_Malloc(sizeof(*pillar), PU_LEVSPEC, 0));
+        pillar = zmalloc<pillar_t *>(sizeof(*pillar), PU_LEVSPEC, 0);
         sec->specialdata = pillar;
         P_AddThinker(&pillar->thinker);
         pillar->thinker.function = reinterpret_cast<think_t>(T_BuildPillar);
@@ -925,7 +926,7 @@ boolean EV_StartFloorWaggle(int tag, int height, int speed, int offset,
             continue;
         }
         retCode = true;
-        waggle = static_cast<floorWaggle_t *>(Z_Malloc(sizeof(*waggle), PU_LEVSPEC, 0));
+        waggle = zmalloc<floorWaggle_t *>(sizeof(*waggle), PU_LEVSPEC, 0);
         sector->specialdata = waggle;
         waggle->thinker.function = reinterpret_cast<think_t>(T_FloorWaggle);
         waggle->sector = sector;

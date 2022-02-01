@@ -29,6 +29,7 @@
 #include "s_sound.hpp"
 #include "doomstat.hpp"
 #include "d_main.hpp"     // villsa [STRIFE]
+#include "../../utils/memory.hpp"
 
 extern line_t *spechit[];  // haleyjd:
 extern int     numspechit; // [STRIFE] - needed in P_XYMovement
@@ -627,7 +628,7 @@ P_SpawnMobj
     state_t*	st;
     mobjinfo_t*	info;
 
-    mobj = static_cast<mobj_t *>(Z_Malloc(sizeof(*mobj), PU_LEVEL, NULL));
+    mobj = zmalloc<mobj_t *>(sizeof(*mobj), PU_LEVEL, NULL);
     memset (mobj, 0, sizeof (*mobj));
     info = &mobjinfo[type];
 

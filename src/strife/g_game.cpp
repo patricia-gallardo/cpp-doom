@@ -68,6 +68,7 @@
 
 #include "g_game.hpp"
 #include "../../utils/lump.hpp"
+#include "../../utils/memory.hpp"
 
 
 #define SAVEGAMESIZE	0x2c000
@@ -2122,7 +2123,7 @@ static void IncreaseDemoBuffer(void)
     // Generate a new buffer twice the size
     new_length = current_length * 2;
     
-    new_demobuffer = static_cast<byte *>(Z_Malloc(new_length, PU_STATIC, 0));
+    new_demobuffer = zmalloc<byte *>(new_length, PU_STATIC, 0);
     new_demop = new_demobuffer + (demo_p - demobuffer);
 
     // Copy over the old data
@@ -2197,7 +2198,7 @@ void G_RecordDemo (char* name)
 
     usergame = false;
     demoname_size = strlen(name) + 5;
-    demoname = static_cast<char *>(Z_Malloc(demoname_size, PU_STATIC, NULL));
+    demoname = zmalloc<char *>(demoname_size, PU_STATIC, NULL);
     M_snprintf(demoname, demoname_size, "%s.lmp", name);
     maxsize = 0x20000;
 
@@ -2212,7 +2213,7 @@ void G_RecordDemo (char* name)
     i = M_CheckParmWithArgs("-maxdemo", 1);
     if (i)
         maxsize = atoi(myargv[i+1])*1024;
-    demobuffer = static_cast<byte *>(Z_Malloc(maxsize, PU_STATIC, NULL));
+    demobuffer = zmalloc<byte *>(maxsize, PU_STATIC, NULL);
     demoend = demobuffer + maxsize;
 
     demorecording = true; 

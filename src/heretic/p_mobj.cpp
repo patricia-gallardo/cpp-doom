@@ -22,6 +22,7 @@
 #include "p_local.hpp"
 #include "sounds.hpp"
 #include "s_sound.hpp"
+#include "../../utils/memory.hpp"
 
 void G_PlayerReborn(int player);
 void P_SpawnMapThing(mapthing_t * mthing);
@@ -857,7 +858,7 @@ mobj_t *P_SpawnMobj(fixed_t x, fixed_t y, fixed_t z, mobjtype_t type)
     mobjinfo_t *info;
     fixed_t space;
 
-    mobj = static_cast<mobj_t *>(Z_Malloc(sizeof(*mobj), PU_LEVEL, NULL));
+    mobj = zmalloc<mobj_t *>(sizeof(*mobj), PU_LEVEL, NULL);
     memset(mobj, 0, sizeof(*mobj));
     info = &mobjinfo[type];
     mobj->type = type;

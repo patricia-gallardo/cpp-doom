@@ -24,6 +24,7 @@
 #include "m_misc.hpp"
 #include "p_local.hpp"
 #include "v_video.hpp"
+#include "../../utils/memory.hpp"
 
 static FILE *SaveGameFP;
 
@@ -1713,7 +1714,7 @@ void P_UnArchiveThinkers(void)
                 return;         // end of list
 
             case tc_mobj:
-                mobj = static_cast<mobj_t *>(Z_Malloc(sizeof(*mobj), PU_LEVEL, NULL));
+                mobj = zmalloc<mobj_t *>(sizeof(*mobj), PU_LEVEL, NULL);
                 saveg_read_mobj_t(mobj);
                 mobj->target = NULL;
                 P_SetThingPosition(mobj);
@@ -1840,7 +1841,7 @@ void P_UnArchiveSpecials(void)
                 return;         // end of list
 
             case tc_ceiling:
-                ceiling = static_cast<ceiling_t *>(Z_Malloc(sizeof(*ceiling), PU_LEVEL, NULL));
+                ceiling = zmalloc<ceiling_t *>(sizeof(*ceiling), PU_LEVEL, NULL);
                 saveg_read_ceiling_t(ceiling);
                 ceiling->sector->specialdata = T_MoveCeiling;  // ???
                 ceiling->thinker.function = reinterpret_cast<think_t>(T_MoveCeiling);
@@ -1849,7 +1850,7 @@ void P_UnArchiveSpecials(void)
                 break;
 
             case tc_door:
-                door = static_cast<vldoor_t *>(Z_Malloc(sizeof(*door), PU_LEVEL, NULL));
+                door = zmalloc<vldoor_t *>(sizeof(*door), PU_LEVEL, NULL);
                 saveg_read_vldoor_t(door);
                 door->sector->specialdata = door;
                 door->thinker.function = reinterpret_cast<think_t>(T_VerticalDoor);
@@ -1857,7 +1858,7 @@ void P_UnArchiveSpecials(void)
                 break;
 
             case tc_floor:
-                floor = static_cast<floormove_t *>(Z_Malloc(sizeof(*floor), PU_LEVEL, NULL));
+                floor = zmalloc<floormove_t *>(sizeof(*floor), PU_LEVEL, NULL);
                 saveg_read_floormove_t(floor);
                 floor->sector->specialdata = T_MoveFloor;
                 floor->thinker.function = reinterpret_cast<think_t>(T_MoveFloor);
@@ -1865,7 +1866,7 @@ void P_UnArchiveSpecials(void)
                 break;
 
             case tc_plat:
-                plat = static_cast<plat_t *>(Z_Malloc(sizeof(*plat), PU_LEVEL, NULL));
+                plat = zmalloc<plat_t *>(sizeof(*plat), PU_LEVEL, NULL);
                 saveg_read_plat_t(plat);
                 plat->sector->specialdata = T_PlatRaise;
                 // In the original Heretic code this was a conditional "fix"
@@ -1880,21 +1881,21 @@ void P_UnArchiveSpecials(void)
                 break;
 
             case tc_flash:
-                flash = static_cast<lightflash_t *>(Z_Malloc(sizeof(*flash), PU_LEVEL, NULL));
+                flash = zmalloc<lightflash_t *>(sizeof(*flash), PU_LEVEL, NULL);
                 saveg_read_lightflash_t(flash);
                 flash->thinker.function = reinterpret_cast<think_t>(T_LightFlash);
                 P_AddThinker(&flash->thinker);
                 break;
 
             case tc_strobe:
-                strobe = static_cast<strobe_t *>(Z_Malloc(sizeof(*strobe), PU_LEVEL, NULL));
+                strobe = zmalloc<strobe_t *>(sizeof(*strobe), PU_LEVEL, NULL);
                 saveg_read_strobe_t(strobe);
                 strobe->thinker.function = reinterpret_cast<think_t>(T_StrobeFlash);
                 P_AddThinker(&strobe->thinker);
                 break;
 
             case tc_glow:
-                glow = static_cast<glow_t *>(Z_Malloc(sizeof(*glow), PU_LEVEL, NULL));
+                glow = zmalloc<glow_t *>(sizeof(*glow), PU_LEVEL, NULL);
                 saveg_read_glow_t(glow);
                 glow->thinker.function = reinterpret_cast<think_t>(T_Glow);
                 P_AddThinker(&glow->thinker);

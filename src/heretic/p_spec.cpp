@@ -24,6 +24,7 @@
 #include "p_local.hpp"
 #include "s_sound.hpp"
 #include "v_video.hpp"
+#include "../../utils/memory.hpp"
 
 // Macros
 
@@ -233,7 +234,7 @@ void P_InitTerrainTypes(void)
     int size;
 
     size = (numflats + 1) * sizeof(int);
-    TerrainTypes = static_cast<int *>(Z_Malloc(size, PU_STATIC, 0));
+    TerrainTypes = zmalloc<int *>(size, PU_STATIC, 0);
     memset(TerrainTypes, 0, size);
     for (i = 0; TerrainTypeDefs[i].type != -1; i++)
     {
@@ -1076,7 +1077,7 @@ int EV_DoDonut(line_t * line)
             //
             //      Spawn rising slime
             //
-            floor = static_cast<floormove_t *>(Z_Malloc(sizeof(*floor), PU_LEVSPEC, 0));
+            floor = zmalloc<floormove_t *>(sizeof(*floor), PU_LEVSPEC, 0);
             P_AddThinker(&floor->thinker);
             s2->specialdata = floor;
             floor->thinker.function = reinterpret_cast<think_t>(T_MoveFloor);
@@ -1092,7 +1093,7 @@ int EV_DoDonut(line_t * line)
             //
             //      Spawn lowering donut-hole
             //
-            floor = static_cast<floormove_t *>(Z_Malloc(sizeof(*floor), PU_LEVSPEC, 0));
+            floor = zmalloc<floormove_t *>(sizeof(*floor), PU_LEVSPEC, 0);
             P_AddThinker(&floor->thinker);
             s1->specialdata = floor;
             floor->thinker.function = reinterpret_cast<think_t>(T_MoveFloor);

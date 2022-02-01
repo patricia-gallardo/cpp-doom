@@ -21,6 +21,7 @@
 #include "i_video.hpp"
 #include "v_video.hpp"
 #include "../../utils/lump.hpp"
+#include "../../utils/memory.hpp"
 
 /*
 
@@ -262,7 +263,7 @@ void R_InitTranslationTables(void)
     V_LoadTintTable();
 
     // Allocate translation tables
-    translationtables = static_cast<byte *>(Z_Malloc(256 * 3, PU_STATIC, 0));
+    translationtables = zmalloc<byte *>(256 * 3, PU_STATIC, 0);
 
     // Fill out the translation tables
     for (i = 0; i < 256; i++)

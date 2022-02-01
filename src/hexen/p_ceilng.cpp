@@ -17,6 +17,7 @@
 
 #include "h2def.hpp"
 #include "p_local.hpp"
+#include "../../utils/memory.hpp"
 
 //==================================================================
 //==================================================================
@@ -133,7 +134,7 @@ int EV_DoCeiling(line_t * line, byte * arg, ceiling_e type)
         // new door thinker
         //
         rtn = 1;
-        ceiling = static_cast<ceiling_t *>(Z_Malloc(sizeof(*ceiling), PU_LEVSPEC, 0));
+        ceiling = zmalloc<ceiling_t *>(sizeof(*ceiling), PU_LEVSPEC, 0);
         P_AddThinker(&ceiling->thinker);
         sec->specialdata = ceiling;
         ceiling->thinker.function = reinterpret_cast<think_t>(T_MoveCeiling);

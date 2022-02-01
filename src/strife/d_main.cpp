@@ -847,7 +847,7 @@ void D_IdentifyVersion(void)
         {
             char   *iwad     = myargv[p + 1];
             size_t  len      = strlen(iwad) + 1;
-            char   *iwadpath = static_cast<char *>(Z_Malloc(len, PU_STATIC, NULL));
+            char   *iwadpath = zmalloc<char *>(len, PU_STATIC, NULL);
             char   *voiceswad;
 
             // extract base path of IWAD parameter

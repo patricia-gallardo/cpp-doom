@@ -26,6 +26,7 @@
 #include "v_video.hpp"
 #include "i_swap.hpp"
 #include "../../utils/lump.hpp"
+#include "../../utils/memory.hpp"
 
 // MACROS ------------------------------------------------------------------
 
@@ -243,9 +244,9 @@ static void InitializeFade(boolean fadeIn)
 {
     unsigned i;
 
-    Palette = static_cast<fixed_t *>(Z_Malloc(768 * sizeof(fixed_t), PU_STATIC, 0));
-    PaletteDelta = static_cast<fixed_t *>(Z_Malloc(768 * sizeof(fixed_t), PU_STATIC, 0));
-    RealPalette = static_cast<byte *>(Z_Malloc(768 * sizeof(byte), PU_STATIC, 0));
+    Palette = zmalloc<fixed_t *>(768 * sizeof(fixed_t), PU_STATIC, 0);
+    PaletteDelta = zmalloc<fixed_t *>(768 * sizeof(fixed_t), PU_STATIC, 0);
+    RealPalette = zmalloc<byte *>(768 * sizeof(byte), PU_STATIC, 0);
 
     if (fadeIn)
     {

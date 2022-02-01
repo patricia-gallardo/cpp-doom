@@ -411,8 +411,8 @@ void R_GenerateLookup(int texnum)
     //  that are covered by more than one patch.
     // Fill in the lump / offset, so columns
     //  with only a single patch are all done.
-    patchcount = (byte *)Z_Malloc(texture->width, PU_STATIC, &patchcount);
-    postcount  = (byte *)Z_Malloc(texture->width, PU_STATIC, &postcount);
+    patchcount = zmalloc<byte *>(texture->width, PU_STATIC, &patchcount);
+    postcount  = zmalloc<byte *>(texture->width, PU_STATIC, &postcount);
     memset(patchcount, 0, texture->width);
     memset(postcount, 0, texture->width);
     patch = texture->patches;
@@ -1142,7 +1142,7 @@ void R_InitColormaps(void)
 
     if (!colormaps)
     {
-        colormaps = (lighttable_t *)Z_Malloc((NUMCOLORMAPS + 1) * 256 * sizeof(lighttable_t), PU_STATIC, 0);
+        colormaps = zmalloc<lighttable_t *>((NUMCOLORMAPS + 1) * 256 * sizeof(lighttable_t), PU_STATIC, 0);
     }
 
     if (crispy->truecolor)

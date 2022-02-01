@@ -22,6 +22,7 @@
 #include "m_misc.hpp"
 #include "p_local.hpp"
 #include "s_sound.hpp"
+#include "../../utils/memory.hpp"
 
 // MACROS ------------------------------------------------------------------
 
@@ -99,7 +100,7 @@ void P_InitTerrainTypes(void)
     int size;
 
     size = (numflats + 1) * sizeof(int);
-    TerrainTypes = static_cast<int *>(Z_Malloc(size, PU_STATIC, 0));
+    TerrainTypes = zmalloc<int *>(size, PU_STATIC, 0);
     memset(TerrainTypes, 0, size);
     for (i = 0; TerrainTypeDefs[i].type != -1; i++)
     {

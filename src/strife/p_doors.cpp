@@ -36,6 +36,7 @@
 // [STRIFE]
 #include "p_dialog.hpp"
 #include "i_system.hpp"
+#include "../../utils/memory.hpp"
 
 
 //
@@ -393,7 +394,7 @@ int EV_DoDoor(line_t* line, vldoor_e type)
 
         // new door thinker
         rtn = 1;
-        door = static_cast<vldoor_t *>(Z_Malloc(sizeof(*door), PU_LEVSPEC, 0));
+        door = zmalloc<vldoor_t *>(sizeof(*door), PU_LEVSPEC, 0);
         P_AddThinker (&door->thinker);
         sec->specialdata = door;
 
@@ -796,7 +797,7 @@ void EV_VerticalDoor(line_t* line, mobj_t* thing)
     // haleyjd 09/15/10: [STRIFE] Removed DOOM door sounds
 
     // new door thinker
-    door = static_cast<vldoor_t *>(Z_Malloc(sizeof(*door), PU_LEVSPEC, 0));
+    door = zmalloc<vldoor_t *>(sizeof(*door), PU_LEVSPEC, 0);
     P_AddThinker (&door->thinker);
     sec->specialdata = door;
     door->thinker.function.acp1 = (actionf_p1) T_VerticalDoor;
@@ -870,7 +871,7 @@ void P_SpawnDoorCloseIn30 (sector_t* sec)
 {
     vldoor_t*   door;
 
-    door = static_cast<vldoor_t *>(Z_Malloc(sizeof(*door), PU_LEVSPEC, 0));
+    door = zmalloc<vldoor_t *>(sizeof(*door), PU_LEVSPEC, 0);
 
     P_AddThinker (&door->thinker);
 
@@ -895,7 +896,7 @@ P_SpawnDoorRaiseIn5Mins
 {
     vldoor_t*	door;
 	
-    door = static_cast<vldoor_t *>(Z_Malloc(sizeof(*door), PU_LEVSPEC, 0));
+    door = zmalloc<vldoor_t *>(sizeof(*door), PU_LEVSPEC, 0);
     
     P_AddThinker (&door->thinker);
 
@@ -1308,7 +1309,7 @@ void EV_SlidingDoor(line_t* line, mobj_t* thing)
     // Init sliding door vars
     if(!door)
     {
-        door = static_cast<slidedoor_t *>(Z_Malloc(sizeof(*door), PU_LEVSPEC, 0));
+        door = zmalloc<slidedoor_t *>(sizeof(*door), PU_LEVSPEC, 0);
         P_AddThinker (&door->thinker);
 
         sec->specialdata = door;

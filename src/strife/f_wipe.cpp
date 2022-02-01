@@ -29,6 +29,7 @@
 #include "r_draw.hpp"
 
 #include "f_wipe.hpp"
+#include "../../utils/memory.hpp"
 
 //
 //                       SCREEN WIPE PACKAGE
@@ -52,7 +53,7 @@ wipe_shittyColMajorXform
     int		y;
     short*	dest;
 
-    dest = (short*) Z_Malloc(width*height*2, PU_STATIC, 0);
+    dest = zmalloc<short*>(width*height*2, PU_STATIC, 0);
 
     for(y=0;y<height;y++)
 	for(x=0;x<width;x++)
@@ -139,7 +140,7 @@ wipe_initMelt
     
     // setup initial column positions
     // (y<0 => not ready to scroll yet)
-    y = (int *) Z_Malloc(width*sizeof(int), PU_STATIC, 0);
+    y = zmalloc<int *>(width*sizeof(int), PU_STATIC, 0);
     y[0] = -(M_Random()%16);
     for (i=1;i<width;i++)
     {
@@ -227,7 +228,7 @@ wipe_StartScreen
   int	width,
   int	height )
 {
-    wipe_scr_start = static_cast<byte *>(Z_Malloc(SCREENWIDTH * SCREENHEIGHT, PU_STATIC, NULL));
+    wipe_scr_start = zmalloc<byte *>(SCREENWIDTH * SCREENHEIGHT, PU_STATIC, NULL);
     I_ReadScreen(wipe_scr_start);
     return 0;
 }
@@ -240,7 +241,7 @@ wipe_EndScreen
   int	width,
   int	height )
 {
-    wipe_scr_end = static_cast<byte *>(Z_Malloc(SCREENWIDTH * SCREENHEIGHT, PU_STATIC, NULL));
+    wipe_scr_end = zmalloc<byte *>(SCREENWIDTH * SCREENHEIGHT, PU_STATIC, NULL);
     I_ReadScreen(wipe_scr_end);
     V_DrawBlock(x, y_pos, width, height, wipe_scr_start); // restore start scr.
     return 0;
@@ -270,7 +271,7 @@ wipe_ScreenWipe
     {
 	go = 1;
         // haleyjd 20110629 [STRIFE]: We *must* use a temp buffer here.
-	wipe_scr = static_cast<byte *>(Z_Malloc(width * height, PU_STATIC, 0)); // DEBUG
+	wipe_scr = zmalloc<byte *>(width * height, PU_STATIC, 0); // DEBUG
 	//wipe_scr = I_VideoBuffer;
 	(*wipes[wipeno*3])(width, height, ticks);
     }

@@ -40,6 +40,7 @@
 #include "p_local.hpp"
 #include "p_inter.hpp"
 #include "../../utils/lump.hpp"
+#include "../../utils/memory.hpp"
 
 //
 // Defines and Macros
@@ -399,7 +400,7 @@ static void P_ParseDialogLump(byte *lump, mapdialog_t **dialogs,
     int i;
     byte *rover = lump;
 
-    *dialogs = static_cast<mapdialog_t *>(Z_Malloc(numdialogs * sizeof(mapdialog_t), tag, NULL));
+    *dialogs = zmalloc<mapdialog_t *>(numdialogs * sizeof(mapdialog_t), tag, NULL);
 
     for(i = 0; i < numdialogs; i++)
     {

@@ -33,6 +33,7 @@
 
 // Data.
 #include "sounds.hpp"
+#include "../../utils/memory.hpp"
 
 
 plat_t* activeplats[MAXPLATS];
@@ -171,7 +172,7 @@ int EV_DoPlat(line_t* line, plattype_e type, int amount)
 
         // Find lowest & highest floors around sector
         rtn = 1;
-        plat = static_cast<plat_t *>(Z_Malloc(sizeof(*plat), PU_LEVSPEC, 0));
+        plat = zmalloc<plat_t *>(sizeof(*plat), PU_LEVSPEC, 0);
         P_AddThinker(&plat->thinker);
 
         plat->type = type;

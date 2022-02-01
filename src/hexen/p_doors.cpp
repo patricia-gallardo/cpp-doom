@@ -17,6 +17,7 @@
 
 #include "h2def.hpp"
 #include "p_local.hpp"
+#include "../../utils/memory.hpp"
 
 //==================================================================
 //==================================================================
@@ -157,7 +158,7 @@ int EV_DoDoor(line_t * line, byte * args, vldoor_e type)
         }
         // Add new door thinker
         retcode = 1;
-        door = static_cast<vldoor_t *>(Z_Malloc(sizeof(*door), PU_LEVSPEC, 0));
+        door = zmalloc<vldoor_t *>(sizeof(*door), PU_LEVSPEC, 0);
         P_AddThinker(&door->thinker);
         sec->specialdata = door;
         door->thinker.function = reinterpret_cast<think_t>(T_VerticalDoor);
@@ -233,7 +234,7 @@ boolean EV_VerticalDoor(line_t * line, mobj_t * thing)
     //
     // new door thinker
     //
-    door = static_cast<vldoor_t *>(Z_Malloc(sizeof(*door), PU_LEVSPEC, 0));
+    door = zmalloc<vldoor_t *>(sizeof(*door), PU_LEVSPEC, 0);
     P_AddThinker(&door->thinker);
     sec->specialdata = door;
     door->thinker.function = reinterpret_cast<think_t>(T_VerticalDoor);

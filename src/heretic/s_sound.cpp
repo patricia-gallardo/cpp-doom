@@ -30,11 +30,12 @@
 #include "w_wad.hpp"
 #include "z_zone.hpp"
 #include "../../utils/lump.hpp"
+#include "../../utils/memory.hpp"
 
 /*
 ===============================================================================
 
-		MUSIC & SFX API
+                MUSIC & SFX API
 
 ===============================================================================
 */
@@ -515,7 +516,7 @@ void S_UpdateSounds(mobj_t * listener)
 void S_Init(void)
 {
     I_SetOPLDriverVer(opl_doom2_1_666);
-    soundCurve = static_cast<byte *>(Z_Malloc(MAX_SND_DIST, PU_STATIC, NULL));
+    soundCurve = zmalloc<byte *>(MAX_SND_DIST, PU_STATIC, NULL);
     if (snd_Channels > 8)
     {
         snd_Channels = 8;

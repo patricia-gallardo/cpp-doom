@@ -33,6 +33,7 @@
 #include "s_sound.hpp"
 #include "v_video.hpp"
 #include "../../utils/lump.hpp"
+#include "../../utils/memory.hpp"
 
 // Macros
 
@@ -1747,7 +1748,7 @@ static void IncreaseDemoBuffer(void)
     // Generate a new buffer twice the size
     new_length = current_length * 2;
 
-    new_demobuffer = static_cast<byte *>(Z_Malloc(new_length, PU_STATIC, 0));
+    new_demobuffer = zmalloc<byte *>(new_length, PU_STATIC, 0);
     new_demop = new_demobuffer + (demo_p - demobuffer);
 
     // Copy over the old data
@@ -1868,7 +1869,7 @@ void G_RecordDemo(skill_t skill, int numplayers, int episode, int map,
     i = M_CheckParmWithArgs("-maxdemo", 1);
     if (i)
         maxsize = atoi(myargv[i + 1]) * 1024;
-    demobuffer = static_cast<byte *>(Z_Malloc(maxsize, PU_STATIC, NULL));
+    demobuffer = zmalloc<byte *>(maxsize, PU_STATIC, NULL);
     demoend = demobuffer + maxsize;
 
     demo_p = demobuffer;
