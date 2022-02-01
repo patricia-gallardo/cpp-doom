@@ -319,7 +319,7 @@ static int EventCallback(SDL_Event *event, TXT_UNCAST_ARG(joystick_axis))
 
         if (advance)
         {
-            joystick_axis->config_stage = NextCalibrateStage(joystick_axis);
+            joystick_axis->config_stage = static_cast<txt_joystick_axis_stage_t>(NextCalibrateStage(joystick_axis));
             SetCalibrationLabel(joystick_axis);
 
             // Finished?

@@ -37,6 +37,7 @@
 #include "p_local.hpp"
 #include "w_wad.hpp"
 #include "z_zone.hpp"
+#include "../../utils/lump.hpp"
 
 // when to clip out sounds
 // Does not fit the large outdoor areas.
@@ -147,7 +148,7 @@ void S_Init(int sfxVolume, int musicVolume, int voiceVolume)
     // Allocating the internal channels for mixing
     // (the maximum numer of sounds rendered
     // simultaneously) within zone memory.
-    channels = Z_Malloc(snd_channels*sizeof(channel_t), PU_STATIC, 0);
+    channels = static_cast<channel_t *>(Z_Malloc(snd_channels * sizeof(channel_t), PU_STATIC, 0));
 
     // Free all channels for use
     for (i=0 ; i<snd_channels ; i++)
@@ -552,7 +553,7 @@ static voiceinfo_t *S_getVoice(const char *name, int lumpnum)
 
     if(!voice)
     {
-        voice = calloc(1, sizeof(voiceinfo_t));
+        voice = static_cast<voiceinfo_t *>(calloc(1, sizeof(voiceinfo_t)));
 
         M_StringCopy(voice->sfx.name, name, sizeof(voice->sfx.name));
         voice->sfx.priority = INT_MIN; // make highest possible priority
@@ -792,7 +793,7 @@ void S_ChangeMusic(int musicnum, int looping)
         music->lumpnum = W_GetNumForName(namebuf);
     }
 
-    music->data = W_CacheLumpNum(music->lumpnum, PU_STATIC);
+    music->data = cache_lump_num<void *>(music->lumpnum, PU_STATIC);
 
     handle = I_RegisterSong(music->data, W_LumpLength(music->lumpnum));
     music->handle = handle;

@@ -187,7 +187,7 @@ void S_StartSong(int song, boolean loop)
         }
 
         lumpnum = W_GetNumForName(songLump);
-        Mus_SndPtr = static_cast<byte *>(W_CacheLumpNum(lumpnum, PU_STATIC));
+        Mus_SndPtr = cache_lump_num<byte *>(lumpnum, PU_STATIC);
         length = W_LumpLength(lumpnum);
 
         RegisteredSong = I_RegisterSong(Mus_SndPtr, length);
@@ -298,7 +298,7 @@ void S_StartSongName(const char *songLump, boolean loop)
         }
 
         lumpnum = W_GetNumForName(songLump);
-        Mus_SndPtr = static_cast<byte *>(W_CacheLumpNum(lumpnum, PU_MUSIC));
+        Mus_SndPtr = cache_lump_num<byte *>(lumpnum, PU_MUSIC);
         length = W_LumpLength(lumpnum);
 
         RegisteredSong = I_RegisterSong(Mus_SndPtr, length);

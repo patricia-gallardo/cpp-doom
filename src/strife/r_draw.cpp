@@ -35,6 +35,7 @@
 
 // State.
 #include "doomstat.hpp"
+#include "../../utils/lump.hpp"
 
 
 // ?
@@ -454,7 +455,7 @@ void R_InitTranslationTables (void)
     V_LoadXlaTable();
 
     // villsa [STRIFE] allocate a larger size for translation tables
-    translationtables = Z_Malloc (256*8, PU_STATIC, 0);
+    translationtables = static_cast<byte *>(Z_Malloc(256 * 8, PU_STATIC, 0));
 
     col1 = 0xFA;
     col2 = 0xE0;
@@ -838,14 +839,14 @@ void R_FillBackScreen (void)
 	
     if (background_buffer == NULL)
     {
-        background_buffer = Z_Malloc(SCREENWIDTH * (SCREENHEIGHT - SBARHEIGHT),
-                                     PU_STATIC, NULL);
+        background_buffer = static_cast<byte *>(Z_Malloc(SCREENWIDTH * (SCREENHEIGHT - SBARHEIGHT),
+            PU_STATIC, NULL));
     }
 
     // haleyjd 08/29/10: [STRIFE] Use configurable back_flat
     name = back_flat;
     
-    src = W_CacheLumpName(name, PU_CACHE); 
+    src = cache_lump_name<byte *>(name, PU_CACHE);
     dest = background_buffer;
 	 
     for (y=0 ; y<SCREENHEIGHT-SBARHEIGHT ; y++) 

@@ -21,8 +21,9 @@
 #include "i_system.hpp"
 #include "i_swap.hpp"
 #include "r_local.hpp"
+#include "../../utils/lump.hpp"
 
-//void R_DrawTranslatedAltTLColumn(void);
+// void R_DrawTranslatedAltTLColumn(void);
 
 typedef struct
 {
@@ -375,7 +376,7 @@ void R_DrawVisSprite(vissprite_t * vis, int x1, int x2)
     fixed_t baseclip;
 
 
-    patch = static_cast<patch_t *>(W_CacheLumpNum(vis->patch + firstspritelump, PU_CACHE));
+    patch = cache_lump_num<patch_t *>(vis->patch + firstspritelump, PU_CACHE);
 
     dc_colormap = vis->colormap;
 

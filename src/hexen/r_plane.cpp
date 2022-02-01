@@ -20,6 +20,7 @@
 #include "h2def.hpp"
 #include "i_system.hpp"
 #include "r_local.hpp"
+#include "../../utils/lump.hpp"
 
 // MACROS ------------------------------------------------------------------
 
@@ -498,7 +499,7 @@ void R_DrawPlanes(void)
             }
         }
         // Regular flat
-        tempSource = static_cast<byte *>(W_CacheLumpNum(firstflat + flattranslation[pl->picnum], PU_STATIC));
+        tempSource = cache_lump_num<byte *>(firstflat + flattranslation[pl->picnum], PU_STATIC);
         scrollOffset = leveltime >> 1 & 63;
         switch (pl->special)
         {                       // Handle scrolling flats

@@ -34,6 +34,7 @@
 #include "st_stuff.hpp"
 #include "st_lib.hpp"
 #include "r_local.hpp"
+#include "../../utils/lump.hpp"
 
 
 // in AM_map.c
@@ -51,7 +52,7 @@ patch_t*		sttminus;
 void STlib_init(void)
 {
     // haleyjd 08/28/10: [STRIFE] STTMINUS -> STCFN045
-    sttminus = (patch_t *) cache_lump_name<patch_t *>(DEH_String("STCFN045"), PU_STATIC);
+    sttminus = cache_lump_name<patch_t *>(DEH_String("STCFN045"), PU_STATIC);
 }
 
 

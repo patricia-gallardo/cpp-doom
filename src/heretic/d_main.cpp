@@ -148,7 +148,7 @@ static void CrispyDrawStats (void)
     if (!height || !coord_x)
     {
 	const int FontABaseLump = W_GetNumForName(DEH_String("FONTA_S")) + 1;
-	const patch_t *const p = static_cast<const patch_t *const>(W_CacheLumpNum(FontABaseLump + 'A' - 33, PU_CACHE));
+	const patch_t *const p = cache_lump_num<const patch_t *const>(FontABaseLump + 'A' - 33, PU_CACHE);
 
 	height = SHORT(p->height) + 1;
 	coord_x = ORIGWIDTH - 7 * SHORT(p->width);
@@ -352,7 +352,7 @@ void D_PageTicker(void)
 
 void D_PageDrawer(void)
 {
-    V_DrawRawScreen(static_cast<pixel_t *>(W_CacheLumpName(pagename, PU_CACHE)));
+    V_DrawRawScreen(cache_lump_name<pixel_t *>(pagename, PU_CACHE));
     if (demosequence == 1)
     {
         V_DrawPatch(4, 160, cache_lump_name<patch_t *>(DEH_String("ADVISOR"), PU_CACHE));

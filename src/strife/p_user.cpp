@@ -430,7 +430,7 @@ void P_PlayerThink (player_t* player)
         // The actual changing of the weapon is done
         //  when the weapon psprite can do it
         //  (read: not in the middle of an attack).
-        newweapon = (cmd->buttons & BT_WEAPONMASK) >> BT_WEAPONSHIFT;
+        newweapon = static_cast<weapontype_t>((cmd->buttons & BT_WEAPONMASK) >> BT_WEAPONSHIFT);
 
         // villsa [STRIFE] select poison bow
         if(newweapon == wp_elecbow)
@@ -602,7 +602,7 @@ const char* P_RemoveInventoryItem(player_t *player, int slot, int amount)
     player->inventory[slot].amount -= amount;
     player->st_update = true;
 
-    type = player->inventory[slot].type;
+    type = static_cast<mobjtype_t>(player->inventory[slot].type);
 
     if(!player->inventory[slot].amount)
     {
@@ -651,7 +651,7 @@ void P_DropInventoryItem(player_t* player, int sprite)
         invslot++;
 
     item = &(player->inventory[invslot]);
-    type = item->type;
+    type = static_cast<mobjtype_t>(item->type);
 
     if(item->amount)
     {
@@ -825,7 +825,7 @@ boolean P_SpawnTeleportBeacon(player_t* player)
         beacon->momx = FixedMul(finecosine[angle], (5*FRACUNIT));
         beacon->momy = FixedMul(finesine[angle], (5*FRACUNIT));
         beacon->momz = FRACUNIT;
-        P_SetMobjState(beacon, beacon->info->seestate);
+        P_SetMobjState(beacon, static_cast<statenum_t>(beacon->info->seestate));
         return true;
     }
     else

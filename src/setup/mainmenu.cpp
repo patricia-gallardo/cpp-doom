@@ -143,7 +143,7 @@ static void QuitConfirm(void *unused1, void *unused2)
     TXT_AddWidgets(window, 
                    label = TXT_NewLabel("Exiting setup.\nSave settings?"),
                    TXT_NewStrut(24, 0),
-                   yes_button = TXT_NewButton2("  Yes  ", DoQuit, DoQuit),
+                   yes_button = TXT_NewButton2("  Yes  ", DoQuit, reinterpret_cast<void *>(1)), // !NULL
                    no_button = TXT_NewButton2("  No   ", DoQuit, NULL),
                    NULL);
 

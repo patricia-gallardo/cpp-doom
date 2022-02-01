@@ -67,6 +67,7 @@
 #include "p_dialog.hpp"   // villsa [STRIFE]
 
 #include "g_game.hpp"
+#include "../../utils/lump.hpp"
 
 
 #define SAVEGAMESIZE	0x2c000
@@ -91,7 +92,7 @@ gamestate_t     oldgamestate;
  
 gameaction_t    gameaction; 
 gamestate_t     gamestate; 
-skill_t         gameskill = 2; // [STRIFE] Default value set to 2.
+skill_t         gameskill = static_cast<skill_t>(2); // [STRIFE] Default value set to 2.
 boolean         respawnmonsters;
 //int             gameepisode; 
 int             gamemap;
@@ -678,7 +679,7 @@ void G_DoLoadLevel (void)
     levelstarttic = gametic;        // for time calculation
 
     if (wipegamestate == GS_LEVEL) 
-        wipegamestate = -1;             // force a wipe 
+        wipegamestate = static_cast<gamestate_t>(-1);             // force a wipe
 
     gamestate = GS_LEVEL; 
 
@@ -2121,7 +2122,7 @@ static void IncreaseDemoBuffer(void)
     // Generate a new buffer twice the size
     new_length = current_length * 2;
     
-    new_demobuffer = Z_Malloc(new_length, PU_STATIC, 0);
+    new_demobuffer = static_cast<byte *>(Z_Malloc(new_length, PU_STATIC, 0));
     new_demop = new_demobuffer + (demo_p - demobuffer);
 
     // Copy over the old data
@@ -2196,7 +2197,7 @@ void G_RecordDemo (char* name)
 
     usergame = false;
     demoname_size = strlen(name) + 5;
-    demoname = Z_Malloc(demoname_size, PU_STATIC, NULL);
+    demoname = static_cast<char *>(Z_Malloc(demoname_size, PU_STATIC, NULL));
     M_snprintf(demoname, demoname_size, "%s.lmp", name);
     maxsize = 0x20000;
 
@@ -2211,7 +2212,7 @@ void G_RecordDemo (char* name)
     i = M_CheckParmWithArgs("-maxdemo", 1);
     if (i)
         maxsize = atoi(myargv[i+1])*1024;
-    demobuffer = Z_Malloc (maxsize,PU_STATIC,NULL); 
+    demobuffer = static_cast<byte *>(Z_Malloc(maxsize, PU_STATIC, NULL));
     demoend = demobuffer + maxsize;
 
     demorecording = true; 
@@ -2310,7 +2311,7 @@ void G_DoPlayDemo (void)
     int     demoversion;
 
     gameaction = ga_nothing; 
-    demobuffer = demo_p = W_CacheLumpName (defdemoname, PU_STATIC); 
+    demobuffer = demo_p = cache_lump_name<byte *>(defdemoname, PU_STATIC);
 
     demoversion = *demo_p++;
 
@@ -2340,7 +2341,7 @@ void G_DoPlayDemo (void)
                          DemoVersionDescription(demoversion));
     }
     
-    skill = *demo_p++; 
+    skill = static_cast<skill_t>(*demo_p++);
     //episode = *demo_p++; [STRIFE] No episodes
     map = *demo_p++; 
     deathmatch = *demo_p++;

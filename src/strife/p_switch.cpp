@@ -220,7 +220,7 @@ static void P_SpawnBrokenGlass(line_t* line)
         glass->z += (24*FRACUNIT);
         glass->flags |= (MF_SHADOW|MF_MVIS);
 
-        P_SetMobjState(glass, P_Random() % 3 + S_SHRD_03); // 284
+        P_SetMobjState(glass, static_cast<statenum_t>(P_Random() % 3 + S_SHRD_03)); // 284
 
         an = ((P_Random() << 13) / 255);
 

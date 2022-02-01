@@ -29,6 +29,7 @@
 #include "m_misc.hpp"
 #include "p_local.hpp"
 #include "v_video.hpp"
+#include "../../utils/lump.hpp"
 
 #define AM_STARTKEY	9
 
@@ -2058,7 +2059,7 @@ void G_DoPlayDemo(void)
 
     gameaction = ga_nothing;
     lumpnum = W_GetNumForName(defdemoname);
-    demobuffer = static_cast<byte *>(W_CacheLumpNum(lumpnum, PU_STATIC));
+    demobuffer = cache_lump_num<byte *>(lumpnum, PU_STATIC);
     demo_p = demobuffer;
     skill = static_cast<skill_t>(*demo_p++);
     episode = *demo_p++;
@@ -2115,7 +2116,7 @@ void G_TimeDemo(char *name)
     skill_t skill;
     int episode, map, i;
 
-    demobuffer = demo_p = static_cast<byte *>(W_CacheLumpName(name, PU_STATIC));
+    demobuffer = demo_p = cache_lump_name<byte *>(name, PU_STATIC);
     skill = static_cast<skill_t>(*demo_p++);
     episode = *demo_p++;
     map = *demo_p++;

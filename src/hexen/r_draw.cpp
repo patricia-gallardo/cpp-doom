@@ -326,7 +326,7 @@ void R_InitTranslationTables(void)
     for (i = 0; i < 3 * (maxplayers - 1); i++)
     {
         lumpnum = W_GetNumForName("trantbl0") + i;
-        transLump = static_cast<byte *>(W_CacheLumpNum(lumpnum, PU_STATIC));
+        transLump = cache_lump_num<byte *>(lumpnum, PU_STATIC);
         memcpy(translationtables + i * 256, transLump, 256);
         W_ReleaseLumpNum(lumpnum);
     }

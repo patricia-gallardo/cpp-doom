@@ -93,7 +93,7 @@ void S_StartSong(int song, boolean loop)
         return;
     }
     mus_lumpnum = W_GetNumForName(S_music[song].name);
-    mus_sndptr = W_CacheLumpNum(mus_lumpnum, PU_MUSIC);
+    mus_sndptr = cache_lump_num<void *>(mus_lumpnum, PU_MUSIC);
     mus_len = W_LumpLength(mus_lumpnum);
     rs = I_RegisterSong(mus_sndptr, mus_len);
     I_PlaySong(rs, loop);       //'true' denotes endless looping.

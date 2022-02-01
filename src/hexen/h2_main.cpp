@@ -984,7 +984,7 @@ void H2_PageTicker(void)
 
 static void PageDrawer(void)
 {
-    V_DrawRawScreen(static_cast<pixel_t *>(W_CacheLumpName(pagename, PU_CACHE)));
+    V_DrawRawScreen(cache_lump_name<pixel_t *>(pagename, PU_CACHE));
     if (demosequence == 1)
     {
         V_DrawPatch(4, 160, cache_lump_name<patch_t *>("ADVISOR", PU_CACHE));

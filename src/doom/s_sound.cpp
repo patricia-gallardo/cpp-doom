@@ -37,6 +37,7 @@
 #include "p_local.hpp"
 #include "w_wad.hpp"
 #include "z_zone.hpp"
+#include "../../utils/lump.hpp"
 
 // when to clip out sounds
 // Does not fit the large outdoor areas.
@@ -975,7 +976,7 @@ void S_ChangeMusic(int musicnum, int looping)
         music->lumpnum = W_GetNumForName(namebuf);
     }
 
-    music->data = W_CacheLumpNum(music->lumpnum, PU_STATIC);
+    music->data = cache_lump_num<void *>(music->lumpnum, PU_STATIC);
 
     handle        = I_RegisterSong(music->data, W_LumpLength(music->lumpnum));
     music->handle = handle;
@@ -1030,7 +1031,7 @@ void S_ChangeMusInfoMusic(int lumpnum, int looping)
 
     music->lumpnum = lumpnum;
 
-    music->data   = W_CacheLumpNum(music->lumpnum, PU_STATIC);
+    music->data   = cache_lump_num<void *>(music->lumpnum, PU_STATIC);
     music->handle = I_RegisterSong(music->data, W_LumpLength(music->lumpnum));
 
     I_PlaySong(music->handle, looping);

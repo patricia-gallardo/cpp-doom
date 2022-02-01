@@ -165,7 +165,7 @@ void F_TextWrite(void)
 //
 // erase the entire screen to a tiled background
 //
-    src = static_cast<byte *>(W_CacheLumpName(finaleflat, PU_CACHE));
+    src = cache_lump_name<byte *>(finaleflat, PU_CACHE);
     dest = I_VideoBuffer;
     for (y = 0; y < SCREENHEIGHT; y++)
     {
@@ -212,7 +212,7 @@ void F_TextWrite(void)
             continue;
         }
 
-        w = static_cast<patch_t *>(W_CacheLumpNum(FontABaseLump + c - 33, PU_CACHE));
+        w = cache_lump_num<patch_t *>(FontABaseLump + c - 33, PU_CACHE);
         if (cx + SHORT(w->width) > SCREENWIDTH)
             break;
         V_DrawPatch(cx, cy, w);
@@ -315,7 +315,7 @@ void F_DrawUnderwater(void)
                 underwawa = true;
                 V_DrawFilledBox(0, 0, SCREENWIDTH, SCREENHEIGHT, 0);
                 lumpname = DEH_String("E2PAL");
-                palette = static_cast<byte *>(W_CacheLumpName(lumpname, PU_STATIC));
+                palette = cache_lump_name<byte *>(lumpname, PU_STATIC);
                 I_SetPalette(palette);
                 W_ReleaseLumpName(lumpname);
                 V_DrawRawScreen(cache_lump_name<pixel_t *>(DEH_String("E2END"), PU_CACHE));
@@ -329,7 +329,7 @@ void F_DrawUnderwater(void)
             if (underwawa)
             {
                 lumpname = DEH_String("PLAYPAL");
-                palette = static_cast<byte *>(W_CacheLumpName(lumpname, PU_STATIC));
+                palette = cache_lump_name<byte *>(lumpname, PU_STATIC);
                 I_SetPalette(palette);
                 W_ReleaseLumpName(lumpname);
                 underwawa = false;
@@ -397,7 +397,7 @@ void F_BunnyScroll(void)
 
     M_snprintf(name, sizeof(name), "END%i", stage);
     V_DrawPatch((SCREENWIDTH - 13 * 8) / 2, (SCREENHEIGHT - 8 * 8) / 2,
-                W_CacheLumpName(name, PU_CACHE));
+                cache_lump_name<patch_t *>(name, PU_CACHE));
 }
 #endif
 

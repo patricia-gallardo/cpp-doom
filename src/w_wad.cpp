@@ -391,7 +391,7 @@ void W_ReadLump(lumpindex_t lump, void *dest)
 // when no longer needed (do not use Z_ChangeTag).
 //
 
-void *W_CacheLumpNum(lumpindex_t lumpnum, int tag)
+[[nodiscard]] void *W_CacheLumpNum(lumpindex_t lumpnum, int tag)
 {
     void *      result;
     lumpinfo_t *lump;
@@ -437,7 +437,7 @@ void *W_CacheLumpNum(lumpindex_t lumpnum, int tag)
 //
 // W_CacheLumpName
 //
-void *W_CacheLumpName(const char *name, int tag)
+[[nodiscard]] void *W_CacheLumpName(const char *name, int tag)
 {
     return W_CacheLumpNum(W_GetNumForName(name), tag);
 }

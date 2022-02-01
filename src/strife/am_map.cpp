@@ -45,6 +45,7 @@
 #include "dstrings.hpp"
 
 #include "am_map.hpp"
+#include "../../utils/lump.hpp"
 
 
 // Automap colors
@@ -466,7 +467,7 @@ void AM_loadPics(void)
     for (i=0;i<10;i++)
     {
         DEH_snprintf(namebuf, 9, "PLMNUM%d", i);
-        marknums[i] = static_cast<patch_t *>(W_CacheLumpName(namebuf, PU_STATIC));
+        marknums[i] = cache_lump_name<patch_t *>(namebuf, PU_STATIC);
     }
 
 }

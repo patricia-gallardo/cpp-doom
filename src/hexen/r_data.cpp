@@ -151,7 +151,7 @@ void R_GenerateComposite(int texnum)
     for (i = 0, patch = texture->patches; i < texture->patchcount;
          i++, patch++)
     {
-        realpatch = static_cast<patch_t *>(W_CacheLumpNum(patch->patch, PU_CACHE));
+        realpatch = cache_lump_num<patch_t *>(patch->patch, PU_CACHE);
         x1 = patch->originx;
         x2 = x1 + SHORT(realpatch->width);
 
@@ -217,7 +217,7 @@ void R_GenerateLookup(int texnum)
     for (i = 0, patch = texture->patches; i < texture->patchcount;
          i++, patch++)
     {
-        realpatch = static_cast<patch_t *>(W_CacheLumpNum(patch->patch, PU_CACHE));
+        realpatch = cache_lump_num<patch_t *>(patch->patch, PU_CACHE);
         x1 = patch->originx;
         x2 = x1 + SHORT(realpatch->width);
         if (x1 < 0)
@@ -273,7 +273,7 @@ byte *R_GetColumn(int tex, int col)
     lump = texturecolumnlump[tex][col];
     ofs = texturecolumnofs[tex][col];
     if (lump > 0)
-        return (byte *) W_CacheLumpNum(lump, PU_CACHE) + ofs;
+        return cache_lump_num<byte *>(lump, PU_CACHE) + ofs;
     if (!texturecomposite[tex])
         R_GenerateComposite(tex);
     return texturecomposite[tex] + ofs;
@@ -468,7 +468,7 @@ void R_InitSpriteLumps(void)
     {
         if (!(i & 127))
             ST_Progress();
-        patch = static_cast<patch_t *>(W_CacheLumpNum(firstspritelump + i, PU_CACHE));
+        patch = cache_lump_num<patch_t *>(firstspritelump + i, PU_CACHE);
         spritewidth[i] = SHORT(patch->width) << FRACBITS;
         spriteoffset[i] = SHORT(patch->leftoffset) << FRACBITS;
         spritetopoffset[i] = SHORT(patch->topoffset) << FRACBITS;

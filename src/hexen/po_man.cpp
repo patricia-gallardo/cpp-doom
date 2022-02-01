@@ -23,6 +23,7 @@
 #include "i_swap.hpp"
 #include "p_local.hpp"
 #include "r_local.hpp"
+#include "../../utils/lump.hpp"
 
 // MACROS ------------------------------------------------------------------
 
@@ -1429,7 +1430,7 @@ void PO_Init(int lump)
     polyobjs = static_cast<polyobj_t *>(Z_Malloc(po_NumPolyobjs * sizeof(polyobj_t), PU_LEVEL, 0));
     memset(polyobjs, 0, po_NumPolyobjs * sizeof(polyobj_t));
 
-    data = static_cast<byte *>(W_CacheLumpNum(lump, PU_STATIC));
+    data = cache_lump_num<byte *>(lump, PU_STATIC);
     numthings = W_LumpLength(lump) / sizeof(mapthing_t);
     mt = (mapthing_t *) data;
     polyIndex = 0;              // index polyobj number

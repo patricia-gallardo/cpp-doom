@@ -352,7 +352,7 @@ static void LoadLumpCallback(const char *lumpname, int lumpnum, patch_t **ptr)
 
     // Cache the lump
 
-    *ptr = static_cast<patch_t *>(W_CacheLumpNum(lumpnum, PU_STATIC));
+    *ptr = cache_lump_num<patch_t *>(lumpnum, PU_STATIC);
 }
 
 void IN_LoadPics(void)
@@ -802,8 +802,8 @@ void IN_DrawCoopStats(void)
         if (playeringame[i])
         {
             V_DrawShadowedPatch(25, ypos,
-                                static_cast<patch_t *>(W_CacheLumpNum(patchFaceOkayBase + i,
-                                               PU_CACHE)));
+                cache_lump_num<patch_t *>(patchFaceOkayBase + i,
+                                               PU_CACHE));
             if (intertime < 40)
             {
                 sounds = 0;
@@ -860,12 +860,12 @@ void IN_DrawDMStats(void)
                 V_DrawShadowedPatch(40,
                                     ((ypos << FRACBITS) +
                                      dSlideY[i] * intertime) >> FRACBITS,
-                                    static_cast<patch_t *>(W_CacheLumpNum(patchFaceOkayBase + i,
-                                                   PU_CACHE)));
+                    cache_lump_num<patch_t *>(patchFaceOkayBase + i,
+                                                   PU_CACHE));
                 V_DrawShadowedPatch(((xpos << FRACBITS) +
                                      dSlideX[i] * intertime) >> FRACBITS, 18,
-                                    static_cast<patch_t *>(W_CacheLumpNum(patchFaceDeadBase + i,
-                                                   PU_CACHE)));
+                    cache_lump_num<patch_t *>(patchFaceDeadBase + i,
+                                                   PU_CACHE));
             }
         }
         sounds = 0;
@@ -888,20 +888,20 @@ void IN_DrawDMStats(void)
             if (intertime < 100 || i == consoleplayer)
             {
                 V_DrawShadowedPatch(40, ypos,
-                                    static_cast<patch_t *>(W_CacheLumpNum(patchFaceOkayBase + i,
-                                                   PU_CACHE)));
+                    cache_lump_num<patch_t *>(patchFaceOkayBase + i,
+                                                   PU_CACHE));
                 V_DrawShadowedPatch(xpos, 18,
-                                    static_cast<patch_t *>(W_CacheLumpNum(patchFaceDeadBase + i,
-                                                   PU_CACHE)));
+                    cache_lump_num<patch_t *>(patchFaceDeadBase + i,
+                                                   PU_CACHE));
             }
             else
             {
                 V_DrawTLPatch(40, ypos,
-                              static_cast<patch_t *>(W_CacheLumpNum(patchFaceOkayBase + i,
-                                             PU_CACHE)));
+                    cache_lump_num<patch_t *>(patchFaceOkayBase + i,
+                                             PU_CACHE));
                 V_DrawTLPatch(xpos, 18,
-                              static_cast<patch_t *>(W_CacheLumpNum(patchFaceDeadBase + i,
-                                             PU_CACHE)));
+                    cache_lump_num<patch_t *>(patchFaceDeadBase + i,
+                                             PU_CACHE));
             }
             kpos = 86;
             for (j = 0; j < MAXPLAYERS; j++)
@@ -1068,7 +1068,7 @@ void IN_DrTextB(const char *text, int x, int y)
         }
         else
         {
-            p = static_cast<patch_t *>(W_CacheLumpNum(FontBLump + c - 33, PU_CACHE));
+            p = cache_lump_num<patch_t *>(FontBLump + c - 33, PU_CACHE);
             V_DrawShadowedPatch(x, y, p);
             x += SHORT(p->width) - 1;
         }

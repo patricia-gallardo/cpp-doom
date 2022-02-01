@@ -210,9 +210,9 @@ void SB_Init(void)
     }
     else
     {
-        PatchLIFEGEM = static_cast<patch_t *>(W_CacheLumpNum(W_GetNumForName(DEH_String("LIFEGEM0"))
+        PatchLIFEGEM = cache_lump_num<patch_t *>(W_GetNumForName(DEH_String("LIFEGEM0"))
                                                                  + consoleplayer,
-            PU_STATIC));
+            PU_STATIC);
     }
     PatchLTFCTOP = cache_lump_name<patch_t *>(DEH_String("LTFCTOP"), PU_STATIC);
     PatchRTFCTOP = cache_lump_name<patch_t *>(DEH_String("RTFCTOP"), PU_STATIC);
@@ -227,14 +227,14 @@ void SB_Init(void)
     startLump = W_GetNumForName(DEH_String("IN0"));
     for (i = 0; i < 10; i++)
     {
-        PatchINumbers[i] = static_cast<patch_t *>(W_CacheLumpNum(startLump + i, PU_STATIC));
+        PatchINumbers[i] = cache_lump_num<patch_t *>(startLump + i, PU_STATIC);
     }
     PatchNEGATIVE = cache_lump_name<patch_t *>(DEH_String("NEGNUM"), PU_STATIC);
     FontBNumBase = W_GetNumForName(DEH_String("FONTB16"));
     startLump = W_GetNumForName(DEH_String("SMALLIN0"));
     for (i = 0; i < 10; i++)
     {
-        PatchSmNumbers[i] = static_cast<patch_t *>(W_CacheLumpNum(startLump + i, PU_STATIC));
+        PatchSmNumbers[i] = cache_lump_num<patch_t *>(startLump + i, PU_STATIC);
     }
     playpalette = W_GetNumForName(DEH_String("PLAYPAL"));
     spinbooklump = W_GetNumForName(DEH_String("SPINBK0"));
@@ -355,19 +355,19 @@ static void DrBNumber(signed int val, int x, int y)
     }
     if (val > 99)
     {
-        patch = static_cast<patch_t *>(W_CacheLumpNum(FontBNumBase + val / 100, PU_CACHE));
+        patch = cache_lump_num<patch_t *>(FontBNumBase + val / 100, PU_CACHE);
         V_DrawShadowedPatch(xpos + 6 - SHORT(patch->width) / 2, y, patch);
     }
     val = val % 100;
     xpos += 12;
     if (val > 9 || oldval > 99)
     {
-        patch = static_cast<patch_t *>(W_CacheLumpNum(FontBNumBase + val / 10, PU_CACHE));
+        patch = cache_lump_num<patch_t *>(FontBNumBase + val / 10, PU_CACHE);
         V_DrawShadowedPatch(xpos + 6 - SHORT(patch->width) / 2, y, patch);
     }
     val = val % 10;
     xpos += 12;
-    patch = static_cast<patch_t *>(W_CacheLumpNum(FontBNumBase + val, PU_CACHE));
+    patch = cache_lump_num<patch_t *>(FontBNumBase + val, PU_CACHE);
     V_DrawShadowedPatch(xpos + 6 - SHORT(patch->width) / 2, y, patch);
 }
 
@@ -620,13 +620,13 @@ void SB_Drawer(void)
             {
                 if (hitCenterFrame && (frame != 15 && frame != 0))
                 {
-                    V_DrawPatch(20, 17, static_cast<patch_t *>(W_CacheLumpNum(spinflylump + 15,
-                                                       PU_CACHE)));
+                    V_DrawPatch(20, 17, cache_lump_num<patch_t *>(spinflylump + 15,
+                                                       PU_CACHE));
                 }
                 else
                 {
-                    V_DrawPatch(20, 17, static_cast<patch_t *>(W_CacheLumpNum(spinflylump + frame,
-                                                       PU_CACHE)));
+                    V_DrawPatch(20, 17, cache_lump_num<patch_t *>(spinflylump + frame,
+                                                       PU_CACHE));
                     hitCenterFrame = false;
                 }
             }
@@ -634,14 +634,14 @@ void SB_Drawer(void)
             {
                 if (!hitCenterFrame && (frame != 15 && frame != 0))
                 {
-                    V_DrawPatch(20, 17, static_cast<patch_t *>(W_CacheLumpNum(spinflylump + frame,
-                                                       PU_CACHE)));
+                    V_DrawPatch(20, 17, cache_lump_num<patch_t *>(spinflylump + frame,
+                                                       PU_CACHE));
                     hitCenterFrame = false;
                 }
                 else
                 {
-                    V_DrawPatch(20, 17, static_cast<patch_t *>(W_CacheLumpNum(spinflylump + 15,
-                                                       PU_CACHE)));
+                    V_DrawPatch(20, 17, cache_lump_num<patch_t *>(spinflylump + 15,
+                                                       PU_CACHE));
                     hitCenterFrame = true;
                 }
             }
@@ -662,7 +662,7 @@ void SB_Drawer(void)
         {
             frame = (leveltime / 3) & 15;
             V_DrawPatch(300, 17,
-                        static_cast<patch_t *>(W_CacheLumpNum(spinbooklump + frame, PU_CACHE)));
+                cache_lump_num<patch_t *>(spinbooklump + frame, PU_CACHE));
             BorderTopRefresh = true;
             UpdateState |= I_MESSAGES;
         }
@@ -721,7 +721,7 @@ void SB_PaletteFlash(void)
     if (palette != sb_palette)
     {
         sb_palette = palette;
-        pal = (byte *) W_CacheLumpNum(playpalette, PU_CACHE) + palette * 768;
+        pal = cache_lump_num<byte *>(playpalette, PU_CACHE) + palette * 768;
         I_SetPalette(pal);
     }
 }
@@ -783,7 +783,7 @@ void DrawMainBar(void)
 
         temp = W_GetNumForName(DEH_String("useartia")) + ArtifactFlash - 1;
 
-        V_DrawPatch(182, 161, static_cast<patch_t *>(W_CacheLumpNum(temp, PU_CACHE)));
+        V_DrawPatch(182, 161, cache_lump_num<patch_t *>(temp, PU_CACHE));
         ArtifactFlash--;
         oldarti = -1;           // so that the correct artifact fills in after the flash
         UpdateState |= I_STATBAR;
@@ -908,7 +908,7 @@ void DrawInventoryBar(void)
         {
             patch = DEH_String(patcharti[CPlayer->inventory[x + i].type]);
 
-            V_DrawPatch(50 + i * 31, 160, static_cast<patch_t *>(W_CacheLumpName(patch, PU_CACHE)));
+            V_DrawPatch(50 + i * 31, 160, cache_lump_name<patch_t *>(patch, PU_CACHE));
             DrSmallNumber(CPlayer->inventory[x + i].count, 69 + i * 31, 182);
         }
     }
@@ -959,7 +959,7 @@ void DrawFullScreenStuff(void)
         {
             patch = DEH_String(patcharti[CPlayer->readyArtifact]);
             V_DrawTLPatch(286, 170, cache_lump_name<patch_t *>(DEH_String("ARTIBOX"), PU_CACHE));
-            V_DrawPatch(286, 170, static_cast<patch_t *>(W_CacheLumpName(patch, PU_CACHE)));
+            V_DrawPatch(286, 170, cache_lump_name<patch_t *>(patch, PU_CACHE));
             DrSmallNumber(CPlayer->inventory[inv_ptr].count, 307, 192);
         }
     }
@@ -975,7 +975,7 @@ void DrawFullScreenStuff(void)
             {
                 patch = DEH_String(patcharti[CPlayer->inventory[x + i].type]);
                 V_DrawPatch(50 + i * 31, 168,
-                            static_cast<patch_t *>(W_CacheLumpName(patch, PU_CACHE)));
+                    cache_lump_name<patch_t *>(patch, PU_CACHE));
                 DrSmallNumber(CPlayer->inventory[x + i].count, 69 + i * 31,
                               190);
             }

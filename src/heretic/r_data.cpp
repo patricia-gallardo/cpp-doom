@@ -24,6 +24,7 @@
 #include "m_misc.hpp"
 #include "r_local.hpp"
 #include "p_local.hpp"
+#include "../../utils/lump.hpp"
 
 extern void CheckAbortStartup(void);
 
@@ -155,7 +156,7 @@ void R_GenerateComposite(int texnum)
     for (i = 0, patch = texture->patches; i < texture->patchcount;
          i++, patch++)
     {
-        realpatch = static_cast<patch_t *>(W_CacheLumpNum(patch->patch, PU_CACHE));
+        realpatch = cache_lump_num<patch_t *>(patch->patch, PU_CACHE);
         x1 = patch->originx;
         x2 = x1 + SHORT(realpatch->width);
 
@@ -221,7 +222,7 @@ void R_GenerateLookup(int texnum)
     for (i = 0, patch = texture->patches; i < texture->patchcount;
          i++, patch++)
     {
-        realpatch = static_cast<patch_t *>(W_CacheLumpNum(patch->patch, PU_CACHE));
+        realpatch = cache_lump_num<patch_t *>(patch->patch, PU_CACHE);
         x1 = patch->originx;
         x2 = x1 + SHORT(realpatch->width);
         if (x1 < 0)
@@ -277,7 +278,7 @@ byte *R_GetColumn(int tex, int col)
     lump = texturecolumnlump[tex][col];
     ofs = texturecolumnofs[tex][col];
     if (lump > 0)
-        return (byte *) W_CacheLumpNum(lump, PU_CACHE) + ofs;
+        return cache_lump_num<byte *>(lump, PU_CACHE) + ofs;
     if (!texturecomposite[tex])
         R_GenerateComposite(tex);
     return texturecomposite[tex] + ofs;
@@ -318,7 +319,7 @@ void R_InitTextures(void)
 //
 // load the patch names from pnames.lmp
 //
-    names = static_cast<char *>(W_CacheLumpName(pnames, PU_STATIC));
+    names = cache_lump_name<char *>(pnames, PU_STATIC);
     nummappatches = LONG(*((int *) names));
     name_p = names + 4;
     patchlookup = static_cast<int *>(Z_Malloc(nummappatches * sizeof(*patchlookup), PU_STATIC, NULL));
@@ -332,14 +333,14 @@ void R_InitTextures(void)
 //
 // load the map texture definitions from textures.lmp
 //
-    maptex = maptex1 = static_cast<int *>(W_CacheLumpName(texture1, PU_STATIC));
+    maptex = maptex1 = cache_lump_name<int *>(texture1, PU_STATIC);
     numtextures1 = LONG(*maptex);
     maxoff = W_LumpLength(W_GetNumForName(texture1));
     directory = maptex + 1;
 
     if (W_CheckNumForName(texture2) != -1)
     {
-        maptex2 = static_cast<int *>(W_CacheLumpName(texture2, PU_STATIC));
+        maptex2 = cache_lump_name<int *>(texture2, PU_STATIC);
         numtextures2 = LONG(*maptex2);
         maxoff2 = W_LumpLength(W_GetNumForName(texture2));
     }
@@ -502,7 +503,7 @@ void R_InitSpriteLumps(void)
 #else
         IncThermo();
 #endif
-        patch = static_cast<patch_t *>(W_CacheLumpNum(firstspritelump + i, PU_CACHE));
+        patch = cache_lump_num<patch_t *>(firstspritelump + i, PU_CACHE);
         spritewidth[i] = SHORT(patch->width) << FRACBITS;
         spriteoffset[i] = SHORT(patch->leftoffset) << FRACBITS;
         spritetopoffset[i] = SHORT(patch->topoffset) << FRACBITS;

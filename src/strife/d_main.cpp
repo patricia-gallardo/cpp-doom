@@ -80,6 +80,7 @@
 
 #include "../../utils/memory.hpp"
 #include "d_main.hpp"
+#include "../../utils/lump.hpp"
 
 //
 // D-DoomLoop()
@@ -215,7 +216,7 @@ void D_Display (void)
     static  boolean             inhelpscreensstate = false;
     static  boolean             popupactivestate = false; // [STRIFE]
     static  boolean             fullscreen = false;
-    static  gamestate_t         oldgamestate = -1;
+    static  gamestate_t         oldgamestate = static_cast<gamestate_t>(-1);
     static  int                 borderdrawcount;
     int                         nowtime;
     int                         tics;
@@ -234,7 +235,7 @@ void D_Display (void)
     if (setsizeneeded)
     {
         R_ExecuteSetViewSize ();
-        oldgamestate = -1;                      // force background redraw
+        oldgamestate = static_cast<gamestate_t>(-1);                      // force background redraw
         borderdrawcount = 3;
     }
 
@@ -295,7 +296,7 @@ void D_Display (void)
 
     // clean up border stuff
     if (gamestate != oldgamestate && gamestate != GS_LEVEL)
-        I_SetPalette (W_CacheLumpName (DEH_String("PLAYPAL"),PU_CACHE));
+        I_SetPalette (cache_lump_name<byte *>(DEH_String("PLAYPAL"),PU_CACHE));
 
     // see if the border needs to be initially drawn
     if (gamestate == GS_LEVEL && oldgamestate != GS_LEVEL)
@@ -353,7 +354,7 @@ void D_Display (void)
         else
             y = (viewwindowy >> crispy->hires)+4;
         V_DrawPatchDirect((viewwindowx >> crispy->hires) + ((scaledviewwidth >> crispy->hires) - 68) / 2, y,
-                          W_CacheLumpName (DEH_String("M_PAUSE"), PU_CACHE));
+                          cache_lump_name<patch_t *> (DEH_String("M_PAUSE"), PU_CACHE));
     }
 
 
@@ -578,7 +579,7 @@ void D_PageTicker (void)
 //
 void D_PageDrawer (void)
 {
-    V_DrawPatch (0, 0, W_CacheLumpName(pagename, PU_CACHE));
+    V_DrawPatch (0, 0, cache_lump_name<patch_t *>(pagename, PU_CACHE));
 }
 
 
@@ -643,13 +644,13 @@ void D_DoAdvanceDemo (void)
         gamestate = GS_DEMOSCREEN;
         pagename = DEH_String("PANEL0");
         S_StartSound(NULL, sfx_rb2act);
-        wipegamestate = -1;
+        wipegamestate = static_cast<gamestate_t>(-1);
         break;
     case 0: // Rogue logo
         pagetic = 4*TICRATE;
         gamestate = GS_DEMOSCREEN;
         pagename = DEH_String("RGELOGO");
-        wipegamestate = -1;
+        wipegamestate = static_cast<gamestate_t>(-1);
         break;
     case 1:
         pagetic = 7*TICRATE;              // The comet struck our planet without
@@ -692,7 +693,7 @@ void D_DoAdvanceDemo (void)
         pagetic = 9*TICRATE;
         gamestate = GS_DEMOSCREEN;
         pagename = DEH_String("TITLEPIC");
-        wipegamestate = -1;
+        wipegamestate = static_cast<gamestate_t>(-1);
         break;
     case 8: // demo
         ClearTmp();
@@ -703,13 +704,13 @@ void D_DoAdvanceDemo (void)
         pagetic = 6*TICRATE;
         gamestate = GS_DEMOSCREEN;
         pagename = DEH_String("vellogo");
-        wipegamestate = -1;
+        wipegamestate = static_cast<gamestate_t>(-1);
         break;
     case 10: // credits
         gamestate = GS_DEMOSCREEN;
         pagetic = 12*TICRATE;
         pagename = DEH_String("CREDIT");
-        wipegamestate = -1;
+        wipegamestate = static_cast<gamestate_t>(-1);
         break;
     default:
         break;
@@ -846,7 +847,7 @@ void D_IdentifyVersion(void)
         {
             char   *iwad     = myargv[p + 1];
             size_t  len      = strlen(iwad) + 1;
-            char   *iwadpath = Z_Malloc(len, PU_STATIC, NULL);
+            char   *iwadpath = static_cast<char *>(Z_Malloc(len, PU_STATIC, NULL));
             char   *voiceswad;
 
             // extract base path of IWAD parameter
@@ -1010,7 +1011,7 @@ static struct
 } gameversions[] = {
     { "Strife 1.2",          "1.2",       exe_strife_1_2  },
     { "Strife 1.31",         "1.31",      exe_strife_1_31 },
-    { NULL,                  NULL,        0               }
+    { NULL,                  NULL, static_cast<GameVersion_t>(0) }
 };
 
 // Initialize the game version
@@ -1097,7 +1098,7 @@ static void D_Endoom(void)
     }
 
     // haleyjd 08/27/10: [STRIFE] ENDOOM -> ENDSTRF
-    endoom = cache_lump_name<patch_t *>(DEH_String("ENDSTRF"), PU_STATIC);
+    endoom = cache_lump_name<byte *>(DEH_String("ENDSTRF"), PU_STATIC);
 
     I_Endoom(endoom);
 }
@@ -1158,8 +1159,8 @@ static void D_DrawText(const char *string, int bc, int fc)
     }
 
     // Set text color
-    TXT_BGColor(bc, 0);
-    TXT_FGColor(fc);
+    TXT_BGColor(static_cast<txt_color_t>(bc), 0);
+    TXT_FGColor(static_cast<txt_color_t>(fc));
 
     // Get column position
     column = D_GetCursorColumn();
@@ -1287,14 +1288,14 @@ static void D_InitIntroSequence(void)
         V_RestoreBuffer(); // make the V_ routines work
 
         // Load all graphics
-        rawgfx_startup0   = cache_lump_name<patch_t *>("STARTUP0", PU_STATIC);
-        rawgfx_startp[0]  = cache_lump_name<patch_t *>("STRTPA1",  PU_STATIC);
-        rawgfx_startp[1]  = cache_lump_name<patch_t *>("STRTPB1",  PU_STATIC);
-        rawgfx_startp[2]  = cache_lump_name<patch_t *>("STRTPC1",  PU_STATIC);
-        rawgfx_startp[3]  = cache_lump_name<patch_t *>("STRTPD1",  PU_STATIC);
-        rawgfx_startlz[0] = cache_lump_name<patch_t *>("STRTLZ1",  PU_STATIC);
-        rawgfx_startlz[1] = cache_lump_name<patch_t *>("STRTLZ2",  PU_STATIC);
-        rawgfx_startbot   = cache_lump_name<patch_t *>("STRTBOT",  PU_STATIC);
+        rawgfx_startup0   = cache_lump_name<byte *>("STARTUP0", PU_STATIC);
+        rawgfx_startp[0]  = cache_lump_name<byte *>("STRTPA1",  PU_STATIC);
+        rawgfx_startp[1]  = cache_lump_name<byte *>("STRTPB1",  PU_STATIC);
+        rawgfx_startp[2]  = cache_lump_name<byte *>("STRTPC1",  PU_STATIC);
+        rawgfx_startp[3]  = cache_lump_name<byte *>("STRTPD1",  PU_STATIC);
+        rawgfx_startlz[0] = cache_lump_name<byte *>("STRTLZ1",  PU_STATIC);
+        rawgfx_startlz[1] = cache_lump_name<byte *>("STRTLZ2",  PU_STATIC);
+        rawgfx_startbot   = cache_lump_name<byte *>("STRTBOT",  PU_STATIC);
 
         // Draw the background
         D_IntroBackground();
@@ -1760,7 +1761,7 @@ void D_DoomMain (void)
     if(devparm)
     {
         char msgbuf[80];
-        char *serial  = cache_lump_name<patch_t *>("SERIAL", PU_CACHE);
+        char *serial  = cache_lump_name<char *>("SERIAL", PU_CACHE);
         int serialnum = atoi(serial);
 
         DEH_snprintf(msgbuf, sizeof(msgbuf), "Wad Serial Number: %d:", serialnum);
@@ -1918,7 +1919,7 @@ void D_DoomMain (void)
 
     if (p)
     {
-        startskill = myargv[p+1][0]-'1';
+        startskill = static_cast<skill_t>(myargv[p + 1][0] - '1');
         autostart = true;
     }
 

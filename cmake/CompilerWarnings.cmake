@@ -50,7 +50,6 @@ function(set_project_warnings)
             -Wno-unused-parameter
             -Wno-unused-variable # TODO turn it back on (patricia)
             -Wno-unused-function # TODO turn it back on (patricia)
-            -Wunused-function # TODO turn it back on (patricia)
             -Wno-reserved-user-defined-literal # TODO turn it back on (patricia)?
             -Wno-shorten-64-to-32 # TODO turn it back on (patricia)
             -Wno-missing-field-initializers # TODO turn it back on (patricia)
@@ -62,6 +61,7 @@ function(set_project_warnings)
             -Wno-float-conversion # TODO turn it back on (patricia)
             -Wno-double-promotion # TODO turn it back on (patricia)
             -Wno-implicit-float-conversion # TODO turn it back on (patricia)
+            -Wno-c++11-narrowing # TODO turn it back on (patricia)
             )
 
     if (WARNINGS_AS_ERRORS)

@@ -33,6 +33,7 @@
 #include "r_sky.hpp"
 #include "r_bmaps.hpp" // [crispy] R_BrightmapForTexName()
 #include "r_swirl.hpp" // [crispy] R_DistortedFlat()
+#include "../../utils/lump.hpp"
 
 
 planefunction_t floorfunc;
@@ -487,7 +488,7 @@ void R_DrawPlanes(void)
         lumpnum = firstflat + (swirling ? pl->picnum : flattranslation[pl->picnum]);
         // [crispy] add support for SMMU swirling flats
         ds_source =
-            static_cast<byte *>(swirling ? R_DistortedFlat(lumpnum) : W_CacheLumpNum(lumpnum, PU_STATIC));
+            static_cast<byte *>(swirling ? reinterpret_cast<unsigned char *>(R_DistortedFlat(lumpnum)) : cache_lump_num<byte *>(lumpnum, PU_STATIC));
         ds_brightmap = R_BrightmapForFlatNum(lumpnum - firstflat);
 
         planeheight = abs(pl->height - viewz);

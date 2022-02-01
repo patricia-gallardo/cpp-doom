@@ -1709,7 +1709,7 @@ static void WI_loadUnloadData(load_callback_t callback)
 
 static void WI_loadCallback(char *name, patch_t **variable)
 {
-    *variable = W_CacheLumpName(name, PU_STATIC);
+    *variable = cache_lump_name<patch_t *>(name, PU_STATIC);
 }
 
 void WI_loadData(void)

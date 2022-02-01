@@ -239,7 +239,7 @@ terraintype_e P_GetTerrainType(mobj_t* mobj)
             i++;
         }
 
-        return terraintypes[i].type;
+        return static_cast<terraintype_e>(terraintypes[i].type);
     }
 
     return FLOOR_SOLID;
@@ -1824,7 +1824,7 @@ int EV_DoDonut(line_t*	line)
             }
 
 	    //	Spawn rising slime
-	    floor = Z_Malloc (sizeof(*floor), PU_LEVSPEC, 0);
+	    floor = static_cast<floormove_t *>(Z_Malloc(sizeof(*floor), PU_LEVSPEC, 0));
 	    P_AddThinker (&floor->thinker);
 	    s2->specialdata = floor;
 	    floor->thinker.function.acp1 = (actionf_p1) T_MoveFloor;
@@ -1838,7 +1838,7 @@ int EV_DoDonut(line_t*	line)
 	    floor->floordestheight = s3_floorheight;
 	    
 	    //	Spawn lowering donut-hole
-	    floor = Z_Malloc (sizeof(*floor), PU_LEVSPEC, 0);
+	    floor = static_cast<floormove_t *>(Z_Malloc(sizeof(*floor), PU_LEVSPEC, 0));
 	    P_AddThinker (&floor->thinker);
 	    s1->specialdata = floor;
 	    floor->thinker.function.acp1 = (actionf_p1) T_MoveFloor;

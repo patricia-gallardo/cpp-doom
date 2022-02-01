@@ -60,6 +60,7 @@
 
 #include "m_menu.hpp"
 #include "p_dialog.hpp"
+#include "../../utils/lump.hpp"
 
 
 extern void M_QuitStrife(int);
@@ -625,7 +626,7 @@ void M_DoNameChar(int choice)
     else
         map = 2;
 
-    G_DeferedInitNew(menuskill, map);
+    G_DeferedInitNew(static_cast<skill_t>(menuskill), map);
     M_ClearMenus(0);
 }
 
@@ -2103,7 +2104,7 @@ boolean M_Responder (event_t* ev)
             if (usegamma > 4+4) // [crispy] intermediate gamma levels
                 usegamma = 0;
             players[consoleplayer].message = DEH_String(gammamsg[usegamma]);
-            I_SetPalette (W_CacheLumpName (DEH_String("PLAYPAL"),PU_CACHE));
+            I_SetPalette (cache_lump_name<byte *> (DEH_String("PLAYPAL"),PU_CACHE));
             return true;
         }
         else if(gameversion == exe_strife_1_31 && key == key_spy)
@@ -2360,7 +2361,7 @@ void M_Drawer (void)
 
         if (name[0])
         {
-            V_DrawPatchDirect (x, y, W_CacheLumpName(name, PU_CACHE));
+            V_DrawPatchDirect (x, y, cache_lump_name<patch_t *>(name, PU_CACHE));
         }
         y += LINEHEIGHT;
     }

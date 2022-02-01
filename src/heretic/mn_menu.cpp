@@ -369,7 +369,7 @@ void MN_DrTextA(const char *text, int x, int y)
         }
         else
         {
-            p = static_cast<patch_t *>(W_CacheLumpNum(FontABaseLump + c - 33, PU_CACHE));
+            p = cache_lump_num<patch_t *>(FontABaseLump + c - 33, PU_CACHE);
             V_DrawPatch(x, y, p);
             x += SHORT(p->width) - 1;
         }
@@ -399,7 +399,7 @@ int MN_TextAWidth(const char *text)
         }
         else
         {
-            p = static_cast<patch_t *>(W_CacheLumpNum(FontABaseLump + c - 33, PU_CACHE));
+            p = cache_lump_num<patch_t *>(FontABaseLump + c - 33, PU_CACHE);
             width += SHORT(p->width) - 1;
         }
     }
@@ -427,7 +427,7 @@ void MN_DrTextB(const char *text, int x, int y)
         }
         else
         {
-            p = static_cast<patch_t *>(W_CacheLumpNum(FontBBaseLump + c - 33, PU_CACHE));
+            p = cache_lump_num<patch_t *>(FontBBaseLump + c - 33, PU_CACHE);
             V_DrawPatch(x, y, p);
             x += SHORT(p->width) - 1;
         }
@@ -457,7 +457,7 @@ int MN_TextBWidth(const char *text)
         }
         else
         {
-            p = static_cast<patch_t *>(W_CacheLumpNum(FontBBaseLump + c - 33, PU_CACHE));
+            p = cache_lump_num<patch_t *>(FontBBaseLump + c - 33, PU_CACHE);
             width += SHORT(p->width) - 1;
         }
     }
@@ -577,14 +577,14 @@ void MN_Drawer(void)
         y = CurrentMenu->y + (CurrentItPos * (ITEM_HEIGHT/2)) + SELECTOR_YOFFSET;
         selName = DEH_String(MenuTime & 8 ? "INVGEMR1" : "INVGEMR2");
         V_DrawPatch(x + (SELECTOR_XOFFSET/2), y,
-                    static_cast<patch_t *>(W_CacheLumpName(selName, PU_CACHE)));
+            cache_lump_name<patch_t *>(selName, PU_CACHE));
         }
         else
         {
         y = CurrentMenu->y + (CurrentItPos * ITEM_HEIGHT) + SELECTOR_YOFFSET;
         selName = DEH_String(MenuTime & 16 ? "M_SLCTR1" : "M_SLCTR2");
         V_DrawPatch(x + SELECTOR_XOFFSET, y,
-                    static_cast<patch_t *>(W_CacheLumpName(selName, PU_CACHE)));
+            cache_lump_name<patch_t *>(selName, PU_CACHE));
         }
     }
 }
@@ -601,9 +601,9 @@ static void DrawMainMenu(void)
 
     frame = (MenuTime / 3) % 18;
     V_DrawPatch(88, 0, cache_lump_name<patch_t *>(DEH_String("M_HTIC"), PU_CACHE));
-    V_DrawPatch(40, 10, static_cast<patch_t *>(W_CacheLumpNum(SkullBaseLump + (17 - frame),
-                                       PU_CACHE)));
-    V_DrawPatch(232, 10, static_cast<patch_t *>(W_CacheLumpNum(SkullBaseLump + frame, PU_CACHE)));
+    V_DrawPatch(40, 10, cache_lump_num<patch_t *>(SkullBaseLump + (17 - frame),
+                                       PU_CACHE));
+    V_DrawPatch(232, 10, cache_lump_num<patch_t *>(SkullBaseLump + frame, PU_CACHE));
 }
 
 //---------------------------------------------------------------------------
@@ -1235,8 +1235,7 @@ boolean MN_Responder(event_t * event)
                     //set the msg to be cleared
                     players[consoleplayer].message = NULL;
                     paused = false;
-                    I_SetPalette(static_cast<byte *>(W_CacheLumpName
-                                 ("PLAYPAL", PU_CACHE)));
+                    I_SetPalette(cache_lump_name<byte *>("PLAYPAL", PU_CACHE));
                     D_StartTitle();     // go to intro/demo mode.
                     break;
 
@@ -1732,8 +1731,8 @@ void MN_DeactivateMenu(void)
 void MN_DrawInfo(void)
 {
     I_SetPalette(cache_lump_name<byte *>("PLAYPAL", PU_CACHE));
-    V_DrawRawScreen(static_cast<pixel_t *>(W_CacheLumpNum(W_GetNumForName("TITLE") + InfoType,
-                                   PU_CACHE)));
+    V_DrawRawScreen(cache_lump_num<pixel_t *>(W_GetNumForName("TITLE") + InfoType,
+                                   PU_CACHE));
 //      V_DrawPatch(0, 0, W_CacheLumpNum(W_GetNumForName("TITLE")+InfoType,
 //              PU_CACHE));
 }

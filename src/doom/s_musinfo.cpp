@@ -34,6 +34,7 @@
 #include "z_zone.hpp"
 
 #include "s_musinfo.hpp"
+#include "../../utils/lump.hpp"
 
 // MACROS ------------------------------------------------------------------
 
@@ -105,7 +106,7 @@ static void OpenScript(char *name, int type)
     if (type == LUMP_SCRIPT)
     { // Lump script
         ScriptLumpNum = W_GetNumForName(name);
-        ScriptBuffer  = (char *)W_CacheLumpNum(ScriptLumpNum, PU_STATIC);
+        ScriptBuffer  = cache_lump_num<char *>(ScriptLumpNum, PU_STATIC);
         ScriptSize    = W_LumpLength(ScriptLumpNum);
         M_StringCopy(ScriptName, name, sizeof(ScriptName));
     }

@@ -20,6 +20,7 @@
 #include "deh_str.hpp"
 #include "i_system.hpp"
 #include "r_local.hpp"
+#include "../../utils/lump.hpp"
 
 planefunction_t floorfunc, ceilingfunc;
 
@@ -476,7 +477,7 @@ void R_DrawPlanes(void)
         //
         lumpnum = firstflat + flattranslation[pl->picnum];
 
-        tempSource = static_cast<byte *>(W_CacheLumpNum(lumpnum, PU_STATIC));
+        tempSource = cache_lump_num<byte *>(lumpnum, PU_STATIC);
 
         switch (pl->special)
         {

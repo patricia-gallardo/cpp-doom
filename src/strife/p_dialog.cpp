@@ -39,6 +39,7 @@
 #include "s_sound.hpp"
 #include "p_local.hpp"
 #include "p_inter.hpp"
+#include "../../utils/lump.hpp"
 
 //
 // Defines and Macros
@@ -454,7 +455,7 @@ void P_DialogLoad(void)
         numleveldialogs = 0;
     else
     {
-        byte *leveldialogptr = static_cast<byte *>(W_CacheLumpNum(lumpnum, PU_STATIC));
+        byte *leveldialogptr = cache_lump_num<byte *>(lumpnum, PU_STATIC);
         numleveldialogs = W_LumpLength(lumpnum) / ORIG_MAPDIALOG_SIZE;
         P_ParseDialogLump(leveldialogptr, &leveldialogs, numleveldialogs, 
                           PU_LEVEL);
@@ -469,7 +470,7 @@ void P_DialogLoad(void)
         script0loaded = true; 
         // BUG: Rogue should have used W_GetNumForName here...
         lumpnum = W_CheckNumForName(DEH_String("script00")); 
-        script0ptr = static_cast<byte *>(W_CacheLumpNum(lumpnum, PU_STATIC));
+        script0ptr = cache_lump_num<byte *>(lumpnum, PU_STATIC);
         numscript0dialogs = W_LumpLength(lumpnum) / ORIG_MAPDIALOG_SIZE;
         P_ParseDialogLump(script0ptr, &script0dialogs, numscript0dialogs,
                           PU_STATIC);
@@ -835,7 +836,7 @@ boolean P_GiveItemToPlayer(player_t *player, int sprnum, mobjtype_t type)
             player->backpack = true;
         }
         for(i = 0; i < NUMAMMO; i++)
-            P_GiveAmmo(player, i, 1);
+            P_GiveAmmo(player, static_cast<ammotype_t>(i), 1);
         break;
 
     case SPR_RIFL: // Assault Rifle
@@ -1081,7 +1082,7 @@ static void P_DialogDrawer(void)
     // draw background
     if(dialogbgpiclumpnum != -1)
     {
-        patch_t *patch = W_CacheLumpNum(dialogbgpiclumpnum, PU_CACHE);
+        patch_t *patch = cache_lump_num<patch_t *>(dialogbgpiclumpnum, PU_CACHE);
         V_DrawPatchDirect(0, 0, patch);
     }
 
@@ -1165,7 +1166,7 @@ void P_DialogDoChoice(int choice)
     // villsa 09/08/10: converted into for loop
     for(i = 0; i < MDLG_MAXITEMS; i++)
     {
-        if(P_PlayerHasItem(dialogplayer, currentchoice->needitems[i]) <
+        if(P_PlayerHasItem(dialogplayer, static_cast<mobjtype_t>(currentchoice->needitems[i])) <
                                          currentchoice->needamounts[i])
         {
             candochoice = false; // nope, missing something
@@ -1183,8 +1184,7 @@ void P_DialogDoChoice(int choice)
         item = currentchoice->giveitem;
         if(item < 0 || 
            P_GiveItemToPlayer(dialogplayer, 
-                              states[mobjinfo[item].spawnstate].sprite, 
-                              item))
+                              states[mobjinfo[item].spawnstate].sprite, static_cast<mobjtype_t>(item)))
         {
             // if successful, take needed items
             int count = 0;
@@ -1220,7 +1220,7 @@ void P_DialogDoChoice(int choice)
         if((objective = currentchoice->objective))
         {
             DEH_snprintf(mission_objective, OBJECTIVE_LEN, "log%i", objective);
-            objlump = W_CacheLumpName(mission_objective, PU_CACHE);
+            objlump = cache_lump_name<char *>(mission_objective, PU_CACHE);
             M_StringCopy(mission_objective, objlump, OBJECTIVE_LEN);
         }
         // haleyjd 20130301: v1.31 hack: if first char of message is a period,
@@ -1324,7 +1324,7 @@ void P_DialogStart(player_t *player)
             // if the item is non-zero, the player must have at least one in his
             // or her inventory
             if(currentdialog->checkitem[i] != 0 &&
-                P_PlayerHasItem(dialogplayer, currentdialog->checkitem[i]) < 1)
+                P_PlayerHasItem(dialogplayer, static_cast<mobjtype_t>(currentdialog->checkitem[i])) < 1)
                 break;
         }
 
@@ -1384,7 +1384,7 @@ void P_DialogStart(player_t *player)
     pic = W_CheckNumForName(currentdialog->backpic);
     dialogbgpiclumpnum = pic;
     if(pic != -1)
-        V_DrawPatchDirect(0, 0, W_CacheLumpNum(pic, PU_CACHE));
+        V_DrawPatchDirect(0, 0, cache_lump_num<patch_t *>(pic, PU_CACHE));
 
     // get voice
     I_StartVoice(currentdialog->voice);

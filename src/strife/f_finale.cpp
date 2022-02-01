@@ -41,6 +41,7 @@
 #include "r_state.hpp"
 
 #include "p_dialog.hpp" // [STRIFE]
+#include "../../utils/lump.hpp"
 
 typedef enum
 {
@@ -178,7 +179,7 @@ void F_StartFinale (void)
     gamestate = GS_FINALE;
     viewactive = false;
     automapactive = false;
-    wipegamestate = -1; // [STRIFE]
+    wipegamestate = static_cast<gamestate_t>(-1); // [STRIFE]
 
     // [STRIFE] Setup the slide show
     slideshow_panel = DEH_String("PANEL0");
@@ -190,7 +191,7 @@ void F_StartFinale (void)
     // system in place, this only manages to fuck up the fade-out that is
     // supposed to happen at the beginning of all finales. So, don't do it!
 #if 0
-    panel = (patch_t *)W_CacheLumpName(slideshow_panel, PU_CACHE);
+    panel = cache_lump_name<patch_t *>(slideshow_panel, PU_CACHE);
     V_DrawPatch(0, 0, panel);
 #endif
 
@@ -271,7 +272,7 @@ void F_WaitTicker(void)
     if(++finalecount >= 250)
     {
         gamestate   = GS_FINALE;
-        finalestage = 0;
+        finalestage = static_cast<finalestage_t>(0);
         finalecount = 0;
     }
 }
@@ -432,7 +433,7 @@ static void F_DoSlideShow(void)
     case SLIDE_EXIT: // state -1: proceed to next finale stage
         finalecount = 0;
         finalestage = F_STAGE_ARTSCREEN;
-        wipegamestate = -1;
+        wipegamestate = static_cast<gamestate_t>(-1);
         S_StartMusic(mus_fast);
         // haleyjd 20130301: The ONLY glitch fixed in 1.31 of Strife
         // *would* be something this insignificant, of course!
@@ -452,7 +453,7 @@ static void F_DoSlideShow(void)
         finalecount = 0;
         finalestage = F_STAGE_ARTSCREEN;
         if(menuactive)
-            wipegamestate = -1;
+            wipegamestate = static_cast<gamestate_t>(-1);
         S_StartMusic(mus_fast);
         slideshow_state = SLIDE_CHOCO; // remain here.
         break;
@@ -654,7 +655,7 @@ void F_StartCast (void)
     casttics = caststate->tics;
     if(casttics > 50)
         casttics = 50;
-    wipegamestate = -1;             // force a screen wipe
+    wipegamestate = static_cast<gamestate_t>(-1);             // force a screen wipe
     castdeath = false;
     finalestage = F_STAGE_CAST;
     castframes = 0;
@@ -1026,7 +1027,7 @@ void F_Drawer (void)
     case F_STAGE_TEXT:
         // Draw slideshow panel
         {
-            patch_t *slide = W_CacheLumpName(slideshow_panel, PU_CACHE);
+            patch_t *slide = cache_lump_name<patch_t *>(slideshow_panel, PU_CACHE);
             V_DrawPatch(0, 0, slide);
         }
         break;

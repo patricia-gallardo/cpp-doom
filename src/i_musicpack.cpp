@@ -45,6 +45,7 @@
 #include "sha1.hpp"
 #include "w_wad.hpp"
 #include "z_zone.hpp"
+#include "../utils/lump.hpp"
 
 #define MID_HEADER_MAGIC "MThd"
 #define MUS_HEADER_MAGIC "MUS\x1a"
@@ -995,7 +996,7 @@ static boolean IsMusicLump(int lumpnum)
         return false;
     }
 
-    data = static_cast<byte *>(W_CacheLumpNum(lumpnum, PU_STATIC));
+    data = cache_lump_num<byte *>(lumpnum, PU_STATIC);
 
     result = memcmp(data, MUS_HEADER_MAGIC, 4) == 0
              || memcmp(data, MID_HEADER_MAGIC, 4) == 0;
@@ -1040,7 +1041,7 @@ static void DumpSubstituteConfig(char *filename)
         }
 
         // Calculate hash.
-        data = static_cast<byte *>(W_CacheLumpNum(lumpnum, PU_STATIC));
+        data = cache_lump_num<byte *>(lumpnum, PU_STATIC);
         SHA1_Init(&context);
         SHA1_Update(&context, data, W_LumpLength(lumpnum));
         SHA1_Final(digest, &context);

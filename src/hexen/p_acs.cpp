@@ -25,6 +25,7 @@
 #include "m_random.hpp"
 #include "p_local.hpp"
 #include "s_sound.hpp"
+#include "../../utils/lump.hpp"
 
 // MACROS ------------------------------------------------------------------
 
@@ -453,7 +454,7 @@ void P_LoadACScripts(int lump)
     acsHeader_t *header;
     acsInfo_t *info;
 
-    ActionCodeBase = static_cast<byte *>(W_CacheLumpNum(lump, PU_LEVEL));
+    ActionCodeBase = cache_lump_num<byte *>(lump, PU_LEVEL);
     ActionCodeSize = W_LumpLength(lump);
 
     M_snprintf(EvalContext, sizeof(EvalContext),

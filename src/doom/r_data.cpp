@@ -569,7 +569,7 @@ byte *
 
     // [crispy] single-patched mid-textures on two-sided walls
     if (lump > 0 && !opaque)
-        return (byte *)W_CacheLumpNum(lump, PU_CACHE) + ofs2;
+        return cache_lump_num<byte *>(lump, PU_CACHE) + ofs2;
 
     if (!texturecomposite[tex])
         R_GenerateComposite(tex);
@@ -707,7 +707,7 @@ void R_InitTextures(void)
             }
 
             pnameslumps[numpnameslumps].lumpnum       = i;
-            pnameslumps[numpnameslumps].names         = W_CacheLumpNum(pnameslumps[numpnameslumps].lumpnum, PU_STATIC);
+            pnameslumps[numpnameslumps].names         = cache_lump_num<patch_t *>(pnameslumps[numpnameslumps].lumpnum, PU_STATIC);
             pnameslumps[numpnameslumps].nummappatches = LONG(*((int *)pnameslumps[numpnameslumps].names));
 
             // [crispy] accumulated number of patches in the lookup tables

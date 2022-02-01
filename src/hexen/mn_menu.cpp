@@ -358,7 +358,7 @@ void MN_DrTextA(const char *text, int x, int y)
         }
         else
         {
-            p = static_cast<patch_t *>(W_CacheLumpNum(FontABaseLump + c - 33, PU_CACHE));
+            p = cache_lump_num<patch_t *>(FontABaseLump + c - 33, PU_CACHE);
             V_DrawPatch(x, y, p);
             x += SHORT(p->width) - 1;
         }
@@ -384,7 +384,7 @@ void MN_DrTextAYellow(const char *text, int x, int y)
         }
         else
         {
-            p = static_cast<patch_t *>(W_CacheLumpNum(FontAYellowBaseLump + c - 33, PU_CACHE));
+            p = cache_lump_num<patch_t *>(FontAYellowBaseLump + c - 33, PU_CACHE);
             V_DrawPatch(x, y, p);
             x += SHORT(p->width) - 1;
         }
@@ -414,7 +414,7 @@ int MN_TextAWidth(const char *text)
         }
         else
         {
-            p = static_cast<patch_t *>(W_CacheLumpNum(FontABaseLump + c - 33, PU_CACHE));
+            p = cache_lump_num<patch_t *>(FontABaseLump + c - 33, PU_CACHE);
             width += SHORT(p->width) - 1;
         }
     }
@@ -442,7 +442,7 @@ void MN_DrTextB(const char *text, int x, int y)
         }
         else
         {
-            p = static_cast<patch_t *>(W_CacheLumpNum(FontBBaseLump + c - 33, PU_CACHE));
+            p = cache_lump_num<patch_t *>(FontBBaseLump + c - 33, PU_CACHE);
             V_DrawPatch(x, y, p);
             x += SHORT(p->width) - 1;
         }
@@ -472,7 +472,7 @@ int MN_TextBWidth(const char *text)
         }
         else
         {
-            p = static_cast<patch_t *>(W_CacheLumpNum(FontBBaseLump + c - 33, PU_CACHE));
+            p = cache_lump_num<patch_t *>(FontBBaseLump + c - 33, PU_CACHE);
             width += SHORT(p->width) - 1;
         }
     }
@@ -571,7 +571,7 @@ void MN_Drawer(void)
         y = CurrentMenu->y + (CurrentItPos * ITEM_HEIGHT) + SELECTOR_YOFFSET;
         selName = MenuTime & 16 ? "M_SLCTR1" : "M_SLCTR2";
         V_DrawPatch(x + SELECTOR_XOFFSET, y,
-            static_cast<patch_t *>(W_CacheLumpName(selName, PU_CACHE)));
+            cache_lump_name<patch_t *>(selName, PU_CACHE));
     }
 }
 
@@ -588,8 +588,8 @@ static void DrawMainMenu(void)
     frame = (MenuTime / 5) % 7;
     V_DrawPatch(88, 0, cache_lump_name<patch_t *>("M_HTIC", PU_CACHE));
 // Old Gold skull positions: (40, 10) and (232, 10)
-    V_DrawPatch(37, 80, static_cast<patch_t *>(W_CacheLumpNum(MauloBaseLump + (frame + 2) % 7, PU_CACHE)));
-    V_DrawPatch(278, 80, static_cast<patch_t *>(W_CacheLumpNum(MauloBaseLump + frame, PU_CACHE)));
+    V_DrawPatch(37, 80, cache_lump_num<patch_t *>(MauloBaseLump + (frame + 2) % 7, PU_CACHE));
+    V_DrawPatch(278, 80, cache_lump_num<patch_t *>(MauloBaseLump + frame, PU_CACHE));
 }
 
 //==========================================================================
@@ -614,10 +614,10 @@ static void DrawClassMenu(void)
 
     MN_DrTextB("CHOOSE CLASS:", 34, 24);
     clazz = (pclass_t) CurrentMenu->items[CurrentItPos].option;
-    V_DrawPatch(174, 8, static_cast<patch_t *>(W_CacheLumpName(boxLumpName[clazz], PU_CACHE)));
+    V_DrawPatch(174, 8, cache_lump_name<patch_t *>(boxLumpName[clazz], PU_CACHE));
     V_DrawPatch(174 + 24, 8 + 12,
-                static_cast<patch_t *>(W_CacheLumpNum(W_GetNumForName(walkLumpName[clazz])
-                               + ((MenuTime >> 3) & 3), PU_CACHE)));
+        cache_lump_num<patch_t *>(W_GetNumForName(walkLumpName[clazz])
+                               + ((MenuTime >> 3) & 3), PU_CACHE));
 }
 
 //---------------------------------------------------------------------------
@@ -1781,7 +1781,7 @@ void MN_DrawInfo(void)
 {
     I_SetPalette(cache_lump_name<byte *>("PLAYPAL", PU_CACHE));
     V_CopyScaledBuffer(I_VideoBuffer,
-           (byte *) W_CacheLumpNum(W_GetNumForName("TITLE") + InfoType,
+           cache_lump_num<byte *>(W_GetNumForName("TITLE") + InfoType,
                                    PU_CACHE), ORIGWIDTH * ORIGHEIGHT);
 //      V_DrawPatch(0, 0, W_CacheLumpNum(W_GetNumForName("TITLE")+InfoType,
 //              PU_CACHE));
@@ -1819,8 +1819,8 @@ static void DrawSlider(Menu_t * menu, int item, int width, int slot)
     V_DrawPatch(x - 32, y, cache_lump_name<patch_t *>("M_SLDLT", PU_CACHE));
     for (x2 = x, count = width; count--; x2 += 8)
     {
-        V_DrawPatch(x2, y, static_cast<patch_t *>(W_CacheLumpName(count & 1 ? "M_SLDMD1"
-                                           : "M_SLDMD2", PU_CACHE)));
+        V_DrawPatch(x2, y, cache_lump_name<patch_t *>(count & 1 ? "M_SLDMD1"
+                                           : "M_SLDMD2", PU_CACHE));
     }
     V_DrawPatch(x2, y, cache_lump_name<patch_t *>("M_SLDRT", PU_CACHE));
     V_DrawPatch(x + 4 + slot * 8, y + 7,

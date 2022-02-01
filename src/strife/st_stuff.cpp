@@ -64,6 +64,7 @@
 #include "m_controls.hpp"
 #include "hu_lib.hpp"     // [STRIFE]
 #include "hu_stuff.hpp"
+#include "../../utils/lump.hpp"
 
 //
 // STATUS BAR DATA
@@ -605,7 +606,7 @@ boolean ST_Responder(event_t* ev)
             if(plyr->powers[i])
                 plyr->powers[i] = (i != 1);
             else
-                P_GivePower(plyr, i);
+                P_GivePower(plyr, static_cast<powertype_t>(i));
             plyr->message = DEH_String(STSTR_BEHOLDX);
         }
     }
@@ -628,7 +629,7 @@ boolean ST_Responder(event_t* ev)
         plyr->backpack = true;
 
         for(i = 0; i < NUMAMMO; ++i)
-            P_GiveAmmo(plyr, i, 1);
+            P_GiveAmmo(plyr, static_cast<ammotype_t>(i), 1);
         plyr->message = DEH_String("you got the stuff!");
     }
     if(cht_CheckCheat(&cheat_powerup[ST_PUMPUP_S], ev->data2))
@@ -900,7 +901,7 @@ void ST_doPaletteStuff(void)
     if (palette != st_palette)
     {
         st_palette = palette;
-        pal = (byte *) W_CacheLumpNum (lu_palette, PU_CACHE)+palette*768;
+        pal = cache_lump_num<byte *> (lu_palette, PU_CACHE)+palette*768;
         I_SetPalette (pal);
     }
 
@@ -1043,7 +1044,7 @@ void ST_doRefresh(void)
             if(lumpnum == -1)
                 patch = cache_lump_name<patch_t *>(DEH_String("STCFN063"), PU_CACHE);
             else
-                patch = W_CacheLumpNum(lumpnum, PU_STATIC);
+                patch = cache_lump_num<patch_t *>(lumpnum, PU_STATIC);
 
             V_DrawPatch(icon_x, 182, patch);
             ST_drawNumFontY(num_x, 191, plyr->inventory[i].amount);
@@ -1214,7 +1215,7 @@ static boolean ST_drawKeysPopup(void)
         for(pnum = 0; pnum < MAXPLAYERS/2; pnum++)
         {
             DEH_snprintf(buffer, sizeof(buffer), "stcolor%d", pnum+1);
-            colpatch = W_CacheLumpName(buffer, PU_CACHE);
+            colpatch = cache_lump_name<patch_t *>(buffer, PU_CACHE);
             V_DrawPatchDirect(28, y, colpatch);
             frags = ST_calcFrags(pnum);
             DEH_snprintf(buffer, sizeof(buffer), "%s%d", player_names[pnum], frags);
@@ -1231,7 +1232,7 @@ static boolean ST_drawKeysPopup(void)
         for(pnum = MAXPLAYERS/2; pnum < MAXPLAYERS; pnum++)
         {
             DEH_snprintf(buffer, sizeof(buffer), "stcolor%d", pnum+1);
-            colpatch = W_CacheLumpName(buffer, PU_CACHE);
+            colpatch = cache_lump_name<patch_t *>(buffer, PU_CACHE);
             V_DrawPatchDirect(158, y, colpatch);
             frags = ST_calcFrags(pnum);
             DEH_snprintf(buffer, sizeof(buffer), "%s%d", player_names[pnum], frags);
@@ -1295,7 +1296,7 @@ static boolean ST_drawKeysPopup(void)
                 // Get spawnstate sprite name and load corresponding icon
                 DEH_snprintf(sprname, sizeof(sprname), "I_%s",
                     sprnames[states[info->spawnstate].sprite]);
-                patch = W_CacheLumpName(sprname, PU_CACHE);
+                patch = cache_lump_name<patch_t *>(sprname, PU_CACHE);
                 V_DrawPatchDirect(x, y, patch);
                 HUlib_drawYellowText(x + ST_KEYNAME_X, y + ST_KEYNAME_Y, info->name);
             }
@@ -1487,7 +1488,7 @@ static void ST_loadUnloadGraphics(load_callback_t callback)
 
 static void ST_loadCallback(const char *lumpname, patch_t **variable)
 {
-    *variable = W_CacheLumpName(lumpname, PU_STATIC);
+    *variable = cache_lump_name<patch_t *>(lumpname, PU_STATIC);
 }
 
 void ST_loadGraphics(void)
@@ -1599,7 +1600,7 @@ void ST_Stop (void)
     if (st_stopped)
         return;
 
-    I_SetPalette (W_CacheLumpNum (lu_palette, PU_CACHE));
+    I_SetPalette (cache_lump_num<byte *> (lu_palette, PU_CACHE));
 
     st_stopped = true;
 }
