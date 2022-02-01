@@ -112,7 +112,7 @@ static void LoadGameSettings(net_gamesettings_t *settings)
     ticdup = settings->ticdup;
     startepisode = settings->episode;
     startmap = settings->map;
-    startskill = settings->skill;
+    startskill = static_cast<skill_t>(settings->skill);
     // TODO startloadgame = settings->loadgame;
     lowres_turn = settings->lowres_turn;
     nomonsters = settings->nomonsters;
@@ -128,7 +128,7 @@ static void LoadGameSettings(net_gamesettings_t *settings)
     for (i=0; i<maxplayers; ++i)
     {
         playeringame[i] = i < settings->num_players;
-        PlayerClass[i] = settings->player_classes[i];
+        PlayerClass[i] = static_cast<pclass_t>(settings->player_classes[i]);
 
         if (PlayerClass[i] >= NUMCLASSES)
         {

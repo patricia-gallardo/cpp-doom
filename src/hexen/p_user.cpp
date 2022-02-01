@@ -20,6 +20,7 @@
 #include "i_system.hpp"
 #include "p_local.hpp"
 #include "s_sound.hpp"
+#include "../../utils/lump.hpp"
 
 void P_PlayerNextArtifact(player_t * player);
 
@@ -229,9 +230,9 @@ void P_MovePlayer(player_t * player)
     }
     if (cmd->forwardmove || cmd->sidemove)
     {
-        if (player->mo->state == &states[PStateNormal[player->class]])
+        if (player->mo->state == &states[PStateNormal[player->clazz]])
         {
-            P_SetMobjState(player->mo, PStateRun[player->class]);
+            P_SetMobjState(player->mo, static_cast<statenum_t>(PStateRun[player->clazz]));
         }
     }
 
@@ -425,7 +426,7 @@ void P_DeathThink(player_t * player)
             newtorchdelta = 0;
         }
         player->playerstate = PST_REBORN;
-        player->mo->special1.i = player->class;
+        player->mo->special1.i = player->clazz;
         if (player->mo->special1.i > 2)
         {
             player->mo->special1.i = 0;
@@ -516,7 +517,7 @@ boolean P_UndoPlayerMorph(player_t * player)
     y = pmo->y;
     z = pmo->z;
     angle = pmo->angle;
-    weapon = pmo->special1.i;
+    weapon = static_cast<weapontype_t>(pmo->special1.i);
     oldFlags = pmo->flags;
     oldFlags2 = pmo->flags2;
     oldBeast = pmo->type;
@@ -535,13 +536,13 @@ boolean P_UndoPlayerMorph(player_t * player)
             break;
         default:
             I_Error("P_UndoPlayerMorph:  Unknown player class %d\n",
-                    player->class);
+                    player->clazz);
             return false;
     }
     if (P_TestMobjLocation(mo) == false)
     {                           // Didn't fit
         P_RemoveMobj(mo);
-        mo = P_SpawnMobj(x, y, z, oldBeast);
+        mo = P_SpawnMobj(x, y, z, static_cast<mobjtype_t>(oldBeast));
         mo->angle = angle;
         mo->health = player->health;
         mo->special1.i = weapon;
@@ -552,7 +553,7 @@ boolean P_UndoPlayerMorph(player_t * player)
         player->morphTics = 2 * 35;
         return (false);
     }
-    if (player->class == PCLASS_FIGHTER)
+    if (player->clazz == PCLASS_FIGHTER)
     {
         // The first type should be blue, and the third should be the
         // Fighter's original gold color
@@ -580,7 +581,7 @@ boolean P_UndoPlayerMorph(player_t * player)
     player->morphTics = 0;
     player->health = mo->health = MAXHEALTH;
     player->mo = mo;
-    player->class = PlayerClass[playerNum];
+    player->clazz = PlayerClass[playerNum];
     angle >>= ANGLETOFINESHIFT;
     fog = P_SpawnMobj(x + 20 * finecosine[angle],
                       y + 20 * finesine[angle], z + TELEFOGHEIGHT, MT_TFOG);
@@ -666,7 +667,7 @@ void P_PlayerThink(player_t * player)
             {
                 speedMo->angle = pmo->angle;
                 playerNum = P_GetPlayerNum(player);
-                if (player->class == PCLASS_FIGHTER)
+                if (player->clazz == PCLASS_FIGHTER)
                 {
                     // The first type should be blue, and the 
                     // third should be the Fighter's original gold color
@@ -684,7 +685,7 @@ void P_PlayerThink(player_t * player)
                     speedMo->flags |= playerNum << MF_TRANSSHIFT;
                 }
                 speedMo->target = pmo;
-                speedMo->special1.i = player->class;
+                speedMo->special1.i = player->clazz;
                 if (speedMo->special1.i > 2)
                 {
                     speedMo->special1.i = 0;
@@ -707,7 +708,7 @@ void P_PlayerThink(player_t * player)
     {
         P_PlayerOnSpecialFlat(player, floorType);
     }
-    switch (player->class)
+    switch (player->clazz)
     {
         case PCLASS_FIGHTER:
             if (player->mo->momz <= -35 * FRACUNIT
@@ -764,12 +765,12 @@ void P_PlayerThink(player_t * player)
 
             for (i = 1; i < arti_firstpuzzitem; i++)
             {
-                P_PlayerUseArtifact(player, i);
+                P_PlayerUseArtifact(player, static_cast<artitype_t>(i));
             }
         }
         else
         {
-            P_PlayerUseArtifact(player, cmd->arti & AFLAG_MASK);
+            P_PlayerUseArtifact(player, static_cast<artitype_t>(cmd->arti & AFLAG_MASK));
         }
     }
     // Check for weapon change
@@ -782,7 +783,7 @@ void P_PlayerThink(player_t * player)
         // The actual changing of the weapon is done when the weapon
         // psprite can do it (A_WeaponReady), so it doesn't happen in
         // the middle of an attack.
-        newweapon = (cmd->buttons & BT_WEAPONMASK) >> BT_WEAPONSHIFT;
+        newweapon = static_cast<weapontype_t>((cmd->buttons & BT_WEAPONMASK) >> BT_WEAPONSHIFT);
         if (player->weaponowned[newweapon]
             && newweapon != player->readyweapon)
         {
@@ -815,7 +816,7 @@ void P_PlayerThink(player_t * player)
     // Other Counters
     if (player->powers[pw_invulnerability])
     {
-        if (player->class == PCLASS_CLERIC)
+        if (player->clazz == PCLASS_CLERIC)
         {
             if (!(leveltime & 7) && player->mo->flags & MF_SHADOW
                 && !(player->mo->flags2 & MF2_DONTDRAW))
@@ -850,7 +851,7 @@ void P_PlayerThink(player_t * player)
         if (!(--player->powers[pw_invulnerability]))
         {
             player->mo->flags2 &= ~(MF2_INVULNERABLE | MF2_REFLECTIVE);
-            if (player->class == PCLASS_CLERIC)
+            if (player->clazz == PCLASS_CLERIC)
             {
                 player->mo->flags2 &= ~(MF2_DONTDRAW | MF2_NONSHOOTABLE);
                 player->mo->flags &= ~(MF_SHADOW | MF_ALTSHADOW);
@@ -1200,7 +1201,7 @@ void P_BlastRadius(player_t * player)
 
     for (think = thinkercap.next; think != &thinkercap; think = think->next)
     {
-        if (think->function != P_MobjThinker)
+        if (think->function != reinterpret_cast<think_t>(P_MobjThinker))
         {                       // Not a mobj thinker
             continue;
         }
@@ -1264,7 +1265,7 @@ boolean P_HealRadius(player_t * player)
 
     for (think = thinkercap.next; think != &thinkercap; think = think->next)
     {
-        if (think->function != P_MobjThinker)
+        if (think->function != reinterpret_cast<think_t>(P_MobjThinker))
         {                       // Not a mobj thinker
             continue;
         }
@@ -1280,7 +1281,7 @@ boolean P_HealRadius(player_t * player)
             continue;
         }
 
-        switch (player->class)
+        switch (player->clazz)
         {
             case PCLASS_FIGHTER:       // Radius armor boost
                 if ((P_GiveArmor(mo->player, ARMOR_ARMOR, 1)) ||
@@ -1349,7 +1350,7 @@ void P_PlayerNextArtifact(player_t * player)
                 curpos = 6;
             }
         }
-        player->readyArtifact = player->inventory[inv_ptr].type;
+        player->readyArtifact = static_cast<artitype_t>(player->inventory[inv_ptr].type);
     }
 }
 
@@ -1392,7 +1393,7 @@ void P_PlayerRemoveArtifact(player_t * player, int slot)
             {
                 inv_ptr = 0;
             }
-            player->readyArtifact = player->inventory[inv_ptr].type;
+            player->readyArtifact = static_cast<artitype_t>(player->inventory[inv_ptr].type);
         }
     }
 }
@@ -1518,7 +1519,7 @@ boolean P_UseArtifact(player_t * player, artitype_t arti)
             break;
         case arti_poisonbag:
             angle = player->mo->angle >> ANGLETOFINESHIFT;
-            if (player->class == PCLASS_CLERIC)
+            if (player->clazz == PCLASS_CLERIC)
             {
                 mo = P_SpawnMobj(player->mo->x + 16 * finecosine[angle],
                                  player->mo->y + 24 * finesine[angle],
@@ -1529,7 +1530,7 @@ boolean P_UseArtifact(player_t * player, artitype_t arti)
                     mo->target = player->mo;
                 }
             }
-            else if (player->class == PCLASS_MAGE)
+            else if (player->clazz == PCLASS_MAGE)
             {
                 mo = P_SpawnMobj(player->mo->x + 16 * finecosine[angle],
                                  player->mo->y + 24 * finesine[angle],
@@ -1586,7 +1587,7 @@ boolean P_UseArtifact(player_t * player, artitype_t arti)
 
             for (i = 0; i < NUMARMOR; i++)
             {
-                count += P_GiveArmor(player, i, 1);     // 1 point per armor type
+                count += P_GiveArmor(player, static_cast<armortype_t>(i), 1);     // 1 point per armor type
             }
             if (!count)
             {

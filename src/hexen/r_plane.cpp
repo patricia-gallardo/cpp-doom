@@ -498,8 +498,7 @@ void R_DrawPlanes(void)
             }
         }
         // Regular flat
-        tempSource = W_CacheLumpNum(firstflat +
-                                    flattranslation[pl->picnum], PU_STATIC);
+        tempSource = static_cast<byte *>(W_CacheLumpNum(firstflat + flattranslation[pl->picnum], PU_STATIC));
         scrollOffset = leveltime >> 1 & 63;
         switch (pl->special)
         {                       // Handle scrolling flats

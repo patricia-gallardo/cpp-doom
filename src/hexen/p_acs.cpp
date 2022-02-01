@@ -453,7 +453,7 @@ void P_LoadACScripts(int lump)
     acsHeader_t *header;
     acsInfo_t *info;
 
-    ActionCodeBase = W_CacheLumpNum(lump, PU_LEVEL);
+    ActionCodeBase = static_cast<byte *>(W_CacheLumpNum(lump, PU_LEVEL));
     ActionCodeSize = W_LumpLength(lump);
 
     M_snprintf(EvalContext, sizeof(EvalContext),
@@ -533,7 +533,7 @@ static void StartOpenACS(int number, int infoIndex, int offset)
 
     script->infoIndex = infoIndex;
     script->ip = offset;
-    script->thinker.function = T_InterpretACS;
+    script->thinker.function = reinterpret_cast<think_t>(T_InterpretACS);
     P_AddThinker(&script->thinker);
 }
 
@@ -614,7 +614,7 @@ boolean P_StartACS(int number, int map, byte * args, mobj_t * activator,
     script->line = line;
     script->side = side;
     script->ip = ACSInfo[infoIndex].offset;
-    script->thinker.function = T_InterpretACS;
+    script->thinker.function = reinterpret_cast<think_t>(T_InterpretACS);
     for (i = 0; i < MAX_SCRIPT_ARGS && i < ACSInfo[infoIndex].argCount; i++)
     {
         script->vars[i] = args[i];
@@ -1521,7 +1521,7 @@ static void ThingCount(int type, int tid)
         for (think = thinkercap.next; think != &thinkercap;
              think = think->next)
         {
-            if (think->function != P_MobjThinker)
+            if (think->function != reinterpret_cast<think_t>(P_MobjThinker))
             {                   // Not a mobj thinker
                 continue;
             }

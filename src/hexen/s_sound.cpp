@@ -26,6 +26,7 @@
 #include "p_local.hpp"            // for P_AproxDistance
 #include "sounds.hpp"
 #include "s_sound.hpp"
+#include "../../utils/lump.hpp"
 
 #define PRIORITY_MAX_ADJUST 10
 #define DIST_ADJUST (MAX_SND_DIST/PRIORITY_MAX_ADJUST)
@@ -186,7 +187,7 @@ void S_StartSong(int song, boolean loop)
         }
 
         lumpnum = W_GetNumForName(songLump);
-        Mus_SndPtr = W_CacheLumpNum(lumpnum, PU_STATIC);
+        Mus_SndPtr = static_cast<byte *>(W_CacheLumpNum(lumpnum, PU_STATIC));
         length = W_LumpLength(lumpnum);
 
         RegisteredSong = I_RegisterSong(Mus_SndPtr, length);
@@ -297,7 +298,7 @@ void S_StartSongName(const char *songLump, boolean loop)
         }
 
         lumpnum = W_GetNumForName(songLump);
-        Mus_SndPtr = W_CacheLumpNum(lumpnum, PU_MUSIC);
+        Mus_SndPtr = static_cast<byte *>(W_CacheLumpNum(lumpnum, PU_MUSIC));
         length = W_LumpLength(lumpnum);
 
         RegisteredSong = I_RegisterSong(Mus_SndPtr, length);
@@ -788,7 +789,7 @@ void S_UpdateSounds(mobj_t * listener)
 void S_Init(void)
 {
     I_SetOPLDriverVer(opl_doom2_1_666);
-    SoundCurve = cache_lump_name<patch_t *>("SNDCURVE", PU_STATIC);
+    SoundCurve = cache_lump_name<byte *>("SNDCURVE", PU_STATIC);
 //      SoundCurve = Z_Malloc(MAX_SND_DIST, PU_STATIC, NULL);
 
     if (snd_Channels > 8)

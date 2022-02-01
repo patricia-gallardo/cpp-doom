@@ -31,7 +31,7 @@
 // Outside Windows, we use strings.h for str[n]casecmp.
 
 
-#if !HAVE_DECL_STRCASECMP || !HAVE_DECL_STRNCASECMP
+#if !__APPLE__ && (!HAVE_DECL_STRCASECMP || !HAVE_DECL_STRNCASECMP)
 
 #include <string.h>
 #if !HAVE_DECL_STRCASECMP

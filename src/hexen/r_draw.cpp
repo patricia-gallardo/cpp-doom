@@ -20,6 +20,7 @@
 #include "i_video.hpp"
 #include "r_local.hpp"
 #include "v_video.hpp"
+#include "../../utils/lump.hpp"
 
 /*
 
@@ -320,12 +321,12 @@ void R_InitTranslationTables(void)
     V_LoadTintTable();
 
     // Allocate translation tables
-    translationtables = Z_Malloc(256 * 3 * (maxplayers - 1), PU_STATIC, 0);
+    translationtables = static_cast<byte *>(Z_Malloc(256 * 3 * (maxplayers - 1), PU_STATIC, 0));
 
     for (i = 0; i < 3 * (maxplayers - 1); i++)
     {
         lumpnum = W_GetNumForName("trantbl0") + i;
-        transLump = W_CacheLumpNum(lumpnum, PU_STATIC);
+        transLump = static_cast<byte *>(W_CacheLumpNum(lumpnum, PU_STATIC));
         memcpy(translationtables + i * 256, transLump, 256);
         W_ReleaseLumpNum(lumpnum);
     }
@@ -452,7 +453,7 @@ void R_DrawViewBorder(void)
     if (scaledviewwidth == SCREENWIDTH)
         return;
 
-    src = cache_lump_name<patch_t *>("F_022", PU_CACHE);
+    src = cache_lump_name<byte *>("F_022", PU_CACHE);
     dest = I_VideoBuffer;
 
     for (y = 0; y < SCREENHEIGHT - SBARHEIGHT; y++)
@@ -518,7 +519,7 @@ void R_DrawTopBorder(void)
 		src = W_CacheLumpName ("FLAT513", PU_CACHE);
 	}
 */
-    src = cache_lump_name<patch_t *>("F_022", PU_CACHE);
+    src = cache_lump_name<byte *>("F_022", PU_CACHE);
     dest = I_VideoBuffer;
 
     for (y = 0; y < 34; y++)

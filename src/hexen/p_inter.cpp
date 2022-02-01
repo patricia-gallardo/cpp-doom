@@ -174,7 +174,7 @@ boolean P_GiveMana(player_t * player, manatype_t mana, int count)
     {
         player->mana[mana] = MAX_MANA;
     }
-    if (player->class == PCLASS_FIGHTER && player->readyweapon == WP_SECOND
+    if (player->clazz == PCLASS_FIGHTER && player->readyweapon == WP_SECOND
         && mana == MANA_1 && prevMana <= 0)
     {
         P_SetPsprite(player, ps_weapon, S_FAXEREADY_G);
@@ -197,7 +197,7 @@ static void TryPickupWeapon(player_t * player, pclass_t weaponClass,
     boolean gaveWeapon;
 
     remove = true;
-    if (player->class != weaponClass)
+    if (player->clazz != weaponClass)
     {                           // Wrong class, but try to pick up for mana
         if (netgame && !deathmatch)
         {                       // Can't pick up weapons for other classes in coop netplay
@@ -307,7 +307,7 @@ boolean P_GiveWeapon(player_t *player, pclass_t class, weapontype_t weapon)
 	boolean gaveMana;
 	boolean gaveWeapon;
 
-	if(player->class != class)
+	if(player->clazz != class)
 	{ // player cannot use this weapon, take it anyway, and get mana
 		if(netgame && !deathmatch)
 		{ // Can't pick up weapons for other classes in coop netplay
@@ -381,7 +381,7 @@ boolean P_GiveWeaponPiece(player_t *player, pclass_t class, int piece)
 {
 	P_GiveMana(player, MANA_1, 20);
 	P_GiveMana(player, MANA_2, 20);
-	if(player->class != class)
+	if(player->clazz != class)
 	{
 		return true;
 	}
@@ -433,7 +433,7 @@ static void TryPickupWeaponPiece(player_t * player, pclass_t matchClass,
     remove = true;
     checkAssembled = true;
     gaveWeapon = false;
-    if (player->class != matchClass)
+    if (player->clazz != matchClass)
     {                           // Wrong class, but try to pick up for mana
         if (netgame && !deathmatch)
         {                       // Can't pick up wrong-class weapons in coop netplay
@@ -571,7 +571,7 @@ boolean P_GiveArmor(player_t * player, armortype_t armortype, int amount)
 
     if (amount == -1)
     {
-        hits = ArmorIncrement[player->class][armortype];
+        hits = ArmorIncrement[player->clazz][armortype];
         if (player->armorpoints[armortype] >= hits)
         {
             return false;
@@ -588,8 +588,8 @@ boolean P_GiveArmor(player_t * player, armortype_t armortype, int amount)
             + player->armorpoints[ARMOR_SHIELD]
             + player->armorpoints[ARMOR_HELMET]
             + player->armorpoints[ARMOR_AMULET]
-            + AutoArmorSave[player->class];
-        if (totalArmor < ArmorMax[player->class] * 5 * FRACUNIT)
+            + AutoArmorSave[player->clazz];
+        if (totalArmor < ArmorMax[player->clazz] * 5 * FRACUNIT)
         {
             player->armorpoints[armortype] += hits;
         }
@@ -636,7 +636,7 @@ boolean P_GivePower(player_t * player, powertype_t power)
         }
         player->powers[power] = INVULNTICS;
         player->mo->flags2 |= MF2_INVULNERABLE;
-        if (player->class == PCLASS_MAGE)
+        if (player->clazz == PCLASS_MAGE)
         {
             player->mo->flags2 |= MF2_REFLECTIVE;
         }
@@ -897,7 +897,7 @@ static void SetDormantArtifact(mobj_t * arti)
 void A_RestoreArtifact(mobj_t * arti)
 {
     arti->flags |= MF_SPECIAL;
-    P_SetMobjState(arti, arti->info->spawnstate);
+    P_SetMobjState(arti, static_cast<statenum_t>(arti->info->spawnstate));
     S_StartSound(arti, SFX_RESPAWN);
 }
 
@@ -924,7 +924,7 @@ void A_RestoreSpecialThing1(mobj_t * thing)
 void A_RestoreSpecialThing2(mobj_t * thing)
 {
     thing->flags |= MF_SPECIAL;
-    P_SetMobjState(thing, thing->info->spawnstate);
+    P_SetMobjState(thing, static_cast<statenum_t>(thing->info->spawnstate));
 }
 
 //---------------------------------------------------------------------------
@@ -1003,7 +1003,7 @@ void P_TouchSpecialThing(mobj_t * special, mobj_t * toucher)
         case SPR_KEY9:
         case SPR_KEYA:
         case SPR_KEYB:
-            if (!P_GiveKey(player, special->sprite - SPR_KEY1))
+            if (!P_GiveKey(player, static_cast<keytype_t>(special->sprite - SPR_KEY1)))
             {
                 return;
             }
@@ -1256,7 +1256,7 @@ mobj_t *ActiveMinotaur(player_t * master)
 
     for (think = thinkercap.next; think != &thinkercap; think = think->next)
     {
-        if (think->function != P_MobjThinker)
+        if (think->function != reinterpret_cast<think_t>(P_MobjThinker))
             continue;
         mo = (mobj_t *) think;
         if (mo->type != MT_MINOTAUR)
@@ -1348,7 +1348,7 @@ void P_KillMobj(mobj_t * source, mobj_t * target)
         P_DropWeapon(target->player);
         if (target->flags2 & MF2_FIREDAMAGE)
         {                       // Player flame death
-            switch (target->player->class)
+            switch (target->player->clazz)
             {
                 case PCLASS_FIGHTER:
                     S_StartSound(target, SFX_PLAYER_FIGHTER_BURN_DEATH);
@@ -1370,7 +1370,7 @@ void P_KillMobj(mobj_t * source, mobj_t * target)
         {                       // Player ice death
             target->flags &= ~(7 << MF_TRANSSHIFT);     //no translation
             target->flags |= MF_ICECORPSE;
-            switch (target->player->class)
+            switch (target->player->clazz)
             {
                 case PCLASS_FIGHTER:
                     P_SetMobjState(target, S_FPLAY_ICE);
@@ -1486,7 +1486,7 @@ void P_KillMobj(mobj_t * source, mobj_t * target)
     if (target->health < -(target->info->spawnhealth >> 1)
         && target->info->xdeathstate)
     {                           // Extreme death
-        P_SetMobjState(target, target->info->xdeathstate);
+        P_SetMobjState(target, static_cast<statenum_t>(target->info->xdeathstate));
     }
     else
     {                           // Normal death
@@ -1495,11 +1495,11 @@ void P_KillMobj(mobj_t * source, mobj_t * target)
             (target->info->xdeathstate))
         {
             // This is to fix the imps' staying in fall state
-            P_SetMobjState(target, target->info->xdeathstate);
+            P_SetMobjState(target, static_cast<statenum_t>(target->info->xdeathstate));
         }
         else
         {
-            P_SetMobjState(target, target->info->deathstate);
+            P_SetMobjState(target, static_cast<statenum_t>(target->info->deathstate));
         }
     }
     target->tics -= P_Random() & 3;
@@ -1574,7 +1574,7 @@ boolean P_MorphPlayer(player_t * player)
     player->health = beastMo->health = MAXMORPHHEALTH;
     player->mo = beastMo;
     memset(&player->armorpoints[0], 0, NUMARMOR * sizeof(int));
-    player->class = PCLASS_PIG;
+    player->clazz = PCLASS_PIG;
     if (oldFlags2 & MF2_FLY)
     {
         beastMo->flags2 |= MF2_FLY;
@@ -1933,7 +1933,7 @@ void P_DamageMobj
     //
     if (player)
     {
-        savedPercent = AutoArmorSave[player->class]
+        savedPercent = AutoArmorSave[player->clazz]
             + player->armorpoints[ARMOR_ARMOR] +
             player->armorpoints[ARMOR_SHIELD] +
             player->armorpoints[ARMOR_HELMET] +
@@ -1950,7 +1950,7 @@ void P_DamageMobj
                 {
                     player->armorpoints[i] -=
                         FixedDiv(FixedMul(damage << FRACBITS,
-                                          ArmorIncrement[player->class][i]),
+                                          ArmorIncrement[player->clazz][i]),
                                  300 * FRACUNIT);
                     if (player->armorpoints[i] < 2 * FRACUNIT)
                     {
@@ -2044,7 +2044,7 @@ void P_DamageMobj
             if (P_Random() < 96)
             {
                 target->flags |= MF_JUSTHIT;    // fight back!
-                P_SetMobjState(target, target->info->painstate);
+                P_SetMobjState(target, static_cast<statenum_t>(target->info->painstate));
             }
             else
             {                   // "electrocute" the target
@@ -2064,7 +2064,7 @@ void P_DamageMobj
         else
         {
             target->flags |= MF_JUSTHIT;        // fight back!
-            P_SetMobjState(target, target->info->painstate);
+            P_SetMobjState(target, static_cast<statenum_t>(target->info->painstate));
             if (inflictor && inflictor->type == MT_POISONCLOUD)
             {
                 if (target->flags & MF_COUNTKILL && P_Random() < 128
@@ -2097,7 +2097,7 @@ void P_DamageMobj
         if (target->state == &states[target->info->spawnstate]
             && target->info->seestate != S_NULL)
         {
-            P_SetMobjState(target, target->info->seestate);
+            P_SetMobjState(target, static_cast<statenum_t>(target->info->seestate));
         }
     }
 }
@@ -2220,7 +2220,7 @@ void P_PoisonDamage(player_t * player, mobj_t * source, int damage,
     }
     if (!(leveltime & 63) && playPainSound)
     {
-        P_SetMobjState(target, target->info->painstate);
+        P_SetMobjState(target, static_cast<statenum_t>(target->info->painstate));
     }
 /*
 	if((P_Random() < target->info->painchance)

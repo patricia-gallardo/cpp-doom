@@ -134,13 +134,13 @@ int EV_DoPlat(line_t * line, byte * args, plattype_e type, int amount)
         // Find lowest & highest floors around sector
         //
         rtn = 1;
-        plat = Z_Malloc(sizeof(*plat), PU_LEVSPEC, 0);
+        plat = static_cast<plat_t *>(Z_Malloc(sizeof(*plat), PU_LEVSPEC, 0));
         P_AddThinker(&plat->thinker);
 
         plat->type = type;
         plat->sector = sec;
         plat->sector->specialdata = plat;
-        plat->thinker.function = T_PlatRaise;
+        plat->thinker.function = reinterpret_cast<think_t>(T_PlatRaise);
         plat->crush = false;
         plat->tag = args[0];
         plat->speed = args[1] * (FRACUNIT / 8);
@@ -186,7 +186,7 @@ int EV_DoPlat(line_t * line, byte * args, plattype_e type, int amount)
                 if (plat->high < sec->floorheight)
                     plat->high = sec->floorheight;
                 plat->wait = args[2];
-                plat->status = P_Random() & 1;
+                plat->status = static_cast<plat_e>(P_Random() & 1);
                 break;
         }
         P_AddActivePlat(plat);

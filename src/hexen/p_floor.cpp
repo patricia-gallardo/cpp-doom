@@ -294,11 +294,11 @@ int EV_DoFloor(line_t * line, byte * args, floor_e floortype)
         //      new floor thinker
         //
         rtn = 1;
-        floor = Z_Malloc(sizeof(*floor), PU_LEVSPEC, 0);
+        floor = static_cast<floormove_t *>(Z_Malloc(sizeof(*floor), PU_LEVSPEC, 0));
         memset(floor, 0, sizeof(*floor));
         P_AddThinker(&floor->thinker);
         sec->specialdata = floor;
-        floor->thinker.function = T_MoveFloor;
+        floor->thinker.function = reinterpret_cast<think_t>(T_MoveFloor);
         floor->type = floortype;
         floor->crush = 0;
         floor->speed = args[1] * (FRACUNIT / 8);
@@ -516,11 +516,11 @@ static void ProcessStairSector(sector_t * sec, int type, int height,
     // new floor thinker
     //
     height += StepDelta;
-    floor = Z_Malloc(sizeof(*floor), PU_LEVSPEC, 0);
+    floor = static_cast<floormove_t *>(Z_Malloc(sizeof(*floor), PU_LEVSPEC, 0));
     memset(floor, 0, sizeof(*floor));
     P_AddThinker(&floor->thinker);
     sec->specialdata = floor;
-    floor->thinker.function = T_MoveFloor;
+    floor->thinker.function = reinterpret_cast<think_t>(T_MoveFloor);
     floor->type = FLEV_RAISEBUILDSTEP;
     floor->direction = Direction;
     floor->sector = sec;
@@ -710,10 +710,10 @@ int EV_BuildPillar(line_t * line, byte * args, boolean crush)
             newHeight = sec->floorheight + (args[2] << FRACBITS);
         }
 
-        pillar = Z_Malloc(sizeof(*pillar), PU_LEVSPEC, 0);
+        pillar = static_cast<pillar_t *>(Z_Malloc(sizeof(*pillar), PU_LEVSPEC, 0));
         sec->specialdata = pillar;
         P_AddThinker(&pillar->thinker);
-        pillar->thinker.function = T_BuildPillar;
+        pillar->thinker.function = reinterpret_cast<think_t>(T_BuildPillar);
         pillar->sector = sec;
         if (!args[2])
         {
@@ -772,10 +772,10 @@ int EV_OpenPillar(line_t * line, byte * args)
             continue;
         }
         rtn = 1;
-        pillar = Z_Malloc(sizeof(*pillar), PU_LEVSPEC, 0);
+        pillar = static_cast<pillar_t *>(Z_Malloc(sizeof(*pillar), PU_LEVSPEC, 0));
         sec->specialdata = pillar;
         P_AddThinker(&pillar->thinker);
-        pillar->thinker.function = T_BuildPillar;
+        pillar->thinker.function = reinterpret_cast<think_t>(T_BuildPillar);
         pillar->sector = sec;
         if (!args[2])
         {
@@ -833,7 +833,7 @@ int EV_FloorCrushStop(line_t * line, byte * args)
     rtn = 0;
     for (think = thinkercap.next; think != &thinkercap; think = think->next)
     {
-        if (think->function != T_MoveFloor)
+        if (think->function != reinterpret_cast<think_t>(T_MoveFloor))
         {
             continue;
         }
@@ -925,9 +925,9 @@ boolean EV_StartFloorWaggle(int tag, int height, int speed, int offset,
             continue;
         }
         retCode = true;
-        waggle = Z_Malloc(sizeof(*waggle), PU_LEVSPEC, 0);
+        waggle = static_cast<floorWaggle_t *>(Z_Malloc(sizeof(*waggle), PU_LEVSPEC, 0));
         sector->specialdata = waggle;
-        waggle->thinker.function = T_FloorWaggle;
+        waggle->thinker.function = reinterpret_cast<think_t>(T_FloorWaggle);
         waggle->sector = sector;
         waggle->originalHeight = sector->floorheight;
         waggle->accumulator = offset * FRACUNIT;

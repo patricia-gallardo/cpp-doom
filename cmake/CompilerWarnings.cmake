@@ -36,18 +36,31 @@ function(set_project_warnings)
             -Wextra # reasonable and standard
             -Wnon-virtual-dtor # warn the user if a class with virtual functions has a non-virtual destructor. This helps
             # catch hard to track down memory errors
-            # -Wold-style-cast # warn for c-style casts
-            -Wcast-align # warn for potential performance problem casts
-            # -Wunused # warn on anything being unused
+            # -Wold-style-cast # warn for c-style casts TODO turn it back on (patricia)
+            # -Wcast-align # warn for potential performance problem casts TODO turn it back on (patricia)
+            # -Wunused # warn on anything being unused TODO turn it back on (patricia)
             -Woverloaded-virtual # warn if you overload (not override) a virtual function
-            -Wpedantic # warn if non-standard C++ is used
+            # -Wpedantic # warn if non-standard C++ is used TODO turn it back on (patricia)
             -Wconversion # warn on type conversions that may lose data
-            -Wno-sign-conversion # warn on sign conversions TODO turn it back online 
+            -Wno-sign-conversion # warn on sign conversions TODO turn it back on (patricia)
             -Wnull-dereference # warn if a null dereference is detected
             -Wdouble-promotion # warn if float is implicit promoted to double
             -Wformat=2 # warn on security issues around functions that format output (ie printf)
             -Wno-unused-lambda-capture # We like explicit capture
             -Wno-unused-parameter
+            -Wno-unused-variable # TODO turn it back on (patricia)
+            -Wunused-function # TODO turn it back on (patricia)
+            -Wno-reserved-user-defined-literal # TODO turn it back on (patricia)?
+            -Wno-shorten-64-to-32 # TODO turn it back on (patricia)
+            -Wno-missing-field-initializers # TODO turn it back on (patricia)
+            -Wno-implicit-int-conversion # TODO turn it back on (patricia)
+            -Wno-sign-compare # TODO turn it back on (patricia)
+            -Wno-writable-strings # TODO turn it back on (patricia)
+            -Wno-format-nonliteral # TODO turn it back on (patricia)
+            -Wno-macro-redefined # TODO turn it back on (patricia)
+            -Wno-float-conversion # TODO turn it back on (patricia)
+            -Wno-double-promotion # TODO turn it back on (patricia)
+            -Wno-implicit-float-conversion # TODO turn it back on (patricia)
             )
 
     if (WARNINGS_AS_ERRORS)

@@ -75,7 +75,7 @@ static void DEH_FrameOverflow(deh_context_t *context, char *varname, int value)
 {
     if (!strcasecmp(varname, "Duration"))
     {
-        weaponinfo[0].ammo = value;
+        weaponinfo[0].ammo = static_cast<ammotype_t>(value);
     }
     else if (!strcasecmp(varname, "Codep frame")) 
     {

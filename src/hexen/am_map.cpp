@@ -27,6 +27,7 @@
 #include "am_map.hpp"
 #include "am_data.hpp"
 #include "v_video.hpp"
+#include "../../utils/lump.hpp"
 
 #define NUMALIAS 3              // Number of antialiased lines.
 
@@ -317,7 +318,7 @@ void AM_initVariables(void)
         for (think = thinkercap.next; think != &thinkercap;
              think = think->next)
         {
-            if (think->function != P_MobjThinker)
+            if (think->function != reinterpret_cast<think_t>(P_MobjThinker))
             {                   //not a mobj
                 continue;
             }
@@ -330,7 +331,7 @@ void AM_initVariables(void)
 
 void AM_loadPics(void)
 {
-    maplump = cache_lump_name<patch_t *>("AUTOPAGE", PU_STATIC);
+    maplump = cache_lump_name<byte *>("AUTOPAGE", PU_STATIC);
 }
 
 

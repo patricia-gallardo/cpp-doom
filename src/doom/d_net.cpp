@@ -18,6 +18,7 @@
 //
 
 #include <stdlib.h>
+#include <cstddef>
 
 #include "d_main.hpp"
 #include "m_argv.hpp"

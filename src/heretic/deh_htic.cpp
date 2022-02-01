@@ -80,7 +80,7 @@ static void SetHHEVersionByName(char *name)
     {
         if (!strcmp(hhe_versions[i], name))
         {
-            deh_hhe_version = i;
+            deh_hhe_version = static_cast<deh_hhe_version_t>(i);
             return;
         }
     }

@@ -21,6 +21,7 @@
 #include "m_misc.hpp"
 #include "r_local.hpp"
 #include "p_local.hpp"
+#include "../../utils/lump.hpp"
 
 typedef struct
 {
@@ -137,8 +138,8 @@ void R_GenerateComposite(int texnum)
     unsigned short *colofs;
 
     texture = textures[texnum];
-    block = Z_Malloc(texturecompositesize[texnum], PU_STATIC,
-                     &texturecomposite[texnum]);
+    block = static_cast<byte *>(Z_Malloc(texturecompositesize[texnum], PU_STATIC,
+          &texturecomposite[texnum]));
     collump = texturecolumnlump[texnum];
     colofs = texturecolumnofs[texnum];
 
@@ -150,7 +151,7 @@ void R_GenerateComposite(int texnum)
     for (i = 0, patch = texture->patches; i < texture->patchcount;
          i++, patch++)
     {
-        realpatch = W_CacheLumpNum(patch->patch, PU_CACHE);
+        realpatch = static_cast<patch_t *>(W_CacheLumpNum(patch->patch, PU_CACHE));
         x1 = patch->originx;
         x2 = x1 + SHORT(realpatch->width);
 
@@ -216,7 +217,7 @@ void R_GenerateLookup(int texnum)
     for (i = 0, patch = texture->patches; i < texture->patchcount;
          i++, patch++)
     {
-        realpatch = W_CacheLumpNum(patch->patch, PU_CACHE);
+        realpatch = static_cast<patch_t *>(W_CacheLumpNum(patch->patch, PU_CACHE));
         x1 = patch->originx;
         x2 = x1 + SHORT(realpatch->width);
         if (x1 < 0)
@@ -308,10 +309,10 @@ void R_InitTextures(void)
 //
 // load the patch names from pnames.lmp
 //
-    names = cache_lump_name<patch_t *>("PNAMES", PU_STATIC);
+    names = cache_lump_name<char *>("PNAMES", PU_STATIC);
     nummappatches = LONG(*((int *) names));
     name_p = names + 4;
-    patchlookup = Z_Malloc(nummappatches * sizeof(*patchlookup), PU_STATIC, NULL);
+    patchlookup = static_cast<int *>(Z_Malloc(nummappatches * sizeof(*patchlookup), PU_STATIC, NULL));
     for (i = 0; i < nummappatches; i++)
     {
         M_StringCopy(name, name_p + i * 8, sizeof(name));
@@ -322,14 +323,14 @@ void R_InitTextures(void)
 //
 // load the map texture definitions from textures.lmp
 //
-    maptex = maptex1 = cache_lump_name<patch_t *>("TEXTURE1", PU_STATIC);
+    maptex = maptex1 = cache_lump_name<int *>("TEXTURE1", PU_STATIC);
     numtextures1 = LONG(*maptex);
     maxoff = W_LumpLength(W_GetNumForName("TEXTURE1"));
     directory = maptex + 1;
 
     if (W_CheckNumForName("TEXTURE2") != -1)
     {
-        maptex2 = cache_lump_name<patch_t *>("TEXTURE2", PU_STATIC);
+        maptex2 = cache_lump_name<int *>("TEXTURE2", PU_STATIC);
         numtextures2 = LONG(*maptex2);
         maxoff2 = W_LumpLength(W_GetNumForName("TEXTURE2"));
     }
@@ -341,13 +342,13 @@ void R_InitTextures(void)
     }
     numtextures = numtextures1 + numtextures2;
 
-    textures = Z_Malloc(numtextures * sizeof(texture_t *), PU_STATIC, 0);
-    texturecolumnlump = Z_Malloc(numtextures * sizeof(short *), PU_STATIC, 0);
-    texturecolumnofs = Z_Malloc(numtextures * sizeof(short *), PU_STATIC, 0);
-    texturecomposite = Z_Malloc(numtextures * sizeof(byte *), PU_STATIC, 0);
-    texturecompositesize = Z_Malloc(numtextures * sizeof(int), PU_STATIC, 0);
-    texturewidthmask = Z_Malloc(numtextures * sizeof(int), PU_STATIC, 0);
-    textureheight = Z_Malloc(numtextures * sizeof(fixed_t), PU_STATIC, 0);
+    textures = static_cast<texture_t **>(Z_Malloc(numtextures * sizeof(texture_t *), PU_STATIC, 0));
+    texturecolumnlump = static_cast<short **>(Z_Malloc(numtextures * sizeof(short *), PU_STATIC, 0));
+    texturecolumnofs = static_cast<unsigned short **>(Z_Malloc(numtextures * sizeof(short *), PU_STATIC, 0));
+    texturecomposite = static_cast<byte **>(Z_Malloc(numtextures * sizeof(byte *), PU_STATIC, 0));
+    texturecompositesize = static_cast<int *>(Z_Malloc(numtextures * sizeof(int), PU_STATIC, 0));
+    texturewidthmask = static_cast<int *>(Z_Malloc(numtextures * sizeof(int), PU_STATIC, 0));
+    textureheight = static_cast<fixed_t *>(Z_Malloc(numtextures * sizeof(fixed_t), PU_STATIC, 0));
 
     totalwidth = 0;
 
@@ -364,11 +365,9 @@ void R_InitTextures(void)
         if (offset > maxoff)
             I_Error("R_InitTextures: bad texture directory");
         mtexture = (maptexture_t *) ((byte *) maptex + offset);
-        texture = textures[i] = Z_Malloc(sizeof(texture_t)
-                                         +
-                                         sizeof(texpatch_t) *
-                                         (SHORT(mtexture->patchcount) - 1),
-                                         PU_STATIC, 0);
+        texture = textures[i] = static_cast<texture_t *>(Z_Malloc(sizeof(texture_t)
+                                                                      + sizeof(texpatch_t) * (SHORT(mtexture->patchcount) - 1),
+            PU_STATIC, 0));
         texture->width = SHORT(mtexture->width);
         texture->height = SHORT(mtexture->height);
         texture->patchcount = SHORT(mtexture->patchcount);
@@ -384,8 +383,8 @@ void R_InitTextures(void)
                 I_Error("R_InitTextures: Missing patch in texture %s",
                         texture->name);
         }
-        texturecolumnlump[i] = Z_Malloc(texture->width * sizeof(short), PU_STATIC, 0);
-        texturecolumnofs[i] = Z_Malloc(texture->width * sizeof(short), PU_STATIC, 0);
+        texturecolumnlump[i] = static_cast<short *>(Z_Malloc(texture->width * sizeof(short), PU_STATIC, 0));
+        texturecolumnofs[i] = static_cast<unsigned short *>(Z_Malloc(texture->width * sizeof(short), PU_STATIC, 0));
         j = 1;
         while (j * 2 <= texture->width)
             j <<= 1;
@@ -414,7 +413,7 @@ void R_InitTextures(void)
 //
 // translation table for global animation
 //
-    texturetranslation = Z_Malloc((numtextures + 1) * sizeof(int), PU_STATIC, 0);
+    texturetranslation = static_cast<int *>(Z_Malloc((numtextures + 1) * sizeof(int), PU_STATIC, 0));
     for (i = 0; i < numtextures; i++)
         texturetranslation[i] = i;
 }
@@ -437,7 +436,7 @@ void R_InitFlats(void)
     numflats = lastflat - firstflat + 1;
 
 // translation table for global animation
-    flattranslation = Z_Malloc((numflats + 1) * sizeof(int), PU_STATIC, 0);
+    flattranslation = static_cast<int *>(Z_Malloc((numflats + 1) * sizeof(int), PU_STATIC, 0));
     for (i = 0; i < numflats; i++)
         flattranslation[i] = i;
 }
@@ -461,15 +460,15 @@ void R_InitSpriteLumps(void)
     firstspritelump = W_GetNumForName("S_START") + 1;
     lastspritelump = W_GetNumForName("S_END") - 1;
     numspritelumps = lastspritelump - firstspritelump + 1;
-    spritewidth = Z_Malloc(numspritelumps * sizeof(fixed_t), PU_STATIC, 0);
-    spriteoffset = Z_Malloc(numspritelumps * sizeof(fixed_t), PU_STATIC, 0);
-    spritetopoffset = Z_Malloc(numspritelumps * sizeof(fixed_t), PU_STATIC, 0);
+    spritewidth = static_cast<fixed_t *>(Z_Malloc(numspritelumps * sizeof(fixed_t), PU_STATIC, 0));
+    spriteoffset = static_cast<fixed_t *>(Z_Malloc(numspritelumps * sizeof(fixed_t), PU_STATIC, 0));
+    spritetopoffset = static_cast<fixed_t *>(Z_Malloc(numspritelumps * sizeof(fixed_t), PU_STATIC, 0));
 
     for (i = 0; i < numspritelumps; i++)
     {
         if (!(i & 127))
             ST_Progress();
-        patch = W_CacheLumpNum(firstspritelump + i, PU_CACHE);
+        patch = static_cast<patch_t *>(W_CacheLumpNum(firstspritelump + i, PU_CACHE));
         spritewidth[i] = SHORT(patch->width) << FRACBITS;
         spriteoffset[i] = SHORT(patch->leftoffset) << FRACBITS;
         spritetopoffset[i] = SHORT(patch->topoffset) << FRACBITS;
@@ -494,7 +493,7 @@ void R_InitColormaps(void)
 //
     lump = W_GetNumForName("COLORMAP");
     length = W_LumpLength(lump);
-    colormaps = Z_Malloc(length, PU_STATIC, 0);
+    colormaps = static_cast<lighttable_t *>(Z_Malloc(length, PU_STATIC, 0));
     W_ReadLump(lump, colormaps);
 }
 
@@ -614,7 +613,7 @@ void R_PrecacheLevel(void)
 //
 // precache flats
 //      
-    flatpresent = Z_Malloc(numflats, PU_STATIC, NULL);
+    flatpresent = static_cast<char *>(Z_Malloc(numflats, PU_STATIC, NULL));
     memset(flatpresent, 0, numflats);
     for (i = 0; i < numsectors; i++)
     {
@@ -636,7 +635,7 @@ void R_PrecacheLevel(void)
 //
 // precache textures
 //
-    texturepresent = Z_Malloc(numtextures, PU_STATIC, NULL);
+    texturepresent = static_cast<char *>(Z_Malloc(numtextures, PU_STATIC, NULL));
     memset(texturepresent, 0, numtextures);
 
     for (i = 0; i < numsides; i++)
@@ -668,12 +667,12 @@ void R_PrecacheLevel(void)
 //
 // precache sprites
 //
-    spritepresent = Z_Malloc(numsprites, PU_STATIC, NULL);
+    spritepresent = static_cast<char *>(Z_Malloc(numsprites, PU_STATIC, NULL));
     memset(spritepresent, 0, numsprites);
 
     for (th = thinkercap.next; th != &thinkercap; th = th->next)
     {
-        if (th->function == P_MobjThinker)
+        if (th->function == reinterpret_cast<think_t>(P_MobjThinker))
             spritepresent[((mobj_t *) th)->sprite] = 1;
     }
 

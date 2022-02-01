@@ -225,7 +225,7 @@ boolean EV_SpawnLight(line_t * line, byte * arg, lighttype_t type)
         if (think)
         {
             P_AddThinker(&light->thinker);
-            light->thinker.function = T_Light;
+            light->thinker.function = reinterpret_cast<think_t>(T_Light);
         }
         else
         {
@@ -268,7 +268,7 @@ void P_SpawnPhasedLight(sector_t * sector, int base, int index)
 {
     phase_t *phase;
 
-    phase = Z_Malloc(sizeof(*phase), PU_LEVSPEC, 0);
+    phase = static_cast<phase_t *>(Z_Malloc(sizeof(*phase), PU_LEVSPEC, 0));
     P_AddThinker(&phase->thinker);
     phase->sector = sector;
     if (index == -1)
@@ -281,7 +281,7 @@ void P_SpawnPhasedLight(sector_t * sector, int base, int index)
     }
     phase->base = base & 255;
     sector->lightlevel = phase->base + PhaseTable[phase->index];
-    phase->thinker.function = T_Phase;
+    phase->thinker.function = reinterpret_cast<think_t>(T_Phase);
 
     sector->special = 0;
 }

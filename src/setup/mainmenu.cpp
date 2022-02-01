@@ -27,7 +27,7 @@
 #include "m_misc.hpp"
 #include "z_zone.hpp"
 
-#include "setup_icon.c"
+#include "setup_icon.cpp"
 #include "mode.hpp"
 
 #include "compatibility.hpp"

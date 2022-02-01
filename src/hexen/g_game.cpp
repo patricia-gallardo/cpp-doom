@@ -209,7 +209,7 @@ void G_BuildTiccmd(ticcmd_t *cmd, int maketic)
 
     // haleyjd: removed externdriver crap
 
-    pClass = players[consoleplayer].class;
+    pClass = players[consoleplayer].clazz;
     memset(cmd, 0, sizeof(*cmd));
 
 //      cmd->consistancy =
@@ -373,7 +373,7 @@ void G_BuildTiccmd(ticcmd_t *cmd, int maketic)
             if (inventory)
             {
                 players[consoleplayer].readyArtifact =
-                    players[consoleplayer].inventory[inv_ptr].type;
+                    static_cast<artitype_t>(players[consoleplayer].inventory[inv_ptr].type);
                 inventory = false;
                 cmd->arti = 0;
                 usearti = false;
@@ -788,7 +788,7 @@ boolean G_Responder(event_t * ev)
     {                           // flag to denote that it's okay to use an artifact
         if (!inventory)
         {
-            plr->readyArtifact = plr->inventory[inv_ptr].type;
+            plr->readyArtifact = static_cast<artitype_t>(plr->inventory[inv_ptr].type);
         }
         usearti = true;
     }
@@ -1083,7 +1083,7 @@ void G_Ticker(void)
     if (inventory && !(--inventoryTics))
     {
         players[consoleplayer].readyArtifact =
-            players[consoleplayer].inventory[inv_ptr].type;
+            static_cast<artitype_t>(players[consoleplayer].inventory[inv_ptr].type);
         inventory = false;
         cmd->arti = 0;
     }
@@ -1178,7 +1178,7 @@ void G_PlayerExitMap(int playerNumber)
 
     if (player->morphTics)
     {
-        player->readyweapon = player->mo->special1.i;     // Restore weapon
+        player->readyweapon = static_cast<weapontype_t>(player->mo->special1.i);     // Restore weapon
         player->morphTics = 0;
     }
     player->messageTics = 0;
@@ -1226,7 +1226,7 @@ void G_PlayerReborn(int player)
     players[player].itemcount = itemcount;
     players[player].secretcount = secretcount;
     players[player].worldTimer = worldTimer;
-    players[player].class = PlayerClass[player];
+    players[player].clazz = PlayerClass[player];
 
     p->usedown = p->attackdown = true;  // don't do anything immediately
     p->playerstate = PST_LIVE;
@@ -1419,7 +1419,7 @@ void G_DoReborn(int playernum)
         players[playernum].mana[MANA_2] = 25;
         if (bestWeapon)
         {                       // Bring up the best weapon
-            players[playernum].pendingweapon = bestWeapon;
+            players[playernum].pendingweapon = static_cast<weapontype_t>(bestWeapon);
         }
     }
 }
@@ -1873,7 +1873,7 @@ static void IncreaseDemoBuffer(void)
     // Generate a new buffer twice the size
     new_length = current_length * 2;
 
-    new_demobuffer = Z_Malloc(new_length, PU_STATIC, 0);
+    new_demobuffer = static_cast<byte *>(Z_Malloc(new_length, PU_STATIC, 0));
     new_demop = new_demobuffer + (demo_p - demobuffer);
 
     // Copy over the old data
@@ -1994,7 +1994,7 @@ void G_RecordDemo(skill_t skill, int numplayers, int episode, int map,
     i = M_CheckParmWithArgs("-maxdemo", 1);
     if (i)
         maxsize = atoi(myargv[i + 1]) * 1024;
-    demobuffer = Z_Malloc(maxsize, PU_STATIC, NULL);
+    demobuffer = static_cast<byte *>(Z_Malloc(maxsize, PU_STATIC, NULL));
     demoend = demobuffer + maxsize;
 
     demo_p = demobuffer;
@@ -2058,9 +2058,9 @@ void G_DoPlayDemo(void)
 
     gameaction = ga_nothing;
     lumpnum = W_GetNumForName(defdemoname);
-    demobuffer = W_CacheLumpNum(lumpnum, PU_STATIC);
+    demobuffer = static_cast<byte *>(W_CacheLumpNum(lumpnum, PU_STATIC));
     demo_p = demobuffer;
-    skill = *demo_p++;
+    skill = static_cast<skill_t>(*demo_p++);
     episode = *demo_p++;
     map = *demo_p++;
 
@@ -2088,7 +2088,7 @@ void G_DoPlayDemo(void)
     for (i = 0; i < maxplayers; i++)
     {
         playeringame[i] = (*demo_p++) != 0;
-        PlayerClass[i] = *demo_p++;
+        PlayerClass[i] = static_cast<pclass_t>(*demo_p++);
     }
 
     // Initialize world info, etc.
@@ -2115,8 +2115,8 @@ void G_TimeDemo(char *name)
     skill_t skill;
     int episode, map, i;
 
-    demobuffer = demo_p = W_CacheLumpName(name, PU_STATIC);
-    skill = *demo_p++;
+    demobuffer = demo_p = static_cast<byte *>(W_CacheLumpName(name, PU_STATIC));
+    skill = static_cast<skill_t>(*demo_p++);
     episode = *demo_p++;
     map = *demo_p++;
 
@@ -2130,7 +2130,7 @@ void G_TimeDemo(char *name)
     for (i = 0; i < maxplayers; i++)
     {
         playeringame[i] = (*demo_p++) != 0;
-        PlayerClass[i] = *demo_p++;
+        PlayerClass[i] = static_cast<pclass_t>(*demo_p++);
     }
 
     G_InitNew(skill, episode, map);
