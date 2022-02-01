@@ -72,11 +72,11 @@ jobs:
       run: cmake $GITHUB_WORKSPACE -DCMAKE_BUILD_TYPE=${{ matrix.cmake-build-type }}
       env: ${{ matrix.configurations.cmake_env }}
 
-    - name: Build
+    - name: Build Doom
       working-directory: ${{runner.workspace}}/build
       shell: bash
       # Execute the build.  You can specify a specific target with "--target <NAME>"
-      run: cmake --build . --config ${{ matrix.cmake-build-type }}
+      run: cmake --build . --config ${{ matrix.cmake-build-type }} --target doom
       env: ${{ matrix.configurations.cmake_env }}
 
     - name: Test
