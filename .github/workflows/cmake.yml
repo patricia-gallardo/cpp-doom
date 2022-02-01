@@ -31,7 +31,7 @@ jobs:
           - name: MacOS 11
             os: macos-11
             cmake_env: {}
-        cmake-build-type: [Debug, Release]
+        cmake-build-type: [Release]
         cmake-build-target: [opl, pcsound, crispy-doom, crispy-heretic, crispy-hexen, crispy-server, crispy-setup, crispy-strife, midiread, mus2mid, doom, heretic, hexen, setup, strife, textscreen]
 
     steps:
