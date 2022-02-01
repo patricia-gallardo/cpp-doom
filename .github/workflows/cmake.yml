@@ -14,7 +14,7 @@ on:
 
 jobs:
   build:
-    name: "${{ matrix.configurations.name }} | ${{ matrix.cmake-build-type }}"
+    name: "${{ matrix.configurations.name }} | ${{ matrix.cmake-build-type }} |  ${{ matrix.cmake-build-target }}"
     runs-on: ${{ matrix.configurations.os }}
     strategy:
       fail-fast: false
@@ -32,6 +32,7 @@ jobs:
             os: macos-11
             cmake_env: {}
         cmake-build-type: [Debug, Release]
+        cmake-build-target: [doom]
 
     steps:
     - uses: actions/checkout@v2
@@ -72,11 +73,11 @@ jobs:
       run: cmake $GITHUB_WORKSPACE -DCMAKE_BUILD_TYPE=${{ matrix.cmake-build-type }}
       env: ${{ matrix.configurations.cmake_env }}
 
-    - name: Build Doom
+    - name: Build
       working-directory: ${{runner.workspace}}/build
       shell: bash
       # Execute the build.  You can specify a specific target with "--target <NAME>"
-      run: cmake --build . --config ${{ matrix.cmake-build-type }} --target doom
+      run: cmake --build . --config ${{ matrix.cmake-build-type }} --target ${{ matrix.cmake-build-target }}
       env: ${{ matrix.configurations.cmake_env }}
 
     - name: Test
