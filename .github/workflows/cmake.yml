@@ -14,7 +14,7 @@ on:
 
 jobs:
   build:
-    name: "${{ matrix.configurations.name }} | ${{ matrix.cmake-build-type }} |  ${{ matrix.cmake-build-target }}"
+    name: "${{ matrix.configurations.name }} | ${{ matrix.cmake-build-target }} |  ${{ matrix.cmake-build-type }}"
     runs-on: ${{ matrix.configurations.os }}
     strategy:
       fail-fast: false
