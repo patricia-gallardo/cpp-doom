@@ -38,6 +38,7 @@
 #include "w_wad.hpp"
 #include "z_zone.hpp"
 #include "../../utils/lump.hpp"
+#include "../../utils/memory.hpp"
 
 // when to clip out sounds
 // Does not fit the large outdoor areas.
@@ -148,7 +149,7 @@ void S_Init(int sfxVolume, int musicVolume, int voiceVolume)
     // Allocating the internal channels for mixing
     // (the maximum numer of sounds rendered
     // simultaneously) within zone memory.
-    channels = static_cast<channel_t *>(Z_Malloc(snd_channels * sizeof(channel_t), PU_STATIC, 0));
+    channels = zmalloc<channel_t *>(snd_channels * sizeof(channel_t), PU_STATIC, 0);
 
     // Free all channels for use
     for (i=0 ; i<snd_channels ; i++)

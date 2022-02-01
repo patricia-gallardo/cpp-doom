@@ -38,6 +38,7 @@
 // haleyjd
 #include "p_local.hpp"
 #include "../../utils/lump.hpp"
+#include "../../utils/memory.hpp"
 
 
 #define MINZ				(FRACUNIT*4)
@@ -192,7 +193,7 @@ void R_InitSpriteDefs (const char** namelist)
     if (!numsprites)
 	return;
 		
-    sprites = static_cast<spritedef_t *>(Z_Malloc(numsprites * sizeof(*sprites), PU_STATIC, NULL));
+    sprites = zmalloc<spritedef_t *>(numsprites * sizeof(*sprites), PU_STATIC, NULL);
 	
     start = firstspritelump-1;
     end = lastspritelump+1;
@@ -269,7 +270,7 @@ void R_InitSpriteDefs (const char** namelist)
 	// allocate space for the frames present and copy sprtemp to it
 	sprites[i].numframes = maxframe;
 	sprites[i].spriteframes =
-            static_cast<spriteframe_t *>(Z_Malloc(maxframe * sizeof(spriteframe_t), PU_STATIC, NULL));
+            zmalloc<spriteframe_t *>(maxframe * sizeof(spriteframe_t), PU_STATIC, NULL);
 	memcpy (sprites[i].spriteframes, sprtemp, maxframe*sizeof(spriteframe_t));
     }
 

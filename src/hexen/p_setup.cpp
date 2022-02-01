@@ -28,6 +28,7 @@
 #include "s_sound.hpp"
 #include "p_local.hpp"
 #include "../../utils/lump.hpp"
+#include "../../utils/memory.hpp"
 
 // MACROS ------------------------------------------------------------------
 
@@ -170,7 +171,7 @@ void P_LoadVertexes(int lump)
     vertex_t *li;
 
     numvertexes = W_LumpLength(lump) / sizeof(mapvertex_t);
-    vertexes = static_cast<vertex_t *>(Z_Malloc(numvertexes * sizeof(vertex_t), PU_LEVEL, 0));
+    vertexes = zmalloc<vertex_t *>(numvertexes * sizeof(vertex_t), PU_LEVEL, 0);
     data = cache_lump_num<byte *>(lump, PU_STATIC);
 
     ml = (mapvertex_t *) data;
@@ -203,7 +204,7 @@ void P_LoadSegs(int lump)
     int linedef_local, side;
 
     numsegs = W_LumpLength(lump) / sizeof(mapseg_t);
-    segs = static_cast<seg_t *>(Z_Malloc(numsegs * sizeof(seg_t), PU_LEVEL, 0));
+    segs = zmalloc<seg_t *>(numsegs * sizeof(seg_t), PU_LEVEL, 0);
     memset(segs, 0, numsegs * sizeof(seg_t));
     data = cache_lump_num<byte *>(lump, PU_STATIC);
 
@@ -248,7 +249,7 @@ void P_LoadSubsectors(int lump)
     subsector_t *ss;
 
     numsubsectors = W_LumpLength(lump) / sizeof(mapsubsector_t);
-    subsectors = static_cast<subsector_t *>(Z_Malloc(numsubsectors * sizeof(subsector_t), PU_LEVEL, 0));
+    subsectors = zmalloc<subsector_t *>(numsubsectors * sizeof(subsector_t), PU_LEVEL, 0);
     data = cache_lump_num<byte *>(lump, PU_STATIC);
 
     ms = (mapsubsector_t *) data;
@@ -280,7 +281,7 @@ void P_LoadSectors(int lump)
     sector_t *ss;
 
     numsectors = W_LumpLength(lump) / sizeof(mapsector_t);
-    sectors = static_cast<sector_t *>(Z_Malloc(numsectors * sizeof(sector_t), PU_LEVEL, 0));
+    sectors = zmalloc<sector_t *>(numsectors * sizeof(sector_t), PU_LEVEL, 0);
     memset(sectors, 0, numsectors * sizeof(sector_t));
     data = cache_lump_num<byte *>(lump, PU_STATIC);
 
@@ -319,7 +320,7 @@ void P_LoadNodes(int lump)
     node_t *no;
 
     numnodes = W_LumpLength(lump) / sizeof(mapnode_t);
-    nodes = static_cast<node_t *>(Z_Malloc(numnodes * sizeof(node_t), PU_LEVEL, 0));
+    nodes = zmalloc<node_t *>(numnodes * sizeof(node_t), PU_LEVEL, 0);
     data = cache_lump_num<byte *>(lump, PU_STATIC);
 
     mn = (mapnode_t *) data;
@@ -417,7 +418,7 @@ void P_LoadLineDefs(int lump)
     vertex_t *v1, *v2;
 
     numlines = W_LumpLength(lump) / sizeof(maplinedef_t);
-    lines = static_cast<line_t *>(Z_Malloc(numlines * sizeof(line_t), PU_LEVEL, 0));
+    lines = zmalloc<line_t *>(numlines * sizeof(line_t), PU_LEVEL, 0);
     memset(lines, 0, numlines * sizeof(line_t));
     data = cache_lump_num<byte *>(lump, PU_STATIC);
 
@@ -507,7 +508,7 @@ void P_LoadSideDefs(int lump)
     side_t *sd;
 
     numsides = W_LumpLength(lump) / sizeof(mapsidedef_t);
-    sides = static_cast<side_t *>(Z_Malloc(numsides * sizeof(side_t), PU_LEVEL, 0));
+    sides = zmalloc<side_t *>(numsides * sizeof(side_t), PU_LEVEL, 0);
     memset(sides, 0, numsides * sizeof(side_t));
     data = cache_lump_num<byte *>(lump, PU_STATIC);
 
@@ -541,7 +542,7 @@ void P_LoadBlockMap(int lump)
 
     lumplen = W_LumpLength(lump);
 
-    blockmaplump = static_cast<short *>(Z_Malloc(lumplen, PU_LEVEL, NULL));
+    blockmaplump = zmalloc<short *>(lumplen, PU_LEVEL, NULL);
     W_ReadLump(lump, blockmaplump);
     blockmap = blockmaplump + 4;
 
@@ -560,7 +561,7 @@ void P_LoadBlockMap(int lump)
     // clear out mobj chains
 
     count = sizeof(*blocklinks) * bmapwidth * bmapheight;
-    blocklinks = static_cast<mobj_t **>(Z_Malloc(count, PU_LEVEL, 0));
+    blocklinks = zmalloc<mobj_t **>(count, PU_LEVEL, 0);
     memset(blocklinks, 0, count);
 }
 
@@ -611,7 +612,7 @@ void P_GroupLines(void)
     }
 
 // build line tables for each sector
-    linebuffer = static_cast<line_t **>(Z_Malloc(total * sizeof(line_t *), PU_LEVEL, 0));
+    linebuffer = zmalloc<line_t **>(total * sizeof(line_t *), PU_LEVEL, 0);
     sector = sectors;
     for (i = 0; i < numsectors; i++, sector++)
     {

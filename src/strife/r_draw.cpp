@@ -36,6 +36,7 @@
 // State.
 #include "doomstat.hpp"
 #include "../../utils/lump.hpp"
+#include "../../utils/memory.hpp"
 
 
 // ?
@@ -455,7 +456,7 @@ void R_InitTranslationTables (void)
     V_LoadXlaTable();
 
     // villsa [STRIFE] allocate a larger size for translation tables
-    translationtables = static_cast<byte *>(Z_Malloc(256 * 8, PU_STATIC, 0));
+    translationtables = zmalloc<byte *>(256 * 8, PU_STATIC, 0);
 
     col1 = 0xFA;
     col2 = 0xE0;
@@ -839,8 +840,8 @@ void R_FillBackScreen (void)
 	
     if (background_buffer == NULL)
     {
-        background_buffer = static_cast<byte *>(Z_Malloc(SCREENWIDTH * (SCREENHEIGHT - SBARHEIGHT),
-            PU_STATIC, NULL));
+        background_buffer = zmalloc<byte *>(SCREENWIDTH * (SCREENHEIGHT - SBARHEIGHT),
+            PU_STATIC, NULL);
     }
 
     // haleyjd 08/29/10: [STRIFE] Use configurable back_flat
