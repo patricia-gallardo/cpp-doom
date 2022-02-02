@@ -17,7 +17,7 @@
 //	Action functions for weapons.
 //
 
-
+#include <variant>
 #include "doomdef.hpp"
 #include "d_event.hpp"
 
@@ -83,9 +83,10 @@ P_SetPsprite
 
         // Call action routine.
         // Modified handling.
-        if (state->action.acp2)
+        if (state->action.index() == two_param_action_hook)
         {
-            state->action.acp2(player, psp);
+            auto callback = std::get<two_param_action>(state->action);
+            callback(player, psp);
             if (!psp->state)
                 break;
         }

@@ -26,9 +26,9 @@
 #include "deh_io.hpp"
 #include "deh_main.hpp"
 
-static actionf_t codeptrs[NUMSTATES];
+static action_hook codeptrs[NUMSTATES];
 
-static int CodePointerIndex(actionf_t *ptr)
+static int CodePointerIndex(action_hook *ptr)
 {
     int i;
 

@@ -71,9 +71,12 @@ P_SetMobjState
 
 	// Modified handling.
 	// Call action functions when the state is set
-	if (st->action.acp1)		
-	    st->action.acp1(mobj);	
-	
+        if (st->action.index() == one_param_action_hook)
+        {
+            auto callback = std::get<one_param_action>(st->action);
+            callback(mobj);
+        }
+
 	state = st->nextstate;
     } while (!mobj->tics);
 				

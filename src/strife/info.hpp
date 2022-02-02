@@ -23,6 +23,7 @@
 
 // Needed for action function pointer handling.
 #include "d_think.hpp"
+#include "action_hook.hpp"
 
 // villsa [STRIFE]
 typedef enum
@@ -1826,7 +1827,7 @@ typedef struct
     int frame;
     int tics;
     // void (*action) ();
-    actionf_t action;
+    action_hook action;
     statenum_t nextstate;
     //int misc1;    // villsa [STRIFE] unused
     //int misc2;    // villsa [STRIFE] unused
