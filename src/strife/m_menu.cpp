@@ -859,7 +859,7 @@ void M_QuickSave(void)
         return;
     }
     DEH_snprintf(tempstring, 80, QSPROMPT, savegamestrings[quickSaveSlot]);
-    M_StartMessage(tempstring,M_QuickSaveResponse,true);
+    M_StartMessage(tempstring, reinterpret_cast<void *>(M_QuickSaveResponse),true);
 }
 
 
@@ -895,7 +895,7 @@ void M_QuickLoad(void)
         return;
     }
     DEH_snprintf(tempstring, 80, QLPROMPT, savegamestrings[quickSaveSlot]);
-    M_StartMessage(tempstring,M_QuickLoadResponse,true);
+    M_StartMessage(tempstring, reinterpret_cast<void *>(M_QuickLoadResponse),true);
 }
 
 
@@ -1233,7 +1233,7 @@ void M_EndGame(int choice)
         return;
     }
 
-    M_StartMessage(DEH_String(ENDGAME),M_EndGameResponse,true);
+    M_StartMessage(DEH_String(ENDGAME), reinterpret_cast<void *>(M_EndGameResponse),true);
 }
 
 
@@ -1344,7 +1344,7 @@ void M_QuitStrife(int choice)
     DEH_snprintf(endstring, sizeof(endstring),
                  "Do you really want to leave?\n\n" DOSY);
   
-    M_StartMessage(endstring, M_QuitResponse, true);
+    M_StartMessage(endstring, reinterpret_cast<void *>(M_QuitResponse), true);
 }
 
 
@@ -1475,7 +1475,7 @@ M_StartMessage
     messageLastMenuActive = menuactive;
     messageToPrint = 1;
     messageString = string;
-    messageRoutine = routine;
+    messageRoutine = reinterpret_cast<void (*)(int)>(routine);
     messageNeedsInput = input;
     menuactive = true;
     return;

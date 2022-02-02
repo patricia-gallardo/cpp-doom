@@ -251,13 +251,13 @@ static void saveg_write_mapthing_t(mapthing_t *str)
 static void saveg_read_actionf_t(actionf_t *str)
 {
     // actionf_p1 acp1;
-    str->acp1 = saveg_readp();
+    str->acp1 = reinterpret_cast<actionf_p1>(saveg_readp());
 }
 
 static void saveg_write_actionf_t(actionf_t *str)
 {
     // actionf_p1 acp1;
-    saveg_writep(str->acp1);
+    saveg_writep(reinterpret_cast<const void *>(str->acp1));
 }
 
 //
