@@ -232,7 +232,7 @@ static boolean GetActionPointerForOffset(int offset, void **result)
     {
         if (action_pointers[i].offsets[deh_hhe_version] == offset)
         {
-            *result = action_pointers[i].func;
+            *result = reinterpret_cast<void *>(action_pointers[i].func);
             return true;
         }
     }
@@ -298,7 +298,7 @@ static void DEH_FrameParseLine(deh_context_t *context, char *line, void *tag)
             return;
         }
 
-        state->action = func;
+        state->action = reinterpret_cast<void (*)()>(func);
     }
     else
     {
