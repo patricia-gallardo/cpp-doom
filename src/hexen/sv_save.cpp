@@ -2886,7 +2886,7 @@ static void UnarchiveThinkers(void)
 
 static void RestoreSSThinker(ssthinker_t *sst)
 {
-    sst->sector->specialdata = sst->thinker.function;
+    sst->sector->specialdata = reinterpret_cast<void *>(sst->thinker.function);
 }
 
 //==========================================================================
@@ -2897,7 +2897,7 @@ static void RestoreSSThinker(ssthinker_t *sst)
 
 static void RestorePlatRaise(plat_t *plat)
 {
-    plat->sector->specialdata = T_PlatRaise;
+    plat->sector->specialdata = reinterpret_cast<void *>(T_PlatRaise);
     P_AddActivePlat(plat);
 }
 
@@ -2909,7 +2909,7 @@ static void RestorePlatRaise(plat_t *plat)
 
 static void RestoreMoveCeiling(ceiling_t *ceiling)
 {
-    ceiling->sector->specialdata = T_MoveCeiling;
+    ceiling->sector->specialdata = reinterpret_cast<void *>(T_MoveCeiling);
     P_AddActiveCeiling(ceiling);
 }
 
