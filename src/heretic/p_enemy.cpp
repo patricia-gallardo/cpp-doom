@@ -479,9 +479,11 @@ boolean P_LookForMonsters(mobj_t * actor)
         return (false);
     }
     count = 0;
+    action_hook needle = P_MobjThinker;
+
     for (think = thinkercap.next; think != &thinkercap; think = think->next)
     {
-        if (think->function != reinterpret_cast<think_t>(P_MobjThinker))
+        if (think->function != needle)
         {                       // Not a mobj thinker
             continue;
         }
@@ -2318,10 +2320,11 @@ void P_Massacre(void)
 {
     mobj_t *mo;
     thinker_t *think;
+    action_hook needle = P_MobjThinker;
 
     for (think = thinkercap.next; think != &thinkercap; think = think->next)
     {
-        if (think->function != reinterpret_cast<think_t>(P_MobjThinker))
+        if (think->function != needle)
         {                       // Not a mobj thinker
             continue;
         }
@@ -2363,10 +2366,11 @@ void A_BossDeath(mobj_t * actor)
     {                           // Not considered a boss in this episode
         return;
     }
+    action_hook needle = P_MobjThinker;
     // Make sure all bosses are dead
     for (think = thinkercap.next; think != &thinkercap; think = think->next)
     {
-        if (think->function != reinterpret_cast<think_t>(P_MobjThinker))
+        if (think->function != needle)
         {                       // Not a mobj thinker
             continue;
         }

@@ -713,10 +713,11 @@ void R_PrecacheLevel(void)
 //
     spritepresent = zmalloc<char *>(numsprites, PU_STATIC, NULL);
     memset(spritepresent, 0, numsprites);
+    action_hook needle = P_MobjThinker;
 
     for (th = thinkercap.next; th != &thinkercap; th = th->next)
     {
-        if (th->function == reinterpret_cast<think_t>(P_MobjThinker))
+        if (th->function == needle)
             spritepresent[((mobj_t *) th)->sprite] = 1;
     }
 

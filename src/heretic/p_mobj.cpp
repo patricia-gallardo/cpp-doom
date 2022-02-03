@@ -72,9 +72,10 @@ boolean P_SetMobjState(mobj_t * mobj, statenum_t state)
     mobj->tics = st->tics;
     mobj->sprite = st->sprite;
     mobj->frame = st->frame;
-    if (st->action)
+    if (st->action.index() == mobj_param_action_hook)
     {                           // Call action function
-        st->action(mobj);
+        auto callback = std::get<mobj_param_action>(st->action);
+        callback(mobj);
     }
     return (true);
 }
@@ -748,7 +749,7 @@ void P_MobjThinker(mobj_t * mobj)
     if (mobj->momx || mobj->momy || (mobj->flags & MF_SKULLFLY))
     {
         P_XYMovement(mobj);
-        if (mobj->thinker.function == (think_t) - 1)
+        if (action_hook_is_empty(mobj->thinker.function))
         {                       // mobj was removed
             return;
         }
@@ -795,7 +796,7 @@ void P_MobjThinker(mobj_t * mobj)
         {
             P_ZMovement(mobj);
         }
-        if (mobj->thinker.function == (think_t) - 1)
+        if (action_hook_is_empty(mobj->thinker.function))
         {                       // mobj was removed
             return;
         }

@@ -51,7 +51,7 @@ add_library(heretic STATIC
             r_things.cpp
             sb_bar.cpp
             sounds.cpp            sounds.hpp
-            s_sound.cpp           s_sound.hpp)
+            s_sound.cpp           s_sound.hpp action_hook.hpp)
 
 target_include_directories(heretic PRIVATE "../" "${CMAKE_CURRENT_BINARY_DIR}/../../")
 target_link_libraries(heretic textscreen SDL2::SDL2 SDL2::SDL2_mixer SDL2::SDL2_net)

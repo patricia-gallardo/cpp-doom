@@ -58,6 +58,7 @@
 #include "d_ticcmd.hpp"
 
 #include "d_loop.hpp"
+#include "action_hook.hpp"
 
 #define	SAVEGAMENAME "hticsav"
 
@@ -133,7 +134,7 @@ typedef void (*think_t) ();
 typedef struct thinker_s
 {
     struct thinker_s *prev, *next;
-    think_t function;
+    action_hook function;
 } thinker_t;
 
 typedef union
@@ -290,7 +291,7 @@ typedef enum
     NUMPSPRITES
 } psprnum_t;
 
-typedef struct
+typedef struct pspdef_s
 {
     state_t *state;             // a NULL state means not active
     int tics;

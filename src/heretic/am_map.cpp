@@ -373,10 +373,11 @@ void AM_initVariables(void)
     memset(KeyPoints, 0, sizeof(vertex_t) * 3);
     if (gameskill == sk_baby)
     {
+        action_hook needle = P_MobjThinker;
         for (think = thinkercap.next; think != &thinkercap;
              think = think->next)
         {
-            if (think->function != reinterpret_cast<think_t>(P_MobjThinker))
+            if (think->function != needle )
             {                   //not a mobj
                 continue;
             }

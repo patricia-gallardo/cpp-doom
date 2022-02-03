@@ -17,6 +17,7 @@
 #ifndef HERETIC_INFO_H
 #define HERETIC_INFO_H
 
+#include "action_hook.hpp"
 typedef enum
 {
     SPR_IMPX,
@@ -1368,7 +1369,7 @@ typedef struct
     spritenum_t sprite;
     int frame;
     int tics;
-    void (*action) ();
+    action_hook action;
     statenum_t nextstate;
     int misc1, misc2;
 } state_t;

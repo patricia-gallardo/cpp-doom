@@ -732,7 +732,7 @@ static void saveg_read_thinker_t(thinker_t *str)
 
     // think_t function;
     SV_ReadLong();
-    str->function = NULL;
+    str->function = std::monostate();
 }
 
 static void saveg_write_thinker_t(thinker_t *str)
@@ -1661,9 +1661,10 @@ void P_ArchiveThinkers(void)
 {
     thinker_t *th;
 
+    action_hook needle = P_MobjThinker;
     for (th = thinkercap.next; th != &thinkercap; th = th->next)
     {
-        if (th->function == reinterpret_cast<think_t>(P_MobjThinker))
+        if (th->function == needle)
         {
             SV_WriteByte(tc_mobj);
             saveg_write_mobj_t((mobj_t *) th);
@@ -1693,10 +1694,11 @@ void P_UnArchiveThinkers(void)
     // remove all the current thinkers
     //
     currentthinker = thinkercap.next;
+    action_hook needle = P_MobjThinker;
     while (currentthinker != &thinkercap)
     {
         next = currentthinker->next;
-        if (currentthinker->function == reinterpret_cast<think_t>(P_MobjThinker))
+        if (currentthinker->function == needle)
             P_RemoveMobj((mobj_t *) currentthinker);
         else
             Z_Free(currentthinker);
@@ -1768,40 +1770,47 @@ void P_ArchiveSpecials(void)
     */
 
     thinker_t *th;
+    action_hook needle_move_ceiling  = T_MoveCeiling;
+    action_hook needle_vertical_door = T_VerticalDoor;
+    action_hook needle_move_floor    = T_MoveFloor;
+    action_hook needle_plat_raise    = T_PlatRaise;
+    action_hook needle_light_flash   = T_LightFlash;
+    action_hook needle_strobe_flash  = T_StrobeFlash;
+    action_hook needle_glow          = T_Glow;
 
     for (th = thinkercap.next; th != &thinkercap; th = th->next)
     {
-        if (th->function == reinterpret_cast<think_t>(T_MoveCeiling))
+        if (th->function == needle_move_ceiling)
         {
             SV_WriteByte(tc_ceiling);
             saveg_write_ceiling_t((ceiling_t *) th);
         }
-        else if (th->function == reinterpret_cast<think_t>(T_VerticalDoor))
+        else if (th->function == needle_vertical_door)
         {
             SV_WriteByte(tc_door);
             saveg_write_vldoor_t((vldoor_t *) th);
         }
-        else if (th->function == reinterpret_cast<think_t>(T_MoveFloor))
+        else if (th->function == needle_move_floor)
         {
             SV_WriteByte(tc_floor);
             saveg_write_floormove_t((floormove_t *) th);
         }
-        else if (th->function == reinterpret_cast<think_t>(T_PlatRaise))
+        else if (th->function == needle_plat_raise)
         {
             SV_WriteByte(tc_plat);
             saveg_write_plat_t((plat_t *) th);
         }
-        else if (th->function == reinterpret_cast<think_t>(T_LightFlash))
+        else if (th->function == needle_light_flash)
         {
             SV_WriteByte(tc_flash);
             saveg_write_lightflash_t((lightflash_t *) th);
         }
-        else if (th->function == reinterpret_cast<think_t>(T_StrobeFlash))
+        else if (th->function == needle_strobe_flash)
         {
             SV_WriteByte(tc_strobe);
             saveg_write_strobe_t((strobe_t *) th);
         }
-        else if (th->function == reinterpret_cast<think_t>(T_Glow))
+        else if (th->function == needle_glow)
         {
             SV_WriteByte(tc_glow);
             saveg_write_glow_t((glow_t *) th);

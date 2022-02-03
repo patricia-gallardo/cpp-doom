@@ -337,9 +337,10 @@ void P_SetPsprite(player_t * player, int position, statenum_t stnum)
             psp->sx = state->misc1 << FRACBITS;
             psp->sy = state->misc2 << FRACBITS;
         }
-        if (state->action)
+        if (state->action.index() == player_psp_action_hook)
         {                       // Call action routine.
-            state->action(player, psp);
+            auto callback = std::get<player_psp_param_action>(state->action);
+            callback(player, psp);
             if (!psp->state)
             {
                 break;

@@ -32,7 +32,7 @@
 typedef struct
 {
     int offsets[deh_hhe_num_versions];
-    void (*func)();
+    action_hook func;
 } hhe_action_pointer_t;
 
 // Offsets of action pointers within the Heretic executables.
