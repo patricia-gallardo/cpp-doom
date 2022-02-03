@@ -12,10 +12,10 @@ struct pspdef_s;
 typedef pspdef_s pspdef_t;
 
 using zero_param_action              = void (*)();
-using one_param_action               = void (*)(mobj_t *);
-using two_param_action               = void (*)(player_t *, pspdef_t *);
-using action_hook                    = std::variant<std::monostate, zero_param_action, one_param_action, two_param_action>;
+using mobj_param_action              = void (*)(mobj_t *);
+using player_psp_param_action        = void (*)(player_t *, pspdef_t *);
+using action_hook                    = std::variant<std::monostate, zero_param_action, mobj_param_action, player_psp_param_action>;
 constexpr int empty_action_hook      = 0;
 constexpr int zero_param_action_hook = 1;
 constexpr int one_param_action_hook  = 2;
-constexpr int two_param_action_hook  = 3;
+constexpr int player_psp_action_hook = 3;

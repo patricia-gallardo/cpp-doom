@@ -73,7 +73,7 @@ P_SetMobjState
 	// Call action functions when the state is set
         if (st->action.index() == one_param_action_hook)
         {
-            auto callback = std::get<one_param_action>(st->action);
+            auto callback = std::get<mobj_param_action>(st->action);
             callback(mobj);
         }
 
