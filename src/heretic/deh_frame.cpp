@@ -298,7 +298,7 @@ static void DEH_FrameParseLine(deh_context_t *context, char *line, void *tag)
             return;
         }
 
-        state->action = reinterpret_cast<void (*)()>(func);
+        state->action = reinterpret_cast<zero_param_action>(func);
     }
     else
     {
