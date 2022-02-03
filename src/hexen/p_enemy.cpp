@@ -473,9 +473,10 @@ boolean P_LookForMonsters(mobj_t * actor)
         return (false);
     }
     count = 0;
+    action_hook needle = P_MobjThinker;
     for (think = thinkercap.next; think != &thinkercap; think = think->next)
     {
-        if (think->function != reinterpret_cast<think_t>(P_MobjThinker))
+        if (think->function != needle)
         {                       // Not a mobj thinker
             continue;
         }
@@ -1209,10 +1210,11 @@ void A_MinotaurLook(mobj_t * actor)
 
     if (!actor->target)         // Normal monster search
     {
+        action_hook needle = P_MobjThinker;
         for (think = thinkercap.next; think != &thinkercap;
              think = think->next)
         {
-            if (think->function != reinterpret_cast<think_t>(P_MobjThinker))
+            if (think->function != needle)
                 continue;
             mo = (mobj_t *) think;
             if (!(mo->flags & MF_COUNTKILL))
@@ -1739,9 +1741,11 @@ int P_Massacre(void)
     thinker_t *think;
 
     count = 0;
+    action_hook needle = P_MobjThinker;
+
     for (think = thinkercap.next; think != &thinkercap; think = think->next)
     {
-        if (think->function != reinterpret_cast<think_t>(P_MobjThinker))
+        if (think->function != needle)
         {                       // Not a mobj thinker
             continue;
         }
@@ -1908,11 +1912,11 @@ void P_InitCreatureCorpseQueue(boolean corpseScan)
 
     if (!corpseScan)
         return;
-
+    action_hook needle = P_MobjThinker;
     // Search mobj list for corpses and place them in this queue
     for (think = thinkercap.next; think != &thinkercap; think = think->next)
     {
-        if (think->function != reinterpret_cast<think_t>(P_MobjThinker))
+        if (think->function != needle)
             continue;
         mo = (mobj_t *) think;
         if (!(mo->flags & MF_CORPSE))

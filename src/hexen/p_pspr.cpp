@@ -244,9 +244,10 @@ void P_SetPsprite(player_t * player, int position, statenum_t stnum)
         {
             psp->sy = state->misc2 << FRACBITS;
         }
-        if (state->action)
-        {                       // Call action routine.
-            state->action(player, psp);
+        if (state->action.index() == player_psp_action_hook)
+        {
+            auto callback = std::get<player_psp_param_action>(state->action);
+            callback(player, psp);
             if (!psp->state)
             {
                 break;
@@ -886,7 +887,7 @@ void A_MWandAttack(player_t * player, pspdef_t * psp)
     mo = P_SpawnPlayerMissile(player->mo, MT_MWAND_MISSILE);
     if (mo)
     {
-        mo->thinker.function = reinterpret_cast<think_t>(P_BlasterMobjThinker);
+        mo->thinker.function = P_BlasterMobjThinker;
     }
     S_StartSound(player->mo, SFX_MAGE_WAND_FIRE);
 }
@@ -1659,7 +1660,7 @@ void A_CFlameAttack(player_t * player, pspdef_t * psp)
     mo = P_SpawnPlayerMissile(player->mo, MT_CFLAME_MISSILE);
     if (mo)
     {
-        mo->thinker.function = reinterpret_cast<think_t>(P_BlasterMobjThinker);
+        mo->thinker.function = P_BlasterMobjThinker;
         mo->special1.i = 2;
     }
 

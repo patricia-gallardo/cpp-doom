@@ -128,7 +128,7 @@ int EV_DoPlat(line_t * line, byte * args, plattype_e type, int amount)
     while ((secnum = P_FindSectorFromTag(args[0], secnum)) >= 0)
     {
         sec = &sectors[secnum];
-        if (sec->specialdata)
+        if (data_or_hook_has_value(sec->specialdata))
             continue;
 
         //
@@ -141,7 +141,7 @@ int EV_DoPlat(line_t * line, byte * args, plattype_e type, int amount)
         plat->type = type;
         plat->sector = sec;
         plat->sector->specialdata = plat;
-        plat->thinker.function = reinterpret_cast<think_t>(T_PlatRaise);
+        plat->thinker.function = T_PlatRaise;
         plat->crush = false;
         plat->tag = args[0];
         plat->speed = args[1] * (FRACUNIT / 8);
@@ -223,7 +223,7 @@ void EV_StopPlat(line_t * line, byte * args)
 
         if (activeplats[i]->tag != 0)
         {
-            activeplats[i]->sector->specialdata = NULL;
+            activeplats[i]->sector->specialdata = std::monostate();
             P_TagFinished(activeplats[i]->sector->tag);
             P_RemoveThinker(&activeplats[i]->thinker);
             activeplats[i] = NULL;
@@ -267,7 +267,7 @@ void P_RemoveActivePlat(plat_t * plat)
     for (i = 0; i < MAXPLATS; i++)
         if (plat == activeplats[i])
         {
-            (activeplats[i])->sector->specialdata = NULL;
+            (activeplats[i])->sector->specialdata = std::monostate();
             P_TagFinished(plat->sector->tag);
             P_RemoveThinker(&(activeplats[i])->thinker);
             activeplats[i] = NULL;

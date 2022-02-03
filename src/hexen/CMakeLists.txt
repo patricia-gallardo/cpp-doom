@@ -52,7 +52,7 @@ add_library(hexen STATIC
             st_start.cpp          st_start.hpp
             sv_save.cpp
                                 textdefs.hpp
-                                xddefs.hpp)
+                                xddefs.hpp action_hook.hpp)
 
 target_include_directories(hexen PRIVATE "../" "${CMAKE_CURRENT_BINARY_DIR}/../../")
 target_link_libraries(hexen SDL2::SDL2 SDL2::SDL2_mixer SDL2::SDL2_net)

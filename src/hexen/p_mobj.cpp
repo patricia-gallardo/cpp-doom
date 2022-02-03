@@ -102,9 +102,10 @@ boolean P_SetMobjState(mobj_t * mobj, statenum_t state)
     mobj->tics = st->tics;
     mobj->sprite = st->sprite;
     mobj->frame = st->frame;
-    if (st->action)
-    {                           // Call action function
-        st->action(mobj);
+    if (st->action.index() == mobj_param_action_hook)
+    {
+        auto callback = std::get<mobj_param_action>(st->action);
+        callback(mobj);
     }
     return (true);
 }
@@ -1066,7 +1067,7 @@ void P_MobjThinker(mobj_t * mobj)
     if (mobj->momx || mobj->momy || (mobj->flags & MF_SKULLFLY))
     {
         P_XYMovement(mobj);
-        if (mobj->thinker.function == (think_t) - 1)
+        if (action_hook_is_empty(mobj->thinker.function))
         {                       // mobj was removed
             return;
         }
@@ -1140,7 +1141,7 @@ void P_MobjThinker(mobj_t * mobj)
         {
             P_ZMovement(mobj);
         }
-        if (mobj->thinker.function == (think_t) - 1)
+        if (action_hook_is_empty(mobj->thinker.function))
         {                       // mobj was removed
             return;
         }
@@ -1247,7 +1248,7 @@ mobj_t *P_SpawnMobj(fixed_t x, fixed_t y, fixed_t z, mobjtype_t type)
         mobj->floorclip = 0;
     }
 
-    mobj->thinker.function = reinterpret_cast<think_t>(P_MobjThinker);
+    mobj->thinker.function = P_MobjThinker;
     P_AddThinker(&mobj->thinker);
     return (mobj);
 }
@@ -1634,9 +1635,10 @@ void P_CreateTIDList(void)
     thinker_t *t;
 
     i = 0;
+    action_hook needle = P_MobjThinker;
     for (t = thinkercap.next; t != &thinkercap; t = t->next)
     {                           // Search all current thinkers
-        if (t->function != reinterpret_cast<think_t>(P_MobjThinker))
+        if (t->function != needle)
         {                       // Not a mobj thinker
             continue;
         }

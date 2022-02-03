@@ -165,7 +165,7 @@ typedef void (*think_t) ();
 typedef struct thinker_s
 {
     struct thinker_s *prev, *next;
-    think_t function;
+    action_hook function;
 } thinker_t;
 
 struct player_s;
@@ -351,7 +351,7 @@ typedef enum
     NUMPSPRITES
 } psprnum_t;
 
-typedef struct
+typedef struct pspdef_s
 {
     state_t *state;             // a NULL state means not active
     int tics;

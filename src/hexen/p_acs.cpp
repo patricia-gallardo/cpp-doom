@@ -534,7 +534,7 @@ static void StartOpenACS(int number, int infoIndex, int offset)
 
     script->infoIndex = infoIndex;
     script->ip = offset;
-    script->thinker.function = reinterpret_cast<think_t>(T_InterpretACS);
+    script->thinker.function = T_InterpretACS;
     P_AddThinker(&script->thinker);
 }
 
@@ -615,7 +615,7 @@ boolean P_StartACS(int number, int map, byte * args, mobj_t * activator,
     script->line = line;
     script->side = side;
     script->ip = ACSInfo[infoIndex].offset;
-    script->thinker.function = reinterpret_cast<think_t>(T_InterpretACS);
+    script->thinker.function = T_InterpretACS;
     for (i = 0; i < MAX_SCRIPT_ARGS && i < ACSInfo[infoIndex].argCount; i++)
     {
         script->vars[i] = args[i];
@@ -902,7 +902,7 @@ static boolean TagBusy(int tag)
     sectorIndex = -1;
     while ((sectorIndex = P_FindSectorFromTag(tag, sectorIndex)) >= 0)
     {
-        if (sectors[sectorIndex].specialdata)
+        if (data_or_hook_has_value(sectors[sectorIndex].specialdata))
         {
             return true;
         }
@@ -1519,10 +1519,11 @@ static void ThingCount(int type, int tid)
     }
     else
     {                           // Count only types
+        action_hook needle = P_MobjThinker;
         for (think = thinkercap.next; think != &thinkercap;
              think = think->next)
         {
-            if (think->function != reinterpret_cast<think_t>(P_MobjThinker))
+            if (think->function != needle)
             {                   // Not a mobj thinker
                 continue;
             }

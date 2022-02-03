@@ -72,14 +72,14 @@ typedef enum
 typedef struct
 {
     thinkClass_t tClass;
-    think_t thinkerFunc;
-    think_t writeFunc;
-    think_t readFunc;
-    think_t restoreFunc;
+    action_hook thinkerFunc;
+    action_hook writeFunc;
+    action_hook readFunc;
+    action_hook restoreFunc;
     size_t size;
 } thinkInfo_t;
 
-typedef struct
+typedef struct ssthinker_s
 {
     thinker_t thinker;
     sector_t *sector;
@@ -691,8 +691,8 @@ static void StreamIn_thinker_t(thinker_t *str)
 
     // think_t function;
     // Function pointer is discarded:
-    str->function = reinterpret_cast<think_t>(SV_ReadPtr());
-    str->function = NULL;
+    str->function = reinterpret_cast<zero_param_action>(SV_ReadPtr());
+    str->function = std::monostate();
 }
 
 static void StreamOut_thinker_t(thinker_t *str)
@@ -2523,7 +2523,7 @@ static void UnarchiveWorld(void)
         sec->special = SV_ReadWord();
         sec->tag = SV_ReadWord();
         sec->seqType = static_cast<seqtype_t>(SV_ReadWord());
-        sec->specialdata = 0;
+        sec->specialdata = std::monostate();
         sec->soundtarget = 0;
     }
     for (i = 0, li = lines; i < numlines; i++, li++)
@@ -2566,10 +2566,11 @@ static void SetMobjArchiveNums(void)
     thinker_t *thinker;
 
     MobjCount = 0;
+    action_hook needle = P_MobjThinker;
     for (thinker = thinkercap.next; thinker != &thinkercap;
          thinker = thinker->next)
     {
-        if (thinker->function == reinterpret_cast<think_t>(P_MobjThinker))
+        if (thinker->function == needle)
         {
             mobj = (mobj_t *) thinker;
             if (mobj->player && !SavingPlayers)
@@ -2595,10 +2596,12 @@ static void ArchiveMobjs(void)
     SV_WriteLong(ASEG_MOBJS);
     SV_WriteLong(MobjCount);
     count = 0;
+    action_hook needle = P_MobjThinker;
+
     for (thinker = thinkercap.next; thinker != &thinkercap;
          thinker = thinker->next)
     {
-        if (thinker->function != reinterpret_cast<think_t>(P_MobjThinker))
+        if (thinker->function != needle)
         {                       // Not a mobj thinker
             continue;
         }
@@ -2636,6 +2639,8 @@ static void UnarchiveMobjs(void)
     {
         MobjList[i] = zmalloc<mobj_t *>(sizeof(mobj_t), PU_LEVEL, NULL);
     }
+    action_hook needle = P_MobjThinker;
+
     for (i = 0; i < MobjCount; i++)
     {
         mobj = MobjList[i];
@@ -2647,7 +2652,7 @@ static void UnarchiveMobjs(void)
         mobj->floorz = mobj->subsector->sector->floorheight;
         mobj->ceilingz = mobj->subsector->sector->ceilingheight;
 
-        mobj->thinker.function = reinterpret_cast<think_t>(P_MobjThinker);
+        mobj->thinker.function = needle;
         P_AddThinker(&mobj->thinker);
     }
     P_CreateTIDList();
@@ -2714,101 +2719,101 @@ static void SetMobjPtr(mobj_t **ptr, unsigned int archiveNum)
 static thinkInfo_t ThinkerInfo[] = {
     {
      TC_MOVE_FLOOR,
-        reinterpret_cast<think_t>(T_MoveFloor),
-        reinterpret_cast<think_t>(StreamOut_floormove_t),
-        reinterpret_cast<think_t>(StreamIn_floormove_t),
-        reinterpret_cast<think_t>(RestoreSSThinker),
+        T_MoveFloor,
+        StreamOut_floormove_t,
+        StreamIn_floormove_t,
+        RestoreSSThinker,
      sizeof(floormove_t)
     },
     {
      TC_PLAT_RAISE,
-        reinterpret_cast<think_t>(T_PlatRaise),
-        reinterpret_cast<think_t>(StreamOut_plat_t),
-        reinterpret_cast<think_t>(StreamIn_plat_t),
-        reinterpret_cast<think_t>(RestorePlatRaise),
+        T_PlatRaise,
+        StreamOut_plat_t,
+        StreamIn_plat_t,
+        RestorePlatRaise,
      sizeof(plat_t)
     },
     {
      TC_MOVE_CEILING,
-        reinterpret_cast<think_t>(T_MoveCeiling),
-        reinterpret_cast<think_t>(StreamOut_ceiling_t),
-        reinterpret_cast<think_t>(StreamIn_ceiling_t),
-        reinterpret_cast<think_t>(RestoreMoveCeiling),
+        T_MoveCeiling,
+        StreamOut_ceiling_t,
+        StreamIn_ceiling_t,
+        RestoreMoveCeiling,
      sizeof(ceiling_t)
     },
     {
      TC_LIGHT,
-        reinterpret_cast<think_t>(T_Light),
-        reinterpret_cast<think_t>(StreamOut_light_t),
-        reinterpret_cast<think_t>(StreamIn_light_t),
-     NULL,
+        T_Light,
+        StreamOut_light_t,
+        StreamIn_light_t,
+        std::monostate(),
      sizeof(light_t)
     },
     {
      TC_VERTICAL_DOOR,
-        reinterpret_cast<think_t>(T_VerticalDoor),
-        reinterpret_cast<think_t>(StreamOut_vldoor_t),
-        reinterpret_cast<think_t>(StreamIn_vldoor_t),
-        reinterpret_cast<think_t>(RestoreSSThinker),
+        T_VerticalDoor,
+        StreamOut_vldoor_t,
+        StreamIn_vldoor_t,
+        RestoreSSThinker,
      sizeof(vldoor_t)
     },
     {
      TC_PHASE,
-        reinterpret_cast<think_t>(T_Phase),
-        reinterpret_cast<think_t>(StreamOut_phase_t),
-        reinterpret_cast<think_t>(StreamIn_phase_t),
-     NULL,
+        T_Phase,
+        StreamOut_phase_t,
+        StreamIn_phase_t,
+        std::monostate(),
      sizeof(phase_t)
     },
     {
      TC_INTERPRET_ACS,
-        reinterpret_cast<think_t>(T_InterpretACS),
-        reinterpret_cast<think_t>(StreamOut_acs_t),
-        reinterpret_cast<think_t>(StreamIn_acs_t),
-     NULL,
+        T_InterpretACS,
+        StreamOut_acs_t,
+        StreamIn_acs_t,
+        std::monostate(),
      sizeof(acs_t)
     },
     {
      TC_ROTATE_POLY,
-        reinterpret_cast<think_t>(T_RotatePoly),
-        reinterpret_cast<think_t>(StreamOut_polyevent_t),
-        reinterpret_cast<think_t>(StreamIn_polyevent_t),
-     NULL,
+        T_RotatePoly,
+        StreamOut_polyevent_t,
+        StreamIn_polyevent_t,
+        std::monostate(),
      sizeof(polyevent_t)
     },
     {
      TC_BUILD_PILLAR,
-        reinterpret_cast<think_t>(T_BuildPillar),
-        reinterpret_cast<think_t>(StreamOut_pillar_t),
-        reinterpret_cast<think_t>(StreamIn_pillar_t),
-        reinterpret_cast<think_t>(RestoreSSThinker),
+        T_BuildPillar,
+        StreamOut_pillar_t,
+        StreamIn_pillar_t,
+        RestoreSSThinker,
      sizeof(pillar_t)
     },
     {
      TC_MOVE_POLY,
-        reinterpret_cast<think_t>(T_MovePoly),
-        reinterpret_cast<think_t>(StreamOut_polyevent_t),
-        reinterpret_cast<think_t>(StreamIn_polyevent_t),
-     NULL,
+        T_MovePoly,
+        StreamOut_polyevent_t,
+        StreamIn_polyevent_t,
+        std::monostate(),
      sizeof(polyevent_t)
     },
     {
      TC_POLY_DOOR,
-        reinterpret_cast<think_t>(T_PolyDoor),
-        reinterpret_cast<think_t>(StreamOut_polydoor_t),
-        reinterpret_cast<think_t>(StreamIn_polydoor_t),
-     NULL,
+        T_PolyDoor,
+        StreamOut_polydoor_t,
+        StreamIn_polydoor_t,
+        std::monostate(),
      sizeof(polydoor_t)
     },
     {
      TC_FLOOR_WAGGLE,
-        reinterpret_cast<think_t>(T_FloorWaggle),
-        reinterpret_cast<think_t>(StreamOut_floorWaggle_t),
-        reinterpret_cast<think_t>(StreamIn_floorWaggle_t),
-        reinterpret_cast<think_t>(RestoreSSThinker),
+        T_FloorWaggle,
+        StreamOut_floorWaggle_t,
+        StreamIn_floorWaggle_t,
+        RestoreSSThinker,
      sizeof(floorWaggle_t)
     },
-    { TC_NULL, NULL, NULL, NULL, NULL, 0},
+    { TC_NULL, std::monostate(), std::monostate(), std::monostate(), std::monostate(), 0},
 };
 
 //==========================================================================
@@ -2831,7 +2836,8 @@ static void ArchiveThinkers(void)
             if (thinker->function == info->thinkerFunc)
             {
                 SV_WriteByte(info->tClass);
-                info->writeFunc(thinker);
+                auto callback = std::get<thinker_param_action>(info->writeFunc);
+                callback(thinker);
                 break;
             }
         }
@@ -2860,11 +2866,13 @@ static void UnarchiveThinkers(void)
             if (tClass == info->tClass)
             {
                 thinker = zmalloc<thinker_t *>(info->size, PU_LEVEL, NULL);
-                info->readFunc(thinker);
+                auto read_callback = std::get<thinker_param_action>(info->readFunc);
+                read_callback(thinker);
                 thinker->function = info->thinkerFunc;
-                if (info->restoreFunc)
+                if (info->restoreFunc.index() == thinker_param_action_hook)
                 {
-                    info->restoreFunc(thinker);
+                    auto restore_callback = std::get<thinker_param_action>(info->restoreFunc);
+                    restore_callback(thinker);
                 }
                 P_AddThinker(thinker);
                 break;
@@ -2886,7 +2894,7 @@ static void UnarchiveThinkers(void)
 
 static void RestoreSSThinker(ssthinker_t *sst)
 {
-    sst->sector->specialdata = reinterpret_cast<void *>(sst->thinker.function);
+    sst->sector->specialdata = sst->thinker.function;
 }
 
 //==========================================================================
@@ -2897,7 +2905,8 @@ static void RestoreSSThinker(ssthinker_t *sst)
 
 static void RestorePlatRaise(plat_t *plat)
 {
-    plat->sector->specialdata = reinterpret_cast<void *>(T_PlatRaise);
+    action_hook hook = T_PlatRaise;
+    plat->sector->specialdata = hook;
     P_AddActivePlat(plat);
 }
 
@@ -2909,7 +2918,8 @@ static void RestorePlatRaise(plat_t *plat)
 
 static void RestoreMoveCeiling(ceiling_t *ceiling)
 {
-    ceiling->sector->specialdata = reinterpret_cast<void *>(T_MoveCeiling);
+    action_hook hook = T_MoveCeiling;
+    ceiling->sector->specialdata = hook;
     P_AddActiveCeiling(ceiling);
 }
 
@@ -3005,10 +3015,12 @@ static void RemoveAllThinkers(void)
     thinker_t *nextThinker;
 
     thinker = thinkercap.next;
+    action_hook needle = P_MobjThinker;
+
     while (thinker != &thinkercap)
     {
         nextThinker = thinker->next;
-        if (thinker->function == reinterpret_cast<think_t>(P_MobjThinker))
+        if (thinker->function == needle)
         {
             P_RemoveMobj((mobj_t *) thinker);
         }

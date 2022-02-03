@@ -1199,9 +1199,10 @@ void P_BlastRadius(player_t * player)
     S_StartSound(pmo, SFX_ARTIFACT_BLAST);
     P_NoiseAlert(player->mo, player->mo);
 
+    action_hook needle = P_MobjThinker;
     for (think = thinkercap.next; think != &thinkercap; think = think->next)
     {
-        if (think->function != reinterpret_cast<think_t>(P_MobjThinker))
+        if (think->function != needle)
         {                       // Not a mobj thinker
             continue;
         }
@@ -1262,10 +1263,11 @@ boolean P_HealRadius(player_t * player)
     fixed_t dist;
     int effective = false;
     int amount;
+    action_hook needle = P_MobjThinker;
 
     for (think = thinkercap.next; think != &thinkercap; think = think->next)
     {
-        if (think->function != reinterpret_cast<think_t>(P_MobjThinker))
+        if (think->function != needle)
         {                       // Not a mobj thinker
             continue;
         }

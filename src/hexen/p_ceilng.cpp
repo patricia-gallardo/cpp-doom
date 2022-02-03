@@ -127,7 +127,7 @@ int EV_DoCeiling(line_t * line, byte * arg, ceiling_e type)
     while ((secnum = P_FindSectorFromTag(arg[0], secnum)) >= 0)
     {
         sec = &sectors[secnum];
-        if (sec->specialdata)
+        if (data_or_hook_has_value(sec->specialdata))
             continue;
 
         //
@@ -137,7 +137,7 @@ int EV_DoCeiling(line_t * line, byte * arg, ceiling_e type)
         ceiling = zmalloc<ceiling_t *>(sizeof(*ceiling), PU_LEVSPEC, 0);
         P_AddThinker(&ceiling->thinker);
         sec->specialdata = ceiling;
-        ceiling->thinker.function = reinterpret_cast<think_t>(T_MoveCeiling);
+        ceiling->thinker.function = T_MoveCeiling;
         ceiling->sector = sec;
         ceiling->crush = 0;
         ceiling->speed = arg[1] * (FRACUNIT / 8);
@@ -242,7 +242,7 @@ void P_RemoveActiveCeiling(ceiling_t * c)
     for (i = 0; i < MAXCEILINGS; i++)
         if (activeceilings[i] == c)
         {
-            activeceilings[i]->sector->specialdata = NULL;
+            activeceilings[i]->sector->specialdata = std::monostate();
             P_RemoveThinker(&activeceilings[i]->thinker);
             P_TagFinished(activeceilings[i]->sector->tag);
             activeceilings[i] = NULL;
@@ -292,7 +292,7 @@ int EV_CeilingCrushStop(line_t * line, byte * args)
         {
             rtn = 1;
             SN_StopSequence((mobj_t *) & activeceilings[i]->sector->soundorg);
-            activeceilings[i]->sector->specialdata = NULL;
+            activeceilings[i]->sector->specialdata = std::monostate();
             P_RemoveThinker(&activeceilings[i]->thinker);
             P_TagFinished(activeceilings[i]->sector->tag);
             activeceilings[i] = NULL;

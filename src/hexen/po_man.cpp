@@ -135,7 +135,7 @@ boolean EV_RotatePoly(line_t * line, byte * args, int direction, boolean
     }
     pe = zmalloc<polyevent_t *>(sizeof(polyevent_t), PU_LEVSPEC, 0);
     P_AddThinker(&pe->thinker);
-    pe->thinker.function = reinterpret_cast<think_t>(T_RotatePoly);
+    pe->thinker.function = T_RotatePoly;
     pe->polyobj = polyNum;
     if (args[2])
     {
@@ -166,7 +166,7 @@ boolean EV_RotatePoly(line_t * line, byte * args, int direction, boolean
         }
         pe = zmalloc<polyevent_t *>(sizeof(polyevent_t), PU_LEVSPEC, 0);
         P_AddThinker(&pe->thinker);
-        pe->thinker.function = reinterpret_cast<think_t>(T_RotatePoly);
+        pe->thinker.function = T_RotatePoly;
         poly->specialdata = pe;
         pe->polyobj = mirror;
         if (args[2])
@@ -267,7 +267,7 @@ boolean EV_MovePoly(line_t * line, byte * args, boolean timesEight, boolean
     }
     pe = zmalloc<polyevent_t *>(sizeof(polyevent_t), PU_LEVSPEC, 0);
     P_AddThinker(&pe->thinker);
-    pe->thinker.function = reinterpret_cast<think_t>(T_MovePoly);
+    pe->thinker.function = T_MovePoly;
     pe->polyobj = polyNum;
     if (timesEight)
     {
@@ -297,7 +297,7 @@ boolean EV_MovePoly(line_t * line, byte * args, boolean timesEight, boolean
         }
         pe = zmalloc<polyevent_t *>(sizeof(polyevent_t), PU_LEVSPEC, 0);
         P_AddThinker(&pe->thinker);
-        pe->thinker.function = reinterpret_cast<think_t>(T_MovePoly);
+        pe->thinker.function = T_MovePoly;
         pe->polyobj = mirror;
         poly->specialdata = pe;
         if (timesEight)
@@ -476,7 +476,7 @@ boolean EV_OpenPolyDoor(line_t * line, byte * args, podoortype_t type)
     pd = zmalloc<polydoor_t *>(sizeof(polydoor_t), PU_LEVSPEC, 0);
     memset(pd, 0, sizeof(polydoor_t));
     P_AddThinker(&pd->thinker);
-    pd->thinker.function = reinterpret_cast<think_t>(T_PolyDoor);
+    pd->thinker.function = T_PolyDoor;
     pd->type = type;
     pd->polyobj = polyNum;
     if (type == PODOOR_SLIDE)
@@ -515,7 +515,7 @@ boolean EV_OpenPolyDoor(line_t * line, byte * args, podoortype_t type)
         pd = zmalloc<polydoor_t *>(sizeof(polydoor_t), PU_LEVSPEC, 0);
         memset(pd, 0, sizeof(polydoor_t));
         P_AddThinker(&pd->thinker);
-        pd->thinker.function = reinterpret_cast<think_t>(T_PolyDoor);
+        pd->thinker.function = T_PolyDoor;
         pd->polyobj = mirror;
         pd->type = type;
         poly->specialdata = pd;
@@ -613,7 +613,8 @@ static void ThrustMobj(mobj_t * mobj, seg_t * seg, polyobj_t * po)
     pe = static_cast<polyevent_t *>(po->specialdata);
     if (pe)
     {
-        if (pe->thinker.function == reinterpret_cast<think_t>(T_RotatePoly))
+        action_hook needle = T_RotatePoly;
+        if (pe->thinker.function == needle)
         {
             force = pe->speed >> 8;
         }
