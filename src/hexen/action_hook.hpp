@@ -43,6 +43,9 @@ using acs_t         = struct acs_s;
 using pillar_t      = struct pillar_s;
 using polydoor_t    = struct polydoor_s;
 using floorWaggle_t = struct floorWaggle_s;
+using lightflash_t  = struct lightflash_s;
+using strobe_t      = struct strobe_s;
+using glow_t        = struct glow_s;
 
 using zero_param_action        = void (*)();
 using mobj_param_action        = void (*)(mobj_t *);
@@ -60,6 +63,9 @@ using acs_param_action         = void (*)(acs_t *);
 using pillar_param_action      = void (*)(pillar_t *);
 using polydoor_param_action    = void (*)(polydoor_t *);
 using floorWaggle_param_action = void (*)(floorWaggle_t *);
+using lightflash_param_action  = void (*)(lightflash_t *);
+using strobe_param_action      = void (*)(strobe_t *);
+using glow_param_action        = void (*)(glow_t *);
 using action_hook              = std::variant<
     std::monostate,
     zero_param_action,
@@ -77,7 +83,10 @@ using action_hook              = std::variant<
     acs_param_action,
     pillar_param_action,
     polydoor_param_action,
-    floorWaggle_param_action>;
+    floorWaggle_param_action,
+    lightflash_param_action,
+    strobe_param_action,
+    glow_param_action>;
 
 static_assert(alternative_index_v<std::monostate, action_hook> == 0);
 

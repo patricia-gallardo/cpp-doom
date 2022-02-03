@@ -142,7 +142,7 @@ typedef struct
 
 
 
-typedef struct
+typedef struct lightflash_s
 {
     thinker_t	thinker;
     sector_t*	sector;
@@ -156,7 +156,7 @@ typedef struct
 
 
 
-typedef struct
+typedef struct strobe_s
 {
     thinker_t	thinker;
     sector_t*	sector;
@@ -171,7 +171,7 @@ typedef struct
 
 
 
-typedef struct
+typedef struct glow_s
 {
     thinker_t	thinker;
     sector_t*	sector;
@@ -294,7 +294,7 @@ typedef enum
 
 
 
-typedef struct
+typedef struct plat_s
 {
     thinker_t	thinker;
     sector_t*	sector;
@@ -355,7 +355,7 @@ typedef enum
 
 
 
-typedef struct
+typedef struct vldoor_s
 {
     thinker_t   thinker;
     vldoor_e    type;
@@ -507,7 +507,7 @@ typedef enum
 
 
 
-typedef struct
+typedef struct ceiling_s
 {
     thinker_t	thinker;
     ceiling_e	type;
@@ -601,7 +601,7 @@ typedef enum
 
 
 
-typedef struct
+typedef struct floormove_s
 {
     thinker_t	thinker;
     floor_e	type;
