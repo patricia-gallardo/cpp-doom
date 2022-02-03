@@ -162,7 +162,7 @@ int EV_DoDoor(line_t * line, vldoor_e type, fixed_t speed)
         door = zmalloc<vldoor_t *>(sizeof(*door), PU_LEVSPEC, 0);
         P_AddThinker(&door->thinker);
         sec->specialdata = door;
-        door->thinker.function = reinterpret_cast<think_t>(T_VerticalDoor);
+        door->thinker.function = T_VerticalDoor;
         door->sector = sec;
         switch (type)
         {
@@ -305,7 +305,7 @@ void EV_VerticalDoor(line_t * line, mobj_t * thing)
     door = zmalloc<vldoor_t *>(sizeof(*door), PU_LEVSPEC, 0);
     P_AddThinker(&door->thinker);
     sec->specialdata = door;
-    door->thinker.function = reinterpret_cast<think_t>(T_VerticalDoor);
+    door->thinker.function = T_VerticalDoor;
     door->sector = sec;
     door->direction = 1;
     switch (line->special)
@@ -347,7 +347,7 @@ void P_SpawnDoorCloseIn30(sector_t * sec)
     P_AddThinker(&door->thinker);
     sec->specialdata = door;
     sec->special = 0;
-    door->thinker.function = reinterpret_cast<think_t>(T_VerticalDoor);
+    door->thinker.function = T_VerticalDoor;
     door->sector = sec;
     door->direction = 0;
     door->type = vld_normal;
@@ -368,7 +368,7 @@ void P_SpawnDoorRaiseIn5Mins(sector_t * sec, int secnum)
     P_AddThinker(&door->thinker);
     sec->specialdata = door;
     sec->special = 0;
-    door->thinker.function = reinterpret_cast<think_t>(T_VerticalDoor);
+    door->thinker.function = T_VerticalDoor;
     door->sector = sec;
     door->direction = 2;
     door->type = vld_raiseIn5Mins;

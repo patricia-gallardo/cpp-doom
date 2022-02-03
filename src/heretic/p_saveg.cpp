@@ -1723,7 +1723,7 @@ void P_UnArchiveThinkers(void)
                 mobj->info = &mobjinfo[mobj->type];
                 mobj->floorz = mobj->subsector->sector->floorheight;
                 mobj->ceilingz = mobj->subsector->sector->ceilingheight;
-                mobj->thinker.function = reinterpret_cast<think_t>(P_MobjThinker);
+                mobj->thinker.function = P_MobjThinker;
                 P_AddThinker(&mobj->thinker);
                 break;
 
@@ -1853,7 +1853,7 @@ void P_UnArchiveSpecials(void)
                 ceiling = zmalloc<ceiling_t *>(sizeof(*ceiling), PU_LEVEL, NULL);
                 saveg_read_ceiling_t(ceiling);
                 ceiling->sector->specialdata = reinterpret_cast<void *>(T_MoveCeiling);  // ???
-                ceiling->thinker.function = reinterpret_cast<think_t>(T_MoveCeiling);
+                ceiling->thinker.function = T_MoveCeiling;
                 P_AddThinker(&ceiling->thinker);
                 P_AddActiveCeiling(ceiling);
                 break;
@@ -1862,7 +1862,7 @@ void P_UnArchiveSpecials(void)
                 door = zmalloc<vldoor_t *>(sizeof(*door), PU_LEVEL, NULL);
                 saveg_read_vldoor_t(door);
                 door->sector->specialdata = door;
-                door->thinker.function = reinterpret_cast<think_t>(T_VerticalDoor);
+                door->thinker.function = T_VerticalDoor;
                 P_AddThinker(&door->thinker);
                 break;
 
@@ -1870,7 +1870,7 @@ void P_UnArchiveSpecials(void)
                 floor = zmalloc<floormove_t *>(sizeof(*floor), PU_LEVEL, NULL);
                 saveg_read_floormove_t(floor);
                 floor->sector->specialdata = reinterpret_cast<void *>(T_MoveFloor);
-                floor->thinker.function = reinterpret_cast<think_t>(T_MoveFloor);
+                floor->thinker.function = T_MoveFloor;
                 P_AddThinker(&floor->thinker);
                 break;
 
@@ -1884,7 +1884,7 @@ void P_UnArchiveSpecials(void)
                 // anyway, so it can't be NULL. Having the conditional causes
                 // a bug, as our saveg_read_thinker_t sets these to NULL.
                 // if (plat->thinker.function)
-                plat->thinker.function = reinterpret_cast<think_t>(T_PlatRaise);
+                plat->thinker.function = T_PlatRaise;
                 P_AddThinker(&plat->thinker);
                 P_AddActivePlat(plat);
                 break;
@@ -1892,21 +1892,21 @@ void P_UnArchiveSpecials(void)
             case tc_flash:
                 flash = zmalloc<lightflash_t *>(sizeof(*flash), PU_LEVEL, NULL);
                 saveg_read_lightflash_t(flash);
-                flash->thinker.function = reinterpret_cast<think_t>(T_LightFlash);
+                flash->thinker.function = T_LightFlash;
                 P_AddThinker(&flash->thinker);
                 break;
 
             case tc_strobe:
                 strobe = zmalloc<strobe_t *>(sizeof(*strobe), PU_LEVEL, NULL);
                 saveg_read_strobe_t(strobe);
-                strobe->thinker.function = reinterpret_cast<think_t>(T_StrobeFlash);
+                strobe->thinker.function = T_StrobeFlash;
                 P_AddThinker(&strobe->thinker);
                 break;
 
             case tc_glow:
                 glow = zmalloc<glow_t *>(sizeof(*glow), PU_LEVEL, NULL);
                 saveg_read_glow_t(glow);
-                glow->thinker.function = reinterpret_cast<think_t>(T_Glow);
+                glow->thinker.function = T_Glow;
                 P_AddThinker(&glow->thinker);
                 break;
 

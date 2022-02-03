@@ -252,7 +252,7 @@ int EV_DoFloor(line_t * line, floor_e floortype)
         floor = zmalloc<floormove_t *>(sizeof(*floor), PU_LEVSPEC, 0);
         P_AddThinker(&floor->thinker);
         sec->specialdata = floor;
-        floor->thinker.function = reinterpret_cast<think_t>(T_MoveFloor);
+        floor->thinker.function = T_MoveFloor;
         floor->type = floortype;
         floor->crush = false;
         switch (floortype)
@@ -405,7 +405,7 @@ int EV_BuildStairs(line_t * line, fixed_t stepDelta)
         floor = zmalloc<floormove_t *>(sizeof(*floor), PU_LEVSPEC, 0);
         P_AddThinker(&floor->thinker);
         sec->specialdata = floor;
-        floor->thinker.function = reinterpret_cast<think_t>(T_MoveFloor);
+        floor->thinker.function = T_MoveFloor;
         floor->type = raiseBuildStep;
         floor->direction = 1;
         floor->sector = sec;
@@ -445,7 +445,7 @@ int EV_BuildStairs(line_t * line, fixed_t stepDelta)
                 floor = zmalloc<floormove_t *>(sizeof(*floor), PU_LEVSPEC, 0);
                 P_AddThinker(&floor->thinker);
                 sec->specialdata = floor;
-                floor->thinker.function = reinterpret_cast<think_t>(T_MoveFloor);
+                floor->thinker.function = T_MoveFloor;
                 floor->type = raiseBuildStep;
                 floor->direction = 1;
                 floor->sector = sec;

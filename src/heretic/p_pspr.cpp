@@ -982,7 +982,7 @@ void A_FireBlasterPL2(player_t * player, pspdef_t * psp)
     mo = P_SpawnPlayerMissile(player->mo, MT_BLASTERFX1);
     if (mo)
     {
-        mo->thinker.function = reinterpret_cast<think_t>(P_BlasterMobjThinker);
+        mo->thinker.function = P_BlasterMobjThinker;
     }
     S_StartSound(player->mo, sfx_blssht);
 }

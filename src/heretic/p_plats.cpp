@@ -154,7 +154,7 @@ int EV_DoPlat(line_t * line, plattype_e type, int amount)
         plat->type = type;
         plat->sector = sec;
         plat->sector->specialdata = plat;
-        plat->thinker.function = reinterpret_cast<think_t>(T_PlatRaise);
+        plat->thinker.function = T_PlatRaise;
         plat->crush = false;
         plat->tag = line->tag;
         switch (type)
@@ -214,7 +214,7 @@ void P_ActivateInStasis(int tag)
             (activeplats[i])->status == in_stasis)
         {
             (activeplats[i])->status = (activeplats[i])->oldstatus;
-            (activeplats[i])->thinker.function = reinterpret_cast<think_t>(T_PlatRaise);
+            (activeplats[i])->thinker.function = T_PlatRaise;
         }
 }
 

@@ -928,7 +928,7 @@ mobj_t *P_SpawnMobj(fixed_t x, fixed_t y, fixed_t z, mobjtype_t type)
         mobj->flags2 &= ~MF2_FEETARECLIPPED;
     }
 
-    mobj->thinker.function = reinterpret_cast<think_t>(P_MobjThinker);
+    mobj->thinker.function = P_MobjThinker;
     P_AddThinker(&mobj->thinker);
     return (mobj);
 }

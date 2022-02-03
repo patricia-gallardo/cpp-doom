@@ -140,7 +140,7 @@ int EV_DoCeiling(line_t * line, ceiling_e type)
         ceiling = zmalloc<ceiling_t *>(sizeof(*ceiling), PU_LEVSPEC, 0);
         P_AddThinker(&ceiling->thinker);
         sec->specialdata = ceiling;
-        ceiling->thinker.function = reinterpret_cast<think_t>(T_MoveCeiling);
+        ceiling->thinker.function = T_MoveCeiling;
         ceiling->sector = sec;
         ceiling->crush = false;
         switch (type)
@@ -226,7 +226,7 @@ void P_ActivateInStasisCeiling(line_t * line)
             (activeceilings[i]->direction == 0))
         {
             activeceilings[i]->direction = activeceilings[i]->olddirection;
-            activeceilings[i]->thinker.function = reinterpret_cast<think_t>(T_MoveCeiling);
+            activeceilings[i]->thinker.function = T_MoveCeiling;
         }
 }
 
