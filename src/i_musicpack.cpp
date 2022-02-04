@@ -16,11 +16,10 @@
 //	System interface for music.
 //
 
-#include <ctype.h>
+#include <cctype>
 #include <memory>
-#include <stdio.h>
-#include <stdlib.h>
-#include <string.h>
+#include <cstdlib>
+#include <cstring>
 #include <string>
 
 #include "SDL.h"

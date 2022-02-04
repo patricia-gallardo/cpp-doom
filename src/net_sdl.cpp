@@ -15,9 +15,9 @@
 //     Networking module which uses SDL_net
 //
 
-#include <stdlib.h>
-#include <string.h>
-#include <stdio.h>
+#include <cstdlib>
+#include <cstring>
+#include <cstdio>
 
 #include "memory.hpp"
 #include "doomtype.hpp"

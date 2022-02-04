@@ -15,8 +15,8 @@
 //     Generate a randomized, private, memorable name for a Player
 //
 
-#include <stdlib.h>
-#include <time.h>
+#include <cstdlib>
+#include <ctime>
 #include "doomtype.hpp"
 #include "m_misc.hpp"
 

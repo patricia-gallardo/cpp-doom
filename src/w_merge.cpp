@@ -18,10 +18,9 @@
 // read the deutex source code made my brain hurt.
 //
 
-#include <stdio.h>
-#include <stdlib.h>
-#include <string.h>
-#include <ctype.h>
+#include <cstdlib>
+#include <cstring>
+#include <cctype>
 
 #include "memory.hpp"
 #include "doomtype.hpp"

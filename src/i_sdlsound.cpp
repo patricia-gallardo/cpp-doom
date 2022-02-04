@@ -19,10 +19,10 @@
 
 #include "config.h"
 
-#include <stdio.h>
-#include <stdlib.h>
-#include <string.h>
-#include <assert.h>
+#include <cstdio>
+#include <cstdlib>
+#include <cstring>
+#include <cassert>
 #include "SDL.h"
 #include "SDL_mixer.h"
 #include <vector>

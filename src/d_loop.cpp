@@ -16,8 +16,8 @@
 //     Main loop code.
 //
 
-#include <stdlib.h>
-#include <string.h>
+#include <cstdlib>
+#include <cstring>
 
 #include "d_event.hpp"
 #include "d_loop.hpp"

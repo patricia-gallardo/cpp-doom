@@ -16,9 +16,9 @@
 // to be interrogated.
 //
 
-#include <stdlib.h>
-#include <string.h>
-#include <ctype.h>
+#include <cstdlib>
+#include <cstring>
+#include <cctype>
 
 #include "i_glob.hpp"
 #include "m_misc.hpp"

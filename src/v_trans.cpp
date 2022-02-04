@@ -16,7 +16,7 @@
 // Color translation tables
 //
 
-#include <math.h>
+#include <cmath>
 
 #include "doomtype.hpp"
 #include "v_trans.hpp"

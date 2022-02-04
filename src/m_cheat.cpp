@@ -17,7 +17,7 @@
 //
 
 
-#include <string.h>
+#include <cstring>
 
 #include "doomtype.hpp"
 #include "m_cheat.hpp"

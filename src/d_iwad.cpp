@@ -16,10 +16,8 @@
 //     to the IWAD type.
 //
 
-#include <stdio.h>
-#include <stdlib.h>
-#include <ctype.h>
-#include <string.h>
+#include <cstdlib>
+#include <cstring>
 
 #include "memory.hpp"
 #include "d_iwad.hpp"

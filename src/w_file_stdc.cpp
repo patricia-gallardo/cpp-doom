@@ -16,7 +16,6 @@
 //	WAD I/O functions.
 //
 
-#include <stdio.h>
 
 #include "memory.hpp"
 #include "m_misc.hpp"

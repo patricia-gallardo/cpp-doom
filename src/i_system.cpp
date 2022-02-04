@@ -16,11 +16,10 @@
 //
 
 
-#include <stdlib.h>
-#include <stdio.h>
-#include <string.h>
+#include <cstdlib>
+#include <cstring>
 
-#include <stdarg.h>
+#include <cstdarg>
 
 #ifdef _WIN32
 #define WIN32_LEAN_AND_MEAN

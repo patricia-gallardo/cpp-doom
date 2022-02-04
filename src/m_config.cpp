@@ -18,12 +18,10 @@
 //
 
 
-#include <stdio.h>
-#include <stdlib.h>
-#include <string.h>
-#include <ctype.h>
-#include <errno.h>
-#include <assert.h>
+#include <cstdlib>
+#include <cstring>
+#include <cctype>
+#include <cassert>
 
 #include "SDL_filesystem.h"
 

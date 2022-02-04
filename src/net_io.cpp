@@ -16,7 +16,7 @@
 //     through the network module system
 //
 
-#include <stdio.h>
+#include <cstdio>
 
 #include "memory.hpp"
 #include "i_system.hpp"

@@ -17,10 +17,9 @@
 
 #include "config.h"
 
-#include <stdio.h>
-#include <string.h>
-#include <errno.h>
-#include <assert.h>
+#include <cstdio>
+#include <cstring>
+#include <cassert>
 
 #include "SDL.h"
 #include "SDL_mixer.h"
