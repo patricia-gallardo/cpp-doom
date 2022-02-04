@@ -62,6 +62,7 @@ function(set_project_warnings)
             -Wno-double-promotion # TODO turn it back on (patricia)
             -Wno-implicit-float-conversion # TODO turn it back on (patricia)
             -Wno-c++11-narrowing # TODO turn it back on (patricia)
+            -Wno-deprecated-anon-enum-enum-conversion # TODO turn it back on (patricia)
             )
 
     if (WARNINGS_AS_ERRORS)

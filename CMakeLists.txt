@@ -5,7 +5,7 @@ cmake_minimum_required(VERSION 3.7.2)
 include(cmake/vcpkg.cmake)
 
 project("Crispy Doom" VERSION 5.7.2 LANGUAGES CXX)
-set(CMAKE_CXX_STANDARD 17)
+set(CMAKE_CXX_STANDARD 20)
 
 # Autotools variables
 set(top_srcdir ${CMAKE_CURRENT_SOURCE_DIR})
