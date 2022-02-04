@@ -20,7 +20,6 @@
 #include <cstring>
 #include <cctype>
 
-#include <sys/types.h>
 
 #ifdef _WIN32
 

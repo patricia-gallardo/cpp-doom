@@ -22,7 +22,6 @@
 //**
 //**************************************************************************
 
-#include <stdlib.h>
 
 #include "doomdef.hpp"
 #include "i_system.hpp" // [crispy] I_Realloc()

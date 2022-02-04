@@ -32,7 +32,6 @@
 #endif
 #else
 #include <sys/stat.h>
-#include <sys/types.h>
 #endif
 
 #include "doomtype.hpp"

@@ -15,7 +15,7 @@
 //
 // F_finale.c
 
-#include <ctype.h>
+#include <cctype>
 
 #include "doomdef.hpp"
 #include "deh_str.hpp"

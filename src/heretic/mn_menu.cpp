@@ -16,8 +16,8 @@
 
 // MN_menu.c
 
-#include <stdlib.h>
-#include <ctype.h>
+#include <cstdlib>
+#include <cctype>
 
 #include "deh_str.hpp"
 #include "doomdef.hpp"
