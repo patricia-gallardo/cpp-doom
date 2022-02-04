@@ -502,7 +502,7 @@ typedef enum
 
 typedef struct
 {
-    int type;
+    artitype_t type;
     int count;
 } inventory_t;
 

@@ -265,7 +265,7 @@ static void StreamOut_ticcmd_t(ticcmd_t *str)
 static void StreamIn_inventory_t(inventory_t *str)
 {
     // int type;
-    str->type = SV_ReadLong();
+    str->type = static_cast<artitype_t>(SV_ReadLong());
 
     // int count;
     str->count = SV_ReadLong();
@@ -2105,7 +2105,7 @@ void SV_LoadGame(int slot)
         players[i].mo = mobj;
         if (i == consoleplayer)
         {
-            players[i].readyArtifact = static_cast<artitype_t>(players[i].inventory[inv_ptr].type);
+            players[i].readyArtifact = players[i].inventory[inv_ptr].type;
         }
     }
 }
