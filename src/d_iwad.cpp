@@ -121,36 +121,36 @@ static registry_value_t uninstall_values[] = {
 
     {
         HKEY_LOCAL_MACHINE,
-        SOFTWARE_KEY "\\Microsoft\\Windows\\CurrentVersion\\"
-                     "Uninstall\\Ultimate Doom for Windows 95",
-        "UninstallString",
+        const_cast<char *>(SOFTWARE_KEY "\\Microsoft\\Windows\\CurrentVersion\\"
+                     "Uninstall\\Ultimate Doom for Windows 95"),
+        const_cast<char *>("UninstallString"),
     },
 
     // Doom II, CD version (Depths of Doom trilogy)
 
     {
         HKEY_LOCAL_MACHINE,
-        SOFTWARE_KEY "\\Microsoft\\Windows\\CurrentVersion\\"
-                     "Uninstall\\Doom II for Windows 95",
-        "UninstallString",
+        const_cast<char *>(SOFTWARE_KEY "\\Microsoft\\Windows\\CurrentVersion\\"
+                     "Uninstall\\Doom II for Windows 95"),
+        const_cast<char *>("UninstallString"),
     },
 
     // Final Doom
 
     {
         HKEY_LOCAL_MACHINE,
-        SOFTWARE_KEY "\\Microsoft\\Windows\\CurrentVersion\\"
-                     "Uninstall\\Final Doom for Windows 95",
-        "UninstallString",
+        const_cast<char *>(SOFTWARE_KEY "\\Microsoft\\Windows\\CurrentVersion\\"
+                     "Uninstall\\Final Doom for Windows 95"),
+        const_cast<char *>("UninstallString"),
     },
 
     // Shareware version
 
     {
         HKEY_LOCAL_MACHINE,
-        SOFTWARE_KEY "\\Microsoft\\Windows\\CurrentVersion\\"
-                     "Uninstall\\Doom Shareware for Windows 95",
-        "UninstallString",
+        const_cast<char *>(SOFTWARE_KEY "\\Microsoft\\Windows\\CurrentVersion\\"
+                     "Uninstall\\Doom Shareware for Windows 95"),
+        const_cast<char *>("UninstallString"),
     },
 };
 
@@ -161,88 +161,88 @@ static registry_value_t root_path_keys[] = {
 
     {
         HKEY_LOCAL_MACHINE,
-        SOFTWARE_KEY "\\Activision\\DOOM Collector's Edition\\v1.0",
-        "INSTALLPATH",
+        const_cast<char *>(SOFTWARE_KEY "\\Activision\\DOOM Collector's Edition\\v1.0"),
+        const_cast<char *>("INSTALLPATH"),
     },
 
     // Doom II
 
     {
         HKEY_LOCAL_MACHINE,
-        SOFTWARE_KEY "\\GOG.com\\Games\\1435848814",
-        "PATH",
+        const_cast<char *>(SOFTWARE_KEY "\\GOG.com\\Games\\1435848814"),
+        const_cast<char *>("PATH"),
     },
 
     // Doom 3: BFG Edition
 
     {
         HKEY_LOCAL_MACHINE,
-        SOFTWARE_KEY "\\GOG.com\\Games\\1135892318",
-        "PATH",
+        const_cast<char *>(SOFTWARE_KEY "\\GOG.com\\Games\\1135892318"),
+        const_cast<char *>("PATH"),
     },
 
     // Final Doom
 
     {
         HKEY_LOCAL_MACHINE,
-        SOFTWARE_KEY "\\GOG.com\\Games\\1435848742",
-        "PATH",
+        const_cast<char *>(SOFTWARE_KEY "\\GOG.com\\Games\\1435848742"),
+        const_cast<char *>("PATH"),
     },
 
     // Ultimate Doom
 
     {
         HKEY_LOCAL_MACHINE,
-        SOFTWARE_KEY "\\GOG.com\\Games\\1435827232",
-        "PATH",
+        const_cast<char *>(SOFTWARE_KEY "\\GOG.com\\Games\\1435827232"),
+        const_cast<char *>("PATH"),
     },
 
     // Strife: Veteran Edition
 
     {
         HKEY_LOCAL_MACHINE,
-        SOFTWARE_KEY "\\GOG.com\\Games\\1432899949",
-        "PATH",
+        const_cast<char *>(SOFTWARE_KEY "\\GOG.com\\Games\\1432899949"),
+        const_cast<char *>("PATH"),
     },
 };
 
 // Subdirectories of the above install path, where IWADs are installed.
 
 static char *root_path_subdirs[] = {
-    ".",
-    "Doom2",
-    "Final Doom",
-    "Ultimate Doom",
-    "Plutonia",
-    "TNT",
-    "base\\wads",
+    const_cast<char *>("."),
+    const_cast<char *>("Doom2"),
+    const_cast<char *>("Final Doom"),
+    const_cast<char *>("Ultimate Doom"),
+    const_cast<char *>("Plutonia"),
+    const_cast<char *>("TNT"),
+    const_cast<char *>("base\\wads"),
 };
 
 // Location where Steam is installed
 
 static registry_value_t steam_install_location = {
     HKEY_LOCAL_MACHINE,
-    SOFTWARE_KEY "\\Valve\\Steam",
-    "InstallPath",
+    const_cast<char *>(SOFTWARE_KEY "\\Valve\\Steam"),
+    const_cast<char *>("InstallPath"),
 };
 
 // Subdirs of the steam install directory where IWADs are found
 
 static char *steam_install_subdirs[] = {
-    "steamapps\\common\\doom 2\\base",
-    "steamapps\\common\\final doom\\base",
-    "steamapps\\common\\ultimate doom\\base",
-    "steamapps\\common\\heretic shadow of the serpent riders\\base",
-    "steamapps\\common\\hexen\\base",
-    "steamapps\\common\\hexen deathkings of the dark citadel\\base",
+    const_cast<char *>("steamapps\\common\\doom 2\\base"),
+    const_cast<char *>("steamapps\\common\\final doom\\base"),
+    const_cast<char *>("steamapps\\common\\ultimate doom\\base"),
+    const_cast<char *>("steamapps\\common\\heretic shadow of the serpent riders\\base"),
+    const_cast<char *>("steamapps\\common\\hexen\\base"),
+    const_cast<char *>("steamapps\\common\\hexen deathkings of the dark citadel\\base"),
 
     // From Doom 3: BFG Edition:
 
-    "steamapps\\common\\DOOM 3 BFG Edition\\base\\wads",
+    const_cast<char *>("steamapps\\common\\DOOM 3 BFG Edition\\base\\wads"),
 
     // From Strife: Veteran Edition:
 
-    "steamapps\\common\\Strife",
+    const_cast<char *>("steamapps\\common\\Strife"),
 };
 
 #define STEAM_BFG_GUS_PATCHES \
@@ -275,7 +275,7 @@ static char *GetRegistryString(registry_value_t *reg_val)
     {
         // Allocate a buffer for the value and read the value
 
-        result = malloc(len + 1);
+        result = static_cast<char *>(malloc(len + 1));
 
         if (RegQueryValueEx(key, reg_val->value, NULL, &valtype,
                 (unsigned char *)result, &len)
@@ -434,21 +434,21 @@ static void CheckDOSDefaults(void)
     // These are the default install directories used by the deice
     // installer program:
 
-    AddIWADDir("\\doom2");    // Doom II
-    AddIWADDir("\\plutonia"); // Final Doom
-    AddIWADDir("\\tnt");
-    AddIWADDir("\\doom_se"); // Ultimate Doom
-    AddIWADDir("\\doom");    // Shareware / Registered Doom
-    AddIWADDir("\\dooms");   // Shareware versions
-    AddIWADDir("\\doomsw");
+    AddIWADDir(const_cast<char *>("\\doom2"));    // Doom II
+    AddIWADDir(const_cast<char *>("\\plutonia")); // Final Doom
+    AddIWADDir(const_cast<char *>("\\tnt"));
+    AddIWADDir(const_cast<char *>("\\doom_se")); // Ultimate Doom
+    AddIWADDir(const_cast<char *>("\\doom"));    // Shareware / Registered Doom
+    AddIWADDir(const_cast<char *>("\\dooms"));   // Shareware versions
+    AddIWADDir(const_cast<char *>("\\doomsw"));
 
-    AddIWADDir("\\heretic");  // Heretic
-    AddIWADDir("\\hrtic_se"); // Heretic Shareware from Quake disc
+    AddIWADDir(const_cast<char *>("\\heretic"));  // Heretic
+    AddIWADDir(const_cast<char *>("\\hrtic_se")); // Heretic Shareware from Quake disc
 
-    AddIWADDir("\\hexen");   // Hexen
-    AddIWADDir("\\hexendk"); // Hexen Deathkings of the Dark Citadel
+    AddIWADDir(const_cast<char *>("\\hexen"));   // Hexen
+    AddIWADDir(const_cast<char *>("\\hexendk")); // Hexen Deathkings of the Dark Citadel
 
-    AddIWADDir("\\strife"); // Strife
+    AddIWADDir(const_cast<char *>("\\strife")); // Strife
 }
 
 #endif
@@ -705,7 +705,7 @@ static void BuildIWADDirList(void)
     }
 
     // Look in the current directory.  Doom always does this.
-    AddIWADDir(".");
+    AddIWADDir(const_cast<char *>("."));
 
     // Next check the directory where the executable is located. This might
     // be different from the current directory.

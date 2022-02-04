@@ -45,7 +45,7 @@
 
 const char *configdir;
 
-static char *autoload_path = "";
+static char *autoload_path = const_cast<char *>("");
 
 // Default filenames for configuration files.
 

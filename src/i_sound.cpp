@@ -44,7 +44,7 @@ int snd_maxslicetime_ms = 28;
 
 // External command to invoke to play back music.
 
-char *snd_musiccmd = "";
+char *snd_musiccmd = const_cast<char *>("");
 
 // Whether to vary the pitch of sound effects
 // Each game will set the default differently

@@ -68,8 +68,8 @@ static window_size_t window_sizes_scaled[] =
     { 0, 0},
 };
 
-static char *video_driver = "";
-static char *window_position = "";
+static char *video_driver = const_cast<char *>("");
+static char *window_position = const_cast<char *>("");
 static int aspect_ratio_correct = 1;
 static int integer_scaling = 0;
 static int vga_porch_flash = 0;

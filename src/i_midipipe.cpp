@@ -437,7 +437,7 @@ boolean I_MidiPipe_InitServer()
     RemoveFileSpec(dirname, dirname_len);
 
     // Define the module.
-    module = PROGRAM_PREFIX "midiproc.exe";
+    module = const_cast<char *>(PROGRAM_PREFIX "midiproc.exe");
 
     // Set up pipes
     memset(&sec_attrs, 0, sizeof(SECURITY_ATTRIBUTES));

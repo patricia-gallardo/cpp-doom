@@ -74,16 +74,16 @@
 
 
 char *chat_macros[10] = {
-    HUSTR_CHATMACRO0,
-    HUSTR_CHATMACRO1,
-    HUSTR_CHATMACRO2,
-    HUSTR_CHATMACRO3,
-    HUSTR_CHATMACRO4,
-    HUSTR_CHATMACRO5,
-    HUSTR_CHATMACRO6,
-    HUSTR_CHATMACRO7,
-    HUSTR_CHATMACRO8,
-    HUSTR_CHATMACRO9
+    const_cast<char *>(HUSTR_CHATMACRO0),
+    const_cast<char *>(HUSTR_CHATMACRO1),
+    const_cast<char *>(HUSTR_CHATMACRO2),
+    const_cast<char *>(HUSTR_CHATMACRO3),
+    const_cast<char *>(HUSTR_CHATMACRO4),
+    const_cast<char *>(HUSTR_CHATMACRO5),
+    const_cast<char *>(HUSTR_CHATMACRO6),
+    const_cast<char *>(HUSTR_CHATMACRO7),
+    const_cast<char *>(HUSTR_CHATMACRO8),
+    const_cast<char *>(HUSTR_CHATMACRO9)
 };
 
 const char *player_names[] = {
@@ -496,24 +496,24 @@ void HU_Init(void)
     if (!M_ParmExists("-nodeh"))
     {
         // [crispy] colorize keycard and skull key messages
-        CrispyReplaceColor(GOTBLUECARD, CR_BLUE, " blue ");
-        CrispyReplaceColor(GOTBLUESKUL, CR_BLUE, " blue ");
-        CrispyReplaceColor(PD_BLUEO, CR_BLUE, " blue ");
-        CrispyReplaceColor(PD_BLUEK, CR_BLUE, " blue ");
-        CrispyReplaceColor(GOTREDCARD, CR_RED, " red ");
-        CrispyReplaceColor(GOTREDSKULL, CR_RED, " red ");
-        CrispyReplaceColor(PD_REDO, CR_RED, " red ");
-        CrispyReplaceColor(PD_REDK, CR_RED, " red ");
-        CrispyReplaceColor(GOTYELWCARD, CR_GOLD, " yellow ");
-        CrispyReplaceColor(GOTYELWSKUL, CR_GOLD, " yellow ");
-        CrispyReplaceColor(PD_YELLOWO, CR_GOLD, " yellow ");
-        CrispyReplaceColor(PD_YELLOWK, CR_GOLD, " yellow ");
+        CrispyReplaceColor(const_cast<char *>(GOTBLUECARD), CR_BLUE, " blue ");
+        CrispyReplaceColor(const_cast<char *>(GOTBLUESKUL), CR_BLUE, " blue ");
+        CrispyReplaceColor(const_cast<char *>(PD_BLUEO), CR_BLUE, " blue ");
+        CrispyReplaceColor(const_cast<char *>(PD_BLUEK), CR_BLUE, " blue ");
+        CrispyReplaceColor(const_cast<char *>(GOTREDCARD), CR_RED, " red ");
+        CrispyReplaceColor(const_cast<char *>(GOTREDSKULL), CR_RED, " red ");
+        CrispyReplaceColor(const_cast<char *>(PD_REDO), CR_RED, " red ");
+        CrispyReplaceColor(const_cast<char *>(PD_REDK), CR_RED, " red ");
+        CrispyReplaceColor(const_cast<char *>(GOTYELWCARD), CR_GOLD, " yellow ");
+        CrispyReplaceColor(const_cast<char *>(GOTYELWSKUL), CR_GOLD, " yellow ");
+        CrispyReplaceColor(const_cast<char *>(PD_YELLOWO), CR_GOLD, " yellow ");
+        CrispyReplaceColor(const_cast<char *>(PD_YELLOWK), CR_GOLD, " yellow ");
 
         // [crispy] colorize multi-player messages
-        CrispyReplaceColor(HUSTR_PLRGREEN, CR_GREEN, "Green: ");
-        CrispyReplaceColor(HUSTR_PLRINDIGO, CR_GRAY, "Indigo: ");
-        CrispyReplaceColor(HUSTR_PLRBROWN, CR_GOLD, "Brown: ");
-        CrispyReplaceColor(HUSTR_PLRRED, CR_RED, "Red: ");
+        CrispyReplaceColor(const_cast<char *>(HUSTR_PLRGREEN), CR_GREEN, "Green: ");
+        CrispyReplaceColor(const_cast<char *>(HUSTR_PLRINDIGO), CR_GRAY, "Indigo: ");
+        CrispyReplaceColor(const_cast<char *>(HUSTR_PLRBROWN), CR_GOLD, "Brown: ");
+        CrispyReplaceColor(const_cast<char *>(HUSTR_PLRRED), CR_RED, "Red: ");
     }
 }
 

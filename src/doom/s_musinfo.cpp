@@ -280,7 +280,7 @@ void S_ParseMusInfo(const char *mapid)
         int num, lumpnum;
         int inMap = false;
 
-        SC_OpenLump("MUSINFO");
+        SC_OpenLump(const_cast<char *>("MUSINFO"));
 
         while (SC_GetString())
         {
