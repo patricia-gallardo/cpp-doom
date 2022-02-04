@@ -272,7 +272,7 @@ void F_WaitTicker(void)
     if(++finalecount >= 250)
     {
         gamestate   = GS_FINALE;
-        finalestage = static_cast<finalestage_t>(0);
+        finalestage = F_STAGE_TEXT;
         finalecount = 0;
     }
 }

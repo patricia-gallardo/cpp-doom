@@ -1080,7 +1080,7 @@ static constexpr struct
     { "Final Doom", "final", exe_final },
     { "Final Doom (alt)", "final2", exe_final2 },
     { "Chex Quest", "chex", exe_chex },
-    { NULL, NULL, static_cast<GameVersion_t>(0) },
+    { NULL, NULL, exe_doom_1_2 },
 };
 
 // Initialize the game version

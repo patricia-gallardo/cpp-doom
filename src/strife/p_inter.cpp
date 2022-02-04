@@ -1353,7 +1353,7 @@ void P_DamageMobj(mobj_t* target, mobj_t* inflictor, mobj_t* source, int damage)
             {
                 target->player->cheats |= CF_ONFIRE;
                 target->player->powers[pw_invisibility] = false;
-                target->player->readyweapon = static_cast<weapontype_t>(0);
+                target->player->readyweapon = wp_fist;
                 P_SetPsprite(target->player, ps_weapon, S_WAVE_00); // 02
                 P_SetPsprite(target->player, ps_flash, S_NULL);
             }

@@ -615,7 +615,7 @@ boolean P_GiveInventoryItem(player_t *player, int sprnum, mobjtype_t type)
     int curinv = 0;
     int i;
     boolean ok = false;
-    mobjtype_t item = static_cast<mobjtype_t>(0);
+    mobjtype_t item = MT_FIELDGUARD;
     inventory_t* invtail;
 
     // repaint the status bar due to inventory changing

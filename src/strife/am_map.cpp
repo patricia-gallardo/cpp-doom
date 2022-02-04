@@ -522,7 +522,7 @@ void AM_LevelInit(void)
 //
 void AM_Stop (void)
 {
-    static event_t st_notify = { static_cast<evtype_t>(0), ev_keyup, AM_MSGEXITED, 0 };
+    static event_t st_notify = { ev_keydown, ev_keyup, AM_MSGEXITED, 0 };
 
     AM_unloadPics();
     automapactive = false;

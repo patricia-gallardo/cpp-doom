@@ -1011,7 +1011,7 @@ static struct
 } gameversions[] = {
     { "Strife 1.2",          "1.2",       exe_strife_1_2  },
     { "Strife 1.31",         "1.31",      exe_strife_1_31 },
-    { NULL,                  NULL, static_cast<GameVersion_t>(0) }
+    { NULL,                  NULL,        exe_doom_1_2 }
 };
 
 // Initialize the game version
