@@ -194,8 +194,8 @@ static wchar_t *BuildCommandLine(const char *program, const char *arg)
 
     // Allocate buffer to contain result string.
 
-    result = calloc(wcslen(exe_path) + strlen(program) + strlen(arg) + 6,
-                    sizeof(wchar_t));
+    result = static_cast<wchar_t *>(calloc(wcslen(exe_path) + strlen(program) + strlen(arg) + 6,
+        sizeof(wchar_t)));
 
     wcscpy(result, L"\"");
 

@@ -18,7 +18,7 @@
 #ifdef _WIN32
 
 #include "SDL.h"
-#include "SDL_thread.hpp"
+#include "SDL_thread.h"
 #include <windows.h>
 
 #include "pcsound.hpp"

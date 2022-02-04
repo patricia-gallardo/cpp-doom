@@ -70,7 +70,7 @@ static void OPL_Win32_PortWrite(opl_port_t port, unsigned int value)
 static unsigned int OPL_Win32_PortRead(opl_port_t port)
 {
     unsigned char result;
-    opl_port_t dst_port = opl_port_base + port;
+    opl_port_t dst_port = static_cast<opl_port_t>(opl_port_base + port);
     
     __asm    
     {
@@ -84,7 +84,7 @@ static unsigned int OPL_Win32_PortRead(opl_port_t port)
 
 static void OPL_Win32_PortWrite(opl_port_t port, unsigned int value)
 {
-    opl_port_t dst_port = opl_port_base + port;
+    opl_port_t dst_port = static_cast<opl_port_t>(opl_port_base + port);
     
     __asm    
     {
