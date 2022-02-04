@@ -21,7 +21,7 @@
 #include "p_local.hpp"
 #include "s_sound.hpp"
 #include "v_video.hpp"
-#include "../../utils/memory.hpp"
+#include "memory.hpp"
 
 //==================================================================
 //==================================================================

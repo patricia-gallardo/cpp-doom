@@ -64,7 +64,7 @@
 #include "m_controls.hpp"
 #include "hu_lib.hpp"     // [STRIFE]
 #include "hu_stuff.hpp"
-#include "../../utils/lump.hpp"
+#include "lump.hpp"
 
 //
 // STATUS BAR DATA

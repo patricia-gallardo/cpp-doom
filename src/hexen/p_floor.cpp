@@ -18,7 +18,7 @@
 #include "h2def.hpp"
 #include "i_system.hpp"
 #include "p_local.hpp"
-#include "../../utils/memory.hpp"
+#include "memory.hpp"
 
 extern fixed_t FloatBobOffsets[64];
 

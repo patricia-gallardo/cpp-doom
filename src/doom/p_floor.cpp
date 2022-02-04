@@ -27,7 +27,7 @@
 #include "doomstat.hpp"
 #include "r_state.hpp"
 // Data.
-#include "../../utils/memory.hpp"
+#include "memory.hpp"
 #include "sounds.hpp"
 
 // e6y

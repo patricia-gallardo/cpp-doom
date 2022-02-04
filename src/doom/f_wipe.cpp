@@ -25,7 +25,7 @@
 
 #include "doomtype.hpp"
 
-#include "../../utils/memory.hpp"
+#include "memory.hpp"
 #include "f_wipe.hpp"
 
 //

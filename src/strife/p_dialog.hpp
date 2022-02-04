@@ -20,7 +20,7 @@
 // Dialog Engine for Strife
 //
 
-#include "../../utils/lump.hpp"
+#include "lump.hpp"
 
 #ifndef P_DIALOG_H__
 #define P_DIALOG_H__

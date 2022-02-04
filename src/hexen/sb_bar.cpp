@@ -27,7 +27,7 @@
 #include "s_sound.hpp"
 #include "v_video.hpp"
 #include "i_swap.hpp"
-#include "../../utils/lump.hpp"
+#include "lump.hpp"
 
 // TYPES -------------------------------------------------------------------
 

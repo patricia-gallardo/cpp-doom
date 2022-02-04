@@ -23,7 +23,7 @@
 #include "i_system.hpp"
 #include "i_sound.hpp"
 #include "s_sound.hpp"
-#include "../../utils/memory.hpp"
+#include "memory.hpp"
 
 // MACROS ------------------------------------------------------------------
 

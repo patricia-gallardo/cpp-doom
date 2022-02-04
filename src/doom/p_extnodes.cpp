@@ -31,8 +31,8 @@
 #include <zlib.h>
 #endif
 
-#include "../../utils/lump.hpp"
-#include "../../utils/memory.hpp"
+#include "lump.hpp"
+#include "memory.hpp"
 #include "p_extnodes.hpp"
 
 void      P_SpawnMapThing(mapthing_t *mthing);

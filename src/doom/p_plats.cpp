@@ -32,7 +32,7 @@
 #include "r_state.hpp"
 
 // Data.
-#include "../../utils/memory.hpp"
+#include "memory.hpp"
 #include "sounds.hpp"
 
 plat_t *activeplats[MAXPLATS];

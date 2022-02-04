@@ -20,7 +20,7 @@
 #include "deh_str.hpp"
 #include "i_system.hpp"
 #include "r_local.hpp"
-#include "../../utils/lump.hpp"
+#include "lump.hpp"
 
 planefunction_t floorfunc, ceilingfunc;
 

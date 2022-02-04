@@ -29,7 +29,7 @@
 #include "s_sound.hpp"
 #include "doomstat.hpp"
 #include "d_main.hpp"     // villsa [STRIFE]
-#include "../../utils/memory.hpp"
+#include "memory.hpp"
 
 extern line_t *spechit[];  // haleyjd:
 extern int     numspechit; // [STRIFE] - needed in P_XYMovement

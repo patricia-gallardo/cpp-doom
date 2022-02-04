@@ -71,8 +71,8 @@
 #include "r_data.hpp"
 #include "r_sky.hpp"
 
-#include "../../utils/lump.hpp"
-#include "../../utils/memory.hpp"
+#include "lump.hpp"
+#include "memory.hpp"
 #include "g_game.hpp"
 #include "v_trans.hpp" // [crispy] colored "always run" message
 

@@ -45,7 +45,7 @@
 #include "dstrings.hpp"
 
 #include "am_map.hpp"
-#include "../../utils/lump.hpp"
+#include "lump.hpp"
 
 
 // Automap colors

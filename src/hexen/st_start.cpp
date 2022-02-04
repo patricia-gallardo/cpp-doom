@@ -28,7 +28,7 @@
 #include "i_videohr.hpp"
 #include "s_sound.hpp"
 #include "st_start.hpp"
-#include "../../utils/memory.hpp"
+#include "memory.hpp"
 
 
 // MACROS ------------------------------------------------------------------

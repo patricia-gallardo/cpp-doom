@@ -23,7 +23,7 @@
 #include "p_local.hpp"
 #include "s_sound.hpp"
 #include "sounds.hpp"
-#include "../../utils/memory.hpp"
+#include "memory.hpp"
 
 // MACROS ------------------------------------------------------------------
 

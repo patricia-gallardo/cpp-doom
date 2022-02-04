@@ -30,7 +30,7 @@
 #include "p_local.hpp"
 #include "s_sound.hpp"
 #include "v_video.hpp"
-#include "../../utils/lump.hpp"
+#include "lump.hpp"
 
 #define QUEUESIZE		128
 #define MESSAGESIZE	128

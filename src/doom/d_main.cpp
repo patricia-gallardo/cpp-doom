@@ -74,8 +74,8 @@
 #include "r_local.hpp"
 #include "statdump.hpp"
 
-#include "../../utils/lump.hpp"
-#include "../../utils/memory.hpp"
+#include "lump.hpp"
+#include "memory.hpp"
 #include "d_main.hpp"
 
 //

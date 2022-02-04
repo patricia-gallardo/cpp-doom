@@ -22,7 +22,7 @@
 #include "h2def.hpp"
 #include "i_system.hpp"
 #include "m_misc.hpp"
-#include "../../utils/lump.hpp"
+#include "lump.hpp"
 
 // MACROS ------------------------------------------------------------------
 

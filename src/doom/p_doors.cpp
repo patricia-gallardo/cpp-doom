@@ -30,7 +30,7 @@
 #include "r_state.hpp"
 
 // Data.
-#include "../../utils/memory.hpp"
+#include "memory.hpp"
 #include "dstrings.hpp"
 #include "sounds.hpp"
 

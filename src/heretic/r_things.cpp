@@ -21,8 +21,8 @@
 #include "i_swap.hpp"
 #include "i_system.hpp"
 #include "r_local.hpp"
-#include "../../utils/lump.hpp"
-#include "../../utils/memory.hpp"
+#include "lump.hpp"
+#include "memory.hpp"
 
 typedef struct
 {

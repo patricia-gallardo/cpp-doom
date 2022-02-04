@@ -17,7 +17,7 @@
 #include "m_random.hpp"
 #include "p_local.hpp"
 #include "v_video.hpp"
-#include "../../utils/memory.hpp"
+#include "memory.hpp"
 
 //==================================================================
 //==================================================================

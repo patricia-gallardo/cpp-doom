@@ -44,10 +44,10 @@
 // Needs access to LFB.
 #include "v_video.hpp"
 
-#include "../../utils/lump.hpp"
+#include "lump.hpp"
 #include "st_stuff.hpp" // [crispy] ST_DrawDemoTimer()
 #include "wi_stuff.hpp"
-#include "../../utils/memory.hpp"
+#include "memory.hpp"
 
 //
 // Data needed to add patches to full screen intermission pics.

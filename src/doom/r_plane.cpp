@@ -33,7 +33,7 @@
 #include "r_sky.hpp"
 #include "r_bmaps.hpp" // [crispy] R_BrightmapForTexName()
 #include "r_swirl.hpp" // [crispy] R_DistortedFlat()
-#include "../../utils/lump.hpp"
+#include "lump.hpp"
 
 
 planefunction_t floorfunc;

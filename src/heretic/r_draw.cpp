@@ -20,8 +20,8 @@
 #include "r_local.hpp"
 #include "i_video.hpp"
 #include "v_video.hpp"
-#include "../../utils/lump.hpp"
-#include "../../utils/memory.hpp"
+#include "lump.hpp"
+#include "memory.hpp"
 
 /*
 

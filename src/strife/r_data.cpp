@@ -33,8 +33,8 @@
 #include "r_sky.hpp"
 #include "r_data.hpp"
 #include "sounds.hpp" // villsa [STRIFE]
-#include "../../utils/lump.hpp"
-#include "../../utils/memory.hpp"
+#include "lump.hpp"
+#include "memory.hpp"
 
 //
 // Graphics.

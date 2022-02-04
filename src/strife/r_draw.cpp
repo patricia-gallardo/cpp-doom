@@ -35,8 +35,8 @@
 
 // State.
 #include "doomstat.hpp"
-#include "../../utils/lump.hpp"
-#include "../../utils/memory.hpp"
+#include "lump.hpp"
+#include "memory.hpp"
 
 
 // ?

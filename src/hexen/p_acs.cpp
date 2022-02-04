@@ -17,7 +17,7 @@
 
 // HEADER FILES ------------------------------------------------------------
 
-#include "../../utils/memory.hpp"
+#include "memory.hpp"
 #include "h2def.hpp"
 #include "i_swap.hpp"
 #include "i_system.hpp"
@@ -25,7 +25,7 @@
 #include "m_random.hpp"
 #include "p_local.hpp"
 #include "s_sound.hpp"
-#include "../../utils/lump.hpp"
+#include "lump.hpp"
 
 // MACROS ------------------------------------------------------------------
 

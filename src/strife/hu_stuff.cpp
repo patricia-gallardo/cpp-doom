@@ -41,7 +41,7 @@
 // Data.
 #include "dstrings.hpp"
 #include "sounds.hpp"
-#include "../../utils/lump.hpp"
+#include "lump.hpp"
 
 //
 // Locally used constants, shortcuts.

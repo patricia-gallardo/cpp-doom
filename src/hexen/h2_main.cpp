@@ -41,7 +41,7 @@
 #include "p_local.hpp"
 #include "v_video.hpp"
 #include "w_main.hpp"
-#include "../../utils/lump.hpp"
+#include "lump.hpp"
 
 // MACROS ------------------------------------------------------------------
 

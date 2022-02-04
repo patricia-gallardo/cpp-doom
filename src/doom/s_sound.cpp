@@ -37,7 +37,7 @@
 #include "p_local.hpp"
 #include "w_wad.hpp"
 #include "z_zone.hpp"
-#include "../../utils/lump.hpp"
+#include "lump.hpp"
 
 // when to clip out sounds
 // Does not fit the large outdoor areas.

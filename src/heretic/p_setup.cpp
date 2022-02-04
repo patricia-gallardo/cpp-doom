@@ -26,8 +26,8 @@
 #include "m_bbox.hpp"
 #include "p_local.hpp"
 #include "s_sound.hpp"
-#include "../../utils/lump.hpp"
-#include "../../utils/memory.hpp"
+#include "lump.hpp"
+#include "memory.hpp"
 
 void P_SpawnMapThing(mapthing_t * mthing);
 

@@ -32,7 +32,7 @@
 #include "s_sound.hpp"
 #include "s_musinfo.hpp" // [crispy] S_ParseMusInfo()
 
-#include "../../utils/memory.hpp"
+#include "memory.hpp"
 #include "doomstat.hpp"
 
 void G_PlayerReborn(int player);

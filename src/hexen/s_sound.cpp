@@ -26,7 +26,7 @@
 #include "p_local.hpp"            // for P_AproxDistance
 #include "sounds.hpp"
 #include "s_sound.hpp"
-#include "../../utils/lump.hpp"
+#include "lump.hpp"
 
 #define PRIORITY_MAX_ADJUST 10
 #define DIST_ADJUST (MAX_SND_DIST/PRIORITY_MAX_ADJUST)

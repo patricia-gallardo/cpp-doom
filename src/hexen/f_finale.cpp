@@ -25,8 +25,8 @@
 #include <ctype.h>
 #include "v_video.hpp"
 #include "i_swap.hpp"
-#include "../../utils/lump.hpp"
-#include "../../utils/memory.hpp"
+#include "lump.hpp"
+#include "memory.hpp"
 
 // MACROS ------------------------------------------------------------------
 

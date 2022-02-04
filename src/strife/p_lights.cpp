@@ -28,7 +28,7 @@
 
 // State.
 #include "r_state.hpp"
-#include "../../utils/memory.hpp"
+#include "memory.hpp"
 
 //
 // FIRELIGHT FLICKER

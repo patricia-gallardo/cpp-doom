@@ -31,7 +31,7 @@
 #include "r_local.hpp"
 #include "s_sound.hpp"
 #include "v_video.hpp"
-#include "../../utils/lump.hpp"
+#include "lump.hpp"
 
 // Macros
 

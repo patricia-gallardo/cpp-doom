@@ -29,7 +29,7 @@
 #include "i_system.hpp"
 #include "i_video.hpp"
 #include "v_video.hpp"
-#include "../../utils/lump.hpp"
+#include "lump.hpp"
 
 typedef enum
 {

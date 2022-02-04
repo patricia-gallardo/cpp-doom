@@ -36,7 +36,7 @@
 // [STRIFE]
 #include "p_dialog.hpp"
 #include "i_system.hpp"
-#include "../../utils/memory.hpp"
+#include "memory.hpp"
 
 
 //

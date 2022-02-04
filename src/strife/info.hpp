@@ -23,7 +23,7 @@
 
 // Needed for action function pointer handling.
 #include "d_think.hpp"
-#include "../../utils/action_hook.hpp"
+#include "action_hook.hpp"
 
 // villsa [STRIFE]
 typedef enum

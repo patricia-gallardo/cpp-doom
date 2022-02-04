@@ -29,7 +29,7 @@
 
 // Data.
 #include "sounds.hpp"
-#include "../../utils/memory.hpp"
+#include "memory.hpp"
 
 //
 // CEILINGS

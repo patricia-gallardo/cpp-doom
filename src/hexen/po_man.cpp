@@ -23,8 +23,8 @@
 #include "i_swap.hpp"
 #include "p_local.hpp"
 #include "r_local.hpp"
-#include "../../utils/lump.hpp"
-#include "../../utils/memory.hpp"
+#include "lump.hpp"
+#include "memory.hpp"
 
 // MACROS ------------------------------------------------------------------
 

@@ -23,7 +23,7 @@
 #include "m_random.hpp"
 #include "p_local.hpp"
 #include "s_sound.hpp"
-#include "../../utils/lump.hpp"
+#include "lump.hpp"
 
 void P_PlayerNextArtifact(player_t * player);
 

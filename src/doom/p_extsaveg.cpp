@@ -20,7 +20,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-#include "../../utils/memory.hpp"
+#include "memory.hpp"
 #include "config.h"
 #include "doomstat.hpp"
 #include "doomtype.hpp"

@@ -31,7 +31,7 @@
 
 #include "r_local.hpp"
 #include "r_sky.hpp"
-#include "../../utils/lump.hpp"
+#include "lump.hpp"
 
 
 planefunction_t		floorfunc;

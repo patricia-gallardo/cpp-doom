@@ -39,8 +39,8 @@
 #include "s_sound.hpp"
 #include "p_local.hpp"
 #include "p_inter.hpp"
-#include "../../utils/lump.hpp"
-#include "../../utils/memory.hpp"
+#include "lump.hpp"
+#include "memory.hpp"
 
 //
 // Defines and Macros

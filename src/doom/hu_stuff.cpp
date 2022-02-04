@@ -45,7 +45,7 @@
 #include "dstrings.hpp"
 #include "sounds.hpp"
 
-#include "../../utils/lump.hpp"
+#include "lump.hpp"
 #include "r_state.hpp" // [crispy] colormaps
 #include "v_trans.hpp" // [crispy] colored kills/items/secret/etc. messages
 #include "v_video.hpp" // [crispy] V_DrawPatch() et al.

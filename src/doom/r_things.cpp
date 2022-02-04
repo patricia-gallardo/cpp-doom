@@ -33,8 +33,8 @@
 
 #include "doomstat.hpp"
 
-#include "../../utils/lump.hpp"
-#include "../../utils/memory.hpp"
+#include "lump.hpp"
+#include "memory.hpp"
 #include "p_local.hpp" // [crispy] MLOOKUNIT
 #include "r_bmaps.hpp" // [crispy] R_BrightmapForTexName()
 #include "v_trans.hpp" // [crispy] colored blood sprites

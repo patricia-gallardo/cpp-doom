@@ -27,8 +27,8 @@
 #include "i_swap.hpp"
 #include "s_sound.hpp"
 #include "p_local.hpp"
-#include "../../utils/lump.hpp"
-#include "../../utils/memory.hpp"
+#include "lump.hpp"
+#include "memory.hpp"
 
 // MACROS ------------------------------------------------------------------
 

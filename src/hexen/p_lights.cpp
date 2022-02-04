@@ -18,7 +18,7 @@
 #include "h2def.hpp"
 #include "m_random.hpp"
 #include "p_local.hpp"
-#include "../../utils/memory.hpp"
+#include "memory.hpp"
 
 //============================================================================
 //

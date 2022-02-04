@@ -34,7 +34,7 @@
 #include "st_stuff.hpp"
 #include "st_lib.hpp"
 #include "r_local.hpp"
-#include "../../utils/lump.hpp"
+#include "lump.hpp"
 
 
 // in AM_map.c

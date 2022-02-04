@@ -29,8 +29,8 @@
 #include "m_misc.hpp"
 #include "p_local.hpp"
 #include "v_video.hpp"
-#include "../../utils/lump.hpp"
-#include "../../utils/memory.hpp"
+#include "lump.hpp"
+#include "memory.hpp"
 
 #define AM_STARTKEY	9
 

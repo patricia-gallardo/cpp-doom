@@ -37,8 +37,8 @@
 
 // haleyjd
 #include "p_local.hpp"
-#include "../../utils/lump.hpp"
-#include "../../utils/memory.hpp"
+#include "lump.hpp"
+#include "memory.hpp"
 
 
 #define MINZ				(FRACUNIT*4)

@@ -47,8 +47,8 @@
 #include "r_state.hpp"
 
 // Data.
-#include "../../utils/lump.hpp"
-#include "../../utils/memory.hpp"
+#include "lump.hpp"
+#include "memory.hpp"
 #include "sounds.hpp"
 
 #define HUSTR_SECRETFOUND "A secret is revealed!"

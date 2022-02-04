@@ -35,7 +35,7 @@
 #include "st_lib.hpp"
 #include "r_local.hpp"
 
-#include "../../utils/lump.hpp"
+#include "lump.hpp"
 #include "v_trans.hpp" // [crispy] colored status bar widgets
 
 // in AM_map.c

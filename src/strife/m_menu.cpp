@@ -60,7 +60,7 @@
 
 #include "m_menu.hpp"
 #include "p_dialog.hpp"
-#include "../../utils/lump.hpp"
+#include "lump.hpp"
 
 
 extern void M_QuitStrife(int);

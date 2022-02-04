@@ -34,7 +34,7 @@
 #include "z_zone.hpp"
 
 #include "s_musinfo.hpp"
-#include "../../utils/lump.hpp"
+#include "lump.hpp"
 
 // MACROS ------------------------------------------------------------------
 

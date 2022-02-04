@@ -27,7 +27,7 @@
 #include "am_map.hpp"
 #include "am_data.hpp"
 #include "v_video.hpp"
-#include "../../utils/lump.hpp"
+#include "lump.hpp"
 
 #define NUMALIAS 3              // Number of antialiased lines.
 

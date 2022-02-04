@@ -78,9 +78,9 @@
 #include "p_setup.hpp"
 #include "r_local.hpp"
 
-#include "../../utils/memory.hpp"
+#include "memory.hpp"
 #include "d_main.hpp"
-#include "../../utils/lump.hpp"
+#include "lump.hpp"
 
 //
 // D-DoomLoop()

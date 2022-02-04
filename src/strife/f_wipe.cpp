@@ -29,7 +29,7 @@
 #include "r_draw.hpp"
 
 #include "f_wipe.hpp"
-#include "../../utils/memory.hpp"
+#include "memory.hpp"
 
 //
 //                       SCREEN WIPE PACKAGE

@@ -67,8 +67,8 @@
 #include "p_dialog.hpp"   // villsa [STRIFE]
 
 #include "g_game.hpp"
-#include "../../utils/lump.hpp"
-#include "../../utils/memory.hpp"
+#include "lump.hpp"
+#include "memory.hpp"
 
 
 #define SAVEGAMESIZE	0x2c000

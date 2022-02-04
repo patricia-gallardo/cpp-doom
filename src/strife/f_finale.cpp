@@ -41,7 +41,7 @@
 #include "r_state.hpp"
 
 #include "p_dialog.hpp" // [STRIFE]
-#include "../../utils/lump.hpp"
+#include "lump.hpp"
 
 typedef enum
 {

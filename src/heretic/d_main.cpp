@@ -45,7 +45,7 @@
 #include "s_sound.hpp"
 #include "w_main.hpp"
 #include "v_video.hpp"
-#include "../../utils/lump.hpp"
+#include "lump.hpp"
 
 #define CT_KEY_GREEN    'g'
 #define CT_KEY_YELLOW   'y'

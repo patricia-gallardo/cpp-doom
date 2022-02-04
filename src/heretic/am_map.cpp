@@ -29,7 +29,7 @@
 
 #include "doomkeys.hpp"
 #include "v_video.hpp"
-#include "../../utils/lump.hpp"
+#include "lump.hpp"
 
 vertex_t KeyPoints[NUMKEYS];
 

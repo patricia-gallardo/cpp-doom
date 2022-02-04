@@ -17,7 +17,7 @@
 #ifndef HERETIC_INFO_H
 #define HERETIC_INFO_H
 
-#include "../../utils/action_hook.hpp"
+#include "action_hook.hpp"
 typedef enum
 {
     SPR_IMPX,

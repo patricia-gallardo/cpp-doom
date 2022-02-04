@@ -23,7 +23,7 @@
 #include "i_video.hpp"
 #include "s_sound.hpp"
 #include "v_video.hpp"
-#include "../../utils/lump.hpp"
+#include "lump.hpp"
 
 static int finalestage;                // 0 = text, 1 = art screen
 static int finalecount;

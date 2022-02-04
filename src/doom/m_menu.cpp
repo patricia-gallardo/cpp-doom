@@ -62,7 +62,7 @@
 #include "m_menu.hpp"
 #include "m_crispy.hpp" // [crispy] Crispness menu
 
-#include "../../utils/lump.hpp"
+#include "lump.hpp"
 #include "v_trans.hpp" // [crispy] colored "invert mouse" message
 
 extern patch_t *hu_font[HU_FONTSIZE];
@@ -1375,7 +1375,7 @@ static void M_DrawMouse(void)
 }
 
 // [crispy] Crispness menu
-#include "../../utils/memory.hpp"
+#include "memory.hpp"
 #include "m_background.hpp"
 static void M_DrawCrispnessBackground(void)
 {

@@ -19,7 +19,7 @@
 #include "m_random.hpp"
 #include "i_system.hpp"
 #include "p_local.hpp"
-#include "../../utils/memory.hpp"
+#include "memory.hpp"
 
 plat_t *activeplats[MAXPLATS];
 

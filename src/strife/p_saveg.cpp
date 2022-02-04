@@ -31,7 +31,7 @@
 // State.
 #include "doomstat.hpp"
 #include "r_state.hpp"
-#include "../../utils/memory.hpp"
+#include "memory.hpp"
 
 #define SAVEGAME_EOF 0x1d
 

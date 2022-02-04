@@ -35,7 +35,7 @@
 #include "sounds.hpp"
 
 // State.
-#include "../../utils/lump.hpp"
+#include "lump.hpp"
 #include "doomstat.hpp"
 #include "r_state.hpp"
 

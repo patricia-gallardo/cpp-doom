@@ -58,7 +58,7 @@
 #include "d_ticcmd.hpp"
 
 #include "d_loop.hpp"
-#include "../../utils/action_hook.hpp"
+#include "action_hook.hpp"
 
 #define	SAVEGAMENAME "hticsav"
 

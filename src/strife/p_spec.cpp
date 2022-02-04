@@ -50,7 +50,7 @@
 // [STRIFE]
 #include "hu_stuff.hpp"
 #include "p_dialog.hpp"
-#include "../../utils/memory.hpp"
+#include "memory.hpp"
 
 
 //

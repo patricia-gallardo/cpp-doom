@@ -59,9 +59,9 @@
 #include "dstrings.hpp"
 #include "sounds.hpp"
 
-#include "../../utils/lump.hpp"
+#include "lump.hpp"
 #include "v_trans.hpp" // [crispy] colored cheat messages
-#include "../../utils/memory.hpp"
+#include "memory.hpp"
 
 extern int     screenblocks;  // [crispy] for the Crispy HUD
 extern boolean inhelpscreens; // [crispy] prevent palette changes
