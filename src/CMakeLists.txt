@@ -30,7 +30,9 @@ set(DEDSERV_FILES
     net_structrw.cpp      net_structrw.hpp
     z_native.cpp          z_zone.hpp)
 
-find_package(X11 REQUIRED)
+if (${CMAKE_SYSTEM_NAME} STREQUAL "Linux")
+    find_package(X11 REQUIRED)
+endif()
 
 add_executable("${PROGRAM_PREFIX}server" WIN32 ${COMMON_SOURCE_FILES} ${DEDSERV_FILES})
 target_include_directories("${PROGRAM_PREFIX}server"
