@@ -18,6 +18,7 @@
 //
 
 #include <cstdio>
+#include <cstdlib>
 
 #include "deh_misc.hpp"
 

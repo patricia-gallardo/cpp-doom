@@ -18,7 +18,7 @@
 //	Moreover, the sky areas have to be determined.
 //
 
-
+#include <cstdlib>
 
 #include "i_system.hpp"
 #include "z_zone.hpp"
