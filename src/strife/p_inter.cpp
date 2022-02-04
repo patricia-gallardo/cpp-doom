@@ -877,9 +877,9 @@ void P_KillMobj(mobj_t* source, mobj_t* target)
             // haleyjd [STRIFE] 20160111: Rogue changed check from < to <=
             if(target->health <= -target->info->spawnhealth 
                 && target->info->xdeathstate)
-                P_SetMobjState(target, static_cast<statenum_t>(target->info->xdeathstate));
+                P_SetMobjState(target, target->info->xdeathstate);
             else
-                P_SetMobjState(target, static_cast<statenum_t>(target->info->deathstate));
+                P_SetMobjState(target, target->info->deathstate);
         }
     }
 
@@ -1174,7 +1174,7 @@ void P_DamageMobj(mobj_t* target, mobj_t* inflictor, mobj_t* source, int damage)
                 if(target->flags & MF_SPECTRAL
                     && !(inflictor->flags & MF_SPECTRAL))
                 {
-                    P_SetMobjState(target, static_cast<statenum_t>(target->info->missilestate));
+                    P_SetMobjState(target, target->info->missilestate);
                     return; // take no damage
                 }
                 break;
@@ -1189,7 +1189,7 @@ void P_DamageMobj(mobj_t* target, mobj_t* inflictor, mobj_t* source, int damage)
         if(source)
             target->target = source;
 
-        P_SetMobjState(target, static_cast<statenum_t>(target->info->painstate));
+        P_SetMobjState(target, target->info->painstate);
         return;
     }
 
@@ -1371,7 +1371,7 @@ void P_DamageMobj(mobj_t* target, mobj_t* inflictor, mobj_t* source, int damage)
     // villsa [STRIFE] set crash state
     if(target->health <= 6 && target->info->crashstate)
     {
-        P_SetMobjState(target, static_cast<statenum_t>(target->info->crashstate));
+        P_SetMobjState(target, target->info->crashstate);
         return;
     }
 
@@ -1381,7 +1381,7 @@ void P_DamageMobj(mobj_t* target, mobj_t* inflictor, mobj_t* source, int damage)
         if(P_Random() < target->info->painchance) 
         {
             target->flags |= MF_JUSTHIT;    // fight back!
-            P_SetMobjState (target, static_cast<statenum_t>(target->info->painstate));
+            P_SetMobjState (target, target->info->painstate);
         }
     }
 
@@ -1401,7 +1401,7 @@ void P_DamageMobj(mobj_t* target, mobj_t* inflictor, mobj_t* source, int damage)
 
         if(target->state == &states[target->info->spawnstate]
            && target->info->seestate != S_NULL)
-            P_SetMobjState (target, static_cast<statenum_t>(target->info->seestate));
+            P_SetMobjState (target, target->info->seestate);
     }
 }
 

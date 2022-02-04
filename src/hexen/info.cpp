@@ -10756,7 +10756,7 @@ mobjinfo_t mobjinfo[NUMMOBJTYPES] = {
      128,                       // painchance
      SFX_PIG_PAIN,              // painsound
      S_PIG_ATK1,                // meleestate
-     0,                         // missilestate
+     S_NULL,                    // missilestate
      S_NULL,                    // crashstate
      S_PIG_DIE1,                // deathstate
      S_NULL,                    // xdeathstate
@@ -10783,7 +10783,7 @@ mobjinfo_t mobjinfo[NUMMOBJTYPES] = {
      135,                       // painchance
      SFX_CENTAUR_PAIN,          // painsound
      S_CENTAUR_ATK1,            // meleestate
-     0,                         // missilestate
+     S_NULL,                    // missilestate
      S_NULL,                    // crashstate
      S_CENTAUR_DEATH1,          // deathstate
      S_CENTAUR_DEATH_X1,        // xdeathstate
@@ -11835,7 +11835,7 @@ mobjinfo_t mobjinfo[NUMMOBJTYPES] = {
      S_BISHOP_PAIN1,            // painstate
      110,                       // painchance
      SFX_BISHOP_PAIN,           // painsound
-     0,                         // meleestate
+     S_NULL,                    // meleestate
      S_BISHOP_ATK1,             // missilestate
      S_NULL,                    // crashstate
      S_BISHOP_DEATH1,           // deathstate
@@ -12888,7 +12888,7 @@ mobjinfo_t mobjinfo[NUMMOBJTYPES] = {
      S_ICEGUY_PAIN1,            // painstate
      144,                       // painchance
      SFX_NONE,                  // painsound
-     0,                         // meleestate
+     S_NULL,                    // meleestate
      S_ICEGUY_ATK1,             // missilestate
      S_NULL,                    // crashstate
      S_ICEGUY_DEATH,            // deathstate
@@ -13780,7 +13780,7 @@ mobjinfo_t mobjinfo[NUMMOBJTYPES] = {
      135,                       // painchance
      SFX_CENTAUR_PAIN,          // painsound
      S_CENTAUR_ATK1,            // meleestate
-     0,                         // missilestate
+     S_NULL,                    // missilestate
      S_NULL,                    // crashstate
      S_NULL,                    // deathstate
      S_NULL,                    // xdeathstate

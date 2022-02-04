@@ -897,7 +897,7 @@ static void SetDormantArtifact(mobj_t * arti)
 void A_RestoreArtifact(mobj_t * arti)
 {
     arti->flags |= MF_SPECIAL;
-    P_SetMobjState(arti, static_cast<statenum_t>(arti->info->spawnstate));
+    P_SetMobjState(arti, arti->info->spawnstate);
     S_StartSound(arti, SFX_RESPAWN);
 }
 
@@ -924,7 +924,7 @@ void A_RestoreSpecialThing1(mobj_t * thing)
 void A_RestoreSpecialThing2(mobj_t * thing)
 {
     thing->flags |= MF_SPECIAL;
-    P_SetMobjState(thing, static_cast<statenum_t>(thing->info->spawnstate));
+    P_SetMobjState(thing, thing->info->spawnstate);
 }
 
 //---------------------------------------------------------------------------
@@ -1488,7 +1488,7 @@ void P_KillMobj(mobj_t * source, mobj_t * target)
     if (target->health < -(target->info->spawnhealth >> 1)
         && target->info->xdeathstate)
     {                           // Extreme death
-        P_SetMobjState(target, static_cast<statenum_t>(target->info->xdeathstate));
+        P_SetMobjState(target, target->info->xdeathstate);
     }
     else
     {                           // Normal death
@@ -1497,11 +1497,11 @@ void P_KillMobj(mobj_t * source, mobj_t * target)
             (target->info->xdeathstate))
         {
             // This is to fix the imps' staying in fall state
-            P_SetMobjState(target, static_cast<statenum_t>(target->info->xdeathstate));
+            P_SetMobjState(target, target->info->xdeathstate);
         }
         else
         {
-            P_SetMobjState(target, static_cast<statenum_t>(target->info->deathstate));
+            P_SetMobjState(target, target->info->deathstate);
         }
     }
     target->tics -= P_Random() & 3;
@@ -2046,7 +2046,7 @@ void P_DamageMobj
             if (P_Random() < 96)
             {
                 target->flags |= MF_JUSTHIT;    // fight back!
-                P_SetMobjState(target, static_cast<statenum_t>(target->info->painstate));
+                P_SetMobjState(target, target->info->painstate);
             }
             else
             {                   // "electrocute" the target
@@ -2066,7 +2066,7 @@ void P_DamageMobj
         else
         {
             target->flags |= MF_JUSTHIT;        // fight back!
-            P_SetMobjState(target, static_cast<statenum_t>(target->info->painstate));
+            P_SetMobjState(target, target->info->painstate);
             if (inflictor && inflictor->type == MT_POISONCLOUD)
             {
                 if (target->flags & MF_COUNTKILL && P_Random() < 128
@@ -2099,7 +2099,7 @@ void P_DamageMobj
         if (target->state == &states[target->info->spawnstate]
             && target->info->seestate != S_NULL)
         {
-            P_SetMobjState(target, static_cast<statenum_t>(target->info->seestate));
+            P_SetMobjState(target, target->info->seestate);
         }
     }
 }
@@ -2222,7 +2222,7 @@ void P_PoisonDamage(player_t * player, mobj_t * source, int damage,
     }
     if (!(leveltime & 63) && playPainSound)
     {
-        P_SetMobjState(target, static_cast<statenum_t>(target->info->painstate));
+        P_SetMobjState(target, target->info->painstate);
     }
 /*
 	if((P_Random() < target->info->painchance)

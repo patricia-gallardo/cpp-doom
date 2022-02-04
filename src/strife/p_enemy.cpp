@@ -188,7 +188,7 @@ static void P_WakeUpThing(mobj_t* puncher, mobj_t* bystander)
         bystander->target = puncher;
         if(bystander->info->seesound)
             S_StartSound(bystander, bystander->info->seesound);
-        P_SetMobjState(bystander, static_cast<statenum_t>(bystander->info->seestate));
+        P_SetMobjState(bystander, bystander->info->seestate);
     }
 }
 
@@ -217,7 +217,7 @@ void P_DoPunchAlert(mobj_t *puncher, mobj_t *punchee)
    
    // make the punchee hurt - haleyjd 09/05/10: Fixed to use painstate.
    punchee->target = puncher;
-   P_SetMobjState(punchee, static_cast<statenum_t>(punchee->info->painstate));
+   P_SetMobjState(punchee, punchee->info->painstate);
    
    // wake up everybody nearby
    
@@ -505,7 +505,7 @@ void P_NewChaseDir(mobj_t* actor)
     if(!actor->target)
     {
         //I_Error("P_NewChaseDir: called with no target");
-        P_SetMobjState(actor, static_cast<statenum_t>(actor->info->spawnstate));
+        P_SetMobjState(actor, actor->info->spawnstate);
         return;
     }
 
@@ -911,7 +911,7 @@ seeyou:
     // [STRIFE] Set threshold (kinda odd as it's still set to 0 above...)
     actor->threshold = 20;
 
-    P_SetMobjState (actor, static_cast<statenum_t>(actor->info->seestate));
+    P_SetMobjState (actor, actor->info->seestate);
 }
 
 //
@@ -975,7 +975,7 @@ void A_FriendLook(mobj_t* actor)
             // STRIFE-TODO: Needs serious verification.
             if(P_LookForPlayers(actor, (actor->flags & MF_GIVEQUEST) != 0))
             {
-                P_SetMobjState(actor, static_cast<statenum_t>(actor->info->seestate));
+                P_SetMobjState(actor, actor->info->seestate);
                 actor->flags |= MF_NODIALOG;
                 return;
             }
@@ -987,7 +987,7 @@ void A_FriendLook(mobj_t* actor)
             if(!(actor->flags & MF_AMBUSH) || P_CheckSight(actor, actor->target))
             {
                 actor->threshold = 10;
-                P_SetMobjState(actor, static_cast<statenum_t>(actor->info->seestate));
+                P_SetMobjState(actor, actor->info->seestate);
                 return;
             }
         }
@@ -1032,7 +1032,7 @@ void A_Listen(mobj_t* actor)
 
                 actor->threshold = 10;
 
-                P_SetMobjState(actor, static_cast<statenum_t>(actor->info->seestate));
+                P_SetMobjState(actor, actor->info->seestate);
             }
         }
     }
@@ -1082,7 +1082,7 @@ void A_Chase (mobj_t*	actor)
         if (P_LookForPlayers(actor, true))
             return; 	// got a new target
 
-        P_SetMobjState (actor, static_cast<statenum_t>(actor->info->spawnstate));
+        P_SetMobjState (actor, actor->info->spawnstate);
         return;
     }
     
@@ -1103,7 +1103,7 @@ void A_Chase (mobj_t*	actor)
         if (actor->info->attacksound)
             S_StartSound (actor, actor->info->attacksound);
 
-        P_SetMobjState (actor, static_cast<statenum_t>(actor->info->meleestate));
+        P_SetMobjState (actor, actor->info->meleestate);
         return;
     }
     
@@ -1119,7 +1119,7 @@ void A_Chase (mobj_t*	actor)
         if (!P_CheckMissileRange (actor))
             goto nomissile;
 
-        P_SetMobjState (actor, static_cast<statenum_t>(actor->info->missilestate));
+        P_SetMobjState (actor, actor->info->missilestate);
 
         // [STRIFE] Add NODIALOG flag to disable dialog
         actor->flags |= (MF_NODIALOG|MF_JUSTATTACKED);
@@ -1292,7 +1292,7 @@ void A_CheckTargetVisible(mobj_t* actor)
         if(!target || target->health <= 0 || !P_CheckSight(actor, target) ||
             P_Random() < 40)
         {
-            P_SetMobjState(actor, static_cast<statenum_t>(actor->info->seestate));
+            P_SetMobjState(actor, actor->info->seestate);
         }
     }
 }
@@ -1545,11 +1545,11 @@ void A_CrusaderAttack(mobj_t* actor)
         actor->angle += (ANG45 / 16);
         P_SpawnFacingMissile(actor, actor->target, MT_C_MISSILE);
 
-        P_SetMobjState(actor, static_cast<statenum_t>(actor->info->seestate));
+        P_SetMobjState(actor, actor->info->seestate);
         actor->reactiontime += 15;
     }
     else
-        P_SetMobjState(actor, static_cast<statenum_t>(actor->info->seestate));
+        P_SetMobjState(actor, actor->info->seestate);
     
     actor->z -= (8*FRACUNIT);
 }
@@ -1597,7 +1597,7 @@ void A_CheckTargetVisible2(mobj_t* actor)
     if(!actor->target || actor->target->health <= 0 || 
         !P_CheckSight(actor, actor->target))
     {
-        P_SetMobjState(actor, static_cast<statenum_t>(actor->info->seestate));
+        P_SetMobjState(actor, actor->info->seestate);
     }
 }
 
@@ -1710,7 +1710,7 @@ void A_InqFly(mobj_t* actor)
         actor->z <= actor->floorz)
     {
         // Come in for a landing.
-        P_SetMobjState(actor, static_cast<statenum_t>(actor->info->seestate));
+        P_SetMobjState(actor, actor->info->seestate);
         actor->reactiontime = 0;
         actor->flags &= ~MF_NOGRAVITY;
     }
@@ -1882,7 +1882,7 @@ void A_AlertSpectreC(mobj_t* actor)
 
             if(mo->type == MT_SPECTRE_C)
             {
-                P_SetMobjState(mo, static_cast<statenum_t>(mo->info->seestate));
+                P_SetMobjState(mo, mo->info->seestate);
                 mo->target = actor->target;
                 return;
             }
@@ -3197,7 +3197,7 @@ void A_TeleportBeacon(mobj_t* actor)
         }
     }
 
-    P_SetMobjState(mobj, static_cast<statenum_t>(mobj->info->seestate));
+    P_SetMobjState(mobj, mobj->info->seestate);
     mobj->angle = actor->angle;
 
     fog_x = mobj->x + FixedMul(20*FRACUNIT, finecosine[actor->angle>>ANGLETOFINESHIFT]);
@@ -3262,7 +3262,7 @@ void A_ClaxonBlare(mobj_t* actor)
         if(actor->target)
             actor->reactiontime = 50;
         else
-            P_SetMobjState(actor, static_cast<statenum_t>(actor->info->spawnstate));
+            P_SetMobjState(actor, actor->info->spawnstate);
     }
 
     // When almost ran down, clear the soundtarget so it doesn't

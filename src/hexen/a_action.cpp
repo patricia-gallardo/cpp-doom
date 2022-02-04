@@ -720,7 +720,7 @@ void A_FogMove(mobj_t * actor)
 
     if (actor->args[3]-- <= 0)
     {
-        P_SetMobjStateNF(actor, static_cast<statenum_t>(actor->info->deathstate));
+        P_SetMobjStateNF(actor, actor->info->deathstate);
         return;
     }
 
@@ -829,7 +829,7 @@ void A_CheckThrowBomb(mobj_t * actor)
     }
     if (!--actor->health)
     {
-        P_SetMobjState(actor, static_cast<statenum_t>(actor->info->deathstate));
+        P_SetMobjState(actor, actor->info->deathstate);
     }
 }
 
@@ -1015,7 +1015,7 @@ void A_CheckTeleRing(mobj_t * actor)
 {
     if (actor->special1.i-- <= 0)
     {
-        P_SetMobjState(actor, static_cast<statenum_t>(actor->info->deathstate));
+        P_SetMobjState(actor, actor->info->deathstate);
     }
 }
 
@@ -1283,7 +1283,7 @@ void A_BatMove(mobj_t * actor)
 
     if (actor->special2.i < 0)
     {
-        P_SetMobjState(actor, static_cast<statenum_t>(actor->info->deathstate));
+        P_SetMobjState(actor, actor->info->deathstate);
     }
     actor->special2.i -= 2;       // Called every 2 tics
 
@@ -1328,7 +1328,7 @@ void A_TreeDeath(mobj_t * actor)
     }
     else
     {
-        P_SetMobjState(actor, static_cast<statenum_t>(actor->info->meleestate));
+        P_SetMobjState(actor, actor->info->meleestate);
     }
 }
 

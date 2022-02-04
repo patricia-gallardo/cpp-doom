@@ -421,11 +421,11 @@ typedef enum
 typedef struct
 {
     manatype_t mana;
-    int upstate;
-    int downstate;
-    int readystate;
-    int atkstate;
-    int holdatkstate;
+    statenum_t upstate;
+    statenum_t downstate;
+    statenum_t readystate;
+    statenum_t atkstate;
+    statenum_t holdatkstate;
     int flashstate;
 } weaponinfo_t;
 

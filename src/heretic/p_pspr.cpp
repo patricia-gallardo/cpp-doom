@@ -407,7 +407,7 @@ void P_PostChickenWeapon(player_t * player, weapontype_t weapon)
     player->pendingweapon = wp_nochange;
     player->readyweapon = weapon;
     player->psprites[ps_weapon].sy = WEAPONBOTTOM;
-    P_SetPsprite(player, ps_weapon, static_cast<statenum_t>(wpnlev1info[weapon].upstate));
+    P_SetPsprite(player, ps_weapon, wpnlev1info[weapon].upstate);
 }
 
 //---------------------------------------------------------------------------
@@ -432,11 +432,11 @@ void P_BringUpWeapon(player_t * player)
     }
     if (player->powers[pw_weaponlevel2])
     {
-        sdnum = static_cast<statenum_t>(wpnlev2info[player->pendingweapon].upstate);
+        sdnum = wpnlev2info[player->pendingweapon].upstate;
     }
     else
     {
-        sdnum = static_cast<statenum_t>(wpnlev1info[player->pendingweapon].upstate);
+        sdnum = wpnlev1info[player->pendingweapon].upstate;
     }
     player->pendingweapon = wp_nochange;
     player->psprites[ps_weapon].sy = WEAPONBOTTOM;
@@ -517,12 +517,12 @@ boolean P_CheckAmmo(player_t * player)
     if (player->powers[pw_weaponlevel2])
     {
         P_SetPsprite(player, ps_weapon,
-                     static_cast<statenum_t>(wpnlev2info[player->readyweapon].downstate));
+                     wpnlev2info[player->readyweapon].downstate);
     }
     else
     {
         P_SetPsprite(player, ps_weapon,
-                     static_cast<statenum_t>(wpnlev1info[player->readyweapon].downstate));
+                     wpnlev1info[player->readyweapon].downstate);
     }
     return (false);
 }
@@ -545,7 +545,7 @@ void P_FireWeapon(player_t * player)
     P_SetMobjState(player->mo, S_PLAY_ATK2);
     wpinfo = player->powers[pw_weaponlevel2] ? &wpnlev2info[0]
         : &wpnlev1info[0];
-    attackState = static_cast<statenum_t>(player->refire ? wpinfo[player->readyweapon].holdatkstate
+    attackState = (player->refire ? wpinfo[player->readyweapon].holdatkstate
         : wpinfo[player->readyweapon].atkstate);
     P_SetPsprite(player, ps_weapon, attackState);
     P_NoiseAlert(player->mo, player->mo);
@@ -568,12 +568,12 @@ void P_DropWeapon(player_t * player)
     if (player->powers[pw_weaponlevel2])
     {
         P_SetPsprite(player, ps_weapon,
-                     static_cast<statenum_t>(wpnlev2info[player->readyweapon].downstate));
+                     wpnlev2info[player->readyweapon].downstate);
     }
     else
     {
         P_SetPsprite(player, ps_weapon,
-                     static_cast<statenum_t>(wpnlev1info[player->readyweapon].downstate));
+                     wpnlev1info[player->readyweapon].downstate);
     }
 }
 
@@ -613,12 +613,12 @@ void A_WeaponReady(player_t * player, pspdef_t * psp)
         if (player->powers[pw_weaponlevel2])
         {
             P_SetPsprite(player, ps_weapon,
-                         static_cast<statenum_t>(wpnlev2info[player->readyweapon].downstate));
+                         wpnlev2info[player->readyweapon].downstate);
         }
         else
         {
             P_SetPsprite(player, ps_weapon,
-                         static_cast<statenum_t>(wpnlev1info[player->readyweapon].downstate));
+                         wpnlev1info[player->readyweapon].downstate);
         }
         return;
     }
@@ -755,7 +755,7 @@ void A_BeakRaise(player_t * player, pspdef_t * psp)
 {
     psp->sy = WEAPONTOP;
     P_SetPsprite(player, ps_weapon,
-                 static_cast<statenum_t>(wpnlev1info[player->readyweapon].readystate));
+                 wpnlev1info[player->readyweapon].readystate);
 }
 
 //---------------------------------------------------------------------------
@@ -775,12 +775,12 @@ void A_Raise(player_t * player, pspdef_t * psp)
     if (player->powers[pw_weaponlevel2])
     {
         P_SetPsprite(player, ps_weapon,
-                     static_cast<statenum_t>(wpnlev2info[player->readyweapon].readystate));
+                     wpnlev2info[player->readyweapon].readystate);
     }
     else
     {
         P_SetPsprite(player, ps_weapon,
-                     static_cast<statenum_t>(wpnlev1info[player->readyweapon].readystate));
+                     wpnlev1info[player->readyweapon].readystate);
     }
 }
 
@@ -1164,7 +1164,7 @@ void A_MaceBallImpact(mobj_t * ball)
         ball->health = MAGIC_JUNK;
         ball->momz = (ball->momz * 192) >> 8;
         ball->flags2 &= ~MF2_FLOORBOUNCE;
-        P_SetMobjState(ball, static_cast<statenum_t>(ball->info->spawnstate));
+        P_SetMobjState(ball, ball->info->spawnstate);
         S_StartSound(ball, sfx_bounce);
     }
     else
@@ -1200,7 +1200,7 @@ void A_MaceBallImpact2(mobj_t * ball)
     else
     {                           // Bounce
         ball->momz = (ball->momz * 192) >> 8;
-        P_SetMobjState(ball, static_cast<statenum_t>(ball->info->spawnstate));
+        P_SetMobjState(ball, ball->info->spawnstate);
 
         tiny = P_SpawnMobj(ball->x, ball->y, ball->z, MT_MACEFX3);
         angle = ball->angle + ANG90;
@@ -1312,7 +1312,7 @@ void A_DeathBallImpact(mobj_t * ball)
             ball->momx = FixedMul(ball->info->speed, finecosine[angle]);
             ball->momy = FixedMul(ball->info->speed, finesine[angle]);
         }
-        P_SetMobjState(ball, static_cast<statenum_t>(ball->info->spawnstate));
+        P_SetMobjState(ball, ball->info->spawnstate);
         S_StartSound(ball, sfx_pstop);
     }
     else

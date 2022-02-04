@@ -660,7 +660,7 @@ void A_Look(mobj_t * actor)
             S_StartSound(actor, sound);
         }
     }
-    P_SetMobjState(actor, static_cast<statenum_t>(actor->info->seestate));
+    P_SetMobjState(actor, actor->info->seestate);
 }
 
 
@@ -721,7 +721,7 @@ void A_Chase(mobj_t * actor)
         {                       // got a new target
             return;
         }
-        P_SetMobjState(actor, static_cast<statenum_t>(actor->info->spawnstate));
+        P_SetMobjState(actor, actor->info->spawnstate);
         return;
     }
 
@@ -743,7 +743,7 @@ void A_Chase(mobj_t * actor)
     {
         if (actor->info->attacksound)
             S_StartSound(actor, actor->info->attacksound);
-        P_SetMobjState(actor, static_cast<statenum_t>(actor->info->meleestate));
+        P_SetMobjState(actor, actor->info->meleestate);
         return;
     }
 
@@ -756,7 +756,7 @@ void A_Chase(mobj_t * actor)
             goto nomissile;
         if (!P_CheckMissileRange(actor))
             goto nomissile;
-        P_SetMobjState(actor, static_cast<statenum_t>(actor->info->missilestate));
+        P_SetMobjState(actor, actor->info->missilestate);
         actor->flags |= MF_JUSTATTACKED;
         return;
     }
@@ -962,7 +962,7 @@ void A_ImpMsAttack(mobj_t * actor)
 
     if (!actor->target || P_Random() > 64)
     {
-        P_SetMobjState(actor, static_cast<statenum_t>(actor->info->seestate));
+        P_SetMobjState(actor, actor->info->seestate);
         return;
     }
     dest = actor->target;
@@ -1511,7 +1511,7 @@ void A_GenWizard(mobj_t * actor)
         return;
     }
     actor->momx = actor->momy = actor->momz = 0;
-    P_SetMobjState(actor, static_cast<statenum_t>(mobjinfo[actor->type].deathstate));
+    P_SetMobjState(actor, mobjinfo[actor->type].deathstate);
     actor->flags &= ~MF_MISSILE;
     fog = P_SpawnMobj(actor->x, actor->y, actor->z, MT_TFOG);
     S_StartSound(fog, sfx_telept);
@@ -1676,7 +1676,7 @@ void A_MinotaurCharge(mobj_t * actor)
     else
     {
         actor->flags &= ~MF_SKULLFLY;
-        P_SetMobjState(actor, static_cast<statenum_t>(actor->info->seestate));
+        P_SetMobjState(actor, actor->info->seestate);
     }
 }
 
@@ -1894,7 +1894,7 @@ void A_WhirlwindSeek(mobj_t * actor)
     if (actor->health < 0)
     {
         actor->momx = actor->momy = actor->momz = 0;
-        P_SetMobjState(actor, static_cast<statenum_t>(mobjinfo[actor->type].deathstate));
+        P_SetMobjState(actor, mobjinfo[actor->type].deathstate);
         actor->flags &= ~MF_MISSILE;
         return;
     }

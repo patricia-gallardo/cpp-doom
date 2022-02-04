@@ -93,7 +93,7 @@ void P_ExplodeMissile (mobj_t* mo)
 {
     mo->momx = mo->momy = mo->momz = 0;
 
-    P_SetMobjState (mo, static_cast<statenum_t>(mobjinfo[mo->type].deathstate));
+    P_SetMobjState (mo, mobjinfo[mo->type].deathstate);
 
     // villsa [STRIFE] removed tics randomization
 

@@ -492,7 +492,7 @@ void P_SetDormantArtifact(mobj_t * arti)
 void A_RestoreArtifact(mobj_t * arti)
 {
     arti->flags |= MF_SPECIAL;
-    P_SetMobjState(arti, static_cast<statenum_t>(arti->info->spawnstate));
+    P_SetMobjState(arti, arti->info->spawnstate);
     S_StartSound(arti, sfx_respawn);
 }
 
@@ -536,7 +536,7 @@ void A_RestoreSpecialThing1(mobj_t * thing)
 void A_RestoreSpecialThing2(mobj_t * thing)
 {
     thing->flags |= MF_SPECIAL;
-    P_SetMobjState(thing, static_cast<statenum_t>(thing->info->spawnstate));
+    P_SetMobjState(thing, thing->info->spawnstate);
 }
 
 //---------------------------------------------------------------------------
@@ -945,11 +945,11 @@ void P_KillMobj(mobj_t * source, mobj_t * target)
     if (target->health < -(target->info->spawnhealth >> 1)
         && target->info->xdeathstate)
     {                           // Extreme death
-        P_SetMobjState(target, static_cast<statenum_t>(target->info->xdeathstate));
+        P_SetMobjState(target, target->info->xdeathstate);
     }
     else
     {                           // Normal death
-        P_SetMobjState(target, static_cast<statenum_t>(target->info->deathstate));
+        P_SetMobjState(target, target->info->deathstate);
     }
     target->tics -= P_Random() & 3;
 //      I_StartSound(&actor->r, actor->info->deathsound);
@@ -1466,7 +1466,7 @@ void P_DamageMobj
         && !(target->flags & MF_SKULLFLY))
     {
         target->flags |= MF_JUSTHIT;    // fight back!
-        P_SetMobjState(target, static_cast<statenum_t>(target->info->painstate));
+        P_SetMobjState(target, target->info->painstate);
     }
     target->reactiontime = 0;   // we're awake now...
     if (!target->threshold && source && !(source->flags2 & MF2_BOSS)
@@ -1479,7 +1479,7 @@ void P_DamageMobj
         if (target->state == &states[target->info->spawnstate]
             && target->info->seestate != S_NULL)
         {
-            P_SetMobjState(target, static_cast<statenum_t>(target->info->seestate));
+            P_SetMobjState(target, target->info->seestate);
         }
     }
 }

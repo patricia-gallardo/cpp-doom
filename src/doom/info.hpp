@@ -1331,7 +1331,7 @@ typedef struct
     // void (*action) ();
     actionf_t  action;
     statenum_t nextstate;
-    int        misc1;
+    statenum_t misc1;
     int        misc2;
 } state_t;
 
@@ -1595,19 +1595,19 @@ typedef enum
 typedef struct
 {
     int          doomednum;
-    int          spawnstate;
+    statenum_t   spawnstate;
     int          spawnhealth;
-    int          seestate;
+    statenum_t   seestate;
     int          seesound;
     int          reactiontime;
     int          attacksound;
-    int          painstate;
+    statenum_t   painstate;
     int          painchance;
     int          painsound;
-    int          meleestate;
-    int          missilestate;
-    int          deathstate;
-    int          xdeathstate;
+    statenum_t   meleestate;
+    statenum_t   missilestate;
+    statenum_t   deathstate;
+    statenum_t   xdeathstate;
     int          deathsound;
     int          speed;
     int          radius;
@@ -1616,7 +1616,7 @@ typedef struct
     int          damage;
     int          activesound;
     unsigned int flags;
-    int          raisestate;
+    statenum_t   raisestate;
     // [crispy] height of the spawnstate's first sprite in pixels
     int actualheight;
 

@@ -122,7 +122,7 @@ void P_ExplodeMissile(mobj_t * mo)
         }
     }
     mo->momx = mo->momy = mo->momz = 0;
-    P_SetMobjState(mo, static_cast<statenum_t>(mobjinfo[mo->type].deathstate));
+    P_SetMobjState(mo, mobjinfo[mo->type].deathstate);
     //mo->tics -= P_Random()&3;
     mo->flags &= ~MF_MISSILE;
     if (mo->info->deathsound)
@@ -140,7 +140,7 @@ void P_ExplodeMissile(mobj_t * mo)
 void P_FloorBounceMissile(mobj_t * mo)
 {
     mo->momz = -mo->momz;
-    P_SetMobjState(mo, static_cast<statenum_t>(mobjinfo[mo->type].deathstate));
+    P_SetMobjState(mo, mobjinfo[mo->type].deathstate);
 }
 
 //----------------------------------------------------------------------------
@@ -290,7 +290,7 @@ void P_XYMovement(mobj_t * mo)
         {                       // A flying mobj slammed into something
             mo->flags &= ~MF_SKULLFLY;
             mo->momx = mo->momy = mo->momz = 0;
-            P_SetMobjState(mo, static_cast<statenum_t>(mo->info->seestate));
+            P_SetMobjState(mo, mo->info->seestate);
         }
         return;
     }
@@ -558,7 +558,7 @@ void P_ZMovement(mobj_t * mo)
         }
         if (mo->info->crashstate && (mo->flags & MF_CORPSE))
         {
-            P_SetMobjState(mo, static_cast<statenum_t>(mo->info->crashstate));
+            P_SetMobjState(mo, mo->info->crashstate);
             return;
         }
     }

@@ -130,9 +130,9 @@ static void P_ExplodeMissileSafe(mobj_t *mo, boolean safe)
 {
     mo->momx = mo->momy = mo->momz = 0;
 
-    P_SetMobjState(mo, static_cast<statenum_t>(
-                           safe ? P_LatestSafeState(static_cast<statenum_t>(
-                               mobjinfo[mo->type].deathstate)) :
+    P_SetMobjState(mo, (
+                           safe ? P_LatestSafeState(
+                               mobjinfo[mo->type].deathstate) :
                                   mobjinfo[mo->type].deathstate));
 
     mo->tics -= safe ? Crispy_Random() & 3 : P_Random() & 3;
@@ -175,7 +175,7 @@ void P_XYMovement(mobj_t *mo)
             mo->flags &= ~MF_SKULLFLY;
             mo->momx = mo->momy = mo->momz = 0;
 
-            P_SetMobjState(mo, static_cast<statenum_t>(mo->info->spawnstate));
+            P_SetMobjState(mo, mo->info->spawnstate);
         }
         return;
     }
@@ -641,7 +641,7 @@ static mobj_t *
     // do not set the state with P_SetMobjState,
     // because action routines can not be called yet
     st = &states[safe ? P_LatestSafeState(
-                     static_cast<statenum_t>(info->spawnstate)) :
+                     info->spawnstate) :
                         info->spawnstate];
 
     mobj->state  = st;

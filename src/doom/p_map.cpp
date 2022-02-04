@@ -320,7 +320,7 @@ boolean PIT_CheckThing(mobj_t *thing)
         tmthing->momx = tmthing->momy = tmthing->momz = 0;
 
         P_SetMobjState(tmthing,
-            static_cast<statenum_t>(tmthing->info->spawnstate));
+            tmthing->info->spawnstate);
 
         return false; // stop moving
     }

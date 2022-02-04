@@ -79,19 +79,19 @@ static void DEH_FrameOverflow(deh_context_t *context, char *varname, int value)
     }
     else if (!strcasecmp(varname, "Codep frame")) 
     {
-        weaponinfo[0].upstate = value;
+        weaponinfo[0].upstate = static_cast<statenum_t>(value);
     }
     else if (!strcasecmp(varname, "Next frame")) 
     {
-        weaponinfo[0].downstate = value;
+        weaponinfo[0].downstate = static_cast<statenum_t>(value);
     }
     else if (!strcasecmp(varname, "Unknown 1"))
     {
-        weaponinfo[0].readystate = value;
+        weaponinfo[0].readystate = static_cast<statenum_t>(value);
     }
     else if (!strcasecmp(varname, "Unknown 2"))
     {
-        weaponinfo[0].atkstate = value;
+        weaponinfo[0].atkstate = static_cast<statenum_t>(value);
     }
     else
     {

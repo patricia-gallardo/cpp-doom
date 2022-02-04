@@ -660,7 +660,7 @@ void A_Look(mobj_t * actor)
             S_StartSound(actor, sound);
         }
     }
-    P_SetMobjState(actor, static_cast<statenum_t>(actor->info->seestate));
+    P_SetMobjState(actor, actor->info->seestate);
 }
 
 
@@ -721,7 +721,7 @@ void A_Chase(mobj_t * actor)
         {                       // got a new target
             return;
         }
-        P_SetMobjState(actor, static_cast<statenum_t>(actor->info->spawnstate));
+        P_SetMobjState(actor, actor->info->spawnstate);
         return;
     }
 
@@ -745,7 +745,7 @@ void A_Chase(mobj_t * actor)
         {
             S_StartSound(actor, actor->info->attacksound);
         }
-        P_SetMobjState(actor, static_cast<statenum_t>(actor->info->meleestate));
+        P_SetMobjState(actor, actor->info->meleestate);
         return;
     }
 
@@ -758,7 +758,7 @@ void A_Chase(mobj_t * actor)
             goto nomissile;
         if (!P_CheckMissileRange(actor))
             goto nomissile;
-        P_SetMobjState(actor, static_cast<statenum_t>(actor->info->missilestate));
+        P_SetMobjState(actor, actor->info->missilestate);
         actor->flags |= MF_JUSTATTACKED;
         return;
     }
@@ -1279,14 +1279,14 @@ void A_MinotaurChase(mobj_t * actor)
         {
             S_StartSound(actor, actor->info->attacksound);
         }
-        P_SetMobjState(actor, static_cast<statenum_t>(actor->info->meleestate));
+        P_SetMobjState(actor, actor->info->meleestate);
         return;
     }
 
     // Missile attack
     if (actor->info->missilestate && P_CheckMissileRange(actor))
     {
-        P_SetMobjState(actor, static_cast<statenum_t>(actor->info->missilestate));
+        P_SetMobjState(actor, actor->info->missilestate);
         return;
     }
 
@@ -1395,7 +1395,7 @@ void A_MinotaurCharge(mobj_t * actor)
     else
     {
         actor->flags &= ~MF_SKULLFLY;
-        P_SetMobjState(actor, static_cast<statenum_t>(actor->info->seestate));
+        P_SetMobjState(actor, actor->info->seestate);
     }
 }
 
@@ -2056,7 +2056,7 @@ void A_SerpentChase(mobj_t * actor)
         {                       // got a new target
             return;
         }
-        P_SetMobjState(actor, static_cast<statenum_t>(actor->info->spawnstate));
+        P_SetMobjState(actor, actor->info->spawnstate);
         return;
     }
 
@@ -2080,7 +2080,7 @@ void A_SerpentChase(mobj_t * actor)
         {
             S_StartSound(actor, actor->info->attacksound);
         }
-        P_SetMobjState(actor, static_cast<statenum_t>(actor->info->meleestate));
+        P_SetMobjState(actor, actor->info->meleestate);
         return;
     }
 
@@ -2257,7 +2257,7 @@ void A_SerpentWalk(mobj_t * actor)
         {                       // got a new target
             return;
         }
-        P_SetMobjState(actor, static_cast<statenum_t>(actor->info->spawnstate));
+        P_SetMobjState(actor, actor->info->spawnstate);
         return;
     }
 
@@ -2592,7 +2592,7 @@ void A_CentaurDefend(mobj_t * actor)
     if (P_CheckMeleeRange(actor) && P_Random() < 32)
     {
         A_UnSetInvulnerable(actor);
-        P_SetMobjState(actor, static_cast<statenum_t>(actor->info->meleestate));
+        P_SetMobjState(actor, actor->info->meleestate);
     }
 }
 
@@ -2963,7 +2963,7 @@ void A_DragonInitFlight(mobj_t * actor)
         actor->special1.m = P_FindMobjFromTID(actor->tid, &search);
         if (search == -1)
         {
-            P_SetMobjState(actor, static_cast<statenum_t>(actor->info->spawnstate));
+            P_SetMobjState(actor, actor->info->spawnstate);
             return;
         }
     }
@@ -2999,7 +2999,7 @@ void A_DragonFlight(mobj_t * actor)
         }
         else if ((actor->angle - angle) <= ANG1 * 20)
         {
-            P_SetMobjState(actor, static_cast<statenum_t>(actor->info->missilestate));
+            P_SetMobjState(actor, actor->info->missilestate);
             S_StartSound(actor, SFX_DRAGON_ATTACK);
         }
     }
@@ -3721,7 +3721,7 @@ void A_FiredChase(mobj_t * actor)
     {
         if (P_CheckMissileRange(actor) && (P_Random() < 20))
         {
-            P_SetMobjState(actor, static_cast<statenum_t>(actor->info->missilestate));
+            P_SetMobjState(actor, actor->info->missilestate);
             actor->flags |= MF_JUSTATTACKED;
             return;
         }
@@ -4000,7 +4000,7 @@ void A_SorcBallOrbit(mobj_t * actor)
     angle_t prevangle = actor->special1.i;
 
     if (actor->target->health <= 0)
-        P_SetMobjState(actor, static_cast<statenum_t>(actor->info->painstate));
+        P_SetMobjState(actor, actor->info->painstate);
 
     baseangle = (angle_t) parent->special1.i;
     switch (actor->type)
@@ -4444,7 +4444,7 @@ void A_SorcFX2Orbit(mobj_t * actor)
     if ((parent->health <= 0) ||        // Sorcerer is dead
         (!parent->args[0]))     // Time expired
     {
-        P_SetMobjStateNF(actor, static_cast<statenum_t>(actor->info->deathstate));
+        P_SetMobjStateNF(actor, actor->info->deathstate);
         parent->args[0] = 0;
         parent->flags2 &= ~MF2_REFLECTIVE;
         parent->flags2 &= ~MF2_INVULNERABLE;
@@ -4452,7 +4452,7 @@ void A_SorcFX2Orbit(mobj_t * actor)
 
     if (actor->args[0] && (parent->args[0]-- <= 0))     // Time expired
     {
-        P_SetMobjStateNF(actor, static_cast<statenum_t>(actor->info->deathstate));
+        P_SetMobjStateNF(actor, actor->info->deathstate);
         parent->args[0] = 0;
         parent->flags2 &= ~MF2_REFLECTIVE;
     }
@@ -4533,7 +4533,7 @@ void A_SorcFX4Check(mobj_t * actor)
 {
     if (actor->special2.i-- <= 0)
     {
-        P_SetMobjStateNF(actor, static_cast<statenum_t>(actor->info->deathstate));
+        P_SetMobjStateNF(actor, actor->info->deathstate);
     }
 }
 
@@ -4562,7 +4562,7 @@ void A_BounceCheck(mobj_t * actor)
     {
         if (actor->args[3]-- <= 0)
         {
-            P_SetMobjState(actor, static_cast<statenum_t>(actor->info->deathstate));
+            P_SetMobjState(actor, actor->info->deathstate);
             switch (actor->type)
             {
                 case MT_SORCBALL1:
@@ -4642,7 +4642,7 @@ void A_FastChase(mobj_t * actor)
         {                       // got a new target
             return;
         }
-        P_SetMobjState(actor, static_cast<statenum_t>(actor->info->spawnstate));
+        P_SetMobjState(actor, actor->info->spawnstate);
         return;
     }
 
@@ -4695,7 +4695,7 @@ void A_FastChase(mobj_t * actor)
             goto nomissile;
         if (!P_CheckMissileRange(actor))
             goto nomissile;
-        P_SetMobjState(actor, static_cast<statenum_t>(actor->info->missilestate));
+        P_SetMobjState(actor, actor->info->missilestate);
         actor->flags |= MF_JUSTATTACKED;
         return;
     }
@@ -4778,7 +4778,7 @@ void A_CheckFloor(mobj_t * actor)
     {
         actor->z = actor->floorz;
         actor->flags2 &= ~MF2_LOGRAV;
-        P_SetMobjState(actor, static_cast<statenum_t>(actor->info->deathstate));
+        P_SetMobjState(actor, actor->info->deathstate);
     }
 }
 
@@ -4985,7 +4985,7 @@ void A_KoraxChase(mobj_t * actor)
         return;
     if (P_Random() < 30)
     {
-        P_SetMobjState(actor, static_cast<statenum_t>(actor->info->missilestate));
+        P_SetMobjState(actor, actor->info->missilestate);
     }
     else if (P_Random() < 30)
     {

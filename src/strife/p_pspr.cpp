@@ -117,7 +117,7 @@ void P_BringUpWeapon (player_t* player)
     if (player->pendingweapon == wp_flame)
         S_StartSound (player->mo, sfx_flidl);   // villsa [STRIFE] flame sounds
 
-    newstate = static_cast<statenum_t>(weaponinfo[player->pendingweapon].upstate);
+    newstate = weaponinfo[player->pendingweapon].upstate;
 
     player->psprites[ps_weapon].sy = WEAPONBOTTOM;
     P_SetPsprite (player, ps_weapon, newstate);
@@ -198,7 +198,7 @@ boolean P_CheckAmmo (player_t* player)
 
 
     // Now set appropriate weapon overlay.
-    P_SetPsprite(player, ps_weapon, static_cast<statenum_t>(weaponinfo[player->readyweapon].downstate));
+    P_SetPsprite(player, ps_weapon, weaponinfo[player->readyweapon].downstate);
 
     return false;
 }
@@ -217,7 +217,7 @@ void P_FireWeapon (player_t* player)
         return;
 
     P_SetMobjState (player->mo, S_PLAY_05); // 292
-    newstate = static_cast<statenum_t>(weaponinfo[player->readyweapon].atkstate);
+    newstate = weaponinfo[player->readyweapon].atkstate;
     P_SetPsprite (player, ps_weapon, newstate);
     
     // villsa [STRIFE] exclude these weapons from causing noise
@@ -235,7 +235,7 @@ void P_DropWeapon (player_t* player)
 {
     P_SetPsprite (player,
                   ps_weapon,
-        static_cast<statenum_t>(weaponinfo[player->readyweapon].downstate));
+        weaponinfo[player->readyweapon].downstate);
 }
 
 
@@ -273,7 +273,7 @@ void A_WeaponReady( player_t* player, pspdef_t* psp)
     {
         // change weapon
         //  (pending weapon should allready be validated)
-        newstate = static_cast<statenum_t>(weaponinfo[player->readyweapon].downstate);
+        newstate = weaponinfo[player->readyweapon].downstate;
         P_SetPsprite (player, ps_weapon, newstate);
         return;
     }
@@ -402,7 +402,7 @@ A_Raise
 
     // The weapon has been raised all the way,
     //  so change to the ready state.
-    newstate = static_cast<statenum_t>(weaponinfo[player->readyweapon].readystate);
+    newstate = weaponinfo[player->readyweapon].readystate;
 
     P_SetPsprite (player, ps_weapon, newstate);
 }
@@ -418,7 +418,7 @@ A_GunFlash
   pspdef_t*	psp ) 
 {
     P_SetMobjState (player->mo, S_PLAY_06);
-    P_SetPsprite (player,ps_flash, static_cast<statenum_t>(weaponinfo[player->readyweapon].flashstate));
+    P_SetPsprite (player,ps_flash, weaponinfo[player->readyweapon].flashstate);
 }
 
 

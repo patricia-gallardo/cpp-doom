@@ -348,7 +348,7 @@ void P_PostMorphWeapon(player_t * player, weapontype_t weapon)
     player->readyweapon = weapon;
     player->psprites[ps_weapon].sy = WEAPONBOTTOM;
     P_SetPsprite(player, ps_weapon,
-        static_cast<statenum_t>(WeaponInfo[weapon][player->clazz].upstate));
+        WeaponInfo[weapon][player->clazz].upstate);
 }
 
 //---------------------------------------------------------------------------
@@ -374,7 +374,7 @@ void P_BringUpWeapon(player_t * player)
     }
     else
     {
-        stnum = static_cast<statenum_t>(WeaponInfo[player->pendingweapon][player->clazz].upstate);
+        stnum = WeaponInfo[player->pendingweapon][player->clazz].upstate;
     }
     player->pendingweapon = WP_NOCHANGE;
     player->psprites[ps_weapon].sy = WEAPONBOTTOM;
@@ -437,7 +437,7 @@ boolean P_CheckMana(player_t * player)
     }
     while (player->pendingweapon == WP_NOCHANGE);
     P_SetPsprite(player, ps_weapon,
-        static_cast<statenum_t>(WeaponInfo[player->readyweapon][player->clazz].downstate));
+        WeaponInfo[player->readyweapon][player->clazz].downstate);
     return (false);
 }
 
@@ -463,7 +463,7 @@ void P_FireWeapon(player_t * player)
     }
     else
     {
-        attackState = static_cast<statenum_t>(player->refire ?
+        attackState = (player->refire ?
                                                   WeaponInfo[player->readyweapon][player->clazz].holdatkstate :
                                                   WeaponInfo[player->readyweapon][player->clazz].atkstate);
     }
@@ -482,7 +482,7 @@ void P_FireWeapon(player_t * player)
 void P_DropWeapon(player_t * player)
 {
     P_SetPsprite(player, ps_weapon,
-        static_cast<statenum_t>(WeaponInfo[player->readyweapon][player->clazz].downstate));
+        WeaponInfo[player->readyweapon][player->clazz].downstate);
 }
 
 //---------------------------------------------------------------------------
@@ -508,7 +508,7 @@ void A_WeaponReady(player_t * player, pspdef_t * psp)
     if (player->pendingweapon != WP_NOCHANGE || !player->health)
     {
         P_SetPsprite(player, ps_weapon,
-            static_cast<statenum_t>(WeaponInfo[player->readyweapon][player->clazz].downstate));
+            WeaponInfo[player->readyweapon][player->clazz].downstate);
         return;
     }
 
@@ -613,7 +613,7 @@ void A_Raise(player_t * player, pspdef_t * psp)
     else
     {
         P_SetPsprite(player, ps_weapon,
-            static_cast<statenum_t>(WeaponInfo[player->readyweapon][player->clazz].readystate));
+            WeaponInfo[player->readyweapon][player->clazz].readystate);
     }
 }
 
@@ -990,7 +990,7 @@ void A_LightningZap(mobj_t * actor)
     actor->health -= 8;
     if (actor->health <= 0)
     {
-        P_SetMobjState(actor, static_cast<statenum_t>(actor->info->deathstate));
+        P_SetMobjState(actor, actor->info->deathstate);
         return;
     }
     if (actor->type == MT_LIGHTNING_FLOOR)
@@ -2102,7 +2102,7 @@ void A_CHolySeek(mobj_t * actor)
         actor->momx >>= 2;
         actor->momy >>= 2;
         actor->momz = 0;
-        P_SetMobjState(actor, static_cast<statenum_t>(actor->info->deathstate));
+        P_SetMobjState(actor, actor->info->deathstate);
         actor->tics -= P_Random() & 3;
         return;
     }

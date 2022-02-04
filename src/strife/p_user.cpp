@@ -825,7 +825,7 @@ boolean P_SpawnTeleportBeacon(player_t* player)
         beacon->momx = FixedMul(finecosine[angle], (5*FRACUNIT));
         beacon->momy = FixedMul(finesine[angle], (5*FRACUNIT));
         beacon->momz = FRACUNIT;
-        P_SetMobjState(beacon, static_cast<statenum_t>(beacon->info->seestate));
+        P_SetMobjState(beacon, beacon->info->seestate);
         return true;
     }
     else
