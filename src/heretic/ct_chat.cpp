@@ -17,8 +17,8 @@
 // Chat mode
 //
 
-#include <string.h>
-#include <ctype.h>
+#include <cstring>
+#include <cctype>
 
 #include "doomdef.hpp"
 #include "doomkeys.hpp"

@@ -16,7 +16,7 @@
 
 // P_enemy.c
 
-#include <stdlib.h>
+#include <cstdlib>
 #include "doomdef.hpp"
 #include "i_system.hpp"
 #include "i_timer.hpp"

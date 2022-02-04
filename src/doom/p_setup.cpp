@@ -18,7 +18,7 @@
 //
 
 
-#include <math.h>
+#include <cmath>
 
 #include "z_zone.hpp"
 

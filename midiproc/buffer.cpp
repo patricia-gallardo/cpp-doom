@@ -19,7 +19,7 @@
 
 #include "buffer.hpp"
 
-#include <stdlib.h>
+#include <cstdlib>
 
 //
 // Create a new buffer.

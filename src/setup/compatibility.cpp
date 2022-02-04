@@ -14,7 +14,7 @@
 
 // Sound control menu
 
-#include <stdlib.h>
+#include <cstdlib>
 
 #include "crispy.hpp"
 #include "m_config.hpp"

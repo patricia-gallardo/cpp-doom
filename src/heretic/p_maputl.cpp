@@ -16,7 +16,7 @@
 
 // P_maputl.c
 
-#include <stdlib.h>
+#include <cstdlib>
 
 #include "doomdef.hpp"
 #include "m_bbox.hpp"

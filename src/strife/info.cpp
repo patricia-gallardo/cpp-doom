@@ -18,8 +18,7 @@
 //	This one is the original DOOM version, preserved.
 //
 
-#include <stdio.h>
-#include <stdlib.h>
+#include <cstdio>
 
 #include "action_hooks.hpp"
 

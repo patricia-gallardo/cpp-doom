@@ -18,10 +18,10 @@
 
 #ifndef __DOOMDEF__
 #define __DOOMDEF__
-#include <stdio.h>
-#include <string.h>
+#include <cstdio>
+#include <cstring>
 //haleyjd: removed WATCOMC
-#include <limits.h>
+#include <climits>
 
 #define HERETIC_VERSION 130
 #define HERETIC_VERSION_TEXT "v1.3"

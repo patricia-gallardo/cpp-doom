@@ -16,8 +16,8 @@
 // Parses [STRINGS] sections in BEX files
 //
 
-#include <stdio.h>
-#include <string.h>
+#include <cstdio>
+#include <cstring>
 
 #include "deh_defs.hpp"
 #include "deh_io.hpp"

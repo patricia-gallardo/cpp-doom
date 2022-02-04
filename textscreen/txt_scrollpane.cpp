@@ -12,11 +12,7 @@
 // GNU General Public License for more details.
 //
 
-#include <ctype.h>
-#include <stdio.h>
-#include <stdlib.h>
-#include <string.h>
-#include <math.h>
+#include <cstdio>
 
 #include "txt_scrollpane.hpp"
 #include "txt_gui.hpp"

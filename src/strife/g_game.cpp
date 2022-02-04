@@ -15,9 +15,9 @@
 // DESCRIPTION:  none
 //
 
-#include <string.h>
-#include <stdlib.h>
-#include <math.h>
+#include <cstring>
+#include <cstdlib>
+#include <cmath>
 
 #include "doomdef.hpp" 
 #include "doomkeys.hpp"
