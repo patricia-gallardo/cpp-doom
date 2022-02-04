@@ -19,6 +19,7 @@
 
 #include <stdio.h>
 #include <stdlib.h>
+#include <cstdlib>
 
 #include "deh_misc.hpp"
 
@@ -102,8 +103,8 @@ boolean PIT_StompThing(mobj_t *thing)
 
     blockdist = thing->radius + tmthing->radius;
 
-    if (abs(thing->x - tmx) >= blockdist
-        || abs(thing->y - tmy) >= blockdist)
+    if (std::abs(thing->x - tmx) >= blockdist
+        || std::abs(thing->y - tmy) >= blockdist)
     {
         // didn't hit it
         return true;
@@ -289,8 +290,8 @@ boolean PIT_CheckThing(mobj_t *thing)
 
     blockdist = thing->radius + tmthing->radius;
 
-    if (abs(thing->x - tmx) >= blockdist
-        || abs(thing->y - tmy) >= blockdist)
+    if (std::abs(thing->x - tmx) >= blockdist
+        || std::abs(thing->y - tmy) >= blockdist)
     {
         // didn't hit it
         return true;
@@ -1425,8 +1426,8 @@ boolean PIT_RadiusAttack(mobj_t *thing)
         || thing->type == MT_SPIDER)
         return true;
 
-    dx = abs(thing->x - bombspot->x);
-    dy = abs(thing->y - bombspot->y);
+    dx = std::abs(thing->x - bombspot->x);
+    dy = std::abs(thing->y - bombspot->y);
 
     dist = dx > dy ? dx : dy;
     dist = (dist - thing->radius) >> FRACBITS;

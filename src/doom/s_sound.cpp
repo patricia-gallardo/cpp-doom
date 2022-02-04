@@ -17,6 +17,7 @@
 
 #include <stdio.h>
 #include <stdlib.h>
+#include <cstdlib>
 
 #include "i_sound.hpp"
 #include "i_system.hpp"
@@ -568,8 +569,8 @@ static int S_AdjustSoundParams(mobj_t *listener, mobj_t *source,
 
     // calculate the distance to sound origin
     //  and clip it if necessary
-    adx = abs(listener->x - source->x);
-    ady = abs(listener->y - source->y);
+    adx = std::abs(listener->x - source->x);
+    ady = std::abs(listener->y - source->y);
 
     // From _GG1_ p.428. Appox. eucledian distance fast.
     approx_dist = adx + ady - ((adx < ady ? adx : ady) >> 1);

@@ -604,7 +604,7 @@ static void P_RemoveSlimeTrails(void)
 
 			// [crispy] wait a minute... moved more than 8 map units?
 			// maybe that's a linguortal then, back to the original coordinates
-			if (abs(v->r_x - v->x) > 8*FRACUNIT || abs(v->r_y - v->y) > 8*FRACUNIT)
+			if (std::abs(v->r_x - v->x) > 8*FRACUNIT || std::abs(v->r_y - v->y) > 8*FRACUNIT)
 			{
 			    v->r_x = v->x;
 			    v->r_y = v->y;

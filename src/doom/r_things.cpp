@@ -499,7 +499,7 @@ void R_DrawVisSprite(vissprite_t *vis,
 #endif
     }
 
-    dc_iscale     = abs(vis->xiscale) >> detailshift;
+    dc_iscale     = std::abs(vis->xiscale) >> detailshift;
     dc_texturemid = vis->texturemid;
     frac          = vis->startfrac;
     spryscale     = vis->scale;
@@ -615,7 +615,7 @@ void R_ProjectSprite(mobj_t *thing)
     tx  = -(gyt + gxt);
 
     // too far off the side?
-    if (abs(tx) > (tz << 2))
+    if (std::abs(tx) > (tz << 2))
         return;
 
         // decide which patch to use for sprite relative to player
@@ -873,7 +873,7 @@ static void R_DrawLSprite(void)
 
     tx = -(FixedMul(laserspot->y - viewy, viewcos) - FixedMul(laserspot->x - viewx, viewsin));
 
-    if (abs(tx) > (tz << 2))
+    if (std::abs(tx) > (tz << 2))
         return;
 
     vis = R_NewVisSprite();
@@ -996,7 +996,7 @@ void R_DrawPSprite(pspdef_t *psp, psprnum_t psprnum) // [crispy] differentiate g
     vis->translation = NULL; // [crispy] no color translation
     vis->mobjflags   = 0;
     // [crispy] weapons drawn 1 pixel too high when player is idle
-    vis->texturemid = (BASEYCENTER << FRACBITS) + FRACUNIT / 4 - (psp->sy2 + abs(psp->dy) - spritetopoffset[lump]);
+    vis->texturemid = (BASEYCENTER << FRACBITS) + FRACUNIT / 4 - (psp->sy2 + std::abs(psp->dy) - spritetopoffset[lump]);
     vis->x1         = x1 < 0 ? 0 : x1;
     vis->x2         = x2 >= viewwidth ? viewwidth - 1 : x2;
     vis->scale      = pspritescale << detailshift;

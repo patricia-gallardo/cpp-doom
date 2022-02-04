@@ -540,7 +540,7 @@ void P_NewChaseDir(mobj_t* actor)
 
     // try other directions
     if (P_Random() > 200
-        ||  abs(deltay)>abs(deltax))
+        ||  std::abs(deltay)>std::abs(deltax))
     {
         tdir=d[1];
         d[1]=d[2];

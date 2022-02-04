@@ -1220,7 +1220,7 @@ int TXT_PageTable(TXT_UNCAST_ARG(table), int pagex, int pagey)
 
                 // ...but is it far enough away?
 
-                if (distance >= abs(pagey))
+                if (distance >= std::abs(pagey))
                 {
                     break;
                 }

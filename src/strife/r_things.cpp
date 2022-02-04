@@ -462,7 +462,7 @@ R_DrawVisSprite
         dc_translation = translationtables - 256 + (translation >> (MF_TRANSSHIFT - 8));
     }
 
-    dc_iscale = abs(vis->xiscale)>>detailshift;
+    dc_iscale = std::abs(vis->xiscale)>>detailshift;
     dc_texturemid = vis->texturemid;
     frac = vis->startfrac;
     spryscale = vis->scale;
@@ -549,7 +549,7 @@ void R_ProjectSprite (mobj_t* thing)
     tx = -(gyt+gxt); 
 
     // too far off the side?
-    if (abs(tx)>(tz<<2))
+    if (std::abs(tx)>(tz<<2))
 	return;
     
     // decide which patch to use for sprite relative to player

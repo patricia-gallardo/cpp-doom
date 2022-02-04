@@ -374,7 +374,7 @@ void P_NewChaseDir(mobj_t * actor)
     }
 
 // try other directions
-    if (P_Random() > 200 || abs(deltay) > abs(deltax))
+    if (P_Random() > 200 || std::abs(deltay) > std::abs(deltax))
     {
         tdir = d[1];
         d[1] = d[2];
@@ -5360,7 +5360,7 @@ void A_KSpiritSeeker(mobj_t * actor, angle_t thresh, angle_t turnMax)
     {
         newZ = target->z + ((P_Random() * target->info->height) >> 8);
         deltaZ = newZ - actor->z;
-        if (abs(deltaZ) > 15 * FRACUNIT)
+        if (std::abs(deltaZ) > 15 * FRACUNIT)
         {
             if (deltaZ > 0)
             {

@@ -230,7 +230,7 @@ void P_MovePlayer (player_t* player)
         {
             player->pitch = player->pitch - CENTERVIEWAMOUNT;
         }
-        if (abs(player->pitch) < CENTERVIEWAMOUNT)
+        if (std::abs(player->pitch) < CENTERVIEWAMOUNT)
         {
             player->pitch = 0;
             player->centerview = 0;

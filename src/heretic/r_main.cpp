@@ -257,8 +257,8 @@ fixed_t R_PointToDist(fixed_t x, fixed_t y)
     fixed_t dx, dy, temp;
     fixed_t dist;
 
-    dx = abs(x - viewx);
-    dy = abs(y - viewy);
+    dx = std::abs(x - viewx);
+    dy = std::abs(y - viewy);
 
     if (dy > dx)
     {
@@ -331,7 +331,7 @@ fixed_t R_ScaleFromGlobalAngle(angle_t visangle)
         sinv = finesine[(visangle - rw_normalangle) >> ANGLETOFINESHIFT];
         dist = FixedDiv(rw_distance, sinv);
         cosv = finecosine[(viewangle - visangle) >> ANGLETOFINESHIFT];
-        z = abs(FixedMul(dist, cosv));
+        z = std::abs(FixedMul(dist, cosv));
         scale = FixedDiv(projection, z);
         return scale;
     }
@@ -608,13 +608,13 @@ void R_ExecuteSetViewSize(void)
     for (i = 0; i < viewheight; i++)
     {
         dy = ((i - viewheight / 2) << FRACBITS) + FRACUNIT / 2;
-        dy = abs(dy);
+        dy = std::abs(dy);
         yslope[i] = FixedDiv((viewwidth << detailshift) / 2 * FRACUNIT, dy);
     }
 
     for (i = 0; i < viewwidth; i++)
     {
-        cosadj = abs(finecosine[xtoviewangle[i] >> ANGLETOFINESHIFT]);
+        cosadj = std::abs(finecosine[xtoviewangle[i] >> ANGLETOFINESHIFT]);
         distscale[i] = FixedDiv(FRACUNIT, cosadj);
     }
 
@@ -750,7 +750,7 @@ void R_SetupFrame(player_t * player)
         for (i = 0; i < viewheight; i++)
         {
             yslope[i] = FixedDiv((viewwidth << detailshift) / 2 * FRACUNIT,
-                                 abs(((i - centery) << FRACBITS) +
+                                 std::abs(((i - centery) << FRACBITS) +
                                      FRACUNIT / 2));
         }
     }

@@ -675,7 +675,7 @@ void AdjustPlayerAngle(mobj_t * pmo)
 
     angle = R_PointToAngle2(pmo->x, pmo->y, linetarget->x, linetarget->y);
     difference = (int) angle - (int) pmo->angle;
-    if (abs(difference) > MAX_ANGADJUST)
+    if (std::abs(difference) > MAX_ANGADJUST)
     {
         pmo->angle += difference > 0 ? MAX_ANGADJUST : -MAX_ANGADJUST;
     }
@@ -2037,7 +2037,7 @@ static void CHolySeekerMissile(mobj_t * actor, angle_t thresh,
     {
         newZ = target->z + ((P_Random() * target->height) >> 8);
         deltaZ = newZ - actor->z;
-        if (abs(deltaZ) > 15 * FRACUNIT)
+        if (std::abs(deltaZ) > 15 * FRACUNIT)
         {
             if (deltaZ > 0)
             {

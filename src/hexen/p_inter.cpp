@@ -2116,7 +2116,7 @@ void P_FallingDamage(player_t * player)
     int mom;
     int dist;
 
-    mom = abs(player->mo->momz);
+    mom = std::abs(player->mo->momz);
     dist = FixedMul(mom, 16 * FRACUNIT / 23);
 
     if (mom >= 63 * FRACUNIT)

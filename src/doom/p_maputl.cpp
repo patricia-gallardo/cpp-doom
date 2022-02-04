@@ -22,6 +22,7 @@
 
 
 #include <stdlib.h>
+#include <cstdlib>
 
 
 #include "i_system.hpp" // [crispy] I_Realloc()
@@ -44,8 +45,8 @@ fixed_t
     P_AproxDistance(fixed_t dx,
         fixed_t             dy)
 {
-    dx = abs(dx);
-    dy = abs(dy);
+    dx = std::abs(dx);
+    dy = std::abs(dy);
     if (dx < dy)
         return dx + dy - (dx >> 1);
     return dx + dy - (dy >> 1);
@@ -933,13 +934,13 @@ boolean
     {
         mapxstep = 1;
         partial  = FRACUNIT - ((x1 >> MAPBTOFRAC) & (FRACUNIT - 1));
-        ystep    = FixedDiv(y2 - y1, abs(x2 - x1));
+        ystep    = FixedDiv(y2 - y1, std::abs(x2 - x1));
     }
     else if (xt2 < xt1)
     {
         mapxstep = -1;
         partial  = (x1 >> MAPBTOFRAC) & (FRACUNIT - 1);
-        ystep    = FixedDiv(y2 - y1, abs(x2 - x1));
+        ystep    = FixedDiv(y2 - y1, std::abs(x2 - x1));
     }
     else
     {
@@ -955,13 +956,13 @@ boolean
     {
         mapystep = 1;
         partial  = FRACUNIT - ((y1 >> MAPBTOFRAC) & (FRACUNIT - 1));
-        xstep    = FixedDiv(x2 - x1, abs(y2 - y1));
+        xstep    = FixedDiv(x2 - x1, std::abs(y2 - y1));
     }
     else if (yt2 < yt1)
     {
         mapystep = -1;
         partial  = (y1 >> MAPBTOFRAC) & (FRACUNIT - 1);
-        xstep    = FixedDiv(x2 - x1, abs(y2 - y1));
+        xstep    = FixedDiv(x2 - x1, std::abs(y2 - y1));
     }
     else
     {

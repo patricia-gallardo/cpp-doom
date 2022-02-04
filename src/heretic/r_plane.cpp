@@ -518,7 +518,7 @@ void R_DrawPlanes(void)
             default:
                 ds_source = tempSource;
         }
-        planeheight = abs(pl->height - viewz);
+        planeheight = std::abs(pl->height - viewz);
         light = (pl->lightlevel >> LIGHTSEGSHIFT) + extralight;
         if (light >= LIGHTLEVELS)
             light = LIGHTLEVELS - 1;

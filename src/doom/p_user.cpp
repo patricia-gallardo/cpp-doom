@@ -19,7 +19,8 @@
 //
 
 
-#include <stdlib.h> // [crispy] abs()
+ // [crispy] std::abs()
+#include <cstdlib>
 #include "doomdef.hpp"
 #include "d_event.hpp"
 
@@ -312,7 +313,7 @@ void P_PlayerThink(player_t *player)
         {
             player->lookdir += 8 * MLOOKUNIT;
         }
-        if (abs(player->lookdir) < 8 * MLOOKUNIT)
+        if (std::abs(player->lookdir) < 8 * MLOOKUNIT)
         {
             player->lookdir   = 0;
             player->centering = false;

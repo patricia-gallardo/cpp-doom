@@ -81,7 +81,7 @@ void T_RotatePoly(polyevent_t * pe)
 
     if (PO_RotatePolyobj(pe->polyobj, pe->speed))
     {
-        absSpeed = abs(pe->speed);
+        absSpeed = std::abs(pe->speed);
 
         if (pe->dist == -1)
         {                       // perpetual polyobj
@@ -215,7 +215,7 @@ void T_MovePoly(polyevent_t * pe)
 
     if (PO_MovePolyobj(pe->polyobj, pe->xSpeed, pe->ySpeed))
     {
-        absSpeed = abs(pe->speed);
+        absSpeed = std::abs(pe->speed);
         pe->dist -= absSpeed;
         if (pe->dist <= 0)
         {
@@ -346,7 +346,7 @@ void T_PolyDoor(polydoor_t * pd)
         case PODOOR_SLIDE:
             if (PO_MovePolyobj(pd->polyobj, pd->xSpeed, pd->ySpeed))
             {
-                absSpeed = abs(pd->speed);
+                absSpeed = std::abs(pd->speed);
                 pd->dist -= absSpeed;
                 if (pd->dist <= 0)
                 {
@@ -396,7 +396,7 @@ void T_PolyDoor(polydoor_t * pd)
         case PODOOR_SWING:
             if (PO_RotatePolyobj(pd->polyobj, pd->speed))
             {
-                absSpeed = abs(pd->speed);
+                absSpeed = std::abs(pd->speed);
                 if (pd->dist == -1)
                 {               // perpetual polyobj
                     return;

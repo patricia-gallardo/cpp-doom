@@ -148,8 +148,8 @@ void S_StartSound(void *_origin, int sound_id)
 
 // calculate the distance before other stuff so that we can throw out
 // sounds that are beyond the hearing range.
-    absx = abs(origin->x - listener->x);
-    absy = abs(origin->y - listener->y);
+    absx = std::abs(origin->x - listener->x);
+    absy = std::abs(origin->y - listener->y);
     dist = absx + absy - (absx > absy ? absy >> 1 : absx >> 1);
     dist >>= FRACBITS;
 //  dist = P_AproxDistance(origin->x-viewx, origin->y-viewy)>>FRACBITS;
@@ -478,8 +478,8 @@ void S_UpdateSounds(mobj_t * listener)
         }
         else
         {
-            absx = abs(channel[i].mo->x - listener->x);
-            absy = abs(channel[i].mo->y - listener->y);
+            absx = std::abs(channel[i].mo->x - listener->x);
+            absy = std::abs(channel[i].mo->y - listener->y);
             dist = absx + absy - (absx > absy ? absy >> 1 : absx >> 1);
             dist >>= FRACBITS;
 //          dist = P_AproxDistance(channel[i].mo->x-listener->x, channel[i].mo->y-listener->y)>>FRACBITS;

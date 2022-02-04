@@ -156,9 +156,9 @@ static boolean CalibrateAxis(txt_joystick_axis_t *joystick_axis)
             continue;
         }
 
-        if (abs(axis_value) > best_value)
+        if (std::abs(axis_value) > best_value)
         {
-            best_value = abs(axis_value);
+            best_value = std::abs(axis_value);
             best_invert = axis_value > 0;
             best_axis = i;
         }
@@ -235,7 +235,7 @@ static void IdentifyBadAxes(txt_joystick_axis_t *joystick_axis)
     {
         val = SDL_JoystickGetAxis(joystick_axis->joystick, i);
 
-        joystick_axis->bad_axis[i] = abs(val) > (32768 / 5);
+        joystick_axis->bad_axis[i] = std::abs(val) > (32768 / 5);
 
         if (joystick_axis->bad_axis[i])
         {

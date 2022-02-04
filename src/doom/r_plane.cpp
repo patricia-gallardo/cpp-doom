@@ -21,6 +21,7 @@
 
 #include <stdio.h>
 #include <stdlib.h>
+#include <cstdlib>
 
 #include "i_system.hpp"
 #include "z_zone.hpp"
@@ -137,7 +138,7 @@ void R_MapPlane(int y,
     // [crispy] visplanes with the same flats now match up far better than before
     // adapted from prboom-plus/src/r_plane.c:191-239, translated to fixed-point math
 
-    if (!(dy = abs(centery - y)))
+    if (!(dy = std::abs(centery - y)))
     {
         return;
     }
@@ -491,7 +492,7 @@ void R_DrawPlanes(void)
             static_cast<byte *>(swirling ? reinterpret_cast<unsigned char *>(R_DistortedFlat(lumpnum)) : cache_lump_num<byte *>(lumpnum, PU_STATIC));
         ds_brightmap = R_BrightmapForFlatNum(lumpnum - firstflat);
 
-        planeheight = abs(pl->height - viewz);
+        planeheight = std::abs(pl->height - viewz);
         light       = (pl->lightlevel >> LIGHTSEGSHIFT) + (extralight * LIGHTBRIGHT);
 
         if (light >= LIGHTLEVELS)

@@ -427,7 +427,7 @@ void R_DrawVisSprite(vissprite_t * vis, int x1, int x2)
             ((vis->mobjflags & MF_TRANSLATION) >> (MF_TRANSSHIFT - 8));
     }
 
-    dc_iscale = abs(vis->xiscale) >> detailshift;
+    dc_iscale = std::abs(vis->xiscale) >> detailshift;
     dc_texturemid = vis->texturemid;
     frac = vis->startfrac;
     spryscale = vis->scale;
@@ -521,7 +521,7 @@ void R_ProjectSprite(mobj_t * thing)
     gyt = FixedMul(tr_y, viewcos);
     tx = -(gyt + gxt);
 
-    if (abs(tx) > (tz << 2))
+    if (std::abs(tx) > (tz << 2))
         return;                 // too far off the side
 
 //

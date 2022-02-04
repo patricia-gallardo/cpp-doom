@@ -206,7 +206,7 @@ void P_FloorBounceMissile(mobj_t * mo)
         case MT_SGSHARD9:
         case MT_SGSHARD0:
             mo->momz = FixedMul(mo->momz, -0.3 * FRACUNIT);
-            if (abs(mo->momz) < (FRACUNIT / 2))
+            if (std::abs(mo->momz) < (FRACUNIT / 2))
             {
                 P_SetMobjState(mo, S_NULL);
                 return;
@@ -680,7 +680,7 @@ void P_MonsterFallingDamage(mobj_t * mo)
     int damage;
     int mom;
 
-    mom = abs(mo->momz);
+    mom = std::abs(mo->momz);
     if (mom > 35 * FRACUNIT)
     {                           // automatic death
         damage = 10000;

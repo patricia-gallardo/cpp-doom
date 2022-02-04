@@ -266,7 +266,7 @@ void P_MovePlayer(player_t * player)
         {
             player->lookdir += 8;
         }
-        if (abs(player->lookdir) < 8)
+        if (std::abs(player->lookdir) < 8)
         {
             player->lookdir = 0;
             player->centering = false;
@@ -368,7 +368,7 @@ void P_DeathThink(player_t * player)
         {
             player->lookdir += 6;
         }
-        if (abs(player->lookdir) < 6)
+        if (std::abs(player->lookdir) < 6)
         {
             player->lookdir = 0;
         }

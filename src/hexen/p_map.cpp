@@ -107,7 +107,7 @@ boolean PIT_StompThing(mobj_t * thing)
         return true;
 
     blockdist = thing->radius + tmthing->radius;
-    if (abs(thing->x - tmx) >= blockdist || abs(thing->y - tmy) >= blockdist)
+    if (std::abs(thing->x - tmx) >= blockdist || std::abs(thing->y - tmy) >= blockdist)
         return true;            // didn't hit it
 
     if (thing == tmthing)
@@ -203,8 +203,8 @@ boolean PIT_ThrustStompThing(mobj_t * thing)
         return true;
 
     blockdist = thing->radius + tsthing->radius;
-    if (abs(thing->x - tsthing->x) >= blockdist ||
-        abs(thing->y - tsthing->y) >= blockdist ||
+    if (std::abs(thing->x - tsthing->x) >= blockdist ||
+        std::abs(thing->y - tsthing->y) >= blockdist ||
         (thing->z > tsthing->z + tsthing->height))
         return true;            // didn't hit it
 
@@ -354,7 +354,7 @@ boolean PIT_CheckThing(mobj_t * thing)
         return (true);
     }
     blockdist = thing->radius + tmthing->radius;
-    if (abs(thing->x - tmx) >= blockdist || abs(thing->y - tmy) >= blockdist)
+    if (std::abs(thing->x - tmx) >= blockdist || std::abs(thing->y - tmy) >= blockdist)
     {                           // Didn't hit thing
         return (true);
     }
@@ -686,7 +686,7 @@ boolean PIT_CheckOnmobjZ(mobj_t * thing)
         return (true);
     }
     blockdist = thing->radius + tmthing->radius;
-    if (abs(thing->x - tmx) >= blockdist || abs(thing->y - tmy) >= blockdist)
+    if (std::abs(thing->x - tmx) >= blockdist || std::abs(thing->y - tmy) >= blockdist)
     {                           // Didn't hit thing
         return (true);
     }
@@ -2141,12 +2141,12 @@ boolean PIT_RadiusAttack(mobj_t * thing)
     {                           // don't damage the source of the explosion
         return true;
     }
-    if (abs((thing->z - bombspot->z) >> FRACBITS) > 2 * bombdistance)
+    if (std::abs((thing->z - bombspot->z) >> FRACBITS) > 2 * bombdistance)
     {                           // too high/low
         return true;
     }
-    dx = abs(thing->x - bombspot->x);
-    dy = abs(thing->y - bombspot->y);
+    dx = std::abs(thing->x - bombspot->x);
+    dy = std::abs(thing->y - bombspot->y);
     dist = dx > dy ? dx : dy;
     dist = (dist - thing->radius) >> FRACBITS;
     if (dist < 0)

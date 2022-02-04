@@ -198,7 +198,7 @@ void A_PotteryCheck(mobj_t * actor)
     {
         pmo = players[consoleplayer].mo;
         if (P_CheckSight(actor, pmo)
-	  && (abs((int)R_PointToAngle2(pmo->x, pmo->y, actor->x, actor->y)
+	  && (std::abs((int)R_PointToAngle2(pmo->x, pmo->y, actor->x, actor->y)
            - (int)pmo->angle) <= ANG45))
         {                       // Previous state (pottery bit waiting state)
             P_SetMobjState(actor, static_cast<statenum_t>(actor->state - &states[0] - 1));
@@ -218,7 +218,7 @@ void A_PotteryCheck(mobj_t * actor)
             }
             pmo = players[i].mo;
             if (P_CheckSight(actor, pmo) 
-              && (abs((int)R_PointToAngle2(pmo->x, pmo->y, actor->x, actor->y)
+              && (std::abs((int)R_PointToAngle2(pmo->x, pmo->y, actor->x, actor->y)
                - (int)pmo->angle) <= ANG45))
             {                   // Previous state (pottery bit waiting state)
                 P_SetMobjState(actor, static_cast<statenum_t>(actor->state - &states[0] - 1));
@@ -817,7 +817,7 @@ void A_PoisonShroom(mobj_t * actor)
 
 void A_CheckThrowBomb(mobj_t * actor)
 {
-    if (abs(actor->momx) < 1.5 * FRACUNIT && abs(actor->momy) < 1.5 * FRACUNIT
+    if (std::abs(actor->momx) < 1.5 * FRACUNIT && std::abs(actor->momy) < 1.5 * FRACUNIT
         && actor->momz < 2 * FRACUNIT
         && actor->state == &states[S_THROWINGBOMB6])
     {

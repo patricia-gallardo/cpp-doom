@@ -96,7 +96,7 @@ void P_CreateBlockMap(void)
             ady = lines[i].dy >> FRACBITS, dy = ady < 0 ? -1 : 1;
 
             // difference in preferring to move across y (>0) instead of x (<0)
-            diff = !adx ? 1 : !ady ? -1 : (((x >> MAPBTOFRAC) << MAPBTOFRAC) + (dx > 0 ? MAPBLOCKUNITS - 1 : 0) - x) * (ady = abs(ady)) * dx - (((y >> MAPBTOFRAC) << MAPBTOFRAC) + (dy > 0 ? MAPBLOCKUNITS - 1 : 0) - y) * (adx = abs(adx)) * dy;
+            diff = !adx ? 1 : !ady ? -1 : (((x >> MAPBTOFRAC) << MAPBTOFRAC) + (dx > 0 ? MAPBLOCKUNITS - 1 : 0) - x) * (ady = std::abs(ady)) * dx - (((y >> MAPBTOFRAC) << MAPBTOFRAC) + (dy > 0 ? MAPBLOCKUNITS - 1 : 0) - y) * (adx = std::abs(adx)) * dy;
 
             // starting block, and pointer to its blocklist structure
             b = (y >> MAPBTOFRAC) * bmapwidth + (x >> MAPBTOFRAC);

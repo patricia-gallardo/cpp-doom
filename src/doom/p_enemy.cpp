@@ -20,6 +20,7 @@
 
 #include <stdio.h>
 #include <stdlib.h>
+#include <cstdlib>
 
 #include "m_random.hpp"
 #include "i_system.hpp"
@@ -399,7 +400,7 @@ void P_NewChaseDir(mobj_t *actor)
 
     // try other directions
     if (P_Random() > 200
-        || abs(deltay) > abs(deltax))
+        || std::abs(deltay) > std::abs(deltax))
     {
         tdir = d[1];
         d[1] = d[2];
@@ -1155,8 +1156,8 @@ boolean PIT_VileCheck(mobj_t *thing)
 
     maxdist = thing->info->radius + mobjinfo[MT_VILE].radius;
 
-    if (abs(thing->x - viletryx) > maxdist
-        || abs(thing->y - viletryy) > maxdist)
+    if (std::abs(thing->x - viletryx) > maxdist
+        || std::abs(thing->y - viletryy) > maxdist)
         return true; // not actually touching
 
     corpsehit       = thing;

@@ -41,7 +41,7 @@ fixed_t
 
 fixed_t FixedDiv(fixed_t a, fixed_t b)
 {
-    if ((abs(a) >> 14) >= abs(b))
+    if ((std::abs(a) >> 14) >= std::abs(b))
     {
         return (a ^ b) < 0 ? INT_MIN : INT_MAX;
     }

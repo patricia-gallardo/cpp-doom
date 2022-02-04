@@ -396,8 +396,8 @@ void S_StartSoundAtVolume(mobj_t * origin, int sound_id, int volume)
 
     // calculate the distance before other stuff so that we can throw out
     // sounds that are beyond the hearing range.
-    absx = abs(origin->x - listener->x);
-    absy = abs(origin->y - listener->y);
+    absx = std::abs(origin->x - listener->x);
+    absy = std::abs(origin->y - listener->y);
     dist = absx + absy - (absx > absy ? absy >> 1 : absx >> 1);
     dist >>= FRACBITS;
     if (dist >= MAX_SND_DIST)
@@ -739,8 +739,8 @@ void S_UpdateSounds(mobj_t * listener)
         }
         else
         {
-            absx = abs(Channel[i].mo->x - listener->x);
-            absy = abs(Channel[i].mo->y - listener->y);
+            absx = std::abs(Channel[i].mo->x - listener->x);
+            absy = std::abs(Channel[i].mo->y - listener->y);
             dist = absx + absy - (absx > absy ? absy >> 1 : absx >> 1);
             dist >>= FRACBITS;
 

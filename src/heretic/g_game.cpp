@@ -859,7 +859,7 @@ boolean G_Responder(event_t * ev)
 
     if (ev->type == ev_mouse)
     {
-        testcontrols_mousespeed = abs(ev->data2);
+        testcontrols_mousespeed = std::abs(ev->data2);
     }
 
     if (ev->type == ev_keydown && ev->data1 == key_prevweapon)
