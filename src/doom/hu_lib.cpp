@@ -106,10 +106,10 @@ void HUlib_drawTextLine(hu_textline_t *l,
         // [crispy] support multi-colored text lines
         if (c == cr_esc)
         {
-            if (l->l[i + 1] >= '0' && l->l[i + 1] <= '0' + CRMAX - 1)
+            if (l->l[i + 1] >= '0' && l->l[i + 1] <= '0' + static_cast<int>(cr_t::CRMAX) - 1)
             {
                 i++;
-                dp_translation = (crispy->coloredhud & COLOREDHUD_TEXT) ? cr[(int)(l->l[i] - '0')] : NULL;
+                dp_translation = (crispy->coloredhud & COLOREDHUD_TEXT) ? cr_colors[(int)(l->l[i] - '0')] : NULL;
             }
         }
         else

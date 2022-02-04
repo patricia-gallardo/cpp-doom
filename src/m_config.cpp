@@ -43,7 +43,7 @@
 // Location where all configuration data is stored -
 // default.cfg, savegames, etc.
 
-const char *configdir;
+char *configdir;
 
 static char *autoload_path = const_cast<char *>("");
 
@@ -2732,7 +2732,7 @@ static char *GetDefaultConfigDir(void)
 // files are stored - default.cfg, chocolate-doom.cfg, savegames, etc.
 //
 
-void M_SetConfigDir(const char *dir)
+void M_SetConfigDir(char *dir)
 {
     // Use the directory that was passed, or find the default.
 

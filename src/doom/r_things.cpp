@@ -770,7 +770,7 @@ void R_ProjectSprite(mobj_t *thing)
         {
             if (thing->target->type == MT_BABY)
             {
-                vis->translation = cr[CR_RED2GREEN];
+                vis->translation = cr_colors[static_cast<int>(cr_t::CR_RED2GREEN)];
             }
         }
         else
@@ -778,13 +778,13 @@ void R_ProjectSprite(mobj_t *thing)
             // [crispy] Barons of Hell and Hell Knights bleed green blood
             if (thing->target->type == MT_BRUISER || thing->target->type == MT_KNIGHT)
             {
-                vis->translation = cr[CR_RED2GREEN];
+                vis->translation = cr_colors[static_cast<int>(cr_t::CR_RED2GREEN)];
             }
             else
                 // [crispy] Cacodemons bleed blue blood
                 if (thing->target->type == MT_HEAD)
             {
-                vis->translation = cr[CR_RED2BLUE];
+                vis->translation = cr_colors[static_cast<int>(cr_t::CR_RED2BLUE)];
             }
         }
     }
@@ -812,7 +812,7 @@ byte *R_LaserspotColor(void)
         }
         if (linetarget)
         {
-            return cr[CR_GRAY];
+            return cr_colors[static_cast<int>(cr_t::CR_GRAY)];
         }
     }
 
@@ -823,15 +823,15 @@ byte *R_LaserspotColor(void)
 
         // [crispy] Invulnerability powerup and God Mode cheat turn Health values gray
         if (viewplayer->cheats & CF_GODMODE || viewplayer->powers[pw_invulnerability])
-            return cr[CR_GRAY];
+            return cr_colors[static_cast<int>(cr_t::CR_GRAY)];
         else if (health < 25)
-            return cr[CR_RED];
+            return cr_colors[static_cast<int>(cr_t::CR_RED)];
         else if (health < 50)
-            return cr[CR_GOLD];
+            return cr_colors[static_cast<int>(cr_t::CR_GOLD)];
         else if (health <= 100)
-            return cr[CR_GREEN];
+            return cr_colors[static_cast<int>(cr_t::CR_GREEN)];
         else
-            return cr[CR_BLUE];
+            return cr_colors[static_cast<int>(cr_t::CR_BLUE)];
     }
 
     return NULL;

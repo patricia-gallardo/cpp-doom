@@ -385,7 +385,7 @@ void D_DoomMain(void)
 
     if (cdrom)
     {
-        M_SetConfigDir("c:\\hexndata\\");
+        M_SetConfigDir(const_cast<char *>("c:\\hexndata\\"));
     }
     else
     {

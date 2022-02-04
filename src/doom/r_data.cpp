@@ -1199,18 +1199,18 @@ void R_InitColormaps(void)
         extern byte V_Colorize(byte * playpal, int cr, byte source, boolean keepgray109);
 
         if (!crstr)
-            crstr = static_cast<decltype(crstr)>(I_Realloc(NULL, CRMAX * sizeof(*crstr)));
+            crstr = static_cast<decltype(crstr)>(I_Realloc(NULL, static_cast<int>(cr_t::CRMAX) * sizeof(*crstr)));
 
         // [crispy] check for status bar graphics replacements
         i        = W_CheckNumForName(DEH_String("sttnum0")); // [crispy] Status Bar '0'
         keepgray = (i >= 0 && W_IsIWADLump(lumpinfo[i]));
 
         // [crispy] CRMAX - 2: don't override the original GREN and BLUE2 Boom tables
-        for (i = 0; i < CRMAX - 2; i++)
+        for (i = 0; i < static_cast<int>(cr_t::CRMAX) - 2; i++)
         {
             for (j = 0; j < 256; j++)
             {
-                cr[i][j] = V_Colorize(playpal, i, j, keepgray);
+                cr_colors[i][j] = V_Colorize(playpal, i, j, keepgray);
             }
 
             M_snprintf(c, sizeof(c), "%c%c", cr_esc, '0' + i);

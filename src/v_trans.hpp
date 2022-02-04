@@ -35,7 +35,7 @@
 
 #include "doomtype.hpp"
 
-enum
+enum class cr_t
 {
     CR_NONE,
     CR_DARK,
@@ -47,11 +47,11 @@ enum
     CR_RED2BLUE,
     CR_RED2GREEN,
     CRMAX
-} cr_t;
+};
 
 #define CR_GREY CR_GRAY
 
-extern byte * cr[CRMAX];
+extern byte *cr_colors[static_cast<int>(cr_t::CRMAX)];
 extern char **crstr;
 
 #define cr_esc '~'

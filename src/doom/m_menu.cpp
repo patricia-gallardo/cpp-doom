@@ -822,7 +822,7 @@ void       M_DrawLoad(void)
 
         // [crispy] shade empty savegame slots
         if (!LoadMenu[i].status)
-            dp_translation = cr[CR_DARK];
+            dp_translation = cr_colors[static_cast<int>(cr_t::CR_DARK)];
 
         M_WriteText(LoadDef.x, LoadDef.y + LINEHEIGHT * i, savegamestrings[i]);
 
@@ -1062,9 +1062,9 @@ void M_QuickSave(void)
         return;
     }
     // [crispy] print savegame name in golden letters
-    savegamestring = M_StringJoin(crstr[CR_GOLD],
+    savegamestring = M_StringJoin(crstr[static_cast<int>(cr_t::CR_GOLD)],
         savegamestrings[quickSaveSlot],
-        crstr[CR_NONE],
+        crstr[static_cast<int>(cr_t::CR_NONE)],
         NULL);
     DEH_snprintf(tempstring, sizeof(tempstring),
         QSPROMPT, savegamestring);
@@ -1107,9 +1107,9 @@ void M_QuickLoad(void)
         return;
     }
     // [crispy] print savegame name in golden letters
-    savegamestring = M_StringJoin(crstr[CR_GOLD],
+    savegamestring = M_StringJoin(crstr[static_cast<int>(cr_t::CR_GOLD)],
         savegamestrings[quickSaveSlot],
-        crstr[CR_NONE],
+        crstr[static_cast<int>(cr_t::CR_NONE)],
         NULL);
     DEH_snprintf(tempstring, sizeof(tempstring),
         QLPROMPT, savegamestring);
@@ -1365,8 +1365,8 @@ static void M_DrawMouse(void)
         21, mouseSensitivity_y);
 
     M_snprintf(mouse_menu_text, sizeof(mouse_menu_text),
-        "%sInvert Vertical Axis: %s%s", crstr[CR_NONE],
-        mouse_y_invert ? crstr[CR_GREEN] : crstr[CR_DARK],
+        "%sInvert Vertical Axis: %s%s", crstr[static_cast<int>(cr_t::CR_NONE)],
+        mouse_y_invert ? crstr[static_cast<int>(cr_t::CR_GREEN)] : crstr[static_cast<int>(cr_t::CR_DARK)],
         mouse_y_invert ? "On" : "Off");
     M_WriteText(MouseDef.x, MouseDef.y + LINEHEIGHT * mouse_invert + 6,
         mouse_menu_text);
@@ -1405,22 +1405,22 @@ static char crispy_menu_text[48];
 static void M_DrawCrispnessHeader(char *item)
 {
     M_snprintf(crispy_menu_text, sizeof(crispy_menu_text),
-        "%s%s", crstr[CR_GOLD], item);
+        "%s%s", crstr[static_cast<int>(cr_t::CR_GOLD)], item);
     M_WriteText(ORIGWIDTH / 2 - M_StringWidth(item) / 2, 12, crispy_menu_text);
 }
 
 static void M_DrawCrispnessSeparator(int y, char *item)
 {
     M_snprintf(crispy_menu_text, sizeof(crispy_menu_text),
-        "%s%s", crstr[CR_GOLD], item);
+        "%s%s", crstr[static_cast<int>(cr_t::CR_GOLD)], item);
     M_WriteText(currentMenu->x - 8, currentMenu->y + CRISPY_LINEHEIGHT * y, crispy_menu_text);
 }
 
 static void M_DrawCrispnessItem(int y, char *item, int feat, boolean cond)
 {
     M_snprintf(crispy_menu_text, sizeof(crispy_menu_text),
-        "%s%s: %s%s", cond ? crstr[CR_NONE] : crstr[CR_DARK], item,
-        cond ? (feat ? crstr[CR_GREEN] : crstr[CR_DARK]) : crstr[CR_DARK],
+        "%s%s: %s%s", cond ? crstr[static_cast<int>(cr_t::CR_NONE)] : crstr[static_cast<int>(cr_t::CR_DARK)], item,
+        cond ? (feat ? crstr[static_cast<int>(cr_t::CR_GREEN)] : crstr[static_cast<int>(cr_t::CR_DARK)]) : crstr[static_cast<int>(cr_t::CR_DARK)],
         cond && feat ? "On" : "Off");
     M_WriteText(currentMenu->x, currentMenu->y + CRISPY_LINEHEIGHT * y, crispy_menu_text);
 }
@@ -1428,8 +1428,8 @@ static void M_DrawCrispnessItem(int y, char *item, int feat, boolean cond)
 static void M_DrawCrispnessMultiItem(int y, char *item, multiitem_t *multiitem, int feat, boolean cond)
 {
     M_snprintf(crispy_menu_text, sizeof(crispy_menu_text),
-        "%s%s: %s%s", cond ? crstr[CR_NONE] : crstr[CR_DARK], item,
-        cond ? (feat ? crstr[CR_GREEN] : crstr[CR_DARK]) : crstr[CR_DARK],
+        "%s%s: %s%s", cond ? crstr[static_cast<int>(cr_t::CR_NONE)] : crstr[static_cast<int>(cr_t::CR_DARK)], item,
+        cond ? (feat ? crstr[static_cast<int>(cr_t::CR_GREEN)] : crstr[static_cast<int>(cr_t::CR_DARK)]) : crstr[static_cast<int>(cr_t::CR_DARK)],
         cond && feat ? multiitem[feat].name : multiitem[0].name);
     M_WriteText(currentMenu->x, currentMenu->y + CRISPY_LINEHEIGHT * y, crispy_menu_text);
 }
@@ -1437,7 +1437,7 @@ static void M_DrawCrispnessMultiItem(int y, char *item, multiitem_t *multiitem, 
 static void M_DrawCrispnessGoto(int y, char *item)
 {
     M_snprintf(crispy_menu_text, sizeof(crispy_menu_text),
-        "%s%s", crstr[CR_GOLD], item);
+        "%s%s", crstr[static_cast<int>(cr_t::CR_GOLD)], item);
     M_WriteText(currentMenu->x, currentMenu->y + CRISPY_LINEHEIGHT * y, crispy_menu_text);
 }
 
@@ -1867,7 +1867,7 @@ void M_DrawThermo(int x,
 
     if (!thermDot)
     {
-        dp_translation = cr[CR_DARK];
+        dp_translation = cr_colors[static_cast<int>(cr_t::CR_DARK)];
     }
 
     xx = x;
@@ -1887,7 +1887,7 @@ void M_DrawThermo(int x,
     if (thermDot >= thermWidth)
     {
         thermDot       = thermWidth - 1;
-        dp_translation = cr[CR_DARK];
+        dp_translation = cr_colors[static_cast<int>(cr_t::CR_DARK)];
     }
 
     V_DrawPatchDirect((x + 8) + thermDot * 8, y,
@@ -1930,7 +1930,7 @@ int M_StringWidth(const char *string)
         // [crispy] correctly center colorized strings
         if (string[i] == cr_esc)
         {
-            if (string[i + 1] >= '0' && string[i + 1] <= '0' + CRMAX - 1)
+            if (string[i + 1] >= '0' && string[i + 1] <= '0' + static_cast<int>(cr_t::CRMAX) - 1)
             {
                 i++;
                 continue;
@@ -1998,10 +1998,10 @@ void M_WriteText(int x,
         // [crispy] support multi-colored text
         if (c == cr_esc)
         {
-            if (*ch >= '0' && *ch <= '0' + CRMAX - 1)
+            if (*ch >= '0' && *ch <= '0' + static_cast<int>(cr_t::CRMAX) - 1)
             {
                 c              = *ch++;
-                dp_translation = cr[(int)(c - '0')];
+                dp_translation = cr_colors[(int)(c - '0')];
                 continue;
             }
         }
@@ -2909,7 +2909,7 @@ void M_Drawer(void)
         {
             // [crispy] shade unavailable menu items
             if ((currentMenu == &MainDef && i == savegame && (!usergame || gamestate != GS_LEVEL)) || (currentMenu == &OptionsDef && i == endgame && (!usergame || netgame)) || (currentMenu == &MainDef && i == loadgame && (netgame && !demoplayback)) || (currentMenu == &MainDef && i == newgame && (demorecording || (netgame && !demoplayback))))
-                dp_translation = cr[CR_DARK];
+                dp_translation = cr_colors[static_cast<int>(cr_t::CR_DARK)];
 
             if (currentMenu == &OptionsDef)
             {
@@ -2931,7 +2931,7 @@ void M_Drawer(void)
     if (currentMenu == CrispnessMenus[crispness_cur])
     {
         char item[4];
-        M_snprintf(item, sizeof(item), "%s>", whichSkull ? crstr[CR_NONE] : crstr[CR_DARK]);
+        M_snprintf(item, sizeof(item), "%s>", whichSkull ? crstr[static_cast<int>(cr_t::CR_NONE)] : crstr[static_cast<int>(cr_t::CR_DARK)]);
         M_WriteText(currentMenu->x - 8, currentMenu->y + CRISPY_LINEHEIGHT * itemOn, item);
         dp_translation = NULL;
     }
@@ -3144,13 +3144,13 @@ void M_ForceLoadGame()
     savegwarning =
         savemaplumpinfo ?
             M_StringJoin("This savegame requires the file\n",
-                crstr[CR_GOLD], savewadfilename, crstr[CR_NONE], "\n",
-                "to restore ", crstr[CR_GOLD], savemaplumpinfo->name, crstr[CR_NONE], " .\n\n",
+                crstr[static_cast<int>(cr_t::CR_GOLD)], savewadfilename, crstr[static_cast<int>(cr_t::CR_NONE)], "\n",
+                "to restore ", crstr[static_cast<int>(cr_t::CR_GOLD)], savemaplumpinfo->name, crstr[static_cast<int>(cr_t::CR_NONE)], " .\n\n",
                 "Continue to restore from\n",
-                crstr[CR_GOLD], W_WadNameForLump(savemaplumpinfo), crstr[CR_NONE], " ?\n\n",
+                crstr[static_cast<int>(cr_t::CR_GOLD)], W_WadNameForLump(savemaplumpinfo), crstr[static_cast<int>(cr_t::CR_NONE)], " ?\n\n",
                 PRESSYN, NULL) :
             M_StringJoin("This savegame requires the file\n",
-                crstr[CR_GOLD], savewadfilename, crstr[CR_NONE], "\n",
+                crstr[static_cast<int>(cr_t::CR_GOLD)], savewadfilename, crstr[static_cast<int>(cr_t::CR_NONE)], "\n",
                 "to restore a map that is\n",
                 "currently not available!\n\n",
                 PRESSKEY, NULL);
@@ -3179,7 +3179,7 @@ void M_ConfirmDeleteGame()
 {
     savegwarning =
         M_StringJoin("delete savegame\n\n",
-            crstr[CR_GOLD], savegamestrings[itemOn], crstr[CR_NONE], " ?\n\n",
+            crstr[static_cast<int>(cr_t::CR_GOLD)], savegamestrings[itemOn], crstr[static_cast<int>(cr_t::CR_NONE)], " ?\n\n",
             PRESSYN, NULL);
 
     M_StartMessage(savegwarning, M_ConfirmDeleteGameResponse, true);

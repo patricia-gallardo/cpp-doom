@@ -919,8 +919,8 @@ boolean
                 const char *const killed    = (gameversion == exe_chex) ? "returned" : "killed";
 
                 M_snprintf(msg, sizeof(msg), "%s%d %s%s%s %s",
-                    crstr[CR_GOLD],
-                    killcount, crstr[CR_NONE], monster, (killcount == 1) ? "" : "s", killed);
+                    crstr[static_cast<int>(cr_t::CR_GOLD)],
+                    killcount, crstr[static_cast<int>(cr_t::CR_NONE)], monster, (killcount == 1) ? "" : "s", killed);
                 plyr->message = msg;
             }
             // [crispy] implement Crispy Doom's "spechits" cheat
@@ -929,8 +929,8 @@ boolean
                 int triggeredlines = ST_cheat_spechits();
 
                 M_snprintf(msg, sizeof(msg), "%s%d %sSpecial Line%s Triggered",
-                    crstr[CR_GOLD],
-                    triggeredlines, crstr[CR_NONE], (triggeredlines == 1) ? "" : "s");
+                    crstr[static_cast<int>(cr_t::CR_GOLD)],
+                    triggeredlines, crstr[static_cast<int>(cr_t::CR_NONE)], (triggeredlines == 1) ? "" : "s");
                 plyr->message = msg;
             }
             // [crispy] implement PrBoom+'s "notarget" cheat
@@ -971,7 +971,7 @@ boolean
                 }
 
                 M_snprintf(msg, sizeof(msg), "Notarget Mode %s%s",
-                    crstr[CR_GREEN],
+                    crstr[static_cast<int>(cr_t::CR_GREEN)],
                     (plyr->cheats & CF_NOTARGET) ? "ON" : "OFF");
                 plyr->message = msg;
             }
@@ -981,7 +981,7 @@ boolean
                 plyr->cheats ^= CF_NOMOMENTUM;
 
                 M_snprintf(msg, sizeof(msg), "Nomomentum Mode %s%s",
-                    crstr[CR_GREEN],
+                    crstr[static_cast<int>(cr_t::CR_GREEN)],
                     (plyr->cheats & CF_NOMOMENTUM) ? "ON" : "OFF");
                 plyr->message = msg;
             }
@@ -1087,7 +1087,7 @@ boolean
                 if (!plyr->message)
                 {
                     M_snprintf(msg, sizeof(msg), "Weapon %s%d%s %s",
-                        crstr[CR_GOLD], w + 1, crstr[CR_NONE],
+                        crstr[static_cast<int>(cr_t::CR_GOLD)], w + 1, crstr[static_cast<int>(cr_t::CR_NONE)],
                         plyr->weaponowned[w] ? "added" : "removed");
                     plyr->message = msg;
                 }
@@ -1107,7 +1107,7 @@ boolean
             crispy->flashinghom = !crispy->flashinghom;
 
             M_snprintf(msg, sizeof(msg), "HOM Detection %s%s",
-                crstr[CR_GREEN],
+                crstr[static_cast<int>(cr_t::CR_GREEN)],
                 (crispy->flashinghom) ? "ON" : "OFF");
             plyr->message = msg;
         }
@@ -1701,13 +1701,13 @@ static byte *ST_WidgetColor(int i)
             int fullammo = maxammo[weaponinfo[plyr->readyweapon].ammo];
 
             if (ammo < fullammo / 4)
-                return cr[CR_RED];
+                return cr_colors[static_cast<int>(cr_t::CR_RED)];
             else if (ammo < fullammo / 2)
-                return cr[CR_GOLD];
+                return cr_colors[static_cast<int>(cr_t::CR_GOLD)];
             else if (ammo <= fullammo)
-                return cr[CR_GREEN];
+                return cr_colors[static_cast<int>(cr_t::CR_GREEN)];
             else
-                return cr[CR_BLUE];
+                return cr_colors[static_cast<int>(cr_t::CR_BLUE)];
         }
         break;
     }
@@ -1716,15 +1716,15 @@ static byte *ST_WidgetColor(int i)
 
         // [crispy] Invulnerability powerup and God Mode cheat turn Health values gray
         if (plyr->cheats & CF_GODMODE || plyr->powers[pw_invulnerability])
-            return cr[CR_GRAY];
+            return cr_colors[static_cast<int>(cr_t::CR_GRAY)];
         else if (health < 25)
-            return cr[CR_RED];
+            return cr_colors[static_cast<int>(cr_t::CR_RED)];
         else if (health < 50)
-            return cr[CR_GOLD];
+            return cr_colors[static_cast<int>(cr_t::CR_GOLD)];
         else if (health <= 100)
-            return cr[CR_GREEN];
+            return cr_colors[static_cast<int>(cr_t::CR_GREEN)];
         else
-            return cr[CR_BLUE];
+            return cr_colors[static_cast<int>(cr_t::CR_BLUE)];
 
         break;
     }
@@ -1732,37 +1732,37 @@ static byte *ST_WidgetColor(int i)
         int frags = st_fragscount;
 
         if (frags < 0)
-            return cr[CR_RED];
+            return cr_colors[static_cast<int>(cr_t::CR_RED)];
         else if (frags == 0)
-            return cr[CR_GOLD];
+            return cr_colors[static_cast<int>(cr_t::CR_GOLD)];
         else
-            return cr[CR_GREEN];
+            return cr_colors[static_cast<int>(cr_t::CR_GREEN)];
 
         break;
     }
     case hudcolor_armor: {
         // [crispy] Invulnerability powerup and God Mode cheat turn Armor values gray
         if (plyr->cheats & CF_GODMODE || plyr->powers[pw_invulnerability])
-            return cr[CR_GRAY];
+            return cr_colors[static_cast<int>(cr_t::CR_GRAY)];
         // [crispy] color by armor type
         else if (plyr->armortype >= 2)
-            return cr[CR_BLUE];
+            return cr_colors[static_cast<int>(cr_t::CR_BLUE)];
         else if (plyr->armortype == 1)
-            return cr[CR_GREEN];
+            return cr_colors[static_cast<int>(cr_t::CR_GREEN)];
         else if (plyr->armortype == 0)
-            return cr[CR_RED];
+            return cr_colors[static_cast<int>(cr_t::CR_RED)];
         /*
             // [crispy] alternatively, color by armor points
             int armor = plyr->armorpoints;
 
             if (armor < 25)
-                return cr[CR_RED];
+                return cr[static_cast<int>(cr_t::CR_RED)];
             else if (armor < 50)
-                return cr[CR_GOLD];
+                return cr[static_cast<int>(cr_t::CR_GOLD)];
             else if (armor <= 100)
-                return cr[CR_GREEN];
+                return cr[static_cast<int>(cr_t::CR_GREEN)];
             else
-                return cr[CR_BLUE];
+                return cr[static_cast<int>(cr_t::CR_BLUE)];
 */
         break;
     }
@@ -2332,12 +2332,12 @@ void ST_Init(void)
         char str_behold[80];
         M_snprintf(str_behold, sizeof(str_behold),
             "in%sV%suln, %sS%str, %sI%snviso, %sR%sad, %sA%sllmap, or %sL%site-amp",
-            crstr[CR_GOLD], crstr[CR_NONE],
-            crstr[CR_GOLD], crstr[CR_NONE],
-            crstr[CR_GOLD], crstr[CR_NONE],
-            crstr[CR_GOLD], crstr[CR_NONE],
-            crstr[CR_GOLD], crstr[CR_NONE],
-            crstr[CR_GOLD], crstr[CR_NONE]);
+            crstr[static_cast<int>(cr_t::CR_GOLD)], crstr[static_cast<int>(cr_t::CR_NONE)],
+            crstr[static_cast<int>(cr_t::CR_GOLD)], crstr[static_cast<int>(cr_t::CR_NONE)],
+            crstr[static_cast<int>(cr_t::CR_GOLD)], crstr[static_cast<int>(cr_t::CR_NONE)],
+            crstr[static_cast<int>(cr_t::CR_GOLD)], crstr[static_cast<int>(cr_t::CR_NONE)],
+            crstr[static_cast<int>(cr_t::CR_GOLD)], crstr[static_cast<int>(cr_t::CR_NONE)],
+            crstr[static_cast<int>(cr_t::CR_GOLD)], crstr[static_cast<int>(cr_t::CR_NONE)]);
         DEH_AddStringReplacement(STSTR_BEHOLD, str_behold);
     }
 
@@ -2359,7 +2359,7 @@ void ST_DrawDemoTimer(const int time)
     x = (viewwindowx >> crispy->hires) + (scaledviewwidth >> crispy->hires) - DELTAWIDTH;
 
     // [crispy] draw the Demo Timer widget with gray numbers
-    dp_translation = cr[CR_GRAY];
+    dp_translation = cr_colors[static_cast<int>(cr_t::CR_GRAY)];
     dp_translucent = (gamestate == GS_LEVEL);
 
     while (n-- > 0)

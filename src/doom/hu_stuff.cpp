@@ -418,7 +418,7 @@ static void CrispyReplaceColor(char *str, const int cr, const char *col)
     }
 
     M_snprintf(col_replace, sizeof(col_replace),
-        "%s%s%s", crstr[cr], col, crstr[CR_NONE]);
+        "%s%s%s", crstr[cr], col, crstr[static_cast<int>(cr_t::CR_NONE)]);
     str_replace = M_StringReplace(str, col, col_replace);
     DEH_AddStringReplacement(str, str_replace);
     free(str_replace);
@@ -443,21 +443,21 @@ void HU_Init(void)
 
     if (gameversion == exe_chex)
     {
-        cr_stat  = crstr[CR_GREEN];
-        cr_stat2 = crstr[CR_GOLD];
+        cr_stat  = crstr[static_cast<int>(cr_t::CR_GREEN)];
+        cr_stat2 = crstr[static_cast<int>(cr_t::CR_GOLD)];
         kills    = "F ";
     }
     else
     {
         if (gameversion == exe_hacx)
         {
-            cr_stat = crstr[CR_BLUE];
+            cr_stat = crstr[static_cast<int>(cr_t::CR_BLUE)];
         }
         else
         {
-            cr_stat = crstr[CR_RED];
+            cr_stat = crstr[static_cast<int>(cr_t::CR_RED)];
         }
-        cr_stat2 = crstr[CR_GREEN];
+        cr_stat2 = crstr[static_cast<int>(cr_t::CR_GREEN)];
         kills    = "K ";
     }
 
@@ -496,24 +496,24 @@ void HU_Init(void)
     if (!M_ParmExists("-nodeh"))
     {
         // [crispy] colorize keycard and skull key messages
-        CrispyReplaceColor(const_cast<char *>(GOTBLUECARD), CR_BLUE, " blue ");
-        CrispyReplaceColor(const_cast<char *>(GOTBLUESKUL), CR_BLUE, " blue ");
-        CrispyReplaceColor(const_cast<char *>(PD_BLUEO), CR_BLUE, " blue ");
-        CrispyReplaceColor(const_cast<char *>(PD_BLUEK), CR_BLUE, " blue ");
-        CrispyReplaceColor(const_cast<char *>(GOTREDCARD), CR_RED, " red ");
-        CrispyReplaceColor(const_cast<char *>(GOTREDSKULL), CR_RED, " red ");
-        CrispyReplaceColor(const_cast<char *>(PD_REDO), CR_RED, " red ");
-        CrispyReplaceColor(const_cast<char *>(PD_REDK), CR_RED, " red ");
-        CrispyReplaceColor(const_cast<char *>(GOTYELWCARD), CR_GOLD, " yellow ");
-        CrispyReplaceColor(const_cast<char *>(GOTYELWSKUL), CR_GOLD, " yellow ");
-        CrispyReplaceColor(const_cast<char *>(PD_YELLOWO), CR_GOLD, " yellow ");
-        CrispyReplaceColor(const_cast<char *>(PD_YELLOWK), CR_GOLD, " yellow ");
+        CrispyReplaceColor(const_cast<char *>(GOTBLUECARD), static_cast<int>(cr_t::CR_BLUE), " blue ");
+        CrispyReplaceColor(const_cast<char *>(GOTBLUESKUL), static_cast<int>(cr_t::CR_BLUE), " blue ");
+        CrispyReplaceColor(const_cast<char *>(PD_BLUEO), static_cast<int>(cr_t::CR_BLUE), " blue ");
+        CrispyReplaceColor(const_cast<char *>(PD_BLUEK), static_cast<int>(cr_t::CR_BLUE), " blue ");
+        CrispyReplaceColor(const_cast<char *>(GOTREDCARD), static_cast<int>(cr_t::CR_RED), " red ");
+        CrispyReplaceColor(const_cast<char *>(GOTREDSKULL), static_cast<int>(cr_t::CR_RED), " red ");
+        CrispyReplaceColor(const_cast<char *>(PD_REDO), static_cast<int>(cr_t::CR_RED), " red ");
+        CrispyReplaceColor(const_cast<char *>(PD_REDK), static_cast<int>(cr_t::CR_RED), " red ");
+        CrispyReplaceColor(const_cast<char *>(GOTYELWCARD), static_cast<int>(cr_t::CR_GOLD), " yellow ");
+        CrispyReplaceColor(const_cast<char *>(GOTYELWSKUL), static_cast<int>(cr_t::CR_GOLD), " yellow ");
+        CrispyReplaceColor(const_cast<char *>(PD_YELLOWO), static_cast<int>(cr_t::CR_GOLD), " yellow ");
+        CrispyReplaceColor(const_cast<char *>(PD_YELLOWK), static_cast<int>(cr_t::CR_GOLD), " yellow ");
 
         // [crispy] colorize multi-player messages
-        CrispyReplaceColor(const_cast<char *>(HUSTR_PLRGREEN), CR_GREEN, "Green: ");
-        CrispyReplaceColor(const_cast<char *>(HUSTR_PLRINDIGO), CR_GRAY, "Indigo: ");
-        CrispyReplaceColor(const_cast<char *>(HUSTR_PLRBROWN), CR_GOLD, "Brown: ");
-        CrispyReplaceColor(const_cast<char *>(HUSTR_PLRRED), CR_RED, "Red: ");
+        CrispyReplaceColor(const_cast<char *>(HUSTR_PLRGREEN), static_cast<int>(cr_t::CR_GREEN), "Green: ");
+        CrispyReplaceColor(const_cast<char *>(HUSTR_PLRINDIGO), static_cast<int>(cr_t::CR_GRAY), "Indigo: ");
+        CrispyReplaceColor(const_cast<char *>(HUSTR_PLRBROWN), static_cast<int>(cr_t::CR_GOLD), "Brown: ");
+        CrispyReplaceColor(const_cast<char *>(HUSTR_PLRRED), static_cast<int>(cr_t::CR_RED), "Red: ");
     }
 }
 
@@ -722,7 +722,7 @@ void HU_Start(void)
     {
         char *m;
 
-        ptr = M_StringJoin(crstr[CR_GOLD], W_WadNameForLump(maplumpinfo), ": ", crstr[CR_GRAY], maplumpinfo->name, NULL);
+        ptr = M_StringJoin(crstr[static_cast<int>(cr_t::CR_GOLD)], W_WadNameForLump(maplumpinfo), ": ", crstr[static_cast<int>(cr_t::CR_GRAY)], maplumpinfo->name, NULL);
         m   = ptr;
 
         while (*m)
@@ -736,7 +736,7 @@ void HU_Start(void)
     s = DEH_String(s);
 
     // [crispy] print the map title in white from the first colon onward
-    M_snprintf(buf, sizeof(buf), "%s%s", ":", crstr[CR_GRAY]);
+    M_snprintf(buf, sizeof(buf), "%s%s", ":", crstr[static_cast<int>(cr_t::CR_GRAY)]);
     ptr = M_StringReplace(s, ":", buf);
     s   = ptr;
 
@@ -821,7 +821,7 @@ void HU_Drawer(void)
 
     if (secret_on && !menuactive)
     {
-        dp_translation = cr[CR_GOLD];
+        dp_translation = cr_colors[static_cast<int>(cr_t::CR_GOLD)];
         HUlib_drawSText(&w_secret);
     }
 
@@ -833,7 +833,7 @@ void HU_Drawer(void)
     HUlib_drawIText(&w_chat);
 
     if (crispy->coloredhud & COLOREDHUD_TEXT)
-        dp_translation = cr[CR_GOLD];
+        dp_translation = cr_colors[static_cast<int>(cr_t::CR_GOLD)];
 
     if (automapactive)
     {
@@ -1014,24 +1014,24 @@ void HU_Ticker(void)
     {
         // [crispy] count spawned monsters
         if (extrakills)
-            M_snprintf(str, sizeof(str), "%s%s%s%d/%d+%d", cr_stat, kills, crstr[CR_GRAY],
+            M_snprintf(str, sizeof(str), "%s%s%s%d/%d+%d", cr_stat, kills, crstr[static_cast<int>(cr_t::CR_GRAY)],
                 plr->killcount, totalkills, extrakills);
         else
-            M_snprintf(str, sizeof(str), "%s%s%s%d/%d", cr_stat, kills, crstr[CR_GRAY],
+            M_snprintf(str, sizeof(str), "%s%s%s%d/%d", cr_stat, kills, crstr[static_cast<int>(cr_t::CR_GRAY)],
                 plr->killcount, totalkills);
         HUlib_clearTextLine(&w_kills);
         s = str;
         while (*s)
             HUlib_addCharToTextLine(&w_kills, *(s++));
 
-        M_snprintf(str, sizeof(str), "%sI %s%d/%d", cr_stat, crstr[CR_GRAY],
+        M_snprintf(str, sizeof(str), "%sI %s%d/%d", cr_stat, crstr[static_cast<int>(cr_t::CR_GRAY)],
             plr->itemcount, totalitems);
         HUlib_clearTextLine(&w_items);
         s = str;
         while (*s)
             HUlib_addCharToTextLine(&w_items, *(s++));
 
-        M_snprintf(str, sizeof(str), "%sS %s%d/%d", cr_stat, crstr[CR_GRAY],
+        M_snprintf(str, sizeof(str), "%sS %s%d/%d", cr_stat, crstr[static_cast<int>(cr_t::CR_GRAY)],
             plr->secretcount, totalsecret);
         HUlib_clearTextLine(&w_scrts);
         s = str;
@@ -1044,10 +1044,10 @@ void HU_Ticker(void)
         const int time = leveltime / TICRATE;
 
         if (time >= 3600)
-            M_snprintf(str, sizeof(str), "%s%02d:%02d:%02d", crstr[CR_GRAY],
+            M_snprintf(str, sizeof(str), "%s%02d:%02d:%02d", crstr[static_cast<int>(cr_t::CR_GRAY)],
                 time / 3600, (time % 3600) / 60, time % 60);
         else
-            M_snprintf(str, sizeof(str), "%s%02d:%02d", crstr[CR_GRAY],
+            M_snprintf(str, sizeof(str), "%s%02d:%02d", crstr[static_cast<int>(cr_t::CR_GRAY)],
                 time / 60, time % 60);
         HUlib_clearTextLine(&w_ltime);
         s = str;
@@ -1057,21 +1057,21 @@ void HU_Ticker(void)
 
     if (crispy->playercoords == WIDGETS_ALWAYS || (automapactive && crispy->playercoords == WIDGETS_AUTOMAP))
     {
-        M_snprintf(str, sizeof(str), "%sX %s%-5d", cr_stat2, crstr[CR_GRAY],
+        M_snprintf(str, sizeof(str), "%sX %s%-5d", cr_stat2, crstr[static_cast<int>(cr_t::CR_GRAY)],
             (plr->mo->x) >> FRACBITS);
         HUlib_clearTextLine(&w_coordx);
         s = str;
         while (*s)
             HUlib_addCharToTextLine(&w_coordx, *(s++));
 
-        M_snprintf(str, sizeof(str), "%sY %s%-5d", cr_stat2, crstr[CR_GRAY],
+        M_snprintf(str, sizeof(str), "%sY %s%-5d", cr_stat2, crstr[static_cast<int>(cr_t::CR_GRAY)],
             (plr->mo->y) >> FRACBITS);
         HUlib_clearTextLine(&w_coordy);
         s = str;
         while (*s)
             HUlib_addCharToTextLine(&w_coordy, *(s++));
 
-        M_snprintf(str, sizeof(str), "%sA %s%-5d", cr_stat2, crstr[CR_GRAY],
+        M_snprintf(str, sizeof(str), "%sA %s%-5d", cr_stat2, crstr[static_cast<int>(cr_t::CR_GRAY)],
             (plr->mo->angle) / ANG1);
         HUlib_clearTextLine(&w_coorda);
         s = str;
@@ -1081,7 +1081,7 @@ void HU_Ticker(void)
 
     if (plr->powers[pw_showfps])
     {
-        M_snprintf(str, sizeof(str), "%s%-4d %sFPS", crstr[CR_GRAY], crispy->fps, cr_stat2);
+        M_snprintf(str, sizeof(str), "%s%-4d %sFPS", crstr[static_cast<int>(cr_t::CR_GRAY)], crispy->fps, cr_stat2);
         HUlib_clearTextLine(&w_fps);
         s = str;
         while (*s)

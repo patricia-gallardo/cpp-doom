@@ -69,7 +69,7 @@ static const byte cr_red2green[256] = { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12
     224, 225, 226, 227, 228, 229, 230, 231, 232, 233, 234, 235, 236, 237, 238, 239,
     240, 241, 242, 243, 244, 245, 246, 247, 248, 249, 250, 251, 252, 253, 254, 255 };
 
-byte *cr[] = {
+byte *cr_colors[] = {
     (byte *)&cr_none,
     (byte *)&cr_dark,
     (byte *)&cr_gray,
@@ -265,7 +265,7 @@ byte V_Colorize(byte *playpal, int cr, byte source, boolean keepgray109)
     vect rgb, hsv;
 
     // [crispy] preserve gray drop shadow in IWAD status bar numbers
-    if (cr == CR_NONE || (keepgray109 && source == 109))
+    if (cr == static_cast<int>(cr_t::CR_NONE) || (keepgray109 && source == 109))
         return source;
 
     rgb.x = playpal[3 * source + 0] / 255.;
@@ -274,21 +274,21 @@ byte V_Colorize(byte *playpal, int cr, byte source, boolean keepgray109)
 
     rgb_to_hsv(&rgb, &hsv);
 
-    if (cr == CR_DARK)
+    if (cr == static_cast<int>(cr_t::CR_DARK))
         hsv.z *= 0.5;
-    else if (cr == CR_GRAY)
+    else if (cr == static_cast<int>(cr_t::CR_GRAY))
         hsv.y = 0;
     else
     {
         // [crispy] hack colors to full saturation
         hsv.y = 1.0;
 
-        if (cr == CR_GREEN)
+        if (cr == static_cast<int>(cr_t::CR_GREEN))
         {
             //	    hsv.x = 135./360.;
             hsv.x = (150. * hsv.z + 120. * (1. - hsv.z)) / 360.;
         }
-        else if (cr == CR_GOLD)
+        else if (cr == static_cast<int>(cr_t::CR_GOLD))
         {
             //	    hsv.x = 45./360.;
             //	    hsv.x = (50. * hsv.z + 30. * (1. - hsv.z))/360.;
@@ -296,11 +296,11 @@ byte V_Colorize(byte *playpal, int cr, byte source, boolean keepgray109)
             hsv.y = 1.0 - 0.4 * hsv.z;
             hsv.z = 0.2 + 0.8 * hsv.z;
         }
-        else if (cr == CR_RED)
+        else if (cr == static_cast<int>(cr_t::CR_RED))
         {
             hsv.x = 0.;
         }
-        else if (cr == CR_BLUE)
+        else if (cr == static_cast<int>(cr_t::CR_BLUE))
         {
             hsv.x = 240. / 360.;
         }
