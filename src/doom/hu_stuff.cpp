@@ -86,11 +86,11 @@ char *chat_macros[10] = {
     const_cast<char *>(HUSTR_CHATMACRO9)
 };
 
-const char *player_names[] = {
-    HUSTR_PLRGREEN,
-    HUSTR_PLRINDIGO,
-    HUSTR_PLRBROWN,
-    HUSTR_PLRRED
+char *player_names[] = {
+    const_cast<char *>(HUSTR_PLRGREEN),
+    const_cast<char *>(HUSTR_PLRINDIGO),
+    const_cast<char *>(HUSTR_PLRBROWN),
+    const_cast<char *>(HUSTR_PLRRED)
 };
 
 char                 chat_char; // remove later.
