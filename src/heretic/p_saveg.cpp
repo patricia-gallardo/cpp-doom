@@ -742,7 +742,13 @@ static void saveg_write_thinker_t(thinker_t *str)
     SV_WritePtr(str->next);
 
     // think_t function;
-    SV_WritePtr(reinterpret_cast<const void *>(str->function));
+    const void *pointer = std::visit(overloaded {
+                                         [](const std::monostate &) { return static_cast<void *>(nullptr); },
+                                         [](const auto &function) {
+                                             return reinterpret_cast<void *>(function);
+                                         } },
+        str->function);
+    SV_WritePtr(pointer);
 }
 
 

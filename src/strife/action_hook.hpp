@@ -27,6 +27,11 @@ inline constexpr std::size_t alternative_index_v = alternative_index<T, U>::valu
 
 static_assert(alternative_index_v<long, std::variant<int, long, bool>> == 1);
 
+template<class... Ts>
+struct overloaded : Ts... { using Ts::operator()...; };
+template<class... Ts>
+overloaded(Ts...) -> overloaded<Ts...>;
+
 using mobj_t        = struct mobj_s;
 using player_t      = struct player_s;
 using pspdef_t      = struct pspdef_s;
