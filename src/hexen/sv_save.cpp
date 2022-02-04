@@ -692,7 +692,7 @@ static void StreamIn_thinker_t(thinker_t *str)
     // think_t function;
     // Function pointer is discarded:
     str->function = reinterpret_cast<zero_param_action>(SV_ReadPtr());
-    str->function = std::monostate();
+    str->function = null_hook();
 }
 
 static void StreamOut_thinker_t(thinker_t *str)
@@ -2523,7 +2523,7 @@ static void UnarchiveWorld(void)
         sec->special = SV_ReadWord();
         sec->tag = SV_ReadWord();
         sec->seqType = static_cast<seqtype_t>(SV_ReadWord());
-        sec->specialdata = std::monostate();
+        sec->specialdata = null_hook();
         sec->soundtarget = 0;
     }
     for (i = 0, li = lines; i < numlines; i++, li++)
@@ -2746,7 +2746,7 @@ static thinkInfo_t ThinkerInfo[] = {
         T_Light,
         StreamOut_light_t,
         StreamIn_light_t,
-        std::monostate(),
+        null_hook(),
      sizeof(light_t)
     },
     {
@@ -2762,7 +2762,7 @@ static thinkInfo_t ThinkerInfo[] = {
         T_Phase,
         StreamOut_phase_t,
         StreamIn_phase_t,
-        std::monostate(),
+        null_hook(),
      sizeof(phase_t)
     },
     {
@@ -2770,7 +2770,7 @@ static thinkInfo_t ThinkerInfo[] = {
         T_InterpretACS,
         StreamOut_acs_t,
         StreamIn_acs_t,
-        std::monostate(),
+        null_hook(),
      sizeof(acs_t)
     },
     {
@@ -2778,7 +2778,7 @@ static thinkInfo_t ThinkerInfo[] = {
         T_RotatePoly,
         StreamOut_polyevent_t,
         StreamIn_polyevent_t,
-        std::monostate(),
+        null_hook(),
      sizeof(polyevent_t)
     },
     {
@@ -2794,7 +2794,7 @@ static thinkInfo_t ThinkerInfo[] = {
         T_MovePoly,
         StreamOut_polyevent_t,
         StreamIn_polyevent_t,
-        std::monostate(),
+        null_hook(),
      sizeof(polyevent_t)
     },
     {
@@ -2802,7 +2802,7 @@ static thinkInfo_t ThinkerInfo[] = {
         T_PolyDoor,
         StreamOut_polydoor_t,
         StreamIn_polydoor_t,
-        std::monostate(),
+        null_hook(),
      sizeof(polydoor_t)
     },
     {
@@ -2813,7 +2813,7 @@ static thinkInfo_t ThinkerInfo[] = {
         RestoreSSThinker,
      sizeof(floorWaggle_t)
     },
-    { TC_NULL, std::monostate(), std::monostate(), std::monostate(), std::monostate(), 0},
+    { TC_NULL, null_hook(), null_hook(), null_hook(), null_hook(), 0},
 };
 
 //==========================================================================

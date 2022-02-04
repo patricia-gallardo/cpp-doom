@@ -223,7 +223,7 @@ void EV_StopPlat(line_t * line, byte * args)
 
         if (activeplats[i]->tag != 0)
         {
-            activeplats[i]->sector->specialdata = std::monostate();
+            activeplats[i]->sector->specialdata = null_hook();
             P_TagFinished(activeplats[i]->sector->tag);
             P_RemoveThinker(&activeplats[i]->thinker);
             activeplats[i] = NULL;
@@ -267,7 +267,7 @@ void P_RemoveActivePlat(plat_t * plat)
     for (i = 0; i < MAXPLATS; i++)
         if (plat == activeplats[i])
         {
-            (activeplats[i])->sector->specialdata = std::monostate();
+            (activeplats[i])->sector->specialdata = null_hook();
             P_TagFinished(plat->sector->tag);
             P_RemoveThinker(&(activeplats[i])->thinker);
             activeplats[i] = NULL;

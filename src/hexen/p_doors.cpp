@@ -80,7 +80,7 @@ void T_VerticalDoor(vldoor_t * door)
                 {
                     case DREV_NORMAL:
                     case DREV_CLOSE:
-                        door->sector->specialdata = std::monostate();
+                        door->sector->specialdata = null_hook();
                         P_TagFinished(door->sector->tag);
                         P_RemoveThinker(&door->thinker);        // unlink and free
                         break;
@@ -118,7 +118,7 @@ void T_VerticalDoor(vldoor_t * door)
                         break;
                     case DREV_CLOSE30THENOPEN:
                     case DREV_OPEN:
-                        door->sector->specialdata = std::monostate();
+                        door->sector->specialdata = null_hook();
                         P_TagFinished(door->sector->tag);
                         P_RemoveThinker(&door->thinker);        // unlink and free
                         break;

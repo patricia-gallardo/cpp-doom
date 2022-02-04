@@ -242,7 +242,7 @@ void P_RemoveActiveCeiling(ceiling_t * c)
     for (i = 0; i < MAXCEILINGS; i++)
         if (activeceilings[i] == c)
         {
-            activeceilings[i]->sector->specialdata = std::monostate();
+            activeceilings[i]->sector->specialdata = null_hook();
             P_RemoveThinker(&activeceilings[i]->thinker);
             P_TagFinished(activeceilings[i]->sector->tag);
             activeceilings[i] = NULL;
@@ -292,7 +292,7 @@ int EV_CeilingCrushStop(line_t * line, byte * args)
         {
             rtn = 1;
             SN_StopSequence((mobj_t *) & activeceilings[i]->sector->soundorg);
-            activeceilings[i]->sector->specialdata = std::monostate();
+            activeceilings[i]->sector->specialdata = null_hook();
             P_RemoveThinker(&activeceilings[i]->thinker);
             P_TagFinished(activeceilings[i]->sector->tag);
             activeceilings[i] = NULL;

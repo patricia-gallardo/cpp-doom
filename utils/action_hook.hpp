@@ -52,6 +52,7 @@ using lightflash_t  = struct lightflash_s;
 using strobe_t      = struct strobe_s;
 using glow_t        = struct glow_s;
 
+using null_hook                = std::monostate;
 using zero_param_action        = void (*)();
 using mobj_param_action        = void (*)(mobj_t *);
 using player_psp_param_action  = void (*)(player_t *, pspdef_t *);
@@ -72,7 +73,7 @@ using lightflash_param_action  = void (*)(lightflash_t *);
 using strobe_param_action      = void (*)(strobe_t *);
 using glow_param_action        = void (*)(glow_t *);
 using action_hook              = std::variant<
-    std::monostate,
+    null_hook,
     zero_param_action,
     mobj_param_action,
     player_psp_param_action,
@@ -93,7 +94,7 @@ using action_hook              = std::variant<
     strobe_param_action,
     glow_param_action>;
 
-static_assert(alternative_index_v<std::monostate, action_hook> == 0);
+static_assert(alternative_index_v<null_hook, action_hook> == 0);
 
 static_assert(alternative_index_v<mobj_param_action, action_hook> == 2);
 constexpr int mobj_param_action_hook = alternative_index_v<mobj_param_action, action_hook>;

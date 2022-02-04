@@ -732,7 +732,7 @@ static void saveg_read_thinker_t(thinker_t *str)
 
     // think_t function;
     SV_ReadLong();
-    str->function = std::monostate();
+    str->function = null_hook();
 }
 
 static void saveg_write_thinker_t(thinker_t *str)
@@ -743,7 +743,7 @@ static void saveg_write_thinker_t(thinker_t *str)
 
     // think_t function;
     const void *pointer = std::visit(overloaded {
-                                         [](const std::monostate &) { return static_cast<void *>(nullptr); },
+                                         [](const null_hook &) { return static_cast<void *>(nullptr); },
                                          [](const auto &function) {
                                              return reinterpret_cast<void *>(function);
                                          } },

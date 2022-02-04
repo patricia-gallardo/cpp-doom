@@ -247,7 +247,7 @@ int EV_CeilingCrushStop(line_t * line)
             (activeceilings[i]->direction != 0))
         {
             activeceilings[i]->olddirection = activeceilings[i]->direction;
-            activeceilings[i]->thinker.function = std::monostate();
+            activeceilings[i]->thinker.function = null_hook();
             activeceilings[i]->direction = 0;   // in-stasis
             rtn = 1;
         }

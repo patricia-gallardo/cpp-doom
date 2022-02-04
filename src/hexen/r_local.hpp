@@ -65,7 +65,7 @@ typedef struct
 struct line_s;
 
 using data_or_hook = std::variant<
-    std::monostate,
+    null_hook,
     thinker_param_action,
     action_hook,
     ceiling_t *,

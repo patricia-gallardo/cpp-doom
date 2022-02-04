@@ -233,7 +233,7 @@ static boolean GetActionPointerForOffset(int offset, void **result)
         if (action_pointers[i].offsets[deh_hhe_version] == offset)
         {
             void *pointer = std::visit(overloaded {
-                                           [](const std::monostate &) { return static_cast<void *>(nullptr); },
+                                           [](const null_hook &) { return static_cast<void *>(nullptr); },
                                            [](const auto &function) {
                                                return reinterpret_cast<void *>(function);
                                            } },

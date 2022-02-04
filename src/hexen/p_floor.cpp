@@ -239,7 +239,7 @@ void T_MoveFloor(floormove_t * floor)
 //                      floor->resetDelay = 0;
             return;
         }
-        floor->sector->specialdata = std::monostate();
+        floor->sector->specialdata = null_hook();
         /*
            if (floor->direction == 1)
            switch(floor->type)
@@ -417,7 +417,7 @@ int EV_DoFloorAndCeiling(line_t * line, byte * args, boolean raise)
         while ((secnum = P_FindSectorFromTag(args[0], secnum)) >= 0)
         {
             sec = &sectors[secnum];
-            sec->specialdata = std::monostate();
+            sec->specialdata = null_hook();
         }
         ceiling = EV_DoCeiling(line, args, CLEV_RAISEBYVALUE);
     }
@@ -428,7 +428,7 @@ int EV_DoFloorAndCeiling(line_t * line, byte * args, boolean raise)
         while ((secnum = P_FindSectorFromTag(args[0], secnum)) >= 0)
         {
             sec = &sectors[secnum];
-            sec->specialdata = std::monostate();
+            sec->specialdata = null_hook();
         }
         ceiling = EV_DoCeiling(line, args, CLEV_LOWERBYVALUE);
     }
@@ -668,7 +668,7 @@ void T_BuildPillar(pillar_t * pillar)
                        -pillar->direction);
     if (res1 == RES_PASTDEST && res2 == RES_PASTDEST)
     {
-        pillar->sector->specialdata = std::monostate();
+        pillar->sector->specialdata = null_hook();
         SN_StopSequence((mobj_t *) & pillar->sector->soundorg);
         P_TagFinished(pillar->sector->tag);
         P_RemoveThinker(&pillar->thinker);
@@ -847,7 +847,7 @@ int EV_FloorCrushStop(line_t * line, byte * args)
         }
         // Completely remove the crushing floor
         SN_StopSequence((mobj_t *) & floor->sector->soundorg);
-        floor->sector->specialdata = std::monostate();
+        floor->sector->specialdata = null_hook();
         P_TagFinished(floor->sector->tag);
         P_RemoveThinker(&floor->thinker);
         rtn = 1;
@@ -881,7 +881,7 @@ void T_FloorWaggle(floorWaggle_t * waggle)
             {                   // Remove
                 waggle->sector->floorheight = waggle->originalHeight;
                 P_ChangeSector(waggle->sector, true);
-                waggle->sector->specialdata = std::monostate();
+                waggle->sector->specialdata = null_hook();
                 P_TagFinished(waggle->sector->tag);
                 P_RemoveThinker(&waggle->thinker);
                 return;

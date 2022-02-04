@@ -149,5 +149,5 @@ void P_AddThinker(thinker_t * thinker)
 
 void P_RemoveThinker(thinker_t * thinker)
 {
-    thinker->function = std::monostate();
+    thinker->function = null_hook();
 }
