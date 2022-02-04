@@ -25,8 +25,8 @@
 #include "w_wad.hpp"
 #include "z_zone.hpp"
 
-#include "../utils/lump.hpp"
-#include "../utils/memory.hpp"
+#include "lump.hpp"
+#include "memory.hpp"
 #include "deh_defs.hpp"
 #include "deh_io.hpp"
 

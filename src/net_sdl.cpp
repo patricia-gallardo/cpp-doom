@@ -19,7 +19,7 @@
 #include <string.h>
 #include <stdio.h>
 
-#include "../utils/memory.hpp"
+#include "memory.hpp"
 #include "doomtype.hpp"
 #include "i_system.hpp"
 #include "m_argv.hpp"

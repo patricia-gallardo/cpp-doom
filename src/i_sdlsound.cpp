@@ -40,7 +40,7 @@
 #include "w_wad.hpp"
 #include "z_zone.hpp"
 
-#include "../utils/lump.hpp"
+#include "lump.hpp"
 #include "doomtype.hpp"
 
 #define LOW_PASS_FILTER

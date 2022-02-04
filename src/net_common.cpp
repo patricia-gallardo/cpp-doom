@@ -25,7 +25,7 @@
 #include "i_timer.hpp"
 #include "m_argv.hpp"
 
-#include "../utils/memory.hpp"
+#include "memory.hpp"
 #include "net_common.hpp"
 #include "net_io.hpp"
 #include "net_packet.hpp"

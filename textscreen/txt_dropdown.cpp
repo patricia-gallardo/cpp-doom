@@ -17,7 +17,7 @@
 
 #include "doomkeys.hpp"
 
-#include "../utils/memory.hpp"
+#include "memory.hpp"
 #include "txt_button.hpp"
 #include "txt_dropdown.hpp"
 #include "txt_gui.hpp"

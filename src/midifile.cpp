@@ -20,7 +20,7 @@
 #include <string.h>
 #include <assert.h>
 
-#include "../utils/memory.hpp"
+#include "memory.hpp"
 #include "doomtype.hpp"
 #include "i_swap.hpp"
 #include "i_system.hpp"

@@ -18,7 +18,7 @@
 
 #include <stdio.h>
 
-#include "../utils/memory.hpp"
+#include "memory.hpp"
 #include "i_system.hpp"
 #include "net_defs.hpp"
 #include "net_io.hpp"

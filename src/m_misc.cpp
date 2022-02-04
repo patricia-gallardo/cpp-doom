@@ -40,7 +40,7 @@
 
 #include "deh_str.hpp"
 
-#include "../utils/memory.hpp"
+#include "memory.hpp"
 #include "i_swap.hpp"
 #include "i_system.hpp"
 #include "i_video.hpp"

@@ -24,7 +24,7 @@
 #include "deh_str.hpp"
 #include "m_misc.hpp"
 
-#include "../utils/memory.hpp"
+#include "memory.hpp"
 #include "z_zone.hpp"
 
 typedef struct

@@ -18,7 +18,7 @@
 
 #include <stdio.h>
 
-#include "../utils/memory.hpp"
+#include "memory.hpp"
 #include "m_misc.hpp"
 #include "w_file.hpp"
 #include "z_zone.hpp"

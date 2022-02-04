@@ -45,7 +45,7 @@
 #include "sha1.hpp"
 #include "w_wad.hpp"
 #include "z_zone.hpp"
-#include "../utils/lump.hpp"
+#include "lump.hpp"
 
 #define MID_HEADER_MAGIC "MThd"
 #define MUS_HEADER_MAGIC "MUS\x1a"

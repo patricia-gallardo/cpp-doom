@@ -31,7 +31,7 @@
 
 #include "crispy.hpp"
 
-#include "../utils/lump.hpp"
+#include "lump.hpp"
 #include "config.h"
 #include "d_loop.hpp"
 #include "deh_str.hpp"

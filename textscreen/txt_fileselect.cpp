@@ -27,7 +27,7 @@
 #include "txt_io.hpp"
 #include "txt_main.hpp"
 #include "txt_widget.hpp"
-#include "../utils/memory.hpp"
+#include "memory.hpp"
 
 struct txt_fileselect_s {
     txt_widget_t widget;

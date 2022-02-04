@@ -44,8 +44,8 @@
 #include "z_zone.hpp"
 #include "crispy.hpp"
 
-#include "../utils/lump.hpp"
-#include "../utils/memory.hpp"
+#include "lump.hpp"
+#include "memory.hpp"
 #include "config.h"
 #ifdef HAVE_LIBPNG
 #include <png.h>

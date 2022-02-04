@@ -20,7 +20,7 @@
 #include <stdlib.h>
 #include <string.h>
 
-#include "../utils/memory.hpp"
+#include "memory.hpp"
 #include "opl_queue.hpp"
 
 #define MAX_OPL_QUEUE 64

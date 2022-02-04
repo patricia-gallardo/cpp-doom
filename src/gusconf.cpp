@@ -26,7 +26,7 @@
 #include <string.h>
 #include <ctype.h>
 
-#include "../utils/memory.hpp"
+#include "memory.hpp"
 #include "m_misc.hpp"
 #include "w_wad.hpp"
 #include "z_zone.hpp"

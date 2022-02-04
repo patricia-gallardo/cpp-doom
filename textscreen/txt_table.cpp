@@ -26,7 +26,7 @@
 #include "txt_separator.hpp"
 #include "txt_strut.hpp"
 #include "txt_table.hpp"
-#include "../utils/memory.hpp"
+#include "memory.hpp"
 
 txt_widget_t txt_table_overflow_right;
 txt_widget_t txt_table_overflow_down;

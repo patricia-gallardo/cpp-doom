@@ -21,7 +21,7 @@
 #include <ctype.h>
 #include <string.h>
 
-#include "../utils/memory.hpp"
+#include "memory.hpp"
 #include "d_iwad.hpp"
 #include "deh_str.hpp"
 #include "doomkeys.hpp"

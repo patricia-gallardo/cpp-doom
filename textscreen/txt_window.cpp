@@ -19,7 +19,7 @@
 
 #include "doomkeys.hpp"
 
-#include "../utils/memory.hpp"
+#include "memory.hpp"
 #include "txt_desktop.hpp"
 #include "txt_gui.hpp"
 #include "txt_io.hpp"

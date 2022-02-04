@@ -45,7 +45,7 @@
 
 #include "i_system.hpp"
 
-#include "../utils/memory.hpp"
+#include "memory.hpp"
 #include "w_wad.hpp"
 #include "z_zone.hpp"
 
