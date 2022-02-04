@@ -51,9 +51,9 @@ int snd_samplerate = 44100;
 int opl_io_port = 0x388;
 int snd_cachesize = 64 * 1024 * 1024;
 int snd_maxslicetime_ms = 28;
-char *snd_musiccmd = "";
+char *snd_musiccmd = const_cast<char *>("");
 int snd_pitchshift = 0;
-char *snd_dmxoption = "-opl3"; // [crispy] default to OPL3 emulation
+char *snd_dmxoption = const_cast<char *>("-opl3"); // [crispy] default to OPL3 emulation
 
 static int numChannels = 8;
 static int sfxVolume = 8;
@@ -88,11 +88,11 @@ static void UpdateSndDevices(TXT_UNCAST_ARG(widget), TXT_UNCAST_ARG(data))
     {
         default:
         case OPLMODE_OPL2:
-            snd_dmxoption = "";
+            snd_dmxoption = const_cast<char *>("");
             break;
 
         case OPLMODE_OPL3:
-            snd_dmxoption = "-opl3";
+            snd_dmxoption = const_cast<char *>("-opl3");
             break;
     }
 }

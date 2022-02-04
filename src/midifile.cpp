@@ -718,28 +718,28 @@ static char *MIDI_EventTypeToString(midi_event_type_t event_type)
     switch (event_type)
     {
     case MIDI_EVENT_NOTE_OFF:
-        return "MIDI_EVENT_NOTE_OFF";
+        return const_cast<char *>("MIDI_EVENT_NOTE_OFF");
     case MIDI_EVENT_NOTE_ON:
-        return "MIDI_EVENT_NOTE_ON";
+        return const_cast<char *>("MIDI_EVENT_NOTE_ON");
     case MIDI_EVENT_AFTERTOUCH:
-        return "MIDI_EVENT_AFTERTOUCH";
+        return const_cast<char *>("MIDI_EVENT_AFTERTOUCH");
     case MIDI_EVENT_CONTROLLER:
-        return "MIDI_EVENT_CONTROLLER";
+        return const_cast<char *>("MIDI_EVENT_CONTROLLER");
     case MIDI_EVENT_PROGRAM_CHANGE:
-        return "MIDI_EVENT_PROGRAM_CHANGE";
+        return const_cast<char *>("MIDI_EVENT_PROGRAM_CHANGE");
     case MIDI_EVENT_CHAN_AFTERTOUCH:
-        return "MIDI_EVENT_CHAN_AFTERTOUCH";
+        return const_cast<char *>("MIDI_EVENT_CHAN_AFTERTOUCH");
     case MIDI_EVENT_PITCH_BEND:
-        return "MIDI_EVENT_PITCH_BEND";
+        return const_cast<char *>("MIDI_EVENT_PITCH_BEND");
     case MIDI_EVENT_SYSEX:
-        return "MIDI_EVENT_SYSEX";
+        return const_cast<char *>("MIDI_EVENT_SYSEX");
     case MIDI_EVENT_SYSEX_SPLIT:
-        return "MIDI_EVENT_SYSEX_SPLIT";
+        return const_cast<char *>("MIDI_EVENT_SYSEX_SPLIT");
     case MIDI_EVENT_META:
-        return "MIDI_EVENT_META";
+        return const_cast<char *>("MIDI_EVENT_META");
 
     default:
-        return "(unknown)";
+        return const_cast<char *>("(unknown)");
     }
 }
 

@@ -54,7 +54,7 @@ static int usejoystick = 0;
 
 // GUID and index of joystick to use.
 
-char *joystick_guid = "";
+char *joystick_guid = const_cast<char *>("");
 int joystick_index = -1;
 
 // Calibration button. This is the button the user pressed at the
