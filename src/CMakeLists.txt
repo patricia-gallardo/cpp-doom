@@ -30,10 +30,12 @@ set(DEDSERV_FILES
     net_structrw.cpp      net_structrw.hpp
     z_native.cpp          z_zone.hpp)
 
+find_package(X11 REQUIRED)
+
 add_executable("${PROGRAM_PREFIX}server" WIN32 ${COMMON_SOURCE_FILES} ${DEDSERV_FILES})
 target_include_directories("${PROGRAM_PREFIX}server"
                            PRIVATE "${CMAKE_CURRENT_BINARY_DIR}/../")
-target_link_libraries("${PROGRAM_PREFIX}server" SDL2::SDL2 SDL2::SDL2main SDL2::SDL2_net)
+target_link_libraries("${PROGRAM_PREFIX}server" SDL2::SDL2 SDL2::SDL2main SDL2::SDL2_net ${X11_LIBRARIES})
 
 # Source files used by the game binaries (chocolate-doom, etc.)
 
@@ -138,7 +140,7 @@ else()
 endif()
 
 target_include_directories("${PROGRAM_PREFIX}doom" PRIVATE ${GAME_INCLUDE_DIRS})
-target_link_libraries("${PROGRAM_PREFIX}doom" doom ${EXTRA_LIBS})
+target_link_libraries("${PROGRAM_PREFIX}doom" doom ${EXTRA_LIBS} ${X11_LIBRARIES})
 
 if(MSVC)
     set_target_properties("${PROGRAM_PREFIX}doom" PROPERTIES
@@ -152,7 +154,7 @@ else()
 endif()
 
 target_include_directories("${PROGRAM_PREFIX}heretic" PRIVATE ${GAME_INCLUDE_DIRS})
-target_link_libraries("${PROGRAM_PREFIX}heretic" heretic ${EXTRA_LIBS})
+target_link_libraries("${PROGRAM_PREFIX}heretic" heretic ${EXTRA_LIBS} ${X11_LIBRARIES})
 
 if(MSVC)
     set_target_properties("${PROGRAM_PREFIX}heretic" PROPERTIES
@@ -166,7 +168,7 @@ else()
 endif()
 
 target_include_directories("${PROGRAM_PREFIX}hexen" PRIVATE ${GAME_INCLUDE_DIRS})
-target_link_libraries("${PROGRAM_PREFIX}hexen" hexen ${EXTRA_LIBS})
+target_link_libraries("${PROGRAM_PREFIX}hexen" hexen ${EXTRA_LIBS} ${X11_LIBRARIES})
 
 if(MSVC)
     set_target_properties("${PROGRAM_PREFIX}hexen" PROPERTIES
@@ -180,7 +182,7 @@ else()
 endif()
 
 target_include_directories("${PROGRAM_PREFIX}strife" PRIVATE ${GAME_INCLUDE_DIRS})
-target_link_libraries("${PROGRAM_PREFIX}strife" strife ${EXTRA_LIBS})
+target_link_libraries("${PROGRAM_PREFIX}strife" strife ${EXTRA_LIBS} ${X11_LIBRARIES})
 
 if(MSVC)
     set_target_properties("${PROGRAM_PREFIX}strife" PROPERTIES
@@ -212,14 +214,12 @@ endif()
 
 target_include_directories("${PROGRAM_PREFIX}setup"
                            PRIVATE "${CMAKE_CURRENT_BINARY_DIR}/../")
-target_link_libraries("${PROGRAM_PREFIX}setup" SDL2::SDL2main SDL2::SDL2 SDL2::SDL2_mixer SDL2::SDL2_net setup textscreen)
+target_link_libraries("${PROGRAM_PREFIX}setup" ${X11_LIBRARIES} SDL2::SDL2main SDL2::SDL2 SDL2::SDL2_mixer SDL2::SDL2_net setup textscreen)
 
 if(MSVC)
     set_target_properties("${PROGRAM_PREFIX}setup" PROPERTIES
                           LINK_FLAGS "/MANIFEST:NO")
 endif()
-
-find_package(X11 REQUIRED)
 
 add_executable(midiread midifile.cpp z_native.cpp i_system.cpp m_argv.cpp m_misc.cpp d_iwad.cpp deh_str.cpp m_config.cpp)
 target_compile_definitions(midiread PRIVATE "-DTEST")
