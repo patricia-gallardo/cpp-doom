@@ -12,11 +12,10 @@
 // GNU General Public License for more details.
 //
 
-#include <ctype.h>
-#include <stdio.h>
-#include <stdlib.h>
-#include <string.h>
-#include <math.h>
+#include <cctype>
+#include <cstdlib>
+#include <cstring>
+#include <cmath>
 
 #include "doomkeys.hpp"
 

@@ -45,7 +45,7 @@ const char *TXT_DIRECTORY[] = { "__directory__", NULL };
 
 #include <fcntl.h>
 #include <unistd.h>
-#include <errno.h>
+#include <cerrno>
 #include <sys/wait.h>
 
 static char *ExecReadOutput(char **argv)
