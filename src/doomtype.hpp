@@ -33,7 +33,7 @@
 
 #if !__APPLE__ && (!HAVE_DECL_STRCASECMP || !HAVE_DECL_STRNCASECMP)
 
-#include <string.h>
+#include <cstring>
 #if !HAVE_DECL_STRCASECMP
 #define strcasecmp stricmp
 #endif

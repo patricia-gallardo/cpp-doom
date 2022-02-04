@@ -15,7 +15,7 @@
 //
 
 
-#include <math.h>
+#include <cmath>
 #include "m_random.hpp"
 #include "h2def.hpp"
 #include "m_bbox.hpp"

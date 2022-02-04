@@ -14,7 +14,7 @@
 // GNU General Public License for more details.
 //
 
-#include <ctype.h>
+#include <cctype>
 
 #include "h2def.hpp"
 #include "s_sound.hpp"

@@ -15,8 +15,8 @@
 //
 
 
-#include <stdio.h>
-#include <stdlib.h>
+#include <cstdio>
+#include <cstdlib>
 #include "h2def.hpp"
 #include "i_system.hpp"
 #include "i_swap.hpp"

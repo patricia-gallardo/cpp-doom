@@ -22,7 +22,6 @@
 
 
 
-#include <stdlib.h>
 
 
 #include "m_bbox.hpp"

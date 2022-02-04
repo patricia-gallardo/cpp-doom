@@ -22,8 +22,7 @@
 
 
 
-#include <stdlib.h>
-#include <math.h>
+#include <cstdlib>
 
 
 #include "doomdef.hpp"

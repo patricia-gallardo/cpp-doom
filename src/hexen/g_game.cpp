@@ -15,7 +15,7 @@
 //
 
 
-#include <string.h>
+#include <cstring>
 #include "m_random.hpp"
 #include "h2def.hpp"
 #include "s_sound.hpp"

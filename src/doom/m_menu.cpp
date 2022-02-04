@@ -18,8 +18,8 @@
 //
 
 
-#include <stdlib.h>
-#include <ctype.h>
+#include <cstdlib>
+#include <cctype>
 
 
 #include "doomdef.hpp"

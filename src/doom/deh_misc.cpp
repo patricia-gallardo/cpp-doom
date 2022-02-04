@@ -15,8 +15,8 @@
 // Parses "Misc" sections in dehacked files
 //
 
-#include <stdlib.h>
-#include <string.h>
+#include <cstdlib>
+#include <cstring>
 
 #include "doomtype.hpp"
 #include "deh_defs.hpp"

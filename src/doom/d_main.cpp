@@ -20,11 +20,10 @@
 //
 
 
-#include <ctype.h>
-#include <stdio.h>
-#include <stdlib.h>
-#include <string.h>
-#include <time.h> // [crispy] time_t, time(), struct tm, localtime()
+#include <cctype>
+#include <cstdlib>
+#include <cstring>
+#include <ctime> // [crispy] time_t, time(), struct tm, localtime()
 
 #include "config.h"
 #include "deh_main.hpp"

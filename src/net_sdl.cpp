@@ -35,7 +35,6 @@
 //
 
 #include <SDL_net.h>
-#include <cstring>
 
 #define DEFAULT_PORT 2342
 

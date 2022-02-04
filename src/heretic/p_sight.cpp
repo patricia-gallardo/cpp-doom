@@ -15,7 +15,7 @@
 //
 // P_sight.c
 
-#include <stdlib.h>
+#include <cstdlib>
 
 #include "doomdef.hpp"
 #include "p_local.hpp"

@@ -21,7 +21,7 @@
 //
 
 
-#include <stdlib.h>
+#include <cstdlib>
 
 #include "doomdef.hpp"
 #include "doomstat.hpp"

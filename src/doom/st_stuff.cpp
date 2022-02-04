@@ -19,7 +19,7 @@
 //
 
 
-#include <stdio.h>
+#include <cstdio>
 
 #include "i_swap.hpp" // [crispy] SHORT()
 #include "i_system.hpp"

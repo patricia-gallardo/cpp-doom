@@ -16,9 +16,8 @@
 //
 
 
-#include <string.h>
-#include <stdlib.h>
-#include <math.h>
+#include <cstring>
+#include <cstdlib>
 
 #include "doomdef.hpp"
 #include "doomkeys.hpp"

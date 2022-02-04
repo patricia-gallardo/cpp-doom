@@ -15,8 +15,8 @@
 //
 
 
-#include <string.h>
-#include <ctype.h>
+#include <cstring>
+#include <cctype>
 #include "h2def.hpp"
 #include "i_input.hpp"
 #include "s_sound.hpp"

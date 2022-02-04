@@ -17,8 +17,7 @@
 
 // HEADER FILES ------------------------------------------------------------
 
-#include <math.h>
-#include <stdlib.h>
+#include <cstdlib>
 #include "h2def.hpp"
 #include "i_system.hpp"
 #include "m_argv.hpp"

@@ -16,9 +16,9 @@
 
 // G_game.c
 
-#include <stdio.h>
-#include <stdlib.h>
-#include <string.h>
+#include <cstdio>
+#include <cstdlib>
+#include <cstring>
 #include "doomdef.hpp"
 #include "doomkeys.hpp"
 #include "deh_str.hpp"

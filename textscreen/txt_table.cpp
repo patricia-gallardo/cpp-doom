@@ -12,9 +12,9 @@
 // GNU General Public License for more details.
 //
 
-#include <stdarg.h>
-#include <stdlib.h>
-#include <string.h>
+#include <cstdarg>
+#include <cstdlib>
+#include <cstring>
 #include <vector>
 
 #include "doomkeys.hpp"

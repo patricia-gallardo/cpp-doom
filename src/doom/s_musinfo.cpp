@@ -23,8 +23,7 @@
 
 // HEADER FILES ------------------------------------------------------------
 
-#include <string.h>
-#include <stdlib.h>
+#include <cstring>
 #include "doomstat.hpp"
 #include "i_system.hpp"
 #include "m_misc.hpp"

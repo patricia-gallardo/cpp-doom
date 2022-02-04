@@ -14,8 +14,8 @@
 // GNU General Public License for more details.
 //
 // R_things.c
-#include <stdio.h>
-#include <stdlib.h>
+#include <cstdio>
+#include <cstdlib>
 #include "doomdef.hpp"
 #include "deh_str.hpp"
 #include "i_swap.hpp"

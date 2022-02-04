@@ -17,7 +17,7 @@
 
 // HEADER FILES ------------------------------------------------------------
 
-#include <ctype.h>
+#include <cctype>
 #include "h2def.hpp"
 #include "doomkeys.hpp"
 #include "i_input.hpp"

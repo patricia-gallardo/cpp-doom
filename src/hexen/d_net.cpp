@@ -17,7 +17,7 @@
 //	all OS independend parts.
 //
 
-#include <stdlib.h>
+#include <cstdlib>
 
 #include "m_argv.hpp"
 #include "i_system.hpp"

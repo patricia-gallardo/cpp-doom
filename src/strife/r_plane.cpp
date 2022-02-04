@@ -19,8 +19,6 @@
 //
 
 
-#include <stdio.h>
-#include <stdlib.h>
 
 #include "i_system.hpp"
 #include "z_zone.hpp"

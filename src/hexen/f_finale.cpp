@@ -22,7 +22,7 @@
 #include "i_video.hpp"
 #include "p_local.hpp"
 #include "s_sound.hpp"
-#include <ctype.h>
+#include <cctype>
 #include "v_video.hpp"
 #include "i_swap.hpp"
 #include "lump.hpp"

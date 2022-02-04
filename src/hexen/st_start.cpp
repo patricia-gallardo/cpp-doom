@@ -18,7 +18,7 @@
 
 // HEADER FILES ------------------------------------------------------------
 
-#include <stdarg.h>
+#include <cstdarg>
 
 #include "config.h"
 

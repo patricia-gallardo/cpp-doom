@@ -17,8 +17,7 @@
 //	Shooting and aiming.
 //
 
-#include <stdio.h>
-#include <stdlib.h>
+#include <cstdio>
 #include <cstdlib>
 
 #include "deh_misc.hpp"

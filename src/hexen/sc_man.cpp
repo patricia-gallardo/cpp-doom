@@ -17,8 +17,8 @@
 
 // HEADER FILES ------------------------------------------------------------
 
-#include <string.h>
-#include <stdlib.h>
+#include <cstring>
+#include <cstdlib>
 #include "h2def.hpp"
 #include "i_system.hpp"
 #include "m_misc.hpp"

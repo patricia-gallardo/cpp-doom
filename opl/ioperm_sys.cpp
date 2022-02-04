@@ -25,7 +25,7 @@
 #include <windows.h>
 #include <winioctl.h>
 
-#include <errno.h>
+#include <cerrno>
 
 #include "ioperm_sys.hpp"
 

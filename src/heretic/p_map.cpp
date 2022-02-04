@@ -15,7 +15,6 @@
 //
 // P_map.c
 
-#include <stdlib.h>
 
 #include "doomdef.hpp"
 #include "i_system.hpp"

@@ -22,7 +22,7 @@
 #include "i_system.hpp"
 #include "p_local.hpp"
 #include "z_zone.hpp"
-#include <stdlib.h>
+#include <cstdlib>
 
 // [crispy] taken from mbfsrc/P_SETUP.C:547-707, slightly adapted
 

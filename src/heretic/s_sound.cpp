@@ -14,7 +14,7 @@
 // GNU General Public License for more details.
 //
 
-#include <stdlib.h>
+#include <cstdlib>
 
 #include "doomdef.hpp"
 #include "i_system.hpp"

@@ -16,7 +16,7 @@
 
 // P_user.c
 
-#include <stdlib.h>
+#include <cstdlib>
 
 #include "doomdef.hpp"
 #include "deh_str.hpp"

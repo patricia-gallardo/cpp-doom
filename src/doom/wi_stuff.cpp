@@ -17,7 +17,7 @@
 //
 
 
-#include <stdio.h>
+#include <cstdio>
 
 #include "z_zone.hpp"
 

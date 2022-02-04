@@ -17,8 +17,8 @@
 //	[crispy] Archiving: Extended SaveGame I/O.
 //
 
-#include <stdio.h>
-#include <stdlib.h>
+#include <cstdio>
+#include <cstdlib>
 
 #include "memory.hpp"
 #include "config.h"
