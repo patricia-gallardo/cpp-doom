@@ -1,6 +1,6 @@
 set(CMAKE_MODULE_PATH "${CMAKE_CURRENT_SOURCE_DIR}/cmake")
 
-cmake_minimum_required(VERSION 3.7.2)
+cmake_minimum_required(VERSION 3.16)
 
 include(cmake/vcpkg.cmake)
 
