@@ -111,7 +111,7 @@ static char *back_flat = const_cast<char *>("F_PAVE01");
 static int comport = 0;
 static char *nickname = NULL;
 
-static void BindMiscVariables(void)
+static void BindMiscVariables()
 {
     if (gamemission == doom)
     {
@@ -160,7 +160,7 @@ static void BindMiscVariables(void)
 // Initialise all configuration file bindings.
 //
 
-void InitBindings(void)
+void InitBindings()
 {
     M_ApplyPlatformDefaults();
 
@@ -367,17 +367,17 @@ void SetupMission(GameSelectCallback callback)
     }
 }
 
-const char *GetExecutableName(void)
+const char *GetExecutableName()
 {
     return executable;
 }
 
-const char *GetGameTitle(void)
+const char *GetGameTitle()
 {
     return game_title;
 }
 
-const iwad_t **GetIwads(void)
+const iwad_t **GetIwads()
 {
     return iwads;
 }

@@ -30,7 +30,7 @@
 
 #define WINDOW_HELP_URL "https://www.chocolate-doom.org/setup-display"
 
-extern void RestartTextscreen(void);
+extern void RestartTextscreen();
 
 typedef struct
 {
@@ -90,7 +90,7 @@ static int system_video_env_set;
 
 // Set the SDL_VIDEODRIVER environment variable
 
-void SetDisplayDriver(void)
+void SetDisplayDriver()
 {
     static int first_time = 1;
 
@@ -254,7 +254,7 @@ void ConfigDisplay(TXT_UNCAST_ARG(widget), void *user_data)
                       AdvancedDisplayConfig, sizes_table);
 }
 
-void BindDisplayVariables(void)
+void BindDisplayVariables()
 {
     M_BindIntVariable("aspect_ratio_correct",      &aspect_ratio_correct);
     M_BindIntVariable("integer_scaling",           &integer_scaling);

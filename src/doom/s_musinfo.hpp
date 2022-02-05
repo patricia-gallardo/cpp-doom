@@ -38,6 +38,6 @@ typedef struct musinfo_s {
 extern musinfo_t musinfo;
 
 extern void S_ParseMusInfo(const char *mapid);
-extern void T_MusInfo(void);
+extern void T_MusInfo();
 
 #endif

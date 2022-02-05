@@ -30,7 +30,7 @@
 
 // Parse the command line, merging WAD files that are sppecified.
 // Returns true if at least one file was added.
-boolean W_ParseCommandLine(void)
+boolean W_ParseCommandLine()
 {
     boolean modifiedgame = false;
     int     p;

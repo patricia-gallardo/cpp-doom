@@ -307,7 +307,7 @@ void R_RenderMaskedSegRange(drawseg_t *ds,
 #define HEIGHTBITS 12
 #define HEIGHTUNIT (1 << HEIGHTBITS)
 
-void R_RenderSegLoop(void)
+void R_RenderSegLoop()
 {
     angle_t  angle;
     unsigned index;

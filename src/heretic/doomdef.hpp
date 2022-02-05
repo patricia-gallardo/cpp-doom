@@ -587,8 +587,8 @@ extern int vanilla_demo_limit;
 //----------
 //BASE LEVEL
 //----------
-void D_DoomMain(void);
-void IncThermo(void);
+void D_DoomMain();
+void IncThermo();
 void InitThermo(int max);
 void tprintf(const char *string, int initflag);
 // not a globally visible function, just included for source reference
@@ -596,7 +596,7 @@ void tprintf(const char *string, int initflag);
 // parses command line options
 // if not overrided, calls N_AdvanceDemo
 
-void D_DoomLoop(void);
+void D_DoomLoop();
 // not a globally visible function, just included for source reference
 // called by D_DoomMain, never exits
 // manages timing and IO
@@ -658,7 +658,7 @@ void G_DeferedPlayDemo(const char *demo);
 void G_LoadGame(char *name);
 // can be called by the startup code or M_Responder
 // calls P_SetupLevel or W_EnterWorld
-void G_DoLoadGame(void);
+void G_DoLoadGame();
 
 void G_SaveGame(int slot, char *description);
 // called by M_Responder
@@ -674,9 +674,9 @@ void SV_WriteByte(byte val);
 void SV_WriteWord(unsigned short val);
 void SV_WriteLong(unsigned int val);
 void SV_Read(void *buffer, int size);
-byte SV_ReadByte(void);
-uint16_t SV_ReadWord(void);
-uint32_t SV_ReadLong(void);
+byte SV_ReadByte();
+uint16_t SV_ReadWord();
+uint32_t SV_ReadLong();
 
 extern char *savegamedir;
 
@@ -687,21 +687,21 @@ void G_RecordDemo(skill_t skill, int numplayers, int episode, int map,
 void G_PlayDemo(char *name);
 void G_TimeDemo(char *name);
 
-void G_ExitLevel(void);
-void G_SecretExitLevel(void);
+void G_ExitLevel();
+void G_SecretExitLevel();
 
-void G_WorldDone(void);
+void G_WorldDone();
 
-void G_Ticker(void);
+void G_Ticker();
 boolean G_Responder(event_t * ev);
 
-void G_ScreenShot(void);
+void G_ScreenShot();
 
 //-----
 //PLAY
 //-----
 
-void P_Ticker(void);
+void P_Ticker();
 // called by C_Ticker
 // can call G_PlayerExited
 // carries out all thinking of monsters and players
@@ -709,17 +709,17 @@ void P_Ticker(void);
 void P_SetupLevel(int episode, int map, int playermask, skill_t skill);
 // called by W_Ticker
 
-void P_Init(void);
+void P_Init();
 // called by startup code
 
-void P_ArchivePlayers(void);
-void P_UnArchivePlayers(void);
-void P_ArchiveWorld(void);
-void P_UnArchiveWorld(void);
-void P_ArchiveThinkers(void);
-void P_UnArchiveThinkers(void);
-void P_ArchiveSpecials(void);
-void P_UnArchiveSpecials(void);
+void P_ArchivePlayers();
+void P_UnArchivePlayers();
+void P_ArchiveWorld();
+void P_UnArchiveWorld();
+void P_ArchiveThinkers();
+void P_UnArchiveThinkers();
+void P_ArchiveSpecials();
+void P_UnArchiveSpecials();
 // load / save game routines
 
 
@@ -743,11 +743,11 @@ extern int UpdateState;
 void R_RenderPlayerView(player_t * player);
 // called by G_Drawer
 
-void R_Init(void);
+void R_Init();
 // called by startup code
 
-void R_DrawViewBorder(void);
-void R_DrawTopBorder(void);
+void R_DrawViewBorder();
+void R_DrawTopBorder();
 // if the view size is not full screen, draws a border around it
 
 void R_SetViewSize(int blocks, int detail);
@@ -774,19 +774,19 @@ int M_DrawText(int x, int y, boolean direct, char *string);
 
 extern boolean intermission;
 
-void IN_Start(void);
-void IN_Ticker(void);
-void IN_Drawer(void);
+void IN_Start();
+void IN_Ticker();
+void IN_Drawer();
 
 //----------------------
 // Chat mode (CT_chat.c)
 //----------------------
 
-void CT_Init(void);
-void CT_Drawer(void);
+void CT_Init();
+void CT_Drawer();
 boolean CT_Responder(event_t * ev);
-void CT_Ticker(void);
-char CT_dequeueChatChar(void);
+void CT_Ticker();
+char CT_dequeueChatChar();
 
 extern boolean chatmodeon;
 extern boolean ultimatemsg;
@@ -795,18 +795,18 @@ extern boolean ultimatemsg;
 // Finale (F_finale.c)
 //--------------------
 
-void F_Drawer(void);
-void F_Ticker(void);
-void F_StartFinale(void);
+void F_Drawer();
+void F_Ticker();
+void F_StartFinale();
 
 //----------------------
 // STATUS BAR (SB_bar.c)
 //----------------------
 
-void SB_Init(void);
+void SB_Init();
 boolean SB_Responder(event_t * event);
-void SB_Ticker(void);
-void SB_Drawer(void);
+void SB_Ticker();
+void SB_Drawer();
 
 //-----------------
 // MENU (MN_menu.c)
@@ -814,12 +814,12 @@ void SB_Drawer(void);
 
 extern boolean MenuActive;
 
-void MN_Init(void);
-void MN_ActivateMenu(void);
-void MN_DeactivateMenu(void);
+void MN_Init();
+void MN_ActivateMenu();
+void MN_DeactivateMenu();
 boolean MN_Responder(event_t * event);
-void MN_Ticker(void);
-void MN_Drawer(void);
+void MN_Ticker();
+void MN_Drawer();
 void MN_DrTextA(const char *text, int x, int y);
 int MN_TextAWidth(const char *text);
 void MN_DrTextB(const char *text, int x, int y);

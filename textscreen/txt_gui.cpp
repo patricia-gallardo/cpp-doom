@@ -464,7 +464,7 @@ void TXT_PushClipArea(int x1, int x2, int y1, int y2)
     cliparea = newarea;
 }
 
-void TXT_PopClipArea(void)
+void TXT_PopClipArea()
 {
     txt_cliparea_t *next_cliparea;
 

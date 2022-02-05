@@ -1628,7 +1628,7 @@ void P_SpawnMapThing(mapthing_t * mthing)
 //
 //==========================================================================
 
-void P_CreateTIDList(void)
+void P_CreateTIDList()
 {
     int i;
     mobj_t *mobj;

@@ -151,7 +151,7 @@ static char *ExecReadOutput(char **argv)
 //     closed.
 #if defined(_WIN32)
 
-int TXT_CanSelectFiles(void)
+int TXT_CanSelectFiles()
 {
     return 0;
 }
@@ -174,7 +174,7 @@ static BOOL (*MySHGetPathFromIDList)(LPITEMIDLIST, LPTSTR) = NULL;
 
 // Load library functions from DLL files.
 
-static int LoadDLLs(void)
+static int LoadDLLs()
 {
     HMODULE comdlg32, shell32
 
@@ -203,7 +203,7 @@ static int LoadDLLs(void)
         && MySHGetPathFromIDList != NULL;
 }
 
-static int InitLibraries(void)
+static int InitLibraries()
 {
     static int initted = 0, success = 0;
 
@@ -255,7 +255,7 @@ static char *GenerateFilterString(const char **extensions)
     return result;
 }
 
-int TXT_CanSelectFiles(void)
+int TXT_CanSelectFiles()
 {
     return InitLibraries();
 }
@@ -519,7 +519,7 @@ static char *GenerateAppleScript(const char *window_title, const char **extensio
     return result;
 }
 
-int TXT_CanSelectFiles(void)
+int TXT_CanSelectFiles()
 {
     return 1;
 }
@@ -566,12 +566,12 @@ static unsigned int NumExtensions(const char **extensions)
     return result;
 }
 
-static int ZenityAvailable(void)
+static int ZenityAvailable()
 {
     return system(ZENITY_BINARY " --help >/dev/null 2>&1") == 0;
 }
 
-int TXT_CanSelectFiles(void)
+int TXT_CanSelectFiles()
 {
     return ZenityAvailable();
 }

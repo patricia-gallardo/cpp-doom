@@ -54,7 +54,7 @@ static int          addr_table_size = -1;
 
 // Initializes the address table
 
-static void NET_SDL_InitAddrTable(void)
+static void NET_SDL_InitAddrTable()
 {
     addr_table_size = 16;
 
@@ -154,7 +154,7 @@ static void NET_SDL_FreeAddress(net_addr_t *addr)
     I_Error("NET_SDL_FreeAddress: Attempted to remove an unused address!");
 }
 
-static boolean NET_SDL_InitClient(void)
+static boolean NET_SDL_InitClient()
 {
     int p;
 
@@ -193,7 +193,7 @@ static boolean NET_SDL_InitClient(void)
     return true;
 }
 
-static boolean NET_SDL_InitServer(void)
+static boolean NET_SDL_InitServer()
 {
     int p;
 

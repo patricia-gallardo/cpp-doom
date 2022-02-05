@@ -291,7 +291,7 @@ byte *R_GetColumn(int tex, int col)
 ==================
 */
 
-void R_InitTextures(void)
+void R_InitTextures()
 {
     maptexture_t *mtexture;
     texture_t *texture;
@@ -428,7 +428,7 @@ void R_InitTextures(void)
 =================
 */
 
-void R_InitFlats(void)
+void R_InitFlats()
 {
     int i;
 
@@ -453,7 +453,7 @@ void R_InitFlats(void)
 =================
 */
 
-void R_InitSpriteLumps(void)
+void R_InitSpriteLumps()
 {
     int i;
     patch_t *patch;
@@ -485,7 +485,7 @@ void R_InitSpriteLumps(void)
 =================
 */
 
-void R_InitColormaps(void)
+void R_InitColormaps()
 {
     int lump, length;
 //
@@ -509,7 +509,7 @@ void R_InitColormaps(void)
 =================
 */
 
-void R_InitData(void)
+void R_InitData()
 {
     R_InitTextures();
     R_InitFlats();
@@ -598,7 +598,7 @@ int R_TextureNumForName(const char *name)
 
 int flatmemory, texturememory, spritememory;
 
-void R_PrecacheLevel(void)
+void R_PrecacheLevel()
 {
     char *flatpresent;
     char *texturepresent;

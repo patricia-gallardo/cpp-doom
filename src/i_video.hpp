@@ -35,7 +35,7 @@ extern int SCREENWIDTH;
 extern int SCREENHEIGHT;
 extern int HIRESWIDTH;                  // [crispy] non-widescreen SCREENWIDTH
 extern int DELTAWIDTH;                  // [crispy] horizontal widescreen offset
-void       I_GetScreenDimensions(void); // [crispy] re-calculate DELTAWIDTH
+void       I_GetScreenDimensions(); // [crispy] re-calculate DELTAWIDTH
 
 // Screen height used when aspect_ratio_correct=true.
 
@@ -44,16 +44,16 @@ void       I_GetScreenDimensions(void); // [crispy] re-calculate DELTAWIDTH
 
 extern int SCREENHEIGHT_4_3;
 
-typedef boolean (*grabmouse_callback_t)(void);
+typedef boolean (*grabmouse_callback_t)();
 
 // Called by D_DoomMain,
 // determines the hardware configuration
 // and sets up the video mode
-void I_InitGraphics(void);
+void I_InitGraphics();
 
-void I_GraphicsCheckCommandLine(void);
+void I_GraphicsCheckCommandLine();
 
-void I_ShutdownGraphics(void);
+void I_ShutdownGraphics();
 
 // Takes full 8 bit values.
 #ifndef CRISPY_TRUECOLOR
@@ -64,33 +64,33 @@ void                 I_SetPalette(int palette);
 extern const pixel_t I_MapRGB(const uint8_t r, const uint8_t g, const uint8_t b);
 #endif
 
-void I_UpdateNoBlit(void);
-void I_FinishUpdate(void);
+void I_UpdateNoBlit();
+void I_FinishUpdate();
 
 void I_ReadScreen(pixel_t *scr);
 
-void I_BeginRead(void);
+void I_BeginRead();
 
 void I_SetWindowTitle(const char *title);
 
-void I_CheckIsScreensaver(void);
+void I_CheckIsScreensaver();
 void I_SetGrabMouseCallback(grabmouse_callback_t func);
 
 void I_DisplayFPSDots(boolean dots_on);
-void I_BindVideoVariables(void);
+void I_BindVideoVariables();
 
-void I_InitWindowTitle(void);
-void I_InitWindowIcon(void);
+void I_InitWindowTitle();
+void I_InitWindowIcon();
 
 // Called before processing any tics in a frame (just after displaying a frame).
 // Time consuming syncronous operations are performed here (joystick reading).
 
-void I_StartFrame(void);
+void I_StartFrame();
 
 // Called before processing each tic in a frame.
 // Quick syncronous operations are performed here.
 
-void I_StartTic(void);
+void I_StartTic();
 
 // Enable the loading disk image displayed when reading from disk.
 

@@ -137,7 +137,7 @@ static void PCSound_Mix_Callback(void *udata, Uint8 *stream, int len)
     }
 }
 
-static int SDLIsInitialized(void)
+static int SDLIsInitialized()
 {
     int freq, channels;
     Uint16 format;
@@ -145,7 +145,7 @@ static int SDLIsInitialized(void)
     return Mix_QuerySpec(&freq, &format, &channels);
 }
 
-static void PCSound_SDL_Shutdown(void)
+static void PCSound_SDL_Shutdown()
 {
     if (sdl_was_initialized)
     {
@@ -158,7 +158,7 @@ static void PCSound_SDL_Shutdown(void)
 // Calculate slice size, based on MAX_SOUND_SLICE_TIME.
 // The result must be a power of two.
 
-static int GetSliceSize(void)
+static int GetSliceSize()
 {
     int limit;
     int n;

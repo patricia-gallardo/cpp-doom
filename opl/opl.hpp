@@ -79,7 +79,7 @@ opl_init_result_t OPL_Init(unsigned int port_base);
 
 // Shut down the OPL subsystem.
 
-void OPL_Shutdown(void);
+void OPL_Shutdown();
 
 // Set the sample rate used for software emulation.
 
@@ -99,7 +99,7 @@ unsigned int OPL_ReadPort(opl_port_t port);
 
 // Read the cuurrent status byte of the OPL chip.
 
-unsigned int OPL_ReadStatus(void);
+unsigned int OPL_ReadStatus();
 
 // Write to an OPL register.
 
@@ -108,7 +108,7 @@ void OPL_WriteRegister(int reg, int value);
 // Perform a detection sequence to determine that an
 // OPL chip is present.
 
-opl_init_result_t OPL_Detect(void);
+opl_init_result_t OPL_Detect();
 
 // Initialize all registers, performed on startup.
 
@@ -130,16 +130,16 @@ void OPL_AdjustCallbacks(float factor);
 
 // Clear all OPL callbacks that have been set.
 
-void OPL_ClearCallbacks(void);
+void OPL_ClearCallbacks();
 
 // Begin critical section, during which, OPL callbacks will not be
 // invoked.
 
-void OPL_Lock(void);
+void OPL_Lock();
 
 // End critical section.
 
-void OPL_Unlock(void);
+void OPL_Unlock();
 
 // Block until the specified number of microseconds have elapsed.
 

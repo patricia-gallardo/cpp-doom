@@ -918,7 +918,7 @@ static boolean ReadSubstituteConfig(char *musicdir, const char *filename)
 
 // Find substitute configs and try to load them.
 
-static void LoadSubstituteConfigs(void)
+static void LoadSubstituteConfigs()
 {
     glob_t *     glob;
     char *       musicdir;
@@ -1064,7 +1064,7 @@ static void DumpSubstituteConfig(char *filename)
 
 // Shutdown music
 
-static void I_MP_ShutdownMusic(void)
+static void I_MP_ShutdownMusic()
 {
     if (music_initialized)
     {
@@ -1080,7 +1080,7 @@ static void I_MP_ShutdownMusic(void)
     }
 }
 
-static boolean SDLIsInitialized(void)
+static boolean SDLIsInitialized()
 {
     int    freq, channels;
     Uint16 format;
@@ -1096,7 +1096,7 @@ void TrackPositionCallback(int chan, void *stream, int len, void *udata)
 }
 
 // Initialize music subsystem
-static boolean I_MP_InitMusic(void)
+static boolean I_MP_InitMusic()
 {
     int i;
 
@@ -1209,7 +1209,7 @@ static void I_MP_PlaySong(void *handle, boolean looping)
     }
 }
 
-static void I_MP_PauseSong(void)
+static void I_MP_PauseSong()
 {
     if (!music_initialized)
     {
@@ -1219,7 +1219,7 @@ static void I_MP_PauseSong(void)
     Mix_PauseMusic();
 }
 
-static void I_MP_ResumeSong(void)
+static void I_MP_ResumeSong()
 {
     if (!music_initialized)
     {
@@ -1229,7 +1229,7 @@ static void I_MP_ResumeSong(void)
     Mix_ResumeMusic();
 }
 
-static void I_MP_StopSong(void)
+static void I_MP_StopSong()
 {
     if (!music_initialized)
     {
@@ -1291,7 +1291,7 @@ static void *I_MP_RegisterSong(void *data, int len)
 }
 
 // Is the song playing?
-static boolean I_MP_MusicIsPlaying(void)
+static boolean I_MP_MusicIsPlaying()
 {
     if (!music_initialized)
     {
@@ -1302,7 +1302,7 @@ static boolean I_MP_MusicIsPlaying(void)
 }
 
 // Get position in substitute music track, in seconds since start of track.
-static double GetMusicPosition(void)
+static double GetMusicPosition()
 {
     unsigned int music_pos;
     int          freq;
@@ -1316,7 +1316,7 @@ static double GetMusicPosition(void)
     return (double)music_pos / freq;
 }
 
-static void RestartCurrentTrack(void)
+static void RestartCurrentTrack()
 {
     double start = (double)file_metadata.start_time
                    / file_metadata.samplerate_hz;
@@ -1335,7 +1335,7 @@ static void RestartCurrentTrack(void)
 
 // Poll music position; if we have passed the loop point end position
 // then we need to go back.
-static void I_MP_PollMusic(void)
+static void I_MP_PollMusic()
 {
     // When playing substitute tracks, loop tags only apply if we're playing
     // a looping track. Tracks like the title screen music have the loop

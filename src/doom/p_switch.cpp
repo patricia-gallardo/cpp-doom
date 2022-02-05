@@ -105,7 +105,7 @@ int           maxbuttons; // [crispy] remove MAXBUTTONS limit
 // P_InitSwitchList
 // Only called at game initialization.
 //
-void P_InitSwitchList(void)
+void P_InitSwitchList()
 {
     int i, slindex, episode;
 

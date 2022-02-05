@@ -27,8 +27,8 @@ typedef void (*TxtIdleCallback)(void *user_data);
 
 void TXT_AddDesktopWindow(txt_window_t *win);
 void TXT_RemoveDesktopWindow(txt_window_t *win);
-void TXT_DrawDesktop(void);
-void TXT_DispatchEvents(void);
+void TXT_DrawDesktop();
+void TXT_DispatchEvents();
 void TXT_DrawWindow(txt_window_t *window);
 void TXT_SetWindowFocus(txt_window_t *window, int focused);
 int TXT_WindowKeyPress(txt_window_t *window, int c);
@@ -46,7 +46,7 @@ void TXT_SetDesktopTitle(const char *title);
  * @ref TXT_GUIMainLoop function.
  */
 
-void TXT_ExitMainLoop(void);
+void TXT_ExitMainLoop();
 
 /**
  * Start the main event loop.  At least one window must have been
@@ -57,7 +57,7 @@ void TXT_ExitMainLoop(void);
  * @ref TXT_ExitMainLoop function.
  */
 
-void TXT_GUIMainLoop(void);
+void TXT_GUIMainLoop();
 
 /**
  * Get the top window on the desktop that is currently receiving
@@ -66,7 +66,7 @@ void TXT_GUIMainLoop(void);
  * @return    The active window, or NULL if no windows are present.
  */
 
-txt_window_t *TXT_GetActiveWindow(void);
+txt_window_t *TXT_GetActiveWindow();
 
 /**
  * Set a callback function to be invoked periodically by the main

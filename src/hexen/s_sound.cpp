@@ -33,7 +33,7 @@
 
 #define DEFAULT_ARCHIVEPATH     "o:\\sound\\archive\\"
 
-void S_ShutDown(void);
+void S_ShutDown();
 
 // If true, CD music playback is enabled (snd_musicdevice == SNDDEVICE_CD
 // and CD initialization succeeded).
@@ -88,7 +88,7 @@ int snd_Channels = 16;
 //
 //==========================================================================
 
-void S_Start(void)
+void S_Start()
 {
     S_StopAllSound();
     S_StartSong(gamemap, true);
@@ -101,7 +101,7 @@ void S_Start(void)
 //
 //==========================================================================
 
-static boolean ShouldRestartCDTrack(void)
+static boolean ShouldRestartCDTrack()
 {
     return cd_track_end_time != 0 && I_GetTimeMS() > cd_track_end_time;
 }
@@ -226,7 +226,7 @@ boolean S_StartCustomCDTrack(int tracknum)
 //
 //==========================================================================
 
-int S_GetCurrentCDTrack(void)
+int S_GetCurrentCDTrack()
 {
     if (!cdmusic || cd_current_track == 0)
     {
@@ -339,7 +339,7 @@ void S_StartSound(mobj_t * origin, int sound_id)
     S_StartSoundAtVolume(origin, sound_id, 127);
 }
 
-static mobj_t *GetSoundListener(void)
+static mobj_t *GetSoundListener()
 {
     static degenmobj_t dummy_listener;
 
@@ -616,7 +616,7 @@ void S_StopSound(mobj_t * origin)
 //
 //==========================================================================
 
-void S_StopAllSound(void)
+void S_StopAllSound()
 {
     int i;
 
@@ -654,7 +654,7 @@ void S_SoundLink(mobj_t * oldactor, mobj_t * newactor)
 //
 //==========================================================================
 
-void S_PauseSound(void)
+void S_PauseSound()
 {
     if (cdmusic)
     {
@@ -672,7 +672,7 @@ void S_PauseSound(void)
 //
 //==========================================================================
 
-void S_ResumeSound(void)
+void S_ResumeSound()
 {
     if (cdmusic)
     {
@@ -786,7 +786,7 @@ void S_UpdateSounds(mobj_t * listener)
 //
 //==========================================================================
 
-void S_Init(void)
+void S_Init()
 {
     I_SetOPLDriverVer(opl_doom2_1_666);
     SoundCurve = cache_lump_name<byte *>("SNDCURVE", PU_STATIC);
@@ -898,7 +898,7 @@ boolean S_GetSoundPlayingInfo(mobj_t * mobj, int sound_id)
 //
 //==========================================================================
 
-void S_SetMusicVolume(void)
+void S_SetMusicVolume()
 {
     if (cdmusic)
     {
@@ -932,7 +932,7 @@ void S_SetMusicVolume(void)
 //
 //==========================================================================
 
-void S_ShutDown(void)
+void S_ShutDown()
 {
     I_StopSong();
     I_UnRegisterSong(RegisteredSong);
@@ -949,7 +949,7 @@ void S_ShutDown(void)
 //
 //==========================================================================
 
-void S_InitScript(void)
+void S_InitScript()
 {
     int i;
 

@@ -213,7 +213,7 @@ static void InitConnectData(net_connect_data_t *connect_data)
     connect_data->is_freedoom = 0;
 }
 
-void D_ConnectNetGame(void)
+void D_ConnectNetGame()
 {
     net_connect_data_t connect_data;
 
@@ -238,7 +238,7 @@ void D_ConnectNetGame(void)
 // D_CheckNetGame
 // Works out player numbers among the net participants
 //
-void D_CheckNetGame(void)
+void D_CheckNetGame()
 {
     net_gamesettings_t settings;
 

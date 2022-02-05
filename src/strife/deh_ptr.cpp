@@ -43,7 +43,7 @@ static int CodePointerIndex(action_hook *ptr)
     return -1;
 }
 
-static void DEH_PointerInit(void)
+static void DEH_PointerInit()
 {
     int i;
     

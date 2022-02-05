@@ -104,16 +104,16 @@ const char * finaletext;
 const char * finaleflat;
 static char *finaletext_rw;
 
-void    F_StartCast(void);
-void    F_CastTicker(void);
+void    F_StartCast();
+void    F_CastTicker();
 boolean F_CastResponder(event_t *ev);
-void    F_CastDrawer(void);
+void    F_CastDrawer();
 
 
 //
 // F_StartFinale
 //
-void F_StartFinale(void)
+void F_StartFinale()
 {
     size_t i;
 
@@ -196,7 +196,7 @@ boolean F_Responder(event_t *event)
 //
 // F_Ticker
 //
-void F_Ticker(void)
+void F_Ticker()
 {
     size_t i;
 
@@ -273,7 +273,7 @@ static inline boolean F_AddLineBreak(char *c)
     return false;
 }
 
-void F_TextWrite(void)
+void F_TextWrite()
 {
     int        x, y, w;
     signed int count;
@@ -503,7 +503,7 @@ static int F_SoundForState(int st)
 //
 // F_StartCast
 //
-void F_StartCast(void)
+void F_StartCast()
 {
     wipegamestate = gamestate_t::GS_FORCE_WIPE; // force a screen wipe
     castnum       = 0;
@@ -521,7 +521,7 @@ void F_StartCast(void)
 //
 // F_CastTicker
 //
-void F_CastTicker(void)
+void F_CastTicker()
 {
     int st;
     int sfx;
@@ -803,7 +803,7 @@ void F_CastPrint(const char *text)
 // F_CastDrawer
 //
 
-void F_CastDrawer(void)
+void F_CastDrawer()
 {
     spritedef_t *  sprdef;
     spriteframe_t *sprframe;
@@ -875,7 +875,7 @@ void F_DrawPatchCol(int x,
 //
 // F_BunnyScroll
 //
-void F_BunnyScroll(void)
+void F_BunnyScroll()
 {
     signed int scrolled;
     int        x;
@@ -939,7 +939,7 @@ void F_BunnyScroll(void)
         cache_lump_name<patch_t *>(name, PU_CACHE));
 }
 
-static void F_ArtScreenDrawer(void)
+static void F_ArtScreenDrawer()
 {
     const char *lumpname;
 
@@ -988,7 +988,7 @@ static void F_ArtScreenDrawer(void)
 //
 // F_Drawer
 //
-void F_Drawer(void)
+void F_Drawer()
 {
     switch (finalestage)
     {

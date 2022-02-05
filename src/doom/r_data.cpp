@@ -578,7 +578,7 @@ byte *
 }
 
 
-static void GenerateTextureHashTable(void)
+static void GenerateTextureHashTable()
 {
     texture_t **rover;
     int         i;
@@ -625,7 +625,7 @@ static void GenerateTextureHashTable(void)
 //  with the textures from the world map.
 //
 // [crispy] partly rewritten to merge PNAMES and TEXTURE1/2 lumps
-void R_InitTextures(void)
+void R_InitTextures()
 {
     maptexture_t *mtexture;
     texture_t *   texture;
@@ -941,7 +941,7 @@ void R_InitTextures(void)
 //
 // R_InitFlats
 //
-void R_InitFlats(void)
+void R_InitFlats()
 {
     int i;
 
@@ -963,7 +963,7 @@ void R_InitFlats(void)
 //  so the sprite does not need to be cached completely
 //  just for having the header info ready during rendering.
 //
-void R_InitSpriteLumps(void)
+void R_InitSpriteLumps()
 {
     int      i;
     patch_t *patch;
@@ -1116,7 +1116,7 @@ static void R_InitTranMap()
 //
 // R_InitColormaps
 //
-void R_InitColormaps(void)
+void R_InitColormaps()
 {
 #ifndef CRISPY_TRUECOLOR
     int lump;
@@ -1134,7 +1134,7 @@ void R_InitColormaps(void)
     // [crispy] intermediate gamma levels
     if (!gamma2table)
     {
-        extern void I_SetGammaTable(void);
+        extern void I_SetGammaTable();
         I_SetGammaTable();
     }
 
@@ -1228,7 +1228,7 @@ void R_InitColormaps(void)
 //  that will be used by all views
 // Must be called after W_Init.
 //
-void R_InitData(void)
+void R_InitData()
 {
     // [crispy] Moved R_InitFlats() to the top, because it sets firstflat/lastflat
     // which are required by R_InitTextures() to prevent flat lumps from being
@@ -1339,7 +1339,7 @@ int flatmemory;
 int texturememory;
 int spritememory;
 
-void R_PrecacheLevel(void)
+void R_PrecacheLevel()
 {
     char *flatpresent;
     char *texturepresent;

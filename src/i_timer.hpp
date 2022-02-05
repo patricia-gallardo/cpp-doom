@@ -24,16 +24,16 @@
 
 // Called by D_DoomLoop,
 // returns current time in tics.
-int I_GetTime(void);
+int I_GetTime();
 
 // returns current time in ms
-int I_GetTimeMS(void);
+int I_GetTimeMS();
 
 // Pause for a specified number of ms
 void I_Sleep(int ms);
 
 // Initialize timer
-void I_InitTimer(void);
+void I_InitTimer();
 
 // Wait for vertical retrace or pause a bit.
 void I_WaitVBL(int count);

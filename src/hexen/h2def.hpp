@@ -699,13 +699,13 @@ extern int vanilla_demo_limit;
 //----------
 //BASE LEVEL
 //----------
-void H2_Main(void);
+void H2_Main();
 // not a globally visible function, just included for source reference
 // calls all startup code
 // parses command line options
 // if not overrided, calls N_AdvanceDemo
 
-void H2_GameLoop(void);
+void H2_GameLoop();
 // not a globally visible function, just included for source reference
 // called by H2_Main, never exits
 // manages timing and IO
@@ -769,7 +769,7 @@ void G_DeferedPlayDemo(const char *demo);
 void G_LoadGame(int slot);
 // can be called by the startup code or M_Responder
 // calls P_SetupLevel or W_EnterWorld
-void G_DoLoadGame(void);
+void G_DoLoadGame();
 
 void G_SaveGame(int slot, char *description);
 // called by M_Responder
@@ -784,18 +784,18 @@ void G_TimeDemo(char *name);
 void G_TeleportNewMap(int map, int position);
 
 void G_Completed(int map, int position);
-//void G_ExitLevel (void);
-//void G_SecretExitLevel (void);
+//void G_ExitLevel ();
+//void G_SecretExitLevel ();
 
 void G_StartNewGame(skill_t skill);
-void G_StartNewInit(void);
+void G_StartNewInit();
 
-void G_WorldDone(void);
+void G_WorldDone();
 
-void G_Ticker(void);
+void G_Ticker();
 boolean G_Responder(event_t * ev);
 
-void G_ScreenShot(void);
+void G_ScreenShot();
 
 //-------
 //SV_SAVE
@@ -811,18 +811,18 @@ void SV_SaveGame(int slot, const char *description);
 void SV_SaveMap(boolean savePlayers);
 void SV_LoadGame(int slot);
 void SV_MapTeleport(int map, int position);
-void SV_LoadMap(void);
-void SV_InitBaseSlot(void);
-void SV_UpdateRebornSlot(void);
-void SV_ClearRebornSlot(void);
-boolean SV_RebornSlotAvailable(void);
-int SV_GetRebornSlot(void);
+void SV_LoadMap();
+void SV_InitBaseSlot();
+void SV_UpdateRebornSlot();
+void SV_ClearRebornSlot();
+boolean SV_RebornSlotAvailable();
+int SV_GetRebornSlot();
 
 //-----
 //PLAY
 //-----
 
-void P_Ticker(void);
+void P_Ticker();
 // called by C_Ticker
 // can call G_PlayerExited
 // carries out all thinking of monsters and players
@@ -830,7 +830,7 @@ void P_Ticker(void);
 void P_SetupLevel(int episode, int map, int playermask, skill_t skill);
 // called by W_Ticker
 
-void P_Init(void);
+void P_Init();
 // called by startup code
 
 int P_GetMapCluster(int map);
@@ -848,12 +848,12 @@ boolean P_GetMapLightning(int map);
 boolean P_GetMapFadeTable(int map);
 char *P_GetMapSongLump(int map);
 void P_PutMapSongLump(int map, char *lumpName);
-int P_GetCDStartTrack(void);
-int P_GetCDEnd1Track(void);
-int P_GetCDEnd2Track(void);
-int P_GetCDEnd3Track(void);
-int P_GetCDIntermissionTrack(void);
-int P_GetCDTitleTrack(void);
+int P_GetCDStartTrack();
+int P_GetCDEnd1Track();
+int P_GetCDEnd2Track();
+int P_GetCDEnd3Track();
+int P_GetCDIntermissionTrack();
+int P_GetCDTitleTrack();
 
 //-------
 //REFRESH
@@ -875,11 +875,11 @@ extern int UpdateState;
 void R_RenderPlayerView(player_t * player);
 // called by G_Drawer
 
-void R_Init(void);
+void R_Init();
 // called by startup code
 
-void R_DrawViewBorder(void);
-void R_DrawTopBorder(void);
+void R_DrawViewBorder();
+void R_DrawTopBorder();
 // if the view size is not full screen, draws a border around it
 
 void R_SetViewSize(int blocks, int detail);
@@ -907,14 +907,14 @@ int M_DrawText(int x, int y, boolean direct, char *string);
 void SC_Open(const char *name);
 void SC_OpenLump(const char *name);
 void SC_OpenFile(const char *name);
-void SC_Close(void);
-boolean SC_GetString(void);
-void SC_MustGetString(void);
+void SC_Close();
+boolean SC_GetString();
+void SC_MustGetString();
 void SC_MustGetStringName(char *name);
-boolean SC_GetNumber(void);
-void SC_MustGetNumber(void);
-void SC_UnGet(void);
-//boolean SC_Check(void);
+boolean SC_GetNumber();
+void SC_MustGetNumber();
+void SC_UnGet();
+//boolean SC_Check();
 boolean SC_Compare(const char *text);
 int SC_MatchString(const char **strings);
 int SC_MustMatchString(const char **strings);
@@ -973,12 +973,12 @@ typedef enum
     SEQTYPE_NUMSEQ
 } seqtype_t;
 
-void SN_InitSequenceScript(void);
+void SN_InitSequenceScript();
 void SN_StartSequence(mobj_t * mobj, int sequence);
 void SN_StartSequenceName(mobj_t * mobj, char *name);
 void SN_StopSequence(mobj_t * mobj);
-void SN_UpdateActiveSequences(void);
-void SN_StopAllSequences(void);
+void SN_UpdateActiveSequences();
+void SN_StopAllSequences();
 int SN_GetSequenceOffset(int sequence, int *sequencePtr);
 void SN_ChangeNodeData(int nodeNum, int seqOffset, int delayTics, int volume,
                        int currentSoundID);
@@ -1010,19 +1010,19 @@ extern seqnode_t *SequenceListHead;
 extern boolean intermission;
 extern char ClusterMessage[MAX_INTRMSN_MESSAGE_SIZE];
 
-void IN_Start(void);
-void IN_Ticker(void);
-void IN_Drawer(void);
+void IN_Start();
+void IN_Ticker();
+void IN_Drawer();
 
 //----------------------
 // Chat mode (CT_chat.c)
 //----------------------
 
-void CT_Init(void);
-void CT_Drawer(void);
+void CT_Init();
+void CT_Drawer();
 boolean CT_Responder(event_t * ev);
-void CT_Ticker(void);
-char CT_dequeueChatChar(void);
+void CT_Ticker();
+char CT_dequeueChatChar();
 
 extern boolean chatmodeon;
 
@@ -1030,9 +1030,9 @@ extern boolean chatmodeon;
 // Finale (F_finale.c)
 //--------------------
 
-void F_Drawer(void);
-void F_Ticker(void);
-void F_StartFinale(void);
+void F_Drawer();
+void F_Ticker();
+void F_StartFinale();
 
 //----------------------
 // STATUS BAR (SB_bar.c)
@@ -1040,25 +1040,25 @@ void F_StartFinale(void);
 
 extern int inv_ptr;
 extern int curpos;
-void SB_Init(void);
-void SB_SetClassData(void);
+void SB_Init();
+void SB_SetClassData();
 boolean SB_Responder(event_t * event);
-void SB_Ticker(void);
-void SB_Drawer(void);
-void Draw_TeleportIcon(void);
-void Draw_SaveIcon(void);
-void Draw_LoadIcon(void);
+void SB_Ticker();
+void SB_Drawer();
+void Draw_TeleportIcon();
+void Draw_SaveIcon();
+void Draw_LoadIcon();
 
 //-----------------
 // MENU (MN_menu.c)
 //-----------------
 
-void MN_Init(void);
-void MN_ActivateMenu(void);
-void MN_DeactivateMenu(void);
+void MN_Init();
+void MN_ActivateMenu();
+void MN_DeactivateMenu();
 boolean MN_Responder(event_t * event);
-void MN_Ticker(void);
-void MN_Drawer(void);
+void MN_Ticker();
+void MN_Drawer();
 void MN_DrTextA(const char *text, int x, int y);
 void MN_DrTextAYellow(const char *text, int x, int y);
 int MN_TextAWidth(const char *text);

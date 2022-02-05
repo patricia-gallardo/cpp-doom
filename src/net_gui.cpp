@@ -61,7 +61,7 @@ static void StartGame(TXT_UNCAST_ARG(widget), TXT_UNCAST_ARG(unused))
     NET_CL_LaunchGame();
 }
 
-static void OpenWaitDialog(void)
+static void OpenWaitDialog()
 {
     txt_window_action_t *cancel;
 
@@ -81,7 +81,7 @@ static void OpenWaitDialog(void)
     old_max_players = 0;
 }
 
-static void BuildWindow(void)
+static void BuildWindow()
 {
     char         buf[50];
     txt_table_t *table;
@@ -114,7 +114,7 @@ static void BuildWindow(void)
     TXT_AddWidget(window, drone_label);
 }
 
-static void UpdateGUI(void)
+static void UpdateGUI()
 {
     txt_window_action_t *startgame;
     char                 buf[50];
@@ -186,7 +186,7 @@ static void UpdateGUI(void)
     TXT_SetWindowAction(window, TXT_HORIZ_RIGHT, startgame);
 }
 
-static void BuildMasterStatusWindow(void)
+static void BuildMasterStatusWindow()
 {
     txt_window_t *master_window;
 
@@ -205,7 +205,7 @@ static void BuildMasterStatusWindow(void)
     TXT_SetWindowAction(master_window, TXT_HORIZ_RIGHT, NULL);
 }
 
-static void CheckMasterStatus(void)
+static void CheckMasterStatus()
 {
     boolean added;
 
@@ -256,7 +256,7 @@ static void CloseWindow(TXT_UNCAST_ARG(widget), TXT_UNCAST_ARG(window))
     TXT_CloseWindow(window);
 }
 
-static void CheckSHA1Sums(void)
+static void CheckSHA1Sums()
 {
     boolean              correct_wad, correct_deh;
     boolean              same_freedoom;
@@ -352,7 +352,7 @@ static void CheckSHA1Sums(void)
     had_warning = true;
 }
 
-static void ParseCommandLineArgs(void)
+static void ParseCommandLineArgs()
 {
     int i;
 
@@ -370,7 +370,7 @@ static void ParseCommandLineArgs(void)
     }
 }
 
-static void CheckAutoLaunch(void)
+static void CheckAutoLaunch()
 {
     int nodes;
 
@@ -389,7 +389,7 @@ static void CheckAutoLaunch(void)
     }
 }
 
-void NET_WaitForLaunch(void)
+void NET_WaitForLaunch()
 {
     if (!TXT_Init())
     {

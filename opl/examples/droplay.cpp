@@ -56,7 +56,7 @@ void WriteReg(unsigned int reg, unsigned int val)
     }
 }
 
-void ClearAllRegs(void)
+void ClearAllRegs()
 {
     int i;
 
@@ -66,7 +66,7 @@ void ClearAllRegs(void)
     }
 }
 
-void Init(void)
+void Init()
 {
     if (SDL_Init(SDL_INIT_TIMER) < 0)
     {
@@ -81,7 +81,7 @@ void Init(void)
     }
 }
 
-void Shutdown(void)
+void Shutdown()
 {
     OPL_Shutdown();
 }

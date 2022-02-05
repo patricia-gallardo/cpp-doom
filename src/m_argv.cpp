@@ -226,7 +226,7 @@ static void LoadResponseFile(int argv_index, const char *filename)
 // Find a Response File
 //
 
-void M_FindResponseFile(void)
+void M_FindResponseFile()
 {
     int i;
 
@@ -320,7 +320,7 @@ static int CompareByFileType(const void *a, const void *b)
     return ret ? ret : (arg_a->stable - arg_b->stable);
 }
 
-void M_AddLooseFiles(void)
+void M_AddLooseFiles()
 {
     int         i, types = 0;
     char **     newargv;
@@ -403,7 +403,7 @@ void M_AddLooseFiles(void)
 
 // Return the name of the executable used to start the program:
 
-const char *M_GetExecutableName(void)
+const char *M_GetExecutableName()
 {
     return M_BaseName(myargv[0]);
 }

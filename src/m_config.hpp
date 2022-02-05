@@ -22,11 +22,11 @@
 
 #include "doomtype.hpp"
 
-void        M_LoadDefaults(void);
-void        M_SaveDefaults(void);
+void        M_LoadDefaults();
+void        M_SaveDefaults();
 void        M_SaveDefaultsAlternate(const char *main, const char *extra);
 void        M_SetConfigDir(const char *dir);
-void        M_SetMusicPackDir(void);
+void        M_SetMusicPackDir();
 void        M_BindIntVariable(const char *name, int *variable);
 void        M_BindFloatVariable(const char *name, float *variable);
 void        M_BindStringVariable(const char *name, char **variable);

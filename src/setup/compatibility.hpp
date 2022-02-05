@@ -16,7 +16,7 @@
 #define SETUP_COMPATIBILITY_H
 
 void CompatibilitySettings(void *widget, void *user_data);
-void BindCompatibilityVariables(void);
+void BindCompatibilityVariables();
 
 extern int vanilla_savegame_limit;
 extern int vanilla_demo_limit;

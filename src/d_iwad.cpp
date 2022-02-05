@@ -300,7 +300,7 @@ static char *GetRegistryString(registry_value_t *reg_val)
 
 // Check for the uninstall strings from the CD versions
 
-static void CheckUninstallStrings(void)
+static void CheckUninstallStrings()
 {
     unsigned int i;
 
@@ -334,7 +334,7 @@ static void CheckUninstallStrings(void)
 
 // Check for GOG.com and Doom: Collector's Edition
 
-static void CheckInstallRootPaths(void)
+static void CheckInstallRootPaths()
 {
     unsigned int i;
 
@@ -365,7 +365,7 @@ static void CheckInstallRootPaths(void)
 
 // Check for Doom downloaded via Steam
 
-static void CheckSteamEdition(void)
+static void CheckSteamEdition()
 {
     char * install_path;
     char * subpath;
@@ -392,7 +392,7 @@ static void CheckSteamEdition(void)
 // The BFG edition ships with a full set of GUS patches. If we find them,
 // we can autoconfigure to use them.
 
-static void CheckSteamGUSPatches(void)
+static void CheckSteamGUSPatches()
 {
     const char *current_path;
     char *      install_path;
@@ -429,7 +429,7 @@ static void CheckSteamGUSPatches(void)
 
 // Default install directories for DOS Doom
 
-static void CheckDOSDefaults(void)
+static void CheckDOSDefaults()
 {
     // These are the default install directories used by the deice
     // installer program:
@@ -604,7 +604,7 @@ static void AddIWADPath(const char *path, const char *suffix)
 // using standard environment variables. See the XDG Base Directory
 // Specification:
 // <http://standards.freedesktop.org/basedir-spec/basedir-spec-latest.html>
-static void AddXdgDirs(void)
+static void AddXdgDirs()
 {
     char *env, *tmp_env;
 
@@ -666,7 +666,7 @@ static void AddXdgDirs(void)
 // could parse *.vdf files to more accurately detect installation
 // locations, but the defaults are likely to be good enough for just
 // about everyone.
-static void AddSteamDirs(void)
+static void AddSteamDirs()
 {
     char *homedir, *steampath;
 
@@ -695,7 +695,7 @@ static void AddSteamDirs(void)
 // Build a list of IWAD files
 //
 
-static void BuildIWADDirList(void)
+static void BuildIWADDirList()
 {
     char *env;
 

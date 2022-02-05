@@ -60,10 +60,10 @@
 #define HAT_AXIS_HORIZONTAL 1
 #define HAT_AXIS_VERTICAL   2
 
-void I_InitJoystick(void);
-void I_ShutdownJoystick(void);
-void I_UpdateJoystick(void);
+void I_InitJoystick();
+void I_ShutdownJoystick();
+void I_UpdateJoystick();
 
-void I_BindJoystickVariables(void);
+void I_BindJoystickVariables();
 
 #endif /* #ifndef __I_JOYSTICK__ */

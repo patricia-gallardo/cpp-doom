@@ -68,7 +68,7 @@
 extern	thinker_t	thinkercap;	
 
 
-void P_InitThinkers (void);
+void P_InitThinkers ();
 void P_AddThinker (thinker_t* thinker);
 void P_RemoveThinker (thinker_t* thinker);
 
@@ -110,7 +110,7 @@ extern int		iquehead;
 extern int		iquetail;
 
 
-void P_RespawnSpecials (void);
+void P_RespawnSpecials ();
 
 mobj_t*
 P_SpawnMobj
@@ -142,8 +142,8 @@ void P_DoPunchAlert(mobj_t *puncher, mobj_t *punchee);  // villsa [STRIFE]
 void A_BodyParts(mobj_t *actor);                        // haleyjd: [STRIFE]
 void A_AlertSpectreC(mobj_t* actor);
 void A_FaceTarget (mobj_t* actor);
-void P_FreePrisoners(void);
-void P_DestroyConverter(void);
+void P_FreePrisoners();
+void P_DestroyConverter();
 
 //
 // P_MAPUTL

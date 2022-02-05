@@ -175,7 +175,7 @@ void I_PrintBanner(const char *msg)
     puts(msg);
 }
 
-void I_PrintDivider(void)
+void I_PrintDivider()
 {
     int i;
 
@@ -208,7 +208,7 @@ void I_PrintStartupBanner(const char *gamedescription)
 // Returns true if stdout is a real console, false if it is a file
 //
 
-boolean I_ConsoleStdout(void)
+boolean I_ConsoleStdout()
 {
 #ifdef _WIN32
     // SDL "helpfully" always redirects stdout to a file.
@@ -222,13 +222,13 @@ boolean I_ConsoleStdout(void)
 // I_Init
 //
 /*
-void I_Init (void)
+void I_Init ()
 {
     I_CheckIsScreensaver();
     I_InitTimer();
     I_InitJoystick();
 }
-void I_BindVariables(void)
+void I_BindVariables()
 {
     I_BindVideoVariables();
     I_BindJoystickVariables();
@@ -240,7 +240,7 @@ void I_BindVariables(void)
 // I_Quit
 //
 
-void I_Quit(void)
+void I_Quit()
 {
     atexit_listentry_t *entry;
 

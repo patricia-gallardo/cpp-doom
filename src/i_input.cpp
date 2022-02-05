@@ -299,7 +299,7 @@ void I_StartTextInput(int x1, int y1, int x2, int y2)
     }
 }
 
-void I_StopTextInput(void)
+void I_StopTextInput()
 {
     text_input_enabled = false;
 
@@ -450,7 +450,7 @@ static int AccelerateMouseY(int val)
 //
 // This is to combine all mouse movement for a tic into one mouse
 // motion event.
-void I_ReadMouse(void)
+void I_ReadMouse()
 {
     int     x, y;
     event_t ev;
@@ -479,7 +479,7 @@ void I_ReadMouse(void)
 }
 
 // Bind all variables controlling input options.
-void I_BindInputVariables(void)
+void I_BindInputVariables()
 {
     M_BindFloatVariable("mouse_acceleration", &mouse_acceleration);
     M_BindIntVariable("mouse_threshold", &mouse_threshold);

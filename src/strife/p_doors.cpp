@@ -1040,7 +1040,7 @@ slideframe_t slideFrames[MAXSLIDEDOORS];
 //
 // villsa [STRIFE] resurrected
 //
-void P_InitSlidingDoorFrames(void)
+void P_InitSlidingDoorFrames()
 {
     int i;
     int f1;

@@ -45,7 +45,7 @@ static void RotatePt(int an, fixed_t * x, fixed_t * y, fixed_t startSpotX,
 static void UnLinkPolyobj(polyobj_t * po);
 static void LinkPolyobj(polyobj_t * po);
 static boolean CheckMobjBlocking(seg_t * seg, polyobj_t * po);
-static void InitBlockMap(void);
+static void InitBlockMap();
 static void IterFindPolySegs(int x, int y, seg_t ** segList);
 static void SpawnPolyobj(int index, int tag, boolean crush);
 static void TranslateToStartSpot(int tag, int originX, int originY);
@@ -1111,7 +1111,7 @@ static boolean CheckMobjBlocking(seg_t * seg, polyobj_t * po)
 //
 //==========================================================================
 
-static void InitBlockMap(void)
+static void InitBlockMap()
 {
     int i;
     int j;

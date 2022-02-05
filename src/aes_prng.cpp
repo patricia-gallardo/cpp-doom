@@ -2448,14 +2448,14 @@ void PRNG_Start(prng_seed_t key)
     prng_enabled       = true;
 }
 
-void PRNG_Stop(void)
+void PRNG_Stop()
 {
     prng_enabled = false;
 }
 
 // Generate a set of new PRNG values by encrypting a new block.
 
-static void PRNG_Generate(void)
+static void PRNG_Generate()
 {
     byte         input[16], output[16];
     unsigned int i;
@@ -2486,7 +2486,7 @@ static void PRNG_Generate(void)
 
 // Read a random 32-bit integer from the PRNG.
 
-unsigned int PRNG_Random(void)
+unsigned int PRNG_Random()
 {
     unsigned int result;
 

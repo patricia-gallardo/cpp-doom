@@ -53,19 +53,19 @@ void G_SaveGame (int slot, char* description);
 // Only called by startup code.
 void G_RecordDemo (char* name);
 
-void G_BeginRecording (void);
+void G_BeginRecording ();
 
 void G_PlayDemo (char* name);
 void G_TimeDemo (char* name);
-boolean G_CheckDemoStatus (void);
+boolean G_CheckDemoStatus ();
 
 void G_RiftExitLevel(int map, int spot, angle_t angle); // [STRIFE]
 void G_ExitLevel (int dest);
-//void G_SecretExitLevel (void);
+//void G_SecretExitLevel ();
 
-void G_StartFinale(void); // [STRIFE]
+void G_StartFinale(); // [STRIFE]
 
-//void G_WorldDone (void);
+//void G_WorldDone ();
 
 boolean G_RiftCheat(int riftSpotNum); // [STRIFE]
 
@@ -73,12 +73,12 @@ boolean G_RiftCheat(int riftSpotNum); // [STRIFE]
 
 void G_BuildTiccmd (ticcmd_t *cmd, int maketic);
 
-void G_Ticker (void);
+void G_Ticker ();
 boolean G_Responder (event_t*	ev);
 
-void G_ScreenShot (void);
+void G_ScreenShot ();
 
-void G_DrawMouseSpeedBox(void);
+void G_DrawMouseSpeedBox();
 
 // [STRIFE]
 boolean G_WriteSaveName(int slot, const char *charname);

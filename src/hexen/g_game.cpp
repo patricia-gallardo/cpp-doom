@@ -41,25 +41,25 @@ extern void P_PlayerNextArtifact(player_t * player);
 
 // Functions
 
-boolean G_CheckDemoStatus(void);
+boolean G_CheckDemoStatus();
 void G_ReadDemoTiccmd(ticcmd_t * cmd);
 void G_WriteDemoTiccmd(ticcmd_t * cmd);
 
 void G_DoReborn(int playernum);
 
-void G_DoLoadLevel(void);
-void G_DoInitNew(void);
-void G_DoNewGame(void);
-void G_DoPlayDemo(void);
-void G_DoTeleportNewMap(void);
-void G_DoCompleted(void);
-void G_DoVictory(void);
-void G_DoWorldDone(void);
-void G_DoSaveGame(void);
-void G_DoSingleReborn(void);
+void G_DoLoadLevel();
+void G_DoInitNew();
+void G_DoNewGame();
+void G_DoPlayDemo();
+void G_DoTeleportNewMap();
+void G_DoCompleted();
+void G_DoVictory();
+void G_DoWorldDone();
+void G_DoSaveGame();
+void G_DoSingleReborn();
 
-void H2_PageTicker(void);
-void H2_AdvanceDemo(void);
+void H2_PageTicker();
+void H2_AdvanceDemo();
 
 extern boolean mn_SuicideConsole;
 
@@ -680,7 +680,7 @@ void G_BuildTiccmd(ticcmd_t *cmd, int maketic)
 ==============
 */
 
-void G_DoLoadLevel(void)
+void G_DoLoadLevel()
 {
     int i;
 
@@ -938,7 +938,7 @@ boolean G_Responder(event_t * ev)
 //
 //==========================================================================
 
-void G_Ticker(void)
+void G_Ticker()
 {
     int i, buf;
     ticcmd_t *cmd = NULL;
@@ -1426,7 +1426,7 @@ void G_DoReborn(int playernum)
     }
 }
 
-void G_ScreenShot(void)
+void G_ScreenShot()
 {
     gameaction = ga_screenshot;
 }
@@ -1437,7 +1437,7 @@ void G_ScreenShot(void)
 //
 //==========================================================================
 
-void G_StartNewInit(void)
+void G_StartNewInit()
 {
     SV_InitBaseSlot();
     SV_ClearRebornSlot();
@@ -1487,7 +1487,7 @@ void G_TeleportNewMap(int map, int position)
 //
 //==========================================================================
 
-void G_DoTeleportNewMap(void)
+void G_DoTeleportNewMap()
 {
     SV_MapTeleport(LeaveMap, LeavePosition);
     gamestate = GS_LEVEL;
@@ -1497,12 +1497,12 @@ void G_DoTeleportNewMap(void)
 
 /*
 boolean secretexit;
-void G_ExitLevel (void)
+void G_ExitLevel ()
 {
 	secretexit = false;
 	gameaction = ga_completed;
 }
-void G_SecretExitLevel (void)
+void G_SecretExitLevel ()
 {
 	secretexit = true;
 	gameaction = ga_completed;
@@ -1531,7 +1531,7 @@ void G_Completed(int map, int position)
     LeavePosition = position;
 }
 
-void G_DoCompleted(void)
+void G_DoCompleted()
 {
     int i;
 
@@ -1605,7 +1605,7 @@ void G_DoCompleted(void)
 //
 //============================================================================
 
-void G_WorldDone(void)
+void G_WorldDone()
 {
     gameaction = ga_worlddone;
 }
@@ -1616,7 +1616,7 @@ void G_WorldDone(void)
 //
 //============================================================================
 
-void G_DoWorldDone(void)
+void G_DoWorldDone()
 {
     gamestate = GS_LEVEL;
     G_DoLoadLevel();
@@ -1633,7 +1633,7 @@ void G_DoWorldDone(void)
 //
 //==========================================================================
 
-void G_DoSingleReborn(void)
+void G_DoSingleReborn()
 {
     gameaction = ga_nothing;
     SV_LoadGame(SV_GetRebornSlot());
@@ -1664,7 +1664,7 @@ void G_LoadGame(int slot)
 //
 //==========================================================================
 
-void G_DoLoadGame(void)
+void G_DoLoadGame()
 {
     gameaction = ga_nothing;
     SV_LoadGame(GameLoadSlot);
@@ -1698,7 +1698,7 @@ void G_SaveGame(int slot, char *description)
 //
 //==========================================================================
 
-void G_DoSaveGame(void)
+void G_DoSaveGame()
 {
     SV_SaveGame(savegameslot, savedescription);
     gameaction = ga_nothing;
@@ -1724,7 +1724,7 @@ void G_DeferredNewGame(skill_t skill)
 //
 //==========================================================================
 
-void G_DoNewGame(void)
+void G_DoNewGame()
 {
     G_StartNewGame(TempSkill);
     gameaction = ga_nothing;
@@ -1748,7 +1748,7 @@ void G_DeferedInitNew(skill_t skill, int episode, int map)
     gameaction = ga_initnew;
 }
 
-void G_DoInitNew(void)
+void G_DoInitNew()
 {
     SV_InitBaseSlot();
     G_InitNew(TempSkill, TempEpisode, TempMap);
@@ -1861,7 +1861,7 @@ void G_ReadDemoTiccmd(ticcmd_t * cmd)
 
 // Increase the size of the demo buffer to allow unlimited demos
 
-static void IncreaseDemoBuffer(void)
+static void IncreaseDemoBuffer()
 {
     int current_length;
     byte *new_demobuffer;
@@ -2053,7 +2053,7 @@ void G_DeferedPlayDemo(const char *name)
     gameaction = ga_playdemo;
 }
 
-void G_DoPlayDemo(void)
+void G_DoPlayDemo()
 {
     skill_t skill;
     int i, lumpnum, episode, map;
@@ -2155,7 +2155,7 @@ void G_TimeDemo(char *name)
 ===================
 */
 
-boolean G_CheckDemoStatus(void)
+boolean G_CheckDemoStatus()
 {
     int endtime, realtics;
 

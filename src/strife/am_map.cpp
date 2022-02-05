@@ -270,7 +270,7 @@ AM_getIslope
 //
 //
 //
-void AM_activateNewScale(void)
+void AM_activateNewScale()
 {
     m_x += m_w/2;
     m_y += m_h/2;
@@ -285,7 +285,7 @@ void AM_activateNewScale(void)
 //
 //
 //
-void AM_saveScaleAndLoc(void)
+void AM_saveScaleAndLoc()
 {
     old_m_x = m_x;
     old_m_y = m_y;
@@ -296,7 +296,7 @@ void AM_saveScaleAndLoc(void)
 //
 //
 //
-void AM_restoreScaleAndLoc(void)
+void AM_restoreScaleAndLoc()
 {
 
     m_w = old_m_w;
@@ -320,7 +320,7 @@ void AM_restoreScaleAndLoc(void)
 //
 // adds a marker at the current location
 //
-void AM_addMark(void)
+void AM_addMark()
 {
     markpoints[markpointnum].x = plr->mo->x; // 20160306 [STRIFE]: use player position
     markpoints[markpointnum].y = plr->mo->y;
@@ -332,7 +332,7 @@ void AM_addMark(void)
 // Determines bounding box of all vertices,
 // sets global variables controlling zoom range.
 //
-void AM_findMinMaxBoundaries(void)
+void AM_findMinMaxBoundaries()
 {
     int i;
     fixed_t a;
@@ -372,7 +372,7 @@ void AM_findMinMaxBoundaries(void)
 //
 //
 //
-void AM_changeWindowLoc(void)
+void AM_changeWindowLoc()
 {
     if (m_paninc.x || m_paninc.y)
     {
@@ -401,7 +401,7 @@ void AM_changeWindowLoc(void)
 //
 //
 //
-void AM_initVariables(void)
+void AM_initVariables()
 {
     int pnum;
     static event_t st_notify = { ev_keyup, AM_MSGENTERED, 0, 0 };
@@ -459,7 +459,7 @@ void AM_initVariables(void)
 //
 // haleyjd 08/27/10: [STRIFE] Changed marknums to PLMNUM%d
 //
-void AM_loadPics(void)
+void AM_loadPics()
 {
     int i;
     char namebuf[9];
@@ -472,7 +472,7 @@ void AM_loadPics(void)
 
 }
 
-void AM_unloadPics(void)
+void AM_unloadPics()
 {
     int i;
     char namebuf[9];
@@ -484,7 +484,7 @@ void AM_unloadPics(void)
     }
 }
 
-void AM_clearMarks(void)
+void AM_clearMarks()
 {
     int i;
 
@@ -497,7 +497,7 @@ void AM_clearMarks(void)
 // should be called at the start of every level
 // right now, i figure it out myself
 //
-void AM_LevelInit(void)
+void AM_LevelInit()
 {
     leveljuststarted = 0;
 
@@ -520,7 +520,7 @@ void AM_LevelInit(void)
 //
 //
 //
-void AM_Stop (void)
+void AM_Stop ()
 {
     static event_t st_notify = { ev_keydown, ev_keyup, AM_MSGEXITED, 0 };
 
@@ -533,7 +533,7 @@ void AM_Stop (void)
 //
 //
 //
-void AM_Start (void)
+void AM_Start ()
 {
     static int lastlevel = -1;
     //static int lastepisode = -1;
@@ -553,7 +553,7 @@ void AM_Start (void)
 //
 // set the window scale to the maximum size
 //
-void AM_minOutWindowScale(void)
+void AM_minOutWindowScale()
 {
     scale_mtof = min_scale_mtof;
     scale_ftom = FixedDiv(FRACUNIT, scale_mtof);
@@ -563,7 +563,7 @@ void AM_minOutWindowScale(void)
 //
 // set the window scale to the minimum size
 //
-void AM_maxOutWindowScale(void)
+void AM_maxOutWindowScale()
 {
     scale_mtof = max_scale_mtof;
     scale_ftom = FixedDiv(FRACUNIT, scale_mtof);
@@ -755,7 +755,7 @@ AM_Responder
 //
 // Zooming
 //
-void AM_changeWindowScale(void)
+void AM_changeWindowScale()
 {
 
     // Change the scaling multipliers
@@ -774,7 +774,7 @@ void AM_changeWindowScale(void)
 //
 //
 //
-void AM_doFollowPlayer(void)
+void AM_doFollowPlayer()
 {
 
     if (f_oldloc.x != plr->mo->x || f_oldloc.y != plr->mo->y)
@@ -798,7 +798,7 @@ void AM_doFollowPlayer(void)
 //
 //
 //
-void AM_updateLightLev(void)
+void AM_updateLightLev()
 {
     static int nexttic = 0;
     //static int litelevels[] = { 0, 3, 5, 6, 6, 7, 7, 7 };
@@ -819,7 +819,7 @@ void AM_updateLightLev(void)
 //
 // Updates on Game Tick
 //
-void AM_Ticker (void)
+void AM_Ticker ()
 {
 
     if (!automapactive)
@@ -1136,7 +1136,7 @@ AM_drawMline
 // Determines visible lines, draws them.
 // This is LineDef based, not LineSeg based.
 //
-void AM_drawWalls(void)
+void AM_drawWalls()
 {
     int i;
     line_t* line;
@@ -1273,7 +1273,7 @@ AM_drawLineCharacter
     }
 }
 
-void AM_drawPlayers(void)
+void AM_drawPlayers()
 {
     int		i;
     player_t*	p;
@@ -1322,7 +1322,7 @@ void AM_drawPlayers(void)
 //
 // villsa [STRIFE] no arguments
 //
-void AM_drawThings(void)
+void AM_drawThings()
 {
     int         i;
     mobj_t*     t;
@@ -1363,7 +1363,7 @@ void AM_drawThings(void)
 //
 // AM_drawMarks
 //
-void AM_drawMarks(void)
+void AM_drawMarks()
 {
     int i, fx, fy, w, h;
 
@@ -1394,7 +1394,7 @@ void AM_drawMarks(void)
     fb[(f_w*(f_h+1))/2] = color; // single point for now
 }*/
 
-void AM_Drawer (void)
+void AM_Drawer ()
 {
     if (!automapactive) return;
 

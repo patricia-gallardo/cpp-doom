@@ -145,21 +145,21 @@ void SV_Read(void *buffer, int size)
     }
 }
 
-byte SV_ReadByte(void)
+byte SV_ReadByte()
 {
     byte result;
     SV_Read(&result, sizeof(byte));
     return result;
 }
 
-uint16_t SV_ReadWord(void)
+uint16_t SV_ReadWord()
 {
     uint16_t result;
     SV_Read(&result, sizeof(unsigned short));
     return SHORT(result);
 }
 
-uint32_t SV_ReadLong(void)
+uint32_t SV_ReadLong()
 {
     uint32_t result;
     SV_Read(&result, sizeof(int));
@@ -1505,7 +1505,7 @@ static void saveg_write_glow_t(glow_t *str)
 ====================
 */
 
-void P_ArchivePlayers(void)
+void P_ArchivePlayers()
 {
     int i;
 
@@ -1527,7 +1527,7 @@ void P_ArchivePlayers(void)
 ====================
 */
 
-void P_UnArchivePlayers(void)
+void P_UnArchivePlayers()
 {
     int i;
 
@@ -1553,7 +1553,7 @@ void P_UnArchivePlayers(void)
 ====================
 */
 
-void P_ArchiveWorld(void)
+void P_ArchiveWorld()
 {
     int i, j;
     sector_t *sec;
@@ -1602,7 +1602,7 @@ void P_ArchiveWorld(void)
 ====================
 */
 
-void P_UnArchiveWorld(void)
+void P_UnArchiveWorld()
 {
     int i, j;
     sector_t *sec;
@@ -1663,7 +1663,7 @@ typedef enum
 ====================
 */
 
-void P_ArchiveThinkers(void)
+void P_ArchiveThinkers()
 {
     thinker_t *th;
 
@@ -1690,7 +1690,7 @@ void P_ArchiveThinkers(void)
 ====================
 */
 
-void P_UnArchiveThinkers(void)
+void P_UnArchiveThinkers()
 {
     byte tclass;
     thinker_t *currentthinker, *next;
@@ -1763,7 +1763,7 @@ enum
     tc_endspecials
 } specials_e;
 
-void P_ArchiveSpecials(void)
+void P_ArchiveSpecials()
 {
     /*
     T_MoveCeiling, (ceiling_t: sector_t * swizzle), - active list
@@ -1834,7 +1834,7 @@ void P_ArchiveSpecials(void)
 ====================
 */
 
-void P_UnArchiveSpecials(void)
+void P_UnArchiveSpecials()
 {
     byte tclass;
     ceiling_t *ceiling;

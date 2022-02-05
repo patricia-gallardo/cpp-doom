@@ -44,7 +44,7 @@
 #define ST_NETNOTCH_HEIGHT		16
 #define ST_MAX_NETNOTCHES		8
 
-byte *ST_LoadScreen(void);
+byte *ST_LoadScreen();
 void ST_UpdateNotches(int notchPosition);
 void ST_UpdateNetNotches(int notchPosition);
 
@@ -116,7 +116,7 @@ static const byte netnotchTable[] = {
 //
 //==========================================================================
 
-void ST_Init(void)
+void ST_Init()
 {
     byte *pal;
     byte *buffer;
@@ -151,7 +151,7 @@ void ST_Init(void)
     }
 }
 
-void ST_Done(void)
+void ST_Done()
 {
     if (using_graphical_startup)
     {
@@ -195,7 +195,7 @@ void ST_UpdateNetNotches(int notchPosition)
 //
 //==========================================================================
 
-void ST_Progress(void)
+void ST_Progress()
 {
     // Check for ESC press -- during startup all events eaten here
     if (I_CheckAbortHR())
@@ -226,7 +226,7 @@ void ST_Progress(void)
 //
 //==========================================================================
 
-void ST_NetProgress(void)
+void ST_NetProgress()
 {
     printf("*");
 
@@ -249,7 +249,7 @@ void ST_NetProgress(void)
 // ST_NetDone - net progress complete
 //
 //==========================================================================
-void ST_NetDone(void)
+void ST_NetDone()
 {
     if (using_graphical_startup)
     {
@@ -297,7 +297,7 @@ void ST_RealMessage(const char *message, ...)
 //==========================================================================
 
 
-byte *ST_LoadScreen(void)
+byte *ST_LoadScreen()
 {
     int length, lump;
     byte *buffer;

@@ -26,7 +26,7 @@
 
 int cd_Error;
 
-int I_CDMusInit(void)
+int I_CDMusInit()
 {
     fprintf(stderr,
         "I_CDMusInit: CD music playback is no longer supported! "
@@ -38,7 +38,7 @@ int I_CDMusInit(void)
 // We cannot print status messages inline during startup, they must
 // be deferred until after I_CDMusInit has returned.
 
-void I_CDMusPrintStartup(void)
+void I_CDMusPrintStartup()
 {
 }
 
@@ -47,12 +47,12 @@ int I_CDMusPlay(int track)
     return 0;
 }
 
-int I_CDMusStop(void)
+int I_CDMusStop()
 {
     return 0;
 }
 
-int I_CDMusResume(void)
+int I_CDMusResume()
 {
     return 0;
 }
@@ -62,12 +62,12 @@ int I_CDMusSetVolume(int volume)
     return 0;
 }
 
-int I_CDMusFirstTrack(void)
+int I_CDMusFirstTrack()
 {
     return 0;
 }
 
-int I_CDMusLastTrack(void)
+int I_CDMusLastTrack()
 {
     return 0;
 }

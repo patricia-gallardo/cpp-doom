@@ -63,7 +63,7 @@ static int OPL_Linux_Init(unsigned int port_base)
     return 1;
 }
 
-static void OPL_Linux_Shutdown(void)
+static void OPL_Linux_Shutdown()
 {
     // Stop callback thread
 

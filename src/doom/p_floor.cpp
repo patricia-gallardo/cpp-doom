@@ -280,7 +280,7 @@ void T_MoveGoobers(floormove_t *floor)
 }
 
 // [crispy] easter egg: homage to an old friend
-void EV_DoGoobers(void)
+void EV_DoGoobers()
 {
     int i;
 

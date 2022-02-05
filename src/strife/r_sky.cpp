@@ -44,7 +44,7 @@ int			skytexturemid;
 // R_InitSkyMap
 // Called whenever the view size changes.
 //
-void R_InitSkyMap (void)
+void R_InitSkyMap ()
 {
     // haleyjd 10/03/10: [STRIFE] Sky is set here, not in G_DoLoadLevel.
     // Also skytexturemid changed from 100 to 199.

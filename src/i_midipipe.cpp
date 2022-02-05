@@ -215,7 +215,7 @@ void RemoveFileSpec(TCHAR *path, size_t size)
     *(fp + 1) = '\0';
 }
 
-static boolean BlockForAck(void)
+static boolean BlockForAck()
 {
     boolean       ok;
     net_packet_t *packet;
@@ -270,7 +270,7 @@ boolean I_MidiPipe_RegisterSong(char *filename)
 //
 // Tells the MIDI subprocess to unload the current song.
 //
-void I_MidiPipe_UnregisterSong(void)
+void I_MidiPipe_UnregisterSong()
 {
     boolean       ok;
     net_packet_t *packet;

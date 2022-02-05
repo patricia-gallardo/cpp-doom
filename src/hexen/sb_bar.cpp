@@ -43,17 +43,17 @@ typedef struct Cheat_s
 
 // PRIVATE FUNCTION PROTOTYPES ---------------------------------------------
 
-static void DrawSoundInfo(void);
+static void DrawSoundInfo();
 static void DrINumber(signed int val, int x, int y);
 static void DrRedINumber(signed int val, int x, int y);
 static void DrBNumber(signed int val, int x, int y);
-static void DrawCommonBar(void);
-static void DrawMainBar(void);
-static void DrawInventoryBar(void);
-static void DrawKeyBar(void);
-static void DrawWeaponPieces(void);
-static void DrawFullScreenStuff(void);
-static void DrawAnimatedIcons(void);
+static void DrawCommonBar();
+static void DrawMainBar();
+static void DrawInventoryBar();
+static void DrawKeyBar();
+static void DrawWeaponPieces();
+static void DrawFullScreenStuff();
+static void DrawAnimatedIcons();
 static boolean HandleCheats(byte key);
 static boolean CheatAddKey(Cheat_t * cheat, byte key, boolean * eat);
 static void CheatGodFunc(player_t * player, Cheat_t * cheat);
@@ -255,7 +255,7 @@ static Cheat_t Cheats[] = {
 //
 //==========================================================================
 
-void SB_Init(void)
+void SB_Init()
 {
     int i;
     int startLump;
@@ -344,7 +344,7 @@ void SB_Init(void)
 //
 //==========================================================================
 
-void SB_SetClassData(void)
+void SB_SetClassData()
 {
     int clazz;
 
@@ -387,7 +387,7 @@ void SB_SetClassData(void)
 //
 //==========================================================================
 
-void SB_Ticker(void)
+void SB_Ticker()
 {
     int delta;
     int curHealth;
@@ -615,7 +615,7 @@ static void ShadeLine(int x, int y, int height, int shade)
 //
 //==========================================================================
 
-static void ShadeChain(void)
+static void ShadeChain()
 {
 	int i;
 
@@ -635,7 +635,7 @@ static void ShadeChain(void)
 //
 //==========================================================================
 
-static void DrawSoundInfo(void)
+static void DrawSoundInfo()
 {
     int i;
     SoundInfo_t s;
@@ -749,7 +749,7 @@ static int oldkeys = -1;
 
 extern boolean automapactive;
 
-void SB_Drawer(void)
+void SB_Drawer()
 {
     // Sound info debug stuff
     if (DebugSound == true)
@@ -819,7 +819,7 @@ void SB_Drawer(void)
 //
 //==========================================================================
 
-static void DrawAnimatedIcons(void)
+static void DrawAnimatedIcons()
 {
     int frame;
     static boolean hitCenterFrame;
@@ -984,7 +984,7 @@ void SB_PaletteFlash(boolean forceChange)
 //
 //==========================================================================
 
-void DrawCommonBar(void)
+void DrawCommonBar()
 {
     int healthPos;
 
@@ -1017,7 +1017,7 @@ void DrawCommonBar(void)
 //
 //==========================================================================
 
-void DrawMainBar(void)
+void DrawMainBar()
 {
     int i, j, k;
     int temp;
@@ -1233,7 +1233,7 @@ void DrawMainBar(void)
 //
 //==========================================================================
 
-void DrawInventoryBar(void)
+void DrawInventoryBar()
 {
     int i;
     int x;
@@ -1277,7 +1277,7 @@ void DrawInventoryBar(void)
 //
 //==========================================================================
 
-void DrawKeyBar(void)
+void DrawKeyBar()
 {
     int i;
     int xPosition;
@@ -1351,7 +1351,7 @@ static int PieceX[NUMCLASSES][3] = {
     {0, 0, 0}                   // Pig is never used
 };
 
-static void DrawWeaponPieces(void)
+static void DrawWeaponPieces()
 {
     if (CPlayer->pieces == 7)
     {
@@ -1379,7 +1379,7 @@ static void DrawWeaponPieces(void)
 //
 //==========================================================================
 
-void DrawFullScreenStuff(void)
+void DrawFullScreenStuff()
 {
     int i;
     int x;
@@ -1461,7 +1461,7 @@ void DrawFullScreenStuff(void)
 // Draw_TeleportIcon
 //
 //==========================================================================
-void Draw_TeleportIcon(void)
+void Draw_TeleportIcon()
 {
     patch_t *patch;
     patch = cache_lump_num<patch_t *>(W_GetNumForName("teleicon"), PU_CACHE);
@@ -1476,7 +1476,7 @@ void Draw_TeleportIcon(void)
 // Draw_SaveIcon
 //
 //==========================================================================
-void Draw_SaveIcon(void)
+void Draw_SaveIcon()
 {
     patch_t *patch;
     patch = cache_lump_num<patch_t *>(W_GetNumForName("saveicon"), PU_CACHE);
@@ -1491,7 +1491,7 @@ void Draw_SaveIcon(void)
 // Draw_LoadIcon
 //
 //==========================================================================
-void Draw_LoadIcon(void)
+void Draw_LoadIcon()
 {
     patch_t *patch;
     patch = cache_lump_num<patch_t *>(W_GetNumForName("loadicon"), PU_CACHE);

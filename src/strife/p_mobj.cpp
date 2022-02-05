@@ -745,7 +745,7 @@ void P_RemoveMobj (mobj_t* mobj)
 //
 // [STRIFE] modification to item respawn time handling
 //
-void P_RespawnSpecials (void)
+void P_RespawnSpecials ()
 {
     fixed_t     x;
     fixed_t     y;

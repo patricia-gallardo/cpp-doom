@@ -151,7 +151,7 @@ static void FreeAllocatedSound(allocated_sound_t *snd)
 // and free a sound that is not in use, to free up memory.  Return true
 // for success.
 
-static boolean FindAndFreeSound(void)
+static boolean FindAndFreeSound()
 {
     allocated_sound_t *snd;
 
@@ -369,7 +369,7 @@ static void ReleaseSoundOnChannel(int channel)
 
 // Returns the conversion mode for libsamplerate to use.
 
-static int SRC_ConversionMode(void)
+static int SRC_ConversionMode()
 {
     switch (use_libsamplerate)
     {
@@ -1083,7 +1083,7 @@ static boolean I_SDL_SoundIsPlaying(int handle)
 // Periodically called to update the sound system
 //
 
-static void I_SDL_UpdateSound(void)
+static void I_SDL_UpdateSound()
 {
     int i;
 
@@ -1101,7 +1101,7 @@ static void I_SDL_UpdateSound(void)
     }
 }
 
-static void I_SDL_ShutdownSound(void)
+static void I_SDL_ShutdownSound()
 {
     if (!sound_initialized)
     {
@@ -1117,7 +1117,7 @@ static void I_SDL_ShutdownSound(void)
 // Calculate slice size, based on snd_maxslicetime_ms.
 // The result must be a power of two.
 
-static int GetSliceSize(void)
+static int GetSliceSize()
 {
     int limit;
     int n;

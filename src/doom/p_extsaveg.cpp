@@ -452,7 +452,7 @@ static const extsavegdata_t extsavegdata[] = {
     { "musinfo", P_WriteMusInfo, P_ReadMusInfo, 0 },
 };
 
-void P_WriteExtendedSaveGameData(void)
+void P_WriteExtendedSaveGameData()
 {
     int i;
 

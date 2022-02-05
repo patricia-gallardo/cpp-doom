@@ -83,13 +83,13 @@ void G_PlayerReborn(int player);
 
 void G_DoReborn(int playernum);
 
-void G_DoLoadLevel(void);
-void G_DoNewGame(void);
-void G_DoPlayDemo(void);
-void G_DoCompleted(void);
-void G_DoVictory(void);
-void G_DoWorldDone(void);
-void G_DoSaveGame(void);
+void G_DoLoadLevel();
+void G_DoNewGame();
+void G_DoPlayDemo();
+void G_DoCompleted();
+void G_DoVictory();
+void G_DoWorldDone();
+void G_DoSaveGame();
 
 // Gamestate the last time G_Ticker was called.
 
@@ -324,7 +324,7 @@ static int G_NextWeapon(int direction)
 
 // [crispy] holding down the "Run" key may trigger special behavior,
 // e.g. quick exit, clean screenshots, resurrection from savegames
-boolean speedkeydown(void)
+boolean speedkeydown()
 {
     return (key_speed < NUMKEYS && gamekeydown[key_speed]) || (joybspeed < MAX_JOY_BUTTONS && joybuttons[joybspeed]);
 }
@@ -788,7 +788,7 @@ void G_BuildTiccmd(ticcmd_t *cmd, int maketic)
 //
 // G_DoLoadLevel
 //
-void G_DoLoadLevel(void)
+void G_DoLoadLevel()
 {
     int i;
 
@@ -1050,7 +1050,7 @@ boolean G_Responder(event_t *ev)
 
 
 // [crispy] re-read game parameters from command line
-static void G_ReadGameParms(void)
+static void G_ReadGameParms()
 {
     respawnparm = M_CheckParm("-respawn");
     fastparm    = M_CheckParm("-fast");
@@ -1071,7 +1071,7 @@ static void G_CrispyScreenShot()
 // G_Ticker
 // Make ticcmd_ts for the players.
 //
-void G_Ticker(void)
+void G_Ticker()
 {
     int       i;
     int       buf;
@@ -1561,7 +1561,7 @@ void G_DoReborn(int playernum)
 }
 
 
-void G_ScreenShot(void)
+void G_ScreenShot()
 {
     gameaction = ga_screenshot;
 }
@@ -1600,7 +1600,7 @@ static int npars[9] = {
 boolean      secretexit;
 extern char *pagename;
 
-void G_ExitLevel(void)
+void G_ExitLevel()
 {
     secretexit = false;
     G_ClearSavename();
@@ -1608,7 +1608,7 @@ void G_ExitLevel(void)
 }
 
 // Here's for the german edition.
-void G_SecretExitLevel(void)
+void G_SecretExitLevel()
 {
     // IF NO WOLF3D LEVELS, NO SECRET EXIT!
     if ((gamemode == commercial)
@@ -1620,7 +1620,7 @@ void G_SecretExitLevel(void)
     gameaction = ga_completed;
 }
 
-void G_DoCompleted(void)
+void G_DoCompleted()
 {
     int i;
 
@@ -1855,7 +1855,7 @@ void G_DoCompleted(void)
 //
 // G_WorldDone
 //
-void G_WorldDone(void)
+void G_WorldDone()
 {
     gameaction = ga_worlddone;
 
@@ -1909,7 +1909,7 @@ void G_WorldDone(void)
     }
 }
 
-void G_DoWorldDone(void)
+void G_DoWorldDone()
 {
     gamestate = GS_LEVEL;
     gamemap   = wminfo.next + 1;
@@ -1924,7 +1924,7 @@ void G_DoWorldDone(void)
 // Can be called by the startup code or the menu task.
 //
 extern boolean setsizeneeded;
-void           R_ExecuteSetViewSize(void);
+void           R_ExecuteSetViewSize();
 
 
 void G_LoadGame(char *name)
@@ -1934,7 +1934,7 @@ void G_LoadGame(char *name)
 }
 
 int  savedleveltime = 0; // [crispy] moved here for level time logging
-void G_DoLoadGame(void)
+void G_DoLoadGame()
 {
 
     // [crispy] loaded game must always be single player.
@@ -2049,7 +2049,7 @@ void G_SaveGame(int slot,
     sendsave = true;
 }
 
-void G_DoSaveGame(void)
+void G_DoSaveGame()
 {
     char *savegame_file;
     char *temp_savegame_file;
@@ -2179,7 +2179,7 @@ void G_DeferedInitNew(skill_t skill,
 }
 
 
-void G_DoNewGame(void)
+void G_DoNewGame()
 {
     demoplayback    = false;
     netdemo         = false;
@@ -2458,7 +2458,7 @@ void G_ReadDemoTiccmd(ticcmd_t *cmd)
 
 // Increase the size of the demo buffer to allow unlimited demos
 
-static void IncreaseDemoBuffer(void)
+static void IncreaseDemoBuffer()
 {
     int   current_length;
     byte *new_demobuffer;
@@ -2592,7 +2592,7 @@ void G_RecordDemo(char *name)
 }
 
 // Get the demo version code appropriate for the version set in gameversion.
-int G_VanillaVersionCode(void)
+int G_VanillaVersionCode()
 {
     switch (gameversion)
     {
@@ -2608,7 +2608,7 @@ int G_VanillaVersionCode(void)
     }
 }
 
-void G_BeginRecording(void)
+void G_BeginRecording()
 {
     int i;
 
@@ -2712,7 +2712,7 @@ static const char *DemoVersionDescription(int version)
     }
 }
 
-void G_DoPlayDemo(void)
+void G_DoPlayDemo()
 {
     skill_t skill;
     int     i, lumpnum, episode, map;
@@ -2893,7 +2893,7 @@ void G_TimeDemo(char *name)
 =================== 
 */
 
-boolean G_CheckDemoStatus(void)
+boolean G_CheckDemoStatus()
 {
     int endtime;
 

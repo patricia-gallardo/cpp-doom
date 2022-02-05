@@ -83,7 +83,7 @@ fixed_t cachedystep[MAXHEIGHT];
 ================
 */
 
-void R_InitSkyMap(void)
+void R_InitSkyMap()
 {
     skyflatnum = R_FlatNumForName(DEH_String("F_SKY1"));
     skytexturemid = 200 * FRACUNIT;
@@ -100,7 +100,7 @@ void R_InitSkyMap(void)
 ====================
 */
 
-void R_InitPlanes(void)
+void R_InitPlanes()
 {
 }
 
@@ -182,7 +182,7 @@ void R_MapPlane(int y, int x1, int x2)
 ====================
 */
 
-void R_ClearPlanes(void)
+void R_ClearPlanes()
 {
     int i;
     angle_t angle;
@@ -392,7 +392,7 @@ void R_MakeSpans(int x, unsigned int t1, unsigned int b1, unsigned int t2, unsig
 ================
 */
 
-void R_DrawPlanes(void)
+void R_DrawPlanes()
 {
     visplane_t *pl;
     int light;

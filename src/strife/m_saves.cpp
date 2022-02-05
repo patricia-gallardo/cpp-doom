@@ -48,7 +48,7 @@ char character_name[CHARACTER_NAME_LEN]; // Name of "character" for saveslot
 //
 // Clear the temporary save directory
 //
-void ClearTmp(void)
+void ClearTmp()
 {
     glob_t *glob;
 
@@ -78,7 +78,7 @@ void ClearTmp(void)
 //
 // Clear a single save slot folder
 //
-void ClearSlot(void)
+void ClearSlot()
 {
     glob_t *glob;
 
@@ -109,7 +109,7 @@ void ClearSlot(void)
 //
 // Copying files from savepathtemp to savepath
 //
-void FromCurr(void)
+void FromCurr()
 {
     glob_t *glob;
 
@@ -148,7 +148,7 @@ void FromCurr(void)
 //
 // Copying files from savepath to savepathtemp
 //
-void ToCurr(void)
+void ToCurr()
 {
     glob_t *glob;
 
@@ -190,7 +190,7 @@ void ToCurr(void)
 //
 // Moves a map to the "HERE" save.
 //
-void M_SaveMoveMapToHere(void)
+void M_SaveMoveMapToHere()
 {
     char *mapsave  = NULL;
     char *heresave = NULL;
@@ -219,7 +219,7 @@ void M_SaveMoveMapToHere(void)
 //
 // Moves the "HERE" save to a map.
 //
-void M_SaveMoveHereToMap(void)
+void M_SaveMoveHereToMap()
 {
     char *mapsave  = NULL;
     char *heresave = NULL;
@@ -264,7 +264,7 @@ boolean M_SaveMisObj(const char *path)
 //
 // Reads the mission objective from the MIS_OBJ file.
 //
-void M_ReadMisObj(void)
+void M_ReadMisObj()
 {
     FILE *f = NULL;
     char *srcpath = NULL;

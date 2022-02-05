@@ -80,7 +80,7 @@ typedef enum
 extern thinker_t thinkercap;    // both the head and tail of the thinker list
 extern int TimerGame;           // tic countdown for deathmatch
 
-void P_InitThinkers(void);
+void P_InitThinkers();
 void P_AddThinker(thinker_t * thinker);
 void P_RemoveThinker(thinker_t * thinker);
 
@@ -99,8 +99,8 @@ void P_RemoveThinker(thinker_t * thinker);
 #define USE_MACE_AMMO_1 1
 #define USE_MACE_AMMO_2 5
 
-void P_OpenWeapons(void);
-void P_CloseWeapons(void);
+void P_OpenWeapons();
+void P_CloseWeapons();
 void P_AddMaceSpot(mapthing_t * mthing);
 void P_RepositionMace(mobj_t * mo);
 void P_SetPsprite(player_t * player, int position, statenum_t stnum);
@@ -159,9 +159,9 @@ mobj_t *P_SPMAngle(mobj_t * source, mobjtype_t type, angle_t angle);
 // ***** P_ENEMY *****
 
 void P_NoiseAlert(mobj_t * target, mobj_t * emmiter);
-void P_InitMonsters(void);
+void P_InitMonsters();
 void P_AddBossSpot(fixed_t x, fixed_t y, angle_t angle);
-void P_Massacre(void);
+void P_Massacre();
 void P_DSparilTeleport(mobj_t * actor);
 
 // ***** P_MAPUTL *****
@@ -265,14 +265,14 @@ boolean P_ChickenMorphPlayer(player_t * player);
 // ***** AM_MAP *****
 
 boolean AM_Responder(event_t * ev);
-void AM_Ticker(void);
-void AM_Drawer(void);
+void AM_Ticker();
+void AM_Drawer();
 
 // ***** SB_BAR *****
 
 extern int SB_state;
 extern int ArtifactFlash;
-void SB_PaletteFlash(void);
+void SB_PaletteFlash();
 
 #include "p_spec.hpp"
 

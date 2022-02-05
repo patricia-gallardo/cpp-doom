@@ -59,11 +59,11 @@ struct _net_packet_s {
 struct _net_module_s {
     // Initialize this module for use as a client
 
-    boolean (*InitClient)(void);
+    boolean (*InitClient)();
 
     // Initialize this module for use as a server
 
-    boolean (*InitServer)(void);
+    boolean (*InitServer)();
 
     // Send a packet
 

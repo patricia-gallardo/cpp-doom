@@ -176,7 +176,7 @@ static void SoundServer(int speaker_handle)
 
 // Start up the sound server.  Returns non-zero if successful.
 
-static int StartSoundServer(void)
+static int StartSoundServer()
 {
     int result;
     int speaker_handle;
@@ -235,7 +235,7 @@ static int StartSoundServer(void)
     return 1;
 }
 
-static void StopSoundServer(void)
+static void StopSoundServer()
 {
     int status;
 
@@ -297,7 +297,7 @@ static int PCSound_BSD_Init(pcsound_callback_func callback_func)
     return 1;
 }
 
-static void PCSound_BSD_Shutdown(void)
+static void PCSound_BSD_Shutdown()
 {
     // Stop the sound thread
 

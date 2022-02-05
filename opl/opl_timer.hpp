@@ -20,12 +20,12 @@
 
 #include "opl.hpp"
 
-int OPL_Timer_StartThread(void);
-void OPL_Timer_StopThread(void);
+int OPL_Timer_StartThread();
+void OPL_Timer_StopThread();
 void OPL_Timer_SetCallback(uint64_t us, opl_callback_t callback, void *data);
-void OPL_Timer_ClearCallbacks(void);
-void OPL_Timer_Lock(void);
-void OPL_Timer_Unlock(void);
+void OPL_Timer_ClearCallbacks();
+void OPL_Timer_Lock();
+void OPL_Timer_Unlock();
 void OPL_Timer_SetPaused(int paused);
 void OPL_Timer_AdjustCallbacks(float factor);
 

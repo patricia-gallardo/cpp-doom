@@ -168,7 +168,7 @@ void S_Init(int sfxVolume, int musicVolume, int voiceVolume)
     I_AtExit(S_Shutdown, true);
 }
 
-void S_Shutdown(void)
+void S_Shutdown()
 {
     I_ShutdownSound();
     I_ShutdownMusic();
@@ -219,7 +219,7 @@ static void S_StopChannel(int cnum)
 // haleyjd 08/31/10: [STRIFE]
 // * Removed DOOM music handling and replaced with Strife code.
 //
-void S_Start(void)
+void S_Start()
 {
     int cnum;
     int mnum;
@@ -628,7 +628,7 @@ void I_StartVoice(const char *lumpname)
 // Stop and resume music, during game PAUSE.
 //
 
-void S_PauseSound(void)
+void S_PauseSound()
 {
     if (mus_playing && !mus_paused)
     {
@@ -637,7 +637,7 @@ void S_PauseSound(void)
     }
 }
 
-void S_ResumeSound(void)
+void S_ResumeSound()
 {
     if (mus_playing && mus_paused)
     {
@@ -802,12 +802,12 @@ void S_ChangeMusic(int musicnum, int looping)
     mus_playing = music;
 }
 
-boolean S_MusicPlaying(void)
+boolean S_MusicPlaying()
 {
     return I_MusicIsPlaying();
 }
 
-void S_StopMusic(void)
+void S_StopMusic()
 {
     if (mus_playing)
     {

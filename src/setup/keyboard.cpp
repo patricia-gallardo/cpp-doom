@@ -481,7 +481,7 @@ void ConfigKeyboard(TXT_UNCAST_ARG(widget), void *user_data)
     TXT_SetWindowAction(window, TXT_HORIZ_CENTER, TestConfigAction());
 }
 
-void BindKeyboardVariables(void)
+void BindKeyboardVariables()
 {
     M_BindIntVariable("vanilla_keyboard_mapping", &vanilla_keyboard_mapping);
 }

@@ -136,26 +136,26 @@ typedef enum
 
 // Initialize the screen
 // Returns 1 if successful, 0 if failed.
-int TXT_Init(void);
+int TXT_Init();
 
 // Shut down text mode emulation
-void TXT_Shutdown(void);
+void TXT_Shutdown();
 
 // Get a pointer to the buffer containing the raw screen data.
-unsigned char *TXT_GetScreenData(void);
+unsigned char *TXT_GetScreenData();
 
 // Update an area of the screen
 void TXT_UpdateScreenArea(int x, int y, int w, int h);
 
 // Update the whole screen
-void TXT_UpdateScreen(void);
+void TXT_UpdateScreen();
 
 // Set the RGB value for a particular entry in the color palette:
 void TXT_SetColor(txt_color_t color, std::uint8_t r, std::uint8_t g,
                   std::uint8_t b);
 
 // Read a character from the keyboard
-int TXT_GetChar(void);
+int TXT_GetChar();
 
 // Given a Unicode character, get a character that can be used to represent
 // it on the code page being displayed on the screen. If the character cannot

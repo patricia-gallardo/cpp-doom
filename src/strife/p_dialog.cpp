@@ -350,7 +350,7 @@ static int numrndmessages = arrlen(rndMessages);
 
 #define NUMDIALOGMENUITEMS 6
 
-static void P_DialogDrawer(void);
+static void P_DialogDrawer();
 
 static menuitem_t dialogmenuitems[] =
 {
@@ -445,7 +445,7 @@ static void P_ParseDialogLump(byte *lump, mapdialog_t **dialogs,
 // haleyjd 09/02/10: Loads the dialog script for the current map. Also loads 
 // SCRIPT00 if it has not yet been loaded.
 //
-void P_DialogLoad(void)
+void P_DialogLoad()
 {
     char lumpname[9];
     int  lumpnum;
@@ -1045,7 +1045,7 @@ static void P_TakeDialogItem(player_t *player, int type, int amount)
 //
 // This function is set as the drawer callback for the dialog menu.
 //
-static void P_DialogDrawer(void)
+static void P_DialogDrawer()
 {
     angle_t angle;
     int y;
@@ -1247,7 +1247,7 @@ void P_DialogDoChoice(int choice)
 // [STRIFE] New function
 // haleyjd 09/13/10: This is a hack used by the finale system.
 //
-void P_DialogStartP1(void)
+void P_DialogStartP1()
 {
     P_DialogStart(&players[0]);
 }

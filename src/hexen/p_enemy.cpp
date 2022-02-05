@@ -1734,7 +1734,7 @@ void A_Explode(mobj_t * actor)
 //
 //----------------------------------------------------------------------------
 
-int P_Massacre(void)
+int P_Massacre()
 {
     int count;
     mobj_t *mo;

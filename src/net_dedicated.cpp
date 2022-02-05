@@ -65,7 +65,7 @@ static const char *not_dedicated_options[] = {
     NULL,
 };
 
-static void CheckForClientOptions(void)
+static void CheckForClientOptions()
 {
     int i;
 
@@ -82,7 +82,7 @@ static void CheckForClientOptions(void)
     }
 }
 
-void NET_DedicatedServer(void)
+void NET_DedicatedServer()
 {
     CheckForClientOptions();
 

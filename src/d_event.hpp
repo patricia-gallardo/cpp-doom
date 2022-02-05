@@ -137,7 +137,7 @@ void D_PostEvent(event_t *ev);
 
 // Read an event from the event queue
 
-event_t *D_PopEvent(void);
+event_t *D_PopEvent();
 
 
 #endif

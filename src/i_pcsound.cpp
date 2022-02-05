@@ -405,7 +405,7 @@ static boolean I_PCS_InitSound(boolean _use_sfx_prefix)
     return pcs_initialized;
 }
 
-static void I_PCS_ShutdownSound(void)
+static void I_PCS_ShutdownSound()
 {
     if (pcs_initialized)
     {
@@ -413,7 +413,7 @@ static void I_PCS_ShutdownSound(void)
     }
 }
 
-static void I_PCS_UpdateSound(void)
+static void I_PCS_UpdateSound()
 {
     // no-op.
 }

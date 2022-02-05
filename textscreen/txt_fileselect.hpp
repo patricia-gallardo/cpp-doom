@@ -38,7 +38,7 @@ typedef struct txt_fileselect_s txt_fileselect_t;
  * platform.
  */
 
-int TXT_CanSelectFiles(void);
+int TXT_CanSelectFiles();
 
 /**
  * Open a native file selector to select a file.

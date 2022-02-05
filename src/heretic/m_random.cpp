@@ -51,25 +51,25 @@ const unsigned int rndtable[256] = {
 int rndindex = 0;
 int prndindex = 0;
 
-int P_Random(void)
+int P_Random()
 {
     prndindex = (prndindex + 1) & 0xff;
     return rndtable[prndindex];
 }
 
-int M_Random(void)
+int M_Random()
 {
     rndindex = (rndindex + 1) & 0xff;
     return rndtable[rndindex];
 }
 
-void M_ClearRandom(void)
+void M_ClearRandom()
 {
     rndindex = prndindex = 0;
 }
 
 // inspired by the same routine in Eternity, thanks haleyjd
-int P_SubRandom (void)
+int P_SubRandom ()
 {
     int r = P_Random();
     return r - P_Random();

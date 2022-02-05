@@ -28,7 +28,7 @@
 
 static Uint32 basetime = 0;
 
-int I_GetTime(void)
+int I_GetTime()
 {
     Uint32 ticks;
 
@@ -46,7 +46,7 @@ int I_GetTime(void)
 // Same as I_GetTime, but returns time in milliseconds
 //
 
-int I_GetTimeMS(void)
+int I_GetTimeMS()
 {
     Uint32 ticks;
 
@@ -71,7 +71,7 @@ void I_WaitVBL(int count)
 }
 
 
-void I_InitTimer(void)
+void I_InitTimer()
 {
     // initialize timer
 

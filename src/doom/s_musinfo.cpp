@@ -51,10 +51,10 @@
 
 // PRIVATE FUNCTION PROTOTYPES ---------------------------------------------
 
-static void    CheckOpen(void);
+static void    CheckOpen();
 static void    OpenScript(char *name, int type);
 static void    SC_OpenLump(char *name);
-static void    SC_Close(void);
+static void    SC_Close();
 static boolean SC_Compare(const char *text);
 
 // EXTERNAL DATA DECLARATIONS ----------------------------------------------
@@ -130,7 +130,7 @@ static void OpenScript(char *name, int type)
 //
 //==========================================================================
 
-static void SC_Close(void)
+static void SC_Close()
 {
     if (ScriptOpen)
     {
@@ -152,7 +152,7 @@ static void SC_Close(void)
 //
 //==========================================================================
 
-static boolean SC_GetString(void)
+static boolean SC_GetString()
 {
     char *  text;
     boolean foundToken;
@@ -255,7 +255,7 @@ static boolean SC_Compare(const char *text)
 //
 //==========================================================================
 
-static void CheckOpen(void)
+static void CheckOpen()
 {
     if (ScriptOpen == false)
     {
@@ -325,7 +325,7 @@ void S_ParseMusInfo(const char *mapid)
     }
 }
 
-void T_MusInfo(void)
+void T_MusInfo()
 {
     if (musinfo.tics < 0 || !musinfo.mapthing)
     {

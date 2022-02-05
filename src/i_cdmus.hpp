@@ -28,14 +28,14 @@
 
 extern int cd_Error;
 
-int  I_CDMusInit(void);
-void I_CDMusPrintStartup(void);
+int  I_CDMusInit();
+void I_CDMusPrintStartup();
 int  I_CDMusPlay(int track);
-int  I_CDMusStop(void);
-int  I_CDMusResume(void);
+int  I_CDMusStop();
+int  I_CDMusResume();
 int  I_CDMusSetVolume(int volume);
-int  I_CDMusFirstTrack(void);
-int  I_CDMusLastTrack(void);
+int  I_CDMusFirstTrack();
+int  I_CDMusLastTrack();
 int  I_CDMusTrackLength(int track);
 
 #endif

@@ -106,7 +106,7 @@ int			dccount;
 // Thus a special case loop for very fast rendering can
 //  be used. It has also been used with Wolfenstein 3D.
 // 
-void R_DrawColumn (void) 
+void R_DrawColumn ()
 { 
     int			count; 
     byte*		dest; 
@@ -156,7 +156,7 @@ void R_DrawColumn (void)
 // UNUSED.
 // Loop unrolled.
 #if 0
-void R_DrawColumn (void) 
+void R_DrawColumn ()
 { 
     int			count; 
     byte*		source;
@@ -225,7 +225,7 @@ void R_DrawColumn (void)
 // villsa [STRIFE] new function
 // Replacement for R_DrawFuzzColumn
 //
-void R_DrawMVisTLColumn(void)
+void R_DrawMVisTLColumn()
 {
     int                 count; 
     byte*               dest; 
@@ -278,7 +278,7 @@ void R_DrawMVisTLColumn(void)
 // Achieves a second translucency level using the same lookup table,
 // via inversion of the colors in the index computation.
 //
-void R_DrawTLColumn(void)
+void R_DrawTLColumn()
 {
     int                 count; 
     byte*               dest; 
@@ -338,7 +338,7 @@ void R_DrawTLColumn(void)
 byte*	dc_translation;
 byte*	translationtables;
 
-void R_DrawTranslatedColumn (void) 
+void R_DrawTranslatedColumn ()
 { 
     int                 count; 
     byte*               dest; 
@@ -388,7 +388,7 @@ void R_DrawTranslatedColumn (void)
 // villsa [STRIFE] new function
 // Combines translucency and color translation.
 //
-void R_DrawTRTLColumn(void)
+void R_DrawTRTLColumn()
 {
     int                 count; 
     byte*               dest; 
@@ -437,7 +437,7 @@ void R_DrawTRTLColumn(void)
 // haleyjd 08/26/10: [STRIFE]
 // * Added loading of XLATAB
 //
-void R_InitTranslationTables (void)
+void R_InitTranslationTables ()
 {
     int i;
     byte col1, col2;
@@ -588,7 +588,7 @@ int			dscount;
 
 //
 // Draws the actual span.
-void R_DrawSpan (void) 
+void R_DrawSpan ()
 { 
     unsigned int position, step;
     byte *dest;
@@ -644,7 +644,7 @@ void R_DrawSpan (void)
 // UNUSED.
 // Loop unrolled by 4.
 #if 0
-void R_DrawSpan (void) 
+void R_DrawSpan ()
 { 
     unsigned	position, step;
 
@@ -717,7 +717,7 @@ void R_DrawSpan (void)
 //
 // Again..
 //
-void R_DrawSpanLow (void)
+void R_DrawSpanLow ()
 {
     unsigned int position, step;
     unsigned int xtemp, ytemp;
@@ -812,7 +812,7 @@ R_InitBuffer
 //
 // haleyjd 08/29/10: [STRIFE] Added support for configurable back_flat.
 //
-void R_FillBackScreen (void) 
+void R_FillBackScreen ()
 { 
     byte*	src;
     byte*	dest; 
@@ -933,7 +933,7 @@ R_VideoErase
 // Draws the border around the view
 //  for different size windows?
 //
-void R_DrawViewBorder (void) 
+void R_DrawViewBorder ()
 { 
     int		top;
     int		side;

@@ -44,7 +44,7 @@ typedef struct
 char *gus_patch_path = const_cast<char *>("");
 int   gus_ram_kb     = 1024;
 
-static unsigned int MappingIndex(void)
+static unsigned int MappingIndex()
 {
     unsigned int result = gus_ram_kb / 256;
 
@@ -202,7 +202,7 @@ static void FreeDMXConfig(gus_config_t *config)
     }
 }
 
-static char *ReadDMXConfig(void)
+static char *ReadDMXConfig()
 {
     int          lumpnum;
     unsigned int len;

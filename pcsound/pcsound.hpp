@@ -27,7 +27,7 @@ int PCSound_Init(pcsound_callback_func callback_func);
 
 // Shut down the PC speaker subsystem.
 
-void PCSound_Shutdown(void);
+void PCSound_Shutdown();
 
 // Set the preferred output sample rate when emulating a PC speaker. 
 // This must be called before PCSound_Init.

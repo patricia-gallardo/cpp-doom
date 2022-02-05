@@ -66,7 +66,7 @@ struct deh_context_s {
     long linestart;
 };
 
-static deh_context_t *DEH_NewContext(void)
+static deh_context_t *DEH_NewContext()
 {
     deh_context_t *context;
 

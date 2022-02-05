@@ -20,7 +20,7 @@
 
 #include "d_mode.hpp"
 
-boolean W_ParseCommandLine(void);
+boolean W_ParseCommandLine();
 void    W_CheckCorrectIWAD(GameMission_t mission);
 
 int W_MergeDump(const char *file);

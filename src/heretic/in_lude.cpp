@@ -45,18 +45,18 @@ boolean intermission;
 
 // Private functions
 
-static void IN_WaitStop(void);
-static void IN_Stop(void);
-static void IN_LoadPics(void);
-static void IN_UnloadPics(void);
-static void IN_CheckForSkip(void);
-static void IN_InitStats(void);
-static void IN_DrawOldLevel(void);
-static void IN_DrawYAH(void);
-static void IN_DrawStatBack(void);
-static void IN_DrawSingleStats(void);
-static void IN_DrawCoopStats(void);
-static void IN_DrawDMStats(void);
+static void IN_WaitStop();
+static void IN_Stop();
+static void IN_LoadPics();
+static void IN_UnloadPics();
+static void IN_CheckForSkip();
+static void IN_InitStats();
+static void IN_DrawOldLevel();
+static void IN_DrawYAH();
+static void IN_DrawStatBack();
+static void IN_DrawSingleStats();
+static void IN_DrawCoopStats();
+static void IN_DrawDMStats();
 static void IN_DrawNumber(int val, int x, int y, int digits);
 static void IN_DrawTime(int x, int y, int h, int m, int s);
 static void IN_DrTextB(const char *text, int x, int y);
@@ -159,9 +159,9 @@ static const char *NameForMap(int map)
 //
 //========================================================================
 
-extern void AM_Stop(void);
+extern void AM_Stop();
 
-void IN_Start(void)
+void IN_Start()
 {
     I_SetPalette(cache_lump_name<byte *>(DEH_String("PLAYPAL"), PU_CACHE));
     IN_LoadPics();
@@ -181,7 +181,7 @@ void IN_Start(void)
 //
 //========================================================================
 
-void IN_WaitStop(void)
+void IN_WaitStop()
 {
     if (!--cnt)
     {
@@ -196,7 +196,7 @@ void IN_WaitStop(void)
 //
 //========================================================================
 
-void IN_Stop(void)
+void IN_Stop()
 {
     intermission = false;
     IN_UnloadPics();
@@ -211,7 +211,7 @@ void IN_Stop(void)
 //      Initializes the stats for single player mode
 //========================================================================
 
-void IN_InitStats(void)
+void IN_InitStats()
 {
     int i;
     int j;
@@ -355,7 +355,7 @@ static void LoadLumpCallback(const char *lumpname, int lumpnum, patch_t **ptr)
     *ptr = cache_lump_num<patch_t *>(lumpnum, PU_STATIC);
 }
 
-void IN_LoadPics(void)
+void IN_LoadPics()
 {
     FontBLump = W_GetNumForName(DEH_String("FONTB_S")) + 1;
     patchFaceOkayBase = W_GetNumForName(DEH_String("FACEA0"));
@@ -382,7 +382,7 @@ static void UnloadLumpCallback(const char *lumpname, int lumpnum, patch_t **ptr)
     }
 }
 
-void IN_UnloadPics(void)
+void IN_UnloadPics()
 {
     IN_LoadUnloadPics(UnloadLumpCallback);
 }
@@ -393,7 +393,7 @@ void IN_UnloadPics(void)
 //
 //========================================================================
 
-void IN_Ticker(void)
+void IN_Ticker()
 {
     if (!intermission)
     {
@@ -464,7 +464,7 @@ void IN_Ticker(void)
 //      Check to see if any player hit a key
 //========================================================================
 
-void IN_CheckForSkip(void)
+void IN_CheckForSkip()
 {
     int i;
     player_t *player;
@@ -507,7 +507,7 @@ void IN_CheckForSkip(void)
 //
 //========================================================================
 
-void IN_Drawer(void)
+void IN_Drawer()
 {
     static int oldinterstate;
 
@@ -574,7 +574,7 @@ void IN_Drawer(void)
 //
 //========================================================================
 
-void IN_DrawStatBack(void)
+void IN_DrawStatBack()
 {
     int x;
     int y;
@@ -606,7 +606,7 @@ void IN_DrawStatBack(void)
 //
 //========================================================================
 
-void IN_DrawOldLevel(void)
+void IN_DrawOldLevel()
 {
     const char *level_name = NameForMap(prevmap);
     int i;
@@ -657,7 +657,7 @@ void IN_DrawOldLevel(void)
 //
 //========================================================================
 
-void IN_DrawYAH(void)
+void IN_DrawYAH()
 {
     const char *level_name = NameForMap(gamemap);
     int i;
@@ -695,7 +695,7 @@ void IN_DrawYAH(void)
 //
 //========================================================================
 
-void IN_DrawSingleStats(void)
+void IN_DrawSingleStats()
 {
     const char *prev_level_name = NameForMap(prevmap);
     const char *next_level_name = NameForMap(gamemap);
@@ -779,7 +779,7 @@ void IN_DrawSingleStats(void)
 //
 //========================================================================
 
-void IN_DrawCoopStats(void)
+void IN_DrawCoopStats()
 {
     const char *level_name = NameForMap(prevmap);
     int i;
@@ -832,7 +832,7 @@ void IN_DrawCoopStats(void)
 //
 //========================================================================
 
-void IN_DrawDMStats(void)
+void IN_DrawDMStats()
 {
     int i;
     int j;

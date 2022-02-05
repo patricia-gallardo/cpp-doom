@@ -468,7 +468,7 @@ static inline int cht_CheckCheatSP(cheatseq_t *cht, char key)
 //
 // STATUS BAR CODE
 //
-void ST_Stop(void);
+void ST_Stop();
 
 void ST_refreshBackground(boolean force)
 {
@@ -988,7 +988,7 @@ boolean
             // [crispy] implement Crispy Doom's "goobers" cheat, ne easter egg
             else if (cht_CheckCheatSP(&cheat_goobers, ev->data2))
             {
-                extern void EV_DoGoobers(void);
+                extern void EV_DoGoobers();
 
                 EV_DoGoobers();
 
@@ -1285,7 +1285,7 @@ boolean
 }
 
 
-int ST_calcPainOffset(void)
+int ST_calcPainOffset()
 {
     int        health;
     static int lastcalc;
@@ -1310,7 +1310,7 @@ int ST_calcPainOffset(void)
 //
 // [crispy] fix status bar face hysteresis
 static int faceindex;
-void       ST_updateFaceWidget(void)
+void       ST_updateFaceWidget()
 {
     int        i;
     angle_t    badguyangle;
@@ -1491,7 +1491,7 @@ void       ST_updateFaceWidget(void)
     st_faceindex = painoffset + faceindex;
 }
 
-void ST_updateWidgets(void)
+void ST_updateWidgets()
 {
     static int largeammo = 1994; // means "n/a"
     int        i;
@@ -1583,7 +1583,7 @@ void ST_updateWidgets(void)
         st_chat = st_oldchat;
 }
 
-void ST_Ticker(void)
+void ST_Ticker()
 {
 
     st_clock++;
@@ -1594,7 +1594,7 @@ void ST_Ticker(void)
 
 static int st_palette = 0;
 
-void ST_doPaletteStuff(void)
+void ST_doPaletteStuff()
 {
 
     int palette;
@@ -1773,7 +1773,7 @@ static byte *ST_WidgetColor(int i)
 
 // [crispy] draw the gibbed death state frames in the Health widget
 // in sync with the actual player sprite
-static inline void ST_DrawGibbedPlayerSprites(void)
+static inline void ST_DrawGibbedPlayerSprites()
 {
     state_t const *state = plyr->mo->state;
     spritedef_t *  sprdef;
@@ -1893,7 +1893,7 @@ void ST_drawWidgets(boolean refresh)
     dp_translation = NULL;
 }
 
-void ST_doRefresh(void)
+void ST_doRefresh()
 {
 
     st_firsttime = false;
@@ -1905,7 +1905,7 @@ void ST_doRefresh(void)
     ST_drawWidgets(true);
 }
 
-void ST_diffDraw(void)
+void ST_diffDraw()
 {
     // update all widgets
     ST_drawWidgets(false);
@@ -2047,12 +2047,12 @@ static void ST_loadCallback(const char *lumpname, patch_t **variable)
     *variable = cache_lump_name<patch_t *>(lumpname, PU_STATIC);
 }
 
-void ST_loadGraphics(void)
+void ST_loadGraphics()
 {
     ST_loadUnloadGraphics(ST_loadCallback);
 }
 
-void ST_loadData(void)
+void ST_loadData()
 {
     int i;
 
@@ -2080,17 +2080,17 @@ static void ST_unloadCallback(const char *lumpname, patch_t **variable)
     *variable = NULL;
 }
 
-void ST_unloadGraphics(void)
+void ST_unloadGraphics()
 {
     ST_loadUnloadGraphics(ST_unloadCallback);
 }
 
-void ST_unloadData(void)
+void ST_unloadData()
 {
     ST_unloadGraphics();
 }
 
-void ST_initData(void)
+void ST_initData()
 {
 
     int i;
@@ -2122,7 +2122,7 @@ void ST_initData(void)
 }
 
 
-void ST_createWidgets(void)
+void ST_createWidgets()
 {
 
     int i;
@@ -2289,7 +2289,7 @@ void ST_createWidgets(void)
 static boolean st_stopped = true;
 
 
-void ST_Start(void)
+void ST_Start()
 {
 
     if (!st_stopped)
@@ -2310,7 +2310,7 @@ void ST_Start(void)
     }
 }
 
-void ST_Stop(void)
+void ST_Stop()
 {
     if (st_stopped)
         return;
@@ -2324,7 +2324,7 @@ void ST_Stop(void)
     st_stopped = true;
 }
 
-void ST_Init(void)
+void ST_Init()
 {
     // [crispy] colorize the confusing 'behold' power-up menu
     if (!DEH_HasStringReplacement(STSTR_BEHOLD) && !M_ParmExists("-nodeh"))

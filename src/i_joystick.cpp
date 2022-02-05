@@ -75,7 +75,7 @@ static int joystick_physical_buttons[NUM_VIRTUAL_BUTTONS] = {
     0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10
 };
 
-void I_ShutdownJoystick(void)
+void I_ShutdownJoystick()
 {
     if (joystick != NULL)
     {
@@ -109,7 +109,7 @@ static boolean IsValidAxis(int axis)
     return axis < num_axes;
 }
 
-static int DeviceIndex(void)
+static int DeviceIndex()
 {
     SDL_JoystickGUID guid, dev_guid;
     int              i;
@@ -143,7 +143,7 @@ static int DeviceIndex(void)
     return -1;
 }
 
-void I_InitJoystick(void)
+void I_InitJoystick()
 {
     int index;
 
@@ -266,7 +266,7 @@ static int ReadButtonState(int vbutton)
 
 // Get a bitmask of all currently-pressed buttons
 
-static int GetButtonsState(void)
+static int GetButtonsState()
 {
     int i;
     int result;
@@ -359,7 +359,7 @@ static int GetAxisState(int axis, int invert)
     return result;
 }
 
-void I_UpdateJoystick(void)
+void I_UpdateJoystick()
 {
     if (joystick != NULL)
     {
@@ -376,7 +376,7 @@ void I_UpdateJoystick(void)
     }
 }
 
-void I_BindJoystickVariables(void)
+void I_BindJoystickVariables()
 {
     int i;
 

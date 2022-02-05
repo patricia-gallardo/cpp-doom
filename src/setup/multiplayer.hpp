@@ -20,10 +20,10 @@ void WarpMenu(void *widget, void *user_data);
 void JoinMultiGame(void *widget, void *user_data);
 void MultiplayerConfig(void *widget, void *user_data);
 
-void SetChatMacroDefaults(void);
-void SetPlayerNameDefault(void);
+void SetChatMacroDefaults();
+void SetPlayerNameDefault();
 
-void BindMultiplayerVariables(void);
+void BindMultiplayerVariables();
 
 #endif /* #ifndef SETUP_MULTIPLAYER_H */
 

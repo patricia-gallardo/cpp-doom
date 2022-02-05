@@ -41,11 +41,11 @@
 
 // PRIVATE FUNCTION PROTOTYPES ---------------------------------------------
 
-static void TextWrite(void);
-static void DrawPic(void);
+static void TextWrite();
+static void DrawPic();
 static void InitializeFade(boolean fadeIn);
-static void DeInitializeFade(void);
-static void FadePic(void);
+static void DeInitializeFade();
+static void FadePic();
 static char *GetFinaleText(int sequence);
 
 // EXTERNAL DATA DECLARATIONS ----------------------------------------------
@@ -76,7 +76,7 @@ static byte *RealPalette;
 //
 //===========================================================================
 
-void F_StartFinale(void)
+void F_StartFinale()
 {
     gameaction = ga_nothing;
     gamestate = GS_FINALE;
@@ -113,7 +113,7 @@ boolean F_Responder(event_t * event)
 //
 //===========================================================================
 
-void F_Ticker(void)
+void F_Ticker()
 {
     FinaleCount++;
     if (FinaleStage < 5 && FinaleCount >= FinaleEndCount)
@@ -164,7 +164,7 @@ void F_Ticker(void)
 //
 //===========================================================================
 
-static void TextWrite(void)
+static void TextWrite()
 {
     int count;
     char *ch;
@@ -278,7 +278,7 @@ static void InitializeFade(boolean fadeIn)
 //
 //===========================================================================
 
-static void DeInitializeFade(void)
+static void DeInitializeFade()
 {
     Z_Free(Palette);
     Z_Free(PaletteDelta);
@@ -291,7 +291,7 @@ static void DeInitializeFade(void)
 //
 //===========================================================================
 
-static void FadePic(void)
+static void FadePic()
 {
     unsigned i;
 
@@ -309,7 +309,7 @@ static void FadePic(void)
 //
 //===========================================================================
 
-static void DrawPic(void)
+static void DrawPic()
 {
     V_CopyScaledBuffer(I_VideoBuffer, cache_lump_num<pixel_t *>(FinaleLumpNum, PU_CACHE),
            ORIGWIDTH * ORIGHEIGHT);
@@ -332,7 +332,7 @@ static void DrawPic(void)
 //
 //===========================================================================
 
-void F_Drawer(void)
+void F_Drawer()
 {
     switch (FinaleStage)
     {

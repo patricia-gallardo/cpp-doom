@@ -48,39 +48,39 @@ int prndindex = 0;
 int crndindex = 0;
 
 // Which one is deterministic?
-int P_Random(void)
+int P_Random()
 {
     prndindex = (prndindex + 1) & 0xff;
     return rndtable[prndindex];
 }
 
-int M_Random(void)
+int M_Random()
 {
     rndindex = (rndindex + 1) & 0xff;
     return rndtable[rndindex];
 }
 
 // [crispy] our own private random function
-int Crispy_Random(void)
+int Crispy_Random()
 {
     crndindex = (crndindex + 1) & 0xff;
     return rndtable[crndindex];
 }
 
-void M_ClearRandom(void)
+void M_ClearRandom()
 {
     rndindex = prndindex = 0;
     crndindex            = 0;
 }
 
 // inspired by the same routine in Eternity, thanks haleyjd
-int P_SubRandom(void)
+int P_SubRandom()
 {
     int r = P_Random();
     return r - P_Random();
 }
 
-int Crispy_SubRandom(void)
+int Crispy_SubRandom()
 {
     int r = Crispy_Random();
     return r - Crispy_Random();

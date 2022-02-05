@@ -285,7 +285,7 @@ static void SetShowCursor(bool show)
     }
 }
 
-void I_ShutdownGraphics(void)
+void I_ShutdownGraphics()
 {
     if (initialized)
     {
@@ -301,14 +301,14 @@ void I_ShutdownGraphics(void)
 //
 // I_StartFrame
 //
-void I_StartFrame(void)
+void I_StartFrame()
 {
     // er?
 }
 
 // Adjust window_width / window_height variables to be an an aspect
 // ratio consistent with the aspect_ratio_correct variable.
-static void AdjustWindowSize(void)
+static void AdjustWindowSize()
 {
     if (aspect_ratio_correct || integer_scaling)
     {
@@ -398,7 +398,7 @@ static boolean ToggleFullScreenKeyShortcut(SDL_Keysym *sym)
     return (sym->scancode == SDL_SCANCODE_RETURN || sym->scancode == SDL_SCANCODE_KP_ENTER) && (sym->mod & flags) != 0;
 }
 
-static void I_ToggleFullScreen(void)
+static void I_ToggleFullScreen()
 {
     unsigned int flags = 0;
 
@@ -426,7 +426,7 @@ static void I_ToggleFullScreen(void)
     }
 }
 
-void I_GetEvent(void)
+void I_GetEvent()
 {
     extern void I_HandleKeyboardEvent(SDL_Event * sdlevent);
     extern void I_HandleMouseEvent(SDL_Event * sdlevent);
@@ -488,7 +488,7 @@ void I_GetEvent(void)
 //
 // I_StartTic
 //
-void I_StartTic(void)
+void I_StartTic()
 {
     if (!initialized)
     {
@@ -512,12 +512,12 @@ void I_StartTic(void)
 //
 // I_UpdateNoBlit
 //
-void I_UpdateNoBlit(void)
+void I_UpdateNoBlit()
 {
     // what is this?
 }
 
-static void UpdateGrab(void)
+static void UpdateGrab()
 {
     static boolean currently_grabbed = false;
     boolean        grab;
@@ -712,7 +712,7 @@ fixed_t fractionaltic;
 //
 // I_FinishUpdate
 //
-void I_FinishUpdate(void)
+void I_FinishUpdate()
 {
     static int lasttic;
     int        tics;
@@ -893,7 +893,7 @@ void I_ReadScreen(pixel_t *scr)
 //
 // [crispy] intermediate gamma levels
 byte **gamma2table = NULL;
-void   I_SetGammaTable(void)
+void   I_SetGammaTable()
 {
     int i;
 
@@ -1025,7 +1025,7 @@ void I_SetWindowTitle(const char *title)
 // the title set with I_SetWindowTitle.
 //
 
-void I_InitWindowTitle(void)
+void I_InitWindowTitle()
 {
     char *buf;
 
@@ -1036,7 +1036,7 @@ void I_InitWindowTitle(void)
 
 // Set the application icon
 
-void I_InitWindowIcon(void)
+void I_InitWindowIcon()
 {
     SDL_Surface *surface;
 
@@ -1060,7 +1060,7 @@ static void SetScaleFactor(int factor)
     fullscreen    = false;
 }
 
-void I_GraphicsCheckCommandLine(void)
+void I_GraphicsCheckCommandLine()
 {
     int i;
 
@@ -1202,7 +1202,7 @@ void I_GraphicsCheckCommandLine(void)
 
 // Check if we have been invoked as a screensaver by xscreensaver.
 
-void I_CheckIsScreensaver(void)
+void I_CheckIsScreensaver()
 {
     char *env;
 
@@ -1214,7 +1214,7 @@ void I_CheckIsScreensaver(void)
     }
 }
 
-static void SetSDLVideoDriver(void)
+static void SetSDLVideoDriver()
 {
     // Allow a default value for the SDL video driver to be specified
     // in the configuration file.
@@ -1292,7 +1292,7 @@ void I_GetWindowPosition(int *x, int *y, int w, int h)
     }
 }
 
-static void SetVideoMode(void)
+static void SetVideoMode()
 {
     int w, h;
     int x, y;
@@ -1524,7 +1524,7 @@ static void SetVideoMode(void)
 }
 
 // [crispy] re-calculate SCREENWIDTH, SCREENHEIGHT, HIRESWIDTH and DELTAWIDTH
-void I_GetScreenDimensions(void)
+void I_GetScreenDimensions()
 {
     SDL_DisplayMode mode;
     int             w = 16, h = 10;
@@ -1560,7 +1560,7 @@ void I_GetScreenDimensions(void)
     DELTAWIDTH = ((SCREENWIDTH - HIRESWIDTH) >> crispy->hires) / 2;
 }
 
-void I_InitGraphics(void)
+void I_InitGraphics()
 {
     SDL_Event dummy;
 #ifndef CRISPY_TRUECOLOR
@@ -1878,7 +1878,7 @@ void I_RenderReadPixels(byte **data, int *w, int *h, int *p)
 
 // Bind all variables controlling video options into the configuration
 // file system.
-void I_BindVideoVariables(void)
+void I_BindVideoVariables()
 {
     M_BindIntVariable("use_mouse", &usemouse);
     M_BindIntVariable("fullscreen", &fullscreen);

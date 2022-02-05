@@ -20,18 +20,18 @@
 // Most damage defined using HITDICE
 #define HITDICE(a) ((1+(P_Random()&7))*a)
 
-int M_Random(void);
+int M_Random();
 // returns a number from 0 to 255
-int P_Random(void);
+int P_Random();
 // as M_Random, but used only by the play simulation
 
-void M_ClearRandom(void);
+void M_ClearRandom();
 // fix randoms for demos
 
 extern int rndindex;
 
 // Defined version of P_Random() - P_Random()
-int P_SubRandom (void);
+int P_SubRandom ();
 
 #endif // HEXEN_M_RANDOM_H
 

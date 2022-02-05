@@ -93,24 +93,24 @@ void P_SpawnPlayer(mapthing_t * mthing);
 
 // PRIVATE FUNCTION PROTOTYPES ---------------------------------------------
 
-static void ArchiveWorld(void);
-static void UnarchiveWorld(void);
-static void ArchivePolyobjs(void);
-static void UnarchivePolyobjs(void);
-static void ArchiveMobjs(void);
-static void UnarchiveMobjs(void);
-static void ArchiveThinkers(void);
-static void UnarchiveThinkers(void);
-static void ArchiveScripts(void);
-static void UnarchiveScripts(void);
-static void ArchivePlayers(void);
-static void UnarchivePlayers(void);
-static void ArchiveSounds(void);
-static void UnarchiveSounds(void);
-static void ArchiveMisc(void);
-static void UnarchiveMisc(void);
-static void SetMobjArchiveNums(void);
-static void RemoveAllThinkers(void);
+static void ArchiveWorld();
+static void UnarchiveWorld();
+static void ArchivePolyobjs();
+static void UnarchivePolyobjs();
+static void ArchiveMobjs();
+static void UnarchiveMobjs();
+static void ArchiveThinkers();
+static void UnarchiveThinkers();
+static void ArchiveScripts();
+static void UnarchiveScripts();
+static void ArchivePlayers();
+static void UnarchivePlayers();
+static void ArchiveSounds();
+static void UnarchiveSounds();
+static void ArchiveMisc();
+static void UnarchiveMisc();
+static void SetMobjArchiveNums();
+static void RemoveAllThinkers();
 static int GetMobjNum(mobj_t * mobj);
 static void SetMobjPtr(mobj_t **ptr, unsigned int archiveNum);
 static void RestoreSSThinker(ssthinker_t * sst);
@@ -123,12 +123,12 @@ static void CopyFile(char *sourceName, char *destName);
 static boolean ExistingFile(char *name);
 static void SV_OpenRead(char *fileName);
 static void SV_OpenWrite(char *fileName);
-static void SV_Close(void);
+static void SV_Close();
 static void SV_Read(void *buffer, int size);
-static byte SV_ReadByte(void);
-static uint16_t SV_ReadWord(void);
-static uint32_t SV_ReadLong(void);
-static void *SV_ReadPtr(void);
+static byte SV_ReadByte();
+static uint16_t SV_ReadWord();
+static uint32_t SV_ReadLong();
+static void *SV_ReadPtr();
 static void SV_Write(const void *buffer, int size);
 static void SV_WriteByte(byte val);
 static void SV_WriteWord(unsigned short val);
@@ -2118,7 +2118,7 @@ void SV_LoadGame(int slot)
 //
 //==========================================================================
 
-void SV_UpdateRebornSlot(void)
+void SV_UpdateRebornSlot()
 {
     ClearSaveSlot(REBORN_SLOT);
     CopySaveSlot(BASE_SLOT, REBORN_SLOT);
@@ -2130,7 +2130,7 @@ void SV_UpdateRebornSlot(void)
 //
 //==========================================================================
 
-void SV_ClearRebornSlot(void)
+void SV_ClearRebornSlot()
 {
     ClearSaveSlot(REBORN_SLOT);
 }
@@ -2320,7 +2320,7 @@ void SV_MapTeleport(int map, int position)
 //
 //==========================================================================
 
-int SV_GetRebornSlot(void)
+int SV_GetRebornSlot()
 {
     return (REBORN_SLOT);
 }
@@ -2333,7 +2333,7 @@ int SV_GetRebornSlot(void)
 //
 //==========================================================================
 
-boolean SV_RebornSlotAvailable(void)
+boolean SV_RebornSlotAvailable()
 {
     char fileName[100];
 
@@ -2347,7 +2347,7 @@ boolean SV_RebornSlotAvailable(void)
 //
 //==========================================================================
 
-void SV_LoadMap(void)
+void SV_LoadMap()
 {
     char fileName[100];
 
@@ -2389,7 +2389,7 @@ void SV_LoadMap(void)
 //
 //==========================================================================
 
-void SV_InitBaseSlot(void)
+void SV_InitBaseSlot()
 {
     ClearSaveSlot(BASE_SLOT);
 }
@@ -2400,7 +2400,7 @@ void SV_InitBaseSlot(void)
 //
 //==========================================================================
 
-static void ArchivePlayers(void)
+static void ArchivePlayers()
 {
     int i;
 
@@ -2426,7 +2426,7 @@ static void ArchivePlayers(void)
 //
 //==========================================================================
 
-static void UnarchivePlayers(void)
+static void UnarchivePlayers()
 {
     int i;
 
@@ -2453,7 +2453,7 @@ static void UnarchivePlayers(void)
 //
 //==========================================================================
 
-static void ArchiveWorld(void)
+static void ArchiveWorld()
 {
     int i;
     int j;
@@ -2504,7 +2504,7 @@ static void ArchiveWorld(void)
 //
 //==========================================================================
 
-static void UnarchiveWorld(void)
+static void UnarchiveWorld()
 {
     int i;
     int j;
@@ -2560,7 +2560,7 @@ static void UnarchiveWorld(void)
 //
 //==========================================================================
 
-static void SetMobjArchiveNums(void)
+static void SetMobjArchiveNums()
 {
     mobj_t *mobj;
     thinker_t *thinker;
@@ -2588,7 +2588,7 @@ static void SetMobjArchiveNums(void)
 //
 //==========================================================================
 
-static void ArchiveMobjs(void)
+static void ArchiveMobjs()
 {
     int count;
     thinker_t *thinker;
@@ -2624,7 +2624,7 @@ static void ArchiveMobjs(void)
 //
 //==========================================================================
 
-static void UnarchiveMobjs(void)
+static void UnarchiveMobjs()
 {
     int i;
     mobj_t *mobj;
@@ -2822,7 +2822,7 @@ static thinkInfo_t ThinkerInfo[] = {
 //
 //==========================================================================
 
-static void ArchiveThinkers(void)
+static void ArchiveThinkers()
 {
     thinker_t *thinker;
     thinkInfo_t *info;
@@ -2852,7 +2852,7 @@ static void ArchiveThinkers(void)
 //
 //==========================================================================
 
-static void UnarchiveThinkers(void)
+static void UnarchiveThinkers()
 {
     int tClass;
     thinker_t *thinker;
@@ -2929,7 +2929,7 @@ static void RestoreMoveCeiling(ceiling_t *ceiling)
 //
 //==========================================================================
 
-static void ArchiveScripts(void)
+static void ArchiveScripts()
 {
     int i;
 
@@ -2952,7 +2952,7 @@ static void ArchiveScripts(void)
 //
 //==========================================================================
 
-static void UnarchiveScripts(void)
+static void UnarchiveScripts()
 {
     int i;
 
@@ -2975,7 +2975,7 @@ static void UnarchiveScripts(void)
 //
 //==========================================================================
 
-static void ArchiveMisc(void)
+static void ArchiveMisc()
 {
     int ix;
 
@@ -2992,7 +2992,7 @@ static void ArchiveMisc(void)
 //
 //==========================================================================
 
-static void UnarchiveMisc(void)
+static void UnarchiveMisc()
 {
     int ix;
 
@@ -3009,7 +3009,7 @@ static void UnarchiveMisc(void)
 //
 //==========================================================================
 
-static void RemoveAllThinkers(void)
+static void RemoveAllThinkers()
 {
     thinker_t *thinker;
     thinker_t *nextThinker;
@@ -3039,7 +3039,7 @@ static void RemoveAllThinkers(void)
 //
 //==========================================================================
 
-static void ArchiveSounds(void)
+static void ArchiveSounds()
 {
     seqnode_t *node;
     sector_t *sec;
@@ -3087,7 +3087,7 @@ static void ArchiveSounds(void)
 //
 //==========================================================================
 
-static void UnarchiveSounds(void)
+static void UnarchiveSounds()
 {
     int i;
     int numSequences;
@@ -3135,7 +3135,7 @@ static void UnarchiveSounds(void)
 //
 //==========================================================================
 
-static void ArchivePolyobjs(void)
+static void ArchivePolyobjs()
 {
     int i;
 
@@ -3156,7 +3156,7 @@ static void ArchivePolyobjs(void)
 //
 //==========================================================================
 
-static void UnarchivePolyobjs(void)
+static void UnarchivePolyobjs()
 {
     int i;
     fixed_t deltaX;
@@ -3379,7 +3379,7 @@ static void SV_OpenWrite(char *fileName)
 //
 //==========================================================================
 
-static void SV_Close(void)
+static void SV_Close()
 {
     if (SavingFP)
     {
@@ -3403,28 +3403,28 @@ static void SV_Read(void *buffer, int size)
     }
 }
 
-static byte SV_ReadByte(void)
+static byte SV_ReadByte()
 {
     byte result;
     SV_Read(&result, sizeof(byte));
     return result;
 }
 
-static uint16_t SV_ReadWord(void)
+static uint16_t SV_ReadWord()
 {
     uint16_t result;
     SV_Read(&result, sizeof(unsigned short));
     return SHORT(result);
 }
 
-static uint32_t SV_ReadLong(void)
+static uint32_t SV_ReadLong()
 {
     uint32_t result;
     SV_Read(&result, sizeof(int));
     return LONG(result);
 }
 
-static void *SV_ReadPtr(void)
+static void *SV_ReadPtr()
 {
     return (void *) (intptr_t) SV_ReadLong();
 }

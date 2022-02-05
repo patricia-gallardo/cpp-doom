@@ -152,7 +152,7 @@ static int query_servers_found;
 
 // Find an IWAD from its description
 
-static const iwad_t *GetCurrentIWAD(void)
+static const iwad_t *GetCurrentIWAD()
 {
     return found_iwads[found_iwad_selected];
 }
@@ -305,7 +305,7 @@ static void StartSinglePlayerGame(TXT_UNCAST_ARG(widget), TXT_UNCAST_ARG(unused)
     StartGame(0);
 }
 
-static void UpdateWarpButton(void)
+static void UpdateWarpButton()
 {
     char buf[10];
 
@@ -321,7 +321,7 @@ static void UpdateWarpButton(void)
     TXT_SetButtonLabel(warpbutton, buf);
 }
 
-static void UpdateSkillButton(void)
+static void UpdateSkillButton()
 {
     const iwad_t *iwad = GetCurrentIWAD();
 
@@ -528,7 +528,7 @@ static void UpdateWarpType(TXT_UNCAST_ARG(widget), TXT_UNCAST_ARG(unused))
 // Get an IWAD list with a default fallback IWAD that is appropriate
 // for the game we are configuring (matches gamemission global variable).
 
-static const iwad_t **GetFallbackIwadList(void)
+static const iwad_t **GetFallbackIwadList()
 {
     static const iwad_t *fallback_iwad_list[2];
     unsigned int i;
@@ -550,7 +550,7 @@ static const iwad_t **GetFallbackIwadList(void)
     return fallback_iwad_list;
 }
 
-static txt_widget_t *IWADSelector(void)
+static txt_widget_t *IWADSelector()
 {
     txt_dropdown_list_t *dropdown;
     txt_widget_t *result;
@@ -674,7 +674,7 @@ static void OpenExtraParamsWindow(TXT_UNCAST_ARG(widget),
     }
 }
 
-static txt_window_action_t *WadWindowAction(void)
+static txt_window_action_t *WadWindowAction()
 {
     txt_window_action_t *action;
 
@@ -684,7 +684,7 @@ static txt_window_action_t *WadWindowAction(void)
     return action;
 }
 
-static txt_dropdown_list_t *GameTypeDropdown(void)
+static txt_dropdown_list_t *GameTypeDropdown()
 {
     switch (gamemission)
     {
@@ -852,7 +852,7 @@ static void DoJoinGame(void *unused1, void *unused2)
     exit(0);
 }
 
-static txt_window_action_t *JoinGameAction(void)
+static txt_window_action_t *JoinGameAction()
 {
     txt_window_action_t *action;
 
@@ -1070,7 +1070,7 @@ void JoinMultiGame(TXT_UNCAST_ARG(widget), void *user_data)
     TXT_SetWindowAction(window, TXT_HORIZ_RIGHT, JoinGameAction());
 }
 
-void SetChatMacroDefaults(void)
+void SetChatMacroDefaults()
 {
     int i;
     const char *const defaults[] =
@@ -1098,7 +1098,7 @@ void SetChatMacroDefaults(void)
     }
 }
 
-void SetPlayerNameDefault(void)
+void SetPlayerNameDefault()
 {
     if (net_player_name == NULL)
     {
@@ -1144,7 +1144,7 @@ void MultiplayerConfig(TXT_UNCAST_ARG(widget), void *user_data)
     TXT_AddWidget(window, table);
 }
 
-void BindMultiplayerVariables(void)
+void BindMultiplayerVariables()
 {
     char buf[15];
     int i;

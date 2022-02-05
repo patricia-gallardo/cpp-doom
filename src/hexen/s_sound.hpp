@@ -73,22 +73,22 @@ extern int snd_MusicVolume;
 extern int snd_Channels;
 extern boolean cdmusic;
 
-void S_Start(void);
+void S_Start();
 void S_StartSound(mobj_t * origin, int sound_id);
 int S_GetSoundID(char *name);
 void S_StartSoundAtVolume(mobj_t * origin, int sound_id, int volume);
 void S_StopSound(mobj_t * origin);
-void S_StopAllSound(void);
-void S_PauseSound(void);
-void S_ResumeSound(void);
+void S_StopAllSound();
+void S_PauseSound();
+void S_ResumeSound();
 void S_UpdateSounds(mobj_t * listener);
 void S_StartSong(int song, boolean loop);
 void S_StartSongName(const char *songLump, boolean loop);
-void S_Init(void);
+void S_Init();
 void S_GetChannelInfo(SoundInfo_t * s);
-void S_SetMusicVolume(void);
+void S_SetMusicVolume();
 boolean S_GetSoundPlayingInfo(mobj_t * mobj, int sound_id);
 boolean S_StartCustomCDTrack(int tracknum);
-int S_GetCurrentCDTrack(void);
+int S_GetCurrentCDTrack();
 
 #endif

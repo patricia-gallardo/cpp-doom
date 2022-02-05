@@ -134,7 +134,7 @@ typedef struct
 // More precisely, initialize STMINUS,
 //  everything else is done somewhere else.
 //
-void STlib_init(void);
+void STlib_init();
 
 
 

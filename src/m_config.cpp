@@ -2479,7 +2479,7 @@ void M_SetConfigFilenames(const char *main_config, const char *extra_config)
 // M_SaveDefaults
 //
 
-void M_SaveDefaults(void)
+void M_SaveDefaults()
 {
     SaveDefaultCollection(&doom_defaults);
     SaveDefaultCollection(&extra_defaults);
@@ -2514,7 +2514,7 @@ void M_SaveDefaultsAlternate(const char *main, const char *extra)
 // M_LoadDefaults
 //
 
-void M_LoadDefaults(void)
+void M_LoadDefaults()
 {
     int i;
 
@@ -2702,7 +2702,7 @@ float M_GetFloatVariable(const char *name)
 // Get the path to the default configuration dir to use, if NULL
 // is passed to M_SetConfigDir.
 
-static char *GetDefaultConfigDir(void)
+static char *GetDefaultConfigDir()
 {
 #if !defined(_WIN32) || defined(_WIN32_WCE)
 
@@ -2764,7 +2764,7 @@ void M_SetConfigDir(const char *dir)
 
 // Set the value of music_pack_path if it is currently empty, and create
 // the directory if necessary.
-void M_SetMusicPackDir(void)
+void M_SetMusicPackDir()
 {
     const char *current_path;
     char *      prefdir, *music_pack_path, *readme_path;

@@ -695,7 +695,7 @@ void V_DrawShadowedPatch(int x, int y, patch_t *patch)
 // Load tint table from TINTTAB lump.
 //
 
-void V_LoadTintTable(void)
+void V_LoadTintTable()
 {
     tinttable = cache_lump_name<byte *>("TINTTAB", PU_STATIC);
 }
@@ -706,7 +706,7 @@ void V_LoadTintTable(void)
 // villsa [STRIFE] Load xla table from XLATAB lump.
 //
 
-void V_LoadXlaTable(void)
+void V_LoadXlaTable()
 {
     xlatab = cache_lump_name<byte *>("XLATAB", PU_STATIC);
 }
@@ -865,7 +865,7 @@ void V_DrawRawScreen(pixel_t *raw)
 //
 // V_Init
 //
-void V_Init(void)
+void V_Init()
 {
     // [crispy] initialize resolution-agnostic patch drawing
     if (HIRESWIDTH && SCREENHEIGHT)
@@ -889,7 +889,7 @@ void V_UseBuffer(pixel_t *buffer)
 
 // Restore screen buffer to the i_video screen buffer.
 
-void V_RestoreBuffer(void)
+void V_RestoreBuffer()
 {
     dest_screen = I_VideoBuffer;
 }

@@ -42,8 +42,8 @@ extern fixed_t *yslope;
 extern fixed_t  yslopes[LOOKDIRS][MAXHEIGHT];
 extern fixed_t  distscale[MAXWIDTH];
 
-void R_InitPlanes(void);
-void R_ClearPlanes(void);
+void R_InitPlanes();
+void R_ClearPlanes();
 
 void R_MapPlane(int y,
     int             x1,
@@ -55,7 +55,7 @@ void R_MakeSpans(int x,
     unsigned int     t2, // [crispy] 32-bit integer math
     unsigned int     b2);    // [crispy] 32-bit integer math
 
-void R_DrawPlanes(void);
+void R_DrawPlanes();
 
 visplane_t *
     R_FindPlane(fixed_t height,

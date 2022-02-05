@@ -324,7 +324,7 @@ void AM_getIslope(mline_t *ml,
 //
 //
 //
-void AM_activateNewScale(void)
+void AM_activateNewScale()
 {
     m_x += m_w / 2;
     m_y += m_h / 2;
@@ -339,7 +339,7 @@ void AM_activateNewScale(void)
 //
 //
 //
-void AM_saveScaleAndLoc(void)
+void AM_saveScaleAndLoc()
 {
     old_m_x = m_x;
     old_m_y = m_y;
@@ -350,7 +350,7 @@ void AM_saveScaleAndLoc(void)
 //
 //
 //
-void AM_restoreScaleAndLoc(void)
+void AM_restoreScaleAndLoc()
 {
 
     m_w = old_m_w;
@@ -376,7 +376,7 @@ void AM_restoreScaleAndLoc(void)
 //
 // adds a marker at the current location
 //
-void AM_addMark(void)
+void AM_addMark()
 {
     // [crispy] keep the map static in overlay mode
     // if not following the player
@@ -397,7 +397,7 @@ void AM_addMark(void)
 // Determines bounding box of all vertices,
 // sets global variables controlling zoom range.
 //
-void AM_findMinMaxBoundaries(void)
+void AM_findMinMaxBoundaries()
 {
     int     i;
     fixed_t a;
@@ -437,7 +437,7 @@ void AM_findMinMaxBoundaries(void)
 //
 //
 //
-void AM_changeWindowLoc(void)
+void AM_changeWindowLoc()
 {
     int64_t incx, incy;
 
@@ -481,7 +481,7 @@ void AM_changeWindowLoc(void)
 //
 //
 //
-void AM_initVariables(void)
+void AM_initVariables()
 {
     int            pnum;
     static event_t st_notify = { ev_keyup, AM_MSGENTERED, 0, 0 };
@@ -536,7 +536,7 @@ void AM_initVariables(void)
 //
 //
 //
-void AM_loadPics(void)
+void AM_loadPics()
 {
     int  i;
     char namebuf[9];
@@ -548,7 +548,7 @@ void AM_loadPics(void)
     }
 }
 
-void AM_unloadPics(void)
+void AM_unloadPics()
 {
     int  i;
     char namebuf[9];
@@ -560,7 +560,7 @@ void AM_unloadPics(void)
     }
 }
 
-void AM_clearMarks(void)
+void AM_clearMarks()
 {
     int i;
 
@@ -573,7 +573,7 @@ void AM_clearMarks(void)
 // should be called at the start of every level
 // right now, i figure it out myself
 //
-void AM_LevelInit(void)
+void AM_LevelInit()
 {
     fixed_t a, b;
     leveljuststarted = 0;
@@ -600,7 +600,7 @@ void AM_LevelInit(void)
     scale_ftom = FixedDiv(FRACUNIT, scale_mtof);
 }
 
-void AM_ReInit(void)
+void AM_ReInit()
 {
     f_w = SCREENWIDTH;
     f_h = SCREENHEIGHT;
@@ -622,7 +622,7 @@ void AM_ReInit(void)
 //
 //
 //
-void AM_Stop(void)
+void AM_Stop()
 {
     static event_t st_notify = { {}, ev_keyup, AM_MSGEXITED, 0 };
 
@@ -637,7 +637,7 @@ void AM_Stop(void)
 //
 // [crispy] moved here for extended savegames
 static int lastlevel = -1, lastepisode = -1;
-void       AM_Start(void)
+void       AM_Start()
 {
     if (!stopped) AM_Stop();
     stopped = false;
@@ -659,7 +659,7 @@ void       AM_Start(void)
 //
 // set the window scale to the maximum size
 //
-void AM_minOutWindowScale(void)
+void AM_minOutWindowScale()
 {
     scale_mtof = min_scale_mtof;
     scale_ftom = FixedDiv(FRACUNIT, scale_mtof);
@@ -669,7 +669,7 @@ void AM_minOutWindowScale(void)
 //
 // set the window scale to the minimum size
 //
-void AM_maxOutWindowScale(void)
+void AM_maxOutWindowScale()
 {
     scale_mtof = max_scale_mtof;
     scale_ftom = FixedDiv(FRACUNIT, scale_mtof);
@@ -901,7 +901,7 @@ boolean
 //
 // Zooming
 //
-void AM_changeWindowScale(void)
+void AM_changeWindowScale()
 {
 
     // Change the scaling multipliers
@@ -927,7 +927,7 @@ void AM_changeWindowScale(void)
 //
 //
 //
-void AM_doFollowPlayer(void)
+void AM_doFollowPlayer()
 {
 
     if (f_oldloc.x != plr->mo->x || f_oldloc.y != plr->mo->y)
@@ -949,7 +949,7 @@ void AM_doFollowPlayer(void)
 //
 //
 //
-void AM_updateLightLev(void)
+void AM_updateLightLev()
 {
     static int nexttic = 0;
     //static int litelevels[] = { 0, 3, 5, 6, 6, 7, 7, 7 };
@@ -969,7 +969,7 @@ void AM_updateLightLev(void)
 //
 // Updates on Game Tick
 //
-void AM_Ticker(void)
+void AM_Ticker()
 {
 
     if (!automapactive)
@@ -1359,7 +1359,7 @@ static keycolor_t AM_DoorColor(int type)
     return no_key;
 }
 
-void AM_drawWalls(void)
+void AM_drawWalls()
 {
     int            i;
     static mline_t l;
@@ -1569,7 +1569,7 @@ void AM_drawLineCharacter(mline_t *lineguy,
     }
 }
 
-void AM_drawPlayers(void)
+void AM_drawPlayers()
 {
     int        i;
     player_t * p;
@@ -1722,7 +1722,7 @@ void AM_drawThings(int colors,
     }
 }
 
-void AM_drawMarks(void)
+void AM_drawMarks()
 {
     int      i, fx, fy, w, h;
     mpoint_t pt;
@@ -1781,7 +1781,7 @@ void AM_drawCrosshair(int color)
 */
 }
 
-void AM_Drawer(void)
+void AM_Drawer()
 {
     if (!automapactive) return;
 

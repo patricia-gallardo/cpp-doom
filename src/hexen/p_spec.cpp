@@ -80,7 +80,7 @@ mobj_t LavaInflictor;
 //
 //==========================================================================
 
-void P_InitLava(void)
+void P_InitLava()
 {
     memset(&LavaInflictor, 0, sizeof(mobj_t));
     LavaInflictor.type = MT_CIRCLEFLAME;
@@ -93,7 +93,7 @@ void P_InitLava(void)
 //
 //==========================================================================
 
-void P_InitTerrainTypes(void)
+void P_InitTerrainTypes()
 {
     int i;
     int lump;
@@ -1021,7 +1021,7 @@ void P_PlayerOnSpecialFlat(player_t * player, int floorType)
 //
 //----------------------------------------------------------------------------
 
-void P_UpdateSpecials(void)
+void P_UpdateSpecials()
 {
     int i;
 
@@ -1075,7 +1075,7 @@ void P_UpdateSpecials(void)
 short numlinespecials;
 line_t *linespeciallist[MAXLINEANIMS];
 
-void P_SpawnSpecials(void)
+void P_SpawnSpecials()
 {
     sector_t *sector;
     int i;

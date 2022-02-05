@@ -89,7 +89,7 @@ static int CallbackWaiting(uint64_t *next_time)
     return *next_time <= current_time;
 }
 
-static uint64_t GetNextTime(void)
+static uint64_t GetNextTime()
 {
     opl_callback_t callback;
     void *callback_data;
@@ -161,21 +161,21 @@ static int ThreadFunction(void *unused)
     return 0;
 }
 
-static void InitResources(void)
+static void InitResources()
 {
     callback_queue = OPL_Queue_Create();
     timer_mutex = SDL_CreateMutex();
     callback_queue_mutex = SDL_CreateMutex();
 }
 
-static void FreeResources(void)
+static void FreeResources()
 {
     OPL_Queue_Destroy(callback_queue);
     SDL_DestroyMutex(callback_queue_mutex);
     SDL_DestroyMutex(timer_mutex);
 }
 
-int OPL_Timer_StartThread(void)
+int OPL_Timer_StartThread()
 {
     InitResources();
 
@@ -197,7 +197,7 @@ int OPL_Timer_StartThread(void)
     return 1;
 }
 
-void OPL_Timer_StopThread(void)
+void OPL_Timer_StopThread()
 {
     timer_thread_state = THREAD_STATE_STOPPING;
 
@@ -217,7 +217,7 @@ void OPL_Timer_SetCallback(uint64_t us, opl_callback_t callback, void *data)
     SDL_UnlockMutex(callback_queue_mutex);
 }
 
-void OPL_Timer_ClearCallbacks(void)
+void OPL_Timer_ClearCallbacks()
 {
     SDL_LockMutex(callback_queue_mutex);
     OPL_Queue_Clear(callback_queue);
@@ -231,12 +231,12 @@ void OPL_Timer_AdjustCallbacks(float factor)
     SDL_UnlockMutex(callback_queue_mutex);
 }
 
-void OPL_Timer_Lock(void)
+void OPL_Timer_Lock()
 {
     SDL_LockMutex(timer_mutex);
 }
 
-void OPL_Timer_Unlock(void)
+void OPL_Timer_Unlock()
 {
     SDL_UnlockMutex(timer_mutex);
 }

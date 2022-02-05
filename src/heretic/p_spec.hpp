@@ -63,18 +63,18 @@ extern line_t *linespeciallist[MAXLINEANIMS];
 #define	MO_TELEPORTMAN		14
 
 // at game start
-void P_InitPicAnims(void);
-void P_InitTerrainTypes(void);
-void P_InitLava(void);
+void P_InitPicAnims();
+void P_InitTerrainTypes();
+void P_InitLava();
 
 // at map load
-void P_SpawnSpecials(void);
-void P_InitAmbientSound(void);
+void P_SpawnSpecials();
+void P_InitAmbientSound();
 void P_AddAmbientSfx(int sequence);
 
 // every tic
-void P_UpdateSpecials(void);
-void P_AmbientSound(void);
+void P_UpdateSpecials();
+void P_AmbientSound();
 
 // when needed
 boolean P_UseSpecialLine(mobj_t * thing, line_t * line);
@@ -190,7 +190,7 @@ typedef struct
 extern button_t buttonlist[MAXBUTTONS];
 
 void P_ChangeSwitchTexture(line_t * line, int useAgain);
-void P_InitSwitchList(void);
+void P_InitSwitchList();
 
 /*
 ===============================================================================

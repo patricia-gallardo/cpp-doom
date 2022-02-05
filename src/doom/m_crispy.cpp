@@ -126,14 +126,14 @@ multiitem_t multiitem_widgets[NUM_WIDGETS] = {
     { WIDGETS_ALWAYS, const_cast<char *>("always") },
 };
 
-extern void AM_ReInit(void);
-extern void EnableLoadingDisk(void);
+extern void AM_ReInit();
+extern void EnableLoadingDisk();
 extern void P_SegLengths(boolean contrast_only);
-extern void R_ExecuteSetViewSize(void);
-extern void R_InitLightTables(void);
+extern void R_ExecuteSetViewSize();
+extern void R_InitLightTables();
 extern void I_ReInitGraphics(int reinit);
-extern void ST_createWidgets(void);
-extern void HU_Start(void);
+extern void ST_createWidgets();
+extern void HU_Start();
 extern void M_SizeDisplay(int choice);
 
 
@@ -295,7 +295,7 @@ void M_CrispyToggleFreeaim(int choice)
     CheckCrispySingleplayer(!demorecording && !demoplayback && !netgame);
 }
 
-static void M_CrispyToggleSkyHook(void)
+static void M_CrispyToggleSkyHook()
 {
     players[consoleplayer].lookdir = 0;
     R_InitSkyMap();
@@ -326,7 +326,7 @@ void M_CrispyToggleFullsounds(int choice)
     }
 }
 
-static void M_CrispyToggleHiresHook(void)
+static void M_CrispyToggleHiresHook()
 {
     crispy->hires = !crispy->hires;
 
@@ -437,7 +437,7 @@ void M_CrispyToggleSmoothScaling(int choice)
     crispy->smoothscaling = !crispy->smoothscaling;
 }
 
-static void M_CrispyToggleSmoothLightingHook(void)
+static void M_CrispyToggleSmoothLightingHook()
 {
     crispy->smoothlight = !crispy->smoothlight;
 
@@ -490,7 +490,7 @@ void M_CrispyToggleUncapped(int choice)
     crispy->uncapped = !crispy->uncapped;
 }
 
-void M_CrispyToggleVsyncHook(void)
+void M_CrispyToggleVsyncHook()
 {
     crispy->vsync = !crispy->vsync;
 
@@ -515,7 +515,7 @@ void M_CrispyToggleWeaponSquat(int choice)
     crispy->weaponsquat = !crispy->weaponsquat;
 }
 
-void M_CrispyReinitHUDWidgets(void)
+void M_CrispyReinitHUDWidgets()
 {
     if (gamestate == GS_LEVEL && gamemap > 0)
     {
@@ -526,7 +526,7 @@ void M_CrispyReinitHUDWidgets(void)
     }
 }
 
-static void M_CrispyToggleWidescreenHook(void)
+static void M_CrispyToggleWidescreenHook()
 {
     crispy->widescreen = (crispy->widescreen + 1) % NUM_WIDESCREEN;
 

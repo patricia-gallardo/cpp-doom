@@ -58,7 +58,7 @@ R_StoreWallRange
 //
 // R_ClearDrawSegs
 //
-void R_ClearDrawSegs (void)
+void R_ClearDrawSegs ()
 {
     ds_p = drawsegs;
 }
@@ -241,7 +241,7 @@ R_ClipPassWallSegment
 //
 // R_ClearClipSegs
 //
-void R_ClearClipSegs (void)
+void R_ClearClipSegs ()
 {
     solidsegs[0].first = -0x7fffffff;
     solidsegs[0].last = -1;
