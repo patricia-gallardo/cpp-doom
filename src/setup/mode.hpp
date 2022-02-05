@@ -19,6 +19,7 @@
 #include "d_iwad.hpp"
 
 using GameSelectCallback = void (*)();
+
 extern GameMission_t gamemission;
 
 void SetupMission(GameSelectCallback callback);

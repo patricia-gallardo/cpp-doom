@@ -23,7 +23,6 @@
 #include "d_ticcmd.hpp"
 #include "d_event.hpp"
 
-
 using atexit_func_t = void (*)();
 
 // Called by DoomMain.

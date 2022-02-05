@@ -21,6 +21,7 @@
 
 #include "opl.hpp"
 
+
 using opl_init_func = int (*)(unsigned int);
 using opl_shutdown_func = void (*)();
 using opl_read_port_func = unsigned int (*)(opl_port_t);

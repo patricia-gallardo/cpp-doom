@@ -339,6 +339,7 @@ extern int numdrawsegs;
 extern lighttable_t **hscalelight, **vscalelight, **dscalelight;
 
 using drawfunc_t = void (*)(int, int);
+
 void R_ClearClipSegs();
 
 void R_ClearDrawSegs();

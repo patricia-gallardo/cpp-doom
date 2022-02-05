@@ -399,6 +399,7 @@ extern drawseg_t drawsegs[MAXDRAWSEGS], *ds_p;
 extern lighttable_t **hscalelight, **vscalelight, **dscalelight;
 
 using drawfunc_t = void (*)(int, int);
+
 void R_ClearClipSegs();
 
 void R_ClearDrawSegs();
