@@ -30,7 +30,7 @@
 
 // PRIVATE FUNCTION PROTOTYPES ---------------------------------------------
 
-static void RunThinkers(void);
+static void RunThinkers();
 
 // EXTERNAL DATA DECLARATIONS ----------------------------------------------
 
@@ -50,7 +50,7 @@ thinker_t thinkercap;           // The head and tail of the thinker list
 //
 //==========================================================================
 
-void P_Ticker(void)
+void P_Ticker()
 {
     int i;
 
@@ -84,7 +84,7 @@ void P_Ticker(void)
 //
 //==========================================================================
 
-static void RunThinkers(void)
+static void RunThinkers()
 {
     thinker_t *currentthinker, *nextthinker;
 
@@ -117,7 +117,7 @@ static void RunThinkers(void)
 //
 //==========================================================================
 
-void P_InitThinkers(void)
+void P_InitThinkers()
 {
     thinkercap.prev = thinkercap.next = &thinkercap;
 }

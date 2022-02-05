@@ -42,8 +42,8 @@
 #define MINZ        (FRACUNIT * 4)
 #define BASEYCENTER (ORIGHEIGHT / 2)
 
-//void R_DrawColumn (void);
-//void R_DrawFuzzColumn (void);
+//void R_DrawColumn ();
+//void R_DrawFuzzColumn ();
 
 
 typedef struct
@@ -343,7 +343,7 @@ void R_InitSprites(const char **namelist)
 // R_ClearSprites
 // Called at frame start.
 //
-void R_ClearSprites(void)
+void R_ClearSprites()
 {
     vissprite_p = vissprites;
 }
@@ -354,7 +354,7 @@ void R_ClearSprites(void)
 //
 vissprite_t overflowsprite;
 
-vissprite_t *R_NewVisSprite(void)
+vissprite_t *R_NewVisSprite()
 {
     // [crispy] remove MAXVISSPRITE Vanilla limit
     if (vissprite_p == &vissprites[numvissprites])
@@ -800,7 +800,7 @@ void R_ProjectSprite(mobj_t *thing)
 
 extern void P_LineLaser(mobj_t *t1, angle_t angle, fixed_t distance, fixed_t slope);
 
-byte *R_LaserspotColor(void)
+byte *R_LaserspotColor()
 {
     if (crispy->crosshairtarget)
     {
@@ -838,7 +838,7 @@ byte *R_LaserspotColor(void)
 }
 
 // [crispy] generate a vissprite for the laser spot
-static void R_DrawLSprite(void)
+static void R_DrawLSprite()
 {
     fixed_t      xscale;
     fixed_t      tx, tz;
@@ -1060,7 +1060,7 @@ void R_DrawPSprite(pspdef_t *psp, psprnum_t psprnum) // [crispy] differentiate g
 //
 // R_DrawPlayerSprites
 //
-void R_DrawPlayerSprites(void)
+void R_DrawPlayerSprites()
 {
     int       i;
     int       lightnum;
@@ -1112,7 +1112,7 @@ static inline int cmp_vissprites(const void *a, const void *b)
     return ret ? ret : vsa->next - vsb->next;
 }
 
-void R_SortVisSprites(void)
+void R_SortVisSprites()
 {
     int          count;
     vissprite_t *ds;
@@ -1134,7 +1134,7 @@ void R_SortVisSprites(void)
 vissprite_t vsprsortedhead;
 
 
-void R_SortVisSprites(void)
+void R_SortVisSprites()
 {
     int          i;
     int          count;
@@ -1303,7 +1303,7 @@ void R_DrawSprite(vissprite_t *spr)
 //
 // R_DrawMasked
 //
-void R_DrawMasked(void)
+void R_DrawMasked()
 {
     vissprite_t *spr;
     drawseg_t *  ds;

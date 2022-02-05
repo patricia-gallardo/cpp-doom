@@ -36,7 +36,7 @@ extern	int	levelTimeCount;
 
 
 // at game start
-void    P_InitPicAnims (void);
+void    P_InitPicAnims ();
 
 // villsa [STRIFE]
 typedef enum
@@ -47,14 +47,14 @@ typedef enum
     FLOOR_END   = -1
 } terraintype_e;
 
-void P_InitTerrainTypes(void);                  // villsa [STRIFE]
+void P_InitTerrainTypes();                  // villsa [STRIFE]
 terraintype_e P_GetTerrainType(mobj_t* mobj);   // villsa [STRIFE]
 
 // at map load
-void    P_SpawnSpecials (void);
+void    P_SpawnSpecials ();
 
 // every tic
-void    P_UpdateSpecials (void);
+void    P_UpdateSpecials ();
 
 // when needed
 boolean
@@ -263,7 +263,7 @@ P_ChangeSwitchTexture
 ( line_t*	line,
   int		useAgain );
 
-void P_InitSwitchList(void);
+void P_InitSwitchList();
 
 
 //
@@ -485,7 +485,7 @@ void T_SlidingDoor(slidedoor_t* door);
 // how many diff. types of anims
 #define MAXSLIDEDOORS	8       // villsa [STRIFE] changed from 5 to 8                     
 
-void P_InitSlidingDoorFrames(void);
+void P_InitSlidingDoorFrames();
 void EV_SlidingDoor(line_t* line, mobj_t* thing);
 int EV_RemoteSlidingDoor(line_t* line, mobj_t* thing);
 

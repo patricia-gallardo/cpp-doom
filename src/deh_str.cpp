@@ -102,7 +102,7 @@ boolean DEH_HasStringReplacement(const char *s)
     return DEH_String(s) != s;
 }
 
-static void InitHashTable(void)
+static void InitHashTable()
 {
     // init hash table
 
@@ -115,7 +115,7 @@ static void InitHashTable(void)
 
 static void DEH_AddToHashtable(deh_substitution_t *sub);
 
-static void IncreaseHashtable(void)
+static void IncreaseHashtable()
 {
     deh_substitution_t **old_table;
     int                  old_table_length;

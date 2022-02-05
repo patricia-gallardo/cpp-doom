@@ -110,10 +110,10 @@ char*	finaletext;
 char*	finaleflat;
 */
 
-void	F_StartCast (void);
-void	F_CastTicker (void);
+void	F_StartCast ();
+void	F_CastTicker ();
 boolean F_CastResponder (event_t *ev);
-void	F_CastDrawer (void);
+void	F_CastDrawer ();
 
 // [STRIFE] - Slideshow states enumeration
 enum
@@ -167,7 +167,7 @@ enum
 // [STRIFE]
 // haleyjd 09/13/10: Modified to drive slideshow sequences.
 //
-void F_StartFinale (void)
+void F_StartFinale ()
 {
 #if 0
     // haleyjd 20111006: see below...
@@ -266,7 +266,7 @@ boolean F_Responder (event_t *event)
 // haleyjd 09/13/10: This is called from G_Ticker if gamestate is 1, but we
 // have no idea for what it's supposed to be. It is unused.
 //
-void F_WaitTicker(void)
+void F_WaitTicker()
 {
     if(++finalecount >= 250)
     {
@@ -282,7 +282,7 @@ void F_WaitTicker(void)
 // [STRIFE] New function
 // haleyjd 09/13/10: Handles slideshow states. Begging to be tabulated!
 //
-static void F_DoSlideShow(void)
+static void F_DoSlideShow()
 {
     patch_t *patch;
 
@@ -474,7 +474,7 @@ static void F_DoSlideShow(void)
 // [STRIFE] Modifications for new finales
 // haleyjd 09/13/10: Calls F_DoSlideShow
 //
-void F_Ticker (void)
+void F_Ticker ()
 {
     size_t          i;
 
@@ -524,7 +524,7 @@ extern	patch_t *hu_font[HU_FONTSIZE];
 //
 // F_TextWrite
 //
-void F_TextWrite (void)
+void F_TextWrite ()
 {
     byte*	src;
     byte*	dest;
@@ -642,7 +642,7 @@ boolean		castattacking;
 // Evidence suggests this was meant to be started from a menu item.
 // See m_menu.c for more info.
 //
-void F_StartCast (void)
+void F_StartCast ()
 {
     usergame = false;
     gameaction = ga_nothing;
@@ -672,7 +672,7 @@ void F_StartCast (void)
 // pick it up and finish it, adding it as the optional menu item it was 
 // meant to be, or just adding it as part of the ending sequence.
 //
-void F_CastTicker (void)
+void F_CastTicker ()
 {
     int         st;
 
@@ -854,7 +854,7 @@ void F_CastPrint (char* text)
 //
 // F_CastDrawer
 //
-void F_CastDrawer (void)
+void F_CastDrawer ()
 {
     spritedef_t*	sprdef;
     spriteframe_t*	sprframe;
@@ -930,7 +930,7 @@ F_DrawPatchCol
 // one will currently be used, as full demo version support isn't looking
 // likely right now.
 //
-void F_DrawMap34End (void)
+void F_DrawMap34End ()
 {
     signed int  scrolled;
     int         x;
@@ -970,7 +970,7 @@ void F_DrawMap34End (void)
 
 // haleyjd 09/13/10: [STRIFE] Unused.
 /*
-static void F_ArtScreenDrawer(void)
+static void F_ArtScreenDrawer()
 {
     char *lumpname;
     
@@ -1015,7 +1015,7 @@ static void F_ArtScreenDrawer(void)
 // [STRIFE]
 // haleyjd 09/13/10: Modified for slideshow, demo version, etc.
 //
-void F_Drawer (void)
+void F_Drawer ()
 {
     switch (finalestage)
     {

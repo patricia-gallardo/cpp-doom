@@ -192,20 +192,20 @@ void M_Sound(int choice);
 
 //void M_FinishReadThis(int choice); - [STRIFE] unused
 void M_SaveSelect(int choice);
-void M_ReadSaveStrings(void);
-void M_QuickSave(void);
-void M_QuickLoad(void);
+void M_ReadSaveStrings();
+void M_QuickSave();
+void M_QuickLoad();
 
-void M_DrawMainMenu(void);
-void M_DrawReadThis1(void);
-void M_DrawReadThis2(void);
-void M_DrawReadThis3(void); // [STRIFE]
-void M_DrawNewGame(void);
-void M_DrawEpisode(void);
-void M_DrawOptions(void);
-void M_DrawSound(void);
-void M_DrawLoad(void);
-void M_DrawSave(void);
+void M_DrawMainMenu();
+void M_DrawReadThis1();
+void M_DrawReadThis2();
+void M_DrawReadThis3(); // [STRIFE]
+void M_DrawNewGame();
+void M_DrawEpisode();
+void M_DrawOptions();
+void M_DrawSound();
+void M_DrawLoad();
+void M_DrawSave();
 
 void M_DrawSaveLoadBorder(int x,int y);
 void M_SetupNextMenu(menu_t *menudef);
@@ -215,7 +215,7 @@ void M_DrawSelCell(menu_t *menu,int item);
 int  M_StringWidth(const char *string);
 int  M_StringHeight(const char *string);
 void M_StartMessage(const char *string,void *routine,boolean input);
-void M_StopMessage(void);
+void M_StopMessage();
 
 
 
@@ -519,7 +519,7 @@ menu_t  SaveDef =
     0
 };
 
-void M_DrawNameChar(void);
+void M_DrawNameChar();
 
 //
 // NAME CHARACTER MENU
@@ -545,7 +545,7 @@ menu_t NameCharDef =
 // [STRIFE]
 // haleyjd 20110210: Rewritten to read "name" file in each slot directory
 //
-void M_ReadSaveStrings(void)
+void M_ReadSaveStrings()
 {
     FILE *handle;
     int   i;
@@ -581,7 +581,7 @@ void M_ReadSaveStrings(void)
 // haleyjd 09/22/10: [STRIFE] New function
 // Handler for drawing the "Name Your Character" menu.
 //
-void M_DrawNameChar(void)
+void M_DrawNameChar()
 {
     int i;
 
@@ -633,7 +633,7 @@ void M_DoNameChar(int choice)
 //
 // M_LoadGame & Cie.
 //
-void M_DrawLoad(void)
+void M_DrawLoad()
 {
     int             i;
 
@@ -714,7 +714,7 @@ void M_LoadGame (int choice)
 //
 //  M_SaveGame & Cie.
 //
-void M_DrawSave(void)
+void M_DrawSave()
 {
     int             i;
 
@@ -832,7 +832,7 @@ void M_QuickSaveResponse(int key)
     }
 }
 
-void M_QuickSave(void)
+void M_QuickSave()
 {
     if (netgame)
     {
@@ -881,7 +881,7 @@ void M_QuickLoadResponse(int key)
 //
 // [STRIFE] Verified unmodified
 //
-void M_QuickLoad(void)
+void M_QuickLoad()
 {
     if (netgame)
     {
@@ -906,7 +906,7 @@ void M_QuickLoad(void)
 // Had a "quick hack to fix romero bug"
 // haleyjd 08/28/10: [STRIFE] Draw HELP1, unconditionally.
 //
-void M_DrawReadThis1(void)
+void M_DrawReadThis1()
 {
     inhelpscreens = true;
 
@@ -919,7 +919,7 @@ void M_DrawReadThis1(void)
 // Read This Menus
 // haleyjd 08/28/10: [STRIFE] Not optional, draws HELP2
 //
-void M_DrawReadThis2(void)
+void M_DrawReadThis2()
 {
     inhelpscreens = true;
 
@@ -931,7 +931,7 @@ void M_DrawReadThis2(void)
 // Read This Menus
 // haleyjd 08/28/10: [STRIFE] New function to draw HELP3.
 //
-void M_DrawReadThis3(void)
+void M_DrawReadThis3()
 {
     inhelpscreens = true;
     
@@ -945,7 +945,7 @@ void M_DrawReadThis3(void)
 // * Changed title graphic coordinates
 // * Added voice volume and sensitivity sliders
 //
-void M_DrawSound(void)
+void M_DrawSound()
 {
     V_DrawPatchDirect (100, 10, cache_lump_name<patch_t *>(DEH_String("M_SVOL"), PU_CACHE));
 
@@ -1032,7 +1032,7 @@ void M_MusicVol(int choice)
 //
 // haleyjd 08/27/10: [STRIFE] Changed x coordinate; M_DOOM -> M_STRIFE
 //
-void M_DrawMainMenu(void)
+void M_DrawMainMenu()
 {
     V_DrawPatchDirect(84, 2,
                       cache_lump_name<patch_t *>(DEH_String("M_STRIFE"), PU_CACHE));
@@ -1046,7 +1046,7 @@ void M_DrawMainMenu(void)
 //
 // haleyjd 08/31/10: [STRIFE] Changed M_NEWG -> M_NGAME
 //
-void M_DrawNewGame(void)
+void M_DrawNewGame()
 {
     V_DrawPatchDirect(96, 14, cache_lump_name<patch_t *>(DEH_String("M_NGAME"), PU_CACHE));
     V_DrawPatchDirect(54, 38, cache_lump_name<patch_t *>(DEH_String("M_SKILL"), PU_CACHE));
@@ -1074,7 +1074,7 @@ void M_NewGame(int choice)
 /*
 int     epi;
 
-void M_DrawEpisode(void)
+void M_DrawEpisode()
 {
     V_DrawPatchDirect(54, 38, cache_lump_name<patch_t *>(DEH_String("M_EPISOD"), PU_CACHE));
 }
@@ -1133,7 +1133,7 @@ char    detailNames[2][9]	= {"M_GDHIGH","M_GDLOW"};
 char	msgNames[2][9]		= {"M_MSGOFF","M_MSGON"};
 
 
-void M_DrawOptions(void)
+void M_DrawOptions()
 {
     // haleyjd 08/27/10: [STRIFE] M_OPTTTL -> M_OPTION
     V_DrawPatchDirect(108, 15, 
@@ -1156,7 +1156,7 @@ void M_Options(int choice)
 // [STRIFE] New function
 // haleyjd 20110211: toggle autouse health state
 //
-void M_AutoUseHealth(void)
+void M_AutoUseHealth()
 {
     if(!netgame && usergame)
     {
@@ -1174,7 +1174,7 @@ void M_AutoUseHealth(void)
 //
 // [STRIFE] New function
 //
-void M_ChangeShowText(void)
+void M_ChangeShowText()
 {
     dialogshowtext ^= true;
 
@@ -1280,7 +1280,7 @@ void M_FinishReadThis(int choice)
 */
 
 #if 0
-extern void F_StartCast(void);
+extern void F_StartCast();
 
 //
 // M_CheckStartCast
@@ -1327,7 +1327,7 @@ void M_QuitResponse(int key)
 
 /*
 // haleyjd 09/11/10: [STRIFE] Unused
-static char *M_SelectEndMessage(void)
+static char *M_SelectEndMessage()
 {
 }
 */
@@ -1483,7 +1483,7 @@ M_StartMessage
 
 
 
-void M_StopMessage(void)
+void M_StopMessage()
 {
     menuactive = messageLastMenuActive;
     messageToPrint = 0;
@@ -2273,7 +2273,7 @@ boolean M_Responder (event_t* ev)
 //
 // M_StartControlPanel
 //
-void M_StartControlPanel (void)
+void M_StartControlPanel ()
 {
     // intro might call this repeatedly
     if (menuactive)
@@ -2291,7 +2291,7 @@ void M_StartControlPanel (void)
 // Called after the view has been rendered,
 // but before it has been blitted.
 //
-void M_Drawer (void)
+void M_Drawer ()
 {
     static short	x;
     static short	y;
@@ -2407,7 +2407,7 @@ void M_SetupNextMenu(menu_t *menudef)
 //
 // haleyjd 08/27/10: [STRIFE] Rewritten for Sigil cursor
 //
-void M_Ticker (void)
+void M_Ticker ()
 {
     if (--cursorAnimCounter <= 0)
     {
@@ -2422,7 +2422,7 @@ void M_Ticker (void)
 //
 // haleyjd 08/27/10: [STRIFE] Removed DOOM gamemode stuff
 //
-void M_Init (void)
+void M_Init ()
 {
     currentMenu = &MainDef;
     menuactive = 0;

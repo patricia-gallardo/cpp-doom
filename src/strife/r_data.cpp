@@ -399,7 +399,7 @@ R_GetColumn
 }
 
 
-static void GenerateTextureHashTable(void)
+static void GenerateTextureHashTable()
 {
     texture_t **rover;
     int i;
@@ -446,7 +446,7 @@ static void GenerateTextureHashTable(void)
 // Initializes the texture list
 //  with the textures from the world map.
 //
-void R_InitTextures (void)
+void R_InitTextures ()
 {
     maptexture_t*	mtexture;
     texture_t*		texture;
@@ -639,7 +639,7 @@ void R_InitTextures (void)
 //
 // R_InitFlats
 //
-void R_InitFlats (void)
+void R_InitFlats ()
 {
     int		i;
 	
@@ -661,7 +661,7 @@ void R_InitFlats (void)
 //  so the sprite does not need to be cached completely
 //  just for having the header info ready during rendering.
 //
-void R_InitSpriteLumps (void)
+void R_InitSpriteLumps ()
 {
     int		i;
     patch_t	*patch;
@@ -697,7 +697,7 @@ void R_InitSpriteLumps (void)
 //
 // R_InitColormaps
 //
-void R_InitColormaps (void)
+void R_InitColormaps ()
 {
     int	lump;
 
@@ -714,7 +714,7 @@ void R_InitColormaps (void)
 //  that will be used by all views
 // Must be called after W_Init.
 //
-void R_InitData (void)
+void R_InitData ()
 {
     R_InitTextures ();
     if(devparm)
@@ -905,7 +905,7 @@ int		flatmemory;
 int		texturememory;
 int		spritememory;
 
-void R_PrecacheLevel (void)
+void R_PrecacheLevel ()
 {
     char*		flatpresent;
     char*		texturepresent;

@@ -182,7 +182,7 @@ DEH_BEGIN_MAPPING(state_mapping, state_t)
   DEH_MAPPING("Unknown 2",        misc2)
 DEH_END_MAPPING
 
-static void DEH_FrameInit(void)
+static void DEH_FrameInit()
 {
     // Bit of a hack here:
     DEH_HereticInit();

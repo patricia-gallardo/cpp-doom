@@ -51,7 +51,7 @@ static BossSpot_t BossSpots[MAX_BOSS_SPOTS];
 //
 //----------------------------------------------------------------------------
 
-void P_InitMonsters(void)
+void P_InitMonsters()
 {
     BossSpotCount = 0;
 }
@@ -2316,7 +2316,7 @@ void A_MakePod(mobj_t * actor)
 //
 //----------------------------------------------------------------------------
 
-void P_Massacre(void)
+void P_Massacre()
 {
     mobj_t *mo;
     thinker_t *think;

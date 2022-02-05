@@ -68,7 +68,7 @@
 extern thinker_t thinkercap;
 
 
-void P_InitThinkers(void);
+void P_InitThinkers();
 void P_AddThinker(thinker_t *thinker);
 void P_RemoveThinker(thinker_t *thinker);
 
@@ -104,7 +104,7 @@ extern int        iquehead;
 extern int        iquetail;
 
 
-void P_RespawnSpecials(void);
+void P_RespawnSpecials();
 
 mobj_t *
     P_SpawnMobj(fixed_t x,

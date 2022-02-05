@@ -144,7 +144,7 @@ boolean P_SightBlockLinesIterator(int x, int y)
 ====================
 */
 
-boolean P_SightTraverseIntercepts(void)
+boolean P_SightTraverseIntercepts()
 {
     int count;
     fixed_t dist;

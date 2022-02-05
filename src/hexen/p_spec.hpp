@@ -29,14 +29,14 @@ extern line_t *linespeciallist[MAXLINEANIMS];
 #define MO_TELEPORTMAN 14
 
 // at game start
-void P_InitTerrainTypes(void);
-void P_InitLava(void);
+void P_InitTerrainTypes();
+void P_InitLava();
 
 // at map load
-void P_SpawnSpecials(void);
+void P_SpawnSpecials();
 
 // every tic
-void P_UpdateSpecials(void);
+void P_UpdateSpecials();
 
 // when needed
 boolean P_ExecuteLineSpecial(int special, byte * args, line_t * line,
@@ -73,10 +73,10 @@ line_t *P_FindLine(int lineTag, int *searchPosition);
 // P_anim.c
 //-------------------------------
 
-void P_AnimateSurfaces(void);
-void P_InitFTAnims(void);
-void P_InitLightning(void);
-void P_ForceLightning(void);
+void P_AnimateSurfaces();
+void P_InitFTAnims();
+void P_InitLightning();
+void P_ForceLightning();
 
 /*
 ===============================================================================
@@ -227,7 +227,7 @@ typedef struct
 extern button_t buttonlist[MAXBUTTONS];
 
 void P_ChangeSwitchTexture(line_t * line, int useAgain);
-void P_InitSwitchList(void);
+void P_InitSwitchList();
 
 /*
 ===============================================================================
@@ -544,8 +544,8 @@ boolean P_SuspendACS(int number, int map);
 void T_InterpretACS(acs_t * script);
 void P_TagFinished(int tag);
 void P_PolyobjFinished(int po);
-void P_ACSInitNewGame(void);
-void P_CheckACSStore(void);
+void P_ACSInitNewGame();
+void P_CheckACSStore();
 void CheckACSPresent(int number);
 
 extern int ACScriptCount;

@@ -127,7 +127,7 @@ button_t        buttonlist[MAXBUTTONS];
 // P_InitSwitchList
 // Only called at game initialization.
 //
-void P_InitSwitchList(void)
+void P_InitSwitchList()
 {
     int i, slindex, episode;
 

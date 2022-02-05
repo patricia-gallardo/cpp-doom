@@ -241,7 +241,7 @@ weaponinfo_t wpnlev2info[NUMWEAPONS] = {
 //
 //---------------------------------------------------------------------------
 
-void P_OpenWeapons(void)
+void P_OpenWeapons()
 {
     MaceSpotCount = 0;
 }
@@ -294,7 +294,7 @@ void P_RepositionMace(mobj_t * mo)
 //
 //---------------------------------------------------------------------------
 
-void P_CloseWeapons(void)
+void P_CloseWeapons()
 {
     int spot;
 

@@ -67,7 +67,7 @@ static music_module_t *active_music_module;
 
 // Sound modules
 
-extern void           I_InitTimidityConfig(void);
+extern void           I_InitTimidityConfig();
 extern sound_module_t sound_sdl_module;
 extern sound_module_t sound_pcsound_module;
 extern music_module_t music_sdl_module;
@@ -268,7 +268,7 @@ void I_InitSound(boolean use_sfx_prefix)
     }
 }
 
-void I_ShutdownSound(void)
+void I_ShutdownSound()
 {
     if (sound_module != NULL)
     {
@@ -298,7 +298,7 @@ int I_GetSfxLumpNum(sfxinfo_t *sfxinfo)
     }
 }
 
-void I_UpdateSound(void)
+void I_UpdateSound()
 {
     if (sound_module != NULL)
     {
@@ -382,11 +382,11 @@ void I_PrecacheSounds(sfxinfo_t *sounds, int num_sounds)
     }
 }
 
-void I_InitMusic(void)
+void I_InitMusic()
 {
 }
 
-void I_ShutdownMusic(void)
+void I_ShutdownMusic()
 {
 }
 
@@ -398,7 +398,7 @@ void I_SetMusicVolume(int volume)
     }
 }
 
-void I_PauseSong(void)
+void I_PauseSong()
 {
     if (active_music_module != NULL)
     {
@@ -406,7 +406,7 @@ void I_PauseSong(void)
     }
 }
 
-void I_ResumeSong(void)
+void I_ResumeSong()
 {
     if (active_music_module != NULL)
     {
@@ -460,7 +460,7 @@ void I_PlaySong(void *handle, boolean looping)
     }
 }
 
-void I_StopSong(void)
+void I_StopSong()
 {
     if (active_music_module != NULL)
     {
@@ -468,7 +468,7 @@ void I_StopSong(void)
     }
 }
 
-boolean I_MusicIsPlaying(void)
+boolean I_MusicIsPlaying()
 {
     if (active_music_module != NULL)
     {
@@ -480,7 +480,7 @@ boolean I_MusicIsPlaying(void)
     }
 }
 
-void I_BindSoundVariables(void)
+void I_BindSoundVariables()
 {
     extern char *snd_dmxoption;
     extern int   use_libsamplerate;

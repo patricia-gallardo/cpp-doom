@@ -90,7 +90,7 @@
 //  calls all ?_Responder, ?_Ticker, and ?_Drawer,
 //  calls I_GetTime, I_StartFrame, and I_StartTic
 //
-void D_DoomLoop (void);
+void D_DoomLoop ();
 
 static boolean D_AddFile(char *filename);
 
@@ -162,15 +162,15 @@ static int comport = 0;
 // fraggle 06/03/11 [STRIFE]: Multiplayer nickname?
 char *nickname = NULL;
 
-void D_ConnectNetGame(void);
-void D_CheckNetGame(void);
+void D_ConnectNetGame();
+void D_CheckNetGame();
 
 
 //
 // D_ProcessEvents
 // Send all the events of the given timestamp down the responder chain
 //
-void D_ProcessEvents (void)
+void D_ProcessEvents ()
 {
     event_t*    ev;
 
@@ -206,9 +206,9 @@ void D_ProcessEvents (void)
 gamestate_t     wipegamestate = GS_UNKNOWN;
 extern  boolean setsizeneeded;
 //extern  int             showMessages; [STRIFE] no such variable
-void R_ExecuteSetViewSize (void);
+void R_ExecuteSetViewSize ();
 
-void D_Display (void)
+void D_Display ()
 {
     static  boolean             viewactivestate = false;
     static  boolean             menuactivestate = false;
@@ -397,7 +397,7 @@ void D_Display (void)
 // Add configuration file variable bindings.
 //
 
-void D_BindVariables(void)
+void D_BindVariables()
 {
     int i;
 
@@ -472,7 +472,7 @@ void D_BindVariables(void)
 // Called to determine whether to grab the mouse pointer
 //
 
-boolean D_GrabMouseCallback(void)
+boolean D_GrabMouseCallback()
 {
     // Drone players don't need mouse focus
 
@@ -491,7 +491,7 @@ boolean D_GrabMouseCallback(void)
 
 // During startup, never grab the mouse.
 
-static boolean D_StartupGrabCallback(void)
+static boolean D_StartupGrabCallback()
 {
     return false;
 }
@@ -501,7 +501,7 @@ static boolean D_StartupGrabCallback(void)
 //
 //  haleyjd 08/23/10: [STRIFE] Verified unmodified.
 //
-void D_DoomLoop (void)
+void D_DoomLoop ()
 {
     if (demorecording)
         G_BeginRecording ();
@@ -563,7 +563,7 @@ const char      *pagename;
 //
 // haleyjd 08/22/2010: [STRIFE] verified unmodified
 //
-void D_PageTicker (void)
+void D_PageTicker ()
 {
     if (--pagetic < 0)
         D_AdvanceDemo ();
@@ -576,7 +576,7 @@ void D_PageTicker (void)
 //
 // haleyjd 08/22/2010: [STRIFE] verified unmodified
 //
-void D_PageDrawer (void)
+void D_PageDrawer ()
 {
     V_DrawPatch (0, 0, cache_lump_name<patch_t *>(pagename, PU_CACHE));
 }
@@ -588,7 +588,7 @@ void D_PageDrawer (void)
 //
 // haleyjd 08/22/2010: [STRIFE] verified unmodified
 //
-void D_AdvanceDemo (void)
+void D_AdvanceDemo ()
 {
     advancedemo = true;
 }
@@ -600,7 +600,7 @@ void D_AdvanceDemo (void)
 //
 // [STRIFE] Modified for the opening slideshow and the exit screen
 //
-void D_DoAdvanceDemo (void)
+void D_DoAdvanceDemo ()
 {
     players[consoleplayer].playerstate = PST_LIVE;  // not reborn
     advancedemo = false;
@@ -731,7 +731,7 @@ void D_DoAdvanceDemo (void)
 // [STRIFE]
 // haleyjd 09/11/10: Small modifications for new demo sequence.
 //
-void D_StartTitle (void)
+void D_StartTitle ()
 {
     gamestate = GS_DEMOSCREEN;
     gameaction = ga_nothing;
@@ -746,7 +746,7 @@ void D_StartTitle (void)
 // haleyjd 09/11/10: Sets up the quit game snippet powered by the
 // demo sequence.
 //
-void D_QuitGame(void)
+void D_QuitGame()
 {
     gameaction = ga_nothing;
     demosequence = -4;
@@ -816,7 +816,7 @@ static char *GetGameName(char *gamename)
 // Find out what version of Doom is playing.
 //
 
-void D_IdentifyVersion(void)
+void D_IdentifyVersion()
 {
     // gamemission is set up by the D_FindIWAD function.  But if 
     // we specify '-iwad', we have to identify using 
@@ -889,7 +889,7 @@ void D_IdentifyVersion(void)
 // Code with no xrefs; probably left over from a private alpha or beta.
 // Translated here because it explains what the SERIAL lump was meant to do.
 //
-void DoTimeBomb(void)
+void DoTimeBomb()
 {
     dosdate_t date;
     char *serial;
@@ -916,7 +916,7 @@ void DoTimeBomb(void)
 
 // Set the gamedescription string
 
-void D_SetGameDescription(void)
+void D_SetGameDescription()
 {
     gamedescription = GetGameName(const_cast<char *>("Strife: Quest for the Sigil"));
 }
@@ -924,7 +924,7 @@ void D_SetGameDescription(void)
 //      print title for every printed line
 static char title[128] = "";
 
-static void InitTitleString(void)
+static void InitTitleString()
 {
     switch (gameversion)
     {
@@ -977,7 +977,7 @@ static const char *copyright_banners[] =
 
 // Prints a message only if it has been modified by dehacked.
 
-void PrintDehackedBanners(void)
+void PrintDehackedBanners()
 {
     size_t i;
 
@@ -1015,7 +1015,7 @@ static struct
 
 // Initialize the game version
 
-static void InitGameVersion(void)
+static void InitGameVersion()
 {
     int p;
     int i;
@@ -1065,7 +1065,7 @@ static void InitGameVersion(void)
     }
 }
 
-void PrintGameVersion(void)
+void PrintGameVersion()
 {
     int i;
 
@@ -1082,7 +1082,7 @@ void PrintGameVersion(void)
 
 // Function called at exit to display the ENDOOM screen
 
-static void D_Endoom(void)
+static void D_Endoom()
 {
     byte *endoom;
 
@@ -1105,7 +1105,7 @@ static void D_Endoom(void)
 //
 // D_GetCursorColumn
 //
-static int D_GetCursorColumn(void)
+static int D_GetCursorColumn()
 {
     int x, y;
     TXT_GetXY(&x, &y);
@@ -1115,7 +1115,7 @@ static int D_GetCursorColumn(void)
 //
 // D_GetCursorRow
 //
-static int D_GetCursorRow(void)
+static int D_GetCursorRow()
 {
     int x, y;
     TXT_GetXY(&x, &y);
@@ -1209,7 +1209,7 @@ boolean D_PatchClipCallback(patch_t *patch, int x, int y)
 // that is necessitated by Chocolate Doom issues, such as setting global 
 // callbacks.
 //
-static void D_InitChocoStrife(void)
+static void D_InitChocoStrife()
 {
     // set the V_DrawPatch clipping callback
     V_SetPatchClipCallback(D_PatchClipCallback);
@@ -1237,7 +1237,7 @@ static byte *rawgfx_startbot;
 // buffered or page-flipped surfaces it is best to redraw the entire screen
 // every frame.
 //
-static void D_IntroBackground(void)
+static void D_IntroBackground()
 {
     if(!showintro)
         return;
@@ -1266,7 +1266,7 @@ static void D_IntroBackground(void)
 // haleyjd 20110206: Initialize the graphical introduction sequence
 //
 
-static void D_InitIntroSequence(void)
+static void D_InitIntroSequence()
 {
     byte *textScreen;
     char string[80];
@@ -1362,7 +1362,7 @@ static void D_InitIntroSequence(void)
 // [STRIFE] New function
 // haleyjd 20110206: Refresh the intro sequence
 //
-static void D_DrawIntroSequence(void)
+static void D_DrawIntroSequence()
 {
     int laserpos;
     int robotpos;
@@ -1429,7 +1429,7 @@ static void D_DrawIntroSequence(void)
 //
 // Advance the intro sequence
 //
-void D_IntroTick(void)
+void D_IntroTick()
 {
     static boolean didsound = false; // haleyjd 20120209
     
@@ -1461,7 +1461,7 @@ void D_IntroTick(void)
 //
 //=============================================================================
 
-static void G_CheckDemoStatusAtExit (void)
+static void G_CheckDemoStatusAtExit ()
 {
     G_CheckDemoStatus();
 }
@@ -1469,7 +1469,7 @@ static void G_CheckDemoStatusAtExit (void)
 //
 // D_DoomMain
 //
-void D_DoomMain (void)
+void D_DoomMain ()
 {
     int             p;
     char            file[256];

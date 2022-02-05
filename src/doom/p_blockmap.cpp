@@ -26,7 +26,7 @@
 
 // [crispy] taken from mbfsrc/P_SETUP.C:547-707, slightly adapted
 
-void P_CreateBlockMap(void)
+void P_CreateBlockMap()
 {
     int     i;
     fixed_t minx = INT_MAX, miny = INT_MAX, maxx = INT_MIN, maxy = INT_MIN;

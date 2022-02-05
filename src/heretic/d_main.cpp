@@ -81,10 +81,10 @@ FILE *debugfile;
 
 static int show_endoom = 0;
 
-void D_ConnectNetGame(void);
-void D_CheckNetGame(void);
-void D_PageDrawer(void);
-void D_AdvanceDemo(void);
+void D_ConnectNetGame();
+void D_CheckNetGame();
+void D_PageDrawer();
+void D_AdvanceDemo();
 boolean F_Responder(event_t * ev);
 
 //---------------------------------------------------------------------------
@@ -95,7 +95,7 @@ boolean F_Responder(event_t * ev);
 //
 //---------------------------------------------------------------------------
 
-void D_ProcessEvents(void)
+void D_ProcessEvents()
 {
     event_t *ev;
 
@@ -119,7 +119,7 @@ void D_ProcessEvents(void)
 //
 //---------------------------------------------------------------------------
 
-void DrawMessage(void)
+void DrawMessage()
 {
     player_t *player;
 
@@ -139,7 +139,7 @@ void DrawMessage(void)
 //
 //---------------------------------------------------------------------------
 
-static void CrispyDrawStats (void)
+static void CrispyDrawStats ()
 {
     static short height, coord_x;
     char str[32];
@@ -187,11 +187,11 @@ static void CrispyDrawStats (void)
     }
 }
 
-void R_ExecuteSetViewSize(void);
+void R_ExecuteSetViewSize();
 
 extern boolean finalestage;
 
-void D_Display(void)
+void D_Display()
 {
     extern boolean askforquit;
 
@@ -265,7 +265,7 @@ void D_Display(void)
 // Called to determine whether to grab the mouse pointer
 //
 
-boolean D_GrabMouseCallback(void)
+boolean D_GrabMouseCallback()
 {
     // when menu is active or game is paused, release the mouse
 
@@ -283,7 +283,7 @@ boolean D_GrabMouseCallback(void)
 //
 //---------------------------------------------------------------------------
 
-void D_DoomLoop(void)
+void D_DoomLoop()
 {
     if (M_CheckParm("-debugfile"))
     {
@@ -335,7 +335,7 @@ static const char *pagename;
 ================
 */
 
-void D_PageTicker(void)
+void D_PageTicker()
 {
     if (--pagetic < 0)
         D_AdvanceDemo();
@@ -350,7 +350,7 @@ void D_PageTicker(void)
 ================
 */
 
-void D_PageDrawer(void)
+void D_PageDrawer()
 {
     V_DrawRawScreen(cache_lump_name<pixel_t *>(pagename, PU_CACHE));
     if (demosequence == 1)
@@ -369,12 +369,12 @@ void D_PageDrawer(void)
 =================
 */
 
-void D_AdvanceDemo(void)
+void D_AdvanceDemo()
 {
     advancedemo = true;
 }
 
-void D_DoAdvanceDemo(void)
+void D_DoAdvanceDemo()
 {
     players[consoleplayer].playerstate = PST_LIVE;      // don't reborn
     advancedemo = false;
@@ -439,7 +439,7 @@ void D_DoAdvanceDemo(void)
 =================
 */
 
-void D_StartTitle(void)
+void D_StartTitle()
 {
     gameaction = ga_nothing;
     demosequence = -1;
@@ -456,7 +456,7 @@ void D_StartTitle(void)
 ==============
 */
 
-void D_CheckRecordFrom(void)
+void D_CheckRecordFrom()
 {
     int p;
     char *filename;
@@ -500,7 +500,7 @@ void D_CheckRecordFrom(void)
 char *iwadfile;
 
 
-void wadprintf(void)
+void wadprintf()
 {
     if (debugmode)
     {
@@ -557,7 +557,7 @@ void hprintf(const char *string)
         puts(string);
 }
 
-void drawstatus(void)
+void drawstatus()
 {
     int i;
 
@@ -580,7 +580,7 @@ static void status(const char *string)
     }
 }
 
-void DrawThermo(void)
+void DrawThermo()
 {
     static int last_progress = -1;
     int progress;
@@ -615,7 +615,7 @@ void DrawThermo(void)
     TXT_UpdateScreen();
 }
 
-void initStartup(void)
+void initStartup()
 {
     byte *textScreen;
     byte *loading;
@@ -652,7 +652,7 @@ void initStartup(void)
     using_graphical_startup = true;
 }
 
-static void finishStartup(void)
+static void finishStartup()
 {
     if (using_graphical_startup)
     {
@@ -667,13 +667,13 @@ void tprintf(const char *msg, int initflag)
 }
 
 // haleyjd: moved up, removed WATCOMC code
-void CleanExit(void)
+void CleanExit()
 {
     DEH_printf("Exited from HERETIC.\n");
     exit(1);
 }
 
-void CheckAbortStartup(void)
+void CheckAbortStartup()
 {
     // haleyjd: removed WATCOMC
     // haleyjd FIXME: this should actually work in text mode too, but how to
@@ -685,7 +685,7 @@ void CheckAbortStartup(void)
     }
 }
 
-void IncThermo(void)
+void IncThermo()
 {
     thermCurrent++;
     DrawThermo();
@@ -702,7 +702,7 @@ void InitThermo(int max)
 // Add configuration file variable bindings.
 //
 
-void D_BindVariables(void)
+void D_BindVariables()
 {
     extern int screenblocks;
     extern int snd_Channels;
@@ -759,7 +759,7 @@ void D_BindVariables(void)
 // Called at exit to display the ENDOOM screen (ENDTEXT in Heretic)
 //
 
-static void D_Endoom(void)
+static void D_Endoom()
 {
     byte *endoom_data;
 
@@ -781,7 +781,7 @@ static void D_Endoom(void)
 //
 //---------------------------------------------------------------------------
 
-void D_DoomMain(void)
+void D_DoomMain()
 {
     GameMission_t gamemission;
     int p;

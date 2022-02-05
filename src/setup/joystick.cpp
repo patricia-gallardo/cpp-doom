@@ -687,7 +687,7 @@ static void LoadConfigurationSet(const joystick_config_t *configs)
 }
 
 // Load configuration for joystick_index based on known types.
-static void LoadKnownConfiguration(void)
+static void LoadKnownConfiguration()
 {
     const known_joystick_t *jstype;
 
@@ -701,7 +701,7 @@ static void LoadKnownConfiguration(void)
     LoadConfigurationSet(jstype->configs);
 }
 
-static void InitJoystick(void)
+static void InitJoystick()
 {
     if (!joystick_initted)
     {
@@ -709,7 +709,7 @@ static void InitJoystick(void)
     }
 }
 
-static void UnInitJoystick(void)
+static void UnInitJoystick()
 {
     if (joystick_initted)
     {
@@ -722,7 +722,7 @@ static void UnInitJoystick(void)
 // is used to distinguish between different devices. As the index can
 // change, UpdateJoystickIndex() checks to see if it is still valid and
 // updates it as appropriate.
-static void UpdateJoystickIndex(void)
+static void UpdateJoystickIndex()
 {
     SDL_JoystickGUID guid, dev_guid;
     int i;
@@ -757,7 +757,7 @@ static void UpdateJoystickIndex(void)
 }
 
 // Set the label showing the name of the currently selected joystick
-static void SetJoystickButtonLabel(void)
+static void SetJoystickButtonLabel()
 {
     SDL_JoystickGUID guid, dev_guid;
     const char *name;
@@ -787,7 +787,7 @@ static void SetJoystickButtonLabel(void)
 
 // Try to open all joysticks visible to SDL.
 
-static int OpenAllJoysticks(void)
+static int OpenAllJoysticks()
 {
     int i;
     int result;
@@ -830,7 +830,7 @@ static int OpenAllJoysticks(void)
 
 // Close all the joysticks opened with OpenAllJoysticks()
 
-static void CloseAllJoysticks(void)
+static void CloseAllJoysticks()
 {
     int i;
 
@@ -850,7 +850,7 @@ static void CloseAllJoysticks(void)
     UnInitJoystick();
 }
 
-static void CalibrateXAxis(void)
+static void CalibrateXAxis()
 {
     TXT_ConfigureJoystickAxis(x_axis_widget, calibrate_button, NULL);
 }
@@ -915,7 +915,7 @@ static int CalibrationEventCallback(SDL_Event *event, void *user_data)
     return 1;
 }
 
-static void NoJoystick(void)
+static void NoJoystick()
 {
     TXT_MessageBox(NULL, "No gamepads or joysticks could be found.\n\n"
                          "Try configuring your controller from within\n"
@@ -1084,7 +1084,7 @@ void ConfigJoystick(TXT_UNCAST_ARG(widget), void *user_data)
     UnInitJoystick();
 }
 
-void BindJoystickVariables(void)
+void BindJoystickVariables()
 {
     int i;
 

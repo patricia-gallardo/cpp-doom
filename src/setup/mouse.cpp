@@ -202,7 +202,7 @@ void ConfigMouse(TXT_UNCAST_ARG(widget), void *user_data)
                   TXT_NewButton2("More controls...", ConfigExtraButtons, NULL));
 }
 
-void BindMouseVariables(void)
+void BindMouseVariables()
 {
     M_BindIntVariable("use_mouse",               &usemouse);
     M_BindIntVariable("novert",                  &novert);

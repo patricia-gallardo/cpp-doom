@@ -47,7 +47,7 @@ extern boolean		automapactive;
 //
 patch_t*		sttminus;
 
-void STlib_init(void)
+void STlib_init()
 {
     // haleyjd 08/28/10: [STRIFE] STTMINUS -> STCFN045
     sttminus = cache_lump_name<patch_t *>(DEH_String("STCFN045"), PU_STATIC);

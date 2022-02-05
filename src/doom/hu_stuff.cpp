@@ -426,7 +426,7 @@ static void CrispyReplaceColor(char *str, const int cr, const char *col)
 
 static const char *cr_stat, *cr_stat2, *kills;
 
-void HU_Init(void)
+void HU_Init()
 {
 
     int  i;
@@ -517,7 +517,7 @@ void HU_Init(void)
     }
 }
 
-void HU_Stop(void)
+void HU_Stop()
 {
     headsupactive = false;
 }
@@ -586,7 +586,7 @@ static void HU_SetSpecialLevelName(const char *wad, const char **name)
     }
 }
 
-void HU_Start(void)
+void HU_Start()
 {
 
     int         i;
@@ -759,7 +759,7 @@ void HU_Start(void)
 }
 
 // [crispy] print a bar indicating demo progress at the bottom of the screen
-void HU_DemoProgressBar(void)
+void HU_DemoProgressBar()
 {
     const int i = SCREENWIDTH * defdemotics / deftotaldemotics;
 
@@ -781,11 +781,11 @@ void HU_DemoProgressBar(void)
 }
 
 // [crispy] static, non-projected crosshair
-static void HU_DrawCrosshair(void)
+static void HU_DrawCrosshair()
 {
     static int      lump;
     static patch_t *patch;
-    extern byte *   R_LaserspotColor(void);
+    extern byte *   R_LaserspotColor();
 
     if (weaponinfo[plr->readyweapon].ammo == am_noammo || plr->playerstate != PST_LIVE || automapactive || menuactive || paused || secret_on)
         return;
@@ -806,7 +806,7 @@ static void HU_DrawCrosshair(void)
     //  V_DrawHorizLine(0, (screenblocks <= 10) ? (SCREENHEIGHT/2-ST_HEIGHT) : (SCREENHEIGHT/2), SCREENWIDTH, 128);
 }
 
-void HU_Drawer(void)
+void HU_Drawer()
 {
 
     if (crispy->cleanscreenshot)
@@ -893,7 +893,7 @@ void HU_Drawer(void)
     }
 }
 
-void HU_Erase(void)
+void HU_Erase()
 {
 
     HUlib_eraseSText(&w_message);
@@ -910,7 +910,7 @@ void HU_Erase(void)
     HUlib_eraseTextLine(&w_fps);
 }
 
-void HU_Ticker(void)
+void HU_Ticker()
 {
 
     int  i, rc;
@@ -1109,7 +1109,7 @@ void HU_queueChatChar(char c)
     }
 }
 
-char HU_dequeueChatChar(void)
+char HU_dequeueChatChar()
 {
     char c;
 
@@ -1135,7 +1135,7 @@ static void StartChatInput(int dest)
     I_StartTextInput(0, 8, SCREENWIDTH, 16);
 }
 
-static void StopChatInput(void)
+static void StopChatInput()
 {
     chat_on = false;
     I_StopTextInput();

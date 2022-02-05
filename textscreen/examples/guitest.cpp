@@ -111,7 +111,7 @@ void UnicodeWindow(TXT_UNCAST_ARG(widget), void *user_data)
 
 }
 
-void SetupWindow(void)
+void SetupWindow()
 {
     txt_window_t *window;
     txt_table_t *table;
@@ -194,7 +194,7 @@ void SetupWindow(void)
     firstwin = window;
 }
 
-void Window2(void)
+void Window2()
 {
     txt_window_t *window;
     txt_table_t *table;
@@ -254,7 +254,7 @@ void Window2(void)
     TXT_AddWidget(window, scrollpane);
 }
 
-void ScrollingMenu(void)
+void ScrollingMenu()
 {
     txt_window_t *window;
     txt_button_t *button;

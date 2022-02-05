@@ -79,12 +79,12 @@ void	G_PlayerReborn (int player);
  
 void	G_DoReborn (int playernum); 
  
-void	G_DoLoadLevel (void); 
-void	G_DoNewGame (void); 
-void	G_DoPlayDemo (void); 
-void	G_DoCompleted (void); 
-void	G_DoVictory (void); 
-void	G_DoWorldDone (void); 
+void	G_DoLoadLevel ();
+void	G_DoNewGame ();
+void	G_DoPlayDemo ();
+void	G_DoCompleted ();
+void	G_DoVictory ();
+void	G_DoWorldDone ();
 void	G_DoSaveGame (char *path); 
  
 // Gamestate the last time G_Ticker was called.
@@ -670,7 +670,7 @@ void G_BuildTiccmd (ticcmd_t* cmd, int maketic)
 //
 // G_DoLoadLevel 
 //
-void G_DoLoadLevel (void) 
+void G_DoLoadLevel ()
 { 
     int             i; 
 
@@ -898,7 +898,7 @@ boolean G_Responder (event_t* ev)
 // G_Ticker
 // Make ticcmd_ts for the players.
 //
-void G_Ticker (void) 
+void G_Ticker ()
 { 
     int         i;
     int         buf; 
@@ -1359,7 +1359,7 @@ void G_DoReborn (int playernum)
 //
 // [STRIFE] Verified unmodified
 //
-void G_ScreenShot (void) 
+void G_ScreenShot ()
 { 
     gameaction = ga_screenshot; 
 } 
@@ -1434,7 +1434,7 @@ void G_ExitLevel (int dest)
 /*
 // haleyjd 20100823: [STRIFE] No secret exits in Strife.
 // Here's for the german edition.
-void G_SecretExitLevel (void) 
+void G_SecretExitLevel ()
 {
     // IF NO WOLF3D LEVELS, NO SECRET EXIT!
     if ( (gamemode == commercial)
@@ -1454,7 +1454,7 @@ void G_SecretExitLevel (void)
 // used anywhere in the game, but it *is* usable in mods via linetype 124,
 // W1 Start Finale.
 //
-void G_StartFinale(void)
+void G_StartFinale()
 {
     gameaction = ga_victory;
 }
@@ -1469,7 +1469,7 @@ void G_StartFinale(void)
 // * Removed intermission code.
 // * Added setting gameaction to ga_worlddone.
 //
-void G_DoCompleted (void) 
+void G_DoCompleted ()
 {
     int i;
 
@@ -1506,7 +1506,7 @@ void G_DoCompleted (void)
 //
 // G_WorldDone 
 //
-void G_WorldDone (void) 
+void G_WorldDone ()
 { 
     gameaction = ga_worlddone; 
 
@@ -1538,7 +1538,7 @@ void G_WorldDone (void)
 // haleyjd 20100824: [STRIFE] New function
 // Teleports the player to the appropriate rift spot.
 //
-void G_RiftPlayer(void)
+void G_RiftPlayer()
 {
     if(riftdest)
     {
@@ -1568,7 +1568,7 @@ boolean G_RiftCheat(int riftSpotNum)
 //
 // haleyjd 20100824: [STRIFE] Added destmap -> gamemap set.
 //
-void G_DoWorldDone (void) 
+void G_DoWorldDone ()
 {        
     int temp_leveltime = leveltime;
     boolean temp_shadow = false;
@@ -1616,7 +1616,7 @@ void G_DoWorldDone (void)
 //
 // haleyjd 20101003: [STRIFE] New function. No xrefs; unused.
 //
-void G_DoWorldDone2(void)
+void G_DoWorldDone2()
 {
     gamestate = GS_LEVEL;
     gameaction = ga_nothing;
@@ -1660,7 +1660,7 @@ void G_ReadCurrent(const char *path)
 // Can be called by the startup code or the menu task. 
 //
 extern boolean setsizeneeded;
-void R_ExecuteSetViewSize (void);
+void R_ExecuteSetViewSize ();
 
 char	savename[256];
 
@@ -1909,7 +1909,7 @@ void G_DeferedInitNew(skill_t skill, int map)
 // [STRIFE] Code added to turn off the stonecold effect.
 //   Someone also removed the nomonsters reset...
 //
-void G_DoNewGame (void) 
+void G_DoNewGame ()
 {
     demoplayback = false; 
     netdemo = false;
@@ -2109,7 +2109,7 @@ void G_ReadDemoTiccmd (ticcmd_t* cmd)
 
 // Increase the size of the demo buffer to allow unlimited demos
 
-static void IncreaseDemoBuffer(void)
+static void IncreaseDemoBuffer()
 {
     int current_length;
     byte *new_demobuffer;
@@ -2220,7 +2220,7 @@ void G_RecordDemo (char* name)
 } 
  
  
-void G_BeginRecording (void) 
+void G_BeginRecording ()
 { 
     int             i; 
 
@@ -2305,7 +2305,7 @@ static const char *DemoVersionDescription(int version)
 //
 // [STRIFE] Modified for Strife demo format.
 //
-void G_DoPlayDemo (void) 
+void G_DoPlayDemo ()
 { 
     skill_t skill; 
     int     i, map; 
@@ -2414,7 +2414,7 @@ void G_TimeDemo (char* name)
 //
 // [STRIFE] Verified unmodified
 //
-boolean G_CheckDemoStatus (void) 
+boolean G_CheckDemoStatus ()
 { 
     int             endtime; 
 

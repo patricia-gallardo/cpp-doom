@@ -545,7 +545,7 @@ void P_LoadBlockMap (int lump)
 // Builds sector line lists and subsector sector numbers.
 // Finds block bounding boxes for sectors.
 //
-void P_GroupLines (void)
+void P_GroupLines ()
 {
     line_t**		linebuffer;
     int			i;
@@ -853,7 +853,7 @@ P_SetupLevel
 //
 // P_Init
 //
-void P_Init (void)
+void P_Init ()
 {
     P_InitSwitchList();
     P_InitPicAnims();

@@ -111,7 +111,7 @@ void PassThroughArguments(execute_context_t *context)
     }
 }
 
-execute_context_t *NewExecuteContext(void)
+execute_context_t *NewExecuteContext()
 {
     execute_context_t *result;
 
@@ -411,7 +411,7 @@ static void TestCallback(TXT_UNCAST_ARG(widget), TXT_UNCAST_ARG(data))
     free(extra_cfg);
 }
 
-txt_window_action_t *TestConfigAction(void)
+txt_window_action_t *TestConfigAction()
 {
     txt_window_action_t *test_action;
     

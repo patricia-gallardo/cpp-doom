@@ -36,8 +36,8 @@ int M_CheckParm(const char *check);
 // following the specified argument.
 int M_CheckParmWithArgs(const char *check, int num_args);
 
-void M_FindResponseFile(void);
-void M_AddLooseFiles(void);
+void M_FindResponseFile();
+void M_AddLooseFiles();
 
 // Parameter has been specified?
 
@@ -45,6 +45,6 @@ boolean M_ParmExists(const char *check);
 
 // Get name of executable used to run this program:
 
-const char *M_GetExecutableName(void);
+const char *M_GetExecutableName();
 
 #endif

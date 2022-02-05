@@ -36,10 +36,10 @@
 
 ticcmd_t *netcmds;
 
-extern void H2_DoAdvanceDemo(void);
-extern void H2_ProcessEvents(void);
+extern void H2_DoAdvanceDemo();
+extern void H2_ProcessEvents();
 extern void G_BuildTiccmd(ticcmd_t *cmd, int maketic);
-extern boolean G_CheckDemoStatus(void);
+extern boolean G_CheckDemoStatus();
 
 extern boolean demorecording;
 
@@ -211,7 +211,7 @@ static void InitConnectData(net_connect_data_t *connect_data)
     connect_data->is_freedoom = 0;
 }
 
-void D_ConnectNetGame(void)
+void D_ConnectNetGame()
 {
     net_connect_data_t connect_data;
 
@@ -253,7 +253,7 @@ static boolean StartupProgress(int now_ready, int total)
 // Works out player numbers among the net participants
 //
 
-void D_CheckNetGame(void)
+void D_CheckNetGame()
 {
     net_gamesettings_t settings;
 

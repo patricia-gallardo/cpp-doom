@@ -82,7 +82,7 @@ typedef enum
 extern thinker_t thinkercap;    // both the head and tail of the thinker list
 extern int TimerGame;           // tic countdown for deathmatch
 
-void P_InitThinkers(void);
+void P_InitThinkers();
 void P_AddThinker(thinker_t * thinker);
 void P_RemoveThinker(thinker_t * thinker);
 
@@ -164,7 +164,7 @@ mobj_t *P_SpawnPlayerMissile(mobj_t * source, mobjtype_t type);
 mobj_t *P_SPMAngle(mobj_t * source, mobjtype_t type, angle_t angle);
 mobj_t *P_SPMAngleXYZ(mobj_t * source, fixed_t x, fixed_t y,
                       fixed_t z, mobjtype_t type, angle_t angle);
-void P_CreateTIDList(void);
+void P_CreateTIDList();
 void P_RemoveMobjFromTIDList(mobj_t * mobj);
 void P_InsertMobjIntoTIDList(mobj_t * mobj, int tid);
 mobj_t *P_FindMobjFromTID(int tid, int *searchPosition);
@@ -174,7 +174,7 @@ mobj_t *P_SpawnKoraxMissile(fixed_t x, fixed_t y, fixed_t z,
 // ***** P_ENEMY *****
 
 void P_NoiseAlert(mobj_t * target, mobj_t * emmiter);
-int P_Massacre(void);
+int P_Massacre();
 boolean A_RaiseMobj(mobj_t * actor);
 boolean A_SinkMobj(mobj_t * actor);
 void A_NoBlocking(mobj_t * actor);
@@ -298,8 +298,8 @@ boolean P_MorphPlayer(player_t * player);
 // ***** AM_MAP *****
 
 boolean AM_Responder(event_t * ev);
-void AM_Ticker(void);
-void AM_Drawer(void);
+void AM_Ticker();
+void AM_Drawer();
 
 // ***** A_ACTION *****
 boolean A_LocalQuake(byte * args, mobj_t * victim);

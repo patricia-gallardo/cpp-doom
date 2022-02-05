@@ -287,7 +287,7 @@ void M_SizeDisplay(int choice); // villsa [STRIFE]
 //
 // STATUS BAR CODE
 //
-void ST_Stop(void);
+void ST_Stop();
 
 // [STRIFE]
 static char st_msgbuf[ST_MSGWIDTH];
@@ -760,7 +760,7 @@ boolean ST_Responder(event_t* ev)
 
 
 /*
-int ST_calcPainOffset(void)
+int ST_calcPainOffset()
 {
     // haleyjd 08/31/10: [STRIFE] Removed.
 }
@@ -773,14 +773,14 @@ int ST_calcPainOffset(void)
 //  dead > evil grin > turned head > straight ahead
 //
 /*
-void ST_updateFaceWidget(void)
+void ST_updateFaceWidget()
 {
     // haleyjd 08/31/10: [STRIFE] Removed.
 }
 */
 
 /*
-void ST_updateWidgets(void)
+void ST_updateWidgets()
 {
     // haleyjd 09/01/10: [STRIFE] Rogue merged this into ST_Ticker below.
 }
@@ -794,7 +794,7 @@ void ST_updateWidgets(void)
 // * Merged ST_updateWidgets here. Wasn't inlined, as doesn't exist separately 
 //   in the binary as inlined functions normally do.
 //
-void ST_Ticker (void)
+void ST_Ticker ()
 {
     static int  largeammo = 1994; // means "n/a"
 
@@ -849,7 +849,7 @@ static int st_palette = 0;
 // * Changed radsuit palette handling for Strife nukagecount.
 // * All other logic verified to be unmodified.
 //
-void ST_doPaletteStuff(void)
+void ST_doPaletteStuff()
 {
 
     int		palette;
@@ -982,7 +982,7 @@ void ST_drawLine(int x, int y, int len, int color)
 // haleyjd 20100920: Evidence more than suggests that Rogue moved all status bar
 // drawing down to this function.
 //
-void ST_doRefresh(void)
+void ST_doRefresh()
 {
     // draw status bar background to off-screen buff
     if (st_statusbaron)
@@ -1192,7 +1192,7 @@ static void ST_drawTime(int x, int y, int time)
 // haleyjd 20110213: [STRIFE] New function
 // This has taken the longest out of almost everything to get working properly.
 //
-static boolean ST_drawKeysPopup(void)
+static boolean ST_drawKeysPopup()
 {
     int x, y, yt, key, keycount;
     mobjinfo_t *info;
@@ -1320,7 +1320,7 @@ static boolean ST_drawKeysPopup(void)
 // haleyjd 20100901: [STRIFE] New function.
 // * Draws external portions of the status bar such the top bar and popups.
 //
-boolean ST_DrawExternal(void)
+boolean ST_DrawExternal()
 {
     int i;
 
@@ -1491,12 +1491,12 @@ static void ST_loadCallback(const char *lumpname, patch_t **variable)
     *variable = cache_lump_name<patch_t *>(lumpname, PU_STATIC);
 }
 
-void ST_loadGraphics(void)
+void ST_loadGraphics()
 {
     ST_loadUnloadGraphics(ST_loadCallback);
 }
 
-void ST_loadData(void)
+void ST_loadData()
 {
 //    static int dword_8848C = 1; // STRIFE-TODO: what is the purpose of this?
 //    dword_8848C = 0;
@@ -1511,12 +1511,12 @@ static void ST_unloadCallback(const char *lumpname, patch_t **variable)
     *variable = NULL;
 }
 
-void ST_unloadGraphics(void)
+void ST_unloadGraphics()
 {
     ST_loadUnloadGraphics(ST_unloadCallback);
 }
 
-void ST_unloadData(void)
+void ST_unloadData()
 {
     ST_unloadGraphics();
 }
@@ -1527,7 +1527,7 @@ void ST_unloadData(void)
 // haleyjd 20100901: [STRIFE]
 // * Removed prebeta cruft, face stuff, keyboxes, and oldwe
 //
-void ST_initData(void)
+void ST_initData()
 {
     st_firsttime = true;
     plyr = &players[consoleplayer];
@@ -1543,7 +1543,7 @@ void ST_initData(void)
 
 
 
-void ST_createWidgets(void)
+void ST_createWidgets()
 {
     int i;
 
@@ -1585,7 +1585,7 @@ void ST_createWidgets(void)
 static boolean	st_stopped = true;
 
 
-void ST_Start (void)
+void ST_Start ()
 {
     if (!st_stopped)
         ST_Stop();
@@ -1595,7 +1595,7 @@ void ST_Start (void)
     st_stopped = false;
 }
 
-void ST_Stop (void)
+void ST_Stop ()
 {
     if (st_stopped)
         return;
@@ -1605,7 +1605,7 @@ void ST_Stop (void)
     st_stopped = true;
 }
 
-void ST_Init (void)
+void ST_Init ()
 {
     ST_loadData();
 

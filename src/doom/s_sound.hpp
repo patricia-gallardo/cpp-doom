@@ -34,7 +34,7 @@ void S_Init(int sfxVolume, int musicVolume);
 
 // Shut down sound
 
-void S_Shutdown(void);
+void S_Shutdown();
 
 
 //
@@ -43,7 +43,7 @@ void S_Shutdown(void);
 //  determines music if any, changes music.
 //
 
-void S_Start(void);
+void S_Start();
 
 //
 // Start sound for thing at <origin>
@@ -67,14 +67,14 @@ void S_ChangeMusic(int music_id, int looping);
 void S_ChangeMusInfoMusic(int lumpnum, int looping);
 
 // query if music is playing
-boolean S_MusicPlaying(void);
+boolean S_MusicPlaying();
 
 // Stops the music fer sure.
-void S_StopMusic(void);
+void S_StopMusic();
 
 // Stop and resume music, during game PAUSE.
-void S_PauseSound(void);
-void S_ResumeSound(void);
+void S_PauseSound();
+void S_ResumeSound();
 
 
 //
@@ -87,7 +87,7 @@ void S_SetSfxVolume(int volume);
 
 extern int snd_channels;
 
-void S_UpdateSndChannels(void);
-void S_UpdateStereoSeparation(void);
+void S_UpdateSndChannels();
+void S_UpdateStereoSeparation();
 
 #endif

@@ -66,11 +66,11 @@ lighttable_t *zlight[LIGHTLEVELS][MAXLIGHTZ];
 
 int extralight;                 // bumped light from gun blasts
 
-void (*colfunc) (void);
-void (*basecolfunc) (void);
-void (*tlcolfunc) (void);
-void (*transcolfunc) (void);
-void (*spanfunc) (void);
+void (*colfunc) ();
+void (*basecolfunc) ();
+void (*tlcolfunc) ();
+void (*transcolfunc) ();
+void (*spanfunc) ();
 
 /*
 ===================
@@ -285,7 +285,7 @@ fixed_t R_PointToDist(fixed_t x, fixed_t y)
 =================
 */
 
-void R_InitPointToAngle(void)
+void R_InitPointToAngle()
 {
 // now getting from tables.c
 #if 0
@@ -368,7 +368,7 @@ fixed_t R_ScaleFromGlobalAngle(angle_t visangle)
 =================
 */
 
-void R_InitTables(void)
+void R_InitTables()
 {
 // now getting from tables.c
 #if 0
@@ -410,7 +410,7 @@ void R_InitTables(void)
 =================
 */
 
-void R_InitTextureMapping(void)
+void R_InitTextureMapping()
 {
     int i;
     int x;
@@ -487,7 +487,7 @@ void R_InitTextureMapping(void)
 
 #define		DISTMAP	2
 
-void R_InitLightTables(void)
+void R_InitLightTables()
 {
     int i, j, level, startmap;
     int scale;
@@ -544,7 +544,7 @@ void R_SetViewSize(int blocks, int detail)
 ==============
 */
 
-void R_ExecuteSetViewSize(void)
+void R_ExecuteSetViewSize()
 {
     fixed_t cosadj, dy;
     int i, j, level, startmap;
@@ -655,7 +655,7 @@ void R_ExecuteSetViewSize(void)
 int detailLevel;
 int screenblocks = 10;
 
-void R_Init(void)
+void R_Init()
 {
     //tprintf("R_InitData ", 1);
     R_InitData();

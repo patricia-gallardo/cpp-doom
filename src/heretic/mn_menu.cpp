@@ -81,7 +81,7 @@ typedef struct
 {
     int x;
     int y;
-    void (*drawFunc) (void);
+    void (*drawFunc) ();
     int itemCount;
     MenuItem_t *items;
     int oldItPos;
@@ -90,7 +90,7 @@ typedef struct
 
 // Private Functions
 
-static void InitFonts(void);
+static void InitFonts();
 static void SetMenu(MenuType_t menu);
 static boolean SCNetCheck(int option);
 static boolean SCQuitGame(int option);
@@ -109,19 +109,19 @@ static boolean CrispySmoothing(int option);
 static boolean CrispyAutomapStats(int option);
 static boolean CrispyLevelTime(int option);
 static boolean CrispyPlayerCoords(int option);
-static void DrawMainMenu(void);
-static void DrawEpisodeMenu(void);
-static void DrawSkillMenu(void);
-static void DrawOptionsMenu(void);
-static void DrawOptions2Menu(void);
+static void DrawMainMenu();
+static void DrawEpisodeMenu();
+static void DrawSkillMenu();
+static void DrawOptionsMenu();
+static void DrawOptions2Menu();
 static void DrawFileSlots(Menu_t * menu);
-static void DrawFilesMenu(void);
-static void MN_DrawInfo(void);
-static void DrawLoadMenu(void);
-static void DrawSaveMenu(void);
+static void DrawFilesMenu();
+static void MN_DrawInfo();
+static void DrawLoadMenu();
+static void DrawSaveMenu();
 static void DrawSlider(Menu_t * menu, int item, int width, int slot);
-static void DrawCrispnessMenu(void);
-void MN_LoadSlotText(void);
+static void DrawCrispnessMenu();
+void MN_LoadSlotText();
 
 // External Data
 
@@ -322,7 +322,7 @@ static Menu_t *Menus[] = {
 //
 //---------------------------------------------------------------------------
 
-void MN_Init(void)
+void MN_Init()
 {
     InitFonts();
     MenuActive = false;
@@ -342,7 +342,7 @@ void MN_Init(void)
 //
 //---------------------------------------------------------------------------
 
-static void InitFonts(void)
+static void InitFonts()
 {
     FontABaseLump = W_GetNumForName(DEH_String("FONTA_S")) + 1;
     FontBBaseLump = W_GetNumForName(DEH_String("FONTB_S")) + 1;
@@ -470,7 +470,7 @@ int MN_TextBWidth(const char *text)
 //
 //---------------------------------------------------------------------------
 
-void MN_Ticker(void)
+void MN_Ticker()
 {
     if (MenuActive == false)
     {
@@ -492,7 +492,7 @@ const char *QuitEndMsg[] = {
     "DO YOU WANT TO QUICKLOAD THE GAME NAMED"
 };
 
-void MN_Drawer(void)
+void MN_Drawer()
 {
     int i;
     int x;
@@ -595,7 +595,7 @@ void MN_Drawer(void)
 //
 //---------------------------------------------------------------------------
 
-static void DrawMainMenu(void)
+static void DrawMainMenu()
 {
     int frame;
 
@@ -612,7 +612,7 @@ static void DrawMainMenu(void)
 //
 //---------------------------------------------------------------------------
 
-static void DrawEpisodeMenu(void)
+static void DrawEpisodeMenu()
 {
 }
 
@@ -622,7 +622,7 @@ static void DrawEpisodeMenu(void)
 //
 //---------------------------------------------------------------------------
 
-static void DrawSkillMenu(void)
+static void DrawSkillMenu()
 {
 }
 
@@ -632,7 +632,7 @@ static void DrawSkillMenu(void)
 //
 //---------------------------------------------------------------------------
 
-static void DrawFilesMenu(void)
+static void DrawFilesMenu()
 {
 // clear out the quicksave/quickload stuff
     quicksave = 0;
@@ -647,7 +647,7 @@ static void DrawFilesMenu(void)
 //
 //---------------------------------------------------------------------------
 
-static void DrawLoadMenu(void)
+static void DrawLoadMenu()
 {
     const char *title;
 
@@ -667,7 +667,7 @@ static void DrawLoadMenu(void)
 //
 //---------------------------------------------------------------------------
 
-static void DrawSaveMenu(void)
+static void DrawSaveMenu()
 {
     const char *title;
 
@@ -688,7 +688,7 @@ static void DrawSaveMenu(void)
 //              Loads in the text message for each slot
 //===========================================================================
 
-void MN_LoadSlotText(void)
+void MN_LoadSlotText()
 {
     FILE *fp;
     int i;
@@ -745,7 +745,7 @@ static void DrawFileSlots(Menu_t * menu)
 //
 //---------------------------------------------------------------------------
 
-static void DrawOptionsMenu(void)
+static void DrawOptionsMenu()
 {
     if (messageson)
     {
@@ -764,7 +764,7 @@ static void DrawOptionsMenu(void)
 //
 //---------------------------------------------------------------------------
 
-static void DrawOptions2Menu(void)
+static void DrawOptions2Menu()
 {
     DrawSlider(&Options2Menu, 1, 9, screenblocks - 3);
     DrawSlider(&Options2Menu, 3, 16, snd_MaxVolume);
@@ -1128,8 +1128,8 @@ boolean MN_Responder(event_t * event)
     int i;
     MenuItem_t *item;
     extern boolean automapactive;
-    extern void D_StartTitle(void);
-    extern boolean G_CheckDemoStatus(void);
+    extern void D_StartTitle();
+    extern boolean G_CheckDemoStatus();
     char *textBuffer;
 
     // In testcontrols mode, none of the function keys should do anything
@@ -1668,7 +1668,7 @@ boolean MN_Responder(event_t * event)
 //
 //---------------------------------------------------------------------------
 
-void MN_ActivateMenu(void)
+void MN_ActivateMenu()
 {
     if (MenuActive)
     {
@@ -1697,7 +1697,7 @@ void MN_ActivateMenu(void)
 //
 //---------------------------------------------------------------------------
 
-void MN_DeactivateMenu(void)
+void MN_DeactivateMenu()
 {
     if (CurrentMenu != NULL)
     {
@@ -1728,7 +1728,7 @@ void MN_DeactivateMenu(void)
 //
 //---------------------------------------------------------------------------
 
-void MN_DrawInfo(void)
+void MN_DrawInfo()
 {
     I_SetPalette(cache_lump_name<byte *>("PLAYPAL", PU_CACHE));
     V_DrawRawScreen(cache_lump_num<pixel_t *>(W_GetNumForName("TITLE") + InfoType,
@@ -1783,7 +1783,7 @@ static void DrawSlider(Menu_t * menu, int item, int width, int slot)
 //
 //---------------------------------------------------------------------------
 
-static void DrawCrispnessMenu(void)
+static void DrawCrispnessMenu()
 {
     static const char *title;
 

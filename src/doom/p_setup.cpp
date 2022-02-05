@@ -171,7 +171,7 @@ void P_LoadVertexes(int lump)
 //
 // GetSectorAtNullAddress
 //
-sector_t *GetSectorAtNullAddress(void)
+sector_t *GetSectorAtNullAddress()
 {
     static boolean  null_sector_is_initialized = false;
     static sector_t null_sector;
@@ -761,7 +761,7 @@ boolean P_LoadBlockMap(int lump)
 // Builds sector line lists and subsector sector numbers.
 // Finds block bounding boxes for sectors.
 //
-void P_GroupLines(void)
+void P_GroupLines()
 {
     line_t **    linebuffer;
     int          i;
@@ -879,7 +879,7 @@ void P_GroupLines(void)
 // but separate coordinates that are *only* used in rendering,
 // i.e. r_bsp.c:R_AddLine()
 
-static void P_RemoveSlimeTrails(void)
+static void P_RemoveSlimeTrails()
 {
     int i;
 
@@ -1196,7 +1196,7 @@ void P_SetupLevel(int episode,
     // [crispy] (re-)create BLOCKMAP if necessary
     if (!crispy_validblockmap)
     {
-        extern void P_CreateBlockMap(void);
+        extern void P_CreateBlockMap();
         P_CreateBlockMap();
     }
     if (crispy_mapformat & (MFMT_ZDBSPX | MFMT_ZDBSPZ))
@@ -1264,7 +1264,7 @@ void P_SetupLevel(int episode,
 }
 
 // [crispy] height of the spawnstate's first sprite in pixels
-static void P_InitActualHeights(void)
+static void P_InitActualHeights()
 {
     int i;
 
@@ -1298,7 +1298,7 @@ static void P_InitActualHeights(void)
 //
 // P_Init
 //
-void P_Init(void)
+void P_Init()
 {
     P_InitSwitchList();
     P_InitPicAnims();

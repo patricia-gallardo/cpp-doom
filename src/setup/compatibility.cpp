@@ -52,7 +52,7 @@ void CompatibilitySettings(TXT_UNCAST_ARG(widget), void *user_data)
     }
 }
 
-void BindCompatibilityVariables(void)
+void BindCompatibilityVariables()
 {
     // [crispy]
     if (gamemission == doom)

@@ -25,17 +25,17 @@
 
 // Read events from all input devices
 
-void D_ProcessEvents(void);
+void D_ProcessEvents();
 
 
 //
 // BASE LEVEL
 //
-void D_PageTicker(void);
-void D_PageDrawer(void);
-void D_AdvanceDemo(void);
-void D_DoAdvanceDemo(void);
-void D_StartTitle(void);
+void D_PageTicker();
+void D_PageDrawer();
+void D_AdvanceDemo();
+void D_DoAdvanceDemo();
+void D_StartTitle();
 
 //
 // GLOBAL VARIABLES

@@ -97,7 +97,7 @@ static void UpdateSndDevices(TXT_UNCAST_ARG(widget), TXT_UNCAST_ARG(data))
     }
 }
 
-static txt_dropdown_list_t *OPLTypeSelector(void)
+static txt_dropdown_list_t *OPLTypeSelector()
 {
     txt_dropdown_list_t *result;
 
@@ -202,7 +202,7 @@ void ConfigSound(TXT_UNCAST_ARG(widget), void *user_data)
         NULL);
 }
 
-void BindSoundVariables(void)
+void BindSoundVariables()
 {
     M_BindIntVariable("snd_sfxdevice",            &snd_sfxdevice);
     M_BindIntVariable("snd_musicdevice",          &snd_musicdevice);

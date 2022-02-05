@@ -58,32 +58,32 @@
 
 // EXTERNAL FUNCTION PROTOTYPES --------------------------------------------
 
-void R_ExecuteSetViewSize(void);
-void D_ConnectNetGame(void);
-void D_CheckNetGame(void);
+void R_ExecuteSetViewSize();
+void D_ConnectNetGame();
+void D_CheckNetGame();
 boolean F_Responder(event_t * ev);
-void I_StartupKeyboard(void);
-void I_StartupJoystick(void);
-void I_ShutdownKeyboard(void);
-void S_InitScript(void);
+void I_StartupKeyboard();
+void I_StartupJoystick();
+void I_ShutdownKeyboard();
+void S_InitScript();
 
 // PUBLIC FUNCTION PROTOTYPES ----------------------------------------------
 
-void H2_ProcessEvents(void);
-void H2_DoAdvanceDemo(void);
-void H2_AdvanceDemo(void);
-void H2_StartTitle(void);
-void H2_PageTicker(void);
+void H2_ProcessEvents();
+void H2_DoAdvanceDemo();
+void H2_AdvanceDemo();
+void H2_StartTitle();
+void H2_PageTicker();
 
 // PRIVATE FUNCTION PROTOTYPES ---------------------------------------------
 
-static void DrawMessage(void);
-static void PageDrawer(void);
-static void HandleArgs(void);
-static void CheckRecordFrom(void);
-static void DrawAndBlit(void);
-static void CreateSavePath(void);
-static void WarpCheck(void);
+static void DrawMessage();
+static void PageDrawer();
+static void HandleArgs();
+static void CheckRecordFrom();
+static void DrawAndBlit();
+static void CreateSavePath();
+static void WarpCheck();
 
 // EXTERNAL DATA DECLARATIONS ----------------------------------------------
 
@@ -125,7 +125,7 @@ static char *SavePathConfig;
 
 // CODE --------------------------------------------------------------------
 
-void D_BindVariables(void)
+void D_BindVariables()
 {
     int i;
 
@@ -180,7 +180,7 @@ void D_BindVariables(void)
 
 // Set the default directory where hub savegames are saved.
 
-static void D_SetDefaultSavePath(void)
+static void D_SetDefaultSavePath()
 {
     SavePath = M_GetSaveGameDir("hexen.wad");
 
@@ -215,7 +215,7 @@ static void D_SetDefaultSavePath(void)
 // version - it doesn't include lumps used by the DOS DMX library.
 // This means that we can't do GUS or OPL emulation and need to apply
 // a workaround.
-static void AdjustForMacIWAD(void)
+static void AdjustForMacIWAD()
 {
     boolean adjust_music = false;
 
@@ -251,7 +251,7 @@ static void AdjustForMacIWAD(void)
 // Called to determine whether to grab the mouse pointer
 //
 
-static boolean D_GrabMouseCallback(void)
+static boolean D_GrabMouseCallback()
 {
     // when menu is active or game is paused, release the mouse
 
@@ -265,7 +265,7 @@ static boolean D_GrabMouseCallback(void)
 
 // Message displayed when quitting Hexen
 
-static void D_HexenQuitMessage(void)
+static void D_HexenQuitMessage()
 {
     printf("\nHexen: Beyond Heretic\n");
 }
@@ -279,7 +279,7 @@ static void D_AddFile(char *filename)
 
 // Find out what version of Hexen is playing.
 
-void D_IdentifyVersion(void)
+void D_IdentifyVersion()
 {
     // The Hexen Shareware, ne 4 Level Demo Version, is missing the SKY1 lump
     // and uses the SKY2 lump instead. Let's use this fact and the missing
@@ -317,7 +317,7 @@ void D_IdentifyVersion(void)
 
 // Set the gamedescription string.
 
-void D_SetGameDescription(void)
+void D_SetGameDescription()
 {
 /*
     NB: The 4 Level Demo Version actually prints a four-lined banner
@@ -344,9 +344,9 @@ void D_SetGameDescription(void)
 // H2_Main
 //
 //==========================================================================
-void InitMapMusicInfo(void);
+void InitMapMusicInfo();
 
-void D_DoomMain(void)
+void D_DoomMain()
 {
     GameMission_t gamemission;
     int p;
@@ -572,7 +572,7 @@ void D_DoomMain(void)
 //
 //==========================================================================
 
-static void HandleArgs(void)
+static void HandleArgs()
 {
     int p;
 
@@ -751,7 +751,7 @@ static void HandleArgs(void)
 //
 //==========================================================================
 
-static void WarpCheck(void)
+static void WarpCheck()
 {
     int p;
     int map;
@@ -797,7 +797,7 @@ static void WarpCheck(void)
 //
 //==========================================================================
 
-void H2_GameLoop(void)
+void H2_GameLoop()
 {
     if (M_CheckParm("-debugfile"))
     {
@@ -834,7 +834,7 @@ void H2_GameLoop(void)
 //
 //==========================================================================
 
-void H2_ProcessEvents(void)
+void H2_ProcessEvents()
 {
     event_t *ev;
 
@@ -865,7 +865,7 @@ void H2_ProcessEvents(void)
 //
 //==========================================================================
 
-static void DrawAndBlit(void)
+static void DrawAndBlit()
 {
     // Change the view size if needed
     if (setsizeneeded)
@@ -941,7 +941,7 @@ static void DrawAndBlit(void)
 //
 //==========================================================================
 
-static void DrawMessage(void)
+static void DrawMessage()
 {
     player_t *player;
 
@@ -968,7 +968,7 @@ static void DrawMessage(void)
 //
 //==========================================================================
 
-void H2_PageTicker(void)
+void H2_PageTicker()
 {
     if (--pagetic < 0)
     {
@@ -982,7 +982,7 @@ void H2_PageTicker(void)
 //
 //==========================================================================
 
-static void PageDrawer(void)
+static void PageDrawer()
 {
     V_DrawRawScreen(cache_lump_name<pixel_t *>(pagename, PU_CACHE));
     if (demosequence == 1)
@@ -1000,7 +1000,7 @@ static void PageDrawer(void)
 //
 //==========================================================================
 
-void H2_AdvanceDemo(void)
+void H2_AdvanceDemo()
 {
     advancedemo = true;
 }
@@ -1011,7 +1011,7 @@ void H2_AdvanceDemo(void)
 //
 //==========================================================================
 
-void H2_DoAdvanceDemo(void)
+void H2_DoAdvanceDemo()
 {
     players[consoleplayer].playerstate = PST_LIVE;      // don't reborn
     advancedemo = false;
@@ -1066,7 +1066,7 @@ void H2_DoAdvanceDemo(void)
 //
 //==========================================================================
 
-void H2_StartTitle(void)
+void H2_StartTitle()
 {
     gameaction = ga_nothing;
     demosequence = -1;
@@ -1081,7 +1081,7 @@ void H2_StartTitle(void)
 //
 //==========================================================================
 
-static void CheckRecordFrom(void)
+static void CheckRecordFrom()
 {
     int p;
 
@@ -1107,7 +1107,7 @@ static void CheckRecordFrom(void)
 
 // haleyjd: removed WATCOMC
 /*
-void CleanExit(void)
+void CleanExit()
 {
 	union REGS regs;
 
@@ -1125,7 +1125,7 @@ void CleanExit(void)
 //
 //==========================================================================
 
-static void CreateSavePath(void)
+static void CreateSavePath()
 {
     M_MakeDirectory(SavePath);
 }

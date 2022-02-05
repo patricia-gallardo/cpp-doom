@@ -34,7 +34,7 @@ static SDL_Window * hr_screen    = NULL;
 static SDL_Surface *hr_surface   = NULL;
 static const char * window_title = "";
 
-boolean I_SetVideoModeHR(void)
+boolean I_SetVideoModeHR()
 {
     int x, y;
 
@@ -69,7 +69,7 @@ void I_SetWindowTitleHR(const char *title)
     window_title = title;
 }
 
-void I_UnsetVideoModeHR(void)
+void I_UnsetVideoModeHR()
 {
     if (hr_screen != NULL)
     {
@@ -80,7 +80,7 @@ void I_UnsetVideoModeHR(void)
     }
 }
 
-void I_ClearScreenHR(void)
+void I_ClearScreenHR()
 {
     SDL_Rect area = { 0, 0, HR_SCREENWIDTH, HR_SCREENHEIGHT };
 
@@ -160,7 +160,7 @@ void I_SlamHR(const byte *buffer)
     I_SlamBlockHR(0, 0, HR_SCREENWIDTH, HR_SCREENHEIGHT, buffer);
 }
 
-void I_InitPaletteHR(void)
+void I_InitPaletteHR()
 {
     // ...
 }
@@ -223,7 +223,7 @@ void I_FadeToPaletteHR(const byte *palette)
     I_SetPaletteHR(palette);
 }
 
-void I_BlackPaletteHR(void)
+void I_BlackPaletteHR()
 {
     byte blackpal[16 * 3];
 
@@ -233,7 +233,7 @@ void I_BlackPaletteHR(void)
 }
 
 // Check if the user has hit the escape key to abort startup.
-boolean I_CheckAbortHR(void)
+boolean I_CheckAbortHR()
 {
     SDL_Event ev;
     boolean   result = false;

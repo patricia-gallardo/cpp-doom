@@ -302,10 +302,10 @@ extern fixed_t viewcos, viewsin;
 
 extern int detailshift;         // 0 = high, 1 = low
 
-extern void (*colfunc) (void);
-extern void (*basecolfunc) (void);
-extern void (*tlcolfunc) (void);
-extern void (*spanfunc) (void);
+extern void (*colfunc) ();
+extern void (*basecolfunc) ();
+extern void (*tlcolfunc) ();
+extern void (*spanfunc) ();
 
 int R_PointOnSide(fixed_t x, fixed_t y, node_t * node);
 int R_PointOnSegSide(fixed_t x, fixed_t y, seg_t * line);
@@ -339,10 +339,10 @@ extern int numdrawsegs;
 extern lighttable_t **hscalelight, **vscalelight, **dscalelight;
 
 typedef void (*drawfunc_t) (int start, int stop);
-void R_ClearClipSegs(void);
+void R_ClearClipSegs();
 
-void R_ClearDrawSegs(void);
-void R_InitSkyMap(void);
+void R_ClearDrawSegs();
+void R_InitSkyMap();
 void R_RenderBSPNode(int bspnum);
 
 //
@@ -369,11 +369,11 @@ extern int ceilingclip[MAXWIDTH]; // [crispy] 32-bit integer math
 extern fixed_t yslope[MAXHEIGHT];
 extern fixed_t distscale[MAXWIDTH];
 
-void R_InitPlanes(void);
-void R_ClearPlanes(void);
+void R_InitPlanes();
+void R_ClearPlanes();
 void R_MapPlane(int y, int x1, int x2);
 void R_MakeSpans(int x, unsigned int t1, unsigned int b1, unsigned int t2, unsigned int b2); // [crispy] 32-bit integer math
-void R_DrawPlanes(void);
+void R_DrawPlanes();
 
 visplane_t *R_FindPlane(fixed_t height, int picnum, int lightlevel,
                         int special);
@@ -402,8 +402,8 @@ extern int *texturetranslation; // for global animation
 extern int firstspritelump, lastspritelump, numspritelumps;
 
 byte *R_GetColumn(int tex, int col);
-void R_InitData(void);
-void R_PrecacheLevel(void);
+void R_InitData();
+void R_PrecacheLevel();
 
 
 //
@@ -431,14 +431,14 @@ extern fixed_t pspritescale, pspriteiscale;
 void R_DrawMaskedColumn(column_t * column, signed int baseclip);
 
 
-void R_SortVisSprites(void);
+void R_SortVisSprites();
 
 void R_AddSprites(sector_t * sec);
-void R_AddPSprites(void);
-void R_DrawSprites(void);
+void R_AddPSprites();
+void R_DrawSprites();
 void R_InitSprites(const char **namelist);
-void R_ClearSprites(void);
-void R_DrawMasked(void);
+void R_ClearSprites();
+void R_DrawMasked();
 void R_ClipVisSprite(vissprite_t * vis, int xl, int xh);
 
 //=============================================================================
@@ -456,13 +456,13 @@ extern fixed_t dc_texturemid;
 extern int dc_texheight;
 extern byte *dc_source;         // first pixel in a column
 
-void R_DrawColumn(void);
-void R_DrawColumnLow(void);
-void R_DrawTLColumn(void);
-void R_DrawTLColumnLow(void);
-void R_DrawTranslatedColumn(void);
-void R_DrawTranslatedTLColumn(void);
-void R_DrawTranslatedColumnLow(void);
+void R_DrawColumn();
+void R_DrawColumnLow();
+void R_DrawTLColumn();
+void R_DrawTLColumnLow();
+void R_DrawTranslatedColumn();
+void R_DrawTranslatedTLColumn();
+void R_DrawTranslatedColumnLow();
 
 extern int ds_y;
 extern int ds_x1;
@@ -477,10 +477,10 @@ extern byte *ds_source;         // start of a 64*64 tile image
 extern byte *translationtables;
 extern byte *dc_translation;
 
-void R_DrawSpan(void);
-void R_DrawSpanLow(void);
+void R_DrawSpan();
+void R_DrawSpanLow();
 
 void R_InitBuffer(int width, int height);
-void R_InitTranslationTables(void);
+void R_InitTranslationTables();
 
 #endif // __R_LOCAL__

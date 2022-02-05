@@ -34,7 +34,7 @@
 
 extern boolean automapactive; // in AM_map.c
 
-void HUlib_init(void)
+void HUlib_init()
 {
 }
 

@@ -82,14 +82,14 @@ static net_packet_t *QueuePop(packet_queue_t *queue)
 //
 //-----------------------------------------------------------------------------
 
-static boolean NET_CL_InitClient(void)
+static boolean NET_CL_InitClient()
 {
     QueueInit(&client_queue);
 
     return true;
 }
 
-static boolean NET_CL_InitServer(void)
+static boolean NET_CL_InitServer()
 {
     I_Error("NET_CL_InitServer: attempted to initialize client pipe end as a server!");
     return false;
@@ -157,13 +157,13 @@ net_module_t net_loop_client_module = {
 //
 //-----------------------------------------------------------------------------
 
-static boolean NET_SV_InitClient(void)
+static boolean NET_SV_InitClient()
 {
     I_Error("NET_SV_InitClient: attempted to initialize server pipe end as a client!");
     return false;
 }
 
-static boolean NET_SV_InitServer(void)
+static boolean NET_SV_InitServer()
 {
     QueueInit(&server_queue);
 

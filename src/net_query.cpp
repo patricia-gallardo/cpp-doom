@@ -241,7 +241,7 @@ static query_target_t *GetTargetForAddr(net_addr_t *addr, boolean create)
     return target;
 }
 
-static void FreeTargets(void)
+static void FreeTargets()
 {
     int i;
 
@@ -426,7 +426,7 @@ static void NET_Query_GetResponse(net_query_callback_t callback,
 
 // Find a target we have not yet queried and send a query.
 
-static void SendOneQuery(void)
+static void SendOneQuery()
 {
     unsigned int now;
     unsigned int i;
@@ -486,7 +486,7 @@ static void SendOneQuery(void)
 
 // Time out servers that have been queried and not responded.
 
-static void CheckTargetTimeouts(void)
+static void CheckTargetTimeouts()
 {
     unsigned int i;
     unsigned int now;
@@ -522,7 +522,7 @@ static void CheckTargetTimeouts(void)
 
 // If all targets have responded or timed out, returns true.
 
-static boolean AllTargetsDone(void)
+static boolean AllTargetsDone()
 {
     unsigned int i;
 
@@ -560,7 +560,7 @@ int NET_Query_Poll(net_query_callback_t callback, void *user_data)
 
 // Stop the query loop
 
-static void NET_Query_ExitLoop(void)
+static void NET_Query_ExitLoop()
 {
     query_loop_running = false;
 }
@@ -580,7 +580,7 @@ static void NET_Query_QueryLoop(net_query_callback_t callback, void *user_data)
     }
 }
 
-void NET_Query_Init(void)
+void NET_Query_Init()
 {
     if (query_context == NULL)
     {
@@ -607,7 +607,7 @@ static void NET_Query_ExitCallback(net_addr_t *addr, net_querydata_t *data,
 // Search the targets list and find a target that has responded.
 // If none have responded, returns NULL.
 
-static query_target_t *FindFirstResponder(void)
+static query_target_t *FindFirstResponder()
 {
     unsigned int i;
 
@@ -625,7 +625,7 @@ static query_target_t *FindFirstResponder(void)
 
 // Return a count of the number of responses.
 
-static int GetNumResponses(void)
+static int GetNumResponses()
 {
     unsigned int i;
     int          result;
@@ -644,7 +644,7 @@ static int GetNumResponses(void)
     return result;
 }
 
-int NET_StartLANQuery(void)
+int NET_StartLANQuery()
 {
     query_target_t *target;
 
@@ -658,7 +658,7 @@ int NET_StartLANQuery(void)
     return 1;
 }
 
-int NET_StartMasterQuery(void)
+int NET_StartMasterQuery()
 {
     net_addr_t *    master;
     query_target_t *target;
@@ -734,7 +734,7 @@ static constexpr const char *GameDescription(int mode, int mission)
     }
 }
 
-static void PrintHeader(void)
+static void PrintHeader()
 {
     int i;
 
@@ -783,7 +783,7 @@ static void NET_QueryPrintCallback(net_addr_t *addr,
     printf("%s\n", data->description);
 }
 
-void NET_LANQuery(void)
+void NET_LANQuery()
 {
     if (NET_StartLANQuery())
     {
@@ -796,7 +796,7 @@ void NET_LANQuery(void)
     }
 }
 
-void NET_MasterQuery(void)
+void NET_MasterQuery()
 {
     if (NET_StartMasterQuery())
     {
@@ -847,7 +847,7 @@ void NET_QueryAddress(char *addr_str)
     }
 }
 
-net_addr_t *NET_FindLANServer(void)
+net_addr_t *NET_FindLANServer()
 {
     query_target_t *target;
     query_target_t *responder;

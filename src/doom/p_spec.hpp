@@ -36,13 +36,13 @@ extern int     levelTimeCount;
 
 
 // at game start
-void P_InitPicAnims(void);
+void P_InitPicAnims();
 
 // at map load
-void P_SpawnSpecials(void);
+void P_SpawnSpecials();
 
 // every tic
-void P_UpdateSpecials(void);
+void P_UpdateSpecials();
 
 // when needed
 boolean
@@ -226,7 +226,7 @@ extern int       maxbuttons;
 void P_ChangeSwitchTexture(line_t *line,
     int                            useAgain);
 
-void P_InitSwitchList(void);
+void P_InitSwitchList();
 
 
 //
@@ -421,7 +421,7 @@ typedef struct
 // how many diff. types of anims
 #define MAXSLIDEDOORS 5                            
 
-void P_InitSlidingDoorFrames(void);
+void P_InitSlidingDoorFrames();
 
 void
 EV_SlidingDoor

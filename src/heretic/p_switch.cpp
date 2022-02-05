@@ -99,7 +99,7 @@ button_t buttonlist[MAXBUTTONS];
 ===============
 */
 
-void P_InitSwitchList(void)
+void P_InitSwitchList()
 {
     int i, slindex, episode;
 

@@ -89,7 +89,7 @@ boolean shiftdown;
 //      Initialize chat mode data
 //===========================================================================
 
-void CT_Init(void)
+void CT_Init()
 {
     int i;
 
@@ -114,7 +114,7 @@ void CT_Init(void)
 //
 //===========================================================================
 
-void CT_Stop(void)
+void CT_Stop()
 {
     chatmodeon = false;
     I_StopTextInput();
@@ -251,7 +251,7 @@ boolean CT_Responder(event_t * ev)
 //
 //===========================================================================
 
-void CT_Ticker(void)
+void CT_Ticker()
 {
     int i;
     int j;
@@ -340,7 +340,7 @@ void CT_Ticker(void)
 //
 //===========================================================================
 
-void CT_Drawer(void)
+void CT_Drawer()
 {
     int i;
     int x;
@@ -391,7 +391,7 @@ void CT_queueChatChar(char ch)
 //
 //===========================================================================
 
-char CT_dequeueChatChar(void)
+char CT_dequeueChatChar()
 {
     byte temp;
 

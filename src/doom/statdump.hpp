@@ -18,6 +18,6 @@
 #define DOOM_STATDUMP_H
 
 void StatCopy(const wbstartstruct_t *stats);
-void StatDump(void);
+void StatDump();
 
 #endif /* #ifndef DOOM_STATDUMP_H */

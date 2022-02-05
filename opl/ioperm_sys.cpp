@@ -95,7 +95,7 @@ static SC_HANDLE svc = NULL;
 static int service_was_created = 0;
 static int service_was_started = 0;
 
-static int LoadLibraryPointers(void)
+static int LoadLibraryPointers()
 {
     HMODULE dll;
     int i;
@@ -169,7 +169,7 @@ int IOperm_EnablePortRange(unsigned int from, unsigned int num, int turn_on)
 // Returns 1 for success, 0 for failure.
 // Remember to call IOperm_UninstallDriver to uninstall the driver later.
 
-int IOperm_InstallDriver(void)
+int IOperm_InstallDriver()
 {
     wchar_t driver_path[MAX_PATH];
     int error;
@@ -281,7 +281,7 @@ int IOperm_InstallDriver(void)
     return result;
 }
 
-int IOperm_UninstallDriver(void)
+int IOperm_UninstallDriver()
 {
     SERVICE_STATUS stat;
     int result = 1;

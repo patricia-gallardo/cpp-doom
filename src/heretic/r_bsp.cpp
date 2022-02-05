@@ -39,7 +39,7 @@ void R_StoreWallRange(int start, int stop);
 ====================
 */
 
-void R_ClearDrawSegs(void)
+void R_ClearDrawSegs()
 {
     ds_p = drawsegs;
 }
@@ -192,7 +192,7 @@ void R_ClipPassWallSegment(int first, int last)
 ====================
 */
 
-void R_ClearClipSegs(void)
+void R_ClearClipSegs()
 {
     solidsegs[0].first = -0x7fffffff;
     solidsegs[0].last = -1;

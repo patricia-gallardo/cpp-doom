@@ -36,7 +36,7 @@ txt_label_t *input_box;
 int first_operand;
 operator_t operator = OP_NONE;
 
-void UpdateInputBox(void)
+void UpdateInputBox()
 {
     char buf[20];
 

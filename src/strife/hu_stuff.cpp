@@ -176,7 +176,7 @@ const char *mapnames[] =
 // haleyjd 09/18/10: [STRIFE]
 // * Modified to load yfont along with hu_font.
 //
-void HU_Init(void)
+void HU_Init()
 {
     int		i;
     int		j;
@@ -201,7 +201,7 @@ void HU_Init(void)
 //
 // [STRIFE] Verified unmodified.
 //
-void HU_Stop(void)
+void HU_Stop()
 {
     headsupactive = false;
 }
@@ -211,7 +211,7 @@ void HU_Stop(void)
 //
 // haleyjd 09/18/10: [STRIFE] Added a hack for nickname at the end.
 //
-void HU_Start(void)
+void HU_Start()
 {
     int         i;
     const char *s;
@@ -282,7 +282,7 @@ void HU_Start(void)
 //
 // [STRIFE] Verified unmodified.
 //
-void HU_Drawer(void)
+void HU_Drawer()
 {
     HUlib_drawSText(&w_message);
     HUlib_drawIText(&w_chat);
@@ -295,7 +295,7 @@ void HU_Drawer(void)
 //
 // [STRIFE] Verified unmodified.
 //
-void HU_Erase(void)
+void HU_Erase()
 {
     HUlib_eraseSText(&w_message);
     HUlib_eraseIText(&w_chat);
@@ -398,7 +398,7 @@ static void HU_addMessage(const char *prefix, const char *message)
 // haleyjd 09/18/10: [STRIFE] Changes to split up message into two lines,
 // and support for player names (STRIFE-TODO: unfinished!)
 //
-void HU_Ticker(void)
+void HU_Ticker()
 {
     int i, rc;
     char c;
@@ -498,7 +498,7 @@ void HU_queueChatChar(char c)
 //
 // [STRIFE] Verified unmodified.
 //
-char HU_dequeueChatChar(void)
+char HU_dequeueChatChar()
 {
     char c;
 
@@ -516,13 +516,13 @@ char HU_dequeueChatChar(void)
 }
 
 // fraggle 01/05/15: New functions to support the Chocolate input interface.
-static void StartChatInput(void)
+static void StartChatInput()
 {
     chat_on = true;
     I_StartTextInput(HU_INPUTX, HU_INPUTY, SCREENWIDTH, HU_INPUTY + 8);
 }
 
-static void StopChatInput(void)
+static void StopChatInput()
 {
     chat_on = false;
     I_StopTextInput();

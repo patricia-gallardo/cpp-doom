@@ -40,7 +40,7 @@
 
 // PRIVATE FUNCTION PROTOTYPES ---------------------------------------------
 
-static void CheckOpen(void);
+static void CheckOpen();
 static void OpenScript(const char *name, int type);
 
 // EXTERNAL DATA DECLARATIONS ----------------------------------------------
@@ -154,7 +154,7 @@ static void OpenScript(const char *name, int type)
 //
 //==========================================================================
 
-void SC_Close(void)
+void SC_Close()
 {
     if (ScriptOpen)
     {
@@ -176,7 +176,7 @@ void SC_Close(void)
 //
 //==========================================================================
 
-boolean SC_GetString(void)
+boolean SC_GetString()
 {
     char *text;
     boolean foundToken;
@@ -264,7 +264,7 @@ boolean SC_GetString(void)
 //
 //==========================================================================
 
-void SC_MustGetString(void)
+void SC_MustGetString()
 {
     if (SC_GetString() == false)
     {
@@ -293,7 +293,7 @@ void SC_MustGetStringName(char *name)
 //
 //==========================================================================
 
-boolean SC_GetNumber(void)
+boolean SC_GetNumber()
 {
     char *stopper;
 
@@ -320,7 +320,7 @@ boolean SC_GetNumber(void)
 //
 //==========================================================================
 
-void SC_MustGetNumber(void)
+void SC_MustGetNumber()
 {
     if (SC_GetNumber() == false)
     {
@@ -336,7 +336,7 @@ void SC_MustGetNumber(void)
 //
 //==========================================================================
 
-void SC_UnGet(void)
+void SC_UnGet()
 {
     AlreadyGot = true;
 }
@@ -350,7 +350,7 @@ void SC_UnGet(void)
 //==========================================================================
 
 /*
-boolean SC_Check(void)
+boolean SC_Check()
 {
 	char *text;
 
@@ -457,7 +457,7 @@ void SC_ScriptError(const char *message)
 //
 //==========================================================================
 
-static void CheckOpen(void)
+static void CheckOpen()
 {
     if (ScriptOpen == false)
     {

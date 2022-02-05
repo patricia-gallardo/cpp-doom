@@ -117,14 +117,14 @@ void V_BeginRead(size_t nbytes)
     recent_bytes_read += nbytes;
 }
 
-static pixel_t *DiskRegionPointer(void)
+static pixel_t *DiskRegionPointer()
 {
     return I_VideoBuffer
            + loading_disk_yoffs * SCREENWIDTH
            + loading_disk_xoffs;
 }
 
-void V_DrawDiskIcon(void)
+void V_DrawDiskIcon()
 {
     if (disk_data != NULL && recent_bytes_read > diskicon_threshold)
     {
@@ -143,7 +143,7 @@ void V_DrawDiskIcon(void)
     recent_bytes_read = 0;
 }
 
-void V_RestoreDiskBackground(void)
+void V_RestoreDiskBackground()
 {
     if (disk_drawn)
     {

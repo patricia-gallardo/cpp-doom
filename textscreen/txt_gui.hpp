@@ -32,9 +32,9 @@ int TXT_CanDrawCharacter(unsigned int c);
 void TXT_DrawHorizScrollbar(int x, int y, int w, int cursor, int range);
 void TXT_DrawVertScrollbar(int x, int y, int h, int cursor, int range);
 
-void TXT_InitClipArea(void);
+void TXT_InitClipArea();
 void TXT_PushClipArea(int x1, int x2, int y1, int y2);
-void TXT_PopClipArea(void);
+void TXT_PopClipArea();
 
 #endif /* #ifndef TXT_GUI_H */
 

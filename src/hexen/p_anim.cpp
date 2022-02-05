@@ -65,7 +65,7 @@ typedef struct
 
 // PRIVATE FUNCTION PROTOTYPES ---------------------------------------------
 
-static void P_LightningFlash(void);
+static void P_LightningFlash();
 
 // EXTERNAL DATA DECLARATIONS ----------------------------------------------
 
@@ -96,7 +96,7 @@ static int *LightningLightLevels;
 //
 //==========================================================================
 
-void P_AnimateSurfaces(void)
+void P_AnimateSurfaces()
 {
     int i;
     animDef_t *ad;
@@ -180,7 +180,7 @@ void P_AnimateSurfaces(void)
 //
 //==========================================================================
 
-static void P_LightningFlash(void)
+static void P_LightningFlash()
 {
     int i;
     sector_t *tempSec;
@@ -299,7 +299,7 @@ static void P_LightningFlash(void)
 //
 //==========================================================================
 
-void P_ForceLightning(void)
+void P_ForceLightning()
 {
     NextLightningFlash = 0;
 }
@@ -310,7 +310,7 @@ void P_ForceLightning(void)
 //
 //==========================================================================
 
-void P_InitLightning(void)
+void P_InitLightning()
 {
     int i;
     int secCount;
@@ -354,7 +354,7 @@ void P_InitLightning(void)
 //
 //==========================================================================
 
-void P_InitFTAnims(void)
+void P_InitFTAnims()
 {
     int base;
     int mod;

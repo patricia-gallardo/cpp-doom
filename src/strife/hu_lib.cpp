@@ -98,7 +98,7 @@ void HUlib_drawYellowText(int x, int y, const char *text)
 //
 // [STRIFE] Verified unmodified.
 //
-void HUlib_init(void)
+void HUlib_init()
 {
 }
 

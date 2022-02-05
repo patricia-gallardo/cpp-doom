@@ -2647,7 +2647,7 @@ static char pmsgbuffer[80];
 // * Called when the prisoners get freed, obviously. Gives a
 //   message and awards quest token 13.
 //
-void P_FreePrisoners(void)
+void P_FreePrisoners()
 {
     int i;
 
@@ -2667,7 +2667,7 @@ void P_FreePrisoners(void)
 // * Called when the converter is shut down in the factory.
 //   Gives several items and a message.
 //
-void P_DestroyConverter(void)
+void P_DestroyConverter()
 {
     int i;
 

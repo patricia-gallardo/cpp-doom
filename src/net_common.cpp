@@ -453,7 +453,7 @@ boolean NET_ValidGameSettings(GameMode_t mode, GameMission_t mission,
     return true;
 }
 
-static void CloseLog(void)
+static void CloseLog()
 {
     if (net_debug != NULL)
     {
@@ -462,7 +462,7 @@ static void CloseLog(void)
     }
 }
 
-void NET_OpenLog(void)
+void NET_OpenLog()
 {
     int p;
 

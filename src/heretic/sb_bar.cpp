@@ -38,15 +38,15 @@ typedef struct Cheat_s
 
 // Private Functions
 
-static void DrawSoundInfo(void);
+static void DrawSoundInfo();
 static void ShadeLine(int x, int y, int height, int shade);
-static void ShadeChain(void);
+static void ShadeChain();
 static void DrINumber(signed int val, int x, int y);
 static void DrBNumber(signed int val, int x, int y);
-static void DrawCommonBar(void);
-static void DrawMainBar(void);
-static void DrawInventoryBar(void);
-static void DrawFullScreenStuff(void);
+static void DrawCommonBar();
+static void DrawMainBar();
+static void DrawInventoryBar();
+static void DrawFullScreenStuff();
 static boolean HandleCheats(byte key);
 static void CheatGodFunc(player_t * player, Cheat_t * cheat);
 static void CheatNoClipFunc(player_t * player, Cheat_t * cheat);
@@ -186,7 +186,7 @@ static Cheat_t Cheats[] = {
 //
 //---------------------------------------------------------------------------
 
-void SB_Init(void)
+void SB_Init()
 {
     int i;
     int startLump;
@@ -247,7 +247,7 @@ void SB_Init(void)
 //
 //---------------------------------------------------------------------------
 
-void SB_Ticker(void)
+void SB_Ticker()
 {
     int delta;
     int curHealth;
@@ -429,7 +429,7 @@ static void ShadeLine(int x, int y, int height, int shade)
 //
 //---------------------------------------------------------------------------
 
-static void ShadeChain(void)
+static void ShadeChain()
 {
     int i;
 
@@ -448,7 +448,7 @@ static void ShadeChain(void)
 //
 //---------------------------------------------------------------------------
 
-static void DrawSoundInfo(void)
+static void DrawSoundInfo()
 {
     int i;
     SoundInfo_t s;
@@ -549,7 +549,7 @@ int playerkeys = 0;
 
 extern boolean automapactive;
 
-void SB_Drawer(void)
+void SB_Drawer()
 {
     int frame;
     static boolean hitCenterFrame;
@@ -688,7 +688,7 @@ void SB_Drawer(void)
 
 // sets the new palette based upon current values of player->damagecount
 // and player->bonuscount
-void SB_PaletteFlash(void)
+void SB_PaletteFlash()
 {
     static int sb_palette = 0;
     int palette;
@@ -732,7 +732,7 @@ void SB_PaletteFlash(void)
 //
 //---------------------------------------------------------------------------
 
-void DrawCommonBar(void)
+void DrawCommonBar()
 {
     int chainY;
     int healthPos;
@@ -771,7 +771,7 @@ void DrawCommonBar(void)
 //
 //---------------------------------------------------------------------------
 
-void DrawMainBar(void)
+void DrawMainBar()
 {
     int i;
     int temp;
@@ -891,7 +891,7 @@ void DrawMainBar(void)
 //
 //---------------------------------------------------------------------------
 
-void DrawInventoryBar(void)
+void DrawInventoryBar()
 {
     const char *patch;
     int i;
@@ -925,7 +925,7 @@ void DrawInventoryBar(void)
     }
 }
 
-void DrawFullScreenStuff(void)
+void DrawFullScreenStuff()
 {
     const char *patch;
     int i;

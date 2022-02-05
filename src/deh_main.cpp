@@ -72,7 +72,7 @@ void DEH_Checksum(sha1_digest_t digest)
 
 // Called on startup to call the Init functions
 
-static void InitializeSections(void)
+static void InitializeSections()
 {
     unsigned int i;
 
@@ -85,7 +85,7 @@ static void InitializeSections(void)
     }
 }
 
-static void DEH_Init(void)
+static void DEH_Init()
 {
     //!
     // @category mod
@@ -523,7 +523,7 @@ int DEH_LoadLumpByName(const char *name, boolean allow_long, boolean allow_error
 }
 
 // Check the command line for -deh argument, and others.
-void DEH_ParseCommandLine(void)
+void DEH_ParseCommandLine()
 {
     char *filename;
     int   p;

@@ -399,7 +399,7 @@ static patch_t *background;
 //
 
 // slam background
-void WI_slamBackground(void)
+void WI_slamBackground()
 {
     V_DrawPatchFullScreen(background, false);
 }
@@ -413,7 +413,7 @@ boolean WI_Responder(event_t *ev)
 
 
 // Draws "<Levelname> Finished!"
-void WI_drawLF(void)
+void WI_drawLF()
 {
     int y = WI_TITLEY;
 
@@ -456,7 +456,7 @@ void WI_drawLF(void)
 
 
 // Draws "Entering <LevelName>"
-void WI_drawEL(void)
+void WI_drawEL()
 {
     int y = WI_TITLEY;
 
@@ -525,7 +525,7 @@ void WI_drawOnLnode(int n,
 }
 
 
-void WI_initAnimatedBack(void)
+void WI_initAnimatedBack()
 {
     int     i;
     anim_t *a;
@@ -553,7 +553,7 @@ void WI_initAnimatedBack(void)
     }
 }
 
-void WI_updateAnimatedBack(void)
+void WI_updateAnimatedBack()
 {
     int     i;
     anim_t *a;
@@ -603,7 +603,7 @@ void WI_updateAnimatedBack(void)
     }
 }
 
-void WI_drawAnimatedBack(void)
+void WI_drawAnimatedBack()
 {
     int     i;
     anim_t *a;
@@ -750,20 +750,20 @@ void WI_drawTime(int x,
 }
 
 
-void WI_End(void)
+void WI_End()
 {
-    void WI_unloadData(void);
+    void WI_unloadData();
     WI_unloadData();
 }
 
-void WI_initNoState(void)
+void WI_initNoState()
 {
     state           = NoState;
     acceleratestage = 0;
     cnt             = 10;
 }
 
-void WI_updateNoState(void)
+void WI_updateNoState()
 {
 
     WI_updateAnimatedBack();
@@ -782,7 +782,7 @@ void WI_updateNoState(void)
 static boolean snl_pointeron = false;
 
 
-void WI_initShowNextLoc(void)
+void WI_initShowNextLoc()
 {
     // [crispy] display tally screen after ExM8
     if ((gamemode != commercial) && (gamemap == 8))
@@ -798,7 +798,7 @@ void WI_initShowNextLoc(void)
     WI_initAnimatedBack();
 }
 
-void WI_updateShowNextLoc(void)
+void WI_updateShowNextLoc()
 {
     WI_updateAnimatedBack();
 
@@ -808,7 +808,7 @@ void WI_updateShowNextLoc(void)
         snl_pointeron = (cnt & 31) < 20;
 }
 
-void WI_drawShowNextLoc(void)
+void WI_drawShowNextLoc()
 {
 
     int            i;
@@ -858,7 +858,7 @@ void WI_drawShowNextLoc(void)
         WI_drawEL();
 }
 
-void WI_drawNoState(void)
+void WI_drawNoState()
 {
     snl_pointeron = true;
     WI_drawShowNextLoc();
@@ -893,7 +893,7 @@ static int dm_frags[MAXPLAYERS][MAXPLAYERS];
 static int dm_totals[MAXPLAYERS];
 
 
-void WI_initDeathmatchStats(void)
+void WI_initDeathmatchStats()
 {
 
     int i;
@@ -921,7 +921,7 @@ void WI_initDeathmatchStats(void)
 }
 
 
-void WI_updateDeathmatchStats(void)
+void WI_updateDeathmatchStats()
 {
 
     int i;
@@ -1021,7 +1021,7 @@ void WI_updateDeathmatchStats(void)
 }
 
 
-void WI_drawDeathmatchStats(void)
+void WI_drawDeathmatchStats()
 {
 
     int i;
@@ -1109,7 +1109,7 @@ static int cnt_frags[MAXPLAYERS];
 static int dofrags;
 static int ng_state;
 
-void WI_initNetgameStats(void)
+void WI_initNetgameStats()
 {
 
     int i;
@@ -1136,7 +1136,7 @@ void WI_initNetgameStats(void)
 }
 
 
-void WI_updateNetgameStats(void)
+void WI_updateNetgameStats()
 {
 
     int i;
@@ -1290,7 +1290,7 @@ void WI_updateNetgameStats(void)
 }
 
 
-void WI_drawNetgameStats(void)
+void WI_drawNetgameStats()
 {
     int i;
     int x;
@@ -1349,7 +1349,7 @@ void WI_drawNetgameStats(void)
 
 static int sp_state;
 
-void WI_initStats(void)
+void WI_initStats()
 {
     state           = StatCount;
     acceleratestage = 0;
@@ -1361,7 +1361,7 @@ void WI_initStats(void)
     WI_initAnimatedBack();
 }
 
-void WI_updateStats(void)
+void WI_updateStats()
 {
 
     WI_updateAnimatedBack();
@@ -1467,7 +1467,7 @@ void WI_updateStats(void)
 }
 
 // [crispy] conditionally draw par times on intermission screen
-static boolean WI_drawParTime(void)
+static boolean WI_drawParTime()
 {
     extern lumpinfo_t *maplumpinfo;
 
@@ -1531,7 +1531,7 @@ static boolean WI_drawParTime(void)
     return result;
 }
 
-void WI_drawStats(void)
+void WI_drawStats()
 {
     // line height
     int lh;
@@ -1590,13 +1590,13 @@ void WI_drawStats(void)
     // [crispy] demo progress bar
     if (demoplayback && crispy->demobar)
     {
-        extern void HU_DemoProgressBar(void);
+        extern void HU_DemoProgressBar();
 
         HU_DemoProgressBar();
     }
 }
 
-void WI_checkForAccelerate(void)
+void WI_checkForAccelerate()
 {
     int       i;
     player_t *player;
@@ -1628,7 +1628,7 @@ void WI_checkForAccelerate(void)
 
 
 // Updates stuff each tick
-void WI_Ticker(void)
+void WI_Ticker()
 {
     // counter for general background animation
     bcnt++;
@@ -1866,7 +1866,7 @@ static void WI_loadCallback(const char *name, patch_t **variable)
         *variable = NULL;
 }
 
-void WI_loadData(void)
+void WI_loadData()
 {
     if (gamemode == commercial)
     {
@@ -1902,7 +1902,7 @@ static void WI_unloadCallback(const char *name, patch_t **variable)
     *variable = NULL;
 }
 
-void WI_unloadData(void)
+void WI_unloadData()
 {
     WI_loadUnloadData(WI_unloadCallback);
 
@@ -1913,7 +1913,7 @@ void WI_unloadData(void)
     // W_ReleaseLumpName("STFDEAD0");
 }
 
-void WI_Drawer(void)
+void WI_Drawer()
 {
     switch (state)
     {

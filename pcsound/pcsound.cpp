@@ -130,7 +130,7 @@ int PCSound_Init(pcsound_callback_func callback_func)
     }
 }
 
-void PCSound_Shutdown(void)
+void PCSound_Shutdown()
 {
     pcsound_driver->shutdown_func();
     pcsound_driver = NULL;

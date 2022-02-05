@@ -308,7 +308,7 @@ void S_Init(int sfxVolume, int musicVolume)
     S_UpdateStereoSeparation();
 }
 
-void S_Shutdown(void)
+void S_Shutdown()
 {
     I_ShutdownSound();
     I_ShutdownMusic();
@@ -355,7 +355,7 @@ static void S_StopChannel(int cnum)
 //
 static short prevmap = -1;
 
-void S_Start(void)
+void S_Start()
 {
     int cnum;
     int mnum;
@@ -769,7 +769,7 @@ void S_StartSoundOnce(void *origin_p, int sfx_id)
 // Stop and resume music, during game PAUSE.
 //
 
-void S_PauseSound(void)
+void S_PauseSound()
 {
     if (mus_playing && !mus_paused)
     {
@@ -778,7 +778,7 @@ void S_PauseSound(void)
     }
 }
 
-void S_ResumeSound(void)
+void S_ResumeSound()
 {
     if (mus_playing && mus_paused)
     {
@@ -1048,12 +1048,12 @@ void S_ChangeMusInfoMusic(int lumpnum, int looping)
     musinfo.current_item = lumpnum;
 }
 
-boolean S_MusicPlaying(void)
+boolean S_MusicPlaying()
 {
     return I_MusicIsPlaying();
 }
 
-void S_StopMusic(void)
+void S_StopMusic()
 {
     if (mus_playing)
     {
@@ -1071,7 +1071,7 @@ void S_StopMusic(void)
 }
 
 // [crispy] variable number of sound channels
-void S_UpdateSndChannels(void)
+void S_UpdateSndChannels()
 {
     int i;
 
@@ -1098,7 +1098,7 @@ void S_UpdateSndChannels(void)
     }
 }
 
-void S_UpdateStereoSeparation(void)
+void S_UpdateStereoSeparation()
 {
     // [crispy] play all sound effects in mono
     if (crispy->soundmono)

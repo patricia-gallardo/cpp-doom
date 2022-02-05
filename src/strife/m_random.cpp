@@ -51,13 +51,13 @@ int	rndindex = 0;
 int	prndindex = 0;
 
 // Which one is deterministic?
-int P_Random (void)
+int P_Random ()
 {
     prndindex = (prndindex+1)&0xff;
     return rndtable[prndindex];
 }
 
-int M_Random (void)
+int M_Random ()
 {
     rndindex = (rndindex+1)&0xff;
     return rndtable[rndindex];
@@ -68,7 +68,7 @@ int M_Random (void)
 //
 // haleyjd 20110204 [STRIFE]: No "seeding" of M_Random index
 //
-void M_ClearRandom (void)
+void M_ClearRandom ()
 {
     prndindex = 0;
     rndindex = 0;

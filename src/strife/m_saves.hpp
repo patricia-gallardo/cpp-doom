@@ -30,15 +30,15 @@ extern char *loadpath;
 extern char character_name[CHARACTER_NAME_LEN];
 
 // Strife Savegame Functions
-void ClearTmp(void);
-void ClearSlot(void);
-void FromCurr(void);
-void ToCurr(void);
-void M_SaveMoveMapToHere(void);
-void M_SaveMoveHereToMap(void);
+void ClearTmp();
+void ClearSlot();
+void FromCurr();
+void ToCurr();
+void M_SaveMoveMapToHere();
+void M_SaveMoveHereToMap();
 
 boolean M_SaveMisObj(const char *path);
-void    M_ReadMisObj(void);
+void    M_ReadMisObj();
 
 // Custom Utilities for Filepath Handling
 void *M_Calloc(size_t n1, size_t n2);

@@ -112,8 +112,8 @@ static short mapxstart = 0;     //x-value for the bitmap.
 void DrawWuLine(int X0, int Y0, int X1, int Y1, byte * BaseColor,
                 int NumLevels, unsigned short IntensityBits);
 
-void AM_DrawDeathmatchStats(void);
-static void DrawWorldTimer(void);
+void AM_DrawDeathmatchStats();
+static void DrawWorldTimer();
 
 // Calculates the slope and slope according to the x-axis of a line
 // segment in map coordinates (with the upright y-axis n' all) so
@@ -134,7 +134,7 @@ void AM_getIslope(mline_t *ml, islope_t *is)
 }
 */
 
-void AM_activateNewScale(void)
+void AM_activateNewScale()
 {
     m_x += m_w / 2;
     m_y += m_h / 2;
@@ -146,7 +146,7 @@ void AM_activateNewScale(void)
     m_y2 = m_y + m_h;
 }
 
-void AM_saveScaleAndLoc(void)
+void AM_saveScaleAndLoc()
 {
     old_m_x = m_x;
     old_m_y = m_y;
@@ -154,7 +154,7 @@ void AM_saveScaleAndLoc(void)
     old_m_h = m_h;
 }
 
-void AM_restoreScaleAndLoc(void)
+void AM_restoreScaleAndLoc()
 {
 
     m_w = old_m_w;
@@ -180,7 +180,7 @@ void AM_restoreScaleAndLoc(void)
 // adds a marker at the current location
 
 /*
-void AM_addMark(void)
+void AM_addMark()
 {
   markpoints[markpointnum].x = m_x + m_w/2;
   markpoints[markpointnum].y = m_y + m_h/2;
@@ -188,7 +188,7 @@ void AM_addMark(void)
 
 }
 */
-void AM_findMinMaxBoundaries(void)
+void AM_findMinMaxBoundaries()
 {
     int i;
     fixed_t a, b;
@@ -219,7 +219,7 @@ void AM_findMinMaxBoundaries(void)
 
 }
 
-void AM_changeWindowLoc(void)
+void AM_changeWindowLoc()
 {
     if (m_paninc.x || m_paninc.y)
     {
@@ -271,7 +271,7 @@ void AM_changeWindowLoc(void)
     m_y2 = m_y + m_h;
 }
 
-void AM_initVariables(void)
+void AM_initVariables()
 {
     int pnum;
     thinker_t *think;
@@ -331,14 +331,14 @@ void AM_initVariables(void)
 //c  ST_Responder(&st_notify);
 }
 
-void AM_loadPics(void)
+void AM_loadPics()
 {
     maplump = cache_lump_name<byte *>("AUTOPAGE", PU_STATIC);
 }
 
 
 /*
-void AM_clearMarks(void)
+void AM_clearMarks()
 {
   int i;
   for (i=0;i<AM_NUMMARKPOINTS;i++) markpoints[i].x = -1; // means empty
@@ -349,7 +349,7 @@ void AM_clearMarks(void)
 // should be called at the start of every level
 // right now, i figure it out myself
 
-void AM_LevelInit(void)
+void AM_LevelInit()
 {
     leveljuststarted = 0;
 
@@ -373,7 +373,7 @@ void AM_LevelInit(void)
 
 static boolean stopped = true;
 
-void AM_Stop(void)
+void AM_Stop()
 {
     //static event_t st_notify = { 0, ev_keyup, AM_MSGEXITED };
 
@@ -384,7 +384,7 @@ void AM_Stop(void)
     BorderNeedRefresh = true;
 }
 
-void AM_Start(void)
+void AM_Start()
 {
     static int lastlevel = -1, lastepisode = -1;
 
@@ -407,7 +407,7 @@ void AM_Start(void)
 
 // set the window scale to the maximum size
 
-void AM_minOutWindowScale(void)
+void AM_minOutWindowScale()
 {
     scale_mtof = min_scale_mtof;
     scale_ftom = FixedDiv(FRACUNIT, scale_mtof);
@@ -416,7 +416,7 @@ void AM_minOutWindowScale(void)
 
 // set the window scale to the minimum size
 
-void AM_maxOutWindowScale(void)
+void AM_maxOutWindowScale()
 {
     scale_mtof = max_scale_mtof;
     scale_ftom = FixedDiv(FRACUNIT, scale_mtof);
@@ -588,7 +588,7 @@ boolean AM_Responder(event_t * ev)
     return rc;
 }
 
-void AM_changeWindowScale(void)
+void AM_changeWindowScale()
 {
 
     // Change the scaling multipliers
@@ -603,7 +603,7 @@ void AM_changeWindowScale(void)
         AM_activateNewScale();
 }
 
-void AM_doFollowPlayer(void)
+void AM_doFollowPlayer()
 {
     if (f_oldloc.x != plr->mo->x || f_oldloc.y != plr->mo->y)
     {
@@ -642,7 +642,7 @@ void AM_doFollowPlayer(void)
 
 // Ripped out for Heretic
 /*
-void AM_updateLightLev(void)
+void AM_updateLightLev()
 {
   static nexttic = 0;
 //static int litelevels[] = { 0, 3, 5, 6, 6, 7, 7, 7 };
@@ -659,7 +659,7 @@ void AM_updateLightLev(void)
 }
 */
 
-void AM_Ticker(void)
+void AM_Ticker()
 {
 
     if (!automapactive)
@@ -1175,7 +1175,7 @@ void AM_drawGrid(int color)
     }
 }
 
-void AM_drawWalls(void)
+void AM_drawWalls()
 {
     int i;
     static mline_t l;
@@ -1287,7 +1287,7 @@ void AM_drawLineCharacter(mline_t * lineguy, int lineguylines, fixed_t scale,
     }
 }
 
-void AM_drawPlayers(void)
+void AM_drawPlayers()
 {
     int i;
     player_t *p;
@@ -1346,7 +1346,7 @@ void AM_drawThings(int colors, int colorrange)
 }
 
 /*
-void AM_drawMarks(void)
+void AM_drawMarks()
 {
   int i, fx, fy, w, h;
 
@@ -1365,7 +1365,7 @@ void AM_drawMarks(void)
 }
 */
 /*
-void AM_drawkeys(void)
+void AM_drawkeys()
 {
 	if(KeyPoints[0].x != 0 || KeyPoints[0].y != 0)
 	{
@@ -1392,7 +1392,7 @@ void AM_drawCrosshair(int color)
 }
 */
 
-void AM_Drawer(void)
+void AM_Drawer()
 {
     if (!automapactive)
         return;
@@ -1441,7 +1441,7 @@ const char *PlayerColorText[MAXPLAYERS] = {
     "PURPLE:"
 };
 
-void AM_DrawDeathmatchStats(void)
+void AM_DrawDeathmatchStats()
 {
     int i, j, k, m;
     int fragCount[MAXPLAYERS];
@@ -1512,7 +1512,7 @@ void AM_DrawDeathmatchStats(void)
 //
 //===========================================================================
 
-static void DrawWorldTimer(void)
+static void DrawWorldTimer()
 {
     int days;
     int hours;

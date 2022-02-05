@@ -945,7 +945,7 @@ static boolean opl_stereo_correct = false;
 
 // Load instrument table from GENMIDI lump:
 
-static boolean LoadInstrumentTable(void)
+static boolean LoadInstrumentTable()
 {
     auto *lump = cache_lump_name<byte *>(DEH_String("genmidi"), PU_STATIC);
 
@@ -962,7 +962,7 @@ static boolean LoadInstrumentTable(void)
 
 // Get the next available voice from the freelist.
 
-static opl_voice_t *GetFreeVoice(void)
+static opl_voice_t *GetFreeVoice()
 {
     opl_voice_t *result;
     int          i;
@@ -1187,7 +1187,7 @@ static void SetVoicePan(opl_voice_t *voice, unsigned int pan)
 
 // Initialize the voice table and freelist
 
-static void InitVoices(void)
+static void InitVoices()
 {
     int i;
 
@@ -1311,7 +1311,7 @@ static void KeyOffEvent(opl_track_data_t *track, midi_event_t *event)
 // passed to the function is the channel for the new note to be
 // played.
 
-static void ReplaceExistingVoice(void)
+static void ReplaceExistingVoice()
 {
     int i;
     int result;
@@ -1342,7 +1342,7 @@ static void ReplaceExistingVoice(void)
 // Alternate versions of ReplaceExistingVoice() used when emulating old
 // versions of the DMX library used in Doom 1.666, Heretic and Hexen.
 
-static void ReplaceExistingVoiceDoom1(void)
+static void ReplaceExistingVoiceDoom1()
 {
     int i;
     int result;
@@ -2101,7 +2101,7 @@ static void I_OPL_PlaySong(void *handle, boolean looping)
     OPL_SetPaused(0);
 }
 
-static void I_OPL_PauseSong(void)
+static void I_OPL_PauseSong()
 {
     unsigned int i;
 
@@ -2127,7 +2127,7 @@ static void I_OPL_PauseSong(void)
     }
 }
 
-static void I_OPL_ResumeSong(void)
+static void I_OPL_ResumeSong()
 {
     if (!music_initialized)
     {
@@ -2137,7 +2137,7 @@ static void I_OPL_ResumeSong(void)
     OPL_SetPaused(0);
 }
 
-static void I_OPL_StopSong(void)
+static void I_OPL_StopSong()
 {
     unsigned int i;
 
@@ -2264,7 +2264,7 @@ static void *I_OPL_RegisterSong(void *data, int len)
 
 // Is the song playing?
 
-static boolean I_OPL_MusicIsPlaying(void)
+static boolean I_OPL_MusicIsPlaying()
 {
     if (!music_initialized)
     {
@@ -2276,7 +2276,7 @@ static boolean I_OPL_MusicIsPlaying(void)
 
 // Shutdown music
 
-static void I_OPL_ShutdownMusic(void)
+static void I_OPL_ShutdownMusic()
 {
     if (music_initialized)
     {
@@ -2296,7 +2296,7 @@ static void I_OPL_ShutdownMusic(void)
 
 // Initialize music subsystem
 
-static boolean I_OPL_InitMusic(void)
+static boolean I_OPL_InitMusic()
 {
 
     opl_init_result_t chip_type;
@@ -2387,7 +2387,7 @@ void I_SetOPLDriverVer(opl_driver_ver_t ver)
 //
 //----------------------------------------------------------------------
 
-static int NumActiveChannels(void)
+static int NumActiveChannels()
 {
     int i;
 

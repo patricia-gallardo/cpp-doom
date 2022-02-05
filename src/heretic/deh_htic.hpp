@@ -41,7 +41,7 @@ typedef enum
 
 #define DEH_HERETIC_NUMMOBJTYPES (NUMMOBJTYPES - 2)
 
-void DEH_HereticInit(void);
+void DEH_HereticInit();
 int DEH_MapHereticThingType(int type);
 int DEH_MapHereticFrameNumber(int frame);
 void DEH_SuggestHereticVersion(deh_hhe_version_t version);

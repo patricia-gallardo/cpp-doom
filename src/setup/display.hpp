@@ -16,8 +16,8 @@
 #define SETUP_DISPLAY_H
 
 void ConfigDisplay(void *widget, void *user_data);
-void SetDisplayDriver(void);
-void BindDisplayVariables(void);
+void SetDisplayDriver();
+void BindDisplayVariables();
 
 extern int show_endoom;
 extern int graphical_startup;

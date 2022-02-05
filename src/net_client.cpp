@@ -174,7 +174,7 @@ unsigned int net_local_is_freedoom;
 
 // Called when we become disconnected from the server
 
-static void NET_CL_Disconnected(void)
+static void NET_CL_Disconnected()
 {
     D_ReceiveTic(NULL, NULL);
 }
@@ -263,7 +263,7 @@ static void NET_CL_ExpandFullTiccmd(net_full_ticcmd_t *cmd, unsigned int seq,
 
 // Advance the receive window
 
-static void NET_CL_AdvanceWindow(void)
+static void NET_CL_AdvanceWindow()
 {
     ticcmd_t ticcmds[NET_MAXPLAYERS];
 
@@ -289,7 +289,7 @@ static void NET_CL_AdvanceWindow(void)
 
 // Shut down the client code, etc.  Invoked after a disconnect.
 
-static void NET_CL_Shutdown(void)
+static void NET_CL_Shutdown()
 {
     if (net_client_connected)
     {
@@ -301,7 +301,7 @@ static void NET_CL_Shutdown(void)
     }
 }
 
-void NET_CL_LaunchGame(void)
+void NET_CL_LaunchGame()
 {
     NET_Conn_NewReliable(&client_connection, NET_PACKET_TYPE_LAUNCH);
 }
@@ -322,7 +322,7 @@ void NET_CL_StartGame(net_gamesettings_t *settings)
     NET_WriteSettings(packet, settings);
 }
 
-static void NET_CL_SendGameDataACK(void)
+static void NET_CL_SendGameDataACK()
 {
     net_packet_t *packet;
 
@@ -644,7 +644,7 @@ static void NET_CL_SendResendRequest(int start, int end)
 
 // Check for expired resend requests
 
-static void NET_CL_CheckResends(void)
+static void NET_CL_CheckResends()
 {
     int          i;
     int          resend_start, resend_end;
@@ -992,7 +992,7 @@ static void NET_CL_ParsePacket(net_packet_t *packet)
 // "Run" the client code: check for new packets, send packets as
 // needed
 
-void NET_CL_Run(void)
+void NET_CL_Run()
 {
     net_addr_t *  addr;
     net_packet_t *packet;
@@ -1168,7 +1168,7 @@ boolean NET_CL_GetSettings(net_gamesettings_t *_settings)
 
 // disconnect from the server
 
-void NET_CL_Disconnect(void)
+void NET_CL_Disconnect()
 {
     int start_time;
 
@@ -1208,7 +1208,7 @@ void NET_CL_Disconnect(void)
     NET_CL_Shutdown();
 }
 
-void NET_CL_Init(void)
+void NET_CL_Init()
 {
     // Try to set from the USER and USERNAME environment variables
     // Otherwise, fallback to "Player"
@@ -1219,13 +1219,13 @@ void NET_CL_Init(void)
     }
 }
 
-void NET_Init(void)
+void NET_Init()
 {
     NET_OpenLog();
     NET_CL_Init();
 }
 
-void NET_BindVariables(void)
+void NET_BindVariables()
 {
     M_BindStringVariable("player_name", &net_player_name);
 }

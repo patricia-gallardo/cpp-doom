@@ -280,7 +280,7 @@ void R_InitSprites(const char **namelist)
 ===================
 */
 
-void R_ClearSprites(void)
+void R_ClearSprites()
 {
     vissprite_p = vissprites;
 }
@@ -296,7 +296,7 @@ void R_ClearSprites(void)
 
 vissprite_t overflowsprite;
 
-vissprite_t *R_NewVisSprite(void)
+vissprite_t *R_NewVisSprite()
 {
     // [crispy] remove MAXVISSPRITE limit
     if (vissprite_p == &vissprites[numvissprites])
@@ -798,7 +798,7 @@ void R_DrawPSprite(pspdef_t * psp)
 ========================
 */
 
-void R_DrawPlayerSprites(void)
+void R_DrawPlayerSprites()
 {
     int i, lightnum;
     pspdef_t *psp;
@@ -841,7 +841,7 @@ void R_DrawPlayerSprites(void)
 
 vissprite_t vsprsortedhead;
 
-void R_SortVisSprites(void)
+void R_SortVisSprites()
 {
     int i, count;
     vissprite_t *ds, *best;
@@ -1006,7 +1006,7 @@ void R_DrawSprite(vissprite_t * spr)
 ========================
 */
 
-void R_DrawMasked(void)
+void R_DrawMasked()
 {
     vissprite_t *spr;
     drawseg_t *ds;

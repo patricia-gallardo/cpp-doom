@@ -228,7 +228,7 @@ int dclick_use = 1;
 // Bind all of the common controls used by Doom and all other games.
 //
 
-void M_BindBaseControls(void)
+void M_BindBaseControls()
 {
     M_BindIntVariable("key_right", &key_right);
     M_BindIntVariable("key_left", &key_left);
@@ -284,7 +284,7 @@ void M_BindBaseControls(void)
     M_BindIntVariable("key_togglenovert", &key_togglenovert);   // [crispy]
 }
 
-void M_BindHereticControls(void)
+void M_BindHereticControls()
 {
     M_BindIntVariable("key_flyup", &key_flyup);
     M_BindIntVariable("key_flydown", &key_flydown);
@@ -307,7 +307,7 @@ void M_BindHereticControls(void)
     M_BindIntVariable("key_arti_torch", &key_arti_torch);
 }
 
-void M_BindHexenControls(void)
+void M_BindHexenControls()
 {
     // [crispy] *_jump moved to M_BindBaseControls()
 
@@ -321,7 +321,7 @@ void M_BindHexenControls(void)
     M_BindIntVariable("key_arti_invulnerability", &key_arti_invulnerability);
 }
 
-void M_BindStrifeControls(void)
+void M_BindStrifeControls()
 {
     // These are shared with all games, but have different defaults:
     key_message_refresh = '/';
@@ -356,7 +356,7 @@ void M_BindStrifeControls(void)
     M_BindIntVariable("joyb_jump", &joybjump);
 }
 
-void M_BindWeaponControls(void)
+void M_BindWeaponControls()
 {
     M_BindIntVariable("key_weapon1", &key_weapon1);
     M_BindIntVariable("key_weapon2", &key_weapon2);
@@ -377,7 +377,7 @@ void M_BindWeaponControls(void)
     M_BindIntVariable("mouseb_nextweapon", &mousebnextweapon);
 }
 
-void M_BindMapControls(void)
+void M_BindMapControls()
 {
     M_BindIntVariable("key_map_north", &key_map_north);
     M_BindIntVariable("key_map_south", &key_map_south);
@@ -395,7 +395,7 @@ void M_BindMapControls(void)
     M_BindIntVariable("key_map_rotate", &key_map_rotate);   // [crispy]
 }
 
-void M_BindMenuControls(void)
+void M_BindMenuControls()
 {
     M_BindIntVariable("key_menu_activate", &key_menu_activate);
     M_BindIntVariable("key_menu_up", &key_menu_up);
@@ -449,7 +449,7 @@ void M_BindChatControls(unsigned int num_players)
 // platform we are running on.
 //
 
-void M_ApplyPlatformDefaults(void)
+void M_ApplyPlatformDefaults()
 {
     // no-op. Add your platform-specific patches here.
 }

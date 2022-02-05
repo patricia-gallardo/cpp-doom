@@ -37,23 +37,23 @@ extern byte*		dc_source;
 // The span blitting interface.
 // Hook in assembler or system specific BLT
 //  here.
-void 	R_DrawColumn (void);
-void 	R_DrawColumnLow (void);
+void 	R_DrawColumn ();
+void 	R_DrawColumnLow ();
 
 // The Spectre/Invisibility effect.
-//void 	R_DrawFuzzColumn (void);
-//void 	R_DrawFuzzColumnLow (void);
+//void 	R_DrawFuzzColumn ();
+//void 	R_DrawFuzzColumnLow ();
 
 // Draw with color translation tables,
 //  for player sprite rendering,
 //  Green/Red/Blue/Indigo shirts.
-void	R_DrawTranslatedColumn (void);
-void	R_DrawTranslatedColumnLow (void);
+void	R_DrawTranslatedColumn ();
+void	R_DrawTranslatedColumnLow ();
 
 // villsa [STRIFE] - transclucent rendering
-void    R_DrawTLColumn (void);
-void    R_DrawMVisTLColumn (void);
-void    R_DrawTRTLColumn (void);
+void    R_DrawTLColumn ();
+void    R_DrawMVisTLColumn ();
+void    R_DrawTRTLColumn ();
 
 void
 R_VideoErase
@@ -82,10 +82,10 @@ extern char *back_flat; // haleyjd 08/29/10: [STRIFE]
 
 // Span blitting for rows, floor/ceiling.
 // No Sepctre effect needed.
-void 	R_DrawSpan (void);
+void 	R_DrawSpan ();
 
 // Low resolution mode, 160x200?
-void 	R_DrawSpanLow (void);
+void 	R_DrawSpanLow ();
 
 
 void
@@ -96,15 +96,15 @@ R_InitBuffer
 
 // Initialize color translation tables,
 //  for player rendering etc.
-void	R_InitTranslationTables (void);
+void	R_InitTranslationTables ();
 
 
 
 // Rendering function.
-void R_FillBackScreen (void);
+void R_FillBackScreen ();
 
 // If the view size is not full screen, draws a border around it.
-void R_DrawViewBorder (void);
+void R_DrawViewBorder ();
 
 
 

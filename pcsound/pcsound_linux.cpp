@@ -148,7 +148,7 @@ static int PCSound_Linux_Init(pcsound_callback_func callback_func)
     return 1;
 }
 
-static void PCSound_Linux_Shutdown(void)
+static void PCSound_Linux_Shutdown()
 {
     sound_thread_running = 0;
     SDL_WaitThread(sound_thread_handle, NULL);

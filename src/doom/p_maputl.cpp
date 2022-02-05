@@ -523,7 +523,7 @@ intercept_t *       intercept_p;
 
 // [crispy] remove INTERCEPTS limit
 // taken from PrBoom+/src/p_maputl.c:422-433
-static void check_intercept(void)
+static void check_intercept()
 {
     static size_t num_intercepts;
     const size_t  offset = intercept_p - intercepts;

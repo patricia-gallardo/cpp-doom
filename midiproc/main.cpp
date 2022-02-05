@@ -73,7 +73,7 @@ static boolean WriteInt16(CHAR *out, size_t osize, unsigned int in)
 //
 // Cleanly close our in-use pipes.
 //
-static void FreePipes(void)
+static void FreePipes()
 {
     if (midi_process_in != NULL)
     {
@@ -105,7 +105,7 @@ static void UnregisterSong()
 //
 // Cleanly shut down SDL.
 //
-static void ShutdownSDL(void)
+static void ShutdownSDL()
 {
     UnregisterSong();
     Mix_CloseAudio();

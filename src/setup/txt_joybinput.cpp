@@ -91,7 +91,7 @@ static int VirtualButtonForVariable(int *variable)
 // Rearrange joystick button configuration to be in "canonical" form:
 // each joyb* variable should have a value equal to its index in
 // all_joystick_buttons[NUM_VIRTUAL_BUTTONS] above.
-static void CanonicalizeButtons(void)
+static void CanonicalizeButtons()
 {
     int new_mapping[NUM_VIRTUAL_BUTTONS];
     int vbutton;
@@ -187,7 +187,7 @@ static void PromptWindowClosed(TXT_UNCAST_ARG(widget), TXT_UNCAST_ARG(joystick))
     SDL_QuitSubSystem(SDL_INIT_JOYSTICK);
 }
 
-static void OpenErrorWindow(void)
+static void OpenErrorWindow()
 {
     TXT_MessageBox(NULL, "Please configure a controller first!");
 }

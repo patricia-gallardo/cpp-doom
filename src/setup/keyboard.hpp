@@ -16,7 +16,7 @@
 #define SETUP_KEYBOARD_H 
 
 void ConfigKeyboard(void *widget, void *user_data);
-void BindKeyboardVariables(void);
+void BindKeyboardVariables();
 
 extern int vanilla_keyboard_mapping;
 

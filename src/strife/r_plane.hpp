@@ -40,8 +40,8 @@ extern short		ceilingclip[MAXWIDTH];
 extern fixed_t		yslope[MAXHEIGHT];
 extern fixed_t		distscale[MAXWIDTH];
 
-void R_InitPlanes (void);
-void R_ClearPlanes (void);
+void R_InitPlanes ();
+void R_ClearPlanes ();
 
 void
 R_MapPlane
@@ -57,7 +57,7 @@ R_MakeSpans
   int		t2,
   int		b2 );
 
-void R_DrawPlanes (void);
+void R_DrawPlanes ();
 
 visplane_t*
 R_FindPlane
