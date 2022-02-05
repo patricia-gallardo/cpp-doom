@@ -309,7 +309,7 @@ void P_UnsetThingPosition(mobj_t *thing)
     int blockx, blocky;
 
     if (!(thing->flags & MF_NOSECTOR))
-    {   // inert things don't need to be in blockmap
+    { // inert things don't need to be in blockmap
         // unlink from subsector
         if (thing->snext)
             thing->snext->sprev = thing->sprev;
@@ -320,7 +320,7 @@ void P_UnsetThingPosition(mobj_t *thing)
     }
 
     if (!(thing->flags & MF_NOBLOCKMAP))
-    {   // inert things don't need to be in blockmap
+    { // inert things don't need to be in blockmap
         // unlink from block map
         if (thing->bnext)
             thing->bnext->bprev = thing->bprev;
