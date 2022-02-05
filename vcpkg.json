@@ -5,7 +5,12 @@
     "dependencies": [
         "libpng",
         "libsamplerate",
-        "sdl2",
+        {
+            "name": "sdl2",
+            "default-features": false,
+            "features": [ "x11" ],
+            "platform": "linux"
+        },
         "sdl2-mixer",
         "sdl2-net"
     ]
