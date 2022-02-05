@@ -797,13 +797,13 @@ static void InitMapInfo(void)
     int mcmdValue;
     mapInfo_t *info;
     char songMulch[10];
-    char *default_sky_name = DEFAULT_SKY_NAME;
+    char *default_sky_name = const_cast<char *>(DEFAULT_SKY_NAME);
 
     mapMax = 1;
 
     if (gamemode == shareware)
     {
-	default_sky_name = "SKY2";
+	default_sky_name = const_cast<char *>("SKY2");
     }
 
     // Put defaults into MapInfo[0]
