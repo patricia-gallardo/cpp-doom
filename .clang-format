@@ -1,10 +1,11 @@
-BasedOnStyle: WebKit
+BasedOnStyle: Mozilla
+ColumnLimit: 0
 AlignOperands: true
 AllowShortCaseLabelsOnASingleLine: true
 AllowShortFunctionsOnASingleLine: None
 AllowShortIfStatementsOnASingleLine: true
 BraceWrapping:
-  AfterControlStatement: true
+  AfterControlStatement: Always
   AfterEnum: true
   AfterFunction: true
   BeforeElse: true
@@ -15,11 +16,11 @@ DerivePointerAlignment: false
 IndentWrappedFunctionNames: true
 MaxEmptyLinesToKeep: 2
 PointerAlignment: Right
-SortIncludes: false
+SortIncludes: CaseInsensitive
 TabWidth: 8
 UseTab: Never
-AlignConsecutiveAssignments: true
-AlignConsecutiveDeclarations: true
-AlignConsecutiveMacros: true
+AlignConsecutiveAssignments: AcrossEmptyLinesAndComments
+AlignConsecutiveDeclarations: AcrossEmptyLinesAndComments
+AlignConsecutiveMacros: AcrossEmptyLinesAndComments
 AlignTrailingComments: true
 
