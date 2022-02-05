@@ -1,19 +1,19 @@
 #ifdef DOOM
-#define DEFAULT_IWAD   doom2.wad
+#define DEFAULT_IWAD doom2.wad
 #elif HERETIC
-#define DEFAULT_IWAD   heretic.wad
+#define DEFAULT_IWAD heretic.wad
 #elif HEXEN
-#define DEFAULT_IWAD   hexen.wad
+#define DEFAULT_IWAD hexen.wad
 #elif STRIFE
-#define DEFAULT_IWAD   strife1.wad
+#define DEFAULT_IWAD strife1.wad
 #endif
-# LONG_GAME_NAME installation
+#LONG_GAME_NAME installation
 
 These are instructions for how to install and set up LONG_GAME_NAME
 for play.
 
 #if !PRECOMPILED
-# Building LONG_GAME_NAME
+#Building LONG_GAME_NAME
 
 Before you can play LONG_GAME_NAME, you need to compile a binary that
 you can run.  For compilation, LONG_GAME_NAME requires the following
@@ -42,7 +42,7 @@ document.  Please see the GNU autoconf / automake documentation for more
 information.
 
 #endif
-# Obtaining an IWAD file
+#Obtaining an IWAD file
 
 To play, you need an IWAD file.  This file contains the game data
 (graphics, sounds, etc). The full versions of the games are
@@ -153,7 +153,7 @@ using an LHA archive tool (there is one available for almost every
 operating system).
 
 #endif
-# Running the game
+#Running the game
 
 #if __MACOSX__
 Once you have an IWAD file, you can specify its location within the
@@ -213,7 +213,7 @@ do one of the following:
 #endif
 
 #if DOOM
-# Playing with Freedoom
+#Playing with Freedoom
 
 Freedoom is an open content project to create a Doom engine-based game
 that is entirely free software. The website can be found here:
@@ -224,7 +224,7 @@ Check out the [Chocolate Doom wiki’s page on
 Freedoom](https://www.chocolate-doom.org/wiki/index.php/Freedoom)
 for more information.
 
-# Playing with Chex Quest
+#Playing with Chex Quest
 
 Chex Quest is a game based on Doom with some minor modifications that
 was distributed with boxes of Chex cereal in 1997.  It is possible to
@@ -243,7 +243,7 @@ line parameter to specify the Chex Quest IWAD file:
    LONG_EXE_NAME -iwad chex.wad
 
 #endif
-# Installing upgrades
+#Installing upgrades
 
 #if DOOM
 LONG_GAME_NAME requires a version 1.9 IWAD file.  Generally, if you
@@ -297,7 +297,7 @@ As the patches are binary patches that run as DOS executables, you
 will need to use a DOS emulator (such as DOSBox) to run them.
 #endif
 
-# Music support
+#Music support
 
 LONG_GAME_NAME includes OPL emulation code that accurately reproduces
 the way that the in-game music sounded under DOS when using an

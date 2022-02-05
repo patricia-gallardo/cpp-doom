@@ -34,9 +34,8 @@
 #include "txt_strut.hpp"
 #include "txt_table.hpp"
 #include "txt_widget.hpp"
-#include "txt_window_action.hpp"
 #include "txt_window.hpp"
+#include "txt_window_action.hpp"
 
 
 #endif /* #ifndef TEXTSCREEN_H */
-

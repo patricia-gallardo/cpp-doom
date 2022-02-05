@@ -15,85 +15,85 @@
 //     Generate a randomized, private, memorable name for a Player
 //
 
-#include <cstdlib>
-#include <ctime>
 #include "doomtype.hpp"
 #include "m_misc.hpp"
+#include <cstdlib>
+#include <ctime>
 
 static const char *const adjectives[] = {
-    "Grumpy",
-    "Ecstatic",
-    "Surly",
-    "Prepared",
-    "Crafty",
-    "Alert",
-    "Sluggish",
-    "Testy",
-    "Reluctant",
-    "Languid",
-    "Passive",
-    "Pacifist",
-    "Aggressive",
-    "Hostile",
-    "Bubbly",
-    "Giggly",
-    "Laughing",
-    "Crying",
-    "Frowning",
-    "Torpid",
-    "Lethargic",
-    "Manic",
-    "Patient",
-    "Protective",
-    "Philosophical",
-    "Enquiring",
-    "Debating",
-    "Furious",
-    "Laid-Back",
-    "Easy-Going",
-    "Cromulent",
-    "Excitable",
-    "Tired",
-    "Exhausted",
-    "Ruminating",
-    "Redundant",
-    "Sporty",
-    "Ginger",
-    "Scary",
-    "Posh",
-    "Baby",
+  "Grumpy",
+  "Ecstatic",
+  "Surly",
+  "Prepared",
+  "Crafty",
+  "Alert",
+  "Sluggish",
+  "Testy",
+  "Reluctant",
+  "Languid",
+  "Passive",
+  "Pacifist",
+  "Aggressive",
+  "Hostile",
+  "Bubbly",
+  "Giggly",
+  "Laughing",
+  "Crying",
+  "Frowning",
+  "Torpid",
+  "Lethargic",
+  "Manic",
+  "Patient",
+  "Protective",
+  "Philosophical",
+  "Enquiring",
+  "Debating",
+  "Furious",
+  "Laid-Back",
+  "Easy-Going",
+  "Cromulent",
+  "Excitable",
+  "Tired",
+  "Exhausted",
+  "Ruminating",
+  "Redundant",
+  "Sporty",
+  "Ginger",
+  "Scary",
+  "Posh",
+  "Baby",
 };
 
 static const char *const nouns[] = {
-    "Frad",
-    // Doom
-    "Cacodemon",
-    "Arch-Vile",
-    "Cyberdemon",
-    "Imp",
-    "Demon",
-    "Mancubus",
-    "Arachnotron",
-    "Baron",
-    "Knight",
-    "Revenant",
-    // Hexen
-    "Ettin",
-    "Maulotaur",
-    "Centaur",
-    "Afrit",
-    "Serpent",
-    // Heretic
-    "Disciple",
-    "Gargoyle",
-    "Golem",
-    "Lich",
-    // Strife
-    "Sentinel",
-    "Acolyte",
-    "Templar",
-    "Reaver",
-    "Spectre",
+  "Frad",
+  // Doom
+  "Cacodemon",
+  "Arch-Vile",
+  "Cyberdemon",
+  "Imp",
+  "Demon",
+  "Mancubus",
+  "Arachnotron",
+  "Baron",
+  "Knight",
+  "Revenant",
+  // Hexen
+  "Ettin",
+  "Maulotaur",
+  "Centaur",
+  "Afrit",
+  "Serpent",
+  // Heretic
+  "Disciple",
+  "Gargoyle",
+  "Golem",
+  "Lich",
+  // Strife
+  "Sentinel",
+  "Acolyte",
+  "Templar",
+  "Reaver",
+  "Spectre",
 };
 
 /*
@@ -101,18 +101,20 @@ static const char *const nouns[] = {
  * their setup routine. But, the two callers only invoke getRandomPetName
  * once, so the initialization might as well occur then.
  */
-static void InitPetName()
+static void
+  InitPetName()
 {
-    srand((unsigned int)time(NULL));
+  srand((unsigned int)time(NULL));
 }
 
-char *NET_GetRandomPetName()
+char *
+  NET_GetRandomPetName()
 {
-    const char *a, *n;
+  const char *a, *n;
 
-    InitPetName();
-    a = adjectives[rand() % arrlen(adjectives)];
-    n = nouns[rand() % arrlen(nouns)];
+  InitPetName();
+  a = adjectives[rand() % arrlen(adjectives)];
+  n = nouns[rand() % arrlen(nouns)];
 
-    return M_StringJoin(a, " ", n, NULL);
+  return M_StringJoin(a, " ", n, NULL);
 }

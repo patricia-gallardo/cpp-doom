@@ -15,7 +15,6 @@
 //
 
 
-
 // HEADER FILES ------------------------------------------------------------
 
 #include <cstdarg>
@@ -26,81 +25,307 @@
 #include "i_system.hpp"
 #include "i_video.hpp"
 #include "i_videohr.hpp"
+#include "memory.hpp"
 #include "s_sound.hpp"
 #include "st_start.hpp"
-#include "memory.hpp"
 
 
 // MACROS ------------------------------------------------------------------
-#define ST_MAX_NOTCHES		32
-#define ST_NOTCH_WIDTH		16
-#define ST_NOTCH_HEIGHT		23
-#define ST_PROGRESS_X		64      // Start of notches x screen pos.
-#define ST_PROGRESS_Y		441     // Start of notches y screen pos.
+#define ST_MAX_NOTCHES     32
+#define ST_NOTCH_WIDTH     16
+#define ST_NOTCH_HEIGHT    23
+#define ST_PROGRESS_X      64  // Start of notches x screen pos.
+#define ST_PROGRESS_Y      441 // Start of notches y screen pos.
 
-#define ST_NETPROGRESS_X		288
-#define ST_NETPROGRESS_Y		32
-#define ST_NETNOTCH_WIDTH		8
-#define ST_NETNOTCH_HEIGHT		16
-#define ST_MAX_NETNOTCHES		8
+#define ST_NETPROGRESS_X   288
+#define ST_NETPROGRESS_Y   32
+#define ST_NETNOTCH_WIDTH  8
+#define ST_NETNOTCH_HEIGHT 16
+#define ST_MAX_NETNOTCHES  8
 
-byte *ST_LoadScreen();
-void ST_UpdateNotches(int notchPosition);
-void ST_UpdateNetNotches(int notchPosition);
+byte *
+  ST_LoadScreen();
+void
+  ST_UpdateNotches(int notchPosition);
+void
+                   ST_UpdateNetNotches(int notchPosition);
 
 // PRIVATE DATA DEFINITIONS ------------------------------------------------
-static const byte *bitmap = NULL;
-int graphical_startup = 0;
-static boolean using_graphical_startup;
+static const byte *bitmap            = NULL;
+int                graphical_startup = 0;
+static boolean     using_graphical_startup;
 
-static const byte notchTable[] = {
-    // plane 0
-    0x00, 0x80, 0x01, 0x80, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x02, 0x40,
-    0x02, 0x40, 0x02, 0x40, 0x02, 0x40, 0x02, 0x40, 0x02, 0x40, 0x03, 0xC0,
-    0x0F, 0x90, 0x1B, 0x68, 0x3D, 0xBC, 0x3F, 0xFC, 0x20, 0x08, 0x20, 0x08,
-    0x2F, 0xD8, 0x37, 0xD8, 0x37, 0xF8, 0x1F, 0xF8, 0x1C, 0x50,
+static const byte  notchTable[] = {
+  // plane 0
+  0x00,
+  0x80,
+  0x01,
+  0x80,
+  0x00,
+  0x00,
+  0x00,
+  0x00,
+  0x00,
+  0x00,
+  0x02,
+  0x40,
+  0x02,
+  0x40,
+  0x02,
+  0x40,
+  0x02,
+  0x40,
+  0x02,
+  0x40,
+  0x02,
+  0x40,
+  0x03,
+  0xC0,
+  0x0F,
+  0x90,
+  0x1B,
+  0x68,
+  0x3D,
+  0xBC,
+  0x3F,
+  0xFC,
+  0x20,
+  0x08,
+  0x20,
+  0x08,
+  0x2F,
+  0xD8,
+  0x37,
+  0xD8,
+  0x37,
+  0xF8,
+  0x1F,
+  0xF8,
+  0x1C,
+  0x50,
 
-    // plane 1
-    0x00, 0x80, 0x01, 0x80, 0x00, 0x00, 0x00, 0x00, 0x02, 0x40, 0x02, 0x40,
-    0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x40, 0x01, 0xA0,
-    0x30, 0x6C, 0x24, 0x94, 0x42, 0x4A, 0x60, 0x0E, 0x60, 0x06, 0x7F, 0xF6,
-    0x7F, 0xF6, 0x7F, 0xF6, 0x5E, 0xF6, 0x38, 0x16, 0x23, 0xAC,
+  // plane 1
+  0x00,
+  0x80,
+  0x01,
+  0x80,
+  0x00,
+  0x00,
+  0x00,
+  0x00,
+  0x02,
+  0x40,
+  0x02,
+  0x40,
+  0x00,
+  0x00,
+  0x00,
+  0x00,
+  0x00,
+  0x00,
+  0x00,
+  0x00,
+  0x00,
+  0x40,
+  0x01,
+  0xA0,
+  0x30,
+  0x6C,
+  0x24,
+  0x94,
+  0x42,
+  0x4A,
+  0x60,
+  0x0E,
+  0x60,
+  0x06,
+  0x7F,
+  0xF6,
+  0x7F,
+  0xF6,
+  0x7F,
+  0xF6,
+  0x5E,
+  0xF6,
+  0x38,
+  0x16,
+  0x23,
+  0xAC,
 
-    // plane 2
-    0x00, 0x80, 0x01, 0x80, 0x01, 0x80, 0x00, 0x00, 0x02, 0x40, 0x02, 0x40,
-    0x02, 0x40, 0x02, 0x40, 0x02, 0x40, 0x02, 0x40, 0x02, 0x40, 0x03, 0xE0,
-    0x30, 0x6C, 0x24, 0x94, 0x52, 0x6A, 0x7F, 0xFE, 0x60, 0x0E, 0x60, 0x0E,
-    0x6F, 0xD6, 0x77, 0xD6, 0x56, 0xF6, 0x38, 0x36, 0x23, 0xAC,
+  // plane 2
+  0x00,
+  0x80,
+  0x01,
+  0x80,
+  0x01,
+  0x80,
+  0x00,
+  0x00,
+  0x02,
+  0x40,
+  0x02,
+  0x40,
+  0x02,
+  0x40,
+  0x02,
+  0x40,
+  0x02,
+  0x40,
+  0x02,
+  0x40,
+  0x02,
+  0x40,
+  0x03,
+  0xE0,
+  0x30,
+  0x6C,
+  0x24,
+  0x94,
+  0x52,
+  0x6A,
+  0x7F,
+  0xFE,
+  0x60,
+  0x0E,
+  0x60,
+  0x0E,
+  0x6F,
+  0xD6,
+  0x77,
+  0xD6,
+  0x56,
+  0xF6,
+  0x38,
+  0x36,
+  0x23,
+  0xAC,
 
-    // plane 3
-    0x00, 0x00, 0x00, 0x00, 0x01, 0x80, 0x01, 0x80, 0x01, 0x80, 0x01, 0x80,
-    0x03, 0xC0, 0x03, 0xC0, 0x03, 0xC0, 0x03, 0xC0, 0x03, 0x80, 0x02, 0x40,
-    0x0F, 0x90, 0x1B, 0x68, 0x3D, 0xB4, 0x1F, 0xF0, 0x1F, 0xF8, 0x1F, 0xF8,
-    0x10, 0x28, 0x08, 0x28, 0x29, 0x08, 0x07, 0xE8, 0x1C, 0x50
+  // plane 3
+  0x00,
+  0x00,
+  0x00,
+  0x00,
+  0x01,
+  0x80,
+  0x01,
+  0x80,
+  0x01,
+  0x80,
+  0x01,
+  0x80,
+  0x03,
+  0xC0,
+  0x03,
+  0xC0,
+  0x03,
+  0xC0,
+  0x03,
+  0xC0,
+  0x03,
+  0x80,
+  0x02,
+  0x40,
+  0x0F,
+  0x90,
+  0x1B,
+  0x68,
+  0x3D,
+  0xB4,
+  0x1F,
+  0xF0,
+  0x1F,
+  0xF8,
+  0x1F,
+  0xF8,
+  0x10,
+  0x28,
+  0x08,
+  0x28,
+  0x29,
+  0x08,
+  0x07,
+  0xE8,
+  0x1C,
+  0x50
 };
 
 
 // Red Network Progress notches
 static const byte netnotchTable[] = {
-    // plane 0
-    0x80, 0x50, 0xD0, 0xf0, 0xF0, 0xF0, 0xF0, 0xF0, 0xF0, 0xD0, 0xF0, 0xC0,
-    0x70, 0x50, 0x80, 0x60,
+  // plane 0
+  0x80,
+  0x50,
+  0xD0,
+  0xf0,
+  0xF0,
+  0xF0,
+  0xF0,
+  0xF0,
+  0xF0,
+  0xD0,
+  0xF0,
+  0xC0,
+  0x70,
+  0x50,
+  0x80,
+  0x60,
 
-    // plane 1
-    0x60, 0xE0, 0xE0, 0xA0, 0xA0, 0xA0, 0xE0, 0xA0, 0xA0, 0xA0, 0xE0, 0xA0,
-    0xA0, 0xE0, 0x60, 0x00,
+  // plane 1
+  0x60,
+  0xE0,
+  0xE0,
+  0xA0,
+  0xA0,
+  0xA0,
+  0xE0,
+  0xA0,
+  0xA0,
+  0xA0,
+  0xE0,
+  0xA0,
+  0xA0,
+  0xE0,
+  0x60,
+  0x00,
 
-    // plane 2
-    0x80, 0x10, 0x10, 0x10, 0x10, 0x10, 0x10, 0x10, 0x10, 0x10, 0x10, 0x00,
-    0x10, 0x10, 0x80, 0x60,
+  // plane 2
+  0x80,
+  0x10,
+  0x10,
+  0x10,
+  0x10,
+  0x10,
+  0x10,
+  0x10,
+  0x10,
+  0x10,
+  0x10,
+  0x00,
+  0x10,
+  0x10,
+  0x80,
+  0x60,
 
-    // plane 3
-    0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
-    0x00, 0x00, 0x00, 0x00
+  // plane 3
+  0x00,
+  0x00,
+  0x00,
+  0x00,
+  0x00,
+  0x00,
+  0x00,
+  0x00,
+  0x00,
+  0x00,
+  0x00,
+  0x00,
+  0x00,
+  0x00,
+  0x00,
+  0x00
 };
 
 // CODE --------------------------------------------------------------------
-
 
 
 //--------------------------------------------------------------------------
@@ -116,48 +341,50 @@ static const byte netnotchTable[] = {
 //
 //==========================================================================
 
-void ST_Init()
+void
+  ST_Init()
 {
-    byte *pal;
-    byte *buffer;
-    
-    using_graphical_startup = false;
+  byte *pal;
+  byte *buffer;
 
-    if (graphical_startup && !debugmode && !testcontrols)
+  using_graphical_startup = false;
+
+  if (graphical_startup && !debugmode && !testcontrols)
+  {
+    I_SetWindowTitleHR("Hexen startup - " PACKAGE_STRING);
+
+    // Set 640x480x16 mode
+    if (I_SetVideoModeHR())
     {
-        I_SetWindowTitleHR("Hexen startup - " PACKAGE_STRING);
+      using_graphical_startup = true;
+      I_InitWindowIcon();
 
-        // Set 640x480x16 mode
-        if (I_SetVideoModeHR())
-        {
-            using_graphical_startup = true;
-            I_InitWindowIcon();
+      S_StartSongName("orb", true);
 
-            S_StartSongName("orb", true);
+      I_ClearScreenHR();
+      I_InitPaletteHR();
+      I_BlackPaletteHR();
 
-            I_ClearScreenHR();
-            I_InitPaletteHR();
-            I_BlackPaletteHR();
+      // Load graphic
+      buffer = ST_LoadScreen();
+      pal    = buffer;
+      bitmap = buffer + 16 * 3;
 
-            // Load graphic
-            buffer = ST_LoadScreen();
-            pal = buffer;
-            bitmap = buffer + 16 * 3;
-
-            I_SlamHR(bitmap);
-            I_FadeToPaletteHR(pal);
-            Z_Free(buffer);
-        }
+      I_SlamHR(bitmap);
+      I_FadeToPaletteHR(pal);
+      Z_Free(buffer);
     }
+  }
 }
 
-void ST_Done()
+void
+  ST_Done()
 {
-    if (using_graphical_startup)
-    {
-        I_ClearScreenHR();
-        I_UnsetVideoModeHR();
-    }
+  if (using_graphical_startup)
+  {
+    I_ClearScreenHR();
+    I_UnsetVideoModeHR();
+  }
 }
 
 
@@ -167,11 +394,12 @@ void ST_Done()
 //
 //==========================================================================
 
-void ST_UpdateNotches(int notchPosition)
+void
+  ST_UpdateNotches(int notchPosition)
 {
-    int x = ST_PROGRESS_X + notchPosition * ST_NOTCH_WIDTH;
-    int y = ST_PROGRESS_Y;
-    I_SlamBlockHR(x, y, ST_NOTCH_WIDTH, ST_NOTCH_HEIGHT, notchTable);
+  int x = ST_PROGRESS_X + notchPosition * ST_NOTCH_WIDTH;
+  int y = ST_PROGRESS_Y;
+  I_SlamBlockHR(x, y, ST_NOTCH_WIDTH, ST_NOTCH_HEIGHT, notchTable);
 }
 
 
@@ -181,11 +409,12 @@ void ST_UpdateNotches(int notchPosition)
 //
 //==========================================================================
 
-void ST_UpdateNetNotches(int notchPosition)
+void
+  ST_UpdateNetNotches(int notchPosition)
 {
-    int x = ST_NETPROGRESS_X + notchPosition * ST_NETNOTCH_WIDTH;
-    int y = ST_NETPROGRESS_Y;
-    I_SlamBlockHR(x, y, ST_NETNOTCH_WIDTH, ST_NETNOTCH_HEIGHT, netnotchTable);
+  int x = ST_NETPROGRESS_X + notchPosition * ST_NETNOTCH_WIDTH;
+  int y = ST_NETPROGRESS_Y;
+  I_SlamBlockHR(x, y, ST_NETNOTCH_WIDTH, ST_NETNOTCH_HEIGHT, netnotchTable);
 }
 
 
@@ -195,28 +424,29 @@ void ST_UpdateNetNotches(int notchPosition)
 //
 //==========================================================================
 
-void ST_Progress()
+void
+  ST_Progress()
 {
-    // Check for ESC press -- during startup all events eaten here
-    if (I_CheckAbortHR())
+  // Check for ESC press -- during startup all events eaten here
+  if (I_CheckAbortHR())
+  {
+    I_Quit();
+  }
+
+  if (using_graphical_startup)
+  {
+    static int notchPosition = 0;
+
+    if (notchPosition < ST_MAX_NOTCHES)
     {
-        I_Quit();
+      ST_UpdateNotches(notchPosition);
+      S_StartSound(NULL, SFX_STARTUP_TICK);
+      // I_Sleep(1000);
+      notchPosition++;
     }
+  }
 
-    if (using_graphical_startup)
-    {
-        static int notchPosition = 0;
-
-        if (notchPosition < ST_MAX_NOTCHES)
-        {
-            ST_UpdateNotches(notchPosition);
-            S_StartSound(NULL, SFX_STARTUP_TICK);
-            //I_Sleep(1000);
-            notchPosition++;
-        }
-    }
-
-    printf(".");
+  printf(".");
 }
 
 
@@ -226,21 +456,22 @@ void ST_Progress()
 //
 //==========================================================================
 
-void ST_NetProgress()
+void
+  ST_NetProgress()
 {
-    printf("*");
+  printf("*");
 
-    if (using_graphical_startup)
+  if (using_graphical_startup)
+  {
+    static int netnotchPosition = 0;
+
+    if (netnotchPosition < ST_MAX_NETNOTCHES)
     {
-        static int netnotchPosition = 0;
-
-        if (netnotchPosition < ST_MAX_NETNOTCHES)
-        {
-            ST_UpdateNetNotches(netnotchPosition);
-            S_StartSound(NULL, SFX_DRIP);
-            netnotchPosition++;
-        }
+      ST_UpdateNetNotches(netnotchPosition);
+      S_StartSound(NULL, SFX_DRIP);
+      netnotchPosition++;
     }
+  }
 }
 
 
@@ -249,12 +480,13 @@ void ST_NetProgress()
 // ST_NetDone - net progress complete
 //
 //==========================================================================
-void ST_NetDone()
+void
+  ST_NetDone()
 {
-    if (using_graphical_startup)
-    {
-        S_StartSound(NULL, SFX_PICKUP_WEAPON);
-    }
+  if (using_graphical_startup)
+  {
+    S_StartSound(NULL, SFX_PICKUP_WEAPON);
+  }
 }
 
 
@@ -264,13 +496,14 @@ void ST_NetDone()
 //
 //==========================================================================
 
-void ST_Message(const char *message, ...)
+void
+  ST_Message(const char *message, ...)
 {
-    va_list argptr;
+  va_list argptr;
 
-    va_start(argptr, message);
-    vprintf(message, argptr);
-    va_end(argptr);
+  va_start(argptr, message);
+  vprintf(message, argptr);
+  va_end(argptr);
 }
 
 //==========================================================================
@@ -279,15 +512,15 @@ void ST_Message(const char *message, ...)
 //
 //==========================================================================
 
-void ST_RealMessage(const char *message, ...)
+void
+  ST_RealMessage(const char *message, ...)
 {
-    va_list argptr;
+  va_list argptr;
 
-    va_start(argptr, message);
-    vprintf(message, argptr);
-    va_end(argptr);
+  va_start(argptr, message);
+  vprintf(message, argptr);
+  va_end(argptr);
 }
-
 
 
 //==========================================================================
@@ -297,15 +530,15 @@ void ST_RealMessage(const char *message, ...)
 //==========================================================================
 
 
-byte *ST_LoadScreen()
+byte *
+  ST_LoadScreen()
 {
-    int length, lump;
-    byte *buffer;
+  int   length, lump;
+  byte *buffer;
 
-    lump = W_GetNumForName("STARTUP");
-    length = W_LumpLength(lump);
-    buffer = zmalloc<byte *>(length, PU_STATIC, NULL);
-    W_ReadLump(lump, buffer);
-    return (buffer);
+  lump   = W_GetNumForName("STARTUP");
+  length = W_LumpLength(lump);
+  buffer = zmalloc<byte *>(length, PU_STATIC, NULL);
+  W_ReadLump(lump, buffer);
+  return (buffer);
 }
-

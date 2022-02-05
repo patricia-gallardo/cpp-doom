@@ -23,16 +23,18 @@ using pcsound_callback_func = void (*)(int *, int *);
 // Initialise the PC speaker subsystem.  The given function is called
 // periodically to request more sound data to play.
 
-int PCSound_Init(pcsound_callback_func callback_func);
+int
+  PCSound_Init(pcsound_callback_func callback_func);
 
 // Shut down the PC speaker subsystem.
 
-void PCSound_Shutdown();
+void
+  PCSound_Shutdown();
 
-// Set the preferred output sample rate when emulating a PC speaker. 
+// Set the preferred output sample rate when emulating a PC speaker.
 // This must be called before PCSound_Init.
 
-void PCSound_SetSampleRate(int rate);
+void
+  PCSound_SetSampleRate(int rate);
 
 #endif /* #ifndef PCSOUND_H */
-

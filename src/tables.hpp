@@ -38,41 +38,41 @@
 
 #include "m_fixed.hpp"
 
-#define FINEANGLES 8192
-#define FINEMASK   (FINEANGLES - 1)
+#define FINEANGLES       8192
+#define FINEMASK         (FINEANGLES - 1)
 
 
 // 0x100000000 to 0x2000
 #define ANGLETOFINESHIFT 19
 
 // Effective size is 10240.
-extern const fixed_t finesine[5 * FINEANGLES / 4];
+extern const fixed_t  finesine[5 * FINEANGLES / 4];
 
 // Re-use data, is just PI/2 pahse shift.
 extern const fixed_t *finecosine;
 
 
 // Effective size is 4096.
-extern const fixed_t finetangent[FINEANGLES / 2];
+extern const fixed_t  finetangent[FINEANGLES / 2];
 
 // Gamma correction tables.
-extern const byte gammatable[5][256];
+extern const byte     gammatable[5][256];
 
 // Binary Angle Measument, BAM.
 
-#define ANG45   0x20000000
-#define ANG90   0x40000000
-#define ANG180  0x80000000
-#define ANG270  0xc0000000
-#define ANG_MAX 0xffffffff
+#define ANG45      0x20000000
+#define ANG90      0x40000000
+#define ANG180     0x80000000
+#define ANG270     0xc0000000
+#define ANG_MAX    0xffffffff
 
-#define ANG1  (ANG45 / 45)
-#define ANG60 (ANG180 / 3)
+#define ANG1       (ANG45 / 45)
+#define ANG60      (ANG180 / 3)
 
 // Heretic code uses this definition as though it represents one
 // degree, but it is not!  This is actually ~1.40 degrees.
 
-#define ANG1_X 0x01000000
+#define ANG1_X     0x01000000
 
 #define SLOPERANGE 2048
 #define SLOPEBITS  11
@@ -89,8 +89,10 @@ extern const angle_t tantoangle[SLOPERANGE + 1];
 
 // Utility function,
 //  called by R_PointToAngle.
-int SlopeDiv(unsigned int num, unsigned int den);
-int SlopeDivCrispy(unsigned int num, unsigned int den);
+int
+  SlopeDiv(unsigned int num, unsigned int den);
+int
+  SlopeDivCrispy(unsigned int num, unsigned int den);
 
 
 #endif

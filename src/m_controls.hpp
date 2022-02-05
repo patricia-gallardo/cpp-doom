@@ -179,15 +179,24 @@ extern int joybautomap;
 
 extern int dclick_use;
 
-void M_BindBaseControls();
-void M_BindHereticControls();
-void M_BindHexenControls();
-void M_BindStrifeControls();
-void M_BindWeaponControls();
-void M_BindMapControls();
-void M_BindMenuControls();
-void M_BindChatControls(unsigned int num_players);
+void
+  M_BindBaseControls();
+void
+  M_BindHereticControls();
+void
+  M_BindHexenControls();
+void
+  M_BindStrifeControls();
+void
+  M_BindWeaponControls();
+void
+  M_BindMapControls();
+void
+  M_BindMenuControls();
+void
+  M_BindChatControls(unsigned int num_players);
 
-void M_ApplyPlatformDefaults();
+void
+  M_ApplyPlatformDefaults();
 
 #endif /* #ifndef __M_CONTROLS_H__ */

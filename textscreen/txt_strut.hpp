@@ -33,11 +33,10 @@ using txt_strut_t = struct txt_strut_s;
 
 #include "txt_widget.hpp"
 
-struct txt_strut_s
-{
-    txt_widget_t widget;
-    int width;
-    int height;
+struct txt_strut_s {
+  txt_widget_t widget;
+  int          width;
+  int          height;
 };
 
 /**
@@ -47,8 +46,7 @@ struct txt_strut_s
  * @param height     Height of the strut, in characters.
  */
 
-txt_strut_t *TXT_NewStrut(int width, int height);
+txt_strut_t *
+  TXT_NewStrut(int width, int height);
 
 #endif /* #ifndef TXT_STRUT_H */
-
-

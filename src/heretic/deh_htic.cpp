@@ -19,26 +19,26 @@
 #include <cstring>
 
 #include "deh_defs.hpp"
-#include "deh_main.hpp"
 #include "deh_htic.hpp"
+#include "deh_main.hpp"
 #include "info.hpp"
 #include "m_argv.hpp"
 
-const char *deh_signatures[] =
-{
-    "Patch File for HHE v1.0",
-    "Patch File for HHE v1.1",
-    NULL
+const char *deh_signatures[] = {
+  "Patch File for HHE v1.0",
+  "Patch File for HHE v1.1",
+  NULL
 };
 
-static const char *hhe_versions[] =
-{
-    "1.0", "1.2", "1.3"
+static const char *hhe_versions[] = {
+  "1.0",
+  "1.2",
+  "1.3"
 };
 
 // Version number for patches.
 
-deh_hhe_version_t deh_hhe_version = deh_hhe_1_0;
+deh_hhe_version_t    deh_hhe_version = deh_hhe_1_0;
 
 // deh_ammo.c:
 extern deh_section_t deh_section_ammo;
@@ -59,137 +59,140 @@ extern deh_section_t deh_section_weapon;
 // List of section types:
 //
 
-deh_section_t *deh_section_types[] =
-{
-    &deh_section_ammo,
-    &deh_section_frame,
-//    &deh_section_pointer, TODO
-    &deh_section_sound,
-    &deh_section_heretic_text,
-    &deh_section_thing,
-    &deh_section_weapon,
-    NULL
+deh_section_t       *deh_section_types[] = {
+  &deh_section_ammo,
+  &deh_section_frame,
+  //    &deh_section_pointer, TODO
+  &deh_section_sound,
+  &deh_section_heretic_text,
+  &deh_section_thing,
+  &deh_section_weapon,
+  NULL
 };
 
-static void SetHHEVersionByName(char *name)
+static void
+  SetHHEVersionByName(char *name)
 {
-    int i;
+  int i;
 
-    for (i=0; i<arrlen(hhe_versions); ++i)
+  for (i = 0; i < arrlen(hhe_versions); ++i)
+  {
+    if (!strcmp(hhe_versions[i], name))
     {
-        if (!strcmp(hhe_versions[i], name))
-        {
-            deh_hhe_version = static_cast<deh_hhe_version_t>(i);
-            return;
-        }
+      deh_hhe_version = static_cast<deh_hhe_version_t>(i);
+      return;
     }
+  }
 
-    fprintf(stderr, "Unknown Heretic version: %s\n", name);
-    fprintf(stderr, "Valid versions:\n");
+  fprintf(stderr, "Unknown Heretic version: %s\n", name);
+  fprintf(stderr, "Valid versions:\n");
 
-    for (i=0; i<arrlen(hhe_versions); ++i)
-    {
-        fprintf(stderr, "\t%s\n", hhe_versions[i]);
-    }
+  for (i = 0; i < arrlen(hhe_versions); ++i)
+  {
+    fprintf(stderr, "\t%s\n", hhe_versions[i]);
+  }
 }
 
 // Initialize Heretic(HHE)-specific dehacked bits.
 
-void DEH_HereticInit()
+void
+  DEH_HereticInit()
 {
-    int i;
+  int i;
 
-    //!
-    // @arg <version>
-    // @category mod
-    //
-    // Select the Heretic version number that was used to generate the
-    // HHE patch to be loaded.  Patches for each of the Vanilla
-    // Heretic versions (1.0, 1.2, 1.3) can be loaded, but the correct
-    // version number must be specified.
+  //!
+  // @arg <version>
+  // @category mod
+  //
+  // Select the Heretic version number that was used to generate the
+  // HHE patch to be loaded.  Patches for each of the Vanilla
+  // Heretic versions (1.0, 1.2, 1.3) can be loaded, but the correct
+  // version number must be specified.
 
-    i = M_CheckParm("-hhever");
+  i = M_CheckParm("-hhever");
 
-    if (i > 0)
-    {
-        SetHHEVersionByName(myargv[i + 1]);
-    }
+  if (i > 0)
+  {
+    SetHHEVersionByName(myargv[i + 1]);
+  }
 
-    // For v1.0 patches, we must apply a slight change to the states[]
-    // table.  The table was changed between 1.0 and 1.3 to add two extra
-    // frames to the player "burning death" animation.
-    //
-    // If we are using a v1.0 patch, we must change the table to cut
-    // these out again.
+  // For v1.0 patches, we must apply a slight change to the states[]
+  // table.  The table was changed between 1.0 and 1.3 to add two extra
+  // frames to the player "burning death" animation.
+  //
+  // If we are using a v1.0 patch, we must change the table to cut
+  // these out again.
 
-    if (deh_hhe_version < deh_hhe_1_2)
-    {
-        states[S_PLAY_FDTH18].nextstate = S_NULL;
-    }
+  if (deh_hhe_version < deh_hhe_1_2)
+  {
+    states[S_PLAY_FDTH18].nextstate = S_NULL;
+  }
 }
 
-int DEH_MapHereticThingType(int type)
+int
+  DEH_MapHereticThingType(int type)
 {
-    // Heretic 1.0 had an extra entry in the mobjinfo table that was removed
-    // in later versions. This has been added back into the table for
-    // compatibility. However, it also means that if we're loading a patch
-    // for a later version, we need to translate to the index used internally.
+  // Heretic 1.0 had an extra entry in the mobjinfo table that was removed
+  // in later versions. This has been added back into the table for
+  // compatibility. However, it also means that if we're loading a patch
+  // for a later version, we need to translate to the index used internally.
 
-    if (deh_hhe_version > deh_hhe_1_0)
+  if (deh_hhe_version > deh_hhe_1_0)
+  {
+    if (type >= MT_PHOENIXFX_REMOVED)
     {
-        if (type >= MT_PHOENIXFX_REMOVED)
-        {
-            ++type;
-        }
+      ++type;
     }
+  }
 
-    return type;
+  return type;
 }
 
-int DEH_MapHereticFrameNumber(int frame)
+int
+  DEH_MapHereticFrameNumber(int frame)
 {
-    if (deh_hhe_version < deh_hhe_1_2)
+  if (deh_hhe_version < deh_hhe_1_2)
+  {
+    // Between Heretic 1.0 and 1.2, two new frames
+    // were added to the "states" table, to extend the "flame death"
+    // animation displayed when the player is killed by fire.  Therefore,
+    // we must map Heretic 1.0 frame numbers to corresponding indexes
+    // for our state table.
+
+    if (frame >= S_PLAY_FDTH19)
     {
-        // Between Heretic 1.0 and 1.2, two new frames
-        // were added to the "states" table, to extend the "flame death"
-        // animation displayed when the player is killed by fire.  Therefore,
-        // we must map Heretic 1.0 frame numbers to corresponding indexes
-        // for our state table.
-
-        if (frame >= S_PLAY_FDTH19)
-        {
-            frame = (frame - S_PLAY_FDTH19) + S_BLOODYSKULL1;
-        }
+      frame = (frame - S_PLAY_FDTH19) + S_BLOODYSKULL1;
     }
-    else
+  }
+  else
+  {
+    // After Heretic 1.2, three unused frames were removed from the
+    // states table, unused phoenix rod frames.  Our state table includes
+    // these missing states for backwards compatibility.  We must therefore
+    // adjust frame numbers for v1.2/v1.3 to corresponding indexes for
+    // our state table.
+
+    if (frame >= S_PHOENIXFXIX_1)
     {
-        // After Heretic 1.2, three unused frames were removed from the
-        // states table, unused phoenix rod frames.  Our state table includes
-        // these missing states for backwards compatibility.  We must therefore
-        // adjust frame numbers for v1.2/v1.3 to corresponding indexes for
-        // our state table.
-
-        if (frame >= S_PHOENIXFXIX_1)
-        {
-            frame = (frame - S_PHOENIXFXIX_1) + S_PHOENIXPUFF1;
-        }
+      frame = (frame - S_PHOENIXFXIX_1) + S_PHOENIXPUFF1;
     }
+  }
 
-    return frame;
+  return frame;
 }
 
-void DEH_SuggestHereticVersion(deh_hhe_version_t version)
+void
+  DEH_SuggestHereticVersion(deh_hhe_version_t version)
 {
-    fprintf(stderr,
-    "\n"
-    "This patch may be for version %s. You are currently running in\n"
-    "Heretic %s mode. For %s mode, add this to your command line:\n"
-    "\n"
-    "\t-hhever %s\n"
-    "\n",
-    hhe_versions[version],
-    hhe_versions[deh_hhe_version],
-    hhe_versions[version],
-    hhe_versions[version]);
+  fprintf(stderr,
+          "\n"
+          "This patch may be for version %s. You are currently running in\n"
+          "Heretic %s mode. For %s mode, add this to your command line:\n"
+          "\n"
+          "\t-hhever %s\n"
+          "\n",
+          hhe_versions[version],
+          hhe_versions[deh_hhe_version],
+          hhe_versions[version],
+          hhe_versions[version]);
 }
-

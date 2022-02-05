@@ -17,126 +17,133 @@
 
 #include "doomkeys.hpp"
 
-#include "txt_radiobutton.hpp"
+#include "memory.hpp"
 #include "txt_gui.hpp"
 #include "txt_io.hpp"
 #include "txt_main.hpp"
+#include "txt_radiobutton.hpp"
 #include "txt_utf8.hpp"
 #include "txt_window.hpp"
-#include "memory.hpp"
 
-static void TXT_RadioButtonSizeCalc(TXT_UNCAST_ARG(radiobutton))
+static void
+  TXT_RadioButtonSizeCalc(TXT_UNCAST_ARG(radiobutton))
 {
-    TXT_CAST_ARG(txt_radiobutton_t, radiobutton);
+  TXT_CAST_ARG(txt_radiobutton_t, radiobutton);
 
-    // Minimum width is the string length + right-side spaces for padding
+  // Minimum width is the string length + right-side spaces for padding
 
-    radiobutton->widget.w = TXT_UTF8_Strlen(radiobutton->label) + 5;
-    radiobutton->widget.h = 1;
+  radiobutton->widget.w = TXT_UTF8_Strlen(radiobutton->label) + 5;
+  radiobutton->widget.h = 1;
 }
 
-static void TXT_RadioButtonDrawer(TXT_UNCAST_ARG(radiobutton))
+static void
+  TXT_RadioButtonDrawer(TXT_UNCAST_ARG(radiobutton))
 {
-    TXT_CAST_ARG(txt_radiobutton_t, radiobutton);
-    txt_saved_colors_t colors;
-    int i;
-    int w;
+  TXT_CAST_ARG(txt_radiobutton_t, radiobutton);
+  txt_saved_colors_t colors;
+  int                i;
+  int                w;
 
-    w = radiobutton->widget.w;
+  w = radiobutton->widget.w;
 
-    TXT_SaveColors(&colors);
-    TXT_FGColor(TXT_COLOR_BRIGHT_CYAN);
-    TXT_DrawString("(");
+  TXT_SaveColors(&colors);
+  TXT_FGColor(TXT_COLOR_BRIGHT_CYAN);
+  TXT_DrawString("(");
 
-    TXT_FGColor(TXT_COLOR_BRIGHT_WHITE);
+  TXT_FGColor(TXT_COLOR_BRIGHT_WHITE);
 
-    if (*radiobutton->variable == radiobutton->value)
-    {
-        TXT_DrawCodePageString("\x07");
-    }
-    else
-    {
-        TXT_DrawString(" ");
-    }
+  if (*radiobutton->variable == radiobutton->value)
+  {
+    TXT_DrawCodePageString("\x07");
+  }
+  else
+  {
+    TXT_DrawString(" ");
+  }
 
-    TXT_FGColor(TXT_COLOR_BRIGHT_CYAN);
+  TXT_FGColor(TXT_COLOR_BRIGHT_CYAN);
 
-    TXT_DrawString(") ");
+  TXT_DrawString(") ");
 
-    TXT_RestoreColors(&colors);
-    TXT_SetWidgetBG(radiobutton);
+  TXT_RestoreColors(&colors);
+  TXT_SetWidgetBG(radiobutton);
 
-    TXT_DrawString(radiobutton->label);
+  TXT_DrawString(radiobutton->label);
 
-    for (i=TXT_UTF8_Strlen(radiobutton->label); i < w-5; ++i)
-    {
-        TXT_DrawString(" ");
-    }
+  for (i = TXT_UTF8_Strlen(radiobutton->label); i < w - 5; ++i)
+  {
+    TXT_DrawString(" ");
+  }
 }
 
-static void TXT_RadioButtonDestructor(TXT_UNCAST_ARG(radiobutton))
+static void
+  TXT_RadioButtonDestructor(TXT_UNCAST_ARG(radiobutton))
 {
-    TXT_CAST_ARG(txt_radiobutton_t, radiobutton);
+  TXT_CAST_ARG(txt_radiobutton_t, radiobutton);
 
-    free(radiobutton->label);
+  free(radiobutton->label);
 }
 
-static int TXT_RadioButtonKeyPress(TXT_UNCAST_ARG(radiobutton), int key)
+static int
+  TXT_RadioButtonKeyPress(TXT_UNCAST_ARG(radiobutton), int key)
 {
-    TXT_CAST_ARG(txt_radiobutton_t, radiobutton);
+  TXT_CAST_ARG(txt_radiobutton_t, radiobutton);
 
-    if (key == KEY_ENTER || key == ' ')
+  if (key == KEY_ENTER || key == ' ')
+  {
+    if (*radiobutton->variable != radiobutton->value)
     {
-        if (*radiobutton->variable != radiobutton->value)
-        {
-            *radiobutton->variable = radiobutton->value;
-            TXT_EmitSignal(radiobutton, "selected");
-        }
-        return 1;
+      *radiobutton->variable = radiobutton->value;
+      TXT_EmitSignal(radiobutton, "selected");
     }
-    
-    return 0;
+    return 1;
+  }
+
+  return 0;
 }
 
-static void TXT_RadioButtonMousePress(TXT_UNCAST_ARG(radiobutton), 
-                                      int x, int y, int b)
+static void
+  TXT_RadioButtonMousePress(TXT_UNCAST_ARG(radiobutton),
+                            int x,
+                            int y,
+                            int b)
 {
-    TXT_CAST_ARG(txt_radiobutton_t, radiobutton);
+  TXT_CAST_ARG(txt_radiobutton_t, radiobutton);
 
-    if (b == TXT_MOUSE_LEFT)
-    {
-        // Equivalent to pressing enter
+  if (b == TXT_MOUSE_LEFT)
+  {
+    // Equivalent to pressing enter
 
-        TXT_RadioButtonKeyPress(radiobutton, KEY_ENTER);
-    }
+    TXT_RadioButtonKeyPress(radiobutton, KEY_ENTER);
+  }
 }
 
-txt_widget_class_t txt_radiobutton_class =
-{
-    TXT_AlwaysSelectable,
-    TXT_RadioButtonSizeCalc,
-    TXT_RadioButtonDrawer,
-    TXT_RadioButtonKeyPress,
-    TXT_RadioButtonDestructor,
-    TXT_RadioButtonMousePress,
-    NULL,
+txt_widget_class_t txt_radiobutton_class = {
+  TXT_AlwaysSelectable,
+  TXT_RadioButtonSizeCalc,
+  TXT_RadioButtonDrawer,
+  TXT_RadioButtonKeyPress,
+  TXT_RadioButtonDestructor,
+  TXT_RadioButtonMousePress,
+  NULL,
 };
 
-txt_radiobutton_t *TXT_NewRadioButton(const char *label, int *variable, int value)
+txt_radiobutton_t *
+  TXT_NewRadioButton(const char *label, int *variable, int value)
 {
-    auto *radiobutton = create_struct<txt_radiobutton_t>();
+  auto *radiobutton = create_struct<txt_radiobutton_t>();
 
-    TXT_InitWidget(radiobutton, &txt_radiobutton_class);
-    radiobutton->label = strdup(label);
-    radiobutton->variable = variable;
-    radiobutton->value = value;
+  TXT_InitWidget(radiobutton, &txt_radiobutton_class);
+  radiobutton->label    = strdup(label);
+  radiobutton->variable = variable;
+  radiobutton->value    = value;
 
-    return radiobutton;
+  return radiobutton;
 }
 
-void TXT_SetRadioButtonLabel(txt_radiobutton_t *radiobutton, const char *value)
+void
+  TXT_SetRadioButtonLabel(txt_radiobutton_t *radiobutton, const char *value)
 {
-    free(radiobutton->label);
-    radiobutton->label = strdup(value);
+  free(radiobutton->label);
+  radiobutton->label = strdup(value);
 }
-

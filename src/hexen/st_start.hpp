@@ -26,16 +26,23 @@
 // TYPES -------------------------------------------------------------------
 
 // PUBLIC FUNCTION PROTOTYPES ----------------------------------------------
-extern void ST_Init();
-extern void ST_Done();
-extern void ST_Message(const char *message, ...) PRINTF_ATTR(1, 2);
-extern void ST_RealMessage(const char *message, ...) PRINTF_ATTR(1, 2);
-extern void ST_Progress();
-extern void ST_NetProgress();
-extern void ST_NetDone();
+extern void
+  ST_Init();
+extern void
+  ST_Done();
+extern void
+  ST_Message(const char *message, ...) PRINTF_ATTR(1, 2);
+extern void
+  ST_RealMessage(const char *message, ...) PRINTF_ATTR(1, 2);
+extern void
+  ST_Progress();
+extern void
+  ST_NetProgress();
+extern void
+           ST_NetDone();
 
 // PUBLIC DATA DECLARATIONS ------------------------------------------------
- 
+
 extern int graphical_startup;
 
 #endif

@@ -25,19 +25,19 @@
 #include <w_wad.hpp>
 #include <z_zone.hpp>
 
-#include "lump.hpp"
 #include "doomstat.hpp"
+#include "lump.hpp"
 
 // swirl factors determine the number of waves per flat width
 
 // 1 cycle per 64 units
-#define swirlfactor (8192 / 64)
+#define swirlfactor  (8192 / 64)
 
 // 1 cycle per 32 units (2 in 64)
 #define swirlfactor2 (8192 / 32)
 
-#define SEQUENCE 1024
-#define FLATSIZE (64 * 64)
+#define SEQUENCE     1024
+#define FLATSIZE     (64 * 64)
 
 static int *offsets;
 static int *offset;
@@ -46,79 +46,81 @@ static int *offset;
 #define AMP2  2
 #define SPEED 40
 
-void R_InitDistortedFlats()
+void
+  R_InitDistortedFlats()
 {
-    if (!offsets)
+  if (!offsets)
+  {
+    int i;
+
+    offsets = static_cast<decltype(offsets)>(I_Realloc(NULL, SEQUENCE * FLATSIZE * sizeof(*offsets)));
+    offset  = offsets;
+
+    for (i = 0; i < SEQUENCE; i++)
     {
-        int i;
+      int x, y;
 
-        offsets = static_cast<decltype(offsets)>(I_Realloc(NULL, SEQUENCE * FLATSIZE * sizeof(*offsets)));
-        offset  = offsets;
-
-        for (i = 0; i < SEQUENCE; i++)
+      for (x = 0; x < 64; x++)
+      {
+        for (y = 0; y < 64; y++)
         {
-            int x, y;
+          int x1, y1;
+          int sinvalue, sinvalue2;
 
-            for (x = 0; x < 64; x++)
-            {
-                for (y = 0; y < 64; y++)
-                {
-                    int x1, y1;
-                    int sinvalue, sinvalue2;
+          sinvalue  = (y * swirlfactor + i * SPEED * 5 + 900) & 8191;
+          sinvalue2 = (x * swirlfactor2 + i * SPEED * 4 + 300) & 8191;
+          x1        = x + 128
+               + ((finesine[sinvalue] * AMP) >> FRACBITS)
+               + ((finesine[sinvalue2] * AMP2) >> FRACBITS);
 
-                    sinvalue  = (y * swirlfactor + i * SPEED * 5 + 900) & 8191;
-                    sinvalue2 = (x * swirlfactor2 + i * SPEED * 4 + 300) & 8191;
-                    x1        = x + 128
-                         + ((finesine[sinvalue] * AMP) >> FRACBITS)
-                         + ((finesine[sinvalue2] * AMP2) >> FRACBITS);
+          sinvalue  = (x * swirlfactor + i * SPEED * 3 + 700) & 8191;
+          sinvalue2 = (y * swirlfactor2 + i * SPEED * 4 + 1200) & 8191;
+          y1        = y + 128
+               + ((finesine[sinvalue] * AMP) >> FRACBITS)
+               + ((finesine[sinvalue2] * AMP2) >> FRACBITS);
 
-                    sinvalue  = (x * swirlfactor + i * SPEED * 3 + 700) & 8191;
-                    sinvalue2 = (y * swirlfactor2 + i * SPEED * 4 + 1200) & 8191;
-                    y1        = y + 128
-                         + ((finesine[sinvalue] * AMP) >> FRACBITS)
-                         + ((finesine[sinvalue2] * AMP2) >> FRACBITS);
+          x1 &= 63;
+          y1 &= 63;
 
-                    x1 &= 63;
-                    y1 &= 63;
-
-                    offset[(y << 6) + x] = (y1 << 6) + x1;
-                }
-            }
-
-            offset += FLATSIZE;
+          offset[(y << 6) + x] = (y1 << 6) + x1;
         }
+      }
+
+      offset += FLATSIZE;
     }
+  }
 }
 
-char *R_DistortedFlat(int flatnum)
+char *
+  R_DistortedFlat(int flatnum)
 {
-    static int  swirltic  = -1;
-    static int  swirlflat = -1;
-    static char distortedflat[FLATSIZE];
+  static int  swirltic  = -1;
+  static int  swirlflat = -1;
+  static char distortedflat[FLATSIZE];
 
-    if (swirltic != leveltime)
+  if (swirltic != leveltime)
+  {
+    offset    = offsets + ((leveltime & (SEQUENCE - 1)) * FLATSIZE);
+
+    swirltic  = leveltime;
+    swirlflat = -1;
+  }
+
+  if (swirlflat != flatnum)
+  {
+    int   i;
+
+    auto *normalflat = cache_lump_num<char *>(flatnum, PU_STATIC);
+
+    for (i = 0; i < FLATSIZE; i++)
     {
-        offset = offsets + ((leveltime & (SEQUENCE - 1)) * FLATSIZE);
-
-        swirltic  = leveltime;
-        swirlflat = -1;
+      distortedflat[i] = normalflat[offset[i]];
     }
 
-    if (swirlflat != flatnum)
-    {
-        int i;
+    W_ReleaseLumpNum(flatnum);
 
-        auto *normalflat = cache_lump_num<char *>(flatnum, PU_STATIC);
+    swirlflat = flatnum;
+  }
 
-        for (i = 0; i < FLATSIZE; i++)
-        {
-            distortedflat[i] = normalflat[offset[i]];
-        }
-
-        W_ReleaseLumpNum(flatnum);
-
-        swirlflat = flatnum;
-    }
-
-    return distortedflat;
+  return distortedflat;
 }

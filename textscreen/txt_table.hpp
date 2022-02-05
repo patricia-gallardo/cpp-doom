@@ -33,20 +33,20 @@
  * empty and the widget in the cell above it can overflow down into it.
  */
 
-#define TXT_TABLE_OVERFLOW_DOWN (&txt_table_overflow_down)
+#define TXT_TABLE_OVERFLOW_DOWN  (&txt_table_overflow_down)
 
 /**
  * Magic value that if given to @ref TXT_AddWidget(), will pad out all
  * columns until the end of line.
  */
-#define TXT_TABLE_EOL (&txt_table_eol)
+#define TXT_TABLE_EOL            (&txt_table_eol)
 
 /**
  * Indicates an empty space to @ref TXT_AddWidgets(). Equivalent to
  * TXT_AddWidget(table, NULL), except that NULL is used by TXT_AddWidgets()
  * to indicate the end of input.
  */
-#define TXT_TABLE_EMPTY (&txt_table_empty)
+#define TXT_TABLE_EMPTY          (&txt_table_empty)
 
 /**
  * Table widget.
@@ -66,30 +66,30 @@ using txt_table_t = struct txt_table_s;
 
 #include "txt_widget.hpp"
 
-struct txt_table_s
-{
-    txt_widget_t widget;
+struct txt_table_s {
+  txt_widget_t   widget;
 
-    // Widgets in this table
-    // The widget at (x,y) in the table is widgets[columns * y + x]
-    txt_widget_t **widgets;
-    int num_widgets;
+  // Widgets in this table
+  // The widget at (x,y) in the table is widgets[columns * y + x]
+  txt_widget_t **widgets;
+  int            num_widgets;
 
-    // Number of columns
-    int columns;
+  // Number of columns
+  int            columns;
 
-    // Currently selected:
-    int selected_x;
-    int selected_y;
+  // Currently selected:
+  int            selected_x;
+  int            selected_y;
 };
 
 extern txt_widget_class_t txt_table_class;
-extern txt_widget_t txt_table_overflow_right;
-extern txt_widget_t txt_table_overflow_down;
-extern txt_widget_t txt_table_eol;
-extern txt_widget_t txt_table_empty;
+extern txt_widget_t       txt_table_overflow_right;
+extern txt_widget_t       txt_table_overflow_down;
+extern txt_widget_t       txt_table_eol;
+extern txt_widget_t       txt_table_empty;
 
-void TXT_InitTable(txt_table_t *table, int columns);
+void
+  TXT_InitTable(txt_table_t *table, int columns);
 
 /**
  * Create a new table.
@@ -98,7 +98,8 @@ void TXT_InitTable(txt_table_t *table, int columns);
  * @return              Pointer to the new table structure.
  */
 
-txt_table_t *TXT_NewTable(int columns);
+txt_table_t *
+  TXT_NewTable(int columns);
 
 /**
  * Create a new table and populate it with provided widgets.
@@ -110,7 +111,8 @@ txt_table_t *TXT_NewTable(int columns);
  * @return              Pointer to the new table structure.
  */
 
-txt_table_t *TXT_MakeTable(int columns, ...);
+txt_table_t *
+  TXT_MakeTable(int columns, ...);
 
 /**
  * Create a table containing the specified widgets packed horizontally,
@@ -123,7 +125,8 @@ txt_table_t *TXT_MakeTable(int columns, ...);
  * @return             Pointer to the new table structure.
  */
 
-txt_table_t *TXT_NewHorizBox(TXT_UNCAST_ARG(first_widget), ...);
+txt_table_t             *
+  TXT_NewHorizBox(TXT_UNCAST_ARG(first_widget), ...);
 
 /**
  * Get the currently selected widget within a table.
@@ -153,7 +156,7 @@ txt_widget_t *TXT_GetSelectedWidget(TXT_UNCAST_ARG(table));
  * @param widget       The widget to add.
  */
 
-void TXT_AddWidget(TXT_UNCAST_ARG(table), TXT_UNCAST_ARG(widget));
+void          TXT_AddWidget(TXT_UNCAST_ARG(table), TXT_UNCAST_ARG(widget));
 
 /**
  * Add multiple widgets to a table.
@@ -166,7 +169,8 @@ void TXT_AddWidget(TXT_UNCAST_ARG(table), TXT_UNCAST_ARG(widget));
  * @param table        The table.
  */
 
-void TXT_AddWidgets(TXT_UNCAST_ARG(table), ...);
+void
+    TXT_AddWidgets(TXT_UNCAST_ARG(table), ...);
 
 /**
  * Select the given widget that is contained within the specified
@@ -198,7 +202,8 @@ int TXT_SelectWidget(TXT_UNCAST_ARG(table), TXT_UNCAST_ARG(widget));
  * @param new_columns   The new number of columns.
  */
 
-void TXT_SetTableColumns(TXT_UNCAST_ARG(table), int new_columns);
+void
+  TXT_SetTableColumns(TXT_UNCAST_ARG(table), int new_columns);
 
 /**
  * Set the widths of the columns of the table.
@@ -217,7 +222,8 @@ void TXT_SetTableColumns(TXT_UNCAST_ARG(table), int new_columns);
  * @param table     The table.
  */
 
-void TXT_SetColumnWidths(TXT_UNCAST_ARG(table), ...);
+void
+     TXT_SetColumnWidths(TXT_UNCAST_ARG(table), ...);
 
 /**
  * Remove all widgets from a table.
@@ -238,8 +244,7 @@ void TXT_ClearTable(TXT_UNCAST_ARG(table));
  * @return         Non-zero if the selection has been changed.
  */
 
-int TXT_PageTable(TXT_UNCAST_ARG(table), int pagex, int pagey);
+int
+  TXT_PageTable(TXT_UNCAST_ARG(table), int pagex, int pagey);
 
 #endif /* #ifndef TXT_TABLE_T */
-
-

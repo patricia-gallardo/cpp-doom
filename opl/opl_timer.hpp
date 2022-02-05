@@ -20,14 +20,21 @@
 
 #include "opl.hpp"
 
-int OPL_Timer_StartThread();
-void OPL_Timer_StopThread();
-void OPL_Timer_SetCallback(uint64_t us, opl_callback_t callback, void *data);
-void OPL_Timer_ClearCallbacks();
-void OPL_Timer_Lock();
-void OPL_Timer_Unlock();
-void OPL_Timer_SetPaused(int paused);
-void OPL_Timer_AdjustCallbacks(float factor);
+int
+  OPL_Timer_StartThread();
+void
+  OPL_Timer_StopThread();
+void
+  OPL_Timer_SetCallback(uint64_t us, opl_callback_t callback, void *data);
+void
+  OPL_Timer_ClearCallbacks();
+void
+  OPL_Timer_Lock();
+void
+  OPL_Timer_Unlock();
+void
+  OPL_Timer_SetPaused(int paused);
+void
+  OPL_Timer_AdjustCallbacks(float factor);
 
 #endif /* #ifndef OPL_TIMER_H */
-

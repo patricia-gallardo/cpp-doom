@@ -23,6 +23,7 @@
 
 #include "doomtype.hpp"
 
-extern void NET_WaitForLaunch();
+extern void
+  NET_WaitForLaunch();
 
 #endif /* #ifndef NET_GUI_H */

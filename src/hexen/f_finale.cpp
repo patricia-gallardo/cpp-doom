@@ -18,20 +18,20 @@
 // HEADER FILES ------------------------------------------------------------
 
 #include "h2def.hpp"
+#include "i_swap.hpp"
 #include "i_system.hpp"
 #include "i_video.hpp"
-#include "p_local.hpp"
-#include "s_sound.hpp"
-#include <cctype>
-#include "v_video.hpp"
-#include "i_swap.hpp"
 #include "lump.hpp"
 #include "memory.hpp"
+#include "p_local.hpp"
+#include "s_sound.hpp"
+#include "v_video.hpp"
+#include <cctype>
 
 // MACROS ------------------------------------------------------------------
 
-#define	TEXTSPEED	3
-#define	TEXTWAIT	250
+#define TEXTSPEED 3
+#define TEXTWAIT  250
 
 // TYPES -------------------------------------------------------------------
 
@@ -41,32 +41,38 @@
 
 // PRIVATE FUNCTION PROTOTYPES ---------------------------------------------
 
-static void TextWrite();
-static void DrawPic();
-static void InitializeFade(boolean fadeIn);
-static void DeInitializeFade();
-static void FadePic();
-static char *GetFinaleText(int sequence);
+static void
+  TextWrite();
+static void
+  DrawPic();
+static void
+  InitializeFade(boolean fadeIn);
+static void
+  DeInitializeFade();
+static void
+  FadePic();
+static char               *
+  GetFinaleText(int sequence);
 
 // EXTERNAL DATA DECLARATIONS ----------------------------------------------
 
-extern boolean automapactive;
-extern boolean viewactive;
+extern boolean  automapactive;
+extern boolean  viewactive;
 
 // PUBLIC DATA DECLARATIONS ------------------------------------------------
 
 // PRIVATE DATA DEFINITIONS ------------------------------------------------
 
-static int FinaleStage;
-static int FinaleCount;
-static int FinaleEndCount;
-static int FinaleLumpNum;
-static int FontABaseLump;
-static char *FinaleText;
+static int      FinaleStage;
+static int      FinaleCount;
+static int      FinaleEndCount;
+static int      FinaleLumpNum;
+static int      FontABaseLump;
+static char    *FinaleText;
 
 static fixed_t *Palette;
 static fixed_t *PaletteDelta;
-static byte *RealPalette;
+static byte    *RealPalette;
 
 // CODE --------------------------------------------------------------------
 
@@ -76,24 +82,25 @@ static byte *RealPalette;
 //
 //===========================================================================
 
-void F_StartFinale()
+void
+  F_StartFinale()
 {
-    gameaction = ga_nothing;
-    gamestate = GS_FINALE;
-    viewactive = false;
-    automapactive = false;
-    P_ClearMessage(&players[consoleplayer]);
+  gameaction    = ga_nothing;
+  gamestate     = GS_FINALE;
+  viewactive    = false;
+  automapactive = false;
+  P_ClearMessage(&players[consoleplayer]);
 
-    FinaleStage = 0;
-    FinaleCount = 0;
-    FinaleText = GetFinaleText(0);
-    FinaleEndCount = 70;
-    FinaleLumpNum = W_GetNumForName("FINALE1");
-    FontABaseLump = W_GetNumForName("FONTA_S") + 1;
-    InitializeFade(1);
+  FinaleStage    = 0;
+  FinaleCount    = 0;
+  FinaleText     = GetFinaleText(0);
+  FinaleEndCount = 70;
+  FinaleLumpNum  = W_GetNumForName("FINALE1");
+  FontABaseLump  = W_GetNumForName("FONTA_S") + 1;
+  InitializeFade(1);
 
-//      S_ChangeMusic(mus_victor, true);
-    S_StartSongName("hall", false);     // don't loop the song
+  //      S_ChangeMusic(mus_victor, true);
+  S_StartSongName("hall", false); // don't loop the song
 }
 
 //===========================================================================
@@ -102,9 +109,10 @@ void F_StartFinale()
 //
 //===========================================================================
 
-boolean F_Responder(event_t * event)
+boolean
+  F_Responder(event_t *event)
 {
-    return false;
+  return false;
 }
 
 //===========================================================================
@@ -113,49 +121,50 @@ boolean F_Responder(event_t * event)
 //
 //===========================================================================
 
-void F_Ticker()
+void
+  F_Ticker()
 {
-    FinaleCount++;
-    if (FinaleStage < 5 && FinaleCount >= FinaleEndCount)
+  FinaleCount++;
+  if (FinaleStage < 5 && FinaleCount >= FinaleEndCount)
+  {
+    FinaleCount = 0;
+    FinaleStage++;
+    switch (FinaleStage)
     {
-        FinaleCount = 0;
-        FinaleStage++;
-        switch (FinaleStage)
-        {
-            case 1:            // Text 1
-                FinaleEndCount = strlen(FinaleText) * TEXTSPEED + TEXTWAIT;
-                break;
-            case 2:            // Pic 2, Text 2
-                FinaleText = GetFinaleText(1);
-                FinaleEndCount = strlen(FinaleText) * TEXTSPEED + TEXTWAIT;
-                FinaleLumpNum = W_GetNumForName("FINALE2");
-                S_StartSongName("orb", false);
-                break;
-            case 3:            // Pic 2 -- Fade out
-                FinaleEndCount = 70;
-                DeInitializeFade();
-                InitializeFade(0);
-                break;
-            case 4:            // Pic 3 -- Fade in
-                FinaleLumpNum = W_GetNumForName("FINALE3");
-                FinaleEndCount = 71;
-                DeInitializeFade();
-                InitializeFade(1);
-                S_StartSongName("chess", true);
-                break;
-            case 5:            // Pic 3 , Text 3
-                FinaleText = GetFinaleText(2);
-                DeInitializeFade();
-                break;
-            default:
-                break;
-        }
-        return;
+      case 1: // Text 1
+        FinaleEndCount = strlen(FinaleText) * TEXTSPEED + TEXTWAIT;
+        break;
+      case 2: // Pic 2, Text 2
+        FinaleText     = GetFinaleText(1);
+        FinaleEndCount = strlen(FinaleText) * TEXTSPEED + TEXTWAIT;
+        FinaleLumpNum  = W_GetNumForName("FINALE2");
+        S_StartSongName("orb", false);
+        break;
+      case 3: // Pic 2 -- Fade out
+        FinaleEndCount = 70;
+        DeInitializeFade();
+        InitializeFade(0);
+        break;
+      case 4: // Pic 3 -- Fade in
+        FinaleLumpNum  = W_GetNumForName("FINALE3");
+        FinaleEndCount = 71;
+        DeInitializeFade();
+        InitializeFade(1);
+        S_StartSongName("chess", true);
+        break;
+      case 5: // Pic 3 , Text 3
+        FinaleText = GetFinaleText(2);
+        DeInitializeFade();
+        break;
+      default:
+        break;
     }
-    if (FinaleStage == 0 || FinaleStage == 3 || FinaleStage == 4)
-    {
-        FadePic();
-    }
+    return;
+  }
+  if (FinaleStage == 0 || FinaleStage == 3 || FinaleStage == 4)
+  {
+    FadePic();
+  }
 }
 
 //===========================================================================
@@ -164,74 +173,74 @@ void F_Ticker()
 //
 //===========================================================================
 
-static void TextWrite()
+static void
+  TextWrite()
 {
-    int count;
-    char *ch;
-    int c;
-    int cx, cy;
-    patch_t *w;
+  int      count;
+  char    *ch;
+  int      c;
+  int      cx, cy;
+  patch_t *w;
 
-    V_CopyScaledBuffer(I_VideoBuffer, cache_lump_num<pixel_t *>(FinaleLumpNum, PU_CACHE),
-           ORIGWIDTH * ORIGHEIGHT);
-    if (FinaleStage == 5)
-    {                           // Chess pic, draw the correct character graphic
-        if (netgame)
-        {
-            V_DrawPatch(20, 0, cache_lump_name<patch_t *>("chessall", PU_CACHE));
-        }
-        else if (PlayerClass[consoleplayer])
-        {
-            V_DrawPatch(60, 0, cache_lump_num<patch_t *>(W_GetNumForName("chessc") + PlayerClass[consoleplayer] - 1, PU_CACHE));
-        }
-    }
-    // Draw the actual text
-    if (FinaleStage == 5)
+  V_CopyScaledBuffer(I_VideoBuffer, cache_lump_num<pixel_t *>(FinaleLumpNum, PU_CACHE), ORIGWIDTH * ORIGHEIGHT);
+  if (FinaleStage == 5)
+  { // Chess pic, draw the correct character graphic
+    if (netgame)
     {
-        cy = 135;
+      V_DrawPatch(20, 0, cache_lump_name<patch_t *>("chessall", PU_CACHE));
     }
-    else
+    else if (PlayerClass[consoleplayer])
     {
-        cy = 5;
+      V_DrawPatch(60, 0, cache_lump_num<patch_t *>(W_GetNumForName("chessc") + PlayerClass[consoleplayer] - 1, PU_CACHE));
     }
-    cx = 20;
-    ch = FinaleText;
-    count = (FinaleCount - 10) / TEXTSPEED;
-    if (count < 0)
+  }
+  // Draw the actual text
+  if (FinaleStage == 5)
+  {
+    cy = 135;
+  }
+  else
+  {
+    cy = 5;
+  }
+  cx    = 20;
+  ch    = FinaleText;
+  count = (FinaleCount - 10) / TEXTSPEED;
+  if (count < 0)
+  {
+    count = 0;
+  }
+  for (; count; count--)
+  {
+    c = *ch++;
+    if (!c)
     {
-        count = 0;
+      break;
     }
-    for (; count; count--)
+    if (c == '\n')
     {
-        c = *ch++;
-        if (!c)
-        {
-            break;
-        }
-        if (c == '\n')
-        {
-            cx = 20;
-            cy += 9;
-            continue;
-        }
-        if (c < 32)
-        {
-            continue;
-        }
-        c = toupper(c);
-        if (c == 32)
-        {
-            cx += 5;
-            continue;
-        }
-        w = cache_lump_num<patch_t *>(FontABaseLump + c - 33, PU_CACHE);
-        if (cx + SHORT(w->width) > SCREENWIDTH)
-        {
-            break;
-        }
-        V_DrawPatch(cx, cy, w);
-        cx += SHORT(w->width);
+      cx = 20;
+      cy += 9;
+      continue;
     }
+    if (c < 32)
+    {
+      continue;
+    }
+    c = toupper(c);
+    if (c == 32)
+    {
+      cx += 5;
+      continue;
+    }
+    w = cache_lump_num<patch_t *>(FontABaseLump + c - 33, PU_CACHE);
+    if (cx + SHORT(w->width) > SCREENWIDTH)
+    {
+      break;
+    }
+    V_DrawPatch(cx, cy, w);
+    cx += SHORT(w->width);
+  }
 }
 
 //===========================================================================
@@ -240,36 +249,39 @@ static void TextWrite()
 //
 //===========================================================================
 
-static void InitializeFade(boolean fadeIn)
+static void
+  InitializeFade(boolean fadeIn)
 {
-    unsigned i;
+  unsigned i;
 
-    Palette = zmalloc<fixed_t *>(768 * sizeof(fixed_t), PU_STATIC, 0);
-    PaletteDelta = zmalloc<fixed_t *>(768 * sizeof(fixed_t), PU_STATIC, 0);
-    RealPalette = zmalloc<byte *>(768 * sizeof(byte), PU_STATIC, 0);
+  Palette      = zmalloc<fixed_t *>(768 * sizeof(fixed_t), PU_STATIC, 0);
+  PaletteDelta = zmalloc<fixed_t *>(768 * sizeof(fixed_t), PU_STATIC, 0);
+  RealPalette  = zmalloc<byte *>(768 * sizeof(byte), PU_STATIC, 0);
 
-    if (fadeIn)
+  if (fadeIn)
+  {
+    memset(RealPalette, 0, 768 * sizeof(byte));
+    for (i = 0; i < 768; i++)
     {
-        memset(RealPalette, 0, 768 * sizeof(byte));
-        for (i = 0; i < 768; i++)
-        {
-            Palette[i] = 0;
-            PaletteDelta[i] = FixedDiv((*((byte *) cache_lump_name<patch_t *>("playpal",
-                                                                   PU_CACHE) +
-                                          i)) << FRACBITS, 70 * FRACUNIT);
-        }
+      Palette[i]      = 0;
+      PaletteDelta[i] = FixedDiv((*((byte *)cache_lump_name<patch_t *>("playpal",
+                                                                       PU_CACHE)
+                                    + i))
+                                   << FRACBITS,
+                                 70 * FRACUNIT);
     }
-    else
+  }
+  else
+  {
+    for (i = 0; i < 768; i++)
     {
-        for (i = 0; i < 768; i++)
-        {
-            RealPalette[i] =
-                *((byte *) cache_lump_name<patch_t *>("playpal", PU_CACHE) + i);
-            Palette[i] = RealPalette[i] << FRACBITS;
-            PaletteDelta[i] = FixedDiv(Palette[i], -70 * FRACUNIT);
-        }
+      RealPalette[i] =
+        *((byte *)cache_lump_name<patch_t *>("playpal", PU_CACHE) + i);
+      Palette[i]      = RealPalette[i] << FRACBITS;
+      PaletteDelta[i] = FixedDiv(Palette[i], -70 * FRACUNIT);
     }
-    I_SetPalette(RealPalette);
+  }
+  I_SetPalette(RealPalette);
 }
 
 //===========================================================================
@@ -278,11 +290,12 @@ static void InitializeFade(boolean fadeIn)
 //
 //===========================================================================
 
-static void DeInitializeFade()
+static void
+  DeInitializeFade()
 {
-    Z_Free(Palette);
-    Z_Free(PaletteDelta);
-    Z_Free(RealPalette);
+  Z_Free(Palette);
+  Z_Free(PaletteDelta);
+  Z_Free(RealPalette);
 }
 
 //===========================================================================
@@ -291,16 +304,17 @@ static void DeInitializeFade()
 //
 //===========================================================================
 
-static void FadePic()
+static void
+  FadePic()
 {
-    unsigned i;
+  unsigned i;
 
-    for (i = 0; i < 768; i++)
-    {
-        Palette[i] += PaletteDelta[i];
-        RealPalette[i] = Palette[i] >> FRACBITS;
-    }
-    I_SetPalette(RealPalette);
+  for (i = 0; i < 768; i++)
+  {
+    Palette[i] += PaletteDelta[i];
+    RealPalette[i] = Palette[i] >> FRACBITS;
+  }
+  I_SetPalette(RealPalette);
 }
 
 //===========================================================================
@@ -309,21 +323,21 @@ static void FadePic()
 //
 //===========================================================================
 
-static void DrawPic()
+static void
+  DrawPic()
 {
-    V_CopyScaledBuffer(I_VideoBuffer, cache_lump_num<pixel_t *>(FinaleLumpNum, PU_CACHE),
-           ORIGWIDTH * ORIGHEIGHT);
-    if (FinaleStage == 4 || FinaleStage == 5)
-    {                           // Chess pic, draw the correct character graphic
-        if (netgame)
-        {
-            V_DrawPatch(20, 0, cache_lump_name<patch_t *>("chessall", PU_CACHE));
-        }
-        else if (PlayerClass[consoleplayer])
-        {
-            V_DrawPatch(60, 0, cache_lump_num<patch_t *>(W_GetNumForName("chessc") + PlayerClass[consoleplayer] - 1, PU_CACHE));
-        }
+  V_CopyScaledBuffer(I_VideoBuffer, cache_lump_num<pixel_t *>(FinaleLumpNum, PU_CACHE), ORIGWIDTH * ORIGHEIGHT);
+  if (FinaleStage == 4 || FinaleStage == 5)
+  { // Chess pic, draw the correct character graphic
+    if (netgame)
+    {
+      V_DrawPatch(20, 0, cache_lump_name<patch_t *>("chessall", PU_CACHE));
     }
+    else if (PlayerClass[consoleplayer])
+    {
+      V_DrawPatch(60, 0, cache_lump_num<patch_t *>(W_GetNumForName("chessc") + PlayerClass[consoleplayer] - 1, PU_CACHE));
+    }
+  }
 }
 
 //===========================================================================
@@ -332,28 +346,29 @@ static void DrawPic()
 //
 //===========================================================================
 
-void F_Drawer()
+void
+  F_Drawer()
 {
-    switch (FinaleStage)
-    {
-        case 0:                // Fade in initial finale screen
-            DrawPic();
-            break;
-        case 1:
-        case 2:
-            TextWrite();
-            break;
-        case 3:                // Fade screen out
-            DrawPic();
-            break;
-        case 4:                // Fade in chess screen
-            DrawPic();
-            break;
-        case 5:
-            TextWrite();
-            break;
-    }
-    UpdateState |= I_FULLSCRN;
+  switch (FinaleStage)
+  {
+    case 0: // Fade in initial finale screen
+      DrawPic();
+      break;
+    case 1:
+    case 2:
+      TextWrite();
+      break;
+    case 3: // Fade screen out
+      DrawPic();
+      break;
+    case 4: // Fade in chess screen
+      DrawPic();
+      break;
+    case 5:
+      TextWrite();
+      break;
+  }
+  UpdateState |= I_FULLSCRN;
 }
 
 //==========================================================================
@@ -362,25 +377,26 @@ void F_Drawer()
 //
 //==========================================================================
 
-static char *GetFinaleText(int sequence)
+static char *
+  GetFinaleText(int sequence)
 {
-    const char *msgLumpName;
-    int msgSize;
-    int msgLump;
-    static const char *winMsgLumpNames[] = {
-        "win1msg",
-        "win2msg",
-        "win3msg"
-    };
+  const char        *msgLumpName;
+  int                msgSize;
+  int                msgLump;
+  static const char *winMsgLumpNames[] = {
+    "win1msg",
+    "win2msg",
+    "win3msg"
+  };
 
-    msgLumpName = winMsgLumpNames[sequence];
-    msgLump = W_GetNumForName(msgLumpName);
-    msgSize = W_LumpLength(msgLump);
-    if (msgSize >= MAX_INTRMSN_MESSAGE_SIZE)
-    {
-        I_Error("Finale message too long (%s)", msgLumpName);
-    }
-    W_ReadLump(msgLump, ClusterMessage);
-    ClusterMessage[msgSize] = 0;        // Append terminator
-    return ClusterMessage;
+  msgLumpName = winMsgLumpNames[sequence];
+  msgLump     = W_GetNumForName(msgLumpName);
+  msgSize     = W_LumpLength(msgLump);
+  if (msgSize >= MAX_INTRMSN_MESSAGE_SIZE)
+  {
+    I_Error("Finale message too long (%s)", msgLumpName);
+  }
+  W_ReadLump(msgLump, ClusterMessage);
+  ClusterMessage[msgSize] = 0; // Append terminator
+  return ClusterMessage;
 }

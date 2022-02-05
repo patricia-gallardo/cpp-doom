@@ -1,15 +1,16 @@
-#!/bin/bash
+#!/ bin / bash
 #
-# Copy a program to the specified destination, along
-# with libraries it depends upon.
+#Copy a program to the specified destination, along
+#with libraries it depends       upon.
 
-src_bin=$1
-dest_dir=$2
+src_bin                                           = $1
+                                         dest_dir = $2
 
-# Returns true if the specified file is a dylib.
+#Returns true if the specified file is a dylib.
 
-is_dylib() {
-	case "$1" in
+                                         is_dylib()
+{
+        case "$1" in
 		*.dylib)
 			true
 			;;
@@ -19,8 +20,8 @@ is_dylib() {
 	esac
 }
 
-# Returns true if the specified file is in a system location
-# (/System or /usr):
+#Returns true if the specified file is in a system location
+#(/ System or / usr):
 
 is_sys_lib() {
 	case "$1" in
@@ -65,36 +66,35 @@ install_with_deps() {
 	# Copy libraries that this file depends on:
 
 	otool -L "$src_file" | tail -n +2 | sed 's/^.//; s/ (.*//' | while read; do
-		
-		# Don't copy system libraries
+
+#Don't copy system libraries
 
 		if is_sys_lib "$REPLY"; then
 			continue
 		fi
 
-		#echo "    - $bin_name depends on $REPLY"
+#echo "    - $bin_name depends on $REPLY"
 
-		# Copy this library into the package, and:
-		# recursively install any libraries that _this_ library depends on:
+#Copy this library into the                                    package, and:
+#recursively install any libraries that _this_ library depends on:
 
 		install_with_deps "$REPLY"
 
-		# Change destination binary to depend on the
-		# copy inside the package:
+#Change destination binary to depend on the
+#copy inside the                        package:
 
 		lib_name=$(basename "$REPLY")
 		install_name_tool -change "$REPLY" "@executable_path/$lib_name" \
 		                  "$dest_file"
 	done
 
-	# If this is a library that we have installed, change its id:
+#If this is a library that we have installed, change its id:
 
 	if is_dylib "$dest_file"; then
 		install_name_tool -id "@executable_path/$bin_name" "$dest_file"
 	fi
 }
 
-# Install the file, and recursively install any libraries:
+#Install the file, and recursively install any libraries:
 
 install_with_deps "$src_bin"
-

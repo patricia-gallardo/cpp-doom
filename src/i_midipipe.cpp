@@ -51,7 +51,7 @@
 boolean midi_server_initialized = false;
 
 // True if the current track is being handled via the MIDI server.
-boolean midi_server_registered = false;
+boolean midi_server_registered  = false;
 
 //=============================================================================
 //
@@ -75,28 +75,29 @@ static HANDLE midi_process_out_writer;
 //
 // Free all pipes in use by this module.
 //
-static void FreePipes()
+static void
+  FreePipes()
 {
-    if (midi_process_in_reader != NULL)
-    {
-        CloseHandle(midi_process_in_reader);
-        midi_process_in_reader = NULL;
-    }
-    if (midi_process_in_writer != NULL)
-    {
-        CloseHandle(midi_process_in_writer);
-        midi_process_in_writer = NULL;
-    }
-    if (midi_process_out_reader != NULL)
-    {
-        CloseHandle(midi_process_out_reader);
-        midi_process_in_reader = NULL;
-    }
-    if (midi_process_out_writer != NULL)
-    {
-        CloseHandle(midi_process_out_writer);
-        midi_process_out_writer = NULL;
-    }
+  if (midi_process_in_reader != NULL)
+  {
+    CloseHandle(midi_process_in_reader);
+    midi_process_in_reader = NULL;
+  }
+  if (midi_process_in_writer != NULL)
+  {
+    CloseHandle(midi_process_in_writer);
+    midi_process_in_writer = NULL;
+  }
+  if (midi_process_out_reader != NULL)
+  {
+    CloseHandle(midi_process_out_reader);
+    midi_process_in_reader = NULL;
+  }
+  if (midi_process_out_writer != NULL)
+  {
+    CloseHandle(midi_process_out_writer);
+    midi_process_out_writer = NULL;
+  }
 }
 
 //
@@ -107,20 +108,21 @@ static void FreePipes()
 // If this is the case, using the MIDI server is probably necessary.  If not,
 // we're likely using Timidity and thus don't need to start the server.
 //
-static boolean UsingNativeMidi()
+static boolean
+  UsingNativeMidi()
 {
-    int i;
-    int decoders = Mix_GetNumMusicDecoders();
+  int i;
+  int decoders = Mix_GetNumMusicDecoders();
 
-    for (i = 0; i < decoders; i++)
+  for (i = 0; i < decoders; i++)
+  {
+    if (strcmp(Mix_GetMusicDecoder(i), "NATIVEMIDI") == 0)
     {
-        if (strcmp(Mix_GetMusicDecoder(i), "NATIVEMIDI") == 0)
-        {
-            return true;
-        }
+      return true;
     }
+  }
 
-    return false;
+  return false;
 }
 
 //
@@ -128,13 +130,13 @@ static boolean UsingNativeMidi()
 //
 // Writes packet data to the subprocess' standard in.
 //
-static boolean WritePipe(net_packet_t *packet)
+static boolean
+  WritePipe(net_packet_t *packet)
 {
-    DWORD bytes_written;
-    BOOL  ok = WriteFile(midi_process_in_writer, packet->data, packet->len,
-        &bytes_written, NULL);
+  DWORD bytes_written;
+  BOOL  ok = WriteFile(midi_process_in_writer, packet->data, packet->len, &bytes_written, NULL);
 
-    return ok;
+  return ok;
 }
 
 //
@@ -144,58 +146,57 @@ static boolean WritePipe(net_packet_t *packet)
 // response is unexpected, or doesn't arrive within a specific amuont of time,
 // assume the subprocess is in an unknown state.
 //
-static boolean ExpectPipe(net_packet_t *packet)
+static boolean
+  ExpectPipe(net_packet_t *packet)
 {
-    int   start;
-    BOOL  ok;
-    CHAR  pipe_buffer[8192];
-    DWORD pipe_buffer_read = 0;
+  int   start;
+  BOOL  ok;
+  CHAR  pipe_buffer[8192];
+  DWORD pipe_buffer_read = 0;
 
-    if (packet->len > sizeof(pipe_buffer))
+  if (packet->len > sizeof(pipe_buffer))
+  {
+    // The size of the packet we're expecting is larger than our buffer
+    // size, so bail out now.
+    return false;
+  }
+
+  start = I_GetTimeMS();
+
+  do
+  {
+    // Wait until we see exactly the amount of data we expect on the pipe.
+    ok = PeekNamedPipe(midi_process_out_reader, NULL, 0, NULL, &pipe_buffer_read, NULL);
+    if (!ok)
     {
-        // The size of the packet we're expecting is larger than our buffer
-        // size, so bail out now.
-        return false;
+      break;
+    }
+    else if (pipe_buffer_read < packet->len)
+    {
+      I_Sleep(1);
+      continue;
     }
 
-    start = I_GetTimeMS();
-
-    do
+    // Read precisely the number of bytes we're expecting, and no more.
+    ok = ReadFile(midi_process_out_reader, pipe_buffer, packet->len, &pipe_buffer_read, NULL);
+    if (!ok || pipe_buffer_read != packet->len)
     {
-        // Wait until we see exactly the amount of data we expect on the pipe.
-        ok = PeekNamedPipe(midi_process_out_reader, NULL, 0, NULL,
-            &pipe_buffer_read, NULL);
-        if (!ok)
-        {
-            break;
-        }
-        else if (pipe_buffer_read < packet->len)
-        {
-            I_Sleep(1);
-            continue;
-        }
+      break;
+    }
 
-        // Read precisely the number of bytes we're expecting, and no more.
-        ok = ReadFile(midi_process_out_reader, pipe_buffer, packet->len,
-            &pipe_buffer_read, NULL);
-        if (!ok || pipe_buffer_read != packet->len)
-        {
-            break;
-        }
+    // Compare our data buffer to the packet.
+    if (memcmp(packet->data, pipe_buffer, packet->len) != 0)
+    {
+      break;
+    }
 
-        // Compare our data buffer to the packet.
-        if (memcmp(packet->data, pipe_buffer, packet->len) != 0)
-        {
-            break;
-        }
+    return true;
 
-        return true;
+    // Continue looping as long as we don't exceed our maximum wait time.
+  } while (I_GetTimeMS() - start <= MIDIPIPE_MAX_WAIT);
 
-        // Continue looping as long as we don't exceed our maximum wait time.
-    } while (I_GetTimeMS() - start <= MIDIPIPE_MAX_WAIT);
-
-    // TODO: Deal with the wedged process?
-    return false;
+  // TODO: Deal with the wedged process?
+  return false;
 }
 
 //
@@ -203,29 +204,31 @@ static boolean ExpectPipe(net_packet_t *packet)
 //
 // A reimplementation of PathRemoveFileSpec that doesn't bring in Shlwapi
 //
-void RemoveFileSpec(TCHAR *path, size_t size)
+void
+  RemoveFileSpec(TCHAR *path, size_t size)
 {
-    TCHAR *fp = NULL;
+  TCHAR *fp = NULL;
 
-    fp = &path[size];
-    while (path <= fp && *fp != DIR_SEPARATOR)
-    {
-        fp--;
-    }
-    *(fp + 1) = '\0';
+  fp        = &path[size];
+  while (path <= fp && *fp != DIR_SEPARATOR)
+  {
+    fp--;
+  }
+  *(fp + 1) = '\0';
 }
 
-static boolean BlockForAck()
+static boolean
+  BlockForAck()
 {
-    boolean       ok;
-    net_packet_t *packet;
+  boolean       ok;
+  net_packet_t *packet;
 
-    packet = NET_NewPacket(2);
-    NET_WriteInt16(packet, MIDIPIPE_PACKET_TYPE_ACK);
-    ok = ExpectPipe(packet);
-    NET_FreePacket(packet);
+  packet = NET_NewPacket(2);
+  NET_WriteInt16(packet, MIDIPIPE_PACKET_TYPE_ACK);
+  ok = ExpectPipe(packet);
+  NET_FreePacket(packet);
 
-    return ok;
+  return ok;
 }
 
 //=============================================================================
@@ -239,30 +242,31 @@ static boolean BlockForAck()
 // Tells the MIDI subprocess to load a specific filename for playing.  This
 // function blocks until there is an acknowledgement from the server.
 //
-boolean I_MidiPipe_RegisterSong(char *filename)
+boolean
+  I_MidiPipe_RegisterSong(char *filename)
 {
-    boolean       ok;
-    net_packet_t *packet;
+  boolean       ok;
+  net_packet_t *packet;
 
-    packet = NET_NewPacket(64);
-    NET_WriteInt16(packet, MIDIPIPE_PACKET_TYPE_REGISTER_SONG);
-    NET_WriteString(packet, filename);
-    ok = WritePipe(packet);
-    NET_FreePacket(packet);
+  packet = NET_NewPacket(64);
+  NET_WriteInt16(packet, MIDIPIPE_PACKET_TYPE_REGISTER_SONG);
+  NET_WriteString(packet, filename);
+  ok = WritePipe(packet);
+  NET_FreePacket(packet);
 
-    midi_server_registered = false;
+  midi_server_registered = false;
 
-    ok = ok && BlockForAck();
-    if (!ok)
-    {
-        DEBUGOUT("I_MidiPipe_RegisterSong failed");
-        return false;
-    }
+  ok                     = ok && BlockForAck();
+  if (!ok)
+  {
+    DEBUGOUT("I_MidiPipe_RegisterSong failed");
+    return false;
+  }
 
-    midi_server_registered = true;
+  midi_server_registered = true;
 
-    DEBUGOUT("I_MidiPipe_RegisterSong succeeded");
-    return true;
+  DEBUGOUT("I_MidiPipe_RegisterSong succeeded");
+  return true;
 }
 
 //
@@ -270,26 +274,27 @@ boolean I_MidiPipe_RegisterSong(char *filename)
 //
 // Tells the MIDI subprocess to unload the current song.
 //
-void I_MidiPipe_UnregisterSong()
+void
+  I_MidiPipe_UnregisterSong()
 {
-    boolean       ok;
-    net_packet_t *packet;
+  boolean       ok;
+  net_packet_t *packet;
 
-    packet = NET_NewPacket(64);
-    NET_WriteInt16(packet, MIDIPIPE_PACKET_TYPE_UNREGISTER_SONG);
-    ok = WritePipe(packet);
-    NET_FreePacket(packet);
+  packet = NET_NewPacket(64);
+  NET_WriteInt16(packet, MIDIPIPE_PACKET_TYPE_UNREGISTER_SONG);
+  ok = WritePipe(packet);
+  NET_FreePacket(packet);
 
-    ok = ok && BlockForAck();
-    if (!ok)
-    {
-        DEBUGOUT("I_MidiPipe_UnregisterSong failed");
-        return;
-    }
+  ok = ok && BlockForAck();
+  if (!ok)
+  {
+    DEBUGOUT("I_MidiPipe_UnregisterSong failed");
+    return;
+  }
 
-    midi_server_registered = false;
+  midi_server_registered = false;
 
-    DEBUGOUT("I_MidiPipe_UnregisterSong succeeded");
+  DEBUGOUT("I_MidiPipe_UnregisterSong succeeded");
 }
 
 //
@@ -297,25 +302,26 @@ void I_MidiPipe_UnregisterSong()
 //
 // Tells the MIDI subprocess to set a specific volume for the song.
 //
-void I_MidiPipe_SetVolume(int vol)
+void
+  I_MidiPipe_SetVolume(int vol)
 {
-    boolean       ok;
-    net_packet_t *packet;
+  boolean       ok;
+  net_packet_t *packet;
 
-    packet = NET_NewPacket(6);
-    NET_WriteInt16(packet, MIDIPIPE_PACKET_TYPE_SET_VOLUME);
-    NET_WriteInt32(packet, vol);
-    ok = WritePipe(packet);
-    NET_FreePacket(packet);
+  packet = NET_NewPacket(6);
+  NET_WriteInt16(packet, MIDIPIPE_PACKET_TYPE_SET_VOLUME);
+  NET_WriteInt32(packet, vol);
+  ok = WritePipe(packet);
+  NET_FreePacket(packet);
 
-    ok = ok && BlockForAck();
-    if (!ok)
-    {
-        DEBUGOUT("I_MidiPipe_SetVolume failed");
-        return;
-    }
+  ok = ok && BlockForAck();
+  if (!ok)
+  {
+    DEBUGOUT("I_MidiPipe_SetVolume failed");
+    return;
+  }
 
-    DEBUGOUT("I_MidiPipe_SetVolume succeeded");
+  DEBUGOUT("I_MidiPipe_SetVolume succeeded");
 }
 
 //
@@ -323,25 +329,26 @@ void I_MidiPipe_SetVolume(int vol)
 //
 // Tells the MIDI subprocess to play the currently loaded song.
 //
-void I_MidiPipe_PlaySong(int loops)
+void
+  I_MidiPipe_PlaySong(int loops)
 {
-    boolean       ok;
-    net_packet_t *packet;
+  boolean       ok;
+  net_packet_t *packet;
 
-    packet = NET_NewPacket(6);
-    NET_WriteInt16(packet, MIDIPIPE_PACKET_TYPE_PLAY_SONG);
-    NET_WriteInt32(packet, loops);
-    ok = WritePipe(packet);
-    NET_FreePacket(packet);
+  packet = NET_NewPacket(6);
+  NET_WriteInt16(packet, MIDIPIPE_PACKET_TYPE_PLAY_SONG);
+  NET_WriteInt32(packet, loops);
+  ok = WritePipe(packet);
+  NET_FreePacket(packet);
 
-    ok = ok && BlockForAck();
-    if (!ok)
-    {
-        DEBUGOUT("I_MidiPipe_PlaySong failed");
-        return;
-    }
+  ok = ok && BlockForAck();
+  if (!ok)
+  {
+    DEBUGOUT("I_MidiPipe_PlaySong failed");
+    return;
+  }
 
-    DEBUGOUT("I_MidiPipe_PlaySong succeeded");
+  DEBUGOUT("I_MidiPipe_PlaySong succeeded");
 }
 
 //
@@ -349,24 +356,25 @@ void I_MidiPipe_PlaySong(int loops)
 //
 // Tells the MIDI subprocess to stop playing the currently loaded song.
 //
-void I_MidiPipe_StopSong()
+void
+  I_MidiPipe_StopSong()
 {
-    boolean       ok;
-    net_packet_t *packet;
+  boolean       ok;
+  net_packet_t *packet;
 
-    packet = NET_NewPacket(2);
-    NET_WriteInt16(packet, MIDIPIPE_PACKET_TYPE_STOP_SONG);
-    ok = WritePipe(packet);
-    NET_FreePacket(packet);
+  packet = NET_NewPacket(2);
+  NET_WriteInt16(packet, MIDIPIPE_PACKET_TYPE_STOP_SONG);
+  ok = WritePipe(packet);
+  NET_FreePacket(packet);
 
-    ok = ok && BlockForAck();
-    if (!ok)
-    {
-        DEBUGOUT("I_MidiPipe_StopSong failed");
-        return;
-    }
+  ok = ok && BlockForAck();
+  if (!ok)
+  {
+    DEBUGOUT("I_MidiPipe_StopSong failed");
+    return;
+  }
 
-    DEBUGOUT("I_MidiPipe_StopSong succeeded");
+  DEBUGOUT("I_MidiPipe_StopSong succeeded");
 }
 
 //
@@ -374,28 +382,29 @@ void I_MidiPipe_StopSong()
 //
 // Tells the MIDI subprocess to shutdown.
 //
-void I_MidiPipe_ShutdownServer()
+void
+  I_MidiPipe_ShutdownServer()
 {
-    boolean       ok;
-    net_packet_t *packet;
+  boolean       ok;
+  net_packet_t *packet;
 
-    packet = NET_NewPacket(2);
-    NET_WriteInt16(packet, MIDIPIPE_PACKET_TYPE_SHUTDOWN);
-    ok = WritePipe(packet);
-    NET_FreePacket(packet);
+  packet = NET_NewPacket(2);
+  NET_WriteInt16(packet, MIDIPIPE_PACKET_TYPE_SHUTDOWN);
+  ok = WritePipe(packet);
+  NET_FreePacket(packet);
 
-    ok = ok && BlockForAck();
-    FreePipes();
+  ok = ok && BlockForAck();
+  FreePipes();
 
-    midi_server_initialized = false;
+  midi_server_initialized = false;
 
-    if (!ok)
-    {
-        DEBUGOUT("I_MidiPipe_ShutdownServer failed");
-        return;
-    }
+  if (!ok)
+  {
+    DEBUGOUT("I_MidiPipe_ShutdownServer failed");
+    return;
+  }
 
-    DEBUGOUT("I_MidiPipe_ShutdownServer succeeded");
+  DEBUGOUT("I_MidiPipe_ShutdownServer succeeded");
 }
 
 //=============================================================================
@@ -408,97 +417,96 @@ void I_MidiPipe_ShutdownServer()
 //
 // Start up the MIDI server.
 //
-boolean I_MidiPipe_InitServer()
+boolean
+  I_MidiPipe_InitServer()
 {
-    TCHAR               dirname[MAX_PATH + 1];
-    DWORD               dirname_len;
-    char *              module  = NULL;
-    char *              cmdline = NULL;
-    char                params_buf[128];
-    SECURITY_ATTRIBUTES sec_attrs;
-    PROCESS_INFORMATION proc_info;
-    STARTUPINFO         startup_info;
-    BOOL                ok;
+  TCHAR               dirname[MAX_PATH + 1];
+  DWORD               dirname_len;
+  char               *module  = NULL;
+  char               *cmdline = NULL;
+  char                params_buf[128];
+  SECURITY_ATTRIBUTES sec_attrs;
+  PROCESS_INFORMATION proc_info;
+  STARTUPINFO         startup_info;
+  BOOL                ok;
 
-    if (!UsingNativeMidi() || strlen(snd_musiccmd) > 0)
-    {
-        // If we're not using native MIDI, or if we're playing music through
-        // an exteranl program, we don't need to start the server.
-        return false;
-    }
+  if (!UsingNativeMidi() || strlen(snd_musiccmd) > 0)
+  {
+    // If we're not using native MIDI, or if we're playing music through
+    // an exteranl program, we don't need to start the server.
+    return false;
+  }
 
-    // Get directory name
-    memset(dirname, 0, sizeof(dirname));
-    dirname_len = GetModuleFileName(NULL, dirname, MAX_PATH);
-    if (dirname_len == 0)
-    {
-        return false;
-    }
-    RemoveFileSpec(dirname, dirname_len);
+  // Get directory name
+  memset(dirname, 0, sizeof(dirname));
+  dirname_len = GetModuleFileName(NULL, dirname, MAX_PATH);
+  if (dirname_len == 0)
+  {
+    return false;
+  }
+  RemoveFileSpec(dirname, dirname_len);
 
-    // Define the module.
-    module = const_cast<char *>(PROGRAM_PREFIX "midiproc.exe");
+  // Define the module.
+  module = const_cast<char *>(PROGRAM_PREFIX "midiproc.exe");
 
-    // Set up pipes
-    memset(&sec_attrs, 0, sizeof(SECURITY_ATTRIBUTES));
-    sec_attrs.nLength              = sizeof(SECURITY_ATTRIBUTES);
-    sec_attrs.bInheritHandle       = TRUE;
-    sec_attrs.lpSecurityDescriptor = NULL;
+  // Set up pipes
+  memset(&sec_attrs, 0, sizeof(SECURITY_ATTRIBUTES));
+  sec_attrs.nLength              = sizeof(SECURITY_ATTRIBUTES);
+  sec_attrs.bInheritHandle       = TRUE;
+  sec_attrs.lpSecurityDescriptor = NULL;
 
-    if (!CreatePipe(&midi_process_in_reader, &midi_process_in_writer, &sec_attrs, 0))
-    {
-        DEBUGOUT("Could not initialize midiproc stdin");
-        return false;
-    }
+  if (!CreatePipe(&midi_process_in_reader, &midi_process_in_writer, &sec_attrs, 0))
+  {
+    DEBUGOUT("Could not initialize midiproc stdin");
+    return false;
+  }
 
-    if (!SetHandleInformation(midi_process_in_writer, HANDLE_FLAG_INHERIT, 0))
-    {
-        DEBUGOUT("Could not disinherit midiproc stdin");
-        return false;
-    }
+  if (!SetHandleInformation(midi_process_in_writer, HANDLE_FLAG_INHERIT, 0))
+  {
+    DEBUGOUT("Could not disinherit midiproc stdin");
+    return false;
+  }
 
-    if (!CreatePipe(&midi_process_out_reader, &midi_process_out_writer, &sec_attrs, 0))
-    {
-        DEBUGOUT("Could not initialize midiproc stdout/stderr");
-        return false;
-    }
+  if (!CreatePipe(&midi_process_out_reader, &midi_process_out_writer, &sec_attrs, 0))
+  {
+    DEBUGOUT("Could not initialize midiproc stdout/stderr");
+    return false;
+  }
 
-    if (!SetHandleInformation(midi_process_out_reader, HANDLE_FLAG_INHERIT, 0))
-    {
-        DEBUGOUT("Could not disinherit midiproc stdin");
-        return false;
-    }
+  if (!SetHandleInformation(midi_process_out_reader, HANDLE_FLAG_INHERIT, 0))
+  {
+    DEBUGOUT("Could not disinherit midiproc stdin");
+    return false;
+  }
 
-    // Define the command line.  Version, Sample Rate, and handles follow
-    // the executable name.
-    M_snprintf(params_buf, sizeof(params_buf), "%d %Iu %Iu",
-        snd_samplerate, (size_t)midi_process_in_reader, (size_t)midi_process_out_writer);
-    cmdline = M_StringJoin(module, " \"" PACKAGE_STRING "\"", " ", params_buf, NULL);
+  // Define the command line.  Version, Sample Rate, and handles follow
+  // the executable name.
+  M_snprintf(params_buf, sizeof(params_buf), "%d %Iu %Iu", snd_samplerate, (size_t)midi_process_in_reader, (size_t)midi_process_out_writer);
+  cmdline = M_StringJoin(module, " \"" PACKAGE_STRING "\"", " ", params_buf, NULL);
 
-    // Launch the subprocess
-    memset(&proc_info, 0, sizeof(proc_info));
-    memset(&startup_info, 0, sizeof(startup_info));
-    startup_info.cb = sizeof(startup_info);
+  // Launch the subprocess
+  memset(&proc_info, 0, sizeof(proc_info));
+  memset(&startup_info, 0, sizeof(startup_info));
+  startup_info.cb = sizeof(startup_info);
 
-    ok = CreateProcess(TEXT(module), TEXT(cmdline), NULL, NULL, TRUE,
-        0, NULL, dirname, &startup_info, &proc_info);
+  ok              = CreateProcess(TEXT(module), TEXT(cmdline), NULL, NULL, TRUE, 0, NULL, dirname, &startup_info, &proc_info);
 
-    if (!ok)
-    {
-        FreePipes();
-        free(cmdline);
+  if (!ok)
+  {
+    FreePipes();
+    free(cmdline);
 
-        return false;
-    }
+    return false;
+  }
 
-    // Since the server has these handles, we don't need them anymore.
-    CloseHandle(midi_process_in_reader);
-    midi_process_in_reader = NULL;
-    CloseHandle(midi_process_out_writer);
-    midi_process_out_writer = NULL;
+  // Since the server has these handles, we don't need them anymore.
+  CloseHandle(midi_process_in_reader);
+  midi_process_in_reader = NULL;
+  CloseHandle(midi_process_out_writer);
+  midi_process_out_writer = NULL;
 
-    midi_server_initialized = true;
-    return true;
+  midi_server_initialized = true;
+  return true;
 }
 
 #endif

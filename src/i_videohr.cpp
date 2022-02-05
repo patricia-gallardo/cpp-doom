@@ -25,232 +25,238 @@
 
 // Palette fade-in takes two seconds
 
-#define FADE_TIME 2000
+#define FADE_TIME       2000
 
 #define HR_SCREENWIDTH  640
 #define HR_SCREENHEIGHT 480
 
-static SDL_Window * hr_screen    = NULL;
+static SDL_Window  *hr_screen    = NULL;
 static SDL_Surface *hr_surface   = NULL;
-static const char * window_title = "";
+static const char  *window_title = "";
 
-boolean I_SetVideoModeHR()
+boolean
+  I_SetVideoModeHR()
 {
-    int x, y;
+  int x, y;
 
-    if (SDL_Init(SDL_INIT_VIDEO) < 0)
+  if (SDL_Init(SDL_INIT_VIDEO) < 0)
+  {
+    return false;
+  }
+
+  I_GetWindowPosition(&x, &y, HR_SCREENWIDTH, HR_SCREENHEIGHT);
+
+  // Create screen surface at the native desktop pixel depth (bpp=0),
+  // as we cannot trust true 8-bit to reliably work nowadays.
+  hr_screen = SDL_CreateWindow(window_title, x, y, HR_SCREENWIDTH, HR_SCREENHEIGHT, 0);
+
+  if (hr_screen == NULL)
+  {
+    SDL_QuitSubSystem(SDL_INIT_VIDEO);
+    return false;
+  }
+
+  // We do all actual drawing into an intermediate surface.
+  hr_surface = SDL_CreateRGBSurface(0, HR_SCREENWIDTH, HR_SCREENHEIGHT, 8, 0, 0, 0, 0);
+
+  return true;
+}
+
+void
+  I_SetWindowTitleHR(const char *title)
+{
+  window_title = title;
+}
+
+void
+  I_UnsetVideoModeHR()
+{
+  if (hr_screen != NULL)
+  {
+    SDL_QuitSubSystem(SDL_INIT_VIDEO);
+    hr_screen = NULL;
+    SDL_FreeSurface(hr_surface);
+    hr_surface = NULL;
+  }
+}
+
+void
+  I_ClearScreenHR()
+{
+  SDL_Rect area = { 0, 0, HR_SCREENWIDTH, HR_SCREENHEIGHT };
+
+  SDL_FillRect(hr_surface, &area, 0);
+}
+
+void
+  I_SlamBlockHR(int x, int y, int w, int h, const byte *src)
+{
+  SDL_Rect    blit_rect;
+  const byte *srcptrs[4];
+  byte        srcbits[4];
+  byte       *dest;
+  int         x1, y1;
+  int         i;
+  int         bit;
+
+  // Set up source pointers to read from source buffer - each 4-bit
+  // pixel has its bits split into four sub-buffers
+
+  for (i = 0; i < 4; ++i)
+  {
+    srcptrs[i] = src + (i * w * h / 8);
+  }
+
+  if (SDL_LockSurface(hr_surface) < 0)
+  {
+    return;
+  }
+
+  // Draw each pixel
+
+  bit = 0;
+
+  for (y1 = y; y1 < y + h; ++y1)
+  {
+    dest = ((byte *)hr_surface->pixels) + y1 * hr_surface->pitch + x;
+
+    for (x1 = x; x1 < x + w; ++x1)
     {
-        return false;
+      // Get the bits for this pixel
+      // For each bit, find the byte containing it, shift down
+      // and mask out the specific bit wanted.
+
+      for (i = 0; i < 4; ++i)
+      {
+        srcbits[i] = (srcptrs[i][bit / 8] >> (7 - (bit % 8))) & 0x1;
+      }
+
+      // Reassemble the pixel value
+
+      *dest = (srcbits[0] << 0)
+              | (srcbits[1] << 1)
+              | (srcbits[2] << 2)
+              | (srcbits[3] << 3);
+
+      // Next pixel!
+
+      ++dest;
+      ++bit;
+    }
+  }
+
+  SDL_UnlockSurface(hr_surface);
+
+  // Update the region we drew.
+  blit_rect.x = x;
+  blit_rect.y = y;
+  blit_rect.w = w;
+  blit_rect.h = h;
+  SDL_BlitSurface(hr_surface, &blit_rect, SDL_GetWindowSurface(hr_screen), &blit_rect);
+  SDL_UpdateWindowSurfaceRects(hr_screen, &blit_rect, 1);
+}
+
+void
+  I_SlamHR(const byte *buffer)
+{
+  I_SlamBlockHR(0, 0, HR_SCREENWIDTH, HR_SCREENHEIGHT, buffer);
+}
+
+void
+  I_InitPaletteHR()
+{
+  // ...
+}
+
+void
+  I_SetPaletteHR(const byte *palette)
+{
+  SDL_Rect  screen_rect = { 0, 0, HR_SCREENWIDTH, HR_SCREENHEIGHT };
+  SDL_Color sdlpal[16];
+  int       i;
+
+  for (i = 0; i < 16; ++i)
+  {
+    sdlpal[i].r = palette[i * 3 + 0] * 4;
+    sdlpal[i].g = palette[i * 3 + 1] * 4;
+    sdlpal[i].b = palette[i * 3 + 2] * 4;
+  }
+
+  // After setting colors, update the screen.
+  SDL_SetPaletteColors(hr_surface->format->palette, sdlpal, 0, 16);
+  SDL_BlitSurface(hr_surface, &screen_rect, SDL_GetWindowSurface(hr_screen), &screen_rect);
+  SDL_UpdateWindowSurfaceRects(hr_screen, &screen_rect, 1);
+}
+
+void
+  I_FadeToPaletteHR(const byte *palette)
+{
+  byte tmppal[16 * 3];
+  int  starttime;
+  int  elapsed;
+  int  i;
+
+  starttime = I_GetTimeMS();
+
+  for (;;)
+  {
+    elapsed = I_GetTimeMS() - starttime;
+
+    if (elapsed >= FADE_TIME)
+    {
+      break;
     }
 
-    I_GetWindowPosition(&x, &y, HR_SCREENWIDTH, HR_SCREENHEIGHT);
+    // Generate the fake palette
 
-    // Create screen surface at the native desktop pixel depth (bpp=0),
-    // as we cannot trust true 8-bit to reliably work nowadays.
-    hr_screen = SDL_CreateWindow(window_title, x, y,
-        HR_SCREENWIDTH, HR_SCREENHEIGHT,
-        0);
-
-    if (hr_screen == NULL)
+    for (i = 0; i < 16 * 3; ++i)
     {
-        SDL_QuitSubSystem(SDL_INIT_VIDEO);
-        return false;
+      tmppal[i] = (palette[i] * elapsed) / FADE_TIME;
     }
 
-    // We do all actual drawing into an intermediate surface.
-    hr_surface = SDL_CreateRGBSurface(0, HR_SCREENWIDTH, HR_SCREENHEIGHT,
-        8, 0, 0, 0, 0);
+    I_SetPaletteHR(tmppal);
+    SDL_UpdateWindowSurface(hr_screen);
 
-    return true;
+    // Sleep a bit
+
+    I_Sleep(10);
+  }
+
+  // Set the final palette
+
+  I_SetPaletteHR(palette);
 }
 
-void I_SetWindowTitleHR(const char *title)
+void
+  I_BlackPaletteHR()
 {
-    window_title = title;
-}
+  byte blackpal[16 * 3];
 
-void I_UnsetVideoModeHR()
-{
-    if (hr_screen != NULL)
-    {
-        SDL_QuitSubSystem(SDL_INIT_VIDEO);
-        hr_screen = NULL;
-        SDL_FreeSurface(hr_surface);
-        hr_surface = NULL;
-    }
-}
+  memset(blackpal, 0, sizeof(blackpal));
 
-void I_ClearScreenHR()
-{
-    SDL_Rect area = { 0, 0, HR_SCREENWIDTH, HR_SCREENHEIGHT };
-
-    SDL_FillRect(hr_surface, &area, 0);
-}
-
-void I_SlamBlockHR(int x, int y, int w, int h, const byte *src)
-{
-    SDL_Rect    blit_rect;
-    const byte *srcptrs[4];
-    byte        srcbits[4];
-    byte *      dest;
-    int         x1, y1;
-    int         i;
-    int         bit;
-
-    // Set up source pointers to read from source buffer - each 4-bit
-    // pixel has its bits split into four sub-buffers
-
-    for (i = 0; i < 4; ++i)
-    {
-        srcptrs[i] = src + (i * w * h / 8);
-    }
-
-    if (SDL_LockSurface(hr_surface) < 0)
-    {
-        return;
-    }
-
-    // Draw each pixel
-
-    bit = 0;
-
-    for (y1 = y; y1 < y + h; ++y1)
-    {
-        dest = ((byte *)hr_surface->pixels) + y1 * hr_surface->pitch + x;
-
-        for (x1 = x; x1 < x + w; ++x1)
-        {
-            // Get the bits for this pixel
-            // For each bit, find the byte containing it, shift down
-            // and mask out the specific bit wanted.
-
-            for (i = 0; i < 4; ++i)
-            {
-                srcbits[i] = (srcptrs[i][bit / 8] >> (7 - (bit % 8))) & 0x1;
-            }
-
-            // Reassemble the pixel value
-
-            *dest = (srcbits[0] << 0)
-                    | (srcbits[1] << 1)
-                    | (srcbits[2] << 2)
-                    | (srcbits[3] << 3);
-
-            // Next pixel!
-
-            ++dest;
-            ++bit;
-        }
-    }
-
-    SDL_UnlockSurface(hr_surface);
-
-    // Update the region we drew.
-    blit_rect.x = x;
-    blit_rect.y = y;
-    blit_rect.w = w;
-    blit_rect.h = h;
-    SDL_BlitSurface(hr_surface, &blit_rect,
-        SDL_GetWindowSurface(hr_screen), &blit_rect);
-    SDL_UpdateWindowSurfaceRects(hr_screen, &blit_rect, 1);
-}
-
-void I_SlamHR(const byte *buffer)
-{
-    I_SlamBlockHR(0, 0, HR_SCREENWIDTH, HR_SCREENHEIGHT, buffer);
-}
-
-void I_InitPaletteHR()
-{
-    // ...
-}
-
-void I_SetPaletteHR(const byte *palette)
-{
-    SDL_Rect  screen_rect = { 0, 0, HR_SCREENWIDTH, HR_SCREENHEIGHT };
-    SDL_Color sdlpal[16];
-    int       i;
-
-    for (i = 0; i < 16; ++i)
-    {
-        sdlpal[i].r = palette[i * 3 + 0] * 4;
-        sdlpal[i].g = palette[i * 3 + 1] * 4;
-        sdlpal[i].b = palette[i * 3 + 2] * 4;
-    }
-
-    // After setting colors, update the screen.
-    SDL_SetPaletteColors(hr_surface->format->palette, sdlpal, 0, 16);
-    SDL_BlitSurface(hr_surface, &screen_rect,
-        SDL_GetWindowSurface(hr_screen), &screen_rect);
-    SDL_UpdateWindowSurfaceRects(hr_screen, &screen_rect, 1);
-}
-
-void I_FadeToPaletteHR(const byte *palette)
-{
-    byte tmppal[16 * 3];
-    int  starttime;
-    int  elapsed;
-    int  i;
-
-    starttime = I_GetTimeMS();
-
-    for (;;)
-    {
-        elapsed = I_GetTimeMS() - starttime;
-
-        if (elapsed >= FADE_TIME)
-        {
-            break;
-        }
-
-        // Generate the fake palette
-
-        for (i = 0; i < 16 * 3; ++i)
-        {
-            tmppal[i] = (palette[i] * elapsed) / FADE_TIME;
-        }
-
-        I_SetPaletteHR(tmppal);
-        SDL_UpdateWindowSurface(hr_screen);
-
-        // Sleep a bit
-
-        I_Sleep(10);
-    }
-
-    // Set the final palette
-
-    I_SetPaletteHR(palette);
-}
-
-void I_BlackPaletteHR()
-{
-    byte blackpal[16 * 3];
-
-    memset(blackpal, 0, sizeof(blackpal));
-
-    I_SetPaletteHR(blackpal);
+  I_SetPaletteHR(blackpal);
 }
 
 // Check if the user has hit the escape key to abort startup.
-boolean I_CheckAbortHR()
+boolean
+  I_CheckAbortHR()
 {
-    SDL_Event ev;
-    boolean   result = false;
+  SDL_Event ev;
+  boolean   result = false;
 
-    // Not initialized?
-    if (hr_surface == NULL)
+  // Not initialized?
+  if (hr_surface == NULL)
+  {
+    return false;
+  }
+
+  while (SDL_PollEvent(&ev))
+  {
+    if (ev.type == SDL_KEYDOWN && ev.key.keysym.sym == SDLK_ESCAPE)
     {
-        return false;
+      result = true;
     }
+  }
 
-    while (SDL_PollEvent(&ev))
-    {
-        if (ev.type == SDL_KEYDOWN && ev.key.keysym.sym == SDLK_ESCAPE)
-        {
-            result = true;
-        }
-    }
-
-    return result;
+  return result;
 }

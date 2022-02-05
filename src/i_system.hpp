@@ -20,20 +20,23 @@
 #ifndef __I_SYSTEM__
 #define __I_SYSTEM__
 
-#include "d_ticcmd.hpp"
 #include "d_event.hpp"
+#include "d_ticcmd.hpp"
 
 using atexit_func_t = void (*)();
 
 // Called by DoomMain.
-void I_Init();
+void
+  I_Init();
 
 // Called by startup code
 // to get the ammount of memory to malloc
 // for the zone management.
-byte *I_ZoneBase(int *size);
+byte *
+  I_ZoneBase(int *size);
 
-boolean I_ConsoleStdout();
+boolean
+  I_ConsoleStdout();
 
 
 // Asynchronous interrupt functions should maintain private queues
@@ -44,41 +47,52 @@ boolean I_ConsoleStdout();
 // or calls a loadable driver to build it.
 // This ticcmd will then be modified by the gameloop
 // for normal input.
-ticcmd_t *I_BaseTiccmd();
+ticcmd_t *
+  I_BaseTiccmd();
 
 
 // Called by M_Responder when quit is selected.
 // Clean exit, displays sell blurb.
-void I_Quit() NORETURN;
+void
+  I_Quit() NORETURN;
 
-void I_Error(const char *error, ...) NORETURN PRINTF_ATTR(1, 2);
+void
+  I_Error(const char *error, ...) NORETURN PRINTF_ATTR(1, 2);
 
-void I_Tactile(int on, int off, int total);
+void
+  I_Tactile(int on, int off, int total);
 
-void *I_Realloc(void *ptr, size_t size);
+void *
+  I_Realloc(void *ptr, size_t size);
 
-boolean I_GetMemoryValue(unsigned int offset, void *value, int size);
+boolean
+  I_GetMemoryValue(unsigned int offset, void *value, int size);
 
 // Schedule a function to be called when the program exits.
 // If run_if_error is true, the function is called if the exit
 // is due to an error (I_Error)
 
-void I_AtExit(atexit_func_t func, boolean run_if_error);
+void
+  I_AtExit(atexit_func_t func, boolean run_if_error);
 
 // Add all system-specific config file variable bindings.
 
-void I_BindVariables();
+void
+  I_BindVariables();
 
 // Print startup banner copyright message.
 
-void I_PrintStartupBanner(const char *gamedescription);
+void
+  I_PrintStartupBanner(const char *gamedescription);
 
 // Print a centered text banner displaying the given string.
 
-void I_PrintBanner(const char *text);
+void
+  I_PrintBanner(const char *text);
 
 // Print a dividing line for startup banners.
 
-void I_PrintDivider();
+void
+  I_PrintDivider();
 
 #endif

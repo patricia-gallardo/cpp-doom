@@ -25,7 +25,7 @@ GameMode_t    gamemode    = indetermined;
 GameMission_t gamemission = doom;
 GameVersion_t gameversion = exe_final2;
 GameVariant_t gamevariant = vanilla;
-const char *  gamedescription;
+const char   *gamedescription;
 
 // Set if homebrew PWAD stuff has been added.
-boolean modifiedgame;
+boolean       modifiedgame;

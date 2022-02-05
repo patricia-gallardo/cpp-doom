@@ -23,6 +23,7 @@
 #include "doomtype.hpp"
 #include "memio.hpp"
 
-boolean mus2mid(MEMFILE *musinput, MEMFILE *midioutput);
+boolean
+  mus2mid(MEMFILE *musinput, MEMFILE *midioutput);
 
 #endif /* #ifndef MUS2MID_H */

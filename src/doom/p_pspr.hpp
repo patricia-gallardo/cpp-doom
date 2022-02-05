@@ -49,25 +49,24 @@
 // drawn directly on the view screen,
 // coordinates are given for a 320*200 view screen.
 //
-using psprnum_t = enum
-{
-    ps_weapon,
-    ps_flash,
-    NUMPSPRITES
+using psprnum_t = enum {
+  ps_weapon,
+  ps_flash,
+  NUMPSPRITES
 
 };
 
 struct pspdef_t {
-    state_t *state; // a NULL state means not active
-    int      tics;
-    fixed_t  sx;
-    fixed_t  sy;
+  state_t *state; // a NULL state means not active
+  int      tics;
+  fixed_t  sx;
+  fixed_t  sy;
 
-    // [crispy] squat down weapon sprite
-    fixed_t dy;
-    // [crispy] variable weapon sprite bob
-    fixed_t sx2;
-    fixed_t sy2;
+  // [crispy] squat down weapon sprite
+  fixed_t  dy;
+  // [crispy] variable weapon sprite bob
+  fixed_t  sx2;
+  fixed_t  sy2;
 };
 
 #endif

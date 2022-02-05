@@ -34,45 +34,60 @@
 // WADFILE I/O related stuff.
 //
 
-using lumpinfo_t = struct lumpinfo_s;
+using lumpinfo_t  = struct lumpinfo_s;
 using lumpindex_t = int;
 
 struct lumpinfo_s {
-    char        name[8];
-    wad_file_t *wad_file;
-    int         position;
-    int         size;
-    void *      cache;
+  char        name[8];
+  wad_file_t *wad_file;
+  int         position;
+  int         size;
+  void       *cache;
 
-    // Used for hash table lookups
-    lumpindex_t next;
+  // Used for hash table lookups
+  lumpindex_t next;
 };
 
 
 extern lumpinfo_t **lumpinfo;
 extern unsigned int numlumps;
 
-wad_file_t *W_AddFile(const char *filename);
-void        W_Reload();
+wad_file_t *
+  W_AddFile(const char *filename);
+void
+  W_Reload();
 
-lumpindex_t W_CheckNumForName(const char *name);
-lumpindex_t W_GetNumForName(const char *name);
-lumpindex_t W_CheckNumForNameFromTo(const char *name, int from, int to);
+lumpindex_t
+  W_CheckNumForName(const char *name);
+lumpindex_t
+  W_GetNumForName(const char *name);
+lumpindex_t
+  W_CheckNumForNameFromTo(const char *name, int from, int to);
 
-int  W_LumpLength(lumpindex_t lump);
-void W_ReadLump(lumpindex_t lump, void *dest);
+int
+  W_LumpLength(lumpindex_t lump);
+void
+  W_ReadLump(lumpindex_t lump, void *dest);
 
-void *W_CacheLumpNum(lumpindex_t lump, int tag);
-void *W_CacheLumpName(const char *name, int tag);
+void *
+  W_CacheLumpNum(lumpindex_t lump, int tag);
+void *
+  W_CacheLumpName(const char *name, int tag);
 
-void W_GenerateHashTable();
+void
+  W_GenerateHashTable();
 
-extern unsigned int W_LumpNameHash(const char *s);
+extern unsigned int
+  W_LumpNameHash(const char *s);
 
-void W_ReleaseLumpNum(lumpindex_t lump);
-void W_ReleaseLumpName(const char *name);
+void
+  W_ReleaseLumpNum(lumpindex_t lump);
+void
+  W_ReleaseLumpName(const char *name);
 
-const char *W_WadNameForLump(const lumpinfo_t *lump);
-boolean     W_IsIWADLump(const lumpinfo_t *lump);
+const char *
+  W_WadNameForLump(const lumpinfo_t *lump);
+boolean
+  W_IsIWADLump(const lumpinfo_t *lump);
 
 #endif

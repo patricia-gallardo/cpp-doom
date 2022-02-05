@@ -43,12 +43,11 @@ using txt_radiobutton_t = struct txt_radiobutton_s;
 
 #include "txt_widget.hpp"
 
-struct txt_radiobutton_s
-{
-    txt_widget_t widget;
-    char *label;
-    int *variable;
-    int value;
+struct txt_radiobutton_s {
+  txt_widget_t widget;
+  char        *label;
+  int         *variable;
+  int          value;
 };
 
 /**
@@ -63,7 +62,8 @@ struct txt_radiobutton_s
  * @return               Pointer to the new radio button widget.
  */
 
-txt_radiobutton_t *TXT_NewRadioButton(const char *label, int *variable, int value);
+txt_radiobutton_t *
+  TXT_NewRadioButton(const char *label, int *variable, int value);
 
 /**
  * Set the label on a radio button.
@@ -72,8 +72,7 @@ txt_radiobutton_t *TXT_NewRadioButton(const char *label, int *variable, int valu
  * @param value          The new label (UTF-8 format).
  */
 
-void TXT_SetRadioButtonLabel(txt_radiobutton_t *radiobutton, const char *value);
+void
+  TXT_SetRadioButtonLabel(txt_radiobutton_t *radiobutton, const char *value);
 
 #endif /* #ifndef TXT_RADIOBUTTON_H */
-
-

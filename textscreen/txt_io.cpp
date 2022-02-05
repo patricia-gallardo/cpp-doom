@@ -20,156 +20,167 @@
 #include "txt_io.hpp"
 #include "txt_main.hpp"
 
-static int cur_x = 0, cur_y = 0;
+static int         cur_x = 0, cur_y = 0;
 static txt_color_t fgcolor = TXT_COLOR_GREY;
 static txt_color_t bgcolor = TXT_COLOR_BLACK;
 
-static void NewLine(unsigned char *screendata)
+static void
+  NewLine(unsigned char *screendata)
 {
-    int i;
-    unsigned char *p;
+  int            i;
+  unsigned char *p;
 
-    cur_x = 0;
-    ++cur_y;
+  cur_x = 0;
+  ++cur_y;
 
-    if (cur_y >= TXT_SCREEN_H)
+  if (cur_y >= TXT_SCREEN_H)
+  {
+    // Scroll the screen up
+
+    cur_y = TXT_SCREEN_H - 1;
+
+    memmove(screendata, screendata + TXT_SCREEN_W * 2, TXT_SCREEN_W * 2 * (TXT_SCREEN_H - 1));
+
+    // Clear the bottom line
+
+    p = screendata + (TXT_SCREEN_H - 1) * 2 * TXT_SCREEN_W;
+
+    for (i = 0; i < TXT_SCREEN_W; ++i)
     {
-        // Scroll the screen up
-
-        cur_y = TXT_SCREEN_H - 1;
-
-        memmove(screendata, screendata + TXT_SCREEN_W * 2,
-                TXT_SCREEN_W * 2 * (TXT_SCREEN_H -1));
-
-        // Clear the bottom line
-
-        p = screendata + (TXT_SCREEN_H - 1) * 2 * TXT_SCREEN_W;
-
-        for (i=0; i<TXT_SCREEN_W; ++i) 
-        {
-            *p++ = ' ';
-            *p++ = fgcolor | (bgcolor << 4);
-        }
+      *p++ = ' ';
+      *p++ = fgcolor | (bgcolor << 4);
     }
+  }
 }
 
-static void PutSymbol(unsigned char *screendata, int c)
+static void
+  PutSymbol(unsigned char *screendata, int c)
 {
-    unsigned char *p;
+  unsigned char *p;
 
-    p = screendata + cur_y * TXT_SCREEN_W * 2 +  cur_x * 2;
+  p    = screendata + cur_y * TXT_SCREEN_W * 2 + cur_x * 2;
 
-    // Add a new character to the buffer
+  // Add a new character to the buffer
 
-    p[0] = c;
-    p[1] = fgcolor | (bgcolor << 4);
+  p[0] = c;
+  p[1] = fgcolor | (bgcolor << 4);
 
-    ++cur_x;
+  ++cur_x;
 
-    if (cur_x >= TXT_SCREEN_W)
-    {
-        NewLine(screendata);
-    }
+  if (cur_x >= TXT_SCREEN_W)
+  {
+    NewLine(screendata);
+  }
 }
 
 // "Blind" version of TXT_PutChar() below which doesn't do any interpretation
 // of control signals. Just write a particular symbol to the screen buffer.
-void TXT_PutSymbol(int c)
+void
+  TXT_PutSymbol(int c)
 {
-    PutSymbol(TXT_GetScreenData(), c);
+  PutSymbol(TXT_GetScreenData(), c);
 }
 
-static void PutChar(unsigned char *screendata, int c)
+static void
+  PutChar(unsigned char *screendata, int c)
 {
-    switch (c)
-    {
-        case '\n':
-            NewLine(screendata);
-            break;
+  switch (c)
+  {
+    case '\n':
+      NewLine(screendata);
+      break;
 
-        case '\b':
-            // backspace
-            --cur_x;
-            if (cur_x < 0)
-                cur_x = 0;
-            break;
+    case '\b':
+      // backspace
+      --cur_x;
+      if (cur_x < 0)
+        cur_x = 0;
+      break;
 
-        default:
-            PutSymbol(screendata, c);
-            break;
-    }
+    default:
+      PutSymbol(screendata, c);
+      break;
+  }
 }
 
-void TXT_PutChar(int c)
+void
+  TXT_PutChar(int c)
 {
-    PutChar(TXT_GetScreenData(), c);
+  PutChar(TXT_GetScreenData(), c);
 }
 
-void TXT_Puts(const char *s)
+void
+  TXT_Puts(const char *s)
 {
-    unsigned char *screen;
-    const char *p;
+  unsigned char *screen;
+  const char    *p;
 
-    screen = TXT_GetScreenData();
+  screen = TXT_GetScreenData();
 
-    for (p=s; *p != '\0'; ++p)
-    {
-        PutChar(screen, *p);
-    }
+  for (p = s; *p != '\0'; ++p)
+  {
+    PutChar(screen, *p);
+  }
 
-    PutChar(screen, '\n');
+  PutChar(screen, '\n');
 }
 
-void TXT_GotoXY(int x, int y)
+void
+  TXT_GotoXY(int x, int y)
 {
-    cur_x = x;
-    cur_y = y;
+  cur_x = x;
+  cur_y = y;
 }
 
-void TXT_GetXY(int *x, int *y)
+void
+  TXT_GetXY(int *x, int *y)
 {
-    *x = cur_x;
-    *y = cur_y;
+  *x = cur_x;
+  *y = cur_y;
 }
 
-void TXT_FGColor(txt_color_t color)
+void
+  TXT_FGColor(txt_color_t color)
 {
-    fgcolor = color;
+  fgcolor = color;
 }
 
-void TXT_BGColor(txt_color_t color, int blinking)
+void
+  TXT_BGColor(txt_color_t color, int blinking)
 {
-    bgcolor = color;
-    if (blinking)
-        bgcolor = static_cast<txt_color_t>( bgcolor | TXT_COLOR_BLINKING);
+  bgcolor = color;
+  if (blinking)
+    bgcolor = static_cast<txt_color_t>(bgcolor | TXT_COLOR_BLINKING);
 }
 
-void TXT_SaveColors(txt_saved_colors_t *save)
+void
+  TXT_SaveColors(txt_saved_colors_t *save)
 {
-    save->bgcolor = bgcolor;
-    save->fgcolor = fgcolor;
+  save->bgcolor = bgcolor;
+  save->fgcolor = fgcolor;
 }
 
-void TXT_RestoreColors(txt_saved_colors_t *save)
+void
+  TXT_RestoreColors(txt_saved_colors_t *save)
 {
-    bgcolor = save->bgcolor;
-    fgcolor = save->fgcolor;
+  bgcolor = save->bgcolor;
+  fgcolor = save->fgcolor;
 }
 
-void TXT_ClearScreen()
+void
+  TXT_ClearScreen()
 {
-    unsigned char *screen;
-    int i;
+  unsigned char *screen;
+  int            i;
 
-    screen = TXT_GetScreenData();
+  screen = TXT_GetScreenData();
 
-    for (i=0; i<TXT_SCREEN_W * TXT_SCREEN_H; ++i)
-    {
-        screen[i * 2] = ' ';
-        screen[i * 2 +  1] = (bgcolor << 4) | fgcolor;
-    }
+  for (i = 0; i < TXT_SCREEN_W * TXT_SCREEN_H; ++i)
+  {
+    screen[i * 2]     = ' ';
+    screen[i * 2 + 1] = (bgcolor << 4) | fgcolor;
+  }
 
-    cur_x = 0;
-    cur_y = 0;
+  cur_x = 0;
+  cur_y = 0;
 }
-

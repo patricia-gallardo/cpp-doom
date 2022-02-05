@@ -26,13 +26,12 @@
 // Weapon info: sprite frames, ammunition use.
 using weaponinfo_t = struct
 {
-    ammotype_t ammo;
-    statenum_t upstate;
-    statenum_t downstate;
-    statenum_t readystate;
-    statenum_t atkstate;
-    statenum_t flashstate;
-
+  ammotype_t ammo;
+  statenum_t upstate;
+  statenum_t downstate;
+  statenum_t readystate;
+  statenum_t atkstate;
+  statenum_t flashstate;
 };
 
 extern weaponinfo_t weaponinfo[NUMWEAPONS];

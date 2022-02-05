@@ -2,57 +2,57 @@
 
 #include <variant>
 
-template <std::size_t, class, class>
+template<std::size_t, class, class>
 struct alternative_index_helper;
 
-template <std::size_t index, class T, class U>
+template<std::size_t index, class T, class U>
 struct alternative_index_helper<index, T, std::variant<U>> {
-    static constexpr std::size_t count = std::is_same_v<T, U>;
-    static constexpr std::size_t value = index;
+  static constexpr std::size_t count = std::is_same_v<T, U>;
+  static constexpr std::size_t value = index;
 };
 
-template <std::size_t index, class T, class U, class... Types>
+template<std::size_t index, class T, class U, class... Types>
 struct alternative_index_helper<index, T, std::variant<U, Types...>> {
-    static constexpr std::size_t count = std::is_same_v<T, U> + alternative_index_helper<index + 1, T, std::variant<Types...>>::count;
-    static constexpr std::size_t value = std::is_same_v<T, U> ? index : alternative_index_helper<index + 1, T, std::variant<Types...>>::value;
+  static constexpr std::size_t count = std::is_same_v<T, U> + alternative_index_helper<index + 1, T, std::variant<Types...>>::count;
+  static constexpr std::size_t value = std::is_same_v<T, U> ? index : alternative_index_helper<index + 1, T, std::variant<Types...>>::value;
 };
 
-template <class T, class U>
+template<class T, class U>
 struct alternative_index {
-    static_assert(alternative_index_helper<0, T, U>::count == 1, "There needs to be exactly one of the given type in the variant");
-    static constexpr std::size_t value = alternative_index_helper<0, T, U>::value;
+  static_assert(alternative_index_helper<0, T, U>::count == 1, "There needs to be exactly one of the given type in the variant");
+  static constexpr std::size_t value = alternative_index_helper<0, T, U>::value;
 };
-template <class T, class U>
+template<class T, class U>
 inline constexpr std::size_t alternative_index_v = alternative_index<T, U>::value;
 
 static_assert(alternative_index_v<long, std::variant<int, long, bool>> == 1);
 
-template <class... Ts>
+template<class... Ts>
 struct overloaded : Ts... {
-    using Ts::operator()...;
+  using Ts::operator()...;
 };
-template <class... Ts>
+template<class... Ts>
 overloaded(Ts...) -> overloaded<Ts...>;
 
-using mobj_t        = struct mobj_s;
-using player_t      = struct player_s;
-using pspdef_t      = struct pspdef_s;
-using thinker_t     = struct thinker_s;
-using floormove_t   = struct floormove_s;
-using polyevent_t   = struct polyevent_s;
-using plat_t        = struct plat_s;
-using ceiling_t     = struct ceiling_s;
-using light_t       = struct light_s;
-using ssthinker_t   = struct ssthinker_s;
-using vldoor_t      = struct vldoor_s;
-using phase_t       = struct phase_s;
-using acs_t         = struct acs_s;
-using pillar_t      = struct pillar_s;
-using polydoor_t    = struct polydoor_s;
-using floorWaggle_t = struct floorWaggle_s;
-using lightflash_t  = struct lightflash_s;
-using strobe_t      = struct strobe_s;
-using glow_t        = struct glow_s;
+using mobj_t                   = struct mobj_s;
+using player_t                 = struct player_s;
+using pspdef_t                 = struct pspdef_s;
+using thinker_t                = struct thinker_s;
+using floormove_t              = struct floormove_s;
+using polyevent_t              = struct polyevent_s;
+using plat_t                   = struct plat_s;
+using ceiling_t                = struct ceiling_s;
+using light_t                  = struct light_s;
+using ssthinker_t              = struct ssthinker_s;
+using vldoor_t                 = struct vldoor_s;
+using phase_t                  = struct phase_s;
+using acs_t                    = struct acs_s;
+using pillar_t                 = struct pillar_s;
+using polydoor_t               = struct polydoor_s;
+using floorWaggle_t            = struct floorWaggle_s;
+using lightflash_t             = struct lightflash_s;
+using strobe_t                 = struct strobe_s;
+using glow_t                   = struct glow_s;
 
 using null_hook                = std::monostate;
 using zero_param_action        = void (*)();
@@ -75,26 +75,26 @@ using lightflash_param_action  = void (*)(lightflash_t *);
 using strobe_param_action      = void (*)(strobe_t *);
 using glow_param_action        = void (*)(glow_t *);
 using action_hook              = std::variant<
-    null_hook,
-    zero_param_action,
-    mobj_param_action,
-    player_psp_param_action,
-    thinker_param_action,
-    floormove_param_action,
-    polyevent_param_action,
-    plat_param_action,
-    ceiling_param_action,
-    light_param_action,
-    ssthinker_param_action,
-    vldoor_param_action,
-    phase_param_action,
-    acs_param_action,
-    pillar_param_action,
-    polydoor_param_action,
-    floorWaggle_param_action,
-    lightflash_param_action,
-    strobe_param_action,
-    glow_param_action>;
+  null_hook,
+  zero_param_action,
+  mobj_param_action,
+  player_psp_param_action,
+  thinker_param_action,
+  floormove_param_action,
+  polyevent_param_action,
+  plat_param_action,
+  ceiling_param_action,
+  light_param_action,
+  ssthinker_param_action,
+  vldoor_param_action,
+  phase_param_action,
+  acs_param_action,
+  pillar_param_action,
+  polydoor_param_action,
+  floorWaggle_param_action,
+  lightflash_param_action,
+  strobe_param_action,
+  glow_param_action>;
 
 static_assert(alternative_index_v<null_hook, action_hook> == 0);
 
@@ -107,12 +107,14 @@ constexpr int player_psp_action_hook = alternative_index_v<player_psp_param_acti
 static_assert(alternative_index_v<thinker_param_action, action_hook> == 4);
 constexpr int thinker_param_action_hook = alternative_index_v<thinker_param_action, action_hook>;
 
-constexpr bool action_hook_has_value(const action_hook &hook)
+constexpr bool
+  action_hook_has_value(const action_hook &hook)
 {
-    return hook.index() != 0;
+  return hook.index() != 0;
 }
 
-constexpr bool action_hook_is_empty(const action_hook &hook)
+constexpr bool
+  action_hook_is_empty(const action_hook &hook)
 {
-    return !action_hook_has_value(hook);
+  return !action_hook_has_value(hook);
 }

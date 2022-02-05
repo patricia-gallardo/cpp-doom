@@ -24,8 +24,11 @@
 
 typedef byte prng_seed_t[16];
 
-void         PRNG_Start(prng_seed_t seed);
-void         PRNG_Stop();
-unsigned int PRNG_Random();
+void
+  PRNG_Start(prng_seed_t seed);
+void
+  PRNG_Stop();
+unsigned int
+  PRNG_Random();
 
 #endif /* #ifndef __AES_PRNG_H__ */

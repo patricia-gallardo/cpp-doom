@@ -22,22 +22,28 @@
 #ifndef __P_EXTNODES__
 #define __P_EXTNODES__
 
-using mapformat_t = enum
-{
-    MFMT_DOOMBSP = 0x000,
-    MFMT_DEEPBSP = 0x001,
-    MFMT_ZDBSPX  = 0x002,
-    MFMT_ZDBSPZ  = 0x004,
-    MFMT_HEXEN   = 0x100,
+using mapformat_t = enum {
+  MFMT_DOOMBSP = 0x000,
+  MFMT_DEEPBSP = 0x001,
+  MFMT_ZDBSPX  = 0x002,
+  MFMT_ZDBSPZ  = 0x004,
+  MFMT_HEXEN   = 0x100,
 };
 
-extern mapformat_t P_CheckMapFormat(int lumpnum);
+extern mapformat_t
+  P_CheckMapFormat(int lumpnum);
 
-extern void P_LoadSegs_DeePBSP(int lump);
-extern void P_LoadSubsectors_DeePBSP(int lump);
-extern void P_LoadNodes_DeePBSP(int lump);
-extern void P_LoadNodes_ZDBSP(int lump, boolean compressed);
-extern void P_LoadThings_Hexen(int lump);
-extern void P_LoadLineDefs_Hexen(int lump);
+extern void
+  P_LoadSegs_DeePBSP(int lump);
+extern void
+  P_LoadSubsectors_DeePBSP(int lump);
+extern void
+  P_LoadNodes_DeePBSP(int lump);
+extern void
+  P_LoadNodes_ZDBSP(int lump, boolean compressed);
+extern void
+  P_LoadThings_Hexen(int lump);
+extern void
+  P_LoadLineDefs_Hexen(int lump);
 
 #endif

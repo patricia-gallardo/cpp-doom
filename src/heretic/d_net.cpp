@@ -18,10 +18,10 @@
 //
 
 
+#include "doomdef.hpp"
 #include "i_system.hpp"
 #include "i_timer.hpp"
 #include "i_video.hpp"
-#include "doomdef.hpp"
 #include "m_argv.hpp"
 #include "m_misc.hpp"
 #include "w_checksum.hpp"
@@ -32,171 +32,181 @@
 
 ticcmd_t *netcmds;
 
-extern void D_DoAdvanceDemo();
-extern void D_ProcessEvents();
-extern void G_BuildTiccmd(ticcmd_t *cmd, int maketic);
-extern boolean G_CheckDemoStatus();
+extern void
+  D_DoAdvanceDemo();
+extern void
+  D_ProcessEvents();
+extern void
+  G_BuildTiccmd(ticcmd_t *cmd, int maketic);
+extern boolean
+  G_CheckDemoStatus();
 
 // Called when a player leaves the game
 
-static void PlayerQuitGame(player_t *player)
+static void
+  PlayerQuitGame(player_t *player)
 {
-    static char exitmsg[80];
-    unsigned int player_num;
+  static char  exitmsg[80];
+  unsigned int player_num;
 
-    player_num = player - players;
+  player_num = player - players;
 
-    // Note:
-    // The Heretic source code does this, which doesn't actually work.
-    // As a result, the exit message is never seen.
+  // Note:
+  // The Heretic source code does this, which doesn't actually work.
+  // As a result, the exit message is never seen.
 
-    M_StringCopy(exitmsg, "PLAYER 1 LEFT THE GAME", sizeof(exitmsg));
-    exitmsg[7] += player_num;
-    players[consoleplayer].message = exitmsg;
+  M_StringCopy(exitmsg, "PLAYER 1 LEFT THE GAME", sizeof(exitmsg));
+  exitmsg[7] += player_num;
+  players[consoleplayer].message = exitmsg;
 
-    playeringame[player_num] = false;
-    players[consoleplayer].message = exitmsg;
+  playeringame[player_num]       = false;
+  players[consoleplayer].message = exitmsg;
 
-    // TODO: check if it is sensible to do this:
+  // TODO: check if it is sensible to do this:
 
-    if (demorecording) 
-    {
-        G_CheckDemoStatus ();
-    }
+  if (demorecording)
+  {
+    G_CheckDemoStatus();
+  }
 }
 
-static void RunTic(ticcmd_t *cmds, boolean *ingame)
+static void
+  RunTic(ticcmd_t *cmds, boolean *ingame)
 {
-    extern boolean advancedemo;
-    unsigned int i;
+  extern boolean advancedemo;
+  unsigned int   i;
 
-    // Check for player quits.
+  // Check for player quits.
 
-    for (i = 0; i < MAXPLAYERS; ++i)
+  for (i = 0; i < MAXPLAYERS; ++i)
+  {
+    if (!demoplayback && playeringame[i] && !ingame[i])
     {
-        if (!demoplayback && playeringame[i] && !ingame[i])
-        {
-            PlayerQuitGame(&players[i]);
-        }
+      PlayerQuitGame(&players[i]);
     }
+  }
 
-    netcmds = cmds;
+  netcmds = cmds;
 
-    // check that there are players in the game.  if not, we cannot
-    // run a tic.
+  // check that there are players in the game.  if not, we cannot
+  // run a tic.
 
-    if (advancedemo)
-        D_DoAdvanceDemo ();
+  if (advancedemo)
+    D_DoAdvanceDemo();
 
-    G_Ticker ();
+  G_Ticker();
 }
 
 static loop_interface_t doom_loop_interface = {
-    D_ProcessEvents,
-    G_BuildTiccmd,
-    RunTic,
-    MN_Ticker
+  D_ProcessEvents,
+  G_BuildTiccmd,
+  RunTic,
+  MN_Ticker
 };
 
 
-// Load game settings from the specified structure and 
+// Load game settings from the specified structure and
 // set global variables.
 
-static void LoadGameSettings(net_gamesettings_t *settings)
+static void
+  LoadGameSettings(net_gamesettings_t *settings)
 {
-    unsigned int i;
+  unsigned int i;
 
-    deathmatch = settings->deathmatch;
-    ticdup = settings->ticdup;
-    startepisode = settings->episode;
-    startmap = settings->map;
-    startskill = static_cast<skill_t>(settings->skill);
-    // TODO startloadgame = settings->loadgame;
-    lowres_turn = settings->lowres_turn;
-    nomonsters = settings->nomonsters;
-    respawnparm = settings->respawn_monsters;
-    consoleplayer = settings->consoleplayer;
+  deathmatch    = settings->deathmatch;
+  ticdup        = settings->ticdup;
+  startepisode  = settings->episode;
+  startmap      = settings->map;
+  startskill    = static_cast<skill_t>(settings->skill);
+  // TODO startloadgame = settings->loadgame;
+  lowres_turn   = settings->lowres_turn;
+  nomonsters    = settings->nomonsters;
+  respawnparm   = settings->respawn_monsters;
+  consoleplayer = settings->consoleplayer;
 
-    if (lowres_turn)
-    {
-        printf("NOTE: Turning resolution is reduced; this is probably "
-               "because there is a client recording a Vanilla demo.\n");
-    }
+  if (lowres_turn)
+  {
+    printf("NOTE: Turning resolution is reduced; this is probably "
+           "because there is a client recording a Vanilla demo.\n");
+  }
 
-    for (i = 0; i < MAXPLAYERS; ++i)
-    {
-        playeringame[i] = i < settings->num_players;
-    }
+  for (i = 0; i < MAXPLAYERS; ++i)
+  {
+    playeringame[i] = i < settings->num_players;
+  }
 }
 
 // Save the game settings from global variables to the specified
 // game settings structure.
 
-static void SaveGameSettings(net_gamesettings_t *settings)
+static void
+  SaveGameSettings(net_gamesettings_t *settings)
 {
-    // Fill in game settings structure with appropriate parameters
-    // for the new game
+  // Fill in game settings structure with appropriate parameters
+  // for the new game
 
-    settings->deathmatch = deathmatch;
-    settings->episode = startepisode;
-    settings->map = startmap;
-    settings->skill = startskill;
-    // TODO settings->loadgame = startloadgame;
-    settings->gameversion = exe_heretic_1_3;
-    settings->nomonsters = nomonsters;
-    settings->respawn_monsters = respawnparm;
-    settings->timelimit = 0;
+  settings->deathmatch       = deathmatch;
+  settings->episode          = startepisode;
+  settings->map              = startmap;
+  settings->skill            = startskill;
+  // TODO settings->loadgame = startloadgame;
+  settings->gameversion      = exe_heretic_1_3;
+  settings->nomonsters       = nomonsters;
+  settings->respawn_monsters = respawnparm;
+  settings->timelimit        = 0;
 
-    settings->lowres_turn = M_ParmExists("-record")
-                         && !M_ParmExists("-longtics");
+  settings->lowres_turn      = M_ParmExists("-record")
+                          && !M_ParmExists("-longtics");
 }
 
-static void InitConnectData(net_connect_data_t *connect_data)
+static void
+  InitConnectData(net_connect_data_t *connect_data)
 {
-    connect_data->drone = false;
-    connect_data->max_players = MAXPLAYERS;
+  connect_data->drone       = false;
+  connect_data->max_players = MAXPLAYERS;
 
-    //
-    // Connect data
-    //
+  //
+  // Connect data
+  //
 
-    // Game type fields:
+  // Game type fields:
 
-    connect_data->gamemode = gamemode;
-    connect_data->gamemission = heretic;
+  connect_data->gamemode    = gamemode;
+  connect_data->gamemission = heretic;
 
-    // Are we recording a demo? Possibly set lowres turn mode
+  // Are we recording a demo? Possibly set lowres turn mode
 
-    connect_data->lowres_turn = M_ParmExists("-record")
-                             && !M_ParmExists("-longtics");
+  connect_data->lowres_turn = M_ParmExists("-record")
+                              && !M_ParmExists("-longtics");
 
-    // Read checksums of our WAD directory and dehacked information
+  // Read checksums of our WAD directory and dehacked information
 
-    W_Checksum(connect_data->wad_sha1sum);
-    DEH_Checksum(connect_data->deh_sha1sum);
+  W_Checksum(connect_data->wad_sha1sum);
+  DEH_Checksum(connect_data->deh_sha1sum);
 
-    connect_data->is_freedoom = 0;
+  connect_data->is_freedoom = 0;
 }
 
-void D_ConnectNetGame()
+void
+  D_ConnectNetGame()
 {
-    net_connect_data_t connect_data;
+  net_connect_data_t connect_data;
 
-    InitConnectData(&connect_data);
-    netgame = D_InitNetGame(&connect_data);
+  InitConnectData(&connect_data);
+  netgame = D_InitNetGame(&connect_data);
 
-    //!
-    // @category net
-    //
-    // Start the game playing as though in a netgame with a single
-    // player.  This can also be used to play back single player netgame
-    // demos.
-    //
+  //!
+  // @category net
+  //
+  // Start the game playing as though in a netgame with a single
+  // player.  This can also be used to play back single player netgame
+  // demos.
+  //
 
-    if (M_CheckParm("-solo-net") > 0)
-    {
-        netgame = true;
-    }
+  if (M_CheckParm("-solo-net") > 0)
+  {
+    netgame = true;
+  }
 }
 
 //
@@ -204,19 +214,19 @@ void D_ConnectNetGame()
 // Works out player numbers among the net participants
 //
 
-void D_CheckNetGame ()
+void
+  D_CheckNetGame()
 {
-    net_gamesettings_t settings;
+  net_gamesettings_t settings;
 
-    D_RegisterLoopCallbacks(&doom_loop_interface);
+  D_RegisterLoopCallbacks(&doom_loop_interface);
 
-    if (netgame)
-    {
-        autostart = true;
-    }
+  if (netgame)
+  {
+    autostart = true;
+  }
 
-    SaveGameSettings(&settings);
-    D_StartNetGame(&settings, NULL);
-    LoadGameSettings(&settings);
+  SaveGameSettings(&settings);
+  D_StartNetGame(&settings, NULL);
+  LoadGameSettings(&settings);
 }
-

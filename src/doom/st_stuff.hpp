@@ -21,65 +21,70 @@
 #ifndef __STSTUFF_H__
 #define __STSTUFF_H__
 
-#include "doomtype.hpp"
 #include "d_event.hpp"
+#include "doomtype.hpp"
 #include "m_cheat.hpp"
 
 // Size of statusbar.
 // Now sensitive for scaling.
-#define ST_HEIGHT 32
-#define ST_WIDTH  ORIGWIDTH
-#define ST_Y      (ORIGHEIGHT - ST_HEIGHT)
+#define ST_HEIGHT  32
+#define ST_WIDTH   ORIGWIDTH
+#define ST_Y       (ORIGHEIGHT - ST_HEIGHT)
 
 #define CRISPY_HUD 12
 
 // [crispy] Demo Timer widget
-extern void ST_DrawDemoTimer(const int time);
-extern int  defdemotics, deftotaldemotics;
+extern void
+           ST_DrawDemoTimer(const int time);
+extern int defdemotics, deftotaldemotics;
 
 //
 // STATUS BAR
 //
 
 // Called by main loop.
-boolean ST_Responder(event_t *ev);
+boolean
+  ST_Responder(event_t *ev);
 
 // Called by main loop.
-void ST_Ticker();
+void
+  ST_Ticker();
 
 // Called by main loop.
-void ST_Drawer(boolean fullscreen, boolean refresh);
+void
+  ST_Drawer(boolean fullscreen, boolean refresh);
 
 // Called when the console player is spawned on each level.
-void ST_Start();
+void
+  ST_Start();
 
 // Called by startup code.
-void ST_Init();
+void
+  ST_Init();
 
 // [crispy] forcefully initialize the status bar backing screen
-extern void ST_refreshBackground(boolean force);
+extern void
+  ST_refreshBackground(boolean force);
 
 
 // States for status bar code.
-using st_stateenum_t = enum
-{
-    AutomapState,
-    FirstPersonState
+using st_stateenum_t = enum {
+  AutomapState,
+  FirstPersonState
 
 };
 
 
 // States for the chat code.
-using st_chatstateenum_t = enum
-{
-    StartChatState,
-    WaitDestState,
-    GetChatState
+using st_chatstateenum_t = enum {
+  StartChatState,
+  WaitDestState,
+  GetChatState
 
 };
 
 
-extern pixel_t *  st_backing_screen;
+extern pixel_t   *st_backing_screen;
 extern cheatseq_t cheat_mus;
 extern cheatseq_t cheat_god;
 extern cheatseq_t cheat_ammo;

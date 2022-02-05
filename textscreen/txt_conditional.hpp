@@ -41,8 +41,8 @@ using txt_conditional_t = struct txt_conditional_s;
  * @return                Pointer to the new conditional widget.
  */
 
-txt_conditional_t *TXT_NewConditional(int *var, int expected_value,
-                                      TXT_UNCAST_ARG(child));
+txt_conditional_t *
+  TXT_NewConditional(int *var, int expected_value, TXT_UNCAST_ARG(child));
 
 /**
  * Return the given child widget if the given boolean condition is true.
@@ -56,8 +56,7 @@ txt_conditional_t *TXT_NewConditional(int *var, int expected_value,
  *                         widget.
  */
 
-txt_widget_t *TXT_If(int condition, TXT_UNCAST_ARG(child));
+txt_widget_t *
+  TXT_If(int condition, TXT_UNCAST_ARG(child));
 
 #endif /* #ifndef TXT_CONDITIONAL_H */
-
-

@@ -19,16 +19,16 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-#include "txt_main.hpp"
 #include "txt_io.hpp"
+#include "txt_main.hpp"
 
 #include "net_client.hpp"
 
 #include "config.h"
 #include "ct_chat.hpp"
-#include "doomdef.hpp"
-#include "deh_main.hpp"
 #include "d_iwad.hpp"
+#include "deh_main.hpp"
+#include "doomdef.hpp"
 #include "i_endoom.hpp"
 #include "i_input.hpp"
 #include "i_joystick.hpp"
@@ -37,55 +37,60 @@
 #include "i_system.hpp"
 #include "i_timer.hpp"
 #include "i_video.hpp"
+#include "lump.hpp"
 #include "m_argv.hpp"
 #include "m_config.hpp"
 #include "m_controls.hpp"
 #include "m_misc.hpp"
 #include "p_local.hpp"
 #include "s_sound.hpp"
-#include "w_main.hpp"
 #include "v_video.hpp"
-#include "lump.hpp"
+#include "w_main.hpp"
 
-#define CT_KEY_GREEN    'g'
-#define CT_KEY_YELLOW   'y'
-#define CT_KEY_RED      'r'
-#define CT_KEY_BLUE     'b'
+#define CT_KEY_GREEN     'g'
+#define CT_KEY_YELLOW    'y'
+#define CT_KEY_RED       'r'
+#define CT_KEY_BLUE      'b'
 
 #define STARTUP_WINDOW_X 17
 #define STARTUP_WINDOW_Y 7
 
-GameMode_t gamemode = indetermined;
-const char *gamedescription = "unknown";
+GameMode_t     gamemode        = indetermined;
+const char    *gamedescription = "unknown";
 
-boolean nomonsters;             // checkparm of -nomonsters
-boolean respawnparm;            // checkparm of -respawn
-boolean debugmode;              // checkparm of -debug
-boolean ravpic;                 // checkparm of -ravpic
-boolean cdrom;                  // true if cd-rom mode active
-boolean noartiskip;             // whether shift-enter skips an artifact
+boolean        nomonsters;  // checkparm of -nomonsters
+boolean        respawnparm; // checkparm of -respawn
+boolean        debugmode;   // checkparm of -debug
+boolean        ravpic;      // checkparm of -ravpic
+boolean        cdrom;       // true if cd-rom mode active
+boolean        noartiskip;  // whether shift-enter skips an artifact
 
-skill_t startskill;
-int startepisode;
-int startmap;
-int UpdateState;
-static int graphical_startup = 0;
+skill_t        startskill;
+int            startepisode;
+int            startmap;
+int            UpdateState;
+static int     graphical_startup = 0;
 static boolean using_graphical_startup;
 static boolean main_loop_started = false;
-boolean autostart;
+boolean        autostart;
 extern boolean automapactive;
 
-boolean advancedemo;
+boolean        advancedemo;
 
-FILE *debugfile;
+FILE          *debugfile;
 
-static int show_endoom = 0;
+static int     show_endoom = 0;
 
-void D_ConnectNetGame();
-void D_CheckNetGame();
-void D_PageDrawer();
-void D_AdvanceDemo();
-boolean F_Responder(event_t * ev);
+void
+  D_ConnectNetGame();
+void
+  D_CheckNetGame();
+void
+  D_PageDrawer();
+void
+  D_AdvanceDemo();
+boolean
+  F_Responder(event_t *ev);
 
 //---------------------------------------------------------------------------
 //
@@ -95,22 +100,23 @@ boolean F_Responder(event_t * ev);
 //
 //---------------------------------------------------------------------------
 
-void D_ProcessEvents()
+void
+  D_ProcessEvents()
 {
-    event_t *ev;
+  event_t *ev;
 
-    while ((ev = D_PopEvent()) != NULL)
+  while ((ev = D_PopEvent()) != NULL)
+  {
+    if (F_Responder(ev))
     {
-        if (F_Responder(ev))
-        {
-            continue;
-        }
-        if (MN_Responder(ev))
-        {
-            continue;
-        }
-        G_Responder(ev);
+      continue;
     }
+    if (MN_Responder(ev))
+    {
+      continue;
+    }
+    G_Responder(ev);
+  }
 }
 
 //---------------------------------------------------------------------------
@@ -119,16 +125,17 @@ void D_ProcessEvents()
 //
 //---------------------------------------------------------------------------
 
-void DrawMessage()
+void
+  DrawMessage()
 {
-    player_t *player;
+  player_t *player;
 
-    player = &players[consoleplayer];
-    if (player->messageTics <= 0 || !player->message)
-    {                           // No message
-        return;
-    }
-    MN_DrTextA(player->message, 160 - MN_TextAWidth(player->message) / 2, 1);
+  player = &players[consoleplayer];
+  if (player->messageTics <= 0 || !player->message)
+  { // No message
+    return;
+  }
+  MN_DrTextA(player->message, 160 - MN_TextAWidth(player->message) / 2, 1);
 }
 
 //---------------------------------------------------------------------------
@@ -139,124 +146,126 @@ void DrawMessage()
 //
 //---------------------------------------------------------------------------
 
-static void CrispyDrawStats ()
+static void
+  CrispyDrawStats()
 {
-    static short height, coord_x;
-    char str[32];
-    player_t *const player = &players[consoleplayer];
+  static short    height, coord_x;
+  char            str[32];
+  player_t *const player = &players[consoleplayer];
 
-    if (!height || !coord_x)
-    {
-	const int FontABaseLump = W_GetNumForName(DEH_String("FONTA_S")) + 1;
-	const patch_t *const p = cache_lump_num<const patch_t *const>(FontABaseLump + 'A' - 33, PU_CACHE);
+  if (!height || !coord_x)
+  {
+    const int            FontABaseLump = W_GetNumForName(DEH_String("FONTA_S")) + 1;
+    const patch_t *const p             = cache_lump_num<const patch_t *const>(FontABaseLump + 'A' - 33, PU_CACHE);
 
-	height = SHORT(p->height) + 1;
-	coord_x = ORIGWIDTH - 7 * SHORT(p->width);
-    }
+    height                             = SHORT(p->height) + 1;
+    coord_x                            = ORIGWIDTH - 7 * SHORT(p->width);
+  }
 
-    if (crispy->automapstats == WIDGETS_ALWAYS || (automapactive && crispy->automapstats == WIDGETS_AUTOMAP))
-    {
-	M_snprintf(str, sizeof(str), "K %d/%d", player->killcount, totalkills);
-	MN_DrTextA(str, 0, 1*height);
+  if (crispy->automapstats == WIDGETS_ALWAYS || (automapactive && crispy->automapstats == WIDGETS_AUTOMAP))
+  {
+    M_snprintf(str, sizeof(str), "K %d/%d", player->killcount, totalkills);
+    MN_DrTextA(str, 0, 1 * height);
 
-	M_snprintf(str, sizeof(str), "I %d/%d", player->itemcount, totalitems);
-	MN_DrTextA(str, 0, 2*height);
+    M_snprintf(str, sizeof(str), "I %d/%d", player->itemcount, totalitems);
+    MN_DrTextA(str, 0, 2 * height);
 
-	M_snprintf(str, sizeof(str), "S %d/%d", player->secretcount, totalsecret);
-	MN_DrTextA(str, 0, 3*height);
-    }
+    M_snprintf(str, sizeof(str), "S %d/%d", player->secretcount, totalsecret);
+    MN_DrTextA(str, 0, 3 * height);
+  }
 
-    if (crispy->leveltime == WIDGETS_ALWAYS || (automapactive && crispy->leveltime == WIDGETS_AUTOMAP))
-    {
-	const int time = leveltime / TICRATE;
+  if (crispy->leveltime == WIDGETS_ALWAYS || (automapactive && crispy->leveltime == WIDGETS_AUTOMAP))
+  {
+    const int time = leveltime / TICRATE;
 
-	M_snprintf(str, sizeof(str), "%02d:%02d", time/60, time%60);
-	MN_DrTextA(str, 0, 4*height);
-    }
+    M_snprintf(str, sizeof(str), "%02d:%02d", time / 60, time % 60);
+    MN_DrTextA(str, 0, 4 * height);
+  }
 
-    if (crispy->playercoords == WIDGETS_ALWAYS || (automapactive && crispy->playercoords == WIDGETS_AUTOMAP))
-    {
-	M_snprintf(str, sizeof(str), "X %-5d", player->mo->x>>FRACBITS);
-	MN_DrTextA(str, coord_x, 1*height);
+  if (crispy->playercoords == WIDGETS_ALWAYS || (automapactive && crispy->playercoords == WIDGETS_AUTOMAP))
+  {
+    M_snprintf(str, sizeof(str), "X %-5d", player->mo->x >> FRACBITS);
+    MN_DrTextA(str, coord_x, 1 * height);
 
-	M_snprintf(str, sizeof(str), "Y %-5d", player->mo->y>>FRACBITS);
-	MN_DrTextA(str, coord_x, 2*height);
+    M_snprintf(str, sizeof(str), "Y %-5d", player->mo->y >> FRACBITS);
+    MN_DrTextA(str, coord_x, 2 * height);
 
-	M_snprintf(str, sizeof(str), "A %-5d", player->mo->angle/ANG1);
-	MN_DrTextA(str, coord_x, 3*height);
-    }
+    M_snprintf(str, sizeof(str), "A %-5d", player->mo->angle / ANG1);
+    MN_DrTextA(str, coord_x, 3 * height);
+  }
 }
 
-void R_ExecuteSetViewSize();
+void
+               R_ExecuteSetViewSize();
 
 extern boolean finalestage;
 
-void D_Display()
+void
+  D_Display()
 {
-    extern boolean askforquit;
+  extern boolean askforquit;
 
-    // Change the view size if needed
-    if (setsizeneeded)
+  // Change the view size if needed
+  if (setsizeneeded)
+  {
+    R_ExecuteSetViewSize();
+  }
+
+  //
+  // do buffered drawing
+  //
+  switch (gamestate)
+  {
+    case GS_LEVEL:
+      if (!gametic)
+        break;
+      if (automapactive)
+        AM_Drawer();
+      else
+        R_RenderPlayerView(&players[displayplayer]);
+      CT_Drawer();
+      UpdateState |= I_FULLVIEW;
+      SB_Drawer();
+      CrispyDrawStats();
+      break;
+    case GS_INTERMISSION:
+      IN_Drawer();
+      break;
+    case GS_FINALE:
+      F_Drawer();
+      break;
+    case GS_DEMOSCREEN:
+      D_PageDrawer();
+      break;
+  }
+
+  if (testcontrols)
+  {
+    V_DrawMouseSpeedBox(testcontrols_mousespeed);
+  }
+
+  if (paused && !MenuActive && !askforquit)
+  {
+    if (!netgame)
     {
-        R_ExecuteSetViewSize();
+      V_DrawPatch(160, (viewwindowy >> crispy->hires) + 5, cache_lump_name<patch_t *>(DEH_String("PAUSED"), PU_CACHE));
     }
-
-//
-// do buffered drawing
-//
-    switch (gamestate)
+    else
     {
-        case GS_LEVEL:
-            if (!gametic)
-                break;
-            if (automapactive)
-                AM_Drawer();
-            else
-                R_RenderPlayerView(&players[displayplayer]);
-            CT_Drawer();
-            UpdateState |= I_FULLVIEW;
-            SB_Drawer();
-            CrispyDrawStats();
-            break;
-        case GS_INTERMISSION:
-            IN_Drawer();
-            break;
-        case GS_FINALE:
-            F_Drawer();
-            break;
-        case GS_DEMOSCREEN:
-            D_PageDrawer();
-            break;
+      V_DrawPatch(160, 70, cache_lump_name<patch_t *>(DEH_String("PAUSED"), PU_CACHE));
     }
+  }
+  // Handle player messages
+  DrawMessage();
 
-    if (testcontrols)
-    {
-        V_DrawMouseSpeedBox(testcontrols_mousespeed);
-    }
+  // Menu drawing
+  MN_Drawer();
 
-    if (paused && !MenuActive && !askforquit)
-    {
-        if (!netgame)
-        {
-            V_DrawPatch(160, (viewwindowy >> crispy->hires) + 5, cache_lump_name<patch_t *>(DEH_String("PAUSED"),
-                                                              PU_CACHE));
-        }
-        else
-        {
-            V_DrawPatch(160, 70, cache_lump_name<patch_t *>(DEH_String("PAUSED"), PU_CACHE));
-        }
-    }
-    // Handle player messages
-    DrawMessage();
+  // Send out any new accumulation
+  NetUpdate();
 
-    // Menu drawing
-    MN_Drawer();
-
-    // Send out any new accumulation
-    NetUpdate();
-
-    // Flush buffered stuff to screen
-    I_FinishUpdate();
+  // Flush buffered stuff to screen
+  I_FinishUpdate();
 }
 
 //
@@ -265,16 +274,17 @@ void D_Display()
 // Called to determine whether to grab the mouse pointer
 //
 
-boolean D_GrabMouseCallback()
+boolean
+  D_GrabMouseCallback()
 {
-    // when menu is active or game is paused, release the mouse
+  // when menu is active or game is paused, release the mouse
 
-    if (MenuActive || paused)
-        return false;
+  if (MenuActive || paused)
+    return false;
 
-    // only grab mouse when playing levels (but not demos)
+  // only grab mouse when playing levels (but not demos)
 
-    return (gamestate == GS_LEVEL) && !demoplayback && !advancedemo;
+  return (gamestate == GS_LEVEL) && !demoplayback && !advancedemo;
 }
 
 //---------------------------------------------------------------------------
@@ -283,45 +293,46 @@ boolean D_GrabMouseCallback()
 //
 //---------------------------------------------------------------------------
 
-void D_DoomLoop()
+void
+  D_DoomLoop()
 {
-    if (M_CheckParm("-debugfile"))
-    {
-        char filename[20];
-        M_snprintf(filename, sizeof(filename), "debug%i.txt", consoleplayer);
-        debugfile = fopen(filename, "w");
-    }
-    I_GraphicsCheckCommandLine();
-    I_SetGrabMouseCallback(D_GrabMouseCallback);
-    I_InitGraphics();
+  if (M_CheckParm("-debugfile"))
+  {
+    char filename[20];
+    M_snprintf(filename, sizeof(filename), "debug%i.txt", consoleplayer);
+    debugfile = fopen(filename, "w");
+  }
+  I_GraphicsCheckCommandLine();
+  I_SetGrabMouseCallback(D_GrabMouseCallback);
+  I_InitGraphics();
 
-    main_loop_started = true;
+  main_loop_started = true;
 
-    while (1)
-    {
-        // Frame syncronous IO operations
-        I_StartFrame();
+  while (1)
+  {
+    // Frame syncronous IO operations
+    I_StartFrame();
 
-        // Process one or more tics
-        // Will run at least one tic
-        TryRunTics();
+    // Process one or more tics
+    // Will run at least one tic
+    TryRunTics();
 
-        // Move positional sounds
-        S_UpdateSounds(players[consoleplayer].mo);
-        D_Display();
-    }
+    // Move positional sounds
+    S_UpdateSounds(players[consoleplayer].mo);
+    D_Display();
+  }
 }
 
 /*
 ===============================================================================
 
-						DEMO LOOP
+                                                DEMO LOOP
 
 ===============================================================================
 */
 
-static int demosequence;
-static int pagetic;
+static int         demosequence;
+static int         pagetic;
 static const char *pagename;
 
 
@@ -335,10 +346,11 @@ static const char *pagename;
 ================
 */
 
-void D_PageTicker()
+void
+  D_PageTicker()
 {
-    if (--pagetic < 0)
-        D_AdvanceDemo();
+  if (--pagetic < 0)
+    D_AdvanceDemo();
 }
 
 
@@ -350,14 +362,15 @@ void D_PageTicker()
 ================
 */
 
-void D_PageDrawer()
+void
+  D_PageDrawer()
 {
-    V_DrawRawScreen(cache_lump_name<pixel_t *>(pagename, PU_CACHE));
-    if (demosequence == 1)
-    {
-        V_DrawPatch(4, 160, cache_lump_name<patch_t *>(DEH_String("ADVISOR"), PU_CACHE));
-    }
-    UpdateState |= I_FULLSCRN;
+  V_DrawRawScreen(cache_lump_name<pixel_t *>(pagename, PU_CACHE));
+  if (demosequence == 1)
+  {
+    V_DrawPatch(4, 160, cache_lump_name<patch_t *>(DEH_String("ADVISOR"), PU_CACHE));
+  }
+  UpdateState |= I_FULLSCRN;
 }
 
 /*
@@ -369,65 +382,67 @@ void D_PageDrawer()
 =================
 */
 
-void D_AdvanceDemo()
+void
+  D_AdvanceDemo()
 {
-    advancedemo = true;
+  advancedemo = true;
 }
 
-void D_DoAdvanceDemo()
+void
+  D_DoAdvanceDemo()
 {
-    players[consoleplayer].playerstate = PST_LIVE;      // don't reborn
-    advancedemo = false;
-    usergame = false;           // can't save / end game here
-    paused = false;
-    gameaction = ga_nothing;
-    demosequence = (demosequence + 1) % 7;
-    switch (demosequence)
-    {
-        case 0:
-            pagetic = 210;
-            gamestate = GS_DEMOSCREEN;
-            pagename = DEH_String("TITLE");
-            S_StartSong(mus_titl, false);
-            break;
-        case 1:
-            pagetic = 140;
-            gamestate = GS_DEMOSCREEN;
-            pagename = DEH_String("TITLE");
-            break;
-        case 2:
-            BorderNeedRefresh = true;
-            UpdateState |= I_FULLSCRN;
-            G_DeferedPlayDemo(DEH_String("demo1"));
-            break;
-        case 3:
-            pagetic = 200;
-            gamestate = GS_DEMOSCREEN;
-            pagename = DEH_String("CREDIT");
-            break;
-        case 4:
-            BorderNeedRefresh = true;
-            UpdateState |= I_FULLSCRN;
-            G_DeferedPlayDemo(DEH_String("demo2"));
-            break;
-        case 5:
-            pagetic = 200;
-            gamestate = GS_DEMOSCREEN;
-            if (gamemode == shareware)
-            {
-                pagename = DEH_String("ORDER");
-            }
-            else
-            {
-                pagename = DEH_String("CREDIT");
-            }
-            break;
-        case 6:
-            BorderNeedRefresh = true;
-            UpdateState |= I_FULLSCRN;
-            G_DeferedPlayDemo(DEH_String("demo3"));
-            break;
-    }
+  players[consoleplayer].playerstate = PST_LIVE; // don't reborn
+  advancedemo                        = false;
+  usergame                           = false; // can't save / end game here
+  paused                             = false;
+  gameaction                         = ga_nothing;
+  demosequence                       = (demosequence + 1) % 7;
+  switch (demosequence)
+  {
+    case 0:
+      pagetic   = 210;
+      gamestate = GS_DEMOSCREEN;
+      pagename  = DEH_String("TITLE");
+      S_StartSong(mus_titl, false);
+      break;
+    case 1:
+      pagetic   = 140;
+      gamestate = GS_DEMOSCREEN;
+      pagename  = DEH_String("TITLE");
+      break;
+    case 2:
+      BorderNeedRefresh = true;
+      UpdateState |= I_FULLSCRN;
+      G_DeferedPlayDemo(DEH_String("demo1"));
+      break;
+    case 3:
+      pagetic   = 200;
+      gamestate = GS_DEMOSCREEN;
+      pagename  = DEH_String("CREDIT");
+      break;
+    case 4:
+      BorderNeedRefresh = true;
+      UpdateState |= I_FULLSCRN;
+      G_DeferedPlayDemo(DEH_String("demo2"));
+      break;
+    case 5:
+      pagetic   = 200;
+      gamestate = GS_DEMOSCREEN;
+      if (gamemode == shareware)
+      {
+        pagename = DEH_String("ORDER");
+      }
+      else
+      {
+        pagename = DEH_String("CREDIT");
+      }
+      break;
+    case 6:
+      BorderNeedRefresh = true;
+      UpdateState |= I_FULLSCRN;
+      G_DeferedPlayDemo(DEH_String("demo3"));
+      break;
+  }
 }
 
 
@@ -439,11 +454,12 @@ void D_DoAdvanceDemo()
 =================
 */
 
-void D_StartTitle()
+void
+  D_StartTitle()
 {
-    gameaction = ga_nothing;
-    demosequence = -1;
-    D_AdvanceDemo();
+  gameaction   = ga_nothing;
+  demosequence = -1;
+  D_AdvanceDemo();
 }
 
 
@@ -456,30 +472,31 @@ void D_StartTitle()
 ==============
 */
 
-void D_CheckRecordFrom()
+void
+  D_CheckRecordFrom()
 {
-    int p;
-    char *filename;
+  int   p;
+  char *filename;
 
-    //!
-    // @vanilla
-    // @category demo
-    // @arg <savenum> <demofile>
-    //
-    // Record a demo, loading from the given filename. Equivalent
-    // to -loadgame <savenum> -record <demofile>.
+  //!
+  // @vanilla
+  // @category demo
+  // @arg <savenum> <demofile>
+  //
+  // Record a demo, loading from the given filename. Equivalent
+  // to -loadgame <savenum> -record <demofile>.
 
-    p = M_CheckParmWithArgs("-recordfrom", 2);
-    if (!p)
-        return;
+  p = M_CheckParmWithArgs("-recordfrom", 2);
+  if (!p)
+    return;
 
-    filename = SV_Filename(myargv[p + 1][0] - '0');
-    G_LoadGame(filename);
-    G_DoLoadGame();             // load the gameskill etc info from savegame
+  filename = SV_Filename(myargv[p + 1][0] - '0');
+  G_LoadGame(filename);
+  G_DoLoadGame(); // load the gameskill etc info from savegame
 
-    G_RecordDemo(gameskill, 1, gameepisode, gamemap, myargv[p + 2]);
-    D_DoomLoop();               // never returns
-    free(filename);
+  G_RecordDemo(gameskill, 1, gameepisode, gamemap, myargv[p + 2]);
+  D_DoomLoop(); // never returns
+  free(filename);
 }
 
 /*
@@ -493,30 +510,32 @@ void D_CheckRecordFrom()
 // MAPDIR should be defined as the directory that holds development maps
 // for the -wart # # command
 
-#define MAPDIR "\\data\\"
+#define MAPDIR           "\\data\\"
 
 #define SHAREWAREWADNAME "heretic1.wad"
 
 char *iwadfile;
 
 
-void wadprintf()
+void
+  wadprintf()
 {
-    if (debugmode)
-    {
-        return;
-    }
+  if (debugmode)
+  {
+    return;
+  }
 }
 
-boolean D_AddFile(char *file)
+boolean
+  D_AddFile(char *file)
 {
-    wad_file_t *handle;
+  wad_file_t *handle;
 
-    printf("  adding %s\n", file);
+  printf("  adding %s\n", file);
 
-    handle = W_AddFile(file);
+  handle = W_AddFile(file);
 
-    return handle != NULL;
+  return handle != NULL;
 }
 
 //==========================================================
@@ -524,13 +543,13 @@ boolean D_AddFile(char *file)
 //  Startup Thermo code
 //
 //==========================================================
-#define MSG_Y       9
-#define THERM_X     14
-#define THERM_Y     14
+#define MSG_Y   9
+#define THERM_X 14
+#define THERM_Y 14
 
-int thermMax;
-int thermCurrent;
-char smsg[80];                  // status bar line
+int        thermMax;
+int        thermCurrent;
+char       smsg[80]; // status bar line
 
 //
 //  Heretic startup screen shit
@@ -538,241 +557,254 @@ char smsg[80];                  // status bar line
 
 static int startup_line = STARTUP_WINDOW_Y;
 
-void hprintf(const char *string)
+void
+  hprintf(const char *string)
 {
-    if (using_graphical_startup)
-    {
-        TXT_BGColor(TXT_COLOR_CYAN, 0);
-        TXT_FGColor(TXT_COLOR_BRIGHT_WHITE);
-
-        TXT_GotoXY(STARTUP_WINDOW_X, startup_line);
-        ++startup_line;
-        TXT_Puts(string);
-
-        TXT_UpdateScreen();
-    }
-
-    // haleyjd: shouldn't be WATCOMC-only
-    if (debugmode)
-        puts(string);
-}
-
-void drawstatus()
-{
-    int i;
-
-    TXT_GotoXY(1, 24);
-    TXT_BGColor(TXT_COLOR_BLUE, 0);
+  if (using_graphical_startup)
+  {
+    TXT_BGColor(TXT_COLOR_CYAN, 0);
     TXT_FGColor(TXT_COLOR_BRIGHT_WHITE);
 
-    for (i=0; smsg[i] != '\0'; ++i) 
-    {
-        TXT_PutChar(smsg[i]);
-    }
-}
-
-static void status(const char *string)
-{
-    if (using_graphical_startup)
-    {
-        M_StringConcat(smsg, string, sizeof(smsg));
-        drawstatus();
-    }
-}
-
-void DrawThermo()
-{
-    static int last_progress = -1;
-    int progress;
-    int i;
-
-    if (!using_graphical_startup)
-    {
-        return;
-    }
-
-    // No progress? Don't update the screen.
-
-    progress = (50 * thermCurrent) / thermMax + 2;
-
-    if (last_progress == progress)
-    {
-        return;
-    }
-
-    last_progress = progress;
-
-    TXT_GotoXY(THERM_X, THERM_Y);
-
-    TXT_FGColor(TXT_COLOR_BRIGHT_GREEN);
-    TXT_BGColor(TXT_COLOR_GREEN, 0);
-
-    for (i = 0; i < progress; i++)
-    {
-        TXT_PutChar(0xdb);
-    }
+    TXT_GotoXY(STARTUP_WINDOW_X, startup_line);
+    ++startup_line;
+    TXT_Puts(string);
 
     TXT_UpdateScreen();
+  }
+
+  // haleyjd: shouldn't be WATCOMC-only
+  if (debugmode)
+    puts(string);
 }
 
-void initStartup()
+void
+  drawstatus()
 {
-    byte *textScreen;
-    byte *loading;
+  int i;
 
-    if (!graphical_startup || debugmode || testcontrols)
-    {
-        using_graphical_startup = false;
-        return;
-    }
+  TXT_GotoXY(1, 24);
+  TXT_BGColor(TXT_COLOR_BLUE, 0);
+  TXT_FGColor(TXT_COLOR_BRIGHT_WHITE);
 
-    if (!TXT_Init()) 
-    {
-        using_graphical_startup = false;
-        return;
-    }
-
-    I_InitWindowTitle();
-    I_InitWindowIcon();
-
-    // Blit main screen
-    textScreen = TXT_GetScreenData();
-    loading = cache_lump_name<byte *>(DEH_String("LOADING"), PU_CACHE);
-    memcpy(textScreen, loading, 4000);
-
-    // Print version string
-
-    TXT_BGColor(TXT_COLOR_RED, 0);
-    TXT_FGColor(TXT_COLOR_YELLOW);
-    TXT_GotoXY(46, 2);
-    TXT_Puts(HERETIC_VERSION_TEXT);
-
-    TXT_UpdateScreen();
-
-    using_graphical_startup = true;
+  for (i = 0; smsg[i] != '\0'; ++i)
+  {
+    TXT_PutChar(smsg[i]);
+  }
 }
 
-static void finishStartup()
+static void
+  status(const char *string)
 {
-    if (using_graphical_startup)
-    {
-        TXT_Shutdown();
-    }
+  if (using_graphical_startup)
+  {
+    M_StringConcat(smsg, string, sizeof(smsg));
+    drawstatus();
+  }
+}
+
+void
+  DrawThermo()
+{
+  static int last_progress = -1;
+  int        progress;
+  int        i;
+
+  if (!using_graphical_startup)
+  {
+    return;
+  }
+
+  // No progress? Don't update the screen.
+
+  progress = (50 * thermCurrent) / thermMax + 2;
+
+  if (last_progress == progress)
+  {
+    return;
+  }
+
+  last_progress = progress;
+
+  TXT_GotoXY(THERM_X, THERM_Y);
+
+  TXT_FGColor(TXT_COLOR_BRIGHT_GREEN);
+  TXT_BGColor(TXT_COLOR_GREEN, 0);
+
+  for (i = 0; i < progress; i++)
+  {
+    TXT_PutChar(0xdb);
+  }
+
+  TXT_UpdateScreen();
+}
+
+void
+  initStartup()
+{
+  byte *textScreen;
+  byte *loading;
+
+  if (!graphical_startup || debugmode || testcontrols)
+  {
+    using_graphical_startup = false;
+    return;
+  }
+
+  if (!TXT_Init())
+  {
+    using_graphical_startup = false;
+    return;
+  }
+
+  I_InitWindowTitle();
+  I_InitWindowIcon();
+
+  // Blit main screen
+  textScreen = TXT_GetScreenData();
+  loading    = cache_lump_name<byte *>(DEH_String("LOADING"), PU_CACHE);
+  memcpy(textScreen, loading, 4000);
+
+  // Print version string
+
+  TXT_BGColor(TXT_COLOR_RED, 0);
+  TXT_FGColor(TXT_COLOR_YELLOW);
+  TXT_GotoXY(46, 2);
+  TXT_Puts(HERETIC_VERSION_TEXT);
+
+  TXT_UpdateScreen();
+
+  using_graphical_startup = true;
+}
+
+static void
+  finishStartup()
+{
+  if (using_graphical_startup)
+  {
+    TXT_Shutdown();
+  }
 }
 
 char tmsg[300];
-void tprintf(const char *msg, int initflag)
+void
+  tprintf(const char *msg, int initflag)
 {
-    printf("%s", msg);
+  printf("%s", msg);
 }
 
 // haleyjd: moved up, removed WATCOMC code
-void CleanExit()
+void
+  CleanExit()
 {
-    DEH_printf("Exited from HERETIC.\n");
-    exit(1);
+  DEH_printf("Exited from HERETIC.\n");
+  exit(1);
 }
 
-void CheckAbortStartup()
+void
+  CheckAbortStartup()
 {
-    // haleyjd: removed WATCOMC
-    // haleyjd FIXME: this should actually work in text mode too, but how to
-    // get input before SDL video init?
-    if(using_graphical_startup)
-    {
-        if(TXT_GetChar() == 27)
-            CleanExit();
-    }
+  // haleyjd: removed WATCOMC
+  // haleyjd FIXME: this should actually work in text mode too, but how to
+  // get input before SDL video init?
+  if (using_graphical_startup)
+  {
+    if (TXT_GetChar() == 27)
+      CleanExit();
+  }
 }
 
-void IncThermo()
+void
+  IncThermo()
 {
-    thermCurrent++;
-    DrawThermo();
-    CheckAbortStartup();
+  thermCurrent++;
+  DrawThermo();
+  CheckAbortStartup();
 }
 
-void InitThermo(int max)
+void
+  InitThermo(int max)
 {
-    thermMax = max;
-    thermCurrent = 0;
+  thermMax     = max;
+  thermCurrent = 0;
 }
 
 //
 // Add configuration file variable bindings.
 //
 
-void D_BindVariables()
+void
+  D_BindVariables()
 {
-    extern int screenblocks;
-    extern int snd_Channels;
-    int i;
+  extern int screenblocks;
+  extern int snd_Channels;
+  int        i;
 
-    M_ApplyPlatformDefaults();
+  M_ApplyPlatformDefaults();
 
-    I_BindInputVariables();
-    I_BindVideoVariables();
-    I_BindJoystickVariables();
-    I_BindSoundVariables();
+  I_BindInputVariables();
+  I_BindVideoVariables();
+  I_BindJoystickVariables();
+  I_BindSoundVariables();
 
-    M_BindBaseControls();
-    M_BindHereticControls();
-    M_BindWeaponControls();
-    M_BindChatControls(MAXPLAYERS);
+  M_BindBaseControls();
+  M_BindHereticControls();
+  M_BindWeaponControls();
+  M_BindChatControls(MAXPLAYERS);
 
-    key_multi_msgplayer[0] = CT_KEY_GREEN;
-    key_multi_msgplayer[1] = CT_KEY_YELLOW;
-    key_multi_msgplayer[2] = CT_KEY_RED;
-    key_multi_msgplayer[3] = CT_KEY_BLUE;
+  key_multi_msgplayer[0] = CT_KEY_GREEN;
+  key_multi_msgplayer[1] = CT_KEY_YELLOW;
+  key_multi_msgplayer[2] = CT_KEY_RED;
+  key_multi_msgplayer[3] = CT_KEY_BLUE;
 
-    M_BindMenuControls();
-    M_BindMapControls();
+  M_BindMenuControls();
+  M_BindMapControls();
 
-    NET_BindVariables();
+  NET_BindVariables();
 
-    M_BindIntVariable("mouse_sensitivity",      &mouseSensitivity);
-    M_BindIntVariable("sfx_volume",             &snd_MaxVolume);
-    M_BindIntVariable("music_volume",           &snd_MusicVolume);
-    M_BindIntVariable("screenblocks",           &screenblocks);
-    M_BindIntVariable("snd_channels",           &snd_Channels);
-    M_BindIntVariable("vanilla_savegame_limit", &vanilla_savegame_limit);
-    M_BindIntVariable("vanilla_demo_limit",     &vanilla_demo_limit);
-    M_BindIntVariable("show_endoom",            &show_endoom);
-    M_BindIntVariable("graphical_startup",      &graphical_startup);
+  M_BindIntVariable("mouse_sensitivity", &mouseSensitivity);
+  M_BindIntVariable("sfx_volume", &snd_MaxVolume);
+  M_BindIntVariable("music_volume", &snd_MusicVolume);
+  M_BindIntVariable("screenblocks", &screenblocks);
+  M_BindIntVariable("snd_channels", &snd_Channels);
+  M_BindIntVariable("vanilla_savegame_limit", &vanilla_savegame_limit);
+  M_BindIntVariable("vanilla_demo_limit", &vanilla_demo_limit);
+  M_BindIntVariable("show_endoom", &show_endoom);
+  M_BindIntVariable("graphical_startup", &graphical_startup);
 
-    for (i=0; i<10; ++i)
-    {
-        char buf[12];
+  for (i = 0; i < 10; ++i)
+  {
+    char buf[12];
 
-        M_snprintf(buf, sizeof(buf), "chatmacro%i", i);
-        M_BindStringVariable(buf, &chat_macros[i]);
-    }
+    M_snprintf(buf, sizeof(buf), "chatmacro%i", i);
+    M_BindStringVariable(buf, &chat_macros[i]);
+  }
 
-    // [crispy] bind "crispness" config variables
-    M_BindIntVariable("crispy_smoothscaling",   &crispy->smoothscaling);
-    M_BindIntVariable("crispy_automapstats",    &crispy->automapstats);
-    M_BindIntVariable("crispy_leveltime",       &crispy->leveltime);
-    M_BindIntVariable("crispy_playercoords",    &crispy->playercoords);
+  // [crispy] bind "crispness" config variables
+  M_BindIntVariable("crispy_smoothscaling", &crispy->smoothscaling);
+  M_BindIntVariable("crispy_automapstats", &crispy->automapstats);
+  M_BindIntVariable("crispy_leveltime", &crispy->leveltime);
+  M_BindIntVariable("crispy_playercoords", &crispy->playercoords);
 }
 
-// 
+//
 // Called at exit to display the ENDOOM screen (ENDTEXT in Heretic)
 //
 
-static void D_Endoom()
+static void
+  D_Endoom()
 {
-    byte *endoom_data;
+  byte *endoom_data;
 
-    // Disable ENDOOM?
+  // Disable ENDOOM?
 
-    if (!show_endoom || testcontrols || !main_loop_started)
-    {
-        return;
-    }
+  if (!show_endoom || testcontrols || !main_loop_started)
+  {
+    return;
+  }
 
-    endoom_data = cache_lump_name<byte *>(DEH_String("ENDTEXT"), PU_STATIC);
+  endoom_data = cache_lump_name<byte *>(DEH_String("ENDTEXT"), PU_STATIC);
 
-    I_Endoom(endoom_data);
+  I_Endoom(endoom_data);
 }
 
 //---------------------------------------------------------------------------
@@ -781,449 +813,447 @@ static void D_Endoom()
 //
 //---------------------------------------------------------------------------
 
-void D_DoomMain()
+void
+  D_DoomMain()
 {
-    GameMission_t gamemission;
-    int p;
-    char file[256];
-    char demolumpname[9];
+  GameMission_t gamemission;
+  int           p;
+  char          file[256];
+  char          demolumpname[9];
 
-    I_PrintBanner(PACKAGE_STRING);
+  I_PrintBanner(PACKAGE_STRING);
 
-    I_AtExit(D_Endoom, false);
+  I_AtExit(D_Endoom, false);
 
-    //!
-    // @category game
-    // @vanilla
-    //
-    // Disable monsters.
-    //
+  //!
+  // @category game
+  // @vanilla
+  //
+  // Disable monsters.
+  //
 
-    nomonsters = M_ParmExists("-nomonsters");
+  nomonsters   = M_ParmExists("-nomonsters");
 
-    //!
-    // @category game
-    // @vanilla
-    //
-    // Monsters respawn after being killed.
-    //
+  //!
+  // @category game
+  // @vanilla
+  //
+  // Monsters respawn after being killed.
+  //
 
-    respawnparm = M_ParmExists("-respawn");
+  respawnparm  = M_ParmExists("-respawn");
 
-    //!
-    // @vanilla
-    //
-    // Take screenshots when F1 is pressed.
-    //
+  //!
+  // @vanilla
+  //
+  // Take screenshots when F1 is pressed.
+  //
 
-    ravpic = M_ParmExists("-ravpic");
+  ravpic       = M_ParmExists("-ravpic");
 
-    //!
-    // @category obscure
-    // @vanilla
-    //
-    // Allow artifacts to be used when the run key is held down.
-    //
+  //!
+  // @category obscure
+  // @vanilla
+  //
+  // Allow artifacts to be used when the run key is held down.
+  //
 
-    noartiskip = M_ParmExists("-noartiskip");
+  noartiskip   = M_ParmExists("-noartiskip");
 
-    debugmode = M_ParmExists("-debug");
-    startskill = sk_medium;
-    startepisode = 1;
-    startmap = 1;
-    autostart = false;
+  debugmode    = M_ParmExists("-debug");
+  startskill   = sk_medium;
+  startepisode = 1;
+  startmap     = 1;
+  autostart    = false;
 
-//
-// get skill / episode / map from parms
-//
+  //
+  // get skill / episode / map from parms
+  //
 
-    //!
-    // @vanilla
-    // @category net
-    //
-    // Start a deathmatch game.
-    //
+  //!
+  // @vanilla
+  // @category net
+  //
+  // Start a deathmatch game.
+  //
 
-    if (M_ParmExists("-deathmatch"))
-    {
-        deathmatch = true;
-    }
+  if (M_ParmExists("-deathmatch"))
+  {
+    deathmatch = true;
+  }
 
-    //!
-    // @category game
-    // @arg <skill>
-    // @vanilla
-    //
-    // Set the game skill, 1-5 (1: easiest, 5: hardest).  A skill of
-    // 0 disables all monsters.
-    //
+  //!
+  // @category game
+  // @arg <skill>
+  // @vanilla
+  //
+  // Set the game skill, 1-5 (1: easiest, 5: hardest).  A skill of
+  // 0 disables all monsters.
+  //
 
-    p = M_CheckParmWithArgs("-skill", 1);
-    if (p)
-    {
-        startskill = static_cast<skill_t>(myargv[p + 1][0] - '1');
-        autostart = true;
-    }
+  p = M_CheckParmWithArgs("-skill", 1);
+  if (p)
+  {
+    startskill = static_cast<skill_t>(myargv[p + 1][0] - '1');
+    autostart  = true;
+  }
 
-    //!
-    // @category game
-    // @arg <n>
-    // @vanilla
-    //
-    // Start playing on episode n (1-4)
-    //
+  //!
+  // @category game
+  // @arg <n>
+  // @vanilla
+  //
+  // Start playing on episode n (1-4)
+  //
 
-    p = M_CheckParmWithArgs("-episode", 1);
-    if (p)
-    {
-        startepisode = myargv[p + 1][0] - '0';
-        startmap = 1;
-        autostart = true;
-    }
+  p = M_CheckParmWithArgs("-episode", 1);
+  if (p)
+  {
+    startepisode = myargv[p + 1][0] - '0';
+    startmap     = 1;
+    autostart    = true;
+  }
 
-    //!
-    // @category game
-    // @arg <x> <y>
-    // @vanilla
-    //
-    // Start a game immediately, warping to level ExMy.
-    //
+  //!
+  // @category game
+  // @arg <x> <y>
+  // @vanilla
+  //
+  // Start a game immediately, warping to level ExMy.
+  //
 
-    p = M_CheckParmWithArgs("-warp", 2);
-    if (p && p < myargc - 2)
-    {
-        startepisode = myargv[p + 1][0] - '0';
-        startmap = myargv[p + 2][0] - '0';
-        autostart = true;
-    }
+  p = M_CheckParmWithArgs("-warp", 2);
+  if (p && p < myargc - 2)
+  {
+    startepisode = myargv[p + 1][0] - '0';
+    startmap     = myargv[p + 2][0] - '0';
+    autostart    = true;
+  }
 
-//
-// init subsystems
-//
-    DEH_printf("V_Init: allocate screens.\n");
-    V_Init();
+  //
+  // init subsystems
+  //
+  DEH_printf("V_Init: allocate screens.\n");
+  V_Init();
 
-    // Check for -CDROM
+  // Check for -CDROM
 
-    cdrom = false;
+  cdrom = false;
 
 #ifdef _WIN32
 
-    //!
-    // @category obscure
-    // @platform windows
-    // @vanilla
-    //
-    // Save configuration data and savegames in c:\heretic.cd,
-    // allowing play from CD.
-    //
+  //!
+  // @category obscure
+  // @platform windows
+  // @vanilla
+  //
+  // Save configuration data and savegames in c:\heretic.cd,
+  // allowing play from CD.
+  //
 
-    if (M_CheckParm("-cdrom"))
-    {
-        cdrom = true;
-    }
+  if (M_CheckParm("-cdrom"))
+  {
+    cdrom = true;
+  }
 #endif
 
-    if (cdrom)
-    {
-        M_SetConfigDir(DEH_String("c:\\heretic.cd"));
-    }
-    else
-    {
-        M_SetConfigDir(NULL);
-    }
+  if (cdrom)
+  {
+    M_SetConfigDir(DEH_String("c:\\heretic.cd"));
+  }
+  else
+  {
+    M_SetConfigDir(NULL);
+  }
 
-    // Load defaults before initing other systems
-    DEH_printf("M_LoadDefaults: Load system defaults.\n");
-    D_BindVariables();
-    M_SetConfigFilenames("heretic.cfg", PROGRAM_PREFIX "heretic.cfg");
-    M_LoadDefaults();
+  // Load defaults before initing other systems
+  DEH_printf("M_LoadDefaults: Load system defaults.\n");
+  D_BindVariables();
+  M_SetConfigFilenames("heretic.cfg", PROGRAM_PREFIX "heretic.cfg");
+  M_LoadDefaults();
 
-    I_AtExit(M_SaveDefaults, false);
+  I_AtExit(M_SaveDefaults, false);
 
-    DEH_printf("Z_Init: Init zone memory allocation daemon.\n");
-    Z_Init();
+  DEH_printf("Z_Init: Init zone memory allocation daemon.\n");
+  Z_Init();
 
-    DEH_printf("W_Init: Init WADfiles.\n");
+  DEH_printf("W_Init: Init WADfiles.\n");
 
-    iwadfile = D_FindIWAD(IWAD_MASK_HERETIC, &gamemission);
+  iwadfile = D_FindIWAD(IWAD_MASK_HERETIC, &gamemission);
 
-    if (iwadfile == NULL)
-    {
-        I_Error("Game mode indeterminate. No IWAD was found. Try specifying\n"
-                "one with the '-iwad' command line parameter.");
-    }
+  if (iwadfile == NULL)
+  {
+    I_Error("Game mode indeterminate. No IWAD was found. Try specifying\n"
+            "one with the '-iwad' command line parameter.");
+  }
 
-    D_AddFile(iwadfile);
-    W_CheckCorrectIWAD(heretic);
+  D_AddFile(iwadfile);
+  W_CheckCorrectIWAD(heretic);
 
-    //!
-    // @category mod
-    //
-    // Disable auto-loading of .wad files.
-    //
-    if (!M_ParmExists("-noautoload"))
-    {
-        char *autoload_dir;
-        autoload_dir = M_GetAutoloadDir("heretic.wad");
-        DEH_AutoLoadPatches(autoload_dir);
-        W_AutoLoadWADs(autoload_dir);
-        free(autoload_dir);
-    }
+  //!
+  // @category mod
+  //
+  // Disable auto-loading of .wad files.
+  //
+  if (!M_ParmExists("-noautoload"))
+  {
+    char *autoload_dir;
+    autoload_dir = M_GetAutoloadDir("heretic.wad");
+    DEH_AutoLoadPatches(autoload_dir);
+    W_AutoLoadWADs(autoload_dir);
+    free(autoload_dir);
+  }
 
-    // Load dehacked patches specified on the command line.
-    DEH_ParseCommandLine();
+  // Load dehacked patches specified on the command line.
+  DEH_ParseCommandLine();
 
-    // Load PWAD files.
-    W_ParseCommandLine();
+  // Load PWAD files.
+  W_ParseCommandLine();
 
+  //!
+  // @arg <demo>
+  // @category demo
+  // @vanilla
+  //
+  // Play back the demo named demo.lmp.
+  //
+
+  p = M_CheckParmWithArgs("-playdemo", 1);
+  if (!p)
+  {
     //!
     // @arg <demo>
     // @category demo
     // @vanilla
     //
-    // Play back the demo named demo.lmp.
+    // Play back the demo named demo.lmp, determining the framerate
+    // of the screen.
     //
 
-    p = M_CheckParmWithArgs("-playdemo", 1);
-    if (!p)
+    p = M_CheckParmWithArgs("-timedemo", 1);
+  }
+
+  if (p)
+  {
+    char *uc_filename = strdup(myargv[p + 1]);
+    M_ForceUppercase(uc_filename);
+
+    // In Vanilla, the filename must be specified without .lmp,
+    // but make that optional.
+    if (M_StringEndsWith(uc_filename, ".LMP"))
     {
-        //!
-        // @arg <demo>
-        // @category demo
-        // @vanilla
-        //
-        // Play back the demo named demo.lmp, determining the framerate
-        // of the screen.
-        //
-
-        p = M_CheckParmWithArgs("-timedemo", 1);
-    }
-
-    if (p)
-    {
-        char *uc_filename = strdup(myargv[p + 1]);
-        M_ForceUppercase(uc_filename);
-
-        // In Vanilla, the filename must be specified without .lmp,
-        // but make that optional.
-        if (M_StringEndsWith(uc_filename, ".LMP"))
-        {
-            M_StringCopy(file, myargv[p + 1], sizeof(file));
-        }
-        else
-        {
-            DEH_snprintf(file, sizeof(file), "%s.lmp", myargv[p + 1]);
-        }
-
-        free(uc_filename);
-
-        if (D_AddFile(file))
-        {
-            M_StringCopy(demolumpname, lumpinfo[numlumps - 1]->name,
-                         sizeof(demolumpname));
-        }
-        else
-        {
-            // The file failed to load, but copy the original arg as a
-            // demo name to make tricks like -playdemo demo1 possible.
-            M_StringCopy(demolumpname, myargv[p + 1], sizeof(demolumpname));
-        }
-
-        printf("Playing demo %s.\n", file);
-    }
-
-    // Generate the WAD hash table.  Speed things up a bit.
-    W_GenerateHashTable();
-
-    //!
-    // @category demo
-    //
-    // Record or playback a demo without automatically quitting
-    // after either level exit or player respawn.
-    //
-
-    demoextend = M_ParmExists("-demoextend");
-
-    if (W_CheckNumForName(DEH_String("E2M1")) == -1)
-    {
-        gamemode = shareware;
-        gamedescription = "Heretic (shareware)";
-    }
-    else if (W_CheckNumForName("EXTENDED") != -1)
-    {
-        // Presence of the EXTENDED lump indicates the retail version
-
-        gamemode = retail;
-        gamedescription = "Heretic: Shadow of the Serpent Riders";
+      M_StringCopy(file, myargv[p + 1], sizeof(file));
     }
     else
     {
-        gamemode = registered;
-        gamedescription = "Heretic (registered)";
+      DEH_snprintf(file, sizeof(file), "%s.lmp", myargv[p + 1]);
     }
 
-    I_SetWindowTitle(gamedescription);
+    free(uc_filename);
 
-    savegamedir = M_GetSaveGameDir("heretic.wad");
-
-    I_PrintStartupBanner(gamedescription);
-
-    if (M_ParmExists("-testcontrols"))
+    if (D_AddFile(file))
     {
-        startepisode = 1;
-        startmap = 1;
-        autostart = true;
-        testcontrols = true;
+      M_StringCopy(demolumpname, lumpinfo[numlumps - 1]->name, sizeof(demolumpname));
     }
-
-    I_InitTimer();
-    I_InitSound(false);
-    I_InitMusic();
-
-    tprintf("NET_Init: Init network subsystem.\n", 1);
-    NET_Init ();
-
-    D_ConnectNetGame();
-
-    // haleyjd: removed WATCOMC
-    initStartup();
-
-    //
-    //  Build status bar line!
-    //
-    smsg[0] = 0;
-    if (deathmatch)
-        status(DEH_String("DeathMatch..."));
-    if (nomonsters)
-        status(DEH_String("No Monsters..."));
-    if (respawnparm)
-        status(DEH_String("Respawning..."));
-    if (autostart)
+    else
     {
-        char temp[64];
-        DEH_snprintf(temp, sizeof(temp),
-                     "Warp to Episode %d, Map %d, Skill %d ",
-                     startepisode, startmap, startskill + 1);
-        status(temp);
+      // The file failed to load, but copy the original arg as a
+      // demo name to make tricks like -playdemo demo1 possible.
+      M_StringCopy(demolumpname, myargv[p + 1], sizeof(demolumpname));
     }
-    wadprintf();                // print the added wadfiles
 
-    tprintf(DEH_String("MN_Init: Init menu system.\n"), 1);
-    MN_Init();
+    printf("Playing demo %s.\n", file);
+  }
 
-    CT_Init();
+  // Generate the WAD hash table.  Speed things up a bit.
+  W_GenerateHashTable();
 
-    tprintf(DEH_String("R_Init: Init Heretic refresh daemon."), 1);
-    hprintf(DEH_String("Loading graphics"));
-    R_Init();
-    tprintf("\n", 0);
+  //!
+  // @category demo
+  //
+  // Record or playback a demo without automatically quitting
+  // after either level exit or player respawn.
+  //
 
-    tprintf(DEH_String("P_Init: Init Playloop state.\n"), 1);
-    hprintf(DEH_String("Init game engine."));
-    P_Init();
-    IncThermo();
+  demoextend = M_ParmExists("-demoextend");
 
-    tprintf(DEH_String("I_Init: Setting up machine state.\n"), 1);
-    I_CheckIsScreensaver();
-    I_InitJoystick();
-    IncThermo();
+  if (W_CheckNumForName(DEH_String("E2M1")) == -1)
+  {
+    gamemode        = shareware;
+    gamedescription = "Heretic (shareware)";
+  }
+  else if (W_CheckNumForName("EXTENDED") != -1)
+  {
+    // Presence of the EXTENDED lump indicates the retail version
 
-    tprintf(DEH_String("S_Init: Setting up sound.\n"), 1);
-    S_Init();
-    //IO_StartupTimer();
-    S_Start();
+    gamemode        = retail;
+    gamedescription = "Heretic: Shadow of the Serpent Riders";
+  }
+  else
+  {
+    gamemode        = registered;
+    gamedescription = "Heretic (registered)";
+  }
 
-    tprintf(DEH_String("D_CheckNetGame: Checking network game status.\n"), 1);
-    hprintf(DEH_String("Checking network game status."));
-    D_CheckNetGame();
-    IncThermo();
+  I_SetWindowTitle(gamedescription);
 
-    // haleyjd: removed WATCOMC
+  savegamedir = M_GetSaveGameDir("heretic.wad");
 
-    tprintf(DEH_String("SB_Init: Loading patches.\n"), 1);
-    SB_Init();
-    IncThermo();
+  I_PrintStartupBanner(gamedescription);
 
-//
-// start the apropriate game based on parms
-//
+  if (M_ParmExists("-testcontrols"))
+  {
+    startepisode = 1;
+    startmap     = 1;
+    autostart    = true;
+    testcontrols = true;
+  }
 
-    D_CheckRecordFrom();
+  I_InitTimer();
+  I_InitSound(false);
+  I_InitMusic();
 
-    //!
-    // @arg <x>
-    // @category demo
-    // @vanilla
-    //
-    // Record a demo named x.lmp.
-    //
+  tprintf("NET_Init: Init network subsystem.\n", 1);
+  NET_Init();
 
-    p = M_CheckParmWithArgs("-record", 1);
-    if (p)
+  D_ConnectNetGame();
+
+  // haleyjd: removed WATCOMC
+  initStartup();
+
+  //
+  //  Build status bar line!
+  //
+  smsg[0] = 0;
+  if (deathmatch)
+    status(DEH_String("DeathMatch..."));
+  if (nomonsters)
+    status(DEH_String("No Monsters..."));
+  if (respawnparm)
+    status(DEH_String("Respawning..."));
+  if (autostart)
+  {
+    char temp[64];
+    DEH_snprintf(temp, sizeof(temp), "Warp to Episode %d, Map %d, Skill %d ", startepisode, startmap, startskill + 1);
+    status(temp);
+  }
+  wadprintf(); // print the added wadfiles
+
+  tprintf(DEH_String("MN_Init: Init menu system.\n"), 1);
+  MN_Init();
+
+  CT_Init();
+
+  tprintf(DEH_String("R_Init: Init Heretic refresh daemon."), 1);
+  hprintf(DEH_String("Loading graphics"));
+  R_Init();
+  tprintf("\n", 0);
+
+  tprintf(DEH_String("P_Init: Init Playloop state.\n"), 1);
+  hprintf(DEH_String("Init game engine."));
+  P_Init();
+  IncThermo();
+
+  tprintf(DEH_String("I_Init: Setting up machine state.\n"), 1);
+  I_CheckIsScreensaver();
+  I_InitJoystick();
+  IncThermo();
+
+  tprintf(DEH_String("S_Init: Setting up sound.\n"), 1);
+  S_Init();
+  // IO_StartupTimer();
+  S_Start();
+
+  tprintf(DEH_String("D_CheckNetGame: Checking network game status.\n"), 1);
+  hprintf(DEH_String("Checking network game status."));
+  D_CheckNetGame();
+  IncThermo();
+
+  // haleyjd: removed WATCOMC
+
+  tprintf(DEH_String("SB_Init: Loading patches.\n"), 1);
+  SB_Init();
+  IncThermo();
+
+  //
+  // start the apropriate game based on parms
+  //
+
+  D_CheckRecordFrom();
+
+  //!
+  // @arg <x>
+  // @category demo
+  // @vanilla
+  //
+  // Record a demo named x.lmp.
+  //
+
+  p = M_CheckParmWithArgs("-record", 1);
+  if (p)
+  {
+    G_RecordDemo(startskill, 1, startepisode, startmap, myargv[p + 1]);
+    D_DoomLoop(); // Never returns
+  }
+
+  p = M_CheckParmWithArgs("-playdemo", 1);
+  if (p)
+  {
+    singledemo = true; // Quit after one demo
+    G_DeferedPlayDemo(demolumpname);
+    D_DoomLoop(); // Never returns
+  }
+
+  p = M_CheckParmWithArgs("-timedemo", 1);
+  if (p)
+  {
+    G_TimeDemo(demolumpname);
+    D_DoomLoop(); // Never returns
+  }
+
+  //!
+  // @category game
+  // @arg <s>
+  // @vanilla
+  //
+  // Load the game in savegame slot s.
+  //
+
+  p = M_CheckParmWithArgs("-loadgame", 1);
+  if (p && p < myargc - 1)
+  {
+    char *filename;
+
+    filename = SV_Filename(myargv[p + 1][0] - '0');
+    G_LoadGame(filename);
+    free(filename);
+  }
+
+  // Check valid episode and map
+  if (autostart || netgame)
+  {
+    if (!D_ValidEpisodeMap(heretic, gamemode, startepisode, startmap))
     {
-        G_RecordDemo(startskill, 1, startepisode, startmap, myargv[p + 1]);
-        D_DoomLoop();           // Never returns
+      startepisode = 1;
+      startmap     = 1;
     }
+  }
 
-    p = M_CheckParmWithArgs("-playdemo", 1);
-    if (p)
-    {
-        singledemo = true;      // Quit after one demo
-        G_DeferedPlayDemo(demolumpname);
-        D_DoomLoop();           // Never returns
-    }
-
-    p = M_CheckParmWithArgs("-timedemo", 1);
-    if (p)
-    {
-        G_TimeDemo(demolumpname);
-        D_DoomLoop();           // Never returns
-    }
-
-    //!
-    // @category game
-    // @arg <s>
-    // @vanilla
-    //
-    // Load the game in savegame slot s.
-    //
-
-    p = M_CheckParmWithArgs("-loadgame", 1);
-    if (p && p < myargc - 1)
-    {
-        char *filename;
-
-	filename = SV_Filename(myargv[p + 1][0] - '0');
-        G_LoadGame(filename);
-	free(filename);
-    }
-
-    // Check valid episode and map
+  if (gameaction != ga_loadgame)
+  {
+    UpdateState |= I_FULLSCRN;
+    BorderNeedRefresh = true;
     if (autostart || netgame)
     {
-        if (!D_ValidEpisodeMap(heretic, gamemode, startepisode, startmap))
-        {
-            startepisode = 1;
-            startmap = 1;
-        }
+      G_InitNew(startskill, startepisode, startmap);
     }
-
-    if (gameaction != ga_loadgame)
+    else
     {
-        UpdateState |= I_FULLSCRN;
-        BorderNeedRefresh = true;
-        if (autostart || netgame)
-        {
-            G_InitNew(startskill, startepisode, startmap);
-        }
-        else
-        {
-            D_StartTitle();
-        }
+      D_StartTitle();
     }
+  }
 
-    finishStartup();
+  finishStartup();
 
-    D_DoomLoop();               // Never returns
+  D_DoomLoop(); // Never returns
 }

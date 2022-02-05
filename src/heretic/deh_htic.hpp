@@ -23,30 +23,32 @@
 // HHE executable version.  Loading HHE patches is (unfortunately)
 // dependent on the version of the Heretic executable used to make them.
 
-using deh_hhe_version_t = enum
-{
-    deh_hhe_1_0,
-    deh_hhe_1_2,
-    deh_hhe_1_3,
-    deh_hhe_num_versions
+using deh_hhe_version_t = enum {
+  deh_hhe_1_0,
+  deh_hhe_1_2,
+  deh_hhe_1_3,
+  deh_hhe_num_versions
 };
 
 // HHE doesn't know about the last two states in the state table, so
 // these are considered invalid.
 
-#define DEH_HERETIC_NUMSTATES (NUMSTATES - 2)
+#define DEH_HERETIC_NUMSTATES    (NUMSTATES - 2)
 
 // It also doesn't know about the last two things in the mobjinfo table
 // (which correspond to the states above)
 
 #define DEH_HERETIC_NUMMOBJTYPES (NUMMOBJTYPES - 2)
 
-void DEH_HereticInit();
-int DEH_MapHereticThingType(int type);
-int DEH_MapHereticFrameNumber(int frame);
-void DEH_SuggestHereticVersion(deh_hhe_version_t version);
+void
+  DEH_HereticInit();
+int
+  DEH_MapHereticThingType(int type);
+int
+  DEH_MapHereticFrameNumber(int frame);
+void
+                         DEH_SuggestHereticVersion(deh_hhe_version_t version);
 
 extern deh_hhe_version_t deh_hhe_version;
 
 #endif /* #ifndef DEH_HTIC_H */
-

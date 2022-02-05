@@ -21,13 +21,13 @@
 #include "p_local.hpp"
 #include "v_video.hpp"
 
-int leveltime;
-int TimerGame;
+int       leveltime;
+int       TimerGame;
 
 /*
 ===============================================================================
 
-								THINKERS
+                                                                THINKERS
 
 All thinkers should be allocated by Z_Malloc so they can be operated on uniformly.  The actual
 structures will vary in size, but the first element must be thinker_t.
@@ -35,7 +35,7 @@ structures will vary in size, but the first element must be thinker_t.
 ===============================================================================
 */
 
-thinker_t thinkercap;           // both the head and tail of the thinker list
+thinker_t thinkercap; // both the head and tail of the thinker list
 
 /*
 ===============
@@ -45,9 +45,10 @@ thinker_t thinkercap;           // both the head and tail of the thinker list
 ===============
 */
 
-void P_InitThinkers()
+void
+  P_InitThinkers()
 {
-    thinkercap.prev = thinkercap.next = &thinkercap;
+  thinkercap.prev = thinkercap.next = &thinkercap;
 }
 
 
@@ -61,12 +62,13 @@ void P_InitThinkers()
 ===============
 */
 
-void P_AddThinker(thinker_t * thinker)
+void
+  P_AddThinker(thinker_t *thinker)
 {
-    thinkercap.prev->next = thinker;
-    thinker->next = &thinkercap;
-    thinker->prev = thinkercap.prev;
-    thinkercap.prev = thinker;
+  thinkercap.prev->next = thinker;
+  thinker->next         = &thinkercap;
+  thinker->prev         = thinkercap.prev;
+  thinkercap.prev       = thinker;
 }
 
 /*
@@ -80,9 +82,10 @@ void P_AddThinker(thinker_t * thinker)
 ===============
 */
 
-void P_RemoveThinker(thinker_t * thinker)
+void
+  P_RemoveThinker(thinker_t *thinker)
 {
-    thinker->function = (think_t) - 1;
+  thinker->function = (think_t)-1;
 }
 
 /*
@@ -95,7 +98,8 @@ void P_RemoveThinker(thinker_t * thinker)
 ===============
 */
 
-void P_AllocateThinker(thinker_t * thinker)
+void
+  P_AllocateThinker(thinker_t *thinker)
 {
 }
 
@@ -108,30 +112,32 @@ void P_AllocateThinker(thinker_t * thinker)
 ===============
 */
 
-void P_RunThinkers()
+void
+  P_RunThinkers()
 {
-    thinker_t *currentthinker, *nextthinker;
+  thinker_t *currentthinker, *nextthinker;
 
-    currentthinker = thinkercap.next;
-    while (currentthinker != &thinkercap)
-    {
-        if (action_hook_is_empty(currentthinker->function))
-        {                       // time to remove it
-            nextthinker = currentthinker->next;
-            currentthinker->next->prev = currentthinker->prev;
-            currentthinker->prev->next = currentthinker->next;
-            Z_Free(currentthinker);
-        }
-        else
-        {
-            if (currentthinker->function.index() == thinker_param_action_hook) {
-                auto callback = std::get<thinker_param_action>(currentthinker->function);
-                callback(currentthinker);
-            }
-            nextthinker = currentthinker->next;
-        }
-        currentthinker = nextthinker;
+  currentthinker = thinkercap.next;
+  while (currentthinker != &thinkercap)
+  {
+    if (action_hook_is_empty(currentthinker->function))
+    { // time to remove it
+      nextthinker                = currentthinker->next;
+      currentthinker->next->prev = currentthinker->prev;
+      currentthinker->prev->next = currentthinker->next;
+      Z_Free(currentthinker);
     }
+    else
+    {
+      if (currentthinker->function.index() == thinker_param_action_hook)
+      {
+        auto callback = std::get<thinker_param_action>(currentthinker->function);
+        callback(currentthinker);
+      }
+      nextthinker = currentthinker->next;
+    }
+    currentthinker = nextthinker;
+  }
 }
 
 //----------------------------------------------------------------------------
@@ -140,30 +146,31 @@ void P_RunThinkers()
 //
 //----------------------------------------------------------------------------
 
-void P_Ticker()
+void
+  P_Ticker()
 {
-    int i;
+  int i;
 
-    if (paused)
+  if (paused)
+  {
+    return;
+  }
+  for (i = 0; i < MAXPLAYERS; i++)
+  {
+    if (playeringame[i])
     {
-        return;
+      P_PlayerThink(&players[i]);
     }
-    for (i = 0; i < MAXPLAYERS; i++)
+  }
+  if (TimerGame)
+  {
+    if (!--TimerGame)
     {
-        if (playeringame[i])
-        {
-            P_PlayerThink(&players[i]);
-        }
+      G_ExitLevel();
     }
-    if (TimerGame)
-    {
-        if (!--TimerGame)
-        {
-            G_ExitLevel();
-        }
-    }
-    P_RunThinkers();
-    P_UpdateSpecials();
-    P_AmbientSound();
-    leveltime++;
+  }
+  P_RunThinkers();
+  P_UpdateSpecials();
+  P_AmbientSound();
+  leveltime++;
 }

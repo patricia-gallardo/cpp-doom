@@ -14,7 +14,7 @@
 //
 // DESCRIPTION:
 //   Menu widget stuff, episode selection and such.
-//    
+//
 
 
 #ifndef __M_MENU__
@@ -30,33 +30,32 @@
 
 using menuitem_t = struct
 {
-    // 0 = no cursor here, 1 = ok, 2 = arrows ok
-    short	status;
+  // 0 = no cursor here, 1 = ok, 2 = arrows ok
+  short status;
 
-    char	name[10];
+  char  name[10];
 
-    // choice = menu item #.
-    // if status = 2,
-    //   choice=0:leftarrow,1:rightarrow
-    void	(*routine)(int choice);
+  // choice = menu item #.
+  // if status = 2,
+  //   choice=0:leftarrow,1:rightarrow
+  void (*routine)(int choice);
 
-    // hotkey in menu
-    char	alphaKey;
+  // hotkey in menu
+  char alphaKey;
 };
 
-using menu_t = struct menu_s
-{
-    short		numitems;	// # of menu items
-    struct menu_s*	prevMenu;	// previous menu
-    menuitem_t*		menuitems;	// menu items
-    void		(*routine)();	// draw routine
-    short		x;
-    short		y;		// x,y of menu
-    short		lastOn;		// last item user was on in menu
+using menu_t = struct menu_s {
+  short          numitems;  // # of menu items
+  struct menu_s *prevMenu;  // previous menu
+  menuitem_t    *menuitems; // menu items
+  void (*routine)();        // draw routine
+  short x;
+  short y;      // x,y of menu
+  short lastOn; // last item user was on in menu
 };
 
-extern menu_t*	currentMenu;    // villsa [STRIFE] made external
-extern short itemOn;
+extern menu_t *currentMenu; // villsa [STRIFE] made external
+extern short   itemOn;
 
 //
 // MENUS
@@ -66,36 +65,45 @@ extern short itemOn;
 // Even when the menu is not displayed,
 // this can resize the view and change game parameters.
 // Does all the real work of the menu interaction.
-boolean M_Responder (event_t *ev);
+boolean
+  M_Responder(event_t *ev);
 
 
 // Called by main loop,
 // only used for menu (skull cursor) animation.
-void M_Ticker ();
+void
+  M_Ticker();
 
 // Called by main loop,
 // draws the menus directly into the screen buffer.
-void M_Drawer ();
+void
+  M_Drawer();
 
 // Called by D_DoomMain,
 // loads the config file.
-void M_Init ();
+void
+  M_Init();
 
 // Called by intro code to force menu up upon a keypress,
 // does nothing if menu is already up.
-void M_StartControlPanel ();
+void
+  M_StartControlPanel();
 
 // haleyjd 09/04/10: Externalized. Draws menu text.
-int M_WriteText(int x, int y, const char *string);
+int
+  M_WriteText(int x, int y, const char *string);
 
 // haleyjd 09/04/10: [STRIFE] New function.
-void M_DialogDimMsg(int x, int y, char *str, boolean useyfont);
+void
+  M_DialogDimMsg(int x, int y, char *str, boolean useyfont);
 
 // haleyjd [STRIFE] Externalized
-void M_ClearMenus (int choice);
-void M_LoadSelect(int choice);
+void
+  M_ClearMenus(int choice);
+void
+           M_LoadSelect(int choice);
 
 extern int detailLevel;
 extern int screenblocks;
 
-#endif    
+#endif

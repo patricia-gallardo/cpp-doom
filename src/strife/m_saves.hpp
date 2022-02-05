@@ -27,30 +27,43 @@
 extern char *savepath;
 extern char *savepathtemp;
 extern char *loadpath;
-extern char character_name[CHARACTER_NAME_LEN];
+extern char  character_name[CHARACTER_NAME_LEN];
 
 // Strife Savegame Functions
-void ClearTmp();
-void ClearSlot();
-void FromCurr();
-void ToCurr();
-void M_SaveMoveMapToHere();
-void M_SaveMoveHereToMap();
+void
+  ClearTmp();
+void
+  ClearSlot();
+void
+  FromCurr();
+void
+  ToCurr();
+void
+  M_SaveMoveMapToHere();
+void
+  M_SaveMoveHereToMap();
 
-boolean M_SaveMisObj(const char *path);
-void    M_ReadMisObj();
+boolean
+  M_SaveMisObj(const char *path);
+void
+  M_ReadMisObj();
 
 // Custom Utilities for Filepath Handling
-void *M_Calloc(size_t n1, size_t n2);
-void  M_NormalizeSlashes(char *str);
-int   M_StringAlloc(char **str, int numstrs, size_t extra, const char *str1, ...);
-char *M_SafeFilePath(const char *basepath, const char *newcomponent);
-char  M_GetFilePath(const char *fn, char *dest, size_t len);
-char *M_MakeStrifeSaveDir(int slotnum, const char *extra);
-void  M_CreateSaveDirs(const char *savedir);
+void *
+  M_Calloc(size_t n1, size_t n2);
+void
+  M_NormalizeSlashes(char *str);
+int
+  M_StringAlloc(char **str, int numstrs, size_t extra, const char *str1, ...);
+char *
+  M_SafeFilePath(const char *basepath, const char *newcomponent);
+char
+  M_GetFilePath(const char *fn, char *dest, size_t len);
+char *
+  M_MakeStrifeSaveDir(int slotnum, const char *extra);
+void
+  M_CreateSaveDirs(const char *savedir);
 
 #endif
 
 // EOF
-
-

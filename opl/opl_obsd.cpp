@@ -23,16 +23,16 @@
 
 #if defined(HAVE_LIBI386)
 
-#include <sys/types.h>
-#include <machine/sysarch.h>
 #include <i386/pio.h>
+#include <machine/sysarch.h>
+#include <sys/types.h>
 #define set_iopl i386_iopl
 
 #elif defined(HAVE_LIBAMD64)
 
-#include <sys/types.h>
-#include <machine/sysarch.h>
 #include <amd64/pio.h>
+#include <machine/sysarch.h>
+#include <sys/types.h>
 #define set_iopl amd64_iopl
 
 #else
@@ -43,9 +43,9 @@
 
 #ifndef NO_OBSD_DRIVER
 
+#include <errno.h>
 #include <stdio.h>
 #include <string.h>
-#include <errno.h>
 #include <unistd.h>
 
 #include "opl.hpp"
@@ -54,65 +54,67 @@
 
 static unsigned int opl_port_base;
 
-static int OPL_OpenBSD_Init(unsigned int port_base)
+static int
+  OPL_OpenBSD_Init(unsigned int port_base)
 {
-    // Try to get permissions:
+  // Try to get permissions:
 
-    if (set_iopl(3) < 0)
-    {
-        fprintf(stderr, "Failed to get raise I/O privilege level: "
-                        "check that you are running as root.\n");
-        return 0;
-    }
+  if (set_iopl(3) < 0)
+  {
+    fprintf(stderr, "Failed to get raise I/O privilege level: "
+                    "check that you are running as root.\n");
+    return 0;
+  }
 
-    opl_port_base = port_base;
+  opl_port_base = port_base;
 
-    // Start callback thread
+  // Start callback thread
 
-    if (!OPL_Timer_StartThread())
-    {
-        set_iopl(0);
-        return 0;
-    }
-
-    return 1;
-}
-
-static void OPL_OpenBSD_Shutdown()
-{
-    // Stop callback thread
-
-    OPL_Timer_StopThread();
-
-    // Release I/O port permissions:
-
+  if (!OPL_Timer_StartThread())
+  {
     set_iopl(0);
+    return 0;
+  }
+
+  return 1;
 }
 
-static unsigned int OPL_OpenBSD_PortRead(opl_port_t port)
+static void
+  OPL_OpenBSD_Shutdown()
 {
-    return inb(opl_port_base + port);
+  // Stop callback thread
+
+  OPL_Timer_StopThread();
+
+  // Release I/O port permissions:
+
+  set_iopl(0);
 }
 
-static void OPL_OpenBSD_PortWrite(opl_port_t port, unsigned int value)
+static unsigned int
+  OPL_OpenBSD_PortRead(opl_port_t port)
 {
-    outb(opl_port_base + port, value);
+  return inb(opl_port_base + port);
 }
 
-opl_driver_t opl_openbsd_driver =
+static void
+  OPL_OpenBSD_PortWrite(opl_port_t port, unsigned int value)
 {
-    "OpenBSD",
-    OPL_OpenBSD_Init,
-    OPL_OpenBSD_Shutdown,
-    OPL_OpenBSD_PortRead,
-    OPL_OpenBSD_PortWrite,
-    OPL_Timer_SetCallback,
-    OPL_Timer_ClearCallbacks,
-    OPL_Timer_Lock,
-    OPL_Timer_Unlock,
-    OPL_Timer_SetPaused,
-    OPL_Timer_AdjustCallbacks,
+  outb(opl_port_base + port, value);
+}
+
+opl_driver_t opl_openbsd_driver = {
+  "OpenBSD",
+  OPL_OpenBSD_Init,
+  OPL_OpenBSD_Shutdown,
+  OPL_OpenBSD_PortRead,
+  OPL_OpenBSD_PortWrite,
+  OPL_Timer_SetCallback,
+  OPL_Timer_ClearCallbacks,
+  OPL_Timer_Lock,
+  OPL_Timer_Unlock,
+  OPL_Timer_SetPaused,
+  OPL_Timer_AdjustCallbacks,
 };
 
 #endif /* #ifndef NO_OBSD_DRIVER */
-

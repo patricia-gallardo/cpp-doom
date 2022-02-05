@@ -12,12 +12,15 @@
 // GNU General Public License for more details.
 //
 
-#ifndef SETUP_DISPLAY_H 
+#ifndef SETUP_DISPLAY_H
 #define SETUP_DISPLAY_H
 
-void ConfigDisplay(void *widget, void *user_data);
-void SetDisplayDriver();
-void BindDisplayVariables();
+void
+  ConfigDisplay(void *widget, void *user_data);
+void
+  SetDisplayDriver();
+void
+           BindDisplayVariables();
 
 extern int show_endoom;
 extern int graphical_startup;

@@ -14,35 +14,38 @@
 //
 // DESCRIPTION:
 //
-//    
+//
 
 
 #ifndef __F_FINALE__
 #define __F_FINALE__
 
 
-#include "doomtype.hpp"
 #include "d_event.hpp"
+#include "doomtype.hpp"
 //
 // FINALE
 //
 
 // Called by main loop.
-boolean F_Responder (event_t* ev);
+boolean
+  F_Responder(event_t *ev);
 
 // Called by main loop.
-void F_Ticker ();
+void
+  F_Ticker();
 
 // haleyjd: [STRIFE] Called from G_Ticker as well...
-void F_WaitTicker();
+void
+  F_WaitTicker();
 
 // Called by main loop.
-void F_Drawer ();
+void
+  F_Drawer();
 
 
-void F_StartFinale ();
-
-
+void
+  F_StartFinale();
 
 
 #endif

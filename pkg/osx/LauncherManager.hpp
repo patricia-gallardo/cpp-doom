@@ -15,37 +15,35 @@
 #ifndef LAUNCHER_LAUNCHERMANAGER_H
 #define LAUNCHER_LAUNCHERMANAGER_H
 
+#include "IWADController.hpp"
 #include <AppKit/AppKit.h>
 #include <AppKit/NSNibLoading.h>
-#include "IWADController.hpp"
 
-@interface LauncherManager : NSObject
-{
-    IWADController *iwadController;
+@interface LauncherManager : NSObject {
+  IWADController *iwadController;
 
-    id launcherWindow;
-    id launchButton;
+  id              launcherWindow;
+  id              launchButton;
 
-    id commandLineArguments;
+  id              commandLineArguments;
 }
 
-- (void) launch: (id)sender;
-- (void) runSetup: (id)sender;
-- (void) awakeFromNib;
-- (void) clearCommandLine;
-- (BOOL) addIWADPath: (NSString *) path;
-- (void) addFileToCommandLine: (NSString *) fileName
-         forArgument: (NSString *) args;
-- (BOOL) selectGameByName: (const char *) name;
-- (void) openTerminal: (id) sender;
+- (void)launch:(id)sender;
+- (void)runSetup:(id)sender;
+- (void)awakeFromNib;
+- (void)clearCommandLine;
+- (BOOL)addIWADPath:(NSString *)path;
+- (void)addFileToCommandLine:(NSString *)fileName
+                 forArgument:(NSString *)args;
+- (BOOL)selectGameByName:(const char *)name;
+- (void)openTerminal:(id)sender;
 
-- (void) openREADME: (id) sender;
-- (void) openINSTALL: (id) sender;
-- (void) openCMDLINE: (id) sender;
-- (void) openCOPYING: (id) sender;
-- (void) openDocumentation: (id) sender;
+- (void)openREADME:(id)sender;
+- (void)openINSTALL:(id)sender;
+- (void)openCMDLINE:(id)sender;
+- (void)openCOPYING:(id)sender;
+- (void)openDocumentation:(id)sender;
 
 @end
 
 #endif /* #ifndef LAUNCHER_LAUNCHERMANAGER_H */
-

@@ -30,9 +30,9 @@
 // a pic is an unmasked block of pixels
 using pic_t = struct
 {
-    byte width;
-    byte height;
-    byte data;
+  byte width;
+  byte height;
+  byte data;
 };
 
 

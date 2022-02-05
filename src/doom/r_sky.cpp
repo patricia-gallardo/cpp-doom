@@ -42,18 +42,19 @@ int skytexturemid;
 // R_InitSkyMap
 // Called whenever the view size changes.
 //
-void R_InitSkyMap()
+void
+  R_InitSkyMap()
 {
-    // skyflatnum = R_FlatNumForName ( SKYFLATNAME );
-    // [crispy] stretch sky
-    if (skytexture == -1)
-    {
-        return;
-    }
-    if ((crispy->stretchsky = crispy->freelook || crispy->mouselook || crispy->pitch))
-    {
-        skytexturemid = -28 * FRACUNIT * (textureheight[skytexture] >> FRACBITS) / SKYSTRETCH_HEIGHT;
-    }
-    else
-        skytexturemid = ORIGHEIGHT / 2 * FRACUNIT;
+  // skyflatnum = R_FlatNumForName ( SKYFLATNAME );
+  // [crispy] stretch sky
+  if (skytexture == -1)
+  {
+    return;
+  }
+  if ((crispy->stretchsky = crispy->freelook || crispy->mouselook || crispy->pitch))
+  {
+    skytexturemid = -28 * FRACUNIT * (textureheight[skytexture] >> FRACBITS) / SKYSTRETCH_HEIGHT;
+  }
+  else
+    skytexturemid = ORIGHEIGHT / 2 * FRACUNIT;
 }

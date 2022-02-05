@@ -1,191 +1,136 @@
-#!/usr/bin/env python
-# 
-# Chocolate Doom self-documentation tool.  This works similar to javadoc
+#!/ usr / bin / env python
+#
+#Chocolate Doom self - documentation tool.This works similar to javadoc
 # or doxygen, but documents command line parameters and configuration
-# file values, generating documentation in Unix manpage, wikitext and
-# plain text forms.
+#file values, generating documentation in Unix          manpage, wikitext and
+#plain text forms.
 #
-# Comments are read from the source code in the following form:
+#Comments are read from the source code in the following form:
 #
-#   //!
-#   // @arg <extra arguments>
-#   // @category Category
-#   // @platform <some platform that the parameter is specific to>
-#   //
-#   // Long description of the parameter
-#   //
+#//!
+#// @arg <extra arguments>
+#// @category Category
+#// @platform <some platform that the parameter is specific to>
+#//
+#// Long description of the parameter
+#//
 #
-#   something_involving = M_CheckParm("-param");
+#something_involving = M_CheckParm("-param");
 #
-# For configuration file values:
+#For configuration file values:
 #
-#   //! @begin_config_file myconfig
+#//! @begin_config_file myconfig
 #
-#   //!
-#   // Description of the configuration file value.
-#   //
+#//!
+#// Description of the configuration file value.
+#//
 #
-#   CONFIG_VARIABLE_INT(my_variable,       c_variable),
+#CONFIG_VARIABLE_INT(my_variable, c_variable),
 #
 
-import io
-import sys
-import os
-import re
-import glob
-import getopt
+import io import sys import os import re import glob import getopt
 
-TEXT_WRAP_WIDTH = 78
-INCLUDE_STATEMENT_RE = re.compile("@include\s+(\S+)")
+  TEXT_WRAP_WIDTH = 78 INCLUDE_STATEMENT_RE = re.compile("@include\s+(\S+)")
 
-# Use appropriate stdout function for Python 2 or 3
+#Use appropriate stdout function for Python 2 or 3
 
-def stdout(buf):
-    if sys.version_info.major < 3:
-        sys.stdout.write(buf)
-    else:
-        sys.stdout.buffer.write(buf)
+    def stdout(buf) : if sys.version_info.major<3 : sys.stdout.write(buf) else : sys.stdout.buffer.write(buf)
 
-# Find the maximum width of a list of parameters (for plain text output)
+#Find the maximum width of a list of parameters(for plain text output)
 
-def parameter_list_width(params):
-    w = 0
+                                                                       def parameter_list_width(params) : w = 0
 
-    for p in params:
-        pw = len(p.name) + 5
+                                                                     for p in params : pw                   = len(p.name) + 5
 
-        if p.args:
-            pw += len(p.args)
+                                                                                                if p.args : pw += len(p.args)
 
-        if pw > w:
-            w = pw
+                                                                                                                        if pw> w : w = pw
 
-    return w
+                                                                                                                      return w
 
-class ConfigFile:
-    def __init__(self, filename):
-        self.filename = filename
-        self.variables = []
+                                                                                                                      class ConfigFile : def __init__(self, filename) : self.filename = filename self.variables =[]
 
-    def add_variable(self, variable):
-        self.variables.append(variable)
+                                                                                                                                                      def add_variable(self, variable) : self.variables.append(variable)
 
-    def manpage_output(self):
-        result = ".SH CONFIGURATION VARIABLES\n"
+                                                                                                                                                                               def manpage_output(self) : result = ".SH CONFIGURATION VARIABLES\n"
 
-        for v in self.variables:
-            result += ".TP\n"
-            result += v.manpage_output()
+                                                                                                                                                                                                  for v in self.variables : result += ".TP\n" result += v.manpage_output()
 
-        return result
+                                                                                                                                                                                                    return result
 
-    def plaintext_output(self):
-        result = ""
+                                                                                                                                                                                                  def plaintext_output(self) : result = ""
 
-        w = parameter_list_width(self.variables)
+                                                                                                                                                                                                  w                                   = parameter_list_width(self.variables)
 
-        for p in self.variables:
-            result += p.plaintext_output(w)
+                                                                                                                                                                                                                             for p in self.variables : result += p.plaintext_output(w)
 
-        result = result.rstrip() + "\n"
+                                                                                                                                                                                                                                                                                      result = result.rstrip() + "\n"
 
-        return result
+                                                                                                                                                                                                                                                                                    return result
 
-class Category:
-    def __init__(self, description):
-        self.description = description
-        self.params = []
+                                                                                                                                                                                                                                                                                    class Category : def __init__(self, description) : self.description = description self.params =[]
 
-    def add_param(self, param):
-        self.params.append(param)
+                                                                                                                                                                                                                                                                                                                  def add_param(self, param) : self.params.append(param)
 
-    # Plain text output
+#Plain text output
 
-    def plaintext_output(self):
-        result = "=== %s ===\n\n" % self.description
+                                                                                                                                                                                                                                                                                                                                        def plaintext_output(self) : result = "=== %s ===\n\n" % self.description
 
-        self.params.sort()
+                                                                                                                                                                                                                                                                                                                                                             self.params.sort()
 
-        w = parameter_list_width(self.params)
+                                                                                                                                                                                                                                                                                                                                                               w = parameter_list_width(self.params)
 
-        for p in self.params:
-            if p.should_show():
-                result += p.plaintext_output(w)
+                                                                                                                                                                                                                                                                                                                                                                                          for p in self.params : if p.should_show() : result += p.plaintext_output(w)
 
-        result = result.rstrip() + "\n"
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                     result = result.rstrip() + "\n"
 
-        return result
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                   return result
 
-    def markdown_output(self):
-        result = "## %s\n\n| Parameter | Description |\n| - | - |\n" % self.description
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                   def markdown_output(self) : result = "## %s\n\n| Parameter | Description |\n| - | - |\n" % self.description
 
-        self.params.sort()
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                       self.params.sort()
 
-        for p in self.params:
-            if p.should_show():
-                result += p.markdown_output()
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                          for p in self.params : if p.should_show() : result += p.markdown_output()
 
-        result = result.rstrip() + "\n"
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                    result = result.rstrip() + "\n"
 
-        return result
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                  return result
 
-    def completion_output(self):
-        result = ""
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                  def completion_output(self) : result = ""
 
-        self.params.sort()
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        self.params.sort()
 
-        for p in self.params:
-            if p.should_show():
-                result += p.completion_output(0)
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                           for p in self.params : if p.should_show() : result += p.completion_output(0)
 
-        result = result.rstrip()
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                       result = result.rstrip()
 
-        return result
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                         return result
 
-    def manpage_output(self):
-        result = ".SH " + self.description.upper() + "\n"
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                     def manpage_output(self) : result = ".SH " + self.description.upper() + "\n"
 
-        self.params.sort()
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                         self.params.sort()
 
-        for p in self.params:
-            if p.should_show():
-                result += ".TP\n"
-                result += p.manpage_output()
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                            for p in self.params : if p.should_show() : result += ".TP\n" result += p.manpage_output()
 
-        return result
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      return result
 
-    def wiki_output(self):
-        result = "=== %s ===\n" % self.description
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                    def wiki_output(self) : result = "=== %s ===\n" % self.description
 
-        self.params.sort()
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                    self.params.sort()
 
-        for p in self.params:
-            if p.should_show():
-                result += "; " + p.wiki_output() + "\n"
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                       for p in self.params : if p.should_show() : result += "; " + p.wiki_output() + "\n"
 
-        # Escape special HTML characters
+#Escape special HTML characters
 
-        result = result.replace("&", "&amp;")
-        result = result.replace("<", "&lt;")
-        result = result.replace(">", "&gt;")
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                  result = result.replace("&", "&amp;") result = result.replace("<", "&lt;") result = result.replace(">", "&gt;")
 
-        return result
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                       return result
 
-categories = (
-    (None,      Category("General options")),
-    ("game",    Category("Game start options")),
-    ("video",   Category("Display options")),
-    ("net",     Category("Networking options")),
-    ("mod",     Category("Dehacked and WAD merging")),
-    ("demo",    Category("Demo options")),
-    ("compat",  Category("Compatibility")),
-    ("obscure", Category("Obscure and less-used options")),
-)
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                     categories                                                                                                                                                                                                                                                                                                          =((None, Category("General options")), ("game", Category("Game start options")), ("video", Category("Display options")), ("net", Category("Networking options")), ("mod", Category("Dehacked and WAD merging")), ("demo", Category("Demo options")), ("compat", Category("Compatibility")), ("obscure", Category("Obscure and less-used options")), )
 
-wikipages = []
-config_files = {}
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                               wikipages =[] config_files = {}
 
-# Show options that are in Vanilla Doom? Or only new options?
+#Show options that are in Vanilla Doom ? Or only new options ?
 
 show_vanilla_options = True
 
@@ -291,29 +236,29 @@ class Parameter:
 
         result = "| %s | %s |\n" % (name, text)
 
-        # html escape
+#html escape
         result = result.replace("<", "&lt;")
         result = result.replace(">", "&gt;")
 
         return result
 
     def plaintext_output(self, indent):
-        # Build the first line, with the argument on
+#Build the first line, with the argument on
         start = "  " + self.name
         if self.args:
             start += " " + self.args
 
-        # pad up to the plaintext width
+#pad up to the plaintext width
         start += " " * (indent - len(start))
 
-        # Build the description text
+#Build the description   text
         description = self.text
         if self.platform:
             description += " (%s only)" % self.platform
         description += self._games_only_text()
 
-        # Build the complete text for the argument
-        # Split the description into words and add a word at a time
+#Build the complete text for the                      argument
+#Split the description into words and add a word at a time
         result = ""
         words = [word for word in re.split('\s+', description) if word]
         maxlen = TEXT_WRAP_WIDTH - indent
@@ -336,7 +281,7 @@ class Parameter:
 
         return result
 
-# Read list of wiki pages
+#Read list of wiki pages
 
 def read_wikipages():
     f = io.open("wikipages", encoding='UTF-8')
@@ -352,7 +297,7 @@ def read_wikipages():
     finally:
         f.close()
 
-# Add wiki page links
+#Add wiki page links
 
 def add_wiki_links(text):
     def replace_name(m):
@@ -370,13 +315,13 @@ def add_wiki_links(text):
 
 def add_parameter(param, line, config_file):
 
-    # If we're only targeting a particular game, check this is one of
-    # the ones we're targeting.
+#If we're only targeting a particular game, check this is one of
+#the ones we're targeting.
 
     if match_game and param.games and match_game not in param.games:
         return
 
-    # Is this documenting a command line parameter?
+#Is this documenting a command line parameter ?
 
     match = re.search('(M_CheckParm(WithArgs)|M_ParmExists)?\s*\(\s*"(.*?)"',
                       line)
@@ -387,7 +332,7 @@ def add_parameter(param, line, config_file):
         category.add_param(param)
         return
 
-    # Documenting a configuration file variable?
+#Documenting a configuration file variable ?
 
     match = re.search('CONFIG_VARIABLE_\S+\s*\(\s*(\S+?)\),', line)
 
@@ -411,51 +356,51 @@ def process_file(filename):
         for line in f:
             line = line.rstrip()
 
-            # Ignore empty lines
+#Ignore empty lines
 
             if re.match('\s*$', line):
                 continue
 
-            # Currently reading a doc comment?
+#Currently reading a doc comment ?
 
             if param:
-                # End of doc comment
+#End of doc comment
 
                 if not re.match('\s*//', line):
                     waiting_for_checkparm = True
 
-                # The first non-empty line after the documentation comment
-                # ends must contain the thing being documented.
+#The first non - empty line after the documentation comment
+#ends must contain the thing being                  documented.
 
                 if waiting_for_checkparm:
                     add_parameter(param, line, current_config_file)
                     param = None
                 else:
-                    # More documentation text
+#More documentation text
 
                     munged_line = re.sub('\s*\/\/\s*', '', line, 1)
                     munged_line = re.sub('\s*$', '', munged_line)
                     param.add_text(munged_line)
 
-            # Check for start of a doc comment
+#Check for start of a doc comment
 
             if re.search("//!", line):
                 match = re.search("@begin_config_file\s*(\S+)", line)
 
                 if match:
-                    # Beginning a configuration file
+#Beginning a configuration file
                     tagname = match.group(1)
                     current_config_file = ConfigFile(tagname)
                     config_files[tagname] = current_config_file
                 else:
-                    # Start of a normal comment
+#Start of a normal comment
                     param = Parameter()
                     waiting_for_checkparm = False
     finally:
         f.close()
 
 def process_files(path):
-    # Process all C source files.
+#Process all C source files.
 
     if os.path.isdir(path):
         files = glob.glob(path + "/*.c")
@@ -463,7 +408,7 @@ def process_files(path):
         for filename in files:
             process_file(filename)
     else:
-        # Special case to allow a single file to be specified as a target
+#Special case to allow a single file to be specified as a target
 
         process_file(path)
 
@@ -546,7 +491,7 @@ def usage():
     print("   -g :  Only document options for specified game.")
     sys.exit(0)
 
-# Parse command line
+#Parse command line
 
 opts, args = getopt.getopt(sys.argv[1:], "n:s:z:M:m:wp:b:c:g:V")
 
@@ -593,17 +538,16 @@ for opt in opts:
 if output_function == None or len(args) < 1:
     usage()
 else:
-    # Process specified files
+#Process specified files
 
     for path in args:
         process_files(path)
 
-    # Build a list of things to document
+#Build a list of things to document
     if doc_config_file:
         documentation_targets = [config_files[doc_config_file]]
     else:
         documentation_targets = [c for _, c in categories]
 
-    # Generate the output
+#Generate the output
     output_function(documentation_targets, substs, template)
-

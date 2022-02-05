@@ -12,13 +12,13 @@
 // GNU General Public License for more details.
 //
 
-#include <AppKit/AppKit.h>
 #include "Execute.h"
+#include <AppKit/AppKit.h>
 
-int main(int argc, const char *argv[])
+int
+  main(int argc, const char *argv[])
 {
-    SetProgramLocation(argv[0]);
+  SetProgramLocation(argv[0]);
 
-    return NSApplicationMain (argc, argv);
+  return NSApplicationMain(argc, argv);
 }
-

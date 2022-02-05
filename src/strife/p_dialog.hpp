@@ -25,80 +25,85 @@
 #ifndef P_DIALOG_H__
 #define P_DIALOG_H__
 
-#define OBJECTIVE_LEN       300
+#define OBJECTIVE_LEN     300
 
-#define MAXINVENTORYSLOTS   30
+#define MAXINVENTORYSLOTS 30
 
-#define MDLG_CHOICELEN      32
-#define MDLG_MSGLEN         80
-#define MDLG_NAMELEN        16
-#define MDLG_LUMPLEN        8
-#define MDLG_TEXTLEN        320
-#define MDLG_MAXCHOICES     5
-#define MDLG_MAXITEMS       3
+#define MDLG_CHOICELEN    32
+#define MDLG_MSGLEN       80
+#define MDLG_NAMELEN      16
+#define MDLG_LUMPLEN      8
+#define MDLG_TEXTLEN      320
+#define MDLG_MAXCHOICES   5
+#define MDLG_MAXITEMS     3
 
 extern char mission_objective[OBJECTIVE_LEN];
 
-extern int dialogshowtext;
+extern int  dialogshowtext;
 
 // villsa - convenient macro for giving objective logs to player
-#define GiveObjective(x, minlumpnum) \
-do { \
-  int obj_ln  = W_CheckNumForName(DEH_String(x)); \
-  if(obj_ln > minlumpnum) \
-    M_StringCopy(mission_objective, cache_lump_num<const char *>(obj_ln, PU_CACHE), \
-                 OBJECTIVE_LEN);\
-} while(0)
+#define GiveObjective(x, minlumpnum)                                                                  \
+  do                                                                                                  \
+  {                                                                                                   \
+    int obj_ln = W_CheckNumForName(DEH_String(x));                                                    \
+    if (obj_ln > minlumpnum)                                                                          \
+      M_StringCopy(mission_objective, cache_lump_num<const char *>(obj_ln, PU_CACHE), OBJECTIVE_LEN); \
+  } while (0)
 
 // haleyjd - voice and objective in one
-#define GiveVoiceObjective(voice, log, minlumpnum) \
-do { \
-  int obj_ln = W_CheckNumForName(DEH_String(log)); \
-  I_StartVoice(DEH_String(voice)); \
-  if(obj_ln > minlumpnum) \
-    M_StringCopy(mission_objective, cache_lump_num<const char *>(obj_ln, PU_CACHE), \
-                 OBJECTIVE_LEN);\
-} while(0)
+#define GiveVoiceObjective(voice, log, minlumpnum)                                                    \
+  do                                                                                                  \
+  {                                                                                                   \
+    int obj_ln = W_CheckNumForName(DEH_String(log));                                                  \
+    I_StartVoice(DEH_String(voice));                                                                  \
+    if (obj_ln > minlumpnum)                                                                          \
+      M_StringCopy(mission_objective, cache_lump_num<const char *>(obj_ln, PU_CACHE), OBJECTIVE_LEN); \
+  } while (0)
 
-using mapdlgchoice_t = struct mapdlgchoice_s
-{
-    int  giveitem;                      // item given when successful
-    int  needitems[MDLG_MAXITEMS];      // item needed for success
-    int  needamounts[MDLG_MAXITEMS];    // amount of items needed
-    char text[MDLG_CHOICELEN];          // normal text
-    char textok[MDLG_MSGLEN];           // message given on success
-    int next;                           // next dialog?
-    int objective;                      // ???
-    char textno[MDLG_MSGLEN];           // message given on failure
+using mapdlgchoice_t = struct mapdlgchoice_s {
+  int  giveitem;                   // item given when successful
+  int  needitems[MDLG_MAXITEMS];   // item needed for success
+  int  needamounts[MDLG_MAXITEMS]; // amount of items needed
+  char text[MDLG_CHOICELEN];       // normal text
+  char textok[MDLG_MSGLEN];        // message given on success
+  int  next;                       // next dialog?
+  int  objective;                  // ???
+  char textno[MDLG_MSGLEN];        // message given on failure
 };
 
-using mapdialog_t = struct mapdialog_s
-{
-    int speakerid;                      // script ID# for mobjtype that will use this dialog
-    int dropitem;                       // item to drop if that thingtype is killed
-    int checkitem[MDLG_MAXITEMS];       // item(s) needed to see this dialog
-    int jumptoconv;                     // conversation to jump to when... ?
-    char name[MDLG_NAMELEN];            // name of speaker
-    char voice[MDLG_LUMPLEN];           // voice file to play
-    char backpic[MDLG_LUMPLEN];         // backdrop pic for character, if any
-    char text[MDLG_TEXTLEN];            // main message text
+using mapdialog_t = struct mapdialog_s {
+  int            speakerid;                // script ID# for mobjtype that will use this dialog
+  int            dropitem;                 // item to drop if that thingtype is killed
+  int            checkitem[MDLG_MAXITEMS]; // item(s) needed to see this dialog
+  int            jumptoconv;               // conversation to jump to when... ?
+  char           name[MDLG_NAMELEN];       // name of speaker
+  char           voice[MDLG_LUMPLEN];      // voice file to play
+  char           backpic[MDLG_LUMPLEN];    // backdrop pic for character, if any
+  char           text[MDLG_TEXTLEN];       // main message text
 
-    // options that this dialog gives the player
-    mapdlgchoice_t choices[MDLG_MAXCHOICES];
+  // options that this dialog gives the player
+  mapdlgchoice_t choices[MDLG_MAXCHOICES];
 };
 
-void         P_DialogLoad();
-void         P_DialogStart(player_t *player);
-void         P_DialogDoChoice(int choice);
-boolean      P_GiveItemToPlayer(player_t *player, int sprnum, mobjtype_t type);
-boolean      P_GiveInventoryItem(player_t *player, int sprnum, mobjtype_t type);
-boolean      P_UseInventoryItem(player_t* player, int item);
-void         P_DialogStartP1();
-mapdialog_t* P_DialogFind(mobjtype_t type, int jumptoconv);
-int          P_PlayerHasItem(player_t *player, mobjtype_t type);
+void
+  P_DialogLoad();
+void
+  P_DialogStart(player_t *player);
+void
+  P_DialogDoChoice(int choice);
+boolean
+  P_GiveItemToPlayer(player_t *player, int sprnum, mobjtype_t type);
+boolean
+  P_GiveInventoryItem(player_t *player, int sprnum, mobjtype_t type);
+boolean
+  P_UseInventoryItem(player_t *player, int item);
+void
+  P_DialogStartP1();
+mapdialog_t *
+  P_DialogFind(mobjtype_t type, int jumptoconv);
+int
+  P_PlayerHasItem(player_t *player, mobjtype_t type);
 
 #endif
 
 // EOF
-
-

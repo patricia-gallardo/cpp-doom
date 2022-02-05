@@ -19,95 +19,96 @@
 #include <cstdlib>
 #include <cstring>
 
-#include "doomdef.hpp"
-#include "doomtype.hpp"
 #include "deh_defs.hpp"
 #include "deh_io.hpp"
 #include "deh_main.hpp"
+#include "doomdef.hpp"
+#include "doomtype.hpp"
 #include "p_local.hpp"
 
-static void *DEH_AmmoStart(deh_context_t *context, char *line)
+static void *
+  DEH_AmmoStart(deh_context_t *context, char *line)
 {
-    int ammo_number = 0;
+  int ammo_number = 0;
 
-    if (sscanf(line, "Ammo %i", &ammo_number) != 1)
-    {
-        DEH_Warning(context, "Parse error on section start");
-        return NULL;
-    }
+  if (sscanf(line, "Ammo %i", &ammo_number) != 1)
+  {
+    DEH_Warning(context, "Parse error on section start");
+    return NULL;
+  }
 
-    if (ammo_number < 0 || ammo_number >= NUMAMMO)
-    {
-        DEH_Warning(context, "Invalid ammo number: %i", ammo_number);
-        return NULL;
-    }
+  if (ammo_number < 0 || ammo_number >= NUMAMMO)
+  {
+    DEH_Warning(context, "Invalid ammo number: %i", ammo_number);
+    return NULL;
+  }
 
-    return &maxammo[ammo_number];
+  return &maxammo[ammo_number];
 }
 
-static void DEH_AmmoParseLine(deh_context_t *context, char *line, void *tag)
+static void
+  DEH_AmmoParseLine(deh_context_t *context, char *line, void *tag)
 {
-    char *variable_name, *value;
-    int ivalue;
-    int ammo_number;
+  char *variable_name, *value;
+  int   ivalue;
+  int   ammo_number;
 
-    if (tag == NULL)
-        return;
+  if (tag == NULL)
+    return;
 
-    ammo_number = ((int *) tag) - maxammo;
+  ammo_number = ((int *)tag) - maxammo;
 
-    // Parse the assignment
+  // Parse the assignment
 
-    if (!DEH_ParseAssignment(line, &variable_name, &value))
-    {
-        // Failed to parse
+  if (!DEH_ParseAssignment(line, &variable_name, &value))
+  {
+    // Failed to parse
 
-        DEH_Warning(context, "Failed to parse assignment");
-        return;
-    }
+    DEH_Warning(context, "Failed to parse assignment");
+    return;
+  }
 
-    ivalue = atoi(value);
+  ivalue = atoi(value);
 
-    if (!strcasecmp(variable_name, "Per ammo"))
-    {
-        // Heretic doesn't have a "per clip" ammo array, instead
-        // it is per weapon.  However, the weapon number lines
-        // up with the ammo number if we add one.
+  if (!strcasecmp(variable_name, "Per ammo"))
+  {
+    // Heretic doesn't have a "per clip" ammo array, instead
+    // it is per weapon.  However, the weapon number lines
+    // up with the ammo number if we add one.
 
-        GetWeaponAmmo[ammo_number + 1] = ivalue;
-    }
-    else if (!strcasecmp(variable_name, "Max ammo"))
-    {
-        maxammo[ammo_number] = ivalue;
-    }
-    else
-    {
-        DEH_Warning(context, "Field named '%s' not found", variable_name);
-    }
+    GetWeaponAmmo[ammo_number + 1] = ivalue;
+  }
+  else if (!strcasecmp(variable_name, "Max ammo"))
+  {
+    maxammo[ammo_number] = ivalue;
+  }
+  else
+  {
+    DEH_Warning(context, "Field named '%s' not found", variable_name);
+  }
 }
 
-static void DEH_AmmoSHA1Hash(sha1_context_t *context)
+static void
+  DEH_AmmoSHA1Hash(sha1_context_t *context)
 {
-    int i;
+  int i;
 
-    for (i=0; i<NUMAMMO; ++i)
-    {
-        SHA1_UpdateInt32(context, maxammo[i]);
-    }
+  for (i = 0; i < NUMAMMO; ++i)
+  {
+    SHA1_UpdateInt32(context, maxammo[i]);
+  }
 
-    for (i=0; i<NUMWEAPONS; ++i)
-    {
-        SHA1_UpdateInt32(context, GetWeaponAmmo[i]);
-    }
+  for (i = 0; i < NUMWEAPONS; ++i)
+  {
+    SHA1_UpdateInt32(context, GetWeaponAmmo[i]);
+  }
 }
 
-deh_section_t deh_section_ammo =
-{
-    "Ammo",
-    NULL,
-    DEH_AmmoStart,
-    DEH_AmmoParseLine,
-    NULL,
-    DEH_AmmoSHA1Hash,
+deh_section_t deh_section_ammo = {
+  "Ammo",
+  NULL,
+  DEH_AmmoStart,
+  DEH_AmmoParseLine,
+  NULL,
+  DEH_AmmoSHA1Hash,
 };
-

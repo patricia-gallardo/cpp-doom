@@ -29,25 +29,29 @@
  * to be increased or decreased.
  */
 
-using txt_spincontrol_t = struct txt_spincontrol_s;
+using txt_spincontrol_t      = struct txt_spincontrol_s;
 
-using txt_spincontrol_type_t = enum
-{
-    TXT_SPINCONTROL_INT,
-    TXT_SPINCONTROL_FLOAT,
+using txt_spincontrol_type_t = enum {
+  TXT_SPINCONTROL_INT,
+  TXT_SPINCONTROL_FLOAT,
 };
 
 #include "txt_widget.hpp"
 
-struct txt_spincontrol_s
-{
-    txt_widget_t widget;
-    txt_spincontrol_type_t type;
-    union { float f; int i; } min, max, step;
-    union { float *f; int *i; } value;
-    int editing;
-    char *buffer;
-    size_t buffer_len;
+struct txt_spincontrol_s {
+  txt_widget_t           widget;
+  txt_spincontrol_type_t type;
+  union {
+    float f;
+    int   i;
+  } min, max, step;
+  union {
+    float *f;
+    int   *i;
+  } value;
+  int    editing;
+  char  *buffer;
+  size_t buffer_len;
 };
 
 /**
@@ -60,7 +64,8 @@ struct txt_spincontrol_s
  * @return             Pointer to the new spin control widget.
  */
 
-txt_spincontrol_t *TXT_NewSpinControl(int *value, int min, int max);
+txt_spincontrol_t *
+  TXT_NewSpinControl(int *value, int min, int max);
 
 /**
  * Create a new spin control widget tracking a float value.
@@ -72,8 +77,7 @@ txt_spincontrol_t *TXT_NewSpinControl(int *value, int min, int max);
  * @return             Pointer to the new spin control widget.
  */
 
-txt_spincontrol_t *TXT_NewFloatSpinControl(float *value, float min, float max);
+txt_spincontrol_t *
+  TXT_NewFloatSpinControl(float *value, float min, float max);
 
 #endif /* #ifndef TXT_SPINCONTROL_H */
-
-

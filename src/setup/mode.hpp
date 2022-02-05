@@ -15,18 +15,22 @@
 #ifndef SETUP_MODE_H
 #define SETUP_MODE_H
 
-#include "d_mode.hpp"
 #include "d_iwad.hpp"
+#include "d_mode.hpp"
 
 using GameSelectCallback = void (*)();
 
 extern GameMission_t gamemission;
 
-void SetupMission(GameSelectCallback callback);
-void InitBindings();
-const char *GetExecutableName();
-const char *GetGameTitle();
-const iwad_t **GetIwads();
+void
+  SetupMission(GameSelectCallback callback);
+void
+  InitBindings();
+const char *
+  GetExecutableName();
+const char *
+  GetGameTitle();
+const iwad_t **
+  GetIwads();
 
 #endif /* #ifndef SETUP_MODE_H */
-

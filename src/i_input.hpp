@@ -31,16 +31,20 @@ extern int   mouse_threshold_y;    // [crispy]
 extern int   mouse_y_invert;       // [crispy]
 extern int   novert;               // [crispy]
 
-void I_BindInputVariables();
-void I_ReadMouse();
+void
+  I_BindInputVariables();
+void
+  I_ReadMouse();
 
 // I_StartTextInput begins text input, activating the on-screen keyboard
 // (if one is used). The caller indicates that any entered text will be
 // displayed in the rectangle given by the provided set of coordinates.
-void I_StartTextInput(int x1, int y1, int x2, int y2);
+void
+  I_StartTextInput(int x1, int y1, int x2, int y2);
 
 // I_StopTextInput finishes text input, deactivating the on-screen keyboard
 // (if one is used).
-void I_StopTextInput();
+void
+  I_StopTextInput();
 
 #endif

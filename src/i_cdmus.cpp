@@ -26,53 +26,62 @@
 
 int cd_Error;
 
-int I_CDMusInit()
+int
+  I_CDMusInit()
 {
-    fprintf(stderr,
-        "I_CDMusInit: CD music playback is no longer supported! "
-        "Please use digital music packs instead:\n"
-        "https://www.chocolate-doom.org/wiki/index.php/Digital_music_packs\n");
-    return -1;
+  fprintf(stderr,
+          "I_CDMusInit: CD music playback is no longer supported! "
+          "Please use digital music packs instead:\n"
+          "https://www.chocolate-doom.org/wiki/index.php/Digital_music_packs\n");
+  return -1;
 }
 
 // We cannot print status messages inline during startup, they must
 // be deferred until after I_CDMusInit has returned.
 
-void I_CDMusPrintStartup()
+void
+  I_CDMusPrintStartup()
 {
 }
 
-int I_CDMusPlay(int track)
+int
+  I_CDMusPlay(int track)
 {
-    return 0;
+  return 0;
 }
 
-int I_CDMusStop()
+int
+  I_CDMusStop()
 {
-    return 0;
+  return 0;
 }
 
-int I_CDMusResume()
+int
+  I_CDMusResume()
 {
-    return 0;
+  return 0;
 }
 
-int I_CDMusSetVolume(int volume)
+int
+  I_CDMusSetVolume(int volume)
 {
-    return 0;
+  return 0;
 }
 
-int I_CDMusFirstTrack()
+int
+  I_CDMusFirstTrack()
 {
-    return 0;
+  return 0;
 }
 
-int I_CDMusLastTrack()
+int
+  I_CDMusLastTrack()
 {
-    return 0;
+  return 0;
 }
 
-int I_CDMusTrackLength(int track_num)
+int
+  I_CDMusTrackLength(int track_num)
 {
-    return 0;
+  return 0;
 }

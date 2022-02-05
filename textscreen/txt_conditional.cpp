@@ -18,152 +18,161 @@
 #include "txt_strut.hpp"
 #include <new>
 
-struct txt_conditional_s
-{
-    txt_widget_t widget;
-    int *var;
-    int expected_value;
-    txt_widget_t *child;
+struct txt_conditional_s {
+  txt_widget_t  widget;
+  int          *var;
+  int           expected_value;
+  txt_widget_t *child;
 };
 
-static int ConditionTrue(txt_conditional_t *conditional)
+static int
+  ConditionTrue(txt_conditional_t *conditional)
 {
-    return *conditional->var == conditional->expected_value;
+  return *conditional->var == conditional->expected_value;
 }
 
-static int TXT_CondSelectable(TXT_UNCAST_ARG(conditional))
+static int
+  TXT_CondSelectable(TXT_UNCAST_ARG(conditional))
 {
-    TXT_CAST_ARG(txt_conditional_t, conditional);
-    return ConditionTrue(conditional)
-        && TXT_SelectableWidget(conditional->child);
+  TXT_CAST_ARG(txt_conditional_t, conditional);
+  return ConditionTrue(conditional)
+         && TXT_SelectableWidget(conditional->child);
 }
 
-static void TXT_CondSizeCalc(TXT_UNCAST_ARG(conditional))
+static void
+  TXT_CondSizeCalc(TXT_UNCAST_ARG(conditional))
 {
-    TXT_CAST_ARG(txt_conditional_t, conditional);
+  TXT_CAST_ARG(txt_conditional_t, conditional);
 
-    if (!ConditionTrue(conditional))
-    {
-        conditional->widget.w = 0;
-        conditional->widget.h = 0;
-    }
-    else
-    {
-        TXT_CalcWidgetSize(conditional->child);
-        conditional->widget.w = conditional->child->w;
-        conditional->widget.h = conditional->child->h;
-    }
+  if (!ConditionTrue(conditional))
+  {
+    conditional->widget.w = 0;
+    conditional->widget.h = 0;
+  }
+  else
+  {
+    TXT_CalcWidgetSize(conditional->child);
+    conditional->widget.w = conditional->child->w;
+    conditional->widget.h = conditional->child->h;
+  }
 }
 
-static void TXT_CondLayout(TXT_UNCAST_ARG(conditional))
+static void
+  TXT_CondLayout(TXT_UNCAST_ARG(conditional))
 {
-    TXT_CAST_ARG(txt_conditional_t, conditional);
+  TXT_CAST_ARG(txt_conditional_t, conditional);
 
-    if (ConditionTrue(conditional))
-    {
-        conditional->child->x = conditional->widget.x;
-        conditional->child->y = conditional->widget.y;
-        TXT_LayoutWidget(conditional->child);
-    }
+  if (ConditionTrue(conditional))
+  {
+    conditional->child->x = conditional->widget.x;
+    conditional->child->y = conditional->widget.y;
+    TXT_LayoutWidget(conditional->child);
+  }
 }
 
-static void TXT_CondDrawer(TXT_UNCAST_ARG(conditional))
+static void
+  TXT_CondDrawer(TXT_UNCAST_ARG(conditional))
 {
-    TXT_CAST_ARG(txt_conditional_t, conditional);
+  TXT_CAST_ARG(txt_conditional_t, conditional);
 
-    if (ConditionTrue(conditional))
-    {
-        TXT_DrawWidget(conditional->child);
-    }
+  if (ConditionTrue(conditional))
+  {
+    TXT_DrawWidget(conditional->child);
+  }
 }
 
-static void TXT_CondDestructor(TXT_UNCAST_ARG(conditional))
+static void
+  TXT_CondDestructor(TXT_UNCAST_ARG(conditional))
 {
-    TXT_CAST_ARG(txt_conditional_t, conditional);
-    TXT_DestroyWidget(conditional->child);
+  TXT_CAST_ARG(txt_conditional_t, conditional);
+  TXT_DestroyWidget(conditional->child);
 }
 
-static void TXT_CondFocused(TXT_UNCAST_ARG(conditional), int focused)
+static void
+  TXT_CondFocused(TXT_UNCAST_ARG(conditional), int focused)
 {
-    TXT_CAST_ARG(txt_conditional_t, conditional);
+  TXT_CAST_ARG(txt_conditional_t, conditional);
 
-    if (ConditionTrue(conditional))
-    {
-        TXT_SetWidgetFocus(conditional->child, focused);
-    }
+  if (ConditionTrue(conditional))
+  {
+    TXT_SetWidgetFocus(conditional->child, focused);
+  }
 }
 
-static int TXT_CondKeyPress(TXT_UNCAST_ARG(conditional), int key)
+static int
+  TXT_CondKeyPress(TXT_UNCAST_ARG(conditional), int key)
 {
-    TXT_CAST_ARG(txt_conditional_t, conditional);
+  TXT_CAST_ARG(txt_conditional_t, conditional);
 
-    if (ConditionTrue(conditional))
-    {
-        return TXT_WidgetKeyPress(conditional->child, key);
-    }
+  if (ConditionTrue(conditional))
+  {
+    return TXT_WidgetKeyPress(conditional->child, key);
+  }
 
-    return 0;
+  return 0;
 }
 
-static void TXT_CondMousePress(TXT_UNCAST_ARG(conditional),
-                               int x, int y, int b)
+static void
+  TXT_CondMousePress(TXT_UNCAST_ARG(conditional),
+                     int x,
+                     int y,
+                     int b)
 {
-    TXT_CAST_ARG(txt_conditional_t, conditional);
+  TXT_CAST_ARG(txt_conditional_t, conditional);
 
-    if (ConditionTrue(conditional))
-    {
-        TXT_WidgetMousePress(conditional->child, x, y, b);
-    }
+  if (ConditionTrue(conditional))
+  {
+    TXT_WidgetMousePress(conditional->child, x, y, b);
+  }
 }
 
-txt_widget_class_t txt_conditional_class =
-{
-    TXT_CondSelectable,
-    TXT_CondSizeCalc,
-    TXT_CondDrawer,
-    TXT_CondKeyPress,
-    TXT_CondDestructor,
-    TXT_CondMousePress,
-    TXT_CondLayout,
-    TXT_CondFocused,
+txt_widget_class_t txt_conditional_class = {
+  TXT_CondSelectable,
+  TXT_CondSizeCalc,
+  TXT_CondDrawer,
+  TXT_CondKeyPress,
+  TXT_CondDestructor,
+  TXT_CondMousePress,
+  TXT_CondLayout,
+  TXT_CondFocused,
 };
 
-txt_conditional_t *TXT_NewConditional(int *var, int expected_value,
-                                      TXT_UNCAST_ARG(child))
+txt_conditional_t *
+  TXT_NewConditional(int *var, int expected_value, TXT_UNCAST_ARG(child))
 {
-    TXT_CAST_ARG(txt_widget_t, child);
+  TXT_CAST_ARG(txt_widget_t, child);
 
-    auto *loc = malloc(sizeof(txt_conditional_t));
-    auto *conditional = new (loc) txt_conditional_t{};
+  auto *loc         = malloc(sizeof(txt_conditional_t));
+  auto *conditional = new (loc) txt_conditional_t{};
 
 
-    TXT_InitWidget(conditional, &txt_conditional_class);
-    conditional->var = var;
-    conditional->expected_value = expected_value;
-    conditional->child = child;
+  TXT_InitWidget(conditional, &txt_conditional_class);
+  conditional->var            = var;
+  conditional->expected_value = expected_value;
+  conditional->child          = child;
 
-    child->parent = &conditional->widget;
+  child->parent               = &conditional->widget;
 
-    return conditional;
+  return conditional;
 }
 
 // "Static" conditional that returns an empty strut if the given static
 // value is false. Kind of like a conditional but we only evaluate it at
 // creation time.
-txt_widget_t *TXT_If(int conditional, TXT_UNCAST_ARG(child))
+txt_widget_t *
+  TXT_If(int conditional, TXT_UNCAST_ARG(child))
 {
-    TXT_CAST_ARG(txt_widget_t, child);
+  TXT_CAST_ARG(txt_widget_t, child);
 
-    if (conditional)
-    {
-        return child;
-    }
-    else
-    {
-        txt_strut_t *nullwidget;
-        TXT_DestroyWidget(child);
-        nullwidget = TXT_NewStrut(0, 0);
-        return &nullwidget->widget;
-    }
+  if (conditional)
+  {
+    return child;
+  }
+  else
+  {
+    txt_strut_t *nullwidget;
+    TXT_DestroyWidget(child);
+    nullwidget = TXT_NewStrut(0, 0);
+    return &nullwidget->widget;
+  }
 }
-

@@ -18,14 +18,14 @@
 //
 
 
-#include "z_zone.hpp"
 #include "p_local.hpp"
 #include "s_musinfo.hpp" // [crispy] T_MAPMusic()
+#include "z_zone.hpp"
 
 #include "doomstat.hpp"
 
 
-int leveltime;
+int       leveltime;
 
 //
 // THINKERS
@@ -43,9 +43,10 @@ thinker_t thinkercap;
 //
 // P_InitThinkers
 //
-void P_InitThinkers()
+void
+  P_InitThinkers()
 {
-    thinkercap.prev = thinkercap.next = &thinkercap;
+  thinkercap.prev = thinkercap.next = &thinkercap;
 }
 
 
@@ -53,12 +54,13 @@ void P_InitThinkers()
 // P_AddThinker
 // Adds a new thinker at the end of the list.
 //
-void P_AddThinker(thinker_t *thinker)
+void
+  P_AddThinker(thinker_t *thinker)
 {
-    thinkercap.prev->next = thinker;
-    thinker->next         = &thinkercap;
-    thinker->prev         = thinkercap.prev;
-    thinkercap.prev       = thinker;
+  thinkercap.prev->next = thinker;
+  thinker->next         = &thinkercap;
+  thinker->prev         = thinkercap.prev;
+  thinkercap.prev       = thinker;
 }
 
 
@@ -67,10 +69,11 @@ void P_AddThinker(thinker_t *thinker)
 // Deallocation is lazy -- it will not actually be freed
 // until its thinking turn comes up.
 //
-void P_RemoveThinker(thinker_t *thinker)
+void
+  P_RemoveThinker(thinker_t *thinker)
 {
-    // FIXME: NOP.
-    thinker->function.acv = (actionf_v)(-1);
+  // FIXME: NOP.
+  thinker->function.acv = (actionf_v)(-1);
 }
 
 
@@ -78,7 +81,8 @@ void P_RemoveThinker(thinker_t *thinker)
 // P_AllocateThinker
 // Allocates memory and adds a new thinker at the end of the list.
 //
-void P_AllocateThinker(thinker_t *thinker)
+void
+  P_AllocateThinker(thinker_t *thinker)
 {
 }
 
@@ -86,33 +90,34 @@ void P_AllocateThinker(thinker_t *thinker)
 //
 // P_RunThinkers
 //
-void P_RunThinkers()
+void
+  P_RunThinkers()
 {
-    thinker_t *currentthinker, *nextthinker;
+  thinker_t *currentthinker, *nextthinker;
 
-    currentthinker = thinkercap.next;
-    while (currentthinker != &thinkercap)
+  currentthinker = thinkercap.next;
+  while (currentthinker != &thinkercap)
+  {
+    if (currentthinker->function.acv == (actionf_v)(-1))
     {
-        if (currentthinker->function.acv == (actionf_v)(-1))
-        {
-            // time to remove it
-            nextthinker                = currentthinker->next;
-            currentthinker->next->prev = currentthinker->prev;
-            currentthinker->prev->next = currentthinker->next;
-            Z_Free(currentthinker);
-        }
-        else
-        {
-            if (currentthinker->function.acp1)
-                currentthinker->function.acp1(
-                    reinterpret_cast<mobj_t *>(currentthinker));
-            nextthinker = currentthinker->next;
-        }
-        currentthinker = nextthinker;
+      // time to remove it
+      nextthinker                = currentthinker->next;
+      currentthinker->next->prev = currentthinker->prev;
+      currentthinker->prev->next = currentthinker->next;
+      Z_Free(currentthinker);
     }
+    else
+    {
+      if (currentthinker->function.acp1)
+        currentthinker->function.acp1(
+          reinterpret_cast<mobj_t *>(currentthinker));
+      nextthinker = currentthinker->next;
+    }
+    currentthinker = nextthinker;
+  }
 
-    // [crispy] support MUSINFO lump (dynamic music changing)
-    T_MusInfo();
+  // [crispy] support MUSINFO lump (dynamic music changing)
+  T_MusInfo();
 }
 
 
@@ -120,32 +125,33 @@ void P_RunThinkers()
 // P_Ticker
 //
 
-void P_Ticker()
+void
+  P_Ticker()
 {
-    int i;
+  int i;
 
-    // run the tic
-    if (paused)
-        return;
+  // run the tic
+  if (paused)
+    return;
 
-    // pause if in menu and at least one tic has been run
-    if (!netgame
-        && menuactive
-        && !demoplayback
-        && players[consoleplayer].viewz != 1)
-    {
-        return;
-    }
+  // pause if in menu and at least one tic has been run
+  if (!netgame
+      && menuactive
+      && !demoplayback
+      && players[consoleplayer].viewz != 1)
+  {
+    return;
+  }
 
 
-    for (i = 0; i < MAXPLAYERS; i++)
-        if (playeringame[i])
-            P_PlayerThink(&players[i]);
+  for (i = 0; i < MAXPLAYERS; i++)
+    if (playeringame[i])
+      P_PlayerThink(&players[i]);
 
-    P_RunThinkers();
-    P_UpdateSpecials();
-    P_RespawnSpecials();
+  P_RunThinkers();
+  P_UpdateSpecials();
+  P_RespawnSpecials();
 
-    // for par times
-    leveltime++;
+  // for par times
+  leveltime++;
 }

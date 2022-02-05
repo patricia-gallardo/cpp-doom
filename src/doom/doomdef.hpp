@@ -23,15 +23,15 @@
 #include <cstdio>
 #include <cstring>
 
+#include "d_mode.hpp"
 #include "doomtype.hpp"
 #include "i_timer.hpp"
-#include "d_mode.hpp"
 
 //
 // Global parameters/defines.
 //
 // DOOM version
-#define DOOM_VERSION 109
+#define DOOM_VERSION     109
 
 // Version code for cph's longtics hack ("v1.91")
 #define DOOM_191_VERSION 111
@@ -49,25 +49,24 @@
 // the game final animation, or a demo.
 enum gamestate_t
 {
-    GS_LEVEL,
-    GS_INTERMISSION,
-    GS_FINALE,
-    GS_DEMOSCREEN,
-    GS_FORCE_WIPE = -1
+  GS_LEVEL,
+  GS_INTERMISSION,
+  GS_FINALE,
+  GS_DEMOSCREEN,
+  GS_FORCE_WIPE = -1
 };
 
-using gameaction_t = enum
-{
-    ga_nothing,
-    ga_loadlevel,
-    ga_newgame,
-    ga_loadgame,
-    ga_savegame,
-    ga_playdemo,
-    ga_completed,
-    ga_victory,
-    ga_worlddone,
-    ga_screenshot
+using gameaction_t = enum {
+  ga_nothing,
+  ga_loadlevel,
+  ga_newgame,
+  ga_loadgame,
+  ga_savegame,
+  ga_playdemo,
+  ga_completed,
+  ga_victory,
+  ga_worlddone,
+  ga_screenshot
 };
 
 //
@@ -86,16 +85,15 @@ using gameaction_t = enum
 //
 // Key cards.
 //
-using card_t = enum
-{
-    it_bluecard,
-    it_yellowcard,
-    it_redcard,
-    it_blueskull,
-    it_yellowskull,
-    it_redskull,
+using card_t = enum {
+  it_bluecard,
+  it_yellowcard,
+  it_redcard,
+  it_blueskull,
+  it_yellowskull,
+  it_redskull,
 
-    NUMCARDS
+  NUMCARDS
 
 };
 
@@ -103,52 +101,49 @@ using card_t = enum
 // The defined weapons,
 //  including a marker indicating
 //  user has not changed weapon.
-using weapontype_t = enum
-{
-    wp_fist,
-    wp_pistol,
-    wp_shotgun,
-    wp_chaingun,
-    wp_missile,
-    wp_plasma,
-    wp_bfg,
-    wp_chainsaw,
-    wp_supershotgun,
+using weapontype_t = enum {
+  wp_fist,
+  wp_pistol,
+  wp_shotgun,
+  wp_chaingun,
+  wp_missile,
+  wp_plasma,
+  wp_bfg,
+  wp_chainsaw,
+  wp_supershotgun,
 
-    NUMWEAPONS,
+  NUMWEAPONS,
 
-    // No pending weapon change.
-    wp_nochange
+  // No pending weapon change.
+  wp_nochange
 
 };
 
 
 // Ammunition types defined.
-using ammotype_t = enum
-{
-    am_clip,  // Pistol / chaingun ammo.
-    am_shell, // Shotgun / double barreled shotgun.
-    am_cell,  // Plasma rifle, BFG.
-    am_misl,  // Missile launcher.
-    NUMAMMO,
-    am_noammo // Unlimited for chainsaw / fist.
+using ammotype_t = enum {
+  am_clip,  // Pistol / chaingun ammo.
+  am_shell, // Shotgun / double barreled shotgun.
+  am_cell,  // Plasma rifle, BFG.
+  am_misl,  // Missile launcher.
+  NUMAMMO,
+  am_noammo // Unlimited for chainsaw / fist.
 
 };
 
 
 // Power up artifacts.
-using powertype_t = enum
-{
-    pw_invulnerability,
-    pw_strength,
-    pw_invisibility,
-    pw_ironfeet,
-    pw_allmap,
-    pw_infrared,
-    NUMPOWERS,
-    // [crispy] showfps and mapcoords are now "powers"
-    pw_showfps,
-    pw_mapcoords
+using powertype_t = enum {
+  pw_invulnerability,
+  pw_strength,
+  pw_invisibility,
+  pw_ironfeet,
+  pw_allmap,
+  pw_infrared,
+  NUMPOWERS,
+  // [crispy] showfps and mapcoords are now "powers"
+  pw_showfps,
+  pw_mapcoords
 
 };
 
@@ -158,12 +153,11 @@ using powertype_t = enum
 //  how many seconds till expiration,
 //  assuming TICRATE is 35 ticks/second.
 //
-using powerduration_t = enum
-{
-    INVULNTICS = (30 * TICRATE),
-    INVISTICS  = (60 * TICRATE),
-    INFRATICS  = (120 * TICRATE),
-    IRONTICS   = (60 * TICRATE)
+using powerduration_t = enum {
+  INVULNTICS = (30 * TICRATE),
+  INVISTICS  = (60 * TICRATE),
+  INFRATICS  = (120 * TICRATE),
+  IRONTICS   = (60 * TICRATE)
 
 };
 

@@ -24,45 +24,51 @@
 //
 // Globally visible constants.
 //
-#define HU_FONTSTART    '!'     // the first font characters
-#define HU_FONTEND      '_'     // the last font characters
+#define HU_FONTSTART  '!' // the first font characters
+#define HU_FONTEND    '_' // the last font characters
 
 // Calculate # of glyphs in font.
-#define HU_FONTSIZE     (HU_FONTEND - HU_FONTSTART + 1)	
+#define HU_FONTSIZE   (HU_FONTEND - HU_FONTSTART + 1)
 
-#define HU_BROADCAST    9       // haleyjd [STRIFE] Changed 5 -> 9
-#define HU_CHANGENAME   10      // haleyjd [STRIFE] Special command
+#define HU_BROADCAST  9  // haleyjd [STRIFE] Changed 5 -> 9
+#define HU_CHANGENAME 10 // haleyjd [STRIFE] Special command
 
-#define HU_MSGX         0
-#define HU_MSGY         (SHORT(hu_font[0]->height) + 1) // [STRIFE]: DOOM bug fix
-#define HU_MSGWIDTH     64      // in characters
-#define HU_MSGHEIGHT    2       // in lines
+#define HU_MSGX       0
+#define HU_MSGY       (SHORT(hu_font[0]->height) + 1) // [STRIFE]: DOOM bug fix
+#define HU_MSGWIDTH   64                              // in characters
+#define HU_MSGHEIGHT  2                               // in lines
 
-#define HU_MSGTIMEOUT   (8*TICRATE) // haleyjd [STRIFE] Doubled message timeout
+#define HU_MSGTIMEOUT (8 * TICRATE) // haleyjd [STRIFE] Doubled message timeout
 
 
 //
 // HEADS UP TEXT
 //
 
-void HU_Init();
-void HU_Start();
+void
+  HU_Init();
+void
+  HU_Start();
 
-boolean HU_Responder(event_t* ev);
+boolean
+  HU_Responder(event_t *ev);
 
-void HU_Ticker();
-void HU_Drawer();
-char HU_dequeueChatChar();
-void HU_Erase();
+void
+  HU_Ticker();
+void
+  HU_Drawer();
+char
+  HU_dequeueChatChar();
+void
+                   HU_Erase();
 
-extern char *chat_macros[10];
-extern char player_names[8][16];   // villsa [STRIFE]
+extern char       *chat_macros[10];
+extern char        player_names[8][16]; // villsa [STRIFE]
 
 // haleyjd [STRIFE] externalized:
 extern const char *mapnames[];
 
 // [STRIFE]
-extern patch_t* yfont[HU_FONTSIZE];   // haleyjd 09/18/10: [STRIFE]
+extern patch_t    *yfont[HU_FONTSIZE]; // haleyjd 09/18/10: [STRIFE]
 
 #endif
-

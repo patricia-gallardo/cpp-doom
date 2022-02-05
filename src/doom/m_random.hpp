@@ -26,19 +26,25 @@
 
 // Returns a number from 0 to 255,
 // from a lookup table.
-int M_Random();
+int
+  M_Random();
 
 // As M_Random, but used only by the play simulation.
-int P_Random();
+int
+  P_Random();
 
 // [crispy] our own private random function
-int Crispy_Random();
+int
+  Crispy_Random();
 
 // Fix randoms for demos.
-void M_ClearRandom();
+void
+  M_ClearRandom();
 
 // Defined version of P_Random() - P_Random()
-int P_SubRandom();
-int Crispy_SubRandom();
+int
+  P_SubRandom();
+int
+  Crispy_SubRandom();
 
 #endif

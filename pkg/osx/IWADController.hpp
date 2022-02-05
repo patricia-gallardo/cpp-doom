@@ -18,40 +18,38 @@
 #include <AppKit/AppKit.h>
 #include <AppKit/NSNibLoading.h>
 
-@interface IWADController : NSObject
-{
-    id iwadSelector;
-    id configWindow;
+@interface IWADController : NSObject {
+  id iwadSelector;
+  id configWindow;
 
-    id chex;
-    id doom1;
-    id doom2;
-    id plutonia;
-    id tnt;
-    id freedoom1;
-    id freedoom2;
-    id freedm;
+  id chex;
+  id doom1;
+  id doom2;
+  id plutonia;
+  id tnt;
+  id freedoom1;
+  id freedoom2;
+  id freedm;
 
-    id heretic;
-    id hexen;
-    id strife;
+  id heretic;
+  id hexen;
+  id strife;
 }
 
-- (void) closeConfigWindow: (id)sender;
-- (void) openConfigWindow: (id)sender;
-- (NSString *) getIWADLocation;
-- (NSString *) autoloadPath;
-- (void) awakeFromNib;
-- (BOOL) setDropdownList;
-- (void) setDropdownSelection;
-- (void) saveConfig;
-- (char *) doomWadPath;
-- (void) setEnvironment;
-- (const char *) getGameName;
-- (BOOL) addIWADPath: (NSString *) path;
-- (BOOL) selectGameByName: (const char *) name;
+- (void)closeConfigWindow:(id)sender;
+- (void)openConfigWindow:(id)sender;
+- (NSString *)getIWADLocation;
+- (NSString *)autoloadPath;
+- (void)awakeFromNib;
+- (BOOL)setDropdownList;
+- (void)setDropdownSelection;
+- (void)saveConfig;
+- (char *)doomWadPath;
+- (void)setEnvironment;
+- (const char *)getGameName;
+- (BOOL)addIWADPath:(NSString *)path;
+- (BOOL)selectGameByName:(const char *)name;
 
 @end
 
 #endif /* #ifndef LAUNCHER_IWADCONTROLLER_H */
-

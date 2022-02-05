@@ -15,14 +15,14 @@
 // Top-level dehacked definitions for Doom dehacked.
 //
 
-#include <cstdlib>
 #include "deh_defs.hpp"
 #include "deh_main.hpp"
+#include <cstdlib>
 
 const char *deh_signatures[] = {
-    "Patch File for DeHackEd v2.3",
-    "Patch File for DeHackEd v3.0",
-    NULL
+  "Patch File for DeHackEd v2.3",
+  "Patch File for DeHackEd v3.0",
+  NULL
 };
 
 // deh_ammo.c:
@@ -56,19 +56,19 @@ extern deh_section_t deh_section_bexincl;
 // List of section types:
 //
 
-deh_section_t *deh_section_types[] = {
-    &deh_section_ammo,
-    &deh_section_cheat,
-    &deh_section_frame,
-    &deh_section_misc,
-    &deh_section_pointer,
-    &deh_section_sound,
-    &deh_section_text,
-    &deh_section_thing,
-    &deh_section_weapon,
-    &deh_section_bexstr,
-    &deh_section_bexpars,
-    &deh_section_bexptr,
-    &deh_section_bexincl,
-    NULL
+deh_section_t       *deh_section_types[] = {
+  &deh_section_ammo,
+  &deh_section_cheat,
+  &deh_section_frame,
+  &deh_section_misc,
+  &deh_section_pointer,
+  &deh_section_sound,
+  &deh_section_text,
+  &deh_section_thing,
+  &deh_section_weapon,
+  &deh_section_bexstr,
+  &deh_section_bexpars,
+  &deh_section_bexptr,
+  &deh_section_bexincl,
+  NULL
 };

@@ -37,14 +37,13 @@ using txt_dropdown_list_t = struct txt_dropdown_list_s;
 
 //
 // Drop-down list box.
-// 
+//
 
-struct txt_dropdown_list_s
-{
-    txt_widget_t widget;
-    int *variable;
-    const char **values;
-    int num_values;
+struct txt_dropdown_list_s {
+  txt_widget_t widget;
+  int         *variable;
+  const char **values;
+  int          num_values;
 };
 
 /**
@@ -61,9 +60,9 @@ struct txt_dropdown_list_s
  * @param num_values      The number of variables in the list.
  */
 
-txt_dropdown_list_t *TXT_NewDropdownList(int *variable, 
-                                         const char **values, int num_values);
+txt_dropdown_list_t *
+  TXT_NewDropdownList(int         *variable,
+                      const char **values,
+                      int          num_values);
 
 #endif /* #ifndef TXT_DROPDOWN_H */
-
-

@@ -24,83 +24,84 @@
 #include "pcsound.hpp"
 #include "pcsound_internal.hpp"
 
-static SDL_Thread *sound_thread_handle;
-static int sound_thread_running;
+static SDL_Thread           *sound_thread_handle;
+static int                   sound_thread_running;
 static pcsound_callback_func callback;
 
-static int SoundThread(void *unused)
+static int
+  SoundThread(void *unused)
 {
-    int frequency;
-    int duration;
-    
-    while (sound_thread_running)
-    {
-        callback(&duration, &frequency);
+  int frequency;
+  int duration;
 
-        if (frequency != 0) 
-        {
-            Beep(frequency, duration);
-        }
-        else
-        {
-            Sleep(duration);
-        }
+  while (sound_thread_running)
+  {
+    callback(&duration, &frequency);
+
+    if (frequency != 0)
+    {
+      Beep(frequency, duration);
     }
-    
-    return 0;    
+    else
+    {
+      Sleep(duration);
+    }
+  }
+
+  return 0;
 }
 
-static int PCSound_Win32_Init(pcsound_callback_func callback_func)
+static int
+  PCSound_Win32_Init(pcsound_callback_func callback_func)
 {
-    OSVERSIONINFO osvi;
-    BOOL result;
+  OSVERSIONINFO osvi;
+  BOOL          result;
 
-    // Temporarily disabled - the Windows scheduler is strange and 
-    // stupid.
-   
+  // Temporarily disabled - the Windows scheduler is strange and
+  // stupid.
+
+  return 0;
+
+  // Find the OS version
+
+  osvi.dwOSVersionInfoSize = sizeof(osvi);
+
+  result                   = GetVersionEx(&osvi);
+
+  if (!result)
+  {
     return 0;
+  }
 
-    // Find the OS version
+  // Beep() ignores its arguments on win9x, so this driver will
+  // not work there.
+  if (osvi.dwPlatformId != VER_PLATFORM_WIN32_NT)
+  {
+    return 0;
+  }
 
-    osvi.dwOSVersionInfoSize = sizeof(osvi);
+  // Start a thread to play sound.
 
-    result = GetVersionEx(&osvi);
+  callback             = callback_func;
+  sound_thread_running = 1;
 
-    if (!result)
-    {
-        return 0;
-    }
+  sound_thread_handle =
+    SDL_CreateThread(SoundThread, "PC speaker thread", NULL);
 
-    // Beep() ignores its arguments on win9x, so this driver will
-    // not work there.
-    if (osvi.dwPlatformId != VER_PLATFORM_WIN32_NT)
-    {
-        return 0;
-    }
-
-    // Start a thread to play sound.
-
-    callback = callback_func;
-    sound_thread_running = 1;
-
-    sound_thread_handle =
-        SDL_CreateThread(SoundThread, "PC speaker thread", NULL);
-
-    return 1;
+  return 1;
 }
 
-static void PCSound_Win32_Shutdown()
+static void
+  PCSound_Win32_Shutdown()
 {
-    sound_thread_running = 0;
-    SDL_WaitThread(sound_thread_handle, NULL);
+  sound_thread_running = 0;
+  SDL_WaitThread(sound_thread_handle, NULL);
 }
 
-pcsound_driver_t pcsound_win32_driver = 
-{
-    "Windows",
-    PCSound_Win32_Init,
-    PCSound_Win32_Shutdown,
+pcsound_driver_t pcsound_win32_driver = {
+  "Windows",
+  PCSound_Win32_Init,
+  PCSound_Win32_Shutdown,
 };
 
 #endif /* #ifdef _WIN32 */
-

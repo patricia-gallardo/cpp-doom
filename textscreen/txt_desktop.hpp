@@ -25,13 +25,20 @@
 
 using TxtIdleCallback = void (*)(void *);
 
-void TXT_AddDesktopWindow(txt_window_t *win);
-void TXT_RemoveDesktopWindow(txt_window_t *win);
-void TXT_DrawDesktop();
-void TXT_DispatchEvents();
-void TXT_DrawWindow(txt_window_t *window);
-void TXT_SetWindowFocus(txt_window_t *window, int focused);
-int TXT_WindowKeyPress(txt_window_t *window, int c);
+void
+  TXT_AddDesktopWindow(txt_window_t *win);
+void
+  TXT_RemoveDesktopWindow(txt_window_t *win);
+void
+  TXT_DrawDesktop();
+void
+  TXT_DispatchEvents();
+void
+  TXT_DrawWindow(txt_window_t *window);
+void
+  TXT_SetWindowFocus(txt_window_t *window, int focused);
+int
+  TXT_WindowKeyPress(txt_window_t *window, int c);
 
 /**
  * Set the title displayed at the top of the screen.
@@ -39,14 +46,16 @@ int TXT_WindowKeyPress(txt_window_t *window, int c);
  * @param title         The title to display (UTF-8 format).
  */
 
-void TXT_SetDesktopTitle(const char *title);
+void
+  TXT_SetDesktopTitle(const char *title);
 
 /**
  * Exit the currently-running main loop and return from the
  * @ref TXT_GUIMainLoop function.
  */
 
-void TXT_ExitMainLoop();
+void
+  TXT_ExitMainLoop();
 
 /**
  * Start the main event loop.  At least one window must have been
@@ -57,7 +66,8 @@ void TXT_ExitMainLoop();
  * @ref TXT_ExitMainLoop function.
  */
 
-void TXT_GUIMainLoop();
+void
+  TXT_GUIMainLoop();
 
 /**
  * Get the top window on the desktop that is currently receiving
@@ -66,7 +76,8 @@ void TXT_GUIMainLoop();
  * @return    The active window, or NULL if no windows are present.
  */
 
-txt_window_t *TXT_GetActiveWindow();
+txt_window_t *
+  TXT_GetActiveWindow();
 
 /**
  * Set a callback function to be invoked periodically by the main
@@ -80,9 +91,10 @@ txt_window_t *TXT_GetActiveWindow();
  *                      to be invoked at least once every 200ms.
  */
 
-void TXT_SetPeriodicCallback(TxtIdleCallback callback,
-                             void *user_data,
-                             unsigned int period);
+void
+  TXT_SetPeriodicCallback(TxtIdleCallback callback,
+                          void           *user_data,
+                          unsigned int    period);
 
 /**
  * Raise the z-position of the given window relative to other windows.
@@ -92,7 +104,8 @@ void TXT_SetPeriodicCallback(TxtIdleCallback callback,
  *                      or zero if the window could not be raised further.
  */
 
-int TXT_RaiseWindow(txt_window_t *window);
+int
+  TXT_RaiseWindow(txt_window_t *window);
 
 /**
  * Lower the z-position of the given window relative to other windows.
@@ -102,7 +115,7 @@ int TXT_RaiseWindow(txt_window_t *window);
  *                      or zero if the window could not be lowered further.
  */
 
-int TXT_LowerWindow(txt_window_t *window);
+int
+  TXT_LowerWindow(txt_window_t *window);
 
 #endif /* #ifndef TXT_DESKTOP_H */
-

@@ -14,14 +14,12 @@
 //
 // DESCRIPTION:
 //	Globally defined strings.
-// 
-
+//
 
 
 #include "dstrings.hpp"
 
-const char *doom1_endmsg[] =
-{
+const char *doom1_endmsg[] = {
   "are you sure you want to\nquit this great game?",
   "please don't leave, there's more\ndemons to toast!",
   "let's beat it -- this is turning\ninto a bloodbath!",
@@ -32,8 +30,7 @@ const char *doom1_endmsg[] =
   "go ahead and leave. see if i care.",
 };
 
-const char *doom2_endmsg[] =
-{
+const char *doom2_endmsg[] = {
   // QuitDOOM II messages
   "are you sure you want to\nquit this great game?",
   "you want to quit?\nthen, thou hast lost an eighth!",
@@ -67,7 +64,3 @@ char* endmsg[] =
 };
 
 #endif
-
-  
-
-

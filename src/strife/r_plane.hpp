@@ -24,53 +24,50 @@
 #include "r_data.hpp"
 
 
-
 // Visplane related.
-extern  short*		lastopening;
+extern short *lastopening;
 
 
 using planefunction_t = void (*)(int, int);
 
-extern planefunction_t	floorfunc;
-extern planefunction_t	ceilingfunc_t;
+extern planefunction_t floorfunc;
+extern planefunction_t ceilingfunc_t;
 
-extern short		floorclip[MAXWIDTH];
-extern short		ceilingclip[MAXWIDTH];
+extern short           floorclip[MAXWIDTH];
+extern short           ceilingclip[MAXWIDTH];
 
-extern fixed_t		yslope[MAXHEIGHT];
-extern fixed_t		distscale[MAXWIDTH];
-
-void R_InitPlanes ();
-void R_ClearPlanes ();
+extern fixed_t         yslope[MAXHEIGHT];
+extern fixed_t         distscale[MAXWIDTH];
 
 void
-R_MapPlane
-( int		y,
-  int		x1,
-  int		x2 );
+  R_InitPlanes();
+void
+  R_ClearPlanes();
 
 void
-R_MakeSpans
-( int		x,
-  int		t1,
-  int		b1,
-  int		t2,
-  int		b2 );
+  R_MapPlane(int y,
+             int x1,
+             int x2);
 
-void R_DrawPlanes ();
+void
+  R_MakeSpans(int x,
+              int t1,
+              int b1,
+              int t2,
+              int b2);
 
-visplane_t*
-R_FindPlane
-( fixed_t	height,
-  int		picnum,
-  int		lightlevel );
+void
+  R_DrawPlanes();
 
-visplane_t*
-R_CheckPlane
-( visplane_t*	pl,
-  int		start,
-  int		stop );
+visplane_t *
+  R_FindPlane(fixed_t height,
+              int     picnum,
+              int     lightlevel);
 
+visplane_t *
+  R_CheckPlane(visplane_t *pl,
+               int         start,
+               int         stop);
 
 
 #endif

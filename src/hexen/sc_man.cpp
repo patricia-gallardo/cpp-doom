@@ -17,19 +17,19 @@
 
 // HEADER FILES ------------------------------------------------------------
 
-#include <cstring>
-#include <cstdlib>
 #include "h2def.hpp"
 #include "i_system.hpp"
-#include "m_misc.hpp"
 #include "lump.hpp"
+#include "m_misc.hpp"
+#include <cstdlib>
+#include <cstring>
 
 // MACROS ------------------------------------------------------------------
 
-#define MAX_STRING_SIZE 64
-#define ASCII_COMMENT (';')
-#define ASCII_QUOTE (34)
-#define LUMP_SCRIPT 1
+#define MAX_STRING_SIZE  64
+#define ASCII_COMMENT    (';')
+#define ASCII_QUOTE      (34)
+#define LUMP_SCRIPT      1
 #define FILE_ZONE_SCRIPT 2
 
 // TYPES -------------------------------------------------------------------
@@ -40,31 +40,33 @@
 
 // PRIVATE FUNCTION PROTOTYPES ---------------------------------------------
 
-static void CheckOpen();
-static void OpenScript(const char *name, int type);
+static void
+  CheckOpen();
+static void
+               OpenScript(const char *name, int type);
 
 // EXTERNAL DATA DECLARATIONS ----------------------------------------------
 
 // PUBLIC DATA DEFINITIONS -------------------------------------------------
 
-char *sc_String;
-int sc_Number;
-int sc_Line;
-boolean sc_End;
-boolean sc_Crossed;
-boolean sc_FileScripts = false;
-const char *sc_ScriptsDir = "";
+char          *sc_String;
+int            sc_Number;
+int            sc_Line;
+boolean        sc_End;
+boolean        sc_Crossed;
+boolean        sc_FileScripts = false;
+const char    *sc_ScriptsDir  = "";
 
 // PRIVATE DATA DEFINITIONS ------------------------------------------------
 
-static char ScriptName[16];
-static char *ScriptBuffer;
-static char *ScriptPtr;
-static char *ScriptEndPtr;
-static char StringBuffer[MAX_STRING_SIZE];
-static int ScriptLumpNum;
+static char    ScriptName[16];
+static char   *ScriptBuffer;
+static char   *ScriptPtr;
+static char   *ScriptEndPtr;
+static char    StringBuffer[MAX_STRING_SIZE];
+static int     ScriptLumpNum;
 static boolean ScriptOpen = false;
-static int ScriptSize;
+static int     ScriptSize;
 static boolean AlreadyGot = false;
 
 // CODE --------------------------------------------------------------------
@@ -75,19 +77,20 @@ static boolean AlreadyGot = false;
 //
 //==========================================================================
 
-void SC_Open(const char *name)
+void
+  SC_Open(const char *name)
 {
-    char fileName[128];
+  char fileName[128];
 
-    if (sc_FileScripts == true)
-    {
-        M_snprintf(fileName, sizeof(fileName), "%s%s.txt", sc_ScriptsDir, name);
-        SC_OpenFile(fileName);
-    }
-    else
-    {
-        SC_OpenLump(name);
-    }
+  if (sc_FileScripts == true)
+  {
+    M_snprintf(fileName, sizeof(fileName), "%s%s.txt", sc_ScriptsDir, name);
+    SC_OpenFile(fileName);
+  }
+  else
+  {
+    SC_OpenLump(name);
+  }
 }
 
 //==========================================================================
@@ -98,9 +101,10 @@ void SC_Open(const char *name)
 //
 //==========================================================================
 
-void SC_OpenLump(const char *name)
+void
+  SC_OpenLump(const char *name)
 {
-    OpenScript(name, LUMP_SCRIPT);
+  OpenScript(name, LUMP_SCRIPT);
 }
 
 //==========================================================================
@@ -112,9 +116,10 @@ void SC_OpenLump(const char *name)
 //
 //==========================================================================
 
-void SC_OpenFile(const char *name)
+void
+  SC_OpenFile(const char *name)
 {
-    OpenScript(name, FILE_ZONE_SCRIPT);
+  OpenScript(name, FILE_ZONE_SCRIPT);
 }
 
 //==========================================================================
@@ -123,29 +128,30 @@ void SC_OpenFile(const char *name)
 //
 //==========================================================================
 
-static void OpenScript(const char *name, int type)
+static void
+  OpenScript(const char *name, int type)
 {
-    SC_Close();
-    if (type == LUMP_SCRIPT)
-    {                           // Lump script
-        ScriptLumpNum = W_GetNumForName(name);
-        ScriptBuffer = cache_lump_num<char *>(ScriptLumpNum, PU_STATIC);
-        ScriptSize = W_LumpLength(ScriptLumpNum);
-        M_StringCopy(ScriptName, name, sizeof(ScriptName));
-    }
-    else if (type == FILE_ZONE_SCRIPT)
-    {                           // File script - zone
-        ScriptLumpNum = -1;
-        ScriptSize = M_ReadFile(name, (byte **) & ScriptBuffer);
-        M_ExtractFileBase(name, ScriptName);
-    }
-    ScriptPtr = ScriptBuffer;
-    ScriptEndPtr = ScriptPtr + ScriptSize;
-    sc_Line = 1;
-    sc_End = false;
-    ScriptOpen = true;
-    sc_String = StringBuffer;
-    AlreadyGot = false;
+  SC_Close();
+  if (type == LUMP_SCRIPT)
+  { // Lump script
+    ScriptLumpNum = W_GetNumForName(name);
+    ScriptBuffer  = cache_lump_num<char *>(ScriptLumpNum, PU_STATIC);
+    ScriptSize    = W_LumpLength(ScriptLumpNum);
+    M_StringCopy(ScriptName, name, sizeof(ScriptName));
+  }
+  else if (type == FILE_ZONE_SCRIPT)
+  { // File script - zone
+    ScriptLumpNum = -1;
+    ScriptSize    = M_ReadFile(name, (byte **)&ScriptBuffer);
+    M_ExtractFileBase(name, ScriptName);
+  }
+  ScriptPtr    = ScriptBuffer;
+  ScriptEndPtr = ScriptPtr + ScriptSize;
+  sc_Line      = 1;
+  sc_End       = false;
+  ScriptOpen   = true;
+  sc_String    = StringBuffer;
+  AlreadyGot   = false;
 }
 
 //==========================================================================
@@ -154,20 +160,21 @@ static void OpenScript(const char *name, int type)
 //
 //==========================================================================
 
-void SC_Close()
+void
+  SC_Close()
 {
-    if (ScriptOpen)
+  if (ScriptOpen)
+  {
+    if (ScriptLumpNum >= 0)
     {
-        if (ScriptLumpNum >= 0)
-        {
-            W_ReleaseLumpNum(ScriptLumpNum);
-        }
-        else
-        {
-            Z_Free(ScriptBuffer);
-        }
-        ScriptOpen = false;
+      W_ReleaseLumpNum(ScriptLumpNum);
     }
+    else
+    {
+      Z_Free(ScriptBuffer);
+    }
+    ScriptOpen = false;
+  }
 }
 
 //==========================================================================
@@ -176,86 +183,87 @@ void SC_Close()
 //
 //==========================================================================
 
-boolean SC_GetString()
+boolean
+  SC_GetString()
 {
-    char *text;
-    boolean foundToken;
+  char   *text;
+  boolean foundToken;
 
-    CheckOpen();
-    if (AlreadyGot)
+  CheckOpen();
+  if (AlreadyGot)
+  {
+    AlreadyGot = false;
+    return true;
+  }
+  foundToken = false;
+  sc_Crossed = false;
+  if (ScriptPtr >= ScriptEndPtr)
+  {
+    sc_End = true;
+    return false;
+  }
+  while (foundToken == false)
+  {
+    while (ScriptPtr < ScriptEndPtr && *ScriptPtr <= 32)
     {
-        AlreadyGot = false;
-        return true;
+      if (*ScriptPtr++ == '\n')
+      {
+        sc_Line++;
+        sc_Crossed = true;
+      }
     }
-    foundToken = false;
-    sc_Crossed = false;
     if (ScriptPtr >= ScriptEndPtr)
     {
-        sc_End = true;
-        return false;
+      sc_End = true;
+      return false;
     }
-    while (foundToken == false)
-    {
-        while (ScriptPtr < ScriptEndPtr && *ScriptPtr <= 32)
-        {
-            if (*ScriptPtr++ == '\n')
-            {
-                sc_Line++;
-                sc_Crossed = true;
-            }
-        }
-        if (ScriptPtr >= ScriptEndPtr)
-        {
-            sc_End = true;
-            return false;
-        }
-        if (*ScriptPtr != ASCII_COMMENT)
-        {                       // Found a token
-            foundToken = true;
-        }
-        else
-        {                       // Skip comment
-            while (*ScriptPtr++ != '\n')
-            {
-                if (ScriptPtr >= ScriptEndPtr)
-                {
-                    sc_End = true;
-                    return false;
-                }
-            }
-            sc_Line++;
-            sc_Crossed = true;
-        }
-    }
-    text = sc_String;
-    if (*ScriptPtr == ASCII_QUOTE)
-    {                           // Quoted string
-        ScriptPtr++;
-        while (*ScriptPtr != ASCII_QUOTE)
-        {
-            *text++ = *ScriptPtr++;
-            if (ScriptPtr == ScriptEndPtr
-                || text == &sc_String[MAX_STRING_SIZE - 1])
-            {
-                break;
-            }
-        }
-        ScriptPtr++;
+    if (*ScriptPtr != ASCII_COMMENT)
+    { // Found a token
+      foundToken = true;
     }
     else
-    {                           // Normal string
-        while ((*ScriptPtr > 32) && (*ScriptPtr != ASCII_COMMENT))
+    { // Skip comment
+      while (*ScriptPtr++ != '\n')
+      {
+        if (ScriptPtr >= ScriptEndPtr)
         {
-            *text++ = *ScriptPtr++;
-            if (ScriptPtr == ScriptEndPtr
-                || text == &sc_String[MAX_STRING_SIZE - 1])
-            {
-                break;
-            }
+          sc_End = true;
+          return false;
         }
+      }
+      sc_Line++;
+      sc_Crossed = true;
     }
-    *text = 0;
-    return true;
+  }
+  text = sc_String;
+  if (*ScriptPtr == ASCII_QUOTE)
+  { // Quoted string
+    ScriptPtr++;
+    while (*ScriptPtr != ASCII_QUOTE)
+    {
+      *text++ = *ScriptPtr++;
+      if (ScriptPtr == ScriptEndPtr
+          || text == &sc_String[MAX_STRING_SIZE - 1])
+      {
+        break;
+      }
+    }
+    ScriptPtr++;
+  }
+  else
+  { // Normal string
+    while ((*ScriptPtr > 32) && (*ScriptPtr != ASCII_COMMENT))
+    {
+      *text++ = *ScriptPtr++;
+      if (ScriptPtr == ScriptEndPtr
+          || text == &sc_String[MAX_STRING_SIZE - 1])
+      {
+        break;
+      }
+    }
+  }
+  *text = 0;
+  return true;
 }
 
 //==========================================================================
@@ -264,12 +272,13 @@ boolean SC_GetString()
 //
 //==========================================================================
 
-void SC_MustGetString()
+void
+  SC_MustGetString()
 {
-    if (SC_GetString() == false)
-    {
-        SC_ScriptError("Missing string.");
-    }
+  if (SC_GetString() == false)
+  {
+    SC_ScriptError("Missing string.");
+  }
 }
 
 //==========================================================================
@@ -278,13 +287,14 @@ void SC_MustGetString()
 //
 //==========================================================================
 
-void SC_MustGetStringName(char *name)
+void
+  SC_MustGetStringName(char *name)
 {
-    SC_MustGetString();
-    if (SC_Compare(name) == false)
-    {
-        SC_ScriptError(NULL);
-    }
+  SC_MustGetString();
+  if (SC_Compare(name) == false)
+  {
+    SC_ScriptError(NULL);
+  }
 }
 
 //==========================================================================
@@ -293,25 +303,29 @@ void SC_MustGetStringName(char *name)
 //
 //==========================================================================
 
-boolean SC_GetNumber()
+boolean
+  SC_GetNumber()
 {
-    char *stopper;
+  char *stopper;
 
-    CheckOpen();
-    if (SC_GetString())
+  CheckOpen();
+  if (SC_GetString())
+  {
+    sc_Number = strtol(sc_String, &stopper, 0);
+    if (*stopper != 0)
     {
-        sc_Number = strtol(sc_String, &stopper, 0);
-        if (*stopper != 0)
-        {
-            I_Error("SC_GetNumber: Bad numeric constant \"%s\".\n"
-                    "Script %s, Line %d", sc_String, ScriptName, sc_Line);
-        }
-        return true;
+      I_Error("SC_GetNumber: Bad numeric constant \"%s\".\n"
+              "Script %s, Line %d",
+              sc_String,
+              ScriptName,
+              sc_Line);
     }
-    else
-    {
-        return false;
-    }
+    return true;
+  }
+  else
+  {
+    return false;
+  }
 }
 
 //==========================================================================
@@ -320,12 +334,13 @@ boolean SC_GetNumber()
 //
 //==========================================================================
 
-void SC_MustGetNumber()
+void
+  SC_MustGetNumber()
 {
-    if (SC_GetNumber() == false)
-    {
-        SC_ScriptError("Missing integer.");
-    }
+  if (SC_GetNumber() == false)
+  {
+    SC_ScriptError("Missing integer.");
+  }
 }
 
 //==========================================================================
@@ -336,9 +351,10 @@ void SC_MustGetNumber()
 //
 //==========================================================================
 
-void SC_UnGet()
+void
+  SC_UnGet()
 {
-    AlreadyGot = true;
+  AlreadyGot = true;
 }
 
 //==========================================================================
@@ -352,31 +368,31 @@ void SC_UnGet()
 /*
 boolean SC_Check()
 {
-	char *text;
+        char *text;
 
-	CheckOpen();
-	text = ScriptPtr;
-	if(text >= ScriptEndPtr)
-	{
-		return false;
-	}
-	while(*text <= 32)
-	{
-		if(*text == '\n')
-		{
-			return false;
-		}
-		text++;
-		if(text == ScriptEndPtr)
-		{
-			return false;
-		}
-	}
-	if(*text == ASCII_COMMENT)
-	{
-		return false;
-	}
-	return true;
+        CheckOpen();
+        text = ScriptPtr;
+        if(text >= ScriptEndPtr)
+        {
+                return false;
+        }
+        while(*text <= 32)
+        {
+                if(*text == '\n')
+                {
+                        return false;
+                }
+                text++;
+                if(text == ScriptEndPtr)
+                {
+                        return false;
+                }
+        }
+        if(*text == ASCII_COMMENT)
+        {
+                return false;
+        }
+        return true;
 }
 */
 
@@ -389,18 +405,19 @@ boolean SC_Check()
 //
 //==========================================================================
 
-int SC_MatchString(const char **strings)
+int
+  SC_MatchString(const char **strings)
 {
-    int i;
+  int i;
 
-    for (i = 0; *strings != NULL; i++)
+  for (i = 0; *strings != NULL; i++)
+  {
+    if (SC_Compare(*strings++))
     {
-        if (SC_Compare(*strings++))
-        {
-            return i;
-        }
+      return i;
     }
-    return -1;
+  }
+  return -1;
 }
 
 //==========================================================================
@@ -409,16 +426,17 @@ int SC_MatchString(const char **strings)
 //
 //==========================================================================
 
-int SC_MustMatchString(const char **strings)
+int
+  SC_MustMatchString(const char **strings)
 {
-    int i;
+  int i;
 
-    i = SC_MatchString(strings);
-    if (i == -1)
-    {
-        SC_ScriptError(NULL);
-    }
-    return i;
+  i = SC_MatchString(strings);
+  if (i == -1)
+  {
+    SC_ScriptError(NULL);
+  }
+  return i;
 }
 
 //==========================================================================
@@ -427,13 +445,14 @@ int SC_MustMatchString(const char **strings)
 //
 //==========================================================================
 
-boolean SC_Compare(const char *text)
+boolean
+  SC_Compare(const char *text)
 {
-    if (strcasecmp(text, sc_String) == 0)
-    {
-        return true;
-    }
-    return false;
+  if (strcasecmp(text, sc_String) == 0)
+  {
+    return true;
+  }
+  return false;
 }
 
 //==========================================================================
@@ -442,13 +461,14 @@ boolean SC_Compare(const char *text)
 //
 //==========================================================================
 
-void SC_ScriptError(const char *message)
+void
+  SC_ScriptError(const char *message)
 {
-    if (message == NULL)
-    {
-        message = "Bad syntax.";
-    }
-    I_Error("Script error, \"%s\" line %d: %s", ScriptName, sc_Line, message);
+  if (message == NULL)
+  {
+    message = "Bad syntax.";
+  }
+  I_Error("Script error, \"%s\" line %d: %s", ScriptName, sc_Line, message);
 }
 
 //==========================================================================
@@ -457,10 +477,11 @@ void SC_ScriptError(const char *message)
 //
 //==========================================================================
 
-static void CheckOpen()
+static void
+  CheckOpen()
 {
-    if (ScriptOpen == false)
-    {
-        I_Error("SC_ call before SC_Open().");
-    }
+  if (ScriptOpen == false)
+  {
+    I_Error("SC_ call before SC_Open().");
+  }
 }

@@ -38,7 +38,8 @@ using txt_fileselect_t = struct txt_fileselect_s;
  * platform.
  */
 
-int TXT_CanSelectFiles();
+int
+  TXT_CanSelectFiles();
 
 /**
  * Open a native file selector to select a file.
@@ -50,7 +51,8 @@ int TXT_CanSelectFiles();
  *                    to select directories.
  */
 
-char *TXT_SelectFile(const char *prompt, const char **extensions);
+char *
+  TXT_SelectFile(const char *prompt, const char **extensions);
 
 /**
  * Create a new txt_fileselect_t widget.
@@ -65,8 +67,8 @@ char *TXT_SelectFile(const char *prompt, const char **extensions);
  *                    to select directories.
  */
 
-txt_fileselect_t *TXT_NewFileSelector(char **variable, int size,
-                                      const char *prompt, const char **extensions);
+txt_fileselect_t                  *
+  TXT_NewFileSelector(char **variable, int size, const char *prompt, const char **extensions);
 
 /**
  * Special value to use for 'extensions' that selects a directory
@@ -76,4 +78,3 @@ txt_fileselect_t *TXT_NewFileSelector(char **variable, int size,
 extern const char *TXT_DIRECTORY[];
 
 #endif /* #ifndef TXT_FILESELECT_H */
-

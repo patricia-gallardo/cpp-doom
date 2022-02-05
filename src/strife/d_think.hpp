@@ -23,46 +23,36 @@
 #define __D_THINK__
 
 
-
-
-
 //
 // Experimental stuff.
 // To compile this as "ANSI C with classes"
 //  we will need to handle the various
 //  action functions cleanly.
 //
-using actionf_v = void (*)();
+using actionf_v  = void (*)();
 using actionf_p1 = void (*)(void *);
 using actionf_p2 = void (*)(void *, void *);
 
-typedef union
-{
-  actionf_v	acv;
-  actionf_p1	acp1;
-  actionf_p2	acp2;
+typedef union {
+  actionf_v  acv;
+  actionf_p1 acp1;
+  actionf_p2 acp2;
 
 } actionf_t;
-
-
-
 
 
 // Historically, "think_t" is yet another
 //  function pointer to a routine to handle
 //  an actor.
-using think_t = actionf_t;
+using think_t   = actionf_t;
 
 
 // Doubly linked list of actors.
-using thinker_t = struct thinker_s
-{
-    struct thinker_s*	prev;
-    struct thinker_s*	next;
-    think_t		function;
-
+using thinker_t = struct thinker_s {
+  struct thinker_s *prev;
+  struct thinker_s *next;
+  think_t           function;
 };
-
 
 
 #endif

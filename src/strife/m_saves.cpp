@@ -22,15 +22,15 @@
 #include <cstdarg>
 #include <cstring>
 
-#include "z_zone.hpp"
-#include "i_glob.hpp"
-#include "i_system.hpp"
 #include "d_player.hpp"
 #include "deh_str.hpp"
 #include "doomstat.hpp"
+#include "i_glob.hpp"
+#include "i_system.hpp"
 #include "m_misc.hpp"
 #include "m_saves.hpp"
 #include "p_dialog.hpp"
+#include "z_zone.hpp"
 
 //
 // File Paths
@@ -41,36 +41,37 @@ char *savepath;     // The actual path of the selected saveslot
 char *savepathtemp; // The path of the temporary saveslot (strfsav6.ssg)
 char *loadpath;     // Path used while loading the game
 
-char character_name[CHARACTER_NAME_LEN]; // Name of "character" for saveslot
+char  character_name[CHARACTER_NAME_LEN]; // Name of "character" for saveslot
 
 //
 // ClearTmp
 //
 // Clear the temporary save directory
 //
-void ClearTmp()
+void
+  ClearTmp()
 {
-    glob_t *glob;
+  glob_t *glob;
 
-    if(savepathtemp == NULL)
-        I_Error("you fucked up savedir man!");
+  if (savepathtemp == NULL)
+    I_Error("you fucked up savedir man!");
 
-    glob = I_StartGlob(savepathtemp, "*", 0);
-    if (glob == NULL)
-        I_Error("ClearTmp: Couldn't open dir %s", savepathtemp);
+  glob = I_StartGlob(savepathtemp, "*", 0);
+  if (glob == NULL)
+    I_Error("ClearTmp: Couldn't open dir %s", savepathtemp);
 
-    for (;;)
+  for (;;)
+  {
+    const char *path = I_NextGlob(glob);
+
+    if (path == NULL)
     {
-        const char *path = I_NextGlob(glob);
-
-        if (path == NULL)
-        {
-            break;
-        }
-        remove(path);
+      break;
     }
+    remove(path);
+  }
 
-    I_EndGlob(glob);
+  I_EndGlob(glob);
 }
 
 //
@@ -78,30 +79,31 @@ void ClearTmp()
 //
 // Clear a single save slot folder
 //
-void ClearSlot()
+void
+  ClearSlot()
 {
-    glob_t *glob;
+  glob_t *glob;
 
-    if(savepath == NULL)
-        I_Error("userdir is fucked up man!");
+  if (savepath == NULL)
+    I_Error("userdir is fucked up man!");
 
-    glob = I_StartGlob(savepath, "*", 0);
-    if (glob == NULL)
-        I_Error("ClearSlot: Couldn't open dir %s", savepath);
+  glob = I_StartGlob(savepath, "*", 0);
+  if (glob == NULL)
+    I_Error("ClearSlot: Couldn't open dir %s", savepath);
 
-    for (;;)
+  for (;;)
+  {
+    const char *filepath = I_NextGlob(glob);
+
+    if (filepath == NULL)
     {
-        const char *filepath = I_NextGlob(glob);
-
-        if (filepath == NULL)
-        {
-            break;
-        }
-
-        remove(filepath);
+      break;
     }
 
-    I_EndGlob(glob);
+    remove(filepath);
+  }
+
+  I_EndGlob(glob);
 }
 
 //
@@ -109,38 +111,39 @@ void ClearSlot()
 //
 // Copying files from savepathtemp to savepath
 //
-void FromCurr()
+void
+  FromCurr()
 {
-    glob_t *glob;
+  glob_t *glob;
 
-    glob = I_StartGlob(savepathtemp, "*", 0);
+  glob = I_StartGlob(savepathtemp, "*", 0);
 
-    if (glob == NULL)
-        I_Error("FromCurr: Couldn't open dir %s", savepathtemp);
+  if (glob == NULL)
+    I_Error("FromCurr: Couldn't open dir %s", savepathtemp);
 
-    for (;;)
+  for (;;)
+  {
+    byte       *filebuffer;
+    int         filelen;
+    const char *srcfilename;
+    char       *dstfilename;
+
+    srcfilename = I_NextGlob(glob);
+    if (srcfilename == NULL)
     {
-        byte *filebuffer;
-        int filelen;
-        const char *srcfilename;
-        char *dstfilename;
-
-        srcfilename = I_NextGlob(glob);
-        if (srcfilename == NULL)
-        {
-            break;
-        }
-
-        dstfilename = M_SafeFilePath(savepath, M_BaseName(srcfilename));
-
-        filelen = M_ReadFile(srcfilename, &filebuffer);
-        M_WriteFile(dstfilename, filebuffer, filelen);
-
-        Z_Free(filebuffer);
-        Z_Free(dstfilename);
+      break;
     }
 
-    I_EndGlob(glob);
+    dstfilename = M_SafeFilePath(savepath, M_BaseName(srcfilename));
+
+    filelen     = M_ReadFile(srcfilename, &filebuffer);
+    M_WriteFile(dstfilename, filebuffer, filelen);
+
+    Z_Free(filebuffer);
+    Z_Free(dstfilename);
+  }
+
+  I_EndGlob(glob);
 }
 
 //
@@ -148,41 +151,42 @@ void FromCurr()
 //
 // Copying files from savepath to savepathtemp
 //
-void ToCurr()
+void
+  ToCurr()
 {
-    glob_t *glob;
+  glob_t *glob;
 
-    ClearTmp();
+  ClearTmp();
 
-    // BUG: Rogue copypasta'd this error message, which is why we don't know
-    // the real original name of this function.
-    glob = I_StartGlob(savepath, "*", 0);
-    if (glob == NULL)
-        I_Error("ClearSlot: Couldn't open dir %s", savepath);
+  // BUG: Rogue copypasta'd this error message, which is why we don't know
+  // the real original name of this function.
+  glob = I_StartGlob(savepath, "*", 0);
+  if (glob == NULL)
+    I_Error("ClearSlot: Couldn't open dir %s", savepath);
 
-    for (;;)
+  for (;;)
+  {
+    byte       *filebuffer;
+    int         filelen;
+    const char *srcfilename;
+    char       *dstfilename;
+
+    srcfilename = I_NextGlob(glob);
+    if (srcfilename == NULL)
     {
-        byte *filebuffer;
-        int filelen;
-        const char *srcfilename;
-        char *dstfilename;
-
-        srcfilename = I_NextGlob(glob);
-        if (srcfilename == NULL)
-        {
-            break;
-        }
-
-        dstfilename = M_SafeFilePath(savepathtemp, M_BaseName(srcfilename));
-
-        filelen = M_ReadFile(srcfilename, &filebuffer);
-        M_WriteFile(dstfilename, filebuffer, filelen);
-
-        Z_Free(filebuffer);
-        Z_Free(dstfilename);
+      break;
     }
 
-    I_EndGlob(glob);
+    dstfilename = M_SafeFilePath(savepathtemp, M_BaseName(srcfilename));
+
+    filelen     = M_ReadFile(srcfilename, &filebuffer);
+    M_WriteFile(dstfilename, filebuffer, filelen);
+
+    Z_Free(filebuffer);
+    Z_Free(dstfilename);
+  }
+
+  I_EndGlob(glob);
 }
 
 //
@@ -190,28 +194,29 @@ void ToCurr()
 //
 // Moves a map to the "HERE" save.
 //
-void M_SaveMoveMapToHere()
+void
+  M_SaveMoveMapToHere()
 {
-    char *mapsave  = NULL;
-    char *heresave = NULL;
-    char tmpnum[33];
+  char *mapsave  = NULL;
+  char *heresave = NULL;
+  char  tmpnum[33];
 
-    // haleyjd: no itoa available...
-    M_snprintf(tmpnum, sizeof(tmpnum), "%d", gamemap);
+  // haleyjd: no itoa available...
+  M_snprintf(tmpnum, sizeof(tmpnum), "%d", gamemap);
 
-    // haleyjd: use M_SafeFilePath, not sprintf
-    mapsave  = M_SafeFilePath(savepath, tmpnum);
-    heresave = M_SafeFilePath(savepath, "here");
+  // haleyjd: use M_SafeFilePath, not sprintf
+  mapsave  = M_SafeFilePath(savepath, tmpnum);
+  heresave = M_SafeFilePath(savepath, "here");
 
-    // haleyjd: use M_FileExists, not access
-    if(M_FileExists(mapsave))
-    {
-        remove(heresave);
-        rename(mapsave, heresave);
-    }
+  // haleyjd: use M_FileExists, not access
+  if (M_FileExists(mapsave))
+  {
+    remove(heresave);
+    rename(mapsave, heresave);
+  }
 
-    Z_Free(mapsave);
-    Z_Free(heresave);
+  Z_Free(mapsave);
+  Z_Free(heresave);
 }
 
 //
@@ -219,26 +224,27 @@ void M_SaveMoveMapToHere()
 //
 // Moves the "HERE" save to a map.
 //
-void M_SaveMoveHereToMap()
+void
+  M_SaveMoveHereToMap()
 {
-    char *mapsave  = NULL;
-    char *heresave = NULL;
-    char tmpnum[33];
+  char *mapsave  = NULL;
+  char *heresave = NULL;
+  char  tmpnum[33];
 
-    // haleyjd: no itoa available...
-    M_snprintf(tmpnum, sizeof(tmpnum), "%d", gamemap);
+  // haleyjd: no itoa available...
+  M_snprintf(tmpnum, sizeof(tmpnum), "%d", gamemap);
 
-    mapsave  = M_SafeFilePath(savepathtemp, tmpnum);
-    heresave = M_SafeFilePath(savepathtemp, "here");
+  mapsave  = M_SafeFilePath(savepathtemp, tmpnum);
+  heresave = M_SafeFilePath(savepathtemp, "here");
 
-    if(M_FileExists(heresave))
-    {
-        remove(mapsave);
-        rename(heresave, mapsave);
-    }
+  if (M_FileExists(heresave))
+  {
+    remove(mapsave);
+    rename(heresave, mapsave);
+  }
 
-    Z_Free(mapsave);
-    Z_Free(heresave);
+  Z_Free(mapsave);
+  Z_Free(heresave);
 }
 
 //
@@ -246,17 +252,18 @@ void M_SaveMoveHereToMap()
 //
 // Writes the mission objective into the MIS_OBJ file.
 //
-boolean M_SaveMisObj(const char *path)
+boolean
+  M_SaveMisObj(const char *path)
 {
-    boolean result;
-    char *destpath = NULL;
+  boolean result;
+  char   *destpath = NULL;
 
-    // haleyjd 20110210: use M_SafeFilePath, not sprintf
-    destpath = M_SafeFilePath(path, "mis_obj");
-    result   = M_WriteFile(destpath, mission_objective, OBJECTIVE_LEN);
+  // haleyjd 20110210: use M_SafeFilePath, not sprintf
+  destpath         = M_SafeFilePath(path, "mis_obj");
+  result           = M_WriteFile(destpath, mission_objective, OBJECTIVE_LEN);
 
-    Z_Free(destpath);
-    return result;
+  Z_Free(destpath);
+  return result;
 }
 
 //
@@ -264,25 +271,26 @@ boolean M_SaveMisObj(const char *path)
 //
 // Reads the mission objective from the MIS_OBJ file.
 //
-void M_ReadMisObj()
+void
+  M_ReadMisObj()
 {
-    FILE *f = NULL;
-    char *srcpath = NULL;
+  FILE *f       = NULL;
+  char *srcpath = NULL;
 
-    // haleyjd: use M_SafeFilePath, not sprintf
-    srcpath = M_SafeFilePath(savepathtemp, "mis_obj");
+  // haleyjd: use M_SafeFilePath, not sprintf
+  srcpath       = M_SafeFilePath(savepathtemp, "mis_obj");
 
-    if((f = fopen(srcpath, "rb")))
+  if ((f = fopen(srcpath, "rb")))
+  {
+    int retval = fread(mission_objective, 1, OBJECTIVE_LEN, f);
+    fclose(f);
+    if (retval != OBJECTIVE_LEN)
     {
-        int retval = fread(mission_objective, 1, OBJECTIVE_LEN, f);
-        fclose(f);
-        if (retval != OBJECTIVE_LEN)
-        {
-            I_Error("M_ReadMisObj: error while reading mission objective");
-        }
+      I_Error("M_ReadMisObj: error while reading mission objective");
     }
+  }
 
-    Z_Free(srcpath);
+  Z_Free(srcpath);
 }
 
 //=============================================================================
@@ -303,9 +311,10 @@ void M_ReadMisObj()
 // haleyjd 20110210 - original routine
 // Because Choco doesn't have Z_Calloc O_o
 //
-void *M_Calloc(size_t n1, size_t n2)
+void *
+  M_Calloc(size_t n1, size_t n2)
 {
-    return (n1 *= n2) ? memset(Z_Malloc(n1, PU_STATIC, NULL), 0, n1) : NULL;
+  return (n1 *= n2) ? memset(Z_Malloc(n1, PU_STATIC, NULL), 0, n1) : NULL;
 }
 
 //
@@ -325,39 +334,40 @@ void *M_Calloc(size_t n1, size_t n2)
 // only difference from use in EE is that the pointer returned in *str must
 // be manually freed.
 //
-int M_StringAlloc(char **str, int numstrs, size_t extra, const char *str1, ...)
+int
+  M_StringAlloc(char **str, int numstrs, size_t extra, const char *str1, ...)
 {
-    va_list args;
-    size_t len = extra;
+  va_list args;
+  size_t  len = extra;
 
-    if(numstrs < 1)
-        I_Error("M_StringAlloc: invalid input\n");
+  if (numstrs < 1)
+    I_Error("M_StringAlloc: invalid input\n");
 
-    len += strlen(str1);
+  len += strlen(str1);
 
-    --numstrs;
+  --numstrs;
 
-    if(numstrs != 0)
-    {   
-        va_start(args, str1);
+  if (numstrs != 0)
+  {
+    va_start(args, str1);
 
-        while(numstrs != 0)
-        {
-            const char *argstr = va_arg(args, const char *);
+    while (numstrs != 0)
+    {
+      const char *argstr = va_arg(args, const char *);
 
-            len += strlen(argstr);
+      len += strlen(argstr);
 
-            --numstrs;
-        }
-
-        va_end(args);
+      --numstrs;
     }
 
-    ++len;
+    va_end(args);
+  }
 
-    *str = (char *)(M_Calloc(1, len));
+  ++len;
 
-    return len;
+  *str = (char *)(M_Calloc(1, len));
+
+  return len;
 }
 
 //
@@ -368,30 +378,31 @@ int M_StringAlloc(char **str, int numstrs, size_t extra, const char *str1, ...)
 //
 // killough 11/98: rewritten
 //
-// [STRIFE] - haleyjd 20110210: Borrowed from Eternity and adapted to respect 
+// [STRIFE] - haleyjd 20110210: Borrowed from Eternity and adapted to respect
 // the DIR_SEPARATOR define used by Choco Doom. This routine originated in
 // BOOM.
 //
-void M_NormalizeSlashes(char *str)
+void
+  M_NormalizeSlashes(char *str)
 {
-    char *p;
-   
-    // Convert all slashes/backslashes to DIR_SEPARATOR
-    for(p = str; *p; p++)
-    {
-        if((*p == '/' || *p == '\\') && *p != DIR_SEPARATOR)
-            *p = DIR_SEPARATOR;
-    }
+  char *p;
 
-    // Remove trailing slashes
-    while(p > str && *--p == DIR_SEPARATOR)
-        *p = 0;
+  // Convert all slashes/backslashes to DIR_SEPARATOR
+  for (p = str; *p; p++)
+  {
+    if ((*p == '/' || *p == '\\') && *p != DIR_SEPARATOR)
+      *p = DIR_SEPARATOR;
+  }
 
-    // Collapse multiple slashes
-    for(p = str; (*str++ = *p); )
-        if(*p++ == DIR_SEPARATOR)
-            while(*p == DIR_SEPARATOR)
-                p++;
+  // Remove trailing slashes
+  while (p > str && *--p == DIR_SEPARATOR)
+    *p = 0;
+
+  // Collapse multiple slashes
+  for (p = str; (*str++ = *p);)
+    if (*p++ == DIR_SEPARATOR)
+      while (*p == DIR_SEPARATOR)
+        p++;
 }
 
 //
@@ -402,24 +413,25 @@ void M_NormalizeSlashes(char *str)
 // with another path component or file name. The returned string is Z_Malloc'd
 // and should be freed when it has exhausted its usefulness.
 //
-char *M_SafeFilePath(const char *basepath, const char *newcomponent)
+char *
+  M_SafeFilePath(const char *basepath, const char *newcomponent)
 {
-    int   newstrlen = 0;
-    char *newstr = NULL;
+  int   newstrlen = 0;
+  char *newstr    = NULL;
 
-    if (!strcmp(basepath, ""))
-    {
-        basepath = ".";
-    }
+  if (!strcmp(basepath, ""))
+  {
+    basepath = ".";
+  }
 
-    // Always throw in a slash. M_NormalizeSlashes will remove it in the case
-    // that either basepath or newcomponent includes a redundant slash at the
-    // end or beginning respectively.
-    newstrlen = M_StringAlloc(&newstr, 3, 1, basepath, "/", newcomponent);
-    M_snprintf(newstr, newstrlen, "%s/%s", basepath, newcomponent);
-    M_NormalizeSlashes(newstr);
+  // Always throw in a slash. M_NormalizeSlashes will remove it in the case
+  // that either basepath or newcomponent includes a redundant slash at the
+  // end or beginning respectively.
+  newstrlen = M_StringAlloc(&newstr, 3, 1, basepath, "/", newcomponent);
+  M_snprintf(newstr, newstrlen, "%s/%s", basepath, newcomponent);
+  M_NormalizeSlashes(newstr);
 
-    return newstr;
+  return newstr;
 }
 
 //
@@ -430,21 +442,22 @@ char *M_SafeFilePath(const char *basepath, const char *newcomponent)
 // that's no good for Choco purposes, and I agree, so this routine will create
 // the full set of folders under the configured savegamedir.
 //
-void M_CreateSaveDirs(const char *savedir)
+void
+  M_CreateSaveDirs(const char *savedir)
 {
-    int i;
+  int i;
 
-    for(i = 0; i < 7; i++)
-    {
-        char *compositedir;
+  for (i = 0; i < 7; i++)
+  {
+    char *compositedir;
 
-        // compose the full path by concatenating with savedir
-        compositedir = M_SafeFilePath(savedir, M_MakeStrifeSaveDir(i, ""));
+    // compose the full path by concatenating with savedir
+    compositedir = M_SafeFilePath(savedir, M_MakeStrifeSaveDir(i, ""));
 
-        M_MakeDirectory(compositedir);
+    M_MakeDirectory(compositedir);
 
-        Z_Free(compositedir);
-    }
+    Z_Free(compositedir);
+  }
 }
 
 //
@@ -452,64 +465,63 @@ void M_CreateSaveDirs(const char *savedir)
 //
 // haleyjd 20110211: Convenience routine
 //
-char *M_MakeStrifeSaveDir(int slotnum, const char *extra)
+char *
+  M_MakeStrifeSaveDir(int slotnum, const char *extra)
 {
-    static char tmpbuffer[32];
+  static char tmpbuffer[32];
 
-    M_snprintf(tmpbuffer, sizeof(tmpbuffer),
-               "strfsav%d.ssg%s", slotnum, extra);
+  M_snprintf(tmpbuffer, sizeof(tmpbuffer), "strfsav%d.ssg%s", slotnum, extra);
 
-    return tmpbuffer;
+  return tmpbuffer;
 }
 
-// 
+//
 // M_GetFilePath
 //
 // haleyjd: STRIFE-FIXME: Temporary?
 // Code borrowed from Eternity, and modified to return separator char
 //
-char M_GetFilePath(const char *fn, char *dest, size_t len)
+char
+  M_GetFilePath(const char *fn, char *dest, size_t len)
 {
-    boolean found_slash = false;
-    char *p;
-    char sepchar = '\0';
+  boolean found_slash = false;
+  char   *p;
+  char    sepchar = '\0';
 
-    memset(dest, 0, len);
+  memset(dest, 0, len);
 
-    p = dest + len - 1;
+  p = dest + len - 1;
 
-    M_StringCopy(dest, fn, len);
+  M_StringCopy(dest, fn, len);
 
-    while(p >= dest)
+  while (p >= dest)
+  {
+    if (*p == '/' || *p == '\\')
     {
-        if(*p == '/' || *p == '\\')
-        {
-            sepchar = *p;
-            found_slash = true; // mark that the path ended with a slash
-            *p = '\0';
-            break;
-        }
-        *p = '\0';
-        p--;
+      sepchar     = *p;
+      found_slash = true; // mark that the path ended with a slash
+      *p          = '\0';
+      break;
     }
+    *p = '\0';
+    p--;
+  }
 
-    // haleyjd: in the case that no slash was ever found, yet the
-    // path string is empty, we are dealing with a file local to the
-    // working directory. The proper path to return for such a string is
-    // not "", but ".", since the format strings add a slash now. When
-    // the string is empty but a slash WAS found, we really do want to
-    // return the empty string, since the path is relative to the root.
-    if(!found_slash && *dest == '\0')
-        *dest = '.';
+  // haleyjd: in the case that no slash was ever found, yet the
+  // path string is empty, we are dealing with a file local to the
+  // working directory. The proper path to return for such a string is
+  // not "", but ".", since the format strings add a slash now. When
+  // the string is empty but a slash WAS found, we really do want to
+  // return the empty string, since the path is relative to the root.
+  if (!found_slash && *dest == '\0')
+    *dest = '.';
 
-    // if a separator is not found, default to forward, because Windows 
-    // supports that too.
-    if(sepchar == '\0') 
-        sepchar = '/';
+  // if a separator is not found, default to forward, because Windows
+  // supports that too.
+  if (sepchar == '\0')
+    sepchar = '/';
 
-    return sepchar;
+  return sepchar;
 }
 
 // EOF
-
-

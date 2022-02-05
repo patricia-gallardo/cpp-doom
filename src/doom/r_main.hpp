@@ -27,24 +27,24 @@
 //
 // POV related.
 //
-extern fixed_t viewcos;
-extern fixed_t viewsin;
+extern fixed_t         viewcos;
+extern fixed_t         viewsin;
 
-extern int viewwindowx;
-extern int viewwindowy;
+extern int             viewwindowx;
+extern int             viewwindowy;
 
 
-extern int centerx;
-extern int centery;
+extern int             centerx;
+extern int             centery;
 
-extern fixed_t centerxfrac;
-extern fixed_t centeryfrac;
-extern fixed_t projection;
+extern fixed_t         centerxfrac;
+extern fixed_t         centeryfrac;
+extern fixed_t         projection;
 
-extern int validcount;
+extern int             validcount;
 
-extern int linecount;
-extern int loopcount;
+extern int             linecount;
+extern int             loopcount;
 
 
 //
@@ -56,20 +56,20 @@ extern int loopcount;
 // Lighting constants.
 // Now why not 32 levels here?
 // [crispy] parameterized for smooth diminishing lighting
-extern int LIGHTLEVELS;
-extern int LIGHTSEGSHIFT;
-extern int LIGHTBRIGHT;
-extern int MAXLIGHTSCALE;
-extern int LIGHTSCALESHIFT;
-extern int MAXLIGHTZ;
-extern int LIGHTZSHIFT;
+extern int             LIGHTLEVELS;
+extern int             LIGHTSEGSHIFT;
+extern int             LIGHTBRIGHT;
+extern int             MAXLIGHTSCALE;
+extern int             LIGHTSCALESHIFT;
+extern int             MAXLIGHTZ;
+extern int             LIGHTZSHIFT;
 
 extern lighttable_t ***scalelight;
-extern lighttable_t ** scalelightfixed;
+extern lighttable_t  **scalelightfixed;
 extern lighttable_t ***zlight;
 
-extern int           extralight;
-extern lighttable_t *fixedcolormap;
+extern int             extralight;
+extern lighttable_t   *fixedcolormap;
 
 
 // Number of diminishing brightness levels.
@@ -81,9 +81,9 @@ extern lighttable_t *fixedcolormap;
 extern fixed_t fractionaltic;
 
 // Blocky/low detail mode.
-//B remove this?
+// B remove this?
 //  0 = high, 1 = low
-extern int detailshift;
+extern int     detailshift;
 
 
 //
@@ -101,58 +101,66 @@ extern void (*spanfunc)();
 
 //
 // Utility functions.
-int R_PointOnSide(fixed_t x,
-    fixed_t               y,
-    node_t *              node);
+int
+  R_PointOnSide(fixed_t x,
+                fixed_t y,
+                node_t *node);
 
-int R_PointOnSegSide(fixed_t x,
-    fixed_t                  y,
-    seg_t *                  line);
-
-angle_t
-    R_PointToAngle(fixed_t x,
-        fixed_t            y);
+int
+  R_PointOnSegSide(fixed_t x,
+                   fixed_t y,
+                   seg_t  *line);
 
 angle_t
-    R_PointToAngleCrispy(fixed_t x,
-        fixed_t                  y);
+  R_PointToAngle(fixed_t x,
+                 fixed_t y);
 
 angle_t
-    R_PointToAngle2(fixed_t x1,
-        fixed_t             y1,
-        fixed_t             x2,
-        fixed_t             y2);
+  R_PointToAngleCrispy(fixed_t x,
+                       fixed_t y);
+
+angle_t
+  R_PointToAngle2(fixed_t x1,
+                  fixed_t y1,
+                  fixed_t x2,
+                  fixed_t y2);
 
 fixed_t
-    R_PointToDist(fixed_t x,
-        fixed_t           y);
+  R_PointToDist(fixed_t x,
+                fixed_t y);
 
 
-fixed_t R_ScaleFromGlobalAngle(angle_t visangle);
+fixed_t
+  R_ScaleFromGlobalAngle(angle_t visangle);
 
 subsector_t *
-    R_PointInSubsector(fixed_t x,
-        fixed_t                y);
+  R_PointInSubsector(fixed_t x,
+                     fixed_t y);
 
-void R_AddPointToBox(int x,
-    int                  y,
-    fixed_t *            box);
+void
+  R_AddPointToBox(int      x,
+                  int      y,
+                  fixed_t *box);
 
 
 // [AM] Interpolate between two angles.
-angle_t R_InterpolateAngle(angle_t oangle, angle_t nangle, fixed_t scale);
+angle_t
+  R_InterpolateAngle(angle_t oangle, angle_t nangle, fixed_t scale);
 
 //
 // REFRESH - the actual rendering functions.
 //
 
 // Called by G_Drawer.
-void R_RenderPlayerView(player_t *player);
+void
+  R_RenderPlayerView(player_t *player);
 
 // Called by startup code.
-void R_Init();
+void
+  R_Init();
 
 // Called by M_Responder.
-void R_SetViewSize(int blocks, int detail);
+void
+  R_SetViewSize(int blocks, int detail);
 
 #endif

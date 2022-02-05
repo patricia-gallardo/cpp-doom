@@ -37,21 +37,21 @@
 
 enum class cr_t
 {
-    CR_NONE,
-    CR_DARK,
-    CR_GRAY,
-    CR_GREEN,
-    CR_GOLD,
-    CR_RED,
-    CR_BLUE,
-    CR_RED2BLUE,
-    CR_RED2GREEN,
-    CRMAX
+  CR_NONE,
+  CR_DARK,
+  CR_GRAY,
+  CR_GREEN,
+  CR_GOLD,
+  CR_RED,
+  CR_BLUE,
+  CR_RED2BLUE,
+  CR_RED2GREEN,
+  CRMAX
 };
 
 #define CR_GREY CR_GRAY
 
-extern byte *cr_colors[static_cast<int>(cr_t::CRMAX)];
+extern byte  *cr_colors[static_cast<int>(cr_t::CRMAX)];
 extern char **crstr;
 
 #define cr_esc '~'
@@ -60,9 +60,12 @@ extern char **crstr;
 extern byte *tranmap;
 #else
 extern const pixel_t (*blendfunc)(const pixel_t fg, const pixel_t bg);
-extern const pixel_t I_BlendAdd(const pixel_t bg, const pixel_t fg);
-extern const pixel_t I_BlendDark(const pixel_t bg, const int d);
-extern const pixel_t I_BlendOver(const pixel_t bg, const pixel_t fg);
+extern const pixel_t
+  I_BlendAdd(const pixel_t bg, const pixel_t fg);
+extern const pixel_t
+  I_BlendDark(const pixel_t bg, const int d);
+extern const pixel_t
+  I_BlendOver(const pixel_t bg, const pixel_t fg);
 #endif
 
 #endif // __V_TRANS__

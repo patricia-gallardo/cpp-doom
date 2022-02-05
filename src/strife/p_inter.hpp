@@ -20,13 +20,22 @@
 #ifndef __P_INTER__
 #define __P_INTER__
 
+#include "d_player.hpp"
+#include "doomtype.hpp"
 // haleyjd [STRIFE]: Multiple externals added
-boolean P_GiveCard(player_t* player, card_t card);
-boolean P_GiveBody(player_t* player, int num);
-boolean P_GiveArmor(player_t* player, int armortype);
-boolean P_GivePower(player_t* player, powertype_t power);
-boolean P_GiveAmmo(player_t* player, ammotype_t ammo, int num);
-boolean P_GiveWeapon(player_t* player, weapontype_t weapon, boolean dropped);
-void    P_KillMobj(mobj_t* source, mobj_t* target);
+boolean
+  P_GiveCard(player_t *player, card_t card);
+boolean
+  P_GiveBody(player_t *player, int num);
+boolean
+  P_GiveArmor(player_t *player, int armortype);
+boolean
+  P_GivePower(player_t *player, powertype_t power);
+boolean
+  P_GiveAmmo(player_t *player, ammotype_t ammo, int num);
+boolean
+  P_GiveWeapon(player_t *player, weapontype_t weapon, boolean dropped);
+void
+  P_KillMobj(mobj_t *source, mobj_t *target);
 
 #endif

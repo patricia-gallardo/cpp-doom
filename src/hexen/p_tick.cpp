@@ -30,15 +30,16 @@
 
 // PRIVATE FUNCTION PROTOTYPES ---------------------------------------------
 
-static void RunThinkers();
+static void
+          RunThinkers();
 
 // EXTERNAL DATA DECLARATIONS ----------------------------------------------
 
 // PUBLIC DATA DEFINITIONS -------------------------------------------------
 
-int leveltime;
-int TimerGame;
-thinker_t thinkercap;           // The head and tail of the thinker list
+int       leveltime;
+int       TimerGame;
+thinker_t thinkercap; // The head and tail of the thinker list
 
 // PRIVATE DATA DEFINITIONS ------------------------------------------------
 
@@ -50,32 +51,33 @@ thinker_t thinkercap;           // The head and tail of the thinker list
 //
 //==========================================================================
 
-void P_Ticker()
+void
+  P_Ticker()
 {
-    int i;
+  int i;
 
-    if (paused)
+  if (paused)
+  {
+    return;
+  }
+  for (i = 0; i < maxplayers; i++)
+  {
+    if (playeringame[i])
     {
-        return;
+      P_PlayerThink(&players[i]);
     }
-    for (i = 0; i < maxplayers; i++)
+  }
+  if (TimerGame)
+  {
+    if (!--TimerGame)
     {
-        if (playeringame[i])
-        {
-            P_PlayerThink(&players[i]);
-        }
+      G_Completed(P_TranslateMap(P_GetMapNextMap(gamemap)), 0);
     }
-    if (TimerGame)
-    {
-        if (!--TimerGame)
-        {
-            G_Completed(P_TranslateMap(P_GetMapNextMap(gamemap)), 0);
-        }
-    }
-    RunThinkers();
-    P_UpdateSpecials();
-    P_AnimateSurfaces();
-    leveltime++;
+  }
+  RunThinkers();
+  P_UpdateSpecials();
+  P_AnimateSurfaces();
+  leveltime++;
 }
 
 //==========================================================================
@@ -84,31 +86,33 @@ void P_Ticker()
 //
 //==========================================================================
 
-static void RunThinkers()
+static void
+  RunThinkers()
 {
-    thinker_t *currentthinker, *nextthinker;
+  thinker_t *currentthinker, *nextthinker;
 
-    currentthinker = thinkercap.next;
-    while (currentthinker != &thinkercap)
-    {
-        if (action_hook_is_empty(currentthinker->function))
-        {                       // Time to remove it
-            nextthinker = currentthinker->next;
-            currentthinker->next->prev = currentthinker->prev;
-            currentthinker->prev->next = currentthinker->next;
-            Z_Free(currentthinker);
-        }
-        else
-        {
-            if (currentthinker->function.index() == thinker_param_action_hook) {
-                auto callback = std::get<thinker_param_action>(currentthinker->function);
-                callback(currentthinker);
-            }
-            nextthinker = currentthinker->next;
-        }
-
-        currentthinker = nextthinker;
+  currentthinker = thinkercap.next;
+  while (currentthinker != &thinkercap)
+  {
+    if (action_hook_is_empty(currentthinker->function))
+    { // Time to remove it
+      nextthinker                = currentthinker->next;
+      currentthinker->next->prev = currentthinker->prev;
+      currentthinker->prev->next = currentthinker->next;
+      Z_Free(currentthinker);
     }
+    else
+    {
+      if (currentthinker->function.index() == thinker_param_action_hook)
+      {
+        auto callback = std::get<thinker_param_action>(currentthinker->function);
+        callback(currentthinker);
+      }
+      nextthinker = currentthinker->next;
+    }
+
+    currentthinker = nextthinker;
+  }
 }
 
 //==========================================================================
@@ -117,9 +121,10 @@ static void RunThinkers()
 //
 //==========================================================================
 
-void P_InitThinkers()
+void
+  P_InitThinkers()
 {
-    thinkercap.prev = thinkercap.next = &thinkercap;
+  thinkercap.prev = thinkercap.next = &thinkercap;
 }
 
 //==========================================================================
@@ -130,12 +135,13 @@ void P_InitThinkers()
 //
 //==========================================================================
 
-void P_AddThinker(thinker_t * thinker)
+void
+  P_AddThinker(thinker_t *thinker)
 {
-    thinkercap.prev->next = thinker;
-    thinker->next = &thinkercap;
-    thinker->prev = thinkercap.prev;
-    thinkercap.prev = thinker;
+  thinkercap.prev->next = thinker;
+  thinker->next         = &thinkercap;
+  thinker->prev         = thinkercap.prev;
+  thinkercap.prev       = thinker;
 }
 
 //==========================================================================
@@ -147,7 +153,8 @@ void P_AddThinker(thinker_t * thinker)
 //
 //==========================================================================
 
-void P_RemoveThinker(thinker_t * thinker)
+void
+  P_RemoveThinker(thinker_t *thinker)
 {
-    thinker->function = null_hook();
+  thinker->function = null_hook();
 }

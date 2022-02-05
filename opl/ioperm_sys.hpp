@@ -20,9 +20,11 @@
 #ifndef IOPERM_SYS_H
 #define IOPERM_SYS_H
 
-int IOperm_EnablePortRange(unsigned int from, unsigned int num, int turn_on);
-int IOperm_InstallDriver();
-int IOperm_UninstallDriver();
+int
+  IOperm_EnablePortRange(unsigned int from, unsigned int num, int turn_on);
+int
+  IOperm_InstallDriver();
+int
+  IOperm_UninstallDriver();
 
 #endif /* #ifndef IOPERM_SYS_H */
-

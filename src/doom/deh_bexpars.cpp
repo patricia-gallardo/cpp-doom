@@ -25,54 +25,56 @@
 int bex_pars[6][10] = { { 0 } };
 int bex_cpars[32]   = { 0 };
 
-static void *DEH_BEXParsStart(deh_context_t *context, char *line)
+static void *
+  DEH_BEXParsStart(deh_context_t *context, char *line)
 {
-    char s[7];
+  char s[7];
 
-    if (sscanf(line, "%6s", s) == 0 || strcmp("[PARS]", s))
-    {
-        DEH_Warning(context, "Parse error on section start");
-    }
+  if (sscanf(line, "%6s", s) == 0 || strcmp("[PARS]", s))
+  {
+    DEH_Warning(context, "Parse error on section start");
+  }
 
-    return NULL;
+  return NULL;
 }
 
-static void DEH_BEXParsParseLine(deh_context_t *context, char *line, void *tag)
+static void
+  DEH_BEXParsParseLine(deh_context_t *context, char *line, void *tag)
 {
-    int episode, map, partime;
+  int episode, map, partime;
 
-    if (sscanf(line, "par %32d %32d %32d", &episode, &map, &partime) == 3)
-    {
-        if (episode >= 1 && episode <= 5 && map >= 1 && map <= 9)
-            bex_pars[episode][map] = partime;
-        else
-        {
-            DEH_Warning(context, "Invalid episode or map: E%dM%d", episode, map);
-            return;
-        }
-    }
-    else if (sscanf(line, "par %32d %32d", &map, &partime) == 2)
-    {
-        if (map >= 1 && map <= 32)
-            bex_cpars[map - 1] = partime;
-        else
-        {
-            DEH_Warning(context, "Invalid map: MAP%02d", map);
-            return;
-        }
-    }
+  if (sscanf(line, "par %32d %32d %32d", &episode, &map, &partime) == 3)
+  {
+    if (episode >= 1 && episode <= 5 && map >= 1 && map <= 9)
+      bex_pars[episode][map] = partime;
     else
     {
-        DEH_Warning(context, "Failed to parse assignment");
-        return;
+      DEH_Warning(context, "Invalid episode or map: E%dM%d", episode, map);
+      return;
     }
+  }
+  else if (sscanf(line, "par %32d %32d", &map, &partime) == 2)
+  {
+    if (map >= 1 && map <= 32)
+      bex_cpars[map - 1] = partime;
+    else
+    {
+      DEH_Warning(context, "Invalid map: MAP%02d", map);
+      return;
+    }
+  }
+  else
+  {
+    DEH_Warning(context, "Failed to parse assignment");
+    return;
+  }
 }
 
 deh_section_t deh_section_bexpars = {
-    "[PARS]",
-    NULL,
-    DEH_BEXParsStart,
-    DEH_BEXParsParseLine,
-    NULL,
-    NULL,
+  "[PARS]",
+  NULL,
+  DEH_BEXParsStart,
+  DEH_BEXParsParseLine,
+  NULL,
+  NULL,
 };

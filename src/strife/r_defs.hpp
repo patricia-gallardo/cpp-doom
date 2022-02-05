@@ -39,19 +39,14 @@
 #include "v_patch.hpp"
 
 
-
-
 // Silhouette, needed for clipping Segs (mainly)
 // and sprites representing things.
-#define SIL_NONE		0
-#define SIL_BOTTOM		1
-#define SIL_TOP			2
-#define SIL_BOTH		3
+#define SIL_NONE    0
+#define SIL_BOTTOM  1
+#define SIL_TOP     2
+#define SIL_BOTH    3
 
-#define MAXDRAWSEGS		256*8
-
-
-
+#define MAXDRAWSEGS 256 * 8
 
 
 //
@@ -66,9 +61,8 @@
 //
 using vertex_t = struct
 {
-    fixed_t	x;
-    fixed_t	y;
-
+  fixed_t x;
+  fixed_t y;
 };
 
 
@@ -83,11 +77,10 @@ struct line_s;
 //  updated.
 using degenmobj_t = struct
 {
-    thinker_t		thinker;	// not used for anything
-    fixed_t		x;
-    fixed_t		y;
-    fixed_t		z;
-
+  thinker_t thinker; // not used for anything
+  fixed_t   x;
+  fixed_t   y;
+  fixed_t   z;
 };
 
 //
@@ -96,41 +89,38 @@ using degenmobj_t = struct
 //
 using sector_t = struct
 {
-    fixed_t	floorheight;
-    fixed_t	ceilingheight;
-    short	floorpic;
-    short	ceilingpic;
-    short	lightlevel;
-    short	special;
-    short	tag;
+  fixed_t         floorheight;
+  fixed_t         ceilingheight;
+  short           floorpic;
+  short           ceilingpic;
+  short           lightlevel;
+  short           special;
+  short           tag;
 
-    // 0 = untraversed, 1,2 = sndlines -1
-    int		soundtraversed;
+  // 0 = untraversed, 1,2 = sndlines -1
+  int             soundtraversed;
 
-    // thing that made a sound (or null)
-    mobj_t*	soundtarget;
+  // thing that made a sound (or null)
+  mobj_t         *soundtarget;
 
-    // mapblock bounding box for height changes
-    int		blockbox[4];
+  // mapblock bounding box for height changes
+  int             blockbox[4];
 
-    // origin for any sounds played by the sector
-    degenmobj_t	soundorg;
+  // origin for any sounds played by the sector
+  degenmobj_t     soundorg;
 
-    // if == validcount, already checked
-    int		validcount;
+  // if == validcount, already checked
+  int             validcount;
 
-    // list of mobjs in sector
-    mobj_t*	thinglist;
+  // list of mobjs in sector
+  mobj_t         *thinglist;
 
-    // thinker_t for reversable actions
-    void*	specialdata;
+  // thinker_t for reversable actions
+  void           *specialdata;
 
-    int			linecount;
-    struct line_s**	lines;	// [linecount] size
-
+  int             linecount;
+  struct line_s **lines; // [linecount] size
 };
-
-
 
 
 //
@@ -139,78 +129,71 @@ using sector_t = struct
 
 using side_t = struct
 {
-    // add this to the calculated texture column
-    fixed_t	textureoffset;
+  // add this to the calculated texture column
+  fixed_t   textureoffset;
 
-    // add this to the calculated texture top
-    fixed_t	rowoffset;
+  // add this to the calculated texture top
+  fixed_t   rowoffset;
 
-    // Texture indices.
-    // We do not maintain names here.
-    short	toptexture;
-    short	bottomtexture;
-    short	midtexture;
+  // Texture indices.
+  // We do not maintain names here.
+  short     toptexture;
+  short     bottomtexture;
+  short     midtexture;
 
-    // Sector the SideDef is facing.
-    sector_t*	sector;
-
+  // Sector the SideDef is facing.
+  sector_t *sector;
 };
-
 
 
 //
 // Move clipping aid for LineDefs.
 //
-using slopetype_t = enum
-{
-    ST_HORIZONTAL,
-    ST_VERTICAL,
-    ST_POSITIVE,
-    ST_NEGATIVE
+using slopetype_t = enum {
+  ST_HORIZONTAL,
+  ST_VERTICAL,
+  ST_POSITIVE,
+  ST_NEGATIVE
 
 };
 
 
+using line_t = struct line_s {
+  // Vertices, from v1 to v2.
+  vertex_t   *v1;
+  vertex_t   *v2;
 
-using line_t = struct line_s
-{
-    // Vertices, from v1 to v2.
-    vertex_t*	v1;
-    vertex_t*	v2;
+  // Precalculated v2 - v1 for side checking.
+  fixed_t     dx;
+  fixed_t     dy;
 
-    // Precalculated v2 - v1 for side checking.
-    fixed_t	dx;
-    fixed_t	dy;
+  // Animation related.
+  short       flags;
+  short       special;
+  short       tag;
 
-    // Animation related.
-    short	flags;
-    short	special;
-    short	tag;
+  // Visual appearance: SideDefs.
+  //  sidenum[1] will be -1 if one sided
+  short       sidenum[2];
 
-    // Visual appearance: SideDefs.
-    //  sidenum[1] will be -1 if one sided
-    short	sidenum[2];
+  // Neat. Another bounding box, for the extent
+  //  of the LineDef.
+  fixed_t     bbox[4];
 
-    // Neat. Another bounding box, for the extent
-    //  of the LineDef.
-    fixed_t	bbox[4];
+  // To aid move clipping.
+  slopetype_t slopetype;
 
-    // To aid move clipping.
-    slopetype_t	slopetype;
+  // Front and back sector.
+  // Note: redundant? Can be retrieved from SideDefs.
+  sector_t   *frontsector;
+  sector_t   *backsector;
 
-    // Front and back sector.
-    // Note: redundant? Can be retrieved from SideDefs.
-    sector_t*	frontsector;
-    sector_t*	backsector;
+  // if == validcount, already checked
+  int         validcount;
 
-    // if == validcount, already checked
-    int		validcount;
-
-    // thinker_t for reversable actions
-    void*	specialdata;
+  // thinker_t for reversable actions
+  void       *specialdata;
 };
-
-
 
 
 //
@@ -220,14 +203,11 @@ using line_t = struct line_s
 //  indicating the visible walls that define
 //  (all or some) sides of a convex BSP leaf.
 //
-using subsector_t = struct subsector_s
-{
-    sector_t*	sector;
-    short	numlines;
-    short	firstline;
-
+using subsector_t = struct subsector_s {
+  sector_t *sector;
+  short     numlines;
+  short     firstline;
 };
-
 
 
 //
@@ -235,24 +215,22 @@ using subsector_t = struct subsector_s
 //
 using seg_t = struct
 {
-    vertex_t*	v1;
-    vertex_t*	v2;
+  vertex_t *v1;
+  vertex_t *v2;
 
-    fixed_t	offset;
+  fixed_t   offset;
 
-    angle_t	angle;
+  angle_t   angle;
 
-    side_t*	sidedef;
-    line_t*	linedef;
+  side_t   *sidedef;
+  line_t   *linedef;
 
-    // Sector references.
-    // Could be retrieved from linedef, too.
-    // backsector is NULL for one sided lines
-    sector_t*	frontsector;
-    sector_t*	backsector;
-
+  // Sector references.
+  // Could be retrieved from linedef, too.
+  // backsector is NULL for one sided lines
+  sector_t *frontsector;
+  sector_t *backsector;
 };
-
 
 
 //
@@ -260,30 +238,24 @@ using seg_t = struct
 //
 using node_t = struct
 {
-    // Partition line.
-    fixed_t	x;
-    fixed_t	y;
-    fixed_t	dx;
-    fixed_t	dy;
+  // Partition line.
+  fixed_t        x;
+  fixed_t        y;
+  fixed_t        dx;
+  fixed_t        dy;
 
-    // Bounding box for each child.
-    fixed_t	bbox[2][4];
+  // Bounding box for each child.
+  fixed_t        bbox[2][4];
 
-    // If NF_SUBSECTOR its a subsector.
-    unsigned short children[2];
-
+  // If NF_SUBSECTOR its a subsector.
+  unsigned short children[2];
 };
 
 
-
-
 // PC direct to screen pointers
-//B UNUSED - keep till detailshift in r_draw.c resolved
-//extern byte*	destview;
-//extern byte*	destscreen;
-
-
-
+// B UNUSED - keep till detailshift in r_draw.c resolved
+// extern byte*	destview;
+// extern byte*	destscreen;
 
 
 //
@@ -298,81 +270,74 @@ using node_t = struct
 using lighttable_t = byte;
 
 
-
-
 //
 // ?
 //
-using drawseg_t = struct drawseg_s
-{
-    seg_t*		curline;
-    int			x1;
-    int			x2;
+using drawseg_t    = struct drawseg_s {
+  seg_t  *curline;
+  int     x1;
+  int     x2;
 
-    fixed_t		scale1;
-    fixed_t		scale2;
-    fixed_t		scalestep;
+  fixed_t scale1;
+  fixed_t scale2;
+  fixed_t scalestep;
 
-    // 0=none, 1=bottom, 2=top, 3=both
-    int			silhouette;
+  // 0=none, 1=bottom, 2=top, 3=both
+  int     silhouette;
 
-    // do not clip sprites above this
-    fixed_t		bsilheight;
+  // do not clip sprites above this
+  fixed_t bsilheight;
 
-    // do not clip sprites below this
-    fixed_t		tsilheight;
+  // do not clip sprites below this
+  fixed_t tsilheight;
 
-    // Pointers to lists for sprite clipping,
-    //  all three adjusted so [x1] is first value.
-    short*		sprtopclip;
-    short*		sprbottomclip;
-    short*		maskedtexturecol;
-
+  // Pointers to lists for sprite clipping,
+  //  all three adjusted so [x1] is first value.
+  short  *sprtopclip;
+  short  *sprbottomclip;
+  short  *maskedtexturecol;
 };
-
 
 
 // A vissprite_t is a thing
 //  that will be drawn during a refresh.
 // I.e. a sprite object that is partly visible.
-using vissprite_t = struct vissprite_s
-{
-    // Doubly linked list.
-    struct vissprite_s*	prev;
-    struct vissprite_s*	next;
+using vissprite_t = struct vissprite_s {
+  // Doubly linked list.
+  struct vissprite_s *prev;
+  struct vissprite_s *next;
 
-    int			x1;
-    int			x2;
+  int                 x1;
+  int                 x2;
 
-    // for line side calculation
-    fixed_t		gx;
-    fixed_t		gy;
+  // for line side calculation
+  fixed_t             gx;
+  fixed_t             gy;
 
-    // global bottom / top for silhouette clipping
-    fixed_t		gz;
-    fixed_t		gzt;
+  // global bottom / top for silhouette clipping
+  fixed_t             gz;
+  fixed_t             gzt;
 
-    // horizontal position of x1
-    fixed_t		startfrac;
+  // horizontal position of x1
+  fixed_t             startfrac;
 
-    fixed_t		scale;
+  fixed_t             scale;
 
-    // negative if flipped
-    fixed_t		xiscale;
+  // negative if flipped
+  fixed_t             xiscale;
 
-    fixed_t		texturemid;
-    int			patch;
+  fixed_t             texturemid;
+  int                 patch;
 
-    // for color translation and shadow draw,
-    //  maxbright frames as well
-    lighttable_t*	colormap;
+  // for color translation and shadow draw,
+  //  maxbright frames as well
+  lighttable_t       *colormap;
 
-    int			mobjflags;
-
+  int                 mobjflags;
 };
 
 
-//	
+//
 // Sprites are patches with a special naming convention
 //  so they can be recognized by R_InitSprites.
 // The base name is NNNNFx or NNNNFxFx, with
@@ -389,19 +354,17 @@ using vissprite_t = struct vissprite_s
 //
 using spriteframe_t = struct
 {
-    // If false use 0 for any position.
-    // Note: as eight entries are available,
-    //  we might as well insert the same name eight times.
-    boolean	rotate;
+  // If false use 0 for any position.
+  // Note: as eight entries are available,
+  //  we might as well insert the same name eight times.
+  boolean rotate;
 
-    // Lump to use for view angles 0-7.
-    short	lump[8];
+  // Lump to use for view angles 0-7.
+  short   lump[8];
 
-    // Flip bit (1 = flip) to use for view angles 0-7.
-    byte	flip[8];
-
+  // Flip bit (1 = flip) to use for view angles 0-7.
+  byte    flip[8];
 };
-
 
 
 //
@@ -410,39 +373,34 @@ using spriteframe_t = struct
 //
 using spritedef_t = struct
 {
-    int			numframes;
-    spriteframe_t*	spriteframes;
-
+  int            numframes;
+  spriteframe_t *spriteframes;
 };
-
 
 
 //
 // Now what is a visplane, anyway?
-// 
+//
 using visplane_t = struct
 {
-  fixed_t		height;
-  int			picnum;
-  int			lightlevel;
-  int			minx;
-  int			maxx;
+  fixed_t        height;
+  int            picnum;
+  int            lightlevel;
+  int            minx;
+  int            maxx;
 
   // leave pads for [minx-1]/[maxx+1]
 
-  unsigned short		pad1;
+  unsigned short pad1;
   // Here lies the rub for all
   //  dynamic resize/change of resolution.
-  unsigned short		top[MAXWIDTH];
-  unsigned short		pad2;
-  unsigned short		pad3;
+  unsigned short top[MAXWIDTH];
+  unsigned short pad2;
+  unsigned short pad3;
   // See above.
-  unsigned short		bottom[MAXWIDTH];
-  unsigned short		pad4;
-
+  unsigned short bottom[MAXWIDTH];
+  unsigned short pad4;
 };
-
-
 
 
 #endif

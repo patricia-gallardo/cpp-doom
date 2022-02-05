@@ -21,17 +21,17 @@
 #define __R_SKY__
 
 
-
 // SKY, store the number for name.
-#define			SKYFLATNAME  "F_SKY001" // villsa [STRIFE]
+#define SKYFLATNAME     "F_SKY001" // villsa [STRIFE]
 
 // The sky map is 256*128*4 maps.
-#define ANGLETOSKYSHIFT		22
+#define ANGLETOSKYSHIFT 22
 
-extern  int		skytexture;
-extern int		skytexturemid;
+extern int skytexture;
+extern int skytexturemid;
 
 // Called whenever the view size changes.
-void R_InitSkyMap ();
+void
+  R_InitSkyMap();
 
 #endif

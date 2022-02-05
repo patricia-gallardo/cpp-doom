@@ -21,26 +21,26 @@
 #define __R_BSP__
 
 
-extern seg_t *   curline;
-extern side_t *  sidedef;
-extern line_t *  linedef;
-extern sector_t *frontsector;
-extern sector_t *backsector;
+extern seg_t         *curline;
+extern side_t        *sidedef;
+extern line_t        *linedef;
+extern sector_t      *frontsector;
+extern sector_t      *backsector;
 
-extern int rw_x;
-extern int rw_stopx;
+extern int            rw_x;
+extern int            rw_stopx;
 
-extern boolean segtextured;
+extern boolean        segtextured;
 
 // false if the back side is the same plane
-extern boolean markfloor;
-extern boolean markceiling;
+extern boolean        markfloor;
+extern boolean        markceiling;
 
-extern boolean skymap;
+extern boolean        skymap;
 
-extern drawseg_t *drawsegs;
-extern drawseg_t *ds_p;
-extern int        numdrawsegs;
+extern drawseg_t     *drawsegs;
+extern drawseg_t     *ds_p;
+extern int            numdrawsegs;
 
 extern lighttable_t **hscalelight;
 extern lighttable_t **vscalelight;
@@ -51,11 +51,14 @@ using drawfunc_t = void (*)(int, int);
 
 
 // BSP?
-void R_ClearClipSegs();
-void R_ClearDrawSegs();
+void
+  R_ClearClipSegs();
+void
+  R_ClearDrawSegs();
 
 
-void R_RenderBSPNode(int bspnum);
+void
+  R_RenderBSPNode(int bspnum);
 
 
 #endif
