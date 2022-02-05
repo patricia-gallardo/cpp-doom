@@ -21,7 +21,7 @@
 
 // Save configuration.  Invoked when we launch the game or quit.
 
-- () saveConfig
+- (void) saveConfig
 {
     NSUserDefaults *defaults;
 
@@ -38,7 +38,7 @@
 
 // Load configuration, invoked on startup.
 
-- () setConfig
+- (void) setConfig
 {
     NSUserDefaults *defaults;
     NSString *args;
@@ -215,14 +215,14 @@ static NSString *AppendQuotedFilename(NSString *str, NSString *fileName)
 // Clear out the existing command line options.
 // Invoked before the first file is added.
 
-- () clearCommandLine
+- (void) clearCommandLine
 {
     [self->commandLineArguments setStringValue: @""];
 }
 
 // Add a file to the command line to load with the game.
 
-- () addFileToCommandLine: (NSString *) fileName
+- (void) addFileToCommandLine: (NSString *) fileName
          forArgument: (NSString *) arg
 {
     NSString *commandLine;
@@ -266,7 +266,7 @@ static NSString *AppendQuotedFilename(NSString *str, NSString *fileName)
     [self->commandLineArguments setStringValue: commandLine];
 }
 
-- () launch: (id)sender
+- (void) launch: (id)sender
 {
     NSString *iwad;
     NSString *args;
@@ -298,7 +298,7 @@ static NSString *AppendQuotedFilename(NSString *str, NSString *fileName)
 
 // Invoked when the "Setup Tool" button is clicked, to run the setup tool:
 
-- () runSetup: (id)sender
+- (void) runSetup: (id)sender
 {
     const char *game_name;
     char *arg;
@@ -320,7 +320,7 @@ static NSString *AppendQuotedFilename(NSString *str, NSString *fileName)
 // Invoked when the "Terminal" option is selected from the menu, to open
 // a terminal window.
 
-- () openTerminal: (id) sender
+- (void) openTerminal: (id) sender
 {
     char *doomwadpath;
 
@@ -333,17 +333,17 @@ static NSString *AppendQuotedFilename(NSString *str, NSString *fileName)
     free(doomwadpath);
 }
 
-- () openREADME: (id) sender
+- (void) openREADME: (id) sender
 {
     OpenDocumentation("README");
 }
 
-- () openINSTALL: (id) sender
+- (void) openINSTALL: (id) sender
 {
     OpenDocumentation("INSTALL");
 }
 
-- () openCMDLINE: (id) sender
+- (void) openCMDLINE: (id) sender
 {
     const char *game_name;
     char filename[32];
@@ -357,17 +357,17 @@ static NSString *AppendQuotedFilename(NSString *str, NSString *fileName)
     OpenDocumentation(filename);
 }
 
-- () openCOPYING: (id) sender
+- (void) openCOPYING: (id) sender
 {
     OpenDocumentation("COPYING");
 }
 
-- () openDocumentation: (id) sender
+- (void) openDocumentation: (id) sender
 {
     OpenDocumentation("");
 }
 
-- () openAutoload: (id) sender
+- (void) openAutoload: (id) sender
 {
     NSFileManager *fm = [NSFileManager defaultManager];
     NSString *path = [self->iwadController autoloadPath];
@@ -388,7 +388,7 @@ static NSString *AppendQuotedFilename(NSString *str, NSString *fileName)
     [[NSWorkspace sharedWorkspace] openFile:path withApplication:@"Finder"];
 }
 
-- () awakeFromNib
+- (void) awakeFromNib
 {
     [self->launcherWindow setTitle: @PACKAGE_NAME " Launcher"];
     [self->launcherWindow center];

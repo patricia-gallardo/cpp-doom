@@ -37,16 +37,16 @@
     id strife;
 }
 
-- () closeConfigWindow: (id)sender;
-- () openConfigWindow: (id)sender;
+- (void) closeConfigWindow: (id)sender;
+- (void) openConfigWindow: (id)sender;
 - (NSString *) getIWADLocation;
 - (NSString *) autoloadPath;
-- () awakeFromNib;
+- (void) awakeFromNib;
 - (BOOL) setDropdownList;
-- () setDropdownSelection;
-- () saveConfig;
+- (void) setDropdownSelection;
+- (void) saveConfig;
 - (char *) doomWadPath;
-- () setEnvironment;
+- (void) setEnvironment;
 - (const char *) getGameName;
 - (BOOL) addIWADPath: (NSString *) path;
 - (BOOL) selectGameByName: (const char *) name;

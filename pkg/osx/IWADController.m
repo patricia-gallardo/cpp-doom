@@ -68,7 +68,7 @@ static NSString *IWADFilenames[NUM_IWAD_TYPES + 1] =
 
 @implementation IWADController
 
-- () getIWADList: (NSPathControl **) iwadList
+- (void) getIWADList: (NSPathControl **) iwadList
 {
     iwadList[IWAD_DOOM1] = self->doom1;
     iwadList[IWAD_DOOM2] = self->doom2;
@@ -144,7 +144,7 @@ static const char *NameForIWAD(IWAD iwad)
     return NameForIWAD([self getSelectedIWAD]);
 }
 
-- () setIWADConfig
+- (void) setIWADConfig
 {
     NSPathControl *iwadList[NUM_IWAD_TYPES];
     NSUserDefaults *defaults;
@@ -172,7 +172,7 @@ static const char *NameForIWAD(IWAD iwad)
 
 // On startup, set the selected item in the IWAD dropdown
 
-- () setDropdownSelection
+- (void) setDropdownSelection
 {
     NSUserDefaults *defaults;
     NSString *selected;
@@ -240,7 +240,7 @@ static const char *NameForIWAD(IWAD iwad)
     return have_wads;
 }
 
-- () saveConfig
+- (void) saveConfig
 {
     NSPathControl *iwadList[NUM_IWAD_TYPES];
     IWAD selectedIWAD;
@@ -273,7 +273,7 @@ static const char *NameForIWAD(IWAD iwad)
 // Callback method invoked when the configuration button in the main
 // window is clicked.
 
-- () openConfigWindow: (id)sender
+- (void) openConfigWindow: (id)sender
 {
     if (![self->configWindow isVisible])
     {
@@ -283,14 +283,14 @@ static const char *NameForIWAD(IWAD iwad)
 
 // Callback method invoked when the close button is clicked.
 
-- () closeConfigWindow: (id)sender
+- (void) closeConfigWindow: (id)sender
 {
     [self->configWindow orderOut: sender];
     [self saveConfig];
     [self setDropdownList];
 }
 
-- () awakeFromNib
+- (void) awakeFromNib
 {
     [self->configWindow center];
 
@@ -384,7 +384,7 @@ static const char *NameForIWAD(IWAD iwad)
 // Set the DOOMWADPATH environment variable to contain the path to each
 // of the configured IWAD files.
 
-- () setEnvironment
+- (void) setEnvironment
 {
     char *doomwadpath;
     char *env;

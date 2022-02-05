@@ -29,21 +29,21 @@
     id commandLineArguments;
 }
 
-- () launch: (id)sender;
-- () runSetup: (id)sender;
-- () awakeFromNib;
-- () clearCommandLine;
+- (void) launch: (id)sender;
+- (void) runSetup: (id)sender;
+- (void) awakeFromNib;
+- (void) clearCommandLine;
 - (BOOL) addIWADPath: (NSString *) path;
-- () addFileToCommandLine: (NSString *) fileName
+- (void) addFileToCommandLine: (NSString *) fileName
          forArgument: (NSString *) args;
 - (BOOL) selectGameByName: (const char *) name;
-- () openTerminal: (id) sender;
+- (void) openTerminal: (id) sender;
 
-- () openREADME: (id) sender;
-- () openINSTALL: (id) sender;
-- () openCMDLINE: (id) sender;
-- () openCOPYING: (id) sender;
-- () openDocumentation: (id) sender;
+- (void) openREADME: (id) sender;
+- (void) openINSTALL: (id) sender;
+- (void) openCMDLINE: (id) sender;
+- (void) openCOPYING: (id) sender;
+- (void) openDocumentation: (id) sender;
 
 @end
 
