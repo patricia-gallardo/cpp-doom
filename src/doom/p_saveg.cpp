@@ -17,8 +17,7 @@
 //
 
 
-#include <stdio.h>
-#include <stdlib.h>
+#include <cstdlib>
 
 #include "dstrings.hpp"
 #include "deh_main.hpp"
@@ -28,7 +27,7 @@
 #include "p_saveg.hpp"
 
 // State.
-#include "../../utils/memory.hpp"
+#include "memory.hpp"
 #include "doomstat.hpp"
 #include "g_game.hpp"
 #include "m_misc.hpp"

@@ -19,13 +19,13 @@
 
 #ifdef _WIN32
 
-#include <stdio.h>
+#include <cstdio>
 
 #define WIN32_LEAN_AND_MEAN
 #include <windows.h>
 #include <winioctl.h>
 
-#include <errno.h>
+#include <cerrno>
 
 #include "ioperm_sys.hpp"
 
@@ -76,7 +76,7 @@ static BOOL (WINAPI *MyDeleteService)(SC_HANDLE hService);
 
 static struct
 {
-    char *name;
+    const char *name;
     void **fn;
 } dll_functions[] = {
     { "OpenSCManagerW",     (void **) &MyOpenSCManagerW },
@@ -197,8 +197,8 @@ int IOperm_InstallDriver(void)
     // Create the service.
 
     svc = MyCreateServiceW(scm,
-                           L"ioperm",
-                           L"ioperm support for Cygwin driver",
+                           const_cast<wchar_t *>(L"ioperm"),
+                           const_cast<wchar_t *>(L"ioperm support for Cygwin driver"),
                            SERVICE_ALL_ACCESS,
                            SERVICE_KERNEL_DRIVER,
                            SERVICE_AUTO_START,
@@ -222,7 +222,7 @@ int IOperm_InstallDriver(void)
         }
         else
         {
-            svc = MyOpenServiceW(scm, L"ioperm", SERVICE_ALL_ACCESS);
+            svc = MyOpenServiceW(scm, const_cast<wchar_t *>(L"ioperm"), SERVICE_ALL_ACCESS);
 
             if (svc == NULL)
             {

@@ -18,7 +18,7 @@
 
 #if _WIN32
 
-#include <stdlib.h>
+#include <cstdlib>
 #include <sys/stat.h>
 
 #define WIN32_LEAN_AND_MEAN
@@ -437,7 +437,7 @@ boolean I_MidiPipe_InitServer()
     RemoveFileSpec(dirname, dirname_len);
 
     // Define the module.
-    module = PROGRAM_PREFIX "midiproc.exe";
+    module = const_cast<char *>(PROGRAM_PREFIX "midiproc.exe");
 
     // Set up pipes
     memset(&sec_attrs, 0, sizeof(SECURITY_ATTRIBUTES));

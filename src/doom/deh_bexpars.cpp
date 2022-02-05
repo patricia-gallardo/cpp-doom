@@ -16,8 +16,8 @@
 // Parses [PARS] sections in BEX files
 //
 
-#include <stdio.h>
-#include <string.h>
+#include <cstdio>
+#include <cstring>
 
 #include "deh_bexpars.hpp"
 #include "deh_io.hpp"

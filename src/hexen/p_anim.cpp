@@ -22,6 +22,7 @@
 #include "i_system.hpp"
 #include "p_local.hpp"
 #include "s_sound.hpp"
+#include "memory.hpp"
 
 // MACROS ------------------------------------------------------------------
 
@@ -340,7 +341,7 @@ void P_InitLightning(void)
         LevelHasLightning = false;
         return;
     }
-    LightningLightLevels = (int *) Z_Malloc(secCount * sizeof(int), PU_LEVEL,
+    LightningLightLevels = zmalloc<int *>(secCount * sizeof(int), PU_LEVEL,
                                             NULL);
     NextLightningFlash = ((P_Random() & 15) + 5) * 35;  // don't flash at level start
 }

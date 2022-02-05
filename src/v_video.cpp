@@ -21,10 +21,9 @@
 
 #include "SDL_version.h" // [crispy]
 
-#include <stdio.h>
-#include <stdlib.h>
-#include <string.h>
-#include <math.h>
+#include <cstdlib>
+#include <cstring>
+#include <cmath>
 
 #include "i_system.hpp"
 
@@ -44,8 +43,8 @@
 #include "z_zone.hpp"
 #include "crispy.hpp"
 
-#include "../utils/lump.hpp"
-#include "../utils/memory.hpp"
+#include "lump.hpp"
+#include "memory.hpp"
 #include "config.h"
 #ifdef HAVE_LIBPNG
 #include <png.h>
@@ -168,7 +167,7 @@ void V_SetPatchClipCallback(vpatchclipfunc_t func)
 // [crispy] four different rendering functions
 // for each possible combination of dp_translation and dp_translucent:
 // (1) normal, opaque patch
-static const inline pixel_t drawpatchpx00(const pixel_t dest, const pixel_t source)
+static inline pixel_t drawpatchpx00(const pixel_t dest, const pixel_t source)
 #ifndef CRISPY_TRUECOLOR
 {
     return source;
@@ -179,7 +178,7 @@ static const inline pixel_t drawpatchpx00(const pixel_t dest, const pixel_t sour
 }
 #endif
 // (2) color-translated, opaque patch
-static const inline pixel_t drawpatchpx01(const pixel_t dest, const pixel_t source)
+static inline pixel_t drawpatchpx01(const pixel_t dest, const pixel_t source)
 #ifndef CRISPY_TRUECOLOR
 {
     return dp_translation[source];
@@ -190,7 +189,7 @@ static const inline pixel_t drawpatchpx01(const pixel_t dest, const pixel_t sour
 }
 #endif
 // (3) normal, translucent patch
-static const inline pixel_t drawpatchpx10(const pixel_t dest, const pixel_t source)
+static inline pixel_t drawpatchpx10(const pixel_t dest, const pixel_t source)
 #ifndef CRISPY_TRUECOLOR
 {
     return tranmap[(dest << 8) + source];
@@ -201,7 +200,7 @@ static const inline pixel_t drawpatchpx10(const pixel_t dest, const pixel_t sour
 }
 #endif
 // (4) color-translated, translucent patch
-static const inline pixel_t drawpatchpx11(const pixel_t dest, const pixel_t source)
+static inline pixel_t drawpatchpx11(const pixel_t dest, const pixel_t source)
 #ifndef CRISPY_TRUECOLOR
 {
     return tranmap[(dest << 8) + dp_translation[source]];
@@ -212,7 +211,7 @@ static const inline pixel_t drawpatchpx11(const pixel_t dest, const pixel_t sour
 }
 #endif
 // [crispy] array of function pointers holding the different rendering functions
-typedef const pixel_t       drawpatchpx_t(const pixel_t dest, const pixel_t source);
+typedef pixel_t       drawpatchpx_t(const pixel_t dest, const pixel_t source);
 static drawpatchpx_t *const drawpatchpx_a[2][2] = { { drawpatchpx11, drawpatchpx10 }, { drawpatchpx01, drawpatchpx00 } };
 
 static fixed_t dx, dxi, dy, dyi;

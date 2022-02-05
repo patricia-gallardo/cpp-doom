@@ -16,7 +16,7 @@
 //
 
 
-#include <ctype.h>
+#include <cctype>
 
 #include "doomdef.hpp"
 #include "doomkeys.hpp"
@@ -41,6 +41,7 @@
 // Data.
 #include "dstrings.hpp"
 #include "sounds.hpp"
+#include "lump.hpp"
 
 //
 // Locally used constants, shortcuts.
@@ -58,18 +59,17 @@
 #define HU_INPUTWIDTH   64
 #define HU_INPUTHEIGHT  1
 
-char *chat_macros[10] =
-{
-    HUSTR_CHATMACRO0,
-    HUSTR_CHATMACRO1,
-    HUSTR_CHATMACRO2,
-    HUSTR_CHATMACRO3,
-    HUSTR_CHATMACRO4,
-    HUSTR_CHATMACRO5,
-    HUSTR_CHATMACRO6,
-    HUSTR_CHATMACRO7,
-    HUSTR_CHATMACRO8,
-    HUSTR_CHATMACRO9
+char *chat_macros[10] = {
+    const_cast<char *>(HUSTR_CHATMACRO0),
+    const_cast<char *>(HUSTR_CHATMACRO1),
+    const_cast<char *>(HUSTR_CHATMACRO2),
+    const_cast<char *>(HUSTR_CHATMACRO3),
+    const_cast<char *>(HUSTR_CHATMACRO4),
+    const_cast<char *>(HUSTR_CHATMACRO5),
+    const_cast<char *>(HUSTR_CHATMACRO6),
+    const_cast<char *>(HUSTR_CHATMACRO7),
+    const_cast<char *>(HUSTR_CHATMACRO8),
+    const_cast<char *>(HUSTR_CHATMACRO9)
 };
 
 // villsa [STRIFE]
@@ -187,12 +187,12 @@ void HU_Init(void)
     for (i=0;i<HU_FONTSIZE;i++)
     {
         DEH_snprintf(buffer, 9, "STCFN%.3d", j++);
-        hu_font[i] = (patch_t *) W_CacheLumpName(buffer, PU_STATIC);
+        hu_font[i] = cache_lump_name<patch_t *>(buffer, PU_STATIC);
 
         // haleyjd 09/18/10: load yfont as well; and yes, this is exactly
         // how Rogue did it :P
         buffer[2] = 'B';
-        yfont[i] = (patch_t *) W_CacheLumpName(buffer, PU_STATIC);
+        yfont[i] = cache_lump_name<patch_t *>(buffer, PU_STATIC);
     }
 }
 

@@ -12,8 +12,6 @@
 // GNU General Public License for more details.
 //
 
-#include <stdlib.h>
-#include <string.h>
 
 #include "doomkeys.hpp"
 
@@ -21,7 +19,7 @@
 #include "txt_io.hpp"
 #include "txt_main.hpp"
 #include "txt_window.hpp"
-#include "../utils/memory.hpp"
+#include "memory.hpp"
 
 static void TXT_StrutSizeCalc(TXT_UNCAST_ARG(strut))
 {

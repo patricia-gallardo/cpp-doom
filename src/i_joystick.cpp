@@ -19,9 +19,8 @@
 #include "SDL.h"
 #include "SDL_joystick.h"
 
-#include <stdlib.h>
-#include <stdio.h>
-#include <string.h>
+#include <cstdio>
+#include <cstring>
 
 #include "doomtype.hpp"
 #include "d_event.hpp"
@@ -45,7 +44,7 @@ static SDL_Joystick *joystick = NULL;
 static int usejoystick = 0;
 
 // SDL GUID and index of the joystick to use.
-static char *joystick_guid  = "";
+static char *joystick_guid  = const_cast<char *>("");
 static int   joystick_index = -1;
 
 // Which joystick axis to use for horizontal movement, and whether to

@@ -16,9 +16,9 @@
 // to be interrogated.
 //
 
-#include <stdlib.h>
-#include <string.h>
-#include <ctype.h>
+#include <cstdlib>
+#include <cstring>
+#include <cctype>
 
 #include "i_glob.hpp"
 #include "m_misc.hpp"
@@ -26,8 +26,8 @@
 
 #if defined(_MSC_VER)
 // For Visual C++, we need to include the win_opendir module.
-#include <win_opendir.h>
 #include <sys/stat.h>
+#include <win_opendir.hpp>
 #define S_ISDIR(m) (((m)&S_IFMT) == S_IFDIR)
 #elif defined(HAVE_DIRENT_H)
 #include <dirent.h>

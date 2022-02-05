@@ -18,9 +18,7 @@
 //	Moreover, the sky areas have to be determined.
 //
 
-
-#include <stdio.h>
-#include <stdlib.h>
+#include <cstdlib>
 
 #include "i_system.hpp"
 #include "z_zone.hpp"
@@ -31,7 +29,7 @@
 
 #include "r_local.hpp"
 #include "r_sky.hpp"
-
+#include "lump.hpp"
 
 
 planefunction_t		floorfunc;
@@ -416,9 +414,9 @@ void R_DrawPlanes (void)
 	
 	// regular flat
         lumpnum = firstflat + flattranslation[pl->picnum];
-	ds_source = W_CacheLumpNum(lumpnum, PU_STATIC);
+	ds_source = cache_lump_num<byte *>(lumpnum, PU_STATIC);
 	
-	planeheight = abs(pl->height-viewz);
+	planeheight = std::abs(pl->height-viewz);
 	light = (pl->lightlevel >> LIGHTSEGSHIFT)+extralight;
 
 	if (light >= LIGHTLEVELS)

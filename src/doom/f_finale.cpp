@@ -17,8 +17,7 @@
 //
 
 
-#include <stdio.h>
-#include <ctype.h>
+#include <cctype>
 
 // Functions.
 #include "deh_main.hpp"
@@ -251,7 +250,7 @@ void F_Ticker(void)
 // F_TextWrite
 //
 
-#include "../../utils/lump.hpp"
+#include "lump.hpp"
 #include "hu_stuff.hpp"
 extern patch_t *hu_font[HU_FONTSIZE];
 

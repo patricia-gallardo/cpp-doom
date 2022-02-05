@@ -15,9 +15,8 @@
 // Top-level dehacked definitions for Heretic dehacked (HHE).
 //
 
-#include <stdio.h>
-#include <stdlib.h>
-#include <string.h>
+#include <cstdio>
+#include <cstring>
 
 #include "deh_defs.hpp"
 #include "deh_main.hpp"
@@ -80,7 +79,7 @@ static void SetHHEVersionByName(char *name)
     {
         if (!strcmp(hhe_versions[i], name))
         {
-            deh_hhe_version = i;
+            deh_hhe_version = static_cast<deh_hhe_version_t>(i);
             return;
         }
     }

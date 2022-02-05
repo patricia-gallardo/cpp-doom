@@ -22,6 +22,7 @@
 #include "m_misc.hpp"
 #include "p_local.hpp"
 #include "s_sound.hpp"
+#include "memory.hpp"
 
 // MACROS ------------------------------------------------------------------
 
@@ -99,7 +100,7 @@ void P_InitTerrainTypes(void)
     int size;
 
     size = (numflats + 1) * sizeof(int);
-    TerrainTypes = Z_Malloc(size, PU_STATIC, 0);
+    TerrainTypes = zmalloc<int *>(size, PU_STATIC, 0);
     memset(TerrainTypes, 0, size);
     for (i = 0; TerrainTypeDefs[i].type != -1; i++)
     {
@@ -394,7 +395,7 @@ boolean EV_SectorSoundChange(byte * args)
     rtn = false;
     while ((secNum = P_FindSectorFromTag(args[0], secNum)) >= 0)
     {
-        sectors[secNum].seqType = args[1];
+        sectors[secNum].seqType = static_cast<seqtype_t>(args[1]);
         rtn = true;
     }
     return rtn;
@@ -408,7 +409,7 @@ boolean EV_SectorSoundChange(byte * args)
 
 static boolean CheckedLockedDoor(mobj_t * mo, byte lock)
 {
-    extern char *TextKeyMessages[11];
+    extern const char *TextKeyMessages[11];
     char LockedBuffer[80];
 
     if (!mo->player)
@@ -453,7 +454,7 @@ boolean EV_LineSearchForPuzzleItem(line_t * line, byte * args, mobj_t * mo)
     // Search player's inventory for puzzle items
     for (i = 0; i < player->artifactCount; i++)
     {
-        arti = player->inventory[i].type;
+        arti = static_cast<artitype_t>(player->inventory[i].type);
         type = arti - arti_firstpuzzitem;
         if (type < 0)
             continue;

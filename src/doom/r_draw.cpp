@@ -33,8 +33,8 @@
 #include "v_trans.hpp"
 
 // State.
-#include "../../utils/lump.hpp"
-#include "../../utils/memory.hpp"
+#include "lump.hpp"
+#include "memory.hpp"
 #include "doomstat.hpp"
 
 // ?

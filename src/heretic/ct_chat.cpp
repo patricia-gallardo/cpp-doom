@@ -17,8 +17,8 @@
 // Chat mode
 //
 
-#include <string.h>
-#include <ctype.h>
+#include <cstring>
+#include <cctype>
 
 #include "doomdef.hpp"
 #include "doomkeys.hpp"
@@ -30,6 +30,7 @@
 #include "p_local.hpp"
 #include "s_sound.hpp"
 #include "v_video.hpp"
+#include "lump.hpp"
 
 #define QUEUESIZE		128
 #define MESSAGESIZE	128
@@ -356,9 +357,8 @@ void CT_Drawer(void)
             }
             else
             {
-                patch = W_CacheLumpNum(FontABaseLump +
-                                       chat_msg[consoleplayer][i] - 33,
-                                       PU_CACHE);
+                patch = cache_lump_num<patch_t *>(FontABaseLump + chat_msg[consoleplayer][i] - 33,
+                    PU_CACHE);
                 V_DrawPatch(x, 10, patch);
                 x += patch->width;
             }
@@ -426,7 +426,7 @@ void CT_AddChar(int player, char c)
     }
     else
     {
-        patch = W_CacheLumpNum(FontABaseLump + c - 33, PU_CACHE);
+        patch = cache_lump_num<patch_t *>(FontABaseLump + c - 33, PU_CACHE);
         msglen[player] += patch->width;
     }
 }
@@ -455,7 +455,7 @@ void CT_BackSpace(int player)
     }
     else
     {
-        patch = W_CacheLumpNum(FontABaseLump + c - 33, PU_CACHE);
+        patch = cache_lump_num<patch_t *>(FontABaseLump + c - 33, PU_CACHE);
         msglen[player] -= patch->width;
     }
     chat_msg[player][msgptr[player]] = 0;

@@ -64,6 +64,20 @@ typedef struct
 
 struct line_s;
 
+using data_or_hook = std::variant<
+    null_hook,
+    thinker_param_action,
+    action_hook,
+    ceiling_t *,
+    floormove_t *,
+    plat_t *,
+    vldoor_t *,
+    pillar_t *,
+    floorWaggle_t *>;
+
+constexpr bool data_or_hook_empty(data_or_hook hook) { return hook.index() == 0; }
+constexpr bool data_or_hook_has_value(data_or_hook hook) { return hook.index() != 0; }
+
 typedef struct
 {
     fixed_t floorheight, ceilingheight;
@@ -79,7 +93,7 @@ typedef struct
     degenmobj_t soundorg;       // for any sounds played by the sector
     int validcount;             // if == validcount, already checked
     mobj_t *thinglist;          // list of mobjs in sector
-    void *specialdata;          // thinker_t for reversable actions
+    data_or_hook specialdata;   // thinker_t for reversable actions
     int linecount;
     struct line_s **lines;      // [linecount] size
 } sector_t;
@@ -254,7 +268,7 @@ typedef struct vissprite_s
     lighttable_t *colormap;
     int mobjflags;              // for color translation and shadow draw
     boolean psprite;            // true if psprite
-    int class;                  // player class (used in translation)
+    int clazz;                  // player class (used in translation)
     fixed_t floorclip;
 } vissprite_t;
 

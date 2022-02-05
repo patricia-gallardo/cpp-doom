@@ -16,7 +16,7 @@
 //	Zone Memory Allocation. Neat.
 //
 
-#include <string.h>
+#include <cstring>
 
 #include "doomtype.hpp"
 #include "i_system.hpp"

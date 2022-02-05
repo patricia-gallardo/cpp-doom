@@ -16,11 +16,11 @@
 //     can always get the first callback.
 //
 
-#include <stdio.h>
-#include <stdlib.h>
-#include <string.h>
+#include <cstdio>
+#include <cstdlib>
+#include <cstring>
 
-#include "../utils/memory.hpp"
+#include "memory.hpp"
 #include "opl_queue.hpp"
 
 #define MAX_OPL_QUEUE 64

@@ -38,6 +38,6 @@ void        M_SetConfigFilenames(const char *main_config, const char *extra_conf
 char *      M_GetSaveGameDir(const char *iwadname);
 char *      M_GetAutoloadDir(const char *iwadname);
 
-extern const char *configdir;
+extern char *configdir;
 
 #endif

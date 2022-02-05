@@ -28,12 +28,12 @@ set(DEDSERV_FILES
     net_query.cpp         net_query.hpp
     net_server.cpp        net_server.hpp
     net_structrw.cpp      net_structrw.hpp
-    z_native.cpp          z_zone.hpp ../utils/lump.hpp)
+    z_native.cpp          z_zone.hpp)
 
 add_executable("${PROGRAM_PREFIX}server" WIN32 ${COMMON_SOURCE_FILES} ${DEDSERV_FILES})
 target_include_directories("${PROGRAM_PREFIX}server"
                            PRIVATE "${CMAKE_CURRENT_BINARY_DIR}/../")
-target_link_libraries("${PROGRAM_PREFIX}server" SDL2::SDL2main SDL2::SDL2_net)
+target_link_libraries("${PROGRAM_PREFIX}server" SDL2::SDL2 SDL2::SDL2main SDL2::SDL2_net)
 
 # Source files used by the game binaries (chocolate-doom, etc.)
 

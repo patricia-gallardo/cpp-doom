@@ -17,10 +17,8 @@
 //
 
 
-#include <stdio.h>
-#include <stdlib.h>
-#include <string.h>
-#include <ctype.h>
+#include <cstdlib>
+#include <cstring>
 
 #include "SDL.h"
 #include "SDL_mixer.h"
@@ -56,7 +54,7 @@ static boolean sdl_was_initialized = false;
 static boolean musicpaused = false;
 static int     current_music_volume;
 
-char *timidity_cfg_path = "";
+char *timidity_cfg_path = const_cast<char *>("");
 
 static char *temp_timidity_cfg = NULL;
 

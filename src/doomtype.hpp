@@ -31,9 +31,9 @@
 // Outside Windows, we use strings.h for str[n]casecmp.
 
 
-#if !HAVE_DECL_STRCASECMP || !HAVE_DECL_STRNCASECMP
+#if !__APPLE__ && (!HAVE_DECL_STRCASECMP || !HAVE_DECL_STRNCASECMP)
 
-#include <string.h>
+#include <cstring>
 #if !HAVE_DECL_STRCASECMP
 #define strcasecmp stricmp
 #endif
@@ -98,7 +98,7 @@
 // pre-standardisation version).  inttypes.h is also in the C99
 // standard and defined to include stdint.h, so include this.
 
-#include <inttypes.h>
+#include <cinttypes>
 
 #if defined(__cplusplus) || defined(__bool_true_false_are_defined)
 
@@ -125,7 +125,7 @@ typedef uint32_t pixel_t;
 typedef int64_t  dpixel_t;
 #endif
 
-#include <limits.h>
+#include <climits>
 
 #ifdef _WIN32
 

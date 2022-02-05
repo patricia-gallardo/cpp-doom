@@ -16,7 +16,7 @@
 //	Mission begin melt/wipe screen special effect.
 //
 
-#include <string.h>
+#include <cstring>
 
 #include "z_zone.hpp"
 #include "i_video.hpp"
@@ -25,7 +25,7 @@
 
 #include "doomtype.hpp"
 
-#include "../../utils/memory.hpp"
+#include "memory.hpp"
 #include "f_wipe.hpp"
 
 //
@@ -48,7 +48,7 @@ void wipe_shittyColMajorXform(dpixel_t *array,
     int       y;
     dpixel_t *dest;
 
-    dest = (dpixel_t *)Z_Malloc(width * height * sizeof(*dest), PU_STATIC, 0);
+    dest = zmalloc<dpixel_t *>(width * height * sizeof(*dest), PU_STATIC, 0);
 
     for (y = 0; y < height; y++)
         for (x = 0; x < width; x++)
@@ -136,7 +136,7 @@ int wipe_initMelt(int width,
 
     // setup initial column positions
     // (y<0 => not ready to scroll yet)
-    y    = (int *)Z_Malloc(width * sizeof(int), PU_STATIC, 0);
+    y    = zmalloc<int *>(width * sizeof(int), PU_STATIC, 0);
     y[0] = -(M_Random() % 16);
     for (i = 1; i < width; i++)
     {
@@ -252,7 +252,7 @@ int wipe_ScreenWipe(int wipeno,
     if (!go)
     {
         go = 1;
-        // wipe_scr = (pixel_t *) Z_Malloc(width*height, PU_STATIC, 0); // DEBUG
+        // wipe_scr = zmalloc<pixel_t *>(width*height, PU_STATIC, 0); // DEBUG
         wipe_scr = I_VideoBuffer;
         (*wipes[wipeno * 3])(width, height, ticks);
     }

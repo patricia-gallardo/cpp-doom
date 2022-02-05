@@ -17,7 +17,7 @@
 //
 
 
-#include <stdio.h>
+#include <cstdio>
 
 #include "deh_main.hpp"
 
@@ -45,7 +45,7 @@
 // Data.
 #include "dstrings.hpp"
 
-#include "../../utils/lump.hpp"
+#include "lump.hpp"
 #include "am_map.hpp"
 extern boolean inhelpscreens; // [crispy]
 

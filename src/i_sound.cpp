@@ -15,8 +15,7 @@
 // DESCRIPTION:  none
 //
 
-#include <stdio.h>
-#include <stdlib.h>
+#include <cstdio>
 
 #include "SDL_mixer.h"
 
@@ -45,15 +44,15 @@ int snd_maxslicetime_ms = 28;
 
 // External command to invoke to play back music.
 
-char *snd_musiccmd = "";
+char *snd_musiccmd = const_cast<char *>("");
 
 // Whether to vary the pitch of sound effects
 // Each game will set the default differently
 
 int snd_pitchshift = -1;
 
-snddevice_t snd_musicdevice = SNDDEVICE_SB;
-snddevice_t snd_sfxdevice   = SNDDEVICE_SB;
+int snd_musicdevice = SNDDEVICE_SB;
+int snd_sfxdevice   = SNDDEVICE_SB;
 
 // Low-level sound and music modules we are using
 static sound_module_t *sound_module;
@@ -142,7 +141,7 @@ static void InitSfxModule(boolean use_sfx_prefix)
         // Is the sfx device in the list of devices supported by
         // this module?
 
-        if (SndDeviceInList(snd_sfxdevice,
+        if (SndDeviceInList(static_cast<snddevice_t>(snd_sfxdevice),
                 sound_modules[i]->sound_devices,
                 sound_modules[i]->num_sound_devices))
         {
@@ -170,7 +169,7 @@ static void InitMusicModule()
         // Is the music device in the list of devices supported
         // by this module?
 
-        if (SndDeviceInList(snd_musicdevice,
+        if (SndDeviceInList(static_cast<snddevice_t>(snd_musicdevice),
                 music_modules[i]->sound_devices,
                 music_modules[i]->num_sound_devices))
         {

@@ -17,7 +17,7 @@
 //	Action functions for weapons.
 //
 
-
+#include <variant>
 #include "doomdef.hpp"
 #include "d_event.hpp"
 
@@ -83,9 +83,10 @@ P_SetPsprite
 
         // Call action routine.
         // Modified handling.
-        if (state->action.acp2)
+        if (state->action.index() == player_psp_action_hook)
         {
-            state->action.acp2(player, psp);
+            auto callback = std::get<player_psp_param_action>(state->action);
+            callback(player, psp);
             if (!psp->state)
                 break;
         }
@@ -125,7 +126,7 @@ void P_BringUpWeapon (player_t* player)
     if(player->pendingweapon == wp_elecbow)
         P_SetPsprite(player, ps_flash, S_XBOW_10); // 31
     else if(player->pendingweapon == wp_sigil && player->sigiltype)
-        P_SetPsprite(player, ps_flash, S_SIGH_00 + player->sigiltype); // 117
+        P_SetPsprite(player, ps_flash, static_cast<statenum_t>(S_SIGH_00 + player->sigiltype)); // 117
     else
         P_SetPsprite(player, ps_flash, S_NULL);
 
@@ -234,7 +235,7 @@ void P_DropWeapon (player_t* player)
 {
     P_SetPsprite (player,
                   ps_weapon,
-                  weaponinfo[player->readyweapon].downstate);
+        weaponinfo[player->readyweapon].downstate);
 }
 
 
@@ -417,7 +418,7 @@ A_GunFlash
   pspdef_t*	psp ) 
 {
     P_SetMobjState (player->mo, S_PLAY_06);
-    P_SetPsprite (player,ps_flash,weaponinfo[player->readyweapon].flashstate);
+    P_SetPsprite (player,ps_flash, weaponinfo[player->readyweapon].flashstate);
 }
 
 
@@ -568,7 +569,7 @@ void A_FireGrenade(player_t* player, pspdef_t* pspr)
     // set flash frame
     st1 = &states[(pspr->state - states) + weaponinfo[player->readyweapon].flashstate];
     st2 = &states[weaponinfo[player->readyweapon].atkstate];
-    P_SetPsprite(player, ps_flash, st1 - st2);
+    P_SetPsprite(player, ps_flash, static_cast<statenum_t>(st1 - st2));
 
     player->mo->z += 32*FRACUNIT; // ugh
     mo = P_SpawnMortar(player->mo, type);
@@ -872,7 +873,7 @@ void A_FireSigil(player_t* player, pspdef_t* pspr)
 void A_GunFlashThinker(player_t* player, pspdef_t* pspr)
 {
     if(player->readyweapon == wp_sigil && player->sigiltype)
-        P_SetPsprite(player, ps_flash, S_SIGH_00 + player->sigiltype);
+        P_SetPsprite(player, ps_flash, static_cast<statenum_t>(S_SIGH_00 + player->sigiltype));
     else
         P_SetPsprite(player, ps_flash, S_NULL);
 

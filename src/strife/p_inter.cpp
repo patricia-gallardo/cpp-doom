@@ -609,7 +609,7 @@ void P_TouchSpecialThing(mobj_t* special, mobj_t* toucher)
             player->backpack = true;
         }
         for(i = 0; i < NUMAMMO; i++)
-            P_GiveAmmo(player, i, 1);
+            P_GiveAmmo(player, static_cast<ammotype_t>(i), 1);
         break;
 
     // 1 Gold
@@ -689,7 +689,7 @@ void P_TouchSpecialThing(mobj_t* special, mobj_t* toucher)
         {
             // haleyjd 09/21/10: Strife player still picks up keys that
             // he has already found. (break, not return)
-            if(!P_GiveCard(player, special->type - MT_KEY_BASE))
+            if(!P_GiveCard(player, static_cast<card_t>(special->type - MT_KEY_BASE)))
                 break; 
         }
         else
@@ -825,7 +825,7 @@ void P_KillMobj(mobj_t* source, mobj_t* target)
                 if(target->player->inventory[0].amount <= 0)
                     break;
 
-                item = target->player->inventory[0].type;
+                item = static_cast<mobjtype_t>(target->player->inventory[0].type);
                 if(item == MT_MONY_1)
                 {
                     loot = P_SpawnMobj(target->x, target->y, 
@@ -887,7 +887,7 @@ void P_KillMobj(mobj_t* source, mobj_t* target)
 
     // Drop stuff.
     // villsa [STRIFE] get item from dialog target
-    item = P_DialogFind(target->type, target->miscdata)->dropitem;
+    item = static_cast<mobjtype_t>(P_DialogFind(target->type, target->miscdata)->dropitem);
 
     if(!item)
     {
@@ -1353,7 +1353,7 @@ void P_DamageMobj(mobj_t* target, mobj_t* inflictor, mobj_t* source, int damage)
             {
                 target->player->cheats |= CF_ONFIRE;
                 target->player->powers[pw_invisibility] = false;
-                target->player->readyweapon = 0;
+                target->player->readyweapon = wp_fist;
                 P_SetPsprite(target->player, ps_weapon, S_WAVE_00); // 02
                 P_SetPsprite(target->player, ps_flash, S_NULL);
             }

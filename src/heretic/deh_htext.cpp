@@ -15,9 +15,9 @@
 // Parses Text substitution sections in dehacked files
 //
 
-#include <stdio.h>
-#include <stdlib.h>
-#include <string.h>
+#include <cstdio>
+#include <cstdlib>
+#include <cstring>
 
 #include "doomtype.hpp"
 #include "dstrings.hpp"
@@ -743,7 +743,7 @@ static void SuggestOtherVersions(unsigned int offset)
         {
             if (strings[i].offsets[v] == offset)
             {
-                DEH_SuggestHereticVersion(v);
+                DEH_SuggestHereticVersion(static_cast<deh_hhe_version_t>(v));
             }
         }
     }
@@ -758,7 +758,7 @@ static void SuggestOtherVersions(unsigned int offset)
         {
             if (string_list[i] == offset)
             {
-                DEH_SuggestHereticVersion(v);
+                DEH_SuggestHereticVersion(static_cast<deh_hhe_version_t>(v));
             }
         }
     }
@@ -777,7 +777,7 @@ static void *DEH_TextStart(deh_context_t *context, char *line)
         return NULL;
     }
 
-    repl_text = malloc(repl_len + 1);
+    repl_text = static_cast<char *>(malloc(repl_len + 1));
 
     // read in the "to" text
 

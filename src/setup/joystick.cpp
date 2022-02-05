@@ -12,9 +12,9 @@
 // GNU General Public License for more details.
 //
 
-#include <stdio.h>
-#include <stdlib.h>
-#include <string.h>
+#include <cstdio>
+#include <cstdlib>
+#include <cstring>
 
 #include "doomtype.hpp"
 #include "i_joystick.hpp"
@@ -54,7 +54,7 @@ static int usejoystick = 0;
 
 // GUID and index of joystick to use.
 
-char *joystick_guid = "";
+char *joystick_guid = const_cast<char *>("");
 int joystick_index = -1;
 
 // Calibration button. This is the button the user pressed at the
@@ -797,7 +797,7 @@ static int OpenAllJoysticks(void)
     // SDL_JoystickOpen() all joysticks.
 
     all_joysticks_len = SDL_NumJoysticks();
-    all_joysticks = calloc(all_joysticks_len, sizeof(SDL_Joystick *));
+    all_joysticks = static_cast<SDL_Joystick **>(calloc(all_joysticks_len, sizeof(SDL_Joystick *)));
 
     result = 0;
 
@@ -867,7 +867,7 @@ static boolean SetJoystickGUID(SDL_JoystickID joy_id)
         if (SDL_JoystickInstanceID(all_joysticks[i]) == joy_id)
         {
             guid = SDL_JoystickGetGUID(all_joysticks[i]);
-            joystick_guid = malloc(33);
+            joystick_guid = static_cast<char *>(malloc(33));
             SDL_JoystickGetGUIDString(guid, joystick_guid, 33);
             joystick_index = i;
             return true;

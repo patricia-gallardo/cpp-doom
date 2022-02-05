@@ -25,8 +25,8 @@
 #include "w_wad.hpp"
 #include "z_zone.hpp"
 
-#include "../utils/lump.hpp"
-#include "../utils/memory.hpp"
+#include "lump.hpp"
+#include "memory.hpp"
 #include "v_diskicon.hpp"
 
 // Only display the disk icon if more then this much bytes have been read

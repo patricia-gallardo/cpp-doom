@@ -14,7 +14,7 @@
 // GNU General Public License for more details.
 //
 
-#include <stdlib.h>
+#include <cstdlib>
 
 #include "doomdef.hpp"
 #include "i_system.hpp"
@@ -29,11 +29,13 @@
 
 #include "w_wad.hpp"
 #include "z_zone.hpp"
+#include "lump.hpp"
+#include "memory.hpp"
 
 /*
 ===============================================================================
 
-		MUSIC & SFX API
+                MUSIC & SFX API
 
 ===============================================================================
 */
@@ -92,7 +94,7 @@ void S_StartSong(int song, boolean loop)
         return;
     }
     mus_lumpnum = W_GetNumForName(S_music[song].name);
-    mus_sndptr = W_CacheLumpNum(mus_lumpnum, PU_MUSIC);
+    mus_sndptr = cache_lump_num<void *>(mus_lumpnum, PU_MUSIC);
     mus_len = W_LumpLength(mus_lumpnum);
     rs = I_RegisterSong(mus_sndptr, mus_len);
     I_PlaySong(rs, loop);       //'true' denotes endless looping.
@@ -122,7 +124,7 @@ static mobj_t *GetSoundListener(void)
 
 void S_StartSound(void *_origin, int sound_id)
 {
-    mobj_t *origin = _origin;
+    mobj_t *origin = static_cast<mobj_t *>(_origin);
     mobj_t *listener;
     int dist, vol;
     int i;
@@ -146,8 +148,8 @@ void S_StartSound(void *_origin, int sound_id)
 
 // calculate the distance before other stuff so that we can throw out
 // sounds that are beyond the hearing range.
-    absx = abs(origin->x - listener->x);
-    absy = abs(origin->y - listener->y);
+    absx = std::abs(origin->x - listener->x);
+    absy = std::abs(origin->y - listener->y);
     dist = absx + absy - (absx > absy ? absy >> 1 : absx >> 1);
     dist >>= FRACBITS;
 //  dist = P_AproxDistance(origin->x-viewx, origin->y-viewy)>>FRACBITS;
@@ -289,7 +291,7 @@ void S_StartSound(void *_origin, int sound_id)
 
 void S_StartSoundAtVolume(void *_origin, int sound_id, int volume)
 {
-    mobj_t *origin = _origin;
+    mobj_t *origin = static_cast<mobj_t *>(_origin);
     mobj_t *listener;
     int i;
 
@@ -389,7 +391,7 @@ boolean S_StopSoundID(int sound_id, int priority)
 
 void S_StopSound(void *_origin)
 {
-    mobj_t *origin = _origin;
+    mobj_t *origin = static_cast<mobj_t *>(_origin);
     int i;
 
     for (i = 0; i < snd_Channels; i++)
@@ -476,8 +478,8 @@ void S_UpdateSounds(mobj_t * listener)
         }
         else
         {
-            absx = abs(channel[i].mo->x - listener->x);
-            absy = abs(channel[i].mo->y - listener->y);
+            absx = std::abs(channel[i].mo->x - listener->x);
+            absy = std::abs(channel[i].mo->y - listener->y);
             dist = absx + absy - (absx > absy ? absy >> 1 : absx >> 1);
             dist >>= FRACBITS;
 //          dist = P_AproxDistance(channel[i].mo->x-listener->x, channel[i].mo->y-listener->y)>>FRACBITS;
@@ -514,7 +516,7 @@ void S_UpdateSounds(mobj_t * listener)
 void S_Init(void)
 {
     I_SetOPLDriverVer(opl_doom2_1_666);
-    soundCurve = Z_Malloc(MAX_SND_DIST, PU_STATIC, NULL);
+    soundCurve = zmalloc<byte *>(MAX_SND_DIST, PU_STATIC, NULL);
     if (snd_Channels > 8)
     {
         snd_Channels = 8;

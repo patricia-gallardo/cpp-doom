@@ -16,11 +16,11 @@
 //
 
 #include "net_packet.hpp"
-#include "../utils/memory.hpp"
+#include "memory.hpp"
 #include "m_misc.hpp"
 #include "z_zone.hpp"
-#include <ctype.h>
-#include <string.h>
+#include <cctype>
+#include <cstring>
 
 static int total_packet_memory = 0;
 

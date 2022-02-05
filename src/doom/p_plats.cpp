@@ -16,7 +16,7 @@
 //	Plats (i.e. elevator platforms) code, raising/lowering.
 //
 
-#include <stdio.h>
+#include <cstdio>
 
 #include "i_system.hpp"
 #include "z_zone.hpp"
@@ -32,7 +32,7 @@
 #include "r_state.hpp"
 
 // Data.
-#include "../../utils/memory.hpp"
+#include "memory.hpp"
 #include "sounds.hpp"
 
 plat_t *activeplats[MAXPLATS];

@@ -35,6 +35,8 @@
 
 // State.
 #include "doomstat.hpp"
+#include "lump.hpp"
+#include "memory.hpp"
 
 
 // ?
@@ -78,7 +80,7 @@ static byte *background_buffer = NULL;
 
 // haleyjd 08/29/10: [STRIFE] Rogue added the ability to customize the view
 // border flat by storing it in the configuration file.
-char *back_flat = "F_PAVE01";
+char *back_flat = const_cast<char *>("F_PAVE01");
 
 //
 // R_DrawColumn
@@ -454,7 +456,7 @@ void R_InitTranslationTables (void)
     V_LoadXlaTable();
 
     // villsa [STRIFE] allocate a larger size for translation tables
-    translationtables = Z_Malloc (256*8, PU_STATIC, 0);
+    translationtables = zmalloc<byte *>(256 * 8, PU_STATIC, 0);
 
     col1 = 0xFA;
     col2 = 0xE0;
@@ -838,14 +840,14 @@ void R_FillBackScreen (void)
 	
     if (background_buffer == NULL)
     {
-        background_buffer = Z_Malloc(SCREENWIDTH * (SCREENHEIGHT - SBARHEIGHT),
-                                     PU_STATIC, NULL);
+        background_buffer = zmalloc<byte *>(SCREENWIDTH * (SCREENHEIGHT - SBARHEIGHT),
+            PU_STATIC, NULL);
     }
 
     // haleyjd 08/29/10: [STRIFE] Use configurable back_flat
     name = back_flat;
     
-    src = W_CacheLumpName(name, PU_CACHE); 
+    src = cache_lump_name<byte *>(name, PU_CACHE);
     dest = background_buffer;
 	 
     for (y=0 ; y<SCREENHEIGHT-SBARHEIGHT ; y++) 

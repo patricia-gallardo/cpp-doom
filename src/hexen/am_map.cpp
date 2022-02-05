@@ -14,7 +14,7 @@
 // GNU General Public License for more details.
 //
 
-#include <stdio.h>
+#include <cstdio>
 
 #include "h2def.hpp"
 #include "doomkeys.hpp"
@@ -27,6 +27,7 @@
 #include "am_map.hpp"
 #include "am_data.hpp"
 #include "v_video.hpp"
+#include "lump.hpp"
 
 #define NUMALIAS 3              // Number of antialiased lines.
 
@@ -314,10 +315,12 @@ void AM_initVariables(void)
 //      memset(KeyPoints, 0, sizeof(vertex_t)*3);
     if (gameskill == sk_baby)
     {
+        constexpr action_hook needle = P_MobjThinker;
+
         for (think = thinkercap.next; think != &thinkercap;
              think = think->next)
         {
-            if (think->function != P_MobjThinker)
+            if (think->function != needle)
             {                   //not a mobj
                 continue;
             }
@@ -330,7 +333,7 @@ void AM_initVariables(void)
 
 void AM_loadPics(void)
 {
-    maplump = cache_lump_name<patch_t *>("AUTOPAGE", PU_STATIC);
+    maplump = cache_lump_name<byte *>("AUTOPAGE", PU_STATIC);
 }
 
 

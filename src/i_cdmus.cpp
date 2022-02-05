@@ -16,7 +16,7 @@
 // Hexen CD interface.
 //
 
-#include <stdio.h>
+#include <cstdio>
 
 #include "SDL.h"
 

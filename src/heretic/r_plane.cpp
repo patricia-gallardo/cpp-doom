@@ -15,11 +15,12 @@
 //
 // R_planes.c
 
-#include <stdlib.h>
+#include <cstdlib>
 #include "doomdef.hpp"
 #include "deh_str.hpp"
 #include "i_system.hpp"
 #include "r_local.hpp"
+#include "lump.hpp"
 
 planefunction_t floorfunc, ceilingfunc;
 
@@ -219,7 +220,7 @@ static void R_RaiseVisplanes (visplane_t** vp)
 	visplane_t* visplanes_old = visplanes;
 
 	numvisplanes = numvisplanes ? 2 * numvisplanes : MAXVISPLANES;
-	visplanes = I_Realloc(visplanes, numvisplanes * sizeof(*visplanes));
+	visplanes = static_cast<visplane_t *>(I_Realloc(visplanes, numvisplanes * sizeof(*visplanes)));
 	memset(visplanes + numvisplanes_old, 0, (numvisplanes - numvisplanes_old) * sizeof(*visplanes));
 
 	lastvisplane = visplanes + numvisplanes_old;
@@ -476,7 +477,7 @@ void R_DrawPlanes(void)
         //
         lumpnum = firstflat + flattranslation[pl->picnum];
 
-        tempSource = W_CacheLumpNum(lumpnum, PU_STATIC);
+        tempSource = cache_lump_num<byte *>(lumpnum, PU_STATIC);
 
         switch (pl->special)
         {
@@ -517,7 +518,7 @@ void R_DrawPlanes(void)
             default:
                 ds_source = tempSource;
         }
-        planeheight = abs(pl->height - viewz);
+        planeheight = std::abs(pl->height - viewz);
         light = (pl->lightlevel >> LIGHTSEGSHIFT) + extralight;
         if (light >= LIGHTLEVELS)
             light = LIGHTLEVELS - 1;

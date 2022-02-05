@@ -16,7 +16,7 @@
 //	Moving object handling. Spawn functions.
 //
 
-#include <stdio.h>
+#include <cstdio>
 
 #include "i_system.hpp"
 #include "z_zone.hpp"
@@ -29,6 +29,7 @@
 #include "s_sound.hpp"
 #include "doomstat.hpp"
 #include "d_main.hpp"     // villsa [STRIFE]
+#include "memory.hpp"
 
 extern line_t *spechit[];  // haleyjd:
 extern int     numspechit; // [STRIFE] - needed in P_XYMovement
@@ -70,9 +71,12 @@ P_SetMobjState
 
 	// Modified handling.
 	// Call action functions when the state is set
-	if (st->action.acp1)		
-	    st->action.acp1(mobj);	
-	
+        if (st->action.index() == mobj_param_action_hook)
+        {
+            auto callback = std::get<mobj_param_action>(st->action);
+            callback(mobj);
+        }
+
 	state = st->nextstate;
     } while (!mobj->tics);
 				
@@ -627,7 +631,7 @@ P_SpawnMobj
     state_t*	st;
     mobjinfo_t*	info;
 
-    mobj = Z_Malloc (sizeof(*mobj), PU_LEVEL, NULL);
+    mobj = zmalloc<mobj_t *>(sizeof(*mobj), PU_LEVEL, NULL);
     memset (mobj, 0, sizeof (*mobj));
     info = &mobjinfo[type];
 
@@ -795,7 +799,7 @@ void P_RespawnSpecials (void)
     else
         z = ONFLOORZ;
 
-    mo = P_SpawnMobj (x,y,z, i);
+    mo = P_SpawnMobj (x,y,z, static_cast<mobjtype_t>(i));
     mo->spawnpoint = *mthing;
     mo->angle = ANG45 * (mthing->angle/45);
 
@@ -988,7 +992,7 @@ void P_SpawnMapThing (mapthing_t* mthing)
     else
         z = ONFLOORZ;
     
-    mobj = P_SpawnMobj (x,y,z, i);
+    mobj = P_SpawnMobj (x,y,z, static_cast<mobjtype_t>(i));
     mobj->spawnpoint = *mthing;
 
     if (mobj->tics > 0)

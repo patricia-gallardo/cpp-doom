@@ -18,6 +18,7 @@
 #include "p_local.hpp"
 #include "s_sound.hpp"
 #include "v_video.hpp"
+#include "memory.hpp"
 
 //==================================================================
 //==================================================================
@@ -136,7 +137,7 @@ int EV_DoCeiling(line_t * line, ceiling_e type)
         // new door thinker
         //
         rtn = 1;
-        ceiling = Z_Malloc(sizeof(*ceiling), PU_LEVSPEC, 0);
+        ceiling = zmalloc<ceiling_t *>(sizeof(*ceiling), PU_LEVSPEC, 0);
         P_AddThinker(&ceiling->thinker);
         sec->specialdata = ceiling;
         ceiling->thinker.function = T_MoveCeiling;
@@ -246,7 +247,7 @@ int EV_CeilingCrushStop(line_t * line)
             (activeceilings[i]->direction != 0))
         {
             activeceilings[i]->olddirection = activeceilings[i]->direction;
-            activeceilings[i]->thinker.function = NULL;
+            activeceilings[i]->thinker.function = null_hook();
             activeceilings[i]->direction = 0;   // in-stasis
             rtn = 1;
         }

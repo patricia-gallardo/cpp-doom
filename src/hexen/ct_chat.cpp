@@ -15,8 +15,8 @@
 //
 
 
-#include <string.h>
-#include <ctype.h>
+#include <cstring>
+#include <cctype>
 #include "h2def.hpp"
 #include "i_input.hpp"
 #include "s_sound.hpp"
@@ -25,6 +25,7 @@
 #include "m_misc.hpp"
 #include "p_local.hpp"
 #include "v_video.hpp"
+#include "lump.hpp"
 
 #define NUMKEYS 256
 
@@ -85,16 +86,16 @@ const char *CT_FromPlrText[MAXPLAYERS] = {
 };
 
 char *chat_macros[10] = {
-    HUSTR_CHATMACRO0,
-    HUSTR_CHATMACRO1,
-    HUSTR_CHATMACRO2,
-    HUSTR_CHATMACRO3,
-    HUSTR_CHATMACRO4,
-    HUSTR_CHATMACRO5,
-    HUSTR_CHATMACRO6,
-    HUSTR_CHATMACRO7,
-    HUSTR_CHATMACRO8,
-    HUSTR_CHATMACRO9,
+    const_cast<char *>(HUSTR_CHATMACRO0),
+    const_cast<char *>(HUSTR_CHATMACRO1),
+    const_cast<char *>(HUSTR_CHATMACRO2),
+    const_cast<char *>(HUSTR_CHATMACRO3),
+    const_cast<char *>(HUSTR_CHATMACRO4),
+    const_cast<char *>(HUSTR_CHATMACRO5),
+    const_cast<char *>(HUSTR_CHATMACRO6),
+    const_cast<char *>(HUSTR_CHATMACRO7),
+    const_cast<char *>(HUSTR_CHATMACRO8),
+    const_cast<char *>(HUSTR_CHATMACRO9),
 };
 
 boolean altdown;
@@ -388,9 +389,8 @@ void CT_Drawer(void)
             }
             else
             {
-                patch = W_CacheLumpNum(FontABaseLump +
-                                       chat_msg[consoleplayer][i] - 33,
-                                       PU_CACHE);
+                patch = cache_lump_num<patch_t *>(FontABaseLump + chat_msg[consoleplayer][i] - 33,
+                    PU_CACHE);
                 V_DrawPatch(x, 10, patch);
                 x += patch->width;
             }
@@ -458,7 +458,7 @@ void CT_AddChar(int player, char c)
     }
     else
     {
-        patch = W_CacheLumpNum(FontABaseLump + c - 33, PU_CACHE);
+        patch = cache_lump_num<patch_t *>(FontABaseLump + c - 33, PU_CACHE);
         msglen[player] += patch->width;
     }
 }
@@ -487,7 +487,7 @@ void CT_BackSpace(int player)
     }
     else
     {
-        patch = W_CacheLumpNum(FontABaseLump + c - 33, PU_CACHE);
+        patch = cache_lump_num<patch_t *>(FontABaseLump + c - 33, PU_CACHE);
         msglen[player] -= patch->width;
     }
     chat_msg[player][msgptr[player]] = 0;

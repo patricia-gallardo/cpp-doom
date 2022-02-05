@@ -18,11 +18,10 @@
 //
 
 
-#include <stdio.h>
-#include <stdlib.h>
-#include <string.h>
-#include <ctype.h>
-#include <errno.h>
+#include <cstdlib>
+#include <cstring>
+#include <cctype>
+#include <cerrno>
 
 #ifdef _WIN32
 #define WIN32_LEAN_AND_MEAN
@@ -33,14 +32,13 @@
 #endif
 #else
 #include <sys/stat.h>
-#include <sys/types.h>
 #endif
 
 #include "doomtype.hpp"
 
 #include "deh_str.hpp"
 
-#include "../utils/memory.hpp"
+#include "memory.hpp"
 #include "i_swap.hpp"
 #include "i_system.hpp"
 #include "i_video.hpp"
@@ -651,9 +649,9 @@ char *M_OEMToUTF8(const char *oem)
     wchar_t *    tmp;
     char *       result;
 
-    tmp = malloc(len * sizeof(wchar_t));
+    tmp = static_cast<wchar_t *>(malloc(len * sizeof(wchar_t)));
     MultiByteToWideChar(CP_OEMCP, 0, oem, len, tmp, len);
-    result = malloc(len * 4);
+    result = static_cast<char *>(malloc(len * 4));
     WideCharToMultiByte(CP_UTF8, 0, tmp, len, result, len * 4, NULL, NULL);
     free(tmp);
 

@@ -17,7 +17,7 @@
 
 // HEADER FILES ------------------------------------------------------------
 
-#include "../../utils/memory.hpp"
+#include "memory.hpp"
 #include "h2def.hpp"
 #include "i_swap.hpp"
 #include "i_system.hpp"
@@ -25,6 +25,7 @@
 #include "m_random.hpp"
 #include "p_local.hpp"
 #include "s_sound.hpp"
+#include "lump.hpp"
 
 // MACROS ------------------------------------------------------------------
 
@@ -453,7 +454,7 @@ void P_LoadACScripts(int lump)
     acsHeader_t *header;
     acsInfo_t *info;
 
-    ActionCodeBase = W_CacheLumpNum(lump, PU_LEVEL);
+    ActionCodeBase = cache_lump_num<byte *>(lump, PU_LEVEL);
     ActionCodeSize = W_LumpLength(lump);
 
     M_snprintf(EvalContext, sizeof(EvalContext),
@@ -678,7 +679,7 @@ boolean P_StartLockedACS(line_t * line, byte * args, mobj_t * mo, int side)
     byte newArgs[5];
     char LockedBuffer[80];
 
-    extern char *TextKeyMessages[11];
+    extern const char *TextKeyMessages[11];
 
     lock = args[4];
     if (!mo->player)
@@ -901,7 +902,7 @@ static boolean TagBusy(int tag)
     sectorIndex = -1;
     while ((sectorIndex = P_FindSectorFromTag(tag, sectorIndex)) >= 0)
     {
-        if (sectors[sectorIndex].specialdata)
+        if (data_or_hook_has_value(sectors[sectorIndex].specialdata))
         {
             return true;
         }
@@ -1518,10 +1519,11 @@ static void ThingCount(int type, int tid)
     }
     else
     {                           // Count only types
+        action_hook needle = P_MobjThinker;
         for (think = thinkercap.next; think != &thinkercap;
              think = think->next)
         {
-            if (think->function != P_MobjThinker)
+            if (think->function != needle)
             {                   // Not a mobj thinker
                 continue;
             }

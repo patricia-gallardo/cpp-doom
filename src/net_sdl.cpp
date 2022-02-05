@@ -15,11 +15,11 @@
 //     Networking module which uses SDL_net
 //
 
-#include <stdlib.h>
-#include <string.h>
-#include <stdio.h>
+#include <cstdlib>
+#include <cstring>
+#include <cstdio>
 
-#include "../utils/memory.hpp"
+#include "memory.hpp"
 #include "doomtype.hpp"
 #include "i_system.hpp"
 #include "m_argv.hpp"
@@ -35,7 +35,6 @@
 //
 
 #include <SDL_net.h>
-#include <cstring>
 
 #define DEFAULT_PORT 2342
 

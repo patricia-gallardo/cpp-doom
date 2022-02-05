@@ -14,7 +14,7 @@
 // GNU General Public License for more details.
 //
 
-#include <ctype.h>
+#include <cctype>
 
 #include "h2def.hpp"
 #include "s_sound.hpp"
@@ -24,6 +24,7 @@
 #include "p_local.hpp"
 #include "v_video.hpp"
 #include "i_swap.hpp"
+#include "lump.hpp"
 
 // MACROS ------------------------------------------------------------------
 
@@ -98,7 +99,7 @@ extern void AM_Stop(void);
 void IN_Start(void)
 {
     int i;
-    I_SetPalette(cache_lump_name<patch_t *>("PLAYPAL", PU_CACHE));
+    I_SetPalette(cache_lump_name<byte *>("PLAYPAL", PU_CACHE));
     InitStats();
     LoadPics();
     intermission = true;
@@ -259,7 +260,7 @@ static void LoadPics(void)
         FontBLumpBase = W_GetNumForName("FONTB16");
         for (i = 0; i < 10; i++)
         {
-            FontBNumbers[i] = W_CacheLumpNum(FontBLumpBase + i, PU_STATIC);
+            FontBNumbers[i] = cache_lump_num<patch_t *>(FontBLumpBase + i, PU_STATIC);
         }
         FontBLump = W_GetNumForName("FONTB_S") + 1;
         FontBNegative = cache_lump_name<patch_t *>("FONTB13", PU_STATIC);
@@ -600,7 +601,7 @@ static void DrawHubText(void)
             cx += 5;
             continue;
         }
-        w = W_CacheLumpNum(FontABaseLump + c - 33, PU_CACHE);
+        w = cache_lump_num<patch_t *>(FontABaseLump + c - 33, PU_CACHE);
         if (cx + SHORT(w->width) > SCREENWIDTH)
         {
             break;

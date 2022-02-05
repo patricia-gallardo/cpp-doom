@@ -16,13 +16,11 @@
 // memory.
 //
 
-#include <stdio.h>
-#include <stdlib.h>
-#include <string.h>
+#include <cstring>
 
 #include "memio.hpp"
 
-#include "../utils/memory.hpp"
+#include "memory.hpp"
 #include "z_zone.hpp"
 
 typedef enum

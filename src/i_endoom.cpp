@@ -15,8 +15,7 @@
 //    Exit text-mode ENDOOM screen.
 //
 
-#include <stdio.h>
-#include <string.h>
+#include <cstring>
 
 #include "config.h"
 #include "doomtype.hpp"

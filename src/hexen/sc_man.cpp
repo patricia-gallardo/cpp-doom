@@ -17,11 +17,12 @@
 
 // HEADER FILES ------------------------------------------------------------
 
-#include <string.h>
-#include <stdlib.h>
+#include <cstring>
+#include <cstdlib>
 #include "h2def.hpp"
 #include "i_system.hpp"
 #include "m_misc.hpp"
+#include "lump.hpp"
 
 // MACROS ------------------------------------------------------------------
 
@@ -128,7 +129,7 @@ static void OpenScript(const char *name, int type)
     if (type == LUMP_SCRIPT)
     {                           // Lump script
         ScriptLumpNum = W_GetNumForName(name);
-        ScriptBuffer = (char *) W_CacheLumpNum(ScriptLumpNum, PU_STATIC);
+        ScriptBuffer = cache_lump_num<char *>(ScriptLumpNum, PU_STATIC);
         ScriptSize = W_LumpLength(ScriptLumpNum);
         M_StringCopy(ScriptName, name, sizeof(ScriptName));
     }

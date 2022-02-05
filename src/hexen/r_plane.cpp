@@ -20,6 +20,7 @@
 #include "h2def.hpp"
 #include "i_system.hpp"
 #include "r_local.hpp"
+#include "lump.hpp"
 
 // MACROS ------------------------------------------------------------------
 
@@ -498,8 +499,7 @@ void R_DrawPlanes(void)
             }
         }
         // Regular flat
-        tempSource = W_CacheLumpNum(firstflat +
-                                    flattranslation[pl->picnum], PU_STATIC);
+        tempSource = cache_lump_num<byte *>(firstflat + flattranslation[pl->picnum], PU_STATIC);
         scrollOffset = leveltime >> 1 & 63;
         switch (pl->special)
         {                       // Handle scrolling flats
@@ -559,7 +559,7 @@ void R_DrawPlanes(void)
                 ds_source = tempSource;
                 break;
         }
-        planeheight = abs(pl->height - viewz);
+        planeheight = std::abs(pl->height - viewz);
         light = (pl->lightlevel >> LIGHTSEGSHIFT) + extralight;
         if (light >= LIGHTLEVELS)
         {

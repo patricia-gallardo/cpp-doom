@@ -18,8 +18,8 @@
 //
 
 
-#include <stdlib.h>
-#include <ctype.h>
+#include <cstdlib>
+#include <cctype>
 
 
 #include "doomdef.hpp"
@@ -60,6 +60,7 @@
 
 #include "m_menu.hpp"
 #include "p_dialog.hpp"
+#include "lump.hpp"
 
 
 extern void M_QuitStrife(int);
@@ -625,7 +626,7 @@ void M_DoNameChar(int choice)
     else
         map = 2;
 
-    G_DeferedInitNew(menuskill, map);
+    G_DeferedInitNew(static_cast<skill_t>(menuskill), map);
     M_ClearMenus(0);
 }
 
@@ -858,7 +859,7 @@ void M_QuickSave(void)
         return;
     }
     DEH_snprintf(tempstring, 80, QSPROMPT, savegamestrings[quickSaveSlot]);
-    M_StartMessage(tempstring,M_QuickSaveResponse,true);
+    M_StartMessage(tempstring, reinterpret_cast<void *>(M_QuickSaveResponse),true);
 }
 
 
@@ -894,7 +895,7 @@ void M_QuickLoad(void)
         return;
     }
     DEH_snprintf(tempstring, 80, QLPROMPT, savegamestrings[quickSaveSlot]);
-    M_StartMessage(tempstring,M_QuickLoadResponse,true);
+    M_StartMessage(tempstring, reinterpret_cast<void *>(M_QuickLoadResponse),true);
 }
 
 
@@ -1232,7 +1233,7 @@ void M_EndGame(int choice)
         return;
     }
 
-    M_StartMessage(DEH_String(ENDGAME),M_EndGameResponse,true);
+    M_StartMessage(DEH_String(ENDGAME), reinterpret_cast<void *>(M_EndGameResponse),true);
 }
 
 
@@ -1343,7 +1344,7 @@ void M_QuitStrife(int choice)
     DEH_snprintf(endstring, sizeof(endstring),
                  "Do you really want to leave?\n\n" DOSY);
   
-    M_StartMessage(endstring, M_QuitResponse, true);
+    M_StartMessage(endstring, reinterpret_cast<void *>(M_QuitResponse), true);
 }
 
 
@@ -1474,7 +1475,7 @@ M_StartMessage
     messageLastMenuActive = menuactive;
     messageToPrint = 1;
     messageString = string;
-    messageRoutine = routine;
+    messageRoutine = reinterpret_cast<void (*)(int)>(routine);
     messageNeedsInput = input;
     menuactive = true;
     return;
@@ -2103,7 +2104,7 @@ boolean M_Responder (event_t* ev)
             if (usegamma > 4+4) // [crispy] intermediate gamma levels
                 usegamma = 0;
             players[consoleplayer].message = DEH_String(gammamsg[usegamma]);
-            I_SetPalette (W_CacheLumpName (DEH_String("PLAYPAL"),PU_CACHE));
+            I_SetPalette (cache_lump_name<byte *> (DEH_String("PLAYPAL"),PU_CACHE));
             return true;
         }
         else if(gameversion == exe_strife_1_31 && key == key_spy)
@@ -2360,7 +2361,7 @@ void M_Drawer (void)
 
         if (name[0])
         {
-            V_DrawPatchDirect (x, y, W_CacheLumpName(name, PU_CACHE));
+            V_DrawPatchDirect (x, y, cache_lump_name<patch_t *>(name, PU_CACHE));
         }
         y += LINEHEIGHT;
     }

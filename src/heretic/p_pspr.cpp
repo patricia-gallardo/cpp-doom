@@ -337,9 +337,10 @@ void P_SetPsprite(player_t * player, int position, statenum_t stnum)
             psp->sx = state->misc1 << FRACBITS;
             psp->sy = state->misc2 << FRACBITS;
         }
-        if (state->action)
+        if (state->action.index() == player_psp_action_hook)
         {                       // Call action routine.
-            state->action(player, psp);
+            auto callback = std::get<player_psp_param_action>(state->action);
+            callback(player, psp);
             if (!psp->state)
             {
                 break;
@@ -419,7 +420,7 @@ void P_PostChickenWeapon(player_t * player, weapontype_t weapon)
 
 void P_BringUpWeapon(player_t * player)
 {
-    statenum_t new;
+    statenum_t sdnum;
 
     if (player->pendingweapon == wp_nochange)
     {
@@ -431,15 +432,15 @@ void P_BringUpWeapon(player_t * player)
     }
     if (player->powers[pw_weaponlevel2])
     {
-        new = wpnlev2info[player->pendingweapon].upstate;
+        sdnum = wpnlev2info[player->pendingweapon].upstate;
     }
     else
     {
-        new = wpnlev1info[player->pendingweapon].upstate;
+        sdnum = wpnlev1info[player->pendingweapon].upstate;
     }
     player->pendingweapon = wp_nochange;
     player->psprites[ps_weapon].sy = WEAPONBOTTOM;
-    P_SetPsprite(player, ps_weapon, new);
+    P_SetPsprite(player, ps_weapon, sdnum);
 }
 
 //---------------------------------------------------------------------------
@@ -544,8 +545,8 @@ void P_FireWeapon(player_t * player)
     P_SetMobjState(player->mo, S_PLAY_ATK2);
     wpinfo = player->powers[pw_weaponlevel2] ? &wpnlev2info[0]
         : &wpnlev1info[0];
-    attackState = player->refire ? wpinfo[player->readyweapon].holdatkstate
-        : wpinfo[player->readyweapon].atkstate;
+    attackState = (player->refire ? wpinfo[player->readyweapon].holdatkstate
+        : wpinfo[player->readyweapon].atkstate);
     P_SetPsprite(player, ps_weapon, attackState);
     P_NoiseAlert(player->mo, player->mo);
     if (player->readyweapon == wp_gauntlets && !player->refire)
@@ -1563,7 +1564,7 @@ void A_SkullRodStorm(mobj_t * actor)
     }
     x = actor->x + ((P_Random() & 127) - 64) * FRACUNIT;
     y = actor->y + ((P_Random() & 127) - 64) * FRACUNIT;
-    mo = P_SpawnMobj(x, y, ONCEILINGZ, MT_RAINPLR1 + actor->special2.i);
+    mo = P_SpawnMobj(x, y, ONCEILINGZ, static_cast<mobjtype_t>(MT_RAINPLR1 + actor->special2.i));
     mo->target = actor->target;
     mo->momx = 1;               // Force collision detection
     mo->momz = -mo->info->speed;
@@ -1586,7 +1587,7 @@ void A_RainImpact(mobj_t * actor)
 {
     if (actor->z > actor->floorz)
     {
-        P_SetMobjState(actor, S_RAINAIRXPLR1_1 + actor->special2.i);
+        P_SetMobjState(actor, static_cast<statenum_t>(S_RAINAIRXPLR1_1 + actor->special2.i));
     }
     else if (P_Random() < 40)
     {

@@ -25,7 +25,7 @@
 // up to work independently.
 //
 
-#include <stdint.h>
+#include <cstdint>
 
 #include "aes_prng.hpp"
 #include "doomtype.hpp"

@@ -17,10 +17,9 @@
 //
 
 
-#include <ctype.h>
-#include <stdio.h>
-#include <stdlib.h>
-#include <string.h>
+#include <cctype>
+#include <cstdlib>
+#include <cstring>
 #include <string>
 
 #include "doomtype.hpp"
@@ -32,7 +31,7 @@
 #include "v_diskicon.hpp"
 #include "z_zone.hpp"
 
-#include "../utils/memory.hpp"
+#include "memory.hpp"
 #include "w_wad.hpp"
 
 typedef PACKED_STRUCT(
@@ -391,7 +390,7 @@ void W_ReadLump(lumpindex_t lump, void *dest)
 // when no longer needed (do not use Z_ChangeTag).
 //
 
-void *W_CacheLumpNum(lumpindex_t lumpnum, int tag)
+[[nodiscard]] void *W_CacheLumpNum(lumpindex_t lumpnum, int tag)
 {
     void *      result;
     lumpinfo_t *lump;
@@ -437,7 +436,7 @@ void *W_CacheLumpNum(lumpindex_t lumpnum, int tag)
 //
 // W_CacheLumpName
 //
-void *W_CacheLumpName(const char *name, int tag)
+[[nodiscard]] void *W_CacheLumpName(const char *name, int tag)
 {
     return W_CacheLumpNum(W_GetNumForName(name), tag);
 }

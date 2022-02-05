@@ -19,7 +19,6 @@
 // Events can be discarded if no responder claims them
 //
 
-#include <stdlib.h>
 #include "d_event.hpp"
 
 #define MAXEVENTS 64
@@ -48,7 +47,7 @@ event_t *D_PopEvent(void)
 
     if (eventtail == eventhead)
     {
-        return NULL;
+        return nullptr;
     }
 
     result = &events[eventtail];

@@ -15,8 +15,8 @@
 // Parses "Frame" sections in dehacked files
 //
 
-#include <stdio.h>
-#include <stdlib.h>
+#include <cstdio>
+#include <cstdlib>
 
 #include "doomtype.hpp"
 #include "d_items.hpp"
@@ -75,23 +75,23 @@ static void DEH_FrameOverflow(deh_context_t *context, char *varname, int value)
 {
     if (!strcasecmp(varname, "Duration"))
     {
-        weaponinfo[0].ammo = value;
+        weaponinfo[0].ammo = static_cast<ammotype_t>(value);
     }
     else if (!strcasecmp(varname, "Codep frame")) 
     {
-        weaponinfo[0].upstate = value;
+        weaponinfo[0].upstate = static_cast<statenum_t>(value);
     }
     else if (!strcasecmp(varname, "Next frame")) 
     {
-        weaponinfo[0].downstate = value;
+        weaponinfo[0].downstate = static_cast<statenum_t>(value);
     }
     else if (!strcasecmp(varname, "Unknown 1"))
     {
-        weaponinfo[0].readystate = value;
+        weaponinfo[0].readystate = static_cast<statenum_t>(value);
     }
     else if (!strcasecmp(varname, "Unknown 2"))
     {
-        weaponinfo[0].atkstate = value;
+        weaponinfo[0].atkstate = static_cast<statenum_t>(value);
     }
     else
     {

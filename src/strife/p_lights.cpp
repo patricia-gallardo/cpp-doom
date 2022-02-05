@@ -28,6 +28,7 @@
 
 // State.
 #include "r_state.hpp"
+#include "memory.hpp"
 
 //
 // FIRELIGHT FLICKER
@@ -73,7 +74,7 @@ void P_SpawnFireFlicker (sector_t*      sector)
     // Nothing special about it during gameplay.
     sector->special = 0; 
 
-    flick = Z_Malloc ( sizeof(*flick), PU_LEVSPEC, 0);
+    flick = zmalloc<fireflicker_t *>(sizeof(*flick), PU_LEVSPEC, 0);
 
     P_AddThinker (&flick->thinker);
 
@@ -131,7 +132,7 @@ void P_SpawnLightFlash (sector_t*	sector)
     // nothing special about it during gameplay
     sector->special = 0;
 
-    flash = Z_Malloc ( sizeof(*flash), PU_LEVSPEC, 0);
+    flash = zmalloc<lightflash_t *>(sizeof(*flash), PU_LEVSPEC, 0);
 
     P_AddThinker (&flash->thinker);
 
@@ -191,7 +192,7 @@ P_SpawnStrobeFlash
 {
     strobe_t*   flash;
 
-    flash = Z_Malloc ( sizeof(*flash), PU_LEVSPEC, 0);
+    flash = zmalloc<strobe_t *>(sizeof(*flash), PU_LEVSPEC, 0);
 
     P_AddThinker (&flash->thinker);
 
@@ -357,7 +358,7 @@ void P_SpawnGlowingLight(sector_t*	sector)
 {
     glow_t*	g;
 
-    g = Z_Malloc( sizeof(*g), PU_LEVSPEC, 0);
+    g = zmalloc<glow_t *>(sizeof(*g), PU_LEVSPEC, 0);
 
     P_AddThinker(&g->thinker);
 

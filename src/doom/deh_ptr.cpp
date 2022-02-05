@@ -15,9 +15,9 @@
 // Parses Action Pointer entries in dehacked files
 //
 
-#include <stdio.h>
-#include <stdlib.h>
-#include <string.h>
+#include <cstdio>
+#include <cstdlib>
+#include <cstring>
 
 #include "doomtype.hpp"
 #include "info.hpp"
@@ -60,7 +60,7 @@ static void DEH_PointerInit(void)
         states[i].tics       = -1;
         states[i].action.acv = (actionf_v)NULL;
         states[i].nextstate  = static_cast<statenum_t>(i);
-        states[i].misc1      = 0;
+        states[i].misc1      = S_NULL;
         states[i].misc2      = 0;
         //	states[i].dehacked = false;
         codeptrs[i] = states[i].action;

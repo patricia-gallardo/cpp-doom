@@ -17,7 +17,7 @@
 //	Switches, buttons. Two-state animation. Exits.
 //
 
-#include <stdio.h>
+#include <cstdio>
 
 #include "i_system.hpp"
 #include "deh_main.hpp"
@@ -35,7 +35,7 @@
 #include "sounds.hpp"
 
 // State.
-#include "../../utils/lump.hpp"
+#include "lump.hpp"
 #include "doomstat.hpp"
 #include "r_state.hpp"
 

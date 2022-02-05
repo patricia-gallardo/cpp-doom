@@ -18,8 +18,8 @@
 //	that are associated with states/frames. 
 //
 
-#include <stdio.h>
-#include <stdlib.h>
+#include <cstdio>
+#include <cstdlib>
 
 #include "m_random.hpp"
 #include "i_system.hpp"
@@ -217,7 +217,7 @@ void P_DoPunchAlert(mobj_t *puncher, mobj_t *punchee)
    
    // make the punchee hurt - haleyjd 09/05/10: Fixed to use painstate.
    punchee->target = puncher;
-   P_SetMobjState(punchee, punchee->info->painstate); 
+   P_SetMobjState(punchee, punchee->info->painstate);
    
    // wake up everybody nearby
    
@@ -509,7 +509,7 @@ void P_NewChaseDir(mobj_t* actor)
         return;
     }
 
-    olddir = actor->movedir;
+    olddir = static_cast<dirtype_t>(actor->movedir);
     turnaround=opposite[olddir];
 
     deltax = actor->target->x - actor->x;
@@ -540,11 +540,11 @@ void P_NewChaseDir(mobj_t* actor)
 
     // try other directions
     if (P_Random() > 200
-        ||  abs(deltay)>abs(deltax))
+        ||  std::abs(deltay)>std::abs(deltax))
     {
         tdir=d[1];
         d[1]=d[2];
-        d[2]=tdir;
+        d[2]= static_cast<dirtype_t>(tdir);
     }
 
     if (d[1]==turnaround)
@@ -997,12 +997,12 @@ void A_FriendLook(mobj_t* actor)
     if(P_Random() < 30)
     {
         int t = P_Random();
-        P_SetMobjState(actor, (t & 1) + actor->info->spawnstate + 1);
+        P_SetMobjState(actor, static_cast<statenum_t>((t & 1) + actor->info->spawnstate + 1));
     }
 
     // wander around a bit
     if(!(actor->flags & MF_STAND) && P_Random() < 40)
-        P_SetMobjState(actor, actor->info->spawnstate + 3);
+        P_SetMobjState(actor, static_cast<statenum_t>(actor->info->spawnstate + 3));
 }
 
 //
@@ -1802,7 +1802,7 @@ void A_Sigil_A_Action(mobj_t* actor)
     else
         type = MT_SIGIL_A_ZAP_RIGHT;
 
-    mo = P_SpawnMobj(x, y, ONCEILINGZ, type);
+    mo = P_SpawnMobj(x, y, ONCEILINGZ, static_cast<mobjtype_t>(type));
     mo->momz = -18 * FRACUNIT;
     mo->target = actor->target;
     mo->health = actor->health;
@@ -2628,7 +2628,7 @@ void A_CrystalExplode(mobj_t* actor)
     // spawn rubble
     for(i = 0; i < 8; i++)
     {
-        rubble = P_SpawnMobj(actor->x, actor->y, actor->z, MT_RUBBLE1 + i);
+        rubble = P_SpawnMobj(actor->x, actor->y, actor->z, static_cast<mobjtype_t>(MT_RUBBLE1 + i));
         r = P_Random();
         rubble->momx = ((r & 0x0f) - (P_Random() & 7)) << FRACBITS;
         r = P_Random();
@@ -3229,7 +3229,7 @@ void A_BodyParts(mobj_t* actor)
         type = MT_MEAT;
 
     mo = P_SpawnMobj(actor->x, actor->y, actor->z + (24*FRACUNIT), type);
-    P_SetMobjState(mo, mo->info->spawnstate + (P_Random() % 19));
+    P_SetMobjState(mo, static_cast<statenum_t>(mo->info->spawnstate + (P_Random() % 19)));
 
     an = (P_Random() << 13) / 255;
     mo->angle = an << ANGLETOFINESHIFT;

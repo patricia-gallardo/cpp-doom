@@ -12,7 +12,7 @@
 // GNU General Public License for more details.
 //
 
-#include <stdlib.h>
+#include <cstdlib>
 
 #include "crispy.hpp"
 #include "textscreen.hpp"

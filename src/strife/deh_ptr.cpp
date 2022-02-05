@@ -15,9 +15,9 @@
 // Parses Action Pointer entries in dehacked files
 //
 
-#include <stdio.h>
-#include <stdlib.h>
-#include <string.h>
+#include <cstdio>
+#include <cstdlib>
+#include <cstring>
 
 #include "doomtype.hpp"
 #include "info.hpp"
@@ -26,9 +26,9 @@
 #include "deh_io.hpp"
 #include "deh_main.hpp"
 
-static actionf_t codeptrs[NUMSTATES];
+static action_hook codeptrs[NUMSTATES];
 
-static int CodePointerIndex(actionf_t *ptr)
+static int CodePointerIndex(action_hook *ptr)
 {
     int i;
 

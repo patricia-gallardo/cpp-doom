@@ -12,9 +12,9 @@
 // GNU General Public License for more details.
 //
 
-#include <stdio.h>
-#include <stdlib.h>
-#include <string.h>
+#include <cstdio>
+#include <cstdlib>
+#include <cstring>
 
 #include "doomtype.hpp"
 
@@ -570,7 +570,7 @@ static txt_widget_t *IWADSelector(void)
          ++num_iwads;
     }
 
-    iwad_labels = malloc(sizeof(*iwad_labels) * num_iwads);
+    iwad_labels = static_cast<const char **>(malloc(sizeof(*iwad_labels) * num_iwads));
 
     for (i=0; i < num_iwads; ++i)
     {
@@ -907,10 +907,10 @@ static void SelectQueryAddress(TXT_UNCAST_ARG(button),
                            "but the IWAD file %s is not found!\n"
                            "Without the required IWAD file, it may not be\n"
                            "possible to join this game.",
-                           D_SuggestGameName(querydata->gamemission,
-                                             querydata->gamemode),
-                           D_SuggestIWADName(querydata->gamemission,
-                                             querydata->gamemode));
+                D_SuggestGameName(static_cast<GameMission_t>(querydata->gamemission),
+                    static_cast<GameMode_t>(querydata->gamemode)),
+                D_SuggestIWADName(static_cast<GameMission_t>(querydata->gamemission),
+                    static_cast<GameMode_t>(querydata->gamemode)));
         }
     }
 

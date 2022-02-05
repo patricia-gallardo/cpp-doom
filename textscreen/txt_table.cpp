@@ -12,9 +12,9 @@
 // GNU General Public License for more details.
 //
 
-#include <stdarg.h>
-#include <stdlib.h>
-#include <string.h>
+#include <cstdarg>
+#include <cstdlib>
+#include <cstring>
 #include <vector>
 
 #include "doomkeys.hpp"
@@ -26,7 +26,7 @@
 #include "txt_separator.hpp"
 #include "txt_strut.hpp"
 #include "txt_table.hpp"
-#include "../utils/memory.hpp"
+#include "memory.hpp"
 
 txt_widget_t txt_table_overflow_right;
 txt_widget_t txt_table_overflow_down;
@@ -1220,7 +1220,7 @@ int TXT_PageTable(TXT_UNCAST_ARG(table), int pagex, int pagey)
 
                 // ...but is it far enough away?
 
-                if (distance >= abs(pagey))
+                if (distance >= std::abs(pagey))
                 {
                     break;
                 }

@@ -16,7 +16,7 @@
 //	Plats (i.e. elevator platforms) code, raising/lowering.
 //
 
-#include <stdio.h>
+#include <cstdio>
 
 #include "i_system.hpp"
 #include "z_zone.hpp"
@@ -33,6 +33,7 @@
 
 // Data.
 #include "sounds.hpp"
+#include "memory.hpp"
 
 
 plat_t* activeplats[MAXPLATS];
@@ -171,7 +172,7 @@ int EV_DoPlat(line_t* line, plattype_e type, int amount)
 
         // Find lowest & highest floors around sector
         rtn = 1;
-        plat = Z_Malloc( sizeof(*plat), PU_LEVSPEC, 0);
+        plat = zmalloc<plat_t *>(sizeof(*plat), PU_LEVSPEC, 0);
         P_AddThinker(&plat->thinker);
 
         plat->type = type;
@@ -269,7 +270,7 @@ int EV_DoPlat(line_t* line, plattype_e type, int amount)
                 plat->high = sec->floorheight;
 
             plat->wait = TICRATE * PLATWAIT;
-            plat->status = P_Random() & 1;
+            plat->status = static_cast<plat_e>(P_Random() & 1);
 
             S_StartSound(&sec->soundorg, sfx_pstart);
             break;

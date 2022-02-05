@@ -22,6 +22,7 @@
 #include "p_local.hpp"
 #include "s_sound.hpp"
 #include "v_video.hpp"
+#include "memory.hpp"
 
 plat_t *activeplats[MAXPLATS];
 
@@ -147,7 +148,7 @@ int EV_DoPlat(line_t * line, plattype_e type, int amount)
         // Find lowest & highest floors around sector
         //
         rtn = 1;
-        plat = Z_Malloc(sizeof(*plat), PU_LEVSPEC, 0);
+        plat = zmalloc<plat_t *>(sizeof(*plat), PU_LEVSPEC, 0);
         P_AddThinker(&plat->thinker);
 
         plat->type = type;
@@ -194,7 +195,7 @@ int EV_DoPlat(line_t * line, plattype_e type, int amount)
                 if (plat->high < sec->floorheight)
                     plat->high = sec->floorheight;
                 plat->wait = 35 * PLATWAIT;
-                plat->status = P_Random() & 1;
+                plat->status = static_cast<plat_e>(P_Random() & 1);
                 S_StartSound(&sec->soundorg, sfx_pstart);
                 break;
         }
@@ -227,7 +228,7 @@ void EV_StopPlat(line_t * line)
         {
             (activeplats[j])->oldstatus = (activeplats[j])->status;
             (activeplats[j])->status = in_stasis;
-            (activeplats[j])->thinker.function = NULL;
+            (activeplats[j])->thinker.function = null_hook();
         }
 }
 

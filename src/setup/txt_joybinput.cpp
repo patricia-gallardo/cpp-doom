@@ -12,11 +12,9 @@
 // GNU General Public License for more details.
 //
 
-#include <stdio.h>
-#include <stdlib.h>
-#include <string.h>
+#include <cstdlib>
 
-#include "SDL_joystick.hpp"
+#include "SDL_joystick.h"
 
 #include "doomkeys.hpp"
 #include "joystick.hpp"
@@ -326,7 +324,7 @@ txt_joystick_input_t *TXT_NewJoystickInput(int *variable)
 {
     txt_joystick_input_t *joystick_input;
 
-    joystick_input = malloc(sizeof(txt_joystick_input_t));
+    joystick_input = static_cast<txt_joystick_input_t *>(malloc(sizeof(txt_joystick_input_t)));
 
     TXT_InitWidget(joystick_input, &txt_joystick_input_class);
     joystick_input->variable = variable;

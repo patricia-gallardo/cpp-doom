@@ -17,8 +17,7 @@
 //
 
 
-#include <stdio.h>
-#include <ctype.h>
+#include <cstdio>
 
 #include "deh_main.hpp"
 #include "doomdef.hpp"
@@ -35,7 +34,7 @@
 #include "st_lib.hpp"
 #include "r_local.hpp"
 
-#include "../../utils/lump.hpp"
+#include "lump.hpp"
 #include "v_trans.hpp" // [crispy] colored status bar widgets
 
 // in AM_map.c
@@ -186,7 +185,7 @@ void STlib_updatePercent(st_percent_t *per,
     STlib_updateNum(&per->n, refresh); // [crispy] moved here
 
     if (crispy->coloredhud & COLOREDHUD_BAR)
-        dp_translation = cr[CR_GRAY];
+        dp_translation = cr_colors[static_cast<int>(cr_t::CR_GRAY)];
 
     if (refresh && *per->n.on)
         V_DrawPatch(per->n.x, per->n.y, per->p);

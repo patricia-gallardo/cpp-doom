@@ -18,7 +18,7 @@
 
 // HEADER FILES ------------------------------------------------------------
 
-#include <stdarg.h>
+#include <cstdarg>
 
 #include "config.h"
 
@@ -28,6 +28,7 @@
 #include "i_videohr.hpp"
 #include "s_sound.hpp"
 #include "st_start.hpp"
+#include "memory.hpp"
 
 
 // MACROS ------------------------------------------------------------------
@@ -303,7 +304,7 @@ byte *ST_LoadScreen(void)
 
     lump = W_GetNumForName("STARTUP");
     length = W_LumpLength(lump);
-    buffer = (byte *) Z_Malloc(length, PU_STATIC, NULL);
+    buffer = zmalloc<byte *>(length, PU_STATIC, NULL);
     W_ReadLump(lump, buffer);
     return (buffer);
 }

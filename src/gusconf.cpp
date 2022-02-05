@@ -21,12 +21,12 @@
 //
 
 
-#include <stdio.h>
-#include <stdlib.h>
-#include <string.h>
-#include <ctype.h>
+#include <cstdio>
+#include <cstdlib>
+#include <cstring>
+#include <cctype>
 
-#include "../utils/memory.hpp"
+#include "memory.hpp"
 #include "m_misc.hpp"
 #include "w_wad.hpp"
 #include "z_zone.hpp"
@@ -41,7 +41,7 @@ typedef struct
     unsigned int count;
 } gus_config_t;
 
-char *gus_patch_path = "";
+char *gus_patch_path = const_cast<char *>("");
 int   gus_ram_kb     = 1024;
 
 static unsigned int MappingIndex(void)

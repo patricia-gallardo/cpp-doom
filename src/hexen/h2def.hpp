@@ -17,9 +17,9 @@
 
 #ifndef __H2DEF__
 #define __H2DEF__
-#include <stdio.h>
-#include <string.h>
-#include <stdlib.h>
+#include <cstdio>
+#include <cstring>
+#include <cstdlib>
 //#include <values.h>
 
 #include "st_start.hpp"
@@ -165,7 +165,7 @@ typedef void (*think_t) ();
 typedef struct thinker_s
 {
     struct thinker_s *prev, *next;
-    think_t function;
+    action_hook function;
 } thinker_t;
 
 struct player_s;
@@ -351,7 +351,7 @@ typedef enum
     NUMPSPRITES
 } psprnum_t;
 
-typedef struct
+typedef struct pspdef_s
 {
     state_t *state;             // a NULL state means not active
     int tics;
@@ -421,11 +421,11 @@ typedef enum
 typedef struct
 {
     manatype_t mana;
-    int upstate;
-    int downstate;
-    int readystate;
-    int atkstate;
-    int holdatkstate;
+    statenum_t upstate;
+    statenum_t downstate;
+    statenum_t readystate;
+    statenum_t atkstate;
+    statenum_t holdatkstate;
     int flashstate;
 } weaponinfo_t;
 
@@ -502,7 +502,7 @@ typedef enum
 
 typedef struct
 {
-    int type;
+    artitype_t type;
     int count;
 } inventory_t;
 
@@ -520,7 +520,7 @@ typedef struct player_s
     playerstate_t playerstate;
     ticcmd_t cmd;
 
-    pclass_t class;             // player class type
+    pclass_t clazz;             // player class type
 
     fixed_t viewz;              // focal origin above r.z
     fixed_t viewheight;         // base height above floor for viewz

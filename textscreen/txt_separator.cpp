@@ -12,8 +12,8 @@
 // GNU General Public License for more details.
 //
 
-#include <stdlib.h>
-#include <string.h>
+#include <cstdlib>
+#include <cstring>
 
 #include "txt_separator.hpp"
 #include "txt_gui.hpp"
@@ -21,7 +21,7 @@
 #include "txt_main.hpp"
 #include "txt_utf8.hpp"
 #include "txt_window.hpp"
-#include "../utils/memory.hpp"
+#include "memory.hpp"
 
 static void TXT_SeparatorSizeCalc(TXT_UNCAST_ARG(separator))
 {

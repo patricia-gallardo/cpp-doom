@@ -17,9 +17,9 @@
 //    start the game.
 //
 
-#include <stdio.h>
-#include <stdlib.h>
-#include <ctype.h>
+#include <cstdio>
+#include <cstdlib>
+#include <cctype>
 
 #include "config.h"
 #include "doomkeys.hpp"

@@ -17,8 +17,8 @@
 //	generation of lookups, caching, retrieval by name.
 //
 
-#include <stdio.h>
-#include <stdlib.h> // [crispy] calloc()
+#include <cstdio>
+#include <cstdlib> // [crispy] calloc()
 
 #include "deh_main.hpp"
 #include "i_swap.hpp"
@@ -36,8 +36,8 @@
 #include "doomstat.hpp"
 #include "r_sky.hpp"
 
-#include "../../utils/lump.hpp"
-#include "../../utils/memory.hpp"
+#include "lump.hpp"
+#include "memory.hpp"
 #include "r_bmaps.hpp" // [crispy] R_BrightmapForTexName()
 #include "r_data.hpp"
 #include "v_trans.hpp" // [crispy] tranmap, CRMAX
@@ -411,8 +411,8 @@ void R_GenerateLookup(int texnum)
     //  that are covered by more than one patch.
     // Fill in the lump / offset, so columns
     //  with only a single patch are all done.
-    patchcount = (byte *)Z_Malloc(texture->width, PU_STATIC, &patchcount);
-    postcount  = (byte *)Z_Malloc(texture->width, PU_STATIC, &postcount);
+    patchcount = zmalloc<byte *>(texture->width, PU_STATIC, &patchcount);
+    postcount  = zmalloc<byte *>(texture->width, PU_STATIC, &postcount);
     memset(patchcount, 0, texture->width);
     memset(postcount, 0, texture->width);
     patch = texture->patches;
@@ -569,7 +569,7 @@ byte *
 
     // [crispy] single-patched mid-textures on two-sided walls
     if (lump > 0 && !opaque)
-        return (byte *)W_CacheLumpNum(lump, PU_CACHE) + ofs2;
+        return cache_lump_num<byte *>(lump, PU_CACHE) + ofs2;
 
     if (!texturecomposite[tex])
         R_GenerateComposite(tex);
@@ -707,7 +707,7 @@ void R_InitTextures(void)
             }
 
             pnameslumps[numpnameslumps].lumpnum       = i;
-            pnameslumps[numpnameslumps].names         = W_CacheLumpNum(pnameslumps[numpnameslumps].lumpnum, PU_STATIC);
+            pnameslumps[numpnameslumps].names         = cache_lump_num<patch_t *>(pnameslumps[numpnameslumps].lumpnum, PU_STATIC);
             pnameslumps[numpnameslumps].nummappatches = LONG(*((int *)pnameslumps[numpnameslumps].names));
 
             // [crispy] accumulated number of patches in the lookup tables
@@ -1142,7 +1142,7 @@ void R_InitColormaps(void)
 
     if (!colormaps)
     {
-        colormaps = (lighttable_t *)Z_Malloc((NUMCOLORMAPS + 1) * 256 * sizeof(lighttable_t), PU_STATIC, 0);
+        colormaps = zmalloc<lighttable_t *>((NUMCOLORMAPS + 1) * 256 * sizeof(lighttable_t), PU_STATIC, 0);
     }
 
     if (crispy->truecolor)
@@ -1199,18 +1199,18 @@ void R_InitColormaps(void)
         extern byte V_Colorize(byte * playpal, int cr, byte source, boolean keepgray109);
 
         if (!crstr)
-            crstr = static_cast<decltype(crstr)>(I_Realloc(NULL, CRMAX * sizeof(*crstr)));
+            crstr = static_cast<decltype(crstr)>(I_Realloc(NULL, static_cast<int>(cr_t::CRMAX) * sizeof(*crstr)));
 
         // [crispy] check for status bar graphics replacements
         i        = W_CheckNumForName(DEH_String("sttnum0")); // [crispy] Status Bar '0'
         keepgray = (i >= 0 && W_IsIWADLump(lumpinfo[i]));
 
         // [crispy] CRMAX - 2: don't override the original GREN and BLUE2 Boom tables
-        for (i = 0; i < CRMAX - 2; i++)
+        for (i = 0; i < static_cast<int>(cr_t::CRMAX) - 2; i++)
         {
             for (j = 0; j < 256; j++)
             {
-                cr[i][j] = V_Colorize(playpal, i, j, keepgray);
+                cr_colors[i][j] = V_Colorize(playpal, i, j, keepgray);
             }
 
             M_snprintf(c, sizeof(c), "%c%c", cr_esc, '0' + i);

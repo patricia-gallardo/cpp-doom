@@ -20,7 +20,7 @@
 #ifndef __M_BBOX__
 #define __M_BBOX__
 
-#include <limits.h>
+#include <climits>
 
 #include "m_fixed.hpp"
 

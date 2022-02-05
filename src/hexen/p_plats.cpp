@@ -19,6 +19,7 @@
 #include "m_random.hpp"
 #include "i_system.hpp"
 #include "p_local.hpp"
+#include "memory.hpp"
 
 plat_t *activeplats[MAXPLATS];
 
@@ -127,14 +128,14 @@ int EV_DoPlat(line_t * line, byte * args, plattype_e type, int amount)
     while ((secnum = P_FindSectorFromTag(args[0], secnum)) >= 0)
     {
         sec = &sectors[secnum];
-        if (sec->specialdata)
+        if (data_or_hook_has_value(sec->specialdata))
             continue;
 
         //
         // Find lowest & highest floors around sector
         //
         rtn = 1;
-        plat = Z_Malloc(sizeof(*plat), PU_LEVSPEC, 0);
+        plat = zmalloc<plat_t *>(sizeof(*plat), PU_LEVSPEC, 0);
         P_AddThinker(&plat->thinker);
 
         plat->type = type;
@@ -186,7 +187,7 @@ int EV_DoPlat(line_t * line, byte * args, plattype_e type, int amount)
                 if (plat->high < sec->floorheight)
                     plat->high = sec->floorheight;
                 plat->wait = args[2];
-                plat->status = P_Random() & 1;
+                plat->status = static_cast<plat_e>(P_Random() & 1);
                 break;
         }
         P_AddActivePlat(plat);
@@ -222,7 +223,7 @@ void EV_StopPlat(line_t * line, byte * args)
 
         if (activeplats[i]->tag != 0)
         {
-            activeplats[i]->sector->specialdata = NULL;
+            activeplats[i]->sector->specialdata = null_hook();
             P_TagFinished(activeplats[i]->sector->tag);
             P_RemoveThinker(&activeplats[i]->thinker);
             activeplats[i] = NULL;
@@ -266,7 +267,7 @@ void P_RemoveActivePlat(plat_t * plat)
     for (i = 0; i < MAXPLATS; i++)
         if (plat == activeplats[i])
         {
-            (activeplats[i])->sector->specialdata = NULL;
+            (activeplats[i])->sector->specialdata = null_hook();
             P_TagFinished(plat->sector->tag);
             P_RemoveThinker(&(activeplats[i])->thinker);
             activeplats[i] = NULL;

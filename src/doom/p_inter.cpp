@@ -740,10 +740,10 @@ void P_KillMobj(mobj_t *source,
         && target->info->xdeathstate)
     {
         P_SetMobjState(target,
-            static_cast<statenum_t>(target->info->xdeathstate));
+            target->info->xdeathstate);
     }
     else
-        P_SetMobjState(target, static_cast<statenum_t>(target->info->deathstate));
+        P_SetMobjState(target, target->info->deathstate);
     target->tics -= P_Random() & 3;
 
     // [crispy] randomly flip corpse, blood and death animation sprites
@@ -930,7 +930,7 @@ void P_DamageMobj(mobj_t *target,
         target->flags |= MF_JUSTHIT; // fight back!
 
         P_SetMobjState(target,
-            static_cast<statenum_t>(target->info->painstate));
+            target->info->painstate);
     }
 
     target->reactiontime = 0; // we're awake now...
@@ -946,6 +946,6 @@ void P_DamageMobj(mobj_t *target,
         if (target->state == &states[target->info->spawnstate]
             && target->info->seestate != S_NULL)
             P_SetMobjState(target,
-                static_cast<statenum_t>(target->info->seestate));
+                target->info->seestate);
     }
 }

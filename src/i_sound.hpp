@@ -226,8 +226,8 @@ void    I_PlaySong(void *handle, boolean looping);
 void    I_StopSong(void);
 boolean I_MusicIsPlaying(void);
 
-extern snddevice_t snd_sfxdevice;
-extern snddevice_t snd_musicdevice;
+extern int         snd_sfxdevice;
+extern int         snd_musicdevice;
 extern int         snd_samplerate;
 extern int         snd_cachesize;
 extern int         snd_maxslicetime_ms;

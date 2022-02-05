@@ -18,12 +18,10 @@
 //
 
 
-#include <stdio.h>
-#include <stdlib.h>
-#include <string.h>
-#include <ctype.h>
-#include <errno.h>
-#include <assert.h>
+#include <cstdlib>
+#include <cstring>
+#include <cctype>
+#include <cassert>
 
 #include "SDL_filesystem.h"
 
@@ -45,9 +43,9 @@
 // Location where all configuration data is stored -
 // default.cfg, savegames, etc.
 
-const char *configdir;
+char *configdir;
 
-static char *autoload_path = "";
+static char *autoload_path = const_cast<char *>("");
 
 // Default filenames for configuration files.
 
@@ -2740,7 +2738,7 @@ void M_SetConfigDir(const char *dir)
 
     if (dir != NULL)
     {
-        configdir = dir;
+        configdir = const_cast<char *>(dir);
     }
     else
     {

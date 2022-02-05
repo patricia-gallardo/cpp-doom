@@ -12,8 +12,7 @@
 // GNU General Public License for more details.
 //
 
-#include <stdlib.h>
-#include <string.h>
+#include <cstdlib>
 
 #include "txt_conditional.hpp"
 #include "txt_strut.hpp"

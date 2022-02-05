@@ -152,7 +152,7 @@ void A_PotteryExplode(mobj_t * actor)
     for (i = (P_Random() & 3) + 3; i; i--)
     {
         mo = P_SpawnMobj(actor->x, actor->y, actor->z, MT_POTTERYBIT1);
-        P_SetMobjState(mo, mo->info->spawnstate + (P_Random() % 5));
+        P_SetMobjState(mo, static_cast<statenum_t>(mo->info->spawnstate + (P_Random() % 5)));
         mo->momz = ((P_Random() & 7) + 5) * (3 * FRACUNIT / 4);
         mo->momx = P_SubRandom() << (FRACBITS - 6);
         mo->momy = P_SubRandom() << (FRACBITS - 6);
@@ -179,7 +179,7 @@ void A_PotteryExplode(mobj_t * actor)
 
 void A_PotteryChooseBit(mobj_t * actor)
 {
-    P_SetMobjState(actor, actor->info->deathstate + (P_Random() % 5) + 1);
+    P_SetMobjState(actor, static_cast<statenum_t>(actor->info->deathstate + (P_Random() % 5) + 1));
     actor->tics = 256 + (P_Random() << 1);
 }
 
@@ -198,10 +198,10 @@ void A_PotteryCheck(mobj_t * actor)
     {
         pmo = players[consoleplayer].mo;
         if (P_CheckSight(actor, pmo)
-	  && (abs((int)R_PointToAngle2(pmo->x, pmo->y, actor->x, actor->y)
+	  && (std::abs((int)R_PointToAngle2(pmo->x, pmo->y, actor->x, actor->y)
            - (int)pmo->angle) <= ANG45))
         {                       // Previous state (pottery bit waiting state)
-            P_SetMobjState(actor, actor->state - &states[0] - 1);
+            P_SetMobjState(actor, static_cast<statenum_t>(actor->state - &states[0] - 1));
         }
         else
         {
@@ -218,10 +218,10 @@ void A_PotteryCheck(mobj_t * actor)
             }
             pmo = players[i].mo;
             if (P_CheckSight(actor, pmo) 
-              && (abs((int)R_PointToAngle2(pmo->x, pmo->y, actor->x, actor->y)
+              && (std::abs((int)R_PointToAngle2(pmo->x, pmo->y, actor->x, actor->y)
                - (int)pmo->angle) <= ANG45))
             {                   // Previous state (pottery bit waiting state)
-                P_SetMobjState(actor, actor->state - &states[0] - 1);
+                P_SetMobjState(actor, static_cast<statenum_t>(actor->state - &states[0] - 1));
                 return;
             }
         }
@@ -258,7 +258,7 @@ void A_CorpseExplode(mobj_t * actor)
     for (i = (P_Random() & 3) + 3; i; i--)
     {
         mo = P_SpawnMobj(actor->x, actor->y, actor->z, MT_CORPSEBIT);
-        P_SetMobjState(mo, mo->info->spawnstate + (P_Random() % 3));
+        P_SetMobjState(mo, static_cast<statenum_t>(mo->info->spawnstate + (P_Random() % 3)));
         mo->momz = ((P_Random() & 7) + 5) * (3 * FRACUNIT / 4);
         mo->momx = P_SubRandom() << (FRACBITS - 6);
         mo->momy = P_SubRandom() << (FRACBITS - 6);
@@ -292,7 +292,7 @@ void A_LeafSpawn(mobj_t * actor)
         // Official release of Hexen's source code relies on unspecified behavior
         // the in order of function's argument evaluation,
         // see ISO-IEC 9899-1999, [6.5.2.2.10]
-        mobjtype_t type = MT_LEAF1 + (P_Random() & 1);
+        mobjtype_t type = static_cast<mobjtype_t>(MT_LEAF1 + (P_Random() & 1));
         fixed_t z = actor->z + (P_Random() << 14);
         fixed_t y = actor->y + (P_SubRandom() << 14);
         fixed_t x = actor->x + (P_SubRandom() << 14);
@@ -817,7 +817,7 @@ void A_PoisonShroom(mobj_t * actor)
 
 void A_CheckThrowBomb(mobj_t * actor)
 {
-    if (abs(actor->momx) < 1.5 * FRACUNIT && abs(actor->momy) < 1.5 * FRACUNIT
+    if (std::abs(actor->momx) < 1.5 * FRACUNIT && std::abs(actor->momy) < 1.5 * FRACUNIT
         && actor->momz < 2 * FRACUNIT
         && actor->state == &states[S_THROWINGBOMB6])
     {
@@ -1058,7 +1058,7 @@ void P_SpawnDirt(mobj_t * actor, fixed_t radius)
             dtype = MT_DIRT6;
             break;
     }
-    mo = P_SpawnMobj(x, y, z, dtype);
+    mo = P_SpawnMobj(x, y, z, static_cast<mobjtype_t>(dtype));
     if (mo)
     {
         mo->momz = P_Random() << 10;
@@ -1170,7 +1170,7 @@ void A_SoAExplode(mobj_t * actor)
                          actor->y + ((r2 - 128) << 12),
                          actor->z + (r1 * actor->height / 256),
                          MT_ZARMORCHUNK);
-        P_SetMobjState(mo, mo->info->spawnstate + i);
+        P_SetMobjState(mo, static_cast<statenum_t>(mo->info->spawnstate + i));
         mo->momz = ((P_Random() & 7) + 5) * FRACUNIT;
         mo->momx = P_SubRandom() << (FRACBITS - 6);
         mo->momy = P_SubRandom() << (FRACBITS - 6);

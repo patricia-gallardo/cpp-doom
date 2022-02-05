@@ -5,7 +5,7 @@ cmake_minimum_required(VERSION 3.7.2)
 include(cmake/vcpkg.cmake)
 
 project("Crispy Doom" VERSION 5.7.2 LANGUAGES CXX)
-set(CMAKE_CXX_STANDARD 17)
+set(CMAKE_CXX_STANDARD 20)
 
 # Autotools variables
 set(top_srcdir ${CMAKE_CURRENT_SOURCE_DIR})
@@ -70,6 +70,8 @@ configure_file(cmake/config.h.cin config.h)
 configure_file(src/resource.rc.in src/resource.rc)
 configure_file(src/setup-res.rc.in src/setup-res.rc)
 configure_file(src/setup/setup-manifest.xml.in src/setup/setup-manifest.xml)
+
+include_directories(utils)
 
 foreach(SUBDIR textscreen midiproc opl pcsound src)
     add_subdirectory("${SUBDIR}")

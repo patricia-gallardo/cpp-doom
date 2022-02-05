@@ -15,9 +15,9 @@
 // Routines for selecting files.
 //
 
-#include <stdio.h>
-#include <stdlib.h>
-#include <string.h>
+#include <cstdio>
+#include <cstdlib>
+#include <cstring>
 
 #include "doomkeys.hpp"
 
@@ -27,7 +27,7 @@
 #include "txt_io.hpp"
 #include "txt_main.hpp"
 #include "txt_widget.hpp"
-#include "../utils/memory.hpp"
+#include "memory.hpp"
 
 struct txt_fileselect_s {
     txt_widget_t widget;
@@ -45,7 +45,7 @@ const char *TXT_DIRECTORY[] = { "__directory__", NULL };
 
 #include <fcntl.h>
 #include <unistd.h>
-#include <errno.h>
+#include <cerrno>
 #include <sys/wait.h>
 
 static char *ExecReadOutput(char **argv)
@@ -358,7 +358,7 @@ static char *CreateEscapedString(const char *original)
         }
     }
 
-    result = malloc(strlen(original) + count_extras + 1);
+    result = static_cast<char *>(malloc(strlen(original) + count_extras + 1));
     if (!result)
     {
         return NULL;
@@ -399,7 +399,7 @@ static char *CreateExtensionsList(const char **extensions)
         result_len += 5 + strlen(extensions[i]) * 2;
     }
 
-    result = malloc(result_len);
+    result = static_cast<char *>(malloc(result_len));
     if (!result)
     {
         return NULL;
@@ -467,7 +467,7 @@ static char *GenerateSelector(const char *const window_title, const char **exten
         result_len += strlen(ext_list);
     }
 
-    result = malloc(result_len);
+    result = static_cast<char *>(malloc(result_len));
     if (!result)
     {
         free(window_title_escaped);
@@ -506,7 +506,7 @@ static char *GenerateAppleScript(const char *window_title, const char **extensio
     }
 
     result_len = strlen(APPLESCRIPT_WRAPPER) + strlen(selector);
-    result = malloc(result_len);
+    result = static_cast<char *>(malloc(result_len));
     if (!result)
     {
         free(selector);

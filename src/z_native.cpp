@@ -20,8 +20,8 @@
 //
 
 
-#include <stdlib.h>
-#include <string.h>
+#include <cstdlib>
+#include <cstring>
 
 #include "z_zone.hpp"
 #include "i_system.hpp"
@@ -267,7 +267,7 @@ void *Z_Malloc(int size, int tag, void *user)
     // Hook into the linked list for this tag type
 
     newblock->id   = ZONEID;
-    newblock->user = user;
+    newblock->user = static_cast<void **>(user);
     newblock->size = size;
 
     Z_InsertBlock(newblock);

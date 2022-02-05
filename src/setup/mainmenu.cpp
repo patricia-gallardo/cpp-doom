@@ -12,9 +12,8 @@
 // GNU General Public License for more details.
 //
 
-#include <stdio.h>
-#include <stdlib.h>
-#include <string.h>
+#include <cstdio>
+#include <cstdlib>
 
 #include "config.h"
 #include "textscreen.hpp"
@@ -27,7 +26,7 @@
 #include "m_misc.hpp"
 #include "z_zone.hpp"
 
-#include "setup_icon.c"
+#include "setup_icon.cpp"
 #include "mode.hpp"
 
 #include "compatibility.hpp"
@@ -82,7 +81,7 @@ static void SensibleDefaults(void)
     key_multi_msgplayer[7] = 'm';
     mousebprevweapon = 4;           // Scroll wheel = weapon cycle
     mousebnextweapon = 3;
-    snd_musicdevice = 3;
+    snd_musicdevice = static_cast<snddevice_t>(3);
     joybspeed = 29;                 // Always run
     vanilla_savegame_limit = 0;
     vanilla_keyboard_mapping = 0;
@@ -91,7 +90,7 @@ static void SensibleDefaults(void)
     show_endoom = 0;
     dclick_use = 0;
     novert = 1;
-    snd_dmxoption = "-opl3 -reverse";
+    snd_dmxoption = const_cast<char *>("-opl3 -reverse");
     png_screenshots = 1;
 }
 
@@ -143,7 +142,7 @@ static void QuitConfirm(void *unused1, void *unused2)
     TXT_AddWidgets(window, 
                    label = TXT_NewLabel("Exiting setup.\nSave settings?"),
                    TXT_NewStrut(24, 0),
-                   yes_button = TXT_NewButton2("  Yes  ", DoQuit, DoQuit),
+                   yes_button = TXT_NewButton2("  Yes  ", DoQuit, reinterpret_cast<void *>(1)), // !NULL
                    no_button = TXT_NewButton2("  No   ", DoQuit, NULL),
                    NULL);
 

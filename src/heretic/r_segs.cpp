@@ -22,7 +22,6 @@
 //**
 //**************************************************************************
 
-#include <stdlib.h>
 
 #include "doomdef.hpp"
 #include "i_system.hpp" // [crispy] I_Realloc()
@@ -348,7 +347,7 @@ void R_StoreWallRange(int start, int stop)
 	int numdrawsegs_old = numdrawsegs;
 
 	numdrawsegs = numdrawsegs ? 2 * numdrawsegs : MAXDRAWSEGS;
-	drawsegs = I_Realloc(drawsegs, numdrawsegs * sizeof(*drawsegs));
+	drawsegs = static_cast<drawseg_t *>(I_Realloc(drawsegs, numdrawsegs * sizeof(*drawsegs)));
 	memset(drawsegs + numdrawsegs_old, 0, (numdrawsegs - numdrawsegs_old) * sizeof(*drawsegs));
 
 	ds_p = drawsegs + numdrawsegs_old;
@@ -372,7 +371,7 @@ void R_StoreWallRange(int start, int stop)
 // calculate rw_distance for scale calculation
 //
     rw_normalangle = curline->angle + ANG90;
-    offsetangle = abs(rw_normalangle - rw_angle1);
+    offsetangle = (rw_normalangle - rw_angle1);
     if (offsetangle > ANG90)
         offsetangle = ANG90;
     distangle = ANG90 - offsetangle;

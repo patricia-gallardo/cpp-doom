@@ -16,7 +16,7 @@
 //
 
 #include "SDL.h"
-#include <string.h>
+#include <cstring>
 
 #include "doomtype.hpp"
 
@@ -26,7 +26,7 @@
 #include "w_wad.hpp"
 #include "z_zone.hpp"
 
-#include "../utils/lump.hpp"
+#include "lump.hpp"
 #include "pcsound.hpp"
 
 #define TIMER_FREQ 1193181 /* hz */

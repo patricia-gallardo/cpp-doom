@@ -14,10 +14,10 @@
 // Common code shared between the client and server
 //
 
-#include <stdio.h>
-#include <stdlib.h>
-#include <stdarg.h>
-#include <string.h>
+#include <cstdio>
+#include <cstdlib>
+#include <cstdarg>
+#include <cstring>
 
 #include "doomtype.hpp"
 #include "d_mode.hpp"
@@ -25,7 +25,7 @@
 #include "i_timer.hpp"
 #include "m_argv.hpp"
 
-#include "../utils/memory.hpp"
+#include "memory.hpp"
 #include "net_common.hpp"
 #include "net_io.hpp"
 #include "net_packet.hpp"

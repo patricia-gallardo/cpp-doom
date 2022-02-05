@@ -97,7 +97,7 @@ typedef enum
     LITE_STROBE
 } lighttype_t;
 
-typedef struct
+typedef struct light_s
 {
     thinker_t thinker;
     sector_t *sector;
@@ -109,7 +109,7 @@ typedef struct
     int count;
 } light_t;
 
-typedef struct
+typedef struct phase_s
 {
     thinker_t thinker;
     sector_t *sector;
@@ -256,7 +256,7 @@ typedef enum
     //PLAT_RAISETONEARESTANDCHANGE
 } plattype_e;
 
-typedef struct
+typedef struct plat_s
 {
     thinker_t thinker;
     sector_t *sector;
@@ -300,7 +300,7 @@ typedef enum
     DREV_RAISEIN5MINS,
 } vldoor_e;
 
-typedef struct
+typedef struct vldoor_s
 {
     thinker_t thinker;
     sector_t *sector;
@@ -340,7 +340,7 @@ typedef enum
     CLEV_MOVETOVALUETIMES8
 } ceiling_e;
 
-typedef struct
+typedef struct ceiling_s
 {
     thinker_t thinker;
     sector_t *sector;
@@ -389,7 +389,7 @@ typedef enum
     FLEV_MOVETOVALUETIMES8
 } floor_e;
 
-typedef struct
+typedef struct floormove_s
 {
     thinker_t thinker;
     sector_t *sector;
@@ -410,7 +410,7 @@ typedef struct
     byte textureChange;
 } floormove_t;
 
-typedef struct
+typedef struct pillar_s
 {
     thinker_t thinker;
     sector_t *sector;
@@ -422,7 +422,7 @@ typedef struct
     int crush;
 } pillar_t;
 
-typedef struct
+typedef struct floorWaggle_s
 {
     thinker_t thinker;
     sector_t *sector;

@@ -20,6 +20,8 @@
 #include "r_local.hpp"
 #include "i_video.hpp"
 #include "v_video.hpp"
+#include "lump.hpp"
+#include "memory.hpp"
 
 /*
 
@@ -261,7 +263,7 @@ void R_InitTranslationTables(void)
     V_LoadTintTable();
 
     // Allocate translation tables
-    translationtables = Z_Malloc(256 * 3, PU_STATIC, 0);
+    translationtables = zmalloc<byte *>(256 * 3, PU_STATIC, 0);
 
     // Fill out the translation tables
     for (i = 0; i < 256; i++)
@@ -403,11 +405,11 @@ void R_DrawViewBorder(void)
 
     if (gamemode == shareware)
     {
-        src = cache_lump_name<patch_t *>(DEH_String("FLOOR04"), PU_CACHE);
+        src = cache_lump_name<byte *>(DEH_String("FLOOR04"), PU_CACHE);
     }
     else
     {
-        src = cache_lump_name<patch_t *>(DEH_String("FLAT513"), PU_CACHE);
+        src = cache_lump_name<byte *>(DEH_String("FLAT513"), PU_CACHE);
     }
     dest = I_VideoBuffer;
 
@@ -469,11 +471,11 @@ void R_DrawTopBorder(void)
 
     if (gamemode == shareware)
     {
-        src = cache_lump_name<patch_t *>(DEH_String("FLOOR04"), PU_CACHE);
+        src = cache_lump_name<byte *>(DEH_String("FLOOR04"), PU_CACHE);
     }
     else
     {
-        src = cache_lump_name<patch_t *>(DEH_String("FLAT513"), PU_CACHE);
+        src = cache_lump_name<byte *>(DEH_String("FLAT513"), PU_CACHE);
     }
     dest = I_VideoBuffer;
 

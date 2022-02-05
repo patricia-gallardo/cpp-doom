@@ -12,9 +12,8 @@
 // GNU General Public License for more details.
 //
 
-#include <stdio.h>
-#include <stdlib.h>
-#include <string.h>
+#include <cstdio>
+#include <cstdlib>
 
 #include "SDL.h"
 
@@ -157,9 +156,9 @@ static boolean CalibrateAxis(txt_joystick_axis_t *joystick_axis)
             continue;
         }
 
-        if (abs(axis_value) > best_value)
+        if (std::abs(axis_value) > best_value)
         {
-            best_value = abs(axis_value);
+            best_value = std::abs(axis_value);
             best_invert = axis_value > 0;
             best_axis = i;
         }
@@ -227,8 +226,8 @@ static void IdentifyBadAxes(txt_joystick_axis_t *joystick_axis)
     free(joystick_axis->bad_axis);
 
     joystick_axis->bad_axis
-        = calloc(SDL_JoystickNumAxes(joystick_axis->joystick),
-                                     sizeof(boolean));
+        = static_cast<boolean *>(calloc(SDL_JoystickNumAxes(joystick_axis->joystick),
+        sizeof(boolean)));
 
     // Look for uncentered axes.
 
@@ -236,7 +235,7 @@ static void IdentifyBadAxes(txt_joystick_axis_t *joystick_axis)
     {
         val = SDL_JoystickGetAxis(joystick_axis->joystick, i);
 
-        joystick_axis->bad_axis[i] = abs(val) > (32768 / 5);
+        joystick_axis->bad_axis[i] = std::abs(val) > (32768 / 5);
 
         if (joystick_axis->bad_axis[i])
         {
@@ -319,7 +318,7 @@ static int EventCallback(SDL_Event *event, TXT_UNCAST_ARG(joystick_axis))
 
         if (advance)
         {
-            joystick_axis->config_stage = NextCalibrateStage(joystick_axis);
+            joystick_axis->config_stage = static_cast<txt_joystick_axis_stage_t>(NextCalibrateStage(joystick_axis));
             SetCalibrationLabel(joystick_axis);
 
             // Finished?
@@ -518,7 +517,7 @@ txt_joystick_axis_t *TXT_NewJoystickAxis(int *axis, int *invert,
 {
     txt_joystick_axis_t *joystick_axis;
 
-    joystick_axis = malloc(sizeof(txt_joystick_axis_t));
+    joystick_axis = static_cast<txt_joystick_axis_t *>(malloc(sizeof(txt_joystick_axis_t)));
 
     TXT_InitWidget(joystick_axis, &txt_joystick_axis_class);
     joystick_axis->axis = axis;

@@ -15,8 +15,8 @@
 // Parses "Frame" sections in dehacked files
 //
 
-#include <stdio.h>
-#include <stdlib.h>
+#include <cstdio>
+#include <cstdlib>
 
 #include "doomtype.hpp"
 #include "info.hpp"
@@ -32,7 +32,7 @@
 typedef struct
 {
     int offsets[deh_hhe_num_versions];
-    void (*func)();
+    action_hook func;
 } hhe_action_pointer_t;
 
 // Offsets of action pointers within the Heretic executables.
@@ -232,7 +232,13 @@ static boolean GetActionPointerForOffset(int offset, void **result)
     {
         if (action_pointers[i].offsets[deh_hhe_version] == offset)
         {
-            *result = action_pointers[i].func;
+            void *pointer = std::visit(overloaded {
+                                           [](const null_hook &) { return static_cast<void *>(nullptr); },
+                                           [](const auto &function) {
+                                               return reinterpret_cast<void *>(function);
+                                           } },
+                action_pointers[i].func);
+            *result       = pointer;
             return true;
         }
     }
@@ -254,7 +260,7 @@ static void SuggestOtherVersions(unsigned int offset)
         {
             if (action_pointers[i].offsets[v] == offset)
             {
-                DEH_SuggestHereticVersion(v);
+                DEH_SuggestHereticVersion(static_cast<deh_hhe_version_t>(v));
             }
         }
     }
@@ -298,7 +304,7 @@ static void DEH_FrameParseLine(deh_context_t *context, char *line, void *tag)
             return;
         }
 
-        state->action = func;
+        state->action = reinterpret_cast<zero_param_action>(func);
     }
     else
     {

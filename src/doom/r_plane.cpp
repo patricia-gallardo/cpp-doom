@@ -19,8 +19,8 @@
 //
 
 
-#include <stdio.h>
-#include <stdlib.h>
+#include <cstdio>
+#include <cstdlib>
 
 #include "i_system.hpp"
 #include "z_zone.hpp"
@@ -33,6 +33,7 @@
 #include "r_sky.hpp"
 #include "r_bmaps.hpp" // [crispy] R_BrightmapForTexName()
 #include "r_swirl.hpp" // [crispy] R_DistortedFlat()
+#include "lump.hpp"
 
 
 planefunction_t floorfunc;
@@ -136,7 +137,7 @@ void R_MapPlane(int y,
     // [crispy] visplanes with the same flats now match up far better than before
     // adapted from prboom-plus/src/r_plane.c:191-239, translated to fixed-point math
 
-    if (!(dy = abs(centery - y)))
+    if (!(dy = std::abs(centery - y)))
     {
         return;
     }
@@ -487,10 +488,10 @@ void R_DrawPlanes(void)
         lumpnum = firstflat + (swirling ? pl->picnum : flattranslation[pl->picnum]);
         // [crispy] add support for SMMU swirling flats
         ds_source =
-            static_cast<byte *>(swirling ? R_DistortedFlat(lumpnum) : W_CacheLumpNum(lumpnum, PU_STATIC));
+            static_cast<byte *>(swirling ? reinterpret_cast<unsigned char *>(R_DistortedFlat(lumpnum)) : cache_lump_num<byte *>(lumpnum, PU_STATIC));
         ds_brightmap = R_BrightmapForFlatNum(lumpnum - firstflat);
 
-        planeheight = abs(pl->height - viewz);
+        planeheight = std::abs(pl->height - viewz);
         light       = (pl->lightlevel >> LIGHTSEGSHIFT) + (extralight * LIGHTBRIGHT);
 
         if (light >= LIGHTLEVELS)

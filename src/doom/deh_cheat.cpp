@@ -15,8 +15,8 @@
 // Parses "Cheat" sections in dehacked files
 //
 
-#include <stdlib.h>
-#include <string.h>
+#include <cstdlib>
+#include <cstring>
 
 #include "doomtype.hpp"
 

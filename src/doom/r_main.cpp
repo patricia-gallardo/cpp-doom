@@ -19,8 +19,7 @@
 //
 
 
-#include <stdlib.h>
-#include <math.h>
+#include <cstdlib>
 
 
 #include "doomdef.hpp"
@@ -411,8 +410,8 @@ fixed_t
     fixed_t dist;
     fixed_t frac;
 
-    dx = abs(x - viewx);
-    dy = abs(y - viewy);
+    dx = std::abs(x - viewx);
+    dy = std::abs(y - viewy);
 
     if (dy > dx)
     {
@@ -495,7 +494,7 @@ fixed_t R_ScaleFromGlobalAngle (angle_t visangle)
     sinv = finesine[(visangle-rw_normalangle)>>ANGLETOFINESHIFT];	
     dist = FixedDiv (rw_distance, sinv);
     cosv = finecosine[(viewangle-visangle)>>ANGLETOFINESHIFT];
-    z = abs(FixedMul (dist, cosv));
+    z = std::abs(FixedMul (dist, cosv));
     scale = FixedDiv(projection, z);
     return scale;
 }
@@ -848,7 +847,7 @@ void R_ExecuteSetViewSize(void)
         for (j = 0; j < LOOKDIRS; j++)
         {
             dy            = ((i - (viewheight / 2 + ((j - LOOKDIRMIN) * (1 << crispy->hires)) * (screenblocks < 11 ? screenblocks : 11) / 10)) << FRACBITS) + FRACUNIT / 2;
-            dy            = abs(dy);
+            dy            = std::abs(dy);
             yslopes[j][i] = FixedDiv(num, dy);
         }
     }
@@ -856,7 +855,7 @@ void R_ExecuteSetViewSize(void)
 
     for (i = 0; i < viewwidth; i++)
     {
-        cosadj       = abs(finecosine[xtoviewangle[i] >> ANGLETOFINESHIFT]);
+        cosadj       = std::abs(finecosine[xtoviewangle[i] >> ANGLETOFINESHIFT]);
         distscale[i] = FixedDiv(FRACUNIT, cosadj);
     }
 

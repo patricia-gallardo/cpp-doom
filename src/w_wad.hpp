@@ -20,7 +20,7 @@
 #ifndef __W_WAD__
 #define __W_WAD__
 
-#include <stdio.h>
+#include <cstdio>
 
 #include "doomtype.hpp"
 #include "w_file.hpp"

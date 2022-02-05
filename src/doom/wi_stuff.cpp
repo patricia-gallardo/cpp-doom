@@ -17,7 +17,7 @@
 //
 
 
-#include <stdio.h>
+#include <cstdio>
 
 #include "z_zone.hpp"
 
@@ -44,9 +44,10 @@
 // Needs access to LFB.
 #include "v_video.hpp"
 
-#include "../../utils/lump.hpp"
+#include "lump.hpp"
 #include "st_stuff.hpp" // [crispy] ST_DrawDemoTimer()
 #include "wi_stuff.hpp"
+#include "memory.hpp"
 
 //
 // Data needed to add patches to full screen intermission pics.
@@ -1870,7 +1871,7 @@ void WI_loadData(void)
     if (gamemode == commercial)
     {
         NUMCMAPS   = (crispy->havemap33) ? 33 : 32;
-        lnames     = (patch_t **)Z_Malloc(sizeof(patch_t *) * NUMCMAPS,
+        lnames     = zmalloc<patch_t **>(sizeof(patch_t *) * NUMCMAPS,
             PU_STATIC, NULL);
         num_lnames = NUMCMAPS;
     }
@@ -1878,7 +1879,7 @@ void WI_loadData(void)
     {
         // [crispy] support E1M10 "Sewers"
         int nummaps = crispy->havee1m10 ? NUMMAPS + 1 : NUMMAPS;
-        lnames      = (patch_t **)Z_Malloc(sizeof(patch_t *) * nummaps,
+        lnames      = zmalloc<patch_t **>(sizeof(patch_t *) * nummaps,
             PU_STATIC, NULL);
         num_lnames  = nummaps;
     }

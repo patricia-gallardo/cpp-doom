@@ -12,14 +12,14 @@
 // GNU General Public License for more details.
 //
 
-#include <stdio.h>
-#include <stdlib.h>
-#include <stdarg.h>
-#include <string.h>
+#include <cstdio>
+#include <cstdlib>
+#include <cstdarg>
+#include <cstring>
 
 #include "doomkeys.hpp"
 
-#include "../utils/memory.hpp"
+#include "memory.hpp"
 #include "txt_desktop.hpp"
 #include "txt_gui.hpp"
 #include "txt_io.hpp"

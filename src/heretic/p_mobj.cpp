@@ -22,6 +22,7 @@
 #include "p_local.hpp"
 #include "sounds.hpp"
 #include "s_sound.hpp"
+#include "memory.hpp"
 
 void G_PlayerReborn(int player);
 void P_SpawnMapThing(mapthing_t * mthing);
@@ -71,9 +72,10 @@ boolean P_SetMobjState(mobj_t * mobj, statenum_t state)
     mobj->tics = st->tics;
     mobj->sprite = st->sprite;
     mobj->frame = st->frame;
-    if (st->action)
+    if (st->action.index() == mobj_param_action_hook)
     {                           // Call action function
-        st->action(mobj);
+        auto callback = std::get<mobj_param_action>(st->action);
+        callback(mobj);
     }
     return (true);
 }
@@ -747,7 +749,7 @@ void P_MobjThinker(mobj_t * mobj)
     if (mobj->momx || mobj->momy || (mobj->flags & MF_SKULLFLY))
     {
         P_XYMovement(mobj);
-        if (mobj->thinker.function == (think_t) - 1)
+        if (action_hook_is_empty(mobj->thinker.function))
         {                       // mobj was removed
             return;
         }
@@ -794,7 +796,7 @@ void P_MobjThinker(mobj_t * mobj)
         {
             P_ZMovement(mobj);
         }
-        if (mobj->thinker.function == (think_t) - 1)
+        if (action_hook_is_empty(mobj->thinker.function))
         {                       // mobj was removed
             return;
         }
@@ -857,7 +859,7 @@ mobj_t *P_SpawnMobj(fixed_t x, fixed_t y, fixed_t z, mobjtype_t type)
     mobjinfo_t *info;
     fixed_t space;
 
-    mobj = Z_Malloc(sizeof(*mobj), PU_LEVEL, NULL);
+    mobj = zmalloc<mobj_t *>(sizeof(*mobj), PU_LEVEL, NULL);
     memset(mobj, 0, sizeof(*mobj));
     info = &mobjinfo[type];
     mobj->type = type;
@@ -1148,7 +1150,7 @@ void P_SpawnMapThing(mapthing_t * mthing)
     {
         z = ONFLOORZ;
     }
-    mobj = P_SpawnMobj(x, y, z, i);
+    mobj = P_SpawnMobj(x, y, z, static_cast<mobjtype_t>(i));
     if (mobj->flags2 & MF2_FLOATBOB)
     {                           // Seed random starting index for bobbing motion
         mobj->health = P_Random();

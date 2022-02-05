@@ -23,8 +23,7 @@
 
 // HEADER FILES ------------------------------------------------------------
 
-#include <string.h>
-#include <stdlib.h>
+#include <cstring>
 #include "doomstat.hpp"
 #include "i_system.hpp"
 #include "m_misc.hpp"
@@ -34,6 +33,7 @@
 #include "z_zone.hpp"
 
 #include "s_musinfo.hpp"
+#include "lump.hpp"
 
 // MACROS ------------------------------------------------------------------
 
@@ -105,7 +105,7 @@ static void OpenScript(char *name, int type)
     if (type == LUMP_SCRIPT)
     { // Lump script
         ScriptLumpNum = W_GetNumForName(name);
-        ScriptBuffer  = (char *)W_CacheLumpNum(ScriptLumpNum, PU_STATIC);
+        ScriptBuffer  = cache_lump_num<char *>(ScriptLumpNum, PU_STATIC);
         ScriptSize    = W_LumpLength(ScriptLumpNum);
         M_StringCopy(ScriptName, name, sizeof(ScriptName));
     }
@@ -279,7 +279,7 @@ void S_ParseMusInfo(const char *mapid)
         int num, lumpnum;
         int inMap = false;
 
-        SC_OpenLump("MUSINFO");
+        SC_OpenLump(const_cast<char *>("MUSINFO"));
 
         while (SC_GetString())
         {

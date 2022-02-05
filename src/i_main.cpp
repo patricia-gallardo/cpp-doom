@@ -19,7 +19,7 @@
 #include "config.h"
 #include "crispy.hpp"
 
-#include <stdio.h>
+#include <cstdio>
 
 #include "SDL.h"
 

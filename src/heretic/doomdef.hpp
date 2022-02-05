@@ -18,10 +18,10 @@
 
 #ifndef __DOOMDEF__
 #define __DOOMDEF__
-#include <stdio.h>
-#include <string.h>
+#include <cstdio>
+#include <cstring>
 //haleyjd: removed WATCOMC
-#include <limits.h>
+#include <climits>
 
 #define HERETIC_VERSION 130
 #define HERETIC_VERSION_TEXT "v1.3"
@@ -58,6 +58,7 @@
 #include "d_ticcmd.hpp"
 
 #include "d_loop.hpp"
+#include "action_hook.hpp"
 
 #define	SAVEGAMENAME "hticsav"
 
@@ -133,7 +134,7 @@ typedef void (*think_t) ();
 typedef struct thinker_s
 {
     struct thinker_s *prev, *next;
-    think_t function;
+    action_hook function;
 } thinker_t;
 
 typedef union
@@ -290,7 +291,7 @@ typedef enum
     NUMPSPRITES
 } psprnum_t;
 
-typedef struct
+typedef struct pspdef_s
 {
     state_t *state;             // a NULL state means not active
     int tics;
@@ -348,11 +349,11 @@ typedef enum
 typedef struct
 {
     ammotype_t ammo;
-    int upstate;
-    int downstate;
-    int readystate;
-    int atkstate;
-    int holdatkstate;
+    statenum_t upstate;
+    statenum_t downstate;
+    statenum_t readystate;
+    statenum_t atkstate;
+    statenum_t holdatkstate;
     int flashstate;
 } weaponinfo_t;
 

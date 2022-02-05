@@ -17,9 +17,9 @@
 //
 
 
-#include <stdio.h>
-#include <stdlib.h>
-#include <string.h>
+#include <cstdio>
+#include <cstdlib>
+#include <cstring>
 
 #include "memio.hpp"
 #include "mus2mid.hpp"
@@ -31,8 +31,8 @@
 #include "w_wad.hpp"
 #include "z_zone.hpp"
 
-#include "../utils/lump.hpp"
-#include "../utils/memory.hpp"
+#include "lump.hpp"
+#include "memory.hpp"
 #include "midifile.hpp"
 #include "opl.hpp"
 
@@ -934,7 +934,7 @@ static unsigned int last_perc_count;
 // Configuration file variable, containing the port number for the
 // adlib chip.
 
-char *snd_dmxoption = "-opl3"; // [crispy] default to OPL3 emulation
+char *snd_dmxoption = const_cast<char *>("-opl3"); // [crispy] default to OPL3 emulation
 int   opl_io_port   = 0x388;
 
 // If true, OPL sound channels are reversed to their correct arrangement

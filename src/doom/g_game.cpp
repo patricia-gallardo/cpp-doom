@@ -16,9 +16,8 @@
 //
 
 
-#include <string.h>
-#include <stdlib.h>
-#include <math.h>
+#include <cstring>
+#include <cstdlib>
 
 #include "doomdef.hpp"
 #include "doomkeys.hpp"
@@ -71,8 +70,8 @@
 #include "r_data.hpp"
 #include "r_sky.hpp"
 
-#include "../../utils/lump.hpp"
-#include "../../utils/memory.hpp"
+#include "lump.hpp"
+#include "memory.hpp"
 #include "g_game.hpp"
 #include "v_trans.hpp" // [crispy] colored "always run" message
 
@@ -426,7 +425,7 @@ void G_BuildTiccmd(ticcmd_t *cmd, int maketic)
         }
 
         M_snprintf(playermessage, sizeof(playermessage), "ALWAYS RUN %s%s",
-            crstr[CR_GREEN],
+            crstr[static_cast<int>(cr_t::CR_GREEN)],
             (joybspeed >= MAX_JOY_BUTTONS) ? "ON" : "OFF");
         player->message = playermessage;
         S_StartSound(NULL, sfx_swtchn);
@@ -441,7 +440,7 @@ void G_BuildTiccmd(ticcmd_t *cmd, int maketic)
 
         M_snprintf(playermessage, sizeof(playermessage),
             "vertical mouse movement %s%s",
-            crstr[CR_GREEN],
+            crstr[static_cast<int>(cr_t::CR_GREEN)],
             !novert ? "ON" : "OFF");
         player->message = playermessage;
         S_StartSound(NULL, sfx_swtchn);
@@ -984,7 +983,7 @@ boolean G_Responder(event_t *ev)
         // Perform a low pass filter on this so that the thermometer
         // appears to move smoothly.
 
-        testcontrols_mousespeed = abs(ev->data2);
+        testcontrols_mousespeed = std::abs(ev->data2);
     }
 
     // If the next/previous weapon keys are pressed, set the next_weapon

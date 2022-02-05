@@ -31,7 +31,7 @@
 
 #include "crispy.hpp"
 
-#include "../utils/lump.hpp"
+#include "lump.hpp"
 #include "config.h"
 #include "d_loop.hpp"
 #include "deh_str.hpp"
@@ -120,11 +120,11 @@ int png_screenshots = 1; // [crispy]
 
 // SDL video driver name
 
-char *video_driver = "";
+char *video_driver = const_cast<char *>("");
 
 // Window position:
 
-char *window_position = "center";
+char *window_position = const_cast<char *>("center");
 
 // SDL display number on which to run.
 

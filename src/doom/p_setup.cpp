@@ -18,7 +18,7 @@
 //
 
 
-#include <math.h>
+#include <cmath>
 
 #include "z_zone.hpp"
 
@@ -41,8 +41,8 @@
 
 #include "doomstat.hpp"
 
-#include "../../utils/lump.hpp"
-#include "../../utils/memory.hpp"
+#include "lump.hpp"
+#include "memory.hpp"
 #include "p_extnodes.hpp" // [crispy] support extended node formats
 
 void P_SpawnMapThing(mapthing_t *mthing);
@@ -273,7 +273,7 @@ void P_LoadSegs(int lump)
 void P_SegLengths(boolean contrast_only)
 {
     int       i;
-    const int rightangle = abs(finesine[(ANG60 / 2) >> ANGLETOFINESHIFT]);
+    const int rightangle = std::abs(finesine[(ANG60 / 2) >> ANGLETOFINESHIFT]);
 
     for (i = 0; i < numsegs; i++)
     {
@@ -296,11 +296,11 @@ void P_SegLengths(boolean contrast_only)
         // [crispy] smoother fake contrast
         if (!dy)
             li->fakecontrast = -LIGHTBRIGHT;
-        else if (abs(finesine[li->r_angle >> ANGLETOFINESHIFT]) < rightangle)
+        else if (std::abs(finesine[li->r_angle >> ANGLETOFINESHIFT]) < rightangle)
             li->fakecontrast = -(LIGHTBRIGHT >> 1);
         else if (!dx)
             li->fakecontrast = LIGHTBRIGHT;
-        else if (abs(finecosine[li->r_angle >> ANGLETOFINESHIFT]) < rightangle)
+        else if (std::abs(finecosine[li->r_angle >> ANGLETOFINESHIFT]) < rightangle)
             li->fakecontrast = LIGHTBRIGHT >> 1;
         else
             li->fakecontrast = 0;
@@ -913,7 +913,7 @@ static void P_RemoveSlimeTrails(void)
 
                         // [crispy] wait a minute... moved more than 8 map units?
                         // maybe that's a linguortal then, back to the original coordinates
-                        if (abs(v->r_x - v->x) > 8 * FRACUNIT || abs(v->r_y - v->y) > 8 * FRACUNIT)
+                        if (std::abs(v->r_x - v->x) > 8 * FRACUNIT || std::abs(v->r_y - v->y) > 8 * FRACUNIT)
                         {
                             v->r_x = v->x;
                             v->r_y = v->y;

@@ -91,7 +91,7 @@ static void RunThinkers(void)
     currentthinker = thinkercap.next;
     while (currentthinker != &thinkercap)
     {
-        if (currentthinker->function == (think_t) - 1)
+        if (action_hook_is_empty(currentthinker->function))
         {                       // Time to remove it
             nextthinker = currentthinker->next;
             currentthinker->next->prev = currentthinker->prev;
@@ -100,8 +100,10 @@ static void RunThinkers(void)
         }
         else
         {
-            if (currentthinker->function)
-                currentthinker->function(currentthinker);
+            if (currentthinker->function.index() == thinker_param_action_hook) {
+                auto callback = std::get<thinker_param_action>(currentthinker->function);
+                callback(currentthinker);
+            }
             nextthinker = currentthinker->next;
         }
 
@@ -147,5 +149,5 @@ void P_AddThinker(thinker_t * thinker)
 
 void P_RemoveThinker(thinker_t * thinker)
 {
-    thinker->function = (think_t) - 1;
+    thinker->function = null_hook();
 }

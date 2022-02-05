@@ -12,10 +12,10 @@
 // GNU General Public License for more details.
 //
 
-#include <stdlib.h>
-#include <string.h>
+#include <cstdlib>
+#include <cstring>
 
-#include "../utils/memory.hpp"
+#include "memory.hpp"
 #include "txt_gui.hpp"
 #include "txt_io.hpp"
 #include "txt_label.hpp"

@@ -23,6 +23,7 @@
 #include "p_local.hpp"
 #include "s_sound.hpp"
 #include "sounds.hpp"
+#include "memory.hpp"
 
 // MACROS ------------------------------------------------------------------
 
@@ -101,9 +102,10 @@ boolean P_SetMobjState(mobj_t * mobj, statenum_t state)
     mobj->tics = st->tics;
     mobj->sprite = st->sprite;
     mobj->frame = st->frame;
-    if (st->action)
-    {                           // Call action function
-        st->action(mobj);
+    if (st->action.index() == mobj_param_action_hook)
+    {
+        auto callback = std::get<mobj_param_action>(st->action);
+        callback(mobj);
     }
     return (true);
 }
@@ -204,7 +206,7 @@ void P_FloorBounceMissile(mobj_t * mo)
         case MT_SGSHARD9:
         case MT_SGSHARD0:
             mo->momz = FixedMul(mo->momz, -0.3 * FRACUNIT);
-            if (abs(mo->momz) < (FRACUNIT / 2))
+            if (std::abs(mo->momz) < (FRACUNIT / 2))
             {
                 P_SetMobjState(mo, S_NULL);
                 return;
@@ -537,7 +539,7 @@ void P_XYMovement(mobj_t * mo)
                     {
                         case MT_CENTAUR:
                         case MT_CENTAURLEADER:
-                            if (abs(angle - BlockingMobj->angle) >> 24 > 45)
+                            if ((angle - BlockingMobj->angle) >> 24 > 45)
                                 goto explode;
                             if (mo->type == MT_HOLY_FX)
                                 goto explode;
@@ -642,9 +644,9 @@ void P_XYMovement(mobj_t * mo)
         if (player)
         {
             if ((unsigned) ((player->mo->state - states)
-                            - PStateRun[player->class]) < 4)
+                            - PStateRun[player->clazz]) < 4)
             {
-                P_SetMobjState(player->mo, PStateNormal[player->class]);
+                P_SetMobjState(player->mo, static_cast<statenum_t>(PStateNormal[player->clazz]));
             }
         }
         mo->momx = 0;
@@ -678,7 +680,7 @@ void P_MonsterFallingDamage(mobj_t * mo)
     int damage;
     int mom;
 
-    mom = abs(mo->momz);
+    mom = std::abs(mo->momz);
     if (mom > 35 * FRACUNIT)
     {                           // automatic death
         damage = 10000;
@@ -804,7 +806,7 @@ void P_ZMovement(mobj_t * mo)
                              && !mo->player->morphTics)
                     {
                         S_StartSound(mo, SFX_PLAYER_LAND);
-                        switch (mo->player->class)
+                        switch (mo->player->clazz)
                         {
                             case PCLASS_FIGHTER:
                                 S_StartSound(mo, SFX_PLAYER_FIGHTER_GRUNT);
@@ -1023,7 +1025,7 @@ static void PlayerLandedOnThing(mobj_t * mo, mobj_t * onmobj)
     else if (mo->momz < -GRAVITY * 12 && !mo->player->morphTics)
     {
         S_StartSound(mo, SFX_PLAYER_LAND);
-        switch (mo->player->class)
+        switch (mo->player->clazz)
         {
             case PCLASS_FIGHTER:
                 S_StartSound(mo, SFX_PLAYER_FIGHTER_GRUNT);
@@ -1065,7 +1067,7 @@ void P_MobjThinker(mobj_t * mobj)
     if (mobj->momx || mobj->momy || (mobj->flags & MF_SKULLFLY))
     {
         P_XYMovement(mobj);
-        if (mobj->thinker.function == (think_t) - 1)
+        if (action_hook_is_empty(mobj->thinker.function))
         {                       // mobj was removed
             return;
         }
@@ -1139,7 +1141,7 @@ void P_MobjThinker(mobj_t * mobj)
         {
             P_ZMovement(mobj);
         }
-        if (mobj->thinker.function == (think_t) - 1)
+        if (action_hook_is_empty(mobj->thinker.function))
         {                       // mobj was removed
             return;
         }
@@ -1173,7 +1175,7 @@ mobj_t *P_SpawnMobj(fixed_t x, fixed_t y, fixed_t z, mobjtype_t type)
     mobjinfo_t *info;
     fixed_t space;
 
-    mobj = Z_Malloc(sizeof(*mobj), PU_LEVEL, NULL);
+    mobj = zmalloc<mobj_t *>(sizeof(*mobj), PU_LEVEL, NULL);
     memset(mobj, 0, sizeof(*mobj));
     info = &mobjinfo[type];
     mobj->type = type;
@@ -1310,19 +1312,19 @@ void P_SpawnPlayer(mapthing_t * mthing)
     z = ONFLOORZ;
     if (randomclass && deathmatch)
     {
-        p->class = P_Random() % 3;
-        if (p->class == PlayerClass[mthing->type - 1])
+        p->clazz = static_cast<pclass_t>(P_Random() % 3);
+        if (p->clazz == PlayerClass[mthing->type - 1])
         {
-            p->class = (p->class + 1) % 3;
+            p->clazz = static_cast<pclass_t>((p->clazz + 1) % 3);
         }
-        PlayerClass[mthing->type - 1] = p->class;
+        PlayerClass[mthing->type - 1] = p->clazz;
         SB_SetClassData();
     }
     else
     {
-        p->class = PlayerClass[mthing->type - 1];
+        p->clazz = PlayerClass[mthing->type - 1];
     }
-    switch (p->class)
+    switch (p->clazz)
     {
         case PCLASS_FIGHTER:
             mobj = P_SpawnMobj(x, y, z, MT_PLAYER_FIGHTER);
@@ -1339,7 +1341,7 @@ void P_SpawnPlayer(mapthing_t * mthing)
     }
 
     // Set translation table data
-    if (p->class == PCLASS_FIGHTER
+    if (p->clazz == PCLASS_FIGHTER
         && (mthing->type == 1 || mthing->type == 3))
     {
         // The first type should be blue, and the third should be the
@@ -1449,7 +1451,7 @@ void P_SpawnMapThing(mapthing_t * mthing)
     {
         R_PointInSubsector(mthing->x << FRACBITS,
                            mthing->y << FRACBITS)->sector->seqType =
-            mthing->type - 1400;
+            static_cast<seqtype_t>(mthing->type - 1400);
         return;
     }
 
@@ -1566,7 +1568,7 @@ void P_SpawnMapThing(mapthing_t * mthing)
         default:
             break;
     }
-    mobj = P_SpawnMobj(x, y, z, i);
+    mobj = P_SpawnMobj(x, y, z, static_cast<mobjtype_t>(i));
     if (z == ONFLOORZ)
     {
         mobj->z += mthing->height << FRACBITS;
@@ -1633,9 +1635,10 @@ void P_CreateTIDList(void)
     thinker_t *t;
 
     i = 0;
+    action_hook needle = P_MobjThinker;
     for (t = thinkercap.next; t != &thinkercap; t = t->next)
     {                           // Search all current thinkers
-        if (t->function != P_MobjThinker)
+        if (t->function != needle)
         {                       // Not a mobj thinker
             continue;
         }

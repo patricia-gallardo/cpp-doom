@@ -16,10 +16,10 @@
 //
 
 
-#include <ctype.h>
-#include <stdio.h>
-#include <stdlib.h>
-#include <string.h>
+#include <cctype>
+#include <cstdio>
+#include <cstdlib>
+#include <cstring>
 
 #include "SDL_stdinc.h"
 
@@ -257,7 +257,7 @@ void M_FindResponseFile(void)
         // the loop we'll ignore it. Since some parameters stop reading when
         // an argument beginning with a '-' is encountered, we keep something
         // that starts with a '-'.
-        myargv[i] = "-_";
+        myargv[i] = const_cast<char *>("-_");
         LoadResponseFile(i + 1, myargv[i + 1]);
     }
 }
@@ -333,7 +333,7 @@ void M_AddLooseFiles(void)
 
     // allocate space for up to three additional regular parameters
 
-    arguments = malloc((myargc + 3) * sizeof(*arguments));
+    arguments = static_cast<argument_t *>(malloc((myargc + 3) * sizeof(*arguments)));
     memset(arguments, 0, (myargc + 3) * sizeof(*arguments));
 
     // check the command line and make sure it does not already
@@ -381,7 +381,7 @@ void M_AddLooseFiles(void)
         myargc++;
     }
 
-    newargv = malloc(myargc * sizeof(*newargv));
+    newargv = static_cast<char **>(malloc(myargc * sizeof(*newargv)));
 
     // sort the argument list by file type, except for the zeroth argument
     // which is the executable invocation itself

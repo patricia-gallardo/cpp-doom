@@ -18,7 +18,7 @@
 //	Pending weapon.
 //
 
-#include <stdlib.h>
+#include <cstdlib>
 
 #include "doomdef.hpp"
 #include "d_event.hpp"
@@ -230,7 +230,7 @@ void P_MovePlayer (player_t* player)
         {
             player->pitch = player->pitch - CENTERVIEWAMOUNT;
         }
-        if (abs(player->pitch) < CENTERVIEWAMOUNT)
+        if (std::abs(player->pitch) < CENTERVIEWAMOUNT)
         {
             player->pitch = 0;
             player->centerview = 0;
@@ -430,7 +430,7 @@ void P_PlayerThink (player_t* player)
         // The actual changing of the weapon is done
         //  when the weapon psprite can do it
         //  (read: not in the middle of an attack).
-        newweapon = (cmd->buttons & BT_WEAPONMASK) >> BT_WEAPONSHIFT;
+        newweapon = static_cast<weapontype_t>((cmd->buttons & BT_WEAPONMASK) >> BT_WEAPONSHIFT);
 
         // villsa [STRIFE] select poison bow
         if(newweapon == wp_elecbow)
@@ -602,7 +602,7 @@ const char* P_RemoveInventoryItem(player_t *player, int slot, int amount)
     player->inventory[slot].amount -= amount;
     player->st_update = true;
 
-    type = player->inventory[slot].type;
+    type = static_cast<mobjtype_t>(player->inventory[slot].type);
 
     if(!player->inventory[slot].amount)
     {
@@ -651,7 +651,7 @@ void P_DropInventoryItem(player_t* player, int sprite)
         invslot++;
 
     item = &(player->inventory[invslot]);
-    type = item->type;
+    type = static_cast<mobjtype_t>(item->type);
 
     if(item->amount)
     {

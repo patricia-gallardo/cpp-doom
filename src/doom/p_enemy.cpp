@@ -18,8 +18,8 @@
 //	that are associated with states/frames.
 //
 
-#include <stdio.h>
-#include <stdlib.h>
+#include <cstdio>
+#include <cstdlib>
 
 #include "m_random.hpp"
 #include "i_system.hpp"
@@ -399,7 +399,7 @@ void P_NewChaseDir(mobj_t *actor)
 
     // try other directions
     if (P_Random() > 200
-        || abs(deltay) > abs(deltax))
+        || std::abs(deltay) > std::abs(deltax))
     {
         tdir = d[1];
         d[1] = d[2];
@@ -663,7 +663,7 @@ seeyou:
         }
     }
 
-    P_SetMobjState(actor, static_cast<statenum_t>(actor->info->seestate));
+    P_SetMobjState(actor, actor->info->seestate);
 }
 
 
@@ -710,7 +710,7 @@ void A_Chase(mobj_t *actor)
         if (P_LookForPlayers(actor, true))
             return; // got a new target
 
-        P_SetMobjState(actor, static_cast<statenum_t>(actor->info->spawnstate));
+        P_SetMobjState(actor, actor->info->spawnstate);
         return;
     }
 
@@ -730,7 +730,7 @@ void A_Chase(mobj_t *actor)
         if (actor->info->attacksound)
             S_StartSound(actor, actor->info->attacksound);
 
-        P_SetMobjState(actor, static_cast<statenum_t>(actor->info->meleestate));
+        P_SetMobjState(actor, actor->info->meleestate);
         return;
     }
 
@@ -747,7 +747,7 @@ void A_Chase(mobj_t *actor)
             goto nomissile;
 
         P_SetMobjState(actor,
-            static_cast<statenum_t>(actor->info->missilestate));
+            actor->info->missilestate);
         actor->flags |= MF_JUSTATTACKED;
         return;
     }
@@ -877,7 +877,7 @@ void A_CPosRefire(mobj_t *actor)
         || actor->target->health <= 0
         || !P_CheckSight(actor, actor->target))
     {
-        P_SetMobjState(actor, static_cast<statenum_t>(actor->info->seestate));
+        P_SetMobjState(actor, actor->info->seestate);
     }
 }
 
@@ -894,7 +894,7 @@ void A_SpidRefire(mobj_t *actor)
         || actor->target->health <= 0
         || !P_CheckSight(actor, actor->target))
     {
-        P_SetMobjState(actor, static_cast<statenum_t>(actor->info->seestate));
+        P_SetMobjState(actor, actor->info->seestate);
     }
 }
 
@@ -1155,8 +1155,8 @@ boolean PIT_VileCheck(mobj_t *thing)
 
     maxdist = thing->info->radius + mobjinfo[MT_VILE].radius;
 
-    if (abs(thing->x - viletryx) > maxdist
-        || abs(thing->y - viletryy) > maxdist)
+    if (std::abs(thing->x - viletryx) > maxdist
+        || std::abs(thing->y - viletryy) > maxdist)
         return true; // not actually touching
 
     corpsehit       = thing;
@@ -1223,7 +1223,7 @@ void A_VileChase(mobj_t *actor)
                     info = corpsehit->info;
 
                     P_SetMobjState(corpsehit,
-                        static_cast<statenum_t>(info->raisestate));
+                        info->raisestate);
                     corpsehit->height <<= 2;
                     corpsehit->flags  = info->flags;
                     corpsehit->health = info->spawnhealth;
@@ -2059,7 +2059,7 @@ void A_SpawnFly(mobj_t *mo)
     extrakills++;
 
     if (P_LookForPlayers(newmobj, true))
-        P_SetMobjState(newmobj, static_cast<statenum_t>(newmobj->info->seestate));
+        P_SetMobjState(newmobj, newmobj->info->seestate);
 
     // telefrag anything in this spot
     P_TeleportMove(newmobj, newmobj->x, newmobj->y);

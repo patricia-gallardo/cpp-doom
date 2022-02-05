@@ -12,10 +12,9 @@
 // GNU General Public License for more details.
 //
 
-#include <ctype.h>
-#include <stdio.h>
-#include <stdlib.h>
-#include <string.h>
+#include <cctype>
+#include <cstdlib>
+#include <cstring>
 
 #include "doomkeys.hpp"
 
@@ -25,7 +24,7 @@
 #include "txt_main.hpp"
 #include "txt_utf8.hpp"
 #include "txt_window.hpp"
-#include "../utils/memory.hpp"
+#include "memory.hpp"
 
 extern txt_widget_class_t txt_inputbox_class;
 extern txt_widget_class_t txt_int_inputbox_class;

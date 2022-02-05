@@ -12,8 +12,8 @@
 // GNU General Public License for more details.
 //
 
-#include <stdlib.h>
-#include <string.h>
+#include <cstdlib>
+#include <cstring>
 
 #include "doomtype.hpp"
 
@@ -107,7 +107,7 @@ static int detailLevel = 0;
 static char *savedir = NULL;
 static char *executable = NULL;
 static const char *game_title = "Doom";
-static char *back_flat = "F_PAVE01";
+static char *back_flat = const_cast<char *>("F_PAVE01");
 static int comport = 0;
 static char *nickname = NULL;
 
@@ -134,7 +134,7 @@ static void BindMiscVariables(void)
         if (!strcmp(savedir, ""))
         {
             free(savedir);
-            savedir = "hexndata" DIR_SEPARATOR_S;
+            savedir = const_cast<char *>("hexndata" DIR_SEPARATOR_S);
         }
     }
 
@@ -207,7 +207,7 @@ static void SetExecutable(mission_config_t *config)
     free(executable);
 
 #ifdef _WIN32
-    extension = ".exe";
+    extension = const_cast<char *>(".exe");
 #else
     extension = "";
 #endif

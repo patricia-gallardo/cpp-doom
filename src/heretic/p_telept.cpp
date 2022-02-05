@@ -140,10 +140,11 @@ boolean EV_Teleport(line_t * line, int side, mobj_t * thing)
         if (sectors[i].tag == tag)
         {
             thinker = thinkercap.next;
+            action_hook needle = P_MobjThinker;
             for (thinker = thinkercap.next; thinker != &thinkercap;
                  thinker = thinker->next)
             {
-                if (thinker->function != P_MobjThinker)
+                if (thinker->function != needle)
                 {               // Not a mobj
                     continue;
                 }

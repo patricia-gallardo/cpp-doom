@@ -321,7 +321,7 @@ typedef enum
     PODOOR_SWING,
 } podoortype_t;
 
-typedef struct
+typedef struct polyevent_s
 {
     thinker_t thinker;
     int polyobj;
@@ -332,7 +332,7 @@ typedef struct
     fixed_t ySpeed;
 } polyevent_t;
 
-typedef struct
+typedef struct polydoor_s
 {
     thinker_t thinker;
     int polyobj;

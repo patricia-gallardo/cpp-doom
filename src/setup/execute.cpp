@@ -14,13 +14,12 @@
 
 // Code for invoking Doom
 
-#include <stdarg.h>
-#include <stdio.h>
-#include <stdlib.h>
-#include <string.h>
-#include <ctype.h>
+#include <cstdarg>
+#include <cstdio>
+#include <cstdlib>
+#include <cstring>
+#include <cctype>
 
-#include <sys/types.h>
 
 #ifdef _WIN32
 
@@ -116,7 +115,7 @@ execute_context_t *NewExecuteContext(void)
 {
     execute_context_t *result;
 
-    result = malloc(sizeof(execute_context_t));
+    result = static_cast<execute_context_t *>(malloc(sizeof(execute_context_t)));
     
     result->response_file = TempFile("chocolat.rsp");
     result->stream = fopen(result->response_file, "w");
@@ -194,8 +193,8 @@ static wchar_t *BuildCommandLine(const char *program, const char *arg)
 
     // Allocate buffer to contain result string.
 
-    result = calloc(wcslen(exe_path) + strlen(program) + strlen(arg) + 6,
-                    sizeof(wchar_t));
+    result = static_cast<wchar_t *>(calloc(wcslen(exe_path) + strlen(program) + strlen(arg) + 6,
+        sizeof(wchar_t)));
 
     wcscpy(result, L"\"");
 
@@ -299,7 +298,7 @@ static char *GetFullExePath(const char *program)
     {
         path_len = sep - myargv[0] + 1;
         result_len = strlen(program) + path_len + 1;
-        result = malloc(result_len);
+        result = static_cast<char *>(malloc(result_len));
 
         M_StringCopy(result, myargv[0], result_len);
         result[path_len] = '\0';

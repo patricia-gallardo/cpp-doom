@@ -17,6 +17,7 @@
 
 #include "h2def.hpp"
 #include "p_local.hpp"
+#include "memory.hpp"
 
 //==================================================================
 //==================================================================
@@ -79,7 +80,7 @@ void T_VerticalDoor(vldoor_t * door)
                 {
                     case DREV_NORMAL:
                     case DREV_CLOSE:
-                        door->sector->specialdata = NULL;
+                        door->sector->specialdata = null_hook();
                         P_TagFinished(door->sector->tag);
                         P_RemoveThinker(&door->thinker);        // unlink and free
                         break;
@@ -117,7 +118,7 @@ void T_VerticalDoor(vldoor_t * door)
                         break;
                     case DREV_CLOSE30THENOPEN:
                     case DREV_OPEN:
-                        door->sector->specialdata = NULL;
+                        door->sector->specialdata = null_hook();
                         P_TagFinished(door->sector->tag);
                         P_RemoveThinker(&door->thinker);        // unlink and free
                         break;
@@ -151,13 +152,13 @@ int EV_DoDoor(line_t * line, byte * args, vldoor_e type)
     while ((secnum = P_FindSectorFromTag(args[0], secnum)) >= 0)
     {
         sec = &sectors[secnum];
-        if (sec->specialdata)
+        if (data_or_hook_has_value(sec->specialdata))
         {
             continue;
         }
         // Add new door thinker
         retcode = 1;
-        door = Z_Malloc(sizeof(*door), PU_LEVSPEC, 0);
+        door = zmalloc<vldoor_t *>(sizeof(*door), PU_LEVSPEC, 0);
         P_AddThinker(&door->thinker);
         sec->specialdata = door;
         door->thinker.function = T_VerticalDoor;
@@ -206,7 +207,7 @@ boolean EV_VerticalDoor(line_t * line, mobj_t * thing)
 
     // if the sector has an active thinker, use it
     sec = sides[line->sidenum[side ^ 1]].sector;
-    if (sec->specialdata)
+    if (data_or_hook_has_value(sec->specialdata))
     {
         return false;
 /*
@@ -233,7 +234,7 @@ boolean EV_VerticalDoor(line_t * line, mobj_t * thing)
     //
     // new door thinker
     //
-    door = Z_Malloc(sizeof(*door), PU_LEVSPEC, 0);
+    door = zmalloc<vldoor_t *>(sizeof(*door), PU_LEVSPEC, 0);
     P_AddThinker(&door->thinker);
     sec->specialdata = door;
     door->thinker.function = T_VerticalDoor;

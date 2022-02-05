@@ -147,7 +147,7 @@ void A_RandomJump(mobj_t *mo, player_t *player, pspdef_t *psp)
             extern void P_SetPsprite(player_t * player, int position, statenum_t stnum);
 
             P_SetPsprite(player, psp - &player->psprites[0],
-                static_cast<statenum_t>(psp->state->misc1));
+                psp->state->misc1);
         }
     }
     else
@@ -156,7 +156,7 @@ void A_RandomJump(mobj_t *mo, player_t *player, pspdef_t *psp)
     {
         if (Crispy_Random() < mo->state->misc2)
         {
-            P_SetMobjState(mo, static_cast<statenum_t>(mo->state->misc1));
+            P_SetMobjState(mo, mo->state->misc1);
         }
     }
 }

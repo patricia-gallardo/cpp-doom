@@ -20,11 +20,10 @@
 //
 
 
-#include <ctype.h>
-#include <stdio.h>
-#include <stdlib.h>
-#include <string.h>
-#include <time.h> // [crispy] time_t, time(), struct tm, localtime()
+#include <cctype>
+#include <cstdlib>
+#include <cstring>
+#include <ctime> // [crispy] time_t, time(), struct tm, localtime()
 
 #include "config.h"
 #include "deh_main.hpp"
@@ -74,8 +73,8 @@
 #include "r_local.hpp"
 #include "statdump.hpp"
 
-#include "../../utils/lump.hpp"
-#include "../../utils/memory.hpp"
+#include "lump.hpp"
+#include "memory.hpp"
 #include "d_main.hpp"
 
 //
@@ -1080,7 +1079,7 @@ static constexpr struct
     { "Final Doom", "final", exe_final },
     { "Final Doom (alt)", "final2", exe_final2 },
     { "Chex Quest", "chex", exe_chex },
-    { NULL, NULL, static_cast<GameVersion_t>(0) },
+    { NULL, NULL, exe_doom_1_2 },
 };
 
 // Initialize the game version

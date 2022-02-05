@@ -20,6 +20,8 @@
 // Dialog Engine for Strife
 //
 
+#include "lump.hpp"
+
 #ifndef P_DIALOG_H__
 #define P_DIALOG_H__
 
@@ -44,7 +46,7 @@ extern int dialogshowtext;
 do { \
   int obj_ln  = W_CheckNumForName(DEH_String(x)); \
   if(obj_ln > minlumpnum) \
-    M_StringCopy(mission_objective, W_CacheLumpNum(obj_ln, PU_CACHE), \
+    M_StringCopy(mission_objective, cache_lump_num<const char *>(obj_ln, PU_CACHE), \
                  OBJECTIVE_LEN);\
 } while(0)
 
@@ -54,7 +56,7 @@ do { \
   int obj_ln = W_CheckNumForName(DEH_String(log)); \
   I_StartVoice(DEH_String(voice)); \
   if(obj_ln > minlumpnum) \
-    M_StringCopy(mission_objective, W_CacheLumpNum(obj_ln, PU_CACHE), \
+    M_StringCopy(mission_objective, cache_lump_num<const char *>(obj_ln, PU_CACHE), \
                  OBJECTIVE_LEN);\
 } while(0)
 

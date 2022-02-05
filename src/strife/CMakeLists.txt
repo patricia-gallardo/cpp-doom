@@ -65,7 +65,7 @@ set(STRIFE_SOURCES
     sounds.cpp        sounds.hpp
     st_lib.cpp        st_lib.hpp
     st_stuff.cpp      st_stuff.hpp
-    wi_stuff.cpp      wi_stuff.hpp)
+    wi_stuff.cpp      wi_stuff.hpp action_hooks.hpp)
 
 add_library(strife STATIC ${STRIFE_SOURCES})
 

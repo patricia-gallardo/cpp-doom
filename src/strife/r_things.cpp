@@ -19,8 +19,8 @@
 
 
 
-#include <stdio.h>
-#include <stdlib.h>
+#include <cstdio>
+#include <cstdlib>
 
 
 #include "deh_main.hpp"
@@ -37,7 +37,8 @@
 
 // haleyjd
 #include "p_local.hpp"
-
+#include "lump.hpp"
+#include "memory.hpp"
 
 
 #define MINZ				(FRACUNIT*4)
@@ -192,7 +193,7 @@ void R_InitSpriteDefs (const char** namelist)
     if (!numsprites)
 	return;
 		
-    sprites = Z_Malloc(numsprites *sizeof(*sprites), PU_STATIC, NULL);
+    sprites = zmalloc<spritedef_t *>(numsprites * sizeof(*sprites), PU_STATIC, NULL);
 	
     start = firstspritelump-1;
     end = lastspritelump+1;
@@ -268,8 +269,8 @@ void R_InitSpriteDefs (const char** namelist)
 	
 	// allocate space for the frames present and copy sprtemp to it
 	sprites[i].numframes = maxframe;
-	sprites[i].spriteframes = 
-	    Z_Malloc (maxframe * sizeof(spriteframe_t), PU_STATIC, NULL);
+	sprites[i].spriteframes =
+            zmalloc<spriteframe_t *>(maxframe * sizeof(spriteframe_t), PU_STATIC, NULL);
 	memcpy (sprites[i].spriteframes, sprtemp, maxframe*sizeof(spriteframe_t));
     }
 
@@ -414,7 +415,7 @@ R_DrawVisSprite
     int                 clip;   // villsa [STRIFE]
     int                 translation;    // villsa [STRIFE]
 
-    patch = W_CacheLumpNum (vis->patch+firstspritelump, PU_CACHE);
+    patch = cache_lump_num<patch_t *> (vis->patch+firstspritelump, PU_CACHE);
 
     dc_colormap = vis->colormap;
 
@@ -461,7 +462,7 @@ R_DrawVisSprite
         dc_translation = translationtables - 256 + (translation >> (MF_TRANSSHIFT - 8));
     }
 
-    dc_iscale = abs(vis->xiscale)>>detailshift;
+    dc_iscale = std::abs(vis->xiscale)>>detailshift;
     dc_texturemid = vis->texturemid;
     frac = vis->startfrac;
     spryscale = vis->scale;
@@ -548,7 +549,7 @@ void R_ProjectSprite (mobj_t* thing)
     tx = -(gyt+gxt); 
 
     // too far off the side?
-    if (abs(tx)>(tz<<2))
+    if (std::abs(tx)>(tz<<2))
 	return;
     
     // decide which patch to use for sprite relative to player

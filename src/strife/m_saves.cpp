@@ -19,9 +19,8 @@
 // Strife Hub Saving Code
 //
 
-#include <stdarg.h>
-#include <stdlib.h>
-#include <string.h>
+#include <cstdarg>
+#include <cstring>
 
 #include "z_zone.hpp"
 #include "i_glob.hpp"

@@ -16,7 +16,7 @@
 
 // P_enemy.c
 
-#include <stdlib.h>
+#include <cstdlib>
 #include "doomdef.hpp"
 #include "i_system.hpp"
 #include "i_timer.hpp"
@@ -346,12 +346,13 @@ void P_NewChaseDir(mobj_t * actor)
 {
     fixed_t deltax, deltay;
     dirtype_t d[3];
-    dirtype_t tdir, olddir, turnaround;
+    int tdir;
+    dirtype_t olddir, turnaround;
 
     if (!actor->target)
         I_Error("P_NewChaseDir: called with no target");
 
-    olddir = actor->movedir;
+    olddir = static_cast<dirtype_t>(actor->movedir);
     turnaround = opposite[olddir];
 
     deltax = actor->target->x - actor->x;
@@ -378,11 +379,11 @@ void P_NewChaseDir(mobj_t * actor)
     }
 
 // try other directions
-    if (P_Random() > 200 || abs(deltay) > abs(deltax))
+    if (P_Random() > 200 || std::abs(deltay) > std::abs(deltax))
     {
         tdir = d[1];
         d[1] = d[2];
-        d[2] = tdir;
+        d[2] = static_cast<dirtype_t>(tdir);
     }
 
     if (d[1] == turnaround)
@@ -478,9 +479,11 @@ boolean P_LookForMonsters(mobj_t * actor)
         return (false);
     }
     count = 0;
+    action_hook needle = P_MobjThinker;
+
     for (think = thinkercap.next; think != &thinkercap; think = think->next)
     {
-        if (think->function != P_MobjThinker)
+        if (think->function != needle)
         {                       // Not a mobj thinker
             continue;
         }
@@ -1069,7 +1072,7 @@ boolean P_UpdateChicken(mobj_t * actor, int tics)
     {
         return (false);
     }
-    moType = actor->special2.i;
+    moType = static_cast<mobjtype_t>(actor->special2.i);
     x = actor->x;
     y = actor->y;
     z = actor->z;
@@ -1190,7 +1193,7 @@ void A_Feathers(mobj_t * actor)
         mo->momx = P_SubRandom() << 8;
         mo->momy = P_SubRandom() << 8;
         mo->momz = FRACUNIT + (P_Random() << 9);
-        P_SetMobjState(mo, S_FEATHER1 + (P_Random() & 7));
+        P_SetMobjState(mo, static_cast<statenum_t>(S_FEATHER1 + (P_Random() & 7)));
     }
 }
 
@@ -2317,10 +2320,11 @@ void P_Massacre(void)
 {
     mobj_t *mo;
     thinker_t *think;
+    action_hook needle = P_MobjThinker;
 
     for (think = thinkercap.next; think != &thinkercap; think = think->next)
     {
-        if (think->function != P_MobjThinker)
+        if (think->function != needle)
         {                       // Not a mobj thinker
             continue;
         }
@@ -2351,7 +2355,7 @@ void A_BossDeath(mobj_t * actor)
         MT_SORCERER2,
         MT_HEAD,
         MT_MINOTAUR,
-        -1
+        static_cast<mobjtype_t>(-1)
     };
 
     if (gamemap != 8)
@@ -2362,10 +2366,11 @@ void A_BossDeath(mobj_t * actor)
     {                           // Not considered a boss in this episode
         return;
     }
+    action_hook needle = P_MobjThinker;
     // Make sure all bosses are dead
     for (think = thinkercap.next; think != &thinkercap; think = think->next)
     {
-        if (think->function != P_MobjThinker)
+        if (think->function != needle)
         {                       // Not a mobj thinker
             continue;
         }

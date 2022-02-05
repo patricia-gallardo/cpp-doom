@@ -107,7 +107,7 @@ int EV_DoDonut(line_t * line);
 
 ===============================================================================
 */
-typedef struct
+typedef struct lightflash_s
 {
     thinker_t thinker;
     sector_t *sector;
@@ -118,7 +118,7 @@ typedef struct
     int mintime;
 } lightflash_t;
 
-typedef struct
+typedef struct strobe_s
 {
     thinker_t thinker;
     sector_t *sector;
@@ -129,7 +129,7 @@ typedef struct
     int brighttime;
 } strobe_t;
 
-typedef struct
+typedef struct glow_s
 {
     thinker_t thinker;
     sector_t *sector;
@@ -215,7 +215,7 @@ typedef enum
     raiseToNearestAndChange
 } plattype_e;
 
-typedef struct
+typedef struct plat_s
 {
     thinker_t thinker;
     sector_t *sector;
@@ -260,7 +260,7 @@ typedef enum
     vld_raiseIn5Mins
 } vldoor_e;
 
-typedef struct
+typedef struct vldoor_s
 {
     thinker_t thinker;
     vldoor_e type;
@@ -298,7 +298,7 @@ typedef enum
     fastCrushAndRaise
 } ceiling_e;
 
-typedef struct
+typedef struct ceiling_s
 {
     thinker_t thinker;
     ceiling_e type;
@@ -348,7 +348,7 @@ typedef enum
     raiseBuildStep              // One step of a staircase
 } floor_e;
 
-typedef struct
+typedef struct floormove_s
 {
     thinker_t thinker;
     floor_e type;
