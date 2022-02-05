@@ -47,20 +47,20 @@ void P_UpdateSpecials();
 // when needed
 boolean
     P_UseSpecialLine(mobj_t *thing,
-        line_t *             line,
+        line_t              *line,
         int                  side);
 
 void P_ShootSpecialLine(mobj_t *thing,
-    line_t *                    line);
+    line_t                     *line);
 
 void P_CrossSpecialLine(int linenum,
     int                     side,
-    mobj_t *                thing);
+    mobj_t                 *thing);
 
 // [crispy] more MBF code pointers
 void P_CrossSpecialLinePtr(line_t *line,
     int                            side,
-    mobj_t *                       thing);
+    mobj_t                        *thing);
 
 void P_PlayerInSpecialSector(player_t *player);
 
@@ -95,7 +95,7 @@ int P_FindMinSurroundingLight(sector_t *sector,
 
 sector_t *
     getNextSector(line_t *line,
-        sector_t *        sec);
+        sector_t         *sec);
 
 
 //
@@ -114,7 +114,6 @@ using fireflicker_t = struct
     int       count;
     int       maxlight;
     int       minlight;
-
 };
 
 
@@ -127,7 +126,6 @@ using lightflash_t = struct
     int       minlight;
     int       maxtime;
     int       mintime;
-
 };
 
 
@@ -140,7 +138,6 @@ using strobe_t = struct
     int       maxlight;
     int       darktime;
     int       brighttime;
-
 };
 
 
@@ -151,7 +148,6 @@ using glow_t = struct
     int       minlight;
     int       maxlight;
     int       direction;
-
 };
 
 
@@ -191,8 +187,7 @@ typedef PACKED_STRUCT(
     }) switchlist_t;
 
 
-using bwhere_e = enum
-{
+using bwhere_e = enum {
     top,
     middle,
     bottom
@@ -202,12 +197,11 @@ using bwhere_e = enum
 
 using button_t = struct
 {
-    line_t *     line;
+    line_t      *line;
     bwhere_e     where;
     int          btexture;
     int          btimer;
     degenmobj_t *soundorg;
-
 };
 
 
@@ -232,8 +226,7 @@ void P_InitSwitchList();
 //
 // P_PLATS
 //
-using plat_e = enum
-{
+using plat_e = enum {
     up,
     down,
     waiting,
@@ -242,8 +235,7 @@ using plat_e = enum
 };
 
 
-using plattype_e = enum
-{
+using plattype_e = enum {
     perpetualRaise,
     downWaitUpStay,
     raiseAndChange,
@@ -256,7 +248,7 @@ using plattype_e = enum
 using plat_t = struct
 {
     thinker_t  thinker;
-    sector_t * sector;
+    sector_t  *sector;
     fixed_t    speed;
     fixed_t    low;
     fixed_t    high;
@@ -267,7 +259,6 @@ using plat_t = struct
     boolean    crush;
     int        tag;
     plattype_e type;
-
 };
 
 
@@ -293,8 +284,7 @@ void P_ActivateInStasis(int tag);
 //
 // P_DOORS
 //
-using vldoor_e = enum
-{
+using vldoor_e = enum {
     vld_normal,
     vld_close30ThenOpen,
     vld_close,
@@ -323,7 +313,6 @@ using vldoor_t = struct
     // (keep in case a door going down is reset)
     // when it reaches 0, start going down
     int topcountdown;
-
 };
 
 
@@ -331,14 +320,14 @@ using vldoor_t = struct
 #define VDOORWAIT  150
 
 void EV_VerticalDoor(line_t *line,
-    mobj_t *                 thing);
+    mobj_t                  *thing);
 
 int EV_DoDoor(line_t *line,
     vldoor_e          type);
 
 int EV_DoLockedDoor(line_t *line,
     vldoor_e                type,
-    mobj_t *                thing);
+    mobj_t                 *thing);
 
 void T_VerticalDoor(vldoor_t *door);
 void P_SpawnDoorCloseIn30(sector_t *sec);
@@ -433,8 +422,7 @@ EV_SlidingDoor
 //
 // P_CEILNG
 //
-using ceiling_e = enum
-{
+using ceiling_e = enum {
     lowerToFloor,
     raiseToHighest,
     lowerAndCrush,
@@ -461,7 +449,6 @@ using ceiling_t = struct
     // ID
     int tag;
     int olddirection;
-
 };
 
 
@@ -484,8 +471,7 @@ void P_ActivateInStasisCeiling(line_t *line);
 //
 // P_FLOOR
 //
-using floor_e = enum
-{
+using floor_e = enum {
     // lower floor to highest surrounding floor
     lowerFloor,
 
@@ -520,8 +506,7 @@ using floor_e = enum
 };
 
 
-using stair_e = enum
-{
+using stair_e = enum {
     build8, // slowly build by 8
     turbo16 // quickly build by 16
 
@@ -539,14 +524,12 @@ using floormove_t = struct
     short     texture;
     fixed_t   floordestheight;
     fixed_t   speed;
-
 };
 
 
 #define FLOORSPEED FRACUNIT
 
-using result_e = enum
-{
+using result_e = enum {
     ok,
     crushed,
     pastdest
@@ -574,6 +557,6 @@ void T_MoveFloor(floormove_t *floor);
 //
 int EV_Teleport(line_t *line,
     int                 side,
-    mobj_t *            thing);
+    mobj_t             *thing);
 
 #endif

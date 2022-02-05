@@ -43,8 +43,7 @@
 //
 // Player states.
 //
-using playerstate_t = enum
-{
+using playerstate_t = enum {
     // Playing or camping.
     PST_LIVE,
     // Dead on the ground, view follows killer.
@@ -58,8 +57,7 @@ using playerstate_t = enum
 //
 // Player internal flags, for cheats and debug.
 //
-using cheat_t = enum
-{
+using cheat_t = enum {
     // No clipping, walk through barriers.
     CF_NOCLIP = 1,
     // No damage, no health loss.
@@ -76,7 +74,7 @@ using cheat_t = enum
 // Extended player object info: player_t
 //
 struct player_t {
-    mobj_t *      mo;
+    mobj_t       *mo;
     playerstate_t playerstate;
     ticcmd_t      cmd;
 
@@ -208,7 +206,6 @@ using wbplayerstruct_t = struct
     int stime;
     int frags[4];
     int score; // current score on entry, modified on return
-
 };
 
 using wbstartstruct_t = struct

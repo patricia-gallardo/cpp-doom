@@ -104,8 +104,7 @@
 //
 // Misc. mobj flags
 //
-using mobjflag_t = enum
-{
+using mobjflag_t = enum {
     // Call P_SpecialThing when touched.
     MF_SPECIAL = 1,
     // Blocks.
@@ -213,7 +212,7 @@ struct mobj_t {
     mobj_t *snext;
     mobj_t *sprev;
 
-    //More drawing info: to determine current sprite.
+    // More drawing info: to determine current sprite.
     angle_t     angle;  // orientation
     spritenum_t sprite; // used to find patch_t and flip value
     int         frame;  // might be ORed with FF_FULLBRIGHT

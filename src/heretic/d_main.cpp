@@ -47,32 +47,32 @@
 #include "v_video.hpp"
 #include "lump.hpp"
 
-#define CT_KEY_GREEN    'g'
-#define CT_KEY_YELLOW   'y'
-#define CT_KEY_RED      'r'
-#define CT_KEY_BLUE     'b'
+#define CT_KEY_GREEN  'g'
+#define CT_KEY_YELLOW 'y'
+#define CT_KEY_RED    'r'
+#define CT_KEY_BLUE   'b'
 
 #define STARTUP_WINDOW_X 17
 #define STARTUP_WINDOW_Y 7
 
-GameMode_t gamemode = indetermined;
+GameMode_t  gamemode        = indetermined;
 const char *gamedescription = "unknown";
 
-boolean nomonsters;             // checkparm of -nomonsters
-boolean respawnparm;            // checkparm of -respawn
-boolean debugmode;              // checkparm of -debug
-boolean ravpic;                 // checkparm of -ravpic
-boolean cdrom;                  // true if cd-rom mode active
-boolean noartiskip;             // whether shift-enter skips an artifact
+boolean nomonsters;  // checkparm of -nomonsters
+boolean respawnparm; // checkparm of -respawn
+boolean debugmode;   // checkparm of -debug
+boolean ravpic;      // checkparm of -ravpic
+boolean cdrom;       // true if cd-rom mode active
+boolean noartiskip;  // whether shift-enter skips an artifact
 
-skill_t startskill;
-int startepisode;
-int startmap;
-int UpdateState;
-static int graphical_startup = 0;
+skill_t        startskill;
+int            startepisode;
+int            startmap;
+int            UpdateState;
+static int     graphical_startup = 0;
 static boolean using_graphical_startup;
 static boolean main_loop_started = false;
-boolean autostart;
+boolean        autostart;
 extern boolean automapactive;
 
 boolean advancedemo;
@@ -81,11 +81,11 @@ FILE *debugfile;
 
 static int show_endoom = 0;
 
-void D_ConnectNetGame();
-void D_CheckNetGame();
-void D_PageDrawer();
-void D_AdvanceDemo();
-boolean F_Responder(event_t * ev);
+void    D_ConnectNetGame();
+void    D_CheckNetGame();
+void    D_PageDrawer();
+void    D_AdvanceDemo();
+boolean F_Responder(event_t *ev);
 
 //---------------------------------------------------------------------------
 //
@@ -125,7 +125,7 @@ void DrawMessage()
 
     player = &players[consoleplayer];
     if (player->messageTics <= 0 || !player->message)
-    {                           // No message
+    { // No message
         return;
     }
     MN_DrTextA(player->message, 160 - MN_TextAWidth(player->message) / 2, 1);
@@ -139,51 +139,51 @@ void DrawMessage()
 //
 //---------------------------------------------------------------------------
 
-static void CrispyDrawStats ()
+static void CrispyDrawStats()
 {
-    static short height, coord_x;
-    char str[32];
+    static short    height, coord_x;
+    char            str[32];
     player_t *const player = &players[consoleplayer];
 
     if (!height || !coord_x)
     {
-	const int FontABaseLump = W_GetNumForName(DEH_String("FONTA_S")) + 1;
-	const patch_t *const p = cache_lump_num<const patch_t *const>(FontABaseLump + 'A' - 33, PU_CACHE);
+        const int            FontABaseLump = W_GetNumForName(DEH_String("FONTA_S")) + 1;
+        const patch_t *const p             = cache_lump_num<const patch_t *const>(FontABaseLump + 'A' - 33, PU_CACHE);
 
-	height = SHORT(p->height) + 1;
-	coord_x = ORIGWIDTH - 7 * SHORT(p->width);
+        height  = SHORT(p->height) + 1;
+        coord_x = ORIGWIDTH - 7 * SHORT(p->width);
     }
 
     if (crispy->automapstats == WIDGETS_ALWAYS || (automapactive && crispy->automapstats == WIDGETS_AUTOMAP))
     {
-	M_snprintf(str, sizeof(str), "K %d/%d", player->killcount, totalkills);
-	MN_DrTextA(str, 0, 1*height);
+        M_snprintf(str, sizeof(str), "K %d/%d", player->killcount, totalkills);
+        MN_DrTextA(str, 0, 1 * height);
 
-	M_snprintf(str, sizeof(str), "I %d/%d", player->itemcount, totalitems);
-	MN_DrTextA(str, 0, 2*height);
+        M_snprintf(str, sizeof(str), "I %d/%d", player->itemcount, totalitems);
+        MN_DrTextA(str, 0, 2 * height);
 
-	M_snprintf(str, sizeof(str), "S %d/%d", player->secretcount, totalsecret);
-	MN_DrTextA(str, 0, 3*height);
+        M_snprintf(str, sizeof(str), "S %d/%d", player->secretcount, totalsecret);
+        MN_DrTextA(str, 0, 3 * height);
     }
 
     if (crispy->leveltime == WIDGETS_ALWAYS || (automapactive && crispy->leveltime == WIDGETS_AUTOMAP))
     {
-	const int time = leveltime / TICRATE;
+        const int time = leveltime / TICRATE;
 
-	M_snprintf(str, sizeof(str), "%02d:%02d", time/60, time%60);
-	MN_DrTextA(str, 0, 4*height);
+        M_snprintf(str, sizeof(str), "%02d:%02d", time / 60, time % 60);
+        MN_DrTextA(str, 0, 4 * height);
     }
 
     if (crispy->playercoords == WIDGETS_ALWAYS || (automapactive && crispy->playercoords == WIDGETS_AUTOMAP))
     {
-	M_snprintf(str, sizeof(str), "X %-5d", player->mo->x>>FRACBITS);
-	MN_DrTextA(str, coord_x, 1*height);
+        M_snprintf(str, sizeof(str), "X %-5d", player->mo->x >> FRACBITS);
+        MN_DrTextA(str, coord_x, 1 * height);
 
-	M_snprintf(str, sizeof(str), "Y %-5d", player->mo->y>>FRACBITS);
-	MN_DrTextA(str, coord_x, 2*height);
+        M_snprintf(str, sizeof(str), "Y %-5d", player->mo->y >> FRACBITS);
+        MN_DrTextA(str, coord_x, 2 * height);
 
-	M_snprintf(str, sizeof(str), "A %-5d", player->mo->angle/ANG1);
-	MN_DrTextA(str, coord_x, 3*height);
+        M_snprintf(str, sizeof(str), "A %-5d", player->mo->angle / ANG1);
+        MN_DrTextA(str, coord_x, 3 * height);
     }
 }
 
@@ -201,32 +201,32 @@ void D_Display()
         R_ExecuteSetViewSize();
     }
 
-//
-// do buffered drawing
-//
+    //
+    // do buffered drawing
+    //
     switch (gamestate)
     {
-        case GS_LEVEL:
-            if (!gametic)
-                break;
-            if (automapactive)
-                AM_Drawer();
-            else
-                R_RenderPlayerView(&players[displayplayer]);
-            CT_Drawer();
-            UpdateState |= I_FULLVIEW;
-            SB_Drawer();
-            CrispyDrawStats();
+    case GS_LEVEL:
+        if (!gametic)
             break;
-        case GS_INTERMISSION:
-            IN_Drawer();
-            break;
-        case GS_FINALE:
-            F_Drawer();
-            break;
-        case GS_DEMOSCREEN:
-            D_PageDrawer();
-            break;
+        if (automapactive)
+            AM_Drawer();
+        else
+            R_RenderPlayerView(&players[displayplayer]);
+        CT_Drawer();
+        UpdateState |= I_FULLVIEW;
+        SB_Drawer();
+        CrispyDrawStats();
+        break;
+    case GS_INTERMISSION:
+        IN_Drawer();
+        break;
+    case GS_FINALE:
+        F_Drawer();
+        break;
+    case GS_DEMOSCREEN:
+        D_PageDrawer();
+        break;
     }
 
     if (testcontrols)
@@ -238,8 +238,7 @@ void D_Display()
     {
         if (!netgame)
         {
-            V_DrawPatch(160, (viewwindowy >> crispy->hires) + 5, cache_lump_name<patch_t *>(DEH_String("PAUSED"),
-                                                              PU_CACHE));
+            V_DrawPatch(160, (viewwindowy >> crispy->hires) + 5, cache_lump_name<patch_t *>(DEH_String("PAUSED"), PU_CACHE));
         }
         else
         {
@@ -315,13 +314,13 @@ void D_DoomLoop()
 /*
 ===============================================================================
 
-						DEMO LOOP
+                                                DEMO LOOP
 
 ===============================================================================
 */
 
-static int demosequence;
-static int pagetic;
+static int         demosequence;
+static int         pagetic;
 static const char *pagename;
 
 
@@ -376,57 +375,57 @@ void D_AdvanceDemo()
 
 void D_DoAdvanceDemo()
 {
-    players[consoleplayer].playerstate = PST_LIVE;      // don't reborn
-    advancedemo = false;
-    usergame = false;           // can't save / end game here
-    paused = false;
-    gameaction = ga_nothing;
-    demosequence = (demosequence + 1) % 7;
+    players[consoleplayer].playerstate = PST_LIVE; // don't reborn
+    advancedemo                        = false;
+    usergame                           = false; // can't save / end game here
+    paused                             = false;
+    gameaction                         = ga_nothing;
+    demosequence                       = (demosequence + 1) % 7;
     switch (demosequence)
     {
-        case 0:
-            pagetic = 210;
-            gamestate = GS_DEMOSCREEN;
-            pagename = DEH_String("TITLE");
-            S_StartSong(mus_titl, false);
-            break;
-        case 1:
-            pagetic = 140;
-            gamestate = GS_DEMOSCREEN;
-            pagename = DEH_String("TITLE");
-            break;
-        case 2:
-            BorderNeedRefresh = true;
-            UpdateState |= I_FULLSCRN;
-            G_DeferedPlayDemo(DEH_String("demo1"));
-            break;
-        case 3:
-            pagetic = 200;
-            gamestate = GS_DEMOSCREEN;
+    case 0:
+        pagetic   = 210;
+        gamestate = GS_DEMOSCREEN;
+        pagename  = DEH_String("TITLE");
+        S_StartSong(mus_titl, false);
+        break;
+    case 1:
+        pagetic   = 140;
+        gamestate = GS_DEMOSCREEN;
+        pagename  = DEH_String("TITLE");
+        break;
+    case 2:
+        BorderNeedRefresh = true;
+        UpdateState |= I_FULLSCRN;
+        G_DeferedPlayDemo(DEH_String("demo1"));
+        break;
+    case 3:
+        pagetic   = 200;
+        gamestate = GS_DEMOSCREEN;
+        pagename  = DEH_String("CREDIT");
+        break;
+    case 4:
+        BorderNeedRefresh = true;
+        UpdateState |= I_FULLSCRN;
+        G_DeferedPlayDemo(DEH_String("demo2"));
+        break;
+    case 5:
+        pagetic   = 200;
+        gamestate = GS_DEMOSCREEN;
+        if (gamemode == shareware)
+        {
+            pagename = DEH_String("ORDER");
+        }
+        else
+        {
             pagename = DEH_String("CREDIT");
-            break;
-        case 4:
-            BorderNeedRefresh = true;
-            UpdateState |= I_FULLSCRN;
-            G_DeferedPlayDemo(DEH_String("demo2"));
-            break;
-        case 5:
-            pagetic = 200;
-            gamestate = GS_DEMOSCREEN;
-            if (gamemode == shareware)
-            {
-                pagename = DEH_String("ORDER");
-            }
-            else
-            {
-                pagename = DEH_String("CREDIT");
-            }
-            break;
-        case 6:
-            BorderNeedRefresh = true;
-            UpdateState |= I_FULLSCRN;
-            G_DeferedPlayDemo(DEH_String("demo3"));
-            break;
+        }
+        break;
+    case 6:
+        BorderNeedRefresh = true;
+        UpdateState |= I_FULLSCRN;
+        G_DeferedPlayDemo(DEH_String("demo3"));
+        break;
     }
 }
 
@@ -441,7 +440,7 @@ void D_DoAdvanceDemo()
 
 void D_StartTitle()
 {
-    gameaction = ga_nothing;
+    gameaction   = ga_nothing;
     demosequence = -1;
     D_AdvanceDemo();
 }
@@ -458,7 +457,7 @@ void D_StartTitle()
 
 void D_CheckRecordFrom()
 {
-    int p;
+    int   p;
     char *filename;
 
     //!
@@ -475,10 +474,10 @@ void D_CheckRecordFrom()
 
     filename = SV_Filename(myargv[p + 1][0] - '0');
     G_LoadGame(filename);
-    G_DoLoadGame();             // load the gameskill etc info from savegame
+    G_DoLoadGame(); // load the gameskill etc info from savegame
 
     G_RecordDemo(gameskill, 1, gameepisode, gamemap, myargv[p + 2]);
-    D_DoomLoop();               // never returns
+    D_DoomLoop(); // never returns
     free(filename);
 }
 
@@ -524,13 +523,13 @@ boolean D_AddFile(char *file)
 //  Startup Thermo code
 //
 //==========================================================
-#define MSG_Y       9
-#define THERM_X     14
-#define THERM_Y     14
+#define MSG_Y   9
+#define THERM_X 14
+#define THERM_Y 14
 
-int thermMax;
-int thermCurrent;
-char smsg[80];                  // status bar line
+int  thermMax;
+int  thermCurrent;
+char smsg[80]; // status bar line
 
 //
 //  Heretic startup screen shit
@@ -565,7 +564,7 @@ void drawstatus()
     TXT_BGColor(TXT_COLOR_BLUE, 0);
     TXT_FGColor(TXT_COLOR_BRIGHT_WHITE);
 
-    for (i=0; smsg[i] != '\0'; ++i) 
+    for (i = 0; smsg[i] != '\0'; ++i)
     {
         TXT_PutChar(smsg[i]);
     }
@@ -583,8 +582,8 @@ static void status(const char *string)
 void DrawThermo()
 {
     static int last_progress = -1;
-    int progress;
-    int i;
+    int        progress;
+    int        i;
 
     if (!using_graphical_startup)
     {
@@ -626,7 +625,7 @@ void initStartup()
         return;
     }
 
-    if (!TXT_Init()) 
+    if (!TXT_Init())
     {
         using_graphical_startup = false;
         return;
@@ -637,7 +636,7 @@ void initStartup()
 
     // Blit main screen
     textScreen = TXT_GetScreenData();
-    loading = cache_lump_name<byte *>(DEH_String("LOADING"), PU_CACHE);
+    loading    = cache_lump_name<byte *>(DEH_String("LOADING"), PU_CACHE);
     memcpy(textScreen, loading, 4000);
 
     // Print version string
@@ -678,9 +677,9 @@ void CheckAbortStartup()
     // haleyjd: removed WATCOMC
     // haleyjd FIXME: this should actually work in text mode too, but how to
     // get input before SDL video init?
-    if(using_graphical_startup)
+    if (using_graphical_startup)
     {
-        if(TXT_GetChar() == 27)
+        if (TXT_GetChar() == 27)
             CleanExit();
     }
 }
@@ -694,7 +693,7 @@ void IncThermo()
 
 void InitThermo(int max)
 {
-    thermMax = max;
+    thermMax     = max;
     thermCurrent = 0;
 }
 
@@ -706,7 +705,7 @@ void D_BindVariables()
 {
     extern int screenblocks;
     extern int snd_Channels;
-    int i;
+    int        i;
 
     M_ApplyPlatformDefaults();
 
@@ -730,17 +729,17 @@ void D_BindVariables()
 
     NET_BindVariables();
 
-    M_BindIntVariable("mouse_sensitivity",      &mouseSensitivity);
-    M_BindIntVariable("sfx_volume",             &snd_MaxVolume);
-    M_BindIntVariable("music_volume",           &snd_MusicVolume);
-    M_BindIntVariable("screenblocks",           &screenblocks);
-    M_BindIntVariable("snd_channels",           &snd_Channels);
+    M_BindIntVariable("mouse_sensitivity", &mouseSensitivity);
+    M_BindIntVariable("sfx_volume", &snd_MaxVolume);
+    M_BindIntVariable("music_volume", &snd_MusicVolume);
+    M_BindIntVariable("screenblocks", &screenblocks);
+    M_BindIntVariable("snd_channels", &snd_Channels);
     M_BindIntVariable("vanilla_savegame_limit", &vanilla_savegame_limit);
-    M_BindIntVariable("vanilla_demo_limit",     &vanilla_demo_limit);
-    M_BindIntVariable("show_endoom",            &show_endoom);
-    M_BindIntVariable("graphical_startup",      &graphical_startup);
+    M_BindIntVariable("vanilla_demo_limit", &vanilla_demo_limit);
+    M_BindIntVariable("show_endoom", &show_endoom);
+    M_BindIntVariable("graphical_startup", &graphical_startup);
 
-    for (i=0; i<10; ++i)
+    for (i = 0; i < 10; ++i)
     {
         char buf[12];
 
@@ -749,13 +748,13 @@ void D_BindVariables()
     }
 
     // [crispy] bind "crispness" config variables
-    M_BindIntVariable("crispy_smoothscaling",   &crispy->smoothscaling);
-    M_BindIntVariable("crispy_automapstats",    &crispy->automapstats);
-    M_BindIntVariable("crispy_leveltime",       &crispy->leveltime);
-    M_BindIntVariable("crispy_playercoords",    &crispy->playercoords);
+    M_BindIntVariable("crispy_smoothscaling", &crispy->smoothscaling);
+    M_BindIntVariable("crispy_automapstats", &crispy->automapstats);
+    M_BindIntVariable("crispy_leveltime", &crispy->leveltime);
+    M_BindIntVariable("crispy_playercoords", &crispy->playercoords);
 }
 
-// 
+//
 // Called at exit to display the ENDOOM screen (ENDTEXT in Heretic)
 //
 
@@ -784,9 +783,9 @@ static void D_Endoom()
 void D_DoomMain()
 {
     GameMission_t gamemission;
-    int p;
-    char file[256];
-    char demolumpname[9];
+    int           p;
+    char          file[256];
+    char          demolumpname[9];
 
     I_PrintBanner(PACKAGE_STRING);
 
@@ -827,15 +826,15 @@ void D_DoomMain()
 
     noartiskip = M_ParmExists("-noartiskip");
 
-    debugmode = M_ParmExists("-debug");
-    startskill = sk_medium;
+    debugmode    = M_ParmExists("-debug");
+    startskill   = sk_medium;
     startepisode = 1;
-    startmap = 1;
-    autostart = false;
+    startmap     = 1;
+    autostart    = false;
 
-//
-// get skill / episode / map from parms
-//
+    //
+    // get skill / episode / map from parms
+    //
 
     //!
     // @vanilla
@@ -862,7 +861,7 @@ void D_DoomMain()
     if (p)
     {
         startskill = static_cast<skill_t>(myargv[p + 1][0] - '1');
-        autostart = true;
+        autostart  = true;
     }
 
     //!
@@ -877,8 +876,8 @@ void D_DoomMain()
     if (p)
     {
         startepisode = myargv[p + 1][0] - '0';
-        startmap = 1;
-        autostart = true;
+        startmap     = 1;
+        autostart    = true;
     }
 
     //!
@@ -893,13 +892,13 @@ void D_DoomMain()
     if (p && p < myargc - 2)
     {
         startepisode = myargv[p + 1][0] - '0';
-        startmap = myargv[p + 2][0] - '0';
-        autostart = true;
+        startmap     = myargv[p + 2][0] - '0';
+        autostart    = true;
     }
 
-//
-// init subsystems
-//
+    //
+    // init subsystems
+    //
     DEH_printf("V_Init: allocate screens.\n");
     V_Init();
 
@@ -1021,7 +1020,7 @@ void D_DoomMain()
         if (D_AddFile(file))
         {
             M_StringCopy(demolumpname, lumpinfo[numlumps - 1]->name,
-                         sizeof(demolumpname));
+                sizeof(demolumpname));
         }
         else
         {
@@ -1047,19 +1046,19 @@ void D_DoomMain()
 
     if (W_CheckNumForName(DEH_String("E2M1")) == -1)
     {
-        gamemode = shareware;
+        gamemode        = shareware;
         gamedescription = "Heretic (shareware)";
     }
     else if (W_CheckNumForName("EXTENDED") != -1)
     {
         // Presence of the EXTENDED lump indicates the retail version
 
-        gamemode = retail;
+        gamemode        = retail;
         gamedescription = "Heretic: Shadow of the Serpent Riders";
     }
     else
     {
-        gamemode = registered;
+        gamemode        = registered;
         gamedescription = "Heretic (registered)";
     }
 
@@ -1072,8 +1071,8 @@ void D_DoomMain()
     if (M_ParmExists("-testcontrols"))
     {
         startepisode = 1;
-        startmap = 1;
-        autostart = true;
+        startmap     = 1;
+        autostart    = true;
         testcontrols = true;
     }
 
@@ -1082,7 +1081,7 @@ void D_DoomMain()
     I_InitMusic();
 
     tprintf("NET_Init: Init network subsystem.\n", 1);
-    NET_Init ();
+    NET_Init();
 
     D_ConnectNetGame();
 
@@ -1103,11 +1102,11 @@ void D_DoomMain()
     {
         char temp[64];
         DEH_snprintf(temp, sizeof(temp),
-                     "Warp to Episode %d, Map %d, Skill %d ",
-                     startepisode, startmap, startskill + 1);
+            "Warp to Episode %d, Map %d, Skill %d ",
+            startepisode, startmap, startskill + 1);
         status(temp);
     }
-    wadprintf();                // print the added wadfiles
+    wadprintf(); // print the added wadfiles
 
     tprintf(DEH_String("MN_Init: Init menu system.\n"), 1);
     MN_Init();
@@ -1131,7 +1130,7 @@ void D_DoomMain()
 
     tprintf(DEH_String("S_Init: Setting up sound.\n"), 1);
     S_Init();
-    //IO_StartupTimer();
+    // IO_StartupTimer();
     S_Start();
 
     tprintf(DEH_String("D_CheckNetGame: Checking network game status.\n"), 1);
@@ -1145,9 +1144,9 @@ void D_DoomMain()
     SB_Init();
     IncThermo();
 
-//
-// start the apropriate game based on parms
-//
+    //
+    // start the apropriate game based on parms
+    //
 
     D_CheckRecordFrom();
 
@@ -1163,22 +1162,22 @@ void D_DoomMain()
     if (p)
     {
         G_RecordDemo(startskill, 1, startepisode, startmap, myargv[p + 1]);
-        D_DoomLoop();           // Never returns
+        D_DoomLoop(); // Never returns
     }
 
     p = M_CheckParmWithArgs("-playdemo", 1);
     if (p)
     {
-        singledemo = true;      // Quit after one demo
+        singledemo = true; // Quit after one demo
         G_DeferedPlayDemo(demolumpname);
-        D_DoomLoop();           // Never returns
+        D_DoomLoop(); // Never returns
     }
 
     p = M_CheckParmWithArgs("-timedemo", 1);
     if (p)
     {
         G_TimeDemo(demolumpname);
-        D_DoomLoop();           // Never returns
+        D_DoomLoop(); // Never returns
     }
 
     //!
@@ -1194,9 +1193,9 @@ void D_DoomMain()
     {
         char *filename;
 
-	filename = SV_Filename(myargv[p + 1][0] - '0');
+        filename = SV_Filename(myargv[p + 1][0] - '0');
         G_LoadGame(filename);
-	free(filename);
+        free(filename);
     }
 
     // Check valid episode and map
@@ -1205,7 +1204,7 @@ void D_DoomMain()
         if (!D_ValidEpisodeMap(heretic, gamemode, startepisode, startmap))
         {
             startepisode = 1;
-            startmap = 1;
+            startmap     = 1;
         }
     }
 
@@ -1225,5 +1224,5 @@ void D_DoomMain()
 
     finishStartup();
 
-    D_DoomLoop();               // Never returns
+    D_DoomLoop(); // Never returns
 }

@@ -30,15 +30,14 @@
 #include "deh_defs.hpp"
 #include "deh_io.hpp"
 
-using deh_input_type_t = enum
-{
+using deh_input_type_t = enum {
     DEH_INPUT_FILE,
     DEH_INPUT_LUMP
 };
 
 struct deh_context_s {
     deh_input_type_t type;
-    char *           filename;
+    char            *filename;
 
     // If the input comes from a memory buffer, pointer to the memory
     // buffer.
@@ -56,7 +55,7 @@ struct deh_context_s {
 
     // Used by DEH_ReadLine:
     boolean last_was_newline;
-    char *  readbuffer;
+    char   *readbuffer;
     int     readbuffer_size;
 
     // Error handling.
@@ -90,7 +89,7 @@ static deh_context_t *DEH_NewContext()
 
 deh_context_t *DEH_OpenFile(const char *filename)
 {
-    FILE *         fstream;
+    FILE          *fstream;
     deh_context_t *context;
 
     fstream = fopen(filename, "r");

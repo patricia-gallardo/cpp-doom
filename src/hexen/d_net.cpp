@@ -36,9 +36,9 @@
 
 ticcmd_t *netcmds;
 
-extern void H2_DoAdvanceDemo();
-extern void H2_ProcessEvents();
-extern void G_BuildTiccmd(ticcmd_t *cmd, int maketic);
+extern void    H2_DoAdvanceDemo();
+extern void    H2_ProcessEvents();
+extern void    G_BuildTiccmd(ticcmd_t *cmd, int maketic);
 extern boolean G_CheckDemoStatus();
 
 extern boolean demorecording;
@@ -47,7 +47,7 @@ extern boolean demorecording;
 
 static void PlayerQuitGame(player_t *player)
 {
-    static char exitmsg[80];
+    static char  exitmsg[80];
     unsigned int player_num;
 
     player_num = player - players;
@@ -61,16 +61,16 @@ static void PlayerQuitGame(player_t *player)
 
     // TODO: check if it is sensible to do this:
 
-    if (demorecording) 
+    if (demorecording)
     {
-        G_CheckDemoStatus ();
+        G_CheckDemoStatus();
     }
 }
 
 static void RunTic(ticcmd_t *cmds, boolean *ingame)
 {
     extern boolean advancedemo;
-    unsigned int i;
+    unsigned int   i;
 
     // Check for player quits.
 
@@ -88,9 +88,9 @@ static void RunTic(ticcmd_t *cmds, boolean *ingame)
     // run a tic.
 
     if (advancedemo)
-        H2_DoAdvanceDemo ();
+        H2_DoAdvanceDemo();
 
-    G_Ticker ();
+    G_Ticker();
 }
 
 static loop_interface_t hexen_loop_interface = {
@@ -101,22 +101,22 @@ static loop_interface_t hexen_loop_interface = {
 };
 
 
-// Load game settings from the specified structure and 
+// Load game settings from the specified structure and
 // set global variables.
 
 static void LoadGameSettings(net_gamesettings_t *settings)
 {
     unsigned int i;
 
-    deathmatch = settings->deathmatch;
-    ticdup = settings->ticdup;
+    deathmatch   = settings->deathmatch;
+    ticdup       = settings->ticdup;
     startepisode = settings->episode;
-    startmap = settings->map;
-    startskill = static_cast<skill_t>(settings->skill);
+    startmap     = settings->map;
+    startskill   = static_cast<skill_t>(settings->skill);
     // TODO startloadgame = settings->loadgame;
-    lowres_turn = settings->lowres_turn;
-    nomonsters = settings->nomonsters;
-    respawnparm = settings->respawn_monsters;
+    lowres_turn   = settings->lowres_turn;
+    nomonsters    = settings->nomonsters;
+    respawnparm   = settings->respawn_monsters;
     consoleplayer = settings->consoleplayer;
 
     if (lowres_turn)
@@ -125,10 +125,10 @@ static void LoadGameSettings(net_gamesettings_t *settings)
                "because there is a client recording a Vanilla demo.\n");
     }
 
-    for (i=0; i<maxplayers; ++i)
+    for (i = 0; i < maxplayers; ++i)
     {
         playeringame[i] = i < settings->num_players;
-        PlayerClass[i] = static_cast<pclass_t>(settings->player_classes[i]);
+        PlayerClass[i]  = static_cast<pclass_t>(settings->player_classes[i]);
 
         if (PlayerClass[i] >= NUMCLASSES)
         {
@@ -151,17 +151,17 @@ static void SaveGameSettings(net_gamesettings_t *settings)
     // for the new game
 
     settings->deathmatch = deathmatch;
-    settings->episode = startepisode;
-    settings->map = startmap;
-    settings->skill = startskill;
+    settings->episode    = startepisode;
+    settings->map        = startmap;
+    settings->skill      = startskill;
     // TODO settings->loadgame = startloadgame;
-    settings->gameversion = exe_hexen_1_1;
-    settings->nomonsters = nomonsters;
+    settings->gameversion      = exe_hexen_1_1;
+    settings->nomonsters       = nomonsters;
     settings->respawn_monsters = respawnparm;
-    settings->timelimit = 0;
+    settings->timelimit        = 0;
 
     settings->lowres_turn = M_ParmExists("-record")
-                         && !M_ParmExists("-longtics");
+                            && !M_ParmExists("-longtics");
 }
 
 static void InitConnectData(net_connect_data_t *connect_data)
@@ -174,15 +174,15 @@ static void InitConnectData(net_connect_data_t *connect_data)
 
     // Game type fields:
 
-    connect_data->gamemode = gamemode;
+    connect_data->gamemode    = gamemode;
     connect_data->gamemission = hexen;
 
     // Are we recording a demo? Possibly set lowres turn mode
 
     connect_data->lowres_turn = M_ParmExists("-record")
-                             && !M_ParmExists("-longtics");
+                                && !M_ParmExists("-longtics");
 
-    connect_data->drone = false;
+    connect_data->drone       = false;
     connect_data->max_players = maxplayers;
 
     //!
@@ -283,8 +283,7 @@ void D_CheckNetGame()
 //
 //==========================================================================
 
-void NET_SendFrags(player_t * player)
+void NET_SendFrags(player_t *player)
 {
     // Not sure what this is intended for. Unused?
 }
-

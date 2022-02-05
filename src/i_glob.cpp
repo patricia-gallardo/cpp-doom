@@ -55,7 +55,7 @@ static boolean IsDirectory(char *dir, struct dirent *de)
     else
 #endif
     {
-        char *      filename;
+        char       *filename;
         struct stat sb;
         int         result;
 
@@ -76,9 +76,9 @@ struct glob_s {
     char **globs;
     int    num_globs;
     int    flags;
-    DIR *  dir;
-    char * directory;
-    char * last_filename;
+    DIR   *dir;
+    char  *directory;
+    char  *last_filename;
     // These fields are only used when the GLOB_FLAG_SORTED flag is set:
     char **filenames;
     int    filenames_len;
@@ -98,7 +98,7 @@ static void FreeStringList(char **globs, int num_globs)
 glob_t *I_StartMultiGlob(const char *directory, int flags,
     const char *glob, ...)
 {
-    char ** globs;
+    char  **globs;
     int     num_globs;
     glob_t *result;
     va_list args;
@@ -115,7 +115,7 @@ glob_t *I_StartMultiGlob(const char *directory, int flags,
     for (;;)
     {
         const char *arg = va_arg(args, const char *);
-        char **     new_globs;
+        char      **new_globs;
 
         if (arg == NULL)
         {
@@ -274,7 +274,7 @@ static void ReadAllFilenames(glob_t *glob)
             break;
         }
         glob->filenames                      = static_cast<char **>(realloc(
-            glob->filenames, (glob->filenames_len + 1) * sizeof(char *)));
+                                 glob->filenames, (glob->filenames_len + 1) * sizeof(char *)));
         glob->filenames[glob->filenames_len] = name;
         ++glob->filenames_len;
     }

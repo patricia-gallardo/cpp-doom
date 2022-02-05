@@ -90,65 +90,65 @@
 //  calls all ?_Responder, ?_Ticker, and ?_Drawer,
 //  calls I_GetTime, I_StartFrame, and I_StartTic
 //
-void D_DoomLoop ();
+void D_DoomLoop();
 
 static boolean D_AddFile(char *filename);
 
 // Location where savegames are stored
 
-char *          savegamedir;
+char *savegamedir;
 
 // location of IWAD and WAD files
 
-char *          iwadfile;
+char *iwadfile;
 
 
-boolean         devparm;        // started game with -devparm
-boolean         nomonsters;     // checkparm of -nomonsters
-boolean         respawnparm;    // checkparm of -respawn
-boolean         fastparm;       // checkparm of -fast
-boolean         flipparm;       // [STRIFE] haleyjd 20110629: checkparm of -flip
-boolean         randomparm;     // [STRIFE] haleyjd 20130915: checkparm of -random
+boolean devparm;     // started game with -devparm
+boolean nomonsters;  // checkparm of -nomonsters
+boolean respawnparm; // checkparm of -respawn
+boolean fastparm;    // checkparm of -fast
+boolean flipparm;    // [STRIFE] haleyjd 20110629: checkparm of -flip
+boolean randomparm;  // [STRIFE] haleyjd 20130915: checkparm of -random
 
-boolean         showintro = true;   // [STRIFE] checkparm of -nograph, disables intro
+boolean showintro = true; // [STRIFE] checkparm of -nograph, disables intro
 
 
-//extern int soundVolume;
-//extern  int	sfxVolume;
-//extern  int	musicVolume;
+// extern int soundVolume;
+// extern  int	sfxVolume;
+// extern  int	musicVolume;
 
-extern  boolean	inhelpscreens;
+extern boolean inhelpscreens;
 
-skill_t		startskill;
-int             startepisode;
-int		startmap;
-boolean		autostart;
-int             startloadgame;
+skill_t startskill;
+int     startepisode;
+int     startmap;
+boolean autostart;
+int     startloadgame;
 
-boolean		advancedemo;
+boolean advancedemo;
 
 // villsa [STRIFE] workparm variable (similar to devparm?)
-boolean         workparm = false;
+boolean workparm = false;
 
 // villsa [STRIFE] stonecold cheat variable
-boolean         stonecold = false;
+boolean stonecold = false;
 
 // haleyjd 09/11/10: [STRIFE] Game type variables
-boolean         isregistered;
-boolean         isdemoversion;
+boolean isregistered;
+boolean isdemoversion;
 
 // Store demo, do not accept any inputs
 // haleyjd [STRIFE] Unused.
-//boolean         storedemo;
+// boolean         storedemo;
 
 
-char		wadfile[1024];          // primary wad file
-char		mapdir[1024];           // directory of development maps
+char wadfile[1024]; // primary wad file
+char mapdir[1024];  // directory of development maps
 
-int             show_endoom = 0;
-int             show_diskicon = 1;
-int             graphical_startup = 0;
-static boolean  using_text_startup;
+int            show_endoom       = 0;
+int            show_diskicon     = 1;
+int            graphical_startup = 0;
+static boolean using_text_startup;
 
 // If true, startup has completed and the main game loop has started.
 
@@ -170,26 +170,24 @@ void D_CheckNetGame();
 // D_ProcessEvents
 // Send all the events of the given timestamp down the responder chain
 //
-void D_ProcessEvents ()
+void D_ProcessEvents()
 {
-    event_t*    ev;
+    event_t *ev;
 
-    // haleyjd 08/22/2010: [STRIFE] there is no such thing as a "store demo" 
+    // haleyjd 08/22/2010: [STRIFE] there is no such thing as a "store demo"
     // version of Strife
 
     // IF STORE DEMO, DO NOT ACCEPT INPUT
-    //if (storedemo)
+    // if (storedemo)
     //    return;
 
     while ((ev = D_PopEvent()) != NULL)
     {
-        if (M_Responder (ev))
-            continue;               // menu ate the event
-        G_Responder (ev);
+        if (M_Responder(ev))
+            continue; // menu ate the event
+        G_Responder(ev);
     }
 }
-
-
 
 
 //
@@ -203,38 +201,38 @@ void D_ProcessEvents ()
 // * 20100901: Added ST_DrawExternal and popupactivestate static variable
 // * 20110206: Start wipegamestate at GS_UNKNOWN (STRIFE-TODO: rename?)
 //
-gamestate_t     wipegamestate = GS_UNKNOWN;
-extern  boolean setsizeneeded;
-//extern  int             showMessages; [STRIFE] no such variable
-void R_ExecuteSetViewSize ();
+gamestate_t    wipegamestate = GS_UNKNOWN;
+extern boolean setsizeneeded;
+// extern  int             showMessages; [STRIFE] no such variable
+void R_ExecuteSetViewSize();
 
-void D_Display ()
+void D_Display()
 {
-    static  boolean             viewactivestate = false;
-    static  boolean             menuactivestate = false;
-    static  boolean             inhelpscreensstate = false;
-    static  boolean             popupactivestate = false; // [STRIFE]
-    static  boolean             fullscreen = false;
-    static  gamestate_t         oldgamestate = static_cast<gamestate_t>(-1);
-    static  int                 borderdrawcount;
-    int                         nowtime;
-    int                         tics;
-    int                         wipestart;
-    int                         y;
-    boolean                     done;
-    boolean                     wipe;
-    boolean                     redrawsbar;
+    static boolean     viewactivestate    = false;
+    static boolean     menuactivestate    = false;
+    static boolean     inhelpscreensstate = false;
+    static boolean     popupactivestate   = false; // [STRIFE]
+    static boolean     fullscreen         = false;
+    static gamestate_t oldgamestate       = static_cast<gamestate_t>(-1);
+    static int         borderdrawcount;
+    int                nowtime;
+    int                tics;
+    int                wipestart;
+    int                y;
+    boolean            done;
+    boolean            wipe;
+    boolean            redrawsbar;
 
     if (nodrawers)
-        return;                    // for comparative timing / profiling
+        return; // for comparative timing / profiling
 
     redrawsbar = false;
-    
+
     // change the view size if needed
     if (setsizeneeded)
     {
-        R_ExecuteSetViewSize ();
-        oldgamestate = static_cast<gamestate_t>(-1);                      // force background redraw
+        R_ExecuteSetViewSize();
+        oldgamestate    = static_cast<gamestate_t>(-1); // force background redraw
         borderdrawcount = 3;
     }
 
@@ -257,51 +255,51 @@ void D_Display ()
         if (!gametic)
             break;
         if (automapactive)
-            AM_Drawer ();
-        if (wipe || (viewheight != (200 <<crispy->hires) && fullscreen) )
+            AM_Drawer();
+        if (wipe || (viewheight != (200 << crispy->hires) && fullscreen))
             redrawsbar = true;
         // haleyjd 08/29/10: [STRIFE] Always redraw sbar if menu is/was active
         if (menuactivestate || (inhelpscreensstate && !inhelpscreens))
-            redrawsbar = true;              // just put away the help screen
-        ST_Drawer (viewheight == (200 << crispy->hires), redrawsbar );
+            redrawsbar = true; // just put away the help screen
+        ST_Drawer(viewheight == (200 << crispy->hires), redrawsbar);
         fullscreen = viewheight == (200 << crispy->hires);
         break;
-      
-     // haleyjd 08/23/2010: [STRIFE] No intermission
-     /*
-     case GS_INTERMISSION:
-         WI_Drawer ();
-         break;
-     */
+
+        // haleyjd 08/23/2010: [STRIFE] No intermission
+        /*
+        case GS_INTERMISSION:
+            WI_Drawer ();
+            break;
+        */
 
     case GS_FINALE:
-        F_Drawer ();
+        F_Drawer();
         break;
 
     case GS_DEMOSCREEN:
-        D_PageDrawer ();
+        D_PageDrawer();
         break;
-    
+
     default:
         break;
     }
-    
+
     // draw buffered stuff to screen
-    I_UpdateNoBlit ();
+    I_UpdateNoBlit();
 
     // draw the view directly
     if (gamestate == GS_LEVEL && !automapactive && gametic)
-        R_RenderPlayerView (&players[displayplayer]);
+        R_RenderPlayerView(&players[displayplayer]);
 
     // clean up border stuff
     if (gamestate != oldgamestate && gamestate != GS_LEVEL)
-        I_SetPalette (cache_lump_name<byte *>(DEH_String("PLAYPAL"),PU_CACHE));
+        I_SetPalette(cache_lump_name<byte *>(DEH_String("PLAYPAL"), PU_CACHE));
 
     // see if the border needs to be initially drawn
     if (gamestate == GS_LEVEL && oldgamestate != GS_LEVEL)
     {
-        viewactivestate = false;        // view was not active
-        R_FillBackScreen ();    // draw the pattern into the back screen
+        viewactivestate = false; // view was not active
+        R_FillBackScreen();      // draw the pattern into the back screen
     }
 
     // see if the border needs to be updated to the screen
@@ -309,15 +307,14 @@ void D_Display ()
     {
         if (menuactive || menuactivestate || !viewactivestate)
         {
-            borderdrawcount = 3;
+            borderdrawcount  = 3;
             popupactivestate = false;
         }
         if (borderdrawcount)
         {
-            R_DrawViewBorder ();    // erase old menu stuff
+            R_DrawViewBorder(); // erase old menu stuff
             borderdrawcount--;
         }
-
     }
 
     if (testcontrols)
@@ -327,21 +324,21 @@ void D_Display ()
         V_DrawMouseSpeedBox(testcontrols_mousespeed);
     }
 
-    menuactivestate = menuactive;
-    viewactivestate = viewactive;
+    menuactivestate    = menuactive;
+    viewactivestate    = viewactive;
     inhelpscreensstate = inhelpscreens;
     oldgamestate = wipegamestate = gamestate;
 
     // haleyjd 20120208: [STRIFE] Rogue moved this down to below border drawing
     if (gamestate == GS_LEVEL && gametic)
     {
-        HU_Drawer ();
-        if(ST_DrawExternal()) 
+        HU_Drawer();
+        if (ST_DrawExternal())
             popupactivestate = true;
-        else if(popupactivestate)
+        else if (popupactivestate)
         {
             popupactivestate = false;
-            menuactivestate = 1;
+            menuactivestate  = 1;
         }
     }
 
@@ -351,45 +348,44 @@ void D_Display ()
         if (automapactive)
             y = 4;
         else
-            y = (viewwindowy >> crispy->hires)+4;
+            y = (viewwindowy >> crispy->hires) + 4;
         V_DrawPatchDirect((viewwindowx >> crispy->hires) + ((scaledviewwidth >> crispy->hires) - 68) / 2, y,
-                          cache_lump_name<patch_t *> (DEH_String("M_PAUSE"), PU_CACHE));
+            cache_lump_name<patch_t *>(DEH_String("M_PAUSE"), PU_CACHE));
     }
 
 
     // menus go directly to the screen
-    M_Drawer ();          // menu is drawn even on top of everything
-    NetUpdate ();         // send out any new accumulation
+    M_Drawer();  // menu is drawn even on top of everything
+    NetUpdate(); // send out any new accumulation
 
 
     // normal update
     if (!wipe)
     {
-        I_FinishUpdate ();              // page flip or blit buffer
+        I_FinishUpdate(); // page flip or blit buffer
         return;
     }
-    
+
     // wipe update
     wipe_EndScreen(0, 0, SCREENWIDTH, SCREENHEIGHT);
 
-    wipestart = I_GetTime () - 1;
+    wipestart = I_GetTime() - 1;
 
     do
     {
         do
         {
-            nowtime = I_GetTime ();
-            tics = nowtime - wipestart;
+            nowtime = I_GetTime();
+            tics    = nowtime - wipestart;
             I_Sleep(1);
         } while (tics < 3); // haleyjd 08/23/2010: [STRIFE] Changed from == 0 to < 3
 
         // haleyjd 08/26/10: [STRIFE] Changed to use ColorXForm wipe.
         wipestart = nowtime;
-        done = wipe_ScreenWipe(wipe_ColorXForm
-                               , 0, 0, SCREENWIDTH, SCREENHEIGHT, tics);
-        I_UpdateNoBlit ();
-        M_Drawer ();                            // menu is drawn even on top of wipes
-        I_FinishUpdate ();                      // page flip or blit buffer
+        done      = wipe_ScreenWipe(wipe_ColorXForm, 0, 0, SCREENWIDTH, SCREENHEIGHT, tics);
+        I_UpdateNoBlit();
+        M_Drawer();       // menu is drawn even on top of wipes
+        I_FinishUpdate(); // page flip or blit buffer
     } while (!done);
 }
 
@@ -437,27 +433,27 @@ void D_BindVariables()
     // * screenblocks -> screensize
     // * Added nickname, comport
 
-    M_BindIntVariable("mouse_sensitivity",      &mouseSensitivity);
-    M_BindIntVariable("sfx_volume",             &sfxVolume);
-    M_BindIntVariable("music_volume",           &musicVolume);
-    M_BindIntVariable("voice_volume",           &voiceVolume); 
-    M_BindIntVariable("show_talk",              &dialogshowtext);
-    M_BindIntVariable("screensize",             &screenblocks);
-    M_BindIntVariable("snd_channels",           &snd_channels);
+    M_BindIntVariable("mouse_sensitivity", &mouseSensitivity);
+    M_BindIntVariable("sfx_volume", &sfxVolume);
+    M_BindIntVariable("music_volume", &musicVolume);
+    M_BindIntVariable("voice_volume", &voiceVolume);
+    M_BindIntVariable("show_talk", &dialogshowtext);
+    M_BindIntVariable("screensize", &screenblocks);
+    M_BindIntVariable("snd_channels", &snd_channels);
     M_BindIntVariable("vanilla_savegame_limit", &vanilla_savegame_limit);
-    M_BindIntVariable("vanilla_demo_limit",     &vanilla_demo_limit);
-    M_BindIntVariable("show_endoom",            &show_endoom);
-    M_BindIntVariable("show_diskicon",          &show_diskicon);
-    M_BindIntVariable("graphical_startup",      &graphical_startup);
+    M_BindIntVariable("vanilla_demo_limit", &vanilla_demo_limit);
+    M_BindIntVariable("show_endoom", &show_endoom);
+    M_BindIntVariable("show_diskicon", &show_diskicon);
+    M_BindIntVariable("graphical_startup", &graphical_startup);
 
-    M_BindStringVariable("back_flat",           &back_flat);
-    M_BindStringVariable("nickname",            &nickname);
+    M_BindStringVariable("back_flat", &back_flat);
+    M_BindStringVariable("nickname", &nickname);
 
-    M_BindIntVariable("comport",                &comport);
+    M_BindIntVariable("comport", &comport);
 
     // Multiplayer chat macros
 
-    for (i=0; i<10; ++i)
+    for (i = 0; i < 10; ++i)
     {
         char buf[12];
 
@@ -501,10 +497,10 @@ static boolean D_StartupGrabCallback()
 //
 //  haleyjd 08/23/10: [STRIFE] Verified unmodified.
 //
-void D_DoomLoop ()
+void D_DoomLoop()
 {
     if (demorecording)
-        G_BeginRecording ();
+        G_BeginRecording();
 
     main_loop_started = true;
 
@@ -534,27 +530,26 @@ void D_DoomLoop ()
     while (1)
     {
         // frame syncronous IO operations
-        I_StartFrame ();
+        I_StartFrame();
 
         // process one or more tics
-        TryRunTics (); // will run at least one tic
+        TryRunTics(); // will run at least one tic
 
-        S_UpdateSounds (players[consoleplayer].mo);// move positional sounds
+        S_UpdateSounds(players[consoleplayer].mo); // move positional sounds
 
         // Update display, next frame, with current state.
         if (screenvisible)
-            D_Display ();
+            D_Display();
     }
 }
-
 
 
 //
 //  DEMO LOOP
 //
-int             demosequence;
-int             pagetic;
-const char      *pagename;
+int         demosequence;
+int         pagetic;
+const char *pagename;
 
 
 //
@@ -563,12 +558,11 @@ const char      *pagename;
 //
 // haleyjd 08/22/2010: [STRIFE] verified unmodified
 //
-void D_PageTicker ()
+void D_PageTicker()
 {
     if (--pagetic < 0)
-        D_AdvanceDemo ();
+        D_AdvanceDemo();
 }
-
 
 
 //
@@ -576,9 +570,9 @@ void D_PageTicker ()
 //
 // haleyjd 08/22/2010: [STRIFE] verified unmodified
 //
-void D_PageDrawer ()
+void D_PageDrawer()
 {
-    V_DrawPatch (0, 0, cache_lump_name<patch_t *>(pagename, PU_CACHE));
+    V_DrawPatch(0, 0, cache_lump_name<patch_t *>(pagename, PU_CACHE));
 }
 
 
@@ -588,7 +582,7 @@ void D_PageDrawer ()
 //
 // haleyjd 08/22/2010: [STRIFE] verified unmodified
 //
-void D_AdvanceDemo ()
+void D_AdvanceDemo()
 {
     advancedemo = true;
 }
@@ -600,14 +594,14 @@ void D_AdvanceDemo ()
 //
 // [STRIFE] Modified for the opening slideshow and the exit screen
 //
-void D_DoAdvanceDemo ()
+void D_DoAdvanceDemo()
 {
-    players[consoleplayer].playerstate = PST_LIVE;  // not reborn
-    advancedemo = false;
-    usergame = false;               // no save / end game here
-    paused = false;
-    gameaction = ga_nothing;
-    
+    players[consoleplayer].playerstate = PST_LIVE; // not reborn
+    advancedemo                        = false;
+    usergame                           = false; // no save / end game here
+    paused                             = false;
+    gameaction                         = ga_nothing;
+
     // villsa 09/12/10: [STRIFE] converted pagetics to ticrate
     switch (demosequence)
     {
@@ -616,99 +610,99 @@ void D_DoAdvanceDemo ()
         return;
     case -4: // show exit screen
         menuactive = false;
-        pagetic = 3*TICRATE;
-        gamestate = GS_DEMOSCREEN;
-        pagename = DEH_String("PANEL7");
+        pagetic    = 3 * TICRATE;
+        gamestate  = GS_DEMOSCREEN;
+        pagename   = DEH_String("PANEL7");
         S_StartMusic(mus_fast);
-        if(isdemoversion)
+        if (isdemoversion)
             demosequence = -3; // show Velocity logo
         else
             demosequence = -5; // exit
         return;
     case -3: // show Velocity logo for demo version
-        pagetic = 6*TICRATE;
-        gamestate = GS_DEMOSCREEN;
-        pagename = DEH_String("vellogo");
+        pagetic      = 6 * TICRATE;
+        gamestate    = GS_DEMOSCREEN;
+        pagename     = DEH_String("vellogo");
         demosequence = -5; // exit
         return;
     case -2: // title screen
-        pagetic = 6*TICRATE;
+        pagetic   = 6 * TICRATE;
         gamestate = GS_DEMOSCREEN;
-        pagename = DEH_String("TITLEPIC");
+        pagename  = DEH_String("TITLEPIC");
         S_StartMusic(mus_logo);
         demosequence = -1; // start intro cinematic
         return;
     case -1: // start of intro cinematic
-        pagetic = 10;
+        pagetic   = 10;
         gamestate = GS_DEMOSCREEN;
-        pagename = DEH_String("PANEL0");
+        pagename  = DEH_String("PANEL0");
         S_StartSound(NULL, sfx_rb2act);
         wipegamestate = static_cast<gamestate_t>(-1);
         break;
     case 0: // Rogue logo
-        pagetic = 4*TICRATE;
-        gamestate = GS_DEMOSCREEN;
-        pagename = DEH_String("RGELOGO");
+        pagetic       = 4 * TICRATE;
+        gamestate     = GS_DEMOSCREEN;
+        pagename      = DEH_String("RGELOGO");
         wipegamestate = static_cast<gamestate_t>(-1);
         break;
     case 1:
-        pagetic = 7*TICRATE;              // The comet struck our planet without
-        gamestate = GS_DEMOSCREEN;        // warning.We lost our paradise in a 
-        pagename = DEH_String("PANEL1");  // single, violent stroke.
-        I_StartVoice(DEH_String("pro1")); 
+        pagetic   = 7 * TICRATE;          // The comet struck our planet without
+        gamestate = GS_DEMOSCREEN;        // warning.We lost our paradise in a
+        pagename  = DEH_String("PANEL1"); // single, violent stroke.
+        I_StartVoice(DEH_String("pro1"));
         S_StartMusic(mus_intro);
         break;
     case 2:
-        pagetic = 9*TICRATE;              // The impact released a virus which 
-        gamestate = GS_DEMOSCREEN;        // swept through the land and killed 
-        pagename = DEH_String("PANEL2");  // millions. They turned out to be 
+        pagetic   = 9 * TICRATE;          // The impact released a virus which
+        gamestate = GS_DEMOSCREEN;        // swept through the land and killed
+        pagename  = DEH_String("PANEL2"); // millions. They turned out to be
         I_StartVoice(DEH_String("pro2")); // the lucky ones...
         break;
     case 3:
-        pagetic = 12*TICRATE;             // For those that did not die became 
+        pagetic   = 12 * TICRATE;         // For those that did not die became
         gamestate = GS_DEMOSCREEN;        // mutations of humanity. Some became
-        pagename = DEH_String("PANEL3");  // fanatics who heard the voice of a
-        I_StartVoice(DEH_String("pro3")); // malignant God in their heads, and 
+        pagename  = DEH_String("PANEL3"); // fanatics who heard the voice of a
+        I_StartVoice(DEH_String("pro3")); // malignant God in their heads, and
         break;                            // called themselves the Order.
     case 4:
-        pagetic = 11*TICRATE;             // Those of us who were deaf to this
-        pagename = DEH_String("PANEL4");  // voice suffer horribly and are 
+        pagetic   = 11 * TICRATE;         // Those of us who were deaf to this
+        pagename  = DEH_String("PANEL4"); // voice suffer horribly and are
         gamestate = GS_DEMOSCREEN;        // forced to serve these ruthless
         I_StartVoice(DEH_String("pro4")); // psychotics, who wield weapons more
         break;                            // powerful than anything we can muster.
     case 5:
-        pagetic = 10*TICRATE;             // They destroy our women and children,
+        pagetic   = 10 * TICRATE;         // They destroy our women and children,
         gamestate = GS_DEMOSCREEN;        // so that we must hide them underground,
-        pagename = DEH_String("PANEL5");  // and live like animals in constant
+        pagename  = DEH_String("PANEL5"); // and live like animals in constant
         I_StartVoice(DEH_String("pro5")); // fear for our lives.
         break;
     case 6:                               // But there are whispers of discontent.
-        pagetic = 16*TICRATE;             // If we organize, can we defeat our
+        pagetic   = 16 * TICRATE;         // If we organize, can we defeat our
         gamestate = GS_DEMOSCREEN;        // masters? Weapons are being stolen,
-        pagename = DEH_String("PANEL6");  // soldiers are being trained. A 
-        I_StartVoice(DEH_String("pro6")); // Movement is born! Born of lifelong 
+        pagename  = DEH_String("PANEL6"); // soldiers are being trained. A
+        I_StartVoice(DEH_String("pro6")); // Movement is born! Born of lifelong
         break;                            // STRIFE!
-    case 7: // titlepic again - unused...
-        pagetic = 9*TICRATE;
-        gamestate = GS_DEMOSCREEN;
-        pagename = DEH_String("TITLEPIC");
+    case 7:                               // titlepic again - unused...
+        pagetic       = 9 * TICRATE;
+        gamestate     = GS_DEMOSCREEN;
+        pagename      = DEH_String("TITLEPIC");
         wipegamestate = static_cast<gamestate_t>(-1);
         break;
     case 8: // demo
         ClearTmp();
-        pagetic = 9*TICRATE;
+        pagetic = 9 * TICRATE;
         G_DeferedPlayDemo(DEH_String("demo1"));
         break;
     case 9: // velocity logo? - unused...
-        pagetic = 6*TICRATE;
-        gamestate = GS_DEMOSCREEN;
-        pagename = DEH_String("vellogo");
+        pagetic       = 6 * TICRATE;
+        gamestate     = GS_DEMOSCREEN;
+        pagename      = DEH_String("vellogo");
         wipegamestate = static_cast<gamestate_t>(-1);
         break;
     case 10: // credits
-        gamestate = GS_DEMOSCREEN;
-        pagetic = 12*TICRATE;
-        pagename = DEH_String("CREDIT");
+        gamestate     = GS_DEMOSCREEN;
+        pagetic       = 12 * TICRATE;
+        pagename      = DEH_String("CREDIT");
         wipegamestate = static_cast<gamestate_t>(-1);
         break;
     default:
@@ -717,12 +711,11 @@ void D_DoAdvanceDemo ()
 
     ++demosequence;
 
-    if(demosequence > 11)
+    if (demosequence > 11)
         demosequence = -2;
-    if(demosequence == 7 || demosequence == 9)
+    if (demosequence == 7 || demosequence == 9)
         ++demosequence;
 }
-
 
 
 //
@@ -731,12 +724,12 @@ void D_DoAdvanceDemo ()
 // [STRIFE]
 // haleyjd 09/11/10: Small modifications for new demo sequence.
 //
-void D_StartTitle ()
+void D_StartTitle()
 {
-    gamestate = GS_DEMOSCREEN;
-    gameaction = ga_nothing;
+    gamestate    = GS_DEMOSCREEN;
+    gameaction   = ga_nothing;
     demosequence = -2;
-    D_AdvanceDemo ();
+    D_AdvanceDemo();
 }
 
 //
@@ -748,7 +741,7 @@ void D_StartTitle ()
 //
 void D_QuitGame()
 {
-    gameaction = ga_nothing;
+    gameaction   = ga_nothing;
     demosequence = -4;
     D_AdvanceDemo();
 }
@@ -758,8 +751,7 @@ void D_QuitGame()
 // These are from the original source: some of them are perhaps
 // not used in any dehacked patches
 
-static const char *banners[] =
-{
+static const char *banners[] = {
     // strife1.wad:
 
     "                      "
@@ -770,39 +762,39 @@ static const char *banners[] =
 //
 // Get game name: if the startup banner has been replaced, use that.
 // Otherwise, use the name given
-// 
+//
 
 static char *GetGameName(char *gamename)
 {
-    size_t i;
+    size_t      i;
     const char *deh_sub;
-    
-    for (i=0; i<arrlen(banners); ++i)
+
+    for (i = 0; i < arrlen(banners); ++i)
     {
         // Has the banner been replaced?
 
         deh_sub = DEH_String(banners[i]);
-        
+
         if (deh_sub != banners[i])
         {
             size_t gamename_size;
 
             // Has been replaced
-            // We need to expand via printf to include the Doom version 
+            // We need to expand via printf to include the Doom version
             // number
             // We also need to cut off spaces to get the basic name
 
             const auto newgamename_size = strlen(deh_sub) + 10;
-            auto *newgamename = zmalloc<char *>(newgamename_size, PU_STATIC, 0);
+            auto      *newgamename      = zmalloc<char *>(newgamename_size, PU_STATIC, 0);
             M_snprintf(newgamename, newgamename_size, deh_sub,
-                       STRIFE_VERSION / 100, STRIFE_VERSION % 100);
+                STRIFE_VERSION / 100, STRIFE_VERSION % 100);
 
             while (newgamename[0] != '\0' && isspace(newgamename[0]))
             {
                 memmove(newgamename, newgamename + 1, newgamename_size - 1);
             }
 
-            while (newgamename[0] != '\0' && isspace(newgamename[strlen(newgamename)-1]))
+            while (newgamename[0] != '\0' && isspace(newgamename[strlen(newgamename) - 1]))
                 newgamename[strlen(newgamename) - 1] = '\0';
 
             return newgamename;
@@ -818,36 +810,36 @@ static char *GetGameName(char *gamename)
 
 void D_IdentifyVersion()
 {
-    // gamemission is set up by the D_FindIWAD function.  But if 
-    // we specify '-iwad', we have to identify using 
+    // gamemission is set up by the D_FindIWAD function.  But if
+    // we specify '-iwad', we have to identify using
     // IdentifyIWADByName.  However, if the iwad does not match
-    // any known IWAD name, we may have a dilemma.  Try to 
+    // any known IWAD name, we may have a dilemma.  Try to
     // identify by its contents.
-    
+
     // STRIFE-TODO: some elaborate checks? for now we assume...
     // The logic in strife1.exe is simple:
     // * if strife1.wad is found, set isregistered = true
     // * if strife0.wad is found, set isdemoversion = true
 
     // Make sure gamemode is set up correctly
-    gamemode = commercial;
-    gamemission = strife;
+    gamemode     = commercial;
+    gamemission  = strife;
     isregistered = true;
 
-    // Load voices.wad 
-    if(isregistered)
+    // Load voices.wad
+    if (isregistered)
     {
         char *name = NULL;
-        int p;
+        int   p;
 
         // If -iwad was used, check and see if voices.wad exists on the same
         // filepath.
-        if((p = M_CheckParm("-iwad")) && p < myargc - 1)
+        if ((p = M_CheckParm("-iwad")) && p < myargc - 1)
         {
-            char   *iwad     = myargv[p + 1];
-            size_t  len      = strlen(iwad) + 1;
-            char   *iwadpath = zmalloc<char *>(len, PU_STATIC, NULL);
-            char   *voiceswad;
+            char  *iwad     = myargv[p + 1];
+            size_t len      = strlen(iwad) + 1;
+            char  *iwadpath = zmalloc<char *>(len, PU_STATIC, NULL);
+            char  *voiceswad;
 
             // extract base path of IWAD parameter
             M_GetFilePath(iwad, iwadpath, len);
@@ -861,16 +853,16 @@ void D_IdentifyVersion()
         }
 
         // not found? try global search paths
-        if(!name)
+        if (!name)
             name = D_FindWADByName("voices.wad");
 
         // still not found? too bad.
-        if(!name)
+        if (!name)
         {
             disable_voices = 1;
 
-            if(devparm)
-                 printf("Voices disabled\n");
+            if (devparm)
+                printf("Voices disabled\n");
         }
         else
         {
@@ -931,15 +923,13 @@ static void InitTitleString()
     case exe_strife_1_2:
         DEH_snprintf(title, sizeof(title), "                      "
                                            "STRIFE:  Quest for the Sigil v1.2"
-                                           "                                  "
-                                           );
+                                           "                                  ");
         break;
     case exe_strife_1_31:
     default:
         DEH_snprintf(title, sizeof(title), "                      "
                                            "STRIFE:  Quest for the Sigil v1.31"
-                                           "                                 "
-                                           );
+                                           "                                 ");
         break;
     }
 }
@@ -955,11 +945,10 @@ static boolean D_AddFile(char *filename)
 }
 
 // Copyright message banners
-// Some dehacked mods replace these.  These are only displayed if they are 
+// Some dehacked mods replace these.  These are only displayed if they are
 // replaced by dehacked.
 // haleyjd 08/22/2010: [STRIFE] altered to match strings from binary
-static const char *copyright_banners[] =
-{
+static const char *copyright_banners[] = {
     "===========================================================================\n"
     "ATTENTION:  This version of STRIFE has extra files added to it.\n"
     "        You will not receive technical support for modified games.\n"
@@ -981,7 +970,7 @@ void PrintDehackedBanners()
 {
     size_t i;
 
-    for (i=0; i<arrlen(copyright_banners); ++i)
+    for (i = 0; i < arrlen(copyright_banners); ++i)
     {
         const char *deh_s;
 
@@ -1002,15 +991,15 @@ void PrintDehackedBanners()
     }
 }
 
-static struct 
+static struct
 {
-    const char *description;
-    const char *cmdline;
+    const char   *description;
+    const char   *cmdline;
     GameVersion_t version;
 } gameversions[] = {
-    { "Strife 1.2",          "1.2",       exe_strife_1_2  },
-    { "Strife 1.31",         "1.31",      exe_strife_1_31 },
-    { NULL,                  NULL,        exe_doom_1_2 }
+    { "Strife 1.2", "1.2", exe_strife_1_2 },
+    { "Strife 1.31", "1.31", exe_strife_1_31 },
+    { NULL, NULL, exe_doom_1_2 }
 };
 
 // Initialize the game version
@@ -1020,7 +1009,7 @@ static void InitGameVersion()
     int p;
     int i;
 
-    // haleyjd: we support emulating either the 1.2 or the 1.31 versions of 
+    // haleyjd: we support emulating either the 1.2 or the 1.31 versions of
     // Strife, which are the most significant. 1.2 is the most mature version
     // that still has the single saveslot restriction, whereas 1.31 is the
     // final revision. The differences between the two are barely worth
@@ -1037,26 +1026,26 @@ static void InitGameVersion()
 
     if (p)
     {
-        for (i=0; gameversions[i].description != NULL; ++i)
+        for (i = 0; gameversions[i].description != NULL; ++i)
         {
-            if (!strcmp(myargv[p+1], gameversions[i].cmdline))
+            if (!strcmp(myargv[p + 1], gameversions[i].cmdline))
             {
                 gameversion = gameversions[i].version;
                 break;
             }
         }
 
-        if (gameversions[i].description == NULL) 
+        if (gameversions[i].description == NULL)
         {
             printf("Supported game versions:\n");
 
-            for (i=0; gameversions[i].description != NULL; ++i)
+            for (i = 0; gameversions[i].description != NULL; ++i)
             {
                 printf("\t%s (%s)\n", gameversions[i].cmdline,
-                        gameversions[i].description);
+                    gameversions[i].description);
             }
 
-            I_Error("Unknown game version '%s'", myargv[p+1]);
+            I_Error("Unknown game version '%s'", myargv[p + 1]);
         }
     }
     else
@@ -1069,12 +1058,13 @@ void PrintGameVersion()
 {
     int i;
 
-    for (i=0; gameversions[i].description != NULL; ++i)
+    for (i = 0; gameversions[i].description != NULL; ++i)
     {
         if (gameversions[i].version == gameversion)
         {
             printf("Emulating the behavior of the "
-                   "'%s' executable.\n", gameversions[i].description);
+                   "'%s' executable.\n",
+                gameversions[i].description);
             break;
         }
     }
@@ -1197,8 +1187,8 @@ static void D_DrawText(const char *string, int bc, int fc)
 boolean D_PatchClipCallback(patch_t *patch, int x, int y)
 {
     // note that offsets were already accounted for in V_DrawPatch
-    return (x >= 0 && y >= 0 
-            && x + SHORT(patch->width) <= ORIGWIDTH 
+    return (x >= 0 && y >= 0
+            && x + SHORT(patch->width) <= ORIGWIDTH
             && y + SHORT(patch->height) <= ORIGHEIGHT);
 }
 
@@ -1206,7 +1196,7 @@ boolean D_PatchClipCallback(patch_t *patch, int x, int y)
 // D_InitChocoStrife
 //
 // haleyjd 08/28/10: Take care of some Strife-specific initialization
-// that is necessitated by Chocolate Doom issues, such as setting global 
+// that is necessitated by Chocolate Doom issues, such as setting global
 // callbacks.
 //
 static void D_InitChocoStrife()
@@ -1222,9 +1212,9 @@ static void D_InitChocoStrife()
 
 #define MAXINTROPROGRESS 69
 
-static int introprogress;        // track the progress of the intro
+static int introprogress; // track the progress of the intro
 
-static byte *rawgfx_startup0;    // raw linear gfx for intro
+static byte *rawgfx_startup0; // raw linear gfx for intro
 static byte *rawgfx_startp[4];
 static byte *rawgfx_startlz[2];
 static byte *rawgfx_startbot;
@@ -1239,7 +1229,7 @@ static byte *rawgfx_startbot;
 //
 static void D_IntroBackground()
 {
-    if(!showintro)
+    if (!showintro)
         return;
 
     // Fill the background entirely (wasn't needed in vanilla)
@@ -1248,7 +1238,7 @@ static void D_IntroBackground()
     // Strife cleared the screen somewhere in the low-level code between the
     // intro and the titlescreen, so this is to take care of that and get
     // proper fade-in behavior on the titlescreen
-    if(introprogress >= MAXINTROPROGRESS)
+    if (introprogress >= MAXINTROPROGRESS)
     {
         I_FinishUpdate();
         return;
@@ -1256,7 +1246,7 @@ static void D_IntroBackground()
 
     // Draw a 95-pixel rect from STARTUP0 starting at y=57 to (0,41) on the
     // screen (this was a memcpy directly to 0xA3340 in low DOS memory)
-    V_DrawScaledBlock(0, 41, 320, 95, rawgfx_startup0 + (320*57));
+    V_DrawScaledBlock(0, 41, 320, 95, rawgfx_startup0 + (320 * 57));
 }
 
 //
@@ -1269,16 +1259,16 @@ static void D_IntroBackground()
 static void D_InitIntroSequence()
 {
     byte *textScreen;
-    char string[80];
+    char  string[80];
 
     if (devparm || !graphical_startup || testcontrols)
     {
         using_text_startup = false;
-        showintro = false;
+        showintro          = false;
         return;
     }
 
-    if(showintro)
+    if (showintro)
     {
         // In vanilla Strife, Mode 13h was initialized directly in D_DoomMain.
         // We have to be a little more courteous of the low-level code here.
@@ -1288,13 +1278,13 @@ static void D_InitIntroSequence()
 
         // Load all graphics
         rawgfx_startup0   = cache_lump_name<byte *>("STARTUP0", PU_STATIC);
-        rawgfx_startp[0]  = cache_lump_name<byte *>("STRTPA1",  PU_STATIC);
-        rawgfx_startp[1]  = cache_lump_name<byte *>("STRTPB1",  PU_STATIC);
-        rawgfx_startp[2]  = cache_lump_name<byte *>("STRTPC1",  PU_STATIC);
-        rawgfx_startp[3]  = cache_lump_name<byte *>("STRTPD1",  PU_STATIC);
-        rawgfx_startlz[0] = cache_lump_name<byte *>("STRTLZ1",  PU_STATIC);
-        rawgfx_startlz[1] = cache_lump_name<byte *>("STRTLZ2",  PU_STATIC);
-        rawgfx_startbot   = cache_lump_name<byte *>("STRTBOT",  PU_STATIC);
+        rawgfx_startp[0]  = cache_lump_name<byte *>("STRTPA1", PU_STATIC);
+        rawgfx_startp[1]  = cache_lump_name<byte *>("STRTPB1", PU_STATIC);
+        rawgfx_startp[2]  = cache_lump_name<byte *>("STRTPC1", PU_STATIC);
+        rawgfx_startp[3]  = cache_lump_name<byte *>("STRTPD1", PU_STATIC);
+        rawgfx_startlz[0] = cache_lump_name<byte *>("STRTLZ1", PU_STATIC);
+        rawgfx_startlz[1] = cache_lump_name<byte *>("STRTLZ2", PU_STATIC);
+        rawgfx_startbot   = cache_lump_name<byte *>("STRTBOT", PU_STATIC);
 
         // Draw the background
         D_IntroBackground();
@@ -1348,7 +1338,7 @@ static void D_InitIntroSequence()
         D_DrawText(string, TXT_COLOR_BLUE, TXT_COLOR_GREEN);
 
         DEH_snprintf(string, sizeof(string),
-                    "[                                                  ]");
+            "[                                                  ]");
         D_SetCursorPosition(14, 18);
         D_DrawText(string, TXT_COLOR_BLUE, TXT_COLOR_GREEN);
 
@@ -1377,7 +1367,7 @@ static void D_DrawIntroSequence()
 
         // BUG: (?) Due to this clip, the laser never even comes close to
         // touching the peasant; confirmed with vanilla. This MAY have been
-        // intentional, for effect, however, since no death frames are shown 
+        // intentional, for effect, however, since no death frames are shown
         // either... kind of a black-out death.
         if (laserpos > 200)
             laserpos = 200;
@@ -1432,21 +1422,21 @@ static void D_DrawIntroSequence()
 void D_IntroTick()
 {
     static boolean didsound = false; // haleyjd 20120209
-    
-    if(devparm)
+
+    if (devparm)
         return;
 
     ++introprogress;
-    if(introprogress >= MAXINTROPROGRESS)
+    if (introprogress >= MAXINTROPROGRESS)
     {
         D_IntroBackground(); // haleyjd: clear the bg anyway
-        
+
         // haleyjd 20120209: This isn't 100% true to vanilla because vanilla
-        // would play this sound a half-dozen times. BUT, in vanilla, for 
+        // would play this sound a half-dozen times. BUT, in vanilla, for
         // whatever reason, under DMX, playing the same sound multiple times
         // doesn't add up violently like it does under SDL_mixer. This means
         // that without this one-time limitation, the sound is far too loud.
-        if(!didsound)
+        if (!didsound)
         {
             S_StartSound(NULL, sfx_psdtha);
             didsound = true;
@@ -1461,7 +1451,7 @@ void D_IntroTick()
 //
 //=============================================================================
 
-static void G_CheckDemoStatusAtExit ()
+static void G_CheckDemoStatusAtExit()
 {
     G_CheckDemoStatus();
 }
@@ -1469,11 +1459,11 @@ static void G_CheckDemoStatusAtExit ()
 //
 // D_DoomMain
 //
-void D_DoomMain ()
+void D_DoomMain()
 {
-    int             p;
-    char            file[256];
-    char            demolumpname[9];
+    int  p;
+    char file[256];
+    char demolumpname[9];
 
     I_AtExit(D_Endoom, false);
 
@@ -1494,7 +1484,7 @@ void D_DoomMain ()
     if (M_ParmExists("-testcontrols"))
     {
         testcontrols = true;
-        showintro = false;
+        showintro    = false;
     }
 
     // haleyjd 20110206: Moved up -devparm for max visibility
@@ -1505,14 +1495,14 @@ void D_DoomMain ()
     // Developer mode. Implies -nograph.
     //
 
-    devparm = M_CheckParm ("-devparm");
+    devparm = M_CheckParm("-devparm");
 
     // print banner
 
     I_PrintBanner(PACKAGE_STRING);
 
-    //DEH_printf("Z_Init: Init zone memory allocation daemon. \n"); [STRIFE] removed
-    Z_Init ();
+    // DEH_printf("Z_Init: Init zone memory allocation daemon. \n"); [STRIFE] removed
+    Z_Init();
 
     //!
     // @category net
@@ -1554,7 +1544,7 @@ void D_DoomMain ()
 
     if (p)
     {
-        NET_QueryAddress(myargv[p+1]);
+        NET_QueryAddress(myargv[p + 1]);
         exit(0);
     }
 
@@ -1577,7 +1567,7 @@ void D_DoomMain ()
     // Disable monsters.
     //
 
-    nomonsters = M_CheckParm ("-nomonsters");
+    nomonsters = M_CheckParm("-nomonsters");
 
     //!
     // @category obscure
@@ -1586,7 +1576,7 @@ void D_DoomMain ()
     // Set Rogue playtesting mode (godmode, noclip toggled by backspace)
     //
 
-    workparm = M_CheckParm ("-work");
+    workparm = M_CheckParm("-work");
 
     //!
     // @category obscure
@@ -1595,7 +1585,7 @@ void D_DoomMain ()
     // Flip player gun sprites (broken).
     //
 
-    flipparm = M_CheckParm ("-flip");
+    flipparm = M_CheckParm("-flip");
 
     //!
     // @category game
@@ -1604,7 +1594,7 @@ void D_DoomMain ()
     // Respawn monsters after they are killed.
     //
 
-    respawnparm = M_CheckParm ("-respawn");
+    respawnparm = M_CheckParm("-respawn");
 
     //!
     // @category game
@@ -1613,7 +1603,7 @@ void D_DoomMain ()
     // Items respawn at random locations
     //
 
-    randomparm = M_CheckParm ("-random");
+    randomparm = M_CheckParm("-random");
 
     //!
     // @category game
@@ -1622,12 +1612,12 @@ void D_DoomMain ()
     // Monsters move faster.
     //
 
-    fastparm = M_CheckParm ("-fast");
+    fastparm = M_CheckParm("-fast");
 
     I_DisplayFPSDots(devparm);
 
     // haleyjd 20110206 [STRIFE]: -devparm implies -nograph
-    if(devparm)
+    if (devparm)
         showintro = false;
 
     // Note: Vanilla Strife does not understand the -deathmatch command
@@ -1642,13 +1632,13 @@ void D_DoomMain ()
     // all items respawn after 30 seconds.
     //
 
-    if (M_CheckParm ("-altdeath"))
+    if (M_CheckParm("-altdeath"))
         deathmatch = 2;
 
     if (devparm)
         DEH_printf(D_DEVSTR);
-    
-    // find which dir to use for config files
+
+        // find which dir to use for config files
 
 #ifdef _WIN32
 
@@ -1675,7 +1665,7 @@ void D_DoomMain ()
 
         M_SetConfigDir(NULL);
     }
-    
+
     //!
     // @category game
     // @arg <x>
@@ -1685,28 +1675,28 @@ void D_DoomMain ()
     // x defaults to 200.  Values are rounded up to 10 and down to 400.
     //
 
-    if ( (p=M_CheckParm ("-turbo")) )
+    if ((p = M_CheckParm("-turbo")))
     {
-        int     scale = 200;
+        int        scale = 200;
         extern int forwardmove[2];
         extern int sidemove[2];
 
-        if (p<myargc-1)
-            scale = atoi (myargv[p+1]);
+        if (p < myargc - 1)
+            scale = atoi(myargv[p + 1]);
         if (scale < 10)
             scale = 10;
         if (scale > 400)
             scale = 400;
         DEH_printf("turbo scale: %i%%\n", scale);
-        forwardmove[0] = forwardmove[0]*scale/100;
-        forwardmove[1] = forwardmove[1]*scale/100;
-        sidemove[0] = sidemove[0]*scale/100;
-        sidemove[1] = sidemove[1]*scale/100;
+        forwardmove[0] = forwardmove[0] * scale / 100;
+        forwardmove[1] = forwardmove[1] * scale / 100;
+        sidemove[0]    = sidemove[0] * scale / 100;
+        sidemove[1]    = sidemove[1] * scale / 100;
     }
-    
+
     // init subsystems
     // DEH_printf("V_Init: allocate screens.\n"); [STRIFE] removed
-    V_Init ();
+    V_Init();
 
     // Load configuration files before initialising other subsystems.
     // haleyjd 08/22/2010: [STRIFE] - use strife.cfg
@@ -1730,7 +1720,7 @@ void D_DoomMain ()
 
     modifiedgame = false;
 
-    if(devparm) // [STRIFE] Devparm only
+    if (devparm) // [STRIFE] Devparm only
         DEH_printf("W_Init: Init WADfiles.\n");
     D_AddFile(iwadfile);
     W_CheckCorrectIWAD(strife);
@@ -1757,11 +1747,11 @@ void D_DoomMain ()
     modifiedgame = W_ParseCommandLine();
 
     // [STRIFE] serial number output
-    if(devparm)
+    if (devparm)
     {
-        char msgbuf[80];
-        char *serial  = cache_lump_name<char *>("SERIAL", PU_CACHE);
-        int serialnum = atoi(serial);
+        char  msgbuf[80];
+        char *serial    = cache_lump_name<char *>("SERIAL", PU_CACHE);
+        int   serialnum = atoi(serial);
 
         DEH_snprintf(msgbuf, sizeof(msgbuf), "Wad Serial Number: %d:", serialnum);
         printf("%s\n", msgbuf);
@@ -1772,7 +1762,7 @@ void D_DoomMain ()
     //
 
     // Debug:
-//    W_PrintDirectory();
+    //    W_PrintDirectory();
 
     //!
     // @arg <demo>
@@ -1782,7 +1772,7 @@ void D_DoomMain ()
     // Play back the demo named demo.lmp.
     //
 
-    p = M_CheckParmWithArgs ("-playdemo", 1);
+    p = M_CheckParmWithArgs("-playdemo", 1);
 
     if (!p)
     {
@@ -1794,8 +1784,7 @@ void D_DoomMain ()
         // Play back the demo named demo.lmp, determining the framerate
         // of the screen.
         //
-	p = M_CheckParmWithArgs("-timedemo", 1);
-
+        p = M_CheckParmWithArgs("-timedemo", 1);
     }
 
     if (p)
@@ -1811,15 +1800,15 @@ void D_DoomMain ()
         }
         else
         {
-            DEH_snprintf(file, sizeof(file), "%s.lmp", myargv[p+1]);
+            DEH_snprintf(file, sizeof(file), "%s.lmp", myargv[p + 1]);
         }
 
         free(uc_filename);
 
-        if (D_AddFile (file))
+        if (D_AddFile(file))
         {
             M_StringCopy(demolumpname, lumpinfo[numlumps - 1]->name,
-                         sizeof(demolumpname));
+                sizeof(demolumpname));
         }
         else
         {
@@ -1851,8 +1840,8 @@ void D_DoomMain ()
     I_InitSound(true);
     I_InitMusic();
 
-    if(devparm) // [STRIFE]
-        printf ("NET_Init: Init network subsystem.\n");
+    if (devparm) // [STRIFE]
+        printf("NET_Init: Init network subsystem.\n");
     NET_Init();
     D_ConnectNetGame();
 
@@ -1865,10 +1854,10 @@ void D_DoomMain ()
     D_InitIntroSequence();
 
     // haleyjd 20110924: moved S_Init up to here
-    if(devparm) // [STRIFE]
+    if (devparm) // [STRIFE]
         DEH_printf("S_Init: Setting up sound.\n");
-    S_Init (sfxVolume * 8, musicVolume * 8, voiceVolume * 8); // [STRIFE]: voice
-    D_IntroTick(); // [STRIFE]
+    S_Init(sfxVolume * 8, musicVolume * 8, voiceVolume * 8); // [STRIFE]: voice
+    D_IntroTick();                                           // [STRIFE]
 
     // Check for -file in shareware
     if (modifiedgame)
@@ -1876,34 +1865,33 @@ void D_DoomMain ()
         // These are the lumps that will be checked in IWAD,
         // if any one is not present, execution will be aborted.
         // haleyjd 08/22/2010: [STRIFE] Check for Strife lumps.
-        char name[3][8]=
-        {
+        char name[3][8] = {
             "map23", "map30", "ROB3E1"
         };
         int i;
 
         // haleyjd 08/22/2010: [STRIFE] Changed string to match binary
         // STRIFE-FIXME: Needs to test isdemoversion variable
-        if ( gamemode == shareware)
+        if (gamemode == shareware)
             I_Error(DEH_String("\nYou cannot -file with the demo "
                                "version. You must buy the real game!"));
 
         // Check for fake IWAD with right name,
-        // but w/o all the lumps of the registered version. 
+        // but w/o all the lumps of the registered version.
         // STRIFE-FIXME: Needs to test isregistered variable
         if (gamemode == registered)
             for (i = 0; i < 3; i++)
-                if (W_CheckNumForName(name[i])<0)
+                if (W_CheckNumForName(name[i]) < 0)
                     I_Error(DEH_String("\nThis is not the registered version."));
     }
-    
+
     D_IntroTick(); // [STRIFE]
-    
+
     // get skill / episode / map from parms
-    startskill = sk_easy; // [STRIFE]: inits to sk_easy
+    startskill   = sk_easy; // [STRIFE]: inits to sk_easy
     startepisode = 1;
-    startmap = 1;
-    autostart = false;
+    startmap     = 1;
+    autostart    = false;
 
     //!
     // @category game
@@ -1919,7 +1907,7 @@ void D_DoomMain ()
     if (p)
     {
         startskill = static_cast<skill_t>(myargv[p + 1][0] - '1');
-        autostart = true;
+        autostart  = true;
     }
 
     // [STRIFE] no such thing in Strife
@@ -1942,7 +1930,7 @@ void D_DoomMain ()
 
     timelimit = 0;
 
-    //! 
+    //!
     // @arg <n>
     // @category net
     // @vanilla
@@ -1954,7 +1942,7 @@ void D_DoomMain ()
 
     if (p)
     {
-        timelimit = atoi(myargv[p+1]);
+        timelimit = atoi(myargv[p + 1]);
         printf("timer: %i\n", timelimit);
     }
 
@@ -1965,7 +1953,7 @@ void D_DoomMain ()
     // Austin Virtual Gaming: end levels after 20 minutes.
     //
 
-    p = M_CheckParm ("-avg");
+    p = M_CheckParm("-avg");
 
     if (p)
     {
@@ -1985,14 +1973,14 @@ void D_DoomMain ()
     if (p)
     {
         if (gamemode == commercial)
-            startmap = atoi (myargv[p+1]);
+            startmap = atoi(myargv[p + 1]);
         else
         {
-            startepisode = myargv[p+1][0]-'0';
+            startepisode = myargv[p + 1][0] - '0';
 
             if (p + 2 < myargc)
             {
-                startmap = myargv[p+2][0]-'0';
+                startmap = myargv[p + 2][0] - '0';
             }
             else
             {
@@ -2005,8 +1993,8 @@ void D_DoomMain ()
     if (testcontrols)
     {
         startepisode = 1;
-        startmap = 3;
-        autostart = true;
+        startmap     = 3;
+        autostart    = true;
     }
 
     // Check for load game parameter
@@ -2022,10 +2010,10 @@ void D_DoomMain ()
     //
 
     p = M_CheckParmWithArgs("-loadgame", 1);
-    
+
     if (p)
     {
-        startloadgame = atoi(myargv[p+1]);
+        startloadgame = atoi(myargv[p + 1]);
     }
     else
     {
@@ -2034,7 +2022,7 @@ void D_DoomMain ()
     }
 
     if (W_CheckNumForName("SS_START") >= 0
-     || W_CheckNumForName("FF_END") >= 0)
+        || W_CheckNumForName("FF_END") >= 0)
     {
         I_PrintDivider();
         printf(" WARNING: The loaded WAD file contains modified sprites or\n"
@@ -2049,17 +2037,17 @@ void D_DoomMain ()
     D_InitChocoStrife();
 
     // haleyjd 08/22/2010: [STRIFE] Modified string to match binary
-    if(devparm) // [STRIFE]
-       DEH_printf("R_Init: Loading Graphics - ");
-    R_Init ();
+    if (devparm) // [STRIFE]
+        DEH_printf("R_Init: Loading Graphics - ");
+    R_Init();
     D_IntroTick(); // [STRIFE]
 
-    if(devparm) // [STRIFE]
+    if (devparm) // [STRIFE]
         DEH_printf("\nP_Init: Init Playloop state.\n");
-    P_Init ();
+    P_Init();
     D_IntroTick(); // [STRIFE]
 
-    if(devparm) // [STRIFE]
+    if (devparm) // [STRIFE]
         DEH_printf("I_Init: Setting up machine state.\n");
     I_CheckIsScreensaver();
     I_InitJoystick();
@@ -2067,15 +2055,15 @@ void D_DoomMain ()
 
     D_IntroTick(); // [STRIFE]
 
-    if(devparm) // [STRIFE]
+    if (devparm) // [STRIFE]
         DEH_printf("M_Init: Init Menu.\n");
-    M_Init ();
+    M_Init();
     D_IntroTick(); // [STRIFE]
 
     // haleyjd 20110924: Moved S_Init up.
     D_IntroTick();
 
-    // haleyjd 20110220: This stuff was done in I_StartupSound in vanilla, but 
+    // haleyjd 20110220: This stuff was done in I_StartupSound in vanilla, but
     // we'll do it here instead so we don't have to modify the low-level shared
     // code with Strife-specific stuff.
 
@@ -2086,34 +2074,34 @@ void D_DoomMain ()
     // even if voices.wad can be found.
     //
 
-    if(disable_voices || M_CheckParm("-novoice"))
+    if (disable_voices || M_CheckParm("-novoice"))
     {
         dialogshowtext = disable_voices = 1;
     }
 
-    if(devparm)
+    if (devparm)
         DEH_printf("  Play voices = %d\n", disable_voices == 0);
 
-    if(devparm) // [STRIFE]
+    if (devparm) // [STRIFE]
         DEH_printf("D_CheckNetGame: Checking network game status.\n");
-    D_CheckNetGame ();
+    D_CheckNetGame();
 
     PrintGameVersion();
 
-    if(devparm)
+    if (devparm)
         DEH_printf("HU_Init: Setting up heads up display.\n");
-    HU_Init ();
+    HU_Init();
     D_IntroTick(); // [STRIFE]
 
-    if(devparm)
+    if (devparm)
         DEH_printf("ST_Init: Init status bar.\n");
-    ST_Init ();
+    ST_Init();
     D_IntroTick(); // [STRIFE]
 
     // haleyjd [STRIFE] -statcopy used to be here...
     D_IntroTick(); // [STRIFE]
 
-    // If Doom II without a MAP01 lump, this is a store demo.  
+    // If Doom II without a MAP01 lump, this is a store demo.
     // Moved this here so that MAP01 isn't constantly looked up
     // in the main loop.
     // haleyjd 08/23/2010: [STRIFE] There is no storedemo version of Strife
@@ -2134,7 +2122,7 @@ void D_DoomMain ()
 
     if (p)
     {
-        G_RecordDemo (myargv[p+1]);
+        G_RecordDemo(myargv[p + 1]);
         autostart = true;
     }
     D_IntroTick(); // [STRIFE]
@@ -2142,17 +2130,17 @@ void D_DoomMain ()
     p = M_CheckParmWithArgs("-playdemo", 1);
     if (p)
     {
-        singledemo = true;              // quit after one demo
-        G_DeferedPlayDemo (demolumpname);
-        D_DoomLoop ();  // never returns
+        singledemo = true; // quit after one demo
+        G_DeferedPlayDemo(demolumpname);
+        D_DoomLoop(); // never returns
     }
     D_IntroTick(); // [STRIFE]
 
     p = M_CheckParmWithArgs("-timedemo", 1);
     if (p)
     {
-        G_TimeDemo (demolumpname);
-        D_DoomLoop ();  // never returns
+        G_TimeDemo(demolumpname);
+        D_DoomLoop(); // never returns
     }
     D_IntroTick(); // [STRIFE]
 
@@ -2164,12 +2152,12 @@ void D_DoomMain ()
     D_IntroTick(); // [STRIFE]
 
 
-    if (gameaction != ga_loadgame )
+    if (gameaction != ga_loadgame)
     {
         if (autostart || netgame)
-            G_InitNew (startskill, startmap);
+            G_InitNew(startskill, startmap);
         else
-            D_StartTitle ();                // start up intro loop
+            D_StartTitle(); // start up intro loop
     }
 
     if (using_text_startup)
@@ -2177,5 +2165,5 @@ void D_DoomMain ()
         TXT_Shutdown();
     }
 
-    D_DoomLoop ();  // never returns
+    D_DoomLoop(); // never returns
 }

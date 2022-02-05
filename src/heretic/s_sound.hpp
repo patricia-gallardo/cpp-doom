@@ -28,10 +28,10 @@ void S_StartSoundAtVolume(void *origin, int sound_id, int volume);
 void S_StopSound(void *origin);
 void S_PauseSound();
 void S_ResumeSound();
-void S_UpdateSounds(mobj_t * listener);
+void S_UpdateSounds(mobj_t *listener);
 void S_StartSong(int song, boolean loop);
 void S_Init();
-void S_GetChannelInfo(SoundInfo_t * s);
+void S_GetChannelInfo(SoundInfo_t *s);
 void S_SetMaxVolume(boolean fullprocess);
 void S_SetMusicVolume();
 

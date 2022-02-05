@@ -32,16 +32,16 @@
 
 ticcmd_t *netcmds;
 
-extern void D_DoAdvanceDemo();
-extern void D_ProcessEvents();
-extern void G_BuildTiccmd(ticcmd_t *cmd, int maketic);
+extern void    D_DoAdvanceDemo();
+extern void    D_ProcessEvents();
+extern void    G_BuildTiccmd(ticcmd_t *cmd, int maketic);
 extern boolean G_CheckDemoStatus();
 
 // Called when a player leaves the game
 
 static void PlayerQuitGame(player_t *player)
 {
-    static char exitmsg[80];
+    static char  exitmsg[80];
     unsigned int player_num;
 
     player_num = player - players;
@@ -54,21 +54,21 @@ static void PlayerQuitGame(player_t *player)
     exitmsg[7] += player_num;
     players[consoleplayer].message = exitmsg;
 
-    playeringame[player_num] = false;
+    playeringame[player_num]       = false;
     players[consoleplayer].message = exitmsg;
 
     // TODO: check if it is sensible to do this:
 
-    if (demorecording) 
+    if (demorecording)
     {
-        G_CheckDemoStatus ();
+        G_CheckDemoStatus();
     }
 }
 
 static void RunTic(ticcmd_t *cmds, boolean *ingame)
 {
     extern boolean advancedemo;
-    unsigned int i;
+    unsigned int   i;
 
     // Check for player quits.
 
@@ -86,9 +86,9 @@ static void RunTic(ticcmd_t *cmds, boolean *ingame)
     // run a tic.
 
     if (advancedemo)
-        D_DoAdvanceDemo ();
+        D_DoAdvanceDemo();
 
-    G_Ticker ();
+    G_Ticker();
 }
 
 static loop_interface_t doom_loop_interface = {
@@ -99,22 +99,22 @@ static loop_interface_t doom_loop_interface = {
 };
 
 
-// Load game settings from the specified structure and 
+// Load game settings from the specified structure and
 // set global variables.
 
 static void LoadGameSettings(net_gamesettings_t *settings)
 {
     unsigned int i;
 
-    deathmatch = settings->deathmatch;
-    ticdup = settings->ticdup;
+    deathmatch   = settings->deathmatch;
+    ticdup       = settings->ticdup;
     startepisode = settings->episode;
-    startmap = settings->map;
-    startskill = static_cast<skill_t>(settings->skill);
+    startmap     = settings->map;
+    startskill   = static_cast<skill_t>(settings->skill);
     // TODO startloadgame = settings->loadgame;
-    lowres_turn = settings->lowres_turn;
-    nomonsters = settings->nomonsters;
-    respawnparm = settings->respawn_monsters;
+    lowres_turn   = settings->lowres_turn;
+    nomonsters    = settings->nomonsters;
+    respawnparm   = settings->respawn_monsters;
     consoleplayer = settings->consoleplayer;
 
     if (lowres_turn)
@@ -138,22 +138,22 @@ static void SaveGameSettings(net_gamesettings_t *settings)
     // for the new game
 
     settings->deathmatch = deathmatch;
-    settings->episode = startepisode;
-    settings->map = startmap;
-    settings->skill = startskill;
+    settings->episode    = startepisode;
+    settings->map        = startmap;
+    settings->skill      = startskill;
     // TODO settings->loadgame = startloadgame;
-    settings->gameversion = exe_heretic_1_3;
-    settings->nomonsters = nomonsters;
+    settings->gameversion      = exe_heretic_1_3;
+    settings->nomonsters       = nomonsters;
     settings->respawn_monsters = respawnparm;
-    settings->timelimit = 0;
+    settings->timelimit        = 0;
 
     settings->lowres_turn = M_ParmExists("-record")
-                         && !M_ParmExists("-longtics");
+                            && !M_ParmExists("-longtics");
 }
 
 static void InitConnectData(net_connect_data_t *connect_data)
 {
-    connect_data->drone = false;
+    connect_data->drone       = false;
     connect_data->max_players = MAXPLAYERS;
 
     //
@@ -162,13 +162,13 @@ static void InitConnectData(net_connect_data_t *connect_data)
 
     // Game type fields:
 
-    connect_data->gamemode = gamemode;
+    connect_data->gamemode    = gamemode;
     connect_data->gamemission = heretic;
 
     // Are we recording a demo? Possibly set lowres turn mode
 
     connect_data->lowres_turn = M_ParmExists("-record")
-                             && !M_ParmExists("-longtics");
+                                && !M_ParmExists("-longtics");
 
     // Read checksums of our WAD directory and dehacked information
 
@@ -204,7 +204,7 @@ void D_ConnectNetGame()
 // Works out player numbers among the net participants
 //
 
-void D_CheckNetGame ()
+void D_CheckNetGame()
 {
     net_gamesettings_t settings;
 
@@ -219,4 +219,3 @@ void D_CheckNetGame ()
     D_StartNetGame(&settings, NULL);
     LoadGameSettings(&settings);
 }
-

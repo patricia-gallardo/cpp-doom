@@ -39,7 +39,7 @@ static int                  hash_table_length = -1;
 
 static unsigned int strhash(const char *s)
 {
-    const char * p = s;
+    const char  *p = s;
     unsigned int h = *p;
 
     if (h)
@@ -211,8 +211,7 @@ void DEH_AddStringReplacement(const char *from_text, const char *to_text)
     }
 }
 
-using format_arg_t = enum
-{
+using format_arg_t = enum {
     FORMAT_ARG_INVALID,
     FORMAT_ARG_INT,
     FORMAT_ARG_FLOAT,

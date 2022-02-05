@@ -78,9 +78,9 @@ void P_CreateBlockMap()
     {
         using bmap_t = struct {
             int n, nalloc, *list;
-        };                                                         // blocklist structure
+        };                                                                // blocklist structure
         unsigned tot  = bmapwidth * bmapheight;                           // size of blockmap
-        bmap_t * bmap = static_cast<bmap_t *>(calloc(sizeof *bmap, tot)); // array of blocklists
+        bmap_t  *bmap = static_cast<bmap_t *>(calloc(sizeof *bmap, tot)); // array of blocklists
         int      x, y, adx, ady, bend;
 
         for (i = 0; i < numlines; i++)
@@ -96,7 +96,8 @@ void P_CreateBlockMap()
             ady = lines[i].dy >> FRACBITS, dy = ady < 0 ? -1 : 1;
 
             // difference in preferring to move across y (>0) instead of x (<0)
-            diff = !adx ? 1 : !ady ? -1 : (((x >> MAPBTOFRAC) << MAPBTOFRAC) + (dx > 0 ? MAPBLOCKUNITS - 1 : 0) - x) * (ady = std::abs(ady)) * dx - (((y >> MAPBTOFRAC) << MAPBTOFRAC) + (dy > 0 ? MAPBLOCKUNITS - 1 : 0) - y) * (adx = std::abs(adx)) * dy;
+            diff = !adx ? 1 : !ady ? -1 :
+                                     (((x >> MAPBTOFRAC) << MAPBTOFRAC) + (dx > 0 ? MAPBLOCKUNITS - 1 : 0) - x) * (ady = std::abs(ady)) * dx - (((y >> MAPBTOFRAC) << MAPBTOFRAC) + (dy > 0 ? MAPBLOCKUNITS - 1 : 0) - y) * (adx = std::abs(adx)) * dy;
 
             // starting block, and pointer to its blocklist structure
             b = (y >> MAPBTOFRAC) * bmapwidth + (x >> MAPBTOFRAC);

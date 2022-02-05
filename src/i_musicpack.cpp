@@ -338,7 +338,7 @@ static const subst_music_t known_filenames[] = {
 // the time (in # samples since start of track) it represents.
 static unsigned int ParseVorbisTime(unsigned int samplerate_hz, char *value)
 {
-    char *       num_start, *p;
+    char        *num_start, *p;
     unsigned int result = 0;
     char         c;
 
@@ -465,7 +465,7 @@ static void ParseFlacStreaminfo(file_metadata_t *metadata, FILE *fs)
                               | (buf[12] >> 4);
     // Song length is actually a 36 bit field, but 32 bits should be
     // enough for everybody.
-    //metadata->song_length = (buf[14] << 24) | (buf[15] << 16)
+    // metadata->song_length = (buf[14] << 24) | (buf[15] << 16)
     //                      | (buf[16] << 8) | buf[17];
 }
 
@@ -624,7 +624,7 @@ static const char *GetSubstituteMusicFile(void *data, size_t data_len)
 {
     sha1_context_t context;
     sha1_digest_t  hash;
-    const char *   filename;
+    const char    *filename;
     char           hash_str[sizeof(sha1_digest_t) * 2 + 1];
     unsigned int   i;
 
@@ -712,7 +712,7 @@ static char *GetFullPath(const char *musicdir, const char *path)
 static char *ExpandFileExtension(const char *musicdir, const char *filename)
 {
     static const char *extns[] = { ".flac", ".ogg", ".mp3" };
-    char *             replaced, *result;
+    char              *replaced, *result;
     int                i;
 
     if (!M_StringEndsWith(filename, ".{ext}"))
@@ -740,7 +740,7 @@ static void AddSubstituteMusic(const char *musicdir, const char *hash_prefix,
     const char *filename)
 {
     subst_music_t *s;
-    char *         path;
+    char          *path;
 
     path = ExpandFileExtension(musicdir, filename);
     if (path == NULL)
@@ -796,8 +796,8 @@ static const char *ReadHashPrefix(char *line)
 static const char *ParseSubstituteLine(char *musicdir, char *line)
 {
     const char *hash_prefix;
-    char *      filename;
-    char *      p;
+    char       *filename;
+    char       *p;
 
     // Strip out comments if present.
     p = strchr(line, '#');
@@ -884,7 +884,7 @@ static boolean ReadSubstituteConfig(char *musicdir, const char *filename)
     while (line != NULL)
     {
         const char *error;
-        char *      next;
+        char       *next;
 
         // find end of line
         char *eol = strchr(line, '\n');
@@ -920,9 +920,9 @@ static boolean ReadSubstituteConfig(char *musicdir, const char *filename)
 
 static void LoadSubstituteConfigs()
 {
-    glob_t *     glob;
-    char *       musicdir;
-    const char * path;
+    glob_t      *glob;
+    char        *musicdir;
+    const char  *path;
     unsigned int old_music_len;
     unsigned int i;
 
@@ -987,7 +987,7 @@ static void LoadSubstituteConfigs()
 
 static boolean IsMusicLump(int lumpnum)
 {
-    byte *  data;
+    byte   *data;
     boolean result;
 
     if (W_LumpLength(lumpnum) < 4)
@@ -1013,8 +1013,8 @@ static void DumpSubstituteConfig(char *filename)
     sha1_context_t context;
     sha1_digest_t  digest;
     char           name[9];
-    byte *         data;
-    FILE *         fs;
+    byte          *data;
+    FILE          *fs;
     unsigned int   lumpnum;
     size_t         h;
 
@@ -1260,7 +1260,7 @@ static void I_MP_UnRegisterSong(void *handle)
 static void *I_MP_RegisterSong(void *data, int len)
 {
     const char *filename;
-    Mix_Music * music;
+    Mix_Music  *music;
 
     if (!music_initialized)
     {

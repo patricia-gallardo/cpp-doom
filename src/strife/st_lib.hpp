@@ -33,29 +33,27 @@ using st_number_t = struct
 {
     // upper right-hand corner
     //  of the number (right-justified)
-    int         x;
-    int         y;
+    int x;
+    int y;
 
     // max # of digits in number
     int width;
 
     // haleyjd 09/01/10: [STRIFE] Removed "oldnum" member
-    //int         oldnum;
+    // int         oldnum;
 
     // pointer to current value
-    int*        num;
+    int *num;
 
     // haleyjd 09/01/10: [STRIFE] Removed "on" member
     // boolean*    on;
 
     // list of patches for 0-9
-    patch_t**   p;
+    patch_t **p;
 
     // user data
     int data;
-
 };
-
 
 
 // Percent widget ("child" of number widget,
@@ -63,41 +61,36 @@ using st_number_t = struct
 using st_percent_t = struct
 {
     // number information
-    st_number_t		n;
+    st_number_t n;
 
     // percent sign graphic
-    patch_t*		p;
-
+    patch_t *p;
 };
-
 
 
 // Multiple Icon widget
 using st_multicon_t = struct
 {
-     // center-justified location of icons
-    int			x;
-    int			y;
+    // center-justified location of icons
+    int x;
+    int y;
 
     // last icon number
-    int			oldinum;
+    int oldinum;
 
     // pointer to current icon
-    int*		inum;
+    int *inum;
 
     // pointer to boolean stating
     //  whether to update icon
-    boolean*		on;
+    boolean *on;
 
     // list of icons
-    patch_t**		p;
+    patch_t **p;
 
     // user data
-    int			data;
-
+    int data;
 };
-
-
 
 
 // Binary Icon widget
@@ -105,25 +98,23 @@ using st_multicon_t = struct
 using st_binicon_t = struct
 {
     // center-justified location of icon
-    int			x;
-    int			y;
+    int x;
+    int y;
 
     // last icon value
-    boolean		oldval;
+    boolean oldval;
 
     // pointer to current icon status
-    boolean*		val;
+    boolean *val;
 
     // pointer to boolean
     //  stating whether to update icon
-    boolean*		on;
+    boolean *on;
 
 
-    patch_t*		p;	// icon
-    int			data;   // user data
-
+    patch_t *p;    // icon
+    int      data; // user data
 };
-
 
 
 //
@@ -137,28 +128,21 @@ using st_binicon_t = struct
 void STlib_init();
 
 
-
 // Number widget routines
 
 // haleyjd 09/01/10: [STRIFE] Removed "on" parameter.
-void
-STlib_initNum
-( st_number_t*          n,
-  int                   x,
-  int                   y,
-  patch_t**             pl,
-  int*                  num,
-  int                   width );
+void STlib_initNum(st_number_t *n,
+    int                         x,
+    int                         y,
+    patch_t                   **pl,
+    int                        *num,
+    int                         width);
 
 // haleyjd 09/01/10: [STRIFE] Made globally visible.
-void
-STlib_drawNum
-( st_number_t*  n);
+void STlib_drawNum(st_number_t *n);
 
 // haleyjd 09/01/10: [STRIFE] New function
-void
-STlib_drawNumPositive
-( st_number_t*  n);
+void STlib_drawNumPositive(st_number_t *n);
 
 /* haleyjd 09/01/10: [STRIFE] All the below were removed
 void

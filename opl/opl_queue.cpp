@@ -28,14 +28,13 @@
 using opl_queue_entry_t = struct
 {
     opl_callback_t callback;
-    void *data;
-    uint64_t time;
+    void          *data;
+    uint64_t       time;
 };
 
-struct opl_callback_queue_s
-{
+struct opl_callback_queue_s {
     opl_queue_entry_t entries[MAX_OPL_QUEUE];
-    unsigned int num_entries;
+    unsigned int      num_entries;
 };
 
 opl_callback_queue_t *OPL_Queue_Create()
@@ -63,8 +62,8 @@ void OPL_Queue_Clear(opl_callback_queue_t *queue)
 }
 
 void OPL_Queue_Push(opl_callback_queue_t *queue,
-                    opl_callback_t callback, void *data,
-                    uint64_t time)
+    opl_callback_t callback, void *data,
+    uint64_t time)
 {
     int entry_id;
     int parent_id;
@@ -96,8 +95,8 @@ void OPL_Queue_Push(opl_callback_queue_t *queue,
         // Move the existing entry down in the heap.
 
         memcpy(&queue->entries[entry_id],
-               &queue->entries[parent_id],
-               sizeof(opl_queue_entry_t));
+            &queue->entries[parent_id],
+            sizeof(opl_queue_entry_t));
 
         // Advance to the parent.
 
@@ -107,16 +106,16 @@ void OPL_Queue_Push(opl_callback_queue_t *queue,
     // Insert new callback data.
 
     queue->entries[entry_id].callback = callback;
-    queue->entries[entry_id].data = data;
-    queue->entries[entry_id].time = time;
+    queue->entries[entry_id].data     = data;
+    queue->entries[entry_id].time     = time;
 }
 
 int OPL_Queue_Pop(opl_callback_queue_t *queue,
-                  opl_callback_t *callback, void **data)
+    opl_callback_t *callback, void **data)
 {
     opl_queue_entry_t *entry;
-    int child1, child2;
-    int i, next_i;
+    int                child1, child2;
+    int                i, next_i;
 
     // Empty?
 
@@ -128,7 +127,7 @@ int OPL_Queue_Pop(opl_callback_queue_t *queue,
     // Store the result:
 
     *callback = queue->entries[0].callback;
-    *data = queue->entries[0].data;
+    *data     = queue->entries[0].data;
 
     // Decrease the heap size, and keep pointer to the last entry in
     // the heap, which must now be percolated down from the top.
@@ -146,13 +145,13 @@ int OPL_Queue_Pop(opl_callback_queue_t *queue,
         child2 = i * 2 + 2;
 
         if (child1 < queue->num_entries
-         && queue->entries[child1].time < entry->time)
+            && queue->entries[child1].time < entry->time)
         {
             // Left child is less than entry.
             // Use the minimum of left and right children.
 
             if (child2 < queue->num_entries
-             && queue->entries[child2].time < queue->entries[child1].time)
+                && queue->entries[child2].time < queue->entries[child1].time)
             {
                 next_i = child2;
             }
@@ -162,7 +161,7 @@ int OPL_Queue_Pop(opl_callback_queue_t *queue,
             }
         }
         else if (child2 < queue->num_entries
-              && queue->entries[child2].time < entry->time)
+                 && queue->entries[child2].time < entry->time)
         {
             // Right child is less than entry.  Go down the right side.
 
@@ -177,8 +176,8 @@ int OPL_Queue_Pop(opl_callback_queue_t *queue,
         // Percolate the next value up and advance.
 
         memcpy(&queue->entries[i],
-               &queue->entries[next_i],
-               sizeof(opl_queue_entry_t));
+            &queue->entries[next_i],
+            sizeof(opl_queue_entry_t));
         i = next_i;
     }
 
@@ -202,15 +201,15 @@ uint64_t OPL_Queue_Peek(opl_callback_queue_t *queue)
 }
 
 void OPL_Queue_AdjustCallbacks(opl_callback_queue_t *queue,
-                               uint64_t time, float factor)
+    uint64_t time, float factor)
 {
     int64_t offset;
-    int i;
+    int     i;
 
     for (i = 0; i < queue->num_entries; ++i)
     {
-        offset = queue->entries[i].time - time;
-        queue->entries[i].time = time + (uint64_t) (offset / factor);
+        offset                 = queue->entries[i].time - time;
+        queue->entries[i].time = time + (uint64_t)(offset / factor);
     }
 }
 
@@ -227,7 +226,7 @@ static void PrintQueueNode(opl_callback_queue_t *queue, int node, int depth)
         return;
     }
 
-    for (i=0; i<depth * 3; ++i)
+    for (i = 0; i < depth * 3; ++i)
     {
         printf(" ");
     }
@@ -246,19 +245,19 @@ static void PrintQueue(opl_callback_queue_t *queue)
 int main()
 {
     opl_callback_queue_t *queue;
-    int iteration;
+    int                   iteration;
 
     queue = OPL_Queue_Create();
 
-    for (iteration=0; iteration<5000; ++iteration)
+    for (iteration = 0; iteration < 5000; ++iteration)
     {
         opl_callback_t callback;
-        void *data;
-        unsigned int time;
-        unsigned int newtime;
-        int i;
+        void          *data;
+        unsigned int   time;
+        unsigned int   newtime;
+        int            i;
 
-        for (i=0; i<MAX_OPL_QUEUE; ++i)
+        for (i = 0; i < MAX_OPL_QUEUE; ++i)
         {
             time = rand() % 0x10000;
             OPL_Queue_Push(queue, NULL, NULL, time);
@@ -266,7 +265,7 @@ int main()
 
         time = 0;
 
-        for (i=0; i<MAX_OPL_QUEUE; ++i)
+        for (i = 0; i < MAX_OPL_QUEUE; ++i)
         {
             assert(!OPL_Queue_IsEmpty(queue));
             newtime = OPL_Queue_Peek(queue);
@@ -282,4 +281,3 @@ int main()
 }
 
 #endif
-

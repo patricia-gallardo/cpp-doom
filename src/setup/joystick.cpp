@@ -33,14 +33,14 @@
 
 using joystick_config_t = struct
 {
-    const char *name;  // Config file name
-    int value;
+    const char *name; // Config file name
+    int         value;
 };
 
 using known_joystick_t = struct
 {
-    const char *name;
-    int axes, buttons, hats;
+    const char              *name;
+    int                      axes, buttons, hats;
     const joystick_config_t *configs;
 };
 
@@ -54,8 +54,8 @@ static int usejoystick = 0;
 
 // GUID and index of joystick to use.
 
-char *joystick_guid = const_cast<char *>("");
-int joystick_index = -1;
+char *joystick_guid  = const_cast<char *>("");
+int   joystick_index = -1;
 
 // Calibration button. This is the button the user pressed at the
 // start of the calibration sequence. They *must* press this button
@@ -66,23 +66,23 @@ static int calibrate_button = -1;
 // Which joystick axis to use for horizontal movement, and whether to
 // invert the direction:
 
-static int joystick_x_axis = 0;
+static int joystick_x_axis   = 0;
 static int joystick_x_invert = 0;
 
 // Which joystick axis to use for vertical movement, and whether to
 // invert the direction:
 
-static int joystick_y_axis = 1;
+static int joystick_y_axis   = 1;
 static int joystick_y_invert = 0;
 
 // Strafe axis.
 
-static int joystick_strafe_axis = -1;
+static int joystick_strafe_axis   = -1;
 static int joystick_strafe_invert = 0;
 
 // Look axis.
 
-static int joystick_look_axis = -1;
+static int joystick_look_axis   = -1;
 static int joystick_look_invert = 0;
 
 // Virtual to physical mapping.
@@ -90,7 +90,7 @@ int joystick_physical_buttons[NUM_VIRTUAL_BUTTONS] = {
     0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10
 };
 
-static txt_button_t *joystick_button;
+static txt_button_t        *joystick_button;
 static txt_joystick_axis_t *x_axis_widget;
 static txt_joystick_axis_t *y_axis_widget;
 
@@ -98,9 +98,9 @@ static txt_joystick_axis_t *y_axis_widget;
 // Calibration
 //
 
-static txt_window_t *calibration_window;
-static SDL_Joystick **all_joysticks = NULL;
-static int all_joysticks_len = 0;
+static txt_window_t  *calibration_window;
+static SDL_Joystick **all_joysticks     = NULL;
+static int            all_joysticks_len = 0;
 
 // Known controllers.
 // There are lots of game controllers on the market. Try to configure
@@ -130,86 +130,82 @@ static int all_joysticks_len = 0;
 //             D = Use
 
 // Always loaded before others, to get a known starting configuration.
-static const joystick_config_t empty_defaults[] =
-{
-    {"joystick_x_axis",            -1},
-    {"joystick_x_invert",          0},
-    {"joystick_y_axis",            -1},
-    {"joystick_y_invert",          0},
-    {"joystick_strafe_axis",       -1},
-    {"joystick_strafe_invert",     0},
-    {"joystick_look_axis",         -1},
-    {"joystick_look_invert",       0},
-    {"joyb_fire",                  -1},
-    {"joyb_use",                   -1},
-    {"joyb_strafe",                -1},
-    {"joyb_speed",                 -1},
-    {"joyb_strafeleft",            -1},
-    {"joyb_straferight",           -1},
-    {"joyb_prevweapon",            -1},
-    {"joyb_nextweapon",            -1},
-    {"joyb_jump",                  -1},
-    {"joyb_menu_activate",         -1},
-    {"joyb_toggle_automap",        -1},
-    {"joystick_physical_button0",  0},
-    {"joystick_physical_button1",  1},
-    {"joystick_physical_button2",  2},
-    {"joystick_physical_button3",  3},
-    {"joystick_physical_button4",  4},
-    {"joystick_physical_button5",  5},
-    {"joystick_physical_button6",  6},
-    {"joystick_physical_button7",  7},
-    {"joystick_physical_button8",  8},
-    {"joystick_physical_button9",  9},
-    {NULL, 0},
+static const joystick_config_t empty_defaults[] = {
+    { "joystick_x_axis", -1 },
+    { "joystick_x_invert", 0 },
+    { "joystick_y_axis", -1 },
+    { "joystick_y_invert", 0 },
+    { "joystick_strafe_axis", -1 },
+    { "joystick_strafe_invert", 0 },
+    { "joystick_look_axis", -1 },
+    { "joystick_look_invert", 0 },
+    { "joyb_fire", -1 },
+    { "joyb_use", -1 },
+    { "joyb_strafe", -1 },
+    { "joyb_speed", -1 },
+    { "joyb_strafeleft", -1 },
+    { "joyb_straferight", -1 },
+    { "joyb_prevweapon", -1 },
+    { "joyb_nextweapon", -1 },
+    { "joyb_jump", -1 },
+    { "joyb_menu_activate", -1 },
+    { "joyb_toggle_automap", -1 },
+    { "joystick_physical_button0", 0 },
+    { "joystick_physical_button1", 1 },
+    { "joystick_physical_button2", 2 },
+    { "joystick_physical_button3", 3 },
+    { "joystick_physical_button4", 4 },
+    { "joystick_physical_button5", 5 },
+    { "joystick_physical_button6", 6 },
+    { "joystick_physical_button7", 7 },
+    { "joystick_physical_button8", 8 },
+    { "joystick_physical_button9", 9 },
+    { NULL, 0 },
 };
 
-static const joystick_config_t ps3_controller[] =
-{
-    {"joystick_x_axis",        CREATE_BUTTON_AXIS(7, 5)},
-    {"joystick_y_axis",        CREATE_BUTTON_AXIS(4, 6)},
-    {"joyb_fire",              15},  // Square
-    {"joyb_speed",             14},  // X
-    {"joyb_use",               13},  // Circle
-    {"joyb_jump",              12},  // Triangle
-    {"joyb_strafeleft",        8},   // Bottom shoulder buttons
-    {"joyb_straferight",       9},
-    {"joyb_prevweapon",        10},  // Top shoulder buttons
-    {"joyb_nextweapon",        11},
-    {"joyb_menu_activate",     3},   // Start
-    {NULL, 0},
+static const joystick_config_t ps3_controller[] = {
+    { "joystick_x_axis", CREATE_BUTTON_AXIS(7, 5) },
+    { "joystick_y_axis", CREATE_BUTTON_AXIS(4, 6) },
+    { "joyb_fire", 15 },      // Square
+    { "joyb_speed", 14 },     // X
+    { "joyb_use", 13 },       // Circle
+    { "joyb_jump", 12 },      // Triangle
+    { "joyb_strafeleft", 8 }, // Bottom shoulder buttons
+    { "joyb_straferight", 9 },
+    { "joyb_prevweapon", 10 }, // Top shoulder buttons
+    { "joyb_nextweapon", 11 },
+    { "joyb_menu_activate", 3 }, // Start
+    { NULL, 0 },
 };
 
 // Playstation 4 Dual Shock 4 (DS4)
-static const joystick_config_t ps4_ds4_controller[] =
-{
-    {"joystick_x_axis",        CREATE_HAT_AXIS(0, HAT_AXIS_HORIZONTAL)},
-    {"joystick_y_axis",        CREATE_HAT_AXIS(0, HAT_AXIS_VERTICAL)},
-    {"joyb_fire",              0},  // Square
-    {"joyb_speed",             1},  // X
-    {"joyb_use",               2},  // Circle
-    {"joyb_jump",              3},  // Triangle
-    {"joyb_strafeleft",        6},  // Bottom shoulder buttons
-    {"joyb_straferight",       7},
-    {"joyb_prevweapon",        4},  // Top shoulder buttons
-    {"joyb_nextweapon",        5},
-    {"joyb_menu_activate",     12}, // Playstation logo button
+static const joystick_config_t ps4_ds4_controller[] = {
+    { "joystick_x_axis", CREATE_HAT_AXIS(0, HAT_AXIS_HORIZONTAL) },
+    { "joystick_y_axis", CREATE_HAT_AXIS(0, HAT_AXIS_VERTICAL) },
+    { "joyb_fire", 0 },       // Square
+    { "joyb_speed", 1 },      // X
+    { "joyb_use", 2 },        // Circle
+    { "joyb_jump", 3 },       // Triangle
+    { "joyb_strafeleft", 6 }, // Bottom shoulder buttons
+    { "joyb_straferight", 7 },
+    { "joyb_prevweapon", 4 }, // Top shoulder buttons
+    { "joyb_nextweapon", 5 },
+    { "joyb_menu_activate", 12 }, // Playstation logo button
 };
 
-static const joystick_config_t airflo_controller[] =
-{
-    {"joystick_x_axis",        CREATE_HAT_AXIS(0, HAT_AXIS_HORIZONTAL)},
-    {"joystick_y_axis",        CREATE_HAT_AXIS(0, HAT_AXIS_VERTICAL)},
-    {"joyb_fire",              2},  // "3"
-    {"joyb_speed",             0},  // "1"
-    {"joyb_jump",              3},  // "4"
-    {"joyb_use",               1},  // "2"
-    {"joyb_strafeleft",        6},  // Bottom shoulder buttons
-    {"joyb_straferight",       7},
-    {"joyb_prevweapon",        4},  // Top shoulder buttons
-    {"joyb_nextweapon",        5},
-    {"joyb_menu_activate",     9},  // "10", where "Start" usually is.
-    {NULL, 0},
+static const joystick_config_t airflo_controller[] = {
+    { "joystick_x_axis", CREATE_HAT_AXIS(0, HAT_AXIS_HORIZONTAL) },
+    { "joystick_y_axis", CREATE_HAT_AXIS(0, HAT_AXIS_VERTICAL) },
+    { "joyb_fire", 2 },       // "3"
+    { "joyb_speed", 0 },      // "1"
+    { "joyb_jump", 3 },       // "4"
+    { "joyb_use", 1 },        // "2"
+    { "joyb_strafeleft", 6 }, // Bottom shoulder buttons
+    { "joyb_straferight", 7 },
+    { "joyb_prevweapon", 4 }, // Top shoulder buttons
+    { "joyb_nextweapon", 5 },
+    { "joyb_menu_activate", 9 }, // "10", where "Start" usually is.
+    { NULL, 0 },
 };
 
 // Wii controller is weird, so we have to take some liberties.
@@ -217,218 +213,228 @@ static const joystick_config_t airflo_controller[] =
 // Assume there is no nunchuk or classic controller attached.
 
 // When using WJoy on OS X.
-static const joystick_config_t wii_controller_wjoy[] =
-{
-    {"joystick_x_axis",        CREATE_BUTTON_AXIS(2, 3)},
-    {"joystick_y_axis",        CREATE_BUTTON_AXIS(1, 0)},
-    {"joyb_fire",              9},  // Button 1
-    {"joyb_speed",             10}, // Button 2
-    {"joyb_use",               5},  // Button B (trigger)
-    {"joyb_prevweapon",        7},  // -
-    {"joyb_nextweapon",        6},  // +
-    {"joyb_menu_activate",     9},  // Button A
-    {NULL, 0},
+static const joystick_config_t wii_controller_wjoy[] = {
+    { "joystick_x_axis", CREATE_BUTTON_AXIS(2, 3) },
+    { "joystick_y_axis", CREATE_BUTTON_AXIS(1, 0) },
+    { "joyb_fire", 9 },          // Button 1
+    { "joyb_speed", 10 },        // Button 2
+    { "joyb_use", 5 },           // Button B (trigger)
+    { "joyb_prevweapon", 7 },    // -
+    { "joyb_nextweapon", 6 },    // +
+    { "joyb_menu_activate", 9 }, // Button A
+    { NULL, 0 },
 };
 
 // Xbox 360 controller. Thanks to Brad Harding for the details.
-static const joystick_config_t xbox360_controller[] =
-{
-    {"joystick_x_axis",        CREATE_HAT_AXIS(0, HAT_AXIS_HORIZONTAL)},
-    {"joystick_y_axis",        CREATE_HAT_AXIS(0, HAT_AXIS_VERTICAL)},
-    {"joystick_strafe_axis",   2},  // Trigger buttons form an axis(???)
-    {"joyb_fire",              2},  // X
-    {"joyb_speed",             0},  // A
-    {"joyb_jump",              3},  // Y
-    {"joyb_use",               1},  // B
-    {"joyb_prevweapon",        4},  // LB
-    {"joyb_nextweapon",        5},  // RB
-    {"joyb_menu_activate",     9},  // Start
-    {NULL, 0},
+static const joystick_config_t xbox360_controller[] = {
+    { "joystick_x_axis", CREATE_HAT_AXIS(0, HAT_AXIS_HORIZONTAL) },
+    { "joystick_y_axis", CREATE_HAT_AXIS(0, HAT_AXIS_VERTICAL) },
+    { "joystick_strafe_axis", 2 }, // Trigger buttons form an axis(???)
+    { "joyb_fire", 2 },            // X
+    { "joyb_speed", 0 },           // A
+    { "joyb_jump", 3 },            // Y
+    { "joyb_use", 1 },             // B
+    { "joyb_prevweapon", 4 },      // LB
+    { "joyb_nextweapon", 5 },      // RB
+    { "joyb_menu_activate", 9 },   // Start
+    { NULL, 0 },
 };
 
 // Xbox 360 controller under Linux.
-static const joystick_config_t xbox360_controller_linux[] =
-{
-    {"joystick_x_axis",        CREATE_HAT_AXIS(0, HAT_AXIS_HORIZONTAL)},
-    {"joystick_y_axis",        CREATE_HAT_AXIS(0, HAT_AXIS_VERTICAL)},
+static const joystick_config_t xbox360_controller_linux[] = {
+    { "joystick_x_axis", CREATE_HAT_AXIS(0, HAT_AXIS_HORIZONTAL) },
+    { "joystick_y_axis", CREATE_HAT_AXIS(0, HAT_AXIS_VERTICAL) },
     // Ideally we'd like the trigger buttons to be strafe left/right
     // But Linux presents each trigger button as its own axis, which
     // we can't really work with. So we have to settle for a
     // suboptimal setup.
-    {"joyb_fire",              2},  // X
-    {"joyb_speed",             0},  // A
-    {"joyb_jump",              3},  // Y
-    {"joyb_use",               1},  // B
-    {"joyb_strafeleft",        4},  // LB
-    {"joyb_straferight",       5},  // RB
-    {"joyb_menu_activate",     7},  // Start
-    {"joyb_prevweapon",        6},  // Back
-    {NULL, 0},
+    { "joyb_fire", 2 },          // X
+    { "joyb_speed", 0 },         // A
+    { "joyb_jump", 3 },          // Y
+    { "joyb_use", 1 },           // B
+    { "joyb_strafeleft", 4 },    // LB
+    { "joyb_straferight", 5 },   // RB
+    { "joyb_menu_activate", 7 }, // Start
+    { "joyb_prevweapon", 6 },    // Back
+    { NULL, 0 },
 };
 
 // Logitech Dual Action (F310, F710). Thanks to Brad Harding for details.
-static const joystick_config_t logitech_f310_controller[] =
-{
-    {"joystick_x_axis",        CREATE_HAT_AXIS(0, HAT_AXIS_HORIZONTAL)},
-    {"joystick_y_axis",        CREATE_HAT_AXIS(0, HAT_AXIS_VERTICAL)},
-    {"joyb_fire",              0},  // X
-    {"joyb_speed",             1},  // A
-    {"joyb_jump",              3},  // Y
-    {"joyb_use",               2},  // B
-    {"joyb_strafeleft",        6},  // LT
-    {"joyb_straferight",       7},  // RT
-    {"joyb_prevweapon",        4},  // LB
-    {"joyb_nextweapon",        5},  // RB
-    {"joyb_menu_activate",     11}, // Start
-    {NULL, 0},
+static const joystick_config_t logitech_f310_controller[] = {
+    { "joystick_x_axis", CREATE_HAT_AXIS(0, HAT_AXIS_HORIZONTAL) },
+    { "joystick_y_axis", CREATE_HAT_AXIS(0, HAT_AXIS_VERTICAL) },
+    { "joyb_fire", 0 },           // X
+    { "joyb_speed", 1 },          // A
+    { "joyb_jump", 3 },           // Y
+    { "joyb_use", 2 },            // B
+    { "joyb_strafeleft", 6 },     // LT
+    { "joyb_straferight", 7 },    // RT
+    { "joyb_prevweapon", 4 },     // LB
+    { "joyb_nextweapon", 5 },     // RB
+    { "joyb_menu_activate", 11 }, // Start
+    { NULL, 0 },
 };
 
 // Multilaser JS030 gamepad, similar to a PS2 controller.
-static const joystick_config_t multilaser_js030_controller[] =
-{
-    {"joystick_x_axis",        0},   // Left stick / D-pad
-    {"joystick_y_axis",        1},
-    {"joyb_fire",              3},   // Square
-    {"joyb_speed",             2},   // X
-    {"joyb_use",               1},   // Circle
-    {"joyb_jump",              0},   // Triangle
-    {"joyb_strafeleft",        6},   // Bottom shoulder buttons
-    {"joyb_straferight",       7},
-    {"joyb_prevweapon",        4},   // Top shoulder buttons
-    {"joyb_nextweapon",        5},
-    {"joyb_menu_activate",     9},   // Start
-    {NULL, 0},
+static const joystick_config_t multilaser_js030_controller[] = {
+    { "joystick_x_axis", 0 }, // Left stick / D-pad
+    { "joystick_y_axis", 1 },
+    { "joyb_fire", 3 },       // Square
+    { "joyb_speed", 2 },      // X
+    { "joyb_use", 1 },        // Circle
+    { "joyb_jump", 0 },       // Triangle
+    { "joyb_strafeleft", 6 }, // Bottom shoulder buttons
+    { "joyb_straferight", 7 },
+    { "joyb_prevweapon", 4 }, // Top shoulder buttons
+    { "joyb_nextweapon", 5 },
+    { "joyb_menu_activate", 9 }, // Start
+    { NULL, 0 },
 };
 
 // Buffalo Classic USB Gamepad (thanks Fabian Greffrath).
-static const joystick_config_t buffalo_classic_controller[] =
-{
-    {"joystick_x_axis",        0},
-    {"joystick_y_axis",        1},
-    {"joyb_use",               0},    // A
-    {"joyb_speed",             1},    // B
-    {"joyb_jump",              2},    // X
-    {"joyb_fire",              3},    // Y
-    {"joyb_strafeleft",        4},    // Left shoulder
-    {"joyb_straferight",       5},    // Right shoulder
-    {"joyb_prevweapon",        6},    // Select
-    {"joyb_menu_activate",     7},    // Start
-    {NULL, 0},
+static const joystick_config_t buffalo_classic_controller[] = {
+    { "joystick_x_axis", 0 },
+    { "joystick_y_axis", 1 },
+    { "joyb_use", 0 },           // A
+    { "joyb_speed", 1 },         // B
+    { "joyb_jump", 2 },          // X
+    { "joyb_fire", 3 },          // Y
+    { "joyb_strafeleft", 4 },    // Left shoulder
+    { "joyb_straferight", 5 },   // Right shoulder
+    { "joyb_prevweapon", 6 },    // Select
+    { "joyb_menu_activate", 7 }, // Start
+    { NULL, 0 },
 };
 
 // Config for if the user is actually using an old PC joystick or gamepad,
 // probably via a USB-Gameport adapter.
-static const joystick_config_t pc_gameport_controller[] =
-{
-    {"joystick_x_axis",        0},
-    {"joystick_y_axis",        1},
+static const joystick_config_t pc_gameport_controller[] = {
+    { "joystick_x_axis", 0 },
+    { "joystick_y_axis", 1 },
     // Button configuration is the default as used for Vanilla Doom,
     // Heretic and Hexen. When playing with a Gravis Gamepad, this
     // layout should also be vaguely similar to the standard layout
     // described above.
-    {"joyb_fire",              0},
-    {"joyb_strafe",            1},
-    {"joyb_use",               3},
-    {"joyb_speed",             2},
-    {NULL, 0},
+    { "joyb_fire", 0 },
+    { "joyb_strafe", 1 },
+    { "joyb_use", 3 },
+    { "joyb_speed", 2 },
+    { NULL, 0 },
 };
 
 // http://www.8bitdo.com/nes30pro/ and http://www.8bitdo.com/fc30pro/
-static const joystick_config_t nes30_pro_controller[] =
-{
-    {"joystick_x_axis",        CREATE_HAT_AXIS(0, HAT_AXIS_HORIZONTAL)},
-    {"joystick_y_axis",        CREATE_HAT_AXIS(0, HAT_AXIS_VERTICAL)},
-    {"joyb_fire",              4},  // Y
-    {"joyb_speed",             1},  // B
-    {"joyb_jump",              3},  // X
-    {"joyb_use",               0},  // A
-    {"joyb_strafeleft",        6},  // L1
-    {"joyb_straferight",       7}, // R1
-    {"joyb_prevweapon",        8},  // L2
-    {"joyb_nextweapon",        9},  // R2
-    {"joyb_menu_activate",     11}, // Start
-    {"joyb_toggle_automap",    10}, // Select
-    {NULL, 0},
+static const joystick_config_t nes30_pro_controller[] = {
+    { "joystick_x_axis", CREATE_HAT_AXIS(0, HAT_AXIS_HORIZONTAL) },
+    { "joystick_y_axis", CREATE_HAT_AXIS(0, HAT_AXIS_VERTICAL) },
+    { "joyb_fire", 4 },            // Y
+    { "joyb_speed", 1 },           // B
+    { "joyb_jump", 3 },            // X
+    { "joyb_use", 0 },             // A
+    { "joyb_strafeleft", 6 },      // L1
+    { "joyb_straferight", 7 },     // R1
+    { "joyb_prevweapon", 8 },      // L2
+    { "joyb_nextweapon", 9 },      // R2
+    { "joyb_menu_activate", 11 },  // Start
+    { "joyb_toggle_automap", 10 }, // Select
+    { NULL, 0 },
 };
 
 // http://www.8bitdo.com/sfc30/ or http://www.8bitdo.com/snes30/
 // and http://www.nes30.com/ and http://www.fc30.com/
-static const joystick_config_t sfc30_controller[] =
-{
-    {"joystick_x_axis",        0},
-    {"joystick_y_axis",        1},
-    {"joyb_fire",              4}, // Y
-    {"joyb_speed",             1}, // B
-    {"joyb_jump",              3}, // X
-    {"joyb_use",               0}, // A
-    {"joyb_strafeleft",        6}, // L
-    {"joyb_straferight",       7}, // R
-    {"joyb_menu_activate",    11}, // Start
-    {"joyb_toggle_automap",   10}, // Select
-    {NULL, 0},
+static const joystick_config_t sfc30_controller[] = {
+    { "joystick_x_axis", 0 },
+    { "joystick_y_axis", 1 },
+    { "joyb_fire", 4 },            // Y
+    { "joyb_speed", 1 },           // B
+    { "joyb_jump", 3 },            // X
+    { "joyb_use", 0 },             // A
+    { "joyb_strafeleft", 6 },      // L
+    { "joyb_straferight", 7 },     // R
+    { "joyb_menu_activate", 11 },  // Start
+    { "joyb_toggle_automap", 10 }, // Select
+    { NULL, 0 },
 };
 
-static const known_joystick_t known_joysticks[] =
-{
+static const known_joystick_t known_joysticks[] = {
     {
         "PLAYSTATION(R)3 Controller",
-        4, 19, 0,
+        4,
+        19,
+        0,
         ps3_controller,
     },
 
     {
         "AIRFLO             ",
-        4, 13, 1,
+        4,
+        13,
+        1,
         airflo_controller,
     },
 
     {
-        "Wiimote (*",  // WJoy includes the Wiimote MAC address.
-        6, 26, 0,
+        "Wiimote (*", // WJoy includes the Wiimote MAC address.
+        6,
+        26,
+        0,
         wii_controller_wjoy,
     },
 
     {
         "Controller (XBOX 360 For Windows)",
-        5, 10, 1,
+        5,
+        10,
+        1,
         xbox360_controller,
     },
 
     {
         "Controller (XBOX One For Windows)",
-        5, 10, 1,
+        5,
+        10,
+        1,
         xbox360_controller,
     },
 
     // Xbox 360 controller as it appears on Linux.
     {
         "Microsoft X-Box 360 pad",
-        6, 11, 1,
+        6,
+        11,
+        1,
         xbox360_controller_linux,
     },
 
     // Xbox One controller as it appears on Linux.
     {
         "Microsoft X-Box One pad",
-        6, 11, 1,
+        6,
+        11,
+        1,
         xbox360_controller_linux,
     },
 
     {
         "Logitech Dual Action",
-        4, 12, 1,
+        4,
+        12,
+        1,
         logitech_f310_controller,
     },
 
     {
         "USB Vibration Joystick",
-        4, 12, 1,
+        4,
+        12,
+        1,
         multilaser_js030_controller,
     },
 
     {
         "USB,2-axis 8-button gamepad  ",
-        2, 8, 0,
+        2,
+        8,
+        0,
         buffalo_classic_controller,
     },
 
@@ -437,7 +443,9 @@ static const known_joystick_t known_joysticks[] =
     // enough to distinguish it from other gamepads.
     {
         "Wireless Controller",
-        6, 14, 1,
+        6,
+        14,
+        1,
         ps4_ds4_controller,
     },
 
@@ -449,35 +457,45 @@ static const known_joystick_t known_joysticks[] =
     // which should just be the same configuration.
     {
         "WiseGroup.,Ltd Gameport to USB Controller",
-        4, 8, 1,
+        4,
+        8,
+        1,
         pc_gameport_controller,
     },
 
     // How the Super Joy Box 7 appears on Mac OS X.
     {
         "Gameport to USB Controller",
-        2, 8, 1,
+        2,
+        8,
+        1,
         pc_gameport_controller,
     },
 
     // 8Bitdo NES30 Pro, http://www.8bitdo.com/nes30pro/
     {
         "8Bitdo NES30 Pro",
-        4, 16, 1,
+        4,
+        16,
+        1,
         nes30_pro_controller,
     },
 
     // the above, NES variant, via USB on Linux/Raspbian (odd values)
     {
         "8Bitdo NES30 Pro*",
-        6, 15, 1,
+        6,
+        15,
+        1,
         nes30_pro_controller,
     },
 
     // the above, NES variant, connected over bluetooth
     {
         "8Bitdo NES30 Pro",
-        6, 16, 1,
+        6,
+        16,
+        1,
         nes30_pro_controller,
     },
 
@@ -486,7 +504,9 @@ static const known_joystick_t known_joysticks[] =
     // this mode registers the device as an Xbox 360 pad.
     {
         "8Bitdo NES30 Pro Joystick",
-        6, 16, 1,
+        6,
+        16,
+        1,
         nes30_pro_controller,
     },
 
@@ -495,7 +515,9 @@ static const known_joystick_t known_joysticks[] =
     // a NES30 Pro tested on Linux with a FC30 Pro tested with Mac & Linux
     {
         "8Bitdo NES30 Pro",
-        4, 15, 1,
+        4,
+        15,
+        1,
         nes30_pro_controller,
     },
 
@@ -504,28 +526,36 @@ static const known_joystick_t known_joysticks[] =
     // connected over bluetooth
     {
         "8Bitdo FC30 Pro",
-        4, 16, 1,
+        4,
+        16,
+        1,
         nes30_pro_controller,
     },
 
     // variant of the above, via USB on Linux/Raspbian
     {
         "8Bitdo FC30 Pro*",
-        6, 15, 1,
+        6,
+        15,
+        1,
         nes30_pro_controller,
     },
 
     // variant of the above, Linux/bluetooth
     {
         "8Bitdo FC30 Pro",
-	6, 16, 1,
-	nes30_pro_controller,
+        6,
+        16,
+        1,
+        nes30_pro_controller,
     },
 
     // variant of the above, via USB on Mac
     {
         "8Bitdo FC30 Pro",
-        4, 15, 1,
+        4,
+        15,
+        1,
         nes30_pro_controller,
     },
 
@@ -535,14 +565,18 @@ static const known_joystick_t known_joysticks[] =
     // http://www.8bitdo.com/sfc30/
     {
         "8Bitdo SFC30 GamePad*",
-        4, 16, 1,
+        4,
+        16,
+        1,
         sfc30_controller,
     },
 
     // As above, but as detected on RHEL Linux (odd extra axes)
     {
         "8Bitdo SFC30 GamePad*",
-        6, 16, 1,
+        6,
+        16,
+        1,
         sfc30_controller,
     },
 
@@ -550,7 +584,9 @@ static const known_joystick_t known_joysticks[] =
     // http://www.8bitdo.com/snes30/
     {
         "8Bitdo SNES30 GamePad*",
-        4, 16, 1,
+        4,
+        16,
+        1,
         sfc30_controller,
     },
 
@@ -563,7 +599,9 @@ static const known_joystick_t known_joysticks[] =
     // XXX: there is probably a SNES30 variant of this too
     {
         "SFC30 *",
-        4, 12, 1,
+        4,
+        12,
+        1,
         sfc30_controller,
     },
 
@@ -599,15 +637,15 @@ static const known_joystick_t known_joysticks[] =
 static const known_joystick_t *GetJoystickType(int index)
 {
     SDL_Joystick *joystick;
-    const char *name;
-    int axes, buttons, hats;
-    int i;
+    const char   *name;
+    int           axes, buttons, hats;
+    int           i;
 
     joystick = all_joysticks[index];
-    name = SDL_JoystickName(joystick);
-    axes = SDL_JoystickNumAxes(joystick);
-    buttons = SDL_JoystickNumButtons(joystick);
-    hats = SDL_JoystickNumHats(joystick);
+    name     = SDL_JoystickName(joystick);
+    axes     = SDL_JoystickNumAxes(joystick);
+    buttons  = SDL_JoystickNumButtons(joystick);
+    hats     = SDL_JoystickNumHats(joystick);
 
     for (i = 0; i < arrlen(known_joysticks); ++i)
     {
@@ -616,7 +654,8 @@ static const known_joystick_t *GetJoystickType(int index)
         if (M_StringEndsWith(known_joysticks[i].name, "*"))
         {
             if (strncmp(known_joysticks[i].name, name,
-                        strlen(known_joysticks[i].name) - 1) != 0)
+                    strlen(known_joysticks[i].name) - 1)
+                != 0)
             {
                 continue;
             }
@@ -630,15 +669,15 @@ static const known_joystick_t *GetJoystickType(int index)
         }
 
         if (known_joysticks[i].axes == axes
-         && known_joysticks[i].buttons == buttons
-         && known_joysticks[i].hats == hats)
+            && known_joysticks[i].buttons == buttons
+            && known_joysticks[i].hats == hats)
         {
             return &known_joysticks[i];
         }
     }
 
     printf("Unknown joystick '%s' with %i axes, %i buttons, %i hats\n",
-           name, axes, buttons, hats);
+        name, axes, buttons, hats);
     printf("Please consider sending in details about your gamepad!\n");
 
     return NULL;
@@ -654,9 +693,9 @@ static boolean IsKnownJoystick(int index)
 static void LoadConfigurationSet(const joystick_config_t *configs)
 {
     const joystick_config_t *config;
-    char buf[10];
-    int button;
-    int i;
+    char                     buf[10];
+    int                      button;
+    int                      i;
 
     button = 0;
 
@@ -725,7 +764,7 @@ static void UnInitJoystick()
 static void UpdateJoystickIndex()
 {
     SDL_JoystickGUID guid, dev_guid;
-    int i;
+    int              i;
 
     guid = SDL_JoystickGetGUIDFromString(joystick_guid);
 
@@ -760,7 +799,7 @@ static void UpdateJoystickIndex()
 static void SetJoystickButtonLabel()
 {
     SDL_JoystickGUID guid, dev_guid;
-    const char *name;
+    const char      *name;
 
     if (!usejoystick || !strcmp(joystick_guid, ""))
     {
@@ -773,7 +812,7 @@ static void SetJoystickButtonLabel()
         // Use the device name if the GUID and index match.
         if (joystick_index >= 0 && joystick_index < SDL_NumJoysticks())
         {
-            guid = SDL_JoystickGetGUIDFromString(joystick_guid);
+            guid     = SDL_JoystickGetGUIDFromString(joystick_guid);
             dev_guid = SDL_JoystickGetDeviceGUID(joystick_index);
             if (!memcmp(&guid, &dev_guid, sizeof(SDL_JoystickGUID)))
             {
@@ -782,7 +821,7 @@ static void SetJoystickButtonLabel()
         }
     }
 
-    TXT_SetButtonLabel(joystick_button, (char *) name);
+    TXT_SetButtonLabel(joystick_button, (char *)name);
 }
 
 // Try to open all joysticks visible to SDL.
@@ -797,7 +836,7 @@ static int OpenAllJoysticks()
     // SDL_JoystickOpen() all joysticks.
 
     all_joysticks_len = SDL_NumJoysticks();
-    all_joysticks = static_cast<SDL_Joystick **>(calloc(all_joysticks_len, sizeof(SDL_Joystick *)));
+    all_joysticks     = static_cast<SDL_Joystick **>(calloc(all_joysticks_len, sizeof(SDL_Joystick *)));
 
     result = 0;
 
@@ -860,13 +899,13 @@ static void CalibrateXAxis()
 static boolean SetJoystickGUID(SDL_JoystickID joy_id)
 {
     SDL_JoystickGUID guid;
-    int i;
+    int              i;
 
     for (i = 0; i < all_joysticks_len; ++i)
     {
         if (SDL_JoystickInstanceID(all_joysticks[i]) == joy_id)
         {
-            guid = SDL_JoystickGetGUID(all_joysticks[i]);
+            guid          = SDL_JoystickGetGUID(all_joysticks[i]);
             joystick_guid = static_cast<char *>(malloc(33));
             SDL_JoystickGetGUIDString(guid, joystick_guid, 33);
             joystick_index = i;
@@ -892,7 +931,7 @@ static int CalibrationEventCallback(SDL_Event *event, void *user_data)
     // At this point, we have a button press.
     // In the first "center" stage, we're just trying to work out which
     // joystick is being configured and which button the user is pressing.
-    usejoystick = 1;
+    usejoystick      = 1;
     calibrate_button = event->jbutton.button;
 
     // If the joystick is a known one, auto-load default
@@ -909,7 +948,7 @@ static int CalibrationEventCallback(SDL_Event *event, void *user_data)
         // Calibrate joystick axes: Y axis first, then X axis once
         // completed.
         TXT_ConfigureJoystickAxis(y_axis_widget, calibrate_button,
-                                  CalibrateXAxis);
+            CalibrateXAxis);
     }
 
     return 1;
@@ -922,7 +961,7 @@ static void NoJoystick()
                          "your OS first. Maybe you need to install\n"
                          "some drivers or otherwise configure it.");
 
-    usejoystick = 0;
+    usejoystick    = 0;
     joystick_index = -1;
     SetJoystickButtonLabel();
 }
@@ -948,15 +987,15 @@ static void CalibrateJoystick(TXT_UNCAST_ARG(widget), TXT_UNCAST_ARG(unused))
     calibration_window = TXT_NewWindow("Gamepad/Joystick calibration");
 
     TXT_AddWidgets(calibration_window,
-                   TXT_NewStrut(0, 1),
-                   TXT_NewLabel("Center the D-pad or joystick,\n"
-                                "and press a button."),
-                   TXT_NewStrut(0, 1),
-                   NULL);
+        TXT_NewStrut(0, 1),
+        TXT_NewLabel("Center the D-pad or joystick,\n"
+                     "and press a button."),
+        TXT_NewStrut(0, 1),
+        NULL);
 
     TXT_SetWindowAction(calibration_window, TXT_HORIZ_LEFT, NULL);
-    TXT_SetWindowAction(calibration_window, TXT_HORIZ_CENTER, 
-                        TXT_NewWindowAbortAction(calibration_window));
+    TXT_SetWindowAction(calibration_window, TXT_HORIZ_CENTER,
+        TXT_NewWindowAbortAction(calibration_window));
     TXT_SetWindowAction(calibration_window, TXT_HORIZ_RIGHT, NULL);
 
     TXT_SDL_SetEventCallback(CalibrationEventCallback, NULL);
@@ -964,7 +1003,7 @@ static void CalibrateJoystick(TXT_UNCAST_ARG(widget), TXT_UNCAST_ARG(unused))
     TXT_SignalConnect(calibration_window, "closed", CalibrateWindowClosed, NULL);
 
     // Start calibration
-    usejoystick = 0;
+    usejoystick    = 0;
     joystick_index = -1;
 }
 
@@ -980,10 +1019,10 @@ static void AddJoystickControl(TXT_UNCAST_ARG(table), const char *label, int *va
     joy_input = TXT_NewJoystickInput(var);
 
     TXT_AddWidgets(table,
-                   TXT_NewLabel(label),
-                   joy_input,
-                   TXT_TABLE_EMPTY,
-                   NULL);
+        TXT_NewLabel(label),
+        joy_input,
+        TXT_TABLE_EMPTY,
+        NULL);
 }
 
 void ConfigJoystick(TXT_UNCAST_ARG(widget), void *user_data)
@@ -996,52 +1035,52 @@ void ConfigJoystick(TXT_UNCAST_ARG(widget), void *user_data)
     TXT_SetWindowHelpURL(window, WINDOW_HELP_URL);
 
     TXT_AddWidgets(window,
-                   TXT_NewLabel("Controller"),
-                   joystick_button = TXT_NewButton("zzzz"),
-                   TXT_TABLE_EOL,
+        TXT_NewLabel("Controller"),
+        joystick_button = TXT_NewButton("zzzz"),
+        TXT_TABLE_EOL,
 
-                   TXT_NewSeparator("Axes"),
-                   TXT_NewLabel("Forward/backward"),
-                   y_axis_widget = TXT_NewJoystickAxis(&joystick_y_axis,
-                                                       &joystick_y_invert,
-                                                       JOYSTICK_AXIS_VERTICAL),
-                   TXT_TABLE_OVERFLOW_RIGHT,
-                   TXT_TABLE_OVERFLOW_RIGHT,
-                   TXT_TABLE_EMPTY,
-                   TXT_TABLE_EMPTY,
+        TXT_NewSeparator("Axes"),
+        TXT_NewLabel("Forward/backward"),
+        y_axis_widget = TXT_NewJoystickAxis(&joystick_y_axis,
+            &joystick_y_invert,
+            JOYSTICK_AXIS_VERTICAL),
+        TXT_TABLE_OVERFLOW_RIGHT,
+        TXT_TABLE_OVERFLOW_RIGHT,
+        TXT_TABLE_EMPTY,
+        TXT_TABLE_EMPTY,
 
-                   TXT_NewLabel("Turn left/right"),
-                   x_axis_widget =
-                        TXT_NewJoystickAxis(&joystick_x_axis,
-                                            &joystick_x_invert,
-                                            JOYSTICK_AXIS_HORIZONTAL),
-                   TXT_TABLE_OVERFLOW_RIGHT,
-                   TXT_TABLE_OVERFLOW_RIGHT,
-                   TXT_TABLE_EMPTY,
-                   TXT_TABLE_EMPTY,
+        TXT_NewLabel("Turn left/right"),
+        x_axis_widget =
+            TXT_NewJoystickAxis(&joystick_x_axis,
+                &joystick_x_invert,
+                JOYSTICK_AXIS_HORIZONTAL),
+        TXT_TABLE_OVERFLOW_RIGHT,
+        TXT_TABLE_OVERFLOW_RIGHT,
+        TXT_TABLE_EMPTY,
+        TXT_TABLE_EMPTY,
 
-                   TXT_NewLabel("Strafe left/right"),
-                   TXT_NewJoystickAxis(&joystick_strafe_axis,
-                                       &joystick_strafe_invert,
-                                        JOYSTICK_AXIS_HORIZONTAL),
-                   TXT_TABLE_OVERFLOW_RIGHT,
-                   TXT_TABLE_OVERFLOW_RIGHT,
-                   TXT_TABLE_EMPTY,
-                   TXT_TABLE_EMPTY,
-                   NULL);
+        TXT_NewLabel("Strafe left/right"),
+        TXT_NewJoystickAxis(&joystick_strafe_axis,
+            &joystick_strafe_invert,
+            JOYSTICK_AXIS_HORIZONTAL),
+        TXT_TABLE_OVERFLOW_RIGHT,
+        TXT_TABLE_OVERFLOW_RIGHT,
+        TXT_TABLE_EMPTY,
+        TXT_TABLE_EMPTY,
+        NULL);
 
     if (gamemission == doom || gamemission == heretic || gamemission == hexen || gamemission == strife) // [crispy]
     {
         TXT_AddWidgets(window,
-                   TXT_NewLabel("Look up/down"),
-                   TXT_NewJoystickAxis(&joystick_look_axis,
-                                       &joystick_look_invert,
-                                        JOYSTICK_AXIS_VERTICAL),
-                   TXT_TABLE_OVERFLOW_RIGHT,
-                   TXT_TABLE_OVERFLOW_RIGHT,
-                   TXT_TABLE_EMPTY,
-                   TXT_TABLE_EMPTY,
-                   NULL);
+            TXT_NewLabel("Look up/down"),
+            TXT_NewJoystickAxis(&joystick_look_axis,
+                &joystick_look_invert,
+                JOYSTICK_AXIS_VERTICAL),
+            TXT_TABLE_OVERFLOW_RIGHT,
+            TXT_TABLE_OVERFLOW_RIGHT,
+            TXT_TABLE_EMPTY,
+            TXT_TABLE_EMPTY,
+            NULL);
     }
 
     TXT_AddWidget(window, TXT_NewSeparator("Buttons"));
@@ -1088,16 +1127,16 @@ void BindJoystickVariables()
 {
     int i;
 
-    M_BindIntVariable("use_joystick",           &usejoystick);
-    M_BindStringVariable("joystick_guid",       &joystick_guid);
-    M_BindIntVariable("joystick_index",         &joystick_index);
-    M_BindIntVariable("joystick_x_axis",        &joystick_x_axis);
-    M_BindIntVariable("joystick_y_axis",        &joystick_y_axis);
-    M_BindIntVariable("joystick_strafe_axis",   &joystick_strafe_axis);
-    M_BindIntVariable("joystick_x_invert",      &joystick_x_invert);
-    M_BindIntVariable("joystick_y_invert",      &joystick_y_invert);
+    M_BindIntVariable("use_joystick", &usejoystick);
+    M_BindStringVariable("joystick_guid", &joystick_guid);
+    M_BindIntVariable("joystick_index", &joystick_index);
+    M_BindIntVariable("joystick_x_axis", &joystick_x_axis);
+    M_BindIntVariable("joystick_y_axis", &joystick_y_axis);
+    M_BindIntVariable("joystick_strafe_axis", &joystick_strafe_axis);
+    M_BindIntVariable("joystick_x_invert", &joystick_x_invert);
+    M_BindIntVariable("joystick_y_invert", &joystick_y_invert);
     M_BindIntVariable("joystick_strafe_invert", &joystick_strafe_invert);
-    M_BindIntVariable("joystick_look_axis",   &joystick_look_axis);
+    M_BindIntVariable("joystick_look_axis", &joystick_look_axis);
     M_BindIntVariable("joystick_look_invert", &joystick_look_invert);
 
     for (i = 0; i < NUM_VIRTUAL_BUTTONS; ++i)
@@ -1107,4 +1146,3 @@ void BindJoystickVariables()
         M_BindIntVariable(name, &joystick_physical_buttons[i]);
     }
 }
-

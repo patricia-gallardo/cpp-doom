@@ -16,7 +16,6 @@
 //
 
 
-
 #include "z_zone.hpp"
 #include "doomdef.hpp"
 #include "deh_main.hpp"
@@ -46,18 +45,18 @@
 //
 // T_VerticalDoor
 //
-void T_VerticalDoor(vldoor_t* door)
+void T_VerticalDoor(vldoor_t *door)
 {
     result_e res1;
     result_e res2;
 
-    switch(door->direction)
+    switch (door->direction)
     {
     case 0:
         // WAITING
         if (!--door->topcountdown)
         {
-            switch(door->type)
+            switch (door->type)
             {
             case vld_blazeRaise:
                 door->direction = -1; // time to go back down
@@ -73,7 +72,7 @@ void T_VerticalDoor(vldoor_t* door)
                 // villsa [STRIFE]
             case vld_shopClose:
                 door->direction = 1;
-                door->speed = (2*FRACUNIT);
+                door->speed     = (2 * FRACUNIT);
                 S_StartSound(&door->sector->soundorg, door->opensound);
                 break;
 
@@ -94,11 +93,11 @@ void T_VerticalDoor(vldoor_t* door)
         //  INITIAL WAIT
         if (!--door->topcountdown)
         {
-            switch(door->type)
+            switch (door->type)
             {
             case vld_raiseIn5Mins:
                 door->direction = 1;
-                door->type = vld_normal;
+                door->type      = vld_normal;
 
                 // villsa [STRIFE] opensound added
                 S_StartSound(&door->sector->soundorg, door->opensound);
@@ -116,10 +115,10 @@ void T_VerticalDoor(vldoor_t* door)
         res1 = T_MovePlane(door->sector, door->speed, door->topheight, 0, 1, 1);
         res2 = T_MovePlane(door->sector, door->speed, door->topwait, 0, 0, -1);
 
-        if(res1 == pastdest && res2 == pastdest)
+        if (res1 == pastdest && res2 == pastdest)
         {
             door->sector->specialdata = NULL;
-            P_RemoveThinker(&door->thinker);  // unlink and free
+            P_RemoveThinker(&door->thinker); // unlink and free
         }
 
         break;
@@ -127,41 +126,41 @@ void T_VerticalDoor(vldoor_t* door)
     case -1:
         // DOWN
         res1 = T_MovePlane(door->sector, door->speed, door->sector->floorheight, false, 1, door->direction);
-        if(res1 == pastdest)
+        if (res1 == pastdest)
         {
-            switch(door->type)
+            switch (door->type)
             {
             case vld_normal:
             case vld_close:
             case vld_blazeRaise:
             case vld_blazeClose:
                 door->sector->specialdata = NULL;
-                P_RemoveThinker (&door->thinker);  // unlink and free
+                P_RemoveThinker(&door->thinker); // unlink and free
                 // villsa [STRIFE] no sounds
                 break;
 
             case vld_close30ThenOpen:
-                door->direction = 0;
-                door->topcountdown = TICRATE*30;
+                door->direction    = 0;
+                door->topcountdown = TICRATE * 30;
                 break;
 
                 // villsa [STRIFE]
             case vld_shopClose:
-                door->direction = 0;
-                door->topcountdown = TICRATE*120;
+                door->direction    = 0;
+                door->topcountdown = TICRATE * 120;
                 break;
 
             default:
                 break;
             }
         }
-        else if(res1 == crushed)
+        else if (res1 == crushed)
         {
-            switch(door->type)
+            switch (door->type)
             {
             case vld_blazeClose:
-            case vld_close:		// DO NOT GO BACK UP!
-            case vld_shopClose:     // villsa [STRIFE]
+            case vld_close:     // DO NOT GO BACK UP!
+            case vld_shopClose: // villsa [STRIFE]
                 break;
 
             default:
@@ -178,24 +177,24 @@ void T_VerticalDoor(vldoor_t* door)
         res1 = T_MovePlane(door->sector,
             door->speed,
             door->topheight,
-            false,1,door->direction);
+            false, 1, door->direction);
 
-        if(res1 == pastdest)
+        if (res1 == pastdest)
         {
-            switch(door->type)
+            switch (door->type)
             {
             case vld_blazeRaise:
             case vld_normal:
-                door->direction = 0; // wait at top
+                door->direction    = 0; // wait at top
                 door->topcountdown = door->topwait;
                 break;
 
             case vld_close30ThenOpen:
             case vld_blazeOpen:
             case vld_open:
-            case vld_shopClose:     // villsa [STRIFE]
+            case vld_shopClose: // villsa [STRIFE]
                 door->sector->specialdata = NULL;
-                P_RemoveThinker (&door->thinker);  // unlink and free
+                P_RemoveThinker(&door->thinker); // unlink and free
                 break;
 
             default:
@@ -214,20 +213,20 @@ void T_VerticalDoor(vldoor_t* door)
 // [STRIFE] This game has a crap load of keys. And this function doesn't even
 // deal with all of them...
 //
-int EV_DoLockedDoor(line_t* line, vldoor_e type, mobj_t* thing)
+int EV_DoLockedDoor(line_t *line, vldoor_e type, mobj_t *thing)
 {
-    player_t* p;
+    player_t *p;
 
     p = thing->player;
 
-    if(!p)
+    if (!p)
         return 0;
 
-    switch(line->special)
+    switch (line->special)
     {
     case 99:
     case 133:
-        if(!p->cards[key_IDCard])
+        if (!p->cards[key_IDCard])
         {
             p->message = DEH_String("You need an id card");
             S_StartSound(NULL, sfx_oof);
@@ -237,7 +236,7 @@ int EV_DoLockedDoor(line_t* line, vldoor_e type, mobj_t* thing)
 
     case 134:
     case 135:
-        if(!p->cards[key_IDBadge])
+        if (!p->cards[key_IDBadge])
         {
             p->message = DEH_String("You need an id badge");
             S_StartSound(NULL, sfx_oof);
@@ -247,7 +246,7 @@ int EV_DoLockedDoor(line_t* line, vldoor_e type, mobj_t* thing)
 
     case 136:
     case 137:
-        if(!p->cards[key_Passcard])
+        if (!p->cards[key_Passcard])
         {
             p->message = DEH_String("You need a pass card");
             S_StartSound(NULL, sfx_oof);
@@ -257,7 +256,7 @@ int EV_DoLockedDoor(line_t* line, vldoor_e type, mobj_t* thing)
 
     case 151:
     case 164:
-        if(!p->cards[key_GoldKey])
+        if (!p->cards[key_GoldKey])
         {
             p->message = DEH_String("You need a gold key");
             S_StartSound(NULL, sfx_oof);
@@ -267,7 +266,7 @@ int EV_DoLockedDoor(line_t* line, vldoor_e type, mobj_t* thing)
 
     case 153:
     case 163:
-        if(!p->cards[key_SilverKey])
+        if (!p->cards[key_SilverKey])
         {
             p->message = DEH_String("You need a silver key");
             S_StartSound(NULL, sfx_oof);
@@ -277,7 +276,7 @@ int EV_DoLockedDoor(line_t* line, vldoor_e type, mobj_t* thing)
 
     case 152:
     case 162:
-        if(!p->cards[key_BrassKey])
+        if (!p->cards[key_BrassKey])
         {
             p->message = DEH_String("You need a brass key");
             S_StartSound(NULL, sfx_oof);
@@ -287,7 +286,7 @@ int EV_DoLockedDoor(line_t* line, vldoor_e type, mobj_t* thing)
 
     case 167:
     case 168:
-        if(!p->cards[key_SeveredHand])
+        if (!p->cards[key_SeveredHand])
         {
             p->message = DEH_String("Hand print not on file");
             S_StartSound(NULL, sfx_oof);
@@ -296,7 +295,7 @@ int EV_DoLockedDoor(line_t* line, vldoor_e type, mobj_t* thing)
         break;
 
     case 171:
-        if(!p->cards[key_PrisonKey])
+        if (!p->cards[key_PrisonKey])
         {
             p->message = DEH_String("You don't have the key to the prison");
             S_StartSound(NULL, sfx_oof);
@@ -305,7 +304,7 @@ int EV_DoLockedDoor(line_t* line, vldoor_e type, mobj_t* thing)
         break;
 
     case 172:
-        if(!p->cards[key_Power1Key])
+        if (!p->cards[key_Power1Key])
         {
             p->message = DEH_String("You don't have the key");
             S_StartSound(NULL, sfx_oof);
@@ -314,7 +313,7 @@ int EV_DoLockedDoor(line_t* line, vldoor_e type, mobj_t* thing)
         break;
 
     case 173:
-        if(!p->cards[key_Power2Key])
+        if (!p->cards[key_Power2Key])
         {
             p->message = DEH_String("You don't have the key");
             S_StartSound(NULL, sfx_oof);
@@ -323,7 +322,7 @@ int EV_DoLockedDoor(line_t* line, vldoor_e type, mobj_t* thing)
         break;
 
     case 176:
-        if(!p->cards[key_Power3Key])
+        if (!p->cards[key_Power3Key])
         {
             p->message = DEH_String("You don't have the key");
             S_StartSound(NULL, sfx_oof);
@@ -332,7 +331,7 @@ int EV_DoLockedDoor(line_t* line, vldoor_e type, mobj_t* thing)
         break;
 
     case 189:
-        if(!p->cards[key_OracleKey])
+        if (!p->cards[key_OracleKey])
         {
             p->message = DEH_String("You don't have the key");
             S_StartSound(NULL, sfx_oof);
@@ -341,7 +340,7 @@ int EV_DoLockedDoor(line_t* line, vldoor_e type, mobj_t* thing)
         break;
 
     case 191:
-        if(!p->cards[key_MilitaryID])
+        if (!p->cards[key_MilitaryID])
         {
             p->message = DEH_String("You don't have the key");
             S_StartSound(NULL, sfx_oof);
@@ -350,7 +349,7 @@ int EV_DoLockedDoor(line_t* line, vldoor_e type, mobj_t* thing)
         break;
 
     case 192:
-        if(!p->cards[key_WarehouseKey])
+        if (!p->cards[key_WarehouseKey])
         {
             p->message = DEH_String("You don't have the key");
             S_StartSound(NULL, sfx_oof);
@@ -359,7 +358,7 @@ int EV_DoLockedDoor(line_t* line, vldoor_e type, mobj_t* thing)
         break;
 
     case 223:
-        if(!p->cards[key_MineKey])
+        if (!p->cards[key_MineKey])
         {
             p->message = DEH_String("You don't have the key");
             S_StartSound(NULL, sfx_oof);
@@ -368,7 +367,7 @@ int EV_DoLockedDoor(line_t* line, vldoor_e type, mobj_t* thing)
         break;
     }
 
-    return EV_DoDoor(line,type);
+    return EV_DoDoor(line, type);
 }
 
 
@@ -376,46 +375,46 @@ int EV_DoLockedDoor(line_t* line, vldoor_e type, mobj_t* thing)
 // EV_DoDoor
 //
 
-int EV_DoDoor(line_t* line, vldoor_e type)
+int EV_DoDoor(line_t *line, vldoor_e type)
 {
-    int         secnum, rtn;
-    sector_t*   sec;
-    vldoor_t*   door;
+    int       secnum, rtn;
+    sector_t *sec;
+    vldoor_t *door;
 
     secnum = -1;
-    rtn = 0;
+    rtn    = 0;
 
-    while((secnum = P_FindSectorFromLineTag(line,secnum)) >= 0)
+    while ((secnum = P_FindSectorFromLineTag(line, secnum)) >= 0)
     {
         sec = &sectors[secnum];
-        if(sec->specialdata)
+        if (sec->specialdata)
             continue;
 
 
         // new door thinker
-        rtn = 1;
+        rtn  = 1;
         door = zmalloc<vldoor_t *>(sizeof(*door), PU_LEVSPEC, 0);
-        P_AddThinker (&door->thinker);
+        P_AddThinker(&door->thinker);
         sec->specialdata = door;
 
         door->thinker.function.acp1 = (actionf_p1)T_VerticalDoor;
-        door->sector = sec;
-        door->type = type;
-        door->topwait = VDOORWAIT;
-        door->speed = VDOORSPEED;
-        R_SoundNumForDoor(door);    // villsa [STRIFE] set door sounds
+        door->sector                = sec;
+        door->type                  = type;
+        door->topwait               = VDOORWAIT;
+        door->speed                 = VDOORSPEED;
+        R_SoundNumForDoor(door); // villsa [STRIFE] set door sounds
 
-        switch(type)
+        switch (type)
         {
             // villsa [STRIFE] new door type
         case vld_splitOpen:
             door->direction = -2;
             door->topheight = P_FindLowestCeilingSurrounding(sec);
-            door->topheight -= 4*FRACUNIT;
+            door->topheight -= 4 * FRACUNIT;
             door->speed = FRACUNIT;
             // yes, it using topwait to get the floor height
             door->topwait = P_FindLowestFloorSurrounding(sec);
-            if(door->topheight == sec->ceilingheight)
+            if (door->topheight == sec->ceilingheight)
                 continue;
 
             S_StartSound(&sec->soundorg, door->opensound);
@@ -425,28 +424,28 @@ int EV_DoDoor(line_t* line, vldoor_e type)
         case vld_splitRaiseNearest:
             door->direction = -2;
             door->topheight = P_FindLowestCeilingSurrounding(sec);
-            door->topheight -= 4*FRACUNIT;
+            door->topheight -= 4 * FRACUNIT;
             door->speed = FRACUNIT;
             // yes, it using topwait to get the floor height
             door->topwait = P_FindHighestFloorSurrounding(sec);
-            if(door->topheight == sec->ceilingheight)
+            if (door->topheight == sec->ceilingheight)
                 continue;
 
             S_StartSound(&sec->soundorg, door->opensound);
             break;
 
         case vld_blazeClose:
-        case vld_shopClose:     // villsa [STRIFE]
+        case vld_shopClose: // villsa [STRIFE]
             door->topheight = P_FindLowestCeilingSurrounding(sec);
-            door->topheight -= 4*FRACUNIT;
+            door->topheight -= 4 * FRACUNIT;
             door->direction = -1;
-            door->speed = VDOORSPEED * 4;
+            door->speed     = VDOORSPEED * 4;
             S_StartSound(&door->sector->soundorg, sfx_bdcls);
             break;
 
         case vld_close:
             door->topheight = P_FindLowestCeilingSurrounding(sec);
-            door->topheight -= 4*FRACUNIT;
+            door->topheight -= 4 * FRACUNIT;
             door->direction = -1;
 
             // villsa [STRIFE] set door sounds
@@ -465,7 +464,7 @@ int EV_DoDoor(line_t* line, vldoor_e type)
         case vld_blazeOpen:
             door->direction = 1;
             door->topheight = P_FindLowestCeilingSurrounding(sec);
-            door->topheight -= 4*FRACUNIT;
+            door->topheight -= 4 * FRACUNIT;
             door->speed = VDOORSPEED * 4;
             if (door->topheight != sec->ceilingheight)
                 S_StartSound(&door->sector->soundorg, sfx_bdopn);
@@ -475,16 +474,15 @@ int EV_DoDoor(line_t* line, vldoor_e type)
         case vld_open:
             door->direction = 1;
             door->topheight = P_FindLowestCeilingSurrounding(sec);
-            door->topheight -= 4*FRACUNIT;
+            door->topheight -= 4 * FRACUNIT;
 
-            if(door->topheight != sec->ceilingheight)
+            if (door->topheight != sec->ceilingheight)
                 S_StartSound(&door->sector->soundorg, door->opensound);
             break;
 
         default:
             break;
         }
-
     }
     return rtn;
 }
@@ -494,34 +492,34 @@ int EV_DoDoor(line_t* line, vldoor_e type)
 //
 // villsa [STRIFE] new function
 //
-boolean EV_ClearForceFields(line_t* line)
+boolean EV_ClearForceFields(line_t *line)
 {
-    int         secnum;
-    sector_t*   sec;
-    int         i;
-    line_t*     secline;
-    boolean     ret = false;
+    int       secnum;
+    sector_t *sec;
+    int       i;
+    line_t   *secline;
+    boolean   ret = false;
 
     secnum = -1;
 
-    while((secnum = P_FindSectorFromLineTag(line,secnum)) >= 0)
+    while ((secnum = P_FindSectorFromLineTag(line, secnum)) >= 0)
     {
         sec = &sectors[secnum];
 
         line->special = 0;
-        ret = true;
+        ret           = true;
 
         // haleyjd 09/18/10: fixed to continue w/linecount == 0, not return
-        for(i = 0; i < sec->linecount; i++)
+        for (i = 0; i < sec->linecount; i++)
         {
             secline = sec->lines[i];
-            if(!(secline->flags & ML_TWOSIDED))
+            if (!(secline->flags & ML_TWOSIDED))
                 continue;
-            if(secline->special != 148)
+            if (secline->special != 148)
                 continue;
 
             secline->flags &= ~ML_BLOCKING;
-            secline->special = 0;
+            secline->special                      = 0;
             sides[secline->sidenum[0]].midtexture = 0;
             sides[secline->sidenum[1]].midtexture = 0;
         }
@@ -536,24 +534,24 @@ boolean EV_ClearForceFields(line_t* line)
 //
 // [STRIFE] Tons of new door types were added.
 //
-void EV_VerticalDoor(line_t* line, mobj_t* thing)
+void EV_VerticalDoor(line_t *line, mobj_t *thing)
 {
-    player_t*   player;
-    sector_t*   sec;
-    vldoor_t*   door;
-    int         side;
+    player_t *player;
+    sector_t *sec;
+    vldoor_t *door;
+    int       side;
 
-    side = 0;   // only front sides can be used
+    side = 0; // only front sides can be used
 
     //	Check for locks
     player = thing->player;
 
     // haleyjd 09/15/10: [STRIFE] myriad checks here...
-    switch(line->special)
+    switch (line->special)
     {
-    case 26:  // DR ID Card door
-    case 32:  // D1 ID Card door
-        if(!player->cards[key_IDCard])
+    case 26: // DR ID Card door
+    case 32: // D1 ID Card door
+        if (!player->cards[key_IDCard])
         {
             player->message = DEH_String("You need an id card to open this door");
             S_StartSound(NULL, sfx_oof);
@@ -561,9 +559,9 @@ void EV_VerticalDoor(line_t* line, mobj_t* thing)
         }
         break;
 
-    case 27:  // DR Pass Card door
-    case 34:  // D1 Pass Card door
-        if(!player->cards[key_Passcard])
+    case 27: // DR Pass Card door
+    case 34: // D1 Pass Card door
+        if (!player->cards[key_Passcard])
         {
             player->message = DEH_String("You need a pass card key to open this door");
             S_StartSound(NULL, sfx_oof);
@@ -571,9 +569,9 @@ void EV_VerticalDoor(line_t* line, mobj_t* thing)
         }
         break;
 
-    case 28:  // DR ID Badge door
-    case 33:  // D1 ID Badge door
-        if(!player->cards[key_IDBadge])
+    case 28: // DR ID Badge door
+    case 33: // D1 ID Badge door
+        if (!player->cards[key_IDBadge])
         {
             player->message = DEH_String("You need an id badge to open this door");
             S_StartSound(NULL, sfx_oof);
@@ -583,7 +581,7 @@ void EV_VerticalDoor(line_t* line, mobj_t* thing)
 
     case 156: // D1 brass key door
     case 161: // DR brass key door
-        if(!player->cards[key_BrassKey])
+        if (!player->cards[key_BrassKey])
         {
             player->message = DEH_String("You need a brass key");
             S_StartSound(NULL, sfx_oof);
@@ -593,7 +591,7 @@ void EV_VerticalDoor(line_t* line, mobj_t* thing)
 
     case 157: // D1 silver key door
     case 160: // DR silver key door
-        if(!player->cards[key_SilverKey])
+        if (!player->cards[key_SilverKey])
         {
             player->message = DEH_String("You need a silver key");
             S_StartSound(NULL, sfx_oof);
@@ -603,7 +601,7 @@ void EV_VerticalDoor(line_t* line, mobj_t* thing)
 
     case 158: // D1 gold key door
     case 159: // DR gold key door
-        if(!player->cards[key_GoldKey])
+        if (!player->cards[key_GoldKey])
         {
             player->message = DEH_String("You need a gold key");
             S_StartSound(NULL, sfx_oof);
@@ -618,7 +616,7 @@ void EV_VerticalDoor(line_t* line, mobj_t* thing)
         return;
 
     case 166: // DR Hand Print door
-        if(!player->cards[key_SeveredHand])
+        if (!player->cards[key_SeveredHand])
         {
             player->message = DEH_String("Hand print not on file");
             S_StartSound(NULL, sfx_oof);
@@ -627,7 +625,7 @@ void EV_VerticalDoor(line_t* line, mobj_t* thing)
         break;
 
     case 169: // DR Base key door
-        if(!player->cards[key_BaseKey])
+        if (!player->cards[key_BaseKey])
         {
             player->message = DEH_String("You don't have the key");
             S_StartSound(NULL, sfx_oof);
@@ -636,7 +634,7 @@ void EV_VerticalDoor(line_t* line, mobj_t* thing)
         break;
 
     case 170: // DR Gov's Key door
-        if(!player->cards[key_GovsKey])
+        if (!player->cards[key_GovsKey])
         {
             player->message = DEH_String("You don't have the key");
             S_StartSound(NULL, sfx_oof);
@@ -645,7 +643,7 @@ void EV_VerticalDoor(line_t* line, mobj_t* thing)
         break;
 
     case 190: // DR Order Key door
-        if(!player->cards[key_OrderKey])
+        if (!player->cards[key_OrderKey])
         {
             player->message = DEH_String("You don't have the key");
             S_StartSound(NULL, sfx_oof);
@@ -660,7 +658,7 @@ void EV_VerticalDoor(line_t* line, mobj_t* thing)
         return;
 
     case 213: // DR Chalice door
-        if(!P_PlayerHasItem(player, MT_INV_CHALICE))
+        if (!P_PlayerHasItem(player, MT_INV_CHALICE))
         {
             player->message = DEH_String("You need the chalice!");
             S_StartSound(NULL, sfx_oof);
@@ -669,7 +667,7 @@ void EV_VerticalDoor(line_t* line, mobj_t* thing)
         break;
 
     case 217: // DR Core Key door
-        if(!player->cards[key_CoreKey])
+        if (!player->cards[key_CoreKey])
         {
             player->message = DEH_String("You don't have the key");
             S_StartSound(NULL, sfx_oof);
@@ -678,7 +676,7 @@ void EV_VerticalDoor(line_t* line, mobj_t* thing)
         break;
 
     case 221: // DR Mauler Key door
-        if(!player->cards[key_MaulerKey])
+        if (!player->cards[key_MaulerKey])
         {
             player->message = DEH_String("You don't have the key");
             S_StartSound(NULL, sfx_oof);
@@ -687,7 +685,7 @@ void EV_VerticalDoor(line_t* line, mobj_t* thing)
         break;
 
     case 224: // DR Chapel Key door
-        if(!player->cards[key_ChapelKey])
+        if (!player->cards[key_ChapelKey])
         {
             player->message = DEH_String("You don't have the key");
             S_StartSound(NULL, sfx_oof);
@@ -696,7 +694,7 @@ void EV_VerticalDoor(line_t* line, mobj_t* thing)
         break;
 
     case 225: // DR Catacomb Key door
-        if(!player->cards[key_CatacombKey])
+        if (!player->cards[key_CatacombKey])
         {
             player->message = DEH_String("You don't have the key");
             S_StartSound(NULL, sfx_oof);
@@ -705,7 +703,7 @@ void EV_VerticalDoor(line_t* line, mobj_t* thing)
         break;
 
     case 232: // DR Oracle Pass door
-        if(!(player->questflags & QF_QUEST18))
+        if (!(player->questflags & QF_QUEST18))
         {
             player->message = DEH_String("You need the Oracle Pass!");
             S_StartSound(NULL, sfx_oof);
@@ -718,36 +716,36 @@ void EV_VerticalDoor(line_t* line, mobj_t* thing)
     }
 
     // if the sector has an active thinker, use it
-    sec = sides[ line->sidenum[side^1]] .sector;
+    sec = sides[line->sidenum[side ^ 1]].sector;
 
     if (sec->specialdata)
     {
         door = static_cast<vldoor_t *>(sec->specialdata);
         // [STRIFE] Adjusted to handle linetypes handled here by Strife.
-        // BUG: Not all door types are checked here. This means that certain 
+        // BUG: Not all door types are checked here. This means that certain
         // door lines are allowed to fall through and start a new thinker on the
-        // sector! This is why some doors can become jammed in Strife - stuck in 
-        // midair, or unable to be opened at all. Multiple thinkers will fight 
+        // sector! This is why some doors can become jammed in Strife - stuck in
+        // midair, or unable to be opened at all. Multiple thinkers will fight
         // over how to move the door. They should have added a default return if
         // they weren't going to handle this unconditionally...
-        switch(line->special)
+        switch (line->special)
         {
-        case 1:         // ONLY FOR "RAISE" DOORS, NOT "OPEN"s
+        case 1: // ONLY FOR "RAISE" DOORS, NOT "OPEN"s
         case 26:
         case 27:
         case 28:
         case 117:
-        case 159:       // villsa
-        case 160:       // haleyjd
-        case 161:       // villsa
-        case 166:       // villsa
-        case 169:       // villsa
-        case 170:       // villsa
-        case 190:       // villsa
-        case 213:       // villsa
-        case 232:       // villsa
-            if(door->direction == -1)
-                door->direction = 1;    // go back up
+        case 159: // villsa
+        case 160: // haleyjd
+        case 161: // villsa
+        case 166: // villsa
+        case 169: // villsa
+        case 170: // villsa
+        case 190: // villsa
+        case 213: // villsa
+        case 232: // villsa
+            if (door->direction == -1)
+                door->direction = 1; // go back up
             else
             {
                 if (!thing->player)
@@ -757,11 +755,11 @@ void EV_VerticalDoor(line_t* line, mobj_t* thing)
                 // In Vanilla, door->direction is set, even though
                 // "specialdata" might not actually point at a door.
 
-                if (door->thinker.function.acp1 == (actionf_p1) T_VerticalDoor)
+                if (door->thinker.function.acp1 == (actionf_p1)T_VerticalDoor)
                 {
-                    door->direction = -1;   // start going down immediately
+                    door->direction = -1; // start going down immediately
                 }
-                else if (door->thinker.function.acp1 == (actionf_p1) T_PlatRaise)
+                else if (door->thinker.function.acp1 == (actionf_p1)T_PlatRaise)
                 {
                     // Erm, this is a plat, not a door.
                     // This notably causes a problem in ep1-0500.lmp where
@@ -772,7 +770,7 @@ void EV_VerticalDoor(line_t* line, mobj_t* thing)
 
                     plat_t *plat;
 
-                    plat = (plat_t *) door;
+                    plat       = (plat_t *)door;
                     plat->wait = -1;
                 }
                 else
@@ -780,7 +778,7 @@ void EV_VerticalDoor(line_t* line, mobj_t* thing)
                     // This isn't a door OR a plat.  Now we're in trouble.
 
                     fprintf(stderr, "EV_VerticalDoor: Tried to close "
-                        "something that wasn't a door.\n");
+                                    "something that wasn't a door.\n");
 
                     // Try closing it anyway. At least it will work on 32-bit
                     // machines.
@@ -798,30 +796,30 @@ void EV_VerticalDoor(line_t* line, mobj_t* thing)
 
     // new door thinker
     door = zmalloc<vldoor_t *>(sizeof(*door), PU_LEVSPEC, 0);
-    P_AddThinker (&door->thinker);
-    sec->specialdata = door;
-    door->thinker.function.acp1 = (actionf_p1) T_VerticalDoor;
-    door->sector = sec;
-    door->direction = 1;
-    door->speed = VDOORSPEED;
-    door->topwait = VDOORWAIT;
-    R_SoundNumForDoor(door);   // haleyjd 09/15/10: [STRIFE] Get door sounds
+    P_AddThinker(&door->thinker);
+    sec->specialdata            = door;
+    door->thinker.function.acp1 = (actionf_p1)T_VerticalDoor;
+    door->sector                = sec;
+    door->direction             = 1;
+    door->speed                 = VDOORSPEED;
+    door->topwait               = VDOORWAIT;
+    R_SoundNumForDoor(door); // haleyjd 09/15/10: [STRIFE] Get door sounds
 
     // for proper sound - [STRIFE] - verified complete
-    switch(line->special)
+    switch (line->special)
     {
-    case 117:   // BLAZING DOOR RAISE
-    case 118:   // BLAZING DOOR OPEN
+    case 117: // BLAZING DOOR RAISE
+    case 118: // BLAZING DOOR OPEN
         S_StartSound(&sec->soundorg, sfx_bdopn);
         break;
 
-    default:    // NORMAL DOOR SOUND
+    default: // NORMAL DOOR SOUND
         S_StartSound(&sec->soundorg, door->opensound);
         break;
     }
 
     // haleyjd: [STRIFE] - verified all.
-    switch(line->special)
+    switch (line->special)
     {
     case 1:
     case 26:
@@ -834,22 +832,22 @@ void EV_VerticalDoor(line_t* line, mobj_t* thing)
     case 32:
     case 33:
     case 34:
-    case 156:   // villsa [STRIFE]
-    case 157:   // villsa [STRIFE]
-    case 158:   // villsa [STRIFE]
-        door->type = vld_open;
+    case 156: // villsa [STRIFE]
+    case 157: // villsa [STRIFE]
+    case 158: // villsa [STRIFE]
+        door->type    = vld_open;
         line->special = 0;
         break;
 
-    case 117:	// blazing door raise
-        door->type = vld_blazeRaise;
-        door->speed = VDOORSPEED*4;
+    case 117: // blazing door raise
+        door->type  = vld_blazeRaise;
+        door->speed = VDOORSPEED * 4;
         break;
 
-    case 118:	// blazing door open
-        door->type = vld_blazeOpen;
+    case 118: // blazing door open
+        door->type    = vld_blazeOpen;
         line->special = 0;
-        door->speed = VDOORSPEED*4;
+        door->speed   = VDOORSPEED * 4;
         break;
 
     default:
@@ -860,57 +858,55 @@ void EV_VerticalDoor(line_t* line, mobj_t* thing)
 
     // find the top and bottom of the movement range
     door->topheight = P_FindLowestCeilingSurrounding(sec);
-    door->topheight -= 4*FRACUNIT;
+    door->topheight -= 4 * FRACUNIT;
 }
 
 
 //
 // Spawn a door that closes after 30 seconds
 //
-void P_SpawnDoorCloseIn30 (sector_t* sec)
+void P_SpawnDoorCloseIn30(sector_t *sec)
 {
-    vldoor_t*   door;
+    vldoor_t *door;
 
     door = zmalloc<vldoor_t *>(sizeof(*door), PU_LEVSPEC, 0);
 
-    P_AddThinker (&door->thinker);
+    P_AddThinker(&door->thinker);
 
     sec->specialdata = door;
-    sec->special = 0;
+    sec->special     = 0;
 
     door->thinker.function.acp1 = (actionf_p1)T_VerticalDoor;
-    door->sector = sec;
-    door->direction = 0;
-    door->type = vld_normal;
-    door->speed = VDOORSPEED;
-    door->topcountdown = 30 * TICRATE;
+    door->sector                = sec;
+    door->direction             = 0;
+    door->type                  = vld_normal;
+    door->speed                 = VDOORSPEED;
+    door->topcountdown          = 30 * TICRATE;
 }
 
 //
 // Spawn a door that opens after 5 minutes
 //
-void
-P_SpawnDoorRaiseIn5Mins
-( sector_t*	sec,
-  int		secnum )
+void P_SpawnDoorRaiseIn5Mins(sector_t *sec,
+    int                                secnum)
 {
-    vldoor_t*	door;
-	
+    vldoor_t *door;
+
     door = zmalloc<vldoor_t *>(sizeof(*door), PU_LEVSPEC, 0);
-    
-    P_AddThinker (&door->thinker);
+
+    P_AddThinker(&door->thinker);
 
     sec->specialdata = door;
-    sec->special = 0;
+    sec->special     = 0;
 
     door->thinker.function.acp1 = (actionf_p1)T_VerticalDoor;
-    door->sector = sec;
-    door->direction = 2;
-    door->type = vld_raiseIn5Mins;
-    door->speed = VDOORSPEED;
-    door->topheight = P_FindLowestCeilingSurrounding(sec);
-    door->topheight -= 4*FRACUNIT;
-    door->topwait = VDOORWAIT;
+    door->sector                = sec;
+    door->direction             = 2;
+    door->type                  = vld_raiseIn5Mins;
+    door->speed                 = VDOORSPEED;
+    door->topheight             = P_FindLowestCeilingSurrounding(sec);
+    door->topheight -= 4 * FRACUNIT;
+    door->topwait      = VDOORWAIT;
     door->topcountdown = 5 * 60 * TICRATE;
 }
 
@@ -923,92 +919,91 @@ P_SpawnDoorRaiseIn5Mins
 //
 // Sliding door name information
 //
-static slidename_t slideFrameNames[MAXSLIDEDOORS] =
-{
+static slidename_t slideFrameNames[MAXSLIDEDOORS] = {
     // SIGLDR
     {
-        "SIGLDR01",  // frame1
-        "SIGLDR02",  // frame2
-        "SIGLDR03",  // frame3
-        "SIGLDR04",  // frame4
-        "SIGLDR05",  // frame5
-        "SIGLDR06",  // frame6
-        "SIGLDR07",  // frame7
-        "SIGLDR08"   // frame8
+        "SIGLDR01", // frame1
+        "SIGLDR02", // frame2
+        "SIGLDR03", // frame3
+        "SIGLDR04", // frame4
+        "SIGLDR05", // frame5
+        "SIGLDR06", // frame6
+        "SIGLDR07", // frame7
+        "SIGLDR08"  // frame8
     },
     // DORSTN
     {
-        "DORSTN01",  // frame1
-        "DORSTN02",  // frame2
-        "DORSTN03",  // frame3
-        "DORSTN04",  // frame4
-        "DORSTN05",  // frame5
-        "DORSTN06",  // frame6
-        "DORSTN07",  // frame7
-        "DORSTN08"   // frame8
+        "DORSTN01", // frame1
+        "DORSTN02", // frame2
+        "DORSTN03", // frame3
+        "DORSTN04", // frame4
+        "DORSTN05", // frame5
+        "DORSTN06", // frame6
+        "DORSTN07", // frame7
+        "DORSTN08"  // frame8
     },
 
     // DORQTR
     {
-        "DORQTR01",  // frame1
-        "DORQTR02",  // frame2
-        "DORQTR03",  // frame3
-        "DORQTR04",  // frame4
-        "DORQTR05",  // frame5
-        "DORQTR06",  // frame6
-        "DORQTR07",  // frame7
-        "DORQTR08"   // frame8
+        "DORQTR01", // frame1
+        "DORQTR02", // frame2
+        "DORQTR03", // frame3
+        "DORQTR04", // frame4
+        "DORQTR05", // frame5
+        "DORQTR06", // frame6
+        "DORQTR07", // frame7
+        "DORQTR08"  // frame8
     },
 
     // DORCRG
     {
-        "DORCRG01",  // frame1
-        "DORCRG02",  // frame2
-        "DORCRG03",  // frame3
-        "DORCRG04",  // frame4
-        "DORCRG05",  // frame5
-        "DORCRG06",  // frame6
-        "DORCRG07",  // frame7
-        "DORCRG08"   // frame8
+        "DORCRG01", // frame1
+        "DORCRG02", // frame2
+        "DORCRG03", // frame3
+        "DORCRG04", // frame4
+        "DORCRG05", // frame5
+        "DORCRG06", // frame6
+        "DORCRG07", // frame7
+        "DORCRG08"  // frame8
     },
 
     // DORCHN
     {
-        "DORCHN01",  // frame1
-        "DORCHN02",  // frame2
-        "DORCHN03",  // frame3
-        "DORCHN04",  // frame4
-        "DORCHN05",  // frame5
-        "DORCHN06",  // frame6
-        "DORCHN07",  // frame7
-        "DORCHN08"   // frame8
+        "DORCHN01", // frame1
+        "DORCHN02", // frame2
+        "DORCHN03", // frame3
+        "DORCHN04", // frame4
+        "DORCHN05", // frame5
+        "DORCHN06", // frame6
+        "DORCHN07", // frame7
+        "DORCHN08"  // frame8
     },
 
     // DORIRS
     {
-        "DORIRS01",  // frame1
-        "DORIRS02",  // frame2
-        "DORIRS03",  // frame3
-        "DORIRS04",  // frame4
-        "DORIRS05",  // frame5
-        "DORIRS06",  // frame6
-        "DORIRS07",  // frame7
-        "DORIRS08"   // frame8
+        "DORIRS01", // frame1
+        "DORIRS02", // frame2
+        "DORIRS03", // frame3
+        "DORIRS04", // frame4
+        "DORIRS05", // frame5
+        "DORIRS06", // frame6
+        "DORIRS07", // frame7
+        "DORIRS08"  // frame8
     },
 
     // DORALN
     {
-        "DORALN01",  // frame1
-        "DORALN02",  // frame2
-        "DORALN03",  // frame3
-        "DORALN04",  // frame4
-        "DORALN05",  // frame5
-        "DORALN06",  // frame6
-        "DORALN07",  // frame7
-        "DORALN08"   // frame8
+        "DORALN01", // frame1
+        "DORALN02", // frame2
+        "DORALN03", // frame3
+        "DORALN04", // frame4
+        "DORALN05", // frame5
+        "DORALN06", // frame6
+        "DORALN07", // frame7
+        "DORALN08"  // frame8
     },
 
-    {"\0","\0","\0","\0","\0","\0","\0","\0"}
+    { "\0", "\0", "\0", "\0", "\0", "\0", "\0", "\0" }
 };
 
 //
@@ -1016,8 +1011,7 @@ static slidename_t slideFrameNames[MAXSLIDEDOORS] =
 //
 // Sliding door open sounds
 //
-static sfxenum_t slideOpenSounds[MAXSLIDEDOORS] =
-{
+static sfxenum_t slideOpenSounds[MAXSLIDEDOORS] = {
     sfx_drlmto, sfx_drston, sfx_airlck, sfx_drsmto,
     sfx_drchno, sfx_airlck, sfx_airlck, sfx_None
 };
@@ -1027,8 +1021,7 @@ static sfxenum_t slideOpenSounds[MAXSLIDEDOORS] =
 //
 // Sliding door close sounds
 //
-static sfxenum_t slideCloseSounds[MAXSLIDEDOORS] =
-{
+static sfxenum_t slideCloseSounds[MAXSLIDEDOORS] = {
     sfx_drlmtc, sfx_drston, sfx_airlck, sfx_drsmtc,
     sfx_drchnc, sfx_airlck, sfx_airlck, sfx_None
 };
@@ -1049,31 +1042,31 @@ void P_InitSlidingDoorFrames()
     int f4;
 
     memset(slideFrames, 0, sizeof(slideframe_t) * MAXSLIDEDOORS);
-	
-    for(i = 0; i < MAXSLIDEDOORS; i++)
+
+    for (i = 0; i < MAXSLIDEDOORS; i++)
     {
-	if(!slideFrameNames[i].frame1[0])
-	    break;
-			
-	f1 = R_TextureNumForName(DEH_String(slideFrameNames[i].frame1));
-	f2 = R_TextureNumForName(DEH_String(slideFrameNames[i].frame2));
-	f3 = R_TextureNumForName(DEH_String(slideFrameNames[i].frame3));
-	f4 = R_TextureNumForName(DEH_String(slideFrameNames[i].frame4));
+        if (!slideFrameNames[i].frame1[0])
+            break;
 
-	slideFrames[i].frames[0] = f1;
-	slideFrames[i].frames[1] = f2;
-	slideFrames[i].frames[2] = f3;
-	slideFrames[i].frames[3] = f4;
-		
-	f1 = R_TextureNumForName(DEH_String(slideFrameNames[i].frame5));
-	f2 = R_TextureNumForName(DEH_String(slideFrameNames[i].frame6));
-	f3 = R_TextureNumForName(DEH_String(slideFrameNames[i].frame7));
-	f4 = R_TextureNumForName(DEH_String(slideFrameNames[i].frame8));
+        f1 = R_TextureNumForName(DEH_String(slideFrameNames[i].frame1));
+        f2 = R_TextureNumForName(DEH_String(slideFrameNames[i].frame2));
+        f3 = R_TextureNumForName(DEH_String(slideFrameNames[i].frame3));
+        f4 = R_TextureNumForName(DEH_String(slideFrameNames[i].frame4));
 
-	slideFrames[i].frames[4] = f1;
-	slideFrames[i].frames[5] = f2;
-	slideFrames[i].frames[6] = f3;
-	slideFrames[i].frames[7] = f4;
+        slideFrames[i].frames[0] = f1;
+        slideFrames[i].frames[1] = f2;
+        slideFrames[i].frames[2] = f3;
+        slideFrames[i].frames[3] = f4;
+
+        f1 = R_TextureNumForName(DEH_String(slideFrameNames[i].frame5));
+        f2 = R_TextureNumForName(DEH_String(slideFrameNames[i].frame6));
+        f3 = R_TextureNumForName(DEH_String(slideFrameNames[i].frame7));
+        f4 = R_TextureNumForName(DEH_String(slideFrameNames[i].frame8));
+
+        slideFrames[i].frames[4] = f1;
+        slideFrames[i].frames[5] = f2;
+        slideFrames[i].frames[6] = f3;
+        slideFrames[i].frames[7] = f4;
     }
 }
 
@@ -1086,18 +1079,18 @@ void P_InitSlidingDoorFrames()
 //
 // villsa [STRIFE] resurrected
 //
-int P_FindSlidingDoorType(line_t* line)
+int P_FindSlidingDoorType(line_t *line)
 {
     int i;
     int val;
-	
-    for(i = 0; i < MAXSLIDEDOORS-1; i++)
+
+    for (i = 0; i < MAXSLIDEDOORS - 1; i++)
     {
         val = sides[line->sidenum[0]].toptexture;
-	if(val == slideFrames[i].frames[0])
-	    return i;
+        if (val == slideFrames[i].frames[0])
+            return i;
     }
-	
+
     return -1;
 }
 
@@ -1106,31 +1099,31 @@ int P_FindSlidingDoorType(line_t* line)
 //
 // villsa [STRIFE] resurrected
 //
-void T_SlidingDoor(slidedoor_t* door)
+void T_SlidingDoor(slidedoor_t *door)
 {
-    sector_t* sec;
+    sector_t *sec;
 
     sec = door->frontsector;
 
-    switch(door->status)
+    switch (door->status)
     {
     case sd_opening:
-        if(!door->timer--)
+        if (!door->timer--)
         {
-            if(++door->frame == SNUMFRAMES)
+            if (++door->frame == SNUMFRAMES)
             {
                 // IF DOOR IS DONE OPENING...
                 door->line1->flags &= ~ML_BLOCKING;
                 door->line2->flags &= ~ML_BLOCKING;
 
-                if(door->type == sdt_openOnly)
+                if (door->type == sdt_openOnly)
                 {
                     door->frontsector->specialdata = NULL;
-                    P_RemoveThinker (&door->thinker);
+                    P_RemoveThinker(&door->thinker);
                     return;
                 }
 
-                door->timer = SDOORWAIT;
+                door->timer  = SDOORWAIT;
                 door->status = sd_waiting;
             }
             else
@@ -1156,7 +1149,7 @@ void T_SlidingDoor(slidedoor_t* door)
 
     case sd_waiting:
         // IF DOOR IS DONE WAITING...
-        if(!door->timer--)
+        if (!door->timer--)
         {
             fixed_t speed;
             fixed_t cheight;
@@ -1164,7 +1157,7 @@ void T_SlidingDoor(slidedoor_t* door)
             sec = door->frontsector;
 
             // CAN DOOR CLOSE?
-            if(sec->thinglist != NULL)
+            if (sec->thinglist != NULL)
             {
                 door->timer = SDOORWAIT;
                 return;
@@ -1173,10 +1166,10 @@ void T_SlidingDoor(slidedoor_t* door)
             {
 
                 cheight = sec->ceilingheight;
-                speed = cheight - sec->floorheight - (10*FRACUNIT);
+                speed   = cheight - sec->floorheight - (10 * FRACUNIT);
 
                 // something blocking it?
-                if(T_MovePlane(sec, speed, sec->floorheight, 0, 1, -1) == crushed)
+                if (T_MovePlane(sec, speed, sec->floorheight, 0, 1, -1) == crushed)
                 {
                     door->timer = SDOORWAIT;
                     return;
@@ -1184,7 +1177,7 @@ void T_SlidingDoor(slidedoor_t* door)
                 else
                 {
                     // Instantly move plane
-                    T_MovePlane(sec, (128*FRACUNIT), cheight, 0, 1, 1);
+                    T_MovePlane(sec, (128 * FRACUNIT), cheight, 0, 1, 1);
 
                     // turn line blocking back on
                     door->line1->flags |= ML_BLOCKING;
@@ -1194,7 +1187,7 @@ void T_SlidingDoor(slidedoor_t* door)
                     S_StartSound(&sec->soundorg, slideCloseSounds[door->whichDoorIndex]);
 
                     door->status = sd_closing;
-                    door->timer = SWAITTICS;
+                    door->timer  = SWAITTICS;
                 }
             }
         }
@@ -1204,12 +1197,12 @@ void T_SlidingDoor(slidedoor_t* door)
     case sd_closing:
         if (!door->timer--)
         {
-            if(--door->frame < 0)
+            if (--door->frame < 0)
             {
                 // IF DOOR IS DONE CLOSING...
-                T_MovePlane(sec, (128*FRACUNIT), sec->floorheight, 0, 1, -1);
+                T_MovePlane(sec, (128 * FRACUNIT), sec->floorheight, 0, 1, -1);
                 door->frontsector->specialdata = NULL;
-                P_RemoveThinker (&door->thinker);
+                P_RemoveThinker(&door->thinker);
                 return;
             }
             else
@@ -1240,28 +1233,28 @@ void T_SlidingDoor(slidedoor_t* door)
 //
 // villsa [STRIFE] new function
 //
-int EV_RemoteSlidingDoor(line_t* line, mobj_t* thing)
+int EV_RemoteSlidingDoor(line_t *line, mobj_t *thing)
 {
-    int		    secnum;
-    sector_t*       sec;
-    int             i;
-    int             rtn;
-    line_t*         secline;
-	
+    int       secnum;
+    sector_t *sec;
+    int       i;
+    int       rtn;
+    line_t   *secline;
+
     secnum = -1;
-    rtn = 0;
-    
-    while((secnum = P_FindSectorFromLineTag(line,secnum)) >= 0)
+    rtn    = 0;
+
+    while ((secnum = P_FindSectorFromLineTag(line, secnum)) >= 0)
     {
         sec = &sectors[secnum];
-        if(sec->specialdata)
+        if (sec->specialdata)
             continue;
 
-        for(i = 0; i < 4; i++)
+        for (i = 0; i < 4; i++)
         {
             secline = sec->lines[i];
 
-            if(P_FindSlidingDoorType(secline) < 0)
+            if (P_FindSlidingDoorType(secline) < 0)
                 continue;
 
             EV_SlidingDoor(secline, thing);
@@ -1278,28 +1271,28 @@ int EV_RemoteSlidingDoor(line_t* line, mobj_t* thing)
 //
 // villsa [STRIFE]
 //
-void EV_SlidingDoor(line_t* line, mobj_t* thing)
+void EV_SlidingDoor(line_t *line, mobj_t *thing)
 {
-    sector_t*       sec;
-    slidedoor_t*    door;
-    int             i;
-    line_t*         secline;
+    sector_t    *sec;
+    slidedoor_t *door;
+    int          i;
+    line_t      *secline;
 
     // Make sure door isn't already being animated
-    sec = sides[line->sidenum[1]].sector;
+    sec  = sides[line->sidenum[1]].sector;
     door = NULL;
-    if(sec->specialdata)
+    if (sec->specialdata)
     {
         if (!thing->player)
             return;
 
         door = static_cast<slidedoor_t *>(sec->specialdata);
-        if(door->type == sdt_openAndClose)
+        if (door->type == sdt_openAndClose)
         {
-            if(door->status == sd_waiting)
+            if (door->status == sd_waiting)
             {
                 door->status = sd_closing;
-                door->timer = SWAITTICS;    // villsa [STRIFE]
+                door->timer  = SWAITTICS; // villsa [STRIFE]
             }
         }
         else
@@ -1307,19 +1300,19 @@ void EV_SlidingDoor(line_t* line, mobj_t* thing)
     }
 
     // Init sliding door vars
-    if(!door)
+    if (!door)
     {
         door = zmalloc<slidedoor_t *>(sizeof(*door), PU_LEVSPEC, 0);
-        P_AddThinker (&door->thinker);
+        P_AddThinker(&door->thinker);
 
         sec->specialdata = door;
 
-        door->type = sdt_openAndClose;
-        door->status = sd_opening;
+        door->type           = sdt_openAndClose;
+        door->status         = sd_opening;
         door->whichDoorIndex = P_FindSlidingDoorType(line);
 
         // villsa [STRIFE] different error message
-        if(door->whichDoorIndex < 0)
+        if (door->whichDoorIndex < 0)
             I_Error(DEH_String("EV_SlidingDoor: Textures are not defined for sliding door!"));
 
         sides[line->sidenum[0]].midtexture = sides[line->sidenum[0]].toptexture;
@@ -1330,26 +1323,26 @@ void EV_SlidingDoor(line_t* line, mobj_t* thing)
 
         // villsa [STRIFE] this loop assumes that the sliding door is made up
         // of only four linedefs!
-        for(i = 0; i < 4; i++)
+        for (i = 0; i < 4; i++)
         {
             secline = sec->lines[i];
-            if(secline != line)
+            if (secline != line)
             {
-                side_t* side1;
-                side_t* side2;
+                side_t *side1;
+                side_t *side2;
 
                 side1 = &sides[secline->sidenum[0]];
                 side2 = &sides[line->sidenum[0]];
 
-                if(side1->toptexture == side2->toptexture)
+                if (side1->toptexture == side2->toptexture)
                     door->line2 = secline;
             }
         }
 
         door->thinker.function.acp1 = (actionf_p1)T_SlidingDoor;
-        door->timer = SWAITTICS;
-        door->frontsector = sec;
-        door->frame = 0;
+        door->timer                 = SWAITTICS;
+        door->frontsector           = sec;
+        door->frame                 = 0;
 
         // villsa [STRIFE] preset flags
         door->line1->flags |= ML_BLOCKING;
@@ -1358,7 +1351,7 @@ void EV_SlidingDoor(line_t* line, mobj_t* thing)
         // villsa [STRIFE] set the closing sector
         T_MovePlane(
             door->frontsector,
-            (128*FRACUNIT),
+            (128 * FRACUNIT),
             P_FindLowestCeilingSurrounding(door->frontsector),
             0,
             1,
@@ -1368,4 +1361,3 @@ void EV_SlidingDoor(line_t* line, mobj_t* thing)
         S_StartSound(&door->frontsector->soundorg, slideOpenSounds[door->whichDoorIndex]);
     }
 }
-

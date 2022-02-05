@@ -49,13 +49,12 @@ using txt_window_t = struct txt_window_s;
 // Callback function for window key presses
 
 typedef int (*TxtWindowKeyPress)(txt_window_t *window, int key,
-                                 void *user_data);
+    void *user_data);
 typedef int (*TxtWindowMousePress)(txt_window_t *window,
-                                   int x, int y, int b,
-                                   void *user_data);
+    int x, int y, int b,
+    void *user_data);
 
-struct txt_window_s
-{
+struct txt_window_s {
     // Base class: all windows are tables with one column.
 
     txt_table_t table;
@@ -66,9 +65,9 @@ struct txt_window_s
 
     // Screen coordinates of the window
 
-    txt_vert_align_t vert_align;
+    txt_vert_align_t  vert_align;
     txt_horiz_align_t horiz_align;
-    int x, y;
+    int               x, y;
 
     // Actions that appear in the box at the bottom of the window
 
@@ -76,14 +75,14 @@ struct txt_window_s
 
     // Callback functions to invoke when keys/mouse buttons are pressed
 
-    TxtWindowKeyPress key_listener;
-    void *key_listener_data;
+    TxtWindowKeyPress   key_listener;
+    void               *key_listener_data;
     TxtWindowMousePress mouse_listener;
-    void *mouse_listener_data;
+    void               *mouse_listener_data;
 
     // These are set automatically when the window is drawn
 
-    int window_x, window_y;
+    int          window_x, window_y;
     unsigned int window_w, window_h;
 
     // URL of a webpage with help about this window. If set, a help key
@@ -142,9 +141,9 @@ void TXT_CloseWindow(txt_window_t *window);
  */
 
 void TXT_SetWindowPosition(txt_window_t *window,
-                           txt_horiz_align_t horiz_align,
-                           txt_vert_align_t vert_align,
-                           int x, int y);
+    txt_horiz_align_t                    horiz_align,
+    txt_vert_align_t                     vert_align,
+    int x, int y);
 
 /**
  * Set a window action for a given window.
@@ -159,7 +158,7 @@ void TXT_SetWindowPosition(txt_window_t *window,
  */
 
 void TXT_SetWindowAction(txt_window_t *window, txt_horiz_align_t position,
-                         TXT_UNCAST_ARG(action));
+    TXT_UNCAST_ARG(action));
 
 /**
  * Set a callback function to be invoked whenever a key is pressed within
@@ -172,8 +171,8 @@ void TXT_SetWindowAction(txt_window_t *window, txt_horiz_align_t position,
  */
 
 void TXT_SetKeyListener(txt_window_t *window,
-                        TxtWindowKeyPress key_listener,
-                        void *user_data);
+    TxtWindowKeyPress                 key_listener,
+    void                             *user_data);
 
 /**
  * Set a callback function to be invoked whenever a mouse button is pressed
@@ -186,8 +185,8 @@ void TXT_SetKeyListener(txt_window_t *window,
  */
 
 void TXT_SetMouseListener(txt_window_t *window,
-                          TxtWindowMousePress mouse_listener,
-                          void *user_data);
+    TxtWindowMousePress                 mouse_listener,
+    void                               *user_data);
 
 /**
  * Open a window displaying a message.
@@ -218,4 +217,3 @@ void TXT_SetWindowHelpURL(txt_window_t *window, const char *help_url);
 void TXT_OpenWindowHelpURL(txt_window_t *window);
 
 #endif /* #ifndef TXT_WINDOW_H */
-

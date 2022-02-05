@@ -30,11 +30,11 @@ typedef enum
     OP_DIV,
 } operator_t;
 
-int starting_input = 0;
-int input_value = 0;
+int          starting_input = 0;
+int          input_value    = 0;
 txt_label_t *input_box;
-int first_operand;
-operator_t operator = OP_NONE;
+int          first_operand;
+operator_t   operator= OP_NONE;
 
 void UpdateInputBox()
 {
@@ -50,10 +50,10 @@ void InsertNumber(TXT_UNCAST_ARG(button), TXT_UNCAST_ARG(value))
 
     if (starting_input)
     {
-        input_value = 0;
+        input_value    = 0;
         starting_input = 0;
     }
-    
+
     input_value *= 10;
     input_value += *value;
     UpdateInputBox();
@@ -64,7 +64,7 @@ void AddNumberButton(txt_table_t *table, int value)
     char buf[10];
     int *val_copy;
 
-    val_copy = malloc(sizeof(int));
+    val_copy  = malloc(sizeof(int));
     *val_copy = value;
 
     TXT_snprintf(buf, sizeof(buf), "  %i  ", value);
@@ -76,17 +76,17 @@ void Operator(TXT_UNCAST_ARG(button), TXT_UNCAST_ARG(op))
 {
     TXT_CAST_ARG(operator_t, op);
 
-    first_operand = input_value;
-    operator = *op;
+    first_operand  = input_value;
+    operator       = * op;
     starting_input = 1;
 }
 
 void AddOperatorButton(txt_table_t *table, const char *label, operator_t op)
 {
-    char buf[10];
+    char        buf[10];
     operator_t *op_copy;
 
-    op_copy = malloc(sizeof(operator_t));
+    op_copy  = malloc(sizeof(operator_t));
     *op_copy = op;
 
     TXT_snprintf(buf, sizeof(buf), "  %s  ", label);
@@ -98,33 +98,33 @@ void Calculate(TXT_UNCAST_ARG(button), void *unused)
 {
     switch (operator)
     {
-        case OP_PLUS:
-            input_value = first_operand + input_value;
-            break;
-        case OP_MINUS:
-            input_value = first_operand - input_value;
-            break;
-        case OP_MULT:
-            input_value = first_operand * input_value;
-            break;
-        case OP_DIV:
-            input_value = first_operand / input_value;
-            break;
-        case OP_NONE:
-            break;
+    case OP_PLUS:
+        input_value = first_operand + input_value;
+        break;
+    case OP_MINUS:
+        input_value = first_operand - input_value;
+        break;
+    case OP_MULT:
+        input_value = first_operand * input_value;
+        break;
+    case OP_DIV:
+        input_value = first_operand / input_value;
+        break;
+    case OP_NONE:
+        break;
     }
 
     UpdateInputBox();
 
-    operator = OP_NONE;
+    operator       = OP_NONE;
     starting_input = 1;
 }
 
 void BuildGUI()
 {
     txt_window_t *window;
-    txt_table_t *table;
-    
+    txt_table_t  *table;
+
     window = TXT_NewWindow("Calculator");
 
     input_box = TXT_NewLabel("asdf");
@@ -154,7 +154,7 @@ void BuildGUI()
 
     TXT_AddWidget(table, TXT_NewButton2("  =  ", Calculate, NULL));
     AddOperatorButton(table, "/", OP_DIV);
-    
+
     TXT_AddWidget(window, TXT_NewStrut(0, 1));
     UpdateInputBox();
 }
@@ -166,7 +166,7 @@ int main(int argc, char *argv[])
         fprintf(stderr, "Failed to initialise GUI\n");
         exit(-1);
     }
-    
+
     TXT_SetDesktopTitle("Calculator demo");
 
     BuildGUI();
@@ -177,4 +177,3 @@ int main(int argc, char *argv[])
 
     return 0;
 }
-

@@ -66,7 +66,7 @@ static lumpindex_t *lumphash;
 // load the file again.
 static wad_file_t *reloadhandle = NULL;
 static lumpinfo_t *reloadlumps  = NULL;
-static char *      reloadname   = NULL;
+static char       *reloadname   = NULL;
 static int         reloadlump   = -1;
 
 // Hash function used for lump names.
@@ -392,7 +392,7 @@ void W_ReadLump(lumpindex_t lump, void *dest)
 
 [[nodiscard]] void *W_CacheLumpNum(lumpindex_t lumpnum, int tag)
 {
-    void *      result;
+    void       *result;
     lumpinfo_t *lump;
 
     if ((unsigned)lumpnum >= numlumps)
@@ -589,7 +589,7 @@ void W_GenerateHashTable()
 // But: the reload feature is a fragile hack...
 void W_Reload()
 {
-    char *      filename;
+    char       *filename;
     lumpindex_t i;
 
     if (reloadname == NULL)

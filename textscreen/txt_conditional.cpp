@@ -18,11 +18,10 @@
 #include "txt_strut.hpp"
 #include <new>
 
-struct txt_conditional_s
-{
-    txt_widget_t widget;
-    int *var;
-    int expected_value;
+struct txt_conditional_s {
+    txt_widget_t  widget;
+    int          *var;
+    int           expected_value;
     txt_widget_t *child;
 };
 
@@ -35,7 +34,7 @@ static int TXT_CondSelectable(TXT_UNCAST_ARG(conditional))
 {
     TXT_CAST_ARG(txt_conditional_t, conditional);
     return ConditionTrue(conditional)
-        && TXT_SelectableWidget(conditional->child);
+           && TXT_SelectableWidget(conditional->child);
 }
 
 static void TXT_CondSizeCalc(TXT_UNCAST_ARG(conditional))
@@ -106,7 +105,7 @@ static int TXT_CondKeyPress(TXT_UNCAST_ARG(conditional), int key)
 }
 
 static void TXT_CondMousePress(TXT_UNCAST_ARG(conditional),
-                               int x, int y, int b)
+    int x, int y, int b)
 {
     TXT_CAST_ARG(txt_conditional_t, conditional);
 
@@ -116,8 +115,7 @@ static void TXT_CondMousePress(TXT_UNCAST_ARG(conditional),
     }
 }
 
-txt_widget_class_t txt_conditional_class =
-{
+txt_widget_class_t txt_conditional_class = {
     TXT_CondSelectable,
     TXT_CondSizeCalc,
     TXT_CondDrawer,
@@ -129,18 +127,18 @@ txt_widget_class_t txt_conditional_class =
 };
 
 txt_conditional_t *TXT_NewConditional(int *var, int expected_value,
-                                      TXT_UNCAST_ARG(child))
+    TXT_UNCAST_ARG(child))
 {
     TXT_CAST_ARG(txt_widget_t, child);
 
-    auto *loc = malloc(sizeof(txt_conditional_t));
-    auto *conditional = new (loc) txt_conditional_t{};
+    auto *loc         = malloc(sizeof(txt_conditional_t));
+    auto *conditional = new (loc) txt_conditional_t {};
 
 
     TXT_InitWidget(conditional, &txt_conditional_class);
-    conditional->var = var;
+    conditional->var            = var;
     conditional->expected_value = expected_value;
-    conditional->child = child;
+    conditional->child          = child;
 
     child->parent = &conditional->widget;
 
@@ -166,4 +164,3 @@ txt_widget_t *TXT_If(int conditional, TXT_UNCAST_ARG(child))
         return &nullwidget->widget;
     }
 }
-

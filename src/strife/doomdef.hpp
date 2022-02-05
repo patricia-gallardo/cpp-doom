@@ -48,17 +48,15 @@
 
 // The current state of the game: whether we are
 // playing, gazing at the intermission screen,
-// the game final animation, or a demo. 
-using gamestate_t = enum
-{
+// the game final animation, or a demo.
+using gamestate_t = enum {
     GS_LEVEL,
     GS_UNKNOWN,
     GS_FINALE,
     GS_DEMOSCREEN,
 };
 
-using gameaction_t = enum
-{
+using gameaction_t = enum {
     ga_nothing,
     ga_loadlevel,
     ga_newgame,
@@ -76,34 +74,32 @@ using gameaction_t = enum
 //
 
 // Skill flags.
-#define	MTF_EASY                1
-#define	MTF_NORMAL              2
-#define	MTF_HARD                4
+#define MTF_EASY   1
+#define MTF_NORMAL 2
+#define MTF_HARD   4
 // villsa [STRIFE] standing monsters
-#define MTF_STAND               8
+#define MTF_STAND 8
 // villsa [STRIFE] don't spawn in single player
-#define MTF_NOTSINGLE           16
+#define MTF_NOTSINGLE 16
 // Deaf monsters/do not react to sound.
-#define MTF_AMBUSH              32
+#define MTF_AMBUSH 32
 // villsa [STRIFE] friendly to players
-#define MTF_FRIEND              64
+#define MTF_FRIEND 64
 // villsa [STRIFE] TODO - identify
-#define MTF_UNKNOWN1            128
+#define MTF_UNKNOWN1 128
 // villsa [STRIFE] thing is translucent - STRIFE-TODO: But how much?
-#define MTF_TRANSLUCENT         256
+#define MTF_TRANSLUCENT 256
 // villsa [STRIFE] thing is more - or less? - translucent - STRIFE-TODO
-#define MTF_MVIS                512
+#define MTF_MVIS 512
 // villsa [STRIFE] TODO - identify
-#define MTF_UNKNOWN2            1024
-
+#define MTF_UNKNOWN2 1024
 
 
 //
 // Key cards.
 //
 // villsa [STRIFE]
-using card_t = enum
-{
+using card_t = enum {
     key_BaseKey,        // 0
     key_GovsKey,        // 1
     key_Passcard,       // 2
@@ -132,17 +128,15 @@ using card_t = enum
     key_MineKey,        // 25
     key_NewKey5,        // 26
 
-    NUMCARDS            // 27
+    NUMCARDS // 27
 };
-
 
 
 // The defined weapons,
 //  including a marker indicating
 //  user has not changed weapon.
 // villsa [STRIFE]
-using weapontype_t = enum
-{
+using weapontype_t = enum {
     wp_fist,
     wp_elecbow,
     wp_rifle,
@@ -164,8 +158,7 @@ using weapontype_t = enum
 
 
 // Ammunition types defined.
-using ammotype_t = enum
-{
+using ammotype_t = enum {
     am_bullets,
     am_elecbolts,
     am_poisonbolts,
@@ -176,15 +169,14 @@ using ammotype_t = enum
 
     NUMAMMO,
 
-    am_noammo   // unlimited ammo
+    am_noammo // unlimited ammo
 
 };
 
 
 // Power up artifacts.
 // villsa [STRIFE]
-using powertype_t = enum
-{
+using powertype_t = enum {
     pw_strength,
     pw_invisibility,
     pw_ironfeet,
@@ -197,47 +189,46 @@ using powertype_t = enum
 
 // villsa [STRIFE]
 // quest numbers
-using questtype_t = enum
-{               // Hex          Watcom Name               player_t offset
-    tk_quest1,  // 0x00000001   questflags & 1            0x4D
-    tk_quest2,  // 0x00000002   questflags & 2
-    tk_quest3,  // 0x00000004   questflags & 4
-    tk_quest4,  // 0x00000008   questflags & 8
-    tk_quest5,  // 0x00000010   questflags & 10h
-    tk_quest6,  // 0x00000020   questflags & 20h
-    tk_quest7,  // 0x00000040   questflags & 40h
-    tk_quest8,  // 0x00000080   questflags & 80h
-    tk_quest9,  // 0x00000100   BYTE1(questflags) & 1     0x4E
-    tk_quest10, // 0x00000200   BYTE1(questflags) & 2
-    tk_quest11, // 0x00000400   BYTE1(questflags) & 4
-    tk_quest12, // 0x00000800   BYTE1(questflags) & 8
-    tk_quest13, // 0x00001000   BYTE1(questflags) & 10h
-    tk_quest14, // 0x00002000   BYTE1(questflags) & 20h
-    tk_quest15, // 0x00004000   BYTE1(questflags) & 40h
-    tk_quest16, // 0x00008000   BYTE1(questflags) & 80h
-    tk_quest17, // 0x00010000   BYTE2(questflags) & 1     0x4F
-    tk_quest18, // 0x00020000   BYTE2(questflags) & 2
-    tk_quest19, // 0x00040000   BYTE2(questflags) & 4
-    tk_quest20, // 0x00080000   BYTE2(questflags) & 8
-    tk_quest21, // 0x00100000   BYTE2(questflags) & 10h
-    tk_quest22, // 0x00200000   BYTE2(questflags) & 20h
-    tk_quest23, // 0x00400000   BYTE2(questflags) & 40h
-    tk_quest24, // 0x00800000   BYTE2(questflags) & 80h
-    tk_quest25, // 0x01000000   BYTE3(questflags) & 1     0x50
-    tk_quest26, // 0x02000000   BYTE3(questflags) & 2
-    tk_quest27, // 0x04000000   BYTE3(questflags) & 4
-    tk_quest28, // 0x08000000   BYTE3(questflags) & 8
-    tk_quest29, // 0x10000000   BYTE3(questflags) & 10h
-    tk_quest30, // 0x20000000   BYTE3(questflags) & 20h
-    tk_quest31, // 0x40000000   BYTE3(questflags) & 40h
-    tk_quest32, // most likely unused
+using questtype_t = enum { // Hex          Watcom Name               player_t offset
+    tk_quest1,             // 0x00000001   questflags & 1            0x4D
+    tk_quest2,             // 0x00000002   questflags & 2
+    tk_quest3,             // 0x00000004   questflags & 4
+    tk_quest4,             // 0x00000008   questflags & 8
+    tk_quest5,             // 0x00000010   questflags & 10h
+    tk_quest6,             // 0x00000020   questflags & 20h
+    tk_quest7,             // 0x00000040   questflags & 40h
+    tk_quest8,             // 0x00000080   questflags & 80h
+    tk_quest9,             // 0x00000100   BYTE1(questflags) & 1     0x4E
+    tk_quest10,            // 0x00000200   BYTE1(questflags) & 2
+    tk_quest11,            // 0x00000400   BYTE1(questflags) & 4
+    tk_quest12,            // 0x00000800   BYTE1(questflags) & 8
+    tk_quest13,            // 0x00001000   BYTE1(questflags) & 10h
+    tk_quest14,            // 0x00002000   BYTE1(questflags) & 20h
+    tk_quest15,            // 0x00004000   BYTE1(questflags) & 40h
+    tk_quest16,            // 0x00008000   BYTE1(questflags) & 80h
+    tk_quest17,            // 0x00010000   BYTE2(questflags) & 1     0x4F
+    tk_quest18,            // 0x00020000   BYTE2(questflags) & 2
+    tk_quest19,            // 0x00040000   BYTE2(questflags) & 4
+    tk_quest20,            // 0x00080000   BYTE2(questflags) & 8
+    tk_quest21,            // 0x00100000   BYTE2(questflags) & 10h
+    tk_quest22,            // 0x00200000   BYTE2(questflags) & 20h
+    tk_quest23,            // 0x00400000   BYTE2(questflags) & 40h
+    tk_quest24,            // 0x00800000   BYTE2(questflags) & 80h
+    tk_quest25,            // 0x01000000   BYTE3(questflags) & 1     0x50
+    tk_quest26,            // 0x02000000   BYTE3(questflags) & 2
+    tk_quest27,            // 0x04000000   BYTE3(questflags) & 4
+    tk_quest28,            // 0x08000000   BYTE3(questflags) & 8
+    tk_quest29,            // 0x10000000   BYTE3(questflags) & 10h
+    tk_quest30,            // 0x20000000   BYTE3(questflags) & 20h
+    tk_quest31,            // 0x40000000   BYTE3(questflags) & 40h
+    tk_quest32,            // most likely unused
     tk_numquests
 };
 
 // haleyjd 09/12/10: [STRIFE]
 // flag values for each quest.
 enum
-{ //  Name       Flag from bitnum      Purpose, if known
+{                                   //  Name       Flag from bitnum      Purpose, if known
     QF_QUEST1  = (1 << tk_quest1),  // Obtained Beldin's ring
     QF_QUEST2  = (1 << tk_quest2),  // Stole the Chalice
     QF_QUEST3  = (1 << tk_quest3),  // Permission to visit Irale (visited Macil)
@@ -270,8 +261,8 @@ enum
     QF_QUEST30 = (1 << tk_quest30),
     QF_QUEST31 = (1 << tk_quest31),
     QF_QUEST32 = (1U << tk_quest32), // Unused; BUG: Broken Coupling accidentally sets it.
-    
-    QF_ALLQUESTS  = (QF_QUEST31 + (QF_QUEST31 - 1)) // does not include bit 32!
+
+    QF_ALLQUESTS = (QF_QUEST31 + (QF_QUEST31 - 1)) // does not include bit 32!
 };
 
 //
@@ -279,13 +270,12 @@ enum
 //  how many seconds till expiration,
 //  assuming TICRATE is 35 ticks/second.
 //
-using powerduration_t = enum
-{
-    INVISTICS	= (55*TICRATE), // villsa [STRIFE] changed from 60 to 55
-    IRONTICS	= (80*TICRATE), // villsa [STRIFE] changed from 60 to 80
-    PMUPTICS    = (80*TICRATE), // villsa [STRIFE]
-    TARGTICS    = (160*TICRATE),// villsa [STRIFE]
+using powerduration_t = enum {
+    INVISTICS = (55 * TICRATE),  // villsa [STRIFE] changed from 60 to 55
+    IRONTICS  = (80 * TICRATE),  // villsa [STRIFE] changed from 60 to 80
+    PMUPTICS  = (80 * TICRATE),  // villsa [STRIFE]
+    TARGTICS  = (160 * TICRATE), // villsa [STRIFE]
 
 };
 
-#endif          // __DOOMDEF__
+#endif // __DOOMDEF__

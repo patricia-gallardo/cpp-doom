@@ -26,7 +26,7 @@
 #include "opl.hpp"
 
 #define HEADER_STRING "DBRAWOPL"
-#define ADLIB_PORT 0x388
+#define ADLIB_PORT    0x388
 
 void WriteReg(unsigned int reg, unsigned int val)
 {
@@ -43,14 +43,14 @@ void WriteReg(unsigned int reg, unsigned int val)
 
     OPL_WritePort(OPL_REGISTER_PORT, reg);
 
-    for (i=0; i<6; ++i)
+    for (i = 0; i < 6; ++i)
     {
         OPL_ReadPort(OPL_REGISTER_PORT);
     }
 
     OPL_WritePort(OPL_DATA_PORT, val);
 
-    for (i=0; i<35; ++i)
+    for (i = 0; i < 35; ++i)
     {
         OPL_ReadPort(OPL_REGISTER_PORT);
     }
@@ -60,9 +60,9 @@ void ClearAllRegs()
 {
     int i;
 
-    for (i=0; i<=0xff; ++i)
+    for (i = 0; i <= 0xff; ++i)
     {
-	WriteReg(i, 0x00);
+        WriteReg(i, 0x00);
     }
 }
 
@@ -86,16 +86,15 @@ void Shutdown()
     OPL_Shutdown();
 }
 
-struct timer_data
-{
-    int running;
+struct timer_data {
+    int   running;
     FILE *fstream;
 };
 
 void TimerCallback(void *data)
 {
     struct timer_data *timer_data = data;
-    int delay;
+    int                delay;
 
     if (!timer_data->running)
     {
@@ -146,8 +145,8 @@ void TimerCallback(void *data)
 void PlayFile(char *filename)
 {
     struct timer_data timer_data;
-    int running;
-    char buf[8];
+    int               running;
+    char              buf[8];
 
     timer_data.fstream = fopen(filename, "rb");
 
@@ -207,4 +206,3 @@ int main(int argc, char *argv[])
 
     return 0;
 }
-

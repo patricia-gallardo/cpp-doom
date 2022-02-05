@@ -72,9 +72,9 @@ static void *DEH_CheatStart(deh_context_t *context, char *line)
 
 static void DEH_CheatParseLine(deh_context_t *context, char *line, void *tag)
 {
-    deh_cheat_t *  cheat;
-    char *         variable_name;
-    char *         value;
+    deh_cheat_t   *cheat;
+    char          *variable_name;
+    char          *value;
     unsigned char *unsvalue;
     unsigned int   i;
 

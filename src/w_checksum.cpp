@@ -44,7 +44,7 @@ static int GetFileNumber(wad_file_t *handle)
     // Allocate another slot for this file.
 
     open_wadfiles                    = static_cast<wad_file_t **>(I_Realloc(open_wadfiles,
-        sizeof(wad_file_t *) * (num_open_wadfiles + 1)));
+                           sizeof(wad_file_t *) * (num_open_wadfiles + 1)));
     open_wadfiles[num_open_wadfiles] = handle;
 
     result = num_open_wadfiles;

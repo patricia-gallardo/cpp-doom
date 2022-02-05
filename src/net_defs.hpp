@@ -44,13 +44,13 @@
 
 #define BACKUPTICS 128
 
-using net_module_t = struct _net_module_s;
-using net_packet_t = struct _net_packet_s;
-using net_addr_t = struct _net_addr_s;
+using net_module_t  = struct _net_module_s;
+using net_packet_t  = struct _net_packet_s;
+using net_addr_t    = struct _net_addr_s;
 using net_context_t = struct _net_context_s;
 
 struct _net_packet_s {
-    byte *       data;
+    byte        *data;
     size_t       len;
     size_t       alloced;
     unsigned int pos;
@@ -93,7 +93,7 @@ struct _net_module_s {
 struct _net_addr_s {
     net_module_t *module;
     int           refcount;
-    void *        handle;
+    void         *handle;
 };
 
 // Magic number sent when connecting to check this is a valid client
@@ -113,8 +113,7 @@ struct _net_addr_s {
 // to use, so the order matters.
 // NOTE: The values in this enum do not have any special value outside of
 // the program they're compiled in. What matters is the string representation.
-using net_protocol_t = enum
-{
+using net_protocol_t = enum {
     // Protocol introduced with Chocolate Doom v3.0. Each compatibility-
     // breaking change to the network protocol will produce a new protocol
     // number in this enum.
@@ -129,8 +128,7 @@ using net_protocol_t = enum
 
 // packet types
 
-using net_packet_type_t = enum
-{
+using net_packet_type_t = enum {
     NET_PACKET_TYPE_SYN,
     NET_PACKET_TYPE_ACK, // deprecated
     NET_PACKET_TYPE_REJECTED,
@@ -150,8 +148,7 @@ using net_packet_type_t = enum
     NET_PACKET_TYPE_NAT_HOLE_PUNCH,
 };
 
-using net_master_packet_type_t = enum
-{
+using net_master_packet_type_t = enum {
     NET_MASTER_PACKET_TYPE_ADD,
     NET_MASTER_PACKET_TYPE_ADD_RESPONSE,
     NET_MASTER_PACKET_TYPE_QUERY,
@@ -211,7 +208,6 @@ using net_gamesettings_t = struct
     // Hexen player classes:
 
     int player_classes[NET_MAXPLAYERS];
-
 };
 
 #define NET_TICDIFF_FORWARD     (1 << 0)
@@ -243,13 +239,13 @@ using net_full_ticcmd_t = struct
 
 using net_querydata_t = struct
 {
-    const char *   version;
+    const char    *version;
     int            server_state;
     int            num_players;
     int            max_players;
     int            gamemode;
     int            gamemission;
-    const char *   description;
+    const char    *description;
     net_protocol_t protocol;
 };
 

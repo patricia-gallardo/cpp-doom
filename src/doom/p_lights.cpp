@@ -222,7 +222,7 @@ void EV_TurnTagLightsOff(line_t *line)
     int       min;
     sector_t *sector;
     sector_t *tsec;
-    line_t *  templine;
+    line_t   *templine;
 
     sector = sectors;
 
@@ -256,7 +256,7 @@ void EV_LightTurnOn(line_t *line,
     int       j;
     sector_t *sector;
     sector_t *temp;
-    line_t *  templine;
+    line_t   *templine;
 
     sector = sectors;
 

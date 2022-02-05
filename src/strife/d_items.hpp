@@ -34,9 +34,8 @@ using weaponinfo_t = struct
     statenum_t atkstate;
     statenum_t flashstate;
     boolean    availabledemo; // villsa [STRIFE]
-
 };
 
-extern  weaponinfo_t    weaponinfo[NUMWEAPONS];
+extern weaponinfo_t weaponinfo[NUMWEAPONS];
 
 #endif

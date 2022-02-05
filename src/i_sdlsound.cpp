@@ -50,7 +50,7 @@
 using allocated_sound_t = struct allocated_sound_s;
 
 struct allocated_sound_s {
-    sfxinfo_t *        sfxinfo;
+    sfxinfo_t         *sfxinfo;
     Mix_Chunk          chunk;
     int                use_count;
     int                pitch;
@@ -66,7 +66,7 @@ static Uint16  mixer_format;
 static int     mixer_channels;
 static boolean use_sfx_prefix;
 static boolean (*ExpandSoundData)(sfxinfo_t *sfxinfo,
-    byte *                                   data,
+    byte                                    *data,
     int                                      samplerate,
     int                                      bits,
     int                                      length) = NULL;
@@ -253,7 +253,7 @@ static void LockAllocatedSound(allocated_sound_t *snd)
 
     ++snd->use_count;
 
-    //printf("++ %s: Use count=%i\n", snd->sfxinfo->name, snd->use_count);
+    // printf("++ %s: Use count=%i\n", snd->sfxinfo->name, snd->use_count);
 
     // When we use a sound, re-link it into the list at the head, so
     // that the oldest sounds fall to the end of the list for freeing.
@@ -273,7 +273,7 @@ static void UnlockAllocatedSound(allocated_sound_t *snd)
 
     --snd->use_count;
 
-    //printf("-- %s: Use count=%i\n", snd->sfxinfo->name, snd->use_count);
+    // printf("-- %s: Use count=%i\n", snd->sfxinfo->name, snd->use_count);
 }
 
 // Search through the list of allocated sounds and return the one that matches
@@ -301,8 +301,8 @@ static allocated_sound_t *GetAllocatedSoundBySfxInfoAndPitch(sfxinfo_t *sfxinfo,
 static allocated_sound_t *PitchShift(allocated_sound_t *insnd, int pitch)
 {
     allocated_sound_t *outsnd;
-    Sint16 *           inp, *outp;
-    Sint16 *           srcbuf, *dstbuf;
+    Sint16            *inp, *outp;
+    Sint16            *srcbuf, *dstbuf;
     Uint32             srclen, dstlen;
 
     srcbuf = (Sint16 *)insnd->chunk.abuf;
@@ -402,7 +402,7 @@ static int SRC_ConversionMode()
 // DWF 2008-02-10 with cleanups by Simon Howard.
 
 static boolean ExpandSoundData_SRC(sfxinfo_t *sfxinfo,
-    byte *                                    data,
+    byte                                     *data,
     int                                       samplerate,
     int                                       bits,
     int                                       length)
@@ -411,9 +411,9 @@ static boolean ExpandSoundData_SRC(sfxinfo_t *sfxinfo,
     uint32_t i, abuf_index = 0, clipped = 0;
     //    uint32_t alen;
     int                retn;
-    int16_t *          expanded;
+    int16_t           *expanded;
     allocated_sound_t *snd;
-    Mix_Chunk *        chunk;
+    Mix_Chunk         *chunk;
     uint32_t           samplecount = length / (bits / 8);
 
     src_data.input_frames = samplecount;
@@ -563,7 +563,7 @@ static boolean ConvertibleRatio(int freq1, int freq2)
 static void WriteWAV(char *filename, byte *data,
     uint32_t length, int samplerate)
 {
-    FILE *         wav;
+    FILE          *wav;
     unsigned int   i;
     unsigned short s;
 
@@ -610,14 +610,14 @@ static void WriteWAV(char *filename, byte *data,
 // Returns number of clipped samples (always 0).
 
 static boolean ExpandSoundData_SDL(sfxinfo_t *sfxinfo,
-    byte *                                    data,
+    byte                                     *data,
     int                                       samplerate,
     int                                       bits,
     int                                       length)
 {
     SDL_AudioCVT       convertor;
     allocated_sound_t *snd;
-    Mix_Chunk *        chunk;
+    Mix_Chunk         *chunk;
     uint32_t           expanded_length;
     uint32_t           samplecount = length / (bits / 8);
 

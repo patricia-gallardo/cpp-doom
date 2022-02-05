@@ -19,7 +19,7 @@
 //
 
 
- // [crispy] std::abs()
+// [crispy] std::abs()
 #include <cstdlib>
 #include "doomdef.hpp"
 #include "d_event.hpp"
@@ -96,7 +96,7 @@ void P_CalcHeight(player_t *player)
             player->viewz = player->mo->ceilingz - 4 * FRACUNIT;
 
         // [crispy] fix player viewheight in NOMOMENTUM mode
-        //player->viewz = player->mo->z + player->viewheight;
+        // player->viewz = player->mo->z + player->viewheight;
         return;
     }
 
@@ -159,14 +159,14 @@ void P_MovePlayer(player_t *player)
     else
         // [crispy] in-air movement is only possible with jumping enabled
         if (cmd->forwardmove && critical->jump)
-        P_Thrust(player, player->mo->angle, FRACUNIT >> 8);
+            P_Thrust(player, player->mo->angle, FRACUNIT >> 8);
 
     if (cmd->sidemove && onground)
         P_Thrust(player, player->mo->angle - ANG90, cmd->sidemove * 2048);
     else
         // [crispy] in-air movement is only possible with jumping enabled
         if (cmd->sidemove && critical->jump)
-        P_Thrust(player, player->mo->angle, FRACUNIT >> 8);
+            P_Thrust(player, player->mo->angle, FRACUNIT >> 8);
 
     if ((cmd->forwardmove || cmd->sidemove)
         && player->mo->state == &states[S_PLAY])
@@ -262,7 +262,7 @@ void P_DeathThink(player_t *player)
 //
 void P_PlayerThink(player_t *player)
 {
-    ticcmd_t *   cmd;
+    ticcmd_t    *cmd;
     weapontype_t newweapon;
 
     // [AM] Assume we can interpolate at the beginning

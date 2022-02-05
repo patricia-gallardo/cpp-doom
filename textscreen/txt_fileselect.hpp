@@ -66,7 +66,7 @@ char *TXT_SelectFile(const char *prompt, const char **extensions);
  */
 
 txt_fileselect_t *TXT_NewFileSelector(char **variable, int size,
-                                      const char *prompt, const char **extensions);
+    const char *prompt, const char **extensions);
 
 /**
  * Special value to use for 'extensions' that selects a directory
@@ -76,4 +76,3 @@ txt_fileselect_t *TXT_NewFileSelector(char **variable, int size,
 extern const char *TXT_DIRECTORY[];
 
 #endif /* #ifndef TXT_FILESELECT_H */
-

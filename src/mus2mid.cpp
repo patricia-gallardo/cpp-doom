@@ -40,8 +40,7 @@ enum musevent
 };
 
 // MIDI event codes
-using midievent = enum
-{
+using midievent = enum {
     midi_releasekey        = 0x80,
     midi_presskey          = 0x90,
     midi_aftertouchkey     = 0xA0,
@@ -287,7 +286,7 @@ static boolean WriteChangePatch(byte channel, byte patch,
 static boolean WriteChangeController_Valued(byte channel,
     byte                                         control,
     byte                                         value,
-    MEMFILE *                                    midioutput)
+    MEMFILE                                     *midioutput)
 {
     byte working = midi_changecontroller | channel;
 
@@ -334,7 +333,7 @@ static boolean WriteChangeController_Valued(byte channel,
 // Write a valueless controller change event
 static boolean WriteChangeController_Valueless(byte channel,
     byte                                            control,
-    MEMFILE *                                       midioutput)
+    MEMFILE                                        *midioutput)
 {
     return WriteChangeController_Valued(channel, control, 0,
         midioutput);
@@ -697,9 +696,9 @@ boolean mus2mid(MEMFILE *musinput, MEMFILE *midioutput)
 int main(int argc, char *argv[])
 {
     MEMFILE *src, *dst;
-    byte *   infile;
+    byte    *infile;
     long     infile_len;
-    void *   outfile;
+    void    *outfile;
     size_t   outfile_len;
 
     if (argc != 3)

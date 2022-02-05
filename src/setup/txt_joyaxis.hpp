@@ -17,17 +17,15 @@
 
 using txt_joystick_axis_t = struct txt_joystick_axis_s;
 
-using txt_joystick_axis_direction_t = enum
-{
+using txt_joystick_axis_direction_t = enum {
     JOYSTICK_AXIS_HORIZONTAL,
     JOYSTICK_AXIS_VERTICAL,
 };
 
-using txt_joystick_axis_stage_t = enum
-{
-    CONFIG_CENTER,      // "Center the joystick and press a button..."
-    CONFIG_STAGE1,      // "Top or left and press a button..."
-    CONFIG_STAGE2,      // [Optional] "Bottom or right and press a button..."
+using txt_joystick_axis_stage_t = enum {
+    CONFIG_CENTER, // "Center the joystick and press a button..."
+    CONFIG_STAGE1, // "Top or left and press a button..."
+    CONFIG_STAGE2, // [Optional] "Bottom or right and press a button..."
 };
 
 // Callback invoked when calibration is completed.
@@ -42,17 +40,16 @@ using txt_joystick_axis_callback_t = void (*)();
 // A joystick axis.
 //
 
-struct txt_joystick_axis_s
-{
-    txt_widget_t widget;
-    int *axis, *invert;
+struct txt_joystick_axis_s {
+    txt_widget_t                  widget;
+    int                          *axis, *invert;
     txt_joystick_axis_direction_t dir;
 
     // Only used when configuring:
 
     // Configuration prompt window and label.
     txt_window_t *config_window;
-    txt_label_t *config_label;
+    txt_label_t  *config_label;
 
     // SDL joystick handle for reading joystick state.
     SDL_Joystick *joystick;
@@ -76,15 +73,13 @@ struct txt_joystick_axis_s
 };
 
 txt_joystick_axis_t *TXT_NewJoystickAxis(int *axis, int *invert,
-                                         txt_joystick_axis_direction_t dir);
+    txt_joystick_axis_direction_t dir);
 
 // Configure a joystick axis widget.
 //   axis: The axis widget to configure.
 //   using_button: If non-negative, use this joystick button as the button
 //       to expect from the user. Otherwise, ask.
 void TXT_ConfigureJoystickAxis(txt_joystick_axis_t *axis, int using_button,
-                               txt_joystick_axis_callback_t callback);
+    txt_joystick_axis_callback_t callback);
 
 #endif /* #ifndef TXT_JOY_AXIS_H */
-
-

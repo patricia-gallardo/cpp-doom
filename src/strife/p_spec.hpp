@@ -27,104 +27,88 @@
 //
 // End-level timer (-TIMER option)
 //
-extern	boolean levelTimer;
-extern	int	levelTimeCount;
+extern boolean levelTimer;
+extern int     levelTimeCount;
 
 
 //      Define values for map objects
-#define MO_TELEPORTMAN          14
+#define MO_TELEPORTMAN 14
 
 
 // at game start
-void    P_InitPicAnims ();
+void P_InitPicAnims();
 
 // villsa [STRIFE]
-using terraintype_e = enum
-{
+using terraintype_e = enum {
     FLOOR_WATER = 0,
     FLOOR_SLIME = 1,
     FLOOR_SOLID = 2,
     FLOOR_END   = -1
 };
 
-void P_InitTerrainTypes();                  // villsa [STRIFE]
-terraintype_e P_GetTerrainType(mobj_t* mobj);   // villsa [STRIFE]
+void          P_InitTerrainTypes();           // villsa [STRIFE]
+terraintype_e P_GetTerrainType(mobj_t *mobj); // villsa [STRIFE]
 
 // at map load
-void    P_SpawnSpecials ();
+void P_SpawnSpecials();
 
 // every tic
-void    P_UpdateSpecials ();
+void P_UpdateSpecials();
 
 // when needed
 boolean
-P_UseSpecialLine
-( mobj_t*	thing,
-  line_t*	line,
-  int		side );
+    P_UseSpecialLine(mobj_t *thing,
+        line_t              *line,
+        int                  side);
 
-void
-P_ShootSpecialLine
-( mobj_t*	thing,
-  line_t*	line );
+void P_ShootSpecialLine(mobj_t *thing,
+    line_t                     *line);
 
-void
-P_CrossSpecialLine
-( int		linenum,
-  int		side,
-  mobj_t*	thing );
+void P_CrossSpecialLine(int linenum,
+    int                     side,
+    mobj_t                 *thing);
 
-void    P_PlayerInSpecialSector (player_t* player);
+void P_PlayerInSpecialSector(player_t *player);
 
-int
-twoSided
-( int		sector,
-  int		line );
+int twoSided(int sector,
+    int          line);
 
-sector_t*
-getSector
-( int		currentSector,
-  int		line,
-  int		side );
+sector_t *
+    getSector(int currentSector,
+        int       line,
+        int       side);
 
-side_t*
-getSide
-( int		currentSector,
-  int		line,
-  int		side );
+side_t *
+    getSide(int currentSector,
+        int     line,
+        int     side);
 
-fixed_t P_FindLowestFloorSurrounding(sector_t* sec);
-fixed_t P_FindHighestFloorSurrounding(sector_t* sec);
+fixed_t P_FindLowestFloorSurrounding(sector_t *sec);
+fixed_t P_FindHighestFloorSurrounding(sector_t *sec);
 
 fixed_t
-P_FindNextHighestFloor
-( sector_t*	sec,
-  int		currentheight );
+    P_FindNextHighestFloor(sector_t *sec,
+        int                          currentheight);
 
-fixed_t P_FindLowestCeilingSurrounding(sector_t* sec);
-fixed_t P_FindHighestCeilingSurrounding(sector_t* sec);
+fixed_t P_FindLowestCeilingSurrounding(sector_t *sec);
+fixed_t P_FindHighestCeilingSurrounding(sector_t *sec);
 
-int
-P_FindSectorFromLineTag
-( line_t*	line,
-  int		start );
+int P_FindSectorFromLineTag(line_t *line,
+    int                             start);
 
-int
-P_FindMinSurroundingLight
-( sector_t*	sector,
-  int		max );
+int P_FindMinSurroundingLight(sector_t *sector,
+    int                                 max);
 
-sector_t*
-getNextSector
-( line_t*	line,
-  sector_t*	sec );
+sector_t *
+    getNextSector(line_t *line,
+        sector_t         *sec);
 
 
 //
 // SPECIAL
 //
-int     EV_DoDonut(line_t* line);
-boolean EV_ClearForceFields(line_t* line);  // villsa [STRIFE]
+int     EV_DoDonut(line_t *line);
+boolean EV_ClearForceFields(line_t *line); // villsa [STRIFE]
 
 
 //
@@ -132,84 +116,67 @@ boolean EV_ClearForceFields(line_t* line);  // villsa [STRIFE]
 //
 using fireflicker_t = struct
 {
-    thinker_t	thinker;
-    sector_t*	sector;
-    int		count;
-    int		maxlight;
-    int		minlight;
-
+    thinker_t thinker;
+    sector_t *sector;
+    int       count;
+    int       maxlight;
+    int       minlight;
 };
 
 
-
-using lightflash_t = struct lightflash_s
-{
-    thinker_t	thinker;
-    sector_t*	sector;
-    int		count;
-    int		maxlight;
-    int		minlight;
-    int		maxtime;
-    int		mintime;
-
+using lightflash_t = struct lightflash_s {
+    thinker_t thinker;
+    sector_t *sector;
+    int       count;
+    int       maxlight;
+    int       minlight;
+    int       maxtime;
+    int       mintime;
 };
 
 
-
-using strobe_t = struct strobe_s
-{
-    thinker_t	thinker;
-    sector_t*	sector;
-    int		count;
-    int		minlight;
-    int		maxlight;
-    int		darktime;
-    int		brighttime;
-
+using strobe_t = struct strobe_s {
+    thinker_t thinker;
+    sector_t *sector;
+    int       count;
+    int       minlight;
+    int       maxlight;
+    int       darktime;
+    int       brighttime;
 };
 
 
-
-
-using glow_t = struct glow_s
-{
-    thinker_t	thinker;
-    sector_t*	sector;
-    int		minlight;
-    int		maxlight;
-    int		direction;
-
+using glow_t = struct glow_s {
+    thinker_t thinker;
+    sector_t *sector;
+    int       minlight;
+    int       maxlight;
+    int       direction;
 };
 
 
-#define GLOWSPEED			8
-#define STROBEBRIGHT		5
-#define FASTDARK			15
-#define SLOWDARK			35
+#define GLOWSPEED    8
+#define STROBEBRIGHT 5
+#define FASTDARK     15
+#define SLOWDARK     35
 
-void    P_SpawnFireFlicker (sector_t* sector);
-void    T_LightFlash (lightflash_t* flash);
-void    P_SpawnLightFlash (sector_t* sector);
-void    T_StrobeFlash (strobe_t* flash);
+void P_SpawnFireFlicker(sector_t *sector);
+void T_LightFlash(lightflash_t *flash);
+void P_SpawnLightFlash(sector_t *sector);
+void T_StrobeFlash(strobe_t *flash);
 
-void
-P_SpawnStrobeFlash
-( sector_t*	sector,
-  int		fastOrSlow,
-  int		inSync );
+void P_SpawnStrobeFlash(sector_t *sector,
+    int                           fastOrSlow,
+    int                           inSync);
 
-void    EV_StartLightStrobing(line_t* line);
-void    EV_TurnTagLightsOff(line_t* line);
+void EV_StartLightStrobing(line_t *line);
+void EV_TurnTagLightsOff(line_t *line);
 
-void
-EV_LightTurnOn
-( line_t*	line,
-  int		bright );
+void EV_LightTurnOn(line_t *line,
+    int                     bright);
 
-void    T_Glow(glow_t* g);
-void    P_SpawnGlowingLight(sector_t* sector);
-
-
+void T_Glow(glow_t *g);
+void P_SpawnGlowingLight(sector_t *sector);
 
 
 //
@@ -217,16 +184,14 @@ void    P_SpawnGlowingLight(sector_t* sector);
 //
 using switchlist_t = struct
 {
-    char	name1[9];
-    char	name2[9];
-    short	episode;
-    int         sound;  // villsa [STRIFE]
-
+    char  name1[9];
+    char  name2[9];
+    short episode;
+    int   sound; // villsa [STRIFE]
 };
 
 
-using bwhere_e = enum
-{
+using bwhere_e = enum {
     top,
     middle,
     bottom
@@ -236,32 +201,27 @@ using bwhere_e = enum
 
 using button_t = struct
 {
-    line_t*	line;
-    bwhere_e	where;
-    int		btexture;
-    int		btimer;
+    line_t      *line;
+    bwhere_e     where;
+    int          btexture;
+    int          btimer;
     degenmobj_t *soundorg;
-
 };
 
 
+// max # of wall switches in a level
+#define MAXSWITCHES 80 // villsa [STRIFE] changed from 50 to 80
 
+// 4 players, 4 buttons each at once, max.
+#define MAXBUTTONS 16
 
- // max # of wall switches in a level
-#define MAXSWITCHES		80  // villsa [STRIFE] changed from 50 to 80
+// 1 second, in ticks.
+#define BUTTONTIME 35
 
- // 4 players, 4 buttons each at once, max.
-#define MAXBUTTONS		16
+extern button_t buttonlist[MAXBUTTONS];
 
- // 1 second, in ticks. 
-#define BUTTONTIME      35             
-
-extern button_t	buttonlist[MAXBUTTONS]; 
-
-void
-P_ChangeSwitchTexture
-( line_t*	line,
-  int		useAgain );
+void P_ChangeSwitchTexture(line_t *line,
+    int                            useAgain);
 
 void P_InitSwitchList();
 
@@ -269,8 +229,7 @@ void P_InitSwitchList();
 //
 // P_PLATS
 //
-using plat_e = enum
-{
+using plat_e = enum {
     up,
     down,
     waiting,
@@ -279,66 +238,57 @@ using plat_e = enum
 };
 
 
-
-using plattype_e = enum
-{
+using plattype_e = enum {
     perpetualRaise,
     downWaitUpStay,
-    slowDWUS,           // villsa [STRIFE]
+    slowDWUS, // villsa [STRIFE]
     raiseAndChange,
     raiseToNearestAndChange,
     blazeDWUS,
-    upWaitDownStay      // villsa [STRIFE]
+    upWaitDownStay // villsa [STRIFE]
 
 };
 
 
-
-using plat_t = struct plat_s
-{
-    thinker_t	thinker;
-    sector_t*	sector;
-    fixed_t	speed;
-    fixed_t	low;
-    fixed_t	high;
-    int		wait;
-    int		count;
-    plat_e	status;
-    plat_e	oldstatus;
-    boolean	crush;
-    int		tag;
-    plattype_e	type;
-
+using plat_t = struct plat_s {
+    thinker_t  thinker;
+    sector_t  *sector;
+    fixed_t    speed;
+    fixed_t    low;
+    fixed_t    high;
+    int        wait;
+    int        count;
+    plat_e     status;
+    plat_e     oldstatus;
+    boolean    crush;
+    int        tag;
+    plattype_e type;
 };
 
 
+#define PLATWAIT  3
+#define PLATSPEED FRACUNIT
+#define MAXPLATS  30 * 256
 
-#define PLATWAIT		3
-#define PLATSPEED		FRACUNIT
-#define MAXPLATS		30*256
 
+extern plat_t *activeplats[MAXPLATS];
 
-extern plat_t*	activeplats[MAXPLATS];
+void T_PlatRaise(plat_t *plat);
 
-void    T_PlatRaise(plat_t*	plat);
+int EV_DoPlat(line_t *line,
+    plattype_e        type,
+    int               amount);
 
-int
-EV_DoPlat
-( line_t*	line,
-  plattype_e	type,
-  int		amount );
-
-void    P_AddActivePlat(plat_t* plat);
-void    P_RemoveActivePlat(plat_t* plat);
-void    EV_StopPlat(line_t* line);
-void    P_ActivateInStasis(int tag);
+void P_AddActivePlat(plat_t *plat);
+void P_RemoveActivePlat(plat_t *plat);
+void EV_StopPlat(line_t *line);
+void P_ActivateInStasis(int tag);
 
 
 //
 // P_DOORS
 //
-using vldoor_e = enum
-{
+using vldoor_e = enum {
     vld_normal,
     vld_close30ThenOpen,
     vld_close,
@@ -347,76 +297,62 @@ using vldoor_e = enum
     vld_blazeRaise,
     vld_blazeOpen,
     vld_blazeClose,
-    vld_shopClose,          // villsa [STRIFE]
-    vld_splitRaiseNearest,  // villsa [STRIFE]
-    vld_splitOpen           // villsa [STRIFE]
+    vld_shopClose,         // villsa [STRIFE]
+    vld_splitRaiseNearest, // villsa [STRIFE]
+    vld_splitOpen          // villsa [STRIFE]
 
 };
 
 
-
-using vldoor_t = struct vldoor_s
-{
-    thinker_t   thinker;
-    vldoor_e    type;
-    sector_t*   sector;
-    fixed_t     topheight;
-    fixed_t     speed;
+using vldoor_t = struct vldoor_s {
+    thinker_t thinker;
+    vldoor_e  type;
+    sector_t *sector;
+    fixed_t   topheight;
+    fixed_t   speed;
 
     // 1 = up, 0 = waiting at top, -1 = down
-    int         direction;
+    int direction;
 
     // tics to wait at the top
-    int         topwait;
+    int topwait;
     // (keep in case a door going down is reset)
     // when it reaches 0, start going down
-    int         topcountdown;
+    int topcountdown;
 
     // villsa [STRIFE] new field - sound to play when opening
-    int         opensound;
+    int opensound;
 
     // villsa [STRIFE] new field - sound to play when closing
-    int         closesound;
-
+    int closesound;
 };
 
 
+#define VDOORSPEED FRACUNIT * 2
+#define VDOORWAIT  150
 
-#define VDOORSPEED		FRACUNIT*2
-#define VDOORWAIT		150
+void EV_VerticalDoor(line_t *line,
+    mobj_t                  *thing);
 
-void
-EV_VerticalDoor
-( line_t*	line,
-  mobj_t*	thing );
+int EV_DoDoor(line_t *line,
+    vldoor_e          type);
 
-int
-EV_DoDoor
-( line_t*	line,
-  vldoor_e	type );
+int EV_DoLockedDoor(line_t *line,
+    vldoor_e                type,
+    mobj_t                 *thing);
 
-int
-EV_DoLockedDoor
-( line_t*	line,
-  vldoor_e	type,
-  mobj_t*	thing );
+void T_VerticalDoor(vldoor_t *door);
+void P_SpawnDoorCloseIn30(sector_t *sec);
 
-void    T_VerticalDoor (vldoor_t* door);
-void    P_SpawnDoorCloseIn30 (sector_t* sec);
-
-void
-P_SpawnDoorRaiseIn5Mins
-( sector_t*	sec,
-  int		secnum );
-
+void P_SpawnDoorRaiseIn5Mins(sector_t *sec,
+    int                                secnum);
 
 
 // villsa [STRIFE] resurrected sliding doors
 //
 //      Sliding doors...
 //
-using sd_e = enum
-{
+using sd_e = enum {
     sd_opening,
     sd_waiting,
     sd_closing
@@ -424,9 +360,7 @@ using sd_e = enum
 };
 
 
-
-using sdt_e = enum
-{
+using sdt_e = enum {
     sdt_openOnly,
     sdt_closeOnly,
     sdt_openAndClose
@@ -434,68 +368,62 @@ using sdt_e = enum
 };
 
 
-
 // villsa [STRIFE] Rogue added a second line_t in the struct
 // backsector is removed
 using slidedoor_t = struct
 {
-    thinker_t   thinker;
-    sdt_e       type;
-    line_t*     line1;
-    line_t*     line2;
-    int         frame;
-    int         whichDoorIndex;
-    int         timer;
-    sector_t*   frontsector;
-    sd_e        status;
-
+    thinker_t thinker;
+    sdt_e     type;
+    line_t   *line1;
+    line_t   *line2;
+    int       frame;
+    int       whichDoorIndex;
+    int       timer;
+    sector_t *frontsector;
+    sd_e      status;
 };
 
 // villsa [STRIFE] no front/back frames
 using slidename_t = struct
 {
-    char    frame1[9];
-    char    frame2[9];
-    char    frame3[9];
-    char    frame4[9];
-    char    frame5[9];
-    char    frame6[9];
-    char    frame7[9];
-    char    frame8[9];
-
+    char frame1[9];
+    char frame2[9];
+    char frame3[9];
+    char frame4[9];
+    char frame5[9];
+    char frame6[9];
+    char frame7[9];
+    char frame8[9];
 };
 
 // villsa [STRIFE] no front/back frames
 using slideframe_t = struct
 {
     int frames[8];
-
 };
 
 // haleyjd 09/29/10: [STRIFE] Externalized for savegames
-void T_SlidingDoor(slidedoor_t* door);
+void T_SlidingDoor(slidedoor_t *door);
 
 
 // how many frames of animation
-#define SNUMFRAMES      8       // villsa [STRIFE] changed from 4 to 8
+#define SNUMFRAMES 8 // villsa [STRIFE] changed from 4 to 8
 
-#define SDOORWAIT       TICRATE*3
-#define SWAITTICS       4
+#define SDOORWAIT TICRATE * 3
+#define SWAITTICS 4
 
 // how many diff. types of anims
-#define MAXSLIDEDOORS	8       // villsa [STRIFE] changed from 5 to 8                     
+#define MAXSLIDEDOORS 8 // villsa [STRIFE] changed from 5 to 8
 
 void P_InitSlidingDoorFrames();
-void EV_SlidingDoor(line_t* line, mobj_t* thing);
-int EV_RemoteSlidingDoor(line_t* line, mobj_t* thing);
-
+void EV_SlidingDoor(line_t *line, mobj_t *thing);
+int  EV_RemoteSlidingDoor(line_t *line, mobj_t *thing);
 
 
 //
 // P_CEILNG
 //
-using ceiling_e = enum
-{
+using ceiling_e = enum {
     lowerToFloor,
     raiseToHighest,
     lowerAndCrush,
@@ -506,53 +434,44 @@ using ceiling_e = enum
 };
 
 
-
-using ceiling_t = struct ceiling_s
-{
-    thinker_t	thinker;
-    ceiling_e	type;
-    sector_t*	sector;
-    fixed_t	bottomheight;
-    fixed_t	topheight;
-    fixed_t	speed;
-    boolean	crush;
+using ceiling_t = struct ceiling_s {
+    thinker_t thinker;
+    ceiling_e type;
+    sector_t *sector;
+    fixed_t   bottomheight;
+    fixed_t   topheight;
+    fixed_t   speed;
+    boolean   crush;
 
     // 1 = up, 0 = waiting, -1 = down
-    int		direction;
+    int direction;
 
     // ID
-    int		tag;
-    int		olddirection;
-
+    int tag;
+    int olddirection;
 };
 
 
+#define CEILSPEED   FRACUNIT
+#define CEILWAIT    150
+#define MAXCEILINGS 30
 
+extern ceiling_t *activeceilings[MAXCEILINGS];
 
+int EV_DoCeiling(line_t *line,
+    ceiling_e            type);
 
-#define CEILSPEED		FRACUNIT
-#define CEILWAIT		150
-#define MAXCEILINGS		30
-
-extern ceiling_t*	activeceilings[MAXCEILINGS];
-
-int
-EV_DoCeiling
-( line_t*	line,
-  ceiling_e	type );
-
-void    T_MoveCeiling (ceiling_t* ceiling);
-void    P_AddActiveCeiling(ceiling_t* c);
-void    P_RemoveActiveCeiling(ceiling_t* c);
-int	EV_CeilingCrushStop(line_t* line);
-void    P_ActivateInStasisCeiling(line_t* line);
+void T_MoveCeiling(ceiling_t *ceiling);
+void P_AddActiveCeiling(ceiling_t *c);
+void P_RemoveActiveCeiling(ceiling_t *c);
+int  EV_CeilingCrushStop(line_t *line);
+void P_ActivateInStasisCeiling(line_t *line);
 
 
 //
 // P_FLOOR
 //
-using floor_e = enum
-{
+using floor_e = enum {
     // lower floor to highest surrounding floor
     lowerFloor,
 
@@ -575,11 +494,11 @@ using floor_e = enum
     //  and change floorpic
     lowerAndChange,
 
-    raiseFloor64,          // [STRIFE] changed from 24 to 64
+    raiseFloor64, // [STRIFE] changed from 24 to 64
     raiseFloor24AndChange,
     raiseFloorCrush,
 
-     // raise to next highest floor, turbo-speed
+    // raise to next highest floor, turbo-speed
     raiseFloorTurbo,
     donutRaise,
     raiseFloor512,
@@ -590,37 +509,29 @@ using floor_e = enum
 };
 
 
-
-
-using stair_e = enum
-{
+using stair_e = enum {
     build8,     // slowly build by 8
     turbo16,    // quickly build by 16
     buildDown16 // haleyjd 09/24/10: [STRIFE] new stair type
 };
 
 
-
-using floormove_t = struct floormove_s
-{
-    thinker_t	thinker;
-    floor_e	type;
-    boolean	crush;
-    sector_t*	sector;
-    int		direction;
-    int		newspecial;
-    short	texture;
-    fixed_t	floordestheight;
-    fixed_t	speed;
-
+using floormove_t = struct floormove_s {
+    thinker_t thinker;
+    floor_e   type;
+    boolean   crush;
+    sector_t *sector;
+    int       direction;
+    int       newspecial;
+    short     texture;
+    fixed_t   floordestheight;
+    fixed_t   speed;
 };
 
 
+#define FLOORSPEED FRACUNIT
 
-#define FLOORSPEED		FRACUNIT
-
-using result_e = enum
-{
+using result_e = enum {
     ok,
     crushed,
     pastdest
@@ -628,25 +539,20 @@ using result_e = enum
 };
 
 result_e
-T_MovePlane
-( sector_t*	sector,
-  fixed_t	speed,
-  fixed_t	dest,
-  boolean	crush,
-  int		floorOrCeiling,
-  int		direction );
+    T_MovePlane(sector_t *sector,
+        fixed_t           speed,
+        fixed_t           dest,
+        boolean           crush,
+        int               floorOrCeiling,
+        int               direction);
 
-int
-EV_BuildStairs
-( line_t*	line,
-  stair_e	type );
+int EV_BuildStairs(line_t *line,
+    stair_e                type);
 
-int
-EV_DoFloor
-( line_t*	line,
-  floor_e	floortype );
+int EV_DoFloor(line_t *line,
+    floor_e            floortype);
 
-void T_MoveFloor( floormove_t* floor);
+void T_MoveFloor(floormove_t *floor);
 
 //
 // P_TELEPT
@@ -654,25 +560,22 @@ void T_MoveFloor( floormove_t* floor);
 
 // [STRIFE] Teleportation flags - teleflags
 // Not to be conflated with telefrags, though they be tangentially related ;)
-using teleflags_e = enum teleflags
-{
+using teleflags_e = enum teleflags {
     TF_NOSRCSND = 0x01,
     TF_NODSTSND = 0x02,
     TF_NODSTFOG = 0x10,
     TF_NOSRCFOG = 0x20,
 
     TF_NORMAL      = 0,
-    TF_DSTSILENCE  = (TF_NODSTSND|TF_NODSTFOG),    // 0x12 (18) (Not used)
-    TF_SRCSILENCE  = (TF_NOSRCSND|TF_NOSRCFOG),    // 0x21 (33)
-    TF_FULLSILENCE = (TF_SRCSILENCE|TF_DSTSILENCE) // 0x33 (51)
+    TF_DSTSILENCE  = (TF_NODSTSND | TF_NODSTFOG),    // 0x12 (18) (Not used)
+    TF_SRCSILENCE  = (TF_NOSRCSND | TF_NOSRCFOG),    // 0x21 (33)
+    TF_FULLSILENCE = (TF_SRCSILENCE | TF_DSTSILENCE) // 0x33 (51)
 
 };
 
-int
-EV_Teleport
-( line_t*       line,
-  int           side,
-  mobj_t*       thing,
-  teleflags_e   flags);
+int EV_Teleport(line_t *line,
+    int                 side,
+    mobj_t             *thing,
+    teleflags_e         flags);
 
 #endif

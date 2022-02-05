@@ -41,20 +41,20 @@ static void *DEH_AmmoStart(deh_context_t *context, char *line)
         DEH_Warning(context, "Invalid ammo number: %i", ammo_number);
         return NULL;
     }
-    
+
     return &maxammo[ammo_number];
 }
 
 static void DEH_AmmoParseLine(deh_context_t *context, char *line, void *tag)
 {
     char *variable_name, *value;
-    int ivalue;
-    int ammo_number;
+    int   ivalue;
+    int   ammo_number;
 
     if (tag == NULL)
         return;
 
-    ammo_number = ((int *) tag) - maxammo;
+    ammo_number = ((int *)tag) - maxammo;
 
     // Parse the assignment
 
@@ -84,15 +84,14 @@ static void DEH_AmmoSHA1Hash(sha1_context_t *context)
 {
     int i;
 
-    for (i=0; i<NUMAMMO; ++i)
+    for (i = 0; i < NUMAMMO; ++i)
     {
         SHA1_UpdateInt32(context, clipammo[i]);
         SHA1_UpdateInt32(context, maxammo[i]);
     }
 }
 
-deh_section_t deh_section_ammo =
-{
+deh_section_t deh_section_ammo = {
     "Ammo",
     NULL,
     DEH_AmmoStart,
@@ -100,4 +99,3 @@ deh_section_t deh_section_ammo =
     NULL,
     DEH_AmmoSHA1Hash,
 };
-

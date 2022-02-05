@@ -140,7 +140,6 @@ using divline_t = struct
     fixed_t y;
     fixed_t dx;
     fixed_t dy;
-
 };
 
 typedef struct
@@ -158,7 +157,7 @@ typedef struct
 #define MAXINTERCEPTS_ORIGINAL 128
 #define MAXINTERCEPTS          (MAXINTERCEPTS_ORIGINAL + 61)
 
-//extern intercept_t	intercepts[MAXINTERCEPTS]; // [crispy] remove INTERCEPTS limit
+// extern intercept_t	intercepts[MAXINTERCEPTS]; // [crispy] remove INTERCEPTS limit
 extern intercept_t *intercept_p;
 
 using traverser_t = boolean (*)(intercept_t *);
@@ -248,14 +247,14 @@ void P_LineAttack(mobj_t *t1,
     int                   damage);
 
 void P_RadiusAttack(mobj_t *spot,
-    mobj_t *                source,
+    mobj_t                 *source,
     int                     damage);
 
 
 //
 // P_SETUP
 //
-extern byte *   rejectmatrix; // for fast sight rejection
+extern byte    *rejectmatrix; // for fast sight rejection
 extern int32_t *blockmaplump; // offsets in blockmap are from here // [crispy] BLOCKMAP limit
 extern int32_t *blockmap;     // [crispy] BLOCKMAP limit
 extern int      bmapwidth;
@@ -279,11 +278,11 @@ extern int maxammo[NUMAMMO];
 extern int clipammo[NUMAMMO];
 
 void P_TouchSpecialThing(mobj_t *special,
-    mobj_t *                     toucher);
+    mobj_t                      *toucher);
 
 void P_DamageMobj(mobj_t *target,
-    mobj_t *              inflictor,
-    mobj_t *              source,
+    mobj_t               *inflictor,
+    mobj_t               *source,
     int                   damage);
 
 

@@ -1,17 +1,19 @@
 {
-    "$schema": "https://raw.githubusercontent.com/microsoft/vcpkg/master/scripts/vcpkg.schema.json",
-    "name": "doom",
-    "version": "0.1",
-    "dependencies": [
-        "libpng",
-        "libsamplerate",
-        {
-            "name": "sdl2",
-            "default-features": false,
-            "features": [ "x11" ],
-            "platform": "linux"
-        },
-        "sdl2-mixer",
-        "sdl2-net"
-    ]
+  "$schema": "https://raw.githubusercontent.com/microsoft/vcpkg/master/scripts/vcpkg.schema.json",
+  "name": "doom",
+  "version": "0.1",
+  "dependencies": [
+    "libpng",
+    "libsamplerate",
+    {
+      "name": "sdl2",
+      "default-features": false,
+      "features": [
+        "x11"
+      ],
+      "platform": "linux"
+    },
+    "sdl2-mixer",
+    "sdl2-net"
+  ]
 }

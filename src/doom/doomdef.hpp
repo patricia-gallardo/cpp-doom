@@ -56,8 +56,7 @@ enum gamestate_t
     GS_FORCE_WIPE = -1
 };
 
-using gameaction_t = enum
-{
+using gameaction_t = enum {
     ga_nothing,
     ga_loadlevel,
     ga_newgame,
@@ -86,8 +85,7 @@ using gameaction_t = enum
 //
 // Key cards.
 //
-using card_t = enum
-{
+using card_t = enum {
     it_bluecard,
     it_yellowcard,
     it_redcard,
@@ -103,8 +101,7 @@ using card_t = enum
 // The defined weapons,
 //  including a marker indicating
 //  user has not changed weapon.
-using weapontype_t = enum
-{
+using weapontype_t = enum {
     wp_fist,
     wp_pistol,
     wp_shotgun,
@@ -124,8 +121,7 @@ using weapontype_t = enum
 
 
 // Ammunition types defined.
-using ammotype_t = enum
-{
+using ammotype_t = enum {
     am_clip,  // Pistol / chaingun ammo.
     am_shell, // Shotgun / double barreled shotgun.
     am_cell,  // Plasma rifle, BFG.
@@ -137,8 +133,7 @@ using ammotype_t = enum
 
 
 // Power up artifacts.
-using powertype_t = enum
-{
+using powertype_t = enum {
     pw_invulnerability,
     pw_strength,
     pw_invisibility,
@@ -158,8 +153,7 @@ using powertype_t = enum
 //  how many seconds till expiration,
 //  assuming TICRATE is 35 ticks/second.
 //
-using powerduration_t = enum
-{
+using powerduration_t = enum {
     INVULNTICS = (30 * TICRATE),
     INVISTICS  = (60 * TICRATE),
     INFRATICS  = (120 * TICRATE),

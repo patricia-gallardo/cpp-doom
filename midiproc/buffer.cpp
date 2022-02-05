@@ -65,7 +65,7 @@ boolean Buffer_Push(buffer_t *buf, const void *data, int len)
     }
 
     space_begin = buf->data - buf->buffer;
-    space_end = buf->buffer_end - buf->data_end;
+    space_end   = buf->buffer_end - buf->data_end;
 
     if (len > space_end)
     {
@@ -77,7 +77,7 @@ boolean Buffer_Push(buffer_t *buf, const void *data, int len)
 
         // Move our data to the front of the buffer.
         memmove(buf->buffer, buf->data, buf->data_len);
-        buf->data = buf->buffer;
+        buf->data     = buf->buffer;
         buf->data_end = buf->buffer + buf->data_len;
     }
 
@@ -121,7 +121,7 @@ void Buffer_Shift(buffer_t *buf, int len)
 //
 void Buffer_Clear(buffer_t *buf)
 {
-    buf->data = buf->buffer;
+    buf->data     = buf->buffer;
     buf->data_end = buf->buffer;
     buf->data_len = 0;
 }
@@ -132,12 +132,12 @@ void Buffer_Clear(buffer_t *buf)
 // WARNING: This reader will invalidate if the underlying buffer changes.
 //          Use it, then delete it before you touch the underlying buffer again.
 //
-buffer_reader_t *NewReader(buffer_t* buffer)
+buffer_reader_t *NewReader(buffer_t *buffer)
 {
     buffer_reader_t *reader = static_cast<buffer_reader_t *>(malloc(sizeof(buffer_reader_t)));
 
     reader->buffer = buffer;
-    reader->pos = buffer->data;
+    reader->pos    = buffer->data;
 
     return reader;
 }
@@ -164,7 +164,7 @@ int Reader_BytesRead(buffer_reader_t *reader)
 boolean Reader_ReadInt8(buffer_reader_t *reader, uint8_t *out)
 {
     byte *data, *data_end;
-    int len = Buffer_Data(reader->buffer, &data);
+    int   len = Buffer_Data(reader->buffer, &data);
 
     data_end = data + len;
 
@@ -185,10 +185,10 @@ boolean Reader_ReadInt8(buffer_reader_t *reader, uint8_t *out)
 boolean Reader_ReadInt16(buffer_reader_t *reader, uint16_t *out)
 {
     byte *data, *data_end, *dp;
-    int len = Buffer_Data(reader->buffer, &data);
+    int   len = Buffer_Data(reader->buffer, &data);
 
     data_end = data + len;
-    dp = reader->pos;
+    dp       = reader->pos;
 
     if (data_end - reader->pos < 2)
     {
@@ -207,10 +207,10 @@ boolean Reader_ReadInt16(buffer_reader_t *reader, uint16_t *out)
 boolean Reader_ReadInt32(buffer_reader_t *reader, uint32_t *out)
 {
     byte *data, *data_end, *dp;
-    int len = Buffer_Data(reader->buffer, &data);
+    int   len = Buffer_Data(reader->buffer, &data);
 
     data_end = data + len;
-    dp = reader->pos;
+    dp       = reader->pos;
 
     if (data_end - reader->pos < 4)
     {
@@ -229,11 +229,11 @@ boolean Reader_ReadInt32(buffer_reader_t *reader, uint32_t *out)
 char *Reader_ReadString(buffer_reader_t *reader)
 {
     byte *data, *data_start, *data_end, *dp;
-    int len = Buffer_Data(reader->buffer, &data);
+    int   len = Buffer_Data(reader->buffer, &data);
 
     data_start = reader->pos;
-    data_end = data + len;
-    dp = reader->pos;
+    data_end   = data + len;
+    dp         = reader->pos;
 
     while (dp < data_end && *dp != '\0')
     {
@@ -247,7 +247,7 @@ char *Reader_ReadString(buffer_reader_t *reader)
     }
 
     reader->pos = dp + 1;
-    return (char*)data_start;
+    return (char *)data_start;
 }
 
 #endif // #ifdef _WIN32

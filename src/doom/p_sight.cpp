@@ -84,7 +84,7 @@ boolean PTR_SightTraverse(intercept_t *in)
 //
 int P_DivlineSide(fixed_t x,
     fixed_t               y,
-    divline_t *           node)
+    divline_t            *node)
 {
     fixed_t dx;
     fixed_t dy;
@@ -136,7 +136,7 @@ int P_DivlineSide(fixed_t x,
 //
 fixed_t
     P_InterceptVector2(divline_t *v2,
-        divline_t *               v1)
+        divline_t                *v1)
 {
     fixed_t frac;
     fixed_t num;
@@ -161,19 +161,19 @@ fixed_t
 //
 boolean P_CrossSubsector(int num)
 {
-    seg_t *      seg;
-    line_t *     line;
+    seg_t       *seg;
+    line_t      *line;
     int          s1;
     int          s2;
     int          count;
     subsector_t *sub;
-    sector_t *   front;
-    sector_t *   back;
+    sector_t    *front;
+    sector_t    *back;
     fixed_t      opentop;
     fixed_t      openbottom;
     divline_t    divl;
-    vertex_t *   v1;
-    vertex_t *   v2;
+    vertex_t    *v1;
+    vertex_t    *v2;
     fixed_t      frac;
     fixed_t      slope;
 
@@ -332,7 +332,7 @@ boolean P_CrossBSPNode(int bspnum)
 //
 boolean
     P_CheckSight(mobj_t *t1,
-        mobj_t *         t2)
+        mobj_t          *t2)
 {
     int s1;
     int s2;

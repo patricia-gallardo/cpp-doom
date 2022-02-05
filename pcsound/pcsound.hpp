@@ -29,10 +29,9 @@ int PCSound_Init(pcsound_callback_func callback_func);
 
 void PCSound_Shutdown();
 
-// Set the preferred output sample rate when emulating a PC speaker. 
+// Set the preferred output sample rate when emulating a PC speaker.
 // This must be called before PCSound_Init.
 
 void PCSound_SetSampleRate(int rate);
 
 #endif /* #ifndef PCSOUND_H */
-

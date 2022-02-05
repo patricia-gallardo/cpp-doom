@@ -61,8 +61,7 @@ extern void ST_refreshBackground(boolean force);
 
 
 // States for status bar code.
-using st_stateenum_t = enum
-{
+using st_stateenum_t = enum {
     AutomapState,
     FirstPersonState
 
@@ -70,8 +69,7 @@ using st_stateenum_t = enum
 
 
 // States for the chat code.
-using st_chatstateenum_t = enum
-{
+using st_chatstateenum_t = enum {
     StartChatState,
     WaitDestState,
     GetChatState
@@ -79,7 +77,7 @@ using st_chatstateenum_t = enum
 };
 
 
-extern pixel_t *  st_backing_screen;
+extern pixel_t   *st_backing_screen;
 extern cheatseq_t cheat_mus;
 extern cheatseq_t cheat_god;
 extern cheatseq_t cheat_ammo;

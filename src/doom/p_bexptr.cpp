@@ -153,12 +153,12 @@ void A_RandomJump(mobj_t *mo, player_t *player, pspdef_t *psp)
     else
         // [crispy] second, apply to mobj states
         if (mo)
-    {
-        if (Crispy_Random() < mo->state->misc2)
         {
-            P_SetMobjState(mo, mo->state->misc1);
+            if (Crispy_Random() < mo->state->misc2)
+            {
+                P_SetMobjState(mo, mo->state->misc1);
+            }
         }
-    }
 }
 
 //
@@ -167,7 +167,7 @@ void A_RandomJump(mobj_t *mo, player_t *player, pspdef_t *psp)
 
 void A_LineEffect(mobj_t *mo)
 {
-    //if (!(mo->intflags & MIF_LINEDONE))                // Unless already used up
+    // if (!(mo->intflags & MIF_LINEDONE))                // Unless already used up
     {
         line_t junk = *lines;                         // Fake linedef set to 1st
         if ((junk.special = (short)mo->state->misc1)) // Linedef type
@@ -203,7 +203,7 @@ void A_FireOldBFG(mobj_t *mobj, player_t *player, pspdef_t *psp)
 
     if (crispy->recoil && !(player->mo->flags & MF_NOCLIP))
         P_Thrust(player, ANG180 + player->mo->angle,
-            512 * 20); //recoil_values[wp_plasma][0]);
+            512 * 20); // recoil_values[wp_plasma][0]);
 
     player->ammo[weaponinfo[player->readyweapon].ammo]--;
 
@@ -220,7 +220,7 @@ void A_FireOldBFG(mobj_t *mobj, player_t *player, pspdef_t *psp)
         //    if (autoaim || !beta_emulation)
         {
             // killough 8/2/98: make autoaiming prefer enemies
-            int     mask = 0; //MF_FRIEND;
+            int     mask = 0; // MF_FRIEND;
             fixed_t slope;
             if (critical->freeaim == FREEAIM_DIRECT)
                 slope = PLAYER_SLOPE(player);
@@ -244,8 +244,8 @@ void A_FireOldBFG(mobj_t *mobj, player_t *player, pspdef_t *psp)
         }
 
         th         = P_SpawnMobj(mo->x, mo->y,
-            mo->z + 62 * FRACUNIT - player->psprites[ps_weapon].sy,
-            type);
+                    mo->z + 62 * FRACUNIT - player->psprites[ps_weapon].sy,
+                    type);
         th->target = mo; // P_SetTarget(&th->target, mo);
         th->angle  = an1;
         th->momx   = finecosine[an1 >> ANGLETOFINESHIFT] * 25;
@@ -254,5 +254,5 @@ void A_FireOldBFG(mobj_t *mobj, player_t *player, pspdef_t *psp)
         // [crispy] suppress interpolation of player missiles for the first tic
         th->interp = -1;
         P_CheckMissileSpawn(th);
-    } while ((type != MT_PLASMA2) && (type = MT_PLASMA2)); //killough: obfuscated!
+    } while ((type != MT_PLASMA2) && (type = MT_PLASMA2)); // killough: obfuscated!
 }

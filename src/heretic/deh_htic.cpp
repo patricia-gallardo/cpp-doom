@@ -24,15 +24,13 @@
 #include "info.hpp"
 #include "m_argv.hpp"
 
-const char *deh_signatures[] =
-{
+const char *deh_signatures[] = {
     "Patch File for HHE v1.0",
     "Patch File for HHE v1.1",
     NULL
 };
 
-static const char *hhe_versions[] =
-{
+static const char *hhe_versions[] = {
     "1.0", "1.2", "1.3"
 };
 
@@ -59,11 +57,10 @@ extern deh_section_t deh_section_weapon;
 // List of section types:
 //
 
-deh_section_t *deh_section_types[] =
-{
+deh_section_t *deh_section_types[] = {
     &deh_section_ammo,
     &deh_section_frame,
-//    &deh_section_pointer, TODO
+    //    &deh_section_pointer, TODO
     &deh_section_sound,
     &deh_section_heretic_text,
     &deh_section_thing,
@@ -75,7 +72,7 @@ static void SetHHEVersionByName(char *name)
 {
     int i;
 
-    for (i=0; i<arrlen(hhe_versions); ++i)
+    for (i = 0; i < arrlen(hhe_versions); ++i)
     {
         if (!strcmp(hhe_versions[i], name))
         {
@@ -87,7 +84,7 @@ static void SetHHEVersionByName(char *name)
     fprintf(stderr, "Unknown Heretic version: %s\n", name);
     fprintf(stderr, "Valid versions:\n");
 
-    for (i=0; i<arrlen(hhe_versions); ++i)
+    for (i = 0; i < arrlen(hhe_versions); ++i)
     {
         fprintf(stderr, "\t%s\n", hhe_versions[i]);
     }
@@ -181,15 +178,14 @@ int DEH_MapHereticFrameNumber(int frame)
 void DEH_SuggestHereticVersion(deh_hhe_version_t version)
 {
     fprintf(stderr,
-    "\n"
-    "This patch may be for version %s. You are currently running in\n"
-    "Heretic %s mode. For %s mode, add this to your command line:\n"
-    "\n"
-    "\t-hhever %s\n"
-    "\n",
-    hhe_versions[version],
-    hhe_versions[deh_hhe_version],
-    hhe_versions[version],
-    hhe_versions[version]);
+        "\n"
+        "This patch may be for version %s. You are currently running in\n"
+        "Heretic %s mode. For %s mode, add this to your command line:\n"
+        "\n"
+        "\t-hhever %s\n"
+        "\n",
+        hhe_versions[version],
+        hhe_versions[deh_hhe_version],
+        hhe_versions[version],
+        hhe_versions[version]);
 }
-

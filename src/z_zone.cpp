@@ -41,7 +41,7 @@
 
 using memblock_t = struct memblock_s {
     int                size; // including the header and possibly tiny fragments
-    void **            user;
+    void             **user;
     int                tag; // PU_FREE if this is free
     int                id;  // should be ZONEID
     struct memblock_s *next;
@@ -58,7 +58,6 @@ using memzone_t = struct
     memblock_t blocklist;
 
     memblock_t *rover;
-
 };
 
 
@@ -137,7 +136,7 @@ void Z_Init()
 static void ScanForBlock(void *start, void *end)
 {
     memblock_t *block;
-    void **     mem;
+    void      **mem;
     int         i, len, tag;
 
     block = mainzone->blocklist.next;
@@ -244,14 +243,14 @@ void Z_Free(void *ptr)
 void *
     Z_Malloc(int size,
         int      tag,
-        void *   user)
+        void    *user)
 {
     int         extra;
     memblock_t *start;
     memblock_t *rover;
     memblock_t *newblock;
     memblock_t *base;
-    void *      result;
+    void       *result;
 
     size = (size + MEM_ALIGN - 1) & ~(MEM_ALIGN - 1);
 

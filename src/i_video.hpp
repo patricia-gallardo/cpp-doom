@@ -33,8 +33,8 @@
 
 extern int SCREENWIDTH;
 extern int SCREENHEIGHT;
-extern int HIRESWIDTH;                  // [crispy] non-widescreen SCREENWIDTH
-extern int DELTAWIDTH;                  // [crispy] horizontal widescreen offset
+extern int HIRESWIDTH;              // [crispy] non-widescreen SCREENWIDTH
+extern int DELTAWIDTH;              // [crispy] horizontal widescreen offset
 void       I_GetScreenDimensions(); // [crispy] re-calculate DELTAWIDTH
 
 // Screen height used when aspect_ratio_correct=true.
@@ -96,7 +96,7 @@ void I_StartTic();
 
 void I_EnableLoadingDisk(int xoffs, int yoffs);
 
-extern char *  video_driver;
+extern char   *video_driver;
 extern boolean screenvisible;
 
 extern int      vanilla_keyboard_mapping;

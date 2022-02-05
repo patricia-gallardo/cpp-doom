@@ -20,13 +20,12 @@
 
 #include "i_sound.hpp"
 
-#define MAX_SND_DIST    2025
-#define MAX_CHANNELS    16
+#define MAX_SND_DIST 2025
+#define MAX_CHANNELS 16
 
 // Music identifiers
 
-using musicenum_t = enum
-{
+using musicenum_t = enum {
     mus_e1m1,
     mus_e1m2,
     mus_e1m3,
@@ -63,10 +62,9 @@ using musicenum_t = enum
 
 // Sound identifiers
 
-using sfxenum_t = enum
-{
+using sfxenum_t = enum {
     SFX_NONE,
-    SFX_PLAYER_FIGHTER_NORMAL_DEATH,    // class specific death screams
+    SFX_PLAYER_FIGHTER_NORMAL_DEATH, // class specific death screams
     SFX_PLAYER_FIGHTER_CRAZY_DEATH,
     SFX_PLAYER_FIGHTER_EXTREME1_DEATH,
     SFX_PLAYER_FIGHTER_EXTREME2_DEATH,
@@ -92,7 +90,7 @@ using sfxenum_t = enum
     SFX_PLAYER_MAGE_GRUNT,
     SFX_PLAYER_LAND,
     SFX_PLAYER_POISONCOUGH,
-    SFX_PLAYER_FIGHTER_FALLING_SCREAM,  // class specific falling screams
+    SFX_PLAYER_FIGHTER_FALLING_SCREAM, // class specific falling screams
     SFX_PLAYER_CLERIC_FALLING_SCREAM,
     SFX_PLAYER_MAGE_FALLING_SCREAM,
     SFX_PLAYER_FALLING_SPLAT,

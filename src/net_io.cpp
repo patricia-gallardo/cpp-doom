@@ -87,8 +87,8 @@ void NET_SendBroadcast(net_context_t *context, net_packet_t *packet)
 }
 
 boolean NET_RecvPacket(net_context_t *context,
-    net_addr_t **                     addr,
-    net_packet_t **                   packet)
+    net_addr_t                      **addr,
+    net_packet_t                    **packet)
 {
     int i;
 
@@ -125,7 +125,7 @@ void NET_ReferenceAddress(net_addr_t *addr)
         return;
     }
     ++addr->refcount;
-    //printf("%s: +refcount=%d\n", NET_AddrToString(addr), addr->refcount);
+    // printf("%s: +refcount=%d\n", NET_AddrToString(addr), addr->refcount);
 }
 
 void NET_ReleaseAddress(net_addr_t *addr)
@@ -136,7 +136,7 @@ void NET_ReleaseAddress(net_addr_t *addr)
     }
 
     --addr->refcount;
-    //printf("%s: -refcount=%d\n", NET_AddrToString(addr), addr->refcount);
+    // printf("%s: -refcount=%d\n", NET_AddrToString(addr), addr->refcount);
     if (addr->refcount <= 0)
     {
         addr->module->FreeAddress(addr);

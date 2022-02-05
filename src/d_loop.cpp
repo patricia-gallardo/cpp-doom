@@ -180,7 +180,7 @@ static boolean BuildNewTic()
             return false;
     }
 
-    //printf ("mk:%i ",maketic);
+    // printf ("mk:%i ",maketic);
     memset(&cmd, 0, sizeof(ticcmd_t));
     loop_interface->BuildTiccmd(&cmd, maketic);
 
@@ -416,7 +416,7 @@ void D_StartNetGame(net_gamesettings_t *settings,
     new_sync = settings->new_sync;
 
     // TODO: Message disabled until we fix new_sync.
-    //if (!new_sync)
+    // if (!new_sync)
     //{
     //    printf("Syncing netgames like Vanilla Doom.\n");
     //}
@@ -638,7 +638,7 @@ static boolean PlayersInGame()
 
 static void TicdupSquash(ticcmd_set_t *set)
 {
-    ticcmd_t *   cmd;
+    ticcmd_t    *cmd;
     unsigned int i;
 
     for (i = 0; i < NET_MAXPLAYERS; ++i)
@@ -851,7 +851,7 @@ boolean D_NonVanillaRecord(boolean conditional, const char *feature)
 // file, as opposed to a WAD.
 static boolean IsDemoFile(int lumpnum)
 {
-    char *  lower;
+    char   *lower;
     boolean result;
 
     lower = M_StringDuplicate(lumpinfo[lumpnum]->wad_file->path);

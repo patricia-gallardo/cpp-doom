@@ -75,10 +75,10 @@ int M_CheckParm(const char *check)
 
 static void LoadResponseFile(int argv_index, const char *filename)
 {
-    FILE * handle;
+    FILE  *handle;
     int    size;
-    char * infile;
-    char * file;
+    char  *infile;
+    char  *file;
     char **newargv;
     int    newargc;
     int    i, k;
@@ -274,8 +274,8 @@ enum
 static int GuessFileType(const char *name)
 {
     int            ret = FILETYPE_UNKNOWN;
-    const char *   base;
-    char *         lower;
+    const char    *base;
+    char          *lower;
     static boolean iwad_found = false;
 
     base  = M_BaseName(name);
@@ -323,7 +323,7 @@ static int CompareByFileType(const void *a, const void *b)
 void M_AddLooseFiles()
 {
     int         i, types = 0;
-    char **     newargv;
+    char      **newargv;
     argument_t *arguments;
 
     if (myargc < 2)

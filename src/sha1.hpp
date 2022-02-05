@@ -21,7 +21,7 @@
 #include "doomtype.hpp"
 
 using sha1_context_t = struct sha1_context_s;
-typedef byte                  sha1_digest_t[20];
+typedef byte sha1_digest_t[20];
 
 struct sha1_context_s {
     uint32_t h0, h1, h2, h3, h4;

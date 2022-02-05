@@ -58,7 +58,7 @@ fixed_t
 //
 int P_PointOnLineSide(fixed_t x,
     fixed_t                   y,
-    line_t *                  line)
+    line_t                   *line)
 {
     fixed_t dx;
     fixed_t dy;
@@ -98,7 +98,7 @@ int P_PointOnLineSide(fixed_t x,
 // Returns side 0 or 1, -1 if box crosses the line.
 //
 int P_BoxOnLineSide(fixed_t *tmbox,
-    line_t *                 ld)
+    line_t                  *ld)
 {
     int p1 = 0;
     int p2 = 0;
@@ -148,7 +148,7 @@ int P_BoxOnLineSide(fixed_t *tmbox,
 //
 int P_PointOnDivlineSide(fixed_t x,
     fixed_t                      y,
-    divline_t *                  line)
+    divline_t                   *line)
 {
     fixed_t dx;
     fixed_t dy;
@@ -194,7 +194,7 @@ int P_PointOnDivlineSide(fixed_t x,
 // P_MakeDivline
 //
 void P_MakeDivline(line_t *li,
-    divline_t *            dl)
+    divline_t             *dl)
 {
     dl->x  = li->v1->x;
     dl->y  = li->v1->y;
@@ -212,7 +212,7 @@ void P_MakeDivline(line_t *li,
 //
 fixed_t
     P_InterceptVector(divline_t *v2,
-        divline_t *              v1)
+        divline_t               *v1)
 {
 #if 1
     fixed_t frac;
@@ -377,10 +377,10 @@ void P_UnsetThingPosition(mobj_t *thing)
 void P_SetThingPosition(mobj_t *thing)
 {
     subsector_t *ss;
-    sector_t *   sec;
+    sector_t    *sec;
     int          blockx;
     int          blocky;
-    mobj_t **    link;
+    mobj_t     **link;
 
 
     // link into subsector
@@ -455,7 +455,7 @@ boolean
 {
     int      offset;
     int32_t *list; // [crispy] BLOCKMAP limit
-    line_t * ld;
+    line_t  *ld;
 
     if (x < 0
         || y < 0
@@ -519,7 +519,7 @@ boolean
 // INTERCEPT ROUTINES
 //
 static intercept_t *intercepts; // [crispy] remove INTERCEPTS limit
-intercept_t *       intercept_p;
+intercept_t        *intercept_p;
 
 // [crispy] remove INTERCEPTS limit
 // taken from PrBoom+/src/p_maputl.c:422-433
@@ -756,7 +756,7 @@ extern fixed_t bulletslope;
 using intercepts_overrun_t = struct
 {
     int     len;
-    void *  addr;
+    void   *addr;
     boolean int16_array;
 };
 

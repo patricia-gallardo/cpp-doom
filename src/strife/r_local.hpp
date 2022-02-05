@@ -30,7 +30,6 @@
 #include "r_data.hpp"
 
 
-
 //
 // Separate header file for each module.
 //
@@ -42,4 +41,4 @@
 #include "r_things.hpp"
 #include "r_draw.hpp"
 
-#endif		// __R_LOCAL__
+#endif // __R_LOCAL__

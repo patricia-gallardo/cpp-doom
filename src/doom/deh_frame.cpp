@@ -77,7 +77,7 @@ static void *DEH_FrameStart(deh_context_t *context, char *line)
 static void DEH_FrameParseLine(deh_context_t *context, char *line, void *tag)
 {
     state_t *state;
-    char *   variable_name, *value;
+    char    *variable_name, *value;
     int      ivalue;
 
     if (tag == NULL)

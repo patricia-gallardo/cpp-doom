@@ -122,7 +122,7 @@ static byte *AutoAllocMemory(int *size, int default_ram, int min_ram)
 
 byte *I_ZoneBase(int *size)
 {
-    byte *     zonemem;
+    byte      *zonemem;
     int        min_ram, default_ram;
     int        p;
     static int i = 1;
@@ -285,7 +285,7 @@ void I_Error(const char *error, ...)
 
     // Message first.
     va_start(argptr, error);
-    //fprintf(stderr, "\nError: ");
+    // fprintf(stderr, "\nError: ");
     vfprintf(stderr, error, argptr);
     fprintf(stderr, "\n\n");
     va_end(argptr);

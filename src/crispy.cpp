@@ -23,18 +23,18 @@
 // [crispy] "regular" config variables
 static crispy_t crispy_s = {
     .automapoverlay = 0,
-    .extautomap    = 1,
-    .extsaveg      = 1,
-    .hires         = 1,
-    .smoothscaling = 1,
-    .soundfix      = 1,
-    .vsync         = 1,
+    .extautomap     = 1,
+    .extsaveg       = 1,
+    .hires          = 1,
+    .smoothscaling  = 1,
+    .soundfix       = 1,
+    .vsync          = 1,
 };
 crispy_t *const crispy = &crispy_s;
 
 // [crispy] "critical" config variables
 static const crispy_t critical_s = { 0 };
-const crispy_t *      critical   = &critical_s;
+const crispy_t       *critical   = &critical_s;
 
 // [crispy] update the "singleplayer" variable and the "critical" struct
 void CheckCrispySingleplayer(boolean singleplayer)

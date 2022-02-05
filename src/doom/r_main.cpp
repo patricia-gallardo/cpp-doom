@@ -46,7 +46,7 @@ int viewangleoffset;
 int validcount = 1;
 
 
-lighttable_t *        fixedcolormap;
+lighttable_t         *fixedcolormap;
 extern lighttable_t **walllights;
 
 int centerx;
@@ -95,7 +95,7 @@ angle_t xtoviewangle[MAXWIDTH + 1];
 
 // [crispy] parameterized for smooth diminishing lighting
 lighttable_t ***scalelight      = NULL;
-lighttable_t ** scalelightfixed = NULL;
+lighttable_t  **scalelightfixed = NULL;
 lighttable_t ***zlight          = NULL;
 
 // bumped light from gun blasts
@@ -126,7 +126,7 @@ void (*spanfunc)();
 //
 void R_AddPointToBox(int x,
     int                  y,
-    fixed_t *            box)
+    fixed_t             *box)
 {
     if (x < box[BOXLEFT])
         box[BOXLEFT] = x;
@@ -147,7 +147,7 @@ void R_AddPointToBox(int x,
 //
 int R_PointOnSide(fixed_t x,
     fixed_t               y,
-    node_t *              node)
+    node_t               *node)
 {
     fixed_t dx;
     fixed_t dy;
@@ -198,7 +198,7 @@ int R_PointOnSide(fixed_t x,
 
 int R_PointOnSegSide(fixed_t x,
     fixed_t                  y,
-    seg_t *                  line)
+    seg_t                   *line)
 {
     fixed_t lx;
     fixed_t ly;

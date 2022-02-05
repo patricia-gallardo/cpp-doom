@@ -32,8 +32,7 @@ extern musicinfo_t S_music[];
 // Identifiers for all music in game.
 //
 
-using musicenum_t = enum
-{
+using musicenum_t = enum {
     mus_None,
     mus_e1m1,
     mus_e1m2,
@@ -132,8 +131,7 @@ using musicenum_t = enum
 // Identifiers for all sfx in game.
 //
 
-using sfxenum_t = enum
-{
+using sfxenum_t = enum {
     sfx_None,
     sfx_pistol,
     sfx_shotgn,

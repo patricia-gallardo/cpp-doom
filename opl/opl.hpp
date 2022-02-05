@@ -25,49 +25,47 @@ using opl_callback_t = void (*)(void *);
 
 // Result from OPL_Init(), indicating what type of OPL chip was detected,
 // if any.
-using opl_init_result_t = enum
-{
+using opl_init_result_t = enum {
     OPL_INIT_NONE,
     OPL_INIT_OPL2,
     OPL_INIT_OPL3,
 };
 
-using opl_port_t = enum
-{
-    OPL_REGISTER_PORT = 0,
-    OPL_DATA_PORT = 1,
+using opl_port_t = enum {
+    OPL_REGISTER_PORT      = 0,
+    OPL_DATA_PORT          = 1,
     OPL_REGISTER_PORT_OPL3 = 2
 };
 
-#define OPL_NUM_OPERATORS   21
-#define OPL_NUM_VOICES      9
+#define OPL_NUM_OPERATORS 21
+#define OPL_NUM_VOICES    9
 
-#define OPL_REG_WAVEFORM_ENABLE   0x01
-#define OPL_REG_TIMER1            0x02
-#define OPL_REG_TIMER2            0x03
-#define OPL_REG_TIMER_CTRL        0x04
-#define OPL_REG_FM_MODE           0x08
-#define OPL_REG_NEW               0x105
+#define OPL_REG_WAVEFORM_ENABLE 0x01
+#define OPL_REG_TIMER1          0x02
+#define OPL_REG_TIMER2          0x03
+#define OPL_REG_TIMER_CTRL      0x04
+#define OPL_REG_FM_MODE         0x08
+#define OPL_REG_NEW             0x105
 
 // Operator registers (21 of each):
 
-#define OPL_REGS_TREMOLO          0x20
-#define OPL_REGS_LEVEL            0x40
-#define OPL_REGS_ATTACK           0x60
-#define OPL_REGS_SUSTAIN          0x80
-#define OPL_REGS_WAVEFORM         0xE0
+#define OPL_REGS_TREMOLO  0x20
+#define OPL_REGS_LEVEL    0x40
+#define OPL_REGS_ATTACK   0x60
+#define OPL_REGS_SUSTAIN  0x80
+#define OPL_REGS_WAVEFORM 0xE0
 
 // Voice registers (9 of each):
 
-#define OPL_REGS_FREQ_1           0xA0
-#define OPL_REGS_FREQ_2           0xB0
-#define OPL_REGS_FEEDBACK         0xC0
+#define OPL_REGS_FREQ_1   0xA0
+#define OPL_REGS_FREQ_2   0xB0
+#define OPL_REGS_FEEDBACK 0xC0
 
 // Times
 
-#define OPL_SECOND ((uint64_t) 1000 * 1000)
-#define OPL_MS     ((uint64_t) 1000)
-#define OPL_US     ((uint64_t) 1)
+#define OPL_SECOND ((uint64_t)1000 * 1000)
+#define OPL_MS     ((uint64_t)1000)
+#define OPL_US     ((uint64_t)1)
 
 //
 // Low-level functions.
@@ -150,4 +148,3 @@ void OPL_Delay(uint64_t us);
 void OPL_SetPaused(int paused);
 
 #endif
-

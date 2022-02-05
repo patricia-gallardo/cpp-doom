@@ -83,7 +83,6 @@ using musicinfo_t = struct
 
     // music handle once registered
     void *handle;
-
 };
 
 enum snddevice_t : int
@@ -147,7 +146,6 @@ using sound_module_t = struct
     // Called on startup to precache sound effects (if necessary)
 
     void (*CacheSounds)(sfxinfo_t *sounds, int num_sounds);
-
 };
 
 void    I_InitSound(boolean use_sfx_prefix);
@@ -220,25 +218,24 @@ void    I_ShutdownMusic();
 void    I_SetMusicVolume(int volume);
 void    I_PauseSong();
 void    I_ResumeSong();
-void *  I_RegisterSong(void *data, int len);
+void   *I_RegisterSong(void *data, int len);
 void    I_UnRegisterSong(void *handle);
 void    I_PlaySong(void *handle, boolean looping);
 void    I_StopSong();
 boolean I_MusicIsPlaying();
 
-extern int         snd_sfxdevice;
-extern int         snd_musicdevice;
-extern int         snd_samplerate;
-extern int         snd_cachesize;
-extern int         snd_maxslicetime_ms;
-extern char *      snd_musiccmd;
-extern int         snd_pitchshift;
+extern int   snd_sfxdevice;
+extern int   snd_musicdevice;
+extern int   snd_samplerate;
+extern int   snd_cachesize;
+extern int   snd_maxslicetime_ms;
+extern char *snd_musiccmd;
+extern int   snd_pitchshift;
 
 void I_BindSoundVariables();
 
 // DMX version to emulate for OPL emulation:
-using opl_driver_ver_t = enum
-{
+using opl_driver_ver_t = enum {
     opl_doom1_1_666, // Doom 1 v1.666
     opl_doom2_1_666, // Doom 2 v1.666, Hexen, Heretic
     opl_doom_1_9     // Doom v1.9, Strife

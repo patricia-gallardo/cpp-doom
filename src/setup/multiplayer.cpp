@@ -35,16 +35,15 @@
 
 #include "net_petname.hpp"
 
-#define MULTI_START_HELP_URL "https://www.chocolate-doom.org/setup-multi-start"
-#define MULTI_JOIN_HELP_URL "https://www.chocolate-doom.org/setup-multi-join"
+#define MULTI_START_HELP_URL  "https://www.chocolate-doom.org/setup-multi-start"
+#define MULTI_JOIN_HELP_URL   "https://www.chocolate-doom.org/setup-multi-join"
 #define MULTI_CONFIG_HELP_URL "https://www.chocolate-doom.org/setup-multi-config"
-#define LEVEL_WARP_HELP_URL "https://www.chocolate-doom.org/setup-level-warp"
+#define LEVEL_WARP_HELP_URL   "https://www.chocolate-doom.org/setup-level-warp"
 
-#define NUM_WADS 10
+#define NUM_WADS         10
 #define NUM_EXTRA_PARAMS 10
 
-using warptype_t = enum
-{
+using warptype_t = enum {
     WARP_ExMy,
     WARP_MAPxy,
 };
@@ -52,16 +51,16 @@ using warptype_t = enum
 // Fallback IWADs to use if no IWADs are detected.
 
 static const iwad_t fallback_iwads[] = {
-    { "doom.wad",     doom,     registered,  "Doom" },
-    { "heretic.wad",  heretic,  retail,      "Heretic" },
-    { "hexen.wad",    hexen,    commercial,  "Hexen" },
-    { "strife1.wad",  strife,   commercial,  "Strife" },
+    { "doom.wad", doom, registered, "Doom" },
+    { "heretic.wad", heretic, retail, "Heretic" },
+    { "hexen.wad", hexen, commercial, "Hexen" },
+    { "strife1.wad", strife, commercial, "Strife" },
 };
 
 // Array of IWADs found to be installed
 
 static const iwad_t **found_iwads;
-static const char **iwad_labels;
+static const char   **iwad_labels;
 
 // Index of the currently selected IWAD
 
@@ -73,41 +72,37 @@ static const char *iwadfile;
 
 static const char *wad_extensions[] = { "wad", "lmp", "deh", NULL };
 
-static const char *doom_skills[] =
-{
-    "I'm too young to die.", "Hey, not too rough.", "Hurt me plenty.",
-    "Ultra-Violence.", "NIGHTMARE!",
+static const char *doom_skills[] = {
+    "I'm too young to die.",
+    "Hey, not too rough.",
+    "Hurt me plenty.",
+    "Ultra-Violence.",
+    "NIGHTMARE!",
 };
 
-static const char *chex_skills[] =
-{
+static const char *chex_skills[] = {
     "Easy does it", "Not so sticky", "Gobs of goo", "Extreme ooze",
     "SUPER SLIMEY!"
 };
 
-static const char *heretic_skills[] =
-{
+static const char *heretic_skills[] = {
     "Thou needeth a wet-nurse", "Yellowbellies-R-us", "Bringest them oneth",
     "Thou art a smite-meister", "Black plague possesses thee"
 };
 
-static const char *hexen_fighter_skills[] =
-{
+static const char *hexen_fighter_skills[] = {
     "Squire", "Knight", "Warrior", "Berserker", "Titan"
 };
 
-static const char *hexen_cleric_skills[] =
-{
+static const char *hexen_cleric_skills[] = {
     "Altar boy", "Acolyte", "Priest", "Cardinal", "Pope"
 };
 
-static const char *hexen_mage_skills[] =
-{
+static const char *hexen_mage_skills[] = {
     "Apprentice", "Enchanter", "Sorceror", "Warlock", "Archimage"
 };
 
-static const char *strife_skills[] =
-{
+static const char *strife_skills[] = {
     "Training", "Rookie", "Veteran", "Elite", "Bloodbath"
 };
 
@@ -115,8 +110,7 @@ static const char *character_classes[] = { "Fighter", "Cleric", "Mage" };
 
 static const char *gamemodes[] = { "Co-operative", "Deathmatch", "Deathmatch 2.0", "Deathmatch 3.0" };
 
-static const char *strife_gamemodes[] =
-{
+static const char *strife_gamemodes[] = {
     "Normal deathmatch",
     "Items respawn", // (altdeath)
 };
@@ -126,29 +120,29 @@ static char *chat_macros[10];
 
 static char *wads[NUM_WADS];
 static char *extra_params[NUM_EXTRA_PARAMS];
-static int character_class = 0;
-static int skill = 2;
-static int nomonsters = 0;
-static int deathmatch = 0;
-static int strife_altdeath = 0;
-static int fast = 0;
-static int respawn = 0;
-static int udpport = 2342;
-static int timer = 0;
-static int privateserver = 0;
+static int   character_class = 0;
+static int   skill           = 2;
+static int   nomonsters      = 0;
+static int   deathmatch      = 0;
+static int   strife_altdeath = 0;
+static int   fast            = 0;
+static int   respawn         = 0;
+static int   udpport         = 2342;
+static int   timer           = 0;
+static int   privateserver   = 0;
 
 static txt_dropdown_list_t *skillbutton;
-static txt_button_t *warpbutton;
-static warptype_t warptype = WARP_MAPxy;
-static int warpepisode = 1;
-static int warpmap = 1;
+static txt_button_t        *warpbutton;
+static warptype_t           warptype    = WARP_MAPxy;
+static int                  warpepisode = 1;
+static int                  warpmap     = 1;
 
 // Address to connect to when joining a game
 
 static char *connect_address = NULL;
 
 static txt_window_t *query_window;
-static int query_servers_found;
+static int           query_servers_found;
 
 // Find an IWAD from its description
 
@@ -168,8 +162,8 @@ static void AddWADs(execute_context_t *exec)
 {
     int have_wads = 0;
     int i;
- 
-    for (i=0; i<NUM_WADS; ++i)
+
+    for (i = 0; i < NUM_WADS; ++i)
     {
         if (wads[i] != NULL && strlen(wads[i]) > 0)
         {
@@ -186,8 +180,8 @@ static void AddWADs(execute_context_t *exec)
 static void AddExtraParameters(execute_context_t *exec)
 {
     int i;
-    
-    for (i=0; i<NUM_EXTRA_PARAMS; ++i)
+
+    for (i = 0; i < NUM_EXTRA_PARAMS; ++i)
     {
         if (extra_params[i] != NULL && strlen(extra_params[i]) > 0)
         {
@@ -286,7 +280,7 @@ static void StartGame(int multiplayer)
     AddWADs(exec);
 
     TXT_Shutdown();
- 
+
     M_SaveDefaults();
     PassThroughArguments(exec);
 
@@ -329,8 +323,9 @@ static void UpdateSkillButton()
     {
         skillbutton->values = chex_skills;
     }
-    else switch(gamemission)
-    {
+    else
+        switch (gamemission)
+        {
         default:
         case doom:
             skillbutton->values = doom_skills;
@@ -358,17 +353,17 @@ static void UpdateSkillButton()
         case strife:
             skillbutton->values = strife_skills;
             break;
-    }
+        }
 }
 
 static void SetExMyWarp(TXT_UNCAST_ARG(widget), void *val)
 {
     int l;
 
-    l = (intptr_t) val;
+    l = (intptr_t)val;
 
     warpepisode = l / 10;
-    warpmap = l % 10;
+    warpmap     = l % 10;
 
     UpdateWarpButton();
 }
@@ -377,7 +372,7 @@ static void SetMAPxyWarp(TXT_UNCAST_ARG(widget), void *val)
 {
     int l;
 
-    l = (intptr_t) val;
+    l = (intptr_t)val;
 
     warpmap = l;
 
@@ -396,14 +391,14 @@ static void LevelSelectDialog(TXT_UNCAST_ARG(widget), TXT_UNCAST_ARG(user_data))
     txt_window_t *window;
     txt_button_t *button;
     const iwad_t *iwad;
-    char buf[10];
-    int episodes;
-    intptr_t x, y;
-    intptr_t l;
-    int i;
+    char          buf[10];
+    int           episodes;
+    intptr_t      x, y;
+    intptr_t      l;
+    int           i;
 
     window = TXT_NewWindow("Select level");
-    iwad = GetCurrentIWAD();
+    iwad   = GetCurrentIWAD();
 
     if (warptype == WARP_ExMy)
     {
@@ -412,9 +407,9 @@ static void LevelSelectDialog(TXT_UNCAST_ARG(widget), TXT_UNCAST_ARG(user_data))
 
         // ExMy levels
 
-        for (y=1; y<10; ++y)
+        for (y = 1; y < 10; ++y)
         {
-            for (x=1; x<=episodes; ++x)
+            for (x = 1; x <= episodes; ++x)
             {
                 if (IsChexQuest(iwad) && (x > 1 || y > 5))
                 {
@@ -428,12 +423,12 @@ static void LevelSelectDialog(TXT_UNCAST_ARG(widget), TXT_UNCAST_ARG(user_data))
                 }
 
                 M_snprintf(buf, sizeof(buf),
-                           " E%" PRIiPTR "M%" PRIiPTR " ", x, y);
+                    " E%" PRIiPTR "M%" PRIiPTR " ", x, y);
                 button = TXT_NewButton(buf);
                 TXT_SignalConnect(button, "pressed",
-                                  SetExMyWarp, (void *) (x * 10 + y));
+                    SetExMyWarp, (void *)(x * 10 + y));
                 TXT_SignalConnect(button, "pressed",
-                                  CloseLevelSelectDialog, window);
+                    CloseLevelSelectDialog, window);
                 TXT_AddWidget(window, button);
 
                 if (warpepisode == x && warpmap == y)
@@ -447,7 +442,7 @@ static void LevelSelectDialog(TXT_UNCAST_ARG(widget), TXT_UNCAST_ARG(user_data))
     {
         TXT_SetTableColumns(window, 6);
 
-        for (i=0; i<60; ++i)
+        for (i = 0; i < 60; ++i)
         {
             x = i % 6;
             y = i / 6;
@@ -462,10 +457,10 @@ static void LevelSelectDialog(TXT_UNCAST_ARG(widget), TXT_UNCAST_ARG(user_data))
 
             M_snprintf(buf, sizeof(buf), " MAP%02" PRIiPTR " ", l);
             button = TXT_NewButton(buf);
-            TXT_SignalConnect(button, "pressed", 
-                              SetMAPxyWarp, (void *) l);
             TXT_SignalConnect(button, "pressed",
-                              CloseLevelSelectDialog, window);
+                SetMAPxyWarp, (void *)l);
+            TXT_SignalConnect(button, "pressed",
+                CloseLevelSelectDialog, window);
             TXT_AddWidget(window, button);
 
             if (warpmap == l)
@@ -493,7 +488,7 @@ static void IWADSelected(TXT_UNCAST_ARG(widget), TXT_UNCAST_ARG(unused))
 
 static void UpdateWarpType(TXT_UNCAST_ARG(widget), TXT_UNCAST_ARG(unused))
 {
-    warptype_t new_warptype;
+    warptype_t    new_warptype;
     const iwad_t *iwad;
 
     // Get the selected IWAD
@@ -516,7 +511,7 @@ static void UpdateWarpType(TXT_UNCAST_ARG(widget), TXT_UNCAST_ARG(unused))
     if (new_warptype != warptype)
     {
         warpepisode = 1;
-        warpmap = 1;
+        warpmap     = 1;
     }
 
     warptype = new_warptype;
@@ -531,7 +526,7 @@ static void UpdateWarpType(TXT_UNCAST_ARG(widget), TXT_UNCAST_ARG(unused))
 static const iwad_t **GetFallbackIwadList()
 {
     static const iwad_t *fallback_iwad_list[2];
-    unsigned int i;
+    unsigned int         i;
 
     // Default to use if we don't find something better.
 
@@ -553,9 +548,9 @@ static const iwad_t **GetFallbackIwadList()
 static txt_widget_t *IWADSelector()
 {
     txt_dropdown_list_t *dropdown;
-    txt_widget_t *result;
-    int num_iwads;
-    unsigned int i;
+    txt_widget_t        *result;
+    int                  num_iwads;
+    unsigned int         i;
 
     // Find out what WADs are installed
 
@@ -565,14 +560,14 @@ static txt_widget_t *IWADSelector()
 
     num_iwads = 0;
 
-    for (i=0; found_iwads[i] != NULL; ++i)
+    for (i = 0; found_iwads[i] != NULL; ++i)
     {
-         ++num_iwads;
+        ++num_iwads;
     }
 
     iwad_labels = static_cast<const char **>(malloc(sizeof(*iwad_labels) * num_iwads));
 
-    for (i=0; i < num_iwads; ++i)
+    for (i = 0; i < num_iwads; ++i)
     {
         iwad_labels[i] = found_iwads[i]->description;
     }
@@ -583,7 +578,7 @@ static txt_widget_t *IWADSelector()
     if (num_iwads == 0)
     {
         found_iwads = GetFallbackIwadList();
-        num_iwads = 1;
+        num_iwads   = 1;
     }
 
     // Build a dropdown list of IWADs
@@ -592,18 +587,18 @@ static txt_widget_t *IWADSelector()
     {
         // We have only one IWAD.  Show as a label.
 
-        result = (txt_widget_t *) TXT_NewLabel(found_iwads[0]->description);
+        result = (txt_widget_t *)TXT_NewLabel(found_iwads[0]->description);
     }
     else
     {
         // Dropdown list allowing IWAD to be selected.
 
-        dropdown = TXT_NewDropdownList(&found_iwad_selected, 
-                                       iwad_labels, num_iwads);
+        dropdown = TXT_NewDropdownList(&found_iwad_selected,
+            iwad_labels, num_iwads);
 
         TXT_SignalConnect(dropdown, "changed", IWADSelected, NULL);
 
-        result = (txt_widget_t *) dropdown;
+        result = (txt_widget_t *)dropdown;
     }
 
     // The first time the dialog is opened, found_iwad_selected=-1,
@@ -627,7 +622,7 @@ static txt_widget_t *IWADSelector()
 static txt_window_action_t *StartGameAction(int multiplayer)
 {
     txt_window_action_t *action;
-    TxtWidgetSignalFunc callback;
+    TxtWidgetSignalFunc  callback;
 
     action = TXT_NewWindowAction(KEY_F10, "Start");
 
@@ -648,27 +643,27 @@ static txt_window_action_t *StartGameAction(int multiplayer)
 static void OpenWadsWindow(TXT_UNCAST_ARG(widget), TXT_UNCAST_ARG(user_data))
 {
     txt_window_t *window;
-    int i;
+    int           i;
 
     window = TXT_NewWindow("Add WADs");
 
-    for (i=0; i<NUM_WADS; ++i)
+    for (i = 0; i < NUM_WADS; ++i)
     {
         TXT_AddWidget(window,
-                      TXT_NewFileSelector(&wads[i], 60, "Select a WAD file",
-                                          wad_extensions));
+            TXT_NewFileSelector(&wads[i], 60, "Select a WAD file",
+                wad_extensions));
     }
 }
 
-static void OpenExtraParamsWindow(TXT_UNCAST_ARG(widget), 
-                                  TXT_UNCAST_ARG(user_data))
+static void OpenExtraParamsWindow(TXT_UNCAST_ARG(widget),
+    TXT_UNCAST_ARG(user_data))
 {
     txt_window_t *window;
-    int i;
+    int           i;
 
     window = TXT_NewWindow("Extra command line parameters");
-    
-    for (i=0; i<NUM_EXTRA_PARAMS; ++i)
+
+    for (i = 0; i < NUM_EXTRA_PARAMS; ++i)
     {
         TXT_AddWidget(window, TXT_NewInputBox(&extra_params[i], 70));
     }
@@ -688,22 +683,22 @@ static txt_dropdown_list_t *GameTypeDropdown()
 {
     switch (gamemission)
     {
-        case doom:
-        default:
-            return TXT_NewDropdownList(&deathmatch, gamemodes, 4);
+    case doom:
+    default:
+        return TXT_NewDropdownList(&deathmatch, gamemodes, 4);
 
         // Heretic and Hexen don't support Deathmatch II:
 
-        case heretic:
-        case hexen:
-            return TXT_NewDropdownList(&deathmatch, gamemodes, 2);
+    case heretic:
+    case hexen:
+        return TXT_NewDropdownList(&deathmatch, gamemodes, 2);
 
         // Strife supports both deathmatch modes, but doesn't support
         // multiplayer co-op. Use a different variable to indicate whether
         // to use altdeath or not.
 
-        case strife:
-            return TXT_NewDropdownList(&strife_altdeath, strife_gamemodes, 2);
+    case strife:
+        return TXT_NewDropdownList(&strife_altdeath, strife_gamemodes, 2);
     }
 }
 
@@ -733,18 +728,18 @@ static void StartGameMenu(const char *window_title, int multiplayer)
     TXT_SetWindowAction(window, TXT_HORIZ_RIGHT, StartGameAction(multiplayer));
 
     TXT_AddWidgets(window,
-                   TXT_NewLabel("Game"),
-                   iwad_selector = IWADSelector(),
-                   NULL);
+        TXT_NewLabel("Game"),
+        iwad_selector = IWADSelector(),
+        NULL);
 
     if (gamemission == hexen)
     {
         txt_dropdown_list_t *cc_dropdown;
         TXT_AddWidgets(window,
-                       TXT_NewLabel("Character class "),
-                       cc_dropdown = TXT_NewDropdownList(&character_class,
-                                                         character_classes, 3),
-                       NULL);
+            TXT_NewLabel("Character class "),
+            cc_dropdown = TXT_NewDropdownList(&character_class,
+                character_classes, 3),
+            NULL);
 
         // Update skill level dropdown when the character class is changed:
 
@@ -752,51 +747,51 @@ static void StartGameMenu(const char *window_title, int multiplayer)
     }
 
     TXT_AddWidgets(window,
-                   TXT_NewLabel("Skill"),
-                   skillbutton = TXT_NewDropdownList(&skill, doom_skills, 5),
-                   TXT_NewLabel("Level warp"),
-                   warpbutton = TXT_NewButton2("?", LevelSelectDialog, NULL),
-                   NULL);
+        TXT_NewLabel("Skill"),
+        skillbutton = TXT_NewDropdownList(&skill, doom_skills, 5),
+        TXT_NewLabel("Level warp"),
+        warpbutton = TXT_NewButton2("?", LevelSelectDialog, NULL),
+        NULL);
 
     if (multiplayer)
     {
         TXT_AddWidgets(window,
-               TXT_NewLabel("Game type"),
-               GameTypeDropdown(),
-               TXT_NewLabel("Time limit"),
-               TXT_NewHorizBox(TXT_NewIntInputBox(&timer, 2),
-                               TXT_NewLabel("minutes"),
-                               NULL),
-               NULL);
+            TXT_NewLabel("Game type"),
+            GameTypeDropdown(),
+            TXT_NewLabel("Time limit"),
+            TXT_NewHorizBox(TXT_NewIntInputBox(&timer, 2),
+                TXT_NewLabel("minutes"),
+                NULL),
+            NULL);
     }
 
     TXT_AddWidgets(window,
-                   TXT_NewSeparator("Monster options"),
-                   TXT_NewInvertedCheckBox("Monsters enabled", &nomonsters),
-                   TXT_TABLE_OVERFLOW_RIGHT,
-                   TXT_NewCheckBox("Fast monsters", &fast),
-                   TXT_TABLE_OVERFLOW_RIGHT,
-                   TXT_NewCheckBox("Respawning monsters", &respawn),
-                   TXT_TABLE_OVERFLOW_RIGHT,
-                   NULL);
+        TXT_NewSeparator("Monster options"),
+        TXT_NewInvertedCheckBox("Monsters enabled", &nomonsters),
+        TXT_TABLE_OVERFLOW_RIGHT,
+        TXT_NewCheckBox("Fast monsters", &fast),
+        TXT_TABLE_OVERFLOW_RIGHT,
+        TXT_NewCheckBox("Respawning monsters", &respawn),
+        TXT_TABLE_OVERFLOW_RIGHT,
+        NULL);
 
     if (multiplayer)
     {
         TXT_AddWidgets(window,
-                       TXT_NewSeparator("Advanced"),
-                       TXT_NewLabel("UDP port"),
-                       TXT_NewIntInputBox(&udpport, 5),
-                       TXT_NewInvertedCheckBox("Register with master server",
-                                               &privateserver),
-                       TXT_TABLE_OVERFLOW_RIGHT,
-                       NULL);
+            TXT_NewSeparator("Advanced"),
+            TXT_NewLabel("UDP port"),
+            TXT_NewIntInputBox(&udpport, 5),
+            TXT_NewInvertedCheckBox("Register with master server",
+                &privateserver),
+            TXT_TABLE_OVERFLOW_RIGHT,
+            NULL);
     }
 
     TXT_AddWidgets(window,
-                   TXT_NewButton2("Add extra parameters...",
-                                  OpenExtraParamsWindow, NULL),
-                   TXT_TABLE_OVERFLOW_RIGHT,
-                   NULL);
+        TXT_NewButton2("Add extra parameters...",
+            OpenExtraParamsWindow, NULL),
+        TXT_TABLE_OVERFLOW_RIGHT,
+        NULL);
 
     TXT_SignalConnect(iwad_selector, "changed", UpdateWarpType, NULL);
 
@@ -842,7 +837,7 @@ static void DoJoinGame(void *unused1, void *unused2)
     AddWADs(exec);
 
     TXT_Shutdown();
-    
+
     M_SaveDefaults();
 
     PassThroughArguments(exec);
@@ -863,7 +858,7 @@ static txt_window_action_t *JoinGameAction()
 }
 
 static void SelectQueryAddress(TXT_UNCAST_ARG(button),
-                               TXT_UNCAST_ARG(querydata))
+    TXT_UNCAST_ARG(querydata))
 {
     TXT_CAST_ARG(txt_button_t, button);
     TXT_CAST_ARG(net_querydata_t, querydata);
@@ -872,8 +867,8 @@ static void SelectQueryAddress(TXT_UNCAST_ARG(button),
     if (querydata->server_state != 0)
     {
         TXT_MessageBox("Cannot connect to server",
-                       "Gameplay is already in progress\n"
-                       "on this server.");
+            "Gameplay is already in progress\n"
+            "on this server.");
         return;
     }
 
@@ -889,10 +884,10 @@ static void SelectQueryAddress(TXT_UNCAST_ARG(button),
         for (i = 0; found_iwads[i] != NULL; ++i)
         {
             if (found_iwads[i]->mode == querydata->gamemode
-             && found_iwads[i]->mission == querydata->gamemission)
+                && found_iwads[i]->mission == querydata->gamemission)
             {
                 found_iwad_selected = i;
-                iwadfile = found_iwads[i]->name;
+                iwadfile            = found_iwads[i]->name;
                 break;
             }
         }
@@ -900,13 +895,13 @@ static void SelectQueryAddress(TXT_UNCAST_ARG(button),
         if (found_iwads[i] == NULL)
         {
             TXT_MessageBox(NULL,
-                           "The game on this server seems to be:\n"
-                           "\n"
-                           "   %s\n"
-                           "\n"
-                           "but the IWAD file %s is not found!\n"
-                           "Without the required IWAD file, it may not be\n"
-                           "possible to join this game.",
+                "The game on this server seems to be:\n"
+                "\n"
+                "   %s\n"
+                "\n"
+                "but the IWAD file %s is not found!\n"
+                "Without the required IWAD file, it may not be\n"
+                "possible to join this game.",
                 D_SuggestGameName(static_cast<GameMission_t>(querydata->gamemission),
                     static_cast<GameMode_t>(querydata->gamemode)),
                 D_SuggestIWADName(static_cast<GameMission_t>(querydata->gamemission),
@@ -920,9 +915,9 @@ static void SelectQueryAddress(TXT_UNCAST_ARG(button),
 }
 
 static void QueryResponseCallback(net_addr_t *addr,
-                                  net_querydata_t *querydata,
-                                  unsigned int ping_time,
-                                  TXT_UNCAST_ARG(results_table))
+    net_querydata_t                          *querydata,
+    unsigned int                              ping_time,
+    TXT_UNCAST_ARG(results_table))
 {
     TXT_CAST_ARG(txt_table_t, results_table);
     char ping_time_str[16];
@@ -947,7 +942,7 @@ static void QueryResponseCallback(net_addr_t *addr,
     if (querydata->num_players > 0)
     {
         M_snprintf(description, sizeof(description), "(%d/%d) ",
-                   querydata->num_players, querydata->max_players);
+            querydata->num_players, querydata->max_players);
     }
     else
     {
@@ -957,11 +952,11 @@ static void QueryResponseCallback(net_addr_t *addr,
     M_StringConcat(description, querydata->description, sizeof(description));
 
     TXT_AddWidgets(results_table,
-                   TXT_NewLabel(ping_time_str),
-                   TXT_NewButton2(NET_AddrToString(addr),
-                                  SelectQueryAddress, querydata),
-                   TXT_NewLabel(description),
-                   NULL);
+        TXT_NewLabel(ping_time_str),
+        TXT_NewButton2(NET_AddrToString(addr),
+            SelectQueryAddress, querydata),
+        TXT_NewLabel(description),
+        NULL);
 
     ++query_servers_found;
 }
@@ -979,8 +974,7 @@ static void QueryPeriodicCallback(TXT_UNCAST_ARG(results_table))
             TXT_AddWidgets(results_table,
                 TXT_TABLE_EMPTY,
                 TXT_NewLabel("No compatible servers found."),
-                NULL
-            );
+                NULL);
         }
     }
 }
@@ -999,8 +993,8 @@ static void ServerQueryWindow(const char *title)
     query_window = TXT_NewWindow(title);
 
     TXT_AddWidget(query_window,
-                  TXT_NewScrollPane(70, 10,
-                                    results_table = TXT_NewTable(3)));
+        TXT_NewScrollPane(70, 10,
+            results_table = TXT_NewTable(3)));
 
     TXT_SetColumnWidths(results_table, 7, 22, 40);
     TXT_SetPeriodicCallback(QueryPeriodicCallback, results_table, 1);
@@ -1009,14 +1003,14 @@ static void ServerQueryWindow(const char *title)
 }
 
 static void FindInternetServer(TXT_UNCAST_ARG(widget),
-                               TXT_UNCAST_ARG(user_data))
+    TXT_UNCAST_ARG(user_data))
 {
     NET_StartMasterQuery();
     ServerQueryWindow("Find Internet server");
 }
 
 static void FindLANServer(TXT_UNCAST_ARG(widget),
-                          TXT_UNCAST_ARG(user_data))
+    TXT_UNCAST_ARG(user_data))
 {
     NET_StartLANQuery();
     ServerQueryWindow("Find LAN server");
@@ -1024,7 +1018,7 @@ static void FindLANServer(TXT_UNCAST_ARG(widget),
 
 void JoinMultiGame(TXT_UNCAST_ARG(widget), void *user_data)
 {
-    txt_window_t *window;
+    txt_window_t   *window;
     txt_inputbox_t *address_box;
 
     window = TXT_NewWindow("Join multiplayer game");
@@ -1034,35 +1028,35 @@ void JoinMultiGame(TXT_UNCAST_ARG(widget), void *user_data)
     TXT_SetWindowHelpURL(window, MULTI_JOIN_HELP_URL);
 
     TXT_AddWidgets(window,
-                   TXT_NewLabel("Game"),
-                   IWADSelector(),
-                   NULL);
+        TXT_NewLabel("Game"),
+        IWADSelector(),
+        NULL);
 
     if (gamemission == hexen)
     {
         TXT_AddWidgets(window,
-                       TXT_NewLabel("Character class "),
-                       TXT_NewDropdownList(&character_class,
-                                           character_classes, 3),
-                       NULL);
+            TXT_NewLabel("Character class "),
+            TXT_NewDropdownList(&character_class,
+                character_classes, 3),
+            NULL);
     }
 
     TXT_AddWidgets(window,
-                   TXT_NewSeparator("Server"),
-                   TXT_NewLabel("Connect to address: "),
-                   address_box = TXT_NewInputBox(&connect_address, 30),
+        TXT_NewSeparator("Server"),
+        TXT_NewLabel("Connect to address: "),
+        address_box = TXT_NewInputBox(&connect_address, 30),
 
-                   TXT_NewButton2("Find server on Internet...",
-                                  FindInternetServer, NULL),
-                   TXT_TABLE_OVERFLOW_RIGHT,
-                   TXT_NewButton2("Find server on local network...",
-                                  FindLANServer, NULL),
-                   TXT_TABLE_OVERFLOW_RIGHT,
-                   TXT_NewStrut(0, 1),
-                   TXT_TABLE_OVERFLOW_RIGHT,
-                   TXT_NewButton2("Add extra parameters...",
-                                  OpenExtraParamsWindow, NULL),
-                   NULL);
+        TXT_NewButton2("Find server on Internet...",
+            FindInternetServer, NULL),
+        TXT_TABLE_OVERFLOW_RIGHT,
+        TXT_NewButton2("Find server on local network...",
+            FindLANServer, NULL),
+        TXT_TABLE_OVERFLOW_RIGHT,
+        TXT_NewStrut(0, 1),
+        TXT_TABLE_OVERFLOW_RIGHT,
+        TXT_NewButton2("Add extra parameters...",
+            OpenExtraParamsWindow, NULL),
+        NULL);
 
     TXT_SelectWidget(window, address_box);
 
@@ -1072,9 +1066,8 @@ void JoinMultiGame(TXT_UNCAST_ARG(widget), void *user_data)
 
 void SetChatMacroDefaults()
 {
-    int i;
-    const char *const defaults[] =
-    {
+    int               i;
+    const char *const defaults[] = {
         HUSTR_CHATMACRO0,
         HUSTR_CHATMACRO1,
         HUSTR_CHATMACRO2,
@@ -1086,10 +1079,10 @@ void SetChatMacroDefaults()
         HUSTR_CHATMACRO8,
         HUSTR_CHATMACRO9,
     };
-    
+
     // If the chat macros have not been set, initialize with defaults.
 
-    for (i=0; i<10; ++i)
+    for (i = 0; i < 10; ++i)
     {
         if (chat_macros[i] == NULL)
         {
@@ -1109,26 +1102,26 @@ void SetPlayerNameDefault()
 void MultiplayerConfig(TXT_UNCAST_ARG(widget), void *user_data)
 {
     txt_window_t *window;
-    txt_label_t *label;
-    txt_table_t *table;
-    char buf[10];
-    int i;
+    txt_label_t  *label;
+    txt_table_t  *table;
+    char          buf[10];
+    int           i;
 
     window = TXT_NewWindow("Multiplayer Configuration");
     TXT_SetWindowHelpURL(window, MULTI_CONFIG_HELP_URL);
 
     TXT_AddWidgets(window,
-                   TXT_NewStrut(0, 1),
-                   TXT_NewHorizBox(TXT_NewLabel("Player name:  "),
-                                   TXT_NewInputBox(&net_player_name, 25),
-                                   NULL),
-                   TXT_NewStrut(0, 1),
-                   TXT_NewSeparator("Chat macros"),
-                   NULL);
+        TXT_NewStrut(0, 1),
+        TXT_NewHorizBox(TXT_NewLabel("Player name:  "),
+            TXT_NewInputBox(&net_player_name, 25),
+            NULL),
+        TXT_NewStrut(0, 1),
+        TXT_NewSeparator("Chat macros"),
+        NULL);
 
     table = TXT_NewTable(2);
 
-    for (i=0; i<10; ++i)
+    for (i = 0; i < 10; ++i)
     {
         M_snprintf(buf, sizeof(buf), "#%i ", i + 1);
 
@@ -1136,9 +1129,9 @@ void MultiplayerConfig(TXT_UNCAST_ARG(widget), void *user_data)
         TXT_SetFGColor(label, TXT_COLOR_BRIGHT_CYAN);
 
         TXT_AddWidgets(table,
-                       label,
-                       TXT_NewInputBox(&chat_macros[(i + 1) % 10], 40),
-                       NULL);
+            label,
+            TXT_NewInputBox(&chat_macros[(i + 1) % 10], 40),
+            NULL);
     }
 
     TXT_AddWidget(window, table);
@@ -1147,11 +1140,11 @@ void MultiplayerConfig(TXT_UNCAST_ARG(widget), void *user_data)
 void BindMultiplayerVariables()
 {
     char buf[15];
-    int i;
+    int  i;
 
     M_BindStringVariable("player_name", &net_player_name);
 
-    for (i=0; i<10; ++i)
+    for (i = 0; i < 10; ++i)
     {
         M_snprintf(buf, sizeof(buf), "chatmacro%i", i);
         M_BindStringVariable(buf, &chat_macros[i]);
@@ -1159,36 +1152,35 @@ void BindMultiplayerVariables()
 
     switch (gamemission)
     {
-        case doom:
-            M_BindChatControls(4);
-            key_multi_msgplayer[0] = 'g';
-            key_multi_msgplayer[1] = 'i';
-            key_multi_msgplayer[2] = 'b';
-            key_multi_msgplayer[3] = 'r';
-            break;
+    case doom:
+        M_BindChatControls(4);
+        key_multi_msgplayer[0] = 'g';
+        key_multi_msgplayer[1] = 'i';
+        key_multi_msgplayer[2] = 'b';
+        key_multi_msgplayer[3] = 'r';
+        break;
 
-        case heretic:
-            M_BindChatControls(4);
-            key_multi_msgplayer[0] = 'g';
-            key_multi_msgplayer[1] = 'y';
-            key_multi_msgplayer[2] = 'r';
-            key_multi_msgplayer[3] = 'b';
-            break;
+    case heretic:
+        M_BindChatControls(4);
+        key_multi_msgplayer[0] = 'g';
+        key_multi_msgplayer[1] = 'y';
+        key_multi_msgplayer[2] = 'r';
+        key_multi_msgplayer[3] = 'b';
+        break;
 
-        case hexen:
-            M_BindChatControls(8);
-            key_multi_msgplayer[0] = 'b';
-            key_multi_msgplayer[1] = 'r';
-            key_multi_msgplayer[2] = 'y';
-            key_multi_msgplayer[3] = 'g';
-            key_multi_msgplayer[4] = 'j';
-            key_multi_msgplayer[5] = 'w';
-            key_multi_msgplayer[6] = 'h';
-            key_multi_msgplayer[7] = 'p';
-            break;
+    case hexen:
+        M_BindChatControls(8);
+        key_multi_msgplayer[0] = 'b';
+        key_multi_msgplayer[1] = 'r';
+        key_multi_msgplayer[2] = 'y';
+        key_multi_msgplayer[3] = 'g';
+        key_multi_msgplayer[4] = 'j';
+        key_multi_msgplayer[5] = 'w';
+        key_multi_msgplayer[6] = 'h';
+        key_multi_msgplayer[7] = 'p';
+        break;
 
-        default:
-            break;
+    default:
+        break;
     }
 }
-

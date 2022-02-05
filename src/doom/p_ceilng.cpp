@@ -161,7 +161,7 @@ int EV_DoCeiling(line_t *line,
 {
     int        secnum;
     int        rtn;
-    sector_t * sec;
+    sector_t  *sec;
     ceiling_t *ceiling;
 
     secnum = -1;

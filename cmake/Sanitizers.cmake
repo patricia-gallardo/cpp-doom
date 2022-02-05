@@ -39,8 +39,8 @@ function(enable_sanitizers)
         option(ENABLE_SANITIZER_MEMORY "Enable memory sanitizer" FALSE)
         if (ENABLE_SANITIZER_MEMORY AND CMAKE_CXX_COMPILER_ID MATCHES ".*Clang")
             if ("address" IN_LIST SANITIZERS
-                    OR "thread" IN_LIST SANITIZERS
-                    OR "leak" IN_LIST SANITIZERS)
+                OR "thread" IN_LIST SANITIZERS
+                OR "leak" IN_LIST SANITIZERS)
                 message(WARNING "Memory sanitizer does not work with Address, Thread and Leak sanitizer enabled")
             else ()
                 list(APPEND SANITIZERS "memory")
@@ -57,14 +57,14 @@ function(enable_sanitizers)
 
     if (LIST_OF_SANITIZERS)
         if (NOT
-                "${LIST_OF_SANITIZERS}"
-                STREQUAL
-                "")
+            "${LIST_OF_SANITIZERS}"
+            STREQUAL
+            "")
             add_compile_options("$<$<CONFIG:DEBUG>:-fsanitize=${LIST_OF_SANITIZERS}>")
             add_link_options("$<$<CONFIG:DEBUG>:-fsanitize=${LIST_OF_SANITIZERS}>")
-            if(WIN32)
+            if (WIN32)
                 set_property(GLOBAL PROPERTY MSVC_RUNTIME_LIBRARY "MultiThreaded$<$<CONFIG:Debug>:Debug>")
-            endif()
+            endif ()
         endif ()
     endif ()
 

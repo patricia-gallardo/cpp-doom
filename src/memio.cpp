@@ -23,8 +23,7 @@
 #include "memory.hpp"
 #include "z_zone.hpp"
 
-using memfile_mode_t = enum
-{
+using memfile_mode_t = enum {
     MODE_READ,
     MODE_WRITE,
 };

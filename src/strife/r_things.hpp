@@ -21,46 +21,43 @@
 #define __R_THINGS__
 
 
+#define MAXVISSPRITES 128 * 8
 
-#define MAXVISSPRITES  	128*8
-
-extern vissprite_t	vissprites[MAXVISSPRITES];
-extern vissprite_t*	vissprite_p;
-extern vissprite_t	vsprsortedhead;
+extern vissprite_t  vissprites[MAXVISSPRITES];
+extern vissprite_t *vissprite_p;
+extern vissprite_t  vsprsortedhead;
 
 // Constant arrays used for psprite clipping
 //  and initializing clipping.
-extern short		negonearray[MAXWIDTH];
-extern short		screenheightarray[MAXWIDTH];
+extern short negonearray[MAXWIDTH];
+extern short screenheightarray[MAXWIDTH];
 
 // vars for R_DrawMaskedColumn
-extern short*		mfloorclip;
-extern short*		mceilingclip;
-extern fixed_t		spryscale;
-extern fixed_t		sprtopscreen;
+extern short  *mfloorclip;
+extern short  *mceilingclip;
+extern fixed_t spryscale;
+extern fixed_t sprtopscreen;
 
-extern fixed_t		pspritescale;
-extern fixed_t		pspriteiscale;
+extern fixed_t pspritescale;
+extern fixed_t pspriteiscale;
 
 
 // villsa [STIFE] new argument
-void R_DrawMaskedColumn (column_t *column, int baseclip);
+void R_DrawMaskedColumn(column_t *column, int baseclip);
 
 
-void R_SortVisSprites ();
+void R_SortVisSprites();
 
-void R_AddSprites (sector_t* sec);
-void R_AddPSprites ();
-void R_DrawSprites ();
-void R_InitSprites (const char** namelist);
-void R_ClearSprites ();
-void R_DrawMasked ();
+void R_AddSprites(sector_t *sec);
+void R_AddPSprites();
+void R_DrawSprites();
+void R_InitSprites(const char **namelist);
+void R_ClearSprites();
+void R_DrawMasked();
 
-void
-R_ClipVisSprite
-( vissprite_t*		vis,
-  int			xl,
-  int			xh );
+void R_ClipVisSprite(vissprite_t *vis,
+    int                           xl,
+    int                           xh);
 
 
 #endif

@@ -32,7 +32,7 @@
 #include "deh_main.hpp"
 
 extern deh_section_t *deh_section_types[];
-extern const char *   deh_signatures[];
+extern const char    *deh_signatures[];
 
 static boolean deh_initialized = false;
 
@@ -208,7 +208,7 @@ extern void DEH_RestoreLineStart(deh_context_t *context);
 static boolean CheckSignatures(deh_context_t *context)
 {
     size_t i;
-    char * line;
+    char  *line;
 
     // [crispy] save pointer to start of line (should be 0 here)
     DEH_SaveLineStart(context);
@@ -295,9 +295,9 @@ static void DEH_ParseContext(deh_context_t *context)
     deh_section_t *current_section = NULL;
     deh_section_t *prev_section    = NULL; // [crispy] remember previous line parser
     char           section_name[20];
-    void *         tag = NULL;
+    void          *tag = NULL;
     boolean        extended;
-    char *         line;
+    char          *line;
 
     // Read the header and check it matches the signature
 
@@ -359,7 +359,7 @@ static void DEH_ParseContext(deh_context_t *context)
                     prev_section = NULL;
                 }
 
-                //printf("end %s tag\n", current_section->name);
+                // printf("end %s tag\n", current_section->name);
                 current_section = NULL;
             }
         }
@@ -382,7 +382,7 @@ static void DEH_ParseContext(deh_context_t *context)
                 if (current_section != NULL)
                 {
                     tag = current_section->start(context, line);
-                    //printf("started %s tag\n", section_name);
+                    // printf("started %s tag\n", section_name);
                 }
                 else if (prev_section != NULL)
                 {
@@ -393,7 +393,7 @@ static void DEH_ParseContext(deh_context_t *context)
                 }
                 else
                 {
-                    //printf("unknown section name %s\n", section_name);
+                    // printf("unknown section name %s\n", section_name);
                 }
             }
         }
@@ -447,7 +447,7 @@ int DEH_LoadFile(const char *filename)
 void DEH_AutoLoadPatches(const char *path)
 {
     const char *filename;
-    glob_t *    glob;
+    glob_t     *glob;
 
     glob = I_StartMultiGlob(path, GLOB_FLAG_NOCASE | GLOB_FLAG_SORTED,
         "*.deh", "*.bex", "*.hhe", "*.seh", NULL); // [crispy] *.bex

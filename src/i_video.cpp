@@ -57,7 +57,7 @@ int DELTAWIDTH; // [crispy] horizontal widescreen offset
 // These are (1) the window (or the full screen) that our game is rendered to
 // and (2) the renderer that scales the texture (see below) into this window.
 
-static SDL_Window *  screen;
+static SDL_Window   *screen;
 static SDL_Renderer *renderer;
 
 // Window title
@@ -92,14 +92,14 @@ static uint32_t pixel_format;
 // palette
 
 #ifdef CRISPY_TRUECOLOR
-static SDL_Texture * curpane = NULL;
-static SDL_Texture * redpane = NULL;
-static SDL_Texture * yelpane = NULL;
-static SDL_Texture * grnpane = NULL;
+static SDL_Texture  *curpane = NULL;
+static SDL_Texture  *redpane = NULL;
+static SDL_Texture  *yelpane = NULL;
+static SDL_Texture  *grnpane = NULL;
 static int           pane_alpha;
 static unsigned int  rmask, gmask, bmask, amask; // [crispy] moved up here
 static const uint8_t blend_alpha = 0xa8;
-extern pixel_t *     colormaps; // [crispy] evil hack to get FPS dots working as in Vanilla
+extern pixel_t      *colormaps; // [crispy] evil hack to get FPS dots working as in Vanilla
 #else
 static SDL_Color palette[256];
 #endif
@@ -1803,7 +1803,7 @@ void I_RenderReadPixels(byte **data, int *w, int *h, int *p)
     SDL_PixelFormat *format;
     int              temp;
     uint32_t         png_format;
-    byte *           pixels;
+    byte            *pixels;
 
     // [crispy] adjust cropping rectangle if necessary
     rect.x = rect.y = 0;
@@ -1941,10 +1941,10 @@ const pixel_t (*blendfunc)(const pixel_t fg, const pixel_t bg) = I_BlendOver;
 const pixel_t I_MapRGB(const uint8_t r, const uint8_t g, const uint8_t b)
 {
     /*
-	return amask |
-	        (((r * rmask) >> 8) & rmask) |
-	        (((g * gmask) >> 8) & gmask) |
-	        (((b * bmask) >> 8) & bmask);
+        return amask |
+                (((r * rmask) >> 8) & rmask) |
+                (((g * gmask) >> 8) & gmask) |
+                (((b * bmask) >> 8) & bmask);
 */
     return SDL_MapRGB(argbbuffer->format, r, g, b);
 }

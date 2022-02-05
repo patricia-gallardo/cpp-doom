@@ -457,8 +457,8 @@ void P_NightmareRespawn(mobj_t *mobj)
     fixed_t      y;
     fixed_t      z;
     subsector_t *ss;
-    mobj_t *     mo;
-    mapthing_t * mthing;
+    mobj_t      *mo;
+    mapthing_t  *mthing;
 
     x = mobj->spawnpoint.x << FRACBITS;
     y = mobj->spawnpoint.y << FRACBITS;
@@ -537,17 +537,17 @@ void P_MobjThinker(mobj_t *mobj)
     else
         // [AM] Handle interpolation unless we're an active player.
         if (!(mobj->player != NULL && mobj == mobj->player->mo))
-    {
-        // Assume we can interpolate at the beginning
-        // of the tic.
-        mobj->interp = true;
+        {
+            // Assume we can interpolate at the beginning
+            // of the tic.
+            mobj->interp = true;
 
-        // Store starting position for mobj interpolation.
-        mobj->oldx     = mobj->x;
-        mobj->oldy     = mobj->y;
-        mobj->oldz     = mobj->z;
-        mobj->oldangle = mobj->angle;
-    }
+            // Store starting position for mobj interpolation.
+            mobj->oldx     = mobj->x;
+            mobj->oldy     = mobj->y;
+            mobj->oldz     = mobj->z;
+            mobj->oldangle = mobj->angle;
+        }
 
     // momentum movement
     if (mobj->momx
@@ -617,8 +617,8 @@ static mobj_t *
         mobjtype_t          type,
         boolean             safe)
 {
-    mobj_t *    mobj;
-    state_t *   st;
+    mobj_t     *mobj;
+    state_t    *st;
     mobjinfo_t *info;
 
     mobj = zmalloc<decltype(mobj)>(sizeof(*mobj), PU_LEVEL, NULL);
@@ -747,8 +747,8 @@ void P_RespawnSpecials()
     fixed_t z;
 
     subsector_t *ss;
-    mobj_t *     mo;
-    mapthing_t * mthing;
+    mobj_t      *mo;
+    mapthing_t  *mthing;
 
     int i;
 
@@ -1083,7 +1083,7 @@ void P_SpawnBlood(fixed_t x,
     fixed_t               y,
     fixed_t               z,
     int                   damage,
-    mobj_t *              target) // [crispy] pass thing type
+    mobj_t               *target) // [crispy] pass thing type
 {
     mobj_t *th;
 
@@ -1158,7 +1158,7 @@ mobj_t *P_SubstNullMobj(mobj_t *mobj)
 //
 mobj_t *
     P_SpawnMissile(mobj_t *source,
-        mobj_t *           dest,
+        mobj_t            *dest,
         mobjtype_t         type)
 {
     mobj_t *th;
@@ -1258,9 +1258,9 @@ void P_SpawnPlayerMissile(mobj_t *source,
     th->target = source;
     th->angle  = an;
     th->momx   = FixedMul(th->info->speed,
-        finecosine[an >> ANGLETOFINESHIFT]);
+          finecosine[an >> ANGLETOFINESHIFT]);
     th->momy   = FixedMul(th->info->speed,
-        finesine[an >> ANGLETOFINESHIFT]);
+          finesine[an >> ANGLETOFINESHIFT]);
     th->momz   = FixedMul(th->info->speed, slope);
     // [crispy] suppress interpolation of player missiles for the first tic
     th->interp = -1;

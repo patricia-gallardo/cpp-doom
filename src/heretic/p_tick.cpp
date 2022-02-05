@@ -27,7 +27,7 @@ int TimerGame;
 /*
 ===============================================================================
 
-								THINKERS
+                                                                THINKERS
 
 All thinkers should be allocated by Z_Malloc so they can be operated on uniformly.  The actual
 structures will vary in size, but the first element must be thinker_t.
@@ -35,7 +35,7 @@ structures will vary in size, but the first element must be thinker_t.
 ===============================================================================
 */
 
-thinker_t thinkercap;           // both the head and tail of the thinker list
+thinker_t thinkercap; // both the head and tail of the thinker list
 
 /*
 ===============
@@ -61,12 +61,12 @@ void P_InitThinkers()
 ===============
 */
 
-void P_AddThinker(thinker_t * thinker)
+void P_AddThinker(thinker_t *thinker)
 {
     thinkercap.prev->next = thinker;
-    thinker->next = &thinkercap;
-    thinker->prev = thinkercap.prev;
-    thinkercap.prev = thinker;
+    thinker->next         = &thinkercap;
+    thinker->prev         = thinkercap.prev;
+    thinkercap.prev       = thinker;
 }
 
 /*
@@ -80,9 +80,9 @@ void P_AddThinker(thinker_t * thinker)
 ===============
 */
 
-void P_RemoveThinker(thinker_t * thinker)
+void P_RemoveThinker(thinker_t *thinker)
 {
-    thinker->function = (think_t) - 1;
+    thinker->function = (think_t)-1;
 }
 
 /*
@@ -95,7 +95,7 @@ void P_RemoveThinker(thinker_t * thinker)
 ===============
 */
 
-void P_AllocateThinker(thinker_t * thinker)
+void P_AllocateThinker(thinker_t *thinker)
 {
 }
 
@@ -116,15 +116,16 @@ void P_RunThinkers()
     while (currentthinker != &thinkercap)
     {
         if (action_hook_is_empty(currentthinker->function))
-        {                       // time to remove it
-            nextthinker = currentthinker->next;
+        { // time to remove it
+            nextthinker                = currentthinker->next;
             currentthinker->next->prev = currentthinker->prev;
             currentthinker->prev->next = currentthinker->next;
             Z_Free(currentthinker);
         }
         else
         {
-            if (currentthinker->function.index() == thinker_param_action_hook) {
+            if (currentthinker->function.index() == thinker_param_action_hook)
+            {
                 auto callback = std::get<thinker_param_action>(currentthinker->function);
                 callback(currentthinker);
             }

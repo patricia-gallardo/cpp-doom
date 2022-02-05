@@ -23,44 +23,46 @@
 /*
 musicinfo_t S_music[] =
 {
-	{ "MUS_E1M1", 0 }, // 1-1
-	{ "MUS_E1M2", 0 },
-	{ "MUS_E1M3", 0 },
-	{ "MUS_E1M4", 0 },
-	{ "MUS_E1M5", 0 },
-	{ "MUS_E1M6", 0 },
-	{ "MUS_E1M7", 0 },
-	{ "MUS_E1M8", 0 },
-	{ "MUS_E1M9", 0 },
-	{ "MUS_E2M1", 0 }, // 2-1
-	{ "MUS_E2M2", 0 },
-	{ "MUS_E2M3", 0 },
-	{ "MUS_E2M4", 0 },
-	{ "MUS_E1M4", 0 },
-	{ "MUS_E2M6", 0 },
-	{ "MUS_E2M7", 0 },
-	{ "MUS_E2M8", 0 },
-	{ "MUS_E2M9", 0 },
-	{ "MUS_E1M1", 0 }, // 3-1
-	{ "MUS_E3M2", 0 },
-	{ "MUS_E3M3", 0 },
-	{ "MUS_E1M6", 0 },
-	{ "MUS_E1M3", 0 },
-	{ "MUS_E1M2", 0 },
-	{ "MUS_E1M5", 0 },
-	{ "MUS_E1M9", 0 },
-	{ "MUS_E2M6", 0 },
-	{ "MUS_E1M6", 0 }, // 4-1
-	{ "MUS_TITL", 0 },
-	{ "MUS_INTR", 0 },
-	{ "MUS_CPTD", 0 }
+        { "MUS_E1M1", 0 }, // 1-1
+        { "MUS_E1M2", 0 },
+        { "MUS_E1M3", 0 },
+        { "MUS_E1M4", 0 },
+        { "MUS_E1M5", 0 },
+        { "MUS_E1M6", 0 },
+        { "MUS_E1M7", 0 },
+        { "MUS_E1M8", 0 },
+        { "MUS_E1M9", 0 },
+        { "MUS_E2M1", 0 }, // 2-1
+        { "MUS_E2M2", 0 },
+        { "MUS_E2M3", 0 },
+        { "MUS_E2M4", 0 },
+        { "MUS_E1M4", 0 },
+        { "MUS_E2M6", 0 },
+        { "MUS_E2M7", 0 },
+        { "MUS_E2M8", 0 },
+        { "MUS_E2M9", 0 },
+        { "MUS_E1M1", 0 }, // 3-1
+        { "MUS_E3M2", 0 },
+        { "MUS_E3M3", 0 },
+        { "MUS_E1M6", 0 },
+        { "MUS_E1M3", 0 },
+        { "MUS_E1M2", 0 },
+        { "MUS_E1M5", 0 },
+        { "MUS_E1M9", 0 },
+        { "MUS_E2M6", 0 },
+        { "MUS_E1M6", 0 }, // 4-1
+        { "MUS_TITL", 0 },
+        { "MUS_INTR", 0 },
+        { "MUS_CPTD", 0 }
 };
 */
 
 // Sound info
 
-#define SOUND(name, priority, numchannels, pitchshift) \
-    { name, "", priority, NULL, pitchshift, 0, -1, 0, numchannels, NULL }
+#define SOUND(name, priority, numchannels, pitchshift)                    \
+    {                                                                     \
+        name, "", priority, NULL, pitchshift, 0, -1, 0, numchannels, NULL \
+    }
 
 sfxinfo_t S_sfx[] = {
     // tagname, lumpname, priority, usefulness, snd_ptr, lumpnum, numchannels,

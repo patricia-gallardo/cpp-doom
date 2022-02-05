@@ -47,21 +47,21 @@
 //
 //==========================================================================
 
-boolean P_Teleport(mobj_t * thing, fixed_t x, fixed_t y, angle_t angle,
-                   boolean useFog)
+boolean P_Teleport(mobj_t *thing, fixed_t x, fixed_t y, angle_t angle,
+    boolean useFog)
 {
-    fixed_t oldx;
-    fixed_t oldy;
-    fixed_t oldz;
-    fixed_t aboveFloor;
-    fixed_t fogDelta;
+    fixed_t   oldx;
+    fixed_t   oldy;
+    fixed_t   oldz;
+    fixed_t   aboveFloor;
+    fixed_t   fogDelta;
     player_t *player;
-    unsigned an;
-    mobj_t *fog;
+    unsigned  an;
+    mobj_t   *fog;
 
-    oldx = thing->x;
-    oldy = thing->y;
-    oldz = thing->z;
+    oldx       = thing->x;
+    oldy       = thing->y;
+    oldz       = thing->z;
     aboveFloor = thing->z - thing->floorz;
     if (!P_TeleportMove(thing, x, y))
     {
@@ -81,7 +81,7 @@ boolean P_Teleport(mobj_t * thing, fixed_t x, fixed_t y, angle_t angle,
         }
         else
         {
-            thing->z = thing->floorz;
+            thing->z      = thing->floorz;
             player->viewz = thing->z + player->viewheight;
             if (useFog)
             {
@@ -105,15 +105,15 @@ boolean P_Teleport(mobj_t * thing, fixed_t x, fixed_t y, angle_t angle,
     if (useFog)
     {
         fogDelta = thing->flags & MF_MISSILE ? 0 : TELEFOGHEIGHT;
-        fog = P_SpawnMobj(oldx, oldy, oldz + fogDelta, MT_TFOG);
+        fog      = P_SpawnMobj(oldx, oldy, oldz + fogDelta, MT_TFOG);
         S_StartSound(fog, SFX_TELEPORT);
-        an = angle >> ANGLETOFINESHIFT;
+        an  = angle >> ANGLETOFINESHIFT;
         fog = P_SpawnMobj(x + 20 * finecosine[an],
-                          y + 20 * finesine[an], thing->z + fogDelta,
-                          MT_TFOG);
+            y + 20 * finesine[an], thing->z + fogDelta,
+            MT_TFOG);
         S_StartSound(fog, SFX_TELEPORT);
         if (thing->player && !thing->player->powers[pw_speed])
-        {                       // Freeze player for about .5 sec
+        { // Freeze player for about .5 sec
             thing->reactiontime = 18;
         }
         thing->angle = angle;
@@ -136,7 +136,7 @@ boolean P_Teleport(mobj_t * thing, fixed_t x, fixed_t y, angle_t angle,
         thing->momx = FixedMul(thing->info->speed, finecosine[angle]);
         thing->momy = FixedMul(thing->info->speed, finesine[angle]);
     }
-    else if (useFog)            // no fog doesn't alter the player's momentums
+    else if (useFog) // no fog doesn't alter the player's momentums
     {
         thing->momx = thing->momy = thing->momz = 0;
     }
@@ -149,22 +149,22 @@ boolean P_Teleport(mobj_t * thing, fixed_t x, fixed_t y, angle_t angle,
 //
 //==========================================================================
 
-boolean EV_Teleport(int tid, mobj_t * thing, boolean fog)
+boolean EV_Teleport(int tid, mobj_t *thing, boolean fog)
 {
-    int i;
-    int count;
+    int     i;
+    int     count;
     mobj_t *mo;
-    int searcher;
+    int     searcher;
 
     if (!thing)
-    {                           // Teleport function called with an invalid mobj
+    { // Teleport function called with an invalid mobj
         return false;
     }
     if (thing->flags2 & MF2_NOTELEPORT)
     {
         return false;
     }
-    count = 0;
+    count    = 0;
     searcher = -1;
     while (P_FindMobjFromTID(tid, &searcher) != NULL)
     {
@@ -174,9 +174,9 @@ boolean EV_Teleport(int tid, mobj_t * thing, boolean fog)
     {
         return false;
     }
-    count = 1 + (P_Random() % count);
+    count    = 1 + (P_Random() % count);
     searcher = -1;
-    mo = NULL;
+    mo       = NULL;
 
     for (i = 0; i < count; i++)
     {

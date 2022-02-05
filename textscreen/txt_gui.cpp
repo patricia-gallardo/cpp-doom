@@ -25,10 +25,9 @@
 
 using txt_cliparea_t = struct txt_cliparea_s;
 
-struct txt_cliparea_s
-{
-    int x1, x2;
-    int y1, y2;
+struct txt_cliparea_s {
+    int             x1, x2;
+    int             y1, y2;
     txt_cliparea_t *next;
 };
 
@@ -39,12 +38,11 @@ struct txt_cliparea_s
 // +-++
 // +-++
 
-static const int borders[4][4] = 
-{
-    {0xda, 0xc4, 0xc2, 0xbf},
-    {0xb3, ' ',  0xb3, 0xb3},
-    {0xc3, 0xc4, 0xc5, 0xb4},
-    {0xc0, 0xc4, 0xc1, 0xd9},
+static const int borders[4][4] = {
+    { 0xda, 0xc4, 0xc2, 0xbf },
+    { 0xb3, ' ', 0xb3, 0xb3 },
+    { 0xc3, 0xc4, 0xc5, 0xb4 },
+    { 0xc0, 0xc4, 0xc1, 0xd9 },
 };
 
 static txt_cliparea_t *cliparea = NULL;
@@ -54,17 +52,17 @@ static txt_cliparea_t *cliparea = NULL;
 
 void TXT_DrawDesktopBackground(const char *title)
 {
-    int i;
+    int            i;
     unsigned char *screendata;
     unsigned char *p;
 
     screendata = TXT_GetScreenData();
-    
+
     // Fill the screen with gradient characters
 
     p = screendata;
-    
-    for (i=0; i<TXT_SCREEN_W * TXT_SCREEN_H; ++i)
+
+    for (i = 0; i < TXT_SCREEN_W * TXT_SCREEN_H; ++i)
     {
         *p++ = 0xb1;
         *p++ = TXT_COLOR_GREY | (TXT_COLOR_BLUE << 4);
@@ -74,7 +72,7 @@ void TXT_DrawDesktopBackground(const char *title)
 
     p = screendata;
 
-    for (i=0; i<TXT_SCREEN_W; ++i)
+    for (i = 0; i < TXT_SCREEN_W; ++i)
     {
         *p++ = ' ';
         *p++ = TXT_COLOR_BLACK | (TXT_COLOR_GREY << 4);
@@ -82,7 +80,7 @@ void TXT_DrawDesktopBackground(const char *title)
 
     p = screendata + (TXT_SCREEN_H - 1) * TXT_SCREEN_W * 2;
 
-    for (i=0; i<TXT_SCREEN_W; ++i)
+    for (i = 0; i < TXT_SCREEN_W; ++i)
     {
         *p++ = ' ';
         *p++ = TXT_COLOR_BLACK | (TXT_COLOR_GREY << 4);
@@ -102,15 +100,15 @@ void TXT_DrawShadow(int x, int y, int w, int h)
 {
     unsigned char *screendata;
     unsigned char *p;
-    int x1, y1;
+    int            x1, y1;
 
     screendata = TXT_GetScreenData();
 
-    for (y1=y; y1<y+h; ++y1)
+    for (y1 = y; y1 < y + h; ++y1)
     {
         p = screendata + (y1 * TXT_SCREEN_W + x) * 2;
 
-        for (x1=x; x1<x+w; ++x1)
+        for (x1 = x; x1 < x + w; ++x1)
         {
             if (VALID_X(x1) && VALID_Y(y1))
             {
@@ -125,13 +123,13 @@ void TXT_DrawShadow(int x, int y, int w, int h)
 void TXT_DrawWindowFrame(const char *title, int x, int y, int w, int h)
 {
     txt_saved_colors_t colors;
-    int x1, y1;
-    int bx, by;
+    int                x1, y1;
+    int                bx, by;
 
     TXT_SaveColors(&colors);
     TXT_FGColor(TXT_COLOR_BRIGHT_CYAN);
 
-    for (y1=y; y1<y+h; ++y1)
+    for (y1 = y; y1 < y + h; ++y1)
     {
         // Select the appropriate row and column in the borders
         // array to pick the appropriate character to draw at
@@ -140,15 +138,17 @@ void TXT_DrawWindowFrame(const char *title, int x, int y, int w, int h)
         // Draw a horizontal line on the third line down, so we
         // draw a box around the title.
 
-        by = y1 == y ? 0 :
+        by = y1 == y                      ? 0 :
              y1 == y + 2 && title != NULL ? 2 :
-             y1 == y + h - 1 ? 3 : 1;
+             y1 == y + h - 1              ? 3 :
+                                            1;
 
-        for (x1=x; x1<x+w; ++x1)
+        for (x1 = x; x1 < x + w; ++x1)
         {
-            bx = x1 == x ? 0 :
-                 x1 == x + w - 1 ? 3 : 1;
-                 
+            bx = x1 == x         ? 0 :
+                 x1 == x + w - 1 ? 3 :
+                                   1;
+
             if (VALID_X(x1) && VALID_Y(y1))
             {
                 TXT_GotoXY(x1, y1);
@@ -165,11 +165,11 @@ void TXT_DrawWindowFrame(const char *title, int x, int y, int w, int h)
         TXT_BGColor(TXT_COLOR_GREY, 0);
         TXT_FGColor(TXT_COLOR_BLUE);
 
-        for (x1=0; x1<w-2; ++x1)
+        for (x1 = 0; x1 < w - 2; ++x1)
         {
             TXT_DrawString(" ");
         }
-    
+
         TXT_GotoXY(x + (w - TXT_UTF8_Strlen(title)) / 2, y + 1);
         TXT_DrawString(title);
     }
@@ -185,9 +185,9 @@ void TXT_DrawWindowFrame(const char *title, int x, int y, int w, int h)
 void TXT_DrawSeparator(int x, int y, int w)
 {
     txt_saved_colors_t colors;
-    unsigned char *data;
-    int x1;
-    int b;
+    unsigned char     *data;
+    int                x1;
+    int                b;
 
     data = TXT_GetScreenData();
 
@@ -201,13 +201,13 @@ void TXT_DrawSeparator(int x, int y, int w)
 
     data += (y * TXT_SCREEN_W + x) * 2;
 
-    for (x1=x; x1<x+w; ++x1)
+    for (x1 = x; x1 < x + w; ++x1)
     {
         TXT_GotoXY(x1, y);
 
-        b = x1 == x ? 0 :
+        b = x1 == x         ? 0 :
             x1 == x + w - 1 ? 3 :
-            1;
+                              1;
 
         if (VALID_X(x1))
         {
@@ -231,8 +231,8 @@ void TXT_DrawSeparator(int x, int y, int w)
 // string" - characters are in native code page format and not UTF-8.
 void TXT_DrawCodePageString(const char *s)
 {
-    int x, y;
-    int x1;
+    int         x, y;
+    int         x1;
     const char *p;
 
     TXT_GetXY(&x, &y);
@@ -285,9 +285,9 @@ static void PutUnicodeChar(unsigned int c)
 
 void TXT_DrawString(const char *s)
 {
-    int x, y;
-    int x1;
-    const char *p;
+    int          x, y;
+    int          x1;
+    const char  *p;
     unsigned int c;
 
     TXT_GetXY(&x, &y);
@@ -296,7 +296,7 @@ void TXT_DrawString(const char *s)
     {
         x1 = x;
 
-        for (p = s; *p != '\0'; )
+        for (p = s; *p != '\0';)
         {
             c = TXT_DecodeUTF8(&p);
 
@@ -321,8 +321,8 @@ void TXT_DrawString(const char *s)
 void TXT_DrawHorizScrollbar(int x, int y, int w, int cursor, int range)
 {
     txt_saved_colors_t colors;
-    int x1;
-    int cursor_x;
+    int                x1;
+    int                cursor_x;
 
     if (!VALID_Y(y))
     {
@@ -348,7 +348,7 @@ void TXT_DrawHorizScrollbar(int x, int y, int w, int cursor, int range)
         cursor_x = x + w - 2;
     }
 
-    for (x1=x+1; x1<x+w-1; ++x1)
+    for (x1 = x + 1; x1 < x + w - 1; ++x1)
     {
         if (VALID_X(x1))
         {
@@ -370,8 +370,8 @@ void TXT_DrawHorizScrollbar(int x, int y, int w, int cursor, int range)
 void TXT_DrawVertScrollbar(int x, int y, int h, int cursor, int range)
 {
     txt_saved_colors_t colors;
-    int y1;
-    int cursor_y;
+    int                y1;
+    int                cursor_y;
 
     if (!VALID_X(x))
     {
@@ -397,7 +397,7 @@ void TXT_DrawVertScrollbar(int x, int y, int h, int cursor, int range)
         cursor_y += (cursor * (h - 3)) / range;
     }
 
-    for (y1=y+1; y1<y+h-1; ++y1)
+    for (y1 = y + 1; y1 < y + h - 1; ++y1)
     {
         if (VALID_Y(y1))
         {
@@ -423,12 +423,12 @@ void TXT_InitClipArea()
 {
     if (cliparea == nullptr)
     {
-        auto *mem = malloc(sizeof(txt_cliparea_t));
-        cliparea = new (mem) txt_cliparea_t{};
-        cliparea->x1 = 0;
-        cliparea->x2 = TXT_SCREEN_W;
-        cliparea->y1 = 0;
-        cliparea->y2 = TXT_SCREEN_H;
+        auto *mem      = malloc(sizeof(txt_cliparea_t));
+        cliparea       = new (mem) txt_cliparea_t {};
+        cliparea->x1   = 0;
+        cliparea->x2   = TXT_SCREEN_W;
+        cliparea->y1   = 0;
+        cliparea->y2   = TXT_SCREEN_H;
         cliparea->next = nullptr;
     }
 }
@@ -461,7 +461,7 @@ void TXT_PushClipArea(int x1, int x2, int y1, int y2)
     // Hook into the list
 
     newarea->next = cliparea;
-    cliparea = newarea;
+    cliparea      = newarea;
 }
 
 void TXT_PopClipArea()
@@ -474,9 +474,8 @@ void TXT_PopClipArea()
         return;
 
     // Unlink the last entry and delete
-   
+
     next_cliparea = cliparea->next;
     free(cliparea);
     cliparea = next_cliparea;
 }
-

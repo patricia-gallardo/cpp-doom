@@ -205,7 +205,7 @@ boolean W_ParseCommandLine()
 // Load all WAD files from the given directory.
 void W_AutoLoadWADs(const char *path)
 {
-    glob_t *    glob;
+    glob_t     *glob;
     const char *filename;
 
     glob = I_StartMultiGlob(path, GLOB_FLAG_NOCASE | GLOB_FLAG_SORTED,
@@ -230,7 +230,7 @@ void W_AutoLoadWADs(const char *path)
 static const struct
 {
     GameMission_t mission;
-    const char *  lumpname;
+    const char   *lumpname;
 } unique_lumps[] = {
     { doom, "POSSA1" },
     { heretic, "IMPXA1" },

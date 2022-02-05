@@ -24,8 +24,7 @@
 
 // The "mission" controls what game we are playing.
 
-using GameMission_t = enum
-{
+using GameMission_t = enum {
     doom,        // Doom 1
     doom2,       // Doom 2
     pack_tnt,    // Final Doom: TNT: Evilution
@@ -45,8 +44,7 @@ using GameMission_t = enum
 // in: eg. shareware vs. registered.  So doom1.wad and doom.wad are the
 // same mission, but a different mode.
 
-using GameMode_t = enum
-{
+using GameMode_t = enum {
     shareware,   // Doom/Heretic shareware
     registered,  // Doom/Heretic registered
     commercial,  // Doom II/Hexen
@@ -56,8 +54,7 @@ using GameMode_t = enum
 
 // What version are we emulating?
 
-using GameVersion_t = enum
-{
+using GameVersion_t = enum {
     exe_doom_1_2,   // Doom 1.2: shareware and registered
     exe_doom_1_666, // Doom 1.666: for shareware, registered and commercial
     exe_doom_1_7,   // Doom 1.7/1.7a: "
@@ -78,8 +75,7 @@ using GameVersion_t = enum
 
 // What IWAD variant are we using?
 
-using GameVariant_t = enum
-{
+using GameVariant_t = enum {
     vanilla,    // Vanilla Doom
     freedoom,   // FreeDoom: Phase 1 + 2
     freedm,     // FreeDM
@@ -88,8 +84,7 @@ using GameVariant_t = enum
 
 // Skill level.
 
-using skill_t = enum
-{
+using skill_t = enum {
     sk_noitems = -1, // the "-skill 0" hack
     sk_baby    = 0,
     sk_easy,

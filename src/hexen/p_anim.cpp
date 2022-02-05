@@ -27,19 +27,19 @@
 // MACROS ------------------------------------------------------------------
 
 #define ANIM_SCRIPT_NAME "ANIMDEFS"
-#define MAX_ANIM_DEFS 20
-#define MAX_FRAME_DEFS 96
-#define ANIM_FLAT 0
-#define ANIM_TEXTURE 1
-#define SCI_FLAT "flat"
-#define SCI_TEXTURE "texture"
-#define SCI_PIC "pic"
-#define SCI_TICS "tics"
-#define SCI_RAND "rand"
+#define MAX_ANIM_DEFS    20
+#define MAX_FRAME_DEFS   96
+#define ANIM_FLAT        0
+#define ANIM_TEXTURE     1
+#define SCI_FLAT         "flat"
+#define SCI_TEXTURE      "texture"
+#define SCI_PIC          "pic"
+#define SCI_TICS         "tics"
+#define SCI_RAND         "rand"
 
-#define LIGHTNING_SPECIAL 	198
-#define LIGHTNING_SPECIAL2 	199
-#define SKYCHANGE_SPECIAL 	200
+#define LIGHTNING_SPECIAL  198
+#define LIGHTNING_SPECIAL2 199
+#define SKYCHANGE_SPECIAL  200
 
 // TYPES -------------------------------------------------------------------
 
@@ -80,13 +80,13 @@ fixed_t Sky2ScrollDelta;
 
 // PRIVATE DATA DEFINITIONS ------------------------------------------------
 
-static animDef_t AnimDefs[MAX_ANIM_DEFS];
+static animDef_t  AnimDefs[MAX_ANIM_DEFS];
 static frameDef_t FrameDefs[MAX_FRAME_DEFS];
-static int AnimDefCount;
-static boolean LevelHasLightning;
-static int NextLightningFlash;
-static int LightningFlash;
-static int *LightningLightLevels;
+static int        AnimDefCount;
+static boolean    LevelHasLightning;
+static int        NextLightningFlash;
+static int        LightningFlash;
+static int       *LightningLightLevels;
 
 // CODE --------------------------------------------------------------------
 
@@ -98,9 +98,9 @@ static int *LightningLightLevels;
 
 void P_AnimateSurfaces()
 {
-    int i;
+    int        i;
     animDef_t *ad;
-    line_t *line;
+    line_t    *line;
 
     // Animate flats and textures
     for (i = 0; i < AnimDefCount; i++)
@@ -119,9 +119,9 @@ void P_AnimateSurfaces()
             }
             ad->tics = FrameDefs[ad->currentFrameDef].tics;
             if (ad->tics > 255)
-            {                   // Random tics
+            { // Random tics
                 ad->tics = (ad->tics >> 16)
-                    + P_Random() % ((ad->tics & 0xff00) >> 8);
+                           + P_Random() % ((ad->tics & 0xff00) >> 8);
             }
             if (ad->type == ANIM_FLAT)
             {
@@ -129,7 +129,7 @@ void P_AnimateSurfaces()
                     FrameDefs[ad->currentFrameDef].index;
             }
             else
-            {                   // Texture
+            { // Texture
                 texturetranslation[ad->index] =
                     FrameDefs[ad->currentFrameDef].index;
             }
@@ -142,18 +142,18 @@ void P_AnimateSurfaces()
         line = linespeciallist[i];
         switch (line->special)
         {
-            case 100:          // Scroll_Texture_Left
-                sides[line->sidenum[0]].textureoffset += line->arg1 << 10;
-                break;
-            case 101:          // Scroll_Texture_Right
-                sides[line->sidenum[0]].textureoffset -= line->arg1 << 10;
-                break;
-            case 102:          // Scroll_Texture_Up
-                sides[line->sidenum[0]].rowoffset += line->arg1 << 10;
-                break;
-            case 103:          // Scroll_Texture_Down
-                sides[line->sidenum[0]].rowoffset -= line->arg1 << 10;
-                break;
+        case 100: // Scroll_Texture_Left
+            sides[line->sidenum[0]].textureoffset += line->arg1 << 10;
+            break;
+        case 101: // Scroll_Texture_Right
+            sides[line->sidenum[0]].textureoffset -= line->arg1 << 10;
+            break;
+        case 102: // Scroll_Texture_Up
+            sides[line->sidenum[0]].rowoffset += line->arg1 << 10;
+            break;
+        case 103: // Scroll_Texture_Down
+            sides[line->sidenum[0]].rowoffset -= line->arg1 << 10;
+            break;
         }
     }
 
@@ -182,11 +182,11 @@ void P_AnimateSurfaces()
 
 static void P_LightningFlash()
 {
-    int i;
+    int       i;
     sector_t *tempSec;
-    int *tempLight;
-    boolean foundSec;
-    int flashLight;
+    int      *tempLight;
+    boolean   foundSec;
+    int       flashLight;
 
     if (LightningFlash)
     {
@@ -194,7 +194,7 @@ static void P_LightningFlash()
         if (LightningFlash)
         {
             tempLight = LightningLightLevels;
-            tempSec = sectors;
+            tempSec   = sectors;
             for (i = 0; i < numsectors; i++, tempSec++)
             {
                 if (tempSec->ceilingpic == skyflatnum
@@ -210,9 +210,9 @@ static void P_LightningFlash()
             }
         }
         else
-        {                       // remove the alternate lightning flash special
+        { // remove the alternate lightning flash special
             tempLight = LightningLightLevels;
-            tempSec = sectors;
+            tempSec   = sectors;
             for (i = 0; i < numsectors; i++, tempSec++)
             {
                 if (tempSec->ceilingpic == skyflatnum
@@ -228,10 +228,10 @@ static void P_LightningFlash()
         return;
     }
     LightningFlash = (P_Random() & 7) + 8;
-    flashLight = 200 + (P_Random() & 31);
-    tempSec = sectors;
-    tempLight = LightningLightLevels;
-    foundSec = false;
+    flashLight     = 200 + (P_Random() & 31);
+    tempSec        = sectors;
+    tempLight      = LightningLightLevels;
+    foundSec       = false;
     for (i = 0; i < numsectors; i++, tempSec++)
     {
         if (tempSec->ceilingpic == skyflatnum
@@ -269,14 +269,14 @@ static void P_LightningFlash()
     }
     if (foundSec)
     {
-        Sky1Texture = P_GetMapSky2Texture(gamemap);     // set alternate sky                
+        Sky1Texture = P_GetMapSky2Texture(gamemap); // set alternate sky
         S_StartSound(NULL, SFX_THUNDER_CRASH);
     }
     // Calculate the next lighting flash
     if (!NextLightningFlash)
     {
         if (P_Random() < 50)
-        {                       // Immediate Quick flash
+        { // Immediate Quick flash
             NextLightningFlash = (P_Random() & 15) + 16;
         }
         else
@@ -318,11 +318,11 @@ void P_InitLightning()
     if (!P_GetMapLightning(gamemap))
     {
         LevelHasLightning = false;
-        LightningFlash = 0;
+        LightningFlash    = 0;
         return;
     }
     LightningFlash = 0;
-    secCount = 0;
+    secCount       = 0;
     for (i = 0; i < numsectors; i++)
     {
         if (sectors[i].ceilingpic == skyflatnum
@@ -342,8 +342,8 @@ void P_InitLightning()
         return;
     }
     LightningLightLevels = zmalloc<int *>(secCount * sizeof(int), PU_LEVEL,
-                                            NULL);
-    NextLightningFlash = ((P_Random() & 15) + 5) * 35;  // don't flash at level start
+        NULL);
+    NextLightningFlash   = ((P_Random() & 15) + 5) * 35; // don't flash at level start
 }
 
 //==========================================================================
@@ -356,15 +356,15 @@ void P_InitLightning()
 
 void P_InitFTAnims()
 {
-    int base;
-    int mod;
-    int fd;
+    int        base;
+    int        mod;
+    int        fd;
     animDef_t *ad;
-    boolean ignore;
-    boolean done;
+    boolean    ignore;
+    boolean    done;
 
-    fd = 0;
-    ad = AnimDefs;
+    fd           = 0;
+    ad           = AnimDefs;
     AnimDefCount = 0;
     SC_Open(ANIM_SCRIPT_NAME);
     while (SC_GetString())
@@ -385,7 +385,7 @@ void P_InitFTAnims()
         {
             SC_ScriptError(NULL);
         }
-        SC_MustGetString();     // Name
+        SC_MustGetString(); // Name
         ignore = false;
         if (ad->type == ANIM_FLAT)
         {
@@ -399,7 +399,7 @@ void P_InitFTAnims()
             }
         }
         else
-        {                       // Texture
+        { // Texture
             if (R_CheckTextureNumForName(sc_String) == -1)
             {
                 ignore = true;
@@ -410,7 +410,7 @@ void P_InitFTAnims()
             }
         }
         ad->startFrameDef = fd;
-        done = false;
+        done              = false;
         while (done == false)
         {
             if (SC_GetString())
@@ -443,7 +443,7 @@ void P_InitFTAnims()
                         SC_MustGetNumber();
                         if (ignore == false)
                         {
-                            mod = sc_Number - base + 1;
+                            mod                = sc_Number - base + 1;
                             FrameDefs[fd].tics = (base << 16) + (mod << 8);
                             fd++;
                         }
@@ -470,9 +470,9 @@ void P_InitFTAnims()
         }
         if (ignore == false)
         {
-            ad->endFrameDef = fd - 1;
+            ad->endFrameDef     = fd - 1;
             ad->currentFrameDef = ad->endFrameDef;
-            ad->tics = 1;       // Force 1st game tic to animate
+            ad->tics            = 1; // Force 1st game tic to animate
             AnimDefCount++;
             ad++;
         }

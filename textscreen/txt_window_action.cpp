@@ -37,14 +37,14 @@ static void TXT_WindowActionSizeCalc(TXT_UNCAST_ARG(action))
     // and two surrounding spaces.
 
     action->widget.w = TXT_UTF8_Strlen(action->label)
-                     + TXT_UTF8_Strlen(buf) + 3;
+                       + TXT_UTF8_Strlen(buf) + 3;
     action->widget.h = 1;
 }
 
 static void TXT_WindowActionDrawer(TXT_UNCAST_ARG(action))
 {
     TXT_CAST_ARG(txt_window_action_t, action);
-    int hovering;
+    int  hovering;
     char buf[10];
 
     TXT_GetKeyDescription(action->key, buf, sizeof(buf));
@@ -79,12 +79,12 @@ static int TXT_WindowActionKeyPress(TXT_UNCAST_ARG(action), int key)
         TXT_EmitSignal(action, "pressed");
         return 1;
     }
-    
+
     return 0;
 }
 
-static void TXT_WindowActionMousePress(TXT_UNCAST_ARG(action), 
-                                       int x, int y, int b)
+static void TXT_WindowActionMousePress(TXT_UNCAST_ARG(action),
+    int x, int y, int b)
 {
     TXT_CAST_ARG(txt_window_action_t, action);
 
@@ -96,8 +96,7 @@ static void TXT_WindowActionMousePress(TXT_UNCAST_ARG(action),
     }
 }
 
-txt_widget_class_t txt_window_action_class =
-{
+txt_widget_class_t txt_window_action_class = {
     TXT_AlwaysSelectable,
     TXT_WindowActionSizeCalc,
     TXT_WindowActionDrawer,
@@ -112,7 +111,7 @@ txt_window_action_t *TXT_NewWindowAction(int key, const char *label)
     auto *action = create_struct<txt_window_action_t>();
 
     TXT_InitWidget(action, &txt_window_action_class);
-    action->key = key;
+    action->key   = key;
     action->label = strdup(label);
 
     return action;
@@ -165,4 +164,3 @@ txt_window_action_t *TXT_NewWindowSelectAction(txt_window_t *window)
 
     return action;
 }
-

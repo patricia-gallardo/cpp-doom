@@ -92,7 +92,7 @@ static boolean WriteWrapperTimidityConfig(char *write_path)
 
 void I_InitTimidityConfig()
 {
-    char *  env_string;
+    char   *env_string;
     boolean success;
 
     temp_timidity_cfg = M_TempFile("timidity.cfg");
@@ -376,7 +376,7 @@ static boolean ConvertMus(byte *musdata, int len, const char *filename)
 {
     MEMFILE *instream;
     MEMFILE *outstream;
-    void *   outbuf;
+    void    *outbuf;
     size_t   outbuf_len;
     int      result;
 
@@ -400,7 +400,7 @@ static boolean ConvertMus(byte *musdata, int len, const char *filename)
 
 static void *I_SDL_RegisterSong(void *data, int len)
 {
-    char *     filename;
+    char      *filename;
     Mix_Music *music;
 
     if (!music_initialized)

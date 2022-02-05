@@ -43,12 +43,11 @@ using txt_radiobutton_t = struct txt_radiobutton_s;
 
 #include "txt_widget.hpp"
 
-struct txt_radiobutton_s
-{
+struct txt_radiobutton_s {
     txt_widget_t widget;
-    char *label;
-    int *variable;
-    int value;
+    char        *label;
+    int         *variable;
+    int          value;
 };
 
 /**
@@ -75,5 +74,3 @@ txt_radiobutton_t *TXT_NewRadioButton(const char *label, int *variable, int valu
 void TXT_SetRadioButtonLabel(txt_radiobutton_t *radiobutton, const char *value);
 
 #endif /* #ifndef TXT_RADIOBUTTON_H */
-
-

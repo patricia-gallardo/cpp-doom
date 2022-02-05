@@ -41,7 +41,7 @@ static const unsigned char rndtable[256] = {
 };
 
 
-int rndindex = 0;
+int rndindex  = 0;
 int prndindex = 0;
 
 /*
@@ -73,7 +73,7 @@ void M_ClearRandom()
 }
 
 // inspired by the same routine in Eternity, thanks haleyjd
-int P_SubRandom ()
+int P_SubRandom()
 {
     int r = P_Random();
     return r - P_Random();

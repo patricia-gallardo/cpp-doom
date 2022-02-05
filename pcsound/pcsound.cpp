@@ -45,8 +45,7 @@ extern pcsound_driver_t pcsound_linux_driver;
 
 extern pcsound_driver_t pcsound_sdl_driver;
 
-static pcsound_driver_t *drivers[] = 
-{
+static pcsound_driver_t *drivers[] = {
 #ifdef HAVE_LINUX_KD_H
     &pcsound_linux_driver,
 #endif
@@ -72,7 +71,7 @@ void PCSound_SetSampleRate(int rate)
 int PCSound_Init(pcsound_callback_func callback_func)
 {
     char *driver_name;
-    int i;
+    int   i;
 
     if (pcsound_driver != NULL)
     {
@@ -85,7 +84,7 @@ int PCSound_Init(pcsound_callback_func callback_func)
 
     if (driver_name != NULL)
     {
-        for (i=0; drivers[i] != NULL; ++i)
+        for (i = 0; drivers[i] != NULL; ++i)
         {
             if (!strcmp(drivers[i]->name, driver_name))
             {
@@ -98,7 +97,7 @@ int PCSound_Init(pcsound_callback_func callback_func)
                 else
                 {
                     printf("Failed to initialize PC sound driver: %s\n",
-                           drivers[i]->name);
+                        drivers[i]->name);
                     break;
                 }
             }
@@ -108,16 +107,16 @@ int PCSound_Init(pcsound_callback_func callback_func)
     {
         // Try all drivers until we find a working one
 
-        for (i=0; drivers[i] != NULL; ++i)
+        for (i = 0; drivers[i] != NULL; ++i)
         {
-            if (drivers[i]->init_func(callback_func)) 
+            if (drivers[i]->init_func(callback_func))
             {
                 pcsound_driver = drivers[i];
                 break;
             }
         }
     }
-    
+
     if (pcsound_driver != NULL)
     {
         printf("Using PC sound driver: %s\n", pcsound_driver->name);
@@ -135,4 +134,3 @@ void PCSound_Shutdown()
     pcsound_driver->shutdown_func();
     pcsound_driver = NULL;
 }
-

@@ -205,7 +205,7 @@ void T_VerticalDoor(vldoor_t *door)
 
 int EV_DoLockedDoor(line_t *line,
     vldoor_e                type,
-    mobj_t *                thing)
+    mobj_t                 *thing)
 {
     player_t *p;
 
@@ -346,7 +346,7 @@ int EV_DoDoor(line_t *line,
 // EV_VerticalDoor : open a door manually, no tag value
 //
 void EV_VerticalDoor(line_t *line,
-    mobj_t *                 thing)
+    mobj_t                  *thing)
 {
     player_t *player;
     sector_t *sec;

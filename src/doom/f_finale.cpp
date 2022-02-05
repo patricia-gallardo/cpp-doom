@@ -40,8 +40,7 @@
 #include "m_random.hpp"   // [crispy] Crispy_Random()
 #include "event_function_decls.hpp"
 
-using finalestage_t = enum
-{
+using finalestage_t = enum {
     F_STAGE_TEXT,
     F_STAGE_ARTSCREEN,
     F_STAGE_CAST,
@@ -64,8 +63,8 @@ using textscreen_t = struct
 {
     GameMission_t mission;
     int           episode, level;
-    const char *  background;
-    const char *  text;
+    const char   *background;
+    const char   *text;
 };
 
 static textscreen_t textscreens[] = {
@@ -100,8 +99,8 @@ static textscreen_t textscreens[] = {
     { pack_master, 1, 20, "SLIME16", M1TEXT },
 };
 
-const char * finaletext;
-const char * finaleflat;
+const char  *finaletext;
+const char  *finaleflat;
 static char *finaletext_rw;
 
 void    F_StartCast();
@@ -277,7 +276,7 @@ void F_TextWrite()
 {
     int        x, y, w;
     signed int count;
-    char *     ch; // [crispy] un-const
+    char      *ch; // [crispy] un-const
     int        c;
     int        cx;
     int        cy;
@@ -392,7 +391,7 @@ castinfo_t castorder[] = {
 
 int                castnum;
 int                casttics;
-state_t *          caststate;
+state_t           *caststate;
 boolean            castdeath;
 int                castframes;
 int                castonmelee;
@@ -554,9 +553,9 @@ void F_CastTicker()
         // just advance to next state in animation
         // [crispy] fix Doomguy in casting sequence
         /*
-	if (!castdeath && caststate == &states[S_PLAY_ATK1])
-	    goto stopattack;	// Oh, gross hack!
-	*/
+        if (!castdeath && caststate == &states[S_PLAY_ATK1])
+            goto stopattack;	// Oh, gross hack!
+        */
         // [crispy] Allow A_RandomJump() in deaths in cast sequence
         if (caststate->action.acp3 == A_RandomJump && Crispy_Random() < caststate->misc2)
         {
@@ -577,38 +576,38 @@ void F_CastTicker()
 
         sfx = F_SoundForState(st);
         /*
-	// sound hacks....
-	switch (st)
-	{
-	  case S_PLAY_ATK2:	sfx = sfx_dshtgn; break; // [crispy] fix Doomguy in casting sequence
-	  case S_POSS_ATK2:	sfx = sfx_pistol; break;
-	  case S_SPOS_ATK2:	sfx = sfx_shotgn; break;
-	  case S_VILE_ATK2:	sfx = sfx_vilatk; break;
-	  case S_SKEL_FIST2:	sfx = sfx_skeswg; break;
-	  case S_SKEL_FIST4:	sfx = sfx_skepch; break;
-	  case S_SKEL_MISS2:	sfx = sfx_skeatk; break;
-	  case S_FATT_ATK8:
-	  case S_FATT_ATK5:
-	  case S_FATT_ATK2:	sfx = sfx_firsht; break;
-	  case S_CPOS_ATK2:
-	  case S_CPOS_ATK3:
-	  case S_CPOS_ATK4:	sfx = sfx_shotgn; break;
-	  case S_TROO_ATK3:	sfx = sfx_claw; break;
-	  case S_SARG_ATK2:	sfx = sfx_sgtatk; break;
-	  case S_BOSS_ATK2:
-	  case S_BOS2_ATK2:
-	  case S_HEAD_ATK2:	sfx = sfx_firsht; break;
-	  case S_SKULL_ATK2:	sfx = sfx_sklatk; break;
-	  case S_SPID_ATK2:
-	  case S_SPID_ATK3:	sfx = sfx_shotgn; break;
-	  case S_BSPI_ATK2:	sfx = sfx_plasma; break;
-	  case S_CYBER_ATK2:
-	  case S_CYBER_ATK4:
-	  case S_CYBER_ATK6:	sfx = sfx_rlaunc; break;
-	  case S_PAIN_ATK3:	sfx = sfx_sklatk; break;
-	  default: sfx = 0; break;
-	}
-		
+        // sound hacks....
+        switch (st)
+        {
+          case S_PLAY_ATK2:	sfx = sfx_dshtgn; break; // [crispy] fix Doomguy in casting sequence
+          case S_POSS_ATK2:	sfx = sfx_pistol; break;
+          case S_SPOS_ATK2:	sfx = sfx_shotgn; break;
+          case S_VILE_ATK2:	sfx = sfx_vilatk; break;
+          case S_SKEL_FIST2:	sfx = sfx_skeswg; break;
+          case S_SKEL_FIST4:	sfx = sfx_skepch; break;
+          case S_SKEL_MISS2:	sfx = sfx_skeatk; break;
+          case S_FATT_ATK8:
+          case S_FATT_ATK5:
+          case S_FATT_ATK2:	sfx = sfx_firsht; break;
+          case S_CPOS_ATK2:
+          case S_CPOS_ATK3:
+          case S_CPOS_ATK4:	sfx = sfx_shotgn; break;
+          case S_TROO_ATK3:	sfx = sfx_claw; break;
+          case S_SARG_ATK2:	sfx = sfx_sgtatk; break;
+          case S_BOSS_ATK2:
+          case S_BOS2_ATK2:
+          case S_HEAD_ATK2:	sfx = sfx_firsht; break;
+          case S_SKULL_ATK2:	sfx = sfx_sklatk; break;
+          case S_SPID_ATK2:
+          case S_SPID_ATK3:	sfx = sfx_shotgn; break;
+          case S_BSPI_ATK2:	sfx = sfx_plasma; break;
+          case S_CYBER_ATK2:
+          case S_CYBER_ATK4:
+          case S_CYBER_ATK6:	sfx = sfx_rlaunc; break;
+          case S_PAIN_ATK3:	sfx = sfx_sklatk; break;
+          default: sfx = 0; break;
+        }
+
 */
         if (sfx)
             S_StartSound(NULL, sfx);
@@ -699,15 +698,15 @@ boolean F_CastResponder(event_t *ev)
     else
         // [crispy] ... and allow to skip through them ..
         if (ev->data1 == key_strafeleft || ev->data1 == key_alt_strafeleft)
-    {
-        castskip = castnum ? -1 : arrlen(castorder) - 2;
-        return false;
-    }
-    else if (ev->data1 == key_straferight || ev->data1 == key_alt_straferight)
-    {
-        castskip = +1;
-        return false;
-    }
+        {
+            castskip = castnum ? -1 : arrlen(castorder) - 2;
+            return false;
+        }
+        else if (ev->data1 == key_straferight || ev->data1 == key_alt_straferight)
+        {
+            castskip = +1;
+            return false;
+        }
     // [crispy] ... and finally turn them into gibbs
     if (ev->data1 == key_speed)
         xdeath = true;
@@ -805,11 +804,11 @@ void F_CastPrint(const char *text)
 
 void F_CastDrawer()
 {
-    spritedef_t *  sprdef;
+    spritedef_t   *sprdef;
     spriteframe_t *sprframe;
     int            lump;
     boolean        flip;
-    patch_t *      patch;
+    patch_t       *patch;
 
     // erase the entire screen to a background
     V_DrawPatchFullScreen(cache_lump_name<patch_t *>(DEH_String("BOSSBACK"), PU_CACHE), false);
@@ -841,13 +840,13 @@ void F_CastDrawer()
 static fixed_t dxi, dy, dyi;
 
 void F_DrawPatchCol(int x,
-    patch_t *           patch,
+    patch_t            *patch,
     int                 col)
 {
     column_t *column;
-    byte *    source;
-    pixel_t * dest;
-    pixel_t * desttop;
+    byte     *source;
+    pixel_t  *dest;
+    pixel_t  *desttop;
     int       count;
 
     column  = (column_t *)((byte *)patch + LONG(patch->columnofs[col >> FRACBITS]));

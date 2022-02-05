@@ -21,13 +21,12 @@
 
 #include "i_sound.hpp"
 
-#define MAX_SND_DIST 	1600
-#define MAX_CHANNELS	16
+#define MAX_SND_DIST 1600
+#define MAX_CHANNELS 16
 
 // Music identifiers
 
-using musicenum_t = enum
-{
+using musicenum_t = enum {
     mus_e1m1,
     mus_e1m2,
     mus_e1m3,
@@ -110,33 +109,32 @@ typedef struct sfxinfo_s
 typedef struct
 {
     mobj_t *mo;
-    int sound_id;
-    int handle;
-    int pitch;
-    int priority;
+    int     sound_id;
+    int     handle;
+    int     pitch;
+    int     priority;
 } channel_t;
 
 typedef struct
 {
-    int id;
+    int            id;
     unsigned short priority;
-    char *name;
-    mobj_t *mo;
-    int distance;
+    char          *name;
+    mobj_t        *mo;
+    int            distance;
 } ChanInfo_t;
 
 typedef struct
 {
-    int channelCount;
-    int musicVolume;
-    int soundVolume;
+    int        channelCount;
+    int        musicVolume;
+    int        soundVolume;
     ChanInfo_t chan[8];
 } SoundInfo_t;
 
 // Sound identifiers
 
-using sfxenum_t = enum
-{
+using sfxenum_t = enum {
     sfx_None,
     sfx_gldhit,
     sfx_gntful,
@@ -228,10 +226,10 @@ using sfxenum_t = enum
     sfx_sbtpai,
     sfx_plroof,
     sfx_plrpai,
-    sfx_plrdth,                 // Normal
-    sfx_gibdth,                 // Extreme
-    sfx_plrwdth,                // Wimpy
-    sfx_plrcdth,                // Crazy
+    sfx_plrdth,  // Normal
+    sfx_gibdth,  // Extreme
+    sfx_plrwdth, // Wimpy
+    sfx_plrcdth, // Crazy
     sfx_itemup,
     sfx_wpnup,
     sfx_telept,
@@ -285,7 +283,7 @@ using sfxenum_t = enum
     NUMSFX
 };
 
-extern sfxinfo_t S_sfx[];
+extern sfxinfo_t   S_sfx[];
 extern musicinfo_t S_music[];
 
 #endif

@@ -31,9 +31,8 @@
 
 // TYPES -------------------------------------------------------------------
 
-using Cheat_t = struct Cheat_s
-{
-    void (*func) (player_t * player, struct Cheat_s * cheat);
+using Cheat_t = struct Cheat_s {
+    void (*func)(player_t *player, struct Cheat_s *cheat);
     cheatseq_t *seq;
 };
 
@@ -43,46 +42,46 @@ using Cheat_t = struct Cheat_s
 
 // PRIVATE FUNCTION PROTOTYPES ---------------------------------------------
 
-static void DrawSoundInfo();
-static void DrINumber(signed int val, int x, int y);
-static void DrRedINumber(signed int val, int x, int y);
-static void DrBNumber(signed int val, int x, int y);
-static void DrawCommonBar();
-static void DrawMainBar();
-static void DrawInventoryBar();
-static void DrawKeyBar();
-static void DrawWeaponPieces();
-static void DrawFullScreenStuff();
-static void DrawAnimatedIcons();
+static void    DrawSoundInfo();
+static void    DrINumber(signed int val, int x, int y);
+static void    DrRedINumber(signed int val, int x, int y);
+static void    DrBNumber(signed int val, int x, int y);
+static void    DrawCommonBar();
+static void    DrawMainBar();
+static void    DrawInventoryBar();
+static void    DrawKeyBar();
+static void    DrawWeaponPieces();
+static void    DrawFullScreenStuff();
+static void    DrawAnimatedIcons();
 static boolean HandleCheats(byte key);
-static boolean CheatAddKey(Cheat_t * cheat, byte key, boolean * eat);
-static void CheatGodFunc(player_t * player, Cheat_t * cheat);
-static void CheatNoClipFunc(player_t * player, Cheat_t * cheat);
-static void CheatWeaponsFunc(player_t * player, Cheat_t * cheat);
-static void CheatHealthFunc(player_t * player, Cheat_t * cheat);
-static void CheatKeysFunc(player_t * player, Cheat_t * cheat);
-static void CheatSoundFunc(player_t * player, Cheat_t * cheat);
-static void CheatTickerFunc(player_t * player, Cheat_t * cheat);
-static void CheatArtifactAllFunc(player_t * player, Cheat_t * cheat);
-static void CheatPuzzleFunc(player_t * player, Cheat_t * cheat);
-static void CheatWarpFunc(player_t * player, Cheat_t * cheat);
-static void CheatPigFunc(player_t * player, Cheat_t * cheat);
-static void CheatMassacreFunc(player_t * player, Cheat_t * cheat);
-static void CheatIDKFAFunc(player_t * player, Cheat_t * cheat);
-static void CheatQuickenFunc1(player_t * player, Cheat_t * cheat);
-static void CheatQuickenFunc2(player_t * player, Cheat_t * cheat);
-static void CheatQuickenFunc3(player_t * player, Cheat_t * cheat);
-static void CheatClassFunc1(player_t * player, Cheat_t * cheat);
-static void CheatClassFunc2(player_t * player, Cheat_t * cheat);
-static void CheatInitFunc(player_t * player, Cheat_t * cheat);
-static void CheatVersionFunc(player_t * player, Cheat_t * cheat);
-static void CheatDebugFunc(player_t * player, Cheat_t * cheat);
-static void CheatScriptFunc1(player_t * player, Cheat_t * cheat);
-static void CheatScriptFunc2(player_t * player, Cheat_t * cheat);
-static void CheatScriptFunc3(player_t * player, Cheat_t * cheat);
-static void CheatRevealFunc(player_t * player, Cheat_t * cheat);
-static void CheatTrackFunc1(player_t * player, Cheat_t * cheat);
-static void CheatTrackFunc2(player_t * player, Cheat_t * cheat);
+static boolean CheatAddKey(Cheat_t *cheat, byte key, boolean *eat);
+static void    CheatGodFunc(player_t *player, Cheat_t *cheat);
+static void    CheatNoClipFunc(player_t *player, Cheat_t *cheat);
+static void    CheatWeaponsFunc(player_t *player, Cheat_t *cheat);
+static void    CheatHealthFunc(player_t *player, Cheat_t *cheat);
+static void    CheatKeysFunc(player_t *player, Cheat_t *cheat);
+static void    CheatSoundFunc(player_t *player, Cheat_t *cheat);
+static void    CheatTickerFunc(player_t *player, Cheat_t *cheat);
+static void    CheatArtifactAllFunc(player_t *player, Cheat_t *cheat);
+static void    CheatPuzzleFunc(player_t *player, Cheat_t *cheat);
+static void    CheatWarpFunc(player_t *player, Cheat_t *cheat);
+static void    CheatPigFunc(player_t *player, Cheat_t *cheat);
+static void    CheatMassacreFunc(player_t *player, Cheat_t *cheat);
+static void    CheatIDKFAFunc(player_t *player, Cheat_t *cheat);
+static void    CheatQuickenFunc1(player_t *player, Cheat_t *cheat);
+static void    CheatQuickenFunc2(player_t *player, Cheat_t *cheat);
+static void    CheatQuickenFunc3(player_t *player, Cheat_t *cheat);
+static void    CheatClassFunc1(player_t *player, Cheat_t *cheat);
+static void    CheatClassFunc2(player_t *player, Cheat_t *cheat);
+static void    CheatInitFunc(player_t *player, Cheat_t *cheat);
+static void    CheatVersionFunc(player_t *player, Cheat_t *cheat);
+static void    CheatDebugFunc(player_t *player, Cheat_t *cheat);
+static void    CheatScriptFunc1(player_t *player, Cheat_t *cheat);
+static void    CheatScriptFunc2(player_t *player, Cheat_t *cheat);
+static void    CheatScriptFunc3(player_t *player, Cheat_t *cheat);
+static void    CheatRevealFunc(player_t *player, Cheat_t *cheat);
+static void    CheatTrackFunc1(player_t *player, Cheat_t *cheat);
+static void    CheatTrackFunc2(player_t *player, Cheat_t *cheat);
 
 // EXTERNAL DATA DECLARATIONS ----------------------------------------------
 
@@ -91,22 +90,22 @@ extern int AutoArmorSave[NUMCLASSES];
 
 // PUBLIC DATA DECLARATIONS ------------------------------------------------
 
-boolean DebugSound;             // Debug flag for displaying sound info
+boolean DebugSound; // Debug flag for displaying sound info
 boolean inventory;
-int curpos;
-int inv_ptr;
-int ArtifactFlash;
+int     curpos;
+int     inv_ptr;
+int     ArtifactFlash;
 
 // PRIVATE DATA DEFINITIONS ------------------------------------------------
 
 static int DisplayTicker = 0;
 static int HealthMarker;
-//static int ChainWiggle;
+// static int ChainWiggle;
 static player_t *CPlayer;
-static int SpinFlylump;
-static int SpinMinotaurLump;
-static int SpinSpeedLump;
-static int SpinDefenseLump;
+static int       SpinFlylump;
+static int       SpinMinotaurLump;
+static int       SpinSpeedLump;
+static int       SpinDefenseLump;
 
 static int FontBNumBase;
 static int PlayPalette;
@@ -156,7 +155,7 @@ cheatseq_t CheatNoClipSeq = CHEAT("casper", 0);
 cheatseq_t CheatWeaponsSeq = CHEAT("nra", 0);
 
 // Get full health
-cheatseq_t CheatHealthSeq =  CHEAT("clubmed", 0);
+cheatseq_t CheatHealthSeq = CHEAT("clubmed", 0);
 
 // Get all keys
 cheatseq_t CheatKeysSeq = CHEAT("locksmith", 0);
@@ -214,38 +213,40 @@ cheatseq_t CheatTrackSeq1 = CHEAT("`", 0);
 cheatseq_t CheatTrackSeq2 = CHEAT("`", 2);
 
 static Cheat_t Cheats[] = {
-    {CheatTrackFunc1, &CheatTrackSeq1},
-    {CheatTrackFunc2, &CheatTrackSeq2},
-    {CheatGodFunc, &CheatGodSeq},
-    {CheatNoClipFunc, &CheatNoClipSeq},
-    {CheatWeaponsFunc, &CheatWeaponsSeq},
-    {CheatHealthFunc, &CheatHealthSeq},
-    {CheatKeysFunc, &CheatKeysSeq},
-    {CheatSoundFunc, &CheatSoundSeq},
-    {CheatTickerFunc, &CheatTickerSeq},
-    {CheatArtifactAllFunc, &CheatArtifactAllSeq},
-    {CheatPuzzleFunc, &CheatPuzzleSeq},
-    {CheatWarpFunc, &CheatWarpSeq},
-    {CheatPigFunc, &CheatPigSeq},
-    {CheatMassacreFunc, &CheatMassacreSeq},
-    {CheatIDKFAFunc, &CheatIDKFASeq},
-    {CheatQuickenFunc1, &CheatQuickenSeq1},
-    {CheatQuickenFunc2, &CheatQuickenSeq2},
-    {CheatQuickenFunc3, &CheatQuickenSeq3},
-    {CheatClassFunc1, &CheatClass1Seq},
-    {CheatClassFunc2, &CheatClass2Seq},
-    {CheatInitFunc, &CheatInitSeq},
-    {CheatVersionFunc, &CheatVersionSeq},
-    {CheatDebugFunc, &CheatDebugSeq},
-    {CheatScriptFunc1, &CheatScriptSeq1},
-    {CheatScriptFunc2, &CheatScriptSeq2},
-    {CheatScriptFunc3, &CheatScriptSeq3},
-    {CheatRevealFunc, &CheatRevealSeq},
+    { CheatTrackFunc1, &CheatTrackSeq1 },
+    { CheatTrackFunc2, &CheatTrackSeq2 },
+    { CheatGodFunc, &CheatGodSeq },
+    { CheatNoClipFunc, &CheatNoClipSeq },
+    { CheatWeaponsFunc, &CheatWeaponsSeq },
+    { CheatHealthFunc, &CheatHealthSeq },
+    { CheatKeysFunc, &CheatKeysSeq },
+    { CheatSoundFunc, &CheatSoundSeq },
+    { CheatTickerFunc, &CheatTickerSeq },
+    { CheatArtifactAllFunc, &CheatArtifactAllSeq },
+    { CheatPuzzleFunc, &CheatPuzzleSeq },
+    { CheatWarpFunc, &CheatWarpSeq },
+    { CheatPigFunc, &CheatPigSeq },
+    { CheatMassacreFunc, &CheatMassacreSeq },
+    { CheatIDKFAFunc, &CheatIDKFASeq },
+    { CheatQuickenFunc1, &CheatQuickenSeq1 },
+    { CheatQuickenFunc2, &CheatQuickenSeq2 },
+    { CheatQuickenFunc3, &CheatQuickenSeq3 },
+    { CheatClassFunc1, &CheatClass1Seq },
+    { CheatClassFunc2, &CheatClass2Seq },
+    { CheatInitFunc, &CheatInitSeq },
+    { CheatVersionFunc, &CheatVersionSeq },
+    { CheatDebugFunc, &CheatDebugSeq },
+    { CheatScriptFunc1, &CheatScriptSeq1 },
+    { CheatScriptFunc2, &CheatScriptSeq2 },
+    { CheatScriptFunc3, &CheatScriptSeq3 },
+    { CheatRevealFunc, &CheatRevealSeq },
 };
 
-#define SET_CHEAT(cheat, seq) \
-    { memcpy(cheat.sequence, seq, sizeof(seq)); \
-      cheat.sequence_len = sizeof(seq) - 1; }
+#define SET_CHEAT(cheat, seq)                     \
+    {                                             \
+        memcpy(cheat.sequence, seq, sizeof(seq)); \
+        cheat.sequence_len = sizeof(seq) - 1;     \
+    }
 
 // CODE --------------------------------------------------------------------
 
@@ -260,48 +261,48 @@ void SB_Init()
     int i;
     int startLump;
 
-    PatchH2BAR = cache_lump_name<patch_t *>("H2BAR", PU_STATIC);
-    PatchH2TOP = cache_lump_name<patch_t *>("H2TOP", PU_STATIC);
-    PatchINVBAR = cache_lump_name<patch_t *>("INVBAR", PU_STATIC);
-    PatchLFEDGE = cache_lump_name<patch_t *>("LFEDGE", PU_STATIC);
-    PatchRTEDGE = cache_lump_name<patch_t *>("RTEDGE", PU_STATIC);
-    PatchSTATBAR = cache_lump_name<patch_t *>("STATBAR", PU_STATIC);
-    PatchKEYBAR = cache_lump_name<patch_t *>("KEYBAR", PU_STATIC);
-    PatchSELECTBOX = cache_lump_name<patch_t *>("SELECTBOX", PU_STATIC);
-    PatchARTICLEAR = cache_lump_name<patch_t *>("ARTICLS", PU_STATIC);
-    PatchARMCLEAR = cache_lump_name<patch_t *>("ARMCLS", PU_STATIC);
-    PatchMANACLEAR = cache_lump_name<patch_t *>("MANACLS", PU_STATIC);
-    PatchMANAVIAL1 = cache_lump_name<patch_t *>("MANAVL1", PU_STATIC);
-    PatchMANAVIAL2 = cache_lump_name<patch_t *>("MANAVL2", PU_STATIC);
+    PatchH2BAR        = cache_lump_name<patch_t *>("H2BAR", PU_STATIC);
+    PatchH2TOP        = cache_lump_name<patch_t *>("H2TOP", PU_STATIC);
+    PatchINVBAR       = cache_lump_name<patch_t *>("INVBAR", PU_STATIC);
+    PatchLFEDGE       = cache_lump_name<patch_t *>("LFEDGE", PU_STATIC);
+    PatchRTEDGE       = cache_lump_name<patch_t *>("RTEDGE", PU_STATIC);
+    PatchSTATBAR      = cache_lump_name<patch_t *>("STATBAR", PU_STATIC);
+    PatchKEYBAR       = cache_lump_name<patch_t *>("KEYBAR", PU_STATIC);
+    PatchSELECTBOX    = cache_lump_name<patch_t *>("SELECTBOX", PU_STATIC);
+    PatchARTICLEAR    = cache_lump_name<patch_t *>("ARTICLS", PU_STATIC);
+    PatchARMCLEAR     = cache_lump_name<patch_t *>("ARMCLS", PU_STATIC);
+    PatchMANACLEAR    = cache_lump_name<patch_t *>("MANACLS", PU_STATIC);
+    PatchMANAVIAL1    = cache_lump_name<patch_t *>("MANAVL1", PU_STATIC);
+    PatchMANAVIAL2    = cache_lump_name<patch_t *>("MANAVL2", PU_STATIC);
     PatchMANAVIALDIM1 = cache_lump_name<patch_t *>("MANAVL1D", PU_STATIC);
     PatchMANAVIALDIM2 = cache_lump_name<patch_t *>("MANAVL2D", PU_STATIC);
-    PatchMANADIM1 = cache_lump_name<patch_t *>("MANADIM1", PU_STATIC);
-    PatchMANADIM2 = cache_lump_name<patch_t *>("MANADIM2", PU_STATIC);
-    PatchMANABRIGHT1 = cache_lump_name<patch_t *>("MANABRT1", PU_STATIC);
-    PatchMANABRIGHT2 = cache_lump_name<patch_t *>("MANABRT2", PU_STATIC);
-    PatchINVLFGEM1 = cache_lump_name<patch_t *>("invgeml1", PU_STATIC);
-    PatchINVLFGEM2 = cache_lump_name<patch_t *>("invgeml2", PU_STATIC);
-    PatchINVRTGEM1 = cache_lump_name<patch_t *>("invgemr1", PU_STATIC);
-    PatchINVRTGEM2 = cache_lump_name<patch_t *>("invgemr2", PU_STATIC);
+    PatchMANADIM1     = cache_lump_name<patch_t *>("MANADIM1", PU_STATIC);
+    PatchMANADIM2     = cache_lump_name<patch_t *>("MANADIM2", PU_STATIC);
+    PatchMANABRIGHT1  = cache_lump_name<patch_t *>("MANABRT1", PU_STATIC);
+    PatchMANABRIGHT2  = cache_lump_name<patch_t *>("MANABRT2", PU_STATIC);
+    PatchINVLFGEM1    = cache_lump_name<patch_t *>("invgeml1", PU_STATIC);
+    PatchINVLFGEM2    = cache_lump_name<patch_t *>("invgeml2", PU_STATIC);
+    PatchINVRTGEM1    = cache_lump_name<patch_t *>("invgemr1", PU_STATIC);
+    PatchINVRTGEM2    = cache_lump_name<patch_t *>("invgemr2", PU_STATIC);
 
-//      PatchCHAINBACK = cache_lump_name<patch_t *>("CHAINBACK", PU_STATIC);
+    //      PatchCHAINBACK = cache_lump_name<patch_t *>("CHAINBACK", PU_STATIC);
     startLump = W_GetNumForName("IN0");
     for (i = 0; i < 10; i++)
     {
         PatchINumbers[i] = cache_lump_num<patch_t *>(startLump + i, PU_STATIC);
     }
     PatchNEGATIVE = cache_lump_name<patch_t *>("NEGNUM", PU_STATIC);
-    FontBNumBase = W_GetNumForName("FONTB16");
-    startLump = W_GetNumForName("SMALLIN0");
+    FontBNumBase  = W_GetNumForName("FONTB16");
+    startLump     = W_GetNumForName("SMALLIN0");
     for (i = 0; i < 10; i++)
     {
         PatchSmNumbers[i] = cache_lump_num<patch_t *>(startLump + i, PU_STATIC);
     }
-    PlayPalette = W_GetNumForName("PLAYPAL");
-    SpinFlylump = W_GetNumForName("SPFLY0");
+    PlayPalette      = W_GetNumForName("PLAYPAL");
+    SpinFlylump      = W_GetNumForName("SPFLY0");
     SpinMinotaurLump = W_GetNumForName("SPMINO0");
-    SpinSpeedLump = W_GetNumForName("SPBOOT0");
-    SpinDefenseLump = W_GetNumForName("SPSHLD0");
+    SpinSpeedLump    = W_GetNumForName("SPBOOT0");
+    SpinDefenseLump  = W_GetNumForName("SPSHLD0");
 
     if (deathmatch)
     {
@@ -311,30 +312,30 @@ void SB_Init()
 
     if (gamemode == shareware)
     {
-	SET_CHEAT(CheatGodSeq, "bgokey");
-	SET_CHEAT(CheatNoClipSeq, "rjohnson");
-	SET_CHEAT(CheatWeaponsSeq, "crhinehart");
-	SET_CHEAT(CheatHealthSeq,"sgurno");
-	SET_CHEAT(CheatKeysSeq, "mraymondjudy");
-	SET_CHEAT(CheatSoundSeq, "kschilder");
-	SET_CHEAT(CheatTickerSeq, "rrettenmund");
-	SET_CHEAT(CheatArtifactAllSeq, "braffel");
-	SET_CHEAT(CheatPuzzleSeq, "tmoore");
-	SET_CHEAT(CheatWarpSeq, "bpelletier");
-	SET_CHEAT(CheatPigSeq, "ebiessman");
-	SET_CHEAT(CheatMassacreSeq, "cstika");
-	SET_CHEAT(CheatIDKFASeq, "rambo");
-	SET_CHEAT(CheatQuickenSeq1, "quicken");
-	SET_CHEAT(CheatQuickenSeq2, "quickenquicken");
-	SET_CHEAT(CheatQuickenSeq3, "quickenquickenquicken");
-	SET_CHEAT(CheatClass1Seq, "plipo");
-	SET_CHEAT(CheatClass2Seq, "plipo");
-	SET_CHEAT(CheatVersionSeq, "pmacarther");
-	SET_CHEAT(CheatDebugSeq, "jsumwalt");
-	SET_CHEAT(CheatScriptSeq1, "mwagabaza");
-	SET_CHEAT(CheatScriptSeq2, "mwagabaza");
-	SET_CHEAT(CheatScriptSeq3, "mwagabaza");
-	SET_CHEAT(CheatRevealSeq, "reveal");
+        SET_CHEAT(CheatGodSeq, "bgokey");
+        SET_CHEAT(CheatNoClipSeq, "rjohnson");
+        SET_CHEAT(CheatWeaponsSeq, "crhinehart");
+        SET_CHEAT(CheatHealthSeq, "sgurno");
+        SET_CHEAT(CheatKeysSeq, "mraymondjudy");
+        SET_CHEAT(CheatSoundSeq, "kschilder");
+        SET_CHEAT(CheatTickerSeq, "rrettenmund");
+        SET_CHEAT(CheatArtifactAllSeq, "braffel");
+        SET_CHEAT(CheatPuzzleSeq, "tmoore");
+        SET_CHEAT(CheatWarpSeq, "bpelletier");
+        SET_CHEAT(CheatPigSeq, "ebiessman");
+        SET_CHEAT(CheatMassacreSeq, "cstika");
+        SET_CHEAT(CheatIDKFASeq, "rambo");
+        SET_CHEAT(CheatQuickenSeq1, "quicken");
+        SET_CHEAT(CheatQuickenSeq2, "quickenquicken");
+        SET_CHEAT(CheatQuickenSeq3, "quickenquickenquicken");
+        SET_CHEAT(CheatClass1Seq, "plipo");
+        SET_CHEAT(CheatClass2Seq, "plipo");
+        SET_CHEAT(CheatVersionSeq, "pmacarther");
+        SET_CHEAT(CheatDebugSeq, "jsumwalt");
+        SET_CHEAT(CheatScriptSeq1, "mwagabaza");
+        SET_CHEAT(CheatScriptSeq2, "mwagabaza");
+        SET_CHEAT(CheatScriptSeq3, "mwagabaza");
+        SET_CHEAT(CheatRevealSeq, "reveal");
     }
 }
 
@@ -348,33 +349,33 @@ void SB_SetClassData()
 {
     int clazz;
 
-    clazz = PlayerClass[consoleplayer]; // original player class (not pig)
+    clazz           = PlayerClass[consoleplayer]; // original player class (not pig)
     PatchWEAPONSLOT = cache_lump_num<patch_t *>(W_GetNumForName("wpslot0")
-                                                                + clazz,
+                                                    + clazz,
         PU_STATIC);
     PatchWEAPONFULL = cache_lump_num<patch_t *>(W_GetNumForName("wpfull0")
-                                                                + clazz,
+                                                    + clazz,
         PU_STATIC);
-    PatchPIECE1 = cache_lump_num<patch_t *>(W_GetNumForName("wpiecef1")
-                                                                + clazz,
-            PU_STATIC);
-    PatchPIECE2 = cache_lump_num<patch_t *>(W_GetNumForName("wpiecef2")
-                                                                + clazz,
-            PU_STATIC);
-    PatchPIECE3 = cache_lump_num<patch_t *>(W_GetNumForName("wpiecef3")
-                                                                + clazz,
-            PU_STATIC);
-    PatchCHAIN = cache_lump_num<patch_t *>(W_GetNumForName("chain") + clazz, PU_STATIC);
+    PatchPIECE1     = cache_lump_num<patch_t *>(W_GetNumForName("wpiecef1")
+                                                + clazz,
+        PU_STATIC);
+    PatchPIECE2     = cache_lump_num<patch_t *>(W_GetNumForName("wpiecef2")
+                                                + clazz,
+        PU_STATIC);
+    PatchPIECE3     = cache_lump_num<patch_t *>(W_GetNumForName("wpiecef3")
+                                                + clazz,
+        PU_STATIC);
+    PatchCHAIN      = cache_lump_num<patch_t *>(W_GetNumForName("chain") + clazz, PU_STATIC);
     if (!netgame)
-    {                           // single player game uses red life gem (the second gem)
+    { // single player game uses red life gem (the second gem)
         PatchLIFEGEM = cache_lump_num<patch_t *>(W_GetNumForName("lifegem")
-                                                                 + maxplayers * clazz + 1,
+                                                     + maxplayers * clazz + 1,
             PU_STATIC);
     }
     else
     {
         PatchLIFEGEM = cache_lump_num<patch_t *>(W_GetNumForName("lifegem")
-                                                                 + maxplayers * clazz + consoleplayer,
+                                                     + maxplayers * clazz + consoleplayer,
             PU_STATIC);
     }
     SB_state = -1;
@@ -436,7 +437,7 @@ void SB_Ticker()
 static void DrINumber(signed int val, int x, int y)
 {
     patch_t *patch;
-    int oldval;
+    int      oldval;
 
     oldval = val;
     if (val < 0)
@@ -456,7 +457,7 @@ static void DrINumber(signed int val, int x, int y)
         {
             V_DrawPatch(x + 8, y, PatchNEGATIVE);
         }
-        val = val % 10;
+        val   = val % 10;
         patch = PatchINumbers[val];
         V_DrawPatch(x + 16, y, patch);
         return;
@@ -472,7 +473,7 @@ static void DrINumber(signed int val, int x, int y)
         patch = PatchINumbers[val / 10];
         V_DrawPatch(x + 8, y, patch);
     }
-    val = val % 10;
+    val   = val % 10;
     patch = PatchINumbers[val];
     V_DrawPatch(x + 16, y, patch);
 }
@@ -488,7 +489,7 @@ static void DrINumber(signed int val, int x, int y)
 static void DrRedINumber(signed int val, int x, int y)
 {
     patch_t *patch;
-    int oldval;
+    int      oldval;
 
     oldval = val;
     if (val < 0)
@@ -508,7 +509,7 @@ static void DrRedINumber(signed int val, int x, int y)
             cache_lump_num<patch_t *>(W_GetNumForName("inred0") + val / 10, PU_CACHE);
         V_DrawPatch(x + 8, y, patch);
     }
-    val = val % 10;
+    val   = val % 10;
     patch = cache_lump_num<patch_t *>(W_GetNumForName("inred0") + val, PU_CACHE);
     V_DrawPatch(x + 16, y, patch);
 }
@@ -524,11 +525,11 @@ static void DrRedINumber(signed int val, int x, int y)
 static void DrBNumber(signed int val, int x, int y)
 {
     patch_t *patch;
-    int xpos;
-    int oldval;
+    int      xpos;
+    int      oldval;
 
     oldval = val;
-    xpos = x;
+    xpos   = x;
     if (val < 0)
     {
         val = 0;
@@ -597,16 +598,16 @@ static void DrSmallNumber(int val, int x, int y)
 
 static void ShadeLine(int x, int y, int height, int shade)
 {
-	byte *dest;
-	byte *shades;
+        byte *dest;
+        byte *shades;
 
-	shades = colormaps+9*256+shade*2*256;
-	dest = I_VideoBuffer+y*SCREENWIDTH+x;
-	while(height--)
-	{
-		*(dest) = *(shades+*dest);
-		dest += SCREENWIDTH;
-	}
+        shades = colormaps+9*256+shade*2*256;
+        dest = I_VideoBuffer+y*SCREENWIDTH+x;
+        while(height--)
+        {
+                *(dest) = *(shades+*dest);
+                dest += SCREENWIDTH;
+        }
 }
 
 //==========================================================================
@@ -617,13 +618,13 @@ static void ShadeLine(int x, int y, int height, int shade)
 
 static void ShadeChain()
 {
-	int i;
+        int i;
 
-	for(i = 0; i < 16; i++)
-	{
-		ShadeLine(277+i, 190, 10, i/2);
-		ShadeLine(19+i, 190, 10, 7-(i/2));
-	}
+        for(i = 0; i < 16; i++)
+        {
+                ShadeLine(277+i, 190, 10, i/2);
+                ShadeLine(19+i, 190, 10, 7-(i/2));
+        }
 }
 */
 
@@ -637,13 +638,13 @@ static void ShadeChain()
 
 static void DrawSoundInfo()
 {
-    int i;
+    int         i;
     SoundInfo_t s;
     ChanInfo_t *c;
-    char text[32];
-    int x;
-    int y;
-    int xPos[7] = { 1, 75, 112, 156, 200, 230, 260 };
+    char        text[32];
+    int         x;
+    int         y;
+    int         xPos[7] = { 1, 75, 112, 156, 200, 230, 260 };
 
     if (leveltime & 16)
     {
@@ -668,7 +669,7 @@ static void DrawSoundInfo()
         x = 0;
         y = 40 + i * 10;
         if (c->mo == NULL)
-        {                       // Channel is unused
+        { // Channel is unused
             MN_DrTextA("------", xPos[0], y);
             continue;
         }
@@ -681,7 +682,7 @@ static void DrawSoundInfo()
         MN_DrTextA(text, xPos[x++], y);
         M_snprintf(text, sizeof(text), "%d", c->mo->y >> FRACBITS);
         MN_DrTextA(text, xPos[x++], y);
-        M_snprintf(text, sizeof(text), "%d", (int) c->id);
+        M_snprintf(text, sizeof(text), "%d", (int)c->id);
         MN_DrTextA(text, xPos[x++], y);
         M_snprintf(text, sizeof(text), "%d", c->priority);
         MN_DrTextA(text, xPos[x++], y);
@@ -699,53 +700,53 @@ static void DrawSoundInfo()
 //==========================================================================
 
 char patcharti[][10] = {
-    {"ARTIBOX"},                // none
-    {"ARTIINVU"},               // invulnerability
-    {"ARTIPTN2"},               // health
-    {"ARTISPHL"},               // superhealth
-    {"ARTIHRAD"},               // healing radius
-    {"ARTISUMN"},               // summon maulator
-    {"ARTITRCH"},               // torch
-    {"ARTIPORK"},               // egg
-    {"ARTISOAR"},               // fly
-    {"ARTIBLST"},               // blast radius
-    {"ARTIPSBG"},               // poison bag
-    {"ARTITELO"},               // teleport other
-    {"ARTISPED"},               // speed
-    {"ARTIBMAN"},               // boost mana
-    {"ARTIBRAC"},               // boost armor
-    {"ARTIATLP"},               // teleport
-    {"ARTISKLL"},               // arti_puzzskull
-    {"ARTIBGEM"},               // arti_puzzgembig
-    {"ARTIGEMR"},               // arti_puzzgemred
-    {"ARTIGEMG"},               // arti_puzzgemgreen1
-    {"ARTIGMG2"},               // arti_puzzgemgreen2
-    {"ARTIGEMB"},               // arti_puzzgemblue1
-    {"ARTIGMB2"},               // arti_puzzgemblue2
-    {"ARTIBOK1"},               // arti_puzzbook1
-    {"ARTIBOK2"},               // arti_puzzbook2
-    {"ARTISKL2"},               // arti_puzzskull2
-    {"ARTIFWEP"},               // arti_puzzfweapon
-    {"ARTICWEP"},               // arti_puzzcweapon
-    {"ARTIMWEP"},               // arti_puzzmweapon
-    {"ARTIGEAR"},               // arti_puzzgear1
-    {"ARTIGER2"},               // arti_puzzgear2
-    {"ARTIGER3"},               // arti_puzzgear3
-    {"ARTIGER4"},               // arti_puzzgear4
+    { "ARTIBOX" },  // none
+    { "ARTIINVU" }, // invulnerability
+    { "ARTIPTN2" }, // health
+    { "ARTISPHL" }, // superhealth
+    { "ARTIHRAD" }, // healing radius
+    { "ARTISUMN" }, // summon maulator
+    { "ARTITRCH" }, // torch
+    { "ARTIPORK" }, // egg
+    { "ARTISOAR" }, // fly
+    { "ARTIBLST" }, // blast radius
+    { "ARTIPSBG" }, // poison bag
+    { "ARTITELO" }, // teleport other
+    { "ARTISPED" }, // speed
+    { "ARTIBMAN" }, // boost mana
+    { "ARTIBRAC" }, // boost armor
+    { "ARTIATLP" }, // teleport
+    { "ARTISKLL" }, // arti_puzzskull
+    { "ARTIBGEM" }, // arti_puzzgembig
+    { "ARTIGEMR" }, // arti_puzzgemred
+    { "ARTIGEMG" }, // arti_puzzgemgreen1
+    { "ARTIGMG2" }, // arti_puzzgemgreen2
+    { "ARTIGEMB" }, // arti_puzzgemblue1
+    { "ARTIGMB2" }, // arti_puzzgemblue2
+    { "ARTIBOK1" }, // arti_puzzbook1
+    { "ARTIBOK2" }, // arti_puzzbook2
+    { "ARTISKL2" }, // arti_puzzskull2
+    { "ARTIFWEP" }, // arti_puzzfweapon
+    { "ARTICWEP" }, // arti_puzzcweapon
+    { "ARTIMWEP" }, // arti_puzzmweapon
+    { "ARTIGEAR" }, // arti_puzzgear1
+    { "ARTIGER2" }, // arti_puzzgear2
+    { "ARTIGER3" }, // arti_puzzgear3
+    { "ARTIGER4" }, // arti_puzzgear4
 };
 
-int SB_state = -1;
-static int oldarti = 0;
+int        SB_state     = -1;
+static int oldarti      = 0;
 static int oldartiCount = 0;
-static int oldfrags = -9999;
-static int oldmana1 = -1;
-static int oldmana2 = -1;
-static int oldarmor = -1;
-static int oldhealth = -1;
-static int oldlife = -1;
-static int oldpieces = -1;
-static int oldweapon = -1;
-static int oldkeys = -1;
+static int oldfrags     = -9999;
+static int oldmana1     = -1;
+static int oldmana2     = -1;
+static int oldarmor     = -1;
+static int oldhealth    = -1;
+static int oldlife      = -1;
+static int oldpieces    = -1;
+static int oldweapon    = -1;
+static int oldkeys      = -1;
 
 extern boolean automapactive;
 
@@ -783,15 +784,15 @@ void SB_Drawer()
                 {
                     V_DrawPatch(38, 162, PatchKEYBAR);
                 }
-                oldarti = 0;
-                oldmana1 = -1;
-                oldmana2 = -1;
-                oldarmor = -1;
+                oldarti   = 0;
+                oldmana1  = -1;
+                oldmana2  = -1;
+                oldarmor  = -1;
                 oldpieces = -1;
-                oldfrags = -9999;       //can't use -1, 'cuz of negative frags
-                oldlife = -1;
+                oldfrags  = -9999; // can't use -1, 'cuz of negative frags
+                oldlife   = -1;
                 oldweapon = -1;
-                oldkeys = -1;
+                oldkeys   = -1;
             }
             if (!automapactive)
             {
@@ -821,7 +822,7 @@ void SB_Drawer()
 
 static void DrawAnimatedIcons()
 {
-    int frame;
+    int            frame;
     static boolean hitCenterFrame;
 
     // Wings of wrath
@@ -839,8 +840,7 @@ static void DrawAnimatedIcons()
                 }
                 else
                 {
-                    V_DrawPatch(20, 19, cache_lump_num<patch_t *>(SpinFlylump + frame,
-                                                       PU_CACHE));
+                    V_DrawPatch(20, 19, cache_lump_num<patch_t *>(SpinFlylump + frame, PU_CACHE));
                     hitCenterFrame = false;
                 }
             }
@@ -848,14 +848,12 @@ static void DrawAnimatedIcons()
             {
                 if (!hitCenterFrame && (frame != 15 && frame != 0))
                 {
-                    V_DrawPatch(20, 19, cache_lump_num<patch_t *>(SpinFlylump + frame,
-                                                       PU_CACHE));
+                    V_DrawPatch(20, 19, cache_lump_num<patch_t *>(SpinFlylump + frame, PU_CACHE));
                     hitCenterFrame = false;
                 }
                 else
                 {
-                    V_DrawPatch(20, 19, cache_lump_num<patch_t *>(SpinFlylump + 15,
-                                                       PU_CACHE));
+                    V_DrawPatch(20, 19, cache_lump_num<patch_t *>(SpinFlylump + 15, PU_CACHE));
                     hitCenterFrame = true;
                 }
             }
@@ -871,8 +869,7 @@ static void DrawAnimatedIcons()
             || !(CPlayer->powers[pw_speed] & 16))
         {
             frame = (leveltime / 3) & 15;
-            V_DrawPatch(60, 19, cache_lump_num<patch_t *>(SpinSpeedLump + frame,
-                                               PU_CACHE));
+            V_DrawPatch(60, 19, cache_lump_num<patch_t *>(SpinSpeedLump + frame, PU_CACHE));
         }
         BorderTopRefresh = true;
         UpdateState |= I_MESSAGES;
@@ -885,8 +882,7 @@ static void DrawAnimatedIcons()
             || !(CPlayer->powers[pw_invulnerability] & 16))
         {
             frame = (leveltime / 3) & 15;
-            V_DrawPatch(260, 19, cache_lump_num<patch_t *>(SpinDefenseLump + frame,
-                                                PU_CACHE));
+            V_DrawPatch(260, 19, cache_lump_num<patch_t *>(SpinDefenseLump + frame, PU_CACHE));
         }
         BorderTopRefresh = true;
         UpdateState |= I_MESSAGES;
@@ -899,8 +895,7 @@ static void DrawAnimatedIcons()
             || !(CPlayer->powers[pw_minotaur] & 16))
         {
             frame = (leveltime / 3) & 15;
-            V_DrawPatch(300, 19, cache_lump_num<patch_t *>(SpinMinotaurLump + frame,
-                                                PU_CACHE));
+            V_DrawPatch(300, 19, cache_lump_num<patch_t *>(SpinMinotaurLump + frame, PU_CACHE));
         }
         BorderTopRefresh = true;
         UpdateState |= I_MESSAGES;
@@ -919,8 +914,8 @@ static void DrawAnimatedIcons()
 void SB_PaletteFlash(boolean forceChange)
 {
     static int sb_palette = 0;
-    int palette;
-    byte *pal;
+    int        palette;
+    byte      *pal;
 
     if (forceChange)
     {
@@ -958,7 +953,7 @@ void SB_PaletteFlash(boolean forceChange)
             palette += STARTBONUSPALS;
         }
         else if (CPlayer->mo->flags2 & MF2_ICEDAMAGE)
-        {                       // Frozen player
+        { // Frozen player
             palette = STARTICEPAL;
         }
         else
@@ -973,7 +968,7 @@ void SB_PaletteFlash(boolean forceChange)
     if (palette != sb_palette)
     {
         sb_palette = palette;
-        pal = cache_lump_num<byte *>(PlayPalette, PU_CACHE) + palette * 768;
+        pal        = cache_lump_num<byte *>(PlayPalette, PU_CACHE) + palette * 768;
         I_SetPalette(pal);
     }
 }
@@ -1006,7 +1001,7 @@ void DrawCommonBar()
         V_DrawPatch(7 + ((healthPos * 11) / 5), 193, PatchLIFEGEM);
         V_DrawPatch(0, 193, PatchLFEDGE);
         V_DrawPatch(277, 193, PatchRTEDGE);
-//              ShadeChain();
+        //              ShadeChain();
         UpdateState |= I_STATBAR;
     }
 }
@@ -1019,13 +1014,13 @@ void DrawCommonBar()
 
 void DrawMainBar()
 {
-    int i, j, k;
-    int temp;
+    int      i, j, k;
+    int      temp;
     patch_t *manaPatch1, *manaPatch2;
     patch_t *manaVialPatch1, *manaVialPatch2;
 
-    manaPatch1 = NULL;
-    manaPatch2 = NULL;
+    manaPatch1     = NULL;
+    manaPatch2     = NULL;
     manaVialPatch1 = NULL;
     manaVialPatch2 = NULL;
 
@@ -1033,10 +1028,9 @@ void DrawMainBar()
     if (ArtifactFlash)
     {
         V_DrawPatch(144, 160, PatchARTICLEAR);
-        V_DrawPatch(148, 164, cache_lump_num<patch_t *>(W_GetNumForName("useartia")
-                                             + ArtifactFlash - 1, PU_CACHE));
+        V_DrawPatch(148, 164, cache_lump_num<patch_t *>(W_GetNumForName("useartia") + ArtifactFlash - 1, PU_CACHE));
         ArtifactFlash--;
-        oldarti = -1;           // so that the correct artifact fills in after the flash
+        oldarti = -1; // so that the correct artifact fills in after the flash
         UpdateState |= I_STATBAR;
     }
     else if (oldarti != CPlayer->readyArtifact
@@ -1047,13 +1041,13 @@ void DrawMainBar()
         {
             V_DrawPatch(143, 163,
                 cache_lump_name<patch_t *>(patcharti[CPlayer->readyArtifact],
-                                        PU_CACHE));
+                    PU_CACHE));
             if (CPlayer->inventory[inv_ptr].count > 1)
             {
                 DrSmallNumber(CPlayer->inventory[inv_ptr].count, 162, 184);
             }
         }
-        oldarti = CPlayer->readyArtifact;
+        oldarti      = CPlayer->readyArtifact;
         oldartiCount = CPlayer->inventory[inv_ptr].count;
         UpdateState |= I_STATBAR;
     }
@@ -1106,9 +1100,9 @@ void DrawMainBar()
     {
         V_DrawPatch(77, 178, PatchMANACLEAR);
         DrSmallNumber(temp, 79, 181);
-        manaVialPatch1 = (patch_t *) 1; // force a vial update
+        manaVialPatch1 = (patch_t *)1; // force a vial update
         if (temp == 0)
-        {                       // Draw Dim Mana icon
+        { // Draw Dim Mana icon
             manaPatch1 = PatchMANADIM1;
         }
         else if (oldmana1 == 0)
@@ -1123,9 +1117,9 @@ void DrawMainBar()
     {
         V_DrawPatch(109, 178, PatchMANACLEAR);
         DrSmallNumber(temp, 111, 181);
-        manaVialPatch1 = (patch_t *) 1; // force a vial update
+        manaVialPatch1 = (patch_t *)1; // force a vial update
         if (temp == 0)
-        {                       // Draw Dim Mana icon
+        { // Draw Dim Mana icon
             manaPatch2 = PatchMANADIM2;
         }
         else if (oldmana2 == 0)
@@ -1137,11 +1131,11 @@ void DrawMainBar()
     }
     if (oldweapon != CPlayer->readyweapon || manaPatch1 || manaPatch2
         || manaVialPatch1)
-    {                           // Update mana graphics based upon mana count/weapon type
+    { // Update mana graphics based upon mana count/weapon type
         if (CPlayer->readyweapon == WP_FIRST)
         {
-            manaPatch1 = PatchMANADIM1;
-            manaPatch2 = PatchMANADIM2;
+            manaPatch1     = PatchMANADIM1;
+            manaPatch2     = PatchMANADIM2;
             manaVialPatch1 = PatchMANAVIALDIM1;
             manaVialPatch2 = PatchMANAVIALDIM2;
         }
@@ -1152,12 +1146,12 @@ void DrawMainBar()
                 manaPatch1 = PatchMANABRIGHT1;
             }
             manaVialPatch1 = PatchMANAVIAL1;
-            manaPatch2 = PatchMANADIM2;
+            manaPatch2     = PatchMANADIM2;
             manaVialPatch2 = PatchMANAVIALDIM2;
         }
         else if (CPlayer->readyweapon == WP_THIRD)
         {
-            manaPatch1 = PatchMANADIM1;
+            manaPatch1     = PatchMANADIM1;
             manaVialPatch1 = PatchMANAVIALDIM1;
             if (!manaPatch2)
             {
@@ -1183,34 +1177,31 @@ void DrawMainBar()
         V_DrawPatch(94, 164, manaVialPatch1);
         for (i = 165; i < 187 - (22 * CPlayer->mana[0]) / MAX_MANA; i++)
         {
-         for (j = 0; j <= crispy->hires; j++)
-          for (k = 0; k <= crispy->hires; k++)
-          {
-            I_VideoBuffer[((i << crispy->hires) + j) * SCREENWIDTH + ((95 << crispy->hires) + k)] = 0;
-            I_VideoBuffer[((i << crispy->hires) + j) * SCREENWIDTH + ((96 << crispy->hires) + k)] = 0;
-            I_VideoBuffer[((i << crispy->hires) + j) * SCREENWIDTH + ((97 << crispy->hires) + k)] = 0;
-          }
+            for (j = 0; j <= crispy->hires; j++)
+                for (k = 0; k <= crispy->hires; k++)
+                {
+                    I_VideoBuffer[((i << crispy->hires) + j) * SCREENWIDTH + ((95 << crispy->hires) + k)] = 0;
+                    I_VideoBuffer[((i << crispy->hires) + j) * SCREENWIDTH + ((96 << crispy->hires) + k)] = 0;
+                    I_VideoBuffer[((i << crispy->hires) + j) * SCREENWIDTH + ((97 << crispy->hires) + k)] = 0;
+                }
         }
         V_DrawPatch(102, 164, manaVialPatch2);
         for (i = 165; i < 187 - (22 * CPlayer->mana[1]) / MAX_MANA; i++)
         {
-         for (j = 0; j <= crispy->hires; j++)
-          for (k = 0; k <= crispy->hires; k++)
-          {
-            I_VideoBuffer[((i << crispy->hires) + j) * SCREENWIDTH + ((103 << crispy->hires) + k)] = 0;
-            I_VideoBuffer[((i << crispy->hires) + j) * SCREENWIDTH + ((104 << crispy->hires) + k)] = 0;
-            I_VideoBuffer[((i << crispy->hires) + j) * SCREENWIDTH + ((105 << crispy->hires) + k)] = 0;
-          }
+            for (j = 0; j <= crispy->hires; j++)
+                for (k = 0; k <= crispy->hires; k++)
+                {
+                    I_VideoBuffer[((i << crispy->hires) + j) * SCREENWIDTH + ((103 << crispy->hires) + k)] = 0;
+                    I_VideoBuffer[((i << crispy->hires) + j) * SCREENWIDTH + ((104 << crispy->hires) + k)] = 0;
+                    I_VideoBuffer[((i << crispy->hires) + j) * SCREENWIDTH + ((105 << crispy->hires) + k)] = 0;
+                }
         }
         oldweapon = CPlayer->readyweapon;
         UpdateState |= I_STATBAR;
     }
     // Armor
     temp = AutoArmorSave[CPlayer->clazz]
-        + CPlayer->armorpoints[ARMOR_ARMOR] +
-        CPlayer->armorpoints[ARMOR_SHIELD] +
-        CPlayer->armorpoints[ARMOR_HELMET] +
-        CPlayer->armorpoints[ARMOR_AMULET];
+           + CPlayer->armorpoints[ARMOR_ARMOR] + CPlayer->armorpoints[ARMOR_SHIELD] + CPlayer->armorpoints[ARMOR_HELMET] + CPlayer->armorpoints[ARMOR_AMULET];
     if (oldarmor != temp)
     {
         oldarmor = temp;
@@ -1243,31 +1234,29 @@ void DrawInventoryBar()
     V_DrawPatch(38, 162, PatchINVBAR);
     for (i = 0; i < 7; i++)
     {
-        //V_DrawPatch(50+i*31, 160, cache_lump_name<patch_t *>("ARTIBOX", PU_CACHE));
+        // V_DrawPatch(50+i*31, 160, cache_lump_name<patch_t *>("ARTIBOX", PU_CACHE));
         if (CPlayer->inventorySlotNum > x + i
             && CPlayer->inventory[x + i].type != arti_none)
         {
             V_DrawPatch(50 + i * 31, 163,
                 cache_lump_name<patch_t *>(patcharti
-                                        [CPlayer->inventory[x + i].type],
-                                        PU_CACHE));
+                                               [CPlayer->inventory[x + i].type],
+                    PU_CACHE));
             if (CPlayer->inventory[x + i].count > 1)
             {
                 DrSmallNumber(CPlayer->inventory[x + i].count, 68 + i * 31,
-                              185);
+                    185);
             }
         }
     }
     V_DrawPatch(50 + curpos * 31, 163, PatchSELECTBOX);
     if (x != 0)
     {
-        V_DrawPatch(42, 163, !(leveltime & 4) ? PatchINVLFGEM1 :
-                    PatchINVLFGEM2);
+        V_DrawPatch(42, 163, !(leveltime & 4) ? PatchINVLFGEM1 : PatchINVLFGEM2);
     }
     if (CPlayer->inventorySlotNum - x > 7)
     {
-        V_DrawPatch(269, 163, !(leveltime & 4) ? PatchINVRTGEM1 :
-                    PatchINVRTGEM2);
+        V_DrawPatch(269, 163, !(leveltime & 4) ? PatchINVRTGEM1 : PatchINVRTGEM2);
     }
 }
 
@@ -1292,7 +1281,7 @@ void DrawKeyBar()
             {
                 V_DrawPatch(xPosition, 164,
                     cache_lump_num<patch_t *>(W_GetNumForName("keyslot1") + i,
-                                           PU_CACHE));
+                        PU_CACHE));
                 xPosition += 20;
             }
         }
@@ -1300,10 +1289,7 @@ void DrawKeyBar()
         UpdateState |= I_STATBAR;
     }
     temp = AutoArmorSave[CPlayer->clazz]
-        + CPlayer->armorpoints[ARMOR_ARMOR] +
-        CPlayer->armorpoints[ARMOR_SHIELD] +
-        CPlayer->armorpoints[ARMOR_HELMET] +
-        CPlayer->armorpoints[ARMOR_AMULET];
+           + CPlayer->armorpoints[ARMOR_ARMOR] + CPlayer->armorpoints[ARMOR_SHIELD] + CPlayer->armorpoints[ARMOR_HELMET] + CPlayer->armorpoints[ARMOR_AMULET];
     if (oldarmor != temp)
     {
         for (i = 0; i < NUMARMOR; i++)
@@ -1312,25 +1298,23 @@ void DrawKeyBar()
             {
                 continue;
             }
-            if (CPlayer->armorpoints[i] <=
-                (ArmorIncrement[CPlayer->clazz][i] >> 2))
+            if (CPlayer->armorpoints[i] <= (ArmorIncrement[CPlayer->clazz][i] >> 2))
             {
                 V_DrawTLPatch(150 + 31 * i, 164,
-                    cache_lump_num<patch_t *>(W_GetNumForName("armslot1") +
-                                             i, PU_CACHE));
+                    cache_lump_num<patch_t *>(W_GetNumForName("armslot1") + i, PU_CACHE));
             }
-            else if (CPlayer->armorpoints[i] <=
-                     (ArmorIncrement[CPlayer->clazz][i] >> 1))
+            else if (CPlayer->armorpoints[i] <= (ArmorIncrement[CPlayer->clazz][i] >> 1))
             {
                 V_DrawAltTLPatch(150 + 31 * i, 164,
                     cache_lump_num<patch_t *>(W_GetNumForName("armslot1")
-                                                + i, PU_CACHE));
+                                                  + i,
+                        PU_CACHE));
             }
             else
             {
                 V_DrawPatch(150 + 31 * i, 164,
                     cache_lump_num<patch_t *>(W_GetNumForName("armslot1") + i,
-                                           PU_CACHE));
+                        PU_CACHE));
             }
         }
         oldarmor = temp;
@@ -1345,10 +1329,10 @@ void DrawKeyBar()
 //==========================================================================
 
 static int PieceX[NUMCLASSES][3] = {
-    {190, 225, 234},
-    {190, 212, 225},
-    {190, 205, 224},
-    {0, 0, 0}                   // Pig is never used
+    { 190, 225, 234 },
+    { 190, 212, 225 },
+    { 190, 205, 224 },
+    { 0, 0, 0 } // Pig is never used
 };
 
 static void DrawWeaponPieces()
@@ -1413,7 +1397,7 @@ void DrawFullScreenStuff()
             V_DrawTLPatch(286, 170, cache_lump_name<patch_t *>("ARTIBOX", PU_CACHE));
             V_DrawPatch(284, 169,
                 cache_lump_name<patch_t *>(patcharti[CPlayer->readyArtifact],
-                                        PU_CACHE));
+                    PU_CACHE));
             if (CPlayer->inventory[inv_ptr].count > 1)
             {
                 DrSmallNumber(CPlayer->inventory[inv_ptr].count, 302, 192);
@@ -1425,32 +1409,29 @@ void DrawFullScreenStuff()
         x = inv_ptr - curpos;
         for (i = 0; i < 7; i++)
         {
-            V_DrawTLPatch(50 + i * 31, 168, cache_lump_name<patch_t *>("ARTIBOX",
-                                                            PU_CACHE));
+            V_DrawTLPatch(50 + i * 31, 168, cache_lump_name<patch_t *>("ARTIBOX", PU_CACHE));
             if (CPlayer->inventorySlotNum > x + i
                 && CPlayer->inventory[x + i].type != arti_none)
             {
                 V_DrawPatch(49 + i * 31, 167,
                     cache_lump_name<patch_t *>(patcharti
-                                            [CPlayer->inventory[x + i].type],
-                                            PU_CACHE));
+                                                   [CPlayer->inventory[x + i].type],
+                        PU_CACHE));
                 if (CPlayer->inventory[x + i].count > 1)
                 {
                     DrSmallNumber(CPlayer->inventory[x + i].count,
-                                  66 + i * 31, 188);
+                        66 + i * 31, 188);
                 }
             }
         }
         V_DrawPatch(50 + curpos * 31, 167, PatchSELECTBOX);
         if (x != 0)
         {
-            V_DrawPatch(40, 167, !(leveltime & 4) ? PatchINVLFGEM1 :
-                        PatchINVLFGEM2);
+            V_DrawPatch(40, 167, !(leveltime & 4) ? PatchINVLFGEM1 : PatchINVLFGEM2);
         }
         if (CPlayer->inventorySlotNum - x > 7)
         {
-            V_DrawPatch(268, 167, !(leveltime & 4) ?
-                        PatchINVRTGEM1 : PatchINVRTGEM2);
+            V_DrawPatch(268, 167, !(leveltime & 4) ? PatchINVRTGEM1 : PatchINVRTGEM2);
         }
     }
 }
@@ -1502,19 +1483,18 @@ void Draw_LoadIcon()
 }
 
 
-
 //==========================================================================
 //
 // SB_Responder
 //
 //==========================================================================
 
-boolean SB_Responder(event_t * event)
+boolean SB_Responder(event_t *event)
 {
     if (event->type == ev_keydown)
     {
         if (HandleCheats(event->data1))
-        {                       // Need to eat the key
+        { // Need to eat the key
             return (true);
         }
     }
@@ -1531,15 +1511,15 @@ boolean SB_Responder(event_t * event)
 
 static boolean HandleCheats(byte key)
 {
-    int i;
+    int     i;
     boolean eat;
 
     if (gameskill == sk_nightmare)
-    {                           // Can't cheat in nightmare mode
+    { // Can't cheat in nightmare mode
         return (false);
     }
     else if (netgame)
-    {                           // change CD track is the only cheat available in deathmatch
+    { // change CD track is the only cheat available in deathmatch
         eat = false;
         if (cdmusic)
         {
@@ -1557,11 +1537,11 @@ static boolean HandleCheats(byte key)
         return eat;
     }
     if (players[consoleplayer].health <= 0)
-    {                           // Dead players can't cheat
+    { // Dead players can't cheat
         return (false);
     }
     eat = false;
-    for (i = 0; i<arrlen(Cheats); ++i)
+    for (i = 0; i < arrlen(Cheats); ++i)
     {
         if (CheatAddKey(&Cheats[i], key, &eat))
         {
@@ -1580,37 +1560,37 @@ static boolean HandleCheats(byte key)
 //
 //==========================================================================
 
-static boolean CheatAddKey(Cheat_t * cheat, byte key, boolean * eat)
+static boolean CheatAddKey(Cheat_t *cheat, byte key, boolean *eat)
 {
-/*
-    if (!cheat->pos)
-    {
-        cheat->pos = cheat->sequence;
-        cheat->currentArg = 0;
-    }
-    if (*cheat->pos == 0)
-    {
-        *eat = true;
-        cheat->args[cheat->currentArg++] = key;
-        cheat->pos++;
-    }
-    else if (CheatLookup[key] == *cheat->pos)
-    {
-        cheat->pos++;
-    }
-    else
-    {
-        cheat->pos = cheat->sequence;
-        cheat->currentArg = 0;
-    }
-    if (*cheat->pos == 0xff)
-    {
-        cheat->pos = cheat->sequence;
-        cheat->currentArg = 0;
-        return (true);
-    }
-    return (false);
-    */
+    /*
+        if (!cheat->pos)
+        {
+            cheat->pos = cheat->sequence;
+            cheat->currentArg = 0;
+        }
+        if (*cheat->pos == 0)
+        {
+            *eat = true;
+            cheat->args[cheat->currentArg++] = key;
+            cheat->pos++;
+        }
+        else if (CheatLookup[key] == *cheat->pos)
+        {
+            cheat->pos++;
+        }
+        else
+        {
+            cheat->pos = cheat->sequence;
+            cheat->currentArg = 0;
+        }
+        if (*cheat->pos == 0xff)
+        {
+            cheat->pos = cheat->sequence;
+            cheat->currentArg = 0;
+            return (true);
+        }
+        return (false);
+        */
 
     *eat = cht_CheckCheat(cheat->seq, key);
 
@@ -1623,7 +1603,7 @@ static boolean CheatAddKey(Cheat_t * cheat, byte key, boolean * eat)
 //
 //==========================================================================
 
-static void CheatGodFunc(player_t * player, Cheat_t * cheat)
+static void CheatGodFunc(player_t *player, Cheat_t *cheat)
 {
     player->cheats ^= CF_GODMODE;
     if (player->cheats & CF_GODMODE)
@@ -1637,7 +1617,7 @@ static void CheatGodFunc(player_t * player, Cheat_t * cheat)
     SB_state = -1;
 }
 
-static void CheatNoClipFunc(player_t * player, Cheat_t * cheat)
+static void CheatNoClipFunc(player_t *player, Cheat_t *cheat)
 {
     player->cheats ^= CF_NOCLIP;
     if (player->cheats & CF_NOCLIP)
@@ -1650,10 +1630,10 @@ static void CheatNoClipFunc(player_t * player, Cheat_t * cheat)
     }
 }
 
-static void CheatWeaponsFunc(player_t * player, Cheat_t * cheat)
+static void CheatWeaponsFunc(player_t *player, Cheat_t *cheat)
 {
     int i;
-    //extern boolean *WeaponInShareware;
+    // extern boolean *WeaponInShareware;
 
     for (i = 0; i < NUMARMOR; i++)
     {
@@ -1670,7 +1650,7 @@ static void CheatWeaponsFunc(player_t * player, Cheat_t * cheat)
     P_SetMessage(player, TXT_CHEATWEAPONS, true);
 }
 
-static void CheatHealthFunc(player_t * player, Cheat_t * cheat)
+static void CheatHealthFunc(player_t *player, Cheat_t *cheat)
 {
     if (player->morphTics)
     {
@@ -1683,13 +1663,13 @@ static void CheatHealthFunc(player_t * player, Cheat_t * cheat)
     P_SetMessage(player, TXT_CHEATHEALTH, true);
 }
 
-static void CheatKeysFunc(player_t * player, Cheat_t * cheat)
+static void CheatKeysFunc(player_t *player, Cheat_t *cheat)
 {
     player->keys = 2047;
     P_SetMessage(player, TXT_CHEATKEYS, true);
 }
 
-static void CheatSoundFunc(player_t * player, Cheat_t * cheat)
+static void CheatSoundFunc(player_t *player, Cheat_t *cheat)
 {
     DebugSound = !DebugSound;
     if (DebugSound)
@@ -1702,7 +1682,7 @@ static void CheatSoundFunc(player_t * player, Cheat_t * cheat)
     }
 }
 
-static void CheatTickerFunc(player_t * player, Cheat_t * cheat)
+static void CheatTickerFunc(player_t *player, Cheat_t *cheat)
 {
     DisplayTicker = !DisplayTicker;
     if (DisplayTicker)
@@ -1717,7 +1697,7 @@ static void CheatTickerFunc(player_t * player, Cheat_t * cheat)
     I_DisplayFPSDots(DisplayTicker);
 }
 
-static void CheatArtifactAllFunc(player_t * player, Cheat_t * cheat)
+static void CheatArtifactAllFunc(player_t *player, Cheat_t *cheat)
 {
     int i;
     int j;
@@ -1732,7 +1712,7 @@ static void CheatArtifactAllFunc(player_t * player, Cheat_t * cheat)
     P_SetMessage(player, TXT_CHEATARTIFACTS3, true);
 }
 
-static void CheatPuzzleFunc(player_t * player, Cheat_t * cheat)
+static void CheatPuzzleFunc(player_t *player, Cheat_t *cheat)
 {
     int i;
 
@@ -1743,17 +1723,17 @@ static void CheatPuzzleFunc(player_t * player, Cheat_t * cheat)
     P_SetMessage(player, TXT_CHEATARTIFACTS3, true);
 }
 
-static void CheatInitFunc(player_t * player, Cheat_t * cheat)
+static void CheatInitFunc(player_t *player, Cheat_t *cheat)
 {
     G_DeferedInitNew(gameskill, gameepisode, gamemap);
     P_SetMessage(player, TXT_CHEATWARP, true);
 }
 
-static void CheatWarpFunc(player_t * player, Cheat_t * cheat)
+static void CheatWarpFunc(player_t *player, Cheat_t *cheat)
 {
-    int tens;
-    int ones;
-    int map;
+    int  tens;
+    int  ones;
+    int  map;
     char mapName[9];
     char args[2];
 
@@ -1762,24 +1742,24 @@ static void CheatWarpFunc(player_t * player, Cheat_t * cheat)
     tens = args[0] - '0';
     ones = args[1] - '0';
     if (tens < 0 || tens > 9 || ones < 0 || ones > 9)
-    {                           // Bad map
+    { // Bad map
         P_SetMessage(player, TXT_CHEATBADINPUT, true);
         return;
     }
     map = P_TranslateMap((args[0] - '0') * 10 + args[1] - '0');
     if (map == -1)
-    {                           // Not found
+    { // Not found
         P_SetMessage(player, TXT_CHEATNOMAP, true);
         return;
     }
     if (map == gamemap)
-    {                           // Don't try to teleport to current map
+    { // Don't try to teleport to current map
         P_SetMessage(player, TXT_CHEATBADINPUT, true);
         return;
     }
     M_snprintf(mapName, sizeof(mapName), "MAP%02d", map);
     if (W_CheckNumForName(mapName) == -1)
-    {                       // Can't find
+    { // Can't find
         P_SetMessage(player, TXT_CHEATNOMAP, true);
         return;
     }
@@ -1787,7 +1767,7 @@ static void CheatWarpFunc(player_t * player, Cheat_t * cheat)
     G_TeleportNewMap(map, 0);
 }
 
-static void CheatPigFunc(player_t * player, Cheat_t * cheat)
+static void CheatPigFunc(player_t *player, Cheat_t *cheat)
 {
     extern boolean P_UndoPlayerMorph(player_t * player);
 
@@ -1802,9 +1782,9 @@ static void CheatPigFunc(player_t * player, Cheat_t * cheat)
     P_SetMessage(player, "SQUEAL!!", true);
 }
 
-static void CheatMassacreFunc(player_t * player, Cheat_t * cheat)
+static void CheatMassacreFunc(player_t *player, Cheat_t *cheat)
 {
-    int count;
+    int  count;
     char buffer[80];
 
     count = P_Massacre();
@@ -1812,7 +1792,7 @@ static void CheatMassacreFunc(player_t * player, Cheat_t * cheat)
     P_SetMessage(player, buffer, true);
 }
 
-static void CheatIDKFAFunc(player_t * player, Cheat_t * cheat)
+static void CheatIDKFAFunc(player_t *player, Cheat_t *cheat)
 {
     int i;
     if (player->morphTics)
@@ -1828,46 +1808,46 @@ static void CheatIDKFAFunc(player_t * player, Cheat_t * cheat)
     // overflowed the array. We must set the following fields to zero as
     // well:
 
-    player->mana[0] = 0;
-    player->mana[1] = 0;
+    player->mana[0]    = 0;
+    player->mana[1]    = 0;
     player->attackdown = 0;
-    player->usedown = 0;
+    player->usedown    = 0;
 
     player->pendingweapon = WP_FIRST;
     P_SetMessage(player, TXT_CHEATIDKFA, true);
 }
 
-static void CheatQuickenFunc1(player_t * player, Cheat_t * cheat)
+static void CheatQuickenFunc1(player_t *player, Cheat_t *cheat)
 {
     P_SetMessage(player, "TRYING TO CHEAT?  THAT'S ONE....", true);
 }
 
-static void CheatQuickenFunc2(player_t * player, Cheat_t * cheat)
+static void CheatQuickenFunc2(player_t *player, Cheat_t *cheat)
 {
     P_SetMessage(player, "THAT'S TWO....", true);
 }
 
-static void CheatQuickenFunc3(player_t * player, Cheat_t * cheat)
+static void CheatQuickenFunc3(player_t *player, Cheat_t *cheat)
 {
     P_DamageMobj(player->mo, NULL, player->mo, 10000);
     P_SetMessage(player, "THAT'S THREE!  TIME TO DIE.", true);
 }
 
-static void CheatClassFunc1(player_t * player, Cheat_t * cheat)
+static void CheatClassFunc1(player_t *player, Cheat_t *cheat)
 {
     P_SetMessage(player, "ENTER NEW PLAYER CLASS (0 - 2)", true);
 }
 
-static void CheatClassFunc2(player_t * player, Cheat_t * cheat)
+static void CheatClassFunc2(player_t *player, Cheat_t *cheat)
 {
-    int i;
-    int clazz;
+    int  i;
+    int  clazz;
     char args[2];
 
     cht_GetParam(cheat->seq, args);
 
     if (player->morphTics)
-    {                           // don't change class if the player is morphed
+    { // don't change class if the player is morphed
         return;
     }
     clazz = args[0] - '0';
@@ -1888,45 +1868,45 @@ static void CheatClassFunc2(player_t * player, Cheat_t * cheat)
     UpdateState |= I_FULLSCRN;
 }
 
-static void CheatVersionFunc(player_t * player, Cheat_t * cheat)
+static void CheatVersionFunc(player_t *player, Cheat_t *cheat)
 {
     P_SetMessage(player, HEXEN_VERSIONTEXT, true);
 }
 
-static void CheatDebugFunc(player_t * player, Cheat_t * cheat)
+static void CheatDebugFunc(player_t *player, Cheat_t *cheat)
 {
     char textBuffer[50];
     M_snprintf(textBuffer, sizeof(textBuffer),
-               "MAP %d (%d)  X:%5d  Y:%5d  Z:%5d",
-               P_GetMapWarpTrans(gamemap),
-               gamemap,
-               player->mo->x >> FRACBITS,
-               player->mo->y >> FRACBITS, player->mo->z >> FRACBITS);
+        "MAP %d (%d)  X:%5d  Y:%5d  Z:%5d",
+        P_GetMapWarpTrans(gamemap),
+        gamemap,
+        player->mo->x >> FRACBITS,
+        player->mo->y >> FRACBITS, player->mo->z >> FRACBITS);
     P_SetMessage(player, textBuffer, true);
 }
 
-static void CheatScriptFunc1(player_t * player, Cheat_t * cheat)
+static void CheatScriptFunc1(player_t *player, Cheat_t *cheat)
 {
     P_SetMessage(player, "RUN WHICH SCRIPT(01-99)?", true);
 }
 
-static void CheatScriptFunc2(player_t * player, Cheat_t * cheat)
+static void CheatScriptFunc2(player_t *player, Cheat_t *cheat)
 {
     P_SetMessage(player, "RUN WHICH SCRIPT(01-99)?", true);
 }
 
-static void CheatScriptFunc3(player_t * player, Cheat_t * cheat)
+static void CheatScriptFunc3(player_t *player, Cheat_t *cheat)
 {
-    int script;
+    int  script;
     byte script_args[3];
-    int tens, ones;
+    int  tens, ones;
     char textBuffer[40];
     char args[2];
 
     cht_GetParam(cheat->seq, args);
 
-    tens = args[0] - '0';
-    ones = args[1] - '0';
+    tens   = args[0] - '0';
+    ones   = args[1] - '0';
     script = tens * 10 + ones;
     if (script < 1)
         return;
@@ -1937,14 +1917,14 @@ static void CheatScriptFunc3(player_t * player, Cheat_t * cheat)
     if (P_StartACS(script, 0, script_args, player->mo, NULL, 0))
     {
         M_snprintf(textBuffer, sizeof(textBuffer),
-                   "RUNNING SCRIPT %.2d", script);
+            "RUNNING SCRIPT %.2d", script);
         P_SetMessage(player, textBuffer, true);
     }
 }
 
 extern int cheating;
 
-static void CheatRevealFunc(player_t * player, Cheat_t * cheat)
+static void CheatRevealFunc(player_t *player, Cheat_t *cheat)
 {
     cheating = (cheating + 1) % 3;
 }
@@ -1955,7 +1935,7 @@ static void CheatRevealFunc(player_t * player, Cheat_t * cheat)
 //
 //===========================================================================
 
-static void CheatTrackFunc1(player_t * player, Cheat_t * cheat)
+static void CheatTrackFunc1(player_t *player, Cheat_t *cheat)
 {
     char buffer[80];
 
@@ -1970,7 +1950,7 @@ static void CheatTrackFunc1(player_t * player, Cheat_t * cheat)
     }
 
     M_snprintf(buffer, sizeof(buffer), "ENTER DESIRED CD TRACK (%.2d - %.2d):\n",
-               I_CDMusFirstTrack(), I_CDMusLastTrack());
+        I_CDMusFirstTrack(), I_CDMusLastTrack());
     P_SetMessage(player, buffer, true);
 }
 
@@ -1980,10 +1960,10 @@ static void CheatTrackFunc1(player_t * player, Cheat_t * cheat)
 //
 //===========================================================================
 
-static void CheatTrackFunc2(player_t * player, Cheat_t * cheat)
+static void CheatTrackFunc2(player_t *player, Cheat_t *cheat)
 {
     char buffer[80];
-    int track;
+    int  track;
     char args[2];
 
     cht_GetParam(cheat->seq, args);
@@ -2008,7 +1988,7 @@ static void CheatTrackFunc2(player_t * player, Cheat_t * cheat)
     if (!S_StartCustomCDTrack(track))
     {
         M_snprintf(buffer, sizeof(buffer),
-                   "ERROR WHILE TRYING TO PLAY CD TRACK: %.2d\n", track);
+            "ERROR WHILE TRYING TO PLAY CD TRACK: %.2d\n", track);
         P_SetMessage(player, buffer, true);
     }
     else

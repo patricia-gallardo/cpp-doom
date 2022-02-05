@@ -14,7 +14,7 @@
 //
 // DESCRIPTION:
 //   Duh.
-// 
+//
 
 
 #ifndef __G_GAME__
@@ -28,55 +28,55 @@
 //
 // GAME
 //
-void G_DeathMatchSpawnPlayer (int playernum);
+void G_DeathMatchSpawnPlayer(int playernum);
 
 // [STRIFE] Removed episode parameter
-void G_InitNew (skill_t skill, int map);
+void G_InitNew(skill_t skill, int map);
 
 // Can be called by the startup code or M_Responder.
 // A normal game starts at map 1,
 // but a warp test can start elsewhere
 // [STRIFE] Removed episode parameter
-void G_DeferedInitNew (skill_t skill, int map);
+void G_DeferedInitNew(skill_t skill, int map);
 
 void G_DeferedPlayDemo(const char *demo);
 
 // Can be called by the startup code or M_Responder,
 // calls P_SetupLevel or W_EnterWorld.
-void G_LoadGame (char* name);
+void G_LoadGame(char *name);
 
-void G_DoLoadGame (boolean userload);
+void G_DoLoadGame(boolean userload);
 
 // Called by M_Responder.
-void G_SaveGame (int slot, char* description);
+void G_SaveGame(int slot, char *description);
 
 // Only called by startup code.
-void G_RecordDemo (char* name);
+void G_RecordDemo(char *name);
 
-void G_BeginRecording ();
+void G_BeginRecording();
 
-void G_PlayDemo (char* name);
-void G_TimeDemo (char* name);
-boolean G_CheckDemoStatus ();
+void    G_PlayDemo(char *name);
+void    G_TimeDemo(char *name);
+boolean G_CheckDemoStatus();
 
 void G_RiftExitLevel(int map, int spot, angle_t angle); // [STRIFE]
-void G_ExitLevel (int dest);
-//void G_SecretExitLevel ();
+void G_ExitLevel(int dest);
+// void G_SecretExitLevel ();
 
 void G_StartFinale(); // [STRIFE]
 
-//void G_WorldDone ();
+// void G_WorldDone ();
 
 boolean G_RiftCheat(int riftSpotNum); // [STRIFE]
 
 // Read current data from inputs and build a player movement command.
 
-void G_BuildTiccmd (ticcmd_t *cmd, int maketic);
+void G_BuildTiccmd(ticcmd_t *cmd, int maketic);
 
-void G_Ticker ();
-boolean G_Responder (event_t*	ev);
+void    G_Ticker();
+boolean G_Responder(event_t *ev);
 
-void G_ScreenShot ();
+void G_ScreenShot();
 
 void G_DrawMouseSpeedBox();
 

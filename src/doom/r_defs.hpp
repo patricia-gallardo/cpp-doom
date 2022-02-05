@@ -89,7 +89,6 @@ using degenmobj_t = struct
     fixed_t   x;
     fixed_t   y;
     fixed_t   z;
-
 };
 
 //
@@ -189,8 +188,7 @@ using side_t = struct
 //
 // Move clipping aid for LineDefs.
 //
-using slopetype_t = enum
-{
+using slopetype_t = enum {
     ST_HORIZONTAL,
     ST_VERTICAL,
     ST_POSITIVE,
@@ -251,7 +249,6 @@ using subsector_t = struct subsector_s {
     sector_t *sector;
     int       numlines;  // [crispy] extended nodes
     int       firstline; // [crispy] extended nodes
-
 };
 
 
@@ -298,14 +295,13 @@ using node_t = struct
 
     // If NF_SUBSECTOR its a subsector.
     int children[2]; // [crispy] extended nodes
-
 };
 
 
 // PC direct to screen pointers
-//B UNUSED - keep till detailshift in r_draw.c resolved
-//extern byte*	destview;
-//extern byte*	destscreen;
+// B UNUSED - keep till detailshift in r_draw.c resolved
+// extern byte*	destview;
+// extern byte*	destscreen;
 
 
 //
@@ -346,7 +342,6 @@ using drawseg_t = struct drawseg_s {
     int *sprtopclip;       // [crispy] 32-bit integer math
     int *sprbottomclip;    // [crispy] 32-bit integer math
     int *maskedtexturecol; // [crispy] 32-bit integer math
-
 };
 
 
@@ -384,7 +379,7 @@ using vissprite_t = struct vissprite_s {
     //  maxbright frames as well
     // [crispy] brightmaps for select sprites
     lighttable_t *colormap[2];
-    byte *        brightmap;
+    byte         *brightmap;
 
     int mobjflags;
     // [crispy] color translation table for blood colored by monster class
@@ -392,7 +387,6 @@ using vissprite_t = struct vissprite_s {
 #ifdef CRISPY_TRUECOLOR
     const pixel_t (*blendfunc)(const pixel_t fg, const pixel_t bg);
 #endif
-
 };
 
 
@@ -423,7 +417,6 @@ using spriteframe_t = struct
 
     // Flip bit (1 = flip) to use for view angles 0-7.
     byte flip[16]; // [crispy] support 16 sprite rotations
-
 };
 
 
@@ -435,7 +428,6 @@ using spritedef_t = struct
 {
     int            numframes;
     spriteframe_t *spriteframes;
-
 };
 
 
@@ -461,7 +453,6 @@ using visplane_t = struct
     // See above.
     unsigned int bottom[MAXWIDTH]; // [crispy] hires / 32-bit integer math
     unsigned int pad4;             // [crispy] hires / 32-bit integer math
-
 };
 
 using laserpatch_t = struct

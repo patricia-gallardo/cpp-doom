@@ -38,53 +38,51 @@ using window_size_t = struct
 };
 
 // List of aspect ratio-uncorrected window sizes:
-static window_size_t window_sizes_unscaled[] =
-{
-//  { 320,  200 }, // hires
-    { 640,  400 },
-    { 960,  600 },
+static window_size_t window_sizes_unscaled[] = {
+    //  { 320,  200 }, // hires
+    { 640, 400 },
+    { 960, 600 },
     { 1280, 800 },
     { 1600, 1000 },
     { 1920, 1200 }, // hires * 3
     { 2560, 1600 }, // hires * 4
     { 3200, 2000 }, // hires * 5
-    { 0, 0},
+    { 0, 0 },
 };
 
 // List of aspect ratio-corrected window sizes:
-static window_size_t window_sizes_scaled[] =
-{
-//  { 320,  240 }, // hires
-//  { 512,  400 }, // hires
-    { 640,  480 },
-    { 800,  600 },
-    { 960,  720 },
+static window_size_t window_sizes_scaled[] = {
+    //  { 320,  240 }, // hires
+    //  { 512,  400 }, // hires
+    { 640, 480 },
+    { 800, 600 },
+    { 960, 720 },
     { 1024, 800 },
     { 1280, 960 },
     { 1600, 1200 },
     { 1920, 1440 },
     { 2560, 1920 }, // hires * 4
     { 3200, 2400 }, // hires * 5
-    { 0, 0},
+    { 0, 0 },
 };
 
-static char *video_driver = const_cast<char *>("");
-static char *window_position = const_cast<char *>("");
-static int aspect_ratio_correct = 1;
-static int integer_scaling = 0;
-static int vga_porch_flash = 0;
-static int force_software_renderer = 0;
-static int fullscreen = 1;
-static int fullscreen_width = 0, fullscreen_height = 0;
-static int window_width = 800, window_height = 600;
-static int startup_delay = 1000;
-static int max_scaling_buffer_pixels = 16000000;
-static int usegamma = 0;
+static char *video_driver            = const_cast<char *>("");
+static char *window_position         = const_cast<char *>("");
+static int   aspect_ratio_correct    = 1;
+static int   integer_scaling         = 0;
+static int   vga_porch_flash         = 0;
+static int   force_software_renderer = 0;
+static int   fullscreen              = 1;
+static int   fullscreen_width = 0, fullscreen_height = 0;
+static int   window_width = 800, window_height = 600;
+static int   startup_delay             = 1000;
+static int   max_scaling_buffer_pixels = 16000000;
+static int   usegamma                  = 0;
 
 int graphical_startup = 0; // [crispy]
-int show_endoom = 0; // [crispy]
-int show_diskicon = 1;
-int png_screenshots = 1; // [crispy]
+int show_endoom       = 0; // [crispy]
+int show_diskicon     = 1;
+int png_screenshots   = 1; // [crispy]
 
 static int system_video_env_set;
 
@@ -124,13 +122,13 @@ static void WindowSizeSelected(TXT_UNCAST_ARG(widget), TXT_UNCAST_ARG(size))
 {
     TXT_CAST_ARG(window_size_t, size);
 
-    window_width = size->w;
+    window_width  = size->w;
     window_height = size->h;
 }
 
 static txt_radiobutton_t *SizeSelectButton(window_size_t *size)
 {
-    char buf[15];
+    char               buf[15];
     txt_radiobutton_t *result;
 
     M_snprintf(buf, sizeof(buf), "%ix%i", size->w, size->h);
@@ -141,12 +139,12 @@ static txt_radiobutton_t *SizeSelectButton(window_size_t *size)
 }
 
 static void GenerateSizesTable(TXT_UNCAST_ARG(widget),
-                               TXT_UNCAST_ARG(sizes_table))
+    TXT_UNCAST_ARG(sizes_table))
 {
     TXT_CAST_ARG(txt_table_t, sizes_table);
     window_size_t *sizes;
-    boolean have_size;
-    int i;
+    boolean        have_size;
+    int            i;
 
     // Pick which window sizes list to use
     if (aspect_ratio_correct == 1)
@@ -186,10 +184,10 @@ static void GenerateSizesTable(TXT_UNCAST_ARG(widget),
 }
 
 static void AdvancedDisplayConfig(TXT_UNCAST_ARG(widget),
-                                  TXT_UNCAST_ARG(sizes_table))
+    TXT_UNCAST_ARG(sizes_table))
 {
     TXT_CAST_ARG(txt_table_t, sizes_table);
-    txt_window_t *window;
+    txt_window_t   *window;
     txt_checkbox_t *ar_checkbox;
 
     window = TXT_NewWindow("Advanced display options");
@@ -200,17 +198,17 @@ static void AdvancedDisplayConfig(TXT_UNCAST_ARG(widget),
 
     TXT_AddWidgets(window,
         ar_checkbox = TXT_NewCheckBox("Force correct aspect ratio",
-                                      &aspect_ratio_correct),
+            &aspect_ratio_correct),
         TXT_If(gamemission == heretic || gamemission == hexen
-            || gamemission == strife,
+                   || gamemission == strife,
             TXT_NewCheckBox("Graphical startup", &graphical_startup)),
         TXT_If(gamemission == doom || gamemission == heretic
-            || gamemission == strife,
+                   || gamemission == strife,
             TXT_NewCheckBox("Show ENDOOM screen on exit",
-                            &show_endoom)),
+                &show_endoom)),
 #ifdef HAVE_LIBPNG
         TXT_NewCheckBox("Save screenshots in PNG format",
-                        &png_screenshots),
+            &png_screenshots),
 #endif
         NULL);
 
@@ -219,8 +217,8 @@ static void AdvancedDisplayConfig(TXT_UNCAST_ARG(widget),
 
 void ConfigDisplay(TXT_UNCAST_ARG(widget), void *user_data)
 {
-    txt_window_t *window;
-    txt_table_t *sizes_table;
+    txt_window_t        *window;
+    txt_table_t         *sizes_table;
     txt_window_action_t *advanced_button;
 
     // Open the window
@@ -241,7 +239,7 @@ void ConfigDisplay(TXT_UNCAST_ARG(widget), void *user_data)
     // fullscreen and windowed mode (which causes the window's
     // height to change).
     TXT_SetWindowPosition(window, TXT_HORIZ_CENTER, TXT_VERT_TOP,
-                                  TXT_SCREEN_W / 2, 6);
+        TXT_SCREEN_W / 2, 6);
 
     GenerateSizesTable(NULL, sizes_table);
 
@@ -251,40 +249,40 @@ void ConfigDisplay(TXT_UNCAST_ARG(widget), void *user_data)
     advanced_button = TXT_NewWindowAction('a', "Advanced");
     TXT_SetWindowAction(window, TXT_HORIZ_CENTER, advanced_button);
     TXT_SignalConnect(advanced_button, "pressed",
-                      AdvancedDisplayConfig, sizes_table);
+        AdvancedDisplayConfig, sizes_table);
 }
 
 void BindDisplayVariables()
 {
-    M_BindIntVariable("aspect_ratio_correct",      &aspect_ratio_correct);
-    M_BindIntVariable("integer_scaling",           &integer_scaling);
-    M_BindIntVariable("fullscreen",                &fullscreen);
-    M_BindIntVariable("fullscreen_width",          &fullscreen_width);
-    M_BindIntVariable("fullscreen_height",         &fullscreen_height);
-    M_BindIntVariable("window_width",              &window_width);
-    M_BindIntVariable("window_height",             &window_height);
-    M_BindIntVariable("startup_delay",             &startup_delay);
-    M_BindStringVariable("video_driver",           &video_driver);
-    M_BindStringVariable("window_position",        &window_position);
-    M_BindIntVariable("usegamma",                  &usegamma);
-    M_BindIntVariable("png_screenshots",           &png_screenshots);
-    M_BindIntVariable("vga_porch_flash",           &vga_porch_flash);
-    M_BindIntVariable("force_software_renderer",   &force_software_renderer);
+    M_BindIntVariable("aspect_ratio_correct", &aspect_ratio_correct);
+    M_BindIntVariable("integer_scaling", &integer_scaling);
+    M_BindIntVariable("fullscreen", &fullscreen);
+    M_BindIntVariable("fullscreen_width", &fullscreen_width);
+    M_BindIntVariable("fullscreen_height", &fullscreen_height);
+    M_BindIntVariable("window_width", &window_width);
+    M_BindIntVariable("window_height", &window_height);
+    M_BindIntVariable("startup_delay", &startup_delay);
+    M_BindStringVariable("video_driver", &video_driver);
+    M_BindStringVariable("window_position", &window_position);
+    M_BindIntVariable("usegamma", &usegamma);
+    M_BindIntVariable("png_screenshots", &png_screenshots);
+    M_BindIntVariable("vga_porch_flash", &vga_porch_flash);
+    M_BindIntVariable("force_software_renderer", &force_software_renderer);
     M_BindIntVariable("max_scaling_buffer_pixels", &max_scaling_buffer_pixels);
 
     if (gamemission == doom || gamemission == heretic
-     || gamemission == strife)
+        || gamemission == strife)
     {
-        M_BindIntVariable("show_endoom",               &show_endoom);
+        M_BindIntVariable("show_endoom", &show_endoom);
     }
 
     if (gamemission == doom || gamemission == strife)
     {
-        M_BindIntVariable("show_diskicon",             &show_diskicon);
+        M_BindIntVariable("show_diskicon", &show_diskicon);
     }
 
     if (gamemission == heretic || gamemission == hexen || gamemission == strife)
     {
-        M_BindIntVariable("graphical_startup",        &graphical_startup);
+        M_BindIntVariable("graphical_startup", &graphical_startup);
     }
 }

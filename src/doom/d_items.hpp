@@ -32,7 +32,6 @@ using weaponinfo_t = struct
     statenum_t readystate;
     statenum_t atkstate;
     statenum_t flashstate;
-
 };
 
 extern weaponinfo_t weaponinfo[NUMWEAPONS];

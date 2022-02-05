@@ -33,7 +33,7 @@
 #include "m_misc.hpp"
 #include "r_state.hpp"
 
-FILE *     save_stream;
+FILE      *save_stream;
 int        savegamelength;
 boolean    savegame_error;
 static int restoretargets_fail;
@@ -58,7 +58,7 @@ char *P_TempSaveGameFile()
 
 char *P_SaveGameFile(int slot)
 {
-    static char * filename      = NULL;
+    static char  *filename      = NULL;
     static size_t filename_size = 0;
     char          basename[32];
 
@@ -1543,8 +1543,8 @@ void P_ArchiveWorld()
     int       i;
     int       j;
     sector_t *sec;
-    line_t *  li;
-    side_t *  si;
+    line_t   *li;
+    side_t   *si;
 
     // do sectors
     for (i = 0, sec = sectors; i < numsectors; i++, sec++)
@@ -1590,8 +1590,8 @@ void P_UnArchiveWorld()
     int       i;
     int       j;
     sector_t *sec;
-    line_t *  li;
-    side_t *  si;
+    line_t   *li;
+    side_t   *si;
 
     // do sectors
     for (i = 0, sec = sectors; i < numsectors; i++, sec++)
@@ -1643,8 +1643,7 @@ void P_UnArchiveWorld()
 //
 // Thinkers
 //
-using thinkerclass_t = enum
-{
+using thinkerclass_t = enum {
     tc_end,
     tc_mobj
 
@@ -1686,7 +1685,7 @@ void P_UnArchiveThinkers()
     byte       tclass;
     thinker_t *currentthinker;
     thinker_t *next;
-    mobj_t *   mobj;
+    mobj_t    *mobj;
 
     // remove all the current thinkers
     currentthinker = thinkercap.next;
@@ -1718,8 +1717,8 @@ void P_UnArchiveThinkers()
             saveg_read_mobj_t(mobj);
 
             // [crispy] restore mobj->target and mobj->tracer fields
-            //mobj->target = NULL;
-            //mobj->tracer = NULL;
+            // mobj->target = NULL;
+            // mobj->tracer = NULL;
             P_SetThingPosition(mobj);
             mobj->info = &mobjinfo[mobj->type];
             // [crispy] killough 2/28/98: Fix for falling down into a wall after savegame loaded
@@ -1739,7 +1738,7 @@ void P_UnArchiveThinkers()
 // the mobj->target and mobj->tracers fields by the corresponding current pointers again
 void P_RestoreTargets()
 {
-    mobj_t *   mo;
+    mobj_t    *mo;
     thinker_t *th;
 
     for (th = thinkercap.next; th != &thinkercap; th = th->next)
@@ -1889,13 +1888,13 @@ void P_ArchiveSpecials()
 void P_UnArchiveSpecials()
 {
     byte          tclass;
-    ceiling_t *   ceiling;
-    vldoor_t *    door;
-    floormove_t * floor;
-    plat_t *      plat;
+    ceiling_t    *ceiling;
+    vldoor_t     *door;
+    floormove_t  *floor;
+    plat_t       *plat;
     lightflash_t *flash;
-    strobe_t *    strobe;
-    glow_t *      glow;
+    strobe_t     *strobe;
+    glow_t       *glow;
 
 
     // read in saved thinkers

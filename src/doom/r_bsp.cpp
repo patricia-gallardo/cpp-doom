@@ -34,9 +34,9 @@
 //#include "r_local.hpp"
 
 
-seg_t *   curline;
-side_t *  sidedef;
-line_t *  linedef;
+seg_t    *curline;
+side_t   *sidedef;
+line_t   *linedef;
 sector_t *frontsector;
 sector_t *backsector;
 
@@ -67,7 +67,6 @@ using cliprange_t = struct
 {
     int first;
     int last;
-
 };
 
 // We must expand MAXSEGS to the theoretical limit of the number of solidsegs
@@ -509,7 +508,7 @@ boolean R_CheckBBox(fixed_t *bspcoord)
 void R_Subsector(int num)
 {
     int          count;
-    seg_t *      line;
+    seg_t       *line;
     subsector_t *sub;
 
 #ifdef RANGECHECK

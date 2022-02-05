@@ -17,7 +17,7 @@
 // Win32/SDL_mixer MIDI Server
 //
 // Uses pipes to communicate with Doom. This allows this separate process to
-// have its own independent volume control even under Windows Vista and up's 
+// have its own independent volume control even under Windows Vista and up's
 // broken, stupid, completely useless mixer model that can't assign separate
 // volumes to different devices for the same process.
 //
@@ -40,14 +40,14 @@
 #include "config.h"
 #include "doomtype.hpp"
 
-static HANDLE    midi_process_in;  // Standard In.
-static HANDLE    midi_process_out; // Standard Out.
+static HANDLE midi_process_in;  // Standard In.
+static HANDLE midi_process_out; // Standard Out.
 
 // Sound sample rate to use for digital output (Hz)
 static int snd_samplerate = 0;
 
 // Currently playing music track.
-static Mix_Music *music  = NULL;
+static Mix_Music *music = NULL;
 
 //=============================================================================
 //
@@ -181,8 +181,8 @@ static boolean MidiPipe_UnregisterSong(buffer_reader_t *reader)
 
 boolean MidiPipe_SetVolume(buffer_reader_t *reader)
 {
-    int vol;
-    boolean ok = Reader_ReadInt32(reader, (uint32_t*)&vol);
+    int     vol;
+    boolean ok = Reader_ReadInt32(reader, (uint32_t *)&vol);
     if (!ok)
     {
         return false;
@@ -195,8 +195,8 @@ boolean MidiPipe_SetVolume(buffer_reader_t *reader)
 
 boolean MidiPipe_PlaySong(buffer_reader_t *reader)
 {
-    int loops;
-    boolean ok = Reader_ReadInt32(reader, (uint32_t*)&loops);
+    int     loops;
+    boolean ok = Reader_ReadInt32(reader, (uint32_t *)&loops);
     if (!ok)
     {
         return false;
@@ -253,10 +253,10 @@ boolean ParseCommand(buffer_reader_t *reader, uint16_t command)
 //
 boolean ParseMessage(buffer_t *buf)
 {
-    CHAR buffer[2];
-    DWORD bytes_written;
-    int bytes_read;
-    uint16_t command;
+    CHAR             buffer[2];
+    DWORD            bytes_written;
+    int              bytes_read;
+    uint16_t         command;
     buffer_reader_t *reader = NewReader(buf);
 
     // Attempt to read a command out of the buffer.
@@ -284,7 +284,7 @@ boolean ParseMessage(buffer_t *buf)
     }
 
     WriteFile(midi_process_out, buffer, sizeof(buffer),
-              &bytes_written, NULL);
+        &bytes_written, NULL);
 
     return true;
 
@@ -300,18 +300,18 @@ fail:
 //
 boolean ListenForever()
 {
-    BOOL wok = FALSE;
-    CHAR pipe_buffer[8192];
+    BOOL  wok = FALSE;
+    CHAR  pipe_buffer[8192];
     DWORD pipe_buffer_read = 0;
 
-    boolean ok = false;
+    boolean   ok     = false;
     buffer_t *buffer = NewBuffer();
 
     for (;;)
     {
         // Wait until we see some data on the pipe.
         wok = PeekNamedPipe(midi_process_in, NULL, 0, NULL,
-                            &pipe_buffer_read, NULL);
+            &pipe_buffer_read, NULL);
         if (!wok)
         {
             break;
@@ -324,7 +324,7 @@ boolean ListenForever()
 
         // Read data off the pipe and add it to the buffer.
         wok = ReadFile(midi_process_in, pipe_buffer, sizeof(pipe_buffer),
-                       &pipe_buffer_read, NULL);
+            &pipe_buffer_read, NULL);
         if (!wok)
         {
             break;
@@ -380,7 +380,7 @@ boolean InitSDL()
 //
 void InitPipes(HANDLE in, HANDLE out)
 {
-    midi_process_in = in;
+    midi_process_in  = in;
     midi_process_out = out;
 
     atexit(FreePipes);
@@ -398,10 +398,8 @@ int main(int argc, char *argv[])
     // Make sure we're not launching this process by itself.
     if (argc < 5)
     {
-        MessageBox(NULL, TEXT("This program is tasked with playing Native ")
-                   TEXT("MIDI music, and is intended to be launched by ")
-                   TEXT(PACKAGE_NAME) TEXT("."),
-                   TEXT(PACKAGE_STRING), MB_OK | MB_ICONASTERISK);
+        MessageBox(NULL, TEXT("This program is tasked with playing Native ") TEXT("MIDI music, and is intended to be launched by ") TEXT(PACKAGE_NAME) TEXT("."),
+            TEXT(PACKAGE_STRING), MB_OK | MB_ICONASTERISK);
 
         return EXIT_FAILURE;
     }
@@ -411,35 +409,34 @@ int main(int argc, char *argv[])
     {
         char message[1024];
         _snprintf(message, sizeof(message),
-                  "It appears that the version of %s and %smidiproc are out "
-                  "of sync.  Please reinstall %s.\r\n\r\n"
-                  "Server Version: %s\r\nClient Version: %s",
-                  PACKAGE_NAME, PROGRAM_PREFIX, PACKAGE_NAME,
-                  PACKAGE_STRING, argv[1]);
+            "It appears that the version of %s and %smidiproc are out "
+            "of sync.  Please reinstall %s.\r\n\r\n"
+            "Server Version: %s\r\nClient Version: %s",
+            PACKAGE_NAME, PROGRAM_PREFIX, PACKAGE_NAME,
+            PACKAGE_STRING, argv[1]);
         message[sizeof(message) - 1] = '\0';
 
         MessageBox(NULL, TEXT(message),
-                   TEXT(PACKAGE_STRING), MB_OK | MB_ICONASTERISK);
+            TEXT(PACKAGE_STRING), MB_OK | MB_ICONASTERISK);
 
         return EXIT_FAILURE;
     }
 
     // Parse out the sample rate - if we can't, default to 44100.
     snd_samplerate = strtol(argv[2], NULL, 10);
-    if (snd_samplerate == LONG_MAX || snd_samplerate == LONG_MIN ||
-        snd_samplerate == 0)
+    if (snd_samplerate == LONG_MAX || snd_samplerate == LONG_MIN || snd_samplerate == 0)
     {
         snd_samplerate = 44100;
     }
 
     // Parse out our handle ids.
-    in = (HANDLE) strtol(argv[3], NULL, 10);
+    in = (HANDLE)strtol(argv[3], NULL, 10);
     if (in == 0)
     {
         return EXIT_FAILURE;
     }
 
-    out = (HANDLE) strtol(argv[4], NULL, 10);
+    out = (HANDLE)strtol(argv[4], NULL, 10);
     if (out == 0)
     {
         return EXIT_FAILURE;

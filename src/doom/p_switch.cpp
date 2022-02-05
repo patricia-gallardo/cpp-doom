@@ -95,10 +95,10 @@ switchlist_t alphSwitchList_vanilla[] = {
 };
 
 // [crispy] remove MAXSWITCHES limit
-int *         switchlist;
+int          *switchlist;
 int           numswitches;
 static size_t maxswitches;
-button_t *    buttonlist; // [crispy] remove MAXBUTTONS limit
+button_t     *buttonlist; // [crispy] remove MAXBUTTONS limit
 int           maxbuttons; // [crispy] remove MAXBUTTONS limit
 
 //
@@ -332,7 +332,7 @@ void P_ChangeSwitchTexture(line_t *line,
 //
 boolean
     P_UseSpecialLine(mobj_t *thing,
-        line_t *             line,
+        line_t              *line,
         int                  side)
 {
 
@@ -395,10 +395,10 @@ boolean
         EV_VerticalDoor(line, thing);
         break;
 
-        //UNUSED - Door Slide Open&Close
-        // case 124:
-        // EV_SlidingDoor (line, thing);
-        // break;
+        // UNUSED - Door Slide Open&Close
+        //  case 124:
+        //  EV_SlidingDoor (line, thing);
+        //  break;
 
         // SWITCHES
     case 7:

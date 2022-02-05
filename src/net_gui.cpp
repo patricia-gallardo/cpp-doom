@@ -39,10 +39,10 @@
 
 static txt_window_t *window;
 static int           old_max_players;
-static txt_label_t * player_labels[NET_MAXPLAYERS];
-static txt_label_t * ip_labels[NET_MAXPLAYERS];
-static txt_label_t * drone_label;
-static txt_label_t * master_msg_label;
+static txt_label_t  *player_labels[NET_MAXPLAYERS];
+static txt_label_t  *ip_labels[NET_MAXPLAYERS];
+static txt_label_t  *drone_label;
+static txt_label_t  *master_msg_label;
 static boolean       had_warning;
 
 // Number of players we expect to be in the game. When the number is
@@ -260,7 +260,7 @@ static void CheckSHA1Sums()
 {
     boolean              correct_wad, correct_deh;
     boolean              same_freedoom;
-    txt_window_t *       window;
+    txt_window_t        *window;
     txt_window_action_t *cont_button;
 
     if (!net_client_received_wait_data || had_warning)

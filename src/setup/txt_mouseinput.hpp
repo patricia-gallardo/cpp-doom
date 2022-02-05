@@ -24,15 +24,12 @@ using txt_mouse_input_t = struct txt_mouse_input_s;
 // allowing a mouse to be selected.
 //
 
-struct txt_mouse_input_s
-{
+struct txt_mouse_input_s {
     txt_widget_t widget;
-    int *variable;
-    int check_conflicts;
+    int         *variable;
+    int          check_conflicts;
 };
 
 txt_mouse_input_t *TXT_NewMouseInput(int *variable);
 
 #endif /* #ifndef TXT_MOUSE_INPUT_H */
-
-

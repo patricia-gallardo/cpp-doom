@@ -51,7 +51,7 @@ enum class cr_t
 
 #define CR_GREY CR_GRAY
 
-extern byte *cr_colors[static_cast<int>(cr_t::CRMAX)];
+extern byte  *cr_colors[static_cast<int>(cr_t::CRMAX)];
 extern char **crstr;
 
 #define cr_esc '~'

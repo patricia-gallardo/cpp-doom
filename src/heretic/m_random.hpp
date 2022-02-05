@@ -18,7 +18,7 @@
 #define HERETIC_M_RANDOM_H
 
 // Most damage defined using HITDICE
-#define HITDICE(a) ((1+(P_Random()&7))*a)
+#define HITDICE(a) ((1 + (P_Random() & 7)) * a)
 
 int M_Random();
 // returns a number from 0 to 255
@@ -31,7 +31,6 @@ void M_ClearRandom();
 extern int rndindex;
 
 // Defined version of P_Random() - P_Random()
-int P_SubRandom ();
+int P_SubRandom();
 
 #endif // HERETIC_M_RANDOM_H
-

@@ -24,9 +24,9 @@
 #include "pcsound_internal.hpp"
 
 #define MAX_SOUND_SLICE_TIME 70 /* ms */
-#define SQUARE_WAVE_AMP 0x2000
+#define SQUARE_WAVE_AMP      0x2000
 
-// If true, we initialized SDL and have the responsibility to shut it 
+// If true, we initialized SDL and have the responsibility to shut it
 // down
 
 static int sdl_was_initialized = 0;
@@ -37,9 +37,9 @@ static pcsound_callback_func callback;
 
 // Output sound format
 
-static int mixing_freq;
+static int    mixing_freq;
 static Uint16 mixing_format;
-static int mixing_channels;
+static int    mixing_channels;
 
 // Currently playing sound
 // current_remaining is the number of remaining samples that must be played
@@ -56,26 +56,26 @@ static void PCSound_Mix_Callback(void *udata, Uint8 *stream, int len)
 {
     Sint16 *leftptr;
     Sint16 *rightptr;
-    Sint16 this_value;
-    int oldfreq;
-    int i;
-    int nsamples;
+    Sint16  this_value;
+    int     oldfreq;
+    int     i;
+    int     nsamples;
 
     // Number of samples is quadrupled, because of 16-bit and stereo
 
     nsamples = len / 4;
 
-    leftptr = (Sint16 *) stream;
-    rightptr = ((Sint16 *) stream) + 1;
-    
+    leftptr  = (Sint16 *)stream;
+    rightptr = ((Sint16 *)stream) + 1;
+
     // Fill the output buffer
 
-    for (i=0; i<nsamples; ++i)
+    for (i = 0; i < nsamples; ++i)
     {
-        // Has this sound expired? If so, invoke the callback to get 
+        // Has this sound expired? If so, invoke the callback to get
         // the next frequency.
 
-        while (current_remaining == 0) 
+        while (current_remaining == 0)
         {
             oldfreq = current_freq;
 
@@ -96,24 +96,24 @@ static void PCSound_Mix_Callback(void *udata, Uint8 *stream, int len)
         }
 
         // Set the value for this sample.
-        
+
         if (current_freq == 0)
         {
             // Silence
 
             this_value = 0;
         }
-        else 
+        else
         {
             int frac;
 
             // Determine whether we are at a peak or trough in the current
-            // sound.  Multiply by 2 so that frac % 2 will give 0 or 1 
+            // sound.  Multiply by 2 so that frac % 2 will give 0 or 1
             // depending on whether we are at a peak or trough.
 
             frac = (phase_offset * current_freq * 2) / mixing_freq;
 
-            if ((frac % 2) == 0) 
+            if ((frac % 2) == 0)
             {
                 this_value = SQUARE_WAVE_AMP;
             }
@@ -139,7 +139,7 @@ static void PCSound_Mix_Callback(void *udata, Uint8 *stream, int len)
 
 static int SDLIsInitialized()
 {
-    int freq, channels;
+    int    freq, channels;
     Uint16 format;
 
     return Mix_QuerySpec(&freq, &format, &channels);
@@ -167,7 +167,7 @@ static int GetSliceSize()
 
     // Try all powers of two, not exceeding the limit.
 
-    for (n=0;; ++n)
+    for (n = 0;; ++n)
     {
         // 2^n <= limit < 2^n+1 ?
 
@@ -209,7 +209,7 @@ static int PCSound_SDL_Init(pcsound_callback_func callback_func)
 
         SDL_PauseAudio(0);
 
-        // When this module shuts down, it has the responsibility to 
+        // When this module shuts down, it has the responsibility to
         // shut down SDL.
 
         sdl_was_initialized = 1;
@@ -223,16 +223,16 @@ static int PCSound_SDL_Init(pcsound_callback_func callback_func)
 
     if (mixing_format != AUDIO_S16SYS || mixing_channels != 2)
     {
-        fprintf(stderr, 
-                "PCSound_SDL only supports native signed 16-bit LSB, "
-                "stereo format!\n");
+        fprintf(stderr,
+            "PCSound_SDL only supports native signed 16-bit LSB, "
+            "stereo format!\n");
 
         PCSound_SDL_Shutdown();
         return 0;
     }
 
-    callback = callback_func;
-    current_freq = 0;
+    callback          = callback_func;
+    current_freq      = 0;
     current_remaining = 0;
 
     Mix_SetPostMix(PCSound_Mix_Callback, NULL);
@@ -240,10 +240,8 @@ static int PCSound_SDL_Init(pcsound_callback_func callback_func)
     return 1;
 }
 
-pcsound_driver_t pcsound_sdl_driver = 
-{
+pcsound_driver_t pcsound_sdl_driver = {
     "SDL",
     PCSound_SDL_Init,
     PCSound_SDL_Shutdown,
 };
-

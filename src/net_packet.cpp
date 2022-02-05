@@ -38,8 +38,8 @@ net_packet_t *NET_NewPacket(int initial_size)
 
     total_packet_memory += sizeof(net_packet_t) + initial_size;
 
-    //printf("total packet memory: %i bytes\n", total_packet_memory);
-    //printf("%p: allocated\n", packet);
+    // printf("total packet memory: %i bytes\n", total_packet_memory);
+    // printf("%p: allocated\n", packet);
 
     return packet;
 }
@@ -59,7 +59,7 @@ net_packet_t *NET_PacketDup(net_packet_t *packet)
 
 void NET_FreePacket(net_packet_t *packet)
 {
-    //printf("%p: destroyed\n", packet);
+    // printf("%p: destroyed\n", packet);
 
     total_packet_memory -= sizeof(net_packet_t) + packet->alloced;
     Z_Free(packet->data);
@@ -301,7 +301,7 @@ void NET_WriteInt32(net_packet_t *packet, unsigned int i)
 
 void NET_WriteString(net_packet_t *packet, const char *string)
 {
-    byte * p;
+    byte  *p;
     size_t string_size;
 
     string_size = strlen(string) + 1;

@@ -23,8 +23,7 @@
 // HHE executable version.  Loading HHE patches is (unfortunately)
 // dependent on the version of the Heretic executable used to make them.
 
-using deh_hhe_version_t = enum
-{
+using deh_hhe_version_t = enum {
     deh_hhe_1_0,
     deh_hhe_1_2,
     deh_hhe_1_3,
@@ -42,11 +41,10 @@ using deh_hhe_version_t = enum
 #define DEH_HERETIC_NUMMOBJTYPES (NUMMOBJTYPES - 2)
 
 void DEH_HereticInit();
-int DEH_MapHereticThingType(int type);
-int DEH_MapHereticFrameNumber(int frame);
+int  DEH_MapHereticThingType(int type);
+int  DEH_MapHereticFrameNumber(int frame);
 void DEH_SuggestHereticVersion(deh_hhe_version_t version);
 
 extern deh_hhe_version_t deh_hhe_version;
 
 #endif /* #ifndef DEH_HTIC_H */
-

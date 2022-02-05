@@ -28,7 +28,7 @@
 #include "p_mobj.hpp" // [crispy] MF_*
 
 using bex_thingbits_t = struct {
-    const char * flag;
+    const char  *flag;
     unsigned int bits;
 };
 
@@ -125,7 +125,7 @@ static void *DEH_ThingStart(deh_context_t *context, char *line)
 static void DEH_ThingParseLine(deh_context_t *context, char *line, void *tag)
 {
     mobjinfo_t *mobj;
-    char *      variable_name, *value;
+    char       *variable_name, *value;
     int         ivalue;
 
     if (tag == NULL)

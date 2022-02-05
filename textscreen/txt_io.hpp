@@ -20,8 +20,7 @@
 
 #include "txt_main.hpp"
 
-struct txt_saved_colors_t
-{
+struct txt_saved_colors_t {
     txt_color_t bgcolor;
     txt_color_t fgcolor;
 };
@@ -38,4 +37,3 @@ void TXT_RestoreColors(txt_saved_colors_t *save);
 void TXT_ClearScreen();
 
 #endif /* #ifndef TXT_IO_H */
-

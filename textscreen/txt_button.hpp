@@ -32,10 +32,9 @@ using txt_button_t = struct txt_button_s;
 
 #include "txt_widget.hpp"
 
-struct txt_button_s
-{
+struct txt_button_s {
     txt_widget_t widget;
-    char *label;
+    char        *label;
 };
 
 /**
@@ -58,7 +57,7 @@ txt_button_t *TXT_NewButton(const char *label);
  */
 
 txt_button_t *TXT_NewButton2(const char *label, TxtWidgetSignalFunc func,
-                             void *user_data);
+    void *user_data);
 
 /**
  * Change the label used on a button.
@@ -70,5 +69,3 @@ txt_button_t *TXT_NewButton2(const char *label, TxtWidgetSignalFunc func,
 void TXT_SetButtonLabel(txt_button_t *button, const char *label);
 
 #endif /* #ifndef TXT_BUTTON_H */
-
-

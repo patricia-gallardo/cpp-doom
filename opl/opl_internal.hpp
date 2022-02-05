@@ -22,30 +22,30 @@
 #include "opl.hpp"
 
 
-using opl_init_func = int (*)(unsigned int);
-using opl_shutdown_func = void (*)();
-using opl_read_port_func = unsigned int (*)(opl_port_t);
-using opl_write_port_func = void (*)(opl_port_t, unsigned int);
-using opl_set_callback_func = void (*)(uint64_t, opl_callback_t, void *);
-using opl_clear_callbacks_func = void (*)();
-using opl_lock_func = void (*)();
-using opl_unlock_func = void (*)();
-using opl_set_paused_func = void (*)(int);
+using opl_init_func             = int (*)(unsigned int);
+using opl_shutdown_func         = void (*)();
+using opl_read_port_func        = unsigned int (*)(opl_port_t);
+using opl_write_port_func       = void (*)(opl_port_t, unsigned int);
+using opl_set_callback_func     = void (*)(uint64_t, opl_callback_t, void *);
+using opl_clear_callbacks_func  = void (*)();
+using opl_lock_func             = void (*)();
+using opl_unlock_func           = void (*)();
+using opl_set_paused_func       = void (*)(int);
 using opl_adjust_callbacks_func = void (*)(float);
 
 using opl_driver_t = struct
 {
     const char *name;
 
-    opl_init_func init_func;
-    opl_shutdown_func shutdown_func;
-    opl_read_port_func read_port_func;
-    opl_write_port_func write_port_func;
-    opl_set_callback_func set_callback_func;
-    opl_clear_callbacks_func clear_callbacks_func;
-    opl_lock_func lock_func;
-    opl_unlock_func unlock_func;
-    opl_set_paused_func set_paused_func;
+    opl_init_func             init_func;
+    opl_shutdown_func         shutdown_func;
+    opl_read_port_func        read_port_func;
+    opl_write_port_func       write_port_func;
+    opl_set_callback_func     set_callback_func;
+    opl_clear_callbacks_func  clear_callbacks_func;
+    opl_lock_func             lock_func;
+    opl_unlock_func           unlock_func;
+    opl_set_paused_func       set_paused_func;
     opl_adjust_callbacks_func adjust_callbacks_func;
 };
 
@@ -54,4 +54,3 @@ using opl_driver_t = struct
 extern unsigned int opl_sample_rate;
 
 #endif /* #ifndef OPL_INTERNAL_H */
-

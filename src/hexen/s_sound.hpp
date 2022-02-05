@@ -44,51 +44,51 @@ typedef struct sfxinfo_s
 using channel_t = struct
 {
     mobj_t *mo;
-    int sound_id;
-    int handle;
-    int volume;
-    int pitch;
-    int priority;
+    int     sound_id;
+    int     handle;
+    int     volume;
+    int     pitch;
+    int     priority;
 };
 
 using ChanInfo_t = struct
 {
-    int id;
+    int            id;
     unsigned short priority;
-    char *name;
-    mobj_t *mo;
-    int distance;
+    char          *name;
+    mobj_t        *mo;
+    int            distance;
 };
 
 using SoundInfo_t = struct
 {
-    int channelCount;
-    int musicVolume;
-    int soundVolume;
+    int        channelCount;
+    int        musicVolume;
+    int        soundVolume;
     ChanInfo_t chan[8];
 };
 
-extern int snd_MaxVolume;
-extern int snd_MusicVolume;
-extern int snd_Channels;
+extern int     snd_MaxVolume;
+extern int     snd_MusicVolume;
+extern int     snd_Channels;
 extern boolean cdmusic;
 
-void S_Start();
-void S_StartSound(mobj_t * origin, int sound_id);
-int S_GetSoundID(char *name);
-void S_StartSoundAtVolume(mobj_t * origin, int sound_id, int volume);
-void S_StopSound(mobj_t * origin);
-void S_StopAllSound();
-void S_PauseSound();
-void S_ResumeSound();
-void S_UpdateSounds(mobj_t * listener);
-void S_StartSong(int song, boolean loop);
-void S_StartSongName(const char *songLump, boolean loop);
-void S_Init();
-void S_GetChannelInfo(SoundInfo_t * s);
-void S_SetMusicVolume();
-boolean S_GetSoundPlayingInfo(mobj_t * mobj, int sound_id);
+void    S_Start();
+void    S_StartSound(mobj_t *origin, int sound_id);
+int     S_GetSoundID(char *name);
+void    S_StartSoundAtVolume(mobj_t *origin, int sound_id, int volume);
+void    S_StopSound(mobj_t *origin);
+void    S_StopAllSound();
+void    S_PauseSound();
+void    S_ResumeSound();
+void    S_UpdateSounds(mobj_t *listener);
+void    S_StartSong(int song, boolean loop);
+void    S_StartSongName(const char *songLump, boolean loop);
+void    S_Init();
+void    S_GetChannelInfo(SoundInfo_t *s);
+void    S_SetMusicVolume();
+boolean S_GetSoundPlayingInfo(mobj_t *mobj, int sound_id);
 boolean S_StartCustomCDTrack(int tracknum);
-int S_GetCurrentCDTrack();
+int     S_GetCurrentCDTrack();
 
 #endif

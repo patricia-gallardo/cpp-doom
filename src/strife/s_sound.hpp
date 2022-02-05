@@ -32,10 +32,9 @@
 void S_Init(int sfxVolume, int musicVolume, int voiceVolume);
 
 
-// Shut down sound 
+// Shut down sound
 
 void S_Shutdown();
-
 
 
 //
@@ -92,4 +91,3 @@ extern int snd_channels;
 extern int disable_voices;
 
 #endif
-

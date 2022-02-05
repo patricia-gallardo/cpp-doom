@@ -18,8 +18,7 @@
 
 using MEMFILE = struct _MEMFILE;
 
-using mem_rel_t = enum
-{
+using mem_rel_t = enum {
     MEM_SEEK_SET,
     MEM_SEEK_CUR,
     MEM_SEEK_END,

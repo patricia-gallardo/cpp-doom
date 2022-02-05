@@ -35,7 +35,7 @@ struct memblock_s {
     int         id; // = ZONEID
     int         tag;
     int         size;
-    void **     user;
+    void      **user;
     memblock_t *prev;
     memblock_t *next;
 };
@@ -187,7 +187,7 @@ static boolean ClearCache(int size)
         block = block->next;
     }
 
-    //printf("out of memory; cleaning out the cache: %i\n", test_malloced);
+    // printf("out of memory; cleaning out the cache: %i\n", test_malloced);
 
     // Search backwards through the list freeing blocks until we have
     // freed the amount of memory required.
@@ -229,9 +229,9 @@ static boolean ClearCache(int size)
 
 void *Z_Malloc(int size, int tag, void *user)
 {
-    memblock_t *   newblock;
+    memblock_t    *newblock;
     unsigned char *data;
-    void *         result;
+    void          *result;
 
     if (tag < 0 || tag >= PU_NUM_TAGS || tag == PU_FREE)
     {

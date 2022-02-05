@@ -73,7 +73,7 @@ result_e
                 {
                     sector->floorheight = lastpos;
                     P_ChangeSector(sector, crush);
-                    //return crushed;
+                    // return crushed;
                 }
                 return pastdest;
             }
@@ -102,7 +102,7 @@ result_e
                 {
                     sector->floorheight = lastpos;
                     P_ChangeSector(sector, crush);
-                    //return crushed;
+                    // return crushed;
                 }
                 return pastdest;
             }
@@ -141,7 +141,7 @@ result_e
                 {
                     sector->ceilingheight = lastpos;
                     P_ChangeSector(sector, crush);
-                    //return crushed;
+                    // return crushed;
                 }
                 return pastdest;
             }
@@ -174,7 +174,7 @@ result_e
                 {
                     sector->ceilingheight = lastpos;
                     P_ChangeSector(sector, crush);
-                    //return crushed;
+                    // return crushed;
                 }
                 return pastdest;
             }
@@ -286,7 +286,7 @@ void EV_DoGoobers()
 
     for (i = 0; i < numsectors; i++)
     {
-        sector_t *   sec;
+        sector_t    *sec;
         floormove_t *floor;
 
         sec = &sectors[i];
@@ -323,7 +323,7 @@ int EV_DoFloor(line_t *line,
     int          secnum;
     int          rtn;
     int          i;
-    sector_t *   sec;
+    sector_t    *sec;
     floormove_t *floor;
 
     secnum = -1;

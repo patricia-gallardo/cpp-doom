@@ -39,83 +39,74 @@
 
 #include "mode.hpp"
 
-GameMission_t gamemission;
+GameMission_t         gamemission;
 static const iwad_t **iwads;
 
 using mission_config_t = struct
 {
-    const char *label;
+    const char   *label;
     GameMission_t mission;
-    int mask;
-    const char *name;
-    const char *config_file;
-    const char *extra_config_file;
-    const char *executable;
+    int           mask;
+    const char   *name;
+    const char   *config_file;
+    const char   *extra_config_file;
+    const char   *executable;
 };
 
 // Default mission to fall back on, if no IWADs are found at all:
 
 #define DEFAULT_MISSION (&mission_configs[0])
 
-static mission_config_t mission_configs[] =
-{
-    {
-        "Doom",
+static mission_config_t mission_configs[] = {
+    { "Doom",
         doom,
         IWAD_MASK_DOOM,
         "doom",
         "default.cfg",
         PROGRAM_PREFIX "doom.cfg",
-        PROGRAM_PREFIX "doom"
-    },
-    {
-        "Heretic",
+        PROGRAM_PREFIX "doom" },
+    { "Heretic",
         heretic,
         IWAD_MASK_HERETIC,
         "heretic",
         "heretic.cfg",
         PROGRAM_PREFIX "heretic.cfg",
-        PROGRAM_PREFIX "heretic"
-    },
-    {
-        "Hexen",
+        PROGRAM_PREFIX "heretic" },
+    { "Hexen",
         hexen,
         IWAD_MASK_HEXEN,
         "hexen",
         "hexen.cfg",
         PROGRAM_PREFIX "hexen.cfg",
-        PROGRAM_PREFIX "hexen"
-    },
-    {
-        "Strife",
+        PROGRAM_PREFIX "hexen" },
+    { "Strife",
         strife,
         IWAD_MASK_STRIFE,
         "strife",
         "strife.cfg",
         PROGRAM_PREFIX "strife.cfg",
-        PROGRAM_PREFIX "strife"
-    }
+        PROGRAM_PREFIX "strife" }
 };
 
 static GameSelectCallback game_selected_callback;
 
 // Miscellaneous variables that aren't used in setup.
 
-static int showMessages = 1;
-static int screenblocks = 10;
-static int detailLevel = 0;
-static char *savedir = NULL;
-static char *executable = NULL;
-static const char *game_title = "Doom";
-static char *back_flat = const_cast<char *>("F_PAVE01");
-static int comport = 0;
-static char *nickname = NULL;
+static int         showMessages = 1;
+static int         screenblocks = 10;
+static int         detailLevel  = 0;
+static char       *savedir      = NULL;
+static char       *executable   = NULL;
+static const char *game_title   = "Doom";
+static char       *back_flat    = const_cast<char *>("F_PAVE01");
+static int         comport      = 0;
+static char       *nickname     = NULL;
 
 static void BindMiscVariables()
 {
     if (gamemission == doom)
     {
-        M_BindIntVariable("detaillevel",   &detailLevel);
+        M_BindIntVariable("detaillevel", &detailLevel);
         M_BindIntVariable("show_messages", &showMessages);
     }
 
@@ -143,17 +134,16 @@ static void BindMiscVariables()
         // Strife has a different default value than the other games
         screenblocks = 10;
 
-        M_BindStringVariable("back_flat",   &back_flat);
-        M_BindStringVariable("nickname",    &nickname);
+        M_BindStringVariable("back_flat", &back_flat);
+        M_BindStringVariable("nickname", &nickname);
 
-        M_BindIntVariable("screensize",     &screenblocks);
-        M_BindIntVariable("comport",        &comport);
+        M_BindIntVariable("screensize", &screenblocks);
+        M_BindIntVariable("comport", &comport);
     }
     else
     {
-        M_BindIntVariable("screenblocks",   &screenblocks);
+        M_BindIntVariable("screenblocks", &screenblocks);
     }
-
 }
 
 //
@@ -217,7 +207,7 @@ static void SetExecutable(mission_config_t *config)
 
 static void SetMission(mission_config_t *config)
 {
-    iwads = D_FindAllIWADs(config->mask);
+    iwads       = D_FindAllIWADs(config->mask);
     gamemission = config->mission;
     SetExecutable(config);
     game_title = config->label;
@@ -228,7 +218,7 @@ static mission_config_t *GetMissionForName(char *name)
 {
     int i;
 
-    for (i=0; i<arrlen(mission_configs); ++i)
+    for (i = 0; i < arrlen(mission_configs); ++i)
     {
         if (!strcmp(mission_configs[i].name, name))
         {
@@ -245,12 +235,12 @@ static mission_config_t *GetMissionForName(char *name)
 static boolean CheckExecutableName(GameSelectCallback callback)
 {
     mission_config_t *config;
-    const char *exe_name;
-    int i;
+    const char       *exe_name;
+    int               i;
 
     exe_name = M_GetExecutableName();
 
-    for (i=0; i<arrlen(mission_configs); ++i)
+    for (i = 0; i < arrlen(mission_configs); ++i)
     {
         config = &mission_configs[i];
 
@@ -276,10 +266,10 @@ static void GameSelected(TXT_UNCAST_ARG(widget), TXT_UNCAST_ARG(config))
 static void OpenGameSelectDialog(GameSelectCallback callback)
 {
     mission_config_t *mission = NULL;
-    txt_window_t *window;
-    const iwad_t **iwads;
-    int num_games;
-    int i;
+    txt_window_t     *window;
+    const iwad_t    **iwads;
+    int               num_games;
+    int               i;
 
     window = TXT_NewWindow("Select game");
 
@@ -288,7 +278,7 @@ static void OpenGameSelectDialog(GameSelectCallback callback)
 
     // Add a button for each game.
 
-    for (i=0; i<arrlen(mission_configs); ++i)
+    for (i = 0; i < arrlen(mission_configs); ++i)
     {
         // Do we have any IWADs for this game installed?
         // If so, add a button.
@@ -299,8 +289,8 @@ static void OpenGameSelectDialog(GameSelectCallback callback)
         {
             mission = &mission_configs[i];
             TXT_AddWidget(window, TXT_NewButton2(mission_configs[i].label,
-                                                 GameSelected,
-                                                 &mission_configs[i]));
+                                      GameSelected,
+                                      &mission_configs[i]));
             ++num_games;
         }
 
@@ -335,8 +325,8 @@ static void OpenGameSelectDialog(GameSelectCallback callback)
 void SetupMission(GameSelectCallback callback)
 {
     mission_config_t *config;
-    char *mission_name;
-    int p;
+    char             *mission_name;
+    int               p;
 
     //!
     // @arg <game>
@@ -381,4 +371,3 @@ const iwad_t **GetIwads()
 {
     return iwads;
 }
-

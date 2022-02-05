@@ -57,9 +57,9 @@
 // Blending table used for fuzzpatch, etc.
 // Only used in Heretic/Hexen
 
-byte *  tinttable      = NULL;
-byte *  tranmap        = NULL;
-byte *  dp_translation = NULL;
+byte   *tinttable      = NULL;
+byte   *tranmap        = NULL;
+byte   *dp_translation = NULL;
 boolean dp_translucent = false;
 #ifdef CRISPY_TRUECOLOR
 extern pixel_t *colormaps;
@@ -211,7 +211,7 @@ static inline pixel_t drawpatchpx11(const pixel_t dest, const pixel_t source)
 }
 #endif
 // [crispy] array of function pointers holding the different rendering functions
-using drawpatchpx_t = pixel_t (const pixel_t, const pixel_t);
+using drawpatchpx_t                             = pixel_t(const pixel_t, const pixel_t);
 static drawpatchpx_t *const drawpatchpx_a[2][2] = { { drawpatchpx11, drawpatchpx10 }, { drawpatchpx01, drawpatchpx00 } };
 
 static fixed_t dx, dxi, dy, dyi;
@@ -221,9 +221,9 @@ void V_DrawPatch(int x, int y, patch_t *patch)
     int       count;
     int       col;
     column_t *column;
-    pixel_t * desttop;
-    pixel_t * dest;
-    byte *    source;
+    pixel_t  *desttop;
+    pixel_t  *dest;
+    byte     *source;
     int       w;
 
     // [crispy] four different rendering functions
@@ -365,9 +365,9 @@ void V_DrawPatchFlipped(int x, int y, patch_t *patch)
     int       count;
     int       col;
     column_t *column;
-    pixel_t * desttop;
-    pixel_t * dest;
-    byte *    source;
+    pixel_t  *desttop;
+    pixel_t  *dest;
+    byte     *source;
     int       w;
 
     y -= SHORT(patch->topoffset);
@@ -486,8 +486,8 @@ void V_DrawTLPatch(int x, int y, patch_t *patch)
 {
     int       count, col;
     column_t *column;
-    pixel_t * desttop, *dest;
-    byte *    source;
+    pixel_t  *desttop, *dest;
+    byte     *source;
     int       w;
 
     y -= SHORT(patch->topoffset);
@@ -539,8 +539,8 @@ void V_DrawXlaPatch(int x, int y, patch_t *patch)
 {
     int       count, col;
     column_t *column;
-    pixel_t * desttop, *dest;
-    byte *    source;
+    pixel_t  *desttop, *dest;
+    byte     *source;
     int       w;
 
     y -= SHORT(patch->topoffset);
@@ -590,8 +590,8 @@ void V_DrawAltTLPatch(int x, int y, patch_t *patch)
 {
     int       count, col;
     column_t *column;
-    pixel_t * desttop, *dest;
-    byte *    source;
+    pixel_t  *desttop, *dest;
+    byte     *source;
     int       w;
 
     y -= SHORT(patch->topoffset);
@@ -643,9 +643,9 @@ void V_DrawShadowedPatch(int x, int y, patch_t *patch)
 {
     int       count, col;
     column_t *column;
-    pixel_t * desttop, *dest;
-    byte *    source;
-    pixel_t * desttop2, *dest2;
+    pixel_t  *desttop, *dest;
+    byte     *source;
+    pixel_t  *desttop2, *dest2;
     int       w;
 
     y -= SHORT(patch->topoffset);
@@ -936,7 +936,7 @@ void WritePCXfile(char *filename, pixel_t *data,
     int    i;
     int    length;
     pcx_t *pcx;
-    byte * pack;
+    byte  *pack;
 
     pcx = zmalloc<decltype(pcx)>(width * height * 2 + 1000, PU_STATIC, NULL);
 

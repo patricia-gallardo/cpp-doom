@@ -39,4 +39,3 @@
 
 
 #endif /* #ifndef TEXTSCREEN_H */
-

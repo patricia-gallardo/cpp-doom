@@ -240,7 +240,7 @@ void SHA1_Update(sha1_context_t *hd, byte *inbuf, size_t inlen)
 void SHA1_Final(sha1_digest_t digest, sha1_context_t *hd)
 {
     uint32_t t, msb, lsb;
-    byte *   p;
+    byte    *p;
 
     SHA1_Update(hd, NULL, 0); /* flush */
     ;

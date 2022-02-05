@@ -31,8 +31,7 @@
 #include "v_video.hpp"
 #include "lump.hpp"
 
-using gametype_t = enum
-{
+using gametype_t = enum {
     SINGLE,
     COOPERATIVE,
     DEATHMATCH
@@ -61,10 +60,10 @@ static void IN_DrawNumber(int val, int x, int y, int digits);
 static void IN_DrawTime(int x, int y, int h, int m, int s);
 static void IN_DrTextB(const char *text, int x, int y);
 
-static boolean skipintermission;
-static int interstate = 0;
-static int intertime = -1;
-static int oldintertime = 0;
+static boolean    skipintermission;
+static int        interstate   = 0;
+static int        intertime    = -1;
+static int        oldintertime = 0;
 static gametype_t gametype;
 
 static int cnt;
@@ -73,7 +72,7 @@ static int hours;
 static int minutes;
 static int seconds;
 
-static int slaughterboy;        // in DM, the player with the most kills
+static int slaughterboy; // in DM, the player with the most kills
 
 static int killPercent[MAXPLAYERS];
 static int bonusPercent[MAXPLAYERS];
@@ -93,8 +92,8 @@ static int patchFaceOkayBase;
 static int patchFaceDeadBase;
 
 static signed int totalFrags[MAXPLAYERS];
-static fixed_t dSlideX[MAXPLAYERS];
-static fixed_t dSlideY[MAXPLAYERS];
+static fixed_t    dSlideX[MAXPLAYERS];
+static fixed_t    dSlideY[MAXPLAYERS];
 
 static const char *KillersText[] = { "K", "I", "L", "L", "E", "R", "S" };
 
@@ -107,45 +106,39 @@ typedef struct
 } yahpt_t;
 
 static yahpt_t YAHspot[3][9] = {
-    {
-     {172, 78},
-     {86, 90},
-     {73, 66},
-     {159, 95},
-     {148, 126},
-     {132, 54},
-     {131, 74},
-     {208, 138},
-     {52, 101}
-     },
-    {
-     {218, 57},
-     {137, 81},
-     {155, 124},
-     {171, 68},
-     {250, 86},
-     {136, 98},
-     {203, 90},
-     {220, 140},
-     {279, 106}
-     },
-    {
-     {86, 99},
-     {124, 103},
-     {154, 79},
-     {202, 83},
-     {178, 59},
-     {142, 58},
-     {219, 66},
-     {247, 57},
-     {107, 80}
-     }
+    { { 172, 78 },
+        { 86, 90 },
+        { 73, 66 },
+        { 159, 95 },
+        { 148, 126 },
+        { 132, 54 },
+        { 131, 74 },
+        { 208, 138 },
+        { 52, 101 } },
+    { { 218, 57 },
+        { 137, 81 },
+        { 155, 124 },
+        { 171, 68 },
+        { 250, 86 },
+        { 136, 98 },
+        { 203, 90 },
+        { 220, 140 },
+        { 279, 106 } },
+    { { 86, 99 },
+        { 124, 103 },
+        { 154, 79 },
+        { 202, 83 },
+        { 178, 59 },
+        { 142, 58 },
+        { 219, 66 },
+        { 247, 57 },
+        { 107, 80 } }
 };
 
 static const char *NameForMap(int map)
 {
     const char *name = LevelNames[(gameepisode - 1) * 9 + map - 1];
-    name = DEH_String(name);
+    name             = DEH_String(name);
     if (strlen(name) < 7)
     {
         return "";
@@ -166,11 +159,11 @@ void IN_Start()
     I_SetPalette(cache_lump_name<byte *>(DEH_String("PLAYPAL"), PU_CACHE));
     IN_LoadPics();
     IN_InitStats();
-    intermission = true;
-    interstate = -1;
+    intermission     = true;
+    interstate       = -1;
     skipintermission = false;
-    intertime = 0;
-    oldintertime = 0;
+    intertime        = 0;
+    oldintertime     = 0;
     AM_Stop();
     S_StartSong(mus_intr, true);
 }
@@ -200,7 +193,7 @@ void IN_Stop()
 {
     intermission = false;
     IN_UnloadPics();
-    SB_state = -1;
+    SB_state          = -1;
     BorderNeedRefresh = true;
 }
 
@@ -213,19 +206,19 @@ void IN_Stop()
 
 void IN_InitStats()
 {
-    int i;
-    int j;
+    int        i;
+    int        j;
     signed int slaughterfrags;
-    int posnum;
-    int slaughtercount;
-    int playercount;
-    int count;
+    int        posnum;
+    int        slaughtercount;
+    int        playercount;
+    int        count;
 
     if (!netgame)
     {
         gametype = SINGLE;
-        count = leveltime / 35;
-        hours = count / 3600;
+        count    = leveltime / 35;
+        hours    = count / 3600;
         count -= hours * 3600;
         minutes = count / 60;
         count -= minutes * 60;
@@ -259,11 +252,11 @@ void IN_InitStats()
     }
     else
     {
-        gametype = DEATHMATCH;
-        slaughterboy = 0;
+        gametype       = DEATHMATCH;
+        slaughterboy   = 0;
         slaughterfrags = -9999;
-        posnum = 0;
-        playercount = 0;
+        posnum         = 0;
+        playercount    = 0;
         slaughtercount = 0;
         for (i = 0; i < MAXPLAYERS; i++)
         {
@@ -284,7 +277,7 @@ void IN_InitStats()
             }
             if (totalFrags[i] > slaughterfrags)
             {
-                slaughterboy = 1 << i;
+                slaughterboy   = 1 << i;
                 slaughterfrags = totalFrags[i];
                 slaughtercount = 1;
             }
@@ -295,31 +288,31 @@ void IN_InitStats()
             }
         }
         if (playercount == slaughtercount)
-        {                       // don't do the slaughter stuff if everyone is equal
+        { // don't do the slaughter stuff if everyone is equal
             slaughterboy = 0;
         }
     }
 }
 
 static void IN_LoadUnloadPics(void (*callback)(const char *lumpname,
-                                               int lumpnum,
-                                               patch_t **ptr))
+    int                                                    lumpnum,
+    patch_t                                              **ptr))
 {
     int i;
 
     switch (gameepisode)
     {
-        case 1:
-            callback(DEH_String("MAPE1"), 0, &patchINTERPIC);
-            break;
-        case 2:
-            callback(DEH_String("MAPE2"), 0, &patchINTERPIC);
-            break;
-        case 3:
-            callback(DEH_String("MAPE3"), 0, &patchINTERPIC);
-            break;
-        default:
-            break;
+    case 1:
+        callback(DEH_String("MAPE1"), 0, &patchINTERPIC);
+        break;
+    case 2:
+        callback(DEH_String("MAPE2"), 0, &patchINTERPIC);
+        break;
+    case 3:
+        callback(DEH_String("MAPE3"), 0, &patchINTERPIC);
+        break;
+    default:
+        break;
     }
 
     callback(DEH_String("IN_X"), 0, &patchBEENTHERE);
@@ -357,7 +350,7 @@ static void LoadLumpCallback(const char *lumpname, int lumpnum, patch_t **ptr)
 
 void IN_LoadPics()
 {
-    FontBLump = W_GetNumForName(DEH_String("FONTB_S")) + 1;
+    FontBLump         = W_GetNumForName(DEH_String("FONTB_S")) + 1;
     patchFaceOkayBase = W_GetNumForName(DEH_String("FACEA0"));
     patchFaceDeadBase = W_GetNumForName(DEH_String("FACEB0"));
 
@@ -410,48 +403,48 @@ void IN_Ticker()
     {
         interstate++;
         if (gameepisode > 3 && interstate >= 1)
-        {                       // Extended Wad levels:  skip directly to the next level
+        { // Extended Wad levels:  skip directly to the next level
             interstate = 3;
         }
         switch (interstate)
         {
-            case 0:
-                oldintertime = intertime + 300;
-                if (gameepisode > 3)
-                {
-                    oldintertime = intertime + 1200;
-                }
-                break;
-            case 1:
-                oldintertime = intertime + 200;
-                break;
-            case 2:
-                oldintertime = INT_MAX;
-                break;
-            case 3:
-                cnt = 10;
-                break;
-            default:
-                break;
+        case 0:
+            oldintertime = intertime + 300;
+            if (gameepisode > 3)
+            {
+                oldintertime = intertime + 1200;
+            }
+            break;
+        case 1:
+            oldintertime = intertime + 200;
+            break;
+        case 2:
+            oldintertime = INT_MAX;
+            break;
+        case 3:
+            cnt = 10;
+            break;
+        default:
+            break;
         }
     }
     if (skipintermission)
     {
         if (interstate == 0 && intertime < 150)
         {
-            intertime = 150;
+            intertime        = 150;
             skipintermission = false;
             return;
         }
         else if (interstate < 2 && gameepisode < 4)
         {
-            interstate = 2;
+            interstate       = 2;
             skipintermission = false;
             S_StartSound(NULL, sfx_dorcls);
             return;
         }
-        interstate = 3;
-        cnt = 10;
+        interstate       = 3;
+        cnt              = 10;
         skipintermission = false;
         S_StartSound(NULL, sfx_dorcls);
     }
@@ -466,7 +459,7 @@ void IN_Ticker()
 
 void IN_CheckForSkip()
 {
-    int i;
+    int       i;
     player_t *player;
 
     for (i = 0, player = players; i < MAXPLAYERS; i++, player++)
@@ -527,44 +520,44 @@ void IN_Drawer()
     oldinterstate = interstate;
     switch (interstate)
     {
-        case 0:                // draw stats
-            IN_DrawStatBack();
-            switch (gametype)
-            {
-                case SINGLE:
-                    IN_DrawSingleStats();
-                    break;
-                case COOPERATIVE:
-                    IN_DrawCoopStats();
-                    break;
-                case DEATHMATCH:
-                    IN_DrawDMStats();
-                    break;
-            }
+    case 0: // draw stats
+        IN_DrawStatBack();
+        switch (gametype)
+        {
+        case SINGLE:
+            IN_DrawSingleStats();
             break;
-        case 1:                // leaving old level
-            if (gameepisode < 4)
-            {
-                V_DrawPatch(0, 0, patchINTERPIC);
-                IN_DrawOldLevel();
-            }
+        case COOPERATIVE:
+            IN_DrawCoopStats();
             break;
-        case 2:                // going to the next level
-            if (gameepisode < 4)
-            {
-                V_DrawPatch(0, 0, patchINTERPIC);
-                IN_DrawYAH();
-            }
+        case DEATHMATCH:
+            IN_DrawDMStats();
             break;
-        case 3:                // waiting before going to the next level
-            if (gameepisode < 4)
-            {
-                V_DrawPatch(0, 0, patchINTERPIC);
-            }
-            break;
-        default:
-            I_Error("IN_lude:  Intermission state out of range.\n");
-            break;
+        }
+        break;
+    case 1: // leaving old level
+        if (gameepisode < 4)
+        {
+            V_DrawPatch(0, 0, patchINTERPIC);
+            IN_DrawOldLevel();
+        }
+        break;
+    case 2: // going to the next level
+        if (gameepisode < 4)
+        {
+            V_DrawPatch(0, 0, patchINTERPIC);
+            IN_DrawYAH();
+        }
+        break;
+    case 3: // waiting before going to the next level
+        if (gameepisode < 4)
+        {
+            V_DrawPatch(0, 0, patchINTERPIC);
+        }
+        break;
+    default:
+        I_Error("IN_lude:  Intermission state out of range.\n");
+        break;
     }
 }
 
@@ -582,7 +575,7 @@ void IN_DrawStatBack()
     byte *src;
     byte *dest;
 
-    src = cache_lump_name<byte *>(DEH_String("FLOOR16"), PU_CACHE);
+    src  = cache_lump_name<byte *>(DEH_String("FLOOR16"), PU_CACHE);
     dest = I_VideoBuffer;
 
     for (y = 0; y < SCREENHEIGHT; y++)
@@ -609,8 +602,8 @@ void IN_DrawStatBack()
 void IN_DrawOldLevel()
 {
     const char *level_name = NameForMap(prevmap);
-    int i;
-    int x;
+    int         i;
+    int         x;
 
     x = 160 - MN_TextBWidth(level_name) / 2;
     IN_DrTextB(level_name, x, 3);
@@ -622,12 +615,12 @@ void IN_DrawOldLevel()
         for (i = 0; i < gamemap - 1; i++)
         {
             V_DrawPatch(YAHspot[gameepisode - 1][i].x,
-                        YAHspot[gameepisode - 1][i].y, patchBEENTHERE);
+                YAHspot[gameepisode - 1][i].y, patchBEENTHERE);
         }
         if (!(intertime & 16))
         {
             V_DrawPatch(YAHspot[gameepisode - 1][8].x,
-                        YAHspot[gameepisode - 1][8].y, patchBEENTHERE);
+                YAHspot[gameepisode - 1][8].y, patchBEENTHERE);
         }
     }
     else
@@ -635,18 +628,18 @@ void IN_DrawOldLevel()
         for (i = 0; i < prevmap - 1; i++)
         {
             V_DrawPatch(YAHspot[gameepisode - 1][i].x,
-                        YAHspot[gameepisode - 1][i].y, patchBEENTHERE);
+                YAHspot[gameepisode - 1][i].y, patchBEENTHERE);
         }
         if (players[consoleplayer].didsecret)
         {
             V_DrawPatch(YAHspot[gameepisode - 1][8].x,
-                        YAHspot[gameepisode - 1][8].y, patchBEENTHERE);
+                YAHspot[gameepisode - 1][8].y, patchBEENTHERE);
         }
         if (!(intertime & 16))
         {
             V_DrawPatch(YAHspot[gameepisode - 1][prevmap - 1].x,
-                        YAHspot[gameepisode - 1][prevmap - 1].y,
-                        patchBEENTHERE);
+                YAHspot[gameepisode - 1][prevmap - 1].y,
+                patchBEENTHERE);
         }
     }
 }
@@ -660,8 +653,8 @@ void IN_DrawOldLevel()
 void IN_DrawYAH()
 {
     const char *level_name = NameForMap(gamemap);
-    int i;
-    int x;
+    int         i;
+    int         x;
 
     x = 160 - MN_TextAWidth(DEH_String("NOW ENTERING:")) / 2;
     MN_DrTextA(DEH_String("NOW ENTERING:"), x, 10);
@@ -675,17 +668,17 @@ void IN_DrawYAH()
     for (i = 0; i < prevmap; i++)
     {
         V_DrawPatch(YAHspot[gameepisode - 1][i].x,
-                    YAHspot[gameepisode - 1][i].y, patchBEENTHERE);
+            YAHspot[gameepisode - 1][i].y, patchBEENTHERE);
     }
     if (players[consoleplayer].didsecret)
     {
         V_DrawPatch(YAHspot[gameepisode - 1][8].x,
-                    YAHspot[gameepisode - 1][8].y, patchBEENTHERE);
+            YAHspot[gameepisode - 1][8].y, patchBEENTHERE);
     }
     if (!(intertime & 16) || interstate == 3)
-    {                           // draw the destination 'X'
+    { // draw the destination 'X'
         V_DrawPatch(YAHspot[gameepisode - 1][gamemap - 1].x,
-                    YAHspot[gameepisode - 1][gamemap - 1].y, patchGOINGTHERE);
+            YAHspot[gameepisode - 1][gamemap - 1].y, patchGOINGTHERE);
     }
 }
 
@@ -699,8 +692,8 @@ void IN_DrawSingleStats()
 {
     const char *prev_level_name = NameForMap(prevmap);
     const char *next_level_name = NameForMap(gamemap);
-    int x;
-    static int sounds;
+    int         x;
+    static int  sounds;
 
     IN_DrTextB(DEH_String("KILLS"), 50, 65);
     IN_DrTextB(DEH_String("ITEMS"), 50, 90);
@@ -782,9 +775,9 @@ void IN_DrawSingleStats()
 void IN_DrawCoopStats()
 {
     const char *level_name = NameForMap(prevmap);
-    int i;
-    int x;
-    int ypos;
+    int         i;
+    int         x;
+    int         ypos;
 
     static int sounds;
 
@@ -803,7 +796,7 @@ void IN_DrawCoopStats()
         {
             V_DrawShadowedPatch(25, ypos,
                 cache_lump_num<patch_t *>(patchFaceOkayBase + i,
-                                               PU_CACHE));
+                    PU_CACHE));
             if (intertime < 40)
             {
                 sounds = 0;
@@ -858,14 +851,12 @@ void IN_DrawDMStats()
             if (playeringame[i])
             {
                 V_DrawShadowedPatch(40,
-                                    ((ypos << FRACBITS) +
-                                     dSlideY[i] * intertime) >> FRACBITS,
+                    ((ypos << FRACBITS) + dSlideY[i] * intertime) >> FRACBITS,
                     cache_lump_num<patch_t *>(patchFaceOkayBase + i,
-                                                   PU_CACHE));
-                V_DrawShadowedPatch(((xpos << FRACBITS) +
-                                     dSlideX[i] * intertime) >> FRACBITS, 18,
+                        PU_CACHE));
+                V_DrawShadowedPatch(((xpos << FRACBITS) + dSlideX[i] * intertime) >> FRACBITS, 18,
                     cache_lump_num<patch_t *>(patchFaceDeadBase + i,
-                                                   PU_CACHE));
+                        PU_CACHE));
             }
         }
         sounds = 0;
@@ -889,19 +880,19 @@ void IN_DrawDMStats()
             {
                 V_DrawShadowedPatch(40, ypos,
                     cache_lump_num<patch_t *>(patchFaceOkayBase + i,
-                                                   PU_CACHE));
+                        PU_CACHE));
                 V_DrawShadowedPatch(xpos, 18,
                     cache_lump_num<patch_t *>(patchFaceDeadBase + i,
-                                                   PU_CACHE));
+                        PU_CACHE));
             }
             else
             {
                 V_DrawTLPatch(40, ypos,
                     cache_lump_num<patch_t *>(patchFaceOkayBase + i,
-                                             PU_CACHE));
+                        PU_CACHE));
                 V_DrawTLPatch(xpos, 18,
                     cache_lump_num<patch_t *>(patchFaceDeadBase + i,
-                                             PU_CACHE));
+                        PU_CACHE));
             }
             kpos = 86;
             for (j = 0; j < MAXPLAYERS; j++)
@@ -964,18 +955,18 @@ void IN_DrawTime(int x, int y, int h, int m, int s)
 void IN_DrawNumber(int val, int x, int y, int digits)
 {
     patch_t *patch;
-    int xpos;
-    int oldval;
-    int realdigits;
-    boolean neg;
+    int      xpos;
+    int      oldval;
+    int      realdigits;
+    boolean  neg;
 
-    oldval = val;
-    xpos = x;
-    neg = false;
+    oldval     = val;
+    xpos       = x;
+    neg        = false;
     realdigits = 1;
 
     if (val < 0)
-    {                           //...this should reflect negative frags
+    { //...this should reflect negative frags
         val = -val;
         neg = true;
         if (val > 99)
@@ -989,7 +980,7 @@ void IN_DrawNumber(int val, int x, int y, int digits)
         if (digits < realdigits)
         {
             realdigits = digits;
-            val = 9;
+            val        = 9;
         }
     }
     if (val > 99)
@@ -998,7 +989,7 @@ void IN_DrawNumber(int val, int x, int y, int digits)
         if (digits < realdigits)
         {
             realdigits = digits;
-            val = 99;
+            val        = 99;
         }
     }
     if (val > 999)
@@ -1007,7 +998,7 @@ void IN_DrawNumber(int val, int x, int y, int digits)
         if (digits < realdigits)
         {
             realdigits = digits;
-            val = 999;
+            val        = 999;
         }
     }
     if (digits == 4)
@@ -1038,14 +1029,14 @@ void IN_DrawNumber(int val, int x, int y, int digits)
         }
         xpos += 12;
     }
-    val = val % 10;
+    val   = val % 10;
     patch = FontBNumbers[val];
     V_DrawShadowedPatch(xpos + 6 - SHORT(patch->width) / 2, y, patch);
     if (neg)
     {
         patch = FontBNegative;
         V_DrawShadowedPatch(xpos + 6 - SHORT(patch->width) / 2 - 12 * (realdigits),
-                            y, patch);
+            y, patch);
     }
 }
 
@@ -1057,7 +1048,7 @@ void IN_DrawNumber(int val, int x, int y, int digits)
 
 void IN_DrTextB(const char *text, int x, int y)
 {
-    char c;
+    char     c;
     patch_t *p;
 
     while ((c = *text++) != 0)

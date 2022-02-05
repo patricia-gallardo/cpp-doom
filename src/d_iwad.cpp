@@ -70,7 +70,7 @@ boolean D_IsIWADName(const char *name)
 #define MAX_IWAD_DIRS 128
 
 static boolean iwad_dirs_built = false;
-static char *  iwad_dirs[MAX_IWAD_DIRS];
+static char   *iwad_dirs[MAX_IWAD_DIRS];
 static int     num_iwad_dirs = 0;
 
 static void AddIWADDir(char *dir)
@@ -122,7 +122,7 @@ static registry_value_t uninstall_values[] = {
     {
         HKEY_LOCAL_MACHINE,
         const_cast<char *>(SOFTWARE_KEY "\\Microsoft\\Windows\\CurrentVersion\\"
-                     "Uninstall\\Ultimate Doom for Windows 95"),
+                                        "Uninstall\\Ultimate Doom for Windows 95"),
         const_cast<char *>("UninstallString"),
     },
 
@@ -131,7 +131,7 @@ static registry_value_t uninstall_values[] = {
     {
         HKEY_LOCAL_MACHINE,
         const_cast<char *>(SOFTWARE_KEY "\\Microsoft\\Windows\\CurrentVersion\\"
-                     "Uninstall\\Doom II for Windows 95"),
+                                        "Uninstall\\Doom II for Windows 95"),
         const_cast<char *>("UninstallString"),
     },
 
@@ -140,7 +140,7 @@ static registry_value_t uninstall_values[] = {
     {
         HKEY_LOCAL_MACHINE,
         const_cast<char *>(SOFTWARE_KEY "\\Microsoft\\Windows\\CurrentVersion\\"
-                     "Uninstall\\Final Doom for Windows 95"),
+                                        "Uninstall\\Final Doom for Windows 95"),
         const_cast<char *>("UninstallString"),
     },
 
@@ -149,7 +149,7 @@ static registry_value_t uninstall_values[] = {
     {
         HKEY_LOCAL_MACHINE,
         const_cast<char *>(SOFTWARE_KEY "\\Microsoft\\Windows\\CurrentVersion\\"
-                     "Uninstall\\Doom Shareware for Windows 95"),
+                                        "Uninstall\\Doom Shareware for Windows 95"),
         const_cast<char *>("UninstallString"),
     },
 };
@@ -340,8 +340,8 @@ static void CheckInstallRootPaths()
 
     for (i = 0; i < arrlen(root_path_keys); ++i)
     {
-        char *       install_path;
-        char *       subpath;
+        char        *install_path;
+        char        *subpath;
         unsigned int j;
 
         install_path = GetRegistryString(&root_path_keys[i]);
@@ -367,8 +367,8 @@ static void CheckInstallRootPaths()
 
 static void CheckSteamEdition()
 {
-    char * install_path;
-    char * subpath;
+    char  *install_path;
+    char  *subpath;
     size_t i;
 
     install_path = GetRegistryString(&steam_install_location);
@@ -395,8 +395,8 @@ static void CheckSteamEdition()
 static void CheckSteamGUSPatches()
 {
     const char *current_path;
-    char *      install_path;
-    char *      test_patch_path, *patch_path;
+    char       *install_path;
+    char       *test_patch_path, *patch_path;
 
     // Already configured? Don't stomp on the user's choices.
     current_path = M_GetStringVariable("gus_patch_path");
@@ -413,7 +413,7 @@ static void CheckSteamGUSPatches()
     }
 
     patch_path      = M_StringJoin(install_path, "\\", STEAM_BFG_GUS_PATCHES,
-        NULL);
+             NULL);
     test_patch_path = M_StringJoin(patch_path, "\\ACBASS.PAT", NULL);
 
     // Does acbass.pat exist? If so, then set gus_patch_path.
@@ -508,7 +508,7 @@ static char *CheckDirectoryHasIWAD(const char *dir, const char *iwadname)
 
 static char *SearchDirectoryForIWAD(const char *dir, int mask, GameMission_t *mission)
 {
-    char * filename;
+    char  *filename;
     size_t i;
 
     for (i = 0; i < arrlen(iwads); ++i)

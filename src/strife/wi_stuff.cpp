@@ -58,8 +58,8 @@
 // This is supposedly ignored for commercial
 //  release (aka DOOM II), which had 34 maps
 //  in one episode. So there.
-#define NUMEPISODES	4
-#define NUMMAPS		9
+#define NUMEPISODES 4
+#define NUMMAPS     9
 
 
 // in tics
@@ -72,36 +72,36 @@
 
 
 // GLOBAL LOCATIONS
-#define WI_TITLEY		2
-#define WI_SPACINGY    		33
+#define WI_TITLEY   2
+#define WI_SPACINGY 33
 
 // SINGPLE-PLAYER STUFF
-#define SP_STATSX		50
-#define SP_STATSY		50
+#define SP_STATSX   50
+#define SP_STATSY   50
 
-#define SP_TIMEX		16
-#define SP_TIMEY		(SCREENHEIGHT-32)
+#define SP_TIMEX  16
+#define SP_TIMEY  (SCREENHEIGHT - 32)
 
 
 // NET GAME STUFF
-#define NG_STATSY		50
-#define NG_STATSX		(32 + SHORT(star->width)/2 + 32*!dofrags)
+#define NG_STATSY 50
+#define NG_STATSX (32 + SHORT(star->width) / 2 + 32 * !dofrags)
 
-#define NG_SPACINGX    		64
+#define NG_SPACINGX 64
 
 
 // DEATHMATCH STUFF
-#define DM_MATRIXX		42
-#define DM_MATRIXY		68
+#define DM_MATRIXX  42
+#define DM_MATRIXY  68
 
-#define DM_SPACINGX		40
+#define DM_SPACINGX 40
 
-#define DM_TOTALSX		269
+#define DM_TOTALSX 269
 
-#define DM_KILLERSX		10
-#define DM_KILLERSY		100
-#define DM_VICTIMSX    		5
-#define DM_VICTIMSY		50
+#define DM_KILLERSX 10
+#define DM_KILLERSY 100
+#define DM_VICTIMSX 5
+#define DM_VICTIMSY 50
 
 
 
@@ -220,8 +220,10 @@ static point_t lnodes[NUMEPISODES][NUMMAPS] =
 //
 
 #define ANIM(type, period, nanims, x, y, nexttic)            \
-   { (type), (period), (nanims), { (x), (y) }, (nexttic),    \
-     0, { NULL, NULL, NULL }, 0, 0, 0, 0 }
+    {                                                        \
+        (type), (period), (nanims), { (x), (y) }, (nexttic), \
+            0, { NULL, NULL, NULL }, 0, 0, 0, 0              \
+    }
 
 
 static anim_t epsd0animinfo[] =
@@ -285,17 +287,17 @@ static anim_t *anims[NUMEPISODES] =
 //
 
 // States for single-player
-#define SP_KILLS		0
-#define SP_ITEMS		2
-#define SP_SECRET		4
-#define SP_FRAGS		6 
-#define SP_TIME			8 
-#define SP_PAR			ST_TIME
+#define SP_KILLS  0
+#define SP_ITEMS  2
+#define SP_SECRET 4
+#define SP_FRAGS  6
+#define SP_TIME   8
+#define SP_PAR    ST_TIME
 
-#define SP_PAUSE		1
+#define SP_PAUSE         1
 
 // in seconds
-#define SHOWNEXTLOCDELAY	4
+#define SHOWNEXTLOCDELAY 4
 //#define SHOWLASTLOCDELAY	SHOWNEXTLOCDELAY
 
 

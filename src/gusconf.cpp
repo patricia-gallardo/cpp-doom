@@ -35,7 +35,7 @@
 
 using gus_config_t = struct
 {
-    char *       patch_names[MAX_INSTRUMENTS];
+    char        *patch_names[MAX_INSTRUMENTS];
     int          used[MAX_INSTRUMENTS];
     int          mapping[MAX_INSTRUMENTS];
     unsigned int count;
@@ -65,7 +65,7 @@ static unsigned int MappingIndex()
 static int SplitLine(char *line, char **fields, unsigned int max_fields)
 {
     unsigned int num_fields;
-    char *       p;
+    char        *p;
 
     fields[0]  = line;
     num_fields = 1;
@@ -111,7 +111,7 @@ static int SplitLine(char *line, char **fields, unsigned int max_fields)
 
 static void ParseLine(gus_config_t *config, char *line)
 {
-    char *       fields[6];
+    char        *fields[6];
     unsigned int i;
     unsigned int num_fields;
     unsigned int instr_id, mapped_id;
@@ -155,7 +155,7 @@ static void ParseLine(gus_config_t *config, char *line)
 
 static void ParseDMXConfig(char *dmxconf, gus_config_t *config)
 {
-    char *       p, *newline;
+    char        *p, *newline;
     unsigned int i;
 
     memset(config, 0, sizeof(gus_config_t));
@@ -206,7 +206,7 @@ static char *ReadDMXConfig()
 {
     int          lumpnum;
     unsigned int len;
-    char *       data;
+    char        *data;
 
     // TODO: This should be chosen based on gamemode == commercial:
 
@@ -227,7 +227,7 @@ static char *ReadDMXConfig()
 
 static boolean WriteTimidityConfig(char *path, gus_config_t *config)
 {
-    FILE *       fstream;
+    FILE        *fstream;
     unsigned int i;
 
     fstream = fopen(path, "w");
@@ -275,7 +275,7 @@ static boolean WriteTimidityConfig(char *path, gus_config_t *config)
 boolean GUS_WriteConfig(char *path)
 {
     boolean      result;
-    char *       dmxconf;
+    char        *dmxconf;
     gus_config_t config;
 
     if (!strcmp(gus_patch_path, ""))

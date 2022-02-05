@@ -30,9 +30,9 @@
 #define HR_SCREENWIDTH  640
 #define HR_SCREENHEIGHT 480
 
-static SDL_Window * hr_screen    = NULL;
+static SDL_Window  *hr_screen    = NULL;
 static SDL_Surface *hr_surface   = NULL;
-static const char * window_title = "";
+static const char  *window_title = "";
 
 boolean I_SetVideoModeHR()
 {
@@ -92,7 +92,7 @@ void I_SlamBlockHR(int x, int y, int w, int h, const byte *src)
     SDL_Rect    blit_rect;
     const byte *srcptrs[4];
     byte        srcbits[4];
-    byte *      dest;
+    byte       *dest;
     int         x1, y1;
     int         i;
     int         bit;

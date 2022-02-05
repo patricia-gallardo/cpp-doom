@@ -102,9 +102,9 @@ boolean nomonsters;  // checkparm of -nomonsters
 boolean respawnparm; // checkparm of -respawn
 boolean fastparm;    // checkparm of -fast
 
-//extern int soundVolume;
-//extern  int	sfxVolume;
-//extern  int	musicVolume;
+// extern int soundVolume;
+// extern  int	sfxVolume;
+// extern  int	musicVolume;
 
 extern boolean inhelpscreens;
 
@@ -798,7 +798,7 @@ static const char *GetGameName(const char *gamename)
             // We also need to cut off spaces to get the basic name
 
             const auto newgamename_size = strlen(deh_sub) + 10;
-            auto *     newgamename      = zmalloc<char *>(newgamename_size, PU_STATIC, 0);
+            auto      *newgamename      = zmalloc<char *>(newgamename_size, PU_STATIC, 0);
             version                     = G_VanillaVersionCode();
             M_snprintf(newgamename, newgamename_size, deh_sub,
                 version / 100, version % 100);
@@ -824,7 +824,7 @@ static void SetMissionForPackName(const char *pack_name)
 {
     static constexpr struct
     {
-        const char *  name;
+        const char   *name;
         GameMission_t mission;
     } packs[] = {
         { "doom2", doom2 },
@@ -1065,8 +1065,8 @@ void PrintDehackedBanners()
 
 static constexpr struct
 {
-    const char *  description;
-    const char *  cmdline;
+    const char   *description;
+    const char   *cmdline;
     GameVersion_t version;
 } gameversions[] = {
     { "Doom 1.2", "1.2", exe_doom_1_2 },
@@ -1086,7 +1086,7 @@ static constexpr struct
 
 static void InitGameVersion()
 {
-    byte *  demolump;
+    byte   *demolump;
     char    demolumpname[6];
     int     demoversion;
     int     p;
@@ -1492,45 +1492,45 @@ static void LoadNerveWad()
         // menu graphics lumps are available and (a) if they are from the IWAD
         // and that is the BFG Edition DOOM2.WAD or (b) if they are from a PWAD.
         if ((i = W_CheckNumForName("M_EPI1")) != -1 && (j = W_CheckNumForName("M_EPI2")) != -1 && (k = W_CheckNumForName("M_EPISOD")) != -1 && (gamevariant == bfgedition || (!W_IsIWADLump(lumpinfo[i]) && !W_IsIWADLump(lumpinfo[j]) && !W_IsIWADLump(lumpinfo[k]))))
-    {
-        if (strrchr(iwadfile, DIR_SEPARATOR) != NULL)
         {
-            char *dir;
-            dir          = M_DirName(iwadfile);
-            nervewadfile = M_StringJoin(dir, DIR_SEPARATOR_S, "nerve.wad", NULL);
-            free(dir);
+            if (strrchr(iwadfile, DIR_SEPARATOR) != NULL)
+            {
+                char *dir;
+                dir          = M_DirName(iwadfile);
+                nervewadfile = M_StringJoin(dir, DIR_SEPARATOR_S, "nerve.wad", NULL);
+                free(dir);
+            }
+            else
+            {
+                nervewadfile = M_StringDuplicate("nerve.wad");
+            }
+
+            if (!M_FileExists(nervewadfile))
+            {
+                free(nervewadfile);
+                nervewadfile = D_FindWADByName("nerve.wad");
+            }
+
+            if (nervewadfile == NULL)
+            {
+                return;
+            }
+
+            printf(" [expansion]");
+            D_AddFile(nervewadfile);
+
+            // [crispy] rename level name patch lumps out of the way
+            for (i = 0; i < 9; i++)
+            {
+                char lumpname[9];
+
+                M_snprintf(lumpname, 9, "CWILV%2.2d", i);
+                lumpinfo[W_GetNumForName(lumpname)]->name[0] = 'N';
+            }
+
+            // [crispy] regenerate the hashtable
+            W_GenerateHashTable();
         }
-        else
-        {
-            nervewadfile = M_StringDuplicate("nerve.wad");
-        }
-
-        if (!M_FileExists(nervewadfile))
-        {
-            free(nervewadfile);
-            nervewadfile = D_FindWADByName("nerve.wad");
-        }
-
-        if (nervewadfile == NULL)
-        {
-            return;
-        }
-
-        printf(" [expansion]");
-        D_AddFile(nervewadfile);
-
-        // [crispy] rename level name patch lumps out of the way
-        for (i = 0; i < 9; i++)
-        {
-            char lumpname[9];
-
-            M_snprintf(lumpname, 9, "CWILV%2.2d", i);
-            lumpinfo[W_GetNumForName(lumpname)]->name[0] = 'N';
-        }
-
-        // [crispy] regenerate the hashtable
-        W_GenerateHashTable();
-    }
 }
 
 // [crispy] support loading MASTERLEVELS.WAD alongside DOOM2.WAD

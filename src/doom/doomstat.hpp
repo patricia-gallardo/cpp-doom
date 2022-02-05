@@ -58,17 +58,18 @@ extern GameMode_t    gamemode;
 extern GameMission_t gamemission;
 extern GameVersion_t gameversion;
 extern GameVariant_t gamevariant;
-extern const char *  gamedescription;
-extern char *        nervewadfile;
+extern const char   *gamedescription;
+extern char         *nervewadfile;
 
 // Convenience macro.
 // 'gamemission' can be equal to pack_chex or pack_hacx, but these are
 // just modified versions of doom and doom2, and should be interpreted
 // as the same most of the time.
 
-#define logical_gamemission            \
-    (gamemission == pack_chex ? doom : \
-                                gamemission == pack_hacx ? doom2 : gamemission)
+#define logical_gamemission                \
+    (gamemission == pack_chex    ? doom :  \
+        gamemission == pack_hacx ? doom2 : \
+                                   gamemission)
 
 // Set if homebrew PWAD stuff has been added.
 extern boolean modifiedgame;

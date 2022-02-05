@@ -40,28 +40,26 @@ static unsigned int OPL_Win32_PortRead(opl_port_t port)
 {
     unsigned char result;
 
-    __asm__ volatile (
-       "movl %1, %%edx\n"
-       "inb  %%dx, %%al\n"
-       "movb %%al, %0"
-       :   "=m" (result)
-       :   "r" (opl_port_base + port)
-       :   "edx", "al", "memory"
-    );
+    __asm__ volatile(
+        "movl %1, %%edx\n"
+        "inb  %%dx, %%al\n"
+        "movb %%al, %0"
+        : "=m"(result)
+        : "r"(opl_port_base + port)
+        : "edx", "al", "memory");
 
     return result;
 }
 
 static void OPL_Win32_PortWrite(opl_port_t port, unsigned int value)
 {
-    __asm__ volatile (
-       "movl %0, %%edx\n"
-       "movb %1, %%al\n"
-       "outb %%al, %%dx"
-       :
-       :   "r" (opl_port_base + port), "r" ((unsigned char) value)
-       :   "edx", "al"
-    );
+    __asm__ volatile(
+        "movl %0, %%edx\n"
+        "movb %1, %%al\n"
+        "outb %%al, %%dx"
+        :
+        : "r"(opl_port_base + port), "r"((unsigned char)value)
+        : "edx", "al");
 }
 
 // haleyjd 20110417: MSVC version
@@ -70,23 +68,23 @@ static void OPL_Win32_PortWrite(opl_port_t port, unsigned int value)
 static unsigned int OPL_Win32_PortRead(opl_port_t port)
 {
     unsigned char result;
-    opl_port_t dst_port = static_cast<opl_port_t>(opl_port_base + port);
-    
-    __asm    
+    opl_port_t    dst_port = static_cast<opl_port_t>(opl_port_base + port);
+
+    __asm
     {
         mov edx, dword ptr [dst_port]
         in al, dx
         mov byte ptr [result], al
     }
-    
+
     return result;
 }
 
 static void OPL_Win32_PortWrite(opl_port_t port, unsigned int value)
 {
     opl_port_t dst_port = static_cast<opl_port_t>(opl_port_base + port);
-    
-    __asm    
+
+    __asm
     {
         mov edx, dword ptr [dst_port]
         mov al, byte ptr [value]
@@ -173,8 +171,7 @@ static void OPL_Win32_Shutdown()
     IOperm_UninstallDriver();
 }
 
-opl_driver_t opl_win32_driver =
-{
+opl_driver_t opl_win32_driver = {
     "Win32",
     OPL_Win32_Init,
     OPL_Win32_Shutdown,
@@ -189,4 +186,3 @@ opl_driver_t opl_win32_driver =
 };
 
 #endif /* #ifdef _WIN32 */
-

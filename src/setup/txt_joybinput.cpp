@@ -43,8 +43,7 @@ extern int joystick_physical_buttons[NUM_VIRTUAL_BUTTONS];
 // button that the user wants to use for firing. We do this so that
 // the menus work (the game code is hard coded to interpret
 // button #0 = select menu item, button #1 = go back to previous menu).
-static int *all_joystick_buttons[NUM_VIRTUAL_BUTTONS] =
-{
+static int *all_joystick_buttons[NUM_VIRTUAL_BUTTONS] = {
     &joybfire,
     &joybuse,
     &joybstrafe,
@@ -104,13 +103,13 @@ static void CanonicalizeButtons()
         // Don't remap the speed key if it's bound to "always run".
         // Also preserve "unbound" variables.
         if ((all_joystick_buttons[i] == &joybspeed && vbutton >= 20)
-         || vbutton < 0)
+            || vbutton < 0)
         {
             new_mapping[i] = i;
         }
         else
         {
-            new_mapping[i] = PhysicalForVirtualButton(vbutton);
+            new_mapping[i]           = PhysicalForVirtualButton(vbutton);
             *all_joystick_buttons[i] = i;
         }
     }
@@ -155,7 +154,7 @@ static int EventCallback(SDL_Event *event, TXT_UNCAST_ARG(joystick_input))
         // canonical form, to avoid conflicts.
         CanonicalizeButtons();
 
-        vbutton = VirtualButtonForVariable(joystick_input->variable);
+        vbutton    = VirtualButtonForVariable(joystick_input->variable);
         physbutton = event->jbutton.button;
 
         if (joystick_input->check_conflicts)
@@ -164,7 +163,7 @@ static int EventCallback(SDL_Event *event, TXT_UNCAST_ARG(joystick_input))
         }
 
         // Set mapping.
-        *joystick_input->variable = vbutton;
+        *joystick_input->variable          = vbutton;
         joystick_physical_buttons[vbutton] = physbutton;
 
         TXT_CloseWindow(joystick_input->prompt_window);
@@ -238,17 +237,17 @@ static void TXT_JoystickInputSizeCalc(TXT_UNCAST_ARG(joystick_input))
 }
 
 static void GetJoystickButtonDescription(int vbutton, char *buf,
-                                         size_t buf_len)
+    size_t buf_len)
 {
     M_snprintf(buf, buf_len, "BUTTON #%i",
-               PhysicalForVirtualButton(vbutton) + 1);
+        PhysicalForVirtualButton(vbutton) + 1);
 }
 
 static void TXT_JoystickInputDrawer(TXT_UNCAST_ARG(joystick_input))
 {
     TXT_CAST_ARG(txt_joystick_input_t, joystick_input);
     char buf[20];
-    int i;
+    int  i;
 
     if (*joystick_input->variable < 0)
     {
@@ -257,7 +256,7 @@ static void TXT_JoystickInputDrawer(TXT_UNCAST_ARG(joystick_input))
     else
     {
         GetJoystickButtonDescription(*joystick_input->variable,
-                                     buf, sizeof(buf));
+            buf, sizeof(buf));
     }
 
     TXT_SetWidgetBG(joystick_input);
@@ -297,7 +296,7 @@ static int TXT_JoystickInputKeyPress(TXT_UNCAST_ARG(joystick_input), int key)
 }
 
 static void TXT_JoystickInputMousePress(TXT_UNCAST_ARG(widget),
-                                        int x, int y, int b)
+    int x, int y, int b)
 {
     TXT_CAST_ARG(txt_joystick_input_t, widget);
 
@@ -309,8 +308,7 @@ static void TXT_JoystickInputMousePress(TXT_UNCAST_ARG(widget),
     }
 }
 
-txt_widget_class_t txt_joystick_input_class =
-{
+txt_widget_class_t txt_joystick_input_class = {
     TXT_AlwaysSelectable,
     TXT_JoystickInputSizeCalc,
     TXT_JoystickInputDrawer,
@@ -331,4 +329,3 @@ txt_joystick_input_t *TXT_NewJoystickInput(int *variable)
 
     return joystick_input;
 }
-

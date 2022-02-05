@@ -23,15 +23,15 @@
 #include "m_argv.hpp"
 #include "m_misc.hpp"
 #include "r_local.hpp"
-#include "p_local.hpp"            // for P_AproxDistance
+#include "p_local.hpp" // for P_AproxDistance
 #include "sounds.hpp"
 #include "s_sound.hpp"
 #include "lump.hpp"
 
 #define PRIORITY_MAX_ADJUST 10
-#define DIST_ADJUST (MAX_SND_DIST/PRIORITY_MAX_ADJUST)
+#define DIST_ADJUST         (MAX_SND_DIST / PRIORITY_MAX_ADJUST)
 
-#define DEFAULT_ARCHIVEPATH     "o:\\sound\\archive\\"
+#define DEFAULT_ARCHIVEPATH "o:\\sound\\archive\\"
 
 void S_ShutDown();
 
@@ -53,32 +53,32 @@ static int cd_track_end_time = 0;
 /*
 ===============================================================================
 
-		MUSIC & SFX API
+                MUSIC & SFX API
 
 ===============================================================================
 */
 
-//static channel_t channel[MAX_CHANNELS];
+// static channel_t channel[MAX_CHANNELS];
 
-//static int rs; //the current registered song.
-//int mus_song = -1;
-//int mus_lumpnum;
-//void *mus_sndptr;
-//byte *soundCurve;
+// static int rs; //the current registered song.
+// int mus_song = -1;
+// int mus_lumpnum;
+// void *mus_sndptr;
+// byte *soundCurve;
 
-extern sfxinfo_t S_sfx[];
+extern sfxinfo_t   S_sfx[];
 extern musicinfo_t S_music[];
 
 static channel_t Channel[MAX_CHANNELS];
-static void *RegisteredSong;      //the current registered song.
-static boolean MusicPaused;
-static int Mus_Song = -1;
-static byte *Mus_SndPtr;
-static byte *SoundCurve;
+static void     *RegisteredSong; // the current registered song.
+static boolean   MusicPaused;
+static int       Mus_Song = -1;
+static byte     *Mus_SndPtr;
+static byte     *SoundCurve;
 
-int snd_MaxVolume = 10;                // maximum volume for sound
-int snd_MusicVolume = 10;              // maximum volume for music
-int snd_Channels = 16;
+int snd_MaxVolume   = 10; // maximum volume for sound
+int snd_MusicVolume = 10; // maximum volume for music
+int snd_Channels    = 16;
 
 // int AmbChan;
 
@@ -149,9 +149,9 @@ static boolean StartCDTrack(int track, boolean loop)
 void S_StartSong(int song, boolean loop)
 {
     char *songLump;
-    int lumpnum;
-    int length;
-    int track;
+    int   lumpnum;
+    int   length;
+    int   track;
 
     // If we're in CD music mode, play a CD track, instead:
     if (cdmusic)
@@ -171,7 +171,7 @@ void S_StartSong(int song, boolean loop)
     else
     {
         if (song == Mus_Song)
-        {                       // don't replay an old song
+        { // don't replay an old song
             return;
         }
         if (RegisteredSong)
@@ -186,9 +186,9 @@ void S_StartSong(int song, boolean loop)
             return;
         }
 
-        lumpnum = W_GetNumForName(songLump);
+        lumpnum    = W_GetNumForName(songLump);
         Mus_SndPtr = cache_lump_num<byte *>(lumpnum, PU_STATIC);
-        length = W_LumpLength(lumpnum);
+        length     = W_LumpLength(lumpnum);
 
         RegisteredSong = I_RegisterSong(Mus_SndPtr, length);
         I_PlaySong(RegisteredSong, loop);
@@ -276,12 +276,12 @@ void S_StartSongName(const char *songLump, boolean loop)
         {
             cdTrack = P_GetCDEnd3Track();
         }
-/*	Uncomment this, if Kevin writes a specific song for startup
-		else if(!strcmp(songLump, "start"))
-		{
-			cdTrack = P_GetCDStartTrack();
-		}
-*/
+        /*	Uncomment this, if Kevin writes a specific song for startup
+                        else if(!strcmp(songLump, "start"))
+                        {
+                                cdTrack = P_GetCDStartTrack();
+                        }
+        */
         if (cdTrack != 0)
         {
             cd_custom_track = 0;
@@ -297,9 +297,9 @@ void S_StartSongName(const char *songLump, boolean loop)
             RegisteredSong = NULL;
         }
 
-        lumpnum = W_GetNumForName(songLump);
+        lumpnum    = W_GetNumForName(songLump);
         Mus_SndPtr = cache_lump_num<byte *>(lumpnum, PU_MUSIC);
-        length = W_LumpLength(lumpnum);
+        length     = W_LumpLength(lumpnum);
 
         RegisteredSong = I_RegisterSong(Mus_SndPtr, length);
         I_PlaySong(RegisteredSong, loop);
@@ -334,7 +334,7 @@ int S_GetSoundID(char *name)
 //
 //==========================================================================
 
-void S_StartSound(mobj_t * origin, int sound_id)
+void S_StartSound(mobj_t *origin, int sound_id)
 {
     S_StartSoundAtVolume(origin, sound_id, 127);
 }
@@ -356,7 +356,7 @@ static mobj_t *GetSoundListener()
         dummy_listener.y = 0;
         dummy_listener.z = 0;
 
-        return (mobj_t *) &dummy_listener;
+        return (mobj_t *)&dummy_listener;
     }
 }
 
@@ -366,19 +366,19 @@ static mobj_t *GetSoundListener()
 //
 //==========================================================================
 
-void S_StartSoundAtVolume(mobj_t * origin, int sound_id, int volume)
+void S_StartSoundAtVolume(mobj_t *origin, int sound_id, int volume)
 {
     mobj_t *listener;
-    int dist, vol;
-    int i;
-    int priority;
-    int sep;
-    int angle;
-    int absx;
-    int absy;
+    int     dist, vol;
+    int     i;
+    int     priority;
+    int     sep;
+    int     angle;
+    int     absx;
+    int     absy;
 
     static int sndcount = 0;
-    int chan;
+    int        chan;
 
     if (sound_id == 0 || snd_MaxVolume == 0)
         return;
@@ -402,7 +402,7 @@ void S_StartSoundAtVolume(mobj_t * origin, int sound_id, int volume)
     dist >>= FRACBITS;
     if (dist >= MAX_SND_DIST)
     {
-        return;                 // sound is beyond the hearing range...
+        return; // sound is beyond the hearing range...
     }
     if (dist < 0)
     {
@@ -410,22 +410,22 @@ void S_StartSoundAtVolume(mobj_t * origin, int sound_id, int volume)
     }
     priority = S_sfx[sound_id].priority;
     priority *= (PRIORITY_MAX_ADJUST - (dist / DIST_ADJUST));
-    #if 0
+#if 0
     // TODO
     if (!S_StopSoundID(sound_id, priority))
     {
         return;                 // other sounds have greater priority
     }
-    #endif
+#endif
     for (i = 0; i < snd_Channels; i++)
     {
         if (origin->player)
         {
             i = snd_Channels;
-            break;              // let the player have more than one sound.
+            break; // let the player have more than one sound.
         }
         if (origin == Channel[i].mo)
-        {                       // only allow other mobjs one sound
+        { // only allow other mobjs one sound
             S_StopSound(Channel[i].mo);
             break;
         }
@@ -452,15 +452,15 @@ void S_StartSoundAtVolume(mobj_t * origin, int sound_id, int volume)
                 i = (sndcount + chan) % snd_Channels;
                 if (priority >= Channel[i].priority)
                 {
-                    chan = -1;  //denote that sound should be replaced.
+                    chan = -1; // denote that sound should be replaced.
                     break;
                 }
             }
             if (chan != -1)
             {
-                return;         //no free channels.
+                return; // no free channels.
             }
-            else                //replace the lower priority sound.
+            else // replace the lower priority sound.
             {
                 if (Channel[i].handle)
                 {
@@ -483,26 +483,26 @@ void S_StartSoundAtVolume(mobj_t * origin, int sound_id, int volume)
     if (origin == listener)
     {
         sep = 128;
-//              vol = (volume*(snd_MaxVolume+1)*8)>>7;
+        //              vol = (volume*(snd_MaxVolume+1)*8)>>7;
     }
     else
     {
         angle = R_PointToAngle2(listener->x,
-                                listener->y,
-                                Channel[i].mo->x, Channel[i].mo->y);
+            listener->y,
+            Channel[i].mo->x, Channel[i].mo->y);
         angle = (angle - viewangle) >> 24;
-        sep = angle * 2 - 128;
+        sep   = angle * 2 - 128;
         if (sep < 64)
             sep = -sep;
         if (sep > 192)
             sep = 512 - sep;
-//              vol = SoundCurve[dist];
+        //              vol = SoundCurve[dist];
     }
 
     // if the sfxinfo_t is marked as 'can be pitch shifted'
     if (S_sfx[sound_id].pitch)
     {
-        Channel[i].pitch = (byte) (NORM_PITCH + (M_Random() & 7) - (M_Random() & 7));
+        Channel[i].pitch = (byte)(NORM_PITCH + (M_Random() & 7) - (M_Random() & 7));
     }
     else
     {
@@ -514,14 +514,14 @@ void S_StartSoundAtVolume(mobj_t * origin, int sound_id, int volume)
         S_sfx[sound_id].lumpnum = I_GetSfxLumpNum(&S_sfx[sound_id]);
     }
 
-    Channel[i].handle = I_StartSound(&S_sfx[sound_id],
-                                     i,
-                                     vol,
-                                     sep,
-                                     Channel[i].pitch);
+    Channel[i].handle   = I_StartSound(&S_sfx[sound_id],
+          i,
+          vol,
+          sep,
+          Channel[i].pitch);
     Channel[i].sound_id = sound_id;
     Channel[i].priority = priority;
-    Channel[i].volume = volume;
+    Channel[i].volume   = volume;
     if (S_sfx[sound_id].usefulness < 0)
     {
         S_sfx[sound_id].usefulness = 1;
@@ -541,23 +541,23 @@ void S_StartSoundAtVolume(mobj_t * origin, int sound_id, int volume)
 boolean S_StopSoundID(int sound_id, int priority)
 {
     int i;
-    int lp;                     //least priority
+    int lp; // least priority
     int found;
 
     if (S_sfx[sound_id].numchannels == -1)
     {
         return (true);
     }
-    lp = -1;                    //denote the argument sound_id
+    lp    = -1; // denote the argument sound_id
     found = 0;
     for (i = 0; i < snd_Channels; i++)
     {
         if (Channel[i].sound_id == sound_id && Channel[i].mo)
         {
-            found++;            //found one.  Now, should we replace it??
+            found++; // found one.  Now, should we replace it??
             if (priority >= Channel[i].priority)
-            {                   // if we're gonna kill one, then this'll be it
-                lp = i;
+            { // if we're gonna kill one, then this'll be it
+                lp       = i;
                 priority = Channel[i].priority;
             }
         }
@@ -568,7 +568,7 @@ boolean S_StopSoundID(int sound_id, int priority)
     }
     else if (lp == -1)
     {
-        return (false);         // don't replace any sounds
+        return (false); // don't replace any sounds
     }
     if (Channel[lp].handle)
     {
@@ -591,7 +591,7 @@ boolean S_StopSoundID(int sound_id, int priority)
 //
 //==========================================================================
 
-void S_StopSound(mobj_t * origin)
+void S_StopSound(mobj_t *origin)
 {
     int i;
 
@@ -605,7 +605,7 @@ void S_StopSound(mobj_t * origin)
                 S_sfx[Channel[i].sound_id].usefulness--;
             }
             Channel[i].handle = 0;
-            Channel[i].mo = NULL;
+            Channel[i].mo     = NULL;
         }
     }
 }
@@ -620,7 +620,7 @@ void S_StopAllSound()
 {
     int i;
 
-    //stop all sounds
+    // stop all sounds
     for (i = 0; i < snd_Channels; i++)
     {
         if (Channel[i].handle)
@@ -637,7 +637,7 @@ void S_StopAllSound()
 //
 //==========================================================================
 
-void S_SoundLink(mobj_t * oldactor, mobj_t * newactor)
+void S_SoundLink(mobj_t *oldactor, mobj_t *newactor)
 {
     int i;
 
@@ -690,7 +690,7 @@ void S_ResumeSound()
 //
 //==========================================================================
 
-void S_UpdateSounds(mobj_t * listener)
+void S_UpdateSounds(mobj_t *listener)
 {
     int i, dist, vol;
     int angle;
@@ -728,12 +728,12 @@ void S_UpdateSounds(mobj_t * listener)
             {
                 S_sfx[Channel[i].sound_id].usefulness--;
             }
-            Channel[i].handle = 0;
-            Channel[i].mo = NULL;
+            Channel[i].handle   = 0;
+            Channel[i].mo       = NULL;
             Channel[i].sound_id = 0;
         }
         if (Channel[i].mo == NULL || Channel[i].sound_id == 0
-         || Channel[i].mo == listener || listener == NULL)
+            || Channel[i].mo == listener || listener == NULL)
         {
             continue;
         }
@@ -753,10 +753,9 @@ void S_UpdateSounds(mobj_t * listener)
             {
                 dist = 0;
             }
-            //vol = SoundCurve[dist];
+            // vol = SoundCurve[dist];
             vol =
-                (SoundCurve[dist] * (snd_MaxVolume * 8) *
-                 Channel[i].volume) >> 14;
+                (SoundCurve[dist] * (snd_MaxVolume * 8) * Channel[i].volume) >> 14;
             if (Channel[i].mo == listener)
             {
                 sep = 128;
@@ -764,9 +763,9 @@ void S_UpdateSounds(mobj_t * listener)
             else
             {
                 angle = R_PointToAngle2(listener->x, listener->y,
-                                        Channel[i].mo->x, Channel[i].mo->y);
+                    Channel[i].mo->x, Channel[i].mo->y);
                 angle = (angle - viewangle) >> 24;
-                sep = angle * 2 - 128;
+                sep   = angle * 2 - 128;
                 if (sep < 64)
                     sep = -sep;
                 if (sep > 192)
@@ -790,7 +789,7 @@ void S_Init()
 {
     I_SetOPLDriverVer(opl_doom2_1_666);
     SoundCurve = cache_lump_name<byte *>("SNDCURVE", PU_STATIC);
-//      SoundCurve = Z_Malloc(MAX_SND_DIST, PU_STATIC, NULL);
+    //      SoundCurve = Z_Malloc(MAX_SND_DIST, PU_STATIC, NULL);
 
     if (snd_Channels > 8)
     {
@@ -841,26 +840,26 @@ void S_Init()
 //
 //==========================================================================
 
-void S_GetChannelInfo(SoundInfo_t * s)
+void S_GetChannelInfo(SoundInfo_t *s)
 {
-    int i;
+    int         i;
     ChanInfo_t *c;
 
     s->channelCount = snd_Channels;
-    s->musicVolume = snd_MusicVolume;
-    s->soundVolume = snd_MaxVolume;
+    s->musicVolume  = snd_MusicVolume;
+    s->soundVolume  = snd_MaxVolume;
     for (i = 0; i < snd_Channels; i++)
     {
-        c = &s->chan[i];
-        c->id = Channel[i].sound_id;
+        c           = &s->chan[i];
+        c->id       = Channel[i].sound_id;
         c->priority = Channel[i].priority;
-        c->name = S_sfx[c->id].name;
-        c->mo = Channel[i].mo;
+        c->name     = S_sfx[c->id].name;
+        c->mo       = Channel[i].mo;
 
         if (c->mo != NULL)
         {
             c->distance = P_AproxDistance(c->mo->x - viewx, c->mo->y - viewy)
-                >> FRACBITS;
+                          >> FRACBITS;
         }
         else
         {
@@ -875,7 +874,7 @@ void S_GetChannelInfo(SoundInfo_t * s)
 //
 //==========================================================================
 
-boolean S_GetSoundPlayingInfo(mobj_t * mobj, int sound_id)
+boolean S_GetSoundPlayingInfo(mobj_t *mobj, int sound_id)
 {
     int i;
 
@@ -984,12 +983,12 @@ void S_InitScript()
                     if (*sc_String != '?')
                     {
                         M_StringCopy(S_sfx[i].name, sc_String,
-                                     sizeof(S_sfx[i].name));
+                            sizeof(S_sfx[i].name));
                     }
                     else
                     {
                         M_StringCopy(S_sfx[i].name, "default",
-                                     sizeof(S_sfx[i].name));
+                            sizeof(S_sfx[i].name));
                     }
                     break;
                 }
@@ -1010,4 +1009,3 @@ void S_InitScript()
         }
     }
 }
-

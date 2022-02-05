@@ -79,14 +79,14 @@ struct midi_file_s {
     unsigned int  num_tracks;
 
     // Data buffer used to store data read for SysEx or meta events:
-    byte *       buffer;
+    byte        *buffer;
     unsigned int buffer_size;
 };
 
 // Check the header of a chunk:
 
 static boolean CheckChunkHeader(chunk_header_t *chunk,
-    const char *                                expected_id)
+    const char                                 *expected_id)
 {
     boolean result;
 
@@ -166,7 +166,7 @@ static boolean ReadVariableLength(unsigned int *result, FILE *stream)
 static byte *ReadByteSequence(unsigned int num_bytes, FILE *stream)
 {
     unsigned int i;
-    byte *       result;
+    byte        *result;
 
     // Allocate a buffer. Allocate one extra byte, as malloc(0) is
     // non-portable.
@@ -458,7 +458,7 @@ static boolean ReadTrack(midi_track_t *track, FILE *stream)
 
         // todo make into a vector or something
         new_events    = static_cast<midi_event_t *>(I_Realloc(track->events,
-            sizeof(midi_event_t) * (track->num_events + 1)));
+               sizeof(midi_event_t) * (track->num_events + 1)));
         track->events = new_events;
 
         // Read the next event:

@@ -41,7 +41,7 @@ ticcmd_t *netcmds;
 
 static void PlayerQuitGame(player_t *player)
 {
-    static char exitmsg[80];
+    static char  exitmsg[80];
     unsigned int player_num;
 
     player_num = player - players;
@@ -50,25 +50,25 @@ static void PlayerQuitGame(player_t *player)
     // replacements of this message
 
     M_StringCopy(exitmsg, DEH_String("Player 1 left the game"),
-                 sizeof(exitmsg));
+        sizeof(exitmsg));
 
     exitmsg[7] += player_num;
 
-    playeringame[player_num] = false;
+    playeringame[player_num]       = false;
     players[consoleplayer].message = exitmsg;
 
     // TODO: check if it is sensible to do this:
 
-    if (demorecording) 
+    if (demorecording)
     {
-        G_CheckDemoStatus ();
+        G_CheckDemoStatus();
     }
 }
 
 static void RunTic(ticcmd_t *cmds, boolean *ingame)
 {
     extern boolean advancedemo;
-    unsigned int i;
+    unsigned int   i;
 
     // Check for player quits.
 
@@ -86,7 +86,7 @@ static void RunTic(ticcmd_t *cmds, boolean *ingame)
     // run a tic.
 
     if (advancedemo)
-        D_DoAdvanceDemo ();
+        D_DoAdvanceDemo();
 
     M_Ticker();
     G_Ticker();
@@ -105,26 +105,26 @@ static loop_interface_t strife_loop_interface = {
 };
 
 
-// Load game settings from the specified structure and 
+// Load game settings from the specified structure and
 // set global variables.
 
 static void LoadGameSettings(net_gamesettings_t *settings)
 {
     unsigned int i;
 
-    deathmatch = settings->deathmatch;
-    ticdup = settings->ticdup;
-    startepisode = settings->episode;
-    startmap = settings->map;
-    startskill = static_cast<skill_t>(settings->skill);
+    deathmatch    = settings->deathmatch;
+    ticdup        = settings->ticdup;
+    startepisode  = settings->episode;
+    startmap      = settings->map;
+    startskill    = static_cast<skill_t>(settings->skill);
     startloadgame = settings->loadgame;
-    lowres_turn = settings->lowres_turn;
-    nomonsters = settings->nomonsters;
-    fastparm = settings->fast_monsters;
-    respawnparm = settings->respawn_monsters;
-    timelimit = settings->timelimit;
+    lowres_turn   = settings->lowres_turn;
+    nomonsters    = settings->nomonsters;
+    fastparm      = settings->fast_monsters;
+    respawnparm   = settings->respawn_monsters;
+    timelimit     = settings->timelimit;
     consoleplayer = settings->consoleplayer;
-    randomparm = settings->random;
+    randomparm    = settings->random;
 
     if (lowres_turn)
     {
@@ -146,25 +146,25 @@ static void SaveGameSettings(net_gamesettings_t *settings)
     // Fill in game settings structure with appropriate parameters
     // for the new game
 
-    settings->deathmatch = deathmatch;
-    settings->episode = startepisode;
-    settings->map = startmap;
-    settings->skill = startskill;
-    settings->loadgame = startloadgame;
-    settings->gameversion = gameversion;
-    settings->nomonsters = nomonsters;
-    settings->fast_monsters = fastparm;
+    settings->deathmatch       = deathmatch;
+    settings->episode          = startepisode;
+    settings->map              = startmap;
+    settings->skill            = startskill;
+    settings->loadgame         = startloadgame;
+    settings->gameversion      = gameversion;
+    settings->nomonsters       = nomonsters;
+    settings->fast_monsters    = fastparm;
     settings->respawn_monsters = respawnparm;
-    settings->timelimit = timelimit;
-    settings->random = randomparm;
+    settings->timelimit        = timelimit;
+    settings->random           = randomparm;
 
     settings->lowres_turn = M_ParmExists("-record")
-                         && !M_ParmExists("-longtics");
+                            && !M_ParmExists("-longtics");
 }
 
 static void InitConnectData(net_connect_data_t *connect_data)
 {
-    connect_data->drone = false;
+    connect_data->drone       = false;
     connect_data->max_players = MAXPLAYERS;
 
     //!
@@ -175,11 +175,11 @@ static void InitConnectData(net_connect_data_t *connect_data)
 
     if (M_CheckParm("-left") > 0)
     {
-        viewangleoffset = ANG90;
+        viewangleoffset     = ANG90;
         connect_data->drone = true;
     }
 
-    //! 
+    //!
     // @category net
     //
     // Run as the right screen in three screen mode.
@@ -187,7 +187,7 @@ static void InitConnectData(net_connect_data_t *connect_data)
 
     if (M_CheckParm("-right") > 0)
     {
-        viewangleoffset = ANG270;
+        viewangleoffset     = ANG270;
         connect_data->drone = true;
     }
 
@@ -197,13 +197,13 @@ static void InitConnectData(net_connect_data_t *connect_data)
 
     // Game type fields:
 
-    connect_data->gamemode = gamemode;
+    connect_data->gamemode    = gamemode;
     connect_data->gamemission = gamemission;
 
     // Are we recording a demo? Possibly set lowres turn mode
 
     connect_data->lowres_turn = M_CheckParm("-record") > 0
-                             && M_CheckParm("-longtics") == 0;
+                                && M_CheckParm("-longtics") == 0;
 
     // Read checksums of our WAD directory and dehacked information
 
@@ -262,11 +262,11 @@ void D_CheckNetGame()
     }
 
     DEH_printf("startmap: %i, skill: %i, enemies: %i, random: %i\n",
-               startmap, startskill, !nomonsters, randomparm);
+        startmap, startskill, !nomonsters, randomparm);
 
 
     DEH_printf("player %i of %i (%i nodes)\n",
-               consoleplayer+1, settings.num_players, settings.num_players);
+        consoleplayer + 1, settings.num_players, settings.num_players);
 
     // Show players here; the server might have specified a time limit
 
@@ -277,7 +277,7 @@ void D_CheckNetGame()
         if (timelimit == 20 && M_CheckParm("-avg"))
         {
             DEH_printf("Austin Virtual Gaming: Levels will end "
-                           "after 20 minutes\n");
+                       "after 20 minutes\n");
         }
         else
         {
@@ -288,4 +288,3 @@ void D_CheckNetGame()
         }
     }
 }
-

@@ -25,19 +25,20 @@
 
 using txt_callback_t = struct
 {
-    char *signal_name;
+    char               *signal_name;
     TxtWidgetSignalFunc func;
-    void *user_data;
+    void               *user_data;
 };
 
-struct txt_callback_table_s
-{
+struct txt_callback_table_s {
     std::vector<txt_callback_t> callbacks;
 
-    ~txt_callback_table_s() {
-      for (auto &callback : callbacks) {
-        free(callback.signal_name);
-      }
+    ~txt_callback_table_s()
+    {
+        for (auto &callback : callbacks)
+        {
+            free(callback.signal_name);
+        }
     }
 };
 
@@ -51,9 +52,9 @@ void TXT_InitWidget(TXT_UNCAST_ARG(widget), txt_widget_class_t *widget_class)
 {
     TXT_CAST_ARG(txt_widget_t, widget);
 
-    widget->widget_class = widget_class;
+    widget->widget_class   = widget_class;
     widget->callback_table = TXT_NewCallbackTable();
-    widget->parent = NULL;
+    widget->parent         = NULL;
 
     // Not focused until we hear otherwise.
 
@@ -69,9 +70,9 @@ void TXT_InitWidget(TXT_UNCAST_ARG(widget), txt_widget_class_t *widget_class)
 }
 
 void TXT_SignalConnect(TXT_UNCAST_ARG(widget),
-                       const char *signal_name,
-                       TxtWidgetSignalFunc func, 
-                       void *user_data)
+    const char         *signal_name,
+    TxtWidgetSignalFunc func,
+    void               *user_data)
 {
     TXT_CAST_ARG(txt_widget_t, widget);
 
@@ -80,10 +81,10 @@ void TXT_SignalConnect(TXT_UNCAST_ARG(widget),
     // Add a new callback to the table
 
 
-    auto &callback = table->callbacks.emplace_back();
+    auto &callback       = table->callbacks.emplace_back();
     callback.signal_name = strdup(signal_name);
-    callback.func = func;
-    callback.user_data = user_data;
+    callback.func        = func;
+    callback.user_data   = user_data;
 }
 
 void TXT_EmitSignal(TXT_UNCAST_ARG(widget), const char *signal_name)
@@ -249,7 +250,7 @@ int TXT_HoveringOverWidget(TXT_UNCAST_ARG(widget))
 {
     TXT_CAST_ARG(txt_widget_t, widget);
     txt_window_t *active_window;
-    int x, y;
+    int           x, y;
 
     // We can only be hovering over widgets in the active window.
 
@@ -265,7 +266,7 @@ int TXT_HoveringOverWidget(TXT_UNCAST_ARG(widget))
     TXT_GetMousePosition(&x, &y);
 
     return (x >= widget->x && x < widget->x + widget->w
-         && y >= widget->y && y < widget->y + widget->h);
+            && y >= widget->y && y < widget->y + widget->h);
 }
 
 void TXT_SetWidgetBG(TXT_UNCAST_ARG(widget))
@@ -285,4 +286,3 @@ void TXT_SetWidgetBG(TXT_UNCAST_ARG(widget))
         // Use normal window background.
     }
 }
-

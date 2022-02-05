@@ -28,40 +28,40 @@
 #include "lump.hpp"
 #include "memory.hpp"
 
-void P_SpawnMapThing(mapthing_t * mthing);
+void P_SpawnMapThing(mapthing_t *mthing);
 
-int numvertexes;
+int       numvertexes;
 vertex_t *vertexes;
 
-int numsegs;
+int    numsegs;
 seg_t *segs;
 
-int numsectors;
+int       numsectors;
 sector_t *sectors;
 
-int numsubsectors;
+int          numsubsectors;
 subsector_t *subsectors;
 
-int numnodes;
+int     numnodes;
 node_t *nodes;
 
-int numlines;
+int     numlines;
 line_t *lines;
 
-int numsides;
+int     numsides;
 side_t *sides;
 
-int32_t *blockmap;	            // offsets in blockmap are from here // [crispy] BLOCKMAP limit
+int32_t *blockmap;              // offsets in blockmap are from here // [crispy] BLOCKMAP limit
 int32_t *blockmaplump;          // [crispy] BLOCKMAP limit
-int bmapwidth, bmapheight;      // in mapblocks
-fixed_t bmaporgx, bmaporgy;     // origin of block map
+int      bmapwidth, bmapheight; // in mapblocks
+fixed_t  bmaporgx, bmaporgy;    // origin of block map
 mobj_t **blocklinks;            // for thing chains
 
-byte *rejectmatrix;             // for fast sight rejection
+byte *rejectmatrix; // for fast sight rejection
 
 mapthing_t deathmatchstarts[10], *deathmatch_p;
 mapthing_t playerstarts[MAXPLAYERS];
-boolean playerstartsingame[MAXPLAYERS];
+boolean    playerstartsingame[MAXPLAYERS];
 
 /*
 =================
@@ -73,16 +73,16 @@ boolean playerstartsingame[MAXPLAYERS];
 
 void P_LoadVertexes(int lump)
 {
-    byte *data;
-    int i;
+    byte        *data;
+    int          i;
     mapvertex_t *ml;
-    vertex_t *li;
+    vertex_t    *li;
 
     numvertexes = W_LumpLength(lump) / sizeof(mapvertex_t);
-    vertexes = zmalloc<vertex_t *>(numvertexes * sizeof(vertex_t), PU_LEVEL, 0);
-    data = cache_lump_num<byte *>(lump, PU_STATIC);
+    vertexes    = zmalloc<vertex_t *>(numvertexes * sizeof(vertex_t), PU_LEVEL, 0);
+    data        = cache_lump_num<byte *>(lump, PU_STATIC);
 
-    ml = (mapvertex_t *) data;
+    ml = (mapvertex_t *)data;
     li = vertexes;
     for (i = 0; i < numvertexes; i++, li++, ml++)
     {
@@ -90,8 +90,8 @@ void P_LoadVertexes(int lump)
         li->y = SHORT(ml->y) << FRACBITS;
 
         // [crispy] initialize pseudovertexes with actual vertex coordinates
-        li->r_x = li->x;
-        li->r_y = li->y;
+        li->r_x   = li->x;
+        li->r_y   = li->y;
         li->moved = false;
     }
 
@@ -109,32 +109,32 @@ void P_LoadVertexes(int lump)
 
 void P_LoadSegs(int lump)
 {
-    byte *data;
-    int i;
+    byte     *data;
+    int       i;
     mapseg_t *ml;
-    seg_t *li;
-    line_t *ldef;
-    int linedef_local, side;
+    seg_t    *li;
+    line_t   *ldef;
+    int       linedef_local, side;
 
     numsegs = W_LumpLength(lump) / sizeof(mapseg_t);
-    segs = zmalloc<seg_t *>(numsegs * sizeof(seg_t), PU_LEVEL, 0);
+    segs    = zmalloc<seg_t *>(numsegs * sizeof(seg_t), PU_LEVEL, 0);
     memset(segs, 0, numsegs * sizeof(seg_t));
     data = cache_lump_num<byte *>(lump, PU_STATIC);
 
-    ml = (mapseg_t *) data;
+    ml = (mapseg_t *)data;
     li = segs;
     for (i = 0; i < numsegs; i++, li++, ml++)
     {
         li->v1 = &vertexes[SHORT(ml->v1)];
         li->v2 = &vertexes[SHORT(ml->v2)];
 
-        li->angle = (SHORT(ml->angle)) << 16;
-        li->offset = (SHORT(ml->offset)) << 16;
-        linedef_local = SHORT(ml->linedef);
-        ldef = &lines[linedef_local];
-        li->linedef = ldef;
-        side = SHORT(ml->side);
-        li->sidedef = &sides[ldef->sidenum[side]];
+        li->angle       = (SHORT(ml->angle)) << 16;
+        li->offset      = (SHORT(ml->offset)) << 16;
+        linedef_local   = SHORT(ml->linedef);
+        ldef            = &lines[linedef_local];
+        li->linedef     = ldef;
+        side            = SHORT(ml->side);
+        li->sidedef     = &sides[ldef->sidenum[side]];
         li->frontsector = sides[ldef->sidenum[side]].sector;
         if (ldef->flags & ML_TWOSIDED)
             li->backsector = sides[ldef->sidenum[side ^ 1]].sector;
@@ -156,21 +156,21 @@ void P_LoadSegs(int lump)
 
 void P_LoadSubsectors(int lump)
 {
-    byte *data;
-    int i;
+    byte           *data;
+    int             i;
     mapsubsector_t *ms;
-    subsector_t *ss;
+    subsector_t    *ss;
 
     numsubsectors = W_LumpLength(lump) / sizeof(mapsubsector_t);
-    subsectors = zmalloc<subsector_t *>(numsubsectors * sizeof(subsector_t), PU_LEVEL, 0);
-    data = cache_lump_num<byte *>(lump, PU_STATIC);
+    subsectors    = zmalloc<subsector_t *>(numsubsectors * sizeof(subsector_t), PU_LEVEL, 0);
+    data          = cache_lump_num<byte *>(lump, PU_STATIC);
 
-    ms = (mapsubsector_t *) data;
+    ms = (mapsubsector_t *)data;
     memset(subsectors, 0, numsubsectors * sizeof(subsector_t));
     ss = subsectors;
     for (i = 0; i < numsubsectors; i++, ss++, ms++)
     {
-        ss->numlines = SHORT(ms->numsegs);
+        ss->numlines  = SHORT(ms->numsegs);
         ss->firstline = SHORT(ms->firstseg);
     }
 
@@ -188,28 +188,28 @@ void P_LoadSubsectors(int lump)
 
 void P_LoadSectors(int lump)
 {
-    byte *data;
-    int i;
+    byte        *data;
+    int          i;
     mapsector_t *ms;
-    sector_t *ss;
+    sector_t    *ss;
 
     numsectors = W_LumpLength(lump) / sizeof(mapsector_t);
-    sectors = zmalloc<sector_t *>(numsectors * sizeof(sector_t), PU_LEVEL, 0);
+    sectors    = zmalloc<sector_t *>(numsectors * sizeof(sector_t), PU_LEVEL, 0);
     memset(sectors, 0, numsectors * sizeof(sector_t));
     data = cache_lump_num<byte *>(lump, PU_STATIC);
 
-    ms = (mapsector_t *) data;
+    ms = (mapsector_t *)data;
     ss = sectors;
     for (i = 0; i < numsectors; i++, ss++, ms++)
     {
-        ss->floorheight = SHORT(ms->floorheight) << FRACBITS;
+        ss->floorheight   = SHORT(ms->floorheight) << FRACBITS;
         ss->ceilingheight = SHORT(ms->ceilingheight) << FRACBITS;
-        ss->floorpic = R_FlatNumForName(ms->floorpic);
-        ss->ceilingpic = R_FlatNumForName(ms->ceilingpic);
-        ss->lightlevel = SHORT(ms->lightlevel);
-        ss->special = SHORT(ms->special);
-        ss->tag = SHORT(ms->tag);
-        ss->thinglist = NULL;
+        ss->floorpic      = R_FlatNumForName(ms->floorpic);
+        ss->ceilingpic    = R_FlatNumForName(ms->ceilingpic);
+        ss->lightlevel    = SHORT(ms->lightlevel);
+        ss->special       = SHORT(ms->special);
+        ss->tag           = SHORT(ms->tag);
+        ss->thinglist     = NULL;
     }
 
     W_ReleaseLumpNum(lump);
@@ -226,21 +226,21 @@ void P_LoadSectors(int lump)
 
 void P_LoadNodes(int lump)
 {
-    byte *data;
-    int i, j, k;
+    byte      *data;
+    int        i, j, k;
     mapnode_t *mn;
-    node_t *no;
+    node_t    *no;
 
     numnodes = W_LumpLength(lump) / sizeof(mapnode_t);
-    nodes = zmalloc<node_t *>(numnodes * sizeof(node_t), PU_LEVEL, 0);
-    data = cache_lump_num<byte *>(lump, PU_STATIC);
+    nodes    = zmalloc<node_t *>(numnodes * sizeof(node_t), PU_LEVEL, 0);
+    data     = cache_lump_num<byte *>(lump, PU_STATIC);
 
-    mn = (mapnode_t *) data;
+    mn = (mapnode_t *)data;
     no = nodes;
     for (i = 0; i < numnodes; i++, no++, mn++)
     {
-        no->x = SHORT(mn->x) << FRACBITS;
-        no->y = SHORT(mn->y) << FRACBITS;
+        no->x  = SHORT(mn->x) << FRACBITS;
+        no->y  = SHORT(mn->y) << FRACBITS;
         no->dx = SHORT(mn->dx) << FRACBITS;
         no->dy = SHORT(mn->dy) << FRACBITS;
         for (j = 0; j < 2; j++)
@@ -255,7 +255,6 @@ void P_LoadNodes(int lump)
 }
 
 
-
 /*
 =================
 =
@@ -266,22 +265,22 @@ void P_LoadNodes(int lump)
 
 void P_LoadThings(int lump)
 {
-    byte *data;
-    int i;
-    mapthing_t spawnthing;
+    byte       *data;
+    int         i;
+    mapthing_t  spawnthing;
     mapthing_t *mt;
-    int numthings;
+    int         numthings;
 
-    data = cache_lump_num<byte *>(lump, PU_STATIC);
+    data      = cache_lump_num<byte *>(lump, PU_STATIC);
     numthings = W_LumpLength(lump) / sizeof(mapthing_t);
 
-    mt = (mapthing_t *) data;
+    mt = (mapthing_t *)data;
     for (i = 0; i < numthings; i++, mt++)
     {
-        spawnthing.x = SHORT(mt->x);
-        spawnthing.y = SHORT(mt->y);
-        spawnthing.angle = SHORT(mt->angle);
-        spawnthing.type = SHORT(mt->type);
+        spawnthing.x       = SHORT(mt->x);
+        spawnthing.y       = SHORT(mt->y);
+        spawnthing.angle   = SHORT(mt->angle);
+        spawnthing.type    = SHORT(mt->type);
         spawnthing.options = SHORT(mt->options);
         P_SpawnMapThing(&spawnthing);
     }
@@ -302,7 +301,6 @@ void P_LoadThings(int lump)
 }
 
 
-
 /*
 =================
 =
@@ -314,28 +312,28 @@ void P_LoadThings(int lump)
 
 void P_LoadLineDefs(int lump)
 {
-    byte *data;
-    int i;
+    byte         *data;
+    int           i;
     maplinedef_t *mld;
-    line_t *ld;
-    vertex_t *v1, *v2;
+    line_t       *ld;
+    vertex_t     *v1, *v2;
 
     numlines = W_LumpLength(lump) / sizeof(maplinedef_t);
-    lines = zmalloc<line_t *>(numlines * sizeof(line_t), PU_LEVEL, 0);
+    lines    = zmalloc<line_t *>(numlines * sizeof(line_t), PU_LEVEL, 0);
     memset(lines, 0, numlines * sizeof(line_t));
     data = cache_lump_num<byte *>(lump, PU_STATIC);
 
-    mld = (maplinedef_t *) data;
-    ld = lines;
+    mld = (maplinedef_t *)data;
+    ld  = lines;
     for (i = 0; i < numlines; i++, mld++, ld++)
     {
-        ld->flags = SHORT(mld->flags);
+        ld->flags   = SHORT(mld->flags);
         ld->special = SHORT(mld->special);
-        ld->tag = SHORT(mld->tag);
+        ld->tag     = SHORT(mld->tag);
         v1 = ld->v1 = &vertexes[SHORT(mld->v1)];
         v2 = ld->v2 = &vertexes[SHORT(mld->v2)];
-        ld->dx = v2->x - v1->x;
-        ld->dy = v2->y - v1->y;
+        ld->dx      = v2->x - v1->x;
+        ld->dy      = v2->y - v1->y;
         if (!ld->dx)
             ld->slopetype = ST_VERTICAL;
         else if (!ld->dy)
@@ -350,23 +348,23 @@ void P_LoadLineDefs(int lump)
 
         if (v1->x < v2->x)
         {
-            ld->bbox[BOXLEFT] = v1->x;
+            ld->bbox[BOXLEFT]  = v1->x;
             ld->bbox[BOXRIGHT] = v2->x;
         }
         else
         {
-            ld->bbox[BOXLEFT] = v2->x;
+            ld->bbox[BOXLEFT]  = v2->x;
             ld->bbox[BOXRIGHT] = v1->x;
         }
         if (v1->y < v2->y)
         {
             ld->bbox[BOXBOTTOM] = v1->y;
-            ld->bbox[BOXTOP] = v2->y;
+            ld->bbox[BOXTOP]    = v2->y;
         }
         else
         {
             ld->bbox[BOXBOTTOM] = v2->y;
-            ld->bbox[BOXTOP] = v1->y;
+            ld->bbox[BOXTOP]    = v1->y;
         }
         ld->sidenum[0] = SHORT(mld->sidenum[0]);
         ld->sidenum[1] = SHORT(mld->sidenum[1]);
@@ -394,31 +392,30 @@ void P_LoadLineDefs(int lump)
 
 void P_LoadSideDefs(int lump)
 {
-    byte *data;
-    int i;
+    byte         *data;
+    int           i;
     mapsidedef_t *msd;
-    side_t *sd;
+    side_t       *sd;
 
     numsides = W_LumpLength(lump) / sizeof(mapsidedef_t);
-    sides = zmalloc<side_t *>(numsides * sizeof(side_t), PU_LEVEL, 0);
+    sides    = zmalloc<side_t *>(numsides * sizeof(side_t), PU_LEVEL, 0);
     memset(sides, 0, numsides * sizeof(side_t));
     data = cache_lump_num<byte *>(lump, PU_STATIC);
 
-    msd = (mapsidedef_t *) data;
-    sd = sides;
+    msd = (mapsidedef_t *)data;
+    sd  = sides;
     for (i = 0; i < numsides; i++, msd++, sd++)
     {
         sd->textureoffset = SHORT(msd->textureoffset) << FRACBITS;
-        sd->rowoffset = SHORT(msd->rowoffset) << FRACBITS;
-        sd->toptexture = R_TextureNumForName(msd->toptexture);
+        sd->rowoffset     = SHORT(msd->rowoffset) << FRACBITS;
+        sd->toptexture    = R_TextureNumForName(msd->toptexture);
         sd->bottomtexture = R_TextureNumForName(msd->bottomtexture);
-        sd->midtexture = R_TextureNumForName(msd->midtexture);
-        sd->sector = &sectors[SHORT(msd->sector)];
+        sd->midtexture    = R_TextureNumForName(msd->midtexture);
+        sd->sector        = &sectors[SHORT(msd->sector)];
     }
 
     W_ReleaseLumpNum(lump);
 }
-
 
 
 /*
@@ -431,8 +428,8 @@ void P_LoadSideDefs(int lump)
 
 void P_LoadBlockMap(int lump)
 {
-    int i, count;
-    int lumplen;
+    int    i, count;
+    int    lumplen;
     short *wadblockmaplump;
 
     lumplen = W_LumpLength(lump);
@@ -443,7 +440,7 @@ void P_LoadBlockMap(int lump)
     wadblockmaplump = zmalloc<short *>(lumplen, PU_LEVEL, NULL);
     W_ReadLump(lump, wadblockmaplump);
     blockmaplump = zmalloc<int32_t *>(sizeof(*blockmaplump) * count, PU_LEVEL, NULL);
-    blockmap = blockmaplump + 4;
+    blockmap     = blockmaplump + 4;
 
     blockmaplump[0] = SHORT(wadblockmaplump[0]);
     blockmaplump[1] = SHORT(wadblockmaplump[1]);
@@ -451,28 +448,26 @@ void P_LoadBlockMap(int lump)
     blockmaplump[3] = (int32_t)(SHORT(wadblockmaplump[3])) & 0xffff;
 
     // Swap all short integers to native byte ordering:
-	
+
     // count = lumplen / 2; // [crispy] moved up
-    for (i=4; i<count; i++)
+    for (i = 4; i < count; i++)
     {
-        short t = SHORT(wadblockmaplump[i]);
-        blockmaplump[i] = (t == -1) ? -1l : (int32_t) t & 0xffff;
+        short t         = SHORT(wadblockmaplump[i]);
+        blockmaplump[i] = (t == -1) ? -1l : (int32_t)t & 0xffff;
     }
 
     Z_Free(wadblockmaplump);
 
-    bmaporgx = blockmaplump[0] << FRACBITS;
-    bmaporgy = blockmaplump[1] << FRACBITS;
-    bmapwidth = blockmaplump[2];
+    bmaporgx   = blockmaplump[0] << FRACBITS;
+    bmaporgy   = blockmaplump[1] << FRACBITS;
+    bmapwidth  = blockmaplump[2];
     bmapheight = blockmaplump[3];
 
-// clear out mobj chains
-    count = sizeof(*blocklinks) * bmapwidth * bmapheight;
+    // clear out mobj chains
+    count      = sizeof(*blocklinks) * bmapwidth * bmapheight;
     blocklinks = zmalloc<mobj_t **>(count, PU_LEVEL, 0);
     memset(blocklinks, 0, count);
 }
-
-
 
 
 /*
@@ -487,25 +482,25 @@ void P_LoadBlockMap(int lump)
 
 void P_GroupLines()
 {
-    line_t **linebuffer;
-    int i, j, total;
-    line_t *li;
-    sector_t *sector;
+    line_t     **linebuffer;
+    int          i, j, total;
+    line_t      *li;
+    sector_t    *sector;
     subsector_t *ss;
-    seg_t *seg;
-    fixed_t bbox[4];
-    int block;
+    seg_t       *seg;
+    fixed_t      bbox[4];
+    int          block;
 
-// look up sector number for each subsector
+    // look up sector number for each subsector
     ss = subsectors;
     for (i = 0; i < numsubsectors; i++, ss++)
     {
-        seg = &segs[ss->firstline];
+        seg        = &segs[ss->firstline];
         ss->sector = seg->sidedef->sector;
     }
 
-// count number of lines in each sector
-    li = lines;
+    // count number of lines in each sector
+    li    = lines;
     total = 0;
     for (i = 0; i < numlines; i++, li++)
     {
@@ -518,14 +513,14 @@ void P_GroupLines()
         }
     }
 
-// build line tables for each sector    
+    // build line tables for each sector
     linebuffer = zmalloc<line_t **>(total * sizeof(line_t *), PU_LEVEL, 0);
-    sector = sectors;
+    sector     = sectors;
     for (i = 0; i < numsectors; i++, sector++)
     {
         M_ClearBox(bbox);
         sector->lines = linebuffer;
-        li = lines;
+        li            = lines;
         for (j = 0; j < numlines; j++, li++)
         {
             if (li->frontsector == sector || li->backsector == sector)
@@ -543,23 +538,22 @@ void P_GroupLines()
         sector->soundorg.y = (bbox[BOXTOP] + bbox[BOXBOTTOM]) / 2;
 
         // adjust bounding box to map blocks
-        block = (bbox[BOXTOP] - bmaporgy + MAXRADIUS) >> MAPBLOCKSHIFT;
-        block = block >= bmapheight ? bmapheight - 1 : block;
+        block                    = (bbox[BOXTOP] - bmaporgy + MAXRADIUS) >> MAPBLOCKSHIFT;
+        block                    = block >= bmapheight ? bmapheight - 1 : block;
         sector->blockbox[BOXTOP] = block;
 
-        block = (bbox[BOXBOTTOM] - bmaporgy - MAXRADIUS) >> MAPBLOCKSHIFT;
-        block = block < 0 ? 0 : block;
+        block                       = (bbox[BOXBOTTOM] - bmaporgy - MAXRADIUS) >> MAPBLOCKSHIFT;
+        block                       = block < 0 ? 0 : block;
         sector->blockbox[BOXBOTTOM] = block;
 
-        block = (bbox[BOXRIGHT] - bmaporgx + MAXRADIUS) >> MAPBLOCKSHIFT;
-        block = block >= bmapwidth ? bmapwidth - 1 : block;
+        block                      = (bbox[BOXRIGHT] - bmaporgx + MAXRADIUS) >> MAPBLOCKSHIFT;
+        block                      = block >= bmapwidth ? bmapwidth - 1 : block;
         sector->blockbox[BOXRIGHT] = block;
 
-        block = (bbox[BOXLEFT] - bmaporgx - MAXRADIUS) >> MAPBLOCKSHIFT;
-        block = block < 0 ? 0 : block;
+        block                     = (bbox[BOXLEFT] - bmaporgx - MAXRADIUS) >> MAPBLOCKSHIFT;
+        block                     = block < 0 ? 0 : block;
         sector->blockbox[BOXLEFT] = block;
     }
-
 }
 
 //=============================================================================
@@ -576,44 +570,44 @@ static void P_RemoveSlimeTrails()
 
     for (i = 0; i < numsegs; i++)
     {
-	const line_t *l = segs[i].linedef;
-	vertex_t *v = segs[i].v1;
+        const line_t *l = segs[i].linedef;
+        vertex_t     *v = segs[i].v1;
 
-	// [crispy] ignore exactly vertical or horizontal linedefs
-	if (l->dx && l->dy)
-	{
-	    do
-	    {
-		// [crispy] vertex wasn't already moved
-		if (!v->moved)
-		{
-		    v->moved = true;
-		    // [crispy] ignore endpoints of linedefs
-		    if (v != l->v1 && v != l->v2)
-		    {
-			// [crispy] move the vertex towards the linedef
-			// by projecting it using the law of cosines
-			int64_t dx2 = (l->dx >> FRACBITS) * (l->dx >> FRACBITS);
-			int64_t dy2 = (l->dy >> FRACBITS) * (l->dy >> FRACBITS);
-			int64_t dxy = (l->dx >> FRACBITS) * (l->dy >> FRACBITS);
-			int64_t s = dx2 + dy2;
+        // [crispy] ignore exactly vertical or horizontal linedefs
+        if (l->dx && l->dy)
+        {
+            do
+            {
+                // [crispy] vertex wasn't already moved
+                if (!v->moved)
+                {
+                    v->moved = true;
+                    // [crispy] ignore endpoints of linedefs
+                    if (v != l->v1 && v != l->v2)
+                    {
+                        // [crispy] move the vertex towards the linedef
+                        // by projecting it using the law of cosines
+                        int64_t dx2 = (l->dx >> FRACBITS) * (l->dx >> FRACBITS);
+                        int64_t dy2 = (l->dy >> FRACBITS) * (l->dy >> FRACBITS);
+                        int64_t dxy = (l->dx >> FRACBITS) * (l->dy >> FRACBITS);
+                        int64_t s   = dx2 + dy2;
 
-			// [crispy] MBF actually overrides v->x and v->y here
-			v->r_x = (fixed_t)((dx2 * v->x + dy2 * l->v1->x + dxy * (v->y - l->v1->y)) / s);
-			v->r_y = (fixed_t)((dy2 * v->y + dx2 * l->v1->y + dxy * (v->x - l->v1->x)) / s);
+                        // [crispy] MBF actually overrides v->x and v->y here
+                        v->r_x = (fixed_t)((dx2 * v->x + dy2 * l->v1->x + dxy * (v->y - l->v1->y)) / s);
+                        v->r_y = (fixed_t)((dy2 * v->y + dx2 * l->v1->y + dxy * (v->x - l->v1->x)) / s);
 
-			// [crispy] wait a minute... moved more than 8 map units?
-			// maybe that's a linguortal then, back to the original coordinates
-			if (std::abs(v->r_x - v->x) > 8*FRACUNIT || std::abs(v->r_y - v->y) > 8*FRACUNIT)
-			{
-			    v->r_x = v->x;
-			    v->r_y = v->y;
-			}
-		    }
-		}
-	    // [crispy] if v doesn't point to the second vertex of the seg already, point it there
-	    } while ((v != segs[i].v2) && (v = segs[i].v2));
-	}
+                        // [crispy] wait a minute... moved more than 8 map units?
+                        // maybe that's a linguortal then, back to the original coordinates
+                        if (std::abs(v->r_x - v->x) > 8 * FRACUNIT || std::abs(v->r_y - v->y) > 8 * FRACUNIT)
+                        {
+                            v->r_x = v->x;
+                            v->r_y = v->y;
+                        }
+                    }
+                }
+                // [crispy] if v doesn't point to the second vertex of the seg already, point it there
+            } while ((v != segs[i].v2) && (v = segs[i].v2));
+        }
     }
 }
 
@@ -627,39 +621,38 @@ static void P_RemoveSlimeTrails()
 
 void P_SetupLevel(int episode, int map, int playermask, skill_t skill)
 {
-    int i;
-    int parm;
-    char lumpname[9];
-    int lumpnum;
+    int     i;
+    int     parm;
+    char    lumpname[9];
+    int     lumpnum;
     mobj_t *mobj;
 
     totalkills = totalitems = totalsecret = 0;
     for (i = 0; i < MAXPLAYERS; i++)
     {
-        players[i].killcount = players[i].secretcount
-            = players[i].itemcount = 0;
+        players[i].killcount = players[i].secretcount = players[i].itemcount = 0;
     }
-    players[consoleplayer].viewz = 1;   // will be set by player think
+    players[consoleplayer].viewz = 1; // will be set by player think
 
-    S_Start();                  // make sure all sounds are stopped before Z_FreeTags
+    S_Start(); // make sure all sounds are stopped before Z_FreeTags
 
     Z_FreeTags(PU_LEVEL, PU_PURGELEVEL - 1);
 
     P_InitThinkers();
 
-//
-// look for a regular (development) map first
-//
+    //
+    // look for a regular (development) map first
+    //
     lumpname[0] = 'E';
     lumpname[1] = '0' + episode;
     lumpname[2] = 'M';
     lumpname[3] = '0' + map;
     lumpname[4] = 0;
-    leveltime = 0;
+    leveltime   = 0;
 
     lumpnum = W_GetNumForName(lumpname);
 
-// note: most of this ordering is important     
+    // note: most of this ordering is important
     P_LoadBlockMap(lumpnum + ML_BLOCKMAP);
     P_LoadVertexes(lumpnum + ML_VERTEXES);
     P_LoadSectors(lumpnum + ML_SECTORS);
@@ -676,7 +669,7 @@ void P_SetupLevel(int episode, int map, int playermask, skill_t skill)
     // [crispy] remove slime trails
     P_RemoveSlimeTrails();
 
-    bodyqueslot = 0;
+    bodyqueslot  = 0;
     deathmatch_p = deathmatchstarts;
     P_InitAmbientSound();
     P_InitMonsters();
@@ -684,18 +677,18 @@ void P_SetupLevel(int episode, int map, int playermask, skill_t skill)
     P_LoadThings(lumpnum + ML_THINGS);
     P_CloseWeapons();
 
-//
-// if deathmatch, randomly spawn the active players
-//
+    //
+    // if deathmatch, randomly spawn the active players
+    //
     TimerGame = 0;
     if (deathmatch)
     {
         for (i = 0; i < MAXPLAYERS; i++)
         {
             if (playeringame[i])
-            {                   // must give a player spot before deathmatchspawn
-                mobj = P_SpawnMobj(playerstarts[i].x << 16,
-                                   playerstarts[i].y << 16, 0, MT_PLAYER);
+            { // must give a player spot before deathmatchspawn
+                mobj          = P_SpawnMobj(playerstarts[i].x << 16,
+                             playerstarts[i].y << 16, 0, MT_PLAYER);
                 players[i].mo = mobj;
                 G_DeathMatchSpawnPlayer(i);
                 P_RemoveMobj(mobj);
@@ -717,18 +710,17 @@ void P_SetupLevel(int episode, int map, int playermask, skill_t skill)
         }
     }
 
-// set up world state
+    // set up world state
     P_SpawnSpecials();
 
-// build subsector connect matrix
-//      P_ConnectSubsectors ();
+    // build subsector connect matrix
+    //      P_ConnectSubsectors ();
 
-// preload graphics
+    // preload graphics
     if (precache)
         R_PrecacheLevel();
 
-//printf ("free memory: 0x%x\n", Z_FreeMemory());
-
+    // printf ("free memory: 0x%x\n", Z_FreeMemory());
 }
 
 

@@ -35,7 +35,7 @@ extern void ST_NetProgress();
 extern void ST_NetDone();
 
 // PUBLIC DATA DECLARATIONS ------------------------------------------------
- 
+
 extern int graphical_startup;
 
 #endif

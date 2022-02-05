@@ -25,7 +25,7 @@
 
 #include "doomtype.hpp"
 
-#include "r_defs.hpp"   // haleyjd [STRIFE]
+#include "r_defs.hpp" // haleyjd [STRIFE]
 #include "r_draw.hpp"
 
 #include "f_wipe.hpp"
@@ -36,43 +36,38 @@
 //
 
 // when zero, stop the wipe
-static boolean	go = 0;
+static boolean go = 0;
 
-static byte*	wipe_scr_start;
-static byte*	wipe_scr_end;
-static byte*	wipe_scr;
+static byte *wipe_scr_start;
+static byte *wipe_scr_end;
+static byte *wipe_scr;
 
 
-void
-wipe_shittyColMajorXform
-( short*	array,
-  int		width,
-  int		height )
+void wipe_shittyColMajorXform(short *array,
+    int                              width,
+    int                              height)
 {
-    int		x;
-    int		y;
-    short*	dest;
+    int    x;
+    int    y;
+    short *dest;
 
-    dest = zmalloc<short*>(width*height*2, PU_STATIC, 0);
+    dest = zmalloc<short *>(width * height * 2, PU_STATIC, 0);
 
-    for(y=0;y<height;y++)
-	for(x=0;x<width;x++)
-	    dest[x*height+y] = array[y*width+x];
+    for (y = 0; y < height; y++)
+        for (x = 0; x < width; x++)
+            dest[x * height + y] = array[y * width + x];
 
-    memcpy(array, dest, width*height*2);
+    memcpy(array, dest, width * height * 2);
 
     Z_Free(dest);
-
 }
 
 // haleyjd 08/26/10: [STRIFE] Verified unmodified.
-int
-wipe_initColorXForm
-( int	width,
-  int	height,
-  int	ticks )
+int wipe_initColorXForm(int width,
+    int                     height,
+    int                     ticks)
 {
-    memcpy(wipe_scr, wipe_scr_start, width*height);
+    memcpy(wipe_scr, wipe_scr_start, width * height);
     return 0;
 }
 
@@ -80,26 +75,24 @@ wipe_initColorXForm
 // wipe_doColorXForm
 //
 // haleyjd 08/26/10: [STRIFE]
-// * Rogue modified the unused ColorXForm wipe in-place in order to implement 
+// * Rogue modified the unused ColorXForm wipe in-place in order to implement
 //   their distinctive crossfade wipe.
 //
-int
-wipe_doColorXForm
-( int	width,
-  int	height,
-  int	ticks )
+int wipe_doColorXForm(int width,
+    int                   height,
+    int                   ticks)
 {
-    byte *cur_screen = wipe_scr;
-    byte *end_screen = wipe_scr_end;
-    int   pix = width*height;
-    int   i;
+    byte   *cur_screen = wipe_scr;
+    byte   *end_screen = wipe_scr_end;
+    int     pix        = width * height;
+    int     i;
     boolean changed = false;
 
-    for(i = pix; i > 0; i--)
+    for (i = pix; i > 0; i--)
     {
-        if(*cur_screen != *end_screen)
+        if (*cur_screen != *end_screen)
         {
-            changed = true;
+            changed     = true;
             *cur_screen = xlatab[(*cur_screen << 8) + *end_screen];
         }
         ++cur_screen;
@@ -110,109 +103,103 @@ wipe_doColorXForm
 }
 
 // haleyjd 08/26/10: [STRIFE] Verified unmodified.
-int
-wipe_exitColorXForm
-( int	width,
-  int	height,
-  int	ticks )
+int wipe_exitColorXForm(int width,
+    int                     height,
+    int                     ticks)
 {
     return 0;
 }
 
 
-static int*	y;
+static int *y;
 
-int
-wipe_initMelt
-( int	width,
-  int	height,
-  int	ticks )
+int wipe_initMelt(int width,
+    int               height,
+    int               ticks)
 {
     int i, r;
-    
+
     // copy start screen to main screen
-    memcpy(wipe_scr, wipe_scr_start, width*height);
-    
+    memcpy(wipe_scr, wipe_scr_start, width * height);
+
     // makes this wipe faster (in theory)
     // to have stuff in column-major format
-    wipe_shittyColMajorXform((short*)wipe_scr_start, width/2, height);
-    wipe_shittyColMajorXform((short*)wipe_scr_end, width/2, height);
-    
+    wipe_shittyColMajorXform((short *)wipe_scr_start, width / 2, height);
+    wipe_shittyColMajorXform((short *)wipe_scr_end, width / 2, height);
+
     // setup initial column positions
     // (y<0 => not ready to scroll yet)
-    y = zmalloc<int *>(width*sizeof(int), PU_STATIC, 0);
-    y[0] = -(M_Random()%16);
-    for (i=1;i<width;i++)
+    y    = zmalloc<int *>(width * sizeof(int), PU_STATIC, 0);
+    y[0] = -(M_Random() % 16);
+    for (i = 1; i < width; i++)
     {
-	r = (M_Random()%3) - 1;
-	y[i] = y[i-1] + r;
-	if (y[i] > 0) y[i] = 0;
-	else if (y[i] == -16) y[i] = -15;
+        r    = (M_Random() % 3) - 1;
+        y[i] = y[i - 1] + r;
+        if (y[i] > 0)
+            y[i] = 0;
+        else if (y[i] == -16)
+            y[i] = -15;
     }
 
     return 0;
 }
 
-int
-wipe_doMelt
-( int	width,
-  int	height,
-  int	ticks )
+int wipe_doMelt(int width,
+    int             height,
+    int             ticks)
 {
-    int		i;
-    int		j;
-    int		dy;
-    int		idx;
-    
-    short*	s;
-    short*	d;
-    boolean	done = true;
+    int i;
+    int j;
+    int dy;
+    int idx;
 
-    width/=2;
+    short  *s;
+    short  *d;
+    boolean done = true;
+
+    width /= 2;
 
     while (ticks--)
     {
-	for (i=0;i<width;i++)
-	{
-	    if (y[i]<0)
-	    {
-		y[i]++; done = false;
-	    }
-	    else if (y[i] < height)
-	    {
-		dy = (y[i] < 16) ? y[i]+1 : 8;
-		if (y[i]+dy >= height) dy = height - y[i];
-		s = &((short *)wipe_scr_end)[i*height+y[i]];
-		d = &((short *)wipe_scr)[y[i]*width+i];
-		idx = 0;
-		for (j=dy;j;j--)
-		{
-		    d[idx] = *(s++);
-		    idx += width;
-		}
-		y[i] += dy;
-		s = &((short *)wipe_scr_start)[i*height];
-		d = &((short *)wipe_scr)[y[i]*width+i];
-		idx = 0;
-		for (j=height-y[i];j;j--)
-		{
-		    d[idx] = *(s++);
-		    idx += width;
-		}
-		done = false;
-	    }
-	}
+        for (i = 0; i < width; i++)
+        {
+            if (y[i] < 0)
+            {
+                y[i]++;
+                done = false;
+            }
+            else if (y[i] < height)
+            {
+                dy = (y[i] < 16) ? y[i] + 1 : 8;
+                if (y[i] + dy >= height) dy = height - y[i];
+                s   = &((short *)wipe_scr_end)[i * height + y[i]];
+                d   = &((short *)wipe_scr)[y[i] * width + i];
+                idx = 0;
+                for (j = dy; j; j--)
+                {
+                    d[idx] = *(s++);
+                    idx += width;
+                }
+                y[i] += dy;
+                s   = &((short *)wipe_scr_start)[i * height];
+                d   = &((short *)wipe_scr)[y[i] * width + i];
+                idx = 0;
+                for (j = height - y[i]; j; j--)
+                {
+                    d[idx] = *(s++);
+                    idx += width;
+                }
+                done = false;
+            }
+        }
     }
 
     return done;
-
 }
 
-int
-wipe_exitMelt
-( int	width,
-  int	height,
-  int	ticks )
+int wipe_exitMelt(int width,
+    int               height,
+    int               ticks)
 {
     Z_Free(y);
     Z_Free(wipe_scr_start);
@@ -221,12 +208,10 @@ wipe_exitMelt
 }
 
 // haleyjd 08/26/10: [STRIFE] Verified unmodified.
-int
-wipe_StartScreen
-( int	x,
-  int	y_pos,
-  int	width,
-  int	height )
+int wipe_StartScreen(int x,
+    int                  y_pos,
+    int                  width,
+    int                  height)
 {
     wipe_scr_start = zmalloc<byte *>(SCREENWIDTH * SCREENHEIGHT, PU_STATIC, NULL);
     I_ReadScreen(wipe_scr_start);
@@ -234,12 +219,10 @@ wipe_StartScreen
 }
 
 // haleyjd 08/26/10: [STRIFE] Verified unmodified.
-int
-wipe_EndScreen
-( int	x,
-  int	y_pos,
-  int	width,
-  int	height )
+int wipe_EndScreen(int x,
+    int                y_pos,
+    int                width,
+    int                height)
 {
     wipe_scr_end = zmalloc<byte *>(SCREENWIDTH * SCREENHEIGHT, PU_STATIC, NULL);
     I_ReadScreen(wipe_scr_end);
@@ -248,20 +231,17 @@ wipe_EndScreen
 }
 
 // haleyjd 08/26/10: [STRIFE] Verified unmodified.
-int
-wipe_ScreenWipe
-( int	wipeno,
-  int	x,
-  int	y_pos,
-  int	width,
-  int	height,
-  int	ticks )
+int wipe_ScreenWipe(int wipeno,
+    int                 x,
+    int                 y_pos,
+    int                 width,
+    int                 height,
+    int                 ticks)
 {
     int rc;
-    static int (*wipes[])(int, int, int) =
-    {
-	wipe_initColorXForm, wipe_doColorXForm, wipe_exitColorXForm,
-	wipe_initMelt, wipe_doMelt, wipe_exitMelt
+    static int (*wipes[])(int, int, int) = {
+        wipe_initColorXForm, wipe_doColorXForm, wipe_exitColorXForm,
+        wipe_initMelt, wipe_doMelt, wipe_exitMelt
     };
 
     ticks <<= crispy->hires;
@@ -269,16 +249,16 @@ wipe_ScreenWipe
     // initial stuff
     if (!go)
     {
-	go = 1;
+        go = 1;
         // haleyjd 20110629 [STRIFE]: We *must* use a temp buffer here.
-	wipe_scr = zmalloc<byte *>(width * height, PU_STATIC, 0); // DEBUG
-	//wipe_scr = I_VideoBuffer;
-	(*wipes[wipeno*3])(width, height, ticks);
+        wipe_scr = zmalloc<byte *>(width * height, PU_STATIC, 0); // DEBUG
+        // wipe_scr = I_VideoBuffer;
+        (*wipes[wipeno * 3])(width, height, ticks);
     }
 
     // do a piece of wipe-in
     V_MarkRect(0, 0, width, height);
-    rc = (*wipes[wipeno*3+1])(width, height, ticks);
+    rc = (*wipes[wipeno * 3 + 1])(width, height, ticks);
 
     // haleyjd 20110629 [STRIFE]: Copy temp buffer to the real screen.
     V_DrawBlock(x, y_pos, width, height, wipe_scr);
@@ -286,10 +266,9 @@ wipe_ScreenWipe
     // final stuff
     if (rc)
     {
-	go = 0;
-	(*wipes[wipeno*3+2])(width, height, ticks);
+        go = 0;
+        (*wipes[wipeno * 3 + 2])(width, height, ticks);
     }
 
     return !go;
 }
-

@@ -125,16 +125,16 @@ int orbitTableY[256] = {
 /*
 void A_DripBlood(mobj_t *actor)
 {
-	mobj_t *mo;
+        mobj_t *mo;
     int r;
 
     r = P_SubRandom();
 
-	mo = P_SpawnMobj(actor->x+(r<<11),
-		actor->y+(P_SubRandom()<<11), actor->z, MT_BLOOD);
-	mo->momx = P_SubRandom()<<10;
-	mo->momy = P_SubRandom()<<10;
-	mo->flags2 |= MF2_LOGRAV;
+        mo = P_SpawnMobj(actor->x+(r<<11),
+                actor->y+(P_SubRandom()<<11), actor->z, MT_BLOOD);
+        mo->momx = P_SubRandom()<<10;
+        mo->momy = P_SubRandom()<<10;
+        mo->flags2 |= MF2_LOGRAV;
 }
 */
 
@@ -144,10 +144,10 @@ void A_DripBlood(mobj_t *actor)
 //
 //============================================================================
 
-void A_PotteryExplode(mobj_t * actor)
+void A_PotteryExplode(mobj_t *actor)
 {
     mobj_t *mo = NULL;
-    int i;
+    int     i;
 
     for (i = (P_Random() & 3) + 3; i; i--)
     {
@@ -159,13 +159,12 @@ void A_PotteryExplode(mobj_t * actor)
     }
     S_StartSound(mo, SFX_POTTERY_EXPLODE);
     if (actor->args[0])
-    {                           // Spawn an item
+    { // Spawn an item
         if (!nomonsters
-            || !(mobjinfo[TranslateThingType[actor->args[0]]].
-                 flags & MF_COUNTKILL))
-        {                       // Only spawn monsters if not -nomonsters
+            || !(mobjinfo[TranslateThingType[actor->args[0]]].flags & MF_COUNTKILL))
+        { // Only spawn monsters if not -nomonsters
             P_SpawnMobj(actor->x, actor->y, actor->z,
-                        TranslateThingType[actor->args[0]]);
+                TranslateThingType[actor->args[0]]);
         }
     }
     P_RemoveMobj(actor);
@@ -177,7 +176,7 @@ void A_PotteryExplode(mobj_t * actor)
 //
 //============================================================================
 
-void A_PotteryChooseBit(mobj_t * actor)
+void A_PotteryChooseBit(mobj_t *actor)
 {
     P_SetMobjState(actor, static_cast<statenum_t>(actor->info->deathstate + (P_Random() % 5) + 1));
     actor->tics = 256 + (P_Random() << 1);
@@ -189,18 +188,19 @@ void A_PotteryChooseBit(mobj_t * actor)
 //
 //============================================================================
 
-void A_PotteryCheck(mobj_t * actor)
+void A_PotteryCheck(mobj_t *actor)
 {
-    int i;
+    int     i;
     mobj_t *pmo;
 
     if (!netgame)
     {
         pmo = players[consoleplayer].mo;
         if (P_CheckSight(actor, pmo)
-	  && (std::abs((int)R_PointToAngle2(pmo->x, pmo->y, actor->x, actor->y)
-           - (int)pmo->angle) <= ANG45))
-        {                       // Previous state (pottery bit waiting state)
+            && (std::abs((int)R_PointToAngle2(pmo->x, pmo->y, actor->x, actor->y)
+                         - (int)pmo->angle)
+                <= ANG45))
+        { // Previous state (pottery bit waiting state)
             P_SetMobjState(actor, static_cast<statenum_t>(actor->state - &states[0] - 1));
         }
         else
@@ -217,10 +217,11 @@ void A_PotteryCheck(mobj_t * actor)
                 continue;
             }
             pmo = players[i].mo;
-            if (P_CheckSight(actor, pmo) 
-              && (std::abs((int)R_PointToAngle2(pmo->x, pmo->y, actor->x, actor->y)
-               - (int)pmo->angle) <= ANG45))
-            {                   // Previous state (pottery bit waiting state)
+            if (P_CheckSight(actor, pmo)
+                && (std::abs((int)R_PointToAngle2(pmo->x, pmo->y, actor->x, actor->y)
+                             - (int)pmo->angle)
+                    <= ANG45))
+            { // Previous state (pottery bit waiting state)
                 P_SetMobjState(actor, static_cast<statenum_t>(actor->state - &states[0] - 1));
                 return;
             }
@@ -234,14 +235,14 @@ void A_PotteryCheck(mobj_t * actor)
 //
 //============================================================================
 
-void A_CorpseBloodDrip(mobj_t * actor)
+void A_CorpseBloodDrip(mobj_t *actor)
 {
     if (P_Random() > 128)
     {
         return;
     }
     P_SpawnMobj(actor->x, actor->y, actor->z + actor->height / 2,
-                MT_CORPSEBLOODDRIP);
+        MT_CORPSEBLOODDRIP);
 }
 
 //============================================================================
@@ -250,10 +251,10 @@ void A_CorpseBloodDrip(mobj_t * actor)
 //
 //============================================================================
 
-void A_CorpseExplode(mobj_t * actor)
+void A_CorpseExplode(mobj_t *actor)
 {
     mobj_t *mo;
-    int i;
+    int     i;
 
     for (i = (P_Random() & 3) + 3; i; i--)
     {
@@ -282,10 +283,10 @@ void A_CorpseExplode(mobj_t * actor)
 //
 //============================================================================
 
-void A_LeafSpawn(mobj_t * actor)
+void A_LeafSpawn(mobj_t *actor)
 {
     mobj_t *mo;
-    int i;
+    int     i;
 
     for (i = (P_Random() & 3) + 1; i; i--)
     {
@@ -293,15 +294,15 @@ void A_LeafSpawn(mobj_t * actor)
         // the in order of function's argument evaluation,
         // see ISO-IEC 9899-1999, [6.5.2.2.10]
         mobjtype_t type = static_cast<mobjtype_t>(MT_LEAF1 + (P_Random() & 1));
-        fixed_t z = actor->z + (P_Random() << 14);
-        fixed_t y = actor->y + (P_SubRandom() << 14);
-        fixed_t x = actor->x + (P_SubRandom() << 14);
+        fixed_t    z    = actor->z + (P_Random() << 14);
+        fixed_t    y    = actor->y + (P_SubRandom() << 14);
+        fixed_t    x    = actor->x + (P_SubRandom() << 14);
 
         mo = P_SpawnMobj(x, y, z, type);
         if (mo)
         {
             P_ThrustMobj(mo, actor->angle, (P_Random() << 9) + 3 * FRACUNIT);
-            mo->target = actor;
+            mo->target     = actor;
             mo->special1.i = 0;
         }
     }
@@ -313,7 +314,7 @@ void A_LeafSpawn(mobj_t * actor)
 //
 //============================================================================
 
-void A_LeafThrust(mobj_t * actor)
+void A_LeafThrust(mobj_t *actor)
 {
     if (P_Random() > 96)
     {
@@ -328,7 +329,7 @@ void A_LeafThrust(mobj_t * actor)
 //
 //============================================================================
 
-void A_LeafCheck(mobj_t * actor)
+void A_LeafCheck(mobj_t *actor)
 {
     actor->special1.i++;
     if (actor->special1.i >= 20)
@@ -341,14 +342,14 @@ void A_LeafCheck(mobj_t * actor)
         if (!actor->momx && !actor->momy)
         {
             P_ThrustMobj(actor, actor->target->angle,
-                         (P_Random() << 9) + FRACUNIT);
+                (P_Random() << 9) + FRACUNIT);
         }
         return;
     }
     P_SetMobjState(actor, S_LEAF1_8);
     actor->momz = (P_Random() << 9) + FRACUNIT;
     P_ThrustMobj(actor, actor->target->angle,
-                 (P_Random() << 9) + 2 * FRACUNIT);
+        (P_Random() << 9) + 2 * FRACUNIT);
     actor->flags |= MF_MISSILE;
 }
 
@@ -356,43 +357,43 @@ void A_LeafCheck(mobj_t * actor)
 #define ORBIT_RADIUS	(15*FRACUNIT)
 void GenerateOrbitTable()
 {
-	int angle;
+        int angle;
 
-	for (angle=0; angle<256; angle++)
-	{
-		orbitTableX[angle] = FixedMul(ORBIT_RADIUS, finecosine[angle<<5]);
-		orbitTableY[angle] = FixedMul(ORBIT_RADIUS, finesine[angle<<5]);
-	}
+        for (angle=0; angle<256; angle++)
+        {
+                orbitTableX[angle] = FixedMul(ORBIT_RADIUS, finecosine[angle<<5]);
+                orbitTableY[angle] = FixedMul(ORBIT_RADIUS, finesine[angle<<5]);
+        }
 
-	printf("int orbitTableX[256]=\n{\n");
-	for (angle=0; angle<256; angle+=8)
-	{
-		printf("%d, %d, %d, %d, %d, %d, %d, %d,\n",
-			orbitTableX[angle],
-			orbitTableX[angle+1],
-			orbitTableX[angle+2],
-			orbitTableX[angle+3],
-			orbitTableX[angle+4],
-			orbitTableX[angle+5],
-			orbitTableX[angle+6],
-			orbitTableX[angle+7]);
-	}
-	printf("};\n\n");
+        printf("int orbitTableX[256]=\n{\n");
+        for (angle=0; angle<256; angle+=8)
+        {
+                printf("%d, %d, %d, %d, %d, %d, %d, %d,\n",
+                        orbitTableX[angle],
+                        orbitTableX[angle+1],
+                        orbitTableX[angle+2],
+                        orbitTableX[angle+3],
+                        orbitTableX[angle+4],
+                        orbitTableX[angle+5],
+                        orbitTableX[angle+6],
+                        orbitTableX[angle+7]);
+        }
+        printf("};\n\n");
 
-	printf("int orbitTableY[256]=\n{\n");
-	for (angle=0; angle<256; angle+=8)
-	{
-		printf("%d, %d, %d, %d, %d, %d, %d, %d,\n",
-			orbitTableY[angle],
-			orbitTableY[angle+1],
-			orbitTableY[angle+2],
-			orbitTableY[angle+3],
-			orbitTableY[angle+4],
-			orbitTableY[angle+5],
-			orbitTableY[angle+6],
-			orbitTableY[angle+7]);
-	}
-	printf("};\n");
+        printf("int orbitTableY[256]=\n{\n");
+        for (angle=0; angle<256; angle+=8)
+        {
+                printf("%d, %d, %d, %d, %d, %d, %d, %d,\n",
+                        orbitTableY[angle],
+                        orbitTableY[angle+1],
+                        orbitTableY[angle+2],
+                        orbitTableY[angle+3],
+                        orbitTableY[angle+4],
+                        orbitTableY[angle+5],
+                        orbitTableY[angle+6],
+                        orbitTableY[angle+7]);
+        }
+        printf("};\n");
 }
 */
 
@@ -404,7 +405,7 @@ void GenerateOrbitTable()
 //              target          pointer to center mobj
 //              args[0]         angle of ball
 
-void A_BridgeOrbit(mobj_t * actor)
+void A_BridgeOrbit(mobj_t *actor)
 {
     if (actor->target->special1.i)
     {
@@ -417,41 +418,41 @@ void A_BridgeOrbit(mobj_t * actor)
 }
 
 
-void A_BridgeInit(mobj_t * actor)
+void A_BridgeInit(mobj_t *actor)
 {
-    byte startangle;
+    byte    startangle;
     mobj_t *ball1, *ball2, *ball3;
     fixed_t cx, cy, cz;
 
-//      GenerateOrbitTable();
+    //      GenerateOrbitTable();
 
-    cx = actor->x;
-    cy = actor->y;
-    cz = actor->z;
-    startangle = P_Random();
+    cx                = actor->x;
+    cy                = actor->y;
+    cz                = actor->z;
+    startangle        = P_Random();
     actor->special1.i = 0;
 
     // Spawn triad into world
-    ball1 = P_SpawnMobj(cx, cy, cz, MT_BRIDGEBALL);
+    ball1          = P_SpawnMobj(cx, cy, cz, MT_BRIDGEBALL);
     ball1->args[0] = startangle;
-    ball1->target = actor;
+    ball1->target  = actor;
 
-    ball2 = P_SpawnMobj(cx, cy, cz, MT_BRIDGEBALL);
+    ball2          = P_SpawnMobj(cx, cy, cz, MT_BRIDGEBALL);
     ball2->args[0] = (startangle + 85) & 255;
-    ball2->target = actor;
+    ball2->target  = actor;
 
-    ball3 = P_SpawnMobj(cx, cy, cz, MT_BRIDGEBALL);
+    ball3          = P_SpawnMobj(cx, cy, cz, MT_BRIDGEBALL);
     ball3->args[0] = (startangle + 170) & 255;
-    ball3->target = actor;
+    ball3->target  = actor;
 
     A_BridgeOrbit(ball1);
     A_BridgeOrbit(ball2);
     A_BridgeOrbit(ball3);
 }
 
-void A_BridgeRemove(mobj_t * actor)
+void A_BridgeRemove(mobj_t *actor)
 {
-    actor->special1.i = true;     // Removing the bridge
+    actor->special1.i = true; // Removing the bridge
     actor->flags &= ~MF_SOLID;
     P_SetMobjState(actor, S_FREE_BRIDGE1);
 }
@@ -466,7 +467,7 @@ void A_BridgeRemove(mobj_t * actor)
 /*
 void A_GhostOn(mobj_t *actor)
 {
-	actor->flags |= MF_SHADOW;
+        actor->flags |= MF_SHADOW;
 }
 */
 
@@ -479,7 +480,7 @@ void A_GhostOn(mobj_t *actor)
 /*
 void A_GhostOff(mobj_t *actor)
 {
-	actor->flags &= ~MF_SHADOW;
+        actor->flags &= ~MF_SHADOW;
 }
 */
 
@@ -489,7 +490,7 @@ void A_GhostOff(mobj_t *actor)
 //
 //==========================================================================
 
-void A_HideThing(mobj_t * actor)
+void A_HideThing(mobj_t *actor)
 {
     actor->flags2 |= MF2_DONTDRAW;
 }
@@ -500,7 +501,7 @@ void A_HideThing(mobj_t * actor)
 //
 //==========================================================================
 
-void A_UnHideThing(mobj_t * actor)
+void A_UnHideThing(mobj_t *actor)
 {
     actor->flags2 &= ~MF2_DONTDRAW;
 }
@@ -511,7 +512,7 @@ void A_UnHideThing(mobj_t * actor)
 //
 //==========================================================================
 
-void A_SetShootable(mobj_t * actor)
+void A_SetShootable(mobj_t *actor)
 {
     actor->flags2 &= ~MF2_NONSHOOTABLE;
     actor->flags |= MF_SHOOTABLE;
@@ -523,7 +524,7 @@ void A_SetShootable(mobj_t * actor)
 //
 //==========================================================================
 
-void A_UnSetShootable(mobj_t * actor)
+void A_UnSetShootable(mobj_t *actor)
 {
     actor->flags2 |= MF2_NONSHOOTABLE;
     actor->flags &= ~MF_SHOOTABLE;
@@ -535,7 +536,7 @@ void A_UnSetShootable(mobj_t * actor)
 //
 //==========================================================================
 
-void A_SetAltShadow(mobj_t * actor)
+void A_SetAltShadow(mobj_t *actor)
 {
     actor->flags &= ~MF_SHADOW;
     actor->flags |= MF_ALTSHADOW;
@@ -550,7 +551,7 @@ void A_SetAltShadow(mobj_t * actor)
 /*
 void A_UnSetAltShadow(mobj_t *actor)
 {
-	actor->flags &= ~MF_ALTSHADOW;
+        actor->flags &= ~MF_ALTSHADOW;
 }
 */
 
@@ -566,21 +567,21 @@ void A_UnSetAltShadow(mobj_t *actor)
 //
 //==========================================================================
 
-void A_ContMobjSound(mobj_t * actor)
+void A_ContMobjSound(mobj_t *actor)
 {
     switch (actor->type)
     {
-        case MT_SERPENTFX:
-            S_StartSound(actor, SFX_SERPENTFX_CONTINUOUS);
-            break;
-        case MT_HAMMER_MISSILE:
-            S_StartSound(actor, SFX_FIGHTER_HAMMER_CONTINUOUS);
-            break;
-        case MT_QUAKE_FOCUS:
-            S_StartSound(actor, SFX_EARTHQUAKE);
-            break;
-        default:
-            break;
+    case MT_SERPENTFX:
+        S_StartSound(actor, SFX_SERPENTFX_CONTINUOUS);
+        break;
+    case MT_HAMMER_MISSILE:
+        S_StartSound(actor, SFX_FIGHTER_HAMMER_CONTINUOUS);
+        break;
+    case MT_QUAKE_FOCUS:
+        S_StartSound(actor, SFX_EARTHQUAKE);
+        break;
+    default:
+        break;
     }
 }
 
@@ -590,22 +591,21 @@ void A_ContMobjSound(mobj_t * actor)
 //
 //==========================================================================
 
-void A_ESound(mobj_t * mo)
+void A_ESound(mobj_t *mo)
 {
     int sound;
 
     switch (mo->type)
     {
-        case MT_SOUNDWIND:
-            sound = SFX_WIND;
-            break;
-        default:
-            sound = SFX_NONE;
-            break;
+    case MT_SOUNDWIND:
+        sound = SFX_WIND;
+        break;
+    default:
+        sound = SFX_NONE;
+        break;
     }
     S_StartSound(mo, sound);
 }
-
 
 
 //==========================================================================
@@ -613,7 +613,7 @@ void A_ESound(mobj_t * mo)
 //==========================================================================
 
 
-void A_Summon(mobj_t * actor)
+void A_Summon(mobj_t *actor)
 {
     mobj_t *mo;
     mobj_t *master;
@@ -622,7 +622,7 @@ void A_Summon(mobj_t * actor)
     if (mo)
     {
         if (P_TestMobjLocation(mo) == false || !actor->special1.m)
-        {                       // Didn't fit - change back to artifact
+        { // Didn't fit - change back to artifact
             P_SetMobjState(mo, S_NULL);
             mo = P_SpawnMobj(actor->x, actor->y, actor->z, MT_SUMMONMAULATOR);
             if (mo)
@@ -636,14 +636,14 @@ void A_Summon(mobj_t * actor)
         mo->args[1] = (leveltime >> 8) & 0xff;
         mo->args[2] = (leveltime >> 16) & 0xff;
         mo->args[3] = (leveltime >> 24) & 0xff;
-        master = actor->special1.m;
+        master      = actor->special1.m;
         if (master->flags & MF_CORPSE)
-        {                       // Master dead
-            mo->special1.m = NULL;   // No master
+        {                          // Master dead
+            mo->special1.m = NULL; // No master
         }
         else
         {
-            mo->special1.m = actor->special1.m;     // Pointer to master (mobj_t *)
+            mo->special1.m = actor->special1.m; // Pointer to master (mobj_t *)
             P_GivePower(master->player, pw_minotaur);
         }
 
@@ -652,7 +652,6 @@ void A_Summon(mobj_t * actor)
         S_StartSound(actor, SFX_MAULATOR_ACTIVE);
     }
 }
-
 
 
 //==========================================================================
@@ -668,7 +667,7 @@ void A_Summon(mobj_t * actor)
 //
 //==========================================================================
 
-void A_FogSpawn(mobj_t * actor)
+void A_FogSpawn(mobj_t *actor)
 {
     mobj_t *mo = NULL;
     angle_t delta;
@@ -676,19 +675,19 @@ void A_FogSpawn(mobj_t * actor)
     if (actor->special1.i-- > 0)
         return;
 
-    actor->special1.i = actor->args[2];   // Reset frequency count
+    actor->special1.i = actor->args[2]; // Reset frequency count
 
     switch (P_Random() % 3)
     {
-        case 0:
-            mo = P_SpawnMobj(actor->x, actor->y, actor->z, MT_FOGPATCHS);
-            break;
-        case 1:
-            mo = P_SpawnMobj(actor->x, actor->y, actor->z, MT_FOGPATCHM);
-            break;
-        case 2:
-            mo = P_SpawnMobj(actor->x, actor->y, actor->z, MT_FOGPATCHL);
-            break;
+    case 0:
+        mo = P_SpawnMobj(actor->x, actor->y, actor->z, MT_FOGPATCHS);
+        break;
+    case 1:
+        mo = P_SpawnMobj(actor->x, actor->y, actor->z, MT_FOGPATCHM);
+        break;
+    case 2:
+        mo = P_SpawnMobj(actor->x, actor->y, actor->z, MT_FOGPATCHL);
+        break;
     }
 
     if (mo)
@@ -701,19 +700,19 @@ void A_FogSpawn(mobj_t * actor)
         mo->target = actor;
         if (actor->args[0] < 1)
             actor->args[0] = 1;
-        mo->args[0] = (P_Random() % (actor->args[0])) + 1;      // Random speed
-        mo->args[3] = actor->args[3];   // Set lifetime
-        mo->args[4] = 1;        // Set to moving
+        mo->args[0]    = (P_Random() % (actor->args[0])) + 1; // Random speed
+        mo->args[3]    = actor->args[3];                      // Set lifetime
+        mo->args[4]    = 1;                                   // Set to moving
         mo->special2.i = P_Random() & 63;
     }
 }
 
 
-void A_FogMove(mobj_t * actor)
+void A_FogMove(mobj_t *actor)
 {
-    int speed = actor->args[0] << FRACBITS;
+    int     speed = actor->args[0] << FRACBITS;
     angle_t angle;
-    int weaveindex;
+    int     weaveindex;
 
     if (!(actor->args[4]))
         return;
@@ -731,7 +730,7 @@ void A_FogMove(mobj_t * actor)
         actor->special2.i = (weaveindex + 1) & 63;
     }
 
-    angle = actor->angle >> ANGLETOFINESHIFT;
+    angle       = actor->angle >> ANGLETOFINESHIFT;
     actor->momx = FixedMul(speed, finecosine[angle]);
     actor->momy = FixedMul(speed, finesine[angle]);
 }
@@ -742,22 +741,22 @@ void A_FogMove(mobj_t * actor)
 //
 //===========================================================================
 
-void A_PoisonBagInit(mobj_t * actor)
+void A_PoisonBagInit(mobj_t *actor)
 {
     mobj_t *mo;
 
     mo = P_SpawnMobj(actor->x, actor->y, actor->z + 28 * FRACUNIT,
-                     MT_POISONCLOUD);
+        MT_POISONCLOUD);
     if (!mo)
     {
         return;
     }
-    mo->momx = 1;               // missile objects must move to impact other objects
+    mo->momx       = 1; // missile objects must move to impact other objects
     mo->special1.i = 24 + (P_Random() & 7);
     mo->special2.i = 0;
-    mo->target = actor->target;
-    mo->radius = 20 * FRACUNIT;
-    mo->height = 30 * FRACUNIT;
+    mo->target     = actor->target;
+    mo->radius     = 20 * FRACUNIT;
+    mo->height     = 30 * FRACUNIT;
     mo->flags &= ~MF_NOCLIP;
 }
 
@@ -767,7 +766,7 @@ void A_PoisonBagInit(mobj_t * actor)
 //
 //===========================================================================
 
-void A_PoisonBagCheck(mobj_t * actor)
+void A_PoisonBagCheck(mobj_t *actor)
 {
     if (!--actor->special1.i)
     {
@@ -785,7 +784,7 @@ void A_PoisonBagCheck(mobj_t * actor)
 //
 //===========================================================================
 
-void A_PoisonBagDamage(mobj_t * actor)
+void A_PoisonBagDamage(mobj_t *actor)
 {
     int bobIndex;
 
@@ -804,7 +803,7 @@ void A_PoisonBagDamage(mobj_t * actor)
 //
 //===========================================================================
 
-void A_PoisonShroom(mobj_t * actor)
+void A_PoisonShroom(mobj_t *actor)
 {
     actor->tics = 128 + (P_Random() << 1);
 }
@@ -815,14 +814,14 @@ void A_PoisonShroom(mobj_t * actor)
 //
 //===========================================================================
 
-void A_CheckThrowBomb(mobj_t * actor)
+void A_CheckThrowBomb(mobj_t *actor)
 {
     if (std::abs(actor->momx) < 1.5 * FRACUNIT && std::abs(actor->momy) < 1.5 * FRACUNIT
         && actor->momz < 2 * FRACUNIT
         && actor->state == &states[S_THROWINGBOMB6])
     {
         P_SetMobjState(actor, S_THROWINGBOMB7);
-        actor->z = actor->floorz;
+        actor->z    = actor->floorz;
         actor->momz = 0;
         actor->flags2 &= ~MF2_FLOORBOUNCE;
         actor->flags &= ~MF_MISSILE;
@@ -850,11 +849,11 @@ void A_CheckThrowBomb(mobj_t * actor)
 //
 //===========================================================================
 
-boolean A_LocalQuake(byte * args, mobj_t * actor)
+boolean A_LocalQuake(byte *args, mobj_t *actor)
 {
     mobj_t *focus, *target;
-    int lastfound = 0;
-    int success = false;
+    int     lastfound = 0;
+    int     success   = false;
 
     // Find all quake foci
     do
@@ -863,19 +862,18 @@ boolean A_LocalQuake(byte * args, mobj_t * actor)
         if (target)
         {
             focus = P_SpawnMobj(target->x,
-                                target->y, target->z, MT_QUAKE_FOCUS);
+                target->y, target->z, MT_QUAKE_FOCUS);
             if (focus)
             {
                 focus->args[0] = args[0];
-                focus->args[1] = args[1] >> 1;  // decremented every 2 tics
+                focus->args[1] = args[1] >> 1; // decremented every 2 tics
                 focus->args[2] = args[2];
                 focus->args[3] = args[3];
                 focus->args[4] = args[4];
-                success = true;
+                success        = true;
             }
         }
-    }
-    while (target != NULL);
+    } while (target != NULL);
 
     return (success);
 }
@@ -888,14 +886,14 @@ boolean A_LocalQuake(byte * args, mobj_t * actor)
 //===========================================================================
 int localQuakeHappening[MAXPLAYERS];
 
-void A_Quake(mobj_t * actor)
+void A_Quake(mobj_t *actor)
 {
-    angle_t an;
+    angle_t   an;
     player_t *player;
-    mobj_t *victim;
-    int richters = actor->args[0];
-    int playnum;
-    fixed_t dist;
+    mobj_t   *victim;
+    int       richters = actor->args[0];
+    int       playnum;
+    fixed_t   dist;
 
     if (actor->args[1]-- > 0)
     {
@@ -906,10 +904,11 @@ void A_Quake(mobj_t * actor)
                 continue;
 
             victim = player->mo;
-            dist = P_AproxDistance(actor->x - victim->x,
-                                   actor->y - victim->y) >> (FRACBITS + 6);
+            dist   = P_AproxDistance(actor->x - victim->x,
+                         actor->y - victim->y)
+                   >> (FRACBITS + 6);
             // Tested in tile units (64 pixels)
-            if (dist < actor->args[3])  // In tremor radius
+            if (dist < actor->args[3]) // In tremor radius
             {
                 localQuakeHappening[playnum] = richters;
             }
@@ -937,8 +936,6 @@ void A_Quake(mobj_t * actor)
 }
 
 
-
-
 //===========================================================================
 //
 // Teleport other stuff
@@ -947,71 +944,71 @@ void A_Quake(mobj_t * actor)
 
 #define TELEPORT_LIFE 1
 
-void A_TeloSpawnA(mobj_t * actor)
+void A_TeloSpawnA(mobj_t *actor)
 {
     mobj_t *mo;
 
     mo = P_SpawnMobj(actor->x, actor->y, actor->z, MT_TELOTHER_FX2);
     if (mo)
     {
-        mo->special1.i = TELEPORT_LIFE;   // Lifetime countdown
-        mo->angle = actor->angle;
-        mo->target = actor->target;
-        mo->momx = actor->momx >> 1;
-        mo->momy = actor->momy >> 1;
-        mo->momz = actor->momz >> 1;
+        mo->special1.i = TELEPORT_LIFE; // Lifetime countdown
+        mo->angle      = actor->angle;
+        mo->target     = actor->target;
+        mo->momx       = actor->momx >> 1;
+        mo->momy       = actor->momy >> 1;
+        mo->momz       = actor->momz >> 1;
     }
 }
 
-void A_TeloSpawnB(mobj_t * actor)
+void A_TeloSpawnB(mobj_t *actor)
 {
     mobj_t *mo;
 
     mo = P_SpawnMobj(actor->x, actor->y, actor->z, MT_TELOTHER_FX3);
     if (mo)
     {
-        mo->special1.i = TELEPORT_LIFE;   // Lifetime countdown
-        mo->angle = actor->angle;
-        mo->target = actor->target;
-        mo->momx = actor->momx >> 1;
-        mo->momy = actor->momy >> 1;
-        mo->momz = actor->momz >> 1;
+        mo->special1.i = TELEPORT_LIFE; // Lifetime countdown
+        mo->angle      = actor->angle;
+        mo->target     = actor->target;
+        mo->momx       = actor->momx >> 1;
+        mo->momy       = actor->momy >> 1;
+        mo->momz       = actor->momz >> 1;
     }
 }
 
-void A_TeloSpawnC(mobj_t * actor)
+void A_TeloSpawnC(mobj_t *actor)
 {
     mobj_t *mo;
 
     mo = P_SpawnMobj(actor->x, actor->y, actor->z, MT_TELOTHER_FX4);
     if (mo)
     {
-        mo->special1.i = TELEPORT_LIFE;   // Lifetime countdown
-        mo->angle = actor->angle;
-        mo->target = actor->target;
-        mo->momx = actor->momx >> 1;
-        mo->momy = actor->momy >> 1;
-        mo->momz = actor->momz >> 1;
+        mo->special1.i = TELEPORT_LIFE; // Lifetime countdown
+        mo->angle      = actor->angle;
+        mo->target     = actor->target;
+        mo->momx       = actor->momx >> 1;
+        mo->momy       = actor->momy >> 1;
+        mo->momz       = actor->momz >> 1;
     }
 }
 
-void A_TeloSpawnD(mobj_t * actor)
+void A_TeloSpawnD(mobj_t *actor)
 {
     mobj_t *mo;
 
     mo = P_SpawnMobj(actor->x, actor->y, actor->z, MT_TELOTHER_FX5);
     if (mo)
     {
-        mo->special1.i = TELEPORT_LIFE;   // Lifetime countdown
-        mo->angle = actor->angle;
-        mo->target = actor->target;
-        mo->momx = actor->momx >> 1;
-        mo->momy = actor->momy >> 1;
-        mo->momz = actor->momz >> 1;
+        mo->special1.i = TELEPORT_LIFE; // Lifetime countdown
+        mo->angle      = actor->angle;
+        mo->target     = actor->target;
+        mo->momx       = actor->momx >> 1;
+        mo->momy       = actor->momy >> 1;
+        mo->momz       = actor->momz >> 1;
     }
 }
 
-void A_CheckTeleRing(mobj_t * actor)
+void A_CheckTeleRing(mobj_t *actor)
 {
     if (actor->special1.i-- <= 0)
     {
@@ -1020,43 +1017,41 @@ void A_CheckTeleRing(mobj_t * actor)
 }
 
 
-
-
 // Dirt stuff
 
-void P_SpawnDirt(mobj_t * actor, fixed_t radius)
+void P_SpawnDirt(mobj_t *actor, fixed_t radius)
 {
     fixed_t x, y, z;
-    int dtype = 0;
+    int     dtype = 0;
     mobj_t *mo;
     angle_t angle;
 
-    angle = P_Random() << 5;    // <<24 >>19
-    x = actor->x + FixedMul(radius, finecosine[angle]);
-    y = actor->y + FixedMul(radius, finesine[angle]);
-//      x = actor->x + (P_SubRandom()%radius)<<FRACBITS;
-//      y = actor->y + ((P_SubRandom()<<FRACBITS)%radius);
+    angle = P_Random() << 5; // <<24 >>19
+    x     = actor->x + FixedMul(radius, finecosine[angle]);
+    y     = actor->y + FixedMul(radius, finesine[angle]);
+    //      x = actor->x + (P_SubRandom()%radius)<<FRACBITS;
+    //      y = actor->y + ((P_SubRandom()<<FRACBITS)%radius);
     z = actor->z + (P_Random() << 9) + FRACUNIT;
     switch (P_Random() % 6)
     {
-        case 0:
-            dtype = MT_DIRT1;
-            break;
-        case 1:
-            dtype = MT_DIRT2;
-            break;
-        case 2:
-            dtype = MT_DIRT3;
-            break;
-        case 3:
-            dtype = MT_DIRT4;
-            break;
-        case 4:
-            dtype = MT_DIRT5;
-            break;
-        case 5:
-            dtype = MT_DIRT6;
-            break;
+    case 0:
+        dtype = MT_DIRT1;
+        break;
+    case 1:
+        dtype = MT_DIRT2;
+        break;
+    case 2:
+        dtype = MT_DIRT3;
+        break;
+    case 3:
+        dtype = MT_DIRT4;
+        break;
+    case 4:
+        dtype = MT_DIRT5;
+        break;
+    case 5:
+        dtype = MT_DIRT6;
+        break;
     }
     mo = P_SpawnMobj(x, y, z, static_cast<mobjtype_t>(dtype));
     if (mo)
@@ -1064,8 +1059,6 @@ void P_SpawnDirt(mobj_t * actor, fixed_t radius)
         mo->momz = P_Random() << 10;
     }
 }
-
-
 
 
 //===========================================================================
@@ -1079,33 +1072,33 @@ void P_SpawnDirt(mobj_t * actor, fixed_t radius)
 //              args[1]         0 = normal,   1 = bloody
 //===========================================================================
 
-void A_ThrustInitUp(mobj_t * actor)
+void A_ThrustInitUp(mobj_t *actor)
 {
-    actor->special2.i = 5;        // Raise speed
-    actor->args[0] = 1;         // Mark as up
-    actor->floorclip = 0;
-    actor->flags = MF_SOLID;
-    actor->flags2 = MF2_NOTELEPORT | MF2_FLOORCLIP;
+    actor->special2.i = 5; // Raise speed
+    actor->args[0]    = 1; // Mark as up
+    actor->floorclip  = 0;
+    actor->flags      = MF_SOLID;
+    actor->flags2     = MF2_NOTELEPORT | MF2_FLOORCLIP;
     actor->special1.m = NULL;
 }
 
-void A_ThrustInitDn(mobj_t * actor)
+void A_ThrustInitDn(mobj_t *actor)
 {
     mobj_t *mo;
-    actor->special2.i = 5;        // Raise speed
-    actor->args[0] = 0;         // Mark as down
-    actor->floorclip = actor->info->height;
-    actor->flags = 0;
-    actor->flags2 = MF2_NOTELEPORT | MF2_FLOORCLIP | MF2_DONTDRAW;
-    mo = P_SpawnMobj(actor->x, actor->y, actor->z, MT_DIRTCLUMP);
+    actor->special2.i = 5; // Raise speed
+    actor->args[0]    = 0; // Mark as down
+    actor->floorclip  = actor->info->height;
+    actor->flags      = 0;
+    actor->flags2     = MF2_NOTELEPORT | MF2_FLOORCLIP | MF2_DONTDRAW;
+    mo                = P_SpawnMobj(actor->x, actor->y, actor->z, MT_DIRTCLUMP);
     actor->special1.m = mo;
 }
 
 
-void A_ThrustRaise(mobj_t * actor)
+void A_ThrustRaise(mobj_t *actor)
 {
     if (A_RaiseMobj(actor))
-    {                           // Reached it's target height
+    { // Reached it's target height
         actor->args[0] = 1;
         if (actor->args[1])
             P_SetMobjStateNF(actor, S_BTHRUSTINIT2_1);
@@ -1123,10 +1116,10 @@ void A_ThrustRaise(mobj_t * actor)
     // Spawn some dirt
     if (P_Random() < 40)
         P_SpawnDirt(actor, actor->radius);
-    actor->special2.i++;          // Increase raise speed
+    actor->special2.i++; // Increase raise speed
 }
 
-void A_ThrustLower(mobj_t * actor)
+void A_ThrustLower(mobj_t *actor)
 {
     if (A_SinkMobj(actor))
     {
@@ -1138,12 +1131,12 @@ void A_ThrustLower(mobj_t * actor)
     }
 }
 
-void A_ThrustBlock(mobj_t * actor)
+void A_ThrustBlock(mobj_t *actor)
 {
     actor->flags |= MF_SOLID;
 }
 
-void A_ThrustImpale(mobj_t * actor)
+void A_ThrustImpale(mobj_t *actor)
 {
     // Impale all shootables in radius
     PIT_ThrustSpike(actor);
@@ -1155,11 +1148,11 @@ void A_ThrustImpale(mobj_t * actor)
 //
 //===========================================================================
 
-void A_SoAExplode(mobj_t * actor)
+void A_SoAExplode(mobj_t *actor)
 {
     mobj_t *mo;
-    int i;
-    int r1,r2,r3;
+    int     i;
+    int     r1, r2, r3;
 
     for (i = 0; i < 10; i++)
     {
@@ -1167,22 +1160,21 @@ void A_SoAExplode(mobj_t * actor)
         r2 = P_Random();
         r3 = P_Random();
         mo = P_SpawnMobj(actor->x + ((r3 - 128) << 12),
-                         actor->y + ((r2 - 128) << 12),
-                         actor->z + (r1 * actor->height / 256),
-                         MT_ZARMORCHUNK);
+            actor->y + ((r2 - 128) << 12),
+            actor->z + (r1 * actor->height / 256),
+            MT_ZARMORCHUNK);
         P_SetMobjState(mo, static_cast<statenum_t>(mo->info->spawnstate + i));
         mo->momz = ((P_Random() & 7) + 5) * FRACUNIT;
         mo->momx = P_SubRandom() << (FRACBITS - 6);
         mo->momy = P_SubRandom() << (FRACBITS - 6);
     }
     if (actor->args[0])
-    {                           // Spawn an item
+    { // Spawn an item
         if (!nomonsters
-            || !(mobjinfo[TranslateThingType[actor->args[0]]].
-                 flags & MF_COUNTKILL))
-        {                       // Only spawn monsters if not -nomonsters
+            || !(mobjinfo[TranslateThingType[actor->args[0]]].flags & MF_COUNTKILL))
+        { // Only spawn monsters if not -nomonsters
             P_SpawnMobj(actor->x, actor->y, actor->z,
-                        TranslateThingType[actor->args[0]]);
+                TranslateThingType[actor->args[0]]);
         }
     }
     S_StartSound(mo, SFX_SUITOFARMOR_BREAK);
@@ -1195,7 +1187,7 @@ void A_SoAExplode(mobj_t * actor)
 //
 //===========================================================================
 
-void A_BellReset1(mobj_t * actor)
+void A_BellReset1(mobj_t *actor)
 {
     actor->flags |= MF_NOGRAVITY;
     actor->height <<= 2;
@@ -1207,7 +1199,7 @@ void A_BellReset1(mobj_t * actor)
 //
 //===========================================================================
 
-void A_BellReset2(mobj_t * actor)
+void A_BellReset2(mobj_t *actor)
 {
     actor->flags |= MF_SHOOTABLE;
     actor->flags &= ~MF_CORPSE;
@@ -1221,9 +1213,9 @@ void A_BellReset2(mobj_t * actor)
 //
 //===========================================================================
 
-void A_FlameCheck(mobj_t * actor)
+void A_FlameCheck(mobj_t *actor)
 {
-    if (!actor->args[0]--)      // Called every 8 tics
+    if (!actor->args[0]--) // Called every 8 tics
     {
         P_SetMobjState(actor, S_NULL);
     }
@@ -1233,10 +1225,10 @@ void A_FlameCheck(mobj_t * actor)
 //===========================================================================
 // Bat Spawner Variables
 //      special1        frequency counter
-//      special2        
+//      special2
 //      args[0]         frequency of spawn (1=fastest, 10=slowest)
 //      args[1]         spread angle (0..255)
-//      args[2]         
+//      args[2]
 //      args[3]         duration of bats (in octics)
 //      args[4]         turn amount per move (in degrees)
 //
@@ -1245,38 +1237,38 @@ void A_FlameCheck(mobj_t * actor)
 //      args[4]         turn amount per move (in degrees)
 //===========================================================================
 
-void A_BatSpawnInit(mobj_t * actor)
+void A_BatSpawnInit(mobj_t *actor)
 {
-    actor->special1.i = 0;        // Frequency count
+    actor->special1.i = 0; // Frequency count
 }
 
-void A_BatSpawn(mobj_t * actor)
+void A_BatSpawn(mobj_t *actor)
 {
     mobj_t *mo;
-    int delta;
+    int     delta;
     angle_t angle;
 
     // Countdown until next spawn
     if (actor->special1.i-- > 0)
         return;
-    actor->special1.i = actor->args[0];   // Reset frequency count
+    actor->special1.i = actor->args[0]; // Reset frequency count
 
     delta = actor->args[1];
     if (delta == 0)
         delta = 1;
     angle = actor->angle + (((P_Random() % delta) - (delta >> 1)) << 24);
-    mo = P_SpawnMissileAngle(actor, MT_BAT, angle, 0);
+    mo    = P_SpawnMissileAngle(actor, MT_BAT, angle, 0);
     if (mo)
     {
-        mo->args[0] = P_Random() & 63;  // floatbob index
-        mo->args[4] = actor->args[4];   // turn degrees
-        mo->special2.i = actor->args[3] << 3;     // Set lifetime
-        mo->target = actor;
+        mo->args[0]    = P_Random() & 63;     // floatbob index
+        mo->args[4]    = actor->args[4];      // turn degrees
+        mo->special2.i = actor->args[3] << 3; // Set lifetime
+        mo->target     = actor;
     }
 }
 
 
-void A_BatMove(mobj_t * actor)
+void A_BatMove(mobj_t *actor)
 {
     angle_t newangle;
     fixed_t speed;
@@ -1285,7 +1277,7 @@ void A_BatMove(mobj_t * actor)
     {
         P_SetMobjState(actor, actor->info->deathstate);
     }
-    actor->special2.i -= 2;       // Called every 2 tics
+    actor->special2.i -= 2; // Called every 2 tics
 
     if (P_Random() < 128)
     {
@@ -1298,7 +1290,7 @@ void A_BatMove(mobj_t * actor)
 
     // Adjust momentum vector to new direction
     newangle >>= ANGLETOFINESHIFT;
-    speed = FixedMul(actor->info->speed, P_Random() << 10);
+    speed       = FixedMul(actor->info->speed, P_Random() << 10);
     actor->momx = FixedMul(speed, finecosine[newangle]);
     actor->momy = FixedMul(speed, finesine[newangle]);
 
@@ -1306,7 +1298,7 @@ void A_BatMove(mobj_t * actor)
         S_StartSound(actor, SFX_BAT_SCREAM);
 
     // Handle Z movement
-    actor->z = actor->target->z + 2 * FloatBobOffsets[actor->args[0]];
+    actor->z       = actor->target->z + 2 * FloatBobOffsets[actor->args[0]];
     actor->args[0] = (actor->args[0] + 3) & 63;
 }
 
@@ -1316,7 +1308,7 @@ void A_BatMove(mobj_t * actor)
 //
 //===========================================================================
 
-void A_TreeDeath(mobj_t * actor)
+void A_TreeDeath(mobj_t *actor)
 {
     if (!(actor->flags2 & MF2_FIREDAMAGE))
     {
@@ -1338,7 +1330,7 @@ void A_TreeDeath(mobj_t * actor)
 //
 //===========================================================================
 
-void A_NoGravity(mobj_t * actor)
+void A_NoGravity(mobj_t *actor)
 {
     actor->flags |= MF_NOGRAVITY;
 }

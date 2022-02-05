@@ -45,27 +45,27 @@
 
 // MACROS ------------------------------------------------------------------
 
-#define MAXWADFILES 20
-#define CT_KEY_BLUE         'b'
-#define CT_KEY_RED          'r'
-#define CT_KEY_YELLOW       'y'
-#define CT_KEY_GREEN        'g'
-#define CT_KEY_PLAYER5      'j'     // Jade
-#define CT_KEY_PLAYER6      'w'     // White
-#define CT_KEY_PLAYER7      'h'     // Hazel
-#define CT_KEY_PLAYER8      'p'     // Purple
-#define CT_KEY_ALL          't'
+#define MAXWADFILES    20
+#define CT_KEY_BLUE    'b'
+#define CT_KEY_RED     'r'
+#define CT_KEY_YELLOW  'y'
+#define CT_KEY_GREEN   'g'
+#define CT_KEY_PLAYER5 'j' // Jade
+#define CT_KEY_PLAYER6 'w' // White
+#define CT_KEY_PLAYER7 'h' // Hazel
+#define CT_KEY_PLAYER8 'p' // Purple
+#define CT_KEY_ALL     't'
 
 // EXTERNAL FUNCTION PROTOTYPES --------------------------------------------
 
-void R_ExecuteSetViewSize();
-void D_ConnectNetGame();
-void D_CheckNetGame();
-boolean F_Responder(event_t * ev);
-void I_StartupKeyboard();
-void I_StartupJoystick();
-void I_ShutdownKeyboard();
-void S_InitScript();
+void    R_ExecuteSetViewSize();
+void    D_ConnectNetGame();
+void    D_CheckNetGame();
+boolean F_Responder(event_t *ev);
+void    I_StartupKeyboard();
+void    I_StartupJoystick();
+void    I_ShutdownKeyboard();
+void    S_InitScript();
 
 // PUBLIC FUNCTION PROTOTYPES ----------------------------------------------
 
@@ -93,35 +93,35 @@ extern boolean askforquit;
 
 // PUBLIC DATA DEFINITIONS -------------------------------------------------
 
-GameMode_t gamemode;
+GameMode_t         gamemode;
 static const char *gamedescription;
-char *iwadfile;
-static char demolumpname[9];    // Demo lump to start playing.
-boolean nomonsters;             // checkparm of -nomonsters
-boolean respawnparm;            // checkparm of -respawn
-boolean randomclass;            // checkparm of -randclass
-boolean debugmode;              // checkparm of -debug
-boolean ravpic;                 // checkparm of -ravpic
-boolean cdrom = false;          // true if cd-rom mode active
-boolean cmdfrag;                // true if a CMD_FRAG packet should be sent out
-boolean artiskip;               // whether shift-enter skips an artifact
-int maxzone = 0x800000;         // Maximum allocated for zone heap (8meg default)
-skill_t startskill;
-int startepisode;
-int startmap;
-boolean autostart;
-boolean advancedemo;
-FILE *debugfile;
-int UpdateState;
-int maxplayers = MAXPLAYERS;
+char              *iwadfile;
+static char        demolumpname[9];    // Demo lump to start playing.
+boolean            nomonsters;         // checkparm of -nomonsters
+boolean            respawnparm;        // checkparm of -respawn
+boolean            randomclass;        // checkparm of -randclass
+boolean            debugmode;          // checkparm of -debug
+boolean            ravpic;             // checkparm of -ravpic
+boolean            cdrom = false;      // true if cd-rom mode active
+boolean            cmdfrag;            // true if a CMD_FRAG packet should be sent out
+boolean            artiskip;           // whether shift-enter skips an artifact
+int                maxzone = 0x800000; // Maximum allocated for zone heap (8meg default)
+skill_t            startskill;
+int                startepisode;
+int                startmap;
+boolean            autostart;
+boolean            advancedemo;
+FILE              *debugfile;
+int                UpdateState;
+int                maxplayers = MAXPLAYERS;
 
 // PRIVATE DATA DEFINITIONS ------------------------------------------------
 
-static int WarpMap;
-static int demosequence;
-static int pagetic;
+static int         WarpMap;
+static int         demosequence;
+static int         pagetic;
 static const char *pagename;
-static char *SavePathConfig;
+static char       *SavePathConfig;
 
 // CODE --------------------------------------------------------------------
 
@@ -155,21 +155,21 @@ void D_BindVariables()
 
     NET_BindVariables();
 
-    M_BindIntVariable("graphical_startup",      &graphical_startup);
-    M_BindIntVariable("mouse_sensitivity",      &mouseSensitivity);
-    M_BindIntVariable("sfx_volume",             &snd_MaxVolume);
-    M_BindIntVariable("music_volume",           &snd_MusicVolume);
-    M_BindIntVariable("messageson",             &messageson);
-    M_BindIntVariable("screenblocks",           &screenblocks);
-    M_BindIntVariable("snd_channels",           &snd_Channels);
+    M_BindIntVariable("graphical_startup", &graphical_startup);
+    M_BindIntVariable("mouse_sensitivity", &mouseSensitivity);
+    M_BindIntVariable("sfx_volume", &snd_MaxVolume);
+    M_BindIntVariable("music_volume", &snd_MusicVolume);
+    M_BindIntVariable("messageson", &messageson);
+    M_BindIntVariable("screenblocks", &screenblocks);
+    M_BindIntVariable("snd_channels", &snd_Channels);
     M_BindIntVariable("vanilla_savegame_limit", &vanilla_savegame_limit);
-    M_BindIntVariable("vanilla_demo_limit",     &vanilla_demo_limit);
+    M_BindIntVariable("vanilla_demo_limit", &vanilla_demo_limit);
 
     M_BindStringVariable("savedir", &SavePathConfig);
 
     // Multiplayer chat macros
 
-    for (i=0; i<10; ++i)
+    for (i = 0; i < 10; ++i)
     {
         char buf[12];
 
@@ -221,17 +221,17 @@ static void AdjustForMacIWAD()
 
     switch (snd_musicdevice)
     {
-        case SNDDEVICE_ADLIB:
-        case SNDDEVICE_SB:
-            adjust_music = W_CheckNumForName("GENMIDI") < 0;
-            break;
+    case SNDDEVICE_ADLIB:
+    case SNDDEVICE_SB:
+        adjust_music = W_CheckNumForName("GENMIDI") < 0;
+        break;
 
-        case SNDDEVICE_GUS:
-            adjust_music = W_CheckNumForName("DMXGUS") < 0;
-            break;
+    case SNDDEVICE_GUS:
+        adjust_music = W_CheckNumForName("DMXGUS") < 0;
+        break;
 
-        default:
-            break;
+    default:
+        break;
     }
 
     if (adjust_music)
@@ -285,11 +285,10 @@ void D_IdentifyVersion()
     // and uses the SKY2 lump instead. Let's use this fact and the missing
     // levels from MAP05 onward to identify it and set gamemode accordingly.
 
-    if (W_CheckNumForName("SKY1") == -1 &&
-        W_CheckNumForName("MAP05") == -1 )
+    if (W_CheckNumForName("SKY1") == -1 && W_CheckNumForName("MAP05") == -1)
     {
-	gamemode = shareware;
-	maxplayers = 4;
+        gamemode   = shareware;
+        maxplayers = 4;
     }
 
     // The v1.0 IWAD file is missing a bunch of lumps that can cause the game
@@ -305,7 +304,7 @@ void D_IdentifyVersion()
     //
 
     if (!M_ParmExists("-v10override")
-     && gamemode != shareware && W_CheckNumForName("CLUS1MSG") < 0)
+        && gamemode != shareware && W_CheckNumForName("CLUS1MSG") < 0)
     {
         I_Error(
             "You are trying to use the Hexen v1.0 IWAD. This isn't\n"
@@ -319,23 +318,23 @@ void D_IdentifyVersion()
 
 void D_SetGameDescription()
 {
-/*
-    NB: The 4 Level Demo Version actually prints a four-lined banner
-    (and indeed waits for a keypress):
+    /*
+        NB: The 4 Level Demo Version actually prints a four-lined banner
+        (and indeed waits for a keypress):
 
-    Hexen:  Beyond Heretic
+        Hexen:  Beyond Heretic
 
-    4 Level Demo Version
-    Press any key to continue.
-*/
+        4 Level Demo Version
+        Press any key to continue.
+    */
 
     if (gamemode == shareware)
     {
-	gamedescription = "Hexen: 4 Level Demo Version";
+        gamedescription = "Hexen: 4 Level Demo Version";
     }
     else
     {
-	gamedescription = "Hexen";
+        gamedescription = "Hexen";
     }
 }
 
@@ -349,14 +348,14 @@ void InitMapMusicInfo();
 void D_DoomMain()
 {
     GameMission_t gamemission;
-    int p;
+    int           p;
 
     I_AtExit(D_HexenQuitMessage, false);
     startepisode = 1;
-    autostart = false;
-    startskill = sk_medium;
-    startmap = 1;
-    gamemode = commercial;
+    autostart    = false;
+    startskill   = sk_medium;
+    startmap     = 1;
+    gamemode     = commercial;
 
     I_PrintBanner(PACKAGE_STRING);
 
@@ -450,7 +449,7 @@ void D_DoomMain()
     ST_Message("CT_Init: Init chat mode data.\n");
     CT_Init();
 
-    InitMapMusicInfo();         // Init music fields in mapinfo
+    InitMapMusicInfo(); // Init music fields in mapinfo
 
     ST_Message("S_InitScript\n");
     S_InitScript();
@@ -479,8 +478,8 @@ void D_DoomMain()
     R_Init();
     ST_Message("\n");
 
-    //if (M_CheckParm("-net"))
-    //    ST_NetProgress();       // Console player found
+    // if (M_CheckParm("-net"))
+    //     ST_NetProgress();       // Console player found
 
     ST_Message("P_Init: Init Playloop state.\n");
     P_Init();
@@ -500,7 +499,7 @@ void D_DoomMain()
     if (autostart)
     {
         ST_Message("Warp to Map %d (\"%s\":%d), Skill %d\n",
-                   WarpMap, P_GetMapName(startmap), startmap, startskill + 1);
+            WarpMap, P_GetMapName(startmap), startmap, startskill + 1);
     }
 
     CheckRecordFrom();
@@ -517,22 +516,22 @@ void D_DoomMain()
     if (p && p < myargc - 1)
     {
         G_RecordDemo(startskill, 1, startepisode, startmap, myargv[p + 1]);
-        H2_GameLoop();          // Never returns
+        H2_GameLoop(); // Never returns
     }
 
     p = M_CheckParmWithArgs("-playdemo", 1);
     if (p)
     {
-        singledemo = true;      // Quit after one demo
+        singledemo = true; // Quit after one demo
         G_DeferedPlayDemo(demolumpname);
-        H2_GameLoop();          // Never returns
+        H2_GameLoop(); // Never returns
     }
 
     p = M_CheckParmWithArgs("-timedemo", 1);
     if (p)
     {
         G_TimeDemo(demolumpname);
-        H2_GameLoop();          // Never returns
+        H2_GameLoop(); // Never returns
     }
 
     //!
@@ -563,7 +562,7 @@ void D_DoomMain()
             H2_StartTitle();
         }
     }
-    H2_GameLoop();              // Never returns
+    H2_GameLoop(); // Never returns
 }
 
 //==========================================================================
@@ -651,7 +650,7 @@ static void HandleArgs()
     if (p)
     {
         sc_FileScripts = true;
-        sc_ScriptsDir = myargv[p+1];
+        sc_ScriptsDir  = myargv[p + 1];
     }
 
     //!
@@ -668,7 +667,7 @@ static void HandleArgs()
     if (p)
     {
         startskill = static_cast<skill_t>(myargv[p + 1][0] - '1');
-        autostart = true;
+        autostart  = true;
     }
 
     //!
@@ -698,9 +697,9 @@ static void HandleArgs()
     if (p)
     {
         char *uc_filename;
-        char file[256];
+        char  file[256];
 
-        M_StringCopy(file, myargv[p+1], sizeof(file));
+        M_StringCopy(file, myargv[p + 1], sizeof(file));
 
         // With Vanilla Hexen you have to specify the file without
         // extension, but make that optional.
@@ -717,16 +716,16 @@ static void HandleArgs()
         if (W_AddFile(file) != NULL)
         {
             M_StringCopy(demolumpname, lumpinfo[numlumps - 1]->name,
-                         sizeof(demolumpname));
+                sizeof(demolumpname));
         }
         else
         {
             // The file failed to load, but copy the original arg as a
             // demo name to make tricks like -playdemo demo1 possible.
-            M_StringCopy(demolumpname, myargv[p+1], sizeof(demolumpname));
+            M_StringCopy(demolumpname, myargv[p + 1], sizeof(demolumpname));
         }
 
-        ST_Message("Playing demo %s.\n", myargv[p+1]);
+        ST_Message("Playing demo %s.\n", myargv[p + 1]);
     }
 
     //!
@@ -740,7 +739,7 @@ static void HandleArgs()
 
     if (M_ParmExists("-testcontrols"))
     {
-        autostart = true;
+        autostart    = true;
         testcontrols = true;
     }
 }
@@ -768,21 +767,21 @@ static void WarpCheck()
     if (p && p < myargc - 1)
     {
         WarpMap = atoi(myargv[p + 1]);
-        map = P_TranslateMap(WarpMap);
+        map     = P_TranslateMap(WarpMap);
         if (map == -1)
-        {                       // Couldn't find real map number
+        { // Couldn't find real map number
             startmap = 1;
             ST_Message("-WARP: Invalid map number.\n");
         }
         else
-        {                       // Found a valid startmap
-            startmap = map;
+        { // Found a valid startmap
+            startmap  = map;
             autostart = true;
         }
     }
     else
     {
-        WarpMap = 1;
+        WarpMap  = 1;
         startmap = P_TranslateMap(1);
         if (startmap == -1)
         {
@@ -876,32 +875,32 @@ static void DrawAndBlit()
     // Do buffered drawing
     switch (gamestate)
     {
-        case GS_LEVEL:
-            if (!gametic)
-            {
-                break;
-            }
-            if (automapactive)
-            {
-                AM_Drawer();
-            }
-            else
-            {
-                R_RenderPlayerView(&players[displayplayer]);
-            }
-            CT_Drawer();
-            UpdateState |= I_FULLVIEW;
-            SB_Drawer();
+    case GS_LEVEL:
+        if (!gametic)
+        {
             break;
-        case GS_INTERMISSION:
-            IN_Drawer();
-            break;
-        case GS_FINALE:
-            F_Drawer();
-            break;
-        case GS_DEMOSCREEN:
-            PageDrawer();
-            break;
+        }
+        if (automapactive)
+        {
+            AM_Drawer();
+        }
+        else
+        {
+            R_RenderPlayerView(&players[displayplayer]);
+        }
+        CT_Drawer();
+        UpdateState |= I_FULLVIEW;
+        SB_Drawer();
+        break;
+    case GS_INTERMISSION:
+        IN_Drawer();
+        break;
+    case GS_FINALE:
+        F_Drawer();
+        break;
+    case GS_DEMOSCREEN:
+        PageDrawer();
+        break;
     }
 
     if (testcontrols)
@@ -913,8 +912,7 @@ static void DrawAndBlit()
     {
         if (!netgame)
         {
-            V_DrawPatch(160, (viewwindowy >> crispy->hires) + 5, cache_lump_name<patch_t *>("PAUSED",
-                                                              PU_CACHE));
+            V_DrawPatch(160, (viewwindowy >> crispy->hires) + 5, cache_lump_name<patch_t *>("PAUSED", PU_CACHE));
         }
         else
         {
@@ -947,18 +945,18 @@ static void DrawMessage()
 
     player = &players[consoleplayer];
     if (player->messageTics <= 0)
-    {                           // No message
+    { // No message
         return;
     }
     if (player->yellowMessage)
     {
         MN_DrTextAYellow(player->message,
-                         160 - MN_TextAWidth(player->message) / 2, 1);
+            160 - MN_TextAWidth(player->message) / 2, 1);
     }
     else
     {
         MN_DrTextA(player->message, 160 - MN_TextAWidth(player->message) / 2,
-                   1);
+            1);
     }
 }
 
@@ -1013,50 +1011,50 @@ void H2_AdvanceDemo()
 
 void H2_DoAdvanceDemo()
 {
-    players[consoleplayer].playerstate = PST_LIVE;      // don't reborn
-    advancedemo = false;
-    usergame = false;           // can't save/end game here
-    paused = false;
-    gameaction = ga_nothing;
-    demosequence = (demosequence + 1) % 7;
+    players[consoleplayer].playerstate = PST_LIVE; // don't reborn
+    advancedemo                        = false;
+    usergame                           = false; // can't save/end game here
+    paused                             = false;
+    gameaction                         = ga_nothing;
+    demosequence                       = (demosequence + 1) % 7;
     switch (demosequence)
     {
-        case 0:
-            pagetic = 280;
-            gamestate = GS_DEMOSCREEN;
-            pagename = "TITLE";
-            S_StartSongName("hexen", true);
-            break;
-        case 1:
-            pagetic = 210;
-            gamestate = GS_DEMOSCREEN;
-            pagename = "TITLE";
-            break;
-        case 2:
-            BorderNeedRefresh = true;
-            UpdateState |= I_FULLSCRN;
-            G_DeferedPlayDemo("demo1");
-            break;
-        case 3:
-            pagetic = 200;
-            gamestate = GS_DEMOSCREEN;
-            pagename = "CREDIT";
-            break;
-        case 4:
-            BorderNeedRefresh = true;
-            UpdateState |= I_FULLSCRN;
-            G_DeferedPlayDemo("demo2");
-            break;
-        case 5:
-            pagetic = 200;
-            gamestate = GS_DEMOSCREEN;
-            pagename = "CREDIT";
-            break;
-        case 6:
-            BorderNeedRefresh = true;
-            UpdateState |= I_FULLSCRN;
-            G_DeferedPlayDemo("demo3");
-            break;
+    case 0:
+        pagetic   = 280;
+        gamestate = GS_DEMOSCREEN;
+        pagename  = "TITLE";
+        S_StartSongName("hexen", true);
+        break;
+    case 1:
+        pagetic   = 210;
+        gamestate = GS_DEMOSCREEN;
+        pagename  = "TITLE";
+        break;
+    case 2:
+        BorderNeedRefresh = true;
+        UpdateState |= I_FULLSCRN;
+        G_DeferedPlayDemo("demo1");
+        break;
+    case 3:
+        pagetic   = 200;
+        gamestate = GS_DEMOSCREEN;
+        pagename  = "CREDIT";
+        break;
+    case 4:
+        BorderNeedRefresh = true;
+        UpdateState |= I_FULLSCRN;
+        G_DeferedPlayDemo("demo2");
+        break;
+    case 5:
+        pagetic   = 200;
+        gamestate = GS_DEMOSCREEN;
+        pagename  = "CREDIT";
+        break;
+    case 6:
+        BorderNeedRefresh = true;
+        UpdateState |= I_FULLSCRN;
+        G_DeferedPlayDemo("demo3");
+        break;
     }
 }
 
@@ -1068,7 +1066,7 @@ void H2_DoAdvanceDemo()
 
 void H2_StartTitle()
 {
-    gameaction = ga_nothing;
+    gameaction   = ga_nothing;
     demosequence = -1;
     H2_AdvanceDemo();
 }
@@ -1095,27 +1093,27 @@ static void CheckRecordFrom()
     //
     p = M_CheckParm("-recordfrom");
     if (!p || p > myargc - 2)
-    {                           // Bad args
+    { // Bad args
         return;
     }
     G_LoadGame(atoi(myargv[p + 1]));
-    G_DoLoadGame();             // Load the gameskill etc info from savegame
+    G_DoLoadGame(); // Load the gameskill etc info from savegame
     G_RecordDemo(gameskill, 1, gameepisode, gamemap, myargv[p + 2]);
 
-    H2_GameLoop();              // Never returns
+    H2_GameLoop(); // Never returns
 }
 
 // haleyjd: removed WATCOMC
 /*
 void CleanExit()
 {
-	union REGS regs;
+        union REGS regs;
 
-	I_ShutdownKeyboard();
-	regs.x.eax = 0x3;
-	int386(0x10, &regs, &regs);
-	printf("Exited from HEXEN: Beyond Heretic.\n");
-	exit(1);
+        I_ShutdownKeyboard();
+        regs.x.eax = 0x3;
+        int386(0x10, &regs, &regs);
+        printf("Exited from HEXEN: Beyond Heretic.\n");
+        exit(1);
 }
 */
 

@@ -26,8 +26,8 @@
 #include "deh_mapping.hpp"
 
 static deh_mapping_entry_t *GetMappingEntryByName(deh_context_t *context,
-    deh_mapping_t *                                              mapping,
-    char *                                                       name)
+    deh_mapping_t                                               *mapping,
+    char                                                        *name)
 {
     int i;
 
@@ -59,8 +59,8 @@ static deh_mapping_entry_t *GetMappingEntryByName(deh_context_t *context,
 //
 
 static void *GetStructField(void *structptr,
-    deh_mapping_t *               mapping,
-    deh_mapping_entry_t *         entry)
+    deh_mapping_t                *mapping,
+    deh_mapping_entry_t          *entry)
 {
     unsigned int offset;
 
@@ -77,7 +77,7 @@ boolean DEH_SetMapping(deh_context_t *context, deh_mapping_t *mapping,
     void *structptr, char *name, int value)
 {
     deh_mapping_entry_t *entry;
-    void *               location;
+    void                *location;
 
     entry = GetMappingEntryByName(context, mapping, name);
 
@@ -161,7 +161,7 @@ void DEH_StructSHA1Sum(sha1_context_t *context, deh_mapping_t *mapping,
     for (i = 0; mapping->entries[i].name != NULL; ++i)
     {
         deh_mapping_entry_t *entry = &mapping->entries[i];
-        void *               location;
+        void                *location;
 
         if (entry->location == NULL)
         {

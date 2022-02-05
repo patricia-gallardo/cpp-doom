@@ -39,8 +39,8 @@ static void TXT_RadioButtonDrawer(TXT_UNCAST_ARG(radiobutton))
 {
     TXT_CAST_ARG(txt_radiobutton_t, radiobutton);
     txt_saved_colors_t colors;
-    int i;
-    int w;
+    int                i;
+    int                w;
 
     w = radiobutton->widget.w;
 
@@ -68,7 +68,7 @@ static void TXT_RadioButtonDrawer(TXT_UNCAST_ARG(radiobutton))
 
     TXT_DrawString(radiobutton->label);
 
-    for (i=TXT_UTF8_Strlen(radiobutton->label); i < w-5; ++i)
+    for (i = TXT_UTF8_Strlen(radiobutton->label); i < w - 5; ++i)
     {
         TXT_DrawString(" ");
     }
@@ -94,12 +94,12 @@ static int TXT_RadioButtonKeyPress(TXT_UNCAST_ARG(radiobutton), int key)
         }
         return 1;
     }
-    
+
     return 0;
 }
 
-static void TXT_RadioButtonMousePress(TXT_UNCAST_ARG(radiobutton), 
-                                      int x, int y, int b)
+static void TXT_RadioButtonMousePress(TXT_UNCAST_ARG(radiobutton),
+    int x, int y, int b)
 {
     TXT_CAST_ARG(txt_radiobutton_t, radiobutton);
 
@@ -111,8 +111,7 @@ static void TXT_RadioButtonMousePress(TXT_UNCAST_ARG(radiobutton),
     }
 }
 
-txt_widget_class_t txt_radiobutton_class =
-{
+txt_widget_class_t txt_radiobutton_class = {
     TXT_AlwaysSelectable,
     TXT_RadioButtonSizeCalc,
     TXT_RadioButtonDrawer,
@@ -127,9 +126,9 @@ txt_radiobutton_t *TXT_NewRadioButton(const char *label, int *variable, int valu
     auto *radiobutton = create_struct<txt_radiobutton_t>();
 
     TXT_InitWidget(radiobutton, &txt_radiobutton_class);
-    radiobutton->label = strdup(label);
+    radiobutton->label    = strdup(label);
     radiobutton->variable = variable;
-    radiobutton->value = value;
+    radiobutton->value    = value;
 
     return radiobutton;
 }
@@ -139,4 +138,3 @@ void TXT_SetRadioButtonLabel(txt_radiobutton_t *radiobutton, const char *value)
     free(radiobutton->label);
     radiobutton->label = strdup(value);
 }
-

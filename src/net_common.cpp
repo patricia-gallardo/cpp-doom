@@ -42,7 +42,7 @@
 // reliable packet that is guaranteed to reach its destination
 
 struct net_reliable_packet_s {
-    net_packet_t *         packet;
+    net_packet_t          *packet;
     int                    last_send_time;
     int                    seq;
     net_reliable_packet_t *next;
@@ -112,7 +112,7 @@ static void NET_Conn_ParseDisconnect(net_connection_t *conn, net_packet_t *packe
 // Parse a DISCONNECT_ACK packet
 
 static void NET_Conn_ParseDisconnectACK(net_connection_t *conn,
-    net_packet_t *                                        packet)
+    net_packet_t                                         *packet)
 {
 
     if (conn->state == NET_CONN_STATE_DISCONNECTING)
@@ -162,7 +162,7 @@ static void NET_Conn_ParseReliableACK(net_connection_t *conn, net_packet_t *pack
 // Returns true if the packet should be discarded (incorrect sequence)
 
 static boolean NET_Conn_ReliablePacket(net_connection_t *conn,
-    net_packet_t *                                       packet)
+    net_packet_t                                        *packet)
 {
     unsigned int  seq;
     net_packet_t *reply;
@@ -369,7 +369,7 @@ void NET_Conn_Run(net_connection_t *conn)
 
 net_packet_t *NET_Conn_NewReliable(net_connection_t *conn, int packet_type)
 {
-    net_packet_t *          packet;
+    net_packet_t           *packet;
     net_reliable_packet_t **listend;
 
     // Generate a packet with the right header

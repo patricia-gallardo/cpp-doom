@@ -27,9 +27,9 @@
 
 // Size of statusbar.
 // Now sensitive for scaling.
-#define ST_HEIGHT	32
-#define ST_WIDTH	ORIGWIDTH
-#define ST_Y		(ORIGHEIGHT - ST_HEIGHT)
+#define ST_HEIGHT 32
+#define ST_WIDTH  ORIGWIDTH
+#define ST_Y      (ORIGHEIGHT - ST_HEIGHT)
 
 
 //
@@ -37,13 +37,13 @@
 //
 
 // Called by main loop.
-boolean ST_Responder (event_t* ev);
+boolean ST_Responder(event_t *ev);
 
 // Called by main loop.
-void ST_Ticker ();
+void ST_Ticker();
 
 // Called by main loop.
-void ST_Drawer (boolean fullscreen, boolean refresh);
+void ST_Drawer(boolean fullscreen, boolean refresh);
 
 // haleyjd 09/01/10: [STRIFE] New function.
 // Called by main loop to draw external status bar bits.
@@ -51,16 +51,14 @@ void ST_Drawer (boolean fullscreen, boolean refresh);
 boolean ST_DrawExternal();
 
 // Called when the console player is spawned on each level.
-void ST_Start ();
+void ST_Start();
 
 // Called by startup code.
-void ST_Init ();
-
+void ST_Init();
 
 
 // States for status bar code.
-using st_stateenum_t = enum
-{
+using st_stateenum_t = enum {
     AutomapState,
     FirstPersonState
 
@@ -68,14 +66,12 @@ using st_stateenum_t = enum
 
 
 // States for the chat code.
-using st_chatstateenum_t = enum
-{
+using st_chatstateenum_t = enum {
     StartChatState,
     WaitDestState,
     GetChatState
 
 };
-
 
 
 extern byte *st_backing_screen;

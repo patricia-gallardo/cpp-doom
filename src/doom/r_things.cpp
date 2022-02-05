@@ -42,8 +42,8 @@
 #define MINZ        (FRACUNIT * 4)
 #define BASEYCENTER (ORIGHEIGHT / 2)
 
-//void R_DrawColumn ();
-//void R_DrawFuzzColumn ();
+// void R_DrawColumn ();
+// void R_DrawFuzzColumn ();
 
 
 using maskdraw_t = struct
@@ -54,12 +54,11 @@ using maskdraw_t = struct
     int column;
     int topclip;
     int bottomclip;
-
 };
 
 
 static degenmobj_t laserspot_m = { { 0 } };
-degenmobj_t *      laserspot   = &laserspot_m;
+degenmobj_t       *laserspot   = &laserspot_m;
 
 // [crispy] extendable, but the last char element must be zero,
 // keep in sync with multiitem_t multiitem_crosshairtype[] in m_menu.c
@@ -100,7 +99,7 @@ int          numsprites;
 
 spriteframe_t sprtemp[29];
 int           maxframe;
-const char *  spritename;
+const char   *spritename;
 
 
 //
@@ -114,7 +113,8 @@ void R_InstallSpriteLump(int lump,
 {
     int r;
     // [crispy] support 16 sprite rotations
-    unsigned rotation = (rot >= 'A') ? rot - 'A' + 10 : (rot >= '0') ? rot - '0' : 17;
+    unsigned rotation = (rot >= 'A') ? rot - 'A' + 10 : (rot >= '0') ? rot - '0' :
+                                                                       17;
 
     if (frame >= 29 || rotation > 16) // [crispy] support 16 sprite rotations
         I_Error("R_InstallSpriteLump: "
@@ -461,7 +461,7 @@ void R_DrawVisSprite(vissprite_t *vis,
     column_t *column;
     int       texturecolumn;
     fixed_t   frac;
-    patch_t * patch;
+    patch_t  *patch;
 
 
     patch = cache_lump_num<patch_t *>(vis->patch + firstspritelump, PU_CACHE);
@@ -554,7 +554,7 @@ void R_ProjectSprite(mobj_t *thing)
     int x1;
     int x2;
 
-    spritedef_t *  sprdef;
+    spritedef_t   *sprdef;
     spriteframe_t *sprframe;
     int            lump;
 
@@ -649,14 +649,14 @@ void R_ProjectSprite(mobj_t *thing)
         else
             // [crispy] support 16 sprite rotations
             if (sprframe->rotate == 2)
-        {
-            const unsigned rot2 = (ang - interpangle + (unsigned)(ANG45 / 4) * 17);
-            rot                 = (rot2 >> 29) + ((rot2 >> 25) & 8);
-        }
-        else
-        {
-            rot = (ang - interpangle + (unsigned)(ANG45 / 2) * 9) >> 29;
-        }
+            {
+                const unsigned rot2 = (ang - interpangle + (unsigned)(ANG45 / 4) * 17);
+                rot                 = (rot2 >> 29) + ((rot2 >> 25) & 8);
+            }
+            else
+            {
+                rot = (ang - interpangle + (unsigned)(ANG45 / 2) * 9) >> 29;
+            }
         lump = sprframe->lump[rot];
         flip = (boolean)sprframe->flip[rot];
     }
@@ -783,9 +783,9 @@ void R_ProjectSprite(mobj_t *thing)
             else
                 // [crispy] Cacodemons bleed blue blood
                 if (thing->target->type == MT_HEAD)
-            {
-                vis->translation = cr_colors[static_cast<int>(cr_t::CR_RED2BLUE)];
-            }
+                {
+                    vis->translation = cr_colors[static_cast<int>(cr_t::CR_RED2BLUE)];
+                }
         }
     }
 
@@ -944,11 +944,11 @@ void R_DrawPSprite(pspdef_t *psp, psprnum_t psprnum) // [crispy] differentiate g
     fixed_t        tx;
     int            x1;
     int            x2;
-    spritedef_t *  sprdef;
+    spritedef_t   *sprdef;
     spriteframe_t *sprframe;
     int            lump;
     boolean        flip;
-    vissprite_t *  vis;
+    vissprite_t   *vis;
     vissprite_t    avis;
 
     // decide which patch to use
@@ -1306,7 +1306,7 @@ void R_DrawSprite(vissprite_t *spr)
 void R_DrawMasked()
 {
     vissprite_t *spr;
-    drawseg_t *  ds;
+    drawseg_t   *ds;
 
     R_SortVisSprites();
 

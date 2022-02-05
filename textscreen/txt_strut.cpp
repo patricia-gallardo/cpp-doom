@@ -45,8 +45,7 @@ static int TXT_StrutKeyPress(TXT_UNCAST_ARG(strut), int key)
     return 0;
 }
 
-txt_widget_class_t txt_strut_class =
-{
+txt_widget_class_t txt_strut_class = {
     TXT_NeverSelectable,
     TXT_StrutSizeCalc,
     TXT_StrutDrawer,
@@ -61,9 +60,8 @@ txt_strut_t *TXT_NewStrut(int width, int height)
     auto *strut = create_struct<txt_strut_t>();
 
     TXT_InitWidget(strut, &txt_strut_class);
-    strut->width = width;
+    strut->width  = width;
     strut->height = height;
 
     return strut;
 }
-

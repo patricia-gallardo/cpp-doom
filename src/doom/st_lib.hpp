@@ -54,7 +54,6 @@ using st_number_t = struct
 
     // user data
     int data;
-
 };
 
 
@@ -95,7 +94,6 @@ using st_multicon_t = struct
 
     // user data
     int data;
-
 };
 
 
@@ -120,7 +118,6 @@ using st_binicon_t = struct
 
     patch_t *p;    // icon
     int      data; // user data
-
 };
 
 
@@ -139,9 +136,9 @@ void STlib_init();
 void STlib_initNum(st_number_t *n,
     int                         x,
     int                         y,
-    patch_t **                  pl,
-    int *                       num,
-    boolean *                   on,
+    patch_t                   **pl,
+    int                        *num,
+    boolean                    *on,
     int                         width);
 
 void STlib_updateNum(st_number_t *n,
@@ -152,10 +149,10 @@ void STlib_updateNum(st_number_t *n,
 void STlib_initPercent(st_percent_t *p,
     int                              x,
     int                              y,
-    patch_t **                       pl,
-    int *                            num,
-    boolean *                        on,
-    patch_t *                        percent);
+    patch_t                        **pl,
+    int                             *num,
+    boolean                         *on,
+    patch_t                         *percent);
 
 
 void STlib_updatePercent(st_percent_t *per,
@@ -166,9 +163,9 @@ void STlib_updatePercent(st_percent_t *per,
 void STlib_initMultIcon(st_multicon_t *mi,
     int                                x,
     int                                y,
-    patch_t **                         il,
-    int *                              inum,
-    boolean *                          on);
+    patch_t                          **il,
+    int                               *inum,
+    boolean                           *on);
 
 
 void STlib_updateMultIcon(st_multicon_t *mi,
@@ -179,9 +176,9 @@ void STlib_updateMultIcon(st_multicon_t *mi,
 void STlib_initBinIcon(st_binicon_t *b,
     int                              x,
     int                              y,
-    patch_t *                        i,
-    boolean *                        val,
-    boolean *                        on);
+    patch_t                         *i,
+    boolean                         *val,
+    boolean                         *on);
 
 void STlib_updateBinIcon(st_binicon_t *bi,
     boolean                            refresh);

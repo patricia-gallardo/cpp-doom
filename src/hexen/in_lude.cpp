@@ -28,13 +28,12 @@
 
 // MACROS ------------------------------------------------------------------
 
-#define	TEXTSPEED 3
-#define	TEXTWAIT 140
+#define TEXTSPEED 3
+#define TEXTWAIT  140
 
 // TYPES -------------------------------------------------------------------
 
-using gametype_t = enum
-{
+using gametype_t = enum {
     SINGLE,
     COOPERATIVE,
     DEATHMATCH
@@ -62,28 +61,28 @@ static void DrawHubText();
 // PUBLIC DATA DECLARATIONS ------------------------------------------------
 
 boolean intermission;
-char ClusterMessage[MAX_INTRMSN_MESSAGE_SIZE];
+char    ClusterMessage[MAX_INTRMSN_MESSAGE_SIZE];
 
 // PRIVATE DATA DEFINITIONS ------------------------------------------------
 
-static boolean skipintermission;
-static int interstate = 0;
-static int intertime = -1;
+static boolean    skipintermission;
+static int        interstate = 0;
+static int        intertime  = -1;
 static gametype_t gametype;
-static int cnt;
-static int slaughterboy;        // in DM, the player with the most kills
-static patch_t *patchINTERPIC;
-static patch_t *FontBNumbers[10];
-static patch_t *FontBNegative;
-static patch_t *FontBSlash;
-static patch_t *FontBPercent;
-static int FontABaseLump;
-static int FontBLump;
-static int FontBLumpBase;
+static int        cnt;
+static int        slaughterboy; // in DM, the player with the most kills
+static patch_t   *patchINTERPIC;
+static patch_t   *FontBNumbers[10];
+static patch_t   *FontBNegative;
+static patch_t   *FontBSlash;
+static patch_t   *FontBPercent;
+static int        FontABaseLump;
+static int        FontBLump;
+static int        FontBLumpBase;
 
 static signed int totalFrags[MAXPLAYERS];
 
-static int HubCount;
+static int   HubCount;
 static char *HubText;
 
 // CODE --------------------------------------------------------------------
@@ -102,15 +101,15 @@ void IN_Start()
     I_SetPalette(cache_lump_name<byte *>("PLAYPAL", PU_CACHE));
     InitStats();
     LoadPics();
-    intermission = true;
-    interstate = 0;
+    intermission     = true;
+    interstate       = 0;
     skipintermission = false;
-    intertime = 0;
+    intertime        = 0;
     AM_Stop();
     for (i = 0; i < maxplayers; i++)
     {
         players[i].messageTics = 0;
-        players[i].message[0] = 0;
+        players[i].message[0]  = 0;
     }
     SN_StopAllSequences();
 }
@@ -126,10 +125,10 @@ void WaitStop()
     if (!--cnt)
     {
         Stop();
-//              gamestate = GS_LEVEL;
-//              G_DoLoadLevel();
+        //              gamestate = GS_LEVEL;
+        //              G_DoLoadLevel();
         gameaction = ga_leavemap;
-//              G_WorldDone();
+        //              G_WorldDone();
     }
 }
 
@@ -143,7 +142,7 @@ static void Stop()
 {
     intermission = false;
     UnloadPics();
-    SB_state = -1;
+    SB_state          = -1;
     BorderNeedRefresh = true;
 }
 
@@ -164,50 +163,50 @@ static const char *ClusMsgLumpNames[] = {
 
 static void InitStats()
 {
-    int i;
-    int j;
-    int oldCluster;
-    signed int slaughterfrags;
-    int posnum;
-    int slaughtercount;
-    int playercount;
+    int         i;
+    int         j;
+    int         oldCluster;
+    signed int  slaughterfrags;
+    int         posnum;
+    int         slaughtercount;
+    int         playercount;
     const char *msgLumpName;
-    int msgSize;
-    int msgLump;
+    int         msgSize;
+    int         msgLump;
 
     extern int LeaveMap;
 
     if (!deathmatch)
     {
-        gametype = SINGLE;
-        HubCount = 0;
+        gametype   = SINGLE;
+        HubCount   = 0;
         oldCluster = P_GetMapCluster(gamemap);
         if (oldCluster != P_GetMapCluster(LeaveMap))
         {
             if (oldCluster >= 1 && oldCluster <= 5)
             {
                 msgLumpName = ClusMsgLumpNames[oldCluster - 1];
-                msgLump = W_GetNumForName(msgLumpName);
-                msgSize = W_LumpLength(msgLump);
+                msgLump     = W_GetNumForName(msgLumpName);
+                msgSize     = W_LumpLength(msgLump);
                 if (msgSize >= MAX_INTRMSN_MESSAGE_SIZE)
                 {
                     I_Error("Cluster message too long (%s)", msgLumpName);
                 }
                 W_ReadLump(msgLump, ClusterMessage);
-                ClusterMessage[msgSize] = 0;    // Append terminator
-                HubText = ClusterMessage;
-                HubCount = strlen(HubText) * TEXTSPEED + TEXTWAIT;
+                ClusterMessage[msgSize] = 0; // Append terminator
+                HubText                 = ClusterMessage;
+                HubCount                = strlen(HubText) * TEXTSPEED + TEXTWAIT;
                 S_StartSongName("hub", true);
             }
         }
     }
     else
     {
-        gametype = DEATHMATCH;
-        slaughterboy = 0;
+        gametype       = DEATHMATCH;
+        slaughterboy   = 0;
         slaughterfrags = -9999;
-        posnum = 0;
-        playercount = 0;
+        posnum         = 0;
+        playercount    = 0;
         slaughtercount = 0;
         for (i = 0; i < maxplayers; i++)
         {
@@ -226,7 +225,7 @@ static void InitStats()
             }
             if (totalFrags[i] > slaughterfrags)
             {
-                slaughterboy = 1 << i;
+                slaughterboy   = 1 << i;
                 slaughterfrags = totalFrags[i];
                 slaughtercount = 1;
             }
@@ -237,7 +236,7 @@ static void InitStats()
             }
         }
         if (playercount == slaughtercount)
-        {                       // don't do the slaughter stuff if everyone is equal
+        { // don't do the slaughter stuff if everyone is equal
             slaughterboy = 0;
         }
         S_StartSongName("hub", true);
@@ -262,11 +261,11 @@ static void LoadPics()
         {
             FontBNumbers[i] = cache_lump_num<patch_t *>(FontBLumpBase + i, PU_STATIC);
         }
-        FontBLump = W_GetNumForName("FONTB_S") + 1;
+        FontBLump     = W_GetNumForName("FONTB_S") + 1;
         FontBNegative = cache_lump_name<patch_t *>("FONTB13", PU_STATIC);
         FontABaseLump = W_GetNumForName("FONTA_S") + 1;
 
-        FontBSlash = cache_lump_name<patch_t *>("FONTB15", PU_STATIC);
+        FontBSlash   = cache_lump_name<patch_t *>("FONTB15", PU_STATIC);
         FontBPercent = cache_lump_name<patch_t *>("FONTB05", PU_STATIC);
     }
 }
@@ -319,10 +318,10 @@ void IN_Ticker()
     intertime++;
     if (skipintermission || (gametype == SINGLE && !HubCount))
     {
-        interstate = 1;
-        cnt = 10;
+        interstate       = 1;
+        cnt              = 10;
         skipintermission = false;
-        //S_StartSound(NULL, sfx_dorcls);
+        // S_StartSound(NULL, sfx_dorcls);
     }
 }
 
@@ -335,8 +334,8 @@ void IN_Ticker()
 
 static void CheckForSkip()
 {
-    int i;
-    player_t *player;
+    int            i;
+    player_t      *player;
     static boolean triedToSkip;
 
     for (i = 0, player = players; i < maxplayers; i++, player++)
@@ -370,10 +369,10 @@ static void CheckForSkip()
         }
     }
     if (deathmatch && intertime < 140)
-    {                           // wait for 4 seconds before allowing a skip
+    { // wait for 4 seconds before allowing a skip
         if (skipintermission == 1)
         {
-            triedToSkip = true;
+            triedToSkip      = true;
             skipintermission = 0;
         }
     }
@@ -382,7 +381,7 @@ static void CheckForSkip()
         if (triedToSkip)
         {
             skipintermission = 1;
-            triedToSkip = false;
+            triedToSkip      = false;
         }
     }
 }
@@ -404,7 +403,7 @@ void IN_Drawer()
         return;
     }
     UpdateState |= I_FULLSCRN;
-    V_CopyScaledBuffer(I_VideoBuffer, (byte *) patchINTERPIC, ORIGWIDTH * ORIGHEIGHT);
+    V_CopyScaledBuffer(I_VideoBuffer, (byte *)patchINTERPIC, ORIGWIDTH * ORIGHEIGHT);
 
     if (gametype == SINGLE)
     {
@@ -425,53 +424,50 @@ void IN_Drawer()
 //
 //========================================================================
 
-#define TALLY_EFFECT_TICKS 20
-#define TALLY_FINAL_X_DELTA (23*FRACUNIT)
-#define TALLY_FINAL_Y_DELTA (13*FRACUNIT)
-#define TALLY_START_XPOS (178*FRACUNIT)
-#define TALLY_STOP_XPOS (90*FRACUNIT)
-#define TALLY_START_YPOS (132*FRACUNIT)
-#define TALLY_STOP_YPOS (83*FRACUNIT)
-#define TALLY_TOP_X 85
-#define TALLY_TOP_Y 9
-#define TALLY_LEFT_X 7
-#define TALLY_LEFT_Y 71
-#define TALLY_TOTALS_X 291
+#define TALLY_EFFECT_TICKS  20
+#define TALLY_FINAL_X_DELTA (23 * FRACUNIT)
+#define TALLY_FINAL_Y_DELTA (13 * FRACUNIT)
+#define TALLY_START_XPOS    (178 * FRACUNIT)
+#define TALLY_STOP_XPOS     (90 * FRACUNIT)
+#define TALLY_START_YPOS    (132 * FRACUNIT)
+#define TALLY_STOP_YPOS     (83 * FRACUNIT)
+#define TALLY_TOP_X         85
+#define TALLY_TOP_Y         9
+#define TALLY_LEFT_X        7
+#define TALLY_LEFT_Y        71
+#define TALLY_TOTALS_X      291
 
 static void DrDeathTally()
 {
-    int i, j;
-    fixed_t xPos, yPos;
-    fixed_t xDelta, yDelta;
-    fixed_t xStart, scale;
-    int x, y;
-    boolean bold;
+    int            i, j;
+    fixed_t        xPos, yPos;
+    fixed_t        xDelta, yDelta;
+    fixed_t        xStart, scale;
+    int            x, y;
+    boolean        bold;
     static boolean showTotals;
-    int temp;
+    int            temp;
 
     V_DrawPatch(TALLY_TOP_X, TALLY_TOP_Y,
-                cache_lump_name<patch_t *>("tallytop", PU_CACHE));
+        cache_lump_name<patch_t *>("tallytop", PU_CACHE));
     V_DrawPatch(TALLY_LEFT_X, TALLY_LEFT_Y,
-                cache_lump_name<patch_t *>("tallylft", PU_CACHE));
+        cache_lump_name<patch_t *>("tallylft", PU_CACHE));
     if (intertime < TALLY_EFFECT_TICKS)
     {
         showTotals = false;
-        scale = (intertime * FRACUNIT) / TALLY_EFFECT_TICKS;
-        xDelta = FixedMul(scale, TALLY_FINAL_X_DELTA);
-        yDelta = FixedMul(scale, TALLY_FINAL_Y_DELTA);
-        xStart = TALLY_START_XPOS - FixedMul(scale,
-                                             TALLY_START_XPOS -
-                                             TALLY_STOP_XPOS);
+        scale      = (intertime * FRACUNIT) / TALLY_EFFECT_TICKS;
+        xDelta     = FixedMul(scale, TALLY_FINAL_X_DELTA);
+        yDelta     = FixedMul(scale, TALLY_FINAL_Y_DELTA);
+        xStart     = TALLY_START_XPOS - FixedMul(scale, TALLY_START_XPOS - TALLY_STOP_XPOS);
         yPos =
-            TALLY_START_YPOS - FixedMul(scale,
-                                        TALLY_START_YPOS - TALLY_STOP_YPOS);
+            TALLY_START_YPOS - FixedMul(scale, TALLY_START_YPOS - TALLY_STOP_YPOS);
     }
     else
     {
         xDelta = TALLY_FINAL_X_DELTA;
         yDelta = TALLY_FINAL_Y_DELTA;
         xStart = TALLY_STOP_XPOS;
-        yPos = TALLY_STOP_YPOS;
+        yPos   = TALLY_STOP_YPOS;
     }
     if (intertime >= TALLY_EFFECT_TICKS && showTotals == false)
     {
@@ -484,7 +480,7 @@ static void DrDeathTally()
         xPos = xStart;
         for (j = 0; j < maxplayers; j++, xPos += xDelta)
         {
-            x = xPos >> FRACBITS;
+            x    = xPos >> FRACBITS;
             bold = (i == consoleplayer || j == consoleplayer);
             if (playeringame[i] && playeringame[j])
             {
@@ -533,7 +529,7 @@ static void DrNumber(int val, int x, int y, int wrapThresh)
     if (!(val < -9 && wrapThresh < 1000))
     {
         M_snprintf(buff, sizeof(buff), "%d",
-                   val >= wrapThresh ? val % wrapThresh : val);
+            val >= wrapThresh ? val % wrapThresh : val);
     }
     MN_DrTextA(buff, x - MN_TextAWidth(buff) / 2, y);
 }
@@ -551,7 +547,7 @@ static void DrNumberBold(int val, int x, int y, int wrapThresh)
     if (!(val < -9 && wrapThresh < 1000))
     {
         M_snprintf(buff, sizeof(buff), "%d",
-                   val >= wrapThresh ? val % wrapThresh : val);
+            val >= wrapThresh ? val % wrapThresh : val);
     }
     MN_DrTextAYellow(buff, x - MN_TextAWidth(buff) / 2, y);
 }
@@ -564,15 +560,15 @@ static void DrNumberBold(int val, int x, int y, int wrapThresh)
 
 static void DrawHubText()
 {
-    int count;
-    char *ch;
-    int c;
-    int cx, cy;
+    int      count;
+    char    *ch;
+    int      c;
+    int      cx, cy;
     patch_t *w;
 
-    cy = 5;
-    cx = 10;
-    ch = HubText;
+    cy    = 5;
+    cx    = 10;
+    ch    = HubText;
     count = (intertime - 10) / TEXTSPEED;
     if (count < 0)
     {

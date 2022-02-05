@@ -199,11 +199,11 @@ boolean
         // [NS] Just need to pass that it's dropped.
         gaveammo = P_GiveAmmo(player, weaponinfo[weapon].ammo, 2, dropped);
         /*
-	if (dropped)
-	    gaveammo = P_GiveAmmo (player, weaponinfo[weapon].ammo, 1);
-	else
-	    gaveammo = P_GiveAmmo (player, weaponinfo[weapon].ammo, 2);
-	*/
+        if (dropped)
+            gaveammo = P_GiveAmmo (player, weaponinfo[weapon].ammo, 1);
+        else
+            gaveammo = P_GiveAmmo (player, weaponinfo[weapon].ammo, 2);
+        */
     }
     else
         gaveammo = false;
@@ -281,7 +281,7 @@ void P_GiveCard(player_t *player,
 // P_GivePower
 //
 boolean
-    P_GivePower(player_t *  player,
+    P_GivePower(player_t   *player,
         int /*powertype_t*/ power)
 {
     if (power == pw_invulnerability)
@@ -328,9 +328,9 @@ boolean
 // P_TouchSpecialThing
 //
 void P_TouchSpecialThing(mobj_t *special,
-    mobj_t *                     toucher)
+    mobj_t                      *toucher)
 {
-    player_t *    player;
+    player_t     *player;
     int           i;
     fixed_t       delta;
     int           sound;
@@ -537,17 +537,17 @@ void P_TouchSpecialThing(mobj_t *special,
         // [NS] Give half ammo for drops of all types.
     case SPR_CLIP:
         /*
-	if (special->flags & MF_DROPPED)
-	{
-	    if (!P_GiveAmmo (player,am_clip,0))
-		return;
-	}
-	else
-	{
-	    if (!P_GiveAmmo (player,am_clip,1))
-		return;
-	}
-	*/
+        if (special->flags & MF_DROPPED)
+        {
+            if (!P_GiveAmmo (player,am_clip,0))
+                return;
+        }
+        else
+        {
+            if (!P_GiveAmmo (player,am_clip,1))
+                return;
+        }
+        */
         if (!P_GiveAmmo(player, am_clip, 1, dropped))
             return;
         player->message = DEH_String(GOTCLIP);
@@ -678,10 +678,10 @@ void P_TouchSpecialThing(mobj_t *special,
 // KillMobj
 //
 void P_KillMobj(mobj_t *source,
-    mobj_t *            target)
+    mobj_t             *target)
 {
     mobjtype_t item;
-    mobj_t *   mo;
+    mobj_t    *mo;
 
     target->flags &= ~(MF_SHOOTABLE | MF_FLOAT | MF_SKULLFLY);
 
@@ -803,8 +803,8 @@ void P_KillMobj(mobj_t *source,
 // and other environmental stuff.
 //
 void P_DamageMobj(mobj_t *target,
-    mobj_t *              inflictor,
-    mobj_t *              source,
+    mobj_t               *inflictor,
+    mobj_t               *source,
     int                   damage)
 {
     unsigned  ang;

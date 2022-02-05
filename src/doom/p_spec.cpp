@@ -64,7 +64,6 @@ using anim_t = struct
     int     basepic;
     int     numpics;
     int     speed;
-
 };
 
 //
@@ -134,8 +133,8 @@ animdef_t animdefs_vanilla[] = {
 };
 
 // [crispy] remove MAXANIMS limit
-anim_t *      anims;
-anim_t *      lastanim;
+anim_t       *anims;
+anim_t       *lastanim;
 static size_t maxanims;
 
 
@@ -154,7 +153,7 @@ void P_InitPicAnims()
     boolean init_swirl = false;
 
     // [crispy] add support for ANIMATED lumps
-    animdef_t *   animdefs;
+    animdef_t    *animdefs;
     const boolean from_lump = (W_CheckNumForName("ANIMATED") != -1);
 
     if (from_lump)
@@ -284,7 +283,7 @@ int twoSided(int sector,
 //
 sector_t *
     getNextSector(line_t *line,
-        sector_t *        sec)
+        sector_t         *sec)
 {
     if (!(line->flags & ML_TWOSIDED))
         return NULL;
@@ -303,7 +302,7 @@ sector_t *
 fixed_t P_FindLowestFloorSurrounding(sector_t *sec)
 {
     int       i;
-    line_t *  check;
+    line_t   *check;
     sector_t *other;
     fixed_t   floor = sec->floorheight;
 
@@ -329,7 +328,7 @@ fixed_t P_FindLowestFloorSurrounding(sector_t *sec)
 fixed_t P_FindHighestFloorSurrounding(sector_t *sec)
 {
     int       i;
-    line_t *  check;
+    line_t   *check;
     sector_t *other;
     fixed_t   floor = -500 * FRACUNIT;
 
@@ -365,8 +364,8 @@ fixed_t
     int             i;
     int             h;
     int             min;
-    line_t *        check;
-    sector_t *      other;
+    line_t         *check;
+    sector_t       *other;
     fixed_t         height          = currentheight;
     static fixed_t *heightlist      = NULL;
     static int      heightlist_size = 0;
@@ -435,7 +434,7 @@ fixed_t
     P_FindLowestCeilingSurrounding(sector_t *sec)
 {
     int       i;
-    line_t *  check;
+    line_t   *check;
     sector_t *other;
     fixed_t   height = INT_MAX;
 
@@ -460,7 +459,7 @@ fixed_t
 fixed_t P_FindHighestCeilingSurrounding(sector_t *sec)
 {
     int       i;
-    line_t *  check;
+    line_t   *check;
     sector_t *other;
     fixed_t   height = 0;
 
@@ -525,7 +524,7 @@ int P_FindMinSurroundingLight(sector_t *sector,
 {
     int       i;
     int       min;
-    line_t *  line;
+    line_t   *line;
     sector_t *check;
 
     min = max;
@@ -557,7 +556,7 @@ int P_FindMinSurroundingLight(sector_t *sector,
 //
 void P_CrossSpecialLine(int linenum,
     int                     side,
-    mobj_t *                thing)
+    mobj_t                 *thing)
 {
     return P_CrossSpecialLinePtr(&lines[linenum], side, thing);
 }
@@ -565,7 +564,7 @@ void P_CrossSpecialLine(int linenum,
 // [crispy] more MBF code pointers
 void P_CrossSpecialLinePtr(line_t *line,
     int                            side,
-    mobj_t *                       thing)
+    mobj_t                        *thing)
 {
     //  line_t*	line;
     int ok;
@@ -1040,7 +1039,7 @@ void P_CrossSpecialLinePtr(line_t *line,
 // Called when a thing shoots a special line.
 //
 void P_ShootSpecialLine(mobj_t *thing,
-    line_t *                    line)
+    line_t                     *line)
 {
     int ok;
 
@@ -1089,7 +1088,7 @@ void P_ShootSpecialLine(mobj_t *thing,
 //
 void P_PlayerInSpecialSector(player_t *player)
 {
-    sector_t *       sector;
+    sector_t        *sector;
     extern int       showMessages;
     static sector_t *error;
 
@@ -1409,9 +1408,9 @@ static void DonutOverrun(fixed_t *s3_floorheight, short *s3_floorpic,
 //
 int EV_DoDonut(line_t *line)
 {
-    sector_t *   s1;
-    sector_t *   s2;
-    sector_t *   s3;
+    sector_t    *s1;
+    sector_t    *s2;
+    sector_t    *s3;
     int          secnum;
     int          rtn;
     int          i;

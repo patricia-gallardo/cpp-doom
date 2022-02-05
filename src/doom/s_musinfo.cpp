@@ -61,7 +61,7 @@ static boolean SC_Compare(const char *text);
 
 // PUBLIC DATA DEFINITIONS -------------------------------------------------
 
-static char *  sc_String;
+static char   *sc_String;
 static int     sc_Line;
 static boolean sc_End;
 static boolean sc_Crossed;
@@ -69,9 +69,9 @@ static boolean sc_Crossed;
 // PRIVATE DATA DEFINITIONS ------------------------------------------------
 
 static char    ScriptName[16];
-static char *  ScriptBuffer;
-static char *  ScriptPtr;
-static char *  ScriptEndPtr;
+static char   *ScriptBuffer;
+static char   *ScriptPtr;
+static char   *ScriptEndPtr;
 static char    StringBuffer[MAX_STRING_SIZE];
 static int     ScriptLumpNum;
 static boolean ScriptOpen = false;
@@ -154,7 +154,7 @@ static void SC_Close()
 
 static boolean SC_GetString()
 {
-    char *  text;
+    char   *text;
     boolean foundToken;
 
     CheckOpen();

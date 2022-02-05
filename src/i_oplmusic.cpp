@@ -96,7 +96,6 @@ using opl_channel_data_t = struct
     // Pitch bend value:
 
     int bend;
-
 };
 
 // Data associated with a track that is currently playing.
@@ -889,7 +888,7 @@ static const unsigned int volume_mapping_table[] = {
 static opl_driver_ver_t opl_drv_ver       = opl_doom_1_9;
 static boolean          music_initialized = false;
 
-//static boolean musicpaused = false;
+// static boolean musicpaused = false;
 static int start_music_volume;
 static int current_music_volume;
 
@@ -1072,7 +1071,7 @@ static void LoadOperatorData(int op, genmidi_op_t *data,
 // Set the instrument for a particular voice.
 
 static void SetVoiceInstrument(opl_voice_t *voice,
-    genmidi_instr_t *                       instr,
+    genmidi_instr_t                        *instr,
     unsigned int                            instr_voice)
 {
     genmidi_voice_t *data;
@@ -1252,7 +1251,7 @@ static void VoiceKeyOff(opl_voice_t *voice)
 }
 
 static opl_channel_data_t *TrackChannelForEvent(opl_track_data_t *track,
-    midi_event_t *                                                event)
+    midi_event_t                                                 *event)
 {
     unsigned int channel_num = event->data.channel.channel;
 
@@ -1488,7 +1487,7 @@ static void UpdateVoiceFrequency(opl_voice_t *voice)
 // key on event.
 
 static void VoiceKeyOn(opl_channel_data_t *channel,
-    genmidi_instr_t *                      instrument,
+    genmidi_instr_t                       *instrument,
     unsigned int                           instrument_voice,
     unsigned int                           note,
     unsigned int                           key,
@@ -1543,7 +1542,7 @@ static void VoiceKeyOn(opl_channel_data_t *channel,
 
 static void KeyOnEvent(opl_track_data_t *track, midi_event_t *event)
 {
-    genmidi_instr_t *   instrument;
+    genmidi_instr_t    *instrument;
     opl_channel_data_t *channel;
     unsigned int        note, key, volume, voicenum;
     boolean             double_voice;
@@ -1806,9 +1805,9 @@ static void PitchBendEvent(opl_track_data_t *track, midi_event_t *event)
 {
     opl_channel_data_t *channel;
     int                 i;
-    opl_voice_t *       voice_updated_list[OPL_NUM_VOICES * 2];
+    opl_voice_t        *voice_updated_list[OPL_NUM_VOICES * 2];
     unsigned int        voice_updated_num = 0;
-    opl_voice_t *       voice_not_updated_list[OPL_NUM_VOICES * 2];
+    opl_voice_t        *voice_not_updated_list[OPL_NUM_VOICES * 2];
     unsigned int        voice_not_updated_num = 0;
 
     // Update the channel bend value.  Only the MSB of the pitch bend
@@ -1854,7 +1853,7 @@ static void MetaSetTempo(unsigned int tempo)
 
 static void MetaEvent(opl_track_data_t *track, midi_event_t *event)
 {
-    byte *       data     = event->data.meta.data;
+    byte        *data     = event->data.meta.data;
     unsigned int data_len = event->data.meta.length;
 
     switch (event->data.meta.type)
@@ -1968,7 +1967,7 @@ static void RestartSong(void *unused)
 
 static void TrackTimerCallback(void *arg)
 {
-    auto *        track = static_cast<opl_track_data_t *>(arg);
+    auto         *track = static_cast<opl_track_data_t *>(arg);
     midi_event_t *event;
 
     // Get the next event and process it.
@@ -2198,7 +2197,7 @@ static boolean ConvertMus(byte *musdata, int len, char *filename)
 {
     MEMFILE *instream;
     MEMFILE *outstream;
-    void *   outbuf;
+    void    *outbuf;
     size_t   outbuf_len;
     int      result;
 
@@ -2223,7 +2222,7 @@ static boolean ConvertMus(byte *musdata, int len, char *filename)
 static void *I_OPL_RegisterSong(void *data, int len)
 {
     midi_file_t *result;
-    char *       filename;
+    char        *filename;
 
     if (!music_initialized)
     {

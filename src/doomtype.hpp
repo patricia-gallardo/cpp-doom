@@ -118,7 +118,7 @@ typedef enum
 
 using byte = uint8_t;
 #ifndef CRISPY_TRUECOLOR
-using pixel_t = uint8_t;
+using pixel_t  = uint8_t;
 using dpixel_t = int16_t;
 #else
 typedef uint32_t pixel_t;

@@ -35,8 +35,8 @@
 #endif
 
 void TXT_SetWindowAction(txt_window_t *window,
-                         txt_horiz_align_t position, 
-                         TXT_UNCAST_ARG(action))
+    txt_horiz_align_t                  position,
+    TXT_UNCAST_ARG(action))
 {
     TXT_CAST_ARG(txt_widget_t, action);
 
@@ -72,17 +72,17 @@ txt_window_t *TXT_NewWindow(const char *title)
         win->title = strdup(title);
     }
 
-    win->x = TXT_SCREEN_W / 2;
-    win->y = TXT_SCREEN_H / 2;
-    win->horiz_align = TXT_HORIZ_CENTER;
-    win->vert_align = TXT_VERT_CENTER;
-    win->key_listener = NULL;
+    win->x              = TXT_SCREEN_W / 2;
+    win->y              = TXT_SCREEN_H / 2;
+    win->horiz_align    = TXT_HORIZ_CENTER;
+    win->vert_align     = TXT_VERT_CENTER;
+    win->key_listener   = NULL;
     win->mouse_listener = NULL;
-    win->help_url = NULL;
+    win->help_url       = NULL;
 
     TXT_AddWidget(win, TXT_NewSeparator(NULL));
 
-    for (i=0; i<3; ++i)
+    for (i = 0; i < 3; ++i)
     {
         win->actions[i] = NULL;
     }
@@ -108,7 +108,7 @@ void TXT_CloseWindow(txt_window_t *window)
 
     // Destroy all actions
 
-    for (i=0; i<3; ++i)
+    for (i = 0; i < 3; ++i)
     {
         if (window->actions[i] != NULL)
         {
@@ -125,42 +125,42 @@ static void CalcWindowPosition(txt_window_t *window)
 {
     switch (window->horiz_align)
     {
-        case TXT_HORIZ_LEFT:
-            window->window_x = window->x;
-            break;
-        case TXT_HORIZ_CENTER:
-            window->window_x = window->x - (window->window_w / 2);
-            break;
-        case TXT_HORIZ_RIGHT:
-            window->window_x = window->x - (window->window_w - 1);
-            break;
+    case TXT_HORIZ_LEFT:
+        window->window_x = window->x;
+        break;
+    case TXT_HORIZ_CENTER:
+        window->window_x = window->x - (window->window_w / 2);
+        break;
+    case TXT_HORIZ_RIGHT:
+        window->window_x = window->x - (window->window_w - 1);
+        break;
     }
 
     switch (window->vert_align)
     {
-        case TXT_VERT_TOP:
-            window->window_y = window->y;
-            break;
-        case TXT_VERT_CENTER:
-            window->window_y = window->y - (window->window_h / 2);
-            break;
-        case TXT_VERT_BOTTOM:
-            window->window_y = window->y - (window->window_h - 1);
-            break;
+    case TXT_VERT_TOP:
+        window->window_y = window->y;
+        break;
+    case TXT_VERT_CENTER:
+        window->window_y = window->y - (window->window_h / 2);
+        break;
+    case TXT_VERT_BOTTOM:
+        window->window_y = window->y - (window->window_h - 1);
+        break;
     }
 }
 
 static void LayoutActionArea(txt_window_t *window)
 {
     txt_widget_t *widget;
-    int space_available;
-    int space_left_offset;
+    int           space_available;
+    int           space_left_offset;
 
     // We need to calculate the available horizontal space for the center
     // action widget, so that we can center it within it.
     // To start with, we have the entire action area available.
 
-    space_available = window->window_w;
+    space_available   = window->window_w;
     space_left_offset = 0;
 
     // Left action
@@ -209,8 +209,8 @@ static void LayoutActionArea(txt_window_t *window)
         // The left and right widgets have left a space sandwiched between
         // them.  Center this widget within that space.
         widget->x = window->window_x
-                  + space_left_offset
-                  + (space_available - widget->w) / 2;
+                    + space_left_offset
+                    + (space_available - widget->w) / 2;
         widget->y = window->window_y + window->window_h - widget->h - 1;
 
         TXT_LayoutWidget(widget);
@@ -221,7 +221,7 @@ static void DrawActionArea(txt_window_t *window)
 {
     int i;
 
-    for (i=0; i<3; ++i)
+    for (i = 0; i < 3; ++i)
     {
         if (window->actions[i] != NULL)
         {
@@ -230,11 +230,11 @@ static void DrawActionArea(txt_window_t *window)
     }
 }
 
-static void CalcActionAreaSize(txt_window_t *window, 
-                               unsigned int *w, unsigned int *h)
+static void CalcActionAreaSize(txt_window_t *window,
+    unsigned int *w, unsigned int *h)
 {
     txt_widget_t *widget;
-    int i;
+    int           i;
 
     *w = 0;
     *h = 0;
@@ -242,9 +242,9 @@ static void CalcActionAreaSize(txt_window_t *window,
     // Calculate the width of all the action widgets and use this
     // to create an overall min. width of the action area
 
-    for (i=0; i<3; ++i)
+    for (i = 0; i < 3; ++i)
     {
-        widget = (txt_widget_t *) window->actions[i];
+        widget = (txt_widget_t *)window->actions[i];
 
         if (widget != NULL)
         {
@@ -263,12 +263,12 @@ static void CalcActionAreaSize(txt_window_t *window,
 
 void TXT_LayoutWindow(txt_window_t *window)
 {
-    txt_widget_t *widgets = (txt_widget_t *) window;
-    unsigned int widgets_w;
-    unsigned int actionarea_w, actionarea_h;
+    txt_widget_t *widgets = (txt_widget_t *)window;
+    unsigned int  widgets_w;
+    unsigned int  actionarea_w, actionarea_h;
 
     // Calculate size of table
-    
+
     TXT_CalcWidgetSize(window);
 
     // Widgets area: add one character of padding on each side
@@ -276,14 +276,14 @@ void TXT_LayoutWindow(txt_window_t *window)
 
     // Calculate the size of the action area
     // Make window wide enough to action area
-  
+
     CalcActionAreaSize(window, &actionarea_w, &actionarea_h);
-    
+
     if (actionarea_w > widgets_w)
         widgets_w = actionarea_w;
 
     // Set the window size based on widgets_w
-   
+
     window->window_w = widgets_w + 2;
     window->window_h = widgets->h + 1;
 
@@ -301,7 +301,7 @@ void TXT_LayoutWindow(txt_window_t *window)
         window->window_h += actionarea_h + 1;
     }
 
-    // Use the x,y position as the centerpoint and find the location to 
+    // Use the x,y position as the centerpoint and find the location to
     // draw the window.
 
     CalcWindowPosition(window);
@@ -343,9 +343,9 @@ void TXT_DrawWindow(txt_window_t *window)
 
     // Draw the window
 
-    TXT_DrawWindowFrame(window->title, 
-                        window->window_x, window->window_y,
-                        window->window_w, window->window_h);
+    TXT_DrawWindowFrame(window->title,
+        window->window_x, window->window_y,
+        window->window_w, window->window_h);
 
     // Draw all widgets
 
@@ -353,14 +353,14 @@ void TXT_DrawWindow(txt_window_t *window)
 
     // Draw an action area, if we have one
 
-    widgets = (txt_widget_t *) window;
+    widgets = (txt_widget_t *)window;
 
     if (widgets->y + widgets->h < window->window_y + window->window_h - 1)
     {
         // Separator for action area
 
-        TXT_DrawSeparator(window->window_x, widgets->y + widgets->h, 
-                          window->window_w);
+        TXT_DrawSeparator(window->window_x, widgets->y + widgets->h,
+            window->window_w);
 
         // Action area at the window bottom
 
@@ -369,20 +369,20 @@ void TXT_DrawWindow(txt_window_t *window)
 }
 
 void TXT_SetWindowPosition(txt_window_t *window,
-                           txt_horiz_align_t horiz_align,
-                           txt_vert_align_t vert_align,
-                           int x, int y)
+    txt_horiz_align_t                    horiz_align,
+    txt_vert_align_t                     vert_align,
+    int x, int y)
 {
-    window->vert_align = vert_align;
+    window->vert_align  = vert_align;
     window->horiz_align = horiz_align;
-    window->x = x;
-    window->y = y;
+    window->x           = x;
+    window->y           = y;
 }
 
 static int MouseButtonPress(txt_window_t *window, int b)
 {
-    int x, y;
-    int i;
+    int           x, y;
+    int           i;
     txt_widget_t *widgets;
     txt_widget_t *widget;
 
@@ -401,8 +401,8 @@ static int MouseButtonPress(txt_window_t *window, int b)
     {
         // Mouse listener can eat button presses
 
-        if (window->mouse_listener(window, x, y, b, 
-                                   window->mouse_listener_data))
+        if (window->mouse_listener(window, x, y, b,
+                window->mouse_listener_data))
         {
             return 1;
         }
@@ -410,10 +410,10 @@ static int MouseButtonPress(txt_window_t *window, int b)
 
     // Is it within the table range?
 
-    widgets = (txt_widget_t *) window;
+    widgets = (txt_widget_t *)window;
 
-    if (x >= widgets->x && x < (signed) (widgets->x + widgets->w)
-     && y >= widgets->y && y < (signed) (widgets->y + widgets->h))
+    if (x >= widgets->x && x < (signed)(widgets->x + widgets->w)
+        && y >= widgets->y && y < (signed)(widgets->y + widgets->h))
     {
         TXT_WidgetMousePress(window, x, y, b);
         return 1;
@@ -421,13 +421,13 @@ static int MouseButtonPress(txt_window_t *window, int b)
 
     // Was one of the action area buttons pressed?
 
-    for (i=0; i<3; ++i)
+    for (i = 0; i < 3; ++i)
     {
         widget = window->actions[i];
 
         if (widget != NULL
-         && x >= widget->x && x < (signed) (widget->x + widget->w)
-         && y >= widget->y && y < (signed) (widget->y + widget->h))
+            && x >= widget->x && x < (signed)(widget->x + widget->w)
+            && y >= widget->y && y < (signed)(widget->y + widget->h))
         {
             int was_focused;
 
@@ -482,10 +482,10 @@ int TXT_WindowKeyPress(txt_window_t *window, int c)
 
     // Try all of the action buttons
 
-    for (i=0; i<3; ++i)
+    for (i = 0; i < 3; ++i)
     {
         if (window->actions[i] != NULL
-         && TXT_WidgetKeyPress(window->actions[i], c))
+            && TXT_WidgetKeyPress(window->actions[i], c))
         {
             return 1;
         }
@@ -494,18 +494,18 @@ int TXT_WindowKeyPress(txt_window_t *window, int c)
     return 0;
 }
 
-void TXT_SetKeyListener(txt_window_t *window, TxtWindowKeyPress key_listener, 
-                        void *user_data)
+void TXT_SetKeyListener(txt_window_t *window, TxtWindowKeyPress key_listener,
+    void *user_data)
 {
-    window->key_listener = key_listener;
+    window->key_listener      = key_listener;
     window->key_listener_data = user_data;
 }
 
-void TXT_SetMouseListener(txt_window_t *window, 
-                          TxtWindowMousePress mouse_listener,
-                          void *user_data)
+void TXT_SetMouseListener(txt_window_t *window,
+    TxtWindowMousePress                 mouse_listener,
+    void                               *user_data)
 {
-    window->mouse_listener = mouse_listener;
+    window->mouse_listener      = mouse_listener;
     window->mouse_listener_data = user_data;
 }
 
@@ -530,12 +530,12 @@ void TXT_OpenURL(const char *url)
 
 void TXT_OpenURL(const char *url)
 {
-    char *cmd;
+    char  *cmd;
     size_t cmd_len;
-    int retval;
+    int    retval;
 
     cmd_len = strlen(url) + 30;
-    cmd = static_cast<char *>(malloc(cmd_len));
+    cmd     = static_cast<char *>(malloc(cmd_len));
 
 #if defined(__MACOSX__)
     TXT_snprintf(cmd, cmd_len, "open \"%s\"", url);
@@ -545,7 +545,7 @@ void TXT_OpenURL(const char *url)
     if (system("xdg-open --version 2>/dev/null") != 0)
     {
         fprintf(stderr,
-                "xdg-utils is not installed. Can't open this URL:\n%s\n", url);
+            "xdg-utils is not installed. Can't open this URL:\n%s\n", url);
         free(cmd);
         return;
     }
@@ -575,8 +575,8 @@ void TXT_OpenWindowHelpURL(txt_window_t *window)
 txt_window_t *TXT_MessageBox(const char *title, const char *message, ...)
 {
     txt_window_t *window;
-    char buf[256];
-    va_list args;
+    char          buf[256];
+    va_list       args;
 
     va_start(args, message);
     TXT_vsnprintf(buf, sizeof(buf), message, args);
@@ -586,10 +586,9 @@ txt_window_t *TXT_MessageBox(const char *title, const char *message, ...)
     TXT_AddWidget(window, TXT_NewLabel(buf));
 
     TXT_SetWindowAction(window, TXT_HORIZ_LEFT, NULL);
-    TXT_SetWindowAction(window, TXT_HORIZ_CENTER, 
-                        TXT_NewWindowEscapeAction(window));
+    TXT_SetWindowAction(window, TXT_HORIZ_CENTER,
+        TXT_NewWindowEscapeAction(window));
     TXT_SetWindowAction(window, TXT_HORIZ_RIGHT, NULL);
 
     return window;
 }
-

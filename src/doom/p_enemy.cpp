@@ -39,8 +39,7 @@
 #include "sounds.hpp"
 
 
-using dirtype_t = enum
-{
+using dirtype_t = enum {
     DI_EAST,
     DI_NORTHEAST,
     DI_NORTH,
@@ -92,7 +91,7 @@ void P_RecursiveSound(sector_t *sec,
     int                         soundblocks)
 {
     int       i;
-    line_t *  check;
+    line_t   *check;
     sector_t *other;
 
     // wake up all monsters in this sector
@@ -139,7 +138,7 @@ void P_RecursiveSound(sector_t *sec,
 // it will alert other monsters to the player.
 //
 void P_NoiseAlert(mobj_t *target,
-    mobj_t *              emmiter)
+    mobj_t               *emmiter)
 {
     // [crispy] monsters are deaf with NOTARGET cheat
     if (target && target->player && (target->player->cheats & CF_NOTARGET))
@@ -558,7 +557,7 @@ boolean
 void A_KeenDie(mobj_t *mo)
 {
     thinker_t *th;
-    mobj_t *   mo2;
+    mobj_t    *mo2;
     line_t     junk;
 
     A_Fall(mo);
@@ -1036,8 +1035,8 @@ void A_Tracer(mobj_t *actor)
     angle_t    exact;
     fixed_t    dist;
     fixed_t    slope;
-    mobj_t *   dest;
-    mobj_t *   th;
+    mobj_t    *dest;
+    mobj_t    *th;
     extern int demostarttic;
 
     if ((gametic - demostarttic) & 3) // [crispy] fix revenant internal demo bug
@@ -1187,7 +1186,7 @@ void A_VileChase(mobj_t *actor)
     int by;
 
     mobjinfo_t *info;
-    mobj_t *    temp;
+    mobj_t     *temp;
 
     if (actor->movedir != DI_NODIR)
     {
@@ -1280,8 +1279,8 @@ void A_FireCrackle(mobj_t *actor)
 
 void A_Fire(mobj_t *actor)
 {
-    mobj_t * dest;
-    mobj_t * target;
+    mobj_t  *dest;
+    mobj_t  *target;
     unsigned an;
 
     dest = actor->tracer;
@@ -1486,7 +1485,7 @@ void A_PainShootSkull(mobj_t *actor,
     fixed_t y;
     fixed_t z;
 
-    mobj_t *   newmobj;
+    mobj_t    *newmobj;
     angle_t    an;
     int        prestep;
     int        count;
@@ -1695,7 +1694,7 @@ static boolean CheckBossEnd(mobjtype_t motype)
 void A_BossDeath(mobj_t *mo)
 {
     thinker_t *th;
-    mobj_t *   mo2;
+    mobj_t    *mo2;
     line_t     junk;
     int        i;
 
@@ -1816,28 +1815,28 @@ void A_BabyMetal(mobj_t *mo)
 }
 
 void A_OpenShotgun2(mobj_t *mobj,
-    player_t *              player,
-    pspdef_t *              psp)
+    player_t               *player,
+    pspdef_t               *psp)
 {
     if (!player) return;                 // [crispy] let pspr action pointers get called from mobj states
     S_StartSound(player->so, sfx_dbopn); // [crispy] weapon sound source
 }
 
 void A_LoadShotgun2(mobj_t *mobj,
-    player_t *              player,
-    pspdef_t *              psp)
+    player_t               *player,
+    pspdef_t               *psp)
 {
     if (!player) return;                  // [crispy] let pspr action pointers get called from mobj states
     S_StartSound(player->so, sfx_dbload); // [crispy] weapon sound source
 }
 
 void A_ReFire(mobj_t *mobj,
-    player_t *        player,
-    pspdef_t *        psp);
+    player_t         *player,
+    pspdef_t         *psp);
 
 void A_CloseShotgun2(mobj_t *mobj,
-    player_t *               player,
-    pspdef_t *               psp)
+    player_t                *player,
+    pspdef_t                *psp)
 {
     if (!player) return;                 // [crispy] let pspr action pointers get called from mobj states
     S_StartSound(player->so, sfx_dbcls); // [crispy] weapon sound source
@@ -1845,7 +1844,7 @@ void A_CloseShotgun2(mobj_t *mobj,
 }
 
 
-mobj_t **  braintargets    = NULL;
+mobj_t   **braintargets    = NULL;
 int        numbraintargets = 0; // [crispy] initialize
 int        braintargeton   = 0;
 static int maxbraintargets; // [crispy] remove braintargets limit
@@ -1853,7 +1852,7 @@ static int maxbraintargets; // [crispy] remove braintargets limit
 void A_BrainAwake(mobj_t *mo)
 {
     thinker_t *thinker;
-    mobj_t *   m;
+    mobj_t    *m;
 
     // find all the target spots
     numbraintargets = 0;
@@ -2010,9 +2009,9 @@ void A_SpawnSound(mobj_t *mo)
 
 void A_SpawnFly(mobj_t *mo)
 {
-    mobj_t *   newmobj;
-    mobj_t *   fog;
-    mobj_t *   targ;
+    mobj_t    *newmobj;
+    mobj_t    *fog;
+    mobj_t    *targ;
     int        r;
     mobjtype_t type;
 

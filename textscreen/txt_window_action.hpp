@@ -36,11 +36,10 @@ using txt_window_action_t = struct txt_window_action_s;
 #include "txt_widget.hpp"
 #include "txt_window.hpp"
 
-struct txt_window_action_s
-{
+struct txt_window_action_s {
     txt_widget_t widget;
-    char *label;
-    int key;
+    char        *label;
+    int          key;
 };
 
 /**
@@ -86,4 +85,3 @@ txt_window_action_t *TXT_NewWindowAbortAction(txt_window_t *window);
 txt_window_action_t *TXT_NewWindowSelectAction(txt_window_t *window);
 
 #endif /* #ifndef TXT_WINDOW_ACTION_H */
-

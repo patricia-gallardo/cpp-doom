@@ -38,13 +38,13 @@ static int OPL_Linux_Init(unsigned int port_base)
     if (ioperm(port_base, 2, 1) < 0)
     {
         fprintf(stderr, "Failed to get I/O port permissions for 0x%x: %s\n",
-                        port_base, strerror(errno));
+            port_base, strerror(errno));
 
         if (errno == EPERM)
         {
             fprintf(stderr,
-                    "\tYou may need to run the program as root in order\n"
-                    "\tto acquire I/O port permissions for OPL MIDI playback.\n");
+                "\tYou may need to run the program as root in order\n"
+                "\tto acquire I/O port permissions for OPL MIDI playback.\n");
         }
 
         return 0;
@@ -84,8 +84,7 @@ static void OPL_Linux_PortWrite(opl_port_t port, unsigned int value)
     outb(value, opl_port_base + port);
 }
 
-opl_driver_t opl_linux_driver =
-{
+opl_driver_t opl_linux_driver = {
     "Linux",
     OPL_Linux_Init,
     OPL_Linux_Shutdown,
@@ -100,4 +99,3 @@ opl_driver_t opl_linux_driver =
 };
 
 #endif /* #if (defined(__i386__) || defined(__x86_64__)) && defined(HAVE_IOPERM) */
-

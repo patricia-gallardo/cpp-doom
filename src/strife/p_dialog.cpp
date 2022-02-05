@@ -49,11 +49,8 @@
 // haleyjd: size of the original Strife mapdialog_t structure.
 #define ORIG_MAPDIALOG_SIZE 0x5EC
 
-#define DIALOG_INT(field, ptr)    \
-    field = ((int)ptr[0]        | \
-            ((int)ptr[1] <<  8) | \
-            ((int)ptr[2] << 16) | \
-            ((int)ptr[3] << 24)); \
+#define DIALOG_INT(field, ptr)                                                              \
+    field = ((int)ptr[0] | ((int)ptr[1] << 8) | ((int)ptr[2] << 16) | ((int)ptr[3] << 24)); \
     ptr += 4;
 
 #define DIALOG_STR(field, ptr, len) \
@@ -98,7 +95,7 @@ static int numscript0dialogs;
 static player_t *dialogplayer;
 
 // The object to which the player is speaking.
-static mobj_t   *dialogtalker;
+static mobj_t *dialogtalker;
 
 // The talker's current angle
 static angle_t dialogtalkerangle;
@@ -113,7 +110,7 @@ static char dialoglastmsgbuffer[48];
 static char pickupstring[46];
 
 // Health based on gameskill given by the front's medic
-static const int healthamounts[] = { -100 , -75, -50, -50, -100 };
+static const int healthamounts[] = { -100, -75, -50, -50, -100 };
 
 //=============================================================================
 //
@@ -123,17 +120,15 @@ static const int healthamounts[] = { -100 , -75, -50, -50, -100 };
 // their dialog sequences.
 //
 
-using dialogstateset_t = struct dialogstateset_s
-{
+using dialogstateset_t = struct dialogstateset_s {
     mobjtype_t type;  // the type of object
     statenum_t greet; // greeting state, for start of dialog
     statenum_t yes;   // "yes" state, for an affirmative response
     statenum_t no;    // "no" state, when you don't have the right items
 };
 
-static dialogstateset_t dialogstatesets[] =
-{
-    { MT_PLAYER,       S_NULL,    S_NULL,    S_NULL    },
+static dialogstateset_t dialogstatesets[] = {
+    { MT_PLAYER, S_NULL, S_NULL, S_NULL },
     { MT_SHOPKEEPER_W, S_MRGT_00, S_MRYS_00, S_MRNO_00 },
     { MT_SHOPKEEPER_B, S_MRGT_00, S_MRYS_00, S_MRNO_00 },
     { MT_SHOPKEEPER_A, S_MRGT_00, S_MRYS_00, S_MRNO_00 },
@@ -156,29 +151,26 @@ static dialogstateset_t *dialogtalkerstates;
 
 #define MAXRNDMESSAGES 10
 
-using rndmessage_t = struct rndmessage_s
-{
+using rndmessage_t = struct rndmessage_s {
     const char *type_name;
-    int nummessages;
+    int         nummessages;
     const char *messages[MAXRNDMESSAGES];
 };
 
-static rndmessage_t rndMessages[] = 
-{
+static rndmessage_t rndMessages[] = {
     // Peasants
     {
         "PEASANT",
         10,
-        {
-            "PLEASE DON'T HURT ME.",
-            
+        { "PLEASE DON'T HURT ME.",
+
             "IF YOU'RE LOOKING TO HURT ME, I'M \n"
             "NOT REALLY WORTH THE EFFORT.",
-            
+
             "I DON'T KNOW ANYTHING.",
-            
+
             "GO AWAY OR I'LL CALL THE GUARDS!",
-            
+
             "I WISH SOMETIMES THAT ALL THESE \n"
             "REBELS WOULD JUST LEARN THEIR \n"
             "PLACE AND STOP THIS NONSENSE.",
@@ -195,16 +187,13 @@ static rndmessage_t rndMessages[] =
 
             "I'VE HEARD THAT THE ORDER IS REALLY \n"
             "NERVOUS ABOUT THE FRONT'S \n"
-            "ACTIONS AROUND HERE."
-        }
-    },
+            "ACTIONS AROUND HERE." } },
     // Rebel
     {
         "REBEL",
         10,
-        {
-            "THERE'S NO WAY THE ORDER WILL \n"
-            "STAND AGAINST US.",
+        { "THERE'S NO WAY THE ORDER WILL \n"
+          "STAND AGAINST US.",
 
             "WE'RE ALMOST READY TO STRIKE. \n"
             "MACIL'S PLANS ARE FALLING IN PLACE.",
@@ -232,9 +221,7 @@ static rndmessage_t rndMessages[] =
             "EVERYONE HERE AND OUTSIDE.",
 
             "AS LONG AS ONE OF US STILL STANDS, \n"
-            "WE WILL WIN."
-        }
-    },
+            "WE WILL WIN." } },
     // Acolyte
     {
         "AGUARD",
@@ -264,14 +251,12 @@ static rndmessage_t rndMessages[] =
             "AND USHER IT INTO THE NEW ERA.",
 
             "PROBLEM?  NO, I THOUGHT NOT.",
-        }
-    },
+        } },
     // Beggar
     {
         "BEGGAR",
         10,
-        {
-            "ALMS FOR THE POOR?",
+        { "ALMS FOR THE POOR?",
 
             "WHAT ARE YOU LOOKING AT, SURFACER?",
 
@@ -295,16 +280,13 @@ static rndmessage_t rndMessages[] =
 
             "THE ORDER WILL MAKE SHORT WORK OF YOUR PATHETIC FRONT.",
 
-            "WATCH YOURSELF SURFACER. WE KNOW OUR ENEMIES!"
-        }
-    },
+            "WATCH YOURSELF SURFACER. WE KNOW OUR ENEMIES!" } },
     // Templar
     {
         "PGUARD",
         10,
-        {
-            "WE ARE THE HANDS OF FATE. TO EARN \n"
-            "OUR WRATH IS TO FIND OBLIVION!",
+        { "WE ARE THE HANDS OF FATE. TO EARN \n"
+          "OUR WRATH IS TO FIND OBLIVION!",
 
             "THE ORDER WILL CLEANSE THE WORLD \n"
             "OF THE WEAK AND CORRUPT!",
@@ -331,9 +313,7 @@ static rndmessage_t rndMessages[] =
             "IF THERE IS ANY HONOR INSIDE THAT \n"
             "PATHETIC SHELL OF A BODY, \n"
             "YOU'LL ENTER INTO THE ARMS OF THE \n"
-            "ORDER."
-        }
-    }
+            "ORDER." } }
 };
 
 // And again, this could have been a define, but was a variable.
@@ -352,24 +332,22 @@ static int numrndmessages = arrlen(rndMessages);
 
 static void P_DialogDrawer();
 
-static menuitem_t dialogmenuitems[] =
-{
+static menuitem_t dialogmenuitems[] = {
     { 1, "", P_DialogDoChoice, '1' }, // These items are loaded dynamically
     { 1, "", P_DialogDoChoice, '2' },
     { 1, "", P_DialogDoChoice, '3' },
     { 1, "", P_DialogDoChoice, '4' },
     { 1, "", P_DialogDoChoice, '5' },
-    { 1, "", P_DialogDoChoice, '6' }  // Item 6 is always the dismissal item
+    { 1, "", P_DialogDoChoice, '6' } // Item 6 is always the dismissal item
 };
 
-static menu_t dialogmenu =
-{
-    NUMDIALOGMENUITEMS, 
-    NULL, 
-    dialogmenuitems, 
-    P_DialogDrawer, 
-    42, 
-    75, 
+static menu_t dialogmenu = {
+    NUMDIALOGMENUITEMS,
+    NULL,
+    dialogmenuitems,
+    P_DialogDrawer,
+    42,
+    75,
     0
 };
 
@@ -390,50 +368,50 @@ static const char *dialogtext;
 //
 // P_ParseDialogLump
 //
-// haleyjd 09/02/10: This is an original function added to parse out the 
-// dialogs from the dialog lump rather than reading them raw from the lump 
+// haleyjd 09/02/10: This is an original function added to parse out the
+// dialogs from the dialog lump rather than reading them raw from the lump
 // pointer. This avoids problems with structure packing.
 //
-static void P_ParseDialogLump(byte *lump, mapdialog_t **dialogs, 
-                              int numdialogs, int tag)
+static void P_ParseDialogLump(byte *lump, mapdialog_t **dialogs,
+    int numdialogs, int tag)
 {
-    int i;
+    int   i;
     byte *rover = lump;
 
     *dialogs = zmalloc<mapdialog_t *>(numdialogs * sizeof(mapdialog_t), tag, NULL);
 
-    for(i = 0; i < numdialogs; i++)
+    for (i = 0; i < numdialogs; i++)
     {
-        int j;
+        int          j;
         mapdialog_t *curdialog = &((*dialogs)[i]);
 
-        DIALOG_INT(curdialog->speakerid,    rover);
-        DIALOG_INT(curdialog->dropitem,     rover);
+        DIALOG_INT(curdialog->speakerid, rover);
+        DIALOG_INT(curdialog->dropitem, rover);
         DIALOG_INT(curdialog->checkitem[0], rover);
         DIALOG_INT(curdialog->checkitem[1], rover);
         DIALOG_INT(curdialog->checkitem[2], rover);
-        DIALOG_INT(curdialog->jumptoconv,   rover);
-        DIALOG_STR(curdialog->name,         rover, MDLG_NAMELEN);
-        DIALOG_STR(curdialog->voice,        rover, MDLG_LUMPLEN);
-        DIALOG_STR(curdialog->backpic,      rover, MDLG_LUMPLEN);
-        DIALOG_STR(curdialog->text,         rover, MDLG_TEXTLEN);
+        DIALOG_INT(curdialog->jumptoconv, rover);
+        DIALOG_STR(curdialog->name, rover, MDLG_NAMELEN);
+        DIALOG_STR(curdialog->voice, rover, MDLG_LUMPLEN);
+        DIALOG_STR(curdialog->backpic, rover, MDLG_LUMPLEN);
+        DIALOG_STR(curdialog->text, rover, MDLG_TEXTLEN);
 
         // copy choices
-        for(j = 0; j < 5; j++)
+        for (j = 0; j < 5; j++)
         {
             mapdlgchoice_t *curchoice = &(curdialog->choices[j]);
-            DIALOG_INT(curchoice->giveitem,         rover);
-            DIALOG_INT(curchoice->needitems[0],     rover);
-            DIALOG_INT(curchoice->needitems[1],     rover);
-            DIALOG_INT(curchoice->needitems[2],     rover);
-            DIALOG_INT(curchoice->needamounts[0],   rover);
-            DIALOG_INT(curchoice->needamounts[1],   rover);
-            DIALOG_INT(curchoice->needamounts[2],   rover);
-            DIALOG_STR(curchoice->text,             rover, MDLG_CHOICELEN);
-            DIALOG_STR(curchoice->textok,           rover, MDLG_MSGLEN);
-            DIALOG_INT(curchoice->next,             rover);
-            DIALOG_INT(curchoice->objective,        rover);
-            DIALOG_STR(curchoice->textno,           rover, MDLG_MSGLEN);
+            DIALOG_INT(curchoice->giveitem, rover);
+            DIALOG_INT(curchoice->needitems[0], rover);
+            DIALOG_INT(curchoice->needitems[1], rover);
+            DIALOG_INT(curchoice->needitems[2], rover);
+            DIALOG_INT(curchoice->needamounts[0], rover);
+            DIALOG_INT(curchoice->needamounts[1], rover);
+            DIALOG_INT(curchoice->needamounts[2], rover);
+            DIALOG_STR(curchoice->text, rover, MDLG_CHOICELEN);
+            DIALOG_STR(curchoice->textok, rover, MDLG_MSGLEN);
+            DIALOG_INT(curchoice->next, rover);
+            DIALOG_INT(curchoice->objective, rover);
+            DIALOG_STR(curchoice->textno, rover, MDLG_MSGLEN);
         }
     }
 }
@@ -442,7 +420,7 @@ static void P_ParseDialogLump(byte *lump, mapdialog_t **dialogs,
 // P_DialogLoad
 //
 // [STRIFE] New function
-// haleyjd 09/02/10: Loads the dialog script for the current map. Also loads 
+// haleyjd 09/02/10: Loads the dialog script for the current map. Also loads
 // SCRIPT00 if it has not yet been loaded.
 //
 void P_DialogLoad()
@@ -452,29 +430,29 @@ void P_DialogLoad()
 
     // load the SCRIPTxy lump corresponding to MAPxy, if it exists.
     DEH_snprintf(lumpname, sizeof(lumpname), "script%02d", gamemap);
-    if((lumpnum = W_CheckNumForName(lumpname)) == -1)
+    if ((lumpnum = W_CheckNumForName(lumpname)) == -1)
         numleveldialogs = 0;
     else
     {
         byte *leveldialogptr = cache_lump_num<byte *>(lumpnum, PU_STATIC);
-        numleveldialogs = W_LumpLength(lumpnum) / ORIG_MAPDIALOG_SIZE;
-        P_ParseDialogLump(leveldialogptr, &leveldialogs, numleveldialogs, 
-                          PU_LEVEL);
+        numleveldialogs      = W_LumpLength(lumpnum) / ORIG_MAPDIALOG_SIZE;
+        P_ParseDialogLump(leveldialogptr, &leveldialogs, numleveldialogs,
+            PU_LEVEL);
         Z_Free(leveldialogptr); // haleyjd: free the original lump
     }
 
     // also load SCRIPT00 if it has not been loaded yet
-    if(!script0loaded)
+    if (!script0loaded)
     {
         byte *script0ptr;
 
-        script0loaded = true; 
+        script0loaded = true;
         // BUG: Rogue should have used W_GetNumForName here...
-        lumpnum = W_CheckNumForName(DEH_String("script00")); 
-        script0ptr = cache_lump_num<byte *>(lumpnum, PU_STATIC);
+        lumpnum           = W_CheckNumForName(DEH_String("script00"));
+        script0ptr        = cache_lump_num<byte *>(lumpnum, PU_STATIC);
         numscript0dialogs = W_LumpLength(lumpnum) / ORIG_MAPDIALOG_SIZE;
         P_ParseDialogLump(script0ptr, &script0dialogs, numscript0dialogs,
-                          PU_STATIC);
+            PU_STATIC);
         Z_Free(script0ptr); // haleyjd: free the original lump
     }
 }
@@ -490,24 +468,24 @@ int P_PlayerHasItem(player_t *player, mobjtype_t type)
 {
     int i;
 
-    if(type > 0)
+    if (type > 0)
     {
         // check keys
-        if(type >= MT_KEY_BASE && type < MT_INV_SHADOWARMOR)
+        if (type >= MT_KEY_BASE && type < MT_INV_SHADOWARMOR)
             return (player->cards[type - MT_KEY_BASE]);
 
         // check sigil pieces
-        if(type >= MT_SIGIL_A && type <= MT_SIGIL_E)
+        if (type >= MT_SIGIL_A && type <= MT_SIGIL_E)
             return (type - MT_SIGIL_A <= player->sigiltype);
 
         // check quest tokens
-        if(type >= MT_TOKEN_QUEST1 && type <= MT_TOKEN_QUEST31)
+        if (type >= MT_TOKEN_QUEST1 && type <= MT_TOKEN_QUEST31)
             return (player->questflags & (1 << (type - MT_TOKEN_QUEST1)));
 
         // check inventory
-        for(i = 0; i < 32; i++)
+        for (i = 0; i < 32; i++)
         {
-            if(type == player->inventory[i].type)
+            if (type == player->inventory[i].type)
                 return player->inventory[i].amount;
         }
     }
@@ -518,7 +496,7 @@ int P_PlayerHasItem(player_t *player, mobjtype_t type)
 // P_DialogFind
 //
 // [STRIFE] New function
-// haleyjd 09/03/10: Looks for a dialog definition matching the given 
+// haleyjd 09/03/10: Looks for a dialog definition matching the given
 // Script ID # for an mobj.
 //
 mapdialog_t *P_DialogFind(mobjtype_t type, int jumptoconv)
@@ -526,11 +504,11 @@ mapdialog_t *P_DialogFind(mobjtype_t type, int jumptoconv)
     int i;
 
     // check the map-specific dialogs first
-    for(i = 0; i < numleveldialogs; i++)
+    for (i = 0; i < numleveldialogs; i++)
     {
-        if(type == leveldialogs[i].speakerid)
+        if (type == leveldialogs[i].speakerid)
         {
-            if(jumptoconv <= 1)
+            if (jumptoconv <= 1)
                 return &leveldialogs[i];
             else
                 --jumptoconv;
@@ -538,9 +516,9 @@ mapdialog_t *P_DialogFind(mobjtype_t type, int jumptoconv)
     }
 
     // check SCRIPT00 dialogs next
-    for(i = 0; i < numscript0dialogs; i++)
+    for (i = 0; i < numscript0dialogs; i++)
     {
-        if(type == script0dialogs[i].speakerid)
+        if (type == script0dialogs[i].speakerid)
             return &script0dialogs[i];
     }
 
@@ -560,9 +538,9 @@ static dialogstateset_t *P_DialogGetStates(mobjtype_t type)
     int i;
 
     // look for a match by type
-    for(i = 0; i < numdialogstatesets; i++)
+    for (i = 0; i < numdialogstatesets; i++)
     {
-        if(type == dialogstatesets[i].type)
+        if (type == dialogstatesets[i].type)
             return &dialogstatesets[i];
     }
 
@@ -580,19 +558,19 @@ static dialogstateset_t *P_DialogGetStates(mobjtype_t type)
 static const char *P_DialogGetMsg(const char *message)
 {
     // if the message starts with "RANDOM"...
-    if(!strncasecmp(message, DEH_String("RANDOM"), 6))
+    if (!strncasecmp(message, DEH_String("RANDOM"), 6))
     {
-        int i;
+        int         i;
         const char *nameloc = message + 7;
 
-        // look for a match in rndMessages for the string starting 
+        // look for a match in rndMessages for the string starting
         // 7 chars after "RANDOM_"
-        for(i = 0; i < numrndmessages; i++)
+        for (i = 0; i < numrndmessages; i++)
         {
-            if(!strncasecmp(nameloc, rndMessages[i].type_name, 4))
+            if (!strncasecmp(nameloc, rndMessages[i].type_name, 4))
             {
                 // found a match, so return a random message
-                int rnd = M_Random();
+                int rnd         = M_Random();
                 int nummessages = rndMessages[i].nummessages;
                 return DEH_String(rndMessages[i].messages[rnd % nummessages]);
             }
@@ -612,35 +590,35 @@ static const char *P_DialogGetMsg(const char *message)
 //
 boolean P_GiveInventoryItem(player_t *player, int sprnum, mobjtype_t type)
 {
-    int curinv = 0;
-    int i;
-    boolean ok = false;
-    mobjtype_t item = MT_FIELDGUARD;
-    inventory_t* invtail;
+    int          curinv = 0;
+    int          i;
+    boolean      ok   = false;
+    mobjtype_t   item = MT_FIELDGUARD;
+    inventory_t *invtail;
 
     // repaint the status bar due to inventory changing
     player->st_update = true;
 
-    while(1)
+    while (1)
     {
         // inventory is full
-        if(curinv > player->numinventory)
+        if (curinv > player->numinventory)
             return true;
 
         item = static_cast<mobjtype_t>(player->inventory[curinv].type);
-        if(type < item)
+        if (type < item)
         {
-            if(curinv != MAXINVENTORYSLOTS)
+            if (curinv != MAXINVENTORYSLOTS)
             {
                 // villsa - sort inventory item if needed
                 invtail = &player->inventory[player->numinventory - 1];
-                if(player->numinventory >= (curinv + 1))
+                if (player->numinventory >= (curinv + 1))
                 {
-                    for(i = player->numinventory; i >= (curinv + 1); --i)    
+                    for (i = player->numinventory; i >= (curinv + 1); --i)
                     {
-                        invtail[1].sprite   = invtail[0].sprite;
-                        invtail[1].type     = invtail[0].type;
-                        invtail[1].amount   = invtail[0].amount;
+                        invtail[1].sprite = invtail[0].sprite;
+                        invtail[1].type   = invtail[0].type;
+                        invtail[1].amount = invtail[0].amount;
 
                         invtail--;
                     }
@@ -649,12 +627,12 @@ boolean P_GiveInventoryItem(player_t *player, int sprnum, mobjtype_t type)
                 // villsa - add inventory item
                 player->inventory[curinv].amount = 1;
                 player->inventory[curinv].sprite = sprnum;
-                player->inventory[curinv].type = type;
+                player->inventory[curinv].type   = type;
 
                 // sort cursor if needed
-                if(player->numinventory)
+                if (player->numinventory)
                 {
-                    if(curinv <= player->inventorycursor)
+                    if (curinv <= player->inventorycursor)
                         player->inventorycursor++;
                 }
 
@@ -666,14 +644,14 @@ boolean P_GiveInventoryItem(player_t *player, int sprnum, mobjtype_t type)
             return false;
         }
 
-        if(type == item)
+        if (type == item)
             break;
 
         curinv++;
     }
 
     // check amount of inventory item by using the mass from mobjinfo
-    if(player->inventory[curinv].amount < mobjinfo[item].mass)
+    if (player->inventory[curinv].amount < mobjinfo[item].mass)
     {
         player->inventory[curinv].amount++;
         ok = true;
@@ -694,56 +672,56 @@ boolean P_GiveInventoryItem(player_t *player, int sprnum, mobjtype_t type)
 //
 boolean P_GiveItemToPlayer(player_t *player, int sprnum, mobjtype_t type)
 {
-    int i = 0;
+    int    i = 0;
     line_t junk;
-    int sound = sfx_itemup; // haleyjd 09/21/10: different sounds for items
+    int    sound = sfx_itemup; // haleyjd 09/21/10: different sounds for items
 
     // set quest if mf_givequest flag is set
-    if(mobjinfo[type].flags & MF_GIVEQUEST)
+    if (mobjinfo[type].flags & MF_GIVEQUEST)
         player->questflags |= 1 << (mobjinfo[type].speed - 1);
 
     // check for keys
-    if(type >= MT_KEY_BASE && type <= MT_NEWKEY5)
+    if (type >= MT_KEY_BASE && type <= MT_NEWKEY5)
     {
         P_GiveCard(player, static_cast<card_t>(type - MT_KEY_BASE));
         return true;
     }
 
     // check for quest tokens
-    if(type >= MT_TOKEN_QUEST1 && type <= MT_TOKEN_QUEST31)
+    if (type >= MT_TOKEN_QUEST1 && type <= MT_TOKEN_QUEST31)
     {
-        if(mobjinfo[type].name)
+        if (mobjinfo[type].name)
         {
             M_StringCopy(pickupstring, DEH_String(mobjinfo[type].name), 39);
             player->message = pickupstring;
         }
         player->questflags |= 1 << (type - MT_TOKEN_QUEST1);
 
-        if(player == &players[consoleplayer])
+        if (player == &players[consoleplayer])
             S_StartSound(NULL, sound);
         return true;
     }
 
     // haleyjd 09/22/10: Refactored to give sprites higher priority than
     // mobjtypes and to implement missing logic.
-    switch(sprnum)
+    switch (sprnum)
     {
     case SPR_HELT: // This is given only by the "DONNYTRUMP" cheat (aka Midas)
         P_GiveInventoryItem(player, SPR_HELT, MT_TOKEN_TOUGHNESS);
         P_GiveInventoryItem(player, SPR_GUNT, MT_TOKEN_ACCURACY);
 
         // [STRIFE] Bizarre...
-        for(i = 0; i < 5 * player->accuracy + 300; i++)
+        for (i = 0; i < 5 * player->accuracy + 300; i++)
             P_GiveInventoryItem(player, SPR_COIN, MT_MONY_1);
         break;
 
     case SPR_ARM1: // Armor 1
-        if(!P_GiveArmor(player, -2))
+        if (!P_GiveArmor(player, -2))
             P_GiveInventoryItem(player, sprnum, type);
         break;
 
     case SPR_ARM2: // Armor 2
-        if(!P_GiveArmor(player, -1))
+        if (!P_GiveArmor(player, -1))
             P_GiveInventoryItem(player, sprnum, type);
         break;
 
@@ -752,165 +730,165 @@ boolean P_GiveItemToPlayer(player_t *player, int sprnum, mobjtype_t type)
         break;
 
     case SPR_CRED: // 10 Gold
-        for(i = 0; i < 10; i++)
+        for (i = 0; i < 10; i++)
             P_GiveInventoryItem(player, SPR_COIN, MT_MONY_1);
         break;
 
     case SPR_SACK: // 25 gold
-        for(i = 0; i < 25; i++)
+        for (i = 0; i < 25; i++)
             P_GiveInventoryItem(player, SPR_COIN, MT_MONY_1);
         break;
 
     case SPR_CHST: // 50 gold
-        for(i = 0; i < 50; i++)
+        for (i = 0; i < 50; i++)
             P_GiveInventoryItem(player, SPR_COIN, MT_MONY_1);
         break; // haleyjd 20141215: missing break, caused Rowan to not take ring from you.
 
     case SPR_BBOX: // Box of Bullets
-        if(!P_GiveAmmo(player, am_bullets, 5))
+        if (!P_GiveAmmo(player, am_bullets, 5))
             return false;
         break;
 
     case SPR_BLIT: // Bullet Clip
-        if(!P_GiveAmmo(player, am_bullets, 1))
+        if (!P_GiveAmmo(player, am_bullets, 1))
             return false;
         break;
 
     case SPR_PMAP: // Map powerup
-        if(!P_GivePower(player, pw_allmap))
+        if (!P_GivePower(player, pw_allmap))
             return false;
         sound = sfx_yeah; // bluh-doop!
         break;
 
     case SPR_COMM: // Communicator
-        if(!P_GivePower(player, pw_communicator))
+        if (!P_GivePower(player, pw_communicator))
             return false;
         sound = sfx_yeah; // bluh-doop!
         break;
 
     case SPR_MSSL: // Mini-missile
-        if(!P_GiveAmmo(player, am_missiles, 1))
+        if (!P_GiveAmmo(player, am_missiles, 1))
             return false;
         break;
 
     case SPR_ROKT: // Crate of missiles
-        if(!P_GiveAmmo(player, am_missiles, 5))
+        if (!P_GiveAmmo(player, am_missiles, 5))
             return false;
         break;
 
     case SPR_BRY1: // Battery cell
-        if(!P_GiveAmmo(player, am_cell, 1))
+        if (!P_GiveAmmo(player, am_cell, 1))
             return false;
         break;
 
     case SPR_CPAC: // Cell pack
-        if(!P_GiveAmmo(player, am_cell, 5))
+        if (!P_GiveAmmo(player, am_cell, 5))
             return false;
         break;
 
     case SPR_PQRL: // Poison bolts
-        if(!P_GiveAmmo(player, am_poisonbolts, 5))
+        if (!P_GiveAmmo(player, am_poisonbolts, 5))
             return false;
         break;
 
     case SPR_XQRL: // Electric bolts
-        if(!P_GiveAmmo(player, am_elecbolts, 5))
+        if (!P_GiveAmmo(player, am_elecbolts, 5))
             return false;
         break;
 
     case SPR_GRN1: // HE Grenades
-        if(!P_GiveAmmo(player, am_hegrenades, 1))
+        if (!P_GiveAmmo(player, am_hegrenades, 1))
             return false;
         break;
 
     case SPR_GRN2: // WP Grenades
-        if(!P_GiveAmmo(player, am_wpgrenades, 1))
+        if (!P_GiveAmmo(player, am_wpgrenades, 1))
             return false;
         break;
 
     case SPR_BKPK: // Backpack (aka Ammo Satchel)
-        if(!player->backpack)
+        if (!player->backpack)
         {
-            for(i = 0; i < NUMAMMO; i++)
+            for (i = 0; i < NUMAMMO; i++)
                 player->maxammo[i] *= 2;
 
             player->backpack = true;
         }
-        for(i = 0; i < NUMAMMO; i++)
+        for (i = 0; i < NUMAMMO; i++)
             P_GiveAmmo(player, static_cast<ammotype_t>(i), 1);
         break;
 
     case SPR_RIFL: // Assault Rifle
-        if(player->weaponowned[wp_rifle])
+        if (player->weaponowned[wp_rifle])
             return false;
 
-        if(!P_GiveWeapon(player, wp_rifle, false))
+        if (!P_GiveWeapon(player, wp_rifle, false))
             return false;
-        
+
         sound = sfx_wpnup; // SHK-CHK!
         break;
 
     case SPR_FLAM: // Flamethrower
-        if(player->weaponowned[wp_flame])
+        if (player->weaponowned[wp_flame])
             return false;
 
-        if(!P_GiveWeapon(player, wp_flame, false))
+        if (!P_GiveWeapon(player, wp_flame, false))
             return false;
 
         sound = sfx_wpnup; // SHK-CHK!
         break;
 
     case SPR_MMSL: // Mini-missile Launcher
-        if(player->weaponowned[wp_missile])
+        if (player->weaponowned[wp_missile])
             return false;
 
-        if(!P_GiveWeapon(player, wp_missile, false))
+        if (!P_GiveWeapon(player, wp_missile, false))
             return false;
 
         sound = sfx_wpnup; // SHK-CHK!
         break;
 
     case SPR_TRPD: // Mauler
-        if(player->weaponowned[wp_mauler])
+        if (player->weaponowned[wp_mauler])
             return false;
 
-        if(!P_GiveWeapon(player, wp_mauler, false))
+        if (!P_GiveWeapon(player, wp_mauler, false))
             return false;
 
         sound = sfx_wpnup; // SHK-CHK!
         break;
 
     case SPR_CBOW: // Here's a crossbow. Just aim straight, and *SPLAT!*
-        if(player->weaponowned[wp_elecbow])
+        if (player->weaponowned[wp_elecbow])
             return false;
 
-        if(!P_GiveWeapon(player, wp_elecbow, false))
+        if (!P_GiveWeapon(player, wp_elecbow, false))
             return false;
 
         sound = sfx_wpnup; // SHK-CHK!
         break;
 
     case SPR_TOKN: // Miscellaneous items - These are determined by thingtype.
-        switch(type)
+        switch (type)
         {
         case MT_KEY_HAND: // Severed hand
             P_GiveCard(player, key_SeveredHand);
             break;
 
         case MT_MONY_300: // 300 Gold (this is the only way to get it, in fact)
-            for(i = 0; i < 300; i++)
+            for (i = 0; i < 300; i++)
                 P_GiveInventoryItem(player, SPR_COIN, MT_MONY_1);
             break;
 
         case MT_TOKEN_AMMO: // Ammo token - you get this from the Weapons Trainer
-            if(player->ammo[am_bullets] >= 50)
+            if (player->ammo[am_bullets] >= 50)
                 return false;
 
             player->ammo[am_bullets] = 50;
             break;
 
         case MT_TOKEN_HEALTH: // Health token - from the Front's doctor
-            if(!P_GiveBody(player, healthamounts[gameskill]))
+            if (!P_GiveBody(player, healthamounts[gameskill]))
                 return false;
             break;
 
@@ -927,7 +905,7 @@ boolean P_GiveItemToPlayer(player_t *player, int sprnum, mobjtype_t type)
         case MT_TOKEN_PRISON_PASS: // Door special 1 - Prison pass
             junk.tag = 223;
             EV_DoDoor(&junk, vld_open);
-            if(gamemap == 2) // If on Tarnhill, give Prison pass object
+            if (gamemap == 2) // If on Tarnhill, give Prison pass object
                 P_GiveInventoryItem(player, sprnum, type);
             break;
 
@@ -936,13 +914,13 @@ boolean P_GiveItemToPlayer(player_t *player, int sprnum, mobjtype_t type)
             EV_DoDoor(&junk, vld_close);
             break;
 
-        case MT_TOKEN_DOOR3: // Door special 4 (or 3? :P ) 
+        case MT_TOKEN_DOOR3: // Door special 4 (or 3? :P )
             junk.tag = 224;
             EV_DoDoor(&junk, vld_close);
             break;
 
         case MT_TOKEN_STAMINA: // Stamina upgrade
-            if(player->stamina >= 100)
+            if (player->stamina >= 100)
                 return false;
 
             player->stamina += 10;
@@ -950,7 +928,7 @@ boolean P_GiveItemToPlayer(player_t *player, int sprnum, mobjtype_t type)
             break;
 
         case MT_TOKEN_NEW_ACCURACY: // Accuracy upgrade
-            if(player->accuracy >= 100)
+            if (player->accuracy >= 100)
                 return false;
 
             player->accuracy += 10;
@@ -958,10 +936,10 @@ boolean P_GiveItemToPlayer(player_t *player, int sprnum, mobjtype_t type)
 
         case MT_SLIDESHOW: // Slideshow (start a finale)
             gameaction = ga_victory;
-            if(gamemap == 10)
+            if (gamemap == 10)
                 P_GiveItemToPlayer(player, SPR_TOKN, MT_TOKEN_QUEST17);
             break;
-        
+
         default: // The default is to just give it as an inventory item.
             P_GiveInventoryItem(player, sprnum, type);
             break;
@@ -969,13 +947,13 @@ boolean P_GiveItemToPlayer(player_t *player, int sprnum, mobjtype_t type)
         break;
 
     default: // The ultimate default: Give it as an inventory item.
-        if(!P_GiveInventoryItem(player, sprnum, type))
+        if (!P_GiveInventoryItem(player, sprnum, type))
             return false;
         break;
     }
 
     // Play sound.
-    if(player == &players[consoleplayer])
+    if (player == &players[consoleplayer])
         S_StartSound(NULL, sound);
 
     return true;
@@ -991,27 +969,27 @@ static void P_TakeDialogItem(player_t *player, int type, int amount)
 {
     int i;
 
-    if(amount <= 0)
+    if (amount <= 0)
         return;
 
-    for(i = 0; i < player->numinventory; i++)
+    for (i = 0; i < player->numinventory; i++)
     {
         // find a matching item
-        if(type != player->inventory[i].type)
+        if (type != player->inventory[i].type)
             continue;
 
         // if there is none left...
-        if((player->inventory[i].amount -= amount) < 1)
+        if ((player->inventory[i].amount -= amount) < 1)
         {
             // ...shift everything above it down
             int j;
 
             // BUG: They should have stopped at j < numinventory. This
             // seems to implicitly assume that numinventory is always at
-            // least one less than the max # of slots, otherwise it 
+            // least one less than the max # of slots, otherwise it
             // pulls in data from the following player_t fields:
             // st_update, numinventory, inventorycursor, accuracy, stamina
-            for(j = i + 1; j <= player->numinventory; j++)
+            for (j = i + 1; j <= player->numinventory; j++)
             {
                 inventory_t *item1 = &(player->inventory[j - 1]);
                 inventory_t *item2 = &(player->inventory[j]);
@@ -1023,18 +1001,18 @@ static void P_TakeDialogItem(player_t *player, int type, int amount)
             // BUG: This will overwrite the aforementioned fields if
             // numinventory is equal to the number of slots!
             // STRIFE-TODO: Overflow emulation?
-            player->inventory[player->numinventory].type = NUMMOBJTYPES;
+            player->inventory[player->numinventory].type   = NUMMOBJTYPES;
             player->inventory[player->numinventory].sprite = -1;
             player->numinventory--;
 
             // update cursor position
-            if(player->inventorycursor >= player->numinventory)
+            if (player->inventorycursor >= player->numinventory)
             {
-                if(player->inventorycursor)
+                if (player->inventorycursor)
                     player->inventorycursor--;
             }
         } // end if
-        
+
         return; // done!
 
     } // end for
@@ -1048,32 +1026,32 @@ static void P_TakeDialogItem(player_t *player, int type, int amount)
 static void P_DialogDrawer()
 {
     angle_t angle;
-    int y;
-    int i;
-    int height;
-    int finaly;
-    char choicetext[64];
-    char choicetext2[64];
+    int     y;
+    int     i;
+    int     height;
+    int     finaly;
+    char    choicetext[64];
+    char    choicetext2[64];
 
     // Run down bonuscount faster than usual so that flashes from being given
     // items are less obvious.
-    if(dialogplayer->bonuscount)
+    if (dialogplayer->bonuscount)
     {
         dialogplayer->bonuscount -= 3;
-        if(dialogplayer->bonuscount < 0)
+        if (dialogplayer->bonuscount < 0)
             dialogplayer->bonuscount = 0;
     }
 
     angle = R_PointToAngle2(dialogplayer->mo->x,
-                            dialogplayer->mo->y,
-                            dialogtalker->x,
-                            dialogtalker->y);
+        dialogplayer->mo->y,
+        dialogtalker->x,
+        dialogtalker->y);
     angle -= dialogplayer->mo->angle;
 
     // Dismiss the dialog if the player is out of alignment, or the thing he was
     // talking to is now engaged in battle.
-    if ((angle > ANG45 && angle < (ANG270+ANG45))
-     || (dialogtalker->flags & MF_NODIALOG) != 0)
+    if ((angle > ANG45 && angle < (ANG270 + ANG45))
+        || (dialogtalker->flags & MF_NODIALOG) != 0)
     {
         P_DialogDoChoice(dialogmenu.numitems - 1);
     }
@@ -1081,20 +1059,20 @@ static void P_DialogDrawer()
     dialogtalker->reactiontime = 2;
 
     // draw background
-    if(dialogbgpiclumpnum != -1)
+    if (dialogbgpiclumpnum != -1)
     {
         patch_t *patch = cache_lump_num<patch_t *>(dialogbgpiclumpnum, PU_CACHE);
         V_DrawPatchDirect(0, 0, patch);
     }
 
-    // if there's a valid background pic, delay drawing the rest of the menu 
+    // if there's a valid background pic, delay drawing the rest of the menu
     // for a while; otherwise, it will appear immediately
-    if(dialogbgpiclumpnum == -1 || menupausetime <= gametic)
+    if (dialogbgpiclumpnum == -1 || menupausetime <= gametic)
     {
-        if(menuindialog)
+        if (menuindialog)
         {
             // time to pause the game?
-            if(menupausetime + 3 < gametic)
+            if (menupausetime + 3 < gametic)
                 menupause = true;
         }
 
@@ -1103,35 +1081,35 @@ static void P_DialogDrawer()
         y = 28;
 
         // show text (optional for dialogs with voices)
-        if(dialogshowtext || currentdialog->voice[0] == '\0')
+        if (dialogshowtext || currentdialog->voice[0] == '\0')
             y = M_WriteText(20, 28, dialogtext);
 
         height = 20 * dialogmenu.numitems;
 
-        finaly = 175 - height;     // preferred height
-        if(y > finaly)
+        finaly = 175 - height; // preferred height
+        if (y > finaly)
             finaly = 199 - height; // height it will bump down to if necessary.
 
         // draw divider
         M_WriteText(42, finaly - 6, DEH_String("______________________________"));
 
         dialogmenu.y = finaly + 6;
-        y = 0;
+        y            = 0;
 
         // draw the menu items
-        for(i = 0; i < dialogmenu.numitems - 1; i++)
+        for (i = 0; i < dialogmenu.numitems - 1; i++)
         {
             DEH_snprintf(choicetext, sizeof(choicetext),
-                         "%d) %s", i + 1, currentdialog->choices[i].text);
-            
+                "%d) %s", i + 1, currentdialog->choices[i].text);
+
             // alternate text for items that need money
-            if(currentdialog->choices[i].needamounts[0] > 0)
+            if (currentdialog->choices[i].needamounts[0] > 0)
             {
                 // haleyjd 20120401: necessary to avoid undefined behavior:
                 M_StringCopy(choicetext2, choicetext, sizeof(choicetext2));
                 DEH_snprintf(choicetext, sizeof(choicetext),
-                             "%s for %d", choicetext2,
-                             currentdialog->choices[i].needamounts[0]);
+                    "%s for %d", choicetext2,
+                    currentdialog->choices[i].needamounts[0]);
             }
 
             M_WriteText(dialogmenu.x, dialogmenu.y + 3 + y, choicetext);
@@ -1152,12 +1130,12 @@ static void P_DialogDrawer()
 //
 void P_DialogDoChoice(int choice)
 {
-    int i = 0, nextdialog = 0;
-    boolean candochoice = true;
-    const char *message = NULL;
+    int             i = 0, nextdialog = 0;
+    boolean         candochoice = true;
+    const char     *message     = NULL;
     mapdlgchoice_t *currentchoice;
 
-    if(choice == -1)
+    if (choice == -1)
         choice = dialogmenu.numitems - 1;
 
     currentchoice = &(currentdialog->choices[choice]);
@@ -1165,36 +1143,33 @@ void P_DialogDoChoice(int choice)
     I_StartVoice(NULL); // STRIFE-TODO: verify (should stop previous voice I believe)
 
     // villsa 09/08/10: converted into for loop
-    for(i = 0; i < MDLG_MAXITEMS; i++)
+    for (i = 0; i < MDLG_MAXITEMS; i++)
     {
-        if(P_PlayerHasItem(dialogplayer, static_cast<mobjtype_t>(currentchoice->needitems[i])) <
-                                         currentchoice->needamounts[i])
+        if (P_PlayerHasItem(dialogplayer, static_cast<mobjtype_t>(currentchoice->needitems[i])) < currentchoice->needamounts[i])
         {
             candochoice = false; // nope, missing something
         }
     }
 
-    if(choice != dialogmenu.numitems - 1 && candochoice)
+    if (choice != dialogmenu.numitems - 1 && candochoice)
     {
         int item;
 
         message = currentchoice->textok;
-        if(dialogtalkerstates->yes)
+        if (dialogtalkerstates->yes)
             P_SetMobjState(dialogtalker, dialogtalkerstates->yes);
 
         item = currentchoice->giveitem;
-        if(item < 0 || 
-           P_GiveItemToPlayer(dialogplayer, 
-                              states[mobjinfo[item].spawnstate].sprite, static_cast<mobjtype_t>(item)))
+        if (item < 0 || P_GiveItemToPlayer(dialogplayer, states[mobjinfo[item].spawnstate].sprite, static_cast<mobjtype_t>(item)))
         {
             // if successful, take needed items
             int count = 0;
             // villsa 09/08/10: converted into for loop
-            for(count = 0; count < MDLG_MAXITEMS; count++)
+            for (count = 0; count < MDLG_MAXITEMS; count++)
             {
-                P_TakeDialogItem(dialogplayer, 
-                                 currentchoice->needitems[count],
-                                 currentchoice->needamounts[count]);
+                P_TakeDialogItem(dialogplayer,
+                    currentchoice->needitems[count],
+                    currentchoice->needamounts[count]);
             }
         }
         else
@@ -1202,23 +1177,23 @@ void P_DialogDoChoice(int choice)
 
         // store next dialog into the talking actor
         nextdialog = currentchoice->next;
-        if(nextdialog != 0)
+        if (nextdialog != 0)
             dialogtalker->miscdata = (byte)(std::abs(nextdialog));
     }
     else
     {
         // not successful
         message = currentchoice->textno;
-        if(dialogtalkerstates->no)
+        if (dialogtalkerstates->no)
             P_SetMobjState(dialogtalker, dialogtalkerstates->no);
     }
-    
-    if(choice != dialogmenu.numitems - 1)
+
+    if (choice != dialogmenu.numitems - 1)
     {
-        int objective;
+        int   objective;
         char *objlump;
 
-        if((objective = currentchoice->objective))
+        if ((objective = currentchoice->objective))
         {
             DEH_snprintf(mission_objective, OBJECTIVE_LEN, "log%i", objective);
             objlump = cache_lump_name<char *>(mission_objective, PU_CACHE);
@@ -1226,16 +1201,16 @@ void P_DialogDoChoice(int choice)
         }
         // haleyjd 20130301: v1.31 hack: if first char of message is a period,
         // clear the player's message. Is this actually used anywhere?
-        if(gameversion == exe_strife_1_31 && message[0] == '.')
+        if (gameversion == exe_strife_1_31 && message[0] == '.')
             message = NULL;
         dialogplayer->message = message;
     }
 
-    dialogtalker->angle = dialogtalkerangle;
+    dialogtalker->angle     = dialogtalkerangle;
     dialogplayer->st_update = true;
     M_ClearMenus(0);
 
-    if(nextdialog >= 0 || gameaction == ga_victory) // Macil hack
+    if (nextdialog >= 0 || gameaction == ga_victory) // Macil hack
         menuindialog = false;
     else
         P_DialogStart(dialogplayer);
@@ -1259,50 +1234,50 @@ void P_DialogStartP1()
 //
 void P_DialogStart(player_t *player)
 {
-    int i = 0;
-    int pic;
-    int rnd = 0;
+    int         i = 0;
+    int         pic;
+    int         rnd = 0;
     const char *byetext;
-    int jumptoconv;
+    int         jumptoconv;
 
-    if(menuactive || netgame)
+    if (menuactive || netgame)
         return;
 
     // are we facing towards our NPC?
-    P_AimLineAttack(player->mo, player->mo->angle, (128*FRACUNIT));
-    if(!linetarget)
+    P_AimLineAttack(player->mo, player->mo->angle, (128 * FRACUNIT));
+    if (!linetarget)
     {
-        P_AimLineAttack(player->mo, player->mo->angle + (ANG90/16), (128*FRACUNIT));
-        if(!linetarget)
-            P_AimLineAttack(player->mo, player->mo->angle - (ANG90/16), (128*FRACUNIT));
+        P_AimLineAttack(player->mo, player->mo->angle + (ANG90 / 16), (128 * FRACUNIT));
+        if (!linetarget)
+            P_AimLineAttack(player->mo, player->mo->angle - (ANG90 / 16), (128 * FRACUNIT));
     }
 
-    if(!linetarget)
-       return;
+    if (!linetarget)
+        return;
 
     // already in combat, can't talk to it
-    if(linetarget->flags & MF_NODIALOG)
-       return;
+    if (linetarget->flags & MF_NODIALOG)
+        return;
 
     // set pointer to the character talking
     dialogtalker = linetarget;
 
     // play a sound
-    if(player == &players[consoleplayer])
-       S_StartSound(0, sfx_radio);
+    if (player == &players[consoleplayer])
+        S_StartSound(0, sfx_radio);
 
-    linetarget->target = player->mo;         // target the player
-    dialogtalker->reactiontime = 2;          // set reactiontime
-    dialogtalkerangle = dialogtalker->angle; // remember original angle
+    linetarget->target         = player->mo;          // target the player
+    dialogtalker->reactiontime = 2;                   // set reactiontime
+    dialogtalkerangle          = dialogtalker->angle; // remember original angle
 
     // face talker towards player
     A_FaceTarget(dialogtalker);
 
     // face towards NPC's direction
     player->mo->angle = R_PointToAngle2(player->mo->x,
-                                        player->mo->y,
-                                        dialogtalker->x,
-                                        dialogtalker->y);
+        player->mo->y,
+        dialogtalker->x,
+        dialogtalker->y);
     // set pointer to player talking
     dialogplayer = player;
 
@@ -1310,26 +1285,25 @@ void P_DialogStart(player_t *player)
     jumptoconv = linetarget->miscdata;
 
     // check item requirements
-    while(1)
+    while (1)
     {
-        int i = 0;
+        int i         = 0;
         currentdialog = P_DialogFind(linetarget->type, jumptoconv);
 
         // dialog's jumptoconv equal to 0? There's nothing to jump to.
-        if(currentdialog->jumptoconv == 0)
+        if (currentdialog->jumptoconv == 0)
             break;
 
         // villsa 09/08/10: converted into for loop
-        for(i = 0; i < MDLG_MAXITEMS; i++)
+        for (i = 0; i < MDLG_MAXITEMS; i++)
         {
             // if the item is non-zero, the player must have at least one in his
             // or her inventory
-            if(currentdialog->checkitem[i] != 0 &&
-                P_PlayerHasItem(dialogplayer, static_cast<mobjtype_t>(currentdialog->checkitem[i])) < 1)
+            if (currentdialog->checkitem[i] != 0 && P_PlayerHasItem(dialogplayer, static_cast<mobjtype_t>(currentdialog->checkitem[i])) < 1)
                 break;
         }
 
-        if(i < MDLG_MAXITEMS) // didn't find them all? this is our dialog!
+        if (i < MDLG_MAXITEMS) // didn't find them all? this is our dialog!
             break;
 
         jumptoconv = currentdialog->jumptoconv;
@@ -1342,25 +1316,25 @@ void P_DialogStart(player_t *player)
     dialogtalkerstates = P_DialogGetStates(linetarget->type);
 
     // have talker greet the player
-    if(dialogtalkerstates->greet)
+    if (dialogtalkerstates->greet)
         P_SetMobjState(dialogtalker, dialogtalkerstates->greet);
 
     // get talker's name
-    if(currentdialog->name[0])
+    if (currentdialog->name[0])
         dialogname = currentdialog->name;
     else
     {
         // use a fallback:
-        if(mobjinfo[linetarget->type].name)
+        if (mobjinfo[linetarget->type].name)
             dialogname = DEH_String(mobjinfo[linetarget->type].name); // mobjtype name
         else
             dialogname = DEH_String("Person"); // default name - like Joe in Doom 3 :P
     }
 
     // setup number of choices to choose from
-    for(i = 0; i < MDLG_MAXCHOICES; i++)
+    for (i = 0; i < MDLG_MAXCHOICES; i++)
     {
-        if(!currentdialog->choices[i].giveitem)
+        if (!currentdialog->choices[i].giveitem)
             break;
     }
 
@@ -1371,27 +1345,27 @@ void P_DialogStart(player_t *player)
 
     // setup dialog menu
     M_StartControlPanel();
-    menupause = false;
-    menuindialog = true;
+    menupause     = false;
+    menuindialog  = true;
     menupausetime = gametic + 17;
-    currentMenu = &dialogmenu;
+    currentMenu   = &dialogmenu;
 
-    if(i >= dialogmenu.lastOn)
+    if (i >= dialogmenu.lastOn)
         itemOn = dialogmenu.lastOn;
     else
         itemOn = 0;
 
     // get backdrop
-    pic = W_CheckNumForName(currentdialog->backpic);
+    pic                = W_CheckNumForName(currentdialog->backpic);
     dialogbgpiclumpnum = pic;
-    if(pic != -1)
+    if (pic != -1)
         V_DrawPatchDirect(0, 0, cache_lump_num<patch_t *>(pic, PU_CACHE));
 
     // get voice
     I_StartVoice(currentdialog->voice);
 
     // get bye text
-    switch(rnd)
+    switch (rnd)
     {
     case 2:
         byetext = DEH_String("BYE!");
@@ -1406,9 +1380,7 @@ void P_DialogStart(player_t *player)
     }
 
     DEH_snprintf(dialoglastmsgbuffer, sizeof(dialoglastmsgbuffer),
-                 "%d) %s", i + 1, byetext);
+        "%d) %s", i + 1, byetext);
 }
 
 // EOF
-
-

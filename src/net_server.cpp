@@ -45,8 +45,7 @@
 // How often to re-resolve the address of the master server?
 #define MASTER_RESOLVE_PERIOD 8 * 60 * 60 /* 8 hours */
 
-using net_server_state_t = enum
-{
+using net_server_state_t = enum {
     // waiting for the game to be "launched" (key player to press the start
     // button)
 
@@ -66,10 +65,10 @@ using net_client_t = struct
 {
     boolean          active;
     int              player_number;
-    net_addr_t *     addr;
+    net_addr_t      *addr;
     net_connection_t connection;
     int              last_send_time;
-    char *           name;
+    char            *name;
 
     // If true, the client has sent the NET_PACKET_TYPE_GAMESTART
     // message indicating that it is ready for the game to start.
@@ -119,7 +118,6 @@ using net_client_t = struct
     // Player class (for Hexen)
 
     int player_class;
-
 };
 
 // structure used for the recv window
@@ -146,15 +144,15 @@ using net_client_recv_t = struct
 static net_server_state_t server_state;
 static boolean            server_initialized = false;
 static net_client_t       clients[MAXNETNODES];
-static net_client_t *     sv_players[NET_MAXPLAYERS];
-static net_context_t *    server_context;
+static net_client_t      *sv_players[NET_MAXPLAYERS];
+static net_context_t     *server_context;
 static unsigned int       sv_gamemode;
 static unsigned int       sv_gamemission;
 static net_gamesettings_t sv_settings;
 
 // For registration with master server:
 
-static net_addr_t * master_server = NULL;
+static net_addr_t  *master_server = NULL;
 static unsigned int master_refresh_time;
 static unsigned int master_resolve_time;
 
@@ -386,8 +384,8 @@ static net_client_t *NET_SV_Controller()
 static void NET_SV_SendWaitingData(net_client_t *client)
 {
     net_waitdata_t wait_data;
-    net_packet_t * packet;
-    net_client_t * controller;
+    net_packet_t  *packet;
+    net_client_t  *controller;
     int            i;
 
     NET_SV_AssignPlayers();
@@ -587,10 +585,10 @@ static void NET_SV_ParseSYN(net_packet_t *packet, net_client_t *client,
 {
     unsigned int       magic;
     net_connect_data_t data;
-    net_packet_t *     reply;
+    net_packet_t      *reply;
     net_protocol_t     protocol;
-    char *             player_name;
-    char *             client_version;
+    char              *player_name;
+    char              *client_version;
     int                num_players;
     int                i;
 
@@ -1004,7 +1002,7 @@ static void NET_SV_ParseGameStart(net_packet_t *packet, net_client_t *client)
 
 static void NET_SV_SendResendRequest(net_client_t *client, int start, int end)
 {
-    net_packet_t *     packet;
+    net_packet_t      *packet;
     net_client_recv_t *recvobj;
     int                i;
     unsigned int       nowtime;
@@ -1202,7 +1200,7 @@ static void NET_SV_ParseGameData(net_packet_t *packet, net_client_t *client)
     // all tics before the first tic in this packet?  If so, send a
     // resend request.
 
-    //printf("SV: %p: %i\n", client, seq);
+    // printf("SV: %p: %i\n", client, seq);
 
     resend_end = seq - recvwindow_start;
 
@@ -1342,7 +1340,7 @@ static void NET_SV_ParseResendRequest(net_packet_t *packet, net_client_t *client
         return;
     }
 
-    //printf("SV: %p: resend %i-%i\n", client, start, start+num_tics-1);
+    // printf("SV: %p: resend %i-%i\n", client, start, start+num_tics-1);
 
     // Check we have all the requested tics
 
@@ -1376,7 +1374,7 @@ static void NET_SV_ParseResendRequest(net_packet_t *packet, net_client_t *client
 
 void NET_SV_SendQueryResponse(net_addr_t *addr)
 {
-    net_packet_t *  reply;
+    net_packet_t   *reply;
     net_querydata_t querydata;
     int             p;
 
@@ -1427,9 +1425,9 @@ void NET_SV_SendQueryResponse(net_addr_t *addr)
 
 static void NET_SV_ParseHolePunch(net_packet_t *packet)
 {
-    const char *  addr_string;
+    const char   *addr_string;
     net_packet_t *sendpacket;
-    net_addr_t *  addr;
+    net_addr_t   *addr;
 
     addr_string = NET_ReadString(packet);
     if (addr_string == NULL)
@@ -1530,7 +1528,7 @@ static void NET_SV_Packet(net_packet_t *packet, net_addr_t *addr)
     }
     else
     {
-        //printf("SV: %s: %i\n", NET_AddrToString(addr), packet_type);
+        // printf("SV: %s: %i\n", NET_AddrToString(addr), packet_type);
 
         switch (packet_type)
         {
@@ -1660,7 +1658,7 @@ static void NET_SV_PumpSendQueue(net_client_t *client)
             cmd.latency = recvobj->latency;
     }
 
-    //printf("SV: %i: latency %i\n", client->player_number, cmd.latency);
+    // printf("SV: %i: latency %i\n", client->player_number, cmd.latency);
 
     // Add into the queue
 
@@ -1935,7 +1933,7 @@ void NET_SV_RegisterWithMaster()
 
 void NET_SV_Run()
 {
-    net_addr_t *  addr;
+    net_addr_t   *addr;
     net_packet_t *packet;
     int           i;
 

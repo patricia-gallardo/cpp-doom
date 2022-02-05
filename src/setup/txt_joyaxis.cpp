@@ -35,33 +35,33 @@ static const char *CalibrationLabel(txt_joystick_axis_t *joystick_axis)
 {
     switch (joystick_axis->config_stage)
     {
-        case CONFIG_CENTER:
-            return "Center the D-pad or joystick,\n"
-                   "and press a button.";
+    case CONFIG_CENTER:
+        return "Center the D-pad or joystick,\n"
+               "and press a button.";
 
-        case CONFIG_STAGE1:
-            if (joystick_axis->dir == JOYSTICK_AXIS_VERTICAL)
-            {
-                return "Push the D-pad or joystick up,\n"
-                       "and press the button.";
-            }
-            else
-            {
-                return "Push the D-pad or joystick to the\n"
-                       "left, and press the button.";
-            }
+    case CONFIG_STAGE1:
+        if (joystick_axis->dir == JOYSTICK_AXIS_VERTICAL)
+        {
+            return "Push the D-pad or joystick up,\n"
+                   "and press the button.";
+        }
+        else
+        {
+            return "Push the D-pad or joystick to the\n"
+                   "left, and press the button.";
+        }
 
-        case CONFIG_STAGE2:
-            if (joystick_axis->dir == JOYSTICK_AXIS_VERTICAL)
-            {
-                return "Push the D-pad or joystick down,\n"
-                       "and press the button.";
-            }
-            else
-            {
-                return "Push the D-pad or joystick to the\n"
-                       "right, and press the button.";
-            }
+    case CONFIG_STAGE2:
+        if (joystick_axis->dir == JOYSTICK_AXIS_VERTICAL)
+        {
+            return "Push the D-pad or joystick down,\n"
+                   "and press the button.";
+        }
+        else
+        {
+            return "Push the D-pad or joystick to the\n"
+                   "right, and press the button.";
+        }
     }
 
     return NULL;
@@ -107,23 +107,23 @@ static int FindUncenteredHat(SDL_Joystick *joystick, int *axis_invert)
 
         switch (hatval)
         {
-            case SDL_HAT_LEFT:
-            case SDL_HAT_RIGHT:
-                *axis_invert = hatval != SDL_HAT_LEFT;
-                return CREATE_HAT_AXIS(i, HAT_AXIS_HORIZONTAL);
+        case SDL_HAT_LEFT:
+        case SDL_HAT_RIGHT:
+            *axis_invert = hatval != SDL_HAT_LEFT;
+            return CREATE_HAT_AXIS(i, HAT_AXIS_HORIZONTAL);
 
-            case SDL_HAT_UP:
-            case SDL_HAT_DOWN:
-                *axis_invert = hatval != SDL_HAT_UP;
-                return CREATE_HAT_AXIS(i, HAT_AXIS_VERTICAL);
+        case SDL_HAT_UP:
+        case SDL_HAT_DOWN:
+            *axis_invert = hatval != SDL_HAT_UP;
+            return CREATE_HAT_AXIS(i, HAT_AXIS_VERTICAL);
 
-            // If the hat is centered, or is not pointing in a
-            // definite direction, then ignore it. We don't accept
-            // the hat being pointed to the upper-left for example,
-            // because it's ambiguous.
-            case SDL_HAT_CENTERED:
-            default:
-                break;
+        // If the hat is centered, or is not pointing in a
+        // definite direction, then ignore it. We don't accept
+        // the hat being pointed to the upper-left for example,
+        // because it's ambiguous.
+        case SDL_HAT_CENTERED:
+        default:
+            break;
         }
     }
 
@@ -133,18 +133,18 @@ static int FindUncenteredHat(SDL_Joystick *joystick, int *axis_invert)
 
 static boolean CalibrateAxis(txt_joystick_axis_t *joystick_axis)
 {
-    int best_axis;
-    int best_value;
-    int best_invert;
+    int    best_axis;
+    int    best_value;
+    int    best_invert;
     Sint16 axis_value;
-    int i;
+    int    i;
 
     // Check all axes to find which axis has the largest value.  We test
-    // for one axis at a time, so eg. when we prompt to push the joystick 
+    // for one axis at a time, so eg. when we prompt to push the joystick
     // left, whichever axis has the largest value is the left axis.
 
-    best_axis = 0;
-    best_value = 0;
+    best_axis   = 0;
+    best_value  = 0;
     best_invert = 0;
 
     for (i = 0; i < SDL_JoystickNumAxes(joystick_axis->joystick); ++i)
@@ -158,9 +158,9 @@ static boolean CalibrateAxis(txt_joystick_axis_t *joystick_axis)
 
         if (std::abs(axis_value) > best_value)
         {
-            best_value = std::abs(axis_value);
+            best_value  = std::abs(axis_value);
             best_invert = axis_value > 0;
-            best_axis = i;
+            best_axis   = i;
         }
     }
 
@@ -170,7 +170,7 @@ static boolean CalibrateAxis(txt_joystick_axis_t *joystick_axis)
     {
         // Save the best values we have found
 
-        *joystick_axis->axis = best_axis;
+        *joystick_axis->axis   = best_axis;
         *joystick_axis->invert = best_invert;
         return true;
     }
@@ -183,7 +183,7 @@ static boolean CalibrateAxis(txt_joystick_axis_t *joystick_axis)
 
     if (i >= 0)
     {
-        *joystick_axis->axis = CREATE_BUTTON_AXIS(i, 0);
+        *joystick_axis->axis   = CREATE_BUTTON_AXIS(i, 0);
         *joystick_axis->invert = 0;
         return true;
     }
@@ -225,8 +225,7 @@ static void IdentifyBadAxes(txt_joystick_axis_t *joystick_axis)
 
     free(joystick_axis->bad_axis);
 
-    joystick_axis->bad_axis
-        = static_cast<boolean *>(calloc(SDL_JoystickNumAxes(joystick_axis->joystick),
+    joystick_axis->bad_axis = static_cast<boolean *>(calloc(SDL_JoystickNumAxes(joystick_axis->joystick),
         sizeof(boolean)));
 
     // Look for uncentered axes.
@@ -248,24 +247,24 @@ static int NextCalibrateStage(txt_joystick_axis_t *joystick_axis)
 {
     switch (joystick_axis->config_stage)
     {
-        case CONFIG_CENTER:
-            return CONFIG_STAGE1;
+    case CONFIG_CENTER:
+        return CONFIG_STAGE1;
 
-        // After pushing to the left, there are two possibilities:
-        // either it is a button axis, in which case we need to find
-        // the other button, or we can just move on to the next axis.
-        case CONFIG_STAGE1:
-            if (IS_BUTTON_AXIS(*joystick_axis->axis))
-            {
-                return CONFIG_STAGE2;
-            }
-            else
-            {
-                return CONFIG_CENTER;
-            }
-
-        case CONFIG_STAGE2:
+    // After pushing to the left, there are two possibilities:
+    // either it is a button axis, in which case we need to find
+    // the other button, or we can just move on to the next axis.
+    case CONFIG_STAGE1:
+        if (IS_BUTTON_AXIS(*joystick_axis->axis))
+        {
+            return CONFIG_STAGE2;
+        }
+        else
+        {
             return CONFIG_CENTER;
+        }
+
+    case CONFIG_STAGE2:
+        return CONFIG_CENTER;
     }
 
     return -1;
@@ -300,18 +299,18 @@ static int EventCallback(SDL_Event *event, TXT_UNCAST_ARG(joystick_axis))
     // direction and press the button. They must push the same button
     // as they did before; this is necessary to support button axes.
     if (event->jbutton.which == SDL_JoystickInstanceID(joystick_axis->joystick)
-     && event->jbutton.button == joystick_axis->config_button)
+        && event->jbutton.button == joystick_axis->config_button)
     {
         switch (joystick_axis->config_stage)
         {
-            default:
-            case CONFIG_STAGE1:
-                advance = CalibrateAxis(joystick_axis);
-                break;
+        default:
+        case CONFIG_STAGE1:
+            advance = CalibrateAxis(joystick_axis);
+            break;
 
-            case CONFIG_STAGE2:
-                advance = SetButtonAxisPositive(joystick_axis);
-                break;
+        case CONFIG_STAGE2:
+            advance = SetButtonAxisPositive(joystick_axis);
+            break;
         }
 
         // Advance to the next calibration stage?
@@ -340,7 +339,7 @@ static int EventCallback(SDL_Event *event, TXT_UNCAST_ARG(joystick_axis))
 }
 
 static void CalibrateWindowClosed(TXT_UNCAST_ARG(widget),
-                                  TXT_UNCAST_ARG(joystick_axis))
+    TXT_UNCAST_ARG(joystick_axis))
 {
     TXT_CAST_ARG(txt_joystick_axis_t, joystick_axis);
 
@@ -354,8 +353,8 @@ static void CalibrateWindowClosed(TXT_UNCAST_ARG(widget),
 }
 
 void TXT_ConfigureJoystickAxis(txt_joystick_axis_t *joystick_axis,
-                               int using_button,
-                               txt_joystick_axis_callback_t callback)
+    int                                             using_button,
+    txt_joystick_axis_callback_t                    callback)
 {
     // Open the joystick first.
     if (SDL_Init(SDL_INIT_JOYSTICK) < 0)
@@ -374,23 +373,22 @@ void TXT_ConfigureJoystickAxis(txt_joystick_axis_t *joystick_axis,
 
     // Build the prompt window.
 
-    joystick_axis->config_window
-        = TXT_NewWindow("Gamepad/Joystick calibration");
+    joystick_axis->config_window = TXT_NewWindow("Gamepad/Joystick calibration");
     TXT_AddWidgets(joystick_axis->config_window,
-                   TXT_NewStrut(0, 1),
-                   joystick_axis->config_label = TXT_NewLabel(""),
-                   TXT_NewStrut(0, 1),
-                   NULL);
+        TXT_NewStrut(0, 1),
+        joystick_axis->config_label = TXT_NewLabel(""),
+        TXT_NewStrut(0, 1),
+        NULL);
 
     TXT_SetWindowAction(joystick_axis->config_window, TXT_HORIZ_LEFT, NULL);
     TXT_SetWindowAction(joystick_axis->config_window, TXT_HORIZ_CENTER,
-                        TXT_NewWindowAbortAction(joystick_axis->config_window));
+        TXT_NewWindowAbortAction(joystick_axis->config_window));
     TXT_SetWindowAction(joystick_axis->config_window, TXT_HORIZ_RIGHT, NULL);
     TXT_SetWidgetAlign(joystick_axis->config_window, TXT_HORIZ_CENTER);
 
     if (using_button >= 0)
     {
-        joystick_axis->config_stage = CONFIG_STAGE1;
+        joystick_axis->config_stage  = CONFIG_STAGE1;
         joystick_axis->config_button = using_button;
         IdentifyBadAxes(joystick_axis);
     }
@@ -404,7 +402,7 @@ void TXT_ConfigureJoystickAxis(txt_joystick_axis_t *joystick_axis,
     // Close the joystick and shut down joystick subsystem when the window
     // is closed.
     TXT_SignalConnect(joystick_axis->config_window, "closed",
-                      CalibrateWindowClosed, joystick_axis);
+        CalibrateWindowClosed, joystick_axis);
 
     TXT_SDL_SetEventCallback(EventCallback, joystick_axis);
 
@@ -426,7 +424,7 @@ static void TXT_JoystickAxisDrawer(TXT_UNCAST_ARG(joystick_axis))
 {
     TXT_CAST_ARG(txt_joystick_axis_t, joystick_axis);
     char buf[JOYSTICK_AXIS_WIDTH + 1];
-    int i;
+    int  i;
 
     if (*joystick_axis->axis < 0)
     {
@@ -448,7 +446,7 @@ static void TXT_JoystickAxisDrawer(TXT_UNCAST_ARG(joystick_axis))
         dir = HAT_AXIS_DIRECTION(*joystick_axis->axis);
 
         M_snprintf(buf, sizeof(buf), "HAT #%i (%s)", hat,
-                   dir == HAT_AXIS_HORIZONTAL ? "horizontal" : "vertical");
+            dir == HAT_AXIS_HORIZONTAL ? "horizontal" : "vertical");
     }
     else
     {
@@ -489,7 +487,7 @@ static int TXT_JoystickAxisKeyPress(TXT_UNCAST_ARG(joystick_axis), int key)
 }
 
 static void TXT_JoystickAxisMousePress(TXT_UNCAST_ARG(widget),
-                                       int x, int y, int b)
+    int x, int y, int b)
 {
     TXT_CAST_ARG(txt_joystick_axis_t, widget);
 
@@ -501,8 +499,7 @@ static void TXT_JoystickAxisMousePress(TXT_UNCAST_ARG(widget),
     }
 }
 
-txt_widget_class_t txt_joystick_axis_class =
-{
+txt_widget_class_t txt_joystick_axis_class = {
     TXT_AlwaysSelectable,
     TXT_JoystickAxisSizeCalc,
     TXT_JoystickAxisDrawer,
@@ -513,18 +510,17 @@ txt_widget_class_t txt_joystick_axis_class =
 };
 
 txt_joystick_axis_t *TXT_NewJoystickAxis(int *axis, int *invert,
-                                         txt_joystick_axis_direction_t dir)
+    txt_joystick_axis_direction_t dir)
 {
     txt_joystick_axis_t *joystick_axis;
 
     joystick_axis = static_cast<txt_joystick_axis_t *>(malloc(sizeof(txt_joystick_axis_t)));
 
     TXT_InitWidget(joystick_axis, &txt_joystick_axis_class);
-    joystick_axis->axis = axis;
-    joystick_axis->invert = invert;
-    joystick_axis->dir = dir;
+    joystick_axis->axis     = axis;
+    joystick_axis->invert   = invert;
+    joystick_axis->dir      = dir;
     joystick_axis->bad_axis = NULL;
 
     return joystick_axis;
 }
-

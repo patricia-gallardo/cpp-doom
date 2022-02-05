@@ -30,25 +30,25 @@ you so incredibly much for this! - Fabian
 
 int main (int argc, char **argv)
 {
-	FILE *file;
-	int c, i = 0;
+        FILE *file;
+        int c, i = 0;
 
-	if (argc < 2 || !(file = fopen(argv[1], "r")))
-	{
-		return -1;
-	}
+        if (argc < 2 || !(file = fopen(argv[1], "r")))
+        {
+                return -1;
+        }
 
-	while ((c = getc(file)) != EOF)
-	{
-		printf("0x%02x, ", c);
-		if (!(++i % 64))
-		{
-			printf("\n");
-		}
-	}
+        while ((c = getc(file)) != EOF)
+        {
+                printf("0x%02x, ", c);
+                if (!(++i % 64))
+                {
+                        printf("\n");
+                }
+        }
 
-	fclose(file);
-	return 0;
+        fclose(file);
+        return 0;
 }
 */
 

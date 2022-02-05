@@ -94,8 +94,8 @@ char *player_names[] = {
 };
 
 char                 chat_char; // remove later.
-static player_t *    plr;
-patch_t *            hu_font[HU_FONTSIZE];
+static player_t     *plr;
+patch_t             *hu_font[HU_FONTSIZE];
 static hu_textline_t w_title;
 static hu_textline_t w_map;
 static hu_textline_t w_kills;
@@ -531,8 +531,8 @@ using speciallevel_t = struct
     GameMission_t mission;
     int           episode;
     int           map;
-    const char *  wad;
-    const char *  name;
+    const char   *wad;
+    const char   *name;
 };
 
 static const speciallevel_t speciallevels[] = {
@@ -785,7 +785,7 @@ static void HU_DrawCrosshair()
 {
     static int      lump;
     static patch_t *patch;
-    extern byte *   R_LaserspotColor();
+    extern byte    *R_LaserspotColor();
 
     if (weaponinfo[plr->readyweapon].ammo == am_noammo || plr->playerstate != PST_LIVE || automapactive || menuactive || paused || secret_on)
         return;
@@ -1145,7 +1145,7 @@ boolean HU_Responder(event_t *ev)
 {
 
     static char    lastmessage[HU_MAXLINELENGTH + 1];
-    const char *   macromessage;
+    const char    *macromessage;
     boolean        eatkey  = false;
     static boolean altdown = false;
     unsigned char  c;

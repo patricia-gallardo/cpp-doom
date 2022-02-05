@@ -21,8 +21,7 @@
 #include "net_defs.hpp"
 #include "net_packet.hpp"
 
-using net_connstate_t = enum
-{
+using net_connstate_t = enum {
     // Client has sent a SYN, is waiting for a SYN in response.
     NET_CONN_STATE_CONNECTING,
 
@@ -46,8 +45,7 @@ using net_connstate_t = enum
 
 // Reason a connection was terminated
 
-using net_disconnect_reason_t = enum
-{
+using net_disconnect_reason_t = enum {
     // As the result of a local disconnect request
 
     NET_DISCONNECT_LOCAL,
@@ -70,13 +68,13 @@ using net_connection_t = struct
 {
     net_connstate_t         state;
     net_disconnect_reason_t disconnect_reason;
-    net_addr_t *            addr;
+    net_addr_t             *addr;
     net_protocol_t          protocol;
     int                     last_send_time;
     int                     num_retries;
     int                     keepalive_send_time;
     int                     keepalive_recv_time;
-    net_reliable_packet_t * reliable_packets;
+    net_reliable_packet_t  *reliable_packets;
     int                     reliable_send_seq;
     int                     reliable_recv_seq;
 };

@@ -30,7 +30,8 @@
 #define MAX(a, b) (((a) > (b)) ? (a) : (b))
 #endif
 #ifndef BETWEEN
-#define BETWEEN(l, u, x) (((l) > (x)) ? (l) : ((x) > (u)) ? (u) : (x))
+#define BETWEEN(l, u, x) (((l) > (x)) ? (l) : ((x) > (u)) ? (u) : \
+                                                            (x))
 #endif
 
 using crispy_t = struct

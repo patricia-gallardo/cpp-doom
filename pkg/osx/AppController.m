@@ -57,8 +57,8 @@
 
 - (void)applicationDidFinishLaunching:(NSNotification *)aNotif
 {
-// Uncomment if your application is Renaissance-based
-//  [NSBundle loadGSMarkupNamed:@"Main" owner:self];
+    // Uncomment if your application is Renaissance-based
+    //  [NSBundle loadGSMarkupNamed:@"Main" owner:self];
 }
 
 - (BOOL)applicationShouldTerminate:(id)sender
@@ -70,19 +70,20 @@
 {
 }
 
-- (BOOL)applicationShouldTerminateAfterLastWindowClosed:(NSApplication *)_ {
+- (BOOL)applicationShouldTerminateAfterLastWindowClosed:(NSApplication *)_
+{
     return YES;
 }
 
-- (BOOL) application:(NSApplication *) application
-         openFile:(NSString *) fileName
+- (BOOL)application:(NSApplication *)application
+           openFile:(NSString *)fileName
 {
     NSString *extension;
 
     // This may be an IWAD.  If so, add it to the IWAD configuration;
     // don't add it like a PWAD.
 
-    if ([self->launcherManager addIWADPath: fileName])
+    if ([self->launcherManager addIWADPath:fileName])
     {
         return YES;
     }
@@ -100,33 +101,33 @@
 
     extension = [fileName pathExtension];
 
-    if (![extension caseInsensitiveCompare: @"wad"])
+    if (![extension caseInsensitiveCompare:@"wad"])
     {
-        [self->launcherManager addFileToCommandLine: fileName
-                               forArgument: @"-merge"];
+        [self->launcherManager addFileToCommandLine:fileName
+                                        forArgument:@"-merge"];
     }
-    else if (![extension caseInsensitiveCompare: @"lmp"])
+    else if (![extension caseInsensitiveCompare:@"lmp"])
     {
-        [self->launcherManager addFileToCommandLine: fileName
-                               forArgument: @"-playdemo"];
+        [self->launcherManager addFileToCommandLine:fileName
+                                        forArgument:@"-playdemo"];
     }
-    else if (![extension caseInsensitiveCompare: @"deh"])
+    else if (![extension caseInsensitiveCompare:@"deh"])
     {
-        [self->launcherManager addFileToCommandLine: fileName
-                               forArgument: @"-deh"];
-        [self->launcherManager selectGameByName: "doom"];
+        [self->launcherManager addFileToCommandLine:fileName
+                                        forArgument:@"-deh"];
+        [self->launcherManager selectGameByName:"doom"];
     }
-    else if (![extension caseInsensitiveCompare: @"hhe"])
+    else if (![extension caseInsensitiveCompare:@"hhe"])
     {
-        [self->launcherManager addFileToCommandLine: fileName
-                               forArgument: @"-deh"];
-        [self->launcherManager selectGameByName: "heretic"];
+        [self->launcherManager addFileToCommandLine:fileName
+                                        forArgument:@"-deh"];
+        [self->launcherManager selectGameByName:"heretic"];
     }
-    else if (![extension caseInsensitiveCompare: @"seh"])
+    else if (![extension caseInsensitiveCompare:@"seh"])
     {
-        [self->launcherManager addFileToCommandLine: fileName
-                               forArgument: @"-deh"];
-        [self->launcherManager selectGameByName: "strife"];
+        [self->launcherManager addFileToCommandLine:fileName
+                                        forArgument:@"-deh"];
+        [self->launcherManager selectGameByName:"strife"];
     }
     else
     {
@@ -143,4 +144,3 @@
 }
 
 @end
-

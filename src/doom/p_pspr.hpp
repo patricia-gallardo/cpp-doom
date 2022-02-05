@@ -49,8 +49,7 @@
 // drawn directly on the view screen,
 // coordinates are given for a 320*200 view screen.
 //
-using psprnum_t = enum
-{
+using psprnum_t = enum {
     ps_weapon,
     ps_flash,
     NUMPSPRITES

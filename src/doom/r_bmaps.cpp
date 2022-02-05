@@ -3675,7 +3675,7 @@ using fullbright_t = struct
 {
     const char *const texture;
     const int         game;
-    byte *            colormask;
+    byte             *colormask;
 };
 
 static const fullbright_t fullbright_doom[] = {
@@ -3979,29 +3979,29 @@ static byte *R_BrightmapForSprite_Chex(const int type)
 {
     // [crispy] TODO
     /*
-	if (crispy->brightmaps & BRIGHTMAPS_SPRITES)
-	{
-		switch (type)
-		{
-			// Chainsaw
-			case SPR_CSAW:
-			// Shotgun
-			case SPR_SHOT:
-			// Chaingun
-			case SPR_MGUN:
-			// Rocket launcher
-			case SPR_LAUN:
-			// Plasmagun
-			case SPR_PLAS:
-			// BFG9000
-			case SPR_BFUG:
-			{
-				return redandgreen;
-				break;
-			}
-		}
-	}
-	*/
+        if (crispy->brightmaps & BRIGHTMAPS_SPRITES)
+        {
+                switch (type)
+                {
+                        // Chainsaw
+                        case SPR_CSAW:
+                        // Shotgun
+                        case SPR_SHOT:
+                        // Chaingun
+                        case SPR_MGUN:
+                        // Rocket launcher
+                        case SPR_LAUN:
+                        // Plasmagun
+                        case SPR_PLAS:
+                        // BFG9000
+                        case SPR_BFUG:
+                        {
+                                return redandgreen;
+                                break;
+                        }
+                }
+        }
+        */
     return nobrightmap;
 }
 

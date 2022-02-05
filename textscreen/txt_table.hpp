@@ -66,14 +66,13 @@ using txt_table_t = struct txt_table_s;
 
 #include "txt_widget.hpp"
 
-struct txt_table_s
-{
+struct txt_table_s {
     txt_widget_t widget;
 
     // Widgets in this table
     // The widget at (x,y) in the table is widgets[columns * y + x]
     txt_widget_t **widgets;
-    int num_widgets;
+    int            num_widgets;
 
     // Number of columns
     int columns;
@@ -84,10 +83,10 @@ struct txt_table_s
 };
 
 extern txt_widget_class_t txt_table_class;
-extern txt_widget_t txt_table_overflow_right;
-extern txt_widget_t txt_table_overflow_down;
-extern txt_widget_t txt_table_eol;
-extern txt_widget_t txt_table_empty;
+extern txt_widget_t       txt_table_overflow_right;
+extern txt_widget_t       txt_table_overflow_down;
+extern txt_widget_t       txt_table_eol;
+extern txt_widget_t       txt_table_empty;
 
 void TXT_InitTable(txt_table_t *table, int columns);
 
@@ -241,5 +240,3 @@ void TXT_ClearTable(TXT_UNCAST_ARG(table));
 int TXT_PageTable(TXT_UNCAST_ARG(table), int pagex, int pagey);
 
 #endif /* #ifndef TXT_TABLE_T */
-
-

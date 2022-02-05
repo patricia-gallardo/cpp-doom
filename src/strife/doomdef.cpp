@@ -18,11 +18,8 @@
 //
 
 
-
 #include "doomdef.hpp"
 
 // Location for any defines turned variables.
 
 // None.
-
-

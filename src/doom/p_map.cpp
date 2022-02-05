@@ -1152,9 +1152,9 @@ boolean PTR_ShootTraverse(intercept_t *in)
     // check angles to see if the thing can be aimed at
     dist = FixedMul(attackrange, in->frac);
     // [crispy] mobj or actual sprite height
-    thingheight = (shootthing->player && critical->freeaim == FREEAIM_DIRECT) ?
-                      th->info->actualheight :
-                      th->height;
+    thingheight   = (shootthing->player && critical->freeaim == FREEAIM_DIRECT) ?
+                        th->info->actualheight :
+                        th->height;
     thingtopslope = FixedDiv(th->z + thingheight - shootz, dist);
 
     if (thingtopslope < aimslope)
@@ -1452,7 +1452,7 @@ boolean PIT_RadiusAttack(mobj_t *thing)
 // Source is the creature that caused the explosion at spot.
 //
 void P_RadiusAttack(mobj_t *spot,
-    mobj_t *                source,
+    mobj_t                 *source,
     int                     damage)
 {
     int x;

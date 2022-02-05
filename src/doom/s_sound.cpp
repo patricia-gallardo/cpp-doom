@@ -76,12 +76,11 @@ using channel_t = struct
     int handle;
 
     int pitch;
-
 };
 
 // The set of channels available
 
-static channel_t *  channels;
+static channel_t   *channels;
 static degenmobj_t *sobjs;
 
 // Maximum volume of a sound effect.
@@ -642,7 +641,7 @@ static int Clamp(int x)
 void S_StartSound(void *origin_p, int sfx_id)
 {
     sfxinfo_t *sfx;
-    mobj_t *   origin;
+    mobj_t    *origin;
     int        rc;
     int        sep;
     int        pitch;
@@ -902,7 +901,7 @@ void S_ChangeMusic(int musicnum, int looping)
 {
     musicinfo_t *music = NULL;
     char         namebuf[9];
-    void *       handle;
+    void        *handle;
 
     if (gamestate != GS_LEVEL)
     {

@@ -29,8 +29,7 @@
 //
 
 // Input event types.
-using evtype_t = enum
-{
+using evtype_t = enum {
     // Key press/release events.
     //    data1: Key code (from doomkeys.h) of the key that was
     //           pressed or released. This is the key as it appears
@@ -80,8 +79,7 @@ using event_t = struct
 //
 // Button/action code definitions.
 //
-using buttoncode_t = enum
-{
+using buttoncode_t = enum {
     // Press "Fire".
     BT_ATTACK = 1,
     // Use button, to open doors, activate switches.
@@ -112,8 +110,7 @@ using buttoncode_t = enum
 
 // villsa [STRIFE] Strife specific buttons
 // TODO - not finished
-using buttoncode2_t = enum
-{
+using buttoncode2_t = enum {
     // Player view look up
     BT2_LOOKUP = 1,
     // Player view look down

@@ -34,7 +34,7 @@ struct mobj_t;
 struct player_t;
 struct pspdef_t;
 
-using actionf_v = void (*)();
+using actionf_v  = void (*)();
 using actionf_p1 = void (*)(mobj_t *);
 using actionf_p2 = void (*)(player_t *, pspdef_t *);
 using actionf_p3 = void (*)(mobj_t *, player_t *, pspdef_t *); // [crispy] let pspr action pointers get called from mobj states
@@ -79,7 +79,6 @@ using thinker_t = struct thinker_s {
     struct thinker_s *prev;
     struct thinker_s *next;
     think_t           function;
-
 };
 
 

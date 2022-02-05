@@ -146,13 +146,13 @@ texture_t **textures_hashtable;
 
 int *texturewidthmask;
 // needed for texture pegging
-fixed_t *  textureheight;
-int *      texturecompositesize;
-short **   texturecolumnlump;
+fixed_t   *textureheight;
+int       *texturecompositesize;
+short    **texturecolumnlump;
 unsigned **texturecolumnofs;  // killough 4/9/98: make 32-bit
 unsigned **texturecolumnofs2; // [crispy] original column offsets for single-patched textures
-byte **    texturecomposite;
-byte **    texturebrightmap; // [crispy] brightmaps
+byte     **texturecomposite;
+byte     **texturebrightmap; // [crispy] brightmaps
 
 // for global animation
 int *flattranslation;
@@ -191,10 +191,10 @@ lighttable_t *colormaps;
 //
 
 void R_DrawColumnInCache(column_t *patch,
-    byte *                         cache,
+    byte                          *cache,
     int                            originy,
     int                            cacheheight,
-    byte *                         marks)
+    byte                          *marks)
 {
     int   count;
     int   position;
@@ -251,19 +251,19 @@ void R_DrawColumnInCache(column_t *patch,
 
 void R_GenerateComposite(int texnum)
 {
-    byte *      block;
-    texture_t * texture;
+    byte       *block;
+    texture_t  *texture;
     texpatch_t *patch;
-    patch_t *   realpatch;
+    patch_t    *realpatch;
     int         x;
     int         x1;
     int         x2;
     int         i;
-    column_t *  patchcol;
-    short *     collump;
-    unsigned *  colofs; // killough 4/9/98: make 32-bit
-    byte *      marks;  // killough 4/9/98: transparency marks
-    byte *      source; // killough 4/9/98: temporary column
+    column_t   *patchcol;
+    short      *collump;
+    unsigned   *colofs; // killough 4/9/98: make 32-bit
+    byte       *marks;  // killough 4/9/98: transparency marks
+    byte       *source; // killough 4/9/98: temporary column
 
     texture = textures[texnum];
 
@@ -304,9 +304,9 @@ void R_GenerateComposite(int texnum)
             // Column does not have multiple patches?
             // [crispy] generate composites for single-patched columns as well
             /*
-	    if (collump[x] >= 0)
-		continue;
-	    */
+            if (collump[x] >= 0)
+                continue;
+            */
 
             patchcol = (column_t *)((byte *)realpatch
                                     + LONG(realpatch->columnofs[x - x1]));
@@ -328,7 +328,7 @@ void R_GenerateComposite(int texnum)
     {
         if (collump[i] == -1) // process only multipatched columns
         {
-            column_t *  col  = (column_t *)(block + colofs[i] - 3); // cached column
+            column_t   *col  = (column_t *)(block + colofs[i] - 3); // cached column
             const byte *mark = marks + i * texture->height;
             int         j    = 0;
 
@@ -382,18 +382,18 @@ void R_GenerateComposite(int texnum)
 
 void R_GenerateLookup(int texnum)
 {
-    texture_t * texture;
-    byte *      patchcount; // patchcount[texture->width]
-    byte *      postcount;  // killough 4/9/98: keep count of posts in addition to patches.
+    texture_t  *texture;
+    byte       *patchcount; // patchcount[texture->width]
+    byte       *postcount;  // killough 4/9/98: keep count of posts in addition to patches.
     texpatch_t *patch;
-    patch_t *   realpatch;
+    patch_t    *realpatch;
     int         x;
     int         x1;
     int         x2;
     int         i;
-    short *     collump;
-    unsigned *  colofs;    // killough 4/9/98: make 32-bit
-    unsigned *  colofs2;   // [crispy] original column offsets
+    short      *collump;
+    unsigned   *colofs;    // killough 4/9/98: make 32-bit
+    unsigned   *colofs2;   // [crispy] original column offsets
     int         csize = 0; // killough 10/98
     int         err   = 0; // killough 10/98
 
@@ -462,7 +462,7 @@ void R_GenerateLookup(int texnum)
             int            pat       = patch->patch;
             const patch_t *realpatch = cache_lump_num<const patch_t *>(pat, PU_CACHE);
             int            x, x1 = patch++->originx, x2 = x1 + SHORT(realpatch->width);
-            const int *    cofs = realpatch->columnofs - x1;
+            const int     *cofs = realpatch->columnofs - x1;
 
             if (x2 > texture->width)
                 x2 = texture->width;
@@ -474,7 +474,7 @@ void R_GenerateLookup(int texnum)
                 if (patchcount[x] > 1) // Only multipatched columns
                 {
                     const column_t *col  = (const column_t *)((const byte *)realpatch + LONG(cofs[x]));
-                    const byte *    base = (const byte *)col;
+                    const byte     *base = (const byte *)col;
 
                     // count posts
                     for (; col->topdelta != 0xff; postcount[x]++)
@@ -506,8 +506,8 @@ void R_GenerateLookup(int texnum)
                 namet);
             // [crispy] do not return yet
             /*
-	    return;
-	    */
+            return;
+            */
         }
         // I_Error ("R_GenerateLookup: column without a patch");
 
@@ -534,12 +534,12 @@ void R_GenerateLookup(int texnum)
 
         // [crispy] remove limit
         /*
-	    if (texturecompositesize[texnum] > 0x10000-texture->height)
-	    {
-		I_Error ("R_GenerateLookup: texture %i is >64k",
-			 texnum);
-	    }
-	    */
+            if (texturecompositesize[texnum] > 0x10000-texture->height)
+            {
+                I_Error ("R_GenerateLookup: texture %i is >64k",
+                         texnum);
+            }
+            */
         csize += texture->height; // height bytes of texture data
     }
 
@@ -628,9 +628,9 @@ static void GenerateTextureHashTable()
 void R_InitTextures()
 {
     maptexture_t *mtexture;
-    texture_t *   texture;
-    mappatch_t *  mpatch;
-    texpatch_t *  patch;
+    texture_t    *texture;
+    mappatch_t   *mpatch;
+    texpatch_t   *patch;
 
     int i;
     int j;
@@ -665,14 +665,14 @@ void R_InitTextures()
     using texturelump_t = struct
     {
         int   lumpnum;
-        int * maptex;
+        int  *maptex;
         int   maxoff;
         short numtextures;
         short sumtextures;
         short pnamesoffset;
     };
 
-    pnameslump_t * pnameslumps  = NULL;
+    pnameslump_t  *pnameslumps  = NULL;
     texturelump_t *texturelumps = NULL, *texturelump;
 
     int maxpnameslumps  = 1; // PNAMES
@@ -1017,9 +1017,9 @@ static void R_InitTranMap()
     {
         // Compose a default transparent filter map based on PLAYPAL.
         unsigned char *playpal = cache_lump_name<unsigned char *>("PLAYPAL", PU_STATIC);
-        FILE *         cachefp;
-        char *         fname = NULL;
-        extern char *  configdir;
+        FILE          *cachefp;
+        char          *fname = NULL;
+        extern char   *configdir;
 
         struct {
             unsigned char pct;
@@ -1192,7 +1192,7 @@ void R_InitColormaps()
 
     // [crispy] initialize color translation and color strings tables
     {
-        byte *      playpal = cache_lump_name<byte *>("PLAYPAL", PU_STATIC);
+        byte       *playpal = cache_lump_name<byte *>("PLAYPAL", PU_STATIC);
         char        c[3];
         int         i, j;
         boolean     keepgray = false;
@@ -1350,8 +1350,8 @@ void R_PrecacheLevel()
     int k;
     int lump;
 
-    texture_t *    texture;
-    thinker_t *    th;
+    texture_t     *texture;
+    thinker_t     *th;
     spriteframe_t *sf;
 
     if (demoplayback)

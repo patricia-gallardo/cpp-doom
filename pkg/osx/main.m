@@ -19,6 +19,5 @@ int main(int argc, const char *argv[])
 {
     SetProgramLocation(argv[0]);
 
-    return NSApplicationMain (argc, argv);
+    return NSApplicationMain(argc, argv);
 }
-

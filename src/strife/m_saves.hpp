@@ -27,7 +27,7 @@
 extern char *savepath;
 extern char *savepathtemp;
 extern char *loadpath;
-extern char character_name[CHARACTER_NAME_LEN];
+extern char  character_name[CHARACTER_NAME_LEN];
 
 // Strife Savegame Functions
 void ClearTmp();
@@ -52,5 +52,3 @@ void  M_CreateSaveDirs(const char *savedir);
 #endif
 
 // EOF
-
-

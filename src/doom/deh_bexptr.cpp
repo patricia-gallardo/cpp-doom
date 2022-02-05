@@ -26,7 +26,7 @@
 #include "event_function_decls.hpp"
 
 using bex_codeptr_t = struct {
-    const char *    mnemonic;
+    const char     *mnemonic;
     const actionf_t pointer;
 };
 
@@ -140,7 +140,7 @@ static void *DEH_BEXPtrStart(deh_context_t *context, char *line)
 static void DEH_BEXPtrParseLine(deh_context_t *context, char *line, void *tag)
 {
     state_t *state;
-    char *   variable_name, *value, frame_str[6];
+    char    *variable_name, *value, frame_str[6];
     int      frame_number, i;
 
     // parse "FRAME nn = mnemonic", where

@@ -25,7 +25,7 @@
 using stdc_wad_file_t = struct
 {
     wad_file_t wad;
-    FILE *     fstream;
+    FILE      *fstream;
 };
 
 extern wad_file_class_t stdc_wad_file;
@@ -33,7 +33,7 @@ extern wad_file_class_t stdc_wad_file;
 static wad_file_t *W_StdC_OpenFile(const char *path)
 {
     stdc_wad_file_t *result;
-    FILE *           fstream;
+    FILE            *fstream;
 
     fstream = fopen(path, "rb");
 

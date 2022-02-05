@@ -11,36 +11,36 @@ jobs:
     runs-on: ubuntu-20.04
 
     steps:
-    - uses: actions/checkout@v2
+      - uses: actions/checkout@v2
 
-    - name: Create vcpkg build folder
-      run: |
-        mkdir -p build/vcpkg_installed
-        mkdir -p build/_deps
+      - name: Create vcpkg build folder
+        run: |
+          mkdir -p build/vcpkg_installed
+          mkdir -p build/_deps
 
-    - name: Cache vcpkg
-      uses: actions/cache@v2
-      env:
-        cache-name: vcpkg-modules
-      with:
-        path: |
-          ${{runner.workspace}}/build/vcpkg_installed
-          ${{runner.workspace}}/build/_deps
-        key: clang-tidy-${{ hashFiles('vcpkg.json') }}-${{ hashFiles('cmake/vcpkg.cmake') }}
+      - name: Cache vcpkg
+        uses: actions/cache@v2
+        env:
+          cache-name: vcpkg-modules
+        with:
+          path: |
+            ${{runner.workspace}}/build/vcpkg_installed
+            ${{runner.workspace}}/build/_deps
+          key: clang-tidy-${{ hashFiles('vcpkg.json') }}-${{ hashFiles('cmake/vcpkg.cmake') }}
 
-    - name: Fix Path
-      run: echo "/home/runner/.local/bin" >> $GITHUB_PATH
+      - name: Fix Path
+        run: echo "/home/runner/.local/bin" >> $GITHUB_PATH
 
-    - name: Install Linux dependencies
-      run: sudo apt-get update && sudo apt-get install -y libx11-dev libxrandr-dev libxi-dev libgl1-mesa-dev libudev-dev make ninja-build cmake
+      - name: Install Linux dependencies
+        run: sudo apt-get update && sudo apt-get install -y libx11-dev libxrandr-dev libxi-dev libgl1-mesa-dev libudev-dev make ninja-build cmake
 
-    - name: Install clang-tidy
-      run: sudo apt-get install clang-tidy
+      - name: Install clang-tidy
+        run: sudo apt-get install clang-tidy
 
-    - name: Configure CMake
-      working-directory: build
-      run: cmake -DCMAKE_EXPORT_COMPILE_COMMANDS=ON ..
+      - name: Configure CMake
+        working-directory: build
+        run: cmake -DCMAKE_EXPORT_COMPILE_COMMANDS=ON ..
 
-    - name: Run clang-tidy
-      working-directory: build
-      run: run-clang-tidy
+      - name: Run clang-tidy
+        working-directory: build
+        run: run-clang-tidy

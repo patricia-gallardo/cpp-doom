@@ -122,7 +122,7 @@ size_t W_POSIX_Read(wad_file_t *wad, unsigned int offset,
     void *buffer, size_t buffer_len)
 {
     posix_wad_file_t *posix_wad;
-    byte *            byte_buffer;
+    byte             *byte_buffer;
     size_t            bytes_read;
     int               result;
 

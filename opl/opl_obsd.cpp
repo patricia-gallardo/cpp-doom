@@ -99,8 +99,7 @@ static void OPL_OpenBSD_PortWrite(opl_port_t port, unsigned int value)
     outb(opl_port_base + port, value);
 }
 
-opl_driver_t opl_openbsd_driver =
-{
+opl_driver_t opl_openbsd_driver = {
     "OpenBSD",
     OPL_OpenBSD_Init,
     OPL_OpenBSD_Shutdown,
@@ -115,4 +114,3 @@ opl_driver_t opl_openbsd_driver =
 };
 
 #endif /* #ifndef NO_OBSD_DRIVER */
-

@@ -25,8 +25,8 @@
 #include "config.h"
 
 #define RESPONSE_FILE "/tmp/launcher.rsp"
-#define TEMP_SCRIPT "/tmp/tempscript.sh"
-#define WINDOW_TITLE PACKAGE_STRING " command prompt"
+#define TEMP_SCRIPT   "/tmp/tempscript.sh"
+#define WINDOW_TITLE  PACKAGE_STRING " command prompt"
 
 static char *executable_path;
 
@@ -39,7 +39,7 @@ void SetProgramLocation(const char *path)
 
     executable_path = strdup(path);
 
-    p = strrchr(executable_path, '/');
+    p  = strrchr(executable_path, '/');
     *p = '\0';
 }
 
@@ -127,7 +127,7 @@ static void WriteMessage(FILE *script, char *msg)
 
     fprintf(script, "echo \"");
 
-    for (p=msg; *p != '\0'; ++p)
+    for (p = msg; *p != '\0'; ++p)
     {
         // Start new line?
 
@@ -165,7 +165,7 @@ void OpenTerminalWindow(const char *doomwadpath)
     stream = fopen(TEMP_SCRIPT, "w");
 
     fprintf(stream, "#!/bin/sh\n");
-    //fprintf(stream, "set -x\n");
+    // fprintf(stream, "set -x\n");
     fprintf(stream, "PATH=\"%s:$PATH\"\n", executable_path);
 
     // MANPATH is set to point to the directory within the bundle that
@@ -176,7 +176,7 @@ void OpenTerminalWindow(const char *doomwadpath)
 
     fprintf(stream, "rm -f \"/tmp/%s.man\"\n", PACKAGE_TARNAME);
     fprintf(stream, "ln -s \"%s/man\" \"/tmp/%s.man\"\n",
-                    executable_path, PACKAGE_TARNAME);
+        executable_path, PACKAGE_TARNAME);
     fprintf(stream, "MANPATH=\"/tmp/%s.man:$(manpath)\"\n", PACKAGE_TARNAME);
     fprintf(stream, "export MANPATH\n");
 
@@ -210,17 +210,16 @@ void OpenTerminalWindow(const char *doomwadpath)
 
     // Tell the terminal to open a window to run the script.
 
-    [[NSWorkspace sharedWorkspace] openFile: @TEMP_SCRIPT
-                                   withApplication: @"Terminal"];
+    [[NSWorkspace sharedWorkspace] openFile:@TEMP_SCRIPT
+                            withApplication:@"Terminal"];
 }
 
 void OpenDocumentation(const char *filename)
 {
     NSString *path;
 
-    path = [NSString stringWithFormat: @"%s/Documentation/%s",
+    path = [NSString stringWithFormat:@"%s/Documentation/%s",
                      executable_path, filename];
 
-    [[NSWorkspace sharedWorkspace] openFile: path];
+    [[NSWorkspace sharedWorkspace] openFile:path];
 }
-

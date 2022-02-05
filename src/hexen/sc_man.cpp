@@ -26,10 +26,10 @@
 
 // MACROS ------------------------------------------------------------------
 
-#define MAX_STRING_SIZE 64
-#define ASCII_COMMENT (';')
-#define ASCII_QUOTE (34)
-#define LUMP_SCRIPT 1
+#define MAX_STRING_SIZE  64
+#define ASCII_COMMENT    (';')
+#define ASCII_QUOTE      (34)
+#define LUMP_SCRIPT      1
 #define FILE_ZONE_SCRIPT 2
 
 // TYPES -------------------------------------------------------------------
@@ -47,24 +47,24 @@ static void OpenScript(const char *name, int type);
 
 // PUBLIC DATA DEFINITIONS -------------------------------------------------
 
-char *sc_String;
-int sc_Number;
-int sc_Line;
-boolean sc_End;
-boolean sc_Crossed;
-boolean sc_FileScripts = false;
-const char *sc_ScriptsDir = "";
+char       *sc_String;
+int         sc_Number;
+int         sc_Line;
+boolean     sc_End;
+boolean     sc_Crossed;
+boolean     sc_FileScripts = false;
+const char *sc_ScriptsDir  = "";
 
 // PRIVATE DATA DEFINITIONS ------------------------------------------------
 
-static char ScriptName[16];
-static char *ScriptBuffer;
-static char *ScriptPtr;
-static char *ScriptEndPtr;
-static char StringBuffer[MAX_STRING_SIZE];
-static int ScriptLumpNum;
+static char    ScriptName[16];
+static char   *ScriptBuffer;
+static char   *ScriptPtr;
+static char   *ScriptEndPtr;
+static char    StringBuffer[MAX_STRING_SIZE];
+static int     ScriptLumpNum;
 static boolean ScriptOpen = false;
-static int ScriptSize;
+static int     ScriptSize;
 static boolean AlreadyGot = false;
 
 // CODE --------------------------------------------------------------------
@@ -127,25 +127,25 @@ static void OpenScript(const char *name, int type)
 {
     SC_Close();
     if (type == LUMP_SCRIPT)
-    {                           // Lump script
+    { // Lump script
         ScriptLumpNum = W_GetNumForName(name);
-        ScriptBuffer = cache_lump_num<char *>(ScriptLumpNum, PU_STATIC);
-        ScriptSize = W_LumpLength(ScriptLumpNum);
+        ScriptBuffer  = cache_lump_num<char *>(ScriptLumpNum, PU_STATIC);
+        ScriptSize    = W_LumpLength(ScriptLumpNum);
         M_StringCopy(ScriptName, name, sizeof(ScriptName));
     }
     else if (type == FILE_ZONE_SCRIPT)
-    {                           // File script - zone
+    { // File script - zone
         ScriptLumpNum = -1;
-        ScriptSize = M_ReadFile(name, (byte **) & ScriptBuffer);
+        ScriptSize    = M_ReadFile(name, (byte **)&ScriptBuffer);
         M_ExtractFileBase(name, ScriptName);
     }
-    ScriptPtr = ScriptBuffer;
+    ScriptPtr    = ScriptBuffer;
     ScriptEndPtr = ScriptPtr + ScriptSize;
-    sc_Line = 1;
-    sc_End = false;
-    ScriptOpen = true;
-    sc_String = StringBuffer;
-    AlreadyGot = false;
+    sc_Line      = 1;
+    sc_End       = false;
+    ScriptOpen   = true;
+    sc_String    = StringBuffer;
+    AlreadyGot   = false;
 }
 
 //==========================================================================
@@ -178,7 +178,7 @@ void SC_Close()
 
 boolean SC_GetString()
 {
-    char *text;
+    char   *text;
     boolean foundToken;
 
     CheckOpen();
@@ -210,11 +210,11 @@ boolean SC_GetString()
             return false;
         }
         if (*ScriptPtr != ASCII_COMMENT)
-        {                       // Found a token
+        { // Found a token
             foundToken = true;
         }
         else
-        {                       // Skip comment
+        { // Skip comment
             while (*ScriptPtr++ != '\n')
             {
                 if (ScriptPtr >= ScriptEndPtr)
@@ -229,7 +229,7 @@ boolean SC_GetString()
     }
     text = sc_String;
     if (*ScriptPtr == ASCII_QUOTE)
-    {                           // Quoted string
+    { // Quoted string
         ScriptPtr++;
         while (*ScriptPtr != ASCII_QUOTE)
         {
@@ -243,7 +243,7 @@ boolean SC_GetString()
         ScriptPtr++;
     }
     else
-    {                           // Normal string
+    { // Normal string
         while ((*ScriptPtr > 32) && (*ScriptPtr != ASCII_COMMENT))
         {
             *text++ = *ScriptPtr++;
@@ -304,7 +304,8 @@ boolean SC_GetNumber()
         if (*stopper != 0)
         {
             I_Error("SC_GetNumber: Bad numeric constant \"%s\".\n"
-                    "Script %s, Line %d", sc_String, ScriptName, sc_Line);
+                    "Script %s, Line %d",
+                sc_String, ScriptName, sc_Line);
         }
         return true;
     }
@@ -352,31 +353,31 @@ void SC_UnGet()
 /*
 boolean SC_Check()
 {
-	char *text;
+        char *text;
 
-	CheckOpen();
-	text = ScriptPtr;
-	if(text >= ScriptEndPtr)
-	{
-		return false;
-	}
-	while(*text <= 32)
-	{
-		if(*text == '\n')
-		{
-			return false;
-		}
-		text++;
-		if(text == ScriptEndPtr)
-		{
-			return false;
-		}
-	}
-	if(*text == ASCII_COMMENT)
-	{
-		return false;
-	}
-	return true;
+        CheckOpen();
+        text = ScriptPtr;
+        if(text >= ScriptEndPtr)
+        {
+                return false;
+        }
+        while(*text <= 32)
+        {
+                if(*text == '\n')
+                {
+                        return false;
+                }
+                text++;
+                if(text == ScriptEndPtr)
+                {
+                        return false;
+                }
+        }
+        if(*text == ASCII_COMMENT)
+        {
+                return false;
+        }
+        return true;
 }
 */
 

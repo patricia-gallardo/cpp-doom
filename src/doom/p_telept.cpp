@@ -37,15 +37,15 @@
 //
 int EV_Teleport(line_t *line,
     int                 side,
-    mobj_t *            thing)
+    mobj_t             *thing)
 {
     int        i;
     int        tag;
-    mobj_t *   m;
-    mobj_t *   fog;
+    mobj_t    *m;
+    mobj_t    *fog;
     unsigned   an;
     thinker_t *thinker;
-    sector_t * sector;
+    sector_t  *sector;
     fixed_t    oldx;
     fixed_t    oldy;
     fixed_t    oldz;

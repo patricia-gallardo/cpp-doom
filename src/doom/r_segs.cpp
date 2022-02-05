@@ -207,9 +207,9 @@ void R_RenderMaskedSegRange(drawseg_t *ds,
     lightnum += curline->fakecontrast;
     /*
     if (curline->v1->y == curline->v2->y)
-	lightnum--;
+        lightnum--;
     else if (curline->v1->x == curline->v2->x)
-	lightnum++;
+        lightnum++;
 */
 
     if (lightnum < 0)
@@ -449,7 +449,7 @@ void R_RenderSegLoop()
                     dc_yh         = yh;
                     dc_texturemid = rw_bottomtexturemid;
                     dc_source     = R_GetColumn(bottomtexture,
-                        texturecolumn, true);
+                            texturecolumn, true);
                     dc_texheight  = textureheight[bottomtexture] >> FRACBITS; // [crispy] Tutti-Frutti fix
                     dc_brightmap  = texturebrightmap[bottomtexture];
                     colfunc();
@@ -804,10 +804,10 @@ void R_StoreWallRange(int start,
             // [crispy] smoother fake contrast
             lightnum += curline->fakecontrast;
             /*
-	    if (curline->v1->y == curline->v2->y)
-		lightnum--;
-	    else if (curline->v1->x == curline->v2->x)
-		lightnum++;
+            if (curline->v1->y == curline->v2->y)
+                lightnum--;
+            else if (curline->v1->x == curline->v2->x)
+                lightnum++;
 */
 
             if (lightnum < 0)

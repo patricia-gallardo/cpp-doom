@@ -23,18 +23,17 @@
 #include "i_sound.hpp"
 
 // the complete set of sound effects
-extern sfxinfo_t	S_sfx[];
+extern sfxinfo_t S_sfx[];
 
 // the complete set of music
-extern musicinfo_t	S_music[];
+extern musicinfo_t S_music[];
 
 //
 // Identifiers for all music in game.
 //
 
 // villsa [STRIFE]
-using musicenum_t = enum
-{
+using musicenum_t = enum {
     mus_None,
     mus_logo,
     mus_action,
@@ -78,8 +77,7 @@ using musicenum_t = enum
 // Identifiers for all sfx in game.
 //
 
-using sfxenum_t = enum
-{
+using sfxenum_t = enum {
     sfx_None,
     sfx_swish,
     sfx_meatht,

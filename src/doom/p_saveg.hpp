@@ -59,7 +59,7 @@ void P_ArchiveSpecials();
 void P_UnArchiveSpecials();
 void P_RestoreTargets();
 
-extern FILE *  save_stream;
+extern FILE   *save_stream;
 extern boolean savegame_error;
 
 

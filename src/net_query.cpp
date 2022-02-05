@@ -48,15 +48,13 @@
 
 #define QUERY_MAX_ATTEMPTS 3
 
-using query_target_type_t = enum
-{
+using query_target_type_t = enum {
     QUERY_TARGET_SERVER,   // Normal server target.
     QUERY_TARGET_MASTER,   // The master server.
     QUERY_TARGET_BROADCAST // Send a broadcast query
 };
 
-using query_target_state_t = enum
-{
+using query_target_state_t = enum {
     QUERY_TARGET_QUEUED,    // Query not yet sent
     QUERY_TARGET_QUERIED,   // Query sent, waiting response
     QUERY_TARGET_RESPONDED, // Response received
@@ -67,7 +65,7 @@ using query_target_t = struct
 {
     query_target_type_t  type;
     query_target_state_t state;
-    net_addr_t *         addr;
+    net_addr_t          *addr;
     net_querydata_t      data;
     unsigned int         ping_time;
     unsigned int         query_time;
@@ -78,7 +76,7 @@ using query_target_t = struct
 static boolean registered_with_master = false;
 static boolean got_master_response    = false;
 
-static net_context_t * query_context;
+static net_context_t  *query_context;
 static query_target_t *targets;
 static int             num_targets;
 
@@ -188,7 +186,7 @@ static void NET_Query_SendMasterQuery(net_addr_t *addr)
 // given address.
 void NET_RequestHolePunch(net_context_t *context, net_addr_t *addr)
 {
-    net_addr_t *  master_addr;
+    net_addr_t   *master_addr;
     net_packet_t *packet;
 
     master_addr = NET_Query_ResolveMaster(context);
@@ -277,7 +275,7 @@ static void NET_Query_SendQuery(net_addr_t *addr)
 
 static void NET_Query_ParseResponse(net_addr_t *addr, net_packet_t *packet,
     net_query_callback_t callback,
-    void *               user_data)
+    void                *user_data)
 {
     unsigned int    packet_type;
     net_querydata_t querydata;
@@ -346,12 +344,12 @@ static void NET_Query_ParseResponse(net_addr_t *addr, net_packet_t *packet,
 // Parse a response packet from the master server.
 
 static void NET_Query_ParseMasterResponse(net_addr_t *master_addr,
-    net_packet_t *                                    packet)
+    net_packet_t                                     *packet)
 {
     unsigned int    packet_type;
     query_target_t *target;
-    char *          addr_str;
-    net_addr_t *    addr;
+    char           *addr_str;
+    net_addr_t     *addr;
 
     // Read the header.  We are only interested in query responses.
 
@@ -392,7 +390,7 @@ static void NET_Query_ParseMasterResponse(net_addr_t *master_addr,
 
 static void NET_Query_ParsePacket(net_addr_t *addr, net_packet_t *packet,
     net_query_callback_t callback,
-    void *               user_data)
+    void                *user_data)
 {
     query_target_t *target;
 
@@ -411,9 +409,9 @@ static void NET_Query_ParsePacket(net_addr_t *addr, net_packet_t *packet,
 }
 
 static void NET_Query_GetResponse(net_query_callback_t callback,
-    void *                                             user_data)
+    void                                              *user_data)
 {
-    net_addr_t *  addr;
+    net_addr_t   *addr;
     net_packet_t *packet;
 
     if (NET_RecvPacket(query_context, &addr, &packet))
@@ -476,7 +474,7 @@ static void SendOneQuery()
         break;
     }
 
-    //printf("Queried %s\n", NET_AddrToString(targets[i].addr));
+    // printf("Queried %s\n", NET_AddrToString(targets[i].addr));
     targets[i].state      = QUERY_TARGET_QUERIED;
     targets[i].query_time = now;
     ++targets[i].query_attempts;
@@ -660,7 +658,7 @@ int NET_StartLANQuery()
 
 int NET_StartMasterQuery()
 {
-    net_addr_t *    master;
+    net_addr_t     *master;
     query_target_t *target;
 
     NET_Query_Init();
@@ -752,9 +750,9 @@ static void PrintHeader()
 // Callback function that just prints information in a table.
 
 static void NET_QueryPrintCallback(net_addr_t *addr,
-    net_querydata_t *                          data,
+    net_querydata_t                           *data,
     unsigned int                               ping_time,
-    void *                                     user_data)
+    void                                      *user_data)
 {
     // If this is the first server, print the header.
 
@@ -811,7 +809,7 @@ void NET_MasterQuery()
 
 void NET_QueryAddress(char *addr_str)
 {
-    net_addr_t *    addr;
+    net_addr_t     *addr;
     query_target_t *target;
 
     NET_Query_Init();
@@ -851,7 +849,7 @@ net_addr_t *NET_FindLANServer()
 {
     query_target_t *target;
     query_target_t *responder;
-    net_addr_t *    result;
+    net_addr_t     *result;
 
     NET_Query_Init();
 
@@ -887,7 +885,7 @@ static net_packet_t *BlockForPacket(net_addr_t *addr, unsigned int packet_type,
     unsigned int timeout_ms)
 {
     net_packet_t *packet;
-    net_addr_t *  packet_src;
+    net_addr_t   *packet_src;
     unsigned int  read_packet_type;
     unsigned int  start_time;
 
@@ -924,8 +922,8 @@ static net_packet_t *BlockForPacket(net_addr_t *addr, unsigned int packet_type,
 boolean NET_StartSecureDemo(prng_seed_t seed)
 {
     net_packet_t *request, *response;
-    net_addr_t *  master_addr;
-    char *        signature;
+    net_addr_t   *master_addr;
+    char         *signature;
     boolean       result;
 
     NET_Query_Init();
@@ -971,8 +969,8 @@ boolean NET_StartSecureDemo(prng_seed_t seed)
 char *NET_EndSecureDemo(sha1_digest_t demo_hash)
 {
     net_packet_t *request, *response;
-    net_addr_t *  master_addr;
-    char *        signature;
+    net_addr_t   *master_addr;
+    char         *signature;
 
     master_addr = NET_Query_ResolveMaster(query_context);
 

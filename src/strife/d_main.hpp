@@ -23,34 +23,31 @@
 #include "doomdef.hpp"
 
 
-
-
 // Read events from all input devices
 
-void D_ProcessEvents ();
-	
+void D_ProcessEvents();
+
 
 //
 // BASE LEVEL
 //
-void D_PageTicker ();
-void D_PageDrawer ();
-void D_AdvanceDemo ();
-void D_DoAdvanceDemo ();
-void D_StartTitle ();
-void D_QuitGame (); // [STRIFE]
+void D_PageTicker();
+void D_PageDrawer();
+void D_AdvanceDemo();
+void D_DoAdvanceDemo();
+void D_StartTitle();
+void D_QuitGame(); // [STRIFE]
 
 void D_IntroTick(); // [STRIFE]
- 
+
 //
 // GLOBAL VARIABLES
 //
 
-extern  gameaction_t    gameaction;
-extern  boolean         isregistered;   // villsa [STRIFE]
-extern  boolean        isdemoversion;  // haleyjd [STRIFE]
-extern  boolean         stonecold;      // villsa [STRIFE]
-extern  boolean         workparm;       // villsa [STRIFE]
+extern gameaction_t gameaction;
+extern boolean      isregistered;  // villsa [STRIFE]
+extern boolean      isdemoversion; // haleyjd [STRIFE]
+extern boolean      stonecold;     // villsa [STRIFE]
+extern boolean      workparm;      // villsa [STRIFE]
 
 #endif
-

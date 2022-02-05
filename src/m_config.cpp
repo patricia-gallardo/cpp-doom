@@ -52,8 +52,7 @@ static char *autoload_path = const_cast<char *>("");
 static const char *default_main_config;
 static const char *default_extra_config;
 
-using default_type_t = enum
-{
+using default_type_t = enum {
     DEFAULT_INT,
     DEFAULT_INT_HEX,
     DEFAULT_STRING,
@@ -68,7 +67,7 @@ typedef struct
 
     // Pointer to the location in memory of the variable
     union {
-        int *  i;
+        int   *i;
         char **s;
         float *f;
     } location;
@@ -94,7 +93,7 @@ typedef struct
 
 using default_collection_t = struct
 {
-    default_t * defaults;
+    default_t  *defaults;
     int         numdefaults;
     const char *filename;
 };
@@ -2250,7 +2249,7 @@ static void SaveDefaultCollection(default_collection_t *collection)
 {
     default_t *defaults;
     int        i, v;
-    FILE *     f;
+    FILE      *f;
 
     f = fopen(collection->filename, "w");
     if (!f)
@@ -2408,7 +2407,7 @@ static void SetVariable(default_t *def, const char *value)
 
 static void LoadDefaultCollection(default_collection_t *collection)
 {
-    FILE *     f;
+    FILE      *f;
     default_t *def;
     char       defname[80];
     char       strparm[100];
@@ -2767,7 +2766,7 @@ void M_SetConfigDir(const char *dir)
 void M_SetMusicPackDir()
 {
     const char *current_path;
-    char *      prefdir, *music_pack_path, *readme_path;
+    char       *prefdir, *music_pack_path, *readme_path;
 
     current_path = M_GetStringVariable("music_pack_path");
 

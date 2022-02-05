@@ -25,8 +25,7 @@
 
 // States for the intermission
 
-using stateenum_t = enum
-{
+using stateenum_t = enum {
     NoState = -1,
     StatCount,
     ShowNextLoc,

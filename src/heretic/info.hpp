@@ -18,8 +18,7 @@
 #define HERETIC_INFO_H
 
 #include "action_hook.hpp"
-using spritenum_t = enum
-{
+using spritenum_t = enum {
     SPR_IMPX,
     SPR_ACLO,
     SPR_PTN1,
@@ -151,8 +150,7 @@ using spritenum_t = enum
     NUMSPRITES
 };
 
-using statenum_t = enum
-{
+using statenum_t = enum {
     S_NULL,
     S_FREETARGMOBJ,
     S_ITEM_PTN1_1,
@@ -648,9 +646,9 @@ using statenum_t = enum
     S_PHOENIXFXI1_6,
     S_PHOENIXFXI1_7,
     S_PHOENIXFXI1_8,
-    S_PHOENIXFXIX_1,      // [ States in Heretic 1.0 that were removed
+    S_PHOENIXFXIX_1, // [ States in Heretic 1.0 that were removed
     S_PHOENIXFXIX_2,
-    S_PHOENIXFXIX_3,      // ]
+    S_PHOENIXFXIX_3, // ]
     S_PHOENIXPUFF1,
     S_PHOENIXPUFF2,
     S_PHOENIXPUFF3,
@@ -771,8 +769,8 @@ using statenum_t = enum
     S_PLAY_FDTH16,
     S_PLAY_FDTH17,
     S_PLAY_FDTH18,
-    S_PLAY_FDTH19,    // < These two frames were not present in the Heretic
-    S_PLAY_FDTH20,    // < 1.0 executable (fire death animation was extended)
+    S_PLAY_FDTH19, // < These two frames were not present in the Heretic
+    S_PLAY_FDTH20, // < 1.0 executable (fire death animation was extended)
     S_BLOODYSKULL1,
     S_BLOODYSKULL2,
     S_BLOODYSKULL3,
@@ -1367,20 +1365,18 @@ using statenum_t = enum
 typedef struct
 {
     spritenum_t sprite;
-    int frame;
-    int tics;
+    int         frame;
+    int         tics;
     action_hook action;
-    statenum_t nextstate;
-    int misc1, misc2;
+    statenum_t  nextstate;
+    int         misc1, misc2;
 } state_t;
 
-extern state_t states[NUMSTATES];
+extern state_t     states[NUMSTATES];
 extern const char *sprnames[];
 
 
-
-using mobjtype_t = enum
-{
+using mobjtype_t = enum {
     MT_MISC0,
     MT_ITEMSHIELD1,
     MT_ITEMSHIELD2,
@@ -1468,7 +1464,7 @@ using mobjtype_t = enum
     MT_GOLDWANDPUFF2,
     MT_WPHOENIXROD,
     MT_PHOENIXFX1,
-    MT_PHOENIXFX_REMOVED,  // In Heretic 1.0, but removed.
+    MT_PHOENIXFX_REMOVED, // In Heretic 1.0, but removed.
     MT_PHOENIXPUFF,
     MT_PHOENIXFX2,
     MT_MISC15,
@@ -1547,33 +1543,32 @@ using mobjtype_t = enum
 
 typedef struct
 {
-    int doomednum;
+    int        doomednum;
     statenum_t spawnstate;
-    int spawnhealth;
+    int        spawnhealth;
     statenum_t seestate;
-    int seesound;
-    int reactiontime;
-    int attacksound;
+    int        seesound;
+    int        reactiontime;
+    int        attacksound;
     statenum_t painstate;
-    int painchance;
-    int painsound;
+    int        painchance;
+    int        painsound;
     statenum_t meleestate;
     statenum_t missilestate;
     statenum_t crashstate;
     statenum_t deathstate;
     statenum_t xdeathstate;
-    int deathsound;
-    int speed;
-    int radius;
-    int height;
-    int mass;
-    int damage;
-    int activesound;
-    int flags;
-    int flags2;
+    int        deathsound;
+    int        speed;
+    int        radius;
+    int        height;
+    int        mass;
+    int        damage;
+    int        activesound;
+    int        flags;
+    int        flags2;
 } mobjinfo_t;
 
 extern mobjinfo_t mobjinfo[NUMMOBJTYPES];
 
 #endif /* #ifndef HERETIC_INFO_H */
-

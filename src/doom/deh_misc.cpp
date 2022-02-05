@@ -133,7 +133,7 @@ int deh_species_infighting = DEH_DEFAULT_SPECIES_INFIGHTING;
 static struct
 {
     const char *deh_name;
-    int *       value;
+    int        *value;
 } misc_settings[] = {
     { "Initial Health", &deh_initial_health },
     { "Initial Bullets", &deh_initial_bullets },
@@ -159,7 +159,7 @@ static void *DEH_MiscStart(deh_context_t *context, char *line)
 
 static void DEH_MiscParseLine(deh_context_t *context, char *line, void *tag)
 {
-    char * variable_name, *value;
+    char  *variable_name, *value;
     int    ivalue;
     size_t i;
 

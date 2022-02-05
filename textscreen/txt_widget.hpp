@@ -23,9 +23,9 @@
 
 #ifndef DOXYGEN
 
-#define TXT_UNCAST_ARG_NAME(name) uncast_ ## name
-#define TXT_UNCAST_ARG(name)   void * TXT_UNCAST_ARG_NAME(name)
-#define TXT_CAST_ARG(type, name)  type *name = (type *) uncast_ ## name
+#define TXT_UNCAST_ARG_NAME(name) uncast_##name
+#define TXT_UNCAST_ARG(name)      void *TXT_UNCAST_ARG_NAME(name)
+#define TXT_CAST_ARG(type, name)  type *name = (type *)uncast_##name
 
 #else
 
@@ -35,15 +35,13 @@
 
 #include <memory>
 
-using txt_vert_align_t = enum
-{
+using txt_vert_align_t = enum {
     TXT_VERT_TOP,
     TXT_VERT_CENTER,
     TXT_VERT_BOTTOM,
 };
 
-using txt_horiz_align_t = enum
-{
+using txt_horiz_align_t = enum {
     TXT_HORIZ_LEFT,
     TXT_HORIZ_CENTER,
     TXT_HORIZ_RIGHT,
@@ -62,43 +60,41 @@ using txt_horiz_align_t = enum
 
 using txt_widget_t = struct txt_widget_s;
 
-using txt_widget_class_t = struct txt_widget_class_s;
+using txt_widget_class_t   = struct txt_widget_class_s;
 using txt_callback_table_t = struct txt_callback_table_s;
 
-using TxtWidgetSizeCalc = void (*)(void *);
-using TxtWidgetDrawer = void (*)(void *);
-using TxtWidgetDestroy = void (*)(void *);
-using TxtWidgetKeyPress = int (*)(void *, int);
-using TxtWidgetSignalFunc = void (*)(void *, void *);
-using TxtMousePressFunc = void (*)(void *, int, int, int);
-using TxtWidgetLayoutFunc = void (*)(void *);
+using TxtWidgetSizeCalc       = void (*)(void *);
+using TxtWidgetDrawer         = void (*)(void *);
+using TxtWidgetDestroy        = void (*)(void *);
+using TxtWidgetKeyPress       = int (*)(void *, int);
+using TxtWidgetSignalFunc     = void (*)(void *, void *);
+using TxtMousePressFunc       = void (*)(void *, int, int, int);
+using TxtWidgetLayoutFunc     = void (*)(void *);
 using TxtWidgetSelectableFunc = int (*)(void *);
-using TxtWidgetFocusFunc = void (*)(void *, int);
+using TxtWidgetFocusFunc      = void (*)(void *, int);
 
-struct txt_widget_class_s
-{
+struct txt_widget_class_s {
     TxtWidgetSelectableFunc selectable;
-    TxtWidgetSizeCalc size_calc;
-    TxtWidgetDrawer drawer;
-    TxtWidgetKeyPress key_press;
-    TxtWidgetDestroy destructor;
-    TxtMousePressFunc mouse_press;
-    TxtWidgetLayoutFunc layout;
-    TxtWidgetFocusFunc focus_change;
+    TxtWidgetSizeCalc       size_calc;
+    TxtWidgetDrawer         drawer;
+    TxtWidgetKeyPress       key_press;
+    TxtWidgetDestroy        destructor;
+    TxtMousePressFunc       mouse_press;
+    TxtWidgetLayoutFunc     layout;
+    TxtWidgetFocusFunc      focus_change;
 };
 
-struct txt_widget_s
-{
-    txt_widget_class_t *widget_class;
+struct txt_widget_s {
+    txt_widget_class_t                   *widget_class;
     std::shared_ptr<txt_callback_table_t> callback_table;
-    int visible;
-    txt_horiz_align_t align;
-    int focused;
+    int                                   visible;
+    txt_horiz_align_t                     align;
+    int                                   focused;
 
     // These are set automatically when the window is drawn and should
     // not be set manually.
 
-    int x, y;
+    int          x, y;
     unsigned int w, h;
 
     // Pointer up to parent widget that contains this widget.
@@ -110,12 +106,12 @@ void TXT_InitWidget(TXT_UNCAST_ARG(widget), txt_widget_class_t *widget_class);
 void TXT_CalcWidgetSize(TXT_UNCAST_ARG(widget));
 void TXT_DrawWidget(TXT_UNCAST_ARG(widget));
 void TXT_EmitSignal(TXT_UNCAST_ARG(widget), const char *signal_name);
-int TXT_WidgetKeyPress(TXT_UNCAST_ARG(widget), int key);
+int  TXT_WidgetKeyPress(TXT_UNCAST_ARG(widget), int key);
 void TXT_WidgetMousePress(TXT_UNCAST_ARG(widget), int x, int y, int b);
 void TXT_DestroyWidget(TXT_UNCAST_ARG(widget));
 void TXT_LayoutWidget(TXT_UNCAST_ARG(widget));
-int TXT_AlwaysSelectable(TXT_UNCAST_ARG(widget));
-int TXT_NeverSelectable(TXT_UNCAST_ARG(widget));
+int  TXT_AlwaysSelectable(TXT_UNCAST_ARG(widget));
+int  TXT_NeverSelectable(TXT_UNCAST_ARG(widget));
 void TXT_SetWidgetFocus(TXT_UNCAST_ARG(widget), int focused);
 
 /**
@@ -128,7 +124,7 @@ void TXT_SetWidgetFocus(TXT_UNCAST_ARG(widget), int focused);
  */
 
 void TXT_SignalConnect(TXT_UNCAST_ARG(widget), const char *signal_name,
-                       TxtWidgetSignalFunc func, void *user_data);
+    TxtWidgetSignalFunc func, void *user_data);
 
 /**
  * Set the policy for how a widget should be aligned within a table.
@@ -178,4 +174,3 @@ void TXT_SetWidgetBG(TXT_UNCAST_ARG(widget));
 int TXT_ContainsWidget(TXT_UNCAST_ARG(haystack), TXT_UNCAST_ARG(needle));
 
 #endif /* #ifndef TXT_WIDGET_H */
-

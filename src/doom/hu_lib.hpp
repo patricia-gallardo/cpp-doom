@@ -46,7 +46,6 @@ using hu_textline_t = struct
 
     // whether this line needs to be udpated
     int needsupdate;
-
 };
 
 
@@ -61,7 +60,6 @@ using hu_stext_t = struct
     // pointer to boolean stating whether to update window
     boolean *on;
     boolean  laston; // last value of *->on.
-
 };
 
 
@@ -77,7 +75,6 @@ using hu_itext_t = struct
     // pointer to boolean stating whether to update window
     boolean *on;
     boolean  laston; // last value of *->on;
-
 };
 
 
@@ -119,17 +116,17 @@ void HUlib_initSText(hu_stext_t *s,
     int                          x,
     int                          y,
     int                          h,
-    patch_t **                   font,
+    patch_t                    **font,
     int                          startchar,
-    boolean *                    on);
+    boolean                     *on);
 
 // add a new line
 void HUlib_addLineToSText(hu_stext_t *s);
 
 // ?
 void HUlib_addMessageToSText(hu_stext_t *s,
-    const char *                         prefix,
-    const char *                         msg);
+    const char                          *prefix,
+    const char                          *msg);
 
 // draws stext
 void HUlib_drawSText(hu_stext_t *s);
@@ -141,9 +138,9 @@ void HUlib_eraseSText(hu_stext_t *s);
 void HUlib_initIText(hu_itext_t *it,
     int                          x,
     int                          y,
-    patch_t **                   font,
+    patch_t                    **font,
     int                          startchar,
-    boolean *                    on);
+    boolean                     *on);
 
 // enforces left margin
 void HUlib_delCharFromIText(hu_itext_t *it);
@@ -156,7 +153,7 @@ void HUlib_resetIText(hu_itext_t *it);
 
 // left of left-margin
 void HUlib_addPrefixToIText(hu_itext_t *it,
-    char *                              str);
+    char                               *str);
 
 // whether eaten
 boolean

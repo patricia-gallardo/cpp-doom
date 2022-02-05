@@ -27,7 +27,7 @@
 static struct
 {
     net_protocol_t protocol;
-    const char *   name;
+    const char    *name;
 } protocol_names[] = {
     { NET_PROTOCOL_CHOCOLATE_DOOM_0, "CHOCOLATE_DOOM_0" },
 };
@@ -638,7 +638,7 @@ net_protocol_t NET_ReadProtocolList(net_packet_t *packet)
     for (i = 0; i < num_protocols; ++i)
     {
         net_protocol_t p;
-        const char *   name;
+        const char    *name;
 
         name = NET_ReadString(packet);
         if (name == NULL)

@@ -24,28 +24,28 @@ set(PACKAGE_LICENSE "GNU General Public License, version 2")
 
 # Any settings that should apply to all targets in this directory and all
 # subdirectories should go here.  Use judiciously.
-if(MSVC)
+if (MSVC)
     add_definitions("/D_CRT_SECURE_NO_WARNINGS" "/D_CRT_SECURE_NO_DEPRECATE"
                     "/D_CRT_NONSTDC_NO_DEPRECATE")
-else()
+else ()
     add_compile_options("-Wall" "-Wdeclaration-after-statement"
                         "-Wredundant-decls")
-endif()
+endif ()
 
 find_package(SDL2 CONFIG REQUIRED)
 find_package(sdl2-mixer CONFIG REQUIRED)
 find_package(sdl2-net CONFIG REQUIRED)
 
 find_package(SampleRate CONFIG REQUIRED)
-if(SAMPLERATE_FOUND)
+if (SAMPLERATE_FOUND)
     set(HAVE_LIBSAMPLERATE TRUE)
-endif()
+endif ()
 
 # Check for libpng.
 find_package(PNG)
-if(PNG_FOUND)
+if (PNG_FOUND)
     set(HAVE_LIBPNG TRUE)
-endif()
+endif ()
 
 include(CheckSymbolExists)
 include(CheckIncludeFile)
@@ -57,7 +57,7 @@ set(HAVE_DIRENT_H True)
 
 
 string(CONCAT WINDOWS_RC_VERSION "${PROJECT_VERSION_MAJOR}, "
-    "${PROJECT_VERSION_MINOR}, ${PROJECT_VERSION_PATCH}, 0")
+       "${PROJECT_VERSION_MINOR}, ${PROJECT_VERSION_PATCH}, 0")
 
 # Without a hyphen. This is used for the bash-completion scripts.
 string(TOLOWER "${PACKAGE_SHORTNAME}" PROGRAM_SPREFIX)
@@ -73,6 +73,6 @@ configure_file(src/setup/setup-manifest.xml.in src/setup/setup-manifest.xml)
 
 include_directories(utils)
 
-foreach(SUBDIR textscreen midiproc opl pcsound src)
+foreach (SUBDIR textscreen midiproc opl pcsound src)
     add_subdirectory("${SUBDIR}")
-endforeach()
+endforeach ()

@@ -33,8 +33,8 @@ extern int negonearray[MAXWIDTH];       // [crispy] 32-bit integer math
 extern int screenheightarray[MAXWIDTH]; // [crispy] 32-bit integer math
 
 // vars for R_DrawMaskedColumn
-extern int *   mfloorclip;   // [crispy] 32-bit integer math
-extern int *   mceilingclip; // [crispy] 32-bit integer math
+extern int    *mfloorclip;   // [crispy] 32-bit integer math
+extern int    *mceilingclip; // [crispy] 32-bit integer math
 extern fixed_t spryscale;
 extern int64_t sprtopscreen; // [crispy] WiggleFix
 

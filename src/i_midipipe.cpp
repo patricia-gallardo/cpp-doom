@@ -132,7 +132,7 @@ static boolean WritePipe(net_packet_t *packet)
 {
     DWORD bytes_written;
     BOOL  ok = WriteFile(midi_process_in_writer, packet->data, packet->len,
-        &bytes_written, NULL);
+         &bytes_written, NULL);
 
     return ok;
 }
@@ -412,8 +412,8 @@ boolean I_MidiPipe_InitServer()
 {
     TCHAR               dirname[MAX_PATH + 1];
     DWORD               dirname_len;
-    char *              module  = NULL;
-    char *              cmdline = NULL;
+    char               *module  = NULL;
+    char               *cmdline = NULL;
     char                params_buf[128];
     SECURITY_ATTRIBUTES sec_attrs;
     PROCESS_INFORMATION proc_info;

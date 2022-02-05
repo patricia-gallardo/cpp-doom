@@ -33,7 +33,7 @@ static void SetBufferFromValue(txt_inputbox_t *inputbox)
 {
     if (inputbox->widget.widget_class == &txt_inputbox_class)
     {
-        char **value = (char **) inputbox->value;
+        char **value = (char **)inputbox->value;
 
         if (*value != NULL)
         {
@@ -46,7 +46,7 @@ static void SetBufferFromValue(txt_inputbox_t *inputbox)
     }
     else if (inputbox->widget.widget_class == &txt_int_inputbox_class)
     {
-        int *value = (int *) inputbox->value;
+        int *value = (int *)inputbox->value;
         TXT_snprintf(inputbox->buffer, inputbox->buffer_len, "%i", *value);
     }
 }
@@ -91,11 +91,11 @@ static void FinishEditing(txt_inputbox_t *inputbox)
     if (inputbox->widget.widget_class == &txt_inputbox_class)
     {
         free(*((char **)inputbox->value));
-        *((char **) inputbox->value) = strdup(inputbox->buffer);
+        *((char **)inputbox->value) = strdup(inputbox->buffer);
     }
     else if (inputbox->widget.widget_class == &txt_int_inputbox_class)
     {
-        *((int *) inputbox->value) = atoi(inputbox->buffer);
+        *((int *)inputbox->value) = atoi(inputbox->buffer);
     }
 
     TXT_EmitSignal(&inputbox->widget, "changed");
@@ -122,7 +122,7 @@ static void TXT_InputBoxDrawer(TXT_UNCAST_ARG(inputbox))
     int w;
 
     focused = inputbox->widget.focused;
-    w = inputbox->widget.w;
+    w       = inputbox->widget.w;
 
     // Select the background color based on whether we are currently
     // editing, and if not, whether the widget is focused.
@@ -150,7 +150,7 @@ static void TXT_InputBoxDrawer(TXT_UNCAST_ARG(inputbox))
         TXT_DrawCodePageString("\xae");
         TXT_DrawString(
             TXT_UTF8_SkipChars(inputbox->buffer,
-                               TXT_UTF8_Strlen(inputbox->buffer) - w + 2));
+                TXT_UTF8_Strlen(inputbox->buffer) - w + 2));
         chars = w - 1;
     }
     else
@@ -166,7 +166,7 @@ static void TXT_InputBoxDrawer(TXT_UNCAST_ARG(inputbox))
         ++chars;
     }
 
-    for (i=chars; i < w; ++i)
+    for (i = chars; i < w; ++i)
     {
         TXT_DrawString(" ");
     }
@@ -183,13 +183,13 @@ static void TXT_InputBoxDestructor(TXT_UNCAST_ARG(inputbox))
 static void Backspace(txt_inputbox_t *inputbox)
 {
     unsigned int len;
-    char *p;
+    char        *p;
 
     len = TXT_UTF8_Strlen(inputbox->buffer);
 
     if (len > 0)
     {
-        p = TXT_UTF8_SkipChars(inputbox->buffer, len - 1);
+        p  = TXT_UTF8_SkipChars(inputbox->buffer, len - 1);
         *p = '\0';
     }
 }
@@ -203,8 +203,8 @@ static void AddCharacter(txt_inputbox_t *inputbox, int key)
         // Add character to the buffer
 
         end = inputbox->buffer + strlen(inputbox->buffer);
-        p = TXT_EncodeUTF8(end, key);
-        *p = '\0';
+        p   = TXT_EncodeUTF8(end, key);
+        *p  = '\0';
     }
 }
 
@@ -224,10 +224,10 @@ static int TXT_InputBoxKeyPress(TXT_UNCAST_ARG(inputbox), int key)
         // Backspace or delete erases the contents of the box.
 
         if ((key == KEY_DEL || key == KEY_BACKSPACE)
-         && inputbox->widget.widget_class == &txt_inputbox_class)
+            && inputbox->widget.widget_class == &txt_inputbox_class)
         {
             free(*((char **)inputbox->value));
-            *((char **) inputbox->value) = strdup("");
+            *((char **)inputbox->value) = strdup("");
         }
 
         return 0;
@@ -253,7 +253,7 @@ static int TXT_InputBoxKeyPress(TXT_UNCAST_ARG(inputbox), int key)
     // Add character to the buffer, but only if it's a printable character
     // that we can represent on the screen.
     if (isprint(c)
-     || (c >= 128 && TXT_UnicodeCharacter(c) >= 0))
+        || (c >= 128 && TXT_UnicodeCharacter(c) >= 0))
     {
         AddCharacter(inputbox, c);
     }
@@ -262,7 +262,7 @@ static int TXT_InputBoxKeyPress(TXT_UNCAST_ARG(inputbox), int key)
 }
 
 static void TXT_InputBoxMousePress(TXT_UNCAST_ARG(inputbox),
-                                   int x, int y, int b)
+    int x, int y, int b)
 {
     TXT_CAST_ARG(txt_inputbox_t, inputbox);
 
@@ -291,8 +291,7 @@ static void TXT_InputBoxFocused(TXT_UNCAST_ARG(inputbox), int focused)
     }
 }
 
-txt_widget_class_t txt_inputbox_class =
-{
+txt_widget_class_t txt_inputbox_class = {
     TXT_AlwaysSelectable,
     TXT_InputBoxSizeCalc,
     TXT_InputBoxDrawer,
@@ -303,8 +302,7 @@ txt_widget_class_t txt_inputbox_class =
     TXT_InputBoxFocused,
 };
 
-txt_widget_class_t txt_int_inputbox_class =
-{
+txt_widget_class_t txt_int_inputbox_class = {
     TXT_AlwaysSelectable,
     TXT_InputBoxSizeCalc,
     TXT_InputBoxDrawer,
@@ -316,19 +314,19 @@ txt_widget_class_t txt_int_inputbox_class =
 };
 
 static txt_inputbox_t *NewInputBox(txt_widget_class_t *widget_class,
-                                   void *value, int size)
+    void *value, int size)
 {
     auto *inputbox = create_struct<txt_inputbox_t>();
 
     TXT_InitWidget(inputbox, widget_class);
     inputbox->value = value;
-    inputbox->size = size;
+    inputbox->size  = size;
     // 'size' is the maximum number of characters that can be entered,
     // but for a UTF-8 string, each character can take up to four
     // characters.
     inputbox->buffer_len = size * 4 + 1;
-    inputbox->buffer = static_cast<char *>(malloc(inputbox->buffer_len));
-    inputbox->editing = 0;
+    inputbox->buffer     = static_cast<char *>(malloc(inputbox->buffer_len));
+    inputbox->editing    = 0;
 
     return inputbox;
 }
@@ -342,4 +340,3 @@ txt_inputbox_t *TXT_NewIntInputBox(int *value, int size)
 {
     return NewInputBox(&txt_int_inputbox_class, value, size);
 }
-

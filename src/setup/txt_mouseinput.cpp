@@ -27,9 +27,9 @@
 // eg. "BUTTON #10"
 #define MOUSE_INPUT_WIDTH 10
 
-static int MousePressCallback(txt_window_t *window, 
-                              int x, int y, int b,
-                              TXT_UNCAST_ARG(mouse_input))
+static int MousePressCallback(txt_window_t *window,
+    int x, int y, int b,
+    TXT_UNCAST_ARG(mouse_input))
 {
     TXT_CAST_ARG(txt_mouse_input_t, mouse_input);
 
@@ -73,18 +73,18 @@ static void GetMouseButtonDescription(int button, char *buf, size_t buf_len)
 {
     switch (button)
     {
-        case 0:
-            M_StringCopy(buf, "LEFT", buf_len);
-            break;
-        case 1:
-            M_StringCopy(buf, "RIGHT", buf_len);
-            break;
-        case 2:
-            M_StringCopy(buf, "MID", buf_len);
-            break;
-        default:
-            M_snprintf(buf, buf_len, "BUTTON #%i", button + 1);
-            break;
+    case 0:
+        M_StringCopy(buf, "LEFT", buf_len);
+        break;
+    case 1:
+        M_StringCopy(buf, "RIGHT", buf_len);
+        break;
+    case 2:
+        M_StringCopy(buf, "MID", buf_len);
+        break;
+    default:
+        M_snprintf(buf, buf_len, "BUTTON #%i", button + 1);
+        break;
     }
 }
 
@@ -92,7 +92,7 @@ static void TXT_MouseInputDrawer(TXT_UNCAST_ARG(mouse_input))
 {
     TXT_CAST_ARG(txt_mouse_input_t, mouse_input);
     char buf[20];
-    int i;
+    int  i;
 
     if (*mouse_input->variable < 0)
     {
@@ -105,9 +105,9 @@ static void TXT_MouseInputDrawer(TXT_UNCAST_ARG(mouse_input))
 
     TXT_SetWidgetBG(mouse_input);
     TXT_FGColor(TXT_COLOR_BRIGHT_WHITE);
-    
+
     TXT_DrawString(buf);
-    
+
     for (i = TXT_UTF8_Strlen(buf); i < MOUSE_INPUT_WIDTH; ++i)
     {
         TXT_DrawString(" ");
@@ -151,8 +151,7 @@ static void TXT_MouseInputMousePress(TXT_UNCAST_ARG(widget), int x, int y, int b
     }
 }
 
-txt_widget_class_t txt_mouse_input_class =
-{
+txt_widget_class_t txt_mouse_input_class = {
     TXT_AlwaysSelectable,
     TXT_MouseInputSizeCalc,
     TXT_MouseInputDrawer,
@@ -173,4 +172,3 @@ txt_mouse_input_t *TXT_NewMouseInput(int *variable)
 
     return mouse_input;
 }
-

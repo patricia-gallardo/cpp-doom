@@ -47,7 +47,7 @@
 // Distance tp origin when sounds should be maxed out.
 // This should relate to movement clipping resolution
 // (see BLOCKMAP handling).
-// In the source code release: (160*FRACUNIT).  Changed back to the 
+// In the source code release: (160*FRACUNIT).  Changed back to the
 // Vanilla value of 200 (why was this changed?)
 
 #define S_CLOSE_DIST (200 * FRACUNIT)
@@ -61,7 +61,7 @@
 #define S_STEREO_SWING (96 * FRACUNIT)
 
 #define NORM_PRIORITY 64
-#define NORM_SEP 128
+#define NORM_SEP      128
 
 using channel_t = struct
 {
@@ -75,7 +75,6 @@ using channel_t = struct
     int handle;
 
     int pitch;
-
 };
 
 // The set of channels available
@@ -87,7 +86,7 @@ static channel_t *channels;
 
 int sfxVolume = 8;
 
-// Maximum volume of music. 
+// Maximum volume of music.
 
 int musicVolume = 13;
 
@@ -106,7 +105,7 @@ static int snd_VoiceVolume;
 
 // Whether songs are mus_paused
 
-static boolean mus_paused;        
+static boolean mus_paused;
 
 // Music currently being played
 
@@ -135,7 +134,7 @@ int disable_voices = 0;
 // haleyjd 09/11/10: [STRIFE] Added voice volume
 //
 void S_Init(int sfxVolume, int musicVolume, int voiceVolume)
-{  
+{
     int i;
 
     I_SetOPLDriverVer(opl_doom_1_9);
@@ -151,7 +150,7 @@ void S_Init(int sfxVolume, int musicVolume, int voiceVolume)
     channels = zmalloc<channel_t *>(snd_channels * sizeof(channel_t), PU_STATIC, 0);
 
     // Free all channels for use
-    for (i=0 ; i<snd_channels ; i++)
+    for (i = 0; i < snd_channels; i++)
     {
         channels[i].sfxinfo = 0;
     }
@@ -160,7 +159,7 @@ void S_Init(int sfxVolume, int musicVolume, int voiceVolume)
     mus_paused = 0;
 
     // Note that sounds have not been cached (yet).
-    for (i=1 ; i<NUMSFX ; i++)
+    for (i = 1; i < NUMSFX; i++)
     {
         S_sfx[i].lumpnum = S_sfx[i].usefulness = -1;
     }
@@ -176,7 +175,7 @@ void S_Shutdown()
 
 static void S_StopChannel(int cnum)
 {
-    int i;
+    int        i;
     channel_t *c;
 
     c = &channels[cnum];
@@ -196,14 +195,14 @@ static void S_StopChannel(int cnum)
 
         // check to see if other channels are playing the sound
 
-        for (i=0; i<snd_channels; i++)
+        for (i = 0; i < snd_channels; i++)
         {
             if (cnum != i && c->sfxinfo == channels[i].sfxinfo)
             {
                 break;
             }
         }
-        
+
         // degrade usefulness of sound data
 
         c->sfxinfo->usefulness--;
@@ -226,7 +225,7 @@ void S_Start()
 
     // kill all playing sounds at start of level
     //  (trust me - a good idea)
-    for (cnum=0 ; cnum<snd_channels ; cnum++)
+    for (cnum = 0; cnum < snd_channels; cnum++)
     {
         if (channels[cnum].sfxinfo)
         {
@@ -238,7 +237,7 @@ void S_Start()
     mus_paused = 0;
 
     // [STRIFE] Some interesting math here ;)
-    if(gamemap <= 31)
+    if (gamemap <= 31)
         mnum = 1;
     else
         mnum = -30;
@@ -250,10 +249,10 @@ void S_StopSound(mobj_t *origin)
 {
     int cnum;
 
-    for (cnum=0 ; cnum<snd_channels ; cnum++)
+    for (cnum = 0; cnum < snd_channels; cnum++)
     {
         // haleyjd: do not stop voice here.
-        if(cnum == i_voicehandle)
+        if (cnum == i_voicehandle)
             continue;
 
         if (channels[cnum].sfxinfo && channels[cnum].origin == origin)
@@ -274,23 +273,22 @@ void S_StopSound(mobj_t *origin)
 static int S_GetChannel(mobj_t *origin, sfxinfo_t *sfxinfo, boolean isvoice)
 {
     // channel number to use
-    int                cnum;
-    
-    channel_t*        c;
+    int cnum;
+
+    channel_t *c;
 
     // Find an open channel
-    for (cnum=0 ; cnum<snd_channels ; cnum++)
+    for (cnum = 0; cnum < snd_channels; cnum++)
     {
         if (!channels[cnum].sfxinfo)
         {
             break;
-        } 
-        else if (origin && channels[cnum].origin == origin &&
-                 (isvoice || cnum != i_voicehandle)) // haleyjd
+        }
+        else if (origin && channels[cnum].origin == origin && (isvoice || cnum != i_voicehandle)) // haleyjd
         {
             // haleyjd 20150220: [STRIFE] missing sound channel priority check
             // Is a higher priority sound by same origin already playing?
-            if(!isvoice && sfxinfo->priority > channels[cnum].sfxinfo->priority)
+            if (!isvoice && sfxinfo->priority > channels[cnum].sfxinfo->priority)
                 return -1;
 
             S_StopChannel(cnum);
@@ -302,7 +300,7 @@ static int S_GetChannel(mobj_t *origin, sfxinfo_t *sfxinfo, boolean isvoice)
     if (cnum == snd_channels)
     {
         // Look for lower priority
-        for (cnum=0 ; cnum<snd_channels ; cnum++)
+        for (cnum = 0; cnum < snd_channels; cnum++)
         {
             if (channels[cnum].sfxinfo->priority >= sfxinfo->priority)
             {
@@ -314,7 +312,7 @@ static int S_GetChannel(mobj_t *origin, sfxinfo_t *sfxinfo, boolean isvoice)
 
         if (cnum == snd_channels)
         {
-            // FUCK!  No lower priority.  Sorry, Charlie.    
+            // FUCK!  No lower priority.  Sorry, Charlie.
             return -1;
         }
         else
@@ -328,7 +326,7 @@ static int S_GetChannel(mobj_t *origin, sfxinfo_t *sfxinfo, boolean isvoice)
 
     // channel is decided to be cnum.
     c->sfxinfo = sfxinfo;
-    c->origin = origin;
+    c->origin  = origin;
 
     return cnum;
 }
@@ -345,12 +343,12 @@ static int S_GetChannel(mobj_t *origin, sfxinfo_t *sfxinfo, boolean isvoice)
 // was able to catch the smallest things like that.
 //
 static int S_AdjustSoundParams(mobj_t *listener, mobj_t *source,
-                               int *vol, int *sep)
+    int *vol, int *sep)
 {
-    fixed_t        approx_dist;
-    fixed_t        adx;
-    fixed_t        ady;
-    angle_t        angle;
+    fixed_t approx_dist;
+    fixed_t adx;
+    fixed_t ady;
+    angle_t angle;
 
     // calculate the distance to sound origin
     //  and clip it if necessary
@@ -358,19 +356,19 @@ static int S_AdjustSoundParams(mobj_t *listener, mobj_t *source,
     ady = std::abs(listener->y - source->y);
 
     // From _GG1_ p.428. Appox. eucledian distance fast.
-    approx_dist = adx + ady - ((adx < ady ? adx : ady)>>1);
-    
+    approx_dist = adx + ady - ((adx < ady ? adx : ady) >> 1);
+
     // [STRIFE] removed gamemap == 8 hack
     if (approx_dist > S_CLIPPING_DIST)
     {
         return 0;
     }
-    
+
     // angle of source to listener
     angle = R_PointToAngle2(listener->x,
-                            listener->y,
-                            source->x,
-                            source->y);
+        listener->y,
+        source->x,
+        source->y);
 
     if (angle > listener->angle)
     {
@@ -396,32 +394,32 @@ static int S_AdjustSoundParams(mobj_t *listener, mobj_t *source,
     {
         // distance effect
         *vol = (snd_SfxVolume
-                * ((S_CLIPPING_DIST - approx_dist)>>FRACBITS))
-            / S_ATTENUATOR; 
+                   * ((S_CLIPPING_DIST - approx_dist) >> FRACBITS))
+               / S_ATTENUATOR;
     }
-    
+
     return (*vol > 0);
 }
 
 void S_StartSound(void *origin_p, int sfx_id)
 {
     sfxinfo_t *sfx;
-    mobj_t *origin;
-    int rc;
-    int sep;
-    int pitch;
-    int cnum;
-    int volume;
+    mobj_t    *origin;
+    int        rc;
+    int        sep;
+    int        pitch;
+    int        cnum;
+    int        volume;
 
-    origin = (mobj_t *) origin_p;
+    origin = (mobj_t *)origin_p;
     volume = snd_SfxVolume;
 
     // check for bogus sound #
     if (sfx_id < 1 || sfx_id > NUMSFX)
     {
         // [STRIFE]: BUG - Note: vanilla had some extremely buggy and dangerous
-        // code here that tried to print the sprite name of the object playing 
-        // the bad sound. Because it invokes multiple undefined behaviors and 
+        // code here that tried to print the sprite name of the object playing
+        // the bad sound. Because it invokes multiple undefined behaviors and
         // is of basically no consequence, it has deliberately not been ported.
         I_Error("Bad sfx #: %d", sfx_id);
     }
@@ -450,12 +448,12 @@ void S_StartSound(void *origin_p, int sfx_id)
     if (origin && origin != players[consoleplayer].mo)
     {
         rc = S_AdjustSoundParams(players[consoleplayer].mo,
-                                 origin,
-                                 &volume,
-                                 &sep);
+            origin,
+            &volume,
+            &sep);
 
         if (origin->x == players[consoleplayer].mo->x
-         && origin->y == players[consoleplayer].mo->y)
+            && origin->y == players[consoleplayer].mo->y)
         {
             sep = NORM_SEP;
         }
@@ -472,7 +470,7 @@ void S_StartSound(void *origin_p, int sfx_id)
     pitch = NORM_PITCH;
 
     // kill old sound [STRIFE] - nope!
-    //S_StopSound(origin);
+    // S_StopSound(origin);
 
     // try to find a channel
     cnum = S_GetChannel(origin, sfx, false); // haleyjd: not a voice.
@@ -504,9 +502,8 @@ void S_StartSound(void *origin_p, int sfx_id)
 // even if it has already stopped playing. Thanks to this cuteness I get
 // to maintain a dynamic cache of sfxinfo objects!
 
-using voiceinfo_t = struct voiceinfo_s
-{
-    sfxinfo_t sfx;
+using voiceinfo_t = struct voiceinfo_s {
+    sfxinfo_t           sfx;
     struct voiceinfo_s *next; // next on hash chain
 };
 
@@ -517,20 +514,20 @@ using voiceinfo_t = struct voiceinfo_s
 //
 static unsigned int S_voiceHash(const char *str)
 {
-   const char *c = str;
-   unsigned int h = 0;
+    const char  *c = str;
+    unsigned int h = 0;
 
-   if(!str)
-      I_Error("S_voiceHash: cannot hash NULL string!\n");
+    if (!str)
+        I_Error("S_voiceHash: cannot hash NULL string!\n");
 
-   // note: this needs to be case insensitive for lump names
-   while(*c)
-   {
-      h = 5 * h + toupper(*c);
-      ++c;
-   }
+    // note: this needs to be case insensitive for lump names
+    while (*c)
+    {
+        h = 5 * h + toupper(*c);
+        ++c;
+    }
 
-   return h;
+    return h;
 }
 
 static voiceinfo_t *voices[NUMVOICECHAINS];
@@ -548,23 +545,23 @@ static voiceinfo_t *S_getVoice(const char *name, int lumpnum)
 
     voice = voices[hashkey];
 
-    while(voice && strcasecmp(voice->sfx.name, name))
+    while (voice && strcasecmp(voice->sfx.name, name))
         voice = voice->next;
 
-    if(!voice)
+    if (!voice)
     {
         voice = static_cast<voiceinfo_t *>(calloc(1, sizeof(voiceinfo_t)));
 
         M_StringCopy(voice->sfx.name, name, sizeof(voice->sfx.name));
-        voice->sfx.priority = INT_MIN; // make highest possible priority
-        voice->sfx.pitch = -1;
-        voice->sfx.volume = -1;
+        voice->sfx.priority    = INT_MIN; // make highest possible priority
+        voice->sfx.pitch       = -1;
+        voice->sfx.volume      = -1;
         voice->sfx.numchannels = -1;
-        voice->sfx.usefulness = -1;
-        voice->sfx.lumpnum = lumpnum;
+        voice->sfx.usefulness  = -1;
+        voice->sfx.lumpnum     = lumpnum;
 
         // throw it onto the table.
-        voice->next = voices[hashkey];
+        voice->next     = voices[hashkey];
         voices[hashkey] = voice;
     }
 
@@ -582,36 +579,36 @@ static voiceinfo_t *S_getVoice(const char *name, int lumpnum)
 //
 void I_StartVoice(const char *lumpname)
 {
-    int lumpnum;
+    int          lumpnum;
     voiceinfo_t *voice; // choco-specific
-    char lumpnamedup[9];
+    char         lumpnamedup[9];
 
     // no voices in deathmatch mode.
-    if(netgame)
+    if (netgame)
         return;
 
     // STRIFE-TODO: checks if snd_SfxDevice == 83
     // This is probably turning off voice if using PC speaker...
 
     // user has disabled voices?
-    if(disable_voices)
+    if (disable_voices)
         return;
 
     // have a voice playing already? stop it.
-    if(i_voicehandle >= 0)
+    if (i_voicehandle >= 0)
         S_StopChannel(i_voicehandle);
 
     // Vanilla STRIFE appears to have stopped any current voice without
-    // starting a new one if NULL was passed in here, though I cannot 
-    // find an explicit check for NULL in the assembly. Either way, it 
+    // starting a new one if NULL was passed in here, though I cannot
+    // find an explicit check for NULL in the assembly. Either way, it
     // didn't crash, so do a check now:
-    if(lumpname == NULL)
+    if (lumpname == NULL)
         return;
 
     // Because of constness problems...
     M_StringCopy(lumpnamedup, lumpname, sizeof(lumpnamedup));
 
-    if((lumpnum = W_CheckNumForName(lumpnamedup)) != -1)
+    if ((lumpnum = W_CheckNumForName(lumpnamedup)) != -1)
     {
         // haleyjd: Choco-specific: get a voice structure
         voice = S_getVoice(lumpnamedup, lumpnum);
@@ -619,8 +616,7 @@ void I_StartVoice(const char *lumpname)
         // get a channel for the voice
         i_voicehandle = S_GetChannel(NULL, &voice->sfx, true);
 
-        channels[i_voicehandle].handle 
-            = I_StartSound(&voice->sfx, i_voicehandle, snd_VoiceVolume, NORM_SEP, NORM_PITCH);
+        channels[i_voicehandle].handle = I_StartSound(&voice->sfx, i_voicehandle, snd_VoiceVolume, NORM_SEP, NORM_PITCH);
     }
 }
 
@@ -652,18 +648,18 @@ void S_ResumeSound()
 
 void S_UpdateSounds(mobj_t *listener)
 {
-    int                audible;
-    int                cnum;
-    int                volume;
-    int                sep;
-    sfxinfo_t*        sfx;
-    channel_t*        c;
+    int        audible;
+    int        cnum;
+    int        volume;
+    int        sep;
+    sfxinfo_t *sfx;
+    channel_t *c;
 
     I_UpdateSound();
 
-    for (cnum=0; cnum<snd_channels; cnum++)
+    for (cnum = 0; cnum < snd_channels; cnum++)
     {
-        c = &channels[cnum];
+        c   = &channels[cnum];
         sfx = c->sfxinfo;
 
         if (c->sfxinfo)
@@ -672,7 +668,7 @@ void S_UpdateSounds(mobj_t *listener)
             {
                 // initialize parameters
                 volume = snd_SfxVolume;
-                sep = NORM_SEP;
+                sep    = NORM_SEP;
 
                 if (sfx->link)
                 {
@@ -693,9 +689,9 @@ void S_UpdateSounds(mobj_t *listener)
                 if (c->origin && listener != c->origin)
                 {
                     audible = S_AdjustSoundParams(listener,
-                                                  c->origin,
-                                                  &volume,
-                                                  &sep);
+                        c->origin,
+                        &volume,
+                        &sep);
 
                     if (!audible)
                     {
@@ -722,8 +718,8 @@ void S_SetMusicVolume(int volume)
     if (volume < 0 || volume > 127)
     {
         I_Error("Attempt to set music volume at %d",
-                volume);
-    }    
+            volume);
+    }
 
     I_SetMusicVolume(volume);
 }
@@ -766,8 +762,8 @@ void S_StartMusic(int m_id)
 void S_ChangeMusic(int musicnum, int looping)
 {
     musicinfo_t *music = NULL;
-    char namebuf[9];
-    void *handle;
+    char         namebuf[9];
+    void        *handle;
 
     if (musicnum <= mus_None || musicnum >= NUMMUSIC)
     {
@@ -795,7 +791,7 @@ void S_ChangeMusic(int musicnum, int looping)
 
     music->data = cache_lump_num<void *>(music->lumpnum, PU_STATIC);
 
-    handle = I_RegisterSong(music->data, W_LumpLength(music->lumpnum));
+    handle        = I_RegisterSong(music->data, W_LumpLength(music->lumpnum));
     music->handle = handle;
     I_PlaySong(handle, looping);
 
@@ -820,7 +816,6 @@ void S_StopMusic()
         I_UnRegisterSong(mus_playing->handle);
         W_ReleaseLumpNum(mus_playing->lumpnum);
         mus_playing->data = NULL;
-        mus_playing = NULL;
+        mus_playing       = NULL;
     }
 }
-

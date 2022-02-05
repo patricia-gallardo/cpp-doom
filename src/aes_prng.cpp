@@ -2393,7 +2393,7 @@ static void AES_Encrypt(aes_context_t *ctx, uint8_t *out,
     const uint8_t *in)
 {
     const uint32_t *src = (const uint32_t *)in;
-    uint32_t *      dst = (uint32_t *)out;
+    uint32_t       *dst = (uint32_t *)out;
     uint32_t        b0[4], b1[4];
     const uint32_t *kp      = ctx->key_enc + 4;
     const int       key_len = ctx->key_length;

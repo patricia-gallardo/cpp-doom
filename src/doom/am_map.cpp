@@ -143,8 +143,7 @@ using islope_t = struct
     fixed_t slp, islp;
 };
 
-using keycolor_t = enum
-{
+using keycolor_t = enum {
     no_key,
     red_key,
     yellow_key,
@@ -224,8 +223,8 @@ static int grid     = 0;
 static int leveljuststarted = 1; // kluge until AM_LevelInit() is called
 
 boolean automapactive = false;
-//static int 	finit_width = SCREENWIDTH;
-//static int 	finit_height = SCREENHEIGHT - (ST_HEIGHT << crispy->hires);
+// static int 	finit_width = SCREENWIDTH;
+// static int 	finit_height = SCREENHEIGHT - (ST_HEIGHT << crispy->hires);
 
 // location of window on screen
 static int f_x;
@@ -237,7 +236,7 @@ static int f_h;
 
 static int lightlev;     // used for funky strobing effect
 #define fb I_VideoBuffer // [crispy] simplify
-//static pixel_t*	fb; 			// pseudo-frame buffer
+// static pixel_t*	fb; 			// pseudo-frame buffer
 static int amclock;
 
 static mpoint_t m_paninc;     // how far the window pans each tic (map coords)
@@ -305,7 +304,7 @@ static angle_t  mapangle;
 // that it can be used with the brain-dead drawing stuff.
 
 void AM_getIslope(mline_t *ml,
-    islope_t *             is)
+    islope_t              *is)
 {
     int dx, dy;
 
@@ -952,7 +951,7 @@ void AM_doFollowPlayer()
 void AM_updateLightLev()
 {
     static int nexttic = 0;
-    //static int litelevels[] = { 0, 3, 5, 6, 6, 7, 7, 7 };
+    // static int litelevels[] = { 0, 3, 5, 6, 6, 7, 7, 7 };
     static int litelevels[]  = { 0, 4, 7, 10, 12, 14, 15, 15 };
     static int litelevelscnt = 0;
 
@@ -1022,7 +1021,7 @@ void AM_clearFB(int color)
 //
 boolean
     AM_clipMline(mline_t *ml,
-        fline_t *         fl)
+        fline_t          *fl)
 {
     enum
     {
@@ -1481,7 +1480,7 @@ void AM_drawWalls()
 // Used to rotate player arrow line character.
 //
 void AM_rotate(int64_t *x,
-    int64_t *           y,
+    int64_t            *y,
     angle_t             a)
 {
     int64_t tmpx;
@@ -1572,7 +1571,7 @@ void AM_drawLineCharacter(mline_t *lineguy,
 void AM_drawPlayers()
 {
     int        i;
-    player_t * p;
+    player_t  *p;
     static int their_colors[] = { GREENS, GRAYS, BROWNS, REDS };
     int        their_color    = -1;
     int        color;
@@ -1628,7 +1627,7 @@ void AM_drawThings(int colors,
     int                colorrange)
 {
     int        i;
-    mobj_t *   t;
+    mobj_t    *t;
     keycolor_t key;
     mpoint_t   pt;
 
@@ -1678,39 +1677,39 @@ void AM_drawThings(int colors,
                 {
                     AM_drawLineCharacter(cross_mark, arrlen(cross_mark),
                         16 << FRACBITS, t->angle,
-                        (key == red_key) ? REDS :
-                                           (key == yellow_key) ? YELLOWS :
-                                                                 (key == blue_key) ? BLUES :
-                                                                                     colors + lightlev,
+                        (key == red_key)    ? REDS :
+                        (key == yellow_key) ? YELLOWS :
+                        (key == blue_key)   ? BLUES :
+                                              colors + lightlev,
                         pt.x, pt.y);
                 }
                 else
                     // [crispy] draw blood splats and puffs as small squares
                     if (t->type == MT_BLOOD || t->type == MT_PUFF)
-                {
-                    AM_drawLineCharacter(square_mark, arrlen(square_mark),
-                        t->radius >> 2, t->angle,
-                        (t->type == MT_BLOOD) ? REDS : GRAYS,
-                        pt.x, pt.y);
-                }
-                else
-                {
-                    AM_drawLineCharacter(thintriangle_guy, arrlen(thintriangle_guy),
-                        // [crispy] triangle size represents actual thing size
-                        t->radius, t->angle,
-                        // [crispy] show countable kills in red ...
-                        ((t->flags & (MF_COUNTKILL | MF_CORPSE)) == MF_COUNTKILL) ? REDS :
-                                                                                    // [crispy] ... show Lost Souls and missiles in orange ...
-                            (t->flags & (MF_FLOAT | MF_MISSILE)) ? 216 :
-                                                                   // [crispy] ... show other shootable items in dark gold ...
+                    {
+                        AM_drawLineCharacter(square_mark, arrlen(square_mark),
+                            t->radius >> 2, t->angle,
+                            (t->type == MT_BLOOD) ? REDS : GRAYS,
+                            pt.x, pt.y);
+                    }
+                    else
+                    {
+                        AM_drawLineCharacter(thintriangle_guy, arrlen(thintriangle_guy),
+                            // [crispy] triangle size represents actual thing size
+                            t->radius, t->angle,
+                            // [crispy] show countable kills in red ...
+                            ((t->flags & (MF_COUNTKILL | MF_CORPSE)) == MF_COUNTKILL) ? REDS :
+                                                                                        // [crispy] ... show Lost Souls and missiles in orange ...
+                                (t->flags & (MF_FLOAT | MF_MISSILE)) ? 216 :
+                                                                       // [crispy] ... show other shootable items in dark gold ...
                                 (t->flags & MF_SHOOTABLE) ? 164 :
                                                             // [crispy] ... corpses in gray ...
-                                    (t->flags & MF_CORPSE) ? GRAYS :
-                                                             // [crispy] ... and countable items in yellow
-                                        (t->flags & MF_COUNTITEM) ? YELLOWS :
-                                                                    colors + lightlev,
-                        pt.x, pt.y);
-                }
+                                (t->flags & MF_CORPSE) ? GRAYS :
+                                                         // [crispy] ... and countable items in yellow
+                                (t->flags & MF_COUNTITEM) ? YELLOWS :
+                                                            colors + lightlev,
+                            pt.x, pt.y);
+                    }
             }
             else
             {

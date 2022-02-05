@@ -17,7 +17,6 @@
 //
 
 
-
 #include "deh_main.hpp"
 #include "doomdef.hpp"
 
@@ -36,16 +35,14 @@
 
 
 // in AM_map.c
-extern boolean		automapactive; 
-
-
+extern boolean automapactive;
 
 
 //
 // Hack display negative frags.
 //  Loads and store the stminus lump.
 //
-patch_t*		sttminus;
+patch_t *sttminus;
 
 void STlib_init()
 {
@@ -54,29 +51,27 @@ void STlib_init()
 }
 
 
-// 
+//
 // STlib_initNum
 //
 // haleyjd 09/01/10: [STRIFE]
 // * Rogue removed the "on" member of st_number_t.
-void
-STlib_initNum
-( st_number_t*		n,
-  int			x,
-  int			y,
-  patch_t**		pl,
-  int*			num,
-  int			width )
+void STlib_initNum(st_number_t *n,
+    int                         x,
+    int                         y,
+    patch_t                   **pl,
+    int                        *num,
+    int                         width)
 {
-    n->x	= x;
-    n->y	= y;
-    n->width	= width;
-    n->num	= num;
-    n->p	= pl;
+    n->x     = x;
+    n->y     = y;
+    n->width = width;
+    n->num   = num;
+    n->p     = pl;
 }
 
 
-// 
+//
 // STlib_drawNum
 //
 // A fairly efficient way to draw a number
@@ -86,17 +81,15 @@ STlib_initNum
 // haleyjd 09/01/10: [STRIFE]
 // * Rogue removed the "refresh" parameter and caching code
 //
-void
-STlib_drawNum
-( st_number_t*  n)
+void STlib_drawNum(st_number_t *n)
 {
-    int         numdigits = n->width;
-    int         num = *n->num;
+    int numdigits = n->width;
+    int num       = *n->num;
 
-    int         w = SHORT(n->p[0]->width) + 1; // [STRIFE] +1
-    int         x = n->x;
+    int w = SHORT(n->p[0]->width) + 1; // [STRIFE] +1
+    int x = n->x;
 
-    int         neg;
+    int neg;
 
     neg = num < 0;
 
@@ -128,13 +121,13 @@ STlib_drawNum
 
     // in the special case of 0, you draw 0
     if (!num)
-        V_DrawPatch(x - w, n->y, n->p[ 0 ]);
+        V_DrawPatch(x - w, n->y, n->p[0]);
 
     // draw the new number
     while (num && numdigits--)
     {
         x -= w;
-        V_DrawPatch(x, n->y, n->p[ num % 10 ]);
+        V_DrawPatch(x, n->y, n->p[num % 10]);
         num /= 10;
     }
 
@@ -144,21 +137,19 @@ STlib_drawNum
 }
 
 
-// 
+//
 // STlib_drawNumPositive
 //
 // haleyjd 09/01/10: [STRIFE] New function.
 // * Mostly the same as STlib_drawNum, except doesn't draw negatives.
 //
-void
-STlib_drawNumPositive
-( st_number_t*  n)
+void STlib_drawNumPositive(st_number_t *n)
 {
-    int         numdigits = n->width;
-    int         num = *n->num;
+    int numdigits = n->width;
+    int num       = *n->num;
 
-    int         w = SHORT(n->p[0]->width) + 1; // [STRIFE] +1
-    int         x = n->x;
+    int w = SHORT(n->p[0]->width) + 1; // [STRIFE] +1
+    int x = n->x;
 
     // Don't draw negative values.
     if (num < 0)
@@ -172,13 +163,13 @@ STlib_drawNumPositive
 
     // in the special case of 0, you draw 0
     if (!num)
-        V_DrawPatch(x - w, n->y, n->p[ 0 ]);
+        V_DrawPatch(x - w, n->y, n->p[0]);
 
     // draw the new number
     while (num && numdigits--)
     {
         x -= w;
-        V_DrawPatch(x, n->y, n->p[ num % 10 ]);
+        V_DrawPatch(x, n->y, n->p[num % 10]);
         num /= 10;
     }
 }
@@ -219,8 +210,8 @@ STlib_updatePercent
   int			refresh )
 {
     if (refresh && *per->n.on)
-	V_DrawPatch(per->n.x, per->n.y, per->p);
-    
+        V_DrawPatch(per->n.x, per->n.y, per->p);
+
     STlib_updateNum(&per->n, refresh);
 }
 
@@ -256,23 +247,23 @@ STlib_updateMultIcon
     int			y;
 
     if (*mi->on
-	&& (mi->oldinum != *mi->inum || refresh)
-	&& (*mi->inum!=-1))
+        && (mi->oldinum != *mi->inum || refresh)
+        && (*mi->inum!=-1))
     {
-	if (mi->oldinum != -1)
-	{
-	    x = mi->x - SHORT(mi->p[mi->oldinum]->leftoffset);
-	    y = mi->y - SHORT(mi->p[mi->oldinum]->topoffset);
-	    w = SHORT(mi->p[mi->oldinum]->width);
-	    h = SHORT(mi->p[mi->oldinum]->height);
+        if (mi->oldinum != -1)
+        {
+            x = mi->x - SHORT(mi->p[mi->oldinum]->leftoffset);
+            y = mi->y - SHORT(mi->p[mi->oldinum]->topoffset);
+            w = SHORT(mi->p[mi->oldinum]->width);
+            h = SHORT(mi->p[mi->oldinum]->height);
 
-	    if (y - ST_Y < 0)
-		I_Error("updateMultIcon: y - ST_Y < 0");
+            if (y - ST_Y < 0)
+                I_Error("updateMultIcon: y - ST_Y < 0");
 
-	    V_CopyRect(x, y-ST_Y, st_backing_screen, w, h, x, y);
-	}
-	V_DrawPatch(mi->x, mi->y, mi->p[*mi->inum]);
-	mi->oldinum = *mi->inum;
+            V_CopyRect(x, y-ST_Y, st_backing_screen, w, h, x, y);
+        }
+        V_DrawPatch(mi->x, mi->y, mi->p[*mi->inum]);
+        mi->oldinum = *mi->inum;
     }
 }
 
@@ -310,22 +301,21 @@ STlib_updateBinIcon
     if (*bi->on
      && (bi->oldval != *bi->val || refresh))
     {
-	x = bi->x - SHORT(bi->p->leftoffset);
-	y = bi->y - SHORT(bi->p->topoffset);
-	w = SHORT(bi->p->width);
-	h = SHORT(bi->p->height);
+        x = bi->x - SHORT(bi->p->leftoffset);
+        y = bi->y - SHORT(bi->p->topoffset);
+        w = SHORT(bi->p->width);
+        h = SHORT(bi->p->height);
 
-	if (y - ST_Y < 0)
-	    I_Error("updateBinIcon: y - ST_Y < 0");
+        if (y - ST_Y < 0)
+            I_Error("updateBinIcon: y - ST_Y < 0");
 
-	if (*bi->val)
-	    V_DrawPatch(bi->x, bi->y, bi->p);
-	else
-	    V_CopyRect(x, y-ST_Y, st_backing_screen, w, h, x, y);
+        if (*bi->val)
+            V_DrawPatch(bi->x, bi->y, bi->p);
+        else
+            V_CopyRect(x, y-ST_Y, st_backing_screen, w, h, x, y);
 
-	bi->oldval = *bi->val;
+        bi->oldval = *bi->val;
     }
 
 }
 */
-

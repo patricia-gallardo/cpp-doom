@@ -44,7 +44,7 @@ sector_t *GetSectorAtNullAddress();
 mapformat_t P_CheckMapFormat(int lumpnum)
 {
     mapformat_t format = mapformat_t::MFMT_DOOMBSP;
-    byte *      nodes  = NULL;
+    byte       *nodes  = NULL;
     int         b;
 
     if ((b = lumpnum + ML_BLOCKMAP + 1) < numlumps && !strncasecmp(lumpinfo[b]->name, "BEHAVIOR", 8))
@@ -94,10 +94,10 @@ void P_LoadSegs_DeePBSP(int lump)
 
     for (i = 0; i < numsegs; i++)
     {
-        seg_t *           li = segs + i;
+        seg_t            *li = segs + i;
         mapseg_deepbsp_t *ml = data + i;
         int               side, linedef;
-        line_t *          ldef;
+        line_t           *ldef;
 
         li->v1 = &vertexes[ml->v1];
         li->v2 = &vertexes[ml->v2];
@@ -192,7 +192,7 @@ void P_LoadNodes_DeePBSP(int lump)
 
     for (int i = 0; i < numnodes; i++)
     {
-        node_t *                 no = nodes + i;
+        node_t                  *no = nodes + i;
         const mapnode_deepbsp_t *mn = (const mapnode_deepbsp_t *)data + i;
         int                      j;
 
@@ -233,7 +233,7 @@ void P_LoadNodes_ZDBSP(int lump, boolean compressed)
     unsigned int numSubs, currSeg;
     unsigned int numSegs;
     unsigned int numNodes;
-    vertex_t *   newvertarray = NULL;
+    vertex_t    *newvertarray = NULL;
 
     auto *data = cache_lump_num<byte *>(lump, PU_LEVEL);
 
@@ -377,10 +377,10 @@ void P_LoadNodes_ZDBSP(int lump, boolean compressed)
 
     for (i = 0; i < numsegs; i++)
     {
-        line_t *        ldef;
+        line_t         *ldef;
         unsigned int    linedef;
         unsigned char   side;
-        seg_t *         li = segs + i;
+        seg_t          *li = segs + i;
         mapseg_zdbsp_t *ml = (mapseg_zdbsp_t *)data + i;
 
         li->v1 = &vertexes[ml->v1];
@@ -439,7 +439,7 @@ void P_LoadNodes_ZDBSP(int lump, boolean compressed)
     for (i = 0; i < numnodes; i++)
     {
         int              j, k;
-        node_t *         no = nodes + i;
+        node_t          *no = nodes + i;
         mapnode_zdbsp_t *mn = (mapnode_zdbsp_t *)data + i;
 
         no->x  = SHORT(mn->x) << FRACBITS;
@@ -505,8 +505,8 @@ void P_LoadLineDefs_Hexen(int lump)
 {
     int                 i;
     maplinedef_hexen_t *mld;
-    line_t *            ld;
-    vertex_t *          v1, *v2;
+    line_t             *ld;
+    vertex_t           *v1, *v2;
     int                 warn; // [crispy] warn about unknown linedef types
 
     numlines = W_LumpLength(lump) / sizeof(maplinedef_hexen_t);

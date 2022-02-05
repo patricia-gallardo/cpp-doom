@@ -24,17 +24,17 @@
 #include "txt_separator.hpp"
 #include "txt_window.hpp"
 
-#define HELP_KEY KEY_F1
+#define HELP_KEY   KEY_F1
 #define MAXWINDOWS 128
 
-static char *desktop_title;
+static char         *desktop_title;
 static txt_window_t *all_windows[MAXWINDOWS];
-static int num_windows = 0;
-static int main_loop_running = 0;
+static int           num_windows       = 0;
+static int           main_loop_running = 0;
 
 static TxtIdleCallback periodic_callback = NULL;
-static void *periodic_callback_data;
-static unsigned int periodic_callback_period;
+static void           *periodic_callback_data;
+static unsigned int    periodic_callback_period;
 
 void TXT_AddDesktopWindow(txt_window_t *win)
 {
@@ -61,7 +61,7 @@ void TXT_RemoveDesktopWindow(txt_window_t *win)
 
     TXT_SetWindowFocus(win, 0);
 
-    for (from=0, to=0; from<num_windows; ++from)
+    for (from = 0, to = 0; from < num_windows; ++from)
     {
         if (all_windows[from] != win)
         {
@@ -98,7 +98,7 @@ int TXT_RaiseWindow(txt_window_t *window)
     {
         if (all_windows[i] == window)
         {
-            all_windows[i] = all_windows[i + 1];
+            all_windows[i]     = all_windows[i + 1];
             all_windows[i + 1] = window;
 
             if (i == num_windows - 2)
@@ -125,7 +125,7 @@ int TXT_LowerWindow(txt_window_t *window)
         if (all_windows[i + 1] == window)
         {
             all_windows[i + 1] = all_windows[i];
-            all_windows[i] = window;
+            all_windows[i]     = window;
 
             if (i == num_windows - 2)
             {
@@ -144,17 +144,17 @@ int TXT_LowerWindow(txt_window_t *window)
 
 static void DrawDesktopBackground(const char *title)
 {
-    int i;
+    int            i;
     unsigned char *screendata;
     unsigned char *p;
 
     screendata = TXT_GetScreenData();
-    
+
     // Fill the screen with gradient characters
 
     p = screendata;
-    
-    for (i=0; i<TXT_SCREEN_W * TXT_SCREEN_H; ++i)
+
+    for (i = 0; i < TXT_SCREEN_W * TXT_SCREEN_H; ++i)
     {
         *p++ = 0xb1;
         *p++ = TXT_COLOR_GREY | (TXT_COLOR_BLUE << 4);
@@ -164,7 +164,7 @@ static void DrawDesktopBackground(const char *title)
 
     p = screendata;
 
-    for (i=0; i<TXT_SCREEN_W; ++i)
+    for (i = 0; i < TXT_SCREEN_W; ++i)
     {
         *p++ = ' ';
         *p++ = TXT_COLOR_BLACK | (TXT_COLOR_GREY << 4);
@@ -172,7 +172,7 @@ static void DrawDesktopBackground(const char *title)
 
     p = screendata + (TXT_SCREEN_H - 1) * TXT_SCREEN_W * 2;
 
-    for (i=0; i<TXT_SCREEN_W; ++i)
+    for (i = 0; i < TXT_SCREEN_W; ++i)
     {
         *p++ = ' ';
         *p++ = TXT_COLOR_BLACK | (TXT_COLOR_GREY << 4);
@@ -190,9 +190,9 @@ static void DrawDesktopBackground(const char *title)
 
 static void DrawHelpIndicator()
 {
-    char keybuf[10];
+    char        keybuf[10];
     txt_color_t fgcolor;
-    int x, y;
+    int         x, y;
 
     TXT_GetKeyDescription(HELP_KEY, keybuf, sizeof(keybuf));
 
@@ -229,8 +229,8 @@ void TXT_SetDesktopTitle(const char *title)
 void TXT_DrawDesktop()
 {
     txt_window_t *active_window;
-    const char *title;
-    int i;
+    const char   *title;
+    int           i;
 
     TXT_InitClipArea();
 
@@ -247,7 +247,7 @@ void TXT_DrawDesktop()
         DrawHelpIndicator();
     }
 
-    for (i=0; i<num_windows; ++i)
+    for (i = 0; i < num_windows; ++i)
     {
         TXT_DrawWindow(all_windows[i]);
     }
@@ -260,40 +260,38 @@ void TXT_DrawDesktop()
 static void DesktopInputEvent(int c)
 {
     txt_window_t *active_window;
-    int x, y;
+    int           x, y;
 
     switch (c)
     {
-        case TXT_MOUSE_LEFT:
-            TXT_GetMousePosition(&x, &y);
+    case TXT_MOUSE_LEFT:
+        TXT_GetMousePosition(&x, &y);
 
-            // Clicking the top-right of the screen is equivalent
-            // to pressing the help key.
-            if (y == 0 && x >= TXT_SCREEN_W - 9)
-            {
-                DesktopInputEvent(HELP_KEY);
-            }
-            break;
+        // Clicking the top-right of the screen is equivalent
+        // to pressing the help key.
+        if (y == 0 && x >= TXT_SCREEN_W - 9)
+        {
+            DesktopInputEvent(HELP_KEY);
+        }
+        break;
 
-        case HELP_KEY:
-            active_window = TXT_GetActiveWindow();
-            if (active_window != NULL)
-            {
-                TXT_OpenWindowHelpURL(active_window);
-            }
-            break;
+    case HELP_KEY:
+        active_window = TXT_GetActiveWindow();
+        if (active_window != NULL)
+        {
+            TXT_OpenWindowHelpURL(active_window);
+        }
+        break;
 
-        default:
-            break;
+    default:
+        break;
     }
-
-
 }
 
 void TXT_DispatchEvents()
 {
     txt_window_t *active_window;
-    int c;
+    int           c;
 
     while ((c = TXT_GetChar()) > 0)
     {
@@ -314,18 +312,18 @@ void TXT_ExitMainLoop()
 void TXT_DrawASCIITable()
 {
     unsigned char *screendata;
-    char buf[10];
-    int x, y;
-    int n;
+    char           buf[10];
+    int            x, y;
+    int            n;
 
     screendata = TXT_GetScreenData();
 
     TXT_FGColor(TXT_COLOR_BRIGHT_WHITE);
     TXT_BGColor(TXT_COLOR_BLACK, 0);
 
-    for (y=0; y<16; ++y)
+    for (y = 0; y < 16; ++y)
     {
-        for (x=0; x<16; ++x)
+        for (x = 0; x < 16; ++x)
         {
             n = y * 16 + x;
 
@@ -343,11 +341,11 @@ void TXT_DrawASCIITable()
 }
 
 void TXT_SetPeriodicCallback(TxtIdleCallback callback,
-                             void *user_data,
-                             unsigned int period)
+    void                                    *user_data,
+    unsigned int                             period)
 {
-    periodic_callback = callback;
-    periodic_callback_data = user_data;
+    periodic_callback        = callback;
+    periodic_callback_data   = user_data;
     periodic_callback_period = period;
 }
 
@@ -368,7 +366,7 @@ void TXT_GUIMainLoop()
         }
 
         TXT_DrawDesktop();
-//        TXT_DrawASCIITable();
+        //        TXT_DrawASCIITable();
 
         if (periodic_callback == NULL)
         {
@@ -382,4 +380,3 @@ void TXT_GUIMainLoop()
         }
     }
 }
-

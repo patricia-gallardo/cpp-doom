@@ -15,7 +15,6 @@
 //
 
 
-
 // HEADER FILES ------------------------------------------------------------
 
 #include <cstdarg>
@@ -32,26 +31,26 @@
 
 
 // MACROS ------------------------------------------------------------------
-#define ST_MAX_NOTCHES		32
-#define ST_NOTCH_WIDTH		16
-#define ST_NOTCH_HEIGHT		23
-#define ST_PROGRESS_X		64      // Start of notches x screen pos.
-#define ST_PROGRESS_Y		441     // Start of notches y screen pos.
+#define ST_MAX_NOTCHES  32
+#define ST_NOTCH_WIDTH  16
+#define ST_NOTCH_HEIGHT 23
+#define ST_PROGRESS_X   64  // Start of notches x screen pos.
+#define ST_PROGRESS_Y   441 // Start of notches y screen pos.
 
-#define ST_NETPROGRESS_X		288
-#define ST_NETPROGRESS_Y		32
-#define ST_NETNOTCH_WIDTH		8
-#define ST_NETNOTCH_HEIGHT		16
-#define ST_MAX_NETNOTCHES		8
+#define ST_NETPROGRESS_X   288
+#define ST_NETPROGRESS_Y   32
+#define ST_NETNOTCH_WIDTH  8
+#define ST_NETNOTCH_HEIGHT 16
+#define ST_MAX_NETNOTCHES  8
 
 byte *ST_LoadScreen();
-void ST_UpdateNotches(int notchPosition);
-void ST_UpdateNetNotches(int notchPosition);
+void  ST_UpdateNotches(int notchPosition);
+void  ST_UpdateNetNotches(int notchPosition);
 
 // PRIVATE DATA DEFINITIONS ------------------------------------------------
-static const byte *bitmap = NULL;
-int graphical_startup = 0;
-static boolean using_graphical_startup;
+static const byte *bitmap            = NULL;
+int                graphical_startup = 0;
+static boolean     using_graphical_startup;
 
 static const byte notchTable[] = {
     // plane 0
@@ -102,7 +101,6 @@ static const byte netnotchTable[] = {
 // CODE --------------------------------------------------------------------
 
 
-
 //--------------------------------------------------------------------------
 //
 // Startup Screen Functions
@@ -120,7 +118,7 @@ void ST_Init()
 {
     byte *pal;
     byte *buffer;
-    
+
     using_graphical_startup = false;
 
     if (graphical_startup && !debugmode && !testcontrols)
@@ -141,7 +139,7 @@ void ST_Init()
 
             // Load graphic
             buffer = ST_LoadScreen();
-            pal = buffer;
+            pal    = buffer;
             bitmap = buffer + 16 * 3;
 
             I_SlamHR(bitmap);
@@ -211,7 +209,7 @@ void ST_Progress()
         {
             ST_UpdateNotches(notchPosition);
             S_StartSound(NULL, SFX_STARTUP_TICK);
-            //I_Sleep(1000);
+            // I_Sleep(1000);
             notchPosition++;
         }
     }
@@ -289,7 +287,6 @@ void ST_RealMessage(const char *message, ...)
 }
 
 
-
 //==========================================================================
 //
 // ST_LoadScreen - loads startup graphic
@@ -299,13 +296,12 @@ void ST_RealMessage(const char *message, ...)
 
 byte *ST_LoadScreen()
 {
-    int length, lump;
+    int   length, lump;
     byte *buffer;
 
-    lump = W_GetNumForName("STARTUP");
+    lump   = W_GetNumForName("STARTUP");
     length = W_LumpLength(lump);
     buffer = zmalloc<byte *>(length, PU_STATIC, NULL);
     W_ReadLump(lump, buffer);
     return (buffer);
 }
-

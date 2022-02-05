@@ -44,8 +44,7 @@
 
 extern void D_ReceiveTic(ticcmd_t *ticcmds, boolean *playeringame);
 
-using net_clientstate_t = enum
-{
+using net_clientstate_t = enum {
     // waiting for the game to launch
 
     CLIENT_STATE_WAITING_LAUNCH,
@@ -75,7 +74,6 @@ using net_server_recv_t = struct
     // Tic data from server
 
     net_full_ticcmd_t cmd;
-
 };
 
 // Type of structure used in the send window
@@ -103,8 +101,8 @@ extern fixed_t offsetms;
 
 static net_connection_t  client_connection;
 static net_clientstate_t client_state;
-static net_addr_t *      server_addr;
-static net_context_t *   client_context;
+static net_addr_t       *server_addr;
+static net_context_t    *client_context;
 
 // game settings, as received from the server when the game started
 
@@ -431,7 +429,7 @@ void NET_CL_SendTiccmd(ticcmd_t *ticcmd, int maketic)
 static void NET_CL_ParseSYN(net_packet_t *packet)
 {
     net_protocol_t protocol;
-    char *         server_version;
+    char          *server_version;
 
     NET_Log("client: processing SYN response");
 
@@ -616,7 +614,7 @@ static void NET_CL_SendResendRequest(int start, int end)
     unsigned int  nowtime;
     int           i;
 
-    //printf("CL: Send resend %i-%i\n", start, end);
+    // printf("CL: Send resend %i-%i\n", start, end);
 
     packet = NET_NewPacket(64);
     NET_WriteInt16(packet, NET_PACKET_TYPE_GAMEDATA_RESEND);
@@ -808,7 +806,7 @@ static void NET_CL_ParseGameData(net_packet_t *packet)
     // all tics before the first tic in this packet?  If so, send a
     // resend request.
 
-    //printf("CL: %p: %i\n", client, seq);
+    // printf("CL: %p: %i\n", client, seq);
 
     resend_end = seq - recvwindow_start;
 
@@ -880,7 +878,7 @@ static void NET_CL_ParseResendRequest(net_packet_t *packet)
 
     end = start + num_tics - 1;
 
-    //printf("requested resend %i-%i .. ", start, end);
+    // printf("requested resend %i-%i .. ", start, end);
     NET_Log("client: resend request: start=%d, num_tics=%d", start, num_tics);
 
     // Check we have the tics being requested.  If not, reduce the
@@ -994,7 +992,7 @@ static void NET_CL_ParsePacket(net_packet_t *packet)
 
 void NET_CL_Run()
 {
-    net_addr_t *  addr;
+    net_addr_t   *addr;
     net_packet_t *packet;
 
     if (!net_client_connected)

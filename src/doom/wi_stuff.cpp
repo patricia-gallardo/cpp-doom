@@ -67,12 +67,12 @@
 
 
 // in tics
-//U #define PAUSELEN		(TICRATE*2)
-//U #define SCORESTEP		100
-//U #define ANIMPERIOD		32
+// U #define PAUSELEN		(TICRATE*2)
+// U #define SCORESTEP		100
+// U #define ANIMPERIOD		32
 // pixel distance from "(YOU)" to "PLAYER N"
-//U #define STARDIST		10
-//U #define WK 1
+// U #define STARDIST		10
+// U #define WK 1
 
 
 // GLOBAL LOCATIONS
@@ -108,8 +108,7 @@
 #define DM_VICTIMSY 50
 
 
-using animenum_t = enum
-{
+using animenum_t = enum {
     ANIM_ALWAYS,
     ANIM_RANDOM,
     ANIM_LEVEL
@@ -120,7 +119,6 @@ using point_t = struct
 {
     int x;
     int y;
-
 };
 
 
@@ -167,7 +165,6 @@ using anim_t = struct
 
     // used by RANDOM and LEVEL when animating
     int state;
-
 };
 
 
@@ -480,7 +477,7 @@ void WI_drawEL()
 }
 
 void WI_drawOnLnode(int n,
-    patch_t *           c[])
+    patch_t            *c[])
 {
 
     int     i;
@@ -774,7 +771,7 @@ void WI_updateNoState()
         // change gamestate, so WI_Drawer is still going to get
         // run until that happens.  If we do that after WI_End
         // (which unloads all the graphics), we're in trouble.
-        //WI_End();
+        // WI_End();
         G_WorldDone();
     }
 }

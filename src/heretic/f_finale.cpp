@@ -25,11 +25,11 @@
 #include "v_video.hpp"
 #include "lump.hpp"
 
-static int finalestage;                // 0 = text, 1 = art screen
+static int finalestage; // 0 = text, 1 = art screen
 static int finalecount;
 
-#define TEXTSPEED       3
-#define TEXTWAIT        250
+#define TEXTSPEED 3
+#define TEXTWAIT  250
 
 static const char *finaletext;
 static const char *finaleflat;
@@ -51,55 +51,54 @@ extern void D_StartTitle();
 
 void F_StartFinale()
 {
-    gameaction = ga_nothing;
-    gamestate = GS_FINALE;
-    viewactive = false;
-    automapactive = false;
+    gameaction                         = ga_nothing;
+    gamestate                          = GS_FINALE;
+    viewactive                         = false;
+    automapactive                      = false;
     players[consoleplayer].messageTics = 1;
-    players[consoleplayer].message = NULL;
+    players[consoleplayer].message     = NULL;
 
     switch (gameepisode)
     {
-        case 1:
-            finaleflat = DEH_String("FLOOR25");
-            finaletext = DEH_String(E1TEXT);
-            break;
-        case 2:
-            finaleflat = DEH_String("FLATHUH1");
-            finaletext = DEH_String(E2TEXT);
-            break;
-        case 3:
-            finaleflat = DEH_String("FLTWAWA2");
-            finaletext = DEH_String(E3TEXT);
-            break;
-        case 4:
-            finaleflat = DEH_String("FLOOR28");
-            finaletext = DEH_String(E4TEXT);
-            break;
-        case 5:
-            finaleflat = DEH_String("FLOOR08");
-            finaletext = DEH_String(E5TEXT);
-            break;
+    case 1:
+        finaleflat = DEH_String("FLOOR25");
+        finaletext = DEH_String(E1TEXT);
+        break;
+    case 2:
+        finaleflat = DEH_String("FLATHUH1");
+        finaletext = DEH_String(E2TEXT);
+        break;
+    case 3:
+        finaleflat = DEH_String("FLTWAWA2");
+        finaletext = DEH_String(E3TEXT);
+        break;
+    case 4:
+        finaleflat = DEH_String("FLOOR28");
+        finaletext = DEH_String(E4TEXT);
+        break;
+    case 5:
+        finaleflat = DEH_String("FLOOR08");
+        finaletext = DEH_String(E5TEXT);
+        break;
     }
 
-    finalestage = 0;
-    finalecount = 0;
+    finalestage   = 0;
+    finalecount   = 0;
     FontABaseLump = W_GetNumForName(DEH_String("FONTA_S")) + 1;
 
-//      S_ChangeMusic(mus_victor, true);
+    //      S_ChangeMusic(mus_victor, true);
     S_StartSong(mus_cptd, true);
 }
 
 
-
-boolean F_Responder(event_t * event)
+boolean F_Responder(event_t *event)
 {
     if (event->type != ev_keydown)
     {
         return false;
     }
     if (finalestage == 1 && gameepisode == 2)
-    {                           // we're showing the water pic, make any key kick to demo mode
+    { // we're showing the water pic, make any key kick to demo mode
         finalestage++;
         /*
         memset((byte *) 0xa0000, 0, SCREENWIDTH * SCREENHEIGHT);
@@ -132,11 +131,11 @@ void F_Ticker()
             finalestage = 1;
         }
 
-//              wipegamestate = -1;             // force a wipe
-/*
-		if (gameepisode == 3)
-			S_StartMusic (mus_bunny);
-*/
+        //              wipegamestate = -1;             // force a wipe
+        /*
+                        if (gameepisode == 3)
+                                S_StartMusic (mus_bunny);
+        */
     }
 }
 
@@ -150,22 +149,22 @@ void F_Ticker()
 */
 
 //#include "hu_stuff.hpp"
-//extern        patch_t *hu_font[HU_FONTSIZE];
+// extern        patch_t *hu_font[HU_FONTSIZE];
 
 void F_TextWrite()
 {
-    byte *src, *dest;
-    int x, y;
-    int count;
+    byte       *src, *dest;
+    int         x, y;
+    int         count;
     const char *ch;
-    int c;
-    int cx, cy;
-    patch_t *w;
+    int         c;
+    int         cx, cy;
+    patch_t    *w;
 
-//
-// erase the entire screen to a tiled background
-//
-    src = cache_lump_name<byte *>(finaleflat, PU_CACHE);
+    //
+    // erase the entire screen to a tiled background
+    //
+    src  = cache_lump_name<byte *>(finaleflat, PU_CACHE);
     dest = I_VideoBuffer;
     for (y = 0; y < SCREENHEIGHT; y++)
     {
@@ -181,11 +180,11 @@ void F_TextWrite()
         }
     }
 
-//      V_MarkRect (0, 0, SCREENWIDTH, SCREENHEIGHT);
+    //      V_MarkRect (0, 0, SCREENWIDTH, SCREENHEIGHT);
 
-//
-// draw some of the text onto the screen
-//
+    //
+    // draw some of the text onto the screen
+    //
     cx = 20;
     cy = 5;
     ch = finaletext;
@@ -218,33 +217,32 @@ void F_TextWrite()
         V_DrawPatch(cx, cy, w);
         cx += SHORT(w->width);
     }
-
 }
 
 
-void F_DrawPatchCol(int x, patch_t * patch, int col)
+void F_DrawPatchCol(int x, patch_t *patch, int col)
 {
     column_t *column;
-    byte *source, *dest, *desttop;
-    int count;
+    byte     *source, *dest, *desttop;
+    int       count;
 
-    column = (column_t *) ((byte *) patch + LONG(patch->columnofs[col]));
+    column  = (column_t *)((byte *)patch + LONG(patch->columnofs[col]));
     desttop = I_VideoBuffer + x;
 
-// step through the posts in a column
+    // step through the posts in a column
 
     while (column->topdelta != 0xff)
     {
-        source = (byte *) column + 3;
-        dest = desttop + column->topdelta * SCREENWIDTH;
-        count = column->length;
+        source = (byte *)column + 3;
+        dest   = desttop + column->topdelta * SCREENWIDTH;
+        count  = column->length;
 
         while (count--)
         {
             *dest = *source++;
             dest += SCREENWIDTH;
         }
-        column = (column_t *) ((byte *) column + column->length + 4);
+        column = (column_t *)((byte *)column + column->length + 4);
     }
 }
 
@@ -258,8 +256,8 @@ void F_DrawPatchCol(int x, patch_t * patch, int col)
 
 void F_DemonScroll()
 {
-    byte *p1, *p2;
-    static int yval = 0;
+    byte      *p1, *p2;
+    static int yval       = 0;
     static int nextscroll = 0;
 
     if (finalecount < nextscroll)
@@ -282,7 +280,7 @@ void F_DemonScroll()
         nextscroll = finalecount + 3;
     }
     else
-    {                           //else, we'll just sit here and wait, for now
+    { // else, we'll just sit here and wait, for now
         V_CopyScaledBuffer(I_VideoBuffer, p2, ORIGWIDTH * ORIGHEIGHT);
     }
 }
@@ -299,8 +297,8 @@ void F_DrawUnderwater()
 {
     static boolean underwawa = false;
     extern boolean askforquit;
-    const char *lumpname;
-    byte *palette;
+    const char    *lumpname;
+    byte          *palette;
 
     // The underwater screen has its own palette, which is rather annoying.
     // The palette doesn't correspond to the normal palette. Because of
@@ -309,33 +307,33 @@ void F_DrawUnderwater()
 
     switch (finalestage)
     {
-        case 1:
-            if (!underwawa)
-            {
-                underwawa = true;
-                V_DrawFilledBox(0, 0, SCREENWIDTH, SCREENHEIGHT, 0);
-                lumpname = DEH_String("E2PAL");
-                palette = cache_lump_name<byte *>(lumpname, PU_STATIC);
-                I_SetPalette(palette);
-                W_ReleaseLumpName(lumpname);
-                V_DrawRawScreen(cache_lump_name<pixel_t *>(DEH_String("E2END"), PU_CACHE));
-            }
-            paused = false;
-            MenuActive = false;
-            askforquit = false;
+    case 1:
+        if (!underwawa)
+        {
+            underwawa = true;
+            V_DrawFilledBox(0, 0, SCREENWIDTH, SCREENHEIGHT, 0);
+            lumpname = DEH_String("E2PAL");
+            palette  = cache_lump_name<byte *>(lumpname, PU_STATIC);
+            I_SetPalette(palette);
+            W_ReleaseLumpName(lumpname);
+            V_DrawRawScreen(cache_lump_name<pixel_t *>(DEH_String("E2END"), PU_CACHE));
+        }
+        paused     = false;
+        MenuActive = false;
+        askforquit = false;
 
-            break;
-        case 2:
-            if (underwawa)
-            {
-                lumpname = DEH_String("PLAYPAL");
-                palette = cache_lump_name<byte *>(lumpname, PU_STATIC);
-                I_SetPalette(palette);
-                W_ReleaseLumpName(lumpname);
-                underwawa = false;
-            }
-            V_DrawRawScreen(cache_lump_name<pixel_t *>(DEH_String("TITLE"), PU_CACHE));
-            //D_StartTitle(); // go to intro/demo mode.
+        break;
+    case 2:
+        if (underwawa)
+        {
+            lumpname = DEH_String("PLAYPAL");
+            palette  = cache_lump_name<byte *>(lumpname, PU_STATIC);
+            I_SetPalette(palette);
+            W_ReleaseLumpName(lumpname);
+            underwawa = false;
+        }
+        V_DrawRawScreen(cache_lump_name<pixel_t *>(DEH_String("TITLE"), PU_CACHE));
+        // D_StartTitle(); // go to intro/demo mode.
     }
 }
 
@@ -418,26 +416,26 @@ void F_Drawer()
     {
         switch (gameepisode)
         {
-            case 1:
-                if (gamemode == shareware)
-                {
-                    V_DrawRawScreen(cache_lump_name<pixel_t *>("ORDER", PU_CACHE));
-                }
-                else
-                {
-                    V_DrawRawScreen(cache_lump_name<pixel_t *>("CREDIT", PU_CACHE));
-                }
-                break;
-            case 2:
-                F_DrawUnderwater();
-                break;
-            case 3:
-                F_DemonScroll();
-                break;
-            case 4:            // Just show credits screen for extended episodes
-            case 5:
+        case 1:
+            if (gamemode == shareware)
+            {
+                V_DrawRawScreen(cache_lump_name<pixel_t *>("ORDER", PU_CACHE));
+            }
+            else
+            {
                 V_DrawRawScreen(cache_lump_name<pixel_t *>("CREDIT", PU_CACHE));
-                break;
+            }
+            break;
+        case 2:
+            F_DrawUnderwater();
+            break;
+        case 3:
+            F_DemonScroll();
+            break;
+        case 4: // Just show credits screen for extended episodes
+        case 5:
+            V_DrawRawScreen(cache_lump_name<pixel_t *>("CREDIT", PU_CACHE));
+            break;
         }
     }
 }

@@ -34,7 +34,7 @@
 // WADFILE I/O related stuff.
 //
 
-using lumpinfo_t = struct lumpinfo_s;
+using lumpinfo_t  = struct lumpinfo_s;
 using lumpindex_t = int;
 
 struct lumpinfo_s {
@@ -42,7 +42,7 @@ struct lumpinfo_s {
     wad_file_t *wad_file;
     int         position;
     int         size;
-    void *      cache;
+    void       *cache;
 
     // Used for hash table lookups
     lumpindex_t next;

@@ -26,8 +26,8 @@
 
 #define KEY_INPUT_WIDTH 8
 
-static int KeyPressCallback(txt_window_t *window, int key, 
-                            TXT_UNCAST_ARG(key_input))
+static int KeyPressCallback(txt_window_t *window, int key,
+    TXT_UNCAST_ARG(key_input))
 {
     TXT_CAST_ARG(txt_key_input_t, key_input);
 
@@ -81,7 +81,7 @@ static void OpenPromptWindow(txt_key_input_t *key_input)
     // detected when input is grabbed.
 
     // SDL2-TODO: Needed?
-    //SDL_WM_GrabInput(SDL_GRAB_ON);
+    // SDL_WM_GrabInput(SDL_GRAB_ON);
     TXT_SignalConnect(window, "closed", ReleaseGrab, NULL);
 }
 
@@ -100,7 +100,7 @@ static void TXT_KeyInputDrawer(TXT_UNCAST_ARG(key_input))
 {
     TXT_CAST_ARG(txt_key_input_t, key_input);
     char buf[20];
-    int i;
+    int  i;
 
     if (*key_input->variable == 0)
     {
@@ -150,7 +150,7 @@ static int TXT_KeyInputKeyPress(TXT_UNCAST_ARG(key_input), int key)
 static void TXT_KeyInputMousePress(TXT_UNCAST_ARG(widget), int x, int y, int b)
 {
     TXT_CAST_ARG(txt_key_input_t, widget);
-            
+
     // Clicking is like pressing enter
 
     if (b == TXT_MOUSE_LEFT)
@@ -159,8 +159,7 @@ static void TXT_KeyInputMousePress(TXT_UNCAST_ARG(widget), int x, int y, int b)
     }
 }
 
-txt_widget_class_t txt_key_input_class =
-{
+txt_widget_class_t txt_key_input_class = {
     TXT_AlwaysSelectable,
     TXT_KeyInputSizeCalc,
     TXT_KeyInputDrawer,
@@ -181,4 +180,3 @@ txt_key_input_t *TXT_NewKeyInput(int *variable)
 
     return key_input;
 }
-

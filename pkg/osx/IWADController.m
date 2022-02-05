@@ -35,8 +35,7 @@ typedef enum
     NUM_IWAD_TYPES
 } IWAD;
 
-static NSString *IWADLabels[NUM_IWAD_TYPES] =
-{
+static NSString *IWADLabels[NUM_IWAD_TYPES] = {
     @"Doom",
     @"Doom II: Hell on Earth",
     @"Final Doom: TNT: Evilution",
@@ -50,8 +49,7 @@ static NSString *IWADLabels[NUM_IWAD_TYPES] =
     @"FreeDM",
 };
 
-static NSString *IWADFilenames[NUM_IWAD_TYPES + 1] =
-{
+static NSString *IWADFilenames[NUM_IWAD_TYPES + 1] = {
     @"doom.wad",
     @"doom2.wad",
     @"tnt.wad",
@@ -68,26 +66,26 @@ static NSString *IWADFilenames[NUM_IWAD_TYPES + 1] =
 
 @implementation IWADController
 
-- (void) getIWADList: (NSPathControl **) iwadList
+- (void)getIWADList:(NSPathControl **)iwadList
 {
-    iwadList[IWAD_DOOM1] = self->doom1;
-    iwadList[IWAD_DOOM2] = self->doom2;
-    iwadList[IWAD_TNT] = self->tnt;
-    iwadList[IWAD_PLUTONIA] = self->plutonia;
-    iwadList[IWAD_CHEX] = self->chex;
-    iwadList[IWAD_HERETIC] = self->heretic;
-    iwadList[IWAD_HEXEN] = self->hexen;
-    iwadList[IWAD_STRIFE] = self->strife;
+    iwadList[IWAD_DOOM1]     = self->doom1;
+    iwadList[IWAD_DOOM2]     = self->doom2;
+    iwadList[IWAD_TNT]       = self->tnt;
+    iwadList[IWAD_PLUTONIA]  = self->plutonia;
+    iwadList[IWAD_CHEX]      = self->chex;
+    iwadList[IWAD_HERETIC]   = self->heretic;
+    iwadList[IWAD_HEXEN]     = self->hexen;
+    iwadList[IWAD_STRIFE]    = self->strife;
     iwadList[IWAD_FREEDOOM1] = self->freedoom1;
     iwadList[IWAD_FREEDOOM2] = self->freedoom2;
-    iwadList[IWAD_FREEDM] = self->freedm;
+    iwadList[IWAD_FREEDM]    = self->freedm;
 }
 
-- (IWAD) getSelectedIWAD
+- (IWAD)getSelectedIWAD
 {
     unsigned int i;
 
-    for (i=0; i<NUM_IWAD_TYPES; ++i)
+    for (i = 0; i < NUM_IWAD_TYPES; ++i)
     {
         if ([self->iwadSelector titleOfSelectedItem] == IWADLabels[i])
         {
@@ -100,9 +98,9 @@ static NSString *IWADFilenames[NUM_IWAD_TYPES + 1] =
 
 // Get the location of the selected IWAD.
 
-- (NSString *) getIWADLocation
+- (NSString *)getIWADLocation
 {
-    IWAD selectedIWAD;
+    IWAD           selectedIWAD;
     NSPathControl *iwadList[NUM_IWAD_TYPES];
 
     selectedIWAD = [self getSelectedIWAD];
@@ -113,9 +111,9 @@ static NSString *IWADFilenames[NUM_IWAD_TYPES + 1] =
     }
     else
     {
-        [self getIWADList: iwadList];
+        [self getIWADList:iwadList];
 
-	return [[iwadList[selectedIWAD] URL] path];
+        return [[iwadList[selectedIWAD] URL] path];
     }
 }
 
@@ -123,63 +121,63 @@ static const char *NameForIWAD(IWAD iwad)
 {
     switch (iwad)
     {
-        case IWAD_HERETIC:
-            return "heretic";
+    case IWAD_HERETIC:
+        return "heretic";
 
-        case IWAD_HEXEN:
-            return "hexen";
+    case IWAD_HEXEN:
+        return "hexen";
 
-        case IWAD_STRIFE:
-            return "strife";
+    case IWAD_STRIFE:
+        return "strife";
 
-        default:
-            return "doom";
+    default:
+        return "doom";
     }
 }
 
 // Get the name used for the executable for the selected IWAD.
 
-- (const char *) getGameName
+- (const char *)getGameName
 {
     return NameForIWAD([self getSelectedIWAD]);
 }
 
-- (void) setIWADConfig
+- (void)setIWADConfig
 {
-    NSPathControl *iwadList[NUM_IWAD_TYPES];
+    NSPathControl  *iwadList[NUM_IWAD_TYPES];
     NSUserDefaults *defaults;
-    NSString *key;
-    NSString *value;
-    unsigned int i;
+    NSString       *key;
+    NSString       *value;
+    unsigned int    i;
 
-    [self getIWADList: iwadList];
+    [self getIWADList:iwadList];
 
     // Load IWAD filename paths
 
     defaults = [NSUserDefaults standardUserDefaults];
 
-    for (i=0; i<NUM_IWAD_TYPES; ++i)
+    for (i = 0; i < NUM_IWAD_TYPES; ++i)
     {
-        key = IWADFilenames[i];
+        key   = IWADFilenames[i];
         value = [defaults stringForKey:key];
 
         if (value != nil)
         {
-            [iwadList[i] setURL: [NSURL fileURLWithPath: value]];
+            [iwadList[i] setURL:[NSURL fileURLWithPath:value]];
         }
     }
 }
 
 // On startup, set the selected item in the IWAD dropdown
 
-- (void) setDropdownSelection
+- (void)setDropdownSelection
 {
     NSUserDefaults *defaults;
-    NSString *selected;
-    unsigned int i;
+    NSString       *selected;
+    unsigned int    i;
 
     defaults = [NSUserDefaults standardUserDefaults];
-    selected = [defaults stringForKey: @"selected_iwad"];
+    selected = [defaults stringForKey:@"selected_iwad"];
 
     if (selected == nil)
     {
@@ -188,7 +186,7 @@ static const char *NameForIWAD(IWAD iwad)
 
     // Find this IWAD in the filenames list, and select it.
 
-    for (i=0; i<NUM_IWAD_TYPES; ++i)
+    for (i = 0; i < NUM_IWAD_TYPES; ++i)
     {
         if ([selected isEqualToString:IWADFilenames[i]])
         {
@@ -201,28 +199,28 @@ static const char *NameForIWAD(IWAD iwad)
 // Set the dropdown list to include an entry for each IWAD that has
 // been configured.  Returns true if at least one IWAD is configured.
 
-- (BOOL) setDropdownList
+- (BOOL)setDropdownList
 {
     NSPathControl *iwadList[NUM_IWAD_TYPES];
-    BOOL have_wads;
-    id location;
-    unsigned int i;
-    unsigned int enabled_wads;
+    BOOL           have_wads;
+    id             location;
+    unsigned int   i;
+    unsigned int   enabled_wads;
 
     // Build the new list.
 
-    [self getIWADList: iwadList];
+    [self getIWADList:iwadList];
     [self->iwadSelector removeAllItems];
 
     enabled_wads = 0;
 
-    for (i=0; i<NUM_IWAD_TYPES; ++i)
+    for (i = 0; i < NUM_IWAD_TYPES; ++i)
     {
         location = [[iwadList[i] URL] path];
 
         if (location != nil && [location length] > 0)
         {
-            [self->iwadSelector addItemWithTitle: IWADLabels[i]];
+            [self->iwadSelector addItemWithTitle:IWADLabels[i]];
             ++enabled_wads;
         }
     }
@@ -231,7 +229,7 @@ static const char *NameForIWAD(IWAD iwad)
     // were any configured IWADs.
 
     have_wads = enabled_wads > 0;
-    [self->iwadSelector setEnabled: have_wads];
+    [self->iwadSelector setEnabled:have_wads];
 
     // Restore the old selection.
 
@@ -240,24 +238,24 @@ static const char *NameForIWAD(IWAD iwad)
     return have_wads;
 }
 
-- (void) saveConfig
+- (void)saveConfig
 {
-    NSPathControl *iwadList[NUM_IWAD_TYPES];
-    IWAD selectedIWAD;
+    NSPathControl  *iwadList[NUM_IWAD_TYPES];
+    IWAD            selectedIWAD;
     NSUserDefaults *defaults;
-    NSString *key;
-    NSString *value;
-    unsigned int i;
+    NSString       *key;
+    NSString       *value;
+    unsigned int    i;
 
-    [self getIWADList: iwadList];
+    [self getIWADList:iwadList];
 
     // Store all IWAD locations to user defaults.
 
     defaults = [NSUserDefaults standardUserDefaults];
 
-    for (i=0; i<NUM_IWAD_TYPES; ++i)
+    for (i = 0; i < NUM_IWAD_TYPES; ++i)
     {
-        key = IWADFilenames[i];
+        key   = IWADFilenames[i];
         value = [[iwadList[i] URL] path];
 
         [defaults setObject:value forKey:key];
@@ -267,30 +265,30 @@ static const char *NameForIWAD(IWAD iwad)
 
     selectedIWAD = [self getSelectedIWAD];
     [defaults setObject:IWADFilenames[selectedIWAD]
-              forKey:@"selected_iwad"];
+                 forKey:@"selected_iwad"];
 }
 
 // Callback method invoked when the configuration button in the main
 // window is clicked.
 
-- (void) openConfigWindow: (id)sender
+- (void)openConfigWindow:(id)sender
 {
     if (![self->configWindow isVisible])
     {
-        [self->configWindow makeKeyAndOrderFront: sender];
+        [self->configWindow makeKeyAndOrderFront:sender];
     }
 }
 
 // Callback method invoked when the close button is clicked.
 
-- (void) closeConfigWindow: (id)sender
+- (void)closeConfigWindow:(id)sender
 {
-    [self->configWindow orderOut: sender];
+    [self->configWindow orderOut:sender];
     [self saveConfig];
     [self setDropdownList];
 }
 
-- (void) awakeFromNib
+- (void)awakeFromNib
 {
     [self->configWindow center];
 
@@ -309,22 +307,22 @@ static const char *NameForIWAD(IWAD iwad)
 // Generate a value to set for the DOOMWADPATH environment variable
 // that contains each of the configured IWAD files.
 
-- (char *) doomWadPath
+- (char *)doomWadPath
 {
     NSPathControl *iwadList[NUM_IWAD_TYPES];
-    NSString *location;
-    unsigned int i;
-    BOOL first;
-    char *env;
-    size_t env_len;
+    NSString      *location;
+    unsigned int   i;
+    BOOL           first;
+    char          *env;
+    size_t         env_len;
 
-    [self getIWADList: iwadList];
+    [self getIWADList:iwadList];
 
     // Calculate length of environment string.
 
     env_len = 0;
 
-    for (i=0; i<NUM_IWAD_TYPES; ++i)
+    for (i = 0; i < NUM_IWAD_TYPES; ++i)
     {
         location = [[iwadList[i] URL] path];
 
@@ -341,7 +339,7 @@ static const char *NameForIWAD(IWAD iwad)
 
     first = YES;
 
-    for (i=0; i<NUM_IWAD_TYPES; ++i)
+    for (i = 0; i < NUM_IWAD_TYPES; ++i)
     {
         location = [[iwadList[i] URL] path];
 
@@ -360,7 +358,7 @@ static const char *NameForIWAD(IWAD iwad)
     return env;
 }
 
-- (NSString *) autoloadPath
+- (NSString *)autoloadPath
 {
     NSArray *array = NSSearchPathForDirectoriesInDomains(
         NSApplicationSupportDirectory, NSUserDomainMask, YES);
@@ -377,14 +375,14 @@ static const char *NameForIWAD(IWAD iwad)
 
     NSString *base = [array objectAtIndex:0];
     return [NSString pathWithComponents:
-        [NSArray arrayWithObjects: base, @PACKAGE_TARNAME, @"autoload",
-                                   IWADFilenames[selectedIWAD], nil]];
+                         [NSArray arrayWithObjects:base, @PACKAGE_TARNAME, @"autoload",
+                                  IWADFilenames[selectedIWAD], nil]];
 }
 
 // Set the DOOMWADPATH environment variable to contain the path to each
 // of the configured IWAD files.
 
-- (void) setEnvironment
+- (void)setEnvironment
 {
     char *doomwadpath;
     char *env;
@@ -401,34 +399,34 @@ static const char *NameForIWAD(IWAD iwad)
 
     putenv(env);
 
-    //free(env);
+    // free(env);
 }
 
 // Examine a path to a WAD and determine whether it is an IWAD file.
 // If so, it is added to the IWAD configuration, and true is returned.
 
-- (BOOL) addIWADPath: (NSString *) path
+- (BOOL)addIWADPath:(NSString *)path
 {
     NSPathControl *iwadList[NUM_IWAD_TYPES];
-    NSArray *pathComponents;
-    NSString *filename;
-    unsigned int i;
+    NSArray       *pathComponents;
+    NSString      *filename;
+    unsigned int   i;
 
-    [self getIWADList: iwadList];
+    [self getIWADList:iwadList];
 
     // Find an IWAD file that matches the filename in the path that we
     // have been given.
 
     pathComponents = [path pathComponents];
-    filename = [pathComponents objectAtIndex: [pathComponents count] - 1];
+    filename       = [pathComponents objectAtIndex:[pathComponents count] - 1];
 
     for (i = 0; i < NUM_IWAD_TYPES; ++i)
     {
-        if ([filename caseInsensitiveCompare: IWADFilenames[i]] == 0)
+        if ([filename caseInsensitiveCompare:IWADFilenames[i]] == 0)
         {
             // Configure this IWAD.
 
-            [iwadList[i] setURL: [NSURL fileURLWithPath: path]];
+            [iwadList[i] setURL:[NSURL fileURLWithPath:path]];
 
             // Rebuild dropdown list and select the new IWAD.
 
@@ -443,12 +441,12 @@ static const char *NameForIWAD(IWAD iwad)
     return NO;
 }
 
-- (BOOL) selectGameByName: (const char *) name
+- (BOOL)selectGameByName:(const char *)name
 {
     NSPathControl *iwadList[NUM_IWAD_TYPES];
-    NSString *location;
-    const char *name2;
-    int i;
+    NSString      *location;
+    const char    *name2;
+    int            i;
 
     // Already selected an IWAD of the desired type? Just return
     // success.
@@ -459,15 +457,15 @@ static const char *NameForIWAD(IWAD iwad)
 
     // Search through the configured IWADs and try to select the
     // desired game.
-    [self getIWADList: iwadList];
+    [self getIWADList:iwadList];
 
     for (i = 0; i < NUM_IWAD_TYPES; ++i)
     {
         location = [[iwadList[i] URL] path];
-        name2 = NameForIWAD(i);
+        name2    = NameForIWAD(i);
 
         if (!strcmp(name, name2)
-         && location != nil && [location length] > 0)
+            && location != nil && [location length] > 0)
         {
             [self->iwadSelector selectItemWithTitle:IWADLabels[i]];
             return YES;
@@ -479,4 +477,3 @@ static const char *NameForIWAD(IWAD iwad)
 }
 
 @end
-

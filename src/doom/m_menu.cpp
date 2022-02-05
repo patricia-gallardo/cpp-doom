@@ -168,7 +168,7 @@ using menuitem_t = struct
 using menu_t = struct menu_s {
     short          numitems;  // # of menu items
     struct menu_s *prevMenu;  // previous menu
-    menuitem_t *   menuitems; // menu items
+    menuitem_t    *menuitems; // menu items
     void (*routine)();        // draw routine
     short x;
     short y;      // x,y of menu
@@ -1317,8 +1317,8 @@ void M_DrawOptions()
     // [crispy] no patches are drawn in the Options menu anymore
     /*
     V_DrawPatchDirect(OptionsDef.x + 175, OptionsDef.y + LINEHEIGHT * detail,
-		      cache_lump_name<patch_t *>(DEH_String(detailNames[detailLevel]),
-			              PU_CACHE));
+                      cache_lump_name<patch_t *>(DEH_String(detailNames[detailLevel]),
+                                      PU_CACHE));
 */
 
     M_WriteText(OptionsDef.x + M_StringWidth("Graphic Detail: "),
@@ -1380,7 +1380,7 @@ static void M_DrawMouse()
 static void M_DrawCrispnessBackground()
 {
     const byte *const src = crispness_background;
-    pixel_t *         dest;
+    pixel_t          *dest;
     int               x, y;
 
     dest = I_VideoBuffer;
@@ -1971,7 +1971,7 @@ int M_StringHeight(const char *string)
 //
 void M_WriteText(int x,
     int              y,
-    const char *     string)
+    const char      *string)
 {
     int         w;
     const char *ch;
@@ -2794,7 +2794,7 @@ static void M_DrawOPLDev()
 {
     extern void I_OPL_DevMessages(char *, size_t);
     char        debug[1024];
-    char *      curr, *p;
+    char       *curr, *p;
     int         line;
 
     I_OPL_DevMessages(debug, sizeof(debug));
@@ -2834,7 +2834,7 @@ void M_Drawer()
     unsigned int i;
     unsigned int max;
     char         string[80];
-    const char * name;
+    const char  *name;
     int          start;
 
     inhelpscreens = false;
@@ -3083,7 +3083,7 @@ void M_Init()
     if (!M_ParmExists("-nodeh"))
     {
         const char *string;
-        char *      replace;
+        char       *replace;
 
         // [crispy] "i wouldn't leave if i were you.\ndos is much worse."
         string = doom1_endmsg[3];
@@ -3126,7 +3126,7 @@ static void  M_ForceLoadGameResponse(int key)
     if (key != key_menu_confirm || !savemaplumpinfo)
     {
         // [crispy] no need to end game anymore when denied to load savegame
-        //M_EndGameResponse(key_menu_confirm);
+        // M_EndGameResponse(key_menu_confirm);
         savewadfilename = NULL;
 
         // [crispy] reload Load Game menu

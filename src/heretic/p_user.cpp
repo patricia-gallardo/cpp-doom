@@ -25,28 +25,28 @@
 #include "s_sound.hpp"
 #include "lump.hpp"
 
-void P_PlayerNextArtifact(player_t * player);
+void P_PlayerNextArtifact(player_t *player);
 
 // Macros
 
-#define MAXBOB 0x100000         // 16 pixels of bob
+#define MAXBOB 0x100000 // 16 pixels of bob
 
 // Data
 
 boolean onground;
-int newtorch;                   // used in the torch flicker effect.
-int newtorchdelta;
+int     newtorch; // used in the torch flicker effect.
+int     newtorchdelta;
 
 boolean WeaponInShareware[] = {
-    true,                       // Staff
-    true,                       // Gold wand
-    true,                       // Crossbow
-    true,                       // Blaster
-    false,                      // Skull rod
-    false,                      // Phoenix rod
-    false,                      // Mace
-    true,                       // Gauntlets
-    true                        // Beak
+    true,  // Staff
+    true,  // Gold wand
+    true,  // Crossbow
+    true,  // Blaster
+    false, // Skull rod
+    false, // Phoenix rod
+    false, // Mace
+    true,  // Gauntlets
+    true   // Beak
 };
 
 /*
@@ -59,7 +59,7 @@ boolean WeaponInShareware[] = {
 ==================
 */
 
-void P_Thrust(player_t * player, angle_t angle, fixed_t move)
+void P_Thrust(player_t *player, angle_t angle, fixed_t move)
 {
     angle >>= ANGLETOFINESHIFT;
     if (player->powers[pw_flight] && !(player->mo->z <= player->mo->floorz))
@@ -67,7 +67,7 @@ void P_Thrust(player_t * player, angle_t angle, fixed_t move)
         player->mo->momx += FixedMul(move, finecosine[angle]);
         player->mo->momy += FixedMul(move, finesine[angle]);
     }
-    else if (player->mo->subsector->sector->special == 15)      // Friction_Low
+    else if (player->mo->subsector->sector->special == 15) // Friction_Low
     {
         player->mo->momx += FixedMul(move >> 2, finecosine[angle]);
         player->mo->momy += FixedMul(move >> 2, finesine[angle]);
@@ -90,18 +90,17 @@ void P_Thrust(player_t * player, angle_t angle, fixed_t move)
 ==================
 */
 
-void P_CalcHeight(player_t * player)
+void P_CalcHeight(player_t *player)
 {
-    int angle;
+    int     angle;
     fixed_t bob;
 
-//
-// regular movement bobbing (needs to be calculated for gun swing even
-// if not on ground)
-// OPTIMIZE: tablify angle
+    //
+    // regular movement bobbing (needs to be calculated for gun swing even
+    // if not on ground)
+    // OPTIMIZE: tablify angle
 
-    player->bob = FixedMul(player->mo->momx, player->mo->momx) +
-        FixedMul(player->mo->momy, player->mo->momy);
+    player->bob = FixedMul(player->mo->momx, player->mo->momx) + FixedMul(player->mo->momy, player->mo->momy);
     player->bob >>= 2;
     if (player->bob > MAXBOB)
         player->bob = MAXBOB;
@@ -120,17 +119,17 @@ void P_CalcHeight(player_t * player)
     }
 
     angle = (FINEANGLES / 20 * leveltime) & FINEMASK;
-    bob = FixedMul(player->bob / 2, finesine[angle]);
+    bob   = FixedMul(player->bob / 2, finesine[angle]);
 
-//
-// move viewheight
-//
+    //
+    // move viewheight
+    //
     if (player->playerstate == PST_LIVE)
     {
         player->viewheight += player->deltaviewheight;
         if (player->viewheight > VIEWHEIGHT)
         {
-            player->viewheight = VIEWHEIGHT;
+            player->viewheight      = VIEWHEIGHT;
             player->deltaviewheight = 0;
         }
         if (player->viewheight < VIEWHEIGHT / 2)
@@ -180,10 +179,10 @@ void P_CalcHeight(player_t * player)
 =================
 */
 
-void P_MovePlayer(player_t * player)
+void P_MovePlayer(player_t *player)
 {
-    int look;
-    int fly;
+    int       look;
+    int       fly;
     ticcmd_t *cmd;
 
     cmd = &player->cmd;
@@ -193,14 +192,14 @@ void P_MovePlayer(player_t * player)
                 || (player->mo->flags2 & MF2_ONMOBJ));
 
     if (player->chickenTics)
-    {                           // Chicken speed
+    { // Chicken speed
         if (cmd->forwardmove && (onground || player->mo->flags2 & MF2_FLY))
             P_Thrust(player, player->mo->angle, cmd->forwardmove * 2500);
         if (cmd->sidemove && (onground || player->mo->flags2 & MF2_FLY))
             P_Thrust(player, player->mo->angle - ANG90, cmd->sidemove * 2500);
     }
     else
-    {                           // Normal speed
+    { // Normal speed
         if (cmd->forwardmove && (onground || player->mo->flags2 & MF2_FLY))
             P_Thrust(player, player->mo->angle, cmd->forwardmove * 2048);
         if (cmd->sidemove && (onground || player->mo->flags2 & MF2_FLY))
@@ -257,7 +256,7 @@ void P_MovePlayer(player_t * player)
         }
         if (std::abs(player->lookdir) < 8)
         {
-            player->lookdir = 0;
+            player->lookdir   = 0;
             player->centering = false;
         }
     }
@@ -305,23 +304,23 @@ void P_MovePlayer(player_t * player)
 =================
 */
 
-#define         ANG5    (ANG90/18)
+#define ANG5 (ANG90 / 18)
 extern int inv_ptr;
 extern int curpos;
 
-void P_DeathThink(player_t * player)
+void P_DeathThink(player_t *player)
 {
     angle_t angle, delta;
-    int lookDelta;
+    int     lookDelta;
 
     P_MovePsprites(player);
 
     onground = (player->mo->z <= player->mo->floorz);
     if (player->mo->type == MT_BLOODYSKULL)
-    {                           // Flying bloody skull
-        player->viewheight = 6 * FRACUNIT;
+    { // Flying bloody skull
+        player->viewheight      = 6 * FRACUNIT;
         player->deltaviewheight = 0;
-        //player->damagecount = 20;
+        // player->damagecount = 20;
         if (onground)
         {
             if (player->lookdir < 60)
@@ -340,7 +339,7 @@ void P_DeathThink(player_t * player)
         }
     }
     else
-    {                           // Fall to ground
+    { // Fall to ground
         player->deltaviewheight = 0;
         if (player->viewheight > 6 * FRACUNIT)
             player->viewheight -= FRACUNIT;
@@ -364,10 +363,10 @@ void P_DeathThink(player_t * player)
     if (player->attacker && player->attacker != player->mo)
     {
         angle = R_PointToAngle2(player->mo->x, player->mo->y,
-                                player->attacker->x, player->attacker->y);
+            player->attacker->x, player->attacker->y);
         delta = angle - player->mo->angle;
-        if (delta < ANG5 || delta > (unsigned) -ANG5)
-        {                       // Looking at killer, so fade damage flash down
+        if (delta < ANG5 || delta > (unsigned)-ANG5)
+        { // Looking at killer, so fade damage flash down
             player->mo->angle = angle;
             if (player->damagecount)
             {
@@ -389,9 +388,9 @@ void P_DeathThink(player_t * player)
         if (player == &players[consoleplayer])
         {
             I_SetPalette(cache_lump_name<byte *>(DEH_String("PLAYPAL"), PU_CACHE));
-            inv_ptr = 0;
-            curpos = 0;
-            newtorch = 0;
+            inv_ptr       = 0;
+            curpos        = 0;
+            newtorch      = 0;
             newtorchdelta = 0;
         }
         player->playerstate = PST_REBORN;
@@ -407,12 +406,12 @@ void P_DeathThink(player_t * player)
 //
 //----------------------------------------------------------------------------
 
-void P_ChickenPlayerThink(player_t * player)
+void P_ChickenPlayerThink(player_t *player)
 {
     mobj_t *pmo;
 
     if (player->health > 0)
-    {                           // Handle beak movement
+    { // Handle beak movement
         P_UpdateBeak(player, &player->psprites[ps_weapon]);
     }
     if (player->chickenTics & 15)
@@ -421,17 +420,17 @@ void P_ChickenPlayerThink(player_t * player)
     }
     pmo = player->mo;
     if (!(pmo->momx + pmo->momy) && P_Random() < 160)
-    {                           // Twitch view angle
+    { // Twitch view angle
         pmo->angle += P_SubRandom() << 19;
     }
     if ((pmo->z <= pmo->floorz) && (P_Random() < 32))
-    {                           // Jump and noise
+    { // Jump and noise
         pmo->momz += FRACUNIT;
         P_SetMobjState(pmo, S_CHICPLAY_PAIN);
         return;
     }
     if (P_Random() < 48)
-    {                           // Just noise
+    { // Just noise
         S_StartSound(pmo, sfx_chicact);
     }
 }
@@ -442,7 +441,7 @@ void P_ChickenPlayerThink(player_t * player)
 //
 //----------------------------------------------------------------------------
 
-int P_GetPlayerNum(player_t * player)
+int P_GetPlayerNum(player_t *player)
 {
     int i;
 
@@ -462,64 +461,64 @@ int P_GetPlayerNum(player_t * player)
 //
 //----------------------------------------------------------------------------
 
-boolean P_UndoPlayerChicken(player_t * player)
+boolean P_UndoPlayerChicken(player_t *player)
 {
-    mobj_t *fog;
-    mobj_t *mo;
-    mobj_t *pmo;
-    fixed_t x;
-    fixed_t y;
-    fixed_t z;
-    angle_t angle;
-    int playerNum;
+    mobj_t      *fog;
+    mobj_t      *mo;
+    mobj_t      *pmo;
+    fixed_t      x;
+    fixed_t      y;
+    fixed_t      z;
+    angle_t      angle;
+    int          playerNum;
     weapontype_t weapon;
-    int oldFlags;
-    int oldFlags2;
+    int          oldFlags;
+    int          oldFlags2;
 
-    pmo = player->mo;
-    x = pmo->x;
-    y = pmo->y;
-    z = pmo->z;
-    angle = pmo->angle;
-    weapon = static_cast<weapontype_t>(pmo->special1.i);
-    oldFlags = pmo->flags;
+    pmo       = player->mo;
+    x         = pmo->x;
+    y         = pmo->y;
+    z         = pmo->z;
+    angle     = pmo->angle;
+    weapon    = static_cast<weapontype_t>(pmo->special1.i);
+    oldFlags  = pmo->flags;
     oldFlags2 = pmo->flags2;
     P_SetMobjState(pmo, S_FREETARGMOBJ);
     mo = P_SpawnMobj(x, y, z, MT_PLAYER);
     if (P_TestMobjLocation(mo) == false)
-    {                           // Didn't fit
+    { // Didn't fit
         P_RemoveMobj(mo);
-        mo = P_SpawnMobj(x, y, z, MT_CHICPLAYER);
-        mo->angle = angle;
-        mo->health = player->health;
-        mo->special1.i = weapon;
-        mo->player = player;
-        mo->flags = oldFlags;
-        mo->flags2 = oldFlags2;
-        player->mo = mo;
+        mo                  = P_SpawnMobj(x, y, z, MT_CHICPLAYER);
+        mo->angle           = angle;
+        mo->health          = player->health;
+        mo->special1.i      = weapon;
+        mo->player          = player;
+        mo->flags           = oldFlags;
+        mo->flags2          = oldFlags2;
+        player->mo          = mo;
         player->chickenTics = 2 * 35;
         return (false);
     }
     playerNum = P_GetPlayerNum(player);
     if (playerNum != 0)
-    {                           // Set color translation
+    { // Set color translation
         mo->flags |= playerNum << MF_TRANSSHIFT;
     }
-    mo->angle = angle;
-    mo->player = player;
+    mo->angle        = angle;
+    mo->player       = player;
     mo->reactiontime = 18;
     if (oldFlags2 & MF2_FLY)
     {
         mo->flags2 |= MF2_FLY;
         mo->flags |= MF_NOGRAVITY;
     }
-    player->chickenTics = 0;
+    player->chickenTics             = 0;
     player->powers[pw_weaponlevel2] = 0;
     player->health = mo->health = MAXHEALTH;
-    player->mo = mo;
+    player->mo                  = mo;
     angle >>= ANGLETOFINESHIFT;
     fog = P_SpawnMobj(x + 20 * finecosine[angle],
-                      y + 20 * finesine[angle], z + TELEFOGHEIGHT, MT_TFOG);
+        y + 20 * finesine[angle], z + TELEFOGHEIGHT, MT_TFOG);
     S_StartSound(fog, sfx_telept);
     P_PostChickenWeapon(player, weapon);
     return (true);
@@ -531,9 +530,9 @@ boolean P_UndoPlayerChicken(player_t * player)
 //
 //----------------------------------------------------------------------------
 
-void P_PlayerThink(player_t * player)
+void P_PlayerThink(player_t *player)
 {
-    ticcmd_t *cmd;
+    ticcmd_t    *cmd;
     weapontype_t newweapon;
 
     // No-clip cheat
@@ -547,18 +546,18 @@ void P_PlayerThink(player_t * player)
     }
     cmd = &player->cmd;
     if (player->mo->flags & MF_JUSTATTACKED)
-    {                           // Gauntlets attack auto forward motion
-        cmd->angleturn = 0;
+    { // Gauntlets attack auto forward motion
+        cmd->angleturn   = 0;
         cmd->forwardmove = 0xc800 / 512;
-        cmd->sidemove = 0;
+        cmd->sidemove    = 0;
         player->mo->flags &= ~MF_JUSTATTACKED;
     }
-// messageTics is above the rest of the counters so that messages will
-//              go away, even in death.
-    player->messageTics--;      // Can go negative
+    // messageTics is above the rest of the counters so that messages will
+    //              go away, even in death.
+    player->messageTics--; // Can go negative
     if (!player->messageTics)
-    {                           // Refresh the screen when a message goes away
-        ultimatemsg = false;    // clear out any chat messages.
+    {                             // Refresh the screen when a message goes away
+        ultimatemsg      = false; // clear out any chat messages.
         BorderTopRefresh = true;
     }
     if (player->playerstate == PST_DEAD)
@@ -572,7 +571,7 @@ void P_PlayerThink(player_t * player)
     }
     // Handle movement
     if (player->mo->reactiontime)
-    {                           // Player is frozen
+    { // Player is frozen
         player->mo->reactiontime--;
     }
     else
@@ -585,7 +584,7 @@ void P_PlayerThink(player_t * player)
         P_PlayerInSpecialSector(player);
     }
     if (cmd->arti)
-    {                           // Use an artifact
+    { // Use an artifact
         if (cmd->arti == 0xff)
         {
             P_PlayerNextArtifact(player);
@@ -597,7 +596,7 @@ void P_PlayerThink(player_t * player)
     }
     // Check for weapon change
     if (cmd->buttons & BT_SPECIAL)
-    {                           // A special event has no other buttons
+    { // A special event has no other buttons
         cmd->buttons = 0;
     }
     if (cmd->buttons & BT_CHANGE)
@@ -637,11 +636,11 @@ void P_PlayerThink(player_t * player)
     if (player->chickenTics)
     {
         if (player->chickenPeck)
-        {                       // Chicken attack counter
+        { // Chicken attack counter
             player->chickenPeck -= 3;
         }
         if (!--player->chickenTics)
-        {                       // Attempt to undo the chicken
+        { // Attempt to undo the chicken
             P_UndoPlayerChicken(player);
         }
     }
@@ -675,7 +674,7 @@ void P_PlayerThink(player_t * player)
 
             player->mo->flags2 &= ~MF2_FLY;
             player->mo->flags &= ~MF_NOGRAVITY;
-            BorderTopRefresh = true;    //make sure the sprite's cleared out
+            BorderTopRefresh = true; // make sure the sprite's cleared out
         }
     }
     if (player->powers[pw_weaponlevel2])
@@ -751,9 +750,10 @@ void P_PlayerThink(player_t * player)
             }
             else
             {
-                newtorch = (M_Random() & 7) + 1;
+                newtorch      = (M_Random() & 7) + 1;
                 newtorchdelta = (newtorch == player->fixedcolormap) ?
-                    0 : ((newtorch > player->fixedcolormap) ? 1 : -1);
+                                    0 :
+                                    ((newtorch > player->fixedcolormap) ? 1 : -1);
             }
         }
     }
@@ -769,10 +769,10 @@ void P_PlayerThink(player_t * player)
 //
 //----------------------------------------------------------------------------
 
-void P_ArtiTele(player_t * player)
+void P_ArtiTele(player_t *player)
 {
-    int i;
-    int selections;
+    int     i;
+    int     selections;
     fixed_t destX;
     fixed_t destY;
     angle_t destAngle;
@@ -780,19 +780,19 @@ void P_ArtiTele(player_t * player)
     if (deathmatch)
     {
         selections = deathmatch_p - deathmatchstarts;
-        i = P_Random() % selections;
-        destX = deathmatchstarts[i].x << FRACBITS;
-        destY = deathmatchstarts[i].y << FRACBITS;
-        destAngle = ANG45 * (deathmatchstarts[i].angle / 45);
+        i          = P_Random() % selections;
+        destX      = deathmatchstarts[i].x << FRACBITS;
+        destY      = deathmatchstarts[i].y << FRACBITS;
+        destAngle  = ANG45 * (deathmatchstarts[i].angle / 45);
     }
     else
     {
-        destX = playerstarts[0].x << FRACBITS;
-        destY = playerstarts[0].y << FRACBITS;
+        destX     = playerstarts[0].x << FRACBITS;
+        destY     = playerstarts[0].y << FRACBITS;
         destAngle = ANG45 * (playerstarts[0].angle / 45);
     }
     P_Teleport(player->mo, destX, destY, destAngle);
-    S_StartSound(NULL, sfx_wpnup);      // Full volume laugh
+    S_StartSound(NULL, sfx_wpnup); // Full volume laugh
 }
 
 //----------------------------------------------------------------------------
@@ -801,7 +801,7 @@ void P_ArtiTele(player_t * player)
 //
 //----------------------------------------------------------------------------
 
-void P_PlayerNextArtifact(player_t * player)
+void P_PlayerNextArtifact(player_t *player)
 {
     if (player == &players[consoleplayer])
     {
@@ -836,13 +836,13 @@ void P_PlayerNextArtifact(player_t * player)
 //
 //----------------------------------------------------------------------------
 
-void P_PlayerRemoveArtifact(player_t * player, int slot)
+void P_PlayerRemoveArtifact(player_t *player, int slot)
 {
     int i;
     player->artifactCount--;
     if (!(--player->inventory[slot].count))
-    {                           // Used last of a type - compact the artifact list
-        player->readyArtifact = arti_none;
+    { // Used last of a type - compact the artifact list
+        player->readyArtifact        = arti_none;
         player->inventory[slot].type = arti_none;
         for (i = slot + 1; i < player->inventorySlotNum; i++)
         {
@@ -850,7 +850,7 @@ void P_PlayerRemoveArtifact(player_t * player, int slot)
         }
         player->inventorySlotNum--;
         if (player == &players[consoleplayer])
-        {                       // Set position markers and get next readyArtifact
+        { // Set position markers and get next readyArtifact
             inv_ptr--;
             if (inv_ptr < 6)
             {
@@ -879,16 +879,16 @@ void P_PlayerRemoveArtifact(player_t * player, int slot)
 //
 //----------------------------------------------------------------------------
 
-void P_PlayerUseArtifact(player_t * player, artitype_t arti)
+void P_PlayerUseArtifact(player_t *player, artitype_t arti)
 {
     int i;
 
     for (i = 0; i < player->inventorySlotNum; i++)
     {
         if (player->inventory[i].type == arti)
-        {                       // Found match - try to use
+        { // Found match - try to use
             if (P_UseArtifact(player, arti))
-            {                   // Artifact was used - remove it from inventory
+            { // Artifact was used - remove it from inventory
                 P_PlayerRemoveArtifact(player, i);
                 if (player == &players[consoleplayer])
                 {
@@ -897,7 +897,7 @@ void P_PlayerUseArtifact(player_t * player, artitype_t arti)
                 }
             }
             else
-            {                   // Unable to use artifact, advance pointer
+            { // Unable to use artifact, advance pointer
                 P_PlayerNextArtifact(player);
             }
             break;
@@ -913,108 +913,107 @@ void P_PlayerUseArtifact(player_t * player, artitype_t arti)
 //
 //----------------------------------------------------------------------------
 
-boolean P_UseArtifact(player_t * player, artitype_t arti)
+boolean P_UseArtifact(player_t *player, artitype_t arti)
 {
     mobj_t *mo;
     angle_t angle;
 
     switch (arti)
     {
-        case arti_invulnerability:
-            if (!P_GivePower(player, pw_invulnerability))
-            {
-                return (false);
-            }
-            break;
-        case arti_invisibility:
-            if (!P_GivePower(player, pw_invisibility))
-            {
-                return (false);
-            }
-            break;
-        case arti_health:
-            if (!P_GiveBody(player, 25))
-            {
-                return (false);
-            }
-            break;
-        case arti_superhealth:
-            if (!P_GiveBody(player, 100))
-            {
-                return (false);
-            }
-            break;
-        case arti_tomeofpower:
-            if (player->chickenTics)
-            {                   // Attempt to undo chicken
-                if (P_UndoPlayerChicken(player) == false)
-                {               // Failed
-                    P_DamageMobj(player->mo, NULL, NULL, 10000);
-                }
-                else
-                {               // Succeeded
-                    player->chickenTics = 0;
-                    S_StartSound(player->mo, sfx_wpnup);
-                }
+    case arti_invulnerability:
+        if (!P_GivePower(player, pw_invulnerability))
+        {
+            return (false);
+        }
+        break;
+    case arti_invisibility:
+        if (!P_GivePower(player, pw_invisibility))
+        {
+            return (false);
+        }
+        break;
+    case arti_health:
+        if (!P_GiveBody(player, 25))
+        {
+            return (false);
+        }
+        break;
+    case arti_superhealth:
+        if (!P_GiveBody(player, 100))
+        {
+            return (false);
+        }
+        break;
+    case arti_tomeofpower:
+        if (player->chickenTics)
+        { // Attempt to undo chicken
+            if (P_UndoPlayerChicken(player) == false)
+            { // Failed
+                P_DamageMobj(player->mo, NULL, NULL, 10000);
             }
             else
-            {
-                if (!P_GivePower(player, pw_weaponlevel2))
-                {
-                    return (false);
-                }
-                if (player->readyweapon == wp_staff)
-                {
-                    P_SetPsprite(player, ps_weapon, S_STAFFREADY2_1);
-                }
-                else if (player->readyweapon == wp_gauntlets)
-                {
-                    P_SetPsprite(player, ps_weapon, S_GAUNTLETREADY2_1);
-                }
+            { // Succeeded
+                player->chickenTics = 0;
+                S_StartSound(player->mo, sfx_wpnup);
             }
-            break;
-        case arti_torch:
-            if (!P_GivePower(player, pw_infrared))
+        }
+        else
+        {
+            if (!P_GivePower(player, pw_weaponlevel2))
             {
                 return (false);
             }
-            break;
-        case arti_firebomb:
-            angle = player->mo->angle >> ANGLETOFINESHIFT;
-
-            // Vanilla bug here:
-            // Original code here looks like:
-            //   (player->mo->flags2 & MF2_FEETARECLIPPED != 0),
-            // Which under C's operator precedence is:
-            //   (player->mo->flags2 & (MF2_FEETARECLIPPED != 0)),
-            // Which simplifies to:
-            //   (player->mo->flags2 & 1),
-            mo = P_SpawnMobj(player->mo->x + 24 * finecosine[angle],
-                             player->mo->y + 24 * finesine[angle],
-                             player->mo->z -
-                             15 * FRACUNIT * (player->mo->flags2 & 1),
-                             MT_FIREBOMB);
-            mo->target = player->mo;
-            break;
-        case arti_egg:
-            mo = player->mo;
-            P_SpawnPlayerMissile(mo, MT_EGGFX);
-            P_SPMAngle(mo, MT_EGGFX, mo->angle - (ANG45 / 6));
-            P_SPMAngle(mo, MT_EGGFX, mo->angle + (ANG45 / 6));
-            P_SPMAngle(mo, MT_EGGFX, mo->angle - (ANG45 / 3));
-            P_SPMAngle(mo, MT_EGGFX, mo->angle + (ANG45 / 3));
-            break;
-        case arti_fly:
-            if (!P_GivePower(player, pw_flight))
+            if (player->readyweapon == wp_staff)
             {
-                return (false);
+                P_SetPsprite(player, ps_weapon, S_STAFFREADY2_1);
             }
-            break;
-        case arti_teleport:
-            P_ArtiTele(player);
-            break;
-        default:
+            else if (player->readyweapon == wp_gauntlets)
+            {
+                P_SetPsprite(player, ps_weapon, S_GAUNTLETREADY2_1);
+            }
+        }
+        break;
+    case arti_torch:
+        if (!P_GivePower(player, pw_infrared))
+        {
             return (false);
+        }
+        break;
+    case arti_firebomb:
+        angle = player->mo->angle >> ANGLETOFINESHIFT;
+
+        // Vanilla bug here:
+        // Original code here looks like:
+        //   (player->mo->flags2 & MF2_FEETARECLIPPED != 0),
+        // Which under C's operator precedence is:
+        //   (player->mo->flags2 & (MF2_FEETARECLIPPED != 0)),
+        // Which simplifies to:
+        //   (player->mo->flags2 & 1),
+        mo         = P_SpawnMobj(player->mo->x + 24 * finecosine[angle],
+                    player->mo->y + 24 * finesine[angle],
+                    player->mo->z - 15 * FRACUNIT * (player->mo->flags2 & 1),
+                    MT_FIREBOMB);
+        mo->target = player->mo;
+        break;
+    case arti_egg:
+        mo = player->mo;
+        P_SpawnPlayerMissile(mo, MT_EGGFX);
+        P_SPMAngle(mo, MT_EGGFX, mo->angle - (ANG45 / 6));
+        P_SPMAngle(mo, MT_EGGFX, mo->angle + (ANG45 / 6));
+        P_SPMAngle(mo, MT_EGGFX, mo->angle - (ANG45 / 3));
+        P_SPMAngle(mo, MT_EGGFX, mo->angle + (ANG45 / 3));
+        break;
+    case arti_fly:
+        if (!P_GivePower(player, pw_flight))
+        {
+            return (false);
+        }
+        break;
+    case arti_teleport:
+        P_ArtiTele(player);
+        break;
+    default:
+        return (false);
     }
     return (true);
 }

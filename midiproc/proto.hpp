@@ -18,7 +18,8 @@
 #ifndef __PROTO__
 #define __PROTO__
 
-typedef enum {
+typedef enum
+{
     MIDIPIPE_PACKET_TYPE_REGISTER_SONG,
     MIDIPIPE_PACKET_TYPE__DEPRECATED_1,
     MIDIPIPE_PACKET_TYPE_SET_VOLUME,
@@ -30,4 +31,3 @@ typedef enum {
 } net_midipipe_packet_type_t;
 
 #endif
-

@@ -8,13 +8,15 @@
 #include "../src/w_wad.hpp"
 
 template <typename DataType>
-auto cache_lump_name(const char *name, const int tag) {
-  return static_cast<DataType>(W_CacheLumpName(name, tag));
+auto cache_lump_name(const char *name, const int tag)
+{
+    return static_cast<DataType>(W_CacheLumpName(name, tag));
 }
 
 template <typename DataType>
-auto cache_lump_num(lumpindex_t index, const int tag) {
-  return static_cast<DataType>(W_CacheLumpNum(index, tag));
+auto cache_lump_num(lumpindex_t index, const int tag)
+{
+    return static_cast<DataType>(W_CacheLumpNum(index, tag));
 }
 
 #endif // CRISPY_DOOM_LUMP_HPP

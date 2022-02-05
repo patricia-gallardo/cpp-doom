@@ -244,10 +244,10 @@ extern boolean inhelpscreens; // [crispy] prevent palette changes
 #define ST_DETHX 109
 #define ST_DETHY 191
 
-//Incoming messages window location
-//UNUSED
-// #define ST_MSGTEXTX	   (viewwindowx)
-// #define ST_MSGTEXTY	   (viewwindowy+viewheight-18)
+// Incoming messages window location
+// UNUSED
+//  #define ST_MSGTEXTX	   (viewwindowx)
+//  #define ST_MSGTEXTY	   (viewwindowy+viewheight-18)
 #define ST_MSGTEXTX 0
 #define ST_MSGTEXTY 0
 // Dimensions given in characters.
@@ -260,7 +260,7 @@ extern boolean inhelpscreens; // [crispy] prevent palette changes
 
 // Width, in characters again.
 #define ST_OUTWIDTH 52
-    // Height, in lines.
+                              // Height, in lines.
 #define ST_OUTHEIGHT 1
 
 #define ST_MAPTITLEX \
@@ -501,7 +501,7 @@ void ST_refreshBackground(boolean force)
 static int ST_cheat_massacre()
 {
     int         killcount = 0;
-    thinker_t * th;
+    thinker_t  *th;
     extern int  numbraintargets;
     extern void A_PainDie(mobj_t *);
 
@@ -794,42 +794,42 @@ boolean
                     // [JN] Fixed: using a proper IDMUS selection for shareware
                     // and registered game versions.
                     if (gamemode == commercial /* || gameversion < exe_ultimate */)
-                {
-                    musnum = mus_runnin + (buf[0] - '0') * 10 + buf[1] - '0' - 1;
+                    {
+                        musnum = mus_runnin + (buf[0] - '0') * 10 + buf[1] - '0' - 1;
 
-                    /*
-	  if (((buf[0]-'0')*10 + buf[1]-'0') > 35
-       && gameversion >= exe_doom_1_8)
-	  */
-                    // [crispy] prevent crash with IDMUS00
-                    if (musnum < mus_runnin || musnum >= NUMMUSIC)
-                        plyr->message = DEH_String(STSTR_NOMUS);
+                        /*
+              if (((buf[0]-'0')*10 + buf[1]-'0') > 35
+           && gameversion >= exe_doom_1_8)
+              */
+                        // [crispy] prevent crash with IDMUS00
+                        if (musnum < mus_runnin || musnum >= NUMMUSIC)
+                            plyr->message = DEH_String(STSTR_NOMUS);
+                        else
+                        {
+                            S_ChangeMusic(musnum, 1);
+                            // [crispy] eat key press, i.e. don't change weapon upon music change
+                            return true;
+                        }
+                    }
                     else
                     {
-                        S_ChangeMusic(musnum, 1);
-                        // [crispy] eat key press, i.e. don't change weapon upon music change
-                        return true;
-                    }
-                }
-                else
-                {
-                    musnum = mus_e1m1 + (buf[0] - '1') * 9 + (buf[1] - '1');
+                        musnum = mus_e1m1 + (buf[0] - '1') * 9 + (buf[1] - '1');
 
-                    /*
-	  if (((buf[0]-'1')*9 + buf[1]-'1') > 31)
-	  */
-                    // [crispy] prevent crash with IDMUS0x or IDMUSx0
-                    if (musnum < mus_e1m1 || musnum >= mus_runnin ||
-                        // [crispy] support dedicated music tracks for the 4th episode
-                        S_music[musnum].lumpnum == -1)
-                        plyr->message = DEH_String(STSTR_NOMUS);
-                    else
-                    {
-                        S_ChangeMusic(musnum, 1);
-                        // [crispy] eat key press, i.e. don't change weapon upon music change
-                        return true;
+                        /*
+              if (((buf[0]-'1')*9 + buf[1]-'1') > 31)
+              */
+                        // [crispy] prevent crash with IDMUS0x or IDMUSx0
+                        if (musnum < mus_e1m1 || musnum >= mus_runnin ||
+                            // [crispy] support dedicated music tracks for the 4th episode
+                            S_music[musnum].lumpnum == -1)
+                            plyr->message = DEH_String(STSTR_NOMUS);
+                        else
+                        {
+                            S_ChangeMusic(musnum, 1);
+                            // [crispy] eat key press, i.e. don't change weapon upon music change
+                            return true;
+                        }
                     }
-                }
             }
             // [crispy] eat up the first digit typed after a cheat expecting two parameters
             else if (cht_CheckCheat(&cheat_mus1, ev->data2))
@@ -1776,9 +1776,9 @@ static byte *ST_WidgetColor(int i)
 static inline void ST_DrawGibbedPlayerSprites()
 {
     state_t const *state = plyr->mo->state;
-    spritedef_t *  sprdef;
+    spritedef_t   *sprdef;
     spriteframe_t *sprframe;
-    patch_t *      patch;
+    patch_t       *patch;
 
     sprdef = &sprites[state->sprite];
 
@@ -1822,7 +1822,7 @@ void ST_drawWidgets(boolean refresh)
         if (plyr->readyweapon == wp_fist && plyr->powers[pw_strength])
         {
             static int lump = -1;
-            patch_t *  patch;
+            patch_t   *patch;
 
             if (lump == -1)
             {
@@ -1967,7 +1967,7 @@ static void ST_loadUnloadGraphics(load_callback_t callback)
     }
 
     // Load percent key.
-    //Note: why not load STMINUS here, too?
+    // Note: why not load STMINUS here, too?
 
     callback(DEH_String("STTPRCNT"), &tallpercent);
 

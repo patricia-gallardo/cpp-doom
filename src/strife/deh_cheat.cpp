@@ -31,34 +31,33 @@ using deh_cheat_t = struct
     cheatseq_t *seq;
 };
 
-static deh_cheat_t allcheats[] =
-{
+static deh_cheat_t allcheats[] = {
     // haleyjd 20110224: filled in all cheats
-    {"Change music",        &cheat_mus },
-    {"Level Warp",          &cheat_clev },
-    {"Stealth Boots",       &cheat_stealth },
-    {"Sigil piece",         &cheat_lego },
-    {"FPS",                 &cheat_mypos },
-    {"TeleportMapSpot",     &cheat_scoot },
-    {"Gold&StatTokens",     &cheat_midas },
-    {"God mode",            &cheat_god },
-    {"Keys",                &cheat_keys },
-    {"Weapons & Ammo",      &cheat_ammo },
-    {"Massacre",            &cheat_nuke },
-    {"No Clipping",         &cheat_noclip },
-    {"Berserk",             &cheat_powerup[0] },
-    {"Invisibility",        &cheat_powerup[1] },
-    {"Enviro Suit",         &cheat_powerup[2] },
-    {"Health",              &cheat_powerup[3] },
-    {"Backpack",            &cheat_powerup[4] },
+    { "Change music", &cheat_mus },
+    { "Level Warp", &cheat_clev },
+    { "Stealth Boots", &cheat_stealth },
+    { "Sigil piece", &cheat_lego },
+    { "FPS", &cheat_mypos },
+    { "TeleportMapSpot", &cheat_scoot },
+    { "Gold&StatTokens", &cheat_midas },
+    { "God mode", &cheat_god },
+    { "Keys", &cheat_keys },
+    { "Weapons & Ammo", &cheat_ammo },
+    { "Massacre", &cheat_nuke },
+    { "No Clipping", &cheat_noclip },
+    { "Berserk", &cheat_powerup[0] },
+    { "Invisibility", &cheat_powerup[1] },
+    { "Enviro Suit", &cheat_powerup[2] },
+    { "Health", &cheat_powerup[3] },
+    { "Backpack", &cheat_powerup[4] },
     // STRIFE-FIXME/TODO: Does SeHackEd not support PUMPUP{S,T,nil}, or "DOTS" ?
 };
 
 static deh_cheat_t *FindCheatByName(char *name)
 {
     size_t i;
-    
-    for (i=0; i<arrlen(allcheats); ++i)
+
+    for (i = 0; i < arrlen(allcheats); ++i)
     {
         if (!strcasecmp(allcheats[i].name, name))
             return &allcheats[i];
@@ -74,11 +73,11 @@ static void *DEH_CheatStart(deh_context_t *context, char *line)
 
 static void DEH_CheatParseLine(deh_context_t *context, char *line, void *tag)
 {
-    deh_cheat_t *cheat;
-    char *variable_name;
-    char *value;
+    deh_cheat_t   *cheat;
+    char          *variable_name;
+    char          *value;
     unsigned char *unsvalue;
-    unsigned int i;
+    unsigned int   i;
 
     if (!DEH_ParseAssignment(line, &variable_name, &value))
     {
@@ -88,7 +87,7 @@ static void DEH_CheatParseLine(deh_context_t *context, char *line, void *tag)
         return;
     }
 
-    unsvalue = (unsigned char *) value;
+    unsvalue = (unsigned char *)value;
 
     cheat = FindCheatByName(variable_name);
 
@@ -135,8 +134,7 @@ static void DEH_CheatParseLine(deh_context_t *context, char *line, void *tag)
     }
 }
 
-deh_section_t deh_section_cheat =
-{
+deh_section_t deh_section_cheat = {
     "Cheat",
     NULL,
     DEH_CheatStart,
@@ -144,4 +142,3 @@ deh_section_t deh_section_cheat =
     NULL,
     NULL,
 };
-

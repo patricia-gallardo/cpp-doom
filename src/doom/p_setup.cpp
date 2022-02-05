@@ -133,10 +133,10 @@ fixed_t GetOffset(vertex_t *v1, vertex_t *v2)
 //
 void P_LoadVertexes(int lump)
 {
-    byte *       data;
+    byte        *data;
     int          i;
     mapvertex_t *ml;
-    vertex_t *   li;
+    vertex_t    *li;
 
     // Determine number of lumps:
     //  total lump length / vertex record length.
@@ -192,11 +192,11 @@ sector_t *GetSectorAtNullAddress()
 //
 void P_LoadSegs(int lump)
 {
-    byte *    data;
+    byte     *data;
     int       i;
     mapseg_t *ml;
-    seg_t *   li;
-    line_t *  ldef;
+    seg_t    *li;
+    line_t   *ldef;
     int       linedef;
     int       side;
     int       sidenum;
@@ -312,10 +312,10 @@ void P_SegLengths(boolean contrast_only)
 //
 void P_LoadSubsectors(int lump)
 {
-    byte *          data;
+    byte           *data;
     int             i;
     mapsubsector_t *ms;
-    subsector_t *   ss;
+    subsector_t    *ss;
 
     numsubsectors = W_LumpLength(lump) / sizeof(mapsubsector_t);
     subsectors    = zmalloc<decltype(subsectors)>(numsubsectors * sizeof(subsector_t), PU_LEVEL, 0);
@@ -344,10 +344,10 @@ void P_LoadSubsectors(int lump)
 //
 void P_LoadSectors(int lump)
 {
-    byte *       data;
+    byte        *data;
     int          i;
     mapsector_t *ms;
-    sector_t *   ss;
+    sector_t    *ss;
 
     // [crispy] fail on missing sectors
     if (lump >= numlumps)
@@ -396,12 +396,12 @@ void P_LoadSectors(int lump)
 //
 void P_LoadNodes(int lump)
 {
-    byte *     data;
+    byte      *data;
     int        i;
     int        j;
     int        k;
     mapnode_t *mn;
-    node_t *   no;
+    node_t    *no;
 
     numnodes = W_LumpLength(lump) / sizeof(mapnode_t);
     nodes    = zmalloc<decltype(nodes)>(numnodes * sizeof(node_t), PU_LEVEL, 0);
@@ -457,7 +457,7 @@ void P_LoadNodes(int lump)
 //
 void P_LoadThings(int lump)
 {
-    byte *      data;
+    byte       *data;
     int         i;
     mapthing_t *mt;
     mapthing_t  spawnthing;
@@ -526,12 +526,12 @@ void P_LoadThings(int lump)
 //
 void P_LoadLineDefs(int lump)
 {
-    byte *        data;
+    byte         *data;
     int           i;
     maplinedef_t *mld;
-    line_t *      ld;
-    vertex_t *    v1;
-    vertex_t *    v2;
+    line_t       *ld;
+    vertex_t     *v1;
+    vertex_t     *v2;
     int           warn, warn2; // [crispy] warn about invalid linedefs
 
     numlines = W_LumpLength(lump) / sizeof(maplinedef_t);
@@ -671,10 +671,10 @@ void P_LoadLineDefs(int lump)
 //
 void P_LoadSideDefs(int lump)
 {
-    byte *        data;
+    byte         *data;
     int           i;
     mapsidedef_t *msd;
-    side_t *      sd;
+    side_t       *sd;
 
     numsides = W_LumpLength(lump) / sizeof(mapsidedef_t);
     sides    = zmalloc<decltype(sides)>(numsides * sizeof(side_t), PU_LEVEL, 0);
@@ -763,13 +763,13 @@ boolean P_LoadBlockMap(int lump)
 //
 void P_GroupLines()
 {
-    line_t **    linebuffer;
+    line_t     **linebuffer;
     int          i;
     int          j;
-    line_t *     li;
-    sector_t *   sector;
+    line_t      *li;
+    sector_t    *sector;
     subsector_t *ss;
-    seg_t *      seg;
+    seg_t       *seg;
     fixed_t      bbox[4];
     int          block;
 
@@ -886,7 +886,7 @@ static void P_RemoveSlimeTrails()
     for (i = 0; i < numsegs; i++)
     {
         const line_t *l = segs[i].linedef;
-        vertex_t *    v = segs[i].v1;
+        vertex_t     *v = segs[i].v1;
 
         // [crispy] ignore exactly vertical or horizontal linedefs
         if (l->dx && l->dy)
@@ -933,7 +933,7 @@ static void PadRejectArray(byte *array, unsigned int len)
 {
     unsigned int i;
     unsigned int byte_num;
-    byte *       dest;
+    byte        *dest;
     unsigned int padvalue;
 
     // Values to pad the REJECT array with:
@@ -1135,18 +1135,18 @@ void P_SetupLevel(int episode,
     // find map name
     if ( gamemode == commercial)
     {
-	if (map<10)
-	    DEH_snprintf(lumpname, 9, "map0%i", map);
-	else
-	    DEH_snprintf(lumpname, 9, "map%i", map);
+        if (map<10)
+            DEH_snprintf(lumpname, 9, "map0%i", map);
+        else
+            DEH_snprintf(lumpname, 9, "map%i", map);
     }
     else
     {
-	lumpname[0] = 'E';
-	lumpname[1] = '0' + episode;
-	lumpname[2] = 'M';
-	lumpname[3] = '0' + map;
-	lumpname[4] = 0;
+        lumpname[0] = 'E';
+        lumpname[1] = '0' + episode;
+        lumpname[2] = 'M';
+        lumpname[3] = '0' + map;
+        lumpname[4] = 0;
     }
 
     lumpnum = W_GetNumForName (lumpname);
@@ -1260,7 +1260,7 @@ void P_SetupLevel(int episode,
     if (precache)
         R_PrecacheLevel();
 
-    //printf ("free memory: 0x%x\n", Z_FreeMemory());
+    // printf ("free memory: 0x%x\n", Z_FreeMemory());
 }
 
 // [crispy] height of the spawnstate's first sprite in pixels
@@ -1270,11 +1270,11 @@ static void P_InitActualHeights()
 
     for (i = 0; i < NUMMOBJTYPES; i++)
     {
-        state_t *      state;
-        spritedef_t *  sprdef;
+        state_t       *state;
+        spritedef_t   *sprdef;
         spriteframe_t *sprframe;
         int            lump;
-        patch_t *      patch;
+        patch_t       *patch;
 
         state  = &states[mobjinfo[i].spawnstate];
         sprdef = &sprites[state->sprite];

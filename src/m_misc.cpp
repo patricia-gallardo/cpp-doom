@@ -435,7 +435,7 @@ char *M_StringDuplicate(const char *orig)
 char *M_StringReplace(const char *haystack, const char *needle,
     const char *replacement)
 {
-    char *      result, *dst;
+    char       *result, *dst;
     const char *p;
     size_t      needle_len = strlen(needle);
     size_t      result_len, dst_len;
@@ -551,7 +551,7 @@ boolean M_StringEndsWith(const char *s, const char *suffix)
 
 char *M_StringJoin(const char *s, ...)
 {
-    char *      result;
+    char       *result;
     const char *v;
     va_list     args;
     size_t      result_len;
@@ -646,8 +646,8 @@ int M_snprintf(char *buf, size_t buf_len, const char *s, ...)
 char *M_OEMToUTF8(const char *oem)
 {
     unsigned int len = strlen(oem) + 1;
-    wchar_t *    tmp;
-    char *       result;
+    wchar_t     *tmp;
+    char        *result;
 
     tmp = static_cast<wchar_t *>(malloc(len * sizeof(wchar_t)));
     MultiByteToWideChar(CP_OEMCP, 0, oem, len, tmp, len);

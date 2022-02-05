@@ -132,16 +132,16 @@ int extrakills;                          // [crispy] count spawned monsters
 int totalleveltimes;                     // [crispy] CPhipps - total time for all completed levels
 int demostarttic;                        // [crispy] fix revenant internal demo bug
 
-char *  demoname;
-char *  orig_demoname; // [crispy] the name originally chosen for the demo, i.e. without "-00000"
+char   *demoname;
+char   *orig_demoname; // [crispy] the name originally chosen for the demo, i.e. without "-00000"
 boolean demorecording;
 boolean longtics;    // cph's doom 1.91 longtics hack
 boolean lowres_turn; // low resolution turning for longtics
 boolean demoplayback;
 boolean netdemo;
-byte *  demobuffer;
-byte *  demo_p;
-byte *  demoend;
+byte   *demobuffer;
+byte   *demo_p;
+byte   *demoend;
 boolean singledemo; // quit after playing a demo from cmdline
 
 boolean precache = true; // if true, load all graphics at start
@@ -547,10 +547,10 @@ void G_BuildTiccmd(ticcmd_t *cmd, int maketic)
         else
             // [crispy] keyboard lookspring
             if (gamekeydown[key_lookcenter] || (crispy->freelook == FREELOOK_SPRING && kbdlookctrl))
-        {
-            look        = TOCENTER;
-            kbdlookctrl = 0;
-        }
+            {
+                look        = TOCENTER;
+                kbdlookctrl = 0;
+            }
     }
 
     // [crispy] jump keys
@@ -695,13 +695,13 @@ void G_BuildTiccmd(ticcmd_t *cmd, int maketic)
         else
             // [crispy] released
             if (mbmlookctrl)
-        {
-            if (crispy->freelook == FREELOOK_SPRING || mbmlookctrl < SLOWTURNTICS) // [crispy] short click
             {
-                look = TOCENTER;
+                if (crispy->freelook == FREELOOK_SPRING || mbmlookctrl < SLOWTURNTICS) // [crispy] short click
+                {
+                    look = TOCENTER;
+                }
+                mbmlookctrl = 0;
             }
-            mbmlookctrl = 0;
-        }
     }
 
     if (strafe)
@@ -1208,7 +1208,7 @@ void G_Ticker()
                     else
                         // [crispy] Fixed bug when music was hearable with zero volume
                         if (musicVolume)
-                        S_ResumeSound();
+                            S_ResumeSound();
                     break;
 
                 case BTS_SAVEGAME:
@@ -1372,7 +1372,7 @@ boolean
     fixed_t      x;
     fixed_t      y;
     subsector_t *ss;
-    mobj_t *     mo;
+    mobj_t      *mo;
     int          i;
 
     if (!players[playernum].mo)
@@ -1667,20 +1667,20 @@ void G_DoCompleted()
     /*
 //#if 0  Hmmm - why?
     if ( (gamemap == 8)
-	 && (gamemode != commercial) ) 
+         && (gamemode != commercial) )
     {
-	// victory 
-	gameaction = ga_victory; 
-	return; 
-    } 
-	 
+        // victory
+        gameaction = ga_victory;
+        return;
+    }
+
     if ( (gamemap == 9)
-	 && (gamemode != commercial) ) 
+         && (gamemode != commercial) )
     {
-	// exit secret level 
-	for (i=0 ; i<MAXPLAYERS ; i++) 
-	    players[i].didsecret = true; 
-    } 
+        // exit secret level
+        for (i=0 ; i<MAXPLAYERS ; i++)
+            players[i].didsecret = true;
+    }
 //#endif
 */
 
@@ -1976,9 +1976,9 @@ void G_DoLoadGame()
         else
             // [crispy] strings are equal, but not identical
             if (savewadfilename != W_WadNameForLump(savemaplumpinfo))
-        {
-            free(savewadfilename);
-        }
+            {
+                free(savewadfilename);
+            }
     }
     savewadfilename = NULL;
 
@@ -2042,7 +2042,7 @@ void G_DoLoadGame()
 // Description is a 24 byte text string
 //
 void G_SaveGame(int slot,
-    char *          description)
+    char           *description)
 {
     savegameslot = slot;
     M_StringCopy(savedescription, description, sizeof(savedescription));
@@ -2229,17 +2229,17 @@ void G_InitNew(skill_t skill,
     if ( gamemode == retail )
     {
       if (episode > 4)
-	episode = 4;
+        episode = 4;
     }
     else if ( gamemode == shareware )
     {
       if (episode > 1)
-	   episode = 1;	// only start episode 1 on shareware
+           episode = 1;	// only start episode 1 on shareware
     }
     else
     {
       if (episode > 3)
-	episode = 3;
+        episode = 3;
     }
     */
 
@@ -2523,9 +2523,9 @@ void G_WriteDemoTiccmd(ticcmd_t *cmd)
         /*
         if (vanilla_demo_limit)
         {
-            // no more space 
-            G_CheckDemoStatus (); 
-            return; 
+            // no more space
+            G_CheckDemoStatus ();
+            return;
         }
         else
         */
@@ -2552,7 +2552,7 @@ void G_RecordDemo(char *name)
 
     // [crispy] demo file name suffix counter
     static unsigned int j  = 0;
-    FILE *              fp = NULL;
+    FILE               *fp = NULL;
 
     // [crispy] the name originally chosen for the demo, i.e. without "-00000"
     if (!orig_demoname)
@@ -2883,14 +2883,14 @@ void G_TimeDemo(char *name)
 }
 
 
-/* 
-=================== 
-= 
-= G_CheckDemoStatus 
-= 
-= Called after a death or level completion to allow demos to be cleaned up 
-= Returns true if a new demo loop action will take place 
-=================== 
+/*
+===================
+=
+= G_CheckDemoStatus
+=
+= Called after a death or level completion to allow demos to be cleaned up
+= Returns true if a new demo loop action will take place
+===================
 */
 
 boolean G_CheckDemoStatus()

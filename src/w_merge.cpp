@@ -31,8 +31,7 @@
 #include "w_wad.hpp"
 #include "z_zone.hpp"
 
-using section_t = enum
-{
+using section_t = enum {
     SECTION_NORMAL,
     SECTION_FLATS,
     SECTION_SPRITES,
@@ -724,8 +723,8 @@ void W_NWTDashMerge(const char *filename)
 // [crispy] dump merged WAD data into a new IWAD file
 int W_MergeDump(const char *file)
 {
-    FILE *   fp     = NULL;
-    char *   lump_p = NULL;
+    FILE    *fp     = NULL;
+    char    *lump_p = NULL;
     uint32_t i, dir_p;
 
     // [crispy] WAD directory structure

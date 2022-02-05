@@ -56,7 +56,7 @@ static void *DEH_WeaponStart(deh_context_t *context, char *line)
 
 static void DEH_WeaponParseLine(deh_context_t *context, char *line, void *tag)
 {
-    char *        variable_name, *value;
+    char         *variable_name, *value;
     weaponinfo_t *weapon;
     int           ivalue;
 

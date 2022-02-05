@@ -22,8 +22,7 @@
 #ifndef __P_EXTNODES__
 #define __P_EXTNODES__
 
-using mapformat_t = enum
-{
+using mapformat_t = enum {
     MFMT_DOOMBSP = 0x000,
     MFMT_DEEPBSP = 0x001,
     MFMT_ZDBSPX  = 0x002,

@@ -54,7 +54,7 @@ static void TXT_SeparatorDrawer(TXT_UNCAST_ARG(separator))
     // Draw separator.  Go back one character and draw two extra
     // to overlap the window borders.
 
-    TXT_DrawSeparator(x-2, y, w + 4);
+    TXT_DrawSeparator(x - 2, y, w + 4);
 
     if (separator->label != NULL)
     {
@@ -88,8 +88,7 @@ void TXT_SetSeparatorLabel(txt_separator_t *separator, const char *label)
     }
 }
 
-txt_widget_class_t txt_separator_class =
-{
+txt_widget_class_t txt_separator_class = {
     TXT_NeverSelectable,
     TXT_SeparatorSizeCalc,
     TXT_SeparatorDrawer,
@@ -110,4 +109,3 @@ txt_separator_t *TXT_NewSeparator(const char *label)
 
     return separator;
 }
-

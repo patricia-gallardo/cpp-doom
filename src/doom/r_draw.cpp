@@ -54,7 +54,7 @@
 //
 
 
-byte *   viewimage;
+byte    *viewimage;
 int      viewwidth;
 int      scaledviewwidth;
 int      viewheight;
@@ -775,7 +775,7 @@ int ds_x1;
 int ds_x2;
 
 lighttable_t *ds_colormap[2];
-byte *        ds_brightmap;
+byte         *ds_brightmap;
 
 fixed_t ds_xfrac;
 fixed_t ds_yfrac;
@@ -794,7 +794,7 @@ int dscount;
 void R_DrawSpan()
 {
     //  unsigned int position, step;
-    pixel_t *    dest;
+    pixel_t     *dest;
     int          count;
     int          spot;
     unsigned int xtemp, ytemp;
@@ -931,7 +931,7 @@ void R_DrawSpanLow()
 {
     //  unsigned int position, step;
     unsigned int xtemp, ytemp;
-    pixel_t *    dest;
+    pixel_t     *dest;
     int          count;
     int          spot;
 
@@ -1028,7 +1028,7 @@ void R_InitBuffer(int width,
 //
 void R_FillBackScreen()
 {
-    byte *   src;
+    byte    *src;
     pixel_t *dest;
     int      x;
     int      y;
