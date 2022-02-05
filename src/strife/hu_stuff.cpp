@@ -59,18 +59,17 @@
 #define HU_INPUTWIDTH   64
 #define HU_INPUTHEIGHT  1
 
-char *chat_macros[10] =
-{
-    HUSTR_CHATMACRO0,
-    HUSTR_CHATMACRO1,
-    HUSTR_CHATMACRO2,
-    HUSTR_CHATMACRO3,
-    HUSTR_CHATMACRO4,
-    HUSTR_CHATMACRO5,
-    HUSTR_CHATMACRO6,
-    HUSTR_CHATMACRO7,
-    HUSTR_CHATMACRO8,
-    HUSTR_CHATMACRO9
+char *chat_macros[10] = {
+    const_cast<char *>(HUSTR_CHATMACRO0),
+    const_cast<char *>(HUSTR_CHATMACRO1),
+    const_cast<char *>(HUSTR_CHATMACRO2),
+    const_cast<char *>(HUSTR_CHATMACRO3),
+    const_cast<char *>(HUSTR_CHATMACRO4),
+    const_cast<char *>(HUSTR_CHATMACRO5),
+    const_cast<char *>(HUSTR_CHATMACRO6),
+    const_cast<char *>(HUSTR_CHATMACRO7),
+    const_cast<char *>(HUSTR_CHATMACRO8),
+    const_cast<char *>(HUSTR_CHATMACRO9)
 };
 
 // villsa [STRIFE]

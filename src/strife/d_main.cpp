@@ -918,7 +918,7 @@ void DoTimeBomb(void)
 
 void D_SetGameDescription(void)
 {
-    gamedescription = GetGameName("Strife: Quest for the Sigil");
+    gamedescription = GetGameName(const_cast<char *>("Strife: Quest for the Sigil"));
 }
 
 //      print title for every printed line
