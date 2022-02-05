@@ -1,4 +1,5 @@
 BasedOnStyle: WebKit
+ColumnLimit: '0'
 AlignOperands: true
 AllowShortCaseLabelsOnASingleLine: true
 AllowShortFunctionsOnASingleLine: None
@@ -22,4 +23,3 @@ AlignConsecutiveAssignments: true
 AlignConsecutiveDeclarations: true
 AlignConsecutiveMacros: true
 AlignTrailingComments: true
-ColumnLimit: '0'
