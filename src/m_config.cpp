@@ -2732,13 +2732,13 @@ static char *GetDefaultConfigDir(void)
 // files are stored - default.cfg, chocolate-doom.cfg, savegames, etc.
 //
 
-void M_SetConfigDir(char *dir)
+void M_SetConfigDir(const char *dir)
 {
     // Use the directory that was passed, or find the default.
 
     if (dir != NULL)
     {
-        configdir = dir;
+        configdir = const_cast<char *>(dir);
     }
     else
     {

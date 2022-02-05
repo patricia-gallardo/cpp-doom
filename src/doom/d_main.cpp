@@ -1717,7 +1717,7 @@ void D_DoomMain(void)
     {
         printf(D_CDROM);
 
-        M_SetConfigDir(const_cast<char *>("c:\\doomdata\\"));
+        M_SetConfigDir("c:\\doomdata\\");
     }
     else
 #endif
