@@ -147,7 +147,7 @@ extern boolean speedkeydown();
 //
 // MENU TYPEDEFS
 //
-typedef struct
+using menuitem_t = struct
 {
     // 0 = no cursor here, 1 = ok, 2 = arrows ok
     short status;
@@ -162,10 +162,10 @@ typedef struct
     // hotkey in menu
     char  alphaKey;
     char *alttext; // [crispy] alternative text for the Options menu
-} menuitem_t;
+};
 
 
-typedef struct menu_s {
+using menu_t = struct menu_s {
     short          numitems;  // # of menu items
     struct menu_s *prevMenu;  // previous menu
     menuitem_t *   menuitems; // menu items
@@ -173,7 +173,7 @@ typedef struct menu_s {
     short x;
     short y;      // x,y of menu
     short lastOn; // last item user was on in menu
-} menu_t;
+};
 
 short itemOn;           // menu item skull is on
 short skullAnimCounter; // skull animation counter

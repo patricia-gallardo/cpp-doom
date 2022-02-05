@@ -95,27 +95,27 @@
 // the following is crap
 #define LINE_NEVERSEE ML_DONTDRAW
 
-typedef struct
+using fpoint_t = struct
 {
     int x, y;
-} fpoint_t;
+};
 
-typedef struct
+using fline_t = struct
 {
     fpoint_t a, b;
-} fline_t;
+};
 
-typedef vertex_t mpoint_t;
+using mpoint_t = vertex_t;
 
-typedef struct
+using mline_t = struct
 {
     mpoint_t a, b;
-} mline_t;
+};
 
-typedef struct
+using islope_t = struct
 {
     fixed_t slp, islp;
-} islope_t;
+};
 
 // extern int f_x, f_y, f_w, f_h;
 

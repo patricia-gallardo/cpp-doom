@@ -42,11 +42,11 @@
 
 // The complete set of data for a particular tic.
 
-typedef struct
+using ticcmd_set_t = struct
 {
     ticcmd_t cmds[NET_MAXPLAYERS];
     boolean  ingame[NET_MAXPLAYERS];
-} ticcmd_set_t;
+};
 
 // Maximum time that we wait in TryRunTics() for netgame data to be
 // received before we bail out and render a frame anyway.

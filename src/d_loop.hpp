@@ -25,10 +25,9 @@
 // The callback is invoked when new players are ready. The callback
 // should return true, or return false to abort startup.
 
-typedef boolean (*netgame_startup_callback_t)(int ready_players,
-    int                                           num_players);
+using netgame_startup_callback_t = boolean (*)(int, int);
 
-typedef struct
+using loop_interface_t = struct
 {
     // Read events from the event queue, and process them.
 
@@ -46,7 +45,7 @@ typedef struct
     // Run the menu (runs independently of the game).
 
     void (*RunMenu)();
-} loop_interface_t;
+};
 
 // Register callback functions for the main loop code to use.
 void D_RegisterLoopCallbacks(loop_interface_t *i);

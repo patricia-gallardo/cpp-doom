@@ -52,7 +52,7 @@
 #define MIN_RAM     4 * 4  /* MiB [crispy] */
 
 
-typedef struct atexit_listentry_s atexit_listentry_t;
+using atexit_listentry_t = struct atexit_listentry_s;
 
 struct atexit_listentry_s {
     atexit_func_t       func;

@@ -58,7 +58,7 @@
 
 //================ used by play and refresh
 
-typedef struct
+using vertex_t = struct
 {
     fixed_t x, y;
 
@@ -69,11 +69,11 @@ typedef struct
     fixed_t	r_x;
     fixed_t	r_y;
     boolean	moved;
-} vertex_t;
+};
 
 struct line_s;
 
-typedef struct
+using sector_t = struct
 {
     fixed_t floorheight, ceilingheight;
     short floorpic, ceilingpic;
@@ -91,20 +91,20 @@ typedef struct
     void *specialdata;          // thinker_t for reversable actions
     int linecount;
     struct line_s **lines;      // [linecount] size
-} sector_t;
+};
 
-typedef struct
+using side_t = struct
 {
     fixed_t textureoffset;      // add this to the calculated texture col
     fixed_t rowoffset;          // add this to the calculated texture top
     short toptexture, bottomtexture, midtexture;
     sector_t *sector;
-} side_t;
+};
 
-typedef enum
-{ ST_HORIZONTAL, ST_VERTICAL, ST_POSITIVE, ST_NEGATIVE } slopetype_t;
+using slopetype_t = enum
+{ ST_HORIZONTAL, ST_VERTICAL, ST_POSITIVE, ST_NEGATIVE };
 
-typedef struct line_s
+using line_t = struct line_s
 {
     vertex_t *v1, *v2;
     fixed_t dx, dy;             // v2 - v1 for side checking
@@ -116,17 +116,17 @@ typedef struct line_s
     sector_t *frontsector, *backsector;
     int validcount;             // if == validcount, already checked
     void *specialdata;          // thinker_t for reversable actions
-} line_t;
+};
 
 
-typedef struct subsector_s
+using subsector_t = struct subsector_s
 {
     sector_t *sector;
     short numlines;
     short firstline;
-} subsector_t;
+};
 
-typedef struct
+using seg_t = struct
 {
     vertex_t *v1, *v2;
     fixed_t offset;
@@ -135,14 +135,14 @@ typedef struct
     line_t *linedef;
     sector_t *frontsector;
     sector_t *backsector;       // NULL for one sided lines
-} seg_t;
+};
 
-typedef struct
+using node_t = struct
 {
     fixed_t x, y, dx, dy;       // partition line
     fixed_t bbox[2][4];         // bounding box for each child
     unsigned short children[2]; // if NF_SUBSECTOR its a subsector
-} node_t;
+};
 
 
 /*
@@ -153,12 +153,12 @@ typedef struct
 ==============================================================================
 */
 
-typedef byte lighttable_t;      // this could be wider for >8 bit display
+using lighttable_t = byte;      // this could be wider for >8 bit display
 
 #define	MAXVISPLANES	128
 #define	MAXOPENINGS		MAXWIDTH*64*4
 
-typedef struct
+using visplane_t = struct
 {
     fixed_t height;
     int picnum;
@@ -171,9 +171,9 @@ typedef struct
     unsigned int pad3;                    // [crispy] hires / 32-bit integer math
     unsigned int bottom[MAXWIDTH];     // [crispy] hires / 32-bit integer math
     unsigned int pad4;                    // [crispy] hires / 32-bit integer math
-} visplane_t;
+};
 
-typedef struct drawseg_s
+using drawseg_t = struct drawseg_s
 {
     seg_t *curline;
     int x1, x2;
@@ -185,7 +185,7 @@ typedef struct drawseg_s
     int *sprtopclip;            // [crispy] 32-bit integer math
     int *sprbottomclip;         // [crispy] 32-bit integer math
     int *maskedtexturecol;      // [crispy] 32-bit integer math
-} drawseg_t;
+};
 
 #define	SIL_NONE	0
 #define	SIL_BOTTOM	1
@@ -195,7 +195,7 @@ typedef struct drawseg_s
 #define	MAXDRAWSEGS		256
 
 // A vissprite_t is a thing that will be drawn during a refresh
-typedef struct vissprite_s
+using vissprite_t = struct vissprite_s
 {
     struct vissprite_s *prev, *next;
     int x1, x2;
@@ -210,7 +210,7 @@ typedef struct vissprite_s
     int mobjflags;              // for color translation and shadow draw
     boolean psprite;            // true if psprite
     fixed_t footclip;           // foot clipping
-} vissprite_t;
+};
 
 
 extern visplane_t *floorplane, *ceilingplane;
@@ -223,18 +223,18 @@ extern visplane_t *floorplane, *ceilingplane;
 // is used to save space. Some sprites will only have one picture used
 // for all views.  
 
-typedef struct
+using spriteframe_t = struct
 {
     boolean rotate;             // if false use 0 for any position
     short lump[8];              // lump to use for view angles 0-7
     byte flip[8];               // flip (1 = flip) to use for view angles 0-7
-} spriteframe_t;
+};
 
-typedef struct
+using spritedef_t = struct
 {
     int numframes;
     spriteframe_t *spriteframes;
-} spritedef_t;
+};
 
 extern spritedef_t *sprites;
 extern int numsprites;
@@ -338,7 +338,7 @@ extern int numdrawsegs;
 
 extern lighttable_t **hscalelight, **vscalelight, **dscalelight;
 
-typedef void (*drawfunc_t) (int start, int stop);
+using drawfunc_t = void (*)(int, int);
 void R_ClearClipSegs();
 
 void R_ClearDrawSegs();
@@ -356,7 +356,7 @@ void R_RenderMaskedSegRange(drawseg_t * ds, int x1, int x2);
 //
 // R_plane.c
 //
-typedef void (*planefunction_t) (int top, int bottom);
+using planefunction_t = void (*)(int, int);
 extern planefunction_t floorfunc, ceilingfunc;
 
 extern int skyflatnum;

@@ -61,7 +61,7 @@
 #define MELEERANGE (64*FRACUNIT)
 #define MISSILERANGE (32*64*FRACUNIT)
 
-typedef enum
+using dirtype_t = enum
 {
     DI_EAST,
     DI_NORTHEAST,
@@ -73,7 +73,7 @@ typedef enum
     DI_SOUTHEAST,
     DI_NODIR,
     NUMDIRS
-} dirtype_t;
+};
 
 #define BASETHRESHOLD 100       // follow a player exlusively for 3 seconds
 
@@ -185,10 +185,10 @@ void A_DeQueueCorpse(mobj_t * actor);
 
 // ***** P_MAPUTL *****
 
-typedef struct
+using divline_t = struct
 {
     fixed_t x, y, dx, dy;
-} divline_t;
+};
 
 typedef struct
 {
@@ -203,7 +203,7 @@ typedef struct
 
 #define MAXINTERCEPTS   128
 extern intercept_t intercepts[MAXINTERCEPTS], *intercept_p;
-typedef boolean(*traverser_t) (intercept_t * in);
+using traverser_t = boolean (*)(intercept_t *);
 
 
 fixed_t P_AproxDistance(fixed_t dx, fixed_t dy);
@@ -314,14 +314,14 @@ void SB_PaletteFlash(boolean forceChange);
 
 // ===== PO_MAN =====
 
-typedef enum
+using podoortype_t = enum
 {
     PODOOR_NONE,
     PODOOR_SLIDE,
     PODOOR_SWING,
-} podoortype_t;
+};
 
-typedef struct polyevent_s
+using polyevent_t = struct polyevent_s
 {
     thinker_t thinker;
     int polyobj;
@@ -330,9 +330,9 @@ typedef struct polyevent_s
     int angle;
     fixed_t xSpeed;             // for sliding walls
     fixed_t ySpeed;
-} polyevent_t;
+};
 
-typedef struct polydoor_s
+using polydoor_t = struct polydoor_s
 {
     thinker_t thinker;
     int polyobj;
@@ -345,7 +345,7 @@ typedef struct polydoor_s
     int waitTics;
     podoortype_t type;
     boolean close;
-} polydoor_t;
+};
 
 enum
 {

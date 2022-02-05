@@ -108,27 +108,27 @@
 #define DM_VICTIMSY 50
 
 
-typedef enum
+using animenum_t = enum
 {
     ANIM_ALWAYS,
     ANIM_RANDOM,
     ANIM_LEVEL
 
-} animenum_t;
+};
 
-typedef struct
+using point_t = struct
 {
     int x;
     int y;
 
-} point_t;
+};
 
 
 //
 // Animation.
 // There is another anim_t used in p_spec.
 //
-typedef struct
+using anim_t = struct
 {
     animenum_t type;
 
@@ -168,7 +168,7 @@ typedef struct
     // used by RANDOM and LEVEL when animating
     int state;
 
-} anim_t;
+};
 
 
 static point_t lnodes[NUMEPISODES][NUMMAPS] = {
@@ -1668,7 +1668,7 @@ void WI_Ticker()
     }
 }
 
-typedef void (*load_callback_t)(const char *lumpname, patch_t **variable);
+using load_callback_t = void (*)(const char *, patch_t **);
 
 // Common load/unload function.  Iterates over all the graphics
 // lumps to be loaded/unloaded into memory.

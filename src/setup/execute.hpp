@@ -18,7 +18,7 @@
 #include "doomtype.hpp"
 #include "textscreen.hpp"
 
-typedef struct execute_context_s execute_context_t;
+using execute_context_t = struct execute_context_s;
 
 #define IWAD_DOOM2    (1 << 0)       /* doom2.wad */
 #define IWAD_PLUTONIA (1 << 1)       /* plutonia.wad */

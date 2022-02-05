@@ -55,7 +55,7 @@
 
 // TYPES -------------------------------------------------------------------
 
-typedef struct mapInfo_s mapInfo_t;
+using mapInfo_t = struct mapInfo_s;
 struct mapInfo_s
 {
     short cluster;

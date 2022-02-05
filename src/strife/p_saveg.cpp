@@ -1849,12 +1849,12 @@ void P_UnArchiveWorld ()
 //
 // Thinkers
 //
-typedef enum
+using thinkerclass_t = enum
 {
     tc_end,
     tc_mobj
 
-} thinkerclass_t;
+};
 
 
 //

@@ -25,7 +25,7 @@
 
 
 // Weapon info: sprite frames, ammunition use.
-typedef struct
+using weaponinfo_t = struct
 {
     ammotype_t ammo;
     statenum_t upstate;
@@ -35,7 +35,7 @@ typedef struct
     statenum_t flashstate;
     boolean    availabledemo; // villsa [STRIFE]
 
-} weaponinfo_t;
+};
 
 extern  weaponinfo_t    weaponinfo[NUMWEAPONS];
 

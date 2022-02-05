@@ -31,12 +31,12 @@
 #include "v_video.hpp"
 #include "lump.hpp"
 
-typedef enum
+using gametype_t = enum
 {
     SINGLE,
     COOPERATIVE,
     DEATHMATCH
-} gametype_t;
+};
 
 // Public functions
 

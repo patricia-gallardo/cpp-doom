@@ -25,10 +25,10 @@
 
 #include "dstrings.hpp"
 
-typedef struct {
+using bex_string_t = struct {
     const char *macro;
     const char *string;
-} bex_string_t;
+};
 
 // mnemonic keys table
 static const bex_string_t bex_stringtable[] = {

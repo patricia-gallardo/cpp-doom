@@ -47,7 +47,7 @@ extern lighttable_t**	vscalelight;
 extern lighttable_t**	dscalelight;
 
 
-typedef void (*drawfunc_t) (int start, int stop);
+using drawfunc_t = void (*)(int, int);
 
 
 // BSP?

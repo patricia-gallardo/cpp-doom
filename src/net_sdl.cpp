@@ -43,11 +43,11 @@ static int        port    = DEFAULT_PORT;
 static UDPsocket  udpsocket;
 static UDPpacket *recvpacket;
 
-typedef struct
+using addrpair_t = struct
 {
     net_addr_t net_addr;
     IPaddress  sdl_addr;
-} addrpair_t;
+};
 
 static addrpair_t **addr_table;
 static int          addr_table_size = -1;

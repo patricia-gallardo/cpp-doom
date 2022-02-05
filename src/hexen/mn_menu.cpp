@@ -44,16 +44,16 @@
 
 // TYPES -------------------------------------------------------------------
 
-typedef enum
+using ItemType_t = enum
 {
     ITT_EMPTY,
     ITT_EFUNC,
     ITT_LRFUNC,
     ITT_SETMENU,
     ITT_INERT
-} ItemType_t;
+};
 
-typedef enum
+using MenuType_t = enum
 {
     MENU_MAIN,
     MENU_CLASS,
@@ -64,18 +64,18 @@ typedef enum
     MENU_LOAD,
     MENU_SAVE,
     MENU_NONE
-} MenuType_t;
+};
 
-typedef struct
+using MenuItem_t = struct
 {
     ItemType_t type;
     const char *text;
     void (*func) (int option);
     int option;
     MenuType_t menu;
-} MenuItem_t;
+};
 
-typedef struct
+using Menu_t = struct
 {
     int x;
     int y;
@@ -84,7 +84,7 @@ typedef struct
     MenuItem_t *items;
     int oldItPos;
     MenuType_t prevMenu;
-} Menu_t;
+};
 
 // EXTERNAL FUNCTION PROTOTYPES --------------------------------------------
 

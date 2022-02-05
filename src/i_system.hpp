@@ -24,7 +24,7 @@
 #include "d_event.hpp"
 
 
-typedef void (*atexit_func_t)();
+using atexit_func_t = void (*)();
 
 // Called by DoomMain.
 void I_Init();

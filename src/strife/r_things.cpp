@@ -49,16 +49,16 @@
 
 
 
-typedef struct
+using maskdraw_t = struct
 {
     int		x1;
     int		x2;
-	
+
     int		column;
     int		topclip;
     int		bottomclip;
 
-} maskdraw_t;
+};
 
 
 

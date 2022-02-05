@@ -23,11 +23,11 @@
 #include "memory.hpp"
 #include "z_zone.hpp"
 
-typedef enum
+using memfile_mode_t = enum
 {
     MODE_READ,
     MODE_WRITE,
-} memfile_mode_t;
+};
 
 struct _MEMFILE {
     unsigned char *buf;

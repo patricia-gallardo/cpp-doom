@@ -59,7 +59,7 @@
 #define	MELEERANGE (64*FRACUNIT)
 #define	MISSILERANGE (32*64*FRACUNIT)
 
-typedef enum
+using dirtype_t = enum
 {
     DI_EAST,
     DI_NORTHEAST,
@@ -71,7 +71,7 @@ typedef enum
     DI_SOUTHEAST,
     DI_NODIR,
     NUMDIRS
-} dirtype_t;
+};
 
 #define BASETHRESHOLD 100       // follow a player exlusively for 3 seconds
 
@@ -184,7 +184,7 @@ typedef struct
 
 #define	MAXINTERCEPTS	128
 extern intercept_t intercepts[MAXINTERCEPTS], *intercept_p;
-typedef boolean(*traverser_t) (intercept_t * in);
+using traverser_t = boolean (*)(intercept_t *);
 
 
 fixed_t P_AproxDistance(fixed_t dx, fixed_t dy);

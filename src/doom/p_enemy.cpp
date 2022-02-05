@@ -39,7 +39,7 @@
 #include "sounds.hpp"
 
 
-typedef enum
+using dirtype_t = enum
 {
     DI_EAST,
     DI_NORTHEAST,
@@ -52,7 +52,7 @@ typedef enum
     DI_NODIR,
     NUMDIRS
 
-} dirtype_t;
+};
 
 
 //

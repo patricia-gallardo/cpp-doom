@@ -123,13 +123,13 @@ static const int healthamounts[] = { -100 , -75, -50, -50, -100 };
 // their dialog sequences.
 //
 
-typedef struct dialogstateset_s
+using dialogstateset_t = struct dialogstateset_s
 {
     mobjtype_t type;  // the type of object
     statenum_t greet; // greeting state, for start of dialog
     statenum_t yes;   // "yes" state, for an affirmative response
     statenum_t no;    // "no" state, when you don't have the right items
-} dialogstateset_t;
+};
 
 static dialogstateset_t dialogstatesets[] =
 {
@@ -156,12 +156,12 @@ static dialogstateset_t *dialogtalkerstates;
 
 #define MAXRNDMESSAGES 10
 
-typedef struct rndmessage_s
+using rndmessage_t = struct rndmessage_s
 {
     const char *type_name;
     int nummessages;
     const char *messages[MAXRNDMESSAGES];
-} rndmessage_t;
+};
 
 static rndmessage_t rndMessages[] = 
 {

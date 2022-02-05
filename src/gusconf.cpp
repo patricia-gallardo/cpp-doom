@@ -33,13 +33,13 @@
 
 #define MAX_INSTRUMENTS 256
 
-typedef struct
+using gus_config_t = struct
 {
     char *       patch_names[MAX_INSTRUMENTS];
     int          used[MAX_INSTRUMENTS];
     int          mapping[MAX_INSTRUMENTS];
     unsigned int count;
-} gus_config_t;
+};
 
 char *gus_patch_path = const_cast<char *>("");
 int   gus_ram_kb     = 1024;

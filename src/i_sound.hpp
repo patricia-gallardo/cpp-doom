@@ -28,7 +28,7 @@
 //
 // SoundFX struct.
 //
-typedef struct sfxinfo_struct sfxinfo_t;
+using sfxinfo_t = struct sfxinfo_struct;
 
 struct sfxinfo_struct {
     // tag name, used for hexen.
@@ -70,7 +70,7 @@ struct sfxinfo_struct {
 //
 // MusicInfo struct.
 //
-typedef struct
+using musicinfo_t = struct
 {
     // up to 6-character name
     const char *name;
@@ -84,7 +84,7 @@ typedef struct
     // music handle once registered
     void *handle;
 
-} musicinfo_t;
+};
 
 enum snddevice_t : int
 {
@@ -103,7 +103,7 @@ enum snddevice_t : int
 
 // Interface for sound modules
 
-typedef struct
+using sound_module_t = struct
 {
     // List of sound devices that this sound module is used for.
 
@@ -148,7 +148,7 @@ typedef struct
 
     void (*CacheSounds)(sfxinfo_t *sounds, int num_sounds);
 
-} sound_module_t;
+};
 
 void    I_InitSound(boolean use_sfx_prefix);
 void    I_ShutdownSound();
@@ -162,7 +162,7 @@ void    I_PrecacheSounds(sfxinfo_t *sounds, int num_sounds);
 
 // Interface for music modules
 
-typedef struct
+using music_module_t = struct
 {
     // List of sound devices that this music module is used for.
 
@@ -213,7 +213,7 @@ typedef struct
     // Invoked periodically to poll.
 
     void (*Poll)();
-} music_module_t;
+};
 
 void    I_InitMusic();
 void    I_ShutdownMusic();
@@ -237,12 +237,12 @@ extern int         snd_pitchshift;
 void I_BindSoundVariables();
 
 // DMX version to emulate for OPL emulation:
-typedef enum
+using opl_driver_ver_t = enum
 {
     opl_doom1_1_666, // Doom 1 v1.666
     opl_doom2_1_666, // Doom 2 v1.666, Hexen, Heretic
     opl_doom_1_9     // Doom v1.9, Strife
-} opl_driver_ver_t;
+};
 
 void I_SetOPLDriverVer(opl_driver_ver_t ver);
 

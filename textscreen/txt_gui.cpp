@@ -23,7 +23,7 @@
 
 #include <new>
 
-typedef struct txt_cliparea_s txt_cliparea_t;
+using txt_cliparea_t = struct txt_cliparea_s;
 
 struct txt_cliparea_s
 {

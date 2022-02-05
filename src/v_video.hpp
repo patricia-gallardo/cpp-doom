@@ -43,7 +43,7 @@ extern boolean dp_translucent;
 // haleyjd 08/28/10: implemented for Strife support
 // haleyjd 08/28/10: Patch clipping callback, implemented to support Choco
 // Strife.
-typedef boolean (*vpatchclipfunc_t)(patch_t *, int, int);
+using vpatchclipfunc_t = boolean (*)(patch_t *, int, int);
 void V_SetPatchClipCallback(vpatchclipfunc_t func);
 
 
