@@ -1154,7 +1154,7 @@ boolean MN_Responder(event_t * event)
     MenuItem_t *item;
     extern boolean automapactive;
     extern void H2_StartTitle(void);
-    extern void G_CheckDemoStatus(void);
+    extern boolean G_CheckDemoStatus(void);
     char *textBuffer;
 
     // In testcontrols mode, none of the function keys should do anything
