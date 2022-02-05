@@ -22,4 +22,4 @@ AlignConsecutiveAssignments: true
 AlignConsecutiveDeclarations: true
 AlignConsecutiveMacros: true
 AlignTrailingComments: true
-
+ColumnLimit: '0'
