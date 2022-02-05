@@ -54,7 +54,7 @@ void A_SpectreEAttack(mobj_t *actor);
 
 void P_ThrustMobj(mobj_t *actor, angle_t angle, fixed_t force);
 
-typedef enum
+using dirtype_t = enum
 {
     DI_EAST,
     DI_NORTHEAST,
@@ -66,8 +66,8 @@ typedef enum
     DI_SOUTHEAST,
     DI_NODIR,
     NUMDIRS
-    
-} dirtype_t;
+
+};
 
 
 //

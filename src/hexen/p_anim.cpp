@@ -43,13 +43,13 @@
 
 // TYPES -------------------------------------------------------------------
 
-typedef struct
+using frameDef_t = struct
 {
     int index;
     int tics;
-} frameDef_t;
+};
 
-typedef struct
+using animDef_t = struct
 {
     int type;
     int index;
@@ -57,7 +57,7 @@ typedef struct
     int currentFrameDef;
     int startFrameDef;
     int endFrameDef;
-} animDef_t;
+};
 
 // EXTERNAL FUNCTION PROTOTYPES --------------------------------------------
 

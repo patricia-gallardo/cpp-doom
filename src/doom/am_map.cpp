@@ -118,38 +118,38 @@ extern boolean inhelpscreens; // [crispy]
 // the following is crap
 #define LINE_NEVERSEE ML_DONTDRAW
 
-typedef struct
+using fpoint_t = struct
 {
     int x, y;
-} fpoint_t;
+};
 
-typedef struct
+using fline_t = struct
 {
     fpoint_t a, b;
-} fline_t;
+};
 
-typedef struct
+using mpoint_t = struct
 {
     int64_t x, y;
-} mpoint_t;
+};
 
-typedef struct
+using mline_t = struct
 {
     mpoint_t a, b;
-} mline_t;
+};
 
-typedef struct
+using islope_t = struct
 {
     fixed_t slp, islp;
-} islope_t;
+};
 
-typedef enum
+using keycolor_t = enum
 {
     no_key,
     red_key,
     yellow_key,
     blue_key
-} keycolor_t;
+};
 
 
 //

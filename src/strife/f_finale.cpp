@@ -42,12 +42,12 @@
 #include "p_dialog.hpp" // [STRIFE]
 #include "lump.hpp"
 
-typedef enum
+using finalestage_t = enum
 {
     F_STAGE_TEXT,
     F_STAGE_ARTSCREEN,
     F_STAGE_CAST,
-} finalestage_t;
+};
 
 // ?
 //#include "doomstat.hpp"
@@ -598,11 +598,11 @@ void F_TextWrite ()
 // Casting by id Software.
 //   in order of appearance
 //
-typedef struct
+using castinfo_t = struct
 {
     int         isindemo; // [STRIFE] Changed from name, which is in mobjinfo
     mobjtype_t  type;
-} castinfo_t;
+};
 
 // haleyjd: [STRIFE] A new cast order was defined, however it is unused in any
 // of the released versions of Strife, even including the demo version :(

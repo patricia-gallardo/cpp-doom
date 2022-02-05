@@ -48,22 +48,22 @@
 
 #define QUERY_MAX_ATTEMPTS 3
 
-typedef enum
+using query_target_type_t = enum
 {
     QUERY_TARGET_SERVER,   // Normal server target.
     QUERY_TARGET_MASTER,   // The master server.
     QUERY_TARGET_BROADCAST // Send a broadcast query
-} query_target_type_t;
+};
 
-typedef enum
+using query_target_state_t = enum
 {
     QUERY_TARGET_QUEUED,    // Query not yet sent
     QUERY_TARGET_QUERIED,   // Query sent, waiting response
     QUERY_TARGET_RESPONDED, // Response received
     QUERY_TARGET_NO_RESPONSE
-} query_target_state_t;
+};
 
-typedef struct
+using query_target_t = struct
 {
     query_target_type_t  type;
     query_target_state_t state;
@@ -73,7 +73,7 @@ typedef struct
     unsigned int         query_time;
     unsigned int         query_attempts;
     boolean              printed;
-} query_target_t;
+};
 
 static boolean registered_with_master = false;
 static boolean got_master_response    = false;

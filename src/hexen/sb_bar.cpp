@@ -31,11 +31,11 @@
 
 // TYPES -------------------------------------------------------------------
 
-typedef struct Cheat_s
+using Cheat_t = struct Cheat_s
 {
     void (*func) (player_t * player, struct Cheat_s * cheat);
     cheatseq_t *seq;
-} Cheat_t;
+};
 
 // EXTERNAL FUNCTION PROTOTYPES --------------------------------------------
 

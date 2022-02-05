@@ -18,7 +18,8 @@
 #include "d_mode.hpp"
 #include "d_iwad.hpp"
 
-typedef void (*GameSelectCallback)();
+using GameSelectCallback = void (*)();
+
 extern GameMission_t gamemission;
 
 void SetupMission(GameSelectCallback callback);

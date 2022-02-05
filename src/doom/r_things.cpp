@@ -46,7 +46,7 @@
 //void R_DrawFuzzColumn ();
 
 
-typedef struct
+using maskdraw_t = struct
 {
     int x1;
     int x2;
@@ -55,7 +55,7 @@ typedef struct
     int topclip;
     int bottomclip;
 
-} maskdraw_t;
+};
 
 
 static degenmobj_t laserspot_m = { { 0 } };

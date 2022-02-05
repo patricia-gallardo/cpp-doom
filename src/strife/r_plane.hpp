@@ -29,7 +29,7 @@
 extern  short*		lastopening;
 
 
-typedef void (*planefunction_t) (int top, int bottom);
+using planefunction_t = void (*)(int, int);
 
 extern planefunction_t	floorfunc;
 extern planefunction_t	ceilingfunc_t;

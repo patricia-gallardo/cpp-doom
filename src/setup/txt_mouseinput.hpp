@@ -15,7 +15,7 @@
 #ifndef TXT_MOUSE_INPUT_H
 #define TXT_MOUSE_INPUT_H
 
-typedef struct txt_mouse_input_s txt_mouse_input_t;
+using txt_mouse_input_t = struct txt_mouse_input_s;
 
 #include "txt_widget.hpp"
 

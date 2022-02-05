@@ -30,7 +30,7 @@
  * related controls.
  */
 
-typedef struct txt_separator_s txt_separator_t;
+using txt_separator_t = struct txt_separator_s;
 
 #include "txt_widget.hpp"
 

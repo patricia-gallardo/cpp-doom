@@ -37,7 +37,7 @@
 
 // TYPES -------------------------------------------------------------------
 
-typedef enum
+using gameArchiveSegment_t = enum
 {
     ASEG_GAME_HEADER = 101,
     ASEG_MAP_HEADER,
@@ -50,9 +50,9 @@ typedef enum
     ASEG_SOUNDS,
     ASEG_MISC,
     ASEG_END
-} gameArchiveSegment_t;
+};
 
-typedef enum
+using thinkClass_t = enum
 {
     TC_NULL,
     TC_MOVE_CEILING,
@@ -67,9 +67,9 @@ typedef enum
     TC_ROTATE_POLY,
     TC_MOVE_POLY,
     TC_POLY_DOOR
-} thinkClass_t;
+};
 
-typedef struct
+using thinkInfo_t = struct
 {
     thinkClass_t tClass;
     action_hook thinkerFunc;
@@ -77,13 +77,13 @@ typedef struct
     action_hook readFunc;
     action_hook restoreFunc;
     size_t size;
-} thinkInfo_t;
+};
 
-typedef struct ssthinker_s
+using ssthinker_t = struct ssthinker_s
 {
     thinker_t thinker;
     sector_t *sector;
-} ssthinker_t;
+};
 
 // EXTERNAL FUNCTION PROTOTYPES --------------------------------------------
 

@@ -167,12 +167,12 @@ typedef struct
     short episode;
 } switchlist_t;
 
-typedef enum
+using bwhere_e = enum
 {
     top,
     middle,
     bottom
-} bwhere_e;
+};
 
 typedef struct
 {
@@ -199,21 +199,21 @@ void P_InitSwitchList();
 
 ===============================================================================
 */
-typedef enum
+using plat_e = enum
 {
     up,
     down,
     waiting,
     in_stasis
-} plat_e;
+};
 
-typedef enum
+using plattype_e = enum
 {
     perpetualRaise,
     downWaitUpStay,
     raiseAndChange,
     raiseToNearestAndChange
-} plattype_e;
+};
 
 typedef struct plat_s
 {
@@ -251,14 +251,14 @@ void P_ActivateInStasis(int tag);
 
 ===============================================================================
 */
-typedef enum
+using vldoor_e = enum
 {
     vld_normal,
     vld_close30ThenOpen,
     vld_close,
     vld_open,
     vld_raiseIn5Mins
-} vldoor_e;
+};
 
 typedef struct vldoor_s
 {
@@ -289,14 +289,14 @@ void P_SpawnDoorRaiseIn5Mins(sector_t * sec, int secnum);
 
 ===============================================================================
 */
-typedef enum
+using ceiling_e = enum
 {
     lowerToFloor,
     raiseToHighest,
     lowerAndCrush,
     crushAndRaise,
     fastCrushAndRaise
-} ceiling_e;
+};
 
 typedef struct ceiling_s
 {
@@ -331,7 +331,7 @@ void P_ActivateInStasisCeiling(line_t * line);
 
 ===============================================================================
 */
-typedef enum
+using floor_e = enum
 {
     lowerFloor,                 // lower floor to highest surrounding floor
     lowerFloorToLowest,         // lower floor to lowest surrounding floor
@@ -346,7 +346,7 @@ typedef enum
     raiseFloorCrush,
     donutRaise,
     raiseBuildStep              // One step of a staircase
-} floor_e;
+};
 
 typedef struct floormove_s
 {
@@ -363,12 +363,12 @@ typedef struct floormove_s
 
 #define	FLOORSPEED	FRACUNIT
 
-typedef enum
+using result_e = enum
 {
     ok,
     crushed,
     pastdest
-} result_e;
+};
 
 result_e T_MovePlane(sector_t * sector, fixed_t speed,
                      fixed_t dest, boolean crush, int floorOrCeiling,

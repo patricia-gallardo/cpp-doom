@@ -428,13 +428,13 @@ static void P_ReadMusInfo(const char *key)
     }
 }
 
-typedef struct
+using extsavegdata_t = struct
 {
     const char *key;
     void (*extsavegwritefn)(const char *key);
     void (*extsavegreadfn)(const char *key);
     const int pass;
-} extsavegdata_t;
+};
 
 static const extsavegdata_t extsavegdata[] = {
     // [crispy] @FORKS: please change this if you are going to introduce incompatible changes!

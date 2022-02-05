@@ -23,12 +23,12 @@
 #include <vector>
 #include <memory>
 
-typedef struct
+using txt_callback_t = struct
 {
     char *signal_name;
     TxtWidgetSignalFunc func;
     void *user_data;
-} txt_callback_t;
+};
 
 struct txt_callback_table_s
 {

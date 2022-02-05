@@ -29,7 +29,7 @@
 
 #define ZONEID 0x1d4a11
 
-typedef struct memblock_s memblock_t;
+using memblock_t = struct memblock_s;
 
 struct memblock_s {
     int         id; // = ZONEID

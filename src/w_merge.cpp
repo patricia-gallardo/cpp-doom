@@ -31,25 +31,25 @@
 #include "w_wad.hpp"
 #include "z_zone.hpp"
 
-typedef enum
+using section_t = enum
 {
     SECTION_NORMAL,
     SECTION_FLATS,
     SECTION_SPRITES,
-} section_t;
+};
 
-typedef struct
+using searchlist_t = struct
 {
     lumpinfo_t **lumps;
     int          numlumps;
-} searchlist_t;
+};
 
-typedef struct
+using sprite_frame_t = struct
 {
     char        sprname[4];
     char        frame;
     lumpinfo_t *angle_lumps[8];
-} sprite_frame_t;
+};
 
 static searchlist_t iwad;
 static searchlist_t iwad_sprites;
@@ -729,11 +729,11 @@ int W_MergeDump(const char *file)
     uint32_t i, dir_p;
 
     // [crispy] WAD directory structure
-    typedef struct {
+    using directory_t = struct {
         uint32_t pos;
         uint32_t size;
         char     name[8];
-    } directory_t;
+    };
     directory_t *dir = NULL;
 
     // [crispy] open file for writing

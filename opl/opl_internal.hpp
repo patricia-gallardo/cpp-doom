@@ -21,20 +21,19 @@
 
 #include "opl.hpp"
 
-typedef int (*opl_init_func)(unsigned int port_base);
-typedef void (*opl_shutdown_func)();
-typedef unsigned int (*opl_read_port_func)(opl_port_t port);
-typedef void (*opl_write_port_func)(opl_port_t port, unsigned int value);
-typedef void (*opl_set_callback_func)(uint64_t us,
-                                      opl_callback_t callback,
-                                      void *data);
-typedef void (*opl_clear_callbacks_func)();
-typedef void (*opl_lock_func)();
-typedef void (*opl_unlock_func)();
-typedef void (*opl_set_paused_func)(int paused);
-typedef void (*opl_adjust_callbacks_func)(float value);
 
-typedef struct
+using opl_init_func = int (*)(unsigned int);
+using opl_shutdown_func = void (*)();
+using opl_read_port_func = unsigned int (*)(opl_port_t);
+using opl_write_port_func = void (*)(opl_port_t, unsigned int);
+using opl_set_callback_func = void (*)(uint64_t, opl_callback_t, void *);
+using opl_clear_callbacks_func = void (*)();
+using opl_lock_func = void (*)();
+using opl_unlock_func = void (*)();
+using opl_set_paused_func = void (*)(int);
+using opl_adjust_callbacks_func = void (*)(float);
+
+using opl_driver_t = struct
 {
     const char *name;
 
@@ -48,7 +47,7 @@ typedef struct
     opl_unlock_func unlock_func;
     opl_set_paused_func set_paused_func;
     opl_adjust_callbacks_func adjust_callbacks_func;
-} opl_driver_t;
+};
 
 // Sample rate to use when doing software emulation.
 

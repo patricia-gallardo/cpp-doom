@@ -28,7 +28,7 @@
 #define FRACUNIT        (1 << FRACBITS)
 #define FIXED2DOUBLE(x) (x / (double)FRACUNIT)
 
-typedef int fixed_t;
+using fixed_t = int;
 
 fixed_t FixedMul(fixed_t a, fixed_t b);
 fixed_t FixedDiv(fixed_t a, fixed_t b);

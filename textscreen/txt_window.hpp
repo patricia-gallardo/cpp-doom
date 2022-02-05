@@ -40,7 +40,7 @@
  * action to activate the currently-selected widget.
  */
 
-typedef struct txt_window_s txt_window_t;
+using txt_window_t = struct txt_window_s;
 
 #include "txt_widget.hpp"
 #include "txt_table.hpp"

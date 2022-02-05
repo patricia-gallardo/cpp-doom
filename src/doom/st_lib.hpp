@@ -29,7 +29,7 @@
 
 // Number widget
 
-typedef struct
+using st_number_t = struct
 {
     // upper right-hand corner
     //  of the number (right-justified)
@@ -55,12 +55,12 @@ typedef struct
     // user data
     int data;
 
-} st_number_t;
+};
 
 
 // Percent widget ("child" of number widget,
 //  or, more precisely, contains a number widget.)
-typedef struct
+using st_percent_t = struct
 {
     // number information
     st_number_t n;
@@ -70,11 +70,11 @@ typedef struct
 
     // [crispy] remember previous colorization
     byte *oldtranslation;
-} st_percent_t;
+};
 
 
 // Multiple Icon widget
-typedef struct
+using st_multicon_t = struct
 {
     // center-justified location of icons
     int x;
@@ -96,12 +96,12 @@ typedef struct
     // user data
     int data;
 
-} st_multicon_t;
+};
 
 
 // Binary Icon widget
 
-typedef struct
+using st_binicon_t = struct
 {
     // center-justified location of icon
     int x;
@@ -121,7 +121,7 @@ typedef struct
     patch_t *p;    // icon
     int      data; // user data
 
-} st_binicon_t;
+};
 
 
 //

@@ -54,10 +54,10 @@ void R_ClearDrawSegs()
 ===============================================================================
 */
 
-typedef struct
+using cliprange_t = struct
 {
     int first, last;
-} cliprange_t;
+};
 
 // We must expand MAXSEGS to the theoretical limit of the number of solidsegs
 // that can be generated in a scene by the DOOM engine. This was determined by

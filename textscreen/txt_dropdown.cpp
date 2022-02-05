@@ -27,12 +27,12 @@
 #include "txt_window.hpp"
 #include <new>
 
-typedef struct
+using callback_data_t = struct
 {
     txt_window_t *window;
     txt_dropdown_list_t *list;
     int item;
-} callback_data_t;
+};
 
 // Check if the selected value for a list is valid
 

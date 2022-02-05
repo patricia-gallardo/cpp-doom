@@ -29,7 +29,7 @@
  * different areas of the contained widget to be seen.
  */
 
-typedef struct txt_scrollpane_s txt_scrollpane_t;
+using txt_scrollpane_t = struct txt_scrollpane_s;
 
 #include "txt_widget.hpp"
 

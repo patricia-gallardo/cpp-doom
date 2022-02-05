@@ -32,7 +32,7 @@
 
 // Types
 
-typedef enum
+using afxcmd_t = enum
 {
     afxcmd_play,                // (sound)
     afxcmd_playabsvol,          // (sound, volume)
@@ -40,7 +40,7 @@ typedef enum
     afxcmd_delay,               // (ticks)
     afxcmd_delayrand,           // (andbits)
     afxcmd_end                  // ()
-} afxcmd_t;
+};
 
 // Data
 

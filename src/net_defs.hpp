@@ -44,10 +44,10 @@
 
 #define BACKUPTICS 128
 
-typedef struct _net_module_s  net_module_t;
-typedef struct _net_packet_s  net_packet_t;
-typedef struct _net_addr_s    net_addr_t;
-typedef struct _net_context_s net_context_t;
+using net_module_t = struct _net_module_s;
+using net_packet_t = struct _net_packet_s;
+using net_addr_t = struct _net_addr_s;
+using net_context_t = struct _net_context_s;
 
 struct _net_packet_s {
     byte *       data;
@@ -113,7 +113,7 @@ struct _net_addr_s {
 // to use, so the order matters.
 // NOTE: The values in this enum do not have any special value outside of
 // the program they're compiled in. What matters is the string representation.
-typedef enum
+using net_protocol_t = enum
 {
     // Protocol introduced with Chocolate Doom v3.0. Each compatibility-
     // breaking change to the network protocol will produce a new protocol
@@ -125,11 +125,11 @@ typedef enum
 
     NET_NUM_PROTOCOLS,
     NET_PROTOCOL_UNKNOWN,
-} net_protocol_t;
+};
 
 // packet types
 
-typedef enum
+using net_packet_type_t = enum
 {
     NET_PACKET_TYPE_SYN,
     NET_PACKET_TYPE_ACK, // deprecated
@@ -148,9 +148,9 @@ typedef enum
     NET_PACKET_TYPE_QUERY_RESPONSE,
     NET_PACKET_TYPE_LAUNCH,
     NET_PACKET_TYPE_NAT_HOLE_PUNCH,
-} net_packet_type_t;
+};
 
-typedef enum
+using net_master_packet_type_t = enum
 {
     NET_MASTER_PACKET_TYPE_ADD,
     NET_MASTER_PACKET_TYPE_ADD_RESPONSE,
@@ -164,11 +164,11 @@ typedef enum
     NET_MASTER_PACKET_TYPE_SIGN_END_RESPONSE,
     NET_MASTER_PACKET_TYPE_NAT_HOLE_PUNCH,
     NET_MASTER_PACKET_TYPE_NAT_HOLE_PUNCH_ALL,
-} net_master_packet_type_t;
+};
 
 // Settings specified when the client connects to the server.
 
-typedef struct
+using net_connect_data_t = struct
 {
     int           gamemode;
     int           gamemission;
@@ -179,12 +179,12 @@ typedef struct
     sha1_digest_t wad_sha1sum;
     sha1_digest_t deh_sha1sum;
     int           player_class;
-} net_connect_data_t;
+};
 
 // Game settings sent by client to server when initiating game start,
 // and received from the server by clients when the game starts.
 
-typedef struct
+using net_gamesettings_t = struct
 {
     int ticdup;
     int extratics;
@@ -212,7 +212,7 @@ typedef struct
 
     int player_classes[NET_MAXPLAYERS];
 
-} net_gamesettings_t;
+};
 
 #define NET_TICDIFF_FORWARD     (1 << 0)
 #define NET_TICDIFF_SIDE        (1 << 1)
@@ -223,25 +223,25 @@ typedef struct
 #define NET_TICDIFF_RAVEN       (1 << 6)
 #define NET_TICDIFF_STRIFE      (1 << 7)
 
-typedef struct
+using net_ticdiff_t = struct
 {
     unsigned int diff;
     ticcmd_t     cmd;
-} net_ticdiff_t;
+};
 
 // Complete set of ticcmds from all players
 
-typedef struct
+using net_full_ticcmd_t = struct
 {
     signed int    latency;
     unsigned int  seq;
     boolean       playeringame[NET_MAXPLAYERS];
     net_ticdiff_t cmds[NET_MAXPLAYERS];
-} net_full_ticcmd_t;
+};
 
 // Data sent in response to server queries
 
-typedef struct
+using net_querydata_t = struct
 {
     const char *   version;
     int            server_state;
@@ -251,11 +251,11 @@ typedef struct
     int            gamemission;
     const char *   description;
     net_protocol_t protocol;
-} net_querydata_t;
+};
 
 // Data sent by the server while waiting for the game to start.
 
-typedef struct
+using net_waitdata_t = struct
 {
     int           num_players;
     int           num_drones;
@@ -268,6 +268,6 @@ typedef struct
     sha1_digest_t wad_sha1sum;
     sha1_digest_t deh_sha1sum;
     int           is_freedoom;
-} net_waitdata_t;
+};
 
 #endif /* #ifndef NET_DEFS_H */
