@@ -80,7 +80,7 @@ static byte *background_buffer = NULL;
 
 // haleyjd 08/29/10: [STRIFE] Rogue added the ability to customize the view
 // border flat by storing it in the configuration file.
-char *back_flat = "F_PAVE01";
+char *back_flat = const_cast<char *>("F_PAVE01");
 
 //
 // R_DrawColumn

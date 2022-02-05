@@ -141,7 +141,7 @@ static void SV_WritePtr(void *ptr);
 
 #define DEFAULT_SAVEPATH                "hexndata/"
 
-char *SavePath = DEFAULT_SAVEPATH;
+char *SavePath = const_cast<char *>(DEFAULT_SAVEPATH);
 
 int vanilla_savegame_limit = 1;
 
