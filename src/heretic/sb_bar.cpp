@@ -177,7 +177,7 @@ static Cheat_t Cheats[] = {
     {CheatMassacreFunc,  &CheatMassacreSeq},
     {CheatIDKFAFunc,     &CheatIDKFASeq},
     {CheatIDDQDFunc,     &CheatIDDQDSeq},
-    {NULL,               NULL} 
+    {nullptr,               nullptr}
 };
 
 //---------------------------------------------------------------------------

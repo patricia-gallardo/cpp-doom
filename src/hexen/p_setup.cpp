@@ -130,7 +130,7 @@ static const char *MapCmdNames[] = {
     "CD_END3_TRACK",
     "CD_INTERMISSION_TRACK",
     "CD_TITLE_TRACK",
-    NULL
+    nullptr
 };
 static int MapCmdIDs[] = {
     MCMD_SKY1,

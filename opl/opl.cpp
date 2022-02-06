@@ -50,7 +50,7 @@ static opl_driver_t *drivers[] =
     &opl_win32_driver,
 #endif
     &opl_sdl_driver,
-    NULL
+    nullptr
 };
 
 static opl_driver_t *driver = nullptr;

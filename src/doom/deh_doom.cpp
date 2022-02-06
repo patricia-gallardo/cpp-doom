@@ -22,7 +22,7 @@
 const char *deh_signatures[] = {
     "Patch File for DeHackEd v2.3",
     "Patch File for DeHackEd v3.0",
-    NULL
+    nullptr
 };
 
 // deh_ammo.c:
@@ -70,5 +70,5 @@ deh_section_t *deh_section_types[] = {
     &deh_section_bexpars,
     &deh_section_bexptr,
     &deh_section_bexincl,
-    NULL
+    nullptr
 };

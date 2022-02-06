@@ -979,7 +979,7 @@ static void QueryPeriodicCallback(TXT_UNCAST_ARG(results_table))
             TXT_AddWidgets(results_table,
                 TXT_TABLE_EMPTY,
                 TXT_NewLabel("No compatible servers found."),
-                NULL
+                nullptr
             );
         }
     }

@@ -161,7 +161,7 @@ static const joystick_config_t empty_defaults[] =
     {"joystick_physical_button7",  7},
     {"joystick_physical_button8",  8},
     {"joystick_physical_button9",  9},
-    {NULL, 0},
+    {nullptr, 0},
 };
 
 static const joystick_config_t ps3_controller[] =
@@ -177,7 +177,7 @@ static const joystick_config_t ps3_controller[] =
     {"joyb_prevweapon",        10},  // Top shoulder buttons
     {"joyb_nextweapon",        11},
     {"joyb_menu_activate",     3},   // Start
-    {NULL, 0},
+    {nullptr, 0},
 };
 
 // Playstation 4 Dual Shock 4 (DS4)
@@ -209,7 +209,7 @@ static const joystick_config_t airflo_controller[] =
     {"joyb_prevweapon",        4},  // Top shoulder buttons
     {"joyb_nextweapon",        5},
     {"joyb_menu_activate",     9},  // "10", where "Start" usually is.
-    {NULL, 0},
+    {nullptr, 0},
 };
 
 // Wii controller is weird, so we have to take some liberties.
@@ -227,7 +227,7 @@ static const joystick_config_t wii_controller_wjoy[] =
     {"joyb_prevweapon",        7},  // -
     {"joyb_nextweapon",        6},  // +
     {"joyb_menu_activate",     9},  // Button A
-    {NULL, 0},
+    {nullptr, 0},
 };
 
 // Xbox 360 controller. Thanks to Brad Harding for the details.
@@ -243,7 +243,7 @@ static const joystick_config_t xbox360_controller[] =
     {"joyb_prevweapon",        4},  // LB
     {"joyb_nextweapon",        5},  // RB
     {"joyb_menu_activate",     9},  // Start
-    {NULL, 0},
+    {nullptr, 0},
 };
 
 // Xbox 360 controller under Linux.
@@ -263,7 +263,7 @@ static const joystick_config_t xbox360_controller_linux[] =
     {"joyb_straferight",       5},  // RB
     {"joyb_menu_activate",     7},  // Start
     {"joyb_prevweapon",        6},  // Back
-    {NULL, 0},
+    {nullptr, 0},
 };
 
 // Logitech Dual Action (F310, F710). Thanks to Brad Harding for details.
@@ -280,7 +280,7 @@ static const joystick_config_t logitech_f310_controller[] =
     {"joyb_prevweapon",        4},  // LB
     {"joyb_nextweapon",        5},  // RB
     {"joyb_menu_activate",     11}, // Start
-    {NULL, 0},
+    {nullptr, 0},
 };
 
 // Multilaser JS030 gamepad, similar to a PS2 controller.
@@ -297,7 +297,7 @@ static const joystick_config_t multilaser_js030_controller[] =
     {"joyb_prevweapon",        4},   // Top shoulder buttons
     {"joyb_nextweapon",        5},
     {"joyb_menu_activate",     9},   // Start
-    {NULL, 0},
+    {nullptr, 0},
 };
 
 // Buffalo Classic USB Gamepad (thanks Fabian Greffrath).
@@ -313,7 +313,7 @@ static const joystick_config_t buffalo_classic_controller[] =
     {"joyb_straferight",       5},    // Right shoulder
     {"joyb_prevweapon",        6},    // Select
     {"joyb_menu_activate",     7},    // Start
-    {NULL, 0},
+    {nullptr, 0},
 };
 
 // Config for if the user is actually using an old PC joystick or gamepad,
@@ -330,7 +330,7 @@ static const joystick_config_t pc_gameport_controller[] =
     {"joyb_strafe",            1},
     {"joyb_use",               3},
     {"joyb_speed",             2},
-    {NULL, 0},
+    {nullptr, 0},
 };
 
 // http://www.8bitdo.com/nes30pro/ and http://www.8bitdo.com/fc30pro/
@@ -348,7 +348,7 @@ static const joystick_config_t nes30_pro_controller[] =
     {"joyb_nextweapon",        9},  // R2
     {"joyb_menu_activate",     11}, // Start
     {"joyb_toggle_automap",    10}, // Select
-    {NULL, 0},
+    {nullptr, 0},
 };
 
 // http://www.8bitdo.com/sfc30/ or http://www.8bitdo.com/snes30/
@@ -365,7 +365,7 @@ static const joystick_config_t sfc30_controller[] =
     {"joyb_straferight",       7}, // R
     {"joyb_menu_activate",    11}, // Start
     {"joyb_toggle_automap",   10}, // Select
-    {NULL, 0},
+    {nullptr, 0},
 };
 
 static const known_joystick_t known_joysticks[] =

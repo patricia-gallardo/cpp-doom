@@ -30,7 +30,7 @@ const char *sprnames[] = {
     "WZRD","FX11","FX10","KNIG","SPAX","RAXE","SRCR","FX14","SOR2","SDTH",
     "FX16","MNTR","FX12","FX13","AKYY","BKYY","CKYY","AMG2","AMM1","AMM2",
     "AMC1","AMC2","AMS1","AMS2","AMP1","AMP2","AMB1","AMB2", 
-    NULL
+    nullptr
 };
 
 state_t states[NUMSTATES] = {
