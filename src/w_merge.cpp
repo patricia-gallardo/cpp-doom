@@ -122,12 +122,12 @@ static void SetupLists()
 {
     // IWAD
 
-    if (!SetupList(&iwad_flats, &iwad, "F_START", "F_END", NULL, NULL))
+    if (!SetupList(&iwad_flats, &iwad, "F_START", "F_END", NULL, nullptr))
     {
         I_Error("Flats section not found in IWAD");
     }
 
-    if (!SetupList(&iwad_sprites, &iwad, "S_START", "S_END", NULL, NULL))
+    if (!SetupList(&iwad_sprites, &iwad, "S_START", "S_END", NULL, nullptr))
 
     {
         I_Error("Sprites section not found in IWAD");
@@ -143,11 +143,11 @@ static void SetupLists()
 
 static void InitSpriteList()
 {
-    if (sprite_frames == NULL)
+    if (sprite_frames == nullptr)
     {
         sprite_frames_alloced = 128;
         sprite_frames         = zmalloc<decltype(sprite_frames)>(sizeof(*sprite_frames) * sprite_frames_alloced,
-            PU_STATIC, NULL);
+            PU_STATIC, nullptr);
     }
 
     num_sprite_frames = 0;
@@ -206,7 +206,7 @@ static sprite_frame_t *FindSpriteFrame(char *name, int frame)
         sprite_frame_t *newframes;
 
         newframes = zmalloc<decltype(newframes)>(sprite_frames_alloced * 2 * sizeof(*sprite_frames),
-            PU_STATIC, NULL);
+            PU_STATIC, nullptr);
         memcpy(newframes, sprite_frames,
             sprite_frames_alloced * sizeof(*sprite_frames));
         Z_Free(sprite_frames);
@@ -576,7 +576,7 @@ void W_MergeFile(const char *filename)
 
     // Load PWAD
 
-    if (W_AddFile(filename) == NULL)
+    if (W_AddFile(filename) == nullptr)
         return;
 
     // IWAD is at the start, PWAD was appended to the end
@@ -633,7 +633,7 @@ void W_NWTMergeFile(const char *filename, int flags)
 
     // Load PWAD
 
-    if (W_AddFile(filename) == NULL)
+    if (W_AddFile(filename) == nullptr)
         return;
 
     // IWAD is at the start, PWAD was appended to the end
@@ -683,7 +683,7 @@ void W_NWTDashMerge(const char *filename)
 
     wad_file = W_AddFile(filename);
 
-    if (wad_file == NULL)
+    if (wad_file == nullptr)
     {
         return;
     }

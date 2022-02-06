@@ -49,9 +49,9 @@ char *P_TempSaveGameFile()
 {
     static char *filename = NULL;
 
-    if (filename == NULL)
+    if (filename == nullptr)
     {
-        filename = M_StringJoin(savegamedir, "temp.dsg", NULL);
+        filename = M_StringJoin(savegamedir, "temp.dsg", nullptr);
     }
 
     return filename;
@@ -65,7 +65,7 @@ char *P_SaveGameFile(int slot)
     static size_t filename_size;
     char basename[32];
 
-    if (filename == NULL)
+    if (filename == nullptr)
     {
         filename_size = strlen(savegamedir) + 32;
         filename = static_cast<char *>(malloc(filename_size));
@@ -1930,7 +1930,7 @@ void P_UnArchiveThinkers ()
 
         case tc_mobj:
             saveg_read_pad();
-            mobj = zmalloc<mobj_t *>(sizeof(*mobj), PU_LEVEL, NULL);
+            mobj = zmalloc<mobj_t *>(sizeof(*mobj), PU_LEVEL, nullptr);
             saveg_read_mobj_t(mobj);
 
             // haleyjd 09/29/10: Strife sets the targets of non-allied creatures
@@ -2123,7 +2123,7 @@ void P_UnArchiveSpecials ()
 
         case tc_ceiling:
             saveg_read_pad();
-            ceiling = zmalloc<ceiling_t *>(sizeof(*ceiling), PU_LEVEL, NULL);
+            ceiling = zmalloc<ceiling_t *>(sizeof(*ceiling), PU_LEVEL, nullptr);
             saveg_read_ceiling_t(ceiling);
             ceiling->sector->specialdata = ceiling;
 
@@ -2136,7 +2136,7 @@ void P_UnArchiveSpecials ()
 
         case tc_door:
             saveg_read_pad();
-            door = zmalloc<vldoor_t *>(sizeof(*door), PU_LEVEL, NULL);
+            door = zmalloc<vldoor_t *>(sizeof(*door), PU_LEVEL, nullptr);
             saveg_read_vldoor_t(door);
             door->sector->specialdata = door;
             door->thinker.function.acp1 = (actionf_p1)T_VerticalDoor;
@@ -2146,7 +2146,7 @@ void P_UnArchiveSpecials ()
         case tc_slidingdoor:
             // haleyjd 09/29/10: [STRIFE] New thinker type for sliding doors
             saveg_read_pad();
-            slidedoor = zmalloc<slidedoor_t *>(sizeof(*slidedoor), PU_LEVEL, NULL);
+            slidedoor = zmalloc<slidedoor_t *>(sizeof(*slidedoor), PU_LEVEL, nullptr);
             saveg_read_slidedoor_t(slidedoor);
             slidedoor->frontsector->specialdata = slidedoor;
             slidedoor->thinker.function.acp1 = (actionf_p1)T_SlidingDoor;
@@ -2155,7 +2155,7 @@ void P_UnArchiveSpecials ()
 
         case tc_floor:
             saveg_read_pad();
-            floor = zmalloc<floormove_t *>(sizeof(*floor), PU_LEVEL, NULL);
+            floor = zmalloc<floormove_t *>(sizeof(*floor), PU_LEVEL, nullptr);
             saveg_read_floormove_t(floor);
             floor->sector->specialdata = floor;
             floor->thinker.function.acp1 = (actionf_p1)T_MoveFloor;
@@ -2164,7 +2164,7 @@ void P_UnArchiveSpecials ()
 
         case tc_plat:
             saveg_read_pad();
-            plat = zmalloc<plat_t *>(sizeof(*plat), PU_LEVEL, NULL);
+            plat = zmalloc<plat_t *>(sizeof(*plat), PU_LEVEL, nullptr);
             saveg_read_plat_t(plat);
             plat->sector->specialdata = plat;
 
@@ -2177,7 +2177,7 @@ void P_UnArchiveSpecials ()
 
         case tc_flash:
             saveg_read_pad();
-            flash = zmalloc<lightflash_t *>(sizeof(*flash), PU_LEVEL, NULL);
+            flash = zmalloc<lightflash_t *>(sizeof(*flash), PU_LEVEL, nullptr);
             saveg_read_lightflash_t(flash);
             flash->thinker.function.acp1 = (actionf_p1)T_LightFlash;
             P_AddThinker (&flash->thinker);
@@ -2185,7 +2185,7 @@ void P_UnArchiveSpecials ()
 
         case tc_strobe:
             saveg_read_pad();
-            strobe = zmalloc<strobe_t *>(sizeof(*strobe), PU_LEVEL, NULL);
+            strobe = zmalloc<strobe_t *>(sizeof(*strobe), PU_LEVEL, nullptr);
             saveg_read_strobe_t(strobe);
             strobe->thinker.function.acp1 = (actionf_p1)T_StrobeFlash;
             P_AddThinker (&strobe->thinker);
@@ -2193,7 +2193,7 @@ void P_UnArchiveSpecials ()
 
         case tc_glow:
             saveg_read_pad();
-            glow = zmalloc<glow_t *>(sizeof(*glow), PU_LEVEL, NULL);
+            glow = zmalloc<glow_t *>(sizeof(*glow), PU_LEVEL, nullptr);
             saveg_read_glow_t(glow);
             glow->thinker.function.acp1 = (actionf_p1)T_Glow;
             P_AddThinker (&glow->thinker);

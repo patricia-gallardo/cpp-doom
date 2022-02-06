@@ -74,7 +74,7 @@ int PCSound_Init(pcsound_callback_func callback_func)
     char *driver_name;
     int i;
 
-    if (pcsound_driver != NULL)
+    if (pcsound_driver != nullptr)
     {
         return 1;
     }
@@ -83,7 +83,7 @@ int PCSound_Init(pcsound_callback_func callback_func)
 
     driver_name = getenv("PCSOUND_DRIVER");
 
-    if (driver_name != NULL)
+    if (driver_name != nullptr)
     {
         for (i=0; drivers[i] != NULL; ++i)
         {
@@ -118,7 +118,7 @@ int PCSound_Init(pcsound_callback_func callback_func)
         }
     }
     
-    if (pcsound_driver != NULL)
+    if (pcsound_driver != nullptr)
     {
         printf("Using PC sound driver: %s\n", pcsound_driver->name);
         return 1;

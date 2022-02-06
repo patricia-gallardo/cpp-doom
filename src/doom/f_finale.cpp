@@ -475,7 +475,7 @@ static int F_SoundForState(int st)
     void *const nextaction = (void *)(&states[caststate->nextstate])->action.acv;
 
     // [crispy] fix Doomguy in casting sequence
-    if (castaction == NULL)
+    if (castaction == nullptr)
     {
         if (st == S_PLAY_ATK2)
             return sfx_dshtgn;
@@ -540,7 +540,7 @@ void F_CastTicker()
             // switch from deathstate to next monster
             castnum++;
         castdeath = false;
-        if (castorder[castnum].name == NULL)
+        if (castorder[castnum].name == nullptr)
             castnum = 0;
         if (mobjinfo[castorder[castnum].type].seesound)
             S_StartSound(NULL, F_RandomizeSound(mobjinfo[castorder[castnum].type].seesound));

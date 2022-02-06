@@ -188,7 +188,7 @@ void P_AddActiveCeiling(ceiling_t * c)
 {
     int i;
     for (i = 0; i < MAXCEILINGS; i++)
-        if (activeceilings[i] == NULL)
+        if (activeceilings[i] == nullptr)
         {
             activeceilings[i] = c;
             return;

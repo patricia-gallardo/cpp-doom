@@ -173,7 +173,7 @@ static byte *ReadByteSequence(unsigned int num_bytes, FILE *stream)
 
     result = static_cast<byte *>(malloc(num_bytes + 1));
 
-    if (result == NULL)
+    if (result == nullptr)
     {
         fprintf(stderr, "ReadByteSequence: Failed to allocate buffer\n");
         return NULL;
@@ -256,7 +256,7 @@ static boolean ReadSysExEvent(midi_event_t *event, int event_type,
 
     event->data.sysex.data = ReadByteSequence(event->data.sysex.length, stream);
 
-    if (event->data.sysex.data == NULL)
+    if (event->data.sysex.data == nullptr)
     {
         fprintf(stderr, "ReadSysExEvent: Failed while reading SysEx event\n");
         return false;
@@ -296,7 +296,7 @@ static boolean ReadMetaEvent(midi_event_t *event, FILE *stream)
 
     event->data.meta.data = ReadByteSequence(event->data.meta.length, stream);
 
-    if (event->data.meta.data == NULL)
+    if (event->data.meta.data == nullptr)
     {
         fprintf(stderr, "ReadSysExEvent: Failed while reading SysEx event\n");
         return false;
@@ -505,7 +505,7 @@ static boolean ReadAllTracks(midi_file_t *file, FILE *stream)
 
     file->tracks = create_struct<midi_track_t>(file->num_tracks);
 
-    if (file->tracks == NULL)
+    if (file->tracks == nullptr)
     {
         return false;
     }
@@ -566,7 +566,7 @@ void MIDI_FreeFile(midi_file_t *file)
 {
     int i;
 
-    if (file->tracks != NULL)
+    if (file->tracks != nullptr)
     {
         for (i = 0; i < file->num_tracks; ++i)
         {
@@ -585,7 +585,7 @@ midi_file_t *MIDI_LoadFile(char *filename)
 
     auto *file = create_struct<midi_file_t>();
 
-    if (file == NULL)
+    if (file == nullptr)
     {
         return NULL;
     }
@@ -599,7 +599,7 @@ midi_file_t *MIDI_LoadFile(char *filename)
 
     stream = fopen(filename, "rb");
 
-    if (stream == NULL)
+    if (stream == nullptr)
     {
         fprintf(stderr, "MIDI_LoadFile: Failed to open '%s'\n", filename);
         MIDI_FreeFile(file);
@@ -801,7 +801,7 @@ int main(int argc, char *argv[])
 
     file = MIDI_LoadFile(argv[1]);
 
-    if (file == NULL)
+    if (file == nullptr)
     {
         fprintf(stderr, "Failed to open %s\n", argv[1]);
         exit(1);

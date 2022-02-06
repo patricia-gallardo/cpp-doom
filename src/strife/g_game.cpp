@@ -1685,7 +1685,7 @@ void G_DoLoadGame (boolean userload)
     save_stream = fopen(loadpath, "rb");
 
     // [STRIFE] If the file does not exist, G_DoLoadLevel is called.
-    if (save_stream == NULL)
+    if (save_stream == nullptr)
     {
         G_DoLoadLevel();
         return;
@@ -1830,7 +1830,7 @@ void G_DoSaveGame (char *path)
 
     save_stream = fopen(temp_savegame_file, "wb");
 
-    if (save_stream == NULL)
+    if (save_stream == nullptr)
     {
         return;
     }
@@ -2198,7 +2198,7 @@ void G_RecordDemo (char* name)
 
     usergame = false;
     demoname_size = strlen(name) + 5;
-    demoname = zmalloc<char *>(demoname_size, PU_STATIC, NULL);
+    demoname = zmalloc<char *>(demoname_size, PU_STATIC, nullptr);
     M_snprintf(demoname, demoname_size, "%s.lmp", name);
     maxsize = 0x20000;
 
@@ -2213,7 +2213,7 @@ void G_RecordDemo (char* name)
     i = M_CheckParmWithArgs("-maxdemo", 1);
     if (i)
         maxsize = atoi(myargv[i+1])*1024;
-    demobuffer = zmalloc<byte *>(maxsize, PU_STATIC, NULL);
+    demobuffer = zmalloc<byte *>(maxsize, PU_STATIC, nullptr);
     demoend = demobuffer + maxsize;
 
     demorecording = true; 

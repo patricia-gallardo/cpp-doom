@@ -81,7 +81,7 @@ typedef struct
     short special, tag;
 
     int soundtraversed;         // 0 = untraversed, 1,2 = sndlines -1
-    mobj_t *soundtarget;        // thing that made a sound (or null)
+    mobj_t *soundtarget;        // thing that made a sound (or nullptr)
 
     int blockbox[4];            // mapblock bounding box for height changes
     degenmobj_t soundorg;       // for any sounds played by the sector

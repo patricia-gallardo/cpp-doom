@@ -176,7 +176,7 @@ unsigned int net_local_is_freedoom;
 
 static void NET_CL_Disconnected()
 {
-    D_ReceiveTic(NULL, NULL);
+    D_ReceiveTic(NULL, nullptr);
 }
 
 // Called when a packet is received from the server containing game
@@ -436,7 +436,7 @@ static void NET_CL_ParseSYN(net_packet_t *packet)
     NET_Log("client: processing SYN response");
 
     server_version = NET_ReadSafeString(packet);
-    if (server_version == NULL)
+    if (server_version == nullptr)
     {
         NET_Log("client: error: failed to read server version");
         return;
@@ -470,7 +470,7 @@ static void NET_CL_ParseSYN(net_packet_t *packet)
 static void SetRejectReason(const char *s)
 {
     free(net_client_reject_reason);
-    if (s != NULL)
+    if (s != nullptr)
     {
         net_client_reject_reason = strdup(s);
     }
@@ -485,7 +485,7 @@ static void NET_CL_ParseReject(net_packet_t *packet)
     char *msg;
 
     msg = NET_ReadSafeString(packet);
-    if (msg == NULL)
+    if (msg == nullptr)
     {
         return;
     }
@@ -920,7 +920,7 @@ static void NET_CL_ParseConsoleMessage(net_packet_t *packet)
 
     msg = NET_ReadSafeString(packet);
 
-    if (msg == NULL)
+    if (msg == nullptr)
     {
         return;
     }
@@ -1213,7 +1213,7 @@ void NET_CL_Init()
     // Try to set from the USER and USERNAME environment variables
     // Otherwise, fallback to "Player"
 
-    if (net_player_name == NULL)
+    if (net_player_name == nullptr)
     {
         net_player_name = NET_GetRandomPetName();
     }

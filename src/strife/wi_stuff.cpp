@@ -499,7 +499,7 @@ WI_drawOnLnode
 	{
 	    i++;
 	}
-    } while (!fits && i!=2 && c[i] != NULL);
+    } while (!fits && i!=2 && c[i] != nullptr);
 
     if (fits && i<2)
     {
@@ -1718,12 +1718,12 @@ void WI_loadData()
     {
 	NUMCMAPS = 32;
 	lnames = (patch_t **) Z_Malloc(sizeof(patch_t*) * NUMCMAPS,
-				       PU_STATIC, NULL);
+				       PU_STATIC, nullptr);
     }
     else
     {
 	lnames = (patch_t **) Z_Malloc(sizeof(patch_t*) * NUMMAPS,
-				       PU_STATIC, NULL);
+				       PU_STATIC, nullptr);
     }
 
     WI_loadUnloadData(WI_loadCallback);

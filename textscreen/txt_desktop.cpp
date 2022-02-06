@@ -234,7 +234,7 @@ void TXT_DrawDesktop()
 
     TXT_InitClipArea();
 
-    if (desktop_title == NULL)
+    if (desktop_title == nullptr)
         title = "";
     else
         title = desktop_title;
@@ -242,7 +242,7 @@ void TXT_DrawDesktop()
     DrawDesktopBackground(title);
 
     active_window = TXT_GetActiveWindow();
-    if (active_window != NULL && active_window->help_url != NULL)
+    if (active_window != NULL && active_window->help_url != nullptr)
     {
         DrawHelpIndicator();
     }
@@ -277,7 +277,7 @@ static void DesktopInputEvent(int c)
 
         case HELP_KEY:
             active_window = TXT_GetActiveWindow();
-            if (active_window != NULL)
+            if (active_window != nullptr)
             {
                 TXT_OpenWindowHelpURL(active_window);
             }
@@ -370,7 +370,7 @@ void TXT_GUIMainLoop()
         TXT_DrawDesktop();
 //        TXT_DrawASCIITable();
 
-        if (periodic_callback == NULL)
+        if (periodic_callback == nullptr)
         {
             TXT_Sleep(0);
         }

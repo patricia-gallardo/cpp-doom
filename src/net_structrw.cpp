@@ -589,7 +589,7 @@ net_protocol_t NET_ReadProtocol(net_packet_t *packet)
     const char *name;
 
     name = NET_ReadString(packet);
-    if (name == NULL)
+    if (name == nullptr)
     {
         return NET_PROTOCOL_UNKNOWN;
     }
@@ -641,7 +641,7 @@ net_protocol_t NET_ReadProtocolList(net_packet_t *packet)
         const char *   name;
 
         name = NET_ReadString(packet);
-        if (name == NULL)
+        if (name == nullptr)
         {
             return NET_PROTOCOL_UNKNOWN;
         }

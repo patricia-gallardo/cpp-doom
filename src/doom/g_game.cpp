@@ -1952,7 +1952,7 @@ void G_DoLoadGame()
 
     save_stream = fopen(savename, "rb");
 
-    if (save_stream == NULL)
+    if (save_stream == nullptr)
     {
         I_Error("Could not load savegame %s", savename);
     }
@@ -2067,13 +2067,13 @@ void G_DoSaveGame()
     // a corrupted one, or if a savegame buffer overrun occurs.
     save_stream = fopen(temp_savegame_file, "wb");
 
-    if (save_stream == NULL)
+    if (save_stream == nullptr)
     {
         // Failed to save the game, so we're going to have to abort. But
         // to be nice, save to somewhere else before we call I_Error().
         recovery_savegame_file = M_TempFile("recovery.dsg");
         save_stream            = fopen(recovery_savegame_file, "wb");
-        if (save_stream == NULL)
+        if (save_stream == nullptr)
         {
             I_Error("Failed to open either '%s' or '%s' to write savegame.",
                 temp_savegame_file, recovery_savegame_file);
@@ -2123,7 +2123,7 @@ void G_DoSaveGame()
 
     fclose(save_stream);
 
-    if (recovery_savegame_file != NULL)
+    if (recovery_savegame_file != nullptr)
     {
         // We failed to save to the normal location, but we wrote a
         // recovery file to the temp directory. Now we can bomb out
@@ -2564,7 +2564,7 @@ void G_RecordDemo(char *name)
 
     usergame      = false;
     demoname_size = strlen(name) + 5 + 6; // [crispy] + 6 for "-00000"
-    demoname      = zmalloc<decltype(demoname)>(demoname_size, PU_STATIC, NULL);
+    demoname      = zmalloc<decltype(demoname)>(demoname_size, PU_STATIC, nullptr);
     M_snprintf(demoname, demoname_size, "%s.lmp", name);
 
     // [crispy] prevent overriding demos by adding a file name suffix
@@ -2587,7 +2587,7 @@ void G_RecordDemo(char *name)
     i = M_CheckParmWithArgs("-maxdemo", 1);
     if (i)
         maxsize = atoi(myargv[i + 1]) * 1024;
-    demobuffer = zmalloc<decltype(demobuffer)>(maxsize, PU_STATIC, NULL);
+    demobuffer = zmalloc<decltype(demobuffer)>(maxsize, PU_STATIC, nullptr);
     demoend    = demobuffer + maxsize;
 
     demorecording = true;

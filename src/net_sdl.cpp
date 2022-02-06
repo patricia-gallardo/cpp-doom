@@ -91,7 +91,7 @@ static net_addr_t *NET_SDL_FindAddress(IPaddress *addr)
             return &addr_table[i]->net_addr;
         }
 
-        if (empty_entry < 0 && addr_table[i] == NULL)
+        if (empty_entry < 0 && addr_table[i] == nullptr)
             empty_entry = i;
     }
 
@@ -177,7 +177,7 @@ static boolean NET_SDL_InitClient()
 
     udpsocket = SDLNet_UDP_Open(0);
 
-    if (udpsocket == NULL)
+    if (udpsocket == nullptr)
     {
         I_Error("NET_SDL_InitClient: Unable to open a socket!");
     }
@@ -208,7 +208,7 @@ static boolean NET_SDL_InitServer()
 
     udpsocket = SDLNet_UDP_Open(port);
 
-    if (udpsocket == NULL)
+    if (udpsocket == nullptr)
     {
         I_Error("NET_SDL_InitServer: Unable to bind to port %i", port);
     }
@@ -337,7 +337,7 @@ net_addr_t *NET_SDL_ResolveAddress(const char *address)
     const auto *colon = std::strchr(address, ':');
 
     addr_hostname = M_StringDuplicate(address);
-    if (colon != NULL)
+    if (colon != nullptr)
     {
         addr_hostname[colon - address] = '\0';
         addr_port                      = atoi(colon + 1);

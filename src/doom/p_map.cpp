@@ -901,7 +901,7 @@ retry:
 //
 // P_LineAttack
 //
-mobj_t *linetarget; // who got hit (or NULL)
+mobj_t *linetarget; // who got hit (or nullptr)
 mobj_t *shootthing;
 
 // Height if not aiming up or down
@@ -1046,7 +1046,7 @@ boolean PTR_ShootTraverse(intercept_t *in)
         // e6y: emulation of missed back side on two-sided lines.
         // backsector can be NULL when emulating missing back side.
 
-        if (li->backsector == NULL)
+        if (li->backsector == nullptr)
         {
             slope = FixedDiv(openbottom - shootz, dist);
             if (slope > aimslope)

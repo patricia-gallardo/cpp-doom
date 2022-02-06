@@ -605,7 +605,7 @@ void I_StartVoice(const char *lumpname)
     // starting a new one if NULL was passed in here, though I cannot 
     // find an explicit check for NULL in the assembly. Either way, it 
     // didn't crash, so do a check now:
-    if(lumpname == NULL)
+    if(lumpname == nullptr)
         return;
 
     // Because of constness problems...

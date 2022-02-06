@@ -418,7 +418,7 @@ void WI_drawLF()
     int y = WI_TITLEY;
 
     // [crispy] prevent crashes with maps without map title graphics lump
-    if (wbs->last >= num_lnames || lnames[wbs->last] == NULL)
+    if (wbs->last >= num_lnames || lnames[wbs->last] == nullptr)
     {
         V_DrawPatch((ORIGWIDTH - SHORT(finished->width)) / 2, y, finished);
         return;
@@ -461,7 +461,7 @@ void WI_drawEL()
     int y = WI_TITLEY;
 
     // [crispy] prevent crashes with maps without map title graphics lump
-    if (wbs->next >= num_lnames || lnames[wbs->next] == NULL)
+    if (wbs->next >= num_lnames || lnames[wbs->next] == nullptr)
     {
         return;
     }
@@ -509,7 +509,7 @@ void WI_drawOnLnode(int n,
         {
             i++;
         }
-    } while (!fits && i != 2 && c[i] != NULL);
+    } while (!fits && i != 2 && c[i] != nullptr);
 
     if (fits && i < 2)
     {
@@ -1872,7 +1872,7 @@ void WI_loadData()
     {
         NUMCMAPS   = (crispy->havemap33) ? 33 : 32;
         lnames     = zmalloc<patch_t **>(sizeof(patch_t *) * NUMCMAPS,
-            PU_STATIC, NULL);
+            PU_STATIC, nullptr);
         num_lnames = NUMCMAPS;
     }
     else
@@ -1880,7 +1880,7 @@ void WI_loadData()
         // [crispy] support E1M10 "Sewers"
         int nummaps = crispy->havee1m10 ? NUMMAPS + 1 : NUMMAPS;
         lnames      = zmalloc<patch_t **>(sizeof(patch_t *) * nummaps,
-            PU_STATIC, NULL);
+            PU_STATIC, nullptr);
         num_lnames  = nummaps;
     }
 

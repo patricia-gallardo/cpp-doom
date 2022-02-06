@@ -76,7 +76,7 @@ boolean
         // Modified handling.
         // Call action functions when the state is set
         if (st->action.acp3)
-            st->action.acp3(mobj, NULL, NULL); // [crispy] let pspr action pointers get called from mobj states
+            st->action.acp3(mobj, NULL, nullptr); // [crispy] let pspr action pointers get called from mobj states
 
         state = st->nextstate;
 
@@ -621,7 +621,7 @@ static mobj_t *
     state_t *   st;
     mobjinfo_t *info;
 
-    mobj = zmalloc<decltype(mobj)>(sizeof(*mobj), PU_LEVEL, NULL);
+    mobj = zmalloc<decltype(mobj)>(sizeof(*mobj), PU_LEVEL, nullptr);
     memset(mobj, 0, sizeof(*mobj));
     info = &mobjinfo[type];
 
@@ -1138,7 +1138,7 @@ void P_CheckMissileSpawn(mobj_t *th)
 
 mobj_t *P_SubstNullMobj(mobj_t *mobj)
 {
-    if (mobj == NULL)
+    if (mobj == nullptr)
     {
         static mobj_t dummy_mobj;
 

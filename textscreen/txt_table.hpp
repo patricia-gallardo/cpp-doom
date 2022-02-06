@@ -43,7 +43,7 @@
 
 /**
  * Indicates an empty space to @ref TXT_AddWidgets(). Equivalent to
- * TXT_AddWidget(table, NULL), except that NULL is used by TXT_AddWidgets()
+ * TXT_AddWidget(table, nullptr), except that NULL is used by TXT_AddWidgets()
  * to indicate the end of input.
  */
 #define TXT_TABLE_EMPTY (&txt_table_empty)

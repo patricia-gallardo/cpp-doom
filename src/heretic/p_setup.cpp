@@ -440,9 +440,9 @@ void P_LoadBlockMap(int lump)
     count = lumplen / 2; // [crispy] remove BLOCKMAP limit
 
     // [crispy] remove BLOCKMAP limit
-    wadblockmaplump = zmalloc<short *>(lumplen, PU_LEVEL, NULL);
+    wadblockmaplump = zmalloc<short *>(lumplen, PU_LEVEL, nullptr);
     W_ReadLump(lump, wadblockmaplump);
-    blockmaplump = zmalloc<int32_t *>(sizeof(*blockmaplump) * count, PU_LEVEL, NULL);
+    blockmaplump = zmalloc<int32_t *>(sizeof(*blockmaplump) * count, PU_LEVEL, nullptr);
     blockmap = blockmaplump + 4;
 
     blockmaplump[0] = SHORT(wadblockmaplump[0]);

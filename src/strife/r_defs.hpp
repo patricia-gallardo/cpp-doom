@@ -107,7 +107,7 @@ typedef	struct
     // 0 = untraversed, 1,2 = sndlines -1
     int		soundtraversed;
 
-    // thing that made a sound (or null)
+    // thing that made a sound (or nullptr)
     mobj_t*	soundtarget;
 
     // mapblock bounding box for height changes

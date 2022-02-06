@@ -84,7 +84,7 @@ static void DEH_ThingParseLine(deh_context_t *context, char *line, void *tag)
     char *variable_name, *value;
     int ivalue;
     
-    if (tag == NULL)
+    if (tag == nullptr)
        return;
 
     mobj = (mobjinfo_t *) tag;

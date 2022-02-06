@@ -559,7 +559,7 @@ void M_ReadSaveStrings()
         fname = M_SafeFilePath(savegamedir, M_MakeStrifeSaveDir(i, "\\name"));
 
         handle = fopen(fname, "rb");
-        if(handle == NULL)
+        if(handle == nullptr)
         {
             M_StringCopy(savegamestrings[i], DEH_String(EMPTYSTRING),
                          sizeof(savegamestrings[i]));

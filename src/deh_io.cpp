@@ -70,12 +70,12 @@ static deh_context_t *DEH_NewContext()
 {
     deh_context_t *context;
 
-    context = zmalloc<decltype(context)>(sizeof(*context), PU_STATIC, NULL);
+    context = zmalloc<decltype(context)>(sizeof(*context), PU_STATIC, nullptr);
 
     // Initial read buffer size of 128 bytes
 
     context->readbuffer_size  = 128;
-    context->readbuffer       = zmalloc<decltype(context->readbuffer)>(context->readbuffer_size, PU_STATIC, NULL);
+    context->readbuffer       = zmalloc<decltype(context->readbuffer)>(context->readbuffer_size, PU_STATIC, nullptr);
     context->linenum          = 0;
     context->last_was_newline = true;
 
@@ -95,7 +95,7 @@ deh_context_t *DEH_OpenFile(const char *filename)
 
     fstream = fopen(filename, "r");
 
-    if (fstream == NULL)
+    if (fstream == nullptr)
         return NULL;
 
     context = DEH_NewContext();
@@ -213,7 +213,7 @@ static void IncreaseReadBuffer(deh_context_t *context)
     int   newbuffer_size;
 
     newbuffer_size = context->readbuffer_size * 2;
-    newbuffer      = zmalloc<decltype(newbuffer)>(newbuffer_size, PU_STATIC, NULL);
+    newbuffer      = zmalloc<decltype(newbuffer)>(newbuffer_size, PU_STATIC, nullptr);
 
     memcpy(newbuffer, context->readbuffer, context->readbuffer_size);
 

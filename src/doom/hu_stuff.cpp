@@ -722,7 +722,7 @@ void HU_Start()
     {
         char *m;
 
-        ptr = M_StringJoin(crstr[static_cast<int>(cr_t::CR_GOLD)], W_WadNameForLump(maplumpinfo), ": ", crstr[static_cast<int>(cr_t::CR_GRAY)], maplumpinfo->name, NULL);
+        ptr = M_StringJoin(crstr[static_cast<int>(cr_t::CR_GOLD)], W_WadNameForLump(maplumpinfo), ": ", crstr[static_cast<int>(cr_t::CR_GRAY)], maplumpinfo->name, nullptr);
         m   = ptr;
 
         while (*m)

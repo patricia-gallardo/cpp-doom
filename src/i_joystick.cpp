@@ -77,7 +77,7 @@ static int joystick_physical_buttons[NUM_VIRTUAL_BUTTONS] = {
 
 void I_ShutdownJoystick()
 {
-    if (joystick != NULL)
+    if (joystick != nullptr)
     {
         SDL_JoystickClose(joystick);
         joystick = NULL;
@@ -172,7 +172,7 @@ void I_InitJoystick()
 
     joystick = SDL_JoystickOpen(index);
 
-    if (joystick == NULL)
+    if (joystick == nullptr)
     {
         printf("I_InitJoystick: Failed to open joystick #%i\n", index);
         SDL_QuitSubSystem(SDL_INIT_JOYSTICK);
@@ -361,7 +361,7 @@ static int GetAxisState(int axis, int invert)
 
 void I_UpdateJoystick()
 {
-    if (joystick != NULL)
+    if (joystick != nullptr)
     {
         event_t ev;
 

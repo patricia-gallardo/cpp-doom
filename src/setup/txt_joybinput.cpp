@@ -182,7 +182,7 @@ static void PromptWindowClosed(TXT_UNCAST_ARG(widget), TXT_UNCAST_ARG(joystick))
     TXT_CAST_ARG(SDL_Joystick, joystick);
 
     SDL_JoystickClose(joystick);
-    TXT_SDL_SetEventCallback(NULL, NULL);
+    TXT_SDL_SetEventCallback(NULL, nullptr);
     SDL_JoystickEventState(SDL_DISABLE);
     SDL_QuitSubSystem(SDL_INIT_JOYSTICK);
 }
@@ -210,7 +210,7 @@ static void OpenPromptWindow(txt_joystick_input_t *joystick_input)
 
     joystick = SDL_JoystickOpen(joystick_index);
 
-    if (joystick == NULL)
+    if (joystick == nullptr)
     {
         OpenErrorWindow();
         return;

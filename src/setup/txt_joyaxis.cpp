@@ -326,7 +326,7 @@ static int EventCallback(SDL_Event *event, TXT_UNCAST_ARG(joystick_axis))
             {
                 TXT_CloseWindow(joystick_axis->config_window);
 
-                if (joystick_axis->callback != NULL)
+                if (joystick_axis->callback != nullptr)
                 {
                     joystick_axis->callback();
                 }
@@ -350,7 +350,7 @@ static void CalibrateWindowClosed(TXT_UNCAST_ARG(widget),
     SDL_JoystickClose(joystick_axis->joystick);
     SDL_JoystickEventState(SDL_DISABLE);
     SDL_QuitSubSystem(SDL_INIT_JOYSTICK);
-    TXT_SDL_SetEventCallback(NULL, NULL);
+    TXT_SDL_SetEventCallback(NULL, nullptr);
 }
 
 void TXT_ConfigureJoystickAxis(txt_joystick_axis_t *joystick_axis,
@@ -364,7 +364,7 @@ void TXT_ConfigureJoystickAxis(txt_joystick_axis_t *joystick_axis,
     }
 
     joystick_axis->joystick = SDL_JoystickOpen(joystick_index);
-    if (joystick_axis->joystick == NULL)
+    if (joystick_axis->joystick == nullptr)
     {
         TXT_MessageBox(NULL, "Please configure a controller first!");
         return;
@@ -380,12 +380,12 @@ void TXT_ConfigureJoystickAxis(txt_joystick_axis_t *joystick_axis,
                    TXT_NewStrut(0, 1),
                    joystick_axis->config_label = TXT_NewLabel(""),
                    TXT_NewStrut(0, 1),
-                   NULL);
+                   nullptr);
 
-    TXT_SetWindowAction(joystick_axis->config_window, TXT_HORIZ_LEFT, NULL);
+    TXT_SetWindowAction(joystick_axis->config_window, TXT_HORIZ_LEFT, nullptr);
     TXT_SetWindowAction(joystick_axis->config_window, TXT_HORIZ_CENTER,
                         TXT_NewWindowAbortAction(joystick_axis->config_window));
-    TXT_SetWindowAction(joystick_axis->config_window, TXT_HORIZ_RIGHT, NULL);
+    TXT_SetWindowAction(joystick_axis->config_window, TXT_HORIZ_RIGHT, nullptr);
     TXT_SetWidgetAlign(joystick_axis->config_window, TXT_HORIZ_CENTER);
 
     if (using_button >= 0)
@@ -476,7 +476,7 @@ static int TXT_JoystickAxisKeyPress(TXT_UNCAST_ARG(joystick_axis), int key)
 
     if (key == KEY_ENTER)
     {
-        TXT_ConfigureJoystickAxis(joystick_axis, -1, NULL);
+        TXT_ConfigureJoystickAxis(joystick_axis, -1, nullptr);
         return 1;
     }
 

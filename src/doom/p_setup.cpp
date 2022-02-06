@@ -717,9 +717,9 @@ boolean P_LoadBlockMap(int lump)
 
     // [crispy] remove BLOCKMAP limit
     // adapted from boom202s/P_SETUP.C:1025-1076
-    wadblockmaplump = zmalloc<decltype(wadblockmaplump)>(lumplen, PU_LEVEL, NULL);
+    wadblockmaplump = zmalloc<decltype(wadblockmaplump)>(lumplen, PU_LEVEL, nullptr);
     W_ReadLump(lump, wadblockmaplump);
-    blockmaplump = zmalloc<decltype(blockmaplump)>(sizeof(*blockmaplump) * count, PU_LEVEL, NULL);
+    blockmaplump = zmalloc<decltype(blockmaplump)>(sizeof(*blockmaplump) * count, PU_LEVEL, nullptr);
     blockmap     = blockmaplump + 4;
 
     blockmaplump[0] = SHORT(wadblockmaplump[0]);
@@ -818,7 +818,7 @@ void P_GroupLines()
     {
         li = &lines[i];
 
-        if (li->frontsector != NULL)
+        if (li->frontsector != nullptr)
         {
             sector = li->frontsector;
 
@@ -1170,7 +1170,7 @@ void P_SetupLevel(int episode,
             respawnparm ? " -respawn" : "",
             fastparm ? " -fast" : "",
             nomonsters ? " -nomonsters" : "",
-            NULL);
+            nullptr);
 
         fprintf(stderr, "P_SetupLevel: %s (%s) %s%s %d:%02d:%02d/%d:%02d:%02d ",
             maplumpinfo->name, W_WadNameForLump(maplumpinfo),

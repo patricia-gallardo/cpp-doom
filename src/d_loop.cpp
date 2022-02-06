@@ -274,7 +274,7 @@ void D_ReceiveTic(ticcmd_t *ticcmds, boolean *players_mask)
 
     // Disconnected from server?
 
-    if (ticcmds == NULL && players_mask == NULL)
+    if (ticcmds == NULL && players_mask == nullptr)
     {
         D_Disconnected();
         return;
@@ -467,7 +467,7 @@ boolean D_InitNetGame(net_connect_data_t *connect_data)
         {
             addr = NET_FindLANServer();
 
-            if (addr == NULL)
+            if (addr == nullptr)
             {
                 I_Error("No server found on local LAN");
             }
@@ -489,14 +489,14 @@ boolean D_InitNetGame(net_connect_data_t *connect_data)
             addr = net_sdl_module.ResolveAddress(myargv[i + 1]);
             NET_ReferenceAddress(addr);
 
-            if (addr == NULL)
+            if (addr == nullptr)
             {
                 I_Error("Unable to resolve '%s'\n", myargv[i + 1]);
             }
         }
     }
 
-    if (addr != NULL)
+    if (addr != nullptr)
     {
         if (M_CheckParm("-drone") > 0)
         {

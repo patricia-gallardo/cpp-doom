@@ -77,22 +77,22 @@ static HANDLE midi_process_out_writer;
 //
 static void FreePipes()
 {
-    if (midi_process_in_reader != NULL)
+    if (midi_process_in_reader != nullptr)
     {
         CloseHandle(midi_process_in_reader);
         midi_process_in_reader = NULL;
     }
-    if (midi_process_in_writer != NULL)
+    if (midi_process_in_writer != nullptr)
     {
         CloseHandle(midi_process_in_writer);
         midi_process_in_writer = NULL;
     }
-    if (midi_process_out_reader != NULL)
+    if (midi_process_out_reader != nullptr)
     {
         CloseHandle(midi_process_out_reader);
         midi_process_in_reader = NULL;
     }
-    if (midi_process_out_writer != NULL)
+    if (midi_process_out_writer != nullptr)
     {
         CloseHandle(midi_process_out_writer);
         midi_process_out_writer = NULL;
@@ -132,7 +132,7 @@ static boolean WritePipe(net_packet_t *packet)
 {
     DWORD bytes_written;
     BOOL  ok = WriteFile(midi_process_in_writer, packet->data, packet->len,
-        &bytes_written, NULL);
+        &bytes_written, nullptr);
 
     return ok;
 }
@@ -164,7 +164,7 @@ static boolean ExpectPipe(net_packet_t *packet)
     {
         // Wait until we see exactly the amount of data we expect on the pipe.
         ok = PeekNamedPipe(midi_process_out_reader, NULL, 0, NULL,
-            &pipe_buffer_read, NULL);
+            &pipe_buffer_read, nullptr);
         if (!ok)
         {
             break;
@@ -177,7 +177,7 @@ static boolean ExpectPipe(net_packet_t *packet)
 
         // Read precisely the number of bytes we're expecting, and no more.
         ok = ReadFile(midi_process_out_reader, pipe_buffer, packet->len,
-            &pipe_buffer_read, NULL);
+            &pipe_buffer_read, nullptr);
         if (!ok || pipe_buffer_read != packet->len)
         {
             break;
@@ -473,7 +473,7 @@ boolean I_MidiPipe_InitServer()
     // the executable name.
     M_snprintf(params_buf, sizeof(params_buf), "%d %Iu %Iu",
         snd_samplerate, (size_t)midi_process_in_reader, (size_t)midi_process_out_writer);
-    cmdline = M_StringJoin(module, " \"" PACKAGE_STRING "\"", " ", params_buf, NULL);
+    cmdline = M_StringJoin(module, " \"" PACKAGE_STRING "\"", " ", params_buf, nullptr);
 
     // Launch the subprocess
     memset(&proc_info, 0, sizeof(proc_info));

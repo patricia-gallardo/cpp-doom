@@ -62,7 +62,7 @@ static void MapFile(posix_wad_file_t *wad, const char *filename)
 
     wad->wad.mapped = result;
 
-    if (result == NULL)
+    if (result == nullptr)
     {
         fprintf(stderr, "W_POSIX_OpenFile: Unable to mmap() %s - %s\n",
             filename, strerror(errno));

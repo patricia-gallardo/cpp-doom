@@ -816,7 +816,7 @@ static void InterceptsMemoryOverrun(int location, int value)
             // Write the value to the memory location.
             // 16-bit and 32-bit values are written differently.
 
-            if (addr != NULL)
+            if (addr != nullptr)
             {
                 if (intercepts_overrun[i].int16_array)
                 {

@@ -52,18 +52,18 @@ void ClearTmp()
 {
     glob_t *glob;
 
-    if(savepathtemp == NULL)
+    if(savepathtemp == nullptr)
         I_Error("you fucked up savedir man!");
 
     glob = I_StartGlob(savepathtemp, "*", 0);
-    if (glob == NULL)
+    if (glob == nullptr)
         I_Error("ClearTmp: Couldn't open dir %s", savepathtemp);
 
     for (;;)
     {
         const char *path = I_NextGlob(glob);
 
-        if (path == NULL)
+        if (path == nullptr)
         {
             break;
         }
@@ -82,18 +82,18 @@ void ClearSlot()
 {
     glob_t *glob;
 
-    if(savepath == NULL)
+    if(savepath == nullptr)
         I_Error("userdir is fucked up man!");
 
     glob = I_StartGlob(savepath, "*", 0);
-    if (glob == NULL)
+    if (glob == nullptr)
         I_Error("ClearSlot: Couldn't open dir %s", savepath);
 
     for (;;)
     {
         const char *filepath = I_NextGlob(glob);
 
-        if (filepath == NULL)
+        if (filepath == nullptr)
         {
             break;
         }
@@ -115,7 +115,7 @@ void FromCurr()
 
     glob = I_StartGlob(savepathtemp, "*", 0);
 
-    if (glob == NULL)
+    if (glob == nullptr)
         I_Error("FromCurr: Couldn't open dir %s", savepathtemp);
 
     for (;;)
@@ -126,7 +126,7 @@ void FromCurr()
         char *dstfilename;
 
         srcfilename = I_NextGlob(glob);
-        if (srcfilename == NULL)
+        if (srcfilename == nullptr)
         {
             break;
         }
@@ -157,7 +157,7 @@ void ToCurr()
     // BUG: Rogue copypasta'd this error message, which is why we don't know
     // the real original name of this function.
     glob = I_StartGlob(savepath, "*", 0);
-    if (glob == NULL)
+    if (glob == nullptr)
         I_Error("ClearSlot: Couldn't open dir %s", savepath);
 
     for (;;)
@@ -168,7 +168,7 @@ void ToCurr()
         char *dstfilename;
 
         srcfilename = I_NextGlob(glob);
-        if (srcfilename == NULL)
+        if (srcfilename == nullptr)
         {
             break;
         }
@@ -305,7 +305,7 @@ void M_ReadMisObj()
 //
 void *M_Calloc(size_t n1, size_t n2)
 {
-    return (n1 *= n2) ? memset(Z_Malloc(n1, PU_STATIC, NULL), 0, n1) : NULL;
+    return (n1 *= n2) ? memset(Z_Malloc(n1, PU_STATIC, nullptr), 0, n1) : NULL;
 }
 
 //

@@ -606,7 +606,7 @@ static void GenerateTextureHashTable()
 
         rover = &textures_hashtable[key];
 
-        while (*rover != NULL)
+        while (*rover != nullptr)
         {
             rover = &(*rover)->next;
         }
@@ -746,7 +746,7 @@ void R_InitTextures()
 
     // [crispy] fill up the patch lookup table
     name[8]     = 0;
-    patchlookup = zmalloc<decltype(patchlookup)>(nummappatches * sizeof(*patchlookup), PU_STATIC, NULL);
+    patchlookup = zmalloc<decltype(patchlookup)>(nummappatches * sizeof(*patchlookup), PU_STATIC, nullptr);
     for (i = 0, k = 0; i < numpnameslumps; i++)
     {
         for (j = 0; j < pnameslumps[i].nummappatches; j++)
@@ -1027,7 +1027,7 @@ static void R_InitTranMap()
         } cache;
 
         tranmap = zmalloc<decltype(tranmap)>(256 * 256, PU_STATIC, 0);
-        fname   = M_StringJoin(configdir, "tranmap.dat", NULL);
+        fname   = M_StringJoin(configdir, "tranmap.dat", nullptr);
 
         // [crispy] open file readable
         if ((cachefp = fopen(fname, "rb")) &&
@@ -1293,7 +1293,7 @@ int R_CheckTextureNumForName(const char *name)
 
     texture = textures_hashtable[key];
 
-    while (texture != NULL)
+    while (texture != nullptr)
     {
         if (!strncasecmp(texture->name, name, 8))
             return texture->index;
@@ -1358,7 +1358,7 @@ void R_PrecacheLevel()
         return;
 
     // Precache flats.
-    flatpresent = zmalloc<decltype(flatpresent)>(numflats, PU_STATIC, NULL);
+    flatpresent = zmalloc<decltype(flatpresent)>(numflats, PU_STATIC, nullptr);
     memset(flatpresent, 0, numflats);
 
     for (i = 0; i < numsectors; i++)
@@ -1382,7 +1382,7 @@ void R_PrecacheLevel()
     Z_Free(flatpresent);
 
     // Precache textures.
-    texturepresent = zmalloc<decltype(texturepresent)>(numtextures, PU_STATIC, NULL);
+    texturepresent = zmalloc<decltype(texturepresent)>(numtextures, PU_STATIC, nullptr);
     memset(texturepresent, 0, numtextures);
 
     for (i = 0; i < numsides; i++)
@@ -1422,7 +1422,7 @@ void R_PrecacheLevel()
     Z_Free(texturepresent);
 
     // Precache sprites.
-    spritepresent = zmalloc<decltype(spritepresent)>(numsprites, PU_STATIC, NULL);
+    spritepresent = zmalloc<decltype(spritepresent)>(numsprites, PU_STATIC, nullptr);
     memset(spritepresent, 0, numsprites);
 
     for (th = thinkercap.next; th != &thinkercap; th = th->next)

@@ -89,7 +89,7 @@ static void DEH_ThingParseLine(deh_context_t *context, char *line, void *tag)
     char *variable_name, *value;
     int ivalue;
 
-    if (tag == NULL)
+    if (tag == nullptr)
        return;
 
     mobj = (mobjinfo_t *) tag;
@@ -112,7 +112,7 @@ static void DEH_ThingParseLine(deh_context_t *context, char *line, void *tag)
     // undergo transformation from a Heretic 1.0 index to a
     // Heretic 1.3 index.
 
-    if (M_StrCaseStr(variable_name, "frame") != NULL)
+    if (M_StrCaseStr(variable_name, "frame") != nullptr)
     {
         ivalue = DEH_MapHereticFrameNumber(ivalue);
     }

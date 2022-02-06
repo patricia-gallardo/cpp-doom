@@ -181,7 +181,7 @@ void D_ProcessEvents ()
     //if (storedemo)
     //    return;
 
-    while ((ev = D_PopEvent()) != NULL)
+    while ((ev = D_PopEvent()) != nullptr)
     {
         if (M_Responder (ev))
             continue;               // menu ate the event
@@ -846,7 +846,7 @@ void D_IdentifyVersion()
         {
             char   *iwad     = myargv[p + 1];
             size_t  len      = strlen(iwad) + 1;
-            char   *iwadpath = zmalloc<char *>(len, PU_STATIC, NULL);
+            char   *iwadpath = zmalloc<char *>(len, PU_STATIC, nullptr);
             char   *voiceswad;
 
             // extract base path of IWAD parameter
@@ -1046,7 +1046,7 @@ static void InitGameVersion()
             }
         }
 
-        if (gameversions[i].description == NULL) 
+        if (gameversions[i].description == nullptr)
         {
             printf("Supported game versions:\n");
 
@@ -1722,7 +1722,7 @@ void D_DoomMain ()
     iwadfile = D_FindIWAD(IWAD_MASK_STRIFE, &gamemission);
 
     // None found?
-    if (iwadfile == NULL)
+    if (iwadfile == nullptr)
     {
         I_Error("Game mode indeterminate.  No IWAD file was found.  Try\n"
                 "specifying one with the '-iwad' command line parameter.\n");

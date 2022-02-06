@@ -855,7 +855,7 @@ boolean P_UseInventoryItem(player_t* player, int item)
             return false;
 
         name = P_RemoveInventoryItem(player, i, 1);
-        if(name == NULL)
+        if(name == nullptr)
             name = "Item";
 
         M_snprintf(useinventorymsg, sizeof(useinventorymsg),

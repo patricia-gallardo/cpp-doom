@@ -377,7 +377,7 @@ void TXT_AddWidgets(TXT_UNCAST_ARG(table), ...)
     {
         widget = va_arg(args, txt_widget_t *);
 
-        if (widget == NULL)
+        if (widget == nullptr)
         {
             break;
         }
@@ -479,7 +479,7 @@ static void ChangeSelection(txt_table_t *table, int x, int y)
     table->selected_x = x;
     table->selected_y = y;
 
-    if (table->widget.focused && new_widget != NULL)
+    if (table->widget.focused && new_widget != nullptr)
     {
         TXT_SetWidgetFocus(new_widget, 1);
     }
@@ -915,7 +915,7 @@ txt_table_t *TXT_MakeTable(int columns, ...)
         txt_widget_t *widget;
         widget = va_arg(args, txt_widget_t *);
 
-        if (widget == NULL)
+        if (widget == nullptr)
         {
             break;
         }
@@ -950,7 +950,7 @@ txt_table_t *TXT_NewHorizBox(TXT_UNCAST_ARG(first_widget), ...)
 
         widget = va_arg(args, txt_widget_t *);
 
-        if (widget == NULL)
+        if (widget == nullptr)
         {
             // End of list
 
@@ -979,7 +979,7 @@ txt_table_t *TXT_NewHorizBox(TXT_UNCAST_ARG(first_widget), ...)
 
         widget = va_arg(args, txt_widget_t *);
 
-        if (widget == NULL)
+        if (widget == nullptr)
         {
             // End of list
 

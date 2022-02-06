@@ -72,7 +72,7 @@ static void DEH_WeaponParseLine(deh_context_t *context, char *line, void *tag)
     weaponinfo_t *weapon;
     int ivalue;
 
-    if (tag == NULL)
+    if (tag == nullptr)
         return;
 
     weapon = (weaponinfo_t *) tag;
@@ -90,7 +90,7 @@ static void DEH_WeaponParseLine(deh_context_t *context, char *line, void *tag)
     // If this is a frame field, we need to map from Heretic 1.0 frame
     // numbers to Heretic 1.3 frame numbers.
 
-    if (M_StrCaseStr(variable_name, "frame") != NULL)
+    if (M_StrCaseStr(variable_name, "frame") != nullptr)
     {
         ivalue = DEH_MapHereticFrameNumber(ivalue);
     }

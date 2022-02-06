@@ -90,7 +90,7 @@ static void DEH_CheatParseLine(deh_context_t *context, char *line, void *tag)
 
     cheat = FindCheatByName(variable_name);
 
-    if (cheat == NULL)
+    if (cheat == nullptr)
     {
         DEH_Warning(context, "Unknown cheat '%s'", variable_name);
         return;

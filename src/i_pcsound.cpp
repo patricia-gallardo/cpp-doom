@@ -222,7 +222,7 @@ static boolean CachePCSLump(sfxinfo_t *sfxinfo)
 
     // Free the current sound lump back to the cache
 
-    if (current_sound_lump != NULL)
+    if (current_sound_lump != nullptr)
     {
         W_ReleaseLumpNum(current_sound_lump_num);
         current_sound_lump = NULL;

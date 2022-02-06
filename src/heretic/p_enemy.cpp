@@ -1243,7 +1243,7 @@ void A_MummyAttack2(mobj_t * actor)
     }
     mo = P_SpawnMissile(actor, actor->target, MT_MUMMYFX1);
     //mo = P_SpawnMissile(actor, actor->target, MT_EGGFX);
-    if (mo != NULL)
+    if (mo != nullptr)
     {
         mo->special1.m = actor->target;
     }
@@ -1599,7 +1599,7 @@ void A_MinotaurAtk1(mobj_t * actor)
     if (P_CheckMeleeRange(actor))
     {
         P_DamageMobj(actor->target, actor, actor, HITDICE(4));
-        if ((player = actor->target->player) != NULL)
+        if ((player = actor->target->player) != nullptr)
         {                       // Squish the player
             player->deltaviewheight = -16 * FRACUNIT;
         }
@@ -1737,7 +1737,7 @@ void A_MinotaurAtk3(mobj_t * actor)
     if (P_CheckMeleeRange(actor))
     {
         P_DamageMobj(actor->target, actor, actor, HITDICE(5));
-        if ((player = actor->target->player) != NULL)
+        if ((player = actor->target->player) != nullptr)
         {                       // Squish the player
             player->deltaviewheight = -16 * FRACUNIT;
         }
@@ -1745,7 +1745,7 @@ void A_MinotaurAtk3(mobj_t * actor)
     else
     {
         mo = P_SpawnMissile(actor, actor->target, MT_MNTRFX2);
-        if (mo != NULL)
+        if (mo != nullptr)
         {
             S_StartSound(mo, sfx_minat1);
         }
@@ -1825,7 +1825,7 @@ void A_HeadAttack(mobj_t * actor)
     // Distance threshold = 8 cells
 
     target = actor->target;
-    if (target == NULL)
+    if (target == nullptr)
     {
         return;
     }
@@ -1846,7 +1846,7 @@ void A_HeadAttack(mobj_t * actor)
     else if (randAttack < atkResolve2[dist])
     {                           // Fire column
         baseFire = P_SpawnMissile(actor, target, MT_HEADFX3);
-        if (baseFire != NULL)
+        if (baseFire != nullptr)
         {
             P_SetMobjState(baseFire, S_HEADFX3_4);      // Don't grow
             for (i = 0; i < 5; i++)
@@ -1871,7 +1871,7 @@ void A_HeadAttack(mobj_t * actor)
     else
     {                           // Whirlwind
         mo = P_SpawnMissile(actor, target, MT_WHIRLWIND);
-        if (mo != NULL)
+        if (mo != nullptr)
         {
             mo->z -= 32 * FRACUNIT;
             mo->special1.m = target;
@@ -2597,7 +2597,7 @@ void A_SkullPop(mobj_t * actor)
     // source, causing crashes if the player respawns before this
     // function is called.
 
-    if (player != NULL)
+    if (player != nullptr)
     {
         player->mo = mo;
         player->lookdir = 0;

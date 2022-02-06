@@ -212,7 +212,7 @@ static void SetExecutable(mission_config_t *config)
     extension = const_cast<char *>("");
 #endif
 
-    executable = M_StringJoin(config->executable, extension, NULL);
+    executable = M_StringJoin(config->executable, extension, nullptr);
 }
 
 static void SetMission(mission_config_t *config)
@@ -254,7 +254,7 @@ static boolean CheckExecutableName(GameSelectCallback callback)
     {
         config = &mission_configs[i];
 
-        if (strstr(exe_name, config->name) != NULL)
+        if (strstr(exe_name, config->name) != nullptr)
         {
             SetMission(config);
             callback();
@@ -295,7 +295,7 @@ static void OpenGameSelectDialog(GameSelectCallback callback)
 
         iwads = D_FindAllIWADs(mission_configs[i].mask);
 
-        if (iwads[0] != NULL)
+        if (iwads[0] != nullptr)
         {
             mission = &mission_configs[i];
             TXT_AddWidget(window, TXT_NewButton2(mission_configs[i].label,
@@ -353,7 +353,7 @@ void SetupMission(GameSelectCallback callback)
 
         config = GetMissionForName(mission_name);
 
-        if (config == NULL)
+        if (config == nullptr)
         {
             I_Error("Invalid parameter - '%s'", mission_name);
         }

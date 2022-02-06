@@ -345,7 +345,7 @@ static void IN_LoadUnloadPics(void (*callback)(const char *lumpname,
 
 static void LoadLumpCallback(const char *lumpname, int lumpnum, patch_t **ptr)
 {
-    if (lumpname != NULL)
+    if (lumpname != nullptr)
     {
         lumpnum = W_GetNumForName(lumpname);
     }
@@ -372,7 +372,7 @@ void IN_LoadPics()
 
 static void UnloadLumpCallback(const char *lumpname, int lumpnum, patch_t **ptr)
 {
-    if (lumpname != NULL)
+    if (lumpname != nullptr)
     {
         W_ReleaseLumpName(lumpname);
     }

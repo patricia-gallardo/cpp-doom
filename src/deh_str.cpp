@@ -61,7 +61,7 @@ static deh_substitution_t *SubstitutionForString(const char *s)
 
     entry = strhash(s) % hash_table_length;
 
-    while (hash_table[entry] != NULL)
+    while (hash_table[entry] != nullptr)
     {
         if (!strcmp(hash_table[entry]->from_text, s))
         {
@@ -85,7 +85,7 @@ const char *DEH_String(const char *s)
 
     subst = SubstitutionForString(s);
 
-    if (subst != NULL)
+    if (subst != nullptr)
     {
         return subst->to_text;
     }
@@ -109,7 +109,7 @@ static void InitHashTable()
     hash_table_entries = 0;
     hash_table_length  = 16;
     hash_table         = zmalloc<decltype(hash_table)>(sizeof(deh_substitution_t *) * hash_table_length,
-        PU_STATIC, NULL);
+        PU_STATIC, nullptr);
     memset(hash_table, 0, sizeof(deh_substitution_t *) * hash_table_length);
 }
 
@@ -130,14 +130,14 @@ static void IncreaseHashtable()
 
     hash_table_length *= 2;
     hash_table = zmalloc<decltype(hash_table)>(sizeof(deh_substitution_t *) * hash_table_length,
-        PU_STATIC, NULL);
+        PU_STATIC, nullptr);
     memset(hash_table, 0, sizeof(deh_substitution_t *) * hash_table_length);
 
     // go through the old table and insert all the old entries
 
     for (i = 0; i < old_table_length; ++i)
     {
-        if (old_table[i] != NULL)
+        if (old_table[i] != nullptr)
         {
             DEH_AddToHashtable(old_table[i]);
         }
@@ -162,7 +162,7 @@ static void DEH_AddToHashtable(deh_substitution_t *sub)
     // find where to insert it
     entry = strhash(sub->from_text) % hash_table_length;
 
-    while (hash_table[entry] != NULL)
+    while (hash_table[entry] != nullptr)
     {
         entry = (entry + 1) % hash_table_length;
     }
@@ -185,12 +185,12 @@ void DEH_AddStringReplacement(const char *from_text, const char *to_text)
     // Check to see if there is an existing substitution already in place.
     sub = SubstitutionForString(from_text);
 
-    if (sub != NULL)
+    if (sub != nullptr)
     {
         Z_Free(sub->to_text);
 
         len          = strlen(to_text) + 1;
-        sub->to_text = zmalloc<char *>(len, PU_STATIC, NULL);
+        sub->to_text = zmalloc<char *>(len, PU_STATIC, nullptr);
         memcpy(sub->to_text, to_text, len);
     }
     else
@@ -200,11 +200,11 @@ void DEH_AddStringReplacement(const char *from_text, const char *to_text)
 
         // We need to create our own duplicates of the provided strings.
         len            = strlen(from_text) + 1;
-        sub->from_text = zmalloc<char *>(len, PU_STATIC, NULL);
+        sub->from_text = zmalloc<char *>(len, PU_STATIC, nullptr);
         memcpy(sub->from_text, from_text, len);
 
         len          = strlen(to_text) + 1;
-        sub->to_text = zmalloc<char *>(len, PU_STATIC, NULL);
+        sub->to_text = zmalloc<char *>(len, PU_STATIC, nullptr);
         memcpy(sub->to_text, to_text, len);
 
         DEH_AddToHashtable(sub);

@@ -182,7 +182,7 @@ void Z_Free(void *ptr)
     if (block->id != ZONEID)
         I_Error("Z_Free: freed a pointer without ZONEID");
 
-    if (block->tag != PU_FREE && block->user != NULL)
+    if (block->tag != PU_FREE && block->user != nullptr)
     {
         // clear the user's mark
         *block->user = 0;
@@ -493,7 +493,7 @@ void Z_ChangeTag2(void *ptr, int tag, const char *file, int line)
         I_Error("%s:%i: Z_ChangeTag: block without a ZONEID!",
             file, line);
 
-    if (tag >= PU_PURGELEVEL && block->user == NULL)
+    if (tag >= PU_PURGELEVEL && block->user == nullptr)
         I_Error("%s:%i: Z_ChangeTag: an owner is required "
                 "for purgable blocks",
             file, line);

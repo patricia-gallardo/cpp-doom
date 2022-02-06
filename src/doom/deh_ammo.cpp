@@ -51,7 +51,7 @@ static void DEH_AmmoParseLine(deh_context_t *context, char *line, void *tag)
     int   ivalue;
     int   ammo_number;
 
-    if (tag == NULL)
+    if (tag == nullptr)
         return;
 
     ammo_number = ((int *)tag) - maxammo;

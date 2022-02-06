@@ -153,7 +153,7 @@ static void P_ReadFireFlicker(const char *key)
     {
         fireflicker_t *flick;
 
-        flick = zmalloc<decltype(flick)>(sizeof(*flick), PU_LEVEL, NULL);
+        flick = zmalloc<decltype(flick)>(sizeof(*flick), PU_LEVEL, nullptr);
 
         flick->sector   = &sectors[sector];
         flick->count    = count;

@@ -133,7 +133,7 @@ opl_init_result_t OPL_Init(unsigned int port_base)
 
     driver_name = getenv("OPL_DRIVER");
 
-    if (driver_name != NULL)
+    if (driver_name != nullptr)
     {
         // Search the list until we find the driver with this name.
 
@@ -169,7 +169,7 @@ opl_init_result_t OPL_Init(unsigned int port_base)
 
 void OPL_Shutdown()
 {
-    if (driver != NULL)
+    if (driver != nullptr)
     {
         driver->shutdown_func();
         driver = NULL;
@@ -185,7 +185,7 @@ void OPL_SetSampleRate(unsigned int rate)
 
 void OPL_WritePort(opl_port_t port, unsigned int value)
 {
-    if (driver != NULL)
+    if (driver != nullptr)
     {
 #ifdef OPL_DEBUG_TRACE
         printf("OPL_write: %i, %x\n", port, value);
@@ -197,7 +197,7 @@ void OPL_WritePort(opl_port_t port, unsigned int value)
 
 unsigned int OPL_ReadPort(opl_port_t port)
 {
-    if (driver != NULL)
+    if (driver != nullptr)
     {
         unsigned int result;
 
@@ -419,7 +419,7 @@ void OPL_InitRegisters(int opl3)
 
 void OPL_SetCallback(uint64_t us, opl_callback_t callback, void *data)
 {
-    if (driver != NULL)
+    if (driver != nullptr)
     {
         driver->set_callback_func(us, callback, data);
     }
@@ -427,7 +427,7 @@ void OPL_SetCallback(uint64_t us, opl_callback_t callback, void *data)
 
 void OPL_ClearCallbacks()
 {
-    if (driver != NULL)
+    if (driver != nullptr)
     {
         driver->clear_callbacks_func();
     }
@@ -435,7 +435,7 @@ void OPL_ClearCallbacks()
 
 void OPL_Lock()
 {
-    if (driver != NULL)
+    if (driver != nullptr)
     {
         driver->lock_func();
     }
@@ -443,7 +443,7 @@ void OPL_Lock()
 
 void OPL_Unlock()
 {
-    if (driver != NULL)
+    if (driver != nullptr)
     {
         driver->unlock_func();
     }
@@ -472,7 +472,7 @@ void OPL_Delay(uint64_t us)
 {
     delay_data_t delay_data;
 
-    if (driver == NULL)
+    if (driver == nullptr)
     {
         return;
     }
@@ -505,7 +505,7 @@ void OPL_Delay(uint64_t us)
 
 void OPL_SetPaused(int paused)
 {
-    if (driver != NULL)
+    if (driver != nullptr)
     {
         driver->set_paused_func(paused);
     }
@@ -513,7 +513,7 @@ void OPL_SetPaused(int paused)
 
 void OPL_AdjustCallbacks(float value)
 {
-    if (driver != NULL)
+    if (driver != nullptr)
     {
         driver->adjust_callbacks_func(value);
     }

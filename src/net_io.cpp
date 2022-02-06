@@ -61,7 +61,7 @@ net_addr_t *NET_ResolveAddress(net_context_t *context, const char *addr)
     {
         result = context->modules[i]->ResolveAddress(addr);
 
-        if (result != NULL)
+        if (result != nullptr)
         {
             NET_ReferenceAddress(result);
             return result;
@@ -120,7 +120,7 @@ char *NET_AddrToString(net_addr_t *addr)
 
 void NET_ReferenceAddress(net_addr_t *addr)
 {
-    if (addr == NULL)
+    if (addr == nullptr)
     {
         return;
     }
@@ -130,7 +130,7 @@ void NET_ReferenceAddress(net_addr_t *addr)
 
 void NET_ReleaseAddress(net_addr_t *addr)
 {
-    if (addr == NULL)
+    if (addr == nullptr)
     {
         return;
     }

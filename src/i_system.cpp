@@ -93,7 +93,7 @@ static byte *AutoAllocMemory(int *size, int default_ram, int min_ram)
 
     zonemem = NULL;
 
-    while (zonemem == NULL)
+    while (zonemem == nullptr)
     {
         // We need a reasonable minimum amount of RAM to start.
 
@@ -111,7 +111,7 @@ static byte *AutoAllocMemory(int *size, int default_ram, int min_ram)
         // Failed to allocate?  Reduce zone size until we reach a size
         // that is acceptable.
 
-        if (zonemem == NULL)
+        if (zonemem == nullptr)
         {
             default_ram -= 1;
         }
@@ -248,7 +248,7 @@ void I_Quit()
 
     entry = exit_funcs;
 
-    while (entry != NULL)
+    while (entry != nullptr)
     {
         entry->func();
         entry = entry->next;
@@ -301,7 +301,7 @@ void I_Error(const char *error, ...)
 
     entry = exit_funcs;
 
-    while (entry != NULL)
+    while (entry != nullptr)
     {
         if (entry->run_on_error)
         {
@@ -325,7 +325,7 @@ void I_Error(const char *error, ...)
     if (exit_gui_popup && !I_ConsoleStdout())
     {
         SDL_ShowSimpleMessageBox(SDL_MESSAGEBOX_ERROR,
-            PACKAGE_STRING, msgbuf, NULL);
+            PACKAGE_STRING, msgbuf, nullptr);
     }
 
     // abort();
@@ -345,7 +345,7 @@ void *I_Realloc(void *ptr, size_t size)
 
     new_ptr = realloc(ptr, size);
 
-    if (size != 0 && new_ptr == NULL)
+    if (size != 0 && new_ptr == nullptr)
     {
         I_Error("I_Realloc: failed on reallocation of %" PRIuPTR " bytes", size);
     }

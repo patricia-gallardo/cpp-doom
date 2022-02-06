@@ -80,7 +80,7 @@ static char *ExecReadOutput(char **argv)
     completed = 0;
 
     while (!completed
-        || (status == 0 && (result == NULL || strchr(result, '\n') == NULL)))
+        || (status == 0 && (result == NULL || strchr(result, '\n') == nullptr)))
     {
         char buf[64];
         int bytes;
@@ -179,13 +179,13 @@ static int LoadDLLs()
     HMODULE comdlg32, shell32
 
     comdlg32 = LoadLibraryW(L"comdlg32.dll");
-    if (comdlg32 == NULL)
+    if (comdlg32 == nullptr)
     {
         return 0;
     }
 
     shell32 = LoadLibraryW(L"shell32.dll");
-    if (shell32 == NULL)
+    if (shell32 == nullptr)
     {
         FreeLibrary(comdlg32);
         return 0;
@@ -225,7 +225,7 @@ static char *GenerateFilterString(const char **extensions)
     char *result, *out;
     size_t out_len, offset;
 
-    if (extensions == NULL)
+    if (extensions == nullptr)
     {
         return NULL;
     }
@@ -277,7 +277,7 @@ static char *SelectDirectory(char *window_title)
 
     result = NULL;
 
-    if (pidl != NULL)
+    if (pidl != nullptr)
     {
         if (MySHGetPathFromIDList(pidl, selected))
         {
@@ -388,7 +388,7 @@ static char *CreateExtensionsList(const char **extensions)
     unsigned int result_len;
     unsigned int i;
 
-    if (extensions == NULL)
+    if (extensions == nullptr)
     {
         return NULL;
     }
@@ -417,7 +417,7 @@ static char *CreateExtensionsList(const char **extensions)
         TXT_StringConcat(result, escaped, result_len);
         free(escaped);
 
-        if (extensions[i + 1] != NULL)
+        if (extensions[i + 1] != nullptr)
         {
             TXT_StringConcat(result, ",", result_len);
         }
@@ -452,7 +452,7 @@ static char *GenerateSelector(const char *const window_title, const char **exten
 
     // Calculate size.
 
-    if (window_title != NULL)
+    if (window_title != nullptr)
     {
         window_title_escaped = CreateEscapedString(window_title);
         if (!window_title_escaped)
@@ -462,7 +462,7 @@ static char *GenerateSelector(const char *const window_title, const char **exten
         }
         result_len += strlen(window_title_escaped);
     }
-    if (ext_list != NULL)
+    if (ext_list != nullptr)
     {
         result_len += strlen(ext_list);
     }
@@ -477,13 +477,13 @@ static char *GenerateSelector(const char *const window_title, const char **exten
 
     TXT_StringCopy(result, chooser, result_len);
 
-    if (window_title_escaped != NULL)
+    if (window_title_escaped != nullptr)
     {
         TXT_StringConcat(result, " with prompt ", result_len);
         TXT_StringConcat(result, window_title_escaped, result_len);
     }
 
-    if (ext_list != NULL)
+    if (ext_list != nullptr)
     {
         TXT_StringConcat(result, " of type ", result_len);
         TXT_StringConcat(result, ext_list, result_len);
@@ -558,7 +558,7 @@ static unsigned int NumExtensions(const char **extensions)
 {
     unsigned int result = 0;
 
-    if (extensions != NULL)
+    if (extensions != nullptr)
     {
         for (result = 0; extensions[result] != NULL; ++result);
     }
@@ -591,7 +591,7 @@ static char *ExpandExtension(const char *orig)
     newlen = oldlen * 4; // pathological case: 'w' => '[Ww]'
     newext = static_cast<char *>(malloc(newlen+1));
 
-    if (newext == NULL)
+    if (newext == nullptr)
     {
         return NULL;
     }
@@ -633,7 +633,7 @@ char *TXT_SelectFile(const char *window_title, const char **extensions)
     argv[1] = strdup("--file-selection");
     argc = 2;
 
-    if (window_title != NULL)
+    if (window_title != nullptr)
     {
         len = 10 + strlen(window_title);
         argv[argc] = static_cast<char *>(malloc(len));
@@ -646,7 +646,7 @@ char *TXT_SelectFile(const char *window_title, const char **extensions)
         argv[argc] = strdup("--directory");
         ++argc;
     }
-    else if (extensions != NULL)
+    else if (extensions != nullptr)
     {
         for (i = 0; extensions[i] != NULL; ++i)
         {
@@ -730,9 +730,9 @@ static int DoSelectFile(txt_fileselect_t *fileselect)
 
         // Update inputbox variable.
         // If cancel was pressed (ie. NULL was returned by TXT_SelectFile)
-        // then reset to empty string, not NULL).
+        // then reset to empty string, not nullptr).
 
-        if (path == NULL)
+        if (path == nullptr)
         {
             path = strdup("");
         }

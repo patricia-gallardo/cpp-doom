@@ -177,7 +177,7 @@ static void AddSectionLabel(TXT_UNCAST_ARG(table), const char *title,
         TXT_AddWidgets(table,
                        TXT_NewStrut(0, 1),
                        TXT_TABLE_EOL,
-                       NULL);
+                       nullptr);
     }
 
     M_snprintf(buf, sizeof(buf), " - %s - ", title);
@@ -185,7 +185,7 @@ static void AddSectionLabel(TXT_UNCAST_ARG(table), const char *title,
     TXT_AddWidgets(table,
                    TXT_NewLabel(buf),
                    TXT_TABLE_EOL,
-                   NULL);
+                   nullptr);
 }
 static void ConfigExtraKeys(TXT_UNCAST_ARG(widget), TXT_UNCAST_ARG(unused))
 {
@@ -463,10 +463,10 @@ void ConfigKeyboard(TXT_UNCAST_ARG(widget), void *user_data)
     AddKeyControl(window, "Use", &key_use);
 
     TXT_AddWidgets(window,
-                   TXT_NewButton2("More controls...", ConfigExtraKeys, NULL),
+                   TXT_NewButton2("More controls...", ConfigExtraKeys, nullptr),
                    TXT_TABLE_OVERFLOW_RIGHT,
                    TXT_TABLE_EMPTY,
-                   TXT_NewButton2("Other keys...", OtherKeysDialog, NULL),
+                   TXT_NewButton2("Other keys...", OtherKeysDialog, nullptr),
                    TXT_TABLE_OVERFLOW_RIGHT,
 
                    TXT_NewSeparator("Misc."),
@@ -475,9 +475,9 @@ void ConfigKeyboard(TXT_UNCAST_ARG(widget), void *user_data)
                    TXT_NewInvertedCheckBox("Use native keyboard mapping",
                                            &vanilla_keyboard_mapping),
                    TXT_TABLE_EOL,
-                   NULL);
+                   nullptr);
 
-    TXT_SignalConnect(run_control, "changed", UpdateJoybSpeed, NULL);
+    TXT_SignalConnect(run_control, "changed", UpdateJoybSpeed, nullptr);
     TXT_SetWindowAction(window, TXT_HORIZ_CENTER, TestConfigAction());
 }
 

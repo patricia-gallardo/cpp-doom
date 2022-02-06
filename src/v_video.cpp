@@ -938,7 +938,7 @@ void WritePCXfile(char *filename, pixel_t *data,
     pcx_t *pcx;
     byte * pack;
 
-    pcx = zmalloc<decltype(pcx)>(width * height * 2 + 1000, PU_STATIC, NULL);
+    pcx = zmalloc<decltype(pcx)>(width * height * 2 + 1000, PU_STATIC, nullptr);
 
     pcx->manufacturer   = 0x0a; // PCX id
     pcx->version        = 5;    // 256 color
@@ -1047,7 +1047,7 @@ void WritePNGfile(char *filename, pixel_t *data,
     if (!pinfo)
     {
         fclose(handle);
-        png_destroy_write_struct(&ppng, NULL);
+        png_destroy_write_struct(&ppng, nullptr);
         return;
     }
 

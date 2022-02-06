@@ -792,7 +792,7 @@ void M_ReadSaveStrings()
         M_StringCopy(name, P_SaveGameFile(i), sizeof(name));
 
         handle = fopen(name, "rb");
-        if (handle == NULL)
+        if (handle == nullptr)
         {
             M_StringCopy(savegamestrings[i], EMPTYSTRING, SAVESTRINGSIZE);
             LoadMenu[i].status = 0;
@@ -941,7 +941,7 @@ static void SetDefaultSaveName(int slot)
         char *wadname = M_StringDuplicate(W_WadNameForLump(maplumpinfo));
         char *ext     = strrchr(wadname, '.');
 
-        if (ext != NULL)
+        if (ext != nullptr)
         {
             *ext = '\0';
         }
@@ -1065,7 +1065,7 @@ void M_QuickSave()
     savegamestring = M_StringJoin(crstr[static_cast<int>(cr_t::CR_GOLD)],
         savegamestrings[quickSaveSlot],
         crstr[static_cast<int>(cr_t::CR_NONE)],
-        NULL);
+        nullptr);
     DEH_snprintf(tempstring, sizeof(tempstring),
         QSPROMPT, savegamestring);
     free(savegamestring);
@@ -1110,7 +1110,7 @@ void M_QuickLoad()
     savegamestring = M_StringJoin(crstr[static_cast<int>(cr_t::CR_GOLD)],
         savegamestrings[quickSaveSlot],
         crstr[static_cast<int>(cr_t::CR_NONE)],
-        NULL);
+        nullptr);
     DEH_snprintf(tempstring, sizeof(tempstring),
         QLPROMPT, savegamestring);
     free(savegamestring);
@@ -2805,7 +2805,7 @@ static void M_DrawOPLDev()
     {
         p = strchr(curr, '\n');
 
-        if (p != NULL)
+        if (p != nullptr)
         {
             *p = '\0';
         }
@@ -2813,7 +2813,7 @@ static void M_DrawOPLDev()
         M_WriteText(0, line * 8, curr);
         ++line;
 
-        if (p == NULL)
+        if (p == nullptr)
         {
             break;
         }
@@ -3148,14 +3148,14 @@ void M_ForceLoadGame()
                 "to restore ", crstr[static_cast<int>(cr_t::CR_GOLD)], savemaplumpinfo->name, crstr[static_cast<int>(cr_t::CR_NONE)], " .\n\n",
                 "Continue to restore from\n",
                 crstr[static_cast<int>(cr_t::CR_GOLD)], W_WadNameForLump(savemaplumpinfo), crstr[static_cast<int>(cr_t::CR_NONE)], " ?\n\n",
-                PRESSYN, NULL) :
+                PRESSYN, nullptr) :
             M_StringJoin("This savegame requires the file\n",
                 crstr[static_cast<int>(cr_t::CR_GOLD)], savewadfilename, crstr[static_cast<int>(cr_t::CR_NONE)], "\n",
                 "to restore a map that is\n",
                 "currently not available!\n\n",
-                PRESSKEY, NULL);
+                PRESSKEY, nullptr);
 
-    M_StartMessage(savegwarning, M_ForceLoadGameResponse, savemaplumpinfo != NULL);
+    M_StartMessage(savegwarning, M_ForceLoadGameResponse, savemaplumpinfo != nullptr);
     messageToPrint = 2;
     S_StartSound(NULL, sfx_swtchn);
 }
@@ -3180,7 +3180,7 @@ void M_ConfirmDeleteGame()
     savegwarning =
         M_StringJoin("delete savegame\n\n",
             crstr[static_cast<int>(cr_t::CR_GOLD)], savegamestrings[itemOn], crstr[static_cast<int>(cr_t::CR_NONE)], " ?\n\n",
-            PRESSYN, NULL);
+            PRESSYN, nullptr);
 
     M_StartMessage(savegwarning, M_ConfirmDeleteGameResponse, true);
     messageToPrint = 2;

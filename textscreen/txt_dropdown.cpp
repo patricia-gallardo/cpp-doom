@@ -137,9 +137,9 @@ static void OpenSelectorWindow(txt_dropdown_list_t *list)
 
     window = TXT_NewWindow(NULL);
 
-    TXT_SetWindowAction(window, TXT_HORIZ_LEFT, NULL);
-    TXT_SetWindowAction(window, TXT_HORIZ_CENTER, NULL);
-    TXT_SetWindowAction(window, TXT_HORIZ_RIGHT, NULL);
+    TXT_SetWindowAction(window, TXT_HORIZ_LEFT, nullptr);
+    TXT_SetWindowAction(window, TXT_HORIZ_CENTER, nullptr);
+    TXT_SetWindowAction(window, TXT_HORIZ_RIGHT, nullptr);
 
     // Position the window so that the currently selected item appears
     // over the top of the list widget.
@@ -184,8 +184,8 @@ static void OpenSelectorWindow(txt_dropdown_list_t *list)
 
     // Catch presses of escape in this window and close it.
 
-    TXT_SetKeyListener(window, SelectorWindowListener, NULL);
-    TXT_SetMouseListener(window, SelectorMouseListener, NULL);
+    TXT_SetKeyListener(window, SelectorWindowListener, nullptr);
+    TXT_SetMouseListener(window, SelectorMouseListener, nullptr);
 }
 
 static int DropdownListWidth(txt_dropdown_list_t *list)

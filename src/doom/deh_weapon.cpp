@@ -60,7 +60,7 @@ static void DEH_WeaponParseLine(deh_context_t *context, char *line, void *tag)
     weaponinfo_t *weapon;
     int           ivalue;
 
-    if (tag == NULL)
+    if (tag == nullptr)
         return;
 
     weapon = (weaponinfo_t *)tag;

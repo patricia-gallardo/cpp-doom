@@ -135,7 +135,7 @@ static void NET_Conn_ParseReliableACK(net_connection_t *conn, net_packet_t *pack
         return;
     }
 
-    if (conn->reliable_packets == NULL)
+    if (conn->reliable_packets == nullptr)
     {
         return;
     }
@@ -455,7 +455,7 @@ boolean NET_ValidGameSettings(GameMode_t mode, GameMission_t mission,
 
 static void CloseLog()
 {
-    if (net_debug != NULL)
+    if (net_debug != nullptr)
     {
         fclose(net_debug);
         net_debug = NULL;
@@ -470,7 +470,7 @@ void NET_OpenLog()
     if (p > 0)
     {
         net_debug = fopen(myargv[p + 1], "w");
-        if (net_debug == NULL)
+        if (net_debug == nullptr)
         {
             I_Error("Failed to open %s to write debug log.", myargv[p + 1]);
         }
@@ -482,7 +482,7 @@ void NET_Log(const char *fmt, ...)
 {
     va_list args;
 
-    if (net_debug == NULL)
+    if (net_debug == nullptr)
     {
         return;
     }
@@ -498,7 +498,7 @@ void NET_LogPacket(net_packet_t *packet)
 {
     int i, bytes;
 
-    if (net_debug == NULL)
+    if (net_debug == nullptr)
     {
         return;
     }

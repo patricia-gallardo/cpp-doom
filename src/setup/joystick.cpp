@@ -692,7 +692,7 @@ static void LoadKnownConfiguration()
     const known_joystick_t *jstype;
 
     jstype = GetJoystickType(joystick_index);
-    if (jstype == NULL)
+    if (jstype == nullptr)
     {
         return;
     }
@@ -807,7 +807,7 @@ static int OpenAllJoysticks()
 
         // If any joystick is successfully opened, return true.
 
-        if (all_joysticks[i] != NULL)
+        if (all_joysticks[i] != nullptr)
         {
             result = 1;
         }
@@ -836,7 +836,7 @@ static void CloseAllJoysticks()
 
     for (i = 0; i < all_joysticks_len; ++i)
     {
-        if (all_joysticks[i] != NULL)
+        if (all_joysticks[i] != nullptr)
         {
             SDL_JoystickClose(all_joysticks[i]);
         }
@@ -852,7 +852,7 @@ static void CloseAllJoysticks()
 
 static void CalibrateXAxis()
 {
-    TXT_ConfigureJoystickAxis(x_axis_widget, calibrate_button, NULL);
+    TXT_ConfigureJoystickAxis(x_axis_widget, calibrate_button, nullptr);
 }
 
 // Given the SDL_JoystickID instance ID from a button event, set the
@@ -929,7 +929,7 @@ static void NoJoystick()
 
 static void CalibrateWindowClosed(TXT_UNCAST_ARG(widget), TXT_UNCAST_ARG(unused))
 {
-    TXT_SDL_SetEventCallback(NULL, NULL);
+    TXT_SDL_SetEventCallback(NULL, nullptr);
     SetJoystickButtonLabel();
     CloseAllJoysticks();
 }
@@ -952,16 +952,16 @@ static void CalibrateJoystick(TXT_UNCAST_ARG(widget), TXT_UNCAST_ARG(unused))
                    TXT_NewLabel("Center the D-pad or joystick,\n"
                                 "and press a button."),
                    TXT_NewStrut(0, 1),
-                   NULL);
+                   nullptr);
 
-    TXT_SetWindowAction(calibration_window, TXT_HORIZ_LEFT, NULL);
+    TXT_SetWindowAction(calibration_window, TXT_HORIZ_LEFT, nullptr);
     TXT_SetWindowAction(calibration_window, TXT_HORIZ_CENTER, 
                         TXT_NewWindowAbortAction(calibration_window));
-    TXT_SetWindowAction(calibration_window, TXT_HORIZ_RIGHT, NULL);
+    TXT_SetWindowAction(calibration_window, TXT_HORIZ_RIGHT, nullptr);
 
-    TXT_SDL_SetEventCallback(CalibrationEventCallback, NULL);
+    TXT_SDL_SetEventCallback(CalibrationEventCallback, nullptr);
 
-    TXT_SignalConnect(calibration_window, "closed", CalibrateWindowClosed, NULL);
+    TXT_SignalConnect(calibration_window, "closed", CalibrateWindowClosed, nullptr);
 
     // Start calibration
     usejoystick = 0;
@@ -983,7 +983,7 @@ static void AddJoystickControl(TXT_UNCAST_ARG(table), const char *label, int *va
                    TXT_NewLabel(label),
                    joy_input,
                    TXT_TABLE_EMPTY,
-                   NULL);
+                   nullptr);
 }
 
 void ConfigJoystick(TXT_UNCAST_ARG(widget), void *user_data)
@@ -1028,7 +1028,7 @@ void ConfigJoystick(TXT_UNCAST_ARG(widget), void *user_data)
                    TXT_TABLE_OVERFLOW_RIGHT,
                    TXT_TABLE_EMPTY,
                    TXT_TABLE_EMPTY,
-                   NULL);
+                   nullptr);
 
     if (gamemission == doom || gamemission == heretic || gamemission == hexen || gamemission == strife) // [crispy]
     {
@@ -1041,7 +1041,7 @@ void ConfigJoystick(TXT_UNCAST_ARG(widget), void *user_data)
                    TXT_TABLE_OVERFLOW_RIGHT,
                    TXT_TABLE_EMPTY,
                    TXT_TABLE_EMPTY,
-                   NULL);
+                   nullptr);
     }
 
     TXT_AddWidget(window, TXT_NewSeparator("Buttons"));
@@ -1075,7 +1075,7 @@ void ConfigJoystick(TXT_UNCAST_ARG(widget), void *user_data)
 
     AddJoystickControl(window, "Toggle Automap", &joybautomap);
 
-    TXT_SignalConnect(joystick_button, "pressed", CalibrateJoystick, NULL);
+    TXT_SignalConnect(joystick_button, "pressed", CalibrateJoystick, nullptr);
     TXT_SetWindowAction(window, TXT_HORIZ_CENTER, TestConfigAction());
 
     InitJoystick();

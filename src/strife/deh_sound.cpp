@@ -67,7 +67,7 @@ static void DEH_SoundParseLine(deh_context_t *context, char *line, void *tag)
     char *variable_name, *value;
     int ivalue;
     
-    if (tag == NULL)
+    if (tag == nullptr)
        return;
 
     sfx = (sfxinfo_t *) tag;

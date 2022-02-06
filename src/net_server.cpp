@@ -405,7 +405,7 @@ static void NET_SV_SendWaitingData(net_client_t *client)
     // If no controller found (?), send the details that the client
     // is expecting anyway.
 
-    if (controller == NULL)
+    if (controller == nullptr)
     {
         controller = client;
     }
@@ -624,7 +624,7 @@ static void NET_SV_ParseSYN(net_packet_t *packet, net_client_t *client,
     // sending a reject message, as we only reject if we can't negotiate a
     // common protocol (below).
     client_version = NET_ReadString(packet);
-    if (client_version == NULL)
+    if (client_version == nullptr)
     {
         NET_Log("server: error: no version from client");
         return;
@@ -667,7 +667,7 @@ static void NET_SV_ParseSYN(net_packet_t *packet, net_client_t *client,
 
     // Read the player's name
     player_name = NET_ReadString(packet);
-    if (player_name == NULL)
+    if (player_name == nullptr)
     {
         NET_Log("server: error: failed to read player name");
         return;
@@ -730,7 +730,7 @@ static void NET_SV_ParseSYN(net_packet_t *packet, net_client_t *client,
     }
 
     // Allocate a client slot if there isn't one already
-    if (client == NULL)
+    if (client == nullptr)
     {
         // find a slot, or return if none found
 
@@ -743,7 +743,7 @@ static void NET_SV_ParseSYN(net_packet_t *packet, net_client_t *client,
             }
         }
 
-        if (client == NULL)
+        if (client == nullptr)
         {
             return;
         }
@@ -867,7 +867,7 @@ static void StartGame()
 
     for (i = 0; i < NET_MAXPLAYERS; ++i)
     {
-        if (sv_players[i] != NULL)
+        if (sv_players[i] != nullptr)
         {
             sv_settings.player_classes[i] = sv_players[i]->player_class;
         }
@@ -1432,14 +1432,14 @@ static void NET_SV_ParseHolePunch(net_packet_t *packet)
     net_addr_t *  addr;
 
     addr_string = NET_ReadString(packet);
-    if (addr_string == NULL)
+    if (addr_string == nullptr)
     {
         NET_Log("server: error: hole punch request but no address provided");
         return;
     }
 
     addr = NET_ResolveAddress(server_context, addr_string);
-    if (addr == NULL)
+    if (addr == nullptr)
     {
         NET_Log("server: error: failed to resolve address: %s", addr_string);
         return;
@@ -1520,7 +1520,7 @@ static void NET_SV_Packet(net_packet_t *packet, net_addr_t *addr)
     {
         NET_SV_SendQueryResponse(addr);
     }
-    else if (client == NULL)
+    else if (client == nullptr)
     {
         // Must come from a valid client; ignore otherwise
     }
@@ -1922,7 +1922,7 @@ void NET_SV_RegisterWithMaster()
 
     // Send request.
 
-    if (master_server != NULL)
+    if (master_server != nullptr)
     {
         NET_Query_AddToMaster(master_server);
         master_refresh_time = I_GetTimeMS();
@@ -1951,7 +1951,7 @@ void NET_SV_Run()
         NET_ReleaseAddress(addr);
     }
 
-    if (master_server != NULL)
+    if (master_server != nullptr)
     {
         UpdateMasterServer();
     }

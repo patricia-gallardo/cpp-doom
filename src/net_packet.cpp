@@ -210,7 +210,7 @@ char *NET_ReadSafeString(net_packet_t *packet)
     char *r, *w, *result;
 
     result = NET_ReadString(packet);
-    if (result == NULL)
+    if (result == nullptr)
     {
         return NULL;
     }

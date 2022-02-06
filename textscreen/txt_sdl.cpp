@@ -170,11 +170,11 @@ static void ChooseFont()
 
     // Allow normal selection to be overridden from an environment variable:
     env = getenv("TEXTSCREEN_FONT");
-    if (env != NULL)
+    if (env != nullptr)
     {
         font = FontForName(env);
 
-        if (font != NULL)
+        if (font != nullptr)
         {
             return;
         }
@@ -251,7 +251,7 @@ int TXT_Init()
         SDL_CreateWindow("", SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED,
                          screen_image_w, screen_image_h, flags);
 
-    if (TXT_SDLWindow == NULL)
+    if (TXT_SDLWindow == nullptr)
         return 0;
 
     renderer = SDL_CreateRenderer(TXT_SDLWindow, -1, 0);
@@ -608,7 +608,7 @@ signed int TXT_GetChar()
         // If there is an event callback, allow it to intercept this
         // event.
 
-        if (event_callback != NULL)
+        if (event_callback != nullptr)
         {
             if (event_callback(&ev, event_callback_data))
             {
@@ -788,7 +788,7 @@ void TXT_GetKeyDescription(int key, char *buf, size_t buf_len)
 
     keyname = NameForKey(key);
 
-    if (keyname != NULL)
+    if (keyname != nullptr)
     {
         TXT_StringCopy(buf, keyname, buf_len);
 

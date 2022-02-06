@@ -35,7 +35,7 @@ static void SetBufferFromValue(txt_inputbox_t *inputbox)
     {
         char **value = (char **) inputbox->value;
 
-        if (*value != NULL)
+        if (*value != nullptr)
         {
             TXT_StringCopy(inputbox->buffer, *value, inputbox->size);
         }

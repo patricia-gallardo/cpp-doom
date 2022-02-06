@@ -70,7 +70,7 @@ wad_file_t *W_OpenFile(const char *path)
     {
         result = wad_file_classes[i]->OpenFile(path);
 
-        if (result != NULL)
+        if (result != nullptr)
         {
             break;
         }

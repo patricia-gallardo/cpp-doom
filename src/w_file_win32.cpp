@@ -53,9 +53,9 @@ static void MapFile(win32_wad_file_t *wad, const char *filename)
         PAGE_WRITECOPY,
         0,
         0,
-        NULL);
+        nullptr);
 
-    if (wad->handle_map == NULL)
+    if (wad->handle_map == nullptr)
     {
         fprintf(stderr, "W_Win32_OpenFile: Unable to CreateFileMapping() "
                         "for %s\n",
@@ -67,7 +67,7 @@ static void MapFile(win32_wad_file_t *wad, const char *filename)
         FILE_MAP_COPY,
         0, 0, 0));
 
-    if (wad->wad.mapped == NULL)
+    if (wad->wad.mapped == nullptr)
     {
         fprintf(stderr, "W_Win32_OpenFile: Unable to MapViewOfFile() for %s\n",
             filename);
@@ -106,7 +106,7 @@ static wad_file_t *W_Win32_OpenFile(const char *path)
         NULL,
         OPEN_EXISTING,
         FILE_ATTRIBUTE_NORMAL,
-        NULL);
+        nullptr);
 
     if (handle == INVALID_HANDLE_VALUE)
     {
@@ -136,19 +136,19 @@ static void W_Win32_CloseFile(wad_file_t *wad)
 
     // If mapped, unmap it.
 
-    if (win32_wad->wad.mapped != NULL)
+    if (win32_wad->wad.mapped != nullptr)
     {
         UnmapViewOfFile(win32_wad->wad.mapped);
     }
 
-    if (win32_wad->handle_map != NULL)
+    if (win32_wad->handle_map != nullptr)
     {
         CloseHandle(win32_wad->handle_map);
     }
 
     // Close the file
 
-    if (win32_wad->handle != NULL)
+    if (win32_wad->handle != nullptr)
     {
         CloseHandle(win32_wad->handle);
     }
@@ -180,7 +180,7 @@ size_t W_Win32_Read(wad_file_t *wad, unsigned int offset,
 
     // Read into the buffer.
 
-    if (!ReadFile(win32_wad->handle, buffer, buffer_len, &bytes_read, NULL))
+    if (!ReadFile(win32_wad->handle, buffer, buffer_len, &bytes_read, nullptr))
     {
         I_Error("W_Win32_Read: Error reading from file");
     }

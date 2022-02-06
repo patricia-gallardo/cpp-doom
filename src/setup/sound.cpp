@@ -101,7 +101,7 @@ static txt_dropdown_list_t *OPLTypeSelector()
 {
     txt_dropdown_list_t *result;
 
-    if (snd_dmxoption != NULL && strstr(snd_dmxoption, "-opl3") != NULL)
+    if (snd_dmxoption != NULL && strstr(snd_dmxoption, "-opl3") != nullptr)
     {
         snd_oplmode = OPLMODE_OPL3;
     }
@@ -112,7 +112,7 @@ static txt_dropdown_list_t *OPLTypeSelector()
 
     result = TXT_NewDropdownList(&snd_oplmode, opltype_strings, 2);
 
-    TXT_SignalConnect(result, "changed", UpdateSndDevices, NULL);
+    TXT_SignalConnect(result, "changed", UpdateSndDevices, nullptr);
 
     return result;
 }
@@ -141,7 +141,7 @@ void ConfigSound(TXT_UNCAST_ARG(widget), void *user_data)
 
     music_action = TXT_NewWindowAction('m', "Music Packs");
     TXT_SetWindowAction(window, TXT_HORIZ_CENTER, music_action);
-    TXT_SignalConnect(music_action, "pressed", OpenMusicPackDir, NULL);
+    TXT_SignalConnect(music_action, "pressed", OpenMusicPackDir, nullptr);
 
     TXT_AddWidgets(window,
         TXT_NewSeparator("Sound effects"),
@@ -158,13 +158,13 @@ void ConfigSound(TXT_UNCAST_ARG(widget), void *user_data)
                 TXT_NewHorizBox(
                     TXT_NewStrut(4, 0),
                     TXT_NewCheckBox("Pitch-shifted sounds", &snd_pitchshift),
-                    NULL))),
+                    nullptr))),
         TXT_If(gamemission == strife,
             TXT_NewConditional(&snd_sfxdevice, SNDDEVICE_SB,
                 TXT_NewHorizBox(
                     TXT_NewStrut(4, 0),
                     TXT_NewCheckBox("Show text with voices", &show_talk),
-                    NULL))),
+                    nullptr))),
 
         TXT_NewSeparator("Music"),
         TXT_NewRadioButton("Disabled", &snd_musicdevice, SNDDEVICE_NONE),
@@ -176,7 +176,7 @@ void ConfigSound(TXT_UNCAST_ARG(widget), void *user_data)
                 TXT_NewStrut(4, 0),
                 TXT_NewLabel("Chip type: "),
                 OPLTypeSelector(),
-                NULL)),
+                nullptr)),
 
         TXT_NewRadioButton("GUS (emulated)", &snd_musicdevice, SNDDEVICE_GUS),
         TXT_NewConditional(&snd_musicdevice, SNDDEVICE_GUS,
@@ -187,7 +187,7 @@ void ConfigSound(TXT_UNCAST_ARG(widget), void *user_data)
                 TXT_NewFileSelector(&gus_patch_path, 34,
                                     "Select directory containing GUS patches",
                                     TXT_DIRECTORY),
-                NULL)),
+                nullptr)),
 
         TXT_NewRadioButton("MIDI/MP3/OGG/FLAC", &snd_musicdevice, SNDDEVICE_GENMIDI), // [crispy] improve ambigious music backend name
         TXT_NewConditional(&snd_musicdevice, SNDDEVICE_GENMIDI,
@@ -198,8 +198,8 @@ void ConfigSound(TXT_UNCAST_ARG(widget), void *user_data)
                 TXT_NewFileSelector(&timidity_cfg_path, 34,
                                     "Select Timidity config file",
                                     cfg_extension),
-                NULL)),
-        NULL);
+                nullptr)),
+        nullptr);
 }
 
 void BindSoundVariables()

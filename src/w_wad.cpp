@@ -115,7 +115,7 @@ wad_file_t *W_AddFile(const char *filename)
     // reload hack.
     if (filename[0] == '~')
     {
-        if (reloadname != NULL)
+        if (reloadname != nullptr)
         {
             I_Error("Prefixing a WAD filename with '~' indicates that the "
                     "WAD should be reloaded\n"
@@ -133,7 +133,7 @@ wad_file_t *W_AddFile(const char *filename)
     // Open the file and add to directory
     wad_file = W_OpenFile(filename);
 
-    if (wad_file == NULL)
+    if (wad_file == nullptr)
     {
         printf(" couldn't open %s\n", filename);
         return NULL;
@@ -200,7 +200,7 @@ wad_file_t *W_AddFile(const char *filename)
 
     // Increase size of numlumps array to accomodate the new file.
     filelumps = static_cast<decltype(filelumps)>(calloc(numfilelumps, sizeof(lumpinfo_t)));
-    if (filelumps == NULL)
+    if (filelumps == nullptr)
     {
         W_CloseFile(wad_file);
         I_Error("Failed to allocate array for lumps from new file.");
@@ -226,7 +226,7 @@ wad_file_t *W_AddFile(const char *filename)
 
     Z_Free(fileinfo);
 
-    if (lumphash != NULL)
+    if (lumphash != nullptr)
     {
         Z_Free(lumphash);
         lumphash = NULL;
@@ -264,7 +264,7 @@ lumpindex_t W_CheckNumForName(const char *name)
 
     // Do we have a hash table yet?
 
-    if (lumphash != NULL)
+    if (lumphash != nullptr)
     {
         int hash;
 
@@ -407,13 +407,13 @@ void W_ReadLump(lumpindex_t lump, void *dest)
     // region.  If the lump is in an ordinary file, we may already
     // have it cached; otherwise, load it into memory.
 
-    if (lump->wad_file->mapped != NULL)
+    if (lump->wad_file->mapped != nullptr)
     {
         // Memory mapped file, return from the mmapped region.
 
         result = lump->wad_file->mapped + lump->position;
     }
-    else if (lump->cache != NULL)
+    else if (lump->cache != nullptr)
     {
         // Already cached, so just switch the zone tag.
 
@@ -462,7 +462,7 @@ void W_ReleaseLumpNum(lumpindex_t lumpnum)
 
     lump = lumpinfo[lumpnum];
 
-    if (lump->wad_file->mapped != NULL)
+    if (lump->wad_file->mapped != nullptr)
     {
         // Memory-mapped file, so nothing needs to be done here.
     }
@@ -550,7 +550,7 @@ void W_GenerateHashTable()
     lumpindex_t i;
 
     // Free the old hash table, if there is one:
-    if (lumphash != NULL)
+    if (lumphash != nullptr)
     {
         Z_Free(lumphash);
     }
@@ -558,7 +558,7 @@ void W_GenerateHashTable()
     // Generate hash table
     if (numlumps > 0)
     {
-        lumphash = zmalloc<decltype(lumphash)>(sizeof(lumpindex_t) * numlumps, PU_STATIC, NULL);
+        lumphash = zmalloc<decltype(lumphash)>(sizeof(lumpindex_t) * numlumps, PU_STATIC, nullptr);
 
         for (i = 0; i < numlumps; ++i)
         {
@@ -592,7 +592,7 @@ void W_Reload()
     char *      filename;
     lumpindex_t i;
 
-    if (reloadname == NULL)
+    if (reloadname == nullptr)
     {
         return;
     }
@@ -600,7 +600,7 @@ void W_Reload()
     // We must free any lumps being cached from the PWAD we're about to reload:
     for (i = reloadlump; i < numlumps; ++i)
     {
-        if (lumpinfo[i]->cache != NULL)
+        if (lumpinfo[i]->cache != nullptr)
         {
             Z_Free(lumpinfo[i]->cache);
         }

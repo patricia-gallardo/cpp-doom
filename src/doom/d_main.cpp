@@ -146,7 +146,7 @@ void D_ProcessEvents()
     if (storedemo)
         return;
 
-    while ((ev = D_PopEvent()) != NULL)
+    while ((ev = D_PopEvent()) != nullptr)
     {
         if (M_Responder(ev))
             continue; // menu ate the event
@@ -1115,7 +1115,7 @@ static void InitGameVersion()
             }
         }
 
-        if (gameversions[i].description == NULL)
+        if (gameversions[i].description == nullptr)
         {
             printf("Supported game versions:\n");
 
@@ -1298,7 +1298,7 @@ static void LoadIwadDeh()
 
         // Look for chex.deh in the same directory as the IWAD file.
         dirname  = M_DirName(iwadfile);
-        chex_deh = M_StringJoin(dirname, DIR_SEPARATOR_S, "chex.deh", NULL);
+        chex_deh = M_StringJoin(dirname, DIR_SEPARATOR_S, "chex.deh", nullptr);
         free(dirname);
 
         // If the dehacked patch isn't found, try searching the WAD
@@ -1310,7 +1310,7 @@ static void LoadIwadDeh()
         }
 
         // Still not found?
-        if (chex_deh == NULL)
+        if (chex_deh == nullptr)
         {
             I_Error("Unable to find Chex Quest dehacked file (chex.deh).\n"
                     "The dehacked file is required in order to emulate\n"
@@ -1391,12 +1391,12 @@ static void LoadSigilWad()
         char *dirname;
 
         dirname      = M_DirName(iwadfile);
-        sigil_shreds = M_StringJoin(dirname, DIR_SEPARATOR_S, "SIGIL_SHREDS.wad", NULL);
+        sigil_shreds = M_StringJoin(dirname, DIR_SEPARATOR_S, "SIGIL_SHREDS.wad", nullptr);
 
         // [crispy] load SIGIL.WAD
         for (i = 0; i < arrlen(sigil_wads); i++)
         {
-            sigil_wad = M_StringJoin(dirname, DIR_SEPARATOR_S, sigil_wads[i], NULL);
+            sigil_wad = M_StringJoin(dirname, DIR_SEPARATOR_S, sigil_wads[i], nullptr);
 
             if (M_FileExists(sigil_wad))
             {
@@ -1413,7 +1413,7 @@ static void LoadSigilWad()
         }
         free(dirname);
 
-        if (sigil_wad == NULL)
+        if (sigil_wad == nullptr)
         {
             free(sigil_shreds);
             return;
@@ -1430,7 +1430,7 @@ static void LoadSigilWad()
             sigil_shreds = D_FindWADByName("SIGIL_SHREDS.wad");
         }
 
-        if (sigil_shreds != NULL)
+        if (sigil_shreds != nullptr)
         {
             printf(" [expansion]");
             D_AddFile(sigil_shreds);
@@ -1493,11 +1493,11 @@ static void LoadNerveWad()
         // and that is the BFG Edition DOOM2.WAD or (b) if they are from a PWAD.
         if ((i = W_CheckNumForName("M_EPI1")) != -1 && (j = W_CheckNumForName("M_EPI2")) != -1 && (k = W_CheckNumForName("M_EPISOD")) != -1 && (gamevariant == bfgedition || (!W_IsIWADLump(lumpinfo[i]) && !W_IsIWADLump(lumpinfo[j]) && !W_IsIWADLump(lumpinfo[k]))))
     {
-        if (strrchr(iwadfile, DIR_SEPARATOR) != NULL)
+        if (strrchr(iwadfile, DIR_SEPARATOR) != nullptr)
         {
             char *dir;
             dir          = M_DirName(iwadfile);
-            nervewadfile = M_StringJoin(dir, DIR_SEPARATOR_S, "nerve.wad", NULL);
+            nervewadfile = M_StringJoin(dir, DIR_SEPARATOR_S, "nerve.wad", nullptr);
             free(dir);
         }
         else
@@ -1511,7 +1511,7 @@ static void LoadNerveWad()
             nervewadfile = D_FindWADByName("nerve.wad");
         }
 
-        if (nervewadfile == NULL)
+        if (nervewadfile == nullptr)
         {
             return;
         }
@@ -1773,7 +1773,7 @@ void D_DoomMain()
 
     // None found?
 
-    if (iwadfile == NULL)
+    if (iwadfile == nullptr)
     {
         I_Error("Game mode indeterminate.  No IWAD file was found.  Try\n"
                 "specifying one with the '-iwad' command line parameter.\n");

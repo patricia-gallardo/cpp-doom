@@ -48,7 +48,7 @@ void CompatibilitySettings(TXT_UNCAST_ARG(widget), void *user_data)
                                    &vanilla_savegame_limit),
                    TXT_NewCheckBox("Vanilla demo limit",
                                    &vanilla_demo_limit),
-                   NULL);
+                   nullptr);
     }
 }
 

@@ -222,7 +222,7 @@ boolean P_SeekerMissile(mobj_t * actor, angle_t thresh, angle_t turnMax)
     mobj_t *target;
 
     target = (mobj_t *) actor->special1.m;
-    if (target == NULL)
+    if (target == nullptr)
     {
         return (false);
     }
@@ -859,7 +859,7 @@ mobj_t *P_SpawnMobj(fixed_t x, fixed_t y, fixed_t z, mobjtype_t type)
     mobjinfo_t *info;
     fixed_t space;
 
-    mobj = zmalloc<mobj_t *>(sizeof(*mobj), PU_LEVEL, NULL);
+    mobj = zmalloc<mobj_t *>(sizeof(*mobj), PU_LEVEL, nullptr);
     memset(mobj, 0, sizeof(*mobj));
     info = &mobjinfo[type];
     mobj->type = type;
@@ -1430,7 +1430,7 @@ mobj_t *P_SpawnMissile(mobj_t * source, mobj_t * dest, mobjtype_t type)
         dist = 1;
     }
     th->momz = (dest->z - source->z) / dist;
-    return (P_CheckMissileSpawn(th) ? th : NULL);
+    return (P_CheckMissileSpawn(th) ? th : nullptr);
 }
 
 //---------------------------------------------------------------------------
@@ -1478,7 +1478,7 @@ mobj_t *P_SpawnMissileAngle(mobj_t * source, mobjtype_t type,
     mo->momx = FixedMul(mo->info->speed, finecosine[angle]);
     mo->momy = FixedMul(mo->info->speed, finesine[angle]);
     mo->momz = momz;
-    return (P_CheckMissileSpawn(mo) ? mo : NULL);
+    return (P_CheckMissileSpawn(mo) ? mo : nullptr);
 }
 
 /*
@@ -1603,7 +1603,7 @@ mobj_t *P_SPMAngle(mobj_t * source, mobjtype_t type, angle_t angle)
     th->momx = FixedMul(th->info->speed, finecosine[an >> ANGLETOFINESHIFT]);
     th->momy = FixedMul(th->info->speed, finesine[an >> ANGLETOFINESHIFT]);
     th->momz = FixedMul(th->info->speed, slope);
-    return (P_CheckMissileSpawn(th) ? th : NULL);
+    return (P_CheckMissileSpawn(th) ? th : nullptr);
 }
 
 //---------------------------------------------------------------------------

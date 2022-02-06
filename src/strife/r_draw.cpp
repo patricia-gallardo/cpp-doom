@@ -444,7 +444,7 @@ void R_InitTranslationTables ()
 
     // [STRIFE] Load xlatab. Here's how Rogue did it:
     //   v7 = cache_lump_name<patch_t *>("XLATAB", PU_CACHE); // note potential cache bug...
-    //   HIWORD(v8) = (Z_Malloc(131072, PU_STATIC, NULL) + 65535) >> 16;
+    //   HIWORD(v8) = (Z_Malloc(131072, PU_STATIC, nullptr) + 65535) >> 16;
     //   LOWORD(v8) = 0; // aligning to a 64K boundary, as if this is Wolf3D.
     //   xlatab = v8;
     //   memcpy(v8, v7, 65536);
@@ -827,7 +827,7 @@ void R_FillBackScreen ()
 
     if (scaledviewwidth == SCREENWIDTH)
     {
-        if (background_buffer != NULL)
+        if (background_buffer != nullptr)
         {
             Z_Free(background_buffer);
             background_buffer = NULL;
@@ -838,10 +838,10 @@ void R_FillBackScreen ()
 
     // Allocate the background buffer if necessary
 	
-    if (background_buffer == NULL)
+    if (background_buffer == nullptr)
     {
         background_buffer = zmalloc<byte *>(SCREENWIDTH * (SCREENHEIGHT - SBARHEIGHT),
-            PU_STATIC, NULL);
+            PU_STATIC, nullptr);
     }
 
     // haleyjd 08/29/10: [STRIFE] Use configurable back_flat
@@ -921,7 +921,7 @@ R_VideoErase
   //  a 32bit CPU, as GNU GCC/Linux libc did
   //  at one point.
 
-    if (background_buffer != NULL)
+    if (background_buffer != nullptr)
     {
         memcpy(I_VideoBuffer + ofs, background_buffer + ofs, count); 
     }

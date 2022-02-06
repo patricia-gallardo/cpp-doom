@@ -222,7 +222,7 @@ static void OPL_Mix_Callback(void *udata, Uint8 *buffer, int len)
 
 static void OPL_SDL_Shutdown()
 {
-    Mix_HookMusic(NULL, NULL);
+    Mix_HookMusic(NULL, nullptr);
 
     if (sdl_was_initialized)
     {
@@ -234,20 +234,20 @@ static void OPL_SDL_Shutdown()
     }
 
 /*
-    if (opl_chip != NULL)
+    if (opl_chip != nullptr)
     {
         OPLDestroy(opl_chip);
         opl_chip = NULL;
     }
     */
 
-    if (callback_mutex != NULL)
+    if (callback_mutex != nullptr)
     {
         SDL_DestroyMutex(callback_mutex);
         callback_mutex = NULL;
     }
 
-    if (callback_queue_mutex != NULL)
+    if (callback_queue_mutex != nullptr)
     {
         SDL_DestroyMutex(callback_queue_mutex);
         callback_queue_mutex = NULL;
@@ -349,7 +349,7 @@ static int OPL_SDL_Init(unsigned int port_base)
     // Set postmix that adds the OPL music. This is deliberately done
     // as a postmix and not using Mix_HookMusic() as the latter disables
     // normal SDL_mixer music mixing.
-    Mix_SetPostMix(OPL_Mix_Callback, NULL);
+    Mix_SetPostMix(OPL_Mix_Callback, nullptr);
 
     return 1;
 }

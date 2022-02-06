@@ -327,7 +327,7 @@ void P_AddActivePlat(plat_t* plat)
 
     for(i = 0; i < MAXPLATS; i++)
     {
-        if (activeplats[i] == NULL)
+        if (activeplats[i] == nullptr)
         {
             activeplats[i] = plat;
             return;

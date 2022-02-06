@@ -292,7 +292,7 @@ typedef struct mobj_s
     int                 movedir;        // 0-7
     int                 movecount;      // when 0, select a new dir
 
-    // Thing being chased/attacked (or NULL),
+    // Thing being chased/attacked (or nullptr),
     // also the originator for missiles.
     struct mobj_s*      target;
 

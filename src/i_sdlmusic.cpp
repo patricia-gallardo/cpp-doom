@@ -75,7 +75,7 @@ static boolean WriteWrapperTimidityConfig(char *write_path)
 
     fstream = fopen(write_path, "w");
 
-    if (fstream == NULL)
+    if (fstream == nullptr)
     {
         return false;
     }
@@ -111,7 +111,7 @@ void I_InitTimidityConfig()
 
     if (success)
     {
-        env_string = M_StringJoin("TIMIDITY_CFG=", temp_timidity_cfg, NULL);
+        env_string = M_StringJoin("TIMIDITY_CFG=", temp_timidity_cfg, nullptr);
         putenv(env_string);
     }
     else
@@ -125,7 +125,7 @@ void I_InitTimidityConfig()
 
 static void RemoveTimidityConfig()
 {
-    if (temp_timidity_cfg != NULL)
+    if (temp_timidity_cfg != nullptr)
     {
         remove(temp_timidity_cfg);
         free(temp_timidity_cfg);
@@ -355,7 +355,7 @@ static void I_SDL_UnRegisterSong(void *handle)
     else
 #endif
     {
-        if (handle != NULL)
+        if (handle != nullptr)
         {
             Mix_FreeMusic(music);
         }
@@ -450,7 +450,7 @@ static void *I_SDL_RegisterSong(void *data, int len)
 #endif
     {
         music = Mix_LoadMUS(filename);
-        if (music == NULL)
+        if (music == nullptr)
         {
             // Failed to load
             fprintf(stderr, "Error loading midi: %s\n", Mix_GetError());

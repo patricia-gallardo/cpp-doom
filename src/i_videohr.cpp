@@ -51,7 +51,7 @@ boolean I_SetVideoModeHR()
         HR_SCREENWIDTH, HR_SCREENHEIGHT,
         0);
 
-    if (hr_screen == NULL)
+    if (hr_screen == nullptr)
     {
         SDL_QuitSubSystem(SDL_INIT_VIDEO);
         return false;
@@ -71,7 +71,7 @@ void I_SetWindowTitleHR(const char *title)
 
 void I_UnsetVideoModeHR()
 {
-    if (hr_screen != NULL)
+    if (hr_screen != nullptr)
     {
         SDL_QuitSubSystem(SDL_INIT_VIDEO);
         hr_screen = NULL;
@@ -239,7 +239,7 @@ boolean I_CheckAbortHR()
     boolean   result = false;
 
     // Not initialized?
-    if (hr_surface == NULL)
+    if (hr_surface == nullptr)
     {
         return false;
     }

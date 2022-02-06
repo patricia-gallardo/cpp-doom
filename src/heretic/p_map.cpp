@@ -1158,7 +1158,7 @@ void P_SlideMove(mobj_t * mo)
 */
 
 
-mobj_t *linetarget;             // who got hit (or NULL)
+mobj_t *linetarget;             // who got hit (or nullptr)
 mobj_t *shootthing;
 fixed_t shootz;                 // height if not aiming up or down
                                                                         // ???: use slope for monsters?

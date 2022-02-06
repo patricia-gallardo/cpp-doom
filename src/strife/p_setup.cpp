@@ -513,7 +513,7 @@ void P_LoadBlockMap (int lump)
     lumplen = W_LumpLength(lump);
     count = lumplen / 2;
 	
-    blockmaplump = zmalloc<short *>(lumplen, PU_LEVEL, NULL);
+    blockmaplump = zmalloc<short *>(lumplen, PU_LEVEL, nullptr);
     W_ReadLump(lump, blockmaplump);
     blockmap = blockmaplump + 4;
 
@@ -602,7 +602,7 @@ void P_GroupLines ()
     { 
         li = &lines[i];
 
-        if (li->frontsector != NULL)
+        if (li->frontsector != nullptr)
         {
             sector = li->frontsector;
 

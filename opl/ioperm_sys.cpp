@@ -102,14 +102,14 @@ static int LoadLibraryPointers()
 
     // Already loaded?
 
-    if (MyOpenSCManagerW != NULL)
+    if (MyOpenSCManagerW != nullptr)
     {
         return 1;
     }
 
     dll = LoadLibraryW(L"advapi32.dll");
 
-    if (dll == NULL)
+    if (dll == nullptr)
     {
         fprintf(stderr, "LoadLibraryPointers: Failed to open advapi32.dll\n");
         return 0;
@@ -119,7 +119,7 @@ static int LoadLibraryPointers()
     {
         *dll_functions[i].fn = GetProcAddress(dll, dll_functions[i].name);
 
-        if (*dll_functions[i].fn == NULL)
+        if (*dll_functions[i].fn == nullptr)
         {
             fprintf(stderr, "LoadLibraryPointers: Failed to get address "
                             "for '%s'\n", dll_functions[i].name);
@@ -138,7 +138,7 @@ int IOperm_EnablePortRange(unsigned int from, unsigned int num, int turn_on)
     BOOL r;
 
     h = CreateFileW(IOPERM_FILE, GENERIC_READ, 0, NULL,
-                    OPEN_EXISTING, FILE_ATTRIBUTE_NORMAL, NULL);
+                    OPEN_EXISTING, FILE_ATTRIBUTE_NORMAL, nullptr);
 
     if (h == INVALID_HANDLE_VALUE)
     {
@@ -153,7 +153,7 @@ int IOperm_EnablePortRange(unsigned int from, unsigned int num, int turn_on)
     r = DeviceIoControl(h, IOCTL_IOPERM,
                         &ioperm_data, sizeof ioperm_data,
                         NULL, 0,
-                        &BytesReturned, NULL);
+                        &BytesReturned, nullptr);
 
     if (!r)
     {
@@ -182,7 +182,7 @@ int IOperm_InstallDriver()
 
     scm = MyOpenSCManagerW(NULL, NULL, SC_MANAGER_ALL_ACCESS);
 
-    if (scm == NULL)
+    if (scm == nullptr)
     {
         error = GetLastError();
         fprintf(stderr, "IOperm_InstallDriver: OpenSCManager failed (%i).\n",
@@ -192,7 +192,7 @@ int IOperm_InstallDriver()
 
     // Get the full path to the driver file.
 
-    GetFullPathNameW(L"ioperm.sys", MAX_PATH, driver_path, NULL);
+    GetFullPathNameW(L"ioperm.sys", MAX_PATH, driver_path, nullptr);
 
     // Create the service.
 
@@ -208,9 +208,9 @@ int IOperm_InstallDriver()
                            NULL,
                            NULL,
                            NULL,
-                           NULL);
+                           nullptr);
 
-    if (svc == NULL)
+    if (svc == nullptr)
     {
         error = GetLastError();
 
@@ -224,7 +224,7 @@ int IOperm_InstallDriver()
         {
             svc = MyOpenServiceW(scm, const_cast<wchar_t *>(L"ioperm"), SERVICE_ALL_ACCESS);
 
-            if (svc == NULL)
+            if (svc == nullptr)
             {
                 error = GetLastError();
 
@@ -234,7 +234,7 @@ int IOperm_InstallDriver()
             }
         }
 
-        if (svc == NULL)
+        if (svc == nullptr)
         {
             MyCloseServiceHandle(scm);
             return 0;
@@ -248,7 +248,7 @@ int IOperm_InstallDriver()
     // Start the service.  If the service already existed, it might have
     // already been running as well.
 
-    if (!MyStartServiceW(svc, 0, NULL))
+    if (!MyStartServiceW(svc, 0, nullptr))
     {
         error = GetLastError();
 
@@ -333,13 +333,13 @@ int IOperm_UninstallDriver()
 
     // Close handles.
 
-    if (svc != NULL)
+    if (svc != nullptr)
     {
         MyCloseServiceHandle(svc);
         svc = NULL;
     }
 
-    if (scm != NULL)
+    if (scm != nullptr)
     {
         MyCloseServiceHandle(scm);
         scm = NULL;

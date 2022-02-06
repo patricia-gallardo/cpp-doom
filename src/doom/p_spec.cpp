@@ -1441,7 +1441,7 @@ int EV_DoDonut(line_t *line)
         // isn't something that should be done, anyway.
         // Just print a warning and return.
 
-        if (s2 == NULL)
+        if (s2 == nullptr)
         {
             fprintf(stderr,
                 "EV_DoDonut: linedef had no second sidedef! "
@@ -1456,7 +1456,7 @@ int EV_DoDonut(line_t *line)
             if (s3 == s1)
                 continue;
 
-            if (s3 == NULL)
+            if (s3 == nullptr)
             {
                 // e6y
                 // s3 is NULL, so

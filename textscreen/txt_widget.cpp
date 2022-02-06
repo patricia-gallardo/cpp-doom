@@ -148,7 +148,7 @@ int TXT_WidgetKeyPress(TXT_UNCAST_ARG(widget), int key)
 {
     TXT_CAST_ARG(txt_widget_t, widget);
 
-    if (widget->widget_class->key_press != NULL)
+    if (widget->widget_class->key_press != nullptr)
     {
         return widget->widget_class->key_press(widget, key);
     }
@@ -160,7 +160,7 @@ void TXT_SetWidgetFocus(TXT_UNCAST_ARG(widget), int focused)
 {
     TXT_CAST_ARG(txt_widget_t, widget);
 
-    if (widget == NULL)
+    if (widget == nullptr)
     {
         return;
     }
@@ -169,7 +169,7 @@ void TXT_SetWidgetFocus(TXT_UNCAST_ARG(widget), int focused)
     {
         widget->focused = focused;
 
-        if (widget->widget_class->focus_change != NULL)
+        if (widget->widget_class->focus_change != nullptr)
         {
             widget->widget_class->focus_change(widget, focused);
         }
@@ -187,7 +187,7 @@ void TXT_WidgetMousePress(TXT_UNCAST_ARG(widget), int x, int y, int b)
 {
     TXT_CAST_ARG(txt_widget_t, widget);
 
-    if (widget->widget_class->mouse_press != NULL)
+    if (widget->widget_class->mouse_press != nullptr)
     {
         widget->widget_class->mouse_press(widget, x, y, b);
     }
@@ -197,7 +197,7 @@ void TXT_LayoutWidget(TXT_UNCAST_ARG(widget))
 {
     TXT_CAST_ARG(txt_widget_t, widget);
 
-    if (widget->widget_class->layout != NULL)
+    if (widget->widget_class->layout != nullptr)
     {
         widget->widget_class->layout(widget);
     }
@@ -217,7 +217,7 @@ int TXT_SelectableWidget(TXT_UNCAST_ARG(widget))
 {
     TXT_CAST_ARG(txt_widget_t, widget);
 
-    if (widget->widget_class->selectable != NULL)
+    if (widget->widget_class->selectable != nullptr)
     {
         return widget->widget_class->selectable(widget);
     }
@@ -232,7 +232,7 @@ int TXT_ContainsWidget(TXT_UNCAST_ARG(haystack), TXT_UNCAST_ARG(needle))
     TXT_CAST_ARG(txt_widget_t, haystack);
     TXT_CAST_ARG(txt_widget_t, needle);
 
-    while (needle != NULL)
+    while (needle != nullptr)
     {
         if (needle == haystack)
         {

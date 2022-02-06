@@ -128,7 +128,7 @@ static void DEH_ThingParseLine(deh_context_t *context, char *line, void *tag)
     char *      variable_name, *value;
     int         ivalue;
 
-    if (tag == NULL)
+    if (tag == nullptr)
         return;
 
     mobj = (mobjinfo_t *)tag;
@@ -152,7 +152,7 @@ static void DEH_ThingParseLine(deh_context_t *context, char *line, void *tag)
     // [crispy] support BEX bits mnemonics in Things fields
     if (!ivalue && !strcasecmp(variable_name, "bits"))
     {
-        for (; (value = strtok(value, ",+| \t\f\r")); value = NULL)
+        for (; (value = strtok(value, ",+| \t\f\r")); value = nullptr)
         {
             int i;
             for (i = 0; i < arrlen(bex_thingbitstable); i++)

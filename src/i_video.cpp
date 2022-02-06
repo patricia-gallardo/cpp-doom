@@ -252,7 +252,7 @@ static boolean MouseShouldBeGrabbed()
     // Invoke the grabmouse callback function to determine whether
     // the mouse should be grabbed
 
-    if (grabmouse_callback != NULL)
+    if (grabmouse_callback != nullptr)
     {
         return grabmouse_callback();
     }
@@ -281,7 +281,7 @@ static void SetShowCursor(bool show)
         // When the cursor is hidden, grab the input.
         // Relative mode implicitly hides the cursor.
         SDL_SetRelativeMouseMode(static_cast<SDL_bool>(!show));
-        SDL_GetRelativeMouseState(NULL, NULL);
+        SDL_GetRelativeMouseState(NULL, nullptr);
     }
 }
 
@@ -549,7 +549,7 @@ static void UpdateGrab()
 
         SDL_GetWindowSize(screen, &screen_w, &screen_h);
         SDL_WarpMouseInWindow(screen, screen_w - 16, screen_h - 16);
-        SDL_GetRelativeMouseState(NULL, NULL);
+        SDL_GetRelativeMouseState(NULL, nullptr);
     }
 
     currently_grabbed = grab;
@@ -700,7 +700,7 @@ static void CreateUpscaledTexture(boolean force)
     old_texture      = texture_upscaled;
     texture_upscaled = new_texture;
 
-    if (old_texture != NULL)
+    if (old_texture != nullptr)
     {
         SDL_DestroyTexture(old_texture);
     }
@@ -844,24 +844,24 @@ void I_FinishUpdate()
         // using "nearest" integer scaling.
 
         SDL_SetRenderTarget(renderer, texture_upscaled);
-        SDL_RenderCopy(renderer, texture, NULL, NULL);
+        SDL_RenderCopy(renderer, texture, NULL, nullptr);
 
         // Finally, render this upscaled texture to screen using linear scaling.
 
-        SDL_SetRenderTarget(renderer, NULL);
-        SDL_RenderCopy(renderer, texture_upscaled, NULL, NULL);
+        SDL_SetRenderTarget(renderer, nullptr);
+        SDL_RenderCopy(renderer, texture_upscaled, NULL, nullptr);
     }
     else
     {
-        SDL_SetRenderTarget(renderer, NULL);
-        SDL_RenderCopy(renderer, texture, NULL, NULL);
+        SDL_SetRenderTarget(renderer, nullptr);
+        SDL_RenderCopy(renderer, texture, NULL, nullptr);
     }
 
 #ifdef CRISPY_TRUECOLOR
     if (curpane)
     {
         SDL_SetTextureAlphaMod(curpane, pane_alpha);
-        SDL_RenderCopy(renderer, curpane, NULL, NULL);
+        SDL_RenderCopy(renderer, curpane, NULL, nullptr);
     }
 #endif
 
@@ -1030,7 +1030,7 @@ void I_InitWindowTitle()
 {
     char *buf;
 
-    buf = M_StringJoin(window_title, " - ", PACKAGE_STRING, NULL);
+    buf = M_StringJoin(window_title, " - ", PACKAGE_STRING, nullptr);
     SDL_SetWindowTitle(screen, buf);
     free(buf);
 }
@@ -1209,7 +1209,7 @@ void I_CheckIsScreensaver()
 
     env = getenv("XSCREENSAVER_WINDOW");
 
-    if (env != NULL)
+    if (env != nullptr)
     {
         screensaver_mode = true;
     }
@@ -1224,7 +1224,7 @@ static void SetSDLVideoDriver()
     {
         char *env_string;
 
-        env_string = M_StringJoin("SDL_VIDEODRIVER=", video_driver, NULL);
+        env_string = M_StringJoin("SDL_VIDEODRIVER=", video_driver, nullptr);
         putenv(env_string);
         free(env_string);
     }
@@ -1348,11 +1348,11 @@ static void SetVideoMode()
     // "window_flags" contains the fullscreen flag (see above), then
     // w and h are ignored.
 
-    if (screen == NULL)
+    if (screen == nullptr)
     {
         screen = SDL_CreateWindow(NULL, x, y, w, h, window_flags);
 
-        if (screen == NULL)
+        if (screen == nullptr)
         {
             I_Error("Error creating window for video startup: %s",
                 SDL_GetError());
@@ -1392,7 +1392,7 @@ static void SetVideoMode()
         crispy->vsync = false;
     }
 
-    if (renderer != NULL)
+    if (renderer != nullptr)
     {
         SDL_DestroyRenderer(renderer);
         // all associated textures get destroyed
@@ -1413,13 +1413,13 @@ static void SetVideoMode()
         renderer = SDL_CreateRenderer(screen, -1, renderer_flags);
 
         // If this helped, save the setting for later.
-        if (renderer != NULL)
+        if (renderer != nullptr)
         {
             force_software_renderer = 1;
         }
     }
 
-    if (renderer == NULL)
+    if (renderer == nullptr)
     {
         I_Error("Error creating renderer for screen window: %s",
             SDL_GetError());
@@ -1452,13 +1452,13 @@ static void SetVideoMode()
 #ifndef CRISPY_TRUECOLOR
     // Create the 8-bit paletted and the 32-bit RGBA screenbuffer surfaces.
 
-    if (screenbuffer != NULL)
+    if (screenbuffer != nullptr)
     {
         SDL_FreeSurface(screenbuffer);
         screenbuffer = NULL;
     }
 
-    if (screenbuffer == NULL)
+    if (screenbuffer == nullptr)
     {
         screenbuffer = SDL_CreateRGBSurface(0,
             SCREENWIDTH, SCREENHEIGHT, 8,
@@ -1470,13 +1470,13 @@ static void SetVideoMode()
     // Format of argbbuffer must match the screen pixel format because we
     // import the surface data into the texture.
 
-    if (argbbuffer != NULL)
+    if (argbbuffer != nullptr)
     {
         SDL_FreeSurface(argbbuffer);
         argbbuffer = NULL;
     }
 
-    if (argbbuffer == NULL)
+    if (argbbuffer == nullptr)
     {
         SDL_PixelFormatEnumToMasks(pixel_format, &unused_bpp,
             &rmask, &gmask, &bmask, &amask);
@@ -1499,7 +1499,7 @@ static void SetVideoMode()
         SDL_FillRect(argbbuffer, NULL, 0);
     }
 
-    if (texture != NULL)
+    if (texture != nullptr)
     {
         SDL_DestroyTexture(texture);
     }
@@ -1575,7 +1575,7 @@ void I_InitGraphics()
 
     env = getenv("XSCREENSAVER_WINDOW");
 
-    if (env != NULL)
+    if (env != nullptr)
     {
         char winenv[30];
         int  winid;
@@ -1861,7 +1861,7 @@ void I_RenderReadPixels(byte **data, int *w, int *h, int *p)
     // already contains the scene that we actually want to capture.
     if (crispy->post_rendering_hook)
     {
-        SDL_RenderCopy(renderer, crispy->smoothscaling ? texture_upscaled : texture, NULL, NULL);
+        SDL_RenderCopy(renderer, crispy->smoothscaling ? texture_upscaled : texture, NULL, nullptr);
         SDL_RenderPresent(renderer);
     }
 

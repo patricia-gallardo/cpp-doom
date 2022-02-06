@@ -941,7 +941,7 @@ stairstep:
 //
 // P_LineAttack
 //
-mobj_t*		linetarget;	// who got hit (or NULL)
+mobj_t*		linetarget;	// who got hit (or nullptr)
 mobj_t*		shootthing;
 
 // Height if not aiming up or down
@@ -996,7 +996,7 @@ PTR_AimTraverse (intercept_t* in)
         // (eg. ottawau.wad) use this as an "impassible glass" trick
         // and rely on Vanilla Doom's (unintentional) support for this.
 
-        if (li->backsector == NULL)
+        if (li->backsector == nullptr)
         {
             return false;
         }
@@ -1094,7 +1094,7 @@ boolean PTR_ShootTraverse (intercept_t* in)
 
         // Check if backsector is NULL.  See comment in PTR_AimTraverse.
 
-        if (li->backsector == NULL)
+        if (li->backsector == nullptr)
         {
             goto hitline;
         }

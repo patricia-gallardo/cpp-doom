@@ -84,7 +84,7 @@ static int PCSound_Win32_Init(pcsound_callback_func callback_func)
     sound_thread_running = 1;
 
     sound_thread_handle =
-        SDL_CreateThread(SoundThread, "PC speaker thread", NULL);
+        SDL_CreateThread(SoundThread, "PC speaker thread", nullptr);
 
     return 1;
 }
@@ -92,7 +92,7 @@ static int PCSound_Win32_Init(pcsound_callback_func callback_func)
 static void PCSound_Win32_Shutdown()
 {
     sound_thread_running = 0;
-    SDL_WaitThread(sound_thread_handle, NULL);
+    SDL_WaitThread(sound_thread_handle, nullptr);
 }
 
 pcsound_driver_t pcsound_win32_driver = 

@@ -185,7 +185,7 @@ void R_InitSpriteDefs (const char** namelist)
 		
     // count the number of sprite names
     check = namelist;
-    while (*check != NULL)
+    while (*check != nullptr)
 	check++;
 
     numsprites = check-namelist;
@@ -193,7 +193,7 @@ void R_InitSpriteDefs (const char** namelist)
     if (!numsprites)
 	return;
 		
-    sprites = zmalloc<spritedef_t *>(numsprites * sizeof(*sprites), PU_STATIC, NULL);
+    sprites = zmalloc<spritedef_t *>(numsprites * sizeof(*sprites), PU_STATIC, nullptr);
 	
     start = firstspritelump-1;
     end = lastspritelump+1;
@@ -270,7 +270,7 @@ void R_InitSpriteDefs (const char** namelist)
 	// allocate space for the frames present and copy sprtemp to it
 	sprites[i].numframes = maxframe;
 	sprites[i].spriteframes =
-            zmalloc<spriteframe_t *>(maxframe * sizeof(spriteframe_t), PU_STATIC, NULL);
+            zmalloc<spriteframe_t *>(maxframe * sizeof(spriteframe_t), PU_STATIC, nullptr);
 	memcpy (sprites[i].spriteframes, sprtemp, maxframe*sizeof(spriteframe_t));
     }
 

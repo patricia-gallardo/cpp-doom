@@ -1164,7 +1164,7 @@ void T_SlidingDoor(slidedoor_t* door)
             sec = door->frontsector;
 
             // CAN DOOR CLOSE?
-            if(sec->thinglist != NULL)
+            if(sec->thinglist != nullptr)
             {
                 door->timer = SDOORWAIT;
                 return;

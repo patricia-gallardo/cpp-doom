@@ -159,7 +159,7 @@ void TXT_DrawWindowFrame(const char *title, int x, int y, int w, int h)
 
     // Draw the title
 
-    if (title != NULL)
+    if (title != nullptr)
     {
         TXT_GotoXY(x + 1, y + 1);
         TXT_BGColor(TXT_COLOR_GREY, 0);
@@ -470,7 +470,7 @@ void TXT_PopClipArea()
 
     // Never pop the last entry
 
-    if (cliparea->next == NULL)
+    if (cliparea->next == nullptr)
         return;
 
     // Unlink the last entry and delete

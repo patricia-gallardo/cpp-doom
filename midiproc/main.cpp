@@ -75,12 +75,12 @@ static boolean WriteInt16(CHAR *out, size_t osize, unsigned int in)
 //
 static void FreePipes()
 {
-    if (midi_process_in != NULL)
+    if (midi_process_in != nullptr)
     {
         CloseHandle(midi_process_in);
         midi_process_in = NULL;
     }
-    if (midi_process_out != NULL)
+    if (midi_process_out != nullptr)
     {
         CloseHandle(midi_process_out);
         midi_process_out = NULL;
@@ -93,7 +93,7 @@ static void FreePipes()
 //
 static void UnregisterSong()
 {
-    if (music == NULL)
+    if (music == nullptr)
     {
         return;
     }
@@ -124,7 +124,7 @@ static boolean RegisterSong(const char *filename)
     // Remove the temporary MIDI file
     remove(filename);
 
-    if (music == NULL)
+    if (music == nullptr)
     {
         return false;
     }
@@ -165,7 +165,7 @@ static void StopSong()
 static boolean MidiPipe_RegisterSong(buffer_reader_t *reader)
 {
     char *filename = Reader_ReadString(reader);
-    if (filename == NULL)
+    if (filename == nullptr)
     {
         return false;
     }
@@ -284,7 +284,7 @@ boolean ParseMessage(buffer_t *buf)
     }
 
     WriteFile(midi_process_out, buffer, sizeof(buffer),
-              &bytes_written, NULL);
+              &bytes_written, nullptr);
 
     return true;
 
@@ -311,7 +311,7 @@ boolean ListenForever()
     {
         // Wait until we see some data on the pipe.
         wok = PeekNamedPipe(midi_process_in, NULL, 0, NULL,
-                            &pipe_buffer_read, NULL);
+                            &pipe_buffer_read, nullptr);
         if (!wok)
         {
             break;
@@ -324,7 +324,7 @@ boolean ListenForever()
 
         // Read data off the pipe and add it to the buffer.
         wok = ReadFile(midi_process_in, pipe_buffer, sizeof(pipe_buffer),
-                       &pipe_buffer_read, NULL);
+                       &pipe_buffer_read, nullptr);
         if (!wok)
         {
             break;
