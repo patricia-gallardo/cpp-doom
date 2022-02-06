@@ -154,10 +154,10 @@ void P_ExplodeMissile(mobj_t * mo)
         case MT_SORCBALL1:
         case MT_SORCBALL2:
         case MT_SORCBALL3:
-            S_StartSound(NULL, SFX_SORCERER_BIGBALLEXPLODE);
+            S_StartSound(nullptr, SFX_SORCERER_BIGBALLEXPLODE);
             break;
         case MT_SORCFX1:
-            S_StartSound(NULL, SFX_SORCERER_HEADSCREAM);
+            S_StartSound(nullptr, SFX_SORCERER_HEADSCREAM);
             break;
         default:
             if (mo->info->deathsound)
@@ -315,13 +315,13 @@ boolean P_SeekerMissile(mobj_t * actor, angle_t thresh, angle_t turnMax)
     mobj_t *target;
 
     target = actor->special1.m;
-    if (target == NULL)
+    if (target == nullptr)
     {
         return (false);
     }
     if (!(target->flags & MF_SHOOTABLE))
     {                           // Target died
-        actor->special1.m = NULL;
+        actor->special1.m = nullptr;
         return (false);
     }
     dir = P_FaceMobj(actor, target, &delta);
@@ -454,7 +454,7 @@ void P_XYMovement(mobj_t * mo)
         {                       // Blocked move
             if (mo->flags2 & MF2_SLIDE)
             {                   // Try to slide along it
-                if (BlockingMobj == NULL)
+                if (BlockingMobj == nullptr)
                 {               // Slide against wall
                     P_SlideMove(mo);
                 }
@@ -691,7 +691,7 @@ void P_MonsterFallingDamage(mobj_t * mo)
         damage = ((mom - (23 * FRACUNIT)) * 6) >> FRACBITS;
     }
     damage = 10000;             // always kill 'em
-    P_DamageMobj(mo, NULL, NULL, damage);
+    P_DamageMobj(mo, nullptr, nullptr, damage);
 }
 
 
@@ -833,7 +833,7 @@ void P_ZMovement(mobj_t * mo)
             }
             else if (mo->type >= MT_POTTERY1 && mo->type <= MT_POTTERY3)
             {
-                P_DamageMobj(mo, NULL, NULL, 25);
+                P_DamageMobj(mo, nullptr, nullptr, 25);
             }
             else if (mo->flags & MF_COUNTKILL)
             {
@@ -1064,7 +1064,7 @@ void P_MobjThinker(mobj_t * mobj)
 		ResetBlasted(mobj);
 */
     // Handle X and Y momentums
-    BlockingMobj = NULL;
+    BlockingMobj = nullptr;
     if (mobj->momx || mobj->momy || (mobj->flags & MF_SKULLFLY))
     {
         P_XYMovement(mobj);
@@ -1176,7 +1176,7 @@ mobj_t *P_SpawnMobj(fixed_t x, fixed_t y, fixed_t z, mobjtype_t type)
     mobjinfo_t *info;
     fixed_t space;
 
-    mobj = zmalloc<mobj_t *>(sizeof(*mobj), PU_LEVEL, NULL);
+    mobj = zmalloc<mobj_t *>(sizeof(*mobj), PU_LEVEL, nullptr);
     memset(mobj, 0, sizeof(*mobj));
     info = &mobjinfo[type];
     mobj->type = type;
@@ -1709,7 +1709,7 @@ void P_RemoveMobjFromTIDList(mobj_t * mobj)
         if (TIDMobj[i] == mobj)
         {
             TIDList[i] = -1;
-            TIDMobj[i] = NULL;
+            TIDMobj[i] = nullptr;
             mobj->tid = 0;
             return;
         }
@@ -1736,7 +1736,7 @@ mobj_t *P_FindMobjFromTID(int tid, int *searchPosition)
         }
     }
     *searchPosition = -1;
-    return NULL;
+    return nullptr;
 }
 
 /*
@@ -1969,7 +1969,7 @@ int P_HitFloor(mobj_t * thing)
             S_StartSound(mo, SFX_LAVA_SIZZLE);
             if (thing->player && leveltime & 31)
             {
-                P_DamageMobj(thing, &LavaInflictor, NULL, 5);
+                P_DamageMobj(thing, &LavaInflictor, nullptr, 5);
             }
             return (FLOOR_LAVA);
         case FLOOR_SLUDGE:
@@ -2030,7 +2030,7 @@ boolean P_CheckMissileSpawn(mobj_t * missile)
 //
 // FUNC P_SpawnMissile
 //
-// Returns NULL if the missile exploded immediately, otherwise returns
+// Returns nullptr if the missile exploded immediately, otherwise returns
 // a mobj_t pointer to the missile.
 //
 //---------------------------------------------------------------------------
@@ -2086,14 +2086,14 @@ mobj_t *P_SpawnMissile(mobj_t * source, mobj_t * dest, mobjtype_t type)
         dist = 1;
     }
     th->momz = (dest->z - source->z) / dist;
-    return (P_CheckMissileSpawn(th) ? th : NULL);
+    return (P_CheckMissileSpawn(th) ? th : nullptr);
 }
 
 //---------------------------------------------------------------------------
 //
 // FUNC P_SpawnMissileXYZ
 //
-// Returns NULL if the missile exploded immediately, otherwise returns
+// Returns nullptr if the missile exploded immediately, otherwise returns
 // a mobj_t pointer to the missile.
 //
 //---------------------------------------------------------------------------
@@ -2128,14 +2128,14 @@ mobj_t *P_SpawnMissileXYZ(fixed_t x, fixed_t y, fixed_t z,
         dist = 1;
     }
     th->momz = (dest->z - source->z) / dist;
-    return (P_CheckMissileSpawn(th) ? th : NULL);
+    return (P_CheckMissileSpawn(th) ? th : nullptr);
 }
 
 //---------------------------------------------------------------------------
 //
 // FUNC P_SpawnMissileAngle
 //
-// Returns NULL if the missile exploded immediately, otherwise returns
+// Returns nullptr if the missile exploded immediately, otherwise returns
 // a mobj_t pointer to the missile.
 //
 //---------------------------------------------------------------------------
@@ -2176,14 +2176,14 @@ mobj_t *P_SpawnMissileAngle(mobj_t * source, mobjtype_t type,
     mo->momx = FixedMul(mo->info->speed, finecosine[angle]);
     mo->momy = FixedMul(mo->info->speed, finesine[angle]);
     mo->momz = momz;
-    return (P_CheckMissileSpawn(mo) ? mo : NULL);
+    return (P_CheckMissileSpawn(mo) ? mo : nullptr);
 }
 
 //---------------------------------------------------------------------------
 //
 // FUNC P_SpawnMissileAngleSpeed
 //
-// Returns NULL if the missile exploded immediately, otherwise returns
+// Returns nullptr if the missile exploded immediately, otherwise returns
 // a mobj_t pointer to the missile.
 //
 //---------------------------------------------------------------------------
@@ -2207,7 +2207,7 @@ mobj_t *P_SpawnMissileAngleSpeed(mobj_t * source, mobjtype_t type,
     mo->momx = FixedMul(speed, finecosine[angle]);
     mo->momy = FixedMul(speed, finesine[angle]);
     mo->momz = momz;
-    return (P_CheckMissileSpawn(mo) ? mo : NULL);
+    return (P_CheckMissileSpawn(mo) ? mo : nullptr);
 }
 
 
@@ -2290,7 +2290,7 @@ mobj_t *P_SpawnPlayerMissile(mobj_t * source, mobjtype_t type)
     if (!P_TryMove(MissileMobj, MissileMobj->x, MissileMobj->y))
     {                           // Exploded immediately
         P_ExplodeMissile(MissileMobj);
-        return (NULL);
+        return (nullptr);
     }
     return (MissileMobj);
 }
@@ -2335,7 +2335,7 @@ mobj_t *P_SpawnPlayerMinotaur(mobj_t *source, mobjtype_t type)
 	if(!P_TryMove(MissileMobj, MissileMobj->x, MissileMobj->y))
 	{ // Wouln't fit
 
-		return(NULL);
+		return(nullptr);
 	}
 	return(MissileMobj);
 }
@@ -2388,7 +2388,7 @@ mobj_t *P_SPMAngle(mobj_t * source, mobjtype_t type, angle_t angle)
     th->momx = FixedMul(th->info->speed, finecosine[an >> ANGLETOFINESHIFT]);
     th->momy = FixedMul(th->info->speed, finesine[an >> ANGLETOFINESHIFT]);
     th->momz = FixedMul(th->info->speed, slope);
-    return (P_CheckMissileSpawn(th) ? th : NULL);
+    return (P_CheckMissileSpawn(th) ? th : nullptr);
 }
 
 //===========================================================================
@@ -2436,7 +2436,7 @@ mobj_t *P_SPMAngleXYZ(mobj_t * source, fixed_t x, fixed_t y,
     th->momx = FixedMul(th->info->speed, finecosine[an >> ANGLETOFINESHIFT]);
     th->momy = FixedMul(th->info->speed, finesine[an >> ANGLETOFINESHIFT]);
     th->momz = FixedMul(th->info->speed, slope);
-    return (P_CheckMissileSpawn(th) ? th : NULL);
+    return (P_CheckMissileSpawn(th) ? th : nullptr);
 }
 
 mobj_t *P_SpawnKoraxMissile(fixed_t x, fixed_t y, fixed_t z,
@@ -2469,5 +2469,5 @@ mobj_t *P_SpawnKoraxMissile(fixed_t x, fixed_t y, fixed_t z,
         dist = 1;
     }
     th->momz = (dest->z - z + (30 * FRACUNIT)) / dist;
-    return (P_CheckMissileSpawn(th) ? th : NULL);
+    return (P_CheckMissileSpawn(th) ? th : nullptr);
 }

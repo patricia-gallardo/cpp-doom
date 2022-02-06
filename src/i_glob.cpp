@@ -59,7 +59,7 @@ static boolean IsDirectory(char *dir, struct dirent *de)
         struct stat sb;
         int         result;
 
-        filename = M_StringJoin(dir, DIR_SEPARATOR_S, de->d_name, NULL);
+        filename = M_StringJoin(dir, DIR_SEPARATOR_S, de->d_name, nullptr);
         result   = stat(filename, &sb);
         free(filename);
 
@@ -104,9 +104,9 @@ glob_t *I_StartMultiGlob(const char *directory, int flags,
     va_list args;
 
     globs = static_cast<char **>(malloc(sizeof(char *)));
-    if (globs == NULL)
+    if (globs == nullptr)
     {
-        return NULL;
+        return nullptr;
     }
     globs[0]  = M_StringDuplicate(glob);
     num_globs = 1;
@@ -117,14 +117,14 @@ glob_t *I_StartMultiGlob(const char *directory, int flags,
         const char *arg = va_arg(args, const char *);
         char **     new_globs;
 
-        if (arg == NULL)
+        if (arg == nullptr)
         {
             break;
         }
 
         new_globs = static_cast<char **>(
             realloc(globs, sizeof(char *) * (num_globs + 1)));
-        if (new_globs == NULL)
+        if (new_globs == nullptr)
         {
             FreeStringList(globs, num_globs);
         }
@@ -135,26 +135,26 @@ glob_t *I_StartMultiGlob(const char *directory, int flags,
     va_end(args);
 
     result = static_cast<glob_t *>(malloc(sizeof(glob_t)));
-    if (result == NULL)
+    if (result == nullptr)
     {
         FreeStringList(globs, num_globs);
-        return NULL;
+        return nullptr;
     }
 
     result->dir = opendir(directory);
-    if (result->dir == NULL)
+    if (result->dir == nullptr)
     {
         FreeStringList(globs, num_globs);
         free(result);
-        return NULL;
+        return nullptr;
     }
 
     result->directory     = M_StringDuplicate(directory);
     result->globs         = globs;
     result->num_globs     = num_globs;
     result->flags         = flags;
-    result->last_filename = NULL;
-    result->filenames     = NULL;
+    result->last_filename = nullptr;
+    result->filenames     = nullptr;
     result->filenames_len = 0;
     result->next_index    = -1;
     return result;
@@ -162,12 +162,12 @@ glob_t *I_StartMultiGlob(const char *directory, int flags,
 
 glob_t *I_StartGlob(const char *directory, const char *glob, int flags)
 {
-    return I_StartMultiGlob(directory, flags, glob, NULL);
+    return I_StartMultiGlob(directory, flags, glob, nullptr);
 }
 
 void I_EndGlob(glob_t *glob)
 {
-    if (glob == NULL)
+    if (glob == nullptr)
     {
         return;
     }
@@ -247,29 +247,29 @@ static char *NextGlob(glob_t *glob)
     do
     {
         de = readdir(glob->dir);
-        if (de == NULL)
+        if (de == nullptr)
         {
-            return NULL;
+            return nullptr;
         }
     } while (IsDirectory(glob->directory, de)
              || !MatchesAnyGlob(de->d_name, glob));
 
     // Return the fully-qualified path, not just the bare filename.
-    return M_StringJoin(glob->directory, DIR_SEPARATOR_S, de->d_name, NULL);
+    return M_StringJoin(glob->directory, DIR_SEPARATOR_S, de->d_name, nullptr);
 }
 
 static void ReadAllFilenames(glob_t *glob)
 {
     char *name;
 
-    glob->filenames     = NULL;
+    glob->filenames     = nullptr;
     glob->filenames_len = 0;
     glob->next_index    = 0;
 
     for (;;)
     {
         name = NextGlob(glob);
-        if (name == NULL)
+        if (name == nullptr)
         {
             break;
         }
@@ -321,9 +321,9 @@ const char *I_NextGlob(glob_t *glob)
 {
     const char *result;
 
-    if (glob == NULL)
+    if (glob == nullptr)
     {
-        return NULL;
+        return nullptr;
     }
 
     // In unsorted mode we just return the filenames as we read
@@ -344,7 +344,7 @@ const char *I_NextGlob(glob_t *glob)
     }
     if (glob->next_index >= glob->filenames_len)
     {
-        return NULL;
+        return nullptr;
     }
     result = glob->filenames[glob->next_index];
     ++glob->next_index;
@@ -357,7 +357,7 @@ const char *I_NextGlob(glob_t *glob)
 
 glob_t *I_StartGlob(const char *directory, const char *glob, int flags)
 {
-    return NULL;
+    return nullptr;
 }
 
 void I_EndGlob(glob_t *glob)

@@ -365,7 +365,7 @@ static menuitem_t dialogmenuitems[] =
 static menu_t dialogmenu =
 {
     NUMDIALOGMENUITEMS, 
-    NULL, 
+    nullptr,
     dialogmenuitems, 
     P_DialogDrawer, 
     42, 
@@ -400,7 +400,7 @@ static void P_ParseDialogLump(byte *lump, mapdialog_t **dialogs,
     int i;
     byte *rover = lump;
 
-    *dialogs = zmalloc<mapdialog_t *>(numdialogs * sizeof(mapdialog_t), tag, NULL);
+    *dialogs = zmalloc<mapdialog_t *>(numdialogs * sizeof(mapdialog_t), tag, nullptr);
 
     for(i = 0; i < numdialogs; i++)
     {
@@ -720,7 +720,7 @@ boolean P_GiveItemToPlayer(player_t *player, int sprnum, mobjtype_t type)
         player->questflags |= 1 << (type - MT_TOKEN_QUEST1);
 
         if(player == &players[consoleplayer])
-            S_StartSound(NULL, sound);
+            S_StartSound(nullptr, sound);
         return true;
     }
 
@@ -976,7 +976,7 @@ boolean P_GiveItemToPlayer(player_t *player, int sprnum, mobjtype_t type)
 
     // Play sound.
     if(player == &players[consoleplayer])
-        S_StartSound(NULL, sound);
+        S_StartSound(nullptr, sound);
 
     return true;
 }
@@ -1154,7 +1154,7 @@ void P_DialogDoChoice(int choice)
 {
     int i = 0, nextdialog = 0;
     boolean candochoice = true;
-    const char *message = NULL;
+    const char *message = nullptr;
     mapdlgchoice_t *currentchoice;
 
     if(choice == -1)
@@ -1162,7 +1162,7 @@ void P_DialogDoChoice(int choice)
 
     currentchoice = &(currentdialog->choices[choice]);
 
-    I_StartVoice(NULL); // STRIFE-TODO: verify (should stop previous voice I believe)
+    I_StartVoice(nullptr); // STRIFE-TODO: verify (should stop previous voice I believe)
 
     // villsa 09/08/10: converted into for loop
     for(i = 0; i < MDLG_MAXITEMS; i++)
@@ -1227,7 +1227,7 @@ void P_DialogDoChoice(int choice)
         // haleyjd 20130301: v1.31 hack: if first char of message is a period,
         // clear the player's message. Is this actually used anywhere?
         if(gameversion == exe_strife_1_31 && message[0] == '.')
-            message = NULL;
+            message = nullptr;
         dialogplayer->message = message;
     }
 

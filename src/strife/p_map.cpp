@@ -176,7 +176,7 @@ boolean P_TeleportMove(mobj_t*  thing, fixed_t  x, fixed_t  y)
     tmbbox[BOXLEFT] = x - tmthing->radius;
 
     newsubsec = R_PointInSubsector (x,y);
-    ceilingline = NULL;
+    ceilingline = nullptr;
     
     // The base floor/ceiling is from the subsector
     // that contains the point.
@@ -456,8 +456,8 @@ P_CheckPosition
     newsubsec = R_PointInSubsector (x,y);
     
     // [STRIFE] clear blockingline (see P_XYMovement, P_BlockLinesIterator)
-    blockingline = NULL;
-    ceilingline  = NULL;
+    blockingline = nullptr;
+    ceilingline  = nullptr;
     
     // The base floor / ceiling is from the subsector
     // that contains the point.
@@ -941,7 +941,7 @@ stairstep:
 //
 // P_LineAttack
 //
-mobj_t*		linetarget;	// who got hit (or NULL)
+mobj_t*		linetarget;	// who got hit (or nullptr)
 mobj_t*		shootthing;
 
 // Height if not aiming up or down
@@ -996,7 +996,7 @@ PTR_AimTraverse (intercept_t* in)
         // (eg. ottawau.wad) use this as an "impassible glass" trick
         // and rely on Vanilla Doom's (unintentional) support for this.
 
-        if (li->backsector == NULL)
+        if (li->backsector == nullptr)
         {
             return false;
         }
@@ -1094,7 +1094,7 @@ boolean PTR_ShootTraverse (intercept_t* in)
 
         // Check if backsector is NULL.  See comment in PTR_AimTraverse.
 
-        if (li->backsector == NULL)
+        if (li->backsector == nullptr)
         {
             goto hitline;
         }
@@ -1236,7 +1236,7 @@ P_AimLineAttack
     bottomslope = -100*FRACUNIT/160;
     
     attackrange = distance;
-    linetarget = NULL;
+    linetarget = nullptr;
 
     P_PathTraverse ( t1->x, t1->y,
                      x2, y2,

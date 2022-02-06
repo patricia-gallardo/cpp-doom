@@ -45,13 +45,13 @@ static void *DEH_FrameStart(deh_context_t *context, char *line)
     if (sscanf(line, "Frame %i", &frame_number) != 1)
     {
         DEH_Warning(context, "Parse error on section start");
-        return NULL;
+        return nullptr;
     }
 
     if (frame_number < 0 || frame_number >= NUMSTATES)
     {
         DEH_Warning(context, "Invalid frame number: %i", frame_number);
-        return NULL;
+        return nullptr;
     }
 
     if (frame_number >= DEH_VANILLA_NUMSTATES)
@@ -80,7 +80,7 @@ static void DEH_FrameParseLine(deh_context_t *context, char *line, void *tag)
     char *   variable_name, *value;
     int      ivalue;
 
-    if (tag == NULL)
+    if (tag == nullptr)
         return;
 
     state = (state_t *)tag;
@@ -115,9 +115,9 @@ static void DEH_FrameSHA1Sum(sha1_context_t *context)
 
 deh_section_t deh_section_frame = {
     "Frame",
-    NULL,
+    nullptr,
     DEH_FrameStart,
     DEH_FrameParseLine,
-    NULL,
+    nullptr,
     DEH_FrameSHA1Sum,
 };

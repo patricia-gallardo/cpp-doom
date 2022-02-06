@@ -130,7 +130,7 @@ static const char *MapCmdNames[] = {
     "CD_END3_TRACK",
     "CD_INTERMISSION_TRACK",
     "CD_TITLE_TRACK",
-    NULL
+    nullptr
 };
 static int MapCmdIDs[] = {
     MCMD_SKY1,
@@ -296,7 +296,7 @@ void P_LoadSectors(int lump)
         ss->lightlevel = SHORT(ms->lightlevel);
         ss->special = SHORT(ms->special);
         ss->tag = SHORT(ms->tag);
-        ss->thinglist = NULL;
+        ss->thinglist = nullptr;
         ss->seqType = SEQTYPE_STONE;    // default seqType
     }
     W_ReleaseLumpNum(lump);
@@ -541,7 +541,7 @@ void P_LoadBlockMap(int lump)
 
     lumplen = W_LumpLength(lump);
 
-    blockmaplump = zmalloc<short *>(lumplen, PU_LEVEL, NULL);
+    blockmaplump = zmalloc<short *>(lumplen, PU_LEVEL, nullptr);
     W_ReadLump(lump, blockmaplump);
     blockmap = blockmaplump + 4;
 
@@ -827,12 +827,12 @@ static void InitMapInfo()
     {
         if (SC_Compare("MAP") == false)
         {
-            SC_ScriptError(NULL);
+            SC_ScriptError(nullptr);
         }
         SC_MustGetNumber();
         if (sc_Number < 1 || sc_Number > 99)
         {                       // 
-            SC_ScriptError(NULL);
+            SC_ScriptError(nullptr);
         }
         map = sc_Number;
 
@@ -1086,7 +1086,7 @@ char *P_GetMapSongLump(int map)
 {
     if (!strcasecmp(MapInfo[QualifyMap(map)].songLump, DEFAULT_SONG_LUMP))
     {
-        return NULL;
+        return nullptr;
     }
     else
     {

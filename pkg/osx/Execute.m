@@ -51,12 +51,12 @@ static void WriteResponseFile(const char *iwad, const char *args)
 
     fstream = fopen(RESPONSE_FILE, "w");
 
-    if (iwad != NULL)
+    if (iwad != nullptr)
     {
         fprintf(fstream, "-iwad \"%s\"", iwad);
     }
 
-    if (args != NULL)
+    if (args != nullptr)
     {
         fprintf(fstream, "%s", args);
     }
@@ -70,16 +70,16 @@ static void DoExec(const char *executable, const char *iwad, const char *args)
 
     asprintf(&argv[0], "%s/%s", executable_path, executable);
 
-    if (iwad != NULL || args != NULL)
+    if (iwad != nullptr || args != nullptr)
     {
         WriteResponseFile(iwad, args);
 
         argv[1] = "@" RESPONSE_FILE;
-        argv[2] = NULL;
+        argv[2] = nullptr;
     }
     else
     {
-        argv[1] = NULL;
+        argv[1] = nullptr;
     }
 
     execv(argv[0], argv);
@@ -105,7 +105,7 @@ void ExecuteProgram(const char *executable, const char *iwad, const char *args)
 
         homedir = getenv("HOME");
 
-        if (homedir != NULL)
+        if (homedir != nullptr)
         {
             chdir(homedir);
         }

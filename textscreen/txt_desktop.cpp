@@ -32,7 +32,7 @@ static txt_window_t *all_windows[MAXWINDOWS];
 static int num_windows = 0;
 static int main_loop_running = 0;
 
-static TxtIdleCallback periodic_callback = NULL;
+static TxtIdleCallback periodic_callback = nullptr;
 static void *periodic_callback_data;
 static unsigned int periodic_callback_period;
 
@@ -84,7 +84,7 @@ txt_window_t *TXT_GetActiveWindow()
 {
     if (num_windows == 0)
     {
-        return NULL;
+        return nullptr;
     }
 
     return all_windows[num_windows - 1];
@@ -234,7 +234,7 @@ void TXT_DrawDesktop()
 
     TXT_InitClipArea();
 
-    if (desktop_title == NULL)
+    if (desktop_title == nullptr)
         title = "";
     else
         title = desktop_title;
@@ -242,7 +242,7 @@ void TXT_DrawDesktop()
     DrawDesktopBackground(title);
 
     active_window = TXT_GetActiveWindow();
-    if (active_window != NULL && active_window->help_url != NULL)
+    if (active_window != nullptr && active_window->help_url != nullptr)
     {
         DrawHelpIndicator();
     }
@@ -277,7 +277,7 @@ static void DesktopInputEvent(int c)
 
         case HELP_KEY:
             active_window = TXT_GetActiveWindow();
-            if (active_window != NULL)
+            if (active_window != nullptr)
             {
                 TXT_OpenWindowHelpURL(active_window);
             }
@@ -299,7 +299,7 @@ void TXT_DispatchEvents()
     {
         active_window = TXT_GetActiveWindow();
 
-        if (active_window != NULL && !TXT_WindowKeyPress(active_window, c))
+        if (active_window != nullptr && !TXT_WindowKeyPress(active_window, c))
         {
             DesktopInputEvent(c);
         }
@@ -370,7 +370,7 @@ void TXT_GUIMainLoop()
         TXT_DrawDesktop();
 //        TXT_DrawASCIITable();
 
-        if (periodic_callback == NULL)
+        if (periodic_callback == nullptr)
         {
             TXT_Sleep(0);
         }

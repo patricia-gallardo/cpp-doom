@@ -24,7 +24,7 @@
 // Music info
 
 #define MUSIC(name) \
-    { name, 0, NULL, NULL }
+    { name, 0, nullptr, nullptr }
 
 musicinfo_t S_music[] = {
     MUSIC("MUS_E1M1"),            // 1-1
@@ -90,15 +90,15 @@ musicinfo_t S_music[] = {
 
     /* Macro for original heretic sfxinfo_t 
 #define SOUND(name, priority, numchannels) \
-    { name, NULL, priority, -1, NULL, 0, numchannels }
+    { name, nullptr, priority, -1, nullptr, 0, numchannels }
 #define SOUND_LINK(name, link_id, priority, numchannels) \
-    { name, &S_sfx[link_id], priority, -1, NULL, 0, numchannels }
+    { name, &S_sfx[link_id], priority, -1, nullptr, 0, numchannels }
     */
 
 #define SOUND(name, priority, numchannels) \
-    { NULL, name, priority, NULL, -1, -1, -1, 0, numchannels, NULL }
+    { nullptr, name, priority, nullptr, -1, -1, -1, 0, numchannels, nullptr }
 #define SOUND_LINK(name, link_id, priority, numchannels) \
-    { NULL, name, priority, &S_sfx[link_id], 0, 0, -1, 0, numchannels, NULL }
+    { nullptr, name, priority, &S_sfx[link_id], 0, 0, -1, 0, numchannels, nullptr }
 
 sfxinfo_t S_sfx[] = {
     SOUND("",        0,   0),

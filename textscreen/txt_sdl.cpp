@@ -72,7 +72,7 @@ static const txt_font_t *font;
 
 // Dummy "font" that means to try highdpi rendering, or fallback to
 // normal_font otherwise.
-static const txt_font_t highdpi_font = { "normal-highdpi", NULL, 8, 16 };
+static const txt_font_t highdpi_font = { "normal-highdpi", nullptr, 8, 16 };
 
 // Mapping from SDL keyboard scancode to internal key code.
 static const int scancode_translate_table[] = SCANCODE_TO_KEYS_ARRAY;
@@ -115,7 +115,7 @@ static const SDL_Color ega_colors[] =
 
 static int Win32_UseLargeFont()
 {
-    HDC hdc = GetDC(NULL);
+    HDC hdc = GetDC(nullptr);
     int dpix;
 
     if (!hdc)
@@ -124,7 +124,7 @@ static int Win32_UseLargeFont()
     }
 
     dpix = GetDeviceCaps(hdc, LOGPIXELSX);
-    ReleaseDC(NULL, hdc);
+    ReleaseDC(nullptr, hdc);
 
     // 144 is the DPI when using "150%" scaling. If the user has this set
     // then consider this an appropriate threshold for using the large font.
@@ -143,17 +143,17 @@ static const txt_font_t *FontForName(const char *name)
         &normal_font,
         &large_font,
         &highdpi_font,
-        NULL,
+        nullptr,
     };
 
-    for (i = 0; fonts[i]->name != NULL; ++i)
+    for (i = 0; fonts[i]->name != nullptr; ++i)
     {
         if (!strcmp(fonts[i]->name, name))
         {
             return fonts[i];
         }
     }
-    return NULL;
+    return nullptr;
 }
 
 //
@@ -170,11 +170,11 @@ static void ChooseFont()
 
     // Allow normal selection to be overridden from an environment variable:
     env = getenv("TEXTSCREEN_FONT");
-    if (env != NULL)
+    if (env != nullptr)
     {
         font = FontForName(env);
 
-        if (font != NULL)
+        if (font != nullptr)
         {
             return;
         }
@@ -251,7 +251,7 @@ int TXT_Init()
         SDL_CreateWindow("", SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED,
                          screen_image_w, screen_image_h, flags);
 
-    if (TXT_SDLWindow == NULL)
+    if (TXT_SDLWindow == nullptr)
         return 0;
 
     renderer = SDL_CreateRenderer(TXT_SDLWindow, -1, 0);
@@ -303,9 +303,9 @@ int TXT_Init()
 void TXT_Shutdown()
 {
     free(screendata);
-    screendata = NULL;
+    screendata = nullptr;
     SDL_FreeSurface(screenbuffer);
-    screenbuffer = NULL;
+    screenbuffer = nullptr;
     SDL_QuitSubSystem(SDL_INIT_VIDEO);
 }
 
@@ -446,7 +446,7 @@ void TXT_UpdateScreenArea(int x, int y, int w, int h)
 
     SDL_RenderClear(renderer);
     GetDestRect(&rect);
-    SDL_RenderCopy(renderer, screentx, NULL, &rect);
+    SDL_RenderCopy(renderer, screentx, nullptr, &rect);
     SDL_RenderPresent(renderer);
 
     SDL_DestroyTexture(screentx);
@@ -608,7 +608,7 @@ signed int TXT_GetChar()
         // If there is an event callback, allow it to intercept this
         // event.
 
-        if (event_callback != NULL)
+        if (event_callback != nullptr)
         {
             if (event_callback(&ev, event_callback_data))
             {
@@ -778,7 +778,7 @@ static const char *NameForKey(int key)
         }
     }
 
-    return NULL;
+    return nullptr;
 }
 
 void TXT_GetKeyDescription(int key, char *buf, size_t buf_len)
@@ -788,7 +788,7 @@ void TXT_GetKeyDescription(int key, char *buf, size_t buf_len)
 
     keyname = NameForKey(key);
 
-    if (keyname != NULL)
+    if (keyname != nullptr)
     {
         TXT_StringCopy(buf, keyname, buf_len);
 
@@ -862,7 +862,7 @@ void TXT_Sleep(int timeout)
     {
         // We can just wait forever until an event occurs
 
-        SDL_WaitEvent(NULL);
+        SDL_WaitEvent(nullptr);
     }
     else
     {
@@ -873,7 +873,7 @@ void TXT_Sleep(int timeout)
 
         while (SDL_GetTicks() < start_time + timeout)
         {
-            if (SDL_PollEvent(NULL) != 0)
+            if (SDL_PollEvent(nullptr) != 0)
             {
                 // Received an event, so stop waiting
 

@@ -24,7 +24,7 @@
 #include "w_checksum.hpp"
 #include "w_wad.hpp"
 
-static wad_file_t **open_wadfiles     = NULL;
+static wad_file_t **open_wadfiles     = nullptr;
 static int          num_open_wadfiles = 0;
 
 static int GetFileNumber(wad_file_t *handle)

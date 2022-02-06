@@ -221,7 +221,7 @@ static point_t lnodes[NUMEPISODES][NUMMAPS] =
 
 #define ANIM(type, period, nanims, x, y, nexttic)            \
    { (type), (period), (nanims), { (x), (y) }, (nexttic),    \
-     0, { NULL, NULL, NULL }, 0, 0, 0, 0 }
+     0, { nullptr, nullptr, nullptr }, 0, 0, 0, 0 }
 
 
 static anim_t epsd0animinfo[] =
@@ -338,10 +338,10 @@ static int		NUMCMAPS;
 //
 
 // You Are Here graphic
-static patch_t*		yah[3] = { NULL, NULL, NULL }; 
+static patch_t*		yah[3] = { nullptr, nullptr, nullptr };
 
 // splat
-static patch_t*		splat[2] = { NULL, NULL };
+static patch_t*		splat[2] = { nullptr, nullptr };
 
 // %, : graphics
 static patch_t*		percent;
@@ -499,7 +499,7 @@ WI_drawOnLnode
 	{
 	    i++;
 	}
-    } while (!fits && i!=2 && c[i] != NULL);
+    } while (!fits && i!=2 && c[i] != nullptr);
 
     if (fits && i<2)
     {
@@ -1718,12 +1718,12 @@ void WI_loadData()
     {
 	NUMCMAPS = 32;
 	lnames = (patch_t **) Z_Malloc(sizeof(patch_t*) * NUMCMAPS,
-				       PU_STATIC, NULL);
+				       PU_STATIC, nullptr);
     }
     else
     {
 	lnames = (patch_t **) Z_Malloc(sizeof(patch_t*) * NUMMAPS,
-				       PU_STATIC, NULL);
+				       PU_STATIC, nullptr);
     }
 
     WI_loadUnloadData(WI_loadCallback);
@@ -1741,7 +1741,7 @@ void WI_loadData()
 static void WI_unloadCallback(char *name, patch_t **variable)
 {
     W_ReleaseLumpName(name);
-    *variable = NULL;
+    *variable = nullptr;
 }
 
 void WI_unloadData()

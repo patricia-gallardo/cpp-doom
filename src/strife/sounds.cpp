@@ -29,12 +29,12 @@
 //
 
 #define MUSIC(name) \
-    { name, 0, NULL, NULL }
+    { name, 0, nullptr, nullptr }
 
 // villsa [STRIFE]
 musicinfo_t S_music[] =
 {
-    MUSIC(NULL),
+    MUSIC(nullptr),
     MUSIC("logo"),
     MUSIC("action"),
     MUSIC("tavern"),
@@ -79,9 +79,9 @@ musicinfo_t S_music[] =
 //
 
 #define SOUND(name, priority) \
-  { NULL, name, priority, NULL, -1, -1, 0, 0, -1, NULL }
+  { nullptr, name, priority, nullptr, -1, -1, 0, 0, -1, nullptr }
 #define SOUND_LINK(name, priority, link_id, pitch, volume) \
-  { NULL, name, priority, &S_sfx[link_id], pitch, volume, 0, 0, -1, NULL }
+  { nullptr, name, priority, &S_sfx[link_id], pitch, volume, 0, 0, -1, nullptr }
 
 // villsa [STRIFE]
 sfxinfo_t S_sfx[] =

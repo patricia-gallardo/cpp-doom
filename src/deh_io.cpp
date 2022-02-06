@@ -70,12 +70,12 @@ static deh_context_t *DEH_NewContext()
 {
     deh_context_t *context;
 
-    context = zmalloc<decltype(context)>(sizeof(*context), PU_STATIC, NULL);
+    context = zmalloc<decltype(context)>(sizeof(*context), PU_STATIC, nullptr);
 
     // Initial read buffer size of 128 bytes
 
     context->readbuffer_size  = 128;
-    context->readbuffer       = zmalloc<decltype(context->readbuffer)>(context->readbuffer_size, PU_STATIC, NULL);
+    context->readbuffer       = zmalloc<decltype(context->readbuffer)>(context->readbuffer_size, PU_STATIC, nullptr);
     context->linenum          = 0;
     context->last_was_newline = true;
 
@@ -86,7 +86,7 @@ static deh_context_t *DEH_NewContext()
 }
 
 // Open a dehacked file for reading
-// Returns NULL if open failed
+// Returns nullptr if open failed
 
 deh_context_t *DEH_OpenFile(const char *filename)
 {
@@ -95,8 +95,8 @@ deh_context_t *DEH_OpenFile(const char *filename)
 
     fstream = fopen(filename, "r");
 
-    if (fstream == NULL)
-        return NULL;
+    if (fstream == nullptr)
+        return nullptr;
 
     context = DEH_NewContext();
 
@@ -213,7 +213,7 @@ static void IncreaseReadBuffer(deh_context_t *context)
     int   newbuffer_size;
 
     newbuffer_size = context->readbuffer_size * 2;
-    newbuffer      = zmalloc<decltype(newbuffer)>(newbuffer_size, PU_STATIC, NULL);
+    newbuffer      = zmalloc<decltype(newbuffer)>(newbuffer_size, PU_STATIC, nullptr);
 
     memcpy(newbuffer, context->readbuffer, context->readbuffer_size);
 
@@ -273,7 +273,7 @@ char *DEH_ReadLine(deh_context_t *context, boolean extended)
         {
             // end of file
 
-            return NULL;
+            return nullptr;
         }
 
         // cope with lines of any length: increase the buffer size
@@ -370,7 +370,7 @@ boolean DEH_HadError(deh_context_t *context)
 }
 
 // [crispy] return the filename of the DEHACKED file
-// or NULL if it is a DEHACKED lump loaded from a PWAD
+// or nullptr if it is a DEHACKED lump loaded from a PWAD
 char *DEH_FileName(deh_context_t *context)
 {
     if (context->type == DEH_INPUT_FILE)
@@ -378,5 +378,5 @@ char *DEH_FileName(deh_context_t *context)
         return context->filename;
     }
 
-    return NULL;
+    return nullptr;
 }

@@ -83,7 +83,7 @@ void S_StartSong(int song, boolean loop)
         return;
     }
 
-    if (rs != NULL)
+    if (rs != nullptr)
     {
         I_StopSong();
         I_UnRegisterSong(rs);
@@ -108,7 +108,7 @@ static mobj_t *GetSoundListener()
     // If we are at the title screen, the console player doesn't have an
     // object yet, so return a pointer to a static dummy listener instead.
 
-    if (players[consoleplayer].mo != NULL)
+    if (players[consoleplayer].mo != nullptr)
     {
         return players[consoleplayer].mo;
     }
@@ -141,7 +141,7 @@ void S_StartSound(void *_origin, int sound_id)
 
     if (sound_id == 0 || snd_MaxVolume == 0)
         return;
-    if (origin == NULL)
+    if (origin == nullptr)
     {
         origin = listener;
     }
@@ -198,7 +198,7 @@ void S_StartSound(void *_origin, int sound_id)
         }
         for (i = 0; i < snd_Channels; i++)
         {
-            if (channel[i].mo == NULL)
+            if (channel[i].mo == nullptr)
             {
                 break;
             }
@@ -299,7 +299,7 @@ void S_StartSoundAtVolume(void *_origin, int sound_id, int volume)
 
     if (sound_id == 0 || snd_MaxVolume == 0)
         return;
-    if (origin == NULL)
+    if (origin == nullptr)
     {
         origin = listener;
     }
@@ -313,7 +313,7 @@ void S_StartSoundAtVolume(void *_origin, int sound_id, int volume)
 // no priority checking, as ambient sounds would be the LOWEST.
     for (i = 0; i < snd_Channels; i++)
     {
-        if (channel[i].mo == NULL)
+        if (channel[i].mo == nullptr)
         {
             break;
         }
@@ -384,7 +384,7 @@ boolean S_StopSoundID(int sound_id, int priority)
         {
             S_sfx[channel[i].sound_id].usefulness--;
         }
-        channel[lp].mo = NULL;
+        channel[lp].mo = nullptr;
     }
     return (true);
 }
@@ -404,7 +404,7 @@ void S_StopSound(void *_origin)
                 S_sfx[channel[i].sound_id].usefulness--;
             }
             channel[i].handle = 0;
-            channel[i].mo = NULL;
+            channel[i].mo = nullptr;
             if (AmbChan == i)
             {
                 AmbChan = -1;
@@ -464,15 +464,15 @@ void S_UpdateSounds(mobj_t * listener)
                 S_sfx[channel[i].sound_id].usefulness--;
             }
             channel[i].handle = 0;
-            channel[i].mo = NULL;
+            channel[i].mo = nullptr;
             channel[i].sound_id = 0;
             if (AmbChan == i)
             {
                 AmbChan = -1;
             }
         }
-        if (channel[i].mo == NULL || channel[i].sound_id == 0
-         || channel[i].mo == listener || listener == NULL)
+        if (channel[i].mo == nullptr || channel[i].sound_id == 0
+         || channel[i].mo == listener || listener == nullptr)
         {
             continue;
         }
@@ -516,7 +516,7 @@ void S_UpdateSounds(mobj_t * listener)
 void S_Init()
 {
     I_SetOPLDriverVer(opl_doom2_1_666);
-    soundCurve = zmalloc<byte *>(MAX_SND_DIST, PU_STATIC, NULL);
+    soundCurve = zmalloc<byte *>(MAX_SND_DIST, PU_STATIC, nullptr);
     if (snd_Channels > 8)
     {
         snd_Channels = 8;
@@ -551,7 +551,7 @@ void S_GetChannelInfo(SoundInfo_t * s)
         c->name = S_sfx[c->id].name;
         c->mo = channel[i].mo;
 
-        if (c->mo != NULL)
+        if (c->mo != nullptr)
         {
             c->distance = P_AproxDistance(c->mo->x - viewx, c->mo->y - viewy)
                 >> FRACBITS;

@@ -62,14 +62,14 @@ static const char *not_dedicated_options[] = {
     "-extratics",
     "-dup",
     "-shorttics",
-    NULL,
+    nullptr,
 };
 
 static void CheckForClientOptions()
 {
     int i;
 
-    for (i = 0; not_dedicated_options[i] != NULL; ++i)
+    for (i = 0; not_dedicated_options[i] != nullptr; ++i)
     {
         if (M_CheckParm(not_dedicated_options[i]) > 0)
         {

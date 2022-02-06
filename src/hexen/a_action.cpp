@@ -146,7 +146,7 @@ void A_DripBlood(mobj_t *actor)
 
 void A_PotteryExplode(mobj_t * actor)
 {
-    mobj_t *mo = NULL;
+    mobj_t *mo = nullptr;
     int i;
 
     for (i = (P_Random() & 3) + 3; i; i--)
@@ -639,7 +639,7 @@ void A_Summon(mobj_t * actor)
         master = actor->special1.m;
         if (master->flags & MF_CORPSE)
         {                       // Master dead
-            mo->special1.m = NULL;   // No master
+            mo->special1.m = nullptr;   // No master
         }
         else
         {
@@ -670,7 +670,7 @@ void A_Summon(mobj_t * actor)
 
 void A_FogSpawn(mobj_t * actor)
 {
-    mobj_t *mo = NULL;
+    mobj_t *mo = nullptr;
     angle_t delta;
 
     if (actor->special1.i-- > 0)
@@ -875,7 +875,7 @@ boolean A_LocalQuake(byte * args, mobj_t * actor)
             }
         }
     }
-    while (target != NULL);
+    while (target != nullptr);
 
     return (success);
 }
@@ -918,7 +918,7 @@ void A_Quake(mobj_t * actor)
             {
                 if (P_Random() < 50)
                 {
-                    P_DamageMobj(victim, NULL, NULL, HITDICE(1));
+                    P_DamageMobj(victim, nullptr, nullptr, HITDICE(1));
                 }
                 // Thrust player around
                 an = victim->angle + ANG1 * P_Random();
@@ -1086,7 +1086,7 @@ void A_ThrustInitUp(mobj_t * actor)
     actor->floorclip = 0;
     actor->flags = MF_SOLID;
     actor->flags2 = MF2_NOTELEPORT | MF2_FLOORCLIP;
-    actor->special1.m = NULL;
+    actor->special1.m = nullptr;
 }
 
 void A_ThrustInitDn(mobj_t * actor)
@@ -1117,7 +1117,7 @@ void A_ThrustRaise(mobj_t * actor)
     if ((actor->floorclip < actor->height) && actor->special1.m)
     {
         P_RemoveMobj(actor->special1.m);
-        actor->special1.m = NULL;
+        actor->special1.m = nullptr;
     }
 
     // Spawn some dirt

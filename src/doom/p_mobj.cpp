@@ -76,7 +76,7 @@ boolean
         // Modified handling.
         // Call action functions when the state is set
         if (st->action.acp3)
-            st->action.acp3(mobj, NULL, NULL); // [crispy] let pspr action pointers get called from mobj states
+            st->action.acp3(mobj, nullptr, nullptr); // [crispy] let pspr action pointers get called from mobj states
 
         state = st->nextstate;
 
@@ -536,7 +536,7 @@ void P_MobjThinker(mobj_t *mobj)
     }
     else
         // [AM] Handle interpolation unless we're an active player.
-        if (!(mobj->player != NULL && mobj == mobj->player->mo))
+        if (!(mobj->player != nullptr && mobj == mobj->player->mo))
     {
         // Assume we can interpolate at the beginning
         // of the tic.
@@ -621,7 +621,7 @@ static mobj_t *
     state_t *   st;
     mobjinfo_t *info;
 
-    mobj = zmalloc<decltype(mobj)>(sizeof(*mobj), PU_LEVEL, NULL);
+    mobj = zmalloc<decltype(mobj)>(sizeof(*mobj), PU_LEVEL, nullptr);
     memset(mobj, 0, sizeof(*mobj));
     info = &mobjinfo[type];
 
@@ -860,7 +860,7 @@ void P_SpawnPlayer(mapthing_t *mthing)
     p->mo            = mobj;
     p->playerstate   = PST_LIVE;
     p->refire        = 0;
-    p->message       = NULL;
+    p->message       = nullptr;
     p->damagecount   = 0;
     p->bonuscount    = 0;
     p->extralight    = 0;
@@ -1133,12 +1133,12 @@ void P_CheckMissileSpawn(mobj_t *th)
 // Certain functions assume that a mobj_t pointer is non-NULL,
 // causing a crash in some situations where it is NULL.  Vanilla
 // Doom did not crash because of the lack of proper memory
-// protection. This function substitutes NULL pointers for
+// protection. This function substitutes nullptr pointers for
 // pointers to a dummy mobj, to avoid a crash.
 
 mobj_t *P_SubstNullMobj(mobj_t *mobj)
 {
-    if (mobj == NULL)
+    if (mobj == nullptr)
     {
         static mobj_t dummy_mobj;
 

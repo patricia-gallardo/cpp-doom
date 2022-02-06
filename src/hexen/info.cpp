@@ -48,7 +48,7 @@ const char *sprnames[] = {
     "KEY2","KEY3","KEY4","KEY5","KEY6","KEY7","KEY8","KEY9","KEYA","KEYB",
     "ETTN","ETTB","FDMN","FDMB","ICEY","ICPR","ICWS","SORC","SBMP","SBS4",
     "SBMB","SBS3","SBMG","SBS1","SBS2","SBFX","RADE","WATR","KORX","ABAT",
-    NULL
+    nullptr
 };
 
 void A_FreeTargMobj(mobj_t * actor);

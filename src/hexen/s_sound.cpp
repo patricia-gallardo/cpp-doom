@@ -294,7 +294,7 @@ void S_StartSongName(const char *songLump, boolean loop)
         {
             I_StopSong();
             I_UnRegisterSong(RegisteredSong);
-            RegisteredSong = NULL;
+            RegisteredSong = nullptr;
         }
 
         lumpnum = W_GetNumForName(songLump);
@@ -346,7 +346,7 @@ static mobj_t *GetSoundListener()
     // If we are at the title screen, the console player doesn't have an
     // object yet, so return a pointer to a static dummy listener instead.
 
-    if (players[displayplayer].mo != NULL)
+    if (players[displayplayer].mo != nullptr)
     {
         return players[displayplayer].mo;
     }
@@ -385,7 +385,7 @@ void S_StartSoundAtVolume(mobj_t * origin, int sound_id, int volume)
 
     listener = GetSoundListener();
 
-    if (origin == NULL)
+    if (origin == nullptr)
     {
         origin = listener;
     }
@@ -434,7 +434,7 @@ void S_StartSoundAtVolume(mobj_t * origin, int sound_id, int volume)
     {
         for (i = 0; i < snd_Channels; i++)
         {
-            if (Channel[i].mo == NULL)
+            if (Channel[i].mo == nullptr)
             {
                 break;
             }
@@ -580,7 +580,7 @@ boolean S_StopSoundID(int sound_id, int priority)
         {
             S_sfx[Channel[lp].sound_id].usefulness--;
         }
-        Channel[lp].mo = NULL;
+        Channel[lp].mo = nullptr;
     }
     return (true);
 }
@@ -605,7 +605,7 @@ void S_StopSound(mobj_t * origin)
                 S_sfx[Channel[i].sound_id].usefulness--;
             }
             Channel[i].handle = 0;
-            Channel[i].mo = NULL;
+            Channel[i].mo = nullptr;
         }
     }
 }
@@ -729,11 +729,11 @@ void S_UpdateSounds(mobj_t * listener)
                 S_sfx[Channel[i].sound_id].usefulness--;
             }
             Channel[i].handle = 0;
-            Channel[i].mo = NULL;
+            Channel[i].mo = nullptr;
             Channel[i].sound_id = 0;
         }
-        if (Channel[i].mo == NULL || Channel[i].sound_id == 0
-         || Channel[i].mo == listener || listener == NULL)
+        if (Channel[i].mo == nullptr || Channel[i].sound_id == 0
+         || Channel[i].mo == listener || listener == nullptr)
         {
             continue;
         }
@@ -790,7 +790,7 @@ void S_Init()
 {
     I_SetOPLDriverVer(opl_doom2_1_666);
     SoundCurve = cache_lump_name<byte *>("SNDCURVE", PU_STATIC);
-//      SoundCurve = Z_Malloc(MAX_SND_DIST, PU_STATIC, NULL);
+//      SoundCurve = Z_Malloc(MAX_SND_DIST, PU_STATIC, nullptr);
 
     if (snd_Channels > 8)
     {
@@ -857,7 +857,7 @@ void S_GetChannelInfo(SoundInfo_t * s)
         c->name = S_sfx[c->id].name;
         c->mo = Channel[i].mo;
 
-        if (c->mo != NULL)
+        if (c->mo != nullptr)
         {
             c->distance = P_AproxDistance(c->mo->x - viewx, c->mo->y - viewy)
                 >> FRACBITS;

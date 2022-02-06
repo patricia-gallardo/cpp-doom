@@ -56,7 +56,7 @@ as a bug. The point of Chocolate Strife, like Chocolate Doom before it, is to
 be as bug-compatible with the original game as possible. Also be aware that
 some glitches are impossible to compatibly recreate, and wherever this is the
 case, Chocolate Strife has erred on the side of not crashing the program,
-for example by initializing pointers to NULL rather than using them without
+for example by initializing pointers to nullptr rather than using them without
 setting a value first.
 
 

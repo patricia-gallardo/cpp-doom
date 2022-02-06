@@ -36,8 +36,8 @@ static boolean pcs_initialized = false;
 static SDL_mutex *sound_lock;
 static boolean    use_sfx_prefix;
 
-static uint8_t *    current_sound_lump      = NULL;
-static uint8_t *    current_sound_pos       = NULL;
+static uint8_t *    current_sound_lump      = nullptr;
+static uint8_t *    current_sound_pos       = nullptr;
 static unsigned int current_sound_remaining = 0;
 static int          current_sound_handle    = 0;
 static int          current_sound_lump_num  = -1;
@@ -185,7 +185,7 @@ static void PCSCallbackFunc(int *duration, int *freq)
         return;
     }
 
-    if (current_sound_lump != NULL && current_sound_remaining > 0)
+    if (current_sound_lump != nullptr && current_sound_remaining > 0)
     {
         // Read the next tone
 
@@ -222,10 +222,10 @@ static boolean CachePCSLump(sfxinfo_t *sfxinfo)
 
     // Free the current sound lump back to the cache
 
-    if (current_sound_lump != NULL)
+    if (current_sound_lump != nullptr)
     {
         W_ReleaseLumpNum(current_sound_lump_num);
-        current_sound_lump = NULL;
+        current_sound_lump = nullptr;
     }
 
     // Load from WAD
@@ -382,7 +382,7 @@ static boolean I_PCS_SoundIsPlaying(int handle)
         return false;
     }
 
-    return current_sound_lump != NULL && current_sound_remaining > 0;
+    return current_sound_lump != nullptr && current_sound_remaining > 0;
 }
 
 static boolean I_PCS_InitSound(boolean _use_sfx_prefix)

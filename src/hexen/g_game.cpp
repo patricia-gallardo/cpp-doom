@@ -941,7 +941,7 @@ boolean G_Responder(event_t * ev)
 void G_Ticker()
 {
     int i, buf;
-    ticcmd_t *cmd = NULL;
+    ticcmd_t *cmd = nullptr;
 
 //
 // do player reborns if needed
@@ -1358,7 +1358,7 @@ void G_DoReborn(int playernum)
     }
     else
     {                           // Net-game
-        players[playernum].mo->player = NULL;   // Dissassociate the corpse
+        players[playernum].mo->player = nullptr;   // Dissassociate the corpse
 
         if (deathmatch)
         {                       // Spawn at random spot if in death match
@@ -1522,7 +1522,7 @@ void G_Completed(int map, int position)
     if (gamemode == shareware && map > 4)
     {
         P_SetMessage(&players[consoleplayer], "ACCESS DENIED -- DEMO", true);
-        S_StartSound(NULL, SFX_CHAT);
+        S_StartSound(nullptr, SFX_CHAT);
         return;
     }
 
@@ -1996,7 +1996,7 @@ void G_RecordDemo(skill_t skill, int numplayers, int episode, int map,
     i = M_CheckParmWithArgs("-maxdemo", 1);
     if (i)
         maxsize = atoi(myargv[i + 1]) * 1024;
-    demobuffer = zmalloc<byte *>(maxsize, PU_STATIC, NULL);
+    demobuffer = zmalloc<byte *>(maxsize, PU_STATIC, nullptr);
     demoend = demobuffer + maxsize;
 
     demo_p = demobuffer;

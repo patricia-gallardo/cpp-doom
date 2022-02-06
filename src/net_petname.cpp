@@ -103,7 +103,7 @@ static const char *const nouns[] = {
  */
 static void InitPetName()
 {
-    srand((unsigned int)time(NULL));
+    srand((unsigned int)time(nullptr));
 }
 
 char *NET_GetRandomPetName()
@@ -114,5 +114,5 @@ char *NET_GetRandomPetName()
     a = adjectives[rand() % arrlen(adjectives)];
     n = nouns[rand() % arrlen(nouns)];
 
-    return M_StringJoin(a, " ", n, NULL);
+    return M_StringJoin(a, " ", n, nullptr);
 }

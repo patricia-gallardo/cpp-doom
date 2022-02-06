@@ -36,7 +36,7 @@ glob_t *I_StartMultiGlob(const char *directory, int flags,
 // Finish reading file list.
 void I_EndGlob(glob_t *glob);
 
-// Read the name of the next globbed filename. NULL is returned if there
+// Read the name of the next globbed filename. nullptr is returned if there
 // are no more found.
 const char *I_NextGlob(glob_t *glob);
 

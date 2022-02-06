@@ -268,7 +268,7 @@ void HU_Start()
         // haleyjd 09/18/10: [STRIFE] nickname weirdness. 
         if(nickname != player_names[consoleplayer])
         {
-            if(nickname != NULL && *nickname)
+            if(nickname != nullptr && *nickname)
             {
                 DEH_printf("have one\n");
                 nickname = player_names[consoleplayer];
@@ -389,7 +389,7 @@ static void HU_addMessage(const char *prefix, const char *message)
 
     // Add two message lines.
     HUlib_addMessageToSText(&w_message, prefix, buffer);
-    HUlib_addMessageToSText(&w_message, NULL,   rover2);
+    HUlib_addMessageToSText(&w_message, nullptr,   rover2);
 }
 
 //
@@ -419,7 +419,7 @@ void HU_Ticker()
             || (plr->message && message_dontfuckwithme))
         {
             //HUlib_addMessageToSText(&w_message, 0, plr->message);
-            HU_addMessage(NULL, plr->message); // haleyjd [STRIFE]
+            HU_addMessage(nullptr, plr->message); // haleyjd [STRIFE]
             plr->message = 0;
             message_on = true;
             message_counter = HU_MSGTIMEOUT;

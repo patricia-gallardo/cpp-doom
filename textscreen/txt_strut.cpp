@@ -52,8 +52,8 @@ txt_widget_class_t txt_strut_class =
     TXT_StrutDrawer,
     TXT_StrutKeyPress,
     TXT_StrutDestructor,
-    NULL,
-    NULL,
+    nullptr,
+    nullptr,
 };
 
 txt_strut_t *TXT_NewStrut(int width, int height)
