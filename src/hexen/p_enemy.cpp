@@ -1171,14 +1171,14 @@ void A_MinotaurRoam(mobj_t * actor)
 
 void A_MinotaurLook(mobj_t * actor)
 {
-    mobj_t *mo = NULL;
+    mobj_t *mo = nullptr;
     player_t *player;
     thinker_t *think;
     fixed_t dist;
     int i;
     mobj_t *master = actor->special1.m;
 
-    actor->target = NULL;
+    actor->target = nullptr;
     if (deathmatch)             // Quick search for players
     {
         for (i = 0; i < maxplayers; i++)
@@ -1787,7 +1787,7 @@ void A_SkullPop(mobj_t * actor)
     mo->momz = FRACUNIT * 2 + (P_Random() << 6);
     // Attach player mobj to bloody skull
     player = actor->player;
-    actor->player = NULL;
+    actor->player = nullptr;
     actor->special1.i = player->clazz;
     mo->player = player;
     mo->health = actor->health;
@@ -1855,7 +1855,7 @@ void A_FreeTargMobj(mobj_t * mo)
     mo->flags |= MF_CORPSE | MF_DROPOFF | MF_NOGRAVITY;
     mo->flags2 &= ~(MF2_PASSMOBJ | MF2_LOGRAV);
     mo->flags2 |= MF2_DONTDRAW;
-    mo->player = NULL;
+    mo->player = nullptr;
     mo->health = -1000;         // Don't resurrect
 }
 
@@ -1895,7 +1895,7 @@ void A_DeQueueCorpse(mobj_t * actor)
     {
         if (corpseQueue[slot] == actor)
         {
-            corpseQueue[slot] = NULL;
+            corpseQueue[slot] = nullptr;
             break;
         }
     }
@@ -2986,7 +2986,7 @@ void A_DragonFlight(mobj_t * actor)
     {
         if (!(actor->target->flags & MF_SHOOTABLE))
         {                       // target died
-            actor->target = NULL;
+            actor->target = nullptr;
             return;
         }
         angle = R_PointToAngle2(actor->x, actor->y, actor->target->x,
@@ -4914,7 +4914,7 @@ void A_FreezeDeathChunks(mobj_t * actor)
         mo->flags2 |= MF2_ICEDAMAGE;    // used to force blue palette
         mo->flags2 &= ~MF2_FLOORCLIP;
         mo->player = actor->player;
-        actor->player = NULL;
+        actor->player = nullptr;
         mo->health = actor->health;
         mo->angle = actor->angle;
         mo->player->mo = mo;
@@ -5078,7 +5078,7 @@ void KSpiritInit(mobj_t * spirit, mobj_t * korax)
         tail->special1.m = next;
         tail = next;
     }
-    tail->special1.m = NULL;         // last tail bit
+    tail->special1.m = nullptr;         // last tail bit
 }
 
 void A_KoraxDecide(mobj_t * actor)

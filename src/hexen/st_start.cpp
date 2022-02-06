@@ -49,7 +49,7 @@ void ST_UpdateNotches(int notchPosition);
 void ST_UpdateNetNotches(int notchPosition);
 
 // PRIVATE DATA DEFINITIONS ------------------------------------------------
-static const byte *bitmap = NULL;
+static const byte *bitmap = nullptr;
 int graphical_startup = 0;
 static boolean using_graphical_startup;
 

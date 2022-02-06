@@ -321,7 +321,7 @@ boolean P_SeekerMissile(mobj_t * actor, angle_t thresh, angle_t turnMax)
     }
     if (!(target->flags & MF_SHOOTABLE))
     {                           // Target died
-        actor->special1.m = NULL;
+        actor->special1.m = nullptr;
         return (false);
     }
     dir = P_FaceMobj(actor, target, &delta);
@@ -1064,7 +1064,7 @@ void P_MobjThinker(mobj_t * mobj)
 		ResetBlasted(mobj);
 */
     // Handle X and Y momentums
-    BlockingMobj = NULL;
+    BlockingMobj = nullptr;
     if (mobj->momx || mobj->momy || (mobj->flags & MF_SKULLFLY))
     {
         P_XYMovement(mobj);
@@ -1709,7 +1709,7 @@ void P_RemoveMobjFromTIDList(mobj_t * mobj)
         if (TIDMobj[i] == mobj)
         {
             TIDList[i] = -1;
-            TIDMobj[i] = NULL;
+            TIDMobj[i] = nullptr;
             mobj->tid = 0;
             return;
         }

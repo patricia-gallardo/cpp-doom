@@ -176,7 +176,7 @@ boolean EV_Teleport(int tid, mobj_t * thing, boolean fog)
     }
     count = 1 + (P_Random() % count);
     searcher = -1;
-    mo = NULL;
+    mo = nullptr;
 
     for (i = 0; i < count; i++)
     {

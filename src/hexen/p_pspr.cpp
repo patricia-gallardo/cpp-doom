@@ -230,7 +230,7 @@ void P_SetPsprite(player_t * player, int position, statenum_t stnum)
     {
         if (!stnum)
         {                       // Object removed itself.
-            psp->state = NULL;
+            psp->state = nullptr;
             break;
         }
         state = &states[stnum];
@@ -275,7 +275,7 @@ void P_SetPspriteNF(player_t * player, int position, statenum_t stnum)
     {
         if (!stnum)
         {                       // Object removed itself.
-            psp->state = NULL;
+            psp->state = nullptr;
             break;
         }
         state = &states[stnum];
@@ -701,7 +701,7 @@ void A_SnoutAttack(player_t * player, pspdef_t * psp)
     angle = player->mo->angle;
     slope = P_AimLineAttack(player->mo, angle, MELEERANGE);
     PuffType = MT_SNOUTPUFF;
-    PuffSpawned = NULL;
+    PuffSpawned = nullptr;
     P_LineAttack(player->mo, angle, MELEERANGE, slope, damage);
     S_StartSound(player->mo, SFX_PIG_ACTIVE1 + (P_Random() & 1));
     if (linetarget)
@@ -766,7 +766,7 @@ void A_FHammerAttack(player_t * player, pspdef_t * psp)
         }
     }
     // didn't find any targets in meleerange, so set to throw out a hammer
-    PuffSpawned = NULL;
+    PuffSpawned = nullptr;
     angle = pmo->angle;
     slope = P_AimLineAttack(pmo, angle, HAMMER_RANGE);
     P_LineAttack(pmo, angle, HAMMER_RANGE, slope, damage);
@@ -920,7 +920,7 @@ void A_LightningReady(player_t * player, pspdef_t * psp)
 void A_LightningClip(mobj_t * actor)
 {
     mobj_t *cMo;
-    mobj_t *target = NULL;
+    mobj_t *target = nullptr;
     int zigZag;
 
     if (actor->type == MT_LIGHTNING_FLOOR)
@@ -1061,13 +1061,13 @@ void A_MLightningAttack2(mobj_t * actor)
     cmo = P_SpawnPlayerMissile(actor, MT_LIGHTNING_CEILING);
     if (fmo)
     {
-        fmo->special1.m = NULL;
+        fmo->special1.m = nullptr;
         fmo->special2.m = cmo;
         A_LightningZap(fmo);
     }
     if (cmo)
     {
-        cmo->special1.m = NULL;      // mobj that it will track
+        cmo->special1.m = nullptr;      // mobj that it will track
         cmo->special2.m = fmo;
         A_LightningZap(cmo);
     }
@@ -1143,7 +1143,7 @@ void A_LightningRemove(mobj_t * actor)
     mo = actor->special2.m;
     if (mo)
     {
-        mo->special2.m = NULL;
+        mo->special2.m = nullptr;
         P_ExplodeMissile(mo);
     }
 }
@@ -1442,7 +1442,7 @@ void A_FAxeAttack(player_t * player, pspdef_t * psp)
         }
     }
     // didn't find any creatures, so try to strike any walls
-    pmo->special1.m = NULL;
+    pmo->special1.m = nullptr;
 
     angle = pmo->angle;
     slope = P_AimLineAttack(pmo, angle, MELEERANGE);
@@ -1500,7 +1500,7 @@ void A_CMaceAttack(player_t * player, pspdef_t * psp)
         }
     }
     // didn't find any creatures, so try to strike any walls
-    player->mo->special1.m = NULL;
+    player->mo->special1.m = nullptr;
 
     angle = player->mo->angle;
     slope = P_AimLineAttack(player->mo, angle, MELEERANGE);
@@ -1913,7 +1913,7 @@ void A_CHolyAttack2(mobj_t * actor)
             tail->special1.m = next;
             tail = next;
         }
-        tail->special1.m = NULL;     // last tail bit
+        tail->special1.m = nullptr;     // last tail bit
     }
 }
 
@@ -2005,7 +2005,7 @@ static void CHolySeekerMissile(mobj_t * actor, angle_t thresh,
     if (!(target->flags & MF_SHOOTABLE)
         || (!(target->flags & MF_COUNTKILL) && !target->player))
     {                           // Target died/target isn't a player or creature
-        actor->special1.m = NULL;
+        actor->special1.m = nullptr;
         actor->flags &= ~(MF_NOCLIP | MF_SKULLFLY);
         actor->flags |= MF_MISSILE;
         CHolyFindTarget(actor);
@@ -2438,7 +2438,7 @@ void P_SetupPsprites(player_t * player)
     // Remove all psprites
     for (i = 0; i < NUMPSPRITES; i++)
     {
-        player->psprites[i].state = NULL;
+        player->psprites[i].state = nullptr;
     }
     // Spawn the ready weapon
     player->pendingweapon = player->readyweapon;

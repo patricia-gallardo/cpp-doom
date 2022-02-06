@@ -247,7 +247,7 @@ void P_RemoveActiveCeiling(ceiling_t * c)
             activeceilings[i]->sector->specialdata = null_hook();
             P_RemoveThinker(&activeceilings[i]->thinker);
             P_TagFinished(activeceilings[i]->sector->tag);
-            activeceilings[i] = NULL;
+            activeceilings[i] = nullptr;
             break;
         }
 }
@@ -297,7 +297,7 @@ int EV_CeilingCrushStop(line_t * line, byte * args)
             activeceilings[i]->sector->specialdata = null_hook();
             P_RemoveThinker(&activeceilings[i]->thinker);
             P_TagFinished(activeceilings[i]->sector->tag);
-            activeceilings[i] = NULL;
+            activeceilings[i] = nullptr;
             break;
         }
     }

@@ -279,7 +279,7 @@ int EV_DoFloor(line_t * line, byte * args, floor_e floortype)
     int secnum;
     int rtn;
     sector_t *sec;
-    floormove_t *floor = NULL;
+    floormove_t *floor = nullptr;
 
     secnum = -1;
     rtn = 0;

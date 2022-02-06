@@ -296,7 +296,7 @@ void P_LoadSectors(int lump)
         ss->lightlevel = SHORT(ms->lightlevel);
         ss->special = SHORT(ms->special);
         ss->tag = SHORT(ms->tag);
-        ss->thinglist = NULL;
+        ss->thinglist = nullptr;
         ss->seqType = SEQTYPE_STONE;    // default seqType
     }
     W_ReleaseLumpNum(lump);

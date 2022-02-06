@@ -584,7 +584,7 @@ boolean P_StartACS(int number, int map, byte * args, mobj_t * activator,
     int infoIndex;
     aste_t *statePtr;
 
-    NewScript = NULL;
+    NewScript = nullptr;
     if (map && map != gamemap)
     {                           // Add to the script store
         return AddToACSStore(map, number, args);
@@ -1872,7 +1872,7 @@ static int CmdSectorSound()
     int volume;
     mobj_t *mobj;
 
-    mobj = NULL;
+    mobj = nullptr;
     if (ACScript->line)
     {
         mobj = (mobj_t *) & ACScript->line->frontsector->soundorg;
@@ -1914,7 +1914,7 @@ static int CmdSoundSequence()
 {
     mobj_t *mobj;
 
-    mobj = NULL;
+    mobj = nullptr;
     if (ACScript->line)
     {
         mobj = (mobj_t *) & ACScript->line->frontsector->soundorg;

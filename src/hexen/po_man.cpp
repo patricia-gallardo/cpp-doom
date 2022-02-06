@@ -93,7 +93,7 @@ void T_RotatePoly(polyevent_t * pe)
             poly = GetPolyobj(pe->polyobj);
             if (poly->specialdata == pe)
             {
-                poly->specialdata = NULL;
+                poly->specialdata = nullptr;
             }
             SN_StopSequence((mobj_t *) & poly->startSpot);
             P_PolyobjFinished(poly->tag);
@@ -222,7 +222,7 @@ void T_MovePoly(polyevent_t * pe)
             poly = GetPolyobj(pe->polyobj);
             if (poly->specialdata == pe)
             {
-                poly->specialdata = NULL;
+                poly->specialdata = nullptr;
             }
             SN_StopSequence((mobj_t *) & poly->startSpot);
             P_PolyobjFinished(poly->tag);
@@ -366,7 +366,7 @@ void T_PolyDoor(polydoor_t * pd)
                     {
                         if (poly->specialdata == pd)
                         {
-                            poly->specialdata = NULL;
+                            poly->specialdata = nullptr;
                         }
                         P_PolyobjFinished(poly->tag);
                         P_RemoveThinker(&pd->thinker);
@@ -417,7 +417,7 @@ void T_PolyDoor(polydoor_t * pd)
                     {
                         if (poly->specialdata == pd)
                         {
-                            poly->specialdata = NULL;
+                            poly->specialdata = nullptr;
                         }
                         P_PolyobjFinished(poly->tag);
                         P_RemoveThinker(&pd->thinker);
@@ -944,7 +944,7 @@ static void UnLinkPolyobj(polyobj_t * po)
                 {               // polyobj not located in the link cell
                     continue;
                 }
-                link->polyobj = NULL;
+                link->polyobj = nullptr;
             }
         }
     }
@@ -1006,8 +1006,8 @@ static void LinkPolyobj(polyobj_t * po)
                 if (!(*link))
                 {               // Create a new link at the current block cell
                     *link = zmalloc<polyblock_t *>(sizeof(polyblock_t), PU_LEVEL, 0);
-                    (*link)->next = NULL;
-                    (*link)->prev = NULL;
+                    (*link)->next = nullptr;
+                    (*link)->prev = nullptr;
                     (*link)->polyobj = po;
                     continue;
                 }
@@ -1029,7 +1029,7 @@ static void LinkPolyobj(polyobj_t * po)
                 {
                     tempLink->next = zmalloc<polyblock_s *>(sizeof(polyblock_t),
                                  PU_LEVEL, 0);
-                    tempLink->next->next = NULL;
+                    tempLink->next->next = nullptr;
                     tempLink->next->prev = tempLink;
                     tempLink->next->polyobj = po;
                 }
@@ -1343,7 +1343,7 @@ static void TranslateToStartSpot(int tag, int originX, int originY)
     vertex_t avg;               // used to find a polyobj's center, and hence subsector
     int i;
 
-    po = NULL;
+    po = nullptr;
     for (i = 0; i < po_NumPolyobjs; i++)
     {
         if (polyobjs[i].tag == tag)

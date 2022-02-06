@@ -393,7 +393,7 @@ int SC_MatchString(const char **strings)
 {
     int i;
 
-    for (i = 0; *strings != NULL; i++)
+    for (i = 0; *strings != nullptr; i++)
     {
         if (SC_Compare(*strings++))
         {

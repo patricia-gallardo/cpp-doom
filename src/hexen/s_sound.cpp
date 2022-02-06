@@ -294,7 +294,7 @@ void S_StartSongName(const char *songLump, boolean loop)
         {
             I_StopSong();
             I_UnRegisterSong(RegisteredSong);
-            RegisteredSong = NULL;
+            RegisteredSong = nullptr;
         }
 
         lumpnum = W_GetNumForName(songLump);
@@ -580,7 +580,7 @@ boolean S_StopSoundID(int sound_id, int priority)
         {
             S_sfx[Channel[lp].sound_id].usefulness--;
         }
-        Channel[lp].mo = NULL;
+        Channel[lp].mo = nullptr;
     }
     return (true);
 }
@@ -605,7 +605,7 @@ void S_StopSound(mobj_t * origin)
                 S_sfx[Channel[i].sound_id].usefulness--;
             }
             Channel[i].handle = 0;
-            Channel[i].mo = NULL;
+            Channel[i].mo = nullptr;
         }
     }
 }
@@ -729,7 +729,7 @@ void S_UpdateSounds(mobj_t * listener)
                 S_sfx[Channel[i].sound_id].usefulness--;
             }
             Channel[i].handle = 0;
-            Channel[i].mo = NULL;
+            Channel[i].mo = nullptr;
             Channel[i].sound_id = 0;
         }
         if (Channel[i].mo == NULL || Channel[i].sound_id == 0

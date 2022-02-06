@@ -180,14 +180,14 @@ void SN_InitSequenceScript()
 {
     int i, j;
     int inSequence;
-    int *tempDataStart = NULL;
-    int *tempDataPtr = NULL;
+    int *tempDataStart = nullptr;
+    int *tempDataPtr = nullptr;
 
     inSequence = -1;
     ActiveSequences = 0;
     for (i = 0; i < SS_MAX_SCRIPTS; i++)
     {
-        SequenceData[i] = NULL;
+        SequenceData[i] = nullptr;
     }
     SC_Open(SS_SCRIPT_NAME);
     while (SC_GetString())
@@ -330,13 +330,13 @@ void SN_StartSequence(mobj_t * mobj, int sequence)
     if (!SequenceListHead)
     {
         SequenceListHead = node;
-        node->next = node->prev = NULL;
+        node->next = node->prev = nullptr;
     }
     else
     {
         SequenceListHead->prev = node;
         node->next = SequenceListHead;
-        node->prev = NULL;
+        node->prev = nullptr;
         SequenceListHead = node;
     }
     ActiveSequences++;

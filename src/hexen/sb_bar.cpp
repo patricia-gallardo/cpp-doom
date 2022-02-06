@@ -1024,10 +1024,10 @@ void DrawMainBar()
     patch_t *manaPatch1, *manaPatch2;
     patch_t *manaVialPatch1, *manaVialPatch2;
 
-    manaPatch1 = NULL;
-    manaPatch2 = NULL;
-    manaVialPatch1 = NULL;
-    manaVialPatch2 = NULL;
+    manaPatch1 = nullptr;
+    manaPatch2 = nullptr;
+    manaVialPatch1 = nullptr;
+    manaVialPatch2 = nullptr;
 
     // Ready artifact
     if (ArtifactFlash)

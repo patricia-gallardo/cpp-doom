@@ -941,7 +941,7 @@ boolean G_Responder(event_t * ev)
 void G_Ticker()
 {
     int i, buf;
-    ticcmd_t *cmd = NULL;
+    ticcmd_t *cmd = nullptr;
 
 //
 // do player reborns if needed
@@ -1358,7 +1358,7 @@ void G_DoReborn(int playernum)
     }
     else
     {                           // Net-game
-        players[playernum].mo->player = NULL;   // Dissassociate the corpse
+        players[playernum].mo->player = nullptr;   // Dissassociate the corpse
 
         if (deathmatch)
         {                       // Spawn at random spot if in death match
