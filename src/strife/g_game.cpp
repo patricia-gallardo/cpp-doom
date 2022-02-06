@@ -1321,7 +1321,7 @@ void G_DoReborn (int playernum)
         // respawn at the start
 
         // first dissasociate the corpse 
-        // [STRIFE] Checks for NULL first
+        // [STRIFE] Checks for nullptr first
         if(players[playernum].mo)
             players[playernum].mo->player = nullptr;
 

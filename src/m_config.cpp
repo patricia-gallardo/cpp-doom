@@ -101,7 +101,7 @@ typedef struct
 
 #define CONFIG_VARIABLE_GENERIC(name, type) \
     {                                       \
-#name, { NULL }, type, 0, 0, false  \
+#name, { nullptr }, type, 0, 0, false  \
     }
 
 #define CONFIG_VARIABLE_KEY(name) \
@@ -2437,7 +2437,7 @@ static void LoadDefaultCollection(default_collection_t *collection)
 
         def = SearchCollection(collection, defname);
 
-        if (def == NULL || !def->bound)
+        if (def == nullptr || !def->bound)
         {
             // Unknown variable?  Unbound variables are also treated
             // as unknown.
@@ -2642,7 +2642,7 @@ boolean M_SetVariable(const char *name, const char *value)
 
     variable = GetDefaultForName(name);
 
-    if (variable == NULL || !variable->bound)
+    if (variable == nullptr || !variable->bound)
     {
         return false;
     }
@@ -2660,7 +2660,7 @@ int M_GetIntVariable(const char *name)
 
     variable = GetDefaultForName(name);
 
-    if (variable == NULL || !variable->bound
+    if (variable == nullptr || !variable->bound
         || (variable->type != DEFAULT_INT && variable->type != DEFAULT_INT_HEX))
     {
         return 0;
@@ -2675,7 +2675,7 @@ const char *M_GetStringVariable(const char *name)
 
     variable = GetDefaultForName(name);
 
-    if (variable == NULL || !variable->bound
+    if (variable == nullptr || !variable->bound
         || variable->type != DEFAULT_STRING)
     {
         return nullptr;
@@ -2690,7 +2690,7 @@ float M_GetFloatVariable(const char *name)
 
     variable = GetDefaultForName(name);
 
-    if (variable == NULL || !variable->bound
+    if (variable == nullptr || !variable->bound
         || variable->type != DEFAULT_FLOAT)
     {
         return 0;
@@ -2771,7 +2771,7 @@ void M_SetMusicPackDir()
 
     current_path = M_GetStringVariable("music_pack_path");
 
-    if (current_path != NULL && strlen(current_path) > 0)
+    if (current_path != nullptr && strlen(current_path) > 0)
     {
         return;
     }
@@ -2869,7 +2869,7 @@ char *M_GetAutoloadDir(const char *iwadname)
 {
     char *result;
 
-    if (autoload_path == NULL || strlen(autoload_path) == 0)
+    if (autoload_path == nullptr || strlen(autoload_path) == 0)
     {
         char *prefdir;
         prefdir       = SDL_GetPrefPath("", PACKAGE_TARNAME);

@@ -236,7 +236,7 @@ void Z_Free(void *ptr)
 
 //
 // Z_Malloc
-// You can pass a NULL user if the tag is < PU_PURGELEVEL.
+// You can pass a nullptr user if the tag is < PU_PURGELEVEL.
 //
 #define MINFRAGMENT 64
 
@@ -334,7 +334,7 @@ void *
         base->size = size;
     }
 
-    if (user == NULL && tag >= PU_PURGELEVEL)
+    if (user == nullptr && tag >= PU_PURGELEVEL)
         I_Error("Z_Malloc: an owner is required for purgable blocks");
 
     base->user = reinterpret_cast<void **>(user);

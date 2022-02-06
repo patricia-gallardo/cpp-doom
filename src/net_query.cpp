@@ -400,7 +400,7 @@ static void NET_Query_ParsePacket(net_addr_t *addr, net_packet_t *packet,
 
     target = GetTargetForAddr(addr, false);
 
-    if (target != NULL && target->type == QUERY_TARGET_MASTER)
+    if (target != nullptr && target->type == QUERY_TARGET_MASTER)
     {
         NET_Query_ParseMasterResponse(addr, packet);
     }

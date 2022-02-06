@@ -205,7 +205,7 @@ static void CalcRowColSizes(txt_table_t *table,
                 continue;
             }
 
-            // NULL represents an empty spacer
+            // nullptr represents an empty spacer
             if (IsActualWidget(widget))
             {
                 if (widget->h > row_heights[y])
@@ -371,7 +371,7 @@ void TXT_AddWidgets(TXT_UNCAST_ARG(table), ...)
 
     va_start(args, TXT_UNCAST_ARG_NAME(table));
 
-    // Keep adding widgets until a NULL is reached.
+    // Keep adding widgets until a nullptr is reached.
    
     for (;;) 
     {
@@ -779,7 +779,7 @@ static void TXT_TableMousePress(TXT_UNCAST_ARG(table), int x, int y, int b)
     {
         widget = table->widgets[i];
 
-        // NULL widgets are spacers
+        // nullptr widgets are spacers
 
         if (IsActualWidget(widget))
         {
@@ -1019,7 +1019,7 @@ txt_widget_t *TXT_GetSelectedWidget(TXT_UNCAST_ARG(table))
         }
     }
 
-    if (result != NULL && result->widget_class == &txt_table_class)
+    if (result != nullptr && result->widget_class == &txt_table_class)
     {
         result = TXT_GetSelectedWidget(result);
     }

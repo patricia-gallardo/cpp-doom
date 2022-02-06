@@ -43,7 +43,7 @@
 
 /**
  * Indicates an empty space to @ref TXT_AddWidgets(). Equivalent to
- * TXT_AddWidget(table, nullptr), except that NULL is used by TXT_AddWidgets()
+ * TXT_AddWidget(table, nullptr), except that nullptr is used by TXT_AddWidgets()
  * to indicate the end of input.
  */
 #define TXT_TABLE_EMPTY (&txt_table_empty)
@@ -161,7 +161,7 @@ void TXT_AddWidget(TXT_UNCAST_ARG(table), TXT_UNCAST_ARG(widget));
  * Widgets are added as described in the documentation for the
  * @ref TXT_AddWidget function.  This function adds multiple
  * widgets.  The number of arguments is variable, and the argument
- * list must be terminated by a NULL pointer.
+ * list must be terminated by a nullptr pointer.
  *
  * @param table        The table.
  */

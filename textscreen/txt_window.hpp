@@ -204,7 +204,7 @@ txt_window_t *TXT_MessageBox(const char *title, const char *message, ...);
  *
  * @param window          The window.
  * @param help_url        String containing URL of the help page for this
- *                        window, or NULL to set no help for this window.
+ *                        window, or nullptr to set no help for this window.
  */
 
 void TXT_SetWindowHelpURL(txt_window_t *window, const char *help_url);

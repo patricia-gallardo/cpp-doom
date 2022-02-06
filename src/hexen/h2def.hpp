@@ -353,7 +353,7 @@ typedef enum
 
 typedef struct pspdef_s
 {
-    state_t *state;             // a NULL state means not active
+    state_t *state;             // a nullptr state means not active
     int tics;
     fixed_t sx, sy;
 } pspdef_t;
@@ -558,7 +558,7 @@ typedef struct player_s
     short yellowMessage;
     int damagecount, bonuscount;        // for screen flashing
     int poisoncount;            // screen flash for poison damage
-    mobj_t *poisoner;           // NULL for non-player mobjs
+    mobj_t *poisoner;           // nullptr for non-player mobjs
     mobj_t *attacker;           // who did damage (NULL for floors)
     int extralight;             // so gun flashes light up areas
     int fixedcolormap;          // can be set to REDCOLORMAP, etc

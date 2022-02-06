@@ -2030,7 +2030,7 @@ boolean P_CheckMissileSpawn(mobj_t * missile)
 //
 // FUNC P_SpawnMissile
 //
-// Returns NULL if the missile exploded immediately, otherwise returns
+// Returns nullptr if the missile exploded immediately, otherwise returns
 // a mobj_t pointer to the missile.
 //
 //---------------------------------------------------------------------------
@@ -2093,7 +2093,7 @@ mobj_t *P_SpawnMissile(mobj_t * source, mobj_t * dest, mobjtype_t type)
 //
 // FUNC P_SpawnMissileXYZ
 //
-// Returns NULL if the missile exploded immediately, otherwise returns
+// Returns nullptr if the missile exploded immediately, otherwise returns
 // a mobj_t pointer to the missile.
 //
 //---------------------------------------------------------------------------
@@ -2135,7 +2135,7 @@ mobj_t *P_SpawnMissileXYZ(fixed_t x, fixed_t y, fixed_t z,
 //
 // FUNC P_SpawnMissileAngle
 //
-// Returns NULL if the missile exploded immediately, otherwise returns
+// Returns nullptr if the missile exploded immediately, otherwise returns
 // a mobj_t pointer to the missile.
 //
 //---------------------------------------------------------------------------
@@ -2183,7 +2183,7 @@ mobj_t *P_SpawnMissileAngle(mobj_t * source, mobjtype_t type,
 //
 // FUNC P_SpawnMissileAngleSpeed
 //
-// Returns NULL if the missile exploded immediately, otherwise returns
+// Returns nullptr if the missile exploded immediately, otherwise returns
 // a mobj_t pointer to the missile.
 //
 //---------------------------------------------------------------------------

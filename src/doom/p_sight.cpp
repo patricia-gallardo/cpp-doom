@@ -220,7 +220,7 @@ boolean P_CrossSubsector(int num)
         if (s1 == s2)
             continue;
 
-        // Backsector may be NULL if this is an "impassible
+        // Backsector may be nullptr if this is an "impassible
         // glass" hack line.
 
         if (line->backsector == nullptr)

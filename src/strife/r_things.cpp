@@ -426,7 +426,7 @@ R_DrawVisSprite
     // villsa [STRIFE] unused
     /*if (!dc_colormap)
     {
-        // NULL colormap = shadow draw
+        // nullptr colormap = shadow draw
         colfunc = fuzzcolfunc;
     }*/
 

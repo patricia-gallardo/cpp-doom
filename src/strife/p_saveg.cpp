@@ -1946,7 +1946,7 @@ void P_UnArchiveThinkers ()
             // the objects removed, including the player's previous body, from
             // being passed to Z_Free. One glitch relying on another!
 
-            if(mobj->target != NULL && (mobj->flags & MF_ALLY) != MF_ALLY)
+            if(mobj->target != nullptr && (mobj->flags & MF_ALLY) != MF_ALLY)
                 mobj->target = players[0].mo;
             else
                 mobj->target = nullptr;

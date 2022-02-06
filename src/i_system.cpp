@@ -401,7 +401,7 @@ boolean I_GetMemoryValue(unsigned int offset, void *value, int size)
         // @category compat
         // @arg <version>
         //
-        // Specify DOS version to emulate for NULL pointer dereference
+        // Specify DOS version to emulate for nullptr pointer dereference
         // emulation.  Supported versions are: dos622, dos71, dosbox.
         // The default is to emulate DOS 7.1 (Windows 98).
         //

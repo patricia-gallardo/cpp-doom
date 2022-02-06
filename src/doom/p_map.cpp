@@ -1044,7 +1044,7 @@ boolean PTR_ShootTraverse(intercept_t *in)
         dist = FixedMul(attackrange, in->frac);
 
         // e6y: emulation of missed back side on two-sided lines.
-        // backsector can be NULL when emulating missing back side.
+        // backsector can be nullptr when emulating missing back side.
 
         if (li->backsector == nullptr)
         {

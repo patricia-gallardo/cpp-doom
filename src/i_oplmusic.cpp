@@ -2315,7 +2315,7 @@ static boolean I_OPL_InitMusic()
     const char *dmxoption = getenv("DMXOPTION");
     if (dmxoption == nullptr)
     {
-        dmxoption = snd_dmxoption != NULL ? snd_dmxoption : "";
+        dmxoption = snd_dmxoption != nullptr ? snd_dmxoption : "";
     }
 
     if (chip_type == OPL_INIT_OPL3 && strstr(dmxoption, "-opl3") != nullptr)

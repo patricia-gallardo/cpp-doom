@@ -268,7 +268,7 @@ void HU_Start()
         // haleyjd 09/18/10: [STRIFE] nickname weirdness. 
         if(nickname != player_names[consoleplayer])
         {
-            if(nickname != NULL && *nickname)
+            if(nickname != nullptr && *nickname)
             {
                 DEH_printf("have one\n");
                 nickname = player_names[consoleplayer];

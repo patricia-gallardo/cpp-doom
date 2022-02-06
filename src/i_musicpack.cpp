@@ -618,7 +618,7 @@ static void ReadLoopPoints(const char *filename, file_metadata_t *metadata)
 }
 
 // Given a MUS lump, look up a substitute MUS file to play instead
-// (or NULL to just use normal MIDI playback).
+// (or nullptr to just use normal MIDI playback).
 
 static const char *GetSubstituteMusicFile(void *data, size_t data_len)
 {
@@ -706,7 +706,7 @@ static char *GetFullPath(const char *musicdir, const char *path)
 }
 
 // If filename ends with .{ext}, check if a .ogg, .flac or .mp3 exists with
-// that name, returning it if found. If none exist, NULL is returned. If the
+// that name, returning it if found. If none exist, nullptr is returned. If the
 // filename doesn't end with .{ext} then it just acts as a wrapper around
 // GetFullPath().
 static char *ExpandFileExtension(const char *musicdir, const char *filename)
@@ -791,7 +791,7 @@ static const char *ReadHashPrefix(char *line)
 }
 
 // Parse a line from substitute music configuration file; returns error
-// message or NULL for no error.
+// message or nullptr for no error.
 
 static const char *ParseSubstituteLine(char *musicdir, char *line)
 {

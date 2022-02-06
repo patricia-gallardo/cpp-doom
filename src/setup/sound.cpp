@@ -41,7 +41,7 @@ static const char *opltype_strings[] =
     "OPL3"
 };
 
-static const char *cfg_extension[] = { "cfg", NULL };
+static const char *cfg_extension[] = { "cfg", nullptr };
 
 // Config file variables:
 
@@ -101,7 +101,7 @@ static txt_dropdown_list_t *OPLTypeSelector()
 {
     txt_dropdown_list_t *result;
 
-    if (snd_dmxoption != NULL && strstr(snd_dmxoption, "-opl3") != nullptr)
+    if (snd_dmxoption != nullptr && strstr(snd_dmxoption, "-opl3") != nullptr)
     {
         snd_oplmode = OPLMODE_OPL3;
     }

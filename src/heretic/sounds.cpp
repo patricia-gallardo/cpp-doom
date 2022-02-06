@@ -24,7 +24,7 @@
 // Music info
 
 #define MUSIC(name) \
-    { name, 0, NULL, NULL }
+    { name, 0, NULL, nullptr }
 
 musicinfo_t S_music[] = {
     MUSIC("MUS_E1M1"),            // 1-1
@@ -96,9 +96,9 @@ musicinfo_t S_music[] = {
     */
 
 #define SOUND(name, priority, numchannels) \
-    { NULL, name, priority, NULL, -1, -1, -1, 0, numchannels, NULL }
+    { NULL, name, priority, NULL, -1, -1, -1, 0, numchannels, nullptr }
 #define SOUND_LINK(name, link_id, priority, numchannels) \
-    { NULL, name, priority, &S_sfx[link_id], 0, 0, -1, 0, numchannels, NULL }
+    { NULL, name, priority, &S_sfx[link_id], 0, 0, -1, 0, numchannels, nullptr }
 
 sfxinfo_t S_sfx[] = {
     SOUND("",        0,   0),

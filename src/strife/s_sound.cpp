@@ -521,7 +521,7 @@ static unsigned int S_voiceHash(const char *str)
    unsigned int h = 0;
 
    if(!str)
-      I_Error("S_voiceHash: cannot hash NULL string!\n");
+      I_Error("S_voiceHash: cannot hash nullptr string!\n");
 
    // note: this needs to be case insensitive for lump names
    while(*c)
@@ -602,8 +602,8 @@ void I_StartVoice(const char *lumpname)
         S_StopChannel(i_voicehandle);
 
     // Vanilla STRIFE appears to have stopped any current voice without
-    // starting a new one if NULL was passed in here, though I cannot 
-    // find an explicit check for NULL in the assembly. Either way, it 
+    // starting a new one if nullptr was passed in here, though I cannot
+    // find an explicit check for nullptr in the assembly. Either way, it
     // didn't crash, so do a check now:
     if(lumpname == nullptr)
         return;

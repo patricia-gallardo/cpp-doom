@@ -1728,7 +1728,7 @@ void P_AutoUseHealth(player_t * player, int saveHealth)
 =
 = Damages both enemies and players
 = inflictor is the thing that caused the damage
-= 		creature or missile, can be NULL (slime, etc)
+= 		creature or missile, can be nullptr (slime, etc)
 = source is the thing to target after taking damage
 =		creature or NULL
 = Source and inflictor are the same for melee attacks

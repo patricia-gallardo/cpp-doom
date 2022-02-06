@@ -274,7 +274,7 @@ void D_ReceiveTic(ticcmd_t *ticcmds, boolean *players_mask)
 
     // Disconnected from server?
 
-    if (ticcmds == NULL && players_mask == nullptr)
+    if (ticcmds == nullptr && players_mask == nullptr)
     {
         D_Disconnected();
         return;
@@ -324,7 +324,7 @@ static void BlockUntilStart(net_gamesettings_t *settings,
             I_Error("Lost connection to server");
         }
 
-        if (callback != NULL && !callback(net_client_wait_data.ready_players, net_client_wait_data.num_players))
+        if (callback != nullptr && !callback(net_client_wait_data.ready_players, net_client_wait_data.num_players))
         {
             I_Error("Netgame startup aborted.");
         }

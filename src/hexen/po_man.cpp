@@ -936,7 +936,7 @@ static void UnLinkPolyobj(polyobj_t * po)
             if (i >= 0 && i < bmapwidth && j >= 0 && j < bmapheight)
             {
                 link = PolyBlockMap[index + i];
-                while (link != NULL && link->polyobj != po)
+                while (link != nullptr && link->polyobj != po)
                 {
                     link = link->next;
                 }
@@ -1165,7 +1165,7 @@ static void InitBlockMap()
 //
 // IterFindPolySegs
 //
-//              Passing NULL for segList will cause IterFindPolySegs to
+//              Passing nullptr for segList will cause IterFindPolySegs to
 //      count the number of segs in the polyobj
 //==========================================================================
 

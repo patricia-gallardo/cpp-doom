@@ -269,7 +269,7 @@ static int NET_SV_NumPlayers()
 
     for (i = 0; i < NET_MAXPLAYERS; ++i)
     {
-        if (sv_players[i] != NULL && ClientConnected(sv_players[i]))
+        if (sv_players[i] != nullptr && ClientConnected(sv_players[i]))
         {
             result += 1;
         }
@@ -374,7 +374,7 @@ static net_client_t *NET_SV_Controller()
             continue;
         }
 
-        if (best == NULL || clients[i].connect_time < best->connect_time)
+        if (best == nullptr || clients[i].connect_time < best->connect_time)
         {
             best = &clients[i];
         }
@@ -491,7 +491,7 @@ static void NET_SV_AdvanceWindow()
 
         for (i = 0; i < NET_MAXPLAYERS; ++i)
         {
-            if (sv_players[i] == NULL || !ClientConnected(sv_players[i]))
+            if (sv_players[i] == nullptr || !ClientConnected(sv_players[i]))
             {
                 continue;
             }
@@ -855,7 +855,7 @@ static void StartGame()
 
     for (i = 0; i < NET_MAXPLAYERS; ++i)
     {
-        if (sv_players[i] != NULL && sv_players[i]->recording_lowres)
+        if (sv_players[i] != nullptr && sv_players[i]->recording_lowres)
         {
             sv_settings.lowres_turn = true;
         }
@@ -1489,7 +1489,7 @@ static void NET_SV_Packet(net_packet_t *packet, net_addr_t *addr)
 
     // Response from master server?
 
-    if (addr != NULL && addr == master_server)
+    if (addr != nullptr && addr == master_server)
     {
         NET_SV_MasterPacket(packet);
         return;
@@ -1597,7 +1597,7 @@ static void NET_SV_PumpSendQueue(net_client_t *client)
             continue;
         }
 
-        if (sv_players[i] == NULL || !ClientConnected(sv_players[i]))
+        if (sv_players[i] == nullptr || !ClientConnected(sv_players[i]))
         {
             continue;
         }
@@ -1644,7 +1644,7 @@ static void NET_SV_PumpSendQueue(net_client_t *client)
             continue;
         }
 
-        if (sv_players[i] == NULL || !recvwindow[recv_index][i].active)
+        if (sv_players[i] == nullptr || !recvwindow[recv_index][i].active)
         {
             cmd.playeringame[i] = false;
             continue;
@@ -1981,7 +1981,7 @@ void NET_SV_Run()
 
         for (i = 0; i < NET_MAXPLAYERS; ++i)
         {
-            if (sv_players[i] != NULL && ClientConnected(sv_players[i]))
+            if (sv_players[i] != nullptr && ClientConnected(sv_players[i]))
             {
                 NET_SV_CheckResends(sv_players[i]);
             }

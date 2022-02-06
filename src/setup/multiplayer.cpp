@@ -71,7 +71,7 @@ static int found_iwad_selected = -1;
 
 static const char *iwadfile;
 
-static const char *wad_extensions[] = { "wad", "lmp", "deh", NULL };
+static const char *wad_extensions[] = { "wad", "lmp", "deh", nullptr };
 
 static const char *doom_skills[] =
 {
@@ -171,7 +171,7 @@ static void AddWADs(execute_context_t *exec)
  
     for (i=0; i<NUM_WADS; ++i)
     {
-        if (wads[i] != NULL && strlen(wads[i]) > 0)
+        if (wads[i] != nullptr && strlen(wads[i]) > 0)
         {
             if (!have_wads)
             {
@@ -189,7 +189,7 @@ static void AddExtraParameters(execute_context_t *exec)
     
     for (i=0; i<NUM_EXTRA_PARAMS; ++i)
     {
-        if (extra_params[i] != NULL && strlen(extra_params[i]) > 0)
+        if (extra_params[i] != nullptr && strlen(extra_params[i]) > 0)
         {
             AddCmdLineParameter(exec, "%s", extra_params[i]);
         }
@@ -818,7 +818,7 @@ static void DoJoinGame(void *unused1, void *unused2)
 {
     execute_context_t *exec;
 
-    if (connect_address == NULL || strlen(connect_address) <= 0)
+    if (connect_address == nullptr || strlen(connect_address) <= 0)
     {
         TXT_MessageBox(NULL, "Please enter a server address\n"
                              "to connect to.");

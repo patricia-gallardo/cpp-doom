@@ -496,7 +496,7 @@ boolean NET_ReadWaitData(net_packet_t *packet, net_waitdata_t *data)
     {
         s = NET_ReadString(packet);
 
-        if (s == NULL || strlen(s) >= MAXPLAYERNAME)
+        if (s == nullptr || strlen(s) >= MAXPLAYERNAME)
         {
             return false;
         }
@@ -505,7 +505,7 @@ boolean NET_ReadWaitData(net_packet_t *packet, net_waitdata_t *data)
 
         s = NET_ReadString(packet);
 
-        if (s == NULL || strlen(s) >= MAXPLAYERNAME)
+        if (s == nullptr || strlen(s) >= MAXPLAYERNAME)
         {
             return false;
         }

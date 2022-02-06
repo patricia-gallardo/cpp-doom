@@ -1274,7 +1274,7 @@ void I_GetWindowPosition(int *x, int *y, int w, int h)
     // in windowed mode, the desired window position can be specified
     // in the configuration file.
 
-    if (window_position == NULL || !strcmp(window_position, ""))
+    if (window_position == nullptr || !strcmp(window_position, ""))
     {
         *x = *y = SDL_WINDOWPOS_UNDEFINED;
     }
@@ -1405,7 +1405,7 @@ static void SetVideoMode()
     // If we could not find a matching render driver,
     // try again without hardware acceleration.
 
-    if (renderer == NULL && !force_software_renderer)
+    if (renderer == nullptr && !force_software_renderer)
     {
         renderer_flags |= SDL_RENDERER_SOFTWARE;
         renderer_flags &= ~SDL_RENDERER_PRESENTVSYNC;

@@ -281,7 +281,7 @@ static void saveg_write_state_ptr(state_t *state)
 {
     int statenum;
 
-    // NULL states are just written as zero.
+    // nullptr states are just written as zero.
 
     if (state == nullptr)
     {
@@ -865,7 +865,7 @@ static void saveg_read_mobj_t(mobj_t *str)
     // specialval_t special2;
     saveg_read_specialval_t(&str->special2);
 
-    // Now we have a bunch of hacks to try to NULL out special values
+    // Now we have a bunch of hacks to try to nullptr out special values
     // where special[12] contained a mobj_t pointer that isn't valid
     // any more. This isn't in Vanilla but at least it stops the game
     // from crashing.

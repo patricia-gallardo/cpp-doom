@@ -91,7 +91,7 @@ static boolean SetupList(searchlist_t *list, searchlist_t *src_list,
     list->numlumps = 0;
     startlump      = FindInList(src_list, startname);
 
-    if (startname2 != NULL && startlump < 0)
+    if (startname2 != nullptr && startlump < 0)
     {
         startlump = FindInList(src_list, startname2);
     }
@@ -100,7 +100,7 @@ static boolean SetupList(searchlist_t *list, searchlist_t *src_list,
     {
         endlump = FindInList(src_list, endname);
 
-        if (endname2 != NULL && endlump < 0)
+        if (endname2 != nullptr && endlump < 0)
         {
             endlump = FindInList(src_list, endname2);
         }

@@ -218,7 +218,7 @@ static allocated_sound_t *AllocateSound(sfxinfo_t *sfxinfo, size_t len)
         // Out of memory?  Try to free an old sound, then loop round
         // and try again.
 
-        if (snd == NULL && !FindAndFreeSound())
+        if (snd == nullptr && !FindAndFreeSound())
         {
             return nullptr;
         }
@@ -426,7 +426,7 @@ static boolean ExpandSoundData_SRC(sfxinfo_t *sfxinfo,
     std::vector<float> data_out(src_data.output_frames);
     src_data.data_out = data_out.data();
 
-    assert(src_data.data_in != NULL && src_data.data_out != nullptr);
+    assert(src_data.data_in != nullptr && src_data.data_out != nullptr);
 
     // Convert input data to floats
     // [crispy] Handle 16 bit audio data

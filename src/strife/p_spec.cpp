@@ -325,7 +325,7 @@ twoSided
 //
 // getNextSector()
 // Return sector_t * of sector next to current.
-// NULL if not two-sided line
+// nullptr if not two-sided line
 //
 sector_t*
 getNextSector

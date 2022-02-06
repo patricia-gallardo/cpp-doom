@@ -141,7 +141,7 @@ void TXT_DrawWindowFrame(const char *title, int x, int y, int w, int h)
         // draw a box around the title.
 
         by = y1 == y ? 0 :
-             y1 == y + 2 && title != NULL ? 2 :
+             y1 == y + 2 && title != nullptr ? 2 :
              y1 == y + h - 1 ? 3 : 1;
 
         for (x1=x; x1<x+w; ++x1)

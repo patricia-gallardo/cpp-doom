@@ -732,7 +732,7 @@ void S_UpdateSounds(mobj_t * listener)
             Channel[i].mo = nullptr;
             Channel[i].sound_id = 0;
         }
-        if (Channel[i].mo == NULL || Channel[i].sound_id == 0
+        if (Channel[i].mo == nullptr || Channel[i].sound_id == 0
          || Channel[i].mo == listener || listener == nullptr)
         {
             continue;

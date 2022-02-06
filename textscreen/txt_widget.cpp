@@ -255,7 +255,7 @@ int TXT_HoveringOverWidget(TXT_UNCAST_ARG(widget))
 
     active_window = TXT_GetActiveWindow();
 
-    if (active_window == NULL || !TXT_ContainsWidget(active_window, widget))
+    if (active_window == nullptr || !TXT_ContainsWidget(active_window, widget))
     {
         return 0;
     }

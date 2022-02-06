@@ -473,7 +473,7 @@ void R_DrawVisSprite(vissprite_t *vis,
 
     if (!dc_colormap[0])
     {
-        // NULL colormap = shadow draw
+        // nullptr colormap = shadow draw
         colfunc = fuzzcolfunc;
     }
     else if (vis->mobjflags & MF_TRANSLATION)

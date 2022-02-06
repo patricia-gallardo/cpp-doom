@@ -39,7 +39,7 @@ struct txt_fileselect_s {
 
 // Dummy value to select a directory.
 
-const char *TXT_DIRECTORY[] = { "__directory__", NULL };
+const char *TXT_DIRECTORY[] = { "__directory__", nullptr };
 
 #ifndef _WIN32
 
@@ -80,7 +80,7 @@ static char *ExecReadOutput(char **argv)
     completed = 0;
 
     while (!completed
-        || (status == 0 && (result == NULL || strchr(result, '\n') == nullptr)))
+        || (status == 0 && (result == nullptr || strchr(result, '\n') == nullptr)))
     {
         char buf[64];
         int bytes;
@@ -131,7 +131,7 @@ static char *ExecReadOutput(char **argv)
 
     // Strip off newline from the end.
 
-    if (result != NULL && result[result_len - 1] == '\n')
+    if (result != nullptr && result[result_len - 1] == '\n')
     {
         result[result_len - 1] = '\0';
     }
@@ -729,7 +729,7 @@ static int DoSelectFile(txt_fileselect_t *fileselect)
                               fileselect->extensions);
 
         // Update inputbox variable.
-        // If cancel was pressed (ie. NULL was returned by TXT_SelectFile)
+        // If cancel was pressed (ie. nullptr was returned by TXT_SelectFile)
         // then reset to empty string, not nullptr).
 
         if (path == nullptr)

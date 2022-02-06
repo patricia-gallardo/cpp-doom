@@ -471,7 +471,7 @@ void S_UpdateSounds(mobj_t * listener)
                 AmbChan = -1;
             }
         }
-        if (channel[i].mo == NULL || channel[i].sound_id == 0
+        if (channel[i].mo == nullptr || channel[i].sound_id == 0
          || channel[i].mo == listener || listener == nullptr)
         {
             continue;

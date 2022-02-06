@@ -185,7 +185,7 @@ static void PCSCallbackFunc(int *duration, int *freq)
         return;
     }
 
-    if (current_sound_lump != NULL && current_sound_remaining > 0)
+    if (current_sound_lump != nullptr && current_sound_remaining > 0)
     {
         // Read the next tone
 
@@ -382,7 +382,7 @@ static boolean I_PCS_SoundIsPlaying(int handle)
         return false;
     }
 
-    return current_sound_lump != NULL && current_sound_remaining > 0;
+    return current_sound_lump != nullptr && current_sound_remaining > 0;
 }
 
 static boolean I_PCS_InitSound(boolean _use_sfx_prefix)

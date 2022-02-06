@@ -126,7 +126,7 @@ static pixel_t *DiskRegionPointer()
 
 void V_DrawDiskIcon()
 {
-    if (disk_data != NULL && recent_bytes_read > diskicon_threshold)
+    if (disk_data != nullptr && recent_bytes_read > diskicon_threshold)
     {
         // Save the background behind the disk before we draw it.
         CopyRegion(saved_background, LOADING_DISK_W,

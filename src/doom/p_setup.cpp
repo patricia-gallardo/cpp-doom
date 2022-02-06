@@ -826,7 +826,7 @@ void P_GroupLines()
             ++sector->linecount;
         }
 
-        if (li->backsector != NULL && li->frontsector != li->backsector)
+        if (li->backsector != nullptr && li->frontsector != li->backsector)
         {
             sector = li->backsector;
 

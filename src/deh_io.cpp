@@ -86,7 +86,7 @@ static deh_context_t *DEH_NewContext()
 }
 
 // Open a dehacked file for reading
-// Returns NULL if open failed
+// Returns nullptr if open failed
 
 deh_context_t *DEH_OpenFile(const char *filename)
 {
@@ -370,7 +370,7 @@ boolean DEH_HadError(deh_context_t *context)
 }
 
 // [crispy] return the filename of the DEHACKED file
-// or NULL if it is a DEHACKED lump loaded from a PWAD
+// or nullptr if it is a DEHACKED lump loaded from a PWAD
 char *DEH_FileName(deh_context_t *context)
 {
     if (context->type == DEH_INPUT_FILE)

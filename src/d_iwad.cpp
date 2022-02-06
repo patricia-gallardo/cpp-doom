@@ -400,7 +400,7 @@ static void CheckSteamGUSPatches()
 
     // Already configured? Don't stomp on the user's choices.
     current_path = M_GetStringVariable("gus_patch_path");
-    if (current_path != NULL && strlen(current_path) > 0)
+    if (current_path != nullptr && strlen(current_path) > 0)
     {
         return;
     }
@@ -873,7 +873,7 @@ char *D_FindIWAD(int mask, GameMission_t *mission)
 
         BuildIWADDirList();
 
-        for (i = 0; result == NULL && i < num_iwad_dirs; ++i)
+        for (i = 0; result == nullptr && i < num_iwad_dirs; ++i)
         {
             result = SearchDirectoryForIWAD(iwad_dirs[i], mask, mission);
         }

@@ -162,7 +162,7 @@ int     twoSided(int sector, int line)
 
 //==================================================================
 //
-//      Return sector_t * of sector next to current. NULL if not two-sided line
+//      Return sector_t * of sector next to current. nullptr if not two-sided line
 //
 //==================================================================
 sector_t *getNextSector(line_t * line, sector_t * sec)

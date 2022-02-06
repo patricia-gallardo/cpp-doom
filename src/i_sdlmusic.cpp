@@ -269,7 +269,7 @@ static void I_SDL_PlaySong(void *handle, boolean looping)
         return;
     }
 
-    if (handle == NULL && !midi_server_registered)
+    if (handle == nullptr && !midi_server_registered)
     {
         return;
     }

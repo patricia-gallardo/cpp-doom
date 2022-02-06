@@ -242,7 +242,7 @@ void TXT_DrawDesktop()
     DrawDesktopBackground(title);
 
     active_window = TXT_GetActiveWindow();
-    if (active_window != NULL && active_window->help_url != nullptr)
+    if (active_window != nullptr && active_window->help_url != nullptr)
     {
         DrawHelpIndicator();
     }
@@ -299,7 +299,7 @@ void TXT_DispatchEvents()
     {
         active_window = TXT_GetActiveWindow();
 
-        if (active_window != NULL && !TXT_WindowKeyPress(active_window, c))
+        if (active_window != nullptr && !TXT_WindowKeyPress(active_window, c))
         {
             DesktopInputEvent(c);
         }

@@ -134,7 +134,7 @@ typedef struct
     side_t *sidedef;
     line_t *linedef;
     sector_t *frontsector;
-    sector_t *backsector;       // NULL for one sided lines
+    sector_t *backsector;       // nullptr for one sided lines
 } seg_t;
 
 typedef struct

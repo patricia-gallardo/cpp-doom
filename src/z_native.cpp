@@ -224,7 +224,7 @@ static boolean ClearCache(int size)
 
 //
 // Z_Malloc
-// You can pass a NULL user if the tag is < PU_PURGELEVEL.
+// You can pass a nullptr user if the tag is < PU_PURGELEVEL.
 //
 
 void *Z_Malloc(int size, int tag, void *user)
@@ -240,7 +240,7 @@ void *Z_Malloc(int size, int tag, void *user)
             tag);
     }
 
-    if (user == NULL && tag >= PU_PURGELEVEL)
+    if (user == nullptr && tag >= PU_PURGELEVEL)
     {
         I_Error("Z_Malloc: an owner is required for purgable blocks");
     }

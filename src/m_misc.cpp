@@ -125,7 +125,7 @@ char *M_FileCaseExists(const char *path)
 
     // 3. uppercase basename with lowercase extension, e.g. DOOM2.wad
     ext = strrchr(path_dup, '.');
-    if (ext != NULL && ext > filename)
+    if (ext != nullptr && ext > filename)
     {
         M_ForceLowercase(ext + 1);
 

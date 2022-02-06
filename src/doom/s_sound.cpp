@@ -150,7 +150,7 @@ static const altmusic_t altmusic_tnt[] = {
     { "openin", "beast" },  // MAP30
                             //	{"evil",   "evil"},   // MAP31
     { "ultima", "in_cit" }, // MAP32
-    { NULL, NULL },
+    { NULL, nullptr },
 };
 
 // Plutonia music is completely taken from Doom 1 and 2, but re-arranged.
@@ -190,7 +190,7 @@ static const altmusic_t altmusic_plut[] = {
                            //	{"openin", "openin"}, // MAP30 (d_victor has no instumental cover in Doom Metal)
     { "evil", "e3m4" },    // MAP31
     { "ultima", "e2m8" },  // MAP32
-    { NULL, NULL },
+    { NULL, nullptr },
 };
 
 static void S_RegisterAltMusic()

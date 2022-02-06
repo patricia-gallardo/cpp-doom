@@ -251,7 +251,7 @@ boolean P_GiveBody(player_t* player, int num)
             player->health = maxhealth;
 
         // Set mo->health for consistency.
-        // haleyjd 20110225: Seems Strife can call this on a NULL player->mo
+        // haleyjd 20110225: Seems Strife can call this on a nullptr player->mo
         // when giving items to players that are not in the game...
         mo = P_SubstNullMobj(player->mo);
         mo->health = player->health;
@@ -1057,11 +1057,11 @@ static boolean P_IsMobjBoss(mobjtype_t type)
 // P_DamageMobj
 // Damages both enemies and players
 // "inflictor" is the thing that caused the damage
-//  creature or missile, can be NULL (slime, etc)
+//  creature or missile, can be nullptr (slime, etc)
 // "source" is the thing to target after taking damage
 //  creature or NULL
 // Source and inflictor are the same for melee attacks.
-// Source can be NULL for slime, barrel explosions
+// Source can be nullptr for slime, barrel explosions
 // and other environmental stuff.
 //
 // [STRIFE] Extensive changes for spectrals, fire damage, disintegration, and

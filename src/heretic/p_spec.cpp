@@ -331,7 +331,7 @@ int twoSided(int sector, int line)
 
 //==================================================================
 //
-//      Return sector_t * of sector next to current. NULL if not two-sided line
+//      Return sector_t * of sector next to current. nullptr if not two-sided line
 //
 //==================================================================
 sector_t *getNextSector(line_t * line, sector_t * sec)
@@ -414,7 +414,7 @@ fixed_t P_FindNextHighestFloor(sector_t * sec, int currentheight)
         check = sec->lines[i];
         other = getNextSector(check, sec);
 
-        if (other != NULL && other->floorheight > height)
+        if (other != nullptr && other->floorheight > height)
         {
             if (other->floorheight < min)
             {

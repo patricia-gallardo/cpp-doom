@@ -305,7 +305,7 @@ void I_UpdateSound()
         sound_module->Update();
     }
 
-    if (active_music_module != NULL && active_music_module->Poll != nullptr)
+    if (active_music_module != nullptr && active_music_module->Poll != nullptr)
     {
         active_music_module->Poll();
     }
@@ -376,7 +376,7 @@ boolean I_SoundIsPlaying(int channel)
 
 void I_PrecacheSounds(sfxinfo_t *sounds, int num_sounds)
 {
-    if (sound_module != NULL && sound_module->CacheSounds != nullptr)
+    if (sound_module != nullptr && sound_module->CacheSounds != nullptr)
     {
         sound_module->CacheSounds(sounds, num_sounds);
     }

@@ -70,7 +70,7 @@ static void DoExec(const char *executable, const char *iwad, const char *args)
 
     asprintf(&argv[0], "%s/%s", executable_path, executable);
 
-    if (iwad != NULL || args != nullptr)
+    if (iwad != nullptr || args != nullptr)
     {
         WriteResponseFile(iwad, args);
 

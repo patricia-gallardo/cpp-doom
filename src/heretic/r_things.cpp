@@ -404,7 +404,7 @@ void R_DrawVisSprite(vissprite_t * vis, int x1, int x2)
     dc_colormap = vis->colormap;
 
 //      if(!dc_colormap)
-//              colfunc = tlcolfunc;  // NULL colormap = shadow draw
+//              colfunc = tlcolfunc;  // nullptr colormap = shadow draw
 
     if (vis->mobjflags & MF_SHADOW)
     {

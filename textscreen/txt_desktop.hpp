@@ -63,7 +63,7 @@ void TXT_GUIMainLoop();
  * Get the top window on the desktop that is currently receiving
  * inputs.
  *
- * @return    The active window, or NULL if no windows are present.
+ * @return    The active window, or nullptr if no windows are present.
  */
 
 txt_window_t *TXT_GetActiveWindow();
@@ -72,7 +72,7 @@ txt_window_t *TXT_GetActiveWindow();
  * Set a callback function to be invoked periodically by the main
  * loop code.
  *
- * @param callback      The callback to invoke, or NULL to cancel
+ * @param callback      The callback to invoke, or nullptr to cancel
  *                      an existing callback.
  * @param user_data     Extra data to pass to the callback.
  * @param period        Maximum time between invoking each callback.
