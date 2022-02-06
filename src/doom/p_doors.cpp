@@ -156,6 +156,7 @@ void T_VerticalDoor(vldoor_t *door)
                     S_StartSound(&door->sector->soundorg, sfx_bdopn);
                     break;
                 }
+                [[fallthrough]];
 
             default:
                 door->direction = 1;

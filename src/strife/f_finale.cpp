@@ -292,6 +292,7 @@ static void F_DoSlideShow()
         slideshow_tics = 700;
         slideshow_state = SLIDE_EXIT;
         // falls through into state 1, so above is pointless? ...
+        [[fallthrough]];
 
     case SLIDE_PROGRAMMER1: // state #1
         slideshow_panel = DEH_String("SS2F1");

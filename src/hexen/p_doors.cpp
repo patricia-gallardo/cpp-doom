@@ -46,7 +46,7 @@ void T_VerticalDoor(vldoor_t * door)
                         door->direction = -1;   // time to go back down
                         SN_StartSequence((mobj_t *) & door->sector->soundorg,
                                          SEQ_DOOR_STONE +
-                                         door->sector->seqType);
+                                         static_cast<int>(door->sector->seqType));
                         break;
                     case DREV_CLOSE30THENOPEN:
                         door->direction = 1;
@@ -187,7 +187,7 @@ int EV_DoDoor(line_t * line, byte * args, vldoor_e type)
         door->speed = speed;
         door->topwait = args[2];        // line->arg3
         SN_StartSequence((mobj_t *) & door->sector->soundorg,
-                         SEQ_DOOR_STONE + door->sector->seqType);
+                         SEQ_DOOR_STONE + static_cast<int>(door->sector->seqType));
     }
     return (retcode);
 }
@@ -263,7 +263,7 @@ boolean EV_VerticalDoor(line_t * line, mobj_t * thing)
     door->topheight = P_FindLowestCeilingSurrounding(sec);
     door->topheight -= 4 * FRACUNIT;
     SN_StartSequence((mobj_t *) & door->sector->soundorg,
-                     SEQ_DOOR_STONE + door->sector->seqType);
+                     SEQ_DOOR_STONE + static_cast<int>(door->sector->seqType));
     return true;
 }
 

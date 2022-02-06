@@ -544,6 +544,7 @@ void P_XYMovement(mobj_t * mo)
                             if (mo->type == MT_HOLY_FX)
                                 goto explode;
                             // Drop through to sorcerer full reflection
+                            [[fallthrough]];
                         case MT_SORCBOSS:
                             // Deflection
                             if (P_Random() < 128)

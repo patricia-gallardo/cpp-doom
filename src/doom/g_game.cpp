@@ -1881,6 +1881,7 @@ void G_WorldDone()
         case 20:
             if (secretexit)
                 break;
+            [[fallthrough]];
         case 21:
             F_StartFinale();
             break;
@@ -1894,6 +1895,7 @@ void G_WorldDone()
         case 31:
             if (!secretexit)
                 break;
+            [[fallthrough]];
         case 6:
         case 11:
         case 20:

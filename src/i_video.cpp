@@ -445,6 +445,7 @@ void I_GetEvent()
                 break;
             }
             // deliberate fall-though
+            [[fallthrough]];
 
         case SDL_KEYUP:
             I_HandleKeyboardEvent(&sdlevent);

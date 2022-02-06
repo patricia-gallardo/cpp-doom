@@ -209,7 +209,7 @@ static void SetExecutable(mission_config_t *config)
 #ifdef _WIN32
     extension = const_cast<char *>(".exe");
 #else
-    extension = "";
+    extension = const_cast<char *>("");
 #endif
 
     executable = M_StringJoin(config->executable, extension, NULL);

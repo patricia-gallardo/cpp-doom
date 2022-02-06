@@ -324,6 +324,7 @@ EV_DoFloor
 
         case raiseFloorCrush: // [STRIFE] verified unmodified
             floor->crush = true;
+            [[fallthrough]];
         case raiseFloor:
             floor->direction = 1;
             floor->sector = sec;

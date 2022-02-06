@@ -621,7 +621,7 @@ static void AddXdgDirs()
         char *homedir = getenv("HOME");
         if (homedir == NULL)
         {
-            homedir = "/";
+            homedir = const_cast<char *>("/");
         }
 
         tmp_env = M_StringJoin(homedir, "/.local/share", NULL);
@@ -646,7 +646,7 @@ static void AddXdgDirs()
     if (env == NULL)
     {
         // (Trailing / omitted from paths, as it is added below)
-        env = "/usr/local/share:/usr/share";
+        env = const_cast<char *>("/usr/local/share:/usr/share");
     }
 
     // The "standard" location for IWADs on Unix that is supported by most
@@ -673,7 +673,7 @@ static void AddSteamDirs()
     homedir = getenv("HOME");
     if (homedir == NULL)
     {
-        homedir = "/";
+        homedir = const_cast<char *>("/");
     }
     steampath = M_StringJoin(homedir, "/.steam/root/steamapps/common", NULL);
 

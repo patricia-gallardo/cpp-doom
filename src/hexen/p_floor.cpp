@@ -393,7 +393,7 @@ int EV_DoFloor(line_t * line, byte * args, floor_e floortype)
     if (rtn)
     {
         SN_StartSequence((mobj_t *) & floor->sector->soundorg,
-                         SEQ_PLATFORM + floor->sector->seqType);
+                         SEQ_PLATFORM + static_cast<int>(floor->sector->seqType));
     }
     return rtn;
 }
@@ -560,7 +560,7 @@ static void ProcessStairSector(sector_t * sec, int type, int height,
         default:
             break;
     }
-    SN_StartSequence((mobj_t *) & sec->soundorg, SEQ_PLATFORM + sec->seqType);
+    SN_StartSequence((mobj_t *) & sec->soundorg, SEQ_PLATFORM + static_cast<int>(sec->seqType));
     //
     // Find next sector to raise
     // Find nearby sector with sector special equal to type
@@ -743,7 +743,7 @@ int EV_BuildPillar(line_t * line, byte * args, boolean crush)
         pillar->direction = 1;
         pillar->crush = crush * args[3];
         SN_StartSequence((mobj_t *) & pillar->sector->soundorg,
-                         SEQ_PLATFORM + pillar->sector->seqType);
+                         SEQ_PLATFORM + static_cast<int>(pillar->sector->seqType));
     }
     return rtn;
 }
@@ -814,7 +814,7 @@ int EV_OpenPillar(line_t * line, byte * args)
         }
         pillar->direction = -1; // open the pillar
         SN_StartSequence((mobj_t *) & pillar->sector->soundorg,
-                         SEQ_PLATFORM + pillar->sector->seqType);
+                         SEQ_PLATFORM + static_cast<int>(pillar->sector->seqType));
     }
     return rtn;
 }
