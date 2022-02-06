@@ -2010,7 +2010,7 @@ void P_ArchiveSpecials ()
     // save off the current thinkers
     for (th = thinkercap.next ; th != &thinkercap ; th=th->next)
     {
-        if (th->function.acv == (actionf_v)NULL)
+        if (th->function.acv == (actionf_v) nullptr)
         {
             for (i = 0; i < MAXCEILINGS;i++)
                 if (activeceilings[i] == (ceiling_t *)th)
