@@ -46,25 +46,30 @@ function(set_project_warnings)
             -Wnull-dereference # warn if a null dereference is detected
             -Wdouble-promotion # warn if float is implicit promoted to double
             -Wformat=2 # warn on security issues around functions that format output (ie printf)
-            -Wno-unused-lambda-capture # We like explicit capture
+            #-Wno-unused-lambda-capture # CLANG We like explicit capture
             -Wno-unused-parameter
             -Wno-unused-variable # TODO turn it back on (patricia)
             -Wno-unused-function # TODO turn it back on (patricia)
-            -Wno-reserved-user-defined-literal # TODO turn it back on (patricia)?
-            -Wno-shorten-64-to-32 # TODO turn it back on (patricia)
+            #-Wno-reserved-user-defined-literal # CLANG TODO turn it back on (patricia)?
+            #-Wno-shorten-64-to-32 # CLANG TODO turn it back on (patricia)
             -Wno-missing-field-initializers # TODO turn it back on (patricia)
-            -Wno-implicit-int-conversion # TODO turn it back on (patricia)
+            #-Wno-implicit-int-conversion # CLANG TODO turn it back on (patricia)
             -Wno-sign-compare # TODO turn it back on (patricia)
-            -Wno-writable-strings # TODO turn it back on (patricia)
+            #-Wno-writable-strings # CLANG TODO turn it back on (patricia)
             -Wno-format-nonliteral # TODO turn it back on (patricia)
-            -Wno-macro-redefined # TODO turn it back on (patricia)
+            #-Wno-macro-redefined # CLANG TODO turn it back on (patricia)
             -Wno-float-conversion # TODO turn it back on (patricia)
             -Wno-double-promotion # TODO turn it back on (patricia)
-            -Wno-implicit-float-conversion # TODO turn it back on (patricia)
-            -Wno-c++11-narrowing # TODO turn it back on (patricia)
-            -Wno-deprecated-anon-enum-enum-conversion # TODO turn it back on (patricia)
+            #-Wno-implicit-float-conversion # CLANG TODO turn it back on (patricia)
+            #-Wno-c++11-narrowing # CLANG TODO turn it back on (patricia)
+            #-Wno-deprecated-anon-enum-enum-conversion # CLANG TODO turn it back on (patricia)
             -Wno-narrowing # TODO turn it back on (patricia)
+            -Wno-unknown-warning-option # CLANG TODO turn it back on (patricia)
             -fpermissive # GCC TODO turn it back on (patricia)
+            -Wno-unused-but-set-parameter # GCC TODO turn it back on (patricia)
+            -Wno-parentheses # GCC TODO turn it back on (patricia)
+            -Wno-int-in-bool-context # GCC TODO turn it back on (patricia)
+            -Wno-class-memaccess # GCC TODO turn it back on (patricia)
             )
 
     if (WARNINGS_AS_ERRORS)
