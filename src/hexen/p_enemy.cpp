@@ -1455,7 +1455,7 @@ void A_MinotaurAtk3(mobj_t * actor)
     if (P_CheckMeleeRange(actor))
     {
         P_DamageMobj(actor->target, actor, actor, HITDICE(3));
-        if ((player = actor->target->player) != NULL)
+        if ((player = actor->target->player) != nullptr)
         {                       // Squish the player
             player->deltaviewheight = -16 * FRACUNIT;
         }
@@ -1463,7 +1463,7 @@ void A_MinotaurAtk3(mobj_t * actor)
     else
     {
         mo = P_SpawnMissile(actor, actor->target, MT_MNTRFX2);
-        if (mo != NULL)
+        if (mo != nullptr)
         {
             S_StartSound(mo, SFX_MAULATOR_HAMMER_HIT);
         }
@@ -2838,7 +2838,7 @@ static void DragonSeek(mobj_t * actor, angle_t thresh, angle_t turnMax)
     mobj_t *mo;
 
     target = actor->special1.m;
-    if (target == NULL)
+    if (target == nullptr)
     {
         return;
     }
@@ -5329,7 +5329,7 @@ void A_KSpiritSeeker(mobj_t * actor, angle_t thresh, angle_t turnMax)
     fixed_t deltaZ;
 
     target = actor->special1.m;
-    if (target == NULL)
+    if (target == nullptr)
     {
         return;
     }

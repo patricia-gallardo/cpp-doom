@@ -166,7 +166,7 @@ boolean EV_Teleport(int tid, mobj_t * thing, boolean fog)
     }
     count = 0;
     searcher = -1;
-    while (P_FindMobjFromTID(tid, &searcher) != NULL)
+    while (P_FindMobjFromTID(tid, &searcher) != nullptr)
     {
         count++;
     }
@@ -182,7 +182,7 @@ boolean EV_Teleport(int tid, mobj_t * thing, boolean fog)
     {
         mo = P_FindMobjFromTID(tid, &searcher);
     }
-    if (mo == NULL)
+    if (mo == nullptr)
     {
         I_Error("Can't find teleport mapspot\n");
     }

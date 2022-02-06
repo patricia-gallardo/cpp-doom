@@ -541,7 +541,7 @@ void P_LoadBlockMap(int lump)
 
     lumplen = W_LumpLength(lump);
 
-    blockmaplump = zmalloc<short *>(lumplen, PU_LEVEL, NULL);
+    blockmaplump = zmalloc<short *>(lumplen, PU_LEVEL, nullptr);
     W_ReadLump(lump, blockmaplump);
     blockmap = blockmaplump + 4;
 

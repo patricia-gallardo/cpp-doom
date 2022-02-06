@@ -835,7 +835,7 @@ mobj_t *P_RoughMonsterSearch(mobj_t * mo, int distance)
         && startY < bmapheight)
     {
         target = RoughBlockCheck(mo, startY * bmapwidth + startX);
-        if (target != NULL)
+        if (target != nullptr)
         {                       // found a target right away
             return target;
         }
@@ -889,7 +889,7 @@ mobj_t *P_RoughMonsterSearch(mobj_t * mo, int distance)
         for (; blockIndex <= firstStop; blockIndex++)
         {
             target = RoughBlockCheck(mo, blockIndex);
-            if (target != NULL)
+            if (target != nullptr)
             {
                 return target;
             }
@@ -898,7 +898,7 @@ mobj_t *P_RoughMonsterSearch(mobj_t * mo, int distance)
         for (blockIndex--; blockIndex <= secondStop; blockIndex += bmapwidth)
         {
             target = RoughBlockCheck(mo, blockIndex);
-            if (target != NULL)
+            if (target != nullptr)
             {
                 return target;
             }
@@ -907,7 +907,7 @@ mobj_t *P_RoughMonsterSearch(mobj_t * mo, int distance)
         for (blockIndex -= bmapwidth; blockIndex >= thirdStop; blockIndex--)
         {
             target = RoughBlockCheck(mo, blockIndex);
-            if (target != NULL)
+            if (target != nullptr)
             {
                 return target;
             }
@@ -916,7 +916,7 @@ mobj_t *P_RoughMonsterSearch(mobj_t * mo, int distance)
         for (blockIndex++; blockIndex > finalStop; blockIndex -= bmapwidth)
         {
             target = RoughBlockCheck(mo, blockIndex);
-            if (target != NULL)
+            if (target != nullptr)
             {
                 return target;
             }

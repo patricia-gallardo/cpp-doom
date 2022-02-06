@@ -552,7 +552,7 @@ void MN_Drawer()
         {
             BorderNeedRefresh = true;
         }
-        if (CurrentMenu->drawFunc != NULL)
+        if (CurrentMenu->drawFunc != nullptr)
         {
             CurrentMenu->drawFunc();
         }
@@ -688,7 +688,7 @@ static boolean ReadDescriptionForSlot(int slot, char *description)
 
     fp = fopen(name, "rb");
 
-    if (fp == NULL)
+    if (fp == nullptr)
     {
         return false;
     }
@@ -1576,7 +1576,7 @@ boolean MN_Responder(event_t * event)
         }
         else if (key == key_menu_left)           // Slider left
         {
-            if (item->type == ITT_LRFUNC && item->func != NULL)
+            if (item->type == ITT_LRFUNC && item->func != nullptr)
             {
                 item->func(LEFT_DIR);
                 S_StartSound(NULL, SFX_PICKUP_KEY);
@@ -1585,7 +1585,7 @@ boolean MN_Responder(event_t * event)
         }
         else if (key == key_menu_right)          // Slider right
         {
-            if (item->type == ITT_LRFUNC && item->func != NULL)
+            if (item->type == ITT_LRFUNC && item->func != nullptr)
             {
                 item->func(RIGHT_DIR);
                 S_StartSound(NULL, SFX_PICKUP_KEY);
@@ -1596,13 +1596,13 @@ boolean MN_Responder(event_t * event)
         {
             if (item->type == ITT_SETMENU)
             {
-                if (item->func != NULL)
+                if (item->func != nullptr)
                 {
                     item->func(item->option);
                 }
                 SetMenu(item->menu);
             }
-            else if (item->func != NULL)
+            else if (item->func != nullptr)
             {
                 CurrentMenu->oldItPos = CurrentItPos;
                 if (item->type == ITT_LRFUNC)
@@ -1754,7 +1754,7 @@ void MN_ActivateMenu()
 
 void MN_DeactivateMenu()
 {
-    if (CurrentMenu != NULL)
+    if (CurrentMenu != nullptr)
     {
         CurrentMenu->oldItPos = CurrentItPos;
     }

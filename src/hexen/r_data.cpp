@@ -313,7 +313,7 @@ void R_InitTextures()
     names = cache_lump_name<char *>("PNAMES", PU_STATIC);
     nummappatches = LONG(*((int *) names));
     name_p = names + 4;
-    patchlookup = zmalloc<int *>(nummappatches * sizeof(*patchlookup), PU_STATIC, NULL);
+    patchlookup = zmalloc<int *>(nummappatches * sizeof(*patchlookup), PU_STATIC, nullptr);
     for (i = 0; i < nummappatches; i++)
     {
         M_StringCopy(name, name_p + i * 8, sizeof(name));
@@ -614,7 +614,7 @@ void R_PrecacheLevel()
 //
 // precache flats
 //      
-    flatpresent = zmalloc<char *>(numflats, PU_STATIC, NULL);
+    flatpresent = zmalloc<char *>(numflats, PU_STATIC, nullptr);
     memset(flatpresent, 0, numflats);
     for (i = 0; i < numsectors; i++)
     {
@@ -636,7 +636,7 @@ void R_PrecacheLevel()
 //
 // precache textures
 //
-    texturepresent = zmalloc<char *>(numtextures, PU_STATIC, NULL);
+    texturepresent = zmalloc<char *>(numtextures, PU_STATIC, nullptr);
     memset(texturepresent, 0, numtextures);
 
     for (i = 0; i < numsides; i++)
@@ -668,7 +668,7 @@ void R_PrecacheLevel()
 //
 // precache sprites
 //
-    spritepresent = zmalloc<char *>(numsprites, PU_STATIC, NULL);
+    spritepresent = zmalloc<char *>(numsprites, PU_STATIC, nullptr);
     memset(spritepresent, 0, numsprites);
     action_hook needle = P_MobjThinker;
 

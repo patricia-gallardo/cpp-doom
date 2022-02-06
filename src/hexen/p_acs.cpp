@@ -502,7 +502,7 @@ void P_LoadACScripts(int lump)
 
     ACStringCount = ReadCodeInt();
     ACSAssert(ACStringCount >= 0, "negative string count %d", ACStringCount);
-    ACStrings = zmalloc<decltype(    ACStrings)>(ACStringCount * sizeof(char *), PU_LEVEL, NULL);
+    ACStrings = zmalloc<decltype(    ACStrings)>(ACStringCount * sizeof(char *), PU_LEVEL, nullptr);
 
     for (i=0; i<ACStringCount; ++i)
     {
@@ -1501,7 +1501,7 @@ static void ThingCount(int type, int tid)
     searcher = -1;
     if (tid)
     {                           // Count TID things
-        while ((mobj = P_FindMobjFromTID(tid, &searcher)) != NULL)
+        while ((mobj = P_FindMobjFromTID(tid, &searcher)) != nullptr)
         {
             if (type == 0)
             {                   // Just count TIDs
@@ -1894,7 +1894,7 @@ static int CmdThingSound()
     sound = S_GetSoundID(StringLookup(Pop()));
     tid = Pop();
     searcher = -1;
-    while ((mobj = P_FindMobjFromTID(tid, &searcher)) != NULL)
+    while ((mobj = P_FindMobjFromTID(tid, &searcher)) != nullptr)
     {
         S_StartSoundAtVolume(mobj, sound, volume);
     }
@@ -1937,7 +1937,7 @@ static int CmdSetLineTexture()
     side = Pop();
     lineTag = Pop();
     searcher = -1;
-    while ((line = P_FindLine(lineTag, &searcher)) != NULL)
+    while ((line = P_FindLine(lineTag, &searcher)) != nullptr)
     {
         if (position == TEXTURE_MIDDLE)
         {
@@ -1965,7 +1965,7 @@ static int CmdSetLineBlocking()
     blocking = Pop()? ML_BLOCKING : 0;
     lineTag = Pop();
     searcher = -1;
-    while ((line = P_FindLine(lineTag, &searcher)) != NULL)
+    while ((line = P_FindLine(lineTag, &searcher)) != nullptr)
     {
         line->flags = (line->flags & ~ML_BLOCKING) | blocking;
     }
@@ -1987,7 +1987,7 @@ static int CmdSetLineSpecial()
     special = Pop();
     lineTag = Pop();
     searcher = -1;
-    while ((line = P_FindLine(lineTag, &searcher)) != NULL)
+    while ((line = P_FindLine(lineTag, &searcher)) != nullptr)
     {
         line->special = special;
         line->arg1 = arg1;

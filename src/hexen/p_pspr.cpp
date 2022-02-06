@@ -1260,7 +1260,7 @@ void A_MStaffWeave(mobj_t * actor)
 
 void A_MStaffTrack(mobj_t * actor)
 {
-    if ((actor->special1.m == NULL) && (P_Random() < 50))
+    if ((actor->special1.m == nullptr) && (P_Random() < 50))
     {
         actor->special1.m = P_RoughMonsterSearch(actor, 10);
     }
@@ -1971,7 +1971,7 @@ static void CHolyFindTarget(mobj_t * actor)
     mobj_t *target;
 
     target = P_RoughMonsterSearch(actor, 6);
-    if (target != NULL)
+    if (target != nullptr)
     {
         actor->special1.m = target;
         actor->flags |= MF_NOCLIP | MF_SKULLFLY;
@@ -1998,7 +1998,7 @@ static void CHolySeekerMissile(mobj_t * actor, angle_t thresh,
     fixed_t deltaZ;
 
     target = actor->special1.m;
-    if (target == NULL)
+    if (target == nullptr)
     {
         return;
     }

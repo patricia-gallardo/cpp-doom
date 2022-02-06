@@ -317,7 +317,7 @@ static void StreamOut_pspdef_t(pspdef_t *str)
     // state_t *state;
     // This is a pointer; store the index in the states table,
     // rather than the pointer itself.
-    if (str->state != NULL)
+    if (str->state != nullptr)
     {
         SV_WriteLong(str->state - states);
     }
@@ -1074,7 +1074,7 @@ static void StreamOut_mobj_t(mobj_t *str)
 
     // struct player_s *player;
     // Stored as index into players[] array, if there is a player pointer.
-    if (str->player != NULL)
+    if (str->player != nullptr)
     {
         SV_WriteLong(str->player - players + 1);
     }
@@ -1608,7 +1608,7 @@ static void StreamOut_acs_t(acs_t *str)
     SV_WriteLong(GetMobjNum(str->activator));
 
     // line_t *line;
-    if (str->line != NULL)
+    if (str->line != nullptr)
     {
         SV_WriteLong(str->line - lines);
     }
@@ -2271,7 +2271,7 @@ void SV_MapTeleport(int map, int position)
             }
         }
 
-        if (targetPlayerMobj == NULL)
+        if (targetPlayerMobj == nullptr)
         {                       // The poor sap
             targetPlayerMobj = players[i].mo;
         }
@@ -2631,13 +2631,13 @@ static void UnarchiveMobjs()
 
     AssertSegment(ASEG_MOBJS);
     TargetPlayerAddrs = zmalloc<mobj_t ***>(MAX_TARGET_PLAYERS * sizeof(mobj_t **),
-        PU_STATIC, NULL);
+        PU_STATIC, nullptr);
     TargetPlayerCount = 0;
     MobjCount = SV_ReadLong();
-    MobjList = zmalloc<mobj_t **>(MobjCount * sizeof(mobj_t *), PU_STATIC, NULL);
+    MobjList = zmalloc<mobj_t **>(MobjCount * sizeof(mobj_t *), PU_STATIC, nullptr);
     for (i = 0; i < MobjCount; i++)
     {
-        MobjList[i] = zmalloc<mobj_t *>(sizeof(mobj_t), PU_LEVEL, NULL);
+        MobjList[i] = zmalloc<mobj_t *>(sizeof(mobj_t), PU_LEVEL, nullptr);
     }
     action_hook needle = P_MobjThinker;
 
@@ -2667,7 +2667,7 @@ static void UnarchiveMobjs()
 
 static int GetMobjNum(mobj_t * mobj)
 {
-    if (mobj == NULL)
+    if (mobj == nullptr)
     {
         return MOBJ_NULL;
     }
@@ -2865,7 +2865,7 @@ static void UnarchiveThinkers()
         {
             if (tClass == info->tClass)
             {
-                thinker = zmalloc<thinker_t *>(info->size, PU_LEVEL, NULL);
+                thinker = zmalloc<thinker_t *>(info->size, PU_LEVEL, nullptr);
                 auto read_callback = std::get<thinker_param_action>(info->readFunc);
                 read_callback(thinker);
                 thinker->function = info->thinkerFunc;
@@ -3276,7 +3276,7 @@ static void CopyFile(char *source_name, char *dest_name)
     int buf_count, read_count, write_count;
 
     read_handle = fopen(source_name, "rb");
-    if (read_handle == NULL)
+    if (read_handle == nullptr)
     {
         I_Error ("Couldn't read file %s", source_name);
     }
@@ -3290,17 +3290,17 @@ static void CopyFile(char *source_name, char *dest_name)
 
     if (vanilla_savegame_limit)
     {
-        buffer = zmalloc<byte *>(file_length, PU_STATIC, NULL);
+        buffer = zmalloc<byte *>(file_length, PU_STATIC, nullptr);
         Z_Free(buffer);
     }
 
     write_handle = fopen(dest_name, "wb");
-    if (write_handle == NULL)
+    if (write_handle == nullptr)
     {
         I_Error ("Couldn't read file %s", dest_name);
     }
 
-    buffer = zmalloc<byte *>(BUFFER_CHUNK_SIZE, PU_STATIC, NULL);
+    buffer = zmalloc<byte *>(BUFFER_CHUNK_SIZE, PU_STATIC, nullptr);
 
     do
     {
@@ -3340,7 +3340,7 @@ static boolean ExistingFile(char *name)
 {
     FILE *fp;
 
-    if ((fp = fopen(name, "rb")) != NULL)
+    if ((fp = fopen(name, "rb")) != nullptr)
     {
         fclose(fp);
         return true;
@@ -3362,7 +3362,7 @@ static void SV_OpenRead(char *fileName)
     SavingFP = fopen(fileName, "rb");
 
     // Should never happen, only if hex6.hxs cannot ever be created.
-    if (SavingFP == NULL)
+    if (SavingFP == nullptr)
     {
         I_Error("Could not load savegame %s", fileName);
     }

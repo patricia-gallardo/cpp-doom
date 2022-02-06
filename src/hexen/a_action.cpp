@@ -875,7 +875,7 @@ boolean A_LocalQuake(byte * args, mobj_t * actor)
             }
         }
     }
-    while (target != NULL);
+    while (target != nullptr);
 
     return (success);
 }

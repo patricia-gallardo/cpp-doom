@@ -642,7 +642,7 @@ int EV_BuildStairs(line_t * line, byte * args, int direction,
         QueueStairSector(sec, 0, sec->floorheight);
         sec->special = 0;
     }
-    while ((qSec = DequeueStairSector(&type, &height)) != NULL)
+    while ((qSec = DequeueStairSector(&type, &height)) != nullptr)
     {
         ProcessStairSector(qSec, type, height, stairsType, delay, resetDelay);
     }

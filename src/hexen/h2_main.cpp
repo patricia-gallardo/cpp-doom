@@ -411,7 +411,7 @@ void D_DoomMain()
 
     iwadfile = D_FindIWAD(IWAD_MASK_HEXEN, &gamemission);
 
-    if (iwadfile == NULL)
+    if (iwadfile == nullptr)
     {
         I_Error("Game mode indeterminate. No IWAD was found. Try specifying\n"
                 "one with the '-iwad' command line parameter.");
@@ -714,7 +714,7 @@ static void HandleArgs()
 
         free(uc_filename);
 
-        if (W_AddFile(file) != NULL)
+        if (W_AddFile(file) != nullptr)
         {
             M_StringCopy(demolumpname, lumpinfo[numlumps - 1]->name,
                          sizeof(demolumpname));
@@ -842,7 +842,7 @@ void H2_ProcessEvents()
     {
         ev = D_PopEvent();
 
-        if (ev == NULL)
+        if (ev == nullptr)
         {
             break;
         }

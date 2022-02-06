@@ -444,7 +444,7 @@ boolean SC_Compare(const char *text)
 
 void SC_ScriptError(const char *message)
 {
-    if (message == NULL)
+    if (message == nullptr)
     {
         message = "Bad syntax.";
     }

@@ -758,7 +758,7 @@ static void TryPickupArtifact(player_t * player, artitype_t artifactType,
         if (artifact->special)
         {
             P_ExecuteLineSpecial(artifact->special, artifact->args,
-                                 NULL, 0, NULL);
+                                 NULL, 0, nullptr);
             artifact->special = 0;
         }
         player->bonuscount += BONUSADD;

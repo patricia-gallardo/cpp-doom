@@ -199,12 +199,12 @@ void SN_InitSequenceScript()
                 SC_ScriptError("SN_InitSequenceScript:  Nested Script Error");
             }
             tempDataStart = zmalloc<int *>(SS_TEMPBUFFER_SIZE,
-                                             PU_STATIC, NULL);
+                                             PU_STATIC, nullptr);
             memset(tempDataStart, 0, SS_TEMPBUFFER_SIZE);
             tempDataPtr = tempDataStart;
             for (i = 0; i < SS_MAX_SCRIPTS; i++)
             {
-                if (SequenceData[i] == NULL)
+                if (SequenceData[i] == nullptr)
                 {
                     break;
                 }
@@ -289,7 +289,7 @@ void SN_InitSequenceScript()
 
             *tempDataPtr++ = SS_CMD_END;
             dataSize = (tempDataPtr - tempDataStart) * sizeof(int);
-            SequenceData[i] = zmalloc<int *>(dataSize, PU_STATIC, NULL);
+            SequenceData[i] = zmalloc<int *>(dataSize, PU_STATIC, nullptr);
             memcpy(SequenceData[i], tempDataStart, dataSize);
             Z_Free(tempDataStart);
             inSequence = -1;
@@ -319,7 +319,7 @@ void SN_StartSequence(mobj_t * mobj, int sequence)
     seqnode_t *node;
 
     SN_StopSequence(mobj);      // Stop any previous sequence
-    node = zmalloc<seqnode_t *>(sizeof(seqnode_t), PU_STATIC, NULL);
+    node = zmalloc<seqnode_t *>(sizeof(seqnode_t), PU_STATIC, nullptr);
     node->sequencePtr = SequenceData[SequenceTranslate[sequence].scriptNum];
     node->sequence = sequence;
     node->mobj = mobj;

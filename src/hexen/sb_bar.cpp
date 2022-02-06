@@ -667,7 +667,7 @@ static void DrawSoundInfo()
         c = &s.chan[i];
         x = 0;
         y = 40 + i * 10;
-        if (c->mo == NULL)
+        if (c->mo == nullptr)
         {                       // Channel is unused
             MN_DrTextA("------", xPos[0], y);
             continue;
@@ -1726,7 +1726,7 @@ static void CheatArtifactAllFunc(player_t * player, Cheat_t * cheat)
     {
         for (j = 0; j < 25; j++)
         {
-            P_GiveArtifact(player, static_cast<artitype_t>(i), NULL);
+            P_GiveArtifact(player, static_cast<artitype_t>(i), nullptr);
         }
     }
     P_SetMessage(player, TXT_CHEATARTIFACTS3, true);
@@ -1738,7 +1738,7 @@ static void CheatPuzzleFunc(player_t * player, Cheat_t * cheat)
 
     for (i = arti_firstpuzzitem; i < NUMARTIFACTS; i++)
     {
-        P_GiveArtifact(player, static_cast<artitype_t>(i), NULL);
+        P_GiveArtifact(player, static_cast<artitype_t>(i), nullptr);
     }
     P_SetMessage(player, TXT_CHEATARTIFACTS3, true);
 }

@@ -122,7 +122,7 @@ boolean EV_RotatePoly(line_t * line, byte * args, int direction, boolean
 
     polyNum = args[0];
     poly = GetPolyobj(polyNum);
-    if (poly != NULL)
+    if (poly != nullptr)
     {
         if (poly->specialdata && !overRide)
         {                       // poly is already moving
@@ -185,7 +185,7 @@ boolean EV_RotatePoly(line_t * line, byte * args, int direction, boolean
             pe->dist = ANG_MAX - 1;
         }
         poly = GetPolyobj(polyNum);
-        if (poly != NULL)
+        if (poly != nullptr)
         {
             poly->specialdata = pe;
         }
@@ -254,7 +254,7 @@ boolean EV_MovePoly(line_t * line, byte * args, boolean timesEight, boolean
 
     polyNum = args[0];
     poly = GetPolyobj(polyNum);
-    if (poly != NULL)
+    if (poly != nullptr)
     {
         if (poly->specialdata && !overRide)
         {                       // poly is already moving
@@ -462,7 +462,7 @@ boolean EV_OpenPolyDoor(line_t * line, byte * args, podoortype_t type)
 
     polyNum = args[0];
     poly = GetPolyobj(polyNum);
-    if (poly != NULL)
+    if (poly != nullptr)
     {
         if (poly->specialdata)
         {                       // poly is already moving
@@ -940,7 +940,7 @@ static void UnLinkPolyobj(polyobj_t * po)
                 {
                     link = link->next;
                 }
-                if (link == NULL)
+                if (link == nullptr)
                 {               // polyobj not located in the link cell
                     continue;
                 }
@@ -1015,12 +1015,12 @@ static void LinkPolyobj(polyobj_t * po)
                 {
                     tempLink = *link;
                     while (tempLink->next != NULL
-                           && tempLink->polyobj != NULL)
+                           && tempLink->polyobj != nullptr)
                     {
                         tempLink = tempLink->next;
                     }
                 }
-                if (tempLink->polyobj == NULL)
+                if (tempLink->polyobj == nullptr)
                 {
                     tempLink->polyobj = po;
                     continue;
@@ -1225,7 +1225,7 @@ static void SpawnPolyobj(int index, int tag, boolean crush)
             PolySegCount = 1;
             PolyStartX = segs[i].v1->x;
             PolyStartY = segs[i].v1->y;
-            IterFindPolySegs(segs[i].v2->x, segs[i].v2->y, NULL);
+            IterFindPolySegs(segs[i].v2->x, segs[i].v2->y, nullptr);
 
             polyobjs[index].numsegs = PolySegCount;
             polyobjs[index].segs = zmalloc<seg_t **>(PolySegCount * sizeof(seg_t *),
@@ -1357,7 +1357,7 @@ static void TranslateToStartSpot(int tag, int originX, int originY)
         I_Error("TranslateToStartSpot:  Unable to match polyobj tag: %d\n",
                 tag);
     }
-    if (po->segs == NULL)
+    if (po->segs == nullptr)
     {
         I_Error
             ("TranslateToStartSpot:  Anchor point located without a StartSpot point: %d\n",
@@ -1406,7 +1406,7 @@ static void TranslateToStartSpot(int tag, int originX, int originY)
     avg.x /= po->numsegs;
     avg.y /= po->numsegs;
     sub = R_PointInSubsector(avg.x << FRACBITS, avg.y << FRACBITS);
-    if (sub->poly != NULL)
+    if (sub->poly != nullptr)
     {
         I_Error
             ("PO_TranslateToStartSpot:  Multiple polyobjs in a single subsector.\n");
