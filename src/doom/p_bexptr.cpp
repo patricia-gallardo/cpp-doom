@@ -31,7 +31,7 @@ extern void    P_Thrust(player_t *player, angle_t angle, fixed_t move);
 // killough 11/98: kill an object
 void A_Die(mobj_t *actor)
 {
-    P_DamageMobj(actor, NULL, NULL, actor->health);
+    P_DamageMobj(actor, nullptr, nullptr, actor->health);
 }
 
 //

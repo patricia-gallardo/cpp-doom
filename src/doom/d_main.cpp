@@ -1079,7 +1079,7 @@ static constexpr struct
     { "Final Doom", "final", exe_final },
     { "Final Doom (alt)", "final2", exe_final2 },
     { "Chex Quest", "chex", exe_chex },
-    { NULL, NULL, exe_doom_1_2 },
+    { nullptr, nullptr, exe_doom_1_2 },
 };
 
 // Initialize the game version
@@ -1387,7 +1387,7 @@ static void LoadSigilWad()
             "SIGIL_v1_2.wad",
             "SIGIL.wad"
         };
-        char *sigil_wad = NULL, *sigil_shreds = nullptr;
+        char *sigil_wad = nullptr, *sigil_shreds = nullptr;
         char *dirname;
 
         dirname      = M_DirName(iwadfile);

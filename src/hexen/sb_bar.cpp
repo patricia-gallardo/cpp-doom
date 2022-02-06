@@ -1849,7 +1849,7 @@ static void CheatQuickenFunc2(player_t * player, Cheat_t * cheat)
 
 static void CheatQuickenFunc3(player_t * player, Cheat_t * cheat)
 {
-    P_DamageMobj(player->mo, NULL, player->mo, 10000);
+    P_DamageMobj(player->mo, nullptr, player->mo, 10000);
     P_SetMessage(player, "THAT'S THREE!  TIME TO DIE.", true);
 }
 
@@ -1934,7 +1934,7 @@ static void CheatScriptFunc3(player_t * player, Cheat_t * cheat)
         return;
     script_args[0] = script_args[1] = script_args[2] = 0;
 
-    if (P_StartACS(script, 0, script_args, player->mo, NULL, 0))
+    if (P_StartACS(script, 0, script_args, player->mo, nullptr, 0))
     {
         M_snprintf(textBuffer, sizeof(textBuffer),
                    "RUNNING SCRIPT %.2d", script);

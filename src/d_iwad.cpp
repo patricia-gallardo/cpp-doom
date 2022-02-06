@@ -269,7 +269,7 @@ static char *GetRegistryString(registry_value_t *reg_val)
     // Find the type and length of the string, and only accept strings.
 
     if (RegQueryValueEx(key, reg_val->value,
-            NULL, &valtype, NULL, &len)
+            nullptr, &valtype, nullptr, &len)
             == ERROR_SUCCESS
         && valtype == REG_SZ)
     {
@@ -277,7 +277,7 @@ static char *GetRegistryString(registry_value_t *reg_val)
 
         result = static_cast<char *>(malloc(len + 1));
 
-        if (RegQueryValueEx(key, reg_val->value, NULL, &valtype,
+        if (RegQueryValueEx(key, reg_val->value, nullptr, &valtype,
                 (unsigned char *)result, &len)
             != ERROR_SUCCESS)
         {

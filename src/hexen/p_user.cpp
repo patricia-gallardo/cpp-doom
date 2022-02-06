@@ -757,7 +757,7 @@ void P_PlayerThink(player_t * player)
         }
         else if (cmd->arti & AFLAG_SUICIDE)
         {
-            P_DamageMobj(player->mo, NULL, NULL, 10000);
+            P_DamageMobj(player->mo, nullptr, nullptr, 10000);
         }
         if (cmd->arti == NUMARTIFACTS)
         {                       // use one of each artifact (except puzzle artifacts)
@@ -1077,7 +1077,7 @@ void P_TeleportOther(mobj_t * victim)
         {
             P_RemoveMobjFromTIDList(victim);
             P_ExecuteLineSpecial(victim->special, victim->args,
-                                 NULL, 0, victim);
+                                 nullptr, 0, victim);
             victim->special = 0;
         }
 

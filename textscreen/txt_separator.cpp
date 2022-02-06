@@ -93,10 +93,10 @@ txt_widget_class_t txt_separator_class =
     TXT_NeverSelectable,
     TXT_SeparatorSizeCalc,
     TXT_SeparatorDrawer,
-    NULL,
+    nullptr,
     TXT_SeparatorDestructor,
-    NULL,
-    NULL,
+    nullptr,
+    nullptr,
 };
 
 txt_separator_t *TXT_NewSeparator(const char *label)

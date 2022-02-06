@@ -261,7 +261,7 @@ int main()
         for (i=0; i<MAX_OPL_QUEUE; ++i)
         {
             time = rand() % 0x10000;
-            OPL_Queue_Push(queue, NULL, NULL, time);
+            OPL_Queue_Push(queue, nullptr, nullptr, time);
         }
 
         time = 0;

@@ -115,9 +115,9 @@ static void DEH_FrameSHA1Sum(sha1_context_t *context)
 
 deh_section_t deh_section_frame = {
     "Frame",
-    NULL,
+    nullptr,
     DEH_FrameStart,
     DEH_FrameParseLine,
-    NULL,
+    nullptr,
     DEH_FrameSHA1Sum,
 };

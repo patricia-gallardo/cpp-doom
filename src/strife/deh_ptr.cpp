@@ -136,7 +136,7 @@ deh_section_t deh_section_pointer =
     DEH_PointerInit,
     DEH_PointerStart,
     DEH_PointerParseLine,
-    NULL,
+    nullptr,
     DEH_PointerSHA1Sum,
 };
 

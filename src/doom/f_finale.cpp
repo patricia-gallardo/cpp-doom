@@ -387,7 +387,7 @@ castinfo_t castorder[] = {
     { CC_CYBER, MT_CYBORG },
     { CC_HERO, MT_PLAYER },
 
-    { NULL, {} }
+    { nullptr, {} }
 };
 
 int                castnum;

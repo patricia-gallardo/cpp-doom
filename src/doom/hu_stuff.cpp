@@ -537,15 +537,15 @@ typedef struct
 
 static const speciallevel_t speciallevels[] = {
     // [crispy] ExM0
-    { doom, 1, 0, NULL, nullptr },
-    { doom, 2, 0, NULL, nullptr },
-    { doom, 3, 0, NULL, nullptr },
-    { doom, 4, 0, NULL, nullptr },
+    { doom, 1, 0, nullptr, nullptr },
+    { doom, 2, 0, nullptr, nullptr },
+    { doom, 3, 0, nullptr, nullptr },
+    { doom, 4, 0, nullptr, nullptr },
     // [crispy] Romero's latest E1 additions
     { doom, 1, 8, "e1m8b.wad", HUSTR_E1M8B },
     { doom, 1, 4, "e1m4b.wad", HUSTR_E1M4B },
     // [crispy] E1M10 "Sewers" (Xbox Doom)
-    { doom, 1, 10, NULL, HUSTR_E1M10 },
+    { doom, 1, 10, nullptr, HUSTR_E1M10 },
     // [crispy] The Master Levels for Doom 2
     { doom2, 0, 1, "attack.wad", MHUSTR_1 },
     { doom2, 0, 1, "canyon.wad", MHUSTR_2 },

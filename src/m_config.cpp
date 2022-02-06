@@ -735,7 +735,7 @@ static default_t doom_defaults_list[] = {
 static default_collection_t doom_defaults = {
     doom_defaults_list,
     arrlen(doom_defaults_list),
-    NULL,
+    nullptr,
 };
 
 //! @begin_config_file extended
@@ -2196,7 +2196,7 @@ static default_t extra_defaults_list[] = {
 static default_collection_t extra_defaults = {
     extra_defaults_list,
     arrlen(extra_defaults_list),
-    NULL,
+    nullptr,
 };
 
 // Search a collection for a variable

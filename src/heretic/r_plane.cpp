@@ -36,7 +36,7 @@ fixed_t skyiscale;
 // opening
 //
 
-visplane_t *visplanes = NULL, *lastvisplane;
+visplane_t *visplanes = nullptr, *lastvisplane;
 visplane_t *floorplane, *ceilingplane;
 static int numvisplanes;
 

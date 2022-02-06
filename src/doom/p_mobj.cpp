@@ -76,7 +76,7 @@ boolean
         // Modified handling.
         // Call action functions when the state is set
         if (st->action.acp3)
-            st->action.acp3(mobj, NULL, nullptr); // [crispy] let pspr action pointers get called from mobj states
+            st->action.acp3(mobj, nullptr, nullptr); // [crispy] let pspr action pointers get called from mobj states
 
         state = st->nextstate;
 

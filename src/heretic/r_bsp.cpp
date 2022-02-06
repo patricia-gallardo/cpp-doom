@@ -26,7 +26,7 @@ side_t *sidedef;
 line_t *linedef;
 sector_t *frontsector, *backsector;
 
-drawseg_t *drawsegs = NULL, *ds_p;
+drawseg_t *drawsegs = nullptr, *ds_p;
 int numdrawsegs = 0;
 
 void R_StoreWallRange(int start, int stop);

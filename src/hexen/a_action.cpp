@@ -918,7 +918,7 @@ void A_Quake(mobj_t * actor)
             {
                 if (P_Random() < 50)
                 {
-                    P_DamageMobj(victim, NULL, NULL, HITDICE(1));
+                    P_DamageMobj(victim, nullptr, nullptr, HITDICE(1));
                 }
                 // Thrust player around
                 an = victim->angle + ANG1 * P_Random();

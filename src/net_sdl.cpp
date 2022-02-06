@@ -230,7 +230,7 @@ static void NET_SDL_SendPacket(net_addr_t *addr, net_packet_t *packet)
 
     if (addr == &net_broadcast_addr)
     {
-        SDLNet_ResolveHost(&ip, NULL, port);
+        SDLNet_ResolveHost(&ip, nullptr, port);
         ip.host = INADDR_BROADCAST;
     }
     else

@@ -99,10 +99,10 @@ static void DEH_SoundParseLine(deh_context_t *context, char *line, void *tag)
 deh_section_t deh_section_sound =
 {
     "Sound",
-    NULL,
+    nullptr,
     DEH_SoundStart,
     DEH_SoundParseLine,
-    NULL,
-    NULL,
+    nullptr,
+    nullptr,
 };
 

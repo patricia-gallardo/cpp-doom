@@ -2595,7 +2595,7 @@ void A_ZombieInSpecialSector(mobj_t* actor)
         return;
 
     if(sector->special <= 15)
-        P_DamageMobj(actor, NULL, NULL, 999);
+        P_DamageMobj(actor, nullptr, nullptr, 999);
     else if(sector->special == 18)
     {
         tagval = sector->tag - 100;

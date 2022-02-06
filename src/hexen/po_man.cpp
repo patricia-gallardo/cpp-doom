@@ -644,7 +644,7 @@ static void ThrustMobj(mobj_t * mobj, seg_t * seg, polyobj_t * po)
     {
         if (!P_CheckPosition(mobj, mobj->x + thrustX, mobj->y + thrustY))
         {
-            P_DamageMobj(mobj, NULL, NULL, 3);
+            P_DamageMobj(mobj, nullptr, nullptr, 3);
         }
     }
 }

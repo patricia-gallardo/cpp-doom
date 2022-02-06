@@ -523,7 +523,7 @@ void TXT_SetWindowHelpURL(txt_window_t *window, const char *help_url)
 
 void TXT_OpenURL(const char *url)
 {
-    ShellExecute(NULL, "open", url, NULL, NULL, SW_SHOWNORMAL);
+    ShellExecute(NULL, "open", url, nullptr, nullptr, SW_SHOWNORMAL);
 }
 
 #else

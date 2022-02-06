@@ -509,7 +509,7 @@ txt_widget_class_t txt_joystick_axis_class =
     TXT_JoystickAxisKeyPress,
     TXT_JoystickAxisDestructor,
     TXT_JoystickAxisMousePress,
-    NULL,
+    nullptr,
 };
 
 txt_joystick_axis_t *TXT_NewJoystickAxis(int *axis, int *invert,

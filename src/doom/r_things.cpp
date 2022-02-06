@@ -877,7 +877,7 @@ static void R_DrawLSprite()
         return;
 
     vis = R_NewVisSprite();
-    memset(vis, 0, sizeof(*vis));                                                    // [crispy] set all fields to NULL, except ...
+    memset(vis, 0, sizeof(*vis));                                                    // [crispy] set all fields to nullptr, except ...
     vis->patch       = lump - firstspritelump;                                       // [crispy] not a sprite patch
     vis->colormap[0] = vis->colormap[1] = fixedcolormap ? fixedcolormap : colormaps; // [crispy] always full brightness
     vis->brightmap                      = dc_brightmap;

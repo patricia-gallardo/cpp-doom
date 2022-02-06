@@ -108,10 +108,10 @@ txt_widget_class_t txt_label_class =
     TXT_NeverSelectable,
     TXT_LabelSizeCalc,
     TXT_LabelDrawer,
-    NULL,
+    nullptr,
     TXT_LabelDestructor,
-    NULL,
-    NULL,
+    nullptr,
+    nullptr,
 };
 
 void TXT_SetLabel(txt_label_t *label, const char *value)

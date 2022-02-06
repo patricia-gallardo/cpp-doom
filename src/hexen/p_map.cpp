@@ -289,7 +289,7 @@ boolean PIT_CheckLine(line_t * ld)
     {                           // One sided line
         if (tmthing->flags2 & MF2_BLASTED)
         {
-            P_DamageMobj(tmthing, NULL, NULL, tmthing->info->mass >> 5);
+            P_DamageMobj(tmthing, nullptr, nullptr, tmthing->info->mass >> 5);
         }
         CheckForPushSpecial(ld, 0, tmthing);
         return (false);
@@ -300,7 +300,7 @@ boolean PIT_CheckLine(line_t * ld)
         {                       // Explicitly blocking everything
             if (tmthing->flags2 & MF2_BLASTED)
             {
-                P_DamageMobj(tmthing, NULL, NULL, tmthing->info->mass >> 5);
+                P_DamageMobj(tmthing, nullptr, nullptr, tmthing->info->mass >> 5);
             }
             CheckForPushSpecial(ld, 0, tmthing);
             return (false);
@@ -309,7 +309,7 @@ boolean PIT_CheckLine(line_t * ld)
         {                       // Block monsters only
             if (tmthing->flags2 & MF2_BLASTED)
             {
-                P_DamageMobj(tmthing, NULL, NULL, tmthing->info->mass >> 5);
+                P_DamageMobj(tmthing, nullptr, nullptr, tmthing->info->mass >> 5);
             }
             return (false);
         }
@@ -1169,7 +1169,7 @@ boolean P_TryMove(mobj_t * thing, fixed_t x, fixed_t y)
 
         if (tmthing->flags2 & MF2_BLASTED)
         {
-            P_DamageMobj(tmthing, NULL, NULL, tmthing->info->mass >> 5);
+            P_DamageMobj(tmthing, nullptr, nullptr, tmthing->info->mass >> 5);
         }
         numSpecHitTemp = numspechit;
         while (numSpecHitTemp > 0)
@@ -2069,7 +2069,7 @@ boolean PTR_PuzzleItemTraverse(intercept_t * in)
         return true;
     }
 
-    P_StartACS(mobj->args[1], 0, &mobj->args[2], PuzzleItemUser, NULL, 0);
+    P_StartACS(mobj->args[1], 0, &mobj->args[2], PuzzleItemUser, nullptr, 0);
     mobj->special = 0;
     PuzzleActivated = true;
     return false;               // Stop searching
@@ -2270,7 +2270,7 @@ boolean PIT_ChangeSector(mobj_t * thing)
     nofit = true;
     if (crushchange && !(leveltime & 3))
     {
-        P_DamageMobj(thing, NULL, NULL, crushchange);
+        P_DamageMobj(thing, nullptr, nullptr, crushchange);
         // spray blood in a random direction
         if ((!(thing->flags & MF_NOBLOOD)) &&
             (!(thing->flags2 & MF2_INVULNERABLE)))

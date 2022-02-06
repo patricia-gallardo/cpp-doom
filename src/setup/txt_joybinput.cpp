@@ -317,7 +317,7 @@ txt_widget_class_t txt_joystick_input_class =
     TXT_JoystickInputKeyPress,
     TXT_JoystickInputDestructor,
     TXT_JoystickInputMousePress,
-    NULL,
+    nullptr,
 };
 
 txt_joystick_input_t *TXT_NewJoystickInput(int *variable)

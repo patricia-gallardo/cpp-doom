@@ -569,7 +569,7 @@ void P_PlayerThink (player_t* player)
     {
         player->nukagecount--;
         if(!(leveltime & 0x1f) && player->nukagecount > 16*TICRATE)
-            P_DamageMobj(player->mo, NULL, NULL, 5);
+            P_DamageMobj(player->mo, nullptr, nullptr, 5);
     }
 
     if(player->damagecount)

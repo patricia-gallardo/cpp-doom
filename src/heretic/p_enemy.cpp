@@ -2331,7 +2331,7 @@ void P_Massacre()
         mo = (mobj_t *) think;
         if ((mo->flags & MF_COUNTKILL) && (mo->health > 0))
         {
-            P_DamageMobj(mo, NULL, NULL, 10000);
+            P_DamageMobj(mo, nullptr, nullptr, 10000);
         }
     }
 }

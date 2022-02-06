@@ -244,7 +244,7 @@ void R_InitSpriteDefs(const char **namelist)
 ===============================================================================
 */
 
-vissprite_t *vissprites = NULL, *vissprite_p;
+vissprite_t *vissprites = nullptr, *vissprite_p;
 int newvissprite;
 static int numvissprites;
 

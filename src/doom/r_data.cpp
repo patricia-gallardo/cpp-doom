@@ -673,7 +673,7 @@ void R_InitTextures()
     } texturelump_t;
 
     pnameslump_t * pnameslumps  = nullptr;
-    texturelump_t *texturelumps = NULL, *texturelump;
+    texturelump_t *texturelumps = nullptr, *texturelump;
 
     int maxpnameslumps  = 1; // PNAMES
     int maxtexturelumps = 2; // TEXTURE1, TEXTURE2

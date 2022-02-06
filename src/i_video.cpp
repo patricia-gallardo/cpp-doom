@@ -832,7 +832,7 @@ void I_FinishUpdate()
 
     // Update the intermediate texture with the contents of the RGBA buffer.
 
-    SDL_UpdateTexture(texture, NULL, argbbuffer->pixels, argbbuffer->pitch);
+    SDL_UpdateTexture(texture, nullptr, argbbuffer->pixels, argbbuffer->pitch);
 
     // Make sure the pillarboxes are kept clear each frame.
 
@@ -844,24 +844,24 @@ void I_FinishUpdate()
         // using "nearest" integer scaling.
 
         SDL_SetRenderTarget(renderer, texture_upscaled);
-        SDL_RenderCopy(renderer, texture, NULL, nullptr);
+        SDL_RenderCopy(renderer, texture, nullptr, nullptr);
 
         // Finally, render this upscaled texture to screen using linear scaling.
 
         SDL_SetRenderTarget(renderer, nullptr);
-        SDL_RenderCopy(renderer, texture_upscaled, NULL, nullptr);
+        SDL_RenderCopy(renderer, texture_upscaled, nullptr, nullptr);
     }
     else
     {
         SDL_SetRenderTarget(renderer, nullptr);
-        SDL_RenderCopy(renderer, texture, NULL, nullptr);
+        SDL_RenderCopy(renderer, texture, nullptr, nullptr);
     }
 
 #ifdef CRISPY_TRUECOLOR
     if (curpane)
     {
         SDL_SetTextureAlphaMod(curpane, pane_alpha);
-        SDL_RenderCopy(renderer, curpane, NULL, nullptr);
+        SDL_RenderCopy(renderer, curpane, nullptr, nullptr);
     }
 #endif
 
@@ -1463,7 +1463,7 @@ static void SetVideoMode()
         screenbuffer = SDL_CreateRGBSurface(0,
             SCREENWIDTH, SCREENHEIGHT, 8,
             0, 0, 0, 0);
-        SDL_FillRect(screenbuffer, NULL, 0);
+        SDL_FillRect(screenbuffer, nullptr, 0);
     }
 #endif
 
@@ -1484,19 +1484,19 @@ static void SetVideoMode()
             SCREENWIDTH, SCREENHEIGHT, 32,
             rmask, gmask, bmask, amask);
 #ifdef CRISPY_TRUECOLOR
-        SDL_FillRect(argbbuffer, NULL, I_MapRGB(0xff, 0x0, 0x0));
+        SDL_FillRect(argbbuffer, nullptr, I_MapRGB(0xff, 0x0, 0x0));
         redpane = SDL_CreateTextureFromSurface(renderer, argbbuffer);
         SDL_SetTextureBlendMode(redpane, SDL_BLENDMODE_BLEND);
 
-        SDL_FillRect(argbbuffer, NULL, I_MapRGB(0xd7, 0xba, 0x45));
+        SDL_FillRect(argbbuffer, nullptr, I_MapRGB(0xd7, 0xba, 0x45));
         yelpane = SDL_CreateTextureFromSurface(renderer, argbbuffer);
         SDL_SetTextureBlendMode(yelpane, SDL_BLENDMODE_BLEND);
 
-        SDL_FillRect(argbbuffer, NULL, I_MapRGB(0x0, 0xff, 0x0));
+        SDL_FillRect(argbbuffer, nullptr, I_MapRGB(0x0, 0xff, 0x0));
         grnpane = SDL_CreateTextureFromSurface(renderer, argbbuffer);
         SDL_SetTextureBlendMode(grnpane, SDL_BLENDMODE_BLEND);
 #endif
-        SDL_FillRect(argbbuffer, NULL, 0);
+        SDL_FillRect(argbbuffer, nullptr, 0);
     }
 
     if (texture != nullptr)
@@ -1629,7 +1629,7 @@ void I_InitGraphics()
     // Start with a clear black screen
     // (screen will be flipped after we set the palette)
 
-    SDL_FillRect(screenbuffer, NULL, 0);
+    SDL_FillRect(screenbuffer, nullptr, 0);
 
     // Set the palette
 
@@ -1861,7 +1861,7 @@ void I_RenderReadPixels(byte **data, int *w, int *h, int *p)
     // already contains the scene that we actually want to capture.
     if (crispy->post_rendering_hook)
     {
-        SDL_RenderCopy(renderer, crispy->smoothscaling ? texture_upscaled : texture, NULL, nullptr);
+        SDL_RenderCopy(renderer, crispy->smoothscaling ? texture_upscaled : texture, nullptr, nullptr);
         SDL_RenderPresent(renderer);
     }
 

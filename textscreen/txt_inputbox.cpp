@@ -299,7 +299,7 @@ txt_widget_class_t txt_inputbox_class =
     TXT_InputBoxKeyPress,
     TXT_InputBoxDestructor,
     TXT_InputBoxMousePress,
-    NULL,
+    nullptr,
     TXT_InputBoxFocused,
 };
 
@@ -311,7 +311,7 @@ txt_widget_class_t txt_int_inputbox_class =
     TXT_InputBoxKeyPress,
     TXT_InputBoxDestructor,
     TXT_InputBoxMousePress,
-    NULL,
+    nullptr,
     TXT_InputBoxFocused,
 };
 

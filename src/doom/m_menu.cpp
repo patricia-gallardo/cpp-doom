@@ -276,7 +276,7 @@ menuitem_t MainMenu[] = {
 
 menu_t MainDef = {
     main_end,
-    NULL,
+    nullptr,
     MainMenu,
     M_DrawMainMenu,
     97, 64,
@@ -880,7 +880,7 @@ void M_LoadGame(int choice)
     // [crispy] allow loading game while multiplayer demo playback
     if (netgame && !demoplayback)
     {
-        M_StartMessage(DEH_String(LOADNET), NULL, false);
+        M_StartMessage(DEH_String(LOADNET), nullptr, false);
         return;
     }
 
@@ -1014,7 +1014,7 @@ void M_SaveGame(int choice)
 {
     if (!usergame)
     {
-        M_StartMessage(DEH_String(SAVEDEAD), NULL, false);
+        M_StartMessage(DEH_String(SAVEDEAD), nullptr, false);
         return;
     }
 
@@ -1093,7 +1093,7 @@ void M_QuickLoad()
     // [crispy] allow quickloading game while multiplayer demo playback
     if (netgame && !demoplayback)
     {
-        M_StartMessage(DEH_String(QLOADNET), NULL, false);
+        M_StartMessage(DEH_String(QLOADNET), nullptr, false);
         return;
     }
 
@@ -1234,7 +1234,7 @@ void M_NewGame(int choice)
 
     if (netgame && !demoplayback)
     {
-        M_StartMessage(DEH_String(NEWGAME), NULL, false);
+        M_StartMessage(DEH_String(NEWGAME), nullptr, false);
         return;
     }
 
@@ -1285,7 +1285,7 @@ void M_Episode(int choice)
     if ((gamemode == shareware)
         && choice)
     {
-        M_StartMessage(DEH_String(SWSTRING), NULL, false);
+        M_StartMessage(DEH_String(SWSTRING), nullptr, false);
         M_SetupNextMenu(&ReadDef1);
         return;
     }
@@ -1645,7 +1645,7 @@ void M_EndGame(int choice)
 
     if (netgame)
     {
-        M_StartMessage(DEH_String(NETEND), NULL, false);
+        M_StartMessage(DEH_String(NETEND), nullptr, false);
         return;
     }
 

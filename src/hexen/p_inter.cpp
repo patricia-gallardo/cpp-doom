@@ -269,7 +269,7 @@ static void TryPickupWeapon(player_t * player, pclass_t weaponClass,
     if (weapon->special)
     {
         P_ExecuteLineSpecial(weapon->special, weapon->args,
-                             NULL, 0, player->mo);
+                             nullptr, 0, player->mo);
         weapon->special = 0;
     }
 
@@ -476,7 +476,7 @@ static void TryPickupWeaponPiece(player_t * player, pclass_t matchClass,
     if (pieceMobj->special)
     {
         P_ExecuteLineSpecial(pieceMobj->special, pieceMobj->args,
-                             NULL, 0, player->mo);
+                             nullptr, 0, player->mo);
         pieceMobj->special = 0;
     }
     if (remove)
@@ -712,7 +712,7 @@ static void TryPickupArtifact(player_t * player, artitype_t artifactType,
                               mobj_t * artifact)
 {
     static const char *artifactMessages[NUMARTIFACTS] = {
-        NULL,
+        nullptr,
         TXT_ARTIINVULNERABILITY,
         TXT_ARTIHEALTH,
         TXT_ARTISUPERHEALTH,
@@ -758,7 +758,7 @@ static void TryPickupArtifact(player_t * player, artitype_t artifactType,
         if (artifact->special)
         {
             P_ExecuteLineSpecial(artifact->special, artifact->args,
-                                 NULL, 0, nullptr);
+                                 nullptr, 0, nullptr);
             artifact->special = 0;
         }
         player->bonuscount += BONUSADD;
@@ -1016,7 +1016,7 @@ void P_TouchSpecialThing(mobj_t * special, mobj_t * toucher)
             if (special->special)
             {
                 P_ExecuteLineSpecial(special->special, special->args,
-                                     NULL, 0, toucher);
+                                     nullptr, 0, toucher);
                 special->special = 0;
             }
 
@@ -1226,7 +1226,7 @@ void P_TouchSpecialThing(mobj_t * special, mobj_t * toucher)
     }
     if (special->special)
     {
-        P_ExecuteLineSpecial(special->special, special->args, NULL,
+        P_ExecuteLineSpecial(special->special, special->args, nullptr,
                              0, toucher);
         special->special = 0;
     }
@@ -1300,12 +1300,12 @@ void P_KillMobj(mobj_t * source, mobj_t * target)
     {                           // Initiate monster death actions
         if (target->type == MT_SORCBOSS)
         {
-            P_StartACS(target->special, 0, dummyArgs, target, NULL, 0);
+            P_StartACS(target->special, 0, dummyArgs, target, nullptr, 0);
         }
         else
         {
             P_ExecuteLineSpecial(target->special, target->args,
-                                 NULL, 0, target);
+                                 nullptr, 0, target);
         }
     }
     if (source && source->player)
@@ -1524,7 +1524,7 @@ void P_MinotaurSlam(mobj_t * source, mobj_t * target)
     thrust = 16 * FRACUNIT + (P_Random() << 10);
     target->momx += FixedMul(thrust, finecosine[angle]);
     target->momy += FixedMul(thrust, finesine[angle]);
-    P_DamageMobj(target, NULL, source, HITDICE(4));
+    P_DamageMobj(target, nullptr, source, HITDICE(4));
     if (target->player)
     {
         target->reactiontime = 14 + (P_Random() & 7);
@@ -2121,7 +2121,7 @@ void P_FallingDamage(player_t * player)
 
     if (mom >= 63 * FRACUNIT)
     {                           // automatic death
-        P_DamageMobj(player->mo, NULL, NULL, 10000);
+        P_DamageMobj(player->mo, nullptr, nullptr, 10000);
         return;
     }
     damage = ((FixedMul(dist, dist) / 10) >> FRACBITS) - 24;
@@ -2131,7 +2131,7 @@ void P_FallingDamage(player_t * player)
         damage = player->mo->health - 1;
     }
     S_StartSound(player->mo, SFX_PLAYER_LAND);
-    P_DamageMobj(player->mo, NULL, NULL, damage);
+    P_DamageMobj(player->mo, nullptr, nullptr, damage);
 }
 
 //==========================================================================

@@ -95,9 +95,9 @@ static void DEH_BEXInclParseLine(deh_context_t *context, char *line, void *tag)
 
 deh_section_t deh_section_bexincl = {
     "INCLUDE",
-    NULL,
+    nullptr,
     DEH_BEXInclStart,
     DEH_BEXInclParseLine,
-    NULL,
-    NULL,
+    nullptr,
+    nullptr,
 };

@@ -138,10 +138,10 @@ static void DEH_CheatParseLine(deh_context_t *context, char *line, void *tag)
 deh_section_t deh_section_cheat =
 {
     "Cheat",
-    NULL,
+    nullptr,
     DEH_CheatStart,
     DEH_CheatParseLine,
-    NULL,
-    NULL,
+    nullptr,
+    nullptr,
 };
 

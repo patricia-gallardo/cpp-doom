@@ -508,7 +508,7 @@ void P_LoadACScripts(int lump)
     {
         offset = ReadOffset();
         ACStrings[i] = (char *) ActionCodeBase + offset;
-        ACSAssert(memchr(ACStrings[i], '\0', ActionCodeSize - offset) != NULL,
+        ACSAssert(memchr(ACStrings[i], '\0', ActionCodeSize - offset) != nullptr,
                   "string %d missing terminating NUL", i);
     }
 
@@ -555,7 +555,7 @@ void P_CheckACSStore()
     {
         if (store->map == gamemap)
         {
-            P_StartACS(store->script, 0, store->args, NULL, NULL, 0);
+            P_StartACS(store->script, 0, store->args, nullptr, nullptr, 0);
             if (NewScript)
             {
                 NewScript->delayCount = 35;

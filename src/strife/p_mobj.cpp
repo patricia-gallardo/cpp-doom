@@ -200,7 +200,7 @@ void P_XYMovement (mobj_t* mo)
                 // *** BUG: In vanilla Strife the second condition is simply
                 // if(numspechit). However, numspechit can be negative, and
                 // when it is, this accesses spechit[-2]. This always causes the
-                // DOS exe to read from NULL, and the 'special' value there (in
+                // DOS exe to read from nullptr, and the 'special' value there (in
                 // DOS 6.22 at least) is 0x70, which does nothing.
                 if(blockingline && blockingline->special)
                     P_ShootSpecialLine(mo, blockingline);
@@ -373,7 +373,7 @@ void P_ZMovement (mobj_t* mo)
                 // villsa [STRIFE] fall damage
                 // haleyjd 09/18/10: Repaired calculation
                 if(mo->momz < -20*FRACUNIT)
-                    P_DamageMobj(mo, NULL, mo, mo->momz / -25000);
+                    P_DamageMobj(mo, nullptr, mo, mo->momz / -25000);
 
                 // haleyjd 20110224: *Any* fall centers your view, not just
                 // damaging falls (moved outside the above if).

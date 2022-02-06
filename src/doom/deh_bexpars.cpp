@@ -70,9 +70,9 @@ static void DEH_BEXParsParseLine(deh_context_t *context, char *line, void *tag)
 
 deh_section_t deh_section_bexpars = {
     "[PARS]",
-    NULL,
+    nullptr,
     DEH_BEXParsStart,
     DEH_BEXParsParseLine,
-    NULL,
-    NULL,
+    nullptr,
+    nullptr,
 };

@@ -94,10 +94,10 @@ static void DEH_AmmoSHA1Hash(sha1_context_t *context)
 deh_section_t deh_section_ammo =
 {
     "Ammo",
-    NULL,
+    nullptr,
     DEH_AmmoStart,
     DEH_AmmoParseLine,
-    NULL,
+    nullptr,
     DEH_AmmoSHA1Hash,
 };
 

@@ -1152,7 +1152,7 @@ static boolean I_MP_InitMusic()
     Mix_Init(MIX_INIT_FLAC | MIX_INIT_OGG | MIX_INIT_MP3);
 
     // Register an effect function to track the music position.
-    Mix_RegisterEffect(MIX_CHANNEL_POST, TrackPositionCallback, NULL, nullptr);
+    Mix_RegisterEffect(MIX_CHANNEL_POST, TrackPositionCallback, nullptr, nullptr);
 
     return music_initialized;
 }
@@ -1307,7 +1307,7 @@ static double GetMusicPosition()
     unsigned int music_pos;
     int          freq;
 
-    Mix_QuerySpec(&freq, NULL, nullptr);
+    Mix_QuerySpec(&freq, nullptr, nullptr);
 
     SDL_LockAudio();
     music_pos = current_track_pos;
@@ -1360,7 +1360,7 @@ static void I_MP_PollMusic()
 }
 
 music_module_t music_pack_module = {
-    NULL,
+    nullptr,
     0,
     I_MP_InitMusic,
     I_MP_ShutdownMusic,

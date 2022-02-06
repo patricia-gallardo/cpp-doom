@@ -112,10 +112,10 @@ static void DEH_WeaponSHA1Sum(sha1_context_t *context)
 deh_section_t deh_section_weapon =
 {
     "Weapon",
-    NULL,
+    nullptr,
     DEH_WeaponStart,
     DEH_WeaponParseLine,
-    NULL,
+    nullptr,
     DEH_WeaponSHA1Sum,
 };
 

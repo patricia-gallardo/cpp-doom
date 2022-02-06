@@ -515,7 +515,7 @@ static int ST_cheat_massacre()
             {
                 if (mo->health > 0)
                 {
-                    P_DamageMobj(mo, NULL, NULL, 10000);
+                    P_DamageMobj(mo, nullptr, nullptr, 10000);
                     killcount++;
                 }
                 if (mo->type == MT_PAIN)

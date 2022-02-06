@@ -122,12 +122,12 @@ static void SetupLists()
 {
     // IWAD
 
-    if (!SetupList(&iwad_flats, &iwad, "F_START", "F_END", NULL, nullptr))
+    if (!SetupList(&iwad_flats, &iwad, "F_START", "F_END", nullptr, nullptr))
     {
         I_Error("Flats section not found in IWAD");
     }
 
-    if (!SetupList(&iwad_sprites, &iwad, "S_START", "S_END", NULL, nullptr))
+    if (!SetupList(&iwad_sprites, &iwad, "S_START", "S_END", nullptr, nullptr))
 
     {
         I_Error("Sprites section not found in IWAD");

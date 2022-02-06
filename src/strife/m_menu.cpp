@@ -248,7 +248,7 @@ menuitem_t MainMenu[]=
 menu_t  MainDef =
 {
     main_end,
-    NULL,
+    nullptr,
     MainMenu,
     M_DrawMainMenu,
     97,45, // haleyjd 08/28/10: [STRIFE] changed y coord
@@ -702,7 +702,7 @@ void M_LoadGame (int choice)
 {
     if (netgame)
     {
-        M_StartMessage(DEH_String(LOADNET), NULL, false);
+        M_StartMessage(DEH_String(LOADNET), nullptr, false);
         return;
     }
 
@@ -752,7 +752,7 @@ void M_DoSave(int slot)
         FromCurr();
     }
     else
-        M_StartMessage(DEH_String(QSAVESPOT), NULL, false);
+        M_StartMessage(DEH_String(QSAVESPOT), nullptr, false);
 }
 
 //
@@ -789,7 +789,7 @@ void M_SaveGame (int choice)
     if (netgame)
     {
         // haleyjd 20110211: Hooray for Rogue's awesome multiplayer support...
-        M_StartMessage(DEH_String("You can't save a netgame"), NULL, false);
+        M_StartMessage(DEH_String("You can't save a netgame"), nullptr, false);
         return;
     }
     if (!usergame)
@@ -837,7 +837,7 @@ void M_QuickSave()
     if (netgame)
     {
         // haleyjd 20110211 [STRIFE]: More fun...
-        M_StartMessage(DEH_String("You can't save a netgame"), NULL, false);
+        M_StartMessage(DEH_String("You can't save a netgame"), nullptr, false);
         return;
     }
 
@@ -1293,7 +1293,7 @@ void M_CheckStartCast()
 {
     if(usergame)
     {
-        M_StartMessage(DEH_String("You have to end your game first."), NULL, false);
+        M_StartMessage(DEH_String("You have to end your game first."), nullptr, false);
         return;
     }
 

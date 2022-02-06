@@ -836,10 +836,10 @@ static void DEH_TextParseLine(deh_context_t *context, char *line, void *tag)
 deh_section_t deh_section_heretic_text =
 {
     "Text",
-    NULL,
+    nullptr,
     DEH_TextStart,
     DEH_TextParseLine,
-    NULL,
-    NULL,
+    nullptr,
+    nullptr,
 };
 

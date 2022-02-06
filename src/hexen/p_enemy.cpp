@@ -1123,7 +1123,7 @@ static boolean CheckMinotaurAge(mobj_t *mo)
 
     if (leveltime - LONG(starttime) >= MAULATORTICS)
     {
-        P_DamageMobj(mo, NULL, NULL, 10000);
+        P_DamageMobj(mo, nullptr, nullptr, 10000);
         return false;
     }
 
@@ -1754,7 +1754,7 @@ int P_Massacre()
         {
             mo->flags2 &= ~(MF2_NONSHOOTABLE + MF2_INVULNERABLE);
             mo->flags |= MF_SHOOTABLE;
-            P_DamageMobj(mo, NULL, NULL, 10000);
+            P_DamageMobj(mo, nullptr, nullptr, 10000);
             count++;
         }
     }
@@ -4810,7 +4810,7 @@ void A_FreezeDeath(mobj_t * actor)
     else if (actor->flags & MF_COUNTKILL && actor->special)
     {
         // Initiate monster death actions.
-        P_ExecuteLineSpecial(actor->special, actor->args, NULL, 0, actor);
+        P_ExecuteLineSpecial(actor->special, actor->args, nullptr, 0, actor);
     }
 }
 
@@ -4975,7 +4975,7 @@ void A_KoraxChase(mobj_t * actor)
         }
 
         CheckACSPresent(249);
-        P_StartACS(249, 0, args, actor, NULL, 0);
+        P_StartACS(249, 0, args, actor, nullptr, 0);
         actor->special2.i = 1;    // Don't run again
 
         return;
@@ -5053,7 +5053,7 @@ void A_KoraxBonePop(mobj_t * actor)
         KSpiritInit(mo, actor);
 
     CheckACSPresent(255);
-    P_StartACS(255, 0, args, actor, NULL, 0);   // Death script
+    P_StartACS(255, 0, args, actor, nullptr, 0);   // Death script
 }
 
 void KSpiritInit(mobj_t * spirit, mobj_t * korax)
@@ -5171,23 +5171,23 @@ void A_KoraxCommand(mobj_t * actor)
     {
         case 0:
             CheckACSPresent(250);
-            P_StartACS(250, 0, args, actor, NULL, 0);
+            P_StartACS(250, 0, args, actor, nullptr, 0);
             break;
         case 1:
             CheckACSPresent(251);
-            P_StartACS(251, 0, args, actor, NULL, 0);
+            P_StartACS(251, 0, args, actor, nullptr, 0);
             break;
         case 2:
             CheckACSPresent(252);
-            P_StartACS(252, 0, args, actor, NULL, 0);
+            P_StartACS(252, 0, args, actor, nullptr, 0);
             break;
         case 3:
             CheckACSPresent(253);
-            P_StartACS(253, 0, args, actor, NULL, 0);
+            P_StartACS(253, 0, args, actor, nullptr, 0);
             break;
         case 4:
             CheckACSPresent(254);
-            P_StartACS(254, 0, args, actor, NULL, 0);
+            P_StartACS(254, 0, args, actor, nullptr, 0);
             break;
     }
 }

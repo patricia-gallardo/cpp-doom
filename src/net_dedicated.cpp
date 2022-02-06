@@ -62,7 +62,7 @@ static const char *not_dedicated_options[] = {
     "-extratics",
     "-dup",
     "-shorttics",
-    NULL,
+    nullptr,
 };
 
 static void CheckForClientOptions()

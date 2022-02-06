@@ -462,7 +462,7 @@ void P_TouchSpecialThing(mobj_t* special, mobj_t* toucher)
     case MT_SPECTRE_E:
     case MT_ENTITY:
     case MT_SUBENTITY:
-        P_DamageMobj(toucher, NULL, NULL, 5);
+        P_DamageMobj(toucher, nullptr, nullptr, 5);
         return;
     default:
         break;

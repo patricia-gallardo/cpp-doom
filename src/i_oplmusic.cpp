@@ -2372,7 +2372,7 @@ music_module_t music_opl_module = {
     I_OPL_PlaySong,
     I_OPL_StopSong,
     I_OPL_MusicIsPlaying,
-    NULL, // Poll
+    nullptr, // Poll
 };
 
 void I_SetOPLDriverVer(opl_driver_ver_t ver)

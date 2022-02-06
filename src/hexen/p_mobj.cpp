@@ -691,7 +691,7 @@ void P_MonsterFallingDamage(mobj_t * mo)
         damage = ((mom - (23 * FRACUNIT)) * 6) >> FRACBITS;
     }
     damage = 10000;             // always kill 'em
-    P_DamageMobj(mo, NULL, NULL, damage);
+    P_DamageMobj(mo, nullptr, nullptr, damage);
 }
 
 
@@ -833,7 +833,7 @@ void P_ZMovement(mobj_t * mo)
             }
             else if (mo->type >= MT_POTTERY1 && mo->type <= MT_POTTERY3)
             {
-                P_DamageMobj(mo, NULL, NULL, 25);
+                P_DamageMobj(mo, nullptr, nullptr, 25);
             }
             else if (mo->flags & MF_COUNTKILL)
             {
@@ -1969,7 +1969,7 @@ int P_HitFloor(mobj_t * thing)
             S_StartSound(mo, SFX_LAVA_SIZZLE);
             if (thing->player && leveltime & 31)
             {
-                P_DamageMobj(thing, &LavaInflictor, NULL, 5);
+                P_DamageMobj(thing, &LavaInflictor, nullptr, 5);
             }
             return (FLOOR_LAVA);
         case FLOOR_SLUDGE:

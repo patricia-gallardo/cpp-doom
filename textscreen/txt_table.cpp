@@ -34,7 +34,7 @@ txt_widget_t txt_table_eol;
 txt_widget_t txt_table_empty;
 
 // Returns true if the given widget in the table's widgets[] array refers
-// to an actual widget - not NULL, or one of the special overflow pointers.
+// to an actual widget - not nullptr, or one of the special overflow pointers.
 static int IsActualWidget(txt_widget_t *widget)
 {
     return widget != NULL

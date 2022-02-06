@@ -972,7 +972,7 @@ static void QueryPeriodicCallback(TXT_UNCAST_ARG(results_table))
 
     if (!NET_Query_Poll(QueryResponseCallback, results_table))
     {
-        TXT_SetPeriodicCallback(NULL, NULL, 0);
+        TXT_SetPeriodicCallback(NULL, nullptr, 0);
 
         if (query_servers_found == 0)
         {
@@ -987,7 +987,7 @@ static void QueryPeriodicCallback(TXT_UNCAST_ARG(results_table))
 
 static void QueryWindowClosed(TXT_UNCAST_ARG(window), void *unused)
 {
-    TXT_SetPeriodicCallback(NULL, NULL, 0);
+    TXT_SetPeriodicCallback(NULL, nullptr, 0);
 }
 
 static void ServerQueryWindow(const char *title)

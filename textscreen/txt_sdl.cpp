@@ -72,7 +72,7 @@ static const txt_font_t *font;
 
 // Dummy "font" that means to try highdpi rendering, or fallback to
 // normal_font otherwise.
-static const txt_font_t highdpi_font = { "normal-highdpi", NULL, 8, 16 };
+static const txt_font_t highdpi_font = { "normal-highdpi", nullptr, 8, 16 };
 
 // Mapping from SDL keyboard scancode to internal key code.
 static const int scancode_translate_table[] = SCANCODE_TO_KEYS_ARRAY;
@@ -143,7 +143,7 @@ static const txt_font_t *FontForName(const char *name)
         &normal_font,
         &large_font,
         &highdpi_font,
-        NULL,
+        nullptr,
     };
 
     for (i = 0; fonts[i]->name != nullptr; ++i)
@@ -446,7 +446,7 @@ void TXT_UpdateScreenArea(int x, int y, int w, int h)
 
     SDL_RenderClear(renderer);
     GetDestRect(&rect);
-    SDL_RenderCopy(renderer, screentx, NULL, &rect);
+    SDL_RenderCopy(renderer, screentx, nullptr, &rect);
     SDL_RenderPresent(renderer);
 
     SDL_DestroyTexture(screentx);

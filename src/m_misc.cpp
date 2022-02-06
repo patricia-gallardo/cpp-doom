@@ -652,7 +652,7 @@ char *M_OEMToUTF8(const char *oem)
     tmp = static_cast<wchar_t *>(malloc(len * sizeof(wchar_t)));
     MultiByteToWideChar(CP_OEMCP, 0, oem, len, tmp, len);
     result = static_cast<char *>(malloc(len * 4));
-    WideCharToMultiByte(CP_UTF8, 0, tmp, len, result, len * 4, NULL, nullptr);
+    WideCharToMultiByte(CP_UTF8, 0, tmp, len, result, len * 4, nullptr, nullptr);
     free(tmp);
 
     return result;

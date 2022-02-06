@@ -154,7 +154,7 @@ void TXT_SetWindowPosition(txt_window_t *window,
  *
  * @param window      The window.
  * @param position    The window action slot to set (left, center or right).
- * @param action      The window action widget.  If this is NULL, any
+ * @param action      The window action widget.  If this is nullptr, any
  *                    current window action in the given slot is removed.
  */
 

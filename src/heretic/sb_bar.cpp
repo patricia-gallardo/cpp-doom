@@ -1289,6 +1289,6 @@ static void CheatIDKFAFunc(player_t * player, Cheat_t * cheat)
 
 static void CheatIDDQDFunc(player_t * player, Cheat_t * cheat)
 {
-    P_DamageMobj(player->mo, NULL, player->mo, 10000);
+    P_DamageMobj(player->mo, nullptr, player->mo, 10000);
     P_SetMessage(player, DEH_String(TXT_CHEATIDDQD), true);
 }

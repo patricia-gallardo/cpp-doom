@@ -389,7 +389,7 @@ static void HU_addMessage(const char *prefix, const char *message)
 
     // Add two message lines.
     HUlib_addMessageToSText(&w_message, prefix, buffer);
-    HUlib_addMessageToSText(&w_message, NULL,   rover2);
+    HUlib_addMessageToSText(&w_message, nullptr,   rover2);
 }
 
 //

@@ -180,9 +180,9 @@ static void DEH_BEXPtrParseLine(deh_context_t *context, char *line, void *tag)
 
 deh_section_t deh_section_bexptr = {
     "[CODEPTR]",
-    NULL,
+    nullptr,
     DEH_BEXPtrStart,
     DEH_BEXPtrParseLine,
-    NULL,
-    NULL,
+    nullptr,
+    nullptr,
 };

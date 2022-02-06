@@ -221,7 +221,7 @@ static point_t lnodes[NUMEPISODES][NUMMAPS] =
 
 #define ANIM(type, period, nanims, x, y, nexttic)            \
    { (type), (period), (nanims), { (x), (y) }, (nexttic),    \
-     0, { NULL, NULL, nullptr }, 0, 0, 0, 0 }
+     0, { nullptr, nullptr, nullptr }, 0, 0, 0, 0 }
 
 
 static anim_t epsd0animinfo[] =
@@ -338,10 +338,10 @@ static int		NUMCMAPS;
 //
 
 // You Are Here graphic
-static patch_t*		yah[3] = { NULL, NULL, nullptr };
+static patch_t*		yah[3] = { nullptr, nullptr, nullptr };
 
 // splat
-static patch_t*		splat[2] = { NULL, nullptr };
+static patch_t*		splat[2] = { nullptr, nullptr };
 
 // %, : graphics
 static patch_t*		percent;

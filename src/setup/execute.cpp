@@ -146,7 +146,7 @@ void AddCmdLineParameter(execute_context_t *context, const char *s, ...)
 boolean OpenFolder(const char *path)
 {
     // "If the function succeeds, it returns a value greater than 32."
-    return (int)ShellExecute(NULL, "open", path, NULL, NULL, SW_SHOWDEFAULT) > 32;
+    return (int)ShellExecute(NULL, "open", path, nullptr, nullptr, SW_SHOWDEFAULT) > 32;
 }
 
 // Wait for the specified process to exit.  Returns the exit code.
@@ -240,7 +240,7 @@ static int ExecuteCommand(const char *program, const char *arg)
     startup_info.cb = sizeof(startup_info);
 
     if (!CreateProcessW(NULL, command,
-                        NULL, NULL, FALSE, 0, NULL, NULL,
+                        nullptr, nullptr, FALSE, 0, nullptr, nullptr,
                         &startup_info, &proc_info))
     {
         result = -1;

@@ -60,7 +60,7 @@ musicinfo_t S_music[] =
 // Sound info
 
 #define SOUND(name, priority, numchannels, pitchshift) \
-    { name, "", priority, NULL, pitchshift, 0, -1, 0, numchannels, nullptr }
+    { name, "", priority, nullptr, pitchshift, 0, -1, 0, numchannels, nullptr }
 
 sfxinfo_t S_sfx[] = {
     // tagname, lumpname, priority, usefulness, snd_ptr, lumpnum, numchannels,

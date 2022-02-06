@@ -367,9 +367,9 @@ static void DEH_BEXStrParseLine(deh_context_t *context, char *line, void *tag)
 
 deh_section_t deh_section_bexstr = {
     "[STRINGS]",
-    NULL,
+    nullptr,
     DEH_BEXStrStart,
     DEH_BEXStrParseLine,
-    NULL,
-    NULL,
+    nullptr,
+    nullptr,
 };

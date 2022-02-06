@@ -98,7 +98,7 @@ static int snd_mport  = 0;
 static sound_module_t *sound_modules[] = {
     &sound_sdl_module,
     &sound_pcsound_module,
-    NULL,
+    nullptr,
 };
 
 // Compiled-in music modules:
@@ -106,7 +106,7 @@ static sound_module_t *sound_modules[] = {
 static music_module_t *music_modules[] = {
     &music_sdl_module,
     &music_opl_module,
-    NULL,
+    nullptr,
 };
 
 // Check if a sound device is in the given list of devices

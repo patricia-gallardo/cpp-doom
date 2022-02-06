@@ -135,10 +135,10 @@ static void DEH_ThingSHA1Sum(sha1_context_t *context)
 deh_section_t deh_section_thing =
 {
     "Thing",
-    NULL,
+    nullptr,
     DEH_ThingStart,
     DEH_ThingParseLine,
-    NULL,
+    nullptr,
     DEH_ThingSHA1Sum,
 };
 

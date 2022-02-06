@@ -160,8 +160,8 @@ static int quickload;
 
 static MenuItem_t MainItems[] = {
     {ITT_SETMENU, "NEW GAME", SCNetCheck2, 1, MENU_CLASS},
-    {ITT_SETMENU, "OPTIONS", NULL, 0, MENU_OPTIONS},
-    {ITT_SETMENU, "GAME FILES", NULL, 0, MENU_FILES},
+    {ITT_SETMENU, "OPTIONS", nullptr, 0, MENU_OPTIONS},
+    {ITT_SETMENU, "GAME FILES", nullptr, 0, MENU_FILES},
     {ITT_EFUNC, "INFO", SCInfo, 0, MENU_NONE},
     {ITT_EFUNC, "QUIT GAME", SCQuitGame, 0, MENU_NONE}
 };
@@ -190,7 +190,7 @@ static Menu_t ClassMenu = {
 
 static MenuItem_t FilesItems[] = {
     {ITT_SETMENU, "LOAD GAME", SCNetCheck2, 2, MENU_LOAD},
-    {ITT_SETMENU, "SAVE GAME", NULL, 0, MENU_SAVE}
+    {ITT_SETMENU, "SAVE GAME", nullptr, 0, MENU_SAVE}
 };
 
 static Menu_t FilesMenu = {
@@ -202,12 +202,12 @@ static Menu_t FilesMenu = {
 };
 
 static MenuItem_t LoadItems[] = {
-    {ITT_EFUNC, NULL, SCLoadGame, 0, MENU_NONE},
-    {ITT_EFUNC, NULL, SCLoadGame, 1, MENU_NONE},
-    {ITT_EFUNC, NULL, SCLoadGame, 2, MENU_NONE},
-    {ITT_EFUNC, NULL, SCLoadGame, 3, MENU_NONE},
-    {ITT_EFUNC, NULL, SCLoadGame, 4, MENU_NONE},
-    {ITT_EFUNC, NULL, SCLoadGame, 5, MENU_NONE}
+    {ITT_EFUNC, nullptr, SCLoadGame, 0, MENU_NONE},
+    {ITT_EFUNC, nullptr, SCLoadGame, 1, MENU_NONE},
+    {ITT_EFUNC, nullptr, SCLoadGame, 2, MENU_NONE},
+    {ITT_EFUNC, nullptr, SCLoadGame, 3, MENU_NONE},
+    {ITT_EFUNC, nullptr, SCLoadGame, 4, MENU_NONE},
+    {ITT_EFUNC, nullptr, SCLoadGame, 5, MENU_NONE}
 };
 
 static Menu_t LoadMenu = {
@@ -219,12 +219,12 @@ static Menu_t LoadMenu = {
 };
 
 static MenuItem_t SaveItems[] = {
-    {ITT_EFUNC, NULL, SCSaveGame, 0, MENU_NONE},
-    {ITT_EFUNC, NULL, SCSaveGame, 1, MENU_NONE},
-    {ITT_EFUNC, NULL, SCSaveGame, 2, MENU_NONE},
-    {ITT_EFUNC, NULL, SCSaveGame, 3, MENU_NONE},
-    {ITT_EFUNC, NULL, SCSaveGame, 4, MENU_NONE},
-    {ITT_EFUNC, NULL, SCSaveGame, 5, MENU_NONE}
+    {ITT_EFUNC, nullptr, SCSaveGame, 0, MENU_NONE},
+    {ITT_EFUNC, nullptr, SCSaveGame, 1, MENU_NONE},
+    {ITT_EFUNC, nullptr, SCSaveGame, 2, MENU_NONE},
+    {ITT_EFUNC, nullptr, SCSaveGame, 3, MENU_NONE},
+    {ITT_EFUNC, nullptr, SCSaveGame, 4, MENU_NONE},
+    {ITT_EFUNC, nullptr, SCSaveGame, 5, MENU_NONE}
 };
 
 static Menu_t SaveMenu = {
@@ -236,11 +236,11 @@ static Menu_t SaveMenu = {
 };
 
 static MenuItem_t SkillItems[] = {
-    {ITT_EFUNC, NULL, SCSkill, sk_baby, MENU_NONE},
-    {ITT_EFUNC, NULL, SCSkill, sk_easy, MENU_NONE},
-    {ITT_EFUNC, NULL, SCSkill, sk_medium, MENU_NONE},
-    {ITT_EFUNC, NULL, SCSkill, sk_hard, MENU_NONE},
-    {ITT_EFUNC, NULL, SCSkill, sk_nightmare, MENU_NONE}
+    {ITT_EFUNC, nullptr, SCSkill, sk_baby, MENU_NONE},
+    {ITT_EFUNC, nullptr, SCSkill, sk_easy, MENU_NONE},
+    {ITT_EFUNC, nullptr, SCSkill, sk_medium, MENU_NONE},
+    {ITT_EFUNC, nullptr, SCSkill, sk_hard, MENU_NONE},
+    {ITT_EFUNC, nullptr, SCSkill, sk_nightmare, MENU_NONE}
 };
 
 static Menu_t SkillMenu = {
@@ -255,8 +255,8 @@ static MenuItem_t OptionsItems[] = {
     {ITT_EFUNC, "END GAME", SCEndGame, 0, MENU_NONE},
     {ITT_EFUNC, "MESSAGES : ", SCMessages, 0, MENU_NONE},
     {ITT_LRFUNC, "MOUSE SENSITIVITY", SCMouseSensi, 0, MENU_NONE},
-    {ITT_EMPTY, NULL, NULL, 0, MENU_NONE},
-    {ITT_SETMENU, "MORE...", NULL, 0, MENU_OPTIONS2}
+    {ITT_EMPTY, nullptr, nullptr, 0, MENU_NONE},
+    {ITT_SETMENU, "MORE...", nullptr, 0, MENU_OPTIONS2}
 };
 
 static Menu_t OptionsMenu = {
@@ -269,11 +269,11 @@ static Menu_t OptionsMenu = {
 
 static MenuItem_t Options2Items[] = {
     {ITT_LRFUNC, "SCREEN SIZE", SCScreenSize, 0, MENU_NONE},
-    {ITT_EMPTY, NULL, NULL, 0, MENU_NONE},
+    {ITT_EMPTY, nullptr, nullptr, 0, MENU_NONE},
     {ITT_LRFUNC, "SFX VOLUME", SCSfxVolume, 0, MENU_NONE},
-    {ITT_EMPTY, NULL, NULL, 0, MENU_NONE},
+    {ITT_EMPTY, nullptr, nullptr, 0, MENU_NONE},
     {ITT_LRFUNC, "MUSIC VOLUME", SCMusicVolume, 0, MENU_NONE},
-    {ITT_EMPTY, NULL, NULL, 0, MENU_NONE}
+    {ITT_EMPTY, nullptr, nullptr, 0, MENU_NONE}
 };
 
 static Menu_t Options2Menu = {

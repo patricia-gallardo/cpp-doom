@@ -365,7 +365,7 @@ static menuitem_t dialogmenuitems[] =
 static menu_t dialogmenu =
 {
     NUMDIALOGMENUITEMS, 
-    NULL, 
+    nullptr,
     dialogmenuitems, 
     P_DialogDrawer, 
     42, 

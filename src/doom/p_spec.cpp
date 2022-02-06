@@ -1107,7 +1107,7 @@ void P_PlayerInSpecialSector(player_t *player)
         // [crispy] no nukage damage with NOCLIP cheat
         if (!player->powers[pw_ironfeet] && !(player->mo->flags & MF_NOCLIP))
             if (!(leveltime & 0x1f))
-                P_DamageMobj(player->mo, NULL, NULL, 10);
+                P_DamageMobj(player->mo, nullptr, nullptr, 10);
         break;
 
     case 7:
@@ -1115,7 +1115,7 @@ void P_PlayerInSpecialSector(player_t *player)
         // [crispy] no nukage damage with NOCLIP cheat
         if (!player->powers[pw_ironfeet] && !(player->mo->flags & MF_NOCLIP))
             if (!(leveltime & 0x1f))
-                P_DamageMobj(player->mo, NULL, NULL, 5);
+                P_DamageMobj(player->mo, nullptr, nullptr, 5);
         break;
 
     case 16:
@@ -1128,7 +1128,7 @@ void P_PlayerInSpecialSector(player_t *player)
             && !(player->mo->flags & MF_NOCLIP))
         {
             if (!(leveltime & 0x1f))
-                P_DamageMobj(player->mo, NULL, NULL, 20);
+                P_DamageMobj(player->mo, nullptr, nullptr, 20);
         }
         break;
 
@@ -1159,7 +1159,7 @@ void P_PlayerInSpecialSector(player_t *player)
         player->cheats &= ~CF_GODMODE;
 
         if (!(leveltime & 0x1f))
-            P_DamageMobj(player->mo, NULL, NULL, 20);
+            P_DamageMobj(player->mo, nullptr, nullptr, 20);
 
         if (player->health <= 10)
             G_ExitLevel();
@@ -1459,7 +1459,7 @@ int EV_DoDonut(line_t *line)
             if (s3 == nullptr)
             {
                 // e6y
-                // s3 is NULL, so
+                // s3 is nullptr, so
                 // s3->floorheight is an int at 0000:0000
                 // s3->floorpic is a short at 0000:0008
                 // Trying to emulate

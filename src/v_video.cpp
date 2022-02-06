@@ -1035,7 +1035,7 @@ void WritePNGfile(char *filename, pixel_t *data,
         return;
     }
 
-    ppng = png_create_write_struct(PNG_LIBPNG_VER_STRING, NULL,
+    ppng = png_create_write_struct(PNG_LIBPNG_VER_STRING, nullptr,
         error_fn, warning_fn);
     if (!ppng)
     {

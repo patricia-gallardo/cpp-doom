@@ -310,7 +310,7 @@ boolean ListenForever()
     for (;;)
     {
         // Wait until we see some data on the pipe.
-        wok = PeekNamedPipe(midi_process_in, NULL, 0, NULL,
+        wok = PeekNamedPipe(midi_process_in, nullptr, 0, nullptr,
                             &pipe_buffer_read, nullptr);
         if (!wok)
         {
@@ -425,7 +425,7 @@ int main(int argc, char *argv[])
     }
 
     // Parse out the sample rate - if we can't, default to 44100.
-    snd_samplerate = strtol(argv[2], NULL, 10);
+    snd_samplerate = strtol(argv[2], nullptr, 10);
     if (snd_samplerate == LONG_MAX || snd_samplerate == LONG_MIN ||
         snd_samplerate == 0)
     {
@@ -433,13 +433,13 @@ int main(int argc, char *argv[])
     }
 
     // Parse out our handle ids.
-    in = (HANDLE) strtol(argv[3], NULL, 10);
+    in = (HANDLE) strtol(argv[3], nullptr, 10);
     if (in == 0)
     {
         return EXIT_FAILURE;
     }
 
-    out = (HANDLE) strtol(argv[4], NULL, 10);
+    out = (HANDLE) strtol(argv[4], nullptr, 10);
     if (out == 0)
     {
         return EXIT_FAILURE;

@@ -505,5 +505,5 @@ music_module_t music_sdl_module = {
     I_SDL_PlaySong,
     I_SDL_StopSong,
     I_SDL_MusicIsPlaying,
-    NULL, // Poll
+    nullptr, // Poll
 };

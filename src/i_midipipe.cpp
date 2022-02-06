@@ -163,7 +163,7 @@ static boolean ExpectPipe(net_packet_t *packet)
     do
     {
         // Wait until we see exactly the amount of data we expect on the pipe.
-        ok = PeekNamedPipe(midi_process_out_reader, NULL, 0, NULL,
+        ok = PeekNamedPipe(midi_process_out_reader, nullptr, 0, nullptr,
             &pipe_buffer_read, nullptr);
         if (!ok)
         {
@@ -480,8 +480,8 @@ boolean I_MidiPipe_InitServer()
     memset(&startup_info, 0, sizeof(startup_info));
     startup_info.cb = sizeof(startup_info);
 
-    ok = CreateProcess(TEXT(module), TEXT(cmdline), NULL, NULL, TRUE,
-        0, NULL, dirname, &startup_info, &proc_info);
+    ok = CreateProcess(TEXT(module), TEXT(cmdline), nullptr, nullptr, TRUE,
+        0, nullptr, dirname, &startup_info, &proc_info);
 
     if (!ok)
     {

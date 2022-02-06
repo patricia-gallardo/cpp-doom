@@ -137,7 +137,7 @@ int IOperm_EnablePortRange(unsigned int from, unsigned int num, int turn_on)
     DWORD BytesReturned;
     BOOL r;
 
-    h = CreateFileW(IOPERM_FILE, GENERIC_READ, 0, NULL,
+    h = CreateFileW(IOPERM_FILE, GENERIC_READ, 0, nullptr,
                     OPEN_EXISTING, FILE_ATTRIBUTE_NORMAL, nullptr);
 
     if (h == INVALID_HANDLE_VALUE)
@@ -152,7 +152,7 @@ int IOperm_EnablePortRange(unsigned int from, unsigned int num, int turn_on)
 
     r = DeviceIoControl(h, IOCTL_IOPERM,
                         &ioperm_data, sizeof ioperm_data,
-                        NULL, 0,
+                        nullptr, 0,
                         &BytesReturned, nullptr);
 
     if (!r)
@@ -180,7 +180,7 @@ int IOperm_InstallDriver()
         return 0;
     }
 
-    scm = MyOpenSCManagerW(NULL, NULL, SC_MANAGER_ALL_ACCESS);
+    scm = MyOpenSCManagerW(NULL, nullptr, SC_MANAGER_ALL_ACCESS);
 
     if (scm == nullptr)
     {
@@ -204,10 +204,10 @@ int IOperm_InstallDriver()
                            SERVICE_AUTO_START,
                            SERVICE_ERROR_NORMAL,
                            driver_path,
-                           NULL,
-                           NULL,
-                           NULL,
-                           NULL,
+                           nullptr,
+                           nullptr,
+                           nullptr,
+                           nullptr,
                            nullptr);
 
     if (svc == nullptr)

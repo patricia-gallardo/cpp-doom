@@ -800,7 +800,7 @@ txt_widget_class_t txt_fileselect_class =
     TXT_FileSelectKeyPress,
     TXT_FileSelectDestructor,
     TXT_FileSelectMousePress,
-    NULL,
+    nullptr,
     TXT_FileSelectFocused,
 };
 

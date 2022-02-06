@@ -57,7 +57,7 @@ static pcsound_driver_t *drivers[] =
     &pcsound_win32_driver,
 #endif
     &pcsound_sdl_driver,
-    NULL,
+    nullptr,
 };
 
 static pcsound_driver_t *pcsound_driver = nullptr;

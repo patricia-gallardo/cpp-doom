@@ -1620,7 +1620,7 @@ mobjinfo_t mobjinfo[NUMMOBJTYPES] =
         0,      //damage
         sfx_None,       //activesound
         MF_SHOOTABLE|MF_NOSECTOR|MF_NODIALOG,       //flags
-        NULL,       //namepointer
+        nullptr,       //namepointer
     },
 
     {       /*MT_PLAYER*/
@@ -1647,7 +1647,7 @@ mobjinfo_t mobjinfo[NUMMOBJTYPES] =
         0,      //damage
         sfx_None,       //activesound
         MF_SOLID|MF_SHOOTABLE|MF_DROPOFF|MF_NOTDMATCH|MF_ALLY,       //flags
-        NULL,       //namepointer
+        nullptr,       //namepointer
     },
 
     {       /*MT_SHOPKEEPER_W*/
@@ -1783,7 +1783,7 @@ mobjinfo_t mobjinfo[NUMMOBJTYPES] =
         0,      //damage
         sfx_rebact,     //activesound
         MF_SOLID|MF_SHOOTABLE|MF_JUSTHIT|MF_COUNTKILL,      //flags
-        NULL,       //namepointer
+        nullptr,       //namepointer
     },
 
     {       /*MT_PEASANT2_B*/
@@ -1810,7 +1810,7 @@ mobjinfo_t mobjinfo[NUMMOBJTYPES] =
         0,      //damage
         sfx_rebact,     //activesound
         MF_SOLID|MF_SHOOTABLE|MF_JUSTHIT|MF_COUNTKILL,      //flags
-        NULL,       //namepointer
+        nullptr,       //namepointer
     },
 
     {       /*MT_PEASANT2_C*/
@@ -1837,7 +1837,7 @@ mobjinfo_t mobjinfo[NUMMOBJTYPES] =
         0,      //damage
         sfx_rebact,     //activesound
         MF_SOLID|MF_SHOOTABLE|MF_JUSTHIT|MF_COUNTKILL,      //flags
-        NULL,       //namepointer
+        nullptr,       //namepointer
     },
 
     {       /*MT_PEASANT5_A*/
@@ -1864,7 +1864,7 @@ mobjinfo_t mobjinfo[NUMMOBJTYPES] =
         0,      //damage
         sfx_rebact,     //activesound
         MF_SOLID|MF_SHOOTABLE|MF_JUSTHIT|MF_COUNTKILL|MF_COLORSWAP1,        //flags
-        NULL,       //namepointer
+        nullptr,       //namepointer
     },
 
     {       /*MT_PEASANT5_B*/
@@ -1891,7 +1891,7 @@ mobjinfo_t mobjinfo[NUMMOBJTYPES] =
         0,      //damage
         sfx_rebact,     //activesound
         MF_SOLID|MF_SHOOTABLE|MF_JUSTHIT|MF_COUNTKILL|MF_COLORSWAP1,        //flags
-        NULL,       //namepointer
+        nullptr,       //namepointer
     },
 
     {       /*MT_PEASANT5_C*/
@@ -1918,7 +1918,7 @@ mobjinfo_t mobjinfo[NUMMOBJTYPES] =
         0,      //damage
         sfx_rebact,     //activesound
         MF_SOLID|MF_SHOOTABLE|MF_JUSTHIT|MF_COUNTKILL|MF_COLORSWAP1,        //flags
-        NULL,       //namepointer
+        nullptr,       //namepointer
     },
 
     {       /*MT_PEASANT4_A*/
@@ -1946,7 +1946,7 @@ mobjinfo_t mobjinfo[NUMMOBJTYPES] =
         sfx_rebact,     //activesound
         MF_SOLID|MF_SHOOTABLE|MF_JUSTHIT|MF_COUNTKILL|MF_COLORSWAP1
         |MF_COLORSWAP2,     //flags
-        NULL,       //namepointer
+        nullptr,       //namepointer
     },
 
     {       /*MT_PEASANT4_B*/
@@ -1974,7 +1974,7 @@ mobjinfo_t mobjinfo[NUMMOBJTYPES] =
         sfx_rebact,     //activesound
         MF_SOLID|MF_SHOOTABLE|MF_JUSTHIT|MF_COUNTKILL|MF_COLORSWAP1
         |MF_COLORSWAP2,     //flags
-        NULL,       //namepointer
+        nullptr,       //namepointer
     },
 
     {       /*MT_PEASANT4_C*/
@@ -2002,7 +2002,7 @@ mobjinfo_t mobjinfo[NUMMOBJTYPES] =
         sfx_rebact,     //activesound
         MF_SOLID|MF_SHOOTABLE|MF_JUSTHIT|MF_COUNTKILL|MF_COLORSWAP1
         |MF_COLORSWAP2,     //flags
-        NULL,       //namepointer
+        nullptr,       //namepointer
     },
 
     {       /*MT_PEASANT6_A*/
@@ -2029,7 +2029,7 @@ mobjinfo_t mobjinfo[NUMMOBJTYPES] =
         0,      //damage
         sfx_rebact,     //activesound
         MF_SOLID|MF_SHOOTABLE|MF_JUSTHIT|MF_COUNTKILL|MF_COLORSWAP2,        //flags
-        NULL,       //namepointer
+        nullptr,       //namepointer
     },
 
     {       /*MT_PEASANT6_B*/
@@ -2056,7 +2056,7 @@ mobjinfo_t mobjinfo[NUMMOBJTYPES] =
         0,      //damage
         sfx_rebact,     //activesound
         MF_SOLID|MF_SHOOTABLE|MF_JUSTHIT|MF_COUNTKILL|MF_COLORSWAP2,        //flags
-        NULL,       //namepointer
+        nullptr,       //namepointer
     },
 
     {       /*MT_PEASANT6_C*/
@@ -2083,7 +2083,7 @@ mobjinfo_t mobjinfo[NUMMOBJTYPES] =
         0,      //damage
         sfx_rebact,     //activesound
         MF_SOLID|MF_SHOOTABLE|MF_JUSTHIT|MF_COUNTKILL|MF_COLORSWAP2,        //flags
-        NULL,       //namepointer
+        nullptr,       //namepointer
     },
 
     {       /*MT_PEASANT3_A*/
@@ -2110,7 +2110,7 @@ mobjinfo_t mobjinfo[NUMMOBJTYPES] =
         0,      //damage
         sfx_rebact,     //activesound
         MF_SOLID|MF_SHOOTABLE|MF_JUSTHIT|MF_COUNTKILL|MF_COLORSWAP3,        //flags
-        NULL,       //namepointer
+        nullptr,       //namepointer
     },
 
     {       /*MT_PEASANT3_B*/
@@ -2137,7 +2137,7 @@ mobjinfo_t mobjinfo[NUMMOBJTYPES] =
         0,      //damage
         sfx_rebact,     //activesound
         MF_SOLID|MF_SHOOTABLE|MF_JUSTHIT|MF_COUNTKILL|MF_COLORSWAP3,        //flags
-        NULL,       //namepointer
+        nullptr,       //namepointer
     },
 
     {       /*MT_PEASANT3_C*/
@@ -2164,7 +2164,7 @@ mobjinfo_t mobjinfo[NUMMOBJTYPES] =
         0,      //damage
         sfx_rebact,     //activesound
         MF_SOLID|MF_SHOOTABLE|MF_JUSTHIT|MF_COUNTKILL|MF_COLORSWAP3,        //flags
-        NULL,       //namepointer
+        nullptr,       //namepointer
     },
 
     {       /*MT_PEASANT8_A*/
@@ -2192,7 +2192,7 @@ mobjinfo_t mobjinfo[NUMMOBJTYPES] =
         sfx_rebact,     //activesound
         MF_SOLID|MF_SHOOTABLE|MF_JUSTHIT|MF_COUNTKILL|MF_COLORSWAP2
         |MF_COLORSWAP3,     //flags
-        NULL,       //namepointer
+        nullptr,       //namepointer
     },
 
     {       /*MT_PEASANT8_B*/
@@ -2220,7 +2220,7 @@ mobjinfo_t mobjinfo[NUMMOBJTYPES] =
         sfx_rebact,     //activesound
         MF_SOLID|MF_SHOOTABLE|MF_JUSTHIT|MF_COUNTKILL|MF_COLORSWAP2
         |MF_COLORSWAP3,     //flags
-        NULL,       //namepointer
+        nullptr,       //namepointer
     },
 
     {       /*MT_PEASANT8_C*/
@@ -2248,7 +2248,7 @@ mobjinfo_t mobjinfo[NUMMOBJTYPES] =
         sfx_rebact,     //activesound
         MF_SOLID|MF_SHOOTABLE|MF_JUSTHIT|MF_COUNTKILL|MF_COLORSWAP2
         |MF_COLORSWAP3,     //flags
-        NULL,       //namepointer
+        nullptr,       //namepointer
     },
 
     {       /*MT_PEASANT7_A*/
@@ -2276,7 +2276,7 @@ mobjinfo_t mobjinfo[NUMMOBJTYPES] =
         sfx_rebact,     //activesound
         MF_SOLID|MF_SHOOTABLE|MF_JUSTHIT|MF_COUNTKILL|MF_COLORSWAP1
         |MF_COLORSWAP3,     //flags
-        NULL,       //namepointer
+        nullptr,       //namepointer
     },
 
     {       /*MT_PEASANT7_B*/
@@ -2304,7 +2304,7 @@ mobjinfo_t mobjinfo[NUMMOBJTYPES] =
         sfx_rebact,     //activesound
         MF_SOLID|MF_SHOOTABLE|MF_JUSTHIT|MF_COUNTKILL|MF_COLORSWAP1
         |MF_COLORSWAP3,     //flags
-        NULL,       //namepointer
+        nullptr,       //namepointer
     },
 
     {       /*MT_PEASANT7_C*/
@@ -2332,7 +2332,7 @@ mobjinfo_t mobjinfo[NUMMOBJTYPES] =
         sfx_rebact,     //activesound
         MF_SOLID|MF_SHOOTABLE|MF_JUSTHIT|MF_COUNTKILL|MF_COLORSWAP1
         |MF_COLORSWAP3,     //flags
-        NULL,       //namepointer
+        nullptr,       //namepointer
     },
 
     {       /*MT_PEASANT1*/
@@ -2360,7 +2360,7 @@ mobjinfo_t mobjinfo[NUMMOBJTYPES] =
         sfx_rebact,     //activesound
         MF_SOLID|MF_SHOOTABLE|MF_JUSTHIT|MF_COUNTKILL|MF_COLORSWAP1
         |MF_COLORSWAP2|MF_COLORSWAP3,       //flags
-        NULL,       //namepointer
+        nullptr,       //namepointer
     },
 
     {       /*MT_ZOMBIE*/
@@ -2387,7 +2387,7 @@ mobjinfo_t mobjinfo[NUMMOBJTYPES] =
         0,      //damage
         sfx_None,       //activesound
         MF_SOLID|MF_SHOOTABLE|MF_COUNTKILL|MF_COLORSWAP1,       //flags
-        NULL,       //namepointer
+        nullptr,       //namepointer
     },
 
     {       /*MT_BECOMING*/
@@ -2414,7 +2414,7 @@ mobjinfo_t mobjinfo[NUMMOBJTYPES] =
         0,      //damage
         sfx_None,       //activesound
         MF_SOLID|MF_SHOOTABLE|MF_COUNTKILL,     //flags
-        NULL,       //namepointer
+        nullptr,       //namepointer
     },
 
     {       /*MT_ZOMBIESPAWNER*/
@@ -2441,7 +2441,7 @@ mobjinfo_t mobjinfo[NUMMOBJTYPES] =
         0,      //damage
         sfx_telept,     //activesound
         MF_SHOOTABLE|MF_NOSECTOR,       //flags
-        NULL,       //namepointer
+        nullptr,       //namepointer
     },
 
     {       /*MT_HUGE_TANK_1*/
@@ -2468,7 +2468,7 @@ mobjinfo_t mobjinfo[NUMMOBJTYPES] =
         0,      //damage
         sfx_None,       //activesound
         MF_SOLID,       //flags
-        NULL,       //namepointer
+        nullptr,       //namepointer
     },
 
     {       /*MT_HUGE_TANK_2*/
@@ -2495,7 +2495,7 @@ mobjinfo_t mobjinfo[NUMMOBJTYPES] =
         0,      //damage
         sfx_None,       //activesound
         MF_SOLID,       //flags
-        NULL,       //namepointer
+        nullptr,       //namepointer
     },
 
     {       /*MT_HUGE_TANK_3*/
@@ -2522,7 +2522,7 @@ mobjinfo_t mobjinfo[NUMMOBJTYPES] =
         0,      //damage
         sfx_None,       //activesound
         MF_SOLID,       //flags
-        NULL,       //namepointer
+        nullptr,       //namepointer
     },
 
     {       /*MT_TANK_4*/
@@ -2549,7 +2549,7 @@ mobjinfo_t mobjinfo[NUMMOBJTYPES] =
         0,      //damage
         sfx_None,       //activesound
         MF_SOLID,       //flags
-        NULL,       //namepointer
+        nullptr,       //namepointer
     },
 
     {       /*MT_TANK_5*/
@@ -2576,7 +2576,7 @@ mobjinfo_t mobjinfo[NUMMOBJTYPES] =
         0,      //damage
         sfx_None,       //activesound
         MF_SOLID,       //flags
-        NULL,       //namepointer
+        nullptr,       //namepointer
     },
 
     {       /*MT_TANK_6*/
@@ -2603,7 +2603,7 @@ mobjinfo_t mobjinfo[NUMMOBJTYPES] =
         0,      //damage
         sfx_None,       //activesound
         MF_SOLID,       //flags
-        NULL,       //namepointer
+        nullptr,       //namepointer
     },
 
     {       /*MT_KNEELING_GUY*/
@@ -2630,7 +2630,7 @@ mobjinfo_t mobjinfo[NUMMOBJTYPES] =
         0,      //damage
         sfx_chant,      //activesound
         MF_SOLID|MF_SHOOTABLE|MF_NODIALOG|MF_NOBLOOD|MF_COUNTKILL,      //flags
-        NULL,       //namepointer
+        nullptr,       //namepointer
     },
 
     {       /*MT_BEGGAR1*/
@@ -3008,7 +3008,7 @@ mobjinfo_t mobjinfo[NUMMOBJTYPES] =
         0,      //damage
         sfx_None,       //activesound
         MF_NOBLOCKMAP|MF_NOGRAVITY|MF_SHADOW,       //flags
-        NULL,       //namepointer
+        nullptr,       //namepointer
     },
 
     {       /*MT_REAVER*/
@@ -3035,7 +3035,7 @@ mobjinfo_t mobjinfo[NUMMOBJTYPES] =
         0,      //damage
         sfx_revact,     //activesound
         MF_SOLID|MF_SHOOTABLE|MF_NODIALOG|MF_NOBLOOD|MF_COUNTKILL,      //flags
-        NULL,       //namepointer
+        nullptr,       //namepointer
     },
 
     {       /*MT_GUARD1*/
@@ -3333,7 +3333,7 @@ mobjinfo_t mobjinfo[NUMMOBJTYPES] =
         0,      //damage
         sfx_rb2act,     //activesound
         MF_SOLID|MF_SHOOTABLE|MF_NODIALOG|MF_NOBLOOD|MF_COUNTKILL,      //flags
-        NULL,       //namepointer
+        nullptr,       //namepointer
     },
 
     {       /*MT_BISHOP*/
@@ -3361,7 +3361,7 @@ mobjinfo_t mobjinfo[NUMMOBJTYPES] =
         sfx_rb2act,     //activesound
         MF_SOLID|MF_SHOOTABLE|MF_NODIALOG|MF_NOBLOOD|MF_COUNTKILL
         |MF_NOTDMATCH,       //flags
-        NULL,       //namepointer
+        nullptr,       //namepointer
     },
 
     {       /*MT_ORACLE*/
@@ -3445,7 +3445,7 @@ mobjinfo_t mobjinfo[NUMMOBJTYPES] =
         MF_SPECIAL|MF_SOLID|MF_SHOOTABLE|MF_NOGRAVITY|MF_GIVEQUEST
         |MF_FLOAT|MF_NODIALOG|MF_SHADOW|MF_COUNTKILL|MF_NOTDMATCH
         |MF_MVIS|MF_SPECTRAL,        //flags
-        NULL,       //namepointer
+        nullptr,       //namepointer
     },
 
     {       /*MT_NODE*/
@@ -3472,7 +3472,7 @@ mobjinfo_t mobjinfo[NUMMOBJTYPES] =
         0,      //damage
         sfx_None,       //activesound
         MF_NOBLOCKMAP|MF_NOCLIP|MF_NOTDMATCH,        //flags
-        NULL,       //namepointer
+        nullptr,       //namepointer
     },
 
     {       /*MT_SPECTREHEAD*/
@@ -3499,7 +3499,7 @@ mobjinfo_t mobjinfo[NUMMOBJTYPES] =
         0,      //damage
         sfx_None,       //activesound
         MF_NOBLOCKMAP|MF_NOCLIP|MF_NOTDMATCH,        //flags
-        NULL,       //namepointer
+        nullptr,       //namepointer
     },
 
     {       /*MT_SPECTRE_B*/
@@ -3528,7 +3528,7 @@ mobjinfo_t mobjinfo[NUMMOBJTYPES] =
         MF_SPECIAL|MF_SOLID|MF_SHOOTABLE|MF_NOGRAVITY|MF_GIVEQUEST
         |MF_FLOAT|MF_NODIALOG|MF_SHADOW|MF_COUNTKILL|MF_NOTDMATCH
         |MF_MVIS|MF_SPECTRAL,        //flags
-        NULL,       //namepointer
+        nullptr,       //namepointer
     },
 
     {       /*MT_SPECTRE_C*/
@@ -3557,7 +3557,7 @@ mobjinfo_t mobjinfo[NUMMOBJTYPES] =
         MF_SPECIAL|MF_SOLID|MF_SHOOTABLE|MF_NOGRAVITY|MF_GIVEQUEST
         |MF_FLOAT|MF_NODIALOG|MF_SHADOW|MF_COUNTKILL|MF_NOTDMATCH
         |MF_MVIS|MF_SPECTRAL,        //flags
-        NULL,       //namepointer
+        nullptr,       //namepointer
     },
 
     {       /*MT_SPECTRE_D*/
@@ -3586,7 +3586,7 @@ mobjinfo_t mobjinfo[NUMMOBJTYPES] =
         MF_SPECIAL|MF_SOLID|MF_SHOOTABLE|MF_NOGRAVITY|MF_GIVEQUEST
         |MF_FLOAT|MF_NODIALOG|MF_SHADOW|MF_COUNTKILL|MF_NOTDMATCH
         |MF_MVIS|MF_SPECTRAL,        //flags
-        NULL,       //namepointer
+        nullptr,       //namepointer
     },
 
     {       /*MT_SPECTRE_E*/
@@ -3615,7 +3615,7 @@ mobjinfo_t mobjinfo[NUMMOBJTYPES] =
         MF_SPECIAL|MF_SOLID|MF_SHOOTABLE|MF_NOGRAVITY|MF_GIVEQUEST
         |MF_FLOAT|MF_NODIALOG|MF_SHADOW|MF_COUNTKILL|MF_NOTDMATCH
         |MF_MVIS|MF_SPECTRAL,        //flags
-        NULL,       //namepointer
+        nullptr,       //namepointer
     },
 
     {       /*MT_ENTITY*/
@@ -3644,7 +3644,7 @@ mobjinfo_t mobjinfo[NUMMOBJTYPES] =
         MF_SPECIAL|MF_SOLID|MF_SHOOTABLE|MF_NOGRAVITY|MF_GIVEQUEST
         |MF_FLOAT|MF_NODIALOG|MF_SHADOW|MF_COUNTKILL|MF_NOTDMATCH
         |MF_MVIS|MF_SPECTRAL,        //flags
-        NULL,       //namepointer
+        nullptr,       //namepointer
     },
 
     {       /*MT_SUBENTITY*/
@@ -3673,7 +3673,7 @@ mobjinfo_t mobjinfo[NUMMOBJTYPES] =
         MF_SPECIAL|MF_SOLID|MF_SHOOTABLE|MF_NOGRAVITY|MF_GIVEQUEST
         |MF_FLOAT|MF_NODIALOG|MF_SHADOW|MF_COUNTKILL|MF_NOTDMATCH
         |MF_MVIS|MF_SPECTRAL,        //flags
-        NULL,       //namepointer
+        nullptr,       //namepointer
     },
 
     {       /*MT_NEST*/
@@ -3700,7 +3700,7 @@ mobjinfo_t mobjinfo[NUMMOBJTYPES] =
         0,      //damage
         sfx_None,       //activesound
         MF_SOLID|MF_NOTDMATCH,       //flags
-        NULL,       //namepointer
+        nullptr,       //namepointer
     },
 
     {       /*MT_POD*/
@@ -3727,7 +3727,7 @@ mobjinfo_t mobjinfo[NUMMOBJTYPES] =
         0,      //damage
         sfx_None,       //activesound
         MF_SOLID|MF_NOTDMATCH,       //flags
-        NULL,       //namepointer
+        nullptr,       //namepointer
     },
 
     {       /*MT_SIGIL_B_SHOT*/
@@ -3754,7 +3754,7 @@ mobjinfo_t mobjinfo[NUMMOBJTYPES] =
         70,     //damage
         sfx_None,       //activesound
         MF_NOBLOCKMAP|MF_NOGRAVITY|MF_DROPOFF|MF_MISSILE|MF_SPECTRAL,       //flags
-        NULL,       //namepointer
+        nullptr,       //namepointer
     },
 
     {       /*MT_SIGIL_SB_SHOT*/
@@ -3781,7 +3781,7 @@ mobjinfo_t mobjinfo[NUMMOBJTYPES] =
         20,     //damage
         sfx_None,       //activesound
         MF_NOBLOCKMAP|MF_NOGRAVITY|MF_DROPOFF|MF_MISSILE|MF_SPECTRAL,       //flags
-        NULL,       //namepointer
+        nullptr,       //namepointer
     },
 
     {       /*MT_SIGIL_C_SHOT*/
@@ -3808,7 +3808,7 @@ mobjinfo_t mobjinfo[NUMMOBJTYPES] =
         70,     //damage
         sfx_None,       //activesound
         MF_NOBLOCKMAP|MF_NOGRAVITY|MF_DROPOFF|MF_MISSILE|MF_SPECTRAL,       //flags
-        NULL,       //namepointer
+        nullptr,       //namepointer
     },
 
     {       /*MT_SIGIL_SC_SHOT*/
@@ -3835,7 +3835,7 @@ mobjinfo_t mobjinfo[NUMMOBJTYPES] =
         20,     //damage
         sfx_None,       //activesound
         MF_NOBLOCKMAP|MF_NOGRAVITY|MF_DROPOFF|MF_MISSILE|MF_SPECTRAL,       //flags
-        NULL,       //namepointer
+        nullptr,       //namepointer
     },
 
     {       /*MT_SIGIL_E_OFFSHOOT*/
@@ -3862,7 +3862,7 @@ mobjinfo_t mobjinfo[NUMMOBJTYPES] =
         10,     //damage
         sfx_None,       //activesound
         MF_NOBLOCKMAP|MF_NOGRAVITY|MF_DROPOFF|MF_MISSILE|MF_SPECTRAL,       //flags
-        NULL,       //namepointer
+        nullptr,       //namepointer
     },
 
     {       /*MT_SIGIL_TRAIL*/
@@ -3889,7 +3889,7 @@ mobjinfo_t mobjinfo[NUMMOBJTYPES] =
         0,      //damage
         sfx_None,       //activesound
         MF_NOBLOCKMAP|MF_NOGRAVITY|MF_DROPOFF,      //flags
-        NULL,       //namepointer
+        nullptr,       //namepointer
     },
 
     {       /*MT_SIGIL_E_SHOT*/
@@ -3916,7 +3916,7 @@ mobjinfo_t mobjinfo[NUMMOBJTYPES] =
         130,        //damage
         sfx_None,       //activesound
         MF_NOBLOCKMAP|MF_NOGRAVITY|MF_DROPOFF|MF_MISSILE|MF_SPECTRAL,       //flags
-        NULL,       //namepointer
+        nullptr,       //namepointer
     },
 
     {       /*MT_SIGIL_SE_SHOT*/
@@ -3943,7 +3943,7 @@ mobjinfo_t mobjinfo[NUMMOBJTYPES] =
         30,     //damage
         sfx_None,       //activesound
         MF_NOBLOCKMAP|MF_NOGRAVITY|MF_DROPOFF|MF_MISSILE|MF_SPECTRAL,       //flags
-        NULL,       //namepointer
+        nullptr,       //namepointer
     },
 
     {       /*MT_SIGIL_A_ZAP_LEFT*/
@@ -3970,7 +3970,7 @@ mobjinfo_t mobjinfo[NUMMOBJTYPES] =
         100,        //damage
         sfx_None,       //activesound
         MF_NOBLOCKMAP|MF_NOGRAVITY|MF_DROPOFF|MF_MISSILE|MF_SPECTRAL,       //flags
-        NULL,       //namepointer
+        nullptr,       //namepointer
     },
 
     {       /*MT_SIGIL_A_ZAP_RIGHT*/
@@ -3997,7 +3997,7 @@ mobjinfo_t mobjinfo[NUMMOBJTYPES] =
         50,     //damage
         sfx_None,       //activesound
         MF_NOBLOCKMAP|MF_NOGRAVITY|MF_DROPOFF|MF_MISSILE|MF_SPECTRAL,       //flags
-        NULL,       //namepointer
+        nullptr,       //namepointer
     },
 
     {       /*MT_SIGIL_A_GROUND*/
@@ -4024,7 +4024,7 @@ mobjinfo_t mobjinfo[NUMMOBJTYPES] =
         0,      //damage
         sfx_None,       //activesound
         MF_NOBLOCKMAP|MF_SHADOW,        //flags
-        NULL,       //namepointer
+        nullptr,       //namepointer
     },
 
     {       /*MT_SIGIL_D_SHOT*/
@@ -4051,7 +4051,7 @@ mobjinfo_t mobjinfo[NUMMOBJTYPES] =
         120,        //damage
         sfx_None,       //activesound
         MF_NOBLOCKMAP|MF_NOGRAVITY|MF_DROPOFF|MF_MISSILE|MF_SPECTRAL,       //flags
-        NULL,       //namepointer
+        nullptr,       //namepointer
     },
 
     {       /*MT_SIGIL_SD_SHOT*/
@@ -4078,7 +4078,7 @@ mobjinfo_t mobjinfo[NUMMOBJTYPES] =
         60,     //damage
         sfx_None,       //activesound
         MF_NOBLOCKMAP|MF_NOGRAVITY|MF_DROPOFF|MF_MISSILE|MF_SPECTRAL,       //flags
-        NULL,       //namepointer
+        nullptr,       //namepointer
     },
 
     {       /*MT_SENTINEL*/
@@ -4106,7 +4106,7 @@ mobjinfo_t mobjinfo[NUMMOBJTYPES] =
         sfx_sntact,     //activesound
         MF_SOLID|MF_SHOOTABLE|MF_SPAWNCEILING|MF_NOGRAVITY|MF_GIVEQUEST
         |MF_FLOAT|MF_NODIALOG|MF_NOBLOOD|MF_COUNTKILL,      //flags
-        NULL,       //namepointer
+        nullptr,       //namepointer
     },
 
     {       /*MT_STALKER*/
@@ -4134,7 +4134,7 @@ mobjinfo_t mobjinfo[NUMMOBJTYPES] =
         sfx_spisit,     //activesound
         MF_SOLID|MF_SHOOTABLE|MF_SPAWNCEILING|MF_NOGRAVITY|MF_DROPOFF
         |MF_NODIALOG|MF_NOBLOOD|MF_COUNTKILL,       //flags
-        NULL,       //namepointer
+        nullptr,       //namepointer
     },
 
     {       /*MT_INQUISITOR*/
@@ -4161,7 +4161,7 @@ mobjinfo_t mobjinfo[NUMMOBJTYPES] =
         0,      //damage
         sfx_inqact,     //activesound
         MF_SOLID|MF_SHOOTABLE|MF_DROPOFF|MF_NOBLOOD|MF_COUNTKILL,       //flags
-        NULL,       //namepointer
+        nullptr,       //namepointer
     },
 
     {       /*MT_INQARM*/
@@ -4188,7 +4188,7 @@ mobjinfo_t mobjinfo[NUMMOBJTYPES] =
         0,      //damage
         sfx_None,       //activesound
         MF_NOBLOCKMAP|MF_NOCLIP|MF_NOBLOOD,     //flags
-        NULL,       //namepointer
+        nullptr,       //namepointer
     },
 
     {       /*MT_PROGRAMMER*/
@@ -4216,7 +4216,7 @@ mobjinfo_t mobjinfo[NUMMOBJTYPES] =
         sfx_progac,     //activesound
         MF_SOLID|MF_SHOOTABLE|MF_NOGRAVITY|MF_GIVEQUEST|MF_FLOAT
         |MF_NOBLOOD|MF_COUNTKILL|MF_NOTDMATCH,       //flags
-        NULL,       //namepointer
+        nullptr,       //namepointer
     },
 
     {       /*MT_PROGRAMMERBASE*/
@@ -4243,7 +4243,7 @@ mobjinfo_t mobjinfo[NUMMOBJTYPES] =
         0,      //damage
         sfx_None,       //activesound
         MF_NOBLOCKMAP|MF_NOCLIP|MF_NOBLOOD,     //flags
-        NULL,       //namepointer
+        nullptr,       //namepointer
     },
 
     {       /*MT_HOOKSHOT*/
@@ -4270,7 +4270,7 @@ mobjinfo_t mobjinfo[NUMMOBJTYPES] =
         2,      //damage
         sfx_swish,      //activesound
         MF_NOBLOCKMAP|MF_NOGRAVITY|MF_DROPOFF|MF_MISSILE,       //flags
-        NULL,       //namepointer
+        nullptr,       //namepointer
     },
 
     {       /*MT_CHAINSHOT*/
@@ -4297,7 +4297,7 @@ mobjinfo_t mobjinfo[NUMMOBJTYPES] =
         0,      //damage
         sfx_None,       //activesound
         MF_NOBLOCKMAP|MF_NOGRAVITY,     //flags
-        NULL,       //namepointer
+        nullptr,       //namepointer
     },
 
     {       /*MT_MINIMISSLE*/
@@ -4324,7 +4324,7 @@ mobjinfo_t mobjinfo[NUMMOBJTYPES] =
         10,     //damage
         sfx_None,       //activesound
         MF_NOBLOCKMAP|MF_NOGRAVITY|MF_DROPOFF|MF_MISSILE,       //flags
-        NULL,       //namepointer
+        nullptr,       //namepointer
     },
 
     {       /*MT_C_MISSILE*/
@@ -4351,7 +4351,7 @@ mobjinfo_t mobjinfo[NUMMOBJTYPES] =
         7,      //damage
         sfx_None,       //activesound
         MF_NOBLOCKMAP|MF_NOGRAVITY|MF_DROPOFF|MF_MISSILE,       //flags
-        NULL,       //namepointer
+        nullptr,       //namepointer
     },
 
     {       /*MT_SEEKMISSILE*/
@@ -4378,7 +4378,7 @@ mobjinfo_t mobjinfo[NUMMOBJTYPES] =
         10,     //damage
         sfx_None,       //activesound
         MF_NOBLOCKMAP|MF_NOGRAVITY|MF_DROPOFF|MF_MISSILE,       //flags
-        NULL,       //namepointer
+        nullptr,       //namepointer
     },
 
     {       /*MT_ELECARROW*/
@@ -4405,7 +4405,7 @@ mobjinfo_t mobjinfo[NUMMOBJTYPES] =
         10,     //damage
         sfx_swish,      //activesound
         MF_NOBLOCKMAP|MF_NOGRAVITY|MF_DROPOFF|MF_MISSILE,       //flags
-        NULL,       //namepointer
+        nullptr,       //namepointer
     },
 
     {       /*MT_POISARROW*/
@@ -4432,7 +4432,7 @@ mobjinfo_t mobjinfo[NUMMOBJTYPES] =
         500,        //damage
         sfx_swish,      //activesound
         MF_NOBLOCKMAP|MF_NOGRAVITY|MF_DROPOFF|MF_MISSILE,       //flags
-        NULL,       //namepointer
+        nullptr,       //namepointer
     },
 
     {       /*MT_R_LASER*/
@@ -4459,7 +4459,7 @@ mobjinfo_t mobjinfo[NUMMOBJTYPES] =
         0,      //damage
         sfx_None,       //activesound
         MF_NOBLOCKMAP|MF_NOGRAVITY|MF_DROPOFF|MF_MISSILE,       //flags
-        NULL,       //namepointer
+        nullptr,       //namepointer
     },
 
     {       /*MT_L_LASER*/
@@ -4486,7 +4486,7 @@ mobjinfo_t mobjinfo[NUMMOBJTYPES] =
         1,      //damage
         sfx_None,       //activesound
         MF_NOBLOCKMAP|MF_NOGRAVITY|MF_DROPOFF|MF_MISSILE,       //flags
-        NULL,       //namepointer
+        nullptr,       //namepointer
     },
 
     {       /*MT_HEGRENADE*/
@@ -4513,7 +4513,7 @@ mobjinfo_t mobjinfo[NUMMOBJTYPES] =
         1,      //damage
         sfx_None,       //activesound
         MF_NOBLOCKMAP|MF_DROPOFF|MF_MISSILE,        //flags
-        NULL,       //namepointer
+        nullptr,       //namepointer
     },
 
     {       /*MT_PGRENADE*/
@@ -4540,7 +4540,7 @@ mobjinfo_t mobjinfo[NUMMOBJTYPES] =
         1,      //damage
         sfx_None,       //activesound
         MF_NOBLOCKMAP|MF_DROPOFF|MF_MISSILE,        //flags
-        NULL,       //namepointer
+        nullptr,       //namepointer
     },
 
     {       /*MT_INQGRENADE*/
@@ -4567,7 +4567,7 @@ mobjinfo_t mobjinfo[NUMMOBJTYPES] =
         0,      //damage
         sfx_None,       //activesound
         MF_NOBLOCKMAP|MF_DROPOFF|MF_MISSILE,        //flags
-        NULL,       //namepointer
+        nullptr,       //namepointer
     },
 
     {       /*MT_PFLAME*/
@@ -4594,7 +4594,7 @@ mobjinfo_t mobjinfo[NUMMOBJTYPES] =
         0,      //damage
         sfx_None,       //activesound
         MF_NOBLOCKMAP,      //flags
-        NULL,       //namepointer
+        nullptr,       //namepointer
     },
 
     {       /*MT_TORPEDO*/
@@ -4621,7 +4621,7 @@ mobjinfo_t mobjinfo[NUMMOBJTYPES] =
         1,      //damage
         sfx_None,       //activesound
         MF_NOBLOCKMAP|MF_NOGRAVITY|MF_DROPOFF|MF_MISSILE,       //flags
-        NULL,       //namepointer
+        nullptr,       //namepointer
     },
 
     {       /*MT_TORPEDOSPREAD*/
@@ -4648,7 +4648,7 @@ mobjinfo_t mobjinfo[NUMMOBJTYPES] =
         10,     //damage
         sfx_None,       //activesound
         MF_NOBLOCKMAP|MF_NOGRAVITY|MF_DROPOFF|MF_MISSILE,       //flags
-        NULL,       //namepointer
+        nullptr,       //namepointer
     },
 
     {       /*MT_SFIREBALL*/
@@ -4675,7 +4675,7 @@ mobjinfo_t mobjinfo[NUMMOBJTYPES] =
         4,      //damage
         sfx_None,       //activesound
         MF_NOBLOCKMAP|MF_DROPOFF|MF_MISSILE,        //flags
-        NULL,       //namepointer
+        nullptr,       //namepointer
     },
 
     {       /*MT_C_FLAME*/
@@ -4702,7 +4702,7 @@ mobjinfo_t mobjinfo[NUMMOBJTYPES] =
         1,      //damage
         sfx_None,       //activesound
         MF_NOBLOCKMAP|MF_DROPOFF|MF_MISSILE,        //flags
-        NULL,       //namepointer
+        nullptr,       //namepointer
     },
 
     {       /*MT_STRIFEPUFF3*/
@@ -4729,7 +4729,7 @@ mobjinfo_t mobjinfo[NUMMOBJTYPES] =
         0,      //damage
         sfx_None,       //activesound
         MF_NOBLOCKMAP|MF_NOGRAVITY,     //flags
-        NULL,       //namepointer
+        nullptr,       //namepointer
     },
 
     {       /*MT_STRIFEPUFF*/
@@ -4756,7 +4756,7 @@ mobjinfo_t mobjinfo[NUMMOBJTYPES] =
         0,      //damage
         sfx_None,       //activesound
         MF_NOBLOCKMAP|MF_NOGRAVITY|MF_SHADOW,       //flags
-        NULL,       //namepointer
+        nullptr,       //namepointer
     },
 
     {       /*MT_SPARKPUFF*/
@@ -4783,7 +4783,7 @@ mobjinfo_t mobjinfo[NUMMOBJTYPES] =
         0,      //damage
         sfx_None,       //activesound
         MF_NOBLOCKMAP|MF_NOGRAVITY,     //flags
-        NULL,       //namepointer
+        nullptr,       //namepointer
     },
 
     {       /*MT_BLOOD_DEATH*/
@@ -4810,7 +4810,7 @@ mobjinfo_t mobjinfo[NUMMOBJTYPES] =
         0,      //damage
         sfx_None,       //activesound
         MF_NOBLOCKMAP,      //flags
-        NULL,       //namepointer
+        nullptr,       //namepointer
     },
 
     {       /*MT_TFOG*/
@@ -4837,7 +4837,7 @@ mobjinfo_t mobjinfo[NUMMOBJTYPES] =
         0,      //damage
         sfx_None,       //activesound
         MF_NOBLOCKMAP|MF_NOGRAVITY|MF_SHADOW,       //flags
-        NULL,       //namepointer
+        nullptr,       //namepointer
     },
 
     {       /*MT_IFOG*/
@@ -4864,7 +4864,7 @@ mobjinfo_t mobjinfo[NUMMOBJTYPES] =
         0,      //damage
         sfx_None,       //activesound
         MF_NOBLOCKMAP|MF_NOGRAVITY|MF_SHADOW,       //flags
-        NULL,       //namepointer
+        nullptr,       //namepointer
     },
 
     {       /*MT_TELEPORTMAN*/
@@ -4891,7 +4891,7 @@ mobjinfo_t mobjinfo[NUMMOBJTYPES] =
         0,      //damage
         sfx_None,       //activesound
         MF_NOSECTOR|MF_NOBLOCKMAP,      //flags
-        NULL,       //namepointer
+        nullptr,       //namepointer
     },
 
     {       /*MT_MISC_01*/
@@ -4918,7 +4918,7 @@ mobjinfo_t mobjinfo[NUMMOBJTYPES] =
         0,      //damage
         sfx_None,       //activesound
         MF_NOBLOCKMAP|MF_STAND|MF_SPAWNCEILING|MF_NOGRAVITY,        //flags
-        NULL,       //namepointer
+        nullptr,       //namepointer
     },
 
     {       /*MT_TURRET*/
@@ -4946,7 +4946,7 @@ mobjinfo_t mobjinfo[NUMMOBJTYPES] =
         sfx_None,       //activesound
         MF_SHOOTABLE|MF_STAND|MF_SPAWNCEILING|MF_NOGRAVITY|MF_NOBLOOD
         |MF_COUNTKILL,      //flags
-        NULL,       //namepointer
+        nullptr,       //namepointer
     },
 
     {       /*MT_GATE*/
@@ -4973,7 +4973,7 @@ mobjinfo_t mobjinfo[NUMMOBJTYPES] =
         0,      //damage
         sfx_None,       //activesound
         MF_SOLID|MF_SHOOTABLE|MF_GIVEQUEST|MF_NODIALOG|MF_NOBLOOD,      //flags
-        NULL,       //namepointer
+        nullptr,       //namepointer
     },
 
     {       /*MT_COMPUTER*/
@@ -5000,7 +5000,7 @@ mobjinfo_t mobjinfo[NUMMOBJTYPES] =
         0,      //damage
         sfx_None,       //activesound
         MF_SOLID|MF_SHOOTABLE|MF_GIVEQUEST|MF_NODIALOG|MF_NOBLOOD,      //flags
-        NULL,       //namepointer
+        nullptr,       //namepointer
     },
 
     {       /*MT_INV_MED1*/
@@ -5189,7 +5189,7 @@ mobjinfo_t mobjinfo[NUMMOBJTYPES] =
         0,      //damage
         sfx_None,       //activesound
         0,      //flags
-        NULL,       //namepointer
+        nullptr,       //namepointer
     },
 
     {       /*MT_MISC_11*/
@@ -5216,7 +5216,7 @@ mobjinfo_t mobjinfo[NUMMOBJTYPES] =
         0,      //damage
         sfx_None,       //activesound
         0,      //flags
-        NULL,       //namepointer
+        nullptr,       //namepointer
     },
 
     {       /*MT_KEY_BASE*/
@@ -7079,7 +7079,7 @@ mobjinfo_t mobjinfo[NUMMOBJTYPES] =
         0,      //damage
         sfx_reactr,     //activesound
         MF_SOLID|MF_SHOOTABLE|MF_NOGRAVITY|MF_GIVEQUEST|MF_NOBLOOD,     //flags
-        NULL,       //namepointer
+        nullptr,       //namepointer
     },
 
     {       /*MT_RAT*/
@@ -7133,7 +7133,7 @@ mobjinfo_t mobjinfo[NUMMOBJTYPES] =
         0,      //damage
         sfx_None,       //activesound
         MF_SOLID|MF_SHOOTABLE|MF_NODIALOG|MF_NOBLOOD,       //flags
-        NULL,       //namepointer
+        nullptr,       //namepointer
     },
 
     {       /*MT_MISC_06*/
@@ -7160,7 +7160,7 @@ mobjinfo_t mobjinfo[NUMMOBJTYPES] =
         0,      //damage
         sfx_None,       //activesound
         MF_SOLID|MF_SHOOTABLE|MF_NODIALOG|MF_NOBLOOD,       //flags
-        NULL,       //namepointer
+        nullptr,       //namepointer
     },
 
     {       /*MT_MISC_15*/
@@ -7187,7 +7187,7 @@ mobjinfo_t mobjinfo[NUMMOBJTYPES] =
         0,      //damage
         sfx_None,       //activesound
         MF_SOLID|MF_SHOOTABLE|MF_NODIALOG|MF_NOBLOOD,       //flags
-        NULL,       //namepointer
+        nullptr,       //namepointer
     },
 
     {       /*MT_LIGHT14*/
@@ -7214,7 +7214,7 @@ mobjinfo_t mobjinfo[NUMMOBJTYPES] =
         0,      //damage
         sfx_None,       //activesound
         MF_NOBLOCKMAP,      //flags
-        NULL,       //namepointer
+        nullptr,       //namepointer
     },
 
     {       /*MT_LIGHT13*/
@@ -7241,7 +7241,7 @@ mobjinfo_t mobjinfo[NUMMOBJTYPES] =
         0,      //damage
         sfx_None,       //activesound
         MF_NOBLOCKMAP,      //flags
-        NULL,       //namepointer
+        nullptr,       //namepointer
     },
 
     {       /*MT_LIGHT12*/
@@ -7268,7 +7268,7 @@ mobjinfo_t mobjinfo[NUMMOBJTYPES] =
         0,      //damage
         sfx_None,       //activesound
         MF_NOBLOCKMAP,      //flags
-        NULL,       //namepointer
+        nullptr,       //namepointer
     },
 
     {       /*MT_LIGHT18*/
@@ -7295,7 +7295,7 @@ mobjinfo_t mobjinfo[NUMMOBJTYPES] =
         0,      //damage
         sfx_None,       //activesound
         MF_SOLID,       //flags
-        NULL,       //namepointer
+        nullptr,       //namepointer
     },
 
     {       /*MT_PILLAR2*/
@@ -7322,7 +7322,7 @@ mobjinfo_t mobjinfo[NUMMOBJTYPES] =
         0,      //damage
         sfx_None,       //activesound
         MF_SOLID,       //flags
-        NULL,       //namepointer
+        nullptr,       //namepointer
     },
 
     {       /*MT_PILLAR3*/
@@ -7349,7 +7349,7 @@ mobjinfo_t mobjinfo[NUMMOBJTYPES] =
         0,      //damage
         sfx_None,       //activesound
         MF_SOLID,       //flags
-        NULL,       //namepointer
+        nullptr,       //namepointer
     },
 
     {       /*MT_PILLAR4*/
@@ -7376,7 +7376,7 @@ mobjinfo_t mobjinfo[NUMMOBJTYPES] =
         0,      //damage
         sfx_None,       //activesound
         MF_SOLID,       //flags
-        NULL,       //namepointer
+        nullptr,       //namepointer
     },
 
     {       /*MT_PILLAR5*/
@@ -7403,7 +7403,7 @@ mobjinfo_t mobjinfo[NUMMOBJTYPES] =
         0,      //damage
         sfx_None,       //activesound
         MF_SOLID,       //flags
-        NULL,       //namepointer
+        nullptr,       //namepointer
     },
 
     {       /*MT_PILLAR6*/
@@ -7430,7 +7430,7 @@ mobjinfo_t mobjinfo[NUMMOBJTYPES] =
         0,      //damage
         sfx_None,       //activesound
         MF_SOLID,       //flags
-        NULL,       //namepointer
+        nullptr,       //namepointer
     },
 
     {       /*MT_PILLAR7*/
@@ -7457,7 +7457,7 @@ mobjinfo_t mobjinfo[NUMMOBJTYPES] =
         0,      //damage
         sfx_amaln2,     //activesound
         MF_SOLID,       //flags
-        NULL,       //namepointer
+        nullptr,       //namepointer
     },
 
     {       /*MT_CAVE2*/
@@ -7484,7 +7484,7 @@ mobjinfo_t mobjinfo[NUMMOBJTYPES] =
         0,      //damage
         sfx_None,       //activesound
         MF_SOLID|MF_SPAWNCEILING|MF_NOGRAVITY,      //flags
-        NULL,       //namepointer
+        nullptr,       //namepointer
     },
 
     {       /*MT_CAVE3*/
@@ -7511,7 +7511,7 @@ mobjinfo_t mobjinfo[NUMMOBJTYPES] =
         0,      //damage
         sfx_None,       //activesound
         MF_SOLID|MF_SPAWNCEILING|MF_NOGRAVITY,      //flags
-        NULL,       //namepointer
+        nullptr,       //namepointer
     },
 
     {       /*MT_CAVE4*/
@@ -7538,7 +7538,7 @@ mobjinfo_t mobjinfo[NUMMOBJTYPES] =
         0,      //damage
         sfx_None,       //activesound
         MF_SOLID,       //flags
-        NULL,       //namepointer
+        nullptr,       //namepointer
     },
 
     {       /*MT_CAVE6*/
@@ -7565,7 +7565,7 @@ mobjinfo_t mobjinfo[NUMMOBJTYPES] =
         0,      //damage
         sfx_None,       //activesound
         MF_SOLID|MF_SPAWNCEILING|MF_NOGRAVITY,      //flags
-        NULL,       //namepointer
+        nullptr,       //namepointer
     },
 
     {       /*MT_CAVE7*/
@@ -7592,7 +7592,7 @@ mobjinfo_t mobjinfo[NUMMOBJTYPES] =
         0,      //damage
         sfx_None,       //activesound
         MF_SOLID,       //flags
-        NULL,       //namepointer
+        nullptr,       //namepointer
     },
 
     {       /*MT_CAVE5*/
@@ -7619,7 +7619,7 @@ mobjinfo_t mobjinfo[NUMMOBJTYPES] =
         0,      //damage
         sfx_None,       //activesound
         MF_SOLID,       //flags
-        NULL,       //namepointer
+        nullptr,       //namepointer
     },
 
     {       /*MT_LIGHT2*/
@@ -7646,7 +7646,7 @@ mobjinfo_t mobjinfo[NUMMOBJTYPES] =
         0,      //damage
         sfx_None,       //activesound
         0,      //flags
-        NULL,       //namepointer
+        nullptr,       //namepointer
     },
 
     {       /*MT_LIGHT3*/
@@ -7673,7 +7673,7 @@ mobjinfo_t mobjinfo[NUMMOBJTYPES] =
         0,      //damage
         sfx_None,       //activesound
         MF_SOLID,       //flags
-        NULL,       //namepointer
+        nullptr,       //namepointer
     },
 
     {       /*MT_MISC_03*/
@@ -7700,7 +7700,7 @@ mobjinfo_t mobjinfo[NUMMOBJTYPES] =
         0,      //damage
         sfx_wdrip,      //activesound
         MF_NOBLOCKMAP,      //flags
-        NULL,       //namepointer
+        nullptr,       //namepointer
     },
 
     {       /*MT_MISC_13*/
@@ -7727,7 +7727,7 @@ mobjinfo_t mobjinfo[NUMMOBJTYPES] =
         0,      //damage
         sfx_wfall,      //activesound
         MF_NOBLOCKMAP,      //flags
-        NULL,       //namepointer
+        nullptr,       //namepointer
     },
 
     {       /*MT_MISC_02*/
@@ -7754,7 +7754,7 @@ mobjinfo_t mobjinfo[NUMMOBJTYPES] =
         0,      //damage
         sfx_None,       //activesound
         MF_NOBLOCKMAP|MF_SPAWNCEILING|MF_NOGRAVITY,     //flags
-        NULL,       //namepointer
+        nullptr,       //namepointer
     },
 
     {       /*MT_MISC_07*/
@@ -7781,7 +7781,7 @@ mobjinfo_t mobjinfo[NUMMOBJTYPES] =
         0,      //damage
         sfx_wsplsh,     //activesound
         MF_NOBLOCKMAP,      //flags
-        NULL,       //namepointer
+        nullptr,       //namepointer
     },
 
     {       /*MT_BIO2*/
@@ -7808,7 +7808,7 @@ mobjinfo_t mobjinfo[NUMMOBJTYPES] =
         0,      //damage
         sfx_None,       //activesound
         MF_SOLID,       //flags
-        NULL,       //namepointer
+        nullptr,       //namepointer
     },
 
     {       /*MT_TELEPORTSTAND*/
@@ -7835,7 +7835,7 @@ mobjinfo_t mobjinfo[NUMMOBJTYPES] =
         0,      //damage
         sfx_None,       //activesound
         MF_NOBLOCKMAP|MF_SHADOW,        //flags
-        NULL,       //namepointer
+        nullptr,       //namepointer
     },
 
     {       /*MT_DEADTHING1*/
@@ -7862,7 +7862,7 @@ mobjinfo_t mobjinfo[NUMMOBJTYPES] =
         0,      //damage
         sfx_None,       //activesound
         0,      //flags
-        NULL,       //namepointer
+        nullptr,       //namepointer
     },
 
     {       /*MT_DEADTHING2*/
@@ -7889,7 +7889,7 @@ mobjinfo_t mobjinfo[NUMMOBJTYPES] =
         0,      //damage
         sfx_None,       //activesound
         0,      //flags
-        NULL,       //namepointer
+        nullptr,       //namepointer
     },
 
     {       /*MT_DEADTHING3*/
@@ -7916,7 +7916,7 @@ mobjinfo_t mobjinfo[NUMMOBJTYPES] =
         0,      //damage
         sfx_None,       //activesound
         0,      //flags
-        NULL,       //namepointer
+        nullptr,       //namepointer
     },
 
     {       /*MT_DEADTHING4*/
@@ -7943,7 +7943,7 @@ mobjinfo_t mobjinfo[NUMMOBJTYPES] =
         0,      //damage
         sfx_None,       //activesound
         0,      //flags
-        NULL,       //namepointer
+        nullptr,       //namepointer
     },
 
     {       /*MT_DEADTHING5*/
@@ -7970,7 +7970,7 @@ mobjinfo_t mobjinfo[NUMMOBJTYPES] =
         0,      //damage
         sfx_None,       //activesound
         0,      //flags
-        NULL,       //namepointer
+        nullptr,       //namepointer
     },
 
     {       /*MT_DEADTHING6*/
@@ -7997,7 +7997,7 @@ mobjinfo_t mobjinfo[NUMMOBJTYPES] =
         0,      //damage
         sfx_None,       //activesound
         0,      //flags
-        NULL,       //namepointer
+        nullptr,       //namepointer
     },
 
     {       /*MT_BIO1*/
@@ -8024,7 +8024,7 @@ mobjinfo_t mobjinfo[NUMMOBJTYPES] =
         0,      //damage
         sfx_None,       //activesound
         0,      //flags
-        NULL,       //namepointer
+        nullptr,       //namepointer
     },
 
     {       /*MT_GIBS*/
@@ -8051,7 +8051,7 @@ mobjinfo_t mobjinfo[NUMMOBJTYPES] =
         0,      //damage
         sfx_None,       //activesound
         0,      //flags
-        NULL,       //namepointer
+        nullptr,       //namepointer
     },
 
     {       /*MT_MISC_04*/
@@ -8078,7 +8078,7 @@ mobjinfo_t mobjinfo[NUMMOBJTYPES] =
         0,      //damage
         sfx_None,       //activesound
         MF_SOLID,       //flags
-        NULL,       //namepointer
+        nullptr,       //namepointer
     },
 
     {       /*MT_LIGHT11*/
@@ -8105,7 +8105,7 @@ mobjinfo_t mobjinfo[NUMMOBJTYPES] =
         0,      //damage
         sfx_smfire,     //activesound
         MF_SOLID,       //flags
-        NULL,       //namepointer
+        nullptr,       //namepointer
     },
 
     {       /*MT_LIGHT10*/
@@ -8132,7 +8132,7 @@ mobjinfo_t mobjinfo[NUMMOBJTYPES] =
         0,      //damage
         sfx_smfire,     //activesound
         MF_SOLID,       //flags
-        NULL,       //namepointer
+        nullptr,       //namepointer
     },
 
     {       /*MT_LIGHT9*/
@@ -8159,7 +8159,7 @@ mobjinfo_t mobjinfo[NUMMOBJTYPES] =
         0,      //damage
         sfx_smfire,     //activesound
         MF_NOBLOCKMAP,      //flags
-        NULL,       //namepointer
+        nullptr,       //namepointer
     },
 
     {       /*MT_LIGHT8*/
@@ -8186,7 +8186,7 @@ mobjinfo_t mobjinfo[NUMMOBJTYPES] =
         0,      //damage
         sfx_None,       //activesound
         MF_NOBLOCKMAP,      //flags
-        NULL,       //namepointer
+        nullptr,       //namepointer
     },
 
     {       /*MT_MISC_14*/
@@ -8213,7 +8213,7 @@ mobjinfo_t mobjinfo[NUMMOBJTYPES] =
         0,      //damage
         sfx_None,       //activesound
         MF_NOBLOCKMAP|MF_SPAWNCEILING|MF_NOGRAVITY,     //flags
-        NULL,       //namepointer
+        nullptr,       //namepointer
     },
 
     {       /*MT_LIGHT1*/
@@ -8240,7 +8240,7 @@ mobjinfo_t mobjinfo[NUMMOBJTYPES] =
         0,      //damage
         sfx_None,       //activesound
         MF_NOBLOCKMAP|MF_SPAWNCEILING|MF_NOGRAVITY,     //flags
-        NULL,       //namepointer
+        nullptr,       //namepointer
     },
 
     {       /*MT_PILLAR8*/
@@ -8267,7 +8267,7 @@ mobjinfo_t mobjinfo[NUMMOBJTYPES] =
         0,      //damage
         sfx_None,       //activesound
         MF_SOLID,       //flags
-        NULL,       //namepointer
+        nullptr,       //namepointer
     },
 
     {       /*MT_PILLAR9*/
@@ -8294,7 +8294,7 @@ mobjinfo_t mobjinfo[NUMMOBJTYPES] =
         0,      //damage
         sfx_None,       //activesound
         MF_SOLID,       //flags
-        NULL,       //namepointer
+        nullptr,       //namepointer
     },
 
     {       /*MT_LIGHT15*/
@@ -8321,7 +8321,7 @@ mobjinfo_t mobjinfo[NUMMOBJTYPES] =
         0,      //damage
         sfx_None,       //activesound
         MF_SOLID,       //flags
-        NULL,       //namepointer
+        nullptr,       //namepointer
     },
 
     {       /*MT_LIGHT4*/
@@ -8348,7 +8348,7 @@ mobjinfo_t mobjinfo[NUMMOBJTYPES] =
         0,      //damage
         sfx_None,       //activesound
         MF_SOLID,       //flags
-        NULL,       //namepointer
+        nullptr,       //namepointer
     },
 
     {       /*MT_LIGHT5*/
@@ -8375,7 +8375,7 @@ mobjinfo_t mobjinfo[NUMMOBJTYPES] =
         0,      //damage
         sfx_None,       //activesound
         MF_SOLID,       //flags
-        NULL,       //namepointer
+        nullptr,       //namepointer
     },
 
     {       /*MT_ROCK1*/
@@ -8402,7 +8402,7 @@ mobjinfo_t mobjinfo[NUMMOBJTYPES] =
         0,      //damage
         sfx_None,       //activesound
         MF_NOBLOCKMAP,      //flags
-        NULL,       //namepointer
+        nullptr,       //namepointer
     },
 
     {       /*MT_ROCK2*/
@@ -8429,7 +8429,7 @@ mobjinfo_t mobjinfo[NUMMOBJTYPES] =
         0,      //damage
         sfx_None,       //activesound
         MF_NOBLOCKMAP,      //flags
-        NULL,       //namepointer
+        nullptr,       //namepointer
     },
 
     {       /*MT_ROCK3*/
@@ -8456,7 +8456,7 @@ mobjinfo_t mobjinfo[NUMMOBJTYPES] =
         0,      //damage
         sfx_None,       //activesound
         MF_NOBLOCKMAP,      //flags
-        NULL,       //namepointer
+        nullptr,       //namepointer
     },
 
     {       /*MT_ROCK4*/
@@ -8483,7 +8483,7 @@ mobjinfo_t mobjinfo[NUMMOBJTYPES] =
         0,      //damage
         sfx_None,       //activesound
         MF_NOBLOCKMAP,      //flags
-        NULL,       //namepointer
+        nullptr,       //namepointer
     },
 
     {       /*MT_TREE7*/
@@ -8510,7 +8510,7 @@ mobjinfo_t mobjinfo[NUMMOBJTYPES] =
         0,      //damage
         sfx_wriver,     //activesound
         MF_NOBLOCKMAP,      //flags
-        NULL,       //namepointer
+        nullptr,       //namepointer
     },
 
     {       /*MT_RUBBLE1*/
@@ -8537,7 +8537,7 @@ mobjinfo_t mobjinfo[NUMMOBJTYPES] =
         0,      //damage
         sfx_None,       //activesound
         MF_NOBLOCKMAP|MF_NOCLIP,        //flags
-        NULL,       //namepointer
+        nullptr,       //namepointer
     },
 
     {       /*MT_RUBBLE2*/
@@ -8564,7 +8564,7 @@ mobjinfo_t mobjinfo[NUMMOBJTYPES] =
         0,      //damage
         sfx_None,       //activesound
         MF_NOBLOCKMAP|MF_NOCLIP,        //flags
-        NULL,       //namepointer
+        nullptr,       //namepointer
     },
 
     {       /*MT_RUBBLE3*/
@@ -8591,7 +8591,7 @@ mobjinfo_t mobjinfo[NUMMOBJTYPES] =
         0,      //damage
         sfx_None,       //activesound
         MF_NOBLOCKMAP|MF_NOCLIP,        //flags
-        NULL,       //namepointer
+        nullptr,       //namepointer
     },
 
     {       /*MT_RUBBLE4*/
@@ -8618,7 +8618,7 @@ mobjinfo_t mobjinfo[NUMMOBJTYPES] =
         0,      //damage
         sfx_None,       //activesound
         MF_NOBLOCKMAP|MF_NOCLIP,        //flags
-        NULL,       //namepointer
+        nullptr,       //namepointer
     },
 
     {       /*MT_RUBBLE5*/
@@ -8645,7 +8645,7 @@ mobjinfo_t mobjinfo[NUMMOBJTYPES] =
         0,      //damage
         sfx_None,       //activesound
         MF_NOBLOCKMAP|MF_NOCLIP,        //flags
-        NULL,       //namepointer
+        nullptr,       //namepointer
     },
 
     {       /*MT_RUBBLE6*/
@@ -8672,7 +8672,7 @@ mobjinfo_t mobjinfo[NUMMOBJTYPES] =
         0,      //damage
         sfx_None,       //activesound
         MF_NOBLOCKMAP|MF_NOCLIP,        //flags
-        NULL,       //namepointer
+        nullptr,       //namepointer
     },
 
     {       /*MT_RUBBLE7*/
@@ -8699,7 +8699,7 @@ mobjinfo_t mobjinfo[NUMMOBJTYPES] =
         0,      //damage
         sfx_None,       //activesound
         MF_NOBLOCKMAP|MF_NOCLIP,        //flags
-        NULL,       //namepointer
+        nullptr,       //namepointer
     },
 
     {       /*MT_RUBBLE8*/
@@ -8726,7 +8726,7 @@ mobjinfo_t mobjinfo[NUMMOBJTYPES] =
         0,      //damage
         sfx_None,       //activesound
         MF_NOBLOCKMAP|MF_NOCLIP,        //flags
-        NULL,       //namepointer
+        nullptr,       //namepointer
     },
 
     {       /*MT_MISC_08*/
@@ -8753,7 +8753,7 @@ mobjinfo_t mobjinfo[NUMMOBJTYPES] =
         0,      //damage
         sfx_None,       //activesound
         MF_SOLID|MF_SPAWNCEILING|MF_NOGRAVITY,      //flags
-        NULL,       //namepointer
+        nullptr,       //namepointer
     },
 
     {       /*MT_LIGHT6*/
@@ -8780,7 +8780,7 @@ mobjinfo_t mobjinfo[NUMMOBJTYPES] =
         0,      //damage
         sfx_smfire,     //activesound
         MF_SOLID,       //flags
-        NULL,       //namepointer
+        nullptr,       //namepointer
     },
 
     {       /*MT_LIGHT7*/
@@ -8807,7 +8807,7 @@ mobjinfo_t mobjinfo[NUMMOBJTYPES] =
         0,      //damage
         sfx_smfire,     //activesound
         MF_SOLID,       //flags
-        NULL,       //namepointer
+        nullptr,       //namepointer
     },
 
     {       /*MT_TREE2*/
@@ -8834,7 +8834,7 @@ mobjinfo_t mobjinfo[NUMMOBJTYPES] =
         0,      //damage
         sfx_None,       //activesound
         MF_SOLID,       //flags
-        NULL,       //namepointer
+        nullptr,       //namepointer
     },
 
     {       /*MT_TREE3*/
@@ -8861,7 +8861,7 @@ mobjinfo_t mobjinfo[NUMMOBJTYPES] =
         0,      //damage
         sfx_None,       //activesound
         MF_SOLID,       //flags
-        NULL,       //namepointer
+        nullptr,       //namepointer
     },
 
     {       /*MT_TREE4*/
@@ -8888,7 +8888,7 @@ mobjinfo_t mobjinfo[NUMMOBJTYPES] =
         0,      //damage
         sfx_None,       //activesound
         MF_SOLID,       //flags
-        NULL,       //namepointer
+        nullptr,       //namepointer
     },
 
     {       /*MT_TREE1*/
@@ -8915,7 +8915,7 @@ mobjinfo_t mobjinfo[NUMMOBJTYPES] =
         0,      //damage
         sfx_None,       //activesound
         MF_SOLID,       //flags
-        NULL,       //namepointer
+        nullptr,       //namepointer
     },
 
     {       /*MT_TREE6*/
@@ -8942,7 +8942,7 @@ mobjinfo_t mobjinfo[NUMMOBJTYPES] =
         0,      //damage
         sfx_None,       //activesound
         MF_SOLID,       //flags
-        NULL,       //namepointer
+        nullptr,       //namepointer
     },
 
     {       /*MT_TREE5*/
@@ -8969,7 +8969,7 @@ mobjinfo_t mobjinfo[NUMMOBJTYPES] =
         0,      //damage
         sfx_None,       //activesound
         MF_SOLID,       //flags
-        NULL,       //namepointer
+        nullptr,       //namepointer
     },
 
     {       /*MT_CAVE1*/
@@ -8996,7 +8996,7 @@ mobjinfo_t mobjinfo[NUMMOBJTYPES] =
         0,      //damage
         sfx_None,       //activesound
         MF_SOLID,       //flags
-        NULL,       //namepointer
+        nullptr,       //namepointer
     },
 
     {       /*MT_PILLAR1*/
@@ -9023,7 +9023,7 @@ mobjinfo_t mobjinfo[NUMMOBJTYPES] =
         0,      //damage
         sfx_None,       //activesound
         MF_SOLID,       //flags
-        NULL,       //namepointer
+        nullptr,       //namepointer
     },
 
     {       /*MT_MISC_10*/
@@ -9050,7 +9050,7 @@ mobjinfo_t mobjinfo[NUMMOBJTYPES] =
         0,      //damage
         sfx_None,       //activesound
         MF_SOLID,       //flags
-        NULL,       //namepointer
+        nullptr,       //namepointer
     },
 
     {       /*MT_MISC_09*/
@@ -9077,7 +9077,7 @@ mobjinfo_t mobjinfo[NUMMOBJTYPES] =
         0,      //damage
         sfx_None,       //activesound
         MF_SOLID,       //flags
-        NULL,       //namepointer
+        nullptr,       //namepointer
     },
 
     {       /*MT_MISC_17*/
@@ -9104,7 +9104,7 @@ mobjinfo_t mobjinfo[NUMMOBJTYPES] =
         0,      //damage
         sfx_None,       //activesound
         MF_SOLID,       //flags
-        NULL,       //namepointer
+        nullptr,       //namepointer
     },
 
     {       /*MT_MISC_18*/
@@ -9131,7 +9131,7 @@ mobjinfo_t mobjinfo[NUMMOBJTYPES] =
         0,      //damage
         sfx_None,       //activesound
         MF_NOBLOCKMAP,      //flags
-        NULL,       //namepointer
+        nullptr,       //namepointer
     },
 
     {       /*MT_MISC_19*/
@@ -9158,7 +9158,7 @@ mobjinfo_t mobjinfo[NUMMOBJTYPES] =
         0,      //damage
         sfx_None,       //activesound
         MF_NOBLOCKMAP,      //flags
-        NULL,       //namepointer
+        nullptr,       //namepointer
     },
 
     {       /*MT_MISC_20*/
@@ -9185,7 +9185,7 @@ mobjinfo_t mobjinfo[NUMMOBJTYPES] =
         0,      //damage
         sfx_None,       //activesound
         MF_SOLID,       //flags
-        NULL,       //namepointer
+        nullptr,       //namepointer
     },
 
     {       /*MT_LIGHT16*/
@@ -9212,7 +9212,7 @@ mobjinfo_t mobjinfo[NUMMOBJTYPES] =
         0,      //damage
         sfx_None,       //activesound
         MF_SOLID,       //flags
-        NULL,       //namepointer
+        nullptr,       //namepointer
     },
 
     {       /*MT_LIGHT17*/
@@ -9239,7 +9239,7 @@ mobjinfo_t mobjinfo[NUMMOBJTYPES] =
         0,      //damage
         sfx_None,       //activesound
         MF_SOLID,       //flags
-        NULL,       //namepointer
+        nullptr,       //namepointer
     },
 
     {       /*MT_MISC_21*/
@@ -9266,7 +9266,7 @@ mobjinfo_t mobjinfo[NUMMOBJTYPES] =
         0,      //damage
         sfx_None,       //activesound
         MF_SOLID,       //flags
-        NULL,       //namepointer
+        nullptr,       //namepointer
     },
 
     {       /*MT_MISC_12*/
@@ -9293,7 +9293,7 @@ mobjinfo_t mobjinfo[NUMMOBJTYPES] =
         0,      //damage
         sfx_None,       //activesound
         MF_SOLID,       //flags
-        NULL,       //namepointer
+        nullptr,       //namepointer
     },
 
     {       /*MT_MISC_26*/
@@ -9320,7 +9320,7 @@ mobjinfo_t mobjinfo[NUMMOBJTYPES] =
         0,      //damage
         sfx_None,       //activesound
         MF_NOBLOCKMAP,      //flags
-        NULL,       //namepointer
+        nullptr,       //namepointer
     },
 
     {       /*MT_MISC_23*/
@@ -9347,7 +9347,7 @@ mobjinfo_t mobjinfo[NUMMOBJTYPES] =
         0,      //damage
         sfx_None,       //activesound
         MF_NOBLOCKMAP,      //flags
-        NULL,       //namepointer
+        nullptr,       //namepointer
     },
 
     {       /*MT_MISC_24*/
@@ -9374,7 +9374,7 @@ mobjinfo_t mobjinfo[NUMMOBJTYPES] =
         0,      //damage
         sfx_None,       //activesound
         MF_NOBLOCKMAP,      //flags
-        NULL,       //namepointer
+        nullptr,       //namepointer
     },
 
     {       /*MT_MISC_25*/
@@ -9401,7 +9401,7 @@ mobjinfo_t mobjinfo[NUMMOBJTYPES] =
         0,      //damage
         sfx_None,       //activesound
         MF_NOBLOCKMAP,      //flags
-        NULL,       //namepointer
+        nullptr,       //namepointer
     },
 
     {       /*MT_COUPLING*/
@@ -9429,7 +9429,7 @@ mobjinfo_t mobjinfo[NUMMOBJTYPES] =
         sfx_None,       //activesound
         MF_SOLID|MF_SHOOTABLE|MF_GIVEQUEST|MF_NODIALOG|MF_DROPPED
         |MF_NOBLOOD|MF_NOTDMATCH,        //flags
-        NULL,       //namepointer
+        nullptr,       //namepointer
     },
 
     {       /*MT_COUPLING_BROKEN*/
@@ -9483,7 +9483,7 @@ mobjinfo_t mobjinfo[NUMMOBJTYPES] =
         0,      //damage
         sfx_amaln5,     //activesound
         MF_SOLID,       //flags
-        NULL,       //namepointer
+        nullptr,       //namepointer
     },
 
     {       /*MT_PILLAR11*/
@@ -9510,7 +9510,7 @@ mobjinfo_t mobjinfo[NUMMOBJTYPES] =
         0,      //damage
         sfx_amaln6,     //activesound
         MF_SOLID,       //flags
-        NULL,       //namepointer
+        nullptr,       //namepointer
     },
 
     {       /*MT_PILLAR12*/
@@ -9537,7 +9537,7 @@ mobjinfo_t mobjinfo[NUMMOBJTYPES] =
         0,      //damage
         sfx_amaln4,     //activesound
         MF_SOLID|MF_SPAWNCEILING|MF_NOGRAVITY,      //flags
-        NULL,       //namepointer
+        nullptr,       //namepointer
     },
 
     {       /*MT_PILLAR13*/
@@ -9564,7 +9564,7 @@ mobjinfo_t mobjinfo[NUMMOBJTYPES] =
         0,      //damage
         sfx_amaln3,     //activesound
         MF_SOLID,       //flags
-        NULL,       //namepointer
+        nullptr,       //namepointer
     },
 
     {       /*MT_LIGHT19*/
@@ -9591,7 +9591,7 @@ mobjinfo_t mobjinfo[NUMMOBJTYPES] =
         0,      //damage
         sfx_amaln1,     //activesound
         MF_SOLID,       //flags
-        NULL,       //namepointer
+        nullptr,       //namepointer
     },
 
     {       /*MT_MEAT*/
@@ -9618,7 +9618,7 @@ mobjinfo_t mobjinfo[NUMMOBJTYPES] =
         0,      //damage
         sfx_None,       //activesound
         MF_NOBLOCKMAP|MF_NOCLIP,        //flags
-        NULL,       //namepointer
+        nullptr,       //namepointer
     },
 
     {       /*MT_JUNK*/
@@ -9645,7 +9645,7 @@ mobjinfo_t mobjinfo[NUMMOBJTYPES] =
         0,      //damage
         sfx_None,       //activesound
         MF_NOBLOCKMAP|MF_NOCLIP,        //flags
-        NULL,       //namepointer
+        nullptr,       //namepointer
     },
 
     {       /*MT_BURNDROP*/
@@ -9672,7 +9672,7 @@ mobjinfo_t mobjinfo[NUMMOBJTYPES] =
         0,      //damage
         sfx_None,       //activesound
         MF_NOBLOCKMAP|MF_NOCLIP,        //flags
-        NULL,       //namepointer
+        nullptr,       //namepointer
     },
 
     {       /*MT_TOKEN_AMMO*/
@@ -9807,7 +9807,7 @@ mobjinfo_t mobjinfo[NUMMOBJTYPES] =
         0,      //damage
         sfx_None,       //activesound
         MF_SPECIAL,     //flags
-        NULL,       //namepointer
+        nullptr,       //namepointer
     },
 
     {       /*MT_TOKEN_SHOPCLOSE*/
@@ -9834,7 +9834,7 @@ mobjinfo_t mobjinfo[NUMMOBJTYPES] =
         0,      //damage
         sfx_None,       //activesound
         MF_SPECIAL,     //flags
-        NULL,       //namepointer
+        nullptr,       //namepointer
     },
 
     {       /*MT_TOKEN_PRISON_PASS*/
@@ -9888,7 +9888,7 @@ mobjinfo_t mobjinfo[NUMMOBJTYPES] =
         0,      //damage
         sfx_None,       //activesound
         MF_SPECIAL,     //flags
-        NULL,       //namepointer
+        nullptr,       //namepointer
     },
 
     {       /*MT_TOKEN_STAMINA*/
@@ -9915,7 +9915,7 @@ mobjinfo_t mobjinfo[NUMMOBJTYPES] =
         0,      //damage
         sfx_None,       //activesound
         MF_SPECIAL,     //flags
-        NULL,       //namepointer
+        nullptr,       //namepointer
     },
 
     {       /*MT_TOKEN_NEW_ACCURACY*/
@@ -9942,7 +9942,7 @@ mobjinfo_t mobjinfo[NUMMOBJTYPES] =
         0,      //damage
         sfx_None,       //activesound
         MF_SPECIAL,     //flags
-        NULL,       //namepointer
+        nullptr,       //namepointer
     },
 
     {       /*MT_TOKEN_REPORT*/
@@ -10077,7 +10077,7 @@ mobjinfo_t mobjinfo[NUMMOBJTYPES] =
         0,      //damage
         sfx_None,       //activesound
         0,      //flags
-        NULL,       //namepointer
+        nullptr,       //namepointer
     },
 
     {       /*MT_TOKEN_QUEST2*/
@@ -10104,7 +10104,7 @@ mobjinfo_t mobjinfo[NUMMOBJTYPES] =
         0,      //damage
         sfx_None,       //activesound
         0,      //flags
-        NULL,       //namepointer
+        nullptr,       //namepointer
     },
 
     {       /*MT_TOKEN_QUEST3*/
@@ -10131,7 +10131,7 @@ mobjinfo_t mobjinfo[NUMMOBJTYPES] =
         0,      //damage
         sfx_None,       //activesound
         0,      //flags
-        NULL,       //namepointer
+        nullptr,       //namepointer
     },
 
     {       /*MT_TOKEN_QUEST4*/
@@ -10239,7 +10239,7 @@ mobjinfo_t mobjinfo[NUMMOBJTYPES] =
         0,      //damage
         sfx_None,       //activesound
         0,      //flags
-        NULL,       //namepointer
+        nullptr,       //namepointer
     },
 
     {       /*MT_TOKEN_QUEST8*/
@@ -10266,7 +10266,7 @@ mobjinfo_t mobjinfo[NUMMOBJTYPES] =
         0,      //damage
         sfx_None,       //activesound
         0,      //flags
-        NULL,       //namepointer
+        nullptr,       //namepointer
     },
 
     {       /*MT_TOKEN_QUEST9*/
@@ -10293,7 +10293,7 @@ mobjinfo_t mobjinfo[NUMMOBJTYPES] =
         0,      //damage
         sfx_None,       //activesound
         0,      //flags
-        NULL,       //namepointer
+        nullptr,       //namepointer
     },
 
     {       /*MT_TOKEN_QUEST10*/
@@ -10320,7 +10320,7 @@ mobjinfo_t mobjinfo[NUMMOBJTYPES] =
         0,      //damage
         sfx_None,       //activesound
         0,      //flags
-        NULL,       //namepointer
+        nullptr,       //namepointer
     },
 
     {       /*MT_TOKEN_QUEST11*/
@@ -10347,7 +10347,7 @@ mobjinfo_t mobjinfo[NUMMOBJTYPES] =
         0,      //damage
         sfx_None,       //activesound
         0,      //flags
-        NULL,       //namepointer
+        nullptr,       //namepointer
     },
 
     {       /*MT_TOKEN_QUEST12*/
@@ -10374,7 +10374,7 @@ mobjinfo_t mobjinfo[NUMMOBJTYPES] =
         0,      //damage
         sfx_None,       //activesound
         0,      //flags
-        NULL,       //namepointer
+        nullptr,       //namepointer
     },
 
     {       /*MT_TOKEN_QUEST13*/
@@ -10401,7 +10401,7 @@ mobjinfo_t mobjinfo[NUMMOBJTYPES] =
         0,      //damage
         sfx_None,       //activesound
         0,      //flags
-        NULL,       //namepointer
+        nullptr,       //namepointer
     },
 
     {       /*MT_TOKEN_CRYSTAL*/
@@ -10455,7 +10455,7 @@ mobjinfo_t mobjinfo[NUMMOBJTYPES] =
         0,      //damage
         sfx_None,       //activesound
         0,      //flags
-        NULL,       //namepointer
+        nullptr,       //namepointer
     },
 
     {       /*MT_GATEQUEST*/
@@ -10509,7 +10509,7 @@ mobjinfo_t mobjinfo[NUMMOBJTYPES] =
         0,      //damage
         sfx_None,       //activesound
         0,      //flags
-        NULL,       //namepointer
+        nullptr,       //namepointer
     },
 
     {       /*MT_TOKEN_QUEST18*/
@@ -10536,7 +10536,7 @@ mobjinfo_t mobjinfo[NUMMOBJTYPES] =
         0,      //damage
         sfx_None,       //activesound
         0,      //flags
-        NULL,       //namepointer
+        nullptr,       //namepointer
     },
 
     {       /*MT_TOKEN_QUEST19*/
@@ -10563,7 +10563,7 @@ mobjinfo_t mobjinfo[NUMMOBJTYPES] =
         0,      //damage
         sfx_None,       //activesound
         0,      //flags
-        NULL,       //namepointer
+        nullptr,       //namepointer
     },
 
     {       /*MT_TOKEN_QUEST20*/
@@ -10590,7 +10590,7 @@ mobjinfo_t mobjinfo[NUMMOBJTYPES] =
         0,      //damage
         sfx_None,       //activesound
         0,      //flags
-        NULL,       //namepointer
+        nullptr,       //namepointer
     },
 
     {       /*MT_TOKEN_BISHOP*/
@@ -10644,7 +10644,7 @@ mobjinfo_t mobjinfo[NUMMOBJTYPES] =
         0,      //damage
         sfx_None,       //activesound
         0,      //flags
-        NULL,       //namepointer
+        nullptr,       //namepointer
     },
 
     {       /*MT_TOKEN_ORACLE*/
@@ -10725,7 +10725,7 @@ mobjinfo_t mobjinfo[NUMMOBJTYPES] =
         0,      //damage
         sfx_None,       //activesound
         0,      //flags
-        NULL,       //namepointer
+        nullptr,       //namepointer
     },
 
     {       /*MT_TOKEN_LOREMASTER*/
@@ -10806,7 +10806,7 @@ mobjinfo_t mobjinfo[NUMMOBJTYPES] =
         0,      //damage
         sfx_None,       //activesound
         0,      //flags
-        NULL,       //namepointer
+        nullptr,       //namepointer
     },
 
     {       /*MT_TOKEN_QUEST29*/
@@ -10833,7 +10833,7 @@ mobjinfo_t mobjinfo[NUMMOBJTYPES] =
         0,      //damage
         sfx_None,       //activesound
         0,      //flags
-        NULL,       //namepointer
+        nullptr,       //namepointer
     },
 
     {       /*MT_TOKEN_QUEST30*/
@@ -10860,7 +10860,7 @@ mobjinfo_t mobjinfo[NUMMOBJTYPES] =
         0,      //damage
         sfx_None,       //activesound
         0,      //flags
-        NULL,       //namepointer
+        nullptr,       //namepointer
     },
 
     {       /*MT_TOKEN_QUEST31*/
@@ -10887,7 +10887,7 @@ mobjinfo_t mobjinfo[NUMMOBJTYPES] =
         0,      //damage
         sfx_None,       //activesound
         0,      //flags
-        NULL,       //namepointer
+        nullptr,       //namepointer
     },
 
     {       /*MT_SLIDESHOW*/
@@ -10914,7 +10914,7 @@ mobjinfo_t mobjinfo[NUMMOBJTYPES] =
         0,      //damage
         sfx_None,       //activesound
         MF_SPECIAL,     //flags
-        NULL,       //namepointer
+        nullptr,       //namepointer
     },
 
 };

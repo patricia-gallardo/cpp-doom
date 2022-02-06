@@ -49,7 +49,7 @@ extern wad_file_class_t win32_wad_file;
 static void MapFile(win32_wad_file_t *wad, const char *filename)
 {
     wad->handle_map = CreateFileMapping(wad->handle,
-        NULL,
+        nullptr,
         PAGE_WRITECOPY,
         0,
         0,
@@ -78,7 +78,7 @@ unsigned int GetFileLength(HANDLE handle)
 {
     DWORD result;
 
-    result = SetFilePointer(handle, 0, NULL, FILE_END);
+    result = SetFilePointer(handle, 0, nullptr, FILE_END);
 
     if (result == INVALID_SET_FILE_POINTER)
     {
@@ -103,7 +103,7 @@ static wad_file_t *W_Win32_OpenFile(const char *path)
     handle = CreateFileW(wpath,
         GENERIC_READ,
         FILE_SHARE_READ,
-        NULL,
+        nullptr,
         OPEN_EXISTING,
         FILE_ATTRIBUTE_NORMAL,
         nullptr);
@@ -170,7 +170,7 @@ size_t W_Win32_Read(wad_file_t *wad, unsigned int offset,
 
     // Jump to the specified position in the file.
 
-    result = SetFilePointer(win32_wad->handle, offset, NULL, FILE_BEGIN);
+    result = SetFilePointer(win32_wad->handle, offset, nullptr, FILE_BEGIN);
 
     if (result == INVALID_SET_FILE_POINTER)
     {

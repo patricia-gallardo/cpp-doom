@@ -862,20 +862,20 @@ void P_PlayerInSpecialSector(player_t * player)
         case 7:                // Damage_Sludge
             if (!(leveltime & 31))
             {
-                P_DamageMobj(player->mo, NULL, NULL, 4);
+                P_DamageMobj(player->mo, nullptr, nullptr, 4);
             }
             break;
         case 5:                // Damage_LavaWimpy
             if (!(leveltime & 15))
             {
-                P_DamageMobj(player->mo, &LavaInflictor, NULL, 5);
+                P_DamageMobj(player->mo, &LavaInflictor, nullptr, 5);
                 P_HitFloor(player->mo);
             }
             break;
         case 16:               // Damage_LavaHefty
             if (!(leveltime & 15))
             {
-                P_DamageMobj(player->mo, &LavaInflictor, NULL, 8);
+                P_DamageMobj(player->mo, &LavaInflictor, nullptr, 8);
                 P_HitFloor(player->mo);
             }
             break;
@@ -883,7 +883,7 @@ void P_PlayerInSpecialSector(player_t * player)
             P_Thrust(player, 0, 2048 * 28);
             if (!(leveltime & 15))
             {
-                P_DamageMobj(player->mo, &LavaInflictor, NULL, 5);
+                P_DamageMobj(player->mo, &LavaInflictor, nullptr, 5);
                 P_HitFloor(player->mo);
             }
             break;
@@ -896,7 +896,7 @@ void P_PlayerInSpecialSector(player_t * player)
                player->cheats &= ~CF_GODMODE;
                if(!(leveltime&0x1f))
                {
-               P_DamageMobj(player->mo, NULL, NULL, 20);
+               P_DamageMobj(player->mo, nullptr, nullptr, 20);
                }
                if(player->health <= 10)
                {

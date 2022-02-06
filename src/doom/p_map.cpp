@@ -1550,7 +1550,7 @@ boolean PIT_ChangeSector(mobj_t *thing)
 
     if (crushchange && !(leveltime & 3))
     {
-        P_DamageMobj(thing, NULL, NULL, 10);
+        P_DamageMobj(thing, nullptr, nullptr, 10);
 
         // spray blood in a random direction
         mo = P_SpawnMobj(thing->x,
