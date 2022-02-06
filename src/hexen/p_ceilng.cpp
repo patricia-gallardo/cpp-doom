@@ -210,7 +210,7 @@ int EV_DoCeiling(line_t * line, byte * arg, ceiling_e type)
         if (rtn)
         {
             SN_StartSequence((mobj_t *) & ceiling->sector->soundorg,
-                             SEQ_PLATFORM + ceiling->sector->seqType);
+                             SEQ_PLATFORM + static_cast<int>(ceiling->sector->seqType));
         }
     }
     return rtn;
