@@ -33,13 +33,13 @@
 // OPTIMIZE: closed two sided lines as single sided
 
 // True if any of the segs textures might be visible.
-boolean segtextured;
+bool segtextured;
 
 // False if the back side is the same plane.
-boolean markfloor;
-boolean markceiling;
+bool markfloor;
+bool markceiling;
 
-boolean maskedtexture;
+bool maskedtexture;
 int     toptexture;
 int     bottomtexture;
 int     midtexture;
@@ -641,7 +641,7 @@ void R_StoreWallRange(int start,
     {
         // [crispy] fix sprites being visible behind closed doors
         // adapted from mbfsrc/R_BSP.C:234-257
-        const boolean doorclosed =
+        const bool doorclosed =
             // if door is closed because back is shut:
             backsector->interpceilingheight <= backsector->interpfloorheight
             // preserve a kind of transparent door/lift special effect:

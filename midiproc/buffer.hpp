@@ -38,16 +38,16 @@ typedef struct {
 buffer_t *NewBuffer();
 void DeleteBuffer(buffer_t* buf);
 int Buffer_Data(buffer_t *buf, byte **data);
-boolean Buffer_Push(buffer_t *buf, const void *data, int len);
+bool Buffer_Push(buffer_t *buf, const void *data, int len);
 void Buffer_Shift(buffer_t *buf, int len);
 void Buffer_Clear(buffer_t *buf);
 
 buffer_reader_t *NewReader(buffer_t* buffer);
 void DeleteReader(buffer_reader_t *reader);
 int Reader_BytesRead(buffer_reader_t *reader);
-boolean Reader_ReadInt8(buffer_reader_t *reader, uint8_t *out);
-boolean Reader_ReadInt16(buffer_reader_t *reader, uint16_t *out);
-boolean Reader_ReadInt32(buffer_reader_t *reader, uint32_t *out);
+bool Reader_ReadInt8(buffer_reader_t *reader, uint8_t *out);
+bool Reader_ReadInt16(buffer_reader_t *reader, uint16_t *out);
+bool Reader_ReadInt32(buffer_reader_t *reader, uint32_t *out);
 char *Reader_ReadString(buffer_reader_t *reader);
 
 #endif

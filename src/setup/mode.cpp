@@ -242,7 +242,7 @@ static mission_config_t *GetMissionForName(char *name)
 // Check the name of the executable.  If it contains one of the game
 // names (eg. chocolate-hexen-setup.exe) then use that game.
 
-static boolean CheckExecutableName(GameSelectCallback callback)
+static bool CheckExecutableName(GameSelectCallback callback)
 {
     mission_config_t *config;
     const char *exe_name;

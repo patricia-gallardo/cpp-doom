@@ -100,8 +100,8 @@ struct player_t {
 
     // Power ups. invinc and invis are tic counters.
     int     powers[NUMPOWERS + 3]; // [crispy] showfps and mapcoords are now "powers"
-    boolean cards[NUMCARDS];
-    boolean backpack;
+    bool cards[NUMCARDS];
+    bool backpack;
 
     // Frags, kills of other players.
     int          frags[MAXPLAYERS];
@@ -155,7 +155,7 @@ struct player_t {
     pspdef_t psprites[NUMPSPRITES];
 
     // True if secret level has been done.
-    boolean didsecret;
+    bool didsecret;
 
     // [crispy] now follow Crispy Doom specific properties
 
@@ -168,7 +168,7 @@ struct player_t {
 
     // [crispy] free look / mouse look
     int     lookdir, oldlookdir;
-    boolean centering;
+    bool centering;
 
     // [crispy] jumping
     unsigned int jumpTics;
@@ -186,7 +186,7 @@ struct player_t {
     fixed_t bob2;
 
     // [crispy] blinking key or skull in the status bar
-    boolean tryopen[NUMCARDS];
+    bool tryopen[NUMCARDS];
 
     // [crispy] negative player health
     int neghealth;
@@ -199,7 +199,7 @@ struct player_t {
 //
 typedef struct
 {
-    boolean in; // whether the player is in game
+    bool in; // whether the player is in game
 
     // Player stats, kills, collected items etc.
     int skills;
@@ -216,7 +216,7 @@ typedef struct
     int epsd; // episode # (0-2)
 
     // if true, splash the secret level
-    boolean didsecret;
+    bool didsecret;
 
     // previous and next levels, origin 0
     int last;

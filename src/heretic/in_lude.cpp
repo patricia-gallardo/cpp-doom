@@ -41,7 +41,7 @@ typedef enum
 // Public functions
 
 
-boolean intermission;
+bool intermission;
 
 // Private functions
 
@@ -61,7 +61,7 @@ static void IN_DrawNumber(int val, int x, int y, int digits);
 static void IN_DrawTime(int x, int y, int h, int m, int s);
 static void IN_DrTextB(const char *text, int x, int y);
 
-static boolean skipintermission;
+static bool skipintermission;
 static int interstate = 0;
 static int intertime = -1;
 static int oldintertime = 0;
@@ -967,7 +967,7 @@ void IN_DrawNumber(int val, int x, int y, int digits)
     int xpos;
     int oldval;
     int realdigits;
-    boolean neg;
+    bool neg;
 
     oldval = val;
     xpos = x;

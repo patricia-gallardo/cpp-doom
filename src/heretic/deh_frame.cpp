@@ -216,7 +216,7 @@ static void *DEH_FrameStart(deh_context_t *context, char *line)
     return state;
 }
 
-static boolean GetActionPointerForOffset(int offset, void **result)
+static bool GetActionPointerForOffset(int offset, void **result)
 {
     int i;
 

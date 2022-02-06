@@ -64,7 +64,7 @@
 #include "memory.hpp"
 
 extern int     screenblocks;  // [crispy] for the Crispy HUD
-extern boolean inhelpscreens; // [crispy] prevent palette changes
+extern bool inhelpscreens; // [crispy] prevent palette changes
 
 //
 // STATUS BAR DATA
@@ -276,7 +276,7 @@ pixel_t *st_backing_screen;
 static player_t *plyr;
 
 // ST_Start() has just been called
-static boolean st_firsttime;
+static bool st_firsttime;
 
 // lump number for PLAYPAL
 static int lu_palette;
@@ -294,30 +294,30 @@ static st_chatstateenum_t st_chatstate;
 static st_stateenum_t st_gamestate;
 
 // whether left-side main status bar is active
-static boolean st_statusbaron;
+static bool st_statusbaron;
 
 // [crispy] distinguish classic status bar with background and player face from Crispy HUD
-static boolean st_crispyhud;
-static boolean st_classicstatusbar;
-static boolean st_statusbarface;
+static bool st_crispyhud;
+static bool st_classicstatusbar;
+static bool st_statusbarface;
 
 // whether status bar chat is active
-static boolean st_chat;
+static bool st_chat;
 
 // value of st_chat before message popped up
-static boolean st_oldchat;
+static bool st_oldchat;
 
 // whether chat window has the cursor on
-static boolean st_cursoron;
+static bool st_cursoron;
 
 // !deathmatch
-static boolean st_notdeathmatch;
+static bool st_notdeathmatch;
 
 // !deathmatch && st_statusbaron
-static boolean st_armson;
+static bool st_armson;
 
 // !deathmatch
-static boolean st_fragson;
+static bool st_fragson;
 
 // main bar left
 static patch_t *sbar;
@@ -390,7 +390,7 @@ static int st_fragscount;
 static int st_oldhealth = -1;
 
 // used for evil grin
-static boolean oldweaponsowned[NUMWEAPONS];
+static bool oldweaponsowned[NUMWEAPONS];
 
 // count until face changes
 static int st_facecount = 0;
@@ -470,7 +470,7 @@ static inline int cht_CheckCheatSP(cheatseq_t *cht, char key)
 //
 void ST_Stop();
 
-void ST_refreshBackground(boolean force)
+void ST_refreshBackground(bool force)
 {
 
     if (st_classicstatusbar || force)
@@ -537,7 +537,7 @@ static int ST_cheat_massacre()
 static int ST_cheat_spechits()
 {
     int     i, speciallines = 0;
-    boolean origcards[NUMCARDS];
+    bool origcards[NUMCARDS];
     line_t  dummy;
 
     // [crispy] temporarily give all keys
@@ -618,7 +618,7 @@ static int ST_cheat_spechits()
 }
 
 // [crispy] only give available weapons
-static boolean WeaponAvailable(int w)
+static bool WeaponAvailable(int w)
 {
     if (w < 0 || w >= NUMWEAPONS)
         return false;
@@ -633,7 +633,7 @@ static boolean WeaponAvailable(int w)
 }
 
 // [crispy] give or take backpack
-static void GiveBackpack(boolean give)
+static void GiveBackpack(bool give)
 {
     int i;
 
@@ -657,7 +657,7 @@ static void GiveBackpack(boolean give)
 
 // Respond to keyboard input events,
 //  intercept cheats.
-boolean
+bool
     ST_Responder(event_t *ev)
 {
     int i;
@@ -1056,7 +1056,7 @@ boolean
                 {
                     if (!plyr->weaponowned[w])
                     {
-                        extern boolean P_GiveWeapon(player_t * player, weapontype_t weapon, boolean dropped);
+                        extern bool P_GiveWeapon(player_t * player, weapontype_t weapon, bool dropped);
 
                         P_GiveWeapon(plyr, static_cast<weapontype_t>(w), false);
                         S_StartSound(NULL, sfx_wpnup);
@@ -1077,7 +1077,7 @@ boolean
                         // [crispy] removed current weapon, select another one
                         if (w == plyr->readyweapon)
                         {
-                            extern boolean P_CheckAmmo(player_t * player);
+                            extern bool P_CheckAmmo(player_t * player);
 
                             P_CheckAmmo(plyr);
                         }
@@ -1317,12 +1317,12 @@ void       ST_updateFaceWidget()
     angle_t    diffang;
     static int lastattackdown = -1;
     static int priority       = 0;
-    boolean    doevilgrin;
+    bool    doevilgrin;
 
     // [crispy] fix status bar face hysteresis
     int painoffset;
     // [crispy] no evil grin or rampage face in god mode
-    const boolean invul = (plyr->cheats & CF_GODMODE) || plyr->powers[pw_invulnerability];
+    const bool invul = (plyr->cheats & CF_GODMODE) || plyr->powers[pw_invulnerability];
 
     painoffset = ST_calcPainOffset();
 
@@ -1800,10 +1800,10 @@ static inline void ST_DrawGibbedPlayerSprites()
     dp_translation = NULL;
 }
 
-void ST_drawWidgets(boolean refresh)
+void ST_drawWidgets(bool refresh)
 {
     int     i;
-    boolean gibbed = false;
+    bool gibbed = false;
 
     // used by w_arms[] widgets
     st_armson = st_statusbaron && !deathmatch;
@@ -1911,7 +1911,7 @@ void ST_diffDraw()
     ST_drawWidgets(false);
 }
 
-void ST_Drawer(boolean fullscreen, boolean refresh)
+void ST_Drawer(bool fullscreen, bool refresh)
 {
 
     st_statusbaron = (!fullscreen) || (automapactive && !crispy->automapoverlay && !crispy->widescreen);
@@ -2286,7 +2286,7 @@ void ST_createWidgets()
         ST_MAXAMMO3WIDTH);
 }
 
-static boolean st_stopped = true;
+static bool st_stopped = true;
 
 
 void ST_Start()

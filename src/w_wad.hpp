@@ -73,6 +73,6 @@ void W_ReleaseLumpNum(lumpindex_t lump);
 void W_ReleaseLumpName(const char *name);
 
 const char *W_WadNameForLump(const lumpinfo_t *lump);
-boolean     W_IsIWADLump(const lumpinfo_t *lump);
+bool     W_IsIWADLump(const lumpinfo_t *lump);
 
 #endif

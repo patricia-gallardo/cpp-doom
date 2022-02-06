@@ -63,7 +63,7 @@ struct txt_joystick_axis_s
     // the maximum values. These have to be ignored, so when we ask the
     // user to center the joystick, we look for bad axes that are not
     // close to zero.
-    boolean *bad_axis;
+    bool *bad_axis;
 
     // Stage we have reached in configuring joystick axis.
     txt_joystick_axis_stage_t config_stage;

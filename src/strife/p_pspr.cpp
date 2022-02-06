@@ -140,7 +140,7 @@ void P_BringUpWeapon (player_t* player)
 //
 // villsa [STRIFE] Changes to handle Strife weapons
 //
-boolean P_CheckAmmo (player_t* player)
+bool P_CheckAmmo (player_t* player)
 {
     ammotype_t          ammo;
     int                 count;
@@ -680,7 +680,7 @@ void P_BulletSlope (mobj_t *mo)
 void
 P_GunShot
 ( mobj_t*	mo,
-  boolean	accurate )
+  bool	accurate )
 {
     angle_t     angle;
     int         damage;

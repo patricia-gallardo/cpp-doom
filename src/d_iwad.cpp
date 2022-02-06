@@ -48,7 +48,7 @@ static const iwad_t iwads[] = {
     { "strife1.wad", strife, commercial, "Strife" },
 };
 
-boolean D_IsIWADName(const char *name)
+bool D_IsIWADName(const char *name)
 {
     int i;
 
@@ -69,7 +69,7 @@ boolean D_IsIWADName(const char *name)
 
 #define MAX_IWAD_DIRS 128
 
-static boolean iwad_dirs_built = false;
+static bool iwad_dirs_built = false;
 static char *  iwad_dirs[MAX_IWAD_DIRS];
 static int     num_iwad_dirs = 0;
 
@@ -456,7 +456,7 @@ static void CheckDOSDefaults()
 // Returns true if the specified path is a path to a file
 // of the specified name.
 
-static boolean DirIsFile(const char *path, const char *filename)
+static bool DirIsFile(const char *path, const char *filename)
 {
     return strchr(path, DIR_SEPARATOR) != NULL
            && !strcasecmp(M_BaseName(path), filename);

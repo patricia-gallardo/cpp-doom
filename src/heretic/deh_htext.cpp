@@ -670,7 +670,7 @@ static const int *unsupported_strings[] =
     unsupported_strings_1_3,
 };
 
-static boolean StringIsUnsupported(unsigned int offset)
+static bool StringIsUnsupported(unsigned int offset)
 {
     const int *string_list;
     int i;
@@ -688,7 +688,7 @@ static boolean StringIsUnsupported(unsigned int offset)
     return false;
 }
 
-static boolean GetStringByOffset(unsigned int offset, const char **result)
+static bool GetStringByOffset(unsigned int offset, const char **result)
 {
     int i;
 

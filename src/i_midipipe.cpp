@@ -48,10 +48,10 @@
 // True if the midi proces was initialized at least once and has not been
 // explicitly shut down.  This remains true if the server is momentarily
 // unreachable.
-boolean midi_server_initialized = false;
+bool midi_server_initialized = false;
 
 // True if the current track is being handled via the MIDI server.
-boolean midi_server_registered = false;
+bool midi_server_registered = false;
 
 //=============================================================================
 //
@@ -107,7 +107,7 @@ static void FreePipes()
 // If this is the case, using the MIDI server is probably necessary.  If not,
 // we're likely using Timidity and thus don't need to start the server.
 //
-static boolean UsingNativeMidi()
+static bool UsingNativeMidi()
 {
     int i;
     int decoders = Mix_GetNumMusicDecoders();
@@ -128,7 +128,7 @@ static boolean UsingNativeMidi()
 //
 // Writes packet data to the subprocess' standard in.
 //
-static boolean WritePipe(net_packet_t *packet)
+static bool WritePipe(net_packet_t *packet)
 {
     DWORD bytes_written;
     BOOL  ok = WriteFile(midi_process_in_writer, packet->data, packet->len,
@@ -144,7 +144,7 @@ static boolean WritePipe(net_packet_t *packet)
 // response is unexpected, or doesn't arrive within a specific amuont of time,
 // assume the subprocess is in an unknown state.
 //
-static boolean ExpectPipe(net_packet_t *packet)
+static bool ExpectPipe(net_packet_t *packet)
 {
     int   start;
     BOOL  ok;
@@ -215,9 +215,9 @@ void RemoveFileSpec(TCHAR *path, size_t size)
     *(fp + 1) = '\0';
 }
 
-static boolean BlockForAck()
+static bool BlockForAck()
 {
-    boolean       ok;
+    bool       ok;
     net_packet_t *packet;
 
     packet = NET_NewPacket(2);
@@ -239,9 +239,9 @@ static boolean BlockForAck()
 // Tells the MIDI subprocess to load a specific filename for playing.  This
 // function blocks until there is an acknowledgement from the server.
 //
-boolean I_MidiPipe_RegisterSong(char *filename)
+bool I_MidiPipe_RegisterSong(char *filename)
 {
-    boolean       ok;
+    bool       ok;
     net_packet_t *packet;
 
     packet = NET_NewPacket(64);
@@ -272,7 +272,7 @@ boolean I_MidiPipe_RegisterSong(char *filename)
 //
 void I_MidiPipe_UnregisterSong()
 {
-    boolean       ok;
+    bool       ok;
     net_packet_t *packet;
 
     packet = NET_NewPacket(64);
@@ -299,7 +299,7 @@ void I_MidiPipe_UnregisterSong()
 //
 void I_MidiPipe_SetVolume(int vol)
 {
-    boolean       ok;
+    bool       ok;
     net_packet_t *packet;
 
     packet = NET_NewPacket(6);
@@ -325,7 +325,7 @@ void I_MidiPipe_SetVolume(int vol)
 //
 void I_MidiPipe_PlaySong(int loops)
 {
-    boolean       ok;
+    bool       ok;
     net_packet_t *packet;
 
     packet = NET_NewPacket(6);
@@ -351,7 +351,7 @@ void I_MidiPipe_PlaySong(int loops)
 //
 void I_MidiPipe_StopSong()
 {
-    boolean       ok;
+    bool       ok;
     net_packet_t *packet;
 
     packet = NET_NewPacket(2);
@@ -376,7 +376,7 @@ void I_MidiPipe_StopSong()
 //
 void I_MidiPipe_ShutdownServer()
 {
-    boolean       ok;
+    bool       ok;
     net_packet_t *packet;
 
     packet = NET_NewPacket(2);
@@ -408,7 +408,7 @@ void I_MidiPipe_ShutdownServer()
 //
 // Start up the MIDI server.
 //
-boolean I_MidiPipe_InitServer()
+bool I_MidiPipe_InitServer()
 {
     TCHAR               dirname[MAX_PATH + 1];
     DWORD               dirname_len;

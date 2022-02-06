@@ -32,7 +32,7 @@
 byte *
     R_GetColumn(int tex,
         int         col,
-        boolean     opaque);
+        bool     opaque);
 
 
 // I/O, setting up the stuff.

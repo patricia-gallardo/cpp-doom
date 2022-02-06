@@ -72,7 +72,7 @@ typedef struct
 {
     ItemType_t type;
     const char *text;
-    boolean(*func) (int option);
+    bool(*func) (int option);
     int option;
     MenuType_t menu;
 } MenuItem_t;
@@ -92,23 +92,23 @@ typedef struct
 
 static void InitFonts();
 static void SetMenu(MenuType_t menu);
-static boolean SCNetCheck(int option);
-static boolean SCQuitGame(int option);
-static boolean SCEpisode(int option);
-static boolean SCSkill(int option);
-static boolean SCMouseSensi(int option);
-static boolean SCSfxVolume(int option);
-static boolean SCMusicVolume(int option);
-static boolean SCScreenSize(int option);
-static boolean SCLoadGame(int option);
-static boolean SCSaveGame(int option);
-static boolean SCMessages(int option);
-static boolean SCEndGame(int option);
-static boolean SCInfo(int option);
-static boolean CrispySmoothing(int option);
-static boolean CrispyAutomapStats(int option);
-static boolean CrispyLevelTime(int option);
-static boolean CrispyPlayerCoords(int option);
+static bool SCNetCheck(int option);
+static bool SCQuitGame(int option);
+static bool SCEpisode(int option);
+static bool SCSkill(int option);
+static bool SCMouseSensi(int option);
+static bool SCSfxVolume(int option);
+static bool SCMusicVolume(int option);
+static bool SCScreenSize(int option);
+static bool SCLoadGame(int option);
+static bool SCSaveGame(int option);
+static bool SCMessages(int option);
+static bool SCEndGame(int option);
+static bool SCInfo(int option);
+static bool CrispySmoothing(int option);
+static bool CrispyAutomapStats(int option);
+static bool CrispyLevelTime(int option);
+static bool CrispyPlayerCoords(int option);
 static void DrawMainMenu();
 static void DrawEpisodeMenu();
 static void DrawSkillMenu();
@@ -130,9 +130,9 @@ extern int screenblocks;
 
 // Public Data
 
-boolean MenuActive;
+bool MenuActive;
 int InfoType;
-boolean messageson;
+bool messageson;
 
 // Private Data
 
@@ -143,12 +143,12 @@ static Menu_t *CurrentMenu;
 static int CurrentItPos;
 static int MenuEpisode;
 static int MenuTime;
-static boolean soundchanged;
+static bool soundchanged;
 
-boolean askforquit;
+bool askforquit;
 static int typeofask;
-static boolean FileMenuKeySteal;
-static boolean slottextloaded;
+static bool FileMenuKeySteal;
+static bool slottextloaded;
 static char SlotText[6][SLOTTEXTLEN + 2];
 static char oldSlotText[SLOTTEXTLEN + 2];
 static int SlotStatus[6];
@@ -777,7 +777,7 @@ static void DrawOptions2Menu()
 //
 //---------------------------------------------------------------------------
 
-static boolean SCNetCheck(int option)
+static bool SCNetCheck(int option)
 {
     if (!netgame)
     {                           // okay to go into the menu
@@ -806,7 +806,7 @@ static boolean SCNetCheck(int option)
 //
 //---------------------------------------------------------------------------
 
-static boolean SCQuitGame(int option)
+static bool SCQuitGame(int option)
 {
     MenuActive = false;
     askforquit = true;
@@ -824,7 +824,7 @@ static boolean SCQuitGame(int option)
 //
 //---------------------------------------------------------------------------
 
-static boolean SCEndGame(int option)
+static bool SCEndGame(int option)
 {
     if (demoplayback || netgame)
     {
@@ -846,7 +846,7 @@ static boolean SCEndGame(int option)
 //
 //---------------------------------------------------------------------------
 
-static boolean SCMessages(int option)
+static bool SCMessages(int option)
 {
     messageson ^= 1;
     if (messageson)
@@ -867,7 +867,7 @@ static boolean SCMessages(int option)
 //
 //---------------------------------------------------------------------------
 
-static boolean SCLoadGame(int option)
+static bool SCLoadGame(int option)
 {
     char *filename;
 
@@ -897,7 +897,7 @@ static boolean SCLoadGame(int option)
 //
 //---------------------------------------------------------------------------
 
-static boolean SCSaveGame(int option)
+static bool SCSaveGame(int option)
 {
     char *ptr;
 
@@ -948,7 +948,7 @@ static boolean SCSaveGame(int option)
 //
 //---------------------------------------------------------------------------
 
-static boolean SCEpisode(int option)
+static bool SCEpisode(int option)
 {
     if (gamemode == shareware && option > 1)
     {
@@ -969,7 +969,7 @@ static boolean SCEpisode(int option)
 //
 //---------------------------------------------------------------------------
 
-static boolean SCSkill(int option)
+static bool SCSkill(int option)
 {
     G_DeferedInitNew(static_cast<skill_t>(option), MenuEpisode, 1);
     MN_DeactivateMenu();
@@ -982,7 +982,7 @@ static boolean SCSkill(int option)
 //
 //---------------------------------------------------------------------------
 
-static boolean SCMouseSensi(int option)
+static bool SCMouseSensi(int option)
 {
     if (option == RIGHT_DIR)
     {
@@ -1004,7 +1004,7 @@ static boolean SCMouseSensi(int option)
 //
 //---------------------------------------------------------------------------
 
-static boolean SCSfxVolume(int option)
+static bool SCSfxVolume(int option)
 {
     if (option == RIGHT_DIR)
     {
@@ -1028,7 +1028,7 @@ static boolean SCSfxVolume(int option)
 //
 //---------------------------------------------------------------------------
 
-static boolean SCMusicVolume(int option)
+static bool SCMusicVolume(int option)
 {
     if (option == RIGHT_DIR)
     {
@@ -1051,7 +1051,7 @@ static boolean SCMusicVolume(int option)
 //
 //---------------------------------------------------------------------------
 
-static boolean SCScreenSize(int option)
+static bool SCScreenSize(int option)
 {
     if (option == RIGHT_DIR)
     {
@@ -1074,7 +1074,7 @@ static boolean SCScreenSize(int option)
 //
 //---------------------------------------------------------------------------
 
-static boolean SCInfo(int option)
+static bool SCInfo(int option)
 {
     InfoType = 1;
     S_StartSound(NULL, sfx_dorcls);
@@ -1091,25 +1091,25 @@ static boolean SCInfo(int option)
 //
 //---------------------------------------------------------------------------
 
-static boolean CrispySmoothing(int option)
+static bool CrispySmoothing(int option)
 {
     crispy->smoothscaling = !crispy->smoothscaling;
     return true;
 }
 
-static boolean CrispyAutomapStats(int option)
+static bool CrispyAutomapStats(int option)
 {
     crispy->automapstats = (crispy->automapstats + 1) % NUM_WIDGETS;
     return true;
 }
 
-static boolean CrispyLevelTime(int option)
+static bool CrispyLevelTime(int option)
 {
     crispy->leveltime = (crispy->leveltime + 1) % NUM_WIDGETS;
     return true;
 }
 
-static boolean CrispyPlayerCoords(int option)
+static bool CrispyPlayerCoords(int option)
 {
     crispy->playercoords = (crispy->playercoords + 1) % (NUM_WIDGETS - 1); // [crispy] disable "always" setting
     return true;
@@ -1121,15 +1121,15 @@ static boolean CrispyPlayerCoords(int option)
 //
 //---------------------------------------------------------------------------
 
-boolean MN_Responder(event_t * event)
+bool MN_Responder(event_t * event)
 {
     int charTyped;
     int key;
     int i;
     MenuItem_t *item;
-    extern boolean automapactive;
+    extern bool automapactive;
     extern void D_StartTitle();
-    extern boolean G_CheckDemoStatus();
+    extern bool G_CheckDemoStatus();
     char *textBuffer;
 
     // In testcontrols mode, none of the function keys should do anything

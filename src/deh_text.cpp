@@ -27,7 +27,7 @@
 #include "deh_main.hpp"
 
 // [crispy] support INCLUDE NOTEXT directive in BEX files
-boolean bex_notext = false;
+bool bex_notext = false;
 
 // Given a string length, find the maximum length of a
 // string that can replace it.

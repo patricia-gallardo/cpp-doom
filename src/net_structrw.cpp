@@ -45,7 +45,7 @@ void NET_WriteConnectData(net_packet_t *packet, net_connect_data_t *data)
     NET_WriteInt8(packet, data->player_class);
 }
 
-boolean NET_ReadConnectData(net_packet_t *packet, net_connect_data_t *data)
+bool NET_ReadConnectData(net_packet_t *packet, net_connect_data_t *data)
 {
     return NET_ReadInt8(packet, (unsigned int *)&data->gamemode)
            && NET_ReadInt8(packet, (unsigned int *)&data->gamemission)
@@ -86,9 +86,9 @@ void NET_WriteSettings(net_packet_t *packet, net_gamesettings_t *settings)
     }
 }
 
-boolean NET_ReadSettings(net_packet_t *packet, net_gamesettings_t *settings)
+bool NET_ReadSettings(net_packet_t *packet, net_gamesettings_t *settings)
 {
-    boolean success;
+    bool success;
     int     i;
 
     success = NET_ReadInt8(packet, (unsigned int *)&settings->ticdup)
@@ -126,9 +126,9 @@ boolean NET_ReadSettings(net_packet_t *packet, net_gamesettings_t *settings)
     return true;
 }
 
-boolean NET_ReadQueryData(net_packet_t *packet, net_querydata_t *query)
+bool NET_ReadQueryData(net_packet_t *packet, net_querydata_t *query)
 {
-    boolean success;
+    bool success;
 
     query->version = NET_ReadSafeString(packet);
 
@@ -170,7 +170,7 @@ void NET_WriteQueryData(net_packet_t *packet, net_querydata_t *query)
 }
 
 void NET_WriteTiccmdDiff(net_packet_t *packet, net_ticdiff_t *diff,
-    boolean lowres_turn)
+    bool lowres_turn)
 {
     // Header
 
@@ -211,8 +211,8 @@ void NET_WriteTiccmdDiff(net_packet_t *packet, net_ticdiff_t *diff,
     }
 }
 
-boolean NET_ReadTiccmdDiff(net_packet_t *packet, net_ticdiff_t *diff,
-    boolean lowres_turn)
+bool NET_ReadTiccmdDiff(net_packet_t *packet, net_ticdiff_t *diff,
+    bool lowres_turn)
 {
     unsigned int val;
     signed int   sval;
@@ -380,7 +380,7 @@ void NET_TiccmdPatch(ticcmd_t *src, net_ticdiff_t *diff, ticcmd_t *dest)
 // net_full_ticcmd_t
 //
 
-boolean NET_ReadFullTiccmd(net_packet_t *packet, net_full_ticcmd_t *cmd, boolean lowres_turn)
+bool NET_ReadFullTiccmd(net_packet_t *packet, net_full_ticcmd_t *cmd, bool lowres_turn)
 {
     unsigned int bitfield;
     int          i;
@@ -420,7 +420,7 @@ boolean NET_ReadFullTiccmd(net_packet_t *packet, net_full_ticcmd_t *cmd, boolean
     return true;
 }
 
-void NET_WriteFullTiccmd(net_packet_t *packet, net_full_ticcmd_t *cmd, boolean lowres_turn)
+void NET_WriteFullTiccmd(net_packet_t *packet, net_full_ticcmd_t *cmd, bool lowres_turn)
 {
     unsigned int bitfield;
     int          i;
@@ -477,7 +477,7 @@ void NET_WriteWaitData(net_packet_t *packet, net_waitdata_t *data)
     NET_WriteInt8(packet, data->is_freedoom);
 }
 
-boolean NET_ReadWaitData(net_packet_t *packet, net_waitdata_t *data)
+bool NET_ReadWaitData(net_packet_t *packet, net_waitdata_t *data)
 {
     int   i;
     char *s;
@@ -518,7 +518,7 @@ boolean NET_ReadWaitData(net_packet_t *packet, net_waitdata_t *data)
            && NET_ReadInt8(packet, (unsigned int *)&data->is_freedoom);
 }
 
-static boolean NET_ReadBlob(net_packet_t *packet, uint8_t *buf, size_t len)
+static bool NET_ReadBlob(net_packet_t *packet, uint8_t *buf, size_t len)
 {
     unsigned int b;
     int          i;
@@ -546,7 +546,7 @@ static void NET_WriteBlob(net_packet_t *packet, uint8_t *buf, size_t len)
     }
 }
 
-boolean NET_ReadSHA1Sum(net_packet_t *packet, sha1_digest_t digest)
+bool NET_ReadSHA1Sum(net_packet_t *packet, sha1_digest_t digest)
 {
     return NET_ReadBlob(packet, digest, sizeof(sha1_digest_t));
 }
@@ -556,7 +556,7 @@ void NET_WriteSHA1Sum(net_packet_t *packet, sha1_digest_t digest)
     NET_WriteBlob(packet, digest, sizeof(sha1_digest_t));
 }
 
-boolean NET_ReadPRNGSeed(net_packet_t *packet, prng_seed_t seed)
+bool NET_ReadPRNGSeed(net_packet_t *packet, prng_seed_t seed)
 {
     return NET_ReadBlob(packet, seed, sizeof(prng_seed_t));
 }

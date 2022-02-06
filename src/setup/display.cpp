@@ -145,7 +145,7 @@ static void GenerateSizesTable(TXT_UNCAST_ARG(widget),
 {
     TXT_CAST_ARG(txt_table_t, sizes_table);
     window_size_t *sizes;
-    boolean have_size;
+    bool have_size;
     int i;
 
     // Pick which window sizes list to use

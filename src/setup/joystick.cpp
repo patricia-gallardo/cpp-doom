@@ -645,7 +645,7 @@ static const known_joystick_t *GetJoystickType(int index)
 }
 
 // Query if the joystick at the given index is a known joystick type.
-static boolean IsKnownJoystick(int index)
+static bool IsKnownJoystick(int index)
 {
     return GetJoystickType(index) != NULL;
 }
@@ -857,7 +857,7 @@ static void CalibrateXAxis()
 
 // Given the SDL_JoystickID instance ID from a button event, set the
 // joystick_guid and joystick_index config variables.
-static boolean SetJoystickGUID(SDL_JoystickID joy_id)
+static bool SetJoystickGUID(SDL_JoystickID joy_id)
 {
     SDL_JoystickGUID guid;
     int i;

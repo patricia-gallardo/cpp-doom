@@ -56,13 +56,13 @@ typedef struct atexit_listentry_s atexit_listentry_t;
 
 struct atexit_listentry_s {
     atexit_func_t       func;
-    boolean             run_on_error;
+    bool             run_on_error;
     atexit_listentry_t *next;
 };
 
 static atexit_listentry_t *exit_funcs = NULL;
 
-void I_AtExit(atexit_func_t func, boolean run_on_error)
+void I_AtExit(atexit_func_t func, bool run_on_error)
 {
     auto *entry = create_struct<atexit_listentry_t>();
 
@@ -208,7 +208,7 @@ void I_PrintStartupBanner(const char *gamedescription)
 // Returns true if stdout is a real console, false if it is a file
 //
 
-boolean I_ConsoleStdout()
+bool I_ConsoleStdout()
 {
 #ifdef _WIN32
     // SDL "helpfully" always redirects stdout to a file.
@@ -264,14 +264,14 @@ void I_Quit()
 // I_Error
 //
 
-static boolean already_quitting = false;
+static bool already_quitting = false;
 
 void I_Error(const char *error, ...)
 {
     char                msgbuf[512];
     va_list             argptr;
     atexit_listentry_t *entry;
-    boolean             exit_gui_popup;
+    bool             exit_gui_popup;
 
     if (already_quitting)
     {
@@ -386,9 +386,9 @@ static unsigned char mem_dump_custom[DOS_MEM_DUMP_SIZE];
 
 static const unsigned char *dos_mem_dump = mem_dump_dos622;
 
-boolean I_GetMemoryValue(unsigned int offset, void *value, int size)
+bool I_GetMemoryValue(unsigned int offset, void *value, int size)
 {
-    static boolean firsttime = true;
+    static bool firsttime = true;
 
     if (firsttime)
     {

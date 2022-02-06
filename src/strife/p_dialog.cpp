@@ -77,7 +77,7 @@ char mission_objective[OBJECTIVE_LEN];
 //
 
 // True if SCRIPT00 is loaded.
-static boolean script0loaded;
+static bool script0loaded;
 
 // Number of dialogs defined in the current level's script.
 static int numleveldialogs;
@@ -610,11 +610,11 @@ static const char *P_DialogGetMsg(const char *message)
 // haleyjd 09/03/10: Give an inventory item to the player, if possible.
 // villsa 09/09/10: Fleshed out routine
 //
-boolean P_GiveInventoryItem(player_t *player, int sprnum, mobjtype_t type)
+bool P_GiveInventoryItem(player_t *player, int sprnum, mobjtype_t type)
 {
     int curinv = 0;
     int i;
-    boolean ok = false;
+    bool ok = false;
     mobjtype_t item = MT_FIELDGUARD;
     inventory_t* invtail;
 
@@ -692,7 +692,7 @@ boolean P_GiveInventoryItem(player_t *player, int sprnum, mobjtype_t type)
 // Not strictly just for inventory items.
 // villsa 09/09/10: Fleshed out function
 //
-boolean P_GiveItemToPlayer(player_t *player, int sprnum, mobjtype_t type)
+bool P_GiveItemToPlayer(player_t *player, int sprnum, mobjtype_t type)
 {
     int i = 0;
     line_t junk;
@@ -1153,7 +1153,7 @@ static void P_DialogDrawer()
 void P_DialogDoChoice(int choice)
 {
     int i = 0, nextdialog = 0;
-    boolean candochoice = true;
+    bool candochoice = true;
     const char *message = NULL;
     mapdlgchoice_t *currentchoice;
 

@@ -47,10 +47,10 @@ void D_IntroTick(); // [STRIFE]
 //
 
 extern  gameaction_t    gameaction;
-extern  boolean         isregistered;   // villsa [STRIFE]
-extern  boolean        isdemoversion;  // haleyjd [STRIFE]
-extern  boolean         stonecold;      // villsa [STRIFE]
-extern  boolean         workparm;       // villsa [STRIFE]
+extern  bool         isregistered;   // villsa [STRIFE]
+extern  bool        isdemoversion;  // haleyjd [STRIFE]
+extern  bool         stonecold;      // villsa [STRIFE]
+extern  bool         workparm;       // villsa [STRIFE]
 
 #endif
 

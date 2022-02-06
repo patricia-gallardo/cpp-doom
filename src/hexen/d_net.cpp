@@ -39,9 +39,9 @@ ticcmd_t *netcmds;
 extern void H2_DoAdvanceDemo();
 extern void H2_ProcessEvents();
 extern void G_BuildTiccmd(ticcmd_t *cmd, int maketic);
-extern boolean G_CheckDemoStatus();
+extern bool G_CheckDemoStatus();
 
-extern boolean demorecording;
+extern bool demorecording;
 
 // Called when a player leaves the game
 
@@ -67,9 +67,9 @@ static void PlayerQuitGame(player_t *player)
     }
 }
 
-static void RunTic(ticcmd_t *cmds, boolean *ingame)
+static void RunTic(ticcmd_t *cmds, bool *ingame)
 {
-    extern boolean advancedemo;
+    extern bool advancedemo;
     unsigned int i;
 
     // Check for player quits.
@@ -232,7 +232,7 @@ void D_ConnectNetGame()
     }
 }
 
-static boolean StartupProgress(int now_ready, int total)
+static bool StartupProgress(int now_ready, int total)
 {
     static int ready = 0;
 

@@ -67,8 +67,8 @@ struct mapInfo_s
     short sky2Texture;
     fixed_t sky1ScrollDelta;
     fixed_t sky2ScrollDelta;
-    boolean doubleSky;
-    boolean lightning;
+    bool doubleSky;
+    bool lightning;
     int fadetable;
     char songLump[10];
 };
@@ -1049,7 +1049,7 @@ fixed_t P_GetMapSky2ScrollDelta(int map)
 //
 //==========================================================================
 
-boolean P_GetMapDoubleSky(int map)
+bool P_GetMapDoubleSky(int map)
 {
     return MapInfo[QualifyMap(map)].doubleSky;
 }
@@ -1060,7 +1060,7 @@ boolean P_GetMapDoubleSky(int map)
 //
 //==========================================================================
 
-boolean P_GetMapLightning(int map)
+bool P_GetMapLightning(int map)
 {
     return MapInfo[QualifyMap(map)].lightning;
 }
@@ -1071,7 +1071,7 @@ boolean P_GetMapLightning(int map)
 //
 //==========================================================================
 
-boolean P_GetMapFadeTable(int map)
+bool P_GetMapFadeTable(int map)
 {
     return MapInfo[QualifyMap(map)].fadetable;
 }

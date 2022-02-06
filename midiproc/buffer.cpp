@@ -54,7 +54,7 @@ int Buffer_Data(buffer_t *buf, byte **data)
 //
 // Push data onto the end of the buffer.
 //
-boolean Buffer_Push(buffer_t *buf, const void *data, int len)
+bool Buffer_Push(buffer_t *buf, const void *data, int len)
 {
     ptrdiff_t space_begin, space_end;
 
@@ -161,7 +161,7 @@ int Reader_BytesRead(buffer_reader_t *reader)
 //
 // Read an unsigned byte from a buffer.
 //
-boolean Reader_ReadInt8(buffer_reader_t *reader, uint8_t *out)
+bool Reader_ReadInt8(buffer_reader_t *reader, uint8_t *out)
 {
     byte *data, *data_end;
     int len = Buffer_Data(reader->buffer, &data);
@@ -182,7 +182,7 @@ boolean Reader_ReadInt8(buffer_reader_t *reader, uint8_t *out)
 //
 // Read an unsigned short from a buffer.
 //
-boolean Reader_ReadInt16(buffer_reader_t *reader, uint16_t *out)
+bool Reader_ReadInt16(buffer_reader_t *reader, uint16_t *out)
 {
     byte *data, *data_end, *dp;
     int len = Buffer_Data(reader->buffer, &data);
@@ -204,7 +204,7 @@ boolean Reader_ReadInt16(buffer_reader_t *reader, uint16_t *out)
 //
 // Read an unsigned int from a buffer.
 //
-boolean Reader_ReadInt32(buffer_reader_t *reader, uint32_t *out)
+bool Reader_ReadInt32(buffer_reader_t *reader, uint32_t *out)
 {
     byte *data, *data_end, *dp;
     int len = Buffer_Data(reader->buffer, &data);

@@ -72,7 +72,7 @@ static const char shiftxform[] = {
 
 // If true, I_StartTextInput() has been called, and we are populating
 // the data3 field of ev_keydown events.
-static boolean text_input_enabled = true;
+static bool text_input_enabled = true;
 
 // Bit mask of mouse button state.
 static unsigned int mouse_button_state = 0;
@@ -309,7 +309,7 @@ void I_StopTextInput()
     }
 }
 
-static void UpdateMouseButtonState(unsigned int button, boolean on)
+static void UpdateMouseButtonState(unsigned int button, bool on)
 {
     static event_t event;
 

@@ -45,7 +45,7 @@ static int loading_disk_yoffs = 0;
 
 // Number of bytes read since the last call to V_DrawDiskIcon().
 static size_t  recent_bytes_read = 0;
-static boolean disk_drawn;
+static bool disk_drawn;
 
 static void CopyRegion(pixel_t *dest, int dest_pitch,
     pixel_t *src, int src_pitch,

@@ -244,7 +244,7 @@ void P_ChangeSwitchTexture(line_t* line, int useAgain)
     int     texBot;
     int     i;
     int     sound;
-    boolean breakglass; // villsa [STRIFE]
+    bool breakglass; // villsa [STRIFE]
     switchlist_t* sl;   // villsa [STRIFE]
 
     breakglass = false; // villsa [STRIFE]
@@ -446,7 +446,7 @@ static char usemessage[92];
 // Called when a thing uses a special line.
 // Only the front sides of lines are usable.
 //
-boolean P_UseSpecialLine(mobj_t* thing, line_t* line, int side)
+bool P_UseSpecialLine(mobj_t* thing, line_t* line, int side)
 {
     // Err...
     // Use the back sides of VERY SPECIAL lines...

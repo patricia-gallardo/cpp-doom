@@ -59,8 +59,8 @@ typedef PACKED_STRUCT (
 
 static void StartOpenACS(int number, int infoIndex, int offset);
 static void ScriptFinished(int number);
-static boolean TagBusy(int tag);
-static boolean AddToACSStore(int map, int number, byte * args);
+static bool TagBusy(int tag);
+static bool AddToACSStore(int map, int number, byte * args);
 static int GetACSIndex(int number);
 static void Push(int value);
 static int Pop();
@@ -576,7 +576,7 @@ void P_CheckACSStore()
 
 static char ErrorMsg[128];
 
-boolean P_StartACS(int number, int map, byte * args, mobj_t * activator,
+bool P_StartACS(int number, int map, byte * args, mobj_t * activator,
                    line_t * line, int side)
 {
     int i;
@@ -632,7 +632,7 @@ boolean P_StartACS(int number, int map, byte * args, mobj_t * activator,
 //
 //==========================================================================
 
-static boolean AddToACSStore(int map, int number, byte * args)
+static bool AddToACSStore(int map, int number, byte * args)
 {
     int i;
     int index;
@@ -672,7 +672,7 @@ static boolean AddToACSStore(int map, int number, byte * args)
 //==========================================================================
 
 
-boolean P_StartLockedACS(line_t * line, byte * args, mobj_t * mo, int side)
+bool P_StartLockedACS(line_t * line, byte * args, mobj_t * mo, int side)
 {
     int i;
     int lock;
@@ -711,7 +711,7 @@ boolean P_StartLockedACS(line_t * line, byte * args, mobj_t * mo, int side)
 //
 //==========================================================================
 
-boolean P_TerminateACS(int number, int map)
+bool P_TerminateACS(int number, int map)
 {
     int infoIndex;
 
@@ -735,7 +735,7 @@ boolean P_TerminateACS(int number, int map)
 //
 //==========================================================================
 
-boolean P_SuspendACS(int number, int map)
+bool P_SuspendACS(int number, int map)
 {
     int infoIndex;
 
@@ -895,7 +895,7 @@ static void ScriptFinished(int number)
 //
 //==========================================================================
 
-static boolean TagBusy(int tag)
+static bool TagBusy(int tag)
 {
     int sectorIndex;
 
@@ -1959,7 +1959,7 @@ static int CmdSetLineBlocking()
 {
     line_t *line;
     int lineTag;
-    boolean blocking;
+    bool blocking;
     int searcher;
 
     blocking = Pop()? ML_BLOCKING : 0;

@@ -92,7 +92,7 @@
 //
 void D_DoomLoop ();
 
-static boolean D_AddFile(char *filename);
+static bool D_AddFile(char *filename);
 
 // Location where savegames are stored
 
@@ -103,43 +103,43 @@ char *          savegamedir;
 char *          iwadfile;
 
 
-boolean         devparm;        // started game with -devparm
-boolean         nomonsters;     // checkparm of -nomonsters
-boolean         respawnparm;    // checkparm of -respawn
-boolean         fastparm;       // checkparm of -fast
-boolean         flipparm;       // [STRIFE] haleyjd 20110629: checkparm of -flip
-boolean         randomparm;     // [STRIFE] haleyjd 20130915: checkparm of -random
+bool         devparm;        // started game with -devparm
+bool         nomonsters;     // checkparm of -nomonsters
+bool         respawnparm;    // checkparm of -respawn
+bool         fastparm;       // checkparm of -fast
+bool         flipparm;       // [STRIFE] haleyjd 20110629: checkparm of -flip
+bool         randomparm;     // [STRIFE] haleyjd 20130915: checkparm of -random
 
-boolean         showintro = true;   // [STRIFE] checkparm of -nograph, disables intro
+bool         showintro = true;   // [STRIFE] checkparm of -nograph, disables intro
 
 
 //extern int soundVolume;
 //extern  int	sfxVolume;
 //extern  int	musicVolume;
 
-extern  boolean	inhelpscreens;
+extern  bool	inhelpscreens;
 
 skill_t		startskill;
 int             startepisode;
 int		startmap;
-boolean		autostart;
+bool		autostart;
 int             startloadgame;
 
-boolean		advancedemo;
+bool		advancedemo;
 
 // villsa [STRIFE] workparm variable (similar to devparm?)
-boolean         workparm = false;
+bool         workparm = false;
 
 // villsa [STRIFE] stonecold cheat variable
-boolean         stonecold = false;
+bool         stonecold = false;
 
 // haleyjd 09/11/10: [STRIFE] Game type variables
-boolean         isregistered;
-boolean         isdemoversion;
+bool         isregistered;
+bool         isdemoversion;
 
 // Store demo, do not accept any inputs
 // haleyjd [STRIFE] Unused.
-//boolean         storedemo;
+//bool         storedemo;
 
 
 char		wadfile[1024];          // primary wad file
@@ -148,11 +148,11 @@ char		mapdir[1024];           // directory of development maps
 int             show_endoom = 0;
 int             show_diskicon = 1;
 int             graphical_startup = 0;
-static boolean  using_text_startup;
+static bool  using_text_startup;
 
 // If true, startup has completed and the main game loop has started.
 
-static boolean main_loop_started = false;
+static bool main_loop_started = false;
 
 // fraggle 06/03/11 [STRIFE]: Unused config variable, preserved
 // for compatibility:
@@ -204,26 +204,26 @@ void D_ProcessEvents ()
 // * 20110206: Start wipegamestate at GS_UNKNOWN (STRIFE-TODO: rename?)
 //
 gamestate_t     wipegamestate = GS_UNKNOWN;
-extern  boolean setsizeneeded;
+extern  bool setsizeneeded;
 //extern  int             showMessages; [STRIFE] no such variable
 void R_ExecuteSetViewSize ();
 
 void D_Display ()
 {
-    static  boolean             viewactivestate = false;
-    static  boolean             menuactivestate = false;
-    static  boolean             inhelpscreensstate = false;
-    static  boolean             popupactivestate = false; // [STRIFE]
-    static  boolean             fullscreen = false;
+    static  bool             viewactivestate = false;
+    static  bool             menuactivestate = false;
+    static  bool             inhelpscreensstate = false;
+    static  bool             popupactivestate = false; // [STRIFE]
+    static  bool             fullscreen = false;
     static  gamestate_t         oldgamestate = static_cast<gamestate_t>(-1);
     static  int                 borderdrawcount;
     int                         nowtime;
     int                         tics;
     int                         wipestart;
     int                         y;
-    boolean                     done;
-    boolean                     wipe;
-    boolean                     redrawsbar;
+    bool                     done;
+    bool                     wipe;
+    bool                     redrawsbar;
 
     if (nodrawers)
         return;                    // for comparative timing / profiling
@@ -472,7 +472,7 @@ void D_BindVariables()
 // Called to determine whether to grab the mouse pointer
 //
 
-boolean D_GrabMouseCallback()
+bool D_GrabMouseCallback()
 {
     // Drone players don't need mouse focus
 
@@ -491,7 +491,7 @@ boolean D_GrabMouseCallback()
 
 // During startup, never grab the mouse.
 
-static boolean D_StartupGrabCallback()
+static bool D_StartupGrabCallback()
 {
     return false;
 }
@@ -944,7 +944,7 @@ static void InitTitleString()
     }
 }
 
-static boolean D_AddFile(char *filename)
+static bool D_AddFile(char *filename)
 {
     wad_file_t *handle;
 
@@ -1194,7 +1194,7 @@ static void D_DrawText(const char *string, int bc, int fc)
 // haleyjd 08/28/10: Clip patches to the framebuffer without errors.
 // Returns false if V_DrawPatch should return without drawing.
 //
-boolean D_PatchClipCallback(patch_t *patch, int x, int y)
+bool D_PatchClipCallback(patch_t *patch, int x, int y)
 {
     // note that offsets were already accounted for in V_DrawPatch
     return (x >= 0 && y >= 0 
@@ -1431,7 +1431,7 @@ static void D_DrawIntroSequence()
 //
 void D_IntroTick()
 {
-    static boolean didsound = false; // haleyjd 20120209
+    static bool didsound = false; // haleyjd 20120209
     
     if(devparm)
         return;

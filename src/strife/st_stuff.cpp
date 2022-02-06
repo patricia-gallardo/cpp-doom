@@ -144,7 +144,7 @@ static const int st_wforammo[NUMAMMO] = { 3,  3,  2,  3,   3,   2,   3   };
 static player_t*        plyr; 
 
 // ST_Start() has just been called
-static boolean          st_firsttime;
+static bool          st_firsttime;
 
 // lump number for PLAYPAL
 static int              lu_palette;
@@ -153,27 +153,27 @@ static int              lu_palette;
 static st_stateenum_t   st_gamestate;
 
 // whether left-side main status bar is active
-static boolean          st_statusbaron;
+static bool          st_statusbaron;
 
 // villsa [STRIFE]
-static boolean          st_dosizedisplay = false;
+static bool          st_dosizedisplay = false;
 
 // haleyjd 09/01/10: [STRIFE]
 // Whether or not a popup is currently displayed
-static boolean          st_displaypopup = false;
+static bool          st_displaypopup = false;
 
 // villsa [STRIFE]
 static int              st_popupdisplaytics = 0;
 
 // villsa [STRIFE]
 // Whether or not show popup objective screen
-static boolean          st_showobjective = false;
+static bool          st_showobjective = false;
 
 // villsa [STRIFE]
-static boolean          st_showinvpop = false;
+static bool          st_showinvpop = false;
 
 // villsa [STRIFE]
-static boolean          st_showkeys = false;
+static bool          st_showkeys = false;
 
 // villsa [STRIFE] TODO - identify variables
 static int              st_keypage = -1;
@@ -294,10 +294,10 @@ static char st_msgbuf[ST_MSGWIDTH];
 
 // Respond to keyboard input events,
 //  intercept cheats.
-boolean ST_Responder(event_t* ev)
+bool ST_Responder(event_t* ev)
 {
     // haleyjd 09/27/10: made static to ST_Responder
-    static boolean st_keystate = false;
+    static bool st_keystate = false;
     int i;
 
     // Filter automap on/off.
@@ -908,7 +908,7 @@ void ST_doPaletteStuff()
 }
 
 /* 
-void ST_drawWidgets(boolean refresh)
+void ST_drawWidgets(bool refresh)
 {
     haleyjd 09/01/10: [STRIFE] Removed
 }
@@ -1119,7 +1119,7 @@ void ST_doRefresh()
 
 // haleyjd [STRIFE]: Removed ST_diffDraw
 
-void ST_Drawer (boolean fullscreen, boolean refresh)
+void ST_Drawer (bool fullscreen, bool refresh)
 {
     st_statusbaron = (!fullscreen) || automapactive;
     st_firsttime = st_firsttime || refresh;
@@ -1192,7 +1192,7 @@ static void ST_drawTime(int x, int y, int time)
 // haleyjd 20110213: [STRIFE] New function
 // This has taken the longest out of almost everything to get working properly.
 //
-static boolean ST_drawKeysPopup()
+static bool ST_drawKeysPopup()
 {
     int x, y, yt, key, keycount;
     mobjinfo_t *info;
@@ -1258,7 +1258,7 @@ static boolean ST_drawKeysPopup()
         // Are there any keys to display on this page?
         if(st_keypage > 0)
         {
-            boolean haskeyinrange = false;
+            bool haskeyinrange = false;
 
             for(key = ST_KEYSPERPAGE * st_keypage, keycount = 0;
                 keycount < ST_KEYSPERPAGE && key < NUMCARDS;
@@ -1320,7 +1320,7 @@ static boolean ST_drawKeysPopup()
 // haleyjd 20100901: [STRIFE] New function.
 // * Draws external portions of the status bar such the top bar and popups.
 //
-boolean ST_DrawExternal()
+bool ST_DrawExternal()
 {
     int i;
 
@@ -1582,7 +1582,7 @@ void ST_createWidgets()
     }
 }
 
-static boolean	st_stopped = true;
+static bool	st_stopped = true;
 
 
 void ST_Start ()

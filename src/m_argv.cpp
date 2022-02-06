@@ -61,7 +61,7 @@ int M_CheckParmWithArgs(const char *check, int num_args)
 // line arguments, false if not.
 //
 
-boolean M_ParmExists(const char *check)
+bool M_ParmExists(const char *check)
 {
     return M_CheckParm(check) != 0;
 }
@@ -276,7 +276,7 @@ static int GuessFileType(const char *name)
     int            ret = FILETYPE_UNKNOWN;
     const char *   base;
     char *         lower;
-    static boolean iwad_found = false;
+    static bool iwad_found = false;
 
     base  = M_BaseName(name);
     lower = M_StringDuplicate(base);
