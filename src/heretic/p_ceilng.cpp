@@ -76,6 +76,7 @@ void T_MoveCeiling(ceiling_t * ceiling)
                 {
                     case crushAndRaise:
                         ceiling->speed = CEILSPEED;
+                        [[fallthrough]];
                     case fastCrushAndRaise:
                         ceiling->direction = 1;
                         break;
@@ -155,6 +156,7 @@ int EV_DoCeiling(line_t * line, ceiling_e type)
             case crushAndRaise:
                 ceiling->crush = true;
                 ceiling->topheight = sec->ceilingheight;
+                [[fallthrough]];
             case lowerAndCrush:
             case lowerToFloor:
                 ceiling->bottomheight = sec->floorheight;

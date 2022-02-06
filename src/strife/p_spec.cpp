@@ -647,6 +647,7 @@ P_CrossSpecialLine
         if(!(thing->player->questflags & (1 << flag)))
             break;
         // fall-through:
+        [[fallthrough]];
     case 2:
         // Open Door - [STRIFE] Verified unmodified.
         EV_DoDoor(line,vld_open);
@@ -661,6 +662,7 @@ P_CrossSpecialLine
         if(!(thing->player->questflags & (1 << flag)))
             break;
         // fall-through:
+        [[fallthrough]];
     case 3:
         // Close Door - [STRIFE] Verified unmodified.
         EV_DoDoor(line,vld_close);
@@ -774,7 +776,8 @@ P_CrossSpecialLine
         if(!(thing->player->questflags & (1 << flag)))
             break;
         // fall-through:
-    case 38: 
+        [[fallthrough]];
+    case 38:
         // Lower Floor To Lowest - [STRIFE] Verified unmodified.
         EV_DoFloor( line, lowerFloorToLowest );
         line->special = 0;
@@ -870,6 +873,7 @@ P_CrossSpecialLine
         if(thing->player->sigiltype <= 0)
             break;
         // fall-through:
+        [[fallthrough]];
     case 110:
         // Blazing Door Close (faster than TURBO!) - [STRIFE] Verified unmodified.
         EV_DoDoor (line,vld_blazeClose);
@@ -994,6 +998,7 @@ P_CrossSpecialLine
         if(side == 1)
             break;
         // fall-through:
+        [[fallthrough]];
     case 202:
         // haleyjd 09/21/10: [STRIFE] W1 Voiced Objective (Tag = VOC/LOG #)
         // must be consoleplayer
@@ -1196,7 +1201,8 @@ P_CrossSpecialLine
         if(!(thing->player->questflags & (1 << flag)))
             break;
         // fall-through:
-    case 90: 
+        [[fallthrough]];
+    case 90:
         // Raise Door - [STRIFE] Verified unmodified.
         EV_DoDoor(line,vld_normal);
         break;
@@ -1287,6 +1293,7 @@ P_CrossSpecialLine
         if(side == 1)
             break;
         // fall-through:
+        [[fallthrough]];
     case 145:
         // haleyjd [STRIFE] Exit Level to Spot
         thing->momx = thing->momy = thing->momz = 0;
@@ -1347,6 +1354,7 @@ P_CrossSpecialLine
         if(P_PlayerHasItem(thing->player, MT_QUEST_GUARD_UNIFORM))
             break;
         // fall-through:
+        [[fallthrough]];
     case 150:
         // haleyjd 09/21/10: [STRIFE] WR Raise Alarm
         P_NoiseAlert(thing->player->mo, thing->player->mo);
