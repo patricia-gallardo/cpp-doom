@@ -15,6 +15,7 @@
 // Top-level dehacked definitions for Heretic dehacked (HHE).
 //
 
+#include <array>
 #include <cstdio>
 #include <cstring>
 
@@ -75,7 +76,7 @@ static void SetHHEVersionByName(char *name)
 {
     int i;
 
-    for (i=0; i<arrlen(hhe_versions); ++i)
+    for (i=0; i<std::size(hhe_versions); ++i)
     {
         if (!strcmp(hhe_versions[i], name))
         {
@@ -87,7 +88,7 @@ static void SetHHEVersionByName(char *name)
     fprintf(stderr, "Unknown Heretic version: %s\n", name);
     fprintf(stderr, "Valid versions:\n");
 
-    for (i=0; i<arrlen(hhe_versions); ++i)
+    for (i=0; i<std::size(hhe_versions); ++i)
     {
         fprintf(stderr, "\t%s\n", hhe_versions[i]);
     }

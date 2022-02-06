@@ -19,7 +19,7 @@
 //	and call the startup functions.
 //
 
-
+#include <array>
 #include <cctype>
 #include <cstdlib>
 #include <cstring>
@@ -783,7 +783,7 @@ static const char *GetGameName(const char *gamename)
     size_t      i;
     const char *deh_sub;
 
-    for (i = 0; i < arrlen(banners); ++i)
+    for (i = 0; i < std::size(banners); ++i)
     {
         // Has the banner been replaced?
 
@@ -1042,7 +1042,7 @@ void PrintDehackedBanners()
 {
     size_t i;
 
-    for (i = 0; i < arrlen(copyright_banners); ++i)
+    for (i = 0; i < std::size(copyright_banners); ++i)
     {
         const char *deh_s;
 
@@ -1368,7 +1368,7 @@ static void LoadSigilWad()
     }
 
     // [crispy] don't load SIGIL.wad if another PWAD already modifies the texture files
-    for (i = 0; i < arrlen(texture_files); i++)
+    for (i = 0; i < std::size(texture_files); i++)
     {
         int j;
 
@@ -1394,7 +1394,7 @@ static void LoadSigilWad()
         sigil_shreds = M_StringJoin(dirname, DIR_SEPARATOR_S, "SIGIL_SHREDS.wad", NULL);
 
         // [crispy] load SIGIL.WAD
-        for (i = 0; i < arrlen(sigil_wads); i++)
+        for (i = 0; i < std::size(sigil_wads); i++)
         {
             sigil_wad = M_StringJoin(dirname, DIR_SEPARATOR_S, sigil_wads[i], NULL);
 
@@ -1438,7 +1438,7 @@ static void LoadSigilWad()
         }
 
         // [crispy] rename intrusive SIGIL_SHREDS.wad music lumps out of the way
-        for (i = 0; i < arrlen(sigil_lumps); i++)
+        for (i = 0; i < std::size(sigil_lumps); i++)
         {
             int j;
 
@@ -1457,7 +1457,7 @@ static void LoadSigilWad()
         }
 
         // [crispy] rename intrusive SIGIL.wad graphics, demos and music lumps out of the way
-        for (i = 0; i < arrlen(sigil_lumps); i++)
+        for (i = 0; i < std::size(sigil_lumps); i++)
         {
             int j;
 

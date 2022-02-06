@@ -16,7 +16,7 @@
 //	Game completion, final screen animation.
 //
 
-
+#include <array>
 #include <cctype>
 
 // Functions.
@@ -133,7 +133,7 @@ void F_StartFinale()
 
     // Find the right screen and set the text and background
 
-    for (i = 0; i < arrlen(textscreens); ++i)
+    for (i = 0; i < std::size(textscreens); ++i)
     {
         textscreen_t *screen = &textscreens[i];
 
@@ -486,7 +486,7 @@ static int F_SoundForState(int st)
     {
         int i;
 
-        for (i = 0; i < arrlen(actionsounds); i++)
+        for (i = 0; i < std::size(actionsounds); i++)
         {
             const actionsound_t *const as = &actionsounds[i];
 
@@ -700,7 +700,7 @@ boolean F_CastResponder(event_t *ev)
         // [crispy] ... and allow to skip through them ..
         if (ev->data1 == key_strafeleft || ev->data1 == key_alt_strafeleft)
     {
-        castskip = castnum ? -1 : arrlen(castorder) - 2;
+        castskip = castnum ? -1 : std::size(castorder) - 2;
         return false;
     }
     else if (ev->data1 == key_straferight || ev->data1 == key_alt_straferight)

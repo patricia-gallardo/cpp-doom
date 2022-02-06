@@ -17,7 +17,7 @@
 //	Sliders and icons. Kinda widget stuff.
 //
 
-
+#include <array>
 #include <cstdlib>
 #include <cctype>
 
@@ -1578,7 +1578,7 @@ static void M_CrispnessCur(int choice)
 
 static void M_CrispnessNext(int choice)
 {
-    if (++crispness_cur > arrlen(CrispnessMenus) - 1)
+    if (++crispness_cur > std::size(CrispnessMenus) - 1)
     {
         crispness_cur = 0;
     }
@@ -1590,7 +1590,7 @@ static void M_CrispnessPrev(int choice)
 {
     if (--crispness_cur < 0)
     {
-        crispness_cur = arrlen(CrispnessMenus) - 1;
+        crispness_cur = std::size(CrispnessMenus) - 1;
     }
 
     M_CrispnessCur(0);

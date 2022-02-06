@@ -15,6 +15,7 @@
 //	System interface for PC speaker sound.
 //
 
+#include <array>
 #include "SDL.h"
 #include <cstring>
 
@@ -195,7 +196,7 @@ static void PCSCallbackFunc(int *duration, int *freq)
         // for a full discussion of this.
         // Check we don't overflow the frequency table.
 
-        if (tone < arrlen(divisors) && divisors[tone] != 0)
+        if (tone < std::size(divisors) && divisors[tone] != 0)
         {
             *freq = (int)(TIMER_FREQ / divisors[tone]);
         }
@@ -272,7 +273,7 @@ static boolean IsDisabledSound(sfxinfo_t *sfxinfo)
         "sawidl",
     };
 
-    for (i = 0; i < arrlen(disabled_sounds); ++i)
+    for (i = 0; i < std::size(disabled_sounds); ++i)
     {
         if (!strcmp(sfxinfo->name, disabled_sounds[i]))
         {
@@ -429,7 +430,7 @@ static snddevice_t sound_pcsound_devices[] = {
 
 sound_module_t sound_pcsound_module = {
     sound_pcsound_devices,
-    arrlen(sound_pcsound_devices),
+    std::size(sound_pcsound_devices),
     I_PCS_InitSound,
     I_PCS_ShutdownSound,
     I_PCS_GetSfxLumpNum,

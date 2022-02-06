@@ -16,6 +16,7 @@
 //     Common code to parse command line, identifying WAD files to load.
 //
 
+#include <array>
 #include <cstdlib>
 
 #include "config.h"
@@ -243,7 +244,7 @@ void W_CheckCorrectIWAD(GameMission_t mission)
     int         i;
     lumpindex_t lumpnum;
 
-    for (i = 0; i < arrlen(unique_lumps); ++i)
+    for (i = 0; i < std::size(unique_lumps); ++i)
     {
         if (mission != unique_lumps[i].mission)
         {

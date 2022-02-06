@@ -19,7 +19,7 @@
 //	and call the startup functions.
 //
 
-
+#include <array>
 #include <cctype>
 #include <cstdlib>
 #include <cstring>
@@ -777,7 +777,7 @@ static char *GetGameName(char *gamename)
     size_t i;
     const char *deh_sub;
     
-    for (i=0; i<arrlen(banners); ++i)
+    for (i=0; i<std::size(banners); ++i)
     {
         // Has the banner been replaced?
 
@@ -981,7 +981,7 @@ void PrintDehackedBanners()
 {
     size_t i;
 
-    for (i=0; i<arrlen(copyright_banners); ++i)
+    for (i=0; i<std::size(copyright_banners); ++i)
     {
         const char *deh_s;
 

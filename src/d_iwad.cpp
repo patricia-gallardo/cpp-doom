@@ -16,6 +16,7 @@
 //     to the IWAD type.
 //
 
+#include <array>
 #include <cstdlib>
 #include <cstring>
 
@@ -52,7 +53,7 @@ boolean D_IsIWADName(const char *name)
 {
     int i;
 
-    for (i = 0; i < arrlen(iwads); i++)
+    for (i = 0; i < std::size(iwads); i++)
     {
         if (!strcasecmp(name, iwads[i].name))
         {
@@ -304,7 +305,7 @@ static void CheckUninstallStrings()
 {
     unsigned int i;
 
-    for (i = 0; i < arrlen(uninstall_values); ++i)
+    for (i = 0; i < std::size(uninstall_values); ++i)
     {
         char *val;
         char *path;
@@ -338,7 +339,7 @@ static void CheckInstallRootPaths()
 {
     unsigned int i;
 
-    for (i = 0; i < arrlen(root_path_keys); ++i)
+    for (i = 0; i < std::size(root_path_keys); ++i)
     {
         char *       install_path;
         char *       subpath;
@@ -351,7 +352,7 @@ static void CheckInstallRootPaths()
             continue;
         }
 
-        for (j = 0; j < arrlen(root_path_subdirs); ++j)
+        for (j = 0; j < std::size(root_path_subdirs); ++j)
         {
             subpath = M_StringJoin(install_path, DIR_SEPARATOR_S,
                 root_path_subdirs[j], NULL);
@@ -378,7 +379,7 @@ static void CheckSteamEdition()
         return;
     }
 
-    for (i = 0; i < arrlen(steam_install_subdirs); ++i)
+    for (i = 0; i < std::size(steam_install_subdirs); ++i)
     {
         subpath = M_StringJoin(install_path, DIR_SEPARATOR_S,
             steam_install_subdirs[i], NULL);
@@ -511,7 +512,7 @@ static char *SearchDirectoryForIWAD(const char *dir, int mask, GameMission_t *mi
     char * filename;
     size_t i;
 
-    for (i = 0; i < arrlen(iwads); ++i)
+    for (i = 0; i < std::size(iwads); ++i)
     {
         if (((1 << iwads[i].mission) & mask) == 0)
         {
@@ -542,7 +543,7 @@ static GameMission_t IdentifyIWADByName(const char *name, int mask)
     name    = M_BaseName(name);
     mission = none;
 
-    for (i = 0; i < arrlen(iwads); ++i)
+    for (i = 0; i < std::size(iwads); ++i)
     {
         // Check if the filename is this IWAD name.
 
@@ -890,13 +891,13 @@ const iwad_t **D_FindAllIWADs(int mask)
     char *filename;
     int   i;
 
-    auto result = create_struct<iwad_t const * [arrlen(iwads) + 1]>();
-    //    result = malloc(sizeof(iwad_t *) * (arrlen(iwads) + 1));
+    auto result = create_struct<iwad_t const * [std::size(iwads) + 1]>();
+    //    result = malloc(sizeof(iwad_t *) * (std::size(iwads) + 1));
     result_len = 0;
 
     // Try to find all IWADs
 
-    for (i = 0; i < arrlen(iwads); ++i)
+    for (i = 0; i < std::size(iwads); ++i)
     {
         if (((1 << iwads[i].mission) & mask) == 0)
         {
@@ -934,7 +935,7 @@ const char *D_SaveGameIWADName(GameMission_t gamemission)
     // This ensures that doom1.wad and doom.wad saves are stored
     // in the same place.
 
-    for (i = 0; i < arrlen(iwads); ++i)
+    for (i = 0; i < std::size(iwads); ++i)
     {
         if (gamemission == iwads[i].mission)
         {
@@ -951,7 +952,7 @@ const char *D_SuggestIWADName(GameMission_t mission, GameMode_t mode)
 {
     int i;
 
-    for (i = 0; i < arrlen(iwads); ++i)
+    for (i = 0; i < std::size(iwads); ++i)
     {
         if (iwads[i].mission == mission && iwads[i].mode == mode)
         {
@@ -966,7 +967,7 @@ const char *D_SuggestGameName(GameMission_t mission, GameMode_t mode)
 {
     int i;
 
-    for (i = 0; i < arrlen(iwads); ++i)
+    for (i = 0; i < std::size(iwads); ++i)
     {
         if (iwads[i].mission == mission
             && (mode == indetermined || iwads[i].mode == mode))

@@ -17,6 +17,8 @@
 
 // HEADER FILES ------------------------------------------------------------
 
+#include <array>
+
 #include "memory.hpp"
 #include "h2def.hpp"
 #include "i_swap.hpp"
@@ -804,7 +806,7 @@ void T_InterpretACS(acs_t * script)
         M_snprintf(EvalContext, sizeof(EvalContext), "script %d @0x%x, cmd=%d",
                    ACSInfo[script->infoIndex].number, PCodeOffset, cmd);
         ACSAssert(cmd >= 0, "negative ACS instruction %d", cmd);
-        ACSAssert(cmd < arrlen(PCodeCmds),
+        ACSAssert(cmd < std::size(PCodeCmds),
                   "invalid ACS instruction %d (maybe this WAD is designed "
                   "for an advanced source port and is not vanilla "
                   "compatible)", cmd);

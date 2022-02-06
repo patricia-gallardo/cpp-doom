@@ -14,6 +14,8 @@
 // GNU General Public License for more details.
 //
 
+#include <array>
+
 #include "doomdef.hpp"
 #include "deh_str.hpp"
 #include "i_system.hpp"
@@ -117,7 +119,7 @@ void P_InitSwitchList()
 
     slindex = 0;
 
-    for (i = 0; i < arrlen(alphSwitchList); i++)
+    for (i = 0; i < std::size(alphSwitchList); i++)
     {
 	if (alphSwitchList[i].episode <= episode)
 	{

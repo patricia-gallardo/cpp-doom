@@ -16,6 +16,7 @@
 // Parses [STRINGS] sections in BEX files
 //
 
+#include <array>
 #include <cstdio>
 #include <cstring>
 
@@ -356,7 +357,7 @@ static void DEH_BEXStrParseLine(deh_context_t *context, char *line, void *tag)
         return;
     }
 
-    for (i = 0; i < arrlen(bex_stringtable); i++)
+    for (i = 0; i < std::size(bex_stringtable); i++)
     {
         if (!strcasecmp(bex_stringtable[i].macro, variable_name))
         {
