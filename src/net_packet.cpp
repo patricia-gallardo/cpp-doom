@@ -190,7 +190,7 @@ char *NET_ReadString(net_packet_t *packet)
     {
         // Reached the end of the packet
 
-        return NULL;
+        return nullptr;
     }
 
     // packet->data[packet->pos] == '\0': We have reached a terminating
@@ -212,7 +212,7 @@ char *NET_ReadSafeString(net_packet_t *packet)
     result = NET_ReadString(packet);
     if (result == nullptr)
     {
-        return NULL;
+        return nullptr;
     }
 
     // w is always <= r, so we never produce a longer string than the original.

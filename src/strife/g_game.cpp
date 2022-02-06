@@ -1323,7 +1323,7 @@ void G_DoReborn (int playernum)
         // first dissasociate the corpse 
         // [STRIFE] Checks for NULL first
         if(players[playernum].mo)
-            players[playernum].mo->player = NULL;
+            players[playernum].mo->player = nullptr;
 
         // spawn at random spot if in death match 
         if (deathmatch) 
@@ -1632,8 +1632,8 @@ void G_DoWorldDone2()
 //
 void G_ReadCurrent(const char *path)
 {
-    char *temppath = NULL;
-    byte *buffer = NULL;
+    char *temppath = nullptr;
+    byte *buffer = nullptr;
 
     temppath = M_SafeFilePath(path, "\\current");
 

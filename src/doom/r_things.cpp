@@ -316,7 +316,7 @@ void R_InitSpriteDefs(const char **namelist)
 //
 // GAME FUNCTIONS
 //
-vissprite_t *vissprites = NULL;
+vissprite_t *vissprites = nullptr;
 vissprite_t *vissprite_p;
 int          newvissprite;
 static int   numvissprites;
@@ -704,7 +704,7 @@ void R_ProjectSprite(mobj_t *thing)
 
     // store information in a vissprite
     vis              = R_NewVisSprite();
-    vis->translation = NULL; // [crispy] no color translation
+    vis->translation = nullptr; // [crispy] no color translation
     vis->mobjflags   = thing->flags;
     vis->scale       = xscale << detailshift;
     vis->gx          = interpx;
@@ -735,7 +735,7 @@ void R_ProjectSprite(mobj_t *thing)
     if (thing->flags & MF_SHADOW)
     {
         // shadow draw
-        vis->colormap[0] = vis->colormap[1] = NULL;
+        vis->colormap[0] = vis->colormap[1] = nullptr;
     }
     else if (fixedcolormap)
     {
@@ -834,7 +834,7 @@ byte *R_LaserspotColor()
             return cr_colors[static_cast<int>(cr_t::CR_BLUE)];
     }
 
-    return NULL;
+    return nullptr;
 }
 
 // [crispy] generate a vissprite for the laser spot
@@ -993,7 +993,7 @@ void R_DrawPSprite(pspdef_t *psp, psprnum_t psprnum) // [crispy] differentiate g
 
     // store information in a vissprite
     vis              = &avis;
-    vis->translation = NULL; // [crispy] no color translation
+    vis->translation = nullptr; // [crispy] no color translation
     vis->mobjflags   = 0;
     // [crispy] weapons drawn 1 pixel too high when player is idle
     vis->texturemid = (BASEYCENTER << FRACBITS) + FRACUNIT / 4 - (psp->sy2 + std::abs(psp->dy) - spritetopoffset[lump]);
@@ -1024,7 +1024,7 @@ void R_DrawPSprite(pspdef_t *psp, psprnum_t psprnum) // [crispy] differentiate g
         || viewplayer->powers[pw_invisibility] & 8)
     {
         // shadow draw
-        vis->colormap[0] = vis->colormap[1] = NULL;
+        vis->colormap[0] = vis->colormap[1] = nullptr;
     }
     else if (fixedcolormap)
     {

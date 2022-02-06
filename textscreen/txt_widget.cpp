@@ -53,7 +53,7 @@ void TXT_InitWidget(TXT_UNCAST_ARG(widget), txt_widget_class_t *widget_class)
 
     widget->widget_class = widget_class;
     widget->callback_table = TXT_NewCallbackTable();
-    widget->parent = NULL;
+    widget->parent = nullptr;
 
     // Not focused until we hear otherwise.
 

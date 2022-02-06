@@ -180,7 +180,7 @@ static void UpdateGUI()
     }
     else
     {
-        startgame = NULL;
+        startgame = nullptr;
     }
 
     TXT_SetWindowAction(window, TXT_HORIZ_RIGHT, startgame);

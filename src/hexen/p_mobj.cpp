@@ -1736,7 +1736,7 @@ mobj_t *P_FindMobjFromTID(int tid, int *searchPosition)
         }
     }
     *searchPosition = -1;
-    return NULL;
+    return nullptr;
 }
 
 /*

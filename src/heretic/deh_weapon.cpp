@@ -45,13 +45,13 @@ static void *DEH_WeaponStart(deh_context_t *context, char *line)
     if (sscanf(line, "Weapon %i", &weapon_number) != 1)
     {
         DEH_Warning(context, "Parse error on section start");
-        return NULL;
+        return nullptr;
     }
 
     if (weapon_number < 0 || weapon_number >= NUMWEAPONS * 2)
     {
         DEH_Warning(context, "Invalid weapon number: %i", weapon_number);
-        return NULL;
+        return nullptr;
     }
 
     // Because of the tome of power, we have two levels of weapons:

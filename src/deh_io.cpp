@@ -96,7 +96,7 @@ deh_context_t *DEH_OpenFile(const char *filename)
     fstream = fopen(filename, "r");
 
     if (fstream == nullptr)
-        return NULL;
+        return nullptr;
 
     context = DEH_NewContext();
 
@@ -273,7 +273,7 @@ char *DEH_ReadLine(deh_context_t *context, boolean extended)
         {
             // end of file
 
-            return NULL;
+            return nullptr;
         }
 
         // cope with lines of any length: increase the buffer size
@@ -378,5 +378,5 @@ char *DEH_FileName(deh_context_t *context)
         return context->filename;
     }
 
-    return NULL;
+    return nullptr;
 }

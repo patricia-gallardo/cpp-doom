@@ -59,7 +59,7 @@ void DEH_Checksum(sha1_digest_t digest)
 
     SHA1_Init(&sha1_context);
 
-    for (i = 0; deh_section_types[i] != NULL; ++i)
+    for (i = 0; deh_section_types[i] != nullptr; ++i)
     {
         if (deh_section_types[i]->sha1_hash != nullptr)
         {
@@ -76,7 +76,7 @@ static void InitializeSections()
 {
     unsigned int i;
 
-    for (i = 0; deh_section_types[i] != NULL; ++i)
+    for (i = 0; deh_section_types[i] != nullptr; ++i)
     {
         if (deh_section_types[i]->init != nullptr)
         {
@@ -115,10 +115,10 @@ static deh_section_t *GetSectionByName(char *name)
 
     if (!deh_allow_extended_strings && !strncasecmp("[STRINGS]", name, 9))
     {
-        return NULL;
+        return nullptr;
     }
 
-    for (i = 0; deh_section_types[i] != NULL; ++i)
+    for (i = 0; deh_section_types[i] != nullptr; ++i)
     {
         if (!strcasecmp(deh_section_types[i]->name, name))
         {
@@ -126,7 +126,7 @@ static deh_section_t *GetSectionByName(char *name)
         }
     }
 
-    return NULL;
+    return nullptr;
 }
 
 // Is the string passed just whitespace?
@@ -224,7 +224,7 @@ static boolean CheckSignatures(deh_context_t *context)
 
     // Check all signatures to see if one matches
 
-    for (i = 0; deh_signatures[i] != NULL; ++i)
+    for (i = 0; deh_signatures[i] != nullptr; ++i)
     {
         if (!strcmp(deh_signatures[i], line))
         {
@@ -292,10 +292,10 @@ static void DEH_ParseComment(char *comment)
 
 static void DEH_ParseContext(deh_context_t *context)
 {
-    deh_section_t *current_section = NULL;
-    deh_section_t *prev_section    = NULL; // [crispy] remember previous line parser
+    deh_section_t *current_section = nullptr;
+    deh_section_t *prev_section    = nullptr; // [crispy] remember previous line parser
     char           section_name[20];
-    void *         tag = NULL;
+    void *         tag = nullptr;
     boolean        extended;
     char *         line;
 
@@ -356,11 +356,11 @@ static void DEH_ParseContext(deh_context_t *context)
                 }
                 else
                 {
-                    prev_section = NULL;
+                    prev_section = nullptr;
                 }
 
                 //printf("end %s tag\n", current_section->name);
-                current_section = NULL;
+                current_section = nullptr;
             }
         }
         else
@@ -389,7 +389,7 @@ static void DEH_ParseContext(deh_context_t *context)
                     // [crispy] try this line again with the previous line parser
                     DEH_RestoreLineStart(context);
                     current_section = prev_section;
-                    prev_section    = NULL;
+                    prev_section    = nullptr;
                 }
                 else
                 {

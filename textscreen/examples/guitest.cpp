@@ -34,11 +34,11 @@ enum
 const char *extensions[] = { "wad", "lmp", "txt", "a\"b\"c\"\"\"dd", "",
      "\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"", NULL };
 const char *radio_values[] = { "Badger", "Mushroom", "Snake" };
-char *textbox_value = NULL;
+char *textbox_value = nullptr;
 int numbox_value = 0;
 int radiobutton_value;
-char *file_path = NULL;
-char *dir_path = NULL;
+char *file_path = nullptr;
+char *dir_path = nullptr;
 txt_label_t *value_label;
 txt_window_t *firstwin;
 int cheesy;

@@ -63,7 +63,7 @@ static void *DEH_ThingStart(deh_context_t *context, char *line)
     if (sscanf(line, "Thing %i", &orig_thing_number) != 1)
     {
         DEH_Warning(context, "Parse error on section start");
-        return NULL;
+        return nullptr;
     }
 
     // Translate to the correct thing number based on the exe version this
@@ -75,7 +75,7 @@ static void *DEH_ThingStart(deh_context_t *context, char *line)
     if (thing_number < 0 || thing_number >= DEH_HERETIC_NUMMOBJTYPES)
     {
         DEH_Warning(context, "Invalid thing number: %i", orig_thing_number);
-        return NULL;
+        return nullptr;
     }
 
     mobj = &mobjinfo[thing_number];

@@ -96,7 +96,7 @@ void SetDisplayDriver()
 
     if (first_time)
     {
-        system_video_env_set = getenv("SDL_VIDEODRIVER") != NULL;
+        system_video_env_set = getenv("SDL_VIDEODRIVER") != nullptr;
 
         first_time = 0;
     }

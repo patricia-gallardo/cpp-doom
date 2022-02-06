@@ -56,7 +56,7 @@ static int     current_music_volume;
 
 char *timidity_cfg_path = const_cast<char *>("");
 
-static char *temp_timidity_cfg = NULL;
+static char *temp_timidity_cfg = nullptr;
 
 // If the temp_timidity_cfg config variable is set, generate a "wrapper"
 // config file for Timidity to point to the actual config file. This
@@ -117,7 +117,7 @@ void I_InitTimidityConfig()
     else
     {
         free(temp_timidity_cfg);
-        temp_timidity_cfg = NULL;
+        temp_timidity_cfg = nullptr;
     }
 }
 
@@ -405,7 +405,7 @@ static void *I_SDL_RegisterSong(void *data, int len)
 
     if (!music_initialized)
     {
-        return NULL;
+        return nullptr;
     }
 
     // MUS files begin with "MUS"
@@ -439,7 +439,7 @@ static void *I_SDL_RegisterSong(void *data, int len)
     //      music with the MIDI server.
     if (midi_server_initialized)
     {
-        music = NULL;
+        music = nullptr;
         if (!I_MidiPipe_RegisterSong(filename))
         {
             fprintf(stderr, "Error loading midi: %s\n",

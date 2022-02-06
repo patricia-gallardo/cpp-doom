@@ -36,8 +36,8 @@ static boolean pcs_initialized = false;
 static SDL_mutex *sound_lock;
 static boolean    use_sfx_prefix;
 
-static uint8_t *    current_sound_lump      = NULL;
-static uint8_t *    current_sound_pos       = NULL;
+static uint8_t *    current_sound_lump      = nullptr;
+static uint8_t *    current_sound_pos       = nullptr;
 static unsigned int current_sound_remaining = 0;
 static int          current_sound_handle    = 0;
 static int          current_sound_lump_num  = -1;
@@ -225,7 +225,7 @@ static boolean CachePCSLump(sfxinfo_t *sfxinfo)
     if (current_sound_lump != nullptr)
     {
         W_ReleaseLumpNum(current_sound_lump_num);
-        current_sound_lump = NULL;
+        current_sound_lump = nullptr;
     }
 
     // Load from WAD

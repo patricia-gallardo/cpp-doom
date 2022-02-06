@@ -1154,7 +1154,7 @@ void P_DialogDoChoice(int choice)
 {
     int i = 0, nextdialog = 0;
     boolean candochoice = true;
-    const char *message = NULL;
+    const char *message = nullptr;
     mapdlgchoice_t *currentchoice;
 
     if(choice == -1)
@@ -1227,7 +1227,7 @@ void P_DialogDoChoice(int choice)
         // haleyjd 20130301: v1.31 hack: if first char of message is a period,
         // clear the player's message. Is this actually used anywhere?
         if(gameversion == exe_strife_1_31 && message[0] == '.')
-            message = NULL;
+            message = nullptr;
         dialogplayer->message = message;
     }
 

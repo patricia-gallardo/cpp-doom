@@ -110,7 +110,7 @@ static boolean mus_paused;
 
 // Music currently being played
 
-static musicinfo_t *mus_playing = NULL;
+static musicinfo_t *mus_playing = nullptr;
 
 // Number of channels to use
 
@@ -207,7 +207,7 @@ static void S_StopChannel(int cnum)
         // degrade usefulness of sound data
 
         c->sfxinfo->usefulness--;
-        c->sfxinfo = NULL;
+        c->sfxinfo = nullptr;
     }
 }
 
@@ -765,7 +765,7 @@ void S_StartMusic(int m_id)
 
 void S_ChangeMusic(int musicnum, int looping)
 {
-    musicinfo_t *music = NULL;
+    musicinfo_t *music = nullptr;
     char namebuf[9];
     void *handle;
 
@@ -819,8 +819,8 @@ void S_StopMusic()
         I_StopSong();
         I_UnRegisterSong(mus_playing->handle);
         W_ReleaseLumpNum(mus_playing->lumpnum);
-        mus_playing->data = NULL;
-        mus_playing = NULL;
+        mus_playing->data = nullptr;
+        mus_playing = nullptr;
     }
 }
 

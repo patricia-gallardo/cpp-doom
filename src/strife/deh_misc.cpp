@@ -154,7 +154,7 @@ static struct
 
 static void *DEH_MiscStart(deh_context_t *context, char *line)
 {
-    return NULL;
+    return nullptr;
 }
 
 static void DEH_MiscParseLine(deh_context_t *context, char *line, void *tag)

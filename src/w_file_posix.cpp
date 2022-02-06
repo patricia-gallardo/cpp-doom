@@ -83,7 +83,7 @@ static wad_file_t *W_POSIX_OpenFile(const char *path)
 
     if (handle < 0)
     {
-        return NULL;
+        return nullptr;
     }
 
     // Create a new posix_wad_file_t to hold the file handle.

@@ -80,22 +80,22 @@ static void FreePipes()
     if (midi_process_in_reader != nullptr)
     {
         CloseHandle(midi_process_in_reader);
-        midi_process_in_reader = NULL;
+        midi_process_in_reader = nullptr;
     }
     if (midi_process_in_writer != nullptr)
     {
         CloseHandle(midi_process_in_writer);
-        midi_process_in_writer = NULL;
+        midi_process_in_writer = nullptr;
     }
     if (midi_process_out_reader != nullptr)
     {
         CloseHandle(midi_process_out_reader);
-        midi_process_in_reader = NULL;
+        midi_process_in_reader = nullptr;
     }
     if (midi_process_out_writer != nullptr)
     {
         CloseHandle(midi_process_out_writer);
-        midi_process_out_writer = NULL;
+        midi_process_out_writer = nullptr;
     }
 }
 
@@ -205,7 +205,7 @@ static boolean ExpectPipe(net_packet_t *packet)
 //
 void RemoveFileSpec(TCHAR *path, size_t size)
 {
-    TCHAR *fp = NULL;
+    TCHAR *fp = nullptr;
 
     fp = &path[size];
     while (path <= fp && *fp != DIR_SEPARATOR)
@@ -412,8 +412,8 @@ boolean I_MidiPipe_InitServer()
 {
     TCHAR               dirname[MAX_PATH + 1];
     DWORD               dirname_len;
-    char *              module  = NULL;
-    char *              cmdline = NULL;
+    char *              module  = nullptr;
+    char *              cmdline = nullptr;
     char                params_buf[128];
     SECURITY_ATTRIBUTES sec_attrs;
     PROCESS_INFORMATION proc_info;
@@ -443,7 +443,7 @@ boolean I_MidiPipe_InitServer()
     memset(&sec_attrs, 0, sizeof(SECURITY_ATTRIBUTES));
     sec_attrs.nLength              = sizeof(SECURITY_ATTRIBUTES);
     sec_attrs.bInheritHandle       = TRUE;
-    sec_attrs.lpSecurityDescriptor = NULL;
+    sec_attrs.lpSecurityDescriptor = nullptr;
 
     if (!CreatePipe(&midi_process_in_reader, &midi_process_in_writer, &sec_attrs, 0))
     {
@@ -493,9 +493,9 @@ boolean I_MidiPipe_InitServer()
 
     // Since the server has these handles, we don't need them anymore.
     CloseHandle(midi_process_in_reader);
-    midi_process_in_reader = NULL;
+    midi_process_in_reader = nullptr;
     CloseHandle(midi_process_out_writer);
-    midi_process_out_writer = NULL;
+    midi_process_out_writer = nullptr;
 
     midi_server_initialized = true;
     return true;

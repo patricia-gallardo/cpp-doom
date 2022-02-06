@@ -48,7 +48,7 @@ struct ioperm_data
 
 static SC_HANDLE (WINAPI *MyOpenSCManagerW)(wchar_t *lpMachineName,
                                             wchar_t *lpDatabaseName,
-                                            DWORD dwDesiredAccess) = NULL;
+                                            DWORD dwDesiredAccess) = nullptr;
 static SC_HANDLE (WINAPI *MyCreateServiceW)(SC_HANDLE hSCManager,
                                             wchar_t *lpServiceName,
                                             wchar_t *lpDisplayName,
@@ -90,8 +90,8 @@ static struct
 
 // Globals
 
-static SC_HANDLE scm = NULL;
-static SC_HANDLE svc = NULL;
+static SC_HANDLE scm = nullptr;
+static SC_HANDLE svc = nullptr;
 static int service_was_created = 0;
 static int service_was_started = 0;
 
@@ -336,13 +336,13 @@ int IOperm_UninstallDriver()
     if (svc != nullptr)
     {
         MyCloseServiceHandle(svc);
-        svc = NULL;
+        svc = nullptr;
     }
 
     if (scm != nullptr)
     {
         MyCloseServiceHandle(scm);
-        scm = NULL;
+        scm = nullptr;
     }
 
     service_was_created = 0;

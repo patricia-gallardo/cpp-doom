@@ -46,7 +46,7 @@ static void P_WritePackageTarname(const char *key)
 
 // maplumpinfo->wad_file->basename
 
-char *savewadfilename = NULL;
+char *savewadfilename = nullptr;
 
 static void P_WriteWadFileName(const char *key)
 {
@@ -486,7 +486,7 @@ static void P_ReadKeyValuePairs(int pass)
 }
 
 // [crispy] pointer to the info struct for the map lump about to load
-lumpinfo_t *savemaplumpinfo = NULL;
+lumpinfo_t *savemaplumpinfo = nullptr;
 
 void P_ReadExtendedSaveGameData(int pass)
 {
@@ -524,7 +524,7 @@ void P_ReadExtendedSaveGameData(int pass)
     else
     {
         // [crispy] unavailable map!
-        savemaplumpinfo = NULL;
+        savemaplumpinfo = nullptr;
     }
 
     // [crispy] read key/value pairs past the end of the regular savegame data

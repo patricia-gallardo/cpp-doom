@@ -333,7 +333,7 @@ getNextSector
   sector_t*	sec )
 {
     if (!(line->flags & ML_TWOSIDED))
-	return NULL;
+	return nullptr;
 		
     if (line->frontsector == sec)
 	return line->backsector;
@@ -1984,10 +1984,10 @@ void P_SpawnSpecials ()
 
     //	Init other misc stuff
     for (i = 0;i < MAXCEILINGS;i++)
-        activeceilings[i] = NULL;
+        activeceilings[i] = nullptr;
 
     for (i = 0;i < MAXPLATS;i++)
-        activeplats[i] = NULL;
+        activeplats[i] = nullptr;
 
     for (i = 0;i < MAXBUTTONS;i++)
         memset(&buttonlist[i],0,sizeof(button_t));

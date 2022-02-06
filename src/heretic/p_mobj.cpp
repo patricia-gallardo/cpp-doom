@@ -228,7 +228,7 @@ boolean P_SeekerMissile(mobj_t * actor, angle_t thresh, angle_t turnMax)
     }
     if (!(target->flags & MF_SHOOTABLE))
     {                           // Target died
-        actor->special1.m = NULL;
+        actor->special1.m = nullptr;
         return (false);
     }
     dir = P_FaceMobj(actor, target, &delta);
@@ -994,12 +994,12 @@ void P_SpawnPlayer(mapthing_t * mthing)
     p->mo = mobj;
     p->playerstate = PST_LIVE;
     p->refire = 0;
-    p->message = NULL;
+    p->message = nullptr;
     p->damagecount = 0;
     p->bonuscount = 0;
     p->chickenTics = 0;
-    p->rain1 = NULL;
-    p->rain2 = NULL;
+    p->rain1 = nullptr;
+    p->rain2 = nullptr;
     p->extralight = 0;
     p->fixedcolormap = 0;
     p->viewheight = VIEWHEIGHT;

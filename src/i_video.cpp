@@ -72,11 +72,11 @@ static const char *window_title = "";
 // in turn is finally rendered to screen using "linear" scaling.
 
 #ifndef CRISPY_TRUECOLOR
-static SDL_Surface *screenbuffer = NULL;
+static SDL_Surface *screenbuffer = nullptr;
 #endif
-static SDL_Surface *argbbuffer       = NULL;
-static SDL_Texture *texture          = NULL;
-static SDL_Texture *texture_upscaled = NULL;
+static SDL_Surface *argbbuffer       = nullptr;
+static SDL_Texture *texture          = nullptr;
+static SDL_Texture *texture_upscaled = nullptr;
 
 #ifndef CRISPY_TRUECOLOR
 static SDL_Rect blit_rect = {
@@ -92,10 +92,10 @@ static uint32_t pixel_format;
 // palette
 
 #ifdef CRISPY_TRUECOLOR
-static SDL_Texture * curpane = NULL;
-static SDL_Texture * redpane = NULL;
-static SDL_Texture * yelpane = NULL;
-static SDL_Texture * grnpane = NULL;
+static SDL_Texture * curpane = nullptr;
+static SDL_Texture * redpane = nullptr;
+static SDL_Texture * yelpane = nullptr;
+static SDL_Texture * grnpane = nullptr;
 static int           pane_alpha;
 static unsigned int  rmask, gmask, bmask, amask; // [crispy] moved up here
 static const uint8_t blend_alpha = 0xa8;
@@ -178,7 +178,7 @@ static boolean nograbmouse_override = false;
 
 // The screen buffer; this is modified to draw things to the screen
 
-pixel_t *I_VideoBuffer = NULL;
+pixel_t *I_VideoBuffer = nullptr;
 
 // If true, game is running as a screensaver
 
@@ -202,7 +202,7 @@ static boolean noblit;
 // Callback function to invoke to determine whether to grab the
 // mouse pointer.
 
-static grabmouse_callback_t grabmouse_callback = NULL;
+static grabmouse_callback_t grabmouse_callback = nullptr;
 
 // Does the window currently have focus?
 
@@ -893,7 +893,7 @@ void I_ReadScreen(pixel_t *scr)
 // I_SetPalette
 //
 // [crispy] intermediate gamma levels
-byte **gamma2table = NULL;
+byte **gamma2table = nullptr;
 void   I_SetGammaTable()
 {
     int i;
@@ -981,7 +981,7 @@ void I_SetPalette(int palette)
     switch (palette)
     {
     case 0:
-        curpane = NULL;
+        curpane = nullptr;
         break;
     case 1:
     case 2:
@@ -1396,8 +1396,8 @@ static void SetVideoMode()
     {
         SDL_DestroyRenderer(renderer);
         // all associated textures get destroyed
-        texture          = NULL;
-        texture_upscaled = NULL;
+        texture          = nullptr;
+        texture_upscaled = nullptr;
     }
 
     renderer = SDL_CreateRenderer(screen, -1, renderer_flags);
@@ -1455,7 +1455,7 @@ static void SetVideoMode()
     if (screenbuffer != nullptr)
     {
         SDL_FreeSurface(screenbuffer);
-        screenbuffer = NULL;
+        screenbuffer = nullptr;
     }
 
     if (screenbuffer == nullptr)
@@ -1473,7 +1473,7 @@ static void SetVideoMode()
     if (argbbuffer != nullptr)
     {
         SDL_FreeSurface(argbbuffer);
-        argbbuffer = NULL;
+        argbbuffer = nullptr;
     }
 
     if (argbbuffer == nullptr)
@@ -1747,7 +1747,7 @@ void I_ReInitGraphics(int reinit)
         SDL_SetRenderDrawColor(renderer, 0, 0, 0, 255);
 
         // [crispy] the texture gets destroyed in SDL_DestroyRenderer(), force its re-creation
-        texture_upscaled = NULL;
+        texture_upscaled = nullptr;
     }
 
     // [crispy] re-create textures

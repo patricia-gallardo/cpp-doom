@@ -75,11 +75,11 @@ static void DoExec(const char *executable, const char *iwad, const char *args)
         WriteResponseFile(iwad, args);
 
         argv[1] = "@" RESPONSE_FILE;
-        argv[2] = NULL;
+        argv[2] = nullptr;
     }
     else
     {
-        argv[1] = NULL;
+        argv[1] = nullptr;
     }
 
     execv(argv[0], argv);

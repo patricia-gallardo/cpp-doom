@@ -43,13 +43,13 @@ static void *DEH_SoundStart(deh_context_t *context, char *line)
     if (sscanf(line, "Sound %i", &sound_number) != 1)
     {
         DEH_Warning(context, "Parse error on section start");
-        return NULL;
+        return nullptr;
     }
 
     if (sound_number < 0 || sound_number >= NUMSFX)
     {
         DEH_Warning(context, "Invalid sound number: %i", sound_number);
-        return NULL;
+        return nullptr;
     }
 
     if (sound_number >= DEH_VANILLA_NUMSFX)

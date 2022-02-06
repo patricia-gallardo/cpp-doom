@@ -104,12 +104,12 @@ static GameSelectCallback game_selected_callback;
 static int showMessages = 1;
 static int screenblocks = 10;
 static int detailLevel = 0;
-static char *savedir = NULL;
-static char *executable = NULL;
+static char *savedir = nullptr;
+static char *executable = nullptr;
 static const char *game_title = "Doom";
 static char *back_flat = const_cast<char *>("F_PAVE01");
 static int comport = 0;
-static char *nickname = NULL;
+static char *nickname = nullptr;
 
 static void BindMiscVariables()
 {
@@ -236,7 +236,7 @@ static mission_config_t *GetMissionForName(char *name)
         }
     }
 
-    return NULL;
+    return nullptr;
 }
 
 // Check the name of the executable.  If it contains one of the game
@@ -275,7 +275,7 @@ static void GameSelected(TXT_UNCAST_ARG(widget), TXT_UNCAST_ARG(config))
 
 static void OpenGameSelectDialog(GameSelectCallback callback)
 {
-    mission_config_t *mission = NULL;
+    mission_config_t *mission = nullptr;
     txt_window_t *window;
     const iwad_t **iwads;
     int num_games;

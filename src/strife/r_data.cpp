@@ -435,7 +435,7 @@ static void GenerateTextureHashTable()
 
         // Hook into hash table
 
-        textures[i]->next = NULL;
+        textures[i]->next = nullptr;
         *rover = textures[i];
     }
 }
@@ -510,7 +510,7 @@ void R_InitTextures ()
     }
     else
     {
-        maptex2 = NULL;
+        maptex2 = nullptr;
         numtextures2 = 0;
         maxoff2 = 0;
     }

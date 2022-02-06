@@ -47,7 +47,7 @@ static const int borders[4][4] =
     {0xc0, 0xc4, 0xc1, 0xd9},
 };
 
-static txt_cliparea_t *cliparea = NULL;
+static txt_cliparea_t *cliparea = nullptr;
 
 #define VALID_X(x) ((x) >= cliparea->x1 && (x) < cliparea->x2)
 #define VALID_Y(y) ((y) >= cliparea->y1 && (y) < cliparea->y2)

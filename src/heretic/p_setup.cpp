@@ -209,7 +209,7 @@ void P_LoadSectors(int lump)
         ss->lightlevel = SHORT(ms->lightlevel);
         ss->special = SHORT(ms->special);
         ss->tag = SHORT(ms->tag);
-        ss->thinglist = NULL;
+        ss->thinglist = nullptr;
     }
 
     W_ReleaseLumpNum(lump);

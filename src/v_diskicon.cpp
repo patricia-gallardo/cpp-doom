@@ -77,7 +77,7 @@ static void SaveDiskData(const char *disk_lump, int xoffs, int yoffs)
     if (disk_data != nullptr)
     {
         Z_Free(disk_data);
-        disk_data = NULL;
+        disk_data = nullptr;
     }
 
     disk_data = zmalloc<pixel_t *>(LOADING_DISK_W * LOADING_DISK_H * sizeof(*disk_data),
@@ -103,7 +103,7 @@ void V_EnableLoadingDisk(const char *lump_name, int xoffs, int yoffs)
     if (saved_background != nullptr)
     {
         Z_Free(saved_background);
-        saved_background = NULL;
+        saved_background = nullptr;
     }
 
     saved_background = zmalloc<pixel_t *>(LOADING_DISK_W * LOADING_DISK_H

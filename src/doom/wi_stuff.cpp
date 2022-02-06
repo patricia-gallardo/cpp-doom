@@ -1751,7 +1751,7 @@ static void WI_loadUnloadData(load_callback_t callback)
     if (W_CheckNumForName(DEH_String("WIMINUS")) > 0)
         callback(DEH_String("WIMINUS"), &wiminus);
     else
-        wiminus = NULL;
+        wiminus = nullptr;
 
     for (i = 0; i < 10; i++)
     {
@@ -1863,7 +1863,7 @@ static void WI_loadCallback(const char *name, patch_t **variable)
     if (W_CheckNumForName(name) != -1)
         *variable = cache_lump_name<patch_t *>(name, PU_STATIC);
     else
-        *variable = NULL;
+        *variable = nullptr;
 }
 
 void WI_loadData()
@@ -1899,7 +1899,7 @@ void WI_loadData()
 static void WI_unloadCallback(const char *name, patch_t **variable)
 {
     W_ReleaseLumpName(name);
-    *variable = NULL;
+    *variable = nullptr;
 }
 
 void WI_unloadData()

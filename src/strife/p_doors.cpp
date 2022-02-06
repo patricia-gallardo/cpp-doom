@@ -118,7 +118,7 @@ void T_VerticalDoor(vldoor_t* door)
 
         if(res1 == pastdest && res2 == pastdest)
         {
-            door->sector->specialdata = NULL;
+            door->sector->specialdata = nullptr;
             P_RemoveThinker(&door->thinker);  // unlink and free
         }
 
@@ -135,7 +135,7 @@ void T_VerticalDoor(vldoor_t* door)
             case vld_close:
             case vld_blazeRaise:
             case vld_blazeClose:
-                door->sector->specialdata = NULL;
+                door->sector->specialdata = nullptr;
                 P_RemoveThinker (&door->thinker);  // unlink and free
                 // villsa [STRIFE] no sounds
                 break;
@@ -194,7 +194,7 @@ void T_VerticalDoor(vldoor_t* door)
             case vld_blazeOpen:
             case vld_open:
             case vld_shopClose:     // villsa [STRIFE]
-                door->sector->specialdata = NULL;
+                door->sector->specialdata = nullptr;
                 P_RemoveThinker (&door->thinker);  // unlink and free
                 break;
 
@@ -1125,7 +1125,7 @@ void T_SlidingDoor(slidedoor_t* door)
 
                 if(door->type == sdt_openOnly)
                 {
-                    door->frontsector->specialdata = NULL;
+                    door->frontsector->specialdata = nullptr;
                     P_RemoveThinker (&door->thinker);
                     return;
                 }
@@ -1208,7 +1208,7 @@ void T_SlidingDoor(slidedoor_t* door)
             {
                 // IF DOOR IS DONE CLOSING...
                 T_MovePlane(sec, (128*FRACUNIT), sec->floorheight, 0, 1, -1);
-                door->frontsector->specialdata = NULL;
+                door->frontsector->specialdata = nullptr;
                 P_RemoveThinker (&door->thinker);
                 return;
             }
@@ -1287,7 +1287,7 @@ void EV_SlidingDoor(line_t* line, mobj_t* thing)
 
     // Make sure door isn't already being animated
     sec = sides[line->sidenum[1]].sector;
-    door = NULL;
+    door = nullptr;
     if(sec->specialdata)
     {
         if (!thing->player)

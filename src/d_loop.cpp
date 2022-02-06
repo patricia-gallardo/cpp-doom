@@ -106,7 +106,7 @@ static boolean new_sync = true;
 
 // Callback functions for loop code.
 
-static loop_interface_t *loop_interface = NULL;
+static loop_interface_t *loop_interface = nullptr;
 
 // Current players in the multiplayer game.
 // This is distinct from playeringame[] used by the game code, which may
@@ -425,7 +425,7 @@ void D_StartNetGame(net_gamesettings_t *settings,
 boolean D_InitNetGame(net_connect_data_t *connect_data)
 {
     boolean     result = false;
-    net_addr_t *addr   = NULL;
+    net_addr_t *addr   = nullptr;
     int         i;
 
     // Call D_QuitNetGame on exit:

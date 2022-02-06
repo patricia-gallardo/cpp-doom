@@ -243,7 +243,7 @@ char *Reader_ReadString(buffer_reader_t *reader)
     if (dp >= data_end)
     {
         // Didn't see a null terminator, not a complete string.
-        return NULL;
+        return nullptr;
     }
 
     reader->pos = dp + 1;

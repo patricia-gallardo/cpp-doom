@@ -111,7 +111,7 @@ static net_context_t *   client_context;
 static net_gamesettings_t settings;
 
 // Why did the server reject us?
-char *net_client_reject_reason = NULL;
+char *net_client_reject_reason = nullptr;
 
 // true if the client code is in use
 
@@ -129,7 +129,7 @@ boolean net_waiting_for_launch = false;
 
 // Name that we send to the server
 
-char *net_player_name = NULL;
+char *net_player_name = nullptr;
 
 // Connected but not participating in the game (observer)
 
@@ -476,7 +476,7 @@ static void SetRejectReason(const char *s)
     }
     else
     {
-        net_client_reject_reason = NULL;
+        net_client_reject_reason = nullptr;
     }
 }
 

@@ -261,10 +261,10 @@ static char *GetRegistryString(registry_value_t *reg_val)
             0, KEY_READ, &key)
         != ERROR_SUCCESS)
     {
-        return NULL;
+        return nullptr;
     }
 
-    result = NULL;
+    result = nullptr;
 
     // Find the type and length of the string, and only accept strings.
 
@@ -282,7 +282,7 @@ static char *GetRegistryString(registry_value_t *reg_val)
             != ERROR_SUCCESS)
         {
             free(result);
-            result = NULL;
+            result = nullptr;
         }
         else
         {
@@ -500,7 +500,7 @@ static char *CheckDirectoryHasIWAD(const char *dir, const char *iwadname)
         return probe;
     }
 
-    return NULL;
+    return nullptr;
 }
 
 // Search a directory to try to find an IWAD
@@ -528,7 +528,7 @@ static char *SearchDirectoryForIWAD(const char *dir, int mask, GameMission_t *mi
         }
     }
 
-    return NULL;
+    return nullptr;
 }
 
 // When given an IWAD with the '-iwad' parameter,
@@ -614,7 +614,7 @@ static void AddXdgDirs()
     // > is either not set or empty, a default equal to
     // > $HOME/.local/share should be used.
     env     = getenv("XDG_DATA_HOME");
-    tmp_env = NULL;
+    tmp_env = nullptr;
 
     if (env == nullptr)
     {
@@ -800,7 +800,7 @@ char *D_FindWADByName(const char *name)
 
     // File not found
 
-    return NULL;
+    return nullptr;
 }
 
 //
@@ -869,7 +869,7 @@ char *D_FindIWAD(int mask, GameMission_t *mission)
     {
         // Search through the list and look for an IWAD
 
-        result = NULL;
+        result = nullptr;
 
         BuildIWADDirList();
 
@@ -914,7 +914,7 @@ const iwad_t **D_FindAllIWADs(int mask)
 
     // End of list
 
-    result[result_len] = NULL;
+    result[result_len] = nullptr;
 
     return result;
 }

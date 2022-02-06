@@ -47,7 +47,7 @@ static HANDLE    midi_process_out; // Standard Out.
 static int snd_samplerate = 0;
 
 // Currently playing music track.
-static Mix_Music *music  = NULL;
+static Mix_Music *music  = nullptr;
 
 //=============================================================================
 //
@@ -78,12 +78,12 @@ static void FreePipes()
     if (midi_process_in != nullptr)
     {
         CloseHandle(midi_process_in);
-        midi_process_in = NULL;
+        midi_process_in = nullptr;
     }
     if (midi_process_out != nullptr)
     {
         CloseHandle(midi_process_out);
-        midi_process_out = NULL;
+        midi_process_out = nullptr;
     }
 }
 
@@ -99,7 +99,7 @@ static void UnregisterSong()
     }
 
     Mix_FreeMusic(music);
-    music = NULL;
+    music = nullptr;
 }
 
 //

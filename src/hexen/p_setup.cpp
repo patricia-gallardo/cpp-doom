@@ -1086,7 +1086,7 @@ char *P_GetMapSongLump(int map)
 {
     if (!strcasecmp(MapInfo[QualifyMap(map)].songLump, DEFAULT_SONG_LUMP))
     {
-        return NULL;
+        return nullptr;
     }
     else
     {

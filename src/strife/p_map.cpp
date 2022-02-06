@@ -176,7 +176,7 @@ boolean P_TeleportMove(mobj_t*  thing, fixed_t  x, fixed_t  y)
     tmbbox[BOXLEFT] = x - tmthing->radius;
 
     newsubsec = R_PointInSubsector (x,y);
-    ceilingline = NULL;
+    ceilingline = nullptr;
     
     // The base floor/ceiling is from the subsector
     // that contains the point.
@@ -456,8 +456,8 @@ P_CheckPosition
     newsubsec = R_PointInSubsector (x,y);
     
     // [STRIFE] clear blockingline (see P_XYMovement, P_BlockLinesIterator)
-    blockingline = NULL;
-    ceilingline  = NULL;
+    blockingline = nullptr;
+    ceilingline  = nullptr;
     
     // The base floor / ceiling is from the subsector
     // that contains the point.
@@ -1236,7 +1236,7 @@ P_AimLineAttack
     bottomslope = -100*FRACUNIT/160;
     
     attackrange = distance;
-    linetarget = NULL;
+    linetarget = nullptr;
 
     P_PathTraverse ( t1->x, t1->y,
                      x2, y2,

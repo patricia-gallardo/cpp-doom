@@ -65,7 +65,7 @@ txt_window_t *TXT_NewWindow(const char *title)
 
     if (title == nullptr)
     {
-        win->title = NULL;
+        win->title = nullptr;
     }
     else
     {
@@ -76,15 +76,15 @@ txt_window_t *TXT_NewWindow(const char *title)
     win->y = TXT_SCREEN_H / 2;
     win->horiz_align = TXT_HORIZ_CENTER;
     win->vert_align = TXT_VERT_CENTER;
-    win->key_listener = NULL;
-    win->mouse_listener = NULL;
-    win->help_url = NULL;
+    win->key_listener = nullptr;
+    win->mouse_listener = nullptr;
+    win->help_url = nullptr;
 
     TXT_AddWidget(win, TXT_NewSeparator(NULL));
 
     for (i=0; i<3; ++i)
     {
-        win->actions[i] = NULL;
+        win->actions[i] = nullptr;
     }
 
     TXT_AddDesktopWindow(win);

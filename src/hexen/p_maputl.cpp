@@ -922,7 +922,7 @@ mobj_t *P_RoughMonsterSearch(mobj_t * mo, int distance)
             }
         }
     }
-    return NULL;
+    return nullptr;
 }
 
 //===========================================================================
@@ -1066,5 +1066,5 @@ static mobj_t *RoughBlockCheck(mobj_t * mo, int index)
             link = link->bnext;
         }
     }
-    return NULL;
+    return nullptr;
 }

@@ -48,7 +48,7 @@ struct net_reliable_packet_s {
     net_reliable_packet_t *next;
 };
 
-static FILE *net_debug = NULL;
+static FILE *net_debug = nullptr;
 
 static void NET_Conn_Init(net_connection_t *conn, net_addr_t *addr,
     net_protocol_t protocol)
@@ -57,7 +57,7 @@ static void NET_Conn_Init(net_connection_t *conn, net_addr_t *addr,
     conn->num_retries         = 0;
     conn->addr                = addr;
     conn->protocol            = protocol;
-    conn->reliable_packets    = NULL;
+    conn->reliable_packets    = nullptr;
     conn->reliable_send_seq   = 0;
     conn->reliable_recv_seq   = 0;
     conn->keepalive_recv_time = I_GetTimeMS();
@@ -386,12 +386,12 @@ net_packet_t *NET_Conn_NewReliable(net_connection_t *conn, int packet_type)
 
     auto *rp           = create_struct<net_reliable_packet_t>();
     rp->packet         = packet;
-    rp->next           = NULL;
+    rp->next           = nullptr;
     rp->seq            = conn->reliable_send_seq;
     rp->last_send_time = -1;
 
     for (listend = &conn->reliable_packets;
-         *listend != NULL;
+         *listend != nullptr;
          listend = &((*listend)->next))
         ;
 
@@ -458,7 +458,7 @@ static void CloseLog()
     if (net_debug != nullptr)
     {
         fclose(net_debug);
-        net_debug = NULL;
+        net_debug = nullptr;
     }
 }
 

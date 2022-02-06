@@ -53,7 +53,7 @@ static opl_driver_t *drivers[] =
     NULL
 };
 
-static opl_driver_t *driver = NULL;
+static opl_driver_t *driver = nullptr;
 static int init_stage_reg_writes = 1;
 
 unsigned int opl_sample_rate = 22050;
@@ -91,7 +91,7 @@ static opl_init_result_t InitDriver(opl_driver_t *_driver,
     {
         printf("OPL_Init: No OPL detected using '%s' driver.\n", _driver->name);
         _driver->shutdown_func();
-        driver = NULL;
+        driver = nullptr;
         return OPL_INIT_NONE;
     }
 
@@ -109,7 +109,7 @@ static opl_init_result_t AutoSelectDriver(unsigned int port_base)
     int i;
     opl_init_result_t result;
 
-    for (i=0; drivers[i] != NULL; ++i)
+    for (i=0; drivers[i] != nullptr; ++i)
     {
         result = InitDriver(drivers[i], port_base);
         if (result != OPL_INIT_NONE)
@@ -137,7 +137,7 @@ opl_init_result_t OPL_Init(unsigned int port_base)
     {
         // Search the list until we find the driver with this name.
 
-        for (i=0; drivers[i] != NULL; ++i)
+        for (i=0; drivers[i] != nullptr; ++i)
         {
             if (!strcmp(driver_name, drivers[i]->name))
             {
@@ -172,7 +172,7 @@ void OPL_Shutdown()
     if (driver != nullptr)
     {
         driver->shutdown_func();
-        driver = NULL;
+        driver = nullptr;
     }
 }
 

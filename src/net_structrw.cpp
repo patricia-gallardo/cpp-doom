@@ -151,7 +151,7 @@ boolean NET_ReadQueryData(net_packet_t *packet, net_querydata_t *query)
     // okay if it cannot be successfully read.
     query->protocol = NET_ReadProtocolList(packet);
 
-    return query->description != NULL;
+    return query->description != nullptr;
 }
 
 void NET_WriteQueryData(net_packet_t *packet, net_querydata_t *query)

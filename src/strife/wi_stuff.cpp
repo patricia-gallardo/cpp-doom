@@ -1741,7 +1741,7 @@ void WI_loadData()
 static void WI_unloadCallback(char *name, patch_t **variable)
 {
     W_ReleaseLumpName(name);
-    *variable = NULL;
+    *variable = nullptr;
 }
 
 void WI_unloadData()

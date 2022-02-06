@@ -83,7 +83,7 @@ void T_VerticalDoor(vldoor_t * door)
                 {
                     case vld_normal:
                     case vld_close:
-                        door->sector->specialdata = NULL;
+                        door->sector->specialdata = nullptr;
                         P_RemoveThinker(&door->thinker);        // unlink and free
                         S_StartSound(&door->sector->soundorg, sfx_dorcls);
                         break;
@@ -121,7 +121,7 @@ void T_VerticalDoor(vldoor_t * door)
                         break;
                     case vld_close30ThenOpen:
                     case vld_open:
-                        door->sector->specialdata = NULL;
+                        door->sector->specialdata = nullptr;
                         P_RemoveThinker(&door->thinker);        // unlink and free
                         S_StopSound(&door->sector->soundorg);
                         break;

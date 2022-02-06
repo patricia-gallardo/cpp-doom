@@ -287,7 +287,7 @@ sector_t *
         sector_t *        sec)
 {
     if (!(line->flags & ML_TWOSIDED))
-        return NULL;
+        return nullptr;
 
     if (line->frontsector == sec)
         return line->backsector;
@@ -368,7 +368,7 @@ fixed_t
     line_t *        check;
     sector_t *      other;
     fixed_t         height          = currentheight;
-    static fixed_t *heightlist      = NULL;
+    static fixed_t *heightlist      = nullptr;
     static int      heightlist_size = 0;
 
     // [crispy] remove MAX_ADJOINING_SECTORS Vanilla limit
@@ -1658,10 +1658,10 @@ void P_SpawnSpecials()
 
     //	Init other misc stuff
     for (i = 0; i < MAXCEILINGS; i++)
-        activeceilings[i] = NULL;
+        activeceilings[i] = nullptr;
 
     for (i = 0; i < MAXPLATS; i++)
-        activeplats[i] = NULL;
+        activeplats[i] = nullptr;
 
     for (i = 0; i < maxbuttons; i++)
         memset(&buttonlist[i], 0, sizeof(button_t));

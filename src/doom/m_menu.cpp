@@ -826,7 +826,7 @@ void       M_DrawLoad()
 
         M_WriteText(LoadDef.x, LoadDef.y + LINEHEIGHT * i, savegamestrings[i]);
 
-        dp_translation = NULL;
+        dp_translation = nullptr;
     }
 }
 
@@ -1371,7 +1371,7 @@ static void M_DrawMouse()
     M_WriteText(MouseDef.x, MouseDef.y + LINEHEIGHT * mouse_invert + 6,
         mouse_menu_text);
 
-    dp_translation = NULL;
+    dp_translation = nullptr;
 }
 
 // [crispy] Crispness menu
@@ -1465,7 +1465,7 @@ static void M_DrawCrispness1()
     M_DrawCrispnessGoto(crispness1_next, const_cast<char *>("Next Page >"));
     M_DrawCrispnessGoto(crispness1_prev, const_cast<char *>("< Last Page"));
 
-    dp_translation = NULL;
+    dp_translation = nullptr;
 }
 
 static void M_DrawCrispness2()
@@ -1490,7 +1490,7 @@ static void M_DrawCrispness2()
     M_DrawCrispnessGoto(crispness2_next, const_cast<char *>("Next Page >"));
     M_DrawCrispnessGoto(crispness2_prev, const_cast<char *>("< Prev Page"));
 
-    dp_translation = NULL;
+    dp_translation = nullptr;
 }
 
 static void M_DrawCrispness3()
@@ -1520,7 +1520,7 @@ static void M_DrawCrispness3()
     M_DrawCrispnessGoto(crispness3_next, const_cast<char *>("Next Page >"));
     M_DrawCrispnessGoto(crispness3_prev, const_cast<char *>("< Prev Page"));
 
-    dp_translation = NULL;
+    dp_translation = nullptr;
 }
 
 static void M_DrawCrispness4()
@@ -1545,7 +1545,7 @@ static void M_DrawCrispness4()
     M_DrawCrispnessGoto(crispness4_next, const_cast<char *>("First Page >"));
     M_DrawCrispnessGoto(crispness4_prev, const_cast<char *>("< Prev Page"));
 
-    dp_translation = NULL;
+    dp_translation = nullptr;
 }
 
 void M_Options(int choice)
@@ -1893,7 +1893,7 @@ void M_DrawThermo(int x,
     V_DrawPatchDirect((x + 8) + thermDot * 8, y,
         cache_lump_name<patch_t *>(DEH_String("M_THERMO"), PU_CACHE));
 
-    dp_translation = NULL;
+    dp_translation = nullptr;
 }
 
 
@@ -2921,7 +2921,7 @@ void M_Drawer()
             else if (W_CheckNumForName(name) > 0) // [crispy] ...here
                 V_DrawPatchDirect(x, y, cache_lump_name<patch_t *>(name, PU_CACHE));
 
-            dp_translation = NULL;
+            dp_translation = nullptr;
         }
         y += LINEHEIGHT;
     }
@@ -2933,7 +2933,7 @@ void M_Drawer()
         char item[4];
         M_snprintf(item, sizeof(item), "%s>", whichSkull ? crstr[static_cast<int>(cr_t::CR_NONE)] : crstr[static_cast<int>(cr_t::CR_DARK)]);
         M_WriteText(currentMenu->x - 8, currentMenu->y + CRISPY_LINEHEIGHT * itemOn, item);
-        dp_translation = NULL;
+        dp_translation = nullptr;
     }
     else
         V_DrawPatchDirect(x + SKULLXOFF, currentMenu->y - 5 + itemOn * LINEHEIGHT,
@@ -2994,7 +2994,7 @@ void M_Init()
     screenSize       = screenblocks - 3;
     M_SizeDisplay(-1); // [crispy] initialize screenSize_min
     messageToPrint        = 0;
-    messageString         = NULL;
+    messageString         = nullptr;
     messageLastMenuActive = menuactive;
     quickSaveSlot         = -1;
 
@@ -3006,7 +3006,7 @@ void M_Init()
     if (gameversion >= exe_ultimate)
     {
         MainMenu[readthis].routine = M_ReadThis2;
-        ReadDef2.prevMenu          = NULL;
+        ReadDef2.prevMenu          = nullptr;
     }
 
     if (gameversion >= exe_final && gameversion <= exe_final2)
@@ -3127,7 +3127,7 @@ static void  M_ForceLoadGameResponse(int key)
     {
         // [crispy] no need to end game anymore when denied to load savegame
         //M_EndGameResponse(key_menu_confirm);
-        savewadfilename = NULL;
+        savewadfilename = nullptr;
 
         // [crispy] reload Load Game menu
         M_StartControlPanel();

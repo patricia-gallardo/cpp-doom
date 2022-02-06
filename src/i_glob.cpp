@@ -106,7 +106,7 @@ glob_t *I_StartMultiGlob(const char *directory, int flags,
     globs = static_cast<char **>(malloc(sizeof(char *)));
     if (globs == nullptr)
     {
-        return NULL;
+        return nullptr;
     }
     globs[0]  = M_StringDuplicate(glob);
     num_globs = 1;
@@ -138,7 +138,7 @@ glob_t *I_StartMultiGlob(const char *directory, int flags,
     if (result == nullptr)
     {
         FreeStringList(globs, num_globs);
-        return NULL;
+        return nullptr;
     }
 
     result->dir = opendir(directory);
@@ -146,15 +146,15 @@ glob_t *I_StartMultiGlob(const char *directory, int flags,
     {
         FreeStringList(globs, num_globs);
         free(result);
-        return NULL;
+        return nullptr;
     }
 
     result->directory     = M_StringDuplicate(directory);
     result->globs         = globs;
     result->num_globs     = num_globs;
     result->flags         = flags;
-    result->last_filename = NULL;
-    result->filenames     = NULL;
+    result->last_filename = nullptr;
+    result->filenames     = nullptr;
     result->filenames_len = 0;
     result->next_index    = -1;
     return result;
@@ -249,7 +249,7 @@ static char *NextGlob(glob_t *glob)
         de = readdir(glob->dir);
         if (de == nullptr)
         {
-            return NULL;
+            return nullptr;
         }
     } while (IsDirectory(glob->directory, de)
              || !MatchesAnyGlob(de->d_name, glob));
@@ -262,7 +262,7 @@ static void ReadAllFilenames(glob_t *glob)
 {
     char *name;
 
-    glob->filenames     = NULL;
+    glob->filenames     = nullptr;
     glob->filenames_len = 0;
     glob->next_index    = 0;
 
@@ -323,7 +323,7 @@ const char *I_NextGlob(glob_t *glob)
 
     if (glob == nullptr)
     {
-        return NULL;
+        return nullptr;
     }
 
     // In unsorted mode we just return the filenames as we read
@@ -344,7 +344,7 @@ const char *I_NextGlob(glob_t *glob)
     }
     if (glob->next_index >= glob->filenames_len)
     {
-        return NULL;
+        return nullptr;
     }
     result = glob->filenames[glob->next_index];
     ++glob->next_index;
@@ -357,7 +357,7 @@ const char *I_NextGlob(glob_t *glob)
 
 glob_t *I_StartGlob(const char *directory, const char *glob, int flags)
 {
-    return NULL;
+    return nullptr;
 }
 
 void I_EndGlob(glob_t *glob)

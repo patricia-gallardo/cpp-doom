@@ -289,9 +289,9 @@ void P_RemoveActivePlat(plat_t *plat)
     for (i = 0; i < MAXPLATS; i++)
         if (plat == activeplats[i])
         {
-            (activeplats[i])->sector->specialdata = NULL;
+            (activeplats[i])->sector->specialdata = nullptr;
             P_RemoveThinker(&(activeplats[i])->thinker);
-            activeplats[i] = NULL;
+            activeplats[i] = nullptr;
 
             return;
         }

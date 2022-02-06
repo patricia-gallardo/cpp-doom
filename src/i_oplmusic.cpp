@@ -971,7 +971,7 @@ static opl_voice_t *GetFreeVoice()
 
     if (voice_free_num == 0)
     {
-        return NULL;
+        return nullptr;
     }
 
     // Remove from free list
@@ -1015,7 +1015,7 @@ static void ReleaseVoice(int index)
 
     VoiceKeyOff(voice);
 
-    voice->channel = NULL;
+    voice->channel = nullptr;
     voice->note    = 0;
 
     double_voice = voice->current_instr_voice != 0;
@@ -1204,7 +1204,7 @@ static void InitVoices()
         voices[i].op1           = voice_operators[0][i % OPL_NUM_VOICES];
         voices[i].op2           = voice_operators[1][i % OPL_NUM_VOICES];
         voices[i].array         = (i / OPL_NUM_VOICES) << 8;
-        voices[i].current_instr = NULL;
+        voices[i].current_instr = nullptr;
 
         // Add this voice to the freelist.
 
@@ -2168,7 +2168,7 @@ static void I_OPL_StopSong()
 
     free(tracks);
 
-    tracks     = NULL;
+    tracks     = nullptr;
     num_tracks = 0;
 
     OPL_Unlock();
@@ -2227,7 +2227,7 @@ static void *I_OPL_RegisterSong(void *data, int len)
 
     if (!music_initialized)
     {
-        return NULL;
+        return nullptr;
     }
 
     // MUS files begin with "MUS"
@@ -2331,7 +2331,7 @@ static boolean I_OPL_InitMusic()
 
     // Secret, undocumented DMXOPTION that reverses the stereo channels
     // into their correct orientation.
-    opl_stereo_correct = strstr(dmxoption, "-reverse") != NULL;
+    opl_stereo_correct = strstr(dmxoption, "-reverse") != nullptr;
 
     // Initialize all registers.
 
@@ -2347,7 +2347,7 @@ static boolean I_OPL_InitMusic()
 
     InitVoices();
 
-    tracks            = NULL;
+    tracks            = nullptr;
     num_tracks        = 0;
     music_initialized = true;
 

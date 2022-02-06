@@ -31,7 +31,7 @@ typedef struct
     char *to_text;
 } deh_substitution_t;
 
-static deh_substitution_t **hash_table = NULL;
+static deh_substitution_t **hash_table = nullptr;
 static int                  hash_table_entries;
 static int                  hash_table_length = -1;
 
@@ -57,7 +57,7 @@ static deh_substitution_t *SubstitutionForString(const char *s)
 
     // Fallback if we have not initialized the hash table yet
     if (hash_table_length < 0)
-        return NULL;
+        return nullptr;
 
     entry = strhash(s) % hash_table_length;
 
@@ -73,7 +73,7 @@ static deh_substitution_t *SubstitutionForString(const char *s)
     }
 
     // no substitution found
-    return NULL;
+    return nullptr;
 }
 
 // Look up a string to see if it has been replaced with something else
@@ -311,7 +311,7 @@ static format_arg_t NextFormatArgument(const char **str)
 
     // Stop searching, we have reached the end.
 
-    *str = NULL;
+    *str = nullptr;
 
     return FORMAT_ARG_INVALID;
 }

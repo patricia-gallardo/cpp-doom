@@ -72,7 +72,7 @@ byte translations[3][256];
 // Backing buffer containing the bezel drawn around the screen and
 // surrounding background.
 
-static pixel_t *background_buffer = NULL;
+static pixel_t *background_buffer = nullptr;
 
 
 //
@@ -1050,7 +1050,7 @@ void R_FillBackScreen()
         if (background_buffer != nullptr)
         {
             Z_Free(background_buffer);
-            background_buffer = NULL;
+            background_buffer = nullptr;
         }
 
         return;

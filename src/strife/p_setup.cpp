@@ -270,7 +270,7 @@ void P_LoadSectors (int lump)
 	ss->lightlevel = SHORT(ms->lightlevel);
 	ss->special = SHORT(ms->special);
 	ss->tag = SHORT(ms->tag);
-	ss->thinglist = NULL;
+	ss->thinglist = nullptr;
     }
 	
     W_ReleaseLumpNum(lump);
@@ -826,7 +826,7 @@ P_SetupLevel
         for (i=0 ; i<MAXPLAYERS ; i++)
             if (playeringame[i])
             {
-                players[i].mo = NULL;
+                players[i].mo = nullptr;
                 G_DeathMatchSpawnPlayer (i);
             }
 

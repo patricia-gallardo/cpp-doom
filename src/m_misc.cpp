@@ -148,7 +148,7 @@ char *M_FileCaseExists(const char *path)
 
     // 5. no luck
     free(path_dup);
-    return NULL;
+    return nullptr;
 }
 
 //
@@ -392,7 +392,7 @@ const char *M_StrCaseStr(const char *haystack, const char *needle)
 
     if (haystack_len < needle_len)
     {
-        return NULL;
+        return nullptr;
     }
 
     len = haystack_len - needle_len;
@@ -405,7 +405,7 @@ const char *M_StrCaseStr(const char *haystack, const char *needle)
         }
     }
 
-    return NULL;
+    return nullptr;
 }
 
 //
@@ -463,7 +463,7 @@ char *M_StringReplace(const char *haystack, const char *needle,
     if (result == nullptr)
     {
         I_Error("M_StringReplace: Failed to allocate new string");
-        return NULL;
+        return nullptr;
     }
 
     dst     = result;
@@ -576,7 +576,7 @@ char *M_StringJoin(const char *s, ...)
     if (result == nullptr)
     {
         I_Error("M_StringJoin: Failed to allocate new string.");
-        return NULL;
+        return nullptr;
     }
 
     M_StringCopy(result, s, result_len);

@@ -192,8 +192,8 @@ void ToCurr()
 //
 void M_SaveMoveMapToHere()
 {
-    char *mapsave  = NULL;
-    char *heresave = NULL;
+    char *mapsave  = nullptr;
+    char *heresave = nullptr;
     char tmpnum[33];
 
     // haleyjd: no itoa available...
@@ -221,8 +221,8 @@ void M_SaveMoveMapToHere()
 //
 void M_SaveMoveHereToMap()
 {
-    char *mapsave  = NULL;
-    char *heresave = NULL;
+    char *mapsave  = nullptr;
+    char *heresave = nullptr;
     char tmpnum[33];
 
     // haleyjd: no itoa available...
@@ -249,7 +249,7 @@ void M_SaveMoveHereToMap()
 boolean M_SaveMisObj(const char *path)
 {
     boolean result;
-    char *destpath = NULL;
+    char *destpath = nullptr;
 
     // haleyjd 20110210: use M_SafeFilePath, not sprintf
     destpath = M_SafeFilePath(path, "mis_obj");
@@ -266,8 +266,8 @@ boolean M_SaveMisObj(const char *path)
 //
 void M_ReadMisObj()
 {
-    FILE *f = NULL;
-    char *srcpath = NULL;
+    FILE *f = nullptr;
+    char *srcpath = nullptr;
 
     // haleyjd: use M_SafeFilePath, not sprintf
     srcpath = M_SafeFilePath(savepathtemp, "mis_obj");
@@ -305,7 +305,7 @@ void M_ReadMisObj()
 //
 void *M_Calloc(size_t n1, size_t n2)
 {
-    return (n1 *= n2) ? memset(Z_Malloc(n1, PU_STATIC, nullptr), 0, n1) : NULL;
+    return (n1 *= n2) ? memset(Z_Malloc(n1, PU_STATIC, nullptr), 0, n1) : nullptr;
 }
 
 //
@@ -405,7 +405,7 @@ void M_NormalizeSlashes(char *str)
 char *M_SafeFilePath(const char *basepath, const char *newcomponent)
 {
     int   newstrlen = 0;
-    char *newstr = NULL;
+    char *newstr = nullptr;
 
     if (!strcmp(basepath, ""))
     {

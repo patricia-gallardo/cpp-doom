@@ -146,7 +146,7 @@ static void NET_SDL_FreeAddress(net_addr_t *addr)
         if (addr == &addr_table[i]->net_addr)
         {
             Z_Free(addr_table[i]);
-            addr_table[i] = NULL;
+            addr_table[i] = nullptr;
             return;
         }
     }
@@ -355,7 +355,7 @@ net_addr_t *NET_SDL_ResolveAddress(const char *address)
     {
         // unable to resolve
 
-        return NULL;
+        return nullptr;
     }
     else
     {

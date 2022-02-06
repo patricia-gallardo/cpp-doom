@@ -190,7 +190,7 @@ void Z_Free(void *ptr)
 
     // mark as free
     block->tag  = PU_FREE;
-    block->user = NULL;
+    block->user = nullptr;
     block->id   = 0;
 
     // If the -zonezero flag is provided, we zero out the block on free
@@ -325,7 +325,7 @@ void *
         newblock->size = extra;
 
         newblock->tag        = PU_FREE;
-        newblock->user       = NULL;
+        newblock->user       = nullptr;
         newblock->prev       = base;
         newblock->next       = base->next;
         newblock->next->prev = newblock;

@@ -84,7 +84,7 @@ void TXT_SetSeparatorLabel(txt_separator_t *separator, const char *label)
     }
     else
     {
-        separator->label = NULL;
+        separator->label = nullptr;
     }
 }
 
@@ -105,7 +105,7 @@ txt_separator_t *TXT_NewSeparator(const char *label)
 
     TXT_InitWidget(separator, &txt_separator_class);
 
-    separator->label = NULL;
+    separator->label = nullptr;
     TXT_SetSeparatorLabel(separator, label);
 
     return separator;

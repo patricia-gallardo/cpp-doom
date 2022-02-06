@@ -1227,7 +1227,7 @@ void A_VileChase(mobj_t *actor)
                     corpsehit->height <<= 2;
                     corpsehit->flags  = info->flags;
                     corpsehit->health = info->spawnhealth;
-                    corpsehit->target = NULL;
+                    corpsehit->target = nullptr;
 
                     // [crispy] count resurrected monsters
                     extrakills++;
@@ -1845,7 +1845,7 @@ void A_CloseShotgun2(mobj_t *mobj,
 }
 
 
-mobj_t **  braintargets    = NULL;
+mobj_t **  braintargets    = nullptr;
 int        numbraintargets = 0; // [crispy] initialize
 int        braintargeton   = 0;
 static int maxbraintargets; // [crispy] remove braintargets limit

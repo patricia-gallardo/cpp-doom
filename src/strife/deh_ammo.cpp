@@ -33,13 +33,13 @@ static void *DEH_AmmoStart(deh_context_t *context, char *line)
     if (sscanf(line, "Ammo %i", &ammo_number) != 1)
     {
         DEH_Warning(context, "Parse error on section start");
-        return NULL;
+        return nullptr;
     }
 
     if (ammo_number < 0 || ammo_number >= NUMAMMO)
     {
         DEH_Warning(context, "Invalid ammo number: %i", ammo_number);
-        return NULL;
+        return nullptr;
     }
     
     return &maxammo[ammo_number];

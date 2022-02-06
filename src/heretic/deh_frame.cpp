@@ -197,7 +197,7 @@ static void *DEH_FrameStart(deh_context_t *context, char *line)
     if (sscanf(line, "Frame %i", &frame_number) != 1)
     {
         DEH_Warning(context, "Parse error on section start");
-        return NULL;
+        return nullptr;
     }
 
     // Map the HHE frame number (which assumes a Heretic 1.0 state table)
@@ -208,7 +208,7 @@ static void *DEH_FrameStart(deh_context_t *context, char *line)
     if (mapped_frame_number < 0 || mapped_frame_number >= DEH_HERETIC_NUMSTATES)
     {
         DEH_Warning(context, "Invalid frame number: %i", frame_number);
-        return NULL;
+        return nullptr;
     }
 
     state = &states[mapped_frame_number];
@@ -224,7 +224,7 @@ static boolean GetActionPointerForOffset(int offset, void **result)
 
     if (offset == 0)
     {
-        *result = NULL;
+        *result = nullptr;
         return true;
     }
 

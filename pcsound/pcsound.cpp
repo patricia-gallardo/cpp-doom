@@ -60,7 +60,7 @@ static pcsound_driver_t *drivers[] =
     NULL,
 };
 
-static pcsound_driver_t *pcsound_driver = NULL;
+static pcsound_driver_t *pcsound_driver = nullptr;
 
 int pcsound_sample_rate;
 
@@ -85,7 +85,7 @@ int PCSound_Init(pcsound_callback_func callback_func)
 
     if (driver_name != nullptr)
     {
-        for (i=0; drivers[i] != NULL; ++i)
+        for (i=0; drivers[i] != nullptr; ++i)
         {
             if (!strcmp(drivers[i]->name, driver_name))
             {
@@ -108,7 +108,7 @@ int PCSound_Init(pcsound_callback_func callback_func)
     {
         // Try all drivers until we find a working one
 
-        for (i=0; drivers[i] != NULL; ++i)
+        for (i=0; drivers[i] != nullptr; ++i)
         {
             if (drivers[i]->init_func(callback_func)) 
             {
@@ -133,6 +133,6 @@ int PCSound_Init(pcsound_callback_func callback_func)
 void PCSound_Shutdown()
 {
     pcsound_driver->shutdown_func();
-    pcsound_driver = NULL;
+    pcsound_driver = nullptr;
 }
 

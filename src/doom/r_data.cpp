@@ -613,7 +613,7 @@ static void GenerateTextureHashTable()
 
         // Hook into hash table
 
-        textures[i]->next = NULL;
+        textures[i]->next = nullptr;
         *rover            = textures[i];
     }
 }
@@ -636,7 +636,7 @@ void R_InitTextures()
     int j;
     int k;
 
-    int *maptex = NULL;
+    int *maptex = nullptr;
 
     char name[9];
 
@@ -647,7 +647,7 @@ void R_InitTextures()
     int offset;
     int maxoff = 0;
 
-    int *directory = NULL;
+    int *directory = nullptr;
 
     int temp1;
     int temp2;
@@ -672,7 +672,7 @@ void R_InitTextures()
         short pnamesoffset;
     } texturelump_t;
 
-    pnameslump_t * pnameslumps  = NULL;
+    pnameslump_t * pnameslumps  = nullptr;
     texturelump_t *texturelumps = NULL, *texturelump;
 
     int maxpnameslumps  = 1; // PNAMES
@@ -1018,7 +1018,7 @@ static void R_InitTranMap()
         // Compose a default transparent filter map based on PLAYPAL.
         unsigned char *playpal = cache_lump_name<unsigned char *>("PLAYPAL", PU_STATIC);
         FILE *         cachefp;
-        char *         fname = NULL;
+        char *         fname = nullptr;
         extern char *  configdir;
 
         struct {

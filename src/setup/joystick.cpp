@@ -99,7 +99,7 @@ static txt_joystick_axis_t *y_axis_widget;
 //
 
 static txt_window_t *calibration_window;
-static SDL_Joystick **all_joysticks = NULL;
+static SDL_Joystick **all_joysticks = nullptr;
 static int all_joysticks_len = 0;
 
 // Known controllers.
@@ -641,13 +641,13 @@ static const known_joystick_t *GetJoystickType(int index)
            name, axes, buttons, hats);
     printf("Please consider sending in details about your gamepad!\n");
 
-    return NULL;
+    return nullptr;
 }
 
 // Query if the joystick at the given index is a known joystick type.
 static boolean IsKnownJoystick(int index)
 {
-    return GetJoystickType(index) != NULL;
+    return GetJoystickType(index) != nullptr;
 }
 
 // Load a configuration set.
@@ -660,7 +660,7 @@ static void LoadConfigurationSet(const joystick_config_t *configs)
 
     button = 0;
 
-    for (i = 0; configs[i].name != NULL; ++i)
+    for (i = 0; configs[i].name != nullptr; ++i)
     {
         config = &configs[i];
 
@@ -822,7 +822,7 @@ static int OpenAllJoysticks()
     else
     {
         free(all_joysticks);
-        all_joysticks = NULL;
+        all_joysticks = nullptr;
     }
 
     return result;
@@ -845,7 +845,7 @@ static void CloseAllJoysticks()
     SDL_JoystickEventState(SDL_DISABLE);
 
     free(all_joysticks);
-    all_joysticks = NULL;
+    all_joysticks = nullptr;
 
     UnInitJoystick();
 }

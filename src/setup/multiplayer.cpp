@@ -145,7 +145,7 @@ static int warpmap = 1;
 
 // Address to connect to when joining a game
 
-static char *connect_address = NULL;
+static char *connect_address = nullptr;
 
 static txt_window_t *query_window;
 static int query_servers_found;
@@ -536,7 +536,7 @@ static const iwad_t **GetFallbackIwadList()
     // Default to use if we don't find something better.
 
     fallback_iwad_list[0] = &fallback_iwads[0];
-    fallback_iwad_list[1] = NULL;
+    fallback_iwad_list[1] = nullptr;
 
     for (i = 0; i < arrlen(fallback_iwads); ++i)
     {
@@ -565,7 +565,7 @@ static txt_widget_t *IWADSelector()
 
     num_iwads = 0;
 
-    for (i=0; found_iwads[i] != NULL; ++i)
+    for (i=0; found_iwads[i] != nullptr; ++i)
     {
          ++num_iwads;
     }
@@ -886,7 +886,7 @@ static void SelectQueryAddress(TXT_UNCAST_ARG(button),
 
     if (querydata->num_players > 0)
     {
-        for (i = 0; found_iwads[i] != NULL; ++i)
+        for (i = 0; found_iwads[i] != nullptr; ++i)
         {
             if (found_iwads[i]->mode == querydata->gamemode
              && found_iwads[i]->mission == querydata->gamemission)

@@ -60,7 +60,7 @@ struct atexit_listentry_s {
     atexit_listentry_t *next;
 };
 
-static atexit_listentry_t *exit_funcs = NULL;
+static atexit_listentry_t *exit_funcs = nullptr;
 
 void I_AtExit(atexit_func_t func, boolean run_on_error)
 {
@@ -91,7 +91,7 @@ static byte *AutoAllocMemory(int *size, int default_ram, int min_ram)
     // If we used the -mb command line parameter, only the parameter
     // provided is accepted.
 
-    zonemem = NULL;
+    zonemem = nullptr;
 
     while (zonemem == nullptr)
     {

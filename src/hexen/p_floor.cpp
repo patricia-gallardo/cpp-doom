@@ -490,7 +490,7 @@ static sector_t *DequeueStairSector(int *type, int *height)
 
     if (QueueHead == QueueTail)
     {                           // queue is empty
-        return NULL;
+        return nullptr;
     }
     *type = StairQueue[QueueHead].type;
     *height = StairQueue[QueueHead].height;

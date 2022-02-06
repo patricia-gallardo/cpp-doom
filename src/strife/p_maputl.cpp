@@ -420,7 +420,7 @@ P_SetThingPosition (mobj_t* thing)
         // invisible things don't go into the sector links
         sec = ss->sector;
 
-        thing->sprev = NULL;
+        thing->sprev = nullptr;
         thing->snext = sec->thinglist;
 
         if (sec->thinglist)
@@ -443,7 +443,7 @@ P_SetThingPosition (mobj_t* thing)
             && blocky < bmapheight)
         {
             link = &blocklinks[blocky*bmapwidth+blockx];
-            thing->bprev = NULL;
+            thing->bprev = nullptr;
             thing->bnext = *link;
             if (*link)
                 (*link)->bprev = thing;
@@ -453,7 +453,7 @@ P_SetThingPosition (mobj_t* thing)
         else
         {
             // thing is off the map
-            thing->bnext = thing->bprev = NULL;
+            thing->bnext = thing->bprev = nullptr;
         }
     }
 }

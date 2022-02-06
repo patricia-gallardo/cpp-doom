@@ -299,7 +299,7 @@ void TXT_AddWidget(TXT_UNCAST_ARG(table), TXT_UNCAST_ARG(widget))
     // Convenience alias for NULL:
     if (widget == &txt_table_empty)
     {
-        widget = NULL;
+        widget = nullptr;
     }
     else if (widget == &txt_table_eol)
     {
@@ -873,7 +873,7 @@ void TXT_InitTable(txt_table_t *table, int columns)
 
     TXT_InitWidget(table, &txt_table_class);
     table->columns = columns;
-    table->widgets = NULL;
+    table->widgets = nullptr;
     table->num_widgets = 0;
     table->selected_x = 0;
     table->selected_y = 0;
@@ -1007,7 +1007,7 @@ txt_widget_t *TXT_GetSelectedWidget(TXT_UNCAST_ARG(table))
 
     index = table->selected_y * table->columns + table->selected_x;
 
-    result = NULL;
+    result = nullptr;
 
     if (index >= 0 && index < table->num_widgets)
     {
@@ -1015,7 +1015,7 @@ txt_widget_t *TXT_GetSelectedWidget(TXT_UNCAST_ARG(table))
 
         if (!IsActualWidget(result))
         {
-            result = NULL;
+            result = nullptr;
         }
     }
 

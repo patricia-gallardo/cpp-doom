@@ -56,7 +56,7 @@ void F_StartFinale()
     viewactive = false;
     automapactive = false;
     players[consoleplayer].messageTics = 1;
-    players[consoleplayer].message = NULL;
+    players[consoleplayer].message = nullptr;
 
     switch (gameepisode)
     {

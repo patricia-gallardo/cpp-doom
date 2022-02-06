@@ -566,7 +566,7 @@ static polyobj_t *GetPolyobj(int polyNum)
             return &polyobjs[i];
         }
     }
-    return NULL;
+    return nullptr;
 }
 
 //==========================================================================

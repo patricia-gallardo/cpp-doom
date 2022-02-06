@@ -134,9 +134,9 @@ static void InitSfxModule(boolean use_sfx_prefix)
 {
     int i;
 
-    sound_module = NULL;
+    sound_module = nullptr;
 
-    for (i = 0; sound_modules[i] != NULL; ++i)
+    for (i = 0; sound_modules[i] != nullptr; ++i)
     {
         // Is the sfx device in the list of devices supported by
         // this module?
@@ -162,9 +162,9 @@ static void InitMusicModule()
 {
     int i;
 
-    music_module = NULL;
+    music_module = nullptr;
 
-    for (i = 0; music_modules[i] != NULL; ++i)
+    for (i = 0; music_modules[i] != nullptr; ++i)
     {
         // Is the music device in the list of devices supported
         // by this module?
@@ -440,7 +440,7 @@ void *I_RegisterSong(void *data, int len)
     }
     else
     {
-        return NULL;
+        return nullptr;
     }
 }
 

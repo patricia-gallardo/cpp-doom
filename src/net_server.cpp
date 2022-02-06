@@ -154,7 +154,7 @@ static net_gamesettings_t sv_settings;
 
 // For registration with master server:
 
-static net_addr_t * master_server = NULL;
+static net_addr_t * master_server = nullptr;
 static unsigned int master_refresh_time;
 static unsigned int master_resolve_time;
 
@@ -254,7 +254,7 @@ static void NET_SV_AssignPlayers()
 
     for (; pl < NET_MAXPLAYERS; ++pl)
     {
-        sv_players[pl] = NULL;
+        sv_players[pl] = nullptr;
     }
 }
 
@@ -363,7 +363,7 @@ static net_client_t *NET_SV_Controller()
 
     // Find the oldest client (first to connect).
 
-    best = NULL;
+    best = nullptr;
 
     for (i = 0; i < MAXNETNODES; ++i)
     {
@@ -538,7 +538,7 @@ static net_client_t *NET_SV_FindClient(net_addr_t *addr)
         }
     }
 
-    return NULL;
+    return nullptr;
 }
 
 // send a rejection packet to a client
@@ -1917,7 +1917,7 @@ void NET_SV_RegisterWithMaster()
     }
     else
     {
-        master_server = NULL;
+        master_server = nullptr;
     }
 
     // Send request.

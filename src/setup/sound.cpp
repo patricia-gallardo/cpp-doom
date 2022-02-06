@@ -66,9 +66,9 @@ static int show_talk = 0;
 static int use_libsamplerate = 1;
 static float libsamplerate_scale = 0.65;
 
-static char *music_pack_path = NULL;
-static char *timidity_cfg_path = NULL;
-static char *gus_patch_path = NULL;
+static char *music_pack_path = nullptr;
+static char *timidity_cfg_path = nullptr;
+static char *gus_patch_path = nullptr;
 static int gus_ram_kb = 1024;
 
 // DOS specific variables: these are unused but should be maintained

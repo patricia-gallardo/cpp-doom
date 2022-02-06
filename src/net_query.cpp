@@ -86,7 +86,7 @@ static boolean query_loop_running = false;
 static boolean printed_header     = false;
 static int     last_query_time    = 0;
 
-static char *securedemo_start_message = NULL;
+static char *securedemo_start_message = nullptr;
 
 // Resolve the master server address.
 
@@ -224,7 +224,7 @@ static query_target_t *GetTargetForAddr(net_addr_t *addr, boolean create)
 
     if (!create)
     {
-        return NULL;
+        return nullptr;
     }
 
     targets = static_cast<query_target_t *>(I_Realloc(targets, sizeof(query_target_t) * (num_targets + 1)));
@@ -250,7 +250,7 @@ static void FreeTargets()
         NET_ReleaseAddress(targets[i].addr);
     }
     free(targets);
-    targets     = NULL;
+    targets     = nullptr;
     num_targets = 0;
 }
 
@@ -590,7 +590,7 @@ void NET_Query_Init()
     }
 
     free(targets);
-    targets     = NULL;
+    targets     = nullptr;
     num_targets = 0;
 
     printed_header = false;
@@ -620,7 +620,7 @@ static query_target_t *FindFirstResponder()
         }
     }
 
-    return NULL;
+    return nullptr;
 }
 
 // Return a count of the number of responses.
@@ -873,7 +873,7 @@ net_addr_t *NET_FindLANServer()
     }
     else
     {
-        result = NULL;
+        result = nullptr;
     }
 
     FreeTargets();
@@ -916,7 +916,7 @@ static net_packet_t *BlockForPacket(net_addr_t *addr, unsigned int packet_type,
 
     // Timeout - no response.
 
-    return NULL;
+    return nullptr;
 }
 
 // Query master server for secure demo start seed value.
@@ -994,7 +994,7 @@ char *NET_EndSecureDemo(sha1_digest_t demo_hash)
 
     if (response == nullptr)
     {
-        return NULL;
+        return nullptr;
     }
 
     signature = NET_ReadString(response);

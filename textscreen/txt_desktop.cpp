@@ -32,7 +32,7 @@ static txt_window_t *all_windows[MAXWINDOWS];
 static int num_windows = 0;
 static int main_loop_running = 0;
 
-static TxtIdleCallback periodic_callback = NULL;
+static TxtIdleCallback periodic_callback = nullptr;
 static void *periodic_callback_data;
 static unsigned int periodic_callback_period;
 
@@ -84,7 +84,7 @@ txt_window_t *TXT_GetActiveWindow()
 {
     if (num_windows == 0)
     {
-        return NULL;
+        return nullptr;
     }
 
     return all_windows[num_windows - 1];

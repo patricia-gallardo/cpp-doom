@@ -2588,7 +2588,7 @@ void A_SkullPop(mobj_t * actor)
     mo->momz = FRACUNIT * 2 + (P_Random() << 6);
     // Attach player mobj to bloody skull
     player = actor->player;
-    actor->player = NULL;
+    actor->player = nullptr;
     mo->player = player;
     mo->health = actor->health;
     mo->angle = actor->angle;
@@ -2660,7 +2660,7 @@ void A_FreeTargMobj(mobj_t * mo)
     mo->flags &= ~(MF_SHOOTABLE | MF_FLOAT | MF_SKULLFLY | MF_SOLID);
     mo->flags |= MF_CORPSE | MF_DROPOFF | MF_NOGRAVITY;
     mo->flags2 &= ~(MF2_PASSMOBJ | MF2_LOGRAV);
-    mo->player = NULL;
+    mo->player = nullptr;
 }
 
 //----------------------------------------------------------------------------

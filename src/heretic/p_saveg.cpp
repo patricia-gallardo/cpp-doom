@@ -269,7 +269,7 @@ static void saveg_read_state_ptr(state_t **state)
 
     if (statenum == 0)
     {
-        *state = NULL;
+        *state = nullptr;
     }
     else
     {
@@ -353,7 +353,7 @@ static void saveg_read_player_t(player_t *str)
 
     // mobj_t *mo;
     SV_ReadLong();
-    str->mo = NULL;
+    str->mo = nullptr;
 
     // playerstate_t playerstate;
     str->playerstate = static_cast<playerstate_t>(SV_ReadLong());
@@ -466,7 +466,7 @@ static void saveg_read_player_t(player_t *str)
 
     // char *message;
     SV_ReadLong();
-    str->message = NULL;
+    str->message = nullptr;
 
     // int messageTics;
     str->messageTics = SV_ReadLong();
@@ -480,7 +480,7 @@ static void saveg_read_player_t(player_t *str)
 
     // mobj_t *attacker;
     SV_ReadLong();
-    str->attacker = NULL;
+    str->attacker = nullptr;
 
     // int extralight;
     str->extralight = SV_ReadLong();
@@ -508,11 +508,11 @@ static void saveg_read_player_t(player_t *str)
 
     // mobj_t *rain1;
     SV_ReadLong();
-    str->rain1 = NULL;
+    str->rain1 = nullptr;
 
     // mobj_t *rain2;
     SV_ReadLong();
-    str->rain2 = NULL;
+    str->rain2 = nullptr;
 }
 
 static void saveg_write_player_t(player_t *str)
@@ -726,9 +726,9 @@ static void saveg_read_thinker_t(thinker_t *str)
 {
     // struct thinker_s *prev, *next;
     SV_ReadLong();
-    str->prev = NULL;
+    str->prev = nullptr;
     SV_ReadLong();
-    str->next = NULL;
+    str->next = nullptr;
 
     // think_t function;
     SV_ReadLong();
@@ -791,9 +791,9 @@ static void saveg_read_mobj_t(mobj_t *str)
 
     // struct mobj_s *snext, *sprev;
     SV_ReadLong();
-    str->snext = NULL;
+    str->snext = nullptr;
     SV_ReadLong();
-    str->sprev = NULL;
+    str->sprev = nullptr;
 
     // angle_t angle;
     str->angle = SV_ReadLong();
@@ -806,13 +806,13 @@ static void saveg_read_mobj_t(mobj_t *str)
 
     // struct mobj_s *bnext, *bprev;
     SV_ReadLong();
-    str->bnext = NULL;
+    str->bnext = nullptr;
     SV_ReadLong();
-    str->bprev = NULL;
+    str->bprev = nullptr;
 
     // struct subsector_s *subsector;
     SV_ReadLong();
-    str->subsector = NULL;
+    str->subsector = nullptr;
 
     // fixed_t floorz, ceilingz;
     str->floorz = SV_ReadLong();
@@ -842,7 +842,7 @@ static void saveg_read_mobj_t(mobj_t *str)
 
     // mobjinfo_t *info;
     SV_ReadLong();
-    str->info = NULL;
+    str->info = nullptr;
 
     // int tics;
     str->tics = SV_ReadLong();
@@ -875,7 +875,7 @@ static void saveg_read_mobj_t(mobj_t *str)
         // Gas pods use special2.m to point to the pod generator
         // that made it.
         case MT_POD:
-            str->special2.m = NULL;
+            str->special2.m = nullptr;
             break;
 
         // Several thing types use special1.m to mean 'target':
@@ -884,7 +884,7 @@ static void saveg_read_mobj_t(mobj_t *str)
         case MT_MUMMYFX1:    // A_MummyFX1Seek
         case MT_HORNRODFX2:  // A_SkullRodPL2Seek
         case MT_PHOENIXFX1:  // A_PhoenixPuff
-            str->special1.m = NULL;
+            str->special1.m = nullptr;
             break;
 
         default:
@@ -902,7 +902,7 @@ static void saveg_read_mobj_t(mobj_t *str)
 
     // struct mobj_s *target;
     SV_ReadLong();
-    str->target = NULL;
+    str->target = nullptr;
 
     // int reactiontime;
     str->reactiontime = SV_ReadLong();
@@ -919,7 +919,7 @@ static void saveg_read_mobj_t(mobj_t *str)
     }
     else
     {
-        str->player = NULL;
+        str->player = nullptr;
     }
 
     // int lastlook;
@@ -1536,9 +1536,9 @@ void P_UnArchivePlayers()
         if (!playeringame[i])
             continue;
         saveg_read_player_t(&players[i]);
-        players[i].mo = NULL;   // will be set when unarc thinker
-        players[i].message = NULL;
-        players[i].attacker = NULL;
+        players[i].mo = nullptr;   // will be set when unarc thinker
+        players[i].message = nullptr;
+        players[i].attacker = nullptr;
     }
 }
 
@@ -1724,7 +1724,7 @@ void P_UnArchiveThinkers()
             case tc_mobj:
                 mobj = zmalloc<mobj_t *>(sizeof(*mobj), PU_LEVEL, nullptr);
                 saveg_read_mobj_t(mobj);
-                mobj->target = NULL;
+                mobj->target = nullptr;
                 P_SetThingPosition(mobj);
                 mobj->info = &mobjinfo[mobj->type];
                 mobj->floorz = mobj->subsector->sector->floorheight;

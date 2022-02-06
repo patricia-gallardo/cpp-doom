@@ -69,14 +69,14 @@ static boolean (*ExpandSoundData)(sfxinfo_t *sfxinfo,
     byte *                                   data,
     int                                      samplerate,
     int                                      bits,
-    int                                      length) = NULL;
+    int                                      length) = nullptr;
 
 // Doubly-linked list of allocated sounds.
 // When a sound is played, it is moved to the head, so that the oldest
 // sounds not used recently are at the tail.
 
-static allocated_sound_t *allocated_sounds_head = NULL;
-static allocated_sound_t *allocated_sounds_tail = NULL;
+static allocated_sound_t *allocated_sounds_head = nullptr;
+static allocated_sound_t *allocated_sounds_tail = nullptr;
 static int                allocated_sounds_size = 0;
 
 // [crispy] values 3 and higher might reproduce DOOM.EXE more accurately,
@@ -96,7 +96,7 @@ float libsamplerate_scale = 0.65f;
 
 static void AllocatedSoundLink(allocated_sound_t *snd)
 {
-    snd->prev = NULL;
+    snd->prev = nullptr;
 
     snd->next             = allocated_sounds_head;
     allocated_sounds_head = snd;
@@ -220,7 +220,7 @@ static allocated_sound_t *AllocateSound(sfxinfo_t *sfxinfo, size_t len)
 
         if (snd == NULL && !FindAndFreeSound())
         {
-            return NULL;
+            return nullptr;
         }
 
     } while (snd == nullptr);
@@ -292,7 +292,7 @@ static allocated_sound_t *GetAllocatedSoundBySfxInfoAndPitch(sfxinfo_t *sfxinfo,
         p = p->next;
     }
 
-    return NULL;
+    return nullptr;
 }
 
 // Allocate a new sound chunk and pitch-shift an existing sound up-or-down
@@ -322,7 +322,7 @@ static allocated_sound_t *PitchShift(allocated_sound_t *insnd, int pitch)
 
     if (!outsnd)
     {
-        return NULL;
+        return nullptr;
     }
 
     outsnd->pitch = pitch;
@@ -353,7 +353,7 @@ static void ReleaseSoundOnChannel(int channel)
         return;
     }
 
-    channels_playing[channel] = NULL;
+    channels_playing[channel] = nullptr;
 
     UnlockAllocatedSound(snd);
 
@@ -1162,7 +1162,7 @@ static boolean I_SDL_InitSound(boolean _use_sfx_prefix)
     // No sounds yet
     for (i = 0; i < NUM_CHANNELS; ++i)
     {
-        channels_playing[i] = NULL;
+        channels_playing[i] = nullptr;
     }
 
     if (SDL_Init(SDL_INIT_AUDIO) < 0)

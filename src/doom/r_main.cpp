@@ -94,9 +94,9 @@ int viewangletox[FINEANGLES / 2];
 angle_t xtoviewangle[MAXWIDTH + 1];
 
 // [crispy] parameterized for smooth diminishing lighting
-lighttable_t ***scalelight      = NULL;
-lighttable_t ** scalelightfixed = NULL;
-lighttable_t ***zlight          = NULL;
+lighttable_t ***scalelight      = nullptr;
+lighttable_t ** scalelightfixed = nullptr;
+lighttable_t ***zlight          = nullptr;
 
 // bumped light from gun blasts
 int extralight;

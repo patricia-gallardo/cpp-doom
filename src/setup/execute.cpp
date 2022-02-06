@@ -323,7 +323,7 @@ static int ExecuteCommand(const char *program, const char *arg)
 
         argv[0] = GetFullExePath(program);
         argv[1] = arg;
-        argv[2] = NULL;
+        argv[2] = nullptr;
 
         execvp(argv[0], (char **) argv);
 

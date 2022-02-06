@@ -1034,7 +1034,7 @@ static boolean HandleCheats(byte key)
         return (false);
     }
     eat = false;
-    for (i = 0; Cheats[i].func != NULL; i++)
+    for (i = 0; Cheats[i].func != nullptr; i++)
     {
         if (cht_CheckCheat(Cheats[i].seq, key))
         {

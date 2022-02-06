@@ -168,7 +168,7 @@ int     twoSided(int sector, int line)
 sector_t *getNextSector(line_t * line, sector_t * sec)
 {
     if (!(line->flags & ML_TWOSIDED))
-        return NULL;
+        return nullptr;
 
     if (line->frontsector == sec)
         return line->backsector;
@@ -1201,5 +1201,5 @@ line_t *P_FindLine(int lineTag, int *searchPosition)
         }
     }
     *searchPosition = -1;
-    return NULL;
+    return nullptr;
 }

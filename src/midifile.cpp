@@ -176,7 +176,7 @@ static byte *ReadByteSequence(unsigned int num_bytes, FILE *stream)
     if (result == nullptr)
     {
         fprintf(stderr, "ReadByteSequence: Failed to allocate buffer\n");
-        return NULL;
+        return nullptr;
     }
 
     // Read the data:
@@ -188,7 +188,7 @@ static byte *ReadByteSequence(unsigned int num_bytes, FILE *stream)
             fprintf(stderr, "ReadByteSequence: Error while reading byte %u\n",
                 i);
             free(result);
-            return NULL;
+            return nullptr;
         }
     }
 
@@ -439,7 +439,7 @@ static boolean ReadTrack(midi_track_t *track, FILE *stream)
     unsigned int  last_event_type;
 
     track->num_events = 0;
-    track->events     = NULL;
+    track->events     = nullptr;
 
     // Read the header:
 
@@ -587,12 +587,12 @@ midi_file_t *MIDI_LoadFile(char *filename)
 
     if (file == nullptr)
     {
-        return NULL;
+        return nullptr;
     }
 
-    file->tracks      = NULL;
+    file->tracks      = nullptr;
     file->num_tracks  = 0;
-    file->buffer      = NULL;
+    file->buffer      = nullptr;
     file->buffer_size = 0;
 
     // Open file
@@ -603,7 +603,7 @@ midi_file_t *MIDI_LoadFile(char *filename)
     {
         fprintf(stderr, "MIDI_LoadFile: Failed to open '%s'\n", filename);
         MIDI_FreeFile(file);
-        return NULL;
+        return nullptr;
     }
 
     // Read MIDI file header
@@ -612,7 +612,7 @@ midi_file_t *MIDI_LoadFile(char *filename)
     {
         fclose(stream);
         MIDI_FreeFile(file);
-        return NULL;
+        return nullptr;
     }
 
     // Read all tracks:
@@ -621,7 +621,7 @@ midi_file_t *MIDI_LoadFile(char *filename)
     {
         fclose(stream);
         MIDI_FreeFile(file);
-        return NULL;
+        return nullptr;
     }
 
     fclose(stream);

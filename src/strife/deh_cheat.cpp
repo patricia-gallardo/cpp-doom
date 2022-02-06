@@ -64,12 +64,12 @@ static deh_cheat_t *FindCheatByName(char *name)
             return &allcheats[i];
     }
 
-    return NULL;
+    return nullptr;
 }
 
 static void *DEH_CheatStart(deh_context_t *context, char *line)
 {
-    return NULL;
+    return nullptr;
 }
 
 static void DEH_CheatParseLine(deh_context_t *context, char *line, void *tag)

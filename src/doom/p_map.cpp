@@ -153,7 +153,7 @@ boolean
     tmbbox[BOXLEFT]   = x - tmthing->radius;
 
     newsubsec   = R_PointInSubsector(x, y);
-    ceilingline = NULL;
+    ceilingline = nullptr;
 
     // The base floor/ceiling is from the subsector
     // that contains the point.
@@ -511,7 +511,7 @@ boolean
     tmbbox[BOXLEFT]   = x - tmthing->radius;
 
     newsubsec   = R_PointInSubsector(x, y);
-    ceilingline = NULL;
+    ceilingline = nullptr;
 
     // The base floor / ceiling is from the subsector
     // that contains the point.
@@ -1228,7 +1228,7 @@ fixed_t
     bottomslope = -(ORIGHEIGHT / 2) * FRACUNIT / (ORIGWIDTH / 2);
 
     attackrange = distance;
-    linetarget  = NULL;
+    linetarget  = nullptr;
 
     P_PathTraverse(t1->x, t1->y,
         x2, y2,

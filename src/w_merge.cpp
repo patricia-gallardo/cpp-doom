@@ -221,7 +221,7 @@ static sprite_frame_t *FindSpriteFrame(char *name, int frame)
     result->frame = frame;
 
     for (i = 0; i < 8; ++i)
-        result->angle_lumps[i] = NULL;
+        result->angle_lumps[i] = nullptr;
 
     ++num_sprite_frames;
 
@@ -724,8 +724,8 @@ void W_NWTDashMerge(const char *filename)
 // [crispy] dump merged WAD data into a new IWAD file
 int W_MergeDump(const char *file)
 {
-    FILE *   fp     = NULL;
-    char *   lump_p = NULL;
+    FILE *   fp     = nullptr;
+    char *   lump_p = nullptr;
     uint32_t i, dir_p;
 
     // [crispy] WAD directory structure
@@ -734,7 +734,7 @@ int W_MergeDump(const char *file)
         uint32_t size;
         char     name[8];
     } directory_t;
-    directory_t *dir = NULL;
+    directory_t *dir = nullptr;
 
     // [crispy] open file for writing
     fp = fopen(file, "wb");

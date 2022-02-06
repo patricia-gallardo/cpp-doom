@@ -47,7 +47,7 @@ boolean savegame_error;
 
 char *P_TempSaveGameFile()
 {
-    static char *filename = NULL;
+    static char *filename = nullptr;
 
     if (filename == nullptr)
     {
@@ -61,7 +61,7 @@ char *P_TempSaveGameFile()
 
 char *P_SaveGameFile(int slot)
 {
-    static char *filename = NULL;
+    static char *filename = nullptr;
     static size_t filename_size;
     char basename[32];
 
@@ -409,7 +409,7 @@ static void saveg_read_mobj_t(mobj_t *str)
     }
     else
     {
-        str->player = NULL;
+        str->player = nullptr;
     }
 
     // int lastlook;
@@ -623,7 +623,7 @@ static void saveg_read_pspdef_t(pspdef_t *str)
     }
     else
     {
-        str->state = NULL;
+        str->state = nullptr;
     }
 
     // int tics;
@@ -1733,14 +1733,14 @@ void P_UnArchivePlayers (boolean userload)
         if(userload)
         {
             saveg_read_player_t(&players[i]);
-            players[i].mo = NULL;
+            players[i].mo = nullptr;
         }
         else
             saveg_read_player_t(&dummy);
 
         // will be set when unarc thinker
-        players[i].message = NULL;
-        players[i].attacker = NULL;
+        players[i].message = nullptr;
+        players[i].attacker = nullptr;
     }
 }
 
@@ -1949,12 +1949,12 @@ void P_UnArchiveThinkers ()
             if(mobj->target != NULL && (mobj->flags & MF_ALLY) != MF_ALLY)
                 mobj->target = players[0].mo;
             else
-                mobj->target = NULL;
+                mobj->target = nullptr;
 
             // WARNING! Strife does not seem to set tracer! I am leaving it be
             // for now because so far no crashes have been observed, and failing
             // to set this here will almost certainly crash Choco.
-            mobj->tracer = NULL;
+            mobj->tracer = nullptr;
             P_SetThingPosition (mobj);
             mobj->info = &mobjinfo[mobj->type];
             // [STRIFE]: doesn't set these

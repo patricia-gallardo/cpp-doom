@@ -29,7 +29,7 @@ typedef enum
     THREAD_STATE_STOPPING,
 } thread_state_t;
 
-static SDL_Thread *timer_thread = NULL;
+static SDL_Thread *timer_thread = nullptr;
 static thread_state_t timer_thread_state;
 static uint64_t current_time;
 

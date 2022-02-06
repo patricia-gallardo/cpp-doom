@@ -891,7 +891,7 @@ mobj_t *P_CheckOnmobj(mobj_t * thing)
     numspechit = 0;
 
     if (tmflags & MF_NOCLIP)
-        return NULL;
+        return nullptr;
 
 //
 // check things first, possibly picking things up
@@ -912,7 +912,7 @@ mobj_t *P_CheckOnmobj(mobj_t * thing)
                 return onmobj;
             }
     *tmthing = oldmo;
-    return NULL;
+    return nullptr;
 }
 
 //=============================================================================

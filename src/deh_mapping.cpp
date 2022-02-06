@@ -31,7 +31,7 @@ static deh_mapping_entry_t *GetMappingEntryByName(deh_context_t *context,
 {
     int i;
 
-    for (i = 0; mapping->entries[i].name != NULL; ++i)
+    for (i = 0; mapping->entries[i].name != nullptr; ++i)
     {
         deh_mapping_entry_t *entry = &mapping->entries[i];
 
@@ -40,7 +40,7 @@ static deh_mapping_entry_t *GetMappingEntryByName(deh_context_t *context,
             if (entry->location == nullptr)
             {
                 DEH_Warning(context, "Field '%s' is unsupported", name);
-                return NULL;
+                return nullptr;
             }
 
             return entry;
@@ -51,7 +51,7 @@ static deh_mapping_entry_t *GetMappingEntryByName(deh_context_t *context,
 
     DEH_Warning(context, "Field named '%s' not found", name);
 
-    return NULL;
+    return nullptr;
 }
 
 //
@@ -158,7 +158,7 @@ void DEH_StructSHA1Sum(sha1_context_t *context, deh_mapping_t *mapping,
 
     // Go through each mapping
 
-    for (i = 0; mapping->entries[i].name != NULL; ++i)
+    for (i = 0; mapping->entries[i].name != nullptr; ++i)
     {
         deh_mapping_entry_t *entry = &mapping->entries[i];
         void *               location;

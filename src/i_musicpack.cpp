@@ -91,7 +91,7 @@ typedef struct
     int          start_time, end_time;
 } file_metadata_t;
 
-static subst_music_t *subst_music     = NULL;
+static subst_music_t *subst_music     = nullptr;
 static unsigned int   subst_music_len = 0;
 
 static boolean music_initialized = false;
@@ -112,7 +112,7 @@ static file_metadata_t file_metadata;
 static unsigned int current_track_pos;
 
 // Currently playing music track.
-static Mix_Music *current_track_music = NULL;
+static Mix_Music *current_track_music = nullptr;
 
 // If true, the currently playing track is being played on loop.
 static boolean current_track_loop;
@@ -631,7 +631,7 @@ static const char *GetSubstituteMusicFile(void *data, size_t data_len)
     // Don't bother doing a hash if we're never going to find anything.
     if (subst_music_len == 0)
     {
-        return NULL;
+        return nullptr;
     }
 
     SHA1_Init(&context);
@@ -650,7 +650,7 @@ static const char *GetSubstituteMusicFile(void *data, size_t data_len)
     // filename mappings for the same hash. This allows us to try
     // different files and fall back if our first choice isn't found.
 
-    filename = NULL;
+    filename = nullptr;
 
     for (i = 0; i < subst_music_len; ++i)
     {
@@ -732,7 +732,7 @@ static char *ExpandFileExtension(const char *musicdir, const char *filename)
         free(result);
     }
 
-    return NULL;
+    return nullptr;
 }
 
 // Add a substitute music file to the lookup list.
@@ -765,20 +765,20 @@ static const char *ReadHashPrefix(char *line)
     {
         if (!isxdigit(*p))
         {
-            return NULL;
+            return nullptr;
         }
     }
 
     len = p - line;
     if (len == 0 || len > sizeof(sha1_digest_t) * 2)
     {
-        return NULL;
+        return nullptr;
     }
 
     result = static_cast<char *>(malloc(len + 1));
     if (result == nullptr)
     {
-        return NULL;
+        return nullptr;
     }
 
     for (i = 0; i < len; ++i)
@@ -818,7 +818,7 @@ static const char *ParseSubstituteLine(char *musicdir, char *line)
     // been stripped.
     if (*p == '\0')
     {
-        return NULL;
+        return nullptr;
     }
 
     hash_prefix = ReadHashPrefix(p);
@@ -860,7 +860,7 @@ static const char *ParseSubstituteLine(char *musicdir, char *line)
     // Expand full path and add to our database of substitutes.
     AddSubstituteMusic(musicdir, hash_prefix, filename);
 
-    return NULL;
+    return nullptr;
 }
 
 // Read a substitute music configuration file.
@@ -897,7 +897,7 @@ static boolean ReadSubstituteConfig(char *musicdir, const char *filename)
         else
         {
             // end of buffer
-            next = NULL;
+            next = nullptr;
         }
 
         error = ParseSubstituteLine(musicdir, line);
@@ -1237,7 +1237,7 @@ static void I_MP_StopSong()
     }
 
     Mix_HaltMusic();
-    current_track_music = NULL;
+    current_track_music = nullptr;
 }
 
 static void I_MP_UnRegisterSong(void *handle)
@@ -1264,14 +1264,14 @@ static void *I_MP_RegisterSong(void *data, int len)
 
     if (!music_initialized)
     {
-        return NULL;
+        return nullptr;
     }
 
     // See if we're substituting this MUS for a high-quality replacement.
     filename = GetSubstituteMusicFile(data, len);
     if (filename == nullptr)
     {
-        return NULL;
+        return nullptr;
     }
 
     music = Mix_LoadMUS(filename);
@@ -1281,7 +1281,7 @@ static void *I_MP_RegisterSong(void *data, int len)
         // message.
         fprintf(stderr, "Failed to load substitute music file: %s: %s\n",
             filename, Mix_GetError());
-        return NULL;
+        return nullptr;
     }
 
     // Read loop point metadata from the file so that we know where

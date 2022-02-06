@@ -373,7 +373,7 @@ void P_LoadSectors(int lump)
         ss->lightlevel    = SHORT(ms->lightlevel);
         ss->special       = SHORT(ms->special);
         ss->tag           = SHORT(ms->tag);
-        ss->thinglist     = NULL;
+        ss->thinglist     = nullptr;
         // [crispy] WiggleFix: [kb] for R_FixWiggle()
         ss->cachedheight = 0;
         // [AM] Sector interpolation.  Even if we're
@@ -1237,7 +1237,7 @@ void P_SetupLevel(int episode,
         for (i = 0; i < MAXPLAYERS; i++)
             if (playeringame[i])
             {
-                players[i].mo = NULL;
+                players[i].mo = nullptr;
                 G_DeathMatchSpawnPlayer(i);
             }
     }

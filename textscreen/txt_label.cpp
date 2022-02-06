@@ -174,8 +174,8 @@ txt_label_t *TXT_NewLabel(const char *text)
     auto *label = create_struct<txt_label_t>();
 
     TXT_InitWidget(label, &txt_label_class);
-    label->label = NULL;
-    label->lines = NULL;
+    label->label = nullptr;
+    label->lines = nullptr;
 
     // Default colors
 

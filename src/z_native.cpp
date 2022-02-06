@@ -54,7 +54,7 @@ void *test_malloc(size_t size)
 
     if (test_malloced + size > 2 * 1024 * 1024)
     {
-        return NULL;
+        return nullptr;
     }
 
     test_malloced += size;
@@ -87,7 +87,7 @@ void test_free(void *data)
 
 static void Z_InsertBlock(memblock_t *block)
 {
-    block->prev                  = NULL;
+    block->prev                  = nullptr;
     block->next                  = allocated_blocks[block->tag];
     allocated_blocks[block->tag] = block;
 
@@ -148,7 +148,7 @@ void Z_Free(void *ptr)
     {
         // clear the user's mark
 
-        *block->user = NULL;
+        *block->user = nullptr;
     }
 
     Z_RemoveBlock(block);
@@ -211,7 +211,7 @@ static boolean ClearCache(int size)
 
         if (block->user)
         {
-            *block->user = NULL;
+            *block->user = nullptr;
         }
 
         free(block);
@@ -247,7 +247,7 @@ void *Z_Malloc(int size, int tag, void *user)
 
     // Malloc a block of the required size
 
-    newblock = NULL;
+    newblock = nullptr;
 
     while (newblock == nullptr)
     {
@@ -299,7 +299,7 @@ void Z_FreeTags(int lowtag, int hightag)
 
         // Free all in this chain
 
-        for (block = allocated_blocks[i]; block != NULL;)
+        for (block = allocated_blocks[i]; block != nullptr;)
         {
             next = block->next;
 
@@ -307,7 +307,7 @@ void Z_FreeTags(int lowtag, int hightag)
 
             if (block->user != nullptr)
             {
-                *block->user = NULL;
+                *block->user = nullptr;
             }
 
             free(block);
@@ -319,7 +319,7 @@ void Z_FreeTags(int lowtag, int hightag)
 
         // This chain is empty now
 
-        allocated_blocks[i] = NULL;
+        allocated_blocks[i] = nullptr;
     }
 }
 
@@ -413,9 +413,9 @@ void Z_CheckHeap()
 
     for (i = 0; i < PU_NUM_TAGS; ++i)
     {
-        prev = NULL;
+        prev = nullptr;
 
-        for (block = allocated_blocks[i]; block != NULL; block = block->next)
+        for (block = allocated_blocks[i]; block != nullptr; block = block->next)
         {
             if (block->id != ZONEID)
             {

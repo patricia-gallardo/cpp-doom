@@ -636,7 +636,7 @@ void R_ProjectSprite (mobj_t* thing)
     /*if (thing->flags & MF_SHADOW)
     {
 	// shadow draw
-	vis->colormap = NULL;
+	vis->colormap = nullptr;
     }
     else */if (fixedcolormap)
     {

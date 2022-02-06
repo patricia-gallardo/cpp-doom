@@ -384,7 +384,7 @@ boolean S_StopSoundID(int sound_id, int priority)
         {
             S_sfx[channel[i].sound_id].usefulness--;
         }
-        channel[lp].mo = NULL;
+        channel[lp].mo = nullptr;
     }
     return (true);
 }
@@ -404,7 +404,7 @@ void S_StopSound(void *_origin)
                 S_sfx[channel[i].sound_id].usefulness--;
             }
             channel[i].handle = 0;
-            channel[i].mo = NULL;
+            channel[i].mo = nullptr;
             if (AmbChan == i)
             {
                 AmbChan = -1;
@@ -464,7 +464,7 @@ void S_UpdateSounds(mobj_t * listener)
                 S_sfx[channel[i].sound_id].usefulness--;
             }
             channel[i].handle = 0;
-            channel[i].mo = NULL;
+            channel[i].mo = nullptr;
             channel[i].sound_id = 0;
             if (AmbChan == i)
             {

@@ -110,7 +110,7 @@ static wad_file_t *W_Win32_OpenFile(const char *path)
 
     if (handle == INVALID_HANDLE_VALUE)
     {
-        return NULL;
+        return nullptr;
     }
 
     // Create a new win32_wad_file_t to hold the file handle.

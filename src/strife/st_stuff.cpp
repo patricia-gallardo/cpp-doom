@@ -1508,7 +1508,7 @@ void ST_loadData()
 static void ST_unloadCallback(const char *lumpname, patch_t **variable)
 {
     W_ReleaseLumpName(lumpname);
-    *variable = NULL;
+    *variable = nullptr;
 }
 
 void ST_unloadGraphics()

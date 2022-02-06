@@ -637,7 +637,7 @@ static void DrawFilesMenu()
 // clear out the quicksave/quickload stuff
     quicksave = 0;
     quickload = 0;
-    players[consoleplayer].message = NULL;
+    players[consoleplayer].message = nullptr;
     players[consoleplayer].messageTics = 1;
 }
 
@@ -885,7 +885,7 @@ static boolean SCLoadGame(int option)
     if (quickload == -1)
     {
         quickload = option + 1;
-        players[consoleplayer].message = NULL;
+        players[consoleplayer].message = nullptr;
         players[consoleplayer].messageTics = 1;
     }
     return true;
@@ -936,7 +936,7 @@ static boolean SCSaveGame(int option)
     if (quicksave == -1)
     {
         quicksave = option + 1;
-        players[consoleplayer].message = NULL;
+        players[consoleplayer].message = nullptr;
         players[consoleplayer].messageTics = 1;
     }
     return true;
@@ -1233,7 +1233,7 @@ boolean MN_Responder(event_t * event)
                 case 2:
                     players[consoleplayer].messageTics = 0;
                     //set the msg to be cleared
-                    players[consoleplayer].message = NULL;
+                    players[consoleplayer].message = nullptr;
                     paused = false;
                     I_SetPalette(cache_lump_name<byte *>("PLAYPAL", PU_CACHE));
                     D_StartTitle();     // go to intro/demo mode.
@@ -1718,7 +1718,7 @@ void MN_DeactivateMenu()
         S_SetMaxVolume(true);   //recalc the sound curve
         soundchanged = false;
     }
-    players[consoleplayer].message = NULL;
+    players[consoleplayer].message = nullptr;
     players[consoleplayer].messageTics = 1;
 }
 

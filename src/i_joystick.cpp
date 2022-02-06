@@ -35,7 +35,7 @@
 
 #define DEAD_ZONE (32768 / 3)
 
-static SDL_Joystick *joystick = NULL;
+static SDL_Joystick *joystick = nullptr;
 
 // Configuration variables:
 
@@ -80,7 +80,7 @@ void I_ShutdownJoystick()
     if (joystick != nullptr)
     {
         SDL_JoystickClose(joystick);
-        joystick = NULL;
+        joystick = nullptr;
         SDL_QuitSubSystem(SDL_INIT_JOYSTICK);
     }
 }
@@ -188,7 +188,7 @@ void I_InitJoystick()
                "(run joystick setup again)\n");
 
         SDL_JoystickClose(joystick);
-        joystick = NULL;
+        joystick = nullptr;
         SDL_QuitSubSystem(SDL_INIT_JOYSTICK);
     }
 

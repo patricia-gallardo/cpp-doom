@@ -432,14 +432,14 @@ void R_Subsector(int num)
                                  frontsector->lightlevel,
                                  frontsector->special);
     else
-        floorplane = NULL;
+        floorplane = nullptr;
     if (frontsector->ceilingheight > viewz
         || frontsector->ceilingpic == skyflatnum)
         ceilingplane = R_FindPlane(frontsector->ceilingheight,
                                    frontsector->ceilingpic,
                                    frontsector->lightlevel, 0);
     else
-        ceilingplane = NULL;
+        ceilingplane = nullptr;
 
     R_AddSprites(frontsector);
 

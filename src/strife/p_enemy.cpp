@@ -762,7 +762,7 @@ P_LookForPlayers
                   && actor->target->miscdata == actor->miscdata)
                  || actor->target == master)
                 {
-                    actor->target = NULL;
+                    actor->target = nullptr;
                     return false;
                 }
             }
@@ -782,7 +782,7 @@ P_LookForPlayers
             // Clear target if nothing is visible, or if the target is an ally.
             if(!linetarget || actor->target->flags & MF_ALLY)
             {
-                actor->target = NULL;
+                actor->target = nullptr;
                 return false;
             }
         }
@@ -903,7 +903,7 @@ seeyou:
 
         // [STRIFE] Only Inquisitors roar loudly here.
         if (actor->type == MT_INQUISITOR)
-            emitter = NULL;
+            emitter = nullptr;
 
         S_StartSound (emitter, sound);
     }
@@ -3180,7 +3180,7 @@ void A_TeleportBeacon(mobj_t* actor)
 
     // set rebel color and flags
     mobj->flags |= ((actor->miscdata << MF_TRANSSHIFT) | MF_NODIALOG);
-    mobj->target = NULL;
+    mobj->target = nullptr;
 
     // double Rebel's health in deathmatch mode
     if(deathmatch)
@@ -3251,7 +3251,7 @@ void A_ClaxonBlare(mobj_t* actor)
     if(--actor->reactiontime < 0)
     {
         // reset to initial state
-        actor->target = NULL;
+        actor->target = nullptr;
         actor->reactiontime = actor->info->reactiontime;
 
         // listen for more noise
@@ -3269,7 +3269,7 @@ void A_ClaxonBlare(mobj_t* actor)
     // retrigger the alarm.
     // Also, play the harsh, grating claxon.
     if(actor->reactiontime == 2)
-        actor->subsector->sector->soundtarget = NULL;
+        actor->subsector->sector->soundtarget = nullptr;
     else if(actor->reactiontime > 50)
         S_StartSound(actor, sfx_alarm);
 }
@@ -3299,7 +3299,7 @@ void A_ActiveSound(mobj_t* actor)
 //
 void A_ClearSoundTarget(mobj_t* actor)
 {
-    actor->subsector->sector->soundtarget = NULL;
+    actor->subsector->sector->soundtarget = nullptr;
 }
 
 //

@@ -549,7 +549,7 @@ void M_ReadSaveStrings()
 {
     FILE *handle;
     int   i;
-    char *fname = NULL;
+    char *fname = nullptr;
 
     for(i = 0; i < load_end; i++)
     {
@@ -678,7 +678,7 @@ void M_DrawSaveLoadBorder(int x,int y)
 void M_LoadSelect(int choice)
 {
     // [STRIFE]: completely rewritten
-    char *name = NULL;
+    char *name = nullptr;
 
     G_WriteSaveName(choice, savegamestrings[choice]);
     ToCurr();
@@ -2431,7 +2431,7 @@ void M_Init ()
     cursorAnimCounter = 10;
     screenSize = screenblocks - 3;
     messageToPrint = 0;
-    messageString = NULL;
+    messageString = nullptr;
     messageLastMenuActive = menuactive; // STRIFE-FIXME: assigns 0 here...
     quickSaveSlot = -1;
 

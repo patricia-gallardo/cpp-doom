@@ -1529,7 +1529,7 @@ void G_DoReborn(int playernum)
         // respawn at the start
 
         // first dissasociate the corpse
-        players[playernum].mo->player = NULL;
+        players[playernum].mo->player = nullptr;
 
         // spawn at random spot if in death match
         if (deathmatch)
@@ -1982,7 +1982,7 @@ void G_DoLoadGame()
             free(savewadfilename);
         }
     }
-    savewadfilename = NULL;
+    savewadfilename = nullptr;
 
     savegame_error = false;
 
@@ -2057,7 +2057,7 @@ void G_DoSaveGame()
     char *temp_savegame_file;
     char *recovery_savegame_file;
 
-    recovery_savegame_file = NULL;
+    recovery_savegame_file = nullptr;
     temp_savegame_file     = P_TempSaveGameFile();
     savegame_file          = P_SaveGameFile(savegameslot);
 
@@ -2554,7 +2554,7 @@ void G_RecordDemo(char *name)
 
     // [crispy] demo file name suffix counter
     static unsigned int j  = 0;
-    FILE *              fp = NULL;
+    FILE *              fp = nullptr;
 
     // [crispy] the name originally chosen for the demo, i.e. without "-00000"
     if (!orig_demoname)
@@ -2568,7 +2568,7 @@ void G_RecordDemo(char *name)
     M_snprintf(demoname, demoname_size, "%s.lmp", name);
 
     // [crispy] prevent overriding demos by adding a file name suffix
-    for (; j <= 99999 && (fp = fopen(demoname, "rb")) != NULL; j++)
+    for (; j <= 99999 && (fp = fopen(demoname, "rb")) != nullptr; j++)
     {
         M_snprintf(demoname, demoname_size, "%s-%05d.lmp", name, j);
         fclose(fp);

@@ -134,7 +134,7 @@ static void *DEH_BEXPtrStart(deh_context_t *context, char *line)
         DEH_Warning(context, "Parse error on section start");
     }
 
-    return NULL;
+    return nullptr;
 }
 
 static void DEH_BEXPtrParseLine(deh_context_t *context, char *line, void *tag)

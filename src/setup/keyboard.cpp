@@ -103,7 +103,7 @@ static int VarInGroup(int *variable, int **group)
 {
     unsigned int i;
 
-    for (i=0; group[i] != NULL; ++i)
+    for (i=0; group[i] != nullptr; ++i)
     {
         if (group[i] == variable)
         {
@@ -127,7 +127,7 @@ static void CheckKeyGroup(int *variable, int **group)
 
     // If another variable has the same value as the new value, reset it.
 
-    for (i=0; group[i] != NULL; ++i)
+    for (i=0; group[i] != nullptr; ++i)
     {
         if (*variable == *group[i] && group[i] != variable)
         {

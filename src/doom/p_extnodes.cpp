@@ -44,7 +44,7 @@ sector_t *GetSectorAtNullAddress();
 mapformat_t P_CheckMapFormat(int lumpnum)
 {
     mapformat_t format = mapformat_t::MFMT_DOOMBSP;
-    byte *      nodes  = NULL;
+    byte *      nodes  = nullptr;
     int         b;
 
     if ((b = lumpnum + ML_BLOCKMAP + 1) < numlumps && !strncasecmp(lumpinfo[b]->name, "BEHAVIOR", 8))
@@ -233,7 +233,7 @@ void P_LoadNodes_ZDBSP(int lump, boolean compressed)
     unsigned int numSubs, currSeg;
     unsigned int numSegs;
     unsigned int numNodes;
-    vertex_t *   newvertarray = NULL;
+    vertex_t *   newvertarray = nullptr;
 
     auto *data = cache_lump_num<byte *>(lump, PU_LEVEL);
 

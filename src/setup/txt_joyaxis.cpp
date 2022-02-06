@@ -64,7 +64,7 @@ static const char *CalibrationLabel(txt_joystick_axis_t *joystick_axis)
             }
     }
 
-    return NULL;
+    return nullptr;
 }
 
 static void SetCalibrationLabel(txt_joystick_axis_t *joystick_axis)
@@ -345,7 +345,7 @@ static void CalibrateWindowClosed(TXT_UNCAST_ARG(widget),
     TXT_CAST_ARG(txt_joystick_axis_t, joystick_axis);
 
     free(joystick_axis->bad_axis);
-    joystick_axis->bad_axis = NULL;
+    joystick_axis->bad_axis = nullptr;
 
     SDL_JoystickClose(joystick_axis->joystick);
     SDL_JoystickEventState(SDL_DISABLE);
@@ -523,7 +523,7 @@ txt_joystick_axis_t *TXT_NewJoystickAxis(int *axis, int *invert,
     joystick_axis->axis = axis;
     joystick_axis->invert = invert;
     joystick_axis->dir = dir;
-    joystick_axis->bad_axis = NULL;
+    joystick_axis->bad_axis = nullptr;
 
     return joystick_axis;
 }

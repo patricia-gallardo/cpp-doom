@@ -128,7 +128,7 @@ char mapdir[1024];  // directory of development maps
 int show_endoom   = 0; // [crispy] disable
 int show_diskicon = 1;
 
-char *nervewadfile = NULL;
+char *nervewadfile = nullptr;
 
 void D_ConnectNetGame();
 void D_CheckNetGame();
@@ -531,7 +531,7 @@ void D_RunFrame()
     if (crispy->post_rendering_hook && !wipe)
     {
         crispy->post_rendering_hook();
-        crispy->post_rendering_hook = NULL;
+        crispy->post_rendering_hook = nullptr;
     }
 }
 
@@ -1011,7 +1011,7 @@ static boolean D_AddFile(char *filename)
     printf(" adding %s\n", filename);
     handle = W_AddFile(filename);
 
-    return handle != NULL;
+    return handle != nullptr;
 }
 
 // Copyright message banners
@@ -1106,7 +1106,7 @@ static void InitGameVersion()
 
     if (p)
     {
-        for (i = 0; gameversions[i].description != NULL; ++i)
+        for (i = 0; gameversions[i].description != nullptr; ++i)
         {
             if (!strcmp(myargv[p + 1], gameversions[i].cmdline))
             {
@@ -1119,7 +1119,7 @@ static void InitGameVersion()
         {
             printf("Supported game versions:\n");
 
-            for (i = 0; gameversions[i].description != NULL; ++i)
+            for (i = 0; gameversions[i].description != nullptr; ++i)
             {
                 printf("\t%s (%s)\n", gameversions[i].cmdline,
                     gameversions[i].description);
@@ -1234,7 +1234,7 @@ void PrintGameVersion()
 {
     int i;
 
-    for (i = 0; gameversions[i].description != NULL; ++i)
+    for (i = 0; gameversions[i].description != nullptr; ++i)
     {
         if (gameversions[i].version == gameversion)
         {
@@ -1293,7 +1293,7 @@ static void LoadIwadDeh()
     // and installed next to the IWAD.
     if (gameversion == exe_chex)
     {
-        char *chex_deh = NULL;
+        char *chex_deh = nullptr;
         char *dirname;
 
         // Look for chex.deh in the same directory as the IWAD file.
@@ -1387,7 +1387,7 @@ static void LoadSigilWad()
             "SIGIL_v1_2.wad",
             "SIGIL.wad"
         };
-        char *sigil_wad = NULL, *sigil_shreds = NULL;
+        char *sigil_wad = NULL, *sigil_shreds = nullptr;
         char *dirname;
 
         dirname      = M_DirName(iwadfile);

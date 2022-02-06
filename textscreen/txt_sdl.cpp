@@ -146,14 +146,14 @@ static const txt_font_t *FontForName(const char *name)
         NULL,
     };
 
-    for (i = 0; fonts[i]->name != NULL; ++i)
+    for (i = 0; fonts[i]->name != nullptr; ++i)
     {
         if (!strcmp(fonts[i]->name, name))
         {
             return fonts[i];
         }
     }
-    return NULL;
+    return nullptr;
 }
 
 //
@@ -303,9 +303,9 @@ int TXT_Init()
 void TXT_Shutdown()
 {
     free(screendata);
-    screendata = NULL;
+    screendata = nullptr;
     SDL_FreeSurface(screenbuffer);
-    screenbuffer = NULL;
+    screenbuffer = nullptr;
     SDL_QuitSubSystem(SDL_INIT_VIDEO);
 }
 
@@ -778,7 +778,7 @@ static const char *NameForKey(int key)
         }
     }
 
-    return NULL;
+    return nullptr;
 }
 
 void TXT_GetKeyDescription(int key, char *buf, size_t buf_len)

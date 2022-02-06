@@ -516,7 +516,7 @@ boolean D_AddFile(char *file)
 
     handle = W_AddFile(file);
 
-    return handle != NULL;
+    return handle != nullptr;
 }
 
 //==========================================================

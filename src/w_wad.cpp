@@ -64,9 +64,9 @@ static lumpindex_t *lumphash;
 // Variables for the reload hack: filename of the PWAD to reload, and the
 // lumps from WADs before the reload file, so we can resent numlumps and
 // load the file again.
-static wad_file_t *reloadhandle = NULL;
-static lumpinfo_t *reloadlumps  = NULL;
-static char *      reloadname   = NULL;
+static wad_file_t *reloadhandle = nullptr;
+static lumpinfo_t *reloadlumps  = nullptr;
+static char *      reloadname   = nullptr;
 static int         reloadlump   = -1;
 
 // Hash function used for lump names.
@@ -136,7 +136,7 @@ wad_file_t *W_AddFile(const char *filename)
     if (wad_file == nullptr)
     {
         printf(" couldn't open %s\n", filename);
-        return NULL;
+        return nullptr;
     }
 
     if (strcasecmp(filename + strlen(filename) - 3, "wad"))
@@ -217,7 +217,7 @@ wad_file_t *W_AddFile(const char *filename)
         lump_p->wad_file   = wad_file;
         lump_p->position   = LONG(filerover->filepos);
         lump_p->size       = LONG(filerover->size);
-        lump_p->cache      = NULL;
+        lump_p->cache      = nullptr;
         strncpy(lump_p->name, filerover->name, 8);
         lumpinfo[i] = lump_p;
 
@@ -229,7 +229,7 @@ wad_file_t *W_AddFile(const char *filename)
     if (lumphash != nullptr)
     {
         Z_Free(lumphash);
-        lumphash = NULL;
+        lumphash = nullptr;
     }
 
     // If this is the reload file, we need to save some details about the
@@ -615,9 +615,9 @@ void W_Reload()
     W_CloseFile(reloadhandle);
     free(reloadlumps);
 
-    reloadname   = NULL;
+    reloadname   = nullptr;
     reloadlump   = -1;
-    reloadhandle = NULL;
+    reloadhandle = nullptr;
     W_AddFile(filename);
     free(filename);
 

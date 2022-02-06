@@ -464,7 +464,7 @@ void HU_Init()
     // [crispy] initialize the crosshair types
     for (i = 0; laserpatch[i].c; i++)
     {
-        patch_t *patch = NULL;
+        patch_t *patch = nullptr;
 
         // [crispy] check for alternative crosshair patches from e.g. prboom-plus.wad first
         //	if ((laserpatch[i].l = W_CheckNumForName(laserpatch[i].a)) == -1)
@@ -825,7 +825,7 @@ void HU_Drawer()
         HUlib_drawSText(&w_secret);
     }
 
-    dp_translation = NULL;
+    dp_translation = nullptr;
     if (crispy->screenshotmsg == 4)
         HUlib_eraseSText(&w_message);
     else
@@ -871,7 +871,7 @@ void HU_Drawer()
     if (crispy->crosshair == CROSSHAIR_STATIC)
         HU_DrawCrosshair();
 
-    dp_translation = NULL;
+    dp_translation = nullptr;
 
     if (dp_translucent)
         dp_translucent = false;

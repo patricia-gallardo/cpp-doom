@@ -68,7 +68,7 @@ net_addr_t *NET_ResolveAddress(net_context_t *context, const char *addr)
         }
     }
 
-    return NULL;
+    return nullptr;
 }
 
 void NET_SendPacket(net_addr_t *addr, net_packet_t *packet)

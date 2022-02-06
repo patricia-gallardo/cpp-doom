@@ -44,7 +44,7 @@ static int restoretargets_fail;
 
 char *P_TempSaveGameFile()
 {
-    static char *filename = NULL;
+    static char *filename = nullptr;
 
     if (filename == nullptr)
     {
@@ -58,7 +58,7 @@ char *P_TempSaveGameFile()
 
 char *P_SaveGameFile(int slot)
 {
-    static char * filename      = NULL;
+    static char * filename      = nullptr;
     static size_t filename_size = 0;
     char          basename[32];
 
@@ -404,7 +404,7 @@ static void saveg_read_mobj_t(mobj_t *str)
     }
     else
     {
-        str->player = NULL;
+        str->player = nullptr;
     }
 
     // int lastlook;
@@ -446,7 +446,7 @@ thinker_t *P_IndexToThinker(uint32_t index)
     uint32_t   i;
 
     if (!index)
-        return NULL;
+        return nullptr;
 
     for (th = thinkercap.next, i = 0; th != &thinkercap; th = th->next)
     {
@@ -460,7 +460,7 @@ thinker_t *P_IndexToThinker(uint32_t index)
 
     restoretargets_fail++;
 
-    return NULL;
+    return nullptr;
 }
 
 static void saveg_write_mobj_t(mobj_t *str)
@@ -648,7 +648,7 @@ static void saveg_read_pspdef_t(pspdef_t *str)
     }
     else
     {
-        str->state = NULL;
+        str->state = nullptr;
     }
 
     // int tics;
@@ -1528,9 +1528,9 @@ void P_UnArchivePlayers()
         saveg_read_player_t(&players[i]);
 
         // will be set when unarc thinker
-        players[i].mo       = NULL;
-        players[i].message  = NULL;
-        players[i].attacker = NULL;
+        players[i].mo       = nullptr;
+        players[i].message  = nullptr;
+        players[i].attacker = nullptr;
     }
 }
 
@@ -1718,8 +1718,8 @@ void P_UnArchiveThinkers()
             saveg_read_mobj_t(mobj);
 
             // [crispy] restore mobj->target and mobj->tracer fields
-            //mobj->target = NULL;
-            //mobj->tracer = NULL;
+            //mobj->target = nullptr;
+            //mobj->tracer = nullptr;
             P_SetThingPosition(mobj);
             mobj->info = &mobjinfo[mobj->type];
             // [crispy] killough 2/28/98: Fix for falling down into a wall after savegame loaded

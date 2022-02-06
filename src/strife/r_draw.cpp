@@ -76,7 +76,7 @@ int		columnofs[MAXWIDTH];
 // Backing buffer containing the bezel drawn around the screen and 
 // surrounding background.
 
-static byte *background_buffer = NULL;
+static byte *background_buffer = nullptr;
 
 // haleyjd 08/29/10: [STRIFE] Rogue added the ability to customize the view
 // border flat by storing it in the configuration file.
@@ -830,7 +830,7 @@ void R_FillBackScreen ()
         if (background_buffer != nullptr)
         {
             Z_Free(background_buffer);
-            background_buffer = NULL;
+            background_buffer = nullptr;
         }
 
 	return;

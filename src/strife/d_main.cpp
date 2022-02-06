@@ -160,7 +160,7 @@ static boolean main_loop_started = false;
 static int comport = 0;
 
 // fraggle 06/03/11 [STRIFE]: Multiplayer nickname?
-char *nickname = NULL;
+char *nickname = nullptr;
 
 void D_ConnectNetGame();
 void D_CheckNetGame();
@@ -837,7 +837,7 @@ void D_IdentifyVersion()
     // Load voices.wad 
     if(isregistered)
     {
-        char *name = NULL;
+        char *name = nullptr;
         int p;
 
         // If -iwad was used, check and see if voices.wad exists on the same
@@ -951,7 +951,7 @@ static boolean D_AddFile(char *filename)
     printf(" adding %s\n", filename);
     handle = W_AddFile(filename);
 
-    return handle != NULL;
+    return handle != nullptr;
 }
 
 // Copyright message banners
@@ -1037,7 +1037,7 @@ static void InitGameVersion()
 
     if (p)
     {
-        for (i=0; gameversions[i].description != NULL; ++i)
+        for (i=0; gameversions[i].description != nullptr; ++i)
         {
             if (!strcmp(myargv[p+1], gameversions[i].cmdline))
             {
@@ -1050,7 +1050,7 @@ static void InitGameVersion()
         {
             printf("Supported game versions:\n");
 
-            for (i=0; gameversions[i].description != NULL; ++i)
+            for (i=0; gameversions[i].description != nullptr; ++i)
             {
                 printf("\t%s (%s)\n", gameversions[i].cmdline,
                         gameversions[i].description);
@@ -1069,7 +1069,7 @@ void PrintGameVersion()
 {
     int i;
 
-    for (i=0; gameversions[i].description != NULL; ++i)
+    for (i=0; gameversions[i].description != nullptr; ++i)
     {
         if (gameversions[i].version == gameversion)
         {
