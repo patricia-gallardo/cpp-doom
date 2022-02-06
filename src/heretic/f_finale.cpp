@@ -391,7 +391,7 @@ void F_BunnyScroll()
         stage = 6;
     if (stage > laststage)
     {
-        S_StartSound(NULL, sfx_pistol);
+        S_StartSound(nullptr, sfx_pistol);
         laststage = stage;
     }
 

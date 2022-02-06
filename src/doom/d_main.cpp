@@ -1724,7 +1724,7 @@ void D_DoomMain()
     {
         // Auto-detect the configuration dir.
 
-        M_SetConfigDir(NULL);
+        M_SetConfigDir(nullptr);
     }
 
     //!
@@ -2278,7 +2278,7 @@ void D_DoomMain()
     // [crispy] port level flipping feature over from Strawberry Doom
 #ifdef ENABLE_APRIL_1ST_JOKE
     {
-        time_t     curtime = time(NULL);
+        time_t     curtime = time(nullptr);
         struct tm *curtm   = localtime(&curtime);
 
         if (curtm && curtm->tm_mon == 3 && curtm->tm_mday == 1)

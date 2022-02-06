@@ -35,7 +35,7 @@ void CompatibilitySettings(TXT_UNCAST_ARG(widget), void *user_data)
     // [crispy]
     if (gamemission == doom)
     {
-        TXT_MessageBox(NULL, "Please refer to the in-game Crispness menu.");
+        TXT_MessageBox(nullptr, "Please refer to the in-game Crispness menu.");
     }
     else
     {

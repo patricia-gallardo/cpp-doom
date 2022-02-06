@@ -469,11 +469,11 @@ boolean EV_LineSearchForPuzzleItem(line_t * line, byte * args, mobj_t * mo)
                 {
                     if (arti < arti_firstpuzzitem)
                     {
-                        S_StartSound(NULL, SFX_ARTIFACT_USE);
+                        S_StartSound(nullptr, SFX_ARTIFACT_USE);
                     }
                     else
                     {
-                        S_StartSound(NULL, SFX_PUZZLE_SUCCESS);
+                        S_StartSound(nullptr, SFX_PUZZLE_SUCCESS);
                     }
                     ArtifactFlash = 4;
                 }

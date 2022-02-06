@@ -243,7 +243,7 @@ void ConfigDisplay(TXT_UNCAST_ARG(widget), void *user_data)
     TXT_SetWindowPosition(window, TXT_HORIZ_CENTER, TXT_VERT_TOP,
                                   TXT_SCREEN_W / 2, 6);
 
-    GenerateSizesTable(NULL, sizes_table);
+    GenerateSizesTable(nullptr, sizes_table);
 
     // Button to open "advanced" window.
     // Need to pass a pointer to the window sizes table, as some of the options

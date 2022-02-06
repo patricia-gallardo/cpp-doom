@@ -34,7 +34,7 @@
 // villsa [STRIFE]
 musicinfo_t S_music[] =
 {
-    MUSIC(NULL),
+    MUSIC(nullptr),
     MUSIC("logo"),
     MUSIC("action"),
     MUSIC("tavern"),

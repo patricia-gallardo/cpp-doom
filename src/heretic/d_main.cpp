@@ -930,7 +930,7 @@ void D_DoomMain()
     }
     else
     {
-        M_SetConfigDir(NULL);
+        M_SetConfigDir(nullptr);
     }
 
     // Load defaults before initing other systems

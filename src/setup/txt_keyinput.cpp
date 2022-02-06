@@ -69,7 +69,7 @@ static void OpenPromptWindow(txt_key_input_t *key_input)
 
     key_input->check_conflicts = !TXT_GetModifierState(TXT_MOD_SHIFT);
 
-    window = TXT_MessageBox(NULL, "Press the new key...");
+    window = TXT_MessageBox(nullptr, "Press the new key...");
 
     TXT_SetKeyListener(window, KeyPressCallback, key_input);
 

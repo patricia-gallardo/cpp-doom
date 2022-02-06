@@ -105,7 +105,7 @@ static int MainMenuKeyPress(txt_window_t *window, int key, void *user_data)
             SensibleDefaults();
             cheat_sequence_index = 0;
 
-            window = TXT_MessageBox(NULL, "    \x01    ");
+            window = TXT_MessageBox(nullptr, "    \x01    ");
 
             return 1;
         }
@@ -137,7 +137,7 @@ static void QuitConfirm(void *unused1, void *unused2)
     txt_button_t *yes_button;
     txt_button_t *no_button;
 
-    window = TXT_NewWindow(NULL);
+    window = TXT_NewWindow(nullptr);
 
     TXT_AddWidgets(window, 
                    label = TXT_NewLabel("Exiting setup.\nSave settings?"),
@@ -254,7 +254,7 @@ void MainMenu()
 
 static void InitConfig()
 {
-    M_SetConfigDir(NULL);
+    M_SetConfigDir(nullptr);
     InitBindings();
 
     SetChatMacroDefaults();

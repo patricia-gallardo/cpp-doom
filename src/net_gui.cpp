@@ -190,7 +190,7 @@ static void BuildMasterStatusWindow()
 {
     txt_window_t *master_window;
 
-    master_window    = TXT_NewWindow(NULL);
+    master_window    = TXT_NewWindow(nullptr);
     master_msg_label = TXT_NewLabel("");
     TXT_AddWidget(master_window, master_msg_label);
 
@@ -383,7 +383,7 @@ static void CheckAutoLaunch()
 
         if (nodes >= expected_nodes)
         {
-            StartGame(NULL, nullptr);
+            StartGame(nullptr, nullptr);
             expected_nodes = 0;
         }
     }

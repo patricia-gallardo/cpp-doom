@@ -175,7 +175,7 @@ void P_BringUpWeapon(player_t *player)
 	// [crispy] ...only if not playing already
 	if (player == &players[consoleplayer])
 	{
-	    S_StartSoundOnce (NULL, sfx_getpow);
+	    S_StartSoundOnce (nullptr, sfx_getpow);
 	}
     }
 #endif

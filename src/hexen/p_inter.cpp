@@ -288,7 +288,7 @@ static void TryPickupWeapon(player_t * player, pclass_t weaponClass,
     player->bonuscount += BONUSADD;
     if (player == &players[consoleplayer])
     {
-        S_StartSound(NULL, SFX_PICKUP_WEAPON);
+        S_StartSound(nullptr, SFX_PICKUP_WEAPON);
         SB_PaletteFlash(false);
     }
 }
@@ -341,7 +341,7 @@ boolean P_GiveWeapon(player_t *player, pclass_t class, weapontype_t weapon)
 		player->pendingweapon = weapon;
 		if(player == &players[consoleplayer])
 		{
-			S_StartSound(NULL, SFX_PICKUP_WEAPON);
+			S_StartSound(nullptr, SFX_PICKUP_WEAPON);
 		}
 		return(false);
 	}
@@ -512,14 +512,14 @@ static void TryPickupWeaponPiece(player_t * player, pclass_t matchClass,
     {
         P_SetMessage(player, fourthWeaponText[matchClass], false);
         // Play the build-sound full volume for all players
-        S_StartSound(NULL, SFX_WEAPON_BUILD);
+        S_StartSound(nullptr, SFX_WEAPON_BUILD);
     }
     else
     {
         P_SetMessage(player, weaponPieceText[matchClass], false);
         if (player == &players[consoleplayer])
         {
-            S_StartSound(NULL, SFX_PICKUP_WEAPON);
+            S_StartSound(nullptr, SFX_PICKUP_WEAPON);
         }
     }
 }
@@ -770,7 +770,7 @@ static void TryPickupArtifact(player_t * player, artitype_t artifactType,
         }
         else
         {                       // Puzzle item
-            S_StartSound(NULL, SFX_PICKUP_ITEM);
+            S_StartSound(nullptr, SFX_PICKUP_ITEM);
             P_SetMessage(player, artifactMessages[artifactType], true);
             if (!netgame || deathmatch)
             {                   // Remove puzzle items if not cooperative netplay
@@ -1027,7 +1027,7 @@ void P_TouchSpecialThing(mobj_t * special, mobj_t * toucher)
             player->bonuscount += BONUSADD;
             if (player == &players[consoleplayer])
             {
-                S_StartSound(NULL, sound);
+                S_StartSound(nullptr, sound);
                 SB_PaletteFlash(false);
             }
             return;
@@ -1241,7 +1241,7 @@ void P_TouchSpecialThing(mobj_t * special, mobj_t * toucher)
     player->bonuscount += BONUSADD;
     if (player == &players[consoleplayer])
     {
-        S_StartSound(NULL, sound);
+        S_StartSound(nullptr, sound);
         SB_PaletteFlash(false);
     }
 }
@@ -1276,7 +1276,7 @@ mobj_t *ActiveMinotaur(player_t * master)
         if (plr == master)
             return (mo);
     }
-    return (NULL);
+    return (nullptr);
 }
 
 

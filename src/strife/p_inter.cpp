@@ -203,7 +203,7 @@ boolean P_GiveWeapon(player_t* player, weapontype_t weapon, boolean dropped)
             P_GiveAmmo(player, weaponinfo[weapon].ammo, 2);
 
         if(player == &players[consoleplayer])
-            S_StartSound (NULL, sfx_wpnup);
+            S_StartSound (nullptr, sfx_wpnup);
         return false;
     }
 
@@ -741,7 +741,7 @@ void P_TouchSpecialThing(mobj_t* special, mobj_t* toucher)
     player->bonuscount += BONUSADD;
 
     if(player == &players[consoleplayer])
-        S_StartSound(NULL, sound);
+        S_StartSound(nullptr, sound);
 }
 
 // villsa [STRIFE]

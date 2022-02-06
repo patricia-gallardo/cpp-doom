@@ -323,7 +323,7 @@ void R_GenerateComposite(int texnum)
     // killough 4/9/98: Next, convert multipatched columns into true columns,
     // to fix Medusa bug while still allowing for transparent regions.
 
-    source = static_cast<decltype(source)>(I_Realloc(NULL, texture->height)); // temporary column
+    source = static_cast<decltype(source)>(I_Realloc(nullptr, texture->height)); // temporary column
     for (i = 0; i < texture->width; i++)
     {
         if (collump[i] == -1) // process only multipatched columns
@@ -1199,7 +1199,7 @@ void R_InitColormaps()
         extern byte V_Colorize(byte * playpal, int cr, byte source, boolean keepgray109);
 
         if (!crstr)
-            crstr = static_cast<decltype(crstr)>(I_Realloc(NULL, static_cast<int>(cr_t::CRMAX) * sizeof(*crstr)));
+            crstr = static_cast<decltype(crstr)>(I_Realloc(nullptr, static_cast<int>(cr_t::CRMAX) * sizeof(*crstr)));
 
         // [crispy] check for status bar graphics replacements
         i        = W_CheckNumForName(DEH_String("sttnum0")); // [crispy] Status Bar '0'

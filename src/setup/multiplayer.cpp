@@ -615,7 +615,7 @@ static txt_widget_t *IWADSelector()
         found_iwad_selected = 0;
     }
 
-    IWADSelected(NULL, nullptr);
+    IWADSelected(nullptr, nullptr);
 
     return result;
 }
@@ -800,7 +800,7 @@ static void StartGameMenu(const char *window_title, int multiplayer)
 
     TXT_SignalConnect(iwad_selector, "changed", UpdateWarpType, nullptr);
 
-    UpdateWarpType(NULL, nullptr);
+    UpdateWarpType(nullptr, nullptr);
     UpdateWarpButton();
 }
 
@@ -820,7 +820,7 @@ static void DoJoinGame(void *unused1, void *unused2)
 
     if (connect_address == nullptr || strlen(connect_address) <= 0)
     {
-        TXT_MessageBox(NULL, "Please enter a server address\n"
+        TXT_MessageBox(nullptr, "Please enter a server address\n"
                              "to connect to.");
         return;
     }
@@ -899,7 +899,7 @@ static void SelectQueryAddress(TXT_UNCAST_ARG(button),
 
         if (found_iwads[i] == nullptr)
         {
-            TXT_MessageBox(NULL,
+            TXT_MessageBox(nullptr,
                            "The game on this server seems to be:\n"
                            "\n"
                            "   %s\n"
@@ -972,7 +972,7 @@ static void QueryPeriodicCallback(TXT_UNCAST_ARG(results_table))
 
     if (!NET_Query_Poll(QueryResponseCallback, results_table))
     {
-        TXT_SetPeriodicCallback(NULL, nullptr, 0);
+        TXT_SetPeriodicCallback(nullptr, nullptr, 0);
 
         if (query_servers_found == 0)
         {
@@ -987,7 +987,7 @@ static void QueryPeriodicCallback(TXT_UNCAST_ARG(results_table))
 
 static void QueryWindowClosed(TXT_UNCAST_ARG(window), void *unused)
 {
-    TXT_SetPeriodicCallback(NULL, nullptr, 0);
+    TXT_SetPeriodicCallback(nullptr, nullptr, 0);
 }
 
 static void ServerQueryWindow(const char *title)

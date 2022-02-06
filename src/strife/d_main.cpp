@@ -642,7 +642,7 @@ void D_DoAdvanceDemo ()
         pagetic = 10;
         gamestate = GS_DEMOSCREEN;
         pagename = DEH_String("PANEL0");
-        S_StartSound(NULL, sfx_rb2act);
+        S_StartSound(nullptr, sfx_rb2act);
         wipegamestate = static_cast<gamestate_t>(-1);
         break;
     case 0: // Rogue logo
@@ -1448,7 +1448,7 @@ void D_IntroTick()
         // that without this one-time limitation, the sound is far too loud.
         if(!didsound)
         {
-            S_StartSound(NULL, sfx_psdtha);
+            S_StartSound(nullptr, sfx_psdtha);
             didsound = true;
         }
     }
@@ -1673,7 +1673,7 @@ void D_DoomMain ()
     {
         // Auto-detect the configuration dir.
 
-        M_SetConfigDir(NULL);
+        M_SetConfigDir(nullptr);
     }
     
     //!

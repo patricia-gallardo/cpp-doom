@@ -458,7 +458,7 @@ static void CheckDOSDefaults()
 
 static boolean DirIsFile(const char *path, const char *filename)
 {
-    return strchr(path, DIR_SEPARATOR) != NULL
+    return strchr(path, DIR_SEPARATOR) != nullptr
            && !strcasecmp(M_BaseName(path), filename);
 }
 

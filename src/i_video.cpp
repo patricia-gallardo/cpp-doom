@@ -281,7 +281,7 @@ static void SetShowCursor(bool show)
         // When the cursor is hidden, grab the input.
         // Relative mode implicitly hides the cursor.
         SDL_SetRelativeMouseMode(static_cast<SDL_bool>(!show));
-        SDL_GetRelativeMouseState(NULL, nullptr);
+        SDL_GetRelativeMouseState(nullptr, nullptr);
     }
 }
 
@@ -549,7 +549,7 @@ static void UpdateGrab()
 
         SDL_GetWindowSize(screen, &screen_w, &screen_h);
         SDL_WarpMouseInWindow(screen, screen_w - 16, screen_h - 16);
-        SDL_GetRelativeMouseState(NULL, nullptr);
+        SDL_GetRelativeMouseState(nullptr, nullptr);
     }
 
     currently_grabbed = grab;
@@ -1350,7 +1350,7 @@ static void SetVideoMode()
 
     if (screen == nullptr)
     {
-        screen = SDL_CreateWindow(NULL, x, y, w, h, window_flags);
+        screen = SDL_CreateWindow(nullptr, x, y, w, h, window_flags);
 
         if (screen == nullptr)
         {

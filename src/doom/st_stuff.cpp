@@ -1043,7 +1043,7 @@ boolean
                     if (!plyr->powers[pw_strength])
                     {
                         P_GivePower(plyr, pw_strength);
-                        S_StartSound(NULL, sfx_getpow);
+                        S_StartSound(nullptr, sfx_getpow);
                         plyr->message = DEH_String(GOTBERSERK);
                     }
                     else
@@ -1059,7 +1059,7 @@ boolean
                         extern boolean P_GiveWeapon(player_t * player, weapontype_t weapon, boolean dropped);
 
                         P_GiveWeapon(plyr, static_cast<weapontype_t>(w), false);
-                        S_StartSound(NULL, sfx_wpnup);
+                        S_StartSound(nullptr, sfx_wpnup);
 
                         if (w > 1)
                         {
@@ -1533,7 +1533,7 @@ void ST_updateWidgets()
 #if defined(CRISPY_KEYBLINK_WITH_SOUND)
             if (!(plyr->tryopen[i] & (2 * KEYBLINKMASK - 1)))
             {
-                S_StartSound(NULL, sfx_itemup);
+                S_StartSound(nullptr, sfx_itemup);
             }
 #endif
 #if defined(CRISPY_KEYBLINK_IN_CLASSIC_HUD)

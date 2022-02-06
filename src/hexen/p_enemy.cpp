@@ -653,7 +653,7 @@ void A_Look(mobj_t * actor)
         sound = actor->info->seesound;
         if (actor->flags2 & MF2_BOSS)
         {                       // Full volume
-            S_StartSound(NULL, sound);
+            S_StartSound(nullptr, sound);
         }
         else
         {
@@ -796,7 +796,7 @@ void A_Chase(mobj_t * actor)
         }
         else if (actor->flags2 & MF2_BOSS)
         {
-            S_StartSound(NULL, actor->info->activesound);
+            S_StartSound(nullptr, actor->info->activesound);
         }
         else
         {
@@ -4076,7 +4076,7 @@ void A_SorcBallOrbit(mobj_t * actor)
 
                 if (actor->type == MT_SORCBALL1 && P_Random() < 200)
                 {
-                    S_StartSound(NULL, SFX_SORCERER_SPELLCAST);
+                    S_StartSound(nullptr, SFX_SORCERER_SPELLCAST);
                     actor->special2.i = SORCFX4_RAPIDFIRE_TIME;
                     actor->args[4] = 128;
                     parent->args[3] = SORC_FIRING_SPELL;
@@ -4232,7 +4232,7 @@ void A_CastSorcererSpell(mobj_t * actor)
     fixed_t z;
     mobj_t *parent = actor->target;
 
-    S_StartSound(NULL, SFX_SORCERER_SPELLCAST);
+    S_StartSound(nullptr, SFX_SORCERER_SPELLCAST);
 
     // Put sorcerer into throw spell animation
     if (parent->health > 0)
@@ -4543,7 +4543,7 @@ void A_SorcFX4Check(mobj_t * actor)
 
 void A_SorcBallPop(mobj_t * actor)
 {
-    S_StartSound(NULL, SFX_SORCERER_BALLPOP);
+    S_StartSound(nullptr, SFX_SORCERER_BALLPOP);
     actor->flags &= ~MF_NOGRAVITY;
     actor->flags2 |= MF2_LOGRAV;
     actor->momx = ((P_Random() % 10) - 5) << FRACBITS;
@@ -4568,10 +4568,10 @@ void A_BounceCheck(mobj_t * actor)
                 case MT_SORCBALL1:
                 case MT_SORCBALL2:
                 case MT_SORCBALL3:
-                    S_StartSound(NULL, SFX_SORCERER_BIGBALLEXPLODE);
+                    S_StartSound(nullptr, SFX_SORCERER_BIGBALLEXPLODE);
                     break;
                 case MT_SORCFX1:
-                    S_StartSound(NULL, SFX_SORCERER_HEADSCREAM);
+                    S_StartSound(nullptr, SFX_SORCERER_HEADSCREAM);
                     break;
                 default:
                     break;
@@ -4989,7 +4989,7 @@ void A_KoraxChase(mobj_t * actor)
     }
     else if (P_Random() < 30)
     {
-        S_StartSound(NULL, SFX_KORAX_ACTIVE);
+        S_StartSound(nullptr, SFX_KORAX_ACTIVE);
     }
 
     // Teleport away
@@ -5015,7 +5015,7 @@ void A_KoraxStep(mobj_t * actor)
 
 void A_KoraxStep2(mobj_t * actor)
 {
-    S_StartSound(NULL, SFX_KORAX_STEP);
+    S_StartSound(nullptr, SFX_KORAX_STEP);
     A_Chase(actor);
 }
 
@@ -5129,7 +5129,7 @@ void A_KoraxMissile(mobj_t * actor)
     }
 
     // Fire all 6 missiles at once
-    S_StartSound(NULL, sound);
+    S_StartSound(nullptr, sound);
     KoraxFire1(actor, type);
     KoraxFire2(actor, type);
     KoraxFire3(actor, type);
@@ -5400,7 +5400,7 @@ void A_KSpiritRoam(mobj_t * actor)
         A_KSpiritWeave(actor);
         if (P_Random() < 50)
         {
-            S_StartSound(NULL, SFX_SPIRIT_ACTIVE);
+            S_StartSound(nullptr, SFX_SPIRIT_ACTIVE);
         }
     }
 }

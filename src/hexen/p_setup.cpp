@@ -827,12 +827,12 @@ static void InitMapInfo()
     {
         if (SC_Compare("MAP") == false)
         {
-            SC_ScriptError(NULL);
+            SC_ScriptError(nullptr);
         }
         SC_MustGetNumber();
         if (sc_Number < 1 || sc_Number > 99)
         {                       // 
-            SC_ScriptError(NULL);
+            SC_ScriptError(nullptr);
         }
         map = sc_Number;
 

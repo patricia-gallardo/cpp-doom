@@ -130,7 +130,7 @@ void BuildGUI()
     input_box = TXT_NewLabel("asdf");
     TXT_SetBGColor(input_box, TXT_COLOR_BLACK);
     TXT_AddWidget(window, input_box);
-    TXT_AddWidget(window, TXT_NewSeparator(NULL));
+    TXT_AddWidget(window, TXT_NewSeparator(nullptr));
     TXT_AddWidget(window, TXT_NewStrut(0, 1));
 
     table = TXT_NewTable(4);

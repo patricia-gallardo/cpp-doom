@@ -1906,7 +1906,7 @@ static int CmdAmbientSound()
     int volume;
 
     volume = Pop();
-    S_StartSoundAtVolume(NULL, S_GetSoundID(StringLookup(Pop())), volume);
+    S_StartSoundAtVolume(nullptr, S_GetSoundID(StringLookup(Pop())), volume);
     return SCRIPT_CONTINUE;
 }
 

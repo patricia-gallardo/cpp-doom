@@ -264,8 +264,8 @@ void S_Init(int sfxVolume, int musicVolume)
     // (the maximum numer of sounds rendered
     // simultaneously) within zone memory.
     // [crispy] variable number of sound channels
-    channels = static_cast<decltype(channels)>(I_Realloc(NULL, snd_channels * sizeof(channel_t)));
-    sobjs    = static_cast<decltype(sobjs)>(I_Realloc(NULL, snd_channels * sizeof(degenmobj_t)));
+    channels = static_cast<decltype(channels)>(I_Realloc(nullptr, snd_channels * sizeof(channel_t)));
+    sobjs    = static_cast<decltype(sobjs)>(I_Realloc(nullptr, snd_channels * sizeof(degenmobj_t)));
 
     // Free all channels for use
     for (i = 0; i < snd_channels; i++)

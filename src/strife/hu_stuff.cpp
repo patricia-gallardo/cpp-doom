@@ -419,7 +419,7 @@ void HU_Ticker()
             || (plr->message && message_dontfuckwithme))
         {
             //HUlib_addMessageToSText(&w_message, 0, plr->message);
-            HU_addMessage(NULL, plr->message); // haleyjd [STRIFE]
+            HU_addMessage(nullptr, plr->message); // haleyjd [STRIFE]
             plr->message = 0;
             message_on = true;
             message_counter = HU_MSGTIMEOUT;

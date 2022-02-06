@@ -720,7 +720,7 @@ boolean P_GiveItemToPlayer(player_t *player, int sprnum, mobjtype_t type)
         player->questflags |= 1 << (type - MT_TOKEN_QUEST1);
 
         if(player == &players[consoleplayer])
-            S_StartSound(NULL, sound);
+            S_StartSound(nullptr, sound);
         return true;
     }
 
@@ -976,7 +976,7 @@ boolean P_GiveItemToPlayer(player_t *player, int sprnum, mobjtype_t type)
 
     // Play sound.
     if(player == &players[consoleplayer])
-        S_StartSound(NULL, sound);
+        S_StartSound(nullptr, sound);
 
     return true;
 }
@@ -1162,7 +1162,7 @@ void P_DialogDoChoice(int choice)
 
     currentchoice = &(currentdialog->choices[choice]);
 
-    I_StartVoice(NULL); // STRIFE-TODO: verify (should stop previous voice I believe)
+    I_StartVoice(nullptr); // STRIFE-TODO: verify (should stop previous voice I believe)
 
     // villsa 09/08/10: converted into for loop
     for(i = 0; i < MDLG_MAXITEMS; i++)

@@ -792,7 +792,7 @@ void P_ArtiTele(player_t * player)
         destAngle = ANG45 * (playerstarts[0].angle / 45);
     }
     P_Teleport(player->mo, destX, destY, destAngle);
-    S_StartSound(NULL, sfx_wpnup);      // Full volume laugh
+    S_StartSound(nullptr, sfx_wpnup);      // Full volume laugh
 }
 
 //----------------------------------------------------------------------------
@@ -892,7 +892,7 @@ void P_PlayerUseArtifact(player_t * player, artitype_t arti)
                 P_PlayerRemoveArtifact(player, i);
                 if (player == &players[consoleplayer])
                 {
-                    S_StartSound(NULL, sfx_artiuse);
+                    S_StartSound(nullptr, sfx_artiuse);
                     ArtifactFlash = 4;
                 }
             }

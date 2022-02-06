@@ -198,8 +198,8 @@ static int LoadDLLs()
     MySHGetPathFromIDList =
         (void *) GetProcAddress(shell32, "SHGetPathFromIDList");
 
-    return MyGetOpenFileName != NULL
-        && MySHBrowseForFolder != NULL
+    return MyGetOpenFileName != nullptr
+        && MySHBrowseForFolder != nullptr
         && MySHGetPathFromIDList != nullptr;
 }
 

@@ -176,7 +176,7 @@ unsigned int net_local_is_freedoom;
 
 static void NET_CL_Disconnected()
 {
-    D_ReceiveTic(NULL, nullptr);
+    D_ReceiveTic(nullptr, nullptr);
 }
 
 // Called when a packet is received from the server containing game
@@ -1136,7 +1136,7 @@ boolean NET_CL_Connect(net_addr_t *addr, net_connect_data_t *data)
     {
         // connected ok!
         NET_Log("client: connected successfully");
-        SetRejectReason(NULL);
+        SetRejectReason(nullptr);
         client_state = CLIENT_STATE_WAITING_LAUNCH;
         drone        = data->drone;
 

@@ -132,7 +132,7 @@ boolean NET_ReadQueryData(net_packet_t *packet, net_querydata_t *query)
 
     query->version = NET_ReadSafeString(packet);
 
-    success = query->version != NULL
+    success = query->version != nullptr
               && NET_ReadInt8(packet, (unsigned int *)&query->server_state)
               && NET_ReadInt8(packet, (unsigned int *)&query->num_players)
               && NET_ReadInt8(packet, (unsigned int *)&query->max_players)

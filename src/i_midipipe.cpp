@@ -429,7 +429,7 @@ boolean I_MidiPipe_InitServer()
 
     // Get directory name
     memset(dirname, 0, sizeof(dirname));
-    dirname_len = GetModuleFileName(NULL, dirname, MAX_PATH);
+    dirname_len = GetModuleFileName(nullptr, dirname, MAX_PATH);
     if (dirname_len == 0)
     {
         return false;

@@ -115,7 +115,7 @@ static const SDL_Color ega_colors[] =
 
 static int Win32_UseLargeFont()
 {
-    HDC hdc = GetDC(NULL);
+    HDC hdc = GetDC(nullptr);
     int dpix;
 
     if (!hdc)
@@ -124,7 +124,7 @@ static int Win32_UseLargeFont()
     }
 
     dpix = GetDeviceCaps(hdc, LOGPIXELSX);
-    ReleaseDC(NULL, hdc);
+    ReleaseDC(nullptr, hdc);
 
     // 144 is the DPI when using "150%" scaling. If the user has this set
     // then consider this an appropriate threshold for using the large font.
@@ -862,7 +862,7 @@ void TXT_Sleep(int timeout)
     {
         // We can just wait forever until an event occurs
 
-        SDL_WaitEvent(NULL);
+        SDL_WaitEvent(nullptr);
     }
     else
     {
@@ -873,7 +873,7 @@ void TXT_Sleep(int timeout)
 
         while (SDL_GetTicks() < start_time + timeout)
         {
-            if (SDL_PollEvent(NULL) != 0)
+            if (SDL_PollEvent(nullptr) != 0)
             {
                 // Received an event, so stop waiting
 

@@ -1147,7 +1147,7 @@ void P_PlayerInSpecialSector(player_t *player)
             sfx_id = I_GetSfxLumpNum(&S_sfx[sfx_secret]) != -1 ? sfx_secret : sfx_itmbk;
 
             player->centermessage = (crispy->secretmessage == SECRETMESSAGE_COUNT) ? str_count : HUSTR_SECRETFOUND;
-            S_StartSound(NULL, sfx_id);
+            S_StartSound(nullptr, sfx_id);
         }
         // [crispy] remember revealed secrets
         sector->oldspecial = sector->special;

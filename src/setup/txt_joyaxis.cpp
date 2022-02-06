@@ -350,7 +350,7 @@ static void CalibrateWindowClosed(TXT_UNCAST_ARG(widget),
     SDL_JoystickClose(joystick_axis->joystick);
     SDL_JoystickEventState(SDL_DISABLE);
     SDL_QuitSubSystem(SDL_INIT_JOYSTICK);
-    TXT_SDL_SetEventCallback(NULL, nullptr);
+    TXT_SDL_SetEventCallback(nullptr, nullptr);
 }
 
 void TXT_ConfigureJoystickAxis(txt_joystick_axis_t *joystick_axis,
@@ -366,7 +366,7 @@ void TXT_ConfigureJoystickAxis(txt_joystick_axis_t *joystick_axis,
     joystick_axis->joystick = SDL_JoystickOpen(joystick_index);
     if (joystick_axis->joystick == nullptr)
     {
-        TXT_MessageBox(NULL, "Please configure a controller first!");
+        TXT_MessageBox(nullptr, "Please configure a controller first!");
         return;
     }
 

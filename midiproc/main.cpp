@@ -398,7 +398,7 @@ int main(int argc, char *argv[])
     // Make sure we're not launching this process by itself.
     if (argc < 5)
     {
-        MessageBox(NULL, TEXT("This program is tasked with playing Native ")
+        MessageBox(nullptr, TEXT("This program is tasked with playing Native ")
                    TEXT("MIDI music, and is intended to be launched by ")
                    TEXT(PACKAGE_NAME) TEXT("."),
                    TEXT(PACKAGE_STRING), MB_OK | MB_ICONASTERISK);
@@ -418,7 +418,7 @@ int main(int argc, char *argv[])
                   PACKAGE_STRING, argv[1]);
         message[sizeof(message) - 1] = '\0';
 
-        MessageBox(NULL, TEXT(message),
+        MessageBox(nullptr, TEXT(message),
                    TEXT(PACKAGE_STRING), MB_OK | MB_ICONASTERISK);
 
         return EXIT_FAILURE;

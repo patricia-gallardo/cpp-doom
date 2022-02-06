@@ -1039,7 +1039,7 @@ static boolean HandleCheats(byte key)
         if (cht_CheckCheat(Cheats[i].seq, key))
         {
             Cheats[i].func(&players[consoleplayer], &Cheats[i]);
-            S_StartSound(NULL, sfx_dorcls);
+            S_StartSound(nullptr, sfx_dorcls);
         }
     }
     return (eat);

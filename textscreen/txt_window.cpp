@@ -80,7 +80,7 @@ txt_window_t *TXT_NewWindow(const char *title)
     win->mouse_listener = nullptr;
     win->help_url = nullptr;
 
-    TXT_AddWidget(win, TXT_NewSeparator(NULL));
+    TXT_AddWidget(win, TXT_NewSeparator(nullptr));
 
     for (i=0; i<3; ++i)
     {
@@ -425,7 +425,7 @@ static int MouseButtonPress(txt_window_t *window, int b)
     {
         widget = window->actions[i];
 
-        if (widget != NULL
+        if (widget != nullptr
          && x >= widget->x && x < (signed) (widget->x + widget->w)
          && y >= widget->y && y < (signed) (widget->y + widget->h))
         {
@@ -484,7 +484,7 @@ int TXT_WindowKeyPress(txt_window_t *window, int c)
 
     for (i=0; i<3; ++i)
     {
-        if (window->actions[i] != NULL
+        if (window->actions[i] != nullptr
          && TXT_WidgetKeyPress(window->actions[i], c))
         {
             return 1;
@@ -523,7 +523,7 @@ void TXT_SetWindowHelpURL(txt_window_t *window, const char *help_url)
 
 void TXT_OpenURL(const char *url)
 {
-    ShellExecute(NULL, "open", url, nullptr, nullptr, SW_SHOWNORMAL);
+    ShellExecute(nullptr, "open", url, nullptr, nullptr, SW_SHOWNORMAL);
 }
 
 #else

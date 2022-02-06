@@ -310,7 +310,7 @@ void NET_Conn_Run(net_connection_t *conn)
         //
         // NB.  This is braindead, we have a fixed time of one second.
 
-        if (conn->reliable_packets != NULL
+        if (conn->reliable_packets != nullptr
             && (conn->reliable_packets->last_send_time < 0
                 || nowtime - conn->reliable_packets->last_send_time > 1000))
         {

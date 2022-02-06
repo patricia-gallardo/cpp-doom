@@ -183,7 +183,7 @@ void SetupWindow()
         TXT_SignalConnect(rbut, "selected", UpdateLabel, nullptr);
     }
 
-    UpdateLabel(NULL, nullptr);
+    UpdateLabel(nullptr, nullptr);
 
     TXT_AddWidget(window, TXT_NewButton2("Close Window", CloseWindow, nullptr));
 

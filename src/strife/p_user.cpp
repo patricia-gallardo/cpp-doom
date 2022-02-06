@@ -863,7 +863,7 @@ boolean P_UseInventoryItem(player_t* player, int item)
         player->message = useinventorymsg;
 
         if(player == &players[consoleplayer])
-            S_StartSound(NULL, sfx_itemup);
+            S_StartSound(nullptr, sfx_itemup);
 
         return true;
     }

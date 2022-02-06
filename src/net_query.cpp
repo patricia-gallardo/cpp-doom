@@ -310,12 +310,12 @@ static void NET_Query_ParseResponse(net_addr_t *addr, net_packet_t *packet,
     {
         query_target_t *broadcast_target;
 
-        broadcast_target = GetTargetForAddr(NULL, false);
+        broadcast_target = GetTargetForAddr(nullptr, false);
 
         // Not in broadcast mode, unexpected response that came out
         // of nowhere. Ignore.
 
-        if (broadcast_target == NULL
+        if (broadcast_target == nullptr
             || broadcast_target->state != QUERY_TARGET_QUERIED)
         {
             return;
@@ -468,7 +468,7 @@ static void SendOneQuery()
         break;
 
     case QUERY_TARGET_BROADCAST:
-        NET_Query_SendQuery(NULL);
+        NET_Query_SendQuery(nullptr);
         break;
 
     case QUERY_TARGET_MASTER:
@@ -652,7 +652,7 @@ int NET_StartLANQuery()
 
     // Add a broadcast target to the list.
 
-    target       = GetTargetForAddr(NULL, true);
+    target       = GetTargetForAddr(nullptr, true);
     target->type = QUERY_TARGET_BROADCAST;
 
     return 1;
@@ -857,7 +857,7 @@ net_addr_t *NET_FindLANServer()
 
     // Add a broadcast target to the list.
 
-    target       = GetTargetForAddr(NULL, true);
+    target       = GetTargetForAddr(nullptr, true);
     target->type = QUERY_TARGET_BROADCAST;
 
     // Run the query loop, and stop at the first target found.

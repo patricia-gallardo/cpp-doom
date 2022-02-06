@@ -1522,7 +1522,7 @@ void G_Completed(int map, int position)
     if (gamemode == shareware && map > 4)
     {
         P_SetMessage(&players[consoleplayer], "ACCESS DENIED -- DEMO", true);
-        S_StartSound(NULL, SFX_CHAT);
+        S_StartSound(nullptr, SFX_CHAT);
         return;
     }
 

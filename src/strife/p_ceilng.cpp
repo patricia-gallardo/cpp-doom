@@ -337,7 +337,7 @@ int	EV_CeilingCrushStop(line_t	*line)
 	    && (activeceilings[i]->direction != 0))
 	{
 	    activeceilings[i]->olddirection = activeceilings[i]->direction;
-	    activeceilings[i]->thinker.function.acv = (actionf_v)NULL;
+	    activeceilings[i]->thinker.function.acv = (actionf_v) nullptr;
 	    activeceilings[i]->direction = 0;		// in-stasis
 	    rtn = 1;
 	}

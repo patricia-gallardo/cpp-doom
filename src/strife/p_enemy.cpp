@@ -757,7 +757,7 @@ P_LookForPlayers
 
                 // Clear target if nothing is visible, or if the target is a
                 // friendly Rebel or the allied player.
-                if (linetarget == NULL
+                if (linetarget == nullptr
                  || (actor->target->type == MT_REBEL1
                   && actor->target->miscdata == actor->miscdata)
                  || actor->target == master)
@@ -2237,7 +2237,7 @@ void A_Scream(mobj_t* actor)
 
     // Check for bosses.
     if(actor->type == MT_ENTITY || actor->type == MT_INQUISITOR)
-        S_StartSound(NULL, actor->info->deathsound);   // full volume
+        S_StartSound(nullptr, actor->info->deathsound);   // full volume
     else
         S_StartSound(actor, actor->info->deathsound);
 }

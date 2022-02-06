@@ -154,10 +154,10 @@ void P_ExplodeMissile(mobj_t * mo)
         case MT_SORCBALL1:
         case MT_SORCBALL2:
         case MT_SORCBALL3:
-            S_StartSound(NULL, SFX_SORCERER_BIGBALLEXPLODE);
+            S_StartSound(nullptr, SFX_SORCERER_BIGBALLEXPLODE);
             break;
         case MT_SORCFX1:
-            S_StartSound(NULL, SFX_SORCERER_HEADSCREAM);
+            S_StartSound(nullptr, SFX_SORCERER_HEADSCREAM);
             break;
         default:
             if (mo->info->deathsound)
@@ -2290,7 +2290,7 @@ mobj_t *P_SpawnPlayerMissile(mobj_t * source, mobjtype_t type)
     if (!P_TryMove(MissileMobj, MissileMobj->x, MissileMobj->y))
     {                           // Exploded immediately
         P_ExplodeMissile(MissileMobj);
-        return (NULL);
+        return (nullptr);
     }
     return (MissileMobj);
 }
@@ -2335,7 +2335,7 @@ mobj_t *P_SpawnPlayerMinotaur(mobj_t *source, mobjtype_t type)
 	if(!P_TryMove(MissileMobj, MissileMobj->x, MissileMobj->y))
 	{ // Wouln't fit
 
-		return(NULL);
+		return(nullptr);
 	}
 	return(MissileMobj);
 }

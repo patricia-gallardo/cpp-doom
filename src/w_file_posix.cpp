@@ -56,7 +56,7 @@ static void MapFile(posix_wad_file_t *wad, const char *filename)
 
     flags = MAP_PRIVATE;
 
-    result = mmap(NULL, wad->wad.length,
+    result = mmap(nullptr, wad->wad.length,
         protection, flags,
         wad->handle, 0);
 

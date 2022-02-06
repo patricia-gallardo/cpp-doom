@@ -234,7 +234,7 @@ boolean P_GiveWeapon(player_t * player, weapontype_t weapon)
         player->pendingweapon = weapon;
         if (player == &players[consoleplayer])
         {
-            S_StartSound(NULL, sfx_wpnup);
+            S_StartSound(nullptr, sfx_wpnup);
         }
         return (false);
     }
@@ -876,7 +876,7 @@ void P_TouchSpecialThing(mobj_t * special, mobj_t * toucher)
     player->bonuscount += BONUSADD;
     if (player == &players[consoleplayer])
     {
-        S_StartSound(NULL, sound);
+        S_StartSound(nullptr, sound);
         SB_PaletteFlash();
     }
 }
@@ -910,7 +910,7 @@ void P_KillMobj(mobj_t * source, mobj_t * target)
                 source->player->frags[target->player - players]++;
                 if (source->player == &players[consoleplayer])
                 {
-                    S_StartSound(NULL, sfx_gfrag);
+                    S_StartSound(nullptr, sfx_gfrag);
                 }
                 if (source->player->chickenTics)
                 {               // Make a super chicken

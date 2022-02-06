@@ -85,7 +85,7 @@ static net_addr_t *NET_SDL_FindAddress(IPaddress *addr)
 
     for (i = 0; i < addr_table_size; ++i)
     {
-        if (addr_table[i] != NULL
+        if (addr_table[i] != nullptr
             && AddressesEqual(addr, &addr_table[i]->sdl_addr))
         {
             return &addr_table[i]->net_addr;
@@ -185,7 +185,7 @@ static boolean NET_SDL_InitClient()
     recvpacket = SDLNet_AllocPacket(1500);
 
 #ifdef DROP_PACKETS
-    srand(time(NULL));
+    srand(time(nullptr));
 #endif
 
     initted = true;
@@ -215,7 +215,7 @@ static boolean NET_SDL_InitServer()
 
     recvpacket = SDLNet_AllocPacket(1500);
 #ifdef DROP_PACKETS
-    srand(time(NULL));
+    srand(time(nullptr));
 #endif
 
     initted = true;

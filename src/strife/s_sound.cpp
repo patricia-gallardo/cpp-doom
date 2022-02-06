@@ -617,7 +617,7 @@ void I_StartVoice(const char *lumpname)
         voice = S_getVoice(lumpnamedup, lumpnum);
 
         // get a channel for the voice
-        i_voicehandle = S_GetChannel(NULL, &voice->sfx, true);
+        i_voicehandle = S_GetChannel(nullptr, &voice->sfx, true);
 
         channels[i_voicehandle].handle 
             = I_StartSound(&voice->sfx, i_voicehandle, snd_VoiceVolume, NORM_SEP, NORM_PITCH);

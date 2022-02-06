@@ -828,7 +828,7 @@ void M_QuickSaveResponse(int key)
     if (key == key_menu_confirm)
     {
         M_DoSave(quickSaveSlot);
-        S_StartSound(NULL, sfx_mtalht); // [STRIFE] sound
+        S_StartSound(nullptr, sfx_mtalht); // [STRIFE] sound
     }
 }
 
@@ -843,7 +843,7 @@ void M_QuickSave()
 
     if (!usergame)
     {
-        S_StartSound(NULL, sfx_oof);
+        S_StartSound(nullptr, sfx_oof);
         return;
     }
 
@@ -872,7 +872,7 @@ void M_QuickLoadResponse(int key)
     if (key == key_menu_confirm)
     {
         M_LoadSelect(quickSaveSlot);
-        S_StartSound(NULL, sfx_mtalht); // [STRIFE] sound
+        S_StartSound(nullptr, sfx_mtalht); // [STRIFE] sound
     }
 }
 
@@ -1223,7 +1223,7 @@ void M_EndGame(int choice)
     choice = 0;
     if (!usergame)
     {
-        S_StartSound(NULL,sfx_oof);
+        S_StartSound(nullptr,sfx_oof);
         return;
     }
 
@@ -1739,7 +1739,7 @@ boolean M_Responder (event_t* ev)
         }
         else
         {
-            S_StartSound(NULL, sfx_swtchn);
+            S_StartSound(nullptr, sfx_swtchn);
             M_QuitStrife(0);
         }
 
@@ -1948,7 +1948,7 @@ boolean M_Responder (event_t* ev)
 
         menupause = false;                // [STRIFE] unpause
         menuactive = false;
-        S_StartSound(NULL, sfx_mtalht);   // [STRIFE] sound
+        S_StartSound(nullptr, sfx_mtalht);   // [STRIFE] sound
         return true;
     }
 
@@ -1972,7 +1972,7 @@ boolean M_Responder (event_t* ev)
             if (automapactive || chat_on)
                 return false;
             M_SizeDisplay(0);
-            S_StartSound(NULL, sfx_stnmov);
+            S_StartSound(nullptr, sfx_stnmov);
             return true;
         }
         else if (key == key_menu_incscreen) // Screen size up
@@ -1980,7 +1980,7 @@ boolean M_Responder (event_t* ev)
             if (automapactive || chat_on)
                 return false;
             M_SizeDisplay(1);
-            S_StartSound(NULL, sfx_stnmov);
+            S_StartSound(nullptr, sfx_stnmov);
             return true;
         }
         else if (key == key_menu_help)     // Help key
@@ -1990,7 +1990,7 @@ boolean M_Responder (event_t* ev)
             currentMenu = &ReadDef1; 
 
             itemOn = 0;
-            S_StartSound(NULL, sfx_swtchn);
+            S_StartSound(nullptr, sfx_swtchn);
             return true;
         }
         else if (key == key_menu_save)     // Save
@@ -2002,12 +2002,12 @@ boolean M_Responder (event_t* ev)
             if(netgame || players[consoleplayer].health <= 0 ||
                 players[consoleplayer].cheats & CF_ONFIRE)
             {
-                S_StartSound(NULL, sfx_oof);
+                S_StartSound(nullptr, sfx_oof);
             }
             else
             {
                 M_StartControlPanel();
-                S_StartSound(NULL, sfx_swtchn);
+                S_StartSound(nullptr, sfx_swtchn);
                 M_SaveGame(0);
             }
             return true;
@@ -2021,12 +2021,12 @@ boolean M_Responder (event_t* ev)
                 namingCharacter = false;
                 M_StartControlPanel();
                 M_LoadGame(0);
-                S_StartSound(NULL, sfx_swtchn);
+                S_StartSound(nullptr, sfx_swtchn);
             }
             else
             {
                 // Pre 1.31: quickload only
-                S_StartSound(NULL, sfx_swtchn);
+                S_StartSound(nullptr, sfx_swtchn);
                 M_QuickLoad();
             }
             return true;
@@ -2036,14 +2036,14 @@ boolean M_Responder (event_t* ev)
             M_StartControlPanel ();
             currentMenu = &SoundDef;
             itemOn = sfx_vol;
-            S_StartSound(NULL, sfx_swtchn);
+            S_StartSound(nullptr, sfx_swtchn);
             return true;
         }
         else if (key == key_menu_detail)   // Detail toggle
         {
             //M_ChangeDetail(0);
             M_AutoUseHealth(); // [STRIFE]
-            S_StartSound(NULL, sfx_swtchn);
+            S_StartSound(nullptr, sfx_swtchn);
             return true;
         }
         else if (key == key_menu_qsave)    // Quicksave
@@ -2055,18 +2055,18 @@ boolean M_Responder (event_t* ev)
             if(netgame || players[consoleplayer].health <= 0 ||
                players[consoleplayer].cheats & CF_ONFIRE)
             {
-                S_StartSound(NULL, sfx_oof);
+                S_StartSound(nullptr, sfx_oof);
             }
             else
             {
-                S_StartSound(NULL, sfx_swtchn);
+                S_StartSound(nullptr, sfx_swtchn);
                 M_QuickSave();
             }
             return true;
         }
         else if (key == key_menu_endgame)  // End game
         {
-            S_StartSound(NULL, sfx_swtchn);
+            S_StartSound(nullptr, sfx_swtchn);
             M_EndGame(0);
             return true;
         }
@@ -2074,7 +2074,7 @@ boolean M_Responder (event_t* ev)
         {
             //M_ChangeMessages(0);
             M_ChangeShowText(); // [STRIFE]
-            S_StartSound(NULL, sfx_swtchn);
+            S_StartSound(nullptr, sfx_swtchn);
             return true;
         }
         else if (key == key_menu_qload)    // Quickload
@@ -2085,7 +2085,7 @@ boolean M_Responder (event_t* ev)
             if(gameversion == exe_strife_1_31)
             {
                 namingCharacter = false;
-                S_StartSound(NULL, sfx_swtchn);
+                S_StartSound(nullptr, sfx_swtchn);
                 M_QuickLoad();
             }
             else
@@ -2094,7 +2094,7 @@ boolean M_Responder (event_t* ev)
         }
         else if (key == key_menu_quit)     // Quit DOOM
         {
-            S_StartSound(NULL, sfx_swtchn);
+            S_StartSound(nullptr, sfx_swtchn);
             M_QuitStrife(0);
             return true;
         }
@@ -2126,7 +2126,7 @@ boolean M_Responder (event_t* ev)
         if (key == key_menu_activate)
         {
             M_StartControlPanel ();
-            S_StartSound(NULL, sfx_swtchn);
+            S_StartSound(nullptr, sfx_swtchn);
             return true;
         }
         return false;
@@ -2144,7 +2144,7 @@ boolean M_Responder (event_t* ev)
             if (itemOn+1 > currentMenu->numitems-1)
                 itemOn = 0;
             else itemOn++;
-            S_StartSound(NULL, sfx_pstop);
+            S_StartSound(nullptr, sfx_pstop);
         } while(currentMenu->menuitems[itemOn].status==-1);
 
         return true;
@@ -2158,7 +2158,7 @@ boolean M_Responder (event_t* ev)
             if (!itemOn)
                 itemOn = currentMenu->numitems-1;
             else itemOn--;
-            S_StartSound(NULL, sfx_pstop);
+            S_StartSound(nullptr, sfx_pstop);
         } while(currentMenu->menuitems[itemOn].status==-1);
 
         return true;
@@ -2170,7 +2170,7 @@ boolean M_Responder (event_t* ev)
         if (currentMenu->menuitems[itemOn].routine &&
             currentMenu->menuitems[itemOn].status == 2)
         {
-            S_StartSound(NULL, sfx_stnmov);
+            S_StartSound(nullptr, sfx_stnmov);
             currentMenu->menuitems[itemOn].routine(0);
         }
         return true;
@@ -2182,7 +2182,7 @@ boolean M_Responder (event_t* ev)
         if (currentMenu->menuitems[itemOn].routine &&
             currentMenu->menuitems[itemOn].status == 2)
         {
-            S_StartSound(NULL, sfx_stnmov);
+            S_StartSound(nullptr, sfx_stnmov);
             currentMenu->menuitems[itemOn].routine(1);
         }
         return true;
@@ -2198,12 +2198,12 @@ boolean M_Responder (event_t* ev)
             if (currentMenu->menuitems[itemOn].status == 2)
             {
                 currentMenu->menuitems[itemOn].routine(1);      // right arrow
-                S_StartSound(NULL, sfx_stnmov);
+                S_StartSound(nullptr, sfx_stnmov);
             }
             else
             {
                 currentMenu->menuitems[itemOn].routine(itemOn);
-                //S_StartSound(NULL, sfx_swish); [STRIFE] No sound is played here.
+                //S_StartSound(nullptr, sfx_swish); [STRIFE] No sound is played here.
             }
         }
         return true;
@@ -2219,7 +2219,7 @@ boolean M_Responder (event_t* ev)
 
         currentMenu->lastOn = itemOn;
         M_ClearMenus (0);
-        S_StartSound(NULL, sfx_mtalht); // villsa [STRIFE]: sounds
+        S_StartSound(nullptr, sfx_mtalht); // villsa [STRIFE]: sounds
         return true;
     }
     else if (key == key_menu_back)
@@ -2231,7 +2231,7 @@ boolean M_Responder (event_t* ev)
         {
             currentMenu = currentMenu->prevMenu;
             itemOn = currentMenu->lastOn;
-            S_StartSound(NULL, sfx_swtchn);
+            S_StartSound(nullptr, sfx_swtchn);
         }
         return true;
     }
@@ -2249,7 +2249,7 @@ boolean M_Responder (event_t* ev)
             if (currentMenu->menuitems[i].alphaKey == ch)
             {
                 itemOn = i;
-                S_StartSound(NULL, sfx_pstop);
+                S_StartSound(nullptr, sfx_pstop);
                 return true;
             }
         }
@@ -2259,7 +2259,7 @@ boolean M_Responder (event_t* ev)
             if (currentMenu->menuitems[i].alphaKey == ch)
             {
                 itemOn = i;
-                S_StartSound(NULL, sfx_pstop);
+                S_StartSound(nullptr, sfx_pstop);
                 return true;
             }
         }

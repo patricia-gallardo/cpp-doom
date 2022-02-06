@@ -180,7 +180,7 @@ int IOperm_InstallDriver()
         return 0;
     }
 
-    scm = MyOpenSCManagerW(NULL, nullptr, SC_MANAGER_ALL_ACCESS);
+    scm = MyOpenSCManagerW(nullptr, nullptr, SC_MANAGER_ALL_ACCESS);
 
     if (scm == nullptr)
     {

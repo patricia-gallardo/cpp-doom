@@ -847,7 +847,7 @@ static void SCMessages(int option)
     {
         P_SetMessage(&players[consoleplayer], "MESSAGES OFF", true);
     }
-    S_StartSound(NULL, SFX_CHAT);
+    S_StartSound(nullptr, SFX_CHAT);
 }
 
 //===========================================================================
@@ -878,7 +878,7 @@ static boolean SCNetCheck(int option)
             break;
     }
     MenuActive = false;
-    S_StartSound(NULL, SFX_CHAT);
+    S_StartSound(nullptr, SFX_CHAT);
     return false;
 }
 
@@ -1133,7 +1133,7 @@ static void SCScreenSize(int option)
 static void SCInfo(int option)
 {
     InfoType = 1;
-    S_StartSound(NULL, SFX_DOOR_LIGHT_CLOSE);
+    S_StartSound(nullptr, SFX_DOOR_LIGHT_CLOSE);
     if (!netgame && !demoplayback)
     {
         paused = true;
@@ -1188,7 +1188,7 @@ boolean MN_Responder(event_t * event)
         else
         {
             SCQuitGame(0);
-            S_StartSound(NULL, SFX_CHAT);
+            S_StartSound(nullptr, SFX_CHAT);
         }
 
         return true;
@@ -1241,7 +1241,7 @@ boolean MN_Responder(event_t * event)
             SB_state = -1;      //refresh the statbar
             BorderNeedRefresh = true;
         }
-        S_StartSound(NULL, SFX_DOOR_LIGHT_CLOSE);
+        S_StartSound(nullptr, SFX_DOOR_LIGHT_CLOSE);
         return (true);          //make the info screen eat the keypress
     }
 
@@ -1318,7 +1318,7 @@ boolean MN_Responder(event_t * event)
                 return (false);
             }
             SCScreenSize(LEFT_DIR);
-            S_StartSound(NULL, SFX_PICKUP_KEY);
+            S_StartSound(nullptr, SFX_PICKUP_KEY);
             BorderNeedRefresh = true;
             UpdateState |= I_FULLSCRN;
             return (true);
@@ -1330,7 +1330,7 @@ boolean MN_Responder(event_t * event)
                 return (false);
             }
             SCScreenSize(RIGHT_DIR);
-            S_StartSound(NULL, SFX_PICKUP_KEY);
+            S_StartSound(nullptr, SFX_PICKUP_KEY);
             BorderNeedRefresh = true;
             UpdateState |= I_FULLSCRN;
             return (true);
@@ -1354,7 +1354,7 @@ boolean MN_Responder(event_t * event)
                 {
                     paused = true;
                 }
-                S_StartSound(NULL, SFX_DOOR_LIGHT_CLOSE);
+                S_StartSound(nullptr, SFX_DOOR_LIGHT_CLOSE);
                 slottextloaded = false;     //reload the slot text, when needed
             }
             return true;
@@ -1372,7 +1372,7 @@ boolean MN_Responder(event_t * event)
                 {
                     paused = true;
                 }
-                S_StartSound(NULL, SFX_DOOR_LIGHT_CLOSE);
+                S_StartSound(nullptr, SFX_DOOR_LIGHT_CLOSE);
                 slottextloaded = false;     //reload the slot text, when needed
             }
             return true;
@@ -1388,7 +1388,7 @@ boolean MN_Responder(event_t * event)
             {
                 paused = true;
             }
-            S_StartSound(NULL, SFX_DOOR_LIGHT_CLOSE);
+            S_StartSound(nullptr, SFX_DOOR_LIGHT_CLOSE);
             slottextloaded = false; //reload the slot text, when needed
             return true;
         }
@@ -1414,7 +1414,7 @@ boolean MN_Responder(event_t * event)
                     {
                         paused = true;
                     }
-                    S_StartSound(NULL, SFX_DOOR_LIGHT_CLOSE);
+                    S_StartSound(nullptr, SFX_DOOR_LIGHT_CLOSE);
                     slottextloaded = false; //reload the slot text
                     quicksave = -1;
                     P_SetMessage(&players[consoleplayer],
@@ -1428,7 +1428,7 @@ boolean MN_Responder(event_t * event)
                     {
                         paused = true;
                     }
-                    S_StartSound(NULL, SFX_CHAT);
+                    S_StartSound(nullptr, SFX_CHAT);
                 }
             }
             return true;
@@ -1439,7 +1439,7 @@ boolean MN_Responder(event_t * event)
             {
                 if (gamestate == GS_LEVEL && !demoplayback)
                 {
-                    S_StartSound(NULL, SFX_CHAT);
+                    S_StartSound(nullptr, SFX_CHAT);
                     SCEndGame(0);
                 }
             }
@@ -1465,7 +1465,7 @@ boolean MN_Responder(event_t * event)
                     {
                         paused = true;
                     }
-                    S_StartSound(NULL, SFX_DOOR_LIGHT_CLOSE);
+                    S_StartSound(nullptr, SFX_DOOR_LIGHT_CLOSE);
                     slottextloaded = false; // reload the slot text
                     quickload = -1;
                     P_SetMessage(&players[consoleplayer],
@@ -1479,7 +1479,7 @@ boolean MN_Responder(event_t * event)
                         paused = true;
                     }
                     typeofask = 4;
-                    S_StartSound(NULL, SFX_CHAT);
+                    S_StartSound(nullptr, SFX_CHAT);
                 }
             }
             return true;
@@ -1489,7 +1489,7 @@ boolean MN_Responder(event_t * event)
             if (gamestate == GS_LEVEL || gamestate == GS_FINALE)
             {
                 SCQuitGame(0);
-                S_StartSound(NULL, SFX_CHAT);
+                S_StartSound(nullptr, SFX_CHAT);
             }
             return true;
         }
@@ -1554,7 +1554,7 @@ boolean MN_Responder(event_t * event)
                 }
             }
             while (CurrentMenu->items[CurrentItPos].type == ITT_EMPTY);
-            S_StartSound(NULL, SFX_FIGHTER_HAMMER_HITWALL);
+            S_StartSound(nullptr, SFX_FIGHTER_HAMMER_HITWALL);
             return (true);
         }
         else if (key == key_menu_up)             // Previous menu item
@@ -1571,7 +1571,7 @@ boolean MN_Responder(event_t * event)
                 }
             }
             while (CurrentMenu->items[CurrentItPos].type == ITT_EMPTY);
-            S_StartSound(NULL, SFX_FIGHTER_HAMMER_HITWALL);
+            S_StartSound(nullptr, SFX_FIGHTER_HAMMER_HITWALL);
             return (true);
         }
         else if (key == key_menu_left)           // Slider left
@@ -1579,7 +1579,7 @@ boolean MN_Responder(event_t * event)
             if (item->type == ITT_LRFUNC && item->func != nullptr)
             {
                 item->func(LEFT_DIR);
-                S_StartSound(NULL, SFX_PICKUP_KEY);
+                S_StartSound(nullptr, SFX_PICKUP_KEY);
             }
             return (true);
         }
@@ -1588,7 +1588,7 @@ boolean MN_Responder(event_t * event)
             if (item->type == ITT_LRFUNC && item->func != nullptr)
             {
                 item->func(RIGHT_DIR);
-                S_StartSound(NULL, SFX_PICKUP_KEY);
+                S_StartSound(nullptr, SFX_PICKUP_KEY);
             }
             return (true);
         }
@@ -1614,7 +1614,7 @@ boolean MN_Responder(event_t * event)
                     item->func(item->option);
                 }
             }
-            S_StartSound(NULL, SFX_DOOR_LIGHT_CLOSE);
+            S_StartSound(nullptr, SFX_DOOR_LIGHT_CLOSE);
             return (true);
         }
         else if (key == key_menu_activate)
@@ -1624,7 +1624,7 @@ boolean MN_Responder(event_t * event)
         }
         else if (key == key_menu_back)
         {
-            S_StartSound(NULL, SFX_PICKUP_KEY);
+            S_StartSound(nullptr, SFX_PICKUP_KEY);
 
             if (CurrentMenu->prevMenu == MENU_NONE)
             {
@@ -1742,7 +1742,7 @@ void MN_ActivateMenu()
     {
         paused = true;
     }
-    S_StartSound(NULL, SFX_PLATFORM_STOP);
+    S_StartSound(nullptr, SFX_PLATFORM_STOP);
     slottextloaded = false;     //reload the slot text, when needed
 }
 
@@ -1767,7 +1767,7 @@ void MN_DeactivateMenu()
     {
         paused = false;
     }
-    S_StartSound(NULL, SFX_PLATFORM_STOP);
+    S_StartSound(nullptr, SFX_PLATFORM_STOP);
     P_ClearMessage(&players[consoleplayer]);
 }
 

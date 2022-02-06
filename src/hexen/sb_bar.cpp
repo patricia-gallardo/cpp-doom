@@ -1546,12 +1546,12 @@ static boolean HandleCheats(byte key)
             if (CheatAddKey(&Cheats[0], key, &eat))
             {
                 Cheats[0].func(&players[consoleplayer], &Cheats[0]);
-                S_StartSound(NULL, SFX_PLATFORM_STOP);
+                S_StartSound(nullptr, SFX_PLATFORM_STOP);
             }
             if (CheatAddKey(&Cheats[1], key, &eat))
             {
                 Cheats[1].func(&players[consoleplayer], &Cheats[1]);
-                S_StartSound(NULL, SFX_PLATFORM_STOP);
+                S_StartSound(nullptr, SFX_PLATFORM_STOP);
             }
         }
         return eat;
@@ -1566,7 +1566,7 @@ static boolean HandleCheats(byte key)
         if (CheatAddKey(&Cheats[i], key, &eat))
         {
             Cheats[i].func(&players[consoleplayer], &Cheats[i]);
-            S_StartSound(NULL, SFX_PLATFORM_STOP);
+            S_StartSound(nullptr, SFX_PLATFORM_STOP);
         }
     }
     return (eat);

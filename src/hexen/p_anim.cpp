@@ -270,7 +270,7 @@ static void P_LightningFlash()
     if (foundSec)
     {
         Sky1Texture = P_GetMapSky2Texture(gamemap);     // set alternate sky                
-        S_StartSound(NULL, SFX_THUNDER_CRASH);
+        S_StartSound(nullptr, SFX_THUNDER_CRASH);
     }
     // Calculate the next lighting flash
     if (!NextLightningFlash)
@@ -383,7 +383,7 @@ void P_InitFTAnims()
         }
         else
         {
-            SC_ScriptError(NULL);
+            SC_ScriptError(nullptr);
         }
         SC_MustGetString();     // Name
         ignore = false;
@@ -450,7 +450,7 @@ void P_InitFTAnims()
                     }
                     else
                     {
-                        SC_ScriptError(NULL);
+                        SC_ScriptError(nullptr);
                     }
                 }
                 else

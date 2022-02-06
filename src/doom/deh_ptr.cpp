@@ -58,7 +58,7 @@ static void DEH_PointerInit()
         states[i].sprite     = SPR_TNT1;
         states[i].frame      = 0;
         states[i].tics       = -1;
-        states[i].action.acv = (actionf_v)NULL;
+        states[i].action.acv = (actionf_v) nullptr;
         states[i].nextstate  = static_cast<statenum_t>(i);
         states[i].misc1      = S_NULL;
         states[i].misc2      = 0;

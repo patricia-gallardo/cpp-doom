@@ -389,7 +389,7 @@ void D_DoomMain()
     }
     else
     {
-        M_SetConfigDir(NULL);
+        M_SetConfigDir(nullptr);
     }
 
     M_SetConfigFilenames("hexen.cfg", PROGRAM_PREFIX "hexen.cfg");

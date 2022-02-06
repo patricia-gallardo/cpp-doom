@@ -653,7 +653,7 @@ void A_Look(mobj_t * actor)
         sound = actor->info->seesound;
         if (actor->flags2 & MF2_BOSS)
         {                       // Full volume
-            S_StartSound(NULL, sound);
+            S_StartSound(nullptr, sound);
         }
         else
         {
@@ -790,7 +790,7 @@ void A_Chase(mobj_t * actor)
         }
         else if (actor->type == MT_SORCERER2)
         {
-            S_StartSound(NULL, actor->info->activesound);
+            S_StartSound(nullptr, actor->info->activesound);
         }
         else
         {
@@ -1452,7 +1452,7 @@ void A_Srcr2Attack(mobj_t * actor)
     {
         return;
     }
-    S_StartSound(NULL, actor->info->attacksound);
+    S_StartSound(nullptr, actor->info->attacksound);
     if (P_CheckMeleeRange(actor))
     {
         P_DamageMobj(actor->target, actor, actor, HITDICE(20));
@@ -1551,32 +1551,32 @@ void A_Sor2DthLoop(mobj_t * actor)
 
 void A_SorZap(mobj_t * actor)
 {
-    S_StartSound(NULL, sfx_sorzap);
+    S_StartSound(nullptr, sfx_sorzap);
 }
 
 void A_SorRise(mobj_t * actor)
 {
-    S_StartSound(NULL, sfx_sorrise);
+    S_StartSound(nullptr, sfx_sorrise);
 }
 
 void A_SorDSph(mobj_t * actor)
 {
-    S_StartSound(NULL, sfx_sordsph);
+    S_StartSound(nullptr, sfx_sordsph);
 }
 
 void A_SorDExp(mobj_t * actor)
 {
-    S_StartSound(NULL, sfx_sordexp);
+    S_StartSound(nullptr, sfx_sordexp);
 }
 
 void A_SorDBon(mobj_t * actor)
 {
-    S_StartSound(NULL, sfx_sordbon);
+    S_StartSound(nullptr, sfx_sordbon);
 }
 
 void A_SorSightSnd(mobj_t * actor)
 {
-    S_StartSound(NULL, sfx_sorsit);
+    S_StartSound(nullptr, sfx_sorsit);
 }
 
 //----------------------------------------------------------------------------
@@ -2094,7 +2094,7 @@ void A_Scream(mobj_t * actor)
         case MT_SORCERER1:
         case MT_MINOTAUR:
             // Make boss death sounds full volume
-            S_StartSound(NULL, actor->info->deathsound);
+            S_StartSound(nullptr, actor->info->deathsound);
             break;
         case MT_PLAYER:
             // Handle the different player death screams

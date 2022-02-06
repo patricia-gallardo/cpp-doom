@@ -2119,7 +2119,7 @@ static void I_OPL_PauseSong()
 
     for (i = 0; i < num_opl_voices; ++i)
     {
-        if (voices[i].channel != NULL
+        if (voices[i].channel != nullptr
             && voices[i].current_instr < percussion_instrs)
         {
             VoiceKeyOff(&voices[i]);

@@ -950,7 +950,7 @@ boolean
 
         dist = FixedMul(attackrange, in->frac);
 
-        if (li->backsector == NULL
+        if (li->backsector == nullptr
             || li->frontsector->floorheight != li->backsector->floorheight)
         {
             slope = FixedDiv(openbottom - shootz, dist);
@@ -958,7 +958,7 @@ boolean
                 bottomslope = slope;
         }
 
-        if (li->backsector == NULL
+        if (li->backsector == nullptr
             || li->frontsector->ceilingheight != li->backsector->ceilingheight)
         {
             slope = FixedDiv(opentop - shootz, dist);

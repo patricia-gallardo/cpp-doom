@@ -1014,7 +1014,7 @@ static void LinkPolyobj(polyobj_t * po)
                 else
                 {
                     tempLink = *link;
-                    while (tempLink->next != NULL
+                    while (tempLink->next != nullptr
                            && tempLink->polyobj != nullptr)
                     {
                         tempLink = tempLink->next;

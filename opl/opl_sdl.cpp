@@ -222,7 +222,7 @@ static void OPL_Mix_Callback(void *udata, Uint8 *buffer, int len)
 
 static void OPL_SDL_Shutdown()
 {
-    Mix_HookMusic(NULL, nullptr);
+    Mix_HookMusic(nullptr, nullptr);
 
     if (sdl_was_initialized)
     {

@@ -1548,7 +1548,7 @@ mobj_t *P_SpawnPlayerMissile(mobj_t * source, mobjtype_t type)
     if (!P_TryMove(MissileMobj, MissileMobj->x, MissileMobj->y))
     {                           // Exploded immediately
         P_ExplodeMissile(MissileMobj);
-        return (NULL);
+        return (nullptr);
     }
     return (MissileMobj);
 }

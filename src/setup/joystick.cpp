@@ -917,7 +917,7 @@ static int CalibrationEventCallback(SDL_Event *event, void *user_data)
 
 static void NoJoystick()
 {
-    TXT_MessageBox(NULL, "No gamepads or joysticks could be found.\n\n"
+    TXT_MessageBox(nullptr, "No gamepads or joysticks could be found.\n\n"
                          "Try configuring your controller from within\n"
                          "your OS first. Maybe you need to install\n"
                          "some drivers or otherwise configure it.");
@@ -929,7 +929,7 @@ static void NoJoystick()
 
 static void CalibrateWindowClosed(TXT_UNCAST_ARG(widget), TXT_UNCAST_ARG(unused))
 {
-    TXT_SDL_SetEventCallback(NULL, nullptr);
+    TXT_SDL_SetEventCallback(nullptr, nullptr);
     SetJoystickButtonLabel();
     CloseAllJoysticks();
 }

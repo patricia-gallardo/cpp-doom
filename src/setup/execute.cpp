@@ -146,7 +146,7 @@ void AddCmdLineParameter(execute_context_t *context, const char *s, ...)
 boolean OpenFolder(const char *path)
 {
     // "If the function succeeds, it returns a value greater than 32."
-    return (int)ShellExecute(NULL, "open", path, nullptr, nullptr, SW_SHOWDEFAULT) > 32;
+    return (int)ShellExecute(nullptr, "open", path, nullptr, nullptr, SW_SHOWDEFAULT) > 32;
 }
 
 // Wait for the specified process to exit.  Returns the exit code.
@@ -189,7 +189,7 @@ static wchar_t *BuildCommandLine(const char *program, const char *arg)
 
     // Get the path to this .exe file.
 
-    GetModuleFileNameW(NULL, exe_path, MAX_PATH);
+    GetModuleFileNameW(nullptr, exe_path, MAX_PATH);
 
     // Allocate buffer to contain result string.
 
@@ -239,7 +239,7 @@ static int ExecuteCommand(const char *program, const char *arg)
     memset(&startup_info, 0, sizeof(startup_info));
     startup_info.cb = sizeof(startup_info);
 
-    if (!CreateProcessW(NULL, command,
+    if (!CreateProcessW(nullptr, command,
                         nullptr, nullptr, FALSE, 0, nullptr, nullptr,
                         &startup_info, &proc_info))
     {

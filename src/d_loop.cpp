@@ -449,7 +449,7 @@ boolean D_InitNetGame(net_connect_data_t *connect_data)
         NET_SV_RegisterWithMaster();
 
         net_loop_client_module.InitClient();
-        addr = net_loop_client_module.ResolveAddress(NULL);
+        addr = net_loop_client_module.ResolveAddress(nullptr);
         NET_ReferenceAddress(addr);
     }
     else

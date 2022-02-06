@@ -135,7 +135,7 @@ static void OpenSelectorWindow(txt_dropdown_list_t *list)
 
     // Open a simple window with no title bar or action buttons.
 
-    window = TXT_NewWindow(NULL);
+    window = TXT_NewWindow(nullptr);
 
     TXT_SetWindowAction(window, TXT_HORIZ_LEFT, nullptr);
     TXT_SetWindowAction(window, TXT_HORIZ_CENTER, nullptr);
