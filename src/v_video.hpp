@@ -31,7 +31,7 @@
 // VIDEO
 //
 
-#define CENTERY (SCREENHEIGHT / 2)
+//#define CENTERY (SCREENHEIGHT / 2)
 
 
 extern int dirtybox[4];

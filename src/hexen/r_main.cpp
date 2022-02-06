@@ -195,7 +195,7 @@ int R_PointOnSegSide(fixed_t x, fixed_t y, seg_t * line)
 ===============================================================================
 */
 
-#define	DBITS		(FRACBITS-SLOPEBITS)
+//#define	DBITS		(FRACBITS-SLOPEBITS)
 
 angle_t R_PointToAngle(fixed_t x, fixed_t y)
 {
