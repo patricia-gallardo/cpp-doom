@@ -23,9 +23,9 @@
 #include <cstdio>
 #include "doomtype.hpp"
 
-using wad_file_t = struct _wad_file_s;
+typedef struct _wad_file_s wad_file_t;
 
-using wad_file_class_t = struct
+typedef struct
 {
     // Open a file for reading.
     wad_file_t *(*OpenFile)(const char *path);
@@ -37,7 +37,7 @@ using wad_file_class_t = struct
     // provided buffer.  Returns the number of bytes read.
     size_t (*Read)(wad_file_t *file, unsigned int offset,
         void *buffer, size_t buffer_len);
-};
+} wad_file_class_t;
 
 struct _wad_file_s {
     // Class of this file.

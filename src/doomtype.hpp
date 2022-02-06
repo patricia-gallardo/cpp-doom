@@ -104,7 +104,7 @@
 
 // Use builtin bool type with C++.
 
-using boolean = bool;
+typedef bool boolean;
 
 #else
 
@@ -116,10 +116,10 @@ typedef enum
 
 #endif
 
-using byte = uint8_t;
+typedef uint8_t byte;
 #ifndef CRISPY_TRUECOLOR
-using pixel_t = uint8_t;
-using dpixel_t = int16_t;
+typedef uint8_t pixel_t;
+typedef int16_t dpixel_t;
 #else
 typedef uint32_t pixel_t;
 typedef int64_t  dpixel_t;

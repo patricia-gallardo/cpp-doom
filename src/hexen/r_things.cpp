@@ -26,14 +26,14 @@
 
 // void R_DrawTranslatedAltTLColumn();
 
-using maskdraw_t = struct
+typedef struct
 {
     int x1, x2;
 
     int column;
     int topclip;
     int bottomclip;
-};
+} maskdraw_t;
 
 /*
 

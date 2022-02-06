@@ -26,7 +26,7 @@
 #include "action_hook.hpp"
 
 // villsa [STRIFE]
-using spritenum_t = enum
+typedef enum
 {
     SPR_PLAY, // 0
     SPR_PNCH, // 1
@@ -293,10 +293,10 @@ using spritenum_t = enum
     SPR_STLG, // 262
     NUMSPRITES
 
-};
+} spritenum_t;
 
 // villsa [STRIFE]
-using statenum_t = enum
+typedef enum
 {
     S_NULL,     // 00
     S_PNCH_00,      // 01
@@ -1818,10 +1818,10 @@ using statenum_t = enum
     S_STLG_05,      // 1517
     NUMSTATES
 
-};
+} statenum_t;
 
 
-using state_t = struct
+typedef struct
 {
     spritenum_t sprite;
     int frame;
@@ -1831,12 +1831,12 @@ using state_t = struct
     statenum_t nextstate;
     //int misc1;    // villsa [STRIFE] unused
     //int misc2;    // villsa [STRIFE] unused
-};
+} state_t;
 
 extern state_t	states[NUMSTATES];
 extern const char *sprnames[];
 
-using mobjtype_t = enum
+typedef enum
 {
     MT_FIELDGUARD,      //000
     MT_PLAYER,      //001
@@ -2184,10 +2184,10 @@ using mobjtype_t = enum
     MT_SLIDESHOW,       //343
     NUMMOBJTYPES
 
-};
+} mobjtype_t;
 
 // villsa [STRIFE] updated mobjinfo struct
-using mobjinfo_t = struct
+typedef struct
 {
     int     doomednum;
     statenum_t spawnstate;
@@ -2213,7 +2213,7 @@ using mobjinfo_t = struct
     int     activesound;
     int     flags;
     const char *name;
-};
+} mobjinfo_t;
 
 extern mobjinfo_t mobjinfo[NUMMOBJTYPES];
 

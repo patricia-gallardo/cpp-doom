@@ -25,12 +25,12 @@
 
 #define MAX_OPL_QUEUE 64
 
-using opl_queue_entry_t = struct
+typedef struct
 {
     opl_callback_t callback;
     void *data;
     uint64_t time;
-};
+} opl_queue_entry_t;
 
 struct opl_callback_queue_s
 {

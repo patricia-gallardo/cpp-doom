@@ -15,7 +15,7 @@
 #ifndef TXT_JOYB_INPUT_H
 #define TXT_JOYB_INPUT_H
 
-using txt_joystick_input_t = struct txt_joystick_input_s;
+typedef struct txt_joystick_input_s txt_joystick_input_t;
 
 #include "txt_widget.hpp"
 #include "txt_window.hpp"

@@ -148,14 +148,14 @@ void P_DestroyConverter();
 //
 // P_MAPUTL
 //
-using divline_t = struct
+typedef struct
 {
     fixed_t	x;
     fixed_t	y;
     fixed_t	dx;
     fixed_t	dy;
-
-};
+    
+} divline_t;
 
 typedef struct
 {
@@ -175,7 +175,7 @@ typedef struct
 extern intercept_t	intercepts[MAXINTERCEPTS];
 extern intercept_t*	intercept_p;
 
-using traverser_t = boolean (*)(intercept_t *);
+typedef boolean (*traverser_t) (intercept_t *in);
 
 fixed_t P_AproxDistance (fixed_t dx, fixed_t dy);
 int 	P_PointOnLineSide (fixed_t x, fixed_t y, line_t* line);

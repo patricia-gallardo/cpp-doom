@@ -57,10 +57,10 @@
 
 //================ used by play and refresh
 
-using vertex_t = struct
+typedef struct
 {
     fixed_t x, y;
-};
+} vertex_t;
 
 struct line_s;
 
@@ -78,7 +78,7 @@ using data_or_hook = std::variant<
 constexpr bool data_or_hook_empty(data_or_hook hook) { return hook.index() == 0; }
 constexpr bool data_or_hook_has_value(data_or_hook hook) { return hook.index() != 0; }
 
-using sector_t = struct
+typedef struct
 {
     fixed_t floorheight, ceilingheight;
     short floorpic, ceilingpic;
@@ -96,23 +96,23 @@ using sector_t = struct
     data_or_hook specialdata;   // thinker_t for reversable actions
     int linecount;
     struct line_s **lines;      // [linecount] size
-};
+} sector_t;
 
-using side_t = struct
+typedef struct
 {
     fixed_t textureoffset;      // add this to the calculated texture col
     fixed_t rowoffset;          // add this to the calculated texture top
     short toptexture, bottomtexture, midtexture;
     sector_t *sector;
-};
+} side_t;
 
-using slopetype_t = enum
+typedef enum
 {
     ST_HORIZONTAL,
     ST_VERTICAL,
     ST_POSITIVE,
     ST_NEGATIVE
-};
+} slopetype_t;
 
 /*
 typedef struct line_s
@@ -130,7 +130,7 @@ typedef struct line_s
 } line_t;
 */
 
-using line_t = struct line_s
+typedef struct line_s
 {
     vertex_t *v1;
     vertex_t *v2;
@@ -150,9 +150,9 @@ using line_t = struct line_s
     sector_t *backsector;
     int validcount;
     void *specialdata;
-};
+} line_t;
 
-using seg_t = struct
+typedef struct
 {
     vertex_t *v1, *v2;
     fixed_t offset;
@@ -161,10 +161,10 @@ using seg_t = struct
     line_t *linedef;
     sector_t *frontsector;
     sector_t *backsector;       // NULL for one sided lines
-};
+} seg_t;
 
 // ===== Polyobj data =====
-using polyobj_t = struct
+typedef struct
 {
     int numsegs;
     seg_t **segs;
@@ -179,29 +179,29 @@ using polyobj_t = struct
     int seqType;
     fixed_t size;               // polyobj size (area of POLY_AREAUNIT == size of FRACUNIT)
     void *specialdata;          // pointer a thinker, if the poly is moving
-};
+} polyobj_t;
 
-using polyblock_t = struct polyblock_s
+typedef struct polyblock_s
 {
     polyobj_t *polyobj;
     struct polyblock_s *prev;
     struct polyblock_s *next;
-};
+} polyblock_t;
 
-using subsector_t = struct subsector_s
+typedef struct subsector_s
 {
     sector_t *sector;
     short numlines;
     short firstline;
     polyobj_t *poly;
-};
+} subsector_t;
 
-using node_t = struct
+typedef struct
 {
     fixed_t x, y, dx, dy;       // partition line
     fixed_t bbox[2][4];         // bounding box for each child
     unsigned short children[2]; // if NF_SUBSECTOR its a subsector
-};
+} node_t;
 
 
 /*
@@ -212,12 +212,12 @@ using node_t = struct
 ==============================================================================
 */
 
-using lighttable_t = byte;      // this could be wider for >8 bit display
+typedef byte lighttable_t;      // this could be wider for >8 bit display
 
 #define MAXVISPLANES    160*8
 #define MAXOPENINGS             MAXWIDTH*64*4
 
-using visplane_t = struct
+typedef struct
 {
     fixed_t height;
     int picnum;
@@ -230,9 +230,9 @@ using visplane_t = struct
     unsigned short pad3;
     unsigned short bottom[MAXWIDTH];
     unsigned short pad4;
-};
+} visplane_t;
 
-using drawseg_t = struct drawseg_s
+typedef struct drawseg_s
 {
     seg_t *curline;
     int x1, x2;
@@ -244,7 +244,7 @@ using drawseg_t = struct drawseg_s
     short *sprtopclip;          // adjusted so [x1] is first value
     short *sprbottomclip;       // adjusted so [x1] is first value
     short *maskedtexturecol;    // adjusted so [x1] is first value
-};
+} drawseg_t;
 
 #define SIL_NONE        0
 #define SIL_BOTTOM      1
@@ -254,7 +254,7 @@ using drawseg_t = struct drawseg_s
 #define MAXDRAWSEGS             256*8
 
 // A vissprite_t is a thing that will be drawn during a refresh
-using vissprite_t = struct vissprite_s
+typedef struct vissprite_s
 {
     struct vissprite_s *prev, *next;
     int x1, x2;
@@ -270,7 +270,7 @@ using vissprite_t = struct vissprite_s
     boolean psprite;            // true if psprite
     int clazz;                  // player class (used in translation)
     fixed_t floorclip;
-};
+} vissprite_t;
 
 
 extern visplane_t *floorplane, *ceilingplane;
@@ -283,18 +283,18 @@ extern visplane_t *floorplane, *ceilingplane;
 // is used to save space. Some sprites will only have one picture used
 // for all views.
 
-using spriteframe_t = struct
+typedef struct
 {
     boolean rotate;             // if false use 0 for any position
     short lump[8];              // lump to use for view angles 0-7
     byte flip[8];               // flip (1 = flip) to use for view angles 0-7
-};
+} spriteframe_t;
 
-using spritedef_t = struct
+typedef struct
 {
     int numframes;
     spriteframe_t *spriteframes;
-};
+} spritedef_t;
 
 extern spritedef_t *sprites;
 extern int numsprites;
@@ -398,8 +398,7 @@ extern drawseg_t drawsegs[MAXDRAWSEGS], *ds_p;
 
 extern lighttable_t **hscalelight, **vscalelight, **dscalelight;
 
-using drawfunc_t = void (*)(int, int);
-
+typedef void (*drawfunc_t) (int start, int stop);
 void R_ClearClipSegs();
 
 void R_ClearDrawSegs();
@@ -418,7 +417,7 @@ void R_RenderMaskedSegRange(drawseg_t * ds, int x1, int x2);
 //
 // R_plane.c
 //
-using planefunction_t = void (*)(int, int);
+typedef void (*planefunction_t) (int top, int bottom);
 extern planefunction_t floorfunc, ceilingfunc;
 
 extern int skyflatnum;

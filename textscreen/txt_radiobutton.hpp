@@ -39,7 +39,7 @@
  * When a radio button is selected, the "selected" signal is emitted.
  */
 
-using txt_radiobutton_t = struct txt_radiobutton_s;
+typedef struct txt_radiobutton_s txt_radiobutton_t;
 
 #include "txt_widget.hpp"
 

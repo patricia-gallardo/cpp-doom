@@ -16,14 +16,14 @@
 #ifndef MEMIO_H
 #define MEMIO_H
 
-using MEMFILE = struct _MEMFILE;
+typedef struct _MEMFILE MEMFILE;
 
-using mem_rel_t = enum
+typedef enum
 {
     MEM_SEEK_SET,
     MEM_SEEK_CUR,
     MEM_SEEK_END,
-};
+} mem_rel_t;
 
 MEMFILE *mem_fopen_read(void *buf, size_t buflen);
 size_t   mem_fread(void *buf, size_t size, size_t nmemb, MEMFILE *stream);

@@ -31,7 +31,7 @@
  * is emitted.
  */
 
-using txt_dropdown_list_t = struct txt_dropdown_list_s;
+typedef struct txt_dropdown_list_s txt_dropdown_list_t;
 
 #include "txt_widget.hpp"
 

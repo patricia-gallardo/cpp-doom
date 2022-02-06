@@ -29,7 +29,7 @@
 
 // Number widget
 
-using st_number_t = struct
+typedef struct
 {
     // upper right-hand corner
     //  of the number (right-justified)
@@ -41,7 +41,7 @@ using st_number_t = struct
 
     // haleyjd 09/01/10: [STRIFE] Removed "oldnum" member
     //int         oldnum;
-
+    
     // pointer to current value
     int*        num;
 
@@ -53,27 +53,27 @@ using st_number_t = struct
 
     // user data
     int data;
-
-};
+    
+} st_number_t;
 
 
 
 // Percent widget ("child" of number widget,
 //  or, more precisely, contains a number widget.)
-using st_percent_t = struct
+typedef struct
 {
     // number information
     st_number_t		n;
 
     // percent sign graphic
     patch_t*		p;
-
-};
+    
+} st_percent_t;
 
 
 
 // Multiple Icon widget
-using st_multicon_t = struct
+typedef struct
 {
      // center-justified location of icons
     int			x;
@@ -91,18 +91,18 @@ using st_multicon_t = struct
 
     // list of icons
     patch_t**		p;
-
+    
     // user data
     int			data;
-
-};
+    
+} st_multicon_t;
 
 
 
 
 // Binary Icon widget
 
-using st_binicon_t = struct
+typedef struct
 {
     // center-justified location of icon
     int			x;
@@ -116,13 +116,13 @@ using st_binicon_t = struct
 
     // pointer to boolean
     //  stating whether to update icon
-    boolean*		on;
+    boolean*		on;  
 
 
     patch_t*		p;	// icon
     int			data;   // user data
-
-};
+    
+} st_binicon_t;
 
 
 

@@ -28,23 +28,23 @@
 
 // haleyjd 09/04/10: [STRIFE] Made external
 
-using menuitem_t = struct
+typedef struct
 {
     // 0 = no cursor here, 1 = ok, 2 = arrows ok
     short	status;
-
+    
     char	name[10];
-
+    
     // choice = menu item #.
     // if status = 2,
     //   choice=0:leftarrow,1:rightarrow
     void	(*routine)(int choice);
-
+    
     // hotkey in menu
-    char	alphaKey;
-};
+    char	alphaKey;			
+} menuitem_t;
 
-using menu_t = struct menu_s
+typedef struct menu_s
 {
     short		numitems;	// # of menu items
     struct menu_s*	prevMenu;	// previous menu
@@ -53,7 +53,7 @@ using menu_t = struct menu_s
     short		x;
     short		y;		// x,y of menu
     short		lastOn;		// last item user was on in menu
-};
+} menu_t;
 
 extern menu_t*	currentMenu;    // villsa [STRIFE] made external
 extern short itemOn;

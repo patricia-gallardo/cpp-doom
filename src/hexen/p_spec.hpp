@@ -86,7 +86,7 @@ void P_ForceLightning();
 ===============================================================================
 */
 
-using lighttype_t = enum
+typedef enum
 {
     LITE_RAISEBYVALUE,
     LITE_LOWERBYVALUE,
@@ -95,9 +95,9 @@ using lighttype_t = enum
     LITE_GLOW,
     LITE_FLICKER,
     LITE_STROBE
-};
+} lighttype_t;
 
-using light_t = struct light_s
+typedef struct light_s
 {
     thinker_t thinker;
     sector_t *sector;
@@ -107,15 +107,15 @@ using light_t = struct light_s
     int tics1;
     int tics2;
     int count;
-};
+} light_t;
 
-using phase_t = struct phase_s
+typedef struct phase_s
 {
     thinker_t thinker;
     sector_t *sector;
     int index;
     int base;
-};
+} phase_t;
 
 #define LIGHT_SEQUENCE_START    2
 #define LIGHT_SEQUENCE          3
@@ -197,28 +197,28 @@ void P_SpawnLightSequence(sector_t * sector, int indexStep);
 
 ===============================================================================
 */
-using switchlist_t = struct
+typedef struct
 {
     char name1[9];
     char name2[9];
     int soundID;
-};
+} switchlist_t;
 
-using bwhere_e = enum
+typedef enum
 {
     SWTCH_TOP,
     SWTCH_MIDDLE,
     SWTCH_BOTTOM
-};
+} bwhere_e;
 
-using button_t = struct
+typedef struct
 {
     line_t *line;
     bwhere_e where;
     int btexture;
     int btimer;
     mobj_t *soundorg;
-};
+} button_t;
 
 #define MAXSWITCHES 50          // max # of wall switches in a level
 #define MAXBUTTONS 16           // 4 players, 4 buttons each at once, max.
@@ -237,15 +237,15 @@ void P_InitSwitchList();
 ===============================================================================
 */
 
-using plat_e = enum
+typedef enum
 {
     PLAT_UP,
     PLAT_DOWN,
     PLAT_WAITING,
 //      PLAT_IN_STASIS
-};
+} plat_e;
 
-using plattype_e = enum
+typedef enum
 {
     PLAT_PERPETUALRAISE,
     PLAT_DOWNWAITUPSTAY,
@@ -254,9 +254,9 @@ using plattype_e = enum
     PLAT_UPBYVALUEWAITDOWNSTAY,
     //PLAT_RAISEANDCHANGE,
     //PLAT_RAISETONEARESTANDCHANGE
-};
+} plattype_e;
 
-using plat_t = struct plat_s
+typedef struct plat_s
 {
     thinker_t thinker;
     sector_t *sector;
@@ -270,7 +270,7 @@ using plat_t = struct plat_s
     int crush;
     int tag;
     plattype_e type;
-};
+} plat_t;
 
 #define PLATWAIT 3
 #define PLATSPEED FRACUNIT
@@ -291,16 +291,16 @@ void EV_StopPlat(line_t * line, byte * args);
 
 ===============================================================================
 */
-using vldoor_e = enum
+typedef enum
 {
     DREV_NORMAL,
     DREV_CLOSE30THENOPEN,
     DREV_CLOSE,
     DREV_OPEN,
     DREV_RAISEIN5MINS,
-};
+} vldoor_e;
 
-using vldoor_t = struct vldoor_s
+typedef struct vldoor_s
 {
     thinker_t thinker;
     sector_t *sector;
@@ -310,7 +310,7 @@ using vldoor_t = struct vldoor_s
     int direction;              // 1 = up, 0 = waiting at top, -1 = down
     int topwait;                // tics to wait at the top (keep in case a door going down is reset)
     int topcountdown;           // when it reaches 0, start going down
-};
+} vldoor_t;
 
 #define VDOORSPEED FRACUNIT*2
 #define VDOORWAIT 150
@@ -328,7 +328,7 @@ void T_VerticalDoor(vldoor_t * door);
 
 ===============================================================================
 */
-using ceiling_e = enum
+typedef enum
 {
     CLEV_LOWERTOFLOOR,
     CLEV_RAISETOHIGHEST,
@@ -338,9 +338,9 @@ using ceiling_e = enum
     CLEV_RAISEBYVALUE,
     CLEV_CRUSHRAISEANDSTAY,
     CLEV_MOVETOVALUETIMES8
-};
+} ceiling_e;
 
-using ceiling_t = struct ceiling_s
+typedef struct ceiling_s
 {
     thinker_t thinker;
     sector_t *sector;
@@ -351,7 +351,7 @@ using ceiling_t = struct ceiling_s
     int direction;              // 1 = up, 0 = waiting, -1 = down
     int tag;                    // ID
     int olddirection;
-};
+} ceiling_t;
 
 #define CEILSPEED FRACUNIT
 #define CEILWAIT 150
@@ -372,7 +372,7 @@ int EV_CeilingCrushStop(line_t * line, byte * args);
 
 ===============================================================================
 */
-using floor_e = enum
+typedef enum
 {
     FLEV_LOWERFLOOR,            // lower floor to highest surrounding floor
     FLEV_LOWERFLOORTOLOWEST,    // lower floor to lowest surrounding floor
@@ -387,9 +387,9 @@ using floor_e = enum
     FLEV_LOWERTIMES8INSTANT,
     FLEV_RAISETIMES8INSTANT,
     FLEV_MOVETOVALUETIMES8
-};
+} floor_e;
 
-using floormove_t = struct floormove_s
+typedef struct floormove_s
 {
     thinker_t thinker;
     sector_t *sector;
@@ -408,9 +408,9 @@ using floormove_t = struct floormove_s
     short resetDelay;
     short resetDelayCount;
     byte textureChange;
-};
+} floormove_t;
 
-using pillar_t = struct pillar_s
+typedef struct pillar_s
 {
     thinker_t thinker;
     sector_t *sector;
@@ -420,9 +420,9 @@ using pillar_t = struct pillar_s
     int ceilingdest;
     int direction;
     int crush;
-};
+} pillar_t;
 
-using floorWaggle_t = struct floorWaggle_s
+typedef struct floorWaggle_s
 {
     thinker_t thinker;
     sector_t *sector;
@@ -434,23 +434,23 @@ using floorWaggle_t = struct floorWaggle_s
     fixed_t scaleDelta;
     int ticker;
     int state;
-};
+} floorWaggle_t;
 
 #define FLOORSPEED FRACUNIT
 
-using result_e = enum
+typedef enum
 {
     RES_OK,
     RES_CRUSHED,
     RES_PASTDEST
-};
+} result_e;
 
-using stairs_e = enum
+typedef enum
 {
     STAIRS_NORMAL,
     STAIRS_SYNC,
     STAIRS_PHASED
-};
+} stairs_e;
 
 result_e T_MovePlane(sector_t * sector, fixed_t speed,
                      fixed_t dest, int crush, int floorOrCeiling,
@@ -490,7 +490,7 @@ boolean EV_Teleport(int tid, mobj_t * thing, boolean fog);
 #define ACS_STACK_DEPTH 32
 #define MAX_ACS_STORE 20
 
-using aste_t = enum
+typedef enum
 {
     ASTE_INACTIVE,
     ASTE_RUNNING,
@@ -499,10 +499,10 @@ using aste_t = enum
     ASTE_WAITINGFORPOLY,
     ASTE_WAITINGFORSCRIPT,
     ASTE_TERMINATING
-};
+} aste_t;
 
-using acs_t = struct acs_s;
-using acsInfo_t = struct acsInfo_s;
+typedef struct acs_s acs_t;
+typedef struct acsInfo_s acsInfo_t;
 
 struct acsInfo_s
 {
@@ -528,12 +528,12 @@ struct acs_s
     int ip;
 };
 
-using acsstore_t = struct
+typedef struct
 {
     int map;                    // Target map
     int script;                 // Script number on target map
     byte args[4];               // Padded to 4 for alignment
-};
+} acsstore_t;
 
 void P_LoadACScripts(int lump);
 boolean P_StartACS(int number, int map, byte * args, mobj_t * activator,

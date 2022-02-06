@@ -27,10 +27,10 @@
 #include "info.hpp"
 #include "p_mobj.hpp" // [crispy] MF_*
 
-using bex_thingbits_t = struct {
+typedef struct {
     const char * flag;
     unsigned int bits;
-};
+} bex_thingbits_t;
 
 static constexpr bex_thingbits_t bex_thingbitstable[] = {
     { "SPECIAL", MF_SPECIAL },

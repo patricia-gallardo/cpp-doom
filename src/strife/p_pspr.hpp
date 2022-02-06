@@ -51,7 +51,7 @@
 // drawn directly on the view screen,
 // coordinates are given for a 320*200 view screen.
 //
-using psprnum_t = enum
+typedef enum
 {
     ps_weapon,
     ps_flash,
@@ -60,18 +60,18 @@ using psprnum_t = enum
     ps_targright,   // villsa [STRIFE]
     NUMPSPRITES
 
-};
+} psprnum_t;
 
-using pspdef_t = struct pspdef_s
+typedef struct pspdef_s
 {
     state_t*	state;	// a NULL state means not active
     int		tics;
     fixed_t	sx;
     fixed_t	sy;
 
-};
+} pspdef_t;
 
-using playerptr = struct player_s *;
+typedef struct player_s *playerptr;
 
 // haleyjd [STRIFE] Exported
 void P_SetPsprite(playerptr player, int position, statenum_t stnum);

@@ -33,13 +33,13 @@
 #define inline __inline
 #endif
 
-using txt_font_t = struct
+typedef struct
 {
     const char *name;
     const uint8_t *data;
     unsigned int w;
     unsigned int h;
-};
+} txt_font_t;
 
 // Fonts:
 

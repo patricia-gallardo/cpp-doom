@@ -52,14 +52,14 @@ static char *autoload_path = const_cast<char *>("");
 static const char *default_main_config;
 static const char *default_extra_config;
 
-using default_type_t = enum
+typedef enum
 {
     DEFAULT_INT,
     DEFAULT_INT_HEX,
     DEFAULT_STRING,
     DEFAULT_FLOAT,
     DEFAULT_KEY,
-};
+} default_type_t;
 
 typedef struct
 {
@@ -92,12 +92,12 @@ typedef struct
     boolean bound;
 } default_t;
 
-using default_collection_t = struct
+typedef struct
 {
     default_t * defaults;
     int         numdefaults;
     const char *filename;
-};
+} default_collection_t;
 
 #define CONFIG_VARIABLE_GENERIC(name, type) \
     {                                       \

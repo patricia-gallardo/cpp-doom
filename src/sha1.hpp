@@ -20,7 +20,7 @@
 
 #include "doomtype.hpp"
 
-using sha1_context_t = struct sha1_context_s;
+typedef struct sha1_context_s sha1_context_t;
 typedef byte                  sha1_digest_t[20];
 
 struct sha1_context_s {

@@ -26,7 +26,7 @@
 
 // Music identifiers
 
-using musicenum_t = enum
+typedef enum
 {
     mus_e1m1,
     mus_e1m2,
@@ -86,7 +86,7 @@ using musicenum_t = enum
     mus_intr,
     mus_cptd,
     NUMMUSIC
-};
+} musicenum_t;
 
 #if 0
 typedef struct
@@ -135,7 +135,7 @@ typedef struct
 
 // Sound identifiers
 
-using sfxenum_t = enum
+typedef enum
 {
     sfx_None,
     sfx_gldhit,
@@ -283,7 +283,7 @@ using sfxenum_t = enum
     sfx_amb10,
     sfx_amb11,
     NUMSFX
-};
+} sfxenum_t;
 
 extern sfxinfo_t S_sfx[];
 extern musicinfo_t S_music[];

@@ -108,7 +108,7 @@
 //
 // Misc. mobj flags
 //
-using mobjflag_t = enum
+typedef enum
 {
     // Call P_SpecialThing when touched.
     MF_SPECIAL          = 1,
@@ -229,7 +229,7 @@ using mobjflag_t = enum
     // villsa [STRIFE] change from 26 to 28
     MF_TRANSSHIFT       = 28
 
-};
+} mobjflag_t;
 
 
 // Map Object definition.
@@ -261,7 +261,7 @@ typedef struct mobj_s
     // Links in blocks (if needed).
     struct mobj_s*      bnext;
     struct mobj_s*      bprev;
-
+    
     struct subsector_s* subsector;
 
     // The closest interval over all contacted Sectors.
@@ -282,7 +282,7 @@ typedef struct mobj_s
 
     mobjtype_t          type;
     mobjinfo_t*         info;   // &mobjinfo[mobj->type]
-
+    
     int                 tics;   // state tic counter
     state_t*            state;
     int                 flags;
@@ -298,7 +298,7 @@ typedef struct mobj_s
 
     // Reaction time: if non 0, don't attack yet.
     // Used by player to freeze a bit after teleporting.
-    int                 reactiontime;
+    int                 reactiontime;   
 
     // If >0, the target will be chased
     // no matter what (even if shot)
@@ -317,11 +317,11 @@ typedef struct mobj_s
     // Thing being chased/attacked for tracers.
     struct mobj_s*      tracer;
 
-    // [STRIFE] haleyjd 09/05/10:
+    // [STRIFE] haleyjd 09/05/10: 
     // * In multiplayer this stores allegiance, for friends and teleport beacons
     // * In single-player this tracks dialog state.
     byte                miscdata;
-
+    
 } mobj_t;
 
 // haleyjd [STRIFE] Exported

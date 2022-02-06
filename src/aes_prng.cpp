@@ -93,12 +93,12 @@
  * Please ensure that the first two fields are 16-byte aligned
  * relative to the start of the structure, i.e., don't move them!
  */
-using aes_context_t = struct
+typedef struct
 {
     uint32_t key_enc[AES_MAX_KEYLENGTH_U32];
     uint32_t key_dec[AES_MAX_KEYLENGTH_U32];
     uint32_t key_length;
-};
+} aes_context_t;
 
 static inline uint8_t get_byte(const uint32_t x, const unsigned n)
 {

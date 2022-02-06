@@ -32,7 +32,7 @@ extern musicinfo_t S_music[];
 // Identifiers for all music in game.
 //
 
-using musicenum_t = enum
+typedef enum
 {
     mus_None,
     mus_e1m1,
@@ -125,14 +125,14 @@ using musicenum_t = enum
     mus_dm2int,
     NUMMUSIC,
     mus_musinfo
-};
+} musicenum_t;
 
 
 //
 // Identifiers for all sfx in game.
 //
 
-using sfxenum_t = enum
+typedef enum
 {
     sfx_None,
     sfx_pistol,
@@ -252,6 +252,6 @@ using sfxenum_t = enum
     // [crispy] play DSSECRET if available
     sfx_secret,
     NUMSFX
-};
+} sfxenum_t;
 
 #endif

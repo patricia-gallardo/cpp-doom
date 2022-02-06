@@ -29,7 +29,7 @@
  * spacing between widgets.
  */
 
-using txt_strut_t = struct txt_strut_s;
+typedef struct txt_strut_s txt_strut_t;
 
 #include "txt_widget.hpp"
 

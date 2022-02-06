@@ -60,7 +60,7 @@ do { \
                  OBJECTIVE_LEN);\
 } while(0)
 
-using mapdlgchoice_t = struct mapdlgchoice_s
+typedef struct mapdlgchoice_s
 {
     int  giveitem;                      // item given when successful
     int  needitems[MDLG_MAXITEMS];      // item needed for success
@@ -70,9 +70,9 @@ using mapdlgchoice_t = struct mapdlgchoice_s
     int next;                           // next dialog?
     int objective;                      // ???
     char textno[MDLG_MSGLEN];           // message given on failure
-};
+} mapdlgchoice_t;
 
-using mapdialog_t = struct mapdialog_s
+typedef struct mapdialog_s
 {
     int speakerid;                      // script ID# for mobjtype that will use this dialog
     int dropitem;                       // item to drop if that thingtype is killed
@@ -82,10 +82,10 @@ using mapdialog_t = struct mapdialog_s
     char voice[MDLG_LUMPLEN];           // voice file to play
     char backpic[MDLG_LUMPLEN];         // backdrop pic for character, if any
     char text[MDLG_TEXTLEN];            // main message text
-
+    
     // options that this dialog gives the player
     mapdlgchoice_t choices[MDLG_MAXCHOICES];
-};
+} mapdialog_t;
 
 void         P_DialogLoad();
 void         P_DialogStart(player_t *player);

@@ -24,16 +24,16 @@
 #include "lump.hpp"
 #include "memory.hpp"
 
-using texpatch_t = struct
+typedef struct
 {
     int originx;                // block origin (allways UL), which has allready
     int originy;                // accounted  for the patch's internal origin
     int patch;
-};
+} texpatch_t;
 
 // a maptexturedef_t describes a rectangular texture, which is composed of one
 // or more mappatch_t structures that arrange graphic patches
-using texture_t = struct
+typedef struct
 {
     char name[8];               // for switch changing, etc
     short width;
@@ -41,7 +41,7 @@ using texture_t = struct
     short patchcount;
     texpatch_t patches[1];      // [patchcount] drawn back to front
     //  into the cached texture
-};
+} texture_t;
 
 
 

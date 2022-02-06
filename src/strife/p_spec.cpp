@@ -57,26 +57,26 @@
 // Animating textures and planes
 // There is another anim_t used in wi_stuff, unrelated.
 //
-using anim_t = struct
+typedef struct
 {
     boolean	istexture;
     int		picnum;
     int		basepic;
     int		numpics;
     int		speed;
-
-};
+    
+} anim_t;
 
 //
 //      source animation definition
 //
-using animdef_t = struct
+typedef struct
 {
     int 	istexture;	// if false, it is a flat
     char	endname[9];
     char	startname[9];
     int		speed;
-};
+} animdef_t;
 
 
 // haleyjd 08/30/10: [STRIFE] MAXANIMS raised from 32 to 40
@@ -195,12 +195,12 @@ void P_InitPicAnims ()
 }
 
 // villsa [STRIFE] terrain type definitions
-using terraintype_t = struct
+typedef struct
 {
     const char *flat;
     int     type;
     int     num;
-};
+} terraintype_t;
 
 terraintype_t   terraintypes[] =
 {

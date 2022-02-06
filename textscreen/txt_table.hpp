@@ -62,7 +62,7 @@
  * possible simply by creating a table containing a single column.
  */
 
-using txt_table_t = struct txt_table_s;
+typedef struct txt_table_s txt_table_t;
 
 #include "txt_widget.hpp"
 

@@ -41,7 +41,7 @@ typedef struct sfxinfo_s
 } sfxinfo_t;
 */
 
-using channel_t = struct
+typedef struct
 {
     mobj_t *mo;
     int sound_id;
@@ -49,24 +49,24 @@ using channel_t = struct
     int volume;
     int pitch;
     int priority;
-};
+} channel_t;
 
-using ChanInfo_t = struct
+typedef struct
 {
     int id;
     unsigned short priority;
     char *name;
     mobj_t *mo;
     int distance;
-};
+} ChanInfo_t;
 
-using SoundInfo_t = struct
+typedef struct
 {
     int channelCount;
     int musicVolume;
     int soundVolume;
     ChanInfo_t chan[8];
-};
+} SoundInfo_t;
 
 extern int snd_MaxVolume;
 extern int snd_MusicVolume;

@@ -115,15 +115,15 @@
 #define AFLAG_SUICIDE		0x40
 #define AFLAG_JUMP			0x80
 
-using gamestate_t = enum
+typedef enum
 {
     GS_LEVEL,
     GS_INTERMISSION,
     GS_FINALE,
     GS_DEMOSCREEN
-};
+} gamestate_t;
 
-using gameaction_t = enum
+typedef enum
 {
     ga_nothing,
     ga_loadlevel,
@@ -138,9 +138,9 @@ using gameaction_t = enum
     ga_victory,
     ga_worlddone,
     ga_screenshot
-};
+} gameaction_t;
 
-using wipe_t = enum
+typedef enum
 {
     wipe_0,
     wipe_1,
@@ -149,7 +149,7 @@ using wipe_t = enum
     wipe_4,
     NUMWIPES,
     wipe_random
-};
+} wipe_t;
 
 /*
 ===============================================================================
@@ -160,13 +160,13 @@ using wipe_t = enum
 */
 
 // think_t is a function pointer to a routine to handle an actor
-using think_t = void (*)();
+typedef void (*think_t) ();
 
-using thinker_t = struct thinker_s
+typedef struct thinker_s
 {
     struct thinker_s *prev, *next;
     action_hook function;
-};
+} thinker_t;
 
 struct player_s;
 
@@ -225,11 +225,11 @@ typedef struct mobj_s
 } mobj_t;
 
 // each sector has a degenmobj_t in it's center for sound origin purposes
-using degenmobj_t = struct
+typedef struct
 {
     thinker_t thinker;          // not used for anything
     fixed_t x, y, z;
-};
+} degenmobj_t;
 
 //
 // frame flags
@@ -326,37 +326,37 @@ using degenmobj_t = struct
 //=============================================================================
 
 // ===== Player Class Types =====
-using pclass_t = enum
+typedef enum
 {
     PCLASS_FIGHTER,
     PCLASS_CLERIC,
     PCLASS_MAGE,
     PCLASS_PIG,
     NUMCLASSES
-};
+} pclass_t;
 
-using playerstate_t = enum
+typedef enum
 {
     PST_LIVE,                   // playing
     PST_DEAD,                   // dead on the ground
     PST_REBORN                  // ready to restart
-};
+} playerstate_t;
 
 // psprites are scaled shapes directly on the view screen
 // coordinates are given for a 320*200 view screen
-using psprnum_t = enum
+typedef enum
 {
     ps_weapon,
     ps_flash,
     NUMPSPRITES
-};
+} psprnum_t;
 
-using pspdef_t = struct pspdef_s
+typedef struct pspdef_s
 {
     state_t *state;             // a NULL state means not active
     int tics;
     fixed_t sx, sy;
-};
+} pspdef_t;
 
 /* Old Heretic key type
 typedef enum
@@ -368,7 +368,7 @@ typedef enum
 } keytype_t;
 */
 
-using keytype_t = enum
+typedef enum
 {
     KEY_1,
     KEY_2,
@@ -382,18 +382,18 @@ using keytype_t = enum
     KEY_A,
     KEY_B,
     NUMKEYS
-};
+} keytype_t;
 
-using armortype_t = enum
+typedef enum
 {
     ARMOR_ARMOR,
     ARMOR_SHIELD,
     ARMOR_HELMET,
     ARMOR_AMULET,
     NUMARMOR
-};
+} armortype_t;
 
-using weapontype_t = enum
+typedef enum
 {
     WP_FIRST,
     WP_SECOND,
@@ -401,16 +401,16 @@ using weapontype_t = enum
     WP_FOURTH,
     NUMWEAPONS,
     WP_NOCHANGE
-};
+} weapontype_t;
 
-using manatype_t = enum
+typedef enum
 {
     MANA_1,
     MANA_2,
     NUMMANA,
     MANA_BOTH,
     MANA_NONE
-};
+} manatype_t;
 
 #define MAX_MANA	200
 
@@ -418,7 +418,7 @@ using manatype_t = enum
 #define WPIECE2		2
 #define WPIECE3		4
 
-using weaponinfo_t = struct
+typedef struct
 {
     manatype_t mana;
     statenum_t upstate;
@@ -427,11 +427,11 @@ using weaponinfo_t = struct
     statenum_t atkstate;
     statenum_t holdatkstate;
     int flashstate;
-};
+} weaponinfo_t;
 
 extern weaponinfo_t WeaponInfo[NUMWEAPONS][NUMCLASSES];
 
-using artitype_t = enum
+typedef enum
 {
     arti_none,
     arti_invulnerability,
@@ -469,9 +469,9 @@ using artitype_t = enum
     arti_puzzgear3,
     arti_puzzgear4,
     NUMARTIFACTS
-};
+} artitype_t;
 
-using powertype_t = enum
+typedef enum
 {
     pw_None,
     pw_invulnerability,
@@ -483,7 +483,7 @@ using powertype_t = enum
     pw_speed,
     pw_minotaur,
     NUMPOWERS
-};
+} powertype_t;
 
 #define	INVULNTICS (30*35)
 #define	INVISTICS (60*35)
@@ -500,11 +500,11 @@ using powertype_t = enum
 
 #define NUMINVENTORYSLOTS	NUMARTIFACTS
 
-using inventory_t = struct
+typedef struct
 {
     artitype_t type;
     int count;
-};
+} inventory_t;
 
 /*
 ================
@@ -514,7 +514,7 @@ using inventory_t = struct
 ================
 */
 
-using player_t = struct player_s
+typedef struct player_s
 {
     mobj_t *mo;
     playerstate_t playerstate;
@@ -567,7 +567,7 @@ using player_t = struct player_s
     int morphTics;              // player is a pig if > 0
     unsigned int jumpTics;      // delay the next jump for a moment
     unsigned int worldTimer;    // total time the player's been playing
-};
+} player_t;
 
 #define CF_NOCLIP		1
 #define	CF_GODMODE		2
@@ -958,7 +958,7 @@ enum
     SEQ_NUMSEQ
 };
 
-using seqtype_t = enum
+typedef enum
 {
     SEQTYPE_STONE,
     SEQTYPE_HEAVY,
@@ -971,7 +971,7 @@ using seqtype_t = enum
     SEQTYPE_EARTH,
     SEQTYPE_METAL2,
     SEQTYPE_NUMSEQ
-};
+} seqtype_t;
 
 void SN_InitSequenceScript();
 void SN_StartSequence(mobj_t * mobj, int sequence);
@@ -984,7 +984,7 @@ void SN_ChangeNodeData(int nodeNum, int seqOffset, int delayTics, int volume,
                        int currentSoundID);
 
 
-using seqnode_t = struct seqnode_s;
+typedef struct seqnode_s seqnode_t;
 struct seqnode_s
 {
     int *sequencePtr;

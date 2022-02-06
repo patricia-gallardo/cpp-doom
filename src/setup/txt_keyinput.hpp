@@ -15,7 +15,7 @@
 #ifndef TXT_KEY_INPUT_H
 #define TXT_KEY_INPUT_H
 
-using txt_key_input_t = struct txt_key_input_s;
+typedef struct txt_key_input_s txt_key_input_t;
 
 #include "txt_widget.hpp"
 

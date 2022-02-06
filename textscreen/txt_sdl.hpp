@@ -28,7 +28,7 @@
 // Returning 1 will cause the event to be eaten; the textscreen code
 // will not see it.
 
-using TxtSDLEventCallbackFunc = int (*)(SDL_Event *, void *);
+typedef int (*TxtSDLEventCallbackFunc)(SDL_Event *event, void *user_data);
 
 // Set a callback function to call in the SDL event loop.  Useful for
 // intercepting events.  Pass callback=NULL to clear an existing

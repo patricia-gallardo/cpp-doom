@@ -18,7 +18,7 @@
 #ifndef PCSOUND_H
 #define PCSOUND_H
 
-using pcsound_callback_func = void (*)(int *, int *);
+typedef void (*pcsound_callback_func)(int *duration, int *frequency);
 
 // Initialise the PC speaker subsystem.  The given function is called
 // periodically to request more sound data to play.

@@ -96,17 +96,17 @@ enum txt_color_t
 
 // Modifier keys.
 
-using txt_modifier_t = enum
+typedef enum
 {
     TXT_MOD_SHIFT,
     TXT_MOD_CTRL,
     TXT_MOD_ALT,
     TXT_NUM_MODIFIERS
-};
+} txt_modifier_t;
 
 // Due to the way the SDL API works, we provide different ways of configuring
 // how we read input events, each of which is useful in different scenarios.
-using txt_input_mode_t = enum
+typedef enum
 {
     // "Localized" output that takes software keyboard layout into account,
     // but key shifting has no effect.
@@ -121,7 +121,7 @@ using txt_input_mode_t = enum
     // Setting this mode may activate the on-screen keyboard, depending on
     // device and OS.
     TXT_INPUT_TEXT,
-};
+} txt_input_mode_t;
 
 
 #ifdef __GNUC__

@@ -29,13 +29,13 @@
  * to be increased or decreased.
  */
 
-using txt_spincontrol_t = struct txt_spincontrol_s;
+typedef struct txt_spincontrol_s txt_spincontrol_t;
 
-using txt_spincontrol_type_t = enum
+typedef enum
 {
     TXT_SPINCONTROL_INT,
     TXT_SPINCONTROL_FLOAT,
-};
+} txt_spincontrol_type_t;
 
 #include "txt_widget.hpp"
 

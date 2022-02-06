@@ -63,7 +63,7 @@
 #define NORM_PRIORITY 64
 #define NORM_SEP 128
 
-using channel_t = struct
+typedef struct
 {
     // sound information (if null, channel avail.)
     sfxinfo_t *sfxinfo;
@@ -75,8 +75,8 @@ using channel_t = struct
     int handle;
 
     int pitch;
-
-};
+    
+} channel_t;
 
 // The set of channels available
 
@@ -504,11 +504,11 @@ void S_StartSound(void *origin_p, int sfx_id)
 // even if it has already stopped playing. Thanks to this cuteness I get
 // to maintain a dynamic cache of sfxinfo objects!
 
-using voiceinfo_t = struct voiceinfo_s
+typedef struct voiceinfo_s
 {
     sfxinfo_t sfx;
     struct voiceinfo_s *next; // next on hash chain
-};
+} voiceinfo_t;
 
 #define NUMVOICECHAINS 257
 

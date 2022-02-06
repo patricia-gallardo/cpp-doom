@@ -1942,7 +1942,7 @@ void ST_Drawer(boolean fullscreen, boolean refresh)
     dp_translucent = false;
 }
 
-using load_callback_t = void (*)(const char *, patch_t **);
+typedef void (*load_callback_t)(const char *lumpname, patch_t **variable);
 
 // Iterates through all graphics to be loaded or unloaded, along with
 // the variable they use, invoking the specified callback function.

@@ -25,11 +25,11 @@
 #include "memory.hpp"
 #include "z_zone.hpp"
 
-using deh_substitution_t = struct
+typedef struct
 {
     char *from_text;
     char *to_text;
-};
+} deh_substitution_t;
 
 static deh_substitution_t **hash_table = NULL;
 static int                  hash_table_entries;
@@ -211,7 +211,7 @@ void DEH_AddStringReplacement(const char *from_text, const char *to_text)
     }
 }
 
-using format_arg_t = enum
+typedef enum
 {
     FORMAT_ARG_INVALID,
     FORMAT_ARG_INT,
@@ -220,7 +220,7 @@ using format_arg_t = enum
     FORMAT_ARG_STRING,
     FORMAT_ARG_PTR,
     FORMAT_ARG_SAVE_POS
-};
+} format_arg_t;
 
 // Get the type of a format argument.
 // We can mix-and-match different format arguments as long as they

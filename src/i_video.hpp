@@ -44,7 +44,7 @@ void       I_GetScreenDimensions(); // [crispy] re-calculate DELTAWIDTH
 
 extern int SCREENHEIGHT_4_3;
 
-using grabmouse_callback_t = boolean (*)();
+typedef boolean (*grabmouse_callback_t)();
 
 // Called by D_DoomMain,
 // determines the hardware configuration

@@ -49,15 +49,15 @@
 // The current state of the game: whether we are
 // playing, gazing at the intermission screen,
 // the game final animation, or a demo. 
-using gamestate_t = enum
+typedef enum
 {
     GS_LEVEL,
     GS_UNKNOWN,
     GS_FINALE,
     GS_DEMOSCREEN,
-};
+} gamestate_t;
 
-using gameaction_t = enum
+typedef enum
 {
     ga_nothing,
     ga_loadlevel,
@@ -69,7 +69,7 @@ using gameaction_t = enum
     ga_victory,
     ga_worlddone,
     ga_screenshot
-};
+} gameaction_t;
 
 //
 // Difficulty/skill settings/filters.
@@ -102,7 +102,7 @@ using gameaction_t = enum
 // Key cards.
 //
 // villsa [STRIFE]
-using card_t = enum
+typedef enum
 {
     key_BaseKey,        // 0
     key_GovsKey,        // 1
@@ -133,7 +133,7 @@ using card_t = enum
     key_NewKey5,        // 26
 
     NUMCARDS            // 27
-};
+} card_t;
 
 
 
@@ -141,7 +141,7 @@ using card_t = enum
 //  including a marker indicating
 //  user has not changed weapon.
 // villsa [STRIFE]
-using weapontype_t = enum
+typedef enum
 {
     wp_fist,
     wp_elecbow,
@@ -156,15 +156,15 @@ using weapontype_t = enum
     wp_torpedo,
 
     NUMWEAPONS,
-
+    
     // No pending weapon change.
     wp_nochange
 
-};
+} weapontype_t;
 
 
 // Ammunition types defined.
-using ammotype_t = enum
+typedef enum
 {
     am_bullets,
     am_elecbolts,
@@ -178,12 +178,12 @@ using ammotype_t = enum
 
     am_noammo   // unlimited ammo
 
-};
+} ammotype_t;
 
 
 // Power up artifacts.
 // villsa [STRIFE]
-using powertype_t = enum
+typedef enum
 {
     pw_strength,
     pw_invisibility,
@@ -192,12 +192,12 @@ using powertype_t = enum
     pw_communicator,
     pw_targeter,
     NUMPOWERS
-
-};
+    
+} powertype_t;
 
 // villsa [STRIFE]
 // quest numbers
-using questtype_t = enum
+typedef enum
 {               // Hex          Watcom Name               player_t offset
     tk_quest1,  // 0x00000001   questflags & 1            0x4D
     tk_quest2,  // 0x00000002   questflags & 2
@@ -232,7 +232,7 @@ using questtype_t = enum
     tk_quest31, // 0x40000000   BYTE3(questflags) & 40h
     tk_quest32, // most likely unused
     tk_numquests
-};
+} questtype_t;
 
 // haleyjd 09/12/10: [STRIFE]
 // flag values for each quest.
@@ -279,13 +279,13 @@ enum
 //  how many seconds till expiration,
 //  assuming TICRATE is 35 ticks/second.
 //
-using powerduration_t = enum
+typedef enum
 {
     INVISTICS	= (55*TICRATE), // villsa [STRIFE] changed from 60 to 55
     IRONTICS	= (80*TICRATE), // villsa [STRIFE] changed from 60 to 80
     PMUPTICS    = (80*TICRATE), // villsa [STRIFE]
     TARGTICS    = (160*TICRATE),// villsa [STRIFE]
-
-};
+    
+} powerduration_t;
 
 #endif          // __DOOMDEF__

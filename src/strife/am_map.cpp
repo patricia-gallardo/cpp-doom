@@ -87,30 +87,30 @@
 // the following is crap
 #define LINE_NEVERSEE ML_DONTDRAW
 
-using fpoint_t = struct
+typedef struct
 {
     int x, y;
-};
+} fpoint_t;
 
-using fline_t = struct
+typedef struct
 {
     fpoint_t a, b;
-};
+} fline_t;
 
-using mpoint_t = struct
+typedef struct
 {
     fixed_t		x,y;
-};
+} mpoint_t;
 
-using mline_t = struct
+typedef struct
 {
     mpoint_t a, b;
-};
+} mline_t;
 
-using islope_t = struct
+typedef struct
 {
     fixed_t slp, islp;
-};
+} islope_t;
 
 
 

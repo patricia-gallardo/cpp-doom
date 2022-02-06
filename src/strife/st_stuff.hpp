@@ -59,22 +59,22 @@ void ST_Init ();
 
 
 // States for status bar code.
-using st_stateenum_t = enum
+typedef enum
 {
     AutomapState,
     FirstPersonState
-
-};
+    
+} st_stateenum_t;
 
 
 // States for the chat code.
-using st_chatstateenum_t = enum
+typedef enum
 {
     StartChatState,
     WaitDestState,
     GetChatState
-
-};
+    
+} st_chatstateenum_t;
 
 
 

@@ -45,16 +45,16 @@
 
 // Types
 
-using ItemType_t = enum
+typedef enum
 {
     ITT_EMPTY,
     ITT_EFUNC,
     ITT_LRFUNC,
     ITT_SETMENU,
     ITT_INERT
-};
+} ItemType_t;
 
-using MenuType_t = enum
+typedef enum
 {
     MENU_MAIN,
     MENU_EPISODE,
@@ -66,7 +66,7 @@ using MenuType_t = enum
     MENU_SAVE,
     MENU_CRISPNESS,
     MENU_NONE
-};
+} MenuType_t;
 
 typedef struct
 {

@@ -78,7 +78,7 @@ extern const byte gammatable[5][256];
 #define SLOPEBITS  11
 #define DBITS      (FRACBITS - SLOPEBITS)
 
-using angle_t = unsigned int;
+typedef unsigned int angle_t;
 
 
 // Effective size is 2049;

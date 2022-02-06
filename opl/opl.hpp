@@ -21,23 +21,23 @@
 
 #include <cinttypes>
 
-using opl_callback_t = void (*)(void *);
+typedef void (*opl_callback_t)(void *data);
 
 // Result from OPL_Init(), indicating what type of OPL chip was detected,
 // if any.
-using opl_init_result_t = enum
+typedef enum
 {
     OPL_INIT_NONE,
     OPL_INIT_OPL2,
     OPL_INIT_OPL3,
-};
+} opl_init_result_t;
 
-using opl_port_t = enum
+typedef enum
 {
     OPL_REGISTER_PORT = 0,
     OPL_DATA_PORT = 1,
     OPL_REGISTER_PORT_OPL3 = 2
-};
+} opl_port_t;
 
 #define OPL_NUM_OPERATORS   21
 #define OPL_NUM_VOICES      9

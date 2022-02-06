@@ -31,18 +31,18 @@
 
 #define WINDOW_HELP_URL "https://www.chocolate-doom.org/setup-gamepad"
 
-using joystick_config_t = struct
+typedef struct
 {
     const char *name;  // Config file name
     int value;
-};
+} joystick_config_t;
 
-using known_joystick_t = struct
+typedef struct
 {
     const char *name;
     int axes, buttons, hats;
     const joystick_config_t *configs;
-};
+} known_joystick_t;
 
 // SDL joystick successfully initialized?
 

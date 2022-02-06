@@ -89,22 +89,22 @@ typedef struct
     int x, y;
 } fpoint_t;
 
-using fline_t = struct
+typedef struct
 {
     fpoint_t a, b;
-};
+} fline_t;
 
-using mpoint_t = vertex_t;
+typedef vertex_t mpoint_t;
 
-using mline_t = struct
+typedef struct
 {
     mpoint_t a, b;
-};
+} mline_t;
 
-using islope_t = struct
+typedef struct
 {
     fixed_t slp, islp;
-};
+} islope_t;
 
 // extern int f_x, f_y, f_w, f_h;
 

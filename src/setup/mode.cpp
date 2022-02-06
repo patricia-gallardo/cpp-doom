@@ -42,7 +42,7 @@
 GameMission_t gamemission;
 static const iwad_t **iwads;
 
-using mission_config_t = struct
+typedef struct
 {
     const char *label;
     GameMission_t mission;
@@ -51,7 +51,7 @@ using mission_config_t = struct
     const char *config_file;
     const char *extra_config_file;
     const char *executable;
-};
+} mission_config_t;
 
 // Default mission to fall back on, if no IWADs are found at all:
 

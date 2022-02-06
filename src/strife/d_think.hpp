@@ -32,9 +32,9 @@
 //  we will need to handle the various
 //  action functions cleanly.
 //
-using actionf_v = void (*)();
-using actionf_p1 = void (*)(void *);
-using actionf_p2 = void (*)(void *, void *);
+typedef  void (*actionf_v)();
+typedef  void (*actionf_p1)( void* );
+typedef  void (*actionf_p2)( void*, void* );
 
 typedef union
 {
@@ -51,17 +51,17 @@ typedef union
 // Historically, "think_t" is yet another
 //  function pointer to a routine to handle
 //  an actor.
-using think_t = actionf_t;
+typedef actionf_t  think_t;
 
 
 // Doubly linked list of actors.
-using thinker_t = struct thinker_s
+typedef struct thinker_s
 {
     struct thinker_s*	prev;
     struct thinker_s*	next;
     think_t		function;
-
-};
+    
+} thinker_t;
 
 
 

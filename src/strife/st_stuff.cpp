@@ -1422,7 +1422,7 @@ boolean ST_DrawExternal()
     return true;
 }
 
-using load_callback_t = void (*)(const char *, patch_t **);
+typedef void (*load_callback_t)(const char *lumpname, patch_t **variable);
 
 //
 // ST_loadUnloadGraphics

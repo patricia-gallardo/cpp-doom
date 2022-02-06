@@ -22,12 +22,12 @@
 #include "opl_timer.hpp"
 #include "opl_queue.hpp"
 
-using thread_state_t = enum
+typedef enum
 {
     THREAD_STATE_STOPPED,
     THREAD_STATE_RUNNING,
     THREAD_STATE_STOPPING,
-};
+} thread_state_t;
 
 static SDL_Thread *timer_thread = NULL;
 static thread_state_t timer_thread_state;

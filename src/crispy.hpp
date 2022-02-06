@@ -33,7 +33,7 @@
 #define BETWEEN(l, u, x) (((l) > (x)) ? (l) : ((x) > (u)) ? (u) : (x))
 #endif
 
-using crispy_t = struct
+typedef struct
 {
     // [crispy] "crispness" config variables
     int automapoverlay;
@@ -100,7 +100,7 @@ using crispy_t = struct
     const char *platform;
 
     void (*post_rendering_hook)();
-};
+} crispy_t;
 
 extern crispy_t *const crispy;
 extern const crispy_t *critical;

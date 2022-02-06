@@ -56,7 +56,7 @@ enum gamestate_t
     GS_FORCE_WIPE = -1
 };
 
-using gameaction_t = enum
+typedef enum
 {
     ga_nothing,
     ga_loadlevel,
@@ -68,7 +68,7 @@ using gameaction_t = enum
     ga_victory,
     ga_worlddone,
     ga_screenshot
-};
+} gameaction_t;
 
 //
 // Difficulty/skill settings/filters.
@@ -86,7 +86,7 @@ using gameaction_t = enum
 //
 // Key cards.
 //
-using card_t = enum
+typedef enum
 {
     it_bluecard,
     it_yellowcard,
@@ -97,13 +97,13 @@ using card_t = enum
 
     NUMCARDS
 
-};
+} card_t;
 
 
 // The defined weapons,
 //  including a marker indicating
 //  user has not changed weapon.
-using weapontype_t = enum
+typedef enum
 {
     wp_fist,
     wp_pistol,
@@ -120,11 +120,11 @@ using weapontype_t = enum
     // No pending weapon change.
     wp_nochange
 
-};
+} weapontype_t;
 
 
 // Ammunition types defined.
-using ammotype_t = enum
+typedef enum
 {
     am_clip,  // Pistol / chaingun ammo.
     am_shell, // Shotgun / double barreled shotgun.
@@ -133,11 +133,11 @@ using ammotype_t = enum
     NUMAMMO,
     am_noammo // Unlimited for chainsaw / fist.
 
-};
+} ammotype_t;
 
 
 // Power up artifacts.
-using powertype_t = enum
+typedef enum
 {
     pw_invulnerability,
     pw_strength,
@@ -150,7 +150,7 @@ using powertype_t = enum
     pw_showfps,
     pw_mapcoords
 
-};
+} powertype_t;
 
 
 //
@@ -158,13 +158,13 @@ using powertype_t = enum
 //  how many seconds till expiration,
 //  assuming TICRATE is 35 ticks/second.
 //
-using powerduration_t = enum
+typedef enum
 {
     INVULNTICS = (30 * TICRATE),
     INVISTICS  = (60 * TICRATE),
     INFRATICS  = (120 * TICRATE),
     IRONTICS   = (60 * TICRATE)
 
-};
+} powerduration_t;
 
 #endif // __DOOMDEF__

@@ -24,7 +24,7 @@
 #include "info.hpp"
 
 // Weapon info: sprite frames, ammunition use.
-using weaponinfo_t = struct
+typedef struct
 {
     ammotype_t ammo;
     statenum_t upstate;
@@ -33,7 +33,7 @@ using weaponinfo_t = struct
     statenum_t atkstate;
     statenum_t flashstate;
 
-};
+} weaponinfo_t;
 
 extern weaponinfo_t weaponinfo[NUMWEAPONS];
 
