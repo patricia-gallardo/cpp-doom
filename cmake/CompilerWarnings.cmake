@@ -41,7 +41,7 @@ function(set_project_warnings)
             # -Wunused # warn on anything being unused TODO turn it back on (patricia)
             -Woverloaded-virtual # warn if you overload (not override) a virtual function
             # -Wpedantic # warn if non-standard C++ is used TODO turn it back on (patricia)
-            -Wconversion # warn on type conversions that may lose data
+            # -Wconversion # warn on type conversions that may lose data TODO turn it back on (patricia)
             -Wno-sign-conversion # warn on sign conversions TODO turn it back on (patricia)
             -Wnull-dereference # warn if a null dereference is detected
             -Wdouble-promotion # warn if float is implicit promoted to double
@@ -64,6 +64,7 @@ function(set_project_warnings)
             -Wno-c++11-narrowing # TODO turn it back on (patricia)
             -Wno-deprecated-anon-enum-enum-conversion # TODO turn it back on (patricia)
             -Wno-narrowing # TODO turn it back on (patricia)
+            -fpermissive # GCC TODO turn it back on (patricia)
             )
 
     if (WARNINGS_AS_ERRORS)
