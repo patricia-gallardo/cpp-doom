@@ -108,10 +108,10 @@ txt_widget_class_t txt_label_class =
     TXT_NeverSelectable,
     TXT_LabelSizeCalc,
     TXT_LabelDrawer,
-    NULL,
+    nullptr,
     TXT_LabelDestructor,
-    NULL,
-    NULL,
+    nullptr,
+    nullptr,
 };
 
 void TXT_SetLabel(txt_label_t *label, const char *value)
@@ -174,8 +174,8 @@ txt_label_t *TXT_NewLabel(const char *text)
     auto *label = create_struct<txt_label_t>();
 
     TXT_InitWidget(label, &txt_label_class);
-    label->label = NULL;
-    label->lines = NULL;
+    label->label = nullptr;
+    label->lines = nullptr;
 
     // Default colors
 

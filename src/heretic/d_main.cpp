@@ -99,7 +99,7 @@ void D_ProcessEvents()
 {
     event_t *ev;
 
-    while ((ev = D_PopEvent()) != NULL)
+    while ((ev = D_PopEvent()) != nullptr)
     {
         if (F_Responder(ev))
         {
@@ -516,7 +516,7 @@ boolean D_AddFile(char *file)
 
     handle = W_AddFile(file);
 
-    return handle != NULL;
+    return handle != nullptr;
 }
 
 //==========================================================
@@ -930,7 +930,7 @@ void D_DoomMain()
     }
     else
     {
-        M_SetConfigDir(NULL);
+        M_SetConfigDir(nullptr);
     }
 
     // Load defaults before initing other systems
@@ -948,7 +948,7 @@ void D_DoomMain()
 
     iwadfile = D_FindIWAD(IWAD_MASK_HERETIC, &gamemission);
 
-    if (iwadfile == NULL)
+    if (iwadfile == nullptr)
     {
         I_Error("Game mode indeterminate. No IWAD was found. Try specifying\n"
                 "one with the '-iwad' command line parameter.");

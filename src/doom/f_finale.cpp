@@ -175,7 +175,7 @@ void F_StartFinale()
     if (finaletext_rw)
     {
         free(finaletext_rw);
-        finaletext_rw = NULL;
+        finaletext_rw = nullptr;
     }
     finaletext_rw = M_StringDuplicate(finaletext);
 
@@ -387,7 +387,7 @@ castinfo_t castorder[] = {
     { CC_CYBER, MT_CYBORG },
     { CC_HERO, MT_PLAYER },
 
-    { NULL, {} }
+    { nullptr, {} }
 };
 
 int                castnum;
@@ -475,7 +475,7 @@ static int F_SoundForState(int st)
     void *const nextaction = (void *)(&states[caststate->nextstate])->action.acv;
 
     // [crispy] fix Doomguy in casting sequence
-    if (castaction == NULL)
+    if (castaction == nullptr)
     {
         if (st == S_PLAY_ATK2)
             return sfx_dshtgn;
@@ -540,10 +540,10 @@ void F_CastTicker()
             // switch from deathstate to next monster
             castnum++;
         castdeath = false;
-        if (castorder[castnum].name == NULL)
+        if (castorder[castnum].name == nullptr)
             castnum = 0;
         if (mobjinfo[castorder[castnum].type].seesound)
-            S_StartSound(NULL, F_RandomizeSound(mobjinfo[castorder[castnum].type].seesound));
+            S_StartSound(nullptr, F_RandomizeSound(mobjinfo[castorder[castnum].type].seesound));
         caststate  = &states[mobjinfo[castorder[castnum].type].seestate];
         castframes = 0;
         castangle  = 0;     // [crispy] turnable cast
@@ -611,7 +611,7 @@ void F_CastTicker()
 		
 */
         if (sfx)
-            S_StartSound(NULL, sfx);
+            S_StartSound(nullptr, sfx);
     }
 
     if (!castdeath && castframes == 12)
@@ -738,9 +738,9 @@ boolean F_CastResponder(event_t *ev)
     castframes    = 0;
     castattacking = false;
     if (xdeath && mobjinfo[castorder[castnum].type].xdeathstate)
-        S_StartSound(NULL, sfx_slop);
+        S_StartSound(nullptr, sfx_slop);
     else if (mobjinfo[castorder[castnum].type].deathsound)
-        S_StartSound(NULL, F_RandomizeSound(mobjinfo[castorder[castnum].type].deathsound));
+        S_StartSound(nullptr, F_RandomizeSound(mobjinfo[castorder[castnum].type].deathsound));
 
     // [crispy] flippable death sequence
     castflip = crispy->flipcorpses && castdeath && (mobjinfo[castorder[castnum].type].flags & MF_FLIPPABLE) && (Crispy_Random() & 1);
@@ -929,7 +929,7 @@ void F_BunnyScroll()
         stage = 6;
     if (stage > laststage)
     {
-        S_StartSound(NULL, sfx_pistol);
+        S_StartSound(nullptr, sfx_pistol);
         laststage = stage;
     }
 

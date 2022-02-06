@@ -669,7 +669,7 @@ static void DrawSoundInfo()
         c = &s.chan[i];
         x = 0;
         y = 40 + i * 10;
-        if (c->mo == NULL)
+        if (c->mo == nullptr)
         {                       // Channel is unused
             MN_DrTextA("------", xPos[0], y);
             continue;
@@ -1026,10 +1026,10 @@ void DrawMainBar()
     patch_t *manaPatch1, *manaPatch2;
     patch_t *manaVialPatch1, *manaVialPatch2;
 
-    manaPatch1 = NULL;
-    manaPatch2 = NULL;
-    manaVialPatch1 = NULL;
-    manaVialPatch2 = NULL;
+    manaPatch1 = nullptr;
+    manaPatch2 = nullptr;
+    manaVialPatch1 = nullptr;
+    manaVialPatch2 = nullptr;
 
     // Ready artifact
     if (ArtifactFlash)
@@ -1548,12 +1548,12 @@ static boolean HandleCheats(byte key)
             if (CheatAddKey(&Cheats[0], key, &eat))
             {
                 Cheats[0].func(&players[consoleplayer], &Cheats[0]);
-                S_StartSound(NULL, SFX_PLATFORM_STOP);
+                S_StartSound(nullptr, SFX_PLATFORM_STOP);
             }
             if (CheatAddKey(&Cheats[1], key, &eat))
             {
                 Cheats[1].func(&players[consoleplayer], &Cheats[1]);
-                S_StartSound(NULL, SFX_PLATFORM_STOP);
+                S_StartSound(nullptr, SFX_PLATFORM_STOP);
             }
         }
         return eat;
@@ -1568,7 +1568,7 @@ static boolean HandleCheats(byte key)
         if (CheatAddKey(&Cheats[i], key, &eat))
         {
             Cheats[i].func(&players[consoleplayer], &Cheats[i]);
-            S_StartSound(NULL, SFX_PLATFORM_STOP);
+            S_StartSound(nullptr, SFX_PLATFORM_STOP);
         }
     }
     return (eat);
@@ -1728,7 +1728,7 @@ static void CheatArtifactAllFunc(player_t * player, Cheat_t * cheat)
     {
         for (j = 0; j < 25; j++)
         {
-            P_GiveArtifact(player, static_cast<artitype_t>(i), NULL);
+            P_GiveArtifact(player, static_cast<artitype_t>(i), nullptr);
         }
     }
     P_SetMessage(player, TXT_CHEATARTIFACTS3, true);
@@ -1740,7 +1740,7 @@ static void CheatPuzzleFunc(player_t * player, Cheat_t * cheat)
 
     for (i = arti_firstpuzzitem; i < NUMARTIFACTS; i++)
     {
-        P_GiveArtifact(player, static_cast<artitype_t>(i), NULL);
+        P_GiveArtifact(player, static_cast<artitype_t>(i), nullptr);
     }
     P_SetMessage(player, TXT_CHEATARTIFACTS3, true);
 }
@@ -1851,7 +1851,7 @@ static void CheatQuickenFunc2(player_t * player, Cheat_t * cheat)
 
 static void CheatQuickenFunc3(player_t * player, Cheat_t * cheat)
 {
-    P_DamageMobj(player->mo, NULL, player->mo, 10000);
+    P_DamageMobj(player->mo, nullptr, player->mo, 10000);
     P_SetMessage(player, "THAT'S THREE!  TIME TO DIE.", true);
 }
 
@@ -1936,7 +1936,7 @@ static void CheatScriptFunc3(player_t * player, Cheat_t * cheat)
         return;
     script_args[0] = script_args[1] = script_args[2] = 0;
 
-    if (P_StartACS(script, 0, script_args, player->mo, NULL, 0))
+    if (P_StartACS(script, 0, script_args, player->mo, nullptr, 0))
     {
         M_snprintf(textBuffer, sizeof(textBuffer),
                    "RUNNING SCRIPT %.2d", script);

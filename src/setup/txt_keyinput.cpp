@@ -69,7 +69,7 @@ static void OpenPromptWindow(txt_key_input_t *key_input)
 
     key_input->check_conflicts = !TXT_GetModifierState(TXT_MOD_SHIFT);
 
-    window = TXT_MessageBox(NULL, "Press the new key...");
+    window = TXT_MessageBox(nullptr, "Press the new key...");
 
     TXT_SetKeyListener(window, KeyPressCallback, key_input);
 
@@ -82,7 +82,7 @@ static void OpenPromptWindow(txt_key_input_t *key_input)
 
     // SDL2-TODO: Needed?
     //SDL_WM_GrabInput(SDL_GRAB_ON);
-    TXT_SignalConnect(window, "closed", ReleaseGrab, NULL);
+    TXT_SignalConnect(window, "closed", ReleaseGrab, nullptr);
 }
 
 static void TXT_KeyInputSizeCalc(TXT_UNCAST_ARG(key_input))
@@ -167,7 +167,7 @@ txt_widget_class_t txt_key_input_class =
     TXT_KeyInputKeyPress,
     TXT_KeyInputDestructor,
     TXT_KeyInputMousePress,
-    NULL,
+    nullptr,
 };
 
 txt_key_input_t *TXT_NewKeyInput(int *variable)

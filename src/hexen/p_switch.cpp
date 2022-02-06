@@ -46,7 +46,7 @@ switchlist_t alphSwitchListFull[] = {
     {"\0", "\0", 0}
 };
 
-switchlist_t *alphSwitchList = NULL;
+switchlist_t *alphSwitchList = nullptr;
 
 int switchlist[MAXSWITCHES * 2];
 int numswitches;

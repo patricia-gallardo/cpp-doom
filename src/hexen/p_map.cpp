@@ -153,7 +153,7 @@ boolean P_TeleportMove(mobj_t * thing, fixed_t x, fixed_t y)
     tmbbox[BOXLEFT] = x - tmthing->radius;
 
     newsubsec = R_PointInSubsector(x, y);
-    ceilingline = NULL;
+    ceilingline = nullptr;
 
 //
 // the base floor / ceiling is from the subsector that contains the
@@ -289,7 +289,7 @@ boolean PIT_CheckLine(line_t * ld)
     {                           // One sided line
         if (tmthing->flags2 & MF2_BLASTED)
         {
-            P_DamageMobj(tmthing, NULL, NULL, tmthing->info->mass >> 5);
+            P_DamageMobj(tmthing, nullptr, nullptr, tmthing->info->mass >> 5);
         }
         CheckForPushSpecial(ld, 0, tmthing);
         return (false);
@@ -300,7 +300,7 @@ boolean PIT_CheckLine(line_t * ld)
         {                       // Explicitly blocking everything
             if (tmthing->flags2 & MF2_BLASTED)
             {
-                P_DamageMobj(tmthing, NULL, NULL, tmthing->info->mass >> 5);
+                P_DamageMobj(tmthing, nullptr, nullptr, tmthing->info->mass >> 5);
             }
             CheckForPushSpecial(ld, 0, tmthing);
             return (false);
@@ -309,7 +309,7 @@ boolean PIT_CheckLine(line_t * ld)
         {                       // Block monsters only
             if (tmthing->flags2 & MF2_BLASTED)
             {
-                P_DamageMobj(tmthing, NULL, NULL, tmthing->info->mass >> 5);
+                P_DamageMobj(tmthing, nullptr, nullptr, tmthing->info->mass >> 5);
             }
             return (false);
         }
@@ -791,7 +791,7 @@ boolean P_CheckPosition(mobj_t * thing, fixed_t x, fixed_t y)
     tmbbox[BOXLEFT] = x - tmthing->radius;
 
     newsubsec = R_PointInSubsector(x, y);
-    ceilingline = NULL;
+    ceilingline = nullptr;
 
 //
 // the base floor / ceiling is from the subsector that contains the
@@ -820,7 +820,7 @@ boolean P_CheckPosition(mobj_t * thing, fixed_t x, fixed_t y)
     yl = (tmbbox[BOXBOTTOM] - bmaporgy - MAXRADIUS) >> MAPBLOCKSHIFT;
     yh = (tmbbox[BOXTOP] - bmaporgy + MAXRADIUS) >> MAPBLOCKSHIFT;
 
-    BlockingMobj = NULL;
+    BlockingMobj = nullptr;
     for (bx = xl; bx <= xh; bx++)
         for (by = yl; by <= yh; by++)
             if (!P_BlockThingsIterator(bx, by, PIT_CheckThing))
@@ -833,7 +833,7 @@ boolean P_CheckPosition(mobj_t * thing, fixed_t x, fixed_t y)
         return true;
     }
 
-    BlockingMobj = NULL;
+    BlockingMobj = nullptr;
     xl = (tmbbox[BOXLEFT] - bmaporgx) >> MAPBLOCKSHIFT;
     xh = (tmbbox[BOXRIGHT] - bmaporgx) >> MAPBLOCKSHIFT;
     yl = (tmbbox[BOXBOTTOM] - bmaporgy) >> MAPBLOCKSHIFT;
@@ -877,7 +877,7 @@ mobj_t *P_CheckOnmobj(mobj_t * thing)
     tmbbox[BOXLEFT] = x - tmthing->radius;
 
     newsubsec = R_PointInSubsector(x, y);
-    ceilingline = NULL;
+    ceilingline = nullptr;
 
 //
 // the base floor / ceiling is from the subsector that contains the
@@ -891,7 +891,7 @@ mobj_t *P_CheckOnmobj(mobj_t * thing)
     numspechit = 0;
 
     if (tmflags & MF_NOCLIP)
-        return NULL;
+        return nullptr;
 
 //
 // check things first, possibly picking things up
@@ -912,7 +912,7 @@ mobj_t *P_CheckOnmobj(mobj_t * thing)
                 return onmobj;
             }
     *tmthing = oldmo;
-    return NULL;
+    return nullptr;
 }
 
 //=============================================================================
@@ -1169,7 +1169,7 @@ boolean P_TryMove(mobj_t * thing, fixed_t x, fixed_t y)
 
         if (tmthing->flags2 & MF2_BLASTED)
         {
-            P_DamageMobj(tmthing, NULL, NULL, tmthing->info->mass >> 5);
+            P_DamageMobj(tmthing, nullptr, nullptr, tmthing->info->mass >> 5);
         }
         numSpecHitTemp = numspechit;
         while (numSpecHitTemp > 0)
@@ -1561,7 +1561,7 @@ void P_BounceWall(mobj_t * mo)
 
 
 mobj_t *PuffSpawned;
-mobj_t *linetarget;             // who got hit (or NULL)
+mobj_t *linetarget;             // who got hit (or nullptr)
 mobj_t *shootthing;
 fixed_t shootz;                 // height if not aiming up or down
                                                                         // ???: use slope for monsters?
@@ -1821,7 +1821,7 @@ fixed_t P_AimLineAttack(mobj_t * t1, angle_t angle, fixed_t distance)
     topslope = 100 * FRACUNIT / 160;    // can't shoot outside view angles
     bottomslope = -100 * FRACUNIT / 160;
     attackrange = distance;
-    linetarget = NULL;
+    linetarget = nullptr;
 
     P_PathTraverse(t1->x, t1->y, x2, y2, PT_ADDLINES | PT_ADDTHINGS,
                    PTR_AimTraverse);
@@ -2069,7 +2069,7 @@ boolean PTR_PuzzleItemTraverse(intercept_t * in)
         return true;
     }
 
-    P_StartACS(mobj->args[1], 0, &mobj->args[2], PuzzleItemUser, NULL, 0);
+    P_StartACS(mobj->args[1], 0, &mobj->args[2], PuzzleItemUser, nullptr, 0);
     mobj->special = 0;
     PuzzleActivated = true;
     return false;               // Stop searching
@@ -2270,7 +2270,7 @@ boolean PIT_ChangeSector(mobj_t * thing)
     nofit = true;
     if (crushchange && !(leveltime & 3))
     {
-        P_DamageMobj(thing, NULL, NULL, crushchange);
+        P_DamageMobj(thing, nullptr, nullptr, crushchange);
         // spray blood in a random direction
         if ((!(thing->flags & MF_NOBLOOD)) &&
             (!(thing->flags2 & MF2_INVULNERABLE)))

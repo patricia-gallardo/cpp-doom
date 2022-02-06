@@ -200,7 +200,7 @@ void P_XYMovement (mobj_t* mo)
                 // *** BUG: In vanilla Strife the second condition is simply
                 // if(numspechit). However, numspechit can be negative, and
                 // when it is, this accesses spechit[-2]. This always causes the
-                // DOS exe to read from NULL, and the 'special' value there (in
+                // DOS exe to read from nullptr, and the 'special' value there (in
                 // DOS 6.22 at least) is 0x70, which does nothing.
                 if(blockingline && blockingline->special)
                     P_ShootSpecialLine(mo, blockingline);
@@ -373,7 +373,7 @@ void P_ZMovement (mobj_t* mo)
                 // villsa [STRIFE] fall damage
                 // haleyjd 09/18/10: Repaired calculation
                 if(mo->momz < -20*FRACUNIT)
-                    P_DamageMobj(mo, NULL, mo, mo->momz / -25000);
+                    P_DamageMobj(mo, nullptr, mo, mo->momz / -25000);
 
                 // haleyjd 20110224: *Any* fall centers your view, not just
                 // damaging falls (moved outside the above if).
@@ -631,7 +631,7 @@ P_SpawnMobj
     state_t*	st;
     mobjinfo_t*	info;
 
-    mobj = zmalloc<mobj_t *>(sizeof(*mobj), PU_LEVEL, NULL);
+    mobj = zmalloc<mobj_t *>(sizeof(*mobj), PU_LEVEL, nullptr);
     memset (mobj, 0, sizeof (*mobj));
     info = &mobjinfo[type];
 
@@ -856,7 +856,7 @@ void P_SpawnPlayer(mapthing_t* mthing)
     p->mo               = mobj;
     p->playerstate      = PST_LIVE;	
     p->refire           = 0;
-    p->message          = NULL;
+    p->message          = nullptr;
     p->damagecount      = 0;
     p->bonuscount       = 0;
     p->extralight       = 0;
@@ -1134,12 +1134,12 @@ void P_CheckMissileSpawn (mobj_t* th)
 // Certain functions assume that a mobj_t pointer is non-NULL,
 // causing a crash in some situations where it is NULL.  Vanilla
 // Doom did not crash because of the lack of proper memory 
-// protection. This function substitutes NULL pointers for
+// protection. This function substitutes nullptr pointers for
 // pointers to a dummy mobj, to avoid a crash.
 
 mobj_t *P_SubstNullMobj(mobj_t *mobj)
 {
-    if (mobj == NULL)
+    if (mobj == nullptr)
     {
         static mobj_t dummy_mobj;
 

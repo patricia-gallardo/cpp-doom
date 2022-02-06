@@ -40,7 +40,7 @@ void TXT_SetWindowAction(txt_window_t *window,
 {
     TXT_CAST_ARG(txt_widget_t, action);
 
-    if (window->actions[position] != NULL)
+    if (window->actions[position] != nullptr)
     {
         TXT_DestroyWidget(window->actions[position]);
     }
@@ -49,7 +49,7 @@ void TXT_SetWindowAction(txt_window_t *window,
 
     // Maintain parent pointer.
 
-    if (action != NULL)
+    if (action != nullptr)
     {
         action->parent = &window->table.widget;
     }
@@ -63,9 +63,9 @@ txt_window_t *TXT_NewWindow(const char *title)
 
     TXT_InitTable(&win->table, 1);
 
-    if (title == NULL)
+    if (title == nullptr)
     {
-        win->title = NULL;
+        win->title = nullptr;
     }
     else
     {
@@ -76,15 +76,15 @@ txt_window_t *TXT_NewWindow(const char *title)
     win->y = TXT_SCREEN_H / 2;
     win->horiz_align = TXT_HORIZ_CENTER;
     win->vert_align = TXT_VERT_CENTER;
-    win->key_listener = NULL;
-    win->mouse_listener = NULL;
-    win->help_url = NULL;
+    win->key_listener = nullptr;
+    win->mouse_listener = nullptr;
+    win->help_url = nullptr;
 
-    TXT_AddWidget(win, TXT_NewSeparator(NULL));
+    TXT_AddWidget(win, TXT_NewSeparator(nullptr));
 
     for (i=0; i<3; ++i)
     {
-        win->actions[i] = NULL;
+        win->actions[i] = nullptr;
     }
 
     TXT_AddDesktopWindow(win);
@@ -110,7 +110,7 @@ void TXT_CloseWindow(txt_window_t *window)
 
     for (i=0; i<3; ++i)
     {
-        if (window->actions[i] != NULL)
+        if (window->actions[i] != nullptr)
         {
             TXT_DestroyWidget(window->actions[i]);
         }
@@ -165,7 +165,7 @@ static void LayoutActionArea(txt_window_t *window)
 
     // Left action
 
-    if (window->actions[TXT_HORIZ_LEFT] != NULL)
+    if (window->actions[TXT_HORIZ_LEFT] != nullptr)
     {
         widget = window->actions[TXT_HORIZ_LEFT];
 
@@ -183,7 +183,7 @@ static void LayoutActionArea(txt_window_t *window)
 
     // Draw the right action
 
-    if (window->actions[TXT_HORIZ_RIGHT] != NULL)
+    if (window->actions[TXT_HORIZ_RIGHT] != nullptr)
     {
         widget = window->actions[TXT_HORIZ_RIGHT];
 
@@ -200,7 +200,7 @@ static void LayoutActionArea(txt_window_t *window)
 
     // Draw the center action
 
-    if (window->actions[TXT_HORIZ_CENTER] != NULL)
+    if (window->actions[TXT_HORIZ_CENTER] != nullptr)
     {
         widget = window->actions[TXT_HORIZ_CENTER];
 
@@ -223,7 +223,7 @@ static void DrawActionArea(txt_window_t *window)
 
     for (i=0; i<3; ++i)
     {
-        if (window->actions[i] != NULL)
+        if (window->actions[i] != nullptr)
         {
             TXT_DrawWidget(window->actions[i]);
         }
@@ -246,7 +246,7 @@ static void CalcActionAreaSize(txt_window_t *window,
     {
         widget = (txt_widget_t *) window->actions[i];
 
-        if (widget != NULL)
+        if (widget != nullptr)
         {
             TXT_CalcWidgetSize(widget);
             *w += widget->w;
@@ -289,7 +289,7 @@ void TXT_LayoutWindow(txt_window_t *window)
 
     // If the window has a title, add an extra two lines
 
-    if (window->title != NULL)
+    if (window->title != nullptr)
     {
         window->window_h += 2;
     }
@@ -313,7 +313,7 @@ void TXT_LayoutWindow(txt_window_t *window)
     widgets->x = window->window_x + 2;
     widgets->y = window->window_y;
 
-    if (window->title != NULL)
+    if (window->title != nullptr)
     {
         widgets->y += 2;
     }
@@ -397,7 +397,7 @@ static int MouseButtonPress(txt_window_t *window, int b)
     // Try the mouse button listener
     // This happens whether it is in the window range or not
 
-    if (window->mouse_listener != NULL)
+    if (window->mouse_listener != nullptr)
     {
         // Mouse listener can eat button presses
 
@@ -425,7 +425,7 @@ static int MouseButtonPress(txt_window_t *window, int b)
     {
         widget = window->actions[i];
 
-        if (widget != NULL
+        if (widget != nullptr
          && x >= widget->x && x < (signed) (widget->x + widget->w)
          && y >= widget->y && y < (signed) (widget->y + widget->h))
         {
@@ -463,7 +463,7 @@ int TXT_WindowKeyPress(txt_window_t *window, int c)
 
     // Try the window key spy
 
-    if (window->key_listener != NULL)
+    if (window->key_listener != nullptr)
     {
         // key listener can eat keys
 
@@ -484,7 +484,7 @@ int TXT_WindowKeyPress(txt_window_t *window, int c)
 
     for (i=0; i<3; ++i)
     {
-        if (window->actions[i] != NULL
+        if (window->actions[i] != nullptr
          && TXT_WidgetKeyPress(window->actions[i], c))
         {
             return 1;
@@ -523,7 +523,7 @@ void TXT_SetWindowHelpURL(txt_window_t *window, const char *help_url)
 
 void TXT_OpenURL(const char *url)
 {
-    ShellExecute(NULL, "open", url, NULL, NULL, SW_SHOWNORMAL);
+    ShellExecute(nullptr, "open", url, nullptr, nullptr, SW_SHOWNORMAL);
 }
 
 #else
@@ -566,7 +566,7 @@ void TXT_OpenURL(const char *url)
 
 void TXT_OpenWindowHelpURL(txt_window_t *window)
 {
-    if (window->help_url != NULL)
+    if (window->help_url != nullptr)
     {
         TXT_OpenURL(window->help_url);
     }
@@ -585,10 +585,10 @@ txt_window_t *TXT_MessageBox(const char *title, const char *message, ...)
     window = TXT_NewWindow(title);
     TXT_AddWidget(window, TXT_NewLabel(buf));
 
-    TXT_SetWindowAction(window, TXT_HORIZ_LEFT, NULL);
+    TXT_SetWindowAction(window, TXT_HORIZ_LEFT, nullptr);
     TXT_SetWindowAction(window, TXT_HORIZ_CENTER, 
                         TXT_NewWindowEscapeAction(window));
-    TXT_SetWindowAction(window, TXT_HORIZ_RIGHT, NULL);
+    TXT_SetWindowAction(window, TXT_HORIZ_RIGHT, nullptr);
 
     return window;
 }

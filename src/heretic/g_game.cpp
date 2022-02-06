@@ -972,7 +972,7 @@ boolean G_Responder(event_t * ev)
 void G_Ticker()
 {
     int i, buf;
-    ticcmd_t *cmd = NULL;
+    ticcmd_t *cmd = nullptr;
 
 //
 // do player reborns if needed
@@ -1212,8 +1212,8 @@ void G_PlayerFinishLevel(int player)
     p->fixedcolormap = 0;       // Remove torch
     p->damagecount = 0;         // No palette changes
     p->bonuscount = 0;
-    p->rain1 = NULL;
-    p->rain2 = NULL;
+    p->rain1 = nullptr;
+    p->rain2 = nullptr;
     if (p == &players[consoleplayer])
     {
         SB_state = -1;          // refresh the status bar
@@ -1377,7 +1377,7 @@ void G_DoReborn(int playernum)
         gameaction = ga_loadlevel;      // reload the level from scratch
     else
     {                           // respawn at the start
-        players[playernum].mo->player = NULL;   // dissasociate the corpse
+        players[playernum].mo->player = nullptr;   // dissasociate the corpse
 
         // spawn at random spot if in death match
         if (deathmatch)
@@ -1508,7 +1508,7 @@ void G_DoWorldDone()
 //
 //---------------------------------------------------------------------------
 
-static char *savename = NULL;
+static char *savename = nullptr;
 
 void G_LoadGame(char *name)
 {
@@ -1538,7 +1538,7 @@ void G_DoLoadGame()
     SV_OpenRead(savename);
 
     free(savename);
-    savename = NULL;
+    savename = nullptr;
 
     // Skip the description field
     SV_Read(savestr, SAVESTRINGSIZE);
@@ -1870,7 +1870,7 @@ void G_RecordDemo(skill_t skill, int numplayers, int episode, int map,
     i = M_CheckParmWithArgs("-maxdemo", 1);
     if (i)
         maxsize = atoi(myargv[i + 1]) * 1024;
-    demobuffer = zmalloc<byte *>(maxsize, PU_STATIC, NULL);
+    demobuffer = zmalloc<byte *>(maxsize, PU_STATIC, nullptr);
     demoend = demobuffer + maxsize;
 
     demo_p = demobuffer;

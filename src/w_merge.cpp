@@ -91,7 +91,7 @@ static boolean SetupList(searchlist_t *list, searchlist_t *src_list,
     list->numlumps = 0;
     startlump      = FindInList(src_list, startname);
 
-    if (startname2 != NULL && startlump < 0)
+    if (startname2 != nullptr && startlump < 0)
     {
         startlump = FindInList(src_list, startname2);
     }
@@ -100,7 +100,7 @@ static boolean SetupList(searchlist_t *list, searchlist_t *src_list,
     {
         endlump = FindInList(src_list, endname);
 
-        if (endname2 != NULL && endlump < 0)
+        if (endname2 != nullptr && endlump < 0)
         {
             endlump = FindInList(src_list, endname2);
         }
@@ -122,12 +122,12 @@ static void SetupLists()
 {
     // IWAD
 
-    if (!SetupList(&iwad_flats, &iwad, "F_START", "F_END", NULL, NULL))
+    if (!SetupList(&iwad_flats, &iwad, "F_START", "F_END", nullptr, nullptr))
     {
         I_Error("Flats section not found in IWAD");
     }
 
-    if (!SetupList(&iwad_sprites, &iwad, "S_START", "S_END", NULL, NULL))
+    if (!SetupList(&iwad_sprites, &iwad, "S_START", "S_END", nullptr, nullptr))
 
     {
         I_Error("Sprites section not found in IWAD");
@@ -143,11 +143,11 @@ static void SetupLists()
 
 static void InitSpriteList()
 {
-    if (sprite_frames == NULL)
+    if (sprite_frames == nullptr)
     {
         sprite_frames_alloced = 128;
         sprite_frames         = zmalloc<decltype(sprite_frames)>(sizeof(*sprite_frames) * sprite_frames_alloced,
-            PU_STATIC, NULL);
+            PU_STATIC, nullptr);
     }
 
     num_sprite_frames = 0;
@@ -206,7 +206,7 @@ static sprite_frame_t *FindSpriteFrame(char *name, int frame)
         sprite_frame_t *newframes;
 
         newframes = zmalloc<decltype(newframes)>(sprite_frames_alloced * 2 * sizeof(*sprite_frames),
-            PU_STATIC, NULL);
+            PU_STATIC, nullptr);
         memcpy(newframes, sprite_frames,
             sprite_frames_alloced * sizeof(*sprite_frames));
         Z_Free(sprite_frames);
@@ -221,7 +221,7 @@ static sprite_frame_t *FindSpriteFrame(char *name, int frame)
     result->frame = frame;
 
     for (i = 0; i < 8; ++i)
-        result->angle_lumps[i] = NULL;
+        result->angle_lumps[i] = nullptr;
 
     ++num_sprite_frames;
 
@@ -576,7 +576,7 @@ void W_MergeFile(const char *filename)
 
     // Load PWAD
 
-    if (W_AddFile(filename) == NULL)
+    if (W_AddFile(filename) == nullptr)
         return;
 
     // IWAD is at the start, PWAD was appended to the end
@@ -633,7 +633,7 @@ void W_NWTMergeFile(const char *filename, int flags)
 
     // Load PWAD
 
-    if (W_AddFile(filename) == NULL)
+    if (W_AddFile(filename) == nullptr)
         return;
 
     // IWAD is at the start, PWAD was appended to the end
@@ -683,7 +683,7 @@ void W_NWTDashMerge(const char *filename)
 
     wad_file = W_AddFile(filename);
 
-    if (wad_file == NULL)
+    if (wad_file == nullptr)
     {
         return;
     }
@@ -724,8 +724,8 @@ void W_NWTDashMerge(const char *filename)
 // [crispy] dump merged WAD data into a new IWAD file
 int W_MergeDump(const char *file)
 {
-    FILE *   fp     = NULL;
-    char *   lump_p = NULL;
+    FILE *   fp     = nullptr;
+    char *   lump_p = nullptr;
     uint32_t i, dir_p;
 
     // [crispy] WAD directory structure
@@ -734,7 +734,7 @@ int W_MergeDump(const char *file)
         uint32_t size;
         char     name[8];
     } directory_t;
-    directory_t *dir = NULL;
+    directory_t *dir = nullptr;
 
     // [crispy] open file for writing
     fp = fopen(file, "wb");

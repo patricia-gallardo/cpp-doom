@@ -133,7 +133,7 @@ boolean NET_ReadQueryData(net_packet_t *packet, net_querydata_t *query)
 
     query->version = NET_ReadSafeString(packet);
 
-    success = query->version != NULL
+    success = query->version != nullptr
               && NET_ReadInt8(packet, (unsigned int *)&query->server_state)
               && NET_ReadInt8(packet, (unsigned int *)&query->num_players)
               && NET_ReadInt8(packet, (unsigned int *)&query->max_players)
@@ -152,7 +152,7 @@ boolean NET_ReadQueryData(net_packet_t *packet, net_querydata_t *query)
     // okay if it cannot be successfully read.
     query->protocol = NET_ReadProtocolList(packet);
 
-    return query->description != NULL;
+    return query->description != nullptr;
 }
 
 void NET_WriteQueryData(net_packet_t *packet, net_querydata_t *query)
@@ -497,7 +497,7 @@ boolean NET_ReadWaitData(net_packet_t *packet, net_waitdata_t *data)
     {
         s = NET_ReadString(packet);
 
-        if (s == NULL || strlen(s) >= MAXPLAYERNAME)
+        if (s == nullptr || strlen(s) >= MAXPLAYERNAME)
         {
             return false;
         }
@@ -506,7 +506,7 @@ boolean NET_ReadWaitData(net_packet_t *packet, net_waitdata_t *data)
 
         s = NET_ReadString(packet);
 
-        if (s == NULL || strlen(s) >= MAXPLAYERNAME)
+        if (s == nullptr || strlen(s) >= MAXPLAYERNAME)
         {
             return false;
         }
@@ -590,7 +590,7 @@ net_protocol_t NET_ReadProtocol(net_packet_t *packet)
     const char *name;
 
     name = NET_ReadString(packet);
-    if (name == NULL)
+    if (name == nullptr)
     {
         return NET_PROTOCOL_UNKNOWN;
     }
@@ -642,7 +642,7 @@ net_protocol_t NET_ReadProtocolList(net_packet_t *packet)
         const char *   name;
 
         name = NET_ReadString(packet);
-        if (name == NULL)
+        if (name == nullptr)
         {
             return NET_PROTOCOL_UNKNOWN;
         }

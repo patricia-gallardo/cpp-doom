@@ -325,7 +325,7 @@ twoSided
 //
 // getNextSector()
 // Return sector_t * of sector next to current.
-// NULL if not two-sided line
+// nullptr if not two-sided line
 //
 sector_t*
 getNextSector
@@ -333,7 +333,7 @@ getNextSector
   sector_t*	sec )
 {
     if (!(line->flags & ML_TWOSIDED))
-	return NULL;
+	return nullptr;
 		
     if (line->frontsector == sec)
 	return line->backsector;
@@ -1513,7 +1513,7 @@ void P_PlayerInSpecialSector (player_t* player)
         // [STRIFE] Immediate 5 damage every 31 tics
         if(!player->powers[pw_ironfeet])
             if(!(leveltime & 0x1f))
-                P_DamageMobj(player->mo, NULL, NULL, 5);
+                P_DamageMobj(player->mo, nullptr, nullptr, 5);
         break;
 
     case 9:
@@ -1521,7 +1521,7 @@ void P_PlayerInSpecialSector (player_t* player)
         //player->secretcount++; [STRIFE] Don't have a secret count.
         sector->special = 0;
         if(player - players == consoleplayer)
-            S_StartSound(NULL, sfx_yeah);
+            S_StartSound(nullptr, sfx_yeah);
         break;
 
     case 11:
@@ -1529,7 +1529,7 @@ void P_PlayerInSpecialSector (player_t* player)
         player->cheats &= ~CF_GODMODE;
 
         if (!(leveltime&0x1f))
-            P_DamageMobj (player->mo, NULL, NULL, 20);
+            P_DamageMobj (player->mo, nullptr, nullptr, 20);
 
         if (player->health <= 10)
             G_ExitLevel(0);
@@ -1537,7 +1537,7 @@ void P_PlayerInSpecialSector (player_t* player)
 
     case 15:
         // haleyjd 08/30/10: [STRIFE] "Instant" Death sector
-        P_DamageMobj(player->mo, NULL, NULL, 999);
+        P_DamageMobj(player->mo, nullptr, nullptr, 999);
         break;
 
 
@@ -1796,7 +1796,7 @@ int EV_DoDonut(line_t*	line)
         // isn't something that should be done, anyway.
         // Just print a warning and return.
 
-        if (s2 == NULL)
+        if (s2 == nullptr)
         {
             fprintf(stderr,
                     "EV_DoDonut: linedef had no second sidedef! "
@@ -1811,10 +1811,10 @@ int EV_DoDonut(line_t*	line)
 	    if (s3 == s1)
 		continue;
 
-            if (s3 == NULL)
+            if (s3 == nullptr)
             {
                 // e6y
-                // s3 is NULL, so
+                // s3 is nullptr, so
                 // s3->floorheight is an int at 0000:0000
                 // s3->floorpic is a short at 0000:0008
                 // Trying to emulate
@@ -1984,10 +1984,10 @@ void P_SpawnSpecials ()
 
     //	Init other misc stuff
     for (i = 0;i < MAXCEILINGS;i++)
-        activeceilings[i] = NULL;
+        activeceilings[i] = nullptr;
 
     for (i = 0;i < MAXPLATS;i++)
-        activeplats[i] = NULL;
+        activeplats[i] = nullptr;
 
     for (i = 0;i < MAXBUTTONS;i++)
         memset(&buttonlist[i],0,sizeof(button_t));

@@ -266,7 +266,7 @@ void EV_StopPlat(line_t *line)
         {
             (activeplats[j])->oldstatus            = (activeplats[j])->status;
             (activeplats[j])->status               = in_stasis;
-            (activeplats[j])->thinker.function.acv = (actionf_v)NULL;
+            (activeplats[j])->thinker.function.acv = (actionf_v) nullptr;
         }
 }
 
@@ -275,7 +275,7 @@ void P_AddActivePlat(plat_t *plat)
     int i;
 
     for (i = 0; i < MAXPLATS; i++)
-        if (activeplats[i] == NULL)
+        if (activeplats[i] == nullptr)
         {
             activeplats[i] = plat;
             return;
@@ -289,9 +289,9 @@ void P_RemoveActivePlat(plat_t *plat)
     for (i = 0; i < MAXPLATS; i++)
         if (plat == activeplats[i])
         {
-            (activeplats[i])->sector->specialdata = NULL;
+            (activeplats[i])->sector->specialdata = nullptr;
             P_RemoveThinker(&(activeplats[i])->thinker);
-            activeplats[i] = NULL;
+            activeplats[i] = nullptr;
 
             return;
         }

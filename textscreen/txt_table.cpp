@@ -34,10 +34,10 @@ txt_widget_t txt_table_eol;
 txt_widget_t txt_table_empty;
 
 // Returns true if the given widget in the table's widgets[] array refers
-// to an actual widget - not NULL, or one of the special overflow pointers.
+// to an actual widget - not nullptr, or one of the special overflow pointers.
 static int IsActualWidget(txt_widget_t *widget)
 {
-    return widget != NULL
+    return widget != nullptr
         && widget != &txt_table_overflow_right
         && widget != &txt_table_overflow_down;
 }
@@ -205,7 +205,7 @@ static void CalcRowColSizes(txt_table_t *table,
                 continue;
             }
 
-            // NULL represents an empty spacer
+            // nullptr represents an empty spacer
             if (IsActualWidget(widget))
             {
                 if (widget->h > row_heights[y])
@@ -299,7 +299,7 @@ void TXT_AddWidget(TXT_UNCAST_ARG(table), TXT_UNCAST_ARG(widget))
     // Convenience alias for NULL:
     if (widget == &txt_table_empty)
     {
-        widget = NULL;
+        widget = nullptr;
     }
     else if (widget == &txt_table_eol)
     {
@@ -371,13 +371,13 @@ void TXT_AddWidgets(TXT_UNCAST_ARG(table), ...)
 
     va_start(args, TXT_UNCAST_ARG_NAME(table));
 
-    // Keep adding widgets until a NULL is reached.
+    // Keep adding widgets until a nullptr is reached.
    
     for (;;) 
     {
         widget = va_arg(args, txt_widget_t *);
 
-        if (widget == NULL)
+        if (widget == nullptr)
         {
             break;
         }
@@ -479,7 +479,7 @@ static void ChangeSelection(txt_table_t *table, int x, int y)
     table->selected_x = x;
     table->selected_y = y;
 
-    if (table->widget.focused && new_widget != NULL)
+    if (table->widget.focused && new_widget != nullptr)
     {
         TXT_SetWidgetFocus(new_widget, 1);
     }
@@ -779,7 +779,7 @@ static void TXT_TableMousePress(TXT_UNCAST_ARG(table), int x, int y, int b)
     {
         widget = table->widgets[i];
 
-        // NULL widgets are spacers
+        // nullptr widgets are spacers
 
         if (IsActualWidget(widget))
         {
@@ -873,7 +873,7 @@ void TXT_InitTable(txt_table_t *table, int columns)
 
     TXT_InitWidget(table, &txt_table_class);
     table->columns = columns;
-    table->widgets = NULL;
+    table->widgets = nullptr;
     table->num_widgets = 0;
     table->selected_x = 0;
     table->selected_y = 0;
@@ -915,7 +915,7 @@ txt_table_t *TXT_MakeTable(int columns, ...)
         txt_widget_t *widget;
         widget = va_arg(args, txt_widget_t *);
 
-        if (widget == NULL)
+        if (widget == nullptr)
         {
             break;
         }
@@ -950,7 +950,7 @@ txt_table_t *TXT_NewHorizBox(TXT_UNCAST_ARG(first_widget), ...)
 
         widget = va_arg(args, txt_widget_t *);
 
-        if (widget == NULL)
+        if (widget == nullptr)
         {
             // End of list
 
@@ -979,7 +979,7 @@ txt_table_t *TXT_NewHorizBox(TXT_UNCAST_ARG(first_widget), ...)
 
         widget = va_arg(args, txt_widget_t *);
 
-        if (widget == NULL)
+        if (widget == nullptr)
         {
             // End of list
 
@@ -1007,7 +1007,7 @@ txt_widget_t *TXT_GetSelectedWidget(TXT_UNCAST_ARG(table))
 
     index = table->selected_y * table->columns + table->selected_x;
 
-    result = NULL;
+    result = nullptr;
 
     if (index >= 0 && index < table->num_widgets)
     {
@@ -1015,11 +1015,11 @@ txt_widget_t *TXT_GetSelectedWidget(TXT_UNCAST_ARG(table))
 
         if (!IsActualWidget(result))
         {
-            result = NULL;
+            result = nullptr;
         }
     }
 
-    if (result != NULL && result->widget_class == &txt_table_class)
+    if (result != nullptr && result->widget_class == &txt_table_class)
     {
         result = TXT_GetSelectedWidget(result);
     }

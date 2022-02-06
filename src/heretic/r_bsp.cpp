@@ -26,7 +26,7 @@ side_t *sidedef;
 line_t *linedef;
 sector_t *frontsector, *backsector;
 
-drawseg_t *drawsegs = NULL, *ds_p;
+drawseg_t *drawsegs = nullptr, *ds_p;
 int numdrawsegs = 0;
 
 void R_StoreWallRange(int start, int stop);
@@ -432,14 +432,14 @@ void R_Subsector(int num)
                                  frontsector->lightlevel,
                                  frontsector->special);
     else
-        floorplane = NULL;
+        floorplane = nullptr;
     if (frontsector->ceilingheight > viewz
         || frontsector->ceilingpic == skyflatnum)
         ceilingplane = R_FindPlane(frontsector->ceilingheight,
                                    frontsector->ceilingpic,
                                    frontsector->lightlevel, 0);
     else
-        ceilingplane = NULL;
+        ceilingplane = nullptr;
 
     R_AddSprites(frontsector);
 

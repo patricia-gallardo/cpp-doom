@@ -93,7 +93,7 @@ void T_RotatePoly(polyevent_t * pe)
             poly = GetPolyobj(pe->polyobj);
             if (poly->specialdata == pe)
             {
-                poly->specialdata = NULL;
+                poly->specialdata = nullptr;
             }
             SN_StopSequence((mobj_t *) & poly->startSpot);
             P_PolyobjFinished(poly->tag);
@@ -122,7 +122,7 @@ boolean EV_RotatePoly(line_t * line, byte * args, int direction, boolean
 
     polyNum = args[0];
     poly = GetPolyobj(polyNum);
-    if (poly != NULL)
+    if (poly != nullptr)
     {
         if (poly->specialdata && !overRide)
         {                       // poly is already moving
@@ -185,7 +185,7 @@ boolean EV_RotatePoly(line_t * line, byte * args, int direction, boolean
             pe->dist = ANG_MAX - 1;
         }
         poly = GetPolyobj(polyNum);
-        if (poly != NULL)
+        if (poly != nullptr)
         {
             poly->specialdata = pe;
         }
@@ -222,7 +222,7 @@ void T_MovePoly(polyevent_t * pe)
             poly = GetPolyobj(pe->polyobj);
             if (poly->specialdata == pe)
             {
-                poly->specialdata = NULL;
+                poly->specialdata = nullptr;
             }
             SN_StopSequence((mobj_t *) & poly->startSpot);
             P_PolyobjFinished(poly->tag);
@@ -254,7 +254,7 @@ boolean EV_MovePoly(line_t * line, byte * args, boolean timesEight, boolean
 
     polyNum = args[0];
     poly = GetPolyobj(polyNum);
-    if (poly != NULL)
+    if (poly != nullptr)
     {
         if (poly->specialdata && !overRide)
         {                       // poly is already moving
@@ -366,7 +366,7 @@ void T_PolyDoor(polydoor_t * pd)
                     {
                         if (poly->specialdata == pd)
                         {
-                            poly->specialdata = NULL;
+                            poly->specialdata = nullptr;
                         }
                         P_PolyobjFinished(poly->tag);
                         P_RemoveThinker(&pd->thinker);
@@ -417,7 +417,7 @@ void T_PolyDoor(polydoor_t * pd)
                     {
                         if (poly->specialdata == pd)
                         {
-                            poly->specialdata = NULL;
+                            poly->specialdata = nullptr;
                         }
                         P_PolyobjFinished(poly->tag);
                         P_RemoveThinker(&pd->thinker);
@@ -462,7 +462,7 @@ boolean EV_OpenPolyDoor(line_t * line, byte * args, podoortype_t type)
 
     polyNum = args[0];
     poly = GetPolyobj(polyNum);
-    if (poly != NULL)
+    if (poly != nullptr)
     {
         if (poly->specialdata)
         {                       // poly is already moving
@@ -566,7 +566,7 @@ static polyobj_t *GetPolyobj(int polyNum)
             return &polyobjs[i];
         }
     }
-    return NULL;
+    return nullptr;
 }
 
 //==========================================================================
@@ -644,7 +644,7 @@ static void ThrustMobj(mobj_t * mobj, seg_t * seg, polyobj_t * po)
     {
         if (!P_CheckPosition(mobj, mobj->x + thrustX, mobj->y + thrustY))
         {
-            P_DamageMobj(mobj, NULL, NULL, 3);
+            P_DamageMobj(mobj, nullptr, nullptr, 3);
         }
     }
 }
@@ -936,15 +936,15 @@ static void UnLinkPolyobj(polyobj_t * po)
             if (i >= 0 && i < bmapwidth && j >= 0 && j < bmapheight)
             {
                 link = PolyBlockMap[index + i];
-                while (link != NULL && link->polyobj != po)
+                while (link != nullptr && link->polyobj != po)
                 {
                     link = link->next;
                 }
-                if (link == NULL)
+                if (link == nullptr)
                 {               // polyobj not located in the link cell
                     continue;
                 }
-                link->polyobj = NULL;
+                link->polyobj = nullptr;
             }
         }
     }
@@ -1006,21 +1006,21 @@ static void LinkPolyobj(polyobj_t * po)
                 if (!(*link))
                 {               // Create a new link at the current block cell
                     *link = zmalloc<polyblock_t *>(sizeof(polyblock_t), PU_LEVEL, 0);
-                    (*link)->next = NULL;
-                    (*link)->prev = NULL;
+                    (*link)->next = nullptr;
+                    (*link)->prev = nullptr;
                     (*link)->polyobj = po;
                     continue;
                 }
                 else
                 {
                     tempLink = *link;
-                    while (tempLink->next != NULL
-                           && tempLink->polyobj != NULL)
+                    while (tempLink->next != nullptr
+                           && tempLink->polyobj != nullptr)
                     {
                         tempLink = tempLink->next;
                     }
                 }
-                if (tempLink->polyobj == NULL)
+                if (tempLink->polyobj == nullptr)
                 {
                     tempLink->polyobj = po;
                     continue;
@@ -1029,7 +1029,7 @@ static void LinkPolyobj(polyobj_t * po)
                 {
                     tempLink->next = zmalloc<polyblock_s *>(sizeof(polyblock_t),
                                  PU_LEVEL, 0);
-                    tempLink->next->next = NULL;
+                    tempLink->next->next = nullptr;
                     tempLink->next->prev = tempLink;
                     tempLink->next->polyobj = po;
                 }
@@ -1165,7 +1165,7 @@ static void InitBlockMap()
 //
 // IterFindPolySegs
 //
-//              Passing NULL for segList will cause IterFindPolySegs to
+//              Passing nullptr for segList will cause IterFindPolySegs to
 //      count the number of segs in the polyobj
 //==========================================================================
 
@@ -1225,7 +1225,7 @@ static void SpawnPolyobj(int index, int tag, boolean crush)
             PolySegCount = 1;
             PolyStartX = segs[i].v1->x;
             PolyStartY = segs[i].v1->y;
-            IterFindPolySegs(segs[i].v2->x, segs[i].v2->y, NULL);
+            IterFindPolySegs(segs[i].v2->x, segs[i].v2->y, nullptr);
 
             polyobjs[index].numsegs = PolySegCount;
             polyobjs[index].segs = zmalloc<seg_t **>(PolySegCount * sizeof(seg_t *),
@@ -1343,7 +1343,7 @@ static void TranslateToStartSpot(int tag, int originX, int originY)
     vertex_t avg;               // used to find a polyobj's center, and hence subsector
     int i;
 
-    po = NULL;
+    po = nullptr;
     for (i = 0; i < po_NumPolyobjs; i++)
     {
         if (polyobjs[i].tag == tag)
@@ -1357,7 +1357,7 @@ static void TranslateToStartSpot(int tag, int originX, int originY)
         I_Error("TranslateToStartSpot:  Unable to match polyobj tag: %d\n",
                 tag);
     }
-    if (po->segs == NULL)
+    if (po->segs == nullptr)
     {
         I_Error
             ("TranslateToStartSpot:  Anchor point located without a StartSpot point: %d\n",
@@ -1406,7 +1406,7 @@ static void TranslateToStartSpot(int tag, int originX, int originY)
     avg.x /= po->numsegs;
     avg.y /= po->numsegs;
     sub = R_PointInSubsector(avg.x << FRACBITS, avg.y << FRACBITS);
-    if (sub->poly != NULL)
+    if (sub->poly != nullptr)
     {
         I_Error
             ("PO_TranslateToStartSpot:  Multiple polyobjs in a single subsector.\n");

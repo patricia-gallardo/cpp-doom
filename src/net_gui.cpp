@@ -72,7 +72,7 @@ static void OpenWaitDialog()
     TXT_AddWidget(window, TXT_NewLabel("\nPlease wait...\n\n"));
 
     cancel = TXT_NewWindowAction(KEY_ESCAPE, "Cancel");
-    TXT_SignalConnect(cancel, "pressed", EscapePressed, NULL);
+    TXT_SignalConnect(cancel, "pressed", EscapePressed, nullptr);
 
     TXT_SetWindowAction(window, TXT_HORIZ_LEFT, cancel);
     TXT_SetWindowPosition(window, TXT_HORIZ_CENTER, TXT_VERT_BOTTOM,
@@ -93,7 +93,7 @@ static void BuildWindow()
 
     // Add spacers
 
-    TXT_AddWidget(table, NULL);
+    TXT_AddWidget(table, nullptr);
     TXT_AddWidget(table, TXT_NewStrut(25, 1));
     TXT_AddWidget(table, TXT_NewStrut(17, 1));
 
@@ -176,11 +176,11 @@ static void UpdateGUI()
     if (net_client_wait_data.is_controller)
     {
         startgame = TXT_NewWindowAction(' ', "Start game");
-        TXT_SignalConnect(startgame, "pressed", StartGame, NULL);
+        TXT_SignalConnect(startgame, "pressed", StartGame, nullptr);
     }
     else
     {
-        startgame = NULL;
+        startgame = nullptr;
     }
 
     TXT_SetWindowAction(window, TXT_HORIZ_RIGHT, startgame);
@@ -190,7 +190,7 @@ static void BuildMasterStatusWindow()
 {
     txt_window_t *master_window;
 
-    master_window    = TXT_NewWindow(NULL);
+    master_window    = TXT_NewWindow(nullptr);
     master_msg_label = TXT_NewLabel("");
     TXT_AddWidget(master_window, master_msg_label);
 
@@ -200,9 +200,9 @@ static void BuildMasterStatusWindow()
     TXT_LowerWindow(master_window);
     TXT_SetWindowPosition(master_window, TXT_HORIZ_CENTER, TXT_VERT_CENTER,
         TXT_SCREEN_W / 2, TXT_SCREEN_H - 4);
-    TXT_SetWindowAction(master_window, TXT_HORIZ_LEFT, NULL);
-    TXT_SetWindowAction(master_window, TXT_HORIZ_CENTER, NULL);
-    TXT_SetWindowAction(master_window, TXT_HORIZ_RIGHT, NULL);
+    TXT_SetWindowAction(master_window, TXT_HORIZ_LEFT, nullptr);
+    TXT_SetWindowAction(master_window, TXT_HORIZ_CENTER, nullptr);
+    TXT_SetWindowAction(master_window, TXT_HORIZ_RIGHT, nullptr);
 }
 
 static void CheckMasterStatus()
@@ -214,7 +214,7 @@ static void CheckMasterStatus()
         return;
     }
 
-    if (master_msg_label == NULL)
+    if (master_msg_label == nullptr)
     {
         BuildMasterStatusWindow();
     }
@@ -310,9 +310,9 @@ static void CheckSHA1Sums()
     cont_button = TXT_NewWindowAction(KEY_ENTER, "Continue");
     TXT_SignalConnect(cont_button, "pressed", CloseWindow, window);
 
-    TXT_SetWindowAction(window, TXT_HORIZ_LEFT, NULL);
+    TXT_SetWindowAction(window, TXT_HORIZ_LEFT, nullptr);
     TXT_SetWindowAction(window, TXT_HORIZ_CENTER, cont_button);
-    TXT_SetWindowAction(window, TXT_HORIZ_RIGHT, NULL);
+    TXT_SetWindowAction(window, TXT_HORIZ_RIGHT, nullptr);
 
     if (!same_freedoom)
     {
@@ -383,7 +383,7 @@ static void CheckAutoLaunch()
 
         if (nodes >= expected_nodes)
         {
-            StartGame(NULL, NULL);
+            StartGame(nullptr, nullptr);
             expected_nodes = 0;
         }
     }

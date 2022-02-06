@@ -68,7 +68,7 @@ boolean M_FileExists(const char *filename)
 
     fstream = fopen(filename, "r");
 
-    if (fstream != NULL)
+    if (fstream != nullptr)
     {
         fclose(fstream);
         return true;
@@ -98,7 +98,7 @@ char *M_FileCaseExists(const char *path)
     }
 
     filename = strrchr(path_dup, DIR_SEPARATOR);
-    if (filename != NULL)
+    if (filename != nullptr)
     {
         filename++;
     }
@@ -125,7 +125,7 @@ char *M_FileCaseExists(const char *path)
 
     // 3. uppercase basename with lowercase extension, e.g. DOOM2.wad
     ext = strrchr(path_dup, '.');
-    if (ext != NULL && ext > filename)
+    if (ext != nullptr && ext > filename)
     {
         M_ForceLowercase(ext + 1);
 
@@ -148,7 +148,7 @@ char *M_FileCaseExists(const char *path)
 
     // 5. no luck
     free(path_dup);
-    return NULL;
+    return nullptr;
 }
 
 //
@@ -184,7 +184,7 @@ boolean M_WriteFile(const char *name, const void *source, int length)
 
     handle = fopen(name, "wb");
 
-    if (handle == NULL)
+    if (handle == nullptr)
         return false;
 
     count = fwrite(source, 1, length, handle);
@@ -208,7 +208,7 @@ int M_ReadFile(const char *name, byte **buffer)
     byte *buf;
 
     handle = fopen(name, "rb");
-    if (handle == NULL)
+    if (handle == nullptr)
         I_Error("Couldn't read file %s", name);
 
     // find the size of the file by seeking to the end and
@@ -216,7 +216,7 @@ int M_ReadFile(const char *name, byte **buffer)
 
     length = M_FileLength(handle);
 
-    buf   = zmalloc<byte *>(length + 1, PU_STATIC, NULL);
+    buf   = zmalloc<byte *>(length + 1, PU_STATIC, nullptr);
     count = fread(buf, 1, length, handle);
     fclose(handle);
 
@@ -243,7 +243,7 @@ char *M_TempFile(const char *s)
 
     tempdir = getenv("TEMP");
 
-    if (tempdir == NULL)
+    if (tempdir == nullptr)
     {
         tempdir = ".";
     }
@@ -253,7 +253,7 @@ char *M_TempFile(const char *s)
     tempdir = "/tmp";
 #endif
 
-    return M_StringJoin(tempdir, DIR_SEPARATOR_S, s, NULL);
+    return M_StringJoin(tempdir, DIR_SEPARATOR_S, s, nullptr);
 }
 
 boolean M_StrToInt(const char *str, int *result)
@@ -291,7 +291,7 @@ const char *M_BaseName(const char *path)
     const char *p;
 
     p = strrchr(path, DIR_SEPARATOR);
-    if (p == NULL)
+    if (p == nullptr)
     {
         return path;
     }
@@ -392,7 +392,7 @@ const char *M_StrCaseStr(const char *haystack, const char *needle)
 
     if (haystack_len < needle_len)
     {
-        return NULL;
+        return nullptr;
     }
 
     len = haystack_len - needle_len;
@@ -405,7 +405,7 @@ const char *M_StrCaseStr(const char *haystack, const char *needle)
         }
     }
 
-    return NULL;
+    return nullptr;
 }
 
 //
@@ -419,7 +419,7 @@ char *M_StringDuplicate(const char *orig)
 
     result = strdup(orig);
 
-    if (result == NULL)
+    if (result == nullptr)
     {
         I_Error("Failed to duplicate string (length %" PRIuPTR ")\n",
             strlen(orig));
@@ -448,7 +448,7 @@ char *M_StringReplace(const char *haystack, const char *needle,
     for (;;)
     {
         p = strstr(p, needle);
-        if (p == NULL)
+        if (p == nullptr)
         {
             break;
         }
@@ -460,10 +460,10 @@ char *M_StringReplace(const char *haystack, const char *needle,
     // Construct new string.
 
     result = static_cast<char *>(malloc(result_len));
-    if (result == NULL)
+    if (result == nullptr)
     {
         I_Error("M_StringReplace: Failed to allocate new string");
-        return NULL;
+        return nullptr;
     }
 
     dst     = result;
@@ -562,7 +562,7 @@ char *M_StringJoin(const char *s, ...)
     for (;;)
     {
         v = va_arg(args, const char *);
-        if (v == NULL)
+        if (v == nullptr)
         {
             break;
         }
@@ -573,10 +573,10 @@ char *M_StringJoin(const char *s, ...)
 
     result = static_cast<char *>(malloc(result_len));
 
-    if (result == NULL)
+    if (result == nullptr)
     {
         I_Error("M_StringJoin: Failed to allocate new string.");
-        return NULL;
+        return nullptr;
     }
 
     M_StringCopy(result, s, result_len);
@@ -585,7 +585,7 @@ char *M_StringJoin(const char *s, ...)
     for (;;)
     {
         v = va_arg(args, const char *);
-        if (v == NULL)
+        if (v == nullptr)
         {
             break;
         }
@@ -652,7 +652,7 @@ char *M_OEMToUTF8(const char *oem)
     tmp = static_cast<wchar_t *>(malloc(len * sizeof(wchar_t)));
     MultiByteToWideChar(CP_OEMCP, 0, oem, len, tmp, len);
     result = static_cast<char *>(malloc(len * 4));
-    WideCharToMultiByte(CP_UTF8, 0, tmp, len, result, len * 4, NULL, NULL);
+    WideCharToMultiByte(CP_UTF8, 0, tmp, len, result, len * 4, nullptr, nullptr);
     free(tmp);
 
     return result;

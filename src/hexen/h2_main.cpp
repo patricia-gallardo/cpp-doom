@@ -188,7 +188,7 @@ static void D_SetDefaultSavePath()
     {
         // only get hexen.cfg path if one is not already found
 
-        if (SavePathConfig == NULL || !strcmp(SavePathConfig, ""))
+        if (SavePathConfig == nullptr || !strcmp(SavePathConfig, ""))
         {
             // If we are not using a savegame path (probably because we are on
             // Windows and not using a config dir), behave like Vanilla Hexen
@@ -389,7 +389,7 @@ void D_DoomMain()
     }
     else
     {
-        M_SetConfigDir(NULL);
+        M_SetConfigDir(nullptr);
     }
 
     M_SetConfigFilenames("hexen.cfg", PROGRAM_PREFIX "hexen.cfg");
@@ -411,7 +411,7 @@ void D_DoomMain()
 
     iwadfile = D_FindIWAD(IWAD_MASK_HEXEN, &gamemission);
 
-    if (iwadfile == NULL)
+    if (iwadfile == nullptr)
     {
         I_Error("Game mode indeterminate. No IWAD was found. Try specifying\n"
                 "one with the '-iwad' command line parameter.");
@@ -714,7 +714,7 @@ static void HandleArgs()
 
         free(uc_filename);
 
-        if (W_AddFile(file) != NULL)
+        if (W_AddFile(file) != nullptr)
         {
             M_StringCopy(demolumpname, lumpinfo[numlumps - 1]->name,
                          sizeof(demolumpname));
@@ -842,7 +842,7 @@ void H2_ProcessEvents()
     {
         ev = D_PopEvent();
 
-        if (ev == NULL)
+        if (ev == nullptr)
         {
             break;
         }

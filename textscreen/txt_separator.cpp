@@ -27,7 +27,7 @@ static void TXT_SeparatorSizeCalc(TXT_UNCAST_ARG(separator))
 {
     TXT_CAST_ARG(txt_separator_t, separator);
 
-    if (separator->label != NULL)
+    if (separator->label != nullptr)
     {
         // Minimum width is the string length + two spaces for padding
 
@@ -56,7 +56,7 @@ static void TXT_SeparatorDrawer(TXT_UNCAST_ARG(separator))
 
     TXT_DrawSeparator(x-2, y, w + 4);
 
-    if (separator->label != NULL)
+    if (separator->label != nullptr)
     {
         TXT_GotoXY(x, y);
 
@@ -78,13 +78,13 @@ void TXT_SetSeparatorLabel(txt_separator_t *separator, const char *label)
 {
     free(separator->label);
 
-    if (label != NULL)
+    if (label != nullptr)
     {
         separator->label = strdup(label);
     }
     else
     {
-        separator->label = NULL;
+        separator->label = nullptr;
     }
 }
 
@@ -93,10 +93,10 @@ txt_widget_class_t txt_separator_class =
     TXT_NeverSelectable,
     TXT_SeparatorSizeCalc,
     TXT_SeparatorDrawer,
-    NULL,
+    nullptr,
     TXT_SeparatorDestructor,
-    NULL,
-    NULL,
+    nullptr,
+    nullptr,
 };
 
 txt_separator_t *TXT_NewSeparator(const char *label)
@@ -105,7 +105,7 @@ txt_separator_t *TXT_NewSeparator(const char *label)
 
     TXT_InitWidget(separator, &txt_separator_class);
 
-    separator->label = NULL;
+    separator->label = nullptr;
     TXT_SetSeparatorLabel(separator, label);
 
     return separator;

@@ -110,7 +110,7 @@ static boolean mus_paused;
 
 // Music currently being played
 
-static musicinfo_t *mus_playing = NULL;
+static musicinfo_t *mus_playing = nullptr;
 
 // Number of channels to use
 
@@ -207,7 +207,7 @@ static void S_StopChannel(int cnum)
         // degrade usefulness of sound data
 
         c->sfxinfo->usefulness--;
-        c->sfxinfo = NULL;
+        c->sfxinfo = nullptr;
     }
 }
 
@@ -521,7 +521,7 @@ static unsigned int S_voiceHash(const char *str)
    unsigned int h = 0;
 
    if(!str)
-      I_Error("S_voiceHash: cannot hash NULL string!\n");
+      I_Error("S_voiceHash: cannot hash nullptr string!\n");
 
    // note: this needs to be case insensitive for lump names
    while(*c)
@@ -602,10 +602,10 @@ void I_StartVoice(const char *lumpname)
         S_StopChannel(i_voicehandle);
 
     // Vanilla STRIFE appears to have stopped any current voice without
-    // starting a new one if NULL was passed in here, though I cannot 
-    // find an explicit check for NULL in the assembly. Either way, it 
+    // starting a new one if nullptr was passed in here, though I cannot
+    // find an explicit check for nullptr in the assembly. Either way, it
     // didn't crash, so do a check now:
-    if(lumpname == NULL)
+    if(lumpname == nullptr)
         return;
 
     // Because of constness problems...
@@ -617,7 +617,7 @@ void I_StartVoice(const char *lumpname)
         voice = S_getVoice(lumpnamedup, lumpnum);
 
         // get a channel for the voice
-        i_voicehandle = S_GetChannel(NULL, &voice->sfx, true);
+        i_voicehandle = S_GetChannel(nullptr, &voice->sfx, true);
 
         channels[i_voicehandle].handle 
             = I_StartSound(&voice->sfx, i_voicehandle, snd_VoiceVolume, NORM_SEP, NORM_PITCH);
@@ -765,7 +765,7 @@ void S_StartMusic(int m_id)
 
 void S_ChangeMusic(int musicnum, int looping)
 {
-    musicinfo_t *music = NULL;
+    musicinfo_t *music = nullptr;
     char namebuf[9];
     void *handle;
 
@@ -819,8 +819,8 @@ void S_StopMusic()
         I_StopSong();
         I_UnRegisterSong(mus_playing->handle);
         W_ReleaseLumpNum(mus_playing->lumpnum);
-        mus_playing->data = NULL;
-        mus_playing = NULL;
+        mus_playing->data = nullptr;
+        mus_playing = nullptr;
     }
 }
 

@@ -55,11 +55,11 @@ static int *controls[] = { &key_left, &key_right, &key_up, &key_down,
                            &key_arti_blastradius, &key_arti_teleport,
                            &key_arti_teleportother, &key_arti_egg,
                            &key_arti_invulnerability,
-                           &key_prevweapon, &key_nextweapon, NULL };
+                           &key_prevweapon, &key_nextweapon, nullptr };
 
 static int *menu_nav[] = { &key_menu_activate, &key_menu_up, &key_menu_down,
                            &key_menu_left, &key_menu_right, &key_menu_back,
-                           &key_menu_forward, &key_menu_del, NULL };
+                           &key_menu_forward, &key_menu_del, nullptr };
 
 static int *shortcuts[] = { &key_menu_help, &key_menu_save, &key_menu_load,
                             &key_menu_volume, &key_menu_detail, &key_menu_qsave,
@@ -77,7 +77,7 @@ static int *map_keys[] = { &key_map_north, &key_map_south, &key_map_east,
                            &key_map_toggle, &key_map_maxzoom, &key_map_follow,
                            &key_map_grid, &key_map_mark, &key_map_clearmark,
                            &key_map_overlay, &key_map_rotate,
-                           NULL };
+                           nullptr };
 
 static void UpdateJoybSpeed(TXT_UNCAST_ARG(widget), TXT_UNCAST_ARG(var))
 {
@@ -103,7 +103,7 @@ static int VarInGroup(int *variable, int **group)
 {
     unsigned int i;
 
-    for (i=0; group[i] != NULL; ++i)
+    for (i=0; group[i] != nullptr; ++i)
     {
         if (group[i] == variable)
         {
@@ -127,7 +127,7 @@ static void CheckKeyGroup(int *variable, int **group)
 
     // If another variable has the same value as the new value, reset it.
 
-    for (i=0; group[i] != NULL; ++i)
+    for (i=0; group[i] != nullptr; ++i)
     {
         if (*variable == *group[i] && group[i] != variable)
         {
@@ -177,7 +177,7 @@ static void AddSectionLabel(TXT_UNCAST_ARG(table), const char *title,
         TXT_AddWidgets(table,
                        TXT_NewStrut(0, 1),
                        TXT_TABLE_EOL,
-                       NULL);
+                       nullptr);
     }
 
     M_snprintf(buf, sizeof(buf), " - %s - ", title);
@@ -185,7 +185,7 @@ static void AddSectionLabel(TXT_UNCAST_ARG(table), const char *title,
     TXT_AddWidgets(table,
                    TXT_NewLabel(buf),
                    TXT_TABLE_EOL,
-                   NULL);
+                   nullptr);
 }
 static void ConfigExtraKeys(TXT_UNCAST_ARG(widget), TXT_UNCAST_ARG(unused))
 {
@@ -463,10 +463,10 @@ void ConfigKeyboard(TXT_UNCAST_ARG(widget), void *user_data)
     AddKeyControl(window, "Use", &key_use);
 
     TXT_AddWidgets(window,
-                   TXT_NewButton2("More controls...", ConfigExtraKeys, NULL),
+                   TXT_NewButton2("More controls...", ConfigExtraKeys, nullptr),
                    TXT_TABLE_OVERFLOW_RIGHT,
                    TXT_TABLE_EMPTY,
-                   TXT_NewButton2("Other keys...", OtherKeysDialog, NULL),
+                   TXT_NewButton2("Other keys...", OtherKeysDialog, nullptr),
                    TXT_TABLE_OVERFLOW_RIGHT,
 
                    TXT_NewSeparator("Misc."),
@@ -475,9 +475,9 @@ void ConfigKeyboard(TXT_UNCAST_ARG(widget), void *user_data)
                    TXT_NewInvertedCheckBox("Use native keyboard mapping",
                                            &vanilla_keyboard_mapping),
                    TXT_TABLE_EOL,
-                   NULL);
+                   nullptr);
 
-    TXT_SignalConnect(run_control, "changed", UpdateJoybSpeed, NULL);
+    TXT_SignalConnect(run_control, "changed", UpdateJoybSpeed, nullptr);
     TXT_SetWindowAction(window, TXT_HORIZ_CENTER, TestConfigAction());
 }
 

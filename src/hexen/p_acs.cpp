@@ -504,13 +504,13 @@ void P_LoadACScripts(int lump)
 
     ACStringCount = ReadCodeInt();
     ACSAssert(ACStringCount >= 0, "negative string count %d", ACStringCount);
-    ACStrings = zmalloc<decltype(    ACStrings)>(ACStringCount * sizeof(char *), PU_LEVEL, NULL);
+    ACStrings = zmalloc<decltype(    ACStrings)>(ACStringCount * sizeof(char *), PU_LEVEL, nullptr);
 
     for (i=0; i<ACStringCount; ++i)
     {
         offset = ReadOffset();
         ACStrings[i] = (char *) ActionCodeBase + offset;
-        ACSAssert(memchr(ACStrings[i], '\0', ActionCodeSize - offset) != NULL,
+        ACSAssert(memchr(ACStrings[i], '\0', ActionCodeSize - offset) != nullptr,
                   "string %d missing terminating NUL", i);
     }
 
@@ -557,7 +557,7 @@ void P_CheckACSStore()
     {
         if (store->map == gamemap)
         {
-            P_StartACS(store->script, 0, store->args, NULL, NULL, 0);
+            P_StartACS(store->script, 0, store->args, nullptr, nullptr, 0);
             if (NewScript)
             {
                 NewScript->delayCount = 35;
@@ -586,7 +586,7 @@ boolean P_StartACS(int number, int map, byte * args, mobj_t * activator,
     int infoIndex;
     aste_t *statePtr;
 
-    NewScript = NULL;
+    NewScript = nullptr;
     if (map && map != gamemap)
     {                           // Add to the script store
         return AddToACSStore(map, number, args);
@@ -1503,7 +1503,7 @@ static void ThingCount(int type, int tid)
     searcher = -1;
     if (tid)
     {                           // Count TID things
-        while ((mobj = P_FindMobjFromTID(tid, &searcher)) != NULL)
+        while ((mobj = P_FindMobjFromTID(tid, &searcher)) != nullptr)
         {
             if (type == 0)
             {                   // Just count TIDs
@@ -1874,7 +1874,7 @@ static int CmdSectorSound()
     int volume;
     mobj_t *mobj;
 
-    mobj = NULL;
+    mobj = nullptr;
     if (ACScript->line)
     {
         mobj = (mobj_t *) & ACScript->line->frontsector->soundorg;
@@ -1896,7 +1896,7 @@ static int CmdThingSound()
     sound = S_GetSoundID(StringLookup(Pop()));
     tid = Pop();
     searcher = -1;
-    while ((mobj = P_FindMobjFromTID(tid, &searcher)) != NULL)
+    while ((mobj = P_FindMobjFromTID(tid, &searcher)) != nullptr)
     {
         S_StartSoundAtVolume(mobj, sound, volume);
     }
@@ -1908,7 +1908,7 @@ static int CmdAmbientSound()
     int volume;
 
     volume = Pop();
-    S_StartSoundAtVolume(NULL, S_GetSoundID(StringLookup(Pop())), volume);
+    S_StartSoundAtVolume(nullptr, S_GetSoundID(StringLookup(Pop())), volume);
     return SCRIPT_CONTINUE;
 }
 
@@ -1916,7 +1916,7 @@ static int CmdSoundSequence()
 {
     mobj_t *mobj;
 
-    mobj = NULL;
+    mobj = nullptr;
     if (ACScript->line)
     {
         mobj = (mobj_t *) & ACScript->line->frontsector->soundorg;
@@ -1939,7 +1939,7 @@ static int CmdSetLineTexture()
     side = Pop();
     lineTag = Pop();
     searcher = -1;
-    while ((line = P_FindLine(lineTag, &searcher)) != NULL)
+    while ((line = P_FindLine(lineTag, &searcher)) != nullptr)
     {
         if (position == TEXTURE_MIDDLE)
         {
@@ -1967,7 +1967,7 @@ static int CmdSetLineBlocking()
     blocking = Pop()? ML_BLOCKING : 0;
     lineTag = Pop();
     searcher = -1;
-    while ((line = P_FindLine(lineTag, &searcher)) != NULL)
+    while ((line = P_FindLine(lineTag, &searcher)) != nullptr)
     {
         line->flags = (line->flags & ~ML_BLOCKING) | blocking;
     }
@@ -1989,7 +1989,7 @@ static int CmdSetLineSpecial()
     special = Pop();
     lineTag = Pop();
     searcher = -1;
-    while ((line = P_FindLine(lineTag, &searcher)) != NULL)
+    while ((line = P_FindLine(lineTag, &searcher)) != nullptr)
     {
         line->special = special;
         line->arg1 = arg1;
