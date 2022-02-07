@@ -60,20 +60,20 @@ typedef struct deh_mapping_entry_s deh_mapping_entry_t;
 struct deh_mapping_entry_s {
     // field name
 
-    const char *name;
+    const char *name{};
 
     // location relative to the base in the deh_mapping_t struct
     // If this is nullptr, it is an unsupported mapping
 
-    void *location;
+    void *location{};
 
     // field size
 
-    int size;
+    int size{};
 
     // if true, this is a string value.
 
-    boolean is_string;
+    boolean is_string{};
 };
 
 struct deh_mapping_s {

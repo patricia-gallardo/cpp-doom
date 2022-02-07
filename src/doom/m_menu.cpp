@@ -147,22 +147,22 @@ extern boolean speedkeydown();
 //
 // MENU TYPEDEFS
 //
-typedef struct
+struct menuitem_t
 {
     // 0 = no cursor here, 1 = ok, 2 = arrows ok
-    short status;
+    short status{};
 
-    char name[10];
+    char name[10]{};
 
     // choice = menu item #.
     // if status = 2,
     //   choice=0:leftarrow,1:rightarrow
-    void (*routine)(int choice);
+    void (*routine)(int choice){};
 
     // hotkey in menu
-    char  alphaKey;
-    char *alttext; // [crispy] alternative text for the Options menu
-} menuitem_t;
+    char  alphaKey{};
+    char *alttext{}; // [crispy] alternative text for the Options menu
+};
 
 
 typedef struct menu_s {

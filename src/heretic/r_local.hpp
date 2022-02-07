@@ -58,18 +58,18 @@
 
 //================ used by play and refresh
 
-typedef struct
+struct vertex_t
 {
-    fixed_t x, y;
+    fixed_t x{}, y{};
 
 // [crispy] remove slime trails
 // vertex coordinates *only* used in rendering that have been
 // moved towards the linedef associated with their seg by projecting them
 // using the law of cosines in p_setup.c:P_RemoveSlimeTrails();
-    fixed_t	r_x;
-    fixed_t	r_y;
-    boolean	moved;
-} vertex_t;
+    fixed_t	r_x{};
+    fixed_t	r_y{};
+    boolean	moved{};
+};
 
 struct line_s;
 

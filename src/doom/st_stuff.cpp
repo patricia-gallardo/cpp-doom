@@ -689,7 +689,7 @@ boolean
             if (cht_CheckCheatSP(&cheat_god, ev->data2))
             {
                 // [crispy] dead players are first respawned at the current position
-                mapthing_t mt = { 0 };
+                mapthing_t mt = {};
                 if (plyr->playerstate == PST_DEAD)
                 {
                     signed int  an;

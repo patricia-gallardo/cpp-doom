@@ -77,14 +77,14 @@ typedef void (*TxtWidgetFocusFunc)(TXT_UNCAST_ARG(widget), int focused);
 
 struct txt_widget_class_s
 {
-    TxtWidgetSelectableFunc selectable;
-    TxtWidgetSizeCalc size_calc;
-    TxtWidgetDrawer drawer;
-    TxtWidgetKeyPress key_press;
-    TxtWidgetDestroy destructor;
-    TxtMousePressFunc mouse_press;
-    TxtWidgetLayoutFunc layout;
-    TxtWidgetFocusFunc focus_change;
+    TxtWidgetSelectableFunc selectable{};
+    TxtWidgetSizeCalc size_calc{};
+    TxtWidgetDrawer drawer{};
+    TxtWidgetKeyPress key_press{};
+    TxtWidgetDestroy destructor{};
+    TxtMousePressFunc mouse_press{};
+    TxtWidgetLayoutFunc layout{};
+    TxtWidgetFocusFunc focus_change{};
 };
 
 struct txt_widget_s

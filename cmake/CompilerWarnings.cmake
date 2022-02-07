@@ -52,7 +52,7 @@ function(set_project_warnings)
             -Wno-unused-function # TODO turn it back on (patricia)
             #-Wno-reserved-user-defined-literal # CLANG TODO turn it back on (patricia)?
             #-Wno-shorten-64-to-32 # CLANG TODO turn it back on (patricia)
-            -Wno-missing-field-initializers # TODO turn it back on (patricia)
+            #-Wno-missing-field-initializers # TODO turn it back on (patricia)
             #-Wno-implicit-int-conversion # CLANG TODO turn it back on (patricia)
             -Wno-sign-compare # TODO turn it back on (patricia)
             #-Wno-writable-strings # CLANG TODO turn it back on (patricia)
