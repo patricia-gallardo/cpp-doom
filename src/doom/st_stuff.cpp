@@ -1674,23 +1674,23 @@ void ST_doPaletteStuff()
     }
 }
 
-enum
+enum class hudcolor_t
 {
     hudcolor_ammo,
     hudcolor_health,
     hudcolor_frags,
     hudcolor_armor
-} hudcolor_t;
+};
 
 // [crispy] return ammo/health/armor widget color
-static byte *ST_WidgetColor(int i)
+static byte *ST_WidgetColor(hudcolor_t i)
 {
     if (!(crispy->coloredhud & COLOREDHUD_BAR))
         return nullptr;
 
     switch (i)
     {
-    case hudcolor_ammo: {
+    case hudcolor_t::hudcolor_ammo: {
         if (weaponinfo[plyr->readyweapon].ammo == am_noammo)
         {
             return nullptr;
@@ -1711,7 +1711,7 @@ static byte *ST_WidgetColor(int i)
         }
         break;
     }
-    case hudcolor_health: {
+    case hudcolor_t::hudcolor_health: {
         int health = plyr->health;
 
         // [crispy] Invulnerability powerup and God Mode cheat turn Health values gray
@@ -1728,7 +1728,7 @@ static byte *ST_WidgetColor(int i)
 
         break;
     }
-    case hudcolor_frags: {
+    case hudcolor_t::hudcolor_frags: {
         int frags = st_fragscount;
 
         if (frags < 0)
@@ -1740,7 +1740,7 @@ static byte *ST_WidgetColor(int i)
 
         break;
     }
-    case hudcolor_armor: {
+    case hudcolor_t::hudcolor_armor: {
         // [crispy] Invulnerability powerup and God Mode cheat turn Armor values gray
         if (plyr->cheats & CF_GODMODE || plyr->powers[pw_invulnerability])
             return cr_colors[static_cast<int>(cr_t::CR_GRAY)];
@@ -1811,7 +1811,7 @@ void ST_drawWidgets(bool refresh)
     // used by w_frags widget
     st_fragson = deathmatch && st_statusbaron;
 
-    dp_translation = ST_WidgetColor(hudcolor_ammo);
+    dp_translation = ST_WidgetColor(hudcolor_t::hudcolor_ammo);
     STlib_updateNum(&w_ready, refresh);
     dp_translation = nullptr;
 
@@ -1859,12 +1859,12 @@ void ST_drawWidgets(bool refresh)
 
     if (!gibbed)
     {
-        dp_translation = ST_WidgetColor(hudcolor_health);
+        dp_translation = ST_WidgetColor(hudcolor_t::hudcolor_health);
         // [crispy] negative player health
         w_health.n.num = crispy->neghealth ? &plyr->neghealth : &plyr->health;
         STlib_updatePercent(&w_health, refresh);
     }
-    dp_translation = ST_WidgetColor(hudcolor_armor);
+    dp_translation = ST_WidgetColor(hudcolor_t::hudcolor_armor);
     STlib_updatePercent(&w_armor, refresh);
     dp_translation = nullptr;
 
@@ -1887,7 +1887,7 @@ void ST_drawWidgets(bool refresh)
     for (i = 0; i < 3; i++)
         STlib_updateMultIcon(&w_keyboxes[i], refresh);
 
-    dp_translation = ST_WidgetColor(hudcolor_frags);
+    dp_translation = ST_WidgetColor(hudcolor_t::hudcolor_frags);
     STlib_updateNum(&w_frags, refresh);
 
     dp_translation = nullptr;

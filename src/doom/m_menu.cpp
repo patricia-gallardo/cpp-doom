@@ -253,7 +253,7 @@ static void M_DrawCrispness4();
 //
 // DOOM MENU
 //
-enum
+enum class main_e
 {
     newgame = 0,
     options,
@@ -262,7 +262,7 @@ enum
     readthis,
     quitdoom,
     main_end
-} main_e;
+};
 
 menuitem_t MainMenu[] = {
     { 1, "M_NGAME", M_NewGame, 'n' },
@@ -275,7 +275,7 @@ menuitem_t MainMenu[] = {
 };
 
 menu_t MainDef = {
-    main_end,
+    static_cast<short>(main_e::main_end),
     nullptr,
     MainMenu,
     M_DrawMainMenu,
@@ -287,7 +287,7 @@ menu_t MainDef = {
 //
 // EPISODE SELECT
 //
-enum
+enum class episodes_e
 {
     ep1,
     ep2,
@@ -295,7 +295,7 @@ enum
     ep4,
     ep5, // [crispy] Sigil
     ep_end
-} episodes_e;
+};
 
 menuitem_t EpisodeMenu[] = {
     { 1, "M_EPI1", M_Episode, 'k' },
@@ -305,23 +305,23 @@ menuitem_t EpisodeMenu[] = {
 };
 
 menu_t EpiDef = {
-    ep_end,        // # of menu items
+    static_cast<short>(episodes_e::ep_end),        // # of menu items
     &MainDef,      // previous menu
     EpisodeMenu,   // menuitem_t ->
     M_DrawEpisode, // drawing routine ->
     48, 63,        // x,y
-    ep1            // lastOn
+    static_cast<short>(episodes_e::ep1)     // lastOn
 };
 
 //
 // EXPANSION SELECT
 //
-enum
+enum class expansions_e
 {
     ex1,
     ex2,
     ex_end
-} expansions_e;
+};
 
 static menuitem_t ExpansionMenu[] = {
     { 1, "M_EPI1", M_Expansion, 'h' },
@@ -329,18 +329,18 @@ static menuitem_t ExpansionMenu[] = {
 };
 
 static menu_t ExpDef = {
-    ex_end,        // # of menu items
+    static_cast<short>(expansions_e::ex_end),        // # of menu items
     &MainDef,      // previous menu
     ExpansionMenu, // menuitem_t ->
     M_DrawEpisode, // drawing routine ->
     48, 63,        // x,y
-    ex1            // lastOn
+    static_cast<short>(expansions_e::ex1)     // lastOn
 };
 
 //
 // NEW GAME
 //
-enum
+enum class newgame_e
 {
     killthings,
     toorough,
@@ -348,7 +348,7 @@ enum
     violence,
     nightmare,
     newg_end
-} newgame_e;
+};
 
 menuitem_t NewGameMenu[] = {
     { 1, "M_JKILL", M_ChooseSkill, 'i' },
@@ -359,19 +359,19 @@ menuitem_t NewGameMenu[] = {
 };
 
 menu_t NewDef = {
-    newg_end,      // # of menu items
+    static_cast<short>(newgame_e::newg_end),      // # of menu items
     &EpiDef,       // previous menu
     NewGameMenu,   // menuitem_t ->
     M_DrawNewGame, // drawing routine ->
     48, 63,        // x,y
-    hurtme         // lastOn
+    static_cast<short>(newgame_e::hurtme)    // lastOn
 };
 
 
 //
 // OPTIONS MENU
 //
-enum
+enum class options_e
 {
     endgame,
     messages,
@@ -382,7 +382,7 @@ enum
     soundvol,
     crispness, // [crispy] Crispness menu
     opt_end
-} options_e;
+};
 
 menuitem_t OptionsMenu[] = {
     { 1, "M_ENDGAM", M_EndGame, 'e', const_cast<char *>("End Game") },
@@ -396,7 +396,7 @@ menuitem_t OptionsMenu[] = {
 };
 
 menu_t OptionsDef = {
-    opt_end,
+    static_cast<short>(options_e::opt_end),
     &MainDef,
     OptionsMenu,
     M_DrawOptions,
@@ -405,7 +405,7 @@ menu_t OptionsDef = {
 };
 
 // [crispy] mouse sensitivity menu
-enum
+enum class mouse_e
 {
     mouse_horiz,
     mouse_empty1,
@@ -415,7 +415,7 @@ enum
     mouse_empty3,
     mouse_invert,
     mouse_end
-} mouse_e;
+};
 
 static menuitem_t MouseMenu[] = {
     { 2, "", M_ChangeSensitivity, 'h' },
@@ -428,7 +428,7 @@ static menuitem_t MouseMenu[] = {
 };
 
 static menu_t MouseDef = {
-    mouse_end,
+    static_cast<short>(mouse_e::mouse_end),
     &OptionsDef,
     MouseMenu,
     M_DrawMouse,
@@ -437,7 +437,7 @@ static menu_t MouseDef = {
 };
 
 // [crispy] Crispness menu
-enum
+enum class crispness1_e
 {
     crispness_sep_rendering,
     crispness_hires,
@@ -459,7 +459,7 @@ enum
     crispness1_next,
     crispness1_prev,
     crispness1_end
-} crispness1_e;
+};
 
 static menuitem_t Crispness1Menu[] = {
     { -1, "", 0, '\0' },
@@ -482,7 +482,7 @@ static menuitem_t Crispness1Menu[] = {
 };
 
 static menu_t Crispness1Def = {
-    crispness1_end,
+    static_cast<short>(crispness1_e::crispness1_end),
     &OptionsDef,
     Crispness1Menu,
     M_DrawCrispness1,
@@ -490,7 +490,7 @@ static menu_t Crispness1Def = {
     1
 };
 
-enum
+enum class crispness2_e
 {
     crispness_sep_audible,
     crispness_soundfull,
@@ -510,7 +510,7 @@ enum
     crispness2_next,
     crispness2_prev,
     crispness2_end
-} crispness2_e;
+};
 
 static menuitem_t Crispness2Menu[] = {
     { -1, "", 0, '\0' },
@@ -531,7 +531,7 @@ static menuitem_t Crispness2Menu[] = {
 };
 
 static menu_t Crispness2Def = {
-    crispness2_end,
+    static_cast<short>(crispness2_e::crispness2_end),
     &OptionsDef,
     Crispness2Menu,
     M_DrawCrispness2,
@@ -539,7 +539,7 @@ static menu_t Crispness2Def = {
     1
 };
 
-enum
+enum class crispness3_e
 {
     crispness_sep_tactical,
     crispness_freelook,
@@ -561,7 +561,7 @@ enum
     crispness3_next,
     crispness3_prev,
     crispness3_end
-} crispness3_e;
+};
 
 static menuitem_t Crispness3Menu[] = {
     { -1, "", 0, '\0' },
@@ -584,7 +584,7 @@ static menuitem_t Crispness3Menu[] = {
 };
 
 static menu_t Crispness3Def = {
-    crispness3_end,
+    static_cast<short>(crispness3_e::crispness3_end),
     &OptionsDef,
     Crispness3Menu,
     M_DrawCrispness3,
@@ -592,7 +592,7 @@ static menu_t Crispness3Def = {
     1
 };
 
-enum
+enum class crispness4_e
 {
     crispness_sep_physical,
     crispness_freeaim,
@@ -610,7 +610,7 @@ enum
     crispness4_next,
     crispness4_prev,
     crispness4_end
-} crispness4_e;
+};
 
 
 static menuitem_t Crispness4Menu[] = {
@@ -630,7 +630,7 @@ static menuitem_t Crispness4Menu[] = {
 };
 
 static menu_t Crispness4Def = {
-    crispness4_end,
+    static_cast<short>(crispness4_e::crispness4_end),
     &OptionsDef,
     Crispness4Menu,
     M_DrawCrispness4,
@@ -650,18 +650,18 @@ static int crispness_cur;
 //
 // Read This! MENU 1 & 2
 //
-enum
+enum class read_e
 {
     rdthsempty1,
     read1_end
-} read_e;
+};
 
 menuitem_t ReadMenu1[] = {
     { 1, "", M_ReadThis2, 0 }
 };
 
 menu_t ReadDef1 = {
-    read1_end,
+    static_cast<short>(read_e::read1_end),
     &MainDef,
     ReadMenu1,
     M_DrawReadThis1,
@@ -669,18 +669,18 @@ menu_t ReadDef1 = {
     0
 };
 
-enum
+enum class read_e2
 {
     rdthsempty2,
     read2_end
-} read_e2;
+};
 
 menuitem_t ReadMenu2[] = {
     { 1, "", M_FinishReadThis, 0 }
 };
 
 menu_t ReadDef2 = {
-    read2_end,
+    static_cast<short>(read_e2::read2_end),
     &ReadDef1,
     ReadMenu2,
     M_DrawReadThis2,
@@ -691,14 +691,14 @@ menu_t ReadDef2 = {
 //
 // SOUND VOLUME MENU
 //
-enum
+enum class sound_e
 {
     sfx_vol,
     sfx_empty1,
     music_vol,
     sfx_empty2,
     sound_end
-} sound_e;
+};
 
 menuitem_t SoundMenu[] = {
     { 2, "M_SFXVOL", M_SfxVol, 's' },
@@ -708,7 +708,7 @@ menuitem_t SoundMenu[] = {
 };
 
 menu_t SoundDef = {
-    sound_end,
+    static_cast<short>(sound_e::sound_end),
     &OptionsDef,
     SoundMenu,
     M_DrawSound,
@@ -719,7 +719,7 @@ menu_t SoundDef = {
 //
 // LOAD GAME MENU
 //
-enum
+enum class load_e
 {
     load1,
     load2,
@@ -730,7 +730,7 @@ enum
     load7, // [crispy] up to 8 savegames
     load8, // [crispy] up to 8 savegames
     load_end
-} load_e;
+};
 
 menuitem_t LoadMenu[] = {
     { 1, "", M_LoadSelect, '1' },
@@ -744,7 +744,7 @@ menuitem_t LoadMenu[] = {
 };
 
 menu_t LoadDef = {
-    load_end,
+    static_cast<short>(load_e::load_end),
     &MainDef,
     LoadMenu,
     M_DrawLoad,
@@ -767,7 +767,7 @@ menuitem_t SaveMenu[] = {
 };
 
 menu_t SaveDef = {
-    load_end,
+    static_cast<short>(load_e::load_end),
     &MainDef,
     SaveMenu,
     M_DrawSave,
@@ -786,7 +786,7 @@ void M_ReadSaveStrings()
     int   i;
     char  name[256];
 
-    for (i = 0; i < load_end; i++)
+    for (i = 0; i < static_cast<int>(load_e::load_end); i++)
     {
         int retval;
         M_StringCopy(name, P_SaveGameFile(i), sizeof(name));
@@ -816,7 +816,7 @@ void       M_DrawLoad()
     V_DrawPatchDirect(LoadDef_x, LoadDef_y,
         cache_lump_name<patch_t *>(DEH_String("M_LOADG"), PU_CACHE));
 
-    for (i = 0; i < load_end; i++)
+    for (i = 0; i < static_cast<int>(load_e::load_end); i++)
     {
         M_DrawSaveLoadBorder(LoadDef.x, LoadDef.y + LINEHEIGHT * i);
 
@@ -898,7 +898,7 @@ void       M_DrawSave()
     int i;
 
     V_DrawPatchDirect(SaveDef_x, SaveDef_y, cache_lump_name<patch_t *>(DEH_String("M_SAVEG"), PU_CACHE));
-    for (i = 0; i < load_end; i++)
+    for (i = 0; i < static_cast<int>(load_e::load_end); i++)
     {
         M_DrawSaveLoadBorder(LoadDef.x, LoadDef.y + LINEHEIGHT * i);
         M_WriteText(LoadDef.x, LoadDef.y + LINEHEIGHT * i, savegamestrings[i]);
@@ -1158,10 +1158,10 @@ void M_DrawSound()
 {
     V_DrawPatchDirect(60, 38, cache_lump_name<patch_t *>(DEH_String("M_SVOL"), PU_CACHE));
 
-    M_DrawThermo(SoundDef.x, SoundDef.y + LINEHEIGHT * (sfx_vol + 1),
+    M_DrawThermo(SoundDef.x, SoundDef.y + LINEHEIGHT * (static_cast<int>(sound_e::sfx_vol) + 1),
         16, sfxVolume);
 
-    M_DrawThermo(SoundDef.x, SoundDef.y + LINEHEIGHT * (music_vol + 1),
+    M_DrawThermo(SoundDef.x, SoundDef.y + LINEHEIGHT * (static_cast<int>(sound_e::music_vol) + 1),
         16, musicVolume);
 }
 
@@ -1264,13 +1264,13 @@ void M_VerifyNightmare(int key)
     if (key != key_menu_confirm)
         return;
 
-    G_DeferedInitNew(static_cast<skill_t>(nightmare), epi + 1, 1);
+    G_DeferedInitNew(skill_t::sk_nightmare, epi + 1, 1);
     M_ClearMenus();
 }
 
 void M_ChooseSkill(int choice)
 {
-    if (choice == nightmare)
+    if (choice == skill_t::sk_nightmare)
     {
         M_StartMessage(DEH_String(NIGHTMARE), M_VerifyNightmare, true);
         return;
@@ -1322,7 +1322,7 @@ void M_DrawOptions()
 */
 
     M_WriteText(OptionsDef.x + M_StringWidth("Graphic Detail: "),
-        OptionsDef.y + LINEHEIGHT * detail + 8 - (M_StringHeight("HighLow") / 2),
+        OptionsDef.y + LINEHEIGHT * static_cast<int>(options_e::detail) + 8 - (M_StringHeight("HighLow") / 2),
         detailLevel ? "Low" : "High");
 
     // [crispy] no patches are drawn in the Options menu anymore
@@ -1332,10 +1332,10 @@ void M_DrawOptions()
                                       PU_CACHE));
 */
     M_WriteText(OptionsDef.x + M_StringWidth("Messages: "),
-        OptionsDef.y + LINEHEIGHT * messages + 8 - (M_StringHeight("OnOff") / 2),
+        OptionsDef.y + LINEHEIGHT * static_cast<int>(options_e::messages) + 8 - (M_StringHeight("OnOff") / 2),
         showMessages ? "On" : "Off");
 
-    M_DrawThermo(OptionsDef.x + screenSize_min * 8, OptionsDef.y + LINEHEIGHT * (scrnsize + 1),
+    M_DrawThermo(OptionsDef.x + screenSize_min * 8, OptionsDef.y + LINEHEIGHT * (static_cast<int>(options_e::scrnsize) + 1),
         9 + 3 - screenSize_min, screenSize - screenSize_min); // [crispy] Crispy HUD
 }
 
@@ -1346,29 +1346,29 @@ static void M_DrawMouse()
 
     V_DrawPatchDirect(60, LoadDef_y, cache_lump_name<patch_t *>(DEH_String("M_MSENS"), PU_CACHE));
 
-    M_WriteText(MouseDef.x, MouseDef.y + LINEHEIGHT * mouse_horiz + 6,
+    M_WriteText(MouseDef.x, MouseDef.y + LINEHEIGHT * static_cast<int>(mouse_e::mouse_horiz) + 6,
         "HORIZONTAL: TURN");
 
-    M_DrawThermo(MouseDef.x, MouseDef.y + LINEHEIGHT * mouse_empty1,
+    M_DrawThermo(MouseDef.x, MouseDef.y + LINEHEIGHT * static_cast<int>(mouse_e::mouse_empty1),
         21, mouseSensitivity);
 
-    M_WriteText(MouseDef.x, MouseDef.y + LINEHEIGHT * mouse_horiz2 + 6,
+    M_WriteText(MouseDef.x, MouseDef.y + LINEHEIGHT * static_cast<int>(mouse_e::mouse_horiz2) + 6,
         "HORIZONTAL: STRAFE");
 
-    M_DrawThermo(MouseDef.x, MouseDef.y + LINEHEIGHT * mouse_empty2,
+    M_DrawThermo(MouseDef.x, MouseDef.y + LINEHEIGHT * static_cast<int>(mouse_e::mouse_empty2),
         21, mouseSensitivity_x2);
 
-    M_WriteText(MouseDef.x, MouseDef.y + LINEHEIGHT * mouse_vert + 6,
+    M_WriteText(MouseDef.x, MouseDef.y + LINEHEIGHT * static_cast<int>(mouse_e::mouse_vert) + 6,
         "VERTICAL");
 
-    M_DrawThermo(MouseDef.x, MouseDef.y + LINEHEIGHT * mouse_empty3,
+    M_DrawThermo(MouseDef.x, MouseDef.y + LINEHEIGHT * static_cast<int>(mouse_e::mouse_empty3),
         21, mouseSensitivity_y);
 
     M_snprintf(mouse_menu_text, sizeof(mouse_menu_text),
         "%sInvert Vertical Axis: %s%s", crstr[static_cast<int>(cr_t::CR_NONE)],
         mouse_y_invert ? crstr[static_cast<int>(cr_t::CR_GREEN)] : crstr[static_cast<int>(cr_t::CR_DARK)],
         mouse_y_invert ? "On" : "Off");
-    M_WriteText(MouseDef.x, MouseDef.y + LINEHEIGHT * mouse_invert + 6,
+    M_WriteText(MouseDef.x, MouseDef.y + LINEHEIGHT * static_cast<int>(mouse_e::mouse_invert) + 6,
         mouse_menu_text);
 
     dp_translation = nullptr;
@@ -1447,23 +1447,23 @@ static void M_DrawCrispness1()
 
     M_DrawCrispnessHeader(const_cast<char *>("Crispness 1/4"));
 
-    M_DrawCrispnessSeparator(crispness_sep_rendering, const_cast<char *>("Rendering"));
-    M_DrawCrispnessItem(crispness_hires, const_cast<char *>("High Resolution Rendering"), crispy->hires, true);
-    M_DrawCrispnessMultiItem(crispness_widescreen, const_cast<char *>("Widescreen Rendering"), multiitem_widescreen, crispy->widescreen, aspect_ratio_correct);
-    M_DrawCrispnessItem(crispness_uncapped, const_cast<char *>("Uncapped Framerate"), crispy->uncapped, true);
-    M_DrawCrispnessItem(crispness_vsync, const_cast<char *>("Enable VSync"), crispy->vsync, !force_software_renderer);
-    M_DrawCrispnessItem(crispness_smoothscaling, const_cast<char *>("Smooth Pixel Scaling"), crispy->smoothscaling, true);
+    M_DrawCrispnessSeparator(static_cast<int>(crispness1_e::crispness_sep_rendering), const_cast<char *>("Rendering"));
+    M_DrawCrispnessItem(static_cast<int>(crispness1_e::crispness_hires), const_cast<char *>("High Resolution Rendering"), crispy->hires, true);
+    M_DrawCrispnessMultiItem(static_cast<int>(crispness1_e::crispness_widescreen), const_cast<char *>("Widescreen Rendering"), multiitem_widescreen, crispy->widescreen, aspect_ratio_correct);
+    M_DrawCrispnessItem(static_cast<int>(crispness1_e::crispness_uncapped), const_cast<char *>("Uncapped Framerate"), crispy->uncapped, true);
+    M_DrawCrispnessItem(static_cast<int>(crispness1_e::crispness_vsync), const_cast<char *>("Enable VSync"), crispy->vsync, !force_software_renderer);
+    M_DrawCrispnessItem(static_cast<int>(crispness1_e::crispness_smoothscaling), const_cast<char *>("Smooth Pixel Scaling"), crispy->smoothscaling, true);
 
-    M_DrawCrispnessSeparator(crispness_sep_visual, const_cast<char *>("Visual"));
-    M_DrawCrispnessMultiItem(crispness_coloredhud, const_cast<char *>("Colorize HUD Elements"), multiitem_coloredhud, crispy->coloredhud, true);
-    M_DrawCrispnessMultiItem(crispness_translucency, const_cast<char *>("Enable Translucency"), multiitem_translucency, crispy->translucency, true);
-    M_DrawCrispnessItem(crispness_smoothlight, const_cast<char *>("Smooth Diminishing Lighting"), crispy->smoothlight, true);
-    M_DrawCrispnessMultiItem(crispness_brightmaps, const_cast<char *>("Apply Brightmaps to"), multiitem_brightmaps, crispy->brightmaps, true);
-    M_DrawCrispnessItem(crispness_coloredblood, const_cast<char *>("Colored Blood and Corpses"), crispy->coloredblood, gameversion != exe_chex);
-    M_DrawCrispnessItem(crispness_flipcorpses, const_cast<char *>("Randomly Mirrored Corpses"), crispy->flipcorpses, gameversion != exe_chex);
+    M_DrawCrispnessSeparator(static_cast<int>(crispness1_e::crispness_sep_visual), const_cast<char *>("Visual"));
+    M_DrawCrispnessMultiItem(static_cast<int>(crispness1_e::crispness_coloredhud), const_cast<char *>("Colorize HUD Elements"), multiitem_coloredhud, crispy->coloredhud, true);
+    M_DrawCrispnessMultiItem(static_cast<int>(crispness1_e::crispness_translucency), const_cast<char *>("Enable Translucency"), multiitem_translucency, crispy->translucency, true);
+    M_DrawCrispnessItem(static_cast<int>(crispness1_e::crispness_smoothlight), const_cast<char *>("Smooth Diminishing Lighting"), crispy->smoothlight, true);
+    M_DrawCrispnessMultiItem(static_cast<int>(crispness1_e::crispness_brightmaps), const_cast<char *>("Apply Brightmaps to"), multiitem_brightmaps, crispy->brightmaps, true);
+    M_DrawCrispnessItem(static_cast<int>(crispness1_e::crispness_coloredblood), const_cast<char *>("Colored Blood and Corpses"), crispy->coloredblood, gameversion != exe_chex);
+    M_DrawCrispnessItem(static_cast<int>(crispness1_e::crispness_flipcorpses), const_cast<char *>("Randomly Mirrored Corpses"), crispy->flipcorpses, gameversion != exe_chex);
 
-    M_DrawCrispnessGoto(crispness1_next, const_cast<char *>("Next Page >"));
-    M_DrawCrispnessGoto(crispness1_prev, const_cast<char *>("< Last Page"));
+    M_DrawCrispnessGoto(static_cast<int>(crispness1_e::crispness1_next), const_cast<char *>("Next Page >"));
+    M_DrawCrispnessGoto(static_cast<int>(crispness1_e::crispness1_prev), const_cast<char *>("< Last Page"));
 
     dp_translation = nullptr;
 }
@@ -1474,21 +1474,21 @@ static void M_DrawCrispness2()
 
     M_DrawCrispnessHeader(const_cast<char *>("Crispness 2/4"));
 
-    M_DrawCrispnessSeparator(crispness_sep_audible, const_cast<char *>("Audible"));
-    M_DrawCrispnessItem(crispness_soundfull, const_cast<char *>("Play sounds in full length"), crispy->soundfull, true);
-    M_DrawCrispnessItem(crispness_soundfix, const_cast<char *>("Misc. Sound Fixes"), crispy->soundfix, true);
-    M_DrawCrispnessMultiItem(crispness_sndchannels, const_cast<char *>("Sound Channels"), multiitem_sndchannels, snd_channels >> 4, snd_sfxdevice != SNDDEVICE_PCSPEAKER);
-    M_DrawCrispnessItem(crispness_soundmono, const_cast<char *>("Mono SFX"), crispy->soundmono, true);
+    M_DrawCrispnessSeparator(static_cast<int>(crispness2_e::crispness_sep_audible), const_cast<char *>("Audible"));
+    M_DrawCrispnessItem(static_cast<int>(crispness2_e::crispness_soundfull), const_cast<char *>("Play sounds in full length"), crispy->soundfull, true);
+    M_DrawCrispnessItem(static_cast<int>(crispness2_e::crispness_soundfix), const_cast<char *>("Misc. Sound Fixes"), crispy->soundfix, true);
+    M_DrawCrispnessMultiItem(static_cast<int>(crispness2_e::crispness_sndchannels), const_cast<char *>("Sound Channels"), multiitem_sndchannels, snd_channels >> 4, snd_sfxdevice != SNDDEVICE_PCSPEAKER);
+    M_DrawCrispnessItem(static_cast<int>(crispness2_e::crispness_soundmono), const_cast<char *>("Mono SFX"), crispy->soundmono, true);
 
-    M_DrawCrispnessSeparator(crispness_sep_navigational, const_cast<char *>("Navigational"));
-    M_DrawCrispnessItem(crispness_extautomap, const_cast<char *>("Extended Automap colors"), crispy->extautomap, true);
-    M_DrawCrispnessMultiItem(crispness_automapstats, const_cast<char *>("Show Level Stats"), multiitem_widgets, crispy->automapstats, true);
-    M_DrawCrispnessMultiItem(crispness_leveltime, const_cast<char *>("Show Level Time"), multiitem_widgets, crispy->leveltime, true);
-    M_DrawCrispnessMultiItem(crispness_playercoords, const_cast<char *>("Show Player Coords"), multiitem_widgets, crispy->playercoords, true);
-    M_DrawCrispnessMultiItem(crispness_secretmessage, const_cast<char *>("Report Revealed Secrets"), multiitem_secretmessage, crispy->secretmessage, true);
+    M_DrawCrispnessSeparator(static_cast<int>(crispness2_e::crispness_sep_navigational), const_cast<char *>("Navigational"));
+    M_DrawCrispnessItem(static_cast<int>(crispness2_e::crispness_extautomap), const_cast<char *>("Extended Automap colors"), crispy->extautomap, true);
+    M_DrawCrispnessMultiItem(static_cast<int>(crispness2_e::crispness_automapstats), const_cast<char *>("Show Level Stats"), multiitem_widgets, crispy->automapstats, true);
+    M_DrawCrispnessMultiItem(static_cast<int>(crispness2_e::crispness_leveltime), const_cast<char *>("Show Level Time"), multiitem_widgets, crispy->leveltime, true);
+    M_DrawCrispnessMultiItem(static_cast<int>(crispness2_e::crispness_playercoords), const_cast<char *>("Show Player Coords"), multiitem_widgets, crispy->playercoords, true);
+    M_DrawCrispnessMultiItem(static_cast<int>(crispness2_e::crispness_secretmessage), const_cast<char *>("Report Revealed Secrets"), multiitem_secretmessage, crispy->secretmessage, true);
 
-    M_DrawCrispnessGoto(crispness2_next, const_cast<char *>("Next Page >"));
-    M_DrawCrispnessGoto(crispness2_prev, const_cast<char *>("< Prev Page"));
+    M_DrawCrispnessGoto(static_cast<int>(crispness2_e::crispness2_next), const_cast<char *>("Next Page >"));
+    M_DrawCrispnessGoto(static_cast<int>(crispness2_e::crispness2_prev), const_cast<char *>("< Prev Page"));
 
     dp_translation = nullptr;
 }
@@ -1499,26 +1499,26 @@ static void M_DrawCrispness3()
 
     M_DrawCrispnessHeader(const_cast<char *>("Crispness 3/4"));
 
-    M_DrawCrispnessSeparator(crispness_sep_tactical, const_cast<char *>("Tactical"));
+    M_DrawCrispnessSeparator(static_cast<int>(crispness3_e::crispness_sep_tactical), const_cast<char *>("Tactical"));
 
-    M_DrawCrispnessMultiItem(crispness_freelook, const_cast<char *>("Allow Free Look"), multiitem_freelook, crispy->freelook, true);
-    M_DrawCrispnessItem(crispness_mouselook, const_cast<char *>("Permanent Mouse Look"), crispy->mouselook, true);
-    M_DrawCrispnessMultiItem(crispness_bobfactor, const_cast<char *>("Player View/Weapon Bobbing"), multiitem_bobfactor, crispy->bobfactor, true);
-    M_DrawCrispnessMultiItem(crispness_centerweapon, const_cast<char *>("Weapon Attack Alignment"), multiitem_centerweapon, crispy->centerweapon, crispy->bobfactor != BOBFACTOR_OFF);
-    M_DrawCrispnessItem(crispness_weaponsquat, const_cast<char *>("Squat weapon down on impact"), crispy->weaponsquat, true);
-    M_DrawCrispnessItem(crispness_pitch, const_cast<char *>("Weapon Recoil Pitch"), crispy->pitch, true);
-    M_DrawCrispnessItem(crispness_neghealth, const_cast<char *>("Negative Player Health"), crispy->neghealth, true);
+    M_DrawCrispnessMultiItem(static_cast<int>(crispness3_e::crispness_freelook), const_cast<char *>("Allow Free Look"), multiitem_freelook, crispy->freelook, true);
+    M_DrawCrispnessItem(static_cast<int>(crispness3_e::crispness_mouselook), const_cast<char *>("Permanent Mouse Look"), crispy->mouselook, true);
+    M_DrawCrispnessMultiItem(static_cast<int>(crispness3_e::crispness_bobfactor), const_cast<char *>("Player View/Weapon Bobbing"), multiitem_bobfactor, crispy->bobfactor, true);
+    M_DrawCrispnessMultiItem(static_cast<int>(crispness3_e::crispness_centerweapon), const_cast<char *>("Weapon Attack Alignment"), multiitem_centerweapon, crispy->centerweapon, crispy->bobfactor != BOBFACTOR_OFF);
+    M_DrawCrispnessItem(static_cast<int>(crispness3_e::crispness_weaponsquat), const_cast<char *>("Squat weapon down on impact"), crispy->weaponsquat, true);
+    M_DrawCrispnessItem(static_cast<int>(crispness3_e::crispness_pitch), const_cast<char *>("Weapon Recoil Pitch"), crispy->pitch, true);
+    M_DrawCrispnessItem(static_cast<int>(crispness3_e::crispness_neghealth), const_cast<char *>("Negative Player Health"), crispy->neghealth, true);
     //  M_DrawCrispnessItem(crispness_extsaveg, "Extended Savegames", crispy->extsaveg, true);
 
-    M_DrawCrispnessSeparator(crispness_sep_crosshair, const_cast<char *>("Crosshair"));
+    M_DrawCrispnessSeparator(static_cast<int>(crispness3_e::crispness_sep_crosshair), const_cast<char *>("Crosshair"));
 
-    M_DrawCrispnessMultiItem(crispness_crosshair, const_cast<char *>("Draw Crosshair"), multiitem_crosshair, crispy->crosshair, true);
-    M_DrawCrispnessMultiItem(crispness_crosshairtype, const_cast<char *>("Crosshair Shape"), multiitem_crosshairtype, crispy->crosshairtype + 1, crispy->crosshair);
-    M_DrawCrispnessItem(crispness_crosshairhealth, const_cast<char *>("Color indicates Health"), crispy->crosshairhealth, crispy->crosshair);
-    M_DrawCrispnessItem(crispness_crosshairtarget, const_cast<char *>("Highlight on target"), crispy->crosshairtarget, crispy->crosshair);
+    M_DrawCrispnessMultiItem(static_cast<int>(crispness3_e::crispness_crosshair), const_cast<char *>("Draw Crosshair"), multiitem_crosshair, crispy->crosshair, true);
+    M_DrawCrispnessMultiItem(static_cast<int>(crispness3_e::crispness_crosshairtype), const_cast<char *>("Crosshair Shape"), multiitem_crosshairtype, crispy->crosshairtype + 1, crispy->crosshair);
+    M_DrawCrispnessItem(static_cast<int>(crispness3_e::crispness_crosshairhealth), const_cast<char *>("Color indicates Health"), crispy->crosshairhealth, crispy->crosshair);
+    M_DrawCrispnessItem(static_cast<int>(crispness3_e::crispness_crosshairtarget), const_cast<char *>("Highlight on target"), crispy->crosshairtarget, crispy->crosshair);
 
-    M_DrawCrispnessGoto(crispness3_next, const_cast<char *>("Next Page >"));
-    M_DrawCrispnessGoto(crispness3_prev, const_cast<char *>("< Prev Page"));
+    M_DrawCrispnessGoto(static_cast<int>(crispness3_e::crispness3_next), const_cast<char *>("Next Page >"));
+    M_DrawCrispnessGoto(static_cast<int>(crispness3_e::crispness3_prev), const_cast<char *>("< Prev Page"));
 
     dp_translation = nullptr;
 }
@@ -1529,21 +1529,21 @@ static void M_DrawCrispness4()
 
     M_DrawCrispnessHeader(const_cast<char *>("Crispness 4/4"));
 
-    M_DrawCrispnessSeparator(crispness_sep_physical, const_cast<char *>("Physical"));
+    M_DrawCrispnessSeparator(static_cast<int>(crispness4_e::crispness_sep_physical), const_cast<char *>("Physical"));
 
-    M_DrawCrispnessMultiItem(crispness_freeaim, const_cast<char *>("Vertical Aiming"), multiitem_freeaim, crispy->freeaim, crispy->singleplayer);
-    M_DrawCrispnessMultiItem(crispness_jumping, const_cast<char *>("Allow Jumping"), multiitem_jump, crispy->jump, crispy->singleplayer);
-    M_DrawCrispnessItem(crispness_overunder, const_cast<char *>("Walk over/under Monsters"), crispy->overunder, crispy->singleplayer);
-    M_DrawCrispnessItem(crispness_recoil, const_cast<char *>("Weapon Recoil Thrust"), crispy->recoil, crispy->singleplayer);
+    M_DrawCrispnessMultiItem(static_cast<int>(crispness4_e::crispness_freeaim), const_cast<char *>("Vertical Aiming"), multiitem_freeaim, crispy->freeaim, crispy->singleplayer);
+    M_DrawCrispnessMultiItem(static_cast<int>(crispness4_e::crispness_jumping), const_cast<char *>("Allow Jumping"), multiitem_jump, crispy->jump, crispy->singleplayer);
+    M_DrawCrispnessItem(static_cast<int>(crispness4_e::crispness_overunder), const_cast<char *>("Walk over/under Monsters"), crispy->overunder, crispy->singleplayer);
+    M_DrawCrispnessItem(static_cast<int>(crispness4_e::crispness_recoil), const_cast<char *>("Weapon Recoil Thrust"), crispy->recoil, crispy->singleplayer);
 
-    M_DrawCrispnessSeparator(crispness_sep_demos, const_cast<char *>("Demos"));
+    M_DrawCrispnessSeparator(static_cast<int>(crispness4_e::crispness_sep_demos), const_cast<char *>("Demos"));
 
-    M_DrawCrispnessMultiItem(crispness_demotimer, const_cast<char *>("Show Demo Timer"), multiitem_demotimer, crispy->demotimer, true);
-    M_DrawCrispnessMultiItem(crispness_demotimerdir, const_cast<char *>("Playback Timer Direction"), multiitem_demotimerdir, crispy->demotimerdir + 1, crispy->demotimer & DEMOTIMER_PLAYBACK);
-    M_DrawCrispnessItem(crispness_demobar, const_cast<char *>("Show Demo Progress Bar"), crispy->demobar, true);
+    M_DrawCrispnessMultiItem(static_cast<int>(crispness4_e::crispness_demotimer), const_cast<char *>("Show Demo Timer"), multiitem_demotimer, crispy->demotimer, true);
+    M_DrawCrispnessMultiItem(static_cast<int>(crispness4_e::crispness_demotimerdir), const_cast<char *>("Playback Timer Direction"), multiitem_demotimerdir, crispy->demotimerdir + 1, crispy->demotimer & DEMOTIMER_PLAYBACK);
+    M_DrawCrispnessItem(static_cast<int>(crispness4_e::crispness_demobar), const_cast<char *>("Show Demo Progress Bar"), crispy->demobar, true);
 
-    M_DrawCrispnessGoto(crispness4_next, const_cast<char *>("First Page >"));
-    M_DrawCrispnessGoto(crispness4_prev, const_cast<char *>("< Prev Page"));
+    M_DrawCrispnessGoto(static_cast<int>(crispness4_e::crispness4_next), const_cast<char *>("First Page >"));
+    M_DrawCrispnessGoto(static_cast<int>(crispness4_e::crispness4_prev), const_cast<char *>("< Prev Page"));
 
     dp_translation = nullptr;
 }
@@ -2518,7 +2518,7 @@ bool M_Responder(event_t *ev)
         {
             M_StartControlPanel();
             currentMenu = &SoundDef;
-            itemOn      = sfx_vol;
+            itemOn      = static_cast<short>(sound_e::sfx_vol);
             S_StartSound(nullptr, sfx_swtchn);
             return true;
         }
@@ -2908,7 +2908,10 @@ void M_Drawer()
         if (name[0]) // && W_CheckNumForName(name) > 0) // [crispy] moved...
         {
             // [crispy] shade unavailable menu items
-            if ((currentMenu == &MainDef && i == savegame && (!usergame || gamestate != GS_LEVEL)) || (currentMenu == &OptionsDef && i == endgame && (!usergame || netgame)) || (currentMenu == &MainDef && i == loadgame && (netgame && !demoplayback)) || (currentMenu == &MainDef && i == newgame && (demorecording || (netgame && !demoplayback))))
+            if ((currentMenu == &MainDef && static_cast<main_e>(i) == main_e::savegame && (!usergame || gamestate != GS_LEVEL))
+                || (currentMenu == &OptionsDef && static_cast<options_e>(i) == options_e::endgame && (!usergame || netgame))
+                || (currentMenu == &MainDef && static_cast<main_e>(i) == main_e::loadgame && (netgame && !demoplayback))
+                || (currentMenu == &MainDef && static_cast<main_e>(i) == main_e::newgame && (demorecording || (netgame && !demoplayback))))
                 dp_translation = cr_colors[static_cast<int>(cr_t::CR_DARK)];
 
             if (currentMenu == &OptionsDef)
@@ -3005,7 +3008,7 @@ void M_Init()
 
     if (gameversion >= exe_ultimate)
     {
-        MainMenu[readthis].routine = M_ReadThis2;
+        MainMenu[static_cast<int>(main_e::readthis)].routine = M_ReadThis2;
         ReadDef2.prevMenu          = nullptr;
     }
 
@@ -3018,14 +3021,14 @@ void M_Init()
 
     if (gamemode == commercial)
     {
-        MainMenu[readthis] = MainMenu[quitdoom];
+        MainMenu[static_cast<int>(main_e::readthis)] = MainMenu[static_cast<int>(main_e::quitdoom)];
         MainDef.numitems--;
         MainDef.y += 8;
         NewDef.prevMenu                = nervewadfile ? &ExpDef : &MainDef;
         ReadDef1.routine               = M_DrawReadThisCommercial;
         ReadDef1.x                     = 330;
         ReadDef1.y                     = 165;
-        ReadMenu1[rdthsempty1].routine = M_FinishReadThis;
+        ReadMenu1[static_cast<int>(read_e::rdthsempty1)].routine = M_FinishReadThis;
     }
 
     // [crispy] Sigil
@@ -3067,7 +3070,7 @@ void M_Init()
 
         vstep = ORIGHEIGHT - 32; // [crispy] ST_HEIGHT
         vstep -= captionheight;
-        vstep -= (load_end - 1) * LINEHEIGHT + SHORT(patchm->height);
+        vstep -= (static_cast<int>(load_e::load_end) - 1) * LINEHEIGHT + SHORT(patchm->height);
         vstep /= 3;
 
         if (vstep > 0)

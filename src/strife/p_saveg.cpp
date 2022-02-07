@@ -1974,7 +1974,7 @@ void P_UnArchiveThinkers ()
 //
 // P_ArchiveSpecials
 //
-enum
+enum class specials_e
 {
     tc_ceiling,
     tc_door,
@@ -1986,7 +1986,7 @@ enum
     tc_slidingdoor, // [STRIFE]
     tc_endspecials
 
-} specials_e;
+};
 
 
 
@@ -2018,7 +2018,7 @@ void P_ArchiveSpecials ()
 
             if (i<MAXCEILINGS)
             {
-                saveg_write8(tc_ceiling);
+                saveg_write8(static_cast<byte>(specials_e::tc_ceiling));
                 saveg_write_pad();
                 saveg_write_ceiling_t((ceiling_t *) th);
             }
@@ -2027,7 +2027,7 @@ void P_ArchiveSpecials ()
 
         if (th->function.acp1 == (actionf_p1)T_MoveCeiling)
         {
-            saveg_write8(tc_ceiling);
+            saveg_write8(static_cast<byte>(specials_e::tc_ceiling));
             saveg_write_pad();
             saveg_write_ceiling_t((ceiling_t *) th);
             continue;
@@ -2035,7 +2035,7 @@ void P_ArchiveSpecials ()
 
         if (th->function.acp1 == (actionf_p1)T_VerticalDoor)
         {
-            saveg_write8(tc_door);
+            saveg_write8(static_cast<byte>(specials_e::tc_door));
             saveg_write_pad();
             saveg_write_vldoor_t((vldoor_t *) th);
             continue;
@@ -2043,7 +2043,7 @@ void P_ArchiveSpecials ()
 
         if (th->function.acp1 == (actionf_p1)T_SlidingDoor)
         {
-            saveg_write8(tc_slidingdoor);
+            saveg_write8(static_cast<byte>(specials_e::tc_slidingdoor));
             saveg_write_pad();
             saveg_write_slidedoor_t((slidedoor_t *)th);
             continue;
@@ -2051,7 +2051,7 @@ void P_ArchiveSpecials ()
 
         if (th->function.acp1 == (actionf_p1)T_MoveFloor)
         {
-            saveg_write8(tc_floor);
+            saveg_write8(static_cast<byte>(specials_e::tc_floor));
             saveg_write_pad();
             saveg_write_floormove_t((floormove_t *) th);
             continue;
@@ -2059,7 +2059,7 @@ void P_ArchiveSpecials ()
 
         if (th->function.acp1 == (actionf_p1)T_PlatRaise)
         {
-            saveg_write8(tc_plat);
+            saveg_write8(static_cast<byte>(specials_e::tc_plat));
             saveg_write_pad();
             saveg_write_plat_t((plat_t *) th);
             continue;
@@ -2067,7 +2067,7 @@ void P_ArchiveSpecials ()
 
         if (th->function.acp1 == (actionf_p1)T_LightFlash)
         {
-            saveg_write8(tc_flash);
+            saveg_write8(static_cast<byte>(specials_e::tc_flash));
             saveg_write_pad();
             saveg_write_lightflash_t((lightflash_t *) th);
             continue;
@@ -2075,7 +2075,7 @@ void P_ArchiveSpecials ()
 
         if (th->function.acp1 == (actionf_p1)T_StrobeFlash)
         {
-            saveg_write8(tc_strobe);
+            saveg_write8(static_cast<byte>(specials_e::tc_strobe));
             saveg_write_pad();
             saveg_write_strobe_t((strobe_t *) th);
             continue;
@@ -2083,7 +2083,7 @@ void P_ArchiveSpecials ()
 
         if (th->function.acp1 == (actionf_p1)T_Glow)
         {
-            saveg_write8(tc_glow);
+            saveg_write8(static_cast<byte>(specials_e::tc_glow));
             saveg_write_pad();
             saveg_write_glow_t((glow_t *) th);
             continue;
@@ -2091,7 +2091,7 @@ void P_ArchiveSpecials ()
     }
 
     // add a terminating marker
-    saveg_write8(tc_endspecials);
+    saveg_write8(static_cast<byte>(specials_e::tc_endspecials));
 }
 
 
@@ -2100,7 +2100,7 @@ void P_ArchiveSpecials ()
 //
 void P_UnArchiveSpecials ()
 {
-    byte                tclass;
+    specials_e          tclass;
     ceiling_t*          ceiling;
     vldoor_t*           door;
     slidedoor_t*        slidedoor; // haleyjd [STRIFE]
@@ -2114,14 +2114,14 @@ void P_UnArchiveSpecials ()
     // read in saved thinkers
     while (true)
     {
-        tclass = saveg_read8();
+        tclass = static_cast<specials_e>(saveg_read8());
 
         switch (tclass)
         {
-        case tc_endspecials:
+        case specials_e::tc_endspecials:
             return;	// end of list
 
-        case tc_ceiling:
+        case specials_e::tc_ceiling:
             saveg_read_pad();
             ceiling = zmalloc<ceiling_t *>(sizeof(*ceiling), PU_LEVEL, nullptr);
             saveg_read_ceiling_t(ceiling);
@@ -2134,7 +2134,7 @@ void P_UnArchiveSpecials ()
             P_AddActiveCeiling(ceiling);
             break;
 
-        case tc_door:
+        case specials_e::tc_door:
             saveg_read_pad();
             door = zmalloc<vldoor_t *>(sizeof(*door), PU_LEVEL, nullptr);
             saveg_read_vldoor_t(door);
@@ -2143,7 +2143,7 @@ void P_UnArchiveSpecials ()
             P_AddThinker (&door->thinker);
             break;
 
-        case tc_slidingdoor:
+        case specials_e::tc_slidingdoor:
             // haleyjd 09/29/10: [STRIFE] New thinker type for sliding doors
             saveg_read_pad();
             slidedoor = zmalloc<slidedoor_t *>(sizeof(*slidedoor), PU_LEVEL, nullptr);
@@ -2153,7 +2153,7 @@ void P_UnArchiveSpecials ()
             P_AddThinker(&slidedoor->thinker);
             break;
 
-        case tc_floor:
+        case specials_e::tc_floor:
             saveg_read_pad();
             floor = zmalloc<floormove_t *>(sizeof(*floor), PU_LEVEL, nullptr);
             saveg_read_floormove_t(floor);
@@ -2162,7 +2162,7 @@ void P_UnArchiveSpecials ()
             P_AddThinker (&floor->thinker);
             break;
 
-        case tc_plat:
+        case specials_e::tc_plat:
             saveg_read_pad();
             plat = zmalloc<plat_t *>(sizeof(*plat), PU_LEVEL, nullptr);
             saveg_read_plat_t(plat);
@@ -2175,7 +2175,7 @@ void P_UnArchiveSpecials ()
             P_AddActivePlat(plat);
             break;
 
-        case tc_flash:
+        case specials_e::tc_flash:
             saveg_read_pad();
             flash = zmalloc<lightflash_t *>(sizeof(*flash), PU_LEVEL, nullptr);
             saveg_read_lightflash_t(flash);
@@ -2183,7 +2183,7 @@ void P_UnArchiveSpecials ()
             P_AddThinker (&flash->thinker);
             break;
 
-        case tc_strobe:
+        case specials_e::tc_strobe:
             saveg_read_pad();
             strobe = zmalloc<strobe_t *>(sizeof(*strobe), PU_LEVEL, nullptr);
             saveg_read_strobe_t(strobe);
@@ -2191,7 +2191,7 @@ void P_UnArchiveSpecials ()
             P_AddThinker (&strobe->thinker);
             break;
 
-        case tc_glow:
+        case specials_e::tc_glow:
             saveg_read_pad();
             glow = zmalloc<glow_t *>(sizeof(*glow), PU_LEVEL, nullptr);
             saveg_read_glow_t(glow);
@@ -2201,7 +2201,7 @@ void P_UnArchiveSpecials ()
 
         default:
             I_Error ("P_UnarchiveSpecials:Unknown tclass %i "
-                     "in savegame",tclass);
+                     "in savegame",static_cast<int>(tclass));
         }
     }
 }

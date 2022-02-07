@@ -48,7 +48,7 @@ function(set_project_warnings)
             -Wformat=2 # warn on security issues around functions that format output (ie printf)
             #-Wno-unused-lambda-capture # CLANG We like explicit capture
             -Wno-unused-parameter
-            -Wno-unused-variable # TODO turn it back on (patricia)
+            #-Wno-unused-variable # TODO turn it back on (patricia)
             -Wno-unused-function # TODO turn it back on (patricia)
             #-Wno-reserved-user-defined-literal # CLANG TODO turn it back on (patricia)?
             #-Wno-shorten-64-to-32 # CLANG TODO turn it back on (patricia)
