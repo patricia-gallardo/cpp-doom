@@ -65,9 +65,9 @@ typedef enum
 
 // Times
 
-#define OPL_SECOND ((uint64_t) 1000 * 1000)
-#define OPL_MS     ((uint64_t) 1000)
-#define OPL_US     ((uint64_t) 1)
+#define OPL_SECOND (static_cast<uint64_t>(1000 * 1000))
+#define OPL_MS     (static_cast<uint64_t>(1000))
+#define OPL_US     (static_cast<uint64_t>(1))
 
 //
 // Low-level functions.

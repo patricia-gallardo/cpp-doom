@@ -352,7 +352,7 @@ static void OPL3_EnvelopeUpdateKSL(opl3_slot *slot)
     {
         ksl = 0;
     }
-    slot->eg_ksl = (Bit8u)ksl;
+    slot->eg_ksl = static_cast<Bit8u>(ksl);
 }
 
 static void OPL3_EnvelopeCalc(opl3_slot *slot)
@@ -552,7 +552,7 @@ static void OPL3_PhaseGenerate(opl3_slot *slot)
         f_num += range;
     }
     basefreq = (f_num << slot->channel->block) >> 1;
-    phase = (Bit16u)(slot->pg_phase >> 9);
+    phase = static_cast<Bit16u>(slot->pg_phase >> 9);
     if (slot->pg_reset)
     {
         slot->pg_phase = 0;
@@ -618,7 +618,7 @@ static void OPL3_SlotWrite20(opl3_slot *slot, Bit8u data)
     }
     else
     {
-        slot->trem = (Bit8u*)&slot->chip->zeromod;
+        slot->trem = reinterpret_cast<Bit8u*>(&slot->chip->zeromod);
     }
     slot->reg_vib = (data >> 6) & 0x01;
     slot->reg_type = (data >> 5) & 0x01;
@@ -952,7 +952,7 @@ static void OPL3_ChannelWriteC0(opl3_channel *channel, Bit8u data)
     }
     else
     {
-        channel->cha = channel->chb = (Bit16u)~0;
+        channel->cha = channel->chb = static_cast<Bit16u>(~0);
     }
 }
 
@@ -1038,7 +1038,7 @@ static Bit16s OPL3_ClipSample(Bit32s sample)
     {
         sample = -32768;
     }
-    return (Bit16s)sample;
+    return static_cast<Bit16s>(sample);
 }
 
 void OPL3_Generate(opl3_chip *chip, Bit16s *buf)
@@ -1066,7 +1066,7 @@ void OPL3_Generate(opl3_chip *chip, Bit16s *buf)
         {
             accm += *chip->channel[ii].out[jj];
         }
-        chip->mixbuff[0] += (Bit16s)(accm & chip->channel[ii].cha);
+        chip->mixbuff[0] += static_cast<Bit16s>(accm & chip->channel[ii].cha);
     }
 
     for (ii = 15; ii < 18; ii++)
@@ -1095,7 +1095,7 @@ void OPL3_Generate(opl3_chip *chip, Bit16s *buf)
         {
             accm += *chip->channel[ii].out[jj];
         }
-        chip->mixbuff[1] += (Bit16s)(accm & chip->channel[ii].chb);
+        chip->mixbuff[1] += static_cast<Bit16s>(accm & chip->channel[ii].chb);
     }
 
     for (ii = 33; ii < 36; ii++)
@@ -1182,9 +1182,9 @@ void OPL3_GenerateResampled(opl3_chip *chip, Bit16s *buf)
         OPL3_Generate(chip, chip->samples);
         chip->samplecnt -= chip->rateratio;
     }
-    buf[0] = (Bit16s)((chip->oldsamples[0] * (chip->rateratio - chip->samplecnt)
+    buf[0] = static_cast<Bit16s>((chip->oldsamples[0] * (chip->rateratio - chip->samplecnt)
                      + chip->samples[0] * chip->samplecnt) / chip->rateratio);
-    buf[1] = (Bit16s)((chip->oldsamples[1] * (chip->rateratio - chip->samplecnt)
+    buf[1] = static_cast<Bit16s>((chip->oldsamples[1] * (chip->rateratio - chip->samplecnt)
                      + chip->samples[1] * chip->samplecnt) / chip->rateratio);
     chip->samplecnt += 1 << RSM_FRAC;
 }
@@ -1202,7 +1202,7 @@ void OPL3_Reset(opl3_chip *chip, Bit32u samplerate)
         chip->slot[slotnum].eg_rout = 0x1ff;
         chip->slot[slotnum].eg_out = 0x1ff;
         chip->slot[slotnum].eg_gen = envelope_gen_num_release;
-        chip->slot[slotnum].trem = (Bit8u*)&chip->zeromod;
+        chip->slot[slotnum].trem = reinterpret_cast<Bit8u*>(&chip->zeromod);
         chip->slot[slotnum].slot_num = slotnum;
     }
     for (channum = 0; channum < 18; channum++)
