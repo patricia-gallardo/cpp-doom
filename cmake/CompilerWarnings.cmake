@@ -38,7 +38,7 @@ function(set_project_warnings)
             # catch hard to track down memory errors
             # -Wold-style-cast # warn for c-style casts TODO turn it back on (patricia)
             # -Wcast-align # warn for potential performance problem casts TODO turn it back on (patricia)
-            -Wunused # warn on anything being unused TODO turn it back on (patricia)
+            -Wunused # warn on anything being unused
             -Woverloaded-virtual # warn if you overload (not override) a virtual function
             # -Wpedantic # warn if non-standard C++ is used TODO turn it back on (patricia)
             # -Wconversion # warn on type conversions that may lose data TODO turn it back on (patricia)
@@ -47,17 +47,12 @@ function(set_project_warnings)
             -Wformat=2 # warn on security issues around functions that format output (ie printf)
             -fpermissive # GCC TODO turn it back on (patricia)
             -Wno-sign-conversion # warn on sign conversions TODO turn it back on (patricia)
-            #-Wno-unused-parameter
-            #-Wno-unused-function # TODO turn it back on (patricia)
             -Wno-sign-compare # TODO turn it back on (patricia)
             -Wno-format-nonliteral # TODO turn it back on (patricia)
             -Wno-float-conversion # TODO turn it back on (patricia)
             -Wno-double-promotion # TODO turn it back on (patricia)
             -Wno-narrowing # TODO turn it back on (patricia)
             -Wno-unknown-warning-option # CLANG TODO turn it back on (patricia)
-            #-Wno-unused-but-set-parameter # GCC TODO turn it back on (patricia)
-            #-Wno-parentheses # GCC TODO turn it back on (patricia)
-            #-Wno-int-in-bool-context # GCC TODO turn it back on (patricia)
             -Wno-class-memaccess # GCC TODO turn it back on (patricia)
             )
 
