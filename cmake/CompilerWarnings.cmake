@@ -38,7 +38,7 @@ function(set_project_warnings)
             # catch hard to track down memory errors
             # -Wold-style-cast # warn for c-style casts TODO turn it back on (patricia)
             # -Wcast-align # warn for potential performance problem casts TODO turn it back on (patricia)
-            # -Wunused # warn on anything being unused TODO turn it back on (patricia)
+            -Wunused # warn on anything being unused TODO turn it back on (patricia)
             -Woverloaded-virtual # warn if you overload (not override) a virtual function
             # -Wpedantic # warn if non-standard C++ is used TODO turn it back on (patricia)
             # -Wconversion # warn on type conversions that may lose data TODO turn it back on (patricia)
