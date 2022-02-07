@@ -1012,10 +1012,13 @@ bool
 
                     for (i = 0; i < NUMWEAPONS; i++)
                     {
-                        oldweaponsowned[i] = plyr->weaponowned[i] = false;
+                        plyr->weaponowned[i] = false;
+                        oldweaponsowned[i] = plyr->weaponowned[i];
                     }
-                    oldweaponsowned[wp_fist] = plyr->weaponowned[wp_fist] = true;
-                    oldweaponsowned[wp_pistol] = plyr->weaponowned[wp_pistol] = true;
+                    plyr->weaponowned[wp_fist] = true;
+                    oldweaponsowned[wp_fist] = plyr->weaponowned[wp_fist];
+                    plyr->weaponowned[wp_pistol] = true;
+                    oldweaponsowned[wp_pistol] = plyr->weaponowned[wp_pistol];
 
                     for (i = 0; i < NUMAMMO; i++)
                     {
@@ -1072,7 +1075,8 @@ bool
                     else
                     {
                         // [crispy] no reason for evil grin
-                        oldweaponsowned[w] = plyr->weaponowned[w] = false;
+                        plyr->weaponowned[w] = false;
+                        oldweaponsowned[w] = plyr->weaponowned[w];
 
                         // [crispy] removed current weapon, select another one
                         if (w == plyr->readyweapon)

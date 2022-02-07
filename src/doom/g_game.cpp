@@ -1308,11 +1308,13 @@ void G_PlayerFinishLevel(int player)
     p->damagecount   = 0;                      // no palette changes
     p->bonuscount    = 0;
     // [crispy] reset additional player properties
-    p->lookdir = p->oldlookdir =
-        p->centering =
-            p->jumpTics =
-                p->recoilpitch    = p->oldrecoilpitch =
-                    p->psp_dy_max = 0;
+    p->lookdir        = 0;
+    p->oldlookdir     = 0;
+    p->centering      = false;
+    p->jumpTics       = 0;
+    p->recoilpitch    = 0;
+    p->oldrecoilpitch = 0;
+    p->psp_dy_max     = 0;
 }
 
 
