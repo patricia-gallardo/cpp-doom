@@ -40,11 +40,13 @@ function(set_project_warnings)
             # -Wcast-align # warn for potential performance problem casts TODO turn it back on (patricia)
             -Wunused # warn on anything being unused
             -Woverloaded-virtual # warn if you overload (not override) a virtual function
-            # -Wpedantic # warn if non-standard C++ is used TODO turn it back on (patricia)
+            -Wpedantic # warn if non-standard C++ is used TODO turn it back on (patricia)
             # -Wconversion # warn on type conversions that may lose data TODO turn it back on (patricia)
             -Wnull-dereference # warn if a null dereference is detected
             -Wdouble-promotion # warn if float is implicit promoted to double
-            -Wformat=2 # warn on security issues around functions that format output (ie printf)
+            #-Wformat=2 # warn on security issues around functions that format output (ie printf) TODO turn it back on (patricia)
+            -Wno-format-pedantic # CLANG TODO turn it back on (patricia)
+            -Wno-format # GCC TODO turn it back on (patricia)
             -Wno-sign-conversion # warn on sign conversions TODO turn it back on (patricia)
             -Wno-sign-compare # TODO turn it back on (patricia)
             -Wno-format-nonliteral # TODO turn it back on (patricia)
