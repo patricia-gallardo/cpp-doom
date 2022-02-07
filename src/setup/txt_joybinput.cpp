@@ -143,7 +143,7 @@ static void ClearVariablesUsingButton(int physbutton)
 
 static int EventCallback(SDL_Event *event, void *uncast_joystick_input)
 {
-    txt_joystick_input_t *joystick_input = (txt_joystick_input_t *)uncast_joystick_input;
+    txt_joystick_input_t *joystick_input = reinterpret_cast<txt_joystick_input_t *>(uncast_joystick_input);
 
     // Got the joystick button press?
 
@@ -179,7 +179,7 @@ static int EventCallback(SDL_Event *event, void *uncast_joystick_input)
 
 static void PromptWindowClosed(void *, void *uncast_joystick)
 {
-    SDL_Joystick *joystick = (SDL_Joystick *)uncast_joystick;
+    auto *joystick = reinterpret_cast<SDL_Joystick  *>(uncast_joystick);
 
     SDL_JoystickClose(joystick);
     TXT_SDL_SetEventCallback(nullptr, nullptr);
@@ -229,7 +229,7 @@ static void OpenPromptWindow(txt_joystick_input_t *joystick_input)
 
 static void TXT_JoystickInputSizeCalc(void *uncast_joystick_input)
 {
-    txt_joystick_input_t *joystick_input = (txt_joystick_input_t *)uncast_joystick_input;
+    auto *joystick_input = reinterpret_cast<txt_joystick_input_t *>(uncast_joystick_input);
 
     // All joystickinputs are the same size.
 
@@ -246,7 +246,7 @@ static void GetJoystickButtonDescription(int vbutton, char *buf,
 
 static void TXT_JoystickInputDrawer(void *uncast_joystick_input)
 {
-    txt_joystick_input_t *joystick_input = (txt_joystick_input_t *)uncast_joystick_input;
+    auto *joystick_input = reinterpret_cast<txt_joystick_input_t *>(uncast_joystick_input);
     char buf[20];
     int i;
 
@@ -277,7 +277,7 @@ static void TXT_JoystickInputDestructor(void *)
 
 static int TXT_JoystickInputKeyPress(void *uncast_joystick_input, int key)
 {
-    txt_joystick_input_t *joystick_input = (txt_joystick_input_t *)uncast_joystick_input;
+    auto *joystick_input = reinterpret_cast<txt_joystick_input_t *>(uncast_joystick_input);
 
     if (key == KEY_ENTER)
     {
@@ -299,7 +299,7 @@ static int TXT_JoystickInputKeyPress(void *uncast_joystick_input, int key)
 static void TXT_JoystickInputMousePress(void *uncast_widget,
                                         int, int, int b)
 {
-    txt_joystick_input_t *widget = (txt_joystick_input_t *)uncast_widget;
+    auto *widget = reinterpret_cast<txt_joystick_input_t *>(uncast_widget);
 
     // Clicking is like pressing enter
 

@@ -49,7 +49,7 @@ std::shared_ptr<txt_callback_table_t> TXT_NewCallbackTable()
 
 void TXT_InitWidget(void *uncast_widget, txt_widget_class_t *widget_class)
 {
-    txt_widget_t *widget = (txt_widget_t *)uncast_widget;
+    auto *widget = reinterpret_cast<txt_widget_t *>(uncast_widget);
 
     widget->widget_class = widget_class;
     widget->callback_table = TXT_NewCallbackTable();
@@ -73,7 +73,7 @@ void TXT_SignalConnect(void *uncast_widget,
                        TxtWidgetSignalFunc func, 
                        void *user_data)
 {
-    txt_widget_t *widget = (txt_widget_t *)uncast_widget;
+    auto *widget = reinterpret_cast<txt_widget_t *>(uncast_widget);
 
     auto &table = widget->callback_table;
 
@@ -88,7 +88,7 @@ void TXT_SignalConnect(void *uncast_widget,
 
 void TXT_EmitSignal(void *uncast_widget, const char *signal_name)
 {
-    txt_widget_t *widget = (txt_widget_t *)uncast_widget;
+    auto *widget = reinterpret_cast<txt_widget_t *>(uncast_widget);
 
     auto table = widget->callback_table;
 
@@ -110,14 +110,14 @@ void TXT_EmitSignal(void *uncast_widget, const char *signal_name)
 
 void TXT_CalcWidgetSize(void *uncast_widget)
 {
-    txt_widget_t *widget = (txt_widget_t *)uncast_widget;
+    auto *widget = reinterpret_cast<txt_widget_t *>(uncast_widget);
 
     widget->widget_class->size_calc(widget);
 }
 
 void TXT_DrawWidget(void *uncast_widget)
 {
-    txt_widget_t      *widget = (txt_widget_t *)uncast_widget;
+    auto      *widget = reinterpret_cast<txt_widget_t *>(uncast_widget);
     txt_saved_colors_t colors;
 
     // The drawing function might change the fg/bg colors,
@@ -138,7 +138,7 @@ void TXT_DrawWidget(void *uncast_widget)
 
 void TXT_DestroyWidget(void *uncast_widget)
 {
-    txt_widget_t *widget = (txt_widget_t *)uncast_widget;
+    auto *widget = reinterpret_cast<txt_widget_t *>(uncast_widget);
 
     widget->widget_class->destructor(widget);
     free(widget);
@@ -146,7 +146,7 @@ void TXT_DestroyWidget(void *uncast_widget)
 
 int TXT_WidgetKeyPress(void *uncast_widget, int key)
 {
-    txt_widget_t *widget = (txt_widget_t *)uncast_widget;
+    auto *widget = reinterpret_cast<txt_widget_t *>(uncast_widget);
 
     if (widget->widget_class->key_press != nullptr)
     {
@@ -158,7 +158,7 @@ int TXT_WidgetKeyPress(void *uncast_widget, int key)
 
 void TXT_SetWidgetFocus(void *uncast_widget, int focused)
 {
-    txt_widget_t *widget = (txt_widget_t *)uncast_widget;
+    auto *widget = reinterpret_cast<txt_widget_t *>(uncast_widget);
 
     if (widget == nullptr)
     {
@@ -178,14 +178,14 @@ void TXT_SetWidgetFocus(void *uncast_widget, int focused)
 
 void TXT_SetWidgetAlign(void *uncast_widget, txt_horiz_align_t horiz_align)
 {
-    txt_widget_t *widget = (txt_widget_t *)uncast_widget;
+    auto *widget = reinterpret_cast<txt_widget_t *>(uncast_widget);
 
     widget->align = horiz_align;
 }
 
 void TXT_WidgetMousePress(void *uncast_widget, int x, int y, int b)
 {
-    txt_widget_t *widget = (txt_widget_t *)uncast_widget;
+    auto *widget = reinterpret_cast<txt_widget_t *>(uncast_widget);
 
     if (widget->widget_class->mouse_press != nullptr)
     {
@@ -195,7 +195,7 @@ void TXT_WidgetMousePress(void *uncast_widget, int x, int y, int b)
 
 void TXT_LayoutWidget(void *uncast_widget)
 {
-    txt_widget_t *widget = (txt_widget_t *)uncast_widget;
+    auto *widget = reinterpret_cast<txt_widget_t *>(uncast_widget);
 
     if (widget->widget_class->layout != nullptr)
     {
@@ -215,7 +215,7 @@ int TXT_NeverSelectable(void *)
 
 int TXT_SelectableWidget(void *uncast_widget)
 {
-    txt_widget_t *widget = (txt_widget_t *)uncast_widget;
+    auto *widget = reinterpret_cast<txt_widget_t *>(uncast_widget);
 
     if (widget->widget_class->selectable != nullptr)
     {
@@ -247,7 +247,7 @@ int TXT_ContainsWidget(void *uncast_haystack, void *uncast_needle)
 
 int TXT_HoveringOverWidget(void *uncast_widget)
 {
-    txt_widget_t *widget = (txt_widget_t *)uncast_widget;
+    auto *widget = reinterpret_cast<txt_widget_t *>(uncast_widget);
     txt_window_t *active_window;
     int x, y;
 
@@ -270,7 +270,7 @@ int TXT_HoveringOverWidget(void *uncast_widget)
 
 void TXT_SetWidgetBG(void *uncast_widget)
 {
-    txt_widget_t *widget = (txt_widget_t *)uncast_widget;
+    auto *widget = reinterpret_cast<txt_widget_t *>(uncast_widget);
 
     if (widget->focused)
     {

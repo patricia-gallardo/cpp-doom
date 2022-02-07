@@ -148,7 +148,7 @@ static int TXT_KeyInputKeyPress(void *uncast_key_input, int key)
 
 static void TXT_KeyInputMousePress(void *uncast_widget, int, int, int b)
 {
-    txt_key_input_t *widget = (txt_key_input_t *)uncast_widget;
+    auto *widget = reinterpret_cast<txt_key_input_t *>(uncast_widget);
             
     // Clicking is like pressing enter
 

@@ -30,7 +30,7 @@
 static int MousePressCallback(txt_window_t *window, 
                               int, int, int b, void *uncast_mouse_input)
 {
-    txt_mouse_input_t *mouse_input = (txt_mouse_input_t *)uncast_mouse_input;
+    auto *mouse_input = reinterpret_cast<txt_mouse_input_t *>(uncast_mouse_input);
 
     // Got the mouse press.  Save to the variable and close the window.
 
@@ -60,7 +60,7 @@ static void OpenPromptWindow(txt_mouse_input_t *mouse_input)
 
 static void TXT_MouseInputSizeCalc(void *uncast_mouse_input)
 {
-    txt_mouse_input_t *mouse_input = (txt_mouse_input_t *)uncast_mouse_input;
+    auto *mouse_input = reinterpret_cast<txt_mouse_input_t *>(uncast_mouse_input);
 
     // All mouseinputs are the same size.
 
@@ -89,7 +89,7 @@ static void GetMouseButtonDescription(int button, char *buf, size_t buf_len)
 
 static void TXT_MouseInputDrawer(void *uncast_mouse_input)
 {
-    txt_mouse_input_t *mouse_input = (txt_mouse_input_t *)uncast_mouse_input;
+    auto *mouse_input = reinterpret_cast<txt_mouse_input_t *>(uncast_mouse_input);
     char buf[20];
     int i;
 
@@ -119,7 +119,7 @@ static void TXT_MouseInputDestructor(void *)
 
 static int TXT_MouseInputKeyPress(void *uncast_mouse_input, int key)
 {
-    txt_mouse_input_t *mouse_input = (txt_mouse_input_t *)uncast_mouse_input;
+    auto *mouse_input = reinterpret_cast<txt_mouse_input_t *>(uncast_mouse_input);
 
     if (key == KEY_ENTER)
     {
@@ -140,7 +140,7 @@ static int TXT_MouseInputKeyPress(void *uncast_mouse_input, int key)
 
 static void TXT_MouseInputMousePress(void *uncast_widget, int, int, int b)
 {
-    txt_mouse_input_t *widget = (txt_mouse_input_t *)uncast_widget;
+    auto *widget = reinterpret_cast<txt_mouse_input_t *>(uncast_widget);
 
     // Clicking is like pressing enter
 

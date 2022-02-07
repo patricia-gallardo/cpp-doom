@@ -36,7 +36,7 @@ function(set_project_warnings)
             -Wextra # reasonable and standard
             -Wnon-virtual-dtor # warn the user if a class with virtual functions has a non-virtual destructor. This helps
             # catch hard to track down memory errors
-            # -Wold-style-cast # warn for c-style casts TODO turn it back on (patricia)
+            -Wold-style-cast # warn for c-style casts TODO turn it back on (patricia)
             # -Wcast-align # warn for potential performance problem casts TODO turn it back on (patricia)
             -Wunused # warn on anything being unused
             -Woverloaded-virtual # warn if you overload (not override) a virtual function

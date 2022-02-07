@@ -292,7 +292,7 @@ static void FillRowToEnd(txt_table_t *table)
 void TXT_AddWidget(void *uncast_table, void *uncast_widget)
 {
     txt_table_t  *table  = (txt_table_t *)uncast_table;
-    txt_widget_t *widget = (txt_widget_t *)uncast_widget;
+    auto *widget = reinterpret_cast<txt_widget_t *>(uncast_widget);
     int is_separator;
     int i;
 
@@ -1033,7 +1033,7 @@ txt_widget_t *TXT_GetSelectedWidget(void *uncast_table)
 int TXT_SelectWidget(void *uncast_table, void *uncast_widget)
 {
     txt_table_t  *table  = (txt_table_t *)uncast_table;
-    txt_widget_t *widget = (txt_widget_t *)uncast_widget;
+    auto *widget = reinterpret_cast<txt_widget_t *>(uncast_widget);
     int i;
 
     for (i=0; i<table->num_widgets; ++i)
