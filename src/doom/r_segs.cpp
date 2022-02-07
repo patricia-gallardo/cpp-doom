@@ -274,7 +274,7 @@ void R_RenderMaskedSegRange(drawseg_t *ds,
             {
                 int64_t t = (static_cast<int64_t>(centeryfrac) << FRACBITS) - static_cast<int64_t>(dc_texturemid) * spryscale;
 
-                if (t + (int64_t)textureheight[texnum] * spryscale < 0 || t > (int64_t)SCREENHEIGHT << FRACBITS * 2)
+                if (t + static_cast<int64_t>(textureheight[texnum]) * spryscale < 0 || t > static_cast<int64_t>(SCREENHEIGHT) << FRACBITS * 2)
                 {
                     spryscale += rw_scalestep; // [crispy] MBF had this in the for-loop iterator
                     continue;                  // skip if the texture is out of screen's range
@@ -283,10 +283,11 @@ void R_RenderMaskedSegRange(drawseg_t *ds,
                 sprtopscreen = static_cast<int64_t>(t >> FRACBITS); // [crispy] WiggleFix
             }
 
-            dc_iscale = 0xffffffffu / (unsigned)spryscale;
+            dc_iscale = 0xffffffffu / static_cast<unsigned>(spryscale);
 
             // draw the texture
-            col = (column_t *)((uint8_t *)R_GetColumn(texnum, maskedtexturecol[dc_x], false) - 3);
+            uint8_t *col_ptr = reinterpret_cast<uint8_t *>(R_GetColumn(texnum, maskedtexturecol[dc_x], false) - 3);
+            col = reinterpret_cast<column_t *>(col_ptr);
 
             R_DrawMaskedColumn(col);
             maskedtexturecol[dc_x] = INT_MAX; // [crispy] 32-bit integer math
@@ -377,7 +378,7 @@ void R_RenderSegLoop()
             dc_colormap[0] = walllights[index];
             dc_colormap[1] = (!fixedcolormap && (crispy->brightmaps & BRIGHTMAPS_TEXTURES)) ? scalelight[LIGHTLEVELS - 1][MAXLIGHTSCALE - 1] : dc_colormap[0];
             dc_x           = rw_x;
-            dc_iscale      = 0xffffffffu / (unsigned)rw_scale;
+            dc_iscale      = 0xffffffffu / static_cast<unsigned>(rw_scale);
         }
         else
         {

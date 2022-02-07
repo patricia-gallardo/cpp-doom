@@ -783,8 +783,8 @@ static void TXT_TableMousePress(void *uncast_table, int x, int y, int b)
 
         if (IsActualWidget(widget))
         {
-            if (x >= widget->x && x < (signed) (widget->x + widget->w)
-             && y >= widget->y && y < (signed) (widget->y + widget->h))
+            if (x >= widget->x && x < static_cast<signed>(widget->x + widget->w)
+             && y >= widget->y && y < static_cast<signed>(widget->y + widget->h))
             {
                 // This is the widget that was clicked!
 

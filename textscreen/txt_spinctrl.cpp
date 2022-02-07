@@ -31,9 +31,7 @@
 
 static void FloatFormatString(float step, char *buf, size_t buf_len)
 {
-    int precision;
-
-    precision = (int) ceil(-log(step) / log(10));
+    int precision = static_cast<int>(ceil(-log(step) / log(10)));
 
     if (precision > 0)
     {
@@ -58,16 +56,13 @@ static unsigned int IntWidth(int val)
 
 static unsigned int FloatWidth(float val, float step)
 {
-    unsigned int precision;
-    unsigned int result;
-
     // Calculate the width of the int value
 
-    result = IntWidth((int) val);
+    unsigned int result = IntWidth(static_cast<int>(val));
 
     // Add a decimal part if the precision specifies it
 
-    precision = (unsigned int) ceil(-log(step) / log(10));
+    auto precision = static_cast<unsigned int>(ceil(-log(step) / log(10)));
 
     if (precision > 0)
     {
@@ -141,13 +136,11 @@ static void SetBuffer(txt_spincontrol_t *spincontrol)
 static void TXT_SpinControlDrawer(void *uncast_spincontrol)
 {
     auto *spincontrol = reinterpret_cast<txt_spincontrol_t *>(uncast_spincontrol);
-    unsigned int i;
-    unsigned int padding;
-    txt_saved_colors_t colors;
-    int bw;
-    int focused;
-
-    focused = spincontrol->widget.focused;
+    unsigned int i = 0;
+    unsigned int padding = 0;
+    txt_saved_colors_t colors{};
+    int bw = 0;
+    int focused = spincontrol->widget.focused;
 
     TXT_SaveColors(&colors);
 
@@ -247,7 +240,7 @@ static void FinishEditing(txt_spincontrol_t *spincontrol)
     switch (spincontrol->type)
     {
         case TXT_SPINCONTROL_INT:
-            *spincontrol->value.i = atoi(spincontrol->buffer);
+            *spincontrol->value.i = std::atoi(spincontrol->buffer);
             break;
 
         case TXT_SPINCONTROL_FLOAT:
@@ -346,9 +339,7 @@ static void TXT_SpinControlMousePress(void *uncast_spincontrol,
                                    int x, int, int)
 {
     auto *spincontrol = reinterpret_cast<txt_spincontrol_t *>(uncast_spincontrol);
-    unsigned int rel_x;
-
-    rel_x = x - spincontrol->widget.x;
+    unsigned int rel_x = x - spincontrol->widget.x;
 
     if (rel_x < 2)
     {

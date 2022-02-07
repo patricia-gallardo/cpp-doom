@@ -248,8 +248,8 @@ static void ShowSelectedWidget(txt_scrollpane_t *scrollpane)
     {
         scrollpane->y -= scrollpane->widget.y - selected->y;
     }
-    else if ((signed) (selected->y + selected->h) >
-             (signed) (scrollpane->widget.y + scrollpane->h))
+    else if (static_cast<signed>(selected->y + selected->h) >
+             static_cast<signed>(scrollpane->widget.y + scrollpane->h))
     {
         scrollpane->y += (selected->y + selected->h)
                        - (scrollpane->widget.y + scrollpane->h);
@@ -261,8 +261,8 @@ static void ShowSelectedWidget(txt_scrollpane_t *scrollpane)
     {
         scrollpane->x -= scrollpane->widget.x - selected->x;
     }
-    else if ((signed) (selected->x + selected->w) >
-             (signed) (scrollpane->widget.x + scrollpane->w))
+    else if (static_cast<signed>(selected->x + selected->w) >
+             static_cast<signed>(scrollpane->widget.x + scrollpane->w))
     {
         scrollpane->x += (selected->x + selected->w)
                        - (scrollpane->widget.x + scrollpane->w);

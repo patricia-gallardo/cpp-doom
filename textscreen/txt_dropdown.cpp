@@ -113,9 +113,7 @@ static int SelectorWindowListener(txt_window_t *window, int key, void *)
 static int SelectorMouseListener(txt_window_t *window, int x, int y, int,
                                  void *)
 {
-    txt_widget_t *win;
-
-    win = (txt_widget_t *) window;
+    txt_widget_t *win = reinterpret_cast<txt_widget_t *>(window);
 
     if (x < win->x || x > win->x + win->w || y < win->y || y > win->y + win->h)
     {
