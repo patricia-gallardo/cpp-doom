@@ -430,7 +430,7 @@ typedef struct player_s
 
     int flyheight;
     int lookdir;
-    boolean centering;
+    bool centering;
     int health;                 // only used between levels, mo->health
     // is used during levels
     int armorpoints, armortype; // armor type is 0-2
@@ -440,12 +440,12 @@ typedef struct player_s
     int artifactCount;
     int inventorySlotNum;
     int powers[NUMPOWERS];
-    boolean keys[NUMKEYS];
-    boolean backpack;
+    bool keys[NUMKEYS];
+    bool backpack;
     signed int frags[MAXPLAYERS];       // kills of other players
     weapontype_t readyweapon;
     weapontype_t pendingweapon; // wp_nochange if not changing
-    boolean weaponowned[NUMWEAPONS];
+    bool weaponowned[NUMWEAPONS];
     int ammo[NUMAMMO];
     int maxammo[NUMAMMO];
     int attackdown, usedown;    // true if button down last tic
@@ -463,7 +463,7 @@ typedef struct player_s
     int fixedcolormap;          // can be set to REDCOLORMAP, etc
     int colormap;               // 0-3 for which color to draw player
     pspdef_t psprites[NUMPSPRITES];     // view sprites (gun, etc)
-    boolean didsecret;          // true if secret level has been done
+    bool didsecret;          // true if secret level has been done
     int chickenTics;            // player is a chicken if > 0
     int chickenPeck;            // chicken peck countdown
     mobj_t *rain1;              // active rain maker 1
@@ -489,31 +489,31 @@ typedef struct player_s
 
 extern gameaction_t gameaction;
 
-extern boolean paused;
+extern bool paused;
 
 extern GameMode_t gamemode;
 
-extern boolean ExtendedWAD;     // true if main WAD is the extended version
+extern bool ExtendedWAD;     // true if main WAD is the extended version
 
-extern boolean nomonsters;      // checkparm of -nomonsters
+extern bool nomonsters;      // checkparm of -nomonsters
 
-extern boolean respawnparm;     // checkparm of -respawn
+extern bool respawnparm;     // checkparm of -respawn
 
-extern boolean debugmode;       // checkparm of -debug
+extern bool debugmode;       // checkparm of -debug
 
-extern boolean usergame;        // ok to save / end game
+extern bool usergame;        // ok to save / end game
 
-extern boolean ravpic;          // checkparm of -ravpic
+extern bool ravpic;          // checkparm of -ravpic
 
-extern boolean altpal;          // checkparm to use an alternate palette routine
+extern bool altpal;          // checkparm to use an alternate palette routine
 
-extern boolean cdrom;           // true if cd-rom mode active ("-cdrom")
+extern bool cdrom;           // true if cd-rom mode active ("-cdrom")
 
-extern boolean deathmatch;      // only if started as net death
+extern bool deathmatch;      // only if started as net death
 
-extern boolean netgame;         // only true if >1 player
+extern bool netgame;         // only true if >1 player
 
-extern boolean playeringame[MAXPLAYERS];
+extern bool playeringame[MAXPLAYERS];
 
 extern int consoleplayer;       // player taking events and displaying
 
@@ -523,22 +523,22 @@ extern int viewangleoffset;     // ANG90 = left side, ANG270 = right
 
 extern player_t players[MAXPLAYERS];
 
-extern boolean DebugSound;      // debug flag for displaying sound info
+extern bool DebugSound;      // debug flag for displaying sound info
 
 extern int GetWeaponAmmo[NUMWEAPONS];
 
-extern boolean demorecording;
-extern boolean demoplayback;
-extern boolean demoextend;      // allow demos to persist through exit/respawn
+extern bool demorecording;
+extern bool demoplayback;
+extern bool demoextend;      // allow demos to persist through exit/respawn
 extern int skytexture;
 
 // Truncate angleturn in ticcmds to nearest 256.
 // Used when recording Vanilla demos in netgames.
-extern boolean lowres_turn;
+extern bool lowres_turn;
 
 extern gamestate_t gamestate;
 extern skill_t gameskill;
-extern boolean respawnmonsters;
+extern bool respawnmonsters;
 extern int gameepisode;
 extern int gamemap;
 extern int prevmap;
@@ -554,21 +554,21 @@ extern ticcmd_t *netcmds;
 extern mapthing_t *deathmatch_p;
 extern mapthing_t deathmatchstarts[10];
 extern mapthing_t playerstarts[MAXPLAYERS];
-extern boolean playerstartsingame[MAXPLAYERS];
+extern bool playerstartsingame[MAXPLAYERS];
 
 extern int mouseSensitivity;
 
-extern boolean precache;        // if true, load all graphics at level load
+extern bool precache;        // if true, load all graphics at level load
 
-extern boolean singledemo;      // quit after playing a demo from cmdline
+extern bool singledemo;      // quit after playing a demo from cmdline
 
 extern int bodyqueslot;
 extern skill_t startskill;
 extern int startepisode;
 extern int startmap;
-extern boolean autostart;
+extern bool autostart;
 
-extern boolean testcontrols;
+extern bool testcontrols;
 extern int testcontrols_mousespeed;
 
 extern int vanilla_savegame_limit;
@@ -612,7 +612,7 @@ byte *I_AllocLow(int length);
 // haleyjd: was WATCOMC, preserved for historical interest.
 // This is similar to the -control structure in DOOM v1.4 and Strife.
 #if 0
-extern boolean useexterndriver;
+extern bool useexterndriver;
 
 #define EBT_FIRE			1
 #define EBT_OPENDOOR 		2
@@ -693,7 +693,7 @@ void G_SecretExitLevel();
 void G_WorldDone();
 
 void G_Ticker();
-boolean G_Responder(event_t * ev);
+bool G_Responder(event_t * ev);
 
 void G_ScreenShot();
 
@@ -727,10 +727,10 @@ void P_UnArchiveSpecials();
 //REFRESH
 //-------
 
-extern boolean setsizeneeded;
+extern bool setsizeneeded;
 
-extern boolean BorderNeedRefresh;
-extern boolean BorderTopRefresh;
+extern bool BorderNeedRefresh;
+extern bool BorderTopRefresh;
 
 extern int UpdateState;
 // define the different areas for the dirty map
@@ -766,13 +766,13 @@ int R_CheckTextureNumForName(const char *name);
 //----
 // returns the position of the given parameter in the arg list (0 if not found)
 
-int M_DrawText(int x, int y, boolean direct, char *string);
+int M_DrawText(int x, int y, bool direct, char *string);
 
 //----------------------
 // Interlude (IN_lude.c)
 //----------------------
 
-extern boolean intermission;
+extern bool intermission;
 
 void IN_Start();
 void IN_Ticker();
@@ -784,12 +784,12 @@ void IN_Drawer();
 
 void CT_Init();
 void CT_Drawer();
-boolean CT_Responder(event_t * ev);
+bool CT_Responder(event_t * ev);
 void CT_Ticker();
 char CT_dequeueChatChar();
 
-extern boolean chatmodeon;
-extern boolean ultimatemsg;
+extern bool chatmodeon;
+extern bool ultimatemsg;
 
 //--------------------
 // Finale (F_finale.c)
@@ -804,7 +804,7 @@ void F_StartFinale();
 //----------------------
 
 void SB_Init();
-boolean SB_Responder(event_t * event);
+bool SB_Responder(event_t * event);
 void SB_Ticker();
 void SB_Drawer();
 
@@ -812,12 +812,12 @@ void SB_Drawer();
 // MENU (MN_menu.c)
 //-----------------
 
-extern boolean MenuActive;
+extern bool MenuActive;
 
 void MN_Init();
 void MN_ActivateMenu();
 void MN_DeactivateMenu();
-boolean MN_Responder(event_t * event);
+bool MN_Responder(event_t * event);
 void MN_Ticker();
 void MN_Drawer();
 void MN_DrTextA(const char *text, int x, int y);

@@ -59,7 +59,7 @@
 //
 typedef struct
 {
-    boolean istexture;
+    bool istexture;
     int     picnum;
     int     basepic;
     int     numpics;
@@ -151,11 +151,11 @@ extern line_t *linespeciallist[MAXLINEANIMS];
 void P_InitPicAnims()
 {
     int     i;
-    boolean init_swirl = false;
+    bool init_swirl = false;
 
     // [crispy] add support for ANIMATED lumps
     animdef_t *   animdefs;
-    const boolean from_lump = (W_CheckNumForName("ANIMATED") != -1);
+    const bool from_lump = (W_CheckNumForName("ANIMATED") != -1);
 
     if (from_lump)
     {
@@ -1183,7 +1183,7 @@ void P_PlayerInSpecialSector(player_t *player)
 // P_UpdateSpecials
 // Animate planes, scroll walls, etc.
 //
-boolean levelTimer;
+bool levelTimer;
 int     levelTimeCount;
 
 void P_UpdateSpecials()

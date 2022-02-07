@@ -126,16 +126,16 @@ typedef struct player_s
     int			nukagecount;             // Nukage exposure counter
     int			questflags;              // Quest bit flags
     int			pitch;                   // Up/down look angle
-    boolean		centerview;              // True if view should be centered
+    bool		centerview;              // True if view should be centered
     inventory_t		inventory[NUMINVENTORY]; // Player inventory items
-    boolean		st_update;               // If true, update status bar
+    bool		st_update;               // If true, update status bar
     short		numinventory;            // Num. active inventory items
     short		inventorycursor;         // Selected inventory item
     short		accuracy;                // Accuracy stat
     short		stamina;                 // Stamina stat
     
-    boolean		cards[NUMCARDS];
-    boolean		backpack;
+    bool		cards[NUMCARDS];
+    bool		backpack;
 
     // True if button down last tic.
     int			attackdown;
@@ -149,7 +149,7 @@ typedef struct player_s
     // Is wp_nochange if not changing.
     weapontype_t	pendingweapon;
 
-    boolean		weaponowned[NUMWEAPONS];
+    bool		weaponowned[NUMWEAPONS];
     int			ammo[NUMAMMO];
     int			maxammo[NUMAMMO];
 
@@ -193,10 +193,10 @@ typedef struct player_s
     pspdef_t		psprites[NUMPSPRITES];
 
     // [STRIFE] Inefficient means of tracking automap state on all maps
-    boolean		mapstate[40];
+    bool		mapstate[40];
 
     // True if secret level has been done.
-    //boolean		didsecret;   [STRIFE] Removed this.
+    //bool		didsecret;   [STRIFE] Removed this.
 
 } player_t;
 
@@ -207,7 +207,7 @@ typedef struct player_s
 //
 typedef struct
 {
-    boolean	in;	// whether the player is in game
+    bool	in;	// whether the player is in game
     
     // Player stats, kills, collected items etc.
     int		skills;
@@ -224,7 +224,7 @@ typedef struct
     int		epsd;	// episode # (0-2)
 
     // if true, splash the secret level
-    boolean	didsecret;
+    bool	didsecret;
     
     // previous and next levels, origin 0
     int		last;

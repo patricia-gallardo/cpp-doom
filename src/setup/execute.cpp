@@ -143,7 +143,7 @@ void AddCmdLineParameter(execute_context_t *context, const char *s, ...)
 
 #if defined(_WIN32)
 
-boolean OpenFolder(const char *path)
+bool OpenFolder(const char *path)
 {
     // "If the function succeeds, it returns a value greater than 32."
     return (int)ShellExecute(nullptr, "open", path, nullptr, nullptr, SW_SHOWDEFAULT) > 32;
@@ -262,7 +262,7 @@ static int ExecuteCommand(const char *program, const char *arg)
 
 #else
 
-boolean OpenFolder(const char *path)
+bool OpenFolder(const char *path)
 {
     char *cmd;
     int result;

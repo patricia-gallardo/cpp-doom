@@ -45,7 +45,7 @@ void G_DeferedPlayDemo(const char *demo);
 // calls P_SetupLevel or W_EnterWorld.
 void G_LoadGame (char* name);
 
-void G_DoLoadGame (boolean userload);
+void G_DoLoadGame (bool userload);
 
 // Called by M_Responder.
 void G_SaveGame (int slot, char* description);
@@ -57,7 +57,7 @@ void G_BeginRecording ();
 
 void G_PlayDemo (char* name);
 void G_TimeDemo (char* name);
-boolean G_CheckDemoStatus ();
+bool G_CheckDemoStatus ();
 
 void G_RiftExitLevel(int map, int spot, angle_t angle); // [STRIFE]
 void G_ExitLevel (int dest);
@@ -67,21 +67,21 @@ void G_StartFinale(); // [STRIFE]
 
 //void G_WorldDone ();
 
-boolean G_RiftCheat(int riftSpotNum); // [STRIFE]
+bool G_RiftCheat(int riftSpotNum); // [STRIFE]
 
 // Read current data from inputs and build a player movement command.
 
 void G_BuildTiccmd (ticcmd_t *cmd, int maketic);
 
 void G_Ticker ();
-boolean G_Responder (event_t*	ev);
+bool G_Responder (event_t*	ev);
 
 void G_ScreenShot ();
 
 void G_DrawMouseSpeedBox();
 
 // [STRIFE]
-boolean G_WriteSaveName(int slot, const char *charname);
+bool G_WriteSaveName(int slot, const char *charname);
 void    G_ReadCurrent(const char *path);
 
 extern int vanilla_savegame_limit;

@@ -57,7 +57,7 @@ static Mix_Music *music  = nullptr;
 //
 // Write an unsigned integer into a simple CHAR buffer.
 //
-static boolean WriteInt16(CHAR *out, size_t osize, unsigned int in)
+static bool WriteInt16(CHAR *out, size_t osize, unsigned int in)
 {
     if (osize < 2)
     {
@@ -117,7 +117,7 @@ static void ShutdownSDL()
 // SDL_mixer Interface
 //
 
-static boolean RegisterSong(const char *filename)
+static bool RegisterSong(const char *filename)
 {
     music = Mix_LoadMUS(filename);
 
@@ -162,7 +162,7 @@ static void StopSong()
 // Pipe Server Interface
 //
 
-static boolean MidiPipe_RegisterSong(buffer_reader_t *reader)
+static bool MidiPipe_RegisterSong(buffer_reader_t *reader)
 {
     char *filename = Reader_ReadString(reader);
     if (filename == nullptr)
@@ -173,16 +173,16 @@ static boolean MidiPipe_RegisterSong(buffer_reader_t *reader)
     return RegisterSong(filename);
 }
 
-static boolean MidiPipe_UnregisterSong(buffer_reader_t *reader)
+static bool MidiPipe_UnregisterSong(buffer_reader_t *reader)
 {
     UnregisterSong();
     return true;
 }
 
-boolean MidiPipe_SetVolume(buffer_reader_t *reader)
+bool MidiPipe_SetVolume(buffer_reader_t *reader)
 {
     int vol;
-    boolean ok = Reader_ReadInt32(reader, (uint32_t*)&vol);
+    bool ok = Reader_ReadInt32(reader, (uint32_t*)&vol);
     if (!ok)
     {
         return false;
@@ -193,10 +193,10 @@ boolean MidiPipe_SetVolume(buffer_reader_t *reader)
     return true;
 }
 
-boolean MidiPipe_PlaySong(buffer_reader_t *reader)
+bool MidiPipe_PlaySong(buffer_reader_t *reader)
 {
     int loops;
-    boolean ok = Reader_ReadInt32(reader, (uint32_t*)&loops);
+    bool ok = Reader_ReadInt32(reader, (uint32_t*)&loops);
     if (!ok)
     {
         return false;
@@ -207,14 +207,14 @@ boolean MidiPipe_PlaySong(buffer_reader_t *reader)
     return true;
 }
 
-boolean MidiPipe_StopSong()
+bool MidiPipe_StopSong()
 {
     StopSong();
 
     return true;
 }
 
-boolean MidiPipe_Shutdown()
+bool MidiPipe_Shutdown()
 {
     exit(EXIT_SUCCESS);
 }
@@ -227,7 +227,7 @@ boolean MidiPipe_Shutdown()
 //
 // Parses a command and directs to the proper read function.
 //
-boolean ParseCommand(buffer_reader_t *reader, uint16_t command)
+bool ParseCommand(buffer_reader_t *reader, uint16_t command)
 {
     switch (command)
     {
@@ -251,7 +251,7 @@ boolean ParseCommand(buffer_reader_t *reader, uint16_t command)
 //
 // Server packet parser
 //
-boolean ParseMessage(buffer_t *buf)
+bool ParseMessage(buffer_t *buf)
 {
     CHAR buffer[2];
     DWORD bytes_written;
@@ -298,13 +298,13 @@ fail:
 //
 // The main pipe "listening" loop
 //
-boolean ListenForever()
+bool ListenForever()
 {
     BOOL wok = FALSE;
     CHAR pipe_buffer[8192];
     DWORD pipe_buffer_read = 0;
 
-    boolean ok = false;
+    bool ok = false;
     buffer_t *buffer = NewBuffer();
 
     for (;;)
@@ -356,7 +356,7 @@ boolean ListenForever()
 //
 // Start up SDL and SDL_mixer.
 //
-boolean InitSDL()
+bool InitSDL()
 {
     if (SDL_Init(SDL_INIT_AUDIO) == -1)
     {

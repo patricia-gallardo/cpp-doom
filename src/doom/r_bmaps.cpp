@@ -3897,7 +3897,7 @@ static byte *R_BrightmapForTexName_Doom(const char *texname)
     return nobrightmap;
 }
 
-static boolean chex2 = false;
+static bool chex2 = false;
 
 static byte *R_BrightmapForTexName_Chex(const char *texname)
 {

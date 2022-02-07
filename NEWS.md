@@ -354,7 +354,7 @@
   * Some code that accessed memory after freeing it was fixed. Two new
     parameters, -zonezero and -zonescan, were added to try to help
     detect these cases.
-  * Mistaken assumptions about representations of booleans that
+  * Mistaken assumptions about representations of bools that
     affected some ARM systems were fixed (thanks floppes).
   * memcpy() uses on overlapping memory were changed to use memmove(),
     fixing abort traps on OpenBSD (thanks ryan-sg).

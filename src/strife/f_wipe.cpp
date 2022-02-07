@@ -36,7 +36,7 @@
 //
 
 // when zero, stop the wipe
-static boolean	go = 0;
+static bool	go = 0;
 
 static byte*	wipe_scr_start;
 static byte*	wipe_scr_end;
@@ -93,7 +93,7 @@ wipe_doColorXForm
     byte *end_screen = wipe_scr_end;
     int   pix = width*height;
     int   i;
-    boolean changed = false;
+    bool changed = false;
 
     for(i = pix; i > 0; i--)
     {
@@ -166,7 +166,7 @@ wipe_doMelt
     
     short*	s;
     short*	d;
-    boolean	done = true;
+    bool	done = true;
 
     width/=2;
 

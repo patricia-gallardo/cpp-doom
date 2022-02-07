@@ -66,10 +66,10 @@
 extern void M_QuitStrife(int);
 
 extern patch_t*         hu_font[HU_FONTSIZE];
-extern boolean          message_dontfuckwithme;
+extern bool          message_dontfuckwithme;
 
-extern boolean          chat_on;        // in heads-up code
-extern boolean          sendsave;       // [STRIFE]
+extern bool          chat_on;        // in heads-up code
+extern bool          sendsave;       // [STRIFE]
 
 //
 // defaulted values
@@ -102,7 +102,7 @@ int			messy;
 int			messageLastMenuActive;
 
 // timed message = no input from user
-boolean			messageNeedsInput;
+bool			messageNeedsInput;
 
 void    (*messageRoutine)(int response);
 
@@ -127,17 +127,17 @@ int			saveCharIndex;	// which char we're editing
 // old save description before edit
 char			saveOldString[SAVESTRINGSIZE];  
 
-boolean                 inhelpscreens;
-boolean                 menuactive;
-boolean                 menupause;      // haleyjd 08/29/10: [STRIFE] New global
+bool                 inhelpscreens;
+bool                 menuactive;
+bool                 menupause;      // haleyjd 08/29/10: [STRIFE] New global
 int                     menupausetime;  // haleyjd 09/04/10: [STRIFE] New global
-boolean                 menuindialog;   // haleyjd 09/04/10: ditto
+bool                 menuindialog;   // haleyjd 09/04/10: ditto
 
 // haleyjd 08/27/10: [STRIFE] SKULLXOFF == -28, LINEHEIGHT == 19
 #define CURSORXOFF		-28
 #define LINEHEIGHT		19
 
-extern boolean		sendpause;
+extern bool		sendpause;
 char			savegamestrings[10][SAVESTRINGSIZE];
 
 char	endstring[160];
@@ -165,7 +165,7 @@ menu_t*	currentMenu;
 // Keeps track of whether the save game menu is being used to name a new
 // character slot, or to just save the current game. In the v1.31 disassembly
 // this was the new dword_8632C variable.
-boolean namingCharacter; 
+bool namingCharacter;
 
 //
 // PROTOTYPES
@@ -214,7 +214,7 @@ void M_DrawEmptyCell(menu_t *menu,int item);
 void M_DrawSelCell(menu_t *menu,int item);
 int  M_StringWidth(const char *string);
 int  M_StringHeight(const char *string);
-void M_StartMessage(const char *string,void *routine,boolean input);
+void M_StartMessage(const char *string,void *routine,bool input);
 void M_StopMessage();
 
 
@@ -1470,7 +1470,7 @@ void
 M_StartMessage
 ( const char	*string,
   void*		routine,
-  boolean	input )
+  bool	input )
 {
     messageLastMenuActive = menuactive;
     messageToPrint = 1;
@@ -1608,7 +1608,7 @@ M_WriteText
 // at least a 20 pixel margin on the right side. The string passed in must be
 // writable.
 //
-void M_DialogDimMsg(int x, int y, char *str, boolean useyfont)
+void M_DialogDimMsg(int x, int y, char *str, bool useyfont)
 {
     int rightbound = (ORIGWIDTH - 20) - x;
     patch_t **fontarray;  // ebp
@@ -1686,7 +1686,7 @@ void M_DialogDimMsg(int x, int y, char *str, boolean useyfont)
 // These keys evaluate to a "null" key in Vanilla Doom that allows weird
 // jumping in the menus. Preserve this behavior for accuracy.
 
-static boolean IsNullKey(int key)
+static bool IsNullKey(int key)
 {
     return key == KEY_PAUSE || key == KEY_CAPSLOCK
         || key == KEY_SCRLCK || key == KEY_NUMLOCK;
@@ -1699,7 +1699,7 @@ static boolean IsNullKey(int key)
 //
 // M_Responder
 //
-boolean M_Responder (event_t* ev)
+bool M_Responder (event_t* ev)
 {
     int             ch;
     int             key;

@@ -1247,7 +1247,7 @@ void P_AmbientSound()
 {
     afxcmd_t cmd;
     int sound;
-    boolean done;
+    bool done;
 
     if (!AmbSfxCount)
     {                           // No ambient sound sequences on current level

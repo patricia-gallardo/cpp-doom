@@ -67,7 +67,7 @@ void S_ChangeMusic(int music_id, int looping);
 void S_ChangeMusInfoMusic(int lumpnum, int looping);
 
 // query if music is playing
-boolean S_MusicPlaying();
+bool S_MusicPlaying();
 
 // Stops the music fer sure.
 void S_StopMusic();

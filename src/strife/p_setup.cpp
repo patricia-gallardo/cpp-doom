@@ -326,7 +326,7 @@ void P_LoadThings (int lump)
     mapthing_t         *mt;
     mapthing_t          spawnthing;
     int			numthings;
-//    boolean		spawn;
+//    bool		spawn;
 
     data = cache_lump_num<byte *> (lump,PU_STATIC);
     numthings = W_LumpLength (lump) / sizeof(mapthing_t);

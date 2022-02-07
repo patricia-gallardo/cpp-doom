@@ -219,7 +219,7 @@ void P_ChangeSwitchTexture(line_t * line, int useAgain)
 ===============================================================================
 */
 
-boolean P_UseSpecialLine(mobj_t * thing, line_t * line)
+bool P_UseSpecialLine(mobj_t * thing, line_t * line)
 {
     //
     //      Switches that other things can activate

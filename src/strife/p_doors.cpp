@@ -494,13 +494,13 @@ int EV_DoDoor(line_t* line, vldoor_e type)
 //
 // villsa [STRIFE] new function
 //
-boolean EV_ClearForceFields(line_t* line)
+bool EV_ClearForceFields(line_t* line)
 {
     int         secnum;
     sector_t*   sec;
     int         i;
     line_t*     secline;
-    boolean     ret = false;
+    bool     ret = false;
 
     secnum = -1;
 

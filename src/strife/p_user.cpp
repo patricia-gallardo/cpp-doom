@@ -46,7 +46,7 @@
 
 
 void P_DropInventoryItem(player_t* player, int sprite); // villsa [STRIFE]
-boolean P_ItemBehavior(player_t* player, int item);     // villsa [STRIFE]
+bool P_ItemBehavior(player_t* player, int item);     // villsa [STRIFE]
 static char useinventorymsg[44];    // villsa [STRIFE]
 
 //
@@ -56,7 +56,7 @@ static char useinventorymsg[44];    // villsa [STRIFE]
 // 16 pixels of bob
 #define MAXBOB	0x100000	
 
-boolean		onground;
+bool		onground;
 
 
 //
@@ -729,7 +729,7 @@ void P_DropInventoryItem(player_t* player, int sprite)
 // P_TossDegninOre
 // villsa [STRIFE] new function
 //
-boolean P_TossDegninOre(player_t* player)
+bool P_TossDegninOre(player_t* player)
 {
     angle_t angle;
     mobj_t* mo;
@@ -782,7 +782,7 @@ boolean P_TossDegninOre(player_t* player)
 // villsa [STRIFE] new function
 // haleyjd 20140918: bug fixed to propagate allegiance properly.
 //
-boolean P_SpawnTeleportBeacon(player_t* player)
+bool P_SpawnTeleportBeacon(player_t* player)
 {
     angle_t angle;
     int r;
@@ -838,7 +838,7 @@ boolean P_SpawnTeleportBeacon(player_t* player)
 // P_UseInventoryItem
 // villsa [STRIFE] new function
 //
-boolean P_UseInventoryItem(player_t* player, int item)
+bool P_UseInventoryItem(player_t* player, int item)
 {
     int i;
     const char *name;
@@ -875,7 +875,7 @@ boolean P_UseInventoryItem(player_t* player, int item)
 // P_ItemBehavior
 // villsa [STRIFE] new function
 //
-boolean P_ItemBehavior(player_t* player, int item)
+bool P_ItemBehavior(player_t* player, int item)
 {
     switch(item)
     {

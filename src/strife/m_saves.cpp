@@ -246,9 +246,9 @@ void M_SaveMoveHereToMap()
 //
 // Writes the mission objective into the MIS_OBJ file.
 //
-boolean M_SaveMisObj(const char *path)
+bool M_SaveMisObj(const char *path)
 {
-    boolean result;
+    bool result;
     char *destpath = nullptr;
 
     // haleyjd 20110210: use M_SafeFilePath, not sprintf
@@ -470,7 +470,7 @@ char *M_MakeStrifeSaveDir(int slotnum, const char *extra)
 //
 char M_GetFilePath(const char *fn, char *dest, size_t len)
 {
-    boolean found_slash = false;
+    bool found_slash = false;
     char *p;
     char sepchar = '\0';
 

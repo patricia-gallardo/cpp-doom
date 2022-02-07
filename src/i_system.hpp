@@ -34,7 +34,7 @@ void I_Init();
 // for the zone management.
 byte *I_ZoneBase(int *size);
 
-boolean I_ConsoleStdout();
+bool I_ConsoleStdout();
 
 
 // Asynchronous interrupt functions should maintain private queues
@@ -58,13 +58,13 @@ void I_Tactile(int on, int off, int total);
 
 void *I_Realloc(void *ptr, size_t size);
 
-boolean I_GetMemoryValue(unsigned int offset, void *value, int size);
+bool I_GetMemoryValue(unsigned int offset, void *value, int size);
 
 // Schedule a function to be called when the program exits.
 // If run_if_error is true, the function is called if the exit
 // is due to an error (I_Error)
 
-void I_AtExit(atexit_func_t func, boolean run_if_error);
+void I_AtExit(atexit_func_t func, bool run_if_error);
 
 // Add all system-specific config file variable bindings.
 

@@ -222,7 +222,7 @@ void P_LoadNodes_DeePBSP(int lump)
 // - inlined P_LoadZSegs()
 // - added support for compressed ZDBSP nodes
 // - added support for flipped levels
-void P_LoadNodes_ZDBSP(int lump, boolean compressed)
+void P_LoadNodes_ZDBSP(int lump, bool compressed)
 {
     unsigned int i;
 #ifdef HAVE_LIBZ

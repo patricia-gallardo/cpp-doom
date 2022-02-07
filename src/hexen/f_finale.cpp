@@ -43,15 +43,15 @@
 
 static void TextWrite();
 static void DrawPic();
-static void InitializeFade(boolean fadeIn);
+static void InitializeFade(bool fadeIn);
 static void DeInitializeFade();
 static void FadePic();
 static char *GetFinaleText(int sequence);
 
 // EXTERNAL DATA DECLARATIONS ----------------------------------------------
 
-extern boolean automapactive;
-extern boolean viewactive;
+extern bool automapactive;
+extern bool viewactive;
 
 // PUBLIC DATA DECLARATIONS ------------------------------------------------
 
@@ -102,7 +102,7 @@ void F_StartFinale()
 //
 //===========================================================================
 
-boolean F_Responder(event_t * event)
+bool F_Responder(event_t * event)
 {
     return false;
 }
@@ -240,7 +240,7 @@ static void TextWrite()
 //
 //===========================================================================
 
-static void InitializeFade(boolean fadeIn)
+static void InitializeFade(bool fadeIn)
 {
     unsigned i;
 

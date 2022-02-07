@@ -57,7 +57,7 @@ static fixed_t FloatBobOffsets[64] = {
 //
 //----------------------------------------------------------------------------
 
-boolean P_SetMobjState(mobj_t * mobj, statenum_t state)
+bool P_SetMobjState(mobj_t * mobj, statenum_t state)
 {
     state_t *st;
 
@@ -88,7 +88,7 @@ boolean P_SetMobjState(mobj_t * mobj, statenum_t state)
 //
 //----------------------------------------------------------------------------
 
-boolean P_SetMobjStateNF(mobj_t * mobj, statenum_t state)
+bool P_SetMobjStateNF(mobj_t * mobj, statenum_t state)
 {
     state_t *st;
 
@@ -213,7 +213,7 @@ int P_FaceMobj(mobj_t * source, mobj_t * target, angle_t * delta)
 //
 //----------------------------------------------------------------------------
 
-boolean P_SeekerMissile(mobj_t * actor, angle_t thresh, angle_t turnMax)
+bool P_SeekerMissile(mobj_t * actor, angle_t thresh, angle_t turnMax)
 {
     int dir;
     int dist;
@@ -677,7 +677,7 @@ void P_BlasterMobjThinker(mobj_t * mobj)
     fixed_t yfrac;
     fixed_t zfrac;
     fixed_t z;
-    boolean changexy;
+    bool changexy;
 
     // Handle movement
     if (mobj->momx || mobj->momy || (mobj->z != mobj->floorz) || mobj->momz)
@@ -1352,7 +1352,7 @@ int P_HitFloor(mobj_t * thing)
 //
 //---------------------------------------------------------------------------
 
-boolean P_CheckMissileSpawn(mobj_t * missile)
+bool P_CheckMissileSpawn(mobj_t * missile)
 {
     //missile->tics -= P_Random()&3;
 

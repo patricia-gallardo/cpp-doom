@@ -103,15 +103,15 @@ extern pixel_t *     colormaps; // [crispy] evil hack to get FPS dots working as
 #else
 static SDL_Color palette[256];
 #endif
-static boolean palette_to_set;
+static bool palette_to_set;
 
 // display has been set up?
 
-static boolean initialized = false;
+static bool initialized = false;
 
 // disable mouse?
 
-static boolean nomouse  = false;
+static bool nomouse  = false;
 int            usemouse = 1;
 
 // Save screenshots in PNG format.
@@ -174,7 +174,7 @@ static int startup_delay = 1000;
 // this to be temporarily disabled via the command line.
 
 static int     grabmouse            = true;
-static boolean nograbmouse_override = false;
+static bool nograbmouse_override = false;
 
 // The screen buffer; this is modified to draw things to the screen
 
@@ -182,22 +182,22 @@ pixel_t *I_VideoBuffer = nullptr;
 
 // If true, game is running as a screensaver
 
-boolean screensaver_mode = false;
+bool screensaver_mode = false;
 
 // Flag indicating whether the screen is currently visible:
 // when the screen isnt visible, don't render the screen
 
-boolean screenvisible = true;
+bool screenvisible = true;
 
 // If true, we display dots at the bottom of the screen to
 // indicate FPS.
 
-static boolean display_fps_dots;
+static bool display_fps_dots;
 
 // If this is true, the screen is rendered but not blitted to the
 // video buffer.
 
-static boolean noblit;
+static bool noblit;
 
 // Callback function to invoke to determine whether to grab the
 // mouse pointer.
@@ -206,11 +206,11 @@ static grabmouse_callback_t grabmouse_callback = nullptr;
 
 // Does the window currently have focus?
 
-static boolean window_focused = true;
+static bool window_focused = true;
 
 // Window resize state.
 
-static boolean      need_resize = false;
+static bool      need_resize = false;
 static unsigned int last_resize_time;
 #define RESIZE_DELAY 500
 
@@ -221,7 +221,7 @@ int usegamma = 0;
 // Joystick/gamepad hysteresis
 unsigned int joywait = 0;
 
-static boolean MouseShouldBeGrabbed()
+static bool MouseShouldBeGrabbed()
 {
     // never grab the mouse when in screensaver mode
 
@@ -269,7 +269,7 @@ void I_SetGrabMouseCallback(grabmouse_callback_t func)
 
 // Set the variable controlling FPS dots.
 
-void I_DisplayFPSDots(boolean dots_on)
+void I_DisplayFPSDots(bool dots_on)
 {
     display_fps_dots = dots_on;
 }
@@ -389,7 +389,7 @@ static void HandleWindowEvent(SDL_WindowEvent *event)
     }
 }
 
-static boolean ToggleFullScreenKeyShortcut(SDL_Keysym *sym)
+static bool ToggleFullScreenKeyShortcut(SDL_Keysym *sym)
 {
     Uint16 flags = (KMOD_LALT | KMOD_RALT);
 #if defined(__MACOSX__)
@@ -520,8 +520,8 @@ void I_UpdateNoBlit()
 
 static void UpdateGrab()
 {
-    static boolean currently_grabbed = false;
-    boolean        grab;
+    static bool currently_grabbed = false;
+    bool        grab;
 
     grab = MouseShouldBeGrabbed();
 
@@ -622,7 +622,7 @@ static void LimitTextureSize(int *w_upscale, int *h_upscale)
     }
 }
 
-static void CreateUpscaledTexture(boolean force)
+static void CreateUpscaledTexture(bool force)
 {
     int        w, h;
     int        h_upscale, w_upscale;

@@ -97,7 +97,7 @@ const char *DEH_String(const char *s)
 
 // [crispy] returns true if a string has been substituted
 
-boolean DEH_HasStringReplacement(const char *s)
+bool DEH_HasStringReplacement(const char *s)
 {
     return DEH_String(s) != s;
 }
@@ -319,7 +319,7 @@ static format_arg_t NextFormatArgument(const char **str)
 // Check if the specified argument type is a valid replacement for
 // the original.
 
-static boolean ValidArgumentReplacement(format_arg_t original,
+static bool ValidArgumentReplacement(format_arg_t original,
     format_arg_t                                     replacement)
 {
     // In general, the original and replacement types should be
@@ -345,7 +345,7 @@ static boolean ValidArgumentReplacement(format_arg_t original,
 
 // Return true if the specified string contains no format arguments.
 
-static boolean ValidFormatReplacement(const char *original, const char *replacement)
+static bool ValidFormatReplacement(const char *original, const char *replacement)
 {
     const char *rover1;
     const char *rover2;

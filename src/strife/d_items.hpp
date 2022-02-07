@@ -33,7 +33,7 @@ typedef struct
     statenum_t readystate;
     statenum_t atkstate;
     statenum_t flashstate;
-    boolean    availabledemo; // villsa [STRIFE]
+    bool    availabledemo; // villsa [STRIFE]
 
 } weaponinfo_t;
 

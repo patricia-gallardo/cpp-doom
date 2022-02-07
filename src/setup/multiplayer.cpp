@@ -159,7 +159,7 @@ static const iwad_t *GetCurrentIWAD()
 
 // Is the currently selected IWAD the Chex Quest chex.wad?
 
-static boolean IsChexQuest(const iwad_t *iwad)
+static bool IsChexQuest(const iwad_t *iwad)
 {
     return !strcmp(iwad->name, "chex.wad");
 }

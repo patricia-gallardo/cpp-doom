@@ -25,23 +25,23 @@
 
 #include "doomtype.hpp"
 
-extern boolean midi_server_initialized;
-extern boolean midi_server_registered;
+extern bool midi_server_initialized;
+extern bool midi_server_registered;
 
-boolean I_MidiPipe_RegisterSong(char *filename);
+bool I_MidiPipe_RegisterSong(char *filename);
 void    I_MidiPipe_UnregisterSong();
 void    I_MidiPipe_SetVolume(int vol);
 void    I_MidiPipe_PlaySong(int loops);
 void    I_MidiPipe_StopSong();
 void    I_MidiPipe_ShutdownServer();
 
-boolean I_MidiPipe_InitServer();
+bool I_MidiPipe_InitServer();
 
 #else
 
 #include "doomtype.hpp"
 
-static const boolean midi_server_registered = false;
+static const bool midi_server_registered = false;
 
 #endif
 

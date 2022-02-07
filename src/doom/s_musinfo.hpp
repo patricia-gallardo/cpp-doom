@@ -32,7 +32,7 @@ typedef struct musinfo_s {
     int     tics;
     int     current_item;
     int     items[MAX_MUS_ENTRIES];
-    boolean from_savegame;
+    bool from_savegame;
 } musinfo_t;
 
 extern musinfo_t musinfo;

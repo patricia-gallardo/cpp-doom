@@ -131,7 +131,7 @@ P_InterceptVector2
 //
 // [STRIFE] Verified unmodified
 //
-boolean P_CrossSubsector (int num)
+bool P_CrossSubsector (int num)
 {
     seg_t*          seg;
     line_t*         line;
@@ -263,7 +263,7 @@ boolean P_CrossSubsector (int num)
 //
 // [STRIFE] Verified unmodified
 //
-boolean P_CrossBSPNode (int bspnum)
+bool P_CrossBSPNode (int bspnum)
 {
     node_t*     bsp;
     int         side;
@@ -307,7 +307,7 @@ boolean P_CrossBSPNode (int bspnum)
 //
 // [STRIFE] Verified unmodified
 //
-boolean
+bool
 P_CheckSight
 ( mobj_t*       t1,
   mobj_t*       t2 )

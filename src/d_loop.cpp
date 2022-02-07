@@ -45,7 +45,7 @@
 typedef struct
 {
     ticcmd_t cmds[NET_MAXPLAYERS];
-    boolean  ingame[NET_MAXPLAYERS];
+    bool  ingame[NET_MAXPLAYERS];
 } ticcmd_set_t;
 
 // Maximum time that we wait in TryRunTics() for netgame data to be
@@ -81,7 +81,7 @@ int oldleveltime; // [crispy] check if leveltime keeps tickin'
 // When set to true, a single tic is run each time TryRunTics() is called.
 // This is used for -timedemo mode.
 
-boolean singletics = false;
+bool singletics = false;
 
 // Index of the local player.
 
@@ -102,7 +102,7 @@ fixed_t offsetms;
 
 // Use new client syncronisation code
 
-static boolean new_sync = true;
+static bool new_sync = true;
 
 // Callback functions for loop code.
 
@@ -112,7 +112,7 @@ static loop_interface_t *loop_interface = nullptr;
 // This is distinct from playeringame[] used by the game code, which may
 // modify playeringame[] when playing back multiplayer demos.
 
-static boolean local_playeringame[NET_MAXPLAYERS];
+static bool local_playeringame[NET_MAXPLAYERS];
 
 // Requested player class "sent" to the server on connect.
 // If we are only doing a single player game then this needs to be remembered
@@ -140,7 +140,7 @@ static int GetAdjustedTime()
     return (time_ms * TICRATE) / 1000;
 }
 
-static boolean BuildNewTic()
+static bool BuildNewTic()
 {
     int      gameticdiv;
     ticcmd_t cmd;
@@ -268,7 +268,7 @@ static void D_Disconnected()
 // available.
 //
 
-void D_ReceiveTic(ticcmd_t *ticcmds, boolean *players_mask)
+void D_ReceiveTic(ticcmd_t *ticcmds, bool *players_mask)
 {
     int i;
 
@@ -422,9 +422,9 @@ void D_StartNetGame(net_gamesettings_t *settings,
     //}
 }
 
-boolean D_InitNetGame(net_connect_data_t *connect_data)
+bool D_InitNetGame(net_connect_data_t *connect_data)
 {
-    boolean     result = false;
+    bool     result = false;
     net_addr_t *addr   = nullptr;
     int         i;
 
@@ -606,9 +606,9 @@ static void OldNetSync()
 
 // Returns true if there are players in the game:
 
-static boolean PlayersInGame()
+static bool PlayersInGame()
 {
-    boolean      result = false;
+    bool      result = false;
     unsigned int i;
 
     // If we are connected to a server, check if there are any players
@@ -815,7 +815,7 @@ void D_RegisterLoopCallbacks(loop_interface_t *i)
 #include "m_misc.hpp"
 #include "w_wad.hpp"
 
-static boolean StrictDemos()
+static bool StrictDemos()
 {
     //!
     // @category demo
@@ -833,7 +833,7 @@ static boolean StrictDemos()
 // this extension (no extensions are allowed if -strictdemos is given
 // on the command line). A warning is shown on the console using the
 // provided string describing the non-vanilla expansion.
-boolean D_NonVanillaRecord(boolean conditional, const char *feature)
+bool D_NonVanillaRecord(bool conditional, const char *feature)
 {
     if (!conditional || StrictDemos())
     {
@@ -849,10 +849,10 @@ boolean D_NonVanillaRecord(boolean conditional, const char *feature)
 
 // Returns true if the given lump number corresponds to data from a .lmp
 // file, as opposed to a WAD.
-static boolean IsDemoFile(int lumpnum)
+static bool IsDemoFile(int lumpnum)
 {
     char *  lower;
-    boolean result;
+    bool result;
 
     lower = M_StringDuplicate(lumpinfo[lumpnum]->wad_file->path);
     M_ForceLowercase(lower);
@@ -870,7 +870,7 @@ static boolean IsDemoFile(int lumpnum)
 //  - The given lumpnum identifying the demo to play back identifies a
 //    demo that comes from a .lmp file, not a .wad file.
 //  - Before proceeding, a warning is shown to the user on the console.
-boolean D_NonVanillaPlayback(boolean conditional, int lumpnum,
+bool D_NonVanillaPlayback(bool conditional, int lumpnum,
     const char *feature)
 {
     if (!conditional || StrictDemos())

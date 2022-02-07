@@ -41,7 +41,7 @@ void M_AddLooseFiles();
 
 // Parameter has been specified?
 
-boolean M_ParmExists(const char *check);
+bool M_ParmExists(const char *check);
 
 // Get name of executable used to run this program:
 

@@ -43,7 +43,7 @@
 // [crispy] variable player view bob
 static const fixed_t crispy_bobfactor[3] = { 4, 3, 0 };
 
-boolean onground;
+bool onground;
 
 
 //
