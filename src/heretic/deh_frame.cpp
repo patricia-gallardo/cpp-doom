@@ -15,6 +15,7 @@
 // Parses "Frame" sections in dehacked files
 //
 
+#include <array>
 #include <cstdio>
 #include <cstdlib>
 
@@ -228,7 +229,7 @@ static boolean GetActionPointerForOffset(int offset, void **result)
         return true;
     }
 
-    for (i=0; i<arrlen(action_pointers); ++i)
+    for (i=0; i<std::size(action_pointers); ++i)
     {
         if (action_pointers[i].offsets[deh_hhe_version] == offset)
         {
@@ -254,7 +255,7 @@ static void SuggestOtherVersions(unsigned int offset)
 {
     unsigned int i, v;
 
-    for (i=0; i<arrlen(action_pointers); ++i)
+    for (i=0; i<std::size(action_pointers); ++i)
     {
         for (v=0; v<deh_hhe_num_versions; ++v)
         {

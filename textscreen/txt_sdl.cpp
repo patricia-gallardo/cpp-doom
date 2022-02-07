@@ -22,6 +22,7 @@
 #include <cstdio>
 #include <cstdlib>
 #include <cstring>
+#include <array>
 
 #include "doomkeys.hpp"
 
@@ -497,7 +498,6 @@ void TXT_GetMousePosition(int *x, int *y)
 //
 
 // XXX: duplicate from doomtype.h
-#define arrlen(array) (sizeof(array) / sizeof(*array))
 
 static int TranslateScancode(SDL_Scancode scancode)
 {
@@ -518,7 +518,7 @@ static int TranslateScancode(SDL_Scancode scancode)
             return KEY_RALT;
 
         default:
-            if (scancode < arrlen(scancode_translate_table))
+            if (scancode < std::size(scancode_translate_table))
             {
                 return scancode_translate_table[scancode];
             }
@@ -706,7 +706,7 @@ int TXT_UnicodeCharacter(unsigned int c)
     // Check the code page mapping to see if this character maps
     // to anything.
 
-    for (i = 0; i < arrlen(code_page_to_unicode); ++i)
+    for (i = 0; i < std::size(code_page_to_unicode); ++i)
     {
         if (code_page_to_unicode[i] == c)
         {
@@ -754,7 +754,7 @@ static const char *NameForKey(int key)
     // This key presumably maps to a scan code that is listed in the
     // translation table. Find which mapping and once we have a scancode,
     // we can convert it into a virtual key, then a string via SDL.
-    for (i = 0; i < arrlen(scancode_translate_table); ++i)
+    for (i = 0; i < std::size(scancode_translate_table); ++i)
     {
         if (scancode_translate_table[i] == key)
         {
@@ -770,7 +770,7 @@ static const char *NameForKey(int key)
     // Use US English fallback names, if the localized name is too long,
     // not found in the scancode table, or contains unprintable chars
     // (non-extended ASCII character set):
-    for (i = 0; i < arrlen(key_names); ++i)
+    for (i = 0; i < std::size(key_names); ++i)
     {
         if (key_names[i].key == key)
         {

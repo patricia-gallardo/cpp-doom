@@ -17,6 +17,7 @@
 //	Switches, buttons. Two-state animation. Exits.
 //
 
+#include <array>
 #include <cstdio>
 
 #include "i_system.hpp"
@@ -145,7 +146,7 @@ void P_InitSwitchList()
 
     slindex = 0;
 
-    for (i = 0; i < arrlen(alphSwitchList); i++)
+    for (i = 0; i < std::size(alphSwitchList); i++)
     {
 	if (alphSwitchList[i].episode <= episode)
 	{

@@ -16,6 +16,7 @@
 // Parses [CODEPTR] sections in BEX files
 //
 
+#include <array>
 #include <cstdio>
 #include <cstring>
 
@@ -166,7 +167,7 @@ static void DEH_BEXPtrParseLine(deh_context_t *context, char *line, void *tag)
 
     state = (state_t *)&states[frame_number];
 
-    for (i = 0; i < arrlen(bex_codeptrtable); i++)
+    for (i = 0; i < std::size(bex_codeptrtable); i++)
     {
         if (!strcasecmp(bex_codeptrtable[i].mnemonic, value))
         {

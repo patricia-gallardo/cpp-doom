@@ -141,6 +141,4 @@ typedef int64_t  dpixel_t;
 
 #endif
 
-#define arrlen(array) (sizeof(array) / sizeof(*array))
-
 #endif

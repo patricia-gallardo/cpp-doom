@@ -17,6 +17,8 @@
 
 // HEADER FILES ------------------------------------------------------------
 
+#include <array>
+
 #include "h2def.hpp"
 #include "i_cdmus.hpp"
 #include "i_video.hpp"
@@ -1561,7 +1563,7 @@ static boolean HandleCheats(byte key)
         return (false);
     }
     eat = false;
-    for (i = 0; i<arrlen(Cheats); ++i)
+    for (i = 0; i<std::size(Cheats); ++i)
     {
         if (CheatAddKey(&Cheats[i], key, &eat))
         {

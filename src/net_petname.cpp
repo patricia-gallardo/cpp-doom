@@ -15,6 +15,7 @@
 //     Generate a randomized, private, memorable name for a Player
 //
 
+#include <array>
 #include <cstdlib>
 #include <ctime>
 #include "doomtype.hpp"
@@ -111,8 +112,8 @@ char *NET_GetRandomPetName()
     const char *a, *n;
 
     InitPetName();
-    a = adjectives[rand() % arrlen(adjectives)];
-    n = nouns[rand() % arrlen(nouns)];
+    a = adjectives[rand() % std::size(adjectives)];
+    n = nouns[rand() % std::size(nouns)];
 
     return M_StringJoin(a, " ", n, nullptr);
 }

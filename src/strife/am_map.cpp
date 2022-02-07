@@ -16,7 +16,7 @@
 // DESCRIPTION:  the automap code
 //
 
-
+#include <array>
 #include <cstdio>
 
 #include "deh_main.hpp"
@@ -809,7 +809,7 @@ void AM_updateLightLev()
     if (amclock>nexttic)
     {
 	lightlev = litelevels[litelevelscnt++];
-	if (litelevelscnt == arrlen(litelevels)) litelevelscnt = 0;
+	if (litelevelscnt == std::size(litelevels)) litelevelscnt = 0;
 	nexttic = amclock + 6 - (amclock % 6);
     }
 
@@ -1287,7 +1287,7 @@ void AM_drawPlayers()
         // villsa [STRIFE] don't draw cheating player arrow.
         // Player arrow is yellow instead of white
         AM_drawLineCharacter
-		(player_arrow, arrlen(player_arrow), 0, plr->mo->angle,
+		(player_arrow, std::size(player_arrow), 0, plr->mo->angle,
 		 224, plr->mo->x, plr->mo->y);
 	return;
     }
@@ -1311,7 +1311,7 @@ void AM_drawPlayers()
 	    color = their_colors[their_color];
 	
 	AM_drawLineCharacter
-	    (player_arrow, arrlen(player_arrow), 0, p->mo->angle,
+	    (player_arrow, std::size(player_arrow), 0, p->mo->angle,
 	     color, p->mo->x, p->mo->y);
     }
 
@@ -1352,7 +1352,7 @@ void AM_drawThings()
                 radius = (16<<FRACBITS);
             }
 
-            AM_drawLineCharacter (thintriangle_guy, arrlen(thintriangle_guy),
+            AM_drawLineCharacter (thintriangle_guy, std::size(thintriangle_guy),
                 radius, t->angle, colors, t->x, t->y);
 
             t = t->snext;

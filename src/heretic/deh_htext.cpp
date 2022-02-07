@@ -15,6 +15,7 @@
 // Parses Text substitution sections in dehacked files
 //
 
+#include <array>
 #include <cstdio>
 #include <cstdlib>
 #include <cstring>
@@ -692,7 +693,7 @@ static boolean GetStringByOffset(unsigned int offset, const char **result)
 {
     int i;
 
-    for (i=0; i<arrlen(strings); ++i)
+    for (i=0; i<std::size(strings); ++i)
     {
         if (strings[i].offsets[deh_hhe_version] == offset)
         {
@@ -737,7 +738,7 @@ static void SuggestOtherVersions(unsigned int offset)
 
     // Check main string table.
 
-    for (i=0; i<arrlen(strings); ++i)
+    for (i=0; i<std::size(strings); ++i)
     {
         for (v=0; v<deh_hhe_num_versions; ++v)
         {

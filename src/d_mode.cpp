@@ -17,6 +17,8 @@
 //   mode.
 //
 
+#include <array>
+
 #include "doomtype.hpp"
 #include "d_mode.hpp"
 
@@ -53,7 +55,7 @@ boolean D_ValidGameMode(int mission, int mode)
 {
     int i;
 
-    for (i = 0; i < arrlen(valid_modes); ++i)
+    for (i = 0; i < std::size(valid_modes); ++i)
     {
         if (valid_modes[i].mode == mode && valid_modes[i].mission == mission)
         {
@@ -85,7 +87,7 @@ boolean D_ValidEpisodeMap(GameMission_t mission, GameMode_t mode,
 
     // Find the table entry for this mission/mode combination.
 
-    for (i = 0; i < arrlen(valid_modes); ++i)
+    for (i = 0; i < std::size(valid_modes); ++i)
     {
         if (mission == valid_modes[i].mission
             && mode == valid_modes[i].mode)
@@ -151,7 +153,7 @@ boolean D_ValidGameVersion(GameMission_t mission, GameVersion_t version)
         mission = doom;
     }
 
-    for (i = 0; i < arrlen(valid_versions); ++i)
+    for (i = 0; i < std::size(valid_versions); ++i)
     {
         if (valid_versions[i].mission == mission
             && valid_versions[i].version == version)

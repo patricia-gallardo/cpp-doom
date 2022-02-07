@@ -14,6 +14,7 @@
 // Reading and writing various structures into packets
 //
 
+#include <array>
 #include <cstring>
 
 #include "doomtype.hpp"
@@ -570,7 +571,7 @@ static net_protocol_t ParseProtocolName(const char *name)
 {
     int i;
 
-    for (i = 0; i < arrlen(protocol_names); ++i)
+    for (i = 0; i < std::size(protocol_names); ++i)
     {
         if (!strcmp(protocol_names[i].name, name))
         {
@@ -602,7 +603,7 @@ void NET_WriteProtocol(net_packet_t *packet, net_protocol_t protocol)
 {
     int i;
 
-    for (i = 0; i < arrlen(protocol_names); ++i)
+    for (i = 0; i < std::size(protocol_names); ++i)
     {
         if (protocol_names[i].protocol == protocol)
         {

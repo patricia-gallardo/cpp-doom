@@ -15,6 +15,7 @@
 // DESCRIPTION:  none
 //
 
+#include <array>
 #include <cstdio>
 #include <cstdlib>
 
@@ -388,7 +389,7 @@ void S_Start()
             mus_ddtbl2,
         };
 
-        if ((gameepisode == 2 || gamemission == pack_nerve) && gamemap <= arrlen(nmus))
+        if ((gameepisode == 2 || gamemission == pack_nerve) && gamemap <= std::size(nmus))
         {
             mnum = nmus[gamemap - 1];
         }

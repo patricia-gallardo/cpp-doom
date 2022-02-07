@@ -19,6 +19,7 @@
 // Dialog Engine for Strife
 //
 
+#include <array>
 #include <cstdlib>
 
 #include "z_zone.hpp"
@@ -141,7 +142,7 @@ static dialogstateset_t dialogstatesets[] =
 };
 
 // Rogue stored this in a static global rather than making it a define...
-static int numdialogstatesets = arrlen(dialogstatesets);
+static int numdialogstatesets = std::size(dialogstatesets);
 
 // Current dialog talker state
 static dialogstateset_t *dialogtalkerstates;
@@ -337,7 +338,7 @@ static rndmessage_t rndMessages[] =
 };
 
 // And again, this could have been a define, but was a variable.
-static int numrndmessages = arrlen(rndMessages);
+static int numrndmessages = std::size(rndMessages);
 
 //=============================================================================
 //

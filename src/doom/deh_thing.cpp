@@ -15,6 +15,7 @@
 // Parses "Thing" sections in dehacked files
 //
 
+#include <array>
 #include <cstdio>
 #include <cstdlib>
 
@@ -155,7 +156,7 @@ static void DEH_ThingParseLine(deh_context_t *context, char *line, void *tag)
         for (; (value = strtok(value, ",+| \t\f\r")); value = nullptr)
         {
             int i;
-            for (i = 0; i < arrlen(bex_thingbitstable); i++)
+            for (i = 0; i < std::size(bex_thingbitstable); i++)
                 if (!strcasecmp(value, bex_thingbitstable[i].flag))
                 {
                     ivalue |= bex_thingbitstable[i].bits;

@@ -76,7 +76,7 @@ static int VirtualButtonForVariable(int *variable)
 {
     int i;
 
-    for (i = 0; i < arrlen(all_joystick_buttons); ++i)
+    for (i = 0; i < std::size(all_joystick_buttons); ++i)
     {
         if (variable == all_joystick_buttons[i])
         {
@@ -97,7 +97,7 @@ static void CanonicalizeButtons()
     int vbutton;
     int i;
 
-    for (i = 0; i < arrlen(all_joystick_buttons); ++i)
+    for (i = 0; i < std::size(all_joystick_buttons); ++i)
     {
         vbutton = *all_joystick_buttons[i];
 
@@ -128,7 +128,7 @@ static void ClearVariablesUsingButton(int physbutton)
     int vbutton;
     int i;
 
-    for (i = 0; i < arrlen(all_joystick_buttons); ++i)
+    for (i = 0; i < std::size(all_joystick_buttons); ++i)
     {
         vbutton = *all_joystick_buttons[i];
 

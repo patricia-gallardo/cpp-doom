@@ -14,8 +14,9 @@
 // GNU General Public License for more details.
 //
 
-
+#include <array>
 #include <cstring>
+
 #include "m_random.hpp"
 #include "h2def.hpp"
 #include "s_sound.hpp"
@@ -486,7 +487,7 @@ void G_BuildTiccmd(ticcmd_t *cmd, int maketic)
     }
     else
     {
-        for (i=0; i<arrlen(weapon_keys); ++i)
+        for (i=0; i<std::size(weapon_keys); ++i)
         {
             int key = *weapon_keys[i];
 

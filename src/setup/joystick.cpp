@@ -609,7 +609,7 @@ static const known_joystick_t *GetJoystickType(int index)
     buttons = SDL_JoystickNumButtons(joystick);
     hats = SDL_JoystickNumHats(joystick);
 
-    for (i = 0; i < arrlen(known_joysticks); ++i)
+    for (i = 0; i < std::size(known_joysticks); ++i)
     {
         // Check for a name match. If the name ends in '*', this means
         // ignore the rest.

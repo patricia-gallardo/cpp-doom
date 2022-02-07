@@ -15,6 +15,7 @@
 // DESCRIPTION:  none
 //
 
+#include <array>
 #include <cstring>
 #include <cstdlib>
 #include <cmath>
@@ -305,7 +306,7 @@ static int G_NextWeapon(int direction)
         weapon = players[consoleplayer].pendingweapon;
     }
 
-    for (i=0; i<arrlen(weapon_order_table); ++i)
+    for (i=0; i<std::size(weapon_order_table); ++i)
     {
         if (weapon_order_table[i].weapon == weapon)
         {
@@ -318,7 +319,7 @@ static int G_NextWeapon(int direction)
     do
     {
         i += direction;
-        i = (i + arrlen(weapon_order_table)) % arrlen(weapon_order_table);
+        i = (i + std::size(weapon_order_table)) % std::size(weapon_order_table);
     } while (i != start_i && !WeaponSelectable(weapon_order_table[i].weapon));
 
     return weapon_order_table[i].weapon_num;
@@ -524,7 +525,7 @@ void G_BuildTiccmd (ticcmd_t* cmd, int maketic)
     {
         // Check weapon keys.
 
-        for (i=0; i<arrlen(weapon_keys); ++i)
+        for (i=0; i<std::size(weapon_keys); ++i)
         {
             int key = *weapon_keys[i];
 

@@ -15,6 +15,7 @@
 // Parses "Cheat" sections in dehacked files
 //
 
+#include <array>
 #include <cstdlib>
 #include <cstring>
 
@@ -56,7 +57,7 @@ static deh_cheat_t *FindCheatByName(char *name)
 {
     size_t i;
 
-    for (i = 0; i < arrlen(allcheats); ++i)
+    for (i = 0; i < std::size(allcheats); ++i)
     {
         if (!strcasecmp(allcheats[i].name, name))
             return &allcheats[i];

@@ -15,7 +15,7 @@
 // DESCRIPTION:  Heads-up displays
 //
 
-
+#include <array>
 #include <cctype>
 
 #include "doomdef.hpp"
@@ -574,7 +574,7 @@ static void HU_SetSpecialLevelName(const char *wad, const char **name)
 {
     int i;
 
-    for (i = 0; i < arrlen(speciallevels); i++)
+    for (i = 0; i < std::size(speciallevels); i++)
     {
         const speciallevel_t speciallevel = speciallevels[i];
 

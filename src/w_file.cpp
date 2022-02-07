@@ -16,6 +16,7 @@
 //	WAD I/O functions.
 //
 
+#include <array>
 #include <cstdio>
 
 #include "config.h"
@@ -66,7 +67,7 @@ wad_file_t *W_OpenFile(const char *path)
 
     result = nullptr;
 
-    for (i = 0; i < arrlen(wad_file_classes); ++i)
+    for (i = 0; i < std::size(wad_file_classes); ++i)
     {
         result = wad_file_classes[i]->OpenFile(path);
 
