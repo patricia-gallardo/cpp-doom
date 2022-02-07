@@ -48,7 +48,7 @@ function(set_project_warnings)
             -fpermissive # GCC TODO turn it back on (patricia)
             -Wno-sign-conversion # warn on sign conversions TODO turn it back on (patricia)
             #-Wno-unused-parameter
-            -Wno-unused-function # TODO turn it back on (patricia)
+            #-Wno-unused-function # TODO turn it back on (patricia)
             -Wno-sign-compare # TODO turn it back on (patricia)
             -Wno-format-nonliteral # TODO turn it back on (patricia)
             -Wno-float-conversion # TODO turn it back on (patricia)

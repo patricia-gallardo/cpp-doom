@@ -70,7 +70,7 @@ static void *DEH_FrameStart(deh_context_t *context, char *line)
 //
 // This is noticable in Batman Doom where it is impossible to switch weapons
 // away from the fist once selected.
-
+#if 0 // NOT IN USE
 static void DEH_FrameOverflow(deh_context_t *context, char *varname, int value)
 {
     if (!strcasecmp(varname, "Duration"))
@@ -99,6 +99,7 @@ static void DEH_FrameOverflow(deh_context_t *context, char *varname, int value)
                   varname);
     }
 }
+#endif
 
 static void DEH_FrameParseLine(deh_context_t *context, char *line, void *tag)
 {
