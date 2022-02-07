@@ -1218,9 +1218,8 @@ void M_EndGameResponse(int key)
     D_StartTitle ();
 }
 
-void M_EndGame(int choice)
+void M_EndGame(int)
 {
-    choice = 0;
     if (!usergame)
     {
         S_StartSound(nullptr,sfx_oof);
@@ -1242,9 +1241,8 @@ void M_EndGame(int choice)
 //
 // M_ReadThis
 //
-void M_ReadThis(int choice)
+void M_ReadThis(int)
 {
-    choice = 0;
     M_SetupNextMenu(&ReadDef1);
 }
 
@@ -1253,9 +1251,8 @@ void M_ReadThis(int choice)
 //
 // haleyjd 08/28/10: [STRIFE] Eliminated DOOM stuff.
 //
-void M_ReadThis2(int choice)
+void M_ReadThis2(int)
 {
-    choice = 0;
     M_SetupNextMenu(&ReadDef2);
 }
 
@@ -1264,9 +1261,8 @@ void M_ReadThis2(int choice)
 //
 // haleyjd 08/28/10: [STRIFE] New function.
 //
-void M_ReadThis3(int choice)
+void M_ReadThis3(int)
 {
-    choice = 0;
     M_SetupNextMenu(&ReadDef3);
 }
 
@@ -2382,11 +2378,10 @@ void M_Drawer ()
 // haleyjd 08/28/10: [STRIFE] Added an int param so this can be called by menus.
 //         09/08/10: Added menupause.
 //
-void M_ClearMenus (int choice)
+void M_ClearMenus (int)
 {
-    choice = 0;     // haleyjd: for no warning; not from decompilation.
-    menuactive = 0;
-    menupause = 0;
+    menuactive = false;
+    menupause = false;
 }
 
 

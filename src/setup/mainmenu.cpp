@@ -94,7 +94,7 @@ static void SensibleDefaults()
     png_screenshots = 1;
 }
 
-static int MainMenuKeyPress(txt_window_t *window, int key, void *user_data)
+static int MainMenuKeyPress(txt_window_t *, int key, void *)
 {
     if (key == cheat_sequence[cheat_sequence_index])
     {
@@ -105,7 +105,7 @@ static int MainMenuKeyPress(txt_window_t *window, int key, void *user_data)
             SensibleDefaults();
             cheat_sequence_index = 0;
 
-            window = TXT_MessageBox(nullptr, "    \x01    ");
+            TXT_MessageBox(nullptr, "    \x01    ");
 
             return 1;
         }

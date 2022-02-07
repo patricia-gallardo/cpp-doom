@@ -1600,10 +1600,8 @@ static void M_CrispnessPrev(int choice)
 //
 //      Toggle messages on/off
 //
-void M_ChangeMessages(int choice)
+void M_ChangeMessages(int)
 {
-    // warning: unused parameter `int choice'
-    choice       = 0;
     showMessages = 1 - showMessages;
 
     if (!showMessages)
@@ -1634,9 +1632,8 @@ void M_EndGameResponse(int key)
     D_StartTitle();
 }
 
-void M_EndGame(int choice)
+void M_EndGame(int)
 {
-    choice = 0;
     if (!usergame)
     {
         S_StartSound(nullptr, sfx_oof);
@@ -1656,21 +1653,18 @@ void M_EndGame(int choice)
 //
 // M_ReadThis
 //
-void M_ReadThis(int choice)
+void M_ReadThis(int)
 {
-    choice = 0;
     M_SetupNextMenu(&ReadDef1);
 }
 
-void M_ReadThis2(int choice)
+void M_ReadThis2(int)
 {
-    choice = 0;
     M_SetupNextMenu(&ReadDef2);
 }
 
-void M_FinishReadThis(int choice)
+void M_FinishReadThis(int)
 {
-    choice = 0;
     M_SetupNextMenu(&MainDef);
 }
 
@@ -1800,16 +1794,14 @@ static void M_ChangeSensitivity_y(int choice)
     }
 }
 
-static void M_MouseInvert(int choice)
+static void M_MouseInvert(int)
 {
-    choice         = 0;
     mouse_y_invert = !mouse_y_invert;
 }
 
 
-void M_ChangeDetail(int choice)
+void M_ChangeDetail(int)
 {
-    choice      = 0;
     detailLevel = 1 - detailLevel;
 
     R_SetViewSize(screenblocks, detailLevel);
