@@ -153,12 +153,12 @@ static struct
     { "BFG Cells/Shot", &deh_bfg_cells_per_shot },
 };
 
-static void *DEH_MiscStart(deh_context_t *context, char *line)
+static void *DEH_MiscStart(deh_context_t *, char *)
 {
     return nullptr;
 }
 
-static void DEH_MiscParseLine(deh_context_t *context, char *line, void *tag)
+static void DEH_MiscParseLine(deh_context_t *context, char *line, void *)
 {
     char * variable_name, *value;
     int    ivalue;

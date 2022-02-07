@@ -66,12 +66,12 @@ static deh_cheat_t *FindCheatByName(char *name)
     return nullptr;
 }
 
-static void *DEH_CheatStart(deh_context_t *context, char *line)
+static void *DEH_CheatStart(deh_context_t *, char *)
 {
     return nullptr;
 }
 
-static void DEH_CheatParseLine(deh_context_t *context, char *line, void *tag)
+static void DEH_CheatParseLine(deh_context_t *context, char *line, void *)
 {
     deh_cheat_t *  cheat;
     char *         variable_name;

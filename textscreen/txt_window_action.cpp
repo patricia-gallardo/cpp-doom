@@ -84,7 +84,7 @@ static int TXT_WindowActionKeyPress(TXT_UNCAST_ARG(action), int key)
 }
 
 static void TXT_WindowActionMousePress(TXT_UNCAST_ARG(action), 
-                                       int x, int y, int b)
+                                       int, int, int b)
 {
     TXT_CAST_ARG(txt_window_action_t, action);
 
@@ -118,19 +118,25 @@ txt_window_action_t *TXT_NewWindowAction(int key, const char *label)
     return action;
 }
 
+#pragma GCC diagnostic push
+#pragma GCC diagnostic ignored "-Wunused-parameter"
 static void WindowCloseCallback(TXT_UNCAST_ARG(widget), TXT_UNCAST_ARG(window))
 {
     TXT_CAST_ARG(txt_window_t, window);
 
     TXT_CloseWindow(window);
 }
+#pragma GCC diagnostic pop
 
+#pragma GCC diagnostic push
+#pragma GCC diagnostic ignored "-Wunused-parameter"
 static void WindowSelectCallback(TXT_UNCAST_ARG(widget), TXT_UNCAST_ARG(window))
 {
     TXT_CAST_ARG(txt_window_t, window);
 
     TXT_WidgetKeyPress(window, KEY_ENTER);
 }
+#pragma GCC diagnostic pop
 
 // An action with the name "close" the closes the window
 

@@ -807,12 +807,15 @@ txt_widget_class_t txt_fileselect_class =
 // If the (inner) inputbox widget is changed, emit a change to the
 // outer (fileselect) widget.
 
+#pragma GCC diagnostic push
+#pragma GCC diagnostic ignored "-Wunused-parameter"
 static void InputBoxChanged(TXT_UNCAST_ARG(widget), TXT_UNCAST_ARG(fileselect))
 {
     TXT_CAST_ARG(txt_fileselect_t, fileselect);
 
     TXT_EmitSignal(&fileselect->widget, "changed");
 }
+#pragma GCC diagnostic pop
 
 txt_fileselect_t *TXT_NewFileSelector(char **variable, int size,
                                       const char *prompt, const char **extensions)

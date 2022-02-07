@@ -1549,32 +1549,32 @@ void A_Sor2DthLoop(mobj_t * actor)
 //
 //----------------------------------------------------------------------------
 
-void A_SorZap(mobj_t * actor)
+void A_SorZap(mobj_t *)
 {
     S_StartSound(nullptr, sfx_sorzap);
 }
 
-void A_SorRise(mobj_t * actor)
+void A_SorRise(mobj_t *)
 {
     S_StartSound(nullptr, sfx_sorrise);
 }
 
-void A_SorDSph(mobj_t * actor)
+void A_SorDSph(mobj_t *)
 {
     S_StartSound(nullptr, sfx_sordsph);
 }
 
-void A_SorDExp(mobj_t * actor)
+void A_SorDExp(mobj_t *)
 {
     S_StartSound(nullptr, sfx_sordexp);
 }
 
-void A_SorDBon(mobj_t * actor)
+void A_SorDBon(mobj_t *)
 {
     S_StartSound(nullptr, sfx_sordbon);
 }
 
-void A_SorSightSnd(mobj_t * actor)
+void A_SorSightSnd(mobj_t *)
 {
     S_StartSound(nullptr, sfx_sorsit);
 }

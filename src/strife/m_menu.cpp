@@ -698,7 +698,7 @@ void M_LoadSelect(int choice)
 //
 // [STRIFE] Verified unmodified
 //
-void M_LoadGame (int choice)
+void M_LoadGame (int)
 {
     if (netgame)
     {
@@ -783,7 +783,7 @@ void M_SaveSelect(int choice)
 //
 // Selected from DOOM menu
 //
-void M_SaveGame (int choice)
+void M_SaveGame (int)
 {
     // [STRIFE]
     if (netgame)
@@ -962,7 +962,7 @@ void M_DrawSound()
                  16,mouseSensitivity);
 }
 
-void M_Sound(int choice)
+void M_Sound(int)
 {
     M_SetupNextMenu(&SoundDef);
 }
@@ -1052,7 +1052,7 @@ void M_DrawNewGame()
     V_DrawPatchDirect(54, 38, cache_lump_name<patch_t *>(DEH_String("M_SKILL"), PU_CACHE));
 }
 
-void M_NewGame(int choice)
+void M_NewGame(int)
 {
     if (netgame && !demoplayback)
     {
@@ -1145,7 +1145,7 @@ void M_DrawOptions()
                  9,screenSize);
 }
 
-void M_Options(int choice)
+void M_Options(int)
 {
     M_SetupNextMenu(&OptionsDef);
 }
@@ -1335,7 +1335,7 @@ static char *M_SelectEndMessage()
 // haleyjd 09/11/10: No randomized text message; that's taken care of
 // by the randomized voice message after confirmation.
 //
-void M_QuitStrife(int choice)
+void M_QuitStrife(int)
 {
     DEH_snprintf(endstring, sizeof(endstring),
                  "Do you really want to leave?\n\n" DOSY);
@@ -1604,7 +1604,7 @@ M_WriteText
 // at least a 20 pixel margin on the right side. The string passed in must be
 // writable.
 //
-void M_DialogDimMsg(int x, int y, char *str, bool useyfont)
+void M_DialogDimMsg(int x, int, char *str, bool useyfont)
 {
     int rightbound = (ORIGWIDTH - 20) - x;
     patch_t **fontarray;  // ebp

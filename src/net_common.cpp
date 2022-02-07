@@ -91,7 +91,7 @@ void NET_Conn_SendPacket(net_connection_t *conn, net_packet_t *packet)
     NET_SendPacket(conn->addr, packet);
 }
 
-static void NET_Conn_ParseDisconnect(net_connection_t *conn, net_packet_t *packet)
+static void NET_Conn_ParseDisconnect(net_connection_t *conn, net_packet_t *)
 {
     net_packet_t *reply;
 
@@ -111,8 +111,7 @@ static void NET_Conn_ParseDisconnect(net_connection_t *conn, net_packet_t *packe
 
 // Parse a DISCONNECT_ACK packet
 
-static void NET_Conn_ParseDisconnectACK(net_connection_t *conn,
-    net_packet_t *                                        packet)
+static void NET_Conn_ParseDisconnectACK(net_connection_t *conn, net_packet_t *)
 {
 
     if (conn->state == NET_CONN_STATE_DISCONNECTING)

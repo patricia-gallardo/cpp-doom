@@ -778,7 +778,7 @@ void AM_Ticker()
 
 }
 
-void AM_clearFB(int color)
+void AM_clearFB(int)
 {
     int i, j;
     int dmapx;
@@ -1438,7 +1438,7 @@ void AM_drawPlayers()
     }
 }
 
-void AM_drawThings(int colors, int colorrange)
+void AM_drawThings(int colors, int)
 {
     int i;
     mobj_t *t;

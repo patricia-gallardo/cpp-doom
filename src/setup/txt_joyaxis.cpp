@@ -339,6 +339,8 @@ static int EventCallback(SDL_Event *event, TXT_UNCAST_ARG(joystick_axis))
     return 0;
 }
 
+#pragma GCC diagnostic push
+#pragma GCC diagnostic ignored "-Wunused-parameter"
 static void CalibrateWindowClosed(TXT_UNCAST_ARG(widget),
                                   TXT_UNCAST_ARG(joystick_axis))
 {
@@ -352,6 +354,7 @@ static void CalibrateWindowClosed(TXT_UNCAST_ARG(widget),
     SDL_QuitSubSystem(SDL_INIT_JOYSTICK);
     TXT_SDL_SetEventCallback(nullptr, nullptr);
 }
+#pragma GCC diagnostic pop
 
 void TXT_ConfigureJoystickAxis(txt_joystick_axis_t *joystick_axis,
                                int using_button,
@@ -466,9 +469,12 @@ static void TXT_JoystickAxisDrawer(TXT_UNCAST_ARG(joystick_axis))
     }
 }
 
+#pragma GCC diagnostic push
+#pragma GCC diagnostic ignored "-Wunused-parameter"
 static void TXT_JoystickAxisDestructor(TXT_UNCAST_ARG(joystick_axis))
 {
 }
+#pragma GCC diagnostic pop
 
 static int TXT_JoystickAxisKeyPress(TXT_UNCAST_ARG(joystick_axis), int key)
 {
@@ -488,8 +494,7 @@ static int TXT_JoystickAxisKeyPress(TXT_UNCAST_ARG(joystick_axis), int key)
     return 0;
 }
 
-static void TXT_JoystickAxisMousePress(TXT_UNCAST_ARG(widget),
-                                       int x, int y, int b)
+static void TXT_JoystickAxisMousePress(TXT_UNCAST_ARG(widget), int, int, int b)
 {
     TXT_CAST_ARG(txt_joystick_axis_t, widget);
 

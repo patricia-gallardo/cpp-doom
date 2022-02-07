@@ -229,7 +229,7 @@ static void UpdateClockSync(unsigned int seq,
 // the d_net.c structures (netcmds/nettics) and save the new ticcmd
 // back into recvwindow_cmd_base.
 
-static void NET_CL_ExpandFullTiccmd(net_full_ticcmd_t *cmd, unsigned int seq,
+static void NET_CL_ExpandFullTiccmd(net_full_ticcmd_t *cmd, unsigned int,
     ticcmd_t *ticcmds)
 {
     int i;

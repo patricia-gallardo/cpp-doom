@@ -262,7 +262,7 @@ static int TXT_InputBoxKeyPress(TXT_UNCAST_ARG(inputbox), int key)
 }
 
 static void TXT_InputBoxMousePress(TXT_UNCAST_ARG(inputbox),
-                                   int x, int y, int b)
+                                   int, int, int b)
 {
     TXT_CAST_ARG(txt_inputbox_t, inputbox);
 

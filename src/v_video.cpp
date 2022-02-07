@@ -167,7 +167,7 @@ void V_SetPatchClipCallback(vpatchclipfunc_t func)
 // [crispy] four different rendering functions
 // for each possible combination of dp_translation and dp_translucent:
 // (1) normal, opaque patch
-static inline pixel_t drawpatchpx00(const pixel_t dest, const pixel_t source)
+static inline pixel_t drawpatchpx00(const pixel_t, const pixel_t source)
 #ifndef CRISPY_TRUECOLOR
 {
     return source;
@@ -178,7 +178,7 @@ static inline pixel_t drawpatchpx00(const pixel_t dest, const pixel_t source)
 }
 #endif
 // (2) color-translated, opaque patch
-static inline pixel_t drawpatchpx01(const pixel_t dest, const pixel_t source)
+static inline pixel_t drawpatchpx01(const pixel_t, const pixel_t source)
 #ifndef CRISPY_TRUECOLOR
 {
     return dp_translation[source];
@@ -988,17 +988,17 @@ void WritePCXfile(char *filename, pixel_t *data,
 // WritePNGfile
 //
 
-static void error_fn(png_structp p, png_const_charp s)
+static void error_fn(png_structp, png_const_charp s)
 {
     printf("libpng error: %s\n", s);
 }
 
-static void warning_fn(png_structp p, png_const_charp s)
+static void warning_fn(png_structp, png_const_charp s)
 {
     printf("libpng warning: %s\n", s);
 }
 
-void WritePNGfile(char *filename, pixel_t *data,
+void WritePNGfile(char *filename, pixel_t *,
     int width, int height,
     byte *palette)
 {

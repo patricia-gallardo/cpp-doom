@@ -665,7 +665,7 @@ void P_GroupLines()
 =================
 */
 
-void P_SetupLevel(int episode, int map, int playermask, skill_t skill)
+void P_SetupLevel(int, int map, int, skill_t)
 {
     int i;
     int parm;

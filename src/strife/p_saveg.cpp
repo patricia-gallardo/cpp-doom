@@ -1588,7 +1588,7 @@ static void saveg_write_glow_t(glow_t *str)
 // haleyjd 09/28/10: [STRIFE] numerous modifications.
 //
 
-void P_WriteSaveGameHeader(char *description)
+void P_WriteSaveGameHeader(char *)
 {
     char name[VERSIONSIZE]; 
     int i; 

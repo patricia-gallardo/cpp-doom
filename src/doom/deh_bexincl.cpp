@@ -88,7 +88,7 @@ static void *DEH_BEXInclStart(deh_context_t *context, char *line)
     return nullptr;
 }
 
-static void DEH_BEXInclParseLine(deh_context_t *context, char *line, void *tag)
+static void DEH_BEXInclParseLine(deh_context_t *, char *, void *)
 {
     // not used
 }

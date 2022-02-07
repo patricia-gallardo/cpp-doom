@@ -59,9 +59,7 @@ void wipe_shittyColMajorXform(dpixel_t *array,
     Z_Free(dest);
 }
 
-int wipe_initColorXForm(int width,
-    int                     height,
-    int                     ticks)
+int wipe_initColorXForm(int width, int height, int)
 {
     memcpy(wipe_scr, wipe_scr_start, width * height * sizeof(*wipe_scr));
     return 0;
@@ -110,9 +108,7 @@ int wipe_doColorXForm(int width,
     return !changed;
 }
 
-int wipe_exitColorXForm(int width,
-    int                     height,
-    int                     ticks)
+int wipe_exitColorXForm(int, int, int)
 {
     return 0;
 }
@@ -120,9 +116,7 @@ int wipe_exitColorXForm(int width,
 
 static int *y;
 
-int wipe_initMelt(int width,
-    int               height,
-    int               ticks)
+int wipe_initMelt(int width, int height, int)
 {
     int i, r;
 
@@ -204,9 +198,7 @@ int wipe_doMelt(int width,
     return done;
 }
 
-int wipe_exitMelt(int width,
-    int               height,
-    int               ticks)
+int wipe_exitMelt(int, int, int)
 {
     Z_Free(y);
     Z_Free(wipe_scr_start);
@@ -214,10 +206,7 @@ int wipe_exitMelt(int width,
     return 0;
 }
 
-int wipe_StartScreen(int x,
-    int                  y,
-    int                  width,
-    int                  height)
+int wipe_StartScreen(int, int, int, int)
 {
     wipe_scr_start = zmalloc<decltype(wipe_scr_start)>(SCREENWIDTH * SCREENHEIGHT * sizeof(*wipe_scr_start), PU_STATIC, nullptr);
     I_ReadScreen(wipe_scr_start);
@@ -235,12 +224,7 @@ int wipe_EndScreen(int x,
     return 0;
 }
 
-int wipe_ScreenWipe(int wipeno,
-    int                 x,
-    int                 y,
-    int                 width,
-    int                 height,
-    int                 ticks)
+int wipe_ScreenWipe(int wipeno, int, int, int width, int height, int ticks)
 {
     int rc;
     static int (*wipes[])(int, int, int) = {

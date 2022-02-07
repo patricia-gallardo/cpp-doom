@@ -1625,7 +1625,7 @@ static bool CheatAddKey(Cheat_t * cheat, byte key, bool * eat)
 //
 //==========================================================================
 
-static void CheatGodFunc(player_t * player, Cheat_t * cheat)
+static void CheatGodFunc(player_t * player, Cheat_t *)
 {
     player->cheats ^= CF_GODMODE;
     if (player->cheats & CF_GODMODE)
@@ -1639,7 +1639,7 @@ static void CheatGodFunc(player_t * player, Cheat_t * cheat)
     SB_state = -1;
 }
 
-static void CheatNoClipFunc(player_t * player, Cheat_t * cheat)
+static void CheatNoClipFunc(player_t * player, Cheat_t *)
 {
     player->cheats ^= CF_NOCLIP;
     if (player->cheats & CF_NOCLIP)
@@ -1652,7 +1652,7 @@ static void CheatNoClipFunc(player_t * player, Cheat_t * cheat)
     }
 }
 
-static void CheatWeaponsFunc(player_t * player, Cheat_t * cheat)
+static void CheatWeaponsFunc(player_t * player, Cheat_t *)
 {
     int i;
     //extern bool *WeaponInShareware;
@@ -1672,7 +1672,7 @@ static void CheatWeaponsFunc(player_t * player, Cheat_t * cheat)
     P_SetMessage(player, TXT_CHEATWEAPONS, true);
 }
 
-static void CheatHealthFunc(player_t * player, Cheat_t * cheat)
+static void CheatHealthFunc(player_t * player, Cheat_t *)
 {
     if (player->morphTics)
     {
@@ -1685,13 +1685,13 @@ static void CheatHealthFunc(player_t * player, Cheat_t * cheat)
     P_SetMessage(player, TXT_CHEATHEALTH, true);
 }
 
-static void CheatKeysFunc(player_t * player, Cheat_t * cheat)
+static void CheatKeysFunc(player_t * player, Cheat_t *)
 {
     player->keys = 2047;
     P_SetMessage(player, TXT_CHEATKEYS, true);
 }
 
-static void CheatSoundFunc(player_t * player, Cheat_t * cheat)
+static void CheatSoundFunc(player_t * player, Cheat_t *)
 {
     DebugSound = !DebugSound;
     if (DebugSound)
@@ -1704,7 +1704,7 @@ static void CheatSoundFunc(player_t * player, Cheat_t * cheat)
     }
 }
 
-static void CheatTickerFunc(player_t * player, Cheat_t * cheat)
+static void CheatTickerFunc(player_t * player, Cheat_t *)
 {
     DisplayTicker = !DisplayTicker;
     if (DisplayTicker)
@@ -1719,7 +1719,7 @@ static void CheatTickerFunc(player_t * player, Cheat_t * cheat)
     I_DisplayFPSDots(DisplayTicker);
 }
 
-static void CheatArtifactAllFunc(player_t * player, Cheat_t * cheat)
+static void CheatArtifactAllFunc(player_t * player, Cheat_t *)
 {
     int i;
     int j;
@@ -1734,7 +1734,7 @@ static void CheatArtifactAllFunc(player_t * player, Cheat_t * cheat)
     P_SetMessage(player, TXT_CHEATARTIFACTS3, true);
 }
 
-static void CheatPuzzleFunc(player_t * player, Cheat_t * cheat)
+static void CheatPuzzleFunc(player_t * player, Cheat_t *)
 {
     int i;
 
@@ -1745,7 +1745,7 @@ static void CheatPuzzleFunc(player_t * player, Cheat_t * cheat)
     P_SetMessage(player, TXT_CHEATARTIFACTS3, true);
 }
 
-static void CheatInitFunc(player_t * player, Cheat_t * cheat)
+static void CheatInitFunc(player_t * player, Cheat_t *)
 {
     G_DeferedInitNew(gameskill, gameepisode, gamemap);
     P_SetMessage(player, TXT_CHEATWARP, true);
@@ -1789,7 +1789,7 @@ static void CheatWarpFunc(player_t * player, Cheat_t * cheat)
     G_TeleportNewMap(map, 0);
 }
 
-static void CheatPigFunc(player_t * player, Cheat_t * cheat)
+static void CheatPigFunc(player_t * player, Cheat_t *)
 {
     extern bool P_UndoPlayerMorph(player_t * player);
 
@@ -1804,7 +1804,7 @@ static void CheatPigFunc(player_t * player, Cheat_t * cheat)
     P_SetMessage(player, "SQUEAL!!", true);
 }
 
-static void CheatMassacreFunc(player_t * player, Cheat_t * cheat)
+static void CheatMassacreFunc(player_t * player, Cheat_t *)
 {
     int count;
     char buffer[80];
@@ -1814,7 +1814,7 @@ static void CheatMassacreFunc(player_t * player, Cheat_t * cheat)
     P_SetMessage(player, buffer, true);
 }
 
-static void CheatIDKFAFunc(player_t * player, Cheat_t * cheat)
+static void CheatIDKFAFunc(player_t * player, Cheat_t *)
 {
     int i;
     if (player->morphTics)
@@ -1839,23 +1839,23 @@ static void CheatIDKFAFunc(player_t * player, Cheat_t * cheat)
     P_SetMessage(player, TXT_CHEATIDKFA, true);
 }
 
-static void CheatQuickenFunc1(player_t * player, Cheat_t * cheat)
+static void CheatQuickenFunc1(player_t * player, Cheat_t *)
 {
     P_SetMessage(player, "TRYING TO CHEAT?  THAT'S ONE....", true);
 }
 
-static void CheatQuickenFunc2(player_t * player, Cheat_t * cheat)
+static void CheatQuickenFunc2(player_t * player, Cheat_t *)
 {
     P_SetMessage(player, "THAT'S TWO....", true);
 }
 
-static void CheatQuickenFunc3(player_t * player, Cheat_t * cheat)
+static void CheatQuickenFunc3(player_t * player, Cheat_t *)
 {
     P_DamageMobj(player->mo, nullptr, player->mo, 10000);
     P_SetMessage(player, "THAT'S THREE!  TIME TO DIE.", true);
 }
 
-static void CheatClassFunc1(player_t * player, Cheat_t * cheat)
+static void CheatClassFunc1(player_t * player, Cheat_t *)
 {
     P_SetMessage(player, "ENTER NEW PLAYER CLASS (0 - 2)", true);
 }
@@ -1890,12 +1890,12 @@ static void CheatClassFunc2(player_t * player, Cheat_t * cheat)
     UpdateState |= I_FULLSCRN;
 }
 
-static void CheatVersionFunc(player_t * player, Cheat_t * cheat)
+static void CheatVersionFunc(player_t * player, Cheat_t *)
 {
     P_SetMessage(player, HEXEN_VERSIONTEXT, true);
 }
 
-static void CheatDebugFunc(player_t * player, Cheat_t * cheat)
+static void CheatDebugFunc(player_t * player, Cheat_t *)
 {
     char textBuffer[50];
     M_snprintf(textBuffer, sizeof(textBuffer),
@@ -1907,12 +1907,12 @@ static void CheatDebugFunc(player_t * player, Cheat_t * cheat)
     P_SetMessage(player, textBuffer, true);
 }
 
-static void CheatScriptFunc1(player_t * player, Cheat_t * cheat)
+static void CheatScriptFunc1(player_t * player, Cheat_t *)
 {
     P_SetMessage(player, "RUN WHICH SCRIPT(01-99)?", true);
 }
 
-static void CheatScriptFunc2(player_t * player, Cheat_t * cheat)
+static void CheatScriptFunc2(player_t * player, Cheat_t *)
 {
     P_SetMessage(player, "RUN WHICH SCRIPT(01-99)?", true);
 }
@@ -1946,7 +1946,7 @@ static void CheatScriptFunc3(player_t * player, Cheat_t * cheat)
 
 extern int cheating;
 
-static void CheatRevealFunc(player_t * player, Cheat_t * cheat)
+static void CheatRevealFunc(player_t *, Cheat_t *)
 {
     cheating = (cheating + 1) % 3;
 }
@@ -1957,7 +1957,7 @@ static void CheatRevealFunc(player_t * player, Cheat_t * cheat)
 //
 //===========================================================================
 
-static void CheatTrackFunc1(player_t * player, Cheat_t * cheat)
+static void CheatTrackFunc1(player_t * player, Cheat_t *)
 {
     char buffer[80];
 

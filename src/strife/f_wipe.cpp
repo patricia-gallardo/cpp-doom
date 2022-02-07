@@ -66,11 +66,7 @@ wipe_shittyColMajorXform
 }
 
 // haleyjd 08/26/10: [STRIFE] Verified unmodified.
-int
-wipe_initColorXForm
-( int	width,
-  int	height,
-  int	ticks )
+int wipe_initColorXForm(int width, int height, int)
 {
     memcpy(wipe_scr, wipe_scr_start, width*height);
     return 0;
@@ -83,11 +79,7 @@ wipe_initColorXForm
 // * Rogue modified the unused ColorXForm wipe in-place in order to implement 
 //   their distinctive crossfade wipe.
 //
-int
-wipe_doColorXForm
-( int	width,
-  int	height,
-  int	ticks )
+int wipe_doColorXForm(int width, int height, int)
 {
     byte *cur_screen = wipe_scr;
     byte *end_screen = wipe_scr_end;
@@ -110,11 +102,7 @@ wipe_doColorXForm
 }
 
 // haleyjd 08/26/10: [STRIFE] Verified unmodified.
-int
-wipe_exitColorXForm
-( int	width,
-  int	height,
-  int	ticks )
+int wipe_exitColorXForm(int, int, int)
 {
     return 0;
 }
@@ -122,11 +110,7 @@ wipe_exitColorXForm
 
 static int*	y;
 
-int
-wipe_initMelt
-( int	width,
-  int	height,
-  int	ticks )
+int wipe_initMelt(int width, int height, int)
 {
     int i, r;
     
@@ -208,11 +192,7 @@ wipe_doMelt
 
 }
 
-int
-wipe_exitMelt
-( int	width,
-  int	height,
-  int	ticks )
+int wipe_exitMelt(int, int, int)
 {
     Z_Free(y);
     Z_Free(wipe_scr_start);
@@ -221,12 +201,7 @@ wipe_exitMelt
 }
 
 // haleyjd 08/26/10: [STRIFE] Verified unmodified.
-int
-wipe_StartScreen
-( int	x,
-  int	y_pos,
-  int	width,
-  int	height )
+int wipe_StartScreen(int, int, int, int)
 {
     wipe_scr_start = zmalloc<byte *>(SCREENWIDTH * SCREENHEIGHT, PU_STATIC, nullptr);
     I_ReadScreen(wipe_scr_start);

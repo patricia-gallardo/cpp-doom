@@ -138,7 +138,7 @@ static void *DEH_BEXPtrStart(deh_context_t *context, char *line)
     return nullptr;
 }
 
-static void DEH_BEXPtrParseLine(deh_context_t *context, char *line, void *tag)
+static void DEH_BEXPtrParseLine(deh_context_t *context, char *line, void *)
 {
     state_t *state;
     char *   variable_name, *value, frame_str[6];

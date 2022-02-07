@@ -95,7 +95,7 @@ void P_RemoveThinker(thinker_t * thinker)
 ===============
 */
 
-void P_AllocateThinker(thinker_t * thinker)
+void P_AllocateThinker(thinker_t *)
 {
 }
 

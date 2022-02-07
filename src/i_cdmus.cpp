@@ -42,7 +42,7 @@ void I_CDMusPrintStartup()
 {
 }
 
-int I_CDMusPlay(int track)
+int I_CDMusPlay(int)
 {
     return 0;
 }
@@ -57,7 +57,7 @@ int I_CDMusResume()
     return 0;
 }
 
-int I_CDMusSetVolume(int volume)
+int I_CDMusSetVolume(int)
 {
     return 0;
 }
@@ -72,7 +72,7 @@ int I_CDMusLastTrack()
     return 0;
 }
 
-int I_CDMusTrackLength(int track_num)
+int I_CDMusTrackLength(int)
 {
     return 0;
 }

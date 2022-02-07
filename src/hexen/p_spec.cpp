@@ -438,7 +438,7 @@ static bool CheckedLockedDoor(mobj_t * mo, byte lock)
 //
 //==========================================================================
 
-bool EV_LineSearchForPuzzleItem(line_t * line, byte * args, mobj_t * mo)
+bool EV_LineSearchForPuzzleItem(line_t * line, byte *, mobj_t * mo)
 {
     player_t *player;
     int i;

@@ -454,9 +454,7 @@ void R_DrawMaskedColumn(column_t *column)
 // R_DrawVisSprite
 //  mfloorclip and mceilingclip should also be set.
 //
-void R_DrawVisSprite(vissprite_t *vis,
-    int                           x1,
-    int                           x2)
+void R_DrawVisSprite(vissprite_t *vis, int, int)
 {
     column_t *column;
     int       texturecolumn;

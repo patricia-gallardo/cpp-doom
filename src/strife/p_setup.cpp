@@ -746,11 +746,7 @@ static void P_LoadReject(int lumpnum)
 //
 // P_SetupLevel
 //
-void
-P_SetupLevel
-( int       map,
-  int       playermask,
-  skill_t   skill)
+void P_SetupLevel(int map, int, skill_t)
 {
     int     i;
     char    lumpname[9];

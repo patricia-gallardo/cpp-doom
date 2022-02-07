@@ -80,7 +80,7 @@ void SV_OpenRead(char *filename)
 //
 //==========================================================================
 
-void SV_Close(char *fileName)
+void SV_Close(char *)
 {
     SV_WriteByte(SAVE_GAME_TERMINATOR);
 

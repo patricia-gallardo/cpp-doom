@@ -406,7 +406,7 @@ void WI_slamBackground()
 
 // The ticker is used to detect keys
 //  because of timing issues in netgames.
-bool WI_Responder(event_t *ev)
+bool WI_Responder(event_t *)
 {
     return false;
 }

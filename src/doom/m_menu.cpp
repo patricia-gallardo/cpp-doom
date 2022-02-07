@@ -875,7 +875,7 @@ void M_LoadSelect(int choice)
 //
 // Selected from DOOM menu
 //
-void M_LoadGame(int choice)
+void M_LoadGame(int)
 {
     // [crispy] allow loading game while multiplayer demo playback
     if (netgame && !demoplayback)
@@ -928,7 +928,7 @@ void M_DoSave(int slot)
 // Generate a default save slot name when the user saves to
 // an empty slot via the joypad.
 //
-static void SetDefaultSaveName(int slot)
+static void SetDefaultSaveName(int)
 {
     // map from IWAD or PWAD?
     if (W_IsIWADLump(maplumpinfo) && strcmp(savegamedir, ""))
@@ -1010,7 +1010,7 @@ void M_SaveSelect(int choice)
 //
 // Selected from DOOM menu
 //
-void M_SaveGame(int choice)
+void M_SaveGame(int)
 {
     if (!usergame)
     {
@@ -1165,7 +1165,7 @@ void M_DrawSound()
         16, musicVolume);
 }
 
-void M_Sound(int choice)
+void M_Sound(int)
 {
     M_SetupNextMenu(&SoundDef);
 }
@@ -1224,7 +1224,7 @@ void M_DrawNewGame()
     V_DrawPatchDirect(54, 38, cache_lump_name<patch_t *>(DEH_String("M_SKILL"), PU_CACHE));
 }
 
-void M_NewGame(int choice)
+void M_NewGame(int)
 {
     // [crispy] forbid New Game while recording a demo
     if (demorecording)
@@ -1548,13 +1548,13 @@ static void M_DrawCrispness4()
     dp_translation = nullptr;
 }
 
-void M_Options(int choice)
+void M_Options(int)
 {
     M_SetupNextMenu(&OptionsDef);
 }
 
 // [crispy] correctly handle inverted y-axis
-static void M_Mouse(int choice)
+static void M_Mouse(int)
 {
     if (mouseSensitivity_y < 0)
     {
@@ -1571,12 +1571,12 @@ static void M_Mouse(int choice)
     M_SetupNextMenu(&MouseDef);
 }
 
-static void M_CrispnessCur(int choice)
+static void M_CrispnessCur(int)
 {
     M_SetupNextMenu(CrispnessMenus[crispness_cur]);
 }
 
-static void M_CrispnessNext(int choice)
+static void M_CrispnessNext(int)
 {
     if (++crispness_cur > std::size(CrispnessMenus) - 1)
     {
@@ -1586,7 +1586,7 @@ static void M_CrispnessNext(int choice)
     M_CrispnessCur(0);
 }
 
-static void M_CrispnessPrev(int choice)
+static void M_CrispnessPrev(int)
 {
     if (--crispness_cur < 0)
     {
@@ -1736,7 +1736,7 @@ static const char *M_SelectEndMessage()
 }
 
 
-void M_QuitDOOM(int choice)
+void M_QuitDOOM(int)
 {
     // [crispy] fast exit if "run" key is held down
     if (speedkeydown())

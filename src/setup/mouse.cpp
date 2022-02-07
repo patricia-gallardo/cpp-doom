@@ -56,6 +56,8 @@ static int *all_mouse_buttons[] = {
     &mousebreverse // [crispy]
 };
 
+#pragma GCC diagnostic push
+#pragma GCC diagnostic ignored "-Wunused-parameter"
 static void MouseSetCallback(TXT_UNCAST_ARG(widget), TXT_UNCAST_ARG(variable))
 {
     TXT_CAST_ARG(int, variable);
@@ -73,6 +75,7 @@ static void MouseSetCallback(TXT_UNCAST_ARG(widget), TXT_UNCAST_ARG(variable))
         }
     }
 }
+#pragma GCC diagnostic pop
 
 static void AddMouseControl(TXT_UNCAST_ARG(table), const char *label, int *var)
 {
@@ -87,6 +90,8 @@ static void AddMouseControl(TXT_UNCAST_ARG(table), const char *label, int *var)
     TXT_SignalConnect(mouse_input, "set", MouseSetCallback, var);
 }
 
+#pragma GCC diagnostic push
+#pragma GCC diagnostic ignored "-Wunused-parameter"
 static void ConfigExtraButtons(TXT_UNCAST_ARG(widget), TXT_UNCAST_ARG(unused))
 {
     txt_window_t *window;
@@ -122,7 +127,10 @@ static void ConfigExtraButtons(TXT_UNCAST_ARG(widget), TXT_UNCAST_ARG(unused))
         AddMouseControl(buttons_table, "Jump [*]", &mousebjump);
     }
 }
+#pragma GCC diagnostic pop
 
+#pragma GCC diagnostic push
+#pragma GCC diagnostic ignored "-Wunused-parameter"
 void ConfigMouse(TXT_UNCAST_ARG(widget), void *user_data)
 {
     txt_window_t *window;
@@ -201,6 +209,7 @@ void ConfigMouse(TXT_UNCAST_ARG(widget), void *user_data)
     TXT_AddWidget(window,
                   TXT_NewButton2("More controls...", ConfigExtraButtons, nullptr));
 }
+#pragma GCC diagnostic pop
 
 void BindMouseVariables()
 {

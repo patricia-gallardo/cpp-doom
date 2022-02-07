@@ -82,6 +82,8 @@ static int snd_mport = 0;
 
 static int snd_oplmode;
 
+#pragma GCC diagnostic push
+#pragma GCC diagnostic ignored "-Wunused-parameter"
 static void UpdateSndDevices(TXT_UNCAST_ARG(widget), TXT_UNCAST_ARG(data))
 {
     switch (snd_oplmode)
@@ -96,6 +98,7 @@ static void UpdateSndDevices(TXT_UNCAST_ARG(widget), TXT_UNCAST_ARG(data))
             break;
     }
 }
+#pragma GCC diagnostic pop
 
 static txt_dropdown_list_t *OPLTypeSelector()
 {
@@ -117,6 +120,8 @@ static txt_dropdown_list_t *OPLTypeSelector()
     return result;
 }
 
+#pragma GCC diagnostic push
+#pragma GCC diagnostic ignored "-Wunused-parameter"
 static void OpenMusicPackDir(TXT_UNCAST_ARG(widget), TXT_UNCAST_ARG(unused))
 {
     if (!OpenFolder(music_pack_path))
@@ -124,7 +129,10 @@ static void OpenMusicPackDir(TXT_UNCAST_ARG(widget), TXT_UNCAST_ARG(unused))
         TXT_MessageBox("Error", "Failed to open music pack directory.");
     }
 }
+#pragma GCC diagnostic pop
 
+#pragma GCC diagnostic push
+#pragma GCC diagnostic ignored "-Wunused-parameter"
 void ConfigSound(TXT_UNCAST_ARG(widget), void *user_data)
 {
     txt_window_t *window;
@@ -201,6 +209,7 @@ void ConfigSound(TXT_UNCAST_ARG(widget), void *user_data)
                 nullptr)),
         nullptr);
 }
+#pragma GCC diagnostic pop
 
 void BindSoundVariables()
 {

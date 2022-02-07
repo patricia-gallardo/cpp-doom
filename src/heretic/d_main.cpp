@@ -656,7 +656,7 @@ static void finishStartup()
 }
 
 char tmsg[300];
-void tprintf(const char *msg, int initflag)
+void tprintf(const char *msg, int)
 {
     printf("%s", msg);
 }

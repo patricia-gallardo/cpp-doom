@@ -72,6 +72,8 @@ static int SelectorWindowY(txt_dropdown_list_t *list)
 
 // Called when a button in the selector window is pressed
 
+#pragma GCC diagnostic push
+#pragma GCC diagnostic ignored "-Wunused-parameter"
 static void ItemSelected(TXT_UNCAST_ARG(button), TXT_UNCAST_ARG(callback_data))
 {
     TXT_CAST_ARG(callback_data_t, callback_data);
@@ -86,20 +88,24 @@ static void ItemSelected(TXT_UNCAST_ARG(button), TXT_UNCAST_ARG(callback_data))
 
     TXT_CloseWindow(callback_data->window);
 }
+#pragma GCC diagnostic pop
 
 // Free callback data when the window is closed
 
-static void FreeCallbackData(TXT_UNCAST_ARG(list), 
+#pragma GCC diagnostic push
+#pragma GCC diagnostic ignored "-Wunused-parameter"
+static void FreeCallbackData(TXT_UNCAST_ARG(list),
                              TXT_UNCAST_ARG(callback_data))
 {
     TXT_CAST_ARG(callback_data_t, callback_data);
 
     free(callback_data);
 }
+#pragma GCC diagnostic pop
 
 // Catch presses of escape and close the window.
 
-static int SelectorWindowListener(txt_window_t *window, int key, void *user_data)
+static int SelectorWindowListener(txt_window_t *window, int key, void *)
 {
     if (key == KEY_ESCAPE)
     {
@@ -110,8 +116,8 @@ static int SelectorWindowListener(txt_window_t *window, int key, void *user_data
     return 0;
 }
 
-static int SelectorMouseListener(txt_window_t *window, int x, int y, int b,
-                                 void *unused)
+static int SelectorMouseListener(txt_window_t *window, int x, int y, int,
+                                 void *)
 {
     txt_widget_t *win;
 
@@ -249,9 +255,12 @@ static void TXT_DropdownListDrawer(TXT_UNCAST_ARG(list))
     }
 }
 
+#pragma GCC diagnostic push
+#pragma GCC diagnostic ignored "-Wunused-parameter"
 static void TXT_DropdownListDestructor(TXT_UNCAST_ARG(list))
 {
 }
+#pragma GCC diagnostic pop
 
 static int TXT_DropdownListKeyPress(TXT_UNCAST_ARG(list), int key)
 {
@@ -267,7 +276,7 @@ static int TXT_DropdownListKeyPress(TXT_UNCAST_ARG(list), int key)
 }
 
 static void TXT_DropdownListMousePress(TXT_UNCAST_ARG(list), 
-                                       int x, int y, int b)
+                                       int, int, int b)
 {
     TXT_CAST_ARG(txt_dropdown_list_t, list);
 

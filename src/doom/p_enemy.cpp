@@ -1815,17 +1815,13 @@ void A_BabyMetal(mobj_t *mo)
     A_Chase(mo);
 }
 
-void A_OpenShotgun2(mobj_t *mobj,
-    player_t *              player,
-    pspdef_t *              psp)
+void A_OpenShotgun2(mobj_t *, player_t *player, pspdef_t *)
 {
     if (!player) return;                 // [crispy] let pspr action pointers get called from mobj states
     S_StartSound(player->so, sfx_dbopn); // [crispy] weapon sound source
 }
 
-void A_LoadShotgun2(mobj_t *mobj,
-    player_t *              player,
-    pspdef_t *              psp)
+void A_LoadShotgun2(mobj_t *, player_t *player, pspdef_t *)
 {
     if (!player) return;                  // [crispy] let pspr action pointers get called from mobj states
     S_StartSound(player->so, sfx_dbload); // [crispy] weapon sound source
@@ -1835,9 +1831,7 @@ void A_ReFire(mobj_t *mobj,
     player_t *        player,
     pspdef_t *        psp);
 
-void A_CloseShotgun2(mobj_t *mobj,
-    player_t *               player,
-    pspdef_t *               psp)
+void A_CloseShotgun2(mobj_t *, player_t *player, pspdef_t *psp)
 {
     if (!player) return;                 // [crispy] let pspr action pointers get called from mobj states
     S_StartSound(player->so, sfx_dbcls); // [crispy] weapon sound source
@@ -1850,7 +1844,7 @@ int        numbraintargets = 0; // [crispy] initialize
 int        braintargeton   = 0;
 static int maxbraintargets; // [crispy] remove braintargets limit
 
-void A_BrainAwake(mobj_t *mo)
+void A_BrainAwake(mobj_t *)
 {
     thinker_t *thinker;
     mobj_t *   m;
@@ -1901,7 +1895,7 @@ void A_BrainAwake(mobj_t *mo)
 }
 
 
-void A_BrainPain(mobj_t *mo)
+void A_BrainPain(mobj_t *)
 {
     // [crispy] prevent from adding up volume
     crispy->soundfull ? S_StartSoundOnce(nullptr, sfx_bospn) : S_StartSound(nullptr, sfx_bospn);
@@ -1957,7 +1951,7 @@ void A_BrainExplode(mobj_t *mo)
 }
 
 
-void A_BrainDie(mobj_t *mo)
+void A_BrainDie(mobj_t *)
 {
     G_ExitLevel();
 }

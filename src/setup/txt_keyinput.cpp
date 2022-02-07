@@ -55,11 +55,14 @@ static int KeyPressCallback(txt_window_t *window, int key,
     }
 }
 
+#pragma GCC diagnostic push
+#pragma GCC diagnostic ignored "-Wunused-parameter"
 static void ReleaseGrab(TXT_UNCAST_ARG(window), TXT_UNCAST_ARG(unused))
 {
     // SDL2-TODO: Needed?
     // SDL_WM_GrabInput(SDL_GRAB_OFF);
 }
+#pragma GCC diagnostic pop
 
 static void OpenPromptWindow(txt_key_input_t *key_input)
 {
@@ -122,9 +125,12 @@ static void TXT_KeyInputDrawer(TXT_UNCAST_ARG(key_input))
     }
 }
 
+#pragma GCC diagnostic push
+#pragma GCC diagnostic ignored "-Wunused-parameter"
 static void TXT_KeyInputDestructor(TXT_UNCAST_ARG(key_input))
 {
 }
+#pragma GCC diagnostic pop
 
 static int TXT_KeyInputKeyPress(TXT_UNCAST_ARG(key_input), int key)
 {
@@ -147,7 +153,7 @@ static int TXT_KeyInputKeyPress(TXT_UNCAST_ARG(key_input), int key)
     return 0;
 }
 
-static void TXT_KeyInputMousePress(TXT_UNCAST_ARG(widget), int x, int y, int b)
+static void TXT_KeyInputMousePress(TXT_UNCAST_ARG(widget), int, int, int b)
 {
     TXT_CAST_ARG(txt_key_input_t, widget);
             

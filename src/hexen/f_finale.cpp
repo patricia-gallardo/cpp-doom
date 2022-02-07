@@ -102,7 +102,7 @@ void F_StartFinale()
 //
 //===========================================================================
 
-bool F_Responder(event_t * event)
+bool F_Responder(event_t *)
 {
     return false;
 }

@@ -289,7 +289,7 @@ void I_HandleKeyboardEvent(SDL_Event *sdlevent)
     }
 }
 
-void I_StartTextInput(int x1, int y1, int x2, int y2)
+void I_StartTextInput(int, int, int, int)
 {
     text_input_enabled = true;
 

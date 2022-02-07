@@ -1125,7 +1125,7 @@ char HU_dequeueChatChar()
     return c;
 }
 
-static void StartChatInput(int dest)
+static void StartChatInput(int)
 {
     chat_on = true;
     HUlib_resetIText(&w_chat);

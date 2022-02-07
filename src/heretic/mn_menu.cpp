@@ -806,7 +806,7 @@ static bool SCNetCheck(int option)
 //
 //---------------------------------------------------------------------------
 
-static bool SCQuitGame(int option)
+static bool SCQuitGame(int)
 {
     MenuActive = false;
     askforquit = true;
@@ -824,7 +824,7 @@ static bool SCQuitGame(int option)
 //
 //---------------------------------------------------------------------------
 
-static bool SCEndGame(int option)
+static bool SCEndGame(int)
 {
     if (demoplayback || netgame)
     {
@@ -846,7 +846,7 @@ static bool SCEndGame(int option)
 //
 //---------------------------------------------------------------------------
 
-static bool SCMessages(int option)
+static bool SCMessages(int)
 {
     messageson ^= 1;
     if (messageson)
@@ -1074,7 +1074,7 @@ static bool SCScreenSize(int option)
 //
 //---------------------------------------------------------------------------
 
-static bool SCInfo(int option)
+static bool SCInfo(int)
 {
     InfoType = 1;
     S_StartSound(nullptr, sfx_dorcls);
@@ -1091,25 +1091,25 @@ static bool SCInfo(int option)
 //
 //---------------------------------------------------------------------------
 
-static bool CrispySmoothing(int option)
+static bool CrispySmoothing(int)
 {
     crispy->smoothscaling = !crispy->smoothscaling;
     return true;
 }
 
-static bool CrispyAutomapStats(int option)
+static bool CrispyAutomapStats(int)
 {
     crispy->automapstats = (crispy->automapstats + 1) % NUM_WIDGETS;
     return true;
 }
 
-static bool CrispyLevelTime(int option)
+static bool CrispyLevelTime(int)
 {
     crispy->leveltime = (crispy->leveltime + 1) % NUM_WIDGETS;
     return true;
 }
 
-static bool CrispyPlayerCoords(int option)
+static bool CrispyPlayerCoords(int)
 {
     crispy->playercoords = (crispy->playercoords + 1) % (NUM_WIDGETS - 1); // [crispy] disable "always" setting
     return true;
