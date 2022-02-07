@@ -113,7 +113,7 @@ static unsigned int SpinControlWidth(txt_spincontrol_t *spincontrol)
 
 static void TXT_SpinControlSizeCalc(void *uncast_spincontrol)
 {
-    txt_spincontrol_t *spincontrol = (txt_spincontrol_t *)uncast_spincontrol;
+    auto *spincontrol = reinterpret_cast<txt_spincontrol_t *>(uncast_spincontrol);
 
     spincontrol->widget.w = SpinControlWidth(spincontrol) + 5;
     spincontrol->widget.h = 1;
@@ -140,7 +140,7 @@ static void SetBuffer(txt_spincontrol_t *spincontrol)
 
 static void TXT_SpinControlDrawer(void *uncast_spincontrol)
 {
-    txt_spincontrol_t *spincontrol = (txt_spincontrol_t *)uncast_spincontrol;
+    auto *spincontrol = reinterpret_cast<txt_spincontrol_t *>(uncast_spincontrol);
     unsigned int i;
     unsigned int padding;
     txt_saved_colors_t colors;
@@ -199,7 +199,7 @@ static void TXT_SpinControlDrawer(void *uncast_spincontrol)
 
 static void TXT_SpinControlDestructor(void *uncast_spincontrol)
 {
-    txt_spincontrol_t *spincontrol = (txt_spincontrol_t *)uncast_spincontrol;
+    auto *spincontrol = reinterpret_cast<txt_spincontrol_t *>(uncast_spincontrol);
 
     free(spincontrol->buffer);
 }
@@ -261,7 +261,7 @@ static void FinishEditing(txt_spincontrol_t *spincontrol)
 
 static int TXT_SpinControlKeyPress(void *uncast_spincontrol, int key)
 {
-    txt_spincontrol_t *spincontrol = (txt_spincontrol_t *)uncast_spincontrol;
+    auto *spincontrol = reinterpret_cast<txt_spincontrol_t *>(uncast_spincontrol);
 
     // Enter to enter edit mode
 
@@ -345,7 +345,7 @@ static int TXT_SpinControlKeyPress(void *uncast_spincontrol, int key)
 static void TXT_SpinControlMousePress(void *uncast_spincontrol,
                                    int x, int, int)
 {
-    txt_spincontrol_t *spincontrol = (txt_spincontrol_t *)uncast_spincontrol;
+    auto *spincontrol = reinterpret_cast<txt_spincontrol_t *>(uncast_spincontrol);
     unsigned int rel_x;
 
     rel_x = x - spincontrol->widget.x;
@@ -362,7 +362,7 @@ static void TXT_SpinControlMousePress(void *uncast_spincontrol,
 
 static void TXT_SpinControlFocused(void *uncast_spincontrol, int)
 {
-    txt_spincontrol_t *spincontrol = (txt_spincontrol_t *)uncast_spincontrol;
+    auto *spincontrol = reinterpret_cast<txt_spincontrol_t *>(uncast_spincontrol);
 
     FinishEditing(spincontrol);
 }

@@ -17,7 +17,7 @@
 
 static void TXT_StrutSizeCalc(void *uncast_strut)
 {
-    txt_strut_t *strut = (txt_strut_t *)uncast_strut;
+    auto *strut = reinterpret_cast<txt_strut_t *>(uncast_strut);
 
     // Minimum width is the string length + two spaces for padding
 

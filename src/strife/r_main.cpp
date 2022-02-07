@@ -693,7 +693,7 @@ void R_ExecuteSetViewSize ()
 	
     // villsa [STRIFE] calculate centery from player's pitch
     centery = (setblocks*players[consoleplayer].pitch);
-    centery = (unsigned int)(centery/10)+viewheight/2;
+    centery = static_cast<unsigned int>(centery/10)+viewheight/2;
 
     centerx = viewwidth/2;
     centerxfrac = centerx<<FRACBITS;

@@ -528,12 +528,12 @@ void R_ProjectSprite(mobj_t * thing)
         ang = R_PointToAngle(thing->x, thing->y);
         rot = (ang - thing->angle + (unsigned) (ANG45 / 2) * 9) >> 29;
         lump = sprframe->lump[rot];
-        flip = (bool) sprframe->flip[rot];
+        flip = static_cast<bool>(sprframe->flip[rot]);
     }
     else
     {                           // use single rotation for all views
         lump = sprframe->lump[0];
-        flip = (bool) sprframe->flip[0];
+        flip = static_cast<bool>(sprframe->flip[0]);
     }
 
 //
@@ -696,7 +696,7 @@ void R_DrawPSprite(pspdef_t * psp)
     sprframe = &sprdef->spriteframes[psp->state->frame & FF_FRAMEMASK];
 
     lump = sprframe->lump[0];
-    flip = (bool) sprframe->flip[0];
+    flip = static_cast<bool>(sprframe->flip[0]);
 
 //
 // calculate edges of the shape

@@ -782,7 +782,7 @@ static void SetJoystickButtonLabel()
         }
     }
 
-    TXT_SetButtonLabel(joystick_button, (char *) name);
+    TXT_SetButtonLabel(joystick_button, const_cast<char *>(name));
 }
 
 // Try to open all joysticks visible to SDL.

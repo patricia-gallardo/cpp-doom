@@ -684,7 +684,7 @@ char *TXT_SelectFile(const char *window_title, const char **extensions)
 
 static void TXT_FileSelectSizeCalc(void *uncast_fileselect)
 {
-    txt_fileselect_t *fileselect = (txt_fileselect_t *)uncast_fileselect;
+    auto *fileselect = reinterpret_cast<txt_fileselect_t *>(uncast_fileselect);
 
     // Calculate widget size, but override the width to always
     // be the configured size.
@@ -696,7 +696,7 @@ static void TXT_FileSelectSizeCalc(void *uncast_fileselect)
 
 static void TXT_FileSelectDrawer(void *uncast_fileselect)
 {
-    txt_fileselect_t *fileselect = (txt_fileselect_t *)uncast_fileselect;
+    auto *fileselect = reinterpret_cast<txt_fileselect_t *>(uncast_fileselect);
 
     // Input box widget inherits all the properties of the
     // file selector.
@@ -714,7 +714,7 @@ static void TXT_FileSelectDrawer(void *uncast_fileselect)
 
 static void TXT_FileSelectDestructor(void *uncast_fileselect)
 {
-    txt_fileselect_t *fileselect = (txt_fileselect_t *)uncast_fileselect;
+    auto *fileselect = reinterpret_cast<txt_fileselect_t *>(uncast_fileselect);
 
     TXT_DestroyWidget(fileselect->inputbox);
 }
@@ -748,7 +748,7 @@ static int DoSelectFile(txt_fileselect_t *fileselect)
 
 static int TXT_FileSelectKeyPress(void *uncast_fileselect, int key)
 {
-    txt_fileselect_t *fileselect = (txt_fileselect_t *)uncast_fileselect;
+    auto *fileselect = reinterpret_cast<txt_fileselect_t *>(uncast_fileselect);
 
     // When the enter key is pressed, pop up a file selection dialog,
     // if file selectors work. Allow holding down 'alt' to override
@@ -770,7 +770,7 @@ static int TXT_FileSelectKeyPress(void *uncast_fileselect, int key)
 static void TXT_FileSelectMousePress(void *uncast_fileselect,
                                      int x, int y, int b)
 {
-    txt_fileselect_t *fileselect = (txt_fileselect_t *)uncast_fileselect;
+    auto *fileselect = reinterpret_cast<txt_fileselect_t *>(uncast_fileselect);
 
     if (!fileselect->inputbox->editing
      && !TXT_GetModifierState(TXT_MOD_ALT)
@@ -787,7 +787,7 @@ static void TXT_FileSelectMousePress(void *uncast_fileselect,
 
 static void TXT_FileSelectFocused(void *uncast_fileselect, int focused)
 {
-    txt_fileselect_t *fileselect = (txt_fileselect_t *)uncast_fileselect;
+    auto *fileselect = reinterpret_cast<txt_fileselect_t *>(uncast_fileselect);
 
     TXT_SetWidgetFocus(fileselect->inputbox, focused);
 }
@@ -809,7 +809,7 @@ txt_widget_class_t txt_fileselect_class =
 
 static void InputBoxChanged(void *, void *uncast_fileselect)
 {
-    txt_fileselect_t *fileselect = (txt_fileselect_t *)uncast_fileselect;
+    auto *fileselect = reinterpret_cast<txt_fileselect_t *>(uncast_fileselect);
 
     TXT_EmitSignal(&fileselect->widget, "changed");
 }

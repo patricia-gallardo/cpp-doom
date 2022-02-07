@@ -108,7 +108,7 @@ static bool WriteTime(unsigned int time, MEMFILE *midioutput)
 
     for (;;)
     {
-        writeval = (uint8_t)(buffer & 0xFF);
+        writeval = static_cast<uint8_t>(buffer & 0xFF);
 
         if (mem_fwrite(&writeval, 1, 1, midioutput) != 1)
         {
@@ -556,7 +556,7 @@ bool mus2mid(MEMFILE *musinput, MEMFILE *midioutput)
                 {
                     break;
                 }
-                if (WritePitchWheel(channel, (short)(key * 64), midioutput))
+                if (WritePitchWheel(channel, static_cast<short>(key * 64), midioutput))
                 {
                     return true;
                 }

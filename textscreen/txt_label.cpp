@@ -25,7 +25,7 @@
 
 static void TXT_LabelSizeCalc(void *uncast_label)
 {
-    txt_label_t *label = (txt_label_t *)uncast_label;
+    txt_label_t *label = reinterpret_cast<txt_label_t *>(uncast_label);
 
     label->widget.w = label->w;
     label->widget.h = label->h;
@@ -33,7 +33,7 @@ static void TXT_LabelSizeCalc(void *uncast_label)
 
 static void TXT_LabelDrawer(void *uncast_label)
 {
-    txt_label_t *label = (txt_label_t *)uncast_label;
+    auto *label = reinterpret_cast<txt_label_t *>(uncast_label);
     unsigned int x, y;
     int origin_x, origin_y;
     unsigned int align_indent = 0;
@@ -97,7 +97,7 @@ static void TXT_LabelDrawer(void *uncast_label)
 
 static void TXT_LabelDestructor(void *uncast_label)
 {
-    txt_label_t *label = (txt_label_t *)uncast_label;
+    auto *label = reinterpret_cast<txt_label_t *>(uncast_label);
 
     free(label->label);
     free(label->lines);

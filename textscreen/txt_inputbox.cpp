@@ -33,7 +33,7 @@ static void SetBufferFromValue(txt_inputbox_t *inputbox)
 {
     if (inputbox->widget.widget_class == &txt_inputbox_class)
     {
-        char **value = (char **) inputbox->value;
+        char **value = reinterpret_cast<char **>(inputbox->value);
 
         if (*value != nullptr)
         {
@@ -46,7 +46,7 @@ static void SetBufferFromValue(txt_inputbox_t *inputbox)
     }
     else if (inputbox->widget.widget_class == &txt_int_inputbox_class)
     {
-        int *value = (int *) inputbox->value;
+        int *value = reinterpret_cast<int *>(inputbox->value);
         TXT_snprintf(inputbox->buffer, inputbox->buffer_len, "%i", *value);
     }
 }
@@ -90,12 +90,14 @@ static void FinishEditing(txt_inputbox_t *inputbox)
 
     if (inputbox->widget.widget_class == &txt_inputbox_class)
     {
-        free(*((char **)inputbox->value));
-        *((char **) inputbox->value) = strdup(inputbox->buffer);
+        char **value = reinterpret_cast<char **>(inputbox->value);
+        free(*value);
+        *value = strdup(inputbox->buffer);
     }
     else if (inputbox->widget.widget_class == &txt_int_inputbox_class)
     {
-        *((int *) inputbox->value) = atoi(inputbox->buffer);
+        int *pInt = static_cast<int *>(inputbox->value);
+        *pInt     = std::atoi(inputbox->buffer);
     }
 
     TXT_EmitSignal(&inputbox->widget, "changed");
@@ -105,7 +107,7 @@ static void FinishEditing(txt_inputbox_t *inputbox)
 
 static void TXT_InputBoxSizeCalc(void *uncast_inputbox)
 {
-    txt_inputbox_t *inputbox = (txt_inputbox_t *)uncast_inputbox;
+    auto *inputbox = reinterpret_cast<txt_inputbox_t *>(uncast_inputbox);;
 
     // Enough space for the box + cursor
 
@@ -115,7 +117,7 @@ static void TXT_InputBoxSizeCalc(void *uncast_inputbox)
 
 static void TXT_InputBoxDrawer(void *uncast_inputbox)
 {
-    txt_inputbox_t *inputbox = (txt_inputbox_t *)uncast_inputbox;
+    auto *inputbox = reinterpret_cast<txt_inputbox_t *>(uncast_inputbox);;
     int focused;
     int i;
     int chars;
@@ -174,7 +176,7 @@ static void TXT_InputBoxDrawer(void *uncast_inputbox)
 
 static void TXT_InputBoxDestructor(void *uncast_inputbox)
 {
-    txt_inputbox_t *inputbox = (txt_inputbox_t *)uncast_inputbox;
+    auto *inputbox = reinterpret_cast<txt_inputbox_t *>(uncast_inputbox);;
 
     StopEditing(inputbox);
     free(inputbox->buffer);
@@ -210,7 +212,7 @@ static void AddCharacter(txt_inputbox_t *inputbox, int key)
 
 static int TXT_InputBoxKeyPress(void *uncast_inputbox, int key)
 {
-    txt_inputbox_t *inputbox = (txt_inputbox_t *)uncast_inputbox;
+    auto *inputbox = reinterpret_cast<txt_inputbox_t *>(uncast_inputbox);;
     unsigned int c;
 
     if (!inputbox->editing)
@@ -226,8 +228,9 @@ static int TXT_InputBoxKeyPress(void *uncast_inputbox, int key)
         if ((key == KEY_DEL || key == KEY_BACKSPACE)
          && inputbox->widget.widget_class == &txt_inputbox_class)
         {
-            free(*((char **)inputbox->value));
-            *((char **) inputbox->value) = strdup("");
+            char **value = reinterpret_cast<char **>(inputbox->value);
+            free(*value);
+            *value = strdup("");
         }
 
         return 0;
@@ -264,7 +267,7 @@ static int TXT_InputBoxKeyPress(void *uncast_inputbox, int key)
 static void TXT_InputBoxMousePress(void *uncast_inputbox,
                                    int, int, int b)
 {
-    txt_inputbox_t *inputbox = (txt_inputbox_t *)uncast_inputbox;
+    auto *inputbox = reinterpret_cast<txt_inputbox_t *>(uncast_inputbox);;
 
     if (b == TXT_MOUSE_LEFT)
     {
@@ -281,7 +284,7 @@ static void TXT_InputBoxMousePress(void *uncast_inputbox,
 
 static void TXT_InputBoxFocused(void *uncast_inputbox, int focused)
 {
-    txt_inputbox_t *inputbox = (txt_inputbox_t *)uncast_inputbox;
+    auto *inputbox = reinterpret_cast<txt_inputbox_t *>(uncast_inputbox);;
 
     // Stop editing when we lose focus.
 

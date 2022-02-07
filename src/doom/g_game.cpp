@@ -245,7 +245,7 @@ int G_CmdChecksum(ticcmd_t *cmd)
     int    sum = 0;
 
     for (i = 0; i < sizeof(*cmd) / 4 - 1; i++)
-        sum += ((int *)cmd)[i];
+        sum += (reinterpret_cast<int *>(cmd))[i];
 
     return sum;
 }
@@ -453,8 +453,8 @@ void G_BuildTiccmd(ticcmd_t *cmd, int maketic)
     {
         M_snprintf(playermessage, sizeof(playermessage),
             "X=%.10f Y=%.10f A=%d",
-            (double)player->mo->x / FRACUNIT,
-            (double)player->mo->y / FRACUNIT,
+            static_cast<double>(player->mo->x) / FRACUNIT,
+            static_cast<double>(player->mo->y) / FRACUNIT,
             player->mo->angle >> 24);
         player->message = playermessage;
 
@@ -1426,7 +1426,7 @@ bool
         // This calculation overflows in Vanilla Doom, but here we deliberately
         // avoid integer overflow as it is undefined behavior, so the value of
         // 'an' will always be positive.
-        an = (ANG45 >> ANGLETOFINESHIFT) * ((signed int)mthing->angle / 45);
+        an = (ANG45 >> ANGLETOFINESHIFT) * (static_cast<signed int>(mthing->angle) / 45);
 
         switch (an)
         {
@@ -2093,7 +2093,7 @@ void G_DoSaveGame()
         extern const char *skilltable[];
 
         fprintf(stderr, "G_DoSaveGame: Episode %d, Map %d, %s, Time %d:%02d:%02d, Total %d:%02d:%02d.\n",
-            gameepisode, gamemap, skilltable[BETWEEN(0, 5, (int)gameskill + 1)],
+            gameepisode, gamemap, skilltable[BETWEEN(0, 5, static_cast<int>(gameskill) + 1)],
             ltime / 3600, (ltime % 3600) / 60, ltime % 60,
             ttime / 3600, (ttime % 3600) / 60, ttime % 60);
     }
@@ -2437,8 +2437,8 @@ void G_ReadDemoTiccmd(ticcmd_t *cmd)
         return;
     }
 
-    cmd->forwardmove = ((signed char)*demo_p++);
-    cmd->sidemove    = ((signed char)*demo_p++);
+    cmd->forwardmove = (static_cast<signed char>(*demo_p++));
+    cmd->sidemove    = (static_cast<signed char>(*demo_p++));
 
     // If this is a longtics demo, read back in higher resolution
 
@@ -2449,10 +2449,10 @@ void G_ReadDemoTiccmd(ticcmd_t *cmd)
     }
     else
     {
-        cmd->angleturn = ((unsigned char)*demo_p++) << 8;
+        cmd->angleturn = (reinterpret_cast<unsigned char>(*demo_p++)) << 8;
     }
 
-    cmd->buttons = (unsigned char)*demo_p++;
+    cmd->buttons = reinterpret_cast<unsigned char>(*demo_p++);
 
     // [crispy] increase demo tics counter
     // applies to both recording and playback,
@@ -2908,7 +2908,7 @@ bool G_CheckDemoStatus()
 
         endtime  = I_GetTime();
         realtics = endtime - starttime;
-        fps      = ((float)gametic * TICRATE) / realtics;
+        fps      = (static_cast<float>(gametic) * TICRATE) / realtics;
 
         // Prevent recursive calls
         timingdemo   = false;

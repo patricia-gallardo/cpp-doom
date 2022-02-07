@@ -1817,10 +1817,10 @@ void G_DoSaveGame (char *path)
     //   the save slot is currently on.
     current_path = M_SafeFilePath(path, "current");
     // haleyjd: endian-agnostic IO
-    gamemapbytes[0] = (uint8_t)( gamemap        & 0xff);
-    gamemapbytes[1] = (uint8_t)((gamemap >>  8) & 0xff);
-    gamemapbytes[2] = (uint8_t)((gamemap >> 16) & 0xff);
-    gamemapbytes[3] = (uint8_t)((gamemap >> 24) & 0xff);
+    gamemapbytes[0] = static_cast<uint8_t>( gamemap        & 0xff);
+    gamemapbytes[1] = static_cast<uint8_t>((gamemap >>  8) & 0xff);
+    gamemapbytes[2] = static_cast<uint8_t>((gamemap >> 16) & 0xff);
+    gamemapbytes[3] = static_cast<uint8_t>((gamemap >> 24) & 0xff);
     M_WriteFile(current_path, gamemapbytes, 4);
     Z_Free(current_path);
 
@@ -2159,7 +2159,7 @@ void G_WriteDemoTiccmd (ticcmd_t* cmd)
     *demo_p++ = cmd->angleturn >> 8; 
     *demo_p++ = cmd->buttons; 
     *demo_p++ = cmd->buttons2;                 // [STRIFE]
-    *demo_p++ = (uint8_t)(cmd->inventory & 0xff); // [STRIFE]
+    *demo_p++ = static_cast<uint8_t>(cmd->inventory & 0xff); // [STRIFE]
 
     // reset demo pointer back
     demo_p = demo_start;

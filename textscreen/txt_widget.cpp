@@ -229,8 +229,8 @@ int TXT_SelectableWidget(void *uncast_widget)
 
 int TXT_ContainsWidget(void *uncast_haystack, void *uncast_needle)
 {
-    txt_widget_t *haystack = (txt_widget_t *)uncast_haystack;
-    txt_widget_t *needle = (txt_widget_t *)uncast_needle;
+    auto *haystack = reinterpret_cast<txt_widget_t *>(uncast_haystack);
+    auto *needle = reinterpret_cast<txt_widget_t *>(uncast_needle);
 
     while (needle != nullptr)
     {

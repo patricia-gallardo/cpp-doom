@@ -130,7 +130,7 @@ txt_widget_class_t txt_conditional_class =
 
 txt_conditional_t *TXT_NewConditional(int *var, int expected_value, void *uncast_child)
 {
-    txt_widget_t *child = (txt_widget_t *)uncast_child;
+    auto *child = reinterpret_cast<txt_widget_t *>(uncast_child);;
 
     auto *loc = malloc(sizeof(txt_conditional_t));
     auto *conditional = new (loc) txt_conditional_t{};
@@ -151,7 +151,7 @@ txt_conditional_t *TXT_NewConditional(int *var, int expected_value, void *uncast
 // creation time.
 txt_widget_t *TXT_If(int conditional, void *uncast_child)
 {
-    txt_widget_t *child = (txt_widget_t *)uncast_child;
+    auto *child = reinterpret_cast<txt_widget_t *>(uncast_child);;
 
     if (conditional)
     {

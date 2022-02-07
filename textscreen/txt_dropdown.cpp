@@ -76,7 +76,7 @@ static int SelectorWindowY(txt_dropdown_list_t *list)
 
 static void ItemSelected(void *, void *uncast_callback_data)
 {
-    callback_data_t *callback_data = (callback_data_t *)uncast_callback_data;
+    auto *callback_data = reinterpret_cast<callback_data_t *>(uncast_callback_data);
 
     // Set the variable
 
@@ -92,7 +92,7 @@ static void ItemSelected(void *, void *uncast_callback_data)
 // Free callback data when the window is closed
 static void FreeCallbackData(void *, void *uncast_callback_data)
 {
-    callback_data_t *callback_data = (callback_data_t *)uncast_callback_data;
+    auto *callback_data = reinterpret_cast<callback_data_t *>(uncast_callback_data);
 
     free(callback_data);
 }
@@ -211,7 +211,7 @@ static int DropdownListWidth(txt_dropdown_list_t *list)
 
 static void TXT_DropdownListSizeCalc(void *uncast_list)
 {
-    txt_dropdown_list_t *list = (txt_dropdown_list_t *)uncast_list;
+    auto *list = reinterpret_cast<txt_dropdown_list_t *>(uncast_list);
 
     list->widget.w = DropdownListWidth(list);
     list->widget.h = 1;
@@ -219,7 +219,7 @@ static void TXT_DropdownListSizeCalc(void *uncast_list)
 
 static void TXT_DropdownListDrawer(void *uncast_list)
 {
-    txt_dropdown_list_t *list = (txt_dropdown_list_t *)uncast_list;
+    auto *list = reinterpret_cast<txt_dropdown_list_t *>(uncast_list);
     unsigned int i;
     const char *str;
 
@@ -255,7 +255,7 @@ static void TXT_DropdownListDestructor(void *)
 
 static int TXT_DropdownListKeyPress(void *uncast_list, int key)
 {
-    txt_dropdown_list_t *list = (txt_dropdown_list_t *)uncast_list;
+    auto *list = reinterpret_cast<txt_dropdown_list_t *>(uncast_list);
 
     if (key == KEY_ENTER)
     {
@@ -269,7 +269,7 @@ static int TXT_DropdownListKeyPress(void *uncast_list, int key)
 static void TXT_DropdownListMousePress(void *uncast_list,
                                        int, int, int b)
 {
-    txt_dropdown_list_t *list = (txt_dropdown_list_t *)uncast_list;
+    auto *list = reinterpret_cast<txt_dropdown_list_t *>(uncast_list);
 
     // Left mouse click does the same as selecting and pressing enter
 

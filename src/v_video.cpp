@@ -851,7 +851,7 @@ void V_CopyScaledBuffer(pixel_t *dest, pixel_t *src, size_t size)
         {
             for (j = 0; j <= crispy->hires; j++)
             {
-                *(dest + (size << crispy->hires) + (crispy->hires * (int)(size / ORIGWIDTH) + i) * SCREENWIDTH + j) = *(src + size);
+                *(dest + (size << crispy->hires) + (crispy->hires * static_cast<int>(size / ORIGWIDTH) + i) * SCREENWIDTH + j) = *(src + size);
             }
         }
     }
@@ -1224,7 +1224,7 @@ static void DrawAcceleratingBox(int speed)
     {
         // Undo acceleration and get back the original mouse speed
         original_speed = speed - mouse_threshold;
-        original_speed = (int)(original_speed / mouse_acceleration);
+        original_speed = static_cast<int>(original_speed / mouse_acceleration);
         original_speed += mouse_threshold;
 
         linelen = (original_speed * redline_x) / mouse_threshold;

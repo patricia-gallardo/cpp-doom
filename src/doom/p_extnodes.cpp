@@ -204,7 +204,7 @@ void P_LoadNodes_DeePBSP(int lump)
         for (j = 0; j < 2; j++)
         {
             int k;
-            no->children[j] = (unsigned int)(mn->children[j]);
+            no->children[j] = static_cast<unsigned int>(mn->children[j]);
 
             for (k = 0; k < 4; k++)
                 no->bbox[j][k] = SHORT(mn->bbox[j][k]) << FRACBITS;
@@ -449,7 +449,7 @@ void P_LoadNodes_ZDBSP(int lump, bool compressed)
 
         for (j = 0; j < 2; j++)
         {
-            no->children[j] = (unsigned int)(mn->children[j]);
+            no->children[j] = static_cast<unsigned int>(mn->children[j]);
 
             for (k = 0; k < 4; k++)
                 no->bbox[j][k] = SHORT(mn->bbox[j][k]) << FRACBITS;

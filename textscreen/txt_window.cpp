@@ -37,7 +37,7 @@
 void TXT_SetWindowAction(txt_window_t *window,
                          txt_horiz_align_t position, void *uncast_action)
 {
-    txt_widget_t *action = (txt_widget_t *)uncast_action;
+    auto *action = reinterpret_cast<txt_widget_t *>(uncast_action);
 
     if (window->actions[position] != nullptr)
     {

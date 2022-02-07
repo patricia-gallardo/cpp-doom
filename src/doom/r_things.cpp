@@ -425,8 +425,8 @@ void R_DrawMaskedColumn(column_t *column)
         topscreen    = sprtopscreen + spryscale * top;
         bottomscreen = topscreen + spryscale * column->length;
 
-        dc_yl = (int)((topscreen + FRACUNIT - 1) >> FRACBITS); // [crispy] WiggleFix
-        dc_yh = (int)((bottomscreen - 1) >> FRACBITS);         // [crispy] WiggleFix
+        dc_yl = static_cast<int>((topscreen + FRACUNIT - 1) >> FRACBITS); // [crispy] WiggleFix
+        dc_yh = static_cast<int>((bottomscreen - 1) >> FRACBITS);         // [crispy] WiggleFix
 
         if (dc_yh >= mfloorclip[dc_x])
             dc_yh = mfloorclip[dc_x] - 1;
@@ -656,13 +656,13 @@ void R_ProjectSprite(mobj_t *thing)
             rot = (ang - interpangle + (unsigned)(ANG45 / 2) * 9) >> 29;
         }
         lump = sprframe->lump[rot];
-        flip = (bool)sprframe->flip[rot];
+        flip = static_cast<bool>(sprframe->flip[rot]);
     }
     else
     {
         // use single rotation for all views
         lump = sprframe->lump[0];
-        flip = (bool)sprframe->flip[0];
+        flip = static_cast<bool>(sprframe->flip[0]);
     }
 
     // [crispy] randomly flip corpse, blood and death animation sprites
@@ -969,7 +969,7 @@ void R_DrawPSprite(pspdef_t *psp, psprnum_t psprnum) // [crispy] differentiate g
     sprframe = &sprdef->spriteframes[psp->state->frame & FF_FRAMEMASK];
 
     lump = sprframe->lump[0];
-    flip = (bool)sprframe->flip[0] ^ crispy->flipweapons;
+    flip = static_cast<bool>(sprframe->flip[0] ^ crispy->flipweapons);
 
     // calculate edges of the shape
     tx = psp->sx2 - (ORIGWIDTH / 2) * FRACUNIT;

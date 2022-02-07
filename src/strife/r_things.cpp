@@ -480,8 +480,8 @@ void R_DrawVisSprite(vissprite_t *vis, int, int)
         if (texturecolumn < 0 || texturecolumn >= SHORT(patch->width))
             I_Error ("R_DrawSpriteRange: bad texturecolumn");
 #endif
-        column = (column_t *) ((uint8_t *)patch +
-                               LONG(patch->columnofs[texturecolumn]));
+        uint8_t *ptr = reinterpret_cast<uint8_t *>(patch) + LONG(patch->columnofs[texturecolumn]);
+        column = reinterpret_cast<column_t *>(ptr);
         R_DrawMaskedColumn (column, clip);  // villsa [STRIFE] clip argument
     }
 
@@ -568,13 +568,13 @@ void R_ProjectSprite (mobj_t* thing)
 	ang = R_PointToAngle (thing->x, thing->y);
 	rot = (ang-thing->angle+(unsigned)(ANG45/2)*9)>>29;
 	lump = sprframe->lump[rot];
-	flip = (bool)sprframe->flip[rot];
+	flip = static_cast<bool>(sprframe->flip[rot]);
     }
     else
     {
 	// use single rotation for all views
 	lump = sprframe->lump[0];
-	flip = (bool)sprframe->flip[0];
+	flip = static_cast<bool>(sprframe->flip[0]);
     }
     
     // calculate edges of the shape
@@ -725,7 +725,7 @@ void R_DrawPSprite (pspdef_t* psp)
 
     lump = sprframe->lump[0];
     // [STRIFE] haleyjd 20110629: -flip replaces this.
-    //flip = (bool)sprframe->flip[0];
+    //flip = static_cast<bool>(sprframe->flip[0]);
     flip = flipparm;
     
     // calculate edges of the shape

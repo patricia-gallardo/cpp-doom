@@ -872,7 +872,7 @@ void F_CastDrawer ()
     sprdef = &sprites[caststate->sprite];
     sprframe = &sprdef->spriteframes[ caststate->frame & FF_FRAMEMASK];
     lump = sprframe->lump[0];
-    flip = (bool)sprframe->flip[0];
+    flip = static_cast<bool>(sprframe->flip[0]);
 			
     patch = W_CacheLumpNum (lump+firstspritelump, PU_CACHE);
     if (flip)

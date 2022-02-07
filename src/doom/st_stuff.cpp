@@ -697,7 +697,7 @@ bool
 
                     mt.x     = plyr->mo->x >> FRACBITS;
                     mt.y     = plyr->mo->y >> FRACBITS;
-                    mt.angle = (plyr->mo->angle + ANG45 / 2) * (uint64_t)45 / ANG45;
+                    mt.angle = (plyr->mo->angle + ANG45 / 2) * static_cast<uint64_t>(45) / ANG45;
                     mt.type  = consoleplayer + 1;
                     P_SpawnPlayer(&mt);
 
@@ -1124,7 +1124,7 @@ bool
             M_snprintf(msg, sizeof(msg), "%s (%s) x%ld SDL%s",
                 PACKAGE_STRING,
                 BUILD_DATE,
-                (long)sizeof(void *) * CHAR_BIT,
+                static_cast<long>(sizeof(void *)) * CHAR_BIT,
                 crispy->sdlversion);
 #undef BUILD_DATE
             plyr->message = msg;
@@ -1136,7 +1136,7 @@ bool
             extern const char *skilltable[];
 
             M_snprintf(msg, sizeof(msg), "Skill: %s",
-                skilltable[BETWEEN(0, 5, (int)gameskill + 1)]);
+                skilltable[BETWEEN(0, 5, static_cast<int>(gameskill) + 1)]);
             plyr->message = msg;
         }
 
@@ -2354,7 +2354,7 @@ void ST_DrawDemoTimer(const int time)
 {
     char        buffer[16];
     const int   mins = time / (60 * TICRATE);
-    const float secs = (float)(time % (60 * TICRATE)) / TICRATE;
+    const float secs = static_cast<float>(time % (60 * TICRATE)) / TICRATE;
     const int   w    = shortnum[0]->width;
     int         n, x;
 

@@ -130,7 +130,7 @@ static void P_WriteFireFlicker(const char *key)
 
             M_snprintf(line, MAX_LINE_LEN, "%s %d %d %d %d\n",
                 key,
-                (int)(flick->sector - sectors),
+                static_cast<int>(flick->sector - sectors),
                 (int)flick->count,
                 (int)flick->maxlight,
                 (int)flick->minlight);
@@ -253,7 +253,7 @@ static void P_WriteButton(const char *key)
         {
             M_snprintf(line, MAX_LINE_LEN, "%s %d %d %d %d\n",
                 key,
-                (int)(button->line - lines),
+                static_cast<int>(button->line - lines),
                 (int)button->where,
                 (int)button->btexture,
                 (int)button->btimer);

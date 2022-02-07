@@ -1204,7 +1204,7 @@ void P_DialogDoChoice(int choice)
         // store next dialog into the talking actor
         nextdialog = currentchoice->next;
         if(nextdialog != 0)
-            dialogtalker->miscdata = (uint8_t)(std::abs(nextdialog));
+            dialogtalker->miscdata = static_cast<uint8_t>(std::abs(nextdialog));
     }
     else
     {

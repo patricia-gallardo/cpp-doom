@@ -25,7 +25,7 @@
 
 static void TXT_SeparatorSizeCalc(void *uncast_separator)
 {
-    txt_separator_t *separator = (txt_separator_t *)uncast_separator;
+    auto *separator = reinterpret_cast<txt_separator_t *>(uncast_separator);
 
     if (separator->label != nullptr)
     {
@@ -43,7 +43,7 @@ static void TXT_SeparatorSizeCalc(void *uncast_separator)
 
 static void TXT_SeparatorDrawer(void *uncast_separator)
 {
-    txt_separator_t *separator = (txt_separator_t *)uncast_separator;
+    auto *separator = reinterpret_cast<txt_separator_t *>(uncast_separator);
     int x, y;
     int w;
 
@@ -69,7 +69,7 @@ static void TXT_SeparatorDrawer(void *uncast_separator)
 
 static void TXT_SeparatorDestructor(void *uncast_separator)
 {
-    txt_separator_t *separator = (txt_separator_t *)uncast_separator;
+    auto *separator = reinterpret_cast<txt_separator_t *>(uncast_separator);
 
     free(separator->label);
 }

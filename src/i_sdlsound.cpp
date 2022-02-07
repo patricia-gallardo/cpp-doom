@@ -309,7 +309,7 @@ static allocated_sound_t *PitchShift(allocated_sound_t *insnd, int pitch)
 
     // determine ratio pitch:NORM_PITCH and apply to srclen, then invert.
     // This is an approximation of vanilla behaviour based on measurements
-    dstlen = (int)((1 + (1 - (float)pitch / NORM_PITCH)) * srclen);
+    dstlen = static_cast<int>((1 + (1 - (float)pitch / NORM_PITCH)) * srclen);
 
     // ensure that the new buffer is an even length
     if ((dstlen % 2) == 0)
@@ -330,7 +330,7 @@ static allocated_sound_t *PitchShift(allocated_sound_t *insnd, int pitch)
     // loop over output buffer. find corresponding input cell, copy over
     for (outp = dstbuf; outp < dstbuf + dstlen / 2; ++outp)
     {
-        inp   = srcbuf + (int)((float)(outp - dstbuf) / dstlen * srclen);
+        inp   = srcbuf + static_cast<int>((float)(outp - dstbuf) / dstlen * srclen);
         *outp = *inp;
     }
 

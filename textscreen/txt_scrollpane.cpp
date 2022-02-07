@@ -112,7 +112,7 @@ static void SanityCheckScrollbars(txt_scrollpane_t *scrollpane)
 
 static void TXT_ScrollPaneSizeCalc(void *uncast_scrollpane)
 {
-    txt_scrollpane_t *scrollpane = (txt_scrollpane_t *)uncast_scrollpane;
+    auto *scrollpane = reinterpret_cast<txt_scrollpane_t *>(uncast_scrollpane);
     int scrollbars;
 
     if (scrollpane->child != nullptr)
@@ -164,7 +164,7 @@ static void TXT_ScrollPaneSizeCalc(void *uncast_scrollpane)
 
 static void TXT_ScrollPaneDrawer(void *uncast_scrollpane)
 {
-    txt_scrollpane_t *scrollpane = (txt_scrollpane_t *)uncast_scrollpane;
+    auto *scrollpane = reinterpret_cast<txt_scrollpane_t *>(uncast_scrollpane);
     int x1, y1, x2, y2;
     int scrollbars;
 
@@ -211,7 +211,7 @@ static void TXT_ScrollPaneDrawer(void *uncast_scrollpane)
 
 static void TXT_ScrollPaneDestructor(void *uncast_scrollpane)
 {
-    txt_scrollpane_t *scrollpane = (txt_scrollpane_t *)uncast_scrollpane;
+    auto *scrollpane = reinterpret_cast<txt_scrollpane_t *>(uncast_scrollpane);
 
     if (scrollpane->child != nullptr)
     {
@@ -221,7 +221,7 @@ static void TXT_ScrollPaneDestructor(void *uncast_scrollpane)
 
 static void TXT_ScrollPaneFocused(void *uncast_scrollpane, int focused)
 {
-    txt_scrollpane_t *scrollpane = (txt_scrollpane_t *)uncast_scrollpane;
+    auto *scrollpane = reinterpret_cast<txt_scrollpane_t *>(uncast_scrollpane);
 
     // Whether the child is focused depends only on whether the scroll pane
     // itself is focused. Pass through focus to the child.
@@ -384,7 +384,7 @@ static int InterpretScrollKey(txt_scrollpane_t *scrollpane, int key)
 
 static int TXT_ScrollPaneKeyPress(void *uncast_scrollpane, int key)
 {
-    txt_scrollpane_t *scrollpane = (txt_scrollpane_t *)uncast_scrollpane;
+    auto *scrollpane = reinterpret_cast<txt_scrollpane_t *>(uncast_scrollpane);
     int result;
 
     result = 0;
@@ -426,7 +426,7 @@ static int TXT_ScrollPaneKeyPress(void *uncast_scrollpane, int key)
 static void TXT_ScrollPaneMousePress(void *uncast_scrollpane,
                                      int x, int y, int b)
 {
-    txt_scrollpane_t *scrollpane = (txt_scrollpane_t *)uncast_scrollpane;
+    auto *scrollpane = reinterpret_cast<txt_scrollpane_t *>(uncast_scrollpane);
     int scrollbars;
     int rel_x, rel_y;
 
@@ -514,7 +514,7 @@ static void TXT_ScrollPaneMousePress(void *uncast_scrollpane,
 
 static void TXT_ScrollPaneLayout(void *uncast_scrollpane)
 {
-    txt_scrollpane_t *scrollpane = (txt_scrollpane_t *)uncast_scrollpane;
+    auto *scrollpane = reinterpret_cast<txt_scrollpane_t *>(uncast_scrollpane);
 
     SanityCheckScrollbars(scrollpane);
 
@@ -532,7 +532,7 @@ static void TXT_ScrollPaneLayout(void *uncast_scrollpane)
 
 static int TXT_ScrollPaneSelectable(void *uncast_scrollpane)
 {
-    txt_scrollpane_t *scrollpane = (txt_scrollpane_t *)uncast_scrollpane;
+    auto *scrollpane = reinterpret_cast<txt_scrollpane_t *>(uncast_scrollpane);
 
     // If scroll bars are displayed, the scroll pane must be selectable
     // so that we can use the arrow keys to scroll around.
@@ -561,7 +561,7 @@ txt_widget_class_t txt_scrollpane_class =
 
 txt_scrollpane_t *TXT_NewScrollPane(int w, int h, void *uncast_target)
 {
-    txt_widget_t *target     = (txt_widget_t *)uncast_target;
+    auto *target     = reinterpret_cast<txt_widget_t *>(uncast_target);
     auto *scrollpane = create_struct<txt_scrollpane_t>();
 
     TXT_InitWidget(scrollpane, &txt_scrollpane_class);

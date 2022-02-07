@@ -99,13 +99,13 @@ extern bool inhelpscreens; // [crispy]
 #define F_PANINC 4
 // how much zoom-in per tic
 // goes to 2x in 1 second
-#define M_ZOOMIN ((int)(1.02 * FRACUNIT))
+#define M_ZOOMIN (static_cast<int>(1.02 * FRACUNIT))
 // how much zoom-out per tic
 // pulls out to 0.5x in 1 second
-#define M_ZOOMOUT ((int)(FRACUNIT / 1.02))
+#define M_ZOOMOUT (static_cast<int>(FRACUNIT / 1.02))
 // [crispy] zoom faster with the mouse wheel
-#define M2_ZOOMIN  ((int)(1.08 * FRACUNIT))
-#define M2_ZOOMOUT ((int)(FRACUNIT / 1.08))
+#define M2_ZOOMIN  (static_cast<int>(1.08 * FRACUNIT))
+#define M2_ZOOMOUT (static_cast<int>(FRACUNIT / 1.08))
 
 // translates between frame-buffer and map distances
 // [crispy] fix int overflow that causes map and grid lines to disappear
@@ -594,7 +594,7 @@ void AM_LevelInit()
     // square map would just fit in (MAP01 is 3376x3648 units)
     a          = FixedDiv(f_w, (max_w >> FRACBITS < 2048) ? 2 * (max_w >> FRACBITS) : 4096);
     b          = FixedDiv(f_h, (max_h >> FRACBITS < 2048) ? 2 * (max_h >> FRACBITS) : 4096);
-    scale_mtof = FixedDiv(a < b ? a : b, (int)(0.7 * FRACUNIT));
+    scale_mtof = FixedDiv(a < b ? a : b, static_cast<int>(0.7 * FRACUNIT));
     if (scale_mtof > max_scale_mtof)
         scale_mtof = min_scale_mtof;
     scale_ftom = FixedDiv(FRACUNIT, scale_mtof);

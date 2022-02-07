@@ -422,7 +422,7 @@ static int AccelerateMouse(int val)
 
     if (val > mouse_threshold)
     {
-        return (int)((val - mouse_threshold) * mouse_acceleration + mouse_threshold);
+        return static_cast<int>((val - mouse_threshold) * mouse_acceleration + mouse_threshold);
     }
     else
     {
@@ -438,7 +438,7 @@ static int AccelerateMouseY(int val)
 
     if (val > mouse_threshold_y)
     {
-        return (int)((val - mouse_threshold_y) * mouse_acceleration_y + mouse_threshold_y);
+        return static_cast<int>((val - mouse_threshold_y) * mouse_acceleration_y + mouse_threshold_y);
     }
     else
     {

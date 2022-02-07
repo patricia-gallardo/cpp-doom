@@ -1993,7 +1993,7 @@ void M_WriteText(int x,
             if (*ch >= '0' && *ch <= '0' + static_cast<int>(cr_t::CRMAX) - 1)
             {
                 c              = *ch++;
-                dp_translation = cr_colors[(int)(c - '0')];
+                dp_translation = cr_colors[static_cast<int>(c - '0')];
                 continue;
             }
         }

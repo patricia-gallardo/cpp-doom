@@ -166,11 +166,11 @@ int mem_fseek(MEMFILE *stream, signed long position, mem_rel_t whence)
         break;
 
     case MEM_SEEK_CUR:
-        newpos = (int)(stream->position + position);
+        newpos = static_cast<int>(stream->position + position);
         break;
 
     case MEM_SEEK_END:
-        newpos = (int)(stream->buflen + position);
+        newpos = static_cast<int>(stream->buflen + position);
         break;
     default:
         return -1;

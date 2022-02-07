@@ -321,7 +321,7 @@ void R_RenderSegLoop()
     for (; rw_x < rw_stopx; rw_x++)
     {
         // mark floor / ceiling areas
-        yl = (int)((topfrac + heightunit - 1) >> heightbits); // [crispy] WiggleFix
+        yl = static_cast<int>((topfrac + heightunit - 1) >> heightbits); // [crispy] WiggleFix
 
         // no space above wall?
         if (yl < ceilingclip[rw_x] + 1)
@@ -342,7 +342,7 @@ void R_RenderSegLoop()
             }
         }
 
-        yh = (int)(bottomfrac >> heightbits); // [crispy] WiggleFix
+        yh = static_cast<int>(bottomfrac >> heightbits); // [crispy] WiggleFix
 
         if (yh >= floorclip[rw_x])
             yh = floorclip[rw_x] - 1;
@@ -406,7 +406,7 @@ void R_RenderSegLoop()
             if (toptexture)
             {
                 // top wall
-                mid = (int)(pixhigh >> heightbits); // [crispy] WiggleFix
+                mid = static_cast<int>(pixhigh >> heightbits); // [crispy] WiggleFix
                 pixhigh += pixhighstep;
 
                 if (mid >= floorclip[rw_x])
@@ -436,7 +436,7 @@ void R_RenderSegLoop()
             if (bottomtexture)
             {
                 // bottom wall
-                mid = (int)((pixlow + heightunit - 1) >> heightbits); // [crispy] WiggleFix
+                mid = static_cast<int>((pixlow + heightunit - 1) >> heightbits); // [crispy] WiggleFix
                 pixlow += pixlowstep;
 
                 // no space above wall?

@@ -958,7 +958,7 @@ void ST_drawNumFontY2(int x, int y, int num)
 //
 void ST_drawLine(int x, int y, int len, int color)
 {
-    uint8_t  putcolor = (uint8_t)(color);
+    uint8_t  putcolor = static_cast<uint8_t>(color);
     uint8_t *drawpos  = I_VideoBuffer + (y << crispy->hires) * SCREENWIDTH + (x << crispy->hires);
     int i = 0;
 
