@@ -1542,7 +1542,7 @@ void ST_updateWidgets()
                 st_firsttime = true;
             }
 #endif
-            plyr->tryopen[i] = false;
+            plyr->tryopen[i]--;
 #if !defined(CRISPY_KEYBLINK_IN_CLASSIC_HUD)
             if (st_crispyhud)
 #endif

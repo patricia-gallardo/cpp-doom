@@ -57,7 +57,7 @@ function(set_project_warnings)
             -Wno-unknown-warning-option # CLANG TODO turn it back on (patricia)
             #-Wno-unused-but-set-parameter # GCC TODO turn it back on (patricia)
             -Wno-parentheses # GCC TODO turn it back on (patricia)
-            -Wno-int-in-bool-context # GCC TODO turn it back on (patricia)
+            #-Wno-int-in-bool-context # GCC TODO turn it back on (patricia)
             -Wno-class-memaccess # GCC TODO turn it back on (patricia)
             )
 

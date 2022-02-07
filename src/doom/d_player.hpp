@@ -186,7 +186,7 @@ struct player_t {
     fixed_t bob2;
 
     // [crispy] blinking key or skull in the status bar
-    bool tryopen[NUMCARDS];
+    int tryopen[NUMCARDS];
 
     // [crispy] negative player health
     int neghealth;
