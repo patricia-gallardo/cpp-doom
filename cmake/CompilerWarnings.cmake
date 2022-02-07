@@ -45,7 +45,6 @@ function(set_project_warnings)
             -Wnull-dereference # warn if a null dereference is detected
             -Wdouble-promotion # warn if float is implicit promoted to double
             -Wformat=2 # warn on security issues around functions that format output (ie printf)
-            -fpermissive # GCC TODO turn it back on (patricia)
             -Wno-sign-conversion # warn on sign conversions TODO turn it back on (patricia)
             -Wno-sign-compare # TODO turn it back on (patricia)
             -Wno-format-nonliteral # TODO turn it back on (patricia)
