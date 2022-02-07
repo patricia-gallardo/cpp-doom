@@ -32,7 +32,7 @@ jobs:
             os: macos-11
             cmake_env: {}
         cmake-build-type: [Release]
-        cmake-build-target: [opl, pcsound, crispy-doom, crispy-heretic, crispy-hexen, crispy-server, crispy-setup, crispy-strife, midiread, mus2mid, doom, heretic, hexen, setup, strife, textscreen]
+        cmake-build-target: [all] # [opl, pcsound, crispy-doom, crispy-heretic, crispy-hexen, crispy-server, crispy-setup, crispy-strife, midiread, mus2mid, doom, heretic, hexen, setup, strife, textscreen]
 
     steps:
     - uses: actions/checkout@v2
