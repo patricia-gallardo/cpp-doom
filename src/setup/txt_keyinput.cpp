@@ -28,7 +28,7 @@
 
 static int KeyPressCallback(txt_window_t *window, int key, void *uncast_key_input)
 {
-    txt_key_input_t *key_input = (txt_key_input_t *)uncast_key_input;
+    auto *key_input = reinterpret_cast<txt_key_input_t *>(uncast_key_input);
 
     if (key != KEY_ESCAPE)
     {
@@ -86,7 +86,7 @@ static void OpenPromptWindow(txt_key_input_t *key_input)
 
 static void TXT_KeyInputSizeCalc(void *uncast_key_input)
 {
-    txt_key_input_t *key_input = (txt_key_input_t *)uncast_key_input;
+    auto *key_input = reinterpret_cast<txt_key_input_t *>(uncast_key_input);
 
     // All keyinputs are the same size.
 
@@ -97,7 +97,7 @@ static void TXT_KeyInputSizeCalc(void *uncast_key_input)
 
 static void TXT_KeyInputDrawer(void *uncast_key_input)
 {
-    txt_key_input_t *key_input = (txt_key_input_t *)uncast_key_input;
+    auto *key_input = reinterpret_cast<txt_key_input_t *>(uncast_key_input);
     char buf[20];
     int i;
 
@@ -127,7 +127,7 @@ static void TXT_KeyInputDestructor(void *)
 
 static int TXT_KeyInputKeyPress(void *uncast_key_input, int key)
 {
-    txt_key_input_t *key_input = (txt_key_input_t *)uncast_key_input;
+    auto *key_input = reinterpret_cast<txt_key_input_t *>(uncast_key_input);
 
     if (key == KEY_ENTER)
     {

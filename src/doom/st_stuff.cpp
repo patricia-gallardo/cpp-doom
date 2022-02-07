@@ -507,9 +507,9 @@ static int ST_cheat_massacre()
 
     for (th = thinkercap.next; th != &thinkercap; th = th->next)
     {
-        if (th->function.acp1 == (actionf_p1)P_MobjThinker)
+        if (th->function.acp1 == reinterpret_cast<actionf_p1>(P_MobjThinker))
         {
-            mobj_t *mo = (mobj_t *)th;
+            mobj_t *mo = reinterpret_cast<mobj_t *>(th);
 
             if (mo->flags & MF_COUNTKILL || mo->type == MT_SKULL)
             {
@@ -946,9 +946,9 @@ bool
                     // [crispy] let mobjs forget their target and tracer
                     for (th = thinkercap.next; th != &thinkercap; th = th->next)
                     {
-                        if (th->function.acp1 == (actionf_p1)P_MobjThinker)
+                        if (th->function.acp1 == reinterpret_cast<actionf_p1>(P_MobjThinker))
                         {
-                            mobj_t *const mo = (mobj_t *)th;
+                            mobj_t *const mo = reinterpret_cast<mobj_t *>(th);
 
                             if (mo->target && mo->target->player)
                             {

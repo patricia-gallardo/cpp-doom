@@ -267,7 +267,7 @@ static bool CheckExecutableName(GameSelectCallback callback)
 
 static void GameSelected(void *, void *uncast_config)
 {
-    mission_config_t *config = (mission_config_t *)uncast_config;
+    auto *config = reinterpret_cast<mission_config_t *>(uncast_config);
 
     SetMission(config);
     game_selected_callback();

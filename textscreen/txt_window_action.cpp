@@ -28,7 +28,7 @@
 
 static void TXT_WindowActionSizeCalc(void *uncast_action)
 {
-    txt_window_action_t *action = (txt_window_action_t *)uncast_action;
+    auto *action = reinterpret_cast<txt_window_action_t *>(uncast_action);
     char buf[10];
 
     TXT_GetKeyDescription(action->key, buf, sizeof(buf));
@@ -43,7 +43,7 @@ static void TXT_WindowActionSizeCalc(void *uncast_action)
 
 static void TXT_WindowActionDrawer(void *uncast_action)
 {
-    txt_window_action_t *action = (txt_window_action_t *)uncast_action;
+    auto *action = reinterpret_cast<txt_window_action_t *>(uncast_action);
     int hovering;
     char buf[10];
 
@@ -65,14 +65,14 @@ static void TXT_WindowActionDrawer(void *uncast_action)
 
 static void TXT_WindowActionDestructor(void *uncast_action)
 {
-    txt_window_action_t *action = (txt_window_action_t *)uncast_action;
+    auto *action = reinterpret_cast<txt_window_action_t *>(uncast_action);
 
     free(action->label);
 }
 
 static int TXT_WindowActionKeyPress(void *uncast_action, int key)
 {
-    txt_window_action_t *action = (txt_window_action_t *)uncast_action;
+    auto *action = reinterpret_cast<txt_window_action_t *>(uncast_action);
 
     if (tolower(key) == tolower(action->key))
     {
@@ -86,7 +86,7 @@ static int TXT_WindowActionKeyPress(void *uncast_action, int key)
 static void TXT_WindowActionMousePress(void *uncast_action,
                                        int, int, int b)
 {
-    txt_window_action_t *action = (txt_window_action_t *)uncast_action;
+    auto *action = reinterpret_cast<txt_window_action_t *>(uncast_action);
 
     // Simulate a press of the key
 
@@ -120,14 +120,14 @@ txt_window_action_t *TXT_NewWindowAction(int key, const char *label)
 
 static void WindowCloseCallback(void *, void *uncast_window)
 {
-    txt_window_t *window = (txt_window_t *)uncast_window;
+    auto *window = reinterpret_cast<txt_window_t *>(uncast_window);
 
     TXT_CloseWindow(window);
 }
 
 static void WindowSelectCallback(void *, void *uncast_window)
 {
-    txt_window_t *window = (txt_window_t *)uncast_window;
+    auto *window = reinterpret_cast<txt_window_t *>(uncast_window);
 
     TXT_WidgetKeyPress(window, KEY_ENTER);
 }

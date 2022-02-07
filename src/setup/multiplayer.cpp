@@ -365,7 +365,7 @@ static void SetExMyWarp(void *, void *val)
 {
     int l;
 
-    l = (intptr_t) val;
+    l = reinterpret_cast<intptr_t>(val);
 
     warpepisode = l / 10;
     warpmap = l % 10;
@@ -377,7 +377,7 @@ static void SetMAPxyWarp(void *, void *val)
 {
     int l;
 
-    l = (intptr_t) val;
+    l = reinterpret_cast<intptr_t>(val);
 
     warpmap = l;
 
@@ -386,7 +386,7 @@ static void SetMAPxyWarp(void *, void *val)
 
 static void CloseLevelSelectDialog(void *, void *uncast_window)
 {
-    txt_window_t *window = (txt_window_t *)uncast_window;
+    auto *window = reinterpret_cast<txt_window_t *>(uncast_window);
 
     TXT_CloseWindow(window);
 }
@@ -431,7 +431,7 @@ static void LevelSelectDialog(void *, void *)
                            " E%" PRIiPTR "M%" PRIiPTR " ", x, y);
                 button = TXT_NewButton(buf);
                 TXT_SignalConnect(button, "pressed",
-                                  SetExMyWarp, (void *) (x * 10 + y));
+                                  SetExMyWarp, reinterpret_cast<void *>(x * 10 + y));
                 TXT_SignalConnect(button, "pressed",
                                   CloseLevelSelectDialog, window);
                 TXT_AddWidget(window, button);
@@ -463,7 +463,7 @@ static void LevelSelectDialog(void *, void *)
             M_snprintf(buf, sizeof(buf), " MAP%02" PRIiPTR " ", l);
             button = TXT_NewButton(buf);
             TXT_SignalConnect(button, "pressed",
-                              SetMAPxyWarp, (void *) l);
+                              SetMAPxyWarp, reinterpret_cast<void *>(l));
             TXT_SignalConnect(button, "pressed",
                               CloseLevelSelectDialog, window);
             TXT_AddWidget(window, button);
@@ -592,7 +592,7 @@ static txt_widget_t *IWADSelector()
     {
         // We have only one IWAD.  Show as a label.
 
-        result = (txt_widget_t *) TXT_NewLabel(found_iwads[0]->description);
+        result = reinterpret_cast<txt_widget_t *>(TXT_NewLabel(found_iwads[0]->description));
     }
     else
     {
@@ -603,7 +603,7 @@ static txt_widget_t *IWADSelector()
 
         TXT_SignalConnect(dropdown, "changed", IWADSelected, nullptr);
 
-        result = (txt_widget_t *) dropdown;
+        result = reinterpret_cast<txt_widget_t *>(dropdown);
     }
 
     // The first time the dialog is opened, found_iwad_selected=-1,
@@ -861,9 +861,9 @@ static txt_window_action_t *JoinGameAction()
 
 static void SelectQueryAddress(void *uncast_button, void *uncast_querydata)
 {
-    txt_button_t    *button    = (txt_button_t *)uncast_button;
-    net_querydata_t *querydata = (net_querydata_t *)uncast_querydata;
-    int i;
+    auto *button    = reinterpret_cast<txt_button_t *>(uncast_button);
+    auto *querydata = reinterpret_cast<net_querydata_t *>(uncast_querydata);
+    int   i;
 
     if (querydata->server_state != 0)
     {
@@ -917,7 +917,7 @@ static void SelectQueryAddress(void *uncast_button, void *uncast_querydata)
 
 static void QueryResponseCallback(net_addr_t *addr, net_querydata_t *querydata, unsigned int ping_time, void *uncast_results_table)
 {
-    txt_table_t *results_table = (txt_table_t *)uncast_results_table;
+    auto *results_table = reinterpret_cast<txt_table_t *>(uncast_results_table);
     char ping_time_str[16];
     char description[47];
 
@@ -961,7 +961,7 @@ static void QueryResponseCallback(net_addr_t *addr, net_querydata_t *querydata, 
 
 static void QueryPeriodicCallback(void *uncast_results_table)
 {
-    txt_table_t *results_table = (txt_table_t *)uncast_results_table;
+    auto *results_table = reinterpret_cast<txt_table_t *>(uncast_results_table);
 
     if (!NET_Query_Poll(QueryResponseCallback, results_table))
     {

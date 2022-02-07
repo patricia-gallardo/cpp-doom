@@ -58,7 +58,7 @@ static int *all_mouse_buttons[] = {
 
 static void MouseSetCallback(void *, void *uncast_variable)
 {
-    int         *variable = (int *)uncast_variable;
+    int         *variable = reinterpret_cast<int *>(uncast_variable);
     unsigned int i;
 
     // Check if the same mouse button is used for a different action
@@ -76,7 +76,7 @@ static void MouseSetCallback(void *, void *uncast_variable)
 
 static void AddMouseControl(void *uncast_table, const char *label, int *var)
 {
-    txt_table_t       *table = (txt_table_t *)uncast_table;
+    auto              *table = reinterpret_cast<txt_table_t *>(uncast_table);
     txt_mouse_input_t *mouse_input;
 
     TXT_AddWidget(table, TXT_NewLabel(label));

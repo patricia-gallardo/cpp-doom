@@ -273,7 +273,7 @@ static int NextCalibrateStage(txt_joystick_axis_t *joystick_axis)
 
 static int EventCallback(SDL_Event *event, void *uncast_joystick_axis)
 {
-    txt_joystick_axis_t *joystick_axis = (txt_joystick_axis_t *)uncast_joystick_axis;
+    auto *joystick_axis = reinterpret_cast<txt_joystick_axis_t *>(uncast_joystick_axis);
     bool advance;
 
     if (event->type != SDL_JOYBUTTONDOWN)
@@ -341,7 +341,7 @@ static int EventCallback(SDL_Event *event, void *uncast_joystick_axis)
 
 static void CalibrateWindowClosed(void *, void *uncast_joystick_axis)
 {
-    txt_joystick_axis_t *joystick_axis = (txt_joystick_axis_t *)uncast_joystick_axis;
+    auto *joystick_axis = reinterpret_cast<txt_joystick_axis_t *>(uncast_joystick_axis);
 
     free(joystick_axis->bad_axis);
     joystick_axis->bad_axis = nullptr;
@@ -413,7 +413,7 @@ void TXT_ConfigureJoystickAxis(txt_joystick_axis_t *joystick_axis,
 
 static void TXT_JoystickAxisSizeCalc(void *uncast_joystick_axis)
 {
-    txt_joystick_axis_t *joystick_axis = (txt_joystick_axis_t *)uncast_joystick_axis;
+    auto *joystick_axis = reinterpret_cast<txt_joystick_axis_t *>(uncast_joystick_axis);
 
     // All joystickinputs are the same size.
 
@@ -423,7 +423,7 @@ static void TXT_JoystickAxisSizeCalc(void *uncast_joystick_axis)
 
 static void TXT_JoystickAxisDrawer(void *uncast_joystick_axis)
 {
-    txt_joystick_axis_t *joystick_axis = (txt_joystick_axis_t *)uncast_joystick_axis;
+    auto *joystick_axis = reinterpret_cast<txt_joystick_axis_t *>(uncast_joystick_axis);
     char buf[JOYSTICK_AXIS_WIDTH + 1];
     int i;
 
@@ -471,7 +471,7 @@ static void TXT_JoystickAxisDestructor(void *)
 
 static int TXT_JoystickAxisKeyPress(void *uncast_joystick_axis, int key)
 {
-    txt_joystick_axis_t *joystick_axis = (txt_joystick_axis_t *)uncast_joystick_axis;
+    auto *joystick_axis = reinterpret_cast<txt_joystick_axis_t *>(uncast_joystick_axis);
 
     if (key == KEY_ENTER)
     {

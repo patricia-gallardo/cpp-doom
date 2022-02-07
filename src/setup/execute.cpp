@@ -311,11 +311,10 @@ static char *GetFullExePath(const char *program)
 
 static int ExecuteCommand(const char *program, const char *arg)
 {
-    pid_t childpid;
     int result;
     const char *argv[3];
 
-    childpid = fork();
+    pid_t childpid = fork();
 
     if (childpid == 0) 
     {
@@ -325,7 +324,7 @@ static int ExecuteCommand(const char *program, const char *arg)
         argv[1] = arg;
         argv[2] = nullptr;
 
-        execvp(argv[0], (char **) argv);
+        execvp(argv[0], const_cast<char**>(argv));
 
         exit(0x80);
     }

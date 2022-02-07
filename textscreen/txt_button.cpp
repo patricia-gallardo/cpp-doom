@@ -27,7 +27,7 @@
 
 static void TXT_ButtonSizeCalc(void *uncast_button)
 {
-    txt_button_t *button = (txt_button_t *)uncast_button;
+    auto *button = reinterpret_cast<txt_button_t *>(uncast_button);
 
     button->widget.w = TXT_UTF8_Strlen(button->label);
     button->widget.h = 1;
@@ -35,7 +35,7 @@ static void TXT_ButtonSizeCalc(void *uncast_button)
 
 static void TXT_ButtonDrawer(void *uncast_button)
 {
-    txt_button_t *button = (txt_button_t *)uncast_button;
+    auto *button = reinterpret_cast<txt_button_t *>(uncast_button);
     int i;
     int w;
 
@@ -53,14 +53,14 @@ static void TXT_ButtonDrawer(void *uncast_button)
 
 static void TXT_ButtonDestructor(void *uncast_button)
 {
-    txt_button_t *button = (txt_button_t *)uncast_button;
+    auto *button = reinterpret_cast<txt_button_t *>(uncast_button);
 
     free(button->label);
 }
 
 static int TXT_ButtonKeyPress(void *uncast_button, int key)
 {
-    txt_button_t *button = (txt_button_t *)uncast_button;
+    auto *button = reinterpret_cast<txt_button_t *>(uncast_button);
 
     if (key == KEY_ENTER)
     {
@@ -73,7 +73,7 @@ static int TXT_ButtonKeyPress(void *uncast_button, int key)
 
 static void TXT_ButtonMousePress(void *uncast_button, int, int, int b)
 {
-    txt_button_t *button = (txt_button_t *)uncast_button;
+    auto *button = reinterpret_cast<txt_button_t *>(uncast_button);
 
     if (b == TXT_MOUSE_LEFT)
     {

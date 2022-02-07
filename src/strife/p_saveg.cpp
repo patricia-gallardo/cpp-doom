@@ -191,7 +191,7 @@ static void *saveg_readp()
 
 static void saveg_writep(const void *p)
 {
-    saveg_write32((intptr_t) p);
+    saveg_write32(reinterpret_cast<intptr_t>(p));
 }
 
 // Enum values are 32-bit integers.
@@ -1869,7 +1869,7 @@ void P_ArchiveThinkers ()
     // save off the current thinkers
     for (th = thinkercap.next ; th != &thinkercap ; th=th->next)
     {
-        if (th->function.acp1 == (actionf_p1)P_MobjThinker)
+        if (th->function.acp1 == reinterpret_cast<actionf_p1>(P_MobjThinker))
         {
             saveg_write8(tc_mobj);
             saveg_write_pad();
@@ -1910,7 +1910,7 @@ void P_UnArchiveThinkers ()
     {
         next = currentthinker->next;
 
-        if (currentthinker->function.acp1 == (actionf_p1)P_MobjThinker)
+        if (currentthinker->function.acp1 == reinterpret_cast<actionf_p1>(P_MobjThinker))
             P_RemoveMobj ((mobj_t *)currentthinker);
         else
             Z_Free (currentthinker);
@@ -1960,7 +1960,7 @@ void P_UnArchiveThinkers ()
             // [STRIFE]: doesn't set these
             //mobj->floorz = mobj->subsector->sector->floorheight;
             //mobj->ceilingz = mobj->subsector->sector->ceilingheight;
-            mobj->thinker.function.acp1 = (actionf_p1)P_MobjThinker;
+            mobj->thinker.function.acp1 = reinterpret_cast<actionf_p1>(P_MobjThinker);
             P_AddThinker (&mobj->thinker);
             break;
 

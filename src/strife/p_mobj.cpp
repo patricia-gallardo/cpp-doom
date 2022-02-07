@@ -679,7 +679,7 @@ P_SpawnMobj
     else 
         mobj->z = z;
 
-    mobj->thinker.function.acp1 = (actionf_p1)P_MobjThinker;
+    mobj->thinker.function.acp1 = reinterpret_cast<actionf_p1>(P_MobjThinker);
 
     P_AddThinker (&mobj->thinker);
 

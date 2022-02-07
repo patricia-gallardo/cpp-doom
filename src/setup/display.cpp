@@ -124,7 +124,7 @@ void SetDisplayDriver()
 
 static void WindowSizeSelected(void *, void *uncast_size)
 {
-    window_size_t *size = (window_size_t *)uncast_size;
+    auto *size = reinterpret_cast<window_size_t *>(uncast_size);
 
     window_width = size->w;
     window_height = size->h;
@@ -147,7 +147,7 @@ static txt_radiobutton_t *SizeSelectButton(window_size_t *size)
 
 static void GenerateSizesTable(void *, void *uncast_sizes_table)
 {
-    txt_table_t   *sizes_table = (txt_table_t *)uncast_sizes_table;
+    auto   *sizes_table = reinterpret_cast<txt_table_t *>(uncast_sizes_table);
     window_size_t *sizes;
     bool have_size;
     int i;
@@ -194,7 +194,7 @@ static void GenerateSizesTable(void *, void *uncast_sizes_table)
 
 static void AdvancedDisplayConfig(void *, void *uncast_sizes_table)
 {
-    txt_table_t    *sizes_table = (txt_table_t *)uncast_sizes_table;
+    auto    *sizes_table = reinterpret_cast<txt_table_t *>(uncast_sizes_table);
     txt_window_t *window;
     txt_checkbox_t *ar_checkbox;
 

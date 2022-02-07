@@ -187,7 +187,7 @@ static void *saveg_readp()
 
 static void saveg_writep(const void *p)
 {
-    saveg_write32((intptr_t)p);
+    saveg_write32(reinterpret_cast<intptr_t>(p));
 }
 
 // Enum values are 32-bit integers.
@@ -428,7 +428,7 @@ uint32_t P_ThinkerToIndex(thinker_t *thinker)
 
     for (th = thinkercap.next, i = 0; th != &thinkercap; th = th->next)
     {
-        if (th->function.acp1 == (actionf_p1)P_MobjThinker)
+        if (th->function.acp1 == reinterpret_cast<actionf_p1>(P_MobjThinker))
         {
             i++;
             if (th == thinker)
@@ -450,7 +450,7 @@ thinker_t *P_IndexToThinker(uint32_t index)
 
     for (th = thinkercap.next, i = 0; th != &thinkercap; th = th->next)
     {
-        if (th->function.acp1 == (actionf_p1)P_MobjThinker)
+        if (th->function.acp1 == reinterpret_cast<actionf_p1>(P_MobjThinker))
         {
             i++;
             if (i == index)
@@ -1661,7 +1661,7 @@ void P_ArchiveThinkers()
     // save off the current thinkers
     for (th = thinkercap.next; th != &thinkercap; th = th->next)
     {
-        if (th->function.acp1 == (actionf_p1)P_MobjThinker)
+        if (th->function.acp1 == reinterpret_cast<actionf_p1>(P_MobjThinker))
         {
             saveg_write8(tc_mobj);
             saveg_write_pad();
@@ -1694,7 +1694,7 @@ void P_UnArchiveThinkers()
     {
         next = currentthinker->next;
 
-        if (currentthinker->function.acp1 == (actionf_p1)P_MobjThinker)
+        if (currentthinker->function.acp1 == reinterpret_cast<actionf_p1>(P_MobjThinker))
             P_RemoveMobj((mobj_t *)currentthinker);
         else
             Z_Free(currentthinker);
@@ -1725,7 +1725,7 @@ void P_UnArchiveThinkers()
             // [crispy] killough 2/28/98: Fix for falling down into a wall after savegame loaded
             //	    mobj->floorz = mobj->subsector->sector->floorheight;
             //	    mobj->ceilingz = mobj->subsector->sector->ceilingheight;
-            mobj->thinker.function.acp1 = (actionf_p1)P_MobjThinker;
+            mobj->thinker.function.acp1 = reinterpret_cast<actionf_p1>(P_MobjThinker);
             P_AddThinker(&mobj->thinker);
             break;
 
@@ -1744,11 +1744,11 @@ void P_RestoreTargets()
 
     for (th = thinkercap.next; th != &thinkercap; th = th->next)
     {
-        if (th->function.acp1 == (actionf_p1)P_MobjThinker)
+        if (th->function.acp1 == reinterpret_cast<actionf_p1>(P_MobjThinker))
         {
-            mo         = (mobj_t *)th;
+            mo         = reinterpret_cast<mobj_t *>(th);
             mo->target = (mobj_t *)P_IndexToThinker((uintptr_t)mo->target);
-            mo->tracer = (mobj_t *)P_IndexToThinker((uintptr_t)mo->tracer);
+            mo->tracer = (mobj_t *)P_IndexToThinker(reinterpret_cast<uintptr_t>(mo->tracer));
         }
     }
 

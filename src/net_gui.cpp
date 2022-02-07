@@ -251,7 +251,7 @@ static void PrintSHA1Digest(const char *s, const byte *digest)
 
 static void CloseWindow(void *, void *uncast_window)
 {
-    txt_window_t *window = (txt_window_t *)uncast_window;
+    auto *window = reinterpret_cast<txt_window_t *>(uncast_window);
 
     TXT_CloseWindow(window);
 }

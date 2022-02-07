@@ -144,7 +144,7 @@ static void CheckKeyGroup(int *variable, int **group)
 
 static void KeySetCallback(void *, void *uncast_variable)
 {
-    int *variable = (int *)uncast_variable;
+    auto *variable = reinterpret_cast<int *>(uncast_variable);
 
     CheckKeyGroup(variable, controls);
     CheckKeyGroup(variable, menu_nav);
@@ -156,7 +156,7 @@ static void KeySetCallback(void *, void *uncast_variable)
 
 static void AddKeyControl(void *uncast_table, const char *name, int *var)
 {
-    txt_table_t     *table = (txt_table_t *)uncast_table;
+    auto     *table = reinterpret_cast<txt_table_t *>(uncast_table);
     txt_key_input_t *key_input;
 
     TXT_AddWidget(table, TXT_NewLabel(name));
@@ -169,7 +169,7 @@ static void AddKeyControl(void *uncast_table, const char *name, int *var)
 static void AddSectionLabel(void *uncast_table, const char *title,
                             bool add_space)
 {
-    txt_table_t *table = (txt_table_t *)uncast_table;
+    auto *table = reinterpret_cast<txt_table_t *>(uncast_table);
     char buf[64];
 
     if (add_space)

@@ -124,7 +124,7 @@ void SV_WriteLong(unsigned int val)
 
 void SV_WritePtr(const void *ptr)
 {
-    long val = (long)(intptr_t) ptr;
+    long val = (long)reinterpret_cast<intptr_t>(ptr);
 
     SV_WriteLong(val & 0xffffffff);
 }

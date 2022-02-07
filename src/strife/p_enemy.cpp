@@ -1876,9 +1876,9 @@ void A_AlertSpectreC(mobj_t* actor)
 
     for(th = thinkercap.next; th != &thinkercap; th = th->next)
     {
-        if(th->function.acp1 == (actionf_p1)P_MobjThinker)
+        if(th->function.acp1 == reinterpret_cast<actionf_p1>(P_MobjThinker))
         {
-            mobj_t *mo = (mobj_t *)th;
+            mobj_t *mo = reinterpret_cast<mobj_t *>(th);
 
             if(mo->type == MT_SPECTRE_C)
             {
@@ -2947,7 +2947,7 @@ void A_BossDeath (mobj_t* actor)
     {
         if(th->function.acp1 == (actionf_p1) P_MobjThinker)
         {
-            mobj_t *mo = (mobj_t *)th;
+            mobj_t *mo = reinterpret_cast<mobj_t *>(th);
 
             if(mo != actor && mo->type == actor->type && mo->health > 0)
                 return; // one is still alive.
@@ -2987,7 +2987,7 @@ void A_BossDeath (mobj_t* actor)
         {
             if(th->function.acp1 == (actionf_p1) P_MobjThinker)
             {
-                mobj_t *mo = (mobj_t *)th;
+                mobj_t *mo = reinterpret_cast<mobj_t *>(th);
 
                 // KILL ALL ORACLES! RAWWR!
                 if(mo != actor && mo->type == MT_ORACLE && mo->health > 0)
@@ -3086,7 +3086,7 @@ void A_AcolyteSpecial(mobj_t* actor)
     {
         if(th->function.acp1 == (actionf_p1) P_MobjThinker)
         {
-            mobj_t *mo = (mobj_t *)th;
+            mobj_t *mo = reinterpret_cast<mobj_t *>(th);
 
             // Found a living MT_GUARD8?
             if(mo != actor && mo->type == actor->type && mo->health > 0)

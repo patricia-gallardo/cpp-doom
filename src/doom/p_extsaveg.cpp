@@ -289,9 +289,9 @@ static void P_WriteBrainTarget(const char *key)
 
     for (th = thinkercap.next; th != &thinkercap; th = th->next)
     {
-        if (th->function.acp1 == (actionf_p1)P_MobjThinker)
+        if (th->function.acp1 == reinterpret_cast<actionf_p1>(P_MobjThinker))
         {
-            mobj_t *mo = (mobj_t *)th;
+            mobj_t *mo = reinterpret_cast<mobj_t *>(th);
 
             if (mo->state == &states[S_BRAINEYE1])
             {
