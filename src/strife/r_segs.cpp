@@ -180,7 +180,7 @@ R_RenderMaskedSegRange
 	    
 	    // draw the texture
 	    col = (column_t *)( 
-		(byte *)R_GetColumn(texnum,maskedtexturecol[dc_x]) -3);
+		(uint8_t *)R_GetColumn(texnum,maskedtexturecol[dc_x]) -3);
 			
             // villsa [STRIFE] added 0 argument
 	    R_DrawMaskedColumn (col, 0);

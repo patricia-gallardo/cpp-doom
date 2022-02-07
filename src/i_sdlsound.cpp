@@ -65,8 +65,7 @@ static int     mixer_freq;
 static Uint16  mixer_format;
 static int     mixer_channels;
 static bool use_sfx_prefix;
-static bool (*ExpandSoundData)(sfxinfo_t *sfxinfo,
-    byte *                                   data,
+static bool (*ExpandSoundData)(sfxinfo_t *sfxinfo, uint8_t *data,
     int                                      samplerate,
     int                                      bits,
     int                                      length) = nullptr;
@@ -227,7 +226,7 @@ static allocated_sound_t *AllocateSound(sfxinfo_t *sfxinfo, size_t len)
 
     // Skip past the chunk structure for the audio buffer
 
-    snd->chunk.abuf      = (byte *)(snd + 1);
+    snd->chunk.abuf      = (uint8_t *)(snd + 1);
     snd->chunk.alen      = len;
     snd->chunk.allocated = 1;
     snd->chunk.volume    = MIX_MAX_VOLUME;
@@ -609,8 +608,7 @@ static void WriteWAV(char *filename, byte *data,
 // Generic sound expansion function for any sample rate.
 // Returns number of clipped samples (always 0).
 
-static bool ExpandSoundData_SDL(sfxinfo_t *sfxinfo,
-    byte *                                    data,
+static bool ExpandSoundData_SDL(sfxinfo_t *sfxinfo, uint8_t *data,
     int                                       samplerate,
     int                                       bits,
     int                                       length)
@@ -747,7 +745,7 @@ static bool CacheSFX(sfxinfo_t *sfxinfo)
     // need to load the sound
 
     lumpnum    = sfxinfo->lumpnum;
-    auto *data = cache_lump_num<byte *>(lumpnum, PU_STATIC);
+    auto *data = cache_lump_num<uint8_t *>(lumpnum, PU_STATIC);
     lumplen    = W_LumpLength(lumpnum);
 
     // [crispy] Check if this is a valid RIFF wav file

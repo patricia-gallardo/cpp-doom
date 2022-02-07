@@ -50,28 +50,28 @@
 
 typedef PACKED_STRUCT(
     {
-        byte tremolo;
-        byte attack;
-        byte sustain;
-        byte waveform;
-        byte scale;
-        byte level;
+        uint8_t tremolo;
+        uint8_t attack;
+        uint8_t sustain;
+        uint8_t waveform;
+        uint8_t scale;
+        uint8_t level;
     }) genmidi_op_t;
 
 typedef PACKED_STRUCT(
     {
         genmidi_op_t modulator;
-        byte         feedback;
+        uint8_t      feedback;
         genmidi_op_t carrier;
-        byte         unused;
+        uint8_t      unused;
         short        base_note_offset;
     }) genmidi_voice_t;
 
 typedef PACKED_STRUCT(
     {
         unsigned short flags;
-        byte           fine_tuning;
-        byte           fixed_note;
+        uint8_t           fine_tuning;
+        uint8_t           fixed_note;
 
         genmidi_voice_t voices[2];
     }) genmidi_instr_t;
@@ -947,7 +947,7 @@ static bool opl_stereo_correct = false;
 
 static bool LoadInstrumentTable()
 {
-    auto *lump = cache_lump_name<byte *>(DEH_String("genmidi"), PU_STATIC);
+    auto *lump = cache_lump_name<uint8_t *>(DEH_String("genmidi"), PU_STATIC);
 
     // DMX does not check header
 
@@ -1852,7 +1852,7 @@ static void MetaSetTempo(unsigned int tempo)
 
 static void MetaEvent(opl_track_data_t *, midi_event_t *event)
 {
-    byte *       data     = event->data.meta.data;
+    uint8_t     *data     = event->data.meta.data;
     unsigned int data_len = event->data.meta.length;
 
     switch (event->data.meta.type)
@@ -2185,12 +2185,12 @@ static void I_OPL_UnRegisterSong(void *handle)
 
 // Determine whether memory block is a .mid file
 
-static bool IsMid(byte *mem, int len)
+static bool IsMid(uint8_t *mem, int len)
 {
     return len > 4 && !memcmp(mem, "MThd", 4);
 }
 
-static bool ConvertMus(byte *musdata, int len, char *filename)
+static bool ConvertMus(uint8_t *musdata, int len, char *filename)
 {
     MEMFILE *instream;
     MEMFILE *outstream;
@@ -2232,7 +2232,7 @@ static void *I_OPL_RegisterSong(void *data, int len)
     filename = M_TempFile("doom.mid");
 
     // [crispy] remove MID file size limit
-    if (IsMid(static_cast<byte *>(data), len) /* && len < MAXMIDLENGTH */)
+    if (IsMid(static_cast<uint8_t *>(data), len) /* && len < MAXMIDLENGTH */)
     {
         M_WriteFile(filename, data, len);
     }
@@ -2240,7 +2240,7 @@ static void *I_OPL_RegisterSong(void *data, int len)
     {
         // Assume a MUS file and try to convert
 
-        ConvertMus(static_cast<byte *>(data), len, filename);
+        ConvertMus(static_cast<uint8_t *>(data), len, filename);
     }
 
     result = MIDI_LoadFile(filename);

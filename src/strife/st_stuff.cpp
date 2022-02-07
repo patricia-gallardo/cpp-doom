@@ -848,7 +848,7 @@ void ST_doPaletteStuff()
 {
 
     int		palette;
-    byte*	pal;
+    uint8_t    *pal;
     int		cnt;
     int		bzc;
 
@@ -896,7 +896,7 @@ void ST_doPaletteStuff()
     if (palette != st_palette)
     {
         st_palette = palette;
-        pal = cache_lump_num<byte *> (lu_palette, PU_CACHE)+palette*768;
+        pal = cache_lump_num<uint8_t *> (lu_palette, PU_CACHE)+palette*768;
         I_SetPalette (pal);
     }
 
@@ -958,8 +958,8 @@ void ST_drawNumFontY2(int x, int y, int num)
 //
 void ST_drawLine(int x, int y, int len, int color)
 {
-    byte putcolor = (byte)(color);
-    byte *drawpos = I_VideoBuffer + (y << crispy->hires) * SCREENWIDTH + (x << crispy->hires);
+    uint8_t  putcolor = (uint8_t)(color);
+    uint8_t *drawpos  = I_VideoBuffer + (y << crispy->hires) * SCREENWIDTH + (x << crispy->hires);
     int i = 0;
 
     while(i < (len << crispy->hires))
@@ -1595,7 +1595,7 @@ void ST_Stop ()
     if (st_stopped)
         return;
 
-    I_SetPalette (cache_lump_num<byte *> (lu_palette, PU_CACHE));
+    I_SetPalette (cache_lump_num<uint8_t *> (lu_palette, PU_CACHE));
 
     st_stopped = true;
 }

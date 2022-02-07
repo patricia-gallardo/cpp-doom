@@ -100,7 +100,6 @@
 
 #include <cinttypes>
 
-typedef uint8_t byte;
 #ifndef CRISPY_TRUECOLOR
 typedef uint8_t pixel_t;
 typedef int16_t dpixel_t;

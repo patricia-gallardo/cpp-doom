@@ -374,10 +374,10 @@ void R_DrawPlanes()
     int light;
     int x, stop;
     int angle;
-    byte *tempSource;
-    byte *source;
-    byte *source2;
-    byte *dest;
+    uint8_t    *tempSource;
+    uint8_t    *source;
+    uint8_t    *source2;
+    uint8_t    *dest;
     int count;
     int offset;
     int skyTexture;
@@ -387,7 +387,7 @@ void R_DrawPlanes()
     int frac;
     int fracstep = FRACUNIT >> crispy->hires;
 
-    extern byte *ylookup[MAXHEIGHT];
+    uint8_t extern *ylookup[MAXHEIGHT];
     extern int columnofs[MAXWIDTH];
 
 #ifdef RANGECHECK
@@ -499,7 +499,7 @@ void R_DrawPlanes()
             }
         }
         // Regular flat
-        tempSource = cache_lump_num<byte *>(firstflat + flattranslation[pl->picnum], PU_STATIC);
+        tempSource = cache_lump_num<uint8_t *>(firstflat + flattranslation[pl->picnum], PU_STATIC);
         scrollOffset = leveltime >> 1 & 63;
         switch (pl->special)
         {                       // Handle scrolling flats

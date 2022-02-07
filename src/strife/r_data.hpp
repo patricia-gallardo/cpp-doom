@@ -27,8 +27,7 @@
 
 
 // Retrieve column data for span blitting.
-byte*
-R_GetColumn
+uint8_t *R_GetColumn
 ( int		tex,
   int		col );
 

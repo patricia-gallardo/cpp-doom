@@ -73,8 +73,8 @@ static channel_t Channel[MAX_CHANNELS];
 static void *RegisteredSong;      //the current registered song.
 static bool MusicPaused;
 static int Mus_Song = -1;
-static byte *Mus_SndPtr;
-static byte *SoundCurve;
+uint8_t static  *Mus_SndPtr;
+uint8_t static  *SoundCurve;
 
 int snd_MaxVolume = 10;                // maximum volume for sound
 int snd_MusicVolume = 10;              // maximum volume for music
@@ -187,7 +187,7 @@ void S_StartSong(int song, bool loop)
         }
 
         lumpnum = W_GetNumForName(songLump);
-        Mus_SndPtr = cache_lump_num<byte *>(lumpnum, PU_STATIC);
+        Mus_SndPtr = cache_lump_num<uint8_t *>(lumpnum, PU_STATIC);
         length = W_LumpLength(lumpnum);
 
         RegisteredSong = I_RegisterSong(Mus_SndPtr, length);
@@ -298,7 +298,7 @@ void S_StartSongName(const char *songLump, bool loop)
         }
 
         lumpnum = W_GetNumForName(songLump);
-        Mus_SndPtr = cache_lump_num<byte *>(lumpnum, PU_MUSIC);
+        Mus_SndPtr = cache_lump_num<uint8_t *>(lumpnum, PU_MUSIC);
         length = W_LumpLength(lumpnum);
 
         RegisteredSong = I_RegisterSong(Mus_SndPtr, length);
@@ -502,7 +502,7 @@ void S_StartSoundAtVolume(mobj_t * origin, int sound_id, int volume)
     // if the sfxinfo_t is marked as 'can be pitch shifted'
     if (S_sfx[sound_id].pitch)
     {
-        Channel[i].pitch = (byte) (NORM_PITCH + (M_Random() & 7) - (M_Random() & 7));
+        Channel[i].pitch = (uint8_t) (NORM_PITCH + (M_Random() & 7) - (M_Random() & 7));
     }
     else
     {
@@ -789,7 +789,7 @@ void S_UpdateSounds(mobj_t * listener)
 void S_Init()
 {
     I_SetOPLDriverVer(opl_doom2_1_666);
-    SoundCurve = cache_lump_name<byte *>("SNDCURVE", PU_STATIC);
+    SoundCurve = cache_lump_name<uint8_t *>("SNDCURVE", PU_STATIC);
 //      SoundCurve = Z_Malloc(MAX_SND_DIST, PU_STATIC, nullptr);
 
     if (snd_Channels > 8)

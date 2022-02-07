@@ -32,7 +32,7 @@ void I_Init();
 // Called by startup code
 // to get the ammount of memory to malloc
 // for the zone management.
-byte *I_ZoneBase(int *size);
+uint8_t *I_ZoneBase(int *size);
 
 bool I_ConsoleStdout();
 

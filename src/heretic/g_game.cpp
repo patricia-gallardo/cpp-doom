@@ -119,13 +119,15 @@ bool lowres_turn;
 bool shortticfix;            // calculate lowres turning like doom
 bool demoplayback;
 bool demoextend;
-byte *demobuffer, *demo_p, *demoend;
+uint8_t *demobuffer;
+uint8_t *demo_p;
+uint8_t *demoend;
 bool singledemo;             // quit after playing a demo from cmdline
 
 bool precache = true;        // if true, load all graphics at start
 
 // TODO: Heretic uses 16-bit shorts for consistency?
-byte consistancy[MAXPLAYERS][BACKUPTICS];
+uint8_t consistancy[MAXPLAYERS][BACKUPTICS];
 char *savegamedir;
 
 bool testcontrols = false;
@@ -1738,8 +1740,8 @@ void G_ReadDemoTiccmd(ticcmd_t * cmd)
 static void IncreaseDemoBuffer()
 {
     int current_length;
-    byte *new_demobuffer;
-    byte *new_demop;
+    uint8_t *new_demobuffer;
+    uint8_t *new_demop;
     int new_length;
 
     // Find the current size
@@ -1749,7 +1751,7 @@ static void IncreaseDemoBuffer()
     // Generate a new buffer twice the size
     new_length = current_length * 2;
 
-    new_demobuffer = zmalloc<byte *>(new_length, PU_STATIC, 0);
+    new_demobuffer = zmalloc<uint8_t *>(new_length, PU_STATIC, 0);
     new_demop = new_demobuffer + (demo_p - demobuffer);
 
     // Copy over the old data
@@ -1767,7 +1769,7 @@ static void IncreaseDemoBuffer()
 
 void G_WriteDemoTiccmd(ticcmd_t * cmd)
 {
-    byte *demo_start;
+    uint8_t *demo_start;
 
     if (gamekeydown[key_demo_quit]) // press to end demo recording
         G_CheckDemoStatus();
@@ -1870,7 +1872,7 @@ void G_RecordDemo(skill_t skill, int, int episode, int map,
     i = M_CheckParmWithArgs("-maxdemo", 1);
     if (i)
         maxsize = atoi(myargv[i + 1]) * 1024;
-    demobuffer = zmalloc<byte *>(maxsize, PU_STATIC, nullptr);
+    demobuffer = zmalloc<uint8_t *>(maxsize, PU_STATIC, nullptr);
     demoend = demobuffer + maxsize;
 
     demo_p = demobuffer;
@@ -1929,7 +1931,7 @@ void G_DoPlayDemo()
 
     gameaction = ga_nothing;
     lumpnum = W_GetNumForName(defdemoname);
-    demobuffer = cache_lump_num<byte *>(lumpnum, PU_STATIC);
+    demobuffer = cache_lump_num<uint8_t *>(lumpnum, PU_STATIC);
     demo_p = demobuffer;
     skill = static_cast<skill_t>(*demo_p++);
     episode = *demo_p++;
@@ -1977,7 +1979,7 @@ void G_TimeDemo(char *name)
     skill_t skill;
     int episode, map, i;
 
-    demobuffer = demo_p = cache_lump_name<byte *>(name, PU_STATIC);
+    demobuffer = demo_p = cache_lump_name<uint8_t *>(name, PU_STATIC);
     skill = static_cast<skill_t>(*demo_p++);
     episode = *demo_p++;
     map = *demo_p++;

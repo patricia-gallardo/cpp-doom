@@ -220,8 +220,8 @@ typedef struct mobj_s
     fixed_t floorclip;          // value to use for floor clipping
     int archiveNum;             // Identity during archive
     short tid;                  // thing identifier
-    byte special;               // special
-    byte args[5];               // special arguments
+    uint8_t          special;                // special
+    uint8_t          args[5];              // special arguments
 } mobj_t;
 
 // each sector has a degenmobj_t in it's center for sound origin purposes
@@ -669,7 +669,7 @@ extern int mouseSensitivity;
 
 extern bool precache;        // if true, load all graphics at level load
 
-extern byte *screen;            // off screen work buffer, from V_video.c
+extern uint8_t *screen; // off screen work buffer, from V_video.c
 
 extern bool singledemo;      // quit after playing a demo from cmdline
 
@@ -715,7 +715,7 @@ void H2_GameLoop();
 //---------
 //SYSTEM IO
 //---------
-byte *I_AllocLow(int length);
+uint8_t *I_AllocLow(int length);
 // allocates from low memory under dos, just mallocs under unix
 
 // haleyjd: was WATCOMC, again preserved for historical interest as in Heretic

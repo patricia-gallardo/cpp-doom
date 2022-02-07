@@ -372,7 +372,7 @@ static bool IsMid(byte *mem, int len)
 }
 */
 
-static bool ConvertMus(byte *musdata, int len, const char *filename)
+static bool ConvertMus(uint8_t *musdata, int len, const char *filename)
 {
     MEMFILE *instream;
     MEMFILE *outstream;
@@ -427,7 +427,7 @@ static void *I_SDL_RegisterSong(void *data, int len)
     {
         // Assume a MUS file and try to convert
 
-        ConvertMus(static_cast<byte *>(data), len, filename);
+        ConvertMus(static_cast<uint8_t *>(data), len, filename);
     }
 
     // Load the MIDI. In an ideal world we'd be using Mix_LoadMUS_RW()

@@ -1603,7 +1603,7 @@ void ST_doPaletteStuff()
 
     int palette;
 #ifndef CRISPY_TRUECOLOR
-    byte *pal;
+    uint8_t *pal;
 #endif
     int cnt;
     int bzc;
@@ -1670,7 +1670,7 @@ void ST_doPaletteStuff()
     {
         st_palette = palette;
 #ifndef CRISPY_TRUECOLOR
-        pal = cache_lump_num<byte *>(lu_palette, PU_CACHE) + palette * 768;
+        pal = cache_lump_num<uint8_t *>(lu_palette, PU_CACHE) + palette * 768;
         I_SetPalette(pal);
 #else
         I_SetPalette(palette);
@@ -1687,7 +1687,7 @@ enum class hudcolor_t
 };
 
 // [crispy] return ammo/health/armor widget color
-static byte *ST_WidgetColor(hudcolor_t i)
+static uint8_t *ST_WidgetColor(hudcolor_t i)
 {
     if (!(crispy->coloredhud & COLOREDHUD_BAR))
         return nullptr;
@@ -2320,7 +2320,7 @@ void ST_Stop()
         return;
 
 #ifndef CRISPY_TRUECOLOR
-    I_SetPalette(cache_lump_num<byte *>(lu_palette, PU_CACHE));
+    I_SetPalette(cache_lump_num<uint8_t *>(lu_palette, PU_CACHE));
 #else
     I_SetPalette(0);
 #endif

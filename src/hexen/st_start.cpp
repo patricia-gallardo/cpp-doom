@@ -44,16 +44,16 @@
 #define ST_NETNOTCH_HEIGHT		16
 #define ST_MAX_NETNOTCHES		8
 
-byte *ST_LoadScreen();
+uint8_t *ST_LoadScreen();
 void ST_UpdateNotches(int notchPosition);
 void ST_UpdateNetNotches(int notchPosition);
 
 // PRIVATE DATA DEFINITIONS ------------------------------------------------
-static const byte *bitmap = nullptr;
+static const uint8_t *bitmap = nullptr;
 int graphical_startup = 0;
 static bool using_graphical_startup;
 
-static const byte notchTable[] = {
+const uint8_t static notchTable[] = {
     // plane 0
     0x00, 0x80, 0x01, 0x80, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x02, 0x40,
     0x02, 0x40, 0x02, 0x40, 0x02, 0x40, 0x02, 0x40, 0x02, 0x40, 0x03, 0xC0,
@@ -81,7 +81,7 @@ static const byte notchTable[] = {
 
 
 // Red Network Progress notches
-static const byte netnotchTable[] = {
+static const uint8_t netnotchTable[] = {
     // plane 0
     0x80, 0x50, 0xD0, 0xf0, 0xF0, 0xF0, 0xF0, 0xF0, 0xF0, 0xD0, 0xF0, 0xC0,
     0x70, 0x50, 0x80, 0x60,
@@ -118,9 +118,9 @@ static const byte netnotchTable[] = {
 
 void ST_Init()
 {
-    byte *pal;
-    byte *buffer;
-    
+    uint8_t *pal;
+    uint8_t *buffer;
+
     using_graphical_startup = false;
 
     if (graphical_startup && !debugmode && !testcontrols)
@@ -297,14 +297,14 @@ void ST_RealMessage(const char *message, ...)
 //==========================================================================
 
 
-byte *ST_LoadScreen()
+uint8_t *ST_LoadScreen()
 {
     int length, lump;
-    byte *buffer;
+    uint8_t *buffer;
 
     lump = W_GetNumForName("STARTUP");
     length = W_LumpLength(lump);
-    buffer = zmalloc<byte *>(length, PU_STATIC, nullptr);
+    buffer = zmalloc<uint8_t *>(length, PU_STATIC, nullptr);
     W_ReadLump(lump, buffer);
     return (buffer);
 }

@@ -139,9 +139,9 @@ bool longtics;    // cph's doom 1.91 longtics hack
 bool lowres_turn; // low resolution turning for longtics
 bool demoplayback;
 bool netdemo;
-byte *  demobuffer;
-byte *  demo_p;
-byte *  demoend;
+uint8_t *demobuffer;
+uint8_t *demo_p;
+uint8_t *demoend;
 bool singledemo; // quit after playing a demo from cmdline
 
 bool precache = true; // if true, load all graphics at start
@@ -152,7 +152,7 @@ int     testcontrols_mousespeed;
 
 wbstartstruct_t wminfo; // parms for world map / intermission
 
-byte consistancy[MAXPLAYERS][BACKUPTICS];
+uint8_t consistancy[MAXPLAYERS][BACKUPTICS];
 
 #define MAXPLMOVE (forwardmove[1])
 
@@ -2419,7 +2419,7 @@ void G_ReadDemoTiccmd(ticcmd_t *cmd)
     // continue recording the demo under a different name
     if (gamekeydown[key_demo_quit] && singledemo && !netgame)
     {
-        byte *actualbuffer = demobuffer;
+        uint8_t *actualbuffer = demobuffer;
         char *actualname   = M_StringDuplicate(defdemoname);
 
         gamekeydown[key_demo_quit] = false;
@@ -2465,8 +2465,8 @@ void G_ReadDemoTiccmd(ticcmd_t *cmd)
 static void IncreaseDemoBuffer()
 {
     int   current_length;
-    byte *new_demobuffer;
-    byte *new_demop;
+    uint8_t *new_demobuffer;
+    uint8_t *new_demop;
     int   new_length;
 
     // Find the current size
@@ -2494,7 +2494,7 @@ static void IncreaseDemoBuffer()
 
 void G_WriteDemoTiccmd(ticcmd_t *cmd)
 {
-    byte *demo_start;
+    uint8_t *demo_start;
 
     if (gamekeydown[key_demo_quit]) // press q to end demo recording
         G_CheckDemoStatus();
@@ -2733,7 +2733,7 @@ void G_DoPlayDemo()
 
     lumpnum    = W_GetNumForName(defdemoname);
     gameaction = ga_nothing;
-    demobuffer = cache_lump_num<byte *>(lumpnum, PU_STATIC);
+    demobuffer = cache_lump_num<uint8_t *>(lumpnum, PU_STATIC);
     demo_p     = demobuffer;
 
     // [crispy] ignore empty demo lumps
@@ -2845,7 +2845,7 @@ void G_DoPlayDemo()
     // [crispy] demo progress bar
     {
         int   i, numplayersingame = 0;
-        byte *demo_ptr = demo_p;
+        uint8_t *demo_ptr = demo_p;
 
         for (i = 0; i < MAXPLAYERS; i++)
         {

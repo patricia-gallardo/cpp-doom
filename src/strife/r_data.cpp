@@ -147,7 +147,7 @@ fixed_t*		textureheight;
 int*			texturecompositesize;
 short**			texturecolumnlump;
 unsigned short**	texturecolumnofs;
-byte**			texturecomposite;
+uint8_t               **texturecomposite;
 
 // for global animation
 int*		flattranslation;
@@ -182,18 +182,17 @@ lighttable_t	*colormaps;
 //
 void
 R_DrawColumnInCache
-( column_t*	patch,
-  byte*		cache,
+( column_t*	patch, uint8_t *cache,
   int		originy,
   int		cacheheight )
 {
     int		count;
     int		position;
-    byte*	source;
+    uint8_t    *source;
 
     while (patch->topdelta != 0xff)
     {
-	source = (byte *)patch + 3;
+	source = (uint8_t *)patch + 3;
 	count = patch->length;
 	position = originy + patch->topdelta;
 
@@ -209,7 +208,7 @@ R_DrawColumnInCache
 	if (count > 0)
 	    memcpy (cache + position, source, count);
 		
-	patch = (column_t *)(  (byte *)patch + patch->length + 4); 
+	patch = (column_t *)(  (uint8_t *)patch + patch->length + 4);
     }
 }
 
@@ -223,7 +222,7 @@ R_DrawColumnInCache
 //
 void R_GenerateComposite (int texnum)
 {
-    byte*		block;
+    uint8_t            *block;
     texture_t*		texture;
     texpatch_t*		patch;	
     patch_t*		realpatch;
@@ -237,7 +236,7 @@ void R_GenerateComposite (int texnum)
 	
     texture = textures[texnum];
 
-    block = zmalloc<byte *>(texturecompositesize[texnum],
+    block = zmalloc<uint8_t *>(texturecompositesize[texnum],
         PU_STATIC,
         &texturecomposite[texnum]);
 
@@ -269,7 +268,7 @@ void R_GenerateComposite (int texnum)
 	    if (collump[x] >= 0)
 		continue;
 	    
-	    patchcol = (column_t *)((byte *)realpatch
+	    patchcol = (column_t *)((uint8_t *)realpatch
 				    + LONG(realpatch->columnofs[x-x1]));
 	    R_DrawColumnInCache (patchcol,
 				 block + colofs[x],
@@ -292,7 +291,7 @@ void R_GenerateComposite (int texnum)
 void R_GenerateLookup (int texnum)
 {
     texture_t*		texture;
-    byte*		patchcount;	// patchcount[texture->width]
+    uint8_t            *patchcount; // patchcount[texture->width]
     texpatch_t*		patch;	
     patch_t*		realpatch;
     int			x;
@@ -315,7 +314,7 @@ void R_GenerateLookup (int texnum)
     //  that are covered by more than one patch.
     // Fill in the lump / offset, so columns
     //  with only a single patch are all done.
-    patchcount = zmalloc<byte *>(texture->width, PU_STATIC, &patchcount);
+    patchcount = zmalloc<uint8_t *>(texture->width, PU_STATIC, &patchcount);
     memset (patchcount, 0, texture->width);
     patch = texture->patches;
 
@@ -377,8 +376,7 @@ void R_GenerateLookup (int texnum)
 //
 // R_GetColumn
 //
-byte*
-R_GetColumn
+uint8_t *R_GetColumn
 ( int		tex,
   int		col )
 {
@@ -390,7 +388,7 @@ R_GetColumn
     ofs = texturecolumnofs[tex][col];
     
     if (lump > 0)
-	return cache_lump_num<byte *>(lump,PU_CACHE)+ofs;
+	return cache_lump_num<uint8_t *>(lump,PU_CACHE)+ofs;
 
     if (!texturecomposite[tex])
 	R_GenerateComposite (tex);
@@ -519,7 +517,7 @@ void R_InitTextures ()
     textures = zmalloc<texture_t **>(numtextures * sizeof(*textures), PU_STATIC, 0);
     texturecolumnlump = zmalloc<short **>(numtextures * sizeof(*texturecolumnlump), PU_STATIC, 0);
     texturecolumnofs = zmalloc<unsigned short **>(numtextures * sizeof(*texturecolumnofs), PU_STATIC, 0);
-    texturecomposite = zmalloc<byte **>(numtextures * sizeof(*texturecomposite), PU_STATIC, 0);
+    texturecomposite = zmalloc<uint8_t **>(numtextures * sizeof(*texturecomposite), PU_STATIC, 0);
     texturecompositesize = zmalloc<int *>(numtextures * sizeof(*texturecompositesize), PU_STATIC, 0);
     texturewidthmask = zmalloc<int *>(numtextures * sizeof(*texturewidthmask), PU_STATIC, 0);
     textureheight = zmalloc<fixed_t *>(numtextures * sizeof(*textureheight), PU_STATIC, 0);
@@ -570,7 +568,7 @@ void R_InitTextures ()
         if (offset > maxoff)
             I_Error ("R_InitTextures: bad texture directory");
 
-        mtexture = (maptexture_t *) ( (byte *)maptex + offset);
+        mtexture = (maptexture_t *) ( (uint8_t *)maptex + offset);
 
         texture = textures[i] =
             zmalloc<texture_t *>(sizeof(texture_t)

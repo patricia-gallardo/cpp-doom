@@ -295,7 +295,7 @@ void D_Display ()
 
     // clean up border stuff
     if (gamestate != oldgamestate && gamestate != GS_LEVEL)
-        I_SetPalette (cache_lump_name<byte *>(DEH_String("PLAYPAL"),PU_CACHE));
+        I_SetPalette (cache_lump_name<uint8_t *>(DEH_String("PLAYPAL"),PU_CACHE));
 
     // see if the border needs to be initially drawn
     if (gamestate == GS_LEVEL && oldgamestate != GS_LEVEL)
@@ -1082,7 +1082,7 @@ void PrintGameVersion()
 
 static void D_Endoom()
 {
-    byte *endoom;
+    uint8_t *endoom;
 
     // Don't show ENDOOM if we have it disabled, or we're running
     // in screensaver or control test mode. Only show it once the
@@ -1095,7 +1095,7 @@ static void D_Endoom()
     }
 
     // haleyjd 08/27/10: [STRIFE] ENDOOM -> ENDSTRF
-    endoom = cache_lump_name<byte *>(DEH_String("ENDSTRF"), PU_STATIC);
+    endoom = cache_lump_name<uint8_t *>(DEH_String("ENDSTRF"), PU_STATIC);
 
     I_Endoom(endoom);
 }
@@ -1222,10 +1222,10 @@ static void D_InitChocoStrife()
 
 static int introprogress;        // track the progress of the intro
 
-static byte *rawgfx_startup0;    // raw linear gfx for intro
-static byte *rawgfx_startp[4];
-static byte *rawgfx_startlz[2];
-static byte *rawgfx_startbot;
+static uint8_t *rawgfx_startup0; // raw linear gfx for intro
+static uint8_t *rawgfx_startp[4];
+static uint8_t *rawgfx_startlz[2];
+static uint8_t *rawgfx_startbot;
 
 //
 // D_IntroBackground
@@ -1266,7 +1266,7 @@ static void D_IntroBackground()
 
 static void D_InitIntroSequence()
 {
-    byte *textScreen;
+    uint8_t *textScreen;
     char string[80];
 
     if (devparm || !graphical_startup || testcontrols)
@@ -1285,14 +1285,14 @@ static void D_InitIntroSequence()
         V_RestoreBuffer(); // make the V_ routines work
 
         // Load all graphics
-        rawgfx_startup0   = cache_lump_name<byte *>("STARTUP0", PU_STATIC);
-        rawgfx_startp[0]  = cache_lump_name<byte *>("STRTPA1",  PU_STATIC);
-        rawgfx_startp[1]  = cache_lump_name<byte *>("STRTPB1",  PU_STATIC);
-        rawgfx_startp[2]  = cache_lump_name<byte *>("STRTPC1",  PU_STATIC);
-        rawgfx_startp[3]  = cache_lump_name<byte *>("STRTPD1",  PU_STATIC);
-        rawgfx_startlz[0] = cache_lump_name<byte *>("STRTLZ1",  PU_STATIC);
-        rawgfx_startlz[1] = cache_lump_name<byte *>("STRTLZ2",  PU_STATIC);
-        rawgfx_startbot   = cache_lump_name<byte *>("STRTBOT",  PU_STATIC);
+        rawgfx_startup0   = cache_lump_name<uint8_t *>("STARTUP0", PU_STATIC);
+        rawgfx_startp[0]  = cache_lump_name<uint8_t *>("STRTPA1",  PU_STATIC);
+        rawgfx_startp[1]  = cache_lump_name<uint8_t *>("STRTPB1",  PU_STATIC);
+        rawgfx_startp[2]  = cache_lump_name<uint8_t *>("STRTPC1",  PU_STATIC);
+        rawgfx_startp[3]  = cache_lump_name<uint8_t *>("STRTPD1",  PU_STATIC);
+        rawgfx_startlz[0] = cache_lump_name<uint8_t *>("STRTLZ1",  PU_STATIC);
+        rawgfx_startlz[1] = cache_lump_name<uint8_t *>("STRTLZ2",  PU_STATIC);
+        rawgfx_startbot   = cache_lump_name<uint8_t *>("STRTBOT",  PU_STATIC);
 
         // Draw the background
         D_IntroBackground();

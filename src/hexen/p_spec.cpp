@@ -36,7 +36,7 @@
 
 // PRIVATE FUNCTION PROTOTYPES ---------------------------------------------
 
-static bool CheckedLockedDoor(mobj_t * mo, byte lock);
+static bool CheckedLockedDoor(mobj_t * mo, uint8_t lock);
 
 // EXTERNAL DATA DECLARATIONS ----------------------------------------------
 
@@ -382,7 +382,7 @@ int     P_FindMinSurroundingLight(sector_t *sector,int max)
 //
 //=========================================================================
 
-bool EV_SectorSoundChange(byte * args)
+bool EV_SectorSoundChange(uint8_t *args)
 {
     int secNum;
     bool rtn;
@@ -407,7 +407,7 @@ bool EV_SectorSoundChange(byte * args)
 //
 //============================================================================
 
-static bool CheckedLockedDoor(mobj_t * mo, byte lock)
+static bool CheckedLockedDoor(mobj_t * mo, uint8_t lock)
 {
     extern const char *TextKeyMessages[11];
     char LockedBuffer[80];
@@ -438,7 +438,7 @@ static bool CheckedLockedDoor(mobj_t * mo, byte lock)
 //
 //==========================================================================
 
-bool EV_LineSearchForPuzzleItem(line_t * line, byte *, mobj_t * mo)
+bool EV_LineSearchForPuzzleItem(line_t * line, uint8_t *, mobj_t * mo)
 {
     player_t *player;
     int i;
@@ -504,7 +504,7 @@ Events are operations triggered by using, crossing, or shooting special lines, o
 //
 //============================================================================
 
-bool P_ExecuteLineSpecial(int special, byte * args, line_t * line,
+bool P_ExecuteLineSpecial(int special, uint8_t *args, line_t * line,
                              int side, mobj_t * mo)
 {
     bool buttonSuccess;
@@ -846,7 +846,7 @@ bool P_ExecuteLineSpecial(int special, byte * args, line_t * line,
 bool P_ActivateLine(line_t * line, mobj_t * mo, int side,
                        int activationType)
 {
-    byte args[5];
+    uint8_t args[5];
     int lineActivation;
     bool repeat;
     bool buttonSuccess;

@@ -4962,7 +4962,7 @@ void A_KoraxChase(mobj_t * actor)
 {
     mobj_t *spot;
     int lastfound;
-    byte args[3] = {0, 0, 0};
+    uint8_t args[3] = { 0, 0, 0 };
 
     if ((!actor->special2.i) &&
         (actor->health <= (actor->info->spawnhealth / 2)))
@@ -5022,7 +5022,7 @@ void A_KoraxStep2(mobj_t * actor)
 void A_KoraxBonePop(mobj_t * actor)
 {
     mobj_t *mo;
-    byte args[5];
+    uint8_t args[5];
 
     args[0] = args[1] = args[2] = args[3] = args[4] = 0;
 
@@ -5142,7 +5142,7 @@ void A_KoraxMissile(mobj_t * actor)
 // Call action code scripts (250-254)
 void A_KoraxCommand(mobj_t * actor)
 {
-    byte args[5];
+    uint8_t args[5];
     fixed_t x, y, z;
     angle_t ang;
     int numcommands;

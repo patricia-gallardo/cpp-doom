@@ -32,7 +32,7 @@ net_packet_t *NET_NewPacket(int initial_size)
         initial_size = 256;
 
     packet->alloced = initial_size;
-    packet->data    = zmalloc<byte *>(initial_size, PU_STATIC, 0);
+    packet->data    = zmalloc<uint8_t *>(initial_size, PU_STATIC, 0);
     packet->len     = 0;
     packet->pos     = 0;
 
@@ -86,7 +86,7 @@ bool NET_ReadInt8(net_packet_t *packet, unsigned int *data)
 
 bool NET_ReadInt16(net_packet_t *packet, unsigned int *data)
 {
-    byte *p;
+    uint8_t *p;
 
     if (packet->pos + 2 > packet->len)
         return false;
@@ -104,7 +104,7 @@ bool NET_ReadInt16(net_packet_t *packet, unsigned int *data)
 
 bool NET_ReadInt32(net_packet_t *packet, unsigned int *data)
 {
-    byte *p;
+    uint8_t *p;
 
     if (packet->pos + 4 > packet->len)
         return false;
@@ -241,7 +241,7 @@ static void NET_IncreasePacket(net_packet_t *packet)
 
     packet->alloced *= 2;
 
-    auto *newdata = zmalloc<byte *>(packet->alloced, PU_STATIC, 0);
+    auto *newdata = zmalloc<uint8_t *>(packet->alloced, PU_STATIC, 0);
 
     memcpy(newdata, packet->data, packet->len);
 
@@ -266,7 +266,7 @@ void NET_WriteInt8(net_packet_t *packet, unsigned int i)
 
 void NET_WriteInt16(net_packet_t *packet, unsigned int i)
 {
-    byte *p;
+    uint8_t *p;
 
     if (packet->len + 2 > packet->alloced)
         NET_IncreasePacket(packet);
@@ -284,7 +284,7 @@ void NET_WriteInt16(net_packet_t *packet, unsigned int i)
 
 void NET_WriteInt32(net_packet_t *packet, unsigned int i)
 {
-    byte *p;
+    uint8_t *p;
 
     if (packet->len + 4 > packet->alloced)
         NET_IncreasePacket(packet);
@@ -301,7 +301,7 @@ void NET_WriteInt32(net_packet_t *packet, unsigned int i)
 
 void NET_WriteString(net_packet_t *packet, const char *string)
 {
-    byte * p;
+    uint8_t *p;
     size_t string_size;
 
     string_size = strlen(string) + 1;

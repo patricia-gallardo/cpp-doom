@@ -112,7 +112,7 @@ void T_RotatePoly(polyevent_t * pe)
 //
 //==========================================================================
 
-bool EV_RotatePoly(line_t *, byte * args, int direction, bool
+bool EV_RotatePoly(line_t *, uint8_t *args, int direction, bool
                       overRide)
 {
     int mirror;
@@ -243,7 +243,7 @@ void T_MovePoly(polyevent_t * pe)
 //
 //==========================================================================
 
-bool EV_MovePoly(line_t *, byte *args, bool timesEight, bool overRide)
+bool EV_MovePoly(line_t *, uint8_t *args, bool timesEight, bool overRide)
 {
     int mirror;
     int polyNum;
@@ -451,7 +451,7 @@ void T_PolyDoor(polydoor_t * pd)
 //
 //==========================================================================
 
-bool EV_OpenPolyDoor(line_t *, byte * args, podoortype_t type)
+bool EV_OpenPolyDoor(line_t *, uint8_t *args, podoortype_t type)
 {
     int mirror;
     int polyNum;
@@ -1421,7 +1421,7 @@ static void TranslateToStartSpot(int tag, int originX, int originY)
 
 void PO_Init(int lump)
 {
-    byte *data;
+    uint8_t    *data;
     int i;
     mapthing_t spawnthing;
     mapthing_t *mt;
@@ -1431,7 +1431,7 @@ void PO_Init(int lump)
     polyobjs = zmalloc<polyobj_t *>(po_NumPolyobjs * sizeof(polyobj_t), PU_LEVEL, 0);
     memset(polyobjs, 0, po_NumPolyobjs * sizeof(polyobj_t));
 
-    data = cache_lump_num<byte *>(lump, PU_STATIC);
+    data = cache_lump_num<uint8_t *>(lump, PU_STATIC);
     numthings = W_LumpLength(lump) / sizeof(mapthing_t);
     mt = (mapthing_t *) data;
     polyIndex = 0;              // index polyobj number

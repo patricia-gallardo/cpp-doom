@@ -56,8 +56,8 @@ static void DrawKeyBar();
 static void DrawWeaponPieces();
 static void DrawFullScreenStuff();
 static void DrawAnimatedIcons();
-static bool HandleCheats(byte key);
-static bool CheatAddKey(Cheat_t * cheat, byte key, bool * eat);
+static bool HandleCheats(uint8_t key);
+static bool CheatAddKey(Cheat_t * cheat, uint8_t key, bool * eat);
 static void CheatGodFunc(player_t * player, Cheat_t * cheat);
 static void CheatNoClipFunc(player_t * player, Cheat_t * cheat);
 static void CheatWeaponsFunc(player_t * player, Cheat_t * cheat);
@@ -922,7 +922,7 @@ void SB_PaletteFlash(bool forceChange)
 {
     static int sb_palette = 0;
     int palette;
-    byte *pal;
+    uint8_t   *pal;
 
     if (forceChange)
     {
@@ -975,7 +975,7 @@ void SB_PaletteFlash(bool forceChange)
     if (palette != sb_palette)
     {
         sb_palette = palette;
-        pal = cache_lump_num<byte *>(PlayPalette, PU_CACHE) + palette * 768;
+        pal = cache_lump_num<uint8_t *>(PlayPalette, PU_CACHE) + palette * 768;
         I_SetPalette(pal);
     }
 }
@@ -1531,7 +1531,7 @@ bool SB_Responder(event_t * event)
 //
 //==========================================================================
 
-static bool HandleCheats(byte key)
+static bool HandleCheats(uint8_t key)
 {
     int i;
     bool eat;
@@ -1582,7 +1582,7 @@ static bool HandleCheats(byte key)
 //
 //==========================================================================
 
-static bool CheatAddKey(Cheat_t * cheat, byte key, bool * eat)
+static bool CheatAddKey(Cheat_t * cheat, uint8_t key, bool * eat)
 {
 /*
     if (!cheat->pos)
@@ -1920,7 +1920,7 @@ static void CheatScriptFunc2(player_t * player, Cheat_t *)
 static void CheatScriptFunc3(player_t * player, Cheat_t * cheat)
 {
     int script;
-    byte script_args[3];
+    uint8_t script_args[3];
     int tens, ones;
     char textBuffer[40];
     char args[2];

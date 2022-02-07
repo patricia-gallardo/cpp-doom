@@ -51,13 +51,13 @@ enum class cr_t
 
 #define CR_GREY CR_GRAY
 
-extern byte *cr_colors[static_cast<int>(cr_t::CRMAX)];
+extern uint8_t *cr_colors[static_cast<int>(cr_t::CRMAX)];
 extern char **crstr;
 
 constexpr char cr_esc = '~';
 
 #ifndef CRISPY_TRUECOLOR
-extern byte *tranmap;
+extern uint8_t *tranmap;
 #else
 extern const pixel_t (*blendfunc)(const pixel_t fg, const pixel_t bg);
 extern const pixel_t I_BlendAdd(const pixel_t bg, const pixel_t fg);

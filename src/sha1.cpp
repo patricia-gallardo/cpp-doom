@@ -51,7 +51,7 @@ void SHA1_Init(sha1_context_t *hd)
 /****************
  * Transform the message X which consists of 16 32-bit-words
  */
-static void Transform(sha1_context_t *hd, byte *data)
+static void Transform(sha1_context_t *hd, uint8_t *data)
 {
     uint32_t a, b, c, d, e, tm;
     uint32_t x[16];
@@ -68,8 +68,8 @@ static void Transform(sha1_context_t *hd, byte *data)
 #else
     {
         int   i;
-        byte *p2;
-        for (i = 0, p2 = (byte *)x; i < 16; i++, p2 += 4)
+        uint8_t *p2;
+        for (i = 0, p2 = (uint8_t *)x; i < 16; i++, p2 += 4)
         {
             p2[3] = *data++;
             p2[2] = *data++;
@@ -197,7 +197,7 @@ static void Transform(sha1_context_t *hd, byte *data)
 /* Update the message digest with the contents
  * of INBUF with length INLEN.
  */
-void SHA1_Update(sha1_context_t *hd, byte *inbuf, size_t inlen)
+void SHA1_Update(sha1_context_t *hd, uint8_t *inbuf, size_t inlen)
 {
     if (hd->count == 64)
     {
@@ -240,7 +240,7 @@ void SHA1_Update(sha1_context_t *hd, byte *inbuf, size_t inlen)
 void SHA1_Final(sha1_digest_t digest, sha1_context_t *hd)
 {
     uint32_t t, msb, lsb;
-    byte *   p;
+    uint8_t *p;
 
     SHA1_Update(hd, nullptr, 0); /* flush */
     ;
@@ -317,7 +317,7 @@ void SHA1_Final(sha1_digest_t digest, sha1_context_t *hd)
 
 void SHA1_UpdateInt32(sha1_context_t *context, unsigned int val)
 {
-    byte buf[4];
+    uint8_t buf[4];
 
     buf[0] = (val >> 24) & 0xff;
     buf[1] = (val >> 16) & 0xff;
@@ -329,5 +329,5 @@ void SHA1_UpdateInt32(sha1_context_t *context, unsigned int val)
 
 void SHA1_UpdateString(sha1_context_t *context, char *str)
 {
-    SHA1_Update(context, (byte *)str, strlen(str) + 1);
+    SHA1_Update(context, (uint8_t *)str, strlen(str) + 1);
 }

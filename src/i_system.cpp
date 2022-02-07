@@ -82,9 +82,9 @@ void I_Tactile(int, int, int)
 // by trying progressively smaller zone sizes until one is found that
 // works.
 
-static byte *AutoAllocMemory(int *size, int default_ram, int min_ram)
+static uint8_t *AutoAllocMemory(int *size, int default_ram, int min_ram)
 {
-    byte *zonemem;
+    uint8_t *zonemem;
 
     // Allocate the zone memory.  This loop tries progressively smaller
     // zone sizes until a size is found that can be allocated.
@@ -106,7 +106,7 @@ static byte *AutoAllocMemory(int *size, int default_ram, int min_ram)
 
         *size = default_ram * 1024 * 1024;
 
-        zonemem = static_cast<byte *>(malloc(*size));
+        zonemem = static_cast<uint8_t *>(malloc(*size));
 
         // Failed to allocate?  Reduce zone size until we reach a size
         // that is acceptable.
@@ -120,9 +120,9 @@ static byte *AutoAllocMemory(int *size, int default_ram, int min_ram)
     return zonemem;
 }
 
-byte *I_ZoneBase(int *size)
+uint8_t *I_ZoneBase(int *size)
 {
-    byte *     zonemem;
+    uint8_t   *zonemem;
     int        min_ram, default_ram;
     int        p;
     static int i = 1;

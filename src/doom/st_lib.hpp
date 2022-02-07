@@ -69,7 +69,7 @@ typedef struct
     patch_t *p;
 
     // [crispy] remember previous colorization
-    byte *oldtranslation;
+    uint8_t *oldtranslation;
 } st_percent_t;
 
 

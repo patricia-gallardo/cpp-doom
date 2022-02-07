@@ -62,7 +62,7 @@ typedef PACKED_STRUCT (
 static void StartOpenACS(int number, int infoIndex, int offset);
 static void ScriptFinished(int number);
 static bool TagBusy(int tag);
-static bool AddToACSStore(int map, int number, byte * args);
+static bool AddToACSStore(int map, int number, uint8_t *args);
 static int GetACSIndex(int number);
 static void Push(int value);
 static int Pop();
@@ -179,7 +179,7 @@ static void ThingCount(int type, int tid);
 // PUBLIC DATA DEFINITIONS -------------------------------------------------
 
 int ACScriptCount;
-byte *ActionCodeBase;
+uint8_t   *ActionCodeBase;
 static int ActionCodeSize;
 acsInfo_t *ACSInfo;
 int MapVars[MAX_ACS_MAP_VARS];
@@ -191,7 +191,7 @@ acsstore_t ACSStore[MAX_ACS_STORE + 1]; // +1 for termination marker
 static char EvalContext[64];
 static acs_t *ACScript;
 static unsigned int PCodeOffset;
-static byte SpecArgs[8];
+static uint8_t SpecArgs[8];
 static int ACStringCount;
 static char **ACStrings;
 static char PrintBuffer[PRINT_BUFFER_SIZE];
@@ -456,7 +456,7 @@ void P_LoadACScripts(int lump)
     acsHeader_t *header;
     acsInfo_t *info;
 
-    ActionCodeBase = cache_lump_num<byte *>(lump, PU_LEVEL);
+    ActionCodeBase = cache_lump_num<uint8_t *>(lump, PU_LEVEL);
     ActionCodeSize = W_LumpLength(lump);
 
     M_snprintf(EvalContext, sizeof(EvalContext),
@@ -578,7 +578,7 @@ void P_CheckACSStore()
 
 static char ErrorMsg[128];
 
-bool P_StartACS(int number, int map, byte * args, mobj_t * activator,
+bool P_StartACS(int number, int map, uint8_t *args, mobj_t * activator,
                    line_t * line, int side)
 {
     int i;
@@ -634,7 +634,7 @@ bool P_StartACS(int number, int map, byte * args, mobj_t * activator,
 //
 //==========================================================================
 
-static bool AddToACSStore(int map, int number, byte * args)
+static bool AddToACSStore(int map, int number, uint8_t *args)
 {
     int i;
     int index;
@@ -674,11 +674,11 @@ static bool AddToACSStore(int map, int number, byte * args)
 //==========================================================================
 
 
-bool P_StartLockedACS(line_t * line, byte * args, mobj_t * mo, int side)
+bool P_StartLockedACS(line_t * line, uint8_t *args, mobj_t * mo, int side)
 {
     int i;
     int lock;
-    byte newArgs[5];
+    uint8_t newArgs[5];
     char LockedBuffer[80];
 
     extern const char *TextKeyMessages[11];

@@ -23,6 +23,6 @@
 // Display the Endoom screen on shutdown.  Pass a pointer to the
 // ENDOOM lump.
 
-void I_Endoom(byte *data);
+void I_Endoom(uint8_t *data);
 
 #endif

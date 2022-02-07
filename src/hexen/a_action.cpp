@@ -419,7 +419,7 @@ void A_BridgeOrbit(mobj_t * actor)
 
 void A_BridgeInit(mobj_t * actor)
 {
-    byte startangle;
+    uint8_t startangle;
     mobj_t *ball1, *ball2, *ball3;
     fixed_t cx, cy, cz;
 
@@ -850,7 +850,7 @@ void A_CheckThrowBomb(mobj_t * actor)
 //
 //===========================================================================
 
-bool A_LocalQuake(byte * args, mobj_t *)
+bool A_LocalQuake(uint8_t *args, mobj_t *)
 {
     mobj_t *focus, *target;
     int lastfound = 0;

@@ -52,7 +52,7 @@ int main (int argc, char **argv)
 }
 */
 
-static const byte crispness_background[] = {
+static const uint8_t crispness_background[] = {
     0x8d,
     0x8c,
     0x8b,

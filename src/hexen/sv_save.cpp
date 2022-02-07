@@ -125,12 +125,12 @@ static void SV_OpenRead(char *fileName);
 static void SV_OpenWrite(char *fileName);
 static void SV_Close();
 static void SV_Read(void *buffer, int size);
-static byte SV_ReadByte();
+static uint8_t  SV_ReadByte();
 static uint16_t SV_ReadWord();
 static uint32_t SV_ReadLong();
 static void *SV_ReadPtr();
 static void SV_Write(const void *buffer, int size);
-static void SV_WriteByte(byte val);
+static void SV_WriteByte(uint8_t val);
 static void SV_WriteWord(unsigned short val);
 static void SV_WriteLong(unsigned int val);
 static void SV_WritePtr(void *ptr);
@@ -3068,8 +3068,8 @@ static void ArchiveSounds()
         if (i == po_NumPolyobjs)
         {                       // Sound is attached to a sector, not a polyobj
             sec = R_PointInSubsector(node->mobj->x, node->mobj->y)->sector;
-            difference = (int) ((byte *) sec
-                                - (byte *) & sectors[0]) / sizeof(sector_t);
+            difference = (int) ((uint8_t *) sec
+                                - (uint8_t *) & sectors[0]) / sizeof(sector_t);
             SV_WriteLong(0);   // 0 -- sector sound origin
         }
         else
@@ -3270,7 +3270,7 @@ static void CopyFile(char *source_name, char *dest_name)
 {
     const int BUFFER_CHUNK_SIZE = 0x10000;
 
-    byte *buffer;
+    uint8_t *buffer;
     int file_length, file_remaining;
     FILE *read_handle, *write_handle;
     int buf_count, read_count, write_count;
@@ -3290,7 +3290,7 @@ static void CopyFile(char *source_name, char *dest_name)
 
     if (vanilla_savegame_limit)
     {
-        buffer = zmalloc<byte *>(file_length, PU_STATIC, nullptr);
+        buffer = zmalloc<uint8_t *>(file_length, PU_STATIC, nullptr);
         Z_Free(buffer);
     }
 
@@ -3300,7 +3300,7 @@ static void CopyFile(char *source_name, char *dest_name)
         I_Error ("Couldn't read file %s", dest_name);
     }
 
-    buffer = zmalloc<byte *>(BUFFER_CHUNK_SIZE, PU_STATIC, nullptr);
+    buffer = zmalloc<uint8_t *>(BUFFER_CHUNK_SIZE, PU_STATIC, nullptr);
 
     do
     {
@@ -3403,10 +3403,10 @@ static void SV_Read(void *buffer, int size)
     }
 }
 
-static byte SV_ReadByte()
+static uint8_t SV_ReadByte()
 {
-    byte result;
-    SV_Read(&result, sizeof(byte));
+    uint8_t result;
+    SV_Read(&result, sizeof(uint8_t));
     return result;
 }
 
@@ -3440,9 +3440,9 @@ static void SV_Write(const void *buffer, int size)
     fwrite(buffer, size, 1, SavingFP);
 }
 
-static void SV_WriteByte(byte val)
+static void SV_WriteByte(uint8_t val)
 {
-    fwrite(&val, sizeof(byte), 1, SavingFP);
+    fwrite(&val, sizeof(uint8_t), 1, SavingFP);
 }
 
 static void SV_WriteWord(unsigned short val)

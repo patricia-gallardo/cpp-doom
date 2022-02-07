@@ -120,7 +120,7 @@ void FromCurr()
 
     for (;;)
     {
-        byte *filebuffer;
+        uint8_t    *filebuffer;
         int filelen;
         const char *srcfilename;
         char *dstfilename;
@@ -162,7 +162,7 @@ void ToCurr()
 
     for (;;)
     {
-        byte *filebuffer;
+        uint8_t    *filebuffer;
         int filelen;
         const char *srcfilename;
         char *dstfilename;

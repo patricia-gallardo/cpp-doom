@@ -80,9 +80,9 @@ char *P_SaveGameFile(int slot)
 
 // Endian-safe integer read/write functions
 
-static byte saveg_read8()
+static uint8_t saveg_read8()
 {
-    byte result;
+    uint8_t result;
 
     if (fread(&result, 1, 1, save_stream) < 1)
     {
@@ -98,7 +98,7 @@ static byte saveg_read8()
     return result;
 }
 
-static void saveg_write8(byte value)
+static void saveg_write8(uint8_t value)
 {
     if (fwrite(&value, 1, 1, save_stream) < 1)
     {
@@ -564,7 +564,7 @@ static void saveg_read_ticcmd_t(ticcmd_t *str)
     // short consistancy;
     // STRIFE-FIXME: throwing away top byte of consistancy until
     // the true Strife ticcmd_t structure is available.
-    str->consistancy = (byte)saveg_read16();
+    str->consistancy = (uint8_t)saveg_read16();
 
     // byte chatchar;
     str->chatchar = saveg_read8();
@@ -1627,8 +1627,10 @@ void P_WriteSaveGameHeader(char *)
 
 bool P_ReadSaveGameHeader()
 {
-    int	 i; 
-    byte a, b, c; 
+    int	 i;
+    uint8_t a;
+    uint8_t b;
+    uint8_t c;
     char vcheck[VERSIONSIZE]; 
     char read_vcheck[VERSIONSIZE];
 
@@ -1899,7 +1901,7 @@ void P_ArchiveThinkers ()
 //
 void P_UnArchiveThinkers ()
 {
-    byte                tclass;
+    uint8_t             tclass;
     thinker_t*          currentthinker;
     thinker_t*          next;
     mobj_t*             mobj;
@@ -2018,7 +2020,7 @@ void P_ArchiveSpecials ()
 
             if (i<MAXCEILINGS)
             {
-                saveg_write8(static_cast<byte>(specials_e::tc_ceiling));
+                saveg_write8(static_cast<uint8_t>(specials_e::tc_ceiling));
                 saveg_write_pad();
                 saveg_write_ceiling_t((ceiling_t *) th);
             }
@@ -2027,7 +2029,7 @@ void P_ArchiveSpecials ()
 
         if (th->function.acp1 == (actionf_p1)T_MoveCeiling)
         {
-            saveg_write8(static_cast<byte>(specials_e::tc_ceiling));
+            saveg_write8(static_cast<uint8_t>(specials_e::tc_ceiling));
             saveg_write_pad();
             saveg_write_ceiling_t((ceiling_t *) th);
             continue;
@@ -2035,7 +2037,7 @@ void P_ArchiveSpecials ()
 
         if (th->function.acp1 == (actionf_p1)T_VerticalDoor)
         {
-            saveg_write8(static_cast<byte>(specials_e::tc_door));
+            saveg_write8(static_cast<uint8_t>(specials_e::tc_door));
             saveg_write_pad();
             saveg_write_vldoor_t((vldoor_t *) th);
             continue;
@@ -2043,7 +2045,7 @@ void P_ArchiveSpecials ()
 
         if (th->function.acp1 == (actionf_p1)T_SlidingDoor)
         {
-            saveg_write8(static_cast<byte>(specials_e::tc_slidingdoor));
+            saveg_write8(static_cast<uint8_t>(specials_e::tc_slidingdoor));
             saveg_write_pad();
             saveg_write_slidedoor_t((slidedoor_t *)th);
             continue;
@@ -2051,7 +2053,7 @@ void P_ArchiveSpecials ()
 
         if (th->function.acp1 == (actionf_p1)T_MoveFloor)
         {
-            saveg_write8(static_cast<byte>(specials_e::tc_floor));
+            saveg_write8(static_cast<uint8_t>(specials_e::tc_floor));
             saveg_write_pad();
             saveg_write_floormove_t((floormove_t *) th);
             continue;
@@ -2059,7 +2061,7 @@ void P_ArchiveSpecials ()
 
         if (th->function.acp1 == (actionf_p1)T_PlatRaise)
         {
-            saveg_write8(static_cast<byte>(specials_e::tc_plat));
+            saveg_write8(static_cast<uint8_t>(specials_e::tc_plat));
             saveg_write_pad();
             saveg_write_plat_t((plat_t *) th);
             continue;
@@ -2067,7 +2069,7 @@ void P_ArchiveSpecials ()
 
         if (th->function.acp1 == (actionf_p1)T_LightFlash)
         {
-            saveg_write8(static_cast<byte>(specials_e::tc_flash));
+            saveg_write8(static_cast<uint8_t>(specials_e::tc_flash));
             saveg_write_pad();
             saveg_write_lightflash_t((lightflash_t *) th);
             continue;
@@ -2075,7 +2077,7 @@ void P_ArchiveSpecials ()
 
         if (th->function.acp1 == (actionf_p1)T_StrobeFlash)
         {
-            saveg_write8(static_cast<byte>(specials_e::tc_strobe));
+            saveg_write8(static_cast<uint8_t>(specials_e::tc_strobe));
             saveg_write_pad();
             saveg_write_strobe_t((strobe_t *) th);
             continue;
@@ -2083,7 +2085,7 @@ void P_ArchiveSpecials ()
 
         if (th->function.acp1 == (actionf_p1)T_Glow)
         {
-            saveg_write8(static_cast<byte>(specials_e::tc_glow));
+            saveg_write8(static_cast<uint8_t>(specials_e::tc_glow));
             saveg_write_pad();
             saveg_write_glow_t((glow_t *) th);
             continue;
@@ -2091,7 +2093,7 @@ void P_ArchiveSpecials ()
     }
 
     // add a terminating marker
-    saveg_write8(static_cast<byte>(specials_e::tc_endspecials));
+    saveg_write8(static_cast<uint8_t>(specials_e::tc_endspecials));
 }
 
 

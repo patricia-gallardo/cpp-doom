@@ -50,7 +50,7 @@ typedef struct _net_addr_s    net_addr_t;
 typedef struct _net_context_s net_context_t;
 
 struct _net_packet_s {
-    byte *       data;
+    uint8_t     *data;
     size_t       len;
     size_t       alloced;
     unsigned int pos;

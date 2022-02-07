@@ -137,7 +137,7 @@ void Z_Free(void *ptr)
 {
     memblock_t *block;
 
-    block = (memblock_t *)((byte *)ptr - sizeof(memblock_t));
+    block = (memblock_t *)((uint8_t *)ptr - sizeof(memblock_t));
 
     if (block->id != ZONEID)
     {
@@ -441,7 +441,7 @@ void Z_ChangeTag2(void *ptr, int tag, const char *file, int line)
 {
     memblock_t *block;
 
-    block = (memblock_t *)((byte *)ptr - sizeof(memblock_t));
+    block = (memblock_t *)((uint8_t *)ptr - sizeof(memblock_t));
 
     if (block->id != ZONEID)
         I_Error("%s:%i: Z_ChangeTag: block without a ZONEID!",
@@ -464,7 +464,7 @@ void Z_ChangeUser(void *ptr, void **user)
 {
     memblock_t *block;
 
-    block = (memblock_t *)((byte *)ptr - sizeof(memblock_t));
+    block = (memblock_t *)((uint8_t *)ptr - sizeof(memblock_t));
 
     if (block->id != ZONEID)
     {

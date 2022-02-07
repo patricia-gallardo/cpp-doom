@@ -102,7 +102,7 @@ mobj_t **blocklinks;
 // Without special effect, this could be
 //  used as a PVS lookup as well.
 //
-byte *rejectmatrix;
+uint8_t *rejectmatrix;
 
 
 // Maintain single and multi player starting spots.
@@ -133,7 +133,7 @@ fixed_t GetOffset(vertex_t *v1, vertex_t *v2)
 //
 void P_LoadVertexes(int lump)
 {
-    byte *       data;
+    uint8_t     *data;
     int          i;
     mapvertex_t *ml;
     vertex_t *   li;
@@ -146,7 +146,7 @@ void P_LoadVertexes(int lump)
     vertexes = zmalloc<decltype(vertexes)>(numvertexes * sizeof(vertex_t), PU_LEVEL, 0);
 
     // Load data into cache.
-    data = cache_lump_num<byte *>(lump, PU_STATIC);
+    data = cache_lump_num<uint8_t *>(lump, PU_STATIC);
 
     ml = (mapvertex_t *)data;
     li = vertexes;
@@ -192,7 +192,7 @@ sector_t *GetSectorAtNullAddress()
 //
 void P_LoadSegs(int lump)
 {
-    byte *    data;
+    uint8_t  *data;
     int       i;
     mapseg_t *ml;
     seg_t *   li;
@@ -204,7 +204,7 @@ void P_LoadSegs(int lump)
     numsegs = W_LumpLength(lump) / sizeof(mapseg_t);
     segs    = zmalloc<decltype(segs)>(numsegs * sizeof(seg_t), PU_LEVEL, 0);
     memset(segs, 0, numsegs * sizeof(seg_t));
-    data = cache_lump_num<byte *>(lump, PU_STATIC);
+    data = cache_lump_num<uint8_t *>(lump, PU_STATIC);
 
     ml = (mapseg_t *)data;
     li = segs;
@@ -312,14 +312,14 @@ void P_SegLengths(bool contrast_only)
 //
 void P_LoadSubsectors(int lump)
 {
-    byte *          data;
+    uint8_t        *data;
     int             i;
     mapsubsector_t *ms;
     subsector_t *   ss;
 
     numsubsectors = W_LumpLength(lump) / sizeof(mapsubsector_t);
     subsectors    = zmalloc<decltype(subsectors)>(numsubsectors * sizeof(subsector_t), PU_LEVEL, 0);
-    data          = cache_lump_num<byte *>(lump, PU_STATIC);
+    data          = cache_lump_num<uint8_t *>(lump, PU_STATIC);
 
     // [crispy] fail on missing subsectors
     if (!data || !numsubsectors)
@@ -344,7 +344,7 @@ void P_LoadSubsectors(int lump)
 //
 void P_LoadSectors(int lump)
 {
-    byte *       data;
+    uint8_t     *data;
     int          i;
     mapsector_t *ms;
     sector_t *   ss;
@@ -356,7 +356,7 @@ void P_LoadSectors(int lump)
     numsectors = W_LumpLength(lump) / sizeof(mapsector_t);
     sectors    = zmalloc<decltype(sectors)>(numsectors * sizeof(sector_t), PU_LEVEL, 0);
     memset(sectors, 0, numsectors * sizeof(sector_t));
-    data = cache_lump_num<byte *>(lump, PU_STATIC);
+    data = cache_lump_num<uint8_t *>(lump, PU_STATIC);
 
     // [crispy] fail on missing sectors
     if (!data || !numsectors)
@@ -396,7 +396,7 @@ void P_LoadSectors(int lump)
 //
 void P_LoadNodes(int lump)
 {
-    byte *     data;
+    uint8_t   *data;
     int        i;
     int        j;
     int        k;
@@ -405,7 +405,7 @@ void P_LoadNodes(int lump)
 
     numnodes = W_LumpLength(lump) / sizeof(mapnode_t);
     nodes    = zmalloc<decltype(nodes)>(numnodes * sizeof(node_t), PU_LEVEL, 0);
-    data     = cache_lump_num<byte *>(lump, PU_STATIC);
+    data     = cache_lump_num<uint8_t *>(lump, PU_STATIC);
 
     // [crispy] warn about missing nodes
     if (!data || !numnodes)
@@ -457,14 +457,14 @@ void P_LoadNodes(int lump)
 //
 void P_LoadThings(int lump)
 {
-    byte *      data;
+    uint8_t    *data;
     int         i;
     mapthing_t *mt;
     mapthing_t  spawnthing;
     int         numthings;
     bool     spawn;
 
-    data      = cache_lump_num<byte *>(lump, PU_STATIC);
+    data      = cache_lump_num<uint8_t *>(lump, PU_STATIC);
     numthings = W_LumpLength(lump) / sizeof(mapthing_t);
 
     mt = (mapthing_t *)data;
@@ -526,7 +526,7 @@ void P_LoadThings(int lump)
 //
 void P_LoadLineDefs(int lump)
 {
-    byte *        data;
+    uint8_t      *data;
     int           i;
     maplinedef_t *mld;
     line_t *      ld;
@@ -537,7 +537,7 @@ void P_LoadLineDefs(int lump)
     numlines = W_LumpLength(lump) / sizeof(maplinedef_t);
     lines    = zmalloc<decltype(lines)>(numlines * sizeof(line_t), PU_LEVEL, 0);
     memset(lines, 0, numlines * sizeof(line_t));
-    data = cache_lump_num<byte *>(lump, PU_STATIC);
+    data = cache_lump_num<uint8_t *>(lump, PU_STATIC);
 
     mld  = (maplinedef_t *)data;
     ld   = lines;
@@ -671,7 +671,7 @@ void P_LoadLineDefs(int lump)
 //
 void P_LoadSideDefs(int lump)
 {
-    byte *        data;
+    uint8_t      *data;
     int           i;
     mapsidedef_t *msd;
     side_t *      sd;
@@ -679,7 +679,7 @@ void P_LoadSideDefs(int lump)
     numsides = W_LumpLength(lump) / sizeof(mapsidedef_t);
     sides    = zmalloc<decltype(sides)>(numsides * sizeof(side_t), PU_LEVEL, 0);
     memset(sides, 0, numsides * sizeof(side_t));
-    data = cache_lump_num<byte *>(lump, PU_STATIC);
+    data = cache_lump_num<uint8_t *>(lump, PU_STATIC);
 
     msd = (mapsidedef_t *)data;
     sd  = sides;
@@ -929,11 +929,11 @@ static void P_RemoveSlimeTrails()
 // Pad the REJECT lump with extra data when the lump is too small,
 // to simulate a REJECT buffer overflow in Vanilla Doom.
 
-static void PadRejectArray(byte *array, unsigned int len)
+static void PadRejectArray(uint8_t *array, unsigned int len)
 {
     unsigned int i;
     unsigned int byte_num;
-    byte *       dest;
+    uint8_t     *dest;
     unsigned int padvalue;
 
     // Values to pad the REJECT array with:
@@ -998,7 +998,7 @@ static void P_LoadReject(int lumpnum)
 
     if (lumplen >= minlength)
     {
-        rejectmatrix = cache_lump_num<byte *>(lumpnum, PU_LEVEL);
+        rejectmatrix = cache_lump_num<uint8_t *>(lumpnum, PU_LEVEL);
     }
     else
     {

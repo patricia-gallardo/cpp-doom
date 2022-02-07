@@ -45,7 +45,7 @@ struct _wad_file_s {
 
     // If this is nullptr, the file cannot be mapped into memory.  If this
     // is non-NULL, it is a pointer to the mapped file.
-    byte *mapped;
+    uint8_t *mapped;
 
     // Length of the file, in bytes.
     unsigned int length;

@@ -147,7 +147,7 @@ void R_InstallSpriteLump(int lump,
             if (sprtemp[frame].lump[r] == -1)
             {
                 sprtemp[frame].lump[r] = lump - firstspritelump;
-                sprtemp[frame].flip[r] = (byte)flipped;
+                sprtemp[frame].flip[r] = (uint8_t)flipped;
                 // [crispy] ... here
                 sprtemp[frame].rotate = false;
             }
@@ -177,7 +177,7 @@ void R_InstallSpriteLump(int lump,
     }
 
     sprtemp[frame].lump[rotation] = lump - firstspritelump;
-    sprtemp[frame].flip[rotation] = (byte)flipped;
+    sprtemp[frame].flip[rotation] = (uint8_t)flipped;
     // [crispy] ... here
     sprtemp[frame].rotate = true;
 }
@@ -435,7 +435,7 @@ void R_DrawMaskedColumn(column_t *column)
 
         if (dc_yl <= dc_yh)
         {
-            dc_source     = (byte *)column + 3;
+            dc_source     = (uint8_t *)column + 3;
             dc_texturemid = basetexturemid - (top << FRACBITS);
             // dc_source = (byte *)column + 3 - top;
 
@@ -443,7 +443,7 @@ void R_DrawMaskedColumn(column_t *column)
             //  or (SHADOW) R_DrawFuzzColumn.
             colfunc();
         }
-        column = (column_t *)((byte *)column + column->length + 4);
+        column = (column_t *)((uint8_t *)column + column->length + 4);
     }
 
     dc_texturemid = basetexturemid;
@@ -519,7 +519,7 @@ void R_DrawVisSprite(vissprite_t *vis, int, int)
             continue;
         }
 #endif
-        column = (column_t *)((byte *)patch + LONG(patch->columnofs[texturecolumn]));
+        column = (column_t *)((uint8_t *)patch + LONG(patch->columnofs[texturecolumn]));
         R_DrawMaskedColumn(column);
     }
 
@@ -798,7 +798,7 @@ void R_ProjectSprite(mobj_t *thing)
 
 extern void P_LineLaser(mobj_t *t1, angle_t angle, fixed_t distance, fixed_t slope);
 
-byte *R_LaserspotColor()
+uint8_t *R_LaserspotColor()
 {
     if (crispy->crosshairtarget)
     {

@@ -1190,7 +1190,7 @@ void A_MStaffAttack(player_t * player, pspdef_t *)
     {
         player->damagecount = 0;
         player->bonuscount = 0;
-        I_SetPalette(cache_lump_num<byte *>(W_GetNumForName("playpal"),
+        I_SetPalette(cache_lump_num<uint8_t *>(W_GetNumForName("playpal"),
                                              PU_CACHE) +
                      STARTSCOURGEPAL * 768);
     }
@@ -1213,7 +1213,7 @@ void A_MStaffPalette(player_t * player, pspdef_t * psp)
         {                       // reset back to original playpal
             pal = 0;
         }
-        I_SetPalette(cache_lump_num<byte *>(W_GetNumForName("playpal"),
+        I_SetPalette(cache_lump_num<uint8_t *>(W_GetNumForName("playpal"),
                                              PU_CACHE) + pal * 768);
     }
 }
@@ -1932,7 +1932,7 @@ void A_CHolyAttack(player_t * player, pspdef_t *)
     {
         player->damagecount = 0;
         player->bonuscount = 0;
-        I_SetPalette(cache_lump_num<byte *>(W_GetNumForName("playpal"),
+        I_SetPalette(cache_lump_num<uint8_t *>(W_GetNumForName("playpal"),
                                              PU_CACHE) + STARTHOLYPAL * 768);
     }
     S_StartSound(player->mo, SFX_CHOLY_FIRE);
@@ -1955,7 +1955,7 @@ void A_CHolyPalette(player_t * player, pspdef_t * psp)
         {                       // reset back to original playpal
             pal = 0;
         }
-        I_SetPalette(cache_lump_num<byte *>(W_GetNumForName("playpal"),
+        I_SetPalette(cache_lump_num<uint8_t *>(W_GetNumForName("playpal"),
                                              PU_CACHE) + pal * 768);
     }
 }

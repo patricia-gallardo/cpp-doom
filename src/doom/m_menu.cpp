@@ -1379,7 +1379,7 @@ static void M_DrawMouse()
 #include "m_background.hpp"
 static void M_DrawCrispnessBackground()
 {
-    const byte *const src = crispness_background;
+    const uint8_t *const src = crispness_background;
     pixel_t *         dest;
     int               x, y;
 
@@ -2044,20 +2044,20 @@ static int G_ReloadLevel()
 
 static int G_GotoNextLevel()
 {
-    static byte doom_next[5][9] = {
+    static uint8_t doom_next[5][9] = {
         { 12, 13, 19, 15, 16, 17, 18, 21, 14 },
         { 22, 23, 24, 25, 29, 27, 28, 31, 26 },
         { 32, 33, 34, 35, 36, 39, 38, 41, 37 },
         { 42, 49, 44, 45, 46, 47, 48, 51, 43 },
         { 52, 53, 54, 55, 56, 59, 58, 11, 57 },
     };
-    static byte doom2_next[33] = {
+    static uint8_t doom2_next[33] = {
         0, 3, 4, 5, 6, 7, 8, 9, 10, 11,
         12, 13, 14, 15, 31, 17, 18, 19, 20, 21,
         22, 23, 24, 25, 26, 27, 28, 29, 30, 1,
         32, 16, 3
     };
-    static byte nerve_next[9] = {
+    static uint8_t nerve_next[9]  = {
         2, 3, 4, 9, 6, 7, 8, 1, 5
     };
 
@@ -2557,7 +2557,7 @@ bool M_Responder(event_t *ev)
                 usegamma = 0;
             players[consoleplayer].message = DEH_String(gammamsg[usegamma]);
 #ifndef CRISPY_TRUECOLOR
-            I_SetPalette(cache_lump_name<byte *>(DEH_String("PLAYPAL"), PU_CACHE));
+            I_SetPalette(cache_lump_name<uint8_t *>(DEH_String("PLAYPAL"), PU_CACHE));
 #else
             {
                 extern void R_InitColormaps();

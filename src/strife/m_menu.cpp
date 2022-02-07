@@ -2100,7 +2100,7 @@ bool M_Responder (event_t* ev)
             if (usegamma > 4+4) // [crispy] intermediate gamma levels
                 usegamma = 0;
             players[consoleplayer].message = DEH_String(gammamsg[usegamma]);
-            I_SetPalette (cache_lump_name<byte *> (DEH_String("PLAYPAL"),PU_CACHE));
+            I_SetPalette (cache_lump_name<uint8_t *> (DEH_String("PLAYPAL"),PU_CACHE));
             return true;
         }
         else if(gameversion == exe_strife_1_31 && key == key_spy)
