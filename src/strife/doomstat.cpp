@@ -27,7 +27,7 @@ GameVersion_t   gameversion = exe_strife_1_31;
 const char *gamedescription;
 
 // Set if homebrew PWAD stuff has been added.
-boolean	modifiedgame;
+bool	modifiedgame;
 
 
 

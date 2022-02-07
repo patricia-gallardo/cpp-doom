@@ -48,7 +48,7 @@ constexpr char HU_FONTEND   = '_'; // the last font characters
 void HU_Init();
 void HU_Start();
 
-boolean HU_Responder(event_t* ev);
+bool HU_Responder(event_t* ev);
 
 void HU_Ticker();
 void HU_Drawer();

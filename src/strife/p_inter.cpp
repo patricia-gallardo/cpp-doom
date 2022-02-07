@@ -64,7 +64,7 @@ int clipammo[NUMAMMO]   = { 10, 4, 2, 20, 4, 6, 4 };
 //
 // [STRIFE] Modified for Strife ammo types
 //
-boolean P_GiveAmmo(player_t* player, ammotype_t ammo, int num)
+bool P_GiveAmmo(player_t* player, ammotype_t ammo, int num)
 {
     int		oldammo;
 
@@ -149,10 +149,10 @@ boolean P_GiveAmmo(player_t* player, ammotype_t ammo, int num)
 //
 // villsa [STRIFE] some stuff has been changed/moved around
 //
-boolean P_GiveWeapon(player_t* player, weapontype_t weapon, boolean dropped)
+bool P_GiveWeapon(player_t* player, weapontype_t weapon, bool dropped)
 {
-    boolean gaveammo;
-    boolean gaveweapon;
+    bool gaveammo;
+    bool gaveweapon;
 
     // villsa [STRIFE] new code for giving alternate version
     // of the weapon to player
@@ -230,7 +230,7 @@ boolean P_GiveWeapon(player_t* player, weapontype_t weapon, boolean dropped)
 //
 // villsa [STRIFE] a lot of changes have been added for stamina
 //
-boolean P_GiveBody(player_t* player, int num)
+bool P_GiveBody(player_t* player, int num)
 {
     int maxhealth;
     int healing;
@@ -295,7 +295,7 @@ boolean P_GiveBody(player_t* player, int num)
 //
 // [STRIFE] Modified for Strife armor items
 //
-boolean P_GiveArmor(player_t* player, int armortype)
+bool P_GiveArmor(player_t* player, int armortype)
 {
     int hits;
 
@@ -325,7 +325,7 @@ boolean P_GiveArmor(player_t* player, int armortype)
 //
 // [STRIFE] Modified to use larger bonuscount
 //
-boolean P_GiveCard(player_t* player, card_t card)
+bool P_GiveCard(player_t* player, card_t card)
 {
     if (player->cards[card])
         return false;
@@ -343,7 +343,7 @@ boolean P_GiveCard(player_t* player, card_t card)
 //
 // [STRIFE] Modifications for new powerups
 //
-boolean P_GivePower(player_t* player, powertype_t power)
+bool P_GivePower(player_t* player, powertype_t power)
 {
     // haleyjd 09/14/10: [STRIFE] moved to top, exception for Shadow Armor
     if(player->powers[power] && power != pw_invisibility)
@@ -1036,7 +1036,7 @@ void P_KillMobj(mobj_t* source, mobj_t* target)
 //
 // villsa [STRIFE] new function
 //
-static boolean P_IsMobjBoss(mobjtype_t type)
+static bool P_IsMobjBoss(mobjtype_t type)
 {
     switch(type)
     {

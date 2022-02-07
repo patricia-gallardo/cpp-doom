@@ -59,7 +59,7 @@
 //
 typedef struct
 {
-    boolean	istexture;
+    bool	istexture;
     int		picnum;
     int		basepic;
     int		numpics;
@@ -1575,7 +1575,7 @@ void P_PlayerInSpecialSector (player_t* player)
 //
 // [STRIFE] Modifications to support multiple scrolling line types.
 //
-boolean         levelTimer;
+bool         levelTimer;
 int             levelTimeCount;
 
 void P_UpdateSpecials ()

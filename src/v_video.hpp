@@ -38,12 +38,12 @@ extern int dirtybox[4];
 
 extern byte *  tinttable;
 extern byte *  dp_translation;
-extern boolean dp_translucent;
+extern bool dp_translucent;
 
 // haleyjd 08/28/10: implemented for Strife support
 // haleyjd 08/28/10: Patch clipping callback, implemented to support Choco
 // Strife.
-typedef boolean (*vpatchclipfunc_t)(patch_t *, int, int);
+typedef bool (*vpatchclipfunc_t)(patch_t *, int, int);
 void V_SetPatchClipCallback(vpatchclipfunc_t func);
 
 
@@ -63,7 +63,7 @@ void V_DrawAltTLPatch(int x, int y, patch_t *patch);
 void V_DrawShadowedPatch(int x, int y, patch_t *patch);
 void V_DrawXlaPatch(int x, int y, patch_t *patch); // villsa [STRIFE]
 void V_DrawPatchDirect(int x, int y, patch_t *patch);
-void V_DrawPatchFullScreen(patch_t *patch, boolean flipped);
+void V_DrawPatchFullScreen(patch_t *patch, bool flipped);
 
 // Draw a linear block of pixels into the view buffer.
 

@@ -61,7 +61,7 @@ byte *rejectmatrix;             // for fast sight rejection
 
 mapthing_t deathmatchstarts[10], *deathmatch_p;
 mapthing_t playerstarts[MAXPLAYERS];
-boolean playerstartsingame[MAXPLAYERS];
+bool playerstartsingame[MAXPLAYERS];
 
 /*
 =================

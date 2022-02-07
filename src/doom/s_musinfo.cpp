@@ -55,7 +55,7 @@ static void    CheckOpen();
 static void    OpenScript(char *name, int type);
 static void    SC_OpenLump(char *name);
 static void    SC_Close();
-static boolean SC_Compare(const char *text);
+static bool SC_Compare(const char *text);
 
 // EXTERNAL DATA DECLARATIONS ----------------------------------------------
 
@@ -63,8 +63,8 @@ static boolean SC_Compare(const char *text);
 
 static char *  sc_String;
 static int     sc_Line;
-static boolean sc_End;
-static boolean sc_Crossed;
+static bool sc_End;
+static bool sc_Crossed;
 
 // PRIVATE DATA DEFINITIONS ------------------------------------------------
 
@@ -74,9 +74,9 @@ static char *  ScriptPtr;
 static char *  ScriptEndPtr;
 static char    StringBuffer[MAX_STRING_SIZE];
 static int     ScriptLumpNum;
-static boolean ScriptOpen = false;
+static bool ScriptOpen = false;
 static int     ScriptSize;
-static boolean AlreadyGot = false;
+static bool AlreadyGot = false;
 
 // CODE --------------------------------------------------------------------
 
@@ -152,10 +152,10 @@ static void SC_Close()
 //
 //==========================================================================
 
-static boolean SC_GetString()
+static bool SC_GetString()
 {
     char *  text;
-    boolean foundToken;
+    bool foundToken;
 
     CheckOpen();
     if (AlreadyGot)
@@ -240,7 +240,7 @@ static boolean SC_GetString()
 //
 //==========================================================================
 
-static boolean SC_Compare(const char *text)
+static bool SC_Compare(const char *text)
 {
     if (strcasecmp(text, sc_String) == 0)
     {

@@ -36,7 +36,7 @@ extern mapformat_t P_CheckMapFormat(int lumpnum);
 extern void P_LoadSegs_DeePBSP(int lump);
 extern void P_LoadSubsectors_DeePBSP(int lump);
 extern void P_LoadNodes_DeePBSP(int lump);
-extern void P_LoadNodes_ZDBSP(int lump, boolean compressed);
+extern void P_LoadNodes_ZDBSP(int lump, bool compressed);
 extern void P_LoadThings_Hexen(int lump);
 extern void P_LoadLineDefs_Hexen(int lump);
 

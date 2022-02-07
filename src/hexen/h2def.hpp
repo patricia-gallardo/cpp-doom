@@ -529,7 +529,7 @@ typedef struct player_s
 
     int flyheight;
     int lookdir;
-    boolean centering;
+    bool centering;
     int health;                 // only used between levels, mo->health
     // is used during levels
     int armorpoints[NUMARMOR];
@@ -544,7 +544,7 @@ typedef struct player_s
     signed int frags[MAXPLAYERS];       // kills of other players
     weapontype_t readyweapon;
     weapontype_t pendingweapon; // wp_nochange if not changing
-    boolean weaponowned[NUMWEAPONS];
+    bool weaponowned[NUMWEAPONS];
     int mana[NUMMANA];
     int attackdown, usedown;    // true if button down last tic
     int cheats;                 // bit flags
@@ -591,35 +591,35 @@ extern GameMode_t gamemode;         // Always commercial
 
 extern gameaction_t gameaction;
 
-extern boolean paused;
+extern bool paused;
 
-extern boolean DevMaps;         // true = map development mode
+extern bool DevMaps;         // true = map development mode
 extern char *DevMapsDir;        // development maps directory
 
-extern boolean nomonsters;      // checkparm of -nomonsters
+extern bool nomonsters;      // checkparm of -nomonsters
 
-extern boolean respawnparm;     // checkparm of -respawn
+extern bool respawnparm;     // checkparm of -respawn
 
-extern boolean randomclass;     // checkparm of -randclass
+extern bool randomclass;     // checkparm of -randclass
 
-extern boolean debugmode;       // checkparm of -debug
+extern bool debugmode;       // checkparm of -debug
 
-extern boolean usergame;        // ok to save / end game
+extern bool usergame;        // ok to save / end game
 
-extern boolean ravpic;          // checkparm of -ravpic
+extern bool ravpic;          // checkparm of -ravpic
 
-extern boolean altpal;          // checkparm to use an alternate palette routine
+extern bool altpal;          // checkparm to use an alternate palette routine
 
-extern boolean cdrom;           // true if cd-rom mode active ("-cdrom")
+extern bool cdrom;           // true if cd-rom mode active ("-cdrom")
 
-extern boolean deathmatch;      // only if started as net death
+extern bool deathmatch;      // only if started as net death
 
-extern boolean netgame;         // only true if >1 player
+extern bool netgame;         // only true if >1 player
 
-extern boolean cmdfrag;         // true if a CMD_FRAG packet should be sent out every
+extern bool cmdfrag;         // true if a CMD_FRAG packet should be sent out every
                                                 // kill
 
-extern boolean playeringame[MAXPLAYERS];
+extern bool playeringame[MAXPLAYERS];
 extern pclass_t PlayerClass[MAXPLAYERS];
 
 extern int consoleplayer;       // player taking events and displaying
@@ -630,22 +630,22 @@ extern int viewangleoffset;     // ANG90 = left side, ANG270 = right
 
 extern player_t players[MAXPLAYERS];
 
-extern boolean DebugSound;      // debug flag for displaying sound info
+extern bool DebugSound;      // debug flag for displaying sound info
 
-extern boolean demoplayback;
-extern boolean demoextend;      // allow demos to persist through exit/respawn
+extern bool demoplayback;
+extern bool demoextend;      // allow demos to persist through exit/respawn
 extern int maxzone;             // Maximum chunk allocated for zone heap
 
 // Truncate angleturn in ticcmds to nearest 256.
 // Used when recording Vanilla demos in netgames.
-extern boolean lowres_turn;
+extern bool lowres_turn;
 
 extern int Sky1Texture;
 extern int Sky2Texture;
 
 extern gamestate_t gamestate;
 extern skill_t gameskill;
-//extern        boolean         respawnmonsters;
+//extern        bool         respawnmonsters;
 extern int gameepisode;
 extern int gamemap;
 extern int prevmap;
@@ -667,19 +667,19 @@ extern int maxplayers;
 
 extern int mouseSensitivity;
 
-extern boolean precache;        // if true, load all graphics at level load
+extern bool precache;        // if true, load all graphics at level load
 
 extern byte *screen;            // off screen work buffer, from V_video.c
 
-extern boolean singledemo;      // quit after playing a demo from cmdline
+extern bool singledemo;      // quit after playing a demo from cmdline
 
 extern int bodyqueslot;
 extern skill_t startskill;
 extern int startepisode;
 extern int startmap;
-extern boolean autostart;
+extern bool autostart;
 
-extern boolean testcontrols;
+extern bool testcontrols;
 extern int testcontrols_mousespeed;
 
 extern int vanilla_savegame_limit;
@@ -720,7 +720,7 @@ byte *I_AllocLow(int length);
 
 // haleyjd: was WATCOMC, again preserved for historical interest as in Heretic
 #if 0
-extern boolean useexterndriver;
+extern bool useexterndriver;
 
 #define EBT_FIRE			1
 #define EBT_OPENDOOR 		2
@@ -793,7 +793,7 @@ void G_StartNewInit();
 void G_WorldDone();
 
 void G_Ticker();
-boolean G_Responder(event_t * ev);
+bool G_Responder(event_t * ev);
 
 void G_ScreenShot();
 
@@ -808,14 +808,14 @@ void G_ScreenShot();
 extern char *SavePath;
 
 void SV_SaveGame(int slot, const char *description);
-void SV_SaveMap(boolean savePlayers);
+void SV_SaveMap(bool savePlayers);
 void SV_LoadGame(int slot);
 void SV_MapTeleport(int map, int position);
 void SV_LoadMap();
 void SV_InitBaseSlot();
 void SV_UpdateRebornSlot();
 void SV_ClearRebornSlot();
-boolean SV_RebornSlotAvailable();
+bool SV_RebornSlotAvailable();
 int SV_GetRebornSlot();
 
 //-----
@@ -843,9 +843,9 @@ int P_GetMapSky2Texture(int map);
 char *P_GetMapName(int map);
 fixed_t P_GetMapSky1ScrollDelta(int map);
 fixed_t P_GetMapSky2ScrollDelta(int map);
-boolean P_GetMapDoubleSky(int map);
-boolean P_GetMapLightning(int map);
-boolean P_GetMapFadeTable(int map);
+bool P_GetMapDoubleSky(int map);
+bool P_GetMapLightning(int map);
+bool P_GetMapFadeTable(int map);
 char *P_GetMapSongLump(int map);
 void P_PutMapSongLump(int map, char *lumpName);
 int P_GetCDStartTrack();
@@ -859,10 +859,10 @@ int P_GetCDTitleTrack();
 //REFRESH
 //-------
 
-extern boolean setsizeneeded;
+extern bool setsizeneeded;
 
-extern boolean BorderNeedRefresh;
-extern boolean BorderTopRefresh;
+extern bool BorderNeedRefresh;
+extern bool BorderTopRefresh;
 
 extern int UpdateState;
 // define the different areas for the dirty map
@@ -898,7 +898,7 @@ int R_CheckTextureNumForName(const char *name);
 //----
 extern int localQuakeHappening[MAXPLAYERS];
 
-int M_DrawText(int x, int y, boolean direct, char *string);
+int M_DrawText(int x, int y, bool direct, char *string);
 
 //------------------------------
 // SC_man.c
@@ -908,14 +908,14 @@ void SC_Open(const char *name);
 void SC_OpenLump(const char *name);
 void SC_OpenFile(const char *name);
 void SC_Close();
-boolean SC_GetString();
+bool SC_GetString();
 void SC_MustGetString();
 void SC_MustGetStringName(char *name);
-boolean SC_GetNumber();
+bool SC_GetNumber();
 void SC_MustGetNumber();
 void SC_UnGet();
-//boolean SC_Check();
-boolean SC_Compare(const char *text);
+//bool SC_Check();
+bool SC_Compare(const char *text);
 int SC_MatchString(const char **strings);
 int SC_MustMatchString(const char **strings);
 void SC_ScriptError(const char *message);
@@ -923,9 +923,9 @@ void SC_ScriptError(const char *message);
 extern char *sc_String;
 extern int sc_Number;
 extern int sc_Line;
-extern boolean sc_End;
-extern boolean sc_Crossed;
-extern boolean sc_FileScripts;
+extern bool sc_End;
+extern bool sc_Crossed;
+extern bool sc_FileScripts;
 extern const char *sc_ScriptsDir;
 
 //------------------------------
@@ -1007,7 +1007,7 @@ extern seqnode_t *SequenceListHead;
 
 #define MAX_INTRMSN_MESSAGE_SIZE 1024
 
-extern boolean intermission;
+extern bool intermission;
 extern char ClusterMessage[MAX_INTRMSN_MESSAGE_SIZE];
 
 void IN_Start();
@@ -1020,11 +1020,11 @@ void IN_Drawer();
 
 void CT_Init();
 void CT_Drawer();
-boolean CT_Responder(event_t * ev);
+bool CT_Responder(event_t * ev);
 void CT_Ticker();
 char CT_dequeueChatChar();
 
-extern boolean chatmodeon;
+extern bool chatmodeon;
 
 //--------------------
 // Finale (F_finale.c)
@@ -1042,7 +1042,7 @@ extern int inv_ptr;
 extern int curpos;
 void SB_Init();
 void SB_SetClassData();
-boolean SB_Responder(event_t * event);
+bool SB_Responder(event_t * event);
 void SB_Ticker();
 void SB_Drawer();
 void Draw_TeleportIcon();
@@ -1056,7 +1056,7 @@ void Draw_LoadIcon();
 void MN_Init();
 void MN_ActivateMenu();
 void MN_DeactivateMenu();
-boolean MN_Responder(event_t * event);
+bool MN_Responder(event_t * event);
 void MN_Ticker();
 void MN_Drawer();
 void MN_DrTextA(const char *text, int x, int y);

@@ -36,8 +36,8 @@ static const char *finaleflat;
 
 static int FontABaseLump;
 
-extern boolean automapactive;
-extern boolean viewactive;
+extern bool automapactive;
+extern bool viewactive;
 
 extern void D_StartTitle();
 
@@ -92,7 +92,7 @@ void F_StartFinale()
 
 
 
-boolean F_Responder(event_t * event)
+bool F_Responder(event_t * event)
 {
     if (event->type != ev_keydown)
     {
@@ -297,8 +297,8 @@ void F_DemonScroll()
 
 void F_DrawUnderwater()
 {
-    static boolean underwawa = false;
-    extern boolean askforquit;
+    static bool underwawa = false;
+    extern bool askforquit;
     const char *lumpname;
     byte *palette;
 

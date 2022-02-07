@@ -631,7 +631,7 @@ const char *W_WadNameForLump(const lumpinfo_t *lump)
     return M_BaseName(lump->wad_file->path);
 }
 
-boolean W_IsIWADLump(const lumpinfo_t *lump)
+bool W_IsIWADLump(const lumpinfo_t *lump)
 {
     return lump->wad_file == lumpinfo[0]->wad_file;
 }

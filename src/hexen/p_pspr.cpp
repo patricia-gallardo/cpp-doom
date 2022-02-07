@@ -390,7 +390,7 @@ void P_BringUpWeapon(player_t * player)
 //
 //---------------------------------------------------------------------------
 
-boolean P_CheckMana(player_t * player)
+bool P_CheckMana(player_t * player)
 {
     manatype_t mana;
     int count;

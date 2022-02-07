@@ -44,7 +44,7 @@ void       I_GetScreenDimensions(); // [crispy] re-calculate DELTAWIDTH
 
 extern int SCREENHEIGHT_4_3;
 
-typedef boolean (*grabmouse_callback_t)();
+typedef bool (*grabmouse_callback_t)();
 
 // Called by D_DoomMain,
 // determines the hardware configuration
@@ -76,7 +76,7 @@ void I_SetWindowTitle(const char *title);
 void I_CheckIsScreensaver();
 void I_SetGrabMouseCallback(grabmouse_callback_t func);
 
-void I_DisplayFPSDots(boolean dots_on);
+void I_DisplayFPSDots(bool dots_on);
 void I_BindVideoVariables();
 
 void I_InitWindowTitle();
@@ -97,10 +97,10 @@ void I_StartTic();
 void I_EnableLoadingDisk(int xoffs, int yoffs);
 
 extern char *  video_driver;
-extern boolean screenvisible;
+extern bool screenvisible;
 
 extern int      vanilla_keyboard_mapping;
-extern boolean  screensaver_mode;
+extern bool  screensaver_mode;
 extern int      usegamma;
 extern pixel_t *I_VideoBuffer;
 

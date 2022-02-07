@@ -43,13 +43,13 @@
 // ------------------------
 // Command line parameters.
 //
-extern  boolean	nomonsters;	// checkparm of -nomonsters
-extern  boolean	respawnparm;	// checkparm of -respawn
-extern  boolean	fastparm;	// checkparm of -fast
-extern  boolean randomparm;     // [STRIFE] checkparm of -random
-extern  boolean flipparm;       // [STRIFE] checkparm of -flip
+extern  bool	nomonsters;	// checkparm of -nomonsters
+extern  bool	respawnparm;	// checkparm of -respawn
+extern  bool	fastparm;	// checkparm of -fast
+extern  bool randomparm;     // [STRIFE] checkparm of -random
+extern  bool flipparm;       // [STRIFE] checkparm of -flip
 
-extern  boolean	devparm;	// DEBUG: launched with -devparm
+extern  bool	devparm;	// DEBUG: launched with -devparm
 
 
 // -----------------------------------------------------
@@ -61,7 +61,7 @@ extern GameVersion_t    gameversion;
 extern const char       *gamedescription;
 
 // Set if homebrew PWAD stuff has been added.
-extern  boolean	modifiedgame;
+extern  bool	modifiedgame;
 
 
 // -------------------------------------------
@@ -78,7 +78,7 @@ extern	int		startmap;
 
 extern  int             startloadgame;
 
-extern  boolean		autostart;
+extern  bool		autostart;
 
 // Selected by user. 
 extern  skill_t         gameskill;
@@ -89,10 +89,10 @@ extern  int		gamemap;
 extern  int             timelimit;
 
 // Nightmare mode flag, single player.
-extern  boolean         respawnmonsters;
+extern  bool         respawnmonsters;
 
 // Netgame? Only true if >1 player.
-extern  boolean	netgame;
+extern  bool	netgame;
 
 // 0=Co-op; 1=Deathmatch; 2=Altdeath
 extern  int	deathmatch;
@@ -129,21 +129,21 @@ extern int snd_DesiredSfxDevice;
 // Depending on view size - no status bar?
 // Note that there is no way to disable the
 //  status bar explicitely.
-extern  boolean statusbaractive;
+extern  bool statusbaractive;
 
-extern  boolean automapactive;  // In AutoMap mode?
-extern  boolean	menuactive;     // Menu overlayed?
-extern  boolean menupause;      // haleyjd 08/29/10: [STRIFE]
+extern  bool automapactive;  // In AutoMap mode?
+extern  bool	menuactive;     // Menu overlayed?
+extern  bool menupause;      // haleyjd 08/29/10: [STRIFE]
 extern  int     menupausetime;  // haleyjd 09/04/10: [STRIFE]
-extern  boolean menuindialog;   // haleyjd: ditto
-extern  boolean	paused;         // Game Pause?
+extern  bool menuindialog;   // haleyjd: ditto
+extern  bool	paused;         // Game Pause?
 
 
-extern  boolean		viewactive;
+extern  bool		viewactive;
 
-extern  boolean		nodrawers;
+extern  bool		nodrawers;
 
-extern  boolean         testcontrols;
+extern  bool         testcontrols;
 extern  int             testcontrols_mousespeed;
 
 
@@ -176,20 +176,20 @@ extern  int	leveltime;	// tics in game play for par
 // DEMO playback/recording related stuff.
 // No demo, there is a human player in charge?
 // Disable save/end game?
-extern  boolean	usergame;
+extern  bool	usergame;
 
 //?
-extern  boolean	demoplayback;
-extern  boolean	demorecording;
+extern  bool	demoplayback;
+extern  bool	demorecording;
 extern  int     mouse_fire_countdown;   // villsa [STRIFE]
 
 // Round angleturn in ticcmds to the nearest 256.  This is used when
 // recording Vanilla demos in netgames.
 
-extern boolean lowres_turn;
+extern bool lowres_turn;
 
 // Quit after playing a demo from cmdline.
-extern  boolean		singledemo;	
+extern  bool		singledemo;
 
 
 
@@ -213,7 +213,7 @@ extern  gamestate_t     gamestate;
 extern	player_t	players[MAXPLAYERS];
 
 // Alive? Disconnected?
-extern  boolean		playeringame[MAXPLAYERS];
+extern  bool		playeringame[MAXPLAYERS];
 
 
 // Player spawn spots for deathmatch.
@@ -245,7 +245,7 @@ extern  wbstartstruct_t		wminfo;
 extern  char *          savegamedir;
 
 // if true, load all graphics at level load
-extern  boolean         precache;
+extern  bool         precache;
 
 
 // wipegamestate can be set to -1

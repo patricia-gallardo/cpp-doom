@@ -254,7 +254,7 @@ void P_DoPunchAlert(mobj_t *puncher, mobj_t *punchee)
 //
 // [STRIFE] Minor change to meleerange.
 //
-boolean P_CheckMeleeRange(mobj_t* actor)
+bool P_CheckMeleeRange(mobj_t* actor)
 {
     mobj_t*	pl;
     fixed_t	dist;
@@ -285,7 +285,7 @@ boolean P_CheckMeleeRange(mobj_t* actor)
 // varying attack ranges for Strife monsters, as well as a general tweak
 // to considered distance for all monsters.
 //
-boolean P_CheckMissileRange(mobj_t* actor)
+bool P_CheckMissileRange(mobj_t* actor)
 {
     fixed_t dist;
 
@@ -354,7 +354,7 @@ boolean P_CheckMissileRange(mobj_t* actor)
 //
 // villsa [STRIFE] New function
 //
-boolean P_CheckRobotRange(mobj_t *actor)
+bool P_CheckRobotRange(mobj_t *actor)
 {
     fixed_t dist;
 
@@ -386,7 +386,7 @@ fixed_t yspeed[8] = {0,47000,FRACUNIT,47000,0,-47000,-FRACUNIT,-47000};
 extern	line_t*	spechit[];
 extern	int	numspechit;
 
-boolean P_Move (mobj_t*	actor)
+bool P_Move (mobj_t*	actor)
 {
     fixed_t	tryx;
     fixed_t	tryy;
@@ -395,8 +395,8 @@ boolean P_Move (mobj_t*	actor)
 
     // warning: 'catch', 'throw', and 'try'
     // are all C++ reserved words
-    boolean	try_ok;
-    boolean	good;
+    bool	try_ok;
+    bool	good;
 
     if (actor->movedir == DI_NODIR)
         return false;
@@ -472,7 +472,7 @@ boolean P_Move (mobj_t*	actor)
 //
 // haleyjd 09/05/10: [STRIFE] Verified unmodified.
 //
-boolean P_TryWalk (mobj_t* actor)
+bool P_TryWalk (mobj_t* actor)
 {
     if (!P_Move (actor))
     {
@@ -724,10 +724,10 @@ extern void P_BulletSlope (mobj_t *mo);
 // [STRIFE]
 // haleyjd 09/05/10: Modifications to support friendly units.
 //
-boolean
+bool
 P_LookForPlayers
 ( mobj_t*	actor,
-  boolean	allaround )
+  bool	allaround )
 {
     int         c;
     int         stop;

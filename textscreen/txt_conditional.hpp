@@ -45,7 +45,7 @@ txt_conditional_t *TXT_NewConditional(int *var, int expected_value,
                                       TXT_UNCAST_ARG(child));
 
 /**
- * Return the given child widget if the given boolean condition is true.
+ * Return the given child widget if the given bool condition is true.
  *
  * If the condition is not true, the child widget is destroyed and a dummy
  * "null" widget is returned that shows nothing.

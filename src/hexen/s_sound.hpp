@@ -37,7 +37,7 @@ typedef struct sfxinfo_s
     void *snd_ptr;
     int lumpnum;
     int numchannels;            // total number of channels a sound type may occupy
-    boolean changePitch;
+    bool changePitch;
 } sfxinfo_t;
 */
 
@@ -71,7 +71,7 @@ typedef struct
 extern int snd_MaxVolume;
 extern int snd_MusicVolume;
 extern int snd_Channels;
-extern boolean cdmusic;
+extern bool cdmusic;
 
 void S_Start();
 void S_StartSound(mobj_t * origin, int sound_id);
@@ -82,13 +82,13 @@ void S_StopAllSound();
 void S_PauseSound();
 void S_ResumeSound();
 void S_UpdateSounds(mobj_t * listener);
-void S_StartSong(int song, boolean loop);
-void S_StartSongName(const char *songLump, boolean loop);
+void S_StartSong(int song, bool loop);
+void S_StartSongName(const char *songLump, bool loop);
 void S_Init();
 void S_GetChannelInfo(SoundInfo_t * s);
 void S_SetMusicVolume();
-boolean S_GetSoundPlayingInfo(mobj_t * mobj, int sound_id);
-boolean S_StartCustomCDTrack(int tracknum);
+bool S_GetSoundPlayingInfo(mobj_t * mobj, int sound_id);
+bool S_StartCustomCDTrack(int tracknum);
 int S_GetCurrentCDTrack();
 
 #endif

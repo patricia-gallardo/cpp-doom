@@ -68,7 +68,7 @@ struct vertex_t
 // using the law of cosines in p_setup.c:P_RemoveSlimeTrails();
     fixed_t	r_x{};
     fixed_t	r_y{};
-    boolean	moved{};
+    bool	moved{};
 };
 
 struct line_s;
@@ -208,7 +208,7 @@ typedef struct vissprite_s
     int patch;
     lighttable_t *colormap;
     int mobjflags;              // for color translation and shadow draw
-    boolean psprite;            // true if psprite
+    bool psprite;            // true if psprite
     fixed_t footclip;           // foot clipping
 } vissprite_t;
 
@@ -225,7 +225,7 @@ extern visplane_t *floorplane, *ceilingplane;
 
 typedef struct
 {
-    boolean rotate;             // if false use 0 for any position
+    bool rotate;             // if false use 0 for any position
     short lump[8];              // lump to use for view angles 0-7
     byte flip[8];               // flip (1 = flip) to use for view angles 0-7
 } spriteframe_t;
@@ -328,10 +328,10 @@ extern sector_t *frontsector, *backsector;
 extern int rw_x;
 extern int rw_stopx;
 
-extern boolean segtextured;
-extern boolean markfloor;       // false if the back side is the same plane
-extern boolean markceiling;
-extern boolean skymap;
+extern bool segtextured;
+extern bool markfloor;       // false if the back side is the same plane
+extern bool markceiling;
+extern bool skymap;
 
 extern drawseg_t *drawsegs, *ds_p;
 extern int numdrawsegs;

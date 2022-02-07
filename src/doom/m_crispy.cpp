@@ -128,7 +128,7 @@ multiitem_t multiitem_widgets[NUM_WIDGETS] = {
 
 extern void AM_ReInit();
 extern void EnableLoadingDisk();
-extern void P_SegLengths(boolean contrast_only);
+extern void P_SegLengths(bool contrast_only);
 extern void R_ExecuteSetViewSize();
 extern void R_InitLightTables();
 extern void I_ReInitGraphics(int reinit);

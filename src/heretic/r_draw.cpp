@@ -393,7 +393,7 @@ void R_InitBuffer(int width, int height)
 ==================
 */
 
-boolean BorderNeedRefresh;
+bool BorderNeedRefresh;
 
 void R_DrawViewBorder()
 {
@@ -459,7 +459,7 @@ void R_DrawViewBorder()
 ==================
 */
 
-boolean BorderTopRefresh;
+bool BorderTopRefresh;
 
 void R_DrawTopBorder()
 {

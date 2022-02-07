@@ -95,7 +95,7 @@ static int grid = 0;
 
 static int leveljuststarted = 1;        // kluge until AM_LevelInit() is called
 
-boolean automapactive = false;
+bool automapactive = false;
 static int finit_width;// = SCREENWIDTH;
 static int finit_height;// = SCREENHEIGHT - (42 << crispy->hires);
 static int f_x, f_y;            // location of window on screen
@@ -145,7 +145,7 @@ static char cheat_amap[] = { 'r', 'a', 'v', 'm', 'a', 'p' };
 
 static byte cheatcount = 0;
 
-extern boolean viewactive;
+extern bool viewactive;
 
 static byte antialias[NUMALIAS][8] = {
     {96, 97, 98, 99, 100, 101, 102, 103},
@@ -454,7 +454,7 @@ void AM_LevelInit()
     scale_ftom = FixedDiv(FRACUNIT, scale_mtof);
 }
 
-static boolean stopped = true;
+static bool stopped = true;
 
 void AM_Stop()
 {
@@ -506,7 +506,7 @@ void AM_maxOutWindowScale()
     AM_activateNewScale();
 }
 
-boolean AM_Responder(event_t * ev)
+bool AM_Responder(event_t * ev)
 {
     int rc;
     int key;
@@ -846,7 +846,7 @@ void AM_clearFB(int color)
 // faster reject and precalculated slopes.  If I need the speed, will
 // hash algorithm to the common cases.
 
-boolean AM_clipMline(mline_t * ml, fline_t * fl)
+bool AM_clipMline(mline_t * ml, fline_t * fl)
 {
     enum
     { LEFT = 1, RIGHT = 2, BOTTOM = 4, TOP = 8 };

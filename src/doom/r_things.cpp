@@ -110,7 +110,7 @@ const char *  spritename;
 void R_InstallSpriteLump(int lump,
     unsigned                 frame,
     char                     rot,
-    boolean                  flipped)
+    bool                  flipped)
 {
     int r;
     // [crispy] support 16 sprite rotations
@@ -507,7 +507,7 @@ void R_DrawVisSprite(vissprite_t *vis,
 
     for (dc_x = vis->x1; dc_x <= vis->x2; dc_x++, frac += vis->xiscale)
     {
-        static boolean error = false;
+        static bool error = false;
         texturecolumn        = frac >> FRACBITS;
 #ifdef RANGECHECK
         if (texturecolumn < 0 || texturecolumn >= SHORT(patch->width))
@@ -559,7 +559,7 @@ void R_ProjectSprite(mobj_t *thing)
     int            lump;
 
     unsigned rot;
-    boolean  flip;
+    bool  flip;
 
     int index;
 
@@ -658,13 +658,13 @@ void R_ProjectSprite(mobj_t *thing)
             rot = (ang - interpangle + (unsigned)(ANG45 / 2) * 9) >> 29;
         }
         lump = sprframe->lump[rot];
-        flip = (boolean)sprframe->flip[rot];
+        flip = (bool)sprframe->flip[rot];
     }
     else
     {
         // use single rotation for all views
         lump = sprframe->lump[0];
-        flip = (boolean)sprframe->flip[0];
+        flip = (bool)sprframe->flip[0];
     }
 
     // [crispy] randomly flip corpse, blood and death animation sprites
@@ -947,7 +947,7 @@ void R_DrawPSprite(pspdef_t *psp, psprnum_t psprnum) // [crispy] differentiate g
     spritedef_t *  sprdef;
     spriteframe_t *sprframe;
     int            lump;
-    boolean        flip;
+    bool        flip;
     vissprite_t *  vis;
     vissprite_t    avis;
 
@@ -971,7 +971,7 @@ void R_DrawPSprite(pspdef_t *psp, psprnum_t psprnum) // [crispy] differentiate g
     sprframe = &sprdef->spriteframes[psp->state->frame & FF_FRAMEMASK];
 
     lump = sprframe->lump[0];
-    flip = (boolean)sprframe->flip[0] ^ crispy->flipweapons;
+    flip = (bool)sprframe->flip[0] ^ crispy->flipweapons;
 
     // calculate edges of the shape
     tx = psp->sx2 - (ORIGWIDTH / 2) * FRACUNIT;

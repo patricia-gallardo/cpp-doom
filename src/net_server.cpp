@@ -64,7 +64,7 @@ typedef enum
 
 typedef struct
 {
-    boolean          active;
+    bool          active;
     int              player_number;
     net_addr_t *     addr;
     net_connection_t connection;
@@ -74,7 +74,7 @@ typedef struct
     // If true, the client has sent the NET_PACKET_TYPE_GAMESTART
     // message indicating that it is ready for the game to start.
 
-    boolean ready;
+    bool ready;
 
     // Time that this client connected to the server.
     // This is used to determine the controller (oldest client).
@@ -87,7 +87,7 @@ typedef struct
 
     // recording a demo without -longtics
 
-    boolean recording_lowres;
+    bool recording_lowres;
 
     // send queue: items to send to the client
     // this is a circular buffer
@@ -105,7 +105,7 @@ typedef struct
 
     // Observer: receives data but does not participate in the game.
 
-    boolean drone;
+    bool drone;
 
     // SHA1 hash sums of the client's WAD directory and dehacked data
 
@@ -128,7 +128,7 @@ typedef struct
 {
     // Whether this tic has been received yet
 
-    boolean active;
+    bool active;
 
     // Latency value received from the client
 
@@ -144,7 +144,7 @@ typedef struct
 } net_client_recv_t;
 
 static net_server_state_t server_state;
-static boolean            server_initialized = false;
+static bool            server_initialized = false;
 static net_client_t       clients[MAXNETNODES];
 static net_client_t *     sv_players[NET_MAXPLAYERS];
 static net_context_t *    server_context;
@@ -173,7 +173,7 @@ static void NET_SV_DisconnectClient(net_client_t *client)
     }
 }
 
-static boolean ClientConnected(net_client_t *client)
+static bool ClientConnected(net_client_t *client)
 {
     // Check that the client is properly connected: ie. not in the
     // process of connecting or disconnecting
@@ -482,7 +482,7 @@ static void NET_SV_AdvanceWindow()
 
     while (recvwindow_start < lowtic)
     {
-        boolean should_advance;
+        bool should_advance;
 
         // Check we have tics from all players for first tic in
         // the recv window
@@ -906,7 +906,7 @@ static void StartGame()
 
 // Returns true when all nodes have indicated readiness to start the game.
 
-static boolean AllNodesReady()
+static bool AllNodesReady()
 {
     unsigned int i;
 
@@ -1061,7 +1061,7 @@ static void NET_SV_CheckResends(net_client_t *client)
     for (i = 0; i < BACKUPTICS; ++i)
     {
         net_client_recv_t *recvobj;
-        boolean            need_resend;
+        bool            need_resend;
 
         recvobj = &recvwindow[i][player];
 
@@ -1993,7 +1993,7 @@ void NET_SV_Run()
 void NET_SV_Shutdown()
 {
     int     i;
-    boolean running;
+    bool running;
     int     start_time;
 
     if (!server_initialized)

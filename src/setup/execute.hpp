@@ -32,7 +32,7 @@ void AddCmdLineParameter(execute_context_t *context, const char *s, ...) PRINTF_
 void PassThroughArguments(execute_context_t *context);
 int ExecuteDoom(execute_context_t *context);
 int FindInstalledIWADs();
-boolean OpenFolder(const char *path);
+bool OpenFolder(const char *path);
 
 txt_window_action_t *TestConfigAction();
 

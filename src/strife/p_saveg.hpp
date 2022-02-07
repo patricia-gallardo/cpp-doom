@@ -36,18 +36,18 @@ char *P_SaveGameFile(int slot);
 
 // Savegame file header read/write functions
 
-boolean P_ReadSaveGameHeader();
+bool P_ReadSaveGameHeader();
 void P_WriteSaveGameHeader(char *description);
 
 // Savegame end-of-file read/write functions
 
-boolean P_ReadSaveGameEOF();
+bool P_ReadSaveGameEOF();
 void P_WriteSaveGameEOF();
 
 // Persistent storage/archiving.
 // These are the load / save game routines.
 void P_ArchivePlayers ();
-void P_UnArchivePlayers (boolean userload);
+void P_UnArchivePlayers (bool userload);
 void P_ArchiveWorld ();
 void P_UnArchiveWorld ();
 void P_ArchiveThinkers ();
@@ -56,7 +56,7 @@ void P_ArchiveSpecials ();
 void P_UnArchiveSpecials ();
 
 extern FILE *save_stream;
-extern boolean savegame_error;
+extern bool savegame_error;
 
 
 #endif

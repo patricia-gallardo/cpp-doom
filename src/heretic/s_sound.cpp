@@ -41,7 +41,7 @@
 */
 
 void S_ShutDown();
-boolean S_StopSoundID(int sound_id, int priority);
+bool S_StopSoundID(int sound_id, int priority);
 
 static channel_t channel[MAX_CHANNELS];
 
@@ -74,7 +74,7 @@ void S_Start()
     memset(channel, 0, 8 * sizeof(channel_t));
 }
 
-void S_StartSong(int song, boolean loop)
+void S_StartSong(int song, bool loop)
 {
     int mus_len;
 
@@ -342,7 +342,7 @@ void S_StartSoundAtVolume(void *_origin, int sound_id, int volume)
     }
 }
 
-boolean S_StopSoundID(int sound_id, int priority)
+bool S_StopSoundID(int sound_id, int priority)
 {
     int i;
     int lp;                     //least priority
@@ -563,7 +563,7 @@ void S_GetChannelInfo(SoundInfo_t * s)
     }
 }
 
-void S_SetMaxVolume(boolean fullprocess)
+void S_SetMaxVolume(bool fullprocess)
 {
     int i;
 
@@ -584,7 +584,7 @@ void S_SetMaxVolume(boolean fullprocess)
     }
 }
 
-static boolean musicPaused;
+static bool musicPaused;
 void S_SetMusicVolume()
 {
     I_SetMusicVolume(snd_MusicVolume * 8);

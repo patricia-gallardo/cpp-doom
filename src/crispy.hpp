@@ -86,15 +86,15 @@ struct crispy_t
     int demowarp{};
     int fps{};
 
-    boolean flashinghom{};
-    boolean fliplevels{};
-    boolean flipweapons{};
-    boolean haved1e5{};
-    boolean havee1m10{};
-    boolean havemap33{};
-    boolean havessg{};
-    boolean singleplayer{};
-    boolean stretchsky{};
+    bool flashinghom{};
+    bool fliplevels{};
+    bool flipweapons{};
+    bool haved1e5{};
+    bool havee1m10{};
+    bool havemap33{};
+    bool havessg{};
+    bool singleplayer{};
+    bool stretchsky{};
 
     const char *sdlversion{};
     const char *platform{};
@@ -105,7 +105,7 @@ struct crispy_t
 extern crispy_t *const crispy;
 extern const crispy_t *critical;
 
-extern void CheckCrispySingleplayer(boolean singleplayer);
+extern void CheckCrispySingleplayer(bool singleplayer);
 
 enum
 {

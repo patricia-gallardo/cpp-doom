@@ -63,8 +63,8 @@ typedef struct
 
 
 static memzone_t *mainzone;
-static boolean    zero_on_free;
-static boolean    scan_on_free;
+static bool    zero_on_free;
+static bool    scan_on_free;
 
 
 //

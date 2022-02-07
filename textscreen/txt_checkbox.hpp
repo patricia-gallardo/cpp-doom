@@ -24,7 +24,7 @@
 /**
  * Checkbox widget.
  *
- * A checkbox is used to control boolean values that may be either on
+ * A checkbox is used to control bool values that may be either on
  * or off.  The widget has a label that is displayed to the right of
  * the checkbox indicator.  The widget tracks an integer variable;
  * if the variable is non-zero, the checkbox is checked, while if it

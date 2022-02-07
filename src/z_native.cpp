@@ -163,7 +163,7 @@ void Z_Free(void *ptr)
 //
 // Returns true if any blocks were freed.
 
-static boolean ClearCache(int size)
+static bool ClearCache(int size)
 {
     memblock_t *block;
     memblock_t *next_block;

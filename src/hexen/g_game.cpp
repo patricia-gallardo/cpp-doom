@@ -42,7 +42,7 @@ extern void P_PlayerNextArtifact(player_t * player);
 
 // Functions
 
-boolean G_CheckDemoStatus();
+bool G_CheckDemoStatus();
 void G_ReadDemoTiccmd(ticcmd_t * cmd);
 void G_WriteDemoTiccmd(ticcmd_t * cmd);
 
@@ -62,29 +62,29 @@ void G_DoSingleReborn();
 void H2_PageTicker();
 void H2_AdvanceDemo();
 
-extern boolean mn_SuicideConsole;
+extern bool mn_SuicideConsole;
 
 gameaction_t gameaction;
 gamestate_t gamestate;
 skill_t gameskill;
-//boolean         respawnmonsters;
+//bool         respawnmonsters;
 int gameepisode;
 int gamemap;
 int prevmap;
 
-boolean paused;
-boolean sendpause;              // send a pause event next tic
-boolean sendsave;               // send a save event next tic
-boolean usergame;               // ok to save / end game
+bool paused;
+bool sendpause;              // send a pause event next tic
+bool sendsave;               // send a save event next tic
+bool usergame;               // ok to save / end game
 
-boolean timingdemo;             // if true, exit with report on completion
+bool timingdemo;             // if true, exit with report on completion
 int starttime;                  // for comparative timing purposes      
 
-boolean viewactive;
+bool viewactive;
 
-boolean deathmatch;             // only if started as net death
-boolean netgame;                // only true if packets are broadcast
-boolean playeringame[MAXPLAYERS];
+bool deathmatch;             // only if started as net death
+bool netgame;                // only true if packets are broadcast
+bool playeringame[MAXPLAYERS];
 player_t players[MAXPLAYERS];
 pclass_t PlayerClass[MAXPLAYERS];
 
@@ -96,16 +96,16 @@ int displayplayer;              // view being displayed
 int levelstarttic;              // gametic at level start
 
 char demoname[32];
-boolean demorecording;
-boolean longtics;               // specify high resolution turning in demos
-boolean lowres_turn;
-boolean shortticfix;            // calculate lowres turning like doom
-boolean demoplayback;
-boolean demoextend;
+bool demorecording;
+bool longtics;               // specify high resolution turning in demos
+bool lowres_turn;
+bool shortticfix;            // calculate lowres turning like doom
+bool demoplayback;
+bool demoextend;
 byte *demobuffer, *demo_p, *demoend;
-boolean singledemo;             // quit after playing a demo from cmdline
+bool singledemo;             // quit after playing a demo from cmdline
 
-boolean precache = true;        // if true, load all graphics at start
+bool precache = true;        // if true, load all graphics at start
 
 // TODO: Hexen uses 16-bit shorts for consistancy?
 byte consistancy[MAXPLAYERS][BACKUPTICS];
@@ -147,13 +147,13 @@ static int next_weapon = 0;
 #define SLOWTURNTICS    6
 
 #define NUMKEYS 256
-boolean gamekeydown[NUMKEYS];
+bool gamekeydown[NUMKEYS];
 int turnheld;                   // for accelerative turning
 int lookheld;
 
 
-boolean mousearray[MAX_MOUSE_BUTTONS + 1];
-boolean *mousebuttons = &mousearray[1];
+bool mousearray[MAX_MOUSE_BUTTONS + 1];
+bool *mousebuttons = &mousearray[1];
         // allow [-1]
 int mousex, mousey;             // mouse values are used once
 int dclicktime, dclickstate, dclicks;
@@ -164,8 +164,8 @@ int dclicktime2, dclickstate2, dclicks2;
 int joyxmove, joyymove;         // joystick values are repeated
 int joystrafemove;
 int joylook;
-boolean joyarray[MAX_JOY_BUTTONS + 1];
-boolean *joybuttons = &joyarray[1];     // allow [-1]
+bool joyarray[MAX_JOY_BUTTONS + 1];
+bool *joybuttons = &joyarray[1];     // allow [-1]
 
 int savegameslot;
 char savedescription[32];
@@ -180,7 +180,7 @@ static skill_t TempSkill;
 static int TempEpisode;
 static int TempMap;
 
-boolean testcontrols = false;
+bool testcontrols = false;
 int testcontrols_mousespeed;
 
 //=============================================================================
@@ -195,20 +195,20 @@ int testcontrols_mousespeed;
 ====================
 */
 
-extern boolean inventory;
-boolean usearti = true;
+extern bool inventory;
+bool usearti = true;
 
 void G_BuildTiccmd(ticcmd_t *cmd, int maketic)
 {
     int i;
-    boolean strafe, bstrafe;
+    bool strafe, bstrafe;
     int speed, tspeed, lspeed;
     int forward, side;
     int look, arti;
     int flyheight;
     int pClass;
 
-    extern boolean artiskip;
+    extern bool artiskip;
 
     // haleyjd: removed externdriver crap
 
@@ -781,10 +781,10 @@ static void SetMouseButtons(unsigned int buttons_mask)
 ===============================================================================
 */
 
-boolean G_Responder(event_t * ev)
+bool G_Responder(event_t * ev)
 {
     player_t *plr;
-    extern boolean MenuActive;
+    extern bool MenuActive;
 
     plr = &players[consoleplayer];
     if (ev->type == ev_keyup && ev->data1 == key_useartifact)
@@ -1260,7 +1260,7 @@ void G_PlayerReborn(int player)
 
 void P_SpawnPlayer(mapthing_t * mthing);
 
-boolean G_CheckSpot(int playernum, mapthing_t * mthing)
+bool G_CheckSpot(int playernum, mapthing_t * mthing)
 {
     fixed_t x, y;
     subsector_t *ss;
@@ -1335,10 +1335,10 @@ void G_DeathMatchSpawnPlayer(int playernum)
 void G_DoReborn(int playernum)
 {
     int i;
-    boolean oldWeaponowned[NUMWEAPONS];
+    bool oldWeaponowned[NUMWEAPONS];
     int oldKeys;
     int oldPieces;
-    boolean foundSpot;
+    bool foundSpot;
     int bestWeapon;
 
     // quit demo unless -demoextend
@@ -1497,7 +1497,7 @@ void G_DoTeleportNewMap()
 }
 
 /*
-boolean secretexit;
+bool secretexit;
 void G_ExitLevel ()
 {
 	secretexit = false;
@@ -2156,7 +2156,7 @@ void G_TimeDemo(char *name)
 ===================
 */
 
-boolean G_CheckDemoStatus()
+bool G_CheckDemoStatus()
 {
     int endtime, realtics;
 

@@ -29,12 +29,12 @@
 #include "r_draw.hpp"
 #include "hu_stuff.hpp" // [STRIFE]
 
-// boolean : whether the screen is always erased
+// bool : whether the screen is always erased
 #define noterased viewwindowx
 
-extern boolean	automapactive;	// in AM_map.c
+extern bool	automapactive;	// in AM_map.c
 
-extern boolean D_PatchClipCallback(patch_t *patch, int x, int y); // [STRIFE]
+extern bool D_PatchClipCallback(patch_t *patch, int x, int y); // [STRIFE]
 
 //
 // HUlib_drawYellowText
@@ -139,7 +139,7 @@ HUlib_initTextLine
 //
 // [STRIFE] Verified unmodified.
 //
-boolean
+bool
 HUlib_addCharToTextLine
 ( hu_textline_t*        t,
   char                  ch )
@@ -160,7 +160,7 @@ HUlib_addCharToTextLine
 //
 // [STRIFE] Verified unmodified.
 //
-boolean HUlib_delCharFromTextLine(hu_textline_t* t)
+bool HUlib_delCharFromTextLine(hu_textline_t* t)
 {
     if (!t->len) return false;
     else
@@ -179,7 +179,7 @@ boolean HUlib_delCharFromTextLine(hu_textline_t* t)
 void
 HUlib_drawTextLine
 ( hu_textline_t*        l,
-  boolean               drawcursor )
+  bool               drawcursor )
 {
     int                 i;
     int                 w;
@@ -266,7 +266,7 @@ HUlib_initSText
   int           h,
   patch_t**     font,
   int           startchar,
-  boolean*      on )
+  bool*      on )
 {
     int i;
 
@@ -378,7 +378,7 @@ HUlib_initIText
   int           y,
   patch_t**     font,
   int           startchar,
-  boolean*      on )
+  bool*      on )
 {
     it->lm = 0; // default left margin is start of text
     it->on = on;
@@ -428,7 +428,7 @@ HUlib_addPrefixToIText
 // wrapper function for handling general keyed input.
 // returns true if it ate the key
 // [STRIFE] Verified unmodified.
-boolean
+bool
 HUlib_keyInIText
 ( hu_itext_t*	it,
   unsigned char ch )

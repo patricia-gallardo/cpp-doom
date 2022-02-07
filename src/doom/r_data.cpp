@@ -556,7 +556,7 @@ void R_GenerateLookup(int texnum)
 byte *
     R_GetColumn(int tex,
         int         col,
-        boolean     opaque)
+        bool     opaque)
 {
     int lump;
     int ofs;
@@ -1195,8 +1195,8 @@ void R_InitColormaps()
         byte *      playpal = cache_lump_name<byte *>("PLAYPAL", PU_STATIC);
         char        c[3];
         int         i, j;
-        boolean     keepgray = false;
-        extern byte V_Colorize(byte * playpal, int cr, byte source, boolean keepgray109);
+        bool     keepgray = false;
+        extern byte V_Colorize(byte * playpal, int cr, byte source, bool keepgray109);
 
         if (!crstr)
             crstr = static_cast<decltype(crstr)>(I_Realloc(nullptr, static_cast<int>(cr_t::CRMAX) * sizeof(*crstr)));

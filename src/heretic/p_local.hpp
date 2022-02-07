@@ -117,7 +117,7 @@ void P_PlayerThink(player_t * player);
 void P_Thrust(player_t * player, angle_t angle, fixed_t move);
 void P_PlayerRemoveArtifact(player_t * player, int slot);
 void P_PlayerUseArtifact(player_t * player, artitype_t arti);
-boolean P_UseArtifact(player_t * player, artitype_t arti);
+bool P_UseArtifact(player_t * player, artitype_t arti);
 int P_GetPlayerNum(player_t * player);
 
 // ***** P_MOBJ *****
@@ -136,11 +136,11 @@ extern mobj_t *MissileMobj;
 
 mobj_t *P_SpawnMobj(fixed_t x, fixed_t y, fixed_t z, mobjtype_t type);
 void P_RemoveMobj(mobj_t * th);
-boolean P_SetMobjState(mobj_t * mobj, statenum_t state);
-boolean P_SetMobjStateNF(mobj_t * mobj, statenum_t state);
+bool P_SetMobjState(mobj_t * mobj, statenum_t state);
+bool P_SetMobjStateNF(mobj_t * mobj, statenum_t state);
 void P_ThrustMobj(mobj_t * mo, angle_t angle, fixed_t move);
 int P_FaceMobj(mobj_t * source, mobj_t * target, angle_t * delta);
-boolean P_SeekerMissile(mobj_t * actor, angle_t thresh, angle_t turnMax);
+bool P_SeekerMissile(mobj_t * actor, angle_t thresh, angle_t turnMax);
 void P_MobjThinker(mobj_t * mobj);
 void P_BlasterMobjThinker(mobj_t * mobj);
 void P_SpawnPuff(fixed_t x, fixed_t y, fixed_t z);
@@ -149,7 +149,7 @@ void P_BloodSplatter(fixed_t x, fixed_t y, fixed_t z, mobj_t * originator);
 void P_RipperBlood(mobj_t * mo);
 int P_GetThingFloorType(mobj_t * thing);
 int P_HitFloor(mobj_t * thing);
-boolean P_CheckMissileSpawn(mobj_t * missile);
+bool P_CheckMissileSpawn(mobj_t * missile);
 mobj_t *P_SpawnMissile(mobj_t * source, mobj_t * dest, mobjtype_t type);
 mobj_t *P_SpawnMissileAngle(mobj_t * source, mobjtype_t type,
                             angle_t angle, fixed_t momz);
@@ -174,7 +174,7 @@ typedef struct
 typedef struct
 {
     fixed_t frac;               // along trace line
-    boolean isaline;
+    bool isaline;
     union
     {
         mobj_t *thing;
@@ -184,7 +184,7 @@ typedef struct
 
 #define	MAXINTERCEPTS	128
 extern intercept_t intercepts[MAXINTERCEPTS], *intercept_p;
-typedef boolean(*traverser_t) (intercept_t * in);
+typedef bool(*traverser_t) (intercept_t * in);
 
 
 fixed_t P_AproxDistance(fixed_t dx, fixed_t dy);
@@ -198,37 +198,37 @@ extern fixed_t opentop, openbottom, openrange;
 extern fixed_t lowfloor;
 void P_LineOpening(line_t * linedef);
 
-boolean P_BlockLinesIterator(int x, int y, boolean(*func) (line_t *));
-boolean P_BlockThingsIterator(int x, int y, boolean(*func) (mobj_t *));
+bool P_BlockLinesIterator(int x, int y, bool(*func) (line_t *));
+bool P_BlockThingsIterator(int x, int y, bool(*func) (mobj_t *));
 
 #define PT_ADDLINES		1
 #define	PT_ADDTHINGS	2
 #define	PT_EARLYOUT		4
 
 extern divline_t trace;
-boolean P_PathTraverse(fixed_t x1, fixed_t y1, fixed_t x2, fixed_t y2,
-                       int flags, boolean(*trav) (intercept_t *));
+bool P_PathTraverse(fixed_t x1, fixed_t y1, fixed_t x2, fixed_t y2,
+                       int flags, bool(*trav) (intercept_t *));
 
 void P_UnsetThingPosition(mobj_t * thing);
 void P_SetThingPosition(mobj_t * thing);
 
 // ***** P_MAP *****
 
-extern boolean floatok;         // if true, move would be ok if
+extern bool floatok;         // if true, move would be ok if
 extern fixed_t tmfloorz, tmceilingz;    // within tmfloorz - tmceilingz
 
 extern line_t *ceilingline;
-boolean P_TestMobjLocation(mobj_t * mobj);
-boolean P_CheckPosition(mobj_t * thing, fixed_t x, fixed_t y);
+bool P_TestMobjLocation(mobj_t * mobj);
+bool P_CheckPosition(mobj_t * thing, fixed_t x, fixed_t y);
 mobj_t *P_CheckOnmobj(mobj_t * thing);
 void P_FakeZMovement(mobj_t * mo);
-boolean P_TryMove(mobj_t * thing, fixed_t x, fixed_t y);
-boolean P_TeleportMove(mobj_t * thing, fixed_t x, fixed_t y);
+bool P_TryMove(mobj_t * thing, fixed_t x, fixed_t y);
+bool P_TeleportMove(mobj_t * thing, fixed_t x, fixed_t y);
 void P_SlideMove(mobj_t * mo);
-boolean P_CheckSight(mobj_t * t1, mobj_t * t2);
+bool P_CheckSight(mobj_t * t1, mobj_t * t2);
 void P_UseLines(player_t * player);
 
-boolean P_ChangeSector(sector_t * sector, boolean crunch);
+bool P_ChangeSector(sector_t * sector, bool crunch);
 
 extern mobj_t *linetarget;      // who got hit (or nullptr)
 fixed_t P_AimLineAttack(mobj_t * t1, angle_t angle, fixed_t distance);
@@ -252,19 +252,19 @@ extern mobj_t **blocklinks;     // for thing chains
 extern int maxammo[NUMAMMO];
 extern int clipammo[NUMAMMO];
 
-void P_SetMessage(player_t * player, const char *message, boolean ultmsg);
+void P_SetMessage(player_t * player, const char *message, bool ultmsg);
 void P_TouchSpecialThing(mobj_t * special, mobj_t * toucher);
 void P_DamageMobj(mobj_t * target, mobj_t * inflictor, mobj_t * source,
                   int damage);
-boolean P_GiveAmmo(player_t * player, ammotype_t ammo, int count);
-boolean P_GiveArtifact(player_t * player, artitype_t arti, mobj_t * mo);
-boolean P_GiveBody(player_t * player, int num);
-boolean P_GivePower(player_t * player, powertype_t power);
-boolean P_ChickenMorphPlayer(player_t * player);
+bool P_GiveAmmo(player_t * player, ammotype_t ammo, int count);
+bool P_GiveArtifact(player_t * player, artitype_t arti, mobj_t * mo);
+bool P_GiveBody(player_t * player, int num);
+bool P_GivePower(player_t * player, powertype_t power);
+bool P_ChickenMorphPlayer(player_t * player);
 
 // ***** AM_MAP *****
 
-boolean AM_Responder(event_t * ev);
+bool AM_Responder(event_t * ev);
 void AM_Ticker();
 void AM_Drawer();
 
