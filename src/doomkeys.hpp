@@ -81,10 +81,10 @@
 #define KEYP_8 KEY_UPARROW
 #define KEYP_9 KEY_PGUP
 
-#define KEYP_DIVIDE   '/'
-#define KEYP_PLUS     '+'
-#define KEYP_MINUS    '-'
-#define KEYP_MULTIPLY '*'
+constexpr char KEYP_DIVIDE   = '/';
+constexpr char KEYP_PLUS     = '+';
+constexpr char KEYP_MINUS    = '-';
+constexpr char KEYP_MULTIPLY = '*';
 #define KEYP_PERIOD   0
 #define KEYP_EQUALS   KEY_EQUALS
 #define KEYP_ENTER    KEY_ENTER

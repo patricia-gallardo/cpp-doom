@@ -16,8 +16,8 @@
 
 // D_main.c
 
-#include <stdio.h>
-#include <stdlib.h>
+#include <cstdio>
+#include <cstdlib>
 
 #include "txt_main.hpp"
 #include "txt_io.hpp"
@@ -46,11 +46,6 @@
 #include "w_main.hpp"
 #include "v_video.hpp"
 #include "lump.hpp"
-
-#define CT_KEY_GREEN    'g'
-#define CT_KEY_YELLOW   'y'
-#define CT_KEY_RED      'r'
-#define CT_KEY_BLUE     'b'
 
 #define STARTUP_WINDOW_X 17
 #define STARTUP_WINDOW_Y 7

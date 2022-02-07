@@ -135,9 +135,9 @@ typedef int64_t  dpixel_t;
 
 #else
 
-#define DIR_SEPARATOR   '/'
+constexpr char        DIR_SEPARATOR   = '/';
 #define DIR_SEPARATOR_S "/"
-#define PATH_SEPARATOR  ':'
+constexpr char        PATH_SEPARATOR  = ':';
 
 #endif
 

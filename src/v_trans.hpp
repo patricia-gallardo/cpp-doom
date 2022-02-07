@@ -54,7 +54,7 @@ enum class cr_t
 extern byte *cr_colors[static_cast<int>(cr_t::CRMAX)];
 extern char **crstr;
 
-#define cr_esc '~'
+constexpr char cr_esc = '~';
 
 #ifndef CRISPY_TRUECOLOR
 extern byte *tranmap;

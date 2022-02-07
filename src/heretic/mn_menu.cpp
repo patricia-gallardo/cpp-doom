@@ -41,7 +41,7 @@
 #define SELECTOR_XOFFSET (-28)
 #define SELECTOR_YOFFSET (-1)
 #define SLOTTEXTLEN     16
-#define ASCII_CURSOR '['
+constexpr char ASCII_CURSOR = '[';
 
 // Types
 

@@ -18,11 +18,6 @@
 //	Does palette indicators as well (red pain/berserk, bright pickup)
 //
 
-
-
-#include <stdio.h>
-
-#include "i_system.hpp"
 #include "i_video.hpp"
 #include "z_zone.hpp"
 #include "m_random.hpp"

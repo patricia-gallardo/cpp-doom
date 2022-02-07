@@ -64,7 +64,7 @@
 #define HU_TITLEX      (0 - DELTAWIDTH)
 #define HU_TITLEY      (167 - SHORT(hu_font[0]->height))
 
-#define HU_INPUTTOGGLE 't'
+constexpr char HU_INPUTTOGGLE = 't';
 #define HU_INPUTX      HU_MSGX
 #define HU_INPUTY      (HU_MSGY + HU_MSGHEIGHT * (SHORT(hu_font[0]->height) + 1))
 #define HU_INPUTWIDTH  64

@@ -46,15 +46,10 @@
 // MACROS ------------------------------------------------------------------
 
 #define MAXWADFILES 20
-#define CT_KEY_BLUE         'b'
-#define CT_KEY_RED          'r'
-#define CT_KEY_YELLOW       'y'
-#define CT_KEY_GREEN        'g'
-#define CT_KEY_PLAYER5      'j'     // Jade
-#define CT_KEY_PLAYER6      'w'     // White
-#define CT_KEY_PLAYER7      'h'     // Hazel
-#define CT_KEY_PLAYER8      'p'     // Purple
-#define CT_KEY_ALL          't'
+constexpr char CT_KEY_PLAYER5 = 'j'; // Jade
+constexpr char CT_KEY_PLAYER6 = 'w'; // White
+constexpr char CT_KEY_PLAYER7 = 'h'; // Hazel
+constexpr char CT_KEY_PLAYER8 = 'p'; // Purple
 
 // EXTERNAL FUNCTION PROTOTYPES --------------------------------------------
 
