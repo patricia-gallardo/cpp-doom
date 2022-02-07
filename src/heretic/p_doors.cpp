@@ -83,7 +83,7 @@ void T_VerticalDoor(vldoor_t * door)
                 {
                     case vld_normal:
                     case vld_close:
-                        door->sector->specialdata = NULL;
+                        door->sector->specialdata = nullptr;
                         P_RemoveThinker(&door->thinker);        // unlink and free
                         S_StartSound(&door->sector->soundorg, sfx_dorcls);
                         break;
@@ -121,7 +121,7 @@ void T_VerticalDoor(vldoor_t * door)
                         break;
                     case vld_close30ThenOpen:
                     case vld_open:
-                        door->sector->specialdata = NULL;
+                        door->sector->specialdata = nullptr;
                         P_RemoveThinker(&door->thinker);        // unlink and free
                         S_StopSound(&door->sector->soundorg);
                         break;
@@ -226,7 +226,7 @@ void EV_VerticalDoor(line_t * line, mobj_t * thing)
             if (!player->keys[key_blue])
             {
                 P_SetMessage(player, DEH_String(TXT_NEEDBLUEKEY), false);
-                S_StartSound(NULL, sfx_plroof);
+                S_StartSound(nullptr, sfx_plroof);
                 return;
             }
             break;
@@ -239,7 +239,7 @@ void EV_VerticalDoor(line_t * line, mobj_t * thing)
             if (!player->keys[key_yellow])
             {
                 P_SetMessage(player, DEH_String(TXT_NEEDYELLOWKEY), false);
-                S_StartSound(NULL, sfx_plroof);
+                S_StartSound(nullptr, sfx_plroof);
                 return;
             }
             break;
@@ -252,7 +252,7 @@ void EV_VerticalDoor(line_t * line, mobj_t * thing)
             if (!player->keys[key_green])
             {
                 P_SetMessage(player, DEH_String(TXT_NEEDGREENKEY), false);
-                S_StartSound(NULL, sfx_plroof);
+                S_StartSound(nullptr, sfx_plroof);
                 return;
             }
             break;

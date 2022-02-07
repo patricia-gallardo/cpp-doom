@@ -45,7 +45,7 @@ planefunction_t ceilingfunc;
 
 // Here comes the obnoxious "visplane".
 #define MAXVISPLANES 128
-visplane_t *visplanes = NULL;
+visplane_t *visplanes = nullptr;
 visplane_t *lastvisplane;
 visplane_t *floorplane;
 visplane_t *ceilingplane;

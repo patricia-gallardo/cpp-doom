@@ -244,7 +244,7 @@ void P_AddActiveCeiling(ceiling_t *c)
 
     for (i = 0; i < MAXCEILINGS; i++)
     {
-        if (activeceilings[i] == NULL)
+        if (activeceilings[i] == nullptr)
         {
             activeceilings[i] = c;
             return;
@@ -264,9 +264,9 @@ void P_RemoveActiveCeiling(ceiling_t *c)
     {
         if (activeceilings[i] == c)
         {
-            activeceilings[i]->sector->specialdata = NULL;
+            activeceilings[i]->sector->specialdata = nullptr;
             P_RemoveThinker(&activeceilings[i]->thinker);
-            activeceilings[i] = NULL;
+            activeceilings[i] = nullptr;
             break;
         }
     }
@@ -310,7 +310,7 @@ int EV_CeilingCrushStop(line_t *line)
             && (activeceilings[i]->direction != 0))
         {
             activeceilings[i]->olddirection         = activeceilings[i]->direction;
-            activeceilings[i]->thinker.function.acv = (actionf_v)NULL;
+            activeceilings[i]->thinker.function.acv = (actionf_v) nullptr;
             activeceilings[i]->direction            = 0; // in-stasis
             rtn                                     = 1;
         }

@@ -326,7 +326,7 @@ void P_SetPsprite(player_t * player, int position, statenum_t stnum)
     {
         if (!stnum)
         {                       // Object removed itself.
-            psp->state = NULL;
+            psp->state = nullptr;
             break;
         }
         state = &states[stnum];
@@ -1279,7 +1279,7 @@ void A_DeathBallImpact(mobj_t * ball)
         {
             if (!(target->flags & MF_SHOOTABLE))
             {                   // Target died
-                ball->special1.m = NULL;
+                ball->special1.m = nullptr;
             }
             else
             {                   // Seek
@@ -1499,7 +1499,7 @@ void A_AddPlayerRain(mobj_t * actor)
             {
                 player->rain1->health = 16;
             }
-            player->rain1 = NULL;
+            player->rain1 = nullptr;
         }
         else
         {
@@ -1507,7 +1507,7 @@ void A_AddPlayerRain(mobj_t * actor)
             {
                 player->rain2->health = 16;
             }
-            player->rain2 = NULL;
+            player->rain2 = nullptr;
         }
     }
     // Add rain mobj to list
@@ -1550,11 +1550,11 @@ void A_SkullRodStorm(mobj_t * actor)
         }
         if (player->rain1 == actor)
         {
-            player->rain1 = NULL;
+            player->rain1 = nullptr;
         }
         else if (player->rain2 == actor)
         {
-            player->rain2 = NULL;
+            player->rain2 = nullptr;
         }
         return;
     }
@@ -1867,7 +1867,7 @@ void P_SetupPsprites(player_t * player)
     // Remove all psprites
     for (i = 0; i < NUMPSPRITES; i++)
     {
-        player->psprites[i].state = NULL;
+        player->psprites[i].state = nullptr;
     }
     // Spawn the ready weapon
     player->pendingweapon = player->readyweapon;

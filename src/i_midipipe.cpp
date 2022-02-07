@@ -77,25 +77,25 @@ static HANDLE midi_process_out_writer;
 //
 static void FreePipes()
 {
-    if (midi_process_in_reader != NULL)
+    if (midi_process_in_reader != nullptr)
     {
         CloseHandle(midi_process_in_reader);
-        midi_process_in_reader = NULL;
+        midi_process_in_reader = nullptr;
     }
-    if (midi_process_in_writer != NULL)
+    if (midi_process_in_writer != nullptr)
     {
         CloseHandle(midi_process_in_writer);
-        midi_process_in_writer = NULL;
+        midi_process_in_writer = nullptr;
     }
-    if (midi_process_out_reader != NULL)
+    if (midi_process_out_reader != nullptr)
     {
         CloseHandle(midi_process_out_reader);
-        midi_process_in_reader = NULL;
+        midi_process_in_reader = nullptr;
     }
-    if (midi_process_out_writer != NULL)
+    if (midi_process_out_writer != nullptr)
     {
         CloseHandle(midi_process_out_writer);
-        midi_process_out_writer = NULL;
+        midi_process_out_writer = nullptr;
     }
 }
 
@@ -132,7 +132,7 @@ static bool WritePipe(net_packet_t *packet)
 {
     DWORD bytes_written;
     BOOL  ok = WriteFile(midi_process_in_writer, packet->data, packet->len,
-        &bytes_written, NULL);
+        &bytes_written, nullptr);
 
     return ok;
 }
@@ -163,8 +163,8 @@ static bool ExpectPipe(net_packet_t *packet)
     do
     {
         // Wait until we see exactly the amount of data we expect on the pipe.
-        ok = PeekNamedPipe(midi_process_out_reader, NULL, 0, NULL,
-            &pipe_buffer_read, NULL);
+        ok = PeekNamedPipe(midi_process_out_reader, nullptr, 0, nullptr,
+            &pipe_buffer_read, nullptr);
         if (!ok)
         {
             break;
@@ -177,7 +177,7 @@ static bool ExpectPipe(net_packet_t *packet)
 
         // Read precisely the number of bytes we're expecting, and no more.
         ok = ReadFile(midi_process_out_reader, pipe_buffer, packet->len,
-            &pipe_buffer_read, NULL);
+            &pipe_buffer_read, nullptr);
         if (!ok || pipe_buffer_read != packet->len)
         {
             break;
@@ -205,7 +205,7 @@ static bool ExpectPipe(net_packet_t *packet)
 //
 void RemoveFileSpec(TCHAR *path, size_t size)
 {
-    TCHAR *fp = NULL;
+    TCHAR *fp = nullptr;
 
     fp = &path[size];
     while (path <= fp && *fp != DIR_SEPARATOR)
@@ -412,8 +412,8 @@ bool I_MidiPipe_InitServer()
 {
     TCHAR               dirname[MAX_PATH + 1];
     DWORD               dirname_len;
-    char *              module  = NULL;
-    char *              cmdline = NULL;
+    char *              module  = nullptr;
+    char *              cmdline = nullptr;
     char                params_buf[128];
     SECURITY_ATTRIBUTES sec_attrs;
     PROCESS_INFORMATION proc_info;
@@ -429,7 +429,7 @@ bool I_MidiPipe_InitServer()
 
     // Get directory name
     memset(dirname, 0, sizeof(dirname));
-    dirname_len = GetModuleFileName(NULL, dirname, MAX_PATH);
+    dirname_len = GetModuleFileName(nullptr, dirname, MAX_PATH);
     if (dirname_len == 0)
     {
         return false;
@@ -443,7 +443,7 @@ bool I_MidiPipe_InitServer()
     memset(&sec_attrs, 0, sizeof(SECURITY_ATTRIBUTES));
     sec_attrs.nLength              = sizeof(SECURITY_ATTRIBUTES);
     sec_attrs.bInheritHandle       = TRUE;
-    sec_attrs.lpSecurityDescriptor = NULL;
+    sec_attrs.lpSecurityDescriptor = nullptr;
 
     if (!CreatePipe(&midi_process_in_reader, &midi_process_in_writer, &sec_attrs, 0))
     {
@@ -473,15 +473,15 @@ bool I_MidiPipe_InitServer()
     // the executable name.
     M_snprintf(params_buf, sizeof(params_buf), "%d %Iu %Iu",
         snd_samplerate, (size_t)midi_process_in_reader, (size_t)midi_process_out_writer);
-    cmdline = M_StringJoin(module, " \"" PACKAGE_STRING "\"", " ", params_buf, NULL);
+    cmdline = M_StringJoin(module, " \"" PACKAGE_STRING "\"", " ", params_buf, nullptr);
 
     // Launch the subprocess
     memset(&proc_info, 0, sizeof(proc_info));
     memset(&startup_info, 0, sizeof(startup_info));
     startup_info.cb = sizeof(startup_info);
 
-    ok = CreateProcess(TEXT(module), TEXT(cmdline), NULL, NULL, TRUE,
-        0, NULL, dirname, &startup_info, &proc_info);
+    ok = CreateProcess(TEXT(module), TEXT(cmdline), nullptr, nullptr, TRUE,
+        0, nullptr, dirname, &startup_info, &proc_info);
 
     if (!ok)
     {
@@ -493,9 +493,9 @@ bool I_MidiPipe_InitServer()
 
     // Since the server has these handles, we don't need them anymore.
     CloseHandle(midi_process_in_reader);
-    midi_process_in_reader = NULL;
+    midi_process_in_reader = nullptr;
     CloseHandle(midi_process_out_writer);
-    midi_process_out_writer = NULL;
+    midi_process_out_writer = nullptr;
 
     midi_server_initialized = true;
     return true;

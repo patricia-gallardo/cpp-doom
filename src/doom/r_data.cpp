@@ -323,7 +323,7 @@ void R_GenerateComposite(int texnum)
     // killough 4/9/98: Next, convert multipatched columns into true columns,
     // to fix Medusa bug while still allowing for transparent regions.
 
-    source = static_cast<decltype(source)>(I_Realloc(NULL, texture->height)); // temporary column
+    source = static_cast<decltype(source)>(I_Realloc(nullptr, texture->height)); // temporary column
     for (i = 0; i < texture->width; i++)
     {
         if (collump[i] == -1) // process only multipatched columns
@@ -606,14 +606,14 @@ static void GenerateTextureHashTable()
 
         rover = &textures_hashtable[key];
 
-        while (*rover != NULL)
+        while (*rover != nullptr)
         {
             rover = &(*rover)->next;
         }
 
         // Hook into hash table
 
-        textures[i]->next = NULL;
+        textures[i]->next = nullptr;
         *rover            = textures[i];
     }
 }
@@ -636,7 +636,7 @@ void R_InitTextures()
     int j;
     int k;
 
-    int *maptex = NULL;
+    int *maptex = nullptr;
 
     char name[9];
 
@@ -647,7 +647,7 @@ void R_InitTextures()
     int offset;
     int maxoff = 0;
 
-    int *directory = NULL;
+    int *directory = nullptr;
 
     int temp1;
     int temp2;
@@ -672,8 +672,8 @@ void R_InitTextures()
         short pnamesoffset;
     } texturelump_t;
 
-    pnameslump_t * pnameslumps  = NULL;
-    texturelump_t *texturelumps = NULL, *texturelump;
+    pnameslump_t * pnameslumps  = nullptr;
+    texturelump_t *texturelumps = nullptr, *texturelump;
 
     int maxpnameslumps  = 1; // PNAMES
     int maxtexturelumps = 2; // TEXTURE1, TEXTURE2
@@ -746,7 +746,7 @@ void R_InitTextures()
 
     // [crispy] fill up the patch lookup table
     name[8]     = 0;
-    patchlookup = zmalloc<decltype(patchlookup)>(nummappatches * sizeof(*patchlookup), PU_STATIC, NULL);
+    patchlookup = zmalloc<decltype(patchlookup)>(nummappatches * sizeof(*patchlookup), PU_STATIC, nullptr);
     for (i = 0, k = 0; i < numpnameslumps; i++)
     {
         for (j = 0; j < pnameslumps[i].nummappatches; j++)
@@ -1018,7 +1018,7 @@ static void R_InitTranMap()
         // Compose a default transparent filter map based on PLAYPAL.
         unsigned char *playpal = cache_lump_name<unsigned char *>("PLAYPAL", PU_STATIC);
         FILE *         cachefp;
-        char *         fname = NULL;
+        char *         fname = nullptr;
         extern char *  configdir;
 
         struct {
@@ -1027,7 +1027,7 @@ static void R_InitTranMap()
         } cache;
 
         tranmap = zmalloc<decltype(tranmap)>(256 * 256, PU_STATIC, 0);
-        fname   = M_StringJoin(configdir, "tranmap.dat", NULL);
+        fname   = M_StringJoin(configdir, "tranmap.dat", nullptr);
 
         // [crispy] open file readable
         if ((cachefp = fopen(fname, "rb")) &&
@@ -1199,7 +1199,7 @@ void R_InitColormaps()
         extern byte V_Colorize(byte * playpal, int cr, byte source, bool keepgray109);
 
         if (!crstr)
-            crstr = static_cast<decltype(crstr)>(I_Realloc(NULL, static_cast<int>(cr_t::CRMAX) * sizeof(*crstr)));
+            crstr = static_cast<decltype(crstr)>(I_Realloc(nullptr, static_cast<int>(cr_t::CRMAX) * sizeof(*crstr)));
 
         // [crispy] check for status bar graphics replacements
         i        = W_CheckNumForName(DEH_String("sttnum0")); // [crispy] Status Bar '0'
@@ -1293,7 +1293,7 @@ int R_CheckTextureNumForName(const char *name)
 
     texture = textures_hashtable[key];
 
-    while (texture != NULL)
+    while (texture != nullptr)
     {
         if (!strncasecmp(texture->name, name, 8))
             return texture->index;
@@ -1358,7 +1358,7 @@ void R_PrecacheLevel()
         return;
 
     // Precache flats.
-    flatpresent = zmalloc<decltype(flatpresent)>(numflats, PU_STATIC, NULL);
+    flatpresent = zmalloc<decltype(flatpresent)>(numflats, PU_STATIC, nullptr);
     memset(flatpresent, 0, numflats);
 
     for (i = 0; i < numsectors; i++)
@@ -1382,7 +1382,7 @@ void R_PrecacheLevel()
     Z_Free(flatpresent);
 
     // Precache textures.
-    texturepresent = zmalloc<decltype(texturepresent)>(numtextures, PU_STATIC, NULL);
+    texturepresent = zmalloc<decltype(texturepresent)>(numtextures, PU_STATIC, nullptr);
     memset(texturepresent, 0, numtextures);
 
     for (i = 0; i < numsides; i++)
@@ -1422,7 +1422,7 @@ void R_PrecacheLevel()
     Z_Free(texturepresent);
 
     // Precache sprites.
-    spritepresent = zmalloc<decltype(spritepresent)>(numsprites, PU_STATIC, NULL);
+    spritepresent = zmalloc<decltype(spritepresent)>(numsprites, PU_STATIC, nullptr);
     memset(spritepresent, 0, numsprites);
 
     for (th = thinkercap.next; th != &thinkercap; th = th->next)

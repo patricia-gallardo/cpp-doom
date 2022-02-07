@@ -428,7 +428,7 @@ void G_BuildTiccmd(ticcmd_t *cmd, int maketic)
             crstr[static_cast<int>(cr_t::CR_GREEN)],
             (joybspeed >= MAX_JOY_BUTTONS) ? "ON" : "OFF");
         player->message = playermessage;
-        S_StartSound(NULL, sfx_swtchn);
+        S_StartSound(nullptr, sfx_swtchn);
 
         gamekeydown[key_toggleautorun] = false;
     }
@@ -443,7 +443,7 @@ void G_BuildTiccmd(ticcmd_t *cmd, int maketic)
             crstr[static_cast<int>(cr_t::CR_GREEN)],
             !novert ? "ON" : "OFF");
         player->message = playermessage;
-        S_StartSound(NULL, sfx_swtchn);
+        S_StartSound(nullptr, sfx_swtchn);
 
         gamekeydown[key_togglenovert] = false;
     }
@@ -947,7 +947,7 @@ bool G_Responder(event_t *ev)
             M_StartControlPanel();
             // [crispy] play a sound if the menu is activated with a different key than ESC
             if (crispy->soundfix)
-                S_StartSound(NULL, sfx_swtchn);
+                S_StartSound(nullptr, sfx_swtchn);
             return true;
         }
         return false;
@@ -1529,7 +1529,7 @@ void G_DoReborn(int playernum)
         // respawn at the start
 
         // first dissasociate the corpse
-        players[playernum].mo->player = NULL;
+        players[playernum].mo->player = nullptr;
 
         // spawn at random spot if in death match
         if (deathmatch)
@@ -1952,7 +1952,7 @@ void G_DoLoadGame()
 
     save_stream = fopen(savename, "rb");
 
-    if (save_stream == NULL)
+    if (save_stream == nullptr)
     {
         I_Error("Could not load savegame %s", savename);
     }
@@ -1982,7 +1982,7 @@ void G_DoLoadGame()
             free(savewadfilename);
         }
     }
-    savewadfilename = NULL;
+    savewadfilename = nullptr;
 
     savegame_error = false;
 
@@ -2057,7 +2057,7 @@ void G_DoSaveGame()
     char *temp_savegame_file;
     char *recovery_savegame_file;
 
-    recovery_savegame_file = NULL;
+    recovery_savegame_file = nullptr;
     temp_savegame_file     = P_TempSaveGameFile();
     savegame_file          = P_SaveGameFile(savegameslot);
 
@@ -2067,13 +2067,13 @@ void G_DoSaveGame()
     // a corrupted one, or if a savegame buffer overrun occurs.
     save_stream = fopen(temp_savegame_file, "wb");
 
-    if (save_stream == NULL)
+    if (save_stream == nullptr)
     {
         // Failed to save the game, so we're going to have to abort. But
         // to be nice, save to somewhere else before we call I_Error().
         recovery_savegame_file = M_TempFile("recovery.dsg");
         save_stream            = fopen(recovery_savegame_file, "wb");
-        if (save_stream == NULL)
+        if (save_stream == nullptr)
         {
             I_Error("Failed to open either '%s' or '%s' to write savegame.",
                 temp_savegame_file, recovery_savegame_file);
@@ -2123,7 +2123,7 @@ void G_DoSaveGame()
 
     fclose(save_stream);
 
-    if (recovery_savegame_file != NULL)
+    if (recovery_savegame_file != nullptr)
     {
         // We failed to save to the normal location, but we wrote a
         // recovery file to the temp directory. Now we can bomb out
@@ -2554,7 +2554,7 @@ void G_RecordDemo(char *name)
 
     // [crispy] demo file name suffix counter
     static unsigned int j  = 0;
-    FILE *              fp = NULL;
+    FILE *              fp = nullptr;
 
     // [crispy] the name originally chosen for the demo, i.e. without "-00000"
     if (!orig_demoname)
@@ -2564,11 +2564,11 @@ void G_RecordDemo(char *name)
 
     usergame      = false;
     demoname_size = strlen(name) + 5 + 6; // [crispy] + 6 for "-00000"
-    demoname      = zmalloc<decltype(demoname)>(demoname_size, PU_STATIC, NULL);
+    demoname      = zmalloc<decltype(demoname)>(demoname_size, PU_STATIC, nullptr);
     M_snprintf(demoname, demoname_size, "%s.lmp", name);
 
     // [crispy] prevent overriding demos by adding a file name suffix
-    for (; j <= 99999 && (fp = fopen(demoname, "rb")) != NULL; j++)
+    for (; j <= 99999 && (fp = fopen(demoname, "rb")) != nullptr; j++)
     {
         M_snprintf(demoname, demoname_size, "%s-%05d.lmp", name, j);
         fclose(fp);
@@ -2587,7 +2587,7 @@ void G_RecordDemo(char *name)
     i = M_CheckParmWithArgs("-maxdemo", 1);
     if (i)
         maxsize = atoi(myargv[i + 1]) * 1024;
-    demobuffer = zmalloc<decltype(demobuffer)>(maxsize, PU_STATIC, NULL);
+    demobuffer = zmalloc<decltype(demobuffer)>(maxsize, PU_STATIC, nullptr);
     demoend    = demobuffer + maxsize;
 
     demorecording = true;

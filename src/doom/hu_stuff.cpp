@@ -464,7 +464,7 @@ void HU_Init()
     // [crispy] initialize the crosshair types
     for (i = 0; laserpatch[i].c; i++)
     {
-        patch_t *patch = NULL;
+        patch_t *patch = nullptr;
 
         // [crispy] check for alternative crosshair patches from e.g. prboom-plus.wad first
         //	if ((laserpatch[i].l = W_CheckNumForName(laserpatch[i].a)) == -1)
@@ -537,15 +537,15 @@ typedef struct
 
 static const speciallevel_t speciallevels[] = {
     // [crispy] ExM0
-    { doom, 1, 0, NULL, NULL },
-    { doom, 2, 0, NULL, NULL },
-    { doom, 3, 0, NULL, NULL },
-    { doom, 4, 0, NULL, NULL },
+    { doom, 1, 0, nullptr, nullptr },
+    { doom, 2, 0, nullptr, nullptr },
+    { doom, 3, 0, nullptr, nullptr },
+    { doom, 4, 0, nullptr, nullptr },
     // [crispy] Romero's latest E1 additions
     { doom, 1, 8, "e1m8b.wad", HUSTR_E1M8B },
     { doom, 1, 4, "e1m4b.wad", HUSTR_E1M4B },
     // [crispy] E1M10 "Sewers" (Xbox Doom)
-    { doom, 1, 10, NULL, HUSTR_E1M10 },
+    { doom, 1, 10, nullptr, HUSTR_E1M10 },
     // [crispy] The Master Levels for Doom 2
     { doom2, 0, 1, "attack.wad", MHUSTR_1 },
     { doom2, 0, 1, "canyon.wad", MHUSTR_2 },
@@ -722,7 +722,7 @@ void HU_Start()
     {
         char *m;
 
-        ptr = M_StringJoin(crstr[static_cast<int>(cr_t::CR_GOLD)], W_WadNameForLump(maplumpinfo), ": ", crstr[static_cast<int>(cr_t::CR_GRAY)], maplumpinfo->name, NULL);
+        ptr = M_StringJoin(crstr[static_cast<int>(cr_t::CR_GOLD)], W_WadNameForLump(maplumpinfo), ": ", crstr[static_cast<int>(cr_t::CR_GRAY)], maplumpinfo->name, nullptr);
         m   = ptr;
 
         while (*m)
@@ -825,7 +825,7 @@ void HU_Drawer()
         HUlib_drawSText(&w_secret);
     }
 
-    dp_translation = NULL;
+    dp_translation = nullptr;
     if (crispy->screenshotmsg == 4)
         HUlib_eraseSText(&w_message);
     else
@@ -871,7 +871,7 @@ void HU_Drawer()
     if (crispy->crosshair == CROSSHAIR_STATIC)
         HU_DrawCrosshair();
 
-    dp_translation = NULL;
+    dp_translation = nullptr;
 
     if (dp_translucent)
         dp_translucent = false;

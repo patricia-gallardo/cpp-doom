@@ -653,7 +653,7 @@ void A_Look(mobj_t * actor)
         sound = actor->info->seesound;
         if (actor->flags2 & MF2_BOSS)
         {                       // Full volume
-            S_StartSound(NULL, sound);
+            S_StartSound(nullptr, sound);
         }
         else
         {
@@ -796,7 +796,7 @@ void A_Chase(mobj_t * actor)
         }
         else if (actor->flags2 & MF2_BOSS)
         {
-            S_StartSound(NULL, actor->info->activesound);
+            S_StartSound(nullptr, actor->info->activesound);
         }
         else
         {
@@ -1123,7 +1123,7 @@ static bool CheckMinotaurAge(mobj_t *mo)
 
     if (leveltime - LONG(starttime) >= MAULATORTICS)
     {
-        P_DamageMobj(mo, NULL, NULL, 10000);
+        P_DamageMobj(mo, nullptr, nullptr, 10000);
         return false;
     }
 
@@ -1171,14 +1171,14 @@ void A_MinotaurRoam(mobj_t * actor)
 
 void A_MinotaurLook(mobj_t * actor)
 {
-    mobj_t *mo = NULL;
+    mobj_t *mo = nullptr;
     player_t *player;
     thinker_t *think;
     fixed_t dist;
     int i;
     mobj_t *master = actor->special1.m;
 
-    actor->target = NULL;
+    actor->target = nullptr;
     if (deathmatch)             // Quick search for players
     {
         for (i = 0; i < maxplayers; i++)
@@ -1455,7 +1455,7 @@ void A_MinotaurAtk3(mobj_t * actor)
     if (P_CheckMeleeRange(actor))
     {
         P_DamageMobj(actor->target, actor, actor, HITDICE(3));
-        if ((player = actor->target->player) != NULL)
+        if ((player = actor->target->player) != nullptr)
         {                       // Squish the player
             player->deltaviewheight = -16 * FRACUNIT;
         }
@@ -1463,7 +1463,7 @@ void A_MinotaurAtk3(mobj_t * actor)
     else
     {
         mo = P_SpawnMissile(actor, actor->target, MT_MNTRFX2);
-        if (mo != NULL)
+        if (mo != nullptr)
         {
             S_StartSound(mo, SFX_MAULATOR_HAMMER_HIT);
         }
@@ -1754,7 +1754,7 @@ int P_Massacre()
         {
             mo->flags2 &= ~(MF2_NONSHOOTABLE + MF2_INVULNERABLE);
             mo->flags |= MF_SHOOTABLE;
-            P_DamageMobj(mo, NULL, NULL, 10000);
+            P_DamageMobj(mo, nullptr, nullptr, 10000);
             count++;
         }
     }
@@ -1787,7 +1787,7 @@ void A_SkullPop(mobj_t * actor)
     mo->momz = FRACUNIT * 2 + (P_Random() << 6);
     // Attach player mobj to bloody skull
     player = actor->player;
-    actor->player = NULL;
+    actor->player = nullptr;
     actor->special1.i = player->clazz;
     mo->player = player;
     mo->health = actor->health;
@@ -1855,7 +1855,7 @@ void A_FreeTargMobj(mobj_t * mo)
     mo->flags |= MF_CORPSE | MF_DROPOFF | MF_NOGRAVITY;
     mo->flags2 &= ~(MF2_PASSMOBJ | MF2_LOGRAV);
     mo->flags2 |= MF2_DONTDRAW;
-    mo->player = NULL;
+    mo->player = nullptr;
     mo->health = -1000;         // Don't resurrect
 }
 
@@ -1895,7 +1895,7 @@ void A_DeQueueCorpse(mobj_t * actor)
     {
         if (corpseQueue[slot] == actor)
         {
-            corpseQueue[slot] = NULL;
+            corpseQueue[slot] = nullptr;
             break;
         }
     }
@@ -2838,7 +2838,7 @@ static void DragonSeek(mobj_t * actor, angle_t thresh, angle_t turnMax)
     mobj_t *mo;
 
     target = actor->special1.m;
-    if (target == NULL)
+    if (target == nullptr)
     {
         return;
     }
@@ -2986,7 +2986,7 @@ void A_DragonFlight(mobj_t * actor)
     {
         if (!(actor->target->flags & MF_SHOOTABLE))
         {                       // target died
-            actor->target = NULL;
+            actor->target = nullptr;
             return;
         }
         angle = R_PointToAngle2(actor->x, actor->y, actor->target->x,
@@ -4076,7 +4076,7 @@ void A_SorcBallOrbit(mobj_t * actor)
 
                 if (actor->type == MT_SORCBALL1 && P_Random() < 200)
                 {
-                    S_StartSound(NULL, SFX_SORCERER_SPELLCAST);
+                    S_StartSound(nullptr, SFX_SORCERER_SPELLCAST);
                     actor->special2.i = SORCFX4_RAPIDFIRE_TIME;
                     actor->args[4] = 128;
                     parent->args[3] = SORC_FIRING_SPELL;
@@ -4232,7 +4232,7 @@ void A_CastSorcererSpell(mobj_t * actor)
     fixed_t z;
     mobj_t *parent = actor->target;
 
-    S_StartSound(NULL, SFX_SORCERER_SPELLCAST);
+    S_StartSound(nullptr, SFX_SORCERER_SPELLCAST);
 
     // Put sorcerer into throw spell animation
     if (parent->health > 0)
@@ -4543,7 +4543,7 @@ void A_SorcFX4Check(mobj_t * actor)
 
 void A_SorcBallPop(mobj_t * actor)
 {
-    S_StartSound(NULL, SFX_SORCERER_BALLPOP);
+    S_StartSound(nullptr, SFX_SORCERER_BALLPOP);
     actor->flags &= ~MF_NOGRAVITY;
     actor->flags2 |= MF2_LOGRAV;
     actor->momx = ((P_Random() % 10) - 5) << FRACBITS;
@@ -4568,10 +4568,10 @@ void A_BounceCheck(mobj_t * actor)
                 case MT_SORCBALL1:
                 case MT_SORCBALL2:
                 case MT_SORCBALL3:
-                    S_StartSound(NULL, SFX_SORCERER_BIGBALLEXPLODE);
+                    S_StartSound(nullptr, SFX_SORCERER_BIGBALLEXPLODE);
                     break;
                 case MT_SORCFX1:
-                    S_StartSound(NULL, SFX_SORCERER_HEADSCREAM);
+                    S_StartSound(nullptr, SFX_SORCERER_HEADSCREAM);
                     break;
                 default:
                     break;
@@ -4810,7 +4810,7 @@ void A_FreezeDeath(mobj_t * actor)
     else if (actor->flags & MF_COUNTKILL && actor->special)
     {
         // Initiate monster death actions.
-        P_ExecuteLineSpecial(actor->special, actor->args, NULL, 0, actor);
+        P_ExecuteLineSpecial(actor->special, actor->args, nullptr, 0, actor);
     }
 }
 
@@ -4914,7 +4914,7 @@ void A_FreezeDeathChunks(mobj_t * actor)
         mo->flags2 |= MF2_ICEDAMAGE;    // used to force blue palette
         mo->flags2 &= ~MF2_FLOORCLIP;
         mo->player = actor->player;
-        actor->player = NULL;
+        actor->player = nullptr;
         mo->health = actor->health;
         mo->angle = actor->angle;
         mo->player->mo = mo;
@@ -4975,7 +4975,7 @@ void A_KoraxChase(mobj_t * actor)
         }
 
         CheckACSPresent(249);
-        P_StartACS(249, 0, args, actor, NULL, 0);
+        P_StartACS(249, 0, args, actor, nullptr, 0);
         actor->special2.i = 1;    // Don't run again
 
         return;
@@ -4989,7 +4989,7 @@ void A_KoraxChase(mobj_t * actor)
     }
     else if (P_Random() < 30)
     {
-        S_StartSound(NULL, SFX_KORAX_ACTIVE);
+        S_StartSound(nullptr, SFX_KORAX_ACTIVE);
     }
 
     // Teleport away
@@ -5015,7 +5015,7 @@ void A_KoraxStep(mobj_t * actor)
 
 void A_KoraxStep2(mobj_t * actor)
 {
-    S_StartSound(NULL, SFX_KORAX_STEP);
+    S_StartSound(nullptr, SFX_KORAX_STEP);
     A_Chase(actor);
 }
 
@@ -5053,7 +5053,7 @@ void A_KoraxBonePop(mobj_t * actor)
         KSpiritInit(mo, actor);
 
     CheckACSPresent(255);
-    P_StartACS(255, 0, args, actor, NULL, 0);   // Death script
+    P_StartACS(255, 0, args, actor, nullptr, 0);   // Death script
 }
 
 void KSpiritInit(mobj_t * spirit, mobj_t * korax)
@@ -5078,7 +5078,7 @@ void KSpiritInit(mobj_t * spirit, mobj_t * korax)
         tail->special1.m = next;
         tail = next;
     }
-    tail->special1.m = NULL;         // last tail bit
+    tail->special1.m = nullptr;         // last tail bit
 }
 
 void A_KoraxDecide(mobj_t * actor)
@@ -5129,7 +5129,7 @@ void A_KoraxMissile(mobj_t * actor)
     }
 
     // Fire all 6 missiles at once
-    S_StartSound(NULL, sound);
+    S_StartSound(nullptr, sound);
     KoraxFire1(actor, type);
     KoraxFire2(actor, type);
     KoraxFire3(actor, type);
@@ -5171,23 +5171,23 @@ void A_KoraxCommand(mobj_t * actor)
     {
         case 0:
             CheckACSPresent(250);
-            P_StartACS(250, 0, args, actor, NULL, 0);
+            P_StartACS(250, 0, args, actor, nullptr, 0);
             break;
         case 1:
             CheckACSPresent(251);
-            P_StartACS(251, 0, args, actor, NULL, 0);
+            P_StartACS(251, 0, args, actor, nullptr, 0);
             break;
         case 2:
             CheckACSPresent(252);
-            P_StartACS(252, 0, args, actor, NULL, 0);
+            P_StartACS(252, 0, args, actor, nullptr, 0);
             break;
         case 3:
             CheckACSPresent(253);
-            P_StartACS(253, 0, args, actor, NULL, 0);
+            P_StartACS(253, 0, args, actor, nullptr, 0);
             break;
         case 4:
             CheckACSPresent(254);
-            P_StartACS(254, 0, args, actor, NULL, 0);
+            P_StartACS(254, 0, args, actor, nullptr, 0);
             break;
     }
 }
@@ -5329,7 +5329,7 @@ void A_KSpiritSeeker(mobj_t * actor, angle_t thresh, angle_t turnMax)
     fixed_t deltaZ;
 
     target = actor->special1.m;
-    if (target == NULL)
+    if (target == nullptr)
     {
         return;
     }
@@ -5400,7 +5400,7 @@ void A_KSpiritRoam(mobj_t * actor)
         A_KSpiritWeave(actor);
         if (P_Random() < 50)
         {
-            S_StartSound(NULL, SFX_SPIRIT_ACTIVE);
+            S_StartSound(nullptr, SFX_SPIRIT_ACTIVE);
         }
     }
 }

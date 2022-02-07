@@ -29,7 +29,7 @@ typedef enum
     THREAD_STATE_STOPPING,
 } thread_state_t;
 
-static SDL_Thread *timer_thread = NULL;
+static SDL_Thread *timer_thread = nullptr;
 static thread_state_t timer_thread_state;
 static uint64_t current_time;
 
@@ -184,9 +184,9 @@ int OPL_Timer_StartThread()
     opl_timer_paused = 0;
     pause_offset = 0;
 
-    timer_thread = SDL_CreateThread(ThreadFunction, "OPL timer thread", NULL);
+    timer_thread = SDL_CreateThread(ThreadFunction, "OPL timer thread", nullptr);
 
-    if (timer_thread == NULL)
+    if (timer_thread == nullptr)
     {
         timer_thread_state = THREAD_STATE_STOPPED;
         FreeResources();

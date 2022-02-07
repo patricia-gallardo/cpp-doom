@@ -995,7 +995,7 @@
   * The quit screen prompts to quit “to dos” instead of just to quit
     (thanks MikeRS)
   * The “dimensional shambler” quit message was fixed.
-  * Fix crash related to A_BFGSpray with NULL target when using
+  * Fix crash related to A_BFGSpray with nullptr target when using
     dehacked patches - discovered with insaned2.deh (thanks CSonicGo)
   * NUL characters are stripped from dehacked files, to ensure correct
     behavior with some dehacked patches (eg. the one with portal.wad).

@@ -519,7 +519,7 @@ void R_Subsector (int num)
 				  frontsector->lightlevel);
     }
     else
-	floorplane = NULL;
+	floorplane = nullptr;
     
     if (frontsector->ceilingheight > viewz 
 	|| frontsector->ceilingpic == skyflatnum)
@@ -529,7 +529,7 @@ void R_Subsector (int num)
 				    frontsector->lightlevel);
     }
     else
-	ceilingplane = NULL;
+	ceilingplane = nullptr;
 		
     R_AddSprites (frontsector);	
 

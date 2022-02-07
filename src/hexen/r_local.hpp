@@ -86,7 +86,7 @@ typedef struct
     short special, tag;
 
     int soundtraversed;         // 0 = untraversed, 1,2 = sndlines -1
-    mobj_t *soundtarget;        // thing that made a sound (or null)
+    mobj_t *soundtarget;        // thing that made a sound (or nullptr)
     seqtype_t seqType;          // stone, metal, heavy, etc...
 
     int blockbox[4];            // mapblock bounding box for height changes
@@ -160,7 +160,7 @@ typedef struct
     side_t *sidedef;
     line_t *linedef;
     sector_t *frontsector;
-    sector_t *backsector;       // NULL for one sided lines
+    sector_t *backsector;       // nullptr for one sided lines
 } seg_t;
 
 // ===== Polyobj data =====

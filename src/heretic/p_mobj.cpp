@@ -222,13 +222,13 @@ bool P_SeekerMissile(mobj_t * actor, angle_t thresh, angle_t turnMax)
     mobj_t *target;
 
     target = (mobj_t *) actor->special1.m;
-    if (target == NULL)
+    if (target == nullptr)
     {
         return (false);
     }
     if (!(target->flags & MF_SHOOTABLE))
     {                           // Target died
-        actor->special1.m = NULL;
+        actor->special1.m = nullptr;
         return (false);
     }
     dir = P_FaceMobj(actor, target, &delta);
@@ -859,7 +859,7 @@ mobj_t *P_SpawnMobj(fixed_t x, fixed_t y, fixed_t z, mobjtype_t type)
     mobjinfo_t *info;
     fixed_t space;
 
-    mobj = zmalloc<mobj_t *>(sizeof(*mobj), PU_LEVEL, NULL);
+    mobj = zmalloc<mobj_t *>(sizeof(*mobj), PU_LEVEL, nullptr);
     memset(mobj, 0, sizeof(*mobj));
     info = &mobjinfo[type];
     mobj->type = type;
@@ -994,12 +994,12 @@ void P_SpawnPlayer(mapthing_t * mthing)
     p->mo = mobj;
     p->playerstate = PST_LIVE;
     p->refire = 0;
-    p->message = NULL;
+    p->message = nullptr;
     p->damagecount = 0;
     p->bonuscount = 0;
     p->chickenTics = 0;
-    p->rain1 = NULL;
-    p->rain2 = NULL;
+    p->rain1 = nullptr;
+    p->rain2 = nullptr;
     p->extralight = 0;
     p->fixedcolormap = 0;
     p->viewheight = VIEWHEIGHT;
@@ -1373,7 +1373,7 @@ bool P_CheckMissileSpawn(mobj_t * missile)
 //
 // FUNC P_SpawnMissile
 //
-// Returns NULL if the missile exploded immediately, otherwise returns
+// Returns nullptr if the missile exploded immediately, otherwise returns
 // a mobj_t pointer to the missile.
 //
 //---------------------------------------------------------------------------
@@ -1430,14 +1430,14 @@ mobj_t *P_SpawnMissile(mobj_t * source, mobj_t * dest, mobjtype_t type)
         dist = 1;
     }
     th->momz = (dest->z - source->z) / dist;
-    return (P_CheckMissileSpawn(th) ? th : NULL);
+    return (P_CheckMissileSpawn(th) ? th : nullptr);
 }
 
 //---------------------------------------------------------------------------
 //
 // FUNC P_SpawnMissileAngle
 //
-// Returns NULL if the missile exploded immediately, otherwise returns
+// Returns nullptr if the missile exploded immediately, otherwise returns
 // a mobj_t pointer to the missile.
 //
 //---------------------------------------------------------------------------
@@ -1478,7 +1478,7 @@ mobj_t *P_SpawnMissileAngle(mobj_t * source, mobjtype_t type,
     mo->momx = FixedMul(mo->info->speed, finecosine[angle]);
     mo->momy = FixedMul(mo->info->speed, finesine[angle]);
     mo->momz = momz;
-    return (P_CheckMissileSpawn(mo) ? mo : NULL);
+    return (P_CheckMissileSpawn(mo) ? mo : nullptr);
 }
 
 /*
@@ -1548,7 +1548,7 @@ mobj_t *P_SpawnPlayerMissile(mobj_t * source, mobjtype_t type)
     if (!P_TryMove(MissileMobj, MissileMobj->x, MissileMobj->y))
     {                           // Exploded immediately
         P_ExplodeMissile(MissileMobj);
-        return (NULL);
+        return (nullptr);
     }
     return (MissileMobj);
 }
@@ -1603,7 +1603,7 @@ mobj_t *P_SPMAngle(mobj_t * source, mobjtype_t type, angle_t angle)
     th->momx = FixedMul(th->info->speed, finecosine[an >> ANGLETOFINESHIFT]);
     th->momy = FixedMul(th->info->speed, finesine[an >> ANGLETOFINESHIFT]);
     th->momz = FixedMul(th->info->speed, slope);
-    return (P_CheckMissileSpawn(th) ? th : NULL);
+    return (P_CheckMissileSpawn(th) ? th : nullptr);
 }
 
 //---------------------------------------------------------------------------

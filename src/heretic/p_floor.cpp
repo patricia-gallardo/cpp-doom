@@ -194,7 +194,7 @@ void T_MoveFloor(floormove_t * floor)
 
     if (res == pastdest)
     {
-        floor->sector->specialdata = NULL;
+        floor->sector->specialdata = nullptr;
         if (floor->type == raiseBuildStep)
         {
             S_StartSound(&floor->sector->soundorg, sfx_pstop);

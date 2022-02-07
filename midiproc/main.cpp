@@ -47,7 +47,7 @@ static HANDLE    midi_process_out; // Standard Out.
 static int snd_samplerate = 0;
 
 // Currently playing music track.
-static Mix_Music *music  = NULL;
+static Mix_Music *music  = nullptr;
 
 //=============================================================================
 //
@@ -75,15 +75,15 @@ static bool WriteInt16(CHAR *out, size_t osize, unsigned int in)
 //
 static void FreePipes()
 {
-    if (midi_process_in != NULL)
+    if (midi_process_in != nullptr)
     {
         CloseHandle(midi_process_in);
-        midi_process_in = NULL;
+        midi_process_in = nullptr;
     }
-    if (midi_process_out != NULL)
+    if (midi_process_out != nullptr)
     {
         CloseHandle(midi_process_out);
-        midi_process_out = NULL;
+        midi_process_out = nullptr;
     }
 }
 
@@ -93,13 +93,13 @@ static void FreePipes()
 //
 static void UnregisterSong()
 {
-    if (music == NULL)
+    if (music == nullptr)
     {
         return;
     }
 
     Mix_FreeMusic(music);
-    music = NULL;
+    music = nullptr;
 }
 
 //
@@ -124,7 +124,7 @@ static bool RegisterSong(const char *filename)
     // Remove the temporary MIDI file
     remove(filename);
 
-    if (music == NULL)
+    if (music == nullptr)
     {
         return false;
     }
@@ -165,7 +165,7 @@ static void StopSong()
 static bool MidiPipe_RegisterSong(buffer_reader_t *reader)
 {
     char *filename = Reader_ReadString(reader);
-    if (filename == NULL)
+    if (filename == nullptr)
     {
         return false;
     }
@@ -284,7 +284,7 @@ bool ParseMessage(buffer_t *buf)
     }
 
     WriteFile(midi_process_out, buffer, sizeof(buffer),
-              &bytes_written, NULL);
+              &bytes_written, nullptr);
 
     return true;
 
@@ -310,8 +310,8 @@ bool ListenForever()
     for (;;)
     {
         // Wait until we see some data on the pipe.
-        wok = PeekNamedPipe(midi_process_in, NULL, 0, NULL,
-                            &pipe_buffer_read, NULL);
+        wok = PeekNamedPipe(midi_process_in, nullptr, 0, nullptr,
+                            &pipe_buffer_read, nullptr);
         if (!wok)
         {
             break;
@@ -324,7 +324,7 @@ bool ListenForever()
 
         // Read data off the pipe and add it to the buffer.
         wok = ReadFile(midi_process_in, pipe_buffer, sizeof(pipe_buffer),
-                       &pipe_buffer_read, NULL);
+                       &pipe_buffer_read, nullptr);
         if (!wok)
         {
             break;
@@ -398,7 +398,7 @@ int main(int argc, char *argv[])
     // Make sure we're not launching this process by itself.
     if (argc < 5)
     {
-        MessageBox(NULL, TEXT("This program is tasked with playing Native ")
+        MessageBox(nullptr, TEXT("This program is tasked with playing Native ")
                    TEXT("MIDI music, and is intended to be launched by ")
                    TEXT(PACKAGE_NAME) TEXT("."),
                    TEXT(PACKAGE_STRING), MB_OK | MB_ICONASTERISK);
@@ -418,14 +418,14 @@ int main(int argc, char *argv[])
                   PACKAGE_STRING, argv[1]);
         message[sizeof(message) - 1] = '\0';
 
-        MessageBox(NULL, TEXT(message),
+        MessageBox(nullptr, TEXT(message),
                    TEXT(PACKAGE_STRING), MB_OK | MB_ICONASTERISK);
 
         return EXIT_FAILURE;
     }
 
     // Parse out the sample rate - if we can't, default to 44100.
-    snd_samplerate = strtol(argv[2], NULL, 10);
+    snd_samplerate = strtol(argv[2], nullptr, 10);
     if (snd_samplerate == LONG_MAX || snd_samplerate == LONG_MIN ||
         snd_samplerate == 0)
     {
@@ -433,13 +433,13 @@ int main(int argc, char *argv[])
     }
 
     // Parse out our handle ids.
-    in = (HANDLE) strtol(argv[3], NULL, 10);
+    in = (HANDLE) strtol(argv[3], nullptr, 10);
     if (in == 0)
     {
         return EXIT_FAILURE;
     }
 
-    out = (HANDLE) strtol(argv[4], NULL, 10);
+    out = (HANDLE) strtol(argv[4], nullptr, 10);
     if (out == 0)
     {
         return EXIT_FAILURE;

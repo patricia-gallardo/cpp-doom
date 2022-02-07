@@ -59,9 +59,9 @@ void DEH_Checksum(sha1_digest_t digest)
 
     SHA1_Init(&sha1_context);
 
-    for (i = 0; deh_section_types[i] != NULL; ++i)
+    for (i = 0; deh_section_types[i] != nullptr; ++i)
     {
-        if (deh_section_types[i]->sha1_hash != NULL)
+        if (deh_section_types[i]->sha1_hash != nullptr)
         {
             deh_section_types[i]->sha1_hash(&sha1_context);
         }
@@ -76,9 +76,9 @@ static void InitializeSections()
 {
     unsigned int i;
 
-    for (i = 0; deh_section_types[i] != NULL; ++i)
+    for (i = 0; deh_section_types[i] != nullptr; ++i)
     {
-        if (deh_section_types[i]->init != NULL)
+        if (deh_section_types[i]->init != nullptr)
         {
             deh_section_types[i]->init();
         }
@@ -115,10 +115,10 @@ static deh_section_t *GetSectionByName(char *name)
 
     if (!deh_allow_extended_strings && !strncasecmp("[STRINGS]", name, 9))
     {
-        return NULL;
+        return nullptr;
     }
 
-    for (i = 0; deh_section_types[i] != NULL; ++i)
+    for (i = 0; deh_section_types[i] != nullptr; ++i)
     {
         if (!strcasecmp(deh_section_types[i]->name, name))
         {
@@ -126,7 +126,7 @@ static deh_section_t *GetSectionByName(char *name)
         }
     }
 
-    return NULL;
+    return nullptr;
 }
 
 // Is the string passed just whitespace?
@@ -184,7 +184,7 @@ bool DEH_ParseAssignment(char *line, char **variable_name, char **value)
 
     p = strchr(line, '=');
 
-    if (p == NULL)
+    if (p == nullptr)
     {
         return false;
     }
@@ -217,14 +217,14 @@ static bool CheckSignatures(deh_context_t *context)
 
     line = DEH_ReadLine(context, false);
 
-    if (line == NULL)
+    if (line == nullptr)
     {
         return false;
     }
 
     // Check all signatures to see if one matches
 
-    for (i = 0; deh_signatures[i] != NULL; ++i)
+    for (i = 0; deh_signatures[i] != nullptr; ++i)
     {
         if (!strcmp(deh_signatures[i], line))
         {
@@ -263,7 +263,7 @@ static void DEH_ParseComment(char *comment)
     // If you use this, your dehacked patch may not work in Vanilla
     // Doom.
 
-    if (strstr(comment, "*allow-long-strings*") != NULL)
+    if (strstr(comment, "*allow-long-strings*") != nullptr)
     {
         deh_allow_long_strings = true;
     }
@@ -272,7 +272,7 @@ static void DEH_ParseComment(char *comment)
     // those permitted by DOS dehacked.  This is also for Chex
     // Quest.
 
-    if (strstr(comment, "*allow-long-cheats*") != NULL)
+    if (strstr(comment, "*allow-long-cheats*") != nullptr)
     {
         deh_allow_long_cheats = true;
     }
@@ -282,7 +282,7 @@ static void DEH_ParseComment(char *comment)
     // for substitution of map and episode names when loading
     // Freedoom/FreeDM IWADs.
 
-    if (strstr(comment, "*allow-extended-strings*") != NULL)
+    if (strstr(comment, "*allow-extended-strings*") != nullptr)
     {
         deh_allow_extended_strings = true;
     }
@@ -292,10 +292,10 @@ static void DEH_ParseComment(char *comment)
 
 static void DEH_ParseContext(deh_context_t *context)
 {
-    deh_section_t *current_section = NULL;
-    deh_section_t *prev_section    = NULL; // [crispy] remember previous line parser
+    deh_section_t *current_section = nullptr;
+    deh_section_t *prev_section    = nullptr; // [crispy] remember previous line parser
     char           section_name[20];
-    void *         tag = NULL;
+    void *         tag = nullptr;
     bool        extended;
     char *         line;
 
@@ -313,7 +313,7 @@ static void DEH_ParseContext(deh_context_t *context)
     {
         // Read the next line. We only allow the special extended parsing
         // for the BEX [STRINGS] section.
-        extended = current_section != NULL
+        extended = current_section != nullptr
                    && !strcasecmp(current_section->name, "[STRINGS]");
         // [crispy] save pointer to start of line, just in case
         DEH_SaveLineStart(context);
@@ -321,7 +321,7 @@ static void DEH_ParseContext(deh_context_t *context)
 
         // end of file?
 
-        if (line == NULL)
+        if (line == nullptr)
         {
             return;
         }
@@ -339,11 +339,11 @@ static void DEH_ParseContext(deh_context_t *context)
 
         if (IsWhitespace(line))
         {
-            if (current_section != NULL)
+            if (current_section != nullptr)
             {
                 // end of section
 
-                if (current_section->end != NULL)
+                if (current_section->end != nullptr)
                 {
                     current_section->end(context, tag);
                 }
@@ -356,16 +356,16 @@ static void DEH_ParseContext(deh_context_t *context)
                 }
                 else
                 {
-                    prev_section = NULL;
+                    prev_section = nullptr;
                 }
 
                 //printf("end %s tag\n", current_section->name);
-                current_section = NULL;
+                current_section = nullptr;
             }
         }
         else
         {
-            if (current_section != NULL)
+            if (current_section != nullptr)
             {
                 // parse this line
 
@@ -379,17 +379,17 @@ static void DEH_ParseContext(deh_context_t *context)
 
                 current_section = GetSectionByName(section_name);
 
-                if (current_section != NULL)
+                if (current_section != nullptr)
                 {
                     tag = current_section->start(context, line);
                     //printf("started %s tag\n", section_name);
                 }
-                else if (prev_section != NULL)
+                else if (prev_section != nullptr)
                 {
                     // [crispy] try this line again with the previous line parser
                     DEH_RestoreLineStart(context);
                     current_section = prev_section;
-                    prev_section    = NULL;
+                    prev_section    = nullptr;
                 }
                 else
                 {
@@ -425,7 +425,7 @@ int DEH_LoadFile(const char *filename)
 
     context = DEH_OpenFile(filename);
 
-    if (context == NULL)
+    if (context == nullptr)
     {
         fprintf(stderr, "DEH_LoadFile: Unable to open %s\n", filename);
         return 0;
@@ -450,11 +450,11 @@ void DEH_AutoLoadPatches(const char *path)
     glob_t *    glob;
 
     glob = I_StartMultiGlob(path, GLOB_FLAG_NOCASE | GLOB_FLAG_SORTED,
-        "*.deh", "*.bex", "*.hhe", "*.seh", NULL); // [crispy] *.bex
+        "*.deh", "*.bex", "*.hhe", "*.seh", nullptr); // [crispy] *.bex
     for (;;)
     {
         filename = I_NextGlob(glob);
-        if (filename == NULL)
+        if (filename == nullptr)
         {
             break;
         }
@@ -487,7 +487,7 @@ int DEH_LoadLump(int lumpnum, bool allow_long, bool allow_error)
 
     context = DEH_OpenLump(lumpnum);
 
-    if (context == NULL)
+    if (context == nullptr)
     {
         fprintf(stderr, "DEH_LoadFile: Unable to open lump %i\n", lumpnum);
         return 0;

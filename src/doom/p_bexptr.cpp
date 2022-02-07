@@ -31,7 +31,7 @@ extern void    P_Thrust(player_t *player, angle_t angle, fixed_t move);
 // killough 11/98: kill an object
 void A_Die(mobj_t *actor)
 {
-    P_DamageMobj(actor, NULL, NULL, actor->health);
+    P_DamageMobj(actor, nullptr, nullptr, actor->health);
 }
 
 //
@@ -133,7 +133,7 @@ void A_Scratch(mobj_t *mo)
 
 void A_PlaySound(mobj_t *mo)
 {
-    S_StartSound(mo->state->misc2 ? NULL : mo, mo->state->misc1);
+    S_StartSound(mo->state->misc2 ? nullptr : mo, mo->state->misc1);
 }
 
 // [crispy] this is pretty much the only action pointer that makes sense for both mobj and pspr states

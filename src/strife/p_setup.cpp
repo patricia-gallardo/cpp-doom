@@ -270,7 +270,7 @@ void P_LoadSectors (int lump)
 	ss->lightlevel = SHORT(ms->lightlevel);
 	ss->special = SHORT(ms->special);
 	ss->tag = SHORT(ms->tag);
-	ss->thinglist = NULL;
+	ss->thinglist = nullptr;
     }
 	
     W_ReleaseLumpNum(lump);
@@ -513,7 +513,7 @@ void P_LoadBlockMap (int lump)
     lumplen = W_LumpLength(lump);
     count = lumplen / 2;
 	
-    blockmaplump = zmalloc<short *>(lumplen, PU_LEVEL, NULL);
+    blockmaplump = zmalloc<short *>(lumplen, PU_LEVEL, nullptr);
     W_ReadLump(lump, blockmaplump);
     blockmap = blockmaplump + 4;
 
@@ -602,7 +602,7 @@ void P_GroupLines ()
     { 
         li = &lines[i];
 
-        if (li->frontsector != NULL)
+        if (li->frontsector != nullptr)
         {
             sector = li->frontsector;
 
@@ -610,7 +610,7 @@ void P_GroupLines ()
             ++sector->linecount;
         }
 
-        if (li->backsector != NULL && li->frontsector != li->backsector)
+        if (li->backsector != nullptr && li->frontsector != li->backsector)
         {
             sector = li->backsector;
 
@@ -826,7 +826,7 @@ P_SetupLevel
         for (i=0 ; i<MAXPLAYERS ; i++)
             if (playeringame[i])
             {
-                players[i].mo = NULL;
+                players[i].mo = nullptr;
                 G_DeathMatchSpawnPlayer (i);
             }
 

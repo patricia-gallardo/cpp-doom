@@ -1007,7 +1007,7 @@ void ST_doRefresh()
         V_DrawPatch(ST_X, ST_Y, invback);
 
         // draw multiplayer armor backdrop if netgame
-        // haleyjd 20131031: BUG - vanilla is accessing a NULL pointer here when
+        // haleyjd 20131031: BUG - vanilla is accessing a nullptr pointer here when
         // playing back netdemos! It doesn't appear to draw anything, and there 
         // is no apparent ill effect on gameplay, so the best we can do is check.
         if(netgame && stback)
@@ -1508,7 +1508,7 @@ void ST_loadData()
 static void ST_unloadCallback(const char *lumpname, patch_t **variable)
 {
     W_ReleaseLumpName(lumpname);
-    *variable = NULL;
+    *variable = nullptr;
 }
 
 void ST_unloadGraphics()

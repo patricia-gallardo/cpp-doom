@@ -128,7 +128,7 @@ char mapdir[1024];  // directory of development maps
 int show_endoom   = 0; // [crispy] disable
 int show_diskicon = 1;
 
-char *nervewadfile = NULL;
+char *nervewadfile = nullptr;
 
 void D_ConnectNetGame();
 void D_CheckNetGame();
@@ -146,7 +146,7 @@ void D_ProcessEvents()
     if (storedemo)
         return;
 
-    while ((ev = D_PopEvent()) != NULL)
+    while ((ev = D_PopEvent()) != nullptr)
     {
         if (M_Responder(ev))
             continue; // menu ate the event
@@ -531,7 +531,7 @@ void D_RunFrame()
     if (crispy->post_rendering_hook && !wipe)
     {
         crispy->post_rendering_hook();
-        crispy->post_rendering_hook = NULL;
+        crispy->post_rendering_hook = nullptr;
     }
 }
 
@@ -1011,7 +1011,7 @@ static bool D_AddFile(char *filename)
     printf(" adding %s\n", filename);
     handle = W_AddFile(filename);
 
-    return handle != NULL;
+    return handle != nullptr;
 }
 
 // Copyright message banners
@@ -1079,7 +1079,7 @@ static constexpr struct
     { "Final Doom", "final", exe_final },
     { "Final Doom (alt)", "final2", exe_final2 },
     { "Chex Quest", "chex", exe_chex },
-    { NULL, NULL, exe_doom_1_2 },
+    { nullptr, nullptr, exe_doom_1_2 },
 };
 
 // Initialize the game version
@@ -1106,7 +1106,7 @@ static void InitGameVersion()
 
     if (p)
     {
-        for (i = 0; gameversions[i].description != NULL; ++i)
+        for (i = 0; gameversions[i].description != nullptr; ++i)
         {
             if (!strcmp(myargv[p + 1], gameversions[i].cmdline))
             {
@@ -1115,11 +1115,11 @@ static void InitGameVersion()
             }
         }
 
-        if (gameversions[i].description == NULL)
+        if (gameversions[i].description == nullptr)
         {
             printf("Supported game versions:\n");
 
-            for (i = 0; gameversions[i].description != NULL; ++i)
+            for (i = 0; gameversions[i].description != nullptr; ++i)
             {
                 printf("\t%s (%s)\n", gameversions[i].cmdline,
                     gameversions[i].description);
@@ -1234,7 +1234,7 @@ void PrintGameVersion()
 {
     int i;
 
-    for (i = 0; gameversions[i].description != NULL; ++i)
+    for (i = 0; gameversions[i].description != nullptr; ++i)
     {
         if (gameversions[i].version == gameversion)
         {
@@ -1293,12 +1293,12 @@ static void LoadIwadDeh()
     // and installed next to the IWAD.
     if (gameversion == exe_chex)
     {
-        char *chex_deh = NULL;
+        char *chex_deh = nullptr;
         char *dirname;
 
         // Look for chex.deh in the same directory as the IWAD file.
         dirname  = M_DirName(iwadfile);
-        chex_deh = M_StringJoin(dirname, DIR_SEPARATOR_S, "chex.deh", NULL);
+        chex_deh = M_StringJoin(dirname, DIR_SEPARATOR_S, "chex.deh", nullptr);
         free(dirname);
 
         // If the dehacked patch isn't found, try searching the WAD
@@ -1310,7 +1310,7 @@ static void LoadIwadDeh()
         }
 
         // Still not found?
-        if (chex_deh == NULL)
+        if (chex_deh == nullptr)
         {
             I_Error("Unable to find Chex Quest dehacked file (chex.deh).\n"
                     "The dehacked file is required in order to emulate\n"
@@ -1387,16 +1387,16 @@ static void LoadSigilWad()
             "SIGIL_v1_2.wad",
             "SIGIL.wad"
         };
-        char *sigil_wad = NULL, *sigil_shreds = NULL;
+        char *sigil_wad = nullptr, *sigil_shreds = nullptr;
         char *dirname;
 
         dirname      = M_DirName(iwadfile);
-        sigil_shreds = M_StringJoin(dirname, DIR_SEPARATOR_S, "SIGIL_SHREDS.wad", NULL);
+        sigil_shreds = M_StringJoin(dirname, DIR_SEPARATOR_S, "SIGIL_SHREDS.wad", nullptr);
 
         // [crispy] load SIGIL.WAD
         for (i = 0; i < arrlen(sigil_wads); i++)
         {
-            sigil_wad = M_StringJoin(dirname, DIR_SEPARATOR_S, sigil_wads[i], NULL);
+            sigil_wad = M_StringJoin(dirname, DIR_SEPARATOR_S, sigil_wads[i], nullptr);
 
             if (M_FileExists(sigil_wad))
             {
@@ -1413,7 +1413,7 @@ static void LoadSigilWad()
         }
         free(dirname);
 
-        if (sigil_wad == NULL)
+        if (sigil_wad == nullptr)
         {
             free(sigil_shreds);
             return;
@@ -1430,7 +1430,7 @@ static void LoadSigilWad()
             sigil_shreds = D_FindWADByName("SIGIL_SHREDS.wad");
         }
 
-        if (sigil_shreds != NULL)
+        if (sigil_shreds != nullptr)
         {
             printf(" [expansion]");
             D_AddFile(sigil_shreds);
@@ -1493,11 +1493,11 @@ static void LoadNerveWad()
         // and that is the BFG Edition DOOM2.WAD or (b) if they are from a PWAD.
         if ((i = W_CheckNumForName("M_EPI1")) != -1 && (j = W_CheckNumForName("M_EPI2")) != -1 && (k = W_CheckNumForName("M_EPISOD")) != -1 && (gamevariant == bfgedition || (!W_IsIWADLump(lumpinfo[i]) && !W_IsIWADLump(lumpinfo[j]) && !W_IsIWADLump(lumpinfo[k]))))
     {
-        if (strrchr(iwadfile, DIR_SEPARATOR) != NULL)
+        if (strrchr(iwadfile, DIR_SEPARATOR) != nullptr)
         {
             char *dir;
             dir          = M_DirName(iwadfile);
-            nervewadfile = M_StringJoin(dir, DIR_SEPARATOR_S, "nerve.wad", NULL);
+            nervewadfile = M_StringJoin(dir, DIR_SEPARATOR_S, "nerve.wad", nullptr);
             free(dir);
         }
         else
@@ -1511,7 +1511,7 @@ static void LoadNerveWad()
             nervewadfile = D_FindWADByName("nerve.wad");
         }
 
-        if (nervewadfile == NULL)
+        if (nervewadfile == nullptr)
         {
             return;
         }
@@ -1724,7 +1724,7 @@ void D_DoomMain()
     {
         // Auto-detect the configuration dir.
 
-        M_SetConfigDir(NULL);
+        M_SetConfigDir(nullptr);
     }
 
     //!
@@ -1773,7 +1773,7 @@ void D_DoomMain()
 
     // None found?
 
-    if (iwadfile == NULL)
+    if (iwadfile == nullptr)
     {
         I_Error("Game mode indeterminate.  No IWAD file was found.  Try\n"
                 "specifying one with the '-iwad' command line parameter.\n");
@@ -2278,7 +2278,7 @@ void D_DoomMain()
     // [crispy] port level flipping feature over from Strawberry Doom
 #ifdef ENABLE_APRIL_1ST_JOKE
     {
-        time_t     curtime = time(NULL);
+        time_t     curtime = time(nullptr);
         struct tm *curtm   = localtime(&curtime);
 
         if (curtm && curtm->tm_mon == 3 && curtm->tm_mday == 1)

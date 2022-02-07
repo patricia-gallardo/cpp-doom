@@ -339,7 +339,7 @@ void CT_Ticker()
                 {
                     P_SetMessage(&players[consoleplayer], plr_lastmsg[i],
                                  true);
-                    S_StartSound(NULL, SFX_CHAT);
+                    S_StartSound(nullptr, SFX_CHAT);
                 }
                 else if (i == consoleplayer && (*chat_msg[i]))
                 {
@@ -348,7 +348,7 @@ void CT_Ticker()
                         P_SetMessage(&players[consoleplayer],
                                      "THERE ARE NO OTHER PLAYERS IN THE GAME!",
                                      true);
-                        S_StartSound(NULL, SFX_CHAT);
+                        S_StartSound(nullptr, SFX_CHAT);
                     }
                 }
                 CT_ClearChatMessage(i);

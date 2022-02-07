@@ -226,7 +226,7 @@ void EV_StopPlat(line_t * line, byte * args)
             activeplats[i]->sector->specialdata = null_hook();
             P_TagFinished(activeplats[i]->sector->tag);
             P_RemoveThinker(&activeplats[i]->thinker);
-            activeplats[i] = NULL;
+            activeplats[i] = nullptr;
 
             return;
         }
@@ -242,7 +242,7 @@ void EV_StopPlat(line_t * line, byte * args)
 		{
 			(activeplats[j])->oldstatus = (activeplats[j])->status;
 			(activeplats[j])->status = PLAT_IN_STASIS;
-			(activeplats[j])->thinker.function = NULL;
+			(activeplats[j])->thinker.function = nullptr;
 			SN_StopSequence((mobj_t *)&(activeplats[j])->sector->soundorg);
 		}
 	}
@@ -253,7 +253,7 @@ void P_AddActivePlat(plat_t * plat)
 {
     int i;
     for (i = 0; i < MAXPLATS; i++)
-        if (activeplats[i] == NULL)
+        if (activeplats[i] == nullptr)
         {
             activeplats[i] = plat;
             return;
@@ -270,7 +270,7 @@ void P_RemoveActivePlat(plat_t * plat)
             (activeplats[i])->sector->specialdata = null_hook();
             P_TagFinished(plat->sector->tag);
             P_RemoveThinker(&(activeplats[i])->thinker);
-            activeplats[i] = NULL;
+            activeplats[i] = nullptr;
             return;
         }
     I_Error("P_RemoveActivePlat: can't find plat!");

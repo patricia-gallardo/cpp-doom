@@ -32,13 +32,13 @@ enum
 
 // also put some crazy extensions to test the escape function. a"b"c"""dd
 const char *extensions[] = { "wad", "lmp", "txt", "a\"b\"c\"\"\"dd", "",
-     "\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"", NULL };
+     "\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"", nullptr };
 const char *radio_values[] = { "Badger", "Mushroom", "Snake" };
-char *textbox_value = NULL;
+char *textbox_value = nullptr;
 int numbox_value = 0;
 int radiobutton_value;
-char *file_path = NULL;
-char *dir_path = NULL;
+char *file_path = nullptr;
+char *dir_path = nullptr;
 txt_label_t *value_label;
 txt_window_t *firstwin;
 int cheesy;
@@ -61,7 +61,7 @@ void PwnBox(TXT_UNCAST_ARG(widget), void *user_data)
     close_button = TXT_NewWindowAction(KEY_ENTER, "Close");
     TXT_SignalConnect(close_button, "pressed", ClosePwnBox, window);
 
-    TXT_SetWindowAction(window, TXT_HORIZ_LEFT, NULL);
+    TXT_SetWindowAction(window, TXT_HORIZ_LEFT, nullptr);
     TXT_SetWindowAction(window, TXT_HORIZ_RIGHT, close_button);
 }
 
@@ -105,7 +105,7 @@ void UnicodeWindow(TXT_UNCAST_ARG(widget), void *user_data)
                                 "informazioni interessanti"),
                    TXT_NewRadioButton("Ma questo non è un radio??",
                                       &var1, 0),
-                   NULL);
+                   nullptr);
     TXT_SetWindowAction(window, TXT_HORIZ_RIGHT,
                         TXT_NewWindowAction(KEY_ENTER, "Nullità"));
 
@@ -156,8 +156,8 @@ void SetupWindow()
                    TXT_NewButton("Do nothing"),
                    TXT_TABLE_OVERFLOW_DOWN,
                    TXT_TABLE_OVERFLOW_DOWN,
-                   TXT_NewButton2("Qualcosa?", UnicodeWindow, NULL),
-                   NULL);
+                   TXT_NewButton2("Qualcosa?", UnicodeWindow, nullptr),
+                   nullptr);
 
     TXT_AddWidget(window, TXT_NewStrut(0, 1));
     value_label = TXT_NewLabel("");
@@ -169,7 +169,7 @@ void SetupWindow()
 
     cheesy_checkbox = TXT_NewCheckBox("Cheesy", &cheesy);
     TXT_AddWidget(table, cheesy_checkbox);
-    TXT_SignalConnect(cheesy_checkbox, "changed", UpdateLabel, NULL);
+    TXT_SignalConnect(cheesy_checkbox, "changed", UpdateLabel, nullptr);
 
     rightpane = TXT_NewTable(1);
     TXT_AddWidget(table, rightpane);
@@ -180,16 +180,16 @@ void SetupWindow()
 
         rbut = TXT_NewRadioButton(radio_values[i], &radiobutton_value, i);
         TXT_AddWidget(rightpane, rbut);
-        TXT_SignalConnect(rbut, "selected", UpdateLabel, NULL);
+        TXT_SignalConnect(rbut, "selected", UpdateLabel, nullptr);
     }
 
-    UpdateLabel(NULL, NULL);
+    UpdateLabel(nullptr, nullptr);
 
-    TXT_AddWidget(window, TXT_NewButton2("Close Window", CloseWindow, NULL));
+    TXT_AddWidget(window, TXT_NewButton2("Close Window", CloseWindow, nullptr));
 
     pwn = TXT_NewWindowAction(KEY_F1, "PWN!");
     TXT_SetWindowAction(window, TXT_HORIZ_CENTER, pwn);
-    TXT_SignalConnect(pwn, "pressed", PwnBox, NULL);
+    TXT_SignalConnect(pwn, "pressed", PwnBox, nullptr);
 
     firstwin = window;
 }
@@ -211,7 +211,7 @@ void Window2()
                    TXT_NewScrollPane(40, 1,
                         TXT_NewLabel("* Unselectable scroll pane *")),
                    unselectable_table = TXT_NewTable(1),
-                   NULL);
+                   nullptr);
 
     TXT_AddWidget(unselectable_table, TXT_NewLabel("* Unselectable table *"));
     TXT_AddWidget(unselectable_table, TXT_NewLabel(
@@ -235,7 +235,7 @@ void Window2()
                    TXT_NewLabel("Directory:"),
                    TXT_NewFileSelector(&dir_path, 28, "Select directory:",
                                        TXT_DIRECTORY),
-                   NULL);
+                   nullptr);
 
     TXT_AddWidget(window, TXT_NewSeparator("Scroll pane test"));
     scrollpane = TXT_NewScrollPane(40, 5, TXT_NewLabel(
@@ -276,9 +276,9 @@ void ScrollingMenu()
                    TXT_NewButton("Start a network game"),
                    TXT_NewButton("Join a network game"),
                    TXT_NewButton("Multiplayer configuration"),
-                   NULL);
+                   nullptr);
 
-    TXT_SignalConnect(button, "pressed", PwnBox, NULL);
+    TXT_SignalConnect(button, "pressed", PwnBox, nullptr);
 
     TXT_AddWidget(window, TXT_NewScrollPane(0, 6, table));
 }

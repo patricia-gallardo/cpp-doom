@@ -256,7 +256,7 @@ void D_CheckNetGame()
     D_RegisterLoopCallbacks(&doom_loop_interface);
 
     SaveGameSettings(&settings);
-    D_StartNetGame(&settings, NULL);
+    D_StartNetGame(&settings, nullptr);
     LoadGameSettings(&settings);
 
     DEH_printf("startskill %i  deathmatch: %i  startmap: %i  startepisode: %i\n",

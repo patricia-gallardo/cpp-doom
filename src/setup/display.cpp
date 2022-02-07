@@ -96,7 +96,7 @@ void SetDisplayDriver()
 
     if (first_time)
     {
-        system_video_env_set = getenv("SDL_VIDEODRIVER") != NULL;
+        system_video_env_set = getenv("SDL_VIDEODRIVER") != nullptr;
 
         first_time = 0;
     }
@@ -114,7 +114,7 @@ void SetDisplayDriver()
     {
         char *env_string;
 
-        env_string = M_StringJoin("SDL_VIDEODRIVER=", video_driver, NULL);
+        env_string = M_StringJoin("SDL_VIDEODRIVER=", video_driver, nullptr);
         putenv(env_string);
         free(env_string);
     }
@@ -212,7 +212,7 @@ static void AdvancedDisplayConfig(TXT_UNCAST_ARG(widget),
         TXT_NewCheckBox("Save screenshots in PNG format",
                         &png_screenshots),
 #endif
-        NULL);
+        nullptr);
 
     TXT_SignalConnect(ar_checkbox, "changed", GenerateSizesTable, sizes_table);
 }
@@ -232,7 +232,7 @@ void ConfigDisplay(TXT_UNCAST_ARG(widget), void *user_data)
         TXT_NewCheckBox("Full screen", &fullscreen),
         TXT_NewConditional(&fullscreen, 0,
             sizes_table = TXT_NewTable(3)),
-        NULL);
+        nullptr);
 
     TXT_SetColumnWidths(window, 42);
 
@@ -243,7 +243,7 @@ void ConfigDisplay(TXT_UNCAST_ARG(widget), void *user_data)
     TXT_SetWindowPosition(window, TXT_HORIZ_CENTER, TXT_VERT_TOP,
                                   TXT_SCREEN_W / 2, 6);
 
-    GenerateSizesTable(NULL, sizes_table);
+    GenerateSizesTable(nullptr, sizes_table);
 
     // Button to open "advanced" window.
     // Need to pass a pointer to the window sizes table, as some of the options

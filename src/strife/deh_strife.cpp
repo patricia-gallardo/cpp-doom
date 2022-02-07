@@ -23,7 +23,7 @@ const char *deh_signatures[] =
 {
     "Patch File for SeHackEd v0.4",
     "Patch File for SeHackEd v0.3",
-    NULL
+    nullptr
 };
 
 // deh_ammo.c:
@@ -60,6 +60,6 @@ deh_section_t *deh_section_types[] =
     &deh_section_text,
     &deh_section_thing,
     &deh_section_weapon,
-    NULL
+    nullptr
 };
 

@@ -36,7 +36,7 @@ static void *DEH_BEXInclStart(deh_context_t *context, char *line)
     if (!DEH_FileName(context))
     {
         DEH_Warning(context, "DEHACKED lumps may not include files");
-        return NULL;
+        return nullptr;
     }
 
     deh_file = DEH_FileName(context);
@@ -44,7 +44,7 @@ static void *DEH_BEXInclStart(deh_context_t *context, char *line)
     if (bex_nested)
     {
         DEH_Warning(context, "Included files may not include other files");
-        return NULL;
+        return nullptr;
     }
 
     std::string inc_file(strlen(line) + 1, '\0');
@@ -60,7 +60,7 @@ static void *DEH_BEXInclStart(deh_context_t *context, char *line)
     else
     {
         DEH_Warning(context, "Parse error on section start");
-        return NULL;
+        return nullptr;
     }
 
     // first, try loading the file right away
@@ -85,7 +85,7 @@ static void *DEH_BEXInclStart(deh_context_t *context, char *line)
     bex_nested = false;
     bex_notext = false;
 
-    return NULL;
+    return nullptr;
 }
 
 static void DEH_BEXInclParseLine(deh_context_t *context, char *line, void *tag)
@@ -95,9 +95,9 @@ static void DEH_BEXInclParseLine(deh_context_t *context, char *line, void *tag)
 
 deh_section_t deh_section_bexincl = {
     "INCLUDE",
-    NULL,
+    nullptr,
     DEH_BEXInclStart,
     DEH_BEXInclParseLine,
-    NULL,
-    NULL,
+    nullptr,
+    nullptr,
 };

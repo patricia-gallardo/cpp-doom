@@ -312,7 +312,7 @@ static NSString *AppendQuotedFilename(NSString *str, NSString *fileName)
     game_name = [self->iwadController getGameName];
     asprintf(&arg, "-game %s", game_name);
 
-    ExecuteProgram(PROGRAM_PREFIX "setup", NULL, arg);
+    ExecuteProgram(PROGRAM_PREFIX "setup", nullptr, arg);
 
     free(arg);
 }

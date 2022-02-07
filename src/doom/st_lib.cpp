@@ -53,7 +53,7 @@ void STlib_init()
     if (W_CheckNumForName(DEH_String("STTMINUS")) >= 0)
         sttminus = cache_lump_name<patch_t *>(DEH_String("STTMINUS"), PU_STATIC);
     else
-        sttminus = NULL;
+        sttminus = nullptr;
 }
 
 
@@ -168,7 +168,7 @@ void STlib_initPercent(st_percent_t *p,
     p->p = percent;
 
     // [crispy] remember previous colorization
-    p->oldtranslation = NULL;
+    p->oldtranslation = nullptr;
 }
 
 
@@ -190,7 +190,7 @@ void STlib_updatePercent(st_percent_t *per,
     if (refresh && *per->n.on)
         V_DrawPatch(per->n.x, per->n.y, per->p);
 
-    dp_translation = NULL;
+    dp_translation = nullptr;
 }
 
 

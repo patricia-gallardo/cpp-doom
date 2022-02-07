@@ -428,14 +428,14 @@ static void GenerateTextureHashTable()
 
         rover = &textures_hashtable[key];
 
-        while (*rover != NULL)
+        while (*rover != nullptr)
         {
             rover = &(*rover)->next;
         }
 
         // Hook into hash table
 
-        textures[i]->next = NULL;
+        textures[i]->next = nullptr;
         *rover = textures[i];
     }
 }
@@ -485,7 +485,7 @@ void R_InitTextures ()
     names = cache_lump_name<char *> (DEH_String("PNAMES"), PU_STATIC);
     nummappatches = LONG ( *((int *)names) );
     name_p = names+4;
-    patchlookup = zmalloc<int *>(nummappatches * sizeof(*patchlookup), PU_STATIC, NULL);
+    patchlookup = zmalloc<int *>(nummappatches * sizeof(*patchlookup), PU_STATIC, nullptr);
 
     for (i = 0; i < nummappatches; i++)
     {
@@ -510,7 +510,7 @@ void R_InitTextures ()
     }
     else
     {
-        maptex2 = NULL;
+        maptex2 = nullptr;
         numtextures2 = 0;
         maxoff2 = 0;
     }
@@ -780,7 +780,7 @@ int	R_CheckTextureNumForName(const char *name)
 
     texture=textures_hashtable[key]; 
     
-    while (texture != NULL)
+    while (texture != nullptr)
     {
 	if (!strncasecmp (texture->name, name, 8) )
 	    return texture->index;
@@ -924,7 +924,7 @@ void R_PrecacheLevel ()
 	return;
     
     // Precache flats.
-    flatpresent = zmalloc<char *>(numflats, PU_STATIC, NULL);
+    flatpresent = zmalloc<char *>(numflats, PU_STATIC, nullptr);
     memset (flatpresent,0,numflats);	
 
     for (i=0 ; i<numsectors ; i++)
@@ -948,7 +948,7 @@ void R_PrecacheLevel ()
     Z_Free(flatpresent);
     
     // Precache textures.
-    texturepresent = zmalloc<char *>(numtextures, PU_STATIC, NULL);
+    texturepresent = zmalloc<char *>(numtextures, PU_STATIC, nullptr);
     memset (texturepresent,0, numtextures);
 	
     for (i=0 ; i<numsides ; i++)
@@ -985,7 +985,7 @@ void R_PrecacheLevel ()
     Z_Free(texturepresent);
     
     // Precache sprites.
-    spritepresent = zmalloc<char *>(numsprites, PU_STATIC, NULL);
+    spritepresent = zmalloc<char *>(numsprites, PU_STATIC, nullptr);
     memset (spritepresent,0, numsprites);
 	
     for (th = thinkercap.next ; th != &thinkercap ; th=th->next)

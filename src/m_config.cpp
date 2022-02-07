@@ -101,7 +101,7 @@ typedef struct
 
 #define CONFIG_VARIABLE_GENERIC(name, type) \
     {                                       \
-#name, { NULL }, type, 0, 0, false  \
+#name, { nullptr }, type, 0, 0, false  \
     }
 
 #define CONFIG_VARIABLE_KEY(name) \
@@ -735,7 +735,7 @@ static default_t doom_defaults_list[] = {
 static default_collection_t doom_defaults = {
     doom_defaults_list,
     arrlen(doom_defaults_list),
-    NULL,
+    nullptr,
 };
 
 //! @begin_config_file extended
@@ -2196,7 +2196,7 @@ static default_t extra_defaults_list[] = {
 static default_collection_t extra_defaults = {
     extra_defaults_list,
     arrlen(extra_defaults_list),
-    NULL,
+    nullptr,
 };
 
 // Search a collection for a variable
@@ -2213,7 +2213,7 @@ static default_t *SearchCollection(default_collection_t *collection, const char 
         }
     }
 
-    return NULL;
+    return nullptr;
 }
 
 // Mapping from DOS keyboard scan code to internal key code (as defined
@@ -2416,7 +2416,7 @@ static void LoadDefaultCollection(default_collection_t *collection)
     // read the file in, overriding any set defaults
     f = fopen(collection->filename, "r");
 
-    if (f == NULL)
+    if (f == nullptr)
     {
         // File not opened, but don't complain.
         // It's probably just the first time they ran the game.
@@ -2437,7 +2437,7 @@ static void LoadDefaultCollection(default_collection_t *collection)
 
         def = SearchCollection(collection, defname);
 
-        if (def == NULL || !def->bound)
+        if (def == nullptr || !def->bound)
         {
             // Unknown variable?  Unbound variables are also treated
             // as unknown.
@@ -2540,7 +2540,7 @@ void M_LoadDefaults()
     }
     else
     {
-        doom_defaults.filename = M_StringJoin(configdir, default_main_config, NULL);
+        doom_defaults.filename = M_StringJoin(configdir, default_main_config, nullptr);
     }
 
     printf("saving config in %s\n", doom_defaults.filename);
@@ -2562,7 +2562,7 @@ void M_LoadDefaults()
     }
     else
     {
-        extra_defaults.filename = M_StringJoin(configdir, default_extra_config, NULL);
+        extra_defaults.filename = M_StringJoin(configdir, default_extra_config, nullptr);
     }
 
     LoadDefaultCollection(&doom_defaults);
@@ -2579,14 +2579,14 @@ static default_t *GetDefaultForName(const char *name)
 
     result = SearchCollection(&doom_defaults, name);
 
-    if (result == NULL)
+    if (result == nullptr)
     {
         result = SearchCollection(&extra_defaults, name);
     }
 
     // Not found? Internal error.
 
-    if (result == NULL)
+    if (result == nullptr)
     {
         I_Error("Unknown configuration variable: '%s'", name);
     }
@@ -2642,7 +2642,7 @@ bool M_SetVariable(const char *name, const char *value)
 
     variable = GetDefaultForName(name);
 
-    if (variable == NULL || !variable->bound)
+    if (variable == nullptr || !variable->bound)
     {
         return false;
     }
@@ -2660,7 +2660,7 @@ int M_GetIntVariable(const char *name)
 
     variable = GetDefaultForName(name);
 
-    if (variable == NULL || !variable->bound
+    if (variable == nullptr || !variable->bound
         || (variable->type != DEFAULT_INT && variable->type != DEFAULT_INT_HEX))
     {
         return 0;
@@ -2675,10 +2675,10 @@ const char *M_GetStringVariable(const char *name)
 
     variable = GetDefaultForName(name);
 
-    if (variable == NULL || !variable->bound
+    if (variable == nullptr || !variable->bound
         || variable->type != DEFAULT_STRING)
     {
-        return NULL;
+        return nullptr;
     }
 
     return *variable->location.s;
@@ -2690,7 +2690,7 @@ float M_GetFloatVariable(const char *name)
 
     variable = GetDefaultForName(name);
 
-    if (variable == NULL || !variable->bound
+    if (variable == nullptr || !variable->bound
         || variable->type != DEFAULT_FLOAT)
     {
         return 0;
@@ -2715,7 +2715,7 @@ static char *GetDefaultConfigDir()
     char *copy;
 
     result = SDL_GetPrefPath("", PACKAGE_TARNAME);
-    if (result != NULL)
+    if (result != nullptr)
     {
         copy = M_StringDuplicate(result);
         SDL_free(result);
@@ -2736,7 +2736,7 @@ void M_SetConfigDir(const char *dir)
 {
     // Use the directory that was passed, or find the default.
 
-    if (dir != NULL)
+    if (dir != nullptr)
     {
         configdir = const_cast<char *>(dir);
     }
@@ -2771,13 +2771,13 @@ void M_SetMusicPackDir()
 
     current_path = M_GetStringVariable("music_pack_path");
 
-    if (current_path != NULL && strlen(current_path) > 0)
+    if (current_path != nullptr && strlen(current_path) > 0)
     {
         return;
     }
 
     prefdir         = SDL_GetPrefPath("", PACKAGE_TARNAME);
-    music_pack_path = M_StringJoin(prefdir, "music-packs", NULL);
+    music_pack_path = M_StringJoin(prefdir, "music-packs", nullptr);
 
     M_MakeDirectory(prefdir);
     M_MakeDirectory(music_pack_path);
@@ -2786,7 +2786,7 @@ void M_SetMusicPackDir()
     // We write a README file with some basic instructions on how to use
     // the directory.
     readme_path = M_StringJoin(music_pack_path, DIR_SEPARATOR_S,
-        "README.txt", NULL);
+        "README.txt", nullptr);
     M_WriteFile(readme_path, MUSIC_PACK_README, strlen(MUSIC_PACK_README));
 
     free(readme_path);
@@ -2822,7 +2822,7 @@ char *M_GetSaveGameDir(const char *iwadname)
         }
 
         // add separator at end just in case
-        savegamedir = M_StringJoin(savegamedir, DIR_SEPARATOR_S, NULL);
+        savegamedir = M_StringJoin(savegamedir, DIR_SEPARATOR_S, nullptr);
 
         printf("Save directory changed to %s.\n", savegamedir);
     }
@@ -2845,13 +2845,13 @@ char *M_GetSaveGameDir(const char *iwadname)
     {
         // ~/.local/share/chocolate-doom/savegames
 
-        topdir = M_StringJoin(configdir, "savegames", NULL);
+        topdir = M_StringJoin(configdir, "savegames", nullptr);
         M_MakeDirectory(topdir);
 
         // eg. ~/.local/share/chocolate-doom/savegames/doom2.wad/
 
         savegamedir = M_StringJoin(topdir, DIR_SEPARATOR_S, iwadname,
-            DIR_SEPARATOR_S, NULL);
+            DIR_SEPARATOR_S, nullptr);
 
         M_MakeDirectory(savegamedir);
 
@@ -2869,17 +2869,17 @@ char *M_GetAutoloadDir(const char *iwadname)
 {
     char *result;
 
-    if (autoload_path == NULL || strlen(autoload_path) == 0)
+    if (autoload_path == nullptr || strlen(autoload_path) == 0)
     {
         char *prefdir;
         prefdir       = SDL_GetPrefPath("", PACKAGE_TARNAME);
-        autoload_path = M_StringJoin(prefdir, "autoload", NULL);
+        autoload_path = M_StringJoin(prefdir, "autoload", nullptr);
         SDL_free(prefdir);
     }
 
     M_MakeDirectory(autoload_path);
 
-    result = M_StringJoin(autoload_path, DIR_SEPARATOR_S, iwadname, NULL);
+    result = M_StringJoin(autoload_path, DIR_SEPARATOR_S, iwadname, nullptr);
     M_MakeDirectory(result);
 
     // TODO: Add README file

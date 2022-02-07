@@ -46,7 +46,7 @@ extern txt_widget_class_t txt_separator_class;
  * Create a new horizontal separator widget.
  *
  * @param label         Label to display on the separator (UTF-8 format).
- *                      If this is set to NULL, no label is displayed.
+ *                      If this is set to nullptr, no label is displayed.
  * @return              The new separator widget.
  */
 

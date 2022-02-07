@@ -119,7 +119,7 @@ txt_widget_class_t txt_radiobutton_class =
     TXT_RadioButtonKeyPress,
     TXT_RadioButtonDestructor,
     TXT_RadioButtonMousePress,
-    NULL,
+    nullptr,
 };
 
 txt_radiobutton_t *TXT_NewRadioButton(const char *label, int *variable, int value)

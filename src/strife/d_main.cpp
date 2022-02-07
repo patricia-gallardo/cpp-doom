@@ -160,7 +160,7 @@ static bool main_loop_started = false;
 static int comport = 0;
 
 // fraggle 06/03/11 [STRIFE]: Multiplayer nickname?
-char *nickname = NULL;
+char *nickname = nullptr;
 
 void D_ConnectNetGame();
 void D_CheckNetGame();
@@ -181,7 +181,7 @@ void D_ProcessEvents ()
     //if (storedemo)
     //    return;
 
-    while ((ev = D_PopEvent()) != NULL)
+    while ((ev = D_PopEvent()) != nullptr)
     {
         if (M_Responder (ev))
             continue;               // menu ate the event
@@ -642,7 +642,7 @@ void D_DoAdvanceDemo ()
         pagetic = 10;
         gamestate = GS_DEMOSCREEN;
         pagename = DEH_String("PANEL0");
-        S_StartSound(NULL, sfx_rb2act);
+        S_StartSound(nullptr, sfx_rb2act);
         wipegamestate = static_cast<gamestate_t>(-1);
         break;
     case 0: // Rogue logo
@@ -837,7 +837,7 @@ void D_IdentifyVersion()
     // Load voices.wad 
     if(isregistered)
     {
-        char *name = NULL;
+        char *name = nullptr;
         int p;
 
         // If -iwad was used, check and see if voices.wad exists on the same
@@ -846,7 +846,7 @@ void D_IdentifyVersion()
         {
             char   *iwad     = myargv[p + 1];
             size_t  len      = strlen(iwad) + 1;
-            char   *iwadpath = zmalloc<char *>(len, PU_STATIC, NULL);
+            char   *iwadpath = zmalloc<char *>(len, PU_STATIC, nullptr);
             char   *voiceswad;
 
             // extract base path of IWAD parameter
@@ -951,7 +951,7 @@ static bool D_AddFile(char *filename)
     printf(" adding %s\n", filename);
     handle = W_AddFile(filename);
 
-    return handle != NULL;
+    return handle != nullptr;
 }
 
 // Copyright message banners
@@ -1010,7 +1010,7 @@ static struct
 } gameversions[] = {
     { "Strife 1.2",          "1.2",       exe_strife_1_2  },
     { "Strife 1.31",         "1.31",      exe_strife_1_31 },
-    { NULL,                  NULL,        exe_doom_1_2 }
+    { nullptr,                  nullptr,        exe_doom_1_2 }
 };
 
 // Initialize the game version
@@ -1037,7 +1037,7 @@ static void InitGameVersion()
 
     if (p)
     {
-        for (i=0; gameversions[i].description != NULL; ++i)
+        for (i=0; gameversions[i].description != nullptr; ++i)
         {
             if (!strcmp(myargv[p+1], gameversions[i].cmdline))
             {
@@ -1046,11 +1046,11 @@ static void InitGameVersion()
             }
         }
 
-        if (gameversions[i].description == NULL) 
+        if (gameversions[i].description == nullptr)
         {
             printf("Supported game versions:\n");
 
-            for (i=0; gameversions[i].description != NULL; ++i)
+            for (i=0; gameversions[i].description != nullptr; ++i)
             {
                 printf("\t%s (%s)\n", gameversions[i].cmdline,
                         gameversions[i].description);
@@ -1069,7 +1069,7 @@ void PrintGameVersion()
 {
     int i;
 
-    for (i=0; gameversions[i].description != NULL; ++i)
+    for (i=0; gameversions[i].description != nullptr; ++i)
     {
         if (gameversions[i].version == gameversion)
         {
@@ -1448,7 +1448,7 @@ void D_IntroTick()
         // that without this one-time limitation, the sound is far too loud.
         if(!didsound)
         {
-            S_StartSound(NULL, sfx_psdtha);
+            S_StartSound(nullptr, sfx_psdtha);
             didsound = true;
         }
     }
@@ -1673,7 +1673,7 @@ void D_DoomMain ()
     {
         // Auto-detect the configuration dir.
 
-        M_SetConfigDir(NULL);
+        M_SetConfigDir(nullptr);
     }
     
     //!
@@ -1722,7 +1722,7 @@ void D_DoomMain ()
     iwadfile = D_FindIWAD(IWAD_MASK_STRIFE, &gamemission);
 
     // None found?
-    if (iwadfile == NULL)
+    if (iwadfile == nullptr)
     {
         I_Error("Game mode indeterminate.  No IWAD file was found.  Try\n"
                 "specifying one with the '-iwad' command line parameter.\n");

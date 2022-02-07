@@ -279,7 +279,7 @@ int EV_DoFloor(line_t * line, byte * args, floor_e floortype)
     int secnum;
     int rtn;
     sector_t *sec;
-    floormove_t *floor = NULL;
+    floormove_t *floor = nullptr;
 
     secnum = -1;
     rtn = 0;
@@ -490,7 +490,7 @@ static sector_t *DequeueStairSector(int *type, int *height)
 
     if (QueueHead == QueueTail)
     {                           // queue is empty
-        return NULL;
+        return nullptr;
     }
     *type = StairQueue[QueueHead].type;
     *height = StairQueue[QueueHead].height;
@@ -642,7 +642,7 @@ int EV_BuildStairs(line_t * line, byte * args, int direction,
         QueueStairSector(sec, 0, sec->floorheight);
         sec->special = 0;
     }
-    while ((qSec = DequeueStairSector(&type, &height)) != NULL)
+    while ((qSec = DequeueStairSector(&type, &height)) != nullptr)
     {
         ProcessStairSector(qSec, type, height, stairsType, delay, resetDelay);
     }

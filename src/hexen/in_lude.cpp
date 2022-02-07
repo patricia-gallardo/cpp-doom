@@ -322,7 +322,7 @@ void IN_Ticker()
         interstate = 1;
         cnt = 10;
         skipintermission = false;
-        //S_StartSound(NULL, sfx_dorcls);
+        //S_StartSound(nullptr, sfx_dorcls);
     }
 }
 
@@ -476,7 +476,7 @@ static void DrDeathTally()
     if (intertime >= TALLY_EFFECT_TICKS && showTotals == false)
     {
         showTotals = true;
-        S_StartSound(NULL, SFX_PLATFORM_STOP);
+        S_StartSound(nullptr, SFX_PLATFORM_STOP);
     }
     y = yPos >> FRACBITS;
     for (i = 0; i < maxplayers; i++)

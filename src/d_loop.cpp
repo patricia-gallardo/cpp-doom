@@ -106,7 +106,7 @@ static bool new_sync = true;
 
 // Callback functions for loop code.
 
-static loop_interface_t *loop_interface = NULL;
+static loop_interface_t *loop_interface = nullptr;
 
 // Current players in the multiplayer game.
 // This is distinct from playeringame[] used by the game code, which may
@@ -274,7 +274,7 @@ void D_ReceiveTic(ticcmd_t *ticcmds, bool *players_mask)
 
     // Disconnected from server?
 
-    if (ticcmds == NULL && players_mask == NULL)
+    if (ticcmds == nullptr && players_mask == nullptr)
     {
         D_Disconnected();
         return;
@@ -324,7 +324,7 @@ static void BlockUntilStart(net_gamesettings_t *settings,
             I_Error("Lost connection to server");
         }
 
-        if (callback != NULL && !callback(net_client_wait_data.ready_players, net_client_wait_data.num_players))
+        if (callback != nullptr && !callback(net_client_wait_data.ready_players, net_client_wait_data.num_players))
         {
             I_Error("Netgame startup aborted.");
         }
@@ -425,7 +425,7 @@ void D_StartNetGame(net_gamesettings_t *settings,
 bool D_InitNetGame(net_connect_data_t *connect_data)
 {
     bool     result = false;
-    net_addr_t *addr   = NULL;
+    net_addr_t *addr   = nullptr;
     int         i;
 
     // Call D_QuitNetGame on exit:
@@ -449,7 +449,7 @@ bool D_InitNetGame(net_connect_data_t *connect_data)
         NET_SV_RegisterWithMaster();
 
         net_loop_client_module.InitClient();
-        addr = net_loop_client_module.ResolveAddress(NULL);
+        addr = net_loop_client_module.ResolveAddress(nullptr);
         NET_ReferenceAddress(addr);
     }
     else
@@ -467,7 +467,7 @@ bool D_InitNetGame(net_connect_data_t *connect_data)
         {
             addr = NET_FindLANServer();
 
-            if (addr == NULL)
+            if (addr == nullptr)
             {
                 I_Error("No server found on local LAN");
             }
@@ -489,14 +489,14 @@ bool D_InitNetGame(net_connect_data_t *connect_data)
             addr = net_sdl_module.ResolveAddress(myargv[i + 1]);
             NET_ReferenceAddress(addr);
 
-            if (addr == NULL)
+            if (addr == nullptr)
             {
                 I_Error("Unable to resolve '%s'\n", myargv[i + 1]);
             }
         }
     }
 
-    if (addr != NULL)
+    if (addr != nullptr)
     {
         if (M_CheckParm("-drone") > 0)
         {

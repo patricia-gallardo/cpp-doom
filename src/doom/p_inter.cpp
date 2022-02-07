@@ -188,7 +188,7 @@ bool
         player->message = DEH_String(WeaponPickupMessages[weapon]);
 
         if (player == &players[consoleplayer])
-            S_StartSound(NULL, sfx_wpnup);
+            S_StartSound(nullptr, sfx_wpnup);
         return false;
     }
 
@@ -670,7 +670,7 @@ void P_TouchSpecialThing(mobj_t *special,
     P_RemoveMobj(special);
     player->bonuscount += BONUSADD;
     if (player == &players[consoleplayer])
-        S_StartSound(NULL, sound);
+        S_StartSound(nullptr, sound);
 }
 
 
@@ -795,11 +795,11 @@ void P_KillMobj(mobj_t *source,
 // P_DamageMobj
 // Damages both enemies and players
 // "inflictor" is the thing that caused the damage
-//  creature or missile, can be NULL (slime, etc)
+//  creature or missile, can be nullptr (slime, etc)
 // "source" is the thing to target after taking damage
 //  creature or NULL
 // Source and inflictor are the same for melee attacks.
-// Source can be NULL for slime, barrel explosions
+// Source can be nullptr for slime, barrel explosions
 // and other environmental stuff.
 //
 void P_DamageMobj(mobj_t *target,

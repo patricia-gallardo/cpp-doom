@@ -218,7 +218,7 @@ void T_MoveFloor(floormove_t *floor)
 
     if (res == pastdest)
     {
-        floor->sector->specialdata = NULL;
+        floor->sector->specialdata = nullptr;
 
         if (floor->direction == 1)
         {
@@ -272,7 +272,7 @@ void T_MoveGoobers(floormove_t *floor)
     // have reached their respective destination heights
     if ((res1 & res2) == pastdest)
     {
-        floor->sector->specialdata = NULL;
+        floor->sector->specialdata = nullptr;
         P_RemoveThinker(&floor->thinker);
 
         S_StartSound(&floor->sector->soundorg, sfx_pstop);
@@ -296,7 +296,7 @@ void EV_DoGoobers()
         {
             floor = static_cast<floormove_t *>(sec->specialdata);
             P_RemoveThinker(&floor->thinker);
-            sec->specialdata = NULL;
+            sec->specialdata = nullptr;
         }
 
         floor = zmalloc<decltype(floor)>(sizeof(*floor), PU_LEVSPEC, 0);

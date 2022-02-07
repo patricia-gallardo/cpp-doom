@@ -774,7 +774,7 @@ static void *DEH_TextStart(deh_context_t *context, char *line)
     if (sscanf(line, "Text %i %i", &orig_offset, &repl_len) != 2)
     {
         DEH_Warning(context, "Parse error on section start");
-        return NULL;
+        return nullptr;
     }
 
     repl_text = static_cast<char *>(malloc(repl_len + 1));
@@ -825,7 +825,7 @@ static void *DEH_TextStart(deh_context_t *context, char *line)
     // We must always free the replacement text.
     free(repl_text);
 
-    return NULL;
+    return nullptr;
 }
 
 static void DEH_TextParseLine(deh_context_t *context, char *line, void *tag)
@@ -836,10 +836,10 @@ static void DEH_TextParseLine(deh_context_t *context, char *line, void *tag)
 deh_section_t deh_section_heretic_text =
 {
     "Text",
-    NULL,
+    nullptr,
     DEH_TextStart,
     DEH_TextParseLine,
-    NULL,
-    NULL,
+    nullptr,
+    nullptr,
 };
 

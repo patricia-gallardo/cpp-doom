@@ -68,7 +68,7 @@ void SV_OpenRead(char *filename)
 {
     SaveGameFP = fopen(filename, "rb");
 
-    if (SaveGameFP == NULL)
+    if (SaveGameFP == nullptr)
     {
         I_Error("Could not load savegame %s", filename);
     }
@@ -269,7 +269,7 @@ static void saveg_read_state_ptr(state_t **state)
 
     if (statenum == 0)
     {
-        *state = NULL;
+        *state = nullptr;
     }
     else
     {
@@ -281,9 +281,9 @@ static void saveg_write_state_ptr(state_t *state)
 {
     int statenum;
 
-    // NULL states are just written as zero.
+    // nullptr states are just written as zero.
 
-    if (state == NULL)
+    if (state == nullptr)
     {
         SV_WriteLong(0);
         return;
@@ -353,7 +353,7 @@ static void saveg_read_player_t(player_t *str)
 
     // mobj_t *mo;
     SV_ReadLong();
-    str->mo = NULL;
+    str->mo = nullptr;
 
     // playerstate_t playerstate;
     str->playerstate = static_cast<playerstate_t>(SV_ReadLong());
@@ -466,7 +466,7 @@ static void saveg_read_player_t(player_t *str)
 
     // char *message;
     SV_ReadLong();
-    str->message = NULL;
+    str->message = nullptr;
 
     // int messageTics;
     str->messageTics = SV_ReadLong();
@@ -480,7 +480,7 @@ static void saveg_read_player_t(player_t *str)
 
     // mobj_t *attacker;
     SV_ReadLong();
-    str->attacker = NULL;
+    str->attacker = nullptr;
 
     // int extralight;
     str->extralight = SV_ReadLong();
@@ -508,11 +508,11 @@ static void saveg_read_player_t(player_t *str)
 
     // mobj_t *rain1;
     SV_ReadLong();
-    str->rain1 = NULL;
+    str->rain1 = nullptr;
 
     // mobj_t *rain2;
     SV_ReadLong();
-    str->rain2 = NULL;
+    str->rain2 = nullptr;
 }
 
 static void saveg_write_player_t(player_t *str)
@@ -726,9 +726,9 @@ static void saveg_read_thinker_t(thinker_t *str)
 {
     // struct thinker_s *prev, *next;
     SV_ReadLong();
-    str->prev = NULL;
+    str->prev = nullptr;
     SV_ReadLong();
-    str->next = NULL;
+    str->next = nullptr;
 
     // think_t function;
     SV_ReadLong();
@@ -791,9 +791,9 @@ static void saveg_read_mobj_t(mobj_t *str)
 
     // struct mobj_s *snext, *sprev;
     SV_ReadLong();
-    str->snext = NULL;
+    str->snext = nullptr;
     SV_ReadLong();
-    str->sprev = NULL;
+    str->sprev = nullptr;
 
     // angle_t angle;
     str->angle = SV_ReadLong();
@@ -806,13 +806,13 @@ static void saveg_read_mobj_t(mobj_t *str)
 
     // struct mobj_s *bnext, *bprev;
     SV_ReadLong();
-    str->bnext = NULL;
+    str->bnext = nullptr;
     SV_ReadLong();
-    str->bprev = NULL;
+    str->bprev = nullptr;
 
     // struct subsector_s *subsector;
     SV_ReadLong();
-    str->subsector = NULL;
+    str->subsector = nullptr;
 
     // fixed_t floorz, ceilingz;
     str->floorz = SV_ReadLong();
@@ -842,7 +842,7 @@ static void saveg_read_mobj_t(mobj_t *str)
 
     // mobjinfo_t *info;
     SV_ReadLong();
-    str->info = NULL;
+    str->info = nullptr;
 
     // int tics;
     str->tics = SV_ReadLong();
@@ -865,7 +865,7 @@ static void saveg_read_mobj_t(mobj_t *str)
     // specialval_t special2;
     saveg_read_specialval_t(&str->special2);
 
-    // Now we have a bunch of hacks to try to NULL out special values
+    // Now we have a bunch of hacks to try to nullptr out special values
     // where special[12] contained a mobj_t pointer that isn't valid
     // any more. This isn't in Vanilla but at least it stops the game
     // from crashing.
@@ -875,7 +875,7 @@ static void saveg_read_mobj_t(mobj_t *str)
         // Gas pods use special2.m to point to the pod generator
         // that made it.
         case MT_POD:
-            str->special2.m = NULL;
+            str->special2.m = nullptr;
             break;
 
         // Several thing types use special1.m to mean 'target':
@@ -884,7 +884,7 @@ static void saveg_read_mobj_t(mobj_t *str)
         case MT_MUMMYFX1:    // A_MummyFX1Seek
         case MT_HORNRODFX2:  // A_SkullRodPL2Seek
         case MT_PHOENIXFX1:  // A_PhoenixPuff
-            str->special1.m = NULL;
+            str->special1.m = nullptr;
             break;
 
         default:
@@ -902,7 +902,7 @@ static void saveg_read_mobj_t(mobj_t *str)
 
     // struct mobj_s *target;
     SV_ReadLong();
-    str->target = NULL;
+    str->target = nullptr;
 
     // int reactiontime;
     str->reactiontime = SV_ReadLong();
@@ -919,7 +919,7 @@ static void saveg_read_mobj_t(mobj_t *str)
     }
     else
     {
-        str->player = NULL;
+        str->player = nullptr;
     }
 
     // int lastlook;
@@ -1038,7 +1038,7 @@ static void saveg_write_mobj_t(mobj_t *str)
     SV_WriteLong(str->threshold);
 
     // struct player_s *player;
-    if (str->player != NULL)
+    if (str->player != nullptr)
     {
         SV_WriteLong(str->player - players + 1);
     }
@@ -1536,9 +1536,9 @@ void P_UnArchivePlayers()
         if (!playeringame[i])
             continue;
         saveg_read_player_t(&players[i]);
-        players[i].mo = NULL;   // will be set when unarc thinker
-        players[i].message = NULL;
-        players[i].attacker = NULL;
+        players[i].mo = nullptr;   // will be set when unarc thinker
+        players[i].message = nullptr;
+        players[i].attacker = nullptr;
     }
 }
 
@@ -1722,9 +1722,9 @@ void P_UnArchiveThinkers()
                 return;         // end of list
 
             case tc_mobj:
-                mobj = zmalloc<mobj_t *>(sizeof(*mobj), PU_LEVEL, NULL);
+                mobj = zmalloc<mobj_t *>(sizeof(*mobj), PU_LEVEL, nullptr);
                 saveg_read_mobj_t(mobj);
-                mobj->target = NULL;
+                mobj->target = nullptr;
                 P_SetThingPosition(mobj);
                 mobj->info = &mobjinfo[mobj->type];
                 mobj->floorz = mobj->subsector->sector->floorheight;
@@ -1856,7 +1856,7 @@ void P_UnArchiveSpecials()
                 return;         // end of list
 
             case tc_ceiling:
-                ceiling = zmalloc<ceiling_t *>(sizeof(*ceiling), PU_LEVEL, NULL);
+                ceiling = zmalloc<ceiling_t *>(sizeof(*ceiling), PU_LEVEL, nullptr);
                 saveg_read_ceiling_t(ceiling);
                 ceiling->sector->specialdata = reinterpret_cast<void *>(T_MoveCeiling);  // ???
                 ceiling->thinker.function = T_MoveCeiling;
@@ -1865,7 +1865,7 @@ void P_UnArchiveSpecials()
                 break;
 
             case tc_door:
-                door = zmalloc<vldoor_t *>(sizeof(*door), PU_LEVEL, NULL);
+                door = zmalloc<vldoor_t *>(sizeof(*door), PU_LEVEL, nullptr);
                 saveg_read_vldoor_t(door);
                 door->sector->specialdata = door;
                 door->thinker.function = T_VerticalDoor;
@@ -1873,7 +1873,7 @@ void P_UnArchiveSpecials()
                 break;
 
             case tc_floor:
-                floor = zmalloc<floormove_t *>(sizeof(*floor), PU_LEVEL, NULL);
+                floor = zmalloc<floormove_t *>(sizeof(*floor), PU_LEVEL, nullptr);
                 saveg_read_floormove_t(floor);
                 floor->sector->specialdata = reinterpret_cast<void *>(T_MoveFloor);
                 floor->thinker.function = T_MoveFloor;
@@ -1881,7 +1881,7 @@ void P_UnArchiveSpecials()
                 break;
 
             case tc_plat:
-                plat = zmalloc<plat_t *>(sizeof(*plat), PU_LEVEL, NULL);
+                plat = zmalloc<plat_t *>(sizeof(*plat), PU_LEVEL, nullptr);
                 saveg_read_plat_t(plat);
                 plat->sector->specialdata = reinterpret_cast<void *>(T_PlatRaise);
                 // In the original Heretic code this was a conditional "fix"
@@ -1896,21 +1896,21 @@ void P_UnArchiveSpecials()
                 break;
 
             case tc_flash:
-                flash = zmalloc<lightflash_t *>(sizeof(*flash), PU_LEVEL, NULL);
+                flash = zmalloc<lightflash_t *>(sizeof(*flash), PU_LEVEL, nullptr);
                 saveg_read_lightflash_t(flash);
                 flash->thinker.function = T_LightFlash;
                 P_AddThinker(&flash->thinker);
                 break;
 
             case tc_strobe:
-                strobe = zmalloc<strobe_t *>(sizeof(*strobe), PU_LEVEL, NULL);
+                strobe = zmalloc<strobe_t *>(sizeof(*strobe), PU_LEVEL, nullptr);
                 saveg_read_strobe_t(strobe);
                 strobe->thinker.function = T_StrobeFlash;
                 P_AddThinker(&strobe->thinker);
                 break;
 
             case tc_glow:
-                glow = zmalloc<glow_t *>(sizeof(*glow), PU_LEVEL, NULL);
+                glow = zmalloc<glow_t *>(sizeof(*glow), PU_LEVEL, nullptr);
                 saveg_read_glow_t(glow);
                 glow->thinker.function = T_Glow;
                 P_AddThinker(&glow->thinker);

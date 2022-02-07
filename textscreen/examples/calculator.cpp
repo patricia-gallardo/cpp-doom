@@ -130,7 +130,7 @@ void BuildGUI()
     input_box = TXT_NewLabel("asdf");
     TXT_SetBGColor(input_box, TXT_COLOR_BLACK);
     TXT_AddWidget(window, input_box);
-    TXT_AddWidget(window, TXT_NewSeparator(NULL));
+    TXT_AddWidget(window, TXT_NewSeparator(nullptr));
     TXT_AddWidget(window, TXT_NewStrut(0, 1));
 
     table = TXT_NewTable(4);
@@ -150,9 +150,9 @@ void BuildGUI()
     AddNumberButton(table, 3);
     AddOperatorButton(table, "+", OP_PLUS);
     AddNumberButton(table, 0);
-    TXT_AddWidget(table, NULL);
+    TXT_AddWidget(table, nullptr);
 
-    TXT_AddWidget(table, TXT_NewButton2("  =  ", Calculate, NULL));
+    TXT_AddWidget(table, TXT_NewButton2("  =  ", Calculate, nullptr));
     AddOperatorButton(table, "/", OP_DIV);
     
     TXT_AddWidget(window, TXT_NewStrut(0, 1));

@@ -56,7 +56,7 @@ static int     current_music_volume;
 
 char *timidity_cfg_path = const_cast<char *>("");
 
-static char *temp_timidity_cfg = NULL;
+static char *temp_timidity_cfg = nullptr;
 
 // If the temp_timidity_cfg config variable is set, generate a "wrapper"
 // config file for Timidity to point to the actual config file. This
@@ -75,7 +75,7 @@ static bool WriteWrapperTimidityConfig(char *write_path)
 
     fstream = fopen(write_path, "w");
 
-    if (fstream == NULL)
+    if (fstream == nullptr)
     {
         return false;
     }
@@ -111,13 +111,13 @@ void I_InitTimidityConfig()
 
     if (success)
     {
-        env_string = M_StringJoin("TIMIDITY_CFG=", temp_timidity_cfg, NULL);
+        env_string = M_StringJoin("TIMIDITY_CFG=", temp_timidity_cfg, nullptr);
         putenv(env_string);
     }
     else
     {
         free(temp_timidity_cfg);
-        temp_timidity_cfg = NULL;
+        temp_timidity_cfg = nullptr;
     }
 }
 
@@ -125,7 +125,7 @@ void I_InitTimidityConfig()
 
 static void RemoveTimidityConfig()
 {
-    if (temp_timidity_cfg != NULL)
+    if (temp_timidity_cfg != nullptr)
     {
         remove(temp_timidity_cfg);
         free(temp_timidity_cfg);
@@ -269,7 +269,7 @@ static void I_SDL_PlaySong(void *handle, bool looping)
         return;
     }
 
-    if (handle == NULL && !midi_server_registered)
+    if (handle == nullptr && !midi_server_registered)
     {
         return;
     }
@@ -355,7 +355,7 @@ static void I_SDL_UnRegisterSong(void *handle)
     else
 #endif
     {
-        if (handle != NULL)
+        if (handle != nullptr)
         {
             Mix_FreeMusic(music);
         }
@@ -405,7 +405,7 @@ static void *I_SDL_RegisterSong(void *data, int len)
 
     if (!music_initialized)
     {
-        return NULL;
+        return nullptr;
     }
 
     // MUS files begin with "MUS"
@@ -439,7 +439,7 @@ static void *I_SDL_RegisterSong(void *data, int len)
     //      music with the MIDI server.
     if (midi_server_initialized)
     {
-        music = NULL;
+        music = nullptr;
         if (!I_MidiPipe_RegisterSong(filename))
         {
             fprintf(stderr, "Error loading midi: %s\n",
@@ -450,7 +450,7 @@ static void *I_SDL_RegisterSong(void *data, int len)
 #endif
     {
         music = Mix_LoadMUS(filename);
-        if (music == NULL)
+        if (music == nullptr)
         {
             // Failed to load
             fprintf(stderr, "Error loading midi: %s\n", Mix_GetError());
@@ -505,5 +505,5 @@ music_module_t music_sdl_module = {
     I_SDL_PlaySong,
     I_SDL_StopSong,
     I_SDL_MusicIsPlaying,
-    NULL, // Poll
+    nullptr, // Poll
 };

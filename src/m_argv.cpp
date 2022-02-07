@@ -86,7 +86,7 @@ static void LoadResponseFile(int argv_index, const char *filename)
     // Read the response file into memory
     handle = fopen(filename, "rb");
 
-    if (handle == NULL)
+    if (handle == nullptr)
     {
         printf("\nNo such response file!");
         exit(1);

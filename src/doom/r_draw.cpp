@@ -72,7 +72,7 @@ byte translations[3][256];
 // Backing buffer containing the bezel drawn around the screen and
 // surrounding background.
 
-static pixel_t *background_buffer = NULL;
+static pixel_t *background_buffer = nullptr;
 
 
 //
@@ -1047,10 +1047,10 @@ void R_FillBackScreen()
 
     if (scaledviewwidth == SCREENWIDTH)
     {
-        if (background_buffer != NULL)
+        if (background_buffer != nullptr)
         {
             Z_Free(background_buffer);
-            background_buffer = NULL;
+            background_buffer = nullptr;
         }
 
         return;
@@ -1058,10 +1058,10 @@ void R_FillBackScreen()
 
     // Allocate the background buffer if necessary
 
-    if (background_buffer == NULL)
+    if (background_buffer == nullptr)
     {
         background_buffer = zmalloc<decltype(background_buffer)>(MAXWIDTH * (MAXHEIGHT - SBARHEIGHT) * sizeof(*background_buffer),
-            PU_STATIC, NULL);
+            PU_STATIC, nullptr);
     }
 
     if (gamemode == commercial)
@@ -1148,7 +1148,7 @@ void R_VideoErase(unsigned ofs,
     //  a 32bit CPU, as GNU GCC/Linux libc did
     //  at one point.
 
-    if (background_buffer != NULL)
+    if (background_buffer != nullptr)
     {
         memcpy(I_VideoBuffer + ofs, background_buffer + ofs, count * sizeof(*I_VideoBuffer));
     }

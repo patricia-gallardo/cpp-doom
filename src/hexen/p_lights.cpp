@@ -310,7 +310,7 @@ void P_SpawnLightSequence(sector_t * sector, int indexStep)
     count = 1;
     do
     {
-        nextSec = NULL;
+        nextSec = nullptr;
         sec->special = LIGHT_SEQUENCE_START;    // make sure that the search doesn't back up.
         for (i = 0; i < sec->linecount; i++)
         {
@@ -344,7 +344,7 @@ void P_SpawnLightSequence(sector_t * sector, int indexStep)
     base = sector->lightlevel;
     do
     {
-        nextSec = NULL;
+        nextSec = nullptr;
         if (sec->lightlevel)
         {
             base = sec->lightlevel;

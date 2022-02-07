@@ -65,7 +65,7 @@ P_SetPsprite
         if (!stnum)
         {
             // object removed itself
-            psp->state = NULL;
+            psp->state = nullptr;
             break;
         }
 
@@ -529,7 +529,7 @@ void A_FireMissile(player_t* player, pspdef_t* psp)
 void A_FireMauler2(player_t* player, pspdef_t* pspr)
 {
     P_SetMobjState(player->mo, S_PLAY_06);
-    P_DamageMobj(player->mo, player->mo, NULL, 20);
+    P_DamageMobj(player->mo, player->mo, nullptr, 20);
     player->ammo[weaponinfo[player->readyweapon].ammo] -= 30;
     P_SpawnPlayerMissile(player->mo, MT_TORPEDO);
     P_Thrust(player, player->mo->angle + ANG180, 512000);
@@ -782,7 +782,7 @@ void A_FireSigil(player_t* player, pspdef_t* pspr)
 
     // BUG: setting inflictor causes firing the Sigil to always push the player
     // toward the east, no matter what direction he is facing.
-    P_DamageMobj(player->mo, player->mo, NULL, 4 * (player->sigiltype + 1));
+    P_DamageMobj(player->mo, player->mo, nullptr, 4 * (player->sigiltype + 1));
 
     // restore armor
     player->armortype = i;
@@ -953,7 +953,7 @@ void P_SetupPsprites(player_t* player)
 
     // remove all psprites
     for(i = 0; i < NUMPSPRITES; i++)
-        player->psprites[i].state = NULL;
+        player->psprites[i].state = nullptr;
 
     // spawn the gun
     player->pendingweapon = player->readyweapon;

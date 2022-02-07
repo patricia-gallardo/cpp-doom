@@ -234,7 +234,7 @@ void    P_UseLines(player_t *player);
 
 bool P_ChangeSector(sector_t *sector, bool crunch);
 
-extern mobj_t *linetarget; // who got hit (or NULL)
+extern mobj_t *linetarget; // who got hit (or nullptr)
 
 fixed_t
     P_AimLineAttack(mobj_t *t1,

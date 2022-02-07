@@ -177,7 +177,7 @@ static Cheat_t Cheats[] = {
     {CheatMassacreFunc,  &CheatMassacreSeq},
     {CheatIDKFAFunc,     &CheatIDKFASeq},
     {CheatIDDQDFunc,     &CheatIDDQDSeq},
-    {NULL,               NULL} 
+    {nullptr,               nullptr}
 };
 
 //---------------------------------------------------------------------------
@@ -480,7 +480,7 @@ static void DrawSoundInfo()
         c = &s.chan[i];
         x = 0;
         y = 40 + i * 10;
-        if (c->mo == NULL)
+        if (c->mo == nullptr)
         {                       // Channel is unused
             MN_DrTextA(DEH_String("------"), xPos[0], y);
             continue;
@@ -1034,12 +1034,12 @@ static bool HandleCheats(byte key)
         return (false);
     }
     eat = false;
-    for (i = 0; Cheats[i].func != NULL; i++)
+    for (i = 0; Cheats[i].func != nullptr; i++)
     {
         if (cht_CheckCheat(Cheats[i].seq, key))
         {
             Cheats[i].func(&players[consoleplayer], &Cheats[i]);
-            S_StartSound(NULL, sfx_dorcls);
+            S_StartSound(nullptr, sfx_dorcls);
         }
     }
     return (eat);
@@ -1206,7 +1206,7 @@ static void CheatArtifact3Func(player_t * player, Cheat_t * cheat)
             }
             for (j = 0; j < 16; j++)
             {
-                P_GiveArtifact(player, static_cast<artitype_t>(i), NULL);
+                P_GiveArtifact(player, static_cast<artitype_t>(i), nullptr);
             }
         }
         P_SetMessage(player, DEH_String(TXT_CHEATARTIFACTS3), false);
@@ -1222,7 +1222,7 @@ static void CheatArtifact3Func(player_t * player, Cheat_t * cheat)
         }
         for (i = 0; i < count; i++)
         {
-            P_GiveArtifact(player, static_cast<artitype_t>(type), NULL);
+            P_GiveArtifact(player, static_cast<artitype_t>(type), nullptr);
         }
         P_SetMessage(player, DEH_String(TXT_CHEATARTIFACTS3), false);
     }
@@ -1289,6 +1289,6 @@ static void CheatIDKFAFunc(player_t * player, Cheat_t * cheat)
 
 static void CheatIDDQDFunc(player_t * player, Cheat_t * cheat)
 {
-    P_DamageMobj(player->mo, NULL, player->mo, 10000);
+    P_DamageMobj(player->mo, nullptr, player->mo, 10000);
     P_SetMessage(player, DEH_String(TXT_CHEATIDDQD), true);
 }

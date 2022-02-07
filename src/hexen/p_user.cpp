@@ -757,7 +757,7 @@ void P_PlayerThink(player_t * player)
         }
         else if (cmd->arti & AFLAG_SUICIDE)
         {
-            P_DamageMobj(player->mo, NULL, NULL, 10000);
+            P_DamageMobj(player->mo, nullptr, nullptr, 10000);
         }
         if (cmd->arti == NUMARTIFACTS)
         {                       // use one of each artifact (except puzzle artifacts)
@@ -990,7 +990,7 @@ void P_ArtiTele(player_t * player)
     {                           // Teleporting away will undo any morph effects (pig)
         P_UndoPlayerMorph(player);
     }
-    //S_StartSound(NULL, sfx_wpnup); // Full volume laugh
+    //S_StartSound(nullptr, sfx_wpnup); // Full volume laugh
 }
 
 
@@ -1029,7 +1029,7 @@ void P_TeleportToPlayerStarts(mobj_t * victim)
     destY = playerstarts[0][i].y << FRACBITS;
     destAngle = ANG45 * (playerstarts[0][i].angle / 45);
     P_Teleport(victim, destX, destY, destAngle, true);
-    //S_StartSound(NULL, sfx_wpnup); // Full volume laugh
+    //S_StartSound(nullptr, sfx_wpnup); // Full volume laugh
 }
 
 void P_TeleportToDeathmatchStarts(mobj_t * victim)
@@ -1046,7 +1046,7 @@ void P_TeleportToDeathmatchStarts(mobj_t * victim)
         destY = deathmatchstarts[i].y << FRACBITS;
         destAngle = ANG45 * (deathmatchstarts[i].angle / 45);
         P_Teleport(victim, destX, destY, destAngle, true);
-        //S_StartSound(NULL, sfx_wpnup); // Full volume laugh
+        //S_StartSound(nullptr, sfx_wpnup); // Full volume laugh
     }
     else
     {
@@ -1077,7 +1077,7 @@ void P_TeleportOther(mobj_t * victim)
         {
             P_RemoveMobjFromTIDList(victim);
             P_ExecuteLineSpecial(victim->special, victim->args,
-                                 NULL, 0, victim);
+                                 nullptr, 0, victim);
             victim->special = 0;
         }
 
@@ -1421,11 +1421,11 @@ void P_PlayerUseArtifact(player_t * player, artitype_t arti)
                 {
                     if (arti < arti_firstpuzzitem)
                     {
-                        S_StartSound(NULL, SFX_ARTIFACT_USE);
+                        S_StartSound(nullptr, SFX_ARTIFACT_USE);
                     }
                     else
                     {
-                        S_StartSound(NULL, SFX_PUZZLE_SUCCESS);
+                        S_StartSound(nullptr, SFX_PUZZLE_SUCCESS);
                     }
                     ArtifactFlash = 4;
                 }

@@ -46,7 +46,7 @@ static void P_WritePackageTarname(const char *key)
 
 // maplumpinfo->wad_file->basename
 
-char *savewadfilename = NULL;
+char *savewadfilename = nullptr;
 
 static void P_WriteWadFileName(const char *key)
 {
@@ -153,7 +153,7 @@ static void P_ReadFireFlicker(const char *key)
     {
         fireflicker_t *flick;
 
-        flick = zmalloc<decltype(flick)>(sizeof(*flick), PU_LEVEL, NULL);
+        flick = zmalloc<decltype(flick)>(sizeof(*flick), PU_LEVEL, nullptr);
 
         flick->sector   = &sectors[sector];
         flick->count    = count;
@@ -438,7 +438,7 @@ typedef struct
 
 static const extsavegdata_t extsavegdata[] = {
     // [crispy] @FORKS: please change this if you are going to introduce incompatible changes!
-    { "crispy-doom", P_WritePackageTarname, NULL, 0 },
+    { "crispy-doom", P_WritePackageTarname, nullptr, 0 },
     { "wadfilename", P_WriteWadFileName, P_ReadWadFileName, 0 },
     { "extrakills", P_WriteExtraKills, P_ReadExtraKills, 1 },
     { "totalleveltimes", P_WriteTotalLevelTimes, P_ReadTotalLevelTimes, 1 },
@@ -486,7 +486,7 @@ static void P_ReadKeyValuePairs(int pass)
 }
 
 // [crispy] pointer to the info struct for the map lump about to load
-lumpinfo_t *savemaplumpinfo = NULL;
+lumpinfo_t *savemaplumpinfo = nullptr;
 
 void P_ReadExtendedSaveGameData(int pass)
 {
@@ -524,7 +524,7 @@ void P_ReadExtendedSaveGameData(int pass)
     else
     {
         // [crispy] unavailable map!
-        savemaplumpinfo = NULL;
+        savemaplumpinfo = nullptr;
     }
 
     // [crispy] read key/value pairs past the end of the regular savegame data

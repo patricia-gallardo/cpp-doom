@@ -373,7 +373,7 @@ void P_LoadSectors(int lump)
         ss->lightlevel    = SHORT(ms->lightlevel);
         ss->special       = SHORT(ms->special);
         ss->tag           = SHORT(ms->tag);
-        ss->thinglist     = NULL;
+        ss->thinglist     = nullptr;
         // [crispy] WiggleFix: [kb] for R_FixWiggle()
         ss->cachedheight = 0;
         // [AM] Sector interpolation.  Even if we're
@@ -717,9 +717,9 @@ bool P_LoadBlockMap(int lump)
 
     // [crispy] remove BLOCKMAP limit
     // adapted from boom202s/P_SETUP.C:1025-1076
-    wadblockmaplump = zmalloc<decltype(wadblockmaplump)>(lumplen, PU_LEVEL, NULL);
+    wadblockmaplump = zmalloc<decltype(wadblockmaplump)>(lumplen, PU_LEVEL, nullptr);
     W_ReadLump(lump, wadblockmaplump);
-    blockmaplump = zmalloc<decltype(blockmaplump)>(sizeof(*blockmaplump) * count, PU_LEVEL, NULL);
+    blockmaplump = zmalloc<decltype(blockmaplump)>(sizeof(*blockmaplump) * count, PU_LEVEL, nullptr);
     blockmap     = blockmaplump + 4;
 
     blockmaplump[0] = SHORT(wadblockmaplump[0]);
@@ -818,7 +818,7 @@ void P_GroupLines()
     {
         li = &lines[i];
 
-        if (li->frontsector != NULL)
+        if (li->frontsector != nullptr)
         {
             sector = li->frontsector;
 
@@ -826,7 +826,7 @@ void P_GroupLines()
             ++sector->linecount;
         }
 
-        if (li->backsector != NULL && li->frontsector != li->backsector)
+        if (li->backsector != nullptr && li->frontsector != li->backsector)
         {
             sector = li->backsector;
 
@@ -1170,7 +1170,7 @@ void P_SetupLevel(int episode,
             respawnparm ? " -respawn" : "",
             fastparm ? " -fast" : "",
             nomonsters ? " -nomonsters" : "",
-            NULL);
+            nullptr);
 
         fprintf(stderr, "P_SetupLevel: %s (%s) %s%s %d:%02d:%02d/%d:%02d:%02d ",
             maplumpinfo->name, W_WadNameForLump(maplumpinfo),
@@ -1237,7 +1237,7 @@ void P_SetupLevel(int episode,
         for (i = 0; i < MAXPLAYERS; i++)
             if (playeringame[i])
             {
-                players[i].mo = NULL;
+                players[i].mo = nullptr;
                 G_DeathMatchSpawnPlayer(i);
             }
     }

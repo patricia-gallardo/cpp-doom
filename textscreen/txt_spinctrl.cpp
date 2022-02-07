@@ -375,7 +375,7 @@ txt_widget_class_t txt_spincontrol_class =
     TXT_SpinControlKeyPress,
     TXT_SpinControlDestructor,
     TXT_SpinControlMousePress,
-    NULL,
+    nullptr,
     TXT_SpinControlFocused,
 };
 

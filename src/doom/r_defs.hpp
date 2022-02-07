@@ -109,7 +109,7 @@ typedef struct
     // 0 = untraversed, 1,2 = sndlines -1
     int soundtraversed;
 
-    // thing that made a sound (or null)
+    // thing that made a sound (or nullptr)
     mobj_t *soundtarget;
 
     // mapblock bounding box for height changes
@@ -272,7 +272,7 @@ typedef struct
 
     // Sector references.
     // Could be retrieved from linedef, too.
-    // backsector is NULL for one sided lines
+    // backsector is nullptr for one sided lines
     sector_t *frontsector;
     sector_t *backsector;
 

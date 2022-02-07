@@ -185,7 +185,7 @@ bool EV_ThingProjectile(byte * args, bool gravity)
     fineAngle = angle >> ANGLETOFINESHIFT;
     speed = (int) args[3] << 13;
     vspeed = (int) args[4] << 13;
-    while ((mobj = P_FindMobjFromTID(tid, &searcher)) != NULL)
+    while ((mobj = P_FindMobjFromTID(tid, &searcher)) != nullptr)
     {
         newMobj = P_SpawnMobj(mobj->x, mobj->y, mobj->z, moType);
         if (newMobj->info->seesound)
@@ -238,7 +238,7 @@ bool EV_ThingSpawn(byte * args, bool fog)
         return false;
     }
     angle = (int) args[2] << 24;
-    while ((mobj = P_FindMobjFromTID(tid, &searcher)) != NULL)
+    while ((mobj = P_FindMobjFromTID(tid, &searcher)) != nullptr)
     {
         if (mobjinfo[moType].flags2 & MF2_FLOATBOB)
         {
@@ -287,7 +287,7 @@ bool EV_ThingActivate(int tid)
 
     success = false;
     searcher = -1;
-    while ((mobj = P_FindMobjFromTID(tid, &searcher)) != NULL)
+    while ((mobj = P_FindMobjFromTID(tid, &searcher)) != nullptr)
     {
         if (ActivateThing(mobj) == true)
         {
@@ -311,7 +311,7 @@ bool EV_ThingDeactivate(int tid)
 
     success = false;
     searcher = -1;
-    while ((mobj = P_FindMobjFromTID(tid, &searcher)) != NULL)
+    while ((mobj = P_FindMobjFromTID(tid, &searcher)) != nullptr)
     {
         if (DeactivateThing(mobj) == true)
         {
@@ -335,7 +335,7 @@ bool EV_ThingRemove(int tid)
 
     success = false;
     searcher = -1;
-    while ((mobj = P_FindMobjFromTID(tid, &searcher)) != NULL)
+    while ((mobj = P_FindMobjFromTID(tid, &searcher)) != nullptr)
     {
         if (mobj->type == MT_BRIDGE)
         {
@@ -362,11 +362,11 @@ bool EV_ThingDestroy(int tid)
 
     success = false;
     searcher = -1;
-    while ((mobj = P_FindMobjFromTID(tid, &searcher)) != NULL)
+    while ((mobj = P_FindMobjFromTID(tid, &searcher)) != nullptr)
     {
         if (mobj->flags & MF_SHOOTABLE)
         {
-            P_DamageMobj(mobj, NULL, NULL, 10000);
+            P_DamageMobj(mobj, nullptr, nullptr, 10000);
             success = true;
         }
     }
@@ -447,7 +447,7 @@ static bool ActivateThing(mobj_t * mobj)
         case MT_ZBELL:
             if (mobj->health > 0)
             {
-                P_DamageMobj(mobj, NULL, NULL, 10);     // 'ring' the bell
+                P_DamageMobj(mobj, nullptr, nullptr, 10);     // 'ring' the bell
             }
             break;
         case MT_ZCAULDRON:

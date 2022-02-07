@@ -188,7 +188,7 @@ void P_AddActiveCeiling(ceiling_t * c)
 {
     int i;
     for (i = 0; i < MAXCEILINGS; i++)
-        if (activeceilings[i] == NULL)
+        if (activeceilings[i] == nullptr)
         {
             activeceilings[i] = c;
             return;
@@ -207,9 +207,9 @@ void P_RemoveActiveCeiling(ceiling_t * c)
     for (i = 0; i < MAXCEILINGS; i++)
         if (activeceilings[i] == c)
         {
-            activeceilings[i]->sector->specialdata = NULL;
+            activeceilings[i]->sector->specialdata = nullptr;
             P_RemoveThinker(&activeceilings[i]->thinker);
-            activeceilings[i] = NULL;
+            activeceilings[i] = nullptr;
             break;
         }
 }

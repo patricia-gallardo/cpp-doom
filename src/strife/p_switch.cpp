@@ -844,7 +844,7 @@ bool P_UseSpecialLine(mobj_t* thing, line_t* line, int side)
 
     case 148:
         // haleyjd 09/16/10: [STRIFE] using forcefields hurts
-        P_DamageMobj(thing, NULL, NULL, 16);
+        P_DamageMobj(thing, nullptr, nullptr, 16);
         P_Thrust(thing->player, thing->angle + ANG180, 125*FRACUNIT/16);
         break;
 

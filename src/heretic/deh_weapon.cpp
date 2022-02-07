@@ -45,13 +45,13 @@ static void *DEH_WeaponStart(deh_context_t *context, char *line)
     if (sscanf(line, "Weapon %i", &weapon_number) != 1)
     {
         DEH_Warning(context, "Parse error on section start");
-        return NULL;
+        return nullptr;
     }
 
     if (weapon_number < 0 || weapon_number >= NUMWEAPONS * 2)
     {
         DEH_Warning(context, "Invalid weapon number: %i", weapon_number);
-        return NULL;
+        return nullptr;
     }
 
     // Because of the tome of power, we have two levels of weapons:
@@ -72,7 +72,7 @@ static void DEH_WeaponParseLine(deh_context_t *context, char *line, void *tag)
     weaponinfo_t *weapon;
     int ivalue;
 
-    if (tag == NULL)
+    if (tag == nullptr)
         return;
 
     weapon = (weaponinfo_t *) tag;
@@ -90,7 +90,7 @@ static void DEH_WeaponParseLine(deh_context_t *context, char *line, void *tag)
     // If this is a frame field, we need to map from Heretic 1.0 frame
     // numbers to Heretic 1.3 frame numbers.
 
-    if (M_StrCaseStr(variable_name, "frame") != NULL)
+    if (M_StrCaseStr(variable_name, "frame") != nullptr)
     {
         ivalue = DEH_MapHereticFrameNumber(ivalue);
     }
@@ -112,10 +112,10 @@ static void DEH_WeaponSHA1Sum(sha1_context_t *context)
 deh_section_t deh_section_weapon =
 {
     "Weapon",
-    NULL,
+    nullptr,
     DEH_WeaponStart,
     DEH_WeaponParseLine,
-    NULL,
+    nullptr,
     DEH_WeaponSHA1Sum,
 };
 

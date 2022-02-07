@@ -331,13 +331,13 @@ int twoSided(int sector, int line)
 
 //==================================================================
 //
-//      Return sector_t * of sector next to current. NULL if not two-sided line
+//      Return sector_t * of sector next to current. nullptr if not two-sided line
 //
 //==================================================================
 sector_t *getNextSector(line_t * line, sector_t * sec)
 {
     if (!(line->flags & ML_TWOSIDED))
-        return NULL;
+        return nullptr;
 
     if (line->frontsector == sec)
         return line->backsector;
@@ -414,7 +414,7 @@ fixed_t P_FindNextHighestFloor(sector_t * sec, int currentheight)
         check = sec->lines[i];
         other = getNextSector(check, sec);
 
-        if (other != NULL && other->floorheight > height)
+        if (other != nullptr && other->floorheight > height)
         {
             if (other->floorheight < min)
             {
@@ -862,20 +862,20 @@ void P_PlayerInSpecialSector(player_t * player)
         case 7:                // Damage_Sludge
             if (!(leveltime & 31))
             {
-                P_DamageMobj(player->mo, NULL, NULL, 4);
+                P_DamageMobj(player->mo, nullptr, nullptr, 4);
             }
             break;
         case 5:                // Damage_LavaWimpy
             if (!(leveltime & 15))
             {
-                P_DamageMobj(player->mo, &LavaInflictor, NULL, 5);
+                P_DamageMobj(player->mo, &LavaInflictor, nullptr, 5);
                 P_HitFloor(player->mo);
             }
             break;
         case 16:               // Damage_LavaHefty
             if (!(leveltime & 15))
             {
-                P_DamageMobj(player->mo, &LavaInflictor, NULL, 8);
+                P_DamageMobj(player->mo, &LavaInflictor, nullptr, 8);
                 P_HitFloor(player->mo);
             }
             break;
@@ -883,7 +883,7 @@ void P_PlayerInSpecialSector(player_t * player)
             P_Thrust(player, 0, 2048 * 28);
             if (!(leveltime & 15))
             {
-                P_DamageMobj(player->mo, &LavaInflictor, NULL, 5);
+                P_DamageMobj(player->mo, &LavaInflictor, nullptr, 5);
                 P_HitFloor(player->mo);
             }
             break;
@@ -896,7 +896,7 @@ void P_PlayerInSpecialSector(player_t * player)
                player->cheats &= ~CF_GODMODE;
                if(!(leveltime&0x1f))
                {
-               P_DamageMobj(player->mo, NULL, NULL, 20);
+               P_DamageMobj(player->mo, nullptr, nullptr, 20);
                }
                if(player->health <= 10)
                {
@@ -1197,9 +1197,9 @@ void P_SpawnSpecials()
     //      Init other misc stuff
     //
     for (i = 0; i < MAXCEILINGS; i++)
-        activeceilings[i] = NULL;
+        activeceilings[i] = nullptr;
     for (i = 0; i < MAXPLATS; i++)
-        activeplats[i] = NULL;
+        activeplats[i] = nullptr;
     for (i = 0; i < MAXBUTTONS; i++)
         memset(&buttonlist[i], 0, sizeof(button_t));
 }
@@ -1265,12 +1265,12 @@ void P_AmbientSound()
         {
             case afxcmd_play:
                 AmbSfxVolume = P_Random() >> 2;
-                S_StartSoundAtVolume(NULL, *AmbSfxPtr++, AmbSfxVolume);
+                S_StartSoundAtVolume(nullptr, *AmbSfxPtr++, AmbSfxVolume);
                 break;
             case afxcmd_playabsvol:
                 sound = *AmbSfxPtr++;
                 AmbSfxVolume = *AmbSfxPtr++;
-                S_StartSoundAtVolume(NULL, sound, AmbSfxVolume);
+                S_StartSoundAtVolume(nullptr, sound, AmbSfxVolume);
                 break;
             case afxcmd_playrelvol:
                 sound = *AmbSfxPtr++;
@@ -1283,7 +1283,7 @@ void P_AmbientSound()
                 {
                     AmbSfxVolume = 127;
                 }
-                S_StartSoundAtVolume(NULL, sound, AmbSfxVolume);
+                S_StartSoundAtVolume(nullptr, sound, AmbSfxVolume);
                 break;
             case afxcmd_delay:
                 AmbSfxTics = *AmbSfxPtr++;

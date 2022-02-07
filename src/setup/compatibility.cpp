@@ -35,7 +35,7 @@ void CompatibilitySettings(TXT_UNCAST_ARG(widget), void *user_data)
     // [crispy]
     if (gamemission == doom)
     {
-        TXT_MessageBox(NULL, "Please refer to the in-game Crispness menu.");
+        TXT_MessageBox(nullptr, "Please refer to the in-game Crispness menu.");
     }
     else
     {
@@ -48,7 +48,7 @@ void CompatibilitySettings(TXT_UNCAST_ARG(widget), void *user_data)
                                    &vanilla_savegame_limit),
                    TXT_NewCheckBox("Vanilla demo limit",
                                    &vanilla_demo_limit),
-                   NULL);
+                   nullptr);
     }
 }
 

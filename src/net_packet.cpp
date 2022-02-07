@@ -170,7 +170,7 @@ bool NET_ReadSInt32(net_packet_t *packet, signed int *data)
     }
 }
 
-// Read a string from the packet.  Returns NULL if a terminating
+// Read a string from the packet.  Returns nullptr if a terminating
 // NUL character was not found before the end of the packet.
 
 char *NET_ReadString(net_packet_t *packet)
@@ -190,11 +190,11 @@ char *NET_ReadString(net_packet_t *packet)
     {
         // Reached the end of the packet
 
-        return NULL;
+        return nullptr;
     }
 
     // packet->data[packet->pos] == '\0': We have reached a terminating
-    // NULL.  Skip past this NULL and continue reading immediately
+    // NULL.  Skip past this nullptr and continue reading immediately
     // after it.
 
     ++packet->pos;
@@ -210,9 +210,9 @@ char *NET_ReadSafeString(net_packet_t *packet)
     char *r, *w, *result;
 
     result = NET_ReadString(packet);
-    if (result == NULL)
+    if (result == nullptr)
     {
-        return NULL;
+        return nullptr;
     }
 
     // w is always <= r, so we never produce a longer string than the original.

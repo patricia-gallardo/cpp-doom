@@ -189,7 +189,7 @@ void P_InitSwitchList()
     }
 
     // [crispy] pre-allocate some memory for the buttonlist[] array
-    buttonlist = static_cast<decltype(buttonlist)>(I_Realloc(NULL, sizeof(*buttonlist) * (maxbuttons = MAXBUTTONS)));
+    buttonlist = static_cast<decltype(buttonlist)>(I_Realloc(nullptr, sizeof(*buttonlist) * (maxbuttons = MAXBUTTONS)));
     memset(buttonlist, 0, sizeof(*buttonlist) * maxbuttons);
 }
 

@@ -515,7 +515,7 @@ static int ST_cheat_massacre()
             {
                 if (mo->health > 0)
                 {
-                    P_DamageMobj(mo, NULL, NULL, 10000);
+                    P_DamageMobj(mo, nullptr, nullptr, 10000);
                     killcount++;
                 }
                 if (mo->type == MT_PAIN)
@@ -952,12 +952,12 @@ bool
 
                             if (mo->target && mo->target->player)
                             {
-                                mo->target = NULL;
+                                mo->target = nullptr;
                             }
 
                             if (mo->tracer && mo->tracer->player)
                             {
-                                mo->tracer = NULL;
+                                mo->tracer = nullptr;
                             }
                         }
                     }
@@ -966,7 +966,7 @@ bool
                     {
                         sector_t *const sector = &sectors[i];
 
-                        sector->soundtarget = NULL;
+                        sector->soundtarget = nullptr;
                     }
                 }
 
@@ -1043,7 +1043,7 @@ bool
                     if (!plyr->powers[pw_strength])
                     {
                         P_GivePower(plyr, pw_strength);
-                        S_StartSound(NULL, sfx_getpow);
+                        S_StartSound(nullptr, sfx_getpow);
                         plyr->message = DEH_String(GOTBERSERK);
                     }
                     else
@@ -1059,7 +1059,7 @@ bool
                         extern bool P_GiveWeapon(player_t * player, weapontype_t weapon, bool dropped);
 
                         P_GiveWeapon(plyr, static_cast<weapontype_t>(w), false);
-                        S_StartSound(NULL, sfx_wpnup);
+                        S_StartSound(nullptr, sfx_wpnup);
 
                         if (w > 1)
                         {
@@ -1533,7 +1533,7 @@ void ST_updateWidgets()
 #if defined(CRISPY_KEYBLINK_WITH_SOUND)
             if (!(plyr->tryopen[i] & (2 * KEYBLINKMASK - 1)))
             {
-                S_StartSound(NULL, sfx_itemup);
+                S_StartSound(nullptr, sfx_itemup);
             }
 #endif
 #if defined(CRISPY_KEYBLINK_IN_CLASSIC_HUD)
@@ -1686,14 +1686,14 @@ enum
 static byte *ST_WidgetColor(int i)
 {
     if (!(crispy->coloredhud & COLOREDHUD_BAR))
-        return NULL;
+        return nullptr;
 
     switch (i)
     {
     case hudcolor_ammo: {
         if (weaponinfo[plyr->readyweapon].ammo == am_noammo)
         {
-            return NULL;
+            return nullptr;
         }
         else
         {
@@ -1768,7 +1768,7 @@ static byte *ST_WidgetColor(int i)
     }
     }
 
-    return NULL;
+    return nullptr;
 }
 
 // [crispy] draw the gibbed death state frames in the Health widget
@@ -1797,7 +1797,7 @@ static inline void ST_DrawGibbedPlayerSprites()
     }
 
     V_DrawPatch(ST_HEALTHX - 17, 186, patch);
-    dp_translation = NULL;
+    dp_translation = nullptr;
 }
 
 void ST_drawWidgets(bool refresh)
@@ -1813,7 +1813,7 @@ void ST_drawWidgets(bool refresh)
 
     dp_translation = ST_WidgetColor(hudcolor_ammo);
     STlib_updateNum(&w_ready, refresh);
-    dp_translation = NULL;
+    dp_translation = nullptr;
 
     // [crispy] draw "special widgets" in the Crispy HUD
     if (st_crispyhud)
@@ -1866,7 +1866,7 @@ void ST_drawWidgets(bool refresh)
     }
     dp_translation = ST_WidgetColor(hudcolor_armor);
     STlib_updatePercent(&w_armor, refresh);
-    dp_translation = NULL;
+    dp_translation = nullptr;
 
     STlib_updateBinIcon(&w_armsbg, refresh);
 
@@ -1890,7 +1890,7 @@ void ST_drawWidgets(bool refresh)
     dp_translation = ST_WidgetColor(hudcolor_frags);
     STlib_updateNum(&w_frags, refresh);
 
-    dp_translation = NULL;
+    dp_translation = nullptr;
 }
 
 void ST_doRefresh()
@@ -2001,7 +2001,7 @@ static void ST_loadUnloadGraphics(load_callback_t callback)
     if (W_CheckNumForName("STBAR") >= 0)
     {
         callback(DEH_String("STBAR"), &sbar);
-        sbarr = NULL;
+        sbarr = nullptr;
     }
     else
     {
@@ -2077,7 +2077,7 @@ void ST_loadData()
 static void ST_unloadCallback(const char *lumpname, patch_t **variable)
 {
     W_ReleaseLumpName(lumpname);
-    *variable = NULL;
+    *variable = nullptr;
 }
 
 void ST_unloadGraphics()
@@ -2374,6 +2374,6 @@ void ST_DrawDemoTimer(const int time)
         }
     }
 
-    dp_translation = NULL;
+    dp_translation = nullptr;
     dp_translucent = false;
 }

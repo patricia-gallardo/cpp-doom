@@ -44,7 +44,7 @@ typedef struct
 // When the callback mutex is locked using OPL_Lock, callback functions
 // are not invoked.
 
-static SDL_mutex *callback_mutex = NULL;
+static SDL_mutex *callback_mutex = nullptr;
 
 // Queue of callbacks waiting to be invoked.
 
@@ -52,7 +52,7 @@ static opl_callback_queue_t *callback_queue;
 
 // Mutex used to control access to the callback queue.
 
-static SDL_mutex *callback_queue_mutex = NULL;
+static SDL_mutex *callback_queue_mutex = nullptr;
 
 // Current time, in us since startup:
 
@@ -74,7 +74,7 @@ static int opl_opl3mode;
 
 // Temporary mixing buffer used by the mixing callback.
 
-static uint8_t *mix_buffer = NULL;
+static uint8_t *mix_buffer = nullptr;
 
 // Register number that was written.
 
@@ -222,7 +222,7 @@ static void OPL_Mix_Callback(void *udata, Uint8 *buffer, int len)
 
 static void OPL_SDL_Shutdown()
 {
-    Mix_HookMusic(NULL, NULL);
+    Mix_HookMusic(nullptr, nullptr);
 
     if (sdl_was_initialized)
     {
@@ -234,23 +234,23 @@ static void OPL_SDL_Shutdown()
     }
 
 /*
-    if (opl_chip != NULL)
+    if (opl_chip != nullptr)
     {
         OPLDestroy(opl_chip);
-        opl_chip = NULL;
+        opl_chip = nullptr;
     }
     */
 
-    if (callback_mutex != NULL)
+    if (callback_mutex != nullptr)
     {
         SDL_DestroyMutex(callback_mutex);
-        callback_mutex = NULL;
+        callback_mutex = nullptr;
     }
 
-    if (callback_queue_mutex != NULL)
+    if (callback_queue_mutex != nullptr)
     {
         SDL_DestroyMutex(callback_queue_mutex);
-        callback_queue_mutex = NULL;
+        callback_queue_mutex = nullptr;
     }
 }
 
@@ -349,7 +349,7 @@ static int OPL_SDL_Init(unsigned int port_base)
     // Set postmix that adds the OPL music. This is deliberately done
     // as a postmix and not using Mix_HookMusic() as the latter disables
     // normal SDL_mixer music mixing.
-    Mix_SetPostMix(OPL_Mix_Callback, NULL);
+    Mix_SetPostMix(OPL_Mix_Callback, nullptr);
 
     return 1;
 }

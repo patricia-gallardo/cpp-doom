@@ -427,7 +427,7 @@ static void F_DoSlideShow()
         P_DialogStartP1();
         break;
     case SLIDE_HACKHACK: // state -9: unknown bizarre unused state
-        S_StartSound(NULL, sfx_rifle);
+        S_StartSound(nullptr, sfx_rifle);
         slideshow_tics = 3150;
         break;
     case SLIDE_EXIT: // state -1: proceed to next finale stage
@@ -691,11 +691,11 @@ void F_CastTicker ()
             if(!castorder[castnum].isindemo)
                 castnum = 0;
         }
-        // [STRIFE] Break on type == NUMMOBJTYPES rather than name == NULL
+        // [STRIFE] Break on type == NUMMOBJTYPES rather than name == nullptr
         if (castorder[castnum].type == NUMMOBJTYPES)
             castnum = 0;
         if (mobjinfo[castorder[castnum].type].seesound)
-            S_StartSound (NULL, mobjinfo[castorder[castnum].type].seesound);
+            S_StartSound (nullptr, mobjinfo[castorder[castnum].type].seesound);
         caststate = &states[mobjinfo[castorder[castnum].type].seestate];
         castframes = 0;
     }
@@ -722,7 +722,7 @@ void F_CastTicker ()
             sfx = mobjinfo[castorder[castnum].type].attacksound;
 
         if (sfx)
-            S_StartSound (NULL, sfx);
+            S_StartSound (nullptr, sfx);
     }
 
     if (!castdeath && castframes == 12)
@@ -787,7 +787,7 @@ bool F_CastResponder (event_t* ev)
     castframes = 0;
     castattacking = false;
     if (mobjinfo[castorder[castnum].type].deathsound)
-        S_StartSound (NULL, mobjinfo[castorder[castnum].type].deathsound);
+        S_StartSound (nullptr, mobjinfo[castorder[castnum].type].deathsound);
 
     return true;
 }

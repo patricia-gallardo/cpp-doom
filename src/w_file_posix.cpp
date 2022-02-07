@@ -56,13 +56,13 @@ static void MapFile(posix_wad_file_t *wad, const char *filename)
 
     flags = MAP_PRIVATE;
 
-    result = mmap(NULL, wad->wad.length,
+    result = mmap(nullptr, wad->wad.length,
         protection, flags,
         wad->handle, 0);
 
     wad->wad.mapped = result;
 
-    if (result == NULL)
+    if (result == nullptr)
     {
         fprintf(stderr, "W_POSIX_OpenFile: Unable to mmap() %s - %s\n",
             filename, strerror(errno));
@@ -83,7 +83,7 @@ static wad_file_t *W_POSIX_OpenFile(const char *path)
 
     if (handle < 0)
     {
-        return NULL;
+        return nullptr;
     }
 
     // Create a new posix_wad_file_t to hold the file handle.

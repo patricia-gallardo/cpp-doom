@@ -41,11 +41,11 @@
         true },
 
 #define DEH_UNSUPPORTED_MAPPING(deh_name) \
-    { deh_name, NULL, -1, false },
+    { deh_name, nullptr, -1, false },
 
 #define DEH_END_MAPPING \
     {                   \
-        NULL, NULL, -1  \
+        nullptr, nullptr, -1  \
     }                   \
     }                   \
     }                   \
@@ -63,7 +63,7 @@ struct deh_mapping_entry_s {
     const char *name;
 
     // location relative to the base in the deh_mapping_t struct
-    // If this is NULL, it is an unsupported mapping
+    // If this is nullptr, it is an unsupported mapping
 
     void *location;
 
