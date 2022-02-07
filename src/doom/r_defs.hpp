@@ -96,68 +96,68 @@ struct degenmobj_t
 // The SECTORS record, at runtime.
 // Stores things/mobjs.
 //
-typedef struct
+struct sector_t
 {
-    fixed_t floorheight;
-    fixed_t ceilingheight;
-    short   floorpic;
-    short   ceilingpic;
-    short   lightlevel;
-    short   special;
-    short   tag;
+    fixed_t floorheight{};
+    fixed_t ceilingheight{};
+    short   floorpic{};
+    short   ceilingpic{};
+    short   lightlevel{};
+    short   special{};
+    short   tag{};
 
     // 0 = untraversed, 1,2 = sndlines -1
-    int soundtraversed;
+    int soundtraversed{};
 
     // thing that made a sound (or nullptr)
-    mobj_t *soundtarget;
+    mobj_t *soundtarget{};
 
     // mapblock bounding box for height changes
-    int blockbox[4];
+    int blockbox[4]{};
 
     // origin for any sounds played by the sector
     degenmobj_t soundorg;
 
     // if == validcount, already checked
-    int validcount;
+    int validcount{};
 
     // list of mobjs in sector
-    mobj_t *thinglist;
+    mobj_t *thinglist{};
 
     // thinker_t for reversable actions
-    void *specialdata;
+    void *specialdata{};
 
-    int             linecount;
-    struct line_s **lines; // [linecount] size
+    int             linecount{};
+    struct line_s **lines{}; // [linecount] size
 
     // [crispy] WiggleFix: [kb] for R_FixWiggle()
-    int cachedheight;
-    int scaleindex;
+    int cachedheight{};
+    int scaleindex{};
 
     // [crispy] add support for MBF sky tranfers
-    int sky;
+    int sky{};
 
     // [AM] Previous position of floor and ceiling before
     //      think.  Used to interpolate between positions.
-    fixed_t oldfloorheight;
-    fixed_t oldceilingheight;
+    fixed_t oldfloorheight{};
+    fixed_t oldceilingheight{};
 
     // [AM] Gametic when the old positions were recorded.
     //      Has a dual purpose; it prevents movement thinkers
     //      from storing old positions twice in a tic, and
     //      prevents the renderer from attempting to interpolate
     //      if old values were not updated recently.
-    int oldgametic;
+    int oldgametic{};
 
     // [AM] Interpolated floor and ceiling height.
     //      Calculated once per tic and used inside
     //      the renderer.
-    fixed_t interpfloorheight;
-    fixed_t interpceilingheight;
+    fixed_t interpfloorheight{};
+    fixed_t interpceilingheight{};
 
     // [crispy] revealed secrets
-    short oldspecial;
-} sector_t;
+    short oldspecial{};
+};
 
 
 //
@@ -201,39 +201,39 @@ typedef enum
 
 typedef struct line_s {
     // Vertices, from v1 to v2.
-    vertex_t *v1;
-    vertex_t *v2;
+    vertex_t *v1{};
+    vertex_t *v2{};
 
     // Precalculated v2 - v1 for side checking.
-    fixed_t dx;
-    fixed_t dy;
+    fixed_t dx{};
+    fixed_t dy{};
 
     // Animation related.
-    unsigned short flags; // [crispy] extended nodes
-    short          special;
-    short          tag;
+    unsigned short flags{}; // [crispy] extended nodes
+    short          special{};
+    short          tag{};
 
     // Visual appearance: SideDefs.
     //  sidenum[1] will be -1 (NO_INDEX) if one sided
-    unsigned short sidenum[2]; // [crispy] extended nodes
+    unsigned short sidenum[2]{}; // [crispy] extended nodes
 
     // Neat. Another bounding box, for the extent
     //  of the LineDef.
-    fixed_t bbox[4];
+    fixed_t bbox[4]{};
 
     // To aid move clipping.
-    slopetype_t slopetype;
+    slopetype_t slopetype{ST_HORIZONTAL};
 
     // Front and back sector.
     // Note: redundant? Can be retrieved from SideDefs.
-    sector_t *frontsector;
-    sector_t *backsector;
+    sector_t *frontsector{};
+    sector_t *backsector{};
 
     // if == validcount, already checked
-    int validcount;
+    int validcount{};
 
     // thinker_t for reversable actions
-    void *specialdata;
+    void *specialdata{};
 
     // [crispy] calculate sound origin of line to be its midpoint
     degenmobj_t soundorg;

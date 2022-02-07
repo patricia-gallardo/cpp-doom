@@ -1595,19 +1595,19 @@ typedef enum
 struct mobjinfo_t
 {
     int          doomednum{};
-    statenum_t   spawnstate;
+    statenum_t   spawnstate{S_NULL};
     int          spawnhealth{};
-    statenum_t   seestate;
+    statenum_t   seestate{S_NULL};
     int          seesound{};
     int          reactiontime{};
     int          attacksound{};
-    statenum_t   painstate;
+    statenum_t   painstate{S_NULL};
     int          painchance{};
     int          painsound{};
-    statenum_t   meleestate;
-    statenum_t   missilestate;
-    statenum_t   deathstate;
-    statenum_t   xdeathstate;
+    statenum_t   meleestate{S_NULL};
+    statenum_t   missilestate{S_NULL};
+    statenum_t   deathstate{S_NULL};
+    statenum_t   xdeathstate{S_NULL};
     int          deathsound{};
     int          speed{};
     int          radius{};
@@ -1616,7 +1616,7 @@ struct mobjinfo_t
     int          damage{};
     int          activesound{};
     unsigned int flags{};
-    statenum_t   raisestate;
+    statenum_t   raisestate{S_NULL};
     // [crispy] height of the spawnstate's first sprite in pixels
     int actualheight{};
 

@@ -205,88 +205,88 @@ struct mobj_t {
     thinker_t thinker;
 
     // Info for drawing: position.
-    fixed_t x;
-    fixed_t y;
-    fixed_t z;
+    fixed_t x{};
+    fixed_t y{};
+    fixed_t z{};
 
     // More list: links in sector (if needed)
-    mobj_t *snext;
-    mobj_t *sprev;
+    mobj_t *snext{};
+    mobj_t *sprev{};
 
     //More drawing info: to determine current sprite.
-    angle_t     angle;  // orientation
-    spritenum_t sprite; // used to find patch_t and flip value
-    int         frame;  // might be ORed with FF_FULLBRIGHT
+    angle_t     angle{};  // orientation
+    spritenum_t sprite = static_cast<spritenum_t>(0); // used to find patch_t and flip value
+    int         frame{};  // might be ORed with FF_FULLBRIGHT
 
     // Interaction info, by BLOCKMAP.
     // Links in blocks (if needed).
-    mobj_t *bnext;
-    mobj_t *bprev;
+    mobj_t *bnext{};
+    mobj_t *bprev{};
 
-    struct subsector_s *subsector;
+    struct subsector_s *subsector{};
 
     // The closest interval over all contacted Sectors.
-    fixed_t floorz;
-    fixed_t ceilingz;
+    fixed_t floorz{};
+    fixed_t ceilingz{};
 
     // For movement checking.
-    fixed_t radius;
-    fixed_t height;
+    fixed_t radius{};
+    fixed_t height{};
 
     // Momentums, used to update position.
-    fixed_t momx;
-    fixed_t momy;
-    fixed_t momz;
+    fixed_t momx{};
+    fixed_t momy{};
+    fixed_t momz{};
 
     // If == validcount, already checked.
-    int validcount;
+    int validcount{};
 
-    mobjtype_t  type;
-    mobjinfo_t *info; // &mobjinfo[mobj->type]
+    mobjtype_t  type{MT_PLAYER};
+    mobjinfo_t *info{}; // &mobjinfo[mobj->type]
 
-    int      tics; // state tic counter
-    state_t *state;
-    int      flags;
-    int      health;
+    int      tics{}; // state tic counter
+    state_t *state{};
+    int      flags{};
+    int      health{};
 
     // Movement direction, movement generation (zig-zagging).
-    int movedir;   // 0-7
-    int movecount; // when 0, select a new dir
+    int movedir{};   // 0-7
+    int movecount{}; // when 0, select a new dir
 
     // Thing being chased/attacked (or nullptr),
     // also the originator for missiles.
-    mobj_t *target;
+    mobj_t *target{};
 
     // Reaction time: if non 0, don't attack yet.
     // Used by player to freeze a bit after teleporting.
-    int reactiontime;
+    int reactiontime{};
 
     // If >0, the target will be chased
     // no matter what (even if shot)
-    int threshold;
+    int threshold{};
 
     // Additional info record for player avatars only.
     // Only valid if type == MT_PLAYER
-    player_t *player;
+    player_t *player{};
 
     // Player number last looked for.
-    int lastlook;
+    int lastlook{};
 
     // For nightmare respawn.
-    mapthing_t spawnpoint;
+    mapthing_t spawnpoint{};
 
     // Thing being chased/attacked for tracers.
-    mobj_t *tracer;
+    mobj_t *tracer{};
 
     // [AM] If true, ok to interpolate this tic.
-    int interp;
+    int interp{};
 
     // [AM] Previous position of mobj before think.
     //      Used to interpolate between positions.
-    fixed_t oldx;
-    fixed_t oldy;
-    fixed_t oldz;
-    angle_t oldangle;
+    fixed_t oldx{};
+    fixed_t oldy{};
+    fixed_t oldz{};
+    angle_t oldangle{};
 };
 
 
