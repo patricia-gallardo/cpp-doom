@@ -20,11 +20,14 @@ jobs:
       fail-fast: false
       matrix:
         configurations:
-          - name: Ubuntu 20.04
+          - name: Ubuntu 20.04 Clang
             os: ubuntu-20.04
             cmake_env:
               CC: clang-12
               CXX: clang++-12
+          - name: Ubuntu 20.04 GCC
+            os: ubuntu-20.04
+            cmake_env: {}
           - name: Windows 2022
             os: windows-2022
             cmake_env: {}
@@ -52,9 +55,9 @@ jobs:
           ${{runner.workspace}}/build/_deps
         key: ${{ matrix.configurations.os }}-${{ matrix.cmake-build-type }}-${{ hashFiles('vcpkg.json') }}-${{ hashFiles('cmake/vcpkg.cmake') }}
 
-    - name: Fix Path on Ubuntu
-      if: matrix.configurations.os == 'ubuntu-20.04'
-      run: echo "/home/runner/.local/bin" >> $GITHUB_PATH
+#    - name: Fix Path on Ubuntu
+#      if: matrix.configurations.os == 'ubuntu-20.04'
+#      run: echo "/home/runner/.local/bin" >> $GITHUB_PATH
 
     - name: Install Linux dependencies
       if: matrix.configurations.os == 'ubuntu-20.04'
