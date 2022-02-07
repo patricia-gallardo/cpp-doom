@@ -361,10 +361,10 @@
 #define HUSTR_PLRBROWN  "Brown: "
 #define HUSTR_PLRRED    "Red: "
 
-#define HUSTR_KEYGREEN  'g'
-#define HUSTR_KEYINDIGO 'i'
-#define HUSTR_KEYBROWN  'b'
-#define HUSTR_KEYRED    'r'
+constexpr char HUSTR_KEYGREEN  = 'g';
+constexpr char HUSTR_KEYINDIGO = 'i';
+constexpr char HUSTR_KEYBROWN  = 'b';
+constexpr char HUSTR_KEYRED    = 'r';
 
 //
 //	AM_map.C

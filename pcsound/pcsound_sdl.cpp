@@ -52,7 +52,7 @@ static int phase_offset = 0;
 
 // Mixer function that does the PC speaker emulation
 
-static void PCSound_Mix_Callback(void *udata, Uint8 *stream, int len)
+static void PCSound_Mix_Callback(void *, Uint8 *stream, int len)
 {
     Sint16 *leftptr;
     Sint16 *rightptr;

@@ -112,7 +112,7 @@ void T_RotatePoly(polyevent_t * pe)
 //
 //==========================================================================
 
-bool EV_RotatePoly(line_t * line, byte * args, int direction, bool
+bool EV_RotatePoly(line_t *, byte * args, int direction, bool
                       overRide)
 {
     int mirror;
@@ -243,8 +243,7 @@ void T_MovePoly(polyevent_t * pe)
 //
 //==========================================================================
 
-bool EV_MovePoly(line_t * line, byte * args, bool timesEight, bool
-                    overRide)
+bool EV_MovePoly(line_t *, byte *args, bool timesEight, bool overRide)
 {
     int mirror;
     int polyNum;
@@ -452,7 +451,7 @@ void T_PolyDoor(polydoor_t * pd)
 //
 //==========================================================================
 
-bool EV_OpenPolyDoor(line_t * line, byte * args, podoortype_t type)
+bool EV_OpenPolyDoor(line_t *, byte * args, podoortype_t type)
 {
     int mirror;
     int polyNum;

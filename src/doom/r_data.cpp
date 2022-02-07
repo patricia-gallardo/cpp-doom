@@ -992,12 +992,12 @@ void R_InitSpriteLumps()
 // [crispy] initialize translucency filter map
 // based in parts on the implementation from boom202s/R_DATA.C:676-787
 
-enum
+enum class rgb_t
 {
     r,
     g,
     b
-} rgb_t;
+};
 
 static const int tran_filter_pct = 66;
 
@@ -1070,6 +1070,9 @@ static void R_InitTranMap()
                     // Colour matching in RGB space doesn't work very well with the blues
                     // in Doom's palette. Rather than do any colour conversions, just
                     // emphasize the blues when building the translucency table.
+                    int r = static_cast<int>(rgb_t::r);
+                    int g = static_cast<int>(rgb_t::g);
+                    int b = static_cast<int>(rgb_t::b);
                     btmp     = fg[b] * 1.666 < (fg[r] + fg[g]) ? 0 : 50;
                     blend[r] = (tran_filter_pct * fg[r] + (100 - tran_filter_pct) * bg[r]) / (100 + btmp);
                     blend[g] = (tran_filter_pct * fg[g] + (100 - tran_filter_pct) * bg[g]) / (100 + btmp);

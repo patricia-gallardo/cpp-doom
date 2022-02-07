@@ -1826,7 +1826,7 @@ void G_WriteDemoTiccmd(ticcmd_t * cmd)
 ===================
 */
 
-void G_RecordDemo(skill_t skill, int numplayers, int episode, int map,
+void G_RecordDemo(skill_t skill, int, int episode, int map,
                   char *name)
 {
     int i;

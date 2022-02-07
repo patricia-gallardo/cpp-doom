@@ -177,6 +177,8 @@ static int EventCallback(SDL_Event *event, TXT_UNCAST_ARG(joystick_input))
 // When the prompt window is closed, disable the event callback function;
 // we are no longer interested in receiving notification of events.
 
+#pragma GCC diagnostic push
+#pragma GCC diagnostic ignored "-Wunused-parameter"
 static void PromptWindowClosed(TXT_UNCAST_ARG(widget), TXT_UNCAST_ARG(joystick))
 {
     TXT_CAST_ARG(SDL_Joystick, joystick);
@@ -186,6 +188,7 @@ static void PromptWindowClosed(TXT_UNCAST_ARG(widget), TXT_UNCAST_ARG(joystick))
     SDL_JoystickEventState(SDL_DISABLE);
     SDL_QuitSubSystem(SDL_INIT_JOYSTICK);
 }
+#pragma GCC diagnostic pop
 
 static void OpenErrorWindow()
 {
@@ -271,9 +274,12 @@ static void TXT_JoystickInputDrawer(TXT_UNCAST_ARG(joystick_input))
     }
 }
 
+#pragma GCC diagnostic push
+#pragma GCC diagnostic ignored "-Wunused-parameter"
 static void TXT_JoystickInputDestructor(TXT_UNCAST_ARG(joystick_input))
 {
 }
+#pragma GCC diagnostic pop
 
 static int TXT_JoystickInputKeyPress(TXT_UNCAST_ARG(joystick_input), int key)
 {
@@ -297,7 +303,7 @@ static int TXT_JoystickInputKeyPress(TXT_UNCAST_ARG(joystick_input), int key)
 }
 
 static void TXT_JoystickInputMousePress(TXT_UNCAST_ARG(widget),
-                                        int x, int y, int b)
+                                        int, int, int b)
 {
     TXT_CAST_ARG(txt_joystick_input_t, widget);
 

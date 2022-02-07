@@ -598,8 +598,7 @@ void NET_Query_Init()
 
 // Callback that exits the query loop when the first server is found.
 
-static void NET_Query_ExitCallback(net_addr_t *addr, net_querydata_t *data,
-    unsigned int ping_time, void *user_data)
+static void NET_Query_ExitCallback(net_addr_t *, net_querydata_t *, unsigned int, void *)
 {
     NET_Query_ExitLoop();
 }
@@ -751,10 +750,7 @@ static void PrintHeader()
 
 // Callback function that just prints information in a table.
 
-static void NET_QueryPrintCallback(net_addr_t *addr,
-    net_querydata_t *                          data,
-    unsigned int                               ping_time,
-    void *                                     user_data)
+static void NET_QueryPrintCallback(net_addr_t *addr, net_querydata_t *data, unsigned int ping_time, void *)
 {
     // If this is the first server, print the header.
 

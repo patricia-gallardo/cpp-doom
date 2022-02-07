@@ -223,7 +223,7 @@ void M_StopMessage();
 //
 // DOOM MENU
 //
-enum
+enum class main_e
 {
     newgame = 0,
     options,
@@ -232,7 +232,7 @@ enum
     readthis,
     quitdoom,
     main_end
-} main_e;
+};
 
 menuitem_t MainMenu[]=
 {
@@ -247,7 +247,7 @@ menuitem_t MainMenu[]=
 
 menu_t  MainDef =
 {
-    main_end,
+    static_cast<short>(main_e::main_end),
     nullptr,
     MainMenu,
     M_DrawMainMenu,
@@ -291,7 +291,7 @@ menu_t  EpiDef =
 //
 // NEW GAME
 //
-enum
+enum class newgame_e
 {
     killthings,
     toorough,
@@ -299,7 +299,7 @@ enum
     violence,
     nightmare,
     newg_end
-} newgame_e;
+};
 
 menuitem_t NewGameMenu[]=
 {
@@ -313,18 +313,18 @@ menuitem_t NewGameMenu[]=
 
 menu_t  NewDef =
 {
-    newg_end,           // # of menu items
+    static_cast<short>(newgame_e::newg_end),           // # of menu items
     &MainDef,           // previous menu - haleyjd [STRIFE] changed to MainDef
     NewGameMenu,        // menuitem_t ->
     M_DrawNewGame,      // drawing routine ->
     48,63,              // x,y
-    toorough            // lastOn - haleyjd [STRIFE]: default to skill 1
+    static_cast<short>(newgame_e::toorough)  // lastOn - haleyjd [STRIFE]: default to skill 1
 };
 
 //
 // OPTIONS MENU
 //
-enum
+enum class options_e
 {
     // haleyjd 08/28/10: [STRIFE] Removed messages, mouse sens., detail.
     endgame,
@@ -332,7 +332,7 @@ enum
     option_empty1,
     soundvol,
     opt_end
-} options_e;
+};
 
 menuitem_t OptionsMenu[]=
 {
@@ -345,7 +345,7 @@ menuitem_t OptionsMenu[]=
 
 menu_t  OptionsDef =
 {
-    opt_end,
+    static_cast<short>(options_e::opt_end),
     &MainDef,
     OptionsMenu,
     M_DrawOptions,
@@ -356,11 +356,11 @@ menu_t  OptionsDef =
 //
 // Read This! MENU 1 & 2 & [STRIFE] 3
 //
-enum
+enum class read_e
 {
     rdthsempty1,
     read1_end
-} read_e;
+};
 
 menuitem_t ReadMenu1[] =
 {
@@ -369,7 +369,7 @@ menuitem_t ReadMenu1[] =
 
 menu_t  ReadDef1 =
 {
-    read1_end,
+    static_cast<short>(read_e::read1_end),
     &MainDef,
     ReadMenu1,
     M_DrawReadThis1,
@@ -377,11 +377,11 @@ menu_t  ReadDef1 =
     0
 };
 
-enum
+enum class read_e2
 {
     rdthsempty2,
     read2_end
-} read_e2;
+};
 
 menuitem_t ReadMenu2[]=
 {
@@ -390,7 +390,7 @@ menuitem_t ReadMenu2[]=
 
 menu_t  ReadDef2 =
 {
-    read2_end,
+    static_cast<short>(read_e2::read2_end),
     &ReadDef1,
     ReadMenu2,
     M_DrawReadThis2,
@@ -399,11 +399,11 @@ menu_t  ReadDef2 =
 };
 
 // haleyjd 08/28/10: Added Read This! menu 3
-enum
+enum class read_e3
 {
     rdthsempty3,
     read3_end
-} read_e3;
+};
 
 menuitem_t ReadMenu3[]=
 {
@@ -412,7 +412,7 @@ menuitem_t ReadMenu3[]=
 
 menu_t  ReadDef3 =
 {
-    read3_end,
+    static_cast<short>(read_e3::read3_end),
     &ReadDef2,
     ReadMenu3,
     M_DrawReadThis3,
@@ -423,7 +423,7 @@ menu_t  ReadDef3 =
 //
 // SOUND VOLUME MENU
 //
-enum
+enum class sound_e
 {
     sfx_vol,
     sfx_empty1,
@@ -434,7 +434,7 @@ enum
     sfx_mouse,
     sfx_empty4,
     sound_end
-} sound_e;
+};
 
 // haleyjd 08/29/10:
 // [STRIFE] 
@@ -454,7 +454,7 @@ menuitem_t SoundMenu[]=
 
 menu_t  SoundDef =
 {
-    sound_end,
+    static_cast<short>(sound_e::sound_end),
     &OptionsDef,
     SoundMenu,
     M_DrawSound,
@@ -465,7 +465,7 @@ menu_t  SoundDef =
 //
 // LOAD GAME MENU
 //
-enum
+enum class load_e
 {
     load1,
     load2,
@@ -474,7 +474,7 @@ enum
     load5,
     load6,
     load_end
-} load_e;
+};
 
 menuitem_t LoadMenu[]=
 {
@@ -488,7 +488,7 @@ menuitem_t LoadMenu[]=
 
 menu_t  LoadDef =
 {
-    load_end,
+    static_cast<short>(load_e::load_end),
     &MainDef,
     LoadMenu,
     M_DrawLoad,
@@ -511,7 +511,7 @@ menuitem_t SaveMenu[]=
 
 menu_t  SaveDef =
 {
-    load_end,
+    static_cast<short>(load_e::load_end),
     &MainDef,
     SaveMenu,
     M_DrawSave,
@@ -529,7 +529,7 @@ void M_DrawNameChar();
 //
 menu_t NameCharDef =
 {
-    load_end,
+    static_cast<short>(load_e::load_end),
     &NewDef,
     SaveMenu,
     M_DrawNameChar,
@@ -551,7 +551,7 @@ void M_ReadSaveStrings()
     int   i;
     char *fname = nullptr;
 
-    for(i = 0; i < load_end; i++)
+    for(i = 0; i < static_cast<int>(load_e::load_end); i++)
     {
         int retval;
         if(fname)
@@ -587,7 +587,7 @@ void M_DrawNameChar()
 
     M_WriteText(72, 28, DEH_String("Name Your Character"));
 
-    for (i = 0;i < load_end; i++)
+    for (i = 0;i < static_cast<int>(load_e::load_end); i++)
     {
         M_DrawSaveLoadBorder(LoadDef.x,LoadDef.y+LINEHEIGHT*i);
         M_WriteText(LoadDef.x,LoadDef.y+LINEHEIGHT*i,savegamestrings[i]);
@@ -640,7 +640,7 @@ void M_DrawLoad()
     V_DrawPatchDirect(72, 28, 
                       cache_lump_name<patch_t *>(DEH_String("M_LOADG"), PU_CACHE));
 
-    for (i = 0;i < load_end; i++)
+    for (i = 0;i < static_cast<int>(load_e::load_end); i++)
     {
         M_DrawSaveLoadBorder(LoadDef.x,LoadDef.y+LINEHEIGHT*i);
         M_WriteText(LoadDef.x,LoadDef.y+LINEHEIGHT*i,savegamestrings[i]);
@@ -698,7 +698,7 @@ void M_LoadSelect(int choice)
 //
 // [STRIFE] Verified unmodified
 //
-void M_LoadGame (int choice)
+void M_LoadGame (int)
 {
     if (netgame)
     {
@@ -719,7 +719,7 @@ void M_DrawSave()
     int             i;
 
     V_DrawPatchDirect(72, 28, cache_lump_name<patch_t *>(DEH_String("M_SAVEG"), PU_CACHE));
-    for (i = 0;i < load_end; i++)
+    for (i = 0;i < static_cast<int>(load_e::load_end); i++)
     {
         M_DrawSaveLoadBorder(LoadDef.x,LoadDef.y+LINEHEIGHT*i);
         M_WriteText(LoadDef.x,LoadDef.y+LINEHEIGHT*i,savegamestrings[i]);
@@ -783,7 +783,7 @@ void M_SaveSelect(int choice)
 //
 // Selected from DOOM menu
 //
-void M_SaveGame (int choice)
+void M_SaveGame (int)
 {
     // [STRIFE]
     if (netgame)
@@ -949,20 +949,20 @@ void M_DrawSound()
 {
     V_DrawPatchDirect (100, 10, cache_lump_name<patch_t *>(DEH_String("M_SVOL"), PU_CACHE));
 
-    M_DrawThermo(SoundDef.x,SoundDef.y+LINEHEIGHT*(sfx_vol+1),
+    M_DrawThermo(SoundDef.x,SoundDef.y+LINEHEIGHT*(static_cast<int>(sound_e::sfx_vol)+1),
                  16,sfxVolume);
 
-    M_DrawThermo(SoundDef.x,SoundDef.y+LINEHEIGHT*(music_vol+1),
+    M_DrawThermo(SoundDef.x,SoundDef.y+LINEHEIGHT*(static_cast<int>(sound_e::music_vol)+1),
                  16,musicVolume);
 
-    M_DrawThermo(SoundDef.x,SoundDef.y+LINEHEIGHT*(voice_vol+1),
+    M_DrawThermo(SoundDef.x,SoundDef.y+LINEHEIGHT*(static_cast<int>(sound_e::voice_vol)+1),
                  16,voiceVolume);
 
-    M_DrawThermo(SoundDef.x,SoundDef.y+LINEHEIGHT*(sfx_mouse+1),
+    M_DrawThermo(SoundDef.x,SoundDef.y+LINEHEIGHT*(static_cast<int>(sound_e::sfx_mouse)+1),
                  16,mouseSensitivity);
 }
 
-void M_Sound(int choice)
+void M_Sound(int)
 {
     M_SetupNextMenu(&SoundDef);
 }
@@ -1052,7 +1052,7 @@ void M_DrawNewGame()
     V_DrawPatchDirect(54, 38, cache_lump_name<patch_t *>(DEH_String("M_SKILL"), PU_CACHE));
 }
 
-void M_NewGame(int choice)
+void M_NewGame(int)
 {
     if (netgame && !demoplayback)
     {
@@ -1141,11 +1141,11 @@ void M_DrawOptions()
 
     // haleyjd 08/26/10: [STRIFE] Removed messages, sensitivity, detail.
 
-    M_DrawThermo(OptionsDef.x,OptionsDef.y+LINEHEIGHT*(scrnsize+1),
+    M_DrawThermo(OptionsDef.x,OptionsDef.y+LINEHEIGHT*(static_cast<int>(options_e::scrnsize)+1),
                  9,screenSize);
 }
 
-void M_Options(int choice)
+void M_Options(int)
 {
     M_SetupNextMenu(&OptionsDef);
 }
@@ -1218,9 +1218,8 @@ void M_EndGameResponse(int key)
     D_StartTitle ();
 }
 
-void M_EndGame(int choice)
+void M_EndGame(int)
 {
-    choice = 0;
     if (!usergame)
     {
         S_StartSound(nullptr,sfx_oof);
@@ -1242,9 +1241,8 @@ void M_EndGame(int choice)
 //
 // M_ReadThis
 //
-void M_ReadThis(int choice)
+void M_ReadThis(int)
 {
-    choice = 0;
     M_SetupNextMenu(&ReadDef1);
 }
 
@@ -1253,9 +1251,8 @@ void M_ReadThis(int choice)
 //
 // haleyjd 08/28/10: [STRIFE] Eliminated DOOM stuff.
 //
-void M_ReadThis2(int choice)
+void M_ReadThis2(int)
 {
-    choice = 0;
     M_SetupNextMenu(&ReadDef2);
 }
 
@@ -1264,9 +1261,8 @@ void M_ReadThis2(int choice)
 //
 // haleyjd 08/28/10: [STRIFE] New function.
 //
-void M_ReadThis3(int choice)
+void M_ReadThis3(int)
 {
-    choice = 0;
     M_SetupNextMenu(&ReadDef3);
 }
 
@@ -1339,7 +1335,7 @@ static char *M_SelectEndMessage()
 // haleyjd 09/11/10: No randomized text message; that's taken care of
 // by the randomized voice message after confirmation.
 //
-void M_QuitStrife(int choice)
+void M_QuitStrife(int)
 {
     DEH_snprintf(endstring, sizeof(endstring),
                  "Do you really want to leave?\n\n" DOSY);
@@ -1608,7 +1604,7 @@ M_WriteText
 // at least a 20 pixel margin on the right side. The string passed in must be
 // writable.
 //
-void M_DialogDimMsg(int x, int y, char *str, bool useyfont)
+void M_DialogDimMsg(int x, int, char *str, bool useyfont)
 {
     int rightbound = (ORIGWIDTH - 20) - x;
     patch_t **fontarray;  // ebp
@@ -2035,7 +2031,7 @@ bool M_Responder (event_t* ev)
         {
             M_StartControlPanel ();
             currentMenu = &SoundDef;
-            itemOn = sfx_vol;
+            itemOn = static_cast<short>(sound_e::sfx_vol);
             S_StartSound(nullptr, sfx_swtchn);
             return true;
         }
@@ -2382,11 +2378,10 @@ void M_Drawer ()
 // haleyjd 08/28/10: [STRIFE] Added an int param so this can be called by menus.
 //         09/08/10: Added menupause.
 //
-void M_ClearMenus (int choice)
+void M_ClearMenus (int)
 {
-    choice = 0;     // haleyjd: for no warning; not from decompilation.
-    menuactive = 0;
-    menupause = 0;
+    menuactive = false;
+    menupause = false;
 }
 
 

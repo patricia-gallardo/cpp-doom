@@ -625,7 +625,7 @@ static void P_RemoveSlimeTrails()
 =================
 */
 
-void P_SetupLevel(int episode, int map, int playermask, skill_t skill)
+void P_SetupLevel(int episode, int map, int, skill_t)
 {
     int i;
     int parm;

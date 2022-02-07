@@ -390,7 +390,7 @@ void R_DrawMaskedColumn(column_t * column, signed int baseclip)
 ================
 */
 
-void R_DrawVisSprite(vissprite_t * vis, int x1, int x2)
+void R_DrawVisSprite(vissprite_t * vis, int, int)
 {
     column_t *column;
     int texturecolumn;

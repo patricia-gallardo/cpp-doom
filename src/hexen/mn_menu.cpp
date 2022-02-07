@@ -40,7 +40,7 @@
 #define SELECTOR_XOFFSET (-28)
 #define SELECTOR_YOFFSET (-1)
 #define SLOTTEXTLEN	16
-#define ASCII_CURSOR '['
+constexpr char ASCII_CURSOR ='[';
 
 // TYPES -------------------------------------------------------------------
 
@@ -795,7 +795,7 @@ static void DrawOptions2Menu()
 //
 //---------------------------------------------------------------------------
 
-static void SCQuitGame(int option)
+static void SCQuitGame(int)
 {
     MenuActive = false;
     askforquit = true;
@@ -812,7 +812,7 @@ static void SCQuitGame(int option)
 //
 //---------------------------------------------------------------------------
 
-static void SCEndGame(int option)
+static void SCEndGame(int)
 {
     if (demoplayback)
     {
@@ -836,7 +836,7 @@ static void SCEndGame(int option)
 //
 //---------------------------------------------------------------------------
 
-static void SCMessages(int option)
+static void SCMessages(int)
 {
     messageson ^= 1;
     if (messageson)
@@ -1130,7 +1130,7 @@ static void SCScreenSize(int option)
 //
 //---------------------------------------------------------------------------
 
-static void SCInfo(int option)
+static void SCInfo(int)
 {
     InfoType = 1;
     S_StartSound(nullptr, SFX_DOOR_LIGHT_CLOSE);

@@ -194,7 +194,7 @@ void A_LineEffect(mobj_t *mo)
 // This code may not be used in other mods without appropriate credit given.
 // Code leeches will be telefragged.
 
-void A_FireOldBFG(mobj_t *mobj, player_t *player, pspdef_t *psp)
+void A_FireOldBFG(mobj_t *, player_t *player, pspdef_t *)
 {
     mobjtype_t  type = MT_PLASMA1;
     extern void P_CheckMissileSpawn(mobj_t * th);

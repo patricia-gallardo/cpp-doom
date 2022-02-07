@@ -829,7 +829,7 @@ static void *DEH_TextStart(deh_context_t *context, char *line)
     return nullptr;
 }
 
-static void DEH_TextParseLine(deh_context_t *context, char *line, void *tag)
+static void DEH_TextParseLine(deh_context_t *, char *, void *)
 {
     // not used
 }

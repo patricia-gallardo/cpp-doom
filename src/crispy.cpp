@@ -33,7 +33,7 @@ static crispy_t crispy_s = {
 crispy_t *const crispy = &crispy_s;
 
 // [crispy] "critical" config variables
-static const crispy_t critical_s = { 0 };
+static const crispy_t critical_s = {};
 const crispy_t *      critical   = &critical_s;
 
 // [crispy] update the "singleplayer" variable and the "critical" struct

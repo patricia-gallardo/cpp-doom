@@ -71,7 +71,7 @@ static int TXT_ButtonKeyPress(TXT_UNCAST_ARG(button), int key)
     return 0;
 }
 
-static void TXT_ButtonMousePress(TXT_UNCAST_ARG(button), int x, int y, int b)
+static void TXT_ButtonMousePress(TXT_UNCAST_ARG(button), int, int, int b)
 {
     TXT_CAST_ARG(txt_button_t, button);
 

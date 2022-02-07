@@ -28,7 +28,9 @@
 int vanilla_savegame_limit = 0;
 int vanilla_demo_limit = 0;
 
-void CompatibilitySettings(TXT_UNCAST_ARG(widget), void *user_data)
+#pragma GCC diagnostic push
+#pragma GCC diagnostic ignored "-Wunused-parameter"
+void CompatibilitySettings(TXT_UNCAST_ARG(widget), void *)
 {
     txt_window_t *window;
 
@@ -51,6 +53,7 @@ void CompatibilitySettings(TXT_UNCAST_ARG(widget), void *user_data)
                    nullptr);
     }
 }
+#pragma GCC diagnostic pop
 
 void BindCompatibilityVariables()
 {

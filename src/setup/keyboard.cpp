@@ -79,6 +79,8 @@ static int *map_keys[] = { &key_map_north, &key_map_south, &key_map_east,
                            &key_map_overlay, &key_map_rotate,
                            nullptr };
 
+#pragma GCC diagnostic push
+#pragma GCC diagnostic ignored "-Wunused-parameter"
 static void UpdateJoybSpeed(TXT_UNCAST_ARG(widget), TXT_UNCAST_ARG(var))
 {
     if (always_run)
@@ -98,6 +100,7 @@ static void UpdateJoybSpeed(TXT_UNCAST_ARG(widget), TXT_UNCAST_ARG(var))
         joybspeed = 2;
     }
 }
+#pragma GCC diagnostic pop
 
 static int VarInGroup(int *variable, int **group)
 {
@@ -142,6 +145,8 @@ static void CheckKeyGroup(int *variable, int **group)
 
 // Callback invoked when a key control is set
 
+#pragma GCC diagnostic push
+#pragma GCC diagnostic ignored "-Wunused-parameter"
 static void KeySetCallback(TXT_UNCAST_ARG(widget), TXT_UNCAST_ARG(variable))
 {
     TXT_CAST_ARG(int, variable);
@@ -151,6 +156,7 @@ static void KeySetCallback(TXT_UNCAST_ARG(widget), TXT_UNCAST_ARG(variable))
     CheckKeyGroup(variable, shortcuts);
     CheckKeyGroup(variable, map_keys);
 }
+#pragma GCC diagnostic pop
 
 // Add a label and keyboard input to the specified table.
 
@@ -187,6 +193,9 @@ static void AddSectionLabel(TXT_UNCAST_ARG(table), const char *title,
                    TXT_TABLE_EOL,
                    nullptr);
 }
+
+#pragma GCC diagnostic push
+#pragma GCC diagnostic ignored "-Wunused-parameter"
 static void ConfigExtraKeys(TXT_UNCAST_ARG(widget), TXT_UNCAST_ARG(unused))
 {
     txt_window_t *window;
@@ -321,7 +330,10 @@ static void ConfigExtraKeys(TXT_UNCAST_ARG(widget), TXT_UNCAST_ARG(unused))
     AddKeyControl(table, "Previous weapon", &key_prevweapon);
     AddKeyControl(table, "Next weapon", &key_nextweapon);
 }
+#pragma GCC diagnostic pop
 
+#pragma GCC diagnostic push
+#pragma GCC diagnostic ignored "-Wunused-parameter"
 static void OtherKeysDialog(TXT_UNCAST_ARG(widget), TXT_UNCAST_ARG(unused))
 {
     txt_window_t *window;
@@ -411,7 +423,10 @@ static void OtherKeysDialog(TXT_UNCAST_ARG(widget), TXT_UNCAST_ARG(unused))
 
     TXT_AddWidget(window, scrollpane);
 }
+#pragma GCC diagnostic pop
 
+#pragma GCC diagnostic push
+#pragma GCC diagnostic ignored "-Wunused-parameter"
 void ConfigKeyboard(TXT_UNCAST_ARG(widget), void *user_data)
 {
     txt_window_t *window;
@@ -480,6 +495,7 @@ void ConfigKeyboard(TXT_UNCAST_ARG(widget), void *user_data)
     TXT_SignalConnect(run_control, "changed", UpdateJoybSpeed, nullptr);
     TXT_SetWindowAction(window, TXT_HORIZ_CENTER, TestConfigAction());
 }
+#pragma GCC diagnostic pop
 
 void BindKeyboardVariables()
 {

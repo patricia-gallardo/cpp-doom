@@ -785,8 +785,6 @@ static char *GetGameName(char *gamename)
         
         if (deh_sub != banners[i])
         {
-            size_t gamename_size;
-
             // Has been replaced
             // We need to expand via printf to include the Doom version 
             // number

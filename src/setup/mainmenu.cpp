@@ -94,7 +94,7 @@ static void SensibleDefaults()
     png_screenshots = 1;
 }
 
-static int MainMenuKeyPress(txt_window_t *window, int key, void *user_data)
+static int MainMenuKeyPress(txt_window_t *, int key, void *)
 {
     if (key == cheat_sequence[cheat_sequence_index])
     {
@@ -105,7 +105,7 @@ static int MainMenuKeyPress(txt_window_t *window, int key, void *user_data)
             SensibleDefaults();
             cheat_sequence_index = 0;
 
-            window = TXT_MessageBox(nullptr, "    \x01    ");
+            TXT_MessageBox(nullptr, "    \x01    ");
 
             return 1;
         }
@@ -118,7 +118,7 @@ static int MainMenuKeyPress(txt_window_t *window, int key, void *user_data)
     return 0;
 }
 
-static void DoQuit(void *widget, void *dosave)
+static void DoQuit(void *, void *dosave)
 {
     if (dosave != nullptr)
     {
@@ -130,7 +130,7 @@ static void DoQuit(void *widget, void *dosave)
     exit(0);
 }
 
-static void QuitConfirm(void *unused1, void *unused2)
+static void QuitConfirm(void *, void *)
 {
     txt_window_t *window;
     txt_label_t *label;
@@ -157,7 +157,7 @@ static void QuitConfirm(void *unused1, void *unused2)
     TXT_SetWindowAction(window, TXT_HORIZ_RIGHT, nullptr);
 }
 
-static void LaunchDoom(void *unused1, void *unused2)
+static void LaunchDoom(void *, void *)
 {
     execute_context_t *exec;
     

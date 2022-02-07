@@ -120,6 +120,8 @@ void SetDisplayDriver()
     }
 }
 
+#pragma GCC diagnostic push
+#pragma GCC diagnostic ignored "-Wunused-parameter"
 static void WindowSizeSelected(TXT_UNCAST_ARG(widget), TXT_UNCAST_ARG(size))
 {
     TXT_CAST_ARG(window_size_t, size);
@@ -127,6 +129,7 @@ static void WindowSizeSelected(TXT_UNCAST_ARG(widget), TXT_UNCAST_ARG(size))
     window_width = size->w;
     window_height = size->h;
 }
+#pragma GCC diagnostic pop
 
 static txt_radiobutton_t *SizeSelectButton(window_size_t *size)
 {
@@ -140,6 +143,8 @@ static txt_radiobutton_t *SizeSelectButton(window_size_t *size)
     return result;
 }
 
+#pragma GCC diagnostic push
+#pragma GCC diagnostic ignored "-Wunused-parameter"
 static void GenerateSizesTable(TXT_UNCAST_ARG(widget),
                                TXT_UNCAST_ARG(sizes_table))
 {
@@ -184,7 +189,10 @@ static void GenerateSizesTable(TXT_UNCAST_ARG(widget),
         TXT_AddWidget(sizes_table, SizeSelectButton(&current_size));
     }
 }
+#pragma GCC diagnostic pop
 
+#pragma GCC diagnostic push
+#pragma GCC diagnostic ignored "-Wunused-parameter"
 static void AdvancedDisplayConfig(TXT_UNCAST_ARG(widget),
                                   TXT_UNCAST_ARG(sizes_table))
 {
@@ -216,7 +224,10 @@ static void AdvancedDisplayConfig(TXT_UNCAST_ARG(widget),
 
     TXT_SignalConnect(ar_checkbox, "changed", GenerateSizesTable, sizes_table);
 }
+#pragma GCC diagnostic pop
 
+#pragma GCC diagnostic push
+#pragma GCC diagnostic ignored "-Wunused-parameter"
 void ConfigDisplay(TXT_UNCAST_ARG(widget), void *user_data)
 {
     txt_window_t *window;
@@ -253,6 +264,7 @@ void ConfigDisplay(TXT_UNCAST_ARG(widget), void *user_data)
     TXT_SignalConnect(advanced_button, "pressed",
                       AdvancedDisplayConfig, sizes_table);
 }
+#pragma GCC diagnostic pop
 
 void BindDisplayVariables()
 {

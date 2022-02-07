@@ -713,7 +713,7 @@ bool P_StartLockedACS(line_t * line, byte * args, mobj_t * mo, int side)
 //
 //==========================================================================
 
-bool P_TerminateACS(int number, int map)
+bool P_TerminateACS(int number, int)
 {
     int infoIndex;
 
@@ -737,7 +737,7 @@ bool P_TerminateACS(int number, int map)
 //
 //==========================================================================
 
-bool P_SuspendACS(int number, int map)
+bool P_SuspendACS(int number, int)
 {
     int infoIndex;
 

@@ -39,13 +39,13 @@ typedef struct
 //
 //      source animation definition
 //
-typedef struct
+struct animdef_t
 {
-    int istexture;          // if false, it's a flat
-    char endname[9];
-    char startname[9];
-    int speed;
-} animdef_t;
+    int istexture{};          // if false, it's a flat
+    char endname[9]{};
+    char startname[9]{};
+    int speed{};
+};
 
 #define	MAXANIMS		32
 

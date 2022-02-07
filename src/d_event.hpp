@@ -68,13 +68,13 @@ typedef enum
 } evtype_t;
 
 // Event structure.
-typedef struct
+struct event_t
 {
     evtype_t type;
 
     // Event-specific data; see the descriptions given above.
-    int data1, data2, data3, data4, data5;
-} event_t;
+    int data1{}, data2{}, data3{}, data4{}, data5{};
+};
 
 
 //

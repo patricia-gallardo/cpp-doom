@@ -38,37 +38,22 @@ function(set_project_warnings)
             # catch hard to track down memory errors
             # -Wold-style-cast # warn for c-style casts TODO turn it back on (patricia)
             # -Wcast-align # warn for potential performance problem casts TODO turn it back on (patricia)
-            # -Wunused # warn on anything being unused TODO turn it back on (patricia)
+            -Wunused # warn on anything being unused
             -Woverloaded-virtual # warn if you overload (not override) a virtual function
-            # -Wpedantic # warn if non-standard C++ is used TODO turn it back on (patricia)
+            -Wpedantic # warn if non-standard C++ is used TODO turn it back on (patricia)
             # -Wconversion # warn on type conversions that may lose data TODO turn it back on (patricia)
-            -Wno-sign-conversion # warn on sign conversions TODO turn it back on (patricia)
             -Wnull-dereference # warn if a null dereference is detected
             -Wdouble-promotion # warn if float is implicit promoted to double
-            -Wformat=2 # warn on security issues around functions that format output (ie printf)
-            #-Wno-unused-lambda-capture # CLANG We like explicit capture
-            -Wno-unused-parameter
-            -Wno-unused-variable # TODO turn it back on (patricia)
-            -Wno-unused-function # TODO turn it back on (patricia)
-            #-Wno-reserved-user-defined-literal # CLANG TODO turn it back on (patricia)?
-            #-Wno-shorten-64-to-32 # CLANG TODO turn it back on (patricia)
-            -Wno-missing-field-initializers # TODO turn it back on (patricia)
-            #-Wno-implicit-int-conversion # CLANG TODO turn it back on (patricia)
+            #-Wformat=2 # warn on security issues around functions that format output (ie printf) TODO turn it back on (patricia)
+            -Wno-format-pedantic # CLANG TODO turn it back on (patricia)
+            -Wno-format # GCC TODO turn it back on (patricia)
+            -Wno-sign-conversion # warn on sign conversions TODO turn it back on (patricia)
             -Wno-sign-compare # TODO turn it back on (patricia)
-            #-Wno-writable-strings # CLANG TODO turn it back on (patricia)
             -Wno-format-nonliteral # TODO turn it back on (patricia)
-            #-Wno-macro-redefined # CLANG TODO turn it back on (patricia)
             -Wno-float-conversion # TODO turn it back on (patricia)
             -Wno-double-promotion # TODO turn it back on (patricia)
-            #-Wno-implicit-float-conversion # CLANG TODO turn it back on (patricia)
-            #-Wno-c++11-narrowing # CLANG TODO turn it back on (patricia)
-            #-Wno-deprecated-anon-enum-enum-conversion # CLANG TODO turn it back on (patricia)
             -Wno-narrowing # TODO turn it back on (patricia)
             -Wno-unknown-warning-option # CLANG TODO turn it back on (patricia)
-            -fpermissive # GCC TODO turn it back on (patricia)
-            -Wno-unused-but-set-parameter # GCC TODO turn it back on (patricia)
-            -Wno-parentheses # GCC TODO turn it back on (patricia)
-            -Wno-int-in-bool-context # GCC TODO turn it back on (patricia)
             -Wno-class-memaccess # GCC TODO turn it back on (patricia)
             )
 

@@ -374,6 +374,8 @@ int ExecuteDoom(execute_context_t *context)
     return result;
 }
 
+#pragma GCC diagnostic push
+#pragma GCC diagnostic ignored "-Wunused-parameter"
 static void TestCallback(TXT_UNCAST_ARG(widget), TXT_UNCAST_ARG(data))
 {
     execute_context_t *exec;
@@ -410,6 +412,7 @@ static void TestCallback(TXT_UNCAST_ARG(widget), TXT_UNCAST_ARG(data))
     free(main_cfg);
     free(extra_cfg);
 }
+#pragma GCC diagnostic pop
 
 txt_window_action_t *TestConfigAction()
 {

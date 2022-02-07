@@ -1015,7 +1015,7 @@ void P_BlasterMobjThinker(mobj_t * mobj)
 //
 //===========================================================================
 
-static void PlayerLandedOnThing(mobj_t * mo, mobj_t * onmobj)
+static void PlayerLandedOnThing(mobj_t * mo, mobj_t *)
 {
     mo->player->deltaviewheight = mo->momz >> 3;
     if (mo->momz < -23 * FRACUNIT)

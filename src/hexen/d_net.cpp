@@ -232,7 +232,7 @@ void D_ConnectNetGame()
     }
 }
 
-static bool StartupProgress(int now_ready, int total)
+static bool StartupProgress(int now_ready, int)
 {
     static int ready = 0;
 
@@ -283,7 +283,7 @@ void D_CheckNetGame()
 //
 //==========================================================================
 
-void NET_SendFrags(player_t * player)
+void NET_SendFrags(player_t *)
 {
     // Not sure what this is intended for. Unused?
 }

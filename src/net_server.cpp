@@ -789,7 +789,7 @@ static void NET_SV_ParseSYN(net_packet_t *packet, net_client_t *client,
 // Parse a launch packet. This is sent by the key player when the "start"
 // button is pressed, and causes the startup process to continue.
 
-static void NET_SV_ParseLaunch(net_packet_t *packet, net_client_t *client)
+static void NET_SV_ParseLaunch(net_packet_t *, net_client_t *client)
 {
     net_packet_t *launchpacket;
     int           num_players;

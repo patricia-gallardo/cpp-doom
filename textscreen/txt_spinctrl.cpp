@@ -343,7 +343,7 @@ static int TXT_SpinControlKeyPress(TXT_UNCAST_ARG(spincontrol), int key)
 }
 
 static void TXT_SpinControlMousePress(TXT_UNCAST_ARG(spincontrol),
-                                   int x, int y, int b)
+                                   int x, int, int)
 {
     TXT_CAST_ARG(txt_spincontrol_t, spincontrol);
     unsigned int rel_x;
@@ -360,7 +360,7 @@ static void TXT_SpinControlMousePress(TXT_UNCAST_ARG(spincontrol),
     }
 }
 
-static void TXT_SpinControlFocused(TXT_UNCAST_ARG(spincontrol), int focused)
+static void TXT_SpinControlFocused(TXT_UNCAST_ARG(spincontrol), int)
 {
     TXT_CAST_ARG(txt_spincontrol_t, spincontrol);
 

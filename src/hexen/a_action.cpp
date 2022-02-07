@@ -850,7 +850,7 @@ void A_CheckThrowBomb(mobj_t * actor)
 //
 //===========================================================================
 
-bool A_LocalQuake(byte * args, mobj_t * actor)
+bool A_LocalQuake(byte * args, mobj_t *)
 {
     mobj_t *focus, *target;
     int lastfound = 0;

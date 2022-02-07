@@ -914,7 +914,7 @@ static void I_SDL_PrecacheSounds(sfxinfo_t *sounds, int num_sounds)
 
 #else
 
-static void I_SDL_PrecacheSounds(sfxinfo_t *sounds, int num_sounds)
+static void I_SDL_PrecacheSounds(sfxinfo_t *, int)
 {
     // no-op
 }

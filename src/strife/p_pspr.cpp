@@ -308,9 +308,7 @@ void A_WeaponReady( player_t* player, pspdef_t* psp)
 // The player can re-fire the weapon
 // without lowering it entirely.
 //
-void A_ReFire
-( player_t*	player,
-  pspdef_t*	psp )
+void A_ReFire(player_t *player, pspdef_t *)
 {
     
     // check for fire
@@ -332,7 +330,7 @@ void A_ReFire
 //
 // A_CheckReload
 //
-void A_CheckReload(player_t* player, pspdef_t* psp)
+void A_CheckReload(player_t* player, pspdef_t*)
 {
     P_CheckAmmo(player);
 
@@ -412,10 +410,7 @@ A_Raise
 //
 // A_GunFlash
 //
-void
-A_GunFlash
-( player_t*	player,
-  pspdef_t*	psp ) 
+void A_GunFlash(player_t *player, pspdef_t *)
 {
     P_SetMobjState (player->mo, S_PLAY_06);
     P_SetPsprite (player,ps_flash, weaponinfo[player->readyweapon].flashstate);
@@ -432,7 +427,7 @@ A_GunFlash
 // A_Punch
 //
 
-void A_Punch(player_t* player, pspdef_t* psp) 
+void A_Punch(player_t* player, pspdef_t*)
 {
     angle_t     angle;
     int         damage;
@@ -486,7 +481,7 @@ void A_Punch(player_t* player, pspdef_t* psp)
 //
 // villsa [STRIFE] new codepointer
 //
-void A_FireFlameThrower(player_t* player, pspdef_t* psp) 
+void A_FireFlameThrower(player_t* player, pspdef_t*)
 {
     mobj_t* mo;
     int t;
@@ -505,7 +500,7 @@ void A_FireFlameThrower(player_t* player, pspdef_t* psp)
 //
 // villsa [STRIFE] completly new compared to the original
 //
-void A_FireMissile(player_t* player, pspdef_t* psp) 
+void A_FireMissile(player_t* player, pspdef_t*)
 {
     angle_t an;
     int t;
@@ -526,7 +521,7 @@ void A_FireMissile(player_t* player, pspdef_t* psp)
 //
 // villsa [STRIFE] - new codepointer
 //
-void A_FireMauler2(player_t* player, pspdef_t* pspr)
+void A_FireMauler2(player_t* player, pspdef_t*)
 {
     P_SetMobjState(player->mo, S_PLAY_06);
     P_DamageMobj(player->mo, player->mo, nullptr, 20);
@@ -603,7 +598,7 @@ void A_FireGrenade(player_t* player, pspdef_t* pspr)
 // villsa [STRIFE] - new codepointer
 //
 
-void A_FireElectricBolt(player_t* player, pspdef_t* pspr)
+void A_FireElectricBolt(player_t* player, pspdef_t*)
 {
     angle_t an = player->mo->angle;
     int t;
@@ -622,7 +617,7 @@ void A_FireElectricBolt(player_t* player, pspdef_t* pspr)
 // villsa [STRIFE] - new codepointer
 //
 
-void A_FirePoisonBolt(player_t* player, pspdef_t* pspr)
+void A_FirePoisonBolt(player_t* player, pspdef_t*)
 {
     angle_t an = player->mo->angle;
     int t;
@@ -708,7 +703,7 @@ P_GunShot
 //
 // villsa [STRIFE] - new codepointer
 //
-void A_FireRifle(player_t* player, pspdef_t* pspr)
+void A_FireRifle(player_t* player, pspdef_t*)
 {
     S_StartSound(player->mo, sfx_rifle);
 
@@ -726,7 +721,7 @@ void A_FireRifle(player_t* player, pspdef_t* pspr)
 //
 // villsa [STRIFE] - new codepointer
 //
-void A_FireMauler1(player_t* player, pspdef_t* pspr)
+void A_FireMauler1(player_t* player, pspdef_t*)
 {
     int i;
     angle_t angle;
@@ -758,7 +753,7 @@ void A_FireMauler1(player_t* player, pspdef_t* pspr)
 //
 // villsa [STRIFE] - new codepointer
 //
-void A_SigilSound(player_t* player, pspdef_t* pspr)
+void A_SigilSound(player_t* player, pspdef_t*)
 {
     S_StartSound(player->mo, sfx_siglup);
     player->extralight = 2;
@@ -770,7 +765,7 @@ void A_SigilSound(player_t* player, pspdef_t* pspr)
 //
 // villsa [STRIFE] - new codepointer
 //
-void A_FireSigil(player_t* player, pspdef_t* pspr)
+void A_FireSigil(player_t* player, pspdef_t*)
 {
     mobj_t* mo;
     angle_t an;
@@ -870,7 +865,7 @@ void A_FireSigil(player_t* player, pspdef_t* pspr)
 //
 // villsa [STRIFE] - new codepointer
 //
-void A_GunFlashThinker(player_t* player, pspdef_t* pspr)
+void A_GunFlashThinker(player_t* player, pspdef_t* )
 {
     if(player->readyweapon == wp_sigil && player->sigiltype)
         P_SetPsprite(player, ps_flash, static_cast<statenum_t>(S_SIGH_00 + player->sigiltype));
@@ -883,17 +878,17 @@ void A_GunFlashThinker(player_t* player, pspdef_t* pspr)
 //
 // ?
 //
-void A_Light0 (player_t *player, pspdef_t *psp)
+void A_Light0 (player_t *player, pspdef_t *)
 {
     player->extralight = 0;
 }
 
-void A_Light1 (player_t *player, pspdef_t *psp)
+void A_Light1 (player_t *player, pspdef_t *)
 {
     player->extralight = 1;
 }
 
-void A_Light2 (player_t *player, pspdef_t *psp)
+void A_Light2 (player_t *player, pspdef_t *)
 {
     player->extralight = 2;
 }
@@ -903,7 +898,7 @@ void A_Light2 (player_t *player, pspdef_t *psp)
 //
 // villsa [STRIFE] - new codepointer
 //
-void A_SigilShock (player_t *player, pspdef_t *psp)
+void A_SigilShock (player_t *player, pspdef_t *)
 {
     player->extralight = -3;
 }

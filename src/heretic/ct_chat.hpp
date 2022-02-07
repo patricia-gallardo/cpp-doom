@@ -26,11 +26,11 @@
 #define CT_PLR_BLUE		4
 #define CT_PLR_ALL		5
 
-#define CT_KEY_GREEN	'g'
-#define CT_KEY_YELLOW	'y'
-#define CT_KEY_RED		'r'
-#define CT_KEY_BLUE		'b'
-#define CT_KEY_ALL		't'
+constexpr char CT_KEY_GREEN  = 'g';
+constexpr char CT_KEY_YELLOW = 'y';
+constexpr char CT_KEY_RED    = 'r';
+constexpr char CT_KEY_BLUE   = 'b';
+constexpr char CT_KEY_ALL    = 't';
 
 extern char *chat_macros[10];
 

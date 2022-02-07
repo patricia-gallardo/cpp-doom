@@ -58,7 +58,7 @@ typedef struct
 } maskdraw_t;
 
 
-static degenmobj_t laserspot_m = { { 0 } };
+static degenmobj_t laserspot_m = { {} };
 degenmobj_t *      laserspot   = &laserspot_m;
 
 // [crispy] extendable, but the last char element must be zero,
@@ -454,9 +454,7 @@ void R_DrawMaskedColumn(column_t *column)
 // R_DrawVisSprite
 //  mfloorclip and mceilingclip should also be set.
 //
-void R_DrawVisSprite(vissprite_t *vis,
-    int                           x1,
-    int                           x2)
+void R_DrawVisSprite(vissprite_t *vis, int, int)
 {
     column_t *column;
     int       texturecolumn;

@@ -99,7 +99,7 @@ static int TXT_RadioButtonKeyPress(TXT_UNCAST_ARG(radiobutton), int key)
 }
 
 static void TXT_RadioButtonMousePress(TXT_UNCAST_ARG(radiobutton), 
-                                      int x, int y, int b)
+                                      int, int, int b)
 {
     TXT_CAST_ARG(txt_radiobutton_t, radiobutton);
 

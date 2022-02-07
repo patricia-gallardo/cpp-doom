@@ -103,52 +103,52 @@ enum snddevice_t : int
 
 // Interface for sound modules
 
-typedef struct
+struct sound_module_t
 {
     // List of sound devices that this sound module is used for.
 
-    snddevice_t *sound_devices;
-    int          num_sound_devices;
+    snddevice_t *sound_devices{};
+    int          num_sound_devices{};
 
     // Initialise sound module
     // Returns true if successfully initialised
 
-    bool (*Init)(bool use_sfx_prefix);
+    bool (*Init)(bool use_sfx_prefix){};
 
     // Shutdown sound module
 
-    void (*Shutdown)();
+    void (*Shutdown)(){};
 
     // Returns the lump index of the given sound.
 
-    int (*GetSfxLumpNum)(sfxinfo_t *sfxinfo);
+    int (*GetSfxLumpNum)(sfxinfo_t *sfxinfo){};
 
     // Called periodically to update the subsystem.
 
-    void (*Update)();
+    void (*Update)(){};
 
     // Update the sound settings on the given channel.
 
-    void (*UpdateSoundParams)(int channel, int vol, int sep);
+    void (*UpdateSoundParams)(int channel, int vol, int sep){};
 
     // Start a sound on a given channel.  Returns the channel id
     // or -1 on failure.
 
-    int (*StartSound)(sfxinfo_t *sfxinfo, int channel, int vol, int sep, int pitch);
+    int (*StartSound)(sfxinfo_t *sfxinfo, int channel, int vol, int sep, int pitch){};
 
     // Stop the sound playing on the given channel.
 
-    void (*StopSound)(int channel);
+    void (*StopSound)(int channel){};
 
     // Query if a sound is playing on the given channel
 
-    bool (*SoundIsPlaying)(int channel);
+    bool (*SoundIsPlaying)(int channel){};
 
     // Called on startup to precache sound effects (if necessary)
 
-    void (*CacheSounds)(sfxinfo_t *sounds, int num_sounds);
+    void (*CacheSounds)(sfxinfo_t *sounds, int num_sounds){};
 
-} sound_module_t;
+};
 
 void    I_InitSound(bool use_sfx_prefix);
 void    I_ShutdownSound();

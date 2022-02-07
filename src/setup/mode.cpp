@@ -265,6 +265,8 @@ static bool CheckExecutableName(GameSelectCallback callback)
     return false;
 }
 
+#pragma GCC diagnostic push
+#pragma GCC diagnostic ignored "-Wunused-parameter"
 static void GameSelected(TXT_UNCAST_ARG(widget), TXT_UNCAST_ARG(config))
 {
     TXT_CAST_ARG(mission_config_t, config);
@@ -272,6 +274,7 @@ static void GameSelected(TXT_UNCAST_ARG(widget), TXT_UNCAST_ARG(config))
     SetMission(config);
     game_selected_callback();
 }
+#pragma GCC diagnostic pop
 
 static void OpenGameSelectDialog(GameSelectCallback callback)
 {

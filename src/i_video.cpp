@@ -1727,7 +1727,7 @@ void I_ReInitGraphics(int reinit)
     // [crispy] re-create renderer
     if (reinit & REINIT_RENDERER)
     {
-        SDL_RendererInfo info = { 0 };
+        SDL_RendererInfo info = {};
         int              flags;
 
         SDL_GetRendererInfo(renderer, &info);

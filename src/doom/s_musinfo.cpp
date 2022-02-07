@@ -265,7 +265,7 @@ static void CheckOpen()
 
 // [crispy] adapted from prboom-plus/src/s_advsound.c:54-159
 
-musinfo_t musinfo = { 0 };
+musinfo_t musinfo = {};
 
 //
 // S_ParseMusInfo

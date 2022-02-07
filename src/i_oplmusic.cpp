@@ -1251,7 +1251,7 @@ static void VoiceKeyOff(opl_voice_t *voice)
         voice->freq >> 8);
 }
 
-static opl_channel_data_t *TrackChannelForEvent(opl_track_data_t *track,
+static opl_channel_data_t *TrackChannelForEvent(opl_track_data_t *,
     midi_event_t *                                                event)
 {
     unsigned int channel_num = event->data.channel.channel;
@@ -1744,11 +1744,9 @@ static void SetChannelPan(opl_channel_data_t *channel, unsigned int pan)
 }
 
 // Handler for the MIDI_CONTROLLER_ALL_NOTES_OFF channel event.
-static void AllNotesOff(opl_channel_data_t *channel, unsigned int param)
+static void AllNotesOff(opl_channel_data_t *channel, unsigned int)
 {
-    int i;
-
-    for (i = 0; i < voice_alloced_num; i++)
+    for (int i = 0; i < voice_alloced_num; i++)
     {
         if (voice_alloced_list[i]->channel == channel)
         {
@@ -1852,7 +1850,7 @@ static void MetaSetTempo(unsigned int tempo)
 
 // Process a meta event.
 
-static void MetaEvent(opl_track_data_t *track, midi_event_t *event)
+static void MetaEvent(opl_track_data_t *, midi_event_t *event)
 {
     byte *       data     = event->data.meta.data;
     unsigned int data_len = event->data.meta.length;
@@ -1943,21 +1941,19 @@ static void InitChannel(opl_channel_data_t *channel);
 
 // Restart a song from the beginning.
 
-static void RestartSong(void *unused)
+static void RestartSong(void *)
 {
-    unsigned int i;
-
     running_tracks = num_tracks;
 
     start_music_volume = current_music_volume;
 
-    for (i = 0; i < num_tracks; ++i)
+    for (int i = 0; i < num_tracks; ++i)
     {
         MIDI_RestartIterator(tracks[i].iter);
         ScheduleTrack(&tracks[i]);
     }
 
-    for (i = 0; i < MIDI_CHANNELS_PER_TRACK; ++i)
+    for (int i = 0; i < MIDI_CHANNELS_PER_TRACK; ++i)
     {
         InitChannel(&channels[i]);
     }

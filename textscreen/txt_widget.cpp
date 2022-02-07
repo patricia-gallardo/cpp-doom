@@ -203,15 +203,21 @@ void TXT_LayoutWidget(TXT_UNCAST_ARG(widget))
     }
 }
 
+#pragma GCC diagnostic push
+#pragma GCC diagnostic ignored "-Wunused-parameter"
 int TXT_AlwaysSelectable(TXT_UNCAST_ARG(widget))
 {
     return 1;
 }
+#pragma GCC diagnostic pop
 
+#pragma GCC diagnostic push
+#pragma GCC diagnostic ignored "-Wunused-parameter"
 int TXT_NeverSelectable(TXT_UNCAST_ARG(widget))
 {
     return 0;
 }
+#pragma GCC diagnostic pop
 
 int TXT_SelectableWidget(TXT_UNCAST_ARG(widget))
 {

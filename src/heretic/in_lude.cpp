@@ -370,7 +370,7 @@ void IN_LoadPics()
 //
 //========================================================================
 
-static void UnloadLumpCallback(const char *lumpname, int lumpnum, patch_t **ptr)
+static void UnloadLumpCallback(const char *lumpname, int lumpnum, patch_t **)
 {
     if (lumpname != nullptr)
     {

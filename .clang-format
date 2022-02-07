@@ -18,6 +18,7 @@ PointerAlignment: Right
 SortIncludes: false
 TabWidth: 8
 UseTab: Never
+ColumnLimit: 140
 AlignConsecutiveAssignments: true
 AlignConsecutiveDeclarations: true
 AlignConsecutiveMacros: true
