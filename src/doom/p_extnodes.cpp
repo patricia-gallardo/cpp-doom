@@ -163,8 +163,8 @@ void P_LoadSubsectors_DeePBSP(int lump)
 
     for (i = 0; i < numsubsectors; i++)
     {
-        subsectors[i].numlines  = (int)data[i].numsegs;
-        subsectors[i].firstline = (int)data[i].firstseg;
+        subsectors[i].numlines  = static_cast<int>(data[i].numsegs);
+        subsectors[i].firstline = static_cast<int>(data[i].firstseg);
     }
 
     W_ReleaseLumpNum(lump);

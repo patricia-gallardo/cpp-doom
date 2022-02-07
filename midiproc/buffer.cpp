@@ -217,7 +217,7 @@ bool Reader_ReadInt32(buffer_reader_t *reader, uint32_t *out)
         return false;
     }
 
-    *out = (uint32_t)((dp[0] << 24) | (dp[1] << 16) | (dp[2] << 8) | dp[3]);
+    *out = static_cast<uint32_t>((dp[0] << 24) | (dp[1] << 16) | (dp[2] << 8) | dp[3]);
     reader->pos += 4;
 
     return true;

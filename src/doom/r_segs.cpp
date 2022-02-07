@@ -272,7 +272,7 @@ void R_RenderMaskedSegRange(drawseg_t *ds,
             // mapping to screen coordinates is totally out of range:
 
             {
-                int64_t t = ((int64_t)centeryfrac << FRACBITS) - (int64_t)dc_texturemid * spryscale;
+                int64_t t = (static_cast<int64_t>(centeryfrac) << FRACBITS) - static_cast<int64_t>(dc_texturemid) * spryscale;
 
                 if (t + (int64_t)textureheight[texnum] * spryscale < 0 || t > (int64_t)SCREENHEIGHT << FRACBITS * 2)
                 {
@@ -280,7 +280,7 @@ void R_RenderMaskedSegRange(drawseg_t *ds,
                     continue;                  // skip if the texture is out of screen's range
                 }
 
-                sprtopscreen = (int64_t)(t >> FRACBITS); // [crispy] WiggleFix
+                sprtopscreen = static_cast<int64_t>(t >> FRACBITS); // [crispy] WiggleFix
             }
 
             dc_iscale = 0xffffffffu / (unsigned)spryscale;
@@ -557,12 +557,12 @@ void R_StoreWallRange(int start,
     // thank you very much Linguica, e6y and kb1
     // http://www.doomworld.com/vb/post/1340718
     // shift right to avoid possibility of int64 overflow in rw_distance calculation
-    dx          = ((int64_t)curline->v2->r_x - curline->v1->r_x) >> 1;
-    dy          = ((int64_t)curline->v2->r_y - curline->v1->r_y) >> 1;
-    dx1         = ((int64_t)viewx - curline->v1->r_x) >> 1;
-    dy1         = ((int64_t)viewy - curline->v1->r_y) >> 1;
+    dx          = (static_cast<int64_t>(curline->v2->r_x) - curline->v1->r_x) >> 1;
+    dy          = (static_cast<int64_t>(curline->v2->r_y) - curline->v1->r_y) >> 1;
+    dx1         = (static_cast<int64_t>(viewx) - curline->v1->r_x) >> 1;
+    dy1         = (static_cast<int64_t>(viewy) - curline->v1->r_y) >> 1;
     dist        = ((dy * dx1 - dx * dy1) / len) << 1;
-    rw_distance = (fixed_t)BETWEEN(INT_MIN, INT_MAX, dist);
+    rw_distance = static_cast<fixed_t>(BETWEEN(INT_MIN, INT_MAX, dist));
 
 
     ds_p->x1 = rw_x = start;
@@ -789,7 +789,7 @@ void R_StoreWallRange(int start,
     {
 
         // [crispy] fix long wall wobble
-        rw_offset = (fixed_t)(((dx * dx1 + dy * dy1) / len) << 1);
+        rw_offset = static_cast<fixed_t>(((dx * dx1 + dy * dy1) / len) << 1);
         rw_offset += sidedef->textureoffset + curline->offset;
         rw_centerangle = ANG90 + viewangle - rw_normalangle;
 
@@ -843,10 +843,14 @@ void R_StoreWallRange(int start,
     worldbottom >>= invhgtbits;
 
     topstep = -FixedMul(rw_scalestep, worldtop);
-    topfrac = ((int64_t)centeryfrac >> invhgtbits) - (((int64_t)worldtop * rw_scale) >> FRACBITS); // [crispy] WiggleFix
+    int64_t aa =  static_cast<int64_t>(centeryfrac);
+    int64_t bb =  static_cast<int64_t>(worldtop) * rw_scale;
+    topfrac = (aa >> invhgtbits) - (bb >> FRACBITS); // [crispy] WiggleFix
 
     bottomstep = -FixedMul(rw_scalestep, worldbottom);
-    bottomfrac = ((int64_t)centeryfrac >> invhgtbits) - (((int64_t)worldbottom * rw_scale) >> FRACBITS); // [crispy] WiggleFix
+    int64_t aaa  =  static_cast<int64_t>(centeryfrac);
+    int64_t bbb  =  static_cast<int64_t>(worldbottom) * rw_scale;
+    bottomfrac = (aaa >> invhgtbits) - (bbb >> FRACBITS); // [crispy] WiggleFix
 
     if (backsector)
     {
@@ -855,13 +859,17 @@ void R_StoreWallRange(int start,
 
         if (worldhigh < worldtop)
         {
-            pixhigh     = ((int64_t)centeryfrac >> invhgtbits) - (((int64_t)worldhigh * rw_scale) >> FRACBITS); // [crispy] WiggleFix
+            int64_t a   = static_cast<int64_t>(centeryfrac) >> invhgtbits;
+            int64_t b   = static_cast<int64_t>(worldhigh) * rw_scale;
+            pixhigh     = a - (b >> FRACBITS); // [crispy] WiggleFix
             pixhighstep = -FixedMul(rw_scalestep, worldhigh);
         }
 
         if (worldlow > worldbottom)
         {
-            pixlow     = ((int64_t)centeryfrac >> invhgtbits) - (((int64_t)worldlow * rw_scale) >> FRACBITS); // [crispy] WiggleFix
+            int64_t a  = static_cast<int64_t>(centeryfrac) >> invhgtbits;
+            int64_t b  = static_cast<int64_t>(worldlow) * rw_scale;
+            pixlow     = a - (b >> FRACBITS); // [crispy] WiggleFix
             pixlowstep = -FixedMul(rw_scalestep, worldlow);
         }
     }

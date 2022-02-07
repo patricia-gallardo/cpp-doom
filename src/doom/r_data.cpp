@@ -477,7 +477,7 @@ void R_GenerateLookup(int texnum)
                     // count posts
                     for (; col->topdelta != 0xff; postcount[x]++)
                     {
-                        if ((unsigned)((const uint8_t *)col - base) <= limit)
+                        if (static_cast<unsigned>((const uint8_t *)col - base) <= limit)
                             col = (const column_t *)((const uint8_t *)col + col->length + 4);
                         else
                             break;

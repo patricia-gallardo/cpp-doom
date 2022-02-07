@@ -274,7 +274,7 @@ void P_XYMovement (mobj_t* mo)
     {
         // if in a walking frame, stop moving
         // villsa [STRIFE]: different player state (haleyjd - verified 20110202)
-        if ( player&&(unsigned)((player->mo->state - states) - S_PLAY_01) < 4)
+        if ( player && static_cast<unsigned>((player->mo->state - states) - S_PLAY_01) < 4)
             P_SetMobjState (player->mo, S_PLAY_00);
 
         mo->momx = 0;

@@ -226,7 +226,7 @@ static allocated_sound_t *AllocateSound(sfxinfo_t *sfxinfo, size_t len)
 
     // Skip past the chunk structure for the audio buffer
 
-    snd->chunk.abuf      = (uint8_t *)(snd + 1);
+    snd->chunk.abuf      = reinterpret_cast<uint8_t *>(snd + 1);
     snd->chunk.alen      = len;
     snd->chunk.allocated = 1;
     snd->chunk.volume    = MIX_MAX_VOLUME;
@@ -621,7 +621,7 @@ static bool ExpandSoundData_SDL(sfxinfo_t *sfxinfo, uint8_t *data,
 
     // Calculate the length of the expanded version of the sample.
 
-    expanded_length = (uint32_t)((((uint64_t)samplecount) * mixer_freq) / samplerate);
+    expanded_length = static_cast<uint32_t>((((uint64_t)samplecount) * mixer_freq) / samplerate);
 
     // Double up twice: 8 -> 16 bit and mono -> stereo
 

@@ -566,7 +566,7 @@ void R_ProjectSprite (mobj_t* thing)
     {
 	// choose a different rotation based on player view
 	ang = R_PointToAngle (thing->x, thing->y);
-	rot = (ang-thing->angle+(unsigned)(ANG45/2)*9)>>29;
+	rot = (ang-thing->angle+static_cast<unsigned>(ANG45/2)*9)>>29;
 	lump = sprframe->lump[rot];
 	flip = static_cast<bool>(sprframe->flip[rot]);
     }

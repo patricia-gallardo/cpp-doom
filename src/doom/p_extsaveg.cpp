@@ -131,9 +131,9 @@ static void P_WriteFireFlicker(const char *key)
             M_snprintf(line, MAX_LINE_LEN, "%s %d %d %d %d\n",
                 key,
                 static_cast<int>(flick->sector - sectors),
-                (int)flick->count,
-                (int)flick->maxlight,
-                (int)flick->minlight);
+                static_cast<int>(flick->count),
+                static_cast<int>(flick->maxlight),
+                static_cast<int>(flick->minlight));
             fputs(line, save_stream);
         }
     }
@@ -254,9 +254,9 @@ static void P_WriteButton(const char *key)
             M_snprintf(line, MAX_LINE_LEN, "%s %d %d %d %d\n",
                 key,
                 static_cast<int>(button->line - lines),
-                (int)button->where,
-                (int)button->btexture,
-                (int)button->btimer);
+                static_cast<int>(button->where),
+                static_cast<int>(button->btexture),
+                static_cast<int>(button->btimer));
             fputs(line, save_stream);
         }
     }
@@ -516,7 +516,7 @@ void P_ReadExtendedSaveGameData(int pass)
     fseek(save_stream, SAVESTRINGSIZE + VERSIONSIZE + 1, SEEK_SET); // [crispy] + 1 for "gameskill"
     if (fread(&episode, 1, 1, save_stream) == 1 && fread(&map, 1, 1, save_stream) == 1)
     {
-        lumpnum = P_GetNumForMap((int)episode, (int)map, false);
+        lumpnum = P_GetNumForMap(static_cast<int>(episode), static_cast<int>(map), false);
     }
 
     if (lumpnum >= 0)

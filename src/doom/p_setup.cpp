@@ -122,7 +122,7 @@ fixed_t GetOffset(vertex_t *v1, vertex_t *v2)
 
     dx = (v1->x - v2->x) >> FRACBITS;
     dy = (v1->y - v2->y) >> FRACBITS;
-    r  = (fixed_t)(sqrt(dx * dx + dy * dy)) << FRACBITS;
+    r  = static_cast<fixed_t>(sqrt(dx * dx + dy * dy)) << FRACBITS;
 
     return r;
 }
@@ -285,7 +285,7 @@ void P_SegLengths(bool contrast_only)
 
         if (!contrast_only)
         {
-            li->length = (uint32_t)(sqrt((double)dx * dx + (double)dy * dy) / 2);
+            li->length = static_cast<uint32_t>(sqrt((double)dx * dx + (double)dy * dy) / 2);
 
             // [crispy] re-calculate angle used for rendering
             viewx       = li->v1->r_x;
@@ -724,8 +724,8 @@ bool P_LoadBlockMap(int lump)
 
     blockmaplump[0] = SHORT(wadblockmaplump[0]);
     blockmaplump[1] = SHORT(wadblockmaplump[1]);
-    blockmaplump[2] = (int32_t)(SHORT(wadblockmaplump[2])) & 0xffff;
-    blockmaplump[3] = (int32_t)(SHORT(wadblockmaplump[3])) & 0xffff;
+    blockmaplump[2] = static_cast<int32_t>(SHORT(wadblockmaplump[2])) & 0xffff;
+    blockmaplump[3] = static_cast<int32_t>(SHORT(wadblockmaplump[3])) & 0xffff;
 
     // Swap all short integers to native byte ordering.
 
@@ -908,8 +908,8 @@ static void P_RemoveSlimeTrails()
                         int64_t s   = dx2 + dy2;
 
                         // [crispy] MBF actually overrides v->x and v->y here
-                        v->r_x = (fixed_t)((dx2 * v->x + dy2 * l->v1->x + dxy * (v->y - l->v1->y)) / s);
-                        v->r_y = (fixed_t)((dy2 * v->y + dx2 * l->v1->y + dxy * (v->x - l->v1->x)) / s);
+                        v->r_x = static_cast<fixed_t>((dx2 * v->x + dy2 * l->v1->x + dxy * (v->y - l->v1->y)) / s);
+                        v->r_y = static_cast<fixed_t>((dy2 * v->y + dx2 * l->v1->y + dxy * (v->x - l->v1->x)) / s);
 
                         // [crispy] wait a minute... moved more than 8 map units?
                         // maybe that's a linguortal then, back to the original coordinates
@@ -964,7 +964,7 @@ static void PadRejectArray(uint8_t *array, unsigned int len)
     if (len > sizeof(rejectpad))
     {
         fprintf(stderr, "PadRejectArray: REJECT lump too short to pad! (%u > %i)\n",
-            len, (int)sizeof(rejectpad));
+            len, static_cast<int>(sizeof(rejectpad)));
 
         // Pad remaining space with 0 (or 0xff, if specified on command line).
 
@@ -1171,7 +1171,7 @@ void P_SetupLevel(int episode, int map, int, skill_t skill)
 
         fprintf(stderr, "P_SetupLevel: %s (%s) %s%s %d:%02d:%02d/%d:%02d:%02d ",
             maplumpinfo->name, W_WadNameForLump(maplumpinfo),
-            skilltable[BETWEEN(0, 5, (int)skill + 1)], rfn_str,
+            skilltable[BETWEEN(0, 5, static_cast<int>(skill) + 1)], rfn_str,
             ltime / 3600, (ltime % 3600) / 60, ltime % 60,
             ttime / 3600, (ttime % 3600) / 60, ttime % 60);
 
