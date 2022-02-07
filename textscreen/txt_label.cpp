@@ -23,17 +23,17 @@
 #include "txt_utf8.hpp"
 #include "txt_window.hpp"
 
-static void TXT_LabelSizeCalc(TXT_UNCAST_ARG(label))
+static void TXT_LabelSizeCalc(void *uncast_label)
 {
-    TXT_CAST_ARG(txt_label_t, label);
+    txt_label_t *label = (txt_label_t *)uncast_label;
 
     label->widget.w = label->w;
     label->widget.h = label->h;
 }
 
-static void TXT_LabelDrawer(TXT_UNCAST_ARG(label))
+static void TXT_LabelDrawer(void *uncast_label)
 {
-    TXT_CAST_ARG(txt_label_t, label);
+    txt_label_t *label = (txt_label_t *)uncast_label;
     unsigned int x, y;
     int origin_x, origin_y;
     unsigned int align_indent = 0;
@@ -95,9 +95,9 @@ static void TXT_LabelDrawer(TXT_UNCAST_ARG(label))
     }
 }
 
-static void TXT_LabelDestructor(TXT_UNCAST_ARG(label))
+static void TXT_LabelDestructor(void *uncast_label)
 {
-    TXT_CAST_ARG(txt_label_t, label);
+    txt_label_t *label = (txt_label_t *)uncast_label;
 
     free(label->label);
     free(label->lines);

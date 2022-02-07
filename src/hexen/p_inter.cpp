@@ -1269,7 +1269,7 @@ mobj_t *ActiveMinotaur(player_t * master)
             continue;           // for morphed minotaurs
         if (mo->flags & MF_CORPSE)
             continue;
-        starttime = (unsigned int *) mo->args;
+        starttime =  reinterpret_cast<unsigned int *>(mo->args);
         if ((leveltime - *starttime) >= MAULATORTICS)
             continue;
         plr = mo->special1.m->player;

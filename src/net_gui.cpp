@@ -50,22 +50,16 @@ static bool       had_warning;
 // zero, do not autostart.
 static int expected_nodes;
 
-#pragma GCC diagnostic push
-#pragma GCC diagnostic ignored "-Wunused-parameter"
-static void EscapePressed(TXT_UNCAST_ARG(widget), void *unused)
+static void EscapePressed(void *, void *)
 {
     TXT_Shutdown();
     I_Quit();
 }
-#pragma GCC diagnostic pop
 
-#pragma GCC diagnostic push
-#pragma GCC diagnostic ignored "-Wunused-parameter"
-static void StartGame(TXT_UNCAST_ARG(widget), TXT_UNCAST_ARG(unused))
+static void StartGame(void *, void *)
 {
     NET_CL_LaunchGame();
 }
-#pragma GCC diagnostic pop
 
 static void OpenWaitDialog()
 {
@@ -255,15 +249,12 @@ static void PrintSHA1Digest(const char *s, const byte *digest)
     printf("\n");
 }
 
-#pragma GCC diagnostic push
-#pragma GCC diagnostic ignored "-Wunused-parameter"
-static void CloseWindow(TXT_UNCAST_ARG(widget), TXT_UNCAST_ARG(window))
+static void CloseWindow(void *, void *uncast_window)
 {
-    TXT_CAST_ARG(txt_window_t, window);
+    txt_window_t *window = (txt_window_t *)uncast_window;
 
     TXT_CloseWindow(window);
 }
-#pragma GCC diagnostic pop
 
 static void CheckSHA1Sums()
 {

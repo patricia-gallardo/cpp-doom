@@ -12,18 +12,12 @@
 // GNU General Public License for more details.
 //
 
-
-#include "doomkeys.hpp"
-
 #include "txt_strut.hpp"
-#include "txt_io.hpp"
-#include "txt_main.hpp"
-#include "txt_window.hpp"
 #include "memory.hpp"
 
-static void TXT_StrutSizeCalc(TXT_UNCAST_ARG(strut))
+static void TXT_StrutSizeCalc(void *uncast_strut)
 {
-    TXT_CAST_ARG(txt_strut_t, strut);
+    txt_strut_t *strut = (txt_strut_t *)uncast_strut;
 
     // Minimum width is the string length + two spaces for padding
 
@@ -31,28 +25,19 @@ static void TXT_StrutSizeCalc(TXT_UNCAST_ARG(strut))
     strut->widget.h = strut->height;
 }
 
-#pragma GCC diagnostic push
-#pragma GCC diagnostic ignored "-Wunused-parameter"
-static void TXT_StrutDrawer(TXT_UNCAST_ARG(strut))
+static void TXT_StrutDrawer(void *)
 {
     // Nothing is drawn for a strut.
 }
-#pragma GCC diagnostic pop
 
-#pragma GCC diagnostic push
-#pragma GCC diagnostic ignored "-Wunused-parameter"
-static void TXT_StrutDestructor(TXT_UNCAST_ARG(strut))
+static void TXT_StrutDestructor(void *)
 {
 }
-#pragma GCC diagnostic pop
 
-#pragma GCC diagnostic push
-#pragma GCC diagnostic ignored "-Wunused-parameter"
-static int TXT_StrutKeyPress(TXT_UNCAST_ARG(strut), int key)
+static int TXT_StrutKeyPress(void *, int)
 {
     return 0;
 }
-#pragma GCC diagnostic pop
 
 txt_widget_class_t txt_strut_class =
 {

@@ -25,9 +25,9 @@
 #include "txt_window.hpp"
 #include "memory.hpp"
 
-static void TXT_RadioButtonSizeCalc(TXT_UNCAST_ARG(radiobutton))
+static void TXT_RadioButtonSizeCalc(void *uncast_radiobutton)
 {
-    TXT_CAST_ARG(txt_radiobutton_t, radiobutton);
+    txt_radiobutton_t *radiobutton = (txt_radiobutton_t *)uncast_radiobutton;
 
     // Minimum width is the string length + right-side spaces for padding
 
@@ -35,9 +35,9 @@ static void TXT_RadioButtonSizeCalc(TXT_UNCAST_ARG(radiobutton))
     radiobutton->widget.h = 1;
 }
 
-static void TXT_RadioButtonDrawer(TXT_UNCAST_ARG(radiobutton))
+static void TXT_RadioButtonDrawer(void *uncast_radiobutton)
 {
-    TXT_CAST_ARG(txt_radiobutton_t, radiobutton);
+    txt_radiobutton_t *radiobutton = (txt_radiobutton_t *)uncast_radiobutton;
     txt_saved_colors_t colors;
     int i;
     int w;
@@ -74,16 +74,16 @@ static void TXT_RadioButtonDrawer(TXT_UNCAST_ARG(radiobutton))
     }
 }
 
-static void TXT_RadioButtonDestructor(TXT_UNCAST_ARG(radiobutton))
+static void TXT_RadioButtonDestructor(void *uncast_radiobutton)
 {
-    TXT_CAST_ARG(txt_radiobutton_t, radiobutton);
+    txt_radiobutton_t *radiobutton = (txt_radiobutton_t *)uncast_radiobutton;
 
     free(radiobutton->label);
 }
 
-static int TXT_RadioButtonKeyPress(TXT_UNCAST_ARG(radiobutton), int key)
+static int TXT_RadioButtonKeyPress(void *uncast_radiobutton, int key)
 {
-    TXT_CAST_ARG(txt_radiobutton_t, radiobutton);
+    txt_radiobutton_t *radiobutton = (txt_radiobutton_t *)uncast_radiobutton;
 
     if (key == KEY_ENTER || key == ' ')
     {
@@ -98,10 +98,10 @@ static int TXT_RadioButtonKeyPress(TXT_UNCAST_ARG(radiobutton), int key)
     return 0;
 }
 
-static void TXT_RadioButtonMousePress(TXT_UNCAST_ARG(radiobutton), 
+static void TXT_RadioButtonMousePress(void *uncast_radiobutton,
                                       int, int, int b)
 {
-    TXT_CAST_ARG(txt_radiobutton_t, radiobutton);
+    txt_radiobutton_t *radiobutton = (txt_radiobutton_t *)uncast_radiobutton;
 
     if (b == TXT_MOUSE_LEFT)
     {

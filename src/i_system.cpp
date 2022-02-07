@@ -445,14 +445,14 @@ bool I_GetMemoryValue(unsigned int offset, void *value, int size)
     switch (size)
     {
     case 1:
-        *((unsigned char *)value) = dos_mem_dump[offset];
+        *(reinterpret_cast<unsigned int *>(value)) = dos_mem_dump[offset];
         return true;
     case 2:
-        *((unsigned short *)value) = dos_mem_dump[offset]
+        *(reinterpret_cast<unsigned int *>(value)) = dos_mem_dump[offset]
                                      | (dos_mem_dump[offset + 1] << 8);
         return true;
     case 4:
-        *((unsigned int *)value) = dos_mem_dump[offset]
+        *(reinterpret_cast<unsigned int *>(value)) = dos_mem_dump[offset]
                                    | (dos_mem_dump[offset + 1] << 8)
                                    | (dos_mem_dump[offset + 2] << 16)
                                    | (dos_mem_dump[offset + 3] << 24);

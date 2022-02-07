@@ -26,10 +26,9 @@
 
 #define KEY_INPUT_WIDTH 8
 
-static int KeyPressCallback(txt_window_t *window, int key, 
-                            TXT_UNCAST_ARG(key_input))
+static int KeyPressCallback(txt_window_t *window, int key, void *uncast_key_input)
 {
-    TXT_CAST_ARG(txt_key_input_t, key_input);
+    txt_key_input_t *key_input = (txt_key_input_t *)uncast_key_input;
 
     if (key != KEY_ESCAPE)
     {
@@ -55,14 +54,11 @@ static int KeyPressCallback(txt_window_t *window, int key,
     }
 }
 
-#pragma GCC diagnostic push
-#pragma GCC diagnostic ignored "-Wunused-parameter"
-static void ReleaseGrab(TXT_UNCAST_ARG(window), TXT_UNCAST_ARG(unused))
+static void ReleaseGrab(void *, void *)
 {
     // SDL2-TODO: Needed?
     // SDL_WM_GrabInput(SDL_GRAB_OFF);
 }
-#pragma GCC diagnostic pop
 
 static void OpenPromptWindow(txt_key_input_t *key_input)
 {
@@ -88,9 +84,9 @@ static void OpenPromptWindow(txt_key_input_t *key_input)
     TXT_SignalConnect(window, "closed", ReleaseGrab, nullptr);
 }
 
-static void TXT_KeyInputSizeCalc(TXT_UNCAST_ARG(key_input))
+static void TXT_KeyInputSizeCalc(void *uncast_key_input)
 {
-    TXT_CAST_ARG(txt_key_input_t, key_input);
+    txt_key_input_t *key_input = (txt_key_input_t *)uncast_key_input;
 
     // All keyinputs are the same size.
 
@@ -99,9 +95,9 @@ static void TXT_KeyInputSizeCalc(TXT_UNCAST_ARG(key_input))
 }
 
 
-static void TXT_KeyInputDrawer(TXT_UNCAST_ARG(key_input))
+static void TXT_KeyInputDrawer(void *uncast_key_input)
 {
-    TXT_CAST_ARG(txt_key_input_t, key_input);
+    txt_key_input_t *key_input = (txt_key_input_t *)uncast_key_input;
     char buf[20];
     int i;
 
@@ -125,16 +121,13 @@ static void TXT_KeyInputDrawer(TXT_UNCAST_ARG(key_input))
     }
 }
 
-#pragma GCC diagnostic push
-#pragma GCC diagnostic ignored "-Wunused-parameter"
-static void TXT_KeyInputDestructor(TXT_UNCAST_ARG(key_input))
+static void TXT_KeyInputDestructor(void *)
 {
 }
-#pragma GCC diagnostic pop
 
-static int TXT_KeyInputKeyPress(TXT_UNCAST_ARG(key_input), int key)
+static int TXT_KeyInputKeyPress(void *uncast_key_input, int key)
 {
-    TXT_CAST_ARG(txt_key_input_t, key_input);
+    txt_key_input_t *key_input = (txt_key_input_t *)uncast_key_input;
 
     if (key == KEY_ENTER)
     {
@@ -153,9 +146,9 @@ static int TXT_KeyInputKeyPress(TXT_UNCAST_ARG(key_input), int key)
     return 0;
 }
 
-static void TXT_KeyInputMousePress(TXT_UNCAST_ARG(widget), int, int, int b)
+static void TXT_KeyInputMousePress(void *uncast_widget, int, int, int b)
 {
-    TXT_CAST_ARG(txt_key_input_t, widget);
+    txt_key_input_t *widget = (txt_key_input_t *)uncast_widget;
             
     // Clicking is like pressing enter
 

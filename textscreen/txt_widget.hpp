@@ -23,9 +23,9 @@
 
 #ifndef DOXYGEN
 
-#define TXT_UNCAST_ARG_NAME(name) uncast_ ## name
-#define TXT_UNCAST_ARG(name)   void * TXT_UNCAST_ARG_NAME(name)
-#define TXT_CAST_ARG(type, name)  type *name = (type *) uncast_ ## name
+//#define TXT_UNCAST_ARG_NAME(name) uncast_ ## name
+//#define TXT_UNCAST_ARG(name)   void * TXT_UNCAST_ARG_NAME(name)
+//#define TXT_CAST_ARG(type, name)  type *name = (type *) uncast_ ## name
 
 #else
 
@@ -65,15 +65,15 @@ typedef struct txt_widget_s txt_widget_t;
 typedef struct txt_widget_class_s txt_widget_class_t;
 typedef struct txt_callback_table_s txt_callback_table_t;
 
-typedef void (*TxtWidgetSizeCalc)(TXT_UNCAST_ARG(widget));
-typedef void (*TxtWidgetDrawer)(TXT_UNCAST_ARG(widget));
-typedef void (*TxtWidgetDestroy)(TXT_UNCAST_ARG(widget));
-typedef int (*TxtWidgetKeyPress)(TXT_UNCAST_ARG(widget), int key);
-typedef void (*TxtWidgetSignalFunc)(TXT_UNCAST_ARG(widget), void *user_data);
-typedef void (*TxtMousePressFunc)(TXT_UNCAST_ARG(widget), int x, int y, int b);
-typedef void (*TxtWidgetLayoutFunc)(TXT_UNCAST_ARG(widget));
-typedef int (*TxtWidgetSelectableFunc)(TXT_UNCAST_ARG(widget));
-typedef void (*TxtWidgetFocusFunc)(TXT_UNCAST_ARG(widget), int focused);
+typedef void (*TxtWidgetSizeCalc)(void *uncast_widget);
+typedef void (*TxtWidgetDrawer)(void *uncast_widget);
+typedef void (*TxtWidgetDestroy)(void *uncast_widget);
+typedef int (*TxtWidgetKeyPress)(void *uncast_widget, int key);
+typedef void (*TxtWidgetSignalFunc)(void *uncast_widget, void *user_data);
+typedef void (*TxtMousePressFunc)(void *uncast_widget, int x, int y, int b);
+typedef void (*TxtWidgetLayoutFunc)(void *uncast_widget);
+typedef int (*TxtWidgetSelectableFunc)(void *uncast_widget);
+typedef void (*TxtWidgetFocusFunc)(void *uncast_widget, int focused);
 
 struct txt_widget_class_s
 {
@@ -106,17 +106,17 @@ struct txt_widget_s
     txt_widget_t *parent;
 };
 
-void TXT_InitWidget(TXT_UNCAST_ARG(widget), txt_widget_class_t *widget_class);
-void TXT_CalcWidgetSize(TXT_UNCAST_ARG(widget));
-void TXT_DrawWidget(TXT_UNCAST_ARG(widget));
-void TXT_EmitSignal(TXT_UNCAST_ARG(widget), const char *signal_name);
-int TXT_WidgetKeyPress(TXT_UNCAST_ARG(widget), int key);
-void TXT_WidgetMousePress(TXT_UNCAST_ARG(widget), int x, int y, int b);
-void TXT_DestroyWidget(TXT_UNCAST_ARG(widget));
-void TXT_LayoutWidget(TXT_UNCAST_ARG(widget));
-int TXT_AlwaysSelectable(TXT_UNCAST_ARG(widget));
-int TXT_NeverSelectable(TXT_UNCAST_ARG(widget));
-void TXT_SetWidgetFocus(TXT_UNCAST_ARG(widget), int focused);
+void TXT_InitWidget(void *uncast_widget, txt_widget_class_t *widget_class);
+void TXT_CalcWidgetSize(void *uncast_widget);
+void TXT_DrawWidget(void *uncast_widget);
+void TXT_EmitSignal(void *uncast_widget, const char *signal_name);
+int TXT_WidgetKeyPress(void *uncast_widget, int key);
+void TXT_WidgetMousePress(void *uncast_widget, int x, int y, int b);
+void TXT_DestroyWidget(void *uncast_widget);
+void TXT_LayoutWidget(void *uncast_widget);
+int TXT_AlwaysSelectable(void *uncast_widget);
+int TXT_NeverSelectable(void *uncast_widget);
+void TXT_SetWidgetFocus(void *uncast_widget, int focused);
 
 /**
  * Set a callback function to be invoked when a signal occurs.
@@ -127,7 +127,7 @@ void TXT_SetWidgetFocus(TXT_UNCAST_ARG(widget), int focused);
  * @param user_data    User-specified pointer to pass to the callback function.
  */
 
-void TXT_SignalConnect(TXT_UNCAST_ARG(widget), const char *signal_name,
+void TXT_SignalConnect(void *uncast_widget, const char *signal_name,
                        TxtWidgetSignalFunc func, void *user_data);
 
 /**
@@ -138,7 +138,7 @@ void TXT_SignalConnect(TXT_UNCAST_ARG(widget), const char *signal_name,
  * @param horiz_align  The alignment to use.
  */
 
-void TXT_SetWidgetAlign(TXT_UNCAST_ARG(widget), txt_horiz_align_t horiz_align);
+void TXT_SetWidgetAlign(void *uncast_widget, txt_horiz_align_t horiz_align);
 
 /**
  * Query whether a widget is selectable with the cursor.
@@ -147,7 +147,7 @@ void TXT_SetWidgetAlign(TXT_UNCAST_ARG(widget), txt_horiz_align_t horiz_align);
  * @return             Non-zero if the widget is selectable.
  */
 
-int TXT_SelectableWidget(TXT_UNCAST_ARG(widget));
+int TXT_SelectableWidget(void *uncast_widget);
 
 /**
  * Query whether the mouse is hovering over the specified widget.
@@ -156,7 +156,7 @@ int TXT_SelectableWidget(TXT_UNCAST_ARG(widget));
  * @return             Non-zero if the mouse cursor is over the widget.
  */
 
-int TXT_HoveringOverWidget(TXT_UNCAST_ARG(widget));
+int TXT_HoveringOverWidget(void *uncast_widget);
 
 /**
  * Set the background to draw the specified widget, depending on
@@ -165,7 +165,7 @@ int TXT_HoveringOverWidget(TXT_UNCAST_ARG(widget));
  * @param widget       The widget.
  */
 
-void TXT_SetWidgetBG(TXT_UNCAST_ARG(widget));
+void TXT_SetWidgetBG(void *uncast_widget);
 
 /**
  * Query whether the specified widget is contained within another
@@ -175,7 +175,7 @@ void TXT_SetWidgetBG(TXT_UNCAST_ARG(widget));
  * @param needle       The widget being queried.
  */
 
-int TXT_ContainsWidget(TXT_UNCAST_ARG(haystack), TXT_UNCAST_ARG(needle));
+int TXT_ContainsWidget(void *uncast_haystack, void *uncast_needle);
 
 #endif /* #ifndef TXT_WIDGET_H */
 

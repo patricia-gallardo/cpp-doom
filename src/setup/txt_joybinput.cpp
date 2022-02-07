@@ -141,9 +141,9 @@ static void ClearVariablesUsingButton(int physbutton)
 
 // Called in response to SDL events when the prompt window is open:
 
-static int EventCallback(SDL_Event *event, TXT_UNCAST_ARG(joystick_input))
+static int EventCallback(SDL_Event *event, void *uncast_joystick_input)
 {
-    TXT_CAST_ARG(txt_joystick_input_t, joystick_input);
+    txt_joystick_input_t *joystick_input = (txt_joystick_input_t *)uncast_joystick_input;
 
     // Got the joystick button press?
 
@@ -177,18 +177,15 @@ static int EventCallback(SDL_Event *event, TXT_UNCAST_ARG(joystick_input))
 // When the prompt window is closed, disable the event callback function;
 // we are no longer interested in receiving notification of events.
 
-#pragma GCC diagnostic push
-#pragma GCC diagnostic ignored "-Wunused-parameter"
-static void PromptWindowClosed(TXT_UNCAST_ARG(widget), TXT_UNCAST_ARG(joystick))
+static void PromptWindowClosed(void *, void *uncast_joystick)
 {
-    TXT_CAST_ARG(SDL_Joystick, joystick);
+    SDL_Joystick *joystick = (SDL_Joystick *)uncast_joystick;
 
     SDL_JoystickClose(joystick);
     TXT_SDL_SetEventCallback(nullptr, nullptr);
     SDL_JoystickEventState(SDL_DISABLE);
     SDL_QuitSubSystem(SDL_INIT_JOYSTICK);
 }
-#pragma GCC diagnostic pop
 
 static void OpenErrorWindow()
 {
@@ -230,9 +227,9 @@ static void OpenPromptWindow(txt_joystick_input_t *joystick_input)
     SDL_JoystickEventState(SDL_ENABLE);
 }
 
-static void TXT_JoystickInputSizeCalc(TXT_UNCAST_ARG(joystick_input))
+static void TXT_JoystickInputSizeCalc(void *uncast_joystick_input)
 {
-    TXT_CAST_ARG(txt_joystick_input_t, joystick_input);
+    txt_joystick_input_t *joystick_input = (txt_joystick_input_t *)uncast_joystick_input;
 
     // All joystickinputs are the same size.
 
@@ -247,9 +244,9 @@ static void GetJoystickButtonDescription(int vbutton, char *buf,
                PhysicalForVirtualButton(vbutton) + 1);
 }
 
-static void TXT_JoystickInputDrawer(TXT_UNCAST_ARG(joystick_input))
+static void TXT_JoystickInputDrawer(void *uncast_joystick_input)
 {
-    TXT_CAST_ARG(txt_joystick_input_t, joystick_input);
+    txt_joystick_input_t *joystick_input = (txt_joystick_input_t *)uncast_joystick_input;
     char buf[20];
     int i;
 
@@ -274,16 +271,13 @@ static void TXT_JoystickInputDrawer(TXT_UNCAST_ARG(joystick_input))
     }
 }
 
-#pragma GCC diagnostic push
-#pragma GCC diagnostic ignored "-Wunused-parameter"
-static void TXT_JoystickInputDestructor(TXT_UNCAST_ARG(joystick_input))
+static void TXT_JoystickInputDestructor(void *)
 {
 }
-#pragma GCC diagnostic pop
 
-static int TXT_JoystickInputKeyPress(TXT_UNCAST_ARG(joystick_input), int key)
+static int TXT_JoystickInputKeyPress(void *uncast_joystick_input, int key)
 {
-    TXT_CAST_ARG(txt_joystick_input_t, joystick_input);
+    txt_joystick_input_t *joystick_input = (txt_joystick_input_t *)uncast_joystick_input;
 
     if (key == KEY_ENTER)
     {
@@ -302,10 +296,10 @@ static int TXT_JoystickInputKeyPress(TXT_UNCAST_ARG(joystick_input), int key)
     return 0;
 }
 
-static void TXT_JoystickInputMousePress(TXT_UNCAST_ARG(widget),
+static void TXT_JoystickInputMousePress(void *uncast_widget,
                                         int, int, int b)
 {
-    TXT_CAST_ARG(txt_joystick_input_t, widget);
+    txt_joystick_input_t *widget = (txt_joystick_input_t *)uncast_widget;
 
     // Clicking is like pressing enter
 

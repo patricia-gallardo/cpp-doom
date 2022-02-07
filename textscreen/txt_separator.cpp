@@ -23,9 +23,9 @@
 #include "txt_window.hpp"
 #include "memory.hpp"
 
-static void TXT_SeparatorSizeCalc(TXT_UNCAST_ARG(separator))
+static void TXT_SeparatorSizeCalc(void *uncast_separator)
 {
-    TXT_CAST_ARG(txt_separator_t, separator);
+    txt_separator_t *separator = (txt_separator_t *)uncast_separator;
 
     if (separator->label != nullptr)
     {
@@ -41,9 +41,9 @@ static void TXT_SeparatorSizeCalc(TXT_UNCAST_ARG(separator))
     separator->widget.h = 1;
 }
 
-static void TXT_SeparatorDrawer(TXT_UNCAST_ARG(separator))
+static void TXT_SeparatorDrawer(void *uncast_separator)
 {
-    TXT_CAST_ARG(txt_separator_t, separator);
+    txt_separator_t *separator = (txt_separator_t *)uncast_separator;
     int x, y;
     int w;
 
@@ -67,9 +67,9 @@ static void TXT_SeparatorDrawer(TXT_UNCAST_ARG(separator))
     }
 }
 
-static void TXT_SeparatorDestructor(TXT_UNCAST_ARG(separator))
+static void TXT_SeparatorDestructor(void *uncast_separator)
 {
-    TXT_CAST_ARG(txt_separator_t, separator);
+    txt_separator_t *separator = (txt_separator_t *)uncast_separator;
 
     free(separator->label);
 }

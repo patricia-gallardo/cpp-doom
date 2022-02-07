@@ -56,11 +56,9 @@ static int *all_mouse_buttons[] = {
     &mousebreverse // [crispy]
 };
 
-#pragma GCC diagnostic push
-#pragma GCC diagnostic ignored "-Wunused-parameter"
-static void MouseSetCallback(TXT_UNCAST_ARG(widget), TXT_UNCAST_ARG(variable))
+static void MouseSetCallback(void *, void *uncast_variable)
 {
-    TXT_CAST_ARG(int, variable);
+    int         *variable = (int *)uncast_variable;
     unsigned int i;
 
     // Check if the same mouse button is used for a different action
@@ -75,11 +73,10 @@ static void MouseSetCallback(TXT_UNCAST_ARG(widget), TXT_UNCAST_ARG(variable))
         }
     }
 }
-#pragma GCC diagnostic pop
 
-static void AddMouseControl(TXT_UNCAST_ARG(table), const char *label, int *var)
+static void AddMouseControl(void *uncast_table, const char *label, int *var)
 {
-    TXT_CAST_ARG(txt_table_t, table);
+    txt_table_t       *table = (txt_table_t *)uncast_table;
     txt_mouse_input_t *mouse_input;
 
     TXT_AddWidget(table, TXT_NewLabel(label));
@@ -90,9 +87,7 @@ static void AddMouseControl(TXT_UNCAST_ARG(table), const char *label, int *var)
     TXT_SignalConnect(mouse_input, "set", MouseSetCallback, var);
 }
 
-#pragma GCC diagnostic push
-#pragma GCC diagnostic ignored "-Wunused-parameter"
-static void ConfigExtraButtons(TXT_UNCAST_ARG(widget), TXT_UNCAST_ARG(unused))
+static void ConfigExtraButtons(void *, void *)
 {
     txt_window_t *window;
     txt_table_t *buttons_table;
@@ -127,11 +122,8 @@ static void ConfigExtraButtons(TXT_UNCAST_ARG(widget), TXT_UNCAST_ARG(unused))
         AddMouseControl(buttons_table, "Jump [*]", &mousebjump);
     }
 }
-#pragma GCC diagnostic pop
 
-#pragma GCC diagnostic push
-#pragma GCC diagnostic ignored "-Wunused-parameter"
-void ConfigMouse(TXT_UNCAST_ARG(widget), void *user_data)
+void ConfigMouse(void *, void *)
 {
     txt_window_t *window;
 
@@ -209,7 +201,6 @@ void ConfigMouse(TXT_UNCAST_ARG(widget), void *user_data)
     TXT_AddWidget(window,
                   TXT_NewButton2("More controls...", ConfigExtraButtons, nullptr));
 }
-#pragma GCC diagnostic pop
 
 void BindMouseVariables()
 {

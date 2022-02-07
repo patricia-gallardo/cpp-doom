@@ -103,9 +103,9 @@ static void FinishEditing(txt_inputbox_t *inputbox)
     StopEditing(inputbox);
 }
 
-static void TXT_InputBoxSizeCalc(TXT_UNCAST_ARG(inputbox))
+static void TXT_InputBoxSizeCalc(void *uncast_inputbox)
 {
-    TXT_CAST_ARG(txt_inputbox_t, inputbox);
+    txt_inputbox_t *inputbox = (txt_inputbox_t *)uncast_inputbox;
 
     // Enough space for the box + cursor
 
@@ -113,9 +113,9 @@ static void TXT_InputBoxSizeCalc(TXT_UNCAST_ARG(inputbox))
     inputbox->widget.h = 1;
 }
 
-static void TXT_InputBoxDrawer(TXT_UNCAST_ARG(inputbox))
+static void TXT_InputBoxDrawer(void *uncast_inputbox)
 {
-    TXT_CAST_ARG(txt_inputbox_t, inputbox);
+    txt_inputbox_t *inputbox = (txt_inputbox_t *)uncast_inputbox;
     int focused;
     int i;
     int chars;
@@ -172,9 +172,9 @@ static void TXT_InputBoxDrawer(TXT_UNCAST_ARG(inputbox))
     }
 }
 
-static void TXT_InputBoxDestructor(TXT_UNCAST_ARG(inputbox))
+static void TXT_InputBoxDestructor(void *uncast_inputbox)
 {
-    TXT_CAST_ARG(txt_inputbox_t, inputbox);
+    txt_inputbox_t *inputbox = (txt_inputbox_t *)uncast_inputbox;
 
     StopEditing(inputbox);
     free(inputbox->buffer);
@@ -208,9 +208,9 @@ static void AddCharacter(txt_inputbox_t *inputbox, int key)
     }
 }
 
-static int TXT_InputBoxKeyPress(TXT_UNCAST_ARG(inputbox), int key)
+static int TXT_InputBoxKeyPress(void *uncast_inputbox, int key)
 {
-    TXT_CAST_ARG(txt_inputbox_t, inputbox);
+    txt_inputbox_t *inputbox = (txt_inputbox_t *)uncast_inputbox;
     unsigned int c;
 
     if (!inputbox->editing)
@@ -261,10 +261,10 @@ static int TXT_InputBoxKeyPress(TXT_UNCAST_ARG(inputbox), int key)
     return 1;
 }
 
-static void TXT_InputBoxMousePress(TXT_UNCAST_ARG(inputbox),
+static void TXT_InputBoxMousePress(void *uncast_inputbox,
                                    int, int, int b)
 {
-    TXT_CAST_ARG(txt_inputbox_t, inputbox);
+    txt_inputbox_t *inputbox = (txt_inputbox_t *)uncast_inputbox;
 
     if (b == TXT_MOUSE_LEFT)
     {
@@ -279,9 +279,9 @@ static void TXT_InputBoxMousePress(TXT_UNCAST_ARG(inputbox),
     }
 }
 
-static void TXT_InputBoxFocused(TXT_UNCAST_ARG(inputbox), int focused)
+static void TXT_InputBoxFocused(void *uncast_inputbox, int focused)
 {
-    TXT_CAST_ARG(txt_inputbox_t, inputbox);
+    txt_inputbox_t *inputbox = (txt_inputbox_t *)uncast_inputbox;
 
     // Stop editing when we lose focus.
 

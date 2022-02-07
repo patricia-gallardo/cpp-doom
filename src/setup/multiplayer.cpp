@@ -168,7 +168,7 @@ static void AddWADs(execute_context_t *exec)
 {
     int have_wads = 0;
     int i;
- 
+
     for (i=0; i<NUM_WADS; ++i)
     {
         if (wads[i] != nullptr && strlen(wads[i]) > 0)
@@ -186,7 +186,7 @@ static void AddWADs(execute_context_t *exec)
 static void AddExtraParameters(execute_context_t *exec)
 {
     int i;
-    
+
     for (i=0; i<NUM_EXTRA_PARAMS; ++i)
     {
         if (extra_params[i] != nullptr && strlen(extra_params[i]) > 0)
@@ -286,7 +286,7 @@ static void StartGame(int multiplayer)
     AddWADs(exec);
 
     TXT_Shutdown();
- 
+
     M_SaveDefaults();
     PassThroughArguments(exec);
 
@@ -295,21 +295,15 @@ static void StartGame(int multiplayer)
     exit(0);
 }
 
-#pragma GCC diagnostic push
-#pragma GCC diagnostic ignored "-Wunused-parameter"
-static void StartServerGame(TXT_UNCAST_ARG(widget), TXT_UNCAST_ARG(unused))
+static void StartServerGame(void *, void *)
 {
     StartGame(1);
 }
-#pragma GCC diagnostic pop
 
-#pragma GCC diagnostic push
-#pragma GCC diagnostic ignored "-Wunused-parameter"
-static void StartSinglePlayerGame(TXT_UNCAST_ARG(widget), TXT_UNCAST_ARG(unused))
+static void StartSinglePlayerGame(void *, void *)
 {
     StartGame(0);
 }
-#pragma GCC diagnostic pop
 
 static void UpdateWarpButton()
 {
@@ -367,9 +361,7 @@ static void UpdateSkillButton()
     }
 }
 
-#pragma GCC diagnostic push
-#pragma GCC diagnostic ignored "-Wunused-parameter"
-static void SetExMyWarp(TXT_UNCAST_ARG(widget), void *val)
+static void SetExMyWarp(void *, void *val)
 {
     int l;
 
@@ -380,11 +372,8 @@ static void SetExMyWarp(TXT_UNCAST_ARG(widget), void *val)
 
     UpdateWarpButton();
 }
-#pragma GCC diagnostic pop
 
-#pragma GCC diagnostic push
-#pragma GCC diagnostic ignored "-Wunused-parameter"
-static void SetMAPxyWarp(TXT_UNCAST_ARG(widget), void *val)
+static void SetMAPxyWarp(void *, void *val)
 {
     int l;
 
@@ -394,21 +383,15 @@ static void SetMAPxyWarp(TXT_UNCAST_ARG(widget), void *val)
 
     UpdateWarpButton();
 }
-#pragma GCC diagnostic pop
 
-#pragma GCC diagnostic push
-#pragma GCC diagnostic ignored "-Wunused-parameter"
-static void CloseLevelSelectDialog(TXT_UNCAST_ARG(button), TXT_UNCAST_ARG(window))
+static void CloseLevelSelectDialog(void *, void *uncast_window)
 {
-    TXT_CAST_ARG(txt_window_t, window);
+    txt_window_t *window = (txt_window_t *)uncast_window;
 
     TXT_CloseWindow(window);
 }
-#pragma GCC diagnostic pop
 
-#pragma GCC diagnostic push
-#pragma GCC diagnostic ignored "-Wunused-parameter"
-static void LevelSelectDialog(TXT_UNCAST_ARG(widget), TXT_UNCAST_ARG(user_data))
+static void LevelSelectDialog(void *, void *)
 {
     txt_window_t *window;
     txt_button_t *button;
@@ -479,7 +462,7 @@ static void LevelSelectDialog(TXT_UNCAST_ARG(widget), TXT_UNCAST_ARG(user_data))
 
             M_snprintf(buf, sizeof(buf), " MAP%02" PRIiPTR " ", l);
             button = TXT_NewButton(buf);
-            TXT_SignalConnect(button, "pressed", 
+            TXT_SignalConnect(button, "pressed",
                               SetMAPxyWarp, (void *) l);
             TXT_SignalConnect(button, "pressed",
                               CloseLevelSelectDialog, window);
@@ -492,11 +475,8 @@ static void LevelSelectDialog(TXT_UNCAST_ARG(widget), TXT_UNCAST_ARG(user_data))
         }
     }
 }
-#pragma GCC diagnostic pop
 
-#pragma GCC diagnostic push
-#pragma GCC diagnostic ignored "-Wunused-parameter"
-static void IWADSelected(TXT_UNCAST_ARG(widget), TXT_UNCAST_ARG(unused))
+static void IWADSelected(void *, void *)
 {
     const iwad_t *iwad;
 
@@ -508,13 +488,10 @@ static void IWADSelected(TXT_UNCAST_ARG(widget), TXT_UNCAST_ARG(unused))
 
     iwadfile = iwad->name;
 }
-#pragma GCC diagnostic pop
 
 // Called when the IWAD button is changed, to update warptype.
 
-#pragma GCC diagnostic push
-#pragma GCC diagnostic ignored "-Wunused-parameter"
-static void UpdateWarpType(TXT_UNCAST_ARG(widget), TXT_UNCAST_ARG(unused))
+static void UpdateWarpType(void *, void *)
 {
     warptype_t new_warptype;
     const iwad_t *iwad;
@@ -547,7 +524,6 @@ static void UpdateWarpType(TXT_UNCAST_ARG(widget), TXT_UNCAST_ARG(unused))
     UpdateWarpButton();
     UpdateSkillButton();
 }
-#pragma GCC diagnostic pop
 
 // Get an IWAD list with a default fallback IWAD that is appropriate
 // for the game we are configuring (matches gamemission global variable).
@@ -622,7 +598,7 @@ static txt_widget_t *IWADSelector()
     {
         // Dropdown list allowing IWAD to be selected.
 
-        dropdown = TXT_NewDropdownList(&found_iwad_selected, 
+        dropdown = TXT_NewDropdownList(&found_iwad_selected,
                                        iwad_labels, num_iwads);
 
         TXT_SignalConnect(dropdown, "changed", IWADSelected, nullptr);
@@ -669,9 +645,7 @@ static txt_window_action_t *StartGameAction(int multiplayer)
     return action;
 }
 
-#pragma GCC diagnostic push
-#pragma GCC diagnostic ignored "-Wunused-parameter"
-static void OpenWadsWindow(TXT_UNCAST_ARG(widget), TXT_UNCAST_ARG(user_data))
+static void OpenWadsWindow(void *, void *)
 {
     txt_window_t *window;
     int i;
@@ -685,24 +659,19 @@ static void OpenWadsWindow(TXT_UNCAST_ARG(widget), TXT_UNCAST_ARG(user_data))
                                           wad_extensions));
     }
 }
-#pragma GCC diagnostic pop
 
-#pragma GCC diagnostic push
-#pragma GCC diagnostic ignored "-Wunused-parameter"
-static void OpenExtraParamsWindow(TXT_UNCAST_ARG(widget),
-                                  TXT_UNCAST_ARG(user_data))
+static void OpenExtraParamsWindow(void *, void *)
 {
     txt_window_t *window;
     int i;
 
     window = TXT_NewWindow("Extra command line parameters");
-    
+
     for (i=0; i<NUM_EXTRA_PARAMS; ++i)
     {
         TXT_AddWidget(window, TXT_NewInputBox(&extra_params[i], 70));
     }
 }
-#pragma GCC diagnostic pop
 
 static txt_window_action_t *WadWindowAction()
 {
@@ -834,21 +803,15 @@ static void StartGameMenu(const char *window_title, int multiplayer)
     UpdateWarpButton();
 }
 
-#pragma GCC diagnostic push
-#pragma GCC diagnostic ignored "-Wunused-parameter"
-void StartMultiGame(TXT_UNCAST_ARG(widget), void *user_data)
+void StartMultiGame(void *, void *)
 {
     StartGameMenu("Start multiplayer game", 1);
 }
-#pragma GCC diagnostic pop
 
-#pragma GCC diagnostic push
-#pragma GCC diagnostic ignored "-Wunused-parameter"
-void WarpMenu(TXT_UNCAST_ARG(widget), void *)
+void WarpMenu(void *, void *)
 {
     StartGameMenu("Level Warp", 0);
 }
-#pragma GCC diagnostic pop
 
 static void DoJoinGame(void *, void *)
 {
@@ -876,7 +839,7 @@ static void DoJoinGame(void *, void *)
     AddWADs(exec);
 
     TXT_Shutdown();
-    
+
     M_SaveDefaults();
 
     PassThroughArguments(exec);
@@ -896,11 +859,10 @@ static txt_window_action_t *JoinGameAction()
     return action;
 }
 
-static void SelectQueryAddress(TXT_UNCAST_ARG(button),
-                               TXT_UNCAST_ARG(querydata))
+static void SelectQueryAddress(void *uncast_button, void *uncast_querydata)
 {
-    TXT_CAST_ARG(txt_button_t, button);
-    TXT_CAST_ARG(net_querydata_t, querydata);
+    txt_button_t    *button    = (txt_button_t *)uncast_button;
+    net_querydata_t *querydata = (net_querydata_t *)uncast_querydata;
     int i;
 
     if (querydata->server_state != 0)
@@ -953,12 +915,9 @@ static void SelectQueryAddress(TXT_UNCAST_ARG(button),
     TXT_CloseWindow(query_window);
 }
 
-static void QueryResponseCallback(net_addr_t *addr,
-                                  net_querydata_t *querydata,
-                                  unsigned int ping_time,
-                                  TXT_UNCAST_ARG(results_table))
+static void QueryResponseCallback(net_addr_t *addr, net_querydata_t *querydata, unsigned int ping_time, void *uncast_results_table)
 {
-    TXT_CAST_ARG(txt_table_t, results_table);
+    txt_table_t *results_table = (txt_table_t *)uncast_results_table;
     char ping_time_str[16];
     char description[47];
 
@@ -1000,9 +959,9 @@ static void QueryResponseCallback(net_addr_t *addr,
     ++query_servers_found;
 }
 
-static void QueryPeriodicCallback(TXT_UNCAST_ARG(results_table))
+static void QueryPeriodicCallback(void *uncast_results_table)
 {
-    TXT_CAST_ARG(txt_table_t, results_table);
+    txt_table_t *results_table = (txt_table_t *)uncast_results_table;
 
     if (!NET_Query_Poll(QueryResponseCallback, results_table))
     {
@@ -1019,13 +978,10 @@ static void QueryPeriodicCallback(TXT_UNCAST_ARG(results_table))
     }
 }
 
-#pragma GCC diagnostic push
-#pragma GCC diagnostic ignored "-Wunused-parameter"
-static void QueryWindowClosed(TXT_UNCAST_ARG(window), void *)
+static void QueryWindowClosed(void *, void *)
 {
     TXT_SetPeriodicCallback(nullptr, nullptr, 0);
 }
-#pragma GCC diagnostic pop
 
 static void ServerQueryWindow(const char *title)
 {
@@ -1045,29 +1001,19 @@ static void ServerQueryWindow(const char *title)
     TXT_SignalConnect(query_window, "closed", QueryWindowClosed, nullptr);
 }
 
-#pragma GCC diagnostic push
-#pragma GCC diagnostic ignored "-Wunused-parameter"
-static void FindInternetServer(TXT_UNCAST_ARG(widget),
-                               TXT_UNCAST_ARG(user_data))
+static void FindInternetServer(void *, void *)
 {
     NET_StartMasterQuery();
     ServerQueryWindow("Find Internet server");
 }
-#pragma GCC diagnostic pop
 
-#pragma GCC diagnostic push
-#pragma GCC diagnostic ignored "-Wunused-parameter"
-static void FindLANServer(TXT_UNCAST_ARG(widget),
-                          TXT_UNCAST_ARG(user_data))
+static void FindLANServer(void *, void *)
 {
     NET_StartLANQuery();
     ServerQueryWindow("Find LAN server");
 }
-#pragma GCC diagnostic pop
 
-#pragma GCC diagnostic push
-#pragma GCC diagnostic ignored "-Wunused-parameter"
-void JoinMultiGame(TXT_UNCAST_ARG(widget), void *)
+void JoinMultiGame(void *, void *)
 {
     txt_window_t *window;
     txt_inputbox_t *address_box;
@@ -1114,7 +1060,6 @@ void JoinMultiGame(TXT_UNCAST_ARG(widget), void *)
     TXT_SetWindowAction(window, TXT_HORIZ_CENTER, WadWindowAction());
     TXT_SetWindowAction(window, TXT_HORIZ_RIGHT, JoinGameAction());
 }
-#pragma GCC diagnostic pop
 
 void SetChatMacroDefaults()
 {
@@ -1132,7 +1077,7 @@ void SetChatMacroDefaults()
         HUSTR_CHATMACRO8,
         HUSTR_CHATMACRO9,
     };
-    
+
     // If the chat macros have not been set, initialize with defaults.
 
     for (i=0; i<10; ++i)
@@ -1152,9 +1097,8 @@ void SetPlayerNameDefault()
     }
 }
 
-#pragma GCC diagnostic push
-#pragma GCC diagnostic ignored "-Wunused-parameter"
-void MultiplayerConfig(TXT_UNCAST_ARG(widget), void *)
+
+void MultiplayerConfig(void *, void *)
 {
     txt_window_t *window;
     txt_label_t *label;
@@ -1191,7 +1135,6 @@ void MultiplayerConfig(TXT_UNCAST_ARG(widget), void *)
 
     TXT_AddWidget(window, table);
 }
-#pragma GCC diagnostic pop
 
 void BindMultiplayerVariables()
 {
@@ -1240,4 +1183,3 @@ void BindMultiplayerVariables()
             break;
     }
 }
-

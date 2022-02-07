@@ -927,19 +927,14 @@ static void NoJoystick()
     SetJoystickButtonLabel();
 }
 
-#pragma GCC diagnostic push
-#pragma GCC diagnostic ignored "-Wunused-parameter"
-static void CalibrateWindowClosed(TXT_UNCAST_ARG(widget), TXT_UNCAST_ARG(unused))
+static void CalibrateWindowClosed(void *, void *)
 {
     TXT_SDL_SetEventCallback(nullptr, nullptr);
     SetJoystickButtonLabel();
     CloseAllJoysticks();
 }
-#pragma GCC diagnostic pop
 
-#pragma GCC diagnostic push
-#pragma GCC diagnostic ignored "-Wunused-parameter"
-static void CalibrateJoystick(TXT_UNCAST_ARG(widget), TXT_UNCAST_ARG(unused))
+static void CalibrateJoystick(void *, void *)
 {
     // Try to open all available joysticks.  If none are opened successfully,
     // bomb out with an error.
@@ -972,15 +967,14 @@ static void CalibrateJoystick(TXT_UNCAST_ARG(widget), TXT_UNCAST_ARG(unused))
     usejoystick = 0;
     joystick_index = -1;
 }
-#pragma GCC diagnostic pop
 
 //
 // GUI
 //
 
-static void AddJoystickControl(TXT_UNCAST_ARG(table), const char *label, int *var)
+static void AddJoystickControl(void *uncast_table, const char *label, int *var)
 {
-    TXT_CAST_ARG(txt_table_t, table);
+    txt_table_t          *table = (txt_table_t *)uncast_table;
     txt_joystick_input_t *joy_input;
 
     joy_input = TXT_NewJoystickInput(var);
@@ -992,9 +986,7 @@ static void AddJoystickControl(TXT_UNCAST_ARG(table), const char *label, int *va
                    nullptr);
 }
 
-#pragma GCC diagnostic push
-#pragma GCC diagnostic ignored "-Wunused-parameter"
-void ConfigJoystick(TXT_UNCAST_ARG(widget), void *)
+void ConfigJoystick(void *, void *)
 {
     txt_window_t *window;
 
@@ -1091,7 +1083,6 @@ void ConfigJoystick(TXT_UNCAST_ARG(widget), void *)
     SetJoystickButtonLabel();
     UnInitJoystick();
 }
-#pragma GCC diagnostic pop
 
 void BindJoystickVariables()
 {

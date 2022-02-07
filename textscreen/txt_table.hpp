@@ -123,7 +123,7 @@ txt_table_t *TXT_MakeTable(int columns, ...);
  * @return             Pointer to the new table structure.
  */
 
-txt_table_t *TXT_NewHorizBox(TXT_UNCAST_ARG(first_widget), ...);
+txt_table_t *TXT_NewHorizBox(void *uncast_first_widget, ...);
 
 /**
  * Get the currently selected widget within a table.
@@ -134,7 +134,7 @@ txt_table_t *TXT_NewHorizBox(TXT_UNCAST_ARG(first_widget), ...);
  * @return             Pointer to the widget that is currently selected.
  */
 
-txt_widget_t *TXT_GetSelectedWidget(TXT_UNCAST_ARG(table));
+txt_widget_t *TXT_GetSelectedWidget(void *uncast_table);
 
 /**
  * Add a widget to a table.
@@ -153,7 +153,7 @@ txt_widget_t *TXT_GetSelectedWidget(TXT_UNCAST_ARG(table));
  * @param widget       The widget to add.
  */
 
-void TXT_AddWidget(TXT_UNCAST_ARG(table), TXT_UNCAST_ARG(widget));
+void TXT_AddWidget(void *uncast_table, void *uncast_widget);
 
 /**
  * Add multiple widgets to a table.
@@ -166,7 +166,7 @@ void TXT_AddWidget(TXT_UNCAST_ARG(table), TXT_UNCAST_ARG(widget));
  * @param table        The table.
  */
 
-void TXT_AddWidgets(TXT_UNCAST_ARG(table), ...);
+void TXT_AddWidgets(void *uncast_table, ...);
 
 /**
  * Select the given widget that is contained within the specified
@@ -182,7 +182,7 @@ void TXT_AddWidgets(TXT_UNCAST_ARG(table), ...);
  *                    this table.
  */
 
-int TXT_SelectWidget(TXT_UNCAST_ARG(table), TXT_UNCAST_ARG(widget));
+int TXT_SelectWidget(void *uncast_table, void *uncast_widget);
 
 /**
  * Change the number of columns in the table.
@@ -198,7 +198,7 @@ int TXT_SelectWidget(TXT_UNCAST_ARG(table), TXT_UNCAST_ARG(widget));
  * @param new_columns   The new number of columns.
  */
 
-void TXT_SetTableColumns(TXT_UNCAST_ARG(table), int new_columns);
+void TXT_SetTableColumns(void *uncast_table, int new_columns);
 
 /**
  * Set the widths of the columns of the table.
@@ -217,7 +217,7 @@ void TXT_SetTableColumns(TXT_UNCAST_ARG(table), int new_columns);
  * @param table     The table.
  */
 
-void TXT_SetColumnWidths(TXT_UNCAST_ARG(table), ...);
+void TXT_SetColumnWidths(void *uncast_table, ...);
 
 /**
  * Remove all widgets from a table.
@@ -225,7 +225,7 @@ void TXT_SetColumnWidths(TXT_UNCAST_ARG(table), ...);
  * @param table    The table.
  */
 
-void TXT_ClearTable(TXT_UNCAST_ARG(table));
+void TXT_ClearTable(void *uncast_table);
 
 /**
  * Hack to move the selection in a table by a 'page', triggered by the
@@ -238,7 +238,7 @@ void TXT_ClearTable(TXT_UNCAST_ARG(table));
  * @return         Non-zero if the selection has been changed.
  */
 
-int TXT_PageTable(TXT_UNCAST_ARG(table), int pagex, int pagey);
+int TXT_PageTable(void *uncast_table, int pagex, int pagey);
 
 #endif /* #ifndef TXT_TABLE_T */
 

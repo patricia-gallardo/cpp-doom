@@ -21,9 +21,9 @@
 struct txt_conditional_s
 {
     txt_widget_t widget;
-    int *var;
-    int expected_value;
-    txt_widget_t *child;
+    int *var{};
+    int expected_value{};
+    txt_widget_t *child{};
 };
 
 static int ConditionTrue(txt_conditional_t *conditional)
@@ -31,16 +31,16 @@ static int ConditionTrue(txt_conditional_t *conditional)
     return *conditional->var == conditional->expected_value;
 }
 
-static int TXT_CondSelectable(TXT_UNCAST_ARG(conditional))
+static int TXT_CondSelectable(void *uncast_conditional)
 {
-    TXT_CAST_ARG(txt_conditional_t, conditional);
+    auto *conditional = reinterpret_cast<txt_conditional_t *>(uncast_conditional);
     return ConditionTrue(conditional)
         && TXT_SelectableWidget(conditional->child);
 }
 
-static void TXT_CondSizeCalc(TXT_UNCAST_ARG(conditional))
+static void TXT_CondSizeCalc(void *uncast_conditional)
 {
-    TXT_CAST_ARG(txt_conditional_t, conditional);
+    auto *conditional = reinterpret_cast<txt_conditional_t *>(uncast_conditional);
 
     if (!ConditionTrue(conditional))
     {
@@ -55,9 +55,9 @@ static void TXT_CondSizeCalc(TXT_UNCAST_ARG(conditional))
     }
 }
 
-static void TXT_CondLayout(TXT_UNCAST_ARG(conditional))
+static void TXT_CondLayout(void *uncast_conditional)
 {
-    TXT_CAST_ARG(txt_conditional_t, conditional);
+    auto *conditional = reinterpret_cast<txt_conditional_t *>(uncast_conditional);
 
     if (ConditionTrue(conditional))
     {
@@ -67,9 +67,9 @@ static void TXT_CondLayout(TXT_UNCAST_ARG(conditional))
     }
 }
 
-static void TXT_CondDrawer(TXT_UNCAST_ARG(conditional))
+static void TXT_CondDrawer(void *uncast_conditional)
 {
-    TXT_CAST_ARG(txt_conditional_t, conditional);
+    auto *conditional = reinterpret_cast<txt_conditional_t *>(uncast_conditional);
 
     if (ConditionTrue(conditional))
     {
@@ -77,15 +77,15 @@ static void TXT_CondDrawer(TXT_UNCAST_ARG(conditional))
     }
 }
 
-static void TXT_CondDestructor(TXT_UNCAST_ARG(conditional))
+static void TXT_CondDestructor(void *uncast_conditional)
 {
-    TXT_CAST_ARG(txt_conditional_t, conditional);
+    auto *conditional = reinterpret_cast<txt_conditional_t *>(uncast_conditional);
     TXT_DestroyWidget(conditional->child);
 }
 
-static void TXT_CondFocused(TXT_UNCAST_ARG(conditional), int focused)
+static void TXT_CondFocused(void *uncast_conditional, int focused)
 {
-    TXT_CAST_ARG(txt_conditional_t, conditional);
+    auto *conditional = reinterpret_cast<txt_conditional_t *>(uncast_conditional);
 
     if (ConditionTrue(conditional))
     {
@@ -93,9 +93,9 @@ static void TXT_CondFocused(TXT_UNCAST_ARG(conditional), int focused)
     }
 }
 
-static int TXT_CondKeyPress(TXT_UNCAST_ARG(conditional), int key)
+static int TXT_CondKeyPress(void *uncast_conditional, int key)
 {
-    TXT_CAST_ARG(txt_conditional_t, conditional);
+    auto *conditional = reinterpret_cast<txt_conditional_t *>(uncast_conditional);
 
     if (ConditionTrue(conditional))
     {
@@ -105,10 +105,10 @@ static int TXT_CondKeyPress(TXT_UNCAST_ARG(conditional), int key)
     return 0;
 }
 
-static void TXT_CondMousePress(TXT_UNCAST_ARG(conditional),
+static void TXT_CondMousePress(void *uncast_conditional,
                                int x, int y, int b)
 {
-    TXT_CAST_ARG(txt_conditional_t, conditional);
+    auto *conditional = reinterpret_cast<txt_conditional_t *>(uncast_conditional);
 
     if (ConditionTrue(conditional))
     {
@@ -128,10 +128,9 @@ txt_widget_class_t txt_conditional_class =
     TXT_CondFocused,
 };
 
-txt_conditional_t *TXT_NewConditional(int *var, int expected_value,
-                                      TXT_UNCAST_ARG(child))
+txt_conditional_t *TXT_NewConditional(int *var, int expected_value, void *uncast_child)
 {
-    TXT_CAST_ARG(txt_widget_t, child);
+    txt_widget_t *child = (txt_widget_t *)uncast_child;
 
     auto *loc = malloc(sizeof(txt_conditional_t));
     auto *conditional = new (loc) txt_conditional_t{};
@@ -150,9 +149,9 @@ txt_conditional_t *TXT_NewConditional(int *var, int expected_value,
 // "Static" conditional that returns an empty strut if the given static
 // value is false. Kind of like a conditional but we only evaluate it at
 // creation time.
-txt_widget_t *TXT_If(int conditional, TXT_UNCAST_ARG(child))
+txt_widget_t *TXT_If(int conditional, void *uncast_child)
 {
-    TXT_CAST_ARG(txt_widget_t, child);
+    txt_widget_t *child = (txt_widget_t *)uncast_child;
 
     if (conditional)
     {

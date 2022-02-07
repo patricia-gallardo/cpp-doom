@@ -47,9 +47,9 @@ std::shared_ptr<txt_callback_table_t> TXT_NewCallbackTable()
 }
 
 
-void TXT_InitWidget(TXT_UNCAST_ARG(widget), txt_widget_class_t *widget_class)
+void TXT_InitWidget(void *uncast_widget, txt_widget_class_t *widget_class)
 {
-    TXT_CAST_ARG(txt_widget_t, widget);
+    txt_widget_t *widget = (txt_widget_t *)uncast_widget;
 
     widget->widget_class = widget_class;
     widget->callback_table = TXT_NewCallbackTable();
@@ -68,12 +68,12 @@ void TXT_InitWidget(TXT_UNCAST_ARG(widget), txt_widget_class_t *widget_class)
     widget->align = TXT_HORIZ_LEFT;
 }
 
-void TXT_SignalConnect(TXT_UNCAST_ARG(widget),
+void TXT_SignalConnect(void *uncast_widget,
                        const char *signal_name,
                        TxtWidgetSignalFunc func, 
                        void *user_data)
 {
-    TXT_CAST_ARG(txt_widget_t, widget);
+    txt_widget_t *widget = (txt_widget_t *)uncast_widget;
 
     auto &table = widget->callback_table;
 
@@ -86,9 +86,9 @@ void TXT_SignalConnect(TXT_UNCAST_ARG(widget),
     callback.user_data = user_data;
 }
 
-void TXT_EmitSignal(TXT_UNCAST_ARG(widget), const char *signal_name)
+void TXT_EmitSignal(void *uncast_widget, const char *signal_name)
 {
-    TXT_CAST_ARG(txt_widget_t, widget);
+    txt_widget_t *widget = (txt_widget_t *)uncast_widget;
 
     auto table = widget->callback_table;
 
@@ -108,16 +108,16 @@ void TXT_EmitSignal(TXT_UNCAST_ARG(widget), const char *signal_name)
     }
 }
 
-void TXT_CalcWidgetSize(TXT_UNCAST_ARG(widget))
+void TXT_CalcWidgetSize(void *uncast_widget)
 {
-    TXT_CAST_ARG(txt_widget_t, widget);
+    txt_widget_t *widget = (txt_widget_t *)uncast_widget;
 
     widget->widget_class->size_calc(widget);
 }
 
-void TXT_DrawWidget(TXT_UNCAST_ARG(widget))
+void TXT_DrawWidget(void *uncast_widget)
 {
-    TXT_CAST_ARG(txt_widget_t, widget);
+    txt_widget_t      *widget = (txt_widget_t *)uncast_widget;
     txt_saved_colors_t colors;
 
     // The drawing function might change the fg/bg colors,
@@ -136,17 +136,17 @@ void TXT_DrawWidget(TXT_UNCAST_ARG(widget))
     TXT_RestoreColors(&colors);
 }
 
-void TXT_DestroyWidget(TXT_UNCAST_ARG(widget))
+void TXT_DestroyWidget(void *uncast_widget)
 {
-    TXT_CAST_ARG(txt_widget_t, widget);
+    txt_widget_t *widget = (txt_widget_t *)uncast_widget;
 
     widget->widget_class->destructor(widget);
     free(widget);
 }
 
-int TXT_WidgetKeyPress(TXT_UNCAST_ARG(widget), int key)
+int TXT_WidgetKeyPress(void *uncast_widget, int key)
 {
-    TXT_CAST_ARG(txt_widget_t, widget);
+    txt_widget_t *widget = (txt_widget_t *)uncast_widget;
 
     if (widget->widget_class->key_press != nullptr)
     {
@@ -156,9 +156,9 @@ int TXT_WidgetKeyPress(TXT_UNCAST_ARG(widget), int key)
     return 0;
 }
 
-void TXT_SetWidgetFocus(TXT_UNCAST_ARG(widget), int focused)
+void TXT_SetWidgetFocus(void *uncast_widget, int focused)
 {
-    TXT_CAST_ARG(txt_widget_t, widget);
+    txt_widget_t *widget = (txt_widget_t *)uncast_widget;
 
     if (widget == nullptr)
     {
@@ -176,16 +176,16 @@ void TXT_SetWidgetFocus(TXT_UNCAST_ARG(widget), int focused)
     }
 }
 
-void TXT_SetWidgetAlign(TXT_UNCAST_ARG(widget), txt_horiz_align_t horiz_align)
+void TXT_SetWidgetAlign(void *uncast_widget, txt_horiz_align_t horiz_align)
 {
-    TXT_CAST_ARG(txt_widget_t, widget);
+    txt_widget_t *widget = (txt_widget_t *)uncast_widget;
 
     widget->align = horiz_align;
 }
 
-void TXT_WidgetMousePress(TXT_UNCAST_ARG(widget), int x, int y, int b)
+void TXT_WidgetMousePress(void *uncast_widget, int x, int y, int b)
 {
-    TXT_CAST_ARG(txt_widget_t, widget);
+    txt_widget_t *widget = (txt_widget_t *)uncast_widget;
 
     if (widget->widget_class->mouse_press != nullptr)
     {
@@ -193,9 +193,9 @@ void TXT_WidgetMousePress(TXT_UNCAST_ARG(widget), int x, int y, int b)
     }
 }
 
-void TXT_LayoutWidget(TXT_UNCAST_ARG(widget))
+void TXT_LayoutWidget(void *uncast_widget)
 {
-    TXT_CAST_ARG(txt_widget_t, widget);
+    txt_widget_t *widget = (txt_widget_t *)uncast_widget;
 
     if (widget->widget_class->layout != nullptr)
     {
@@ -203,25 +203,19 @@ void TXT_LayoutWidget(TXT_UNCAST_ARG(widget))
     }
 }
 
-#pragma GCC diagnostic push
-#pragma GCC diagnostic ignored "-Wunused-parameter"
-int TXT_AlwaysSelectable(TXT_UNCAST_ARG(widget))
+int TXT_AlwaysSelectable(void *)
 {
     return 1;
 }
-#pragma GCC diagnostic pop
 
-#pragma GCC diagnostic push
-#pragma GCC diagnostic ignored "-Wunused-parameter"
-int TXT_NeverSelectable(TXT_UNCAST_ARG(widget))
+int TXT_NeverSelectable(void *)
 {
     return 0;
 }
-#pragma GCC diagnostic pop
 
-int TXT_SelectableWidget(TXT_UNCAST_ARG(widget))
+int TXT_SelectableWidget(void *uncast_widget)
 {
-    TXT_CAST_ARG(txt_widget_t, widget);
+    txt_widget_t *widget = (txt_widget_t *)uncast_widget;
 
     if (widget->widget_class->selectable != nullptr)
     {
@@ -233,10 +227,10 @@ int TXT_SelectableWidget(TXT_UNCAST_ARG(widget))
     }
 }
 
-int TXT_ContainsWidget(TXT_UNCAST_ARG(haystack), TXT_UNCAST_ARG(needle))
+int TXT_ContainsWidget(void *uncast_haystack, void *uncast_needle)
 {
-    TXT_CAST_ARG(txt_widget_t, haystack);
-    TXT_CAST_ARG(txt_widget_t, needle);
+    txt_widget_t *haystack = (txt_widget_t *)uncast_haystack;
+    txt_widget_t *needle = (txt_widget_t *)uncast_needle;
 
     while (needle != nullptr)
     {
@@ -251,9 +245,9 @@ int TXT_ContainsWidget(TXT_UNCAST_ARG(haystack), TXT_UNCAST_ARG(needle))
     return 0;
 }
 
-int TXT_HoveringOverWidget(TXT_UNCAST_ARG(widget))
+int TXT_HoveringOverWidget(void *uncast_widget)
 {
-    TXT_CAST_ARG(txt_widget_t, widget);
+    txt_widget_t *widget = (txt_widget_t *)uncast_widget;
     txt_window_t *active_window;
     int x, y;
 
@@ -274,9 +268,9 @@ int TXT_HoveringOverWidget(TXT_UNCAST_ARG(widget))
          && y >= widget->y && y < widget->y + widget->h);
 }
 
-void TXT_SetWidgetBG(TXT_UNCAST_ARG(widget))
+void TXT_SetWidgetBG(void *uncast_widget)
 {
-    TXT_CAST_ARG(txt_widget_t, widget);
+    txt_widget_t *widget = (txt_widget_t *)uncast_widget;
 
     if (widget->focused)
     {

@@ -298,10 +298,10 @@ void P_LoadNodes_ZDBSP(int lump, bool compressed)
 
     // 1. Load new vertices added during node building
 
-    orgVerts = *((unsigned int *)data);
+    orgVerts = *(reinterpret_cast<unsigned int *>(data));
     data += sizeof(orgVerts);
 
-    newVerts = *((unsigned int *)data);
+    newVerts = *(reinterpret_cast<unsigned int *>(data));
     data += sizeof(newVerts);
 
     if (orgVerts + newVerts == (unsigned int)numvertexes)
@@ -318,11 +318,11 @@ void P_LoadNodes_ZDBSP(int lump, bool compressed)
     for (i = 0; i < newVerts; i++)
     {
         newvertarray[i + orgVerts].r_x =
-            newvertarray[i + orgVerts].x = *((unsigned int *)data);
+            newvertarray[i + orgVerts].x = *(reinterpret_cast<unsigned int *>(data));
         data += sizeof(newvertarray[0].x);
 
         newvertarray[i + orgVerts].r_y =
-            newvertarray[i + orgVerts].y = *((unsigned int *)data);
+            newvertarray[i + orgVerts].y = *(reinterpret_cast<unsigned int *>(data));
         data += sizeof(newvertarray[0].y);
     }
 
@@ -341,7 +341,7 @@ void P_LoadNodes_ZDBSP(int lump, bool compressed)
 
     // 2. Load subsectors
 
-    numSubs = *((unsigned int *)data);
+    numSubs = *(reinterpret_cast<unsigned int *>(data));
     data += sizeof(numSubs);
 
     if (numSubs < 1)
@@ -363,7 +363,7 @@ void P_LoadNodes_ZDBSP(int lump, bool compressed)
 
     // 3. Load segs
 
-    numSegs = *((unsigned int *)data);
+    numSegs = *(reinterpret_cast<unsigned int *>(data));
     data += sizeof(numSegs);
 
     // The number of stored segs should match the number of segs used by subsectors
@@ -430,7 +430,7 @@ void P_LoadNodes_ZDBSP(int lump, bool compressed)
 
     // 4. Load nodes
 
-    numNodes = *((unsigned int *)data);
+    numNodes = *(reinterpret_cast<unsigned int *>(data));
     data += sizeof(numNodes);
 
     numnodes = numNodes;

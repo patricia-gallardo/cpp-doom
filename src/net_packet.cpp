@@ -121,7 +121,7 @@ bool NET_ReadInt32(net_packet_t *packet, unsigned int *data)
 
 bool NET_ReadSInt8(net_packet_t *packet, signed int *data)
 {
-    if (NET_ReadInt8(packet, (unsigned int *)data))
+    if (NET_ReadInt8(packet, reinterpret_cast<unsigned int *>(data)))
     {
         if (*data & (1 << 7))
         {
@@ -138,7 +138,7 @@ bool NET_ReadSInt8(net_packet_t *packet, signed int *data)
 
 bool NET_ReadSInt16(net_packet_t *packet, signed int *data)
 {
-    if (NET_ReadInt16(packet, (unsigned int *)data))
+    if (NET_ReadInt16(packet, reinterpret_cast<unsigned int *>(data)))
     {
         if (*data & (1 << 15))
         {
@@ -155,7 +155,7 @@ bool NET_ReadSInt16(net_packet_t *packet, signed int *data)
 
 bool NET_ReadSInt32(net_packet_t *packet, signed int *data)
 {
-    if (NET_ReadInt32(packet, (unsigned int *)data))
+    if (NET_ReadInt32(packet, reinterpret_cast<unsigned int *>(data)))
     {
         if (*data & (1U << 31))
         {

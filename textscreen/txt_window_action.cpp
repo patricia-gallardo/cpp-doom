@@ -26,9 +26,9 @@
 #include "txt_window.hpp"
 #include "txt_window_action.hpp"
 
-static void TXT_WindowActionSizeCalc(TXT_UNCAST_ARG(action))
+static void TXT_WindowActionSizeCalc(void *uncast_action)
 {
-    TXT_CAST_ARG(txt_window_action_t, action);
+    txt_window_action_t *action = (txt_window_action_t *)uncast_action;
     char buf[10];
 
     TXT_GetKeyDescription(action->key, buf, sizeof(buf));
@@ -41,9 +41,9 @@ static void TXT_WindowActionSizeCalc(TXT_UNCAST_ARG(action))
     action->widget.h = 1;
 }
 
-static void TXT_WindowActionDrawer(TXT_UNCAST_ARG(action))
+static void TXT_WindowActionDrawer(void *uncast_action)
 {
-    TXT_CAST_ARG(txt_window_action_t, action);
+    txt_window_action_t *action = (txt_window_action_t *)uncast_action;
     int hovering;
     char buf[10];
 
@@ -63,16 +63,16 @@ static void TXT_WindowActionDrawer(TXT_UNCAST_ARG(action))
     TXT_DrawString(" ");
 }
 
-static void TXT_WindowActionDestructor(TXT_UNCAST_ARG(action))
+static void TXT_WindowActionDestructor(void *uncast_action)
 {
-    TXT_CAST_ARG(txt_window_action_t, action);
+    txt_window_action_t *action = (txt_window_action_t *)uncast_action;
 
     free(action->label);
 }
 
-static int TXT_WindowActionKeyPress(TXT_UNCAST_ARG(action), int key)
+static int TXT_WindowActionKeyPress(void *uncast_action, int key)
 {
-    TXT_CAST_ARG(txt_window_action_t, action);
+    txt_window_action_t *action = (txt_window_action_t *)uncast_action;
 
     if (tolower(key) == tolower(action->key))
     {
@@ -83,10 +83,10 @@ static int TXT_WindowActionKeyPress(TXT_UNCAST_ARG(action), int key)
     return 0;
 }
 
-static void TXT_WindowActionMousePress(TXT_UNCAST_ARG(action), 
+static void TXT_WindowActionMousePress(void *uncast_action,
                                        int, int, int b)
 {
-    TXT_CAST_ARG(txt_window_action_t, action);
+    txt_window_action_t *action = (txt_window_action_t *)uncast_action;
 
     // Simulate a press of the key
 
@@ -118,25 +118,19 @@ txt_window_action_t *TXT_NewWindowAction(int key, const char *label)
     return action;
 }
 
-#pragma GCC diagnostic push
-#pragma GCC diagnostic ignored "-Wunused-parameter"
-static void WindowCloseCallback(TXT_UNCAST_ARG(widget), TXT_UNCAST_ARG(window))
+static void WindowCloseCallback(void *, void *uncast_window)
 {
-    TXT_CAST_ARG(txt_window_t, window);
+    txt_window_t *window = (txt_window_t *)uncast_window;
 
     TXT_CloseWindow(window);
 }
-#pragma GCC diagnostic pop
 
-#pragma GCC diagnostic push
-#pragma GCC diagnostic ignored "-Wunused-parameter"
-static void WindowSelectCallback(TXT_UNCAST_ARG(widget), TXT_UNCAST_ARG(window))
+static void WindowSelectCallback(void *, void *uncast_window)
 {
-    TXT_CAST_ARG(txt_window_t, window);
+    txt_window_t *window = (txt_window_t *)uncast_window;
 
     TXT_WidgetKeyPress(window, KEY_ENTER);
 }
-#pragma GCC diagnostic pop
 
 // An action with the name "close" the closes the window
 
