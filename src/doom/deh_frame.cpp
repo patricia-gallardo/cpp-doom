@@ -83,7 +83,7 @@ static void DEH_FrameParseLine(deh_context_t *context, char *line, void *tag)
     if (tag == nullptr)
         return;
 
-    state = (state_t *)tag;
+    state = reinterpret_cast<state_t *>(tag);
 
     // Parse the assignment
 

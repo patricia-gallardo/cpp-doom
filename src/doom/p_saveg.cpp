@@ -182,7 +182,7 @@ static void saveg_write_pad()
 
 static void *saveg_readp()
 {
-    return (void *)(intptr_t)saveg_read32();
+    return reinterpret_cast<void *>(static_cast<intptr_t>(saveg_read32()));
 }
 
 static void saveg_writep(const void *p)
@@ -552,7 +552,10 @@ static void saveg_write_mobj_t(mobj_t *str)
     // struct mobj_s* target;
     // [crispy] instead of the actual pointer, store the
     // corresponding index in the mobj->target field
-    saveg_writep((void *)(uintptr_t)P_ThinkerToIndex((thinker_t *)str->target));
+    auto *thinker = reinterpret_cast<thinker_t *>(str->target);
+    auto intptr  = static_cast<uintptr_t>(P_ThinkerToIndex(thinker));
+    void *pointer = reinterpret_cast<void *>(intptr);
+    saveg_writep(pointer);
 
     // int reactiontime;
     saveg_write32(str->reactiontime);
@@ -579,7 +582,9 @@ static void saveg_write_mobj_t(mobj_t *str)
     // struct mobj_s* tracer;
     // [crispy] instead of the actual pointer, store the
     // corresponding index in the mobj->tracers field
-    saveg_writep((void *)(uintptr_t)P_ThinkerToIndex((thinker_t *)str->tracer));
+    auto *thinker2 = reinterpret_cast<thinker_t *>(str->tracer);
+    auto  intptr2  = static_cast<uintptr_t>(P_ThinkerToIndex(thinker2));
+    saveg_writep(reinterpret_cast<void *>(intptr2));
 }
 
 
@@ -1667,7 +1672,7 @@ void P_ArchiveThinkers()
         {
             saveg_write8(tc_mobj);
             saveg_write_pad();
-            saveg_write_mobj_t((mobj_t *)th);
+            saveg_write_mobj_t(reinterpret_cast<mobj_t *>(th));
 
             continue;
         }
@@ -1697,7 +1702,7 @@ void P_UnArchiveThinkers()
         next = currentthinker->next;
 
         if (currentthinker->function.acp1 == reinterpret_cast<actionf_p1>(P_MobjThinker))
-            P_RemoveMobj((mobj_t *)currentthinker);
+            P_RemoveMobj(reinterpret_cast<mobj_t *>(currentthinker));
         else
             Z_Free(currentthinker);
 
@@ -1749,8 +1754,8 @@ void P_RestoreTargets()
         if (th->function.acp1 == reinterpret_cast<actionf_p1>(P_MobjThinker))
         {
             mo         = reinterpret_cast<mobj_t *>(th);
-            mo->target = (mobj_t *)P_IndexToThinker((uintptr_t)mo->target);
-            mo->tracer = (mobj_t *)P_IndexToThinker(reinterpret_cast<uintptr_t>(mo->tracer));
+            mo->target = reinterpret_cast<mobj_t *>(P_IndexToThinker(reinterpret_cast<uintptr_t>(mo->target)));
+            mo->tracer = reinterpret_cast<mobj_t *>(P_IndexToThinker(reinterpret_cast<uintptr_t>(mo->tracer)));
         }
     }
 
@@ -1800,25 +1805,25 @@ void P_ArchiveSpecials()
         if (th->function.acv == (actionf_v) nullptr)
         {
             for (i = 0; i < MAXCEILINGS; i++)
-                if (activeceilings[i] == (ceiling_t *)th)
+                if (activeceilings[i] == reinterpret_cast<ceiling_t *>(th))
                     break;
 
             if (i < MAXCEILINGS)
             {
                 saveg_write8(static_cast<uint8_t>(specials_e::tc_ceiling));
                 saveg_write_pad();
-                saveg_write_ceiling_t((ceiling_t *)th);
+                saveg_write_ceiling_t(reinterpret_cast<ceiling_t *>(th));
             }
             // [crispy] save plats in statis
             for (i = 0; i < MAXPLATS; i++)
-                if (activeplats[i] == (plat_t *)th)
+                if (activeplats[i] == reinterpret_cast<plat_t *>(th))
                     break;
 
             if (i < MAXPLATS)
             {
                 saveg_write8(static_cast<uint8_t>(specials_e::tc_plat));
                 saveg_write_pad();
-                saveg_write_plat_t((plat_t *)th);
+                saveg_write_plat_t(reinterpret_cast<plat_t *>(th));
             }
             continue;
         }
@@ -1827,7 +1832,7 @@ void P_ArchiveSpecials()
         {
             saveg_write8(static_cast<uint8_t>(specials_e::tc_ceiling));
             saveg_write_pad();
-            saveg_write_ceiling_t((ceiling_t *)th);
+            saveg_write_ceiling_t(reinterpret_cast<ceiling_t *>(th));
             continue;
         }
 
@@ -1835,7 +1840,7 @@ void P_ArchiveSpecials()
         {
             saveg_write8(static_cast<uint8_t>(specials_e::tc_door));
             saveg_write_pad();
-            saveg_write_vldoor_t((vldoor_t *)th);
+            saveg_write_vldoor_t(reinterpret_cast<vldoor_t *>(th));
             continue;
         }
 
@@ -1843,7 +1848,7 @@ void P_ArchiveSpecials()
         {
             saveg_write8(static_cast<uint8_t>(specials_e::tc_floor));
             saveg_write_pad();
-            saveg_write_floormove_t((floormove_t *)th);
+            saveg_write_floormove_t(reinterpret_cast<floormove_t *>(th));
             continue;
         }
 
@@ -1851,7 +1856,7 @@ void P_ArchiveSpecials()
         {
             saveg_write8(static_cast<uint8_t>(specials_e::tc_plat));
             saveg_write_pad();
-            saveg_write_plat_t((plat_t *)th);
+            saveg_write_plat_t(reinterpret_cast<plat_t *>(th));
             continue;
         }
 
@@ -1859,7 +1864,7 @@ void P_ArchiveSpecials()
         {
             saveg_write8(static_cast<uint8_t>(specials_e::tc_flash));
             saveg_write_pad();
-            saveg_write_lightflash_t((lightflash_t *)th);
+            saveg_write_lightflash_t(reinterpret_cast<lightflash_t *>(th));
             continue;
         }
 
@@ -1867,7 +1872,7 @@ void P_ArchiveSpecials()
         {
             saveg_write8(static_cast<uint8_t>(specials_e::tc_strobe));
             saveg_write_pad();
-            saveg_write_strobe_t((strobe_t *)th);
+            saveg_write_strobe_t(reinterpret_cast<strobe_t *>(th));
             continue;
         }
 
@@ -1875,7 +1880,7 @@ void P_ArchiveSpecials()
         {
             saveg_write8(static_cast<uint8_t>(specials_e::tc_glow));
             saveg_write_pad();
-            saveg_write_glow_t((glow_t *)th);
+            saveg_write_glow_t(reinterpret_cast<glow_t *>(th));
             continue;
         }
     }

@@ -63,7 +63,7 @@ bool P_SetMobjState(mobj_t * mobj, statenum_t state)
 
     if (state == S_NULL)
     {                           // Remove mobj
-        mobj->state = (state_t *) S_NULL;
+        mobj->state = nullptr;
         P_RemoveMobj(mobj);
         return (false);
     }
@@ -94,7 +94,7 @@ bool P_SetMobjStateNF(mobj_t * mobj, statenum_t state)
 
     if (state == S_NULL)
     {                           // Remove mobj
-        mobj->state = (state_t *) S_NULL;
+        mobj->state = nullptr;
         P_RemoveMobj(mobj);
         return (false);
     }

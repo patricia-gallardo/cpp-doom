@@ -71,7 +71,7 @@ static void DEH_SoundParseLine(deh_context_t *context, char *line, void *tag)
     if (tag == nullptr)
         return;
 
-    sfx = (sfxinfo_t *)tag;
+    sfx = reinterpret_cast<sfxinfo_t *>(tag);
 
     // Parse the assignment
 

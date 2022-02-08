@@ -62,7 +62,7 @@ bool
     {
         if (state == S_NULL)
         {
-            mobj->state = (state_t *)S_NULL;
+            mobj->state = nullptr;
             P_RemoveMobj(mobj);
             return false;
         }
@@ -733,7 +733,7 @@ void P_RemoveMobj(mobj_t *mobj)
     }
 
     // free block
-    P_RemoveThinker((thinker_t *)mobj);
+    P_RemoveThinker(reinterpret_cast<thinker_t *>(mobj));
 }
 
 
@@ -810,7 +810,7 @@ degenmobj_t muzzles[MAXPLAYERS];
 
 mobj_t *Crispy_PlayerSO(int p)
 {
-    return crispy->soundfull ? (mobj_t *)&muzzles[p] : players[p].mo;
+    return crispy->soundfull ? reinterpret_cast<mobj_t *>(&muzzles[p]) : players[p].mo;
 }
 
 //

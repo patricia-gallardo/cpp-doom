@@ -210,7 +210,7 @@ void R_DrawColumnInCache(column_t *patch, uint8_t *cache,
         {
             top = patch->topdelta;
         }
-        source   = (uint8_t *)patch + 3;
+        source   = reinterpret_cast<uint8_t *>(patch + 3);
         count    = patch->length;
         position = originy + top;
 
@@ -234,7 +234,8 @@ void R_DrawColumnInCache(column_t *patch, uint8_t *cache,
             memset(marks + position, 0xff, count);
         }
 
-        patch = reinterpret_cast<column_t *>((uint8_t *)patch + patch->length + 4);
+        uint8_t *col_ptr = reinterpret_cast<uint8_t *>(patch) + patch->length + 4;
+        patch = reinterpret_cast<column_t *>(col_ptr);
     }
 }
 
@@ -306,8 +307,8 @@ void R_GenerateComposite(int texnum)
 		continue;
 	    */
 
-            patchcol = reinterpret_cast<column_t *>((uint8_t *)realpatch
-                                    + LONG(realpatch->columnofs[x - x1]));
+            uint8_t *col_ptr = reinterpret_cast<uint8_t *>(realpatch) + LONG(realpatch->columnofs[x - x1]);
+            patchcol = reinterpret_cast<column_t *>(col_ptr);
             R_DrawColumnInCache(patchcol,
                 block + colofs[x],
                 // [crispy] single-patched columns are normally not composited
@@ -331,7 +332,7 @@ void R_GenerateComposite(int texnum)
             int         j    = 0;
 
             // save column in temporary so we can shuffle it around
-            memcpy(source, (uint8_t *)col + 3, texture->height);
+            memcpy(source, reinterpret_cast<uint8_t *>(col) + 3, texture->height);
 
             for (;;) // reconstruct the column by scanning transparency marks
             {
@@ -357,8 +358,9 @@ void R_GenerateComposite(int texnum)
                 col->length = len; // killough 12/98: intentionally truncate length
 
                 // copy opaque cells from the temporary back into the column
-                memcpy((uint8_t *)col + 3, source + col->topdelta, len);
-                col = reinterpret_cast<column_t *>((uint8_t *)col + len + 4); // next post
+                memcpy(reinterpret_cast<uint8_t *>(col) + 3, source + col->topdelta, len);
+                uint8_t *col_ptr = reinterpret_cast<uint8_t *>(col) + len + 4;
+                col = reinterpret_cast<column_t *>(col_ptr); // next post
             }
         }
     }
@@ -471,14 +473,18 @@ void R_GenerateLookup(int texnum)
             {
                 if (patchcount[x] > 1) // Only multipatched columns
                 {
-                    const column_t *col  = (const column_t *)((const uint8_t *)realpatch + LONG(cofs[x]));
-                    const uint8_t  *base = (const uint8_t *)col;
+                    const uint8_t  *col_ptr = reinterpret_cast<const uint8_t *>(realpatch) + LONG(cofs[x]);
+                    const auto *col  = reinterpret_cast<const column_t *>(col_ptr);
+                    const auto  *base = reinterpret_cast<const uint8_t *>(col);
 
                     // count posts
                     for (; col->topdelta != 0xff; postcount[x]++)
                     {
-                        if (static_cast<unsigned>((const uint8_t *)col - base) <= limit)
-                            col = (const column_t *)((const uint8_t *)col + col->length + 4);
+                        if (static_cast<unsigned>(reinterpret_cast<const uint8_t *>(col) - base) <= limit)
+                        {
+                            const uint8_t *col_ptr2 = reinterpret_cast<const uint8_t *>(col) + col->length + 4;
+                            col = reinterpret_cast<const column_t *>(col_ptr2);
+                        }
                         else
                             break;
                     }
@@ -706,12 +712,12 @@ void R_InitTextures()
 
             pnameslumps[numpnameslumps].lumpnum       = i;
             pnameslumps[numpnameslumps].names         = cache_lump_num<patch_t *>(pnameslumps[numpnameslumps].lumpnum, PU_STATIC);
-            pnameslumps[numpnameslumps].nummappatches = LONG(*((int *)pnameslumps[numpnameslumps].names));
+            pnameslumps[numpnameslumps].nummappatches = LONG(*(reinterpret_cast<int *>(pnameslumps[numpnameslumps].names)));
 
             // [crispy] accumulated number of patches in the lookup tables
             // excluding the current one
             pnameslumps[numpnameslumps].summappatches = nummappatches;
-            pnameslumps[numpnameslumps].name_p        = (char *)pnameslumps[numpnameslumps].names + 4;
+            pnameslumps[numpnameslumps].name_p        = reinterpret_cast<char *>(pnameslumps[numpnameslumps].names) + 4;
 
             // [crispy] calculate total number of patches
             nummappatches += pnameslumps[numpnameslumps].nummappatches;
@@ -859,7 +865,8 @@ void R_InitTextures()
         if (offset > maxoff)
             I_Error("R_InitTextures: bad texture directory");
 
-        mtexture = (maptexture_t *)((uint8_t *)maptex + offset);
+        uint8_t *byte_ptr = reinterpret_cast<uint8_t *>(maptex) + offset;
+        mtexture = reinterpret_cast<maptexture_t *>(byte_ptr);
 
         texture = textures[i] = zmalloc<decltype(texture)>(sizeof(texture_t)
                                                                + sizeof(texpatch_t) * (SHORT(mtexture->patchcount) - 1),
@@ -1432,7 +1439,10 @@ void R_PrecacheLevel()
     for (th = thinkercap.next; th != &thinkercap; th = th->next)
     {
         if (th->function.acp1 == reinterpret_cast<actionf_p1>(P_MobjThinker))
-            spritepresent[((mobj_t *)th)->sprite] = 1;
+        {
+            mobj_t *pMobj                = reinterpret_cast<mobj_t *>(th);
+            spritepresent[pMobj->sprite] = 1;
+        }
     }
 
     spritememory = 0;

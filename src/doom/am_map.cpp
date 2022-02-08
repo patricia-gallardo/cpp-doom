@@ -278,7 +278,7 @@ static int64_t old_m_x, old_m_y;
 static mpoint_t f_oldloc;
 
 // used by MTOF to scale from map-to-frame-buffer coords
-static fixed_t scale_mtof = (fixed_t)INITSCALEMTOF;
+static fixed_t scale_mtof = INITSCALEMTOF;
 // used by FTOM to scale from frame-buffer-to-map coords (=1/scale_mtof)
 static fixed_t scale_ftom;
 
@@ -1506,12 +1506,12 @@ static void AM_rotatePoint(mpoint_t *pt)
     pt->x -= mapcenter.x;
     pt->y -= mapcenter.y;
 
-    tmpx = (int64_t)FixedMul(pt->x, finecosine[mapangle >> ANGLETOFINESHIFT])
-           - (int64_t)FixedMul(pt->y, finesine[mapangle >> ANGLETOFINESHIFT])
+    tmpx = static_cast<int64_t>(FixedMul(pt->x, finecosine[mapangle >> ANGLETOFINESHIFT]))
+           - static_cast<int64_t>(FixedMul(pt->y, finesine[mapangle >> ANGLETOFINESHIFT]))
            + mapcenter.x;
 
-    pt->y = (int64_t)FixedMul(pt->x, finesine[mapangle >> ANGLETOFINESHIFT])
-            + (int64_t)FixedMul(pt->y, finecosine[mapangle >> ANGLETOFINESHIFT])
+    pt->y = static_cast<int64_t>(FixedMul(pt->x, finesine[mapangle >> ANGLETOFINESHIFT]))
+            + static_cast<int64_t>(FixedMul(pt->y, finecosine[mapangle >> ANGLETOFINESHIFT]))
             + mapcenter.y;
 
     pt->x = tmpx;
@@ -1812,8 +1812,8 @@ void AM_GetMarkPoints(int *n, long *p)
     {
         for (i = 0; i < AM_NUMMARKPOINTS; i++)
         {
-            *p++ = (long)markpoints[i].x;
-            *p++ = (markpoints[i].x == -1) ? 0L : (long)markpoints[i].y;
+            *p++ = static_cast<long>(markpoints[i].x);
+            *p++ = (markpoints[i].x == -1) ? 0L : static_cast<long>(markpoints[i].y);
         }
     }
 }
@@ -1830,7 +1830,7 @@ void AM_SetMarkPoints(int n, long *p)
 
     for (i = 0; i < AM_NUMMARKPOINTS; i++)
     {
-        markpoints[i].x = (int64_t)*p++;
-        markpoints[i].y = (int64_t)*p++;
+        markpoints[i].x = static_cast<int64_t>(*p++);
+        markpoints[i].y = static_cast<int64_t>(*p++);
     }
 }

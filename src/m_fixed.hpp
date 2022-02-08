@@ -26,7 +26,7 @@
 //
 #define FRACBITS        16
 #define FRACUNIT        (1 << FRACBITS)
-#define FIXED2DOUBLE(x) (x / (double)FRACUNIT)
+#define FIXED2DOUBLE(x) (x / static_cast<double>(FRACUNIT))
 
 typedef int fixed_t;
 

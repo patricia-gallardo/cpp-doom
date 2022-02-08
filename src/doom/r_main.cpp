@@ -371,8 +371,8 @@ angle_t
         fixed_t                  y)
 {
     // [crispy] fix overflows for very long distances
-    int64_t y_viewy = (int64_t)y - viewy;
-    int64_t x_viewx = (int64_t)x - viewx;
+    int64_t y_viewy = static_cast<int64_t>(y) - viewy;
+    int64_t x_viewx = static_cast<int64_t>(x) - viewx;
 
     // [crispy] the worst that could happen is e.g. INT_MIN-INT_MAX = 2*INT_MIN
     if (x_viewx < INT_MIN || x_viewx > INT_MAX || y_viewy < INT_MIN || y_viewy > INT_MAX)
@@ -534,16 +534,16 @@ angle_t R_InterpolateAngle(angle_t oangle, angle_t nangle, fixed_t scale)
     else if (nangle > oangle)
     {
         if (nangle - oangle < ANG270)
-            return oangle + (angle_t)((nangle - oangle) * FIXED2DOUBLE(scale));
+            return oangle + static_cast<angle_t>((nangle - oangle) * FIXED2DOUBLE(scale));
         else // Wrapped around
-            return oangle - (angle_t)((oangle - nangle) * FIXED2DOUBLE(scale));
+            return oangle - static_cast<angle_t>((oangle - nangle) * FIXED2DOUBLE(scale));
     }
     else // nangle < oangle
     {
         if (oangle - nangle < ANG270)
-            return oangle - (angle_t)((oangle - nangle) * FIXED2DOUBLE(scale));
+            return oangle - static_cast<angle_t>((oangle - nangle) * FIXED2DOUBLE(scale));
         else // Wrapped around
-            return oangle + (angle_t)((nangle - oangle) * FIXED2DOUBLE(scale));
+            return oangle + static_cast<angle_t>((nangle - oangle) * FIXED2DOUBLE(scale));
     }
 }
 
