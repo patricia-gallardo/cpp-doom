@@ -901,7 +901,7 @@ F_DrawPatchCol
     byte*	desttop;
     int		count;
 	
-    column = (column_t *)((byte *)patch + LONG(patch->columnofs[col]));
+    column = reinterpret_cast<column_t *>((byte *)patch + LONG(patch->columnofs[col]));
     desttop = I_VideoBuffer + x;
 
     // step through the posts in a column
@@ -916,7 +916,7 @@ F_DrawPatchCol
 	    *dest = *source++;
 	    dest += SCREENWIDTH;
 	}
-	column = (column_t *)(  (byte *)column + column->length + 4 );
+	column = reinterpret_cast<column_t *>(  (byte *)column + column->length + 4 );
     }
 }
 #endif

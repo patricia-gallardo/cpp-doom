@@ -179,7 +179,7 @@ R_RenderMaskedSegRange
 	    dc_iscale = 0xffffffffu / (unsigned)spryscale;
 	    
 	    // draw the texture
-	    col = (column_t *)( 
+	    col = reinterpret_cast<column_t *>(
 		(uint8_t *)R_GetColumn(texnum,maskedtexturecol[dc_x]) -3);
 			
             // villsa [STRIFE] added 0 argument

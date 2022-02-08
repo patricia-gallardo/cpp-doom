@@ -234,7 +234,7 @@ void R_DrawColumnInCache(column_t *patch, uint8_t *cache,
             memset(marks + position, 0xff, count);
         }
 
-        patch = (column_t *)((uint8_t *)patch + patch->length + 4);
+        patch = reinterpret_cast<column_t *>((uint8_t *)patch + patch->length + 4);
     }
 }
 
@@ -306,7 +306,7 @@ void R_GenerateComposite(int texnum)
 		continue;
 	    */
 
-            patchcol = (column_t *)((uint8_t *)realpatch
+            patchcol = reinterpret_cast<column_t *>((uint8_t *)realpatch
                                     + LONG(realpatch->columnofs[x - x1]));
             R_DrawColumnInCache(patchcol,
                 block + colofs[x],
@@ -326,7 +326,7 @@ void R_GenerateComposite(int texnum)
     {
         if (collump[i] == -1) // process only multipatched columns
         {
-            column_t *  col  = (column_t *)(block + colofs[i] - 3); // cached column
+            column_t *  col  = reinterpret_cast<column_t *>(block + colofs[i] - 3); // cached column
             const uint8_t *mark = marks + i * texture->height;
             int         j    = 0;
 
@@ -358,7 +358,7 @@ void R_GenerateComposite(int texnum)
 
                 // copy opaque cells from the temporary back into the column
                 memcpy((uint8_t *)col + 3, source + col->topdelta, len);
-                col = (column_t *)((uint8_t *)col + len + 4); // next post
+                col = reinterpret_cast<column_t *>((uint8_t *)col + len + 4); // next post
             }
         }
     }

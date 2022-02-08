@@ -88,9 +88,8 @@ struct midi_file_s {
 static bool CheckChunkHeader(chunk_header_t *chunk,
     const char *                                expected_id)
 {
-    bool result;
-
-    result = (memcmp((char *)chunk->chunk_id, expected_id, 4) == 0);
+    char *chunk_ptr = reinterpret_cast<char *>(chunk->chunk_id);
+    bool result = (memcmp(chunk_ptr, expected_id, 4) == 0);
 
     if (!result)
     {
@@ -119,7 +118,7 @@ static bool ReadByte(uint8_t *result, FILE *stream)
     }
     else
     {
-        *result = (uint8_t)c;
+        *result = static_cast<uint8_t>(c);
 
         return true;
     }
@@ -696,8 +695,8 @@ unsigned int MIDI_GetFileTimeDivision(midi_file_t *file)
     // differently.
     if (result < 0)
     {
-        return (signed int)(-(result / 256))
-               * (signed int)(result & 0xFF);
+        return static_cast<signed int>(-(result / 256))
+               * static_cast<signed int>(result & 0xFF);
     }
     else
     {

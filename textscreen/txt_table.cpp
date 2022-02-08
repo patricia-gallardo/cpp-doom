@@ -1148,7 +1148,7 @@ void TXT_SetColumnWidths(void *uncast_table, ...)
     {
         width = va_arg(args, int);
 
-        strut = (txt_strut_t *) table->widgets[i];
+        strut = reinterpret_cast<txt_strut_t *>(table->widgets[i]);
         strut->width = width;
     }
 

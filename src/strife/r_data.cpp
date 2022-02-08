@@ -208,7 +208,7 @@ R_DrawColumnInCache
 	if (count > 0)
 	    memcpy (cache + position, source, count);
 		
-	patch = (column_t *)(  (uint8_t *)patch + patch->length + 4);
+	patch = reinterpret_cast<column_t *>(  (uint8_t *)patch + patch->length + 4);
     }
 }
 
@@ -268,7 +268,7 @@ void R_GenerateComposite (int texnum)
 	    if (collump[x] >= 0)
 		continue;
 	    
-	    patchcol = (column_t *)((uint8_t *)realpatch
+	    patchcol = reinterpret_cast<column_t *>((uint8_t *)realpatch
 				    + LONG(realpatch->columnofs[x-x1]));
 	    R_DrawColumnInCache (patchcol,
 				 block + colofs[x],

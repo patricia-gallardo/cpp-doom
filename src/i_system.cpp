@@ -434,7 +434,7 @@ bool I_GetMemoryValue(unsigned int offset, void *value, int size)
                     }
 
                     M_StrToInt(myargv[p], &val);
-                    mem_dump_custom[i++] = (unsigned char)val;
+                    mem_dump_custom[i++] = static_cast<unsigned char>(val);
                 }
 
                 dos_mem_dump = mem_dump_custom;

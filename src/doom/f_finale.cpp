@@ -848,14 +848,14 @@ void F_DrawPatchCol(int x,
     pixel_t * desttop;
     int       count;
 
-    column  = (column_t *)((uint8_t *)patch + LONG(patch->columnofs[col >> FRACBITS]));
+    column  = reinterpret_cast<column_t *>((uint8_t *)patch + LONG(patch->columnofs[col >> FRACBITS]));
     desttop = I_VideoBuffer + x + (DELTAWIDTH << crispy->hires);
 
     // step through the posts in a column
     while (column->topdelta != 0xff)
     {
         int srccol = 0;
-        source     = (uint8_t *)column + 3;
+        source     = reinterpret_cast<uint8_t *>(column) + 3;
         dest       = desttop + ((column->topdelta * dy) >> FRACBITS) * SCREENWIDTH;
         count      = (column->length * dy) >> FRACBITS;
 
@@ -865,7 +865,7 @@ void F_DrawPatchCol(int x,
             srccol += dyi;
             dest += SCREENWIDTH;
         }
-        column = (column_t *)((uint8_t *)column + column->length + 4);
+        column = reinterpret_cast<column_t *>(reinterpret_cast<uint8_t *>(column) + column->length + 4);
     }
 }
 

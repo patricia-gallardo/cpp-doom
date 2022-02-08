@@ -137,7 +137,8 @@ void Z_Free(void *ptr)
 {
     memblock_t *block;
 
-    block = (memblock_t *)((uint8_t *)ptr - sizeof(memblock_t));
+    uint8_t *byte_ptr = static_cast<uint8_t *>(ptr);
+    block = reinterpret_cast<memblock_t *>(byte_ptr - sizeof(memblock_t));
 
     if (block->id != ZONEID)
     {
@@ -251,7 +252,7 @@ void *Z_Malloc(int size, int tag, void *user)
 
     while (newblock == nullptr)
     {
-        newblock = (memblock_t *)malloc(sizeof(memblock_t) + size);
+        newblock = static_cast<memblock_t *>(malloc(sizeof(memblock_t) + size));
 
         if (newblock == nullptr)
         {
@@ -272,7 +273,7 @@ void *Z_Malloc(int size, int tag, void *user)
 
     Z_InsertBlock(newblock);
 
-    data   = (unsigned char *)newblock;
+    data   = reinterpret_cast<unsigned char *>(newblock);
     result = data + sizeof(memblock_t);
 
     if (user != nullptr)
@@ -439,9 +440,8 @@ void Z_CheckHeap()
 
 void Z_ChangeTag2(void *ptr, int tag, const char *file, int line)
 {
-    memblock_t *block;
-
-    block = (memblock_t *)((uint8_t *)ptr - sizeof(memblock_t));
+    auto *byte_ptr = static_cast<uint8_t *>(ptr);
+    auto *block = reinterpret_cast<memblock_t *>(byte_ptr - sizeof(memblock_t));
 
     if (block->id != ZONEID)
         I_Error("%s:%i: Z_ChangeTag: block without a ZONEID!",
@@ -462,9 +462,8 @@ void Z_ChangeTag2(void *ptr, int tag, const char *file, int line)
 
 void Z_ChangeUser(void *ptr, void **user)
 {
-    memblock_t *block;
-
-    block = (memblock_t *)((uint8_t *)ptr - sizeof(memblock_t));
+    uint8_t    *byte_ptr = static_cast<uint8_t *>(ptr);
+    memblock_t *block = reinterpret_cast<memblock_t *>(byte_ptr - sizeof(memblock_t));
 
     if (block->id != ZONEID)
     {

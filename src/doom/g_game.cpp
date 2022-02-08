@@ -2449,10 +2449,10 @@ void G_ReadDemoTiccmd(ticcmd_t *cmd)
     }
     else
     {
-        cmd->angleturn = (reinterpret_cast<unsigned char>(*demo_p++)) << 8;
+        cmd->angleturn = (static_cast<unsigned char>(*demo_p++)) << 8;
     }
 
-    cmd->buttons = reinterpret_cast<unsigned char>(*demo_p++);
+    cmd->buttons = static_cast<unsigned char>(*demo_p++);
 
     // [crispy] increase demo tics counter
     // applies to both recording and playback,

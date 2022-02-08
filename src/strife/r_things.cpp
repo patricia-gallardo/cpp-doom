@@ -113,17 +113,17 @@ R_InstallSpriteLump
 	I_Error("R_InstallSpriteLump: "
 		"Bad frame characters in lump %i", lump);
 	
-    if ((int)frame > maxframe)
+    if (static_cast<int>(frame) > maxframe)
 	maxframe = frame;
 		
     if (rotation == 0)
     {
 	// the lump should be used for all rotations
-	if (sprtemp[frame].rotate == false)
+	if (!sprtemp[frame].rotate)
 	    I_Error ("R_InitSprites: Sprite %s frame %c has "
 		     "multip rot=0 lump", spritename, 'A'+frame);
 
-	if (sprtemp[frame].rotate == true)
+	if (sprtemp[frame].rotate)
 	    I_Error ("R_InitSprites: Sprite %s frame %c has rotations "
 		     "and a rot=0 lump", spritename, 'A'+frame);
 			
@@ -137,7 +137,7 @@ R_InstallSpriteLump
     }
 	
     // the lump is only used for one rotation
-    if (sprtemp[frame].rotate == false)
+    if (!sprtemp[frame].rotate)
 	I_Error ("R_InitSprites: Sprite %s frame %c has rotations "
 		 "and a rot=0 lump", spritename, 'A'+frame);
 		
@@ -382,7 +382,7 @@ void R_DrawMaskedColumn (column_t *column, int baseclip)
 
         if (dc_yl <= dc_yh)
         {
-            dc_source = (uint8_t *)column + 3;
+            dc_source = reinterpret_cast<uint8_t *>(column) + 3;
             dc_texturemid = basetexturemid - (column->topdelta<<FRACBITS);
             // dc_source = (byte *)column + 3 - column->topdelta;
 
@@ -390,7 +390,8 @@ void R_DrawMaskedColumn (column_t *column, int baseclip)
             //  or (SHADOW) R_DrawFuzzColumn.
             colfunc ();	
         }
-        column = (column_t *)(  (uint8_t *)column + column->length + 4);
+        uint8_t *col_ptr = reinterpret_cast<uint8_t *>(column);
+        column = reinterpret_cast<column_t *>(col_ptr + column->length + 4);
     }
 
     dc_texturemid = basetexturemid;
@@ -550,7 +551,7 @@ void R_ProjectSprite (mobj_t* thing)
     
     // decide which patch to use for sprite relative to player
 #ifdef RANGECHECK
-    if ((unsigned int) thing->sprite >= (unsigned int) numsprites)
+    if ((unsigned int) thing->sprite >= static_cast<unsigned int>(numsprites))
 	I_Error ("R_ProjectSprite: invalid sprite number %i ",
 		 thing->sprite);
 #endif
@@ -711,7 +712,7 @@ void R_DrawPSprite (pspdef_t* psp)
     
     // decide which patch to use
 #ifdef RANGECHECK
-    if ( (unsigned)psp->state->sprite >= (unsigned int) numsprites)
+    if ( static_cast<unsigned>(psp->state->sprite) >= static_cast<unsigned int>(numsprites))
         I_Error ("R_ProjectSprite: invalid sprite number %i ",
                  psp->state->sprite);
 #endif

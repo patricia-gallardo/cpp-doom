@@ -334,7 +334,7 @@ void M_ExtractFileBase(const char *path, char *dest)
             break;
         }
 
-        dest[length++] = toupper((int)*src++);
+        dest[length++] = toupper(static_cast<int>(*src++));
     }
 }
 

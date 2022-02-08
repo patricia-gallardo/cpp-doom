@@ -482,7 +482,7 @@ bool mus2mid(MEMFILE *musinput, MEMFILE *midioutput)
 #endif
 
     // Seek to where the data is held
-    if (mem_fseek(musinput, (long)musfileheader.scorestart,
+    if (mem_fseek(musinput, static_cast<long>(musfileheader.scorestart),
             MEM_SEEK_SET)
         != 0)
     {

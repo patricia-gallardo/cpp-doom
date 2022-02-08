@@ -43,7 +43,7 @@ MEMFILE *mem_fopen_read(void *buf, size_t buflen)
 {
     auto *file = zmalloc<MEMFILE *>(sizeof(MEMFILE), PU_STATIC, 0);
 
-    file->buf      = (unsigned char *)buf;
+    file->buf      = static_cast<unsigned char *>(buf);
     file->buflen   = buflen;
     file->position = 0;
     file->mode     = MODE_READ;
@@ -162,7 +162,7 @@ int mem_fseek(MEMFILE *stream, signed long position, mem_rel_t whence)
     switch (whence)
     {
     case MEM_SEEK_SET:
-        newpos = (int)position;
+        newpos = static_cast<int>(position);
         break;
 
     case MEM_SEEK_CUR:
