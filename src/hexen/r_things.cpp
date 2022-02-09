@@ -88,7 +88,7 @@ void R_InstallSpriteLump(int lump, unsigned frame, unsigned rotation,
     if (frame >= 30 || rotation > 8)
         I_Error("R_InstallSpriteLump: Bad frame characters in lump %i", lump);
 
-    if ((int) frame > maxframe)
+    if (static_cast<int>(frame) > maxframe)
         maxframe = frame;
 
     if (rotation == 0)
@@ -209,7 +209,7 @@ void R_InitSpriteDefs(const char **namelist)
         maxframe++;
         for (frame = 0; frame < maxframe; frame++)
         {
-            switch ((int) sprtemp[frame].rotate)
+            switch (static_cast<int>(sprtemp[frame].rotate))
             {
                 case -1:       // no rotations were found for that frame at all
                     I_Error("R_InitSprites: No patches found for %s frame %c",
@@ -347,12 +347,12 @@ void R_DrawMaskedColumn(column_t * column, signed int baseclip)
 
         if (dc_yl <= dc_yh)
         {
-            dc_source = (uint8_t *) column + 3;
+            dc_source = reinterpret_cast<uint8_t *>(column) + 3;
             dc_texturemid = basetexturemid - (column->topdelta << FRACBITS);
 //                      dc_source = (byte *)column + 3 - column->topdelta;
             colfunc();          // either R_DrawColumn or R_DrawTLColumn
         }
-        column = reinterpret_cast<column_t *>((uint8_t *) column + column->length + 4);
+        column = reinterpret_cast<column_t *>(reinterpret_cast<uint8_t *>(column) + column->length + 4);
     }
 
     dc_texturemid = basetexturemid;
@@ -445,8 +445,9 @@ void R_DrawVisSprite(vissprite_t * vis, int, int)
         if (texturecolumn < 0 || texturecolumn >= SHORT(patch->width))
             I_Error("R_DrawSpriteRange: bad texturecolumn");
 #endif
-        column = reinterpret_cast<column_t *>((uint8_t *) patch +
-                               LONG(patch->columnofs[texturecolumn]));
+        auto *byte_ptr = reinterpret_cast<uint8_t *>(patch);
+        uint8_t *col_ptr  = byte_ptr + LONG(patch->columnofs[texturecolumn]);
+        column = reinterpret_cast<column_t *>(col_ptr);
         R_DrawMaskedColumn(column, baseclip);
     }
 
@@ -512,7 +513,7 @@ void R_ProjectSprite(mobj_t * thing)
 // decide which patch to use for sprite reletive to player
 //
 #ifdef RANGECHECK
-    if ((unsigned) thing->sprite >= numsprites)
+    if (static_cast<unsigned>(thing->sprite) >= numsprites)
         I_Error("R_ProjectSprite: invalid sprite number %i ", thing->sprite);
 #endif
     sprdef = &sprites[thing->sprite];
@@ -683,7 +684,7 @@ void R_DrawPSprite(pspdef_t * psp)
 // decide which patch to use
 //
 #ifdef RANGECHECK
-    if ((unsigned) psp->state->sprite >= numsprites)
+    if (static_cast<unsigned>(psp->state->sprite) >= numsprites)
         I_Error("R_ProjectSprite: invalid sprite number %i ",
                 psp->state->sprite);
 #endif

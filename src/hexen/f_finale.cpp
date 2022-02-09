@@ -254,7 +254,7 @@ static void InitializeFade(bool fadeIn)
         for (i = 0; i < 768; i++)
         {
             Palette[i] = 0;
-            PaletteDelta[i] = FixedDiv((*((uint8_t *) cache_lump_name<patch_t *>("playpal",
+            PaletteDelta[i] = FixedDiv((*(cache_lump_name<uint8_t *>("playpal",
                                                                    PU_CACHE) +
                                           i)) << FRACBITS, 70 * FRACUNIT);
         }
@@ -264,7 +264,7 @@ static void InitializeFade(bool fadeIn)
         for (i = 0; i < 768; i++)
         {
             RealPalette[i] =
-                *((uint8_t *) cache_lump_name<patch_t *>("playpal", PU_CACHE) + i);
+                *(cache_lump_name<uint8_t *>("playpal", PU_CACHE) + i);
             Palette[i] = RealPalette[i] << FRACBITS;
             PaletteDelta[i] = FixedDiv(Palette[i], -70 * FRACUNIT);
         }

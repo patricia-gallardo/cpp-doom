@@ -1282,7 +1282,7 @@ bool G_CheckSpot(int playernum, mapthing_t * mthing)
 
 // spawn a teleport fog
     ss = R_PointInSubsector(x, y);
-    an = ((unsigned) ANG45 * (mthing->angle / 45)) >> ANGLETOFINESHIFT;
+    an = (static_cast<unsigned>(ANG45) * (mthing->angle / 45)) >> ANGLETOFINESHIFT;
 
     mo = P_SpawnMobj(x + 20 * finecosine[an], y + 20 * finesine[an],
                      ss->sector->floorheight + TELEFOGHEIGHT, MT_TFOG);
@@ -1842,8 +1842,8 @@ void G_ReadDemoTiccmd(ticcmd_t * cmd)
         G_CheckDemoStatus();
         return;
     }
-    cmd->forwardmove = ((signed char) *demo_p++);
-    cmd->sidemove = ((signed char) *demo_p++);
+    cmd->forwardmove = (static_cast<signed char>(*demo_p++));
+    cmd->sidemove = (static_cast<signed char>(*demo_p++));
 
     // If this is a longtics demo, read back in higher resolution
 
@@ -1854,12 +1854,12 @@ void G_ReadDemoTiccmd(ticcmd_t * cmd)
     }
     else
     {
-        cmd->angleturn = ((unsigned char) *demo_p++) << 8;
+        cmd->angleturn = (static_cast<unsigned char>(*demo_p++)) << 8;
     }
 
-    cmd->buttons = (unsigned char) *demo_p++;
-    cmd->lookfly = (unsigned char) *demo_p++;
-    cmd->arti = (unsigned char) *demo_p++;
+    cmd->buttons = static_cast<unsigned char>(*demo_p++);
+    cmd->lookfly = static_cast<unsigned char>(*demo_p++);
+    cmd->arti    = static_cast<unsigned char>(*demo_p++);
 }
 
 // Increase the size of the demo buffer to allow unlimited demos
@@ -2167,7 +2167,7 @@ bool G_CheckDemoStatus()
         float fps;
         endtime = I_GetTime();
         realtics = endtime - starttime;
-        fps = ((float) gametic * TICRATE) / realtics;
+        fps = (static_cast<float>(gametic) * TICRATE) / realtics;
         I_Error("timed %i gametics in %i realtics (%f fps)",
                 gametic, realtics, fps);
     }

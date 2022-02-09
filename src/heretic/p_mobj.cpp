@@ -221,7 +221,7 @@ bool P_SeekerMissile(mobj_t * actor, angle_t thresh, angle_t turnMax)
     angle_t angle;
     mobj_t *target;
 
-    target = (mobj_t *) actor->special1.m;
+    target = reinterpret_cast<mobj_t *>(actor->special1.m);
     if (target == nullptr)
     {
         return (false);
@@ -948,7 +948,7 @@ void P_RemoveMobj(mobj_t * mobj)
 // stop any playing sound
     S_StopSound(mobj);
 // free block
-    P_RemoveThinker((thinker_t *) mobj);
+    P_RemoveThinker(reinterpret_cast<thinker_t *>(mobj));
 }
 
 //=============================================================================

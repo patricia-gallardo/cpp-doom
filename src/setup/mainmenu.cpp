@@ -216,32 +216,32 @@ void MainMenu()
 
     TXT_AddWidgets(window,
         TXT_NewButton2("Configure Display",
-                       (TxtWidgetSignalFunc) ConfigDisplay, nullptr),
+                       ConfigDisplay, nullptr),
         TXT_NewButton2("Configure Sound",
-                       (TxtWidgetSignalFunc) ConfigSound, nullptr),
+                       ConfigSound, nullptr),
         TXT_NewButton2("Configure Keyboard",
-                       (TxtWidgetSignalFunc) ConfigKeyboard, nullptr),
+                       ConfigKeyboard, nullptr),
         TXT_NewButton2("Configure Mouse",
-                       (TxtWidgetSignalFunc) ConfigMouse, nullptr),
+                       ConfigMouse, nullptr),
         TXT_NewButton2("Configure Gamepad/Joystick",
-                       (TxtWidgetSignalFunc) ConfigJoystick, nullptr),
+                       ConfigJoystick, nullptr),
         TXT_NewButton2(gamemission == doom ? "Crispness" : "Compatibility",
-                       (TxtWidgetSignalFunc) CompatibilitySettings, nullptr),
+                       CompatibilitySettings, nullptr),
         GetLaunchButton(),
         TXT_NewStrut(0, 1),
         TXT_NewButton2("Start a Network Game",
-                       (TxtWidgetSignalFunc) StartMultiGame, nullptr),
+                       StartMultiGame, nullptr),
         TXT_NewButton2("Join a Network Game",
-                       (TxtWidgetSignalFunc) JoinMultiGame, nullptr),
+                       JoinMultiGame, nullptr),
         TXT_NewButton2("Multiplayer Configuration",
-                       (TxtWidgetSignalFunc) MultiplayerConfig, nullptr),
+                       MultiplayerConfig, nullptr),
         nullptr);
 
     quit_action = TXT_NewWindowAction(KEY_ESCAPE, "Quit");
     warp_action = TXT_NewWindowAction(KEY_F2, "Warp");
     TXT_SignalConnect(quit_action, "pressed", QuitConfirm, nullptr);
     TXT_SignalConnect(warp_action, "pressed",
-                      (TxtWidgetSignalFunc) WarpMenu, nullptr);
+                      WarpMenu, nullptr);
     TXT_SetWindowAction(window, TXT_HORIZ_LEFT, quit_action);
     TXT_SetWindowAction(window, TXT_HORIZ_CENTER, warp_action);
 
@@ -276,10 +276,16 @@ static void SetIcon()
     extern SDL_Window *TXT_SDLWindow;
     SDL_Surface *surface;
 
+#pragma GCC diagnostic push
+#pragma GCC diagnostic ignored "-Wold-style-cast"
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Wold-style-cast"
     surface = SDL_CreateRGBSurfaceFrom((void *) setup_icon_data, setup_icon_w,
                                        setup_icon_h, 32, setup_icon_w * 4,
                                        0xff << 24, 0xff << 16,
                                        0xff << 8, 0xff << 0);
+#pragma clang diagnostic pop
+#pragma GCC diagnostic pop
 
     SDL_SetWindowIcon(TXT_SDLWindow, surface);
     SDL_FreeSurface(surface);

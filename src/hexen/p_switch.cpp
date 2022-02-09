@@ -109,7 +109,7 @@ void P_StartButton(line_t * line, bwhere_e w, int texture, int time)
             buttonlist[i].where = w;
             buttonlist[i].btexture = texture;
             buttonlist[i].btimer = time;
-            buttonlist[i].soundorg = (mobj_t *) & line->frontsector->soundorg;
+            buttonlist[i].soundorg = reinterpret_cast<mobj_t *>(&line->frontsector->soundorg);
             return;
         }
     }
@@ -137,7 +137,7 @@ void P_ChangeSwitchTexture(line_t * line, int useAgain)
     {
         if (switchlist[i] == texTop)
         {
-            S_StartSound((mobj_t *) & line->frontsector->soundorg,
+            S_StartSound(reinterpret_cast<mobj_t *>(&line->frontsector->soundorg),
                          alphSwitchList[i / 2].soundID);
             sides[line->sidenum[0]].toptexture = switchlist[i ^ 1];
             if (useAgain)
@@ -148,7 +148,7 @@ void P_ChangeSwitchTexture(line_t * line, int useAgain)
         }
         else if (switchlist[i] == texMid)
         {
-            S_StartSound((mobj_t *) & line->frontsector->soundorg,
+            S_StartSound(reinterpret_cast<mobj_t *>(&line->frontsector->soundorg),
                          alphSwitchList[i / 2].soundID);
             sides[line->sidenum[0]].midtexture = switchlist[i ^ 1];
             if (useAgain)
@@ -159,7 +159,7 @@ void P_ChangeSwitchTexture(line_t * line, int useAgain)
         }
         else if (switchlist[i] == texBot)
         {
-            S_StartSound((mobj_t *) & line->frontsector->soundorg,
+            S_StartSound(reinterpret_cast<mobj_t *>(&line->frontsector->soundorg),
                          alphSwitchList[i / 2].soundID);
             sides[line->sidenum[0]].bottomtexture = switchlist[i ^ 1];
             if (useAgain)

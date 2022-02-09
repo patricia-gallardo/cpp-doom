@@ -419,7 +419,7 @@ void P_DeathThink(player_t * player)
     {
         if (player == &players[consoleplayer])
         {
-            I_SetPalette((uint8_t *) cache_lump_name<patch_t *>("PLAYPAL", PU_CACHE));
+            I_SetPalette(cache_lump_name<uint8_t *>("PLAYPAL", PU_CACHE));
             inv_ptr = 0;
             curpos = 0;
             newtorch = 0;
@@ -1206,7 +1206,7 @@ void P_BlastRadius(player_t * player)
         {                       // Not a mobj thinker
             continue;
         }
-        mo = (mobj_t *) think;
+        mo = reinterpret_cast<mobj_t *>(think);
         if ((mo == pmo) || (mo->flags2 & MF2_BOSS))
         {                       // Not a valid monster
             continue;
@@ -1271,7 +1271,7 @@ bool P_HealRadius(player_t * player)
         {                       // Not a mobj thinker
             continue;
         }
-        mo = (mobj_t *) think;
+        mo = reinterpret_cast<mobj_t *>(think);
 
         if (!mo->player)
             continue;

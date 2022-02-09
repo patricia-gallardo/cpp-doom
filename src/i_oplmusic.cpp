@@ -951,7 +951,7 @@ static bool LoadInstrumentTable()
 
     // DMX does not check header
 
-    main_instrs       = (genmidi_instr_t *)(lump + strlen(GENMIDI_HEADER));
+    main_instrs       = reinterpret_cast<genmidi_instr_t *>(lump + strlen(GENMIDI_HEADER));
     percussion_instrs = main_instrs + GENMIDI_NUM_INSTRS;
     main_instr_names =
         (char(*)[32])(percussion_instrs + GENMIDI_NUM_PERCUSSION);
@@ -1402,7 +1402,7 @@ static unsigned int FrequencyForVoice(opl_voice_t *voice)
 
     if ((SHORT(voice->current_instr->flags) & GENMIDI_FLAG_FIXED) == 0)
     {
-        note += (signed short)SHORT(gm_voice->base_note_offset);
+        note += SHORT(gm_voice->base_note_offset);
     }
 
     // Avoid possible overflow due to base note offset:
@@ -1844,7 +1844,7 @@ static void PitchBendEvent(opl_track_data_t *track, midi_event_t *event)
 
 static void MetaSetTempo(unsigned int tempo)
 {
-    OPL_AdjustCallbacks((float)us_per_beat / tempo);
+    OPL_AdjustCallbacks(static_cast<float>(us_per_beat) / tempo);
     us_per_beat = tempo;
 }
 
@@ -2011,7 +2011,7 @@ static void ScheduleTrack(opl_track_data_t *track)
     // Get the number of microseconds until the next event.
 
     nticks = MIDI_GetDeltaTime(track->iter);
-    us     = ((uint64_t)nticks * us_per_beat) / ticks_per_beat;
+    us     = (static_cast<uint64_t>(nticks) * us_per_beat) / ticks_per_beat;
 
     // Set a timer to be invoked when the next event is
     // ready to play.

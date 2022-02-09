@@ -48,7 +48,7 @@ void T_MoveCeiling(ceiling_t * ceiling)
                               ceiling->direction);
             if (res == RES_PASTDEST)
             {
-                SN_StopSequence((mobj_t *) & ceiling->sector->soundorg);
+                SN_StopSequence(reinterpret_cast<mobj_t *>(&ceiling->sector->soundorg));
                 switch (ceiling->type)
                 {
                     case CLEV_CRUSHANDRAISE:
@@ -67,7 +67,7 @@ void T_MoveCeiling(ceiling_t * ceiling)
                               ceiling->direction);
             if (res == RES_PASTDEST)
             {
-                SN_StopSequence((mobj_t *) & ceiling->sector->soundorg);
+                SN_StopSequence(reinterpret_cast<mobj_t *>(&ceiling->sector->soundorg));
                 switch (ceiling->type)
                 {
                     case CLEV_CRUSHANDRAISE:
@@ -209,8 +209,9 @@ int EV_DoCeiling(line_t *, uint8_t *arg, ceiling_e type)
         P_AddActiveCeiling(ceiling);
         if (rtn)
         {
-            SN_StartSequence((mobj_t *) & ceiling->sector->soundorg,
-                             SEQ_PLATFORM + static_cast<int>(ceiling->sector->seqType));
+            SN_StartSequence(
+                reinterpret_cast<mobj_t *>(&ceiling->sector->soundorg),
+                SEQ_PLATFORM + static_cast<int>(ceiling->sector->seqType));
         }
     }
     return rtn;
@@ -293,7 +294,7 @@ int EV_CeilingCrushStop(line_t *, uint8_t *args)
         if (activeceilings[i] && activeceilings[i]->tag == args[0])
         {
             rtn = 1;
-            SN_StopSequence((mobj_t *) & activeceilings[i]->sector->soundorg);
+            SN_StopSequence(reinterpret_cast<mobj_t *>(&activeceilings[i]->sector->soundorg));
             activeceilings[i]->sector->specialdata = null_hook();
             P_RemoveThinker(&activeceilings[i]->thinker);
             P_TagFinished(activeceilings[i]->sector->tag);

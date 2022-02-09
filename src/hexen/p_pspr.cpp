@@ -674,7 +674,7 @@ void AdjustPlayerAngle(mobj_t * pmo)
     int difference;
 
     angle = R_PointToAngle2(pmo->x, pmo->y, linetarget->x, linetarget->y);
-    difference = (int) angle - (int) pmo->angle;
+    difference = static_cast<int>(angle) - static_cast<int>(pmo->angle);
     if (std::abs(difference) > MAX_ANGADJUST)
     {
         pmo->angle += difference > 0 ? MAX_ANGADJUST : -MAX_ANGADJUST;

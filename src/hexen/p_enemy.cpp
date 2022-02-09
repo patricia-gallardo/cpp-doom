@@ -480,7 +480,7 @@ bool P_LookForMonsters(mobj_t * actor)
         {                       // Not a mobj thinker
             continue;
         }
-        mo = (mobj_t *) think;
+        mo = reinterpret_cast<mobj_t *>(think);
         if (!(mo->flags & MF_COUNTKILL) || (mo == actor) || (mo->health <= 0))
         {                       // Not a valid monster
             continue;
@@ -1216,7 +1216,7 @@ void A_MinotaurLook(mobj_t * actor)
         {
             if (think->function != needle)
                 continue;
-            mo = (mobj_t *) think;
+            mo = reinterpret_cast<mobj_t *>(think);
             if (!(mo->flags & MF_COUNTKILL))
                 continue;
             if (mo->health <= 0)
@@ -1749,7 +1749,7 @@ int P_Massacre()
         {                       // Not a mobj thinker
             continue;
         }
-        mo = (mobj_t *) think;
+        mo = reinterpret_cast<mobj_t *>(think);
         if ((mo->flags & MF_COUNTKILL) && (mo->health > 0))
         {
             mo->flags2 &= ~(MF2_NONSHOOTABLE + MF2_INVULNERABLE);
@@ -1918,7 +1918,7 @@ void P_InitCreatureCorpseQueue(bool corpseScan)
     {
         if (think->function != needle)
             continue;
-        mo = (mobj_t *) think;
+        mo = reinterpret_cast<mobj_t *>(think);
         if (!(mo->flags & MF_CORPSE))
             continue;           // Must be a corpse
         if (mo->flags & MF_ICECORPSE)
@@ -3995,14 +3995,14 @@ void A_SorcBallOrbit(mobj_t * actor)
     int x, y;
     angle_t angle, baseangle;
     int mode = actor->target->args[3];
-    mobj_t *parent = (mobj_t *) actor->target;
+    mobj_t *parent = reinterpret_cast<mobj_t *>(actor->target);
     int dist = parent->radius - (actor->radius << 1);
     angle_t prevangle = actor->special1.i;
 
     if (actor->target->health <= 0)
         P_SetMobjState(actor, actor->info->painstate);
 
-    baseangle = (angle_t) parent->special1.i;
+    baseangle = static_cast<angle_t>(parent->special1.i);
     switch (actor->type)
     {
         case MT_SORCBALL1:
@@ -4299,7 +4299,7 @@ void A_SorcOffense1(mobj_t * actor)
 {
     mobj_t *mo;
     angle_t ang1, ang2;
-    mobj_t *parent = (mobj_t *) actor->target;
+    mobj_t *parent = reinterpret_cast<mobj_t *>(actor->target);
 
     ang1 = actor->angle + ANG1 * 70;
     ang2 = actor->angle - ANG1 * 70;
@@ -4461,7 +4461,7 @@ void A_SorcFX2Orbit(mobj_t * actor)
     if (actor->args[0])         // Counter clock-wise
     {
         actor->special1.i += ANG1 * 10;
-        angle = ((angle_t) actor->special1.i) >> ANGLETOFINESHIFT;
+        angle = (static_cast<angle_t>(actor->special1.i)) >> ANGLETOFINESHIFT;
         x = parent->x + FixedMul(dist, finecosine[angle]);
         y = parent->y + FixedMul(dist, finesine[angle]);
         z = parent->z - parent->floorclip + SORC_DEFENSE_HEIGHT * FRACUNIT;
@@ -4472,7 +4472,7 @@ void A_SorcFX2Orbit(mobj_t * actor)
     else                        // Clock wise
     {
         actor->special1.i -= ANG1 * 10;
-        angle = ((angle_t) actor->special1.i) >> ANGLETOFINESHIFT;
+        angle = (static_cast<angle_t>(actor->special1.i)) >> ANGLETOFINESHIFT;
         x = parent->x + FixedMul(dist, finecosine[angle]);
         y = parent->y + FixedMul(dist, finesine[angle]);
         z = parent->z - parent->floorclip + SORC_DEFENSE_HEIGHT * FRACUNIT;

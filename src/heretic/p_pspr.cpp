@@ -1274,7 +1274,7 @@ void A_DeathBallImpact(mobj_t * ball)
     if ((ball->z <= ball->floorz) && ball->momz)
     {                           // Bounce
         newAngle = false;
-        target = (mobj_t *) ball->special1.m;
+        target = reinterpret_cast<mobj_t *>(ball->special1.m);
         if (target)
         {
             if (!(target->flags & MF_SHOOTABLE))

@@ -273,7 +273,7 @@ void V_DrawPatch(int x, int y, patch_t *patch)
             break;
         }
 
-        column = reinterpret_cast<column_t *>((uint8_t *)patch + LONG(patch->columnofs[col >> FRACBITS]));
+        column = reinterpret_cast<column_t *>(reinterpret_cast<uint8_t *>(patch) + LONG(patch->columnofs[col >> FRACBITS]));
 
         // step through the posts in a column
         while (column->topdelta != 0xff)
@@ -414,7 +414,7 @@ void V_DrawPatchFlipped(int x, int y, patch_t *patch)
             break;
         }
 
-        column = reinterpret_cast<column_t *>((uint8_t *)patch + LONG(patch->columnofs[w - 1 - (col >> FRACBITS)]));
+        column = reinterpret_cast<column_t *>(reinterpret_cast<uint8_t *>(patch) + LONG(patch->columnofs[w - 1 - (col >> FRACBITS)]));
 
         // step through the posts in a column
         while (column->topdelta != 0xff)
@@ -507,7 +507,7 @@ void V_DrawTLPatch(int x, int y, patch_t *patch)
     w = SHORT(patch->width);
     for (; col < w << FRACBITS; x++, col += dxi, desttop++)
     {
-        column = reinterpret_cast<column_t *>((uint8_t *)patch + LONG(patch->columnofs[col >> FRACBITS]));
+        column = reinterpret_cast<column_t *>(reinterpret_cast<uint8_t *>(patch) + LONG(patch->columnofs[col >> FRACBITS]));
 
         // step through the posts in a column
 
@@ -558,7 +558,7 @@ void V_DrawXlaPatch(int x, int y, patch_t *patch)
     w = SHORT(patch->width);
     for (; col < w << FRACBITS; x++, col += dxi, desttop++)
     {
-        column = reinterpret_cast<column_t *>((uint8_t *)patch + LONG(patch->columnofs[col >> FRACBITS]));
+        column = reinterpret_cast<column_t *>(reinterpret_cast<uint8_t *>(patch) + LONG(patch->columnofs[col >> FRACBITS]));
 
         // step through the posts in a column
 
@@ -611,7 +611,7 @@ void V_DrawAltTLPatch(int x, int y, patch_t *patch)
     w = SHORT(patch->width);
     for (; col < w << FRACBITS; x++, col += dxi, desttop++)
     {
-        column = reinterpret_cast<column_t *>((uint8_t *)patch + LONG(patch->columnofs[col >> FRACBITS]));
+        column = reinterpret_cast<column_t *>(reinterpret_cast<uint8_t *>(patch) + LONG(patch->columnofs[col >> FRACBITS]));
 
         // step through the posts in a column
 
@@ -666,7 +666,7 @@ void V_DrawShadowedPatch(int x, int y, patch_t *patch)
     w = SHORT(patch->width);
     for (; col < w << FRACBITS; x++, col += dxi, desttop++, desttop2++)
     {
-        column = reinterpret_cast<column_t *>((uint8_t *)patch + LONG(patch->columnofs[col >> FRACBITS]));
+        column = reinterpret_cast<column_t *>(reinterpret_cast<uint8_t *>(patch) + LONG(patch->columnofs[col >> FRACBITS]));
 
         // step through the posts in a column
 

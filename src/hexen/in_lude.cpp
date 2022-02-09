@@ -404,7 +404,7 @@ void IN_Drawer()
         return;
     }
     UpdateState |= I_FULLSCRN;
-    V_CopyScaledBuffer(I_VideoBuffer, (uint8_t *) patchINTERPIC, ORIGWIDTH * ORIGHEIGHT);
+    V_CopyScaledBuffer(I_VideoBuffer, reinterpret_cast<pixel_t *>(patchINTERPIC), ORIGWIDTH * ORIGHEIGHT);
 
     if (gametype == SINGLE)
     {

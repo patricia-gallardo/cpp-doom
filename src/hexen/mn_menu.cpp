@@ -613,7 +613,7 @@ static void DrawClassMenu()
     };
 
     MN_DrTextB("CHOOSE CLASS:", 34, 24);
-    clazz = (pclass_t) CurrentMenu->items[CurrentItPos].option;
+    clazz = static_cast<pclass_t>(CurrentMenu->items[CurrentItPos].option);
     V_DrawPatch(174, 8, cache_lump_name<patch_t *>(boxLumpName[clazz], PU_CACHE));
     V_DrawPatch(174 + 24, 8 + 12,
         cache_lump_num<patch_t *>(W_GetNumForName(walkLumpName[clazz])

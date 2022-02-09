@@ -192,7 +192,7 @@ R_DrawColumnInCache
 
     while (patch->topdelta != 0xff)
     {
-	source = (uint8_t *)patch + 3;
+	source = reinterpret_cast<uint8_t *>(patch) + 3;
 	count = patch->length;
 	position = originy + patch->topdelta;
 
@@ -208,7 +208,7 @@ R_DrawColumnInCache
 	if (count > 0)
 	    memcpy (cache + position, source, count);
 		
-	patch = reinterpret_cast<column_t *>(  (uint8_t *)patch + patch->length + 4);
+	patch = reinterpret_cast<column_t *>(  reinterpret_cast<uint8_t *>(patch) + patch->length + 4);
     }
 }
 

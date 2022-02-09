@@ -464,7 +464,7 @@ static void F_DoSlideShow()
     finalecount = 0;
     if(gameversion != exe_strife_1_31) // See above. This was removed in 1.31.
     {
-       patch = (patch_t *)cache_lump_name<patch_t *>(DEH_String("PANEL0"), PU_CACHE);
+       patch = cache_lump_name<patch_t *>(DEH_String("PANEL0"), PU_CACHE);
        V_DrawPatch(0, 0, patch);
     }
 }
@@ -944,7 +944,7 @@ void F_DrawMap34End ()
     V_MarkRect (0, 0, SCREENWIDTH, SCREENHEIGHT);
 
 
-    scrolled = (320 - ((signed int) finalecount-430)/2);
+    scrolled = (320 - (static_cast<signed int>(finalecount)-430)/2);
     if (scrolled > 320)
         scrolled = 320;
     if (scrolled < 0)

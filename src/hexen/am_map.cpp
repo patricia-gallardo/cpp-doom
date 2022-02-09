@@ -1069,7 +1069,7 @@ void DrawWuLine(int X0, int Y0, int X1, int Y1, uint8_t *BaseColor,
         /* Y-major line; calculate 16-bit fixed-point fractional part of a
            pixel that X advances each time Y advances 1 pixel, truncating the
            result so that we won't overrun the endpoint along the X axis */
-        ErrorAdj = ((unsigned long) DeltaX << 16) / (unsigned long) DeltaY;
+        ErrorAdj = (static_cast<unsigned long>(DeltaX) << 16) / static_cast<unsigned long>(DeltaY);
         /* Draw all pixels other than the first and last */
         while (--DeltaY)
         {
@@ -1098,7 +1098,7 @@ void DrawWuLine(int X0, int Y0, int X1, int Y1, uint8_t *BaseColor,
     /* It's an X-major line; calculate 16-bit fixed-point fractional part of a
        pixel that Y advances each time X advances 1 pixel, truncating the
        result to avoid overrunning the endpoint along the X axis */
-    ErrorAdj = ((unsigned long) DeltaY << 16) / (unsigned long) DeltaX;
+    ErrorAdj = (static_cast<unsigned long>(DeltaY) << 16) / static_cast<unsigned long>(DeltaX);
     /* Draw all pixels other than the first and last */
     while (--DeltaX)
     {

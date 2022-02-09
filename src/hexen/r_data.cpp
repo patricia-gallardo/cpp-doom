@@ -100,7 +100,7 @@ void R_DrawColumnInCache(column_t * patch, uint8_t *cache, int originy,
 
     while (patch->topdelta != 0xff)
     {
-        source = (uint8_t *) patch + 3;
+        source = reinterpret_cast<uint8_t *>(patch) + 3;
         count = patch->length;
         position = originy + patch->topdelta;
         if (position < 0)
@@ -113,7 +113,7 @@ void R_DrawColumnInCache(column_t * patch, uint8_t *cache, int originy,
         if (count > 0)
             memcpy(cache + position, source, count);
 
-        patch = reinterpret_cast<column_t *>((uint8_t *) patch + patch->length + 4);
+        patch = reinterpret_cast<column_t *>(reinterpret_cast<uint8_t *>(patch) + patch->length + 4);
     }
 }
 
@@ -167,7 +167,7 @@ void R_GenerateComposite(int texnum)
         {
             if (collump[x] >= 0)
                 continue;       // column does not have multiple patches
-            patchcol = reinterpret_cast<column_t *>((uint8_t *) realpatch +
+            patchcol = reinterpret_cast<column_t *>(reinterpret_cast<uint8_t *>(realpatch) +
                                      LONG(realpatch->columnofs[x - x1]));
             R_DrawColumnInCache(patchcol, block + colofs[x], patch->originy,
                                 texture->height);
@@ -311,7 +311,7 @@ void R_InitTextures()
 // load the patch names from pnames.lmp
 //
     names = cache_lump_name<char *>("PNAMES", PU_STATIC);
-    nummappatches = LONG(*((int *) names));
+    nummappatches = LONG(*(reinterpret_cast<int *>(names)));
     name_p = names + 4;
     patchlookup = zmalloc<int *>(nummappatches * sizeof(*patchlookup), PU_STATIC, nullptr);
     for (i = 0; i < nummappatches; i++)
@@ -365,7 +365,7 @@ void R_InitTextures()
         offset = LONG(*directory);
         if (offset > maxoff)
             I_Error("R_InitTextures: bad texture directory");
-        mtexture = reinterpret_cast<maptexture_t *>((uint8_t *) maptex + offset);
+        mtexture = reinterpret_cast<maptexture_t *>(reinterpret_cast<uint8_t *>(maptex) + offset);
         texture = textures[i] = zmalloc<texture_t *>(sizeof(texture_t)
                                                                       + sizeof(texpatch_t) * (SHORT(mtexture->patchcount) - 1),
             PU_STATIC, 0);
@@ -675,7 +675,7 @@ void R_PrecacheLevel()
     for (th = thinkercap.next; th != &thinkercap; th = th->next)
     {
         if (th->function == needle)
-            spritepresent[((mobj_t *) th)->sprite] = 1;
+            spritepresent[(reinterpret_cast<mobj_t *>(th))->sprite] = 1;
     }
 
     spritememory = 0;

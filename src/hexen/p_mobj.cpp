@@ -1280,7 +1280,7 @@ void P_RemoveMobj(mobj_t * mobj)
     S_StopSound(mobj);
 
     // Free block
-    P_RemoveThinker((thinker_t *) mobj);
+    P_RemoveThinker(reinterpret_cast<thinker_t *>(mobj));
 }
 
 //==========================================================================
@@ -1643,7 +1643,7 @@ void P_CreateTIDList()
         {                       // Not a mobj thinker
             continue;
         }
-        mobj = (mobj_t *) t;
+        mobj = reinterpret_cast<mobj_t *>(t);
         if (mobj->tid != 0)
         {                       // Add to list
             if (i == MAX_TID_COUNT)

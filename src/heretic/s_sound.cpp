@@ -569,17 +569,15 @@ void S_SetMaxVolume(bool fullprocess)
 
     if (!fullprocess)
     {
-        soundCurve[0] =
-            (*((uint8_t *) cache_lump_name<patch_t *>("SNDCURVE", PU_CACHE)) *
-             (snd_MaxVolume * 8)) >> 7;
+        uint8_t *byte_ptr = cache_lump_name<uint8_t *>("SNDCURVE", PU_CACHE);
+        soundCurve[0]     = (*byte_ptr * (snd_MaxVolume * 8)) >> 7;
     }
     else
     {
         for (i = 0; i < MAX_SND_DIST; i++)
         {
-            soundCurve[i] =
-                (*((uint8_t *) cache_lump_name<patch_t *>("SNDCURVE", PU_CACHE) + i) *
-                 (snd_MaxVolume * 8)) >> 7;
+            uint8_t *byte_ptr = cache_lump_name<uint8_t *>("SNDCURVE", PU_CACHE);
+            soundCurve[i]     = (*(byte_ptr + i) * (snd_MaxVolume * 8)) >> 7;
         }
     }
 }

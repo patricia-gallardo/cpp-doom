@@ -173,7 +173,7 @@ void P_LoadVertexes(int lump)
     vertexes = zmalloc<vertex_t *>(numvertexes * sizeof(vertex_t), PU_LEVEL, 0);
     data = cache_lump_num<uint8_t *>(lump, PU_STATIC);
 
-    ml = (mapvertex_t *) data;
+    ml = reinterpret_cast<mapvertex_t *>(data);
     li = vertexes;
     for (i = 0; i < numvertexes; i++, li++, ml++)
     {
@@ -207,7 +207,7 @@ void P_LoadSegs(int lump)
     memset(segs, 0, numsegs * sizeof(seg_t));
     data = cache_lump_num<uint8_t *>(lump, PU_STATIC);
 
-    ml = (mapseg_t *) data;
+    ml = reinterpret_cast<mapseg_t *>(data);
     li = segs;
     for (i = 0; i < numsegs; i++, li++, ml++)
     {
@@ -251,7 +251,7 @@ void P_LoadSubsectors(int lump)
     subsectors = zmalloc<subsector_t *>(numsubsectors * sizeof(subsector_t), PU_LEVEL, 0);
     data = cache_lump_num<uint8_t *>(lump, PU_STATIC);
 
-    ms = (mapsubsector_t *) data;
+    ms = reinterpret_cast<mapsubsector_t *>(data);
     memset(subsectors, 0, numsubsectors * sizeof(subsector_t));
     ss = subsectors;
     for (i = 0; i < numsubsectors; i++, ss++, ms++)
@@ -284,7 +284,7 @@ void P_LoadSectors(int lump)
     memset(sectors, 0, numsectors * sizeof(sector_t));
     data = cache_lump_num<uint8_t *>(lump, PU_STATIC);
 
-    ms = (mapsector_t *) data;
+    ms = reinterpret_cast<mapsector_t *>(data);
     ss = sectors;
 
     for (i = 0; i < numsectors; i++, ss++, ms++)
@@ -322,7 +322,7 @@ void P_LoadNodes(int lump)
     nodes = zmalloc<node_t *>(numnodes * sizeof(node_t), PU_LEVEL, 0);
     data = cache_lump_num<uint8_t *>(lump, PU_STATIC);
 
-    mn = (mapnode_t *) data;
+    mn = reinterpret_cast<mapnode_t *>(data);
     no = nodes;
     for (i = 0; i < numnodes; i++, no++, mn++)
     {
@@ -359,7 +359,7 @@ void P_LoadThings(int lump)
     data = cache_lump_num<uint8_t *>(lump, PU_STATIC);
     numthings = W_LumpLength(lump) / sizeof(mapthing_t);
 
-    mt = (mapthing_t *) data;
+    mt = reinterpret_cast<mapthing_t *>(data);
     for (i = 0; i < numthings; i++, mt++)
     {
         spawnthing.tid = SHORT(mt->tid);
@@ -421,7 +421,7 @@ void P_LoadLineDefs(int lump)
     memset(lines, 0, numlines * sizeof(line_t));
     data = cache_lump_num<uint8_t *>(lump, PU_STATIC);
 
-    mld = (maplinedef_t *) data;
+    mld = reinterpret_cast<maplinedef_t *>(data);
     ld = lines;
     for (i = 0; i < numlines; i++, mld++, ld++)
     {
@@ -511,7 +511,7 @@ void P_LoadSideDefs(int lump)
     memset(sides, 0, numsides * sizeof(side_t));
     data = cache_lump_num<uint8_t *>(lump, PU_STATIC);
 
-    msd = (mapsidedef_t *) data;
+    msd = reinterpret_cast<mapsidedef_t *>(data);
     sd = sides;
 
     for (i = 0; i < numsides; i++, msd++, sd++)

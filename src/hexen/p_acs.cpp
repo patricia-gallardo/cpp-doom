@@ -347,7 +347,7 @@ static int ReadCodeInt()
     ACSAssert(PCodeOffset + 3 < ActionCodeSize,
               "unexpectedly reached end of ACS lump");
 
-    ptr = (int *) (ActionCodeBase + PCodeOffset);
+    ptr = reinterpret_cast<int *>(ActionCodeBase + PCodeOffset);
     result = LONG(*ptr);
     PCodeOffset += 4;
 
@@ -462,7 +462,7 @@ void P_LoadACScripts(int lump)
     M_snprintf(EvalContext, sizeof(EvalContext),
                "header parsing of lump #%d", lump);
 
-    header = (acsHeader_t *) ActionCodeBase;
+    header = reinterpret_cast<acsHeader_t *>(ActionCodeBase);
     PCodeOffset = LONG(header->infoOffset);
 
     ACScriptCount = ReadCodeInt();
@@ -509,7 +509,7 @@ void P_LoadACScripts(int lump)
     for (i=0; i<ACStringCount; ++i)
     {
         offset = ReadOffset();
-        ACStrings[i] = (char *) ActionCodeBase + offset;
+        ACStrings[i] = reinterpret_cast<char *>(ActionCodeBase) + offset;
         ACSAssert(memchr(ACStrings[i], '\0', ActionCodeSize - offset) != nullptr,
                   "string %d missing terminating NUL", i);
     }
@@ -1529,7 +1529,7 @@ static void ThingCount(int type, int tid)
             {                   // Not a mobj thinker
                 continue;
             }
-            mobj = (mobj_t *) think;
+            mobj = reinterpret_cast<mobj_t *>(think);
             if (mobj->type != moType)
             {                   // Doesn't match
                 continue;
@@ -1877,7 +1877,7 @@ static int CmdSectorSound()
     mobj = nullptr;
     if (ACScript->line)
     {
-        mobj = (mobj_t *) & ACScript->line->frontsector->soundorg;
+        mobj = reinterpret_cast<mobj_t *>(& ACScript->line->frontsector->soundorg);
     }
     volume = Pop();
     S_StartSoundAtVolume(mobj, S_GetSoundID(StringLookup(Pop())), volume);
@@ -1919,7 +1919,7 @@ static int CmdSoundSequence()
     mobj = nullptr;
     if (ACScript->line)
     {
-        mobj = (mobj_t *) & ACScript->line->frontsector->soundorg;
+        mobj = reinterpret_cast<mobj_t *>(& ACScript->line->frontsector->soundorg);
     }
     SN_StartSequenceName(mobj, StringLookup(Pop()));
     return SCRIPT_CONTINUE;

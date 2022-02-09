@@ -683,7 +683,7 @@ static void DrawSoundInfo()
         MN_DrTextA(text, xPos[x++], y);
         M_snprintf(text, sizeof(text), "%d", c->mo->y >> FRACBITS);
         MN_DrTextA(text, xPos[x++], y);
-        M_snprintf(text, sizeof(text), "%d", (int) c->id);
+        M_snprintf(text, sizeof(text), "%d", c->id);
         MN_DrTextA(text, xPos[x++], y);
         M_snprintf(text, sizeof(text), "%d", c->priority);
         MN_DrTextA(text, xPos[x++], y);

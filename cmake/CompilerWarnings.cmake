@@ -55,6 +55,7 @@ function(set_project_warnings)
             -Wno-narrowing # TODO turn it back on (patricia)
             -Wno-unknown-warning-option # CLANG TODO turn it back on (patricia)
             -Wno-class-memaccess # GCC TODO turn it back on (patricia)
+            -Wno-unknown-pragmas # GCC TODO turn it back on (patricia)
             )
 
     if (WARNINGS_AS_ERRORS)

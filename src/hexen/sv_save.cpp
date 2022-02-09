@@ -2572,7 +2572,7 @@ static void SetMobjArchiveNums()
     {
         if (thinker->function == needle)
         {
-            mobj = (mobj_t *) thinker;
+            mobj = reinterpret_cast<mobj_t *>(thinker);
             if (mobj->player && !SavingPlayers)
             {                   // Skipping player mobjs
                 continue;
@@ -2605,12 +2605,12 @@ static void ArchiveMobjs()
         {                       // Not a mobj thinker
             continue;
         }
-        if (((mobj_t *) thinker)->player && !SavingPlayers)
+        if ((reinterpret_cast<mobj_t *>(thinker))->player && !SavingPlayers)
         {                       // Skipping player mobjs
             continue;
         }
         count++;
-        StreamOut_mobj_t((mobj_t *) thinker);
+        StreamOut_mobj_t(reinterpret_cast<mobj_t *>(thinker));
     }
     if (count != MobjCount)
     {
@@ -3022,7 +3022,7 @@ static void RemoveAllThinkers()
         nextThinker = thinker->next;
         if (thinker->function == needle)
         {
-            P_RemoveMobj((mobj_t *) thinker);
+            P_RemoveMobj(reinterpret_cast<mobj_t *>(thinker));
         }
         else
         {
@@ -3060,17 +3060,19 @@ static void ArchiveSounds()
         SV_WriteLong(node->currentSoundID);
         for (i = 0; i < po_NumPolyobjs; i++)
         {
-            if (node->mobj == (mobj_t *) & polyobjs[i].startSpot)
+            if (node->mobj == reinterpret_cast<mobj_t *>(& polyobjs[i].startSpot))
             {
                 break;
             }
         }
         if (i == po_NumPolyobjs)
         {                       // Sound is attached to a sector, not a polyobj
-            sec = R_PointInSubsector(node->mobj->x, node->mobj->y)->sector;
-            difference = static_cast<int>((uint8_t *) sec
-                                - (uint8_t *) & sectors[0]) / sizeof(sector_t);
-            SV_WriteLong(0);   // 0 -- sector sound origin
+            sec          = R_PointInSubsector(node->mobj->x, node->mobj->y)->sector;
+            auto *begin  = reinterpret_cast<uint8_t *>(sec);
+            auto *offset = reinterpret_cast<uint8_t *>(&sectors[0]);
+            int   length = static_cast<int>(begin - offset);
+            difference   = length / sizeof(sector_t);
+            SV_WriteLong(0); // 0 -- sector sound origin
         }
         else
         {
@@ -3117,11 +3119,11 @@ static void UnarchiveSounds()
         secNum = SV_ReadLong();
         if (!polySnd)
         {
-            sndMobj = (mobj_t *) & sectors[secNum].soundorg;
+            sndMobj = reinterpret_cast<mobj_t *>(& sectors[secNum].soundorg);
         }
         else
         {
-            sndMobj = (mobj_t *) & polyobjs[secNum].startSpot;
+            sndMobj = reinterpret_cast<mobj_t *>(& polyobjs[secNum].startSpot);
         }
         SN_StartSequence(sndMobj, sequence);
         SN_ChangeNodeData(i, seqOffset, delayTics, volume, soundID);
@@ -3173,7 +3175,7 @@ static void UnarchivePolyobjs()
         {
             I_Error("UnarchivePolyobjs: Invalid polyobj tag");
         }
-        PO_RotatePolyobj(polyobjs[i].tag, (angle_t) SV_ReadLong());
+        PO_RotatePolyobj(polyobjs[i].tag, static_cast<angle_t>(SV_ReadLong()));
         deltaX = SV_ReadLong() - polyobjs[i].startSpot.x;
         deltaY = SV_ReadLong() - polyobjs[i].startSpot.y;
         PO_MovePolyobj(polyobjs[i].tag, deltaX, deltaY);
@@ -3426,7 +3428,7 @@ static uint32_t SV_ReadLong()
 
 static void *SV_ReadPtr()
 {
-    return (void *) (intptr_t) SV_ReadLong();
+    return reinterpret_cast<void *>(static_cast<intptr_t>(SV_ReadLong()));
 }
 
 //==========================================================================
@@ -3459,12 +3461,10 @@ static void SV_WriteLong(unsigned int val)
 
 static void SV_WritePtr(void *val)
 {
-    long ptr;
-
     // Write a pointer value. In Vanilla Hexen pointers are 32-bit but
     // nowadays they might be larger. Whatever value we write here isn't
     // going to be much use when we reload the game.
 
-    ptr = (long)(intptr_t) val;
-    SV_WriteLong((unsigned int) (ptr & 0xffffffff));
+    long ptr = static_cast<long>(reinterpret_cast<intptr_t>(val));
+    SV_WriteLong(static_cast<unsigned int>(ptr & 0xffffffff));
 }

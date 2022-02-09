@@ -1460,7 +1460,7 @@ bool MN_Responder(event_t * event)
             {
                 usegamma = 0;
             }
-            I_SetPalette((uint8_t *) cache_lump_name<patch_t *>("PLAYPAL", PU_CACHE));
+            I_SetPalette(cache_lump_name<uint8_t *>("PLAYPAL", PU_CACHE));
             return true;
         }
 

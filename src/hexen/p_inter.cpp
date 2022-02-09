@@ -1260,7 +1260,7 @@ mobj_t *ActiveMinotaur(player_t * master)
     {
         if (think->function != needle)
             continue;
-        mo = (mobj_t *) think;
+        mo = reinterpret_cast<mobj_t *>(think);
         if (mo->type != MT_MINOTAUR)
             continue;
         if (mo->health <= 0)

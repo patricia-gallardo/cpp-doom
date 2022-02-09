@@ -356,7 +356,7 @@ static mobj_t *GetSoundListener()
         dummy_listener.y = 0;
         dummy_listener.z = 0;
 
-        return (mobj_t *) &dummy_listener;
+        return reinterpret_cast<mobj_t *>(&dummy_listener);
     }
 }
 
