@@ -63,7 +63,7 @@ static void MapFile(win32_wad_file_t *wad, const char *filename)
         return;
     }
 
-    wad->wad.mapped = static_cast<byte *>(MapViewOfFile(wad->handle_map,
+    wad->wad.mapped = static_cast<uint8_t *>(MapViewOfFile(wad->handle_map,
         FILE_MAP_COPY,
         0, 0, 0));
 
