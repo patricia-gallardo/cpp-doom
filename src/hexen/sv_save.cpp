@@ -2836,7 +2836,7 @@ static void ArchiveThinkers()
             if (thinker->function == info->thinkerFunc)
             {
                 SV_WriteByte(info->tClass);
-                auto callback = std::get<thinker_param_action>(info->writeFunc);
+                const auto & callback = std::get<thinker_param_action>(info->writeFunc);
                 callback(thinker);
                 break;
             }

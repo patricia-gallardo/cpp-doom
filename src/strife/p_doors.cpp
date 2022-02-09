@@ -398,7 +398,7 @@ int EV_DoDoor(line_t* line, vldoor_e type)
         P_AddThinker (&door->thinker);
         sec->specialdata = door;
 
-        door->thinker.function.acp1 = (actionf_p1)T_VerticalDoor;
+        door->thinker.function = T_VerticalDoor;
         door->sector = sec;
         door->type = type;
         door->topwait = VDOORWAIT;
@@ -756,12 +756,13 @@ void EV_VerticalDoor(line_t* line, mobj_t* thing)
                 // When is a door not a door?
                 // In Vanilla, door->direction is set, even though
                 // "specialdata" might not actually point at a door.
-
-                if (door->thinker.function.acp1 == (actionf_p1) T_VerticalDoor)
+                action_hook needle_vertical_door = T_VerticalDoor;
+                action_hook neelde_plat_raise = T_PlatRaise;
+                if (door->thinker.function == needle_vertical_door)
                 {
                     door->direction = -1;   // start going down immediately
                 }
-                else if (door->thinker.function.acp1 == (actionf_p1) T_PlatRaise)
+                else if (door->thinker.function == neelde_plat_raise)
                 {
                     // Erm, this is a plat, not a door.
                     // This notably causes a problem in ep1-0500.lmp where
@@ -800,7 +801,7 @@ void EV_VerticalDoor(line_t* line, mobj_t* thing)
     door = zmalloc<vldoor_t *>(sizeof(*door), PU_LEVSPEC, 0);
     P_AddThinker (&door->thinker);
     sec->specialdata = door;
-    door->thinker.function.acp1 = (actionf_p1) T_VerticalDoor;
+    door->thinker.function = T_VerticalDoor;
     door->sector = sec;
     door->direction = 1;
     door->speed = VDOORSPEED;
@@ -878,7 +879,7 @@ void P_SpawnDoorCloseIn30 (sector_t* sec)
     sec->specialdata = door;
     sec->special = 0;
 
-    door->thinker.function.acp1 = (actionf_p1)T_VerticalDoor;
+    door->thinker.function = T_VerticalDoor;
     door->sector = sec;
     door->direction = 0;
     door->type = vld_normal;
@@ -900,7 +901,7 @@ void P_SpawnDoorRaiseIn5Mins(sector_t *sec, int)
     sec->specialdata = door;
     sec->special = 0;
 
-    door->thinker.function.acp1 = (actionf_p1)T_VerticalDoor;
+    door->thinker.function = T_VerticalDoor;
     door->sector = sec;
     door->direction = 2;
     door->type = vld_raiseIn5Mins;
@@ -1343,7 +1344,7 @@ void EV_SlidingDoor(line_t* line, mobj_t* thing)
             }
         }
 
-        door->thinker.function.acp1 = (actionf_p1)T_SlidingDoor;
+        door->thinker.function = T_SlidingDoor;
         door->timer = SWAITTICS;
         door->frontsector = sec;
         door->frame = 0;

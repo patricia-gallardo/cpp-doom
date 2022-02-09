@@ -104,7 +104,7 @@ bool P_SetMobjState(mobj_t * mobj, statenum_t state)
     mobj->frame = st->frame;
     if (st->action.index() == mobj_param_action_hook)
     {
-        auto callback = std::get<mobj_param_action>(st->action);
+        const auto & callback = std::get<mobj_param_action>(st->action);
         callback(mobj);
     }
     return (true);

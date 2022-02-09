@@ -22,31 +22,8 @@
 #ifndef __D_THINK__
 #define __D_THINK__
 
-
-
-
-
-//
-// Experimental stuff.
-// To compile this as "ANSI C with classes"
-//  we will need to handle the various
-//  action functions cleanly.
-//
-typedef  void (*actionf_v)();
-typedef  void (*actionf_p1)( void* );
-typedef  void (*actionf_p2)( void*, void* );
-
-typedef union
-{
-  actionf_v	acv;
-  actionf_p1	acp1;
-  actionf_p2	acp2;
-
-} actionf_t;
-
-
-
-
+#include "action_hook.hpp"
+using actionf_t = action_hook;
 
 // Historically, "think_t" is yet another
 //  function pointer to a routine to handle

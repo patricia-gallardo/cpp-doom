@@ -101,7 +101,7 @@ static void RunThinkers()
         else
         {
             if (currentthinker->function.index() == thinker_param_action_hook) {
-                auto callback = std::get<thinker_param_action>(currentthinker->function);
+                const auto & callback = std::get<thinker_param_action>(currentthinker->function);
                 callback(currentthinker);
             }
             nextthinker = currentthinker->next;

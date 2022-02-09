@@ -73,7 +73,7 @@ P_SetMobjState
 	// Call action functions when the state is set
         if (st->action.index() == mobj_param_action_hook)
         {
-            auto callback = std::get<mobj_param_action>(st->action);
+            const auto & callback = std::get<mobj_param_action>(st->action);
             callback(mobj);
         }
 
@@ -535,8 +535,8 @@ void P_MobjThinker (mobj_t* mobj)
     {
         P_XYMovement (mobj);
 
-        // FIXME: decent NOP/NULL/Nil function pointer please.
-        if (mobj->thinker.function.acv == (actionf_v) (-1))
+        action_hook invalid_hook = valid_hook(false);
+        if (mobj->thinker.function == invalid_hook)
             return;     // mobj was removed
 
         // villsa [STRIFE] terrain clipping
@@ -551,8 +551,8 @@ void P_MobjThinker (mobj_t* mobj)
     {
         P_ZMovement (mobj);
 
-        // FIXME: decent NOP/NULL/Nil function pointer please.
-        if (mobj->thinker.function.acv == (actionf_v) (-1))
+        action_hook invalid_hook = valid_hook(false);
+        if (mobj->thinker.function == invalid_hook)
             return;     // mobj was removed
 
         // villsa [STRIFE] terrain clipping and sounds
@@ -679,7 +679,7 @@ P_SpawnMobj
     else 
         mobj->z = z;
 
-    mobj->thinker.function.acp1 = reinterpret_cast<actionf_p1>(P_MobjThinker);
+    mobj->thinker.function = P_MobjThinker;
 
     P_AddThinker (&mobj->thinker);
 

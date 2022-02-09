@@ -85,7 +85,7 @@ P_SetPsprite
         // Modified handling.
         if (state->action.index() == player_psp_action_hook)
         {
-            auto callback = std::get<player_psp_param_action>(state->action);
+            const auto & callback = std::get<player_psp_param_action>(state->action);
             callback(player, psp);
             if (!psp->state)
                 break;

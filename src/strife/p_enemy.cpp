@@ -1874,9 +1874,10 @@ void A_AlertSpectreC(mobj_t* actor)
 {
     thinker_t *th;
 
+    action_hook needle = P_MobjThinker;
     for(th = thinkercap.next; th != &thinkercap; th = th->next)
     {
-        if(th->function.acp1 == reinterpret_cast<actionf_p1>(P_MobjThinker))
+        if(th->function == needle)
         {
             mobj_t *mo = reinterpret_cast<mobj_t *>(th);
 
@@ -2943,9 +2944,10 @@ void A_BossDeath (mobj_t* actor)
         return; // everybody's dead.
 
     // check for a still living boss
+    action_hook needle = P_MobjThinker;
     for(th = thinkercap.next; th != &thinkercap; th = th->next)
     {
-        if(th->function.acp1 == (actionf_p1) P_MobjThinker)
+        if(th->function == needle)
         {
             mobj_t *mo = reinterpret_cast<mobj_t *>(th);
 
@@ -2985,7 +2987,7 @@ void A_BossDeath (mobj_t* actor)
         // it becomes an undead ghost monster. Then it's a REAL spectre ;)
         for(th = thinkercap.next; th != &thinkercap; th = th->next)
         {
-            if(th->function.acp1 == (actionf_p1) P_MobjThinker)
+            if(th->function == needle)
             {
                 mobj_t *mo = reinterpret_cast<mobj_t *>(th);
 
@@ -3082,9 +3084,10 @@ void A_AcolyteSpecial(mobj_t* actor)
     if(i == 8)
         return;
 
+    action_hook needle = P_MobjThinker;
     for(th = thinkercap.next; th != &thinkercap; th = th->next)
     {
-        if(th->function.acp1 == (actionf_p1) P_MobjThinker)
+        if(th->function == needle)
         {
             mobj_t *mo = reinterpret_cast<mobj_t *>(th);
 

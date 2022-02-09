@@ -437,7 +437,7 @@ typedef enum
 
 // villsa [STRIFE] Rogue added a second line_t in the struct
 // backsector is removed
-typedef struct
+typedef struct slidedoor_s
 {
     thinker_t   thinker;
     sdt_e       type;
