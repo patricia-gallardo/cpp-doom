@@ -113,7 +113,7 @@ void R_DrawColumnInCache(column_t * patch, uint8_t *cache, int originy,
         if (count > 0)
             memcpy(cache + position, source, count);
 
-        patch = (column_t *) ((uint8_t *) patch + patch->length + 4);
+        patch = reinterpret_cast<column_t *>((uint8_t *) patch + patch->length + 4);
     }
 }
 
@@ -167,7 +167,7 @@ void R_GenerateComposite(int texnum)
         {
             if (collump[x] >= 0)
                 continue;       // column does not have multiple patches
-            patchcol = (column_t *) ((uint8_t *) realpatch +
+            patchcol = reinterpret_cast<column_t *>((uint8_t *) realpatch +
                                      LONG(realpatch->columnofs[x - x1]));
             R_DrawColumnInCache(patchcol, block + colofs[x], patch->originy,
                                 texture->height);
@@ -365,7 +365,7 @@ void R_InitTextures()
         offset = LONG(*directory);
         if (offset > maxoff)
             I_Error("R_InitTextures: bad texture directory");
-        mtexture = (maptexture_t *) ((uint8_t *) maptex + offset);
+        mtexture = reinterpret_cast<maptexture_t *>((uint8_t *) maptex + offset);
         texture = textures[i] = zmalloc<texture_t *>(sizeof(texture_t)
                                                                       + sizeof(texpatch_t) * (SHORT(mtexture->patchcount) - 1),
             PU_STATIC, 0);

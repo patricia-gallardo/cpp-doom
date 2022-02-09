@@ -72,10 +72,10 @@
 #define F_PANINC	4
 // how much zoom-in per tic
 // goes to 2x in 1 second
-#define M_ZOOMIN        ((int) (1.02*FRACUNIT))
+#define M_ZOOMIN        (static_cast<int>(1.02*FRACUNIT))
 // how much zoom-out per tic
 // pulls out to 0.5x in 1 second
-#define M_ZOOMOUT       ((int) (FRACUNIT/1.02))
+#define M_ZOOMOUT       (static_cast<int>(FRACUNIT/1.02))
 
 // translates between frame-buffer and map distances
 #define FTOM(x) FixedMul(((x)<<16),scale_ftom)
@@ -154,17 +154,17 @@ mline_t cheat_player_arrow[] = {
 
 #define R (FRACUNIT)
 mline_t triangle_guy[] = {
-    { { (fixed_t)(-.867*R), (fixed_t)(-.5*R) }, { (fixed_t)(.867*R ), (fixed_t)(-.5*R) } },
-    { { (fixed_t)(.867*R ), (fixed_t)(-.5*R) }, { (fixed_t)(0      ), (fixed_t)(R    ) } },
-    { { (fixed_t)(0      ), (fixed_t)(R    ) }, { (fixed_t)(-.867*R), (fixed_t)(-.5*R) } }
+    { { static_cast<fixed_t>(-.867*R), static_cast<fixed_t>(-.5*R) }, { static_cast<fixed_t>(.867*R ), static_cast<fixed_t>(-.5*R) } },
+    { { static_cast<fixed_t>(.867*R ), static_cast<fixed_t>(-.5*R) }, { static_cast<fixed_t>(0      ), static_cast<fixed_t>(R    ) } },
+    { { static_cast<fixed_t>(0      ), static_cast<fixed_t>(R    ) }, { static_cast<fixed_t>(-.867*R), static_cast<fixed_t>(-.5*R) } }
 };
 #undef R
 
 #define R (FRACUNIT)
 mline_t thintriangle_guy[] = {
-    { { (fixed_t)(-.5*R), (fixed_t)(-.7*R) }, { (fixed_t)(R    ), (fixed_t)(0    ) } },
-    { { (fixed_t)(R    ), (fixed_t)(0    ) }, { (fixed_t)(-.5*R), (fixed_t)(.7*R ) } },
-    { { (fixed_t)(-.5*R), (fixed_t)(.7*R ) }, { (fixed_t)(-.5*R), (fixed_t)(-.7*R) } }
+    { { static_cast<fixed_t>(-.5*R), static_cast<fixed_t>(-.7*R) }, { static_cast<fixed_t>(R    ), static_cast<fixed_t>(0    ) } },
+    { { static_cast<fixed_t>(R    ), static_cast<fixed_t>(0    ) }, { static_cast<fixed_t>(-.5*R), static_cast<fixed_t>(.7*R ) } },
+    { { static_cast<fixed_t>(-.5*R), static_cast<fixed_t>(.7*R ) }, { static_cast<fixed_t>(-.5*R), static_cast<fixed_t>(-.7*R) } }
 };
 #undef R
 
@@ -508,7 +508,7 @@ void AM_LevelInit()
     AM_clearMarks();
 
     AM_findMinMaxBoundaries();
-    scale_mtof = FixedDiv(min_scale_mtof, (int) (0.7*FRACUNIT));
+    scale_mtof = FixedDiv(min_scale_mtof, static_cast<int>(0.7*FRACUNIT));
     if (scale_mtof > max_scale_mtof)
 	scale_mtof = min_scale_mtof;
     scale_ftom = FixedDiv(FRACUNIT, scale_mtof);

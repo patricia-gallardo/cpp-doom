@@ -859,7 +859,7 @@ static void R_DrawLSprite()
     P_LineLaser(viewplayer->mo, viewangle,
         16 * 64 * FRACUNIT, PLAYER_SLOPE(viewplayer));
 
-    if (!laserspot->thinker.function.acv)
+    if (action_hook_is_empty(laserspot->thinker.function))
         return;
 
     tz = FixedMul(laserspot->x - viewx, viewcos) + FixedMul(laserspot->y - viewy, viewsin);

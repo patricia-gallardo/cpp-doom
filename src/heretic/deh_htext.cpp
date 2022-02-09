@@ -680,7 +680,7 @@ static bool StringIsUnsupported(unsigned int offset)
 
     for (i=0; string_list[i] >= 0; ++i)
     {
-        if ((unsigned int) string_list[i] == offset)
+        if (static_cast<unsigned int>(string_list[i] == offset))
         {
             return true;
         }

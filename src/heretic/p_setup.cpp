@@ -599,8 +599,8 @@ static void P_RemoveSlimeTrails()
 			int64_t s = dx2 + dy2;
 
 			// [crispy] MBF actually overrides v->x and v->y here
-			v->r_x = (fixed_t)((dx2 * v->x + dy2 * l->v1->x + dxy * (v->y - l->v1->y)) / s);
-			v->r_y = (fixed_t)((dy2 * v->y + dx2 * l->v1->y + dxy * (v->x - l->v1->x)) / s);
+			v->r_x = static_cast<fixed_t>((dx2 * v->x + dy2 * l->v1->x + dxy * (v->y - l->v1->y)) / s);
+			v->r_y = static_cast<fixed_t>((dy2 * v->y + dx2 * l->v1->y + dxy * (v->x - l->v1->x)) / s);
 
 			// [crispy] wait a minute... moved more than 8 map units?
 			// maybe that's a linguortal then, back to the original coordinates

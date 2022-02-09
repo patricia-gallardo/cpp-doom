@@ -3130,7 +3130,7 @@ static void  M_ForceLoadGameResponse(int key)
         return;
     }
 
-    savewadfilename = (char *)W_WadNameForLump(savemaplumpinfo);
+    savewadfilename = const_cast<char *>(W_WadNameForLump(savemaplumpinfo));
     gameaction      = ga_loadgame;
 }
 

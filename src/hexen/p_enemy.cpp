@@ -4047,15 +4047,15 @@ void A_SorcBallOrbit(mobj_t * actor)
                 switch (actor->type)
                 {
                     case MT_SORCBALL1:
-                        parent->special1.i = (int) (parent->angle -
+                        parent->special1.i = static_cast<int>(parent->angle -
                                                     BALL1_ANGLEOFFSET);
                         break;
                     case MT_SORCBALL2:
-                        parent->special1.i = (int) (parent->angle -
+                        parent->special1.i = static_cast<int>(parent->angle -
                                                     BALL2_ANGLEOFFSET);
                         break;
                     case MT_SORCBALL3:
-                        parent->special1.i = (int) (parent->angle -
+                        parent->special1.i = static_cast<int>(parent->angle -
                                                     BALL3_ANGLEOFFSET);
                         break;
                     default:

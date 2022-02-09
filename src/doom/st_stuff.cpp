@@ -505,9 +505,10 @@ static int ST_cheat_massacre()
     extern int  numbraintargets;
     extern void A_PainDie(mobj_t *);
 
+    action_hook needle = P_MobjThinker;
     for (th = thinkercap.next; th != &thinkercap; th = th->next)
     {
-        if (th->function.acp1 == reinterpret_cast<actionf_p1>(P_MobjThinker))
+        if (th->function == needle)
         {
             mobj_t *mo = reinterpret_cast<mobj_t *>(th);
 
@@ -944,9 +945,10 @@ bool
                     thinker_t *th;
 
                     // [crispy] let mobjs forget their target and tracer
+                    action_hook needle = P_MobjThinker;
                     for (th = thinkercap.next; th != &thinkercap; th = th->next)
                     {
-                        if (th->function.acp1 == reinterpret_cast<actionf_p1>(P_MobjThinker))
+                        if (th->function == needle)
                         {
                             mobj_t *const mo = reinterpret_cast<mobj_t *>(th);
 

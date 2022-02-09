@@ -231,14 +231,14 @@ void F_DrawPatchCol(int x, patch_t * patch, int col)
     uint8_t  *desttop;
     int count;
 
-    column = (column_t *) ((uint8_t *) patch + LONG(patch->columnofs[col]));
+    column = reinterpret_cast<column_t *>(reinterpret_cast<uint8_t *>(patch) + LONG(patch->columnofs[col]));
     desttop = I_VideoBuffer + x;
 
 // step through the posts in a column
 
     while (column->topdelta != 0xff)
     {
-        source = (uint8_t *) column + 3;
+        source = reinterpret_cast<uint8_t *>(column) + 3;
         dest = desttop + column->topdelta * SCREENWIDTH;
         count = column->length;
 
@@ -247,7 +247,7 @@ void F_DrawPatchCol(int x, patch_t * patch, int col)
             *dest = *source++;
             dest += SCREENWIDTH;
         }
-        column = (column_t *) ((uint8_t *) column + column->length + 4);
+        column = reinterpret_cast<column_t *>(reinterpret_cast<uint8_t *>(column) + column->length + 4);
     }
 }
 

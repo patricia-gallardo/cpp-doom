@@ -128,7 +128,7 @@ static fixed_t old_m_x, old_m_y;
 static mpoint_t f_oldloc;
 
 // used by MTOF to scale from map-to-frame-buffer coords
-static fixed_t scale_mtof = (fixed_t)INITSCALEMTOF;
+static fixed_t scale_mtof = static_cast<fixed_t>(INITSCALEMTOF);
 // used by FTOM to scale from frame-buffer-to-map coords (=1/scale_mtof)
 static fixed_t scale_ftom;
 
@@ -379,7 +379,7 @@ void AM_initVariables()
             {                   //not a mobj
                 continue;
             }
-            mo = (mobj_t *) think;
+            mo = reinterpret_cast<mobj_t *>(think);
             if (mo->type == MT_CKEY)
             {
                 KeyPoints[0].x = mo->x;
@@ -448,7 +448,7 @@ void AM_LevelInit()
 //  AM_clearMarks();
 
     AM_findMinMaxBoundaries();
-    scale_mtof = FixedDiv(min_scale_mtof, (int) (0.7 * FRACUNIT));
+    scale_mtof = FixedDiv(min_scale_mtof, static_cast<int>(0.7 * FRACUNIT));
     if (scale_mtof > max_scale_mtof)
         scale_mtof = min_scale_mtof;
     scale_ftom = FixedDiv(FRACUNIT, scale_mtof);
@@ -1167,7 +1167,7 @@ void DrawWuLine(int X0, int Y0, int X1, int Y1, uint8_t *BaseColor,
         /* Y-major line; calculate 16-bit fixed-point fractional part of a
            pixel that X advances each time Y advances 1 pixel, truncating the
            result so that we won't overrun the endpoint along the X axis */
-        ErrorAdj = ((unsigned int) DeltaX << 16) / (unsigned int) DeltaY;
+        ErrorAdj = (static_cast<unsigned int>(DeltaX) << 16) / static_cast<unsigned int>(DeltaY);
         /* Draw all pixels other than the first and last */
         while (--DeltaY)
         {
@@ -1196,7 +1196,7 @@ void DrawWuLine(int X0, int Y0, int X1, int Y1, uint8_t *BaseColor,
     /* It's an X-major line; calculate 16-bit fixed-point fractional part of a
        pixel that Y advances each time X advances 1 pixel, truncating the
        result to avoid overrunning the endpoint along the X axis */
-    ErrorAdj = ((unsigned int) DeltaY << 16) / (unsigned int) DeltaX;
+    ErrorAdj = (static_cast<unsigned int>(DeltaY) << 16) / static_cast<unsigned int>(DeltaX);
     /* Draw all pixels other than the first and last */
     while (--DeltaX)
     {

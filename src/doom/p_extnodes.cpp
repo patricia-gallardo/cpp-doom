@@ -105,16 +105,16 @@ void P_LoadSegs_DeePBSP(int lump)
         li->angle = (SHORT(ml->angle)) << FRACBITS;
 
         //	li->offset = (SHORT(ml->offset))<<FRACBITS; // [crispy] recalculated below
-        linedef     = (unsigned short)SHORT(ml->linedef);
+        linedef     = static_cast<unsigned short>(SHORT(ml->linedef));
         ldef        = &lines[linedef];
         li->linedef = ldef;
         side        = SHORT(ml->side);
 
         // e6y: check for wrong indexes
-        if ((unsigned)ldef->sidenum[side] >= (unsigned)numsides)
+        if (static_cast<unsigned>(ldef->sidenum[side]) >= static_cast<unsigned>(numsides))
         {
             I_Error("P_LoadSegs: linedef %d for seg %d references a non-existent sidedef %d",
-                linedef, i, (unsigned)ldef->sidenum[side]);
+                linedef, i, static_cast<unsigned>(ldef->sidenum[side]));
         }
 
         li->sidedef     = &sides[ldef->sidenum[side]];
@@ -193,7 +193,7 @@ void P_LoadNodes_DeePBSP(int lump)
     for (int i = 0; i < numnodes; i++)
     {
         node_t *                 no = nodes + i;
-        const mapnode_deepbsp_t *mn = (const mapnode_deepbsp_t *)data + i;
+        const mapnode_deepbsp_t *mn = reinterpret_cast<const mapnode_deepbsp_t *>(data) + i;
         int                      j;
 
         no->x  = SHORT(mn->x) << FRACBITS;
@@ -304,7 +304,7 @@ void P_LoadNodes_ZDBSP(int lump, bool compressed)
     newVerts = *(reinterpret_cast<unsigned int *>(data));
     data += sizeof(newVerts);
 
-    if (orgVerts + newVerts == (unsigned int)numvertexes)
+    if (orgVerts + newVerts == static_cast<unsigned int>(numvertexes))
     {
         newvertarray = vertexes;
     }
@@ -328,7 +328,7 @@ void P_LoadNodes_ZDBSP(int lump, bool compressed)
 
     if (vertexes != newvertarray)
     {
-        for (i = 0; i < (unsigned int)numlines; i++)
+        for (i = 0; i < static_cast<unsigned int>(numlines); i++)
         {
             lines[i].v1 = lines[i].v1 - vertexes + newvertarray;
             lines[i].v2 = lines[i].v2 - vertexes + newvertarray;
@@ -352,7 +352,7 @@ void P_LoadNodes_ZDBSP(int lump, bool compressed)
 
     for (i = currSeg = 0; i < numsubsectors; i++)
     {
-        mapsubsector_zdbsp_t *mseg = (mapsubsector_zdbsp_t *)data + i;
+        mapsubsector_zdbsp_t *mseg = reinterpret_cast<mapsubsector_zdbsp_t *>(data) + i;
 
         subsectors[i].firstline = currSeg;
         subsectors[i].numlines  = mseg->numsegs;
@@ -381,21 +381,21 @@ void P_LoadNodes_ZDBSP(int lump, bool compressed)
         unsigned int    linedef;
         unsigned char   side;
         seg_t *         li = segs + i;
-        mapseg_zdbsp_t *ml = (mapseg_zdbsp_t *)data + i;
+        mapseg_zdbsp_t *ml = reinterpret_cast<mapseg_zdbsp_t *>(data) + i;
 
         li->v1 = &vertexes[ml->v1];
         li->v2 = &vertexes[ml->v2];
 
-        linedef     = (unsigned short)SHORT(ml->linedef);
+        linedef     = static_cast<unsigned short>(SHORT(ml->linedef));
         ldef        = &lines[linedef];
         li->linedef = ldef;
         side        = ml->side;
 
         // e6y: check for wrong indexes
-        if ((unsigned)ldef->sidenum[side] >= (unsigned)numsides)
+        if (static_cast<unsigned>(ldef->sidenum[side]) >= static_cast<unsigned>(numsides))
         {
             I_Error("P_LoadSegs: linedef %d for seg %d references a non-existent sidedef %d",
-                linedef, i, (unsigned)ldef->sidenum[side]);
+                linedef, i, static_cast<unsigned>(ldef->sidenum[side]));
         }
 
         li->sidedef     = &sides[ldef->sidenum[side]];
@@ -440,7 +440,7 @@ void P_LoadNodes_ZDBSP(int lump, bool compressed)
     {
         int              j, k;
         node_t *         no = nodes + i;
-        mapnode_zdbsp_t *mn = (mapnode_zdbsp_t *)data + i;
+        mapnode_zdbsp_t *mn = reinterpret_cast<mapnode_zdbsp_t *>(data) + i;
 
         no->x  = SHORT(mn->x) << FRACBITS;
         no->y  = SHORT(mn->y) << FRACBITS;
@@ -475,7 +475,7 @@ void P_LoadThings_Hexen(int lump)
     auto *data = cache_lump_num<uint8_t *>(lump, PU_STATIC);
     numthings  = W_LumpLength(lump) / sizeof(mapthing_hexen_t);
 
-    mt = (mapthing_hexen_t *)data;
+    mt = reinterpret_cast<mapthing_hexen_t *>(data);
     for (int i = 0; i < numthings; i++, mt++)
     {
         //	spawnthing.tid = SHORT(mt->tid);
@@ -514,12 +514,12 @@ void P_LoadLineDefs_Hexen(int lump)
     memset(lines, 0, numlines * sizeof(line_t));
     auto *data = cache_lump_num<uint8_t *>(lump, PU_STATIC);
 
-    mld  = (maplinedef_hexen_t *)data;
+    mld  = reinterpret_cast<maplinedef_hexen_t *>(data);
     ld   = lines;
     warn = 0; // [crispy] warn about unknown linedef types
     for (i = 0; i < numlines; i++, mld++, ld++)
     {
-        ld->flags = (unsigned short)SHORT(mld->flags);
+        ld->flags = static_cast<unsigned short>(SHORT(mld->flags));
 
         ld->special = mld->special;
         //	ld->arg1 = mld->arg1;
@@ -529,14 +529,14 @@ void P_LoadLineDefs_Hexen(int lump)
         //	ld->arg5 = mld->arg5;
 
         // [crispy] warn about unknown linedef types
-        if ((unsigned short)ld->special > 141)
+        if (static_cast<unsigned short>(ld->special > 141))
         {
             fprintf(stderr, "P_LoadLineDefs: Unknown special %d at line %d\n", ld->special, i);
             warn++;
         }
 
-        v1 = ld->v1 = &vertexes[(unsigned short)SHORT(mld->v1)];
-        v2 = ld->v2 = &vertexes[(unsigned short)SHORT(mld->v2)];
+        v1 = ld->v1 = &vertexes[static_cast<unsigned short>(SHORT(mld->v1))];
+        v2 = ld->v2 = &vertexes[static_cast<unsigned short>(SHORT(mld->v2))];
 
         ld->dx = v2->x - v1->x;
         ld->dy = v2->y - v1->y;

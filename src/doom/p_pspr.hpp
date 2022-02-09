@@ -57,7 +57,7 @@ typedef enum
 
 } psprnum_t;
 
-struct pspdef_t {
+typedef struct pspdef_s {
     state_t *state; // a nullptr state means not active
     int      tics;
     fixed_t  sx;
@@ -68,6 +68,6 @@ struct pspdef_t {
     // [crispy] variable weapon sprite bob
     fixed_t sx2;
     fixed_t sy2;
-};
+} pspdef_t;
 
 #endif

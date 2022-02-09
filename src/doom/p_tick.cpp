@@ -69,8 +69,7 @@ void P_AddThinker(thinker_t *thinker)
 //
 void P_RemoveThinker(thinker_t *thinker)
 {
-    // FIXME: NOP.
-    thinker->function.acv = (actionf_v)(-1);
+    thinker->function = valid_hook(false);
 }
 
 
@@ -93,7 +92,8 @@ void P_RunThinkers()
     currentthinker = thinkercap.next;
     while (currentthinker != &thinkercap)
     {
-        if (currentthinker->function.acv == (actionf_v)(-1))
+        action_hook invalid_hook = valid_hook(false);
+        if (currentthinker->function == invalid_hook)
         {
             // time to remove it
             nextthinker                = currentthinker->next;
@@ -103,9 +103,11 @@ void P_RunThinkers()
         }
         else
         {
-            if (currentthinker->function.acp1)
-                currentthinker->function.acp1(
-                    reinterpret_cast<mobj_t *>(currentthinker));
+            if (currentthinker->function.index() == mobj_param_action_hook)
+            {
+                auto callback = std::get<mobj_param_action>(currentthinker->function);
+                callback(reinterpret_cast<mobj_t *>(currentthinker));
+            }
             nextthinker = currentthinker->next;
         }
         currentthinker = nextthinker;

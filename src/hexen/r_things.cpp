@@ -106,7 +106,7 @@ void R_InstallSpriteLump(int lump, unsigned frame, unsigned rotation,
         for (r = 0; r < 8; r++)
         {
             sprtemp[frame].lump[r] = lump - firstspritelump;
-            sprtemp[frame].flip[r] = (uint8_t) flipped;
+            sprtemp[frame].flip[r] = static_cast<uint8_t>(flipped);
         }
         return;
     }
@@ -126,7 +126,7 @@ void R_InstallSpriteLump(int lump, unsigned frame, unsigned rotation,
              spritename, 'A' + frame, '1' + rotation);
 
     sprtemp[frame].lump[rotation] = lump - firstspritelump;
-    sprtemp[frame].flip[rotation] = (uint8_t) flipped;
+    sprtemp[frame].flip[rotation] = static_cast<uint8_t>(flipped);
 }
 
 /*
@@ -352,7 +352,7 @@ void R_DrawMaskedColumn(column_t * column, signed int baseclip)
 //                      dc_source = (byte *)column + 3 - column->topdelta;
             colfunc();          // either R_DrawColumn or R_DrawTLColumn
         }
-        column = (column_t *) ((uint8_t *) column + column->length + 4);
+        column = reinterpret_cast<column_t *>((uint8_t *) column + column->length + 4);
     }
 
     dc_texturemid = basetexturemid;
@@ -445,7 +445,7 @@ void R_DrawVisSprite(vissprite_t * vis, int, int)
         if (texturecolumn < 0 || texturecolumn >= SHORT(patch->width))
             I_Error("R_DrawSpriteRange: bad texturecolumn");
 #endif
-        column = (column_t *) ((uint8_t *) patch +
+        column = reinterpret_cast<column_t *>((uint8_t *) patch +
                                LONG(patch->columnofs[texturecolumn]));
         R_DrawMaskedColumn(column, baseclip);
     }
@@ -526,7 +526,7 @@ void R_ProjectSprite(mobj_t * thing)
     if (sprframe->rotate)
     {                           // choose a different rotation based on player view
         ang = R_PointToAngle(thing->x, thing->y);
-        rot = (ang - thing->angle + (unsigned) (ANG45 / 2) * 9) >> 29;
+        rot = (ang - thing->angle + static_cast<unsigned>(ANG45 / 2) * 9) >> 29;
         lump = sprframe->lump[rot];
         flip = static_cast<bool>(sprframe->flip[rot]);
     }

@@ -568,7 +568,7 @@ void R_InitTextures ()
         if (offset > maxoff)
             I_Error ("R_InitTextures: bad texture directory");
 
-        mtexture = (maptexture_t *) ( (uint8_t *)maptex + offset);
+        mtexture = reinterpret_cast<maptexture_t *>( (uint8_t *)maptex + offset);
 
         texture = textures[i] =
             zmalloc<texture_t *>(sizeof(texture_t)

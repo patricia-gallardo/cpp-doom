@@ -113,9 +113,10 @@ void P_SetPsprite(player_t *player,
 
         // Call action routine.
         // Modified handling.
-        if (state->action.acp3)
+        if (state->action.index() == mobj_player_psp_param_action_hook)
         {
-            state->action.acp3(player->mo, player, psp); // [crispy] let mobj action pointers get called from pspr states
+            const auto & callback = std::get<mobj_player_psp_param_action>(state->action);
+            callback(player->mo, player, psp); // [crispy] let mobj action pointers get called from pspr states
             if (!psp->state)
                 break;
         }
@@ -559,7 +560,7 @@ void A_Saw(mobj_t *, player_t *player, pspdef_t *)
         linetarget->x, linetarget->y);
     if (angle - player->mo->angle > ANG180)
     {
-        if ((signed int)(angle - player->mo->angle) < -ANG90 / 20)
+        if (static_cast<signed int>(angle - player->mo->angle) < -ANG90 / 20)
             player->mo->angle = angle + ANG90 / 21;
         else
             player->mo->angle -= ANG90 / 20;
@@ -930,12 +931,15 @@ void P_MovePsprites(player_t *player)
     if (psp->state)
     {
         // [crispy] don't center vertically during lowering and raising states
-        if (psp->state->misc1 || psp->state->action.acp3 == (actionf_p3)A_Lower || psp->state->action.acp3 == (actionf_p3)A_Raise)
+        action_hook needle_lower = A_Lower;
+        action_hook needle_raise = A_Raise;
+        action_hook needle_weapon_ready = A_WeaponReady;
+        if (psp->state->misc1 || psp->state->action == needle_lower || psp->state->action == needle_raise)
         {
             psp->sx2 = psp->sx;
             psp->sy2 = psp->sy;
         }
-        else if (psp->state->action.acp3 == (actionf_p3)A_WeaponReady || crispy->centerweapon == CENTERWEAPON_BOB)
+        else if (psp->state->action == needle_weapon_ready || crispy->centerweapon == CENTERWEAPON_BOB)
         {
             angle_t angle = (128 * leveltime) & FINEMASK;
             psp->sx2      = FRACUNIT + FixedMul(player->bob2, finecosine[angle]);

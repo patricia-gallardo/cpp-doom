@@ -314,7 +314,7 @@ void F_TextWrite()
     cy = 10;
     ch = finaletext_rw;
 
-    count = ((signed int)finalecount - 10) / TEXTSPEED;
+    count = (static_cast<signed int>(finalecount) - 10) / TEXTSPEED;
     if (count < 0)
         count = 0;
     for (; count; count--)
@@ -471,31 +471,35 @@ static const actionsound_t actionsounds[] = {
 // [crispy] play attack sound based on state action function (instead of state number)
 static int F_SoundForState(int st)
 {
-    actionf_v const castaction = caststate->action.acv;
-    actionf_v const nextaction = (&states[caststate->nextstate])->action.acv;
+    return std::visit(overloaded {
+                          [st](const null_hook &) { return (st == S_PLAY_ATK2) ? sfx_dshtgn : 0; },
+                          [](const valid_hook &cast_action) {
+                              const auto &next = states[caststate->nextstate].action;
+                              for (const auto &action_sound : actionsounds)
+                              {
+                                  if (action_sound.action.index() != valid_hook_action_hook)
+                                      continue;
+                                  const auto &soundaction = std::get<valid_hook>(action_sound.action);
 
-    // [crispy] fix Doomguy in casting sequence
-    if (castaction == nullptr)
-    {
-        if (st == S_PLAY_ATK2)
-            return sfx_dshtgn;
-        else
-            return 0;
-    }
-    else
-    {
-        for (const auto & actionsound : actionsounds)
-        {
-            const actionsound_t *const as = &actionsound;
+                                  if (!action_sound.early && is_valid(cast_action) == is_valid(soundaction))
+                                  {
+                                      return action_sound.sound;
+                                  }
 
-            if ((!as->early && castaction == as->action.acv) || (as->early && nextaction == as->action.acv))
-            {
-                return as->sound;
-            }
-        }
-    }
+                                  if (next.index() != valid_hook_action_hook)
+                                      continue;
+                                  const auto &next_action = std::get<valid_hook>(next);
 
-    return 0;
+                                  if (action_sound.early && is_valid(next_action) == is_valid(soundaction))
+                                  {
+                                      return action_sound.sound;
+                                  }
+                              }
+                              return 0;
+                          },
+                          [](const auto &) { return 0; },
+                      },
+        caststate->action);
 }
 
 //
@@ -556,7 +560,8 @@ void F_CastTicker()
 	    goto stopattack;	// Oh, gross hack!
 	*/
         // [crispy] Allow A_RandomJump() in deaths in cast sequence
-        if (caststate->action.acp3 == A_RandomJump && Crispy_Random() < caststate->misc2)
+        action_hook needle = A_RandomJump;
+        if (caststate->action == needle && Crispy_Random() < caststate->misc2)
         {
             st = caststate->misc1;
         }
@@ -648,7 +653,8 @@ void F_CastTicker()
     if (casttics == -1)
     {
         // [crispy] Allow A_RandomJump() in deaths in cast sequence
-        if (caststate->action.acp3 == A_RandomJump)
+        action_hook needle = A_RandomJump;
+        if (caststate->action == needle)
         {
             if (Crispy_Random() < caststate->misc2)
             {
@@ -721,7 +727,8 @@ bool F_CastResponder(event_t *ev)
         caststate = &states[mobjinfo[castorder[castnum].type].deathstate];
     casttics = caststate->tics;
     // [crispy] Allow A_RandomJump() in deaths in cast sequence
-    if (casttics == -1 && caststate->action.acp3 == A_RandomJump)
+    action_hook needle = A_RandomJump;
+    if (casttics == -1 && caststate->action == needle)
     {
         if (Crispy_Random() < caststate->misc2)
         {
@@ -848,7 +855,7 @@ void F_DrawPatchCol(int x,
     pixel_t * desttop;
     int       count;
 
-    column  = reinterpret_cast<column_t *>((uint8_t *)patch + LONG(patch->columnofs[col >> FRACBITS]));
+    column  = reinterpret_cast<column_t *>(reinterpret_cast<uint8_t *>(patch) + LONG(patch->columnofs[col >> FRACBITS]));
     desttop = I_VideoBuffer + x + (DELTAWIDTH << crispy->hires);
 
     // step through the posts in a column
@@ -896,7 +903,7 @@ void F_BunnyScroll()
 
     V_MarkRect(0, 0, SCREENWIDTH, SCREENHEIGHT);
 
-    scrolled = (ORIGWIDTH - ((signed int)finalecount - 230) / 2);
+    scrolled = (ORIGWIDTH - (static_cast<signed int>(finalecount) - 230) / 2);
     if (scrolled > ORIGWIDTH)
         scrolled = ORIGWIDTH;
     if (scrolled < 0)

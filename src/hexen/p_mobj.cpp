@@ -644,7 +644,7 @@ void P_XYMovement(mobj_t * mo)
     {                           // If in a walking frame, stop moving
         if (player)
         {
-            if ((unsigned) ((player->mo->state - states)
+            if (static_cast<unsigned>((player->mo->state - states)
                             - PStateRun[player->clazz]) < 4)
             {
                 P_SetMobjState(player->mo, static_cast<statenum_t>(PStateNormal[player->clazz]));

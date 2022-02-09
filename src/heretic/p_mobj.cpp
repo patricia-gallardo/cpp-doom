@@ -429,7 +429,7 @@ void P_XYMovement(mobj_t * mo)
         {
             if (player->chickenTics)
             {
-                if ((unsigned) ((player->mo->state - states)
+                if (static_cast<unsigned>((player->mo->state - states)
                                 - S_CHICPLAY_RUN1) < 4)
                 {
                     P_SetMobjState(player->mo, S_CHICPLAY);
@@ -437,7 +437,7 @@ void P_XYMovement(mobj_t * mo)
             }
             else
             {
-                if ((unsigned) ((player->mo->state - states)
+                if (static_cast<unsigned>((player->mo->state - states)
                                 - S_PLAY_RUN1) < 4)
                 {
                     P_SetMobjState(player->mo, S_PLAY);
@@ -1209,7 +1209,7 @@ void P_SpawnPuff(fixed_t x, fixed_t y, fixed_t z)
             break;
         case MT_GAUNTLETPUFF1:
         case MT_GAUNTLETPUFF2:
-            puff->momz = (fixed_t)(.8 * FRACUNIT);
+            puff->momz = static_cast<fixed_t>(.8 * FRACUNIT);
         default:
             break;
     }

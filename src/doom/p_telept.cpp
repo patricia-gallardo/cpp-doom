@@ -71,7 +71,8 @@ int EV_Teleport(line_t *line,
                  thinker = thinker->next)
             {
                 // not a mobj
-                if (thinker->function.acp1 != reinterpret_cast<actionf_p1>(P_MobjThinker))
+                action_hook needle = P_MobjThinker;
+                if (thinker->function != needle)
                     continue;
 
                 m = reinterpret_cast<mobj_t *>(thinker);

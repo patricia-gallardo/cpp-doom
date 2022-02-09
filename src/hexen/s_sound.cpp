@@ -502,7 +502,7 @@ void S_StartSoundAtVolume(mobj_t * origin, int sound_id, int volume)
     // if the sfxinfo_t is marked as 'can be pitch shifted'
     if (S_sfx[sound_id].pitch)
     {
-        Channel[i].pitch = (uint8_t) (NORM_PITCH + (M_Random() & 7) - (M_Random() & 7));
+        Channel[i].pitch = static_cast<uint8_t>(NORM_PITCH + (M_Random() & 7) - (M_Random() & 7));
     }
     else
     {

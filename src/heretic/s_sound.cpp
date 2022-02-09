@@ -118,7 +118,7 @@ static mobj_t *GetSoundListener()
         dummy_listener.y = 0;
         dummy_listener.z = 0;
 
-        return (mobj_t *) &dummy_listener;
+        return reinterpret_cast<mobj_t *>(&dummy_listener);
     }
 }
 
@@ -270,7 +270,7 @@ void S_StartSound(void *_origin, int sound_id)
             sep = 512 - sep;
     }
 
-    channel[i].pitch = (uint8_t) (NORM_PITCH + (M_Random() & 7) - (M_Random() & 7));
+    channel[i].pitch = static_cast<uint8_t>(NORM_PITCH + (M_Random() & 7) - (M_Random() & 7));
     channel[i].handle = I_StartSound(&S_sfx[sound_id], i, vol, sep, channel[i].pitch);
     channel[i].mo = origin;
     channel[i].sound_id = sound_id;
@@ -327,7 +327,7 @@ void S_StartSoundAtVolume(void *_origin, int sound_id, int volume)
         S_sfx[sound_id].lumpnum = I_GetSfxLumpNum(&S_sfx[sound_id]);
     }
 
-    channel[i].pitch = (uint8_t) (NORM_PITCH - (M_Random() & 3) + (M_Random() & 3));
+    channel[i].pitch = static_cast<uint8_t>(NORM_PITCH - (M_Random() & 3) + (M_Random() & 3));
     channel[i].handle = I_StartSound(&S_sfx[sound_id], i, volume, 128, channel[i].pitch);
     channel[i].mo = origin;
     channel[i].sound_id = sound_id;

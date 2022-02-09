@@ -155,7 +155,7 @@ bool P_GiveMana(player_t * player, manatype_t mana, int count)
     {
         return (false);
     }
-    if ((unsigned int) mana > NUMMANA)
+    if (static_cast<unsigned int>(mana) > NUMMANA)
     {
         I_Error("P_GiveMana: bad type %i", mana);
     }
@@ -1254,7 +1254,7 @@ mobj_t *ActiveMinotaur(player_t * master)
     thinker_t *think;
     unsigned int *starttime;
 
-    constexpr action_hook needle = P_MobjThinker;
+    action_hook needle = P_MobjThinker;
 
     for (think = thinkercap.next; think != &thinkercap; think = think->next)
     {

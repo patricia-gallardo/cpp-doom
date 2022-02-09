@@ -75,8 +75,10 @@ bool
 
         // Modified handling.
         // Call action functions when the state is set
-        if (st->action.acp3)
-            st->action.acp3(mobj, nullptr, nullptr); // [crispy] let pspr action pointers get called from mobj states
+        if (st->action.index() == mobj_player_psp_param_action_hook) {
+            const auto & callback = std::get<mobj_player_psp_param_action>(st->action);
+            callback(mobj, nullptr, nullptr); // [crispy] let pspr action pointers get called from mobj states
+        }
 
         state = st->nextstate;
 
@@ -108,7 +110,7 @@ static statenum_t P_LatestSafeState(statenum_t state)
             safestate = state;
         }
 
-        if (states[state].action.acp1)
+        if (action_hook_has_value(states[state].action))
         {
             safestate = S_NULL;
         }
@@ -556,8 +558,8 @@ void P_MobjThinker(mobj_t *mobj)
     {
         P_XYMovement(mobj);
 
-        // FIXME: decent NOP/NULL/Nil function pointer please.
-        if (mobj->thinker.function.acv == (actionf_v)(-1))
+        action_hook needle = valid_hook(false);
+        if (mobj->thinker.function == needle)
             return; // mobj was removed
     }
     if ((mobj->z != mobj->floorz)
@@ -565,8 +567,8 @@ void P_MobjThinker(mobj_t *mobj)
     {
         P_ZMovement(mobj);
 
-        // FIXME: decent NOP/NULL/Nil function pointer please.
-        if (mobj->thinker.function.acv == (actionf_v)(-1))
+        action_hook null_hook = valid_hook(false);
+        if (mobj->thinker.function == null_hook)
             return; // mobj was removed
     }
 
@@ -677,7 +679,7 @@ static mobj_t *
     mobj->oldz     = mobj->z;
     mobj->oldangle = mobj->angle;
 
-    mobj->thinker.function.acp1 = reinterpret_cast<actionf_p1>(P_MobjThinker);
+    mobj->thinker.function = P_MobjThinker;
 
     P_AddThinker(&mobj->thinker);
 

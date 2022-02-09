@@ -130,7 +130,7 @@ bool EV_ClearForceFields(line_t* line);  // villsa [STRIFE]
 //
 // P_LIGHTS
 //
-typedef struct
+typedef struct fireflicker_s
 {
     thinker_t	thinker;
     sector_t*	sector;

@@ -92,7 +92,7 @@ static void DEH_ThingParseLine(deh_context_t *context, char *line, void *tag)
     if (tag == nullptr)
        return;
 
-    mobj = (mobjinfo_t *) tag;
+    mobj = reinterpret_cast<mobjinfo_t *>(tag);
 
     // Parse the assignment
 

@@ -122,11 +122,12 @@ static void P_WriteFireFlicker(const char *key)
 {
     thinker_t *th;
 
+    action_hook needle = T_FireFlicker;
     for (th = thinkercap.next; th != &thinkercap; th = th->next)
     {
-        if (th->function.acp1 == (actionf_p1)T_FireFlicker)
+        if (th->function == needle)
         {
-            fireflicker_t *flick = (fireflicker_t *)th;
+            auto *flick = reinterpret_cast<fireflicker_t *>(th);
 
             M_snprintf(line, MAX_LINE_LEN, "%s %d %d %d %d\n",
                 key,
@@ -161,7 +162,7 @@ static void P_ReadFireFlicker(const char *key)
         flick->maxlight = maxlight;
         flick->minlight = minlight;
 
-        flick->thinker.function.acp1 = (actionf_p1)T_FireFlicker;
+        flick->thinker.function = T_FireFlicker;
 
         P_AddThinker(&flick->thinker);
     }
@@ -181,7 +182,7 @@ static void P_WriteSoundTarget(const char *key)
             M_snprintf(line, MAX_LINE_LEN, "%s %d %d\n",
                 key,
                 i,
-                P_ThinkerToIndex((thinker_t *)sector->soundtarget));
+                P_ThinkerToIndex(reinterpret_cast<thinker_t *>(sector->soundtarget)));
             fputs(line, save_stream);
         }
     }
@@ -198,7 +199,7 @@ static void P_ReadSoundTarget(const char *key)
             == 3
         && !strncmp(string, key, MAX_STRING_LEN))
     {
-        sectors[sector].soundtarget = (mobj_t *)P_IndexToThinker(target);
+        sectors[sector].soundtarget = reinterpret_cast<mobj_t *>(P_IndexToThinker(target));
     }
 }
 
@@ -287,11 +288,12 @@ static void P_WriteBrainTarget(const char *key)
 {
     thinker_t *th;
 
+    action_hook needle = P_MobjThinker;
     for (th = thinkercap.next; th != &thinkercap; th = th->next)
     {
-        if (th->function.acp1 == reinterpret_cast<actionf_p1>(P_MobjThinker))
+        if (th->function == needle)
         {
-            mobj_t *mo = reinterpret_cast<mobj_t *>(th);
+            auto *mo = reinterpret_cast<mobj_t *>(th);
 
             if (mo->state == &states[S_BRAINEYE1])
             {

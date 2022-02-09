@@ -3068,7 +3068,7 @@ static void ArchiveSounds()
         if (i == po_NumPolyobjs)
         {                       // Sound is attached to a sector, not a polyobj
             sec = R_PointInSubsector(node->mobj->x, node->mobj->y)->sector;
-            difference = (int) ((uint8_t *) sec
+            difference = static_cast<int>((uint8_t *) sec
                                 - (uint8_t *) & sectors[0]) / sizeof(sector_t);
             SV_WriteLong(0);   // 0 -- sector sound origin
         }
