@@ -954,7 +954,7 @@ static bool LoadInstrumentTable()
     main_instrs       = reinterpret_cast<genmidi_instr_t *>(lump + strlen(GENMIDI_HEADER));
     percussion_instrs = main_instrs + GENMIDI_NUM_INSTRS;
     main_instr_names =
-        (char(*)[32])(percussion_instrs + GENMIDI_NUM_PERCUSSION);
+        reinterpret_cast<char(*)[32]>(percussion_instrs + GENMIDI_NUM_PERCUSSION);
     percussion_names = main_instr_names + GENMIDI_NUM_INSTRS;
 
     return true;

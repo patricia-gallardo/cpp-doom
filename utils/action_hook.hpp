@@ -66,6 +66,10 @@ constexpr bool operator ==(const valid_hook &a, const valid_hook &b) {
     return a.is_valid() == b.is_valid();
 }
 
+constexpr bool operator !=(const valid_hook &a, const valid_hook &b) {
+    return a.is_valid() != b.is_valid();
+}
+
 using null_hook                = std::monostate;
 using zero_param_action        = void (*)();
 using mobj_param_action        = void (*)(mobj_t *);
