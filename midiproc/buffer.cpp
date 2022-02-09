@@ -45,7 +45,7 @@ void DeleteBuffer(buffer_t *buf)
 //
 // Return the data in the buffer.
 //
-int Buffer_Data(buffer_t *buf, byte **data)
+int Buffer_Data(buffer_t *buf, uint8_t  **data)
 {
     *data = buf->data;
     return buf->data_len;
@@ -163,7 +163,7 @@ int Reader_BytesRead(buffer_reader_t *reader)
 //
 bool Reader_ReadInt8(buffer_reader_t *reader, uint8_t *out)
 {
-    byte *data, *data_end;
+    uint8_t  *data, *data_end;
     int len = Buffer_Data(reader->buffer, &data);
 
     data_end = data + len;
@@ -184,7 +184,7 @@ bool Reader_ReadInt8(buffer_reader_t *reader, uint8_t *out)
 //
 bool Reader_ReadInt16(buffer_reader_t *reader, uint16_t *out)
 {
-    byte *data, *data_end, *dp;
+    uint8_t  *data, *data_end, *dp;
     int len = Buffer_Data(reader->buffer, &data);
 
     data_end = data + len;
@@ -206,7 +206,7 @@ bool Reader_ReadInt16(buffer_reader_t *reader, uint16_t *out)
 //
 bool Reader_ReadInt32(buffer_reader_t *reader, uint32_t *out)
 {
-    byte *data, *data_end, *dp;
+    uint8_t  *data, *data_end, *dp;
     int len = Buffer_Data(reader->buffer, &data);
 
     data_end = data + len;
@@ -228,7 +228,7 @@ bool Reader_ReadInt32(buffer_reader_t *reader, uint32_t *out)
 //
 char *Reader_ReadString(buffer_reader_t *reader)
 {
-    byte *data, *data_start, *data_end, *dp;
+    uint8_t  *data, *data_start, *data_end, *dp;
     int len = Buffer_Data(reader->buffer, &data);
 
     data_start = reader->pos;
