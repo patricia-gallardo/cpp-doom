@@ -119,8 +119,8 @@ int wipe_initMelt(int width, int height, int)
     
     // makes this wipe faster (in theory)
     // to have stuff in column-major format
-    wipe_shittyColMajorXform((short*)wipe_scr_start, width/2, height);
-    wipe_shittyColMajorXform((short*)wipe_scr_end, width/2, height);
+    wipe_shittyColMajorXform(reinterpret_cast<short*>(wipe_scr_start), width/2, height);
+    wipe_shittyColMajorXform(reinterpret_cast<short*>(wipe_scr_end), width/2, height);
     
     // setup initial column positions
     // (y<0 => not ready to scroll yet)
@@ -166,8 +166,8 @@ wipe_doMelt
 	    {
 		dy = (y[i] < 16) ? y[i]+1 : 8;
 		if (y[i]+dy >= height) dy = height - y[i];
-		s = &((short *)wipe_scr_end)[i*height+y[i]];
-		d = &((short *)wipe_scr)[y[i]*width+i];
+		s = &(reinterpret_cast<short *>(wipe_scr_end))[i*height+y[i]];
+		d = &(reinterpret_cast<short *>(wipe_scr))[y[i]*width+i];
 		idx = 0;
 		for (j=dy;j;j--)
 		{
@@ -175,8 +175,8 @@ wipe_doMelt
 		    idx += width;
 		}
 		y[i] += dy;
-		s = &((short *)wipe_scr_start)[i*height];
-		d = &((short *)wipe_scr)[y[i]*width+i];
+		s = &(reinterpret_cast<short *>(wipe_scr_start))[i*height];
+		d = &(reinterpret_cast<short *>(wipe_scr))[y[i]*width+i];
 		idx = 0;
 		for (j=height-y[i];j;j--)
 		{

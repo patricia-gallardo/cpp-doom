@@ -877,7 +877,7 @@ static bool ReadSubstituteConfig(char *musicdir, const char *filename)
         return false;
     }
 
-    M_ReadFile(filename, (uint8_t **)&buffer);
+    M_ReadFile(filename, reinterpret_cast<uint8_t **>(&buffer));
 
     line = buffer;
 
@@ -1180,7 +1180,7 @@ static void I_MP_PlaySong(void *handle, bool looping)
         return;
     }
 
-    current_track_music = (Mix_Music *)handle;
+    current_track_music = reinterpret_cast<Mix_Music *>(handle);
     current_track_loop  = looping;
 
     if (looping)
@@ -1242,7 +1242,7 @@ static void I_MP_StopSong()
 
 static void I_MP_UnRegisterSong(void *handle)
 {
-    Mix_Music *music = (Mix_Music *)handle;
+    Mix_Music *music = reinterpret_cast<Mix_Music *>(handle);
 
     if (!music_initialized)
     {
@@ -1313,12 +1313,12 @@ static double GetMusicPosition()
     music_pos = current_track_pos;
     SDL_UnlockAudio();
 
-    return (double)music_pos / freq;
+    return static_cast<double>(music_pos) / freq;
 }
 
 static void RestartCurrentTrack()
 {
-    double start = (double)file_metadata.start_time
+    double start = static_cast<double>(file_metadata.start_time)
                    / file_metadata.samplerate_hz;
 
     // If the track finished we need to restart it.
@@ -1342,7 +1342,7 @@ static void I_MP_PollMusic()
     // tags ignored.
     if (current_track_loop && file_metadata.valid)
     {
-        double end = (double)file_metadata.end_time
+        double end = static_cast<double>(file_metadata.end_time)
                      / file_metadata.samplerate_hz;
 
         // If we have reached the loop end point then we have to take action.

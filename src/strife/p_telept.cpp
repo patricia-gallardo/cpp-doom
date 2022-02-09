@@ -84,7 +84,7 @@ EV_Teleport
                 if (thinker->function.acp1 != reinterpret_cast<actionf_p1>(P_MobjThinker))
                     continue;
 
-                m = (mobj_t *)thinker;
+                m = reinterpret_cast<mobj_t *>(thinker);
 
                 // not a teleportman
                 if (m->type != MT_TELEPORTMAN )

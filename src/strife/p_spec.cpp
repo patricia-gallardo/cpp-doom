@@ -1753,8 +1753,8 @@ static void DonutOverrun(fixed_t *s3_floorheight, short *s3_floorpic, line_t *, 
             tmp_s3_floorheight >> 16, tmp_s3_floorpic);
      */
 
-    *s3_floorheight = (fixed_t) tmp_s3_floorheight;
-    *s3_floorpic = (short) tmp_s3_floorpic;
+    *s3_floorheight = static_cast<fixed_t>(tmp_s3_floorheight);
+    *s3_floorpic = static_cast<short>(tmp_s3_floorpic);
 }
 
 

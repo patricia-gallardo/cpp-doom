@@ -401,7 +401,7 @@ bool P_Move (mobj_t*	actor)
     if (actor->movedir == DI_NODIR)
         return false;
 
-    if ((unsigned)actor->movedir >= 8)
+    if (static_cast<unsigned>(actor->movedir) >= 8)
         I_Error ("Weird actor->movedir!");
 
     tryx = actor->x + actor->info->speed*xspeed[actor->movedir];
@@ -534,7 +534,7 @@ void P_NewChaseDir(mobj_t* actor)
         && d[2] != DI_NODIR)
     {
         actor->movedir = diags[((deltay<0)<<1)+(deltax>0)];
-        if (actor->movedir != (int) turnaround && P_TryWalk(actor))
+        if (actor->movedir != static_cast<int>(turnaround) && P_TryWalk(actor))
             return;
     }
 
@@ -587,7 +587,7 @@ void P_NewChaseDir(mobj_t* actor)
               tdir<=DI_SOUTHEAST;
               tdir++ )
         {
-            if (tdir != (int) turnaround)
+            if (tdir != static_cast<int>(turnaround))
             {
                 actor->movedir =tdir;
 
@@ -602,7 +602,7 @@ void P_NewChaseDir(mobj_t* actor)
               tdir != (DI_EAST-1);
               tdir-- )
         {
-            if (tdir != (int) turnaround)
+            if (tdir != static_cast<int>(turnaround))
             {
                 actor->movedir = tdir;
 

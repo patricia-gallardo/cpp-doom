@@ -70,11 +70,11 @@ int SlopeDivCrispy(unsigned int num, unsigned int den)
     }
     else
     {
-        uint64_t ans = ((uint64_t)num << 3) / (den >> 8);
+        uint64_t ans = (static_cast<uint64_t>(num) << 3) / (den >> 8);
 
         if (ans <= SLOPERANGE)
         {
-            return (int)ans;
+            return static_cast<int>(ans);
         }
         else
         {

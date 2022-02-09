@@ -333,7 +333,7 @@ static void HU_addMessage(const char *prefix, const char *message)
             if(c < 0 || c >= HU_FONTSIZE)
                 width += 4;
             else
-                width += SHORT(hu_font[(int) c]->width);
+                width += SHORT(hu_font[static_cast<int>(c)]->width);
         }
     }
 
@@ -355,7 +355,7 @@ static void HU_addMessage(const char *prefix, const char *message)
         else
         {
             c -= HU_FONTSTART;
-            width += SHORT(hu_font[(int) c]->width);
+            width += SHORT(hu_font[static_cast<int>(c)]->width);
         }
     }
 

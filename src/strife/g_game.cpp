@@ -246,7 +246,7 @@ int G_CmdChecksum (ticcmd_t* cmd)
     int		sum = 0; 
 	 
     for (i=0 ; i< sizeof(*cmd)/4 - 1 ; i++) 
-	sum += ((int *)cmd)[i]; 
+	sum += (reinterpret_cast<int *>(cmd))[i];
 		 
     return sum; 
 } 
@@ -1240,7 +1240,7 @@ G_CheckSpot
 
     // spawn a teleport fog 
     ss = R_PointInSubsector (x,y); 
-    an = ( ANG45 * (((unsigned int) mthing->angle)/45) ) >> ANGLETOFINESHIFT; 
+    an = ( ANG45 * ((static_cast<unsigned int>(mthing->angle))/45) ) >> ANGLETOFINESHIFT;
 
     mo = P_SpawnMobj (x+20*finecosine[an], y+20*finesine[an] 
                       , ss->sector->floorheight 
@@ -1643,10 +1643,10 @@ void G_ReadCurrent(const char *path)
     else
     {
         // haleyjd 20110211: do endian-correct read
-        gamemap = (((int)buffer[0])       |
-                   ((int)buffer[1] <<  8) |
-                   ((int)buffer[2] << 16) |
-                   ((int)buffer[3] << 24));
+        gamemap = ((static_cast<int>(buffer[0]))       |
+                   (static_cast<int>(buffer[1]) <<  8) |
+                   (static_cast<int>(buffer[2]) << 16) |
+                   (static_cast<int>(buffer[3]) << 24));
         gameaction = ga_loadgame;
         Z_Free(buffer);
     }
@@ -2100,12 +2100,12 @@ void G_ReadDemoTiccmd (ticcmd_t* cmd)
         G_CheckDemoStatus (); 
         return; 
     }
-    cmd->forwardmove = ((signed char)*demo_p++); 
-    cmd->sidemove = ((signed char)*demo_p++); 
-    cmd->angleturn = ((unsigned char) *demo_p++)<<8; 
-    cmd->buttons = (unsigned char)*demo_p++; 
-    cmd->buttons2 = (unsigned char)*demo_p++; // [STRIFE]
-    cmd->inventory = (int)*demo_p++;          // [STRIFE]
+    cmd->forwardmove = static_cast<signed char>(*demo_p++);
+    cmd->sidemove = static_cast<signed char>(*demo_p++);
+    cmd->angleturn = (static_cast<unsigned char>(*demo_p++))<<8;
+    cmd->buttons = static_cast<unsigned char>(*demo_p++);
+    cmd->buttons2 = static_cast<unsigned char>(*demo_p++); // [STRIFE]
+    cmd->inventory = static_cast<int>(*demo_p++);          // [STRIFE]
 }
 
 // Increase the size of the demo buffer to allow unlimited demos
@@ -2426,7 +2426,7 @@ bool G_CheckDemoStatus ()
 
         endtime = I_GetTime (); 
         realtics = endtime - starttime;
-        fps = ((float) gametic * TICRATE) / realtics;
+        fps = (static_cast<float>(gametic) * TICRATE) / realtics;
 
         // Prevent recursive calls
         timingdemo = false;

@@ -850,7 +850,7 @@ void A_FireSigil(player_t* player, pspdef_t*)
         mo->health = -1;
         if(!linetarget)
         {
-            an = (unsigned int)player->pitch >> ANGLETOFINESHIFT;
+            an = static_cast<unsigned int>(player->pitch) >> ANGLETOFINESHIFT;
             mo->momz += FixedMul(finesine[an], mo->info->speed); 
         }
         break;

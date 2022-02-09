@@ -304,12 +304,12 @@ static allocated_sound_t *PitchShift(allocated_sound_t *insnd, int pitch)
     Sint16 *           srcbuf, *dstbuf;
     Uint32             srclen, dstlen;
 
-    srcbuf = (Sint16 *)insnd->chunk.abuf;
+    srcbuf = reinterpret_cast<Sint16 *>(insnd->chunk.abuf);
     srclen = insnd->chunk.alen;
 
     // determine ratio pitch:NORM_PITCH and apply to srclen, then invert.
     // This is an approximation of vanilla behaviour based on measurements
-    dstlen = static_cast<int>((1 + (1 - (float)pitch / NORM_PITCH)) * srclen);
+    dstlen = static_cast<int>((1 + (1 - static_cast<float>(pitch) / NORM_PITCH)) * srclen);
 
     // ensure that the new buffer is an even length
     if ((dstlen % 2) == 0)
@@ -325,12 +325,12 @@ static allocated_sound_t *PitchShift(allocated_sound_t *insnd, int pitch)
     }
 
     outsnd->pitch = pitch;
-    dstbuf        = (Sint16 *)outsnd->chunk.abuf;
+    dstbuf        = reinterpret_cast<Sint16 *>(outsnd->chunk.abuf);
 
     // loop over output buffer. find corresponding input cell, copy over
     for (outp = dstbuf; outp < dstbuf + dstlen / 2; ++outp)
     {
-        inp   = srcbuf + static_cast<int>((float)(outp - dstbuf) / dstlen * srclen);
+        inp   = srcbuf + static_cast<int>(static_cast<float>(outp - dstbuf) / dstlen * srclen);
         *outp = *inp;
     }
 
@@ -621,7 +621,7 @@ static bool ExpandSoundData_SDL(sfxinfo_t *sfxinfo, uint8_t *data,
 
     // Calculate the length of the expanded version of the sample.
 
-    expanded_length = static_cast<uint32_t>((((uint64_t)samplecount) * mixer_freq) / samplerate);
+    expanded_length = static_cast<uint32_t>((static_cast<uint64_t>(samplecount) * mixer_freq) / samplerate);
 
     // Double up twice: 8 -> 16 bit and mono -> stereo
 
@@ -658,7 +658,7 @@ static bool ExpandSoundData_SDL(sfxinfo_t *sfxinfo, uint8_t *data,
     }
     else
     {
-        Sint16 *expanded = (Sint16 *)chunk->abuf;
+        Sint16 *expanded = reinterpret_cast<Sint16 *>(chunk->abuf);
         int     expanded_length;
         int     expand_ratio;
         int     i;
@@ -671,7 +671,7 @@ static bool ExpandSoundData_SDL(sfxinfo_t *sfxinfo, uint8_t *data,
 
         // number of samples in the converted sound
 
-        expanded_length = ((uint64_t)samplecount * mixer_freq) / samplerate;
+        expanded_length = (static_cast<uint64_t>(samplecount) * mixer_freq) / samplerate;
         expand_ratio    = (samplecount << 8) / expanded_length;
 
         for (i = 0; i < expanded_length; ++i)
@@ -721,7 +721,7 @@ static bool ExpandSoundData_SDL(sfxinfo_t *sfxinfo, uint8_t *data,
 
             for (i = 2; i < expanded_length * 2; ++i)
             {
-                expanded[i] = (Sint16)(alpha * expanded[i]
+                expanded[i] = static_cast<Sint16>(alpha * expanded[i]
                                        + (1 - alpha) * expanded[i - 2]);
             }
         }

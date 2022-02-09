@@ -355,7 +355,7 @@ int M_StringAlloc(char **str, int numstrs, size_t extra, const char *str1, ...)
 
     ++len;
 
-    *str = (char *)(M_Calloc(1, len));
+    *str = reinterpret_cast<char *>(M_Calloc(1, len));
 
     return len;
 }

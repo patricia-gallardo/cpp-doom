@@ -506,7 +506,7 @@ void W_Profile ()
 	}
 	else
 	{
-	    block = (memblock_t *) ( (byte *)ptr - sizeof(memblock_t));
+	    block = reinterpret_cast<memblock_t *>( (byte *)ptr - sizeof(memblock_t));
 	    if (block->tag < PU_PURGELEVEL)
 		ch = 'S';
 	    else

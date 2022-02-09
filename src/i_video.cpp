@@ -903,7 +903,7 @@ void   I_SetGammaTable()
     // [crispy] 5 original gamma levels
     for (i = 0; i < 5; i++)
     {
-        gamma2table[2 * i] = (uint8_t *)gammatable[i];
+        gamma2table[2 * i] = const_cast<uint8_t *>(gammatable[i]);
     }
 
     // [crispy] 4 intermediate gamma levels
@@ -1553,7 +1553,7 @@ void I_GetScreenDimensions()
     {
         SCREENWIDTH = w * ah / h;
         // [crispy] make sure SCREENWIDTH is an integer multiple of 4 ...
-        SCREENWIDTH = (SCREENWIDTH + 3) & (int)~3;
+        SCREENWIDTH = (SCREENWIDTH + 3) & static_cast<int>(~3);
         // [crispy] ... but never exceeds MAXWIDTH (array size!)
         SCREENWIDTH = MIN(SCREENWIDTH, MAXWIDTH);
     }

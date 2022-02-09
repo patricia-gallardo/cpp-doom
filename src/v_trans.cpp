@@ -70,16 +70,15 @@ static const uint8_t cr_red2green[256] = { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11,
     240, 241, 242, 243, 244, 245, 246, 247, 248, 249, 250, 251, 252, 253, 254, 255 };
 
 uint8_t *cr_colors[9] = {
-    (uint8_t *)&cr_none,
-    (uint8_t *)&cr_dark,
-    (uint8_t *)&cr_gray,
-    (uint8_t *)&cr_green,
-    (uint8_t *)&cr_gold,
-    (uint8_t *)&cr_red,
-    (uint8_t *)&cr_blue,
-    (uint8_t *)&cr_red2blue,
-    (uint8_t *)&cr_red2green
-};
+    reinterpret_cast<uint8_t *>(&cr_none),
+    reinterpret_cast<uint8_t *>(&cr_dark),
+    reinterpret_cast<uint8_t *>(&cr_gray),
+    reinterpret_cast<uint8_t *>(&cr_green),
+    reinterpret_cast<uint8_t *>(&cr_gold),
+    reinterpret_cast<uint8_t *>(&cr_red),
+    reinterpret_cast<uint8_t *>(&cr_blue),
+    const_cast<uint8_t *>(reinterpret_cast<const uint8_t *>(&cr_red2blue)),
+    const_cast<uint8_t *>(reinterpret_cast<const uint8_t *>(&cr_red2green)) };
 
 char **crstr = 0;
 
@@ -312,5 +311,5 @@ uint8_t V_Colorize(uint8_t *playpal, int cr, uint8_t source, bool keepgray109)
     rgb.y *= 255.;
     rgb.z *= 255.;
 
-    return I_GetPaletteIndex2(playpal, (int)rgb.x, (int)rgb.y, (int)rgb.z);
+    return I_GetPaletteIndex2(playpal, static_cast<int>(rgb.x), static_cast<int>(rgb.y), static_cast<int>(rgb.z));
 }

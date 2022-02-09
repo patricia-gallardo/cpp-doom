@@ -176,11 +176,11 @@ R_RenderMaskedSegRange
 	    }
 			
 	    sprtopscreen = centeryfrac - FixedMul(dc_texturemid, spryscale);
-	    dc_iscale = 0xffffffffu / (unsigned)spryscale;
+	    dc_iscale = 0xffffffffu / static_cast<unsigned>(spryscale);
 	    
 	    // draw the texture
 	    col = reinterpret_cast<column_t *>(
-		(uint8_t *)R_GetColumn(texnum,maskedtexturecol[dc_x]) -3);
+		reinterpret_cast<uint8_t *>(R_GetColumn(texnum,maskedtexturecol[dc_x]) -3));
 			
             // villsa [STRIFE] added 0 argument
 	    R_DrawMaskedColumn (col, 0);
@@ -275,7 +275,7 @@ void R_RenderSegLoop ()
 
 	    dc_colormap = walllights[index];
 	    dc_x = rw_x;
-	    dc_iscale = 0xffffffffu / (unsigned)rw_scale;
+	    dc_iscale = 0xffffffffu / static_cast<unsigned>(rw_scale);
 	}
         else
         {

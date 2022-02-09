@@ -796,7 +796,7 @@ void V_DrawHorizLine(int x, int y, int w, int c)
     int      x1;
 
     // [crispy] prevent framebuffer overflows
-    if (x + w > (unsigned)SCREENWIDTH)
+    if (x + w > static_cast<unsigned>(SCREENWIDTH))
         w = SCREENWIDTH - x;
 
     buf = I_VideoBuffer + SCREENWIDTH * y + x;
@@ -976,7 +976,7 @@ void WritePCXfile(char *filename, pixel_t *data,
         *pack++ = *palette++;
 
     // write output file
-    length = pack - (uint8_t *)pcx;
+    length = pack - reinterpret_cast<uint8_t *>(pcx);
     M_WriteFile(filename, pcx, length);
 
     Z_Free(pcx);

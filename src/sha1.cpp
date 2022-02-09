@@ -69,7 +69,7 @@ static void Transform(sha1_context_t *hd, uint8_t *data)
     {
         int   i;
         uint8_t *p2;
-        for (i = 0, p2 = (uint8_t *)x; i < 16; i++, p2 += 4)
+        for (i = 0, p2 = reinterpret_cast<uint8_t *>(x); i < 16; i++, p2 += 4)
         {
             p2[3] = *data++;
             p2[2] = *data++;
@@ -329,5 +329,5 @@ void SHA1_UpdateInt32(sha1_context_t *context, unsigned int val)
 
 void SHA1_UpdateString(sha1_context_t *context, char *str)
 {
-    SHA1_Update(context, (uint8_t *)str, strlen(str) + 1);
+    SHA1_Update(context, reinterpret_cast<uint8_t *>(str), strlen(str) + 1);
 }

@@ -578,7 +578,7 @@ static void NET_CL_ParseGameStart(net_packet_t *packet)
     }
 
     if (settings.num_players > NET_MAXPLAYERS
-        || settings.consoleplayer >= (signed int)settings.num_players)
+        || settings.consoleplayer >= static_cast<signed int>(settings.num_players))
     {
         // insane values
         NET_Log("client: error: bad settings, num_players=%d, consoleplayer=%d",

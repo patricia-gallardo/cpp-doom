@@ -235,7 +235,7 @@ static void NET_SDL_SendPacket(net_addr_t *addr, net_packet_t *packet)
     }
     else
     {
-        ip = *((IPaddress *)addr->handle);
+        ip = *(reinterpret_cast<IPaddress *>(addr->handle));
     }
 
 #if 0
@@ -307,7 +307,7 @@ void NET_SDL_AddrToString(net_addr_t *addr, char *buffer, int buffer_len)
     uint32_t   host;
     uint16_t   port;
 
-    ip   = (IPaddress *)addr->handle;
+    ip   = reinterpret_cast<IPaddress *>(addr->handle);
     host = SDLNet_Read32(&ip->host);
     port = SDLNet_Read16(&ip->port);
 

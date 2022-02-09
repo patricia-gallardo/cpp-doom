@@ -105,10 +105,10 @@ bool NET_ReadSettings(net_packet_t *packet, net_gamesettings_t *settings)
               && NET_ReadInt8(packet, reinterpret_cast<unsigned int *>(&settings->lowres_turn))
               && NET_ReadInt8(packet, reinterpret_cast<unsigned int *>(&settings->new_sync))
               && NET_ReadInt32(packet, reinterpret_cast<unsigned int *>(&settings->timelimit))
-              && NET_ReadSInt8(packet, (signed int *)&settings->loadgame)
+              && NET_ReadSInt8(packet, reinterpret_cast<signed int *>(&settings->loadgame))
               && NET_ReadInt8(packet, reinterpret_cast<unsigned int *>(&settings->random))
               && NET_ReadInt8(packet, reinterpret_cast<unsigned int *>(&settings->num_players))
-              && NET_ReadSInt8(packet, (signed int *)&settings->consoleplayer);
+              && NET_ReadSInt8(packet, reinterpret_cast<signed int *>(&settings->consoleplayer));
 
     if (!success)
     {

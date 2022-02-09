@@ -413,7 +413,7 @@ void S_StartSound(void *origin_p, int sfx_id)
     int cnum;
     int volume;
 
-    origin = (mobj_t *) origin_p;
+    origin = reinterpret_cast<mobj_t *>(origin_p);
     volume = snd_SfxVolume;
 
     // check for bogus sound #

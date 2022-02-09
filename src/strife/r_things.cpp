@@ -131,7 +131,7 @@ R_InstallSpriteLump
 	for (r=0 ; r<8 ; r++)
 	{
 	    sprtemp[frame].lump[r] = lump - firstspritelump;
-	    sprtemp[frame].flip[r] = (uint8_t)flipped;
+	    sprtemp[frame].flip[r] = static_cast<uint8_t>(flipped);
 	}
 	return;
     }
@@ -151,7 +151,7 @@ R_InstallSpriteLump
 		 spritename, 'A'+frame, '1'+rotation);
 		
     sprtemp[frame].lump[rotation] = lump - firstspritelump;
-    sprtemp[frame].flip[rotation] = (uint8_t)flipped;
+    sprtemp[frame].flip[rotation] = static_cast<uint8_t>(flipped);
 }
 
 
@@ -244,7 +244,7 @@ void R_InitSpriteDefs (const char** namelist)
 	
 	for (frame = 0 ; frame < maxframe ; frame++)
 	{
-	    switch ((int)sprtemp[frame].rotate)
+	    switch (static_cast<int>(sprtemp[frame].rotate))
 	    {
 	      case -1:
 		// no rotations were found for that frame at all
@@ -551,7 +551,7 @@ void R_ProjectSprite (mobj_t* thing)
     
     // decide which patch to use for sprite relative to player
 #ifdef RANGECHECK
-    if ((unsigned int) thing->sprite >= static_cast<unsigned int>(numsprites))
+    if (static_cast<unsigned int>(thing->sprite) >= static_cast<unsigned int>(numsprites))
 	I_Error ("R_ProjectSprite: invalid sprite number %i ",
 		 thing->sprite);
 #endif

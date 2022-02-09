@@ -772,7 +772,7 @@ void EV_VerticalDoor(line_t* line, mobj_t* thing)
 
                     plat_t *plat;
 
-                    plat = (plat_t *) door;
+                    plat = reinterpret_cast<plat_t *>(door);
                     plat->wait = -1;
                 }
                 else

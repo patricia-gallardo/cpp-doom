@@ -328,7 +328,7 @@ char *DEH_ReadLine(deh_context_t *context, bool extended)
             // normal character; don't allow NUL characters to be
             // added.
 
-            context->readbuffer[pos] = (char)c;
+            context->readbuffer[pos] = static_cast<char>(c);
             ++pos;
         }
     }

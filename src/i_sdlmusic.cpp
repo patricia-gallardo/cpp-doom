@@ -291,7 +291,7 @@ static void I_SDL_PlaySong(void *handle, bool looping)
     else
 #endif
     {
-        Mix_PlayMusic((Mix_Music *)handle, loops);
+        Mix_PlayMusic(reinterpret_cast<Mix_Music *>(handle), loops);
     }
 }
 
@@ -340,7 +340,7 @@ static void I_SDL_StopSong()
 
 static void I_SDL_UnRegisterSong(void *handle)
 {
-    Mix_Music *music = (Mix_Music *)handle;
+    Mix_Music *music = reinterpret_cast<Mix_Music *>(handle);
 
     if (!music_initialized)
     {

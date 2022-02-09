@@ -51,10 +51,10 @@
 #define ORIG_MAPDIALOG_SIZE 0x5EC
 
 #define DIALOG_INT(field, ptr)    \
-    field = ((int)ptr[0]        | \
-            ((int)ptr[1] <<  8) | \
-            ((int)ptr[2] << 16) | \
-            ((int)ptr[3] << 24)); \
+    field = (static_cast<int>(ptr[0])        | \
+            (static_cast<int>(ptr[1]) <<  8) | \
+            (static_cast<int>(ptr[2]) << 16) | \
+            (static_cast<int>(ptr[3]) << 24)); \
     ptr += 4;
 
 #define DIALOG_STR(field, ptr, len) \

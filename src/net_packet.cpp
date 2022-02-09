@@ -175,9 +175,7 @@ bool NET_ReadSInt32(net_packet_t *packet, signed int *data)
 
 char *NET_ReadString(net_packet_t *packet)
 {
-    char *start;
-
-    start = (char *)packet->data + packet->pos;
+    char *start = reinterpret_cast<char *>(packet->data) + packet->pos;
 
     // Search forward for a NUL character
 
@@ -315,7 +313,7 @@ void NET_WriteString(net_packet_t *packet, const char *string)
 
     p = packet->data + packet->len;
 
-    M_StringCopy((char *)p, string, string_size);
+    M_StringCopy(reinterpret_cast<char *>(p), string, string_size);
 
     packet->len += string_size;
 }

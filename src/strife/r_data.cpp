@@ -268,7 +268,7 @@ void R_GenerateComposite (int texnum)
 	    if (collump[x] >= 0)
 		continue;
 	    
-	    patchcol = reinterpret_cast<column_t *>((uint8_t *)realpatch
+	    patchcol = reinterpret_cast<column_t *>(reinterpret_cast<uint8_t *>(realpatch)
 				    + LONG(realpatch->columnofs[x-x1]));
 	    R_DrawColumnInCache (patchcol,
 				 block + colofs[x],
@@ -481,7 +481,7 @@ void R_InitTextures ()
 
     // Load the patch names from pnames.lmp.
     names = cache_lump_name<char *> (DEH_String("PNAMES"), PU_STATIC);
-    nummappatches = LONG ( *((int *)names) );
+    nummappatches = LONG ( *(reinterpret_cast<int *>(names)) );
     name_p = names+4;
     patchlookup = zmalloc<int *>(nummappatches * sizeof(*patchlookup), PU_STATIC, nullptr);
 
@@ -568,7 +568,7 @@ void R_InitTextures ()
         if (offset > maxoff)
             I_Error ("R_InitTextures: bad texture directory");
 
-        mtexture = reinterpret_cast<maptexture_t *>( (uint8_t *)maptex + offset);
+        mtexture = reinterpret_cast<maptexture_t *>( reinterpret_cast<uint8_t *>(maptex) + offset);
 
         texture = textures[i] =
             zmalloc<texture_t *>(sizeof(texture_t)
@@ -989,7 +989,7 @@ void R_PrecacheLevel ()
     for (th = thinkercap.next ; th != &thinkercap ; th=th->next)
     {
 	if (th->function.acp1 == reinterpret_cast<actionf_p1>(P_MobjThinker))
-	    spritepresent[((mobj_t *)th)->sprite] = 1;
+	    spritepresent[(reinterpret_cast<mobj_t *>(th))->sprite] = 1;
     }
 	
     spritememory = 0;

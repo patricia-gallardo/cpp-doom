@@ -297,7 +297,7 @@ void P_DeathThink(player_t* player)
 
         delta = angle - player->mo->angle;
 
-        if (delta < ANG5 || delta > (unsigned)-ANG5)
+        if (delta < ANG5 || delta > static_cast<unsigned>(-ANG5))
         {
             // Looking at killer,
             //  so fade damage flash down.

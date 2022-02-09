@@ -118,7 +118,7 @@ static void UpdateGUI()
 {
     txt_window_action_t *startgame;
     char                 buf[50];
-    unsigned int         i;
+    int         i;
 
     // If the value of max_players changes, we must rebuild the
     // contents of the window. This includes when the first
@@ -140,7 +140,7 @@ static void UpdateGUI()
     {
         txt_color_t color = TXT_COLOR_BRIGHT_WHITE;
 
-        if ((signed)i == net_client_wait_data.consoleplayer)
+        if (i == net_client_wait_data.consoleplayer)
         {
             color = TXT_COLOR_YELLOW;
         }

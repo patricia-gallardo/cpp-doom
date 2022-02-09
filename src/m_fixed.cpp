@@ -31,7 +31,7 @@ fixed_t
     FixedMul(fixed_t a,
         fixed_t      b)
 {
-    return ((int64_t)a * (int64_t)b) >> FRACBITS;
+    return (static_cast<int64_t>(a) * static_cast<int64_t>(b)) >> FRACBITS;
 }
 
 
@@ -49,8 +49,8 @@ fixed_t FixedDiv(fixed_t a, fixed_t b)
     {
         int64_t result;
 
-        result = ((int64_t)a << FRACBITS) / b;
+        result = (static_cast<int64_t>(a) << FRACBITS) / b;
 
-        return (fixed_t)result;
+        return static_cast<fixed_t>(result);
     }
 }

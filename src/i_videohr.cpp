@@ -116,7 +116,7 @@ void I_SlamBlockHR(int x, int y, int w, int h, const uint8_t *src)
 
     for (y1 = y; y1 < y + h; ++y1)
     {
-        dest = ((uint8_t *)hr_surface->pixels) + y1 * hr_surface->pitch + x;
+        dest = (reinterpret_cast<uint8_t *>(hr_surface->pixels)) + y1 * hr_surface->pitch + x;
 
         for (x1 = x; x1 < x + w; ++x1)
         {
