@@ -1353,7 +1353,7 @@ void       ST_updateFaceWidget()
 
             for (i = 0; i < NUMWEAPONS; i++)
             {
-                if (oldweaponsowned[i] != plyr->weaponowned[i])
+                if (oldweaponsowned[i] != static_cast<bool>(plyr->weaponowned[i]))
                 {
                     doevilgrin         = true;
                     oldweaponsowned[i] = plyr->weaponowned[i];

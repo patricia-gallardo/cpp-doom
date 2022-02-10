@@ -185,10 +185,10 @@ void P_SpawnGlowingLight(sector_t *sector);
 // [crispy] add PACKEDATTR for reading SWITCHES lumps from memory
 typedef PACKED_STRUCT(
     {
-        char  name1[9];
-        char  name2[9];
-        short episode;
-    }) switchlist_t;
+    char  name1[9];
+    char  name2[9];
+    short episode;
+}) switchlist_t;
 
 
 typedef enum
@@ -532,7 +532,7 @@ typedef struct floormove_s
 {
     thinker_t thinker;
     floor_e   type;
-    bool   crush;
+    int       crush;
     sector_t *sector;
     int       direction;
     int       newspecial;

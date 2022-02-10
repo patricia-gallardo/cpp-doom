@@ -830,7 +830,7 @@ void F_CastDrawer()
     }
     sprframe = &sprdef->spriteframes[caststate->frame & FF_FRAMEMASK];
     lump     = sprframe->lump[castangle];                     // [crispy] turnable cast
-    flip     = static_cast<bool>(sprframe->flip[castangle] ^ castflip); // [crispy] turnable cast, flippable death sequence
+    flip     = static_cast<bool>(sprframe->flip[castangle] ^ static_cast<uint8_t>(castflip)); // [crispy] turnable cast, flippable death sequence
 
     patch = cache_lump_num<patch_t *>(lump + firstspritelump, PU_CACHE);
     if (flip)

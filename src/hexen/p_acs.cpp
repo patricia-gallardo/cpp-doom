@@ -1969,7 +1969,7 @@ static int CmdSetLineBlocking()
     searcher = -1;
     while ((line = P_FindLine(lineTag, &searcher)) != nullptr)
     {
-        line->flags = (line->flags & ~ML_BLOCKING) | blocking;
+        line->flags = (line->flags & ~ML_BLOCKING) | static_cast<int>(blocking);
     }
     return SCRIPT_CONTINUE;
 }

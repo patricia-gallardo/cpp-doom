@@ -967,7 +967,7 @@ void R_SetupFrame(player_t *player)
         leveltime > 1 &&
         // Don't interpolate if the player did something
         // that would necessitate turning it off for a tic.
-        player->mo->interp == true &&
+        player->mo->interp == 1 &&
         // Don't interpolate during a paused state
         leveltime > oldleveltime)
     {

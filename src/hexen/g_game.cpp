@@ -523,7 +523,7 @@ void G_BuildTiccmd(ticcmd_t *cmd, int maketic)
         //
         // forward double click
         //
-        if (mousebuttons[mousebforward] != dclickstate && dclicktime > 1)
+        if (mousebuttons[mousebforward] != static_cast<bool>(dclickstate) && dclicktime > 1)
         {
             dclickstate = mousebuttons[mousebforward];
             if (dclickstate)
@@ -550,7 +550,7 @@ void G_BuildTiccmd(ticcmd_t *cmd, int maketic)
         // strafe double click
         //
         bstrafe = mousebuttons[mousebstrafe] || joybuttons[joybstrafe];
-        if (bstrafe != dclickstate2 && dclicktime2 > 1)
+        if (bstrafe != static_cast<bool>(dclickstate2) && dclicktime2 > 1)
         {
             dclickstate2 = bstrafe;
             if (dclickstate2)

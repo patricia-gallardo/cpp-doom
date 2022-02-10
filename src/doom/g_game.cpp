@@ -364,7 +364,7 @@ void G_BuildTiccmd(ticcmd_t *cmd, int maketic)
     // pressing the "run" key will result in walking
     speed = key_speed >= NUMKEYS
             || joybspeed >= MAX_JOY_BUTTONS;
-    speed ^= speedkeydown();
+    speed ^= static_cast<int>(speedkeydown());
 
     forward = side = look = 0;
 

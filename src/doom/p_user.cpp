@@ -152,7 +152,7 @@ void P_MovePlayer(player_t *player)
     //  if not onground.
     onground = (player->mo->z <= player->mo->floorz);
     // [crispy] give full control in no-clipping mode
-    onground |= (player->mo->flags & MF_NOCLIP);
+    onground |= static_cast<bool>(player->mo->flags & MF_NOCLIP);
 
     if (cmd->forwardmove && onground)
         P_Thrust(player, player->mo->angle, cmd->forwardmove * 2048);

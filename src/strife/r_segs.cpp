@@ -622,7 +622,7 @@ R_StoreWallRange
     }
     
     // calculate rw_offset (only needed for textured lines)
-    segtextured = midtexture | toptexture | bottomtexture | maskedtexture;
+    segtextured = midtexture | toptexture | bottomtexture | static_cast<int>(maskedtexture);
 
     if (segtextured)
     {

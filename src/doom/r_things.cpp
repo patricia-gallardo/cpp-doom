@@ -134,7 +134,7 @@ void R_InstallSpriteLump(int lump,
                 spritename, 'A' + frame);
 
         // [crispy] make non-fatal
-        if (sprtemp[frame].rotate == true)
+        if (sprtemp[frame].rotate == 1)
             fprintf(stderr, "R_InitSprites: Sprite %s frame %c has rotations "
                             "and a rot=0 lump\n",
                 spritename, 'A' + frame);
@@ -578,7 +578,7 @@ void R_ProjectSprite(mobj_t *thing)
     if (crispy->uncapped &&
         // Don't interpolate if the mobj did something
         // that would necessitate turning it off for a tic.
-        thing->interp == true &&
+        thing->interp == 1 &&
         // Don't interpolate during a paused state.
         leveltime > oldleveltime)
     {
@@ -971,7 +971,7 @@ void R_DrawPSprite(pspdef_t *psp, psprnum_t psprnum) // [crispy] differentiate g
     sprframe = &sprdef->spriteframes[psp->state->frame & FF_FRAMEMASK];
 
     lump = sprframe->lump[0];
-    flip = static_cast<bool>(sprframe->flip[0] ^ crispy->flipweapons);
+    flip = static_cast<bool>(sprframe->flip[0] ^ static_cast<uint8_t>(crispy->flipweapons));
 
     // calculate edges of the shape
     tx = psp->sx2 - (ORIGWIDTH / 2) * FRACUNIT;
