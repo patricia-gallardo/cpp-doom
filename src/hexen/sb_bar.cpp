@@ -1023,13 +1023,12 @@ void DrawMainBar()
 {
     int i, j, k;
     int temp;
-    patch_t *manaPatch1, *manaPatch2;
-    patch_t *manaVialPatch1, *manaVialPatch2;
 
-    manaPatch1 = nullptr;
-    manaPatch2 = nullptr;
-    manaVialPatch1 = nullptr;
-    manaVialPatch2 = nullptr;
+    patch_t *manaPatch1 = nullptr;
+    patch_t *manaPatch2 = nullptr;
+    patch_t *manaVialPatch1 = nullptr;
+    patch_t *manaVialPatch2 = nullptr;
+    bool update_manaVialPatch1 = false;
 
     // Ready artifact
     if (ArtifactFlash)
@@ -1108,7 +1107,8 @@ void DrawMainBar()
     {
         V_DrawPatch(77, 178, PatchMANACLEAR);
         DrSmallNumber(temp, 79, 181);
-        manaVialPatch1 = (patch_t *) 1; // force a vial update
+        manaVialPatch1 = nullptr;
+        update_manaVialPatch1 = true; // force a vial update
         if (temp == 0)
         {                       // Draw Dim Mana icon
             manaPatch1 = PatchMANADIM1;
@@ -1125,7 +1125,8 @@ void DrawMainBar()
     {
         V_DrawPatch(109, 178, PatchMANACLEAR);
         DrSmallNumber(temp, 111, 181);
-        manaVialPatch1 = (patch_t *) 1; // force a vial update
+        manaVialPatch1 = nullptr;
+        update_manaVialPatch1 = true; // force a vial update
         if (temp == 0)
         {                       // Draw Dim Mana icon
             manaPatch2 = PatchMANADIM2;
@@ -1138,13 +1139,14 @@ void DrawMainBar()
         UpdateState |= I_STATBAR;
     }
     if (oldweapon != CPlayer->readyweapon || manaPatch1 || manaPatch2
-        || manaVialPatch1)
+        || (manaVialPatch1 || update_manaVialPatch1))
     {                           // Update mana graphics based upon mana count/weapon type
         if (CPlayer->readyweapon == WP_FIRST)
         {
             manaPatch1 = PatchMANADIM1;
             manaPatch2 = PatchMANADIM2;
             manaVialPatch1 = PatchMANAVIALDIM1;
+            update_manaVialPatch1 = false;
             manaVialPatch2 = PatchMANAVIALDIM2;
         }
         else if (CPlayer->readyweapon == WP_SECOND)
@@ -1154,6 +1156,7 @@ void DrawMainBar()
                 manaPatch1 = PatchMANABRIGHT1;
             }
             manaVialPatch1 = PatchMANAVIAL1;
+            update_manaVialPatch1 = false;
             manaPatch2 = PatchMANADIM2;
             manaVialPatch2 = PatchMANAVIALDIM2;
         }
@@ -1161,6 +1164,7 @@ void DrawMainBar()
         {
             manaPatch1 = PatchMANADIM1;
             manaVialPatch1 = PatchMANAVIALDIM1;
+            update_manaVialPatch1 = false;
             if (!manaPatch2)
             {
                 manaPatch2 = PatchMANABRIGHT2;
@@ -1170,6 +1174,7 @@ void DrawMainBar()
         else
         {
             manaVialPatch1 = PatchMANAVIAL1;
+            update_manaVialPatch1 = false;
             manaVialPatch2 = PatchMANAVIAL2;
             if (!manaPatch1)
             {
