@@ -1254,7 +1254,7 @@ mobj_t *ActiveMinotaur(player_t * master)
     thinker_t *think;
     unsigned int *starttime;
 
-    constexpr action_hook needle = P_MobjThinker;
+    action_hook needle = P_MobjThinker;
 
     for (think = thinkercap.next; think != &thinkercap; think = think->next)
     {

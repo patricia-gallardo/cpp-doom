@@ -315,7 +315,7 @@ void AM_initVariables()
 //      memset(KeyPoints, 0, sizeof(vertex_t)*3);
     if (gameskill == sk_baby)
     {
-        constexpr action_hook needle = P_MobjThinker;
+        action_hook needle = P_MobjThinker;
 
         for (think = thinkercap.next; think != &thinkercap;
              think = think->next)
