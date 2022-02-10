@@ -68,7 +68,7 @@ constexpr bool operator ==(const valid_hook &a, const valid_hook &b) {
 }
 
 constexpr bool operator !=(const valid_hook &a, const valid_hook &b) {
-    return a.is_valid() != b.is_valid();
+    return !(a == b);
 }
 
 using null_hook                = std::monostate;
