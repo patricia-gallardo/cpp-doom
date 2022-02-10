@@ -535,8 +535,8 @@ char *TXT_SelectFile(const char *window_title, const char **extensions)
         return nullptr;
     }
 
-    argv[0] = "/usr/bin/osascript";
-    argv[1] = "-e";
+    argv[0] = const_cast<char *>("/usr/bin/osascript");
+    argv[1] = const_cast<char *>("-e");
     argv[2] = applescript;
     argv[3] = nullptr;
 
