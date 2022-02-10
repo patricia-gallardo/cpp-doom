@@ -75,8 +75,8 @@ using data_or_hook = std::variant<
     pillar_t *,
     floorWaggle_t *>;
 
-constexpr bool data_or_hook_empty(data_or_hook hook) { return hook.index() == 0; }
-constexpr bool data_or_hook_has_value(data_or_hook hook) { return hook.index() != 0; }
+constexpr bool data_or_hook_empty(const data_or_hook & hook) { return hook.index() == 0; }
+constexpr bool data_or_hook_has_value(const data_or_hook & hook) { return hook.index() != 0; }
 
 typedef struct
 {

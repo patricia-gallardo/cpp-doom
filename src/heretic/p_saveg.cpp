@@ -744,6 +744,7 @@ static void saveg_write_thinker_t(thinker_t *str)
     // think_t function;
     const void *pointer = std::visit(overloaded {
                                          [](const null_hook &) { return static_cast<void *>(nullptr); },
+                                         [](const valid_hook &) { return static_cast<void *>(nullptr); },
                                          [](const auto &function) {
                                              return reinterpret_cast<void *>(function);
                                          } },
