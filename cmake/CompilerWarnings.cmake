@@ -3,11 +3,7 @@
 # https://github.com/lefticus/cppbestpractices/blob/master/02-Use_the_Tools_Available.md
 
 function(set_project_warnings)
-    if (WIN32)
-        option(WARNINGS_AS_ERRORS "Treat compiler warnings as errors" FALSE)
-    else ()
-        option(WARNINGS_AS_ERRORS "Treat compiler warnings as errors" TRUE)
-    endif ()
+    option(WARNINGS_AS_ERRORS "Treat compiler warnings as errors" FALSE)
 
     set(MSVC_WARNINGS
 #            /W4 # Baseline reasonable warnings
