@@ -1039,12 +1039,16 @@ void I_InitWindowTitle()
 
 void I_InitWindowIcon()
 {
-    SDL_Surface *surface;
-
-    surface = SDL_CreateRGBSurfaceFrom((void *)icon_data, icon_w, icon_h,
+#pragma GCC diagnostic push
+#pragma GCC diagnostic ignored "-Wold-style-cast"
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Wold-style-cast"
+    SDL_Surface *surface = SDL_CreateRGBSurfaceFrom((void *)icon_data, icon_w, icon_h,
         32, icon_w * 4,
         0xff << 24, 0xff << 16,
         0xff << 8, 0xff << 0);
+#pragma clang diagnostic pop
+#pragma GCC diagnostic pop
 
     SDL_SetWindowIcon(screen, surface);
     SDL_FreeSurface(surface);
