@@ -276,17 +276,10 @@ static void SetIcon()
     extern SDL_Window *TXT_SDLWindow;
     SDL_Surface *surface;
 
-#pragma GCC diagnostic push
-#pragma GCC diagnostic ignored "-Wold-style-cast"
-#pragma clang diagnostic push
-#pragma clang diagnostic ignored "-Wold-style-cast"
     surface = SDL_CreateRGBSurfaceFrom((void *) setup_icon_data, setup_icon_w,
                                        setup_icon_h, 32, setup_icon_w * 4,
                                        0xff << 24, 0xff << 16,
                                        0xff << 8, 0xff << 0);
-#pragma clang diagnostic pop
-#pragma GCC diagnostic pop
-
     SDL_SetWindowIcon(TXT_SDLWindow, surface);
     SDL_FreeSurface(surface);
 }
