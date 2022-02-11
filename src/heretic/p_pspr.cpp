@@ -1270,7 +1270,7 @@ void A_DeathBallImpact(mobj_t * ball)
     {                           // Bounce
         angle_t angle = 0;
         bool newAngle = false;
-        mobj_t *target = target = reinterpret_cast<mobj_t *>(ball->special1.m);
+        mobj_t *target = reinterpret_cast<mobj_t *>(ball->special1.m);
         if (target)
         {
             if (!(target->flags & MF_SHOOTABLE))
