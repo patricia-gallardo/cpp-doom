@@ -1063,6 +1063,8 @@ int EV_DoDonut(line_t * line)
 
         rtn = 1;
         s2 = getNextSector(s1->lines[0], s1);
+        if (!s2)
+            continue;
         for (i = 0; i < s2->linecount; i++)
         {
             // Note: This was originally part of the following test:

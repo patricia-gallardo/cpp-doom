@@ -220,12 +220,12 @@ void T_MovePoly(polyevent_t * pe)
         if (pe->dist <= 0)
         {
             poly = GetPolyobj(pe->polyobj);
-            if (poly->specialdata == pe)
+            if (poly)
             {
-                poly->specialdata = nullptr;
+                if (poly->specialdata == pe) { poly->specialdata = nullptr; }
+                SN_StopSequence(reinterpret_cast<mobj_t *>(&poly->startSpot));
+                P_PolyobjFinished(poly->tag);
             }
-            SN_StopSequence(reinterpret_cast<mobj_t *>(&poly->startSpot));
-            P_PolyobjFinished(poly->tag);
             P_RemoveThinker(&pe->thinker);
         }
         if (pe->dist < absSpeed)
