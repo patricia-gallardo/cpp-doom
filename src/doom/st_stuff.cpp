@@ -661,8 +661,6 @@ static void GiveBackpack(bool give)
 bool
     ST_Responder(event_t *ev)
 {
-    int i;
-
     // Filter automap on/off.
     if (ev->type == ev_keyup
         && ((ev->data1 & 0xffff0000) == AM_MSGHEADER))
@@ -733,11 +731,11 @@ bool
                 // [crispy] give backpack
                 GiveBackpack(true);
 
-                for (i = 0; i < NUMWEAPONS; i++)
+                for (int i = 0; i < NUMWEAPONS; i++)
                     if (WeaponAvailable(i)) // [crispy] only give available weapons
                         plyr->weaponowned[i] = true;
 
-                for (i = 0; i < NUMAMMO; i++)
+                for (int i = 0; i < NUMAMMO; i++)
                     plyr->ammo[i] = plyr->maxammo[i];
 
                 // [crispy] trigger evil grin now
@@ -754,14 +752,14 @@ bool
                 // [crispy] give backpack
                 GiveBackpack(true);
 
-                for (i = 0; i < NUMWEAPONS; i++)
+                for (int i = 0; i < NUMWEAPONS; i++)
                     if (WeaponAvailable(i)) // [crispy] only give available weapons
                         plyr->weaponowned[i] = true;
 
-                for (i = 0; i < NUMAMMO; i++)
+                for (int i = 0; i < NUMAMMO; i++)
                     plyr->ammo[i] = plyr->maxammo[i];
 
-                for (i = 0; i < NUMCARDS; i++)
+                for (int i = 0; i < NUMCARDS; i++)
                     plyr->cards[i] = true;
 
                 // [crispy] trigger evil grin now
@@ -861,7 +859,7 @@ bool
                     plyr->message = DEH_String(STSTR_NCOFF);
             }
             // 'behold?' power-up cheats
-            for (i = 0; i < 6; i++)
+            for (int i = 0; i < 6; i++)
             {
                 if (i < 4 ? cht_CheckCheatSP(&cheat_powerup[i], ev->data2) : cht_CheckCheat(&cheat_powerup[i], ev->data2))
                 {
@@ -941,7 +939,6 @@ bool
 
                 if (plyr->cheats & CF_NOTARGET)
                 {
-                    int        i;
                     thinker_t *th;
 
                     // [crispy] let mobjs forget their target and tracer
@@ -964,7 +961,7 @@ bool
                         }
                     }
                     // [crispy] let sectors forget their soundtarget
-                    for (i = 0; i < numsectors; i++)
+                    for (int i = 0; i < numsectors; i++)
                     {
                         sector_t *const sector = &sectors[i];
 
@@ -1012,7 +1009,7 @@ bool
                     GiveBackpack(false);
                     plyr->powers[pw_strength] = 0;
 
-                    for (i = 0; i < NUMWEAPONS; i++)
+                    for (int i = 0; i < NUMWEAPONS; i++)
                     {
                         plyr->weaponowned[i] = false;
                         oldweaponsowned[i] = plyr->weaponowned[i];
@@ -1022,7 +1019,7 @@ bool
                     plyr->weaponowned[wp_pistol] = true;
                     oldweaponsowned[wp_pistol] = plyr->weaponowned[wp_pistol];
 
-                    for (i = 0; i < NUMAMMO; i++)
+                    for (int i = 0; i < NUMAMMO; i++)
                     {
                         plyr->ammo[i] = 0;
                     }
