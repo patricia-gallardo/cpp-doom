@@ -1219,7 +1219,8 @@ void P_DialogDoChoice(int choice)
         int objective;
         char *objlump;
 
-        if((objective = currentchoice->objective))
+        int is_set = objective = currentchoice->objective;
+        if(is_set)
         {
             DEH_snprintf(mission_objective, OBJECTIVE_LEN, "log%i", objective);
             objlump = cache_lump_name<char *>(mission_objective, PU_CACHE);
