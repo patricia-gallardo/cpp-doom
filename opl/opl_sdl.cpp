@@ -112,7 +112,7 @@ static void AdvanceTime(unsigned int nsamples)
 
     // Advance time.
 
-    us = static_cast<uint64_t>(nsamples * OPL_SECOND) / mixing_freq;
+    us = static_cast<uint64_t>(nsamples * OPL_SECOND) / static_cast<unsigned long long int>(mixing_freq);
     current_time += us;
 
     if (opl_sdl_paused)
@@ -177,7 +177,7 @@ static void OPL_Mix_Callback(void *, Uint8 *buffer, int len)
     // Repeatedly call the OPL emulator update function until the buffer is
     // full.
     filled = 0;
-    buffer_samples = len / 4;
+    buffer_samples = static_cast<unsigned int>(len / 4);
 
     while (filled < buffer_samples)
     {
@@ -198,7 +198,7 @@ static void OPL_Mix_Callback(void *, Uint8 *buffer, int len)
         {
             next_callback_time = OPL_Queue_Peek(callback_queue) + pause_offset;
 
-            nsamples = (next_callback_time - current_time) * mixing_freq;
+            nsamples = (next_callback_time - current_time) * static_cast<unsigned long long int>(mixing_freq);
             nsamples = (nsamples + OPL_SECOND - 1) / OPL_SECOND;
 
             if (nsamples > buffer_samples - filled)
@@ -292,7 +292,7 @@ static int OPL_SDL_Init(unsigned int)
             return 0;
         }
 
-        if (Mix_OpenAudio(opl_sample_rate, AUDIO_S16SYS, 2, GetSliceSize()) < 0)
+        if (Mix_OpenAudio(static_cast<int>(opl_sample_rate), AUDIO_S16SYS, 2, static_cast<int>(GetSliceSize())) < 0)
         {
             fprintf(stderr, "Error initialising SDL_mixer: %s\n", Mix_GetError());
 
@@ -337,11 +337,11 @@ static int OPL_SDL_Init(unsigned int)
     }
 
     // Mix buffer: four bytes per sample (16 bits * 2 channels):
-    mix_buffer = static_cast<uint8_t *>(malloc(mixing_freq * 4));
+    mix_buffer = static_cast<uint8_t *>(malloc(static_cast<size_t>(mixing_freq * 4)));
 
     // Create the emulator structure:
 
-    OPL3_Reset(&opl_chip, mixing_freq);
+    OPL3_Reset(&opl_chip, static_cast<Bit32u>(mixing_freq));
     opl_opl3mode = 0;
 
     callback_mutex = SDL_CreateMutex();
@@ -388,9 +388,9 @@ static void OPLTimer_CalculateEndTime(opl_timer_t *timer)
 
     if (timer->enabled)
     {
-        tics = 0x100 - timer->value;
+        tics = static_cast<int>(0x100 - timer->value);
         timer->expire_time = current_time
-                           + (static_cast<uint64_t>(tics * OPL_SECOND)) / timer->rate;
+                           + (static_cast<uint64_t>(static_cast<unsigned long long int>(tics) * OPL_SECOND)) / timer->rate;
     }
 }
 
@@ -435,7 +435,7 @@ static void WriteRegister(unsigned int reg_num, unsigned int value)
             opl_opl3mode = value & 0x01;
             [[fallthrough]];
             default:
-            OPL3_WriteRegBuffered(&opl_chip, reg_num, value);
+            OPL3_WriteRegBuffered(&opl_chip, static_cast<Bit16u>(reg_num), static_cast<Bit8u>(value));
             break;
     }
 }
@@ -444,15 +444,15 @@ static void OPL_SDL_PortWrite(opl_port_t port, unsigned int value)
 {
     if (port == OPL_REGISTER_PORT)
     {
-        register_num = value;
+        register_num = static_cast<int>(value);
     }
     else if (port == OPL_REGISTER_PORT_OPL3)
     {
-        register_num = value | 0x100;
+        register_num = static_cast<int>(value | 0x100);
     }
     else if (port == OPL_DATA_PORT)
     {
-        WriteRegister(register_num, value);
+        WriteRegister(static_cast<unsigned int>(register_num), value);
     }
 }
 

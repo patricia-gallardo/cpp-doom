@@ -77,7 +77,7 @@ void OPL_Queue_Push(opl_callback_queue_t *queue,
 
     // Add to last queue entry.
 
-    entry_id = queue->num_entries;
+    entry_id = static_cast<int>(queue->num_entries);
     ++queue->num_entries;
 
     // Shift existing entries down in the heap.
@@ -138,8 +138,8 @@ int OPL_Queue_Pop(opl_callback_queue_t *queue,
 
     for (;;)
     {
-        unsigned int child1 = i * 2 + 1;
-        unsigned int child2 = i * 2 + 2;
+        unsigned int child1 = static_cast<unsigned int>(i * 2 + 1);
+        unsigned int child2 = static_cast<unsigned int>(i * 2 + 2);
 
         if (child1 < queue->num_entries
          && queue->entries[child1].time < entry->time)
@@ -150,11 +150,11 @@ int OPL_Queue_Pop(opl_callback_queue_t *queue,
             if (child2 < queue->num_entries
              && queue->entries[child2].time < queue->entries[child1].time)
             {
-                next_i = child2;
+                next_i = static_cast<int>(child2);
             }
             else
             {
-                next_i = child1;
+                next_i = static_cast<int>(child1);
             }
         }
         else if (child2 < queue->num_entries
@@ -162,7 +162,7 @@ int OPL_Queue_Pop(opl_callback_queue_t *queue,
         {
             // Right child is less than entry.  Go down the right side.
 
-            next_i = child2;
+            next_i = static_cast<int>(child2);
         }
         else
         {

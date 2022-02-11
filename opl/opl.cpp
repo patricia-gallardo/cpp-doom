@@ -239,11 +239,11 @@ void OPL_WriteRegister(int reg, int value)
 
     if (reg & 0x100)
     {
-        OPL_WritePort(OPL_REGISTER_PORT_OPL3, reg);
+        OPL_WritePort(OPL_REGISTER_PORT_OPL3, static_cast<unsigned int>(reg));
     }
     else
     {
-        OPL_WritePort(OPL_REGISTER_PORT, reg);
+        OPL_WritePort(OPL_REGISTER_PORT, static_cast<unsigned int>(reg));
     }
 
     // For timing, read the register port six times after writing the
@@ -265,7 +265,7 @@ void OPL_WriteRegister(int reg, int value)
         }
     }
 
-    OPL_WritePort(OPL_DATA_PORT, value);
+    OPL_WritePort(OPL_DATA_PORT, static_cast<unsigned int>(value));
 
     // Read the register port 24 times after writing the value to
     // cause the appropriate delay
@@ -290,7 +290,7 @@ opl_init_result_t OPL_Detect()
     OPL_WriteRegister(OPL_REG_TIMER_CTRL, 0x80);
 
     // Read status
-    result1 = OPL_ReadStatus();
+    result1 = static_cast<int>(OPL_ReadStatus());
 
     // Set timer:
     OPL_WriteRegister(OPL_REG_TIMER1, 0xff);
@@ -309,7 +309,7 @@ opl_init_result_t OPL_Detect()
     OPL_Delay(1 * OPL_MS);
 
     // Read status
-    result2 = OPL_ReadStatus();
+    result2 = static_cast<int>(OPL_ReadStatus());
 
     // Reset both timers:
     OPL_WriteRegister(OPL_REG_TIMER_CTRL, 0x60);
@@ -319,8 +319,8 @@ opl_init_result_t OPL_Detect()
 
     if ((result1 & 0xe0) == 0x00 && (result2 & 0xe0) == 0xc0)
     {
-        result1 = OPL_ReadPort(OPL_REGISTER_PORT);
-        result2 = OPL_ReadPort(OPL_REGISTER_PORT_OPL3);
+        result1 = static_cast<int>(OPL_ReadPort(OPL_REGISTER_PORT));
+        result2 = static_cast<int>(OPL_ReadPort(OPL_REGISTER_PORT_OPL3));
         if (result1 == 0x00)
         {
             return OPL_INIT_OPL3;
