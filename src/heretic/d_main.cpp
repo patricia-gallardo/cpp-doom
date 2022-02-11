@@ -18,6 +18,7 @@
 
 #include <cstdio>
 #include <cstdlib>
+#include <cassert>
 
 #include "txt_main.hpp"
 #include "txt_io.hpp"
@@ -474,7 +475,9 @@ void D_CheckRecordFrom()
 
     G_RecordDemo(gameskill, 1, gameepisode, gamemap, myargv[p + 2]);
     D_DoomLoop();               // never returns
-    free(filename);
+    // unreachable code
+    // free(filename);
+    assert(false);
 }
 
 /*

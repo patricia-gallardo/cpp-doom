@@ -1434,12 +1434,7 @@ void AM_drawWalls()
                 }
                 else if (lines[i].flags & ML_SECRET) // secret door
                 {
-                    // [crispy] NB: Choco has this check, but (SECRETWALLCOLORS == WALLCOLORS)
-                    // Boom/PrBoom+ does not have this check at all
-                    if (false && cheating)
-                        AM_drawMline(&l, SECRETWALLCOLORS + lightlev);
-                    else
-                        AM_drawMline(&l, WALLCOLORS + lightlev);
+                    AM_drawMline(&l, WALLCOLORS + lightlev);
                 }
 #if defined CRISPY_HIGHLIGHT_REVEALED_SECRETS
                 // [crispy] draw revealed secret sector boundaries in green

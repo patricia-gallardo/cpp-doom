@@ -303,13 +303,9 @@ static bool NET_SDL_RecvPacket(net_addr_t **addr, net_packet_t **packet)
 
 void NET_SDL_AddrToString(net_addr_t *addr, char *buffer, int buffer_len)
 {
-    IPaddress *ip;
-    uint32_t   host;
-    uint16_t   port;
-
-    ip   = reinterpret_cast<IPaddress *>(addr->handle);
-    host = SDLNet_Read32(&ip->host);
-    port = SDLNet_Read16(&ip->port);
+    IPaddress *ip   = reinterpret_cast<IPaddress *>(addr->handle);
+    uint32_t   host = SDLNet_Read32(&ip->host);
+    uint16_t   port_local = SDLNet_Read16(&ip->port);
 
     M_snprintf(buffer, buffer_len, "%i.%i.%i.%i",
         (host >> 24) & 0xff, (host >> 16) & 0xff,
@@ -319,10 +315,10 @@ void NET_SDL_AddrToString(net_addr_t *addr, char *buffer, int buffer_len)
     // but otherwise we need to include the port. This is important because
     // we use the string representation in the setup tool to provided an
     // address to connect to.
-    if (port != DEFAULT_PORT)
+    if (port_local != DEFAULT_PORT)
     {
         char portbuf[10];
-        M_snprintf(portbuf, sizeof(portbuf), ":%i", port);
+        M_snprintf(portbuf, sizeof(portbuf), ":%i", port_local);
         M_StringConcat(buffer, portbuf, buffer_len);
     }
 }

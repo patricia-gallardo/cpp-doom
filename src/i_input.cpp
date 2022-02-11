@@ -463,15 +463,7 @@ void I_ReadMouse()
         ev.type  = ev_mouse;
         ev.data1 = mouse_button_state;
         ev.data2 = AccelerateMouse(x);
-
-        if (true || !novert) // [crispy] moved to src/*/g_game.c
-        {
-            ev.data3 = -AccelerateMouseY(y); // [crispy]
-        }
-        else
-        {
-            ev.data3 = 0;
-        }
+        ev.data3 = -AccelerateMouseY(y); // [crispy]
 
         // XXX: undefined behaviour since event is scoped to
         // this function

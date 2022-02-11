@@ -171,7 +171,7 @@ bool D_Display()
     static bool     viewactivestate    = false;
     static bool     menuactivestate    = false;
     static bool     inhelpscreensstate = false;
-    static bool     fullscreen         = false;
+    static bool     fullscreen_local   = false;
     static gamestate_t oldgamestate { GS_FORCE_WIPE };
     static int         borderdrawcount;
     int                y;
@@ -212,12 +212,12 @@ bool D_Display()
             R_RenderPlayerView(&players[displayplayer]);
             AM_Drawer();
         }
-        if (wipe || (viewheight != SCREENHEIGHT && fullscreen))
+        if (wipe || (viewheight != SCREENHEIGHT && fullscreen_local))
             redrawsbar = true;
         if (inhelpscreensstate && !inhelpscreens)
             redrawsbar = true; // just put away the help screen
         ST_Drawer(viewheight == SCREENHEIGHT, redrawsbar);
-        fullscreen = viewheight == SCREENHEIGHT;
+        fullscreen_local = viewheight == SCREENHEIGHT;
         break;
 
     case GS_INTERMISSION:
@@ -511,7 +511,8 @@ void D_RunFrame()
     // Update display, next frame, with current state if no profiling is on
     if (screenvisible && !nodrawers)
     {
-        if ((wipe = D_Display()))
+        bool is_set = wipe = D_Display();
+        if (is_set)
         {
             // start wipe on this frame
             wipe_EndScreen(0, 0, SCREENWIDTH, SCREENHEIGHT);
@@ -1736,7 +1737,8 @@ void D_DoomMain()
     // x defaults to 200.  Values are rounded up to 10 and down to 400.
     //
 
-    if ((p = M_CheckParm("-turbo")))
+    int is_set = p = M_CheckParm("-turbo");
+    if (is_set)
     {
         int        scale = 200;
         extern int forwardmove[2];

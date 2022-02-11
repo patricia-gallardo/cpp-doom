@@ -251,16 +251,16 @@ static void PrintSHA1Digest(const char *s, const uint8_t *digest)
 
 static void CloseWindow(void *, void *uncast_window)
 {
-    auto *window = reinterpret_cast<txt_window_t *>(uncast_window);
+    auto *window_local = reinterpret_cast<txt_window_t *>(uncast_window);
 
-    TXT_CloseWindow(window);
+    TXT_CloseWindow(window_local);
 }
 
 static void CheckSHA1Sums()
 {
     bool              correct_wad, correct_deh;
     bool              same_freedoom;
-    txt_window_t *       window;
+    txt_window_t     *window_local;
     txt_window_action_t *cont_button;
 
     if (!net_client_received_wait_data || had_warning)
@@ -305,14 +305,14 @@ static void CheckSHA1Sums()
         PrintSHA1Digest("Server", net_client_wait_data.deh_sha1sum);
     }
 
-    window = TXT_NewWindow("WARNING!");
+    window_local = TXT_NewWindow("WARNING!");
 
     cont_button = TXT_NewWindowAction(KEY_ENTER, "Continue");
-    TXT_SignalConnect(cont_button, "pressed", CloseWindow, window);
+    TXT_SignalConnect(cont_button, "pressed", CloseWindow, window_local);
 
-    TXT_SetWindowAction(window, TXT_HORIZ_LEFT, nullptr);
-    TXT_SetWindowAction(window, TXT_HORIZ_CENTER, cont_button);
-    TXT_SetWindowAction(window, TXT_HORIZ_RIGHT, nullptr);
+    TXT_SetWindowAction(window_local, TXT_HORIZ_LEFT, nullptr);
+    TXT_SetWindowAction(window_local, TXT_HORIZ_CENTER, cont_button);
+    TXT_SetWindowAction(window_local, TXT_HORIZ_RIGHT, nullptr);
 
     if (!same_freedoom)
     {
@@ -322,32 +322,32 @@ static void CheckSHA1Sums()
 
         if (net_local_is_freedoom)
         {
-            TXT_AddWidget(window, TXT_NewLabel("You are using the Freedoom IWAD to play with players\n"
+            TXT_AddWidget(window_local, TXT_NewLabel("You are using the Freedoom IWAD to play with players\n"
                                                "using an official Doom IWAD.  Make sure that you are\n"
                                                "playing the same levels as other players.\n"));
         }
         else
         {
-            TXT_AddWidget(window, TXT_NewLabel("You are using an official IWAD to play with players\n"
+            TXT_AddWidget(window_local, TXT_NewLabel("You are using an official IWAD to play with players\n"
                                                "using the Freedoom IWAD.  Make sure that you are\n"
                                                "playing the same levels as other players.\n"));
         }
     }
     else if (!correct_wad)
     {
-        TXT_AddWidget(window, TXT_NewLabel("Your WAD directory does not match other players in the game.\n"
+        TXT_AddWidget(window_local, TXT_NewLabel("Your WAD directory does not match other players in the game.\n"
                                            "Check that you have loaded the exact same WAD files as other\n"
                                            "players.\n"));
     }
 
     if (!correct_deh)
     {
-        TXT_AddWidget(window, TXT_NewLabel("Your dehacked signature does not match other players in the\n"
+        TXT_AddWidget(window_local, TXT_NewLabel("Your dehacked signature does not match other players in the\n"
                                            "game.  Check that you have loaded the same dehacked patches\n"
                                            "as other players.\n"));
     }
 
-    TXT_AddWidget(window, TXT_NewLabel("If you continue, this may cause your game to desync."));
+    TXT_AddWidget(window_local, TXT_NewLabel("If you continue, this may cause your game to desync."));
 
     had_warning = true;
 }

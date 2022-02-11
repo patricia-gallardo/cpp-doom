@@ -20,6 +20,7 @@
 
 #include <cstdio>
 #include <cstdlib>
+#include <cassert>
 
 #include "m_random.hpp"
 #include "i_system.hpp"
@@ -546,7 +547,9 @@ bool
         return true;
     }
 
-    return false;
+    // unreachable code
+    // return false;
+    assert(false);
 }
 
 

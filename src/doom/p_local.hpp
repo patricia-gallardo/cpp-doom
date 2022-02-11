@@ -175,7 +175,7 @@ extern fixed_t openbottom;
 extern fixed_t openrange;
 extern fixed_t lowfloor;
 
-void P_LineOpening(line_t *linedef);
+void P_LineOpening(line_t *linedef_local);
 
 bool P_BlockLinesIterator(int x, int y, bool (*func)(line_t *));
 bool P_BlockThingsIterator(int x, int y, bool (*func)(mobj_t *));
@@ -265,7 +265,7 @@ extern fixed_t  bmaporgy;   // origin of block map
 extern mobj_t **blocklinks; // for thing chains
 
 // [crispy] factor out map lump name and number finding into a separate function
-extern int P_GetNumForMap(int episode, int map, bool critical);
+extern int P_GetNumForMap(int episode, int map, bool critical_param);
 
 // [crispy] blinking key or skull in the status bar
 #define KEYBLINKMASK 0x8

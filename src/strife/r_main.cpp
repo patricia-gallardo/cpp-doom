@@ -23,6 +23,7 @@
 
 
 #include <cstdlib>
+#include <cassert>
 
 
 #include "doomdef.hpp"
@@ -356,7 +357,9 @@ R_PointToAngle
 	    }
 	}
     }
-    return 0;
+    // unreachable code
+    // return 0;
+    assert(false);
 }
 
 

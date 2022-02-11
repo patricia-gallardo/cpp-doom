@@ -18,6 +18,7 @@
 // HEADER FILES ------------------------------------------------------------
 
 #include <cctype>
+#include <cassert>
 #include "h2def.hpp"
 #include "doomkeys.hpp"
 #include "i_input.hpp"
@@ -1714,7 +1715,9 @@ bool MN_Responder(event_t * event)
         }
         return (true);
     }
-    return (false);
+    // unreachable code
+    // return (false);
+    assert(false);
 }
 
 //---------------------------------------------------------------------------

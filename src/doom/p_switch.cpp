@@ -18,6 +18,7 @@
 //
 
 #include <cstdio>
+#include <cassert>
 
 #include "i_system.hpp"
 #include "deh_main.hpp"
@@ -113,7 +114,8 @@ void P_InitSwitchList()
     switchlist_t *alphSwitchList;
     bool       from_lump;
 
-    if ((from_lump = (W_CheckNumForName("SWITCHES") != -1)))
+    bool is_set = from_lump = (W_CheckNumForName("SWITCHES") != -1);
+    if (is_set)
     {
         alphSwitchList = cache_lump_name<switchlist_t *>("SWITCHES", PU_STATIC);
     }
@@ -241,7 +243,9 @@ void P_StartButton(line_t *line,
         return P_StartButton(line, w, texture, time);
     }
 
-    I_Error("P_StartButton: no button slots left!");
+    // unreachable code
+    // I_Error("P_StartButton: no button slots left!");
+    assert(false);
 }
 
 

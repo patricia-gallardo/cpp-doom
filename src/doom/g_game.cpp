@@ -2844,10 +2844,10 @@ void G_DoPlayDemo()
 
     // [crispy] demo progress bar
     {
-        int   i, numplayersingame = 0;
+        int numplayersingame = 0;
         uint8_t *demo_ptr = demo_p;
 
-        for (i = 0; i < MAXPLAYERS; i++)
+        for (int i = 0; i < MAXPLAYERS; i++)
         {
             if (playeringame[i])
             {

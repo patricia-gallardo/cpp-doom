@@ -343,7 +343,7 @@ void R_GenerateComposite(int texnum)
 
                 if (j >= texture->height) // if at end of column
                 {
-                    col->topdelta = -1; // end-of-column marker
+                    col->topdelta = static_cast<uint8_t>(-1); // end-of-column marker
                     break;
                 }
 
@@ -460,9 +460,9 @@ void R_GenerateLookup(int texnum)
         for (i = texture->patchcount, patch = texture->patches; --i >= 0;)
         {
             int            pat       = patch->patch;
-            const patch_t *realpatch = cache_lump_num<const patch_t *>(pat, PU_CACHE);
-            int            x, x1 = patch++->originx, x2 = x1 + SHORT(realpatch->width);
-            const int *    cofs = realpatch->columnofs - x1;
+            const patch_t *realpatch_local = cache_lump_num<const patch_t *>(pat, PU_CACHE);
+            int            x, x1 = patch++->originx, x2 = x1 + SHORT(realpatch_local->width);
+            const int *    cofs = realpatch_local->columnofs - x1;
 
             if (x2 > texture->width)
                 x2 = texture->width;
@@ -473,7 +473,7 @@ void R_GenerateLookup(int texnum)
             {
                 if (patchcount[x] > 1) // Only multipatched columns
                 {
-                    const uint8_t  *col_ptr = reinterpret_cast<const uint8_t *>(realpatch) + LONG(cofs[x]);
+                    const uint8_t  *col_ptr = reinterpret_cast<const uint8_t *>(realpatch_local) + LONG(cofs[x]);
                     const auto *col  = reinterpret_cast<const column_t *>(col_ptr);
                     const auto  *base = reinterpret_cast<const uint8_t *>(col);
 

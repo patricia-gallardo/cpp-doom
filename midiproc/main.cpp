@@ -173,7 +173,7 @@ static bool MidiPipe_RegisterSong(buffer_reader_t *reader)
     return RegisterSong(filename);
 }
 
-static bool MidiPipe_UnregisterSong(buffer_reader_t *reader)
+static bool MidiPipe_UnregisterSong(buffer_reader_t *)
 {
     UnregisterSong();
     return true;

@@ -160,7 +160,7 @@ static unsigned int WaitForProcessExit(HANDLE subprocess)
 
         if (!GetExitCodeProcess(subprocess, &exit_code))
         {
-            return -1;
+            return static_cast<unsigned int>(-1);
         }
 
         if (exit_code != STILL_ACTIVE)

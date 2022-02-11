@@ -17,6 +17,7 @@
 
 #include <cstdlib>
 #include <cmath>
+#include <cassert>
 #include "doomdef.hpp"
 #include "m_bbox.hpp"
 #include "r_local.hpp"
@@ -241,7 +242,9 @@ angle_t R_PointToAngle(fixed_t x, fixed_t y)
         }
     }
 
-    return 0;
+    // unreachable code
+    // return 0;
+    assert(false);
 }
 
 
@@ -491,7 +494,7 @@ void R_InitTextureMapping()
 
 void R_InitLightTables()
 {
-    int i, j, level, startmap;
+    int i, j, level, startmap_local;
     int scale;
 
 //
@@ -499,14 +502,14 @@ void R_InitLightTables()
 //
     for (i = 0; i < LIGHTLEVELS; i++)
     {
-        startmap = ((LIGHTLEVELS - 1 - i) * 2) * NUMCOLORMAPS / LIGHTLEVELS;
+        startmap_local = ((LIGHTLEVELS - 1 - i) * 2) * NUMCOLORMAPS / LIGHTLEVELS;
         for (j = 0; j < MAXLIGHTZ; j++)
         {
             scale =
                 FixedDiv((ORIGWIDTH / 2 * FRACUNIT),
                          (j + 1) << LIGHTZSHIFT);
             scale >>= LIGHTSCALESHIFT;
-            level = startmap - scale / DISTMAP;
+            level = startmap_local - scale / DISTMAP;
             if (level < 0)
                 level = 0;
             if (level >= NUMCOLORMAPS)
@@ -549,7 +552,7 @@ void R_SetViewSize(int blocks, int detail)
 void R_ExecuteSetViewSize()
 {
     fixed_t cosadj, dy;
-    int i, j, level, startmap;
+    int i, j, level, startmap_local;
 
     setsizeneeded = false;
 
@@ -625,11 +628,10 @@ void R_ExecuteSetViewSize()
 //
     for (i = 0; i < LIGHTLEVELS; i++)
     {
-        startmap = ((LIGHTLEVELS - 1 - i) * 2) * NUMCOLORMAPS / LIGHTLEVELS;
+        startmap_local = ((LIGHTLEVELS - 1 - i) * 2) * NUMCOLORMAPS / LIGHTLEVELS;
         for (j = 0; j < MAXLIGHTSCALE; j++)
         {
-            level =
-                startmap -
+            level = startmap_local -
                 j * SCREENWIDTH / (viewwidth << detailshift) / DISTMAP;
             if (level < 0)
                 level = 0;

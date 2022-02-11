@@ -207,7 +207,7 @@ void G_BuildTiccmd(ticcmd_t *cmd, int maketic)
     int speed, tspeed, lspeed;
     int forward, side;
     int look, arti;
-    int flyheight;
+    int flyheight_local;
     int pClass;
 
     extern bool artiskip;
@@ -237,7 +237,7 @@ void G_BuildTiccmd(ticcmd_t *cmd, int maketic)
 
     // haleyjd: removed externdriver crap
     
-    forward = side = look = arti = flyheight = 0;
+    forward = side = look = arti = flyheight_local = 0;
 
 //
 // use two stage accelerative turning on the keyboard and joystick
@@ -350,15 +350,14 @@ void G_BuildTiccmd(ticcmd_t *cmd, int maketic)
     // Fly up/down/drop keys
     if (gamekeydown[key_flyup])
     {
-        flyheight = 5;          // note that the actual flyheight will be twice this
+        flyheight_local = 5;          // note that the actual flyheight will be twice this
     }
     if (gamekeydown[key_flydown])
-    {
-        flyheight = -5;
+    { flyheight_local = -5;
     }
     if (gamekeydown[key_flycenter])
     {
-        flyheight = TOCENTER;
+        flyheight_local = TOCENTER;
         // haleyjd: removed externdriver crap
         look = TOCENTER;
     }
@@ -624,11 +623,11 @@ void G_BuildTiccmd(ticcmd_t *cmd, int maketic)
         }
         cmd->lookfly = look;
     }
-    if (flyheight < 0)
+    if (flyheight_local < 0)
     {
-        flyheight += 16;
+        flyheight_local += 16;
     }
-    cmd->lookfly |= flyheight << 4;
+    cmd->lookfly |= flyheight_local << 4;
 
 //
 // special buttons

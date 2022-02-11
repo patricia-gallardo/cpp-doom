@@ -1261,11 +1261,6 @@ void A_FireMacePL2(player_t * player, pspdef_t *)
 
 void A_DeathBallImpact(mobj_t * ball)
 {
-    int i;
-    mobj_t *target;
-    angle_t angle;
-    bool newAngle;
-
     if ((ball->z <= ball->floorz) && (P_HitFloor(ball) != FLOOR_SOLID))
     {                           // Landed in some sort of liquid
         P_RemoveMobj(ball);
@@ -1273,8 +1268,9 @@ void A_DeathBallImpact(mobj_t * ball)
     }
     if ((ball->z <= ball->floorz) && ball->momz)
     {                           // Bounce
-        newAngle = false;
-        target = reinterpret_cast<mobj_t *>(ball->special1.m);
+        angle_t angle = 0;
+        bool newAngle = false;
+        mobj_t *target = target = reinterpret_cast<mobj_t *>(ball->special1.m);
         if (target)
         {
             if (!(target->flags & MF_SHOOTABLE))
@@ -1291,7 +1287,7 @@ void A_DeathBallImpact(mobj_t * ball)
         else
         {                       // Find new target
             angle = 0;
-            for (i = 0; i < 16; i++)
+            for (int i = 0; i < 16; i++)
             {
                 P_AimLineAttack(ball, angle, 10 * 64 * FRACUNIT);
                 if (linetarget && ball->target != linetarget)

@@ -141,7 +141,7 @@ bool EV_RotatePoly(line_t *, uint8_t *args, int direction, bool
     {
         if (args[2] == 255)
         {
-            pe->dist = -1;
+            pe->dist = static_cast<unsigned int>(-1);
         }
         else
         {
@@ -173,7 +173,7 @@ bool EV_RotatePoly(line_t *, uint8_t *args, int direction, bool
         {
             if (args[2] == 255)
             {
-                pe->dist = -1;
+                pe->dist = static_cast<unsigned int>(-1);
             }
             else
             {
@@ -720,7 +720,8 @@ bool PO_MovePolyobj(int num, int x, int y)
     vertex_t *prevPts;
     bool blocked;
 
-    if (!(po = GetPolyobj(num)))
+    polyobj_t *is_set = po = GetPolyobj(num);
+    if (!is_set)
     {
         I_Error("PO_MovePolyobj:  Invalid polyobj number: %d\n", num);
     }

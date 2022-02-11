@@ -44,7 +44,7 @@ sector_t *GetSectorAtNullAddress();
 mapformat_t P_CheckMapFormat(int lumpnum)
 {
     mapformat_t format = mapformat_t::MFMT_DOOMBSP;
-    uint8_t    *nodes  = nullptr;
+    uint8_t    *nodes_local = nullptr;
     int         b;
 
     if ((b = lumpnum + ML_BLOCKMAP + 1) < numlumps && !strncasecmp(lumpinfo[b]->name, "BEHAVIOR", 8))
@@ -55,19 +55,19 @@ mapformat_t P_CheckMapFormat(int lumpnum)
     else
         fprintf(stderr, "Doom (");
 
-    if (!((b = lumpnum + ML_NODES) < numlumps && (nodes = cache_lump_num<uint8_t *>(b, PU_CACHE)) && W_LumpLength(b) > 0))
+    if (!((b = lumpnum + ML_NODES) < numlumps && (nodes_local = cache_lump_num<uint8_t *>(b, PU_CACHE)) && W_LumpLength(b) > 0))
         fprintf(stderr, "no nodes");
-    else if (!memcmp(nodes, "xNd4\0\0\0\0", 8))
+    else if (!memcmp(nodes_local, "xNd4\0\0\0\0", 8))
     {
         fprintf(stderr, "DeePBSP");
         format = static_cast<mapformat_t>(format | MFMT_DEEPBSP);
     }
-    else if (!memcmp(nodes, "XNOD", 4))
+    else if (!memcmp(nodes_local, "XNOD", 4))
     {
         fprintf(stderr, "ZDBSP");
         format = static_cast<mapformat_t>(format | MFMT_ZDBSPX);
     }
-    else if (!memcmp(nodes, "ZNOD", 4))
+    else if (!memcmp(nodes_local, "ZNOD", 4))
     {
         fprintf(stderr, "compressed ZDBSP");
         format = static_cast<mapformat_t>(format | MFMT_ZDBSPZ);
@@ -75,7 +75,7 @@ mapformat_t P_CheckMapFormat(int lumpnum)
     else
         fprintf(stderr, "BSP");
 
-    if (nodes)
+    if (nodes_local)
         W_ReleaseLumpNum(b);
 
     return format;
@@ -96,7 +96,7 @@ void P_LoadSegs_DeePBSP(int lump)
     {
         seg_t *           li = segs + i;
         mapseg_deepbsp_t *ml = data + i;
-        int               side, linedef;
+        int               side, linedef_local;
         line_t *          ldef;
 
         li->v1 = &vertexes[ml->v1];
@@ -105,16 +105,15 @@ void P_LoadSegs_DeePBSP(int lump)
         li->angle = (SHORT(ml->angle)) << FRACBITS;
 
         //	li->offset = (SHORT(ml->offset))<<FRACBITS; // [crispy] recalculated below
-        linedef     = static_cast<unsigned short>(SHORT(ml->linedef));
-        ldef        = &lines[linedef];
+        linedef_local = static_cast<unsigned short>(SHORT(ml->linedef));
+        ldef        = &lines[linedef_local];
         li->linedef = ldef;
         side        = SHORT(ml->side);
 
         // e6y: check for wrong indexes
         if (static_cast<unsigned>(ldef->sidenum[side]) >= static_cast<unsigned>(numsides))
         {
-            I_Error("P_LoadSegs: linedef %d for seg %d references a non-existent sidedef %d",
-                linedef, i, static_cast<unsigned>(ldef->sidenum[side]));
+            I_Error("P_LoadSegs: linedef %d for seg %d references a non-existent sidedef %d", linedef_local, i, static_cast<unsigned>(ldef->sidenum[side]));
         }
 
         li->sidedef     = &sides[ldef->sidenum[side]];
@@ -378,7 +377,7 @@ void P_LoadNodes_ZDBSP(int lump, bool compressed)
     for (i = 0; i < numsegs; i++)
     {
         line_t *        ldef;
-        unsigned int    linedef;
+        unsigned int    linedef_local;
         unsigned char   side;
         seg_t *         li = segs + i;
         mapseg_zdbsp_t *ml = reinterpret_cast<mapseg_zdbsp_t *>(data) + i;
@@ -386,16 +385,15 @@ void P_LoadNodes_ZDBSP(int lump, bool compressed)
         li->v1 = &vertexes[ml->v1];
         li->v2 = &vertexes[ml->v2];
 
-        linedef     = static_cast<unsigned short>(SHORT(ml->linedef));
-        ldef        = &lines[linedef];
+        linedef_local = static_cast<unsigned short>(SHORT(ml->linedef));
+        ldef        = &lines[linedef_local];
         li->linedef = ldef;
         side        = ml->side;
 
         // e6y: check for wrong indexes
         if (static_cast<unsigned>(ldef->sidenum[side]) >= static_cast<unsigned>(numsides))
         {
-            I_Error("P_LoadSegs: linedef %d for seg %d references a non-existent sidedef %d",
-                linedef, i, static_cast<unsigned>(ldef->sidenum[side]));
+            I_Error("P_LoadSegs: linedef %d for seg %d references a non-existent sidedef %d", linedef_local, i, static_cast<unsigned>(ldef->sidenum[side]));
         }
 
         li->sidedef     = &sides[ldef->sidenum[side]];

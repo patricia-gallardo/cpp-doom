@@ -1917,10 +1917,10 @@ void ST_diffDraw()
     ST_drawWidgets(false);
 }
 
-void ST_Drawer(bool fullscreen, bool refresh)
+void ST_Drawer(bool fullscreen_param, bool refresh)
 {
 
-    st_statusbaron = (!fullscreen) || (automapactive && !crispy->automapoverlay && !crispy->widescreen);
+    st_statusbaron = (!fullscreen_param) || (automapactive && !crispy->automapoverlay && !crispy->widescreen);
     // [crispy] immediately redraw status bar after help screens have been shown
     st_firsttime = st_firsttime || refresh || inhelpscreens;
 

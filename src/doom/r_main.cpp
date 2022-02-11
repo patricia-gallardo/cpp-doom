@@ -20,6 +20,7 @@
 
 
 #include <cstdlib>
+#include <cassert>
 
 
 #include "doomdef.hpp"
@@ -355,7 +356,9 @@ angle_t
             }
         }
     }
-    return 0;
+    // unreachable code
+    // return 0;
+    assert(false);
 }
 
 angle_t
@@ -662,7 +665,7 @@ void R_InitLightTables()
     int i;
     int j;
     int level;
-    int startmap;
+    int startmap_local;
     int scale;
 
     if (scalelight)
@@ -721,12 +724,12 @@ void R_InitLightTables()
         zlight[i] =
             static_cast<lighttable_t **>(malloc(MAXLIGHTZ * sizeof(**zlight)));
 
-        startmap = ((LIGHTLEVELS - LIGHTBRIGHT - i) * 2) * NUMCOLORMAPS / LIGHTLEVELS;
+        startmap_local = ((LIGHTLEVELS - LIGHTBRIGHT - i) * 2) * NUMCOLORMAPS / LIGHTLEVELS;
         for (j = 0; j < MAXLIGHTZ; j++)
         {
             scale = FixedDiv((ORIGWIDTH / 2 * FRACUNIT), (j + 1) << LIGHTZSHIFT);
             scale >>= LIGHTSCALESHIFT;
-            level = startmap - scale / DISTMAP;
+            level = startmap_local - scale / DISTMAP;
 
             if (level < 0)
                 level = 0;
@@ -773,7 +776,7 @@ void R_ExecuteSetViewSize()
     int     i;
     int     j;
     int     level;
-    int     startmap;
+    int     startmap_local;
 
     setsizeneeded = false;
 
@@ -866,10 +869,10 @@ void R_ExecuteSetViewSize()
     {
         scalelight[i] = static_cast<lighttable_t **>(malloc(MAXLIGHTSCALE * sizeof(**scalelight)));
 
-        startmap = ((LIGHTLEVELS - LIGHTBRIGHT - i) * 2) * NUMCOLORMAPS / LIGHTLEVELS;
+        startmap_local = ((LIGHTLEVELS - LIGHTBRIGHT - i) * 2) * NUMCOLORMAPS / LIGHTLEVELS;
         for (j = 0; j < MAXLIGHTSCALE; j++)
         {
-            level = startmap - j * HIRESWIDTH / MIN(viewwidth << detailshift, HIRESWIDTH) / DISTMAP;
+            level = startmap_local - j * HIRESWIDTH / MIN(viewwidth << detailshift, HIRESWIDTH) / DISTMAP;
 
             if (level < 0)
                 level = 0;

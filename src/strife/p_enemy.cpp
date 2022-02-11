@@ -20,6 +20,7 @@
 
 #include <cstdio>
 #include <cstdlib>
+#include <cassert>
 
 #include "m_random.hpp"
 #include "i_system.hpp"
@@ -842,7 +843,9 @@ P_LookForPlayers
         return true;
     }
 
-    return false;
+    // unreachable code
+    // return false;
+    assert(false);
 }
 
 // haleyjd 09/05/10: [STRIFE] Removed A_KeenDie
