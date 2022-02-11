@@ -2153,7 +2153,7 @@ void SV_MapTeleport(int map, int position)
     int currentInvPos;
     bool rClass;
     bool playerWasReborn;
-    bool oldWeaponowned[NUMWEAPONS];
+    bool oldWeaponowned[NUMWEAPONS] = {};
     int oldKeys = 0;
     int oldPieces = 0;
     int bestWeapon;
