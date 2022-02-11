@@ -387,7 +387,6 @@ void R_GenerateLookup(int texnum)
     uint8_t    *postcount;  // killough 4/9/98: keep count of posts in addition to patches.
     texpatch_t *patch;
     patch_t *   realpatch;
-    int         x;
     int         x1;
     int         x2;
     int         i;
@@ -425,6 +424,7 @@ void R_GenerateLookup(int texnum)
         x1        = patch->originx;
         x2        = x1 + SHORT(realpatch->width);
 
+        int x = 0;
         if (x1 < 0)
             x = 0;
         else
@@ -461,15 +461,14 @@ void R_GenerateLookup(int texnum)
         {
             int            pat       = patch->patch;
             const patch_t *realpatch_local = cache_lump_num<const patch_t *>(pat, PU_CACHE);
-            int            x, x1 = patch++->originx, x2 = x1 + SHORT(realpatch_local->width);
-            const int *    cofs = realpatch_local->columnofs - x1;
+            int            originx         = patch++->originx;
+            int            x2_local        = originx + SHORT(realpatch_local->width);
+            const int *    cofs = realpatch_local->columnofs - originx;
 
-            if (x2 > texture->width)
-                x2 = texture->width;
-            if (x1 < 0)
-                x1 = 0;
+            if (x2_local > texture->width) x2_local = texture->width;
+            if (originx < 0) originx = 0;
 
-            for (x = x1; x < x2; x++)
+            for (int x = originx; x < x2_local; x++)
             {
                 if (patchcount[x] > 1) // Only multipatched columns
                 {
@@ -498,7 +497,7 @@ void R_GenerateLookup(int texnum)
     // Fill in the lump / offset, so columns
     //  with only a single patch are all done.
 
-    for (x = 0; x < texture->width; x++)
+    for (int x = 0; x < texture->width; x++)
     {
         if (!patchcount[x] && !err++) // killough 10/98: non-verbose output
         {

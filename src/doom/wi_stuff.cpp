@@ -694,13 +694,13 @@ int WI_drawNum(int x,
 
 void WI_drawPercent(int x,
     int                 y,
-    int                 p)
+    int p_param)
 {
-    if (p < 0)
+    if (p_param < 0)
         return;
 
     V_DrawPatch(x, y, percent);
-    WI_drawNum(x, y, p, -1);
+    WI_drawNum(x, y, p_param, -1);
 }
 
 
@@ -867,24 +867,23 @@ void WI_drawNoState()
 int WI_fragSum(int playernum)
 {
     int i;
-    int frags = 0;
+    int frags_local = 0;
 
     for (i = 0; i < MAXPLAYERS; i++)
     {
         if (playeringame[i]
             && i != playernum)
-        {
-            frags += plrs[playernum].frags[i];
+        { frags_local += plrs[playernum].frags[i];
         }
     }
 
 
     // JDC hack - negative frags.
-    frags -= plrs[playernum].frags[playernum];
+    frags_local -= plrs[playernum].frags[playernum];
     // UNUSED if (frags < 0)
     // 	frags = 0;
 
-    return frags;
+    return frags_local;
 }
 
 
