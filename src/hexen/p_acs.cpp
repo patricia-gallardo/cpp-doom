@@ -806,7 +806,7 @@ void T_InterpretACS(acs_t * script)
         M_snprintf(EvalContext, sizeof(EvalContext), "script %d @0x%x, cmd=%d",
                    ACSInfo[script->infoIndex].number, PCodeOffset, cmd);
         ACSAssert(cmd >= 0, "negative ACS instruction %d", cmd);
-        ACSAssert(cmd < std::size(PCodeCmds),
+        ACSAssert(cmd < static_cast<int>(std::size(PCodeCmds)),
                   "invalid ACS instruction %d (maybe this WAD is designed "
                   "for an advanced source port and is not vanilla "
                   "compatible)", cmd);
