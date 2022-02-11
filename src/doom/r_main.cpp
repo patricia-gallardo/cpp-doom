@@ -309,7 +309,8 @@ angle_t
             if (x > y)
             {
                 // octant 8
-                return -tantoangle[slope_div(y, x)];
+                // Subtracting from 0u avoids compiler warnings
+                return 0u - tantoangle[slope_div(y, x)];
             }
             else
             {
@@ -977,8 +978,9 @@ void R_SetupFrame(player_t *player)
         viewz     = player->oldviewz + FixedMul(player->viewz - player->oldviewz, fractionaltic);
         viewangle = R_InterpolateAngle(player->mo->oldangle, player->mo->angle, fractionaltic) + viewangleoffset;
 
-        pitch = (player->oldlookdir + (player->lookdir - player->oldlookdir) * FIXED2DOUBLE(fractionaltic)) / MLOOKUNIT
-                + (player->oldrecoilpitch + FixedMul(player->recoilpitch - player->oldrecoilpitch, fractionaltic));
+        double  oldlookdir = player->oldlookdir + (player->lookdir - player->oldlookdir) * FIXED2DOUBLE(fractionaltic);
+        fixed_t recoil     = player->oldrecoilpitch + FixedMul(player->recoilpitch - player->oldrecoilpitch, fractionaltic);
+        pitch              = static_cast<int>(oldlookdir / MLOOKUNIT + recoil);
     }
     else
     {

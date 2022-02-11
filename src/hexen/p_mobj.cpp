@@ -205,7 +205,7 @@ void P_FloorBounceMissile(mobj_t * mo)
         case MT_SGSHARD8:
         case MT_SGSHARD9:
         case MT_SGSHARD0:
-            mo->momz = FixedMul(mo->momz, -0.3 * FRACUNIT);
+            mo->momz = FixedMul(mo->momz, static_cast<fixed_t>(-0.3 * FRACUNIT));
             if (std::abs(mo->momz) < (FRACUNIT / 2))
             {
                 P_SetMobjState(mo, S_NULL);
@@ -213,7 +213,7 @@ void P_FloorBounceMissile(mobj_t * mo)
             }
             break;
         default:
-            mo->momz = FixedMul(mo->momz, -0.7 * FRACUNIT);
+            mo->momz = FixedMul(mo->momz, static_cast<fixed_t>(-0.7 * FRACUNIT));
             break;
     }
     mo->momx = 2 * mo->momx / 3;
@@ -493,7 +493,7 @@ void P_XYMovement(mobj_t * mo)
                                                     mo->y) +
                                 ANG1 * ((P_Random() % 16) - 8);
                             speed = P_AproxDistance(mo->momx, mo->momy);
-                            speed = FixedMul(speed, 0.75 * FRACUNIT);
+                            speed = FixedMul(speed, static_cast<fixed_t>(0.75 * FRACUNIT));
                             mo->angle = angle;
                             angle >>= ANGLETOFINESHIFT;
                             mo->momx = FixedMul(speed, finecosine[angle]);
@@ -1775,7 +1775,7 @@ void P_SpawnPuff(fixed_t x, fixed_t y, fixed_t z)
             puff->momz = FRACUNIT;
             break;
         case MT_HAMMERPUFF:
-            puff->momz = .8 * FRACUNIT;
+            puff->momz = static_cast<fixed_t>(.8 * FRACUNIT);
             break;
         default:
             break;

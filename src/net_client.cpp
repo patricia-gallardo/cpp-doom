@@ -205,17 +205,18 @@ static void UpdateClockSync(unsigned int seq,
     }
 
     // PID filter. These are manually trained parameters.
-#define KP 0.1
-#define KI 0.01
-#define KD 0.02
+    constexpr auto KP = 0.1;
+    constexpr auto KI = 0.01;
+    constexpr auto KD = 0.02;
 
     // How does our latency compare to the worst other player?
     error = latency - remote_latency;
     cumul_error += error;
 
-    offsetms = KP * (FRACUNIT * error)
-               - KI * (FRACUNIT * cumul_error)
-               + (KD * FRACUNIT) * (last_error - error);
+    double kp = KP * (FRACUNIT * error);
+    double ki = KI * (FRACUNIT * cumul_error);
+    double kd = (KD * FRACUNIT) * (last_error - error);
+    offsetms = static_cast<fixed_t>(kp - ki + kd);
 
     last_error   = error;
     last_latency = latency;

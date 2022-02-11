@@ -64,7 +64,7 @@ static int show_talk = 0;
 // but 1 is closer to "use_libsamplerate = 0" which is the default in Choco
 // and causes only a short delay at startup
 static int use_libsamplerate = 1;
-static float libsamplerate_scale = 0.65;
+static float libsamplerate_scale = static_cast<float>(0.65);
 
 static char *music_pack_path = nullptr;
 static char *timidity_cfg_path = nullptr;

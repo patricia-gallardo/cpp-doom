@@ -138,7 +138,7 @@ static void hsv_to_rgb(vect *hsv, vect *rgb)
         if (h >= 360.0)
             h -= 360.0;
         h /= 60.0;
-        i = floor(h);
+        i = static_cast<int>(floor(h));
         f = h - i;
         p = v * (1.0 - s);
         q = v * (1.0 - (s * f));
@@ -301,7 +301,7 @@ uint8_t V_Colorize(uint8_t *playpal, int cr, uint8_t source, bool keepgray109)
         }
         else if (cr == static_cast<int>(cr_t::CR_BLUE))
         {
-            hsv.x = 240. / 360.;
+            hsv.x = static_cast<float>(240. / 360.);
         }
     }
 

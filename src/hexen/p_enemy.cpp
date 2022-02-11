@@ -1029,7 +1029,7 @@ void A_PigPain(mobj_t * actor)
     A_Pain(actor);
     if (actor->z <= actor->floorz)
     {
-        actor->momz = 3.5 * FRACUNIT;
+        actor->momz = static_cast<fixed_t>(3.5 * FRACUNIT);
     }
 }
 
@@ -3886,7 +3886,7 @@ void A_IceGuyMissileExplode(mobj_t * actor)
     for (i = 0; i < 8; i++)
     {
         mo = P_SpawnMissileAngle(actor, MT_ICEGUY_FX2, i * ANG45,
-                                 -0.3 * FRACUNIT);
+                                 static_cast<fixed_t>(-0.3 * FRACUNIT));
         if (mo)
         {
             mo->target = actor->target;

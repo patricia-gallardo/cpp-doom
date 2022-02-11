@@ -563,8 +563,10 @@ void R_StoreWallRange(int start, int stop)
     if (segtextured)
     {
         offsetangle = rw_normalangle - rw_angle1;
-        if (offsetangle > ANG180)
-            offsetangle = -offsetangle;
+        if (offsetangle > ANG180) {
+            // Subtracting from 0u avoids compiler warnings
+            offsetangle = 0u - offsetangle;
+        }
         if (offsetangle > ANG90)
             offsetangle = ANG90;
         sineval = finesine[offsetangle >> ANGLETOFINESHIFT];

@@ -278,7 +278,7 @@ static int64_t old_m_x, old_m_y;
 static mpoint_t f_oldloc;
 
 // used by MTOF to scale from map-to-frame-buffer coords
-static fixed_t scale_mtof = INITSCALEMTOF;
+static fixed_t scale_mtof = static_cast<fixed_t>(INITSCALEMTOF);
 // used by FTOM to scale from frame-buffer-to-map coords (=1/scale_mtof)
 static fixed_t scale_ftom;
 
@@ -451,7 +451,8 @@ void AM_changeWindowLoc()
     incy = m_paninc.y;
     if (crispy->automaprotate)
     {
-        AM_rotate(&incx, &incy, -mapangle);
+        // Subtracting from 0u avoids compiler warnings
+        AM_rotate(&incx, &incy, 0u - mapangle);
     }
     m_x += incx;
     m_y += incy;

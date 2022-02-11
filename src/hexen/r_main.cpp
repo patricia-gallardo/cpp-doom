@@ -215,10 +215,12 @@ angle_t R_PointToAngle(fixed_t x, fixed_t y)
         else
         {                       // y<0
             y = -y;
-            if (x > y)
-                return -tantoangle[SlopeDiv(y, x)];     // octant 8
-            else
+            if (x > y) {
+                // Subtracting from 0u avoids compiler warnings
+                return 0u - tantoangle[SlopeDiv(y, x)];     // octant 8
+            } else {
                 return ANG270 + tantoangle[SlopeDiv(x, y)];     // octant 7
+            }
         }
     }
     else
