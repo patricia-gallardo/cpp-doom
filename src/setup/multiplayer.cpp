@@ -530,19 +530,18 @@ static void UpdateWarpType(void *, void *)
 
 static const iwad_t **GetFallbackIwadList()
 {
-    static const iwad_t *fallback_iwad_list[2];
-    unsigned int i;
+    static const iwad_t *fallback_iwad_list[2] = {};
 
     // Default to use if we don't find something better.
 
     fallback_iwad_list[0] = &fallback_iwads[0];
     fallback_iwad_list[1] = nullptr;
 
-    for (i = 0; i < std::size(fallback_iwads); ++i)
+    for (const auto & fallback_iwad : fallback_iwads)
     {
-        if (gamemission == fallback_iwads[i].mission)
+        if (gamemission == fallback_iwad.mission)
         {
-            fallback_iwad_list[0] = &fallback_iwads[i];
+            fallback_iwad_list[0] = &fallback_iwad;
             break;
         }
     }
@@ -552,27 +551,22 @@ static const iwad_t **GetFallbackIwadList()
 
 static txt_widget_t *IWADSelector()
 {
-    txt_dropdown_list_t *dropdown;
-    txt_widget_t *result;
-    int num_iwads;
-    unsigned int i;
-
     // Find out what WADs are installed
 
     found_iwads = GetIwads();
 
     // Build a list of the descriptions for all installed IWADs
 
-    num_iwads = 0;
+    int num_iwads = 0;
 
-    for (i=0; found_iwads[i] != nullptr; ++i)
+    for (int i=0; found_iwads[i] != nullptr; ++i)
     {
          ++num_iwads;
     }
 
     iwad_labels = static_cast<const char **>(malloc(sizeof(*iwad_labels) * num_iwads));
 
-    for (i=0; i < num_iwads; ++i)
+    for (int i=0; i < num_iwads; ++i)
     {
         iwad_labels[i] = found_iwads[i]->description;
     }
@@ -587,6 +581,7 @@ static txt_widget_t *IWADSelector()
     }
 
     // Build a dropdown list of IWADs
+    txt_widget_t *result = nullptr;
 
     if (num_iwads < 2)
     {
@@ -598,7 +593,7 @@ static txt_widget_t *IWADSelector()
     {
         // Dropdown list allowing IWAD to be selected.
 
-        dropdown = TXT_NewDropdownList(&found_iwad_selected,
+        txt_dropdown_list_t *dropdown = TXT_NewDropdownList(&found_iwad_selected,
                                        iwad_labels, num_iwads);
 
         TXT_SignalConnect(dropdown, "changed", IWADSelected, nullptr);

@@ -28,12 +28,11 @@
 
 void P_CreateBlockMap()
 {
-    int     i;
     fixed_t minx = INT_MAX, miny = INT_MAX, maxx = INT_MIN, maxy = INT_MIN;
 
     // First find limits of map
 
-    for (i = 0; i < numvertexes; i++)
+    for (int i = 0; i < numvertexes; i++)
     {
         if (vertexes[i].x >> FRACBITS < minx)
             minx = vertexes[i].x >> FRACBITS;
@@ -83,7 +82,7 @@ void P_CreateBlockMap()
         bmap_t * bmap = static_cast<bmap_t *>(calloc(sizeof *bmap, tot)); // array of blocklists
         int      x, y, adx, ady, bend;
 
-        for (i = 0; i < numlines; i++)
+        for (int i = 0; i < numlines; i++)
         {
             int dx, dy, diff, b;
 
@@ -145,7 +144,7 @@ void P_CreateBlockMap()
         {
             int count = tot + 6; // we need at least 1 word per block, plus reserved's
 
-            for (i = 0; i < tot; i++)
+            for (unsigned int i = 0; i < tot; i++)
                 if (bmap[i].n)
                     count += bmap[i].n + 2; // 1 header word + 1 trailer word + blocklist
 
@@ -161,7 +160,7 @@ void P_CreateBlockMap()
             blockmaplump[ndx++] = 0;  // Store an empty blockmap list at start
             blockmaplump[ndx++] = -1; // (Used for compression)
 
-            for (i = 4; i < tot; i++, bp++)
+            for (unsigned int i = 4; i < tot; i++, bp++)
                 if (bp->n) // Non-empty blocklist
                 {
                     blockmaplump[blockmaplump[i] = ndx++] = 0; // Store index & header

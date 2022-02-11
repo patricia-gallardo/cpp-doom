@@ -1538,8 +1538,7 @@ bool SB_Responder(event_t * event)
 
 static bool HandleCheats(uint8_t key)
 {
-    int i;
-    bool eat;
+    bool eat = false;
 
     if (gameskill == sk_nightmare)
     {                           // Can't cheat in nightmare mode
@@ -1568,11 +1567,11 @@ static bool HandleCheats(uint8_t key)
         return (false);
     }
     eat = false;
-    for (i = 0; i<std::size(Cheats); ++i)
+    for (auto & Cheat : Cheats)
     {
-        if (CheatAddKey(&Cheats[i], key, &eat))
+        if (CheatAddKey(&Cheat, key, &eat))
         {
-            Cheats[i].func(&players[consoleplayer], &Cheats[i]);
+            Cheat.func(&players[consoleplayer], &Cheat);
             S_StartSound(nullptr, SFX_PLATFORM_STOP);
         }
     }

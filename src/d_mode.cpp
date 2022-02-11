@@ -53,11 +53,9 @@ static struct
 
 bool D_ValidGameMode(int mission, int mode)
 {
-    int i;
-
-    for (i = 0; i < std::size(valid_modes); ++i)
+    for (auto & valid_mode : valid_modes)
     {
-        if (valid_modes[i].mode == mode && valid_modes[i].mission == mission)
+        if (valid_mode.mode == mode && valid_mode.mission == mission)
         {
             return true;
         }
@@ -69,8 +67,6 @@ bool D_ValidGameMode(int mission, int mode)
 bool D_ValidEpisodeMap(GameMission_t mission, GameMode_t mode,
     int episode, int map)
 {
-    int i;
-
     // Hacks for Heretic secret episodes
 
     if (mission == heretic)
@@ -87,13 +83,13 @@ bool D_ValidEpisodeMap(GameMission_t mission, GameMode_t mode,
 
     // Find the table entry for this mission/mode combination.
 
-    for (i = 0; i < std::size(valid_modes); ++i)
+    for (auto & valid_mode : valid_modes)
     {
-        if (mission == valid_modes[i].mission
-            && mode == valid_modes[i].mode)
+        if (mission == valid_mode.mission
+            && mode == valid_mode.mode)
         {
-            return episode >= 1 && episode <= valid_modes[i].episode
-                   && map >= 1 && map <= valid_modes[i].map;
+            return episode >= 1 && episode <= valid_mode.episode
+                   && map >= 1 && map <= valid_mode.map;
         }
     }
 
@@ -142,8 +138,6 @@ static struct {
 
 bool D_ValidGameVersion(GameMission_t mission, GameVersion_t version)
 {
-    int i;
-
     // All Doom variants can use the Doom versions.
 
     if (mission == doom2 || mission == pack_plut || mission == pack_tnt
@@ -153,10 +147,10 @@ bool D_ValidGameVersion(GameMission_t mission, GameVersion_t version)
         mission = doom;
     }
 
-    for (i = 0; i < std::size(valid_versions); ++i)
+    for (auto & valid_version : valid_versions)
     {
-        if (valid_versions[i].mission == mission
-            && valid_versions[i].version == version)
+        if (valid_version.mission == mission
+            && valid_version.version == version)
         {
             return true;
         }

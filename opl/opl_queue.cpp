@@ -204,12 +204,9 @@ uint64_t OPL_Queue_Peek(opl_callback_queue_t *queue)
 void OPL_Queue_AdjustCallbacks(opl_callback_queue_t *queue,
                                uint64_t time, float factor)
 {
-    int64_t offset;
-    int i;
-
-    for (i = 0; i < queue->num_entries; ++i)
+    for (unsigned int i = 0; i < queue->num_entries; ++i)
     {
-        offset = queue->entries[i].time - time;
+        auto offset = queue->entries[i].time - time;
         queue->entries[i].time = time + static_cast<uint64_t>(offset / factor);
     }
 }

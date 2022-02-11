@@ -70,11 +70,10 @@ static void PlayerQuitGame(player_t *player)
 static void RunTic(ticcmd_t *cmds, bool *ingame)
 {
     extern bool advancedemo;
-    unsigned int i;
 
     // Check for player quits.
 
-    for (i = 0; i < maxplayers; ++i)
+    for (int i = 0; i < maxplayers; ++i)
     {
         if (!demoplayback && playeringame[i] && !ingame[i])
         {
@@ -106,8 +105,6 @@ static loop_interface_t hexen_loop_interface = {
 
 static void LoadGameSettings(net_gamesettings_t *settings)
 {
-    unsigned int i;
-
     deathmatch = settings->deathmatch;
     ticdup = settings->ticdup;
     startepisode = settings->episode;
@@ -125,7 +122,7 @@ static void LoadGameSettings(net_gamesettings_t *settings)
                "because there is a client recording a Vanilla demo.\n");
     }
 
-    for (i=0; i<maxplayers; ++i)
+    for (int i=0; i<maxplayers; ++i)
     {
         playeringame[i] = i < settings->num_players;
         PlayerClass[i] = static_cast<pclass_t>(settings->player_classes[i]);

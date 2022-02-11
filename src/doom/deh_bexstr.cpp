@@ -349,7 +349,6 @@ static void *DEH_BEXStrStart(deh_context_t *context, char *line)
 static void DEH_BEXStrParseLine(deh_context_t *context, char *line, void *)
 {
     char *variable_name, *value;
-    int   i;
 
     if (!DEH_ParseAssignment(line, &variable_name, &value))
     {
@@ -357,11 +356,11 @@ static void DEH_BEXStrParseLine(deh_context_t *context, char *line, void *)
         return;
     }
 
-    for (i = 0; i < std::size(bex_stringtable); i++)
+    for (auto bex : bex_stringtable)
     {
-        if (!strcasecmp(bex_stringtable[i].macro, variable_name))
+        if (!strcasecmp(bex.macro, variable_name))
         {
-            DEH_AddStringReplacement(bex_stringtable[i].string, value);
+            DEH_AddStringReplacement(bex.string, value);
         }
     }
 }

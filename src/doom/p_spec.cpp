@@ -1522,9 +1522,9 @@ line_t *linespeciallist[MAXLINEANIMS];
 
 static unsigned int NumScrollers()
 {
-    unsigned int i, scrollers = 0;
+    unsigned int scrollers = 0;
 
-    for (i = 0; i < numlines; i++)
+    for (int i = 0; i < numlines; i++)
     {
         if (48 == lines[i].special)
         {

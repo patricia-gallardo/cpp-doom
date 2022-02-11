@@ -162,7 +162,6 @@ static void DEH_MiscParseLine(deh_context_t *context, char *line, void *)
 {
     char *variable_name, *value;
     int ivalue;
-    size_t i;
 
     if (!DEH_ParseAssignment(line, &variable_name, &value))
     {
@@ -195,11 +194,11 @@ static void DEH_MiscParseLine(deh_context_t *context, char *line, void *)
         return;
     }
 
-    for (i=0; i<std::size(misc_settings); ++i)
+    for (auto & misc_setting : misc_settings)
     {
-        if (!strcasecmp(variable_name, misc_settings[i].deh_name))
+        if (!strcasecmp(variable_name, misc_setting.deh_name))
         {
-            *misc_settings[i].value = ivalue;
+            *misc_setting.value = ivalue;
             return;
         }
     }
@@ -209,11 +208,9 @@ static void DEH_MiscParseLine(deh_context_t *context, char *line, void *)
 
 static void DEH_MiscSHA1Sum(sha1_context_t *context)
 {
-    unsigned int i;
-
-    for (i=0; i<std::size(misc_settings); ++i)
+    for (auto & misc_setting : misc_settings)
     {
-        SHA1_UpdateInt32(context, *misc_settings[i].value);
+        SHA1_UpdateInt32(context, *misc_setting.value);
     }
 }
 

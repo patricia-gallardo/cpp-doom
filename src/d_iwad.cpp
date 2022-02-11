@@ -51,11 +51,9 @@ static const iwad_t iwads[] = {
 
 bool D_IsIWADName(const char *name)
 {
-    int i;
-
-    for (i = 0; i < std::size(iwads); i++)
+    for (const auto & iwad : iwads)
     {
-        if (!strcasecmp(name, iwads[i].name))
+        if (!strcasecmp(name, iwad.name))
         {
             return true;
         }
@@ -509,21 +507,18 @@ static char *CheckDirectoryHasIWAD(const char *dir, const char *iwadname)
 
 static char *SearchDirectoryForIWAD(const char *dir, int mask, GameMission_t *mission)
 {
-    char * filename;
-    size_t i;
-
-    for (i = 0; i < std::size(iwads); ++i)
+    for (const auto & iwad : iwads)
     {
-        if (((1 << iwads[i].mission) & mask) == 0)
+        if (((1 << iwad.mission) & mask) == 0)
         {
             continue;
         }
 
-        filename = CheckDirectoryHasIWAD(dir, DEH_String(iwads[i].name));
+        char *filename = CheckDirectoryHasIWAD(dir, DEH_String(iwad.name));
 
         if (filename != nullptr)
         {
-            *mission = iwads[i].mission;
+            *mission = iwad.mission;
 
             return filename;
         }
@@ -537,26 +532,23 @@ static char *SearchDirectoryForIWAD(const char *dir, int mask, GameMission_t *mi
 
 static GameMission_t IdentifyIWADByName(const char *name, int mask)
 {
-    size_t        i;
-    GameMission_t mission;
-
     name    = M_BaseName(name);
-    mission = none;
+    GameMission_t mission = none;
 
-    for (i = 0; i < std::size(iwads); ++i)
+    for (const auto & iwad : iwads)
     {
         // Check if the filename is this IWAD name.
 
         // Only use supported missions:
 
-        if (((1 << iwads[i].mission) & mask) == 0)
+        if (((1 << iwad.mission) & mask) == 0)
             continue;
 
         // Check if it ends in this IWAD name.
 
-        if (!strcasecmp(name, iwads[i].name))
+        if (!strcasecmp(name, iwad.name))
         {
-            mission = iwads[i].mission;
+            mission = iwad.mission;
             break;
         }
     }
@@ -889,7 +881,6 @@ const iwad_t **D_FindAllIWADs(int mask)
 {
     int   result_len;
     char *filename;
-    int   i;
 
     auto result = create_struct<iwad_t const * [std::size(iwads) + 1]>();
     //    result = malloc(sizeof(iwad_t *) * (std::size(iwads) + 1));
@@ -897,18 +888,18 @@ const iwad_t **D_FindAllIWADs(int mask)
 
     // Try to find all IWADs
 
-    for (i = 0; i < std::size(iwads); ++i)
+    for (const auto & iwad : iwads)
     {
-        if (((1 << iwads[i].mission) & mask) == 0)
+        if (((1 << iwad.mission) & mask) == 0)
         {
             continue;
         }
 
-        filename = D_FindWADByName(iwads[i].name);
+        filename = D_FindWADByName(iwad.name);
 
         if (filename != nullptr)
         {
-            result[result_len] = &iwads[i];
+            result[result_len] = &iwad;
             ++result_len;
         }
     }
@@ -926,8 +917,6 @@ const iwad_t **D_FindAllIWADs(int mask)
 
 const char *D_SaveGameIWADName(GameMission_t gamemission)
 {
-    size_t i;
-
     // Determine the IWAD name to use for savegames.
     // This determines the directory the savegame files get put into.
     //
@@ -935,11 +924,11 @@ const char *D_SaveGameIWADName(GameMission_t gamemission)
     // This ensures that doom1.wad and doom.wad saves are stored
     // in the same place.
 
-    for (i = 0; i < std::size(iwads); ++i)
+    for (const auto & iwad : iwads)
     {
-        if (gamemission == iwads[i].mission)
+        if (gamemission == iwad.mission)
         {
-            return iwads[i].name;
+            return iwad.name;
         }
     }
 
@@ -950,13 +939,11 @@ const char *D_SaveGameIWADName(GameMission_t gamemission)
 
 const char *D_SuggestIWADName(GameMission_t mission, GameMode_t mode)
 {
-    int i;
-
-    for (i = 0; i < std::size(iwads); ++i)
+    for (const auto & iwad : iwads)
     {
-        if (iwads[i].mission == mission && iwads[i].mode == mode)
+        if (iwad.mission == mission && iwad.mode == mode)
         {
-            return iwads[i].name;
+            return iwad.name;
         }
     }
 
@@ -965,14 +952,12 @@ const char *D_SuggestIWADName(GameMission_t mission, GameMode_t mode)
 
 const char *D_SuggestGameName(GameMission_t mission, GameMode_t mode)
 {
-    int i;
-
-    for (i = 0; i < std::size(iwads); ++i)
+    for (const auto & iwad : iwads)
     {
-        if (iwads[i].mission == mission
-            && (mode == indetermined || iwads[i].mode == mode))
+        if (iwad.mission == mission
+            && (mode == indetermined || iwad.mode == mode))
         {
-            return iwads[i].description;
+            return iwad.description;
         }
     }
 

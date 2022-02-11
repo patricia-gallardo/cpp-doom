@@ -74,9 +74,7 @@ static int PhysicalForVirtualButton(int vbutton)
 // variable's index in all_joystick_buttons[NUM_VIRTUAL_BUTTONS].
 static int VirtualButtonForVariable(int *variable)
 {
-    int i;
-
-    for (i = 0; i < std::size(all_joystick_buttons); ++i)
+    for (size_t i = 0; i < std::size(all_joystick_buttons); ++i)
     {
         if (variable == all_joystick_buttons[i])
         {
@@ -93,13 +91,11 @@ static int VirtualButtonForVariable(int *variable)
 // all_joystick_buttons[NUM_VIRTUAL_BUTTONS] above.
 static void CanonicalizeButtons()
 {
-    int new_mapping[NUM_VIRTUAL_BUTTONS];
-    int vbutton;
-    int i;
+    int new_mapping[NUM_VIRTUAL_BUTTONS] = {};
 
-    for (i = 0; i < std::size(all_joystick_buttons); ++i)
+    for (size_t i = 0; i < std::size(all_joystick_buttons); ++i)
     {
-        vbutton = *all_joystick_buttons[i];
+        int vbutton = *all_joystick_buttons[i];
 
         // Don't remap the speed key if it's bound to "always run".
         // Also preserve "unbound" variables.
@@ -115,7 +111,7 @@ static void CanonicalizeButtons()
         }
     }
 
-    for (i = 0; i < NUM_VIRTUAL_BUTTONS; ++i)
+    for (int i = 0; i < NUM_VIRTUAL_BUTTONS; ++i)
     {
         joystick_physical_buttons[i] = new_mapping[i];
     }
@@ -125,16 +121,13 @@ static void CanonicalizeButtons()
 // button.
 static void ClearVariablesUsingButton(int physbutton)
 {
-    int vbutton;
-    int i;
-
-    for (i = 0; i < std::size(all_joystick_buttons); ++i)
+    for (auto & all_joystick_button : all_joystick_buttons)
     {
-        vbutton = *all_joystick_buttons[i];
+        int vbutton = *all_joystick_button;
 
         if (vbutton >= 0 && physbutton == PhysicalForVirtualButton(vbutton))
         {
-            *all_joystick_buttons[i] = -1;
+            *all_joystick_button = -1;
         }
     }
 }

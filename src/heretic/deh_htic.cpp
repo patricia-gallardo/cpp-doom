@@ -74,9 +74,7 @@ deh_section_t *deh_section_types[] =
 
 static void SetHHEVersionByName(char *name)
 {
-    int i;
-
-    for (i=0; i<std::size(hhe_versions); ++i)
+    for (size_t i=0; i<std::size(hhe_versions); ++i)
     {
         if (!strcmp(hhe_versions[i], name))
         {
@@ -88,9 +86,9 @@ static void SetHHEVersionByName(char *name)
     fprintf(stderr, "Unknown Heretic version: %s\n", name);
     fprintf(stderr, "Valid versions:\n");
 
-    for (i=0; i<std::size(hhe_versions); ++i)
+    for (auto & hhe_version : hhe_versions)
     {
-        fprintf(stderr, "\t%s\n", hhe_versions[i]);
+        fprintf(stderr, "\t%s\n", hhe_version);
     }
 }
 

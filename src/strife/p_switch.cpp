@@ -130,7 +130,7 @@ button_t        buttonlist[MAXBUTTONS];
 //
 void P_InitSwitchList()
 {
-    int i, slindex, episode;
+    int episode;
 
     // Note that this is called "episode" here but it's actually something
     // quite different. As we progress from Shareware->Registered->Doom II
@@ -144,16 +144,16 @@ void P_InitSwitchList()
         episode = 1;
     }
 
-    slindex = 0;
+    int slindex = 0;
 
-    for (i = 0; i < std::size(alphSwitchList); i++)
+    for (auto &alph : alphSwitchList)
     {
-	if (alphSwitchList[i].episode <= episode)
+	if (alph.episode <= episode)
 	{
 	    switchlist[slindex++] =
-                R_TextureNumForName(DEH_String(alphSwitchList[i].name1));
+                R_TextureNumForName(DEH_String(alph.name1));
 	    switchlist[slindex++] =
-                R_TextureNumForName(DEH_String(alphSwitchList[i].name2));
+                R_TextureNumForName(DEH_String(alph.name2));
 	}
     }
 

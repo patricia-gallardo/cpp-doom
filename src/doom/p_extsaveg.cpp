@@ -457,13 +457,11 @@ static const extsavegdata_t extsavegdata[] = {
 
 void P_WriteExtendedSaveGameData()
 {
-    int i;
-
     line = static_cast<char *>(malloc(MAX_LINE_LEN));
 
-    for (i = 0; i < std::size(extsavegdata); i++)
+    for (const auto & i : extsavegdata)
     {
-        extsavegdata[i].extsavegwritefn(extsavegdata[i].key);
+        i.extsavegwritefn(i.key);
     }
 
     free(line);
@@ -475,9 +473,7 @@ static void P_ReadKeyValuePairs(int pass)
     {
         if (sscanf(line, "%s", string) == 1)
         {
-            int i;
-
-            for (i = 1; i < std::size(extsavegdata); i++)
+            for (size_t i = 1; i < std::size(extsavegdata); i++)
             {
                 if (extsavegdata[i].extsavegreadfn && extsavegdata[i].pass == pass && !strncmp(string, extsavegdata[i].key, MAX_STRING_LEN))
                 {

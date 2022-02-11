@@ -3877,11 +3877,9 @@ static const fullbright_t fullbright_hacx[] = {
 
 static uint8_t *R_BrightmapForTexName_Doom(const char *texname)
 {
-    int i;
-
-    for (i = 0; i < std::size(fullbright_doom); i++)
+    for (const auto & i : fullbright_doom)
     {
-        const fullbright_t *fullbright = &fullbright_doom[i];
+        const fullbright_t *fullbright = &i;
 
         if ((gamemission == doom && fullbright->game == DOOM2ONLY) || (gamemission != doom && fullbright->game == DOOM1ONLY))
         {
@@ -3901,11 +3899,9 @@ static bool chex2 = false;
 
 static uint8_t *R_BrightmapForTexName_Chex(const char *texname)
 {
-    int i;
-
-    for (i = 0; i < std::size(fullbright_chex); i++)
+    for (const auto & i : fullbright_chex)
     {
-        const fullbright_t *fullbright = &fullbright_chex[i];
+        const fullbright_t *fullbright = &i;
 
         if ((chex2 && fullbright->game == DOOM1ONLY) || (!chex2 && fullbright->game == DOOM2ONLY))
         {
@@ -3923,11 +3919,9 @@ static uint8_t *R_BrightmapForTexName_Chex(const char *texname)
 
 static uint8_t *R_BrightmapForTexName_Hacx(const char *texname)
 {
-    int i;
-
-    for (i = 0; i < std::size(fullbright_hacx); i++)
+    for (const auto & i : fullbright_hacx)
     {
-        const fullbright_t *fullbright = &fullbright_hacx[i];
+        const fullbright_t *fullbright = &i;
 
         if (!strncasecmp(fullbright->texture, texname, 8))
         {

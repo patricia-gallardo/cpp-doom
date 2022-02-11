@@ -691,13 +691,11 @@ static bool StringIsUnsupported(unsigned int offset)
 
 static bool GetStringByOffset(unsigned int offset, const char **result)
 {
-    int i;
-
-    for (i=0; i<std::size(strings); ++i)
+    for (const auto & string : strings)
     {
-        if (strings[i].offsets[deh_hhe_version] == offset)
+        if (string.offsets[deh_hhe_version] == offset)
         {
-            *result = strings[i].string;
+            *result = string.string;
             return true;
         }
     }
@@ -732,17 +730,12 @@ static int MaxStringLength(int len)
 
 static void SuggestOtherVersions(unsigned int offset)
 {
-    const int *string_list;
-    unsigned int i;
-    unsigned int v;
-
     // Check main string table.
-
-    for (i=0; i<std::size(strings); ++i)
+    for (const auto & string : strings)
     {
-        for (v=0; v<deh_hhe_num_versions; ++v)
+        for (int v=0; v<deh_hhe_num_versions; ++v)
         {
-            if (strings[i].offsets[v] == offset)
+            if (string.offsets[v] == offset)
             {
                 DEH_SuggestHereticVersion(static_cast<deh_hhe_version_t>(v));
             }
@@ -751,11 +744,11 @@ static void SuggestOtherVersions(unsigned int offset)
 
     // Check unsupported string tables.
 
-    for (v=0; v<deh_hhe_num_versions; ++v)
+    for (int v=0; v<deh_hhe_num_versions; ++v)
     {
-        string_list = unsupported_strings[v];
+        const int *string_list = unsupported_strings[v];
 
-        for (i=0; string_list[i] >= 0; ++i)
+        for (int i=0; string_list[i] >= 0; ++i)
         {
             if (string_list[i] == offset)
             {

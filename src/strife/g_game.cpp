@@ -293,7 +293,7 @@ static bool WeaponSelectable(weapontype_t weapon)
 static int G_NextWeapon(int direction)
 {
     weapontype_t weapon;
-    int start_i, i;
+    int start_i;
 
     // Find index in the table.
 
@@ -306,6 +306,7 @@ static int G_NextWeapon(int direction)
         weapon = players[consoleplayer].pendingweapon;
     }
 
+    size_t i = 0;
     for (i=0; i<std::size(weapon_order_table); ++i)
     {
         if (weapon_order_table[i].weapon == weapon)
@@ -333,7 +334,6 @@ static int G_NextWeapon(int direction)
 // 
 void G_BuildTiccmd (ticcmd_t* cmd, int maketic) 
 { 
-    int		i; 
     bool	strafe;
     bool	bstrafe;
     int		speed;
@@ -517,15 +517,15 @@ void G_BuildTiccmd (ticcmd_t* cmd, int maketic)
 
     if (gamestate == GS_LEVEL && next_weapon != 0)
     {
-        i = G_NextWeapon(next_weapon);
+        int weapon = G_NextWeapon(next_weapon);
         cmd->buttons |= BT_CHANGE;
-        cmd->buttons |= i << BT_WEAPONSHIFT;
+        cmd->buttons |= weapon << BT_WEAPONSHIFT;
     }
     else
     {
         // Check weapon keys.
 
-        for (i=0; i<std::size(weapon_keys); ++i)
+        for (size_t i=0; i<std::size(weapon_keys); ++i)
         {
             int key = *weapon_keys[i];
 

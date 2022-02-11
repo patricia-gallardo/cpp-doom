@@ -428,10 +428,7 @@ static void NET_Query_GetResponse(net_query_callback_t callback,
 
 static void SendOneQuery()
 {
-    unsigned int now;
-    unsigned int i;
-
-    now = I_GetTimeMS();
+    unsigned int now = I_GetTimeMS();
 
     // Rate limit - only send one query every 50ms.
 
@@ -440,6 +437,7 @@ static void SendOneQuery()
         return;
     }
 
+    int i = 0;
     for (i = 0; i < num_targets; ++i)
     {
         // Not queried yet?
@@ -488,12 +486,9 @@ static void SendOneQuery()
 
 static void CheckTargetTimeouts()
 {
-    unsigned int i;
-    unsigned int now;
+    unsigned int now = I_GetTimeMS();
 
-    now = I_GetTimeMS();
-
-    for (i = 0; i < num_targets; ++i)
+    for (int i = 0; i < num_targets; ++i)
     {
         /*
         printf("target %i: state %i, queries %i, query time %i\n",
@@ -524,9 +519,7 @@ static void CheckTargetTimeouts()
 
 static bool AllTargetsDone()
 {
-    unsigned int i;
-
-    for (i = 0; i < num_targets; ++i)
+    for (int i = 0; i < num_targets; ++i)
     {
         if (targets[i].state != QUERY_TARGET_RESPONDED
             && targets[i].state != QUERY_TARGET_NO_RESPONSE)
@@ -608,9 +601,7 @@ static void NET_Query_ExitCallback(net_addr_t *, net_querydata_t *, unsigned int
 
 static query_target_t *FindFirstResponder()
 {
-    unsigned int i;
-
-    for (i = 0; i < num_targets; ++i)
+    for (int i = 0; i < num_targets; ++i)
     {
         if (targets[i].type == QUERY_TARGET_SERVER
             && targets[i].state == QUERY_TARGET_RESPONDED)
@@ -626,12 +617,9 @@ static query_target_t *FindFirstResponder()
 
 static int GetNumResponses()
 {
-    unsigned int i;
-    int          result;
+    int result = 0;
 
-    result = 0;
-
-    for (i = 0; i < num_targets; ++i)
+    for (int i = 0; i < num_targets; ++i)
     {
         if (targets[i].type == QUERY_TARGET_SERVER
             && targets[i].state == QUERY_TARGET_RESPONDED)

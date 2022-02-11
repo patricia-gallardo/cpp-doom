@@ -520,11 +520,9 @@ bool NET_ReadWaitData(net_packet_t *packet, net_waitdata_t *data)
 
 static bool NET_ReadBlob(net_packet_t *packet, uint8_t *buf, size_t len)
 {
-    unsigned int b;
-    int          i;
-
-    for (i = 0; i < len; ++i)
+    for (size_t i = 0; i < len; ++i)
     {
+        unsigned int b = 0;
         if (!NET_ReadInt8(packet, &b))
         {
             return false;
@@ -538,9 +536,7 @@ static bool NET_ReadBlob(net_packet_t *packet, uint8_t *buf, size_t len)
 
 static void NET_WriteBlob(net_packet_t *packet, uint8_t *buf, size_t len)
 {
-    int i;
-
-    for (i = 0; i < len; ++i)
+    for (size_t i = 0; i < len; ++i)
     {
         NET_WriteInt8(packet, buf[i]);
     }
@@ -568,13 +564,11 @@ void NET_WritePRNGSeed(net_packet_t *packet, prng_seed_t seed)
 
 static net_protocol_t ParseProtocolName(const char *name)
 {
-    int i;
-
-    for (i = 0; i < std::size(protocol_names); ++i)
+    for (auto & protocol_name : protocol_names)
     {
-        if (!strcmp(protocol_names[i].name, name))
+        if (!strcmp(protocol_name.name, name))
         {
-            return protocol_names[i].protocol;
+            return protocol_name.protocol;
         }
     }
 
@@ -600,13 +594,11 @@ net_protocol_t NET_ReadProtocol(net_packet_t *packet)
 // NET_WriteProtocol writes a single string-format protocol name to a packet.
 void NET_WriteProtocol(net_packet_t *packet, net_protocol_t protocol)
 {
-    int i;
-
-    for (i = 0; i < std::size(protocol_names); ++i)
+    for (auto & protocol_name : protocol_names)
     {
-        if (protocol_names[i].protocol == protocol)
+        if (protocol_name.protocol == protocol)
         {
-            NET_WriteString(packet, protocol_names[i].name);
+            NET_WriteString(packet, protocol_name.name);
             return;
         }
     }
@@ -624,29 +616,24 @@ void NET_WriteProtocol(net_packet_t *packet, net_protocol_t protocol)
 // no recognized protocols are read, NET_PROTOCOL_UNKNOWN is returned.
 net_protocol_t NET_ReadProtocolList(net_packet_t *packet)
 {
-    net_protocol_t result;
-    unsigned int   num_protocols;
-    int            i;
+    unsigned int num_protocols;
 
     if (!NET_ReadInt8(packet, &num_protocols))
     {
         return NET_PROTOCOL_UNKNOWN;
     }
 
-    result = NET_PROTOCOL_UNKNOWN;
+    net_protocol_t result = NET_PROTOCOL_UNKNOWN;
 
-    for (i = 0; i < num_protocols; ++i)
+    for (unsigned int i = 0; i < num_protocols; ++i)
     {
-        net_protocol_t p;
-        const char *   name;
-
-        name = NET_ReadString(packet);
+        const char *   name = NET_ReadString(packet);
         if (name == nullptr)
         {
             return NET_PROTOCOL_UNKNOWN;
         }
 
-        p = ParseProtocolName(name);
+        net_protocol_t p = ParseProtocolName(name);
         if (p != NET_PROTOCOL_UNKNOWN)
         {
             result = p;

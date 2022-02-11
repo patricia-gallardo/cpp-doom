@@ -485,9 +485,7 @@ static bool ReadTrack(midi_track_t *track, FILE *stream)
 
 static void FreeTrack(midi_track_t *track)
 {
-    unsigned int i;
-
-    for (i = 0; i < track->num_events; ++i)
+    for (int i = 0; i < track->num_events; ++i)
     {
         FreeEvent(&track->events[i]);
     }
@@ -562,11 +560,9 @@ static bool ReadFileHeader(midi_file_t *file, FILE *stream)
 
 void MIDI_FreeFile(midi_file_t *file)
 {
-    int i;
-
     if (file->tracks != nullptr)
     {
-        for (i = 0; i < file->num_tracks; ++i)
+        for (unsigned int i = 0; i < file->num_tracks; ++i)
         {
             FreeTrack(&file->tracks[i]);
         }
@@ -744,9 +740,8 @@ static char *MIDI_EventTypeToString(midi_event_type_t event_type)
 void PrintTrack(midi_track_t *track)
 {
     midi_event_t *event;
-    unsigned int  i;
 
-    for (i = 0; i < track->num_events; ++i)
+    for (int i = 0; i < track->num_events; ++i)
     {
         event = &track->events[i];
 

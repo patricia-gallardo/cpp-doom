@@ -140,9 +140,8 @@ static void *DEH_BEXPtrStart(deh_context_t *context, char *line)
 
 static void DEH_BEXPtrParseLine(deh_context_t *context, char *line, void *)
 {
-    state_t *state;
     char *   variable_name, *value, frame_str[6];
-    int      frame_number, i;
+    int      frame_number;
 
     // parse "FRAME nn = mnemonic", where
     // variable_name = "FRAME nn" and value = "mnemonic"
@@ -165,13 +164,13 @@ static void DEH_BEXPtrParseLine(deh_context_t *context, char *line, void *)
         return;
     }
 
-    state = &states[frame_number];
+    state_t *state = &states[frame_number];
 
-    for (i = 0; i < std::size(bex_codeptrtable); i++)
+    for (const auto &bex : bex_codeptrtable)
     {
-        if (!strcasecmp(bex_codeptrtable[i].mnemonic, value))
+        if (!strcasecmp(bex.mnemonic, value))
         {
-            state->action = bex_codeptrtable[i].pointer;
+            state->action = bex.pointer;
             return;
         }
     }
