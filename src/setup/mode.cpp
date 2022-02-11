@@ -226,13 +226,11 @@ static void SetMission(mission_config_t *config)
 
 static mission_config_t *GetMissionForName(char *name)
 {
-    int i;
-
-    for (i=0; i<std::size(mission_configs); ++i)
+    for (auto & mission_config : mission_configs)
     {
-        if (!strcmp(mission_configs[i].name, name))
+        if (!strcmp(mission_config.name, name))
         {
-            return &mission_configs[i];
+            return &mission_config;
         }
     }
 
@@ -244,15 +242,11 @@ static mission_config_t *GetMissionForName(char *name)
 
 static bool CheckExecutableName(GameSelectCallback callback)
 {
-    mission_config_t *config;
-    const char *exe_name;
-    int i;
+    const char *exe_name = M_GetExecutableName();
 
-    exe_name = M_GetExecutableName();
-
-    for (i=0; i<std::size(mission_configs); ++i)
+    for (auto & mission_config : mission_configs)
     {
-        config = &mission_configs[i];
+        mission_config_t *config = &mission_config;
 
         if (strstr(exe_name, config->name) != nullptr)
         {
@@ -276,30 +270,26 @@ static void GameSelected(void *, void *uncast_config)
 static void OpenGameSelectDialog(GameSelectCallback callback)
 {
     mission_config_t *mission = nullptr;
-    txt_window_t *window;
-    int num_games;
-    int i;
-
-    window = TXT_NewWindow("Select game");
+    txt_window_t *window = TXT_NewWindow("Select game");
 
     TXT_AddWidget(window, TXT_NewLabel("Select a game to configure:\n"));
-    num_games = 0;
+    int num_games = 0;
 
     // Add a button for each game.
 
-    for (i=0; i<std::size(mission_configs); ++i)
+    for (auto & mission_config : mission_configs)
     {
         // Do we have any IWADs for this game installed?
         // If so, add a button.
 
-        const iwad_t **iwads_local = D_FindAllIWADs(mission_configs[i].mask);
+        const iwad_t **iwads_local = D_FindAllIWADs(mission_config.mask);
 
         if (iwads_local[0] != nullptr)
         {
-            mission = &mission_configs[i];
-            TXT_AddWidget(window, TXT_NewButton2(mission_configs[i].label,
+            mission = &mission_config;
+            TXT_AddWidget(window, TXT_NewButton2(mission_config.label,
                                                  GameSelected,
-                                                 &mission_configs[i]));
+                                                 &mission_config));
             ++num_games;
         }
 

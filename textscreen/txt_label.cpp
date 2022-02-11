@@ -117,7 +117,6 @@ txt_widget_class_t txt_label_class =
 void TXT_SetLabel(txt_label_t *label, const char *value)
 {
     char *p;
-    unsigned int y;
 
     // Free back the old label
 
@@ -144,7 +143,7 @@ void TXT_SetLabel(txt_label_t *label, const char *value)
 
     label->lines = static_cast<char **>(malloc(sizeof(char *) * label->h));
     label->lines[0] = label->label;
-    y = 1;
+    unsigned int y = 1;
 
     for (p = label->label; *p != '\0'; ++p)
     {

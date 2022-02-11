@@ -115,8 +115,6 @@ void    F_CastDrawer();
 //
 void F_StartFinale()
 {
-    size_t i;
-
     gameaction    = ga_nothing;
     gamestate     = GS_FINALE;
     viewactive    = false;
@@ -133,9 +131,9 @@ void F_StartFinale()
 
     // Find the right screen and set the text and background
 
-    for (i = 0; i < std::size(textscreens); ++i)
+    for (auto & textscreen : textscreens)
     {
-        textscreen_t *screen = &textscreens[i];
+        textscreen_t *screen = &textscreen;
 
         // Hack for Chex Quest
 

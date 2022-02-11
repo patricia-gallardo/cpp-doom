@@ -186,7 +186,7 @@ static void ReserveCacheSpace(size_t len)
     // Keep freeing sound effects that aren't currently being played,
     // until there is enough space for the new sound.
 
-    while (allocated_sounds_size + len > snd_cachesize)
+    while (allocated_sounds_size + len > static_cast<size_t>(snd_cachesize))
     {
         // Free a sound.  If there is nothing more to free, stop.
 

@@ -263,7 +263,6 @@ static bool CachePCSLump(sfxinfo_t *sfxinfo)
 
 static bool IsDisabledSound(sfxinfo_t *sfxinfo)
 {
-    int         i;
     const char *disabled_sounds[] = {
         "posact",
         "bgact",
@@ -273,9 +272,9 @@ static bool IsDisabledSound(sfxinfo_t *sfxinfo)
         "sawidl",
     };
 
-    for (i = 0; i < std::size(disabled_sounds); ++i)
+    for (auto & disabled_sound : disabled_sounds)
     {
-        if (!strcmp(sfxinfo->name, disabled_sounds[i]))
+        if (!strcmp(sfxinfo->name, disabled_sound))
         {
             return true;
         }

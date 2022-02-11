@@ -349,7 +349,7 @@ void P_LoadSectors(int lump)
     sector_t *   ss;
 
     // [crispy] fail on missing sectors
-    if (lump >= numlumps)
+    if (lump >= static_cast<int>(numlumps))
         I_Error("P_LoadSectors: No sectors in map!");
 
     numsectors = W_LumpLength(lump) / sizeof(mapsector_t);
@@ -709,7 +709,7 @@ bool P_LoadBlockMap(int lump)
     short *wadblockmaplump;
 
     // [crispy] (re-)create BLOCKMAP if necessary
-    if (M_CheckParm("-blockmap") || lump >= numlumps || (lumplen = W_LumpLength(lump)) < 8 || (count = lumplen / 2) >= 0x10000)
+    if (M_CheckParm("-blockmap") || lump >= static_cast<int>(numlumps) || (lumplen = W_LumpLength(lump)) < 8 || (count = lumplen / 2) >= 0x10000)
     {
         return false;
     }

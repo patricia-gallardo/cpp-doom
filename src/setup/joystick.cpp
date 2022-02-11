@@ -601,7 +601,6 @@ static const known_joystick_t *GetJoystickType(int index)
     SDL_Joystick *joystick;
     const char *name;
     int axes, buttons, hats;
-    int i;
 
     joystick = all_joysticks[index];
     name = SDL_JoystickName(joystick);
@@ -609,31 +608,31 @@ static const known_joystick_t *GetJoystickType(int index)
     buttons = SDL_JoystickNumButtons(joystick);
     hats = SDL_JoystickNumHats(joystick);
 
-    for (i = 0; i < std::size(known_joysticks); ++i)
+    for (const auto & known_joystick : known_joysticks)
     {
         // Check for a name match. If the name ends in '*', this means
         // ignore the rest.
-        if (M_StringEndsWith(known_joysticks[i].name, "*"))
+        if (M_StringEndsWith(known_joystick.name, "*"))
         {
-            if (strncmp(known_joysticks[i].name, name,
-                        strlen(known_joysticks[i].name) - 1) != 0)
+            if (strncmp(known_joystick.name, name,
+                        strlen(known_joystick.name) - 1) != 0)
             {
                 continue;
             }
         }
         else
         {
-            if (strcmp(known_joysticks[i].name, name) != 0)
+            if (strcmp(known_joystick.name, name) != 0)
             {
                 continue;
             }
         }
 
-        if (known_joysticks[i].axes == axes
-         && known_joysticks[i].buttons == buttons
-         && known_joysticks[i].hats == hats)
+        if (known_joystick.axes == axes
+         && known_joystick.buttons == buttons
+         && known_joystick.hats == hats)
         {
-            return &known_joysticks[i];
+            return &known_joystick;
         }
     }
 

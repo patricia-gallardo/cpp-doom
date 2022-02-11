@@ -219,8 +219,6 @@ static void *DEH_FrameStart(deh_context_t *context, char *line)
 
 static bool GetActionPointerForOffset(int offset, void **result)
 {
-    int i;
-
     // Special case.
 
     if (offset == 0)
@@ -229,9 +227,9 @@ static bool GetActionPointerForOffset(int offset, void **result)
         return true;
     }
 
-    for (i=0; i<std::size(action_pointers); ++i)
+    for (const auto & action_pointer : action_pointers)
     {
-        if (action_pointers[i].offsets[deh_hhe_version] == offset)
+        if (action_pointer.offsets[deh_hhe_version] == offset)
         {
             void *pointer = std::visit(overloaded {
                                            [](const null_hook &) { return static_cast<void *>(nullptr); },
@@ -239,7 +237,7 @@ static bool GetActionPointerForOffset(int offset, void **result)
                                            [](const auto &function) {
                                                return reinterpret_cast<void *>(function);
                                            } },
-                action_pointers[i].func);
+                action_pointer.func);
             *result       = pointer;
             return true;
         }
@@ -254,13 +252,11 @@ static bool GetActionPointerForOffset(int offset, void **result)
 
 static void SuggestOtherVersions(unsigned int offset)
 {
-    unsigned int i, v;
-
-    for (i=0; i<std::size(action_pointers); ++i)
+    for (const auto & action_pointer : action_pointers)
     {
-        for (v=0; v<deh_hhe_num_versions; ++v)
+        for (int v=0; v<deh_hhe_num_versions; ++v)
         {
-            if (action_pointers[i].offsets[v] == offset)
+            if (action_pointer.offsets[v] == static_cast<int>(offset))
             {
                 DEH_SuggestHereticVersion(static_cast<deh_hhe_version_t>(v));
             }

@@ -713,16 +713,15 @@ static char *ExpandFileExtension(const char *musicdir, const char *filename)
 {
     static const char *extns[] = { ".flac", ".ogg", ".mp3" };
     char *             replaced, *result;
-    int                i;
 
     if (!M_StringEndsWith(filename, ".{ext}"))
     {
         return GetFullPath(musicdir, filename);
     }
 
-    for (i = 0; i < std::size(extns); ++i)
+    for (auto & extn : extns)
     {
-        replaced = M_StringReplace(filename, ".{ext}", extns[i]);
+        replaced = M_StringReplace(filename, ".{ext}", extn);
         result   = GetFullPath(musicdir, replaced);
         free(replaced);
         if (M_FileExists(result))
@@ -757,10 +756,7 @@ static void AddSubstituteMusic(const char *musicdir, const char *hash_prefix,
 
 static const char *ReadHashPrefix(char *line)
 {
-    char *result;
     char *p;
-    int   i, len;
-
     for (p = line; *p != '\0' && !isspace(*p) && *p != '='; ++p)
     {
         if (!isxdigit(*p))
@@ -769,19 +765,19 @@ static const char *ReadHashPrefix(char *line)
         }
     }
 
-    len = p - line;
+    size_t len = p - line;
     if (len == 0 || len > sizeof(sha1_digest_t) * 2)
     {
         return nullptr;
     }
 
-    result = static_cast<char *>(malloc(len + 1));
+    char *result = static_cast<char *>(malloc(len + 1));
     if (result == nullptr)
     {
         return nullptr;
     }
 
-    for (i = 0; i < len; ++i)
+    for (size_t i = 0; i < len; ++i)
     {
         result[i] = tolower(line[i]);
     }
@@ -924,7 +920,6 @@ static void LoadSubstituteConfigs()
     char *       musicdir;
     const char * path;
     unsigned int old_music_len;
-    unsigned int i;
 
     // We can configure the path to music packs using the music_pack_path
     // configuration variable. Otherwise we use the current directory, or
@@ -965,10 +960,10 @@ static void LoadSubstituteConfigs()
 
     // Add entries from known filenames list. We add this after those from the
     // configuration files, so that the entries here can be overridden.
-    for (i = 0; i < std::size(known_filenames); ++i)
+    for (auto known_filename : known_filenames)
     {
-        AddSubstituteMusic(musicdir, known_filenames[i].hash_prefix,
-            known_filenames[i].filename);
+        AddSubstituteMusic(musicdir, known_filename.hash_prefix,
+            known_filename.filename);
     }
 
     if (subst_music_len > old_music_len)

@@ -772,16 +772,13 @@ void V_DrawScaledBlock(int x, int y, int width, int height, pixel_t *src)
 
 void V_DrawFilledBox(int x, int y, int w, int h, int c)
 {
-    pixel_t *buf, *buf1;
-    int      x1, y1;
+    pixel_t *buf = I_VideoBuffer + SCREENWIDTH * y + x;
 
-    buf = I_VideoBuffer + SCREENWIDTH * y + x;
-
-    for (y1 = 0; y1 < h; ++y1)
+    for (int y1 = 0; y1 < h; ++y1)
     {
-        buf1 = buf;
+        pixel_t *buf1 = buf;
 
-        for (x1 = 0; x1 < w; ++x1)
+        for (int x1 = 0; x1 < w; ++x1)
         {
             *buf1++ = c;
         }
@@ -792,16 +789,13 @@ void V_DrawFilledBox(int x, int y, int w, int h, int c)
 
 void V_DrawHorizLine(int x, int y, int w, int c)
 {
-    pixel_t *buf;
-    int      x1;
-
     // [crispy] prevent framebuffer overflows
-    if (x + w > static_cast<unsigned>(SCREENWIDTH))
+    if (x + w > SCREENWIDTH)
         w = SCREENWIDTH - x;
 
-    buf = I_VideoBuffer + SCREENWIDTH * y + x;
+    pixel_t *buf = I_VideoBuffer + SCREENWIDTH * y + x;
 
-    for (x1 = 0; x1 < w; ++x1)
+    for (int x1 = 0; x1 < w; ++x1)
     {
         *buf++ = c;
     }
@@ -809,12 +803,9 @@ void V_DrawHorizLine(int x, int y, int w, int c)
 
 void V_DrawVertLine(int x, int y, int h, int c)
 {
-    pixel_t *buf;
-    int      y1;
+    pixel_t *buf = I_VideoBuffer + SCREENWIDTH * y + x;
 
-    buf = I_VideoBuffer + SCREENWIDTH * y + x;
-
-    for (y1 = 0; y1 < h; ++y1)
+    for (int y1 = 0; y1 < h; ++y1)
     {
         *buf = c;
         buf += SCREENWIDTH;
@@ -836,8 +827,6 @@ void V_DrawBox(int x, int y, int w, int h, int c)
 
 void V_CopyScaledBuffer(pixel_t *dest, pixel_t *src, size_t size)
 {
-    int i, j;
-
 #ifdef RANGECHECK
     if (size > ORIGWIDTH * ORIGHEIGHT)
     {
@@ -847,9 +836,9 @@ void V_CopyScaledBuffer(pixel_t *dest, pixel_t *src, size_t size)
 
     while (size--)
     {
-        for (i = 0; i <= crispy->hires; i++)
+        for (int i = 0; i <= crispy->hires; i++)
         {
-            for (j = 0; j <= crispy->hires; j++)
+            for (int j = 0; j <= crispy->hires; j++)
             {
                 *(dest + (size << crispy->hires) + (crispy->hires * static_cast<int>(size / ORIGWIDTH) + i) * SCREENWIDTH + j) = *(src + size);
             }

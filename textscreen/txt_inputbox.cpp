@@ -118,13 +118,10 @@ static void TXT_InputBoxSizeCalc(void *uncast_inputbox)
 static void TXT_InputBoxDrawer(void *uncast_inputbox)
 {
     auto *inputbox = reinterpret_cast<txt_inputbox_t *>(uncast_inputbox);;
-    int focused;
-    int i;
-    int chars;
-    int w;
+    unsigned int chars;
 
-    focused = inputbox->widget.focused;
-    w = inputbox->widget.w;
+    int focused = inputbox->widget.focused;
+    unsigned int w = inputbox->widget.w;
 
     // Select the background color based on whether we are currently
     // editing, and if not, whether the widget is focused.
@@ -168,7 +165,7 @@ static void TXT_InputBoxDrawer(void *uncast_inputbox)
         ++chars;
     }
 
-    for (i=chars; i < w; ++i)
+    for (unsigned int i=chars; i < w; ++i)
     {
         TXT_DrawString(" ");
     }

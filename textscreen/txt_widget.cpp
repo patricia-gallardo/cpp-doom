@@ -248,12 +248,10 @@ int TXT_ContainsWidget(void *uncast_haystack, void *uncast_needle)
 int TXT_HoveringOverWidget(void *uncast_widget)
 {
     auto *widget = reinterpret_cast<txt_widget_t *>(uncast_widget);
-    txt_window_t *active_window;
-    int x, y;
 
     // We can only be hovering over widgets in the active window.
 
-    active_window = TXT_GetActiveWindow();
+    txt_window_t *active_window = TXT_GetActiveWindow();
 
     if (active_window == nullptr || !TXT_ContainsWidget(active_window, widget))
     {
@@ -262,10 +260,12 @@ int TXT_HoveringOverWidget(void *uncast_widget)
 
     // Is the mouse cursor within the bounds of the widget?
 
+    int x, y;
     TXT_GetMousePosition(&x, &y);
 
-    return (x >= widget->x && x < widget->x + widget->w
-         && y >= widget->y && y < widget->y + widget->h);
+    int width = static_cast<int>(widget->w);
+    int height = static_cast<int>(widget->h);
+    return (x >= widget->x && x < widget->x + width && y >= widget->y && y < widget->y + height);
 }
 
 void TXT_SetWidgetBG(void *uncast_widget)

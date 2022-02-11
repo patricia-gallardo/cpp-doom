@@ -655,9 +655,7 @@ static void TicdupSquash(ticcmd_set_t *set)
 
 static void SinglePlayerClear(ticcmd_set_t *set)
 {
-    unsigned int i;
-
-    for (i = 0; i < NET_MAXPLAYERS; ++i)
+    for (int i = 0; i < NET_MAXPLAYERS; ++i)
     {
         if (i != localplayer)
         {

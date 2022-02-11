@@ -55,12 +55,10 @@ static deh_cheat_t allcheats[] = {
 
 static deh_cheat_t *FindCheatByName(char *name)
 {
-    size_t i;
-
-    for (i = 0; i < std::size(allcheats); ++i)
+    for (auto & allcheat : allcheats)
     {
-        if (!strcasecmp(allcheats[i].name, name))
-            return &allcheats[i];
+        if (!strcasecmp(allcheat.name, name))
+            return &allcheat;
     }
 
     return nullptr;
@@ -73,12 +71,8 @@ static void *DEH_CheatStart(deh_context_t *, char *)
 
 static void DEH_CheatParseLine(deh_context_t *context, char *line, void *)
 {
-    deh_cheat_t *  cheat;
     char *         variable_name;
     char *         value;
-    unsigned char *unsvalue;
-    unsigned int   i;
-
     if (!DEH_ParseAssignment(line, &variable_name, &value))
     {
         // Failed to parse
@@ -87,9 +81,9 @@ static void DEH_CheatParseLine(deh_context_t *context, char *line, void *)
         return;
     }
 
-    unsvalue = reinterpret_cast<unsigned char *>(value);
+    unsigned char *unsvalue = reinterpret_cast<unsigned char *>(value);
 
-    cheat = FindCheatByName(variable_name);
+    deh_cheat_t *cheat = FindCheatByName(variable_name);
 
     if (cheat == nullptr)
     {
@@ -99,7 +93,7 @@ static void DEH_CheatParseLine(deh_context_t *context, char *line, void *)
 
     // write the value into the cheat sequence
 
-    i = 0;
+    size_t i = 0;
 
     while (unsvalue[i] != 0 && unsvalue[i] != 0xff)
     {
@@ -121,7 +115,7 @@ static void DEH_CheatParseLine(deh_context_t *context, char *line, void *)
 
         // Absolute limit - don't exceed
 
-        if (i >= MAX_CHEAT_LEN - cheat->seq->parameter_chars)
+        if (static_cast<int>(i) >= MAX_CHEAT_LEN - cheat->seq->parameter_chars)
         {
             DEH_Error(context, "Cheat sequence too long!");
             return;

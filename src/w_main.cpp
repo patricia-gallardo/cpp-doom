@@ -241,26 +241,23 @@ static const struct
 
 void W_CheckCorrectIWAD(GameMission_t mission)
 {
-    int         i;
-    lumpindex_t lumpnum;
-
-    for (i = 0; i < std::size(unique_lumps); ++i)
+    for (auto unique_lump : unique_lumps)
     {
-        if (mission != unique_lumps[i].mission)
+        if (mission != unique_lump.mission)
         {
-            lumpnum = W_CheckNumForName(unique_lumps[i].lumpname);
+            lumpindex_t lumpnum = W_CheckNumForName(unique_lump.lumpname);
 
             if (lumpnum >= 0)
             {
                 I_Error("\nYou are trying to use a %s IWAD file with "
                         "the %s%s binary.\nThis isn't going to work.\n"
                         "You probably want to use the %s%s binary.",
-                    D_SuggestGameName(unique_lumps[i].mission,
+                    D_SuggestGameName(unique_lump.mission,
                         indetermined),
                     PROGRAM_PREFIX,
                     D_GameMissionString(mission),
                     PROGRAM_PREFIX,
-                    D_GameMissionString(unique_lumps[i].mission));
+                    D_GameMissionString(unique_lump.mission));
             }
         }
     }

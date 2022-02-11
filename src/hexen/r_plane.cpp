@@ -141,7 +141,7 @@ void R_MapPlane(int y, int x1, int x2)
     unsigned index;
 
 #ifdef RANGECHECK
-    if (x2 < x1 || x1 < 0 || x2 >= viewwidth || static_cast<unsigned>(y) > viewheight)
+    if (x2 < x1 || x1 < 0 || x2 >= viewwidth || y > viewheight)
     {
         I_Error("R_MapPlane: %i, %i at %i", x1, x2, y);
     }

@@ -57,12 +57,10 @@ static deh_cheat_t allcheats[] =
 
 static deh_cheat_t *FindCheatByName(char *name)
 {
-    size_t i;
-    
-    for (i=0; i<std::size(allcheats); ++i)
+    for (auto & allcheat : allcheats)
     {
-        if (!strcasecmp(allcheats[i].name, name))
-            return &allcheats[i];
+        if (!strcasecmp(allcheat.name, name))
+            return &allcheat;
     }
 
     return nullptr;
@@ -79,7 +77,7 @@ static void DEH_CheatParseLine(deh_context_t *context, char *line, void *)
     char *variable_name;
     char *value;
     unsigned char *unsvalue;
-    unsigned int i;
+    int i;
 
     if (!DEH_ParseAssignment(line, &variable_name, &value))
     {
@@ -108,7 +106,7 @@ static void DEH_CheatParseLine(deh_context_t *context, char *line, void *)
         // If the cheat length exceeds the Vanilla limit, stop.  This
         // does not apply if we have the limit turned off.
 
-        if (!deh_allow_long_cheats && i >= cheat->seq->sequence_len)
+        if (!deh_allow_long_cheats && i >= static_cast<int>(cheat->seq->sequence_len))
         {
             DEH_Warning(context, "Cheat sequence longer than supported by "
                                  "Vanilla dehacked");

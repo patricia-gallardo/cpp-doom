@@ -155,10 +155,10 @@ static void DEH_ThingParseLine(deh_context_t *context, char *line, void *tag)
     {
         for (; (value = strtok(value, ",+| \t\f\r")); value = nullptr)
         {
-            for (int i = 0; i < std::size(bex_thingbitstable); i++)
-                if (!strcasecmp(value, bex_thingbitstable[i].flag))
+            for (auto i : bex_thingbitstable)
+                if (!strcasecmp(value, i.flag))
                 {
-                    ivalue |= bex_thingbitstable[i].bits;
+                    ivalue |= i.bits;
                     break;
                 }
         }

@@ -135,7 +135,7 @@ static void ParseLine(gus_config_t *config, char *line)
 
     for (i = 0; i < config->count; i++)
     {
-        if (config->used[i] == mapped_id)
+        if (config->used[i] == static_cast<int>(mapped_id))
         {
             break;
         }

@@ -59,17 +59,16 @@ static int *all_mouse_buttons[] = {
 static void MouseSetCallback(void *, void *uncast_variable)
 {
     int         *variable = reinterpret_cast<int *>(uncast_variable);
-    unsigned int i;
 
     // Check if the same mouse button is used for a different action
     // If so, set the other action(s) to -1 (unset)
 
-    for (i=0; i<std::size(all_mouse_buttons); ++i)
+    for (auto & all_mouse_button : all_mouse_buttons)
     {
-        if (*all_mouse_buttons[i] == *variable
-         && all_mouse_buttons[i] != variable)
+        if (*all_mouse_button == *variable
+         && all_mouse_button != variable)
         {
-            *all_mouse_buttons[i] = -1;
+            *all_mouse_button = -1;
         }
     }
 }

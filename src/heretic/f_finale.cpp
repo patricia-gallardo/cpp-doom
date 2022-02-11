@@ -124,7 +124,7 @@ void F_Ticker()
 {
     finalecount++;
     if (!finalestage
-        && finalecount > strlen(finaletext) * TEXTSPEED + TEXTWAIT)
+        && finalecount > static_cast<int>(strlen(finaletext)) * TEXTSPEED + TEXTWAIT)
     {
         finalecount = 0;
         if (!finalestage)

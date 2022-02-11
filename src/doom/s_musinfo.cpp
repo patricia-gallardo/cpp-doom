@@ -347,7 +347,7 @@ void T_MusInfo()
             {
                 int lumpnum = musinfo.items[arraypt];
 
-                if (lumpnum > 0 && lumpnum < numlumps)
+                if (lumpnum > 0 && lumpnum < static_cast<int>(numlumps))
                 {
                     S_ChangeMusInfoMusic(lumpnum, true);
                 }

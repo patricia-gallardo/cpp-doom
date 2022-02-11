@@ -2025,7 +2025,6 @@ void SV_SaveMap(bool savePlayers)
 
 void SV_LoadGame(int slot)
 {
-    int i;
     char fileName[100];
     char version_text[HXS_VERSION_TEXT_LENGTH];
     player_t playerBackup[MAXPLAYERS];
@@ -2049,7 +2048,7 @@ void SV_LoadGame(int slot)
 
     // Check the version text
 
-    for (i = 0; i < sizeof(version_text); ++i)
+    for (size_t i = 0; i < sizeof(version_text); ++i)
     {
         version_text[i] = SV_ReadByte();
     }
@@ -2066,12 +2065,12 @@ void SV_LoadGame(int slot)
 
     // Read global script info
 
-    for (i = 0; i < MAX_ACS_WORLD_VARS; ++i)
+    for (int i = 0; i < MAX_ACS_WORLD_VARS; ++i)
     {
         WorldVars[i] = SV_ReadLong();
     }
 
-    for (i = 0; i < MAX_ACS_STORE + 1; ++i)
+    for (int i = 0; i < MAX_ACS_STORE + 1; ++i)
     {
         StreamIn_acsstore_t(&ACSStore[i]);
     }
@@ -2082,7 +2081,7 @@ void SV_LoadGame(int slot)
     AssertSegment(ASEG_END);
 
     // Save player structs
-    for (i = 0; i < maxplayers; i++)
+    for (int i = 0; i < maxplayers; i++)
     {
         playerBackup[i] = players[i];
     }
@@ -2098,7 +2097,7 @@ void SV_LoadGame(int slot)
     // Restore player structs
     inv_ptr = 0;
     curpos = 0;
-    for (i = 0; i < maxplayers; i++)
+    for (int i = 0; i < maxplayers; i++)
     {
         mobj = players[i].mo;
         players[i] = playerBackup[i];
@@ -2686,11 +2685,11 @@ static int GetMobjNum(mobj_t * mobj)
 
 static void SetMobjPtr(mobj_t **ptr, unsigned int archiveNum)
 {
-    if (archiveNum == MOBJ_NULL)
+    if (static_cast<int>(archiveNum) == MOBJ_NULL)
     {
         *ptr = nullptr;
     }
-    else if (archiveNum == MOBJ_XX_PLAYER)
+    else if (static_cast<int>(archiveNum) == MOBJ_XX_PLAYER)
     {
         if (TargetPlayerCount == MAX_TARGET_PLAYERS)
         {
@@ -3165,13 +3164,13 @@ static void UnarchivePolyobjs()
     fixed_t deltaY;
 
     AssertSegment(ASEG_POLYOBJS);
-    if (SV_ReadLong() != po_NumPolyobjs)
+    if (static_cast<int>(SV_ReadLong()) != po_NumPolyobjs)
     {
         I_Error("UnarchivePolyobjs: Bad polyobj count");
     }
     for (i = 0; i < po_NumPolyobjs; i++)
     {
-        if (SV_ReadLong() != polyobjs[i].tag)
+        if (static_cast<int>(SV_ReadLong()) != polyobjs[i].tag)
         {
             I_Error("UnarchivePolyobjs: Invalid polyobj tag");
         }

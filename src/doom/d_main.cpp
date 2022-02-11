@@ -781,26 +781,21 @@ static const char *banners[] = {
 
 static const char *GetGameName(const char *gamename)
 {
-    size_t      i;
-    const char *deh_sub;
-
-    for (i = 0; i < std::size(banners); ++i)
+    for (auto & banner : banners)
     {
         // Has the banner been replaced?
 
-        deh_sub = DEH_String(banners[i]);
+        const char *deh_sub = DEH_String(banner);
 
-        if (deh_sub != banners[i])
+        if (deh_sub != banner)
         {
-            int version;
-
             // Has been replaced.
             // We need to expand via printf to include the Doom version number
             // We also need to cut off spaces to get the basic name
 
             const auto newgamename_size = strlen(deh_sub) + 10;
             auto *     newgamename      = zmalloc<char *>(newgamename_size, PU_STATIC, 0);
-            version                     = G_VanillaVersionCode();
+            int version                     = G_VanillaVersionCode();
             M_snprintf(newgamename, newgamename_size, deh_sub,
                 version / 100, version % 100);
 
@@ -1041,15 +1036,11 @@ static const char *copyright_banners[] = {
 
 void PrintDehackedBanners()
 {
-    size_t i;
-
-    for (i = 0; i < std::size(copyright_banners); ++i)
+    for (auto & copyright_banner : copyright_banners)
     {
-        const char *deh_s;
+        const char *deh_s = DEH_String(copyright_banner);
 
-        deh_s = DEH_String(copyright_banners[i]);
-
-        if (deh_s != copyright_banners[i])
+        if (deh_s != copyright_banner)
         {
             printf("%s", deh_s);
 
@@ -1330,8 +1321,6 @@ static void LoadIwadDeh()
 // [crispy] support loading SIGIL.WAD (and SIGIL_SHREDS.WAD) alongside DOOM.WAD
 static void LoadSigilWad()
 {
-    int i;
-
     static constexpr struct {
         const char *name;
         const char  new_name[9];
@@ -1355,25 +1344,23 @@ static void LoadSigilWad()
     };
 
     // [crispy] don't load SIGIL.wad if another PWAD already provides E5M1
-    i = W_CheckNumForName("E5M1");
-    if (i != -1)
+    auto e5m1= W_CheckNumForName("E5M1");
+    if (e5m1 != -1)
     {
         return;
     }
 
     // [crispy] don't load SIGIL.wad if SIGIL_COMPAT.wad is already loaded
-    i = W_CheckNumForName("E3M1");
-    if (i != -1 && !strncasecmp(W_WadNameForLump(lumpinfo[i]), "SIGIL_COMPAT", 12))
+    auto e3m1 = W_CheckNumForName("E3M1");
+    if (e3m1 != -1 && !strncasecmp(W_WadNameForLump(lumpinfo[e3m1]), "SIGIL_COMPAT", 12))
     {
         return;
     }
 
     // [crispy] don't load SIGIL.wad if another PWAD already modifies the texture files
-    for (i = 0; i < std::size(texture_files); i++)
+    for (auto texture_file : texture_files)
     {
-        int j;
-
-        j = W_CheckNumForName(texture_files[i]);
+        int j = W_CheckNumForName(texture_file);
 
         if (j != -1 && !W_IsIWADLump(lumpinfo[j]))
         {
@@ -1395,9 +1382,9 @@ static void LoadSigilWad()
         sigil_shreds = M_StringJoin(dirname, DIR_SEPARATOR_S, "SIGIL_SHREDS.wad", nullptr);
 
         // [crispy] load SIGIL.WAD
-        for (i = 0; i < std::size(sigil_wads); i++)
+        for (auto sigil : sigil_wads)
         {
-            sigil_wad = M_StringJoin(dirname, DIR_SEPARATOR_S, sigil_wads[i], nullptr);
+            sigil_wad = M_StringJoin(dirname, DIR_SEPARATOR_S, sigil, nullptr);
 
             if (M_FileExists(sigil_wad))
             {
@@ -1405,7 +1392,7 @@ static void LoadSigilWad()
             }
 
             free(sigil_wad);
-            sigil_wad = D_FindWADByName(sigil_wads[i]);
+            sigil_wad = D_FindWADByName(sigil);
 
             if (sigil_wad)
             {
@@ -1439,34 +1426,30 @@ static void LoadSigilWad()
         }
 
         // [crispy] rename intrusive SIGIL_SHREDS.wad music lumps out of the way
-        for (i = 0; i < std::size(sigil_lumps); i++)
+        for (const auto & sigil_lump : sigil_lumps)
         {
-            int j;
-
             // [crispy] skip non-music lumps
-            if (strncasecmp(sigil_lumps[i].name, "D_", 2))
+            if (strncasecmp(sigil_lump.name, "D_", 2))
             {
                 continue;
             }
 
-            j = W_CheckNumForName(sigil_lumps[i].name);
+            int j = W_CheckNumForName(sigil_lump.name);
 
             if (j != -1 && !strncasecmp(W_WadNameForLump(lumpinfo[j]), "SIGIL_SHREDS", 12))
             {
-                memcpy(lumpinfo[j]->name, sigil_lumps[i].new_name, 8);
+                memcpy(lumpinfo[j]->name, sigil_lump.new_name, 8);
             }
         }
 
         // [crispy] rename intrusive SIGIL.wad graphics, demos and music lumps out of the way
-        for (i = 0; i < std::size(sigil_lumps); i++)
+        for (const auto & sigil_lump : sigil_lumps)
         {
-            int j;
-
-            j = W_CheckNumForName(sigil_lumps[i].name);
+            int j = W_CheckNumForName(sigil_lump.name);
 
             if (j != -1 && !strncasecmp(W_WadNameForLump(lumpinfo[j]), "SIGIL", 5))
             {
-                memcpy(lumpinfo[j]->name, sigil_lumps[i].new_name, 8);
+                memcpy(lumpinfo[j]->name, sigil_lump.new_name, 8);
             }
         }
 
@@ -2061,9 +2044,9 @@ void D_DoomMain()
     // [crispy] load DEHACKED lumps by default, but allow overriding
     if (!M_ParmExists("-nodehlump") && !M_ParmExists("-nodeh"))
     {
-        int i, loaded = 0;
+        int loaded = 0;
 
-        for (i = numiwadlumps; i < numlumps; ++i)
+        for (unsigned int i = numiwadlumps; i < numlumps; ++i)
         {
             if (!strncmp(lumpinfo[i]->name, "DEHACKED", 8))
             {

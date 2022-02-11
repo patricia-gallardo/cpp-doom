@@ -571,12 +571,8 @@ static const speciallevel_t speciallevels[] = {
 
 static void HU_SetSpecialLevelName(const char *wad, const char **name)
 {
-    int i;
-
-    for (i = 0; i < std::size(speciallevels); i++)
+    for (auto speciallevel : speciallevels)
     {
-        const speciallevel_t speciallevel = speciallevels[i];
-
         if (logical_gamemission == speciallevel.mission && (!speciallevel.episode || gameepisode == speciallevel.episode) && gamemap == speciallevel.map && (!speciallevel.wad || !strcasecmp(wad, speciallevel.wad)))
         {
             *name = speciallevel.name ? speciallevel.name : maplumpinfo->name;

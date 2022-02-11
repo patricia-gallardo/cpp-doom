@@ -425,7 +425,6 @@ static void TXT_JoystickAxisDrawer(void *uncast_joystick_axis)
 {
     auto *joystick_axis = reinterpret_cast<txt_joystick_axis_t *>(uncast_joystick_axis);
     char buf[JOYSTICK_AXIS_WIDTH + 1];
-    int i;
 
     if (*joystick_axis->axis < 0)
     {
@@ -459,7 +458,7 @@ static void TXT_JoystickAxisDrawer(void *uncast_joystick_axis)
 
     TXT_DrawString(buf);
 
-    for (i = TXT_UTF8_Strlen(buf); i < joystick_axis->widget.w; ++i)
+    for (unsigned int i = TXT_UTF8_Strlen(buf); i < joystick_axis->widget.w; ++i)
     {
         TXT_DrawString(" ");
     }

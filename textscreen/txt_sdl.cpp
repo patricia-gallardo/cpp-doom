@@ -263,11 +263,12 @@ int TXT_Init()
     // for drawing the screen.
     if ((SDL_GetWindowFlags(TXT_SDLWindow) & SDL_WINDOW_ALLOW_HIGHDPI) != 0)
     {
-        int render_w, render_h;
+        int render_w = 0;
+        int render_h = 0;
 
         if (SDL_GetRendererOutputSize(renderer, &render_w, &render_h) == 0
-         && render_w >= TXT_SCREEN_W * large_font.w
-         && render_h >= TXT_SCREEN_H * large_font.h)
+         && render_w >= TXT_SCREEN_W * static_cast<int>(large_font.w)
+         && render_h >= TXT_SCREEN_H * static_cast<int>(large_font.h))
         {
             font = &large_font;
             // Note that we deliberately do not update screen_image_{w,h}
@@ -701,16 +702,14 @@ int TXT_GetModifierState(txt_modifier_t mod)
 
 int TXT_UnicodeCharacter(unsigned int c)
 {
-    unsigned int i;
-
     // Check the code page mapping to see if this character maps
     // to anything.
 
-    for (i = 0; i < std::size(code_page_to_unicode); ++i)
+    for (size_t i = 0; i < std::size(code_page_to_unicode); ++i)
     {
-        if (code_page_to_unicode[i] == c)
+        if (code_page_to_unicode[i] == static_cast<short>(c))
         {
-            return i;
+            return static_cast<int>(i);
         }
     }
 
@@ -738,9 +737,6 @@ static int PrintableName(const char *s)
 
 static const char *NameForKey(int key)
 {
-    const char *result;
-    int i;
-
     // Overrides purely for aesthetical reasons, so that default
     // window accelerator keys match those of setup.exe.
     switch (key)
@@ -754,11 +750,11 @@ static const char *NameForKey(int key)
     // This key presumably maps to a scan code that is listed in the
     // translation table. Find which mapping and once we have a scancode,
     // we can convert it into a virtual key, then a string via SDL.
-    for (i = 0; i < std::size(scancode_translate_table); ++i)
+    for (size_t i = 0; i < std::size(scancode_translate_table); ++i)
     {
         if (scancode_translate_table[i] == key)
         {
-            result = SDL_GetKeyName(SDL_GetKeyFromScancode(static_cast<SDL_Scancode>(i)));
+            const char *result = SDL_GetKeyName(SDL_GetKeyFromScancode(static_cast<SDL_Scancode>(i)));
             if (TXT_UTF8_Strlen(result) > 6 || !PrintableName(result))
             {
                 break;
@@ -770,11 +766,11 @@ static const char *NameForKey(int key)
     // Use US English fallback names, if the localized name is too long,
     // not found in the scancode table, or contains unprintable chars
     // (non-extended ASCII character set):
-    for (i = 0; i < std::size(key_names); ++i)
+    for (auto key_name : key_names)
     {
-        if (key_names[i].key == key)
+        if (key_name.key == key)
         {
-            return key_names[i].name;
+            return key_name.name;
         }
     }
 
@@ -948,8 +944,6 @@ void TXT_StringConcat(char *dest, const char *src, size_t dest_len)
 // Safe, portable vsnprintf().
 int TXT_vsnprintf(char *buf, size_t buf_len, const char *s, va_list args)
 {
-    int result;
-
     if (buf_len < 1)
     {
         return 0;
@@ -958,11 +952,11 @@ int TXT_vsnprintf(char *buf, size_t buf_len, const char *s, va_list args)
     // Windows (and other OSes?) has a vsnprintf() that doesn't always
     // append a trailing \0. So we must do it, and write into a buffer
     // that is one byte shorter; otherwise this function is unsafe.
-    result = vsnprintf(buf, buf_len, s, args);
+    int result = vsnprintf(buf, buf_len, s, args);
 
     // If truncated, change the final char in the buffer to a \0.
     // A negative result indicates a truncated buffer on Windows.
-    if (result < 0 || result >= buf_len)
+    if (result < 0 || result >= static_cast<int>(buf_len))
     {
         buf[buf_len - 1] = '\0';
         result = buf_len - 1;

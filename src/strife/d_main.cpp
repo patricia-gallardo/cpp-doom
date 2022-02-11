@@ -774,16 +774,13 @@ static const char *banners[] =
 
 static char *GetGameName(char *gamename)
 {
-    size_t i;
-    const char *deh_sub;
-    
-    for (i=0; i<std::size(banners); ++i)
+    for (auto & banner : banners)
     {
         // Has the banner been replaced?
 
-        deh_sub = DEH_String(banners[i]);
+        const char *deh_sub = DEH_String(banner);
         
-        if (deh_sub != banners[i])
+        if (deh_sub != banner)
         {
             // Has been replaced
             // We need to expand via printf to include the Doom version 
@@ -978,15 +975,11 @@ static const char *copyright_banners[] =
 
 void PrintDehackedBanners()
 {
-    size_t i;
-
-    for (i=0; i<std::size(copyright_banners); ++i)
+    for (auto & copyright_banner : copyright_banners)
     {
-        const char *deh_s;
+        const char *deh_s = DEH_String(copyright_banner);
 
-        deh_s = DEH_String(copyright_banners[i]);
-
-        if (deh_s != copyright_banners[i])
+        if (deh_s != copyright_banner)
         {
             printf("%s", deh_s);
 
@@ -1147,10 +1140,6 @@ static void D_SetChar(char c)
 //
 static void D_DrawText(const char *string, int bc, int fc)
 {
-    int column;
-    int row;
-    int i;
-
     if (!using_text_startup)
     {
         return;
@@ -1161,12 +1150,12 @@ static void D_DrawText(const char *string, int bc, int fc)
     TXT_FGColor(static_cast<txt_color_t>(fc));
 
     // Get column position
-    column = D_GetCursorColumn();
+    int column = D_GetCursorColumn();
 
     // Get row position
-    row = D_GetCursorRow();
+    int row = D_GetCursorRow();
 
-    for (i = 0; i < strlen(string); i++)
+    for (size_t i = 0; i < strlen(string); i++)
     {
         // Set character
         D_SetChar(string[i]);

@@ -159,7 +159,7 @@ static void FillBuffer(uint8_t *buffer, unsigned int nsamples)
     // This seems like a reasonable assumption.  mix_buffer is
     // 1 second long, which should always be much longer than the
     // SDL mix buffer.
-    assert(nsamples < mixing_freq);
+    assert(static_cast<int>(nsamples) < mixing_freq);
 
     // OPL output is generated into temporary buffer and then mixed
     // (to avoid overflows etc.)

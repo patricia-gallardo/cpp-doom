@@ -617,25 +617,19 @@ static char *ExpandExtension(const char *orig)
 
 char *TXT_SelectFile(const char *window_title, const char **extensions)
 {
-    unsigned int i;
-    size_t len;
-    char *result;
-    char **argv;
-    int argc;
-
     if (!ZenityAvailable())
     {
         return nullptr;
     }
 
-    argv = static_cast<char **>(std::calloc(5 + NumExtensions(extensions), sizeof(char *)));
+    char **argv = static_cast<char **>(std::calloc(5 + NumExtensions(extensions), sizeof(char *)));
     argv[0] = strdup(ZENITY_BINARY);
     argv[1] = strdup("--file-selection");
-    argc = 2;
+    int argc = 2;
 
     if (window_title != nullptr)
     {
-        len = 10 + strlen(window_title);
+        size_t len = 10 + strlen(window_title);
         argv[argc] = static_cast<char *>(malloc(len));
         TXT_snprintf(argv[argc], len, "--title=%s", window_title);
         ++argc;
@@ -648,12 +642,12 @@ char *TXT_SelectFile(const char *window_title, const char **extensions)
     }
     else if (extensions != nullptr)
     {
-        for (i = 0; extensions[i] != nullptr; ++i)
+        for (int i = 0; extensions[i] != nullptr; ++i)
         {
             char * newext = ExpandExtension(extensions[i]);
             if (newext)
             {
-                len = 30 + strlen(extensions[i]) + strlen(newext);
+                size_t len = 30 + strlen(extensions[i]) + strlen(newext);
                 argv[argc] = static_cast<char *>(malloc(len));
                 TXT_snprintf(argv[argc], len, "--file-filter=.%s | *.%s",
                              extensions[i], newext);
@@ -668,9 +662,9 @@ char *TXT_SelectFile(const char *window_title, const char **extensions)
 
     argv[argc] = nullptr;
 
-    result = ExecReadOutput(argv);
+    char *result = ExecReadOutput(argv);
 
-    for (i = 0; i < argc; ++i)
+    for (int i = 0; i < argc; ++i)
     {
         free(argv[i]);
     }

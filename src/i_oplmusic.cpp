@@ -1363,15 +1363,10 @@ static void ReplaceExistingVoiceDoom1()
 
 static void ReplaceExistingVoiceDoom2(opl_channel_data_t *channel)
 {
-    int i;
-    int result;
-    int priority;
+    int result = 0;
+    unsigned int priority = 0x8000;
 
-    result = 0;
-
-    priority = 0x8000;
-
-    for (i = 0; i < voice_alloced_num - 3; i++)
+    for (int i = 0; i < voice_alloced_num - 3; i++)
     {
         if (voice_alloced_list[i]->priority < priority
             && voice_alloced_list[i]->channel >= channel)
@@ -1600,7 +1595,7 @@ static void KeyOnEvent(opl_track_data_t *track, midi_event_t *event)
         {
             voicenum = 1;
         }
-        while (voice_alloced_num > num_opl_voices - voicenum)
+        while (voice_alloced_num > num_opl_voices - static_cast<int>(voicenum))
         {
             ReplaceExistingVoiceDoom1();
         }
@@ -1673,25 +1668,23 @@ static void ProgramChangeEvent(opl_track_data_t *track, midi_event_t *event)
 static void SetChannelVolume(opl_channel_data_t *channel, unsigned int volume,
     bool clip_start)
 {
-    unsigned int i;
+    channel->volume_base = static_cast<int>(volume);
 
-    channel->volume_base = volume;
-
-    if (volume > current_music_volume)
+    if (static_cast<int>(volume) > current_music_volume)
     {
         volume = current_music_volume;
     }
 
-    if (clip_start && volume > start_music_volume)
+    if (clip_start && static_cast<int>(volume) > start_music_volume)
     {
         volume = start_music_volume;
     }
 
-    channel->volume = volume;
+    channel->volume = static_cast<int>(volume);
 
     // Update all voices that this channel is using.
 
-    for (i = 0; i < num_opl_voices; ++i)
+    for (int i = 0; i < num_opl_voices; ++i)
     {
         if (voices[i].channel == channel)
         {
@@ -1703,7 +1696,6 @@ static void SetChannelVolume(opl_channel_data_t *channel, unsigned int volume,
 static void SetChannelPan(opl_channel_data_t *channel, unsigned int pan)
 {
     unsigned int reg_pan;
-    unsigned int i;
 
     // The DMX library has the stereo channels backwards, maybe because
     // Paul Radek had a Soundblaster card with the channels reversed, or
@@ -1729,10 +1721,10 @@ static void SetChannelPan(opl_channel_data_t *channel, unsigned int pan)
         {
             reg_pan = 0x30;
         }
-        if (channel->pan != reg_pan)
+        if (channel->pan != static_cast<int>(reg_pan))
         {
             channel->pan = reg_pan;
-            for (i = 0; i < num_opl_voices; i++)
+            for (int i = 0; i < num_opl_voices; i++)
             {
                 if (voices[i].channel == channel)
                 {
@@ -1803,7 +1795,6 @@ static void ControllerEvent(opl_track_data_t *track, midi_event_t *event)
 static void PitchBendEvent(opl_track_data_t *track, midi_event_t *event)
 {
     opl_channel_data_t *channel;
-    int                 i;
     opl_voice_t *       voice_updated_list[OPL_NUM_VOICES * 2];
     unsigned int        voice_updated_num = 0;
     opl_voice_t *       voice_not_updated_list[OPL_NUM_VOICES * 2];
@@ -1817,7 +1808,7 @@ static void PitchBendEvent(opl_track_data_t *track, midi_event_t *event)
 
     // Update all voices for this channel.
 
-    for (i = 0; i < voice_alloced_num; ++i)
+    for (int i = 0; i < voice_alloced_num; ++i)
     {
         if (voice_alloced_list[i]->channel == channel)
         {
@@ -1831,12 +1822,12 @@ static void PitchBendEvent(opl_track_data_t *track, midi_event_t *event)
         }
     }
 
-    for (i = 0; i < voice_not_updated_num; i++)
+    for (unsigned int i = 0; i < voice_not_updated_num; i++)
     {
         voice_alloced_list[i] = voice_not_updated_list[i];
     }
 
-    for (i = 0; i < voice_updated_num; i++)
+    for (unsigned int i = 0; i < voice_updated_num; i++)
     {
         voice_alloced_list[i + voice_not_updated_num] = voice_updated_list[i];
     }
@@ -1947,7 +1938,7 @@ static void RestartSong(void *)
 
     start_music_volume = current_music_volume;
 
-    for (int i = 0; i < num_tracks; ++i)
+    for (unsigned int i = 0; i < num_tracks; ++i)
     {
         MIDI_RestartIterator(tracks[i].iter);
         ScheduleTrack(&tracks[i]);
@@ -2099,8 +2090,6 @@ static void I_OPL_PlaySong(void *handle, bool looping)
 
 static void I_OPL_PauseSong()
 {
-    unsigned int i;
-
     if (!music_initialized)
     {
         return;
@@ -2113,7 +2102,7 @@ static void I_OPL_PauseSong()
     // Turn off all main instrument voices (not percussion).
     // This is what Vanilla does.
 
-    for (i = 0; i < num_opl_voices; ++i)
+    for (int i = 0; i < num_opl_voices; ++i)
     {
         if (voices[i].channel != nullptr
             && voices[i].current_instr < percussion_instrs)
@@ -2415,11 +2404,6 @@ static int ChannelInUse(opl_channel_data_t *channel)
 
 void I_OPL_DevMessages(char *result, size_t result_len)
 {
-    char tmp[80];
-    int  instr_num;
-    int  lines;
-    int  i;
-
     if (num_tracks == 0)
     {
         M_snprintf(result, result_len, "No OPL track!");
@@ -2427,16 +2411,17 @@ void I_OPL_DevMessages(char *result, size_t result_len)
     }
 
     M_snprintf(result, result_len, "Tracks:\n");
-    lines = 1;
+    int lines = 1;
+    char tmp[80] = {};
 
-    for (i = 0; i < NumActiveChannels(); ++i)
+    for (int i = 0; i < NumActiveChannels(); ++i)
     {
         if (channels[i].instrument == nullptr)
         {
             continue;
         }
 
-        instr_num = channels[i].instrument - main_instrs;
+        int instr_num = channels[i].instrument - main_instrs;
 
         M_snprintf(tmp, sizeof(tmp),
             "chan %i: %c i#%i (%s)\n",
@@ -2453,7 +2438,7 @@ void I_OPL_DevMessages(char *result, size_t result_len)
     M_StringConcat(result, tmp, result_len);
     lines += 2;
 
-    i = (last_perc_count + PERCUSSION_LOG_LEN - 1) % PERCUSSION_LOG_LEN;
+    unsigned int i = (last_perc_count + PERCUSSION_LOG_LEN - 1) % PERCUSSION_LOG_LEN;
 
     do
     {

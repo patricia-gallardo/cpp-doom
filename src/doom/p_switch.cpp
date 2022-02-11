@@ -150,7 +150,7 @@ void P_InitSwitchList()
                                                  alphSwitchList[i].episode;
 
         // [crispy] remove MAXSWITCHES limit
-        if (slindex + 1 >= maxswitches)
+        if (slindex + 1 >= static_cast<int>(maxswitches))
         {
             size_t newmax = maxswitches ? 2 * maxswitches : MAXSWITCHES;
             switchlist    = static_cast<decltype(switchlist)>(I_Realloc(switchlist, newmax * sizeof(*switchlist)));

@@ -389,7 +389,7 @@ void S_Start()
             mus_ddtbl2,
         };
 
-        if ((gameepisode == 2 || gamemission == pack_nerve) && gamemap <= std::size(nmus))
+        if ((gameepisode == 2 || gamemission == pack_nerve) && gamemap <= static_cast<int>(std::size(nmus)))
         {
             mnum = nmus[gamemap - 1];
         }

@@ -202,7 +202,6 @@ bool usearti = true;
 
 void G_BuildTiccmd(ticcmd_t *cmd, int maketic)
 {
-    int i;
     bool strafe, bstrafe;
     int speed, tspeed, lspeed;
     int forward, side;
@@ -467,28 +466,29 @@ void G_BuildTiccmd(ticcmd_t *cmd, int maketic)
      && players[consoleplayer].morphTics == 0 && next_weapon != 0)
     {
         int start_i;
+        int weapon = 0;
 
         if (players[consoleplayer].pendingweapon == WP_NOCHANGE)
         {
-            i = players[consoleplayer].readyweapon;
+            weapon = players[consoleplayer].readyweapon;
         }
         else
         {
-            i = players[consoleplayer].pendingweapon;
+            weapon = players[consoleplayer].pendingweapon;
         }
 
         // Don't loop forever.
-        start_i = i;
+        start_i = weapon;
         do {
-            i = (i + next_weapon + NUMWEAPONS) % NUMWEAPONS;
-        } while (i != start_i && !players[consoleplayer].weaponowned[i]);
+            weapon = (weapon + next_weapon + NUMWEAPONS) % NUMWEAPONS;
+        } while (weapon != start_i && !players[consoleplayer].weaponowned[weapon]);
 
         cmd->buttons |= BT_CHANGE;
-        cmd->buttons |= i << BT_WEAPONSHIFT;
+        cmd->buttons |= weapon << BT_WEAPONSHIFT;
     }
     else
     {
-        for (i=0; i<std::size(weapon_keys); ++i)
+        for (size_t i=0; i<std::size(weapon_keys); ++i)
         {
             int key = *weapon_keys[i];
 
