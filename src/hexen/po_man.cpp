@@ -91,12 +91,15 @@ void T_RotatePoly(polyevent_t * pe)
         if (pe->dist <= 0)
         {
             poly = GetPolyobj(pe->polyobj);
-            if (poly->specialdata == pe)
+            if (poly)
             {
-                poly->specialdata = nullptr;
+                if (poly->specialdata == pe)
+                {
+                    poly->specialdata = nullptr;
+                }
+                SN_StopSequence(reinterpret_cast<mobj_t *>(&poly->startSpot));
+                P_PolyobjFinished(poly->tag);
             }
-            SN_StopSequence(reinterpret_cast<mobj_t *>(&poly->startSpot));
-            P_PolyobjFinished(poly->tag);
             P_RemoveThinker(&pe->thinker);
         }
         if (pe->dist < absSpeed)
@@ -141,7 +144,7 @@ bool EV_RotatePoly(line_t *, uint8_t *args, int direction, bool
     {
         if (args[2] == 255)
         {
-            pe->dist = -1;
+            pe->dist = static_cast<unsigned int>(-1);
         }
         else
         {
@@ -173,7 +176,7 @@ bool EV_RotatePoly(line_t *, uint8_t *args, int direction, bool
         {
             if (args[2] == 255)
             {
-                pe->dist = -1;
+                pe->dist = static_cast<unsigned int>(-1);
             }
             else
             {
@@ -220,12 +223,12 @@ void T_MovePoly(polyevent_t * pe)
         if (pe->dist <= 0)
         {
             poly = GetPolyobj(pe->polyobj);
-            if (poly->specialdata == pe)
+            if (poly)
             {
-                poly->specialdata = nullptr;
+                if (poly->specialdata == pe) { poly->specialdata = nullptr; }
+                SN_StopSequence(reinterpret_cast<mobj_t *>(&poly->startSpot));
+                P_PolyobjFinished(poly->tag);
             }
-            SN_StopSequence(reinterpret_cast<mobj_t *>(&poly->startSpot));
-            P_PolyobjFinished(poly->tag);
             P_RemoveThinker(&pe->thinker);
         }
         if (pe->dist < absSpeed)
@@ -335,8 +338,8 @@ void T_PolyDoor(polydoor_t * pd)
         if (!--pd->tics)
         {
             poly = GetPolyobj(pd->polyobj);
-            SN_StartSequence(reinterpret_cast<mobj_t *>(&poly->startSpot), SEQ_DOOR_STONE +
-                             poly->seqType);
+            if (poly)
+                SN_StartSequence(reinterpret_cast<mobj_t *>(&poly->startSpot), SEQ_DOOR_STONE + poly->seqType);
         }
         return;
     }
@@ -350,7 +353,8 @@ void T_PolyDoor(polydoor_t * pd)
                 if (pd->dist <= 0)
                 {
                     poly = GetPolyobj(pd->polyobj);
-                    SN_StopSequence(reinterpret_cast<mobj_t *>(&poly->startSpot));
+                    if (poly)
+                        SN_StopSequence(reinterpret_cast<mobj_t *>(&poly->startSpot));
                     if (!pd->close)
                     {
                         pd->dist = pd->totalDist;
@@ -363,11 +367,11 @@ void T_PolyDoor(polydoor_t * pd)
                     }
                     else
                     {
-                        if (poly->specialdata == pd)
+                        if (poly)
                         {
-                            poly->specialdata = nullptr;
+                            if (poly->specialdata == pd) { poly->specialdata = nullptr; }
+                            P_PolyobjFinished(poly->tag);
                         }
-                        P_PolyobjFinished(poly->tag);
                         P_RemoveThinker(&pd->thinker);
                     }
                 }
@@ -375,20 +379,21 @@ void T_PolyDoor(polydoor_t * pd)
             else
             {
                 poly = GetPolyobj(pd->polyobj);
-                if (poly->crush || !pd->close)
-                {               // continue moving if the poly is a crusher, or is opening
-                    return;
-                }
-                else
-                {               // open back up
-                    pd->dist = pd->totalDist - pd->dist;
-                    pd->direction = (ANG_MAX >> ANGLETOFINESHIFT) -
-                        pd->direction;
-                    pd->xSpeed = -pd->xSpeed;
-                    pd->ySpeed = -pd->ySpeed;
-                    pd->close = false;
-                    SN_StartSequence(reinterpret_cast<mobj_t *>(&poly->startSpot),
-                                     SEQ_DOOR_STONE + poly->seqType);
+                if (poly)
+                {
+                    if (poly->crush || !pd->close)
+                    { // continue moving if the poly is a crusher, or is opening
+                        return;
+                    }
+                    else
+                    { // open back up
+                        pd->dist      = pd->totalDist - pd->dist;
+                        pd->direction = (ANG_MAX >> ANGLETOFINESHIFT) - pd->direction;
+                        pd->xSpeed    = -pd->xSpeed;
+                        pd->ySpeed    = -pd->ySpeed;
+                        pd->close     = false;
+                        SN_StartSequence(reinterpret_cast<mobj_t *>(&poly->startSpot), SEQ_DOOR_STONE + poly->seqType);
+                    }
                 }
             }
             break;
@@ -404,7 +409,8 @@ void T_PolyDoor(polydoor_t * pd)
                 if (pd->dist <= 0)
                 {
                     poly = GetPolyobj(pd->polyobj);
-                    SN_StopSequence(reinterpret_cast<mobj_t *>(&poly->startSpot));
+                    if (poly)
+                        SN_StopSequence(reinterpret_cast<mobj_t *>(&poly->startSpot));
                     if (!pd->close)
                     {
                         pd->dist = pd->totalDist;
@@ -414,11 +420,11 @@ void T_PolyDoor(polydoor_t * pd)
                     }
                     else
                     {
-                        if (poly->specialdata == pd)
+                        if (poly)
                         {
-                            poly->specialdata = nullptr;
+                            if (poly->specialdata == pd) { poly->specialdata = nullptr; }
+                            P_PolyobjFinished(poly->tag);
                         }
-                        P_PolyobjFinished(poly->tag);
                         P_RemoveThinker(&pd->thinker);
                     }
                 }
@@ -426,17 +432,19 @@ void T_PolyDoor(polydoor_t * pd)
             else
             {
                 poly = GetPolyobj(pd->polyobj);
-                if (poly->crush || !pd->close)
-                {               // continue moving if the poly is a crusher, or is opening
-                    return;
-                }
-                else
-                {               // open back up and rewait
-                    pd->dist = pd->totalDist - pd->dist;
-                    pd->speed = -pd->speed;
-                    pd->close = false;
-                    SN_StartSequence(reinterpret_cast<mobj_t *>(&poly->startSpot),
-                                     SEQ_DOOR_STONE + poly->seqType);
+                if (poly)
+                {
+                    if (poly->crush || !pd->close)
+                    { // continue moving if the poly is a crusher, or is opening
+                        return;
+                    }
+                    else
+                    { // open back up and rewait
+                        pd->dist  = pd->totalDist - pd->dist;
+                        pd->speed = -pd->speed;
+                        pd->close = false;
+                        SN_StartSequence(reinterpret_cast<mobj_t *>(&poly->startSpot), SEQ_DOOR_STONE + poly->seqType);
+                    }
                 }
             }
             break;
@@ -720,7 +728,8 @@ bool PO_MovePolyobj(int num, int x, int y)
     vertex_t *prevPts;
     bool blocked;
 
-    if (!(po = GetPolyobj(num)))
+    polyobj_t *is_set = po = GetPolyobj(num);
+    if (!is_set)
     {
         I_Error("PO_MovePolyobj:  Invalid polyobj number: %d\n", num);
     }
@@ -848,7 +857,8 @@ bool PO_RotatePolyobj(int num, angle_t angle)
     polyobj_t *po;
     bool blocked;
 
-    if (!(po = GetPolyobj(num)))
+    polyobj_t *is_set = po = GetPolyobj(num);
+    if (!is_set)
     {
         I_Error("PO_RotatePolyobj:  Invalid polyobj number: %d\n", num);
     }
@@ -1493,7 +1503,7 @@ bool PO_Busy(int polyobj)
     polyobj_t *poly;
 
     poly = GetPolyobj(polyobj);
-    if (!poly->specialdata)
+    if (poly && !poly->specialdata)
     {
         return false;
     }

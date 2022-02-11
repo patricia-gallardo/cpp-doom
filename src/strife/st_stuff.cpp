@@ -1114,9 +1114,9 @@ void ST_doRefresh()
 
 // haleyjd [STRIFE]: Removed ST_diffDraw
 
-void ST_Drawer (bool fullscreen, bool refresh)
+void ST_Drawer (bool fullscreen_param, bool refresh)
 {
-    st_statusbaron = (!fullscreen) || automapactive;
+    st_statusbaron = (!fullscreen_param) || automapactive;
     st_firsttime = st_firsttime || refresh;
 
     // Do red-/gold-shifts from damage/items

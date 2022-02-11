@@ -46,7 +46,7 @@ wipe_StartScreen
 int
 wipe_EndScreen
 ( int		x,
-  int		y,
+  int           y_param,
   int		width,
   int		height );
 

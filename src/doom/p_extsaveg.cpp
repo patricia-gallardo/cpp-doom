@@ -265,18 +265,18 @@ static void P_WriteButton(const char *key)
 
 static void P_ReadButton(const char *key)
 {
-    int linedef, where, btexture, btimer;
+    int linedef_local, where, btexture, btimer;
 
     if (sscanf(line, "%s %d %d %d %d\n",
             string,
-            &linedef,
+            &linedef_local,
             &where,
             &btexture,
             &btimer)
             == 5
         && !strncmp(string, key, MAX_STRING_LEN))
     {
-        P_StartButton(&lines[linedef], static_cast<bwhere_e>(where), btexture, btimer);
+        P_StartButton(&lines[linedef_local], static_cast<bwhere_e>(where), btexture, btimer);
     }
 }
 

@@ -1052,16 +1052,16 @@ void FaceMovementDirection(mobj_t * actor)
             actor->angle = 96 << 24;
             break;
         case DI_WEST:
-            actor->angle = 128 << 24;
+            actor->angle = static_cast<angle_t>(128 << 24);
             break;
         case DI_SOUTHWEST:
-            actor->angle = 160 << 24;
+            actor->angle = static_cast<angle_t>(160 << 24);
             break;
         case DI_SOUTH:
-            actor->angle = 192 << 24;
+            actor->angle = static_cast<angle_t>(192 << 24);
             break;
         case DI_SOUTHEAST:
-            actor->angle = 224 << 24;
+            actor->angle = static_cast<angle_t>(224 << 24);
             break;
     }
 }

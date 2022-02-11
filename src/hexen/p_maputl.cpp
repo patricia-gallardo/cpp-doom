@@ -255,18 +255,18 @@ fixed_t P_InterceptVector(divline_t * v2, divline_t * v1)
 fixed_t opentop, openbottom, openrange;
 fixed_t lowfloor;
 
-void P_LineOpening(line_t * linedef)
+void P_LineOpening(line_t *linedef_local)
 {
     sector_t *front, *back;
 
-    if (linedef->sidenum[1] == -1)
+    if (linedef_local->sidenum[1] == -1)
     {                           // single sided line
         openrange = 0;
         return;
     }
 
-    front = linedef->frontsector;
-    back = linedef->backsector;
+    front = linedef_local->frontsector;
+    back = linedef_local->backsector;
 
     if (front->ceilingheight < back->ceilingheight)
         opentop = front->ceilingheight;

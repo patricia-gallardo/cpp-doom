@@ -248,6 +248,8 @@ static allocated_sound_t *AllocateSound(sfxinfo_t *sfxinfo, size_t len)
 
 static void LockAllocatedSound(allocated_sound_t *snd)
 {
+    if(!snd)
+        return;
     // Increase use count, to stop the sound being freed.
 
     ++snd->use_count;
@@ -659,7 +661,7 @@ static bool ExpandSoundData_SDL(sfxinfo_t *sfxinfo, uint8_t *data,
     else
     {
         Sint16 *expanded = reinterpret_cast<Sint16 *>(chunk->abuf);
-        int     expanded_length;
+        int     expanded_length_local;
         int     expand_ratio;
         int     i;
 
@@ -671,10 +673,10 @@ static bool ExpandSoundData_SDL(sfxinfo_t *sfxinfo, uint8_t *data,
 
         // number of samples in the converted sound
 
-        expanded_length = (static_cast<uint64_t>(samplecount) * mixer_freq) / samplerate;
-        expand_ratio    = (samplecount << 8) / expanded_length;
+        expanded_length_local = (static_cast<uint64_t>(samplecount) * mixer_freq) / samplerate;
+        expand_ratio    = (samplecount << 8) / expanded_length_local;
 
-        for (i = 0; i < expanded_length; ++i)
+        for (i = 0; i < expanded_length_local; ++i)
         {
             Sint16 sample;
             int    src;
@@ -719,7 +721,7 @@ static bool ExpandSoundData_SDL(sfxinfo_t *sfxinfo, uint8_t *data,
 
             // Both channels are processed in parallel, hence [i-2]:
 
-            for (i = 2; i < expanded_length * 2; ++i)
+            for (i = 2; i < expanded_length_local * 2; ++i)
             {
                 expanded[i] = static_cast<Sint16>(alpha * expanded[i]
                                        + (1 - alpha) * expanded[i - 2]);
@@ -1135,8 +1137,9 @@ static int GetSliceSize()
     }
 
     // Should never happen?
-
-    return 1024;
+    // unreachable code
+    // return 1024;
+    assert(false);
 }
 
 static bool I_SDL_InitSound(bool _use_sfx_prefix)
@@ -1144,7 +1147,7 @@ static bool I_SDL_InitSound(bool _use_sfx_prefix)
     int i;
 
     // SDL 2.0.6 has a bug that makes it unusable.
-    if (SDL_COMPILEDVERSION == SDL_VERSIONNUM(2, 0, 6))
+    if constexpr (SDL_COMPILEDVERSION == SDL_VERSIONNUM(2, 0, 6))
     {
         I_Error(
             "I_SDL_InitSound: "

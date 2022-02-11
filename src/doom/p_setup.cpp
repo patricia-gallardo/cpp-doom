@@ -197,7 +197,7 @@ void P_LoadSegs(int lump)
     mapseg_t *ml;
     seg_t *   li;
     line_t *  ldef;
-    int       linedef;
+    int       linedef_local;
     int       side;
     int       sidenum;
 
@@ -215,16 +215,15 @@ void P_LoadSegs(int lump)
 
         li->angle = (SHORT(ml->angle)) << FRACBITS;
         //	li->offset = (SHORT(ml->offset))<<FRACBITS; // [crispy] recalculated below
-        linedef     = static_cast<unsigned short>(SHORT(ml->linedef)); // [crispy] extended nodes
-        ldef        = &lines[linedef];
+        linedef_local = static_cast<unsigned short>(SHORT(ml->linedef)); // [crispy] extended nodes
+        ldef        = &lines[linedef_local];
         li->linedef = ldef;
         side        = SHORT(ml->side);
 
         // e6y: check for wrong indexes
         if (static_cast<unsigned>(ldef->sidenum[side]) >= static_cast<unsigned>(numsides))
         {
-            I_Error("P_LoadSegs: linedef %d for seg %d references a non-existent sidedef %d",
-                linedef, i, static_cast<unsigned>(ldef->sidenum[side]));
+            I_Error("P_LoadSegs: linedef %d for seg %d references a non-existent sidedef %d", linedef_local, i, static_cast<unsigned>(ldef->sidenum[side]));
         }
 
         li->sidedef     = &sides[ldef->sidenum[side]];
@@ -1020,7 +1019,7 @@ const char *skilltable[] = {
 };
 
 // [crispy] factor out map lump name and number finding into a separate function
-int P_GetNumForMap(int episode, int map, bool critical)
+int P_GetNumForMap(int episode, int map, bool critical_param)
 {
     char lumpname[9];
     int  lumpnum;
@@ -1046,7 +1045,7 @@ int P_GetNumForMap(int episode, int map, bool critical)
     if (crispy->havee1m10 && episode == 1 && map == 10)
         DEH_snprintf(lumpname, 9, "E1M10");
 
-    lumpnum = critical ? W_GetNumForName(lumpname) : W_CheckNumForName(lumpname);
+    lumpnum = critical_param ? W_GetNumForName(lumpname) : W_CheckNumForName(lumpname);
 
     if (nervewadfile && episode != 2 && map <= 9)
     {

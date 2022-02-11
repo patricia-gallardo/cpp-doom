@@ -28,7 +28,9 @@ static SDL_Thread *sound_thread_handle;
 static int sound_thread_running;
 static pcsound_callback_func callback;
 
-static int SoundThread(void *unused)
+// Use within PCSound_Win32_Init below is disabled
+#if 0
+static int SoundThread(void *)
 {
     int frequency;
     int duration;
@@ -49,18 +51,19 @@ static int SoundThread(void *unused)
     
     return 0;    
 }
+#endif
 
-static int PCSound_Win32_Init(pcsound_callback_func callback_func)
+static int PCSound_Win32_Init(pcsound_callback_func)
 {
-    OSVERSIONINFO osvi;
-    BOOL result;
-
-    // Temporarily disabled - the Windows scheduler is strange and 
-    // stupid.
-   
     return 0;
 
+// Temporarily disabled - the Windows scheduler is strange and
+// stupid.
+#if 0
     // Find the OS version
+
+    OSVERSIONINFO osvi;
+    BOOL result;
 
     osvi.dwOSVersionInfoSize = sizeof(osvi);
 
@@ -87,6 +90,7 @@ static int PCSound_Win32_Init(pcsound_callback_func callback_func)
         SDL_CreateThread(SoundThread, "PC speaker thread", nullptr);
 
     return 1;
+#endif
 }
 
 static void PCSound_Win32_Shutdown()

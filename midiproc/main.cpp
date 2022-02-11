@@ -173,7 +173,7 @@ static bool MidiPipe_RegisterSong(buffer_reader_t *reader)
     return RegisterSong(filename);
 }
 
-static bool MidiPipe_UnregisterSong(buffer_reader_t *reader)
+static bool MidiPipe_UnregisterSong(buffer_reader_t *)
 {
     UnregisterSong();
     return true;
@@ -433,13 +433,17 @@ int main(int argc, char *argv[])
     }
 
     // Parse out our handle ids.
-    in = (HANDLE) strtol(argv[3], nullptr, 10);
+    long in_long = strtol(argv[3], nullptr, 10);
+    auto in_intptr = static_cast<intptr_t>(in_long);
+    in = reinterpret_cast<HANDLE>(in_intptr);
     if (in == 0)
     {
         return EXIT_FAILURE;
     }
 
-    out = (HANDLE) strtol(argv[4], nullptr, 10);
+    long out_long = strtol(argv[4], nullptr, 10);
+    auto out_intptr = static_cast<intptr_t>(out_long);
+    out = reinterpret_cast<HANDLE>(out_intptr);
     if (out == 0)
     {
         return EXIT_FAILURE;

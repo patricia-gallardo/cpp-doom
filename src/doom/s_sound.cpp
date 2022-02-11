@@ -236,7 +236,7 @@ static void S_RegisterAltMusic()
 //  allocates channel buffer, sets S_sfx lookup.
 //
 
-void S_Init(int sfxVolume, int musicVolume)
+void S_Init(int sfxVolume_param, int musicVolume_param)
 {
     int i;
 
@@ -258,8 +258,8 @@ void S_Init(int sfxVolume, int musicVolume)
 
     I_PrecacheSounds(S_sfx, NUMSFX);
 
-    S_SetSfxVolume(sfxVolume);
-    S_SetMusicVolume(musicVolume);
+    S_SetSfxVolume(sfxVolume_param);
+    S_SetMusicVolume(musicVolume_param);
 
     // Allocating the internal channels for mixing
     // (the maximum numer of sounds rendered

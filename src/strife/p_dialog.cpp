@@ -1219,7 +1219,8 @@ void P_DialogDoChoice(int choice)
         int objective;
         char *objlump;
 
-        if((objective = currentchoice->objective))
+        int is_set = objective = currentchoice->objective;
+        if(is_set)
         {
             DEH_snprintf(mission_objective, OBJECTIVE_LEN, "log%i", objective);
             objlump = cache_lump_name<char *>(mission_objective, PU_CACHE);
@@ -1260,7 +1261,6 @@ void P_DialogStartP1()
 //
 void P_DialogStart(player_t *player)
 {
-    int i = 0;
     int pic;
     int rnd = 0;
     const char *byetext;
@@ -1358,6 +1358,7 @@ void P_DialogStart(player_t *player)
             dialogname = DEH_String("Person"); // default name - like Joe in Doom 3 :P
     }
 
+    int i = 0;
     // setup number of choices to choose from
     for(i = 0; i < MDLG_MAXCHOICES; i++)
     {

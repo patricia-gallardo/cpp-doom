@@ -214,7 +214,7 @@ void D_Display ()
     static  bool             menuactivestate = false;
     static  bool             inhelpscreensstate = false;
     static  bool             popupactivestate = false; // [STRIFE]
-    static  bool             fullscreen = false;
+    static  bool             fullscreen_local = false;
     static  gamestate_t         oldgamestate = static_cast<gamestate_t>(-1);
     static  int                 borderdrawcount;
     int                         nowtime;
@@ -258,13 +258,13 @@ void D_Display ()
             break;
         if (automapactive)
             AM_Drawer ();
-        if (wipe || (viewheight != (200 <<crispy->hires) && fullscreen) )
+        if (wipe || (viewheight != (200 <<crispy->hires) && fullscreen_local) )
             redrawsbar = true;
         // haleyjd 08/29/10: [STRIFE] Always redraw sbar if menu is/was active
         if (menuactivestate || (inhelpscreensstate && !inhelpscreens))
             redrawsbar = true;              // just put away the help screen
         ST_Drawer (viewheight == (200 << crispy->hires), redrawsbar );
-        fullscreen = viewheight == (200 << crispy->hires);
+        fullscreen_local = viewheight == (200 << crispy->hires);
         break;
       
      // haleyjd 08/23/2010: [STRIFE] No intermission
@@ -840,7 +840,8 @@ void D_IdentifyVersion()
 
         // If -iwad was used, check and see if voices.wad exists on the same
         // filepath.
-        if((p = M_CheckParm("-iwad")) && p < myargc - 1)
+        int is_set = p = M_CheckParm("-iwad");
+        if(is_set && p < myargc - 1)
         {
             char   *iwad     = myargv[p + 1];
             size_t  len      = strlen(iwad) + 1;
@@ -1683,7 +1684,8 @@ void D_DoomMain ()
     // x defaults to 200.  Values are rounded up to 10 and down to 400.
     //
 
-    if ( (p=M_CheckParm ("-turbo")) )
+    int is_set = p = M_CheckParm("-turbo");
+    if (is_set)
     {
         int     scale = 200;
         extern int forwardmove[2];

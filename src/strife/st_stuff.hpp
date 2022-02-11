@@ -43,7 +43,7 @@ bool ST_Responder (event_t* ev);
 void ST_Ticker ();
 
 // Called by main loop.
-void ST_Drawer (bool fullscreen, bool refresh);
+void ST_Drawer (bool fullscreen_param, bool refresh);
 
 // haleyjd 09/01/10: [STRIFE] New function.
 // Called by main loop to draw external status bar bits.

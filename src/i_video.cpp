@@ -1039,7 +1039,9 @@ void I_InitWindowTitle()
 
 void I_InitWindowIcon()
 {
-    SDL_Surface *surface = SDL_CreateRGBSurfaceFrom((void *)icon_data, icon_w, icon_h,
+    const unsigned int * const_ptr = icon_data;
+    auto * ptr = const_cast<unsigned int *>(const_ptr);
+    SDL_Surface *surface = SDL_CreateRGBSurfaceFrom(reinterpret_cast<void*>(ptr), icon_w, icon_h,
         32, icon_w * 4,
         0xff << 24, 0xff << 16,
         0xff << 8, 0xff << 0);

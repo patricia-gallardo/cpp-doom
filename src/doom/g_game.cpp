@@ -2719,7 +2719,7 @@ static const char *DemoVersionDescription(int version)
 void G_DoPlayDemo()
 {
     skill_t skill;
-    int     i, lumpnum, episode, map;
+    int     lumpnum, episode, map;
     int     demoversion;
     bool olddemo = false;
     int     lumplength; // [crispy]
@@ -2809,7 +2809,7 @@ void G_DoPlayDemo()
     }
 
 
-    for (i = 0; i < MAXPLAYERS; i++)
+    for (int i = 0; i < MAXPLAYERS; i++)
         playeringame[i] = *demo_p++;
 
     if (playeringame[1] || M_CheckParm("-solo-net") > 0
@@ -2844,10 +2844,10 @@ void G_DoPlayDemo()
 
     // [crispy] demo progress bar
     {
-        int   i, numplayersingame = 0;
+        int numplayersingame = 0;
         uint8_t *demo_ptr = demo_p;
 
-        for (i = 0; i < MAXPLAYERS; i++)
+        for (int i = 0; i < MAXPLAYERS; i++)
         {
             if (playeringame[i])
             {

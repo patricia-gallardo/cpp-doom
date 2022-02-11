@@ -137,7 +137,8 @@ void R_MapPlane(int y,
     // [crispy] visplanes with the same flats now match up far better than before
     // adapted from prboom-plus/src/r_plane.c:191-239, translated to fixed-point math
 
-    if (!(dy = std::abs(centery - y)))
+    int is_set = dy = std::abs(centery - y);
+    if (!is_set)
     {
         return;
     }

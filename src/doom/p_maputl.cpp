@@ -279,20 +279,20 @@ fixed_t openrange;
 fixed_t lowfloor;
 
 
-void P_LineOpening(line_t *linedef)
+void P_LineOpening(line_t *linedef_param)
 {
     sector_t *front;
     sector_t *back;
 
-    if (linedef->sidenum[1] == NO_INDEX) // [crispy] extended nodes
+    if (linedef_param->sidenum[1] == NO_INDEX) // [crispy] extended nodes
     {
         // single sided line
         openrange = 0;
         return;
     }
 
-    front = linedef->frontsector;
-    back  = linedef->backsector;
+    front = linedef_param->frontsector;
+    back  = linedef_param->backsector;
 
     if (front->ceilingheight < back->ceilingheight)
         opentop = front->ceilingheight;

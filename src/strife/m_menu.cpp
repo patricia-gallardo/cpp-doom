@@ -1700,7 +1700,7 @@ bool M_Responder (event_t* ev)
     int             ch;
     int             key;
     int             i;
-    static  int     joywait = 0;
+    static  int     joywait_local = 0;
     static  int     mousewait = 0;
     static  int     mousey = 0;
     static  int     lasty = 0;
@@ -1747,44 +1747,44 @@ bool M_Responder (event_t* ev)
     ch = 0;
     key = -1;
 
-    if (ev->type == ev_joystick && joywait < I_GetTime())
+    if (ev->type == ev_joystick && joywait_local < I_GetTime())
     {
         if (ev->data3 < 0)
         {
             key = key_menu_up;
-            joywait = I_GetTime() + 5;
+            joywait_local = I_GetTime() + 5;
         }
         else if (ev->data3 > 0)
         {
             key = key_menu_down;
-            joywait = I_GetTime() + 5;
+            joywait_local = I_GetTime() + 5;
         }
 
         if (ev->data2 < 0)
         {
             key = key_menu_left;
-            joywait = I_GetTime() + 2;
+            joywait_local = I_GetTime() + 2;
         }
         else if (ev->data2 > 0)
         {
             key = key_menu_right;
-            joywait = I_GetTime() + 2;
+            joywait_local = I_GetTime() + 2;
         }
 
         if (ev->data1&1)
         {
             key = key_menu_forward;
-            joywait = I_GetTime() + 5;
+            joywait_local = I_GetTime() + 5;
         }
         if (ev->data1&2)
         {
             key = key_menu_back;
-            joywait = I_GetTime() + 5;
+            joywait_local = I_GetTime() + 5;
         }
         if (joybmenu >= 0 && (ev->data1 & (1 << joybmenu)) != 0)
         {
             key = key_menu_activate;
-            joywait = I_GetTime() + 5;
+            joywait_local = I_GetTime() + 5;
         }
     }
     else

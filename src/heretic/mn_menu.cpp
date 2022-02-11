@@ -18,6 +18,7 @@
 
 #include <cstdlib>
 #include <cctype>
+#include <cassert>
 
 #include "deh_str.hpp"
 #include "doomdef.hpp"
@@ -1659,7 +1660,9 @@ bool MN_Responder(event_t * event)
         }
         return (true);
     }
-    return (false);
+    // unreachable code
+    // return (false);
+    assert(false);
 }
 
 //---------------------------------------------------------------------------

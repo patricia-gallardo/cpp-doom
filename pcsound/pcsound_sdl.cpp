@@ -16,6 +16,7 @@
 //
 
 #include <cstdio>
+#include <cassert>
 
 #include "SDL.h"
 #include "SDL_mixer.h"
@@ -178,8 +179,9 @@ static int GetSliceSize()
     }
 
     // Should never happen?
-
-    return 1024;
+    // unreachable code
+    // return 1024;
+    assert(false);
 }
 
 static int PCSound_SDL_Init(pcsound_callback_func callback_func)

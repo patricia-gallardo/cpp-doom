@@ -274,9 +274,10 @@ static void InitConfig()
 static void SetIcon()
 {
     extern SDL_Window *TXT_SDLWindow;
-    SDL_Surface *surface;
 
-    surface = SDL_CreateRGBSurfaceFrom((void *) setup_icon_data, setup_icon_w,
+    const unsigned int * const_ptr = setup_icon_data;
+    auto * ptr = const_cast<unsigned int *>(const_ptr);
+    SDL_Surface *surface = SDL_CreateRGBSurfaceFrom(reinterpret_cast<void*>(ptr), setup_icon_w,
                                        setup_icon_h, 32, setup_icon_w * 4,
                                        0xff << 24, 0xff << 16,
                                        0xff << 8, 0xff << 0);

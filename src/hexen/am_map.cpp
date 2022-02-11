@@ -428,14 +428,14 @@ bool AM_Responder(event_t * ev)
     int rc;
     int key;
     static int bigstate = 0;
-    static int joywait = 0;
+    static int joywait_local = 0;
 
     key = ev->data1;
 
     if (ev->type == ev_joystick && joybautomap >= 0
-        && (ev->data1 & (1 << joybautomap)) != 0 && joywait < I_GetTime())
+        && (ev->data1 & (1 << joybautomap)) != 0 && joywait_local < I_GetTime())
     {
-        joywait = I_GetTime() + 5;
+        joywait_local = I_GetTime() + 5;
 
         if (!automapactive)
         {

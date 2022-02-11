@@ -20,6 +20,7 @@
 
 #include <cstdio>
 #include <cstdlib>
+#include <cassert>
 
 #include "m_random.hpp"
 #include "i_system.hpp"
@@ -842,7 +843,9 @@ P_LookForPlayers
         return true;
     }
 
-    return false;
+    // unreachable code
+    // return false;
+    assert(false);
 }
 
 // haleyjd 09/05/10: [STRIFE] Removed A_KeenDie
@@ -962,14 +965,14 @@ void A_RandomWalk(mobj_t* actor)
 //
 void A_FriendLook(mobj_t* actor)
 {
-    mobj_t *soundtarget = actor->subsector->sector->soundtarget;
+    mobj_t *soundtarget_local = actor->subsector->sector->soundtarget;
 
     actor->threshold = 0;
 
-    if(soundtarget && soundtarget->flags & MF_SHOOTABLE)
+    if(soundtarget_local && soundtarget_local->flags & MF_SHOOTABLE)
     {
         // Handle allies, except on maps 3 and 34 (Front Base/Movement Base)
-        if((actor->flags & MF_ALLY) == (soundtarget->flags & MF_ALLY) &&
+        if((actor->flags & MF_ALLY) == (soundtarget_local->flags & MF_ALLY) &&
             gamemap != 3 && gamemap != 34)
         {
             // STRIFE-TODO: Needs serious verification.
@@ -982,7 +985,7 @@ void A_FriendLook(mobj_t* actor)
         }
         else
         {
-            actor->target = soundtarget;
+            actor->target = soundtarget_local;
 
             if(!(actor->flags & MF_AMBUSH) || P_CheckSight(actor, actor->target))
             {
@@ -1013,17 +1016,15 @@ void A_FriendLook(mobj_t* actor)
 //
 void A_Listen(mobj_t* actor)
 {
-    mobj_t *soundtarget;
-
     actor->threshold = 0;
 
-    soundtarget = actor->subsector->sector->soundtarget;
+    mobj_t *soundtarget_local = actor->subsector->sector->soundtarget;
 
-    if(soundtarget && (soundtarget->flags & MF_SHOOTABLE))
+    if(soundtarget_local && (soundtarget_local->flags & MF_SHOOTABLE))
     {
-        if((actor->flags & MF_ALLY) != (soundtarget->flags & MF_ALLY))
+        if((actor->flags & MF_ALLY) != (soundtarget_local->flags & MF_ALLY))
         {
-            actor->target = soundtarget;
+            actor->target = soundtarget_local;
 
             if(!(actor->flags & MF_AMBUSH) || P_CheckSight(actor, actor->target))
             {

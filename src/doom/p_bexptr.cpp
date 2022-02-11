@@ -170,7 +170,8 @@ void A_LineEffect(mobj_t *mo)
     //if (!(mo->intflags & MIF_LINEDONE))                // Unless already used up
     {
         line_t junk = *lines;                         // Fake linedef set to 1st
-        if ((junk.special = static_cast<short>(mo->state->misc1))) // Linedef type
+        short  is_set = junk.special = static_cast<short>(mo->state->misc1);
+        if (is_set) // Linedef type
         {
             player_t player, *oldplayer = mo->player; // Remember player status
             mo->player    = &player;                  // Fake player
