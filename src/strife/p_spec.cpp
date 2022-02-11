@@ -589,7 +589,7 @@ P_CrossSpecialLine
   mobj_t*       thing )
 {
     line_t*     line;
-    side_t*     sidedef; // [STRIFE]
+    side_t     *sidedef_local; // [STRIFE]
     int         flag;    // [STRIFE]
     int         ok;
 
@@ -641,8 +641,8 @@ P_CrossSpecialLine
     //
     case 230:
         // haleyjd 09/21/10: [STRIFE] W1 Open Door if Quest
-        sidedef = &sides[line->sidenum[0]];
-        flag = (sidedef->rowoffset >> FRACBITS) - 1;
+        sidedef_local = &sides[line->sidenum[0]];
+        flag = (sidedef_local->rowoffset >> FRACBITS) - 1;
 
         if(!(thing->player->questflags & (1 << flag)))
             break;
@@ -656,8 +656,8 @@ P_CrossSpecialLine
 
     case 227:
         // haleyjd 09/21/10: [STRIFE] W1 Close Door if Quest
-        sidedef = &sides[line->sidenum[0]];
-        flag = (sidedef->rowoffset >> FRACBITS) - 1;
+        sidedef_local = &sides[line->sidenum[0]];
+        flag = (sidedef_local->rowoffset >> FRACBITS) - 1;
 
         if(!(thing->player->questflags & (1 << flag)))
             break;
@@ -769,8 +769,8 @@ P_CrossSpecialLine
 
     case 193:
         // haleyjd 09/21/10: [STRIFE] W1 Floor Lower to Lowest if Quest
-        sidedef = &sides[line->sidenum[0]];
-        flag = (sidedef->rowoffset >> FRACBITS) - 1; // note is fixed_t
+        sidedef_local = &sides[line->sidenum[0]];
+        flag = (sidedef_local->rowoffset >> FRACBITS) - 1; // note is fixed_t
 
         // must have the questflag indicated in the line's y offset
         if(!(thing->player->questflags & (1 << flag)))
@@ -955,8 +955,8 @@ P_CrossSpecialLine
 
     case 187:
         // haleyjd 09/21/10: [STRIFE] W1 Clear Force Fields if Quest
-        sidedef = &sides[line->sidenum[0]];
-        flag = (sidedef->rowoffset >> FRACBITS) - 1; // note is fixed_t
+        sidedef_local = &sides[line->sidenum[0]];
+        flag = (sidedef_local->rowoffset >> FRACBITS) - 1; // note is fixed_t
 
         // must have the questflag indicated in the line's y offset
         if(!(thing->player->questflags & (1 << flag)))
@@ -1195,8 +1195,8 @@ P_CrossSpecialLine
 
     case 216:
         // haleyjd 09/21/10: [STRIFE] WR Raise Door if Quest
-        sidedef = &sides[line->sidenum[0]];
-        flag = (sidedef->rowoffset >> FRACBITS) - 1; // note is fixed_t.
+        sidedef_local = &sides[line->sidenum[0]];
+        flag = (sidedef_local->rowoffset >> FRACBITS) - 1; // note is fixed_t.
 
         if(!(thing->player->questflags & (1 << flag)))
             break;

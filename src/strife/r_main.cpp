@@ -617,19 +617,19 @@ void R_InitLightTables ()
     int		i;
     int		j;
     int		level;
-    int		startmap; 	
+    int         startmap_local;
     int		scale;
     
     // Calculate the light levels to use
     //  for each level / distance combination.
     for (i=0 ; i< LIGHTLEVELS ; i++)
     {
-	startmap = ((LIGHTLEVELS-1-i)*2)*NUMCOLORMAPS/LIGHTLEVELS;
+        startmap_local = ((LIGHTLEVELS-1-i)*2)*NUMCOLORMAPS/LIGHTLEVELS;
 	for (j=0 ; j<MAXLIGHTZ ; j++)
 	{
 	    scale = FixedDiv ((ORIGWIDTH/2*FRACUNIT), (j+1)<<LIGHTZSHIFT);
 	    scale >>= LIGHTSCALESHIFT;
-	    level = startmap - scale/DISTMAP;
+	    level = startmap_local - scale/DISTMAP;
 	    
 	    if (level < 0)
 		level = 0;
@@ -676,7 +676,7 @@ void R_ExecuteSetViewSize ()
     int		i;
     int		j;
     int		level;
-    int		startmap; 	
+    int         startmap_local;
 
     setsizeneeded = false;
 
@@ -750,10 +750,10 @@ void R_ExecuteSetViewSize ()
     //  for each level / scale combination.
     for (i=0 ; i< LIGHTLEVELS ; i++)
     {
-	startmap = ((LIGHTLEVELS-1-i)*2)*NUMCOLORMAPS/LIGHTLEVELS;
+        startmap_local = ((LIGHTLEVELS-1-i)*2)*NUMCOLORMAPS/LIGHTLEVELS;
 	for (j=0 ; j<MAXLIGHTSCALE ; j++)
 	{
-	    level = startmap - j*SCREENWIDTH/(viewwidth<<detailshift)/DISTMAP;
+	    level = startmap_local - j*SCREENWIDTH/(viewwidth<<detailshift)/DISTMAP;
 	    
 	    if (level < 0)
 		level = 0;

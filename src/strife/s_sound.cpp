@@ -134,16 +134,16 @@ int disable_voices = 0;
 //
 // haleyjd 09/11/10: [STRIFE] Added voice volume
 //
-void S_Init(int sfxVolume, int musicVolume, int voiceVolume)
+void S_Init(int sfxVolume_param, int musicVolume_param, int voiceVolume_param)
 {  
     int i;
 
     I_SetOPLDriverVer(opl_doom_1_9);
     I_PrecacheSounds(S_sfx, NUMSFX);
 
-    S_SetSfxVolume(sfxVolume);
-    S_SetMusicVolume(musicVolume);
-    S_SetVoiceVolume(voiceVolume);
+    S_SetSfxVolume(sfxVolume_param);
+    S_SetMusicVolume(musicVolume_param);
+    S_SetVoiceVolume(voiceVolume_param);
 
     // Allocating the internal channels for mixing
     // (the maximum numer of sounds rendered
