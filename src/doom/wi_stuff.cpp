@@ -737,7 +737,8 @@ void WI_drawTime(int x,
         } while (t / div && div < 3600);
 
         // [crispy] print at most in hhhh:mm:ss format
-        if ((n = (t / div)))
+        int is_set = n = (t / div);
+        if (is_set)
         {
             x = WI_drawNum(x, y, n, -1);
         }

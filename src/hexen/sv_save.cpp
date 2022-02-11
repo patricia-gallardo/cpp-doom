@@ -918,7 +918,7 @@ static void StreamOutMobjSpecials(mobj_t *mobj)
         case MT_MSTAFF_FX2:
             if (corpse)
             {
-                special1 = MOBJ_NULL;
+                special1 = static_cast<unsigned int>(MOBJ_NULL);
             }
             else
             {
@@ -931,7 +931,7 @@ static void StreamOutMobjSpecials(mobj_t *mobj)
         case MT_LIGHTNING_ZAP:
             if (corpse)
             {
-                special2 = MOBJ_NULL;
+                special2 = static_cast<unsigned int>(MOBJ_NULL);
             }
             else
             {
@@ -944,8 +944,8 @@ static void StreamOutMobjSpecials(mobj_t *mobj)
         case MT_LIGHTNING_CEILING:
             if (corpse)
             {
-                special1 = MOBJ_NULL;
-                special2 = MOBJ_NULL;
+                special1 = static_cast<unsigned int>(MOBJ_NULL);
+                special2 = static_cast<unsigned int>(MOBJ_NULL);
             }
             else
             {
@@ -1059,7 +1059,7 @@ static void StreamOut_mobj_t(mobj_t *str)
     // struct mobj_s *target;
     if ((str->flags & MF_CORPSE) != 0)
     {
-        SV_WriteLong(MOBJ_NULL);
+        SV_WriteLong(static_cast<unsigned int>(MOBJ_NULL));
     }
     else
     {
@@ -1614,7 +1614,7 @@ static void StreamOut_acs_t(acs_t *str)
     }
     else
     {
-        SV_WriteLong(-1);
+        SV_WriteLong(static_cast<unsigned int>(-1));
     }
 
     // int side;
