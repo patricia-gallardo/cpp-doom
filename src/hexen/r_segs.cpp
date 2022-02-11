@@ -136,14 +136,13 @@ void R_RenderMaskedSegRange(drawseg_t * ds, int x1, int x2)
             }
 
             sprtopscreen = centeryfrac - FixedMul(dc_texturemid, spryscale);
-            dc_iscale = 0xffffffffu / (unsigned) spryscale;
+            dc_iscale = 0xffffffffu / static_cast<unsigned>(spryscale);
 
             //
             // draw the texture
             //
-            col = (column_t *) ((byte *)
-                                R_GetColumn(texnum,
-                                            maskedtexturecol[dc_x]) - 3);
+            uint8_t *byte_ptr = reinterpret_cast<uint8_t *>(R_GetColumn(texnum, maskedtexturecol[dc_x]));
+            col = reinterpret_cast<column_t *>(byte_ptr - 3);
 
             R_DrawMaskedColumn(col, -1);
             maskedtexturecol[dc_x] = SHRT_MAX;
@@ -231,7 +230,7 @@ void R_RenderSegLoop()
                 index = MAXLIGHTSCALE - 1;
             dc_colormap = walllights[index];
             dc_x = rw_x;
-            dc_iscale = 0xffffffffu / (unsigned) rw_scale;
+            dc_iscale = 0xffffffffu / static_cast<unsigned>(rw_scale);
         }
 
 //
@@ -537,13 +536,15 @@ void R_StoreWallRange(int start, int stop)
 //
 // calculate rw_offset (only needed for textured lines)
 //
-    segtextured = midtexture | toptexture | bottomtexture | maskedtexture;
+    segtextured = midtexture | toptexture | bottomtexture | static_cast<int>(maskedtexture);
 
     if (segtextured)
     {
         offsetangle = rw_normalangle - rw_angle1;
-        if (offsetangle > ANG180)
-            offsetangle = -offsetangle;
+        if (offsetangle > ANG180) {
+            // Subtracting from 0u avoids compiler warnings
+            offsetangle = 0u - offsetangle;
+        }
         if (offsetangle > ANG90)
             offsetangle = ANG90;
         sineval = finesine[offsetangle >> ANGLETOFINESHIFT];

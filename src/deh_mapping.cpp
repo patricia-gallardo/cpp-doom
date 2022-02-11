@@ -64,9 +64,9 @@ static void *GetStructField(void *structptr,
 {
     unsigned int offset;
 
-    offset = (uint8_t *)entry->location - (uint8_t *)mapping->base;
+    offset = reinterpret_cast<uint8_t *>(entry->location) - reinterpret_cast<uint8_t *>(mapping->base);
 
-    return (uint8_t *)structptr + offset;
+    return reinterpret_cast<uint8_t *>(structptr) + offset;
 }
 
 //
@@ -104,13 +104,13 @@ bool DEH_SetMapping(deh_context_t *context, deh_mapping_t *mapping,
     switch (entry->size)
     {
     case 1:
-        *((uint8_t *)location) = value;
+        *(reinterpret_cast<uint8_t *>(location)) = value;
         break;
     case 2:
-        *((uint16_t *)location) = value;
+        *(reinterpret_cast<uint16_t *>(location)) = value;
         break;
     case 4:
-        *((uint32_t *)location) = value;
+        *(reinterpret_cast<uint32_t *>(location)) = value;
         break;
     default:
         DEH_Error(context, "Unknown field type for '%s' (BUG)", name);
@@ -172,18 +172,18 @@ void DEH_StructSHA1Sum(sha1_context_t *context, deh_mapping_t *mapping,
 
         // Add in data for this field
 
-        location = (uint8_t *)structptr + ((uint8_t *)entry->location - (uint8_t *)mapping->base);
+        location = reinterpret_cast<uint8_t *>(structptr) + (reinterpret_cast<uint8_t *>(entry->location) - reinterpret_cast<uint8_t *>(mapping->base));
 
         switch (entry->size)
         {
         case 1:
-            SHA1_UpdateInt32(context, *((uint8_t *)location));
+            SHA1_UpdateInt32(context, *(reinterpret_cast<uint8_t *>(location)));
             break;
         case 2:
-            SHA1_UpdateInt32(context, *((uint16_t *)location));
+            SHA1_UpdateInt32(context, *(reinterpret_cast<uint16_t *>(location)));
             break;
         case 4:
-            SHA1_UpdateInt32(context, *((uint32_t *)location));
+            SHA1_UpdateInt32(context, *(reinterpret_cast<uint32_t *>(location)));
             break;
         default:
             I_Error("Unknown dehacked mapping field type for '%s' (BUG)",

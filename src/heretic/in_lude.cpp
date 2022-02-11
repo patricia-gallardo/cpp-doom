@@ -163,7 +163,7 @@ extern void AM_Stop();
 
 void IN_Start()
 {
-    I_SetPalette(cache_lump_name<byte *>(DEH_String("PLAYPAL"), PU_CACHE));
+    I_SetPalette(cache_lump_name<uint8_t *>(DEH_String("PLAYPAL"), PU_CACHE));
     IN_LoadPics();
     IN_InitStats();
     intermission = true;
@@ -579,10 +579,10 @@ void IN_DrawStatBack()
     int x;
     int y;
 
-    byte *src;
-    byte *dest;
+    uint8_t *src;
+    uint8_t *dest;
 
-    src = cache_lump_name<byte *>(DEH_String("FLOOR16"), PU_CACHE);
+    src = cache_lump_name<uint8_t *>(DEH_String("FLOOR16"), PU_CACHE);
     dest = I_VideoBuffer;
 
     for (y = 0; y < SCREENHEIGHT; y++)

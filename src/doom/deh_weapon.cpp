@@ -63,7 +63,7 @@ static void DEH_WeaponParseLine(deh_context_t *context, char *line, void *tag)
     if (tag == nullptr)
         return;
 
-    weapon = (weaponinfo_t *)tag;
+    weapon = reinterpret_cast<weaponinfo_t *>(tag);
 
     if (!DEH_ParseAssignment(line, &variable_name, &value))
     {

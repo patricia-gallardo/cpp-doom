@@ -87,12 +87,12 @@ void I_ClearScreenHR()
     SDL_FillRect(hr_surface, &area, 0);
 }
 
-void I_SlamBlockHR(int x, int y, int w, int h, const byte *src)
+void I_SlamBlockHR(int x, int y, int w, int h, const uint8_t *src)
 {
     SDL_Rect    blit_rect;
-    const byte *srcptrs[4];
-    byte        srcbits[4];
-    byte *      dest;
+    const uint8_t *srcptrs[4];
+    uint8_t        srcbits[4];
+    uint8_t       *dest;
     int         x1, y1;
     int         i;
     int         bit;
@@ -116,7 +116,7 @@ void I_SlamBlockHR(int x, int y, int w, int h, const byte *src)
 
     for (y1 = y; y1 < y + h; ++y1)
     {
-        dest = ((byte *)hr_surface->pixels) + y1 * hr_surface->pitch + x;
+        dest = (reinterpret_cast<uint8_t *>(hr_surface->pixels)) + y1 * hr_surface->pitch + x;
 
         for (x1 = x; x1 < x + w; ++x1)
         {
@@ -155,7 +155,7 @@ void I_SlamBlockHR(int x, int y, int w, int h, const byte *src)
     SDL_UpdateWindowSurfaceRects(hr_screen, &blit_rect, 1);
 }
 
-void I_SlamHR(const byte *buffer)
+void I_SlamHR(const uint8_t *buffer)
 {
     I_SlamBlockHR(0, 0, HR_SCREENWIDTH, HR_SCREENHEIGHT, buffer);
 }
@@ -165,7 +165,7 @@ void I_InitPaletteHR()
     // ...
 }
 
-void I_SetPaletteHR(const byte *palette)
+void I_SetPaletteHR(const uint8_t *palette)
 {
     SDL_Rect  screen_rect = { 0, 0, HR_SCREENWIDTH, HR_SCREENHEIGHT };
     SDL_Color sdlpal[16];
@@ -185,9 +185,9 @@ void I_SetPaletteHR(const byte *palette)
     SDL_UpdateWindowSurfaceRects(hr_screen, &screen_rect, 1);
 }
 
-void I_FadeToPaletteHR(const byte *palette)
+void I_FadeToPaletteHR(const uint8_t *palette)
 {
-    byte tmppal[16 * 3];
+    uint8_t tmppal[48];
     int  starttime;
     int  elapsed;
     int  i;
@@ -225,7 +225,7 @@ void I_FadeToPaletteHR(const byte *palette)
 
 void I_BlackPaletteHR()
 {
-    byte blackpal[16 * 3];
+    uint8_t blackpal[16 * 3];
 
     memset(blackpal, 0, sizeof(blackpal));
 

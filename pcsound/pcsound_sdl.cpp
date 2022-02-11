@@ -65,8 +65,8 @@ static void PCSound_Mix_Callback(void *, Uint8 *stream, int len)
 
     nsamples = len / 4;
 
-    leftptr = (Sint16 *) stream;
-    rightptr = ((Sint16 *) stream) + 1;
+    leftptr = reinterpret_cast<Sint16 *>(stream);
+    rightptr = leftptr + 1;
     
     // Fill the output buffer
 

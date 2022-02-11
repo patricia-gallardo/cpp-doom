@@ -1398,8 +1398,8 @@ static void DonutOverrun(fixed_t *s3_floorheight, short *s3_floorpic, line_t *, 
             tmp_s3_floorheight >> 16, tmp_s3_floorpic);
      */
 
-    *s3_floorheight = (fixed_t)tmp_s3_floorheight;
-    *s3_floorpic    = (short)tmp_s3_floorpic;
+    *s3_floorheight = static_cast<fixed_t>(tmp_s3_floorheight);
+    *s3_floorpic    = static_cast<short>(tmp_s3_floorpic);
 }
 
 
@@ -1480,7 +1480,7 @@ int EV_DoDonut(line_t *line)
             floor = zmalloc<decltype(floor)>(sizeof(*floor), PU_LEVSPEC, 0);
             P_AddThinker(&floor->thinker);
             s2->specialdata              = floor;
-            floor->thinker.function.acp1 = (actionf_p1)T_MoveFloor;
+            floor->thinker.function      = T_MoveFloor;
             floor->type                  = donutRaise;
             floor->crush                 = false;
             floor->direction             = 1;
@@ -1494,7 +1494,7 @@ int EV_DoDonut(line_t *line)
             floor = zmalloc<decltype(floor)>(sizeof(*floor), PU_LEVSPEC, 0);
             P_AddThinker(&floor->thinker);
             s1->specialdata              = floor;
-            floor->thinker.function.acp1 = (actionf_p1)T_MoveFloor;
+            floor->thinker.function      = T_MoveFloor;
             floor->type                  = lowerFloor;
             floor->crush                 = false;
             floor->direction             = -1;

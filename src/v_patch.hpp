@@ -39,8 +39,8 @@ typedef PACKED_STRUCT(
 // posts are runs of non masked source pixels
 typedef PACKED_STRUCT(
     {
-        byte topdelta; // -1 is the last post in a column
-        byte length;   // length data bytes follows
+        uint8_t topdelta; // -1 is the last post in a column
+        uint8_t length;   // length data bytes follows
     }) post_t;
 
 // column_t is a list of 0 or more post_t, (byte)-1 terminated

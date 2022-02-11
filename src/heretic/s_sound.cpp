@@ -49,7 +49,7 @@ static void *rs;          // Handle for the registered song
 int mus_song = -1;
 int mus_lumpnum;
 void *mus_sndptr;
-byte *soundCurve;
+uint8_t     *soundCurve;
 
 int snd_MaxVolume = 10;
 int snd_MusicVolume = 10;
@@ -118,7 +118,7 @@ static mobj_t *GetSoundListener()
         dummy_listener.y = 0;
         dummy_listener.z = 0;
 
-        return (mobj_t *) &dummy_listener;
+        return reinterpret_cast<mobj_t *>(&dummy_listener);
     }
 }
 
@@ -270,7 +270,7 @@ void S_StartSound(void *_origin, int sound_id)
             sep = 512 - sep;
     }
 
-    channel[i].pitch = (byte) (NORM_PITCH + (M_Random() & 7) - (M_Random() & 7));
+    channel[i].pitch = static_cast<uint8_t>(NORM_PITCH + (M_Random() & 7) - (M_Random() & 7));
     channel[i].handle = I_StartSound(&S_sfx[sound_id], i, vol, sep, channel[i].pitch);
     channel[i].mo = origin;
     channel[i].sound_id = sound_id;
@@ -327,7 +327,7 @@ void S_StartSoundAtVolume(void *_origin, int sound_id, int volume)
         S_sfx[sound_id].lumpnum = I_GetSfxLumpNum(&S_sfx[sound_id]);
     }
 
-    channel[i].pitch = (byte) (NORM_PITCH - (M_Random() & 3) + (M_Random() & 3));
+    channel[i].pitch = static_cast<uint8_t>(NORM_PITCH - (M_Random() & 3) + (M_Random() & 3));
     channel[i].handle = I_StartSound(&S_sfx[sound_id], i, volume, 128, channel[i].pitch);
     channel[i].mo = origin;
     channel[i].sound_id = sound_id;
@@ -516,7 +516,7 @@ void S_UpdateSounds(mobj_t * listener)
 void S_Init()
 {
     I_SetOPLDriverVer(opl_doom2_1_666);
-    soundCurve = zmalloc<byte *>(MAX_SND_DIST, PU_STATIC, nullptr);
+    soundCurve = zmalloc<uint8_t *>(MAX_SND_DIST, PU_STATIC, nullptr);
     if (snd_Channels > 8)
     {
         snd_Channels = 8;
@@ -569,17 +569,15 @@ void S_SetMaxVolume(bool fullprocess)
 
     if (!fullprocess)
     {
-        soundCurve[0] =
-            (*((byte *) cache_lump_name<patch_t *>("SNDCURVE", PU_CACHE)) *
-             (snd_MaxVolume * 8)) >> 7;
+        uint8_t *byte_ptr = cache_lump_name<uint8_t *>("SNDCURVE", PU_CACHE);
+        soundCurve[0]     = (*byte_ptr * (snd_MaxVolume * 8)) >> 7;
     }
     else
     {
         for (i = 0; i < MAX_SND_DIST; i++)
         {
-            soundCurve[i] =
-                (*((byte *) cache_lump_name<patch_t *>("SNDCURVE", PU_CACHE) + i) *
-                 (snd_MaxVolume * 8)) >> 7;
+            uint8_t *byte_ptr = cache_lump_name<uint8_t *>("SNDCURVE", PU_CACHE);
+            soundCurve[i]     = (*(byte_ptr + i) * (snd_MaxVolume * 8)) >> 7;
         }
     }
 }

@@ -414,7 +414,7 @@ void R_DrawPlanes ()
 	
 	// regular flat
         lumpnum = firstflat + flattranslation[pl->picnum];
-	ds_source = cache_lump_num<byte *>(lumpnum, PU_STATIC);
+	ds_source = cache_lump_num<uint8_t *>(lumpnum, PU_STATIC);
 	
 	planeheight = std::abs(pl->height-viewz);
 	light = (pl->lightlevel >> LIGHTSEGSHIFT)+extralight;

@@ -401,7 +401,7 @@ bool P_Move (mobj_t*	actor)
     if (actor->movedir == DI_NODIR)
         return false;
 
-    if ((unsigned)actor->movedir >= 8)
+    if (static_cast<unsigned>(actor->movedir) >= 8)
         I_Error ("Weird actor->movedir!");
 
     tryx = actor->x + actor->info->speed*xspeed[actor->movedir];
@@ -534,7 +534,7 @@ void P_NewChaseDir(mobj_t* actor)
         && d[2] != DI_NODIR)
     {
         actor->movedir = diags[((deltay<0)<<1)+(deltax>0)];
-        if (actor->movedir != (int) turnaround && P_TryWalk(actor))
+        if (actor->movedir != static_cast<int>(turnaround) && P_TryWalk(actor))
             return;
     }
 
@@ -587,7 +587,7 @@ void P_NewChaseDir(mobj_t* actor)
               tdir<=DI_SOUTHEAST;
               tdir++ )
         {
-            if (tdir != (int) turnaround)
+            if (tdir != static_cast<int>(turnaround))
             {
                 actor->movedir =tdir;
 
@@ -602,7 +602,7 @@ void P_NewChaseDir(mobj_t* actor)
               tdir != (DI_EAST-1);
               tdir-- )
         {
-            if (tdir != (int) turnaround)
+            if (tdir != static_cast<int>(turnaround))
             {
                 actor->movedir = tdir;
 
@@ -1874,11 +1874,12 @@ void A_AlertSpectreC(mobj_t* actor)
 {
     thinker_t *th;
 
+    action_hook needle = P_MobjThinker;
     for(th = thinkercap.next; th != &thinkercap; th = th->next)
     {
-        if(th->function.acp1 == (actionf_p1)P_MobjThinker)
+        if(th->function == needle)
         {
-            mobj_t *mo = (mobj_t *)th;
+            mobj_t *mo = reinterpret_cast<mobj_t *>(th);
 
             if(mo->type == MT_SPECTRE_C)
             {
@@ -2943,11 +2944,12 @@ void A_BossDeath (mobj_t* actor)
         return; // everybody's dead.
 
     // check for a still living boss
+    action_hook needle = P_MobjThinker;
     for(th = thinkercap.next; th != &thinkercap; th = th->next)
     {
-        if(th->function.acp1 == (actionf_p1) P_MobjThinker)
+        if(th->function == needle)
         {
-            mobj_t *mo = (mobj_t *)th;
+            mobj_t *mo = reinterpret_cast<mobj_t *>(th);
 
             if(mo != actor && mo->type == actor->type && mo->health > 0)
                 return; // one is still alive.
@@ -2985,9 +2987,9 @@ void A_BossDeath (mobj_t* actor)
         // it becomes an undead ghost monster. Then it's a REAL spectre ;)
         for(th = thinkercap.next; th != &thinkercap; th = th->next)
         {
-            if(th->function.acp1 == (actionf_p1) P_MobjThinker)
+            if(th->function == needle)
             {
-                mobj_t *mo = (mobj_t *)th;
+                mobj_t *mo = reinterpret_cast<mobj_t *>(th);
 
                 // KILL ALL ORACLES! RAWWR!
                 if(mo != actor && mo->type == MT_ORACLE && mo->health > 0)
@@ -3082,11 +3084,12 @@ void A_AcolyteSpecial(mobj_t* actor)
     if(i == 8)
         return;
 
+    action_hook needle = P_MobjThinker;
     for(th = thinkercap.next; th != &thinkercap; th = th->next)
     {
-        if(th->function.acp1 == (actionf_p1) P_MobjThinker)
+        if(th->function == needle)
         {
-            mobj_t *mo = (mobj_t *)th;
+            mobj_t *mo = reinterpret_cast<mobj_t *>(th);
 
             // Found a living MT_GUARD8?
             if(mo != actor && mo->type == actor->type && mo->health > 0)

@@ -176,11 +176,11 @@ R_RenderMaskedSegRange
 	    }
 			
 	    sprtopscreen = centeryfrac - FixedMul(dc_texturemid, spryscale);
-	    dc_iscale = 0xffffffffu / (unsigned)spryscale;
+	    dc_iscale = 0xffffffffu / static_cast<unsigned>(spryscale);
 	    
 	    // draw the texture
-	    col = (column_t *)( 
-		(byte *)R_GetColumn(texnum,maskedtexturecol[dc_x]) -3);
+	    col = reinterpret_cast<column_t *>(
+		reinterpret_cast<uint8_t *>(R_GetColumn(texnum,maskedtexturecol[dc_x]) -3));
 			
             // villsa [STRIFE] added 0 argument
 	    R_DrawMaskedColumn (col, 0);
@@ -275,7 +275,7 @@ void R_RenderSegLoop ()
 
 	    dc_colormap = walllights[index];
 	    dc_x = rw_x;
-	    dc_iscale = 0xffffffffu / (unsigned)rw_scale;
+	    dc_iscale = 0xffffffffu / static_cast<unsigned>(rw_scale);
 	}
         else
         {
@@ -622,7 +622,7 @@ R_StoreWallRange
     }
     
     // calculate rw_offset (only needed for textured lines)
-    segtextured = midtexture | toptexture | bottomtexture | maskedtexture;
+    segtextured = midtexture | toptexture | bottomtexture | static_cast<int>(maskedtexture);
 
     if (segtextured)
     {

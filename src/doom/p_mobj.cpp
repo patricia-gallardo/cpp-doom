@@ -62,7 +62,7 @@ bool
     {
         if (state == S_NULL)
         {
-            mobj->state = (state_t *)S_NULL;
+            mobj->state = nullptr;
             P_RemoveMobj(mobj);
             return false;
         }
@@ -75,8 +75,10 @@ bool
 
         // Modified handling.
         // Call action functions when the state is set
-        if (st->action.acp3)
-            st->action.acp3(mobj, nullptr, nullptr); // [crispy] let pspr action pointers get called from mobj states
+        if (st->action.index() == mobj_player_psp_param_action_hook) {
+            const auto & callback = std::get<mobj_player_psp_param_action>(st->action);
+            callback(mobj, nullptr, nullptr); // [crispy] let pspr action pointers get called from mobj states
+        }
 
         state = st->nextstate;
 
@@ -108,7 +110,7 @@ static statenum_t P_LatestSafeState(statenum_t state)
             safestate = state;
         }
 
-        if (states[state].action.acp1)
+        if (action_hook_has_value(states[state].action))
         {
             safestate = S_NULL;
         }
@@ -281,7 +283,7 @@ void P_XYMovement(mobj_t *mo)
                 && player->cmd.sidemove == 0)))
     {
         // if in a walking frame, stop moving
-        if (player && (unsigned)((player->mo->state - states) - S_PLAY_RUN1) < 4)
+        if (player && static_cast<unsigned>((player->mo->state - states) - S_PLAY_RUN1) < 4)
             P_SetMobjState(player->mo, S_PLAY);
 
         mo->momx = 0;
@@ -556,8 +558,8 @@ void P_MobjThinker(mobj_t *mobj)
     {
         P_XYMovement(mobj);
 
-        // FIXME: decent NOP/NULL/Nil function pointer please.
-        if (mobj->thinker.function.acv == (actionf_v)(-1))
+        action_hook needle = valid_hook(false);
+        if (mobj->thinker.function == needle)
             return; // mobj was removed
     }
     if ((mobj->z != mobj->floorz)
@@ -565,8 +567,8 @@ void P_MobjThinker(mobj_t *mobj)
     {
         P_ZMovement(mobj);
 
-        // FIXME: decent NOP/NULL/Nil function pointer please.
-        if (mobj->thinker.function.acv == (actionf_v)(-1))
+        action_hook null_hook = valid_hook(false);
+        if (mobj->thinker.function == null_hook)
             return; // mobj was removed
     }
 
@@ -665,7 +667,7 @@ static mobj_t *
     // [crispy] randomly flip corpse, blood and death animation sprites
     if (mobj->flags & MF_FLIPPABLE && !(mobj->flags & MF_SHOOTABLE))
     {
-        mobj->health = (mobj->health & (int)~1) - (Crispy_Random() & 1);
+        mobj->health = (mobj->health & static_cast<int>(~1)) - (Crispy_Random() & 1);
     }
 
     // [AM] Do not interpolate on spawn.
@@ -677,7 +679,7 @@ static mobj_t *
     mobj->oldz     = mobj->z;
     mobj->oldangle = mobj->angle;
 
-    mobj->thinker.function.acp1 = (actionf_p1)P_MobjThinker;
+    mobj->thinker.function = P_MobjThinker;
 
     P_AddThinker(&mobj->thinker);
 
@@ -733,7 +735,7 @@ void P_RemoveMobj(mobj_t *mobj)
     }
 
     // free block
-    P_RemoveThinker((thinker_t *)mobj);
+    P_RemoveThinker(reinterpret_cast<thinker_t *>(mobj));
 }
 
 
@@ -810,7 +812,7 @@ degenmobj_t muzzles[MAXPLAYERS];
 
 mobj_t *Crispy_PlayerSO(int p)
 {
-    return crispy->soundfull ? (mobj_t *)&muzzles[p] : players[p].mo;
+    return crispy->soundfull ? reinterpret_cast<mobj_t *>(&muzzles[p]) : players[p].mo;
 }
 
 //

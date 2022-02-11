@@ -65,8 +65,7 @@ static int     mixer_freq;
 static Uint16  mixer_format;
 static int     mixer_channels;
 static bool use_sfx_prefix;
-static bool (*ExpandSoundData)(sfxinfo_t *sfxinfo,
-    byte *                                   data,
+static bool (*ExpandSoundData)(sfxinfo_t *sfxinfo, uint8_t *data,
     int                                      samplerate,
     int                                      bits,
     int                                      length) = nullptr;
@@ -227,7 +226,7 @@ static allocated_sound_t *AllocateSound(sfxinfo_t *sfxinfo, size_t len)
 
     // Skip past the chunk structure for the audio buffer
 
-    snd->chunk.abuf      = (byte *)(snd + 1);
+    snd->chunk.abuf      = reinterpret_cast<uint8_t *>(snd + 1);
     snd->chunk.alen      = len;
     snd->chunk.allocated = 1;
     snd->chunk.volume    = MIX_MAX_VOLUME;
@@ -305,12 +304,12 @@ static allocated_sound_t *PitchShift(allocated_sound_t *insnd, int pitch)
     Sint16 *           srcbuf, *dstbuf;
     Uint32             srclen, dstlen;
 
-    srcbuf = (Sint16 *)insnd->chunk.abuf;
+    srcbuf = reinterpret_cast<Sint16 *>(insnd->chunk.abuf);
     srclen = insnd->chunk.alen;
 
     // determine ratio pitch:NORM_PITCH and apply to srclen, then invert.
     // This is an approximation of vanilla behaviour based on measurements
-    dstlen = (int)((1 + (1 - (float)pitch / NORM_PITCH)) * srclen);
+    dstlen = static_cast<int>((1 + (1 - static_cast<float>(pitch) / NORM_PITCH)) * srclen);
 
     // ensure that the new buffer is an even length
     if ((dstlen % 2) == 0)
@@ -326,12 +325,12 @@ static allocated_sound_t *PitchShift(allocated_sound_t *insnd, int pitch)
     }
 
     outsnd->pitch = pitch;
-    dstbuf        = (Sint16 *)outsnd->chunk.abuf;
+    dstbuf        = reinterpret_cast<Sint16 *>(outsnd->chunk.abuf);
 
     // loop over output buffer. find corresponding input cell, copy over
     for (outp = dstbuf; outp < dstbuf + dstlen / 2; ++outp)
     {
-        inp   = srcbuf + (int)((float)(outp - dstbuf) / dstlen * srclen);
+        inp   = srcbuf + static_cast<int>(static_cast<float>(outp - dstbuf) / dstlen * srclen);
         *outp = *inp;
     }
 
@@ -609,8 +608,7 @@ static void WriteWAV(char *filename, byte *data,
 // Generic sound expansion function for any sample rate.
 // Returns number of clipped samples (always 0).
 
-static bool ExpandSoundData_SDL(sfxinfo_t *sfxinfo,
-    byte *                                    data,
+static bool ExpandSoundData_SDL(sfxinfo_t *sfxinfo, uint8_t *data,
     int                                       samplerate,
     int                                       bits,
     int                                       length)
@@ -623,7 +621,7 @@ static bool ExpandSoundData_SDL(sfxinfo_t *sfxinfo,
 
     // Calculate the length of the expanded version of the sample.
 
-    expanded_length = (uint32_t)((((uint64_t)samplecount) * mixer_freq) / samplerate);
+    expanded_length = static_cast<uint32_t>((static_cast<uint64_t>(samplecount) * mixer_freq) / samplerate);
 
     // Double up twice: 8 -> 16 bit and mono -> stereo
 
@@ -660,7 +658,7 @@ static bool ExpandSoundData_SDL(sfxinfo_t *sfxinfo,
     }
     else
     {
-        Sint16 *expanded = (Sint16 *)chunk->abuf;
+        Sint16 *expanded = reinterpret_cast<Sint16 *>(chunk->abuf);
         int     expanded_length;
         int     expand_ratio;
         int     i;
@@ -673,7 +671,7 @@ static bool ExpandSoundData_SDL(sfxinfo_t *sfxinfo,
 
         // number of samples in the converted sound
 
-        expanded_length = ((uint64_t)samplecount * mixer_freq) / samplerate;
+        expanded_length = (static_cast<uint64_t>(samplecount) * mixer_freq) / samplerate;
         expand_ratio    = (samplecount << 8) / expanded_length;
 
         for (i = 0; i < expanded_length; ++i)
@@ -723,7 +721,7 @@ static bool ExpandSoundData_SDL(sfxinfo_t *sfxinfo,
 
             for (i = 2; i < expanded_length * 2; ++i)
             {
-                expanded[i] = (Sint16)(alpha * expanded[i]
+                expanded[i] = static_cast<Sint16>(alpha * expanded[i]
                                        + (1 - alpha) * expanded[i - 2]);
             }
         }
@@ -747,7 +745,7 @@ static bool CacheSFX(sfxinfo_t *sfxinfo)
     // need to load the sound
 
     lumpnum    = sfxinfo->lumpnum;
-    auto *data = cache_lump_num<byte *>(lumpnum, PU_STATIC);
+    auto *data = cache_lump_num<uint8_t *>(lumpnum, PU_STATIC);
     lumplen    = W_LumpLength(lumpnum);
 
     // [crispy] Check if this is a valid RIFF wav file

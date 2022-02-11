@@ -30,7 +30,7 @@
 // Displays the text mode ending screen after the game quits
 //
 
-void I_Endoom(byte *endoom_data)
+void I_Endoom(uint8_t *endoom_data)
 {
     unsigned char *screendata;
     int            y;

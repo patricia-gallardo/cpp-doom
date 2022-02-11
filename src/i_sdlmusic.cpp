@@ -291,7 +291,7 @@ static void I_SDL_PlaySong(void *handle, bool looping)
     else
 #endif
     {
-        Mix_PlayMusic((Mix_Music *)handle, loops);
+        Mix_PlayMusic(reinterpret_cast<Mix_Music *>(handle), loops);
     }
 }
 
@@ -340,7 +340,7 @@ static void I_SDL_StopSong()
 
 static void I_SDL_UnRegisterSong(void *handle)
 {
-    Mix_Music *music = (Mix_Music *)handle;
+    Mix_Music *music = reinterpret_cast<Mix_Music *>(handle);
 
     if (!music_initialized)
     {
@@ -372,7 +372,7 @@ static bool IsMid(byte *mem, int len)
 }
 */
 
-static bool ConvertMus(byte *musdata, int len, const char *filename)
+static bool ConvertMus(uint8_t *musdata, int len, const char *filename)
 {
     MEMFILE *instream;
     MEMFILE *outstream;
@@ -427,7 +427,7 @@ static void *I_SDL_RegisterSong(void *data, int len)
     {
         // Assume a MUS file and try to convert
 
-        ConvertMus(static_cast<byte *>(data), len, filename);
+        ConvertMus(static_cast<uint8_t *>(data), len, filename);
     }
 
     // Load the MIDI. In an ideal world we'd be using Mix_LoadMUS_RW()

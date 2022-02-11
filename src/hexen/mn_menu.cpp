@@ -613,7 +613,7 @@ static void DrawClassMenu()
     };
 
     MN_DrTextB("CHOOSE CLASS:", 34, 24);
-    clazz = (pclass_t) CurrentMenu->items[CurrentItPos].option;
+    clazz = static_cast<pclass_t>(CurrentMenu->items[CurrentItPos].option);
     V_DrawPatch(174, 8, cache_lump_name<patch_t *>(boxLumpName[clazz], PU_CACHE));
     V_DrawPatch(174 + 24, 8 + 12,
         cache_lump_num<patch_t *>(W_GetNumForName(walkLumpName[clazz])
@@ -1267,7 +1267,7 @@ bool MN_Responder(event_t * event)
                     askforquit = false;
                     typeofask = 0;
                     paused = false;
-                    I_SetPalette(cache_lump_name<byte *>("PLAYPAL", PU_CACHE));
+                    I_SetPalette(cache_lump_name<uint8_t *>("PLAYPAL", PU_CACHE));
                     H2_StartTitle();    // go to intro/demo mode.
                     return false;
                 case 3:
@@ -1779,9 +1779,9 @@ void MN_DeactivateMenu()
 
 void MN_DrawInfo()
 {
-    I_SetPalette(cache_lump_name<byte *>("PLAYPAL", PU_CACHE));
+    I_SetPalette(cache_lump_name<uint8_t *>("PLAYPAL", PU_CACHE));
     V_CopyScaledBuffer(I_VideoBuffer,
-           cache_lump_num<byte *>(W_GetNumForName("TITLE") + InfoType,
+           cache_lump_num<uint8_t *>(W_GetNumForName("TITLE") + InfoType,
                                    PU_CACHE), ORIGWIDTH * ORIGHEIGHT);
 //      V_DrawPatch(0, 0, W_CacheLumpNum(W_GetNumForName("TITLE")+InfoType,
 //              PU_CACHE));

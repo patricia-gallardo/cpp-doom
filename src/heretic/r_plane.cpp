@@ -399,13 +399,13 @@ void R_DrawPlanes()
     int x, stop;
     int lumpnum;
     int angle;
-    byte *tempSource;
+    uint8_t    *tempSource;
 
-    byte *dest;
+    uint8_t *dest;
     int count;
     fixed_t frac, fracstep;
 
-    extern byte *ylookup[MAXHEIGHT];
+    uint8_t extern *ylookup[MAXHEIGHT];
     extern int columnofs[MAXWIDTH];
 
 #ifdef RANGECHECK
@@ -437,7 +437,7 @@ void R_DrawPlanes()
             {
                 dc_yl = pl->top[x];
                 dc_yh = pl->bottom[x];
-                if ((unsigned) dc_yl <= dc_yh) // [crispy] 32-bit integer math
+                if (static_cast<unsigned>(dc_yl) <= dc_yh) // [crispy] 32-bit integer math
                 {
                     angle = (viewangle + xtoviewangle[x]) >> ANGLETOSKYSHIFT;
                     dc_x = x;
@@ -477,7 +477,7 @@ void R_DrawPlanes()
         //
         lumpnum = firstflat + flattranslation[pl->picnum];
 
-        tempSource = cache_lump_num<byte *>(lumpnum, PU_STATIC);
+        tempSource = cache_lump_num<uint8_t *>(lumpnum, PU_STATIC);
 
         switch (pl->special)
         {

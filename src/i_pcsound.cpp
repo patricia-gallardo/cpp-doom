@@ -198,7 +198,7 @@ static void PCSCallbackFunc(int *duration, int *freq)
 
         if (tone < std::size(divisors) && divisors[tone] != 0)
         {
-            *freq = (int)(TIMER_FREQ / divisors[tone]);
+            *freq = static_cast<int>(TIMER_FREQ / divisors[tone]);
         }
         else
         {

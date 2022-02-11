@@ -26,16 +26,16 @@
 // by means of actual color space conversions in r_data:R_InitColormaps().
 
 // this one will be the identity matrix
-static byte cr_none[256];
+static uint8_t cr_none[256];
 // this one will be the ~50% darker matrix
-static byte cr_dark[256];
-static byte cr_gray[256];
-static byte cr_green[256];
-static byte cr_gold[256];
-static byte cr_red[256];
-static byte cr_blue[256];
+static uint8_t cr_dark[256];
+static uint8_t cr_gray[256];
+static uint8_t cr_green[256];
+static uint8_t cr_gold[256];
+static uint8_t cr_red[256];
+static uint8_t cr_blue[256];
 
-static const byte cr_red2blue[256] = { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15,
+static const uint8_t cr_red2blue[256] = { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15,
     16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31,
     32, 33, 34, 35, 36, 37, 38, 39, 40, 41, 42, 43, 207, 207, 46, 207,
     48, 49, 50, 51, 52, 53, 54, 55, 56, 57, 58, 59, 60, 61, 62, 63,
@@ -52,7 +52,7 @@ static const byte cr_red2blue[256] = { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12,
     224, 225, 226, 227, 228, 229, 230, 231, 232, 233, 234, 235, 236, 237, 238, 239,
     240, 241, 242, 243, 244, 245, 246, 247, 248, 249, 250, 251, 252, 253, 254, 255 };
 
-static const byte cr_red2green[256] = { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15,
+static const uint8_t cr_red2green[256] = { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15,
     16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31,
     32, 33, 34, 35, 36, 37, 38, 39, 40, 41, 42, 43, 127, 127, 46, 127,
     48, 49, 50, 51, 52, 53, 54, 55, 56, 57, 58, 59, 60, 61, 62, 63,
@@ -69,17 +69,16 @@ static const byte cr_red2green[256] = { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12
     224, 225, 226, 227, 228, 229, 230, 231, 232, 233, 234, 235, 236, 237, 238, 239,
     240, 241, 242, 243, 244, 245, 246, 247, 248, 249, 250, 251, 252, 253, 254, 255 };
 
-byte *cr_colors[] = {
-    (byte *)&cr_none,
-    (byte *)&cr_dark,
-    (byte *)&cr_gray,
-    (byte *)&cr_green,
-    (byte *)&cr_gold,
-    (byte *)&cr_red,
-    (byte *)&cr_blue,
-    (byte *)&cr_red2blue,
-    (byte *)&cr_red2green
-};
+uint8_t *cr_colors[9] = {
+    reinterpret_cast<uint8_t *>(&cr_none),
+    reinterpret_cast<uint8_t *>(&cr_dark),
+    reinterpret_cast<uint8_t *>(&cr_gray),
+    reinterpret_cast<uint8_t *>(&cr_green),
+    reinterpret_cast<uint8_t *>(&cr_gold),
+    reinterpret_cast<uint8_t *>(&cr_red),
+    reinterpret_cast<uint8_t *>(&cr_blue),
+    const_cast<uint8_t *>(reinterpret_cast<const uint8_t *>(&cr_red2blue)),
+    const_cast<uint8_t *>(reinterpret_cast<const uint8_t *>(&cr_red2green)) };
 
 char **crstr = 0;
 
@@ -139,7 +138,7 @@ static void hsv_to_rgb(vect *hsv, vect *rgb)
         if (h >= 360.0)
             h -= 360.0;
         h /= 60.0;
-        i = floor(h);
+        i = static_cast<int>(floor(h));
         f = h - i;
         p = v * (1.0 - s);
         q = v * (1.0 - (s * f));
@@ -231,7 +230,7 @@ static void rgb_to_hsv(vect *rgb, vect *hsv)
 }
 
 // [crispy] copied over from i_video.c
-static int I_GetPaletteIndex2(byte *palette, int r, int g, int b)
+static int I_GetPaletteIndex2(uint8_t *palette, int r, int g, int b)
 {
     int best, best_diff, diff;
     int i;
@@ -260,7 +259,7 @@ static int I_GetPaletteIndex2(byte *palette, int r, int g, int b)
     return best;
 }
 
-byte V_Colorize(byte *playpal, int cr, byte source, bool keepgray109)
+uint8_t V_Colorize(uint8_t *playpal, int cr, uint8_t source, bool keepgray109)
 {
     vect rgb, hsv;
 
@@ -302,7 +301,7 @@ byte V_Colorize(byte *playpal, int cr, byte source, bool keepgray109)
         }
         else if (cr == static_cast<int>(cr_t::CR_BLUE))
         {
-            hsv.x = 240. / 360.;
+            hsv.x = static_cast<float>(240. / 360.);
         }
     }
 
@@ -312,5 +311,5 @@ byte V_Colorize(byte *playpal, int cr, byte source, bool keepgray109)
     rgb.y *= 255.;
     rgb.z *= 255.;
 
-    return I_GetPaletteIndex2(playpal, (int)rgb.x, (int)rgb.y, (int)rgb.z);
+    return I_GetPaletteIndex2(playpal, static_cast<int>(rgb.x), static_cast<int>(rgb.y), static_cast<int>(rgb.z));
 }

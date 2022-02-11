@@ -311,11 +311,10 @@ static char *GetFullExePath(const char *program)
 
 static int ExecuteCommand(const char *program, const char *arg)
 {
-    pid_t childpid;
     int result;
     const char *argv[3];
 
-    childpid = fork();
+    pid_t childpid = fork();
 
     if (childpid == 0) 
     {
@@ -325,7 +324,7 @@ static int ExecuteCommand(const char *program, const char *arg)
         argv[1] = arg;
         argv[2] = nullptr;
 
-        execvp(argv[0], (char **) argv);
+        execvp(argv[0], const_cast<char**>(argv));
 
         exit(0x80);
     }
@@ -374,9 +373,7 @@ int ExecuteDoom(execute_context_t *context)
     return result;
 }
 
-#pragma GCC diagnostic push
-#pragma GCC diagnostic ignored "-Wunused-parameter"
-static void TestCallback(TXT_UNCAST_ARG(widget), TXT_UNCAST_ARG(data))
+static void TestCallback(void *, void *)
 {
     execute_context_t *exec;
     char *main_cfg;
@@ -412,7 +409,6 @@ static void TestCallback(TXT_UNCAST_ARG(widget), TXT_UNCAST_ARG(data))
     free(main_cfg);
     free(extra_cfg);
 }
-#pragma GCC diagnostic pop
 
 txt_window_action_t *TestConfigAction()
 {

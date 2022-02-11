@@ -146,6 +146,6 @@ char *TXT_UTF8_SkipChars(const char *s, unsigned int n)
         }
     }
 
-    return (char *) p;
+    return const_cast<char *>(p);
 }
 

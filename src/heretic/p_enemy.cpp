@@ -487,7 +487,7 @@ bool P_LookForMonsters(mobj_t * actor)
         {                       // Not a mobj thinker
             continue;
         }
-        mo = (mobj_t *) think;
+        mo = reinterpret_cast<mobj_t *>(think);
         if (!(mo->flags & MF_COUNTKILL) || (mo == actor) || (mo->health <= 0))
         {                       // Not a valid monster
             continue;
@@ -1904,7 +1904,7 @@ void A_WhirlwindSeek(mobj_t * actor)
         S_StartSound(actor, sfx_hedat3);
     }
     if (actor->special1.m
-        && (((mobj_t *) (actor->special1.m))->flags & MF_SHADOW))
+        && ((reinterpret_cast<mobj_t *>(actor->special1.m))->flags & MF_SHADOW))
     {
         return;
     }
@@ -1932,7 +1932,7 @@ void A_HeadIceImpact(mobj_t * ice)
         angle >>= ANGLETOFINESHIFT;
         shard->momx = FixedMul(shard->info->speed, finecosine[angle]);
         shard->momy = FixedMul(shard->info->speed, finesine[angle]);
-        shard->momz = (fixed_t)(-.6 * FRACUNIT);
+        shard->momz = static_cast<fixed_t>(-.6 * FRACUNIT);
         P_CheckMissileSpawn(shard);
     }
 }
@@ -2266,7 +2266,7 @@ void A_RemovePod(mobj_t * actor)
 
     if (actor->special2.m)
     {
-        mo = (mobj_t *) actor->special2.m;
+        mo = reinterpret_cast<mobj_t *>(actor->special2.m);
         if (mo->special1.i > 0)
         {
             mo->special1.i--;
@@ -2301,7 +2301,7 @@ void A_MakePod(mobj_t * actor)
         return;
     }
     P_SetMobjState(mo, S_POD_GROW1);
-    P_ThrustMobj(mo, P_Random() << 24, (fixed_t) (4.5 * FRACUNIT));
+    P_ThrustMobj(mo, P_Random() << 24, static_cast<fixed_t>(4.5 * FRACUNIT));
     S_StartSound(mo, sfx_newpod);
     actor->special1.i++;          // Increment generated pod count
     mo->special2.m = actor;       // Link the generator to the pod
@@ -2328,7 +2328,7 @@ void P_Massacre()
         {                       // Not a mobj thinker
             continue;
         }
-        mo = (mobj_t *) think;
+        mo = reinterpret_cast<mobj_t *>(think);
         if ((mo->flags & MF_COUNTKILL) && (mo->health > 0))
         {
             P_DamageMobj(mo, nullptr, nullptr, 10000);
@@ -2374,7 +2374,7 @@ void A_BossDeath(mobj_t * actor)
         {                       // Not a mobj thinker
             continue;
         }
-        mo = (mobj_t *) think;
+        mo = reinterpret_cast<mobj_t *>(think);
         if ((mo != actor) && (mo->type == actor->type) && (mo->health > 0))
         {                       // Found a living boss
             return;
@@ -2528,7 +2528,7 @@ void A_VolcanoBlast(mobj_t * volcano)
         angle >>= ANGLETOFINESHIFT;
         blast->momx = FixedMul(1 * FRACUNIT, finecosine[angle]);
         blast->momy = FixedMul(1 * FRACUNIT, finesine[angle]);
-        blast->momz = (fixed_t)(2.5 * FRACUNIT) + (P_Random() << 10);
+        blast->momz = static_cast<fixed_t>(2.5 * FRACUNIT) + (P_Random() << 10);
         S_StartSound(blast, sfx_volsht);
         P_CheckMissileSpawn(blast);
     }
@@ -2561,8 +2561,8 @@ void A_VolcBallImpact(mobj_t * ball)
         angle = i * ANG90;
         tiny->angle = angle;
         angle >>= ANGLETOFINESHIFT;
-        tiny->momx = FixedMul((fixed_t)(FRACUNIT * .7), finecosine[angle]);
-        tiny->momy = FixedMul((fixed_t)(FRACUNIT * .7), finesine[angle]);
+        tiny->momx = FixedMul(static_cast<fixed_t>(FRACUNIT * .7), finecosine[angle]);
+        tiny->momy = FixedMul(static_cast<fixed_t>(FRACUNIT * .7), finesine[angle]);
         tiny->momz = FRACUNIT + (P_Random() << 9);
         P_CheckMissileSpawn(tiny);
     }

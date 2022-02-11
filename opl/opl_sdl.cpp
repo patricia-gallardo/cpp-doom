@@ -112,7 +112,7 @@ static void AdvanceTime(unsigned int nsamples)
 
     // Advance time.
 
-    us = ((uint64_t) nsamples * OPL_SECOND) / mixing_freq;
+    us = static_cast<uint64_t>(nsamples * OPL_SECOND) / mixing_freq;
     current_time += us;
 
     if (opl_sdl_paused)
@@ -163,7 +163,7 @@ static void FillBuffer(uint8_t *buffer, unsigned int nsamples)
 
     // OPL output is generated into temporary buffer and then mixed
     // (to avoid overflows etc.)
-    OPL3_GenerateStream(&opl_chip, (Bit16s *) mix_buffer, nsamples);
+    OPL3_GenerateStream(&opl_chip, reinterpret_cast<Bit16s *>(mix_buffer), nsamples);
     SDL_MixAudioFormat(buffer, mix_buffer, AUDIO_S16SYS, nsamples * 4,
                        SDL_MIX_MAXVOLUME);
 }
@@ -389,7 +389,7 @@ static void OPLTimer_CalculateEndTime(opl_timer_t *timer)
     {
         tics = 0x100 - timer->value;
         timer->expire_time = current_time
-                           + ((uint64_t) tics * OPL_SECOND) / timer->rate;
+                           + (static_cast<uint64_t>(tics * OPL_SECOND)) / timer->rate;
     }
 }
 

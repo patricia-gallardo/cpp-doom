@@ -58,7 +58,7 @@ static void DEH_PointerInit()
         states[i].sprite     = SPR_TNT1;
         states[i].frame      = 0;
         states[i].tics       = -1;
-        states[i].action.acv = (actionf_v) nullptr;
+        states[i].action     = null_hook();
         states[i].nextstate  = static_cast<statenum_t>(i);
         states[i].misc1      = S_NULL;
         states[i].misc2      = 0;
@@ -92,13 +92,12 @@ static void *DEH_PointerStart(deh_context_t *context, char *line)
 static void DEH_PointerParseLine(deh_context_t *context, char *line, void *tag)
 {
     state_t *state;
-    char *   variable_name, *value;
+    char    *variable_name, *value;
     int      ivalue;
 
-    if (tag == nullptr)
-        return;
+    if (tag == nullptr) return;
 
-    state = (state_t *)tag;
+    state = reinterpret_cast<state_t *>(tag);
 
     // Parse the assignment
 

@@ -163,7 +163,7 @@ static void PrintPercentage(FILE *stream, int amount, int total)
         // a large value. Therefore, cast to short to give the same
         // output.
 
-        fprintf(stream, " (%i%%)", (short)(amount * 100) / total);
+        fprintf(stream, " (%i%%)", static_cast<short>(amount * 100) / total);
     }
 }
 

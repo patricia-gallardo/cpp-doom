@@ -64,7 +64,7 @@ static int show_talk = 0;
 // but 1 is closer to "use_libsamplerate = 0" which is the default in Choco
 // and causes only a short delay at startup
 static int use_libsamplerate = 1;
-static float libsamplerate_scale = 0.65;
+static float libsamplerate_scale = static_cast<float>(0.65);
 
 static char *music_pack_path = nullptr;
 static char *timidity_cfg_path = nullptr;
@@ -82,9 +82,7 @@ static int snd_mport = 0;
 
 static int snd_oplmode;
 
-#pragma GCC diagnostic push
-#pragma GCC diagnostic ignored "-Wunused-parameter"
-static void UpdateSndDevices(TXT_UNCAST_ARG(widget), TXT_UNCAST_ARG(data))
+static void UpdateSndDevices(void *, void *)
 {
     switch (snd_oplmode)
     {
@@ -98,7 +96,6 @@ static void UpdateSndDevices(TXT_UNCAST_ARG(widget), TXT_UNCAST_ARG(data))
             break;
     }
 }
-#pragma GCC diagnostic pop
 
 static txt_dropdown_list_t *OPLTypeSelector()
 {
@@ -120,20 +117,15 @@ static txt_dropdown_list_t *OPLTypeSelector()
     return result;
 }
 
-#pragma GCC diagnostic push
-#pragma GCC diagnostic ignored "-Wunused-parameter"
-static void OpenMusicPackDir(TXT_UNCAST_ARG(widget), TXT_UNCAST_ARG(unused))
+static void OpenMusicPackDir(void *, void *)
 {
     if (!OpenFolder(music_pack_path))
     {
         TXT_MessageBox("Error", "Failed to open music pack directory.");
     }
 }
-#pragma GCC diagnostic pop
 
-#pragma GCC diagnostic push
-#pragma GCC diagnostic ignored "-Wunused-parameter"
-void ConfigSound(TXT_UNCAST_ARG(widget), void *user_data)
+void ConfigSound(void *, void *)
 {
     txt_window_t *window;
     txt_window_action_t *music_action;
@@ -209,7 +201,6 @@ void ConfigSound(TXT_UNCAST_ARG(widget), void *user_data)
                 nullptr)),
         nullptr);
 }
-#pragma GCC diagnostic pop
 
 void BindSoundVariables()
 {

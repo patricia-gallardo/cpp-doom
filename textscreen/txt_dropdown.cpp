@@ -72,11 +72,11 @@ static int SelectorWindowY(txt_dropdown_list_t *list)
 
 // Called when a button in the selector window is pressed
 
-#pragma GCC diagnostic push
-#pragma GCC diagnostic ignored "-Wunused-parameter"
-static void ItemSelected(TXT_UNCAST_ARG(button), TXT_UNCAST_ARG(callback_data))
+
+
+static void ItemSelected(void *, void *uncast_callback_data)
 {
-    TXT_CAST_ARG(callback_data_t, callback_data);
+    auto *callback_data = reinterpret_cast<callback_data_t *>(uncast_callback_data);
 
     // Set the variable
 
@@ -88,20 +88,14 @@ static void ItemSelected(TXT_UNCAST_ARG(button), TXT_UNCAST_ARG(callback_data))
 
     TXT_CloseWindow(callback_data->window);
 }
-#pragma GCC diagnostic pop
 
 // Free callback data when the window is closed
-
-#pragma GCC diagnostic push
-#pragma GCC diagnostic ignored "-Wunused-parameter"
-static void FreeCallbackData(TXT_UNCAST_ARG(list),
-                             TXT_UNCAST_ARG(callback_data))
+static void FreeCallbackData(void *, void *uncast_callback_data)
 {
-    TXT_CAST_ARG(callback_data_t, callback_data);
+    auto *callback_data = reinterpret_cast<callback_data_t *>(uncast_callback_data);
 
     free(callback_data);
 }
-#pragma GCC diagnostic pop
 
 // Catch presses of escape and close the window.
 
@@ -119,9 +113,7 @@ static int SelectorWindowListener(txt_window_t *window, int key, void *)
 static int SelectorMouseListener(txt_window_t *window, int x, int y, int,
                                  void *)
 {
-    txt_widget_t *win;
-
-    win = (txt_widget_t *) window;
+    txt_widget_t *win = reinterpret_cast<txt_widget_t *>(window);
 
     if (x < win->x || x > win->x + win->w || y < win->y || y > win->y + win->h)
     {
@@ -215,17 +207,17 @@ static int DropdownListWidth(txt_dropdown_list_t *list)
     return result;
 }
 
-static void TXT_DropdownListSizeCalc(TXT_UNCAST_ARG(list))
+static void TXT_DropdownListSizeCalc(void *uncast_list)
 {
-    TXT_CAST_ARG(txt_dropdown_list_t, list);
+    auto *list = reinterpret_cast<txt_dropdown_list_t *>(uncast_list);
 
     list->widget.w = DropdownListWidth(list);
     list->widget.h = 1;
 }
 
-static void TXT_DropdownListDrawer(TXT_UNCAST_ARG(list))
+static void TXT_DropdownListDrawer(void *uncast_list)
 {
-    TXT_CAST_ARG(txt_dropdown_list_t, list);
+    auto *list = reinterpret_cast<txt_dropdown_list_t *>(uncast_list);
     unsigned int i;
     const char *str;
 
@@ -255,16 +247,13 @@ static void TXT_DropdownListDrawer(TXT_UNCAST_ARG(list))
     }
 }
 
-#pragma GCC diagnostic push
-#pragma GCC diagnostic ignored "-Wunused-parameter"
-static void TXT_DropdownListDestructor(TXT_UNCAST_ARG(list))
+static void TXT_DropdownListDestructor(void *)
 {
 }
-#pragma GCC diagnostic pop
 
-static int TXT_DropdownListKeyPress(TXT_UNCAST_ARG(list), int key)
+static int TXT_DropdownListKeyPress(void *uncast_list, int key)
 {
-    TXT_CAST_ARG(txt_dropdown_list_t, list);
+    auto *list = reinterpret_cast<txt_dropdown_list_t *>(uncast_list);
 
     if (key == KEY_ENTER)
     {
@@ -275,10 +264,10 @@ static int TXT_DropdownListKeyPress(TXT_UNCAST_ARG(list), int key)
     return 0;
 }
 
-static void TXT_DropdownListMousePress(TXT_UNCAST_ARG(list), 
+static void TXT_DropdownListMousePress(void *uncast_list,
                                        int, int, int b)
 {
-    TXT_CAST_ARG(txt_dropdown_list_t, list);
+    auto *list = reinterpret_cast<txt_dropdown_list_t *>(uncast_list);
 
     // Left mouse click does the same as selecting and pressing enter
 

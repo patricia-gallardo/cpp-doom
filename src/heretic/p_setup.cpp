@@ -57,7 +57,7 @@ int bmapwidth, bmapheight;      // in mapblocks
 fixed_t bmaporgx, bmaporgy;     // origin of block map
 mobj_t **blocklinks;            // for thing chains
 
-byte *rejectmatrix;             // for fast sight rejection
+uint8_t *rejectmatrix; // for fast sight rejection
 
 mapthing_t deathmatchstarts[10], *deathmatch_p;
 mapthing_t playerstarts[MAXPLAYERS];
@@ -73,16 +73,16 @@ bool playerstartsingame[MAXPLAYERS];
 
 void P_LoadVertexes(int lump)
 {
-    byte *data;
+    uint8_t     *data;
     int i;
     mapvertex_t *ml;
     vertex_t *li;
 
     numvertexes = W_LumpLength(lump) / sizeof(mapvertex_t);
     vertexes = zmalloc<vertex_t *>(numvertexes * sizeof(vertex_t), PU_LEVEL, 0);
-    data = cache_lump_num<byte *>(lump, PU_STATIC);
+    data = cache_lump_num<uint8_t *>(lump, PU_STATIC);
 
-    ml = (mapvertex_t *) data;
+    ml = reinterpret_cast<mapvertex_t *>(data);
     li = vertexes;
     for (i = 0; i < numvertexes; i++, li++, ml++)
     {
@@ -109,7 +109,7 @@ void P_LoadVertexes(int lump)
 
 void P_LoadSegs(int lump)
 {
-    byte *data;
+    uint8_t  *data;
     int i;
     mapseg_t *ml;
     seg_t *li;
@@ -119,9 +119,9 @@ void P_LoadSegs(int lump)
     numsegs = W_LumpLength(lump) / sizeof(mapseg_t);
     segs = zmalloc<seg_t *>(numsegs * sizeof(seg_t), PU_LEVEL, 0);
     memset(segs, 0, numsegs * sizeof(seg_t));
-    data = cache_lump_num<byte *>(lump, PU_STATIC);
+    data = cache_lump_num<uint8_t *>(lump, PU_STATIC);
 
-    ml = (mapseg_t *) data;
+    ml = reinterpret_cast<mapseg_t *>(data);
     li = segs;
     for (i = 0; i < numsegs; i++, li++, ml++)
     {
@@ -156,16 +156,16 @@ void P_LoadSegs(int lump)
 
 void P_LoadSubsectors(int lump)
 {
-    byte *data;
+    uint8_t        *data;
     int i;
     mapsubsector_t *ms;
     subsector_t *ss;
 
     numsubsectors = W_LumpLength(lump) / sizeof(mapsubsector_t);
     subsectors = zmalloc<subsector_t *>(numsubsectors * sizeof(subsector_t), PU_LEVEL, 0);
-    data = cache_lump_num<byte *>(lump, PU_STATIC);
+    data = cache_lump_num<uint8_t *>(lump, PU_STATIC);
 
-    ms = (mapsubsector_t *) data;
+    ms = reinterpret_cast<mapsubsector_t *>(data);
     memset(subsectors, 0, numsubsectors * sizeof(subsector_t));
     ss = subsectors;
     for (i = 0; i < numsubsectors; i++, ss++, ms++)
@@ -188,7 +188,7 @@ void P_LoadSubsectors(int lump)
 
 void P_LoadSectors(int lump)
 {
-    byte *data;
+    uint8_t     *data;
     int i;
     mapsector_t *ms;
     sector_t *ss;
@@ -196,9 +196,9 @@ void P_LoadSectors(int lump)
     numsectors = W_LumpLength(lump) / sizeof(mapsector_t);
     sectors = zmalloc<sector_t *>(numsectors * sizeof(sector_t), PU_LEVEL, 0);
     memset(sectors, 0, numsectors * sizeof(sector_t));
-    data = cache_lump_num<byte *>(lump, PU_STATIC);
+    data = cache_lump_num<uint8_t *>(lump, PU_STATIC);
 
-    ms = (mapsector_t *) data;
+    ms = reinterpret_cast<mapsector_t *>(data);
     ss = sectors;
     for (i = 0; i < numsectors; i++, ss++, ms++)
     {
@@ -226,16 +226,16 @@ void P_LoadSectors(int lump)
 
 void P_LoadNodes(int lump)
 {
-    byte *data;
+    uint8_t   *data;
     int i, j, k;
     mapnode_t *mn;
     node_t *no;
 
     numnodes = W_LumpLength(lump) / sizeof(mapnode_t);
     nodes = zmalloc<node_t *>(numnodes * sizeof(node_t), PU_LEVEL, 0);
-    data = cache_lump_num<byte *>(lump, PU_STATIC);
+    data = cache_lump_num<uint8_t *>(lump, PU_STATIC);
 
-    mn = (mapnode_t *) data;
+    mn = reinterpret_cast<mapnode_t *>(data);
     no = nodes;
     for (i = 0; i < numnodes; i++, no++, mn++)
     {
@@ -266,16 +266,16 @@ void P_LoadNodes(int lump)
 
 void P_LoadThings(int lump)
 {
-    byte *data;
+    uint8_t    *data;
     int i;
     mapthing_t spawnthing;
     mapthing_t *mt;
     int numthings;
 
-    data = cache_lump_num<byte *>(lump, PU_STATIC);
+    data = cache_lump_num<uint8_t *>(lump, PU_STATIC);
     numthings = W_LumpLength(lump) / sizeof(mapthing_t);
 
-    mt = (mapthing_t *) data;
+    mt = reinterpret_cast<mapthing_t *>(data);
     for (i = 0; i < numthings; i++, mt++)
     {
         spawnthing.x = SHORT(mt->x);
@@ -314,7 +314,7 @@ void P_LoadThings(int lump)
 
 void P_LoadLineDefs(int lump)
 {
-    byte *data;
+    uint8_t      *data;
     int i;
     maplinedef_t *mld;
     line_t *ld;
@@ -323,9 +323,9 @@ void P_LoadLineDefs(int lump)
     numlines = W_LumpLength(lump) / sizeof(maplinedef_t);
     lines = zmalloc<line_t *>(numlines * sizeof(line_t), PU_LEVEL, 0);
     memset(lines, 0, numlines * sizeof(line_t));
-    data = cache_lump_num<byte *>(lump, PU_STATIC);
+    data = cache_lump_num<uint8_t *>(lump, PU_STATIC);
 
-    mld = (maplinedef_t *) data;
+    mld = reinterpret_cast<maplinedef_t *>(data);
     ld = lines;
     for (i = 0; i < numlines; i++, mld++, ld++)
     {
@@ -394,7 +394,7 @@ void P_LoadLineDefs(int lump)
 
 void P_LoadSideDefs(int lump)
 {
-    byte *data;
+    uint8_t      *data;
     int i;
     mapsidedef_t *msd;
     side_t *sd;
@@ -402,9 +402,9 @@ void P_LoadSideDefs(int lump)
     numsides = W_LumpLength(lump) / sizeof(mapsidedef_t);
     sides = zmalloc<side_t *>(numsides * sizeof(side_t), PU_LEVEL, 0);
     memset(sides, 0, numsides * sizeof(side_t));
-    data = cache_lump_num<byte *>(lump, PU_STATIC);
+    data = cache_lump_num<uint8_t *>(lump, PU_STATIC);
 
-    msd = (mapsidedef_t *) data;
+    msd = reinterpret_cast<mapsidedef_t *>(data);
     sd = sides;
     for (i = 0; i < numsides; i++, msd++, sd++)
     {
@@ -447,8 +447,8 @@ void P_LoadBlockMap(int lump)
 
     blockmaplump[0] = SHORT(wadblockmaplump[0]);
     blockmaplump[1] = SHORT(wadblockmaplump[1]);
-    blockmaplump[2] = (int32_t)(SHORT(wadblockmaplump[2])) & 0xffff;
-    blockmaplump[3] = (int32_t)(SHORT(wadblockmaplump[3])) & 0xffff;
+    blockmaplump[2] = static_cast<int32_t>(SHORT(wadblockmaplump[2])) & 0xffff;
+    blockmaplump[3] = static_cast<int32_t>(SHORT(wadblockmaplump[3])) & 0xffff;
 
     // Swap all short integers to native byte ordering:
 	
@@ -456,7 +456,7 @@ void P_LoadBlockMap(int lump)
     for (i=4; i<count; i++)
     {
         short t = SHORT(wadblockmaplump[i]);
-        blockmaplump[i] = (t == -1) ? -1l : (int32_t) t & 0xffff;
+        blockmaplump[i] = (t == -1) ? -1l : static_cast<int32_t>(t) & 0xffff;
     }
 
     Z_Free(wadblockmaplump);
@@ -599,8 +599,8 @@ static void P_RemoveSlimeTrails()
 			int64_t s = dx2 + dy2;
 
 			// [crispy] MBF actually overrides v->x and v->y here
-			v->r_x = (fixed_t)((dx2 * v->x + dy2 * l->v1->x + dxy * (v->y - l->v1->y)) / s);
-			v->r_y = (fixed_t)((dy2 * v->y + dx2 * l->v1->y + dxy * (v->x - l->v1->x)) / s);
+			v->r_x = static_cast<fixed_t>((dx2 * v->x + dy2 * l->v1->x + dxy * (v->y - l->v1->y)) / s);
+			v->r_y = static_cast<fixed_t>((dy2 * v->y + dx2 * l->v1->y + dxy * (v->x - l->v1->x)) / s);
 
 			// [crispy] wait a minute... moved more than 8 map units?
 			// maybe that's a linguortal then, back to the original coordinates
@@ -670,7 +670,7 @@ void P_SetupLevel(int episode, int map, int, skill_t)
     P_LoadNodes(lumpnum + ML_NODES);
     P_LoadSegs(lumpnum + ML_SEGS);
 
-    rejectmatrix = cache_lump_num<byte *>(lumpnum + ML_REJECT, PU_LEVEL);
+    rejectmatrix = cache_lump_num<uint8_t *>(lumpnum + ML_REJECT, PU_LEVEL);
     P_GroupLines();
 
     // [crispy] remove slime trails

@@ -107,7 +107,7 @@ int EV_DoDonut(line_t *line);
 //
 // P_LIGHTS
 //
-typedef struct
+typedef struct fireflicker_s
 {
     thinker_t thinker;
     sector_t *sector;
@@ -118,7 +118,7 @@ typedef struct
 } fireflicker_t;
 
 
-typedef struct
+typedef struct lightflash_s
 {
     thinker_t thinker;
     sector_t *sector;
@@ -131,7 +131,7 @@ typedef struct
 } lightflash_t;
 
 
-typedef struct
+typedef struct strobe_s
 {
     thinker_t thinker;
     sector_t *sector;
@@ -144,7 +144,7 @@ typedef struct
 } strobe_t;
 
 
-typedef struct
+typedef struct glow_s
 {
     thinker_t thinker;
     sector_t *sector;
@@ -185,10 +185,10 @@ void P_SpawnGlowingLight(sector_t *sector);
 // [crispy] add PACKEDATTR for reading SWITCHES lumps from memory
 typedef PACKED_STRUCT(
     {
-        char  name1[9];
-        char  name2[9];
-        short episode;
-    }) switchlist_t;
+    char  name1[9];
+    char  name2[9];
+    short episode;
+}) switchlist_t;
 
 
 typedef enum
@@ -253,7 +253,7 @@ typedef enum
 } plattype_e;
 
 
-typedef struct
+typedef struct plat_s
 {
     thinker_t  thinker;
     sector_t * sector;
@@ -307,7 +307,7 @@ typedef enum
 } vldoor_e;
 
 
-typedef struct
+typedef struct vldoor_s
 {
     thinker_t thinker;
     vldoor_e  type;
@@ -445,7 +445,7 @@ typedef enum
 } ceiling_e;
 
 
-typedef struct
+typedef struct ceiling_s
 {
     thinker_t thinker;
     ceiling_e type;
@@ -528,11 +528,11 @@ typedef enum
 } stair_e;
 
 
-typedef struct
+typedef struct floormove_s
 {
     thinker_t thinker;
     floor_e   type;
-    bool   crush;
+    int       crush;
     sector_t *sector;
     int       direction;
     int       newspecial;

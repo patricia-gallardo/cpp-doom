@@ -309,7 +309,8 @@ angle_t
             if (x > y)
             {
                 // octant 8
-                return -tantoangle[slope_div(y, x)];
+                // Subtracting from 0u avoids compiler warnings
+                return 0u - tantoangle[slope_div(y, x)];
             }
             else
             {
@@ -371,8 +372,8 @@ angle_t
         fixed_t                  y)
 {
     // [crispy] fix overflows for very long distances
-    int64_t y_viewy = (int64_t)y - viewy;
-    int64_t x_viewx = (int64_t)x - viewx;
+    int64_t y_viewy = static_cast<int64_t>(y) - viewy;
+    int64_t x_viewx = static_cast<int64_t>(x) - viewx;
 
     // [crispy] the worst that could happen is e.g. INT_MIN-INT_MAX = 2*INT_MIN
     if (x_viewx < INT_MIN || x_viewx > INT_MAX || y_viewy < INT_MIN || y_viewy > INT_MAX)
@@ -534,16 +535,16 @@ angle_t R_InterpolateAngle(angle_t oangle, angle_t nangle, fixed_t scale)
     else if (nangle > oangle)
     {
         if (nangle - oangle < ANG270)
-            return oangle + (angle_t)((nangle - oangle) * FIXED2DOUBLE(scale));
+            return oangle + static_cast<angle_t>((nangle - oangle) * FIXED2DOUBLE(scale));
         else // Wrapped around
-            return oangle - (angle_t)((oangle - nangle) * FIXED2DOUBLE(scale));
+            return oangle - static_cast<angle_t>((oangle - nangle) * FIXED2DOUBLE(scale));
     }
     else // nangle < oangle
     {
         if (oangle - nangle < ANG270)
-            return oangle - (angle_t)((oangle - nangle) * FIXED2DOUBLE(scale));
+            return oangle - static_cast<angle_t>((oangle - nangle) * FIXED2DOUBLE(scale));
         else // Wrapped around
-            return oangle + (angle_t)((nangle - oangle) * FIXED2DOUBLE(scale));
+            return oangle + static_cast<angle_t>((nangle - oangle) * FIXED2DOUBLE(scale));
     }
 }
 
@@ -967,7 +968,7 @@ void R_SetupFrame(player_t *player)
         leveltime > 1 &&
         // Don't interpolate if the player did something
         // that would necessitate turning it off for a tic.
-        player->mo->interp == true &&
+        player->mo->interp == 1 &&
         // Don't interpolate during a paused state
         leveltime > oldleveltime)
     {
@@ -977,8 +978,9 @@ void R_SetupFrame(player_t *player)
         viewz     = player->oldviewz + FixedMul(player->viewz - player->oldviewz, fractionaltic);
         viewangle = R_InterpolateAngle(player->mo->oldangle, player->mo->angle, fractionaltic) + viewangleoffset;
 
-        pitch = (player->oldlookdir + (player->lookdir - player->oldlookdir) * FIXED2DOUBLE(fractionaltic)) / MLOOKUNIT
-                + (player->oldrecoilpitch + FixedMul(player->recoilpitch - player->oldrecoilpitch, fractionaltic));
+        double  oldlookdir = player->oldlookdir + (player->lookdir - player->oldlookdir) * FIXED2DOUBLE(fractionaltic);
+        fixed_t recoil     = player->oldrecoilpitch + FixedMul(player->recoilpitch - player->oldrecoilpitch, fractionaltic);
+        pitch              = static_cast<int>(oldlookdir / MLOOKUNIT + recoil);
     }
     else
     {

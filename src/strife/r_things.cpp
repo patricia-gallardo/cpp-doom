@@ -113,17 +113,17 @@ R_InstallSpriteLump
 	I_Error("R_InstallSpriteLump: "
 		"Bad frame characters in lump %i", lump);
 	
-    if ((int)frame > maxframe)
+    if (static_cast<int>(frame) > maxframe)
 	maxframe = frame;
 		
     if (rotation == 0)
     {
 	// the lump should be used for all rotations
-	if (sprtemp[frame].rotate == false)
+	if (!sprtemp[frame].rotate)
 	    I_Error ("R_InitSprites: Sprite %s frame %c has "
 		     "multip rot=0 lump", spritename, 'A'+frame);
 
-	if (sprtemp[frame].rotate == true)
+	if (sprtemp[frame].rotate)
 	    I_Error ("R_InitSprites: Sprite %s frame %c has rotations "
 		     "and a rot=0 lump", spritename, 'A'+frame);
 			
@@ -131,13 +131,13 @@ R_InstallSpriteLump
 	for (r=0 ; r<8 ; r++)
 	{
 	    sprtemp[frame].lump[r] = lump - firstspritelump;
-	    sprtemp[frame].flip[r] = (byte)flipped;
+	    sprtemp[frame].flip[r] = static_cast<uint8_t>(flipped);
 	}
 	return;
     }
 	
     // the lump is only used for one rotation
-    if (sprtemp[frame].rotate == false)
+    if (!sprtemp[frame].rotate)
 	I_Error ("R_InitSprites: Sprite %s frame %c has rotations "
 		 "and a rot=0 lump", spritename, 'A'+frame);
 		
@@ -151,7 +151,7 @@ R_InstallSpriteLump
 		 spritename, 'A'+frame, '1'+rotation);
 		
     sprtemp[frame].lump[rotation] = lump - firstspritelump;
-    sprtemp[frame].flip[rotation] = (byte)flipped;
+    sprtemp[frame].flip[rotation] = static_cast<uint8_t>(flipped);
 }
 
 
@@ -244,7 +244,7 @@ void R_InitSpriteDefs (const char** namelist)
 	
 	for (frame = 0 ; frame < maxframe ; frame++)
 	{
-	    switch ((int)sprtemp[frame].rotate)
+	    switch (static_cast<int>(sprtemp[frame].rotate))
 	    {
 	      case -1:
 		// no rotations were found for that frame at all
@@ -382,7 +382,7 @@ void R_DrawMaskedColumn (column_t *column, int baseclip)
 
         if (dc_yl <= dc_yh)
         {
-            dc_source = (byte *)column + 3;
+            dc_source = reinterpret_cast<uint8_t *>(column) + 3;
             dc_texturemid = basetexturemid - (column->topdelta<<FRACBITS);
             // dc_source = (byte *)column + 3 - column->topdelta;
 
@@ -390,7 +390,8 @@ void R_DrawMaskedColumn (column_t *column, int baseclip)
             //  or (SHADOW) R_DrawFuzzColumn.
             colfunc ();	
         }
-        column = (column_t *)(  (byte *)column + column->length + 4);
+        uint8_t *col_ptr = reinterpret_cast<uint8_t *>(column);
+        column = reinterpret_cast<column_t *>(col_ptr + column->length + 4);
     }
 
     dc_texturemid = basetexturemid;
@@ -480,8 +481,8 @@ void R_DrawVisSprite(vissprite_t *vis, int, int)
         if (texturecolumn < 0 || texturecolumn >= SHORT(patch->width))
             I_Error ("R_DrawSpriteRange: bad texturecolumn");
 #endif
-        column = (column_t *) ((byte *)patch +
-                               LONG(patch->columnofs[texturecolumn]));
+        uint8_t *ptr = reinterpret_cast<uint8_t *>(patch) + LONG(patch->columnofs[texturecolumn]);
+        column = reinterpret_cast<column_t *>(ptr);
         R_DrawMaskedColumn (column, clip);  // villsa [STRIFE] clip argument
     }
 
@@ -550,7 +551,7 @@ void R_ProjectSprite (mobj_t* thing)
     
     // decide which patch to use for sprite relative to player
 #ifdef RANGECHECK
-    if ((unsigned int) thing->sprite >= (unsigned int) numsprites)
+    if (static_cast<unsigned int>(thing->sprite) >= static_cast<unsigned int>(numsprites))
 	I_Error ("R_ProjectSprite: invalid sprite number %i ",
 		 thing->sprite);
 #endif
@@ -566,15 +567,15 @@ void R_ProjectSprite (mobj_t* thing)
     {
 	// choose a different rotation based on player view
 	ang = R_PointToAngle (thing->x, thing->y);
-	rot = (ang-thing->angle+(unsigned)(ANG45/2)*9)>>29;
+	rot = (ang-thing->angle+static_cast<unsigned>(ANG45/2)*9)>>29;
 	lump = sprframe->lump[rot];
-	flip = (bool)sprframe->flip[rot];
+	flip = static_cast<bool>(sprframe->flip[rot]);
     }
     else
     {
 	// use single rotation for all views
 	lump = sprframe->lump[0];
-	flip = (bool)sprframe->flip[0];
+	flip = static_cast<bool>(sprframe->flip[0]);
     }
     
     // calculate edges of the shape
@@ -711,7 +712,7 @@ void R_DrawPSprite (pspdef_t* psp)
     
     // decide which patch to use
 #ifdef RANGECHECK
-    if ( (unsigned)psp->state->sprite >= (unsigned int) numsprites)
+    if ( static_cast<unsigned>(psp->state->sprite) >= static_cast<unsigned int>(numsprites))
         I_Error ("R_ProjectSprite: invalid sprite number %i ",
                  psp->state->sprite);
 #endif
@@ -725,7 +726,7 @@ void R_DrawPSprite (pspdef_t* psp)
 
     lump = sprframe->lump[0];
     // [STRIFE] haleyjd 20110629: -flip replaces this.
-    //flip = (bool)sprframe->flip[0];
+    //flip = static_cast<bool>(sprframe->flip[0]);
     flip = flipparm;
     
     // calculate edges of the shape

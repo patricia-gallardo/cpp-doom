@@ -297,7 +297,7 @@ void P_DeathThink(player_t* player)
 
         delta = angle - player->mo->angle;
 
-        if (delta < ANG5 || delta > (unsigned)-ANG5)
+        if (delta < ANG5 || delta > static_cast<unsigned>(-ANG5))
         {
             // Looking at killer,
             //  so fade damage flash down.
@@ -820,7 +820,7 @@ bool P_SpawnTeleportBeacon(player_t* player)
     if(P_CheckPosition(beacon, x, y))
     {
         beacon->target = mo;
-        beacon->miscdata = (byte)(player->allegiance);
+        beacon->miscdata = static_cast<uint8_t>(player->allegiance);
         beacon->angle = (angle << ANGLETOFINESHIFT);
         beacon->momx = FixedMul(finecosine[angle], (5*FRACUNIT));
         beacon->momy = FixedMul(finesine[angle], (5*FRACUNIT));

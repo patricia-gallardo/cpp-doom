@@ -155,7 +155,7 @@ bool P_GiveMana(player_t * player, manatype_t mana, int count)
     {
         return (false);
     }
-    if ((unsigned int) mana > NUMMANA)
+    if (static_cast<unsigned int>(mana) > NUMMANA)
     {
         I_Error("P_GiveMana: bad type %i", mana);
     }
@@ -1260,7 +1260,7 @@ mobj_t *ActiveMinotaur(player_t * master)
     {
         if (think->function != needle)
             continue;
-        mo = (mobj_t *) think;
+        mo = reinterpret_cast<mobj_t *>(think);
         if (mo->type != MT_MINOTAUR)
             continue;
         if (mo->health <= 0)
@@ -1269,7 +1269,7 @@ mobj_t *ActiveMinotaur(player_t * master)
             continue;           // for morphed minotaurs
         if (mo->flags & MF_CORPSE)
             continue;
-        starttime = (unsigned int *) mo->args;
+        starttime =  reinterpret_cast<unsigned int *>(mo->args);
         if ((leveltime - *starttime) >= MAULATORTICS)
             continue;
         plr = mo->special1.m->player;
@@ -1288,7 +1288,7 @@ mobj_t *ActiveMinotaur(player_t * master)
 
 void P_KillMobj(mobj_t * source, mobj_t * target)
 {
-    byte dummyArgs[3] = {0, 0, 0};
+    uint8_t dummyArgs[3] = { 0, 0, 0 };
     mobj_t *master;
 
     target->flags &= ~(MF_SHOOTABLE | MF_FLOAT | MF_SKULLFLY | MF_NOGRAVITY);

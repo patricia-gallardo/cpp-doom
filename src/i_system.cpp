@@ -82,9 +82,9 @@ void I_Tactile(int, int, int)
 // by trying progressively smaller zone sizes until one is found that
 // works.
 
-static byte *AutoAllocMemory(int *size, int default_ram, int min_ram)
+static uint8_t *AutoAllocMemory(int *size, int default_ram, int min_ram)
 {
-    byte *zonemem;
+    uint8_t *zonemem;
 
     // Allocate the zone memory.  This loop tries progressively smaller
     // zone sizes until a size is found that can be allocated.
@@ -106,7 +106,7 @@ static byte *AutoAllocMemory(int *size, int default_ram, int min_ram)
 
         *size = default_ram * 1024 * 1024;
 
-        zonemem = static_cast<byte *>(malloc(*size));
+        zonemem = static_cast<uint8_t *>(malloc(*size));
 
         // Failed to allocate?  Reduce zone size until we reach a size
         // that is acceptable.
@@ -120,9 +120,9 @@ static byte *AutoAllocMemory(int *size, int default_ram, int min_ram)
     return zonemem;
 }
 
-byte *I_ZoneBase(int *size)
+uint8_t *I_ZoneBase(int *size)
 {
-    byte *     zonemem;
+    uint8_t   *zonemem;
     int        min_ram, default_ram;
     int        p;
     static int i = 1;
@@ -434,7 +434,7 @@ bool I_GetMemoryValue(unsigned int offset, void *value, int size)
                     }
 
                     M_StrToInt(myargv[p], &val);
-                    mem_dump_custom[i++] = (unsigned char)val;
+                    mem_dump_custom[i++] = static_cast<unsigned char>(val);
                 }
 
                 dos_mem_dump = mem_dump_custom;
@@ -445,14 +445,14 @@ bool I_GetMemoryValue(unsigned int offset, void *value, int size)
     switch (size)
     {
     case 1:
-        *((unsigned char *)value) = dos_mem_dump[offset];
+        *(reinterpret_cast<unsigned int *>(value)) = dos_mem_dump[offset];
         return true;
     case 2:
-        *((unsigned short *)value) = dos_mem_dump[offset]
+        *(reinterpret_cast<unsigned int *>(value)) = dos_mem_dump[offset]
                                      | (dos_mem_dump[offset + 1] << 8);
         return true;
     case 4:
-        *((unsigned int *)value) = dos_mem_dump[offset]
+        *(reinterpret_cast<unsigned int *>(value)) = dos_mem_dump[offset]
                                    | (dos_mem_dump[offset + 1] << 8)
                                    | (dos_mem_dump[offset + 2] << 16)
                                    | (dos_mem_dump[offset + 3] << 24);

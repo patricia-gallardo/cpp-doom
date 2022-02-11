@@ -200,7 +200,7 @@ typedef enum
 
 
 // Map Object definition.
-struct mobj_t {
+typedef struct mobj_s {
     // List: thinker links.
     thinker_t thinker;
 
@@ -287,7 +287,7 @@ struct mobj_t {
     fixed_t oldy{};
     fixed_t oldz{};
     angle_t oldangle{};
-};
+} mobj_t;
 
 
 #endif

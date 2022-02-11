@@ -201,11 +201,11 @@ bool M_WriteFile(const char *name, const void *source, int length)
 // M_ReadFile
 //
 
-int M_ReadFile(const char *name, byte **buffer)
+int M_ReadFile(const char *name, uint8_t **buffer)
 {
     FILE *handle;
     int   count, length;
-    byte *buf;
+    uint8_t *buf;
 
     handle = fopen(name, "rb");
     if (handle == nullptr)
@@ -216,7 +216,7 @@ int M_ReadFile(const char *name, byte **buffer)
 
     length = M_FileLength(handle);
 
-    buf   = zmalloc<byte *>(length + 1, PU_STATIC, nullptr);
+    buf   = zmalloc<uint8_t *>(length + 1, PU_STATIC, nullptr);
     count = fread(buf, 1, length, handle);
     fclose(handle);
 
@@ -334,7 +334,7 @@ void M_ExtractFileBase(const char *path, char *dest)
             break;
         }
 
-        dest[length++] = toupper((int)*src++);
+        dest[length++] = toupper(static_cast<int>(*src++));
     }
 }
 

@@ -122,18 +122,19 @@ static void P_WriteFireFlicker(const char *key)
 {
     thinker_t *th;
 
+    action_hook needle = T_FireFlicker;
     for (th = thinkercap.next; th != &thinkercap; th = th->next)
     {
-        if (th->function.acp1 == (actionf_p1)T_FireFlicker)
+        if (th->function == needle)
         {
-            fireflicker_t *flick = (fireflicker_t *)th;
+            auto *flick = reinterpret_cast<fireflicker_t *>(th);
 
             M_snprintf(line, MAX_LINE_LEN, "%s %d %d %d %d\n",
                 key,
-                (int)(flick->sector - sectors),
-                (int)flick->count,
-                (int)flick->maxlight,
-                (int)flick->minlight);
+                static_cast<int>(flick->sector - sectors),
+                static_cast<int>(flick->count),
+                static_cast<int>(flick->maxlight),
+                static_cast<int>(flick->minlight));
             fputs(line, save_stream);
         }
     }
@@ -161,7 +162,7 @@ static void P_ReadFireFlicker(const char *key)
         flick->maxlight = maxlight;
         flick->minlight = minlight;
 
-        flick->thinker.function.acp1 = (actionf_p1)T_FireFlicker;
+        flick->thinker.function = T_FireFlicker;
 
         P_AddThinker(&flick->thinker);
     }
@@ -181,7 +182,7 @@ static void P_WriteSoundTarget(const char *key)
             M_snprintf(line, MAX_LINE_LEN, "%s %d %d\n",
                 key,
                 i,
-                P_ThinkerToIndex((thinker_t *)sector->soundtarget));
+                P_ThinkerToIndex(reinterpret_cast<thinker_t *>(sector->soundtarget)));
             fputs(line, save_stream);
         }
     }
@@ -198,7 +199,7 @@ static void P_ReadSoundTarget(const char *key)
             == 3
         && !strncmp(string, key, MAX_STRING_LEN))
     {
-        sectors[sector].soundtarget = (mobj_t *)P_IndexToThinker(target);
+        sectors[sector].soundtarget = reinterpret_cast<mobj_t *>(P_IndexToThinker(target));
     }
 }
 
@@ -253,10 +254,10 @@ static void P_WriteButton(const char *key)
         {
             M_snprintf(line, MAX_LINE_LEN, "%s %d %d %d %d\n",
                 key,
-                (int)(button->line - lines),
-                (int)button->where,
-                (int)button->btexture,
-                (int)button->btimer);
+                static_cast<int>(button->line - lines),
+                static_cast<int>(button->where),
+                static_cast<int>(button->btexture),
+                static_cast<int>(button->btimer));
             fputs(line, save_stream);
         }
     }
@@ -287,11 +288,12 @@ static void P_WriteBrainTarget(const char *key)
 {
     thinker_t *th;
 
+    action_hook needle = P_MobjThinker;
     for (th = thinkercap.next; th != &thinkercap; th = th->next)
     {
-        if (th->function.acp1 == (actionf_p1)P_MobjThinker)
+        if (th->function == needle)
         {
-            mobj_t *mo = (mobj_t *)th;
+            auto *mo = reinterpret_cast<mobj_t *>(th);
 
             if (mo->state == &states[S_BRAINEYE1])
             {
@@ -492,7 +494,8 @@ lumpinfo_t *savemaplumpinfo = nullptr;
 void P_ReadExtendedSaveGameData(int pass)
 {
     long p, curpos, endpos;
-    byte episode, map;
+    uint8_t episode;
+    uint8_t map;
     int  lumpnum = -1;
 
     line   = static_cast<char *>(malloc(MAX_LINE_LEN));
@@ -515,7 +518,7 @@ void P_ReadExtendedSaveGameData(int pass)
     fseek(save_stream, SAVESTRINGSIZE + VERSIONSIZE + 1, SEEK_SET); // [crispy] + 1 for "gameskill"
     if (fread(&episode, 1, 1, save_stream) == 1 && fread(&map, 1, 1, save_stream) == 1)
     {
-        lumpnum = P_GetNumForMap((int)episode, (int)map, false);
+        lumpnum = P_GetNumForMap(static_cast<int>(episode), static_cast<int>(map), false);
     }
 
     if (lumpnum >= 0)
@@ -534,7 +537,7 @@ void P_ReadExtendedSaveGameData(int pass)
 
     for (p = endpos - 1; p > 0; p--)
     {
-        byte curbyte;
+        uint8_t curbyte;
 
         fseek(save_stream, p, SEEK_SET);
 

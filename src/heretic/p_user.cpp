@@ -366,7 +366,7 @@ void P_DeathThink(player_t * player)
         angle = R_PointToAngle2(player->mo->x, player->mo->y,
                                 player->attacker->x, player->attacker->y);
         delta = angle - player->mo->angle;
-        if (delta < ANG5 || delta > (unsigned) -ANG5)
+        if (delta < ANG5 || delta > static_cast<unsigned>(-ANG5))
         {                       // Looking at killer, so fade damage flash down
             player->mo->angle = angle;
             if (player->damagecount)
@@ -388,7 +388,7 @@ void P_DeathThink(player_t * player)
     {
         if (player == &players[consoleplayer])
         {
-            I_SetPalette(cache_lump_name<byte *>(DEH_String("PLAYPAL"), PU_CACHE));
+            I_SetPalette(cache_lump_name<uint8_t *>(DEH_String("PLAYPAL"), PU_CACHE));
             inv_ptr = 0;
             curpos = 0;
             newtorch = 0;

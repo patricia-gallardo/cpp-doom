@@ -95,7 +95,7 @@ void T_RotatePoly(polyevent_t * pe)
             {
                 poly->specialdata = nullptr;
             }
-            SN_StopSequence((mobj_t *) & poly->startSpot);
+            SN_StopSequence(reinterpret_cast<mobj_t *>(&poly->startSpot));
             P_PolyobjFinished(poly->tag);
             P_RemoveThinker(&pe->thinker);
         }
@@ -112,7 +112,7 @@ void T_RotatePoly(polyevent_t * pe)
 //
 //==========================================================================
 
-bool EV_RotatePoly(line_t *, byte * args, int direction, bool
+bool EV_RotatePoly(line_t *, uint8_t *args, int direction, bool
                       overRide)
 {
     int mirror;
@@ -154,7 +154,7 @@ bool EV_RotatePoly(line_t *, byte * args, int direction, bool
     }
     pe->speed = (args[1] * direction * (ANG90 / 64)) >> 3;
     poly->specialdata = pe;
-    SN_StartSequence((mobj_t *) & poly->startSpot, SEQ_DOOR_STONE +
+    SN_StartSequence(reinterpret_cast<mobj_t *>(&poly->startSpot), SEQ_DOOR_STONE +
                      poly->seqType);
 
     while ((mirror = GetPolyobjMirror(polyNum)) != 0)
@@ -196,7 +196,7 @@ bool EV_RotatePoly(line_t *, byte * args, int direction, bool
         direction = -direction;
         pe->speed = (args[1] * direction * (ANG90 / 64)) >> 3;
         polyNum = mirror;
-        SN_StartSequence((mobj_t *) & poly->startSpot, SEQ_DOOR_STONE +
+        SN_StartSequence(reinterpret_cast<mobj_t *>(&poly->startSpot), SEQ_DOOR_STONE +
                          poly->seqType);
     }
     return true;
@@ -224,7 +224,7 @@ void T_MovePoly(polyevent_t * pe)
             {
                 poly->specialdata = nullptr;
             }
-            SN_StopSequence((mobj_t *) & poly->startSpot);
+            SN_StopSequence(reinterpret_cast<mobj_t *>(&poly->startSpot));
             P_PolyobjFinished(poly->tag);
             P_RemoveThinker(&pe->thinker);
         }
@@ -243,7 +243,7 @@ void T_MovePoly(polyevent_t * pe)
 //
 //==========================================================================
 
-bool EV_MovePoly(line_t *, byte *args, bool timesEight, bool overRide)
+bool EV_MovePoly(line_t *, uint8_t *args, bool timesEight, bool overRide)
 {
     int mirror;
     int polyNum;
@@ -284,7 +284,7 @@ bool EV_MovePoly(line_t *, byte *args, bool timesEight, bool overRide)
     pe->angle = an >> ANGLETOFINESHIFT;
     pe->xSpeed = FixedMul(pe->speed, finecosine[pe->angle]);
     pe->ySpeed = FixedMul(pe->speed, finesine[pe->angle]);
-    SN_StartSequence((mobj_t *) & poly->startSpot, SEQ_DOOR_STONE +
+    SN_StartSequence(reinterpret_cast<mobj_t *>(&poly->startSpot), SEQ_DOOR_STONE +
                      poly->seqType);
 
     while ((mirror = GetPolyobjMirror(polyNum)) != 0)
@@ -313,7 +313,7 @@ bool EV_MovePoly(line_t *, byte *args, bool timesEight, bool overRide)
         pe->xSpeed = FixedMul(pe->speed, finecosine[pe->angle]);
         pe->ySpeed = FixedMul(pe->speed, finesine[pe->angle]);
         polyNum = mirror;
-        SN_StartSequence((mobj_t *) & poly->startSpot, SEQ_DOOR_STONE +
+        SN_StartSequence(reinterpret_cast<mobj_t *>(&poly->startSpot), SEQ_DOOR_STONE +
                          poly->seqType);
     }
     return true;
@@ -335,7 +335,7 @@ void T_PolyDoor(polydoor_t * pd)
         if (!--pd->tics)
         {
             poly = GetPolyobj(pd->polyobj);
-            SN_StartSequence((mobj_t *) & poly->startSpot, SEQ_DOOR_STONE +
+            SN_StartSequence(reinterpret_cast<mobj_t *>(&poly->startSpot), SEQ_DOOR_STONE +
                              poly->seqType);
         }
         return;
@@ -350,7 +350,7 @@ void T_PolyDoor(polydoor_t * pd)
                 if (pd->dist <= 0)
                 {
                     poly = GetPolyobj(pd->polyobj);
-                    SN_StopSequence((mobj_t *) & poly->startSpot);
+                    SN_StopSequence(reinterpret_cast<mobj_t *>(&poly->startSpot));
                     if (!pd->close)
                     {
                         pd->dist = pd->totalDist;
@@ -387,7 +387,7 @@ void T_PolyDoor(polydoor_t * pd)
                     pd->xSpeed = -pd->xSpeed;
                     pd->ySpeed = -pd->ySpeed;
                     pd->close = false;
-                    SN_StartSequence((mobj_t *) & poly->startSpot,
+                    SN_StartSequence(reinterpret_cast<mobj_t *>(&poly->startSpot),
                                      SEQ_DOOR_STONE + poly->seqType);
                 }
             }
@@ -404,7 +404,7 @@ void T_PolyDoor(polydoor_t * pd)
                 if (pd->dist <= 0)
                 {
                     poly = GetPolyobj(pd->polyobj);
-                    SN_StopSequence((mobj_t *) & poly->startSpot);
+                    SN_StopSequence(reinterpret_cast<mobj_t *>(&poly->startSpot));
                     if (!pd->close)
                     {
                         pd->dist = pd->totalDist;
@@ -435,7 +435,7 @@ void T_PolyDoor(polydoor_t * pd)
                     pd->dist = pd->totalDist - pd->dist;
                     pd->speed = -pd->speed;
                     pd->close = false;
-                    SN_StartSequence((mobj_t *) & poly->startSpot,
+                    SN_StartSequence(reinterpret_cast<mobj_t *>(&poly->startSpot),
                                      SEQ_DOOR_STONE + poly->seqType);
                 }
             }
@@ -451,7 +451,7 @@ void T_PolyDoor(polydoor_t * pd)
 //
 //==========================================================================
 
-bool EV_OpenPolyDoor(line_t *, byte * args, podoortype_t type)
+bool EV_OpenPolyDoor(line_t *, uint8_t *args, podoortype_t type)
 {
     int mirror;
     int polyNum;
@@ -488,7 +488,7 @@ bool EV_OpenPolyDoor(line_t *, byte * args, podoortype_t type)
         pd->direction = an >> ANGLETOFINESHIFT;
         pd->xSpeed = FixedMul(pd->speed, finecosine[pd->direction]);
         pd->ySpeed = FixedMul(pd->speed, finesine[pd->direction]);
-        SN_StartSequence((mobj_t *) & poly->startSpot, SEQ_DOOR_STONE +
+        SN_StartSequence(reinterpret_cast<mobj_t *>(&poly->startSpot), SEQ_DOOR_STONE +
                          poly->seqType);
     }
     else if (type == PODOOR_SWING)
@@ -498,7 +498,7 @@ bool EV_OpenPolyDoor(line_t *, byte * args, podoortype_t type)
         pd->speed = (args[1] * pd->direction * (ANG90 / 64)) >> 3;
         pd->totalDist = args[2] * (ANG90 / 64);
         pd->dist = pd->totalDist;
-        SN_StartSequence((mobj_t *) & poly->startSpot, SEQ_DOOR_STONE +
+        SN_StartSequence(reinterpret_cast<mobj_t *>(&poly->startSpot), SEQ_DOOR_STONE +
                          poly->seqType);
     }
 
@@ -528,7 +528,7 @@ bool EV_OpenPolyDoor(line_t *, byte * args, podoortype_t type)
             pd->direction = an >> ANGLETOFINESHIFT;
             pd->xSpeed = FixedMul(pd->speed, finecosine[pd->direction]);
             pd->ySpeed = FixedMul(pd->speed, finesine[pd->direction]);
-            SN_StartSequence((mobj_t *) & poly->startSpot, SEQ_DOOR_STONE +
+            SN_StartSequence(reinterpret_cast<mobj_t *>(&poly->startSpot), SEQ_DOOR_STONE +
                              poly->seqType);
         }
         else if (type == PODOOR_SWING)
@@ -538,7 +538,7 @@ bool EV_OpenPolyDoor(line_t *, byte * args, podoortype_t type)
             pd->speed = (args[1] * pd->direction * (ANG90 / 64)) >> 3;
             pd->totalDist = args[2] * (ANG90 / 64);
             pd->dist = pd->totalDist;
-            SN_StartSequence((mobj_t *) & poly->startSpot, SEQ_DOOR_STONE +
+            SN_StartSequence(reinterpret_cast<mobj_t *>(&poly->startSpot), SEQ_DOOR_STONE +
                              poly->seqType);
         }
         polyNum = mirror;
@@ -1421,7 +1421,7 @@ static void TranslateToStartSpot(int tag, int originX, int originY)
 
 void PO_Init(int lump)
 {
-    byte *data;
+    uint8_t    *data;
     int i;
     mapthing_t spawnthing;
     mapthing_t *mt;
@@ -1431,9 +1431,9 @@ void PO_Init(int lump)
     polyobjs = zmalloc<polyobj_t *>(po_NumPolyobjs * sizeof(polyobj_t), PU_LEVEL, 0);
     memset(polyobjs, 0, po_NumPolyobjs * sizeof(polyobj_t));
 
-    data = cache_lump_num<byte *>(lump, PU_STATIC);
+    data = cache_lump_num<uint8_t *>(lump, PU_STATIC);
     numthings = W_LumpLength(lump) / sizeof(mapthing_t);
-    mt = (mapthing_t *) data;
+    mt = reinterpret_cast<mapthing_t *>(data);
     polyIndex = 0;              // index polyobj number
     // Find the startSpot points, and spawn each polyobj
     for (i = 0; i < numthings; i++, mt++)
@@ -1454,7 +1454,7 @@ void PO_Init(int lump)
             polyIndex++;
         }
     }
-    mt = (mapthing_t *) data;
+    mt = reinterpret_cast<mapthing_t *>(data);
     for (i = 0; i < numthings; i++, mt++)
     {
         spawnthing.x = SHORT(mt->x);

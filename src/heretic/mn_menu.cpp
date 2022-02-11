@@ -1235,7 +1235,7 @@ bool MN_Responder(event_t * event)
                     //set the msg to be cleared
                     players[consoleplayer].message = nullptr;
                     paused = false;
-                    I_SetPalette(cache_lump_name<byte *>("PLAYPAL", PU_CACHE));
+                    I_SetPalette(cache_lump_name<uint8_t *>("PLAYPAL", PU_CACHE));
                     D_StartTitle();     // go to intro/demo mode.
                     break;
 
@@ -1460,7 +1460,7 @@ bool MN_Responder(event_t * event)
             {
                 usegamma = 0;
             }
-            I_SetPalette((byte *) cache_lump_name<patch_t *>("PLAYPAL", PU_CACHE));
+            I_SetPalette(cache_lump_name<uint8_t *>("PLAYPAL", PU_CACHE));
             return true;
         }
 
@@ -1730,7 +1730,7 @@ void MN_DeactivateMenu()
 
 void MN_DrawInfo()
 {
-    I_SetPalette(cache_lump_name<byte *>("PLAYPAL", PU_CACHE));
+    I_SetPalette(cache_lump_name<uint8_t *>("PLAYPAL", PU_CACHE));
     V_DrawRawScreen(cache_lump_num<pixel_t *>(W_GetNumForName("TITLE") + InfoType,
                                    PU_CACHE));
 //      V_DrawPatch(0, 0, W_CacheLumpNum(W_GetNumForName("TITLE")+InfoType,

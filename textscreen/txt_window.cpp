@@ -35,10 +35,9 @@
 #endif
 
 void TXT_SetWindowAction(txt_window_t *window,
-                         txt_horiz_align_t position, 
-                         TXT_UNCAST_ARG(action))
+                         txt_horiz_align_t position, void *uncast_action)
 {
-    TXT_CAST_ARG(txt_widget_t, action);
+    auto *action = reinterpret_cast<txt_widget_t *>(uncast_action);
 
     if (window->actions[position] != nullptr)
     {
@@ -244,7 +243,7 @@ static void CalcActionAreaSize(txt_window_t *window,
 
     for (i=0; i<3; ++i)
     {
-        widget = (txt_widget_t *) window->actions[i];
+        widget = window->actions[i];
 
         if (widget != nullptr)
         {
@@ -263,7 +262,7 @@ static void CalcActionAreaSize(txt_window_t *window,
 
 void TXT_LayoutWindow(txt_window_t *window)
 {
-    txt_widget_t *widgets = (txt_widget_t *) window;
+    txt_widget_t *widgets = reinterpret_cast<txt_widget_t *>(window);
     unsigned int widgets_w;
     unsigned int actionarea_w, actionarea_h;
 
@@ -353,7 +352,7 @@ void TXT_DrawWindow(txt_window_t *window)
 
     // Draw an action area, if we have one
 
-    widgets = (txt_widget_t *) window;
+    widgets = reinterpret_cast<txt_widget_t *>(window);
 
     if (widgets->y + widgets->h < window->window_y + window->window_h - 1)
     {
@@ -410,10 +409,10 @@ static int MouseButtonPress(txt_window_t *window, int b)
 
     // Is it within the table range?
 
-    widgets = (txt_widget_t *) window;
+    widgets = reinterpret_cast<txt_widget_t *>(window);
 
-    if (x >= widgets->x && x < (signed) (widgets->x + widgets->w)
-     && y >= widgets->y && y < (signed) (widgets->y + widgets->h))
+    if (x >= widgets->x && x < static_cast<signed>(widgets->x + widgets->w)
+     && y >= widgets->y && y < static_cast<signed>(widgets->y + widgets->h))
     {
         TXT_WidgetMousePress(window, x, y, b);
         return 1;
@@ -426,8 +425,8 @@ static int MouseButtonPress(txt_window_t *window, int b)
         widget = window->actions[i];
 
         if (widget != nullptr
-         && x >= widget->x && x < (signed) (widget->x + widget->w)
-         && y >= widget->y && y < (signed) (widget->y + widget->h))
+         && x >= widget->x && x < static_cast<signed>(widget->x + widget->w)
+         && y >= widget->y && y < static_cast<signed>(widget->y + widget->h))
         {
             int was_focused;
 

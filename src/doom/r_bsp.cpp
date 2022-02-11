@@ -312,7 +312,8 @@ void R_AddLine(seg_t *line)
         // Totally off the left edge?
         if (tspan >= span)
             return;
-        angle2 = -clipangle;
+        // Subtracting from 0u avoids compiler warnings
+        angle2 = 0u - clipangle;
     }
 
     // The seg is in the view range,
@@ -467,8 +468,8 @@ bool R_CheckBBox(fixed_t *bspcoord)
         // Totally off the left edge?
         if (tspan >= span)
             return false;
-
-        angle2 = -clipangle;
+        // Subtracting from 0u avoids compiler warnings
+        angle2 = 0u - clipangle;
     }
 
 

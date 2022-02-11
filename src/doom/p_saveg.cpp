@@ -76,9 +76,9 @@ char *P_SaveGameFile(int slot)
 
 // Endian-safe integer read/write functions
 
-static byte saveg_read8()
+static uint8_t saveg_read8()
 {
-    byte result = -1;
+    uint8_t result = -1;
 
     if (fread(&result, 1, 1, save_stream) < 1)
     {
@@ -94,7 +94,7 @@ static byte saveg_read8()
     return result;
 }
 
-static void saveg_write8(byte value)
+static void saveg_write8(uint8_t value)
 {
     if (fwrite(&value, 1, 1, save_stream) < 1)
     {
@@ -182,12 +182,12 @@ static void saveg_write_pad()
 
 static void *saveg_readp()
 {
-    return (void *)(intptr_t)saveg_read32();
+    return reinterpret_cast<void *>(static_cast<intptr_t>(saveg_read32()));
 }
 
 static void saveg_writep(const void *p)
 {
-    saveg_write32((intptr_t)p);
+    saveg_write32(reinterpret_cast<intptr_t>(p));
 }
 
 // Enum values are 32-bit integers.
@@ -243,16 +243,19 @@ static void saveg_write_mapthing_t(mapthing_t *str)
 // actionf_t
 //
 
-static void saveg_read_actionf_t(actionf_t *str)
+static void saveg_read_actionf_t(actionf_t &actionf)
 {
-    // actionf_p1 acp1;
-    str->acp1 = reinterpret_cast<actionf_p1>(saveg_readp());
+    void *pVoid = saveg_readp();
+    actionf     = reinterpret_cast<mobj_param_action>(pVoid);
 }
 
-static void saveg_write_actionf_t(actionf_t *str)
+static void saveg_write_actionf_t(actionf_t &actionf)
 {
-    // actionf_p1 acp1;
-    saveg_writep(reinterpret_cast<const void *>(str->acp1));
+    std::visit(overloaded {
+                   [](const mobj_param_action hook) { saveg_writep(reinterpret_cast<const void *>(hook)); },
+                   [](const auto &) {},
+               },
+        actionf);
 }
 
 //
@@ -277,7 +280,7 @@ static void saveg_read_thinker_t(thinker_t *str)
     str->next = static_cast<thinker_s *>(saveg_readp());
 
     // think_t function;
-    saveg_read_think_t(&str->function);
+    saveg_read_think_t(str->function);
 }
 
 static void saveg_write_thinker_t(thinker_t *str)
@@ -289,7 +292,7 @@ static void saveg_write_thinker_t(thinker_t *str)
     saveg_writep(str->next);
 
     // think_t function;
-    saveg_write_think_t(&str->function);
+    saveg_write_think_t(str->function);
 }
 
 //
@@ -426,9 +429,10 @@ uint32_t P_ThinkerToIndex(thinker_t *thinker)
     if (!thinker)
         return 0;
 
+    action_hook needle = P_MobjThinker;
     for (th = thinkercap.next, i = 0; th != &thinkercap; th = th->next)
     {
-        if (th->function.acp1 == (actionf_p1)P_MobjThinker)
+        if (th->function == needle)
         {
             i++;
             if (th == thinker)
@@ -448,9 +452,10 @@ thinker_t *P_IndexToThinker(uint32_t index)
     if (!index)
         return nullptr;
 
+    action_hook needle = P_MobjThinker;
     for (th = thinkercap.next, i = 0; th != &thinkercap; th = th->next)
     {
-        if (th->function.acp1 == (actionf_p1)P_MobjThinker)
+        if (th->function == needle)
         {
             i++;
             if (i == index)
@@ -552,7 +557,10 @@ static void saveg_write_mobj_t(mobj_t *str)
     // struct mobj_s* target;
     // [crispy] instead of the actual pointer, store the
     // corresponding index in the mobj->target field
-    saveg_writep((void *)(uintptr_t)P_ThinkerToIndex((thinker_t *)str->target));
+    auto *thinker = reinterpret_cast<thinker_t *>(str->target);
+    auto intptr  = static_cast<uintptr_t>(P_ThinkerToIndex(thinker));
+    void *pointer = reinterpret_cast<void *>(intptr);
+    saveg_writep(pointer);
 
     // int reactiontime;
     saveg_write32(str->reactiontime);
@@ -579,7 +587,9 @@ static void saveg_write_mobj_t(mobj_t *str)
     // struct mobj_s* tracer;
     // [crispy] instead of the actual pointer, store the
     // corresponding index in the mobj->tracers field
-    saveg_writep((void *)(uintptr_t)P_ThinkerToIndex((thinker_t *)str->tracer));
+    auto *thinker2 = reinterpret_cast<thinker_t *>(str->tracer);
+    auto  intptr2  = static_cast<uintptr_t>(P_ThinkerToIndex(thinker2));
+    saveg_writep(reinterpret_cast<void *>(intptr2));
 }
 
 
@@ -1437,7 +1447,9 @@ void P_WriteSaveGameHeader(char *description)
 bool P_ReadSaveGameHeader()
 {
     int  i;
-    byte a, b, c;
+    uint8_t a;
+    uint8_t b;
+    uint8_t c;
     char vcheck[VERSIONSIZE];
     char read_vcheck[VERSIONSIZE];
 
@@ -1659,13 +1671,14 @@ void P_ArchiveThinkers()
     thinker_t *th;
 
     // save off the current thinkers
+    action_hook needle = P_MobjThinker;
     for (th = thinkercap.next; th != &thinkercap; th = th->next)
     {
-        if (th->function.acp1 == (actionf_p1)P_MobjThinker)
+        if (th->function == needle)
         {
             saveg_write8(tc_mobj);
             saveg_write_pad();
-            saveg_write_mobj_t((mobj_t *)th);
+            saveg_write_mobj_t(reinterpret_cast<mobj_t *>(th));
 
             continue;
         }
@@ -1683,19 +1696,20 @@ void P_ArchiveThinkers()
 //
 void P_UnArchiveThinkers()
 {
-    byte       tclass;
+    uint8_t    tclass;
     thinker_t *currentthinker;
     thinker_t *next;
     mobj_t *   mobj;
 
     // remove all the current thinkers
     currentthinker = thinkercap.next;
+    action_hook needle = P_MobjThinker;
     while (currentthinker != &thinkercap)
     {
         next = currentthinker->next;
 
-        if (currentthinker->function.acp1 == (actionf_p1)P_MobjThinker)
-            P_RemoveMobj((mobj_t *)currentthinker);
+        if (currentthinker->function == needle)
+            P_RemoveMobj(reinterpret_cast<mobj_t *>(currentthinker));
         else
             Z_Free(currentthinker);
 
@@ -1725,7 +1739,7 @@ void P_UnArchiveThinkers()
             // [crispy] killough 2/28/98: Fix for falling down into a wall after savegame loaded
             //	    mobj->floorz = mobj->subsector->sector->floorheight;
             //	    mobj->ceilingz = mobj->subsector->sector->ceilingheight;
-            mobj->thinker.function.acp1 = (actionf_p1)P_MobjThinker;
+            mobj->thinker.function = P_MobjThinker;
             P_AddThinker(&mobj->thinker);
             break;
 
@@ -1742,13 +1756,14 @@ void P_RestoreTargets()
     mobj_t *   mo;
     thinker_t *th;
 
+    action_hook needle = P_MobjThinker;
     for (th = thinkercap.next; th != &thinkercap; th = th->next)
     {
-        if (th->function.acp1 == (actionf_p1)P_MobjThinker)
+        if (th->function == needle)
         {
-            mo         = (mobj_t *)th;
-            mo->target = (mobj_t *)P_IndexToThinker((uintptr_t)mo->target);
-            mo->tracer = (mobj_t *)P_IndexToThinker((uintptr_t)mo->tracer);
+            mo         = reinterpret_cast<mobj_t *>(th);
+            mo->target = reinterpret_cast<mobj_t *>(P_IndexToThinker(reinterpret_cast<uintptr_t>(mo->target)));
+            mo->tracer = reinterpret_cast<mobj_t *>(P_IndexToThinker(reinterpret_cast<uintptr_t>(mo->tracer)));
         }
     }
 
@@ -1793,93 +1808,101 @@ void P_ArchiveSpecials()
     int        i;
 
     // save off the current thinkers
+    action_hook null_needle          = null_hook();
+    action_hook needle_move_ceiling  = T_MoveCeiling;
+    action_hook needle_vertical_door = T_VerticalDoor;
+    action_hook needle_move_floor    = T_MoveFloor;
+    action_hook needle_plat_raise    = T_PlatRaise;
+    action_hook needle_light_flash   = T_LightFlash;
+    action_hook needle_strobe_flash  = T_StrobeFlash;
+    action_hook needle_glow          = T_Glow;
     for (th = thinkercap.next; th != &thinkercap; th = th->next)
     {
-        if (th->function.acv == (actionf_v) nullptr)
+        if (th->function == null_needle)
         {
             for (i = 0; i < MAXCEILINGS; i++)
-                if (activeceilings[i] == (ceiling_t *)th)
+                if (activeceilings[i] == reinterpret_cast<ceiling_t *>(th))
                     break;
 
             if (i < MAXCEILINGS)
             {
-                saveg_write8(static_cast<byte>(specials_e::tc_ceiling));
+                saveg_write8(static_cast<uint8_t>(specials_e::tc_ceiling));
                 saveg_write_pad();
-                saveg_write_ceiling_t((ceiling_t *)th);
+                saveg_write_ceiling_t(reinterpret_cast<ceiling_t *>(th));
             }
             // [crispy] save plats in statis
             for (i = 0; i < MAXPLATS; i++)
-                if (activeplats[i] == (plat_t *)th)
+                if (activeplats[i] == reinterpret_cast<plat_t *>(th))
                     break;
 
             if (i < MAXPLATS)
             {
-                saveg_write8(static_cast<byte>(specials_e::tc_plat));
+                saveg_write8(static_cast<uint8_t>(specials_e::tc_plat));
                 saveg_write_pad();
-                saveg_write_plat_t((plat_t *)th);
+                saveg_write_plat_t(reinterpret_cast<plat_t *>(th));
             }
             continue;
         }
 
-        if (th->function.acp1 == (actionf_p1)T_MoveCeiling)
+        if (th->function == needle_move_ceiling)
         {
-            saveg_write8(static_cast<byte>(specials_e::tc_ceiling));
+            saveg_write8(static_cast<uint8_t>(specials_e::tc_ceiling));
             saveg_write_pad();
-            saveg_write_ceiling_t((ceiling_t *)th);
+            saveg_write_ceiling_t(reinterpret_cast<ceiling_t *>(th));
             continue;
         }
 
-        if (th->function.acp1 == (actionf_p1)T_VerticalDoor)
+        if (th->function == needle_vertical_door)
         {
-            saveg_write8(static_cast<byte>(specials_e::tc_door));
+            saveg_write8(static_cast<uint8_t>(specials_e::tc_door));
             saveg_write_pad();
-            saveg_write_vldoor_t((vldoor_t *)th);
+            saveg_write_vldoor_t(reinterpret_cast<vldoor_t *>(th));
             continue;
         }
 
-        if (th->function.acp1 == (actionf_p1)T_MoveFloor)
+        if (th->function == needle_move_floor)
         {
-            saveg_write8(static_cast<byte>(specials_e::tc_floor));
+            saveg_write8(static_cast<uint8_t>(specials_e::tc_floor));
             saveg_write_pad();
-            saveg_write_floormove_t((floormove_t *)th);
+            saveg_write_floormove_t(reinterpret_cast<floormove_t *>(th));
             continue;
         }
 
-        if (th->function.acp1 == (actionf_p1)T_PlatRaise)
+        if (th->function == needle_plat_raise)
         {
-            saveg_write8(static_cast<byte>(specials_e::tc_plat));
+            saveg_write8(static_cast<uint8_t>(specials_e::tc_plat));
             saveg_write_pad();
-            saveg_write_plat_t((plat_t *)th);
+            saveg_write_plat_t(reinterpret_cast<plat_t *>(th));
             continue;
         }
 
-        if (th->function.acp1 == (actionf_p1)T_LightFlash)
+        if (th->function == needle_light_flash)
         {
-            saveg_write8(static_cast<byte>(specials_e::tc_flash));
+            saveg_write8(static_cast<uint8_t>(specials_e::tc_flash));
             saveg_write_pad();
-            saveg_write_lightflash_t((lightflash_t *)th);
+            saveg_write_lightflash_t(reinterpret_cast<lightflash_t *>(th));
             continue;
         }
 
-        if (th->function.acp1 == (actionf_p1)T_StrobeFlash)
+        if (th->function == needle_strobe_flash)
         {
-            saveg_write8(static_cast<byte>(specials_e::tc_strobe));
+            saveg_write8(static_cast<uint8_t>(specials_e::tc_strobe));
             saveg_write_pad();
-            saveg_write_strobe_t((strobe_t *)th);
+            saveg_write_strobe_t(reinterpret_cast<strobe_t *>(th));
             continue;
         }
 
-        if (th->function.acp1 == (actionf_p1)T_Glow)
+        if (th->function == needle_glow)
         {
-            saveg_write8(static_cast<byte>(specials_e::tc_glow));
+            saveg_write8(static_cast<uint8_t>(specials_e::tc_glow));
             saveg_write_pad();
-            saveg_write_glow_t((glow_t *)th);
+            saveg_write_glow_t(reinterpret_cast<glow_t *>(th));
             continue;
         }
     }
 
     // add a terminating marker
-    saveg_write8(static_cast<byte>(specials_e::tc_endspecials));
+    saveg_write8(static_cast<uint8_t>(specials_e::tc_endspecials));
 }
 
 
@@ -1914,8 +1937,8 @@ void P_UnArchiveSpecials()
             saveg_read_ceiling_t(ceiling);
             ceiling->sector->specialdata = ceiling;
 
-            if (ceiling->thinker.function.acp1)
-                ceiling->thinker.function.acp1 = (actionf_p1)T_MoveCeiling;
+            if (action_hook_has_value(ceiling->thinker.function))
+                ceiling->thinker.function = T_MoveCeiling;
 
             P_AddThinker(&ceiling->thinker);
             P_AddActiveCeiling(ceiling);
@@ -1925,8 +1948,8 @@ void P_UnArchiveSpecials()
             saveg_read_pad();
             door = zmalloc<decltype(door)>(sizeof(*door), PU_LEVEL, nullptr);
             saveg_read_vldoor_t(door);
-            door->sector->specialdata   = door;
-            door->thinker.function.acp1 = (actionf_p1)T_VerticalDoor;
+            door->sector->specialdata = door;
+            door->thinker.function    = T_VerticalDoor;
             P_AddThinker(&door->thinker);
             break;
 
@@ -1934,8 +1957,8 @@ void P_UnArchiveSpecials()
             saveg_read_pad();
             floor = zmalloc<decltype(floor)>(sizeof(*floor), PU_LEVEL, nullptr);
             saveg_read_floormove_t(floor);
-            floor->sector->specialdata   = floor;
-            floor->thinker.function.acp1 = (actionf_p1)T_MoveFloor;
+            floor->sector->specialdata = floor;
+            floor->thinker.function    = T_MoveFloor;
             P_AddThinker(&floor->thinker);
             break;
 
@@ -1945,8 +1968,8 @@ void P_UnArchiveSpecials()
             saveg_read_plat_t(plat);
             plat->sector->specialdata = plat;
 
-            if (plat->thinker.function.acp1)
-                plat->thinker.function.acp1 = (actionf_p1)T_PlatRaise;
+            if (action_hook_has_value(plat->thinker.function))
+                plat->thinker.function = T_PlatRaise;
 
             P_AddThinker(&plat->thinker);
             P_AddActivePlat(plat);
@@ -1956,7 +1979,7 @@ void P_UnArchiveSpecials()
             saveg_read_pad();
             flash = zmalloc<decltype(flash)>(sizeof(*flash), PU_LEVEL, nullptr);
             saveg_read_lightflash_t(flash);
-            flash->thinker.function.acp1 = (actionf_p1)T_LightFlash;
+            flash->thinker.function = T_LightFlash;
             P_AddThinker(&flash->thinker);
             break;
 
@@ -1964,7 +1987,7 @@ void P_UnArchiveSpecials()
             saveg_read_pad();
             strobe = zmalloc<decltype(strobe)>(sizeof(*strobe), PU_LEVEL, nullptr);
             saveg_read_strobe_t(strobe);
-            strobe->thinker.function.acp1 = (actionf_p1)T_StrobeFlash;
+            strobe->thinker.function = T_StrobeFlash;
             P_AddThinker(&strobe->thinker);
             break;
 
@@ -1972,7 +1995,7 @@ void P_UnArchiveSpecials()
             saveg_read_pad();
             glow = zmalloc<decltype(glow)>(sizeof(*glow), PU_LEVEL, nullptr);
             saveg_read_glow_t(glow);
-            glow->thinker.function.acp1 = (actionf_p1)T_Glow;
+            glow->thinker.function = T_Glow;
             P_AddThinker(&glow->thinker);
             break;
 

@@ -67,7 +67,7 @@ void HUlib_drawYellowText(int x, int y, const char *text)
 
         if(c >= 0 && c < HU_FONTSIZE)
         {
-            patch_t *patch = yfont[(int) c];
+            patch_t *patch = yfont[static_cast<int>(c)];
             int      width = SHORT(patch->width);
 
             if(x + width <= (SCREENWIDTH - 20))
@@ -436,7 +436,7 @@ HUlib_keyInIText
     ch = toupper(ch);
 
     if (ch >= ' ' && ch <= '_') 
-        HUlib_addCharToTextLine(&it->l, (char) ch);
+        HUlib_addCharToTextLine(&it->l, static_cast<char>(ch));
     else if (ch == KEY_BACKSPACE) 
         HUlib_delCharFromIText(it);
     else if (ch != KEY_ENTER) 

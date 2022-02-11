@@ -79,7 +79,8 @@ void P_AddThinker (thinker_t* thinker)
 void P_RemoveThinker (thinker_t* thinker)
 {
   // FIXME: NOP.
-  thinker->function.acv = (actionf_v)(-1);
+  action_hook invalid = valid_hook(false);
+  thinker->function = invalid;
 }
 
 
@@ -102,9 +103,10 @@ void P_RunThinkers ()
     thinker_t *currentthinker, *nextthinker;
 
     currentthinker = thinkercap.next;
+    action_hook invalid_hook = valid_hook(false);
     while (currentthinker != &thinkercap)
     {
-        if ( currentthinker->function.acv == (actionf_v)(-1) )
+        if ( currentthinker->function == invalid_hook )
         {
             // time to remove it
             nextthinker = currentthinker->next;
@@ -114,8 +116,11 @@ void P_RunThinkers ()
         }
         else
         {
-            if (currentthinker->function.acp1)
-                currentthinker->function.acp1 (currentthinker);
+            if (currentthinker->function.index() == thinker_param_action_hook) {
+                const auto & callback = std::get<thinker_param_action>(currentthinker->function);
+                callback(currentthinker);
+
+            }
             nextthinker = currentthinker->next;
         }
 

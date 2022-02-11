@@ -165,7 +165,7 @@ static void DEH_BEXPtrParseLine(deh_context_t *context, char *line, void *)
         return;
     }
 
-    state = (state_t *)&states[frame_number];
+    state = &states[frame_number];
 
     for (i = 0; i < std::size(bex_codeptrtable); i++)
     {

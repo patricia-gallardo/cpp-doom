@@ -125,8 +125,8 @@ int wipe_initMelt(int width, int height, int)
 
     // makes this wipe faster (in theory)
     // to have stuff in column-major format
-    wipe_shittyColMajorXform((dpixel_t *)wipe_scr_start, width / 2, height);
-    wipe_shittyColMajorXform((dpixel_t *)wipe_scr_end, width / 2, height);
+    wipe_shittyColMajorXform(reinterpret_cast<dpixel_t *>(wipe_scr_start), width / 2, height);
+    wipe_shittyColMajorXform(reinterpret_cast<dpixel_t *>(wipe_scr_end), width / 2, height);
 
     // setup initial column positions
     // (y<0 => not ready to scroll yet)
@@ -173,8 +173,10 @@ int wipe_doMelt(int width,
             {
                 dy = (y[i] < 16) ? y[i] + 1 : (8 << crispy->hires);
                 if (y[i] + dy >= height) dy = height - y[i];
-                s   = &((dpixel_t *)wipe_scr_end)[i * height + y[i]];
-                d   = &((dpixel_t *)wipe_scr)[y[i] * width + i];
+                dpixel_t *pixel1 = reinterpret_cast<dpixel_t *>(wipe_scr_end);
+                s   = &pixel1[i * height + y[i]];
+                dpixel_t *pixel2 = reinterpret_cast<dpixel_t *>(wipe_scr);
+                d   = &pixel2[y[i] * width + i];
                 idx = 0;
                 for (j = dy; j; j--)
                 {
@@ -182,8 +184,10 @@ int wipe_doMelt(int width,
                     idx += width;
                 }
                 y[i] += dy;
-                s   = &((dpixel_t *)wipe_scr_start)[i * height];
-                d   = &((dpixel_t *)wipe_scr)[y[i] * width + i];
+                dpixel_t *pixel11 = reinterpret_cast<dpixel_t *>(wipe_scr_start);
+                s   = &pixel11[i * height];
+                dpixel_t *pixel22 = reinterpret_cast<dpixel_t *>(wipe_scr);
+                d   = &pixel22[y[i] * width + i];
                 idx = 0;
                 for (j = height - y[i]; j; j--)
                 {

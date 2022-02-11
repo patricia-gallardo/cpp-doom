@@ -464,7 +464,7 @@ static void F_DoSlideShow()
     finalecount = 0;
     if(gameversion != exe_strife_1_31) // See above. This was removed in 1.31.
     {
-       patch = (patch_t *)cache_lump_name<patch_t *>(DEH_String("PANEL0"), PU_CACHE);
+       patch = cache_lump_name<patch_t *>(DEH_String("PANEL0"), PU_CACHE);
        V_DrawPatch(0, 0, patch);
     }
 }
@@ -872,7 +872,7 @@ void F_CastDrawer ()
     sprdef = &sprites[caststate->sprite];
     sprframe = &sprdef->spriteframes[ caststate->frame & FF_FRAMEMASK];
     lump = sprframe->lump[0];
-    flip = (bool)sprframe->flip[0];
+    flip = static_cast<bool>(sprframe->flip[0]);
 			
     patch = W_CacheLumpNum (lump+firstspritelump, PU_CACHE);
     if (flip)
@@ -901,7 +901,7 @@ F_DrawPatchCol
     byte*	desttop;
     int		count;
 	
-    column = (column_t *)((byte *)patch + LONG(patch->columnofs[col]));
+    column = reinterpret_cast<column_t *>((byte *)patch + LONG(patch->columnofs[col]));
     desttop = I_VideoBuffer + x;
 
     // step through the posts in a column
@@ -916,7 +916,7 @@ F_DrawPatchCol
 	    *dest = *source++;
 	    dest += SCREENWIDTH;
 	}
-	column = (column_t *)(  (byte *)column + column->length + 4 );
+	column = reinterpret_cast<column_t *>(  (byte *)column + column->length + 4 );
     }
 }
 #endif
@@ -944,7 +944,7 @@ void F_DrawMap34End ()
     V_MarkRect (0, 0, SCREENWIDTH, SCREENHEIGHT);
 
 
-    scrolled = (320 - ((signed int) finalecount-430)/2);
+    scrolled = (320 - (static_cast<signed int>(finalecount)-430)/2);
     if (scrolled > 320)
         scrolled = 320;
     if (scrolled < 0)

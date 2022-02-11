@@ -85,7 +85,7 @@ P_SetPsprite
         // Modified handling.
         if (state->action.index() == player_psp_action_hook)
         {
-            auto callback = std::get<player_psp_param_action>(state->action);
+            const auto & callback = std::get<player_psp_param_action>(state->action);
             callback(player, psp);
             if (!psp->state)
                 break;
@@ -850,7 +850,7 @@ void A_FireSigil(player_t* player, pspdef_t*)
         mo->health = -1;
         if(!linetarget)
         {
-            an = (unsigned int)player->pitch >> ANGLETOFINESHIFT;
+            an = static_cast<unsigned int>(player->pitch) >> ANGLETOFINESHIFT;
             mo->momz += FixedMul(finesine[an], mo->info->speed); 
         }
         break;

@@ -54,7 +54,7 @@
 //
 
 
-byte *   viewimage;
+uint8_t *viewimage;
 int      viewwidth;
 int      scaledviewwidth;
 int      viewheight;
@@ -67,7 +67,7 @@ int      columnofs[MAXWIDTH];
 //  translate a limited part to another
 //  (color ramps used for  suit colors).
 //
-byte translations[3][256];
+uint8_t translations[3][256];
 
 // Backing buffer containing the bezel drawn around the screen and
 // surrounding background.
@@ -88,7 +88,7 @@ fixed_t       dc_texturemid;
 int           dc_texheight; // [crispy] Tutti-Frutti fix
 
 // first pixel in a column (possibly virtual)
-byte *dc_source;
+uint8_t *dc_source;
 
 // just for profiling
 int dccount;
@@ -118,7 +118,7 @@ void R_DrawColumn()
         return;
 
 #ifdef RANGECHECK
-    if ((unsigned)dc_x >= SCREENWIDTH
+    if (static_cast<unsigned>(dc_x) >= SCREENWIDTH
         || dc_yl < 0
         || dc_yh >= SCREENHEIGHT)
         I_Error("R_DrawColumn: %i to %i at %i", dc_yl, dc_yh, dc_x);
@@ -154,7 +154,7 @@ void R_DrawColumn()
         do
         {
             // [crispy] brightmaps
-            const byte source = dc_source[frac >> FRACBITS];
+            const uint8_t source = dc_source[frac >> FRACBITS];
             *dest             = dc_colormap[dc_brightmap[source]][source];
 
             dest += SCREENWIDTH;
@@ -169,7 +169,7 @@ void R_DrawColumn()
             // Re-map color indices from wall texture column
             //  using a lighting/special effects LUT.
             // [crispy] brightmaps
-            const byte source = dc_source[(frac >> FRACBITS) & heightmask];
+            const uint8_t source = dc_source[(frac >> FRACBITS) & heightmask];
             *dest             = dc_colormap[dc_brightmap[source]][source];
 
             dest += SCREENWIDTH;
@@ -256,7 +256,7 @@ void R_DrawColumnLow()
         return;
 
 #ifdef RANGECHECK
-    if ((unsigned)dc_x >= SCREENWIDTH
+    if (static_cast<unsigned>(dc_x) >= SCREENWIDTH
         || dc_yl < 0
         || dc_yh >= SCREENHEIGHT)
     {
@@ -290,7 +290,7 @@ void R_DrawColumnLow()
         do
         {
             // [crispy] brightmaps
-            const byte source = dc_source[frac >> FRACBITS];
+            const uint8_t source = dc_source[frac >> FRACBITS];
             *dest2 = *dest = dc_colormap[dc_brightmap[source]][source];
 
             dest += SCREENWIDTH;
@@ -306,7 +306,7 @@ void R_DrawColumnLow()
         {
             // Hack. Does not work corretly.
             // [crispy] brightmaps
-            const byte source = dc_source[(frac >> FRACBITS) & heightmask];
+            const uint8_t source = dc_source[(frac >> FRACBITS) & heightmask];
             *dest2 = *dest = dc_colormap[dc_brightmap[source]][source];
             dest += SCREENWIDTH;
             dest2 += SCREENWIDTH;
@@ -387,7 +387,7 @@ void R_DrawFuzzColumn()
         return;
 
 #ifdef RANGECHECK
-    if ((unsigned)dc_x >= SCREENWIDTH
+    if (static_cast<unsigned>(dc_x) >= SCREENWIDTH
         || dc_yl < 0 || dc_yh >= SCREENHEIGHT)
     {
         I_Error("R_DrawFuzzColumn: %i to %i at %i",
@@ -471,7 +471,7 @@ void R_DrawFuzzColumnLow()
     x = dc_x << 1;
 
 #ifdef RANGECHECK
-    if ((unsigned)x >= SCREENWIDTH
+    if (static_cast<unsigned>(x) >= SCREENWIDTH
         || dc_yl < 0 || dc_yh >= SCREENHEIGHT)
     {
         I_Error("R_DrawFuzzColumn: %i to %i at %i",
@@ -537,8 +537,8 @@ void R_DrawFuzzColumnLow()
 //  of the BaronOfHell, the HellKnight, uses
 //  identical sprites, kinda brightened up.
 //
-byte *dc_translation;
-byte *translationtables;
+uint8_t *dc_translation;
+uint8_t *translationtables;
 
 void R_DrawTranslatedColumn()
 {
@@ -552,7 +552,7 @@ void R_DrawTranslatedColumn()
         return;
 
 #ifdef RANGECHECK
-    if ((unsigned)dc_x >= SCREENWIDTH
+    if (static_cast<unsigned>(dc_x) >= SCREENWIDTH
         || dc_yl < 0
         || dc_yh >= SCREENHEIGHT)
     {
@@ -601,7 +601,7 @@ void R_DrawTranslatedColumnLow()
     x = dc_x << 1;
 
 #ifdef RANGECHECK
-    if ((unsigned)x >= SCREENWIDTH
+    if (static_cast<unsigned>(x) >= SCREENWIDTH
         || dc_yl < 0
         || dc_yh >= SCREENHEIGHT)
     {
@@ -648,7 +648,7 @@ void R_DrawTLColumn()
         return;
 
 #ifdef RANGECHECK
-    if ((unsigned)dc_x >= SCREENWIDTH
+    if (static_cast<unsigned>(dc_x) >= SCREENWIDTH
         || dc_yl < 0
         || dc_yh >= SCREENHEIGHT)
     {
@@ -694,7 +694,7 @@ void R_DrawTLColumnLow()
     x = dc_x << 1;
 
 #ifdef RANGECHECK
-    if ((unsigned)x >= SCREENWIDTH
+    if (static_cast<unsigned>(x) >= SCREENWIDTH
         || dc_yl < 0
         || dc_yh >= SCREENHEIGHT)
     {
@@ -775,7 +775,7 @@ int ds_x1;
 int ds_x2;
 
 lighttable_t *ds_colormap[2];
-byte *        ds_brightmap;
+uint8_t      *ds_brightmap;
 
 fixed_t ds_xfrac;
 fixed_t ds_yfrac;
@@ -783,7 +783,7 @@ fixed_t ds_xstep;
 fixed_t ds_ystep;
 
 // start of a 64*64 tile image
-byte *ds_source;
+uint8_t *ds_source;
 
 // just for profiling
 int dscount;
@@ -803,7 +803,7 @@ void R_DrawSpan()
     if (ds_x2 < ds_x1
         || ds_x1 < 0
         || ds_x2 >= SCREENWIDTH
-        || (unsigned)ds_y > SCREENHEIGHT)
+        || static_cast<unsigned>(ds_y) > SCREENHEIGHT)
     {
         I_Error("R_DrawSpan: %i to %i at %i",
             ds_x1, ds_x2, ds_y);
@@ -830,7 +830,7 @@ void R_DrawSpan()
 
     do
     {
-        byte source;
+        uint8_t source;
         // Calculate current texture index in u,v.
         // [crispy] fix flats getting more distorted the closer they are to the right
         ytemp = (ds_yfrac >> 10) & 0x0fc0;
@@ -939,7 +939,7 @@ void R_DrawSpanLow()
     if (ds_x2 < ds_x1
         || ds_x1 < 0
         || ds_x2 >= SCREENWIDTH
-        || (unsigned)ds_y > SCREENHEIGHT)
+        || static_cast<unsigned>(ds_y) > SCREENHEIGHT)
     {
         I_Error("R_DrawSpan: %i to %i at %i",
             ds_x1, ds_x2, ds_y);
@@ -964,7 +964,7 @@ void R_DrawSpanLow()
 
     do
     {
-        byte source;
+        uint8_t source;
         // Calculate current texture index in u,v.
         // [crispy] fix flats getting more distorted the closer they are to the right
         ytemp = (ds_yfrac >> 10) & 0x0fc0;
@@ -1028,7 +1028,7 @@ void R_InitBuffer(int width,
 //
 void R_FillBackScreen()
 {
-    byte *   src;
+    uint8_t *src;
     pixel_t *dest;
     int      x;
     int      y;
@@ -1069,7 +1069,7 @@ void R_FillBackScreen()
     else
         name = name1;
 
-    src  = cache_lump_name<byte *>(name, PU_CACHE);
+    src  = cache_lump_name<uint8_t *>(name, PU_CACHE);
     dest = background_buffer;
 
     for (y = 0; y < SCREENHEIGHT - SBARHEIGHT; y++)

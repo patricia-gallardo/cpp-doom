@@ -37,7 +37,7 @@
 
 typedef PACKED_STRUCT(
     {
-        byte         chunk_id[4];
+        uint8_t      chunk_id[4];
         unsigned int chunk_size;
     }) chunk_header_t;
 
@@ -79,7 +79,7 @@ struct midi_file_s {
     unsigned int  num_tracks;
 
     // Data buffer used to store data read for SysEx or meta events:
-    byte *       buffer;
+    uint8_t     *buffer;
     unsigned int buffer_size;
 };
 
@@ -88,9 +88,8 @@ struct midi_file_s {
 static bool CheckChunkHeader(chunk_header_t *chunk,
     const char *                                expected_id)
 {
-    bool result;
-
-    result = (memcmp((char *)chunk->chunk_id, expected_id, 4) == 0);
+    char *chunk_ptr = reinterpret_cast<char *>(chunk->chunk_id);
+    bool result = (memcmp(chunk_ptr, expected_id, 4) == 0);
 
     if (!result)
     {
@@ -106,7 +105,7 @@ static bool CheckChunkHeader(chunk_header_t *chunk,
 
 // Read a single byte.  Returns false on error.
 
-static bool ReadByte(byte *result, FILE *stream)
+static bool ReadByte(uint8_t *result, FILE *stream)
 {
     int c;
 
@@ -119,7 +118,7 @@ static bool ReadByte(byte *result, FILE *stream)
     }
     else
     {
-        *result = (byte)c;
+        *result = static_cast<uint8_t>(c);
 
         return true;
     }
@@ -130,7 +129,7 @@ static bool ReadByte(byte *result, FILE *stream)
 static bool ReadVariableLength(unsigned int *result, FILE *stream)
 {
     int  i;
-    byte b = 0;
+    uint8_t b = 0;
 
     *result = 0;
 
@@ -163,15 +162,15 @@ static bool ReadVariableLength(unsigned int *result, FILE *stream)
 
 // Read a byte sequence into the data buffer.
 
-static byte *ReadByteSequence(unsigned int num_bytes, FILE *stream)
+static uint8_t *ReadByteSequence(unsigned int num_bytes, FILE *stream)
 {
     unsigned int i;
-    byte *       result;
+    uint8_t     *result;
 
     // Allocate a buffer. Allocate one extra byte, as malloc(0) is
     // non-portable.
 
-    result = static_cast<byte *>(malloc(num_bytes + 1));
+    result = static_cast<uint8_t *>(malloc(num_bytes + 1));
 
     if (result == nullptr)
     {
@@ -199,11 +198,10 @@ static byte *ReadByteSequence(unsigned int num_bytes, FILE *stream)
 // two_param indicates that the event type takes two parameters
 // (three byte) otherwise it is single parameter (two byte)
 
-static bool ReadChannelEvent(midi_event_t *event,
-    byte event_type, bool two_param,
+static bool ReadChannelEvent(midi_event_t *event, uint8_t event_type, bool two_param,
     FILE *stream)
 {
-    byte b = 0;
+    uint8_t b = 0;
 
     // Set basics:
 
@@ -269,7 +267,7 @@ static bool ReadSysExEvent(midi_event_t *event, int event_type,
 
 static bool ReadMetaEvent(midi_event_t *event, FILE *stream)
 {
-    byte b = 0;
+    uint8_t b = 0;
 
     event->event_type = MIDI_EVENT_META;
 
@@ -308,7 +306,7 @@ static bool ReadMetaEvent(midi_event_t *event, FILE *stream)
 static bool ReadEvent(midi_event_t *event, unsigned int *last_event_type,
     FILE *stream)
 {
-    byte event_type = 0;
+    uint8_t event_type = 0;
 
     if (!ReadVariableLength(&event->delta_time, stream))
     {
@@ -697,8 +695,8 @@ unsigned int MIDI_GetFileTimeDivision(midi_file_t *file)
     // differently.
     if (result < 0)
     {
-        return (signed int)(-(result / 256))
-               * (signed int)(result & 0xFF);
+        return static_cast<signed int>(-(result / 256))
+               * static_cast<signed int>(result & 0xFF);
     }
     else
     {

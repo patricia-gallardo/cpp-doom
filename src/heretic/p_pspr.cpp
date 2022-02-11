@@ -339,7 +339,7 @@ void P_SetPsprite(player_t * player, int position, statenum_t stnum)
         }
         if (state->action.index() == player_psp_action_hook)
         {                       // Call action routine.
-            auto callback = std::get<player_psp_param_action>(state->action);
+            const auto & callback = std::get<player_psp_param_action>(state->action);
             callback(player, psp);
             if (!psp->state)
             {
@@ -1274,7 +1274,7 @@ void A_DeathBallImpact(mobj_t * ball)
     if ((ball->z <= ball->floorz) && ball->momz)
     {                           // Bounce
         newAngle = false;
-        target = (mobj_t *) ball->special1.m;
+        target = reinterpret_cast<mobj_t *>(ball->special1.m);
         if (target)
         {
             if (!(target->flags & MF_SHOOTABLE))
@@ -1640,14 +1640,14 @@ void A_PhoenixPuff(mobj_t * actor)
     puff = P_SpawnMobj(actor->x, actor->y, actor->z, MT_PHOENIXPUFF);
     angle = actor->angle + ANG90;
     angle >>= ANGLETOFINESHIFT;
-    puff->momx = FixedMul((fixed_t)(FRACUNIT * 1.3), finecosine[angle]);
-    puff->momy = FixedMul((fixed_t)(FRACUNIT * 1.3), finesine[angle]);
+    puff->momx = FixedMul(static_cast<fixed_t>(FRACUNIT * 1.3), finecosine[angle]);
+    puff->momy = FixedMul(static_cast<fixed_t>(FRACUNIT * 1.3), finesine[angle]);
     puff->momz = 0;
     puff = P_SpawnMobj(actor->x, actor->y, actor->z, MT_PHOENIXPUFF);
     angle = actor->angle - ANG90;
     angle >>= ANGLETOFINESHIFT;
-    puff->momx = FixedMul((fixed_t)(FRACUNIT * 1.3), finecosine[angle]);
-    puff->momy = FixedMul((fixed_t)(FRACUNIT * 1.3), finesine[angle]);
+    puff->momx = FixedMul(static_cast<fixed_t>(FRACUNIT * 1.3), finecosine[angle]);
+    puff->momy = FixedMul(static_cast<fixed_t>(FRACUNIT * 1.3), finesine[angle]);
     puff->momz = 0;
 }
 
@@ -1739,7 +1739,7 @@ void A_ShutdownPhoenixPL2(player_t * player, pspdef_t *)
 
 void A_FlameEnd(mobj_t * actor)
 {
-    actor->momz += (fixed_t)(1.5 * FRACUNIT);
+    actor->momz += static_cast<fixed_t>(1.5 * FRACUNIT);
 }
 
 //----------------------------------------------------------------------------
@@ -1750,7 +1750,7 @@ void A_FlameEnd(mobj_t * actor)
 
 void A_FloatPuff(mobj_t * puff)
 {
-    puff->momz += (fixed_t)(1.8 * FRACUNIT);
+    puff->momz += static_cast<fixed_t>(1.8 * FRACUNIT);
 }
 
 //---------------------------------------------------------------------------

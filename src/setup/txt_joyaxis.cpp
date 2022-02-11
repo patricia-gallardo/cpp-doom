@@ -271,9 +271,9 @@ static int NextCalibrateStage(txt_joystick_axis_t *joystick_axis)
     return -1;
 }
 
-static int EventCallback(SDL_Event *event, TXT_UNCAST_ARG(joystick_axis))
+static int EventCallback(SDL_Event *event, void *uncast_joystick_axis)
 {
-    TXT_CAST_ARG(txt_joystick_axis_t, joystick_axis);
+    auto *joystick_axis = reinterpret_cast<txt_joystick_axis_t *>(uncast_joystick_axis);
     bool advance;
 
     if (event->type != SDL_JOYBUTTONDOWN)
@@ -339,12 +339,9 @@ static int EventCallback(SDL_Event *event, TXT_UNCAST_ARG(joystick_axis))
     return 0;
 }
 
-#pragma GCC diagnostic push
-#pragma GCC diagnostic ignored "-Wunused-parameter"
-static void CalibrateWindowClosed(TXT_UNCAST_ARG(widget),
-                                  TXT_UNCAST_ARG(joystick_axis))
+static void CalibrateWindowClosed(void *, void *uncast_joystick_axis)
 {
-    TXT_CAST_ARG(txt_joystick_axis_t, joystick_axis);
+    auto *joystick_axis = reinterpret_cast<txt_joystick_axis_t *>(uncast_joystick_axis);
 
     free(joystick_axis->bad_axis);
     joystick_axis->bad_axis = nullptr;
@@ -354,7 +351,6 @@ static void CalibrateWindowClosed(TXT_UNCAST_ARG(widget),
     SDL_QuitSubSystem(SDL_INIT_JOYSTICK);
     TXT_SDL_SetEventCallback(nullptr, nullptr);
 }
-#pragma GCC diagnostic pop
 
 void TXT_ConfigureJoystickAxis(txt_joystick_axis_t *joystick_axis,
                                int using_button,
@@ -415,9 +411,9 @@ void TXT_ConfigureJoystickAxis(txt_joystick_axis_t *joystick_axis,
     joystick_axis->callback = callback;
 }
 
-static void TXT_JoystickAxisSizeCalc(TXT_UNCAST_ARG(joystick_axis))
+static void TXT_JoystickAxisSizeCalc(void *uncast_joystick_axis)
 {
-    TXT_CAST_ARG(txt_joystick_axis_t, joystick_axis);
+    auto *joystick_axis = reinterpret_cast<txt_joystick_axis_t *>(uncast_joystick_axis);
 
     // All joystickinputs are the same size.
 
@@ -425,9 +421,9 @@ static void TXT_JoystickAxisSizeCalc(TXT_UNCAST_ARG(joystick_axis))
     joystick_axis->widget.h = 1;
 }
 
-static void TXT_JoystickAxisDrawer(TXT_UNCAST_ARG(joystick_axis))
+static void TXT_JoystickAxisDrawer(void *uncast_joystick_axis)
 {
-    TXT_CAST_ARG(txt_joystick_axis_t, joystick_axis);
+    auto *joystick_axis = reinterpret_cast<txt_joystick_axis_t *>(uncast_joystick_axis);
     char buf[JOYSTICK_AXIS_WIDTH + 1];
     int i;
 
@@ -469,16 +465,13 @@ static void TXT_JoystickAxisDrawer(TXT_UNCAST_ARG(joystick_axis))
     }
 }
 
-#pragma GCC diagnostic push
-#pragma GCC diagnostic ignored "-Wunused-parameter"
-static void TXT_JoystickAxisDestructor(TXT_UNCAST_ARG(joystick_axis))
+static void TXT_JoystickAxisDestructor(void *)
 {
 }
-#pragma GCC diagnostic pop
 
-static int TXT_JoystickAxisKeyPress(TXT_UNCAST_ARG(joystick_axis), int key)
+static int TXT_JoystickAxisKeyPress(void *uncast_joystick_axis, int key)
 {
-    TXT_CAST_ARG(txt_joystick_axis_t, joystick_axis);
+    auto *joystick_axis = reinterpret_cast<txt_joystick_axis_t *>(uncast_joystick_axis);
 
     if (key == KEY_ENTER)
     {
@@ -494,9 +487,9 @@ static int TXT_JoystickAxisKeyPress(TXT_UNCAST_ARG(joystick_axis), int key)
     return 0;
 }
 
-static void TXT_JoystickAxisMousePress(TXT_UNCAST_ARG(widget), int, int, int b)
+static void TXT_JoystickAxisMousePress(void *uncast_widget, int, int, int b)
 {
-    TXT_CAST_ARG(txt_joystick_axis_t, widget);
+    auto *widget = reinterpret_cast<txt_joystick_axis_t *>(uncast_widget);
 
     // Clicking is like pressing enter
 

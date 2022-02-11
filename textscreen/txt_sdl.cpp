@@ -356,7 +356,7 @@ static inline void UpdateCharacter(int x, int y)
     p = &font->data[(character * font->w * font->h) / 8];
     bit = 0;
 
-    s = ((unsigned char *) screenbuffer->pixels)
+    s = (reinterpret_cast<unsigned char *>(screenbuffer->pixels))
       + (y * font->h * screenbuffer->pitch)
       + (x * font->w);
 

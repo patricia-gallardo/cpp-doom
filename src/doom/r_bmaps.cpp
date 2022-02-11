@@ -28,9 +28,9 @@
 
 // [crispy] brightmap data
 
-static byte nobrightmap[256] = { 0 };
+static uint8_t nobrightmap[256] = { 0 };
 
-static byte notgray[256] = {
+static uint8_t notgray[256] = {
     0,
     0,
     0,
@@ -289,7 +289,7 @@ static byte notgray[256] = {
     1,
 };
 
-static byte notgrayorbrown[256] = {
+static uint8_t notgrayorbrown[256] = {
     0,
     0,
     0,
@@ -548,7 +548,7 @@ static byte notgrayorbrown[256] = {
     1,
 };
 
-static byte redonly[256] = {
+static uint8_t redonly[256] = {
     0,
     0,
     0,
@@ -807,7 +807,7 @@ static byte redonly[256] = {
     0,
 };
 
-static byte greenonly1[256] = {
+static uint8_t greenonly1[256] = {
     0,
     0,
     0,
@@ -1066,7 +1066,7 @@ static byte greenonly1[256] = {
     0,
 };
 
-static byte greenonly2[256] = {
+static uint8_t greenonly2[256] = {
     0,
     0,
     0,
@@ -1325,7 +1325,7 @@ static byte greenonly2[256] = {
     0,
 };
 
-static byte greenonly3[256] = {
+static uint8_t greenonly3[256] = {
     0,
     0,
     0,
@@ -1584,7 +1584,7 @@ static byte greenonly3[256] = {
     0,
 };
 
-static byte yellowonly[256] = {
+static uint8_t yellowonly[256] = {
     0,
     0,
     0,
@@ -1843,7 +1843,7 @@ static byte yellowonly[256] = {
     0,
 };
 
-static byte redandgreen[256] = {
+static uint8_t redandgreen[256] = {
     0,
     0,
     0,
@@ -2102,7 +2102,7 @@ static byte redandgreen[256] = {
     0,
 };
 
-static byte blueandgreen[256] = {
+static uint8_t blueandgreen[256] = {
     0,
     0,
     0,
@@ -2361,7 +2361,7 @@ static byte blueandgreen[256] = {
     0,
 };
 
-static byte brighttan[256] = {
+static uint8_t brighttan[256] = {
     0,
     0,
     0,
@@ -2622,7 +2622,7 @@ static byte brighttan[256] = {
 
 // [crispy] Chex Quest's "locked" door switches
 
-static byte chexred[256] = {
+static uint8_t chexred[256] = {
     0,
     0,
     0,
@@ -2883,7 +2883,7 @@ static byte chexred[256] = {
 
 // [crispy] Chex Quest's "open" door switches
 
-static byte chexgreen[256] = {
+static uint8_t chexgreen[256] = {
     0,
     0,
     0,
@@ -3144,7 +3144,7 @@ static byte chexgreen[256] = {
 
 // [crispy] Chex Quest's "lock"/"open" knobs
 
-static byte chexredgreen[256] = {
+static uint8_t chexredgreen[256] = {
     0,
     0,
     0,
@@ -3403,7 +3403,7 @@ static byte chexredgreen[256] = {
     0,
 };
 
-static byte hacxlightning[256] = {
+static uint8_t hacxlightning[256] = {
     0,
     0,
     0,
@@ -3662,7 +3662,7 @@ static byte hacxlightning[256] = {
     0,
 };
 
-byte *dc_brightmap = nobrightmap;
+uint8_t *dc_brightmap = nobrightmap;
 
 // [crispy] brightmaps for textures
 
@@ -3677,7 +3677,7 @@ typedef struct
 {
     const char *const texture;
     const int         game;
-    byte *            colormask;
+    uint8_t          *colormask;
 } fullbright_t;
 
 static const fullbright_t fullbright_doom[] = {
@@ -3875,7 +3875,7 @@ static const fullbright_t fullbright_hacx[] = {
     { "HW512", DOOM2ONLY, notgrayorbrown },
 };
 
-static byte *R_BrightmapForTexName_Doom(const char *texname)
+static uint8_t *R_BrightmapForTexName_Doom(const char *texname)
 {
     int i;
 
@@ -3899,7 +3899,7 @@ static byte *R_BrightmapForTexName_Doom(const char *texname)
 
 static bool chex2 = false;
 
-static byte *R_BrightmapForTexName_Chex(const char *texname)
+static uint8_t *R_BrightmapForTexName_Chex(const char *texname)
 {
     int i;
 
@@ -3921,7 +3921,7 @@ static byte *R_BrightmapForTexName_Chex(const char *texname)
     return nobrightmap;
 }
 
-static byte *R_BrightmapForTexName_Hacx(const char *texname)
+static uint8_t *R_BrightmapForTexName_Hacx(const char *texname)
 {
     int i;
 
@@ -3941,7 +3941,7 @@ static byte *R_BrightmapForTexName_Hacx(const char *texname)
 // [crispy] brightmaps for sprites
 
 // [crispy] adapted from russian-doom/src/doom/r_things.c:617-639
-static byte *R_BrightmapForSprite_Doom(const int type)
+static uint8_t *R_BrightmapForSprite_Doom(const int type)
 {
     if (crispy->brightmaps & BRIGHTMAPS_SPRITES)
     {
@@ -3977,7 +3977,7 @@ static byte *R_BrightmapForSprite_Doom(const int type)
     return nobrightmap;
 }
 
-static byte *R_BrightmapForSprite_Chex(const int)
+static uint8_t *R_BrightmapForSprite_Chex(const int)
 {
     // [crispy] TODO
     /*
@@ -4007,7 +4007,7 @@ static byte *R_BrightmapForSprite_Chex(const int)
     return nobrightmap;
 }
 
-static byte *R_BrightmapForSprite_Hacx(const int type)
+static uint8_t *R_BrightmapForSprite_Hacx(const int type)
 {
     if (crispy->brightmaps & BRIGHTMAPS_SPRITES)
     {
@@ -4055,7 +4055,7 @@ static byte *R_BrightmapForSprite_Hacx(const int type)
 
 static int bmapflatnum[12];
 
-static byte *R_BrightmapForFlatNum_Doom(const int num)
+static uint8_t *R_BrightmapForFlatNum_Doom(const int num)
 {
     if (crispy->brightmaps & BRIGHTMAPS_TEXTURES)
     {
@@ -4068,7 +4068,7 @@ static byte *R_BrightmapForFlatNum_Doom(const int num)
     return nobrightmap;
 }
 
-static byte *R_BrightmapForFlatNum_Hacx(const int num)
+static uint8_t *R_BrightmapForFlatNum_Hacx(const int num)
 {
     if (crispy->brightmaps & BRIGHTMAPS_TEXTURES)
     {
@@ -4086,14 +4086,14 @@ static byte *R_BrightmapForFlatNum_Hacx(const int num)
     return nobrightmap;
 }
 
-static byte *R_BrightmapForFlatNum_None(const int)
+static uint8_t *R_BrightmapForFlatNum_None(const int)
 {
     return nobrightmap;
 }
 
 // [crispy] brightmaps for states
 
-static byte *R_BrightmapForState_Doom(const int state)
+static uint8_t *R_BrightmapForState_Doom(const int state)
 {
     if (crispy->brightmaps & BRIGHTMAPS_SPRITES)
     {
@@ -4112,7 +4112,7 @@ static byte *R_BrightmapForState_Doom(const int state)
     return nobrightmap;
 }
 
-static byte *R_BrightmapForState_Hacx(const int state)
+static uint8_t *R_BrightmapForState_Hacx(const int state)
 {
     if (crispy->brightmaps & BRIGHTMAPS_SPRITES)
     {
@@ -4140,17 +4140,17 @@ static byte *R_BrightmapForState_Hacx(const int state)
     return nobrightmap;
 }
 
-static byte *R_BrightmapForState_None(const int)
+static uint8_t *R_BrightmapForState_None(const int)
 {
     return nobrightmap;
 }
 
 // [crispy] initialize brightmaps
 
-byte *(*R_BrightmapForTexName)(const char *texname);
-byte *(*R_BrightmapForSprite)(const int type);
-byte *(*R_BrightmapForFlatNum)(const int num);
-byte *(*R_BrightmapForState)(const int state);
+uint8_t *(*R_BrightmapForTexName)(const char *texname);
+uint8_t *(*R_BrightmapForSprite)(const int type);
+uint8_t *(*R_BrightmapForFlatNum)(const int num);
+uint8_t *(*R_BrightmapForState)(const int state);
 
 void R_InitBrightmaps()
 {

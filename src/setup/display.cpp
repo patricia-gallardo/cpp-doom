@@ -120,16 +120,16 @@ void SetDisplayDriver()
     }
 }
 
-#pragma GCC diagnostic push
-#pragma GCC diagnostic ignored "-Wunused-parameter"
-static void WindowSizeSelected(TXT_UNCAST_ARG(widget), TXT_UNCAST_ARG(size))
+
+
+static void WindowSizeSelected(void *, void *uncast_size)
 {
-    TXT_CAST_ARG(window_size_t, size);
+    auto *size = reinterpret_cast<window_size_t *>(uncast_size);
 
     window_width = size->w;
     window_height = size->h;
 }
-#pragma GCC diagnostic pop
+
 
 static txt_radiobutton_t *SizeSelectButton(window_size_t *size)
 {
@@ -143,12 +143,11 @@ static txt_radiobutton_t *SizeSelectButton(window_size_t *size)
     return result;
 }
 
-#pragma GCC diagnostic push
-#pragma GCC diagnostic ignored "-Wunused-parameter"
-static void GenerateSizesTable(TXT_UNCAST_ARG(widget),
-                               TXT_UNCAST_ARG(sizes_table))
+
+
+static void GenerateSizesTable(void *, void *uncast_sizes_table)
 {
-    TXT_CAST_ARG(txt_table_t, sizes_table);
+    auto   *sizes_table = reinterpret_cast<txt_table_t *>(uncast_sizes_table);
     window_size_t *sizes;
     bool have_size;
     int i;
@@ -189,14 +188,13 @@ static void GenerateSizesTable(TXT_UNCAST_ARG(widget),
         TXT_AddWidget(sizes_table, SizeSelectButton(&current_size));
     }
 }
-#pragma GCC diagnostic pop
 
-#pragma GCC diagnostic push
-#pragma GCC diagnostic ignored "-Wunused-parameter"
-static void AdvancedDisplayConfig(TXT_UNCAST_ARG(widget),
-                                  TXT_UNCAST_ARG(sizes_table))
+
+
+
+static void AdvancedDisplayConfig(void *, void *uncast_sizes_table)
 {
-    TXT_CAST_ARG(txt_table_t, sizes_table);
+    auto    *sizes_table = reinterpret_cast<txt_table_t *>(uncast_sizes_table);
     txt_window_t *window;
     txt_checkbox_t *ar_checkbox;
 
@@ -224,11 +222,11 @@ static void AdvancedDisplayConfig(TXT_UNCAST_ARG(widget),
 
     TXT_SignalConnect(ar_checkbox, "changed", GenerateSizesTable, sizes_table);
 }
-#pragma GCC diagnostic pop
 
-#pragma GCC diagnostic push
-#pragma GCC diagnostic ignored "-Wunused-parameter"
-void ConfigDisplay(TXT_UNCAST_ARG(widget), void *user_data)
+
+
+
+void ConfigDisplay(void *, void *)
 {
     txt_window_t *window;
     txt_table_t *sizes_table;
@@ -264,7 +262,6 @@ void ConfigDisplay(TXT_UNCAST_ARG(widget), void *user_data)
     TXT_SignalConnect(advanced_button, "pressed",
                       AdvancedDisplayConfig, sizes_table);
 }
-#pragma GCC diagnostic pop
 
 void BindDisplayVariables()
 {

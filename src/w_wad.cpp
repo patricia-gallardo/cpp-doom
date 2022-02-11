@@ -395,7 +395,7 @@ void W_ReadLump(lumpindex_t lump, void *dest)
     void *      result;
     lumpinfo_t *lump;
 
-    if ((unsigned)lumpnum >= numlumps)
+    if (static_cast<unsigned>(lumpnum) >= numlumps)
     {
         I_Error("W_CacheLumpNum: %i >= numlumps", lumpnum);
     }
@@ -455,7 +455,7 @@ void W_ReleaseLumpNum(lumpindex_t lumpnum)
 {
     lumpinfo_t *lump;
 
-    if ((unsigned)lumpnum >= numlumps)
+    if (static_cast<unsigned>(lumpnum) >= numlumps)
     {
         I_Error("W_ReleaseLumpNum: %i >= numlumps", lumpnum);
     }
@@ -506,7 +506,7 @@ void W_Profile ()
 	}
 	else
 	{
-	    block = (memblock_t *) ( (byte *)ptr - sizeof(memblock_t));
+	    block = reinterpret_cast<memblock_t *>( (byte *)ptr - sizeof(memblock_t));
 	    if (block->tag < PU_PURGELEVEL)
 		ch = 'S';
 	    else

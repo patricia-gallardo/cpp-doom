@@ -36,8 +36,8 @@
 
 extern int dirtybox[4];
 
-extern byte *  tinttable;
-extern byte *  dp_translation;
+extern uint8_t *tinttable;
+extern uint8_t *dp_translation;
 extern bool dp_translucent;
 
 // haleyjd 08/28/10: implemented for Strife support

@@ -57,13 +57,13 @@
 //
 
 
-byte*		viewimage; 
+uint8_t        *viewimage;
 int		viewwidth;
 int		scaledviewwidth;
 int		viewheight;
 int		viewwindowx;
-int		viewwindowy; 
-byte*		ylookup[MAXHEIGHT]; 
+int		viewwindowy;
+uint8_t        *ylookup[MAXHEIGHT];
 int		columnofs[MAXWIDTH]; 
 
 // Color tables for different players,
@@ -76,7 +76,7 @@ int		columnofs[MAXWIDTH];
 // Backing buffer containing the bezel drawn around the screen and 
 // surrounding background.
 
-static byte *background_buffer = nullptr;
+uint8_t static *background_buffer = nullptr;
 
 // haleyjd 08/29/10: [STRIFE] Rogue added the ability to customize the view
 // border flat by storing it in the configuration file.
@@ -93,8 +93,8 @@ int			dc_yh;
 fixed_t			dc_iscale; 
 fixed_t			dc_texturemid;
 
-// first pixel in a column (possibly virtual) 
-byte*			dc_source;		
+// first pixel in a column (possibly virtual)
+uint8_t *dc_source;
 
 // just for profiling 
 int			dccount;
@@ -108,8 +108,8 @@ int			dccount;
 // 
 void R_DrawColumn ()
 { 
-    int			count; 
-    byte*		dest; 
+    int			count;
+    uint8_t            *dest;
     fixed_t		frac;
     fixed_t		fracstep;	 
  
@@ -120,7 +120,7 @@ void R_DrawColumn ()
 	return; 
 				 
 #ifdef RANGECHECK 
-    if ((unsigned)dc_x >= SCREENWIDTH
+    if (static_cast<unsigned>(dc_x) >= SCREENWIDTH
 	|| dc_yl < 0
 	|| dc_yh >= SCREENHEIGHT) 
 	I_Error ("R_DrawColumn: %i to %i at %i", dc_yl, dc_yh, dc_x); 
@@ -227,8 +227,8 @@ void R_DrawColumn ()
 //
 void R_DrawMVisTLColumn()
 {
-    int                 count; 
-    byte*               dest; 
+    int                 count;
+    uint8_t            *dest;
     fixed_t             frac;
     fixed_t             fracstep;
 
@@ -247,7 +247,7 @@ void R_DrawMVisTLColumn()
         return; 
 
 #ifdef RANGECHECK 
-    if ((unsigned)dc_x >= SCREENWIDTH
+    if (static_cast<unsigned>(dc_x) >= SCREENWIDTH
         || dc_yl < 0 || dc_yh >= SCREENHEIGHT)
     {
         I_Error ("R_DrawFuzzColumn: %i to %i at %i",
@@ -263,8 +263,8 @@ void R_DrawMVisTLColumn()
 
     do
     {
-        byte src = dc_colormap[dc_source[(frac>>FRACBITS)&127]];
-        byte col = xlatab[*dest + (src << 8)];
+        uint8_t src = dc_colormap[dc_source[(frac >> FRACBITS) & 127]];
+        uint8_t col = xlatab[*dest + (src << 8)];
         *dest = col;
         dest += SCREENWIDTH;
         frac += fracstep;
@@ -280,8 +280,8 @@ void R_DrawMVisTLColumn()
 //
 void R_DrawTLColumn()
 {
-    int                 count; 
-    byte*               dest; 
+    int                 count;
+    uint8_t            *dest;
     fixed_t             frac;
     fixed_t             fracstep;	 
 
@@ -300,7 +300,7 @@ void R_DrawTLColumn()
         return; 
 
 #ifdef RANGECHECK 
-    if ((unsigned)dc_x >= SCREENWIDTH
+    if (static_cast<unsigned>(dc_x) >= SCREENWIDTH
         || dc_yl < 0 || dc_yh >= SCREENHEIGHT)
     {
         I_Error ("R_DrawFuzzColumn2: %i to %i at %i",
@@ -316,15 +316,15 @@ void R_DrawTLColumn()
 
     do
     {
-        byte src = dc_colormap[dc_source[(frac>>FRACBITS)&127]];
-        byte col = xlatab[(*dest << 8) + src];
+        uint8_t src = dc_colormap[dc_source[(frac >> FRACBITS) & 127]];
+        uint8_t col = xlatab[(*dest << 8) + src];
         *dest = col;
         dest += SCREENWIDTH;
         frac += fracstep;
     } while(count--);
 }
-  
- 
+
+
 
 //
 // R_DrawTranslatedColumn
@@ -335,13 +335,13 @@ void R_DrawTLColumn()
 //  of the BaronOfHell, the HellKnight, uses
 //  identical sprites, kinda brightened up.
 //
-byte*	dc_translation;
-byte*	translationtables;
+uint8_t *dc_translation;
+uint8_t *translationtables;
 
 void R_DrawTranslatedColumn ()
 { 
-    int                 count; 
-    byte*               dest; 
+    int                 count;
+    uint8_t            *dest;
     fixed_t             frac;
     fixed_t             fracstep;
 
@@ -350,7 +350,7 @@ void R_DrawTranslatedColumn ()
         return; 
 
 #ifdef RANGECHECK 
-    if ((unsigned)dc_x >= SCREENWIDTH
+    if (static_cast<unsigned>(dc_x) >= SCREENWIDTH
         || dc_yl < 0
         || dc_yh >= SCREENHEIGHT)
     {
@@ -390,8 +390,8 @@ void R_DrawTranslatedColumn ()
 //
 void R_DrawTRTLColumn()
 {
-    int                 count; 
-    byte*               dest; 
+    int                 count;
+    uint8_t            *dest;
     fixed_t             frac;
     fixed_t             fracstep;
 
@@ -400,7 +400,7 @@ void R_DrawTRTLColumn()
         return; 
 
 #ifdef RANGECHECK 
-    if ((unsigned)dc_x >= SCREENWIDTH
+    if (static_cast<unsigned>(dc_x) >= SCREENWIDTH
         || dc_yl < 0
         || dc_yh >= SCREENHEIGHT)
     {
@@ -418,8 +418,8 @@ void R_DrawTRTLColumn()
     // Here we do an additional index re-mapping.
     do 
     {
-        byte src = dc_colormap[dc_translation[dc_source[frac>>FRACBITS&127]]];
-        byte col = xlatab[(*dest << 8) + src];
+        uint8_t src = dc_colormap[dc_translation[dc_source[frac >> FRACBITS & 127]]];
+        uint8_t col = xlatab[(*dest << 8) + src];
         *dest = col;
         dest += SCREENWIDTH;
         frac += fracstep; 
@@ -440,7 +440,8 @@ void R_DrawTRTLColumn()
 void R_InitTranslationTables ()
 {
     int i;
-    byte col1, col2;
+    uint8_t col1;
+    uint8_t col2;
 
     // [STRIFE] Load xlatab. Here's how Rogue did it:
     //   v7 = cache_lump_name<patch_t *>("XLATAB", PU_CACHE); // note potential cache bug...
@@ -456,7 +457,7 @@ void R_InitTranslationTables ()
     V_LoadXlaTable();
 
     // villsa [STRIFE] allocate a larger size for translation tables
-    translationtables = zmalloc<byte *>(256 * 8, PU_STATIC, 0);
+    translationtables = zmalloc<uint8_t *>(256 * 8, PU_STATIC, 0);
 
     col1 = 0xFA;
     col2 = 0xE0;
@@ -579,8 +580,8 @@ fixed_t			ds_yfrac;
 fixed_t			ds_xstep; 
 fixed_t			ds_ystep;
 
-// start of a 64*64 tile image 
-byte*			ds_source;	
+// start of a 64*64 tile image
+uint8_t *ds_source;
 
 // just for profiling
 int			dscount;
@@ -591,7 +592,7 @@ int			dscount;
 void R_DrawSpan ()
 { 
     unsigned int position, step;
-    byte *dest;
+    uint8_t     *dest;
     int count;
     int spot;
     unsigned int xtemp, ytemp;
@@ -600,7 +601,7 @@ void R_DrawSpan ()
     if (ds_x2 < ds_x1
 	|| ds_x1<0
 	|| ds_x2>=SCREENWIDTH
-	|| (unsigned)ds_y>SCREENHEIGHT)
+	|| static_cast<unsigned>(ds_y)>SCREENHEIGHT)
     {
 	I_Error( "R_DrawSpan: %i to %i at %i",
 		 ds_x1,ds_x2,ds_y);
@@ -721,7 +722,7 @@ void R_DrawSpanLow ()
 {
     unsigned int position, step;
     unsigned int xtemp, ytemp;
-    byte *dest;
+    uint8_t     *dest;
     int count;
     int spot;
 
@@ -729,7 +730,7 @@ void R_DrawSpanLow ()
     if (ds_x2 < ds_x1
 	|| ds_x1<0
 	|| ds_x2>=SCREENWIDTH
-	|| (unsigned)ds_y>SCREENHEIGHT)
+	|| static_cast<unsigned>(ds_y)>SCREENHEIGHT)
     {
 	I_Error( "R_DrawSpan: %i to %i at %i",
 		 ds_x1,ds_x2,ds_y);
@@ -813,9 +814,9 @@ R_InitBuffer
 // haleyjd 08/29/10: [STRIFE] Added support for configurable back_flat.
 //
 void R_FillBackScreen ()
-{ 
-    byte*	src;
-    byte*	dest; 
+{
+    uint8_t    *src;
+    uint8_t    *dest;
     int		x;
     int		y; 
     patch_t*	patch;
@@ -840,14 +841,14 @@ void R_FillBackScreen ()
 	
     if (background_buffer == nullptr)
     {
-        background_buffer = zmalloc<byte *>(SCREENWIDTH * (SCREENHEIGHT - SBARHEIGHT),
+        background_buffer = zmalloc<uint8_t *>(SCREENWIDTH * (SCREENHEIGHT - SBARHEIGHT),
             PU_STATIC, nullptr);
     }
 
     // haleyjd 08/29/10: [STRIFE] Use configurable back_flat
     name = back_flat;
     
-    src = cache_lump_name<byte *>(name, PU_CACHE);
+    src = cache_lump_name<uint8_t *>(name, PU_CACHE);
     dest = background_buffer;
 	 
     for (y=0 ; y<SCREENHEIGHT-SBARHEIGHT ; y++) 

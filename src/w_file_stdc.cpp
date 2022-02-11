@@ -58,7 +58,7 @@ static void W_StdC_CloseFile(wad_file_t *wad)
 {
     stdc_wad_file_t *stdc_wad;
 
-    stdc_wad = (stdc_wad_file_t *)wad;
+    stdc_wad = reinterpret_cast<stdc_wad_file_t *>(wad);
 
     fclose(stdc_wad->fstream);
     Z_Free(stdc_wad);
@@ -73,7 +73,7 @@ size_t W_StdC_Read(wad_file_t *wad, unsigned int offset,
     stdc_wad_file_t *stdc_wad;
     size_t           result;
 
-    stdc_wad = (stdc_wad_file_t *)wad;
+    stdc_wad = reinterpret_cast<stdc_wad_file_t *>(wad);
 
     // Jump to the specified position in the file.
 

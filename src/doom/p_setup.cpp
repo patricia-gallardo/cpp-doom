@@ -102,7 +102,7 @@ mobj_t **blocklinks;
 // Without special effect, this could be
 //  used as a PVS lookup as well.
 //
-byte *rejectmatrix;
+uint8_t *rejectmatrix;
 
 
 // Maintain single and multi player starting spots.
@@ -122,7 +122,7 @@ fixed_t GetOffset(vertex_t *v1, vertex_t *v2)
 
     dx = (v1->x - v2->x) >> FRACBITS;
     dy = (v1->y - v2->y) >> FRACBITS;
-    r  = (fixed_t)(sqrt(dx * dx + dy * dy)) << FRACBITS;
+    r  = static_cast<fixed_t>(sqrt(dx * dx + dy * dy)) << FRACBITS;
 
     return r;
 }
@@ -133,7 +133,7 @@ fixed_t GetOffset(vertex_t *v1, vertex_t *v2)
 //
 void P_LoadVertexes(int lump)
 {
-    byte *       data;
+    uint8_t     *data;
     int          i;
     mapvertex_t *ml;
     vertex_t *   li;
@@ -146,9 +146,9 @@ void P_LoadVertexes(int lump)
     vertexes = zmalloc<decltype(vertexes)>(numvertexes * sizeof(vertex_t), PU_LEVEL, 0);
 
     // Load data into cache.
-    data = cache_lump_num<byte *>(lump, PU_STATIC);
+    data = cache_lump_num<uint8_t *>(lump, PU_STATIC);
 
-    ml = (mapvertex_t *)data;
+    ml = reinterpret_cast<mapvertex_t *>(data);
     li = vertexes;
 
     // Copy and convert vertex coordinates,
@@ -192,7 +192,7 @@ sector_t *GetSectorAtNullAddress()
 //
 void P_LoadSegs(int lump)
 {
-    byte *    data;
+    uint8_t  *data;
     int       i;
     mapseg_t *ml;
     seg_t *   li;
@@ -204,27 +204,27 @@ void P_LoadSegs(int lump)
     numsegs = W_LumpLength(lump) / sizeof(mapseg_t);
     segs    = zmalloc<decltype(segs)>(numsegs * sizeof(seg_t), PU_LEVEL, 0);
     memset(segs, 0, numsegs * sizeof(seg_t));
-    data = cache_lump_num<byte *>(lump, PU_STATIC);
+    data = cache_lump_num<uint8_t *>(lump, PU_STATIC);
 
-    ml = (mapseg_t *)data;
+    ml = reinterpret_cast<mapseg_t *>(data);
     li = segs;
     for (i = 0; i < numsegs; i++, li++, ml++)
     {
-        li->v1 = &vertexes[(unsigned short)SHORT(ml->v1)]; // [crispy] extended nodes
-        li->v2 = &vertexes[(unsigned short)SHORT(ml->v2)]; // [crispy] extended nodes
+        li->v1 = &vertexes[static_cast<unsigned short>(SHORT(ml->v1))]; // [crispy] extended nodes
+        li->v2 = &vertexes[static_cast<unsigned short>(SHORT(ml->v2))]; // [crispy] extended nodes
 
         li->angle = (SHORT(ml->angle)) << FRACBITS;
         //	li->offset = (SHORT(ml->offset))<<FRACBITS; // [crispy] recalculated below
-        linedef     = (unsigned short)SHORT(ml->linedef); // [crispy] extended nodes
+        linedef     = static_cast<unsigned short>(SHORT(ml->linedef)); // [crispy] extended nodes
         ldef        = &lines[linedef];
         li->linedef = ldef;
         side        = SHORT(ml->side);
 
         // e6y: check for wrong indexes
-        if ((unsigned)ldef->sidenum[side] >= (unsigned)numsides)
+        if (static_cast<unsigned>(ldef->sidenum[side]) >= static_cast<unsigned>(numsides))
         {
             I_Error("P_LoadSegs: linedef %d for seg %d references a non-existent sidedef %d",
-                linedef, i, (unsigned)ldef->sidenum[side]);
+                linedef, i, static_cast<unsigned>(ldef->sidenum[side]));
         }
 
         li->sidedef     = &sides[ldef->sidenum[side]];
@@ -285,7 +285,7 @@ void P_SegLengths(bool contrast_only)
 
         if (!contrast_only)
         {
-            li->length = (uint32_t)(sqrt((double)dx * dx + (double)dy * dy) / 2);
+            li->length = static_cast<uint32_t>(sqrt(static_cast<double>(dx) * dx + static_cast<double>(dy) * dy) / 2);
 
             // [crispy] re-calculate angle used for rendering
             viewx       = li->v1->r_x;
@@ -312,27 +312,27 @@ void P_SegLengths(bool contrast_only)
 //
 void P_LoadSubsectors(int lump)
 {
-    byte *          data;
+    uint8_t        *data;
     int             i;
     mapsubsector_t *ms;
     subsector_t *   ss;
 
     numsubsectors = W_LumpLength(lump) / sizeof(mapsubsector_t);
     subsectors    = zmalloc<decltype(subsectors)>(numsubsectors * sizeof(subsector_t), PU_LEVEL, 0);
-    data          = cache_lump_num<byte *>(lump, PU_STATIC);
+    data          = cache_lump_num<uint8_t *>(lump, PU_STATIC);
 
     // [crispy] fail on missing subsectors
     if (!data || !numsubsectors)
         I_Error("P_LoadSubsectors: No subsectors in map!");
 
-    ms = (mapsubsector_t *)data;
+    ms = reinterpret_cast<mapsubsector_t *>(data);
     memset(subsectors, 0, numsubsectors * sizeof(subsector_t));
     ss = subsectors;
 
     for (i = 0; i < numsubsectors; i++, ss++, ms++)
     {
-        ss->numlines  = (unsigned short)SHORT(ms->numsegs);  // [crispy] extended nodes
-        ss->firstline = (unsigned short)SHORT(ms->firstseg); // [crispy] extended nodes
+        ss->numlines  = static_cast<unsigned short>(SHORT(ms->numsegs));  // [crispy] extended nodes
+        ss->firstline = static_cast<unsigned short>(SHORT(ms->firstseg)); // [crispy] extended nodes
     }
 
     W_ReleaseLumpNum(lump);
@@ -344,7 +344,7 @@ void P_LoadSubsectors(int lump)
 //
 void P_LoadSectors(int lump)
 {
-    byte *       data;
+    uint8_t     *data;
     int          i;
     mapsector_t *ms;
     sector_t *   ss;
@@ -356,13 +356,13 @@ void P_LoadSectors(int lump)
     numsectors = W_LumpLength(lump) / sizeof(mapsector_t);
     sectors    = zmalloc<decltype(sectors)>(numsectors * sizeof(sector_t), PU_LEVEL, 0);
     memset(sectors, 0, numsectors * sizeof(sector_t));
-    data = cache_lump_num<byte *>(lump, PU_STATIC);
+    data = cache_lump_num<uint8_t *>(lump, PU_STATIC);
 
     // [crispy] fail on missing sectors
     if (!data || !numsectors)
         I_Error("P_LoadSectors: No sectors in map!");
 
-    ms = (mapsector_t *)data;
+    ms = reinterpret_cast<mapsector_t *>(data);
     ss = sectors;
     for (i = 0; i < numsectors; i++, ss++, ms++)
     {
@@ -396,7 +396,7 @@ void P_LoadSectors(int lump)
 //
 void P_LoadNodes(int lump)
 {
-    byte *     data;
+    uint8_t   *data;
     int        i;
     int        j;
     int        k;
@@ -405,7 +405,7 @@ void P_LoadNodes(int lump)
 
     numnodes = W_LumpLength(lump) / sizeof(mapnode_t);
     nodes    = zmalloc<decltype(nodes)>(numnodes * sizeof(node_t), PU_LEVEL, 0);
-    data     = cache_lump_num<byte *>(lump, PU_STATIC);
+    data     = cache_lump_num<uint8_t *>(lump, PU_STATIC);
 
     // [crispy] warn about missing nodes
     if (!data || !numnodes)
@@ -416,7 +416,7 @@ void P_LoadNodes(int lump)
             I_Error("P_LoadNodes: No nodes in map!");
     }
 
-    mn = (mapnode_t *)data;
+    mn = reinterpret_cast<mapnode_t *>(data);
     no = nodes;
 
     for (i = 0; i < numnodes; i++, no++, mn++)
@@ -427,7 +427,7 @@ void P_LoadNodes(int lump)
         no->dy = SHORT(mn->dy) << FRACBITS;
         for (j = 0; j < 2; j++)
         {
-            no->children[j] = (unsigned short)SHORT(mn->children[j]); // [crispy] extended nodes
+            no->children[j] = static_cast<unsigned short>(SHORT(mn->children[j])); // [crispy] extended nodes
 
             // [crispy] add support for extended nodes
             // from prboom-plus/src/p_setup.c:937-957
@@ -457,17 +457,17 @@ void P_LoadNodes(int lump)
 //
 void P_LoadThings(int lump)
 {
-    byte *      data;
+    uint8_t    *data;
     int         i;
     mapthing_t *mt;
     mapthing_t  spawnthing;
     int         numthings;
     bool     spawn;
 
-    data      = cache_lump_num<byte *>(lump, PU_STATIC);
+    data      = cache_lump_num<uint8_t *>(lump, PU_STATIC);
     numthings = W_LumpLength(lump) / sizeof(mapthing_t);
 
-    mt = (mapthing_t *)data;
+    mt = reinterpret_cast<mapthing_t *>(data);
     for (i = 0; i < numthings; i++, mt++)
     {
         spawn = true;
@@ -526,7 +526,7 @@ void P_LoadThings(int lump)
 //
 void P_LoadLineDefs(int lump)
 {
-    byte *        data;
+    uint8_t      *data;
     int           i;
     maplinedef_t *mld;
     line_t *      ld;
@@ -537,17 +537,17 @@ void P_LoadLineDefs(int lump)
     numlines = W_LumpLength(lump) / sizeof(maplinedef_t);
     lines    = zmalloc<decltype(lines)>(numlines * sizeof(line_t), PU_LEVEL, 0);
     memset(lines, 0, numlines * sizeof(line_t));
-    data = cache_lump_num<byte *>(lump, PU_STATIC);
+    data = cache_lump_num<uint8_t *>(lump, PU_STATIC);
 
-    mld  = (maplinedef_t *)data;
+    mld  = reinterpret_cast<maplinedef_t *>(data);
     ld   = lines;
     warn = warn2 = 0; // [crispy] warn about invalid linedefs
     for (i = 0; i < numlines; i++, mld++, ld++)
     {
-        ld->flags   = (unsigned short)SHORT(mld->flags); // [crispy] extended nodes
+        ld->flags   = static_cast<unsigned short>(SHORT(mld->flags)); // [crispy] extended nodes
         ld->special = SHORT(mld->special);
         // [crispy] warn about unknown linedef types
-        if ((unsigned short)ld->special > 141)
+        if (static_cast<unsigned short>(ld->special) > 141)
         {
             fprintf(stderr, "P_LoadLineDefs: Unknown special %d at line %d.\n", ld->special, i);
             warn++;
@@ -583,8 +583,8 @@ void P_LoadLineDefs(int lump)
                 break;
             }
         }
-        v1 = ld->v1 = &vertexes[(unsigned short)SHORT(mld->v1)]; // [crispy] extended nodes
-        v2 = ld->v2 = &vertexes[(unsigned short)SHORT(mld->v2)]; // [crispy] extended nodes
+        v1 = ld->v1 = &vertexes[static_cast<unsigned short>(SHORT(mld->v1))]; // [crispy] extended nodes
+        v2 = ld->v2 = &vertexes[static_cast<unsigned short>(SHORT(mld->v2))]; // [crispy] extended nodes
         ld->dx      = v2->x - v1->x;
         ld->dy      = v2->y - v1->y;
 
@@ -671,7 +671,7 @@ void P_LoadLineDefs(int lump)
 //
 void P_LoadSideDefs(int lump)
 {
-    byte *        data;
+    uint8_t      *data;
     int           i;
     mapsidedef_t *msd;
     side_t *      sd;
@@ -679,9 +679,9 @@ void P_LoadSideDefs(int lump)
     numsides = W_LumpLength(lump) / sizeof(mapsidedef_t);
     sides    = zmalloc<decltype(sides)>(numsides * sizeof(side_t), PU_LEVEL, 0);
     memset(sides, 0, numsides * sizeof(side_t));
-    data = cache_lump_num<byte *>(lump, PU_STATIC);
+    data = cache_lump_num<uint8_t *>(lump, PU_STATIC);
 
-    msd = (mapsidedef_t *)data;
+    msd = reinterpret_cast<mapsidedef_t *>(data);
     sd  = sides;
     for (i = 0; i < numsides; i++, msd++, sd++)
     {
@@ -724,15 +724,15 @@ bool P_LoadBlockMap(int lump)
 
     blockmaplump[0] = SHORT(wadblockmaplump[0]);
     blockmaplump[1] = SHORT(wadblockmaplump[1]);
-    blockmaplump[2] = (int32_t)(SHORT(wadblockmaplump[2])) & 0xffff;
-    blockmaplump[3] = (int32_t)(SHORT(wadblockmaplump[3])) & 0xffff;
+    blockmaplump[2] = static_cast<int32_t>(SHORT(wadblockmaplump[2])) & 0xffff;
+    blockmaplump[3] = static_cast<int32_t>(SHORT(wadblockmaplump[3])) & 0xffff;
 
     // Swap all short integers to native byte ordering.
 
     for (i = 4; i < count; i++)
     {
         short t         = SHORT(wadblockmaplump[i]);
-        blockmaplump[i] = (t == -1) ? -1l : (int32_t)t & 0xffff;
+        blockmaplump[i] = (t == -1) ? -1l : static_cast<int32_t>(t) & 0xffff;
     }
 
     Z_Free(wadblockmaplump);
@@ -908,8 +908,8 @@ static void P_RemoveSlimeTrails()
                         int64_t s   = dx2 + dy2;
 
                         // [crispy] MBF actually overrides v->x and v->y here
-                        v->r_x = (fixed_t)((dx2 * v->x + dy2 * l->v1->x + dxy * (v->y - l->v1->y)) / s);
-                        v->r_y = (fixed_t)((dy2 * v->y + dx2 * l->v1->y + dxy * (v->x - l->v1->x)) / s);
+                        v->r_x = static_cast<fixed_t>((dx2 * v->x + dy2 * l->v1->x + dxy * (v->y - l->v1->y)) / s);
+                        v->r_y = static_cast<fixed_t>((dy2 * v->y + dx2 * l->v1->y + dxy * (v->x - l->v1->x)) / s);
 
                         // [crispy] wait a minute... moved more than 8 map units?
                         // maybe that's a linguortal then, back to the original coordinates
@@ -929,11 +929,11 @@ static void P_RemoveSlimeTrails()
 // Pad the REJECT lump with extra data when the lump is too small,
 // to simulate a REJECT buffer overflow in Vanilla Doom.
 
-static void PadRejectArray(byte *array, unsigned int len)
+static void PadRejectArray(uint8_t *array, unsigned int len)
 {
     unsigned int i;
     unsigned int byte_num;
-    byte *       dest;
+    uint8_t     *dest;
     unsigned int padvalue;
 
     // Values to pad the REJECT array with:
@@ -964,7 +964,7 @@ static void PadRejectArray(byte *array, unsigned int len)
     if (len > sizeof(rejectpad))
     {
         fprintf(stderr, "PadRejectArray: REJECT lump too short to pad! (%u > %i)\n",
-            len, (int)sizeof(rejectpad));
+            len, static_cast<int>(sizeof(rejectpad)));
 
         // Pad remaining space with 0 (or 0xff, if specified on command line).
 
@@ -998,7 +998,7 @@ static void P_LoadReject(int lumpnum)
 
     if (lumplen >= minlength)
     {
-        rejectmatrix = cache_lump_num<byte *>(lumpnum, PU_LEVEL);
+        rejectmatrix = cache_lump_num<uint8_t *>(lumpnum, PU_LEVEL);
     }
     else
     {
@@ -1171,7 +1171,7 @@ void P_SetupLevel(int episode, int map, int, skill_t skill)
 
         fprintf(stderr, "P_SetupLevel: %s (%s) %s%s %d:%02d:%02d/%d:%02d:%02d ",
             maplumpinfo->name, W_WadNameForLump(maplumpinfo),
-            skilltable[BETWEEN(0, 5, (int)skill + 1)], rfn_str,
+            skilltable[BETWEEN(0, 5, static_cast<int>(skill) + 1)], rfn_str,
             ltime / 3600, (ltime % 3600) / 60, ltime % 60,
             ttime / 3600, (ttime % 3600) / 60, ttime % 60);
 

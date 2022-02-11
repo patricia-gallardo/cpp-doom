@@ -137,19 +137,19 @@ bool         longtics;               // cph's doom 1.91 longtics hack
 bool         lowres_turn;            // low resolution turning for longtics
 bool         demoplayback;
 bool		netdemo;
-byte*		demobuffer;
-byte*		demo_p;
-byte*		demoend; 
+uint8_t        *demobuffer;
+uint8_t        *demo_p;
+uint8_t        *demoend;
 bool         singledemo;             // quit after playing a demo from cmdline
  
 bool         precache = true;        // if true, load all graphics at start
 
 bool         testcontrols = false;    // Invoked by setup to test controls
  
-wbstartstruct_t wminfo;                 // parms for world map / intermission 
- 
-byte            consistancy[MAXPLAYERS][BACKUPTICS]; 
- 
+wbstartstruct_t wminfo;                 // parms for world map / intermission
+
+uint8_t consistancy[MAXPLAYERS][BACKUPTICS];
+
 #define MAXPLMOVE		(forwardmove[1]) 
  
 #define TURBOTHRESHOLD	0x32
@@ -246,7 +246,7 @@ int G_CmdChecksum (ticcmd_t* cmd)
     int		sum = 0; 
 	 
     for (i=0 ; i< sizeof(*cmd)/4 - 1 ; i++) 
-	sum += ((int *)cmd)[i]; 
+	sum += (reinterpret_cast<int *>(cmd))[i];
 		 
     return sum; 
 } 
@@ -1240,7 +1240,7 @@ G_CheckSpot
 
     // spawn a teleport fog 
     ss = R_PointInSubsector (x,y); 
-    an = ( ANG45 * (((unsigned int) mthing->angle)/45) ) >> ANGLETOFINESHIFT; 
+    an = ( ANG45 * ((static_cast<unsigned int>(mthing->angle))/45) ) >> ANGLETOFINESHIFT;
 
     mo = P_SpawnMobj (x+20*finecosine[an], y+20*finesine[an] 
                       , ss->sector->floorheight 
@@ -1634,7 +1634,7 @@ void G_DoWorldDone2()
 void G_ReadCurrent(const char *path)
 {
     char *temppath = nullptr;
-    byte *buffer = nullptr;
+    uint8_t *buffer   = nullptr;
 
     temppath = M_SafeFilePath(path, "\\current");
 
@@ -1643,10 +1643,10 @@ void G_ReadCurrent(const char *path)
     else
     {
         // haleyjd 20110211: do endian-correct read
-        gamemap = (((int)buffer[0])       |
-                   ((int)buffer[1] <<  8) |
-                   ((int)buffer[2] << 16) |
-                   ((int)buffer[3] << 24));
+        gamemap = ((static_cast<int>(buffer[0]))       |
+                   (static_cast<int>(buffer[1]) <<  8) |
+                   (static_cast<int>(buffer[2]) << 16) |
+                   (static_cast<int>(buffer[3]) << 24));
         gameaction = ga_loadgame;
         Z_Free(buffer);
     }
@@ -1803,7 +1803,7 @@ void G_DoSaveGame (char *path)
     char *current_path;
     char *savegame_file;
     char *temp_savegame_file;
-    byte gamemapbytes[4];
+    uint8_t gamemapbytes[4];
     char gamemapstr[33];
 
     temp_savegame_file = P_TempSaveGameFile();
@@ -1817,10 +1817,10 @@ void G_DoSaveGame (char *path)
     //   the save slot is currently on.
     current_path = M_SafeFilePath(path, "current");
     // haleyjd: endian-agnostic IO
-    gamemapbytes[0] = (byte)( gamemap        & 0xff);
-    gamemapbytes[1] = (byte)((gamemap >>  8) & 0xff);
-    gamemapbytes[2] = (byte)((gamemap >> 16) & 0xff);
-    gamemapbytes[3] = (byte)((gamemap >> 24) & 0xff);
+    gamemapbytes[0] = static_cast<uint8_t>( gamemap        & 0xff);
+    gamemapbytes[1] = static_cast<uint8_t>((gamemap >>  8) & 0xff);
+    gamemapbytes[2] = static_cast<uint8_t>((gamemap >> 16) & 0xff);
+    gamemapbytes[3] = static_cast<uint8_t>((gamemap >> 24) & 0xff);
     M_WriteFile(current_path, gamemapbytes, 4);
     Z_Free(current_path);
 
@@ -2100,12 +2100,12 @@ void G_ReadDemoTiccmd (ticcmd_t* cmd)
         G_CheckDemoStatus (); 
         return; 
     }
-    cmd->forwardmove = ((signed char)*demo_p++); 
-    cmd->sidemove = ((signed char)*demo_p++); 
-    cmd->angleturn = ((unsigned char) *demo_p++)<<8; 
-    cmd->buttons = (unsigned char)*demo_p++; 
-    cmd->buttons2 = (unsigned char)*demo_p++; // [STRIFE]
-    cmd->inventory = (int)*demo_p++;          // [STRIFE]
+    cmd->forwardmove = static_cast<signed char>(*demo_p++);
+    cmd->sidemove = static_cast<signed char>(*demo_p++);
+    cmd->angleturn = (static_cast<unsigned char>(*demo_p++))<<8;
+    cmd->buttons = static_cast<unsigned char>(*demo_p++);
+    cmd->buttons2 = static_cast<unsigned char>(*demo_p++); // [STRIFE]
+    cmd->inventory = static_cast<int>(*demo_p++);          // [STRIFE]
 }
 
 // Increase the size of the demo buffer to allow unlimited demos
@@ -2113,8 +2113,8 @@ void G_ReadDemoTiccmd (ticcmd_t* cmd)
 static void IncreaseDemoBuffer()
 {
     int current_length;
-    byte *new_demobuffer;
-    byte *new_demop;
+    uint8_t *new_demobuffer;
+    uint8_t *new_demop;
     int new_length;
 
     // Find the current size
@@ -2124,7 +2124,7 @@ static void IncreaseDemoBuffer()
     // Generate a new buffer twice the size
     new_length = current_length * 2;
     
-    new_demobuffer = zmalloc<byte *>(new_length, PU_STATIC, 0);
+    new_demobuffer = zmalloc<uint8_t *>(new_length, PU_STATIC, 0);
     new_demop = new_demobuffer + (demo_p - demobuffer);
 
     // Copy over the old data
@@ -2146,8 +2146,8 @@ static void IncreaseDemoBuffer()
 // [STRIFE] Modified for Strife ticcmd_t.
 //
 void G_WriteDemoTiccmd (ticcmd_t* cmd) 
-{ 
-    byte *demo_start;
+{
+    uint8_t *demo_start;
 
     if (gamekeydown[key_demo_quit])           // press q to end demo recording 
         G_CheckDemoStatus (); 
@@ -2159,7 +2159,7 @@ void G_WriteDemoTiccmd (ticcmd_t* cmd)
     *demo_p++ = cmd->angleturn >> 8; 
     *demo_p++ = cmd->buttons; 
     *demo_p++ = cmd->buttons2;                 // [STRIFE]
-    *demo_p++ = (byte)(cmd->inventory & 0xff); // [STRIFE]
+    *demo_p++ = static_cast<uint8_t>(cmd->inventory & 0xff); // [STRIFE]
 
     // reset demo pointer back
     demo_p = demo_start;
@@ -2214,7 +2214,7 @@ void G_RecordDemo (char* name)
     i = M_CheckParmWithArgs("-maxdemo", 1);
     if (i)
         maxsize = atoi(myargv[i+1])*1024;
-    demobuffer = zmalloc<byte *>(maxsize, PU_STATIC, nullptr);
+    demobuffer = zmalloc<uint8_t *>(maxsize, PU_STATIC, nullptr);
     demoend = demobuffer + maxsize;
 
     demorecording = true; 
@@ -2313,7 +2313,7 @@ void G_DoPlayDemo ()
     int     demoversion;
 
     gameaction = ga_nothing; 
-    demobuffer = demo_p = cache_lump_name<byte *>(defdemoname, PU_STATIC);
+    demobuffer = demo_p = cache_lump_name<uint8_t *>(defdemoname, PU_STATIC);
 
     demoversion = *demo_p++;
 
@@ -2426,7 +2426,7 @@ bool G_CheckDemoStatus ()
 
         endtime = I_GetTime (); 
         realtics = endtime - starttime;
-        fps = ((float) gametic * TICRATE) / realtics;
+        fps = (static_cast<float>(gametic) * TICRATE) / realtics;
 
         // Prevent recursive calls
         timingdemo = false;

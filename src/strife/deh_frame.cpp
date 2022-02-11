@@ -103,14 +103,13 @@ static void DEH_FrameOverflow(deh_context_t *context, char *varname, int value)
 
 static void DEH_FrameParseLine(deh_context_t *context, char *line, void *tag)
 {
-    state_t *state;
     char *variable_name, *value;
     int ivalue;
     
     if (tag == nullptr)
        return;
 
-    state = (state_t *) tag;
+    state_t *state = reinterpret_cast<state_t *>(tag);
 
     // Parse the assignment
 

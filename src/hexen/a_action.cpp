@@ -198,8 +198,7 @@ void A_PotteryCheck(mobj_t * actor)
     {
         pmo = players[consoleplayer].mo;
         if (P_CheckSight(actor, pmo)
-	  && (std::abs((int)R_PointToAngle2(pmo->x, pmo->y, actor->x, actor->y)
-           - (int)pmo->angle) <= ANG45))
+            && (std::abs(static_cast<int>(R_PointToAngle2(pmo->x, pmo->y, actor->x, actor->y)) - static_cast<int>(pmo->angle)) <= ANG45))
         {                       // Previous state (pottery bit waiting state)
             P_SetMobjState(actor, static_cast<statenum_t>(actor->state - &states[0] - 1));
         }
@@ -217,9 +216,9 @@ void A_PotteryCheck(mobj_t * actor)
                 continue;
             }
             pmo = players[i].mo;
-            if (P_CheckSight(actor, pmo) 
-              && (std::abs((int)R_PointToAngle2(pmo->x, pmo->y, actor->x, actor->y)
-               - (int)pmo->angle) <= ANG45))
+            if (P_CheckSight(actor, pmo)
+                && (std::abs(static_cast<int>(R_PointToAngle2(pmo->x, pmo->y, actor->x, actor->y)) - static_cast<int>(pmo->angle))
+                    <= ANG45))
             {                   // Previous state (pottery bit waiting state)
                 P_SetMobjState(actor, static_cast<statenum_t>(actor->state - &states[0] - 1));
                 return;
@@ -419,7 +418,7 @@ void A_BridgeOrbit(mobj_t * actor)
 
 void A_BridgeInit(mobj_t * actor)
 {
-    byte startangle;
+    uint8_t startangle;
     mobj_t *ball1, *ball2, *ball3;
     fixed_t cx, cy, cz;
 
@@ -850,7 +849,7 @@ void A_CheckThrowBomb(mobj_t * actor)
 //
 //===========================================================================
 
-bool A_LocalQuake(byte * args, mobj_t *)
+bool A_LocalQuake(uint8_t *args, mobj_t *)
 {
     mobj_t *focus, *target;
     int lastfound = 0;

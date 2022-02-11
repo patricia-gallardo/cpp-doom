@@ -58,7 +58,7 @@ P_SetMobjState
     {
 	if (state == S_NULL)
 	{
-	    mobj->state = (state_t *) S_NULL;
+	    mobj->state = nullptr;
 	    P_RemoveMobj (mobj);
 	    return false;
 	}
@@ -73,7 +73,7 @@ P_SetMobjState
 	// Call action functions when the state is set
         if (st->action.index() == mobj_param_action_hook)
         {
-            auto callback = std::get<mobj_param_action>(st->action);
+            const auto & callback = std::get<mobj_param_action>(st->action);
             callback(mobj);
         }
 
@@ -274,7 +274,7 @@ void P_XYMovement (mobj_t* mo)
     {
         // if in a walking frame, stop moving
         // villsa [STRIFE]: different player state (haleyjd - verified 20110202)
-        if ( player&&(unsigned)((player->mo->state - states) - S_PLAY_01) < 4)
+        if ( player && static_cast<unsigned>((player->mo->state - states) - S_PLAY_01) < 4)
             P_SetMobjState (player->mo, S_PLAY_00);
 
         mo->momx = 0;
@@ -535,8 +535,8 @@ void P_MobjThinker (mobj_t* mobj)
     {
         P_XYMovement (mobj);
 
-        // FIXME: decent NOP/NULL/Nil function pointer please.
-        if (mobj->thinker.function.acv == (actionf_v) (-1))
+        action_hook invalid_hook = valid_hook(false);
+        if (mobj->thinker.function == invalid_hook)
             return;     // mobj was removed
 
         // villsa [STRIFE] terrain clipping
@@ -551,8 +551,8 @@ void P_MobjThinker (mobj_t* mobj)
     {
         P_ZMovement (mobj);
 
-        // FIXME: decent NOP/NULL/Nil function pointer please.
-        if (mobj->thinker.function.acv == (actionf_v) (-1))
+        action_hook invalid_hook = valid_hook(false);
+        if (mobj->thinker.function == invalid_hook)
             return;     // mobj was removed
 
         // villsa [STRIFE] terrain clipping and sounds
@@ -679,7 +679,7 @@ P_SpawnMobj
     else 
         mobj->z = z;
 
-    mobj->thinker.function.acp1 = (actionf_p1)P_MobjThinker;
+    mobj->thinker.function = P_MobjThinker;
 
     P_AddThinker (&mobj->thinker);
 
@@ -734,7 +734,7 @@ void P_RemoveMobj (mobj_t* mobj)
     S_StopSound (mobj);
     
     // free block
-    P_RemoveThinker ((thinker_t*)mobj);
+    P_RemoveThinker (reinterpret_cast<thinker_t*>(mobj));
 }
 
 

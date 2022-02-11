@@ -50,22 +50,16 @@ static bool       had_warning;
 // zero, do not autostart.
 static int expected_nodes;
 
-#pragma GCC diagnostic push
-#pragma GCC diagnostic ignored "-Wunused-parameter"
-static void EscapePressed(TXT_UNCAST_ARG(widget), void *unused)
+static void EscapePressed(void *, void *)
 {
     TXT_Shutdown();
     I_Quit();
 }
-#pragma GCC diagnostic pop
 
-#pragma GCC diagnostic push
-#pragma GCC diagnostic ignored "-Wunused-parameter"
-static void StartGame(TXT_UNCAST_ARG(widget), TXT_UNCAST_ARG(unused))
+static void StartGame(void *, void *)
 {
     NET_CL_LaunchGame();
 }
-#pragma GCC diagnostic pop
 
 static void OpenWaitDialog()
 {
@@ -124,7 +118,7 @@ static void UpdateGUI()
 {
     txt_window_action_t *startgame;
     char                 buf[50];
-    unsigned int         i;
+    int         i;
 
     // If the value of max_players changes, we must rebuild the
     // contents of the window. This includes when the first
@@ -146,7 +140,7 @@ static void UpdateGUI()
     {
         txt_color_t color = TXT_COLOR_BRIGHT_WHITE;
 
-        if ((signed)i == net_client_wait_data.consoleplayer)
+        if (i == net_client_wait_data.consoleplayer)
         {
             color = TXT_COLOR_YELLOW;
         }
@@ -241,7 +235,7 @@ static void CheckMasterStatus()
     }
 }
 
-static void PrintSHA1Digest(const char *s, const byte *digest)
+static void PrintSHA1Digest(const char *s, const uint8_t *digest)
 {
     unsigned int i;
 
@@ -255,15 +249,12 @@ static void PrintSHA1Digest(const char *s, const byte *digest)
     printf("\n");
 }
 
-#pragma GCC diagnostic push
-#pragma GCC diagnostic ignored "-Wunused-parameter"
-static void CloseWindow(TXT_UNCAST_ARG(widget), TXT_UNCAST_ARG(window))
+static void CloseWindow(void *, void *uncast_window)
 {
-    TXT_CAST_ARG(txt_window_t, window);
+    auto *window = reinterpret_cast<txt_window_t *>(uncast_window);
 
     TXT_CloseWindow(window);
 }
-#pragma GCC diagnostic pop
 
 static void CheckSHA1Sums()
 {

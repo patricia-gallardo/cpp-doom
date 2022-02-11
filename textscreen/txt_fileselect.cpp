@@ -535,8 +535,8 @@ char *TXT_SelectFile(const char *window_title, const char **extensions)
         return nullptr;
     }
 
-    argv[0] = "/usr/bin/osascript";
-    argv[1] = "-e";
+    argv[0] = const_cast<char *>("/usr/bin/osascript");
+    argv[1] = const_cast<char *>("-e");
     argv[2] = applescript;
     argv[3] = nullptr;
 
@@ -682,9 +682,9 @@ char *TXT_SelectFile(const char *window_title, const char **extensions)
 
 #endif
 
-static void TXT_FileSelectSizeCalc(TXT_UNCAST_ARG(fileselect))
+static void TXT_FileSelectSizeCalc(void *uncast_fileselect)
 {
-    TXT_CAST_ARG(txt_fileselect_t, fileselect);
+    auto *fileselect = reinterpret_cast<txt_fileselect_t *>(uncast_fileselect);
 
     // Calculate widget size, but override the width to always
     // be the configured size.
@@ -694,9 +694,9 @@ static void TXT_FileSelectSizeCalc(TXT_UNCAST_ARG(fileselect))
     fileselect->widget.h = fileselect->inputbox->widget.h;
 }
 
-static void TXT_FileSelectDrawer(TXT_UNCAST_ARG(fileselect))
+static void TXT_FileSelectDrawer(void *uncast_fileselect)
 {
-    TXT_CAST_ARG(txt_fileselect_t, fileselect);
+    auto *fileselect = reinterpret_cast<txt_fileselect_t *>(uncast_fileselect);
 
     // Input box widget inherits all the properties of the
     // file selector.
@@ -712,9 +712,9 @@ static void TXT_FileSelectDrawer(TXT_UNCAST_ARG(fileselect))
     TXT_DrawWidget(fileselect->inputbox);
 }
 
-static void TXT_FileSelectDestructor(TXT_UNCAST_ARG(fileselect))
+static void TXT_FileSelectDestructor(void *uncast_fileselect)
 {
-    TXT_CAST_ARG(txt_fileselect_t, fileselect);
+    auto *fileselect = reinterpret_cast<txt_fileselect_t *>(uncast_fileselect);
 
     TXT_DestroyWidget(fileselect->inputbox);
 }
@@ -746,9 +746,9 @@ static int DoSelectFile(txt_fileselect_t *fileselect)
     return 0;
 }
 
-static int TXT_FileSelectKeyPress(TXT_UNCAST_ARG(fileselect), int key)
+static int TXT_FileSelectKeyPress(void *uncast_fileselect, int key)
 {
-    TXT_CAST_ARG(txt_fileselect_t, fileselect);
+    auto *fileselect = reinterpret_cast<txt_fileselect_t *>(uncast_fileselect);
 
     // When the enter key is pressed, pop up a file selection dialog,
     // if file selectors work. Allow holding down 'alt' to override
@@ -767,10 +767,10 @@ static int TXT_FileSelectKeyPress(TXT_UNCAST_ARG(fileselect), int key)
     return TXT_WidgetKeyPress(fileselect->inputbox, key);
 }
 
-static void TXT_FileSelectMousePress(TXT_UNCAST_ARG(fileselect),
+static void TXT_FileSelectMousePress(void *uncast_fileselect,
                                      int x, int y, int b)
 {
-    TXT_CAST_ARG(txt_fileselect_t, fileselect);
+    auto *fileselect = reinterpret_cast<txt_fileselect_t *>(uncast_fileselect);
 
     if (!fileselect->inputbox->editing
      && !TXT_GetModifierState(TXT_MOD_ALT)
@@ -785,9 +785,9 @@ static void TXT_FileSelectMousePress(TXT_UNCAST_ARG(fileselect),
     TXT_WidgetMousePress(fileselect->inputbox, x, y, b);
 }
 
-static void TXT_FileSelectFocused(TXT_UNCAST_ARG(fileselect), int focused)
+static void TXT_FileSelectFocused(void *uncast_fileselect, int focused)
 {
-    TXT_CAST_ARG(txt_fileselect_t, fileselect);
+    auto *fileselect = reinterpret_cast<txt_fileselect_t *>(uncast_fileselect);
 
     TXT_SetWidgetFocus(fileselect->inputbox, focused);
 }
@@ -807,15 +807,12 @@ txt_widget_class_t txt_fileselect_class =
 // If the (inner) inputbox widget is changed, emit a change to the
 // outer (fileselect) widget.
 
-#pragma GCC diagnostic push
-#pragma GCC diagnostic ignored "-Wunused-parameter"
-static void InputBoxChanged(TXT_UNCAST_ARG(widget), TXT_UNCAST_ARG(fileselect))
+static void InputBoxChanged(void *, void *uncast_fileselect)
 {
-    TXT_CAST_ARG(txt_fileselect_t, fileselect);
+    auto *fileselect = reinterpret_cast<txt_fileselect_t *>(uncast_fileselect);
 
     TXT_EmitSignal(&fileselect->widget, "changed");
 }
-#pragma GCC diagnostic pop
 
 txt_fileselect_t *TXT_NewFileSelector(char **variable, int size,
                                       const char *prompt, const char **extensions)

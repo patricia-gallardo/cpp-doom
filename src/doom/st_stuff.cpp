@@ -505,11 +505,12 @@ static int ST_cheat_massacre()
     extern int  numbraintargets;
     extern void A_PainDie(mobj_t *);
 
+    action_hook needle = P_MobjThinker;
     for (th = thinkercap.next; th != &thinkercap; th = th->next)
     {
-        if (th->function.acp1 == (actionf_p1)P_MobjThinker)
+        if (th->function == needle)
         {
-            mobj_t *mo = (mobj_t *)th;
+            mobj_t *mo = reinterpret_cast<mobj_t *>(th);
 
             if (mo->flags & MF_COUNTKILL || mo->type == MT_SKULL)
             {
@@ -697,7 +698,7 @@ bool
 
                     mt.x     = plyr->mo->x >> FRACBITS;
                     mt.y     = plyr->mo->y >> FRACBITS;
-                    mt.angle = (plyr->mo->angle + ANG45 / 2) * (uint64_t)45 / ANG45;
+                    mt.angle = (plyr->mo->angle + ANG45 / 2) * static_cast<uint64_t>(45) / ANG45;
                     mt.type  = consoleplayer + 1;
                     P_SpawnPlayer(&mt);
 
@@ -944,11 +945,12 @@ bool
                     thinker_t *th;
 
                     // [crispy] let mobjs forget their target and tracer
+                    action_hook needle = P_MobjThinker;
                     for (th = thinkercap.next; th != &thinkercap; th = th->next)
                     {
-                        if (th->function.acp1 == (actionf_p1)P_MobjThinker)
+                        if (th->function == needle)
                         {
-                            mobj_t *const mo = (mobj_t *)th;
+                            mobj_t *const mo = reinterpret_cast<mobj_t *>(th);
 
                             if (mo->target && mo->target->player)
                             {
@@ -1124,7 +1126,7 @@ bool
             M_snprintf(msg, sizeof(msg), "%s (%s) x%ld SDL%s",
                 PACKAGE_STRING,
                 BUILD_DATE,
-                (long)sizeof(void *) * CHAR_BIT,
+                static_cast<long>(sizeof(void *)) * CHAR_BIT,
                 crispy->sdlversion);
 #undef BUILD_DATE
             plyr->message = msg;
@@ -1136,7 +1138,7 @@ bool
             extern const char *skilltable[];
 
             M_snprintf(msg, sizeof(msg), "Skill: %s",
-                skilltable[BETWEEN(0, 5, (int)gameskill + 1)]);
+                skilltable[BETWEEN(0, 5, static_cast<int>(gameskill) + 1)]);
             plyr->message = msg;
         }
 
@@ -1351,7 +1353,7 @@ void       ST_updateFaceWidget()
 
             for (i = 0; i < NUMWEAPONS; i++)
             {
-                if (oldweaponsowned[i] != plyr->weaponowned[i])
+                if (oldweaponsowned[i] != static_cast<bool>(plyr->weaponowned[i]))
                 {
                     doevilgrin         = true;
                     oldweaponsowned[i] = plyr->weaponowned[i];
@@ -1603,7 +1605,7 @@ void ST_doPaletteStuff()
 
     int palette;
 #ifndef CRISPY_TRUECOLOR
-    byte *pal;
+    uint8_t *pal;
 #endif
     int cnt;
     int bzc;
@@ -1670,7 +1672,7 @@ void ST_doPaletteStuff()
     {
         st_palette = palette;
 #ifndef CRISPY_TRUECOLOR
-        pal = cache_lump_num<byte *>(lu_palette, PU_CACHE) + palette * 768;
+        pal = cache_lump_num<uint8_t *>(lu_palette, PU_CACHE) + palette * 768;
         I_SetPalette(pal);
 #else
         I_SetPalette(palette);
@@ -1687,7 +1689,7 @@ enum class hudcolor_t
 };
 
 // [crispy] return ammo/health/armor widget color
-static byte *ST_WidgetColor(hudcolor_t i)
+static uint8_t *ST_WidgetColor(hudcolor_t i)
 {
     if (!(crispy->coloredhud & COLOREDHUD_BAR))
         return nullptr;
@@ -2320,7 +2322,7 @@ void ST_Stop()
         return;
 
 #ifndef CRISPY_TRUECOLOR
-    I_SetPalette(cache_lump_num<byte *>(lu_palette, PU_CACHE));
+    I_SetPalette(cache_lump_num<uint8_t *>(lu_palette, PU_CACHE));
 #else
     I_SetPalette(0);
 #endif
@@ -2354,7 +2356,7 @@ void ST_DrawDemoTimer(const int time)
 {
     char        buffer[16];
     const int   mins = time / (60 * TICRATE);
-    const float secs = (float)(time % (60 * TICRATE)) / TICRATE;
+    const float secs = static_cast<float>(time % (60 * TICRATE)) / TICRATE;
     const int   w    = shortnum[0]->width;
     int         n, x;
 

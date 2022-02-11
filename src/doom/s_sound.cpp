@@ -483,7 +483,7 @@ void S_UnlinkSound(mobj_t *origin)
                 sobj->x                 = origin->x;
                 sobj->y                 = origin->y;
                 sobj->z                 = origin->z;
-                channels[cnum].origin   = (mobj_t *)sobj;
+                channels[cnum].origin   = reinterpret_cast<mobj_t *>(sobj);
                 break;
             }
         }
@@ -650,7 +650,7 @@ void S_StartSound(void *origin_p, int sfx_id)
     int        cnum;
     int        volume;
 
-    origin = (mobj_t *)origin_p;
+    origin = reinterpret_cast<mobj_t *>(origin_p);
     volume = snd_SfxVolume;
 
     // [crispy] make non-fatal, consider zero volume
@@ -939,7 +939,7 @@ void S_ChangeMusic(int musicnum, int looping)
     // [crispy] prevent music number under- and overflows
     if (musicnum <= mus_None || (gamemode == commercial && musicnum < mus_runnin) || musicnum >= NUMMUSIC || (gamemode != commercial && musicnum >= mus_runnin) || S_music[musicnum].lumpnum == -1)
     {
-        const unsigned int umusicnum = (unsigned int)musicnum;
+        const auto umusicnum = static_cast<unsigned int>(musicnum);
 
         if (gamemode == commercial)
         {

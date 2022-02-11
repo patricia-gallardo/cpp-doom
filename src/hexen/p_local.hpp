@@ -267,7 +267,7 @@ void P_RadiusAttack(mobj_t * spot, mobj_t * source, int damage, int distance,
 
 // ***** P_SETUP *****
 
-extern byte *rejectmatrix;      // for fast sight rejection
+extern uint8_t *rejectmatrix;     // for fast sight rejection
 extern short *blockmaplump;     // offsets in blockmap are from here
 extern short *blockmap;
 extern int bmapwidth, bmapheight;       // in mapblocks
@@ -302,7 +302,7 @@ void AM_Ticker();
 void AM_Drawer();
 
 // ***** A_ACTION *****
-bool A_LocalQuake(byte * args, mobj_t * victim);
+bool A_LocalQuake(uint8_t *args, mobj_t * victim);
 void P_SpawnDirt(mobj_t * actor, fixed_t radius);
 void A_BridgeRemove(mobj_t * actor);
 
@@ -362,12 +362,12 @@ extern int po_NumPolyobjs;
 
 void T_PolyDoor(polydoor_t * pd);
 void T_RotatePoly(polyevent_t * pe);
-bool EV_RotatePoly(line_t * line, byte * args, int direction, bool
+bool EV_RotatePoly(line_t * line, uint8_t *args, int direction, bool
                       overRide);
 void T_MovePoly(polyevent_t * pe);
-bool EV_MovePoly(line_t * line, byte * args, bool timesEight, bool
+bool EV_MovePoly(line_t * line, uint8_t *args, bool timesEight, bool
                     overRide);
-bool EV_OpenPolyDoor(line_t * line, byte * args, podoortype_t type);
+bool EV_OpenPolyDoor(line_t * line, uint8_t *args, podoortype_t type);
 
 bool PO_MovePolyobj(int num, int x, int y);
 bool PO_RotatePolyobj(int num, angle_t angle);

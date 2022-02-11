@@ -58,7 +58,7 @@ void CT_BackSpace(int player);
 
 int head;
 int tail;
-byte ChatQueue[QUEUESIZE];
+uint8_t ChatQueue[QUEUESIZE];
 int chat_dest[MAXPLAYERS];
 char chat_msg[MAXPLAYERS][MESSAGESIZE];
 char plr_lastmsg[MAXPLAYERS][MESSAGESIZE + 9];  // add in the length of the pre-string
@@ -393,7 +393,7 @@ void CT_queueChatChar(char ch)
 
 char CT_dequeueChatChar()
 {
-    byte temp;
+    uint8_t temp;
 
     if (head == tail)
     {                           // queue is empty

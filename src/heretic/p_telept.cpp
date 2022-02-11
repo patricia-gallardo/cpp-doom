@@ -148,7 +148,7 @@ bool EV_Teleport(line_t * line, int side, mobj_t * thing)
                 {               // Not a mobj
                     continue;
                 }
-                m = (mobj_t *) thinker;
+                m = reinterpret_cast<mobj_t *>(thinker);
                 if (m->type != MT_TELEPORTMAN)
                 {               // Not a teleportman
                     continue;

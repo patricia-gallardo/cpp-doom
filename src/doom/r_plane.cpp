@@ -473,7 +473,7 @@ void R_DrawPlanes()
                 dc_yl = pl->top[x];
                 dc_yh = pl->bottom[x];
 
-                if ((unsigned)dc_yl <= dc_yh) // [crispy] 32-bit integer math
+                if (static_cast<unsigned>(dc_yl) <= dc_yh) // [crispy] 32-bit integer math
                 {
                     angle     = ((an + xtoviewangle[x]) ^ flip) >> ANGLETOSKYSHIFT;
                     dc_x      = x;
@@ -488,7 +488,7 @@ void R_DrawPlanes()
         lumpnum = firstflat + (swirling ? pl->picnum : flattranslation[pl->picnum]);
         // [crispy] add support for SMMU swirling flats
         ds_source =
-            static_cast<byte *>(swirling ? reinterpret_cast<unsigned char *>(R_DistortedFlat(lumpnum)) : cache_lump_num<byte *>(lumpnum, PU_STATIC));
+            static_cast<uint8_t *>(swirling ? reinterpret_cast<unsigned char *>(R_DistortedFlat(lumpnum)) : cache_lump_num<uint8_t *>(lumpnum, PU_STATIC));
         ds_brightmap = R_BrightmapForFlatNum(lumpnum - firstflat);
 
         planeheight = std::abs(pl->height - viewz);

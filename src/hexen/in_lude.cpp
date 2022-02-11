@@ -99,7 +99,7 @@ extern void AM_Stop();
 void IN_Start()
 {
     int i;
-    I_SetPalette(cache_lump_name<byte *>("PLAYPAL", PU_CACHE));
+    I_SetPalette(cache_lump_name<uint8_t *>("PLAYPAL", PU_CACHE));
     InitStats();
     LoadPics();
     intermission = true;
@@ -404,7 +404,7 @@ void IN_Drawer()
         return;
     }
     UpdateState |= I_FULLSCRN;
-    V_CopyScaledBuffer(I_VideoBuffer, (byte *) patchINTERPIC, ORIGWIDTH * ORIGHEIGHT);
+    V_CopyScaledBuffer(I_VideoBuffer, reinterpret_cast<pixel_t *>(patchINTERPIC), ORIGWIDTH * ORIGHEIGHT);
 
     if (gametype == SINGLE)
     {

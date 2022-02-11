@@ -82,7 +82,7 @@ void P_AddThinker(thinker_t * thinker)
 
 void P_RemoveThinker(thinker_t * thinker)
 {
-    thinker->function = (think_t) - 1;
+    thinker->function = null_hook();
 }
 
 /*
@@ -125,7 +125,7 @@ void P_RunThinkers()
         else
         {
             if (currentthinker->function.index() == thinker_param_action_hook) {
-                auto callback = std::get<thinker_param_action>(currentthinker->function);
+                const auto & callback = std::get<thinker_param_action>(currentthinker->function);
                 callback(currentthinker);
             }
             nextthinker = currentthinker->next;

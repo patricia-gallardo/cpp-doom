@@ -125,12 +125,12 @@ static void SV_OpenRead(char *fileName);
 static void SV_OpenWrite(char *fileName);
 static void SV_Close();
 static void SV_Read(void *buffer, int size);
-static byte SV_ReadByte();
+static uint8_t  SV_ReadByte();
 static uint16_t SV_ReadWord();
 static uint32_t SV_ReadLong();
 static void *SV_ReadPtr();
 static void SV_Write(const void *buffer, int size);
-static void SV_WriteByte(byte val);
+static void SV_WriteByte(uint8_t val);
 static void SV_WriteWord(unsigned short val);
 static void SV_WriteLong(unsigned int val);
 static void SV_WritePtr(void *ptr);
@@ -2572,7 +2572,7 @@ static void SetMobjArchiveNums()
     {
         if (thinker->function == needle)
         {
-            mobj = (mobj_t *) thinker;
+            mobj = reinterpret_cast<mobj_t *>(thinker);
             if (mobj->player && !SavingPlayers)
             {                   // Skipping player mobjs
                 continue;
@@ -2605,12 +2605,12 @@ static void ArchiveMobjs()
         {                       // Not a mobj thinker
             continue;
         }
-        if (((mobj_t *) thinker)->player && !SavingPlayers)
+        if ((reinterpret_cast<mobj_t *>(thinker))->player && !SavingPlayers)
         {                       // Skipping player mobjs
             continue;
         }
         count++;
-        StreamOut_mobj_t((mobj_t *) thinker);
+        StreamOut_mobj_t(reinterpret_cast<mobj_t *>(thinker));
     }
     if (count != MobjCount)
     {
@@ -2836,7 +2836,7 @@ static void ArchiveThinkers()
             if (thinker->function == info->thinkerFunc)
             {
                 SV_WriteByte(info->tClass);
-                auto callback = std::get<thinker_param_action>(info->writeFunc);
+                const auto & callback = std::get<thinker_param_action>(info->writeFunc);
                 callback(thinker);
                 break;
             }
@@ -3022,7 +3022,7 @@ static void RemoveAllThinkers()
         nextThinker = thinker->next;
         if (thinker->function == needle)
         {
-            P_RemoveMobj((mobj_t *) thinker);
+            P_RemoveMobj(reinterpret_cast<mobj_t *>(thinker));
         }
         else
         {
@@ -3060,17 +3060,19 @@ static void ArchiveSounds()
         SV_WriteLong(node->currentSoundID);
         for (i = 0; i < po_NumPolyobjs; i++)
         {
-            if (node->mobj == (mobj_t *) & polyobjs[i].startSpot)
+            if (node->mobj == reinterpret_cast<mobj_t *>(& polyobjs[i].startSpot))
             {
                 break;
             }
         }
         if (i == po_NumPolyobjs)
         {                       // Sound is attached to a sector, not a polyobj
-            sec = R_PointInSubsector(node->mobj->x, node->mobj->y)->sector;
-            difference = (int) ((byte *) sec
-                                - (byte *) & sectors[0]) / sizeof(sector_t);
-            SV_WriteLong(0);   // 0 -- sector sound origin
+            sec          = R_PointInSubsector(node->mobj->x, node->mobj->y)->sector;
+            auto *begin  = reinterpret_cast<uint8_t *>(sec);
+            auto *offset = reinterpret_cast<uint8_t *>(&sectors[0]);
+            int   length = static_cast<int>(begin - offset);
+            difference   = length / sizeof(sector_t);
+            SV_WriteLong(0); // 0 -- sector sound origin
         }
         else
         {
@@ -3117,11 +3119,11 @@ static void UnarchiveSounds()
         secNum = SV_ReadLong();
         if (!polySnd)
         {
-            sndMobj = (mobj_t *) & sectors[secNum].soundorg;
+            sndMobj = reinterpret_cast<mobj_t *>(& sectors[secNum].soundorg);
         }
         else
         {
-            sndMobj = (mobj_t *) & polyobjs[secNum].startSpot;
+            sndMobj = reinterpret_cast<mobj_t *>(& polyobjs[secNum].startSpot);
         }
         SN_StartSequence(sndMobj, sequence);
         SN_ChangeNodeData(i, seqOffset, delayTics, volume, soundID);
@@ -3173,7 +3175,7 @@ static void UnarchivePolyobjs()
         {
             I_Error("UnarchivePolyobjs: Invalid polyobj tag");
         }
-        PO_RotatePolyobj(polyobjs[i].tag, (angle_t) SV_ReadLong());
+        PO_RotatePolyobj(polyobjs[i].tag, static_cast<angle_t>(SV_ReadLong()));
         deltaX = SV_ReadLong() - polyobjs[i].startSpot.x;
         deltaY = SV_ReadLong() - polyobjs[i].startSpot.y;
         PO_MovePolyobj(polyobjs[i].tag, deltaX, deltaY);
@@ -3270,7 +3272,7 @@ static void CopyFile(char *source_name, char *dest_name)
 {
     const int BUFFER_CHUNK_SIZE = 0x10000;
 
-    byte *buffer;
+    uint8_t *buffer;
     int file_length, file_remaining;
     FILE *read_handle, *write_handle;
     int buf_count, read_count, write_count;
@@ -3290,7 +3292,7 @@ static void CopyFile(char *source_name, char *dest_name)
 
     if (vanilla_savegame_limit)
     {
-        buffer = zmalloc<byte *>(file_length, PU_STATIC, nullptr);
+        buffer = zmalloc<uint8_t *>(file_length, PU_STATIC, nullptr);
         Z_Free(buffer);
     }
 
@@ -3300,7 +3302,7 @@ static void CopyFile(char *source_name, char *dest_name)
         I_Error ("Couldn't read file %s", dest_name);
     }
 
-    buffer = zmalloc<byte *>(BUFFER_CHUNK_SIZE, PU_STATIC, nullptr);
+    buffer = zmalloc<uint8_t *>(BUFFER_CHUNK_SIZE, PU_STATIC, nullptr);
 
     do
     {
@@ -3403,10 +3405,10 @@ static void SV_Read(void *buffer, int size)
     }
 }
 
-static byte SV_ReadByte()
+static uint8_t SV_ReadByte()
 {
-    byte result;
-    SV_Read(&result, sizeof(byte));
+    uint8_t result;
+    SV_Read(&result, sizeof(uint8_t));
     return result;
 }
 
@@ -3426,7 +3428,7 @@ static uint32_t SV_ReadLong()
 
 static void *SV_ReadPtr()
 {
-    return (void *) (intptr_t) SV_ReadLong();
+    return reinterpret_cast<void *>(static_cast<intptr_t>(SV_ReadLong()));
 }
 
 //==========================================================================
@@ -3440,9 +3442,9 @@ static void SV_Write(const void *buffer, int size)
     fwrite(buffer, size, 1, SavingFP);
 }
 
-static void SV_WriteByte(byte val)
+static void SV_WriteByte(uint8_t val)
 {
-    fwrite(&val, sizeof(byte), 1, SavingFP);
+    fwrite(&val, sizeof(uint8_t), 1, SavingFP);
 }
 
 static void SV_WriteWord(unsigned short val)
@@ -3459,12 +3461,10 @@ static void SV_WriteLong(unsigned int val)
 
 static void SV_WritePtr(void *val)
 {
-    long ptr;
-
     // Write a pointer value. In Vanilla Hexen pointers are 32-bit but
     // nowadays they might be larger. Whatever value we write here isn't
     // going to be much use when we reload the game.
 
-    ptr = (long)(intptr_t) val;
-    SV_WriteLong((unsigned int) (ptr & 0xffffffff));
+    long ptr = static_cast<long>(reinterpret_cast<intptr_t>(val));
+    SV_WriteLong(static_cast<unsigned int>(ptr & 0xffffffff));
 }

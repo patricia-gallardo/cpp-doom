@@ -112,7 +112,7 @@ void P_CreateBlockMap()
             ady <<= MAPBTOFRAC;
 
             // Now we simply iterate block-by-block until we reach the end block.
-            while ((unsigned)b < tot) // failsafe -- should ALWAYS be true
+            while (static_cast<unsigned>(b) < tot) // failsafe -- should ALWAYS be true
             {
                 // Increase size of allocated list if necessary
                 if (bmap[b].n >= bmap[b].nalloc)

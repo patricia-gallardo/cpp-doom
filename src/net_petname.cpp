@@ -104,7 +104,7 @@ static const char *const nouns[] = {
  */
 static void InitPetName()
 {
-    srand((unsigned int)time(nullptr));
+    srand(static_cast<unsigned int>(time(nullptr)));
 }
 
 char *NET_GetRandomPetName()

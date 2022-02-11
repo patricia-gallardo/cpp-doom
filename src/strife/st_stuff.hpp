@@ -77,8 +77,7 @@ typedef enum
 } st_chatstateenum_t;
 
 
-
-extern byte *st_backing_screen;
+extern uint8_t *st_backing_screen;
 
 extern cheatseq_t cheat_mus;     // [STRIFE]: idmus -> spin
 extern cheatseq_t cheat_god;     // [STRIFE]: iddqd -> omnipotent

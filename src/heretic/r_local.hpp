@@ -153,7 +153,7 @@ typedef struct
 ==============================================================================
 */
 
-typedef byte lighttable_t;      // this could be wider for >8 bit display
+typedef uint8_t lighttable_t; // this could be wider for >8 bit display
 
 #define	MAXVISPLANES	128
 #define	MAXOPENINGS		MAXWIDTH*64*4
@@ -227,7 +227,7 @@ typedef struct
 {
     bool rotate;             // if false use 0 for any position
     short lump[8];              // lump to use for view angles 0-7
-    byte flip[8];               // flip (1 = flip) to use for view angles 0-7
+    uint8_t flip[8];            // flip (1 = flip) to use for view angles 0-7
 } spriteframe_t;
 
 typedef struct
@@ -401,7 +401,7 @@ extern int *texturetranslation; // for global animation
 
 extern int firstspritelump, lastspritelump, numspritelumps;
 
-byte *R_GetColumn(int tex, int col);
+uint8_t *R_GetColumn(int tex, int col);
 void R_InitData();
 void R_PrecacheLevel();
 
@@ -454,7 +454,7 @@ extern int dc_yh;
 extern fixed_t dc_iscale;
 extern fixed_t dc_texturemid;
 extern int dc_texheight;
-extern byte *dc_source;         // first pixel in a column
+extern uint8_t *dc_source; // first pixel in a column
 
 void R_DrawColumn();
 void R_DrawColumnLow();
@@ -472,10 +472,10 @@ extern fixed_t ds_xfrac;
 extern fixed_t ds_yfrac;
 extern fixed_t ds_xstep;
 extern fixed_t ds_ystep;
-extern byte *ds_source;         // start of a 64*64 tile image
+extern uint8_t *ds_source; // start of a 64*64 tile image
 
-extern byte *translationtables;
-extern byte *dc_translation;
+extern uint8_t *translationtables;
+extern uint8_t *dc_translation;
 
 void R_DrawSpan();
 void R_DrawSpanLow();

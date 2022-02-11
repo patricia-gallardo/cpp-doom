@@ -258,7 +258,7 @@ bool D_Display()
     // clean up border stuff
     if (gamestate != oldgamestate && gamestate != GS_LEVEL)
 #ifndef CRISPY_TRUECOLOR
-        I_SetPalette(cache_lump_name<byte *>(DEH_String("PLAYPAL"), PU_CACHE));
+        I_SetPalette(cache_lump_name<uint8_t *>(DEH_String("PLAYPAL"), PU_CACHE));
 #else
         I_SetPalette(0);
 #endif
@@ -1086,7 +1086,7 @@ static constexpr struct
 
 static void InitGameVersion()
 {
-    byte *  demolump;
+    uint8_t *demolump;
     char    demolumpname[6];
     int     demoversion;
     int     p;
@@ -1156,7 +1156,7 @@ static void InitGameVersion()
                 M_snprintf(demolumpname, 6, "demo%i", i);
                 if (W_CheckNumForName(demolumpname) > 0)
                 {
-                    demolump    = cache_lump_name<byte *>(demolumpname, PU_STATIC);
+                    demolump    = cache_lump_name<uint8_t *>(demolumpname, PU_STATIC);
                     demoversion = demolump[0];
                     W_ReleaseLumpName(demolumpname);
                     status = true;
@@ -1250,7 +1250,7 @@ void PrintGameVersion()
 
 static void D_Endoom()
 {
-    byte *endoom;
+    uint8_t *endoom;
 
     // Don't show ENDOOM if we have it disabled, or we're running
     // in screensaver or control test mode. Only show it once the
@@ -1262,7 +1262,7 @@ static void D_Endoom()
         return;
     }
 
-    endoom = cache_lump_name<byte *>(DEH_String("ENDOOM"), PU_STATIC);
+    endoom = cache_lump_name<uint8_t *>(DEH_String("ENDOOM"), PU_STATIC);
 
     I_Endoom(endoom);
 }

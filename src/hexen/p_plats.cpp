@@ -41,14 +41,14 @@ void T_PlatRaise(plat_t * plat)
             {
                 plat->count = plat->wait;
                 plat->status = PLAT_DOWN;
-                SN_StartSequence((mobj_t *) & plat->sector->soundorg,
+                SN_StartSequence(reinterpret_cast<mobj_t *>(&plat->sector->soundorg),
                                  SEQ_PLATFORM + static_cast<int>(plat->sector->seqType));
             }
             else if (res == RES_PASTDEST)
             {
                 plat->count = plat->wait;
                 plat->status = PLAT_WAITING;
-                SN_StopSequence((mobj_t *) & plat->sector->soundorg);
+                SN_StopSequence(reinterpret_cast<mobj_t *>(&plat->sector->soundorg));
                 switch (plat->type)
                 {
                     case PLAT_DOWNWAITUPSTAY:
@@ -77,7 +77,7 @@ void T_PlatRaise(plat_t * plat)
                     default:
                         break;
                 }
-                SN_StopSequence((mobj_t *) & plat->sector->soundorg);
+                SN_StopSequence(reinterpret_cast<mobj_t *>(&plat->sector->soundorg));
             }
             break;
         case PLAT_WAITING:
@@ -87,7 +87,7 @@ void T_PlatRaise(plat_t * plat)
                     plat->status = PLAT_UP;
                 else
                     plat->status = PLAT_DOWN;
-                SN_StartSequence((mobj_t *) & plat->sector->soundorg,
+                SN_StartSequence(reinterpret_cast<mobj_t *>(&plat->sector->soundorg),
                                  SEQ_PLATFORM + static_cast<int>(plat->sector->seqType));
             }
 //              case PLAT_IN_STASIS:
@@ -101,7 +101,7 @@ void T_PlatRaise(plat_t * plat)
 //      "amount" is only used for SOME platforms.
 //
 //==================================================================
-int EV_DoPlat(line_t *, byte * args, plattype_e type, int)
+int EV_DoPlat(line_t *, uint8_t *args, plattype_e type, int)
 {
     plat_t *plat;
     int secnum;
@@ -191,7 +191,7 @@ int EV_DoPlat(line_t *, byte * args, plattype_e type, int)
                 break;
         }
         P_AddActivePlat(plat);
-        SN_StartSequence((mobj_t *) & sec->soundorg,
+        SN_StartSequence(reinterpret_cast<mobj_t *>(& sec->soundorg),
                          SEQ_PLATFORM + static_cast<int>(sec->seqType));
     }
     return rtn;
@@ -213,7 +213,7 @@ void P_ActivateInStasis(int tag)
 }
 #endif
 
-void EV_StopPlat(line_t *, byte * args)
+void EV_StopPlat(line_t *, uint8_t *args)
 {
     int i;
 

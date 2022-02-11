@@ -364,7 +364,7 @@ static unsigned int ParseVorbisTime(unsigned int samplerate_hz, char *value)
         if (*p == '.')
         {
             return result * samplerate_hz
-                   + (unsigned int)(atof(p) * samplerate_hz);
+                   + static_cast<unsigned int>(std::atof(p) * samplerate_hz);
         }
     }
 
@@ -452,7 +452,7 @@ static void ParseVorbisComments(file_metadata_t *metadata, FILE *fs)
 
 static void ParseFlacStreaminfo(file_metadata_t *metadata, FILE *fs)
 {
-    byte buf[34];
+    uint8_t buf[34];
 
     // Read block data.
     if (fread(buf, sizeof(buf), 1, fs) < 1)
@@ -471,7 +471,7 @@ static void ParseFlacStreaminfo(file_metadata_t *metadata, FILE *fs)
 
 static void ParseFlacFile(file_metadata_t *metadata, FILE *fs)
 {
-    byte         header[4];
+    uint8_t      header[4];
     unsigned int block_type;
     size_t       block_len;
     bool      last_block;
@@ -520,7 +520,7 @@ static void ParseFlacFile(file_metadata_t *metadata, FILE *fs)
 
 static void ParseOggIdHeader(file_metadata_t *metadata, FILE *fs)
 {
-    byte buf[21];
+    uint8_t buf[21];
 
     if (fread(buf, sizeof(buf), 1, fs) < 1)
     {
@@ -533,7 +533,7 @@ static void ParseOggIdHeader(file_metadata_t *metadata, FILE *fs)
 
 static void ParseOggFile(file_metadata_t *metadata, FILE *fs)
 {
-    byte         buf[7];
+    uint8_t      buf[7];
     unsigned int offset;
 
     // Scan through the start of the file looking for headers. They
@@ -635,7 +635,7 @@ static const char *GetSubstituteMusicFile(void *data, size_t data_len)
     }
 
     SHA1_Init(&context);
-    SHA1_Update(&context, static_cast<byte *>(data), data_len);
+    SHA1_Update(&context, static_cast<uint8_t *>(data), data_len);
     SHA1_Final(hash, &context);
 
     // Build a string representation of the hash.
@@ -877,7 +877,7 @@ static bool ReadSubstituteConfig(char *musicdir, const char *filename)
         return false;
     }
 
-    M_ReadFile(filename, (byte **)&buffer);
+    M_ReadFile(filename, reinterpret_cast<uint8_t **>(&buffer));
 
     line = buffer;
 
@@ -987,7 +987,7 @@ static void LoadSubstituteConfigs()
 
 static bool IsMusicLump(int lumpnum)
 {
-    byte *  data;
+    uint8_t *data;
     bool result;
 
     if (W_LumpLength(lumpnum) < 4)
@@ -995,7 +995,7 @@ static bool IsMusicLump(int lumpnum)
         return false;
     }
 
-    data = cache_lump_num<byte *>(lumpnum, PU_STATIC);
+    data = cache_lump_num<uint8_t *>(lumpnum, PU_STATIC);
 
     result = memcmp(data, MUS_HEADER_MAGIC, 4) == 0
              || memcmp(data, MID_HEADER_MAGIC, 4) == 0;
@@ -1013,7 +1013,7 @@ static void DumpSubstituteConfig(char *filename)
     sha1_context_t context;
     sha1_digest_t  digest;
     char           name[9];
-    byte *         data;
+    uint8_t       *data;
     FILE *         fs;
     unsigned int   lumpnum;
     size_t         h;
@@ -1040,7 +1040,7 @@ static void DumpSubstituteConfig(char *filename)
         }
 
         // Calculate hash.
-        data = cache_lump_num<byte *>(lumpnum, PU_STATIC);
+        data = cache_lump_num<uint8_t *>(lumpnum, PU_STATIC);
         SHA1_Init(&context);
         SHA1_Update(&context, data, W_LumpLength(lumpnum));
         SHA1_Final(digest, &context);
@@ -1180,7 +1180,7 @@ static void I_MP_PlaySong(void *handle, bool looping)
         return;
     }
 
-    current_track_music = (Mix_Music *)handle;
+    current_track_music = reinterpret_cast<Mix_Music *>(handle);
     current_track_loop  = looping;
 
     if (looping)
@@ -1242,7 +1242,7 @@ static void I_MP_StopSong()
 
 static void I_MP_UnRegisterSong(void *handle)
 {
-    Mix_Music *music = (Mix_Music *)handle;
+    Mix_Music *music = reinterpret_cast<Mix_Music *>(handle);
 
     if (!music_initialized)
     {
@@ -1313,12 +1313,12 @@ static double GetMusicPosition()
     music_pos = current_track_pos;
     SDL_UnlockAudio();
 
-    return (double)music_pos / freq;
+    return static_cast<double>(music_pos) / freq;
 }
 
 static void RestartCurrentTrack()
 {
-    double start = (double)file_metadata.start_time
+    double start = static_cast<double>(file_metadata.start_time)
                    / file_metadata.samplerate_hz;
 
     // If the track finished we need to restart it.
@@ -1342,7 +1342,7 @@ static void I_MP_PollMusic()
     // tags ignored.
     if (current_track_loop && file_metadata.valid)
     {
-        double end = (double)file_metadata.end_time
+        double end = static_cast<double>(file_metadata.end_time)
                      / file_metadata.samplerate_hz;
 
         // If we have reached the loop end point then we have to take action.

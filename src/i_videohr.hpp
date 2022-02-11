@@ -23,11 +23,11 @@ bool I_SetVideoModeHR();
 void    I_UnsetVideoModeHR();
 void    I_SetWindowTitleHR(const char *title);
 void    I_ClearScreenHR();
-void    I_SlamBlockHR(int x, int y, int w, int h, const byte *src);
-void    I_SlamHR(const byte *buffer);
+void    I_SlamBlockHR(int x, int y, int w, int h, const uint8_t *src);
+void    I_SlamHR(const uint8_t *buffer);
 void    I_InitPaletteHR();
-void    I_SetPaletteHR(const byte *palette);
-void    I_FadeToPaletteHR(const byte *palette);
+void    I_SetPaletteHR(const uint8_t *palette);
+void    I_FadeToPaletteHR(const uint8_t *palette);
 void    I_BlackPaletteHR();
 bool I_CheckAbortHR();
 

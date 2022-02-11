@@ -48,15 +48,15 @@ void NET_WriteConnectData(net_packet_t *packet, net_connect_data_t *data)
 
 bool NET_ReadConnectData(net_packet_t *packet, net_connect_data_t *data)
 {
-    return NET_ReadInt8(packet, (unsigned int *)&data->gamemode)
-           && NET_ReadInt8(packet, (unsigned int *)&data->gamemission)
-           && NET_ReadInt8(packet, (unsigned int *)&data->lowres_turn)
-           && NET_ReadInt8(packet, (unsigned int *)&data->drone)
-           && NET_ReadInt8(packet, (unsigned int *)&data->max_players)
-           && NET_ReadInt8(packet, (unsigned int *)&data->is_freedoom)
+    return NET_ReadInt8(packet, reinterpret_cast<unsigned int *>(&data->gamemode))
+           && NET_ReadInt8(packet, reinterpret_cast<unsigned int *>(&data->gamemission))
+           && NET_ReadInt8(packet, reinterpret_cast<unsigned int *>(&data->lowres_turn))
+           && NET_ReadInt8(packet, reinterpret_cast<unsigned int *>(&data->drone))
+           && NET_ReadInt8(packet, reinterpret_cast<unsigned int *>(&data->max_players))
+           && NET_ReadInt8(packet, reinterpret_cast<unsigned int *>(&data->is_freedoom))
            && NET_ReadSHA1Sum(packet, data->wad_sha1sum)
            && NET_ReadSHA1Sum(packet, data->deh_sha1sum)
-           && NET_ReadInt8(packet, (unsigned int *)&data->player_class);
+           && NET_ReadInt8(packet, reinterpret_cast<unsigned int *>(&data->player_class));
 }
 
 void NET_WriteSettings(net_packet_t *packet, net_gamesettings_t *settings)
@@ -92,23 +92,23 @@ bool NET_ReadSettings(net_packet_t *packet, net_gamesettings_t *settings)
     bool success;
     int     i;
 
-    success = NET_ReadInt8(packet, (unsigned int *)&settings->ticdup)
-              && NET_ReadInt8(packet, (unsigned int *)&settings->extratics)
-              && NET_ReadInt8(packet, (unsigned int *)&settings->deathmatch)
-              && NET_ReadInt8(packet, (unsigned int *)&settings->nomonsters)
-              && NET_ReadInt8(packet, (unsigned int *)&settings->fast_monsters)
-              && NET_ReadInt8(packet, (unsigned int *)&settings->respawn_monsters)
-              && NET_ReadInt8(packet, (unsigned int *)&settings->episode)
-              && NET_ReadInt8(packet, (unsigned int *)&settings->map)
+    success = NET_ReadInt8(packet, reinterpret_cast<unsigned int *>(&settings->ticdup))
+              && NET_ReadInt8(packet, reinterpret_cast<unsigned int *>(&settings->extratics))
+              && NET_ReadInt8(packet, reinterpret_cast<unsigned int *>(&settings->deathmatch))
+              && NET_ReadInt8(packet, reinterpret_cast<unsigned int *>(&settings->nomonsters))
+              && NET_ReadInt8(packet, reinterpret_cast<unsigned int *>(&settings->fast_monsters))
+              && NET_ReadInt8(packet, reinterpret_cast<unsigned int *>(&settings->respawn_monsters))
+              && NET_ReadInt8(packet, reinterpret_cast<unsigned int *>(&settings->episode))
+              && NET_ReadInt8(packet, reinterpret_cast<unsigned int *>(&settings->map))
               && NET_ReadSInt8(packet, &settings->skill)
-              && NET_ReadInt8(packet, (unsigned int *)&settings->gameversion)
-              && NET_ReadInt8(packet, (unsigned int *)&settings->lowres_turn)
-              && NET_ReadInt8(packet, (unsigned int *)&settings->new_sync)
-              && NET_ReadInt32(packet, (unsigned int *)&settings->timelimit)
-              && NET_ReadSInt8(packet, (signed int *)&settings->loadgame)
-              && NET_ReadInt8(packet, (unsigned int *)&settings->random)
-              && NET_ReadInt8(packet, (unsigned int *)&settings->num_players)
-              && NET_ReadSInt8(packet, (signed int *)&settings->consoleplayer);
+              && NET_ReadInt8(packet, reinterpret_cast<unsigned int *>(&settings->gameversion))
+              && NET_ReadInt8(packet, reinterpret_cast<unsigned int *>(&settings->lowres_turn))
+              && NET_ReadInt8(packet, reinterpret_cast<unsigned int *>(&settings->new_sync))
+              && NET_ReadInt32(packet, reinterpret_cast<unsigned int *>(&settings->timelimit))
+              && NET_ReadSInt8(packet, reinterpret_cast<signed int *>(&settings->loadgame))
+              && NET_ReadInt8(packet, reinterpret_cast<unsigned int *>(&settings->random))
+              && NET_ReadInt8(packet, reinterpret_cast<unsigned int *>(&settings->num_players))
+              && NET_ReadSInt8(packet, reinterpret_cast<signed int *>(&settings->consoleplayer));
 
     if (!success)
     {
@@ -117,8 +117,7 @@ bool NET_ReadSettings(net_packet_t *packet, net_gamesettings_t *settings)
 
     for (i = 0; i < settings->num_players; ++i)
     {
-        if (!NET_ReadInt8(packet,
-                (unsigned int *)&settings->player_classes[i]))
+        if (!NET_ReadInt8(packet, reinterpret_cast<unsigned int *>(&settings->player_classes[i])))
         {
             return false;
         }
@@ -134,11 +133,11 @@ bool NET_ReadQueryData(net_packet_t *packet, net_querydata_t *query)
     query->version = NET_ReadSafeString(packet);
 
     success = query->version != nullptr
-              && NET_ReadInt8(packet, (unsigned int *)&query->server_state)
-              && NET_ReadInt8(packet, (unsigned int *)&query->num_players)
-              && NET_ReadInt8(packet, (unsigned int *)&query->max_players)
-              && NET_ReadInt8(packet, (unsigned int *)&query->gamemode)
-              && NET_ReadInt8(packet, (unsigned int *)&query->gamemission);
+              && NET_ReadInt8(packet, reinterpret_cast<unsigned int *>(&query->server_state))
+              && NET_ReadInt8(packet, reinterpret_cast<unsigned int *>(&query->num_players))
+              && NET_ReadInt8(packet, reinterpret_cast<unsigned int *>(&query->max_players))
+              && NET_ReadInt8(packet, reinterpret_cast<unsigned int *>(&query->gamemode))
+              && NET_ReadInt8(packet, reinterpret_cast<unsigned int *>(&query->gamemission));
 
     if (!success)
     {
@@ -483,11 +482,11 @@ bool NET_ReadWaitData(net_packet_t *packet, net_waitdata_t *data)
     int   i;
     char *s;
 
-    if (!NET_ReadInt8(packet, (unsigned int *)&data->num_players)
-        || !NET_ReadInt8(packet, (unsigned int *)&data->num_drones)
-        || !NET_ReadInt8(packet, (unsigned int *)&data->ready_players)
-        || !NET_ReadInt8(packet, (unsigned int *)&data->max_players)
-        || !NET_ReadInt8(packet, (unsigned int *)&data->is_controller)
+    if (!NET_ReadInt8(packet, reinterpret_cast<unsigned int *>(&data->num_players))
+        || !NET_ReadInt8(packet, reinterpret_cast<unsigned int *>(&data->num_drones))
+        || !NET_ReadInt8(packet, reinterpret_cast<unsigned int *>(&data->ready_players))
+        || !NET_ReadInt8(packet, reinterpret_cast<unsigned int *>(&data->max_players))
+        || !NET_ReadInt8(packet, reinterpret_cast<unsigned int *>(&data->is_controller))
         || !NET_ReadSInt8(packet, &data->consoleplayer))
     {
         return false;
@@ -516,7 +515,7 @@ bool NET_ReadWaitData(net_packet_t *packet, net_waitdata_t *data)
 
     return NET_ReadSHA1Sum(packet, data->wad_sha1sum)
            && NET_ReadSHA1Sum(packet, data->deh_sha1sum)
-           && NET_ReadInt8(packet, (unsigned int *)&data->is_freedoom);
+           && NET_ReadInt8(packet, reinterpret_cast<unsigned int *>(&data->is_freedoom));
 }
 
 static bool NET_ReadBlob(net_packet_t *packet, uint8_t *buf, size_t len)

@@ -99,9 +99,9 @@ mline_t triangle_guy[] = {
 
 #define R (FRACUNIT)
 mline_t thintriangle_guy[] = {
-  { { (fixed_t)(-.5*R), (fixed_t)(-.7*R) }, { (fixed_t)(R    ), (fixed_t)(0    ) } },
-  { { (fixed_t)(R    ), (fixed_t)(0    ) }, { (fixed_t)(-.5*R), (fixed_t)(.7*R ) } },
-  { { (fixed_t)(-.5*R), (fixed_t)(.7*R ) }, { (fixed_t)(-.5*R), (fixed_t)(-.7*R) } }
+  { { static_cast<fixed_t>(-.5*R), static_cast<fixed_t>(-.7*R) }, { static_cast<fixed_t>(R    ), static_cast<fixed_t>(0    ) } },
+  { { static_cast<fixed_t>(R    ), static_cast<fixed_t>(0    ) }, { static_cast<fixed_t>(-.5*R), static_cast<fixed_t>(.7*R ) } },
+  { { static_cast<fixed_t>(-.5*R), static_cast<fixed_t>(.7*R ) }, { static_cast<fixed_t>(-.5*R), static_cast<fixed_t>(-.7*R) } }
   };
 #undef R
 #define NUMTHINTRIANGLEGUYLINES (sizeof(thintriangle_guy)/sizeof(mline_t))

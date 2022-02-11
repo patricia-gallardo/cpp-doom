@@ -25,9 +25,9 @@
 #include "txt_window.hpp"
 #include "memory.hpp"
 
-static void TXT_CheckBoxSizeCalc(TXT_UNCAST_ARG(checkbox))
+static void TXT_CheckBoxSizeCalc(void *uncast_checkbox)
 {
-    TXT_CAST_ARG(txt_checkbox_t, checkbox);
+    auto *checkbox = reinterpret_cast<txt_checkbox_t *>(uncast_checkbox);;
 
     // Minimum width is the string length + right-side space for padding
 
@@ -35,9 +35,9 @@ static void TXT_CheckBoxSizeCalc(TXT_UNCAST_ARG(checkbox))
     checkbox->widget.h = 1;
 }
 
-static void TXT_CheckBoxDrawer(TXT_UNCAST_ARG(checkbox))
+static void TXT_CheckBoxDrawer(void *uncast_checkbox)
 {
-    TXT_CAST_ARG(txt_checkbox_t, checkbox);
+    auto    *checkbox = reinterpret_cast<txt_checkbox_t *>(uncast_checkbox);;
     txt_saved_colors_t colors;
     int i;
     int w;
@@ -73,16 +73,16 @@ static void TXT_CheckBoxDrawer(TXT_UNCAST_ARG(checkbox))
     }
 }
 
-static void TXT_CheckBoxDestructor(TXT_UNCAST_ARG(checkbox))
+static void TXT_CheckBoxDestructor(void *uncast_checkbox)
 {
-    TXT_CAST_ARG(txt_checkbox_t, checkbox);
+    auto *checkbox = reinterpret_cast<txt_checkbox_t *>(uncast_checkbox);;
 
     free(checkbox->label);
 }
 
-static int TXT_CheckBoxKeyPress(TXT_UNCAST_ARG(checkbox), int key)
+static int TXT_CheckBoxKeyPress(void *uncast_checkbox, int key)
 {
-    TXT_CAST_ARG(txt_checkbox_t, checkbox);
+    auto *checkbox = reinterpret_cast<txt_checkbox_t *>(uncast_checkbox);;
 
     if (key == KEY_ENTER || key == ' ')
     {
@@ -94,9 +94,9 @@ static int TXT_CheckBoxKeyPress(TXT_UNCAST_ARG(checkbox), int key)
     return 0;
 }
 
-static void TXT_CheckBoxMousePress(TXT_UNCAST_ARG(checkbox), int, int, int b)
+static void TXT_CheckBoxMousePress(void *uncast_checkbox, int, int, int b)
 {
-    TXT_CAST_ARG(txt_checkbox_t, checkbox);
+    auto *checkbox = reinterpret_cast<txt_checkbox_t *>(uncast_checkbox);;
 
     if (b == TXT_MOUSE_LEFT)
     {

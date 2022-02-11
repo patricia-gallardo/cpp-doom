@@ -158,8 +158,7 @@ void TXT_SetWindowPosition(txt_window_t *window,
  *                    current window action in the given slot is removed.
  */
 
-void TXT_SetWindowAction(txt_window_t *window, txt_horiz_align_t position,
-                         TXT_UNCAST_ARG(action));
+void TXT_SetWindowAction(txt_window_t *window, txt_horiz_align_t position, void *uncast_action);
 
 /**
  * Set a callback function to be invoked whenever a key is pressed within

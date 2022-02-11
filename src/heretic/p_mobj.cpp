@@ -63,7 +63,7 @@ bool P_SetMobjState(mobj_t * mobj, statenum_t state)
 
     if (state == S_NULL)
     {                           // Remove mobj
-        mobj->state = (state_t *) S_NULL;
+        mobj->state = nullptr;
         P_RemoveMobj(mobj);
         return (false);
     }
@@ -74,7 +74,7 @@ bool P_SetMobjState(mobj_t * mobj, statenum_t state)
     mobj->frame = st->frame;
     if (st->action.index() == mobj_param_action_hook)
     {                           // Call action function
-        auto callback = std::get<mobj_param_action>(st->action);
+        const auto & callback = std::get<mobj_param_action>(st->action);
         callback(mobj);
     }
     return (true);
@@ -94,7 +94,7 @@ bool P_SetMobjStateNF(mobj_t * mobj, statenum_t state)
 
     if (state == S_NULL)
     {                           // Remove mobj
-        mobj->state = (state_t *) S_NULL;
+        mobj->state = nullptr;
         P_RemoveMobj(mobj);
         return (false);
     }
@@ -221,7 +221,7 @@ bool P_SeekerMissile(mobj_t * actor, angle_t thresh, angle_t turnMax)
     angle_t angle;
     mobj_t *target;
 
-    target = (mobj_t *) actor->special1.m;
+    target = reinterpret_cast<mobj_t *>(actor->special1.m);
     if (target == nullptr)
     {
         return (false);
@@ -429,7 +429,7 @@ void P_XYMovement(mobj_t * mo)
         {
             if (player->chickenTics)
             {
-                if ((unsigned) ((player->mo->state - states)
+                if (static_cast<unsigned>((player->mo->state - states)
                                 - S_CHICPLAY_RUN1) < 4)
                 {
                     P_SetMobjState(player->mo, S_CHICPLAY);
@@ -437,7 +437,7 @@ void P_XYMovement(mobj_t * mo)
             }
             else
             {
-                if ((unsigned) ((player->mo->state - states)
+                if (static_cast<unsigned>((player->mo->state - states)
                                 - S_PLAY_RUN1) < 4)
                 {
                     P_SetMobjState(player->mo, S_PLAY);
@@ -948,7 +948,7 @@ void P_RemoveMobj(mobj_t * mobj)
 // stop any playing sound
     S_StopSound(mobj);
 // free block
-    P_RemoveThinker((thinker_t *) mobj);
+    P_RemoveThinker(reinterpret_cast<thinker_t *>(mobj));
 }
 
 //=============================================================================
@@ -1209,7 +1209,7 @@ void P_SpawnPuff(fixed_t x, fixed_t y, fixed_t z)
             break;
         case MT_GAUNTLETPUFF1:
         case MT_GAUNTLETPUFF2:
-            puff->momz = (fixed_t)(.8 * FRACUNIT);
+            puff->momz = static_cast<fixed_t>(.8 * FRACUNIT);
         default:
             break;
     }

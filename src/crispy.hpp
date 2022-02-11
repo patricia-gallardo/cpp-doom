@@ -23,11 +23,13 @@
 
 #include "doomtype.hpp"
 
+#include <algorithm>
+
 #ifndef MIN
-#define MIN(a, b) (((a) < (b)) ? (a) : (b))
+#define MIN(a, b) std::min(a, b) //(((a) < (b)) ? (a) : (b))
 #endif
 #ifndef MAX
-#define MAX(a, b) (((a) > (b)) ? (a) : (b))
+#define MAX(a, b) std::max(a, b)//(((a) > (b)) ? (a) : (b))
 #endif
 #ifndef BETWEEN
 #define BETWEEN(l, u, x) (((l) > (x)) ? (l) : ((x) > (u)) ? (u) : (x))

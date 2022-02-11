@@ -81,9 +81,9 @@
 // how much the automap moves window per tic in frame-buffer coordinates
 #define F_PANINC	4       // moves 140 pixels in 1 second
 // how much zoom-in per tic
-#define M_ZOOMIN        ((int) (1.02*FRACUNIT)) // goes to 2x in 1 second
+#define M_ZOOMIN        (static_cast<int>(1.02*FRACUNIT)) // goes to 2x in 1 second
 // how much zoom-out per tic
-#define M_ZOOMOUT       ((int) (FRACUNIT/1.02)) // pulls out to 0.5x in 1 second
+#define M_ZOOMOUT       (static_cast<int>(FRACUNIT/1.02)) // pulls out to 0.5x in 1 second
 
 // translates between frame-buffer and map distances
 #define FTOM(x) FixedMul(((x)<<16),scale_ftom)

@@ -79,9 +79,7 @@ static int *map_keys[] = { &key_map_north, &key_map_south, &key_map_east,
                            &key_map_overlay, &key_map_rotate,
                            nullptr };
 
-#pragma GCC diagnostic push
-#pragma GCC diagnostic ignored "-Wunused-parameter"
-static void UpdateJoybSpeed(TXT_UNCAST_ARG(widget), TXT_UNCAST_ARG(var))
+static void UpdateJoybSpeed(void *, void *)
 {
     if (always_run)
     {
@@ -100,7 +98,6 @@ static void UpdateJoybSpeed(TXT_UNCAST_ARG(widget), TXT_UNCAST_ARG(var))
         joybspeed = 2;
     }
 }
-#pragma GCC diagnostic pop
 
 static int VarInGroup(int *variable, int **group)
 {
@@ -145,24 +142,21 @@ static void CheckKeyGroup(int *variable, int **group)
 
 // Callback invoked when a key control is set
 
-#pragma GCC diagnostic push
-#pragma GCC diagnostic ignored "-Wunused-parameter"
-static void KeySetCallback(TXT_UNCAST_ARG(widget), TXT_UNCAST_ARG(variable))
+static void KeySetCallback(void *, void *uncast_variable)
 {
-    TXT_CAST_ARG(int, variable);
+    auto *variable = reinterpret_cast<int *>(uncast_variable);
 
     CheckKeyGroup(variable, controls);
     CheckKeyGroup(variable, menu_nav);
     CheckKeyGroup(variable, shortcuts);
     CheckKeyGroup(variable, map_keys);
 }
-#pragma GCC diagnostic pop
 
 // Add a label and keyboard input to the specified table.
 
-static void AddKeyControl(TXT_UNCAST_ARG(table), const char *name, int *var)
+static void AddKeyControl(void *uncast_table, const char *name, int *var)
 {
-    TXT_CAST_ARG(txt_table_t, table);
+    auto     *table = reinterpret_cast<txt_table_t *>(uncast_table);
     txt_key_input_t *key_input;
 
     TXT_AddWidget(table, TXT_NewLabel(name));
@@ -172,10 +166,10 @@ static void AddKeyControl(TXT_UNCAST_ARG(table), const char *name, int *var)
     TXT_SignalConnect(key_input, "set", KeySetCallback, var);
 }
 
-static void AddSectionLabel(TXT_UNCAST_ARG(table), const char *title,
+static void AddSectionLabel(void *uncast_table, const char *title,
                             bool add_space)
 {
-    TXT_CAST_ARG(txt_table_t, table);
+    auto *table = reinterpret_cast<txt_table_t *>(uncast_table);
     char buf[64];
 
     if (add_space)
@@ -194,9 +188,7 @@ static void AddSectionLabel(TXT_UNCAST_ARG(table), const char *title,
                    nullptr);
 }
 
-#pragma GCC diagnostic push
-#pragma GCC diagnostic ignored "-Wunused-parameter"
-static void ConfigExtraKeys(TXT_UNCAST_ARG(widget), TXT_UNCAST_ARG(unused))
+static void ConfigExtraKeys(void *, void *)
 {
     txt_window_t *window;
     txt_scrollpane_t *scrollpane;
@@ -330,11 +322,8 @@ static void ConfigExtraKeys(TXT_UNCAST_ARG(widget), TXT_UNCAST_ARG(unused))
     AddKeyControl(table, "Previous weapon", &key_prevweapon);
     AddKeyControl(table, "Next weapon", &key_nextweapon);
 }
-#pragma GCC diagnostic pop
 
-#pragma GCC diagnostic push
-#pragma GCC diagnostic ignored "-Wunused-parameter"
-static void OtherKeysDialog(TXT_UNCAST_ARG(widget), TXT_UNCAST_ARG(unused))
+static void OtherKeysDialog(void *, void *)
 {
     txt_window_t *window;
     txt_table_t *table;
@@ -423,11 +412,8 @@ static void OtherKeysDialog(TXT_UNCAST_ARG(widget), TXT_UNCAST_ARG(unused))
 
     TXT_AddWidget(window, scrollpane);
 }
-#pragma GCC diagnostic pop
 
-#pragma GCC diagnostic push
-#pragma GCC diagnostic ignored "-Wunused-parameter"
-void ConfigKeyboard(TXT_UNCAST_ARG(widget), void *user_data)
+void ConfigKeyboard(void *, void *)
 {
     txt_window_t *window;
     txt_checkbox_t *run_control;
@@ -495,7 +481,6 @@ void ConfigKeyboard(TXT_UNCAST_ARG(widget), void *user_data)
     TXT_SignalConnect(run_control, "changed", UpdateJoybSpeed, nullptr);
     TXT_SetWindowAction(window, TXT_HORIZ_CENTER, TestConfigAction());
 }
-#pragma GCC diagnostic pop
 
 void BindKeyboardVariables()
 {

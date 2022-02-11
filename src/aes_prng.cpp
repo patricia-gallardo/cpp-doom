@@ -2283,7 +2283,7 @@ static uint32_t aes_ror32(uint32_t word, unsigned int shift)
 static int AES_ExpandKey(aes_context_t *ctx, const uint8_t *in_key,
     unsigned int key_len)
 {
-    const uint32_t *key = (const uint32_t *)in_key;
+    const uint32_t *key = reinterpret_cast<const uint32_t *>(in_key);
     uint32_t        i, t, u, v, w, j;
 
     if (key_len != AES_KEYSIZE_128 && key_len != AES_KEYSIZE_192 && key_len != AES_KEYSIZE_256)
@@ -2392,8 +2392,8 @@ static int AES_SetKey(aes_context_t *ctx, const uint8_t *in_key,
 static void AES_Encrypt(aes_context_t *ctx, uint8_t *out,
     const uint8_t *in)
 {
-    const uint32_t *src = (const uint32_t *)in;
-    uint32_t *      dst = (uint32_t *)out;
+    const uint32_t *src = reinterpret_cast<const uint32_t *>(in);
+    uint32_t *      dst = reinterpret_cast<uint32_t *>(out);
     uint32_t        b0[4], b1[4];
     const uint32_t *kp      = ctx->key_enc + 4;
     const int       key_len = ctx->key_length;
@@ -2457,7 +2457,8 @@ void PRNG_Stop()
 
 static void PRNG_Generate()
 {
-    byte         input[16], output[16];
+    uint8_t      input[16];
+    uint8_t      output[16];
     unsigned int i;
 
     // Input for the cipher is a consecutively increasing 32-bit counter.

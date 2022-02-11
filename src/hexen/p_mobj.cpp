@@ -93,7 +93,7 @@ bool P_SetMobjState(mobj_t * mobj, statenum_t state)
 
     if (state == S_NULL)
     {                           // Remove mobj
-        mobj->state = (state_t *) S_NULL;
+        mobj->state = nullptr;
         P_RemoveMobj(mobj);
         return (false);
     }
@@ -104,7 +104,7 @@ bool P_SetMobjState(mobj_t * mobj, statenum_t state)
     mobj->frame = st->frame;
     if (st->action.index() == mobj_param_action_hook)
     {
-        auto callback = std::get<mobj_param_action>(st->action);
+        const auto & callback = std::get<mobj_param_action>(st->action);
         callback(mobj);
     }
     return (true);
@@ -124,7 +124,7 @@ bool P_SetMobjStateNF(mobj_t * mobj, statenum_t state)
 
     if (state == S_NULL)
     {                           // Remove mobj
-        mobj->state = (state_t *) S_NULL;
+        mobj->state = nullptr;
         P_RemoveMobj(mobj);
         return (false);
     }
@@ -205,7 +205,7 @@ void P_FloorBounceMissile(mobj_t * mo)
         case MT_SGSHARD8:
         case MT_SGSHARD9:
         case MT_SGSHARD0:
-            mo->momz = FixedMul(mo->momz, -0.3 * FRACUNIT);
+            mo->momz = FixedMul(mo->momz, static_cast<fixed_t>(-0.3 * FRACUNIT));
             if (std::abs(mo->momz) < (FRACUNIT / 2))
             {
                 P_SetMobjState(mo, S_NULL);
@@ -213,7 +213,7 @@ void P_FloorBounceMissile(mobj_t * mo)
             }
             break;
         default:
-            mo->momz = FixedMul(mo->momz, -0.7 * FRACUNIT);
+            mo->momz = FixedMul(mo->momz, static_cast<fixed_t>(-0.7 * FRACUNIT));
             break;
     }
     mo->momx = 2 * mo->momx / 3;
@@ -493,7 +493,7 @@ void P_XYMovement(mobj_t * mo)
                                                     mo->y) +
                                 ANG1 * ((P_Random() % 16) - 8);
                             speed = P_AproxDistance(mo->momx, mo->momy);
-                            speed = FixedMul(speed, 0.75 * FRACUNIT);
+                            speed = FixedMul(speed, static_cast<fixed_t>(0.75 * FRACUNIT));
                             mo->angle = angle;
                             angle >>= ANGLETOFINESHIFT;
                             mo->momx = FixedMul(speed, finecosine[angle]);
@@ -644,7 +644,7 @@ void P_XYMovement(mobj_t * mo)
     {                           // If in a walking frame, stop moving
         if (player)
         {
-            if ((unsigned) ((player->mo->state - states)
+            if (static_cast<unsigned>((player->mo->state - states)
                             - PStateRun[player->clazz]) < 4)
             {
                 P_SetMobjState(player->mo, static_cast<statenum_t>(PStateNormal[player->clazz]));
@@ -1280,7 +1280,7 @@ void P_RemoveMobj(mobj_t * mobj)
     S_StopSound(mobj);
 
     // Free block
-    P_RemoveThinker((thinker_t *) mobj);
+    P_RemoveThinker(reinterpret_cast<thinker_t *>(mobj));
 }
 
 //==========================================================================
@@ -1643,7 +1643,7 @@ void P_CreateTIDList()
         {                       // Not a mobj thinker
             continue;
         }
-        mobj = (mobj_t *) t;
+        mobj = reinterpret_cast<mobj_t *>(t);
         if (mobj->tid != 0)
         {                       // Add to list
             if (i == MAX_TID_COUNT)
@@ -1775,7 +1775,7 @@ void P_SpawnPuff(fixed_t x, fixed_t y, fixed_t z)
             puff->momz = FRACUNIT;
             break;
         case MT_HAMMERPUFF:
-            puff->momz = .8 * FRACUNIT;
+            puff->momz = static_cast<fixed_t>(.8 * FRACUNIT);
             break;
         default:
             break;

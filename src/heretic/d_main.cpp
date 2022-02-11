@@ -612,8 +612,8 @@ void DrawThermo()
 
 void initStartup()
 {
-    byte *textScreen;
-    byte *loading;
+    uint8_t *textScreen;
+    uint8_t *loading;
 
     if (!graphical_startup || debugmode || testcontrols)
     {
@@ -632,7 +632,7 @@ void initStartup()
 
     // Blit main screen
     textScreen = TXT_GetScreenData();
-    loading = cache_lump_name<byte *>(DEH_String("LOADING"), PU_CACHE);
+    loading = cache_lump_name<uint8_t *>(DEH_String("LOADING"), PU_CACHE);
     memcpy(textScreen, loading, 4000);
 
     // Print version string
@@ -756,7 +756,7 @@ void D_BindVariables()
 
 static void D_Endoom()
 {
-    byte *endoom_data;
+    uint8_t *endoom_data;
 
     // Disable ENDOOM?
 
@@ -765,7 +765,7 @@ static void D_Endoom()
         return;
     }
 
-    endoom_data = cache_lump_name<byte *>(DEH_String("ENDTEXT"), PU_STATIC);
+    endoom_data = cache_lump_name<uint8_t *>(DEH_String("ENDTEXT"), PU_STATIC);
 
     I_Endoom(endoom_data);
 }

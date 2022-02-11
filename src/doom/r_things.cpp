@@ -121,7 +121,7 @@ void R_InstallSpriteLump(int lump,
                 "Bad frame characters in lump %i",
             lump);
 
-    if ((int)frame > maxframe)
+    if (static_cast<int>(frame) > maxframe)
         maxframe = frame;
 
     if (rotation == 0)
@@ -134,7 +134,7 @@ void R_InstallSpriteLump(int lump,
                 spritename, 'A' + frame);
 
         // [crispy] make non-fatal
-        if (sprtemp[frame].rotate == true)
+        if (sprtemp[frame].rotate == 1)
             fprintf(stderr, "R_InitSprites: Sprite %s frame %c has rotations "
                             "and a rot=0 lump\n",
                 spritename, 'A' + frame);
@@ -147,7 +147,7 @@ void R_InstallSpriteLump(int lump,
             if (sprtemp[frame].lump[r] == -1)
             {
                 sprtemp[frame].lump[r] = lump - firstspritelump;
-                sprtemp[frame].flip[r] = (byte)flipped;
+                sprtemp[frame].flip[r] = static_cast<uint8_t>(flipped);
                 // [crispy] ... here
                 sprtemp[frame].rotate = false;
             }
@@ -177,7 +177,7 @@ void R_InstallSpriteLump(int lump,
     }
 
     sprtemp[frame].lump[rotation] = lump - firstspritelump;
-    sprtemp[frame].flip[rotation] = (byte)flipped;
+    sprtemp[frame].flip[rotation] = static_cast<uint8_t>(flipped);
     // [crispy] ... here
     sprtemp[frame].rotate = true;
 }
@@ -270,7 +270,7 @@ void R_InitSpriteDefs(const char **namelist)
 
         for (frame = 0; frame < maxframe; frame++)
         {
-            switch ((int)sprtemp[frame].rotate)
+            switch (static_cast<int>(sprtemp[frame].rotate))
             {
             case -1:
                 // no rotations were found for that frame at all
@@ -425,8 +425,8 @@ void R_DrawMaskedColumn(column_t *column)
         topscreen    = sprtopscreen + spryscale * top;
         bottomscreen = topscreen + spryscale * column->length;
 
-        dc_yl = (int)((topscreen + FRACUNIT - 1) >> FRACBITS); // [crispy] WiggleFix
-        dc_yh = (int)((bottomscreen - 1) >> FRACBITS);         // [crispy] WiggleFix
+        dc_yl = static_cast<int>((topscreen + FRACUNIT - 1) >> FRACBITS); // [crispy] WiggleFix
+        dc_yh = static_cast<int>((bottomscreen - 1) >> FRACBITS);         // [crispy] WiggleFix
 
         if (dc_yh >= mfloorclip[dc_x])
             dc_yh = mfloorclip[dc_x] - 1;
@@ -435,7 +435,7 @@ void R_DrawMaskedColumn(column_t *column)
 
         if (dc_yl <= dc_yh)
         {
-            dc_source     = (byte *)column + 3;
+            dc_source     = reinterpret_cast<uint8_t *>(column) + 3;
             dc_texturemid = basetexturemid - (top << FRACBITS);
             // dc_source = (byte *)column + 3 - top;
 
@@ -443,7 +443,8 @@ void R_DrawMaskedColumn(column_t *column)
             //  or (SHADOW) R_DrawFuzzColumn.
             colfunc();
         }
-        column = (column_t *)((byte *)column + column->length + 4);
+        uint8_t *col_ptr = reinterpret_cast<uint8_t *>(column) + column->length + 4;
+        column = reinterpret_cast<column_t *>(col_ptr);
     }
 
     dc_texturemid = basetexturemid;
@@ -519,7 +520,8 @@ void R_DrawVisSprite(vissprite_t *vis, int, int)
             continue;
         }
 #endif
-        column = (column_t *)((byte *)patch + LONG(patch->columnofs[texturecolumn]));
+        uint8_t *col_ptr = reinterpret_cast<uint8_t *>(patch) + LONG(patch->columnofs[texturecolumn]);
+        column = reinterpret_cast<column_t *>(col_ptr);
         R_DrawMaskedColumn(column);
     }
 
@@ -576,7 +578,7 @@ void R_ProjectSprite(mobj_t *thing)
     if (crispy->uncapped &&
         // Don't interpolate if the mobj did something
         // that would necessitate turning it off for a tic.
-        thing->interp == true &&
+        thing->interp == 1 &&
         // Don't interpolate during a paused state.
         leveltime > oldleveltime)
     {
@@ -618,7 +620,7 @@ void R_ProjectSprite(mobj_t *thing)
 
         // decide which patch to use for sprite relative to player
 #ifdef RANGECHECK
-    if ((unsigned int)thing->sprite >= (unsigned int)numsprites)
+    if (static_cast<unsigned int>(thing->sprite) >= static_cast<unsigned int>(numsprites))
         I_Error("R_ProjectSprite: invalid sprite number %i ",
             thing->sprite);
 #endif
@@ -648,21 +650,21 @@ void R_ProjectSprite(mobj_t *thing)
             // [crispy] support 16 sprite rotations
             if (sprframe->rotate == 2)
         {
-            const unsigned rot2 = (ang - interpangle + (unsigned)(ANG45 / 4) * 17);
+            const unsigned rot2 = (ang - interpangle + static_cast<unsigned>(ANG45 / 4) * 17);
             rot                 = (rot2 >> 29) + ((rot2 >> 25) & 8);
         }
         else
         {
-            rot = (ang - interpangle + (unsigned)(ANG45 / 2) * 9) >> 29;
+            rot = (ang - interpangle + static_cast<unsigned>(ANG45 / 2) * 9) >> 29;
         }
         lump = sprframe->lump[rot];
-        flip = (bool)sprframe->flip[rot];
+        flip = static_cast<bool>(sprframe->flip[rot]);
     }
     else
     {
         // use single rotation for all views
         lump = sprframe->lump[0];
-        flip = (bool)sprframe->flip[0];
+        flip = static_cast<bool>(sprframe->flip[0]);
     }
 
     // [crispy] randomly flip corpse, blood and death animation sprites
@@ -798,7 +800,7 @@ void R_ProjectSprite(mobj_t *thing)
 
 extern void P_LineLaser(mobj_t *t1, angle_t angle, fixed_t distance, fixed_t slope);
 
-byte *R_LaserspotColor()
+uint8_t *R_LaserspotColor()
 {
     if (crispy->crosshairtarget)
     {
@@ -857,7 +859,7 @@ static void R_DrawLSprite()
     P_LineLaser(viewplayer->mo, viewangle,
         16 * 64 * FRACUNIT, PLAYER_SLOPE(viewplayer));
 
-    if (!laserspot->thinker.function.acv)
+    if (action_hook_is_empty(laserspot->thinker.function))
         return;
 
     tz = FixedMul(laserspot->x - viewx, viewcos) + FixedMul(laserspot->y - viewy, viewsin);
@@ -951,7 +953,7 @@ void R_DrawPSprite(pspdef_t *psp, psprnum_t psprnum) // [crispy] differentiate g
 
     // decide which patch to use
 #ifdef RANGECHECK
-    if ((unsigned)psp->state->sprite >= (unsigned int)numsprites)
+    if (static_cast<unsigned>(psp->state->sprite) >= static_cast<unsigned int>(numsprites))
         I_Error("R_ProjectSprite: invalid sprite number %i ",
             psp->state->sprite);
 #endif
@@ -969,7 +971,7 @@ void R_DrawPSprite(pspdef_t *psp, psprnum_t psprnum) // [crispy] differentiate g
     sprframe = &sprdef->spriteframes[psp->state->frame & FF_FRAMEMASK];
 
     lump = sprframe->lump[0];
-    flip = (bool)sprframe->flip[0] ^ crispy->flipweapons;
+    flip = static_cast<bool>(sprframe->flip[0] ^ static_cast<uint8_t>(crispy->flipweapons));
 
     // calculate edges of the shape
     tx = psp->sx2 - (ORIGWIDTH / 2) * FRACUNIT;
@@ -1102,8 +1104,8 @@ void R_DrawPlayerSprites()
 // [crispy] use stdlib's qsort() function for sorting the vissprites[] array
 static inline int cmp_vissprites(const void *a, const void *b)
 {
-    const vissprite_t *vsa = (const vissprite_t *)a;
-    const vissprite_t *vsb = (const vissprite_t *)b;
+    const auto *vsa = static_cast<const vissprite_t *>(a);
+    const auto *vsb = static_cast<const vissprite_t *>(b);
 
     const int ret = vsa->scale - vsb->scale;
 

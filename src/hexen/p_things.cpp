@@ -160,7 +160,7 @@ mobjtype_t TranslateThingType[] = {
 //
 //==========================================================================
 
-bool EV_ThingProjectile(byte * args, bool gravity)
+bool EV_ThingProjectile(uint8_t *args, bool gravity)
 {
     int tid;
     angle_t angle;
@@ -181,10 +181,10 @@ bool EV_ThingProjectile(byte * args, bool gravity)
     {                           // Don't spawn monsters if -nomonsters
         return false;
     }
-    angle = (int) args[2] << 24;
+    angle     = static_cast<int>(args[2]) << 24;
     fineAngle = angle >> ANGLETOFINESHIFT;
-    speed = (int) args[3] << 13;
-    vspeed = (int) args[4] << 13;
+    speed     = static_cast<int>(args[3]) << 13;
+    vspeed    = static_cast<int>(args[4]) << 13;
     while ((mobj = P_FindMobjFromTID(tid, &searcher)) != nullptr)
     {
         newMobj = P_SpawnMobj(mobj->x, mobj->y, mobj->z, moType);
@@ -217,7 +217,7 @@ bool EV_ThingProjectile(byte * args, bool gravity)
 //
 //==========================================================================
 
-bool EV_ThingSpawn(byte * args, bool fog)
+bool EV_ThingSpawn(uint8_t *args, bool fog)
 {
     int tid;
     angle_t angle;
@@ -237,7 +237,7 @@ bool EV_ThingSpawn(byte * args, bool fog)
     {                           // Don't spawn monsters if -nomonsters
         return false;
     }
-    angle = (int) args[2] << 24;
+    angle = static_cast<int>(args[2]) << 24;
     while ((mobj = P_FindMobjFromTID(tid, &searcher)) != nullptr)
     {
         if (mobjinfo[moType].flags2 & MF2_FLOATBOB)

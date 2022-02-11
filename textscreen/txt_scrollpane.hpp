@@ -52,7 +52,7 @@ struct txt_scrollpane_s
  * @return                Pointer to the new scroll pane widget.
  */
 
-txt_scrollpane_t *TXT_NewScrollPane(int w, int h, TXT_UNCAST_ARG(target));
+txt_scrollpane_t *TXT_NewScrollPane(int w, int h, void *uncast_target);
 
 #endif /* #ifndef TXT_SCROLLPANE_H */
 

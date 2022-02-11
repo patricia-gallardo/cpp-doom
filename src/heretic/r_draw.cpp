@@ -30,11 +30,11 @@ files only know about ccordinates, not the architecture of the frame buffer.
 
 */
 
-byte *viewimage;
+uint8_t *viewimage;
 int viewwidth, scaledviewwidth, viewheight, viewwindowx, viewwindowy;
-byte *ylookup[MAXHEIGHT];
+uint8_t *ylookup[MAXHEIGHT];
 int columnofs[MAXWIDTH];
-byte translations[3][256];      // color tables for different players
+uint8_t  translations[3][256]; // color tables for different players
 
 /*
 ==================
@@ -53,14 +53,14 @@ int dc_yh;
 fixed_t dc_iscale;
 fixed_t dc_texturemid;
 int dc_texheight;
-byte *dc_source;                // first pixel in a column (possibly virtual)
+uint8_t      *dc_source; // first pixel in a column (possibly virtual)
 
 int dccount;                    // just for profiling
 
 void R_DrawColumn()
 {
     int count;
-    byte *dest;
+    uint8_t *dest;
     fixed_t frac, fracstep;
     int heightmask = dc_texheight - 1;
 
@@ -112,7 +112,7 @@ void R_DrawColumn()
 void R_DrawColumnLow()
 {
     int count;
-    byte *dest;
+    uint8_t *dest;
     fixed_t frac, fracstep;
 
     count = dc_yh - dc_yl;
@@ -144,7 +144,7 @@ void R_DrawColumnLow()
 void R_DrawTLColumn()
 {
     int count;
-    byte *dest;
+    uint8_t *dest;
     fixed_t frac, fracstep;
 
     if (!dc_yl)
@@ -186,13 +186,13 @@ void R_DrawTLColumn()
 ========================
 */
 
-byte *dc_translation;
-byte *translationtables;
+uint8_t *dc_translation;
+uint8_t *translationtables;
 
 void R_DrawTranslatedColumn()
 {
     int count;
-    byte *dest;
+    uint8_t *dest;
     fixed_t frac, fracstep;
 
     count = dc_yh - dc_yl;
@@ -221,7 +221,7 @@ void R_DrawTranslatedColumn()
 void R_DrawTranslatedTLColumn()
 {
     int count;
-    byte *dest;
+    uint8_t *dest;
     fixed_t frac, fracstep;
 
     count = dc_yh - dc_yl;
@@ -263,7 +263,7 @@ void R_InitTranslationTables()
     V_LoadTintTable();
 
     // Allocate translation tables
-    translationtables = zmalloc<byte *>(256 * 3, PU_STATIC, 0);
+    translationtables = zmalloc<uint8_t *>(256 * 3, PU_STATIC, 0);
 
     // Fill out the translation tables
     for (i = 0; i < 256; i++)
@@ -298,14 +298,14 @@ fixed_t ds_xfrac;
 fixed_t ds_yfrac;
 fixed_t ds_xstep;
 fixed_t ds_ystep;
-byte *ds_source;                // start of a 64*64 tile image
+uint8_t      *ds_source; // start of a 64*64 tile image
 
 int dscount;                    // just for profiling
 
 void R_DrawSpan()
 {
     fixed_t xfrac, yfrac;
-    byte *dest;
+    uint8_t *dest;
     int count, spot;
 
 #ifdef RANGECHECK
@@ -333,7 +333,7 @@ void R_DrawSpan()
 void R_DrawSpanLow()
 {
     fixed_t xfrac, yfrac;
-    byte *dest;
+    uint8_t *dest;
     int count, spot;
 
 #ifdef RANGECHECK
@@ -397,7 +397,8 @@ bool BorderNeedRefresh;
 
 void R_DrawViewBorder()
 {
-    byte *src, *dest;
+    uint8_t *src;
+    uint8_t *dest;
     int x, y;
 
     if (scaledviewwidth == SCREENWIDTH)
@@ -405,11 +406,11 @@ void R_DrawViewBorder()
 
     if (gamemode == shareware)
     {
-        src = cache_lump_name<byte *>(DEH_String("FLOOR04"), PU_CACHE);
+        src = cache_lump_name<uint8_t *>(DEH_String("FLOOR04"), PU_CACHE);
     }
     else
     {
-        src = cache_lump_name<byte *>(DEH_String("FLAT513"), PU_CACHE);
+        src = cache_lump_name<uint8_t *>(DEH_String("FLAT513"), PU_CACHE);
     }
     dest = I_VideoBuffer;
 
@@ -463,7 +464,8 @@ bool BorderTopRefresh;
 
 void R_DrawTopBorder()
 {
-    byte *src, *dest;
+    uint8_t *src;
+    uint8_t *dest;
     int x, y;
 
     if (scaledviewwidth == SCREENWIDTH)
@@ -471,11 +473,11 @@ void R_DrawTopBorder()
 
     if (gamemode == shareware)
     {
-        src = cache_lump_name<byte *>(DEH_String("FLOOR04"), PU_CACHE);
+        src = cache_lump_name<uint8_t *>(DEH_String("FLOOR04"), PU_CACHE);
     }
     else
     {
-        src = cache_lump_name<byte *>(DEH_String("FLAT513"), PU_CACHE);
+        src = cache_lump_name<uint8_t *>(DEH_String("FLAT513"), PU_CACHE);
     }
     dest = I_VideoBuffer;
 

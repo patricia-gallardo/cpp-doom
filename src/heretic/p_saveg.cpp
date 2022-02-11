@@ -105,9 +105,9 @@ void SV_Write(void *buffer, int size)
     fwrite(buffer, size, 1, SaveGameFP);
 }
 
-void SV_WriteByte(byte val)
+void SV_WriteByte(uint8_t val)
 {
-    SV_Write(&val, sizeof(byte));
+    SV_Write(&val, sizeof(uint8_t));
 }
 
 void SV_WriteWord(unsigned short val)
@@ -124,7 +124,7 @@ void SV_WriteLong(unsigned int val)
 
 void SV_WritePtr(const void *ptr)
 {
-    long val = (long)(intptr_t) ptr;
+    long val = static_cast<long>(reinterpret_cast<intptr_t>(ptr));
 
     SV_WriteLong(val & 0xffffffff);
 }
@@ -145,10 +145,10 @@ void SV_Read(void *buffer, int size)
     }
 }
 
-byte SV_ReadByte()
+uint8_t SV_ReadByte()
 {
-    byte result;
-    SV_Read(&result, sizeof(byte));
+    uint8_t result;
+    SV_Read(&result, sizeof(uint8_t));
     return result;
 }
 
@@ -1674,7 +1674,7 @@ void P_ArchiveThinkers()
         if (th->function == needle)
         {
             SV_WriteByte(tc_mobj);
-            saveg_write_mobj_t((mobj_t *) th);
+            saveg_write_mobj_t(reinterpret_cast<mobj_t *>(th));
         }
         //I_Error("P_ArchiveThinkers: Unknown thinker function");
     }
@@ -1693,7 +1693,7 @@ void P_ArchiveThinkers()
 
 void P_UnArchiveThinkers()
 {
-    byte tclass;
+    uint8_t    tclass;
     thinker_t *currentthinker, *next;
     mobj_t *mobj;
 
@@ -1706,7 +1706,7 @@ void P_UnArchiveThinkers()
     {
         next = currentthinker->next;
         if (currentthinker->function == needle)
-            P_RemoveMobj((mobj_t *) currentthinker);
+            P_RemoveMobj(reinterpret_cast<mobj_t *>(currentthinker));
         else
             Z_Free(currentthinker);
         currentthinker = next;
@@ -1789,42 +1789,42 @@ void P_ArchiveSpecials()
     {
         if (th->function == needle_move_ceiling)
         {
-            SV_WriteByte(static_cast<byte>(specials_e::tc_ceiling));
-            saveg_write_ceiling_t((ceiling_t *) th);
+            SV_WriteByte(static_cast<uint8_t>(specials_e::tc_ceiling));
+            saveg_write_ceiling_t(reinterpret_cast<ceiling_t *>(th));
         }
         else if (th->function == needle_vertical_door)
         {
-            SV_WriteByte(static_cast<byte>(specials_e::tc_door));
-            saveg_write_vldoor_t((vldoor_t *) th);
+            SV_WriteByte(static_cast<uint8_t>(specials_e::tc_door));
+            saveg_write_vldoor_t(reinterpret_cast<vldoor_t *>(th));
         }
         else if (th->function == needle_move_floor)
         {
-            SV_WriteByte(static_cast<byte>(specials_e::tc_floor));
-            saveg_write_floormove_t((floormove_t *) th);
+            SV_WriteByte(static_cast<uint8_t>(specials_e::tc_floor));
+            saveg_write_floormove_t(reinterpret_cast<floormove_t *>(th));
         }
         else if (th->function == needle_plat_raise)
         {
-            SV_WriteByte(static_cast<byte>(specials_e::tc_plat));
-            saveg_write_plat_t((plat_t *) th);
+            SV_WriteByte(static_cast<uint8_t>(specials_e::tc_plat));
+            saveg_write_plat_t(reinterpret_cast<plat_t *>(th));
         }
         else if (th->function == needle_light_flash)
         {
-            SV_WriteByte(static_cast<byte>(specials_e::tc_flash));
-            saveg_write_lightflash_t((lightflash_t *) th);
+            SV_WriteByte(static_cast<uint8_t>(specials_e::tc_flash));
+            saveg_write_lightflash_t(reinterpret_cast<lightflash_t *>(th));
         }
         else if (th->function == needle_strobe_flash)
         {
-            SV_WriteByte(static_cast<byte>(specials_e::tc_strobe));
-            saveg_write_strobe_t((strobe_t *) th);
+            SV_WriteByte(static_cast<uint8_t>(specials_e::tc_strobe));
+            saveg_write_strobe_t(reinterpret_cast<strobe_t *>(th));
         }
         else if (th->function == needle_glow)
         {
-            SV_WriteByte(static_cast<byte>(specials_e::tc_glow));
-            saveg_write_glow_t((glow_t *) th);
+            SV_WriteByte(static_cast<uint8_t>(specials_e::tc_glow));
+            saveg_write_glow_t(reinterpret_cast<glow_t *>(th));
         }
     }
     // Add a terminating marker
-    SV_WriteByte(static_cast<byte>(specials_e::tc_endspecials));
+    SV_WriteByte(static_cast<uint8_t>(specials_e::tc_endspecials));
 }
 
 /*

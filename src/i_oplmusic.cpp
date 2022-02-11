@@ -50,28 +50,28 @@
 
 typedef PACKED_STRUCT(
     {
-        byte tremolo;
-        byte attack;
-        byte sustain;
-        byte waveform;
-        byte scale;
-        byte level;
+        uint8_t tremolo;
+        uint8_t attack;
+        uint8_t sustain;
+        uint8_t waveform;
+        uint8_t scale;
+        uint8_t level;
     }) genmidi_op_t;
 
 typedef PACKED_STRUCT(
     {
         genmidi_op_t modulator;
-        byte         feedback;
+        uint8_t      feedback;
         genmidi_op_t carrier;
-        byte         unused;
+        uint8_t      unused;
         short        base_note_offset;
     }) genmidi_voice_t;
 
 typedef PACKED_STRUCT(
     {
         unsigned short flags;
-        byte           fine_tuning;
-        byte           fixed_note;
+        uint8_t           fine_tuning;
+        uint8_t           fixed_note;
 
         genmidi_voice_t voices[2];
     }) genmidi_instr_t;
@@ -947,14 +947,14 @@ static bool opl_stereo_correct = false;
 
 static bool LoadInstrumentTable()
 {
-    auto *lump = cache_lump_name<byte *>(DEH_String("genmidi"), PU_STATIC);
+    auto *lump = cache_lump_name<uint8_t *>(DEH_String("genmidi"), PU_STATIC);
 
     // DMX does not check header
 
-    main_instrs       = (genmidi_instr_t *)(lump + strlen(GENMIDI_HEADER));
+    main_instrs       = reinterpret_cast<genmidi_instr_t *>(lump + strlen(GENMIDI_HEADER));
     percussion_instrs = main_instrs + GENMIDI_NUM_INSTRS;
     main_instr_names =
-        (char(*)[32])(percussion_instrs + GENMIDI_NUM_PERCUSSION);
+        reinterpret_cast<char(*)[32]>(percussion_instrs + GENMIDI_NUM_PERCUSSION);
     percussion_names = main_instr_names + GENMIDI_NUM_INSTRS;
 
     return true;
@@ -1402,7 +1402,7 @@ static unsigned int FrequencyForVoice(opl_voice_t *voice)
 
     if ((SHORT(voice->current_instr->flags) & GENMIDI_FLAG_FIXED) == 0)
     {
-        note += (signed short)SHORT(gm_voice->base_note_offset);
+        note += SHORT(gm_voice->base_note_offset);
     }
 
     // Avoid possible overflow due to base note offset:
@@ -1844,7 +1844,7 @@ static void PitchBendEvent(opl_track_data_t *track, midi_event_t *event)
 
 static void MetaSetTempo(unsigned int tempo)
 {
-    OPL_AdjustCallbacks((float)us_per_beat / tempo);
+    OPL_AdjustCallbacks(static_cast<float>(us_per_beat) / tempo);
     us_per_beat = tempo;
 }
 
@@ -1852,7 +1852,7 @@ static void MetaSetTempo(unsigned int tempo)
 
 static void MetaEvent(opl_track_data_t *, midi_event_t *event)
 {
-    byte *       data     = event->data.meta.data;
+    uint8_t     *data     = event->data.meta.data;
     unsigned int data_len = event->data.meta.length;
 
     switch (event->data.meta.type)
@@ -2011,7 +2011,7 @@ static void ScheduleTrack(opl_track_data_t *track)
     // Get the number of microseconds until the next event.
 
     nticks = MIDI_GetDeltaTime(track->iter);
-    us     = ((uint64_t)nticks * us_per_beat) / ticks_per_beat;
+    us     = (static_cast<uint64_t>(nticks) * us_per_beat) / ticks_per_beat;
 
     // Set a timer to be invoked when the next event is
     // ready to play.
@@ -2185,12 +2185,12 @@ static void I_OPL_UnRegisterSong(void *handle)
 
 // Determine whether memory block is a .mid file
 
-static bool IsMid(byte *mem, int len)
+static bool IsMid(uint8_t *mem, int len)
 {
     return len > 4 && !memcmp(mem, "MThd", 4);
 }
 
-static bool ConvertMus(byte *musdata, int len, char *filename)
+static bool ConvertMus(uint8_t *musdata, int len, char *filename)
 {
     MEMFILE *instream;
     MEMFILE *outstream;
@@ -2232,7 +2232,7 @@ static void *I_OPL_RegisterSong(void *data, int len)
     filename = M_TempFile("doom.mid");
 
     // [crispy] remove MID file size limit
-    if (IsMid(static_cast<byte *>(data), len) /* && len < MAXMIDLENGTH */)
+    if (IsMid(static_cast<uint8_t *>(data), len) /* && len < MAXMIDLENGTH */)
     {
         M_WriteFile(filename, data, len);
     }
@@ -2240,7 +2240,7 @@ static void *I_OPL_RegisterSong(void *data, int len)
     {
         // Assume a MUS file and try to convert
 
-        ConvertMus(static_cast<byte *>(data), len, filename);
+        ConvertMus(static_cast<uint8_t *>(data), len, filename);
     }
 
     result = MIDI_LoadFile(filename);

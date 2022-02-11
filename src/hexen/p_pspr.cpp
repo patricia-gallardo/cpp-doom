@@ -246,7 +246,7 @@ void P_SetPsprite(player_t * player, int position, statenum_t stnum)
         }
         if (state->action.index() == player_psp_action_hook)
         {
-            auto callback = std::get<player_psp_param_action>(state->action);
+            const auto & callback = std::get<player_psp_param_action>(state->action);
             callback(player, psp);
             if (!psp->state)
             {
@@ -674,7 +674,7 @@ void AdjustPlayerAngle(mobj_t * pmo)
     int difference;
 
     angle = R_PointToAngle2(pmo->x, pmo->y, linetarget->x, linetarget->y);
-    difference = (int) angle - (int) pmo->angle;
+    difference = static_cast<int>(angle) - static_cast<int>(pmo->angle);
     if (std::abs(difference) > MAX_ANGADJUST)
     {
         pmo->angle += difference > 0 ? MAX_ANGADJUST : -MAX_ANGADJUST;
@@ -1190,7 +1190,7 @@ void A_MStaffAttack(player_t * player, pspdef_t *)
     {
         player->damagecount = 0;
         player->bonuscount = 0;
-        I_SetPalette(cache_lump_num<byte *>(W_GetNumForName("playpal"),
+        I_SetPalette(cache_lump_num<uint8_t *>(W_GetNumForName("playpal"),
                                              PU_CACHE) +
                      STARTSCOURGEPAL * 768);
     }
@@ -1213,7 +1213,7 @@ void A_MStaffPalette(player_t * player, pspdef_t * psp)
         {                       // reset back to original playpal
             pal = 0;
         }
-        I_SetPalette(cache_lump_num<byte *>(W_GetNumForName("playpal"),
+        I_SetPalette(cache_lump_num<uint8_t *>(W_GetNumForName("playpal"),
                                              PU_CACHE) + pal * 768);
     }
 }
@@ -1415,10 +1415,10 @@ void A_FAxeAttack(player_t * player, pspdef_t *)
     for (i = 0; i < 16; i++)
     {
         angle = pmo->angle + i * (ANG45 / 16);
-        slope = P_AimLineAttack(pmo, angle, AXERANGE);
+        slope = P_AimLineAttack(pmo, angle, static_cast<fixed_t>(AXERANGE));
         if (linetarget)
         {
-            P_LineAttack(pmo, angle, AXERANGE, slope, damage);
+            P_LineAttack(pmo, angle, static_cast<fixed_t>(AXERANGE), slope, damage);
             if (linetarget->flags & MF_COUNTKILL || linetarget->player)
             {
                 P_ThrustMobj(linetarget, angle, power);
@@ -1428,10 +1428,10 @@ void A_FAxeAttack(player_t * player, pspdef_t *)
             goto axedone;
         }
         angle = pmo->angle - i * (ANG45 / 16);
-        slope = P_AimLineAttack(pmo, angle, AXERANGE);
+        slope = P_AimLineAttack(pmo, angle, static_cast<fixed_t>(AXERANGE));
         if (linetarget)
         {
-            P_LineAttack(pmo, angle, AXERANGE, slope, damage);
+            P_LineAttack(pmo, angle, static_cast<fixed_t>(AXERANGE), slope, damage);
             if (linetarget->flags & MF_COUNTKILL)
             {
                 P_ThrustMobj(linetarget, angle, power);
@@ -1530,10 +1530,10 @@ void A_CStaffCheck(player_t * player, pspdef_t *)
     for (i = 0; i < 3; i++)
     {
         angle = pmo->angle + i * (ANG45 / 16);
-        slope = P_AimLineAttack(pmo, angle, 1.5 * MELEERANGE);
+        slope = P_AimLineAttack(pmo, angle, static_cast<fixed_t>(1.5 * MELEERANGE));
         if (linetarget)
         {
-            P_LineAttack(pmo, angle, 1.5 * MELEERANGE, slope, damage);
+            P_LineAttack(pmo, angle, static_cast<fixed_t>(1.5 * MELEERANGE), slope, damage);
             pmo->angle = R_PointToAngle2(pmo->x, pmo->y,
                                          linetarget->x, linetarget->y);
             if ((linetarget->player || linetarget->flags & MF_COUNTKILL)
@@ -1549,10 +1549,10 @@ void A_CStaffCheck(player_t * player, pspdef_t *)
             break;
         }
         angle = pmo->angle - i * (ANG45 / 16);
-        slope = P_AimLineAttack(player->mo, angle, 1.5 * MELEERANGE);
+        slope = P_AimLineAttack(player->mo, angle, static_cast<fixed_t>(1.5 * MELEERANGE));
         if (linetarget)
         {
-            P_LineAttack(pmo, angle, 1.5 * MELEERANGE, slope, damage);
+            P_LineAttack(pmo, angle, static_cast<fixed_t>(1.5 * MELEERANGE), slope, damage);
             pmo->angle = R_PointToAngle2(pmo->x, pmo->y,
                                          linetarget->x, linetarget->y);
             if (linetarget->player || linetarget->flags & MF_COUNTKILL)
@@ -1712,8 +1712,8 @@ void A_CFlameMissile(mobj_t * actor)
                 mo->angle = an << ANGLETOFINESHIFT;
                 mo->target = actor->target;
                 mo->momx = mo->special1.i =
-                    FixedMul(FLAMESPEED, finecosine[an]);
-                mo->momy = mo->special2.i = FixedMul(FLAMESPEED, finesine[an]);
+                    FixedMul(static_cast<fixed_t>(FLAMESPEED), finecosine[an]);
+                mo->momy = mo->special2.i = FixedMul(static_cast<fixed_t>(FLAMESPEED), finesine[an]);
                 mo->tics -= P_Random() & 3;
             }
             mo = P_SpawnMobj(BlockingMobj->x - FixedMul(dist, finecosine[an]),
@@ -1723,9 +1723,9 @@ void A_CFlameMissile(mobj_t * actor)
             {
                 mo->angle = ANG180 + (an << ANGLETOFINESHIFT);
                 mo->target = actor->target;
-                mo->momx = mo->special1.i = FixedMul(-FLAMESPEED,
+                mo->momx = mo->special1.i = FixedMul(static_cast<fixed_t>(-FLAMESPEED),
                                                      finecosine[an]);
-                mo->momy = mo->special2.i = FixedMul(-FLAMESPEED, finesine[an]);
+                mo->momy = mo->special2.i = FixedMul(static_cast<fixed_t>(-FLAMESPEED), finesine[an]);
                 mo->tics -= P_Random() & 3;
             }
         }
@@ -1932,7 +1932,7 @@ void A_CHolyAttack(player_t * player, pspdef_t *)
     {
         player->damagecount = 0;
         player->bonuscount = 0;
-        I_SetPalette(cache_lump_num<byte *>(W_GetNumForName("playpal"),
+        I_SetPalette(cache_lump_num<uint8_t *>(W_GetNumForName("playpal"),
                                              PU_CACHE) + STARTHOLYPAL * 768);
     }
     S_StartSound(player->mo, SFX_CHOLY_FIRE);
@@ -1955,7 +1955,7 @@ void A_CHolyPalette(player_t * player, pspdef_t * psp)
         {                       // reset back to original playpal
             pal = 0;
         }
-        I_SetPalette(cache_lump_num<byte *>(W_GetNumForName("playpal"),
+        I_SetPalette(cache_lump_num<uint8_t *>(W_GetNumForName("playpal"),
                                              PU_CACHE) + pal * 768);
     }
 }

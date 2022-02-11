@@ -893,17 +893,17 @@ void I_ReadScreen(pixel_t *scr)
 // I_SetPalette
 //
 // [crispy] intermediate gamma levels
-byte **gamma2table = nullptr;
+uint8_t **gamma2table = nullptr;
 void   I_SetGammaTable()
 {
     int i;
 
-    gamma2table = static_cast<byte **>(malloc(9 * sizeof(*gamma2table)));
+    gamma2table = static_cast<uint8_t **>(malloc(9 * sizeof(*gamma2table)));
 
     // [crispy] 5 original gamma levels
     for (i = 0; i < 5; i++)
     {
-        gamma2table[2 * i] = (byte *)gammatable[i];
+        gamma2table[2 * i] = const_cast<uint8_t *>(gammatable[i]);
     }
 
     // [crispy] 4 intermediate gamma levels
@@ -911,7 +911,7 @@ void   I_SetGammaTable()
     {
         int j;
 
-        gamma2table[2 * i + 1] = static_cast<byte *>(malloc(256 * sizeof(**gamma2table)));
+        gamma2table[2 * i + 1] = static_cast<uint8_t *>(malloc(256 * sizeof(**gamma2table)));
 
         for (j = 0; j < 256; j++)
         {
@@ -921,7 +921,7 @@ void   I_SetGammaTable()
 }
 
 #ifndef CRISPY_TRUECOLOR
-void I_SetPalette(byte *doompalette)
+void I_SetPalette(uint8_t *doompalette)
 {
     int i;
 
@@ -1039,13 +1039,10 @@ void I_InitWindowTitle()
 
 void I_InitWindowIcon()
 {
-    SDL_Surface *surface;
-
-    surface = SDL_CreateRGBSurfaceFrom((void *)icon_data, icon_w, icon_h,
+    SDL_Surface *surface = SDL_CreateRGBSurfaceFrom((void *)icon_data, icon_w, icon_h,
         32, icon_w * 4,
         0xff << 24, 0xff << 16,
         0xff << 8, 0xff << 0);
-
     SDL_SetWindowIcon(screen, surface);
     SDL_FreeSurface(surface);
 }
@@ -1553,7 +1550,7 @@ void I_GetScreenDimensions()
     {
         SCREENWIDTH = w * ah / h;
         // [crispy] make sure SCREENWIDTH is an integer multiple of 4 ...
-        SCREENWIDTH = (SCREENWIDTH + 3) & (int)~3;
+        SCREENWIDTH = (SCREENWIDTH + 3) & static_cast<int>(~3);
         // [crispy] ... but never exceeds MAXWIDTH (array size!)
         SCREENWIDTH = MIN(SCREENWIDTH, MAXWIDTH);
     }
@@ -1565,7 +1562,7 @@ void I_InitGraphics()
 {
     SDL_Event dummy;
 #ifndef CRISPY_TRUECOLOR
-    byte *doompal;
+    uint8_t *doompal;
 #endif
     char *env;
 
@@ -1633,7 +1630,7 @@ void I_InitGraphics()
 
     // Set the palette
 
-    doompal = cache_lump_name<byte *>(DEH_String("PLAYPAL"), PU_CACHE);
+    doompal = cache_lump_name<uint8_t *>(DEH_String("PLAYPAL"), PU_CACHE);
     I_SetPalette(doompal);
     SDL_SetPaletteColors(screenbuffer->format->palette, palette, 0, 256);
 #endif
@@ -1798,13 +1795,13 @@ void I_ReInitGraphics(int reinit)
 
 // [crispy] take screenshot of the rendered image
 
-void I_RenderReadPixels(byte **data, int *w, int *h, int *p)
+void I_RenderReadPixels(uint8_t **data, int *w, int *h, int *p)
 {
     SDL_Rect         rect;
     SDL_PixelFormat *format;
     int              temp;
     uint32_t         png_format;
-    byte *           pixels;
+    uint8_t         *pixels;
 
     // [crispy] adjust cropping rectangle if necessary
     rect.x = rect.y = 0;
@@ -1866,7 +1863,7 @@ void I_RenderReadPixels(byte **data, int *w, int *h, int *p)
     }
 
     // [crispy] allocate memory for screenshot image
-    pixels = static_cast<byte *>(malloc(rect.h * temp));
+    pixels = static_cast<uint8_t *>(malloc(rect.h * temp));
     SDL_RenderReadPixels(renderer, &rect, format->format, pixels, temp);
 
     *data = pixels;

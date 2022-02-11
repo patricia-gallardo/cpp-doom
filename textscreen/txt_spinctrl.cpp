@@ -31,9 +31,7 @@
 
 static void FloatFormatString(float step, char *buf, size_t buf_len)
 {
-    int precision;
-
-    precision = (int) ceil(-log(step) / log(10));
+    int precision = static_cast<int>(ceil(-log(step) / log(10)));
 
     if (precision > 0)
     {
@@ -58,16 +56,13 @@ static unsigned int IntWidth(int val)
 
 static unsigned int FloatWidth(float val, float step)
 {
-    unsigned int precision;
-    unsigned int result;
-
     // Calculate the width of the int value
 
-    result = IntWidth((int) val);
+    unsigned int result = IntWidth(static_cast<int>(val));
 
     // Add a decimal part if the precision specifies it
 
-    precision = (unsigned int) ceil(-log(step) / log(10));
+    auto precision = static_cast<unsigned int>(ceil(-log(step) / log(10)));
 
     if (precision > 0)
     {
@@ -111,9 +106,9 @@ static unsigned int SpinControlWidth(txt_spincontrol_t *spincontrol)
     }
 }
 
-static void TXT_SpinControlSizeCalc(TXT_UNCAST_ARG(spincontrol))
+static void TXT_SpinControlSizeCalc(void *uncast_spincontrol)
 {
-    TXT_CAST_ARG(txt_spincontrol_t, spincontrol);
+    auto *spincontrol = reinterpret_cast<txt_spincontrol_t *>(uncast_spincontrol);
 
     spincontrol->widget.w = SpinControlWidth(spincontrol) + 5;
     spincontrol->widget.h = 1;
@@ -138,16 +133,14 @@ static void SetBuffer(txt_spincontrol_t *spincontrol)
     }
 }
 
-static void TXT_SpinControlDrawer(TXT_UNCAST_ARG(spincontrol))
+static void TXT_SpinControlDrawer(void *uncast_spincontrol)
 {
-    TXT_CAST_ARG(txt_spincontrol_t, spincontrol);
-    unsigned int i;
-    unsigned int padding;
-    txt_saved_colors_t colors;
-    int bw;
-    int focused;
-
-    focused = spincontrol->widget.focused;
+    auto *spincontrol = reinterpret_cast<txt_spincontrol_t *>(uncast_spincontrol);
+    unsigned int i = 0;
+    unsigned int padding = 0;
+    txt_saved_colors_t colors{};
+    int bw = 0;
+    int focused = spincontrol->widget.focused;
 
     TXT_SaveColors(&colors);
 
@@ -197,9 +190,9 @@ static void TXT_SpinControlDrawer(TXT_UNCAST_ARG(spincontrol))
     TXT_DrawCodePageString(" \x1a");
 }
 
-static void TXT_SpinControlDestructor(TXT_UNCAST_ARG(spincontrol))
+static void TXT_SpinControlDestructor(void *uncast_spincontrol)
 {
-    TXT_CAST_ARG(txt_spincontrol_t, spincontrol);
+    auto *spincontrol = reinterpret_cast<txt_spincontrol_t *>(uncast_spincontrol);
 
     free(spincontrol->buffer);
 }
@@ -247,11 +240,11 @@ static void FinishEditing(txt_spincontrol_t *spincontrol)
     switch (spincontrol->type)
     {
         case TXT_SPINCONTROL_INT:
-            *spincontrol->value.i = atoi(spincontrol->buffer);
+            *spincontrol->value.i = std::atoi(spincontrol->buffer);
             break;
 
         case TXT_SPINCONTROL_FLOAT:
-            *spincontrol->value.f = static_cast<float>(atof(spincontrol->buffer));
+            *spincontrol->value.f = static_cast<float>(std::atof(spincontrol->buffer));
             break;
     }
 
@@ -259,9 +252,9 @@ static void FinishEditing(txt_spincontrol_t *spincontrol)
     EnforceLimits(spincontrol);
 }
 
-static int TXT_SpinControlKeyPress(TXT_UNCAST_ARG(spincontrol), int key)
+static int TXT_SpinControlKeyPress(void *uncast_spincontrol, int key)
 {
-    TXT_CAST_ARG(txt_spincontrol_t, spincontrol);
+    auto *spincontrol = reinterpret_cast<txt_spincontrol_t *>(uncast_spincontrol);
 
     // Enter to enter edit mode
 
@@ -342,13 +335,11 @@ static int TXT_SpinControlKeyPress(TXT_UNCAST_ARG(spincontrol), int key)
     return 0;
 }
 
-static void TXT_SpinControlMousePress(TXT_UNCAST_ARG(spincontrol),
+static void TXT_SpinControlMousePress(void *uncast_spincontrol,
                                    int x, int, int)
 {
-    TXT_CAST_ARG(txt_spincontrol_t, spincontrol);
-    unsigned int rel_x;
-
-    rel_x = x - spincontrol->widget.x;
+    auto *spincontrol = reinterpret_cast<txt_spincontrol_t *>(uncast_spincontrol);
+    unsigned int rel_x = x - spincontrol->widget.x;
 
     if (rel_x < 2)
     {
@@ -360,9 +351,9 @@ static void TXT_SpinControlMousePress(TXT_UNCAST_ARG(spincontrol),
     }
 }
 
-static void TXT_SpinControlFocused(TXT_UNCAST_ARG(spincontrol), int)
+static void TXT_SpinControlFocused(void *uncast_spincontrol, int)
 {
-    TXT_CAST_ARG(txt_spincontrol_t, spincontrol);
+    auto *spincontrol = reinterpret_cast<txt_spincontrol_t *>(uncast_spincontrol);
 
     FinishEditing(spincontrol);
 }
