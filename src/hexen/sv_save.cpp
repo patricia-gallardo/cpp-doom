@@ -2685,11 +2685,11 @@ static int GetMobjNum(mobj_t * mobj)
 
 static void SetMobjPtr(mobj_t **ptr, unsigned int archiveNum)
 {
-    if (archiveNum == MOBJ_NULL)
+    if (static_cast<int>(archiveNum) == MOBJ_NULL)
     {
         *ptr = nullptr;
     }
-    else if (archiveNum == MOBJ_XX_PLAYER)
+    else if (static_cast<int>(archiveNum) == MOBJ_XX_PLAYER)
     {
         if (TargetPlayerCount == MAX_TARGET_PLAYERS)
         {
@@ -3164,13 +3164,13 @@ static void UnarchivePolyobjs()
     fixed_t deltaY;
 
     AssertSegment(ASEG_POLYOBJS);
-    if (SV_ReadLong() != po_NumPolyobjs)
+    if (static_cast<int>(SV_ReadLong()) != po_NumPolyobjs)
     {
         I_Error("UnarchivePolyobjs: Bad polyobj count");
     }
     for (i = 0; i < po_NumPolyobjs; i++)
     {
-        if (SV_ReadLong() != polyobjs[i].tag)
+        if (static_cast<int>(SV_ReadLong()) != polyobjs[i].tag)
         {
             I_Error("UnarchivePolyobjs: Invalid polyobj tag");
         }

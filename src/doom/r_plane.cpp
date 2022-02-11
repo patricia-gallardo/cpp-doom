@@ -474,7 +474,7 @@ void R_DrawPlanes()
                 dc_yl = pl->top[x];
                 dc_yh = pl->bottom[x];
 
-                if (static_cast<unsigned>(dc_yl) <= dc_yh) // [crispy] 32-bit integer math
+                if (dc_yl <= dc_yh) // [crispy] 32-bit integer math
                 {
                     angle     = ((an + xtoviewangle[x]) ^ flip) >> ANGLETOSKYSHIFT;
                     dc_x      = x;

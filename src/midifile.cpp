@@ -63,7 +63,7 @@ typedef struct
     // Events in this track:
 
     midi_event_t *events;
-    int           num_events;
+    size_t        num_events;
 } midi_track_t;
 
 struct midi_track_iter_s {
@@ -485,7 +485,7 @@ static bool ReadTrack(midi_track_t *track, FILE *stream)
 
 static void FreeTrack(midi_track_t *track)
 {
-    for (int i = 0; i < track->num_events; ++i)
+    for (size_t i = 0; i < track->num_events; ++i)
     {
         FreeEvent(&track->events[i]);
     }
@@ -741,7 +741,7 @@ void PrintTrack(midi_track_t *track)
 {
     midi_event_t *event;
 
-    for (int i = 0; i < track->num_events; ++i)
+    for (size_t i = 0; i < track->num_events; ++i)
     {
         event = &track->events[i];
 

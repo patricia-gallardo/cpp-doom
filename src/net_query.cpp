@@ -873,9 +873,7 @@ static net_packet_t *BlockForPacket(net_addr_t *addr, unsigned int packet_type,
     net_packet_t *packet;
     net_addr_t *  packet_src;
     unsigned int  read_packet_type;
-    unsigned int  start_time;
-
-    start_time = I_GetTimeMS();
+    unsigned int  start_time = I_GetTimeMS();
 
     while (I_GetTimeMS() < start_time + timeout_ms)
     {

@@ -513,7 +513,7 @@ void R_ProjectSprite(mobj_t * thing)
 // decide which patch to use for sprite reletive to player
 //
 #ifdef RANGECHECK
-    if (static_cast<unsigned>(thing->sprite) >= numsprites)
+    if (thing->sprite >= numsprites)
         I_Error("R_ProjectSprite: invalid sprite number %i ", thing->sprite);
 #endif
     sprdef = &sprites[thing->sprite];
@@ -684,7 +684,7 @@ void R_DrawPSprite(pspdef_t * psp)
 // decide which patch to use
 //
 #ifdef RANGECHECK
-    if (static_cast<unsigned>(psp->state->sprite) >= numsprites)
+    if (psp->state->sprite >= numsprites)
         I_Error("R_ProjectSprite: invalid sprite number %i ",
                 psp->state->sprite);
 #endif

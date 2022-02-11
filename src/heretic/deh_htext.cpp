@@ -680,7 +680,7 @@ static bool StringIsUnsupported(unsigned int offset)
 
     for (i=0; string_list[i] >= 0; ++i)
     {
-        if (static_cast<unsigned int>(string_list[i] == offset))
+        if (string_list[i] == static_cast<int>(offset))
         {
             return true;
         }
@@ -750,7 +750,7 @@ static void SuggestOtherVersions(unsigned int offset)
 
         for (int i=0; string_list[i] >= 0; ++i)
         {
-            if (string_list[i] == offset)
+            if (string_list[i] == static_cast<int>(offset))
             {
                 DEH_SuggestHereticVersion(static_cast<deh_hhe_version_t>(v));
             }

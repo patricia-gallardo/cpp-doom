@@ -67,7 +67,7 @@ void R_DrawColumn()
         return;
 
 #ifdef RANGECHECK
-    if (static_cast<unsigned>(dc_x) >= SCREENWIDTH || dc_yl < 0 || dc_yh >= SCREENHEIGHT)
+    if (dc_x >= SCREENWIDTH || dc_yl < 0 || dc_yh >= SCREENHEIGHT)
         I_Error("R_DrawColumn: %i to %i at %i", dc_yl, dc_yh, dc_x);
 #endif
 
@@ -96,7 +96,7 @@ void R_DrawColumnLow()
         return;
 
 #ifdef RANGECHECK
-    if (static_cast<unsigned>(dc_x) >= SCREENWIDTH || dc_yl < 0 || dc_yh >= SCREENHEIGHT)
+    if (dc_x >= SCREENWIDTH || dc_yl < 0 || dc_yh >= SCREENHEIGHT)
         I_Error("R_DrawColumn: %i to %i at %i", dc_yl, dc_yh, dc_x);
 //      dccount++;
 #endif
@@ -131,7 +131,7 @@ void R_DrawTLColumn()
         return;
 
 #ifdef RANGECHECK
-    if (static_cast<unsigned>(dc_x) >= SCREENWIDTH || dc_yl < 0 || dc_yh >= SCREENHEIGHT)
+    if (dc_x >= SCREENWIDTH || dc_yl < 0 || dc_yh >= SCREENHEIGHT)
         I_Error("R_DrawTLColumn: %i to %i at %i", dc_yl, dc_yh, dc_x);
 #endif
 
@@ -173,7 +173,7 @@ void R_DrawAltTLColumn()
         return;
 
 #ifdef RANGECHECK
-    if (static_cast<unsigned>(dc_x) >= SCREENWIDTH || dc_yl < 0 || dc_yh >= SCREENHEIGHT)
+    if (dc_x >= SCREENWIDTH || dc_yl < 0 || dc_yh >= SCREENHEIGHT)
         I_Error("R_DrawAltTLColumn: %i to %i at %i", dc_yl, dc_yh, dc_x);
 #endif
 
@@ -214,7 +214,7 @@ void R_DrawTranslatedColumn()
         return;
 
 #ifdef RANGECHECK
-    if (static_cast<unsigned>(dc_x) >= SCREENWIDTH || dc_yl < 0 || dc_yh >= SCREENHEIGHT)
+    if (dc_x >= SCREENWIDTH || dc_yl < 0 || dc_yh >= SCREENHEIGHT)
         I_Error("R_DrawColumn: %i to %i at %i", dc_yl, dc_yh, dc_x);
 #endif
 
@@ -249,7 +249,7 @@ void R_DrawTranslatedTLColumn()
         return;
 
 #ifdef RANGECHECK
-    if (static_cast<unsigned>(dc_x) >= SCREENWIDTH || dc_yl < 0 || dc_yh >= SCREENHEIGHT)
+    if (dc_x >= SCREENWIDTH || dc_yl < 0 || dc_yh >= SCREENHEIGHT)
         I_Error("R_DrawColumn: %i to %i at %i", dc_yl, dc_yh, dc_x);
 #endif
 
@@ -361,7 +361,7 @@ void R_DrawSpan()
 
 #ifdef RANGECHECK
     if (ds_x2 < ds_x1 || ds_x1 < 0 || ds_x2 >= SCREENWIDTH
-        || static_cast<unsigned>(ds_y) > SCREENHEIGHT)
+        || ds_y > SCREENHEIGHT)
         I_Error("R_DrawSpan: %i to %i at %i", ds_x1, ds_x2, ds_y);
 //      dscount++;
 #endif
@@ -389,7 +389,7 @@ void R_DrawSpanLow()
 
 #ifdef RANGECHECK
     if (ds_x2 < ds_x1 || ds_x1 < 0 || ds_x2 >= SCREENWIDTH
-        || static_cast<unsigned>(ds_y) > SCREENHEIGHT)
+        || ds_y > SCREENHEIGHT)
         I_Error("R_DrawSpan: %i to %i at %i", ds_x1, ds_x2, ds_y);
 //      dscount++;
 #endif
