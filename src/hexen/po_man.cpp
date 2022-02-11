@@ -849,7 +849,8 @@ bool PO_RotatePolyobj(int num, angle_t angle)
     polyobj_t *po;
     bool blocked;
 
-    if (!(po = GetPolyobj(num)))
+    polyobj_t *is_set = po = GetPolyobj(num);
+    if (!is_set)
     {
         I_Error("PO_RotatePolyobj:  Invalid polyobj number: %d\n", num);
     }

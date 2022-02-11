@@ -160,8 +160,9 @@ static int OPL_Win32_Init(unsigned int port_base)
 
 #endif
     // unreachable code
-    // return 0;
     assert(false);
+    // error C4716: 'OPL_Win32_Init': must return a value
+    return 0;
 }
 
 static void OPL_Win32_Shutdown()
