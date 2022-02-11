@@ -248,6 +248,8 @@ static allocated_sound_t *AllocateSound(sfxinfo_t *sfxinfo, size_t len)
 
 static void LockAllocatedSound(allocated_sound_t *snd)
 {
+    if(!snd)
+        return;
     // Increase use count, to stop the sound being freed.
 
     ++snd->use_count;
