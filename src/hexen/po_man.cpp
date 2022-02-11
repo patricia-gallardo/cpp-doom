@@ -83,7 +83,7 @@ void T_RotatePoly(polyevent_t * pe)
     {
         absSpeed = std::abs(pe->speed);
 
-        if (pe->dist == -1)
+        if (pe->dist == static_cast<unsigned int>(-1))
         {                       // perpetual polyobj
             return;
         }
@@ -102,7 +102,7 @@ void T_RotatePoly(polyevent_t * pe)
             }
             P_RemoveThinker(&pe->thinker);
         }
-        if (pe->dist < absSpeed)
+        if (pe->dist < static_cast<unsigned int>(absSpeed))
         {
             pe->speed = pe->dist * (pe->speed < 0 ? -1 : 1);
         }
@@ -231,7 +231,7 @@ void T_MovePoly(polyevent_t * pe)
             }
             P_RemoveThinker(&pe->thinker);
         }
-        if (pe->dist < absSpeed)
+        if (pe->dist < static_cast<unsigned int>(absSpeed))
         {
             pe->speed = pe->dist * (pe->speed < 0 ? -1 : 1);
             pe->xSpeed = FixedMul(pe->speed, finecosine[pe->angle]);

@@ -875,7 +875,7 @@ static net_packet_t *BlockForPacket(net_addr_t *addr, unsigned int packet_type,
     unsigned int  read_packet_type;
     unsigned int  start_time = I_GetTimeMS();
 
-    while (I_GetTimeMS() < start_time + timeout_ms)
+    while (I_GetTimeMS() < static_cast<int>(start_time + timeout_ms))
     {
         if (!NET_RecvPacket(query_context, &packet_src, &packet))
         {

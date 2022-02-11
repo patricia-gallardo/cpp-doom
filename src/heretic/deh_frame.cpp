@@ -256,7 +256,7 @@ static void SuggestOtherVersions(unsigned int offset)
     {
         for (int v=0; v<deh_hhe_num_versions; ++v)
         {
-            if (action_pointer.offsets[v] == offset)
+            if (action_pointer.offsets[v] == static_cast<int>(offset))
             {
                 DEH_SuggestHereticVersion(static_cast<deh_hhe_version_t>(v));
             }

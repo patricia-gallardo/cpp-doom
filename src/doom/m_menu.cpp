@@ -1578,7 +1578,7 @@ static void M_CrispnessCur(int)
 
 static void M_CrispnessNext(int)
 {
-    if (++crispness_cur > std::size(CrispnessMenus) - 1)
+    if (++crispness_cur > static_cast<int>(std::size(CrispnessMenus)) - 1)
     {
         crispness_cur = 0;
     }

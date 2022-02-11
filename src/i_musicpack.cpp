@@ -756,10 +756,7 @@ static void AddSubstituteMusic(const char *musicdir, const char *hash_prefix,
 
 static const char *ReadHashPrefix(char *line)
 {
-    char *result;
     char *p;
-    int   i, len;
-
     for (p = line; *p != '\0' && !isspace(*p) && *p != '='; ++p)
     {
         if (!isxdigit(*p))
@@ -768,19 +765,19 @@ static const char *ReadHashPrefix(char *line)
         }
     }
 
-    len = p - line;
+    size_t len = p - line;
     if (len == 0 || len > sizeof(sha1_digest_t) * 2)
     {
         return nullptr;
     }
 
-    result = static_cast<char *>(malloc(len + 1));
+    char *result = static_cast<char *>(malloc(len + 1));
     if (result == nullptr)
     {
         return nullptr;
     }
 
-    for (i = 0; i < len; ++i)
+    for (size_t i = 0; i < len; ++i)
     {
         result[i] = tolower(line[i]);
     }

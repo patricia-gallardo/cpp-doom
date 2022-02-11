@@ -276,7 +276,7 @@ static void CheckSHA1Sums()
                       net_client_wait_data.deh_sha1sum,
                       sizeof(sha1_digest_t))
                   == 0;
-    same_freedoom = net_client_wait_data.is_freedoom == net_local_is_freedoom;
+    same_freedoom = net_client_wait_data.is_freedoom == static_cast<int>(net_local_is_freedoom);
 
     if (correct_wad && correct_deh && same_freedoom)
     {

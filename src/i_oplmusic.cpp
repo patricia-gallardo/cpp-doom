@@ -1363,15 +1363,10 @@ static void ReplaceExistingVoiceDoom1()
 
 static void ReplaceExistingVoiceDoom2(opl_channel_data_t *channel)
 {
-    int i;
-    int result;
-    int priority;
+    int result = 0;
+    unsigned int priority = 0x8000;
 
-    result = 0;
-
-    priority = 0x8000;
-
-    for (i = 0; i < voice_alloced_num - 3; i++)
+    for (int i = 0; i < voice_alloced_num - 3; i++)
     {
         if (voice_alloced_list[i]->priority < priority
             && voice_alloced_list[i]->channel >= channel)
@@ -1600,7 +1595,7 @@ static void KeyOnEvent(opl_track_data_t *track, midi_event_t *event)
         {
             voicenum = 1;
         }
-        while (voice_alloced_num > num_opl_voices - voicenum)
+        while (voice_alloced_num > num_opl_voices - static_cast<int>(voicenum))
         {
             ReplaceExistingVoiceDoom1();
         }
@@ -1673,19 +1668,19 @@ static void ProgramChangeEvent(opl_track_data_t *track, midi_event_t *event)
 static void SetChannelVolume(opl_channel_data_t *channel, unsigned int volume,
     bool clip_start)
 {
-    channel->volume_base = volume;
+    channel->volume_base = static_cast<int>(volume);
 
-    if (volume > current_music_volume)
+    if (static_cast<int>(volume) > current_music_volume)
     {
         volume = current_music_volume;
     }
 
-    if (clip_start && volume > start_music_volume)
+    if (clip_start && static_cast<int>(volume) > start_music_volume)
     {
         volume = start_music_volume;
     }
 
-    channel->volume = volume;
+    channel->volume = static_cast<int>(volume);
 
     // Update all voices that this channel is using.
 
@@ -1726,7 +1721,7 @@ static void SetChannelPan(opl_channel_data_t *channel, unsigned int pan)
         {
             reg_pan = 0x30;
         }
-        if (channel->pan != reg_pan)
+        if (channel->pan != static_cast<int>(reg_pan))
         {
             channel->pan = reg_pan;
             for (int i = 0; i < num_opl_voices; i++)
@@ -2409,11 +2404,6 @@ static int ChannelInUse(opl_channel_data_t *channel)
 
 void I_OPL_DevMessages(char *result, size_t result_len)
 {
-    char tmp[80];
-    int  instr_num;
-    int  lines;
-    int  i;
-
     if (num_tracks == 0)
     {
         M_snprintf(result, result_len, "No OPL track!");
@@ -2421,16 +2411,17 @@ void I_OPL_DevMessages(char *result, size_t result_len)
     }
 
     M_snprintf(result, result_len, "Tracks:\n");
-    lines = 1;
+    int lines = 1;
+    char tmp[80] = {};
 
-    for (i = 0; i < NumActiveChannels(); ++i)
+    for (int i = 0; i < NumActiveChannels(); ++i)
     {
         if (channels[i].instrument == nullptr)
         {
             continue;
         }
 
-        instr_num = channels[i].instrument - main_instrs;
+        int instr_num = channels[i].instrument - main_instrs;
 
         M_snprintf(tmp, sizeof(tmp),
             "chan %i: %c i#%i (%s)\n",
@@ -2447,7 +2438,7 @@ void I_OPL_DevMessages(char *result, size_t result_len)
     M_StringConcat(result, tmp, result_len);
     lines += 2;
 
-    i = (last_perc_count + PERCUSSION_LOG_LEN - 1) % PERCUSSION_LOG_LEN;
+    unsigned int i = (last_perc_count + PERCUSSION_LOG_LEN - 1) % PERCUSSION_LOG_LEN;
 
     do
     {

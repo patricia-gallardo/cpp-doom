@@ -263,7 +263,7 @@ static int G_NextWeapon(int direction)
     }
 
     // Switch weapon. Don't loop forever.
-    int start_i = i;
+    size_t start_i = i;
     do
     {
         i += direction;

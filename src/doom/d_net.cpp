@@ -127,7 +127,7 @@ static void LoadGameSettings(net_gamesettings_t *settings)
 
     for (std::size_t i = 0; i < MAXPLAYERS; ++i)
     {
-        playeringame[i] = i < settings->num_players;
+        playeringame[i] = static_cast<int>(i) < settings->num_players;
     }
 }
 

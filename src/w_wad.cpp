@@ -339,7 +339,7 @@ lumpindex_t W_CheckNumForNameFromTo(const char *name, int from, int to)
 //
 int W_LumpLength(lumpindex_t lump)
 {
-    if (lump >= numlumps)
+    if (lump >= static_cast<int>(numlumps))
     {
         I_Error("W_LumpLength: %i >= numlumps", lump);
     }
@@ -355,7 +355,7 @@ int W_LumpLength(lumpindex_t lump)
 //
 void W_ReadLump(lumpindex_t lump, void *dest)
 {
-    if (lump >= numlumps)
+    if (lump >= static_cast<int>(numlumps))
     {
         I_Error("W_ReadLump: %i >= numlumps", lump);
     }

@@ -187,11 +187,6 @@ void R_RenderMaskedSegRange(drawseg_t *ds,
     int                                x1,
     int                                x2)
 {
-    unsigned  index;
-    column_t *col;
-    int       lightnum;
-    int       texnum;
-
     // Calculate light table.
     // Use different light tables
     //   for horizontal / vertical / diagonal. Diagonal?
@@ -199,9 +194,9 @@ void R_RenderMaskedSegRange(drawseg_t *ds,
     curline     = ds->curline;
     frontsector = curline->frontsector;
     backsector  = curline->backsector;
-    texnum      = texturetranslation[curline->sidedef->midtexture];
+    int texnum      = texturetranslation[curline->sidedef->midtexture];
 
-    lightnum = (frontsector->lightlevel >> LIGHTSEGSHIFT) + (extralight * LIGHTBRIGHT);
+    int lightnum = (frontsector->lightlevel >> LIGHTSEGSHIFT) + (extralight * LIGHTBRIGHT);
 
     // [crispy] smoother fake contrast
     lightnum += curline->fakecontrast;
@@ -250,7 +245,7 @@ void R_RenderMaskedSegRange(drawseg_t *ds,
         {
             if (!fixedcolormap)
             {
-                index = spryscale >> (LIGHTSCALESHIFT + crispy->hires);
+                int index = spryscale >> (LIGHTSCALESHIFT + crispy->hires);
 
                 if (index >= MAXLIGHTSCALE)
                     index = MAXLIGHTSCALE - 1;
@@ -287,7 +282,7 @@ void R_RenderMaskedSegRange(drawseg_t *ds,
 
             // draw the texture
             uint8_t *col_ptr = reinterpret_cast<uint8_t *>(R_GetColumn(texnum, maskedtexturecol[dc_x], false) - 3);
-            col = reinterpret_cast<column_t *>(col_ptr);
+            column_t *col = reinterpret_cast<column_t *>(col_ptr);
 
             R_DrawMaskedColumn(col);
             maskedtexturecol[dc_x] = INT_MAX; // [crispy] 32-bit integer math
@@ -311,7 +306,6 @@ void R_RenderMaskedSegRange(drawseg_t *ds,
 void R_RenderSegLoop()
 {
     angle_t  angle;
-    unsigned index;
     int      yl;
     int      yh;
     int      mid;
@@ -369,7 +363,7 @@ void R_RenderSegLoop()
             texturecolumn = rw_offset - FixedMul(finetangent[angle], rw_distance);
             texturecolumn >>= FRACBITS;
             // calculate lighting
-            index = rw_scale >> (LIGHTSCALESHIFT + crispy->hires);
+            int index = rw_scale >> (LIGHTSCALESHIFT + crispy->hires);
 
             if (index >= MAXLIGHTSCALE)
                 index = MAXLIGHTSCALE - 1;

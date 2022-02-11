@@ -47,7 +47,7 @@ mapformat_t P_CheckMapFormat(int lumpnum)
     uint8_t    *nodes_local = nullptr;
     int         b;
 
-    if ((b = lumpnum + ML_BLOCKMAP + 1) < numlumps && !strncasecmp(lumpinfo[b]->name, "BEHAVIOR", 8))
+    if ((b = lumpnum + ML_BLOCKMAP + 1) < static_cast<int>(numlumps) && !strncasecmp(lumpinfo[b]->name, "BEHAVIOR", 8))
     {
         fprintf(stderr, "Hexen (");
         format = static_cast<mapformat_t>(format | MFMT_HEXEN);
@@ -55,7 +55,7 @@ mapformat_t P_CheckMapFormat(int lumpnum)
     else
         fprintf(stderr, "Doom (");
 
-    if (!((b = lumpnum + ML_NODES) < numlumps && (nodes_local = cache_lump_num<uint8_t *>(b, PU_CACHE)) && W_LumpLength(b) > 0))
+    if (!((b = lumpnum + ML_NODES) < static_cast<int>(numlumps) && (nodes_local = cache_lump_num<uint8_t *>(b, PU_CACHE)) && W_LumpLength(b) > 0))
         fprintf(stderr, "no nodes");
     else if (!memcmp(nodes_local, "xNd4\0\0\0\0", 8))
     {

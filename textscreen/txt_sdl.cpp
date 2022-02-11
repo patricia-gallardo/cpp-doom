@@ -263,11 +263,12 @@ int TXT_Init()
     // for drawing the screen.
     if ((SDL_GetWindowFlags(TXT_SDLWindow) & SDL_WINDOW_ALLOW_HIGHDPI) != 0)
     {
-        int render_w, render_h;
+        int render_w = 0;
+        int render_h = 0;
 
         if (SDL_GetRendererOutputSize(renderer, &render_w, &render_h) == 0
-         && render_w >= TXT_SCREEN_W * large_font.w
-         && render_h >= TXT_SCREEN_H * large_font.h)
+         && render_w >= TXT_SCREEN_W * static_cast<int>(large_font.w)
+         && render_h >= TXT_SCREEN_H * static_cast<int>(large_font.h))
         {
             font = &large_font;
             // Note that we deliberately do not update screen_image_{w,h}
@@ -706,9 +707,9 @@ int TXT_UnicodeCharacter(unsigned int c)
 
     for (size_t i = 0; i < std::size(code_page_to_unicode); ++i)
     {
-        if (code_page_to_unicode[i] == c)
+        if (code_page_to_unicode[i] == static_cast<short>(c))
         {
-            return i;
+            return static_cast<int>(i);
         }
     }
 
@@ -955,7 +956,7 @@ int TXT_vsnprintf(char *buf, size_t buf_len, const char *s, va_list args)
 
     // If truncated, change the final char in the buffer to a \0.
     // A negative result indicates a truncated buffer on Windows.
-    if (result < 0 || result >= buf_len)
+    if (result < 0 || result >= static_cast<int>(buf_len))
     {
         buf[buf_len - 1] = '\0';
         result = buf_len - 1;

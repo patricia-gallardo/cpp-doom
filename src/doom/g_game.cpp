@@ -290,7 +290,6 @@ static bool WeaponSelectable(weapontype_t weapon)
 static int G_NextWeapon(int direction)
 {
     weapontype_t weapon;
-    int          start_i;
 
     // Find index in the table.
 
@@ -313,7 +312,7 @@ static int G_NextWeapon(int direction)
     }
 
     // Switch weapon. Don't loop forever.
-    start_i = i;
+    size_t start_i = i;
     do
     {
         i += direction;

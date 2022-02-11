@@ -503,7 +503,7 @@ void I_StartTic()
         I_ReadMouse();
     }
 
-    if (joywait < I_GetTime())
+    if (static_cast<int>(joywait) < I_GetTime())
     {
         I_UpdateJoystick();
     }

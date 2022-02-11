@@ -114,12 +114,7 @@ void OPL_Queue_Push(opl_callback_queue_t *queue,
 int OPL_Queue_Pop(opl_callback_queue_t *queue,
                   opl_callback_t *callback, void **data)
 {
-    opl_queue_entry_t *entry;
-    int child1, child2;
-    int i, next_i;
-
     // Empty?
-
     if (queue->num_entries <= 0)
     {
         return 0;
@@ -134,16 +129,17 @@ int OPL_Queue_Pop(opl_callback_queue_t *queue,
     // the heap, which must now be percolated down from the top.
 
     --queue->num_entries;
-    entry = &queue->entries[queue->num_entries];
+    opl_queue_entry_t *entry = &queue->entries[queue->num_entries];
 
     // Percolate down.
 
-    i = 0;
+    int i = 0;
+    int next_i = 0;
 
     for (;;)
     {
-        child1 = i * 2 + 1;
-        child2 = i * 2 + 2;
+        unsigned int child1 = i * 2 + 1;
+        unsigned int child2 = i * 2 + 2;
 
         if (child1 < queue->num_entries
          && queue->entries[child1].time < entry->time)

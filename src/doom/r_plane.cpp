@@ -117,13 +117,6 @@ void R_MapPlane(int y,
     int             x1,
     int             x2)
 {
-    // [crispy] see below
-    //  angle_t	angle;
-    fixed_t distance;
-    //  fixed_t	length;
-    unsigned index;
-    int      dx, dy;
-
 #ifdef RANGECHECK
     if (x2 < x1
         || x1 < 0
@@ -137,12 +130,13 @@ void R_MapPlane(int y,
     // [crispy] visplanes with the same flats now match up far better than before
     // adapted from prboom-plus/src/r_plane.c:191-239, translated to fixed-point math
 
-    int is_set = dy = std::abs(centery - y);
-    if (!is_set)
+    int dy = std::abs(centery - y);
+    if (!dy)
     {
         return;
     }
 
+    fixed_t distance = 0;
     if (planeheight != cachedheight[y])
     {
         cachedheight[y] = planeheight;
@@ -157,7 +151,7 @@ void R_MapPlane(int y,
         ds_ystep = cachedystep[y];
     }
 
-    dx = x1 - centerx;
+    int dx = x1 - centerx;
 
     ds_xfrac = viewx + FixedMul(viewcos, distance) + dx * ds_xstep;
     ds_yfrac = -viewy - FixedMul(viewsin, distance) + dx * ds_ystep;
@@ -166,7 +160,7 @@ void R_MapPlane(int y,
         ds_colormap[0] = ds_colormap[1] = fixedcolormap;
     else
     {
-        index = distance >> LIGHTZSHIFT;
+        int index = distance >> LIGHTZSHIFT;
 
         if (index >= MAXLIGHTZ)
             index = MAXLIGHTZ - 1;

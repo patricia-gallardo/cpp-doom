@@ -344,7 +344,7 @@ static int ReadCodeInt()
     int result;
     int *ptr;
 
-    ACSAssert(PCodeOffset + 3 < ActionCodeSize,
+    ACSAssert(static_cast<int>(PCodeOffset) + 3 < ActionCodeSize,
               "unexpectedly reached end of ACS lump");
 
     ptr = reinterpret_cast<int *>(ActionCodeBase + PCodeOffset);
