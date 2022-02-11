@@ -338,8 +338,8 @@ void T_PolyDoor(polydoor_t * pd)
         if (!--pd->tics)
         {
             poly = GetPolyobj(pd->polyobj);
-            SN_StartSequence(reinterpret_cast<mobj_t *>(&poly->startSpot), SEQ_DOOR_STONE +
-                             poly->seqType);
+            if (poly)
+                SN_StartSequence(reinterpret_cast<mobj_t *>(&poly->startSpot), SEQ_DOOR_STONE + poly->seqType);
         }
         return;
     }
@@ -432,17 +432,19 @@ void T_PolyDoor(polydoor_t * pd)
             else
             {
                 poly = GetPolyobj(pd->polyobj);
-                if (poly->crush || !pd->close)
-                {               // continue moving if the poly is a crusher, or is opening
-                    return;
-                }
-                else
-                {               // open back up and rewait
-                    pd->dist = pd->totalDist - pd->dist;
-                    pd->speed = -pd->speed;
-                    pd->close = false;
-                    SN_StartSequence(reinterpret_cast<mobj_t *>(&poly->startSpot),
-                                     SEQ_DOOR_STONE + poly->seqType);
+                if (poly)
+                {
+                    if (poly->crush || !pd->close)
+                    { // continue moving if the poly is a crusher, or is opening
+                        return;
+                    }
+                    else
+                    { // open back up and rewait
+                        pd->dist  = pd->totalDist - pd->dist;
+                        pd->speed = -pd->speed;
+                        pd->close = false;
+                        SN_StartSequence(reinterpret_cast<mobj_t *>(&poly->startSpot), SEQ_DOOR_STONE + poly->seqType);
+                    }
                 }
             }
             break;
@@ -1501,7 +1503,7 @@ bool PO_Busy(int polyobj)
     polyobj_t *poly;
 
     poly = GetPolyobj(polyobj);
-    if (!poly->specialdata)
+    if (poly && !poly->specialdata)
     {
         return false;
     }
