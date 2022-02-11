@@ -146,7 +146,9 @@ void AddCmdLineParameter(execute_context_t *context, const char *s, ...)
 bool OpenFolder(const char *path)
 {
     // "If the function succeeds, it returns a value greater than 32."
-    return (int)ShellExecute(nullptr, "open", path, nullptr, nullptr, SW_SHOWDEFAULT) > 32;
+    HINSTANCE pHinstance = ShellExecute(nullptr, "open", path, nullptr, nullptr, SW_SHOWDEFAULT);
+    // https://docs.microsoft.com/en-us/windows/win32/api/shellapi/nf-shellapi-shellexecutea?redirectedfrom=MSDN#return-value
+    return reinterpret_cast<intptr_t>(pHinstance) > 32;
 }
 
 // Wait for the specified process to exit.  Returns the exit code.
