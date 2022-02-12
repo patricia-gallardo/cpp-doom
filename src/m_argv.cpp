@@ -71,14 +71,10 @@ int M_CheckParm(const char *check)
     return M_CheckParmWithArgs(check, 0);
 }
 
-#define MAXARGVS 100
+constexpr auto MAXARGVS = 100;
 
 static void LoadResponseFile(int argv_index, const char *filename)
 {
-    char * infile;
-    char **newargv;
-    int    newargc;
-
     // Read the response file into memory
     FILE *handle = fopen(filename, "rb");
 
@@ -98,38 +94,35 @@ static void LoadResponseFile(int argv_index, const char *filename)
     // needed.
 
     char *file = static_cast<char *>(malloc(static_cast<size_t>(size + 1)));
-
-    int i = 0;
-
-    while (i < size)
     {
-        size_t k = fread(file + i, 1, static_cast<size_t>(size - i), handle);
-
-        if (ferror(handle))
+        int i = 0;
+        while (i < size)
         {
-            I_Error("Failed to read full contents of '%s'", filename);
+            size_t k = fread(file + i, 1, static_cast<size_t>(size - i), handle);
+
+            if (ferror(handle)) { I_Error("Failed to read full contents of '%s'", filename); }
+
+            i += k;
         }
 
-        i += k;
+        fclose(handle);
     }
-
-    fclose(handle);
 
     // Create new arguments list array
 
-    newargv = static_cast<char **>(malloc(sizeof(char *) * MAXARGVS));
-    newargc = 0;
+    char **newargv = static_cast<char **>(malloc(sizeof(char *) * MAXARGVS));
+    int newargc = 0;
     memset(newargv, 0, sizeof(char *) * MAXARGVS);
 
     // Copy all the arguments in the list up to the response file
 
-    for (i = 0; i < argv_index; ++i)
+    for (int i = 0; i < argv_index; ++i)
     {
         newargv[i] = myargv[i];
         ++newargc;
     }
 
-    infile = file;
+    char *infile = file;
     long k = 0;
 
     while (k < size)
@@ -196,7 +189,7 @@ static void LoadResponseFile(int argv_index, const char *filename)
 
     // Add arguments following the response file argument
 
-    for (i = argv_index + 1; i < myargc; ++i)
+    for (int i = argv_index + 1; i < myargc; ++i)
     {
         newargv[newargc] = myargv[i];
         ++newargc;
