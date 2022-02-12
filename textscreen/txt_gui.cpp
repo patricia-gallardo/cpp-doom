@@ -231,16 +231,13 @@ void TXT_DrawSeparator(int x, int y, int w)
 // string" - characters are in native code page format and not UTF-8.
 void TXT_DrawCodePageString(const char *s)
 {
-    int x, y;
-    int x1;
-    const char *p;
-
+    int x, y = 0;
     TXT_GetXY(&x, &y);
 
     if (VALID_Y(y))
     {
-        x1 = x;
-
+        int x1 = x;
+        const char *p;
         for (p = s; *p != '\0'; ++p)
         {
             if (VALID_X(x1))
@@ -253,7 +250,8 @@ void TXT_DrawCodePageString(const char *s)
         }
     }
 
-    TXT_GotoXY(x + strlen(s), y);
+    int end_x = static_cast<int>(x + strlen(s));
+    TXT_GotoXY(end_x, y);
 }
 
 static void PutUnicodeChar(unsigned int c)

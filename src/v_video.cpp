@@ -780,7 +780,7 @@ void V_DrawFilledBox(int x, int y, int w, int h, int c)
 
         for (int x1 = 0; x1 < w; ++x1)
         {
-            *buf1++ = c;
+            *buf1++ = static_cast<pixel_t>(c);
         }
 
         buf += SCREENWIDTH;
@@ -797,7 +797,7 @@ void V_DrawHorizLine(int x, int y, int w, int c)
 
     for (int x1 = 0; x1 < w; ++x1)
     {
-        *buf++ = c;
+        *buf++ = static_cast<pixel_t>(c);
     }
 }
 
@@ -807,7 +807,7 @@ void V_DrawVertLine(int x, int y, int h, int c)
 
     for (int y1 = 0; y1 < h; ++y1)
     {
-        *buf = c;
+        *buf = static_cast<pixel_t>(c);
         buf += SCREENWIDTH;
     }
 }

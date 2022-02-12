@@ -50,9 +50,7 @@ const char *TXT_DIRECTORY[] = { "__directory__", nullptr };
 
 static char *ExecReadOutput(char **argv)
 {
-    char *result;
-    int completed;
-    int pid, status, result_len;
+    int status;
     int pipefd[2];
 
     if (pipe(pipefd) != 0)
@@ -60,7 +58,7 @@ static char *ExecReadOutput(char **argv)
         return nullptr;
     }
 
-    pid = fork();
+    int pid = fork();
 
     if (pid == 0)
     {
@@ -75,22 +73,20 @@ static char *ExecReadOutput(char **argv)
     // Wait until the program has completed and (if it was successful)
     // a full line has been read.
 
-    result = nullptr;
-    result_len = 0;
-    completed = 0;
+    char *result = nullptr;
+    int result_len = 0;
+    int completed = 0;
 
     while (!completed
         || (status == 0 && (result == nullptr || strchr(result, '\n') == nullptr)))
     {
-        char buf[64];
-        int bytes;
-
         if (!completed && waitpid(pid, &status, WNOHANG) != 0)
         {
             completed = 1;
         }
 
-        bytes = read(pipefd[0], buf, sizeof(buf));
+        char buf[64];
+        ssize_t bytes = read(pipefd[0], buf, sizeof(buf));
 
         if (bytes < 0)
         {
@@ -102,14 +98,14 @@ static char *ExecReadOutput(char **argv)
         }
         else
         {
-            char *new_result = static_cast<char *>(realloc(result, static_cast<size_t>(result_len + bytes + 1)));
+            char *new_result = static_cast<char *>(realloc(result, (static_cast<size_t>(result_len + bytes + 1))));
             if (new_result == nullptr)
             {
                 break;
             }
             result = new_result;
             memcpy(result + result_len, buf, static_cast<size_t>(bytes));
-            result_len += bytes;
+            result_len += static_cast<int>(bytes);
             result[result_len] = '\0';
         }
 
@@ -584,26 +580,23 @@ int TXT_CanSelectFiles()
 //
 static char *ExpandExtension(const char *orig)
 {
-    int oldlen, newlen, i;
-    char *c, *newext = nullptr;
-
-    oldlen = strlen(orig);
-    newlen = oldlen * 4; // pathological case: 'w' => '[Ww]'
-    newext = static_cast<char *>(malloc(newlen+1));
+    size_t oldlen = strlen(orig);
+    size_t newlen = oldlen * 4; // pathological case: 'w' => '[Ww]'
+    char *newext = static_cast<char *>(malloc(static_cast<size_t>(newlen + 1)));
 
     if (newext == nullptr)
     {
         return nullptr;
     }
 
-    c = newext;
-    for (i = 0; i < oldlen; ++i)
+    char *c = newext;
+    for (size_t i = 0; i < oldlen; ++i)
     {
         if (isalpha(orig[i]))
         {
             *c++ = '[';
-            *c++ = tolower(orig[i]);
-            *c++ = toupper(orig[i]);
+            *c++ = static_cast<char>(tolower(orig[i]));
+            *c++ = static_cast<char>(toupper(orig[i]));
             *c++ = ']';
         }
         else

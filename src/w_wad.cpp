@@ -552,7 +552,7 @@ void W_GenerateHashTable()
     // Generate hash table
     if (numlumps > 0)
     {
-        lumphash = zmalloc<decltype(lumphash)>(sizeof(lumpindex_t) * numlumps, PU_STATIC, nullptr);
+        lumphash = zmalloc<decltype(lumphash)>(static_cast<int>(sizeof(lumpindex_t) * numlumps), PU_STATIC, nullptr);
 
         for (unsigned int i = 0; i < numlumps; ++i)
         {

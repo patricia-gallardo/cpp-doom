@@ -203,7 +203,7 @@ void OPL_Queue_AdjustCallbacks(opl_callback_queue_t *queue,
     for (unsigned int i = 0; i < queue->num_entries; ++i)
     {
         auto offset = queue->entries[i].time - time;
-        queue->entries[i].time = time + static_cast<uint64_t>(offset / factor);
+        queue->entries[i].time = time + static_cast<uint64_t>(static_cast<float>(offset) / factor);
     }
 }
 

@@ -1913,11 +1913,9 @@ void M_StartMessage(const char *string,
 //
 int M_StringWidth(const char *string)
 {
-    size_t i;
-    int    w = 0;
-    int    c;
+    int w = 0;
 
-    for (i = 0; i < strlen(string); i++)
+    for (size_t i = 0; i < strlen(string); i++)
     {
         // [crispy] correctly center colorized strings
         if (string[i] == cr_esc)
@@ -1929,7 +1927,7 @@ int M_StringWidth(const char *string)
             }
         }
 
-        c = toupper(string[i]) - HU_FONTSTART;
+        int c = toupper(string[i]) - HU_FONTSTART;
         if (c < 0 || c >= HU_FONTSIZE)
             w += 4;
         else
@@ -1945,12 +1943,9 @@ int M_StringWidth(const char *string)
 //
 int M_StringHeight(const char *string)
 {
-    size_t i;
-    int    h;
-    int    height = SHORT(hu_font[0]->height);
-
-    h = height;
-    for (i = 0; i < strlen(string); i++)
+    int height = SHORT(hu_font[0]->height);
+    int h = height;
+    for (size_t i = 0; i < strlen(string); i++)
         if (string[i] == '\n')
             h += height;
 
@@ -2823,11 +2818,11 @@ void M_Drawer()
 {
     static short x;
     static short y;
-    unsigned int i;
+    size_t i;
     unsigned int max;
     char         string[80];
     const char * name;
-    int          start;
+    size_t       start;
 
     inhelpscreens = false;
 

@@ -131,10 +131,7 @@ void I_SlamBlockHR(int x, int y, int w, int h, const uint8_t *src)
 
             // Reassemble the pixel value
 
-            *dest = (srcbits[0] << 0)
-                    | (srcbits[1] << 1)
-                    | (srcbits[2] << 2)
-                    | (srcbits[3] << 3);
+            *dest = static_cast<uint8_t>((srcbits[0] << 0) | (srcbits[1] << 1) | (srcbits[2] << 2) | (srcbits[3] << 3));
 
             // Next pixel!
 
@@ -207,7 +204,7 @@ void I_FadeToPaletteHR(const uint8_t *palette)
 
         for (i = 0; i < 16 * 3; ++i)
         {
-            tmppal[i] = (palette[i] * elapsed) / FADE_TIME;
+            tmppal[i] = static_cast<uint8_t>((palette[i] * elapsed) / FADE_TIME);
         }
 
         I_SetPaletteHR(tmppal);

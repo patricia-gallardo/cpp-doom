@@ -779,7 +779,7 @@ static const char *ReadHashPrefix(char *line)
 
     for (size_t i = 0; i < len; ++i)
     {
-        result[i] = tolower(line[i]);
+        result[i] = static_cast<char>(tolower(line[i]));
     }
     result[len] = '\0';
 

@@ -29,9 +29,7 @@ static deh_mapping_entry_t *GetMappingEntryByName(deh_context_t *context,
     deh_mapping_t *                                              mapping,
     char *                                                       name)
 {
-    int i;
-
-    for (i = 0; mapping->entries[i].name != nullptr; ++i)
+    for (int i = 0; mapping->entries[i].name != nullptr; ++i)
     {
         deh_mapping_entry_t *entry = &mapping->entries[i];
 
@@ -62,9 +60,7 @@ static void *GetStructField(void *structptr,
     deh_mapping_t *               mapping,
     deh_mapping_entry_t *         entry)
 {
-    unsigned int offset;
-
-    offset = reinterpret_cast<uint8_t *>(entry->location) - reinterpret_cast<uint8_t *>(mapping->base);
+    unsigned int offset = reinterpret_cast<uint8_t *>(entry->location) - reinterpret_cast<uint8_t *>(mapping->base);
 
     return reinterpret_cast<uint8_t *>(structptr) + offset;
 }
@@ -76,10 +72,7 @@ static void *GetStructField(void *structptr,
 bool DEH_SetMapping(deh_context_t *context, deh_mapping_t *mapping,
     void *structptr, char *name, int value)
 {
-    deh_mapping_entry_t *entry;
-    void *               location;
-
-    entry = GetMappingEntryByName(context, mapping, name);
+    deh_mapping_entry_t *entry = GetMappingEntryByName(context, mapping, name);
 
     if (entry == nullptr)
     {
@@ -94,7 +87,7 @@ bool DEH_SetMapping(deh_context_t *context, deh_mapping_t *mapping,
         return false;
     }
 
-    location = GetStructField(structptr, mapping, entry);
+    void *location = GetStructField(structptr, mapping, entry);
 
     //       printf("Setting %p::%s to %i (%i bytes)\n",
     //               structptr, name, value, entry->size);
@@ -104,13 +97,13 @@ bool DEH_SetMapping(deh_context_t *context, deh_mapping_t *mapping,
     switch (entry->size)
     {
     case 1:
-        *(reinterpret_cast<uint8_t *>(location)) = value;
+        *(reinterpret_cast<uint8_t *>(location)) = static_cast<uint8_t>(value);
         break;
     case 2:
-        *(reinterpret_cast<uint16_t *>(location)) = value;
+        *(reinterpret_cast<uint16_t *>(location)) = static_cast<uint16_t>(value);
         break;
     case 4:
-        *(reinterpret_cast<uint32_t *>(location)) = value;
+        *(reinterpret_cast<uint32_t *>(location)) = static_cast<uint32_t>(value);
         break;
     default:
         DEH_Error(context, "Unknown field type for '%s' (BUG)", name);

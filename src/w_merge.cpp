@@ -218,7 +218,7 @@ static sprite_frame_t *FindSpriteFrame(char *name, int frame)
 
     result = &sprite_frames[num_sprite_frames];
     memcpy(result->sprname, name, 4);
-    result->frame = frame;
+    result->frame = static_cast<char>(frame);
 
     for (i = 0; i < 8; ++i)
         result->angle_lumps[i] = nullptr;

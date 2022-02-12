@@ -52,7 +52,6 @@ static int TXT_MaxStringLength(int len)
 static void *DEH_TextStart(deh_context_t *context, char *line)
 {
     int fromlen, tolen;
-    int i;
 
     if (sscanf(line, "Text %i %i", &fromlen, &tolen) != 2)
     {
@@ -75,17 +74,17 @@ static void *DEH_TextStart(deh_context_t *context, char *line)
 
     // read in the "from" text
 
-    for (i = 0; i < fromlen; ++i)
+    for (int i = 0; i < fromlen; ++i)
     {
-        from_text[i] = DEH_GetChar(context);
+        from_text[i] = static_cast<char>(DEH_GetChar(context));
     }
     from_text[fromlen] = '\0';
 
     // read in the "to" text
 
-    for (i = 0; i < tolen; ++i)
+    for (int i = 0; i < tolen; ++i)
     {
-        to_text[i] = DEH_GetChar(context);
+        to_text[i] = static_cast<char>(DEH_GetChar(context));
     }
     to_text[tolen] = '\0';
 

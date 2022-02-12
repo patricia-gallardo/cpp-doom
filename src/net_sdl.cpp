@@ -343,7 +343,7 @@ net_addr_t *NET_SDL_ResolveAddress(const char *address)
         addr_port = port;
     }
 
-    result = SDLNet_ResolveHost(&ip, addr_hostname, addr_port);
+    result = SDLNet_ResolveHost(&ip, addr_hostname, static_cast<Uint16>(addr_port));
 
     free(addr_hostname);
 

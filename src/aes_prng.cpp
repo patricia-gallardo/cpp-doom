@@ -102,7 +102,7 @@ typedef struct
 
 static inline uint8_t get_byte(const uint32_t x, const unsigned n)
 {
-    return x >> (n << 3);
+    return static_cast<uint8_t>(x >> (n << 3));
 }
 
 static const uint32_t rco_tab[10] = { 1, 2, 4, 8, 16, 32, 64, 128, 27, 54 };

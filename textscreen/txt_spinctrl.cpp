@@ -48,10 +48,8 @@ static void FloatFormatString(float step, char *buf, size_t buf_len)
 static unsigned int IntWidth(int val)
 {
     char buf[25];
-
     TXT_snprintf(buf, sizeof(buf), "%i", val);
-
-    return strlen(buf);
+    return static_cast<unsigned int>(strlen(buf));
 }
 
 static unsigned int FloatWidth(float val, float step)

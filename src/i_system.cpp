@@ -166,10 +166,9 @@ uint8_t *I_ZoneBase(int *size)
 
 void I_PrintBanner(const char *msg)
 {
-    int i;
     int spaces = 35 - (strlen(msg) / 2);
 
-    for (i = 0; i < spaces; ++i)
+    for (int i = 0; i < spaces; ++i)
         putchar(' ');
 
     puts(msg);

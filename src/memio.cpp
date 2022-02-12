@@ -88,7 +88,7 @@ MEMFILE *mem_fopen_write()
     auto *file = zmalloc<MEMFILE *>(sizeof(MEMFILE), PU_STATIC, 0);
 
     file->alloced  = 1024;
-    file->buf      = zmalloc<unsigned char *>(file->alloced, PU_STATIC, 0);
+    file->buf      = zmalloc<unsigned char *>(static_cast<int>(file->alloced), PU_STATIC, 0);
     file->buflen   = 0;
     file->position = 0;
     file->mode     = MODE_WRITE;
@@ -100,8 +100,6 @@ MEMFILE *mem_fopen_write()
 
 size_t mem_fwrite(const void *ptr, size_t size, size_t nmemb, MEMFILE *stream)
 {
-    size_t bytes;
-
     if (stream->mode != MODE_WRITE)
     {
         return static_cast<size_t>(-1);
@@ -110,11 +108,11 @@ size_t mem_fwrite(const void *ptr, size_t size, size_t nmemb, MEMFILE *stream)
     // More bytes than can fit in the buffer?
     // If so, reallocate bigger.
 
-    bytes = size * nmemb;
+    size_t bytes = size * nmemb;
 
     while (bytes > stream->alloced - stream->position)
     {
-        auto *newbuf = zmalloc<unsigned char *>(stream->alloced * 2, PU_STATIC, 0);
+        auto *newbuf = zmalloc<unsigned char *>(static_cast<int>(stream->alloced * 2), PU_STATIC, 0);
         memcpy(newbuf, stream->buf, stream->alloced);
         Z_Free(stream->buf);
         stream->buf = newbuf;
@@ -155,7 +153,7 @@ long mem_ftell(MEMFILE *stream)
 
 int mem_fseek(MEMFILE *stream, signed long position, mem_rel_t whence)
 {
-    unsigned int newpos;
+    unsigned int newpos = 0;
 
     switch (whence)
     {
