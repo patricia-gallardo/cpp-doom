@@ -953,7 +953,7 @@ static void SCSaveGame(int option)
         *(ptr + 1) = 0;
         SlotStatus[option]++;
         currentSlot = option;
-        slotptr = ptr - SlotText[option];
+        slotptr = static_cast<int>(ptr - SlotText[option]);
         return;
     }
     else
@@ -1707,7 +1707,7 @@ bool MN_Responder(event_t * event)
              || charTyped == ',' || charTyped == '.' || charTyped == '-'
              || charTyped == '!')
             {
-                *textBuffer++ = charTyped;
+                *textBuffer++ = static_cast<char>(charTyped);
                 *textBuffer = ASCII_CURSOR;
                 slotptr++;
                 return (true);

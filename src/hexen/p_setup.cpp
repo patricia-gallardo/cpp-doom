@@ -392,7 +392,7 @@ void P_LoadThings(int lump)
     {
         playerCount += playeringame[i];
     }
-    deathSpotsCount = deathmatch_p - deathmatchstarts;
+    deathSpotsCount = static_cast<int>(deathmatch_p - deathmatchstarts);
     if (deathSpotsCount < playerCount)
     {
         I_Error("P_LoadThings: Player count (%d) exceeds deathmatch "
@@ -559,7 +559,7 @@ void P_LoadBlockMap(int lump)
 
     // clear out mobj chains
 
-    count = sizeof(*blocklinks) * bmapwidth * bmapheight;
+    count = static_cast<int>(sizeof(*blocklinks) * bmapwidth * bmapheight);
     blocklinks = zmalloc<mobj_t **>(count, PU_LEVEL, 0);
     memset(blocklinks, 0, count);
 }

@@ -586,7 +586,7 @@ bool HU_Responder(event_t *ev)
     }
     else
     {
-        c = ev->data3;
+        c = static_cast<unsigned char>(ev->data3);
         // send a macro
         if (altdown)
         {
@@ -647,7 +647,7 @@ bool HU_Responder(event_t *ev)
                     else
                     {
                         eatkey = true;
-                        HU_queueChatChar(i+1);
+                        HU_queueChatChar(static_cast<char>(i + 1));
                         DEH_snprintf(lastmessage, sizeof(lastmessage),
                             "Talking to: %c", '1' + i);
                         plr->message = lastmessage;

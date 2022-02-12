@@ -50,9 +50,9 @@ void T_FireFlicker (fireflicker_t* flick)
     amount = (P_Random() & 3) * 8; // [STRIFE] 16 -> 8
 
     if (flick->sector->lightlevel - amount < flick->minlight)
-        flick->sector->lightlevel = flick->minlight;
+        flick->sector->lightlevel = static_cast<short>(flick->minlight);
     else
-        flick->sector->lightlevel = flick->maxlight - amount;
+        flick->sector->lightlevel = static_cast<short>(flick->maxlight - amount);
 
     // [STRIFE] flicker count made random!
     flick->count = (P_Random() & 3) + 1;
@@ -105,12 +105,12 @@ void T_LightFlash (lightflash_t* flash)
 
     if (flash->sector->lightlevel == flash->maxlight)
     {
-        flash->sector->lightlevel = flash->minlight;
+        flash->sector->lightlevel = static_cast<short>(flash->minlight);
         flash->count = (P_Random()&flash->mintime)+1;
     }
     else
     {
-        flash->sector->lightlevel = flash->maxlight;
+        flash->sector->lightlevel = static_cast<short>(flash->maxlight);
         flash->count = (P_Random()&flash->maxtime)+1;
     }
 }
@@ -165,12 +165,12 @@ void T_StrobeFlash (strobe_t*           flash)
 
     if (flash->sector->lightlevel == flash->minlight)
     {
-        flash-> sector->lightlevel = flash->maxlight;
+        flash-> sector->lightlevel = static_cast<short>(flash->maxlight);
         flash->count = flash->brighttime;
     }
     else
     {
-        flash-> sector->lightlevel = flash->minlight;
+        flash-> sector->lightlevel = static_cast<short>(flash->minlight);
         flash->count =flash->darktime;
     }
 }
@@ -269,7 +269,7 @@ void EV_TurnTagLightsOff(line_t* line)
                 if (tsec->lightlevel < min)
                     min = tsec->lightlevel;
             }
-            sector->lightlevel = min;
+            sector->lightlevel = static_cast<short>(min);
         }
     }
 }
@@ -314,7 +314,7 @@ EV_LightTurnOn
                         bright = temp->lightlevel;
                 }
             }
-            sector-> lightlevel = bright;
+            sector-> lightlevel = static_cast<short>(bright);
         }
     }
 }

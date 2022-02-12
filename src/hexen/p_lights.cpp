@@ -36,9 +36,7 @@ void T_Light(light_t * light)
     switch (light->type)
     {
         case LITE_FADE:
-            light->sector->lightlevel =
-                ((light->sector->lightlevel << FRACBITS) +
-                 light->value2) >> FRACBITS;
+            light->sector->lightlevel = static_cast<short>(((light->sector->lightlevel << FRACBITS) + light->value2) >> FRACBITS);
             if (light->tics2 == 1)
             {
                 if (light->sector->lightlevel >= light->value1)
@@ -54,9 +52,7 @@ void T_Light(light_t * light)
             }
             break;
         case LITE_GLOW:
-            light->sector->lightlevel =
-                ((light->sector->lightlevel << FRACBITS) +
-                 light->tics1) >> FRACBITS;
+            light->sector->lightlevel = static_cast<short>(((light->sector->lightlevel << FRACBITS) + light->tics1) >> FRACBITS);
             if (light->tics2 == 1)
             {
                 if (light->sector->lightlevel >= light->value1)
@@ -152,14 +148,14 @@ bool EV_SpawnLight(line_t *, uint8_t *arg, lighttype_t type)
         switch (type)
         {
             case LITE_RAISEBYVALUE:
-                sec->lightlevel += arg1;
+                sec->lightlevel += static_cast<short>(arg1);
                 if (sec->lightlevel > 255)
                 {
                     sec->lightlevel = 255;
                 }
                 break;
             case LITE_LOWERBYVALUE:
-                sec->lightlevel -= arg1;
+                sec->lightlevel -= static_cast<short>(arg1);
                 if (sec->lightlevel < 0)
                 {
                     sec->lightlevel = 0;

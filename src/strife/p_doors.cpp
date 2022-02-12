@@ -1136,17 +1136,13 @@ void T_SlidingDoor(slidedoor_t* door)
                 // IF DOOR NEEDS TO ANIMATE TO NEXT FRAME...
                 door->timer = SWAITTICS;
 
-                sides[door->line2->sidenum[0]].midtexture =
-                    slideFrames[door->whichDoorIndex].frames[door->frame];
+                sides[door->line2->sidenum[0]].midtexture = static_cast<short>(slideFrames[door->whichDoorIndex].frames[door->frame]);
 
-                sides[door->line2->sidenum[1]].midtexture =
-                    slideFrames[door->whichDoorIndex].frames[door->frame];
+                sides[door->line2->sidenum[1]].midtexture = static_cast<short>(slideFrames[door->whichDoorIndex].frames[door->frame]);
 
-                sides[door->line1->sidenum[0]].midtexture =
-                    slideFrames[door->whichDoorIndex].frames[door->frame];
+                sides[door->line1->sidenum[0]].midtexture = static_cast<short>(slideFrames[door->whichDoorIndex].frames[door->frame]);
 
-                sides[door->line1->sidenum[1]].midtexture =
-                    slideFrames[door->whichDoorIndex].frames[door->frame];
+                sides[door->line1->sidenum[1]].midtexture = static_cast<short>(slideFrames[door->whichDoorIndex].frames[door->frame]);
             }
         }
 
@@ -1215,17 +1211,13 @@ void T_SlidingDoor(slidedoor_t* door)
                 // IF DOOR NEEDS TO ANIMATE TO NEXT FRAME...
                 door->timer = SWAITTICS;
 
-                sides[door->line2->sidenum[0]].midtexture =
-                    slideFrames[door->whichDoorIndex].frames[door->frame];
+                sides[door->line2->sidenum[0]].midtexture = static_cast<short>(slideFrames[door->whichDoorIndex].frames[door->frame]);
 
-                sides[door->line2->sidenum[1]].midtexture =
-                    slideFrames[door->whichDoorIndex].frames[door->frame];
+                sides[door->line2->sidenum[1]].midtexture = static_cast<short>(slideFrames[door->whichDoorIndex].frames[door->frame]);
 
-                sides[door->line1->sidenum[0]].midtexture =
-                    slideFrames[door->whichDoorIndex].frames[door->frame];
+                sides[door->line1->sidenum[0]].midtexture = static_cast<short>(slideFrames[door->whichDoorIndex].frames[door->frame]);
 
-                sides[door->line1->sidenum[1]].midtexture =
-                    slideFrames[door->whichDoorIndex].frames[door->frame];
+                sides[door->line1->sidenum[1]].midtexture = static_cast<short>(slideFrames[door->whichDoorIndex].frames[door->frame]);
             }
         }
 

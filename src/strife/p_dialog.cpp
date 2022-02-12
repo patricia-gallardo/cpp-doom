@@ -1116,7 +1116,7 @@ static void P_DialogDrawer()
         // draw divider
         M_WriteText(42, finaly - 6, DEH_String("______________________________"));
 
-        dialogmenu.y = finaly + 6;
+        dialogmenu.y = static_cast<short>(finaly + 6);
         y = 0;
 
         // draw the menu items
@@ -1367,7 +1367,7 @@ void P_DialogStart(player_t *player)
     }
 
     // set number of choices to menu
-    dialogmenu.numitems = i + 1;
+    dialogmenu.numitems = static_cast<short>(i + 1);
 
     rnd = M_Random() % 3;
 

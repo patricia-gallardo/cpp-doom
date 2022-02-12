@@ -232,7 +232,7 @@ void T_MoveFloor(floormove_t* floor)
 	    switch(floor->type)
 	    {
 	      case donutRaise:
-		floor->sector->special = floor->newspecial;
+		floor->sector->special = static_cast<short>(floor->newspecial);
 		floor->sector->floorpic = floor->texture;
 	      default:
 		break;
@@ -243,7 +243,7 @@ void T_MoveFloor(floormove_t* floor)
 	    switch(floor->type)
 	    {
 	      case lowerAndChange:
-		floor->sector->special = floor->newspecial;
+		floor->sector->special = static_cast<short>(floor->newspecial);
 		floor->sector->floorpic = floor->texture;
 	      default:
 		break;
@@ -547,13 +547,13 @@ EV_BuildStairs
                     continue;
 
                 tsec = (sec->lines[i])->frontsector;
-                newsecnum = tsec-sectors;
+                newsecnum = static_cast<int>(tsec-sectors);
 
                 if (secnum != newsecnum)
                     continue;
 
                 tsec = (sec->lines[i])->backsector;
-                newsecnum = tsec - sectors;
+                newsecnum = static_cast<int>(tsec - sectors);
 
                 if (tsec->floorpic != texture)
                     continue;

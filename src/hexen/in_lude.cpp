@@ -196,7 +196,7 @@ static void InitStats()
                 W_ReadLump(msgLump, ClusterMessage);
                 ClusterMessage[msgSize] = 0;    // Append terminator
                 HubText = ClusterMessage;
-                HubCount = strlen(HubText) * TEXTSPEED + TEXTWAIT;
+                HubCount = static_cast<int>(strlen(HubText) * TEXTSPEED + TEXTWAIT);
                 S_StartSongName("hub", true);
             }
         }

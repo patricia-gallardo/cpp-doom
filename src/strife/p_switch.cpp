@@ -290,7 +290,7 @@ void P_ChangeSwitchTexture(line_t* line, int useAgain)
 
             // haleyjd 20141026: [STRIFE]: Rogue fixed wrong sound origin
             S_StartSound(&line->frontsector->soundorg, sound);
-            sides[line->sidenum[0]].toptexture = switchlist[i^1];
+            sides[line->sidenum[0]].toptexture = static_cast<short>(switchlist[i ^ 1]);
 
             if(useAgain)
                 P_StartButton(line,top,switchlist[i],BUTTONTIME);
@@ -310,12 +310,12 @@ void P_ChangeSwitchTexture(line_t* line, int useAgain)
 
                 // haleyjd 20141026: [STRIFE]: Rogue fixed wrong sound origin
                 S_StartSound(&line->frontsector->soundorg, sound);
-                sides[line->sidenum[0]].midtexture = switchlist[i^1];
+                sides[line->sidenum[0]].midtexture = static_cast<short>(switchlist[i ^ 1]);
 
                 // villsa [STRIFE] affect second side of line
                 // BUG: will crash if 1S line is marked with TWOSIDED flag!
                 if(line->flags & ML_TWOSIDED)
-                    sides[line->sidenum[1]].midtexture = switchlist[i^1];
+                    sides[line->sidenum[1]].midtexture = static_cast<short>(switchlist[i ^ 1]);
 
                 if(useAgain)
                     P_StartButton(line, middle,switchlist[i],BUTTONTIME);
@@ -353,7 +353,7 @@ void P_ChangeSwitchTexture(line_t* line, int useAgain)
 
                     // haleyjd 20141026: [STRIFE]: Rogue fixed wrong sound origin
                     S_StartSound(&line->frontsector->soundorg, sound);
-                    sides[line->sidenum[0]].bottomtexture = switchlist[i^1];
+                    sides[line->sidenum[0]].bottomtexture = static_cast<short>(switchlist[i ^ 1]);
 
                     if(useAgain)
                         P_StartButton(line, bottom,switchlist[i],BUTTONTIME);

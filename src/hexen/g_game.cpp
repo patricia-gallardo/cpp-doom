@@ -293,13 +293,13 @@ void G_BuildTiccmd(ticcmd_t *cmd, int maketic)
     else
     {
         if (gamekeydown[key_right])
-            cmd->angleturn -= angleturn[tspeed];
+            cmd->angleturn -= static_cast<short>(angleturn[tspeed]);
         if (gamekeydown[key_left])
-            cmd->angleturn += angleturn[tspeed];
+            cmd->angleturn += static_cast<short>(angleturn[tspeed]);
         if (joyxmove > 0)
-            cmd->angleturn -= angleturn[tspeed];
+            cmd->angleturn -= static_cast<short>(angleturn[tspeed]);
         if (joyxmove < 0)
-            cmd->angleturn += angleturn[tspeed];
+            cmd->angleturn += static_cast<short>(angleturn[tspeed]);
     }
 
     if (gamekeydown[key_up])
@@ -383,9 +383,7 @@ void G_BuildTiccmd(ticcmd_t *cmd, int maketic)
             }
             else if (usearti)
             {
-                cmd->arti |=
-                    players[consoleplayer].inventory[inv_ptr].
-                    type & AFLAG_MASK;
+                cmd->arti |= static_cast<uint8_t>(players[consoleplayer].inventory[inv_ptr].type & AFLAG_MASK);
                 usearti = false;
             }
         }
@@ -484,7 +482,7 @@ void G_BuildTiccmd(ticcmd_t *cmd, int maketic)
         } while (weapon != start_i && !players[consoleplayer].weaponowned[weapon]);
 
         cmd->buttons |= BT_CHANGE;
-        cmd->buttons |= weapon << BT_WEAPONSHIFT;
+        cmd->buttons |= static_cast<uint8_t>(weapon << BT_WEAPONSHIFT);
     }
     else
     {
@@ -495,7 +493,7 @@ void G_BuildTiccmd(ticcmd_t *cmd, int maketic)
             if (gamekeydown[key])
             {
                 cmd->buttons |= BT_CHANGE; 
-                cmd->buttons |= i<<BT_WEAPONSHIFT; 
+                cmd->buttons |= static_cast<uint8_t>(i<<BT_WEAPONSHIFT);
                 break; 
             }
         }
@@ -579,7 +577,7 @@ void G_BuildTiccmd(ticcmd_t *cmd, int maketic)
     }
     else
     {
-        cmd->angleturn -= mousex * 0x8;
+        cmd->angleturn -= static_cast<short>(mousex * 0x8);
     }
 
     if (mousex == 0)
@@ -613,21 +611,21 @@ void G_BuildTiccmd(ticcmd_t *cmd, int maketic)
         forward = (3 * forward) >> 1;
         side = (3 * side) >> 1;
     }
-    cmd->forwardmove += forward;
-    cmd->sidemove += side;
+    cmd->forwardmove += static_cast<signed char>(forward);
+    cmd->sidemove += static_cast<signed char>(side);
     if (players[consoleplayer].playerstate == PST_LIVE)
     {
         if (look < 0)
         {
             look += 16;
         }
-        cmd->lookfly = look;
+        cmd->lookfly = static_cast<uint8_t>(look);
     }
     if (flyheight_local < 0)
     {
         flyheight_local += 16;
     }
-    cmd->lookfly |= flyheight_local << 4;
+    cmd->lookfly |= static_cast<uint8_t>(flyheight_local << 4);
 
 //
 // special buttons
@@ -641,8 +639,7 @@ void G_BuildTiccmd(ticcmd_t *cmd, int maketic)
     if (sendsave)
     {
         sendsave = false;
-        cmd->buttons =
-            BT_SPECIAL | BTS_SAVEGAME | (savegameslot << BTS_SAVESHIFT);
+        cmd->buttons = static_cast<uint8_t>(BT_SPECIAL | BTS_SAVEGAME | (savegameslot << BTS_SAVESHIFT));
     }
 
     if (lowres_turn)
@@ -657,7 +654,7 @@ void G_BuildTiccmd(ticcmd_t *cmd, int maketic)
             // round angleturn to the nearest 256 unit boundary
             // for recording demos with single byte values for turn
 
-            cmd->angleturn = (desired_angleturn + 128) & 0xff00;
+            cmd->angleturn = static_cast<short>((desired_angleturn + 128) & 0xff00);
 
             // Carry forward the error from the reduced resolution to the
             // next tic, so that successive small movements can accumulate.
@@ -668,7 +665,7 @@ void G_BuildTiccmd(ticcmd_t *cmd, int maketic)
         {
             // truncate angleturn to the nearest 256 boundary
             // for recording demos with single byte values for turn
-            cmd->angleturn &= 0xff00;
+            cmd->angleturn &= static_cast<short>(0xff00);
         }
     }
 }
@@ -1033,9 +1030,9 @@ void G_Ticker()
                             cmd->consistancy, consistancy[i][buf]);
                 }
                 if (players[i].mo)
-                    consistancy[i][buf] = players[i].mo->x;
+                    consistancy[i][buf] = static_cast<uint8_t>(players[i].mo->x);
                 else
-                    consistancy[i][buf] = rndindex;
+                    consistancy[i][buf] = static_cast<uint8_t>(rndindex);
             }
         }
 
@@ -1303,21 +1300,18 @@ bool G_CheckSpot(int playernum, mapthing_t * mthing)
 
 void G_DeathMatchSpawnPlayer(int playernum)
 {
-    int i, j;
-    int selections;
-
-    selections = deathmatch_p - deathmatchstarts;
+    int selections = static_cast<int>(deathmatch_p - deathmatchstarts);
 
     // This check has been moved to p_setup.c:P_LoadThings()
     //if (selections < 8)
     //      I_Error ("Only %i deathmatch spots, 8 required", selections);
 
-    for (j = 0; j < 20; j++)
+    for (int j = 0; j < 20; j++)
     {
-        i = P_Random() % selections;
+        int i = P_Random() % selections;
         if (G_CheckSpot(playernum, &deathmatchstarts[i]))
         {
-            deathmatchstarts[i].type = playernum + 1;
+            deathmatchstarts[i].type = static_cast<short>(playernum + 1);
             P_SpawnPlayer(&deathmatchstarts[i]);
             return;
         }
@@ -1391,11 +1385,11 @@ void G_DoReborn(int playernum)
                 {               // Found an open start spot
 
                     // Fake as other player
-                    playerstarts[RebornPosition][i].type = playernum + 1;
+                    playerstarts[RebornPosition][i].type = static_cast<short>(playernum + 1);
                     P_SpawnPlayer(&playerstarts[RebornPosition][i]);
 
                     // Restore proper player type
-                    playerstarts[RebornPosition][i].type = i + 1;
+                    playerstarts[RebornPosition][i].type = static_cast<short>(i + 1);
 
                     foundSpot = true;
                     break;
@@ -1849,7 +1843,7 @@ void G_ReadDemoTiccmd(ticcmd_t * cmd)
     if (longtics)
     {
         cmd->angleturn = *demo_p++;
-        cmd->angleturn |= (*demo_p++) << 8;
+        cmd->angleturn |= static_cast<short>((*demo_p++) << 8);
     }
     else
     {
@@ -1865,20 +1859,15 @@ void G_ReadDemoTiccmd(ticcmd_t * cmd)
 
 static void IncreaseDemoBuffer()
 {
-    int current_length;
-    uint8_t *new_demobuffer;
-    uint8_t *new_demop;
-    int new_length;
-
     // Find the current size
 
-    current_length = demoend - demobuffer;
+    int current_length = static_cast<int>(demoend - demobuffer);
 
     // Generate a new buffer twice the size
-    new_length = current_length * 2;
+    int new_length = current_length * 2;
 
-    new_demobuffer = zmalloc<uint8_t *>(new_length, PU_STATIC, 0);
-    new_demop = new_demobuffer + (demo_p - demobuffer);
+    uint8_t *new_demobuffer = zmalloc<uint8_t *>(new_length, PU_STATIC, 0);
+    uint8_t *new_demop = new_demobuffer + (demo_p - demobuffer);
 
     // Copy over the old data
 
@@ -1909,12 +1898,12 @@ void G_WriteDemoTiccmd(ticcmd_t * cmd)
 
     if (longtics)
     {
-        *demo_p++ = (cmd->angleturn & 0xff);
-        *demo_p++ = (cmd->angleturn >> 8) & 0xff;
+        *demo_p++ = static_cast<uint8_t>(cmd->angleturn & 0xff);
+        *demo_p++ = static_cast<uint8_t>((cmd->angleturn >> 8) & 0xff);
     }
     else
     {
-        *demo_p++ = cmd->angleturn >> 8;
+        *demo_p++ = static_cast<uint8_t>(cmd->angleturn >> 8);
     }
 
     *demo_p++ = cmd->buttons;
@@ -2003,8 +1992,8 @@ void G_RecordDemo(skill_t skill, int, int episode, int map,
 
     demo_p = demobuffer;
     *demo_p++ = skill;
-    *demo_p++ = episode;
-    *demo_p++ = map;
+    *demo_p++ = static_cast<uint8_t>(episode);
+    *demo_p++ = static_cast<uint8_t>(map);
 
     // Write special parameter bits onto player one byte.
     // This aligns with vvHeretic demo usage. Hexen demo support has no
@@ -2166,7 +2155,7 @@ bool G_CheckDemoStatus()
         float fps;
         endtime = I_GetTime();
         realtics = endtime - starttime;
-        fps = (static_cast<float>(gametic) * TICRATE) / realtics;
+        fps = (static_cast<float>(gametic) * TICRATE) / static_cast<float>(realtics);
         I_Error("timed %i gametics in %i realtics (%f fps)",
                 gametic, realtics, fps);
     }
@@ -2185,7 +2174,7 @@ bool G_CheckDemoStatus()
     if (demorecording)
     {
         *demo_p++ = DEMOMARKER;
-        M_WriteFile(demoname, demobuffer, demo_p - demobuffer);
+        M_WriteFile(demoname, demobuffer, static_cast<int>(demo_p - demobuffer));
         Z_Free(demobuffer);
         demorecording = false;
         I_Error("Demo %s recorded", demoname);

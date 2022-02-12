@@ -285,10 +285,8 @@ void SN_InitSequenceScript()
         }
         else if (SC_Compare(SS_STRING_END))
         {
-            int dataSize;
-
             *tempDataPtr++ = SS_CMD_END;
-            dataSize = (tempDataPtr - tempDataStart) * sizeof(int);
+            int dataSize = static_cast<int>((tempDataPtr - tempDataStart) * sizeof(int));
             SequenceData[i] = zmalloc<int *>(dataSize, PU_STATIC, nullptr);
             memcpy(SequenceData[i], tempDataStart, dataSize);
             Z_Free(tempDataStart);
@@ -502,7 +500,7 @@ void SN_StopAllSequences()
 
 int SN_GetSequenceOffset(int sequence, int *sequencePtr)
 {
-    return (sequencePtr -
+    return static_cast<int>(sequencePtr -
             SequenceData[SequenceTranslate[sequence].scriptNum]);
 }
 

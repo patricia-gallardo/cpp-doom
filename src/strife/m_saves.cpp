@@ -305,7 +305,7 @@ void M_ReadMisObj()
 //
 void *M_Calloc(size_t n1, size_t n2)
 {
-    return (n1 *= n2) ? memset(Z_Malloc(n1, PU_STATIC, nullptr), 0, n1) : nullptr;
+    return (n1 *= n2) ? memset(Z_Malloc(static_cast<int>(n1), PU_STATIC, nullptr), 0, n1) : nullptr;
 }
 
 //
@@ -357,7 +357,7 @@ int M_StringAlloc(char **str, int numstrs, size_t extra, const char *str1, ...)
 
     *str = reinterpret_cast<char *>(M_Calloc(1, len));
 
-    return len;
+    return static_cast<int>(len);
 }
 
 //

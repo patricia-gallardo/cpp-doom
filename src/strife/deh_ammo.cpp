@@ -54,7 +54,7 @@ static void DEH_AmmoParseLine(deh_context_t *context, char *line, void *tag)
     if (tag == nullptr)
         return;
 
-    ammo_number = (reinterpret_cast<int *>(tag)) - maxammo;
+    ammo_number = static_cast<int>((reinterpret_cast<int *>(tag)) - maxammo);
 
     // Parse the assignment
 

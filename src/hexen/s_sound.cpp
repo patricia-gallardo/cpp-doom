@@ -853,7 +853,7 @@ void S_GetChannelInfo(SoundInfo_t * s)
     {
         c = &s->chan[i];
         c->id = Channel[i].sound_id;
-        c->priority = Channel[i].priority;
+        c->priority = static_cast<unsigned short>(Channel[i].priority);
         c->name = S_sfx[c->id].name;
         c->mo = Channel[i].mo;
 

@@ -616,7 +616,7 @@ void M_DoNameChar(int choice)
     ClearTmp();
     G_WriteSaveName(choice, savegamestrings[choice]);
     quickSaveSlot = choice;  
-    SaveDef.lastOn = choice;
+    SaveDef.lastOn = static_cast<short>(choice);
     ClearSlot();
     FromCurr();
     
@@ -2405,7 +2405,7 @@ void M_Ticker ()
 {
     if (--cursorAnimCounter <= 0)
     {
-        whichCursor = (whichCursor + 1) % 8;
+        whichCursor = static_cast<short>( (whichCursor + 1) % 8);
         cursorAnimCounter = 5;
     }
 }

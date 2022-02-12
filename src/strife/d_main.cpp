@@ -1312,27 +1312,27 @@ static void D_InitIntroSequence()
         D_DrawText(title, TXT_COLOR_GREEN, TXT_COLOR_BLACK);
 
         DEH_snprintf(string, sizeof(string), "Rogue Entertainment");
-        D_SetCursorPosition(40 - strlen(string) / 2, 5);
+        D_SetCursorPosition(static_cast<int>(40 - strlen(string) / 2), 5);
         D_DrawText(string, TXT_COLOR_BLUE, TXT_COLOR_GREEN);
 
         DEH_snprintf(string, sizeof(string), "and");
-        D_SetCursorPosition(40 - strlen(string) / 2, 7);
+        D_SetCursorPosition(static_cast<int>(40 - strlen(string) / 2), 7);
         D_DrawText(string, TXT_COLOR_BLUE, TXT_COLOR_GREEN);
 
         DEH_snprintf(string, sizeof(string), "Velocity Games");
-        D_SetCursorPosition(40 - strlen(string) / 2, 9);
+        D_SetCursorPosition(static_cast<int>(40 - strlen(string) / 2), 9);
         D_DrawText(string, TXT_COLOR_BLUE, TXT_COLOR_GREEN);
 
         DEH_snprintf(string, sizeof(string), "present");
-        D_SetCursorPosition(40 - strlen(string) / 2, 11);
+        D_SetCursorPosition(static_cast<int>(40 - strlen(string) / 2), 11);
         D_DrawText(string, TXT_COLOR_BLUE, TXT_COLOR_GREEN);
 
         DEH_snprintf(string, sizeof(string), "S T R I F E");
-        D_SetCursorPosition(40 - strlen(string) / 2, 14);
+        D_SetCursorPosition(static_cast<int>(40 - strlen(string) / 2), 14);
         D_DrawText(string, TXT_COLOR_BLUE, TXT_COLOR_GREEN);
 
         DEH_snprintf(string, sizeof(string), "Loading...");
-        D_SetCursorPosition(40 - strlen(string) / 2, 17);
+        D_SetCursorPosition(static_cast<int>(40 - strlen(string) / 2), 17);
         D_DrawText(string, TXT_COLOR_BLUE, TXT_COLOR_GREEN);
 
         DEH_snprintf(string, sizeof(string),

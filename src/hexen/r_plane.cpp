@@ -203,7 +203,7 @@ void R_ClearPlanes()
     // Opening / clipping determination
     for (i = 0; i < viewwidth; i++)
     {
-        floorclip[i] = viewheight;
+        floorclip[i] = static_cast<short>(viewheight);
         ceilingclip[i] = -1;
     }
 

@@ -300,7 +300,7 @@ bool SC_GetNumber()
     CheckOpen();
     if (SC_GetString())
     {
-        sc_Number = strtol(sc_String, &stopper, 0);
+        sc_Number = static_cast<int>(strtol(sc_String, &stopper, 0));
         if (*stopper != 0)
         {
             I_Error("SC_GetNumber: Bad numeric constant \"%s\".\n"

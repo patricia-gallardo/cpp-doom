@@ -575,7 +575,7 @@ P_TryMove
             if (side != oldside)
             {
                 if (ld->special)
-                    P_CrossSpecialLine (ld-lines, oldside, thing);
+                    P_CrossSpecialLine (static_cast<int>(ld-lines), oldside, thing);
             }
         }
     }
@@ -1621,7 +1621,7 @@ static void SpechitOverrun(line_t *ld)
     
     // Calculate address used in doom2.exe
 
-    addr = baseaddr + (ld - lines) * 0x3E;
+    addr = static_cast<unsigned int>(baseaddr + (ld - lines) * 0x3E);
 
     switch(numspechit)
     {

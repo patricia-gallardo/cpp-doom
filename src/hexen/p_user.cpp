@@ -973,7 +973,7 @@ void P_ArtiTele(player_t * player)
 
     if (deathmatch)
     {
-        selections = deathmatch_p - deathmatchstarts;
+        selections = static_cast<int>(deathmatch_p - deathmatchstarts);
         i = P_Random() % selections;
         destX = deathmatchstarts[i].x << FRACBITS;
         destY = deathmatchstarts[i].y << FRACBITS;
@@ -1038,7 +1038,7 @@ void P_TeleportToDeathmatchStarts(mobj_t * victim)
     fixed_t destX, destY;
     angle_t destAngle;
 
-    selections = deathmatch_p - deathmatchstarts;
+    selections = static_cast<int>(deathmatch_p - deathmatchstarts);
     if (selections)
     {
         i = P_Random() % selections;

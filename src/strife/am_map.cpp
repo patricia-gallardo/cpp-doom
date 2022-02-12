@@ -713,7 +713,7 @@ AM_Responder
             rc = false;
         }
 
-	if (!deathmatch && cht_CheckCheat(&cheat_amap, ev->data2))
+	if (!deathmatch && cht_CheckCheat(&cheat_amap, static_cast<char>(ev->data2)))
 	{
 	    rc = false;
 	    cheating = (cheating+1) % 3;
@@ -1023,6 +1023,9 @@ AM_drawFline
 	return;
     }
 
+#pragma GCC diagnostic push
+#pragma GCC diagnostic ignored "-Wconversion"
+
 #define PUTDOT(xx,yy,cc) fb[(yy)*f_w+(xx)]=(cc)
 
     dx = fl->b.x - fl->a.x;
@@ -1068,6 +1071,7 @@ AM_drawFline
 	    d += ax;
 	}
     }
+#pragma GCC diagnostic pop
 }
 
 

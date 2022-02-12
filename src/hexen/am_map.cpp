@@ -255,16 +255,16 @@ void AM_changeWindowLoc()
     // but I believe we need to do this here to stop the background moving
     // when we reach the map boundaries. (In the released source it's done
     // in AM_clearFB).
-    mapxstart += MTOF(m_paninc.x+FRACUNIT/2);
-    mapystart -= MTOF(m_paninc.y+FRACUNIT/2);
+    mapxstart += static_cast<short>(MTOF(m_paninc.x+FRACUNIT/2));
+    mapystart -= static_cast<short>(MTOF(m_paninc.y+FRACUNIT/2));
     if(mapxstart >= (finit_width >> crispy->hires))
-        mapxstart -= (finit_width >> crispy->hires);
+        mapxstart -= static_cast<short>(finit_width >> crispy->hires);
     if(mapxstart < 0)
-        mapxstart += (finit_width >> crispy->hires);
+        mapxstart += static_cast<short>(finit_width >> crispy->hires);
     if(mapystart >= (finit_height >> crispy->hires))
-        mapystart -= (finit_height >> crispy->hires);
+        mapystart -= static_cast<short>(finit_height >> crispy->hires);
     if(mapystart < 0)
-        mapystart += (finit_height >> crispy->hires);
+        mapystart += static_cast<short>(finit_height >> crispy->hires);
     // - end of code that was commented-out
 
     m_x2 = m_x + m_w;
@@ -697,17 +697,17 @@ void AM_clearFB(int)
         oldplr.y = plr->mo->y;
 //              if(f_oldloc.x == INT_MAX) //to eliminate an error when the user first
 //                      dmapx=0;  //goes into the automap.
-        mapxstart += dmapx >> 1;
-        mapystart += dmapy >> 1;
+        mapxstart += static_cast<short>(dmapx >> 1);
+        mapystart += static_cast<short>(dmapy >> 1);
 
         while (mapxstart >= (finit_width >> crispy->hires))
-            mapxstart -= (finit_width >> crispy->hires);
+            mapxstart -= static_cast<short>(finit_width >> crispy->hires);
         while (mapxstart < 0)
-            mapxstart += (finit_width >> crispy->hires);
+            mapxstart += static_cast<short>(finit_width >> crispy->hires);
         while (mapystart >= (finit_height >> crispy->hires))
-            mapystart -= (finit_height >> crispy->hires);
+            mapystart -= static_cast<short>(finit_height >> crispy->hires);
         while (mapystart < 0)
-            mapystart += (finit_height >> crispy->hires);
+            mapystart += static_cast<short>(finit_height >> crispy->hires);
     }
     else
     {

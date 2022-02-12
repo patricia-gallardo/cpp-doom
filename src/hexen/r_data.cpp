@@ -230,8 +230,8 @@ void R_GenerateLookup(int texnum)
         for (; x < x2; x++)
         {
             patchcount[x]++;
-            collump[x] = patch->patch;
-            colofs[x] = LONG(realpatch->columnofs[x - x1]) + 3;
+            collump[x] = static_cast<short>(patch->patch);
+            colofs[x] = static_cast<unsigned short>(LONG(realpatch->columnofs[x - x1]) + 3);
         }
     }
 
@@ -247,7 +247,7 @@ void R_GenerateLookup(int texnum)
         if (patchcount[x] > 1)
         {
             collump[x] = -1;    // use the cached block
-            colofs[x] = texturecompositesize[texnum];
+            colofs[x] = static_cast<unsigned short>(texturecompositesize[texnum]);
             if (texturecompositesize[texnum] > 0x10000 - texture->height)
                 I_Error("R_GenerateLookup: texture %i is >64k", texnum);
             texturecompositesize[texnum] += texture->height;

@@ -312,8 +312,8 @@ bool P_GiveArmor(player_t* player, int armortype)
     if(player->armorpoints >= hits)
         return false;   // don't pick up
 
-    player->armortype = armortype;
-    player->armorpoints = hits;
+    player->armortype = static_cast<short>(armortype);
+    player->armorpoints = static_cast<short>(hits);
 
     return true;
 }
@@ -1283,7 +1283,7 @@ void P_DamageMobj(mobj_t* target, mobj_t* inflictor, mobj_t* source, int damage)
                 P_UseInventoryItem(player, SPR_ARM1);
                 P_UseInventoryItem(player, SPR_ARM2);
             }
-            player->armorpoints -= saved;
+            player->armorpoints -= static_cast<short>(saved);
             damage -= saved;
         }
         player->health -= damage;   // mirror mobj health here for Dave
