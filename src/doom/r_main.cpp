@@ -176,7 +176,7 @@ int R_PointOnSide(fixed_t x,
     // Try to quickly decide by looking at sign bits.
     if ((static_cast<unsigned int>(node->dy ^ node->dx ^ dx ^ dy)) & 0x80000000)
     {
-        if ((node->dy ^ dx) & 0x80000000)
+        if ((static_cast<unsigned int>(node->dy ^ dx)) & 0x80000000)
         {
             // (left is negative)
             return 1;
@@ -867,7 +867,7 @@ void R_ExecuteSetViewSize()
     //  for each level / scale combination.
     for (i = 0; i < LIGHTLEVELS; i++)
     {
-        scalelight[i] = static_cast<lighttable_t **>(malloc(MAXLIGHTSCALE * sizeof(**scalelight)));
+        scalelight[i] = static_cast<lighttable_t **>(malloc(static_cast<unsigned long>(MAXLIGHTSCALE) * sizeof(**scalelight)));
 
         startmap_local = ((LIGHTLEVELS - LIGHTBRIGHT - i) * 2) * NUMCOLORMAPS / LIGHTLEVELS;
         for (j = 0; j < MAXLIGHTSCALE; j++)

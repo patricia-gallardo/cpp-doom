@@ -695,7 +695,7 @@ bool
     if (ev->type == ev_joystick && joybautomap >= 0
         && (ev->data1 & (1 << joybautomap)) != 0)
     {
-        joywait = I_GetTime() + 5;
+        joywait = static_cast<unsigned int>(I_GetTime() + 5);
 
         if (!automapactive)
         {
@@ -861,7 +861,7 @@ bool
         }
 
         if ((!deathmatch || gameversion <= exe_doom_1_8)
-            && cht_CheckCheat(&cheat_amap, ev->data2))
+            && cht_CheckCheat(&cheat_amap, static_cast<char>(ev->data2)))
         {
             rc       = false;
             cheating = (cheating + 1) % 3;
@@ -1010,7 +1010,7 @@ void AM_Ticker()
 //
 void AM_clearFB(int color)
 {
-    memset(fb, color, f_w * f_h * sizeof(*fb));
+    memset(fb, color, static_cast<unsigned long>(f_w * f_h) * sizeof(*fb));
 }
 
 
@@ -1480,9 +1480,7 @@ void AM_rotate(int64_t *x,
     int64_t *           y,
     angle_t             a)
 {
-    int64_t tmpx;
-
-    tmpx =
+    int64_t tmpx =
         FixedMul(*x, finecosine[a >> ANGLETOFINESHIFT])
         - FixedMul(*y, finesine[a >> ANGLETOFINESHIFT]);
 
@@ -1497,12 +1495,10 @@ void AM_rotate(int64_t *x,
 // adapted from prboom-plus/src/am_map.c:898-920
 static void AM_rotatePoint(mpoint_t *pt)
 {
-    int64_t tmpx;
-
     pt->x -= mapcenter.x;
     pt->y -= mapcenter.y;
 
-    tmpx = static_cast<int64_t>(FixedMul(pt->x, finecosine[mapangle >> ANGLETOFINESHIFT]))
+    int64_t tmpx = static_cast<int64_t>(FixedMul(pt->x, finecosine[mapangle >> ANGLETOFINESHIFT]))
            - static_cast<int64_t>(FixedMul(pt->y, finesine[mapangle >> ANGLETOFINESHIFT]))
            + mapcenter.x;
 

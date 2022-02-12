@@ -372,7 +372,7 @@ void R_MakeSpans(int x,
     }
     while (b1 > b2 && b1 >= t1)
     {
-        R_MapPlane(b1, spanstart[b1], x - 1);
+        R_MapPlane(static_cast<int>(b1), spanstart[b1], x - 1);
         b1--;
     }
 

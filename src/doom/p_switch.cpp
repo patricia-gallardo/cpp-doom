@@ -192,7 +192,7 @@ void P_InitSwitchList()
 
     // [crispy] pre-allocate some memory for the buttonlist[] array
     buttonlist = static_cast<decltype(buttonlist)>(I_Realloc(nullptr, sizeof(*buttonlist) * (maxbuttons = MAXBUTTONS)));
-    memset(buttonlist, 0, sizeof(*buttonlist) * maxbuttons);
+    memset(buttonlist, 0, sizeof(*buttonlist) * static_cast<unsigned long>(maxbuttons));
 }
 
 
@@ -238,8 +238,8 @@ void P_StartButton(line_t *line,
     // [crispy] remove MAXBUTTONS limit
     {
         maxbuttons = 2 * maxbuttons;
-        buttonlist = static_cast<decltype(buttonlist)>(I_Realloc(buttonlist, sizeof(*buttonlist) * maxbuttons));
-        memset(buttonlist + maxbuttons / 2, 0, sizeof(*buttonlist) * maxbuttons / 2);
+        buttonlist = static_cast<decltype(buttonlist)>(I_Realloc(buttonlist, sizeof(*buttonlist) * static_cast<unsigned long>(maxbuttons)));
+        memset(buttonlist + maxbuttons / 2, 0, sizeof(*buttonlist) * static_cast<unsigned long>(maxbuttons) / 2);
         return P_StartButton(line, w, texture, time);
     }
 
@@ -282,7 +282,7 @@ void P_ChangeSwitchTexture(line_t *line,
         {
             //	    S_StartSound(buttonlist->soundorg,sound);
             playsound                          = true;
-            sides[line->sidenum[0]].toptexture = switchlist[i ^ 1];
+            sides[line->sidenum[0]].toptexture = static_cast<short>(switchlist[i ^ 1]);
 
             if (useAgain)
                 P_StartButton(line, top, switchlist[i], BUTTONTIME);
@@ -296,7 +296,7 @@ void P_ChangeSwitchTexture(line_t *line,
             {
                 //		S_StartSound(buttonlist->soundorg,sound);
                 playsound                          = true;
-                sides[line->sidenum[0]].midtexture = switchlist[i ^ 1];
+                sides[line->sidenum[0]].midtexture = static_cast<short>(switchlist[i ^ 1]);
 
                 if (useAgain)
                     P_StartButton(line, middle, switchlist[i], BUTTONTIME);
@@ -310,7 +310,7 @@ void P_ChangeSwitchTexture(line_t *line,
                 {
                     //		    S_StartSound(buttonlist->soundorg,sound);
                     playsound                             = true;
-                    sides[line->sidenum[0]].bottomtexture = switchlist[i ^ 1];
+                    sides[line->sidenum[0]].bottomtexture = static_cast<short>(switchlist[i ^ 1]);
 
                     if (useAgain)
                         P_StartButton(line, bottom, switchlist[i], BUTTONTIME);

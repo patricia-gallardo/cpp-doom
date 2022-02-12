@@ -1116,15 +1116,13 @@ static inline int cmp_vissprites(const void *a, const void *b)
 
 void R_SortVisSprites()
 {
-    vissprite_t *ds;
-
     int count = vissprite_p - vissprites;
 
     if (!count)
         return;
 
     // [crispy] maintain a stable sort for deliberately overlaid sprites
-    for (ds = vissprites; ds < vissprite_p; ds++)
+    for (vissprite_t *ds = vissprites; ds < vissprite_p; ds++)
     {
         ds->next = ds + 1;
     }

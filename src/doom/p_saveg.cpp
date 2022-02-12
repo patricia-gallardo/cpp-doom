@@ -1418,7 +1418,7 @@ void P_WriteSaveGameHeader(char *description)
     int  i;
 
     for (i = 0; description[i] != '\0'; ++i)
-        saveg_write8(description[i]);
+        saveg_write8(static_cast<uint8_t>(description[i]));
     for (; i < SAVESTRINGSIZE; ++i)
         saveg_write8(0);
 
@@ -1426,11 +1426,11 @@ void P_WriteSaveGameHeader(char *description)
     M_snprintf(name, sizeof(name), "version %i", G_VanillaVersionCode());
 
     for (i = 0; i < VERSIONSIZE; ++i)
-        saveg_write8(name[i]);
+        saveg_write8(static_cast<uint8_t>(name[i]));
 
-    saveg_write8(gameskill);
-    saveg_write8(gameepisode);
-    saveg_write8(gamemap);
+    saveg_write8(static_cast<uint8_t>(gameskill));
+    saveg_write8(static_cast<uint8_t>(gameepisode));
+    saveg_write8(static_cast<uint8_t>(gamemap));
 
     for (i = 0; i < MAXPLAYERS; i++)
         saveg_write8(playeringame[i]);
@@ -1459,7 +1459,7 @@ bool P_ReadSaveGameHeader()
         saveg_read8();
 
     for (i = 0; i < VERSIONSIZE; ++i)
-        read_vcheck[i] = saveg_read8();
+        read_vcheck[i] = static_cast<char>(saveg_read8());
 
     memset(vcheck, 0, sizeof(vcheck));
     M_snprintf(vcheck, sizeof(vcheck), "version %i", G_VanillaVersionCode());
@@ -1634,7 +1634,7 @@ void P_UnArchiveWorld()
     // do lines
     for (i = 0, li = lines; i < numlines; i++, li++)
     {
-        li->flags   = saveg_read16();
+        li->flags   = static_cast<unsigned short>(saveg_read16());
         li->special = saveg_read16();
         li->tag     = saveg_read16();
         for (j = 0; j < 2; j++)
