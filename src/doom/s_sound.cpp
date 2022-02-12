@@ -434,7 +434,7 @@ void S_Start()
 
     // [crispy] do not change music if not changing map (preserves IDMUS choice)
     {
-        const short curmap = static_cast<const short>((gameepisode << 8) + gamemap);
+        const auto curmap = static_cast<short>((gameepisode << 8) + gamemap);
 
         if (prevmap == curmap || (nodrawers && singletics))
             return;
@@ -450,9 +450,7 @@ void S_Start()
 
 void S_StopSound(mobj_t *origin)
 {
-    int cnum;
-
-    for (cnum = 0; cnum < snd_channels; cnum++)
+    for (int cnum = 0; cnum < snd_channels; cnum++)
     {
         if (channels[cnum].sfxinfo && channels[cnum].origin == origin)
         {
