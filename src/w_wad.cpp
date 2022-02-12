@@ -364,9 +364,9 @@ void W_ReadLump(lumpindex_t lump, void *dest)
 
     V_BeginRead(l->size);
 
-    int c = W_Read(l->wad_file, l->position, dest, l->size);
+    size_t c = W_Read(l->wad_file, l->position, dest, l->size);
 
-    if (c < l->size)
+    if (static_cast<int>(c) < l->size)
     {
         I_Error("W_ReadLump: only read %i of %i on lump %i",
             c, l->size, lump);

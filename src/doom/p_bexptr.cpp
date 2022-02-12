@@ -146,7 +146,7 @@ void A_RandomJump(mobj_t *mo, player_t *player, pspdef_t *psp)
         {
             extern void P_SetPsprite(player_t * player, int position, statenum_t stnum);
 
-            P_SetPsprite(player, psp - &player->psprites[0],
+            P_SetPsprite(player, static_cast<int>(psp - &player->psprites[0]),
                 psp->state->misc1);
         }
     }

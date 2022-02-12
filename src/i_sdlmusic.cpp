@@ -389,7 +389,7 @@ static bool ConvertMus(uint8_t *musdata, int len, const char *filename)
     {
         mem_get_buf(outstream, &outbuf, &outbuf_len);
 
-        M_WriteFile(filename, outbuf, outbuf_len);
+        M_WriteFile(filename, outbuf, static_cast<int>(outbuf_len));
     }
 
     mem_fclose(instream);

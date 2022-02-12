@@ -102,7 +102,7 @@ void HUlib_drawTextLine(hu_textline_t *l,
     y = l->y; // [crispy] support line breaks
     for (i = 0; i < l->len; i++)
     {
-        c = toupper(l->l[i]);
+        c = static_cast<unsigned char>(toupper(l->l[i]));
         // [crispy] support multi-colored text lines
         if (c == cr_esc)
         {
@@ -319,7 +319,7 @@ bool
     HUlib_keyInIText(hu_itext_t *it,
         unsigned char            ch)
 {
-    ch = toupper(ch);
+    ch = static_cast<unsigned char>(toupper(ch));
 
     if (ch >= ' ' && ch <= '_')
         HUlib_addCharToTextLine(&it->l, static_cast<char>(ch));

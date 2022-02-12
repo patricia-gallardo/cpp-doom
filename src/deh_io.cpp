@@ -250,7 +250,7 @@ void DEH_RestoreLineStart(deh_context_t *context)
     }
     else if (context->type == DEH_INPUT_LUMP)
     {
-        context->input_buffer_pos = context->linestart;
+        context->input_buffer_pos = static_cast<unsigned int>(context->linestart);
     }
 
     // [crispy] don't count this line twice

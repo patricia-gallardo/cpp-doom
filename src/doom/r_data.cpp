@@ -707,17 +707,18 @@ void R_InitTextures()
                 pnameslumps = static_cast<decltype(pnameslumps)>(I_Realloc(pnameslumps, static_cast<unsigned long>(maxpnameslumps) * sizeof(*pnameslumps)));
             }
 
-            pnameslumps[numpnameslumps].lumpnum       = i;
-            pnameslumps[numpnameslumps].names         = cache_lump_num<patch_t *>(pnameslumps[numpnameslumps].lumpnum, PU_STATIC);
-            pnameslumps[numpnameslumps].nummappatches = LONG(*(reinterpret_cast<int *>(pnameslumps[numpnameslumps].names)));
+            pnameslump_t &lump = pnameslumps[numpnameslumps];
+            lump.lumpnum       = i;
+            lump.names         = cache_lump_num<patch_t *>(lump.lumpnum, PU_STATIC);
+            lump.nummappatches = static_cast<short>(LONG(*(reinterpret_cast<int *>(lump.names))));
 
             // [crispy] accumulated number of patches in the lookup tables
             // excluding the current one
-            pnameslumps[numpnameslumps].summappatches = static_cast<short>(nummappatches);
-            pnameslumps[numpnameslumps].name_p        = reinterpret_cast<char *>(pnameslumps[numpnameslumps].names) + 4;
+            lump.summappatches = static_cast<short>(nummappatches);
+            lump.name_p        = reinterpret_cast<char *>(lump.names) + 4;
 
             // [crispy] calculate total number of patches
-            nummappatches += pnameslumps[numpnameslumps].nummappatches;
+            nummappatches += lump.nummappatches;
             numpnameslumps++;
         }
         else if (!strncasecmp(lumpinfo[i]->name, DEH_String("TEXTURE"), 7))
@@ -772,7 +773,7 @@ void R_InitTextures()
     {
         texturelumps[i].maptex      = cache_lump_num<int *>(texturelumps[i].lumpnum, PU_STATIC);
         texturelumps[i].maxoff      = W_LumpLength(texturelumps[i].lumpnum);
-        texturelumps[i].numtextures = LONG(*texturelumps[i].maptex);
+        texturelumps[i].numtextures = static_cast<short>(LONG(*texturelumps[i].maptex));
 
         // [crispy] accumulated number of textures in the texture files
         // including the current one
@@ -1081,7 +1082,7 @@ static void R_InitTranMap()
                     btmp     = fg[b] * 1.666 < (fg[r] + fg[g]) ? 0 : 50;
                     blend[r] = static_cast<uint8_t>((tran_filter_pct * fg[r] + (100 - tran_filter_pct) * bg[r]) / (100 + btmp));
                     blend[g] = static_cast<uint8_t>((tran_filter_pct * fg[g] + (100 - tran_filter_pct) * bg[g]) / (100 + btmp));
-                    blend[b] = (tran_filter_pct * fg[b] + (100 - tran_filter_pct) * bg[b]) / 100;
+                    blend[b] = static_cast<uint8_t>((tran_filter_pct * fg[b] + (100 - tran_filter_pct) * bg[b]) / 100);
 
                     *tp++ = static_cast<uint8_t>(I_GetPaletteIndex(blend[r], blend[g], blend[b]));
                 }

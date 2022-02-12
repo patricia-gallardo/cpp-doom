@@ -200,34 +200,28 @@ void R_InstallSpriteLump(int lump,
 //
 void R_InitSpriteDefs(const char **namelist)
 {
-    const char **check;
-    int          i;
-    int          l;
-    int          frame;
-    int          rotation;
-    int          start;
-    int          end;
-    int          patched;
+//    int          frame;
+//    int          rotation;
 
     // count the number of sprite names
-    check = namelist;
+    const char **check = namelist;
     while (*check != nullptr)
         check++;
 
-    numsprites = check - namelist;
+    numsprites = static_cast<int>(check - namelist);
 
     if (!numsprites)
         return;
 
     sprites = zmalloc<decltype(sprites)>(static_cast<int>(static_cast<unsigned long>(numsprites) * sizeof(*sprites)), PU_STATIC, nullptr);
 
-    start = firstspritelump - 1;
-    end   = lastspritelump + 1;
+    int start = firstspritelump - 1;
+    int end   = lastspritelump + 1;
 
     // scan all the lump names for each of the names,
     //  noting the highest frame letter.
     // Just compare 4 characters as ints
-    for (i = 0; i < numsprites; i++)
+    for (int i = 0; i < numsprites; i++)
     {
         spritename = DEH_String(namelist[i]);
         memset(sprtemp, -1, sizeof(sprtemp));
@@ -236,12 +230,13 @@ void R_InitSpriteDefs(const char **namelist)
 
         // scan the lumps,
         //  filling in the frames for whatever is found
-        for (l = start + 1; l < end; l++)
+        for (int l = start + 1; l < end; l++)
         {
             if (!strncasecmp(lumpinfo[l]->name, spritename, 4))
             {
-                frame    = lumpinfo[l]->name[4] - 'A';
-                rotation = lumpinfo[l]->name[5];
+                int frame    = lumpinfo[l]->name[4] - 'A';
+                int rotation = lumpinfo[l]->name[5];
+                int patched;
 
                 if (modifiedgame)
                     patched = W_GetNumForName(lumpinfo[l]->name);
@@ -268,7 +263,7 @@ void R_InitSpriteDefs(const char **namelist)
 
         maxframe++;
 
-        for (frame = 0; frame < maxframe; frame++)
+        for (int frame = 0; frame < maxframe; frame++)
         {
             switch (static_cast<int>(sprtemp[frame].rotate))
             {
@@ -286,6 +281,7 @@ void R_InitSpriteDefs(const char **namelist)
 
             case 1:
                 // must have all 8 frames
+                int rotation;
                 for (rotation = 0; rotation < 8; rotation++)
                     if (sprtemp[frame].lump[rotation] == -1)
                         I_Error("R_InitSprites: Sprite %s frame %c "
@@ -1044,7 +1040,7 @@ void R_DrawPSprite(pspdef_t *psp, psprnum_t psprnum) // [crispy] differentiate g
         vis->colormap[0] = spritelights[MAXLIGHTSCALE - 1];
         vis->colormap[1] = scalelight[LIGHTLEVELS - 1][MAXLIGHTSCALE - 1];
     }
-    vis->brightmap = R_BrightmapForState(psp->state - states);
+    vis->brightmap = R_BrightmapForState(static_cast<int>(psp->state - states));
 
     // [crispy] translucent gun flash sprites
     if (psprnum == ps_flash)
@@ -1111,12 +1107,12 @@ static inline int cmp_vissprites(const void *a, const void *b)
 
     const int ret = vsa->scale - vsb->scale;
 
-    return ret ? ret : vsa->next - vsb->next;
+    return static_cast<int>(ret ? ret : vsa->next - vsb->next);
 }
 
 void R_SortVisSprites()
 {
-    int count = vissprite_p - vissprites;
+    int count = static_cast<int>(vissprite_p - vissprites);
 
     if (!count)
         return;

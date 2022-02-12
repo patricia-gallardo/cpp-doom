@@ -667,7 +667,7 @@ bool mus2mid(MEMFILE *musinput, MEMFILE *midioutput)
         return true;
     }
 
-    tracksizebuffer[0] = (tracksize >> 24) & 0xff;
+    tracksizebuffer[0] = static_cast<uint8_t>((tracksize >> 24) & 0xff);
     tracksizebuffer[1] = (tracksize >> 16) & 0xff;
     tracksizebuffer[2] = (tracksize >> 8) & 0xff;
     tracksizebuffer[3] = tracksize & 0xff;

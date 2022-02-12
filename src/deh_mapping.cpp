@@ -60,8 +60,9 @@ static void *GetStructField(void *structptr,
     deh_mapping_t *               mapping,
     deh_mapping_entry_t *         entry)
 {
-    unsigned int offset = reinterpret_cast<uint8_t *>(entry->location) - reinterpret_cast<uint8_t *>(mapping->base);
-
+    uint8_t     *location_byte_ptr = reinterpret_cast<uint8_t *>(entry->location);
+    uint8_t     *base_byte_ptr     = reinterpret_cast<uint8_t *>(mapping->base);
+    unsigned int offset = static_cast<unsigned int>(location_byte_ptr - base_byte_ptr);
     return reinterpret_cast<uint8_t *>(structptr) + offset;
 }
 

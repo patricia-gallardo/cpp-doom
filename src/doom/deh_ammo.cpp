@@ -47,17 +47,14 @@ static void *DEH_AmmoStart(deh_context_t *context, char *line)
 
 static void DEH_AmmoParseLine(deh_context_t *context, char *line, void *tag)
 {
-    char *variable_name, *value;
-    int   ivalue;
-    int   ammo_number;
-
     if (tag == nullptr)
         return;
 
-    ammo_number = reinterpret_cast<int *>(tag) - maxammo;
+    int ammo_number = static_cast<int>(reinterpret_cast<int *>(tag) - maxammo);
 
     // Parse the assignment
-
+    char *variable_name = nullptr;
+    char *value = nullptr;
     if (!DEH_ParseAssignment(line, &variable_name, &value))
     {
         // Failed to parse
@@ -66,7 +63,7 @@ static void DEH_AmmoParseLine(deh_context_t *context, char *line, void *tag)
         return;
     }
 
-    ivalue = atoi(value);
+    int ivalue = atoi(value);
 
     // maxammo
 

@@ -19,9 +19,9 @@ template <typename DataType> auto create_struct(const std::size_t size) {
 }
 
 template<typename DataType>
-auto zmalloc(int size, int tag, void *ptr)
+auto zmalloc(size_t size, int tag, void *ptr)
 {
-  return static_cast<DataType>(Z_Malloc(size, tag, ptr));
+  return static_cast<DataType>(Z_Malloc(static_cast<int>(size), tag, ptr));
 }
 
 

@@ -22,7 +22,7 @@
 #include <cctype>
 #include <cstring>
 
-static int total_packet_memory = 0;
+static size_t total_packet_memory = 0;
 
 net_packet_t *NET_NewPacket(int initial_size)
 {
@@ -48,9 +48,7 @@ net_packet_t *NET_NewPacket(int initial_size)
 
 net_packet_t *NET_PacketDup(net_packet_t *packet)
 {
-    net_packet_t *newpacket;
-
-    newpacket = NET_NewPacket(packet->len);
+    net_packet_t *newpacket = NET_NewPacket(static_cast<int>(packet->len));
     memcpy(newpacket->data, packet->data, packet->len);
     newpacket->len = packet->len;
 
@@ -256,7 +254,7 @@ void NET_WriteInt8(net_packet_t *packet, unsigned int i)
     if (packet->len + 1 > packet->alloced)
         NET_IncreasePacket(packet);
 
-    packet->data[packet->len] = i;
+    packet->data[packet->len] = static_cast<uint8_t>(i);
     packet->len += 1;
 }
 
@@ -289,7 +287,7 @@ void NET_WriteInt32(net_packet_t *packet, unsigned int i)
 
     p = packet->data + packet->len;
 
-    p[0] = (i >> 24) & 0xff;
+    p[0] = static_cast<uint8_t>((i >> 24) & 0xff);
     p[1] = (i >> 16) & 0xff;
     p[2] = (i >> 8) & 0xff;
     p[3] = i & 0xff;
@@ -299,10 +297,7 @@ void NET_WriteInt32(net_packet_t *packet, unsigned int i)
 
 void NET_WriteString(net_packet_t *packet, const char *string)
 {
-    uint8_t *p;
-    size_t string_size;
-
-    string_size = strlen(string) + 1;
+    size_t string_size = strlen(string) + 1;
 
     // Increase the packet size until large enough to hold the string
 
@@ -311,7 +306,7 @@ void NET_WriteString(net_packet_t *packet, const char *string)
         NET_IncreasePacket(packet);
     }
 
-    p = packet->data + packet->len;
+    uint8_t *p = packet->data + packet->len;
 
     M_StringCopy(reinterpret_cast<char *>(p), string, string_size);
 

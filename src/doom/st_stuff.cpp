@@ -694,9 +694,9 @@ bool
                     signed int  an;
                     extern void P_SpawnPlayer(mapthing_t * mthing);
 
-                    mt.x     = plyr->mo->x >> FRACBITS;
-                    mt.y     = plyr->mo->y >> FRACBITS;
-                    mt.angle = (plyr->mo->angle + ANG45 / 2) * static_cast<uint64_t>(45) / ANG45;
+                    mt.x     = static_cast<short>(plyr->mo->x >> FRACBITS);
+                    mt.y     = static_cast<short>(plyr->mo->y >> FRACBITS);
+                    mt.angle = static_cast<short>((plyr->mo->angle + ANG45 / 2) * static_cast<uint64_t>(45) / ANG45);
                     mt.type  = static_cast<short>(consoleplayer + 1);
                     P_SpawnPlayer(&mt);
 

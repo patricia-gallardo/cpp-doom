@@ -334,20 +334,13 @@ bool
     P_CheckSight(mobj_t *t1,
         mobj_t *         t2)
 {
-    int s1;
-    int s2;
-    int pnum;
-    int bytenum;
-    int bitnum;
-
     // First check for trivial rejection.
-
     // Determine subsector entries in REJECT table.
-    s1      = (t1->subsector->sector - sectors);
-    s2      = (t2->subsector->sector - sectors);
-    pnum    = s1 * numsectors + s2;
-    bytenum = pnum >> 3;
-    bitnum  = 1 << (pnum & 7);
+    int s1      = static_cast<int>(t1->subsector->sector - sectors);
+    int s2      = static_cast<int>(t2->subsector->sector - sectors);
+    int pnum    = s1 * numsectors + s2;
+    int bytenum = pnum >> 3;
+    int bitnum  = 1 << (pnum & 7);
 
     // Check in REJECT table.
     if (rejectmatrix[bytenum] & bitnum)

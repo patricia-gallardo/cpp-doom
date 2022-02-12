@@ -86,7 +86,7 @@ static void LoadResponseFile(int argv_index, const char *filename)
 
     printf("Found response file %s!\n", filename);
 
-    long size = M_FileLength(handle);
+    auto size = static_cast<size_t>(M_FileLength(handle));
 
     // Read in the entire file
     // Allocate one byte extra - this is in case there is an argument
@@ -95,7 +95,7 @@ static void LoadResponseFile(int argv_index, const char *filename)
 
     char *file = static_cast<char *>(malloc(static_cast<size_t>(size + 1)));
     {
-        int i = 0;
+        size_t i = 0;
         while (i < size)
         {
             size_t k = fread(file + i, 1, static_cast<size_t>(size - i), handle);
@@ -123,7 +123,7 @@ static void LoadResponseFile(int argv_index, const char *filename)
     }
 
     char *infile = file;
-    long k = 0;
+    size_t k = 0;
 
     while (k < size)
     {

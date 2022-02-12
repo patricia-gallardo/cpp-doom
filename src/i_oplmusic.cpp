@@ -1824,7 +1824,8 @@ static void PitchBendEvent(opl_track_data_t *track, midi_event_t *event)
 
 static void MetaSetTempo(unsigned int tempo)
 {
-    OPL_AdjustCallbacks(static_cast<float>(us_per_beat) / tempo);
+    float factor = static_cast<float>(us_per_beat) / static_cast<float>(tempo);
+    OPL_AdjustCallbacks(factor);
     us_per_beat = tempo;
 }
 
@@ -2173,7 +2174,7 @@ static bool ConvertMus(uint8_t *musdata, int len, char *filename)
     {
         mem_get_buf(outstream, &outbuf, &outbuf_len);
 
-        M_WriteFile(filename, outbuf, outbuf_len);
+        M_WriteFile(filename, outbuf, static_cast<int>(outbuf_len));
     }
 
     mem_fclose(instream);
@@ -2388,7 +2389,7 @@ void I_OPL_DevMessages(char *result, size_t result_len)
             continue;
         }
 
-        int instr_num = channels[i].instrument - main_instrs;
+        int instr_num = static_cast<int>(channels[i].instrument - main_instrs);
 
         M_snprintf(tmp, sizeof(tmp),
             "chan %i: %c i#%i (%s)\n",

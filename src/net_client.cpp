@@ -735,12 +735,10 @@ static void NET_CL_CheckResends()
 
 static void NET_CL_ParseGameData(net_packet_t *packet)
 {
-    net_server_recv_t *recvobj;
-    unsigned int       seq, num_tics;
-    unsigned int       nowtime;
-    int                resend_start, resend_end;
-    size_t             i;
-    int                index;
+    net_server_recv_t *recvobj = nullptr;
+    unsigned int       seq = 0, num_tics = 0;
+    int                resend_start = 0, resend_end = 0;
+    int                index = 0;
 
     NET_Log("client: processing game data packet");
 
@@ -752,7 +750,7 @@ static void NET_CL_ParseGameData(net_packet_t *packet)
         return;
     }
 
-    nowtime = I_GetTimeMS();
+    unsigned int nowtime = I_GetTimeMS();
 
     // Whatever happens, we now need to send an acknowledgement of our
     // current receive point.
@@ -767,11 +765,11 @@ static void NET_CL_ParseGameData(net_packet_t *packet)
     seq = NET_CL_ExpandTicNum(seq);
     NET_Log("client: got game data, seq=%d, num_tics=%d", seq, num_tics);
 
-    for (i = 0; i < num_tics; ++i)
+    for (size_t i = 0; i < num_tics; ++i)
     {
         net_full_ticcmd_t cmd;
 
-        index = seq - recvwindow_start + i;
+        index = static_cast<int>(seq - recvwindow_start + i);
 
         if (!NET_ReadFullTiccmd(packet, &cmd, settings.lowres_turn))
         {
@@ -801,7 +799,7 @@ static void NET_CL_ParseGameData(net_packet_t *packet)
         // to trigger a clock sync update.
         if (i == num_tics - 1)
         {
-            UpdateClockSync(seq + i, cmd.latency);
+            UpdateClockSync(static_cast<unsigned int>(seq + i), cmd.latency);
         }
     }
 

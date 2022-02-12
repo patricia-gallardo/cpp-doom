@@ -382,8 +382,8 @@ angle_t
     if (x_viewx < INT_MIN || x_viewx > INT_MAX || y_viewy < INT_MIN || y_viewy > INT_MAX)
     {
         // [crispy] preserving the angle by halfing the distance in both directions
-        x = x_viewx / 2 + viewx;
-        y = y_viewy / 2 + viewy;
+        x = static_cast<fixed_t >(x_viewx / 2 + viewx);
+        y = static_cast<fixed_t >(y_viewy / 2 + viewy);
     }
 
     return R_PointToAngleSlope(x, y, SlopeDivCrispy);

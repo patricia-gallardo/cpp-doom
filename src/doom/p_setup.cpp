@@ -284,7 +284,7 @@ void P_SegLengths(bool contrast_only)
 
         if (!contrast_only)
         {
-            li->length = static_cast<uint32_t>(sqrt(static_cast<double>(dx) * dx + static_cast<double>(dy) * dy) / 2);
+            li->length = static_cast<uint32_t>(sqrt(static_cast<double>(dx) * static_cast<double>(dx) + static_cast<double>(dy) * static_cast<double>(dy)) / 2);
 
             // [crispy] re-calculate angle used for rendering
             viewx       = li->v1->r_x;
@@ -367,8 +367,8 @@ void P_LoadSectors(int lump)
     {
         ss->floorheight   = SHORT(ms->floorheight) << FRACBITS;
         ss->ceilingheight = SHORT(ms->ceilingheight) << FRACBITS;
-        ss->floorpic      = R_FlatNumForName(ms->floorpic);
-        ss->ceilingpic    = R_FlatNumForName(ms->ceilingpic);
+        ss->floorpic      = static_cast<short>(R_FlatNumForName(ms->floorpic));
+        ss->ceilingpic    = static_cast<short>(R_FlatNumForName(ms->ceilingpic));
         ss->lightlevel    = SHORT(ms->lightlevel);
         ss->special       = SHORT(ms->special);
         ss->tag           = SHORT(ms->tag);
@@ -686,9 +686,9 @@ void P_LoadSideDefs(int lump)
     {
         sd->textureoffset = SHORT(msd->textureoffset) << FRACBITS;
         sd->rowoffset     = SHORT(msd->rowoffset) << FRACBITS;
-        sd->toptexture    = R_TextureNumForName(msd->toptexture);
-        sd->bottomtexture = R_TextureNumForName(msd->bottomtexture);
-        sd->midtexture    = R_TextureNumForName(msd->midtexture);
+        sd->toptexture    = static_cast<short>(R_TextureNumForName(msd->toptexture));
+        sd->bottomtexture = static_cast<short>(R_TextureNumForName(msd->bottomtexture));
+        sd->midtexture    = static_cast<short>(R_TextureNumForName(msd->midtexture));
         sd->sector        = &sectors[SHORT(msd->sector)];
         // [crispy] smooth texture scrolling
         sd->basetextureoffset = sd->textureoffset;
@@ -745,7 +745,7 @@ bool P_LoadBlockMap(int lump)
 
     // Clear out mobj chains
 
-    count      = sizeof(*blocklinks) * bmapwidth * bmapheight;
+    count      = static_cast<int>(sizeof(*blocklinks)) * bmapwidth * bmapheight;
     blocklinks = zmalloc<decltype(blocklinks)>(count, PU_LEVEL, 0);
     memset(blocklinks, 0, count);
 
@@ -1035,9 +1035,9 @@ int P_GetNumForMap(int episode, int map, bool critical_param)
     else
     {
         lumpname[0] = 'E';
-        lumpname[1] = '0' + episode;
+        lumpname[1] = static_cast<char>('0' + episode);
         lumpname[2] = 'M';
-        lumpname[3] = '0' + map;
+        lumpname[3] = static_cast<char>('0' + map);
         lumpname[4] = 0;
     }
 

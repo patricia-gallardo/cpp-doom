@@ -1258,18 +1258,15 @@ void P_UpdateSpecials()
                 switch (buttonlist[i].where)
                 {
                 case top:
-                    sides[buttonlist[i].line->sidenum[0]].toptexture =
-                        buttonlist[i].btexture;
+                    sides[buttonlist[i].line->sidenum[0]].toptexture = static_cast<short>(buttonlist[i].btexture);
                     break;
 
                 case middle:
-                    sides[buttonlist[i].line->sidenum[0]].midtexture =
-                        buttonlist[i].btexture;
+                    sides[buttonlist[i].line->sidenum[0]].midtexture = static_cast<short>(buttonlist[i].btexture);
                     break;
 
                 case bottom:
-                    sides[buttonlist[i].line->sidenum[0]].bottomtexture =
-                        buttonlist[i].btexture;
+                    sides[buttonlist[i].line->sidenum[0]].bottomtexture = static_cast<short>(buttonlist[i].btexture);
                     break;
                 }
                 // [crispy] & [JN] Logically proper sound behavior.

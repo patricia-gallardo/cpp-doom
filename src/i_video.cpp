@@ -915,7 +915,7 @@ void   I_SetGammaTable()
 
         for (j = 0; j < 256; j++)
         {
-            gamma2table[2 * i + 1][j] = (gamma2table[2 * i][j] + gamma2table[2 * i + 2][j]) / 2;
+            gamma2table[2 * i + 1][j] = static_cast<uint8_t>((gamma2table[2 * i][j] + gamma2table[2 * i + 2][j]) / 2);
         }
     }
 }
@@ -937,9 +937,12 @@ void I_SetPalette(uint8_t *doompalette)
         // controller only supports 6 bits of accuracy.
 
         // [crispy] intermediate gamma levels
-        palette[i].r = gamma2table[usegamma][*doompalette++] & ~3;
-        palette[i].g = gamma2table[usegamma][*doompalette++] & ~3;
-        palette[i].b = gamma2table[usegamma][*doompalette++] & ~3;
+        int red      = gamma2table[usegamma][*doompalette++] & ~3;
+        palette[i].r = static_cast<Uint8>(red);
+        int green    = gamma2table[usegamma][*doompalette++] & ~3;
+        palette[i].g = static_cast<Uint8>(green);
+        int blue     = gamma2table[usegamma][*doompalette++] & ~3;
+        palette[i].b = static_cast<Uint8>(blue);
     }
 
     palette_to_set = true;

@@ -76,7 +76,7 @@ size_t mem_fread(void *buf, size_t size, size_t nmemb, MEMFILE *stream)
 
     // Update position
 
-    stream->position += items * size;
+    stream->position += static_cast<unsigned int>(items * size);
 
     return items;
 }
@@ -122,7 +122,7 @@ size_t mem_fwrite(const void *ptr, size_t size, size_t nmemb, MEMFILE *stream)
     // Copy into buffer
 
     memcpy(stream->buf + stream->position, ptr, bytes);
-    stream->position += bytes;
+    stream->position += static_cast<unsigned int>(bytes);
 
     if (stream->position > stream->buflen)
         stream->buflen = stream->position;
@@ -158,15 +158,15 @@ int mem_fseek(MEMFILE *stream, signed long position, mem_rel_t whence)
     switch (whence)
     {
     case MEM_SEEK_SET:
-        newpos = position;
+        newpos = static_cast<unsigned int>(position);
         break;
 
     case MEM_SEEK_CUR:
-        newpos = stream->position + position;
+        newpos = static_cast<unsigned int>(stream->position + position);
         break;
 
     case MEM_SEEK_END:
-        newpos = stream->buflen + position;
+        newpos = static_cast<unsigned int>(stream->buflen + position);
         break;
     default:
         return -1;

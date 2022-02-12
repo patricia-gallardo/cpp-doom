@@ -965,7 +965,7 @@ void WritePCXfile(char *filename, pixel_t *data,
         *pack++ = *palette++;
 
     // write output file
-    length = pack - reinterpret_cast<uint8_t *>(pcx);
+    length = static_cast<int>(pack - reinterpret_cast<uint8_t *>(pcx));
     M_WriteFile(filename, pcx, length);
 
     Z_Free(pcx);
@@ -1213,7 +1213,7 @@ static void DrawAcceleratingBox(int speed)
     {
         // Undo acceleration and get back the original mouse speed
         original_speed = speed - mouse_threshold;
-        original_speed = static_cast<int>(original_speed / mouse_acceleration);
+        original_speed = static_cast<int>(static_cast<float>(original_speed) / mouse_acceleration);
         original_speed += mouse_threshold;
 
         linelen = (original_speed * redline_x) / mouse_threshold;

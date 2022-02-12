@@ -2468,7 +2468,7 @@ static void PRNG_Generate()
         input[4 * i]     = prng_input_counter & 0xff;
         input[4 * i + 1] = (prng_input_counter >> 8) & 0xff;
         input[4 * i + 2] = (prng_input_counter >> 16) & 0xff;
-        input[4 * i + 3] = (prng_input_counter >> 24) & 0xff;
+        input[4 * i + 3] = static_cast<uint8_t>((prng_input_counter >> 24) & 0xff);
         ++prng_input_counter;
     }
 

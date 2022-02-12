@@ -498,7 +498,7 @@ static void OPL3_EnvelopeKeyOn(opl3_slot *slot, Bit8u type)
 
 static void OPL3_EnvelopeKeyOff(opl3_slot *slot, Bit8u type)
 {
-    slot->key &= ~type;
+    slot->key &= static_cast<Bit8u>(~type);
 }
 
 //
@@ -526,9 +526,9 @@ static void OPL3_PhaseGenerate(opl3_slot *slot)
 
         if (vibpos & 4)
         {
-            range = -range;
+            range = static_cast<Bit8u>(-range);
         }
-        f_num += range;
+        f_num += static_cast<Bit16u>(range);
     }
     auto basefreq = static_cast<Bit32u>((f_num << slot->channel->block) >> 1);
     auto phase = static_cast<Bit16u>(slot->pg_phase >> 9);
@@ -646,7 +646,7 @@ static void OPL3_SlotCalcFB(opl3_slot *slot)
 {
     if (slot->channel->fb != 0x00)
     {
-        slot->fbmod = (slot->prout + slot->out) >> (0x09 - slot->channel->fb);
+        slot->fbmod = static_cast<Bit16s>((slot->prout + slot->out) >> (0x09 - slot->channel->fb));
     }
     else
     {
@@ -759,7 +759,7 @@ static void OPL3_ChannelWriteA0(opl3_channel *channel, Bit8u data)
     {
         return;
     }
-    channel->f_num = (channel->f_num & 0x300) | data;
+    channel->f_num = static_cast<Bit16u>((channel->f_num & 0x300) | data);
     channel->ksv = static_cast<Bit8u>((channel->block << 1) | ((channel->f_num >> (0x09 - channel->chip->nts)) & 0x01));
     OPL3_EnvelopeUpdateKSL(channel->slots[0]);
     OPL3_EnvelopeUpdateKSL(channel->slots[1]);
@@ -1085,7 +1085,7 @@ void OPL3_Generate(opl3_chip *chip, Bit16s *buf)
 
     if ((chip->timer & 0x3f) == 0x3f)
     {
-        chip->tremolopos = (chip->tremolopos + 1) % 210;
+        chip->tremolopos = static_cast<Bit8u>((chip->tremolopos + 1) % 210);
     }
     if (chip->tremolopos < 105)
     {
@@ -1093,7 +1093,7 @@ void OPL3_Generate(opl3_chip *chip, Bit16s *buf)
     }
     else
     {
-        chip->tremolo = (210 - chip->tremolopos) >> chip->tremoloshift;
+        chip->tremolo = static_cast<Bit8u>((210 - chip->tremolopos) >> chip->tremoloshift);
     }
 
     if ((chip->timer & 0x3ff) == 0x3ff)
@@ -1213,7 +1213,7 @@ void OPL3_Reset(opl3_chip *chip, Bit32u samplerate)
 void OPL3_WriteReg(opl3_chip *chip, Bit16u reg, Bit8u v)
 {
     Bit8u high = (reg >> 8) & 0x01;
-    Bit8u regm = reg & 0xff;
+    Bit8u regm = static_cast<Bit8u>(reg & 0xff);
     switch (regm & 0xf0)
     {
     case 0x00:

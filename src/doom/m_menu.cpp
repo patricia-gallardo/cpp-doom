@@ -788,7 +788,6 @@ void M_ReadSaveStrings()
 
     for (i = 0; i < static_cast<int>(load_e::load_end); i++)
     {
-        int retval;
         M_StringCopy(name, P_SaveGameFile(i), sizeof(name));
 
         handle = fopen(name, "rb");
@@ -798,7 +797,7 @@ void M_ReadSaveStrings()
             LoadMenu[i].status = 0;
             continue;
         }
-        retval = fread(&savegamestrings[i], 1, SAVESTRINGSIZE, handle);
+        size_t retval = fread(&savegamestrings[i], 1, SAVESTRINGSIZE, handle);
         fclose(handle);
         LoadMenu[i].status = retval == SAVESTRINGSIZE;
     }
@@ -863,7 +862,7 @@ void M_LoadSelect(int choice)
     M_StringCopy(name, P_SaveGameFile(choice), sizeof(name));
 
     // [crispy] save the last game you loaded
-    SaveDef.lastOn = choice;
+    SaveDef.lastOn = static_cast<short>(choice);
     G_LoadGame(name);
     M_ClearMenus();
 
@@ -978,17 +977,15 @@ static bool StartsWithMapIdentifier(char *str)
 //
 void M_SaveSelect(int choice)
 {
-    int x, y;
-
     // we are going to be intercepting all chars
     saveStringEnter = 1;
 
     // [crispy] load the last game you saved
-    LoadDef.lastOn = choice;
+    LoadDef.lastOn = static_cast<short>(choice);
 
     // We need to turn on text input:
-    x = LoadDef.x - 11;
-    y = LoadDef.y + choice * LINEHEIGHT - 4;
+    int x = LoadDef.x - 11;
+    int y = LoadDef.y + choice * LINEHEIGHT - 4;
     I_StartTextInput(x, y, x + 8 + 24 * 8 + 8, y + LINEHEIGHT - 2);
 
     saveSlot = choice;
@@ -1004,7 +1001,7 @@ void M_SaveSelect(int choice)
             SetDefaultSaveName(choice);
         }
     }
-    saveCharIndex = strlen(savegamestrings[choice]);
+    saveCharIndex = static_cast<int>(strlen(savegamestrings[choice]));
 }
 
 //
@@ -2409,7 +2406,7 @@ bool M_Responder(event_t *ev)
 
             if (ch >= 32 && ch <= 127 && saveCharIndex < SAVESTRINGSIZE - 1 && M_StringWidth(savegamestrings[saveSlot]) < (SAVESTRINGSIZE - 2) * 8)
             {
-                savegamestrings[saveSlot][saveCharIndex++] = ch;
+                savegamestrings[saveSlot][saveCharIndex++] = static_cast<char>(ch);
                 savegamestrings[saveSlot][saveCharIndex]   = 0;
             }
             break;
@@ -2736,7 +2733,7 @@ bool M_Responder(event_t *ev)
         {
             if (currentMenu->menuitems[i].alphaKey == ch)
             {
-                itemOn = i;
+                itemOn = static_cast<short>(i);
                 S_StartSound(nullptr, sfx_pstop);
                 return true;
             }
@@ -2746,7 +2743,7 @@ bool M_Responder(event_t *ev)
         {
             if (currentMenu->menuitems[i].alphaKey == ch)
             {
-                itemOn = i;
+                itemOn = static_cast<short>(i);
                 S_StartSound(nullptr, sfx_pstop);
                 return true;
             }
@@ -2836,7 +2833,7 @@ void M_Drawer()
         }
 
         start = 0;
-        y     = ORIGHEIGHT / 2 - M_StringHeight(messageString) / 2;
+        y     = static_cast<short>(ORIGHEIGHT / 2 - M_StringHeight(messageString) / 2);
         while (messageString[start] != '\0')
         {
             bool foundnewline = false;
@@ -2864,7 +2861,7 @@ void M_Drawer()
                 start += strlen(string);
             }
 
-            x = ORIGWIDTH / 2 - M_StringWidth(string) / 2;
+            x = static_cast<short>(ORIGWIDTH / 2 - M_StringWidth(string) / 2);
             M_WriteText(x > 0 ? x : 0, y, string); // [crispy] prevent negative x-coords
             y += SHORT(hu_font[0]->height);
         }
@@ -3057,14 +3054,15 @@ void M_Init()
 
         vstep = ORIGHEIGHT - 32; // [crispy] ST_HEIGHT
         vstep -= captionheight;
-        vstep -= (static_cast<int>(load_e::load_end) - 1) * LINEHEIGHT + SHORT(patchm->height);
+        vstep -= static_cast<short>((static_cast<int>(load_e::load_end) - 1) * LINEHEIGHT + SHORT(patchm->height));
         vstep /= 3;
 
         if (vstep > 0)
         {
             LoadDef_y = vstep + captionheight - SHORT(patchl->height) + SHORT(patchl->topoffset);
             SaveDef_y = vstep + captionheight - SHORT(patchs->height) + SHORT(patchs->topoffset);
-            LoadDef.y = SaveDef.y = vstep + captionheight + vstep + SHORT(patchm->topoffset) - 7; // [crispy] see M_DrawSaveLoadBorder()
+            int val   = vstep + captionheight + vstep + SHORT(patchm->topoffset) - 7;
+            LoadDef.y = SaveDef.y = static_cast<short>(val); // [crispy] see M_DrawSaveLoadBorder()
             MouseDef.y            = LoadDef.y;
         }
     }
@@ -3072,11 +3070,10 @@ void M_Init()
     // [crispy] remove DOS reference from the game quit confirmation dialogs
     if (!M_ParmExists("-nodeh"))
     {
-        const char *string;
-        char *      replace;
+        char *replace = nullptr;
 
         // [crispy] "i wouldn't leave if i were you.\ndos is much worse."
-        string = doom1_endmsg[3];
+        const char *string = doom1_endmsg[3];
         if (!DEH_HasStringReplacement(string))
         {
             replace = M_StringReplace(string, "dos", crispy->platform);

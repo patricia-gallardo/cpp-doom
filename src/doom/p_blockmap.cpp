@@ -179,7 +179,7 @@ void P_CreateBlockMap()
 
     // [crispy] copied over from P_LoadBlockMap()
     {
-        int count  = sizeof(*blocklinks) * bmapwidth * bmapheight;
+        int count  = static_cast<int>(sizeof(*blocklinks)) * bmapwidth * bmapheight;
         blocklinks = zmalloc<decltype(blocklinks)>(count, PU_LEVEL, 0);
         memset(blocklinks, 0, count);
         blockmap = blockmaplump + 4;

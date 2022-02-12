@@ -961,7 +961,7 @@ void P_SpawnMapThing(mapthing_t *mthing)
     if (mthing->type >= 14100 && mthing->type <= 14164)
     {
         musid        = mthing->type - 14100;
-        mthing->type = mobjinfo[MT_MUSICSOURCE].doomednum;
+        mthing->type = static_cast<short>(mobjinfo[MT_MUSICSOURCE].doomednum);
     }
 
     // find which type to spawn

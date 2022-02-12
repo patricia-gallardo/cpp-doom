@@ -1214,7 +1214,7 @@ bool HU_Responder(event_t *ev)
         // send a macro
         if (altdown)
         {
-            c = ev->data1 - '0';
+            c = static_cast<unsigned char>(ev->data1 - '0');
             if (c > 9)
                 return false;
             // fprintf(stderr, "got here\n");
@@ -1236,7 +1236,7 @@ bool HU_Responder(event_t *ev)
         }
         else
         {
-            c = ev->data3;
+            c = static_cast<unsigned char>(ev->data3);
 
             eatkey = HUlib_keyInIText(&w_chat, c);
             if (eatkey)

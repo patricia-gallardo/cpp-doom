@@ -88,7 +88,7 @@ void Z_ClearZone(memzone_t *zone)
     // a free block.
     block->tag = PU_FREE;
 
-    block->size = zone->size - sizeof(memzone_t);
+    block->size = static_cast<int>(zone->size - sizeof(memzone_t));
 }
 
 
@@ -117,7 +117,7 @@ void Z_Init()
     // free block
     block->tag = PU_FREE;
 
-    block->size = mainzone->size - sizeof(memzone_t);
+    block->size = static_cast<int>(mainzone->size - sizeof(memzone_t));
 
     // [Deliberately undocumented]
     // Zone memory debugging flag. If set, memory is zeroed after it is freed
@@ -136,24 +136,20 @@ void Z_Init()
 // any remaining pointers.
 static void ScanForBlock(void *start, void *end)
 {
-    memblock_t *block;
-    void **     mem;
-    int         i, len, tag;
-
-    block = mainzone->blocklist.next;
+    memblock_t *block = mainzone->blocklist.next;
 
     while (block->next != &mainzone->blocklist)
     {
-        tag = block->tag;
+        int tag = block->tag;
 
         if (tag == PU_STATIC || tag == PU_LEVEL || tag == PU_LEVSPEC)
         {
             // Scan for pointers on the assumption that pointers are aligned
             // on word boundaries (word size depending on pointer size):
-            mem = reinterpret_cast<void **>(reinterpret_cast<uint8_t *>(block) + sizeof(memblock_t));
-            len = (block->size - sizeof(memblock_t)) / sizeof(void *);
+            void **mem = reinterpret_cast<void **>(reinterpret_cast<uint8_t *>(block) + sizeof(memblock_t));
+            int len = static_cast<int>((block->size - sizeof(memblock_t)) / sizeof(void *));
 
-            for (i = 0; i < len; ++i)
+            for (int i = 0; i < len; ++i)
             {
                 if (start <= mem[i] && mem[i] <= end)
                 {
@@ -246,14 +242,7 @@ void *
         int      tag,
         void *   user)
 {
-    int         extra;
-    memblock_t *start;
-    memblock_t *rover;
-    memblock_t *newblock;
-    memblock_t *base;
-    void *      result;
-
-    size = (size + MEM_ALIGN - 1) & ~(MEM_ALIGN - 1);
+    size = static_cast<int>((size + MEM_ALIGN - 1) & ~(MEM_ALIGN - 1));
 
     // scan through the block list,
     // looking for the first free block
@@ -265,13 +254,13 @@ void *
 
     // if there is a free block behind the rover,
     //  back up over them
-    base = mainzone->rover;
+    memblock_t *base = mainzone->rover;
 
     if (base->prev->tag == PU_FREE)
         base = base->prev;
 
-    rover = base;
-    start = base->prev;
+    memblock_t *rover = base;
+    memblock_t *start = base->prev;
 
     do
     {
@@ -316,12 +305,12 @@ void *
 
 
     // found a block big enough
-    extra = base->size - size;
+    int extra = base->size - size;
 
     if (extra > MINFRAGMENT)
     {
         // there will be a free fragment after the allocated block
-        newblock       = reinterpret_cast<memblock_t *>(reinterpret_cast<uint8_t *>(base) + size);
+        memblock_t *newblock = reinterpret_cast<memblock_t *>(reinterpret_cast<uint8_t *>(base) + size);
         newblock->size = extra;
 
         newblock->tag        = PU_FREE;
@@ -340,7 +329,7 @@ void *
     base->user = reinterpret_cast<void **>(user);
     base->tag  = tag;
 
-    result = (reinterpret_cast<uint8_t *>(base) + sizeof(memblock_t));
+    void *result = (reinterpret_cast<uint8_t *>(base) + sizeof(memblock_t));
 
     if (base->user)
     {

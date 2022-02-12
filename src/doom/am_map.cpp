@@ -307,8 +307,8 @@ static angle_t  mapangle;
 void AM_getIslope(mline_t *ml,
     islope_t *             is)
 {
-    int dy = ml->a.y - ml->b.y;
-    int dx = ml->b.x - ml->a.x;
+    int dy = static_cast<int>(ml->a.y - ml->b.y);
+    int dx = static_cast<int>(ml->b.x - ml->a.x);
     if (!dy)
         is->islp = (dx < 0 ? -INT_MAX : INT_MAX);
     else
@@ -367,7 +367,7 @@ void AM_restoreScaleAndLoc()
     m_y2 = m_y + m_h;
 
     // Change the scaling multipliers
-    scale_mtof = FixedDiv(f_w << FRACBITS, m_w);
+    scale_mtof = FixedDiv(f_w << FRACBITS, static_cast<fixed_t>(m_w));
     scale_ftom = FixedDiv(FRACUNIT, scale_mtof);
 }
 
@@ -1080,10 +1080,10 @@ bool
         return false; // trivially outside
 
     // transform to frame-buffer coordinates.
-    fl->a.x = CXMTOF(ml->a.x);
-    fl->a.y = CYMTOF(ml->a.y);
-    fl->b.x = CXMTOF(ml->b.x);
-    fl->b.y = CYMTOF(ml->b.y);
+    fl->a.x = static_cast<int>(CXMTOF(ml->a.x));
+    fl->a.y = static_cast<int>(CYMTOF(ml->a.y));
+    fl->b.x = static_cast<int>(CXMTOF(ml->b.x));
+    fl->b.y = static_cast<int>(CYMTOF(ml->b.y));
 
     DOOUTCODE(outcode1, fl->a.x, fl->a.y);
     DOOUTCODE(outcode2, fl->b.x, fl->b.y);
@@ -1203,9 +1203,9 @@ void AM_drawFline(fline_t *fl,
     if (ax > ay)
     {
         d = ay - ax / 2;
-        while (1)
+        while (true)
         {
-            PUTDOT(x, y, color);
+            PUTDOT(x, y, static_cast<pixel_t>(color));
             if (x == fl->b.x) return;
             if (d >= 0)
             {
@@ -1219,9 +1219,9 @@ void AM_drawFline(fline_t *fl,
     else
     {
         d = ax - ay / 2;
-        while (1)
+        while (true)
         {
-            PUTDOT(x, y, color);
+            PUTDOT(x, y, static_cast<pixel_t>(color));
             if (y == fl->b.y) return;
             if (d >= 0)
             {
@@ -1479,12 +1479,12 @@ void AM_rotate(int64_t *x,
     angle_t             a)
 {
     int64_t tmpx =
-        FixedMul(*x, finecosine[a >> ANGLETOFINESHIFT])
-        - FixedMul(*y, finesine[a >> ANGLETOFINESHIFT]);
+        FixedMul(static_cast<fixed_t>(*x), finecosine[a >> ANGLETOFINESHIFT])
+        - FixedMul(static_cast<fixed_t>(*y), finesine[a >> ANGLETOFINESHIFT]);
 
     *y =
-        FixedMul(*x, finesine[a >> ANGLETOFINESHIFT])
-        + FixedMul(*y, finecosine[a >> ANGLETOFINESHIFT]);
+        FixedMul(static_cast<fixed_t>(*x), finesine[a >> ANGLETOFINESHIFT])
+        + FixedMul(static_cast<fixed_t>(*y), finecosine[a >> ANGLETOFINESHIFT]);
 
     *x = tmpx;
 }
@@ -1496,12 +1496,12 @@ static void AM_rotatePoint(mpoint_t *pt)
     pt->x -= mapcenter.x;
     pt->y -= mapcenter.y;
 
-    int64_t tmpx = static_cast<int64_t>(FixedMul(pt->x, finecosine[mapangle >> ANGLETOFINESHIFT]))
-           - static_cast<int64_t>(FixedMul(pt->y, finesine[mapangle >> ANGLETOFINESHIFT]))
+    int64_t tmpx = static_cast<int64_t>(FixedMul(static_cast<fixed_t>(pt->x), finecosine[mapangle >> ANGLETOFINESHIFT]))
+           - static_cast<int64_t>(FixedMul(static_cast<fixed_t>(pt->y), finesine[mapangle >> ANGLETOFINESHIFT]))
            + mapcenter.x;
 
-    pt->y = static_cast<int64_t>(FixedMul(pt->x, finesine[mapangle >> ANGLETOFINESHIFT]))
-            + static_cast<int64_t>(FixedMul(pt->y, finecosine[mapangle >> ANGLETOFINESHIFT]))
+    pt->y = static_cast<int64_t>(FixedMul(static_cast<fixed_t>(pt->x), finesine[mapangle >> ANGLETOFINESHIFT]))
+            + static_cast<int64_t>(FixedMul(static_cast<fixed_t>(pt->y), finecosine[mapangle >> ANGLETOFINESHIFT]))
             + mapcenter.y;
 
     pt->x = tmpx;
@@ -1530,8 +1530,8 @@ void AM_drawLineCharacter(mline_t *lineguy,
 
         if (scale)
         {
-            l.a.x = FixedMul(scale, l.a.x);
-            l.a.y = FixedMul(scale, l.a.y);
+            l.a.x = FixedMul(scale, static_cast<fixed_t>(l.a.x));
+            l.a.y = FixedMul(scale, static_cast<fixed_t>(l.a.y));
         }
 
         if (angle)
@@ -1545,8 +1545,8 @@ void AM_drawLineCharacter(mline_t *lineguy,
 
         if (scale)
         {
-            l.b.x = FixedMul(scale, l.b.x);
-            l.b.y = FixedMul(scale, l.b.y);
+            l.b.x = FixedMul(scale, static_cast<fixed_t>(l.b.x));
+            l.b.y = FixedMul(scale, static_cast<fixed_t>(l.b.y));
         }
 
         if (angle)
@@ -1579,10 +1579,10 @@ void AM_drawPlayers()
 
         if (cheating)
             AM_drawLineCharacter(cheat_player_arrow, std::size(cheat_player_arrow), 0,
-                plr->mo->angle, WHITE, pt.x, pt.y);
+                plr->mo->angle, WHITE, static_cast<fixed_t>(pt.x), static_cast<fixed_t>(pt.y));
         else
             AM_drawLineCharacter(player_arrow, std::size(player_arrow), 0, plr->mo->angle,
-                WHITE, pt.x, pt.y);
+                WHITE, static_cast<fixed_t>(pt.x), static_cast<fixed_t>(pt.y));
         return;
     }
 
@@ -1610,7 +1610,7 @@ void AM_drawPlayers()
         }
 
         AM_drawLineCharacter(player_arrow, std::size(player_arrow), 0, p->mo->angle,
-            color, pt.x, pt.y);
+            color, static_cast<fixed_t>(pt.x), static_cast<fixed_t>(pt.y));
     }
 }
 
@@ -1671,7 +1671,7 @@ void AM_drawThings(int colors, int)
                                            (key == yellow_key) ? YELLOWS :
                                                                  (key == blue_key) ? BLUES :
                                                                                      colors + lightlev,
-                        pt.x, pt.y);
+                        static_cast<fixed_t>(pt.x), static_cast<fixed_t>(pt.y));
                 }
                 else
                     // [crispy] draw blood splats and puffs as small squares
@@ -1680,7 +1680,7 @@ void AM_drawThings(int colors, int)
                     AM_drawLineCharacter(square_mark, std::size(square_mark),
                         t->radius >> 2, t->angle,
                         (t->type == MT_BLOOD) ? REDS : GRAYS,
-                        pt.x, pt.y);
+                        static_cast<fixed_t>(pt.x), static_cast<fixed_t>(pt.y));
                 }
                 else
                 {
@@ -1698,7 +1698,7 @@ void AM_drawThings(int colors, int)
                                                              // [crispy] ... and countable items in yellow
                                         (t->flags & MF_COUNTITEM) ? YELLOWS :
                                                                     colors + lightlev,
-                        pt.x, pt.y);
+                        static_cast<fixed_t>(pt.x), static_cast<fixed_t>(pt.y));
                 }
             }
             else
@@ -1732,7 +1732,7 @@ void AM_drawMarks()
                 AM_rotatePoint(&pt);
             }
             fx = (flipscreenwidth[CXMTOF(pt.x)] >> crispy->hires) - 1 - DELTAWIDTH;
-            fy = (CYMTOF(pt.y) >> crispy->hires) - 2;
+            fy = static_cast<int>((CYMTOF(pt.y) >> crispy->hires) - 2);
             if (fx >= f_x && fx <= (f_w >> crispy->hires) - w && fy >= f_y && fy <= (f_h >> crispy->hires) - h)
                 V_DrawPatch(fx, fy, marknums[i]);
         }

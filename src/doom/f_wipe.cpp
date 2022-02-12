@@ -88,7 +88,7 @@ int wipe_doColorXForm(int width,
                 if (newval < *e)
                     *w = *e;
                 else
-                    *w = newval;
+                    *w = static_cast<pixel_t>(newval);
                 changed = true;
             }
             else if (*w < *e)
@@ -97,7 +97,7 @@ int wipe_doColorXForm(int width,
                 if (newval > *e)
                     *w = *e;
                 else
-                    *w = newval;
+                    *w = static_cast<pixel_t>(newval);
                 changed = true;
             }
         }

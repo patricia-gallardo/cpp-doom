@@ -206,7 +206,7 @@ static bool NET_SDL_InitServer()
 
     SDLNet_Init();
 
-    udpsocket = SDLNet_UDP_Open(port);
+    udpsocket = SDLNet_UDP_Open(static_cast<Uint16>(port));
 
     if (udpsocket == nullptr)
     {
@@ -230,7 +230,7 @@ static void NET_SDL_SendPacket(net_addr_t *addr, net_packet_t *packet)
 
     if (addr == &net_broadcast_addr)
     {
-        SDLNet_ResolveHost(&ip, nullptr, port);
+        SDLNet_ResolveHost(&ip, nullptr, static_cast<Uint16>(port));
         ip.host = INADDR_BROADCAST;
     }
     else
@@ -261,7 +261,7 @@ static void NET_SDL_SendPacket(net_addr_t *addr, net_packet_t *packet)
 
     sdl_packet.channel = 0;
     sdl_packet.data    = packet->data;
-    sdl_packet.len     = packet->len;
+    sdl_packet.len     = static_cast<int>(packet->len);
     sdl_packet.address = ip;
 
     if (!SDLNet_UDP_Send(udpsocket, -1, &sdl_packet))

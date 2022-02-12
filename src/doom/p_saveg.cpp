@@ -109,18 +109,16 @@ static void saveg_write8(uint8_t value)
 
 static short saveg_read16()
 {
-    int result;
-
-    result = saveg_read8();
+    int result = saveg_read8();
     result |= saveg_read8() << 8;
 
-    return result;
+    return static_cast<short>(result);
 }
 
 static void saveg_write16(short value)
 {
-    saveg_write8(value & 0xff);
-    saveg_write8((value >> 8) & 0xff);
+    saveg_write8(static_cast<uint8_t>(value & 0xff));
+    saveg_write8(static_cast<uint8_t>((value >> 8) & 0xff));
 }
 
 static int saveg_read32()
@@ -137,10 +135,10 @@ static int saveg_read32()
 
 static void saveg_write32(int value)
 {
-    saveg_write8(value & 0xff);
-    saveg_write8((value >> 8) & 0xff);
-    saveg_write8((value >> 16) & 0xff);
-    saveg_write8((value >> 24) & 0xff);
+    saveg_write8(static_cast<uint8_t>(value & 0xff));
+    saveg_write8(static_cast<uint8_t>((value >> 8) & 0xff));
+    saveg_write8(static_cast<uint8_t>((value >> 16) & 0xff));
+    saveg_write8(static_cast<uint8_t>((value >> 24) & 0xff));
 }
 
 // Pad to 4-byte boundaries
@@ -187,7 +185,7 @@ static void *saveg_readp()
 
 static void saveg_writep(const void *p)
 {
-    saveg_write32(reinterpret_cast<intptr_t>(p));
+    saveg_write32(static_cast<int>(reinterpret_cast<intptr_t>(p)));
 }
 
 // Enum values are 32-bit integers.
@@ -540,7 +538,7 @@ static void saveg_write_mobj_t(mobj_t *str)
     saveg_write32(str->tics);
 
     // state_t* state;
-    saveg_write32(str->state - states);
+    saveg_write32(static_cast<int>(str->state - states));
 
     // int flags;
     saveg_write32(str->flags);
@@ -571,7 +569,7 @@ static void saveg_write_mobj_t(mobj_t *str)
     // struct player_s* player;
     if (str->player)
     {
-        saveg_write32(str->player - players + 1);
+        saveg_write32(static_cast<int>(str->player - players + 1));
     }
     else
     {
@@ -610,7 +608,7 @@ static void saveg_read_ticcmd_t(ticcmd_t *str)
     str->angleturn = saveg_read16();
 
     // short consistancy;
-    str->consistancy = saveg_read16();
+    str->consistancy = static_cast<uint8_t>(saveg_read16());
 
     // byte chatchar;
     str->chatchar = saveg_read8();
@@ -681,7 +679,7 @@ static void saveg_write_pspdef_t(pspdef_t *str)
     // state_t* state;
     if (str->state)
     {
-        saveg_write32(str->state - states);
+        saveg_write32(static_cast<int>(str->state - states));
     }
     else
     {
@@ -1018,7 +1016,7 @@ static void saveg_write_ceiling_t(ceiling_t *str)
     saveg_write_enum(str->type);
 
     // sector_t* sector;
-    saveg_write32(str->sector - sectors);
+    saveg_write32(static_cast<int>(str->sector - sectors));
 
     // fixed_t bottomheight;
     saveg_write32(str->bottomheight);
@@ -1085,7 +1083,7 @@ static void saveg_write_vldoor_t(vldoor_t *str)
     saveg_write_enum(str->type);
 
     // sector_t* sector;
-    saveg_write32(str->sector - sectors);
+    saveg_write32(static_cast<int>(str->sector - sectors));
 
     // fixed_t topheight;
     saveg_write32(str->topheight);
@@ -1152,7 +1150,7 @@ static void saveg_write_floormove_t(floormove_t *str)
     saveg_write32(str->crush);
 
     // sector_t* sector;
-    saveg_write32(str->sector - sectors);
+    saveg_write32(static_cast<int>(str->sector - sectors));
 
     // int direction;
     saveg_write32(str->direction);
@@ -1222,7 +1220,7 @@ static void saveg_write_plat_t(plat_t *str)
     saveg_write_thinker_t(&str->thinker);
 
     // sector_t* sector;
-    saveg_write32(str->sector - sectors);
+    saveg_write32(static_cast<int>(str->sector - sectors));
 
     // fixed_t speed;
     saveg_write32(str->speed);
@@ -1292,7 +1290,7 @@ static void saveg_write_lightflash_t(lightflash_t *str)
     saveg_write_thinker_t(&str->thinker);
 
     // sector_t* sector;
-    saveg_write32(str->sector - sectors);
+    saveg_write32(static_cast<int>(str->sector - sectors));
 
     // int count;
     saveg_write32(str->count);
@@ -1347,7 +1345,7 @@ static void saveg_write_strobe_t(strobe_t *str)
     saveg_write_thinker_t(&str->thinker);
 
     // sector_t* sector;
-    saveg_write32(str->sector - sectors);
+    saveg_write32(static_cast<int>(str->sector - sectors));
 
     // int count;
     saveg_write32(str->count);
@@ -1396,7 +1394,7 @@ static void saveg_write_glow_t(glow_t *str)
     saveg_write_thinker_t(&str->thinker);
 
     // sector_t* sector;
-    saveg_write32(str->sector - sectors);
+    saveg_write32(static_cast<int>(str->sector - sectors));
 
     // int minlight;
     saveg_write32(str->minlight);
@@ -1435,9 +1433,9 @@ void P_WriteSaveGameHeader(char *description)
     for (i = 0; i < MAXPLAYERS; i++)
         saveg_write8(playeringame[i]);
 
-    saveg_write8((leveltime >> 16) & 0xff);
-    saveg_write8((leveltime >> 8) & 0xff);
-    saveg_write8(leveltime & 0xff);
+    saveg_write8(static_cast<uint8_t>((leveltime >> 16) & 0xff));
+    saveg_write8(static_cast<uint8_t>((leveltime >> 8) & 0xff));
+    saveg_write8(static_cast<uint8_t>(leveltime & 0xff));
 }
 
 //
@@ -1561,8 +1559,8 @@ void P_ArchiveWorld()
     // do sectors
     for (i = 0, sec = sectors; i < numsectors; i++, sec++)
     {
-        saveg_write16(sec->floorheight >> FRACBITS);
-        saveg_write16(sec->ceilingheight >> FRACBITS);
+        saveg_write16(static_cast<short>(sec->floorheight >> FRACBITS));
+        saveg_write16(static_cast<short>(sec->ceilingheight >> FRACBITS));
         saveg_write16(sec->floorpic);
         saveg_write16(sec->ceilingpic);
         saveg_write16(sec->lightlevel);
@@ -1584,8 +1582,8 @@ void P_ArchiveWorld()
 
             si = &sides[li->sidenum[j]];
 
-            saveg_write16(si->textureoffset >> FRACBITS);
-            saveg_write16(si->rowoffset >> FRACBITS);
+            saveg_write16(static_cast<short>(si->textureoffset >> FRACBITS));
+            saveg_write16(static_cast<short>(si->rowoffset >> FRACBITS));
             saveg_write16(si->toptexture);
             saveg_write16(si->bottomtexture);
             saveg_write16(si->midtexture);
@@ -1762,8 +1760,10 @@ void P_RestoreTargets()
         if (th->function == needle)
         {
             mo         = reinterpret_cast<mobj_t *>(th);
-            mo->target = reinterpret_cast<mobj_t *>(P_IndexToThinker(reinterpret_cast<uintptr_t>(mo->target)));
-            mo->tracer = reinterpret_cast<mobj_t *>(P_IndexToThinker(reinterpret_cast<uintptr_t>(mo->tracer)));
+            uint32_t target_index = static_cast<uint32_t>(reinterpret_cast<uintptr_t>(mo->target));
+            mo->target = reinterpret_cast<mobj_t *>(P_IndexToThinker(target_index));
+            uint32_t tracer_index = static_cast<uint32_t>(reinterpret_cast<uintptr_t>(mo->tracer));
+            mo->tracer = reinterpret_cast<mobj_t *>(P_IndexToThinker(tracer_index));
         }
     }
 

@@ -403,7 +403,7 @@ void G_BuildTiccmd(ticcmd_t *cmd, int maketic)
     // [crispy] add quick 180° reverse
     if (gamekeydown[key_reverse] || mousebuttons[mousebreverse])
     {
-        cmd->angleturn += ANG180 >> FRACBITS;
+        cmd->angleturn += static_cast<short>(ANG180 >> FRACBITS);
         gamekeydown[key_reverse]    = false;
         mousebuttons[mousebreverse] = false;
     }
@@ -487,13 +487,13 @@ void G_BuildTiccmd(ticcmd_t *cmd, int maketic)
     else
     {
         if (gamekeydown[key_right])
-            cmd->angleturn -= angleturn[tspeed];
+            cmd->angleturn -= static_cast<short>(angleturn[tspeed]);
         if (gamekeydown[key_left])
-            cmd->angleturn += angleturn[tspeed];
+            cmd->angleturn += static_cast<short>(angleturn[tspeed]);
         if (joyxmove > 0)
-            cmd->angleturn -= angleturn[tspeed];
+            cmd->angleturn -= static_cast<short>(angleturn[tspeed]);
         if (joyxmove < 0)
-            cmd->angleturn += angleturn[tspeed];
+            cmd->angleturn += static_cast<short>(angleturn[tspeed]);
     }
 
     if (gamekeydown[key_up] || gamekeydown[key_alt_up]) // [crispy] add key_alt_*
@@ -587,7 +587,7 @@ void G_BuildTiccmd(ticcmd_t *cmd, int maketic)
     {
         i = G_NextWeapon(next_weapon);
         cmd->buttons |= BT_CHANGE;
-        cmd->buttons |= i << BT_WEAPONSHIFT;
+        cmd->buttons |= static_cast<uint8_t>(i << BT_WEAPONSHIFT);
     }
     else
     {
@@ -600,7 +600,7 @@ void G_BuildTiccmd(ticcmd_t *cmd, int maketic)
             if (gamekeydown[key])
             {
                 cmd->buttons |= BT_CHANGE;
-                cmd->buttons |= i << BT_WEAPONSHIFT;
+                cmd->buttons |= static_cast<uint8_t>(i << BT_WEAPONSHIFT);
                 break;
             }
         }
@@ -707,7 +707,7 @@ void G_BuildTiccmd(ticcmd_t *cmd, int maketic)
     if (strafe)
         side += mousex2 * 2;
     else
-        cmd->angleturn -= mousex * 0x8;
+        cmd->angleturn -= static_cast<short>(mousex * 0x8);
 
     if (mousex == 0)
     {
@@ -727,8 +727,8 @@ void G_BuildTiccmd(ticcmd_t *cmd, int maketic)
     else if (side < -MAXPLMOVE)
         side = -MAXPLMOVE;
 
-    cmd->forwardmove += forward;
-    cmd->sidemove += side;
+    cmd->forwardmove += static_cast<signed char>(forward);
+    cmd->sidemove += static_cast<signed char>(side);
 
     // [crispy] lookdir delta is stored in the lower 4 bits of the lookfly variable
     if (player->playerstate == PST_LIVE)
@@ -737,7 +737,7 @@ void G_BuildTiccmd(ticcmd_t *cmd, int maketic)
         {
             look += 16;
         }
-        cmd->lookfly = look;
+        cmd->lookfly = static_cast<uint8_t>(look);
     }
 
     // special buttons
@@ -754,7 +754,7 @@ void G_BuildTiccmd(ticcmd_t *cmd, int maketic)
     if (sendsave)
     {
         sendsave     = false;
-        cmd->buttons = BT_SPECIAL | BTS_SAVEGAME | (savegameslot << BTS_SAVESHIFT);
+        cmd->buttons = static_cast<uint8_t>(BT_SPECIAL | BTS_SAVEGAME | (savegameslot << BTS_SAVESHIFT));
     }
 
     if (crispy->fliplevels)
@@ -775,7 +775,7 @@ void G_BuildTiccmd(ticcmd_t *cmd, int maketic)
         // round angleturn to the nearest 256 unit boundary
         // for recording demos with single byte values for turn
 
-        cmd->angleturn = (desired_angleturn + 128) & 0xff00;
+        cmd->angleturn = static_cast<short>((desired_angleturn + 128) & 0xff00);
 
         // Carry forward the error from the reduced resolution to the
         // next tic, so that successive small movements can accumulate.
@@ -1185,9 +1185,9 @@ void G_Ticker()
                         cmd->consistancy, consistancy[i][buf]);
                 }
                 if (players[i].mo)
-                    consistancy[i][buf] = players[i].mo->x;
+                    consistancy[i][buf] = static_cast<uint8_t>(players[i].mo->x);
                 else
-                    consistancy[i][buf] = rndindex;
+                    consistancy[i][buf] = static_cast<uint8_t>(rndindex);
             }
         }
     }
@@ -1476,19 +1476,16 @@ bool
 //
 void G_DeathMatchSpawnPlayer(int playernum)
 {
-    int i, j;
-    int selections;
-
-    selections = deathmatch_p - deathmatchstarts;
+    int selections = static_cast<int>(deathmatch_p - deathmatchstarts);
     if (selections < 4)
         I_Error("Only %i deathmatch spots, 4 required", selections);
 
-    for (j = 0; j < 20; j++)
+    for (int j = 0; j < 20; j++)
     {
-        i = P_Random() % selections;
+        int i = P_Random() % selections;
         if (G_CheckSpot(playernum, &deathmatchstarts[i]))
         {
-            deathmatchstarts[i].type = playernum + 1;
+            deathmatchstarts[i].type = static_cast<short>(playernum + 1);
             P_SpawnPlayer(&deathmatchstarts[i]);
             return;
         }
@@ -1510,8 +1507,6 @@ static inline void G_ClearSavename()
 //
 void G_DoReborn(int playernum)
 {
-    int i;
-
     if (!netgame)
     {
         // [crispy] if the player dies and the game has been loaded or saved
@@ -1547,13 +1542,13 @@ void G_DoReborn(int playernum)
         }
 
         // try to spawn at one of the other players spots
-        for (i = 0; i < MAXPLAYERS; i++)
+        for (int i = 0; i < MAXPLAYERS; i++)
         {
             if (G_CheckSpot(playernum, &playerstarts[i]))
             {
-                playerstarts[i].type = playernum + 1; // fake as other player
+                playerstarts[i].type = static_cast<short>(playernum + 1); // fake as other player
                 P_SpawnPlayer(&playerstarts[i]);
-                playerstarts[i].type = i + 1; // restore
+                playerstarts[i].type = static_cast<short>(i + 1); // restore
                 return;
             }
             // he's going to be inside something.  Too bad.
@@ -1624,11 +1619,9 @@ void G_SecretExitLevel()
 
 void G_DoCompleted()
 {
-    int i;
-
     gameaction = ga_nothing;
 
-    for (i = 0; i < MAXPLAYERS; i++)
+    for (int i = 0; i < MAXPLAYERS; i++)
         if (playeringame[i])
             G_PlayerFinishLevel(i); // take away cards and stuff
 
@@ -1658,7 +1651,7 @@ void G_DoCompleted()
                 return;
             */
             case 9:
-                for (i = 0; i < MAXPLAYERS; i++)
+                for (int i = 0; i < MAXPLAYERS; i++)
                     players[i].didsecret = true;
                 break;
             }
@@ -1823,7 +1816,7 @@ void G_DoCompleted()
 
     wminfo.pnum = consoleplayer;
 
-    for (i = 0; i < MAXPLAYERS; i++)
+    for (int i = 0; i < MAXPLAYERS; i++)
     {
         wminfo.plyr[i].in      = playeringame[i];
         wminfo.plyr[i].skills  = players[i].killcount;
@@ -2445,7 +2438,7 @@ void G_ReadDemoTiccmd(ticcmd_t *cmd)
     if (longtics)
     {
         cmd->angleturn = *demo_p++;
-        cmd->angleturn |= (*demo_p++) << 8;
+        cmd->angleturn |= static_cast<short>((*demo_p++) << 8);
     }
     else
     {
@@ -2464,20 +2457,15 @@ void G_ReadDemoTiccmd(ticcmd_t *cmd)
 
 static void IncreaseDemoBuffer()
 {
-    int   current_length;
-    uint8_t *new_demobuffer;
-    uint8_t *new_demop;
-    int   new_length;
-
     // Find the current size
 
-    current_length = demoend - demobuffer;
+    int current_length = static_cast<int>(demoend - demobuffer);
 
     // Generate a new buffer twice the size
-    new_length = current_length * 2;
+    int new_length = current_length * 2;
 
-    new_demobuffer = zmalloc<decltype(new_demobuffer)>(new_length, PU_STATIC, 0);
-    new_demop      = new_demobuffer + (demo_p - demobuffer);
+    uint8_t *new_demobuffer = zmalloc<decltype(new_demobuffer)>(new_length, PU_STATIC, 0);
+    uint8_t *new_demop      = new_demobuffer + (demo_p - demobuffer);
 
     // Copy over the old data
 
@@ -2508,12 +2496,12 @@ void G_WriteDemoTiccmd(ticcmd_t *cmd)
 
     if (longtics)
     {
-        *demo_p++ = (cmd->angleturn & 0xff);
-        *demo_p++ = (cmd->angleturn >> 8) & 0xff;
+        *demo_p++ = static_cast<uint8_t>(cmd->angleturn & 0xff);
+        *demo_p++ = static_cast<uint8_t>((cmd->angleturn >> 8) & 0xff);
     }
     else
     {
-        *demo_p++ = cmd->angleturn >> 8;
+        *demo_p++ = static_cast<uint8_t>(cmd->angleturn >> 8);
     }
 
     *demo_p++ = cmd->buttons;
@@ -2614,8 +2602,6 @@ int G_VanillaVersionCode()
 
 void G_BeginRecording()
 {
-    int i;
-
     demo_p = demobuffer;
 
     //!
@@ -2636,22 +2622,22 @@ void G_BeginRecording()
     }
     else if (gameversion > exe_doom_1_2)
     {
-        *demo_p++ = G_VanillaVersionCode();
+        *demo_p++ = static_cast<uint8_t>(G_VanillaVersionCode());
     }
 
     *demo_p++ = gameskill;
-    *demo_p++ = gameepisode;
-    *demo_p++ = gamemap;
+    *demo_p++ = static_cast<uint8_t>(gameepisode);
+    *demo_p++ = static_cast<uint8_t>(gamemap);
     if (longtics || gameversion > exe_doom_1_2)
     {
-        *demo_p++ = deathmatch;
+        *demo_p++ = static_cast<uint8_t>(deathmatch);
         *demo_p++ = respawnparm;
         *demo_p++ = fastparm;
         *demo_p++ = nomonsters;
-        *demo_p++ = consoleplayer;
+        *demo_p++ = static_cast<uint8_t>(consoleplayer);
     }
 
-    for (i = 0; i < MAXPLAYERS; i++)
+    for (int i = 0; i < MAXPLAYERS; i++)
         *demo_p++ = playeringame[i];
 }
 
@@ -2908,7 +2894,7 @@ bool G_CheckDemoStatus()
 
         endtime  = I_GetTime();
         realtics = endtime - starttime;
-        fps      = (static_cast<float>(gametic) * TICRATE) / realtics;
+        fps      = (static_cast<float>(gametic) * TICRATE) / static_cast<float>(realtics);
 
         // Prevent recursive calls
         timingdemo   = false;
@@ -2965,7 +2951,7 @@ bool G_CheckDemoStatus()
     if (demorecording)
     {
         *demo_p++ = DEMOMARKER;
-        M_WriteFile(demoname, demobuffer, demo_p - demobuffer);
+        M_WriteFile(demoname, demobuffer, static_cast<int>(demo_p - demobuffer));
         Z_Free(demobuffer);
         demorecording = false;
         // [crispy] if a new game is started during demo recording, start a new demo
