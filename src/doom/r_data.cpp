@@ -345,7 +345,7 @@ void R_GenerateComposite(int texnum)
                     break;
                 }
 
-                col->topdelta = j; // starting offset of post
+                col->topdelta = static_cast<uint8_t>(j); // starting offset of post
 
                 // killough 12/98:
                 // Use 32-bit len counter, to support tall 1s multipatched textures
@@ -353,7 +353,7 @@ void R_GenerateComposite(int texnum)
                 for (len = 0; j < texture->height && mark[j]; j++)
                     len++; // count opaque cells
 
-                col->length = len; // killough 12/98: intentionally truncate length
+                col->length = static_cast<uint8_t>(len); // killough 12/98: intentionally truncate length
 
                 // copy opaque cells from the temporary back into the column
                 memcpy(reinterpret_cast<uint8_t *>(col) + 3, source + col->topdelta, len);

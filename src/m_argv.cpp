@@ -78,7 +78,6 @@ static void LoadResponseFile(int argv_index, const char *filename)
     char * infile;
     char **newargv;
     int    newargc;
-    int    i, k;
 
     // Read the response file into memory
     FILE *handle = fopen(filename, "rb");
@@ -91,7 +90,7 @@ static void LoadResponseFile(int argv_index, const char *filename)
 
     printf("Found response file %s!\n", filename);
 
-    int size = M_FileLength(handle);
+    long size = M_FileLength(handle);
 
     // Read in the entire file
     // Allocate one byte extra - this is in case there is an argument
@@ -100,11 +99,11 @@ static void LoadResponseFile(int argv_index, const char *filename)
 
     char *file = static_cast<char *>(malloc(static_cast<size_t>(size + 1)));
 
-    i = 0;
+    int i = 0;
 
     while (i < size)
     {
-        k = fread(file + i, 1, static_cast<size_t>(size - i), handle);
+        size_t k = fread(file + i, 1, static_cast<size_t>(size - i), handle);
 
         if (k < 0)
         {
@@ -131,7 +130,7 @@ static void LoadResponseFile(int argv_index, const char *filename)
     }
 
     infile = file;
-    k      = 0;
+    long k = 0;
 
     while (k < size)
     {
@@ -225,9 +224,7 @@ static void LoadResponseFile(int argv_index, const char *filename)
 
 void M_FindResponseFile()
 {
-    int i;
-
-    for (i = 1; i < myargc; i++)
+    for (int i = 1; i < myargc; i++)
     {
         if (myargv[i][0] == '@')
         {
@@ -245,7 +242,7 @@ void M_FindResponseFile()
         // line replacing this argument. A response file can also be loaded
         // using the abbreviated syntax '@filename.rsp'.
         //
-        i = M_CheckParmWithArgs("-response", 1);
+        int i = M_CheckParmWithArgs("-response", 1);
         if (i <= 0)
         {
             break;
