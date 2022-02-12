@@ -34,6 +34,7 @@ function(set_project_warnings)
             /wd4244 # disable warning C4244: '=': conversion, possible loss of data TODO turn it back on (patricia)
             /wd4267 # disable warning C4267: '=': conversion, possible loss of data TODO turn it back on (patricia)
             /wd4996 # disable warning C4996: was declared deprecated TODO turn it back on (patricia)
+            /wd4068 # disable unknown pragma warnings
             )
 
     set(CLANG_WARNINGS
