@@ -409,7 +409,7 @@ void A_BridgeOrbit(mobj_t * actor)
     {
         P_SetMobjState(actor, S_NULL);
     }
-    actor->args[0] += 3;
+    actor->args[0] += static_cast<uint8_t>(3);
     actor->x = actor->target->x + orbitTableX[actor->args[0]];
     actor->y = actor->target->y + orbitTableY[actor->args[0]];
     actor->z = actor->target->z;
