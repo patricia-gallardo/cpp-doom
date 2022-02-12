@@ -61,7 +61,7 @@ static void ChecksumAddLump(sha1_context_t *sha1_context, lumpinfo_t *lump)
     SHA1_UpdateString(sha1_context, buf);
     SHA1_UpdateInt32(sha1_context, GetFileNumber(lump->wad_file));
     SHA1_UpdateInt32(sha1_context, lump->position);
-    SHA1_UpdateInt32(sha1_context, lump->size);
+    SHA1_UpdateInt32(sha1_context, static_cast<unsigned int>(lump->size));
 }
 
 void W_Checksum(sha1_digest_t digest)

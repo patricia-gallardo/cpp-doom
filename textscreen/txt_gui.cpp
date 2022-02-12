@@ -250,7 +250,7 @@ void TXT_DrawCodePageString(const char *s)
         }
     }
 
-    int end_x = static_cast<int>(x + strlen(s));
+    int end_x = static_cast<int>(static_cast<unsigned long>(x) + strlen(s));
     TXT_GotoXY(end_x, y);
 }
 

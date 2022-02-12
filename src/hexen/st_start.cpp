@@ -303,7 +303,7 @@ uint8_t *ST_LoadScreen()
     uint8_t *buffer;
 
     lump = W_GetNumForName("STARTUP");
-    length = W_LumpLength(lump);
+    length = static_cast<int>(W_LumpLength(lump));
     buffer = zmalloc<uint8_t *>(length, PU_STATIC, nullptr);
     W_ReadLump(lump, buffer);
     return (buffer);

@@ -365,7 +365,7 @@ void W_ReadLump(lumpindex_t lump, void *dest)
 
     size_t c = W_Read(l->wad_file, static_cast<unsigned int>(l->position), dest, static_cast<size_t>(l->size));
 
-    if (static_cast<int>(c) < l->size)
+    if (c < l->size)
     {
         I_Error("W_ReadLump: only read %i of %i on lump %i",
             c, l->size, lump);
@@ -560,7 +560,7 @@ void W_GenerateHashTable()
 
         for (unsigned int i = 0; i < numlumps; ++i)
         {
-            unsigned int hash = W_LumpNameHash(lumpinfo[i]->name) % numlumps;
+            unsigned int hash = static_cast<unsigned int>(W_LumpNameHash(lumpinfo[i]->name) % numlumps);
 
             // Hook into the hash table
 

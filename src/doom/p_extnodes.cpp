@@ -85,7 +85,7 @@ mapformat_t P_CheckMapFormat(int lumpnum)
 // adapted from prboom-plus/src/p_setup.c:633-752
 void P_LoadSegs_DeePBSP(int lump)
 {
-    numsegs = W_LumpLength(lump) / sizeof(mapseg_deepbsp_t);
+    numsegs = static_cast<int>(W_LumpLength(lump) / sizeof(mapseg_deepbsp_t));
     segs    = zmalloc<decltype(segs)>(static_cast<int>(static_cast<unsigned long>(numsegs) * sizeof(seg_t)), PU_LEVEL, 0);
     mapseg_deepbsp_t *data    = cache_lump_num<mapseg_deepbsp_t *>(lump, PU_STATIC);
 
@@ -144,7 +144,7 @@ void P_LoadSegs_DeePBSP(int lump)
 // adapted from prboom-plus/src/p_setup.c:843-863
 void P_LoadSubsectors_DeePBSP(int lump)
 {
-    numsubsectors = W_LumpLength(lump) / sizeof(mapsubsector_deepbsp_t);
+    numsubsectors = static_cast<int>(W_LumpLength(lump) / sizeof(mapsubsector_deepbsp_t));
     subsectors    = zmalloc<decltype(subsectors)>(numsubsectors * sizeof(subsector_t), PU_LEVEL, 0);
     mapsubsector_deepbsp_t *data = cache_lump_num<mapsubsector_deepbsp_t *>(lump, PU_STATIC);
 
@@ -165,7 +165,7 @@ void P_LoadSubsectors_DeePBSP(int lump)
 void P_LoadNodes_DeePBSP(int lump)
 {
 
-    numnodes   = (W_LumpLength(lump) - 8) / sizeof(mapnode_deepbsp_t);
+    numnodes   = static_cast<int>((W_LumpLength(lump) - 8) / sizeof(mapnode_deepbsp_t));
     nodes      = zmalloc<decltype(nodes)>(numnodes * sizeof(node_t), PU_LEVEL, 0);
     auto *data = cache_lump_num<const uint8_t *>(lump, PU_STATIC);
 
@@ -462,7 +462,7 @@ void P_LoadThings_Hexen(int lump)
     int               numthings;
 
     auto *data = cache_lump_num<uint8_t *>(lump, PU_STATIC);
-    numthings  = W_LumpLength(lump) / sizeof(mapthing_hexen_t);
+    numthings  = static_cast<int>(W_LumpLength(lump) / sizeof(mapthing_hexen_t));
 
     mt = reinterpret_cast<mapthing_hexen_t *>(data);
     for (int i = 0; i < numthings; i++, mt++)
@@ -492,7 +492,7 @@ void P_LoadThings_Hexen(int lump)
 // adapted from chocolate-doom/src/hexen/p_setup.c:410-490
 void P_LoadLineDefs_Hexen(int lump)
 {
-    numlines = W_LumpLength(lump) / sizeof(maplinedef_hexen_t);
+    numlines = static_cast<int>(W_LumpLength(lump) / sizeof(maplinedef_hexen_t));
     lines    = zmalloc<decltype(lines)>(numlines * sizeof(line_t), PU_LEVEL, 0);
     memset(lines, 0, numlines * sizeof(line_t));
     auto *data = cache_lump_num<uint8_t *>(lump, PU_STATIC);

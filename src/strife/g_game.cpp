@@ -1081,6 +1081,8 @@ void G_Ticker ()
     case GS_DEMOSCREEN: 
         D_PageTicker (); 
         break;
+    case NULL_GAMESTATE:
+        break;
     }        
 } 
  

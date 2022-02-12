@@ -1544,7 +1544,7 @@ void D_DoomMain()
     int  p;
     char file[256];
     char demolumpname[9];
-    int  numiwadlumps;
+    size_t numiwadlumps;
 
     I_AtExit(D_Endoom, false);
 
@@ -2046,11 +2046,11 @@ void D_DoomMain()
     {
         int loaded = 0;
 
-        for (unsigned int i = numiwadlumps; i < numlumps; ++i)
+        for (size_t i = numiwadlumps; i < numlumps; ++i)
         {
             if (!strncmp(lumpinfo[i]->name, "DEHACKED", 8))
             {
-                DEH_LoadLump(i, true, true); // [crispy] allow long, allow error
+                DEH_LoadLump(static_cast<int>(i), true, true); // [crispy] allow long, allow error
                 loaded++;
             }
         }

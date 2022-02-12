@@ -467,8 +467,8 @@ void R_InitTextures ()
     int			totalwidth;
     int			nummappatches;
     int			offset;
-    int			maxoff;
-    int			maxoff2;
+    size_t 		maxoff;
+    size_t 		maxoff2;
     int			numtextures1;
     int			numtextures2;
 
@@ -565,7 +565,7 @@ void R_InitTextures ()
 
         offset = LONG(*directory);
 
-        if (offset > maxoff)
+        if (offset > static_cast<int>(maxoff))
             I_Error ("R_InitTextures: bad texture directory");
 
         mtexture = reinterpret_cast<maptexture_t *>( reinterpret_cast<uint8_t *>(maptex) + offset);
@@ -938,7 +938,7 @@ void R_PrecacheLevel ()
 	if (flatpresent[i])
 	{
 	    lump = firstflat + i;
-	    flatmemory += lumpinfo[lump]->size;
+	    flatmemory += static_cast<int>(lumpinfo[lump]->size);
 	    W_CacheLumpNum(lump, PU_CACHE);
 	}
     }
@@ -975,7 +975,7 @@ void R_PrecacheLevel ()
 	for (j=0 ; j<texture->patchcount ; j++)
 	{
 	    lump = texture->patches[j].patch;
-	    texturememory += lumpinfo[lump]->size;
+	    texturememory += static_cast<int>(lumpinfo[lump]->size);
 	    W_CacheLumpNum(lump , PU_CACHE);
 	}
     }
@@ -1004,7 +1004,7 @@ void R_PrecacheLevel ()
 	    for (k=0 ; k<8 ; k++)
 	    {
 		lump = firstspritelump + sf->lump[k];
-		spritememory += lumpinfo[lump]->size;
+		spritememory += static_cast<int>(lumpinfo[lump]->size);
 		W_CacheLumpNum(lump , PU_CACHE);
 	    }
 	}

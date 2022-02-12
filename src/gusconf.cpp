@@ -46,7 +46,7 @@ int   gus_ram_kb     = 1024;
 
 static unsigned int MappingIndex()
 {
-    unsigned int result = gus_ram_kb / 256;
+    unsigned int result = static_cast<unsigned int>(gus_ram_kb / 256);
 
     if (result < 1)
     {
@@ -106,7 +106,7 @@ static int SplitLine(char *line, char **fields, unsigned int max_fields)
         *p = '\0';
     }
 
-    return num_fields;
+    return static_cast<int>(num_fields);
 }
 
 static void ParseLine(gus_config_t *config, char *line)
@@ -116,14 +116,14 @@ static void ParseLine(gus_config_t *config, char *line)
     unsigned int num_fields;
     unsigned int instr_id, mapped_id;
 
-    num_fields = SplitLine(line, fields, 6);
+    num_fields = static_cast<unsigned int>(SplitLine(line, fields, 6));
 
     if (num_fields < 6)
     {
         return;
     }
 
-    instr_id = atoi(fields[0]);
+    instr_id = static_cast<unsigned int>(atoi(fields[0]));
 
     // Skip non GM percussions.
     if ((instr_id >= 128 && instr_id < 128 + 35) || instr_id > 128 + 81)
@@ -131,7 +131,7 @@ static void ParseLine(gus_config_t *config, char *line)
         return;
     }
 
-    mapped_id = atoi(fields[MappingIndex()]);
+    mapped_id = static_cast<unsigned int>(atoi(fields[MappingIndex()]));
 
     for (i = 0; i < config->count; i++)
     {
@@ -147,10 +147,10 @@ static void ParseLine(gus_config_t *config, char *line)
         // instrument, but DMX uses name of 'instr_id' instead).
         free(config->patch_names[i]);
         config->patch_names[i] = M_StringDuplicate(fields[5]);
-        config->used[i]        = mapped_id;
+        config->used[i]        = static_cast<int>(mapped_id);
         config->count++;
     }
-    config->mapping[instr_id] = i;
+    config->mapping[instr_id] = static_cast<int>(i);
 }
 
 static void ParseDMXConfig(char *dmxconf, gus_config_t *config)

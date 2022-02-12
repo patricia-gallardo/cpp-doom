@@ -458,7 +458,7 @@ void P_DialogLoad()
     else
     {
         uint8_t *leveldialogptr = cache_lump_num<uint8_t *>(lumpnum, PU_STATIC);
-        numleveldialogs = W_LumpLength(lumpnum) / ORIG_MAPDIALOG_SIZE;
+        numleveldialogs = static_cast<int>(W_LumpLength(lumpnum) / ORIG_MAPDIALOG_SIZE);
         P_ParseDialogLump(leveldialogptr, &leveldialogs, numleveldialogs, 
                           PU_LEVEL);
         Z_Free(leveldialogptr); // haleyjd: free the original lump
@@ -473,7 +473,7 @@ void P_DialogLoad()
         // BUG: Rogue should have used W_GetNumForName here...
         lumpnum = W_CheckNumForName(DEH_String("script00")); 
         script0ptr = cache_lump_num<uint8_t *>(lumpnum, PU_STATIC);
-        numscript0dialogs = W_LumpLength(lumpnum) / ORIG_MAPDIALOG_SIZE;
+        numscript0dialogs = static_cast<int>(W_LumpLength(lumpnum) / ORIG_MAPDIALOG_SIZE);
         P_ParseDialogLump(script0ptr, &script0dialogs, numscript0dialogs,
                           PU_STATIC);
         Z_Free(script0ptr); // haleyjd: free the original lump

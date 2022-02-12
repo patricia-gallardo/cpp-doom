@@ -172,7 +172,6 @@ static void InitStats()
     int slaughtercount;
     int playercount;
     const char *msgLumpName;
-    int msgSize;
     int msgLump;
 
     extern int LeaveMap;
@@ -188,7 +187,7 @@ static void InitStats()
             {
                 msgLumpName = ClusMsgLumpNames[oldCluster - 1];
                 msgLump = W_GetNumForName(msgLumpName);
-                msgSize = W_LumpLength(msgLump);
+                size_t msgSize = W_LumpLength(msgLump);
                 if (msgSize >= MAX_INTRMSN_MESSAGE_SIZE)
                 {
                     I_Error("Cluster message too long (%s)", msgLumpName);

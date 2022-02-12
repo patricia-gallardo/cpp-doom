@@ -977,7 +977,7 @@ void S_ChangeMusic(int musicnum, int looping)
 
     music->data = cache_lump_num<void *>(music->lumpnum, PU_STATIC);
 
-    handle        = I_RegisterSong(music->data, W_LumpLength(music->lumpnum));
+    handle        = I_RegisterSong(music->data, static_cast<int>(W_LumpLength(music->lumpnum)));
     music->handle = handle;
     I_PlaySong(handle, looping);
     // [crispy] log played music
@@ -1031,7 +1031,7 @@ void S_ChangeMusInfoMusic(int lumpnum, int looping)
     music->lumpnum = lumpnum;
 
     music->data   = cache_lump_num<void *>(music->lumpnum, PU_STATIC);
-    music->handle = I_RegisterSong(music->data, W_LumpLength(music->lumpnum));
+    music->handle = I_RegisterSong(music->data, static_cast<int>(W_LumpLength(music->lumpnum)));
 
     I_PlaySong(music->handle, looping);
     // [crispy] log played music

@@ -1060,7 +1060,7 @@ static void LoadOperatorData(int op, genmidi_op_t *data,
         level |= data->level;
     }
 
-    *volume = level;
+    *volume = static_cast<unsigned int>(level);
 
     OPL_WriteRegister(OPL_REGS_LEVEL + op, level);
     OPL_WriteRegister(OPL_REGS_TREMOLO + op, data->tremolo);
@@ -1109,8 +1109,7 @@ static void SetVoiceInstrument(opl_voice_t *voice,
     // two operators.  Turn on bits in the upper nybble; I think this
     // is for OPL3, where it turns on channel A/B.
 
-    OPL_WriteRegister((OPL_REGS_FEEDBACK + voice->index) | voice->array,
-        data->feedback | voice->reg_pan);
+    OPL_WriteRegister((OPL_REGS_FEEDBACK + voice->index) | voice->array, static_cast<int>(data->feedback | voice->reg_pan));
 
     // Calculate voice priority.
 
@@ -1146,8 +1145,7 @@ static void SetVoiceVolume(opl_voice_t *voice, unsigned int volume)
     {
         voice->car_volume = car_volume | (voice->car_volume & 0xc0);
 
-        OPL_WriteRegister((OPL_REGS_LEVEL + voice->op2) | voice->array,
-            voice->car_volume);
+        OPL_WriteRegister((OPL_REGS_LEVEL + voice->op2) | voice->array, static_cast<int>(voice->car_volume));
 
         // If we are using non-modulated feedback mode, we must set the
         // volume for both voices.
@@ -1166,8 +1164,7 @@ static void SetVoiceVolume(opl_voice_t *voice, unsigned int volume)
             if (mod_volume != voice->mod_volume)
             {
                 voice->mod_volume = mod_volume;
-                OPL_WriteRegister((OPL_REGS_LEVEL + voice->op1) | voice->array,
-                    mod_volume | (opl_voice->modulator.scale & 0xc0));
+                OPL_WriteRegister((OPL_REGS_LEVEL + voice->op1) | voice->array, static_cast<int>(mod_volume | (opl_voice->modulator.scale & 0xc0)));
             }
         }
     }
@@ -1181,8 +1178,7 @@ static void SetVoicePan(opl_voice_t *voice, unsigned int pan)
     opl_voice      = &voice->current_instr->voices[voice->current_instr_voice];
     ;
 
-    OPL_WriteRegister((OPL_REGS_FEEDBACK + voice->index) | voice->array,
-        opl_voice->feedback | pan);
+    OPL_WriteRegister((OPL_REGS_FEEDBACK + voice->index) | voice->array, static_cast<int>(opl_voice->feedback | pan));
 }
 
 // Initialize the voice table and freelist
@@ -1236,11 +1232,11 @@ static void I_OPL_SetMusicVolume(int volume)
     {
         if (i == 15)
         {
-            SetChannelVolume(&channels[i], volume, false);
+            SetChannelVolume(&channels[i], static_cast<unsigned int>(volume), false);
         }
         else
         {
-            SetChannelVolume(&channels[i], channels[i].volume_base, false);
+            SetChannelVolume(&channels[i], static_cast<unsigned int>(channels[i].volume_base), false);
         }
     }
 }
@@ -1388,7 +1384,7 @@ static unsigned int FrequencyForVoice(opl_voice_t *voice)
     unsigned int     sub_index;
     signed int       note;
 
-    note = voice->note;
+    note = static_cast<int>(voice->note);
 
     // Apply note offset.
     // Don't apply offset if the instrument is a fixed note instrument.
@@ -1435,8 +1431,8 @@ static unsigned int FrequencyForVoice(opl_voice_t *voice)
         return frequency_curve[freq_index];
     }
 
-    sub_index = (freq_index - 284) % (12 * 32);
-    octave    = (freq_index - 284) / (12 * 32);
+    sub_index = static_cast<unsigned int>((freq_index - 284) % (12 * 32));
+    octave    = static_cast<unsigned int>((freq_index - 284) / (12 * 32));
 
     // Once the seventh octave is reached, things break down.
     // We can only go up to octave 7 as a maximum anyway (the OPL
@@ -1520,7 +1516,7 @@ static void VoiceKeyOn(opl_channel_data_t *channel,
         voice->note = note;
     }
 
-    voice->reg_pan = channel->pan;
+    voice->reg_pan = static_cast<unsigned int>(channel->pan);
 
     // Program the voice with the instrument data:
 
@@ -1793,7 +1789,7 @@ static void PitchBendEvent(opl_track_data_t *track, midi_event_t *event)
     // value is considered: this is what Doom does.
 
     opl_channel_data_t *channel = TrackChannelForEvent(track, event);
-    channel->bend = event->data.channel.param2 - 64;
+    channel->bend = static_cast<int>(event->data.channel.param2 - 64);
 
     // Update all voices for this channel.
 

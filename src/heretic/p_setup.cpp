@@ -78,7 +78,7 @@ void P_LoadVertexes(int lump)
     mapvertex_t *ml;
     vertex_t *li;
 
-    numvertexes = W_LumpLength(lump) / sizeof(mapvertex_t);
+    numvertexes = static_cast<int>(W_LumpLength(lump) / sizeof(mapvertex_t));
     vertexes = zmalloc<vertex_t *>(numvertexes * sizeof(vertex_t), PU_LEVEL, 0);
     data = cache_lump_num<uint8_t *>(lump, PU_STATIC);
 
@@ -116,7 +116,7 @@ void P_LoadSegs(int lump)
     line_t *ldef;
     int linedef_local, side;
 
-    numsegs = W_LumpLength(lump) / sizeof(mapseg_t);
+    numsegs = static_cast<int>(W_LumpLength(lump) / sizeof(mapseg_t));
     segs = zmalloc<seg_t *>(numsegs * sizeof(seg_t), PU_LEVEL, 0);
     memset(segs, 0, numsegs * sizeof(seg_t));
     data = cache_lump_num<uint8_t *>(lump, PU_STATIC);
@@ -161,7 +161,7 @@ void P_LoadSubsectors(int lump)
     mapsubsector_t *ms;
     subsector_t *ss;
 
-    numsubsectors = W_LumpLength(lump) / sizeof(mapsubsector_t);
+    numsubsectors = static_cast<int>(W_LumpLength(lump) / sizeof(mapsubsector_t));
     subsectors = zmalloc<subsector_t *>(numsubsectors * sizeof(subsector_t), PU_LEVEL, 0);
     data = cache_lump_num<uint8_t *>(lump, PU_STATIC);
 
@@ -193,7 +193,7 @@ void P_LoadSectors(int lump)
     mapsector_t *ms;
     sector_t *ss;
 
-    numsectors = W_LumpLength(lump) / sizeof(mapsector_t);
+    numsectors = static_cast<int>(W_LumpLength(lump) / sizeof(mapsector_t));
     sectors = zmalloc<sector_t *>(numsectors * sizeof(sector_t), PU_LEVEL, 0);
     memset(sectors, 0, numsectors * sizeof(sector_t));
     data = cache_lump_num<uint8_t *>(lump, PU_STATIC);
@@ -231,7 +231,7 @@ void P_LoadNodes(int lump)
     mapnode_t *mn;
     node_t *no;
 
-    numnodes = W_LumpLength(lump) / sizeof(mapnode_t);
+    numnodes = static_cast<int>(W_LumpLength(lump) / sizeof(mapnode_t));
     nodes = zmalloc<node_t *>(numnodes * sizeof(node_t), PU_LEVEL, 0);
     data = cache_lump_num<uint8_t *>(lump, PU_STATIC);
 
@@ -273,7 +273,7 @@ void P_LoadThings(int lump)
     int numthings;
 
     data = cache_lump_num<uint8_t *>(lump, PU_STATIC);
-    numthings = W_LumpLength(lump) / sizeof(mapthing_t);
+    numthings = static_cast<int>(W_LumpLength(lump) / sizeof(mapthing_t));
 
     mt = reinterpret_cast<mapthing_t *>(data);
     for (i = 0; i < numthings; i++, mt++)
@@ -320,7 +320,7 @@ void P_LoadLineDefs(int lump)
     line_t *ld;
     vertex_t *v1, *v2;
 
-    numlines = W_LumpLength(lump) / sizeof(maplinedef_t);
+    numlines = static_cast<int>(W_LumpLength(lump) / sizeof(maplinedef_t));
     lines = zmalloc<line_t *>(numlines * sizeof(line_t), PU_LEVEL, 0);
     memset(lines, 0, numlines * sizeof(line_t));
     data = cache_lump_num<uint8_t *>(lump, PU_STATIC);
@@ -399,7 +399,7 @@ void P_LoadSideDefs(int lump)
     mapsidedef_t *msd;
     side_t *sd;
 
-    numsides = W_LumpLength(lump) / sizeof(mapsidedef_t);
+    numsides = static_cast<int>(W_LumpLength(lump) / sizeof(mapsidedef_t));
     sides = zmalloc<side_t *>(numsides * sizeof(side_t), PU_LEVEL, 0);
     memset(sides, 0, numsides * sizeof(side_t));
     data = cache_lump_num<uint8_t *>(lump, PU_STATIC);
@@ -435,7 +435,7 @@ void P_LoadBlockMap(int lump)
     int lumplen;
     short *wadblockmaplump;
 
-    lumplen = W_LumpLength(lump);
+    lumplen = static_cast<int>(W_LumpLength(lump));
 
     int count = lumplen / 2; // [crispy] remove BLOCKMAP limit
 

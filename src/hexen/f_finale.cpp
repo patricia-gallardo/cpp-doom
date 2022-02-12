@@ -375,7 +375,7 @@ static char *GetFinaleText(int sequence)
 
     msgLumpName = winMsgLumpNames[sequence];
     msgLump = W_GetNumForName(msgLumpName);
-    msgSize = W_LumpLength(msgLump);
+    msgSize = static_cast<int>(W_LumpLength(msgLump));
     if (msgSize >= MAX_INTRMSN_MESSAGE_SIZE)
     {
         I_Error("Finale message too long (%s)", msgLumpName);

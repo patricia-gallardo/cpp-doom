@@ -326,14 +326,14 @@ void R_InitTextures()
 //
     maptex = maptex1 = cache_lump_name<int *>("TEXTURE1", PU_STATIC);
     numtextures1 = LONG(*maptex);
-    maxoff = W_LumpLength(W_GetNumForName("TEXTURE1"));
+    maxoff = static_cast<int>(W_LumpLength(W_GetNumForName("TEXTURE1")));
     directory = maptex + 1;
 
     if (W_CheckNumForName("TEXTURE2") != -1)
     {
         maptex2 = cache_lump_name<int *>("TEXTURE2", PU_STATIC);
         numtextures2 = LONG(*maptex2);
-        maxoff2 = W_LumpLength(W_GetNumForName("TEXTURE2"));
+        maxoff2 = static_cast<int>(W_LumpLength(W_GetNumForName("TEXTURE2")));
     }
     else
     {
@@ -493,7 +493,7 @@ void R_InitColormaps()
 // 256 byte align tables
 //
     lump = W_GetNumForName("COLORMAP");
-    length = W_LumpLength(lump);
+    length = static_cast<int>(W_LumpLength(lump));
     colormaps = zmalloc<lighttable_t *>(length, PU_STATIC, 0);
     W_ReadLump(lump, colormaps);
 }
@@ -627,7 +627,7 @@ void R_PrecacheLevel()
         if (flatpresent[i])
         {
             lump = firstflat + i;
-            flatmemory += lumpinfo[lump]->size;
+            flatmemory += static_cast<int>(lumpinfo[lump]->size);
             W_CacheLumpNum(lump, PU_CACHE);
         }
 
@@ -658,7 +658,7 @@ void R_PrecacheLevel()
         for (j = 0; j < texture->patchcount; j++)
         {
             lump = texture->patches[j].patch;
-            texturememory += lumpinfo[lump]->size;
+            texturememory += static_cast<int>(lumpinfo[lump]->size);
             W_CacheLumpNum(lump, PU_CACHE);
         }
     }
@@ -689,7 +689,7 @@ void R_PrecacheLevel()
             for (k = 0; k < 8; k++)
             {
                 lump = firstspritelump + sf->lump[k];
-                spritememory += lumpinfo[lump]->size;
+                spritememory += static_cast<int>(lumpinfo[lump]->size);
                 W_CacheLumpNum(lump, PU_CACHE);
             }
         }

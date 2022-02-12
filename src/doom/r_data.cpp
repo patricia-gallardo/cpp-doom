@@ -697,7 +697,7 @@ void R_InitTextures()
     // [crispy] fill the arrays with all available PNAMES lumps
     // and the remaining available TEXTURE1/2 lumps
     nummappatches = 0;
-    for (i = numlumps - 1; i >= 0; i--)
+    for (i = static_cast<int>(numlumps - 1); i >= 0; i--)
     {
         if (!strncasecmp(lumpinfo[i]->name, DEH_String("PNAMES"), 6))
         {
@@ -772,7 +772,7 @@ void R_InitTextures()
     for (i = 0; i < numtexturelumps; i++)
     {
         texturelumps[i].maptex      = cache_lump_num<int *>(texturelumps[i].lumpnum, PU_STATIC);
-        texturelumps[i].maxoff      = W_LumpLength(texturelumps[i].lumpnum);
+        texturelumps[i].maxoff      = static_cast<int>(W_LumpLength(texturelumps[i].lumpnum));
         texturelumps[i].numtextures = static_cast<short>(LONG(*texturelumps[i].maptex));
 
         // [crispy] accumulated number of textures in the texture files
@@ -1383,7 +1383,7 @@ void R_PrecacheLevel()
         if (flatpresent[i])
         {
             lump = firstflat + i;
-            flatmemory += lumpinfo[lump]->size;
+            flatmemory += static_cast<int>(lumpinfo[lump]->size);
             W_CacheLumpNum(lump, PU_CACHE);
         }
     }
@@ -1423,7 +1423,7 @@ void R_PrecacheLevel()
         for (j = 0; j < texture->patchcount; j++)
         {
             lump = texture->patches[j].patch;
-            texturememory += lumpinfo[lump]->size;
+            texturememory += static_cast<int>(lumpinfo[lump]->size);
             W_CacheLumpNum(lump, PU_CACHE);
         }
     }
@@ -1456,7 +1456,7 @@ void R_PrecacheLevel()
             for (k = 0; k < 8; k++)
             {
                 lump = firstspritelump + sf->lump[k];
-                spritememory += lumpinfo[lump]->size;
+                spritememory += static_cast<int>(lumpinfo[lump]->size);
                 W_CacheLumpNum(lump, PU_CACHE);
             }
         }

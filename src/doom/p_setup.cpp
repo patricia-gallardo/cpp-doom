@@ -140,7 +140,7 @@ void P_LoadVertexes(int lump)
 
     // Determine number of lumps:
     //  total lump length / vertex record length.
-    numvertexes = W_LumpLength(lump) / sizeof(mapvertex_t);
+    numvertexes = static_cast<int>(W_LumpLength(lump) / sizeof(mapvertex_t));
 
     // Allocate zone memory for buffer.
     vertexes = zmalloc<decltype(vertexes)>(numvertexes * sizeof(vertex_t), PU_LEVEL, 0);
@@ -201,7 +201,7 @@ void P_LoadSegs(int lump)
     int       side;
     int       sidenum;
 
-    numsegs = W_LumpLength(lump) / sizeof(mapseg_t);
+    numsegs = static_cast<int>(W_LumpLength(lump) / sizeof(mapseg_t));
     segs    = zmalloc<decltype(segs)>(numsegs * sizeof(seg_t), PU_LEVEL, 0);
     memset(segs, 0, numsegs * sizeof(seg_t));
     data = cache_lump_num<uint8_t *>(lump, PU_STATIC);
@@ -316,7 +316,7 @@ void P_LoadSubsectors(int lump)
     mapsubsector_t *ms;
     subsector_t *   ss;
 
-    numsubsectors = W_LumpLength(lump) / sizeof(mapsubsector_t);
+    numsubsectors = static_cast<int>(W_LumpLength(lump) / sizeof(mapsubsector_t));
     subsectors    = zmalloc<decltype(subsectors)>(numsubsectors * sizeof(subsector_t), PU_LEVEL, 0);
     data          = cache_lump_num<uint8_t *>(lump, PU_STATIC);
 
@@ -352,7 +352,7 @@ void P_LoadSectors(int lump)
     if (lump >= static_cast<int>(numlumps))
         I_Error("P_LoadSectors: No sectors in map!");
 
-    numsectors = W_LumpLength(lump) / sizeof(mapsector_t);
+    numsectors = static_cast<int>(W_LumpLength(lump) / sizeof(mapsector_t));
     sectors    = zmalloc<decltype(sectors)>(numsectors * sizeof(sector_t), PU_LEVEL, 0);
     memset(sectors, 0, numsectors * sizeof(sector_t));
     data = cache_lump_num<uint8_t *>(lump, PU_STATIC);
@@ -402,7 +402,7 @@ void P_LoadNodes(int lump)
     mapnode_t *mn;
     node_t *   no;
 
-    numnodes = W_LumpLength(lump) / sizeof(mapnode_t);
+    numnodes = static_cast<int>(W_LumpLength(lump) / sizeof(mapnode_t));
     nodes    = zmalloc<decltype(nodes)>(numnodes * sizeof(node_t), PU_LEVEL, 0);
     data     = cache_lump_num<uint8_t *>(lump, PU_STATIC);
 
@@ -464,7 +464,7 @@ void P_LoadThings(int lump)
     bool     spawn;
 
     data      = cache_lump_num<uint8_t *>(lump, PU_STATIC);
-    numthings = W_LumpLength(lump) / sizeof(mapthing_t);
+    numthings = static_cast<int>(W_LumpLength(lump) / sizeof(mapthing_t));
 
     mt = reinterpret_cast<mapthing_t *>(data);
     for (i = 0; i < numthings; i++, mt++)
@@ -533,7 +533,7 @@ void P_LoadLineDefs(int lump)
     vertex_t *    v2;
     int           warn, warn2; // [crispy] warn about invalid linedefs
 
-    numlines = W_LumpLength(lump) / sizeof(maplinedef_t);
+    numlines = static_cast<int>(W_LumpLength(lump) / sizeof(maplinedef_t));
     lines    = zmalloc<decltype(lines)>(numlines * sizeof(line_t), PU_LEVEL, 0);
     memset(lines, 0, numlines * sizeof(line_t));
     data = cache_lump_num<uint8_t *>(lump, PU_STATIC);
@@ -675,7 +675,7 @@ void P_LoadSideDefs(int lump)
     mapsidedef_t *msd;
     side_t *      sd;
 
-    numsides = W_LumpLength(lump) / sizeof(mapsidedef_t);
+    numsides = static_cast<int>(W_LumpLength(lump) / sizeof(mapsidedef_t));
     sides    = zmalloc<decltype(sides)>(numsides * sizeof(side_t), PU_LEVEL, 0);
     memset(sides, 0, numsides * sizeof(side_t));
     data = cache_lump_num<uint8_t *>(lump, PU_STATIC);
@@ -705,11 +705,11 @@ bool P_LoadBlockMap(int lump)
 {
     int    i;
     int    count;
-    int    lumplen;
+    size_t lumplen;
     short *wadblockmaplump;
 
     // [crispy] (re-)create BLOCKMAP if necessary
-    if (M_CheckParm("-blockmap") || lump >= static_cast<int>(numlumps) || (lumplen = W_LumpLength(lump)) < 8 || (count = lumplen / 2) >= 0x10000)
+    if (M_CheckParm("-blockmap") || lump >= static_cast<int>(numlumps) || (lumplen = W_LumpLength(lump)) < 8 || (count = static_cast<int>(lumplen / 2)) >= 0x10000)
     {
         return false;
     }
@@ -982,18 +982,15 @@ static void PadRejectArray(uint8_t *array, unsigned int len)
 
 static void P_LoadReject(int lumpnum)
 {
-    int minlength;
-    int lumplen;
-
     // Calculate the size that the REJECT lump *should* be.
 
-    minlength = (numsectors * numsectors + 7) / 8;
+    size_t minlength = (numsectors * numsectors + 7) / 8;
 
     // If the lump meets the minimum length, it can be loaded directly.
     // Otherwise, we need to allocate a buffer of the correct size
     // and pad it with appropriate data.
 
-    lumplen = W_LumpLength(lumpnum);
+    size_t lumplen = W_LumpLength(lumpnum);
 
     if (lumplen >= minlength)
     {
@@ -1004,7 +1001,7 @@ static void P_LoadReject(int lumpnum)
         rejectmatrix = zmalloc<decltype(rejectmatrix)>(minlength, PU_LEVEL, &rejectmatrix);
         W_ReadLump(lumpnum, rejectmatrix);
 
-        PadRejectArray(rejectmatrix + lumplen, minlength - lumplen);
+        PadRejectArray(rejectmatrix + lumplen, static_cast<int>(minlength - lumplen));
     }
 }
 

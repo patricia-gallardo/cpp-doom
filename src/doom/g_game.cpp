@@ -2706,7 +2706,6 @@ void G_DoPlayDemo()
     int     lumpnum, episode, map;
     int     demoversion;
     bool olddemo = false;
-    int     lumplength; // [crispy]
 
     // [crispy] in demo continue mode free the obsolete demo buffer
     // of size 'maxsize' previously allocated in G_RecordDemo()
@@ -2721,7 +2720,7 @@ void G_DoPlayDemo()
     demo_p     = demobuffer;
 
     // [crispy] ignore empty demo lumps
-    lumplength = W_LumpLength(lumpnum);
+    size_t lumplength = W_LumpLength(lumpnum);
     if (lumplength < 0xd)
     {
         demoplayback = true;
@@ -2841,7 +2840,7 @@ void G_DoPlayDemo()
 
         deftotaldemotics = defdemotics = 0;
 
-        while (*demo_ptr != DEMOMARKER && (demo_ptr - demobuffer) < lumplength)
+        while (*demo_ptr != DEMOMARKER && (demo_ptr - demobuffer) < static_cast<int>(lumplength))
         {
             demo_ptr += numplayersingame * (longtics ? 5 : 4);
             deftotaldemotics++;

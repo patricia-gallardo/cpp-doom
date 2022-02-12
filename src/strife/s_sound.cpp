@@ -795,7 +795,7 @@ void S_ChangeMusic(int musicnum, int looping)
 
     music->data = cache_lump_num<void *>(music->lumpnum, PU_STATIC);
 
-    handle = I_RegisterSong(music->data, W_LumpLength(music->lumpnum));
+    handle = I_RegisterSong(music->data, static_cast<int>(W_LumpLength(music->lumpnum)));
     music->handle = handle;
     I_PlaySong(handle, looping);
 

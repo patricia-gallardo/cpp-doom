@@ -218,9 +218,6 @@ static void PCSCallbackFunc(int *duration, int *freq)
 
 static bool CachePCSLump(sfxinfo_t *sfxinfo)
 {
-    int lumplen;
-    int headerlen;
-
     // Free the current sound lump back to the cache
 
     if (current_sound_lump != nullptr)
@@ -232,7 +229,7 @@ static bool CachePCSLump(sfxinfo_t *sfxinfo)
     // Load from WAD
 
     current_sound_lump = cache_lump_num<uint8_t *>(sfxinfo->lumpnum, PU_STATIC);
-    lumplen            = W_LumpLength(sfxinfo->lumpnum);
+    size_t lumplen     = W_LumpLength(sfxinfo->lumpnum);
 
     // Read header
 
@@ -241,7 +238,7 @@ static bool CachePCSLump(sfxinfo_t *sfxinfo)
         return false;
     }
 
-    headerlen = (current_sound_lump[3] << 8) | current_sound_lump[2];
+    size_t headerlen = (current_sound_lump[3] << 8) | current_sound_lump[2];
 
     if (headerlen > lumplen - 4)
     {
@@ -250,7 +247,7 @@ static bool CachePCSLump(sfxinfo_t *sfxinfo)
 
     // Header checks out ok
 
-    current_sound_remaining = headerlen;
+    current_sound_remaining = static_cast<unsigned int>(headerlen);
     current_sound_pos       = current_sound_lump + 4;
     current_sound_lump_num  = sfxinfo->lumpnum;
 

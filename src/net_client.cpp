@@ -146,7 +146,7 @@ static net_server_send_t send_queue[BACKUPTICS];
 // Receive window
 
 static ticcmd_t          recvwindow_cmd_base[NET_MAXPLAYERS];
-static int               recvwindow_start;
+static unsigned int      recvwindow_start;
 static net_server_recv_t recvwindow[BACKUPTICS];
 
 // Whether we need to send an acknowledgement and
@@ -190,7 +190,7 @@ static void UpdateClockSync(unsigned int seq,
 
     if (seq == send_queue[seq % BACKUPTICS].seq)
     {
-        latency = I_GetTimeMS() - send_queue[seq % BACKUPTICS].time;
+        latency = static_cast<int>(static_cast<unsigned int>(I_GetTimeMS()) - send_queue[seq % BACKUPTICS].time);
     }
     else if (seq > send_queue[seq % BACKUPTICS].seq)
     {
@@ -210,7 +210,7 @@ static void UpdateClockSync(unsigned int seq,
     constexpr auto KD = 0.02;
 
     // How does our latency compare to the worst other player?
-    error = latency - remote_latency;
+    error = static_cast<int>(static_cast<unsigned int>(latency) - remote_latency);
     cumul_error += error;
 
     double kp = KP * (FRACUNIT * error);
@@ -272,7 +272,7 @@ static void NET_CL_AdvanceWindow()
     {
         // Expand tic diff data into d_net.c structures
 
-        NET_CL_ExpandFullTiccmd(&recvwindow[0].cmd, recvwindow_start,
+        NET_CL_ExpandFullTiccmd(&recvwindow[0].cmd, static_cast<unsigned int>(recvwindow_start),
             ticcmds);
         D_ReceiveTic(ticcmds, recvwindow[0].cmd.playeringame);
 
@@ -364,7 +364,7 @@ static void NET_CL_SendTics(int start, int end)
 
     NET_WriteInt8(packet, recvwindow_start & 0xff);
     NET_WriteInt8(packet, start & 0xff);
-    NET_WriteInt8(packet, end - start + 1);
+    NET_WriteInt8(packet, static_cast<unsigned int>(end - start + 1));
 
     // Add the tics.
 
@@ -374,7 +374,7 @@ static void NET_CL_SendTics(int start, int end)
 
         sendobj = &send_queue[i % BACKUPTICS];
 
-        NET_WriteInt16(packet, last_latency);
+        NET_WriteInt16(packet, static_cast<unsigned int>(last_latency));
 
         NET_WriteTiccmdDiff(packet, &sendobj->cmd, settings.lowres_turn);
     }
@@ -408,8 +408,8 @@ void NET_CL_SendTiccmd(ticcmd_t *ticcmd, int maketic)
 
     sendobj         = &send_queue[maketic % BACKUPTICS];
     sendobj->active = true;
-    sendobj->seq    = maketic;
-    sendobj->time   = I_GetTimeMS();
+    sendobj->seq    = static_cast<unsigned int>(maketic);
+    sendobj->time   = static_cast<unsigned int>(I_GetTimeMS());
     sendobj->cmd    = diff;
 
     last_ticcmd = *ticcmd;
@@ -556,7 +556,7 @@ static void NET_CL_ParseLaunch(net_packet_t *packet)
         return;
     }
 
-    net_client_wait_data.num_players = num_players;
+    net_client_wait_data.num_players = static_cast<int>(num_players);
     client_state                     = CLIENT_STATE_WAITING_START;
     NET_Log("client: now waiting for game start");
 }
@@ -621,20 +621,18 @@ static void NET_CL_SendResendRequest(int start, int end)
 
     packet = NET_NewPacket(64);
     NET_WriteInt16(packet, NET_PACKET_TYPE_GAMEDATA_RESEND);
-    NET_WriteInt32(packet, start);
-    NET_WriteInt8(packet, end - start + 1);
+    NET_WriteInt32(packet, static_cast<unsigned int>(start));
+    NET_WriteInt8(packet, static_cast<unsigned int>(end - start + 1));
     NET_Conn_SendPacket(&client_connection, packet);
     NET_FreePacket(packet);
 
-    nowtime = I_GetTimeMS();
+    nowtime = static_cast<unsigned int>(I_GetTimeMS());
 
     // Save the time we sent the resend request
 
     for (i = start; i <= end; ++i)
     {
-        int index;
-
-        index = i - recvwindow_start;
+        int index = i - recvwindow_start;
 
         if (index < 0 || index >= BACKUPTICS)
             continue;
@@ -652,7 +650,7 @@ static void NET_CL_CheckResends()
     unsigned int nowtime;
     bool      maybe_deadlocked;
 
-    nowtime          = I_GetTimeMS();
+    nowtime          = static_cast<unsigned int>(I_GetTimeMS());
     maybe_deadlocked = nowtime - gamedata_recv_time > 1000;
 
     resend_start = -1;
@@ -750,7 +748,7 @@ static void NET_CL_ParseGameData(net_packet_t *packet)
         return;
     }
 
-    unsigned int nowtime = I_GetTimeMS();
+    auto nowtime = static_cast<unsigned int>(I_GetTimeMS());
 
     // Whatever happens, we now need to send an acknowledgement of our
     // current receive point.
@@ -799,7 +797,7 @@ static void NET_CL_ParseGameData(net_packet_t *packet)
         // to trigger a clock sync update.
         if (i == num_tics - 1)
         {
-            UpdateClockSync(static_cast<unsigned int>(seq + i), cmd.latency);
+            UpdateClockSync(static_cast<unsigned int>(seq + i), static_cast<unsigned int>(cmd.latency));
         }
     }
 
@@ -809,7 +807,7 @@ static void NET_CL_ParseGameData(net_packet_t *packet)
 
     //printf("CL: %p: %i\n", client, seq);
 
-    resend_end = seq - recvwindow_start;
+    resend_end = static_cast<int>(seq - recvwindow_start);
 
     if (resend_end <= 0)
         return;
@@ -903,7 +901,7 @@ static void NET_CL_ParseResendRequest(net_packet_t *packet)
     if (start <= end)
     {
         NET_Log("client: resending %d-%d", start, end);
-        NET_CL_SendTics(start, end);
+        NET_CL_SendTics(static_cast<int>(start), static_cast<int>(end));
     }
     else
     {
@@ -939,7 +937,7 @@ static void NET_CL_ParsePacket(net_packet_t *packet)
     }
 
     NET_Log("client: packet from server, type %d",
-        packet_type & ~NET_RELIABLE_PACKET);
+        packet_type & static_cast<unsigned int>(~NET_RELIABLE_PACKET));
     NET_LogPacket(packet);
 
     if (NET_Conn_Packet(&client_connection, packet, &packet_type))
@@ -1071,7 +1069,7 @@ bool NET_CL_Connect(net_addr_t *addr, net_connect_data_t *data)
 
     memcpy(net_local_wad_sha1sum, data->wad_sha1sum, sizeof(sha1_digest_t));
     memcpy(net_local_deh_sha1sum, data->deh_sha1sum, sizeof(sha1_digest_t));
-    net_local_is_freedoom = data->is_freedoom;
+    net_local_is_freedoom = static_cast<unsigned int>(data->is_freedoom);
 
     // create a new network I/O context and add just the necessary module
     client_context = NET_NewContext();

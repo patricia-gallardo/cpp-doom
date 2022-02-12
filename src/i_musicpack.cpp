@@ -344,7 +344,7 @@ static unsigned int ParseVorbisTime(unsigned int samplerate_hz, char *value)
 
     if (strchr(value, ':') == nullptr)
     {
-        return atoi(value);
+        return static_cast<unsigned int>(atoi(value));
     }
 
     result    = 0;
@@ -356,7 +356,7 @@ static unsigned int ParseVorbisTime(unsigned int samplerate_hz, char *value)
         {
             c         = *p;
             *p        = '\0';
-            result    = result * 60 + atoi(num_start);
+            result    = result * 60 + static_cast<unsigned int>(atoi(num_start));
             num_start = p + 1;
             *p        = c;
         }
@@ -368,7 +368,7 @@ static unsigned int ParseVorbisTime(unsigned int samplerate_hz, char *value)
         }
     }
 
-    return (result * 60 + atoi(num_start)) * samplerate_hz;
+    return (result * 60 + static_cast<unsigned int>(atoi(num_start))) * samplerate_hz;
 }
 
 // Given a vorbis comment string (eg. "LOOP_START=12345"), set fields
@@ -390,11 +390,11 @@ static void ParseVorbisComment(file_metadata_t *metadata, char *comment)
 
     if (!strcmp(key, LOOP_START_TAG))
     {
-        metadata->start_time = ParseVorbisTime(metadata->samplerate_hz, value);
+        metadata->start_time = static_cast<int>(ParseVorbisTime(metadata->samplerate_hz, value));
     }
     else if (!strcmp(key, LOOP_END_TAG))
     {
-        metadata->end_time = ParseVorbisTime(metadata->samplerate_hz, value);
+        metadata->end_time = static_cast<int>(ParseVorbisTime(metadata->samplerate_hz, value));
     }
 }
 
@@ -461,8 +461,7 @@ static void ParseFlacStreaminfo(file_metadata_t *metadata, FILE *fs)
     }
 
     // We only care about sample rate and song length.
-    metadata->samplerate_hz = (buf[10] << 12) | (buf[11] << 4)
-                              | (buf[12] >> 4);
+    metadata->samplerate_hz = static_cast<unsigned int>((buf[10] << 12) | (buf[11] << 4) | (buf[12] >> 4));
     // Song length is actually a 36 bit field, but 32 bits should be
     // enough for everybody.
     //metadata->song_length = (buf[14] << 24) | (buf[15] << 16)
@@ -488,7 +487,7 @@ static void ParseFlacFile(file_metadata_t *metadata, FILE *fs)
 
         block_type = header[0] & ~0x80;
         last_block = (header[0] & 0x80) != 0;
-        block_len  = (header[1] << 16) | (header[2] << 8) | header[3];
+        block_len  = static_cast<size_t>((header[1] << 16) | (header[2] << 8) | header[3]);
 
         pos = ftell(fs);
         if (pos < 0)
@@ -511,7 +510,7 @@ static void ParseFlacFile(file_metadata_t *metadata, FILE *fs)
         }
 
         // Seek to start of next block.
-        if (fseek(fs, pos + block_len, SEEK_SET) != 0)
+        if (fseek(fs, static_cast<long>(static_cast<unsigned long>(pos) + block_len), SEEK_SET) != 0)
         {
             return;
         }
@@ -527,8 +526,7 @@ static void ParseOggIdHeader(file_metadata_t *metadata, FILE *fs)
         return;
     }
 
-    metadata->samplerate_hz = (buf[8] << 24) | (buf[7] << 16)
-                              | (buf[6] << 8) | buf[5];
+    metadata->samplerate_hz = static_cast<unsigned int>((buf[8] << 24) | (buf[7] << 16) | (buf[6] << 8) | buf[5]);
 }
 
 static void ParseOggFile(file_metadata_t *metadata, FILE *fs)
@@ -765,7 +763,7 @@ static const char *ReadHashPrefix(char *line)
         }
     }
 
-    size_t len = p - line;
+    size_t len = static_cast<size_t>(p - line);
     if (len == 0 || len > sizeof(sha1_digest_t) * 2)
     {
         return nullptr;
@@ -1023,7 +1021,7 @@ static void DumpSubstituteConfig(char *filename)
     fprintf(fs, "# Example %s substitute MIDI file.\n\n", PACKAGE_NAME);
     fprintf(fs, "# SHA1 hash                              = filename\n");
 
-    for (lumpindex_t lumpnum = 0; lumpnum < numlumps; ++lumpnum)
+    for (lumpindex_t lumpnum = 0; lumpnum < static_cast<int>(numlumps); ++lumpnum)
     {
         strncpy(name, lumpinfo[lumpnum]->name, 8);
         name[8] = '\0';
@@ -1086,7 +1084,7 @@ static bool SDLIsInitialized()
 void TrackPositionCallback(int, void *, int len, void *)
 {
     // Position is doubled up twice: for 16-bit samples and for stereo.
-    current_track_pos += len / 4;
+    current_track_pos += static_cast<unsigned int>(len / 4);
 }
 
 // Initialize music subsystem
@@ -1262,7 +1260,7 @@ static void *I_MP_RegisterSong(void *data, int len)
     }
 
     // See if we're substituting this MUS for a high-quality replacement.
-    filename = GetSubstituteMusicFile(data, len);
+    filename = GetSubstituteMusicFile(data, static_cast<size_t>(len));
     if (filename == nullptr)
     {
         return nullptr;
@@ -1323,7 +1321,7 @@ static void RestartCurrentTrack()
 
     Mix_SetMusicPosition(start);
     SDL_LockAudio();
-    current_track_pos = file_metadata.start_time;
+    current_track_pos = static_cast<unsigned int>(file_metadata.start_time);
     SDL_UnlockAudio();
 }
 

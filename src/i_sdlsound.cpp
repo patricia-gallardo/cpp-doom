@@ -727,7 +727,7 @@ static bool CacheSFX(sfxinfo_t *sfxinfo)
 
     int lumpnum    = sfxinfo->lumpnum;
     auto *data = cache_lump_num<uint8_t *>(lumpnum, PU_STATIC);
-    unsigned int lumplen    = W_LumpLength(lumpnum);
+    size_t lumplen = W_LumpLength(lumpnum);
 
     // [crispy] Check if this is a valid RIFF wav file
     if (lumplen > 44 && memcmp(data, "RIFF", 4) == 0 && memcmp(data + 8, "WAVEfmt ", 8) == 0)
@@ -754,7 +754,7 @@ static bool CacheSFX(sfxinfo_t *sfxinfo)
         length     = data[40] | (data[41] << 8) | (data[42] << 16) | (data[43] << 24);
 
         if (length > lumplen - 44)
-            length = lumplen - 44;
+            length = static_cast<unsigned int>(lumplen - 44);
 
         bits = data[34] | (data[35] << 8);
 
