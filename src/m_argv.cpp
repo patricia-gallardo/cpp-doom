@@ -105,7 +105,7 @@ static void LoadResponseFile(int argv_index, const char *filename)
     {
         size_t k = fread(file + i, 1, static_cast<size_t>(size - i), handle);
 
-        if (k < 0)
+        if (ferror(handle))
         {
             I_Error("Failed to read full contents of '%s'", filename);
         }
