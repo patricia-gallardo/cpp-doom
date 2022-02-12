@@ -107,7 +107,7 @@ static void InitHashTable()
 
     hash_table_entries = 0;
     hash_table_length  = 16;
-    size_t size        = sizeof(deh_substitution_t *) * hash_table_length;
+    size_t size        = sizeof(deh_substitution_t *) * static_cast<unsigned long>(hash_table_length);
     hash_table         = zmalloc<decltype(hash_table)>(size,
         PU_STATIC, nullptr);
     memset(hash_table, 0, sizeof(deh_substitution_t *) * static_cast<unsigned long>(hash_table_length));
@@ -125,7 +125,7 @@ static void IncreaseHashtable()
     // double the size
 
     hash_table_length *= 2;
-    hash_table = zmalloc<decltype(hash_table)>(sizeof(deh_substitution_t *) * hash_table_length,
+    hash_table = zmalloc<decltype(hash_table)>(sizeof(deh_substitution_t *) * static_cast<unsigned long>(hash_table_length),
         PU_STATIC, nullptr);
     memset(hash_table, 0, sizeof(deh_substitution_t *) * static_cast<unsigned long>(hash_table_length));
 

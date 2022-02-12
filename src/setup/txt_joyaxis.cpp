@@ -226,7 +226,7 @@ static void IdentifyBadAxes(txt_joystick_axis_t *joystick_axis)
     free(joystick_axis->bad_axis);
 
     joystick_axis->bad_axis
-        = static_cast<bool *>(calloc(SDL_JoystickNumAxes(joystick_axis->joystick),
+        = static_cast<bool *>(calloc(static_cast<size_t>(SDL_JoystickNumAxes(joystick_axis->joystick)),
         sizeof(bool)));
 
     // Look for uncentered axes.

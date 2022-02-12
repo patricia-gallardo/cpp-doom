@@ -304,7 +304,7 @@ static allocated_sound_t *PitchShift(allocated_sound_t *insnd, int pitch)
 
     // determine ratio pitch:NORM_PITCH and apply to srclen, then invert.
     // This is an approximation of vanilla behaviour based on measurements
-    Uint32 dstlen = static_cast<int>((1 + (1 - static_cast<float>(pitch) / NORM_PITCH)) * static_cast<float>(srclen));
+    Uint32 dstlen = static_cast<Uint32>((1 + (1 - static_cast<float>(pitch) / NORM_PITCH)) * static_cast<float>(srclen));
 
     // ensure that the new buffer is an even length
     if ((dstlen % 2) == 0)

@@ -58,9 +58,9 @@ static void NET_SDL_InitAddrTable()
 {
     addr_table_size = 16;
 
-    addr_table = zmalloc<decltype(addr_table)>(sizeof(addrpair_t *) * addr_table_size,
+    addr_table = zmalloc<decltype(addr_table)>(sizeof(addrpair_t *) * static_cast<unsigned long>(addr_table_size),
         PU_STATIC, 0);
-    memset(addr_table, 0, sizeof(addrpair_t *) * addr_table_size);
+    memset(addr_table, 0, sizeof(addrpair_t *) * static_cast<unsigned long>(addr_table_size));
 }
 
 static bool AddressesEqual(IPaddress *a, IPaddress *b)
@@ -113,11 +113,11 @@ static net_addr_t *NET_SDL_FindAddress(IPaddress *addr)
         // the existing table in.  replace the old table.
 
         new_addr_table_size = addr_table_size * 2;
-        new_addr_table      = zmalloc<decltype(new_addr_table)>(sizeof(addrpair_t *) * new_addr_table_size,
+        new_addr_table      = zmalloc<decltype(new_addr_table)>(sizeof(addrpair_t *) * static_cast<unsigned long>(new_addr_table_size),
             PU_STATIC, 0);
-        memset(new_addr_table, 0, sizeof(addrpair_t *) * new_addr_table_size);
+        memset(new_addr_table, 0, sizeof(addrpair_t *) * static_cast<unsigned long>(new_addr_table_size));
         memcpy(new_addr_table, addr_table,
-            sizeof(addrpair_t *) * addr_table_size);
+            sizeof(addrpair_t *) * static_cast<unsigned long>(addr_table_size));
         Z_Free(addr_table);
         addr_table      = new_addr_table;
         addr_table_size = new_addr_table_size;
@@ -291,8 +291,8 @@ static bool NET_SDL_RecvPacket(net_addr_t **addr, net_packet_t **packet)
     // Put the data into a new packet structure
 
     *packet = NET_NewPacket(recvpacket->len);
-    memcpy((*packet)->data, recvpacket->data, recvpacket->len);
-    (*packet)->len = recvpacket->len;
+    memcpy((*packet)->data, recvpacket->data, static_cast<size_t>(recvpacket->len));
+    (*packet)->len = static_cast<size_t>(recvpacket->len);
 
     // Address
 
@@ -307,7 +307,7 @@ void NET_SDL_AddrToString(net_addr_t *addr, char *buffer, int buffer_len)
     uint32_t   host = SDLNet_Read32(&ip->host);
     uint16_t   port_local = SDLNet_Read16(&ip->port);
 
-    M_snprintf(buffer, buffer_len, "%i.%i.%i.%i",
+    M_snprintf(buffer, static_cast<size_t>(buffer_len), "%i.%i.%i.%i",
         (host >> 24) & 0xff, (host >> 16) & 0xff,
         (host >> 8) & 0xff, host & 0xff);
 
@@ -319,7 +319,7 @@ void NET_SDL_AddrToString(net_addr_t *addr, char *buffer, int buffer_len)
     {
         char portbuf[10];
         M_snprintf(portbuf, sizeof(portbuf), ":%i", port_local);
-        M_StringConcat(buffer, portbuf, buffer_len);
+        M_StringConcat(buffer, portbuf, static_cast<size_t>(buffer_len));
     }
 }
 

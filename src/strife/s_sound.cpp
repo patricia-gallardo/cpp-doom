@@ -148,7 +148,7 @@ void S_Init(int sfxVolume_param, int musicVolume_param, int voiceVolume_param)
     // Allocating the internal channels for mixing
     // (the maximum numer of sounds rendered
     // simultaneously) within zone memory.
-    channels = zmalloc<channel_t *>(snd_channels * sizeof(channel_t), PU_STATIC, 0);
+    channels = zmalloc<channel_t *>(static_cast<unsigned long>(snd_channels) * sizeof(channel_t), PU_STATIC, 0);
 
     // Free all channels for use
     for (i=0 ; i<snd_channels ; i++)
@@ -526,7 +526,7 @@ static unsigned int S_voiceHash(const char *str)
    // note: this needs to be case insensitive for lump names
    while(*c)
    {
-      h = 5 * h + toupper(*c);
+      h = 5 * h + static_cast<unsigned int>(toupper(*c));
       ++c;
    }
 

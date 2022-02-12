@@ -138,7 +138,7 @@ void V_CopyRect(int srcx, int srcy, pixel_t *source,
 
     for (; height > 0; height--)
     {
-        memcpy(dest, src, width * sizeof(*dest));
+        memcpy(dest, src, static_cast<unsigned long>(width) * sizeof(*dest));
         src += SCREENWIDTH;
         dest += SCREENWIDTH;
     }
@@ -736,7 +736,7 @@ void V_DrawBlock(int x, int y, int width, int height, pixel_t *src)
 
     while (height--)
     {
-        memcpy(dest, src, width * sizeof(*dest));
+        memcpy(dest, src, static_cast<unsigned long>(width) * sizeof(*dest));
         src += width;
         dest += SCREENWIDTH;
     }
@@ -926,7 +926,7 @@ void WritePCXfile(char *filename, pixel_t *data,
     pcx_t *pcx;
     uint8_t *pack;
 
-    pcx = zmalloc<decltype(pcx)>(width * height * 2 + 1000, PU_STATIC, nullptr);
+    pcx = zmalloc<decltype(pcx)>(static_cast<size_t>(width * height * 2 + 1000), PU_STATIC, nullptr);
 
     pcx->manufacturer   = 0x0a; // PCX id
     pcx->version        = 5;    // 256 color
@@ -1043,7 +1043,7 @@ void WritePNGfile(char *filename, pixel_t *,
     I_RenderReadPixels(&palette, &width, &height, &j);
     rowbuf = palette; // [crispy] pointer abuse!
 
-    png_set_IHDR(ppng, pinfo, width, height,
+    png_set_IHDR(ppng, pinfo, static_cast<png_uint_32>(width), static_cast<png_uint_32>(height),
 #if SDL_VERSION_ATLEAST(2, 0, 5)
         8, PNG_COLOR_TYPE_RGB, PNG_INTERLACE_NONE,
 #else

@@ -88,7 +88,7 @@ MEMFILE *mem_fopen_write()
     auto *file = zmalloc<MEMFILE *>(sizeof(MEMFILE), PU_STATIC, 0);
 
     file->alloced  = 1024;
-    file->buf      = zmalloc<unsigned char *>(static_cast<int>(file->alloced), PU_STATIC, 0);
+    file->buf      = zmalloc<unsigned char *>(file->alloced, PU_STATIC, 0);
     file->buflen   = 0;
     file->position = 0;
     file->mode     = MODE_WRITE;
@@ -112,7 +112,7 @@ size_t mem_fwrite(const void *ptr, size_t size, size_t nmemb, MEMFILE *stream)
 
     while (bytes > stream->alloced - stream->position)
     {
-        auto *newbuf = zmalloc<unsigned char *>(static_cast<int>(stream->alloced * 2), PU_STATIC, 0);
+        auto *newbuf = zmalloc<unsigned char *>(stream->alloced * 2, PU_STATIC, 0);
         memcpy(newbuf, stream->buf, stream->alloced);
         Z_Free(stream->buf);
         stream->buf = newbuf;
@@ -166,7 +166,7 @@ int mem_fseek(MEMFILE *stream, signed long position, mem_rel_t whence)
         break;
 
     case MEM_SEEK_END:
-        newpos = static_cast<unsigned int>(stream->buflen + position);
+        newpos = static_cast<unsigned int>(stream->buflen + static_cast<unsigned long>(position));
         break;
     default:
         return -1;

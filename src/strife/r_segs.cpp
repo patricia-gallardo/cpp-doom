@@ -167,7 +167,7 @@ R_RenderMaskedSegRange
 	{
 	    if (!fixedcolormap)
 	    {
-		index = spryscale>>(LIGHTSCALESHIFT + crispy->hires);
+		index = static_cast<unsigned int>(spryscale >> (LIGHTSCALESHIFT + crispy->hires));
 
 		if (index >=  MAXLIGHTSCALE )
 		    index = MAXLIGHTSCALE-1;
@@ -176,7 +176,7 @@ R_RenderMaskedSegRange
 	    }
 			
 	    sprtopscreen = centeryfrac - FixedMul(dc_texturemid, spryscale);
-	    dc_iscale = 0xffffffffu / static_cast<unsigned>(spryscale);
+	    dc_iscale = static_cast<fixed_t>(0xffffffffu / static_cast<unsigned>(spryscale));
 	    
 	    // draw the texture
 	    col = reinterpret_cast<column_t *>(
@@ -268,14 +268,14 @@ void R_RenderSegLoop ()
 	    texturecolumn = rw_offset-FixedMul(finetangent[angle],rw_distance);
 	    texturecolumn >>= FRACBITS;
 	    // calculate lighting
-	    index = rw_scale>>(LIGHTSCALESHIFT + crispy->hires);
+	    index = static_cast<unsigned int>(rw_scale >> (LIGHTSCALESHIFT + crispy->hires));
 
 	    if (index >=  MAXLIGHTSCALE )
 		index = MAXLIGHTSCALE-1;
 
 	    dc_colormap = walllights[index];
 	    dc_x = rw_x;
-	    dc_iscale = 0xffffffffu / static_cast<unsigned>(rw_scale);
+	    dc_iscale = static_cast<fixed_t>(0xffffffffu / static_cast<unsigned>(rw_scale));
 	}
         else
         {
@@ -407,7 +407,7 @@ R_StoreWallRange
     
     // calculate rw_distance for scale calculation
     rw_normalangle = curline->angle + ANG90;
-    offsetangle = (rw_normalangle-rw_angle1);
+    offsetangle = (rw_normalangle- static_cast<unsigned int>(rw_angle1));
     
     if (offsetangle > ANG90)
 	offsetangle = ANG90;
@@ -626,7 +626,7 @@ R_StoreWallRange
 
     if (segtextured)
     {
-	offsetangle = rw_normalangle-rw_angle1;
+	offsetangle = rw_normalangle- static_cast<unsigned int>(rw_angle1);
 	
 	if (offsetangle > ANG180)
 	    offsetangle = 0 - offsetangle;
@@ -637,7 +637,7 @@ R_StoreWallRange
 	sineval = finesine[offsetangle >>ANGLETOFINESHIFT];
 	rw_offset = FixedMul (hyp, sineval);
 
-	if (rw_normalangle-rw_angle1 < ANG180)
+	if (rw_normalangle- static_cast<unsigned int>(rw_angle1) < ANG180)
 	    rw_offset = -rw_offset;
 
 	rw_offset += sidedef->textureoffset + curline->offset;
@@ -726,7 +726,7 @@ R_StoreWallRange
     if ( ((ds_p->silhouette & SIL_TOP) || maskedtexture)
 	 && !ds_p->sprtopclip)
     {
-	memcpy (lastopening, ceilingclip+start, 2*(rw_stopx-start));
+	memcpy (lastopening, ceilingclip+start, static_cast<size_t>(2 * (rw_stopx - start)));
 	ds_p->sprtopclip = lastopening - start;
 	lastopening += rw_stopx - start;
     }
@@ -734,7 +734,7 @@ R_StoreWallRange
     if ( ((ds_p->silhouette & SIL_BOTTOM) || maskedtexture)
 	 && !ds_p->sprbottomclip)
     {
-	memcpy (lastopening, floorclip+start, 2*(rw_stopx-start));
+	memcpy (lastopening, floorclip+start, static_cast<size_t>(2 * (rw_stopx - start)));
 	ds_p->sprbottomclip = lastopening - start;
 	lastopening += rw_stopx - start;	
     }

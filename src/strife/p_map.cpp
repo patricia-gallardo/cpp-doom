@@ -250,7 +250,7 @@ bool PIT_CheckLine (line_t* ld)
     if (!ld->backsector)
         return false;           // one sided line
 
-    if (!(tmthing->flags & MF_MISSILE) )
+    if (!(static_cast<unsigned int>(tmthing->flags) & MF_MISSILE) )
     {
         // villsa [STRIFE] include jumpover flag
         if ( ld->flags & ML_BLOCKING &&
@@ -259,7 +259,7 @@ bool PIT_CheckLine (line_t* ld)
 
         // villsa [STRIFE] exclude floaters from blockmonster lines
         if ( !tmthing->player && (ld->flags & ML_BLOCKMONSTERS) &&
-            !(tmthing->flags & MF_FLOAT))
+            !(static_cast<unsigned int>(tmthing->flags) & MF_FLOAT))
             return false;   // block monsters only
 
         // villsa [STRIFE]
@@ -1629,7 +1629,7 @@ static void SpechitOverrun(line_t *ld)
         case 10:
         case 11:
         case 12:
-            tmbbox[numspechit-9] = addr;
+            tmbbox[numspechit-9] = static_cast<fixed_t>(addr);
             break;
         case 13: 
             nofit = addr; // haleyjd 20110204: nofit/crushchange are in opposite 

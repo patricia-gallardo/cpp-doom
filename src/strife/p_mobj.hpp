@@ -285,7 +285,7 @@ typedef struct mobj_s
     
     int                 tics;   // state tic counter
     state_t*            state;
-    int                 flags;
+    unsigned int        flags;
     int                 health;
 
     // Movement direction, movement generation (zig-zagging).

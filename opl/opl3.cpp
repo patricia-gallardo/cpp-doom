@@ -526,7 +526,7 @@ static void OPL3_PhaseGenerate(opl3_slot *slot)
 
         if (vibpos & 4)
         {
-            range = static_cast<Bit8u>(-range);
+            range = static_cast<Bit8s>(-range);
         }
         f_num += static_cast<Bit16u>(range);
     }

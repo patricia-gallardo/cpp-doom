@@ -298,7 +298,7 @@ bool ST_Responder(event_t* ev)
     // Filter automap on/off.
     if(ev->type == ev_keyup)
     {
-        if((ev->data1 & 0xffff0000) == AM_MSGHEADER)
+        if((static_cast<unsigned int>(ev->data1) & 0xffff0000) == AM_MSGHEADER)
         {
             switch(ev->data1)
             {

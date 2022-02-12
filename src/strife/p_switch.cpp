@@ -223,7 +223,7 @@ static void P_SpawnBrokenGlass(line_t* line)
 
         P_SetMobjState(glass, static_cast<statenum_t>(P_Random() % 3 + S_SHRD_03)); // 284
 
-        an = ((P_Random() << 13) / 255);
+        an = (static_cast<angle_t>((P_Random() << 13) / 255));
 
         glass->angle = (an << ANGLETOFINESHIFT);
         glass->momx = FixedMul(finecosine[an], (P_Random() & 3) << FRACBITS);
@@ -1047,7 +1047,7 @@ bool P_UseSpecialLine(mobj_t* thing, line_t* line, int side)
 
     case 234:
         // haleyjd 09/24/10: [STRIFE] SR Raise Door if Quest 3
-        if(!(thing->player->questflags & QF_QUEST3)) // QUEST3 == Irale
+        if(!(static_cast<unsigned int>(thing->player->questflags) & QF_QUEST3)) // QUEST3 == Irale
         {
             // BUG: doesn't make sfx_oof sound like all other message-
             // giving door types. I highly doubt this was intentional.

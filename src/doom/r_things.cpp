@@ -666,7 +666,7 @@ void R_ProjectSprite(mobj_t *thing)
     }
 
     // [crispy] randomly flip corpse, blood and death animation sprites
-    if (crispy->flipcorpses && (static_cast<unsigned int>(thing->flags) & MF_FLIPPABLE) && !(static_cast<unsigned int>(thing->flags) & MF_SHOOTABLE) && (thing->health & 1))
+    if (crispy->flipcorpses && (thing->flags & MF_FLIPPABLE) && !(thing->flags & MF_SHOOTABLE) && (thing->health & 1))
     {
         flip = !flip;
     }
@@ -730,7 +730,7 @@ void R_ProjectSprite(mobj_t *thing)
     vis->patch = lump;
 
     // get light level
-    if (static_cast<unsigned int>(thing->flags) & MF_SHADOW)
+    if (thing->flags & MF_SHADOW)
     {
         // shadow draw
         vis->colormap[0] = vis->colormap[1] = nullptr;

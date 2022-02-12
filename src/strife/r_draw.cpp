@@ -614,9 +614,9 @@ void R_DrawSpan ()
     // each 16-bit part, the top 6 bits are the integer part and the
     // bottom 10 bits are the fractional part of the pixel position.
 
-    position = ((ds_xfrac << 10) & 0xffff0000)
+    position = ((static_cast<unsigned int>(ds_xfrac << 10)) & 0xffff0000)
              | ((ds_yfrac >> 6)  & 0x0000ffff);
-    step = ((ds_xstep << 10) & 0xffff0000)
+    step = ((static_cast<unsigned int>(ds_xstep << 10)) & 0xffff0000)
          | ((ds_ystep >> 6)  & 0x0000ffff);
 
     dest = ylookup[ds_y] + columnofs[ds_x1];
@@ -629,7 +629,7 @@ void R_DrawSpan ()
 	// Calculate current texture index in u,v.
         ytemp = (position >> 4) & 0x0fc0;
         xtemp = (position >> 26);
-        spot = xtemp | ytemp;
+        spot = static_cast<int>(xtemp | ytemp);
 
 	// Lookup pixel from flat texture tile,
 	//  re-index using light/colormap.
@@ -738,9 +738,9 @@ void R_DrawSpanLow ()
 //	dscount++; 
 #endif
 
-    position = ((ds_xfrac << 10) & 0xffff0000)
+    position = ((static_cast<unsigned int>(ds_xfrac << 10)) & 0xffff0000)
              | ((ds_yfrac >> 6)  & 0x0000ffff);
-    step = ((ds_xstep << 10) & 0xffff0000)
+    step = ((static_cast<unsigned int>(ds_xstep << 10)) & 0xffff0000)
          | ((ds_ystep >> 6)  & 0x0000ffff);
 
     count = (ds_x2 - ds_x1);
@@ -756,7 +756,7 @@ void R_DrawSpanLow ()
 	// Calculate current texture index in u,v.
         ytemp = (position >> 4) & 0x0fc0;
         xtemp = (position >> 26);
-        spot = xtemp | ytemp;
+        spot = static_cast<int>(xtemp | ytemp);
 
 	// Lowres/blocky mode does it twice,
 	//  while scale is adjusted appropriately.
@@ -841,7 +841,7 @@ void R_FillBackScreen ()
 	
     if (background_buffer == nullptr)
     {
-        background_buffer = zmalloc<uint8_t *>(SCREENWIDTH * (SCREENHEIGHT - SBARHEIGHT),
+        background_buffer = zmalloc<uint8_t *>(static_cast<size_t>(SCREENWIDTH * (SCREENHEIGHT - SBARHEIGHT)),
             PU_STATIC, nullptr);
     }
 
@@ -924,7 +924,7 @@ R_VideoErase
 
     if (background_buffer != nullptr)
     {
-        memcpy(I_VideoBuffer + ofs, background_buffer + ofs, count); 
+        memcpy(I_VideoBuffer + ofs, background_buffer + ofs, static_cast<size_t>(count));
     }
 } 
 
@@ -952,7 +952,7 @@ void R_DrawViewBorder ()
  
     // copy one line of right side and bottom 
     ofs = (viewheight+top)*SCREENWIDTH-side; 
-    R_VideoErase (ofs, top*SCREENWIDTH+side); 
+    R_VideoErase (static_cast<unsigned int>(ofs), top*SCREENWIDTH+side);
  
     // copy sides using wraparound 
     ofs = top*SCREENWIDTH + SCREENWIDTH-side; 
@@ -960,7 +960,7 @@ void R_DrawViewBorder ()
     
     for (i=1 ; i<viewheight ; i++) 
     { 
-	R_VideoErase (ofs, side); 
+	R_VideoErase (static_cast<unsigned int>(ofs), side);
 	ofs += SCREENWIDTH; 
     } 
 

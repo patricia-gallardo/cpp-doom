@@ -180,7 +180,7 @@ void P_XYMovement (mobj_t* mo)
                 P_SlideMove (mo);
             }
             // villsa [STRIFE] check for bouncy missiles
-            else if(mo->flags & MF_BOUNCE)
+            else if(static_cast<unsigned int>(mo->flags) & MF_BOUNCE)
             {
                 mo->momx >>= 3;
                 mo->momy >>= 3;
@@ -193,7 +193,7 @@ void P_XYMovement (mobj_t* mo)
                 xmove = 0;
                 ymove = 0;
             }
-            else if (mo->flags & MF_MISSILE)
+            else if (static_cast<unsigned int>(mo->flags) & MF_MISSILE)
             {
                 // haley 20110203: [STRIFE]
                 // This modification allows missiles to activate shoot specials.
@@ -234,7 +234,7 @@ void P_XYMovement (mobj_t* mo)
     }
 
     // villsa [STRIFE] replace skullfly flag with MF_BOUNCE
-    if (mo->flags & (MF_MISSILE | MF_BOUNCE) )
+    if (static_cast<unsigned int>(mo->flags) & (MF_MISSILE | MF_BOUNCE) )
         return;     // no friction for missiles ever
 
     // haleyjd 20110224: [STRIFE] players experience friction even in the air,
@@ -250,7 +250,7 @@ void P_XYMovement (mobj_t* mo)
         return;     // no friction when airborne
     }
 
-    if (mo->flags & MF_CORPSE)
+    if (static_cast<unsigned int>(mo->flags) & MF_CORPSE)
     {
         // do not stop sliding
         //  if halfway off a step with some momentum
@@ -322,12 +322,12 @@ void P_ZMovement (mobj_t* mo)
 
     //mo->z += mo->momz; // villsa [STRIFE] unused
 
-    if ( mo->flags & MF_FLOAT
+    if (static_cast<unsigned int>(mo->flags) & MF_FLOAT
         && mo->target)
     {
         // float down towards target if too close
         if ( /*!(mo->flags & MF_SKULLFLY)   // villsa [STRIFE] unused
-             &&*/ !(mo->flags & MF_INFLOAT) )
+             &&*/ !(static_cast<unsigned int>(mo->flags) & MF_INFLOAT) )
         {
             dist = P_AproxDistance (mo->x - mo->target->x,
                                     mo->y - mo->target->y);
@@ -398,15 +398,15 @@ void P_ZMovement (mobj_t* mo)
         */
 
         // villsa [STRIFE] also check for MF_BOUNCE
-        if ( (mo->flags & MF_MISSILE)
-            && !(mo->flags & (MF_NOCLIP|MF_BOUNCE)) )
+        if ( (static_cast<unsigned int>(mo->flags) & MF_MISSILE)
+            && !(static_cast<unsigned int>(mo->flags) & (MF_NOCLIP|MF_BOUNCE)) )
         {
             P_ExplodeMissile (mo);
         }
     }
     else // haleyjd 20110224: else here, not else if - Strife change or what?
     {
-        if (! (mo->flags & MF_NOGRAVITY) )
+        if (! (static_cast<unsigned int>(mo->flags) & MF_NOGRAVITY) )
         {
             if (mo->momz == 0)
                 mo->momz = -GRAVITY*2;
@@ -417,7 +417,7 @@ void P_ZMovement (mobj_t* mo)
         if (mo->z + mo->height > mo->ceilingz)
         {
             // villsa [STRIFE] replace skullfly flag with MF_BOUNCE
-            if (mo->flags & MF_BOUNCE)
+            if (static_cast<unsigned int>(mo->flags) & MF_BOUNCE)
             {
                 // villsa [STRIFE] affect reactiontime
                 // momz is also shifted by 1
@@ -432,8 +432,8 @@ void P_ZMovement (mobj_t* mo)
             mo->z = mo->ceilingz - mo->height;
 
             // villsa [STRIFE] also check for MF_BOUNCE
-            if ( (mo->flags & MF_MISSILE)
-                && !(mo->flags & (MF_NOCLIP|MF_BOUNCE)) )
+            if ( (static_cast<unsigned int>(mo->flags) & MF_MISSILE)
+                && !(static_cast<unsigned int>(mo->flags) & (MF_NOCLIP|MF_BOUNCE)) )
             {
                 // villsa [STRIFE] check against skies
                 if(mo->subsector->sector->ceilingpic == skyflatnum)
@@ -490,7 +490,7 @@ P_NightmareRespawn (mobj_t* mobj)
     mthing = &mobj->spawnpoint;
 
     // spawn it
-    if (mobj->info->flags & MF_SPAWNCEILING)
+    if (static_cast<unsigned int>(mobj->info->flags) & MF_SPAWNCEILING)
         z = ONCEILINGZ;
     else
         z = ONFLOORZ;
@@ -546,7 +546,7 @@ void P_MobjThinker (mobj_t* mobj)
             mobj->flags |= MF_FEETCLIPPED;
 
     }
-    if ( (mobj->z != mobj->floorz && !(mobj->flags & MF_NOGRAVITY)) // villsa [STRIFE]
+    if ( (mobj->z != mobj->floorz && !(static_cast<unsigned int>(mobj->flags) & MF_NOGRAVITY)) // villsa [STRIFE]
         || mobj->momz )
     {
         P_ZMovement (mobj);
@@ -576,7 +576,7 @@ void P_MobjThinker (mobj_t* mobj)
         // villsa [STRIFE] stonecold cheat
         if(stonecold)
         {
-            if(mobj->flags & MF_COUNTKILL)
+            if(static_cast<unsigned int>(mobj->flags) & MF_COUNTKILL)
                 P_DamageMobj(mobj, mobj, mobj, 10);
         }
 
@@ -588,7 +588,7 @@ void P_MobjThinker (mobj_t* mobj)
     else
     {
         // check for nightmare respawn
-        if (! (mobj->flags & MF_COUNTKILL) )
+        if (! (static_cast<unsigned int>(mobj->flags) & MF_COUNTKILL) )
             return;
 
         if (!respawnmonsters)
@@ -607,7 +607,7 @@ void P_MobjThinker (mobj_t* mobj)
             return;
 
         // haleyjd [STRIFE]: NOTDMATCH things don't respawn
-        if(mobj->flags & MF_NOTDMATCH)
+        if(static_cast<unsigned int>(mobj->flags) & MF_NOTDMATCH)
             return;
 
         P_NightmareRespawn (mobj);
@@ -700,8 +700,8 @@ int         iquetail;
 void P_RemoveMobj (mobj_t* mobj)
 {
     // villsa [STRIFE] removed invuln/invis. sphere exceptions
-    if ((mobj->flags & MF_SPECIAL)
-        && !(mobj->flags & MF_DROPPED))
+    if ((static_cast<unsigned int>(mobj->flags) & MF_SPECIAL)
+        && !(static_cast<unsigned int>(mobj->flags) & MF_DROPPED))
     {
         itemrespawnque[iquehead] = mobj->spawnpoint;
         itemrespawntime[iquehead] = leveltime + 30*TICRATE; // [STRIFE]
@@ -794,7 +794,7 @@ void P_RespawnSpecials ()
     }
 
     // spawn it
-    if (mobjinfo[i].flags & MF_SPAWNCEILING)
+    if (static_cast<unsigned int>(mobjinfo[i].flags) & MF_SPAWNCEILING)
         z = ONCEILINGZ;
     else
         z = ONFLOORZ;
@@ -975,19 +975,19 @@ void P_SpawnMapThing (mapthing_t* mthing)
                  mthing->x, mthing->y);
 
     // don't spawn keycards and players in deathmatch
-    if (deathmatch && mobjinfo[i].flags & MF_NOTDMATCH)
+    if (deathmatch && static_cast<unsigned int>(mobjinfo[i].flags) & MF_NOTDMATCH)
         return;
 
     // don't spawn any monsters if -nomonsters
     // villsa [STRIFE] Removed MT_SKULL
-    if (nomonsters && (mobjinfo[i].flags & MF_COUNTKILL))
+    if (nomonsters && (static_cast<unsigned int>(mobjinfo[i].flags) & MF_COUNTKILL))
         return;
     
     // spawn it
     x = mthing->x << FRACBITS;
     y = mthing->y << FRACBITS;
 
-    if (mobjinfo[i].flags & MF_SPAWNCEILING)
+    if (static_cast<unsigned int>(mobjinfo[i].flags) & MF_SPAWNCEILING)
         z = ONCEILINGZ;
     else
         z = ONFLOORZ;
@@ -997,7 +997,7 @@ void P_SpawnMapThing (mapthing_t* mthing)
 
     if (mobj->tics > 0)
         mobj->tics = 1 + (P_Random () % mobj->tics);
-    if (mobj->flags & MF_COUNTKILL)
+    if (static_cast<unsigned int>(mobj->flags) & MF_COUNTKILL)
         totalkills++;
 
     // villsa [STRIFE] unused
@@ -1180,16 +1180,16 @@ P_SpawnMissile
     an = R_PointToAngle2 (source->x, source->y, dest->x, dest->y);
 
     // fuzzy player
-    if (dest->flags & MF_SHADOW)
+    if (static_cast<unsigned int>(dest->flags) & MF_SHADOW)
     {
         int t = P_Random(); // haleyjd 20110223: remove order-of-evaluation dependencies
-        an += (t - P_Random()) << 21;
+        an += static_cast<unsigned int>((t - P_Random()) << 21);
     }
     // villsa [STRIFE] check for heavily transparent things
-    else if(dest->flags & MF_MVIS)
+    else if(static_cast<unsigned int>(dest->flags) & MF_MVIS)
     {
         int t = P_Random();
-        an += (t - P_Random()) << 22;
+        an += static_cast<unsigned int>((t - P_Random()) << 22);
     }
 
     th->angle = an;
@@ -1231,16 +1231,16 @@ mobj_t* P_SpawnFacingMissile(mobj_t* source, mobj_t* target, mobjtype_t type)
     an = th->angle;
 
     // fuzzy player
-    if (target->flags & MF_SHADOW)
+    if (static_cast<unsigned int>(target->flags) & MF_SHADOW)
     {
         int t = P_Random();
-        an += (t - P_Random()) << 21;
+        an += static_cast<unsigned int>((t - P_Random()) << 21);
     }
     // villsa [STRIFE] check for heavily transparent things
-    else if(target->flags & MF_MVIS)
+    else if(static_cast<unsigned int>(target->flags) & MF_MVIS)
     {
         int t = P_Random();
-        an += (t - P_Random()) << 22;
+        an += static_cast<unsigned int>((t - P_Random()) << 22);
     }
 
     an >>= ANGLETOFINESHIFT;
@@ -1309,7 +1309,7 @@ mobj_t* P_SpawnPlayerMissile(mobj_t* source, mobjtype_t type)
     y = source->y;
     
     // villsa [STRIFE]
-    if(!(source->flags & MF_FEETCLIPPED))
+    if(!(static_cast<unsigned int>(source->flags) & MF_FEETCLIPPED))
         z = source->z + 32*FRACUNIT;
     else
         z = source->z + 22*FRACUNIT;

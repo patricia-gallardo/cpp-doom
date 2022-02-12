@@ -230,7 +230,7 @@ bool PIT_CheckLine(line_t *ld)
     if (!ld->backsector)
         return false; // one sided line
 
-    if (!(tmthing->flags & MF_MISSILE))
+    if (!(static_cast<unsigned int>(tmthing->flags) & MF_MISSILE))
     {
         if (ld->flags & ML_BLOCKING)
             return false; // explicitly blocking everything
@@ -301,7 +301,7 @@ bool PIT_CheckThing(mobj_t *thing)
         return true;
 
     // check for skulls slamming into things
-    if (tmthing->flags & MF_SKULLFLY)
+    if (static_cast<unsigned int>(tmthing->flags) & MF_SKULLFLY)
     {
         // [crispy] check if attacking skull flies over player
         if (critical->overunder && thing->player)
@@ -327,7 +327,7 @@ bool PIT_CheckThing(mobj_t *thing)
 
 
     // missiles can hit other things
-    if (tmthing->flags & MF_MISSILE)
+    if (static_cast<unsigned int>(tmthing->flags) & MF_MISSILE)
     {
         // [crispy] mobj or actual sprite height
         const fixed_t thingheight = (tmthing->target && tmthing->target->player && critical->freeaim == FREEAIM_DIRECT) ?
@@ -1190,7 +1190,7 @@ bool PTR_ShootTraverse(intercept_t *in)
 
     // Spawn bullet puffs or blod spots,
     // depending on target type.
-    if (in->d.thing->flags & MF_NOBLOOD)
+    if (static_cast<unsigned int>(in->d.thing->flags) & MF_NOBLOOD)
         P_SpawnPuff(x, y, z);
     else
         P_SpawnBlood(x, y, z, la_damage, th); // [crispy] pass thing type

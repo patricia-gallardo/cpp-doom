@@ -446,7 +446,7 @@ void A_Punch(player_t* player, pspdef_t*)
 
     angle = player->mo->angle;
     t = P_Random();
-    angle += (t - P_Random()) << 18;
+    angle += static_cast<unsigned int>((t - P_Random()) << 18);
     slope = P_AimLineAttack (player->mo, angle, PLAYERMELEERANGE);
     P_LineAttack (player->mo, angle, PLAYERMELEERANGE, slope, damage);
 
@@ -454,7 +454,7 @@ void A_Punch(player_t* player, pspdef_t*)
     if(linetarget)
     {
         // villsa [STRIFE] check for non-flesh types
-        if(linetarget->flags & MF_NOBLOOD)
+        if(static_cast<unsigned int>(linetarget->flags) & MF_NOBLOOD)
             sound = sfx_mtalht;
         else
             sound = sfx_meatht;
@@ -489,7 +489,7 @@ void A_FireFlameThrower(player_t* player, pspdef_t*)
     P_SetMobjState(player->mo, S_PLAY_06);
     player->ammo[weaponinfo[player->readyweapon].ammo]--;
     t = P_Random();
-    player->mo->angle += (t - P_Random()) << 18;
+    player->mo->angle += static_cast<unsigned int>((t - P_Random()) << 18);
 
     mo = P_SpawnPlayerMissile(player->mo, MT_SFIREBALL);
     mo->momz += (5*FRACUNIT);
@@ -509,7 +509,7 @@ void A_FireMissile(player_t* player, pspdef_t*)
     // accuracy * 5, not 4. Checks out with other sources.
     an = player->mo->angle;
     t = P_Random();
-    player->mo->angle += (t - P_Random()) << (19 - (player->accuracy * 5 / 100));
+    player->mo->angle += static_cast<unsigned int>((t - P_Random()) << (19 - (player->accuracy * 5 / 100)));
     P_SetMobjState(player->mo, S_PLAY_06);
     player->ammo[weaponinfo[player->readyweapon].ammo]--;
     P_SpawnPlayerMissile(player->mo, MT_MINIMISSLE);
@@ -605,7 +605,7 @@ void A_FireElectricBolt(player_t* player, pspdef_t*)
 
     // haleyjd 09/19/10: Use 5 mul on accuracy here as well
     t = P_Random();
-    player->mo->angle += (t - P_Random()) << (18 - (player->accuracy * 5 / 100));
+    player->mo->angle += static_cast<unsigned int>((t - P_Random()) << (18 - (player->accuracy * 5 / 100)));
     player->ammo[weaponinfo[player->readyweapon].ammo]--;
     P_SpawnPlayerMissile(player->mo, MT_ELECARROW);
     player->mo->angle = an;
@@ -624,7 +624,7 @@ void A_FirePoisonBolt(player_t* player, pspdef_t*)
 
     // haleyjd 09/19/10: Use 5 mul on accuracy here as well
     t = P_Random();
-    player->mo->angle += (t - P_Random()) << (18 - (player->accuracy * 5 / 100));
+    player->mo->angle += static_cast<unsigned int>((t - P_Random()) << (18 - (player->accuracy * 5 / 100)));
     player->ammo[weaponinfo[player->readyweapon].ammo]--;
     P_SpawnPlayerMissile(player->mo, MT_POISARROW);
     player->mo->angle = an;
@@ -688,7 +688,7 @@ P_GunShot
     if (!accurate)
     {
         int t = P_Random();
-        angle += (t - P_Random()) << (20 - ((mo->player->accuracy * 5) / 100));
+        angle += static_cast<unsigned int>((t - P_Random()) << (20 - ((mo->player->accuracy * 5) / 100)));
     }
 
     // haleyjd 09/18/10 [STRIFE] corrected damage formula and moved down to
@@ -740,7 +740,7 @@ void A_FireMauler1(player_t* player, pspdef_t*)
             damage = 5*(P_Random ()%3+1);
             angle = player->mo->angle;
             t = P_Random();
-            angle += (t - P_Random()) << 19;
+            angle += static_cast<unsigned int>((t - P_Random()) << 19);
             t = P_Random();
             P_LineAttack(player->mo, angle, 2112*FRACUNIT,
                          bulletslope + ((t - P_Random())<<5), damage);

@@ -128,10 +128,10 @@ void P_LoadVertexes (int lump)
 
     // Determine number of lumps:
     //  total lump length / vertex record length.
-    numvertexes = W_LumpLength (lump) / sizeof(mapvertex_t);
+    numvertexes = W_LumpLength(lump) / sizeof(mapvertex_t);
 
     // Allocate zone memory for buffer.
-    vertexes = zmalloc<vertex_t *>(numvertexes * sizeof(vertex_t), PU_LEVEL, 0);
+    vertexes = zmalloc<vertex_t *>(static_cast<unsigned long>(numvertexes) * sizeof(vertex_t), PU_LEVEL, 0);
 
     // Load data into cache.
     data = cache_lump_num<uint8_t *> (lump, PU_STATIC);
@@ -167,9 +167,9 @@ void P_LoadSegs (int lump)
     int			side;
     int                 sidenum;
 	
-    numsegs = W_LumpLength (lump) / sizeof(mapseg_t);
-    segs = zmalloc<seg_t *>(numsegs * sizeof(seg_t), PU_LEVEL, 0);
-    memset (segs, 0, numsegs*sizeof(seg_t));
+    numsegs =W_LumpLength(lump) / sizeof(mapseg_t);
+    segs = zmalloc<seg_t *>(static_cast<unsigned long>(numsegs) * sizeof(seg_t), PU_LEVEL, 0);
+    memset (segs, 0, static_cast<unsigned long>(numsegs) *sizeof(seg_t));
     data = cache_lump_num<uint8_t *> (lump,PU_STATIC);
 	
     ml = reinterpret_cast<mapseg_t *>(data);
@@ -179,7 +179,7 @@ void P_LoadSegs (int lump)
 	li->v1 = &vertexes[SHORT(ml->v1)];
 	li->v2 = &vertexes[SHORT(ml->v2)];
 
-	li->angle = (SHORT(ml->angle))<<16;
+	li->angle = static_cast<angle_t>((SHORT(ml->angle)) << 16);
 	li->offset = (SHORT(ml->offset))<<16;
         linedef_local   = SHORT(ml->linedef);
 	ldef = &lines[linedef_local];
@@ -225,12 +225,12 @@ void P_LoadSubsectors (int lump)
     mapsubsector_t*	ms;
     subsector_t*	ss;
 	
-    numsubsectors = W_LumpLength (lump) / sizeof(mapsubsector_t);
-    subsectors = zmalloc<subsector_t *>(numsubsectors * sizeof(subsector_t), PU_LEVEL, 0);
+    numsubsectors = W_LumpLength(lump) / sizeof(mapsubsector_t);
+    subsectors = zmalloc<subsector_t *>(static_cast<unsigned long>(numsubsectors) * sizeof(subsector_t), PU_LEVEL, 0);
     data = cache_lump_num<uint8_t *> (lump,PU_STATIC);
 	
     ms = reinterpret_cast<mapsubsector_t *>(data);
-    memset (subsectors,0, numsubsectors*sizeof(subsector_t));
+    memset (subsectors,0, static_cast<unsigned long>(numsubsectors) *sizeof(subsector_t));
     ss = subsectors;
     
     for (i=0 ; i<numsubsectors ; i++, ss++, ms++)
@@ -254,9 +254,9 @@ void P_LoadSectors (int lump)
     mapsector_t*	ms;
     sector_t*		ss;
 	
-    numsectors = W_LumpLength (lump) / sizeof(mapsector_t);
-    sectors = zmalloc<sector_t *>(numsectors * sizeof(sector_t), PU_LEVEL, 0);
-    memset (sectors, 0, numsectors*sizeof(sector_t));
+    numsectors = W_LumpLength(lump) / sizeof(mapsector_t);
+    sectors = zmalloc<sector_t *>(static_cast<unsigned long>(numsectors) * sizeof(sector_t), PU_LEVEL, 0);
+    memset (sectors, 0, static_cast<unsigned long>(numsectors) *sizeof(sector_t));
     data = cache_lump_num<uint8_t *> (lump,PU_STATIC);
 	
     ms = reinterpret_cast<mapsector_t *>(data);
@@ -289,8 +289,8 @@ void P_LoadNodes (int lump)
     mapnode_t*	mn;
     node_t*	no;
 	
-    numnodes = W_LumpLength (lump) / sizeof(mapnode_t);
-    nodes = zmalloc<node_t *>(numnodes * sizeof(node_t), PU_LEVEL, 0);
+    numnodes = W_LumpLength(lump) / sizeof(mapnode_t);
+    nodes = zmalloc<node_t *>(static_cast<unsigned long>(numnodes) * sizeof(node_t), PU_LEVEL, 0);
     data = cache_lump_num<uint8_t *> (lump,PU_STATIC);
 	
     mn = reinterpret_cast<mapnode_t *>(data);
@@ -329,7 +329,7 @@ void P_LoadThings (int lump)
 //    bool		spawn;
 
     data = cache_lump_num<uint8_t *> (lump,PU_STATIC);
-    numthings = W_LumpLength (lump) / sizeof(mapthing_t);
+    numthings = W_LumpLength(lump) / sizeof(mapthing_t);
 
     mt = reinterpret_cast<mapthing_t *>(data);
     for (i=0 ; i<numthings ; i++, mt++)
@@ -401,9 +401,9 @@ void P_LoadLineDefs (int lump)
     vertex_t*		v1;
     vertex_t*		v2;
 	
-    numlines = W_LumpLength (lump) / sizeof(maplinedef_t);
-    lines = zmalloc<line_t *>(numlines * sizeof(line_t), PU_LEVEL, 0);
-    memset (lines, 0, numlines*sizeof(line_t));
+    numlines = W_LumpLength(lump) / sizeof(maplinedef_t);
+    lines = zmalloc<line_t *>(static_cast<unsigned long>(numlines) * sizeof(line_t), PU_LEVEL, 0);
+    memset (lines, 0, static_cast<unsigned long>(numlines) *sizeof(line_t));
     data = cache_lump_num<uint8_t *> (lump,PU_STATIC);
 	
     mld = reinterpret_cast<maplinedef_t *>(data);
@@ -480,9 +480,9 @@ void P_LoadSideDefs (int lump)
     mapsidedef_t*	msd;
     side_t*		sd;
 	
-    numsides = W_LumpLength (lump) / sizeof(mapsidedef_t);
-    sides = zmalloc<side_t *>(numsides * sizeof(side_t), PU_LEVEL, 0);
-    memset (sides, 0, numsides*sizeof(side_t));
+    numsides = W_LumpLength(lump) / sizeof(mapsidedef_t);
+    sides = zmalloc<side_t *>(static_cast<unsigned long>(numsides) * sizeof(side_t), PU_LEVEL, 0);
+    memset (sides, 0, static_cast<unsigned long>(numsides) *sizeof(side_t));
     data = cache_lump_num<uint8_t *> (lump,PU_STATIC);
 	
     msd = reinterpret_cast<mapsidedef_t *>(data);
@@ -512,7 +512,7 @@ void P_LoadBlockMap (int lump)
     lumplen = W_LumpLength(lump);
     int count = lumplen / 2;
 	
-    blockmaplump = zmalloc<short *>(lumplen, PU_LEVEL, nullptr);
+    blockmaplump = zmalloc<short *>(static_cast<size_t>(lumplen), PU_LEVEL, nullptr);
     W_ReadLump(lump, blockmaplump);
     blockmap = blockmaplump + 4;
 
@@ -532,7 +532,7 @@ void P_LoadBlockMap (int lump)
 	
     // Clear out mobj chains
 
-    size_t block_count = sizeof(*blocklinks) * bmapwidth * bmapheight;
+    size_t block_count = sizeof(*blocklinks) * static_cast<unsigned long>(bmapwidth) * static_cast<unsigned long>(bmapheight);
     blocklinks = zmalloc<mobj_t **>(block_count, PU_LEVEL, 0);
     memset(blocklinks, 0, block_count);
 }
@@ -580,7 +580,7 @@ void P_GroupLines ()
     }
 
     // build line tables for each sector	
-    linebuffer = zmalloc<line_t **>(totallines * sizeof(line_t *), PU_LEVEL, 0);
+    linebuffer = zmalloc<line_t **>(static_cast<unsigned long>(totallines) * sizeof(line_t *), PU_LEVEL, 0);
 
     for (i=0; i<numsectors; ++i)
     {
@@ -677,7 +677,7 @@ static void PadRejectArray(uint8_t *array, unsigned int len)
         0x1d4a11                              // DOOM_CONST_ZONEID
     };
 
-    rejectpad[0] = ((totallines * 4 + 3) & ~3) + 24;
+    rejectpad[0] = static_cast<unsigned int>(((totallines * 4 + 3) & ~3) + 24);
 
     // Copy values from rejectpad into the destination array.
 
@@ -710,7 +710,7 @@ static void PadRejectArray(uint8_t *array, unsigned int len)
             padvalue = 0xf00;
         }
 
-        memset(array + sizeof(rejectpad), padvalue, len - sizeof(rejectpad));
+        memset(array + sizeof(rejectpad), static_cast<int>(padvalue), len - sizeof(rejectpad));
     }
 }
 
@@ -735,10 +735,10 @@ static void P_LoadReject(int lumpnum)
     }
     else
     {
-        rejectmatrix = zmalloc<uint8_t *>(minlength, PU_LEVEL, &rejectmatrix);
+        rejectmatrix = zmalloc<uint8_t *>(static_cast<size_t>(minlength), PU_LEVEL, &rejectmatrix);
         W_ReadLump(lumpnum, rejectmatrix);
 
-        PadRejectArray(rejectmatrix + lumplen, minlength - lumplen);
+        PadRejectArray(rejectmatrix + lumplen, static_cast<unsigned int>(minlength - lumplen));
     }
 }
 

@@ -318,7 +318,7 @@ static int G_NextWeapon(int direction)
     size_t start_i = i;
     do
     {
-        i += direction;
+        i += static_cast<unsigned long>(direction);
         i = (i + std::size(weapon_order_table)) % std::size(weapon_order_table);
     } while (i != start_i && !WeaponSelectable(weapon_order_table[i].weapon));
 
@@ -481,7 +481,7 @@ void G_BuildTiccmd (ticcmd_t* cmd, int maketic)
     }
 
     // buttons
-    cmd->chatchar = HU_dequeueChatChar(); 
+    cmd->chatchar = static_cast<uint8_t>(HU_dequeueChatChar());
 
     // villsa [STRIFE] - add mouse button support for jump
     if (gamekeydown[key_jump] || mousebuttons[mousebjump]
@@ -874,13 +874,13 @@ bool G_Responder (event_t* ev)
         return false;   // always let key up events filter down 
 
     case ev_mouse: 
-        SetMouseButtons(ev->data1);
+        SetMouseButtons(static_cast<unsigned int>(ev->data1));
         mousex = ev->data2*(mouseSensitivity+5)/10; 
         mousey = ev->data3*(mouseSensitivity+5)/10; 
         return true;    // eat events 
 
     case ev_joystick: 
-        SetJoyButtons(ev->data1);
+        SetJoyButtons(static_cast<unsigned int>(ev->data1));
         joyxmove = ev->data2; 
         joyymove = ev->data3; 
         joystrafemove = ev->data4;
@@ -2110,20 +2110,15 @@ void G_ReadDemoTiccmd (ticcmd_t* cmd)
 
 static void IncreaseDemoBuffer()
 {
-    int current_length;
-    uint8_t *new_demobuffer;
-    uint8_t *new_demop;
-    int new_length;
-
     // Find the current size
 
-    current_length = static_cast<int>(demoend - demobuffer);
+    auto current_length = static_cast<size_t>(demoend - demobuffer);
     
     // Generate a new buffer twice the size
-    new_length = current_length * 2;
+    size_t new_length = current_length * 2;
     
-    new_demobuffer = zmalloc<uint8_t *>(new_length, PU_STATIC, 0);
-    new_demop = new_demobuffer + (demo_p - demobuffer);
+    uint8_t *new_demobuffer = zmalloc<uint8_t *>(new_length, PU_STATIC, 0);
+    uint8_t *new_demop = new_demobuffer + (demo_p - demobuffer);
 
     // Copy over the old data
 
@@ -2152,8 +2147,8 @@ void G_WriteDemoTiccmd (ticcmd_t* cmd)
 
     demo_start = demo_p;
 
-    *demo_p++ = cmd->forwardmove; 
-    *demo_p++ = cmd->sidemove; 
+    *demo_p++ = static_cast<uint8_t>(cmd->forwardmove);
+    *demo_p++ = static_cast<uint8_t>(cmd->sidemove);
     *demo_p++ = static_cast<uint8_t>(cmd->angleturn >> 8);
     *demo_p++ = cmd->buttons; 
     *demo_p++ = cmd->buttons2;                 // [STRIFE]
@@ -2212,7 +2207,7 @@ void G_RecordDemo (char* name)
     i = M_CheckParmWithArgs("-maxdemo", 1);
     if (i)
         maxsize = atoi(myargv[i+1])*1024;
-    demobuffer = zmalloc<uint8_t *>(maxsize, PU_STATIC, nullptr);
+    demobuffer = zmalloc<uint8_t *>(static_cast<size_t>(maxsize), PU_STATIC, nullptr);
     demoend = demobuffer + maxsize;
 
     demorecording = true; 
@@ -2243,7 +2238,7 @@ void G_BeginRecording ()
     // Save the right version code for this demo
     *demo_p++ = STRIFE_VERSION;
 
-    *demo_p++ = gameskill; 
+    *demo_p++ = static_cast<uint8_t>(gameskill);
     //*demo_p++ = gameepisode; [STRIFE] Doesn't have episodes.
     *demo_p++ = static_cast<uint8_t>(gamemap);
     *demo_p++ = static_cast<uint8_t>(deathmatch);

@@ -2309,7 +2309,7 @@ void M_Drawer ()
 
             for (i = 0; i < strlen(messageString + start); i++)
             {
-                if (messageString[start + i] == '\n')
+                if (messageString[static_cast<unsigned int>(start) + i] == '\n')
                 {
                     M_StringCopy(string, messageString + start,
                                  sizeof(string));
@@ -2348,7 +2348,7 @@ void M_Drawer ()
     // DRAW MENU
     x = currentMenu->x;
     y = currentMenu->y;
-    max = currentMenu->numitems;
+    max = static_cast<unsigned int>(currentMenu->numitems);
 
     for (i=0;i<max;i++)
     {

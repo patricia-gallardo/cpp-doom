@@ -31,8 +31,8 @@ net_packet_t *NET_NewPacket(int initial_size)
     if (initial_size == 0)
         initial_size = 256;
 
-    packet->alloced = initial_size;
-    packet->data    = zmalloc<uint8_t *>(initial_size, PU_STATIC, 0);
+    packet->alloced = static_cast<size_t>(initial_size);
+    packet->data    = zmalloc<uint8_t *>(static_cast<size_t>(initial_size), PU_STATIC, 0);
     packet->len     = 0;
     packet->pos     = 0;
 
@@ -91,7 +91,7 @@ bool NET_ReadInt16(net_packet_t *packet, unsigned int *data)
 
     p = packet->data + packet->pos;
 
-    *data = (p[0] << 8) | p[1];
+    *data = static_cast<unsigned int>((p[0] << 8) | p[1]);
     packet->pos += 2;
 
     return true;
@@ -109,7 +109,7 @@ bool NET_ReadInt32(net_packet_t *packet, unsigned int *data)
 
     p = packet->data + packet->pos;
 
-    *data = (p[0] << 24) | (p[1] << 16) | (p[2] << 8) | p[3];
+    *data = static_cast<unsigned int>((p[0] << 24) | (p[1] << 16) | (p[2] << 8) | p[3]);
     packet->pos += 4;
 
     return true;
@@ -155,7 +155,7 @@ bool NET_ReadSInt32(net_packet_t *packet, signed int *data)
 {
     if (NET_ReadInt32(packet, reinterpret_cast<unsigned int *>(data)))
     {
-        if (*data & (1U << 31))
+        if (static_cast<unsigned int>(*data) & (1U << 31))
         {
             *data &= ~(1U << 31);
             *data -= (1U << 31);

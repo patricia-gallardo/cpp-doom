@@ -1148,7 +1148,7 @@ bool PIT_VileCheck(mobj_t *thing)
     int     maxdist;
     bool check;
 
-    if (!(static_cast<unsigned int>(thing->flags) & MF_CORPSE))
+    if (!(thing->flags & MF_CORPSE))
         return true; // not a monster
 
     if (thing->tics != -1)

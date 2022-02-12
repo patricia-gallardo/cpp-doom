@@ -204,21 +204,17 @@ static void FreeDMXConfig(gus_config_t *config)
 
 static char *ReadDMXConfig()
 {
-    int          lumpnum;
-    unsigned int len;
-    char *       data;
-
     // TODO: This should be chosen based on gamemode == commercial:
 
-    lumpnum = W_CheckNumForName("DMXGUS");
+    int lumpnum = W_CheckNumForName("DMXGUS");
 
     if (lumpnum < 0)
     {
         lumpnum = W_GetNumForName("DMXGUSC");
     }
 
-    len  = W_LumpLength(lumpnum);
-    data = zmalloc<char *>(len + 1, PU_STATIC, nullptr);
+    size_t len  = W_LumpLength(lumpnum);
+    char *data = zmalloc<char *>(len + 1, PU_STATIC, nullptr);
     W_ReadLump(lumpnum, data);
 
     data[len] = '\0';
@@ -227,10 +223,9 @@ static char *ReadDMXConfig()
 
 static bool WriteTimidityConfig(char *path, gus_config_t *config)
 {
-    FILE *       fstream;
     unsigned int i;
 
-    fstream = fopen(path, "w");
+    FILE *fstream = fopen(path, "w");
 
     if (fstream == nullptr)
     {

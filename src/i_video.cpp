@@ -732,7 +732,7 @@ void I_FinishUpdate()
             int flags;
             // When the window is resized (we're not in fullscreen mode),
             // save the new window size.
-            flags = SDL_GetWindowFlags(screen);
+            flags = static_cast<int>(SDL_GetWindowFlags(screen));
             if ((flags & SDL_WINDOW_FULLSCREEN_DESKTOP) == 0)
             {
                 SDL_GetWindowSize(screen, &window_width, &window_height);
@@ -794,7 +794,7 @@ void I_FinishUpdate()
 
         fpscount++;
 
-        i    = SDL_GetTicks();
+        i    = static_cast<int>(SDL_GetTicks());
         mili = i - lastmili;
 
         // Update FPS counter every second
@@ -885,7 +885,7 @@ void I_FinishUpdate()
 //
 void I_ReadScreen(pixel_t *scr)
 {
-    memcpy(scr, I_VideoBuffer, SCREENWIDTH * SCREENHEIGHT * sizeof(*scr));
+    memcpy(scr, I_VideoBuffer, static_cast<unsigned long>(SCREENWIDTH * SCREENHEIGHT) * sizeof(*scr));
 }
 
 
@@ -1045,8 +1045,7 @@ void I_InitWindowIcon()
     const unsigned int * const_ptr = icon_data;
     auto * ptr = const_cast<unsigned int *>(const_ptr);
     SDL_Surface *surface = SDL_CreateRGBSurfaceFrom(reinterpret_cast<void*>(ptr), icon_w, icon_h,
-        32, icon_w * 4,
-        0xff << 24, 0xff << 16,
+        32, icon_w * 4, static_cast<Uint32>(0xff << 24), 0xff << 16,
         0xff << 8, 0xff << 0);
     SDL_SetWindowIcon(screen, surface);
     SDL_FreeSurface(surface);
@@ -1352,7 +1351,7 @@ static void SetVideoMode()
 
     if (screen == nullptr)
     {
-        screen = SDL_CreateWindow(nullptr, x, y, w, h, window_flags);
+        screen = SDL_CreateWindow(nullptr, x, y, w, h, static_cast<Uint32>(window_flags));
 
         if (screen == nullptr)
         {
@@ -1402,7 +1401,7 @@ static void SetVideoMode()
         texture_upscaled = nullptr;
     }
 
-    renderer = SDL_CreateRenderer(screen, -1, renderer_flags);
+    renderer = SDL_CreateRenderer(screen, -1, static_cast<Uint32>(renderer_flags));
 
     // If we could not find a matching render driver,
     // try again without hardware acceleration.
@@ -1412,7 +1411,7 @@ static void SetVideoMode()
         renderer_flags |= SDL_RENDERER_SOFTWARE;
         renderer_flags &= ~SDL_RENDERER_PRESENTVSYNC;
 
-        renderer = SDL_CreateRenderer(screen, -1, renderer_flags);
+        renderer = SDL_CreateRenderer(screen, -1, static_cast<Uint32>(renderer_flags));
 
         // If this helped, save the setting for later.
         if (renderer != nullptr)
@@ -1650,7 +1649,7 @@ void I_InitGraphics()
 
     if (fullscreen && !screensaver_mode)
     {
-        SDL_Delay(startup_delay);
+        SDL_Delay(static_cast<Uint32>(startup_delay));
     }
 
     // The actual 320x200 canvas that we draw to. This is the pixel buffer of
@@ -1667,7 +1666,7 @@ void I_InitGraphics()
 
     // Clear the screen to black.
 
-    memset(I_VideoBuffer, 0, SCREENWIDTH * SCREENHEIGHT * sizeof(*I_VideoBuffer));
+    memset(I_VideoBuffer, 0, static_cast<unsigned long>(SCREENWIDTH * SCREENHEIGHT) * sizeof(*I_VideoBuffer));
 
     // clear out any events waiting at the start and center the mouse
 
@@ -1733,7 +1732,7 @@ void I_ReInitGraphics(int reinit)
         int              flags;
 
         SDL_GetRendererInfo(renderer, &info);
-        flags = info.flags;
+        flags = static_cast<int>(info.flags);
 
         if (crispy->vsync && !(flags & SDL_RENDERER_SOFTWARE))
         {
@@ -1745,7 +1744,7 @@ void I_ReInitGraphics(int reinit)
         }
 
         SDL_DestroyRenderer(renderer);
-        renderer = SDL_CreateRenderer(screen, -1, flags);
+        renderer = SDL_CreateRenderer(screen, -1, static_cast<Uint32>(flags));
         SDL_SetRenderDrawColor(renderer, 0, 0, 0, 255);
 
         // [crispy] the texture gets destroyed in SDL_DestroyRenderer(), force its re-creation
@@ -1868,7 +1867,7 @@ void I_RenderReadPixels(uint8_t **data, int *w, int *h, int *p)
     }
 
     // [crispy] allocate memory for screenshot image
-    pixels = static_cast<uint8_t *>(malloc(rect.h * temp));
+    pixels = static_cast<uint8_t *>(malloc(static_cast<size_t>(rect.h * temp)));
     SDL_RenderReadPixels(renderer, &rect, format->format, pixels, temp);
 
     *data = pixels;

@@ -152,7 +152,7 @@ static void saveg_read_pad()
     int padding;
     int i;
 
-    pos = ftell(save_stream);
+    pos = static_cast<unsigned long>(ftell(save_stream));
 
     padding = (4 - (pos & 3)) & 3;
 
@@ -168,7 +168,7 @@ static void saveg_write_pad()
     int padding;
     int i;
 
-    pos = ftell(save_stream);
+    pos = static_cast<unsigned long>(ftell(save_stream));
 
     padding = (4 - (pos & 3)) & 3;
 
@@ -325,7 +325,7 @@ static void saveg_read_mobj_t(mobj_t *str)
     str->sprev = static_cast<mobj_s *>(saveg_readp());
 
     // angle_t angle;
-    str->angle = saveg_read32();
+    str->angle = static_cast<angle_t>(saveg_read32());
 
     // spritenum_t sprite;
     str->sprite = static_cast<spritenum_t>(saveg_read_enum());
@@ -446,7 +446,7 @@ static void saveg_write_mobj_t(mobj_t *str)
     saveg_writep(str->sprev);
 
     // angle_t angle;
-    saveg_write32(str->angle);
+    saveg_write32(static_cast<int>(str->angle));
 
     // spritenum_t sprite;
     saveg_write_enum(str->sprite);
@@ -553,10 +553,10 @@ static void saveg_write_mobj_t(mobj_t *str)
 static void saveg_read_ticcmd_t(ticcmd_t *str)
 {
     // signed char forwardmove;
-    str->forwardmove = saveg_read8();
+    str->forwardmove = static_cast<signed char>(saveg_read8());
 
     // signed char sidemove;
-    str->sidemove = saveg_read8();
+    str->sidemove = static_cast<signed char>(saveg_read8());
 
     // short angleturn;
     str->angleturn = saveg_read16();
@@ -582,10 +582,10 @@ static void saveg_read_ticcmd_t(ticcmd_t *str)
 static void saveg_write_ticcmd_t(ticcmd_t *str)
 {
     // signed char forwardmove;
-    saveg_write8(str->forwardmove);
+    saveg_write8(static_cast<uint8_t>(str->forwardmove));
 
     // signed char sidemove;
-    saveg_write8(str->sidemove);
+    saveg_write8(static_cast<uint8_t>(str->sidemove));
 
     // short angleturn;
     saveg_write16(str->angleturn);
@@ -1605,9 +1605,9 @@ void P_WriteSaveGameHeader(char *)
     M_snprintf(name, sizeof(name), "ver %i", STRIFE_VERSION);
 
     for (i=0; i<VERSIONSIZE; ++i)
-        saveg_write8(name[i]);
+        saveg_write8(static_cast<uint8_t>(name[i]));
 
-    saveg_write8(gameskill);
+    saveg_write8(static_cast<uint8_t>(gameskill));
     
     // [STRIFE] This information is implicit in the file being loaded.
     //saveg_write8(gameepisode);
@@ -1641,7 +1641,7 @@ bool P_ReadSaveGameHeader()
     */
     
     for (i=0; i<VERSIONSIZE; ++i)
-        read_vcheck[i] = saveg_read8();
+        read_vcheck[i] = static_cast<char>(saveg_read8());
 
     memset (vcheck,0,sizeof(vcheck));
     M_snprintf(vcheck, sizeof(vcheck), "ver %i", STRIFE_VERSION);
@@ -1950,7 +1950,7 @@ void P_UnArchiveThinkers ()
             // the objects removed, including the player's previous body, from
             // being passed to Z_Free. One glitch relying on another!
 
-            if(mobj->target != nullptr && (mobj->flags & MF_ALLY) != MF_ALLY)
+            if(mobj->target != nullptr && (static_cast<unsigned int>(mobj->flags) & MF_ALLY) != MF_ALLY)
                 mobj->target = players[0].mo;
             else
                 mobj->target = nullptr;

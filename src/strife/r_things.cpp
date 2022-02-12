@@ -114,7 +114,7 @@ R_InstallSpriteLump
 		"Bad frame characters in lump %i", lump);
 	
     if (static_cast<int>(frame) > maxframe)
-	maxframe = frame;
+	maxframe = static_cast<int>(frame);
 		
     if (rotation == 0)
     {
@@ -193,7 +193,7 @@ void R_InitSpriteDefs (const char** namelist)
     if (!numsprites)
 	return;
 		
-    sprites = zmalloc<spritedef_t *>(numsprites * sizeof(*sprites), PU_STATIC, nullptr);
+    sprites = zmalloc<spritedef_t *>(static_cast<unsigned long>(numsprites) * sizeof(*sprites), PU_STATIC, nullptr);
 	
     start = firstspritelump-1;
     end = lastspritelump+1;
@@ -222,13 +222,13 @@ void R_InitSpriteDefs (const char** namelist)
 		else
 		    patched = l;
 
-		R_InstallSpriteLump (patched, frame, rotation, false);
+		R_InstallSpriteLump (patched, static_cast<unsigned int>(frame), static_cast<unsigned int>(rotation), false);
 
 		if (lumpinfo[l]->name[6])
 		{
 		    frame = lumpinfo[l]->name[6] - 'A';
 		    rotation = lumpinfo[l]->name[7] - '0';
-		    R_InstallSpriteLump (l, frame, rotation, true);
+		    R_InstallSpriteLump (l, static_cast<unsigned int>(frame), static_cast<unsigned int>(rotation), true);
 		}
 	    }
 	}
@@ -270,8 +270,8 @@ void R_InitSpriteDefs (const char** namelist)
 	// allocate space for the frames present and copy sprtemp to it
 	sprites[i].numframes = maxframe;
 	sprites[i].spriteframes =
-            zmalloc<spriteframe_t *>(maxframe * sizeof(spriteframe_t), PU_STATIC, nullptr);
-	memcpy (sprites[i].spriteframes, sprtemp, maxframe*sizeof(spriteframe_t));
+            zmalloc<spriteframe_t *>(static_cast<unsigned long>(maxframe) * sizeof(spriteframe_t), PU_STATIC, nullptr);
+	memcpy (sprites[i].spriteframes, sprtemp, static_cast<unsigned long>(maxframe) *sizeof(spriteframe_t));
     }
 
 }
@@ -418,7 +418,7 @@ void R_DrawVisSprite(vissprite_t *vis, int, int)
 
     // villsa [STRIFE]
     // haleyjd 09/06/10: updated MF_TRANSLATION for Strife
-    translation = vis->mobjflags & MF_TRANSLATION;
+    translation = static_cast<unsigned int>(vis->mobjflags) & MF_TRANSLATION;
     
     // villsa [STRIFE] unused
     /*if (!dc_colormap)
@@ -428,11 +428,11 @@ void R_DrawVisSprite(vissprite_t *vis, int, int)
     }*/
 
     // villsa [STRIFE] Handle the two types of translucency
-    if(vis->mobjflags & MF_SHADOW)
+    if(static_cast<unsigned int>(vis->mobjflags) & MF_SHADOW)
     {
         if(!translation)
         {
-            if(vis->mobjflags & MF_MVIS)
+            if(static_cast<unsigned int>(vis->mobjflags) & MF_MVIS)
                 colfunc = R_DrawMVisTLColumn;
             else
                 colfunc = fuzzcolfunc;
@@ -443,7 +443,7 @@ void R_DrawVisSprite(vissprite_t *vis, int, int)
             dc_translation = translationtables - 256 + (translation >> (MF_TRANSSHIFT - 8));
         }
     }
-    else if(vis->mobjflags & MF_MVIS)
+    else if(static_cast<unsigned int>(vis->mobjflags) & MF_MVIS)
     {
         // haleyjd 20141215: [STRIFE] Objects which are *only* MF_MVIS (players
         // using double Shadow Armors, in particular) are totally invisible. 
@@ -466,7 +466,7 @@ void R_DrawVisSprite(vissprite_t *vis, int, int)
     sprtopscreen = centeryfrac - FixedMul(dc_texturemid,spryscale);
 
     // villsa [STRIFE] clip sprite's feet if needed
-    if(vis->mobjflags & MF_FEETCLIPPED)
+    if(static_cast<unsigned int>(vis->mobjflags) & MF_FEETCLIPPED)
     {
         sprbotscreen = sprtopscreen + FixedMul(spryscale, SHORT(patch->height) << FRACBITS);
         clip = (sprbotscreen - FixedMul(10*FRACUNIT, spryscale)) >> FRACBITS;
@@ -786,7 +786,7 @@ void R_DrawPSprite (pspdef_t* psp)
     }
 
     // When not MVIS, or if SHADOW, behave normally:
-    if(!(viewplayer->mo->flags & MF_MVIS) || (viewplayer->mo->flags & MF_SHADOW))
+    if(!(static_cast<unsigned int>(viewplayer->mo->flags) & MF_MVIS) || (static_cast<unsigned int>(viewplayer->mo->flags) & MF_SHADOW))
     {
         if (fixedcolormap)
         {

@@ -1010,7 +1010,6 @@ static void DumpSubstituteConfig(char *filename)
     char           name[9];
     uint8_t       *data;
     FILE *         fs;
-    unsigned int   lumpnum;
     size_t         h;
 
     fs = fopen(filename, "w");
@@ -1024,7 +1023,7 @@ static void DumpSubstituteConfig(char *filename)
     fprintf(fs, "# Example %s substitute MIDI file.\n\n", PACKAGE_NAME);
     fprintf(fs, "# SHA1 hash                              = filename\n");
 
-    for (lumpnum = 0; lumpnum < numlumps; ++lumpnum)
+    for (lumpindex_t lumpnum = 0; lumpnum < numlumps; ++lumpnum)
     {
         strncpy(name, lumpinfo[lumpnum]->name, 8);
         name[8] = '\0';

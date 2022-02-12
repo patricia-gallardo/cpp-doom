@@ -208,7 +208,7 @@ int M_ReadFile(const char *name, uint8_t **buffer)
 
     long length = M_FileLength(handle);
 
-    uint8_t *buf = zmalloc<uint8_t *>(static_cast<int>(length + 1), PU_STATIC, nullptr);
+    uint8_t *buf = zmalloc<uint8_t *>(static_cast<size_t>(length + 1), PU_STATIC, nullptr);
     size_t count = fread(buf, 1, static_cast<size_t>(length), handle);
     fclose(handle);
 

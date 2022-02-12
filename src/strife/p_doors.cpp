@@ -705,7 +705,7 @@ void EV_VerticalDoor(line_t* line, mobj_t* thing)
         break;
 
     case 232: // DR Oracle Pass door
-        if(!(player->questflags & QF_QUEST18))
+        if(!(static_cast<unsigned int>(player->questflags) & QF_QUEST18))
         {
             player->message = DEH_String("You need the Oracle Pass!");
             S_StartSound(nullptr, sfx_oof);
