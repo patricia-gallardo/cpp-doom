@@ -327,7 +327,7 @@ static bool ReadEvent(midi_event_t *event, unsigned int *last_event_type,
 
     if ((event_type & 0x80) == 0)
     {
-        event_type = *last_event_type;
+        event_type = static_cast<uint8_t>(*last_event_type);
 
         if (fseek(stream, -1, SEEK_CUR) < 0)
         {
@@ -691,12 +691,11 @@ unsigned int MIDI_GetFileTimeDivision(midi_file_t *file)
     // differently.
     if (result < 0)
     {
-        return static_cast<signed int>(-(result / 256))
-               * static_cast<signed int>(result & 0xFF);
+        return static_cast<unsigned int>(static_cast<signed int>(-(result / 256)) * static_cast<signed int>(result & 0xFF));
     }
     else
     {
-        return result;
+        return static_cast<unsigned int>(result);
     }
 }
 

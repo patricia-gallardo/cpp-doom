@@ -106,7 +106,7 @@ static uint8_t *AutoAllocMemory(int *size, int default_ram, int min_ram)
 
         *size = default_ram * 1024 * 1024;
 
-        zonemem = static_cast<uint8_t *>(malloc(*size));
+        zonemem = static_cast<uint8_t *>(malloc(static_cast<size_t>(*size)));
 
         // Failed to allocate?  Reduce zone size until we reach a size
         // that is acceptable.
@@ -448,14 +448,11 @@ bool I_GetMemoryValue(unsigned int offset, void *value, int size)
         *(reinterpret_cast<unsigned int *>(value)) = dos_mem_dump[offset];
         return true;
     case 2:
-        *(reinterpret_cast<unsigned int *>(value)) = dos_mem_dump[offset]
-                                     | (dos_mem_dump[offset + 1] << 8);
+        *(reinterpret_cast<unsigned int *>(value)) = static_cast<unsigned int>(dos_mem_dump[offset] | (dos_mem_dump[offset + 1] << 8));
         return true;
     case 4:
-        *(reinterpret_cast<unsigned int *>(value)) = dos_mem_dump[offset]
-                                   | (dos_mem_dump[offset + 1] << 8)
-                                   | (dos_mem_dump[offset + 2] << 16)
-                                   | (dos_mem_dump[offset + 3] << 24);
+        *(reinterpret_cast<unsigned int *>(value)) = static_cast<unsigned int>(
+            dos_mem_dump[offset] | (dos_mem_dump[offset + 1] << 8) | (dos_mem_dump[offset + 2] << 16) | (dos_mem_dump[offset + 3] << 24));
         return true;
     }
 

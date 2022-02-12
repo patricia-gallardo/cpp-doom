@@ -241,7 +241,6 @@ static void TXT_JoystickInputDrawer(void *uncast_joystick_input)
 {
     auto *joystick_input = reinterpret_cast<txt_joystick_input_t *>(uncast_joystick_input);
     char buf[20];
-    int i;
 
     if (*joystick_input->variable < 0)
     {
@@ -258,7 +257,7 @@ static void TXT_JoystickInputDrawer(void *uncast_joystick_input)
 
     TXT_DrawString(buf);
 
-    for (i = TXT_UTF8_Strlen(buf); i < JOYSTICK_INPUT_WIDTH; ++i)
+    for (unsigned int i = TXT_UTF8_Strlen(buf); i < JOYSTICK_INPUT_WIDTH; ++i)
     {
         TXT_DrawString(" ");
     }

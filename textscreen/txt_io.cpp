@@ -48,7 +48,7 @@ static void NewLine(unsigned char *screendata)
         for (i=0; i<TXT_SCREEN_W; ++i) 
         {
             *p++ = ' ';
-            *p++ = fgcolor | (bgcolor << 4);
+            *p++ = static_cast<unsigned char>(fgcolor | (bgcolor << 4));
         }
     }
 }
@@ -61,8 +61,8 @@ static void PutSymbol(unsigned char *screendata, int c)
 
     // Add a new character to the buffer
 
-    p[0] = c;
-    p[1] = fgcolor | (bgcolor << 4);
+    p[0] = static_cast<unsigned char>(c);
+    p[1] = static_cast<unsigned char>(fgcolor | (bgcolor << 4));
 
     ++cur_x;
 
@@ -166,7 +166,7 @@ void TXT_ClearScreen()
     for (i=0; i<TXT_SCREEN_W * TXT_SCREEN_H; ++i)
     {
         screen[i * 2] = ' ';
-        screen[i * 2 +  1] = (bgcolor << 4) | fgcolor;
+        screen[i * 2 +  1] = static_cast<unsigned char>((bgcolor << 4) | fgcolor);
     }
 
     cur_x = 0;

@@ -55,17 +55,15 @@ MEMFILE *mem_fopen_read(void *buf, size_t buflen)
 
 size_t mem_fread(void *buf, size_t size, size_t nmemb, MEMFILE *stream)
 {
-    size_t items;
-
     if (stream->mode != MODE_READ)
     {
         printf("not a read stream\n");
-        return -1;
+        return static_cast<size_t>(-1);
     }
 
     // Trying to read more bytes than we have left?
 
-    items = nmemb;
+    size_t items = nmemb;
 
     if (items * size > stream->buflen - stream->position)
     {
@@ -106,7 +104,7 @@ size_t mem_fwrite(const void *ptr, size_t size, size_t nmemb, MEMFILE *stream)
 
     if (stream->mode != MODE_WRITE)
     {
-        return -1;
+        return static_cast<size_t>(-1);
     }
 
     // More bytes than can fit in the buffer?
@@ -162,15 +160,15 @@ int mem_fseek(MEMFILE *stream, signed long position, mem_rel_t whence)
     switch (whence)
     {
     case MEM_SEEK_SET:
-        newpos = static_cast<int>(position);
+        newpos = position;
         break;
 
     case MEM_SEEK_CUR:
-        newpos = static_cast<int>(stream->position + position);
+        newpos = stream->position + position;
         break;
 
     case MEM_SEEK_END:
-        newpos = static_cast<int>(stream->buflen + position);
+        newpos = stream->buflen + position;
         break;
     default:
         return -1;

@@ -335,7 +335,7 @@ void TXT_DrawASCIITable()
 
             // Write the character directly to the screen memory buffer:
 
-            screendata[(y * TXT_SCREEN_W + x * 5 + 3) * 2] = n;
+            screendata[(y * TXT_SCREEN_W + x * 5 + 3) * 2] = static_cast<unsigned char>(n);
         }
     }
 
@@ -376,7 +376,7 @@ void TXT_GUIMainLoop()
         }
         else
         {
-            TXT_Sleep(periodic_callback_period);
+            TXT_Sleep(static_cast<int>(periodic_callback_period));
 
             periodic_callback(periodic_callback_data);
         }

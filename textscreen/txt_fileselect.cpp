@@ -102,13 +102,13 @@ static char *ExecReadOutput(char **argv)
         }
         else
         {
-            char *new_result = static_cast<char *>(realloc(result, result_len + bytes + 1));
+            char *new_result = static_cast<char *>(realloc(result, static_cast<size_t>(result_len + bytes + 1)));
             if (new_result == nullptr)
             {
                 break;
             }
             result = new_result;
-            memcpy(result + result_len, buf, bytes);
+            memcpy(result + result_len, buf, static_cast<size_t>(bytes));
             result_len += bytes;
             result[result_len] = '\0';
         }
@@ -684,7 +684,7 @@ static void TXT_FileSelectSizeCalc(void *uncast_fileselect)
     // be the configured size.
 
     TXT_CalcWidgetSize(fileselect->inputbox);
-    fileselect->widget.w = fileselect->size;
+    fileselect->widget.w = static_cast<unsigned int>(fileselect->size);
     fileselect->widget.h = fileselect->inputbox->widget.h;
 }
 

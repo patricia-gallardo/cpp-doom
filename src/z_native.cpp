@@ -252,11 +252,11 @@ void *Z_Malloc(int size, int tag, void *user)
 
     while (newblock == nullptr)
     {
-        newblock = static_cast<memblock_t *>(malloc(sizeof(memblock_t) + size));
+        newblock = static_cast<memblock_t *>(malloc(sizeof(memblock_t) + static_cast<unsigned long>(size)));
 
         if (newblock == nullptr)
         {
-            if (!ClearCache(sizeof(memblock_t) + size))
+            if (!ClearCache(static_cast<int>(sizeof(memblock_t) + static_cast<unsigned long>(size))))
             {
                 I_Error("Z_Malloc: failed on allocation of %i bytes", size);
             }

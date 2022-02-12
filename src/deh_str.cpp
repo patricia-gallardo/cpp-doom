@@ -40,12 +40,12 @@ static int                  hash_table_length = -1;
 static unsigned int strhash(const char *s)
 {
     const char * p = s;
-    unsigned int h = *p;
+    auto h = static_cast<unsigned int>(*p);
 
     if (h)
     {
         for (p += 1; *p; p++)
-            h = (h << 5) - h + *p;
+            h = (h << 5) - h + static_cast<unsigned int>(*p);
     }
 
     return h;
@@ -59,7 +59,7 @@ static deh_substitution_t *SubstitutionForString(const char *s)
     if (hash_table_length < 0)
         return nullptr;
 
-    entry = strhash(s) % hash_table_length;
+    entry = static_cast<int>(strhash(s) % static_cast<unsigned int>(hash_table_length));
 
     while (hash_table[entry] != nullptr)
     {
@@ -108,34 +108,30 @@ static void InitHashTable()
 
     hash_table_entries = 0;
     hash_table_length  = 16;
-    hash_table         = zmalloc<decltype(hash_table)>(sizeof(deh_substitution_t *) * hash_table_length,
+    hash_table         = zmalloc<decltype(hash_table)>(static_cast<int>(sizeof(deh_substitution_t *) * static_cast<unsigned long>(hash_table_length)),
         PU_STATIC, nullptr);
-    memset(hash_table, 0, sizeof(deh_substitution_t *) * hash_table_length);
+    memset(hash_table, 0, sizeof(deh_substitution_t *) * static_cast<unsigned long>(hash_table_length));
 }
 
 static void DEH_AddToHashtable(deh_substitution_t *sub);
 
 static void IncreaseHashtable()
 {
-    deh_substitution_t **old_table;
-    int                  old_table_length;
-    int                  i;
-
     // save the old table
 
-    old_table        = hash_table;
-    old_table_length = hash_table_length;
+    deh_substitution_t **old_table = hash_table;
+    int old_table_length = hash_table_length;
 
     // double the size
 
     hash_table_length *= 2;
-    hash_table = zmalloc<decltype(hash_table)>(sizeof(deh_substitution_t *) * hash_table_length,
+    hash_table = zmalloc<decltype(hash_table)>(static_cast<int>(sizeof(deh_substitution_t *) * static_cast<unsigned long>(hash_table_length)),
         PU_STATIC, nullptr);
-    memset(hash_table, 0, sizeof(deh_substitution_t *) * hash_table_length);
+    memset(hash_table, 0, sizeof(deh_substitution_t *) * static_cast<unsigned long>(hash_table_length));
 
     // go through the old table and insert all the old entries
 
-    for (i = 0; i < old_table_length; ++i)
+    for (int i = 0; i < old_table_length; ++i)
     {
         if (old_table[i] != nullptr)
         {
@@ -160,7 +156,7 @@ static void DEH_AddToHashtable(deh_substitution_t *sub)
     }
 
     // find where to insert it
-    entry = strhash(sub->from_text) % hash_table_length;
+    entry = static_cast<int>(strhash(sub->from_text) % static_cast<unsigned int>(hash_table_length));
 
     while (hash_table[entry] != nullptr)
     {

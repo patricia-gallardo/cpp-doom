@@ -187,7 +187,7 @@ bool M_WriteFile(const char *name, const void *source, int length)
     if (handle == nullptr)
         return false;
 
-    count = fwrite(source, 1, length, handle);
+    count = fwrite(source, 1, static_cast<size_t>(length), handle);
     fclose(handle);
 
     if (count < length)
@@ -334,7 +334,7 @@ void M_ExtractFileBase(const char *path, char *dest)
             break;
         }
 
-        dest[length++] = toupper(static_cast<int>(*src++));
+        dest[length++] = static_cast<char>(toupper(static_cast<int>(*src++)));
     }
 }
 
@@ -348,11 +348,9 @@ void M_ExtractFileBase(const char *path, char *dest)
 
 void M_ForceUppercase(char *text)
 {
-    char *p;
-
-    for (p = text; *p != '\0'; ++p)
+    for (char *p = text; *p != '\0'; ++p)
     {
-        *p = toupper(*p);
+        *p = static_cast<char>(toupper(*p));
     }
 }
 
@@ -370,7 +368,7 @@ void M_ForceLowercase(char *text)
 
     for (p = text; *p != '\0'; ++p)
     {
-        *p = tolower(*p);
+        *p = static_cast<char>(tolower(*p));
     }
 }
 
@@ -382,22 +380,17 @@ void M_ForceLowercase(char *text)
 
 const char *M_StrCaseStr(const char *haystack, const char *needle)
 {
-    unsigned int haystack_len;
-    unsigned int needle_len;
-    unsigned int len;
-    unsigned int i;
-
-    haystack_len = strlen(haystack);
-    needle_len   = strlen(needle);
+    unsigned int haystack_len = strlen(haystack);
+    unsigned int needle_len   = strlen(needle);
 
     if (haystack_len < needle_len)
     {
         return nullptr;
     }
 
-    len = haystack_len - needle_len;
+    unsigned int len = haystack_len - needle_len;
 
-    for (i = 0; i <= len; ++i)
+    for (unsigned int i = 0; i <= len; ++i)
     {
         if (!strncasecmp(haystack + i, needle, needle_len))
         {

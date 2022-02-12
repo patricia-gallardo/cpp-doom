@@ -72,7 +72,7 @@ static void TXT_LabelDrawer(void *uncast_label)
 
         // Draw this line
 
-        TXT_GotoXY(origin_x, origin_y + y);
+        TXT_GotoXY(origin_x, static_cast<int>(static_cast<unsigned int>(origin_y) + y));
 
         // Gap at the start
 

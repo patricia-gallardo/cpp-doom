@@ -796,7 +796,7 @@ static int OpenAllJoysticks()
     // SDL_JoystickOpen() all joysticks.
 
     all_joysticks_len = SDL_NumJoysticks();
-    all_joysticks = static_cast<SDL_Joystick **>(calloc(all_joysticks_len, sizeof(SDL_Joystick *)));
+    all_joysticks = static_cast<SDL_Joystick **>(calloc(static_cast<size_t>(all_joysticks_len), sizeof(SDL_Joystick *)));
 
     result = 0;
 

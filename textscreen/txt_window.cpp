@@ -128,10 +128,10 @@ static void CalcWindowPosition(txt_window_t *window)
             window->window_x = window->x;
             break;
         case TXT_HORIZ_CENTER:
-            window->window_x = window->x - (window->window_w / 2);
+            window->window_x = static_cast<int>(static_cast<unsigned int>(window->x) - (window->window_w / 2));
             break;
         case TXT_HORIZ_RIGHT:
-            window->window_x = window->x - (window->window_w - 1);
+            window->window_x = static_cast<int>(static_cast<unsigned int>(window->x) - (window->window_w - 1));
             break;
     }
 
@@ -141,10 +141,10 @@ static void CalcWindowPosition(txt_window_t *window)
             window->window_y = window->y;
             break;
         case TXT_VERT_CENTER:
-            window->window_y = window->y - (window->window_h / 2);
+            window->window_y = static_cast<int>(static_cast<unsigned int>(window->y) - (window->window_h / 2));
             break;
         case TXT_VERT_BOTTOM:
-            window->window_y = window->y - (window->window_h - 1);
+            window->window_y = static_cast<int>(static_cast<unsigned int>(window->y) - (window->window_h - 1));
             break;
     }
 }
@@ -159,7 +159,7 @@ static void LayoutActionArea(txt_window_t *window)
     // action widget, so that we can center it within it.
     // To start with, we have the entire action area available.
 
-    space_available = window->window_w;
+    space_available = static_cast<int>(window->window_w);
     space_left_offset = 0;
 
     // Left action
@@ -171,7 +171,7 @@ static void LayoutActionArea(txt_window_t *window)
         TXT_CalcWidgetSize(widget);
 
         widget->x = window->window_x + 1;
-        widget->y = window->window_y + window->window_h - widget->h - 1;
+        widget->y = static_cast<int>(static_cast<unsigned int>(window->window_y) + window->window_h - widget->h - 1);
 
         // Adjust available space:
         space_available -= widget->w;
@@ -188,8 +188,8 @@ static void LayoutActionArea(txt_window_t *window)
 
         TXT_CalcWidgetSize(widget);
 
-        widget->x = window->window_x + window->window_w - 1 - widget->w;
-        widget->y = window->window_y + window->window_h - widget->h - 1;
+        widget->x = static_cast<int>(static_cast<unsigned int>(window->window_x) + window->window_w - 1 - widget->w);
+        widget->y = static_cast<int>(static_cast<unsigned int>(window->window_y) + window->window_h - widget->h - 1);
 
         // Adjust available space:
         space_available -= widget->w;
@@ -207,10 +207,8 @@ static void LayoutActionArea(txt_window_t *window)
 
         // The left and right widgets have left a space sandwiched between
         // them.  Center this widget within that space.
-        widget->x = window->window_x
-                  + space_left_offset
-                  + (space_available - widget->w) / 2;
-        widget->y = window->window_y + window->window_h - widget->h - 1;
+        widget->x = static_cast<int>(static_cast<unsigned int>(window->window_x + space_left_offset) + (static_cast<unsigned int>(space_available) - widget->w) / 2);
+        widget->y = static_cast<int>(static_cast<unsigned int>(window->window_y) + window->window_h - widget->h - 1);
 
         TXT_LayoutWidget(widget);
     }
@@ -343,8 +341,7 @@ void TXT_DrawWindow(txt_window_t *window)
     // Draw the window
 
     TXT_DrawWindowFrame(window->title, 
-                        window->window_x, window->window_y,
-                        window->window_w, window->window_h);
+                        window->window_x, window->window_y, static_cast<int>(window->window_w), static_cast<int>(window->window_h));
 
     // Draw all widgets
 
@@ -354,12 +351,11 @@ void TXT_DrawWindow(txt_window_t *window)
 
     widgets = reinterpret_cast<txt_widget_t *>(window);
 
-    if (widgets->y + widgets->h < window->window_y + window->window_h - 1)
+    if (static_cast<unsigned int>(widgets->y) + widgets->h < static_cast<unsigned int>(window->window_y) + window->window_h - 1)
     {
         // Separator for action area
 
-        TXT_DrawSeparator(window->window_x, widgets->y + widgets->h, 
-                          window->window_w);
+        TXT_DrawSeparator(window->window_x, static_cast<int>(static_cast<unsigned int>(widgets->y) + widgets->h), static_cast<int>(window->window_w));
 
         // Action area at the window bottom
 
@@ -411,8 +407,8 @@ static int MouseButtonPress(txt_window_t *window, int b)
 
     widgets = reinterpret_cast<txt_widget_t *>(window);
 
-    if (x >= widgets->x && x < static_cast<signed>(widgets->x + widgets->w)
-     && y >= widgets->y && y < static_cast<signed>(widgets->y + widgets->h))
+    if (x >= widgets->x && x < static_cast<signed>(static_cast<unsigned int>(widgets->x) + widgets->w)
+     && y >= widgets->y && y < static_cast<signed>(static_cast<unsigned int>(widgets->y) + widgets->h))
     {
         TXT_WidgetMousePress(window, x, y, b);
         return 1;
@@ -425,8 +421,8 @@ static int MouseButtonPress(txt_window_t *window, int b)
         widget = window->actions[i];
 
         if (widget != nullptr
-         && x >= widget->x && x < static_cast<signed>(widget->x + widget->w)
-         && y >= widget->y && y < static_cast<signed>(widget->y + widget->h))
+         && x >= widget->x && x < static_cast<signed>(static_cast<unsigned int>(widget->x) + widget->w)
+         && y >= widget->y && y < static_cast<signed>(static_cast<unsigned int>(widget->y) + widget->h))
         {
             int was_focused;
 

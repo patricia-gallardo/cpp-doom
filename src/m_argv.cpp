@@ -75,16 +75,13 @@ int M_CheckParm(const char *check)
 
 static void LoadResponseFile(int argv_index, const char *filename)
 {
-    FILE * handle;
-    int    size;
     char * infile;
-    char * file;
     char **newargv;
     int    newargc;
     int    i, k;
 
     // Read the response file into memory
-    handle = fopen(filename, "rb");
+    FILE *handle = fopen(filename, "rb");
 
     if (handle == nullptr)
     {
@@ -94,20 +91,20 @@ static void LoadResponseFile(int argv_index, const char *filename)
 
     printf("Found response file %s!\n", filename);
 
-    size = M_FileLength(handle);
+    int size = M_FileLength(handle);
 
     // Read in the entire file
     // Allocate one byte extra - this is in case there is an argument
     // at the end of the response file, in which case a '\0' will be
     // needed.
 
-    file = static_cast<char *>(malloc(size + 1));
+    char *file = static_cast<char *>(malloc(static_cast<size_t>(size + 1)));
 
     i = 0;
 
     while (i < size)
     {
-        k = fread(file + i, 1, size - i, handle);
+        k = fread(file + i, 1, static_cast<size_t>(size - i), handle);
 
         if (k < 0)
         {

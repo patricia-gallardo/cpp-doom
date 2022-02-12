@@ -375,9 +375,7 @@ static void SetExMyWarp(void *, void *val)
 
 static void SetMAPxyWarp(void *, void *val)
 {
-    int l;
-
-    l = reinterpret_cast<intptr_t>(val);
+    int l = reinterpret_cast<intptr_t>(val);
 
     warpmap = l;
 
@@ -564,7 +562,7 @@ static txt_widget_t *IWADSelector()
          ++num_iwads;
     }
 
-    iwad_labels = static_cast<const char **>(malloc(sizeof(*iwad_labels) * num_iwads));
+    iwad_labels = static_cast<const char **>(malloc(sizeof(*iwad_labels) * static_cast<unsigned long>(num_iwads)));
 
     for (int i=0; i < num_iwads; ++i)
     {

@@ -30,7 +30,7 @@ static int FullWidth(txt_scrollpane_t *scrollpane)
 {
     if (scrollpane->child != nullptr)
     {
-        return scrollpane->child->w;
+        return static_cast<int>(scrollpane->child->w);
     }
     else
     {
@@ -42,7 +42,7 @@ static int FullHeight(txt_scrollpane_t *scrollpane)
 {
     if (scrollpane->child != nullptr)
     {
-        return scrollpane->child->h;
+        return static_cast<int>(scrollpane->child->h);
     }
     else
     {
@@ -131,8 +131,8 @@ static void TXT_ScrollPaneSizeCalc(void *uncast_scrollpane)
         scrollpane->h = FullHeight(scrollpane);
     }
 
-    scrollpane->widget.w = scrollpane->w;
-    scrollpane->widget.h = scrollpane->h;
+    scrollpane->widget.w = static_cast<unsigned int>(scrollpane->w);
+    scrollpane->widget.h = static_cast<unsigned int>(scrollpane->h);
 
     // If we have scroll bars, we need to expand slightly to
     // accomodate them. Eg. if we have a vertical scrollbar, we
@@ -153,11 +153,11 @@ static void TXT_ScrollPaneSizeCalc(void *uncast_scrollpane)
     {
         if (static_cast<int>(scrollpane->child->w) < scrollpane->w)
         {
-            scrollpane->child->w = scrollpane->w;
+            scrollpane->child->w = static_cast<unsigned int>(scrollpane->w);
         }
         if (static_cast<int>(scrollpane->child->h) < scrollpane->h)
         {
-            scrollpane->child->h = scrollpane->h;
+            scrollpane->child->h = static_cast<unsigned int>(scrollpane->h);
         }
     }
 }
@@ -248,11 +248,11 @@ static void ShowSelectedWidget(txt_scrollpane_t *scrollpane)
     {
         scrollpane->y -= scrollpane->widget.y - selected->y;
     }
-    else if (static_cast<signed>(selected->y + selected->h) >
+    else if (static_cast<signed>(static_cast<unsigned int>(selected->y) + selected->h) >
              static_cast<signed>(scrollpane->widget.y + scrollpane->h))
     {
-        scrollpane->y += (selected->y + selected->h)
-                       - (scrollpane->widget.y + scrollpane->h);
+        scrollpane->y += (static_cast<unsigned int>(selected->y) + selected->h)
+                       - (static_cast<unsigned int>(scrollpane->widget.y + scrollpane->h));
     }
 
     // Scroll left or right?
@@ -261,11 +261,11 @@ static void ShowSelectedWidget(txt_scrollpane_t *scrollpane)
     {
         scrollpane->x -= scrollpane->widget.x - selected->x;
     }
-    else if (static_cast<signed>(selected->x + selected->w) >
+    else if (static_cast<signed>(static_cast<unsigned int>(selected->x) + selected->w) >
              static_cast<signed>(scrollpane->widget.x + scrollpane->w))
     {
-        scrollpane->x += (selected->x + selected->w)
-                       - (scrollpane->widget.x + scrollpane->w);
+        scrollpane->x += (static_cast<unsigned int>(selected->x) + selected->w)
+                       - (static_cast<unsigned int>(scrollpane->widget.x + scrollpane->w));
     }
 }
 

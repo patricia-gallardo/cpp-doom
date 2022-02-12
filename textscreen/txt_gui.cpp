@@ -170,7 +170,7 @@ void TXT_DrawWindowFrame(const char *title, int x, int y, int w, int h)
             TXT_DrawString(" ");
         }
     
-        TXT_GotoXY(x + (w - TXT_UTF8_Strlen(title)) / 2, y + 1);
+        TXT_GotoXY(static_cast<int>(static_cast<unsigned int>(x) + (static_cast<unsigned int>(w) - TXT_UTF8_Strlen(title)) / 2), y + 1);
         TXT_DrawString(title);
     }
 
@@ -258,12 +258,10 @@ void TXT_DrawCodePageString(const char *s)
 
 static void PutUnicodeChar(unsigned int c)
 {
-    int d;
-
     // Treat control characters specially.
     if (c == '\n' || c == '\b')
     {
-        TXT_PutChar(c);
+        TXT_PutChar(static_cast<int>(c));
         return;
     }
 
@@ -271,7 +269,7 @@ static void PutUnicodeChar(unsigned int c)
     // code page. For unrepresentable characters, print a fallback instead.
     // Note that we use TXT_PutSymbol() here because we just want to do a
     // raw write into the screen buffer.
-    d = TXT_UnicodeCharacter(c);
+    int d = TXT_UnicodeCharacter(c);
 
     if (d >= 0)
     {
@@ -315,20 +313,17 @@ void TXT_DrawString(const char *s)
         }
     }
 
-    TXT_GotoXY(x + TXT_UTF8_Strlen(s), y);
+    TXT_GotoXY(static_cast<int>(static_cast<unsigned int>(x) + TXT_UTF8_Strlen(s)), y);
 }
 
 void TXT_DrawHorizScrollbar(int x, int y, int w, int cursor, int range)
 {
-    txt_saved_colors_t colors;
-    int x1;
-    int cursor_x;
-
     if (!VALID_Y(y))
     {
         return;
     }
 
+    txt_saved_colors_t colors;
     TXT_SaveColors(&colors);
     TXT_FGColor(TXT_COLOR_BLACK);
     TXT_BGColor(TXT_COLOR_GREY, 0);
@@ -336,7 +331,7 @@ void TXT_DrawHorizScrollbar(int x, int y, int w, int cursor, int range)
     TXT_GotoXY(x, y);
     TXT_PutChar('\x1b');
 
-    cursor_x = x + 1;
+    int cursor_x = x + 1;
 
     if (range > 0)
     {
@@ -348,7 +343,7 @@ void TXT_DrawHorizScrollbar(int x, int y, int w, int cursor, int range)
         cursor_x = x + w - 2;
     }
 
-    for (x1=x+1; x1<x+w-1; ++x1)
+    for (int x1=x+1; x1<x+w-1; ++x1)
     {
         if (VALID_X(x1))
         {
