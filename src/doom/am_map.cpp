@@ -953,7 +953,7 @@ void AM_updateLightLev()
     static int nexttic = 0;
     //static int litelevels[] = { 0, 3, 5, 6, 6, 7, 7, 7 };
     static int litelevels[]  = { 0, 4, 7, 10, 12, 14, 15, 15 };
-    static int litelevelscnt = 0;
+    static size_t litelevelscnt = 0;
 
     // Change light level
     if (amclock > nexttic)

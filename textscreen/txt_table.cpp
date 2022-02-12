@@ -684,7 +684,7 @@ static void TXT_TableLayout(void *uncast_table)
 
     // Work out the column widths and row heights
 
-    const auto rows = static_cast<const unsigned long>(TableRows(table));
+    const auto rows = static_cast<unsigned long>(TableRows(table));
 
     auto column_widths = std::vector<unsigned int>(static_cast<unsigned long>(table->columns));
     auto row_heights = std::vector<unsigned int>(rows);//    auto column_widths = std::make_unique<unsigned int[]>(table->columns);
@@ -1153,7 +1153,7 @@ int TXT_PageTable(void *uncast_table, int pagex, int pagey)
     auto *table   = reinterpret_cast<txt_table_t *>(uncast_table);
     int changed = 0;
 
-    const unsigned long rows = static_cast<const unsigned long>(TableRows(table));
+    const unsigned long rows = static_cast<unsigned long>(TableRows(table));
 
 
     std::vector<unsigned int> row_heights(rows, 0);
