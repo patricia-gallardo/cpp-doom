@@ -477,30 +477,30 @@ void R_InitTranslationTables ()
         }
         else if(i >= 0x50 && i<= 0x5f)
         {
-            translationtables [i      ] = i;
-            translationtables [i+  256] = i;
-            translationtables [i+2*256] = i;
-            translationtables [i+3*256] = i;
+            translationtables [i      ] = static_cast<uint8_t>(i);
+            translationtables [i+  256] = static_cast<uint8_t>(i);
+            translationtables [i+2*256] = static_cast<uint8_t>(i);
+            translationtables [i+3*256] = static_cast<uint8_t>(i);
             translationtables [i+4*256] = (i & 0x0f) + 0x80;
             translationtables [i+5*256] = (i & 0x0f) + 16;
             translationtables [i+6*256] = (i & 0x0f) + 64;
         }
         else if(i >= 0xd0 && i<= 0xdf)
         {
-            translationtables [i      ] = i;
-            translationtables [i+  256] = i;
-            translationtables [i+2*256] = i;
-            translationtables [i+3*256] = i;
+            translationtables [i      ] = static_cast<uint8_t>(i);
+            translationtables [i+  256] = static_cast<uint8_t>(i);
+            translationtables [i+2*256] = static_cast<uint8_t>(i);
+            translationtables [i+3*256] = static_cast<uint8_t>(i);
             translationtables [i+4*256] = (i & 0x0f) - 80;
             translationtables [i+5*256] = (i & 0x0f) + 48;
             translationtables [i+6*256] = (i & 0x0f) + 16;
         }
         else if(i >= 0xc0 && i<= 0xcf)
         {
-            translationtables [i      ] = i;
-            translationtables [i+  256] = i;
-            translationtables [i+2*256] = i;
-            translationtables [i+3*256] = i;
+            translationtables [i      ] = static_cast<uint8_t>(i);
+            translationtables [i+  256] = static_cast<uint8_t>(i);
+            translationtables [i+2*256] = static_cast<uint8_t>(i);
+            translationtables [i+3*256] = static_cast<uint8_t>(i);
             translationtables [i+4*256] = (i & 0x0f) - 96;
             translationtables [i+5*256] = (i & 0x0f) + 32;
             translationtables [i+6*256] = (i & 0x0f);
@@ -511,22 +511,22 @@ void R_InitTranslationTables ()
         else if(i >= 0xf7 && i<= 0xfb)
         {
             translationtables [i      ] = col1;
-            translationtables [i+  256] = i;
-            translationtables [i+2*256] = i;
-            translationtables [i+3*256] = i;
-            translationtables [i+4*256] = i;
-            translationtables [i+5*256] = i;
-            translationtables [i+6*256] = i;
+            translationtables [i+  256] = static_cast<uint8_t>(i);
+            translationtables [i+2*256] = static_cast<uint8_t>(i);
+            translationtables [i+3*256] = static_cast<uint8_t>(i);
+            translationtables [i+4*256] = static_cast<uint8_t>(i);
+            translationtables [i+5*256] = static_cast<uint8_t>(i);
+            translationtables [i+6*256] = static_cast<uint8_t>(i);
         }
         else if(i >= 0xf1 && i<= 0xf6)
         {
             translationtables [i      ] = (i & 0x0f) - 33;
-            translationtables [i+  256] = i;
-            translationtables [i+2*256] = i;
-            translationtables [i+3*256] = i;
-            translationtables [i+4*256] = i;
-            translationtables [i+5*256] = i;
-            translationtables [i+6*256] = i;
+            translationtables [i+  256] = static_cast<uint8_t>(i);
+            translationtables [i+2*256] = static_cast<uint8_t>(i);
+            translationtables [i+3*256] = static_cast<uint8_t>(i);
+            translationtables [i+4*256] = static_cast<uint8_t>(i);
+            translationtables [i+5*256] = static_cast<uint8_t>(i);
+            translationtables [i+6*256] = static_cast<uint8_t>(i);
         }
         else if(i >= 0x20 && i <= 0x3f) // haleyjd 20110213: fixed upper end
         {
@@ -546,7 +546,7 @@ void R_InitTranslationTables ()
             translationtables[i+3*256]=
             translationtables[i+4*256]=
             translationtables[i+5*256]=
-            translationtables[i+6*256]=i;
+            translationtables[i+6*256]= static_cast<uint8_t>(i);
         }
 
         ++col1;

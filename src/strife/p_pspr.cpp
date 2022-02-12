@@ -780,7 +780,7 @@ void A_FireSigil(player_t* player, pspdef_t*)
     P_DamageMobj(player->mo, player->mo, nullptr, 4 * (player->sigiltype + 1));
 
     // restore armor
-    player->armortype = i;
+    player->armortype = static_cast<short>(i);
 
     S_StartSound(player->mo, sfx_siglup);
 

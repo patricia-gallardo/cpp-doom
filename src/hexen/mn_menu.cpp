@@ -1698,7 +1698,7 @@ bool MN_Responder(event_t * event)
         {
             if (isalpha(charTyped))
             {
-                *textBuffer++ = toupper(charTyped);
+                *textBuffer++ = static_cast<char>(toupper(charTyped));
                 *textBuffer = ASCII_CURSOR;
                 slotptr++;
                 return (true);

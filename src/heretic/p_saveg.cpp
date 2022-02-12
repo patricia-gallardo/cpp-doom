@@ -126,7 +126,7 @@ void SV_WritePtr(const void *ptr)
 {
     long val = static_cast<long>(reinterpret_cast<intptr_t>(ptr));
 
-    SV_WriteLong(val & 0xffffffff);
+    SV_WriteLong(static_cast<unsigned int>(val & 0xffffffff));
 }
 
 //==========================================================================
@@ -137,8 +137,8 @@ void SV_WritePtr(const void *ptr)
 
 void SV_Read(void *buffer, int size)
 {
-    int retval = fread(buffer, 1, size, SaveGameFP);
-    if (retval != size)
+    size_t retval = fread(buffer, 1, size, SaveGameFP);
+    if (static_cast<int>(retval) != size)
     {
         I_Error("Incomplete read in SV_Read: Expected %d, got %d bytes",
             size, retval);
@@ -147,21 +147,21 @@ void SV_Read(void *buffer, int size)
 
 uint8_t SV_ReadByte()
 {
-    uint8_t result;
+    uint8_t result = 0;
     SV_Read(&result, sizeof(uint8_t));
     return result;
 }
 
 uint16_t SV_ReadWord()
 {
-    uint16_t result;
+    uint16_t result = 0;
     SV_Read(&result, sizeof(unsigned short));
     return SHORT(result);
 }
 
 uint32_t SV_ReadLong()
 {
-    uint32_t result;
+    uint32_t result = 0;
     SV_Read(&result, sizeof(int));
     return LONG(result);
 }
@@ -182,7 +182,7 @@ static void saveg_read_ticcmd_t(ticcmd_t *str)
     str->angleturn = SV_ReadWord();
 
     // short consistancy;
-    str->consistancy = SV_ReadWord();
+    str->consistancy = static_cast<uint8_t>(SV_ReadWord());
 
     // byte chatchar;
     str->chatchar = SV_ReadByte();
@@ -289,7 +289,7 @@ static void saveg_write_state_ptr(state_t *state)
         return;
     }
 
-    statenum = state - states;
+    statenum = static_cast<int>(state - states);
 
     // Our internal state table has three extra states than Vanilla, so map
     // to the state numbers used by Vanilla Heretic v1.3 for savegame
@@ -1041,7 +1041,7 @@ static void saveg_write_mobj_t(mobj_t *str)
     // struct player_s *player;
     if (str->player != nullptr)
     {
-        SV_WriteLong(str->player - players + 1);
+        SV_WriteLong(static_cast<unsigned int>(str->player - players + 1));
     }
     else
     {
@@ -1103,7 +1103,7 @@ static void saveg_write_ceiling_t(ceiling_t *str)
     SV_WriteLong(str->type);
 
     // sector_t *sector;
-    SV_WriteLong(str->sector - sectors);
+    SV_WriteLong(static_cast<unsigned int>(str->sector - sectors));
 
     // fixed_t bottomheight, topheight;
     SV_WriteLong(str->bottomheight);
@@ -1169,7 +1169,7 @@ static void saveg_write_vldoor_t(vldoor_t *str)
     SV_WriteLong(str->type);
 
     // sector_t *sector;
-    SV_WriteLong(str->sector - sectors);
+    SV_WriteLong(static_cast<unsigned int>(str->sector - sectors));
 
     // fixed_t topheight;
     SV_WriteLong(str->topheight);
@@ -1237,7 +1237,7 @@ static void saveg_write_floormove_t(floormove_t *str)
     SV_WriteLong(str->crush);
 
     // sector_t *sector;
-    SV_WriteLong(str->sector - sectors);
+    SV_WriteLong(static_cast<unsigned int>(str->sector - sectors));
 
     // int direction;
     SV_WriteLong(str->direction);
@@ -1308,7 +1308,7 @@ static void saveg_write_plat_t(plat_t *str)
     saveg_write_thinker_t(&str->thinker);
 
     // sector_t *sector;
-    SV_WriteLong(str->sector - sectors);
+    SV_WriteLong(static_cast<unsigned int>(str->sector - sectors));
 
     // fixed_t speed;
     SV_WriteLong(str->speed);
@@ -1379,7 +1379,7 @@ static void saveg_write_lightflash_t(lightflash_t *str)
     saveg_write_thinker_t(&str->thinker);
 
     // sector_t *sector;
-    SV_WriteLong(str->sector - sectors);
+    SV_WriteLong(static_cast<unsigned int>(str->sector - sectors));
 
     // int count;
     SV_WriteLong(str->count);
@@ -1435,7 +1435,7 @@ static void saveg_write_strobe_t(strobe_t *str)
     saveg_write_thinker_t(&str->thinker);
 
     // sector_t *sector;
-    SV_WriteLong(str->sector - sectors);
+    SV_WriteLong(static_cast<unsigned int>(str->sector - sectors));
 
     // int count;
     SV_WriteLong(str->count);
@@ -1485,7 +1485,7 @@ static void saveg_write_glow_t(glow_t *str)
     saveg_write_thinker_t(&str->thinker);
 
     // sector_t *sector;
-    SV_WriteLong(str->sector - sectors);
+    SV_WriteLong(static_cast<unsigned int>(str->sector - sectors));
 
     // int minlight;
     SV_WriteLong(str->minlight);
@@ -1564,8 +1564,8 @@ void P_ArchiveWorld()
     // Sectors
     for (i = 0, sec = sectors; i < numsectors; i++, sec++)
     {
-        SV_WriteWord(sec->floorheight >> FRACBITS);
-        SV_WriteWord(sec->ceilingheight >> FRACBITS);
+        SV_WriteWord(static_cast<unsigned short>(sec->floorheight >> FRACBITS));
+        SV_WriteWord(static_cast<unsigned short>(sec->ceilingheight >> FRACBITS));
         SV_WriteWord(sec->floorpic);
         SV_WriteWord(sec->ceilingpic);
         SV_WriteWord(sec->lightlevel);
@@ -1586,8 +1586,8 @@ void P_ArchiveWorld()
                 continue;
             }
             si = &sides[li->sidenum[j]];
-            SV_WriteWord(si->textureoffset >> FRACBITS);
-            SV_WriteWord(si->rowoffset >> FRACBITS);
+            SV_WriteWord(static_cast<unsigned short>(si->textureoffset >> FRACBITS));
+            SV_WriteWord(static_cast<unsigned short>(si->rowoffset >> FRACBITS));
             SV_WriteWord(si->toptexture);
             SV_WriteWord(si->bottomtexture);
             SV_WriteWord(si->midtexture);

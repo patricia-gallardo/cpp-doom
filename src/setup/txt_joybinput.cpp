@@ -78,7 +78,7 @@ static int VirtualButtonForVariable(int *variable)
     {
         if (variable == all_joystick_buttons[i])
         {
-            return i;
+            return static_cast<int>(i);
         }
     }
 
@@ -102,12 +102,12 @@ static void CanonicalizeButtons()
         if ((all_joystick_buttons[i] == &joybspeed && vbutton >= 20)
          || vbutton < 0)
         {
-            new_mapping[i] = i;
+            new_mapping[i] = static_cast<int>(i);
         }
         else
         {
             new_mapping[i] = PhysicalForVirtualButton(vbutton);
-            *all_joystick_buttons[i] = i;
+            *all_joystick_buttons[i] = static_cast<int>(i);
         }
     }
 

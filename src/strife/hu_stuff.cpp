@@ -327,7 +327,7 @@ static void HU_addMessage(const char *prefix, const char *message)
     {
         while((c = *rover1))
         {
-            c = toupper(c) - HU_FONTSTART;
+            c = static_cast<char>(toupper(c) - HU_FONTSTART);
             ++rover1;
 
             if(c < 0 || c >= HU_FONTSIZE)
@@ -348,7 +348,7 @@ static void HU_addMessage(const char *prefix, const char *message)
         *bufptr = c;
         ++bufptr;       // BUG: No check for overflow.
         ++rover2;
-        c = toupper(c);
+        c = static_cast<char>(toupper(c));
 
         if(c == ' ' || c < '!' || c >= '_')
             width += 4;

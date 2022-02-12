@@ -237,8 +237,8 @@ void R_RenderSegLoop ()
 
 	    if (top <= bottom)
 	    {
-		ceilingplane->top[rw_x] = top;
-		ceilingplane->bottom[rw_x] = bottom;
+		ceilingplane->top[rw_x] = static_cast<unsigned short>(top);
+		ceilingplane->bottom[rw_x] = static_cast<unsigned short>(bottom);
 	    }
 	}
 		
@@ -255,8 +255,8 @@ void R_RenderSegLoop ()
 		top = ceilingclip[rw_x]+1;
 	    if (top <= bottom)
 	    {
-		floorplane->top[rw_x] = top;
-		floorplane->bottom[rw_x] = bottom;
+		floorplane->top[rw_x] = static_cast<unsigned short>(top);
+		floorplane->bottom[rw_x] = static_cast<unsigned short>(bottom);
 	    }
 	}
 	
@@ -293,7 +293,7 @@ void R_RenderSegLoop ()
 	    dc_texturemid = rw_midtexturemid;
 	    dc_source = R_GetColumn(midtexture,texturecolumn);
 	    colfunc ();
-	    ceilingclip[rw_x] = viewheight;
+	    ceilingclip[rw_x] = static_cast<short>(viewheight);
 	    floorclip[rw_x] = -1;
 	}
 	else
@@ -315,16 +315,16 @@ void R_RenderSegLoop ()
 		    dc_texturemid = rw_toptexturemid;
 		    dc_source = R_GetColumn(toptexture,texturecolumn);
 		    colfunc ();
-		    ceilingclip[rw_x] = mid;
+		    ceilingclip[rw_x] = static_cast<short>(mid);
 		}
 		else
-		    ceilingclip[rw_x] = yl-1;
+		    ceilingclip[rw_x] = static_cast<short>(yl - 1);
 	    }
 	    else
 	    {
 		// no top wall
 		if (markceiling)
-		    ceilingclip[rw_x] = yl-1;
+		    ceilingclip[rw_x] = static_cast<short>(yl - 1);
 	    }
 			
 	    if (bottomtexture)
@@ -345,23 +345,23 @@ void R_RenderSegLoop ()
 		    dc_source = R_GetColumn(bottomtexture,
 					    texturecolumn);
 		    colfunc ();
-		    floorclip[rw_x] = mid;
+		    floorclip[rw_x] = static_cast<short>(mid);
 		}
 		else
-		    floorclip[rw_x] = yh+1;
+		    floorclip[rw_x] = static_cast<short>(yh + 1);
 	    }
 	    else
 	    {
 		// no bottom wall
 		if (markfloor)
-		    floorclip[rw_x] = yh+1;
+		    floorclip[rw_x] = static_cast<short>(yh + 1);
 	    }
 			
 	    if (maskedtexture)
 	    {
 		// save texturecol
 		//  for backdrawing of masked mid texture
-		maskedtexturecol[rw_x] = texturecolumn;
+		maskedtexturecol[rw_x] = static_cast<short>(texturecolumn);
 	    }
 	}
 		

@@ -716,7 +716,7 @@ int main(int argc, char *argv[])
 
     mem_get_buf(dst, &outfile, &outfile_len);
 
-    M_WriteFile(argv[2], outfile, outfile_len);
+    M_WriteFile(argv[2], outfile, static_cast<int>(outfile_len));
 
     return 0;
 }

@@ -771,16 +771,14 @@ void P_PlayerThink(player_t * player)
 
 void P_ArtiTele(player_t * player)
 {
-    int i;
-    int selections;
-    fixed_t destX;
-    fixed_t destY;
-    angle_t destAngle;
+    fixed_t destX     = 0;
+    fixed_t destY     = 0;
+    angle_t destAngle = 0;
 
     if (deathmatch)
     {
-        selections = deathmatch_p - deathmatchstarts;
-        i = P_Random() % selections;
+        int selections = static_cast<int>(deathmatch_p - deathmatchstarts);
+        int i = P_Random() % selections;
         destX = deathmatchstarts[i].x << FRACBITS;
         destY = deathmatchstarts[i].y << FRACBITS;
         destAngle = ANG45 * (deathmatchstarts[i].angle / 45);

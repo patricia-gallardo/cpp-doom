@@ -729,7 +729,7 @@ void R_ExecuteSetViewSize ()
     
     // thing clipping
     for (i=0 ; i<viewwidth ; i++)
-	screenheightarray[i] = viewheight;
+	screenheightarray[i] = static_cast<short>(viewheight);
     
     // planes
     for (i=0 ; i<viewheight ; i++)

@@ -102,7 +102,7 @@ void R_InstallSpriteLump(int lump, unsigned frame, unsigned rotation,
         sprtemp[frame].rotate = false;
         for (r = 0; r < 8; r++)
         {
-            sprtemp[frame].lump[r] = lump - firstspritelump;
+            sprtemp[frame].lump[r] = static_cast<short>(lump - firstspritelump);
             sprtemp[frame].flip[r] = static_cast<uint8_t>(flipped);
         }
         return;
@@ -122,7 +122,7 @@ void R_InstallSpriteLump(int lump, unsigned frame, unsigned rotation,
             ("R_InitSprites: Sprite %s : %c : %c has two lumps mapped to it",
              spritename, 'A' + frame, '1' + rotation);
 
-    sprtemp[frame].lump[rotation] = lump - firstspritelump;
+    sprtemp[frame].lump[rotation] = static_cast<short>(lump - firstspritelump);
     sprtemp[frame].flip[rotation] = static_cast<uint8_t>(flipped);
 }
 
@@ -153,7 +153,7 @@ void R_InitSpriteDefs(const char **namelist)
     check = namelist;
     while (*check != nullptr)
         check++;
-    numsprites = check - namelist;
+    numsprites = static_cast<int>(check - namelist);
 
     if (!numsprites)
         return;
@@ -848,7 +848,7 @@ void R_SortVisSprites()
     vissprite_t unsorted;
     fixed_t bestscale;
 
-    count = vissprite_p - vissprites;
+    count = static_cast<int>(vissprite_p - vissprites);
 
     unsorted.next = unsorted.prev = &unsorted;
     if (!count)

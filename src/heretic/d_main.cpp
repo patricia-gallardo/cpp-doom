@@ -147,7 +147,7 @@ static void CrispyDrawStats ()
 	const patch_t *const p = cache_lump_num<const patch_t *const>(FontABaseLump + 'A' - 33, PU_CACHE);
 
 	height = SHORT(p->height) + 1;
-	coord_x = ORIGWIDTH - 7 * SHORT(p->width);
+	coord_x = static_cast<short>(ORIGWIDTH - 7 * SHORT(p->width));
     }
 
     if (crispy->automapstats == WIDGETS_ALWAYS || (automapactive && crispy->automapstats == WIDGETS_AUTOMAP))

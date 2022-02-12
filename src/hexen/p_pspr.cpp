@@ -1826,9 +1826,7 @@ void A_CFlameAttack(player_t *player, pspdef_t *psp)
 
 void A_CFlameRotate(mobj_t * actor)
 {
-    int an;
-
-    an = (actor->angle + ANG90) >> ANGLETOFINESHIFT;
+    int an = (actor->angle + ANG90) >> ANGLETOFINESHIFT;
     actor->momx = actor->special1.i + FixedMul(FLAMEROTSPEED, finecosine[an]);
     actor->momy = actor->special2.i + FixedMul(FLAMEROTSPEED, finesine[an]);
     actor->angle += ANG90 / 15;
@@ -2112,7 +2110,7 @@ void A_CHolySeek(mobj_t * actor)
                            actor->args[0] * ANG1 * 2);
         if (!((leveltime + 7) & 15))
         {
-            actor->args[0] = 5 + (P_Random() / 20);
+            actor->args[0] = static_cast<uint8_t>(5 + (P_Random() / 20));
         }
     }
     CHolyWeave(actor);

@@ -139,7 +139,7 @@ void P_ChangeSwitchTexture(line_t * line, int useAgain)
         {
             S_StartSound(reinterpret_cast<mobj_t *>(&line->frontsector->soundorg),
                          alphSwitchList[i / 2].soundID);
-            sides[line->sidenum[0]].toptexture = switchlist[i ^ 1];
+            sides[line->sidenum[0]].toptexture = static_cast<short>(switchlist[i ^ 1]);
             if (useAgain)
             {
                 P_StartButton(line, SWTCH_TOP, switchlist[i], BUTTONTIME);
@@ -150,7 +150,7 @@ void P_ChangeSwitchTexture(line_t * line, int useAgain)
         {
             S_StartSound(reinterpret_cast<mobj_t *>(&line->frontsector->soundorg),
                          alphSwitchList[i / 2].soundID);
-            sides[line->sidenum[0]].midtexture = switchlist[i ^ 1];
+            sides[line->sidenum[0]].midtexture = static_cast<short>(switchlist[i ^ 1]);
             if (useAgain)
             {
                 P_StartButton(line, SWTCH_MIDDLE, switchlist[i], BUTTONTIME);
@@ -161,7 +161,7 @@ void P_ChangeSwitchTexture(line_t * line, int useAgain)
         {
             S_StartSound(reinterpret_cast<mobj_t *>(&line->frontsector->soundorg),
                          alphSwitchList[i / 2].soundID);
-            sides[line->sidenum[0]].bottomtexture = switchlist[i ^ 1];
+            sides[line->sidenum[0]].bottomtexture = static_cast<short>(switchlist[i ^ 1]);
             if (useAgain)
             {
                 P_StartButton(line, SWTCH_BOTTOM, switchlist[i], BUTTONTIME);

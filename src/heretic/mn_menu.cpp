@@ -691,15 +691,10 @@ static void DrawSaveMenu()
 
 void MN_LoadSlotText()
 {
-    FILE *fp;
-    int i;
-    char *filename;
-
-    for (i = 0; i < 6; i++)
+    for (int i = 0; i < 6; i++)
     {
-        int retval;
-        filename = SV_Filename(i);
-        fp = fopen(filename, "rb+");
+        char *filename = SV_Filename(i);
+        FILE *fp = fopen(filename, "rb+");
 	free(filename);
 
         if (!fp)
@@ -708,7 +703,7 @@ void MN_LoadSlotText()
             SlotStatus[i] = 0;
             continue;
         }
-        retval = fread(&SlotText[i], 1, SLOTTEXTLEN, fp);
+        size_t retval = fread(&SlotText[i], 1, SLOTTEXTLEN, fp);
         fclose(fp);
         SlotStatus[i] = retval == SLOTTEXTLEN;
     }
@@ -923,7 +918,7 @@ static bool SCSaveGame(int option)
         *(ptr + 1) = 0;
         SlotStatus[option]++;
         currentSlot = option;
-        slotptr = ptr - SlotText[option];
+        slotptr = static_cast<int>(ptr - SlotText[option]);
         return false;
     }
     else
@@ -1643,7 +1638,7 @@ bool MN_Responder(event_t * event)
         {
             if (isalpha(charTyped))
             {
-                *textBuffer++ = toupper(charTyped);
+                *textBuffer++ = static_cast<char>(toupper(charTyped));
                 *textBuffer = ASCII_CURSOR;
                 slotptr++;
                 return (true);
@@ -1652,7 +1647,7 @@ bool MN_Responder(event_t * event)
               || charTyped == ',' || charTyped == '.' || charTyped == '-'
               || charTyped == '!')
             {
-                *textBuffer++ = charTyped;
+                *textBuffer++ = static_cast<char>(charTyped);
                 *textBuffer = ASCII_CURSOR;
                 slotptr++;
                 return (true);

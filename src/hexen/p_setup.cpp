@@ -291,8 +291,8 @@ void P_LoadSectors(int lump)
     {
         ss->floorheight = SHORT(ms->floorheight) << FRACBITS;
         ss->ceilingheight = SHORT(ms->ceilingheight) << FRACBITS;
-        ss->floorpic = R_FlatNumForName(ms->floorpic);
-        ss->ceilingpic = R_FlatNumForName(ms->ceilingpic);
+        ss->floorpic = static_cast<short>(R_FlatNumForName(ms->floorpic));
+        ss->ceilingpic = static_cast<short>(R_FlatNumForName(ms->ceilingpic));
         ss->lightlevel = SHORT(ms->lightlevel);
         ss->special = SHORT(ms->special);
         ss->tag = SHORT(ms->tag);
@@ -518,9 +518,9 @@ void P_LoadSideDefs(int lump)
     {
         sd->textureoffset = SHORT(msd->textureoffset) << FRACBITS;
         sd->rowoffset = SHORT(msd->rowoffset) << FRACBITS;
-        sd->toptexture = R_TextureNumForName(msd->toptexture);
-        sd->bottomtexture = R_TextureNumForName(msd->bottomtexture);
-        sd->midtexture = R_TextureNumForName(msd->midtexture);
+        sd->toptexture = static_cast<short>(R_TextureNumForName(msd->toptexture));
+        sd->bottomtexture = static_cast<short>(R_TextureNumForName(msd->bottomtexture));
+        sd->midtexture = static_cast<short>(R_TextureNumForName(msd->midtexture));
         sd->sector = &sectors[SHORT(msd->sector)];
     }
     W_ReleaseLumpNum(lump);
@@ -812,7 +812,7 @@ static void InitMapInfo()
     info->warpTrans = 0;
     info->nextMap = 1;          // Always go to map 1 if not specified
     info->cdTrack = 1;
-    info->sky1Texture = R_TextureNumForName(default_sky_name);
+    info->sky1Texture = static_cast<short>(R_TextureNumForName(default_sky_name));
     info->sky2Texture = info->sky1Texture;
     info->sky1ScrollDelta = 0;
     info->sky2ScrollDelta = 0;
@@ -848,7 +848,7 @@ static void InitMapInfo()
         M_StringCopy(info->songLump, songMulch, sizeof(info->songLump));
 
         // The warp translation defaults to the map number
-        info->warpTrans = map;
+        info->warpTrans = static_cast<short>(map);
 
         // Map name must follow the number
         SC_MustGetString();
@@ -867,29 +867,29 @@ static void InitMapInfo()
             {
                 case MCMD_CLUSTER:
                     SC_MustGetNumber();
-                    info->cluster = sc_Number;
+                    info->cluster = static_cast<short>(sc_Number);
                     break;
                 case MCMD_WARPTRANS:
                     SC_MustGetNumber();
-                    info->warpTrans = sc_Number;
+                    info->warpTrans = static_cast<short>(sc_Number);
                     break;
                 case MCMD_NEXT:
                     SC_MustGetNumber();
-                    info->nextMap = sc_Number;
+                    info->nextMap = static_cast<short>(sc_Number);
                     break;
                 case MCMD_CDTRACK:
                     SC_MustGetNumber();
-                    info->cdTrack = sc_Number;
+                    info->cdTrack = static_cast<short>(sc_Number);
                     break;
                 case MCMD_SKY1:
                     SC_MustGetString();
-                    info->sky1Texture = R_TextureNumForName(sc_String);
+                    info->sky1Texture = static_cast<short>(R_TextureNumForName(sc_String));
                     SC_MustGetNumber();
                     info->sky1ScrollDelta = sc_Number << 8;
                     break;
                 case MCMD_SKY2:
                     SC_MustGetString();
-                    info->sky2Texture = R_TextureNumForName(sc_String);
+                    info->sky2Texture = static_cast<short>(R_TextureNumForName(sc_String));
                     SC_MustGetNumber();
                     info->sky2ScrollDelta = sc_Number << 8;
                     break;

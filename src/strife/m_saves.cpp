@@ -274,7 +274,7 @@ void M_ReadMisObj()
 
     if((f = fopen(srcpath, "rb")))
     {
-        int retval = fread(mission_objective, 1, OBJECTIVE_LEN, f);
+        size_t retval = fread(mission_objective, 1, OBJECTIVE_LEN, f);
         fclose(f);
         if (retval != OBJECTIVE_LEN)
         {

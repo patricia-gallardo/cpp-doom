@@ -553,7 +553,6 @@ void M_ReadSaveStrings()
 
     for(i = 0; i < static_cast<int>(load_e::load_end); i++)
     {
-        int retval;
         if(fname)
             Z_Free(fname);
         fname = M_SafeFilePath(savegamedir, M_MakeStrifeSaveDir(i, "\\name"));
@@ -566,7 +565,7 @@ void M_ReadSaveStrings()
             LoadMenu[i].status = 0;
             continue;
         }
-        retval = fread(savegamestrings[i], 1, SAVESTRINGSIZE, handle);
+        size_t retval = fread(savegamestrings[i], 1, SAVESTRINGSIZE, handle);
         fclose(handle);
         LoadMenu[i].status = retval == SAVESTRINGSIZE;
     }
@@ -777,7 +776,7 @@ void M_SaveSelect(int choice)
     M_StringCopy(saveOldString, savegamestrings[choice], sizeof(saveOldString));
     if (!strcmp(savegamestrings[choice], DEH_String(EMPTYSTRING)))
         savegamestrings[choice][0] = 0;
-    saveCharIndex = strlen(savegamestrings[choice]);
+    saveCharIndex = static_cast<int>(strlen(savegamestrings[choice]));
 }
 
 //
@@ -1618,7 +1617,7 @@ void M_DialogDimMsg(int x, int, char *str, bool useyfont)
     else
        fontarray = hu_font;
 
-    bl = toupper(*message);
+    bl = static_cast<char>(toupper(*message));
 
     if(!bl)
         return;
@@ -1654,7 +1653,7 @@ void M_DialogDimMsg(int x, int, char *str, bool useyfont)
                     // BUG: they didn't add the first char to linewidth yet...
                     linewidth -= charwidth; 
                     i--;
-                    al = toupper(*tempptr);
+                    al = static_cast<char>(toupper(*tempptr));
                     if(al < HU_FONTSTART || al > HU_FONTEND)
                         charwidth = 4;
                     else
@@ -1676,7 +1675,7 @@ void M_DialogDimMsg(int x, int, char *str, bool useyfont)
         else
             linewidth = 0; // '\n' seen, so reset the line width
     }
-    while((bl = toupper(message[++i])) != 0); // step to the next character
+    while((bl = static_cast<char>(toupper(message[++i]))) != 0); // step to the next character
 }
 
 // These keys evaluate to a "null" key in Vanilla Doom that allows weird
@@ -1917,7 +1916,7 @@ bool M_Responder (event_t* ev)
                 M_StringWidth(savegamestrings[quickSaveSlot]) <
                 (SAVESTRINGSIZE-2)*8)
             {
-                savegamestrings[quickSaveSlot][saveCharIndex++] = ch;
+                savegamestrings[quickSaveSlot][saveCharIndex++] = static_cast<char>(ch);
                 savegamestrings[quickSaveSlot][saveCharIndex] = 0;
             }
             break;
@@ -2244,7 +2243,7 @@ bool M_Responder (event_t* ev)
         {
             if (currentMenu->menuitems[i].alphaKey == ch)
             {
-                itemOn = i;
+                itemOn = static_cast<short>(i);
                 S_StartSound(nullptr, sfx_pstop);
                 return true;
             }
@@ -2254,7 +2253,7 @@ bool M_Responder (event_t* ev)
         {
             if (currentMenu->menuitems[i].alphaKey == ch)
             {
-                itemOn = i;
+                itemOn = static_cast<short>(i);
                 S_StartSound(nullptr, sfx_pstop);
                 return true;
             }
@@ -2303,7 +2302,7 @@ void M_Drawer ()
     if (messageToPrint)
     {
         start = 0;
-        y = 100 - M_StringHeight(messageString) / 2;
+        y = static_cast<short>(100 - M_StringHeight(messageString) / 2);
         while (messageString[start] != '\0')
         {
             int foundnewline = 0;
@@ -2329,10 +2328,10 @@ void M_Drawer ()
             {
                 M_StringCopy(string, messageString + start,
                              sizeof(string));
-                start += strlen(string);
+                start += static_cast<int>(strlen(string));
             }
 
-            x = 160 - M_StringWidth(string) / 2;
+            x = static_cast<short>(160 - M_StringWidth(string) / 2);
             M_WriteText(x, y, string);
             y += SHORT(hu_font[0]->height);
         }

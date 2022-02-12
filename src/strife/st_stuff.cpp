@@ -469,7 +469,7 @@ bool ST_Responder(event_t* ev)
     //
 
     // 'spin' cheat for changing music
-    if (cht_CheckCheat(&cheat_mus, ev->data2))
+    if (cht_CheckCheat(&cheat_mus, static_cast<char>(ev->data2)))
     {
         char        buf[3];
         int         musnum;
@@ -485,7 +485,7 @@ bool ST_Responder(event_t* ev)
             S_ChangeMusic(musnum, 1);
     }
     // [STRIFE]: "dev" cheat - "DOTS"
-    else if (cht_CheckCheat(&cheat_dev, ev->data2))
+    else if (cht_CheckCheat(&cheat_dev, static_cast<char>(ev->data2)))
     {
         devparm = !devparm;
         if (devparm)
@@ -498,7 +498,7 @@ bool ST_Responder(event_t* ev)
     if(netgame || !usergame)
         return false;
 
-    if (cht_CheckCheat(&cheat_god, ev->data2))
+    if (cht_CheckCheat(&cheat_god, static_cast<char>(ev->data2)))
     {
         // 'omnipotent' cheat for toggleable god mode
         plyr->cheats ^= CF_GODMODE;
@@ -517,11 +517,11 @@ bool ST_Responder(event_t* ev)
             plyr->message = DEH_String(STSTR_DQDOFF);
         }
     }
-    else if (cht_CheckCheat(&cheat_ammo, ev->data2))
+    else if (cht_CheckCheat(&cheat_ammo, static_cast<char>(ev->data2)))
     {
         // [STRIFE]: "BOOMSTIX" cheat for all normal weapons
-        plyr->armorpoints = deh_idkfa_armor;
-        plyr->armortype = deh_idkfa_armor_class;
+        plyr->armorpoints = static_cast<short>(deh_idkfa_armor);
+        plyr->armortype = static_cast<short>(deh_idkfa_armor_class);
 
         for (i = 0; i < NUMWEAPONS; i++)
             if(!isdemoversion || weaponinfo[i].availabledemo)
@@ -535,7 +535,7 @@ bool ST_Responder(event_t* ev)
 
         plyr->message = DEH_String(STSTR_FAADDED);
     }
-    else if(cht_CheckCheat(&cheat_keys, ev->data2))
+    else if(cht_CheckCheat(&cheat_keys, static_cast<char>(ev->data2)))
     {
         // villsa [STRIFE]: "JIMMY" cheat for all keys
         #define FIRSTKEYSETAMOUNT   16
@@ -565,7 +565,7 @@ bool ST_Responder(event_t* ev)
             plyr->message = DEH_String("Cheater Keys Added");
         }
     }
-    else if (cht_CheckCheat(&cheat_noclip, ev->data2))
+    else if (cht_CheckCheat(&cheat_noclip, static_cast<char>(ev->data2)))
     {
         // [STRIFE] Removed idspispopd, added NOCLIP flag setting/removal
         // Noclip cheat - "ELVIS" (hah-hah :P )
@@ -583,7 +583,7 @@ bool ST_Responder(event_t* ev)
             plyr->mo->flags &= ~MF_NOCLIP;
         }
     }
-    else if(cht_CheckCheat(&cheat_stealth, ev->data2))
+    else if(cht_CheckCheat(&cheat_stealth, static_cast<char>(ev->data2)))
     {
         // villsa [STRIFE]: "GRIPPER" cheat; nothing to do with stealth...
         plyr->cheats ^= CF_NOMOMENTUM;
@@ -596,7 +596,7 @@ bool ST_Responder(event_t* ev)
     for(i = 0; i < ST_PUMPUP_B + 3; ++i)
     {
         // [STRIFE]: Handle berserk, invisibility, and envirosuit
-        if(cht_CheckCheat(&cheat_powerup[i], ev->data2))
+        if(cht_CheckCheat(&cheat_powerup[i], static_cast<char>(ev->data2)))
         {
             if(plyr->powers[i])
                 plyr->powers[i] = (i != 1);
@@ -605,7 +605,7 @@ bool ST_Responder(event_t* ev)
             plyr->message = DEH_String(STSTR_BEHOLDX);
         }
     }
-    if(cht_CheckCheat(&cheat_powerup[ST_PUMPUP_H], ev->data2))
+    if(cht_CheckCheat(&cheat_powerup[ST_PUMPUP_H], static_cast<char>(ev->data2)))
     {
         // [STRIFE]: PUMPUPH gives medical inventory items
         P_GiveItemToPlayer(plyr, SPR_STMP, MT_INV_MED1);
@@ -613,7 +613,7 @@ bool ST_Responder(event_t* ev)
         P_GiveItemToPlayer(plyr, SPR_FULL, MT_INV_MED3);
         plyr->message = DEH_String("you got the stuff!");
     }
-    if(cht_CheckCheat(&cheat_powerup[ST_PUMPUP_P], ev->data2))
+    if(cht_CheckCheat(&cheat_powerup[ST_PUMPUP_P], static_cast<char>(ev->data2)))
     {
         // [STRIFE]: PUMPUPP gives backpack
         if(!plyr->backpack)
@@ -627,28 +627,28 @@ bool ST_Responder(event_t* ev)
             P_GiveAmmo(plyr, static_cast<ammotype_t>(i), 1);
         plyr->message = DEH_String("you got the stuff!");
     }
-    if(cht_CheckCheat(&cheat_powerup[ST_PUMPUP_S], ev->data2))
+    if(cht_CheckCheat(&cheat_powerup[ST_PUMPUP_S], static_cast<char>(ev->data2)))
     {
         // [STRIFE]: PUMPUPS gives stamina and accuracy upgrades
         P_GiveItemToPlayer(plyr, SPR_TOKN, MT_TOKEN_STAMINA);
         P_GiveItemToPlayer(plyr, SPR_TOKN, MT_TOKEN_NEW_ACCURACY);
         plyr->message = DEH_String("you got the stuff!");
     }
-    if(cht_CheckCheat(&cheat_powerup[ST_PUMPUP_T], ev->data2))
+    if(cht_CheckCheat(&cheat_powerup[ST_PUMPUP_T], static_cast<char>(ev->data2)))
     {
         // [STRIFE] PUMPUPT gives targeter
         P_GivePower(plyr, pw_targeter);
         plyr->message = DEH_String("you got the stuff!");
     }
     // [STRIFE]: PUMPUP
-    if (cht_CheckCheat(&cheat_powerup[ST_PUMPUP], ev->data2))
+    if (cht_CheckCheat(&cheat_powerup[ST_PUMPUP], static_cast<char>(ev->data2)))
     {
         // 'behold' power-up menu
         plyr->message = DEH_String(STSTR_BEHOLD);
         return false;
     }
 
-    if (cht_CheckCheat(&cheat_mypos, ev->data2))
+    if (cht_CheckCheat(&cheat_mypos, static_cast<char>(ev->data2)))
     {
         // [STRIFE] 'GPS' for player position
         static char buf[ST_MSGWIDTH];
@@ -661,7 +661,7 @@ bool ST_Responder(event_t* ev)
     }
 
     // 'rift' change-level cheat
-    if (cht_CheckCheat(&cheat_clev, ev->data2))
+    if (cht_CheckCheat(&cheat_clev, static_cast<char>(ev->data2)))
     {
         char            buf[3];
         int             map;
@@ -691,7 +691,7 @@ bool ST_Responder(event_t* ev)
         plyr->message = DEH_String(STSTR_CLEV);
         G_RiftExitLevel(map, 0, plyr->mo->angle);
     }
-    else if(cht_CheckCheat(&cheat_scoot, ev->data2))
+    else if(cht_CheckCheat(&cheat_scoot, static_cast<char>(ev->data2)))
     {
         char            buf[3];
         int             spot;
@@ -710,7 +710,7 @@ bool ST_Responder(event_t* ev)
     }
 
     // villsa [STRIFE]
-    if(cht_CheckCheat(&cheat_nuke, ev->data2))
+    if(cht_CheckCheat(&cheat_nuke, static_cast<char>(ev->data2)))
     {
         stonecold ^= 1;
         plyr->message = DEH_String("Kill 'em.  Kill 'em All");
@@ -718,7 +718,7 @@ bool ST_Responder(event_t* ev)
     }
 
     // villsa [STRIFE]
-    if(cht_CheckCheat(&cheat_midas, ev->data2))
+    if(cht_CheckCheat(&cheat_midas, static_cast<char>(ev->data2)))
     {
         plyr->message = DEH_String("YOU GOT THE MIDAS TOUCH, BABY");
         P_GiveItemToPlayer(plyr, SPR_HELT, MT_TOKEN_TOUGHNESS);
@@ -726,7 +726,7 @@ bool ST_Responder(event_t* ev)
 
     // villsa [STRIFE] 
     // haleyjd 20110224: No sigil in demo version
-    if(!isdemoversion && cht_CheckCheat(&cheat_lego, ev->data2))
+    if(!isdemoversion && cht_CheckCheat(&cheat_lego, static_cast<char>(ev->data2)))
     {
         plyr->st_update = true;
         if(plyr->weaponowned[wp_sigil])

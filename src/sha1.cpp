@@ -47,7 +47,8 @@ void SHA1_Init(sha1_context_t *hd)
     hd->count   = 0;
 }
 
-
+#pragma GCC diagnostic push
+#pragma GCC diagnostic ignored "-Wconversion"
 /****************
  * Transform the message X which consists of 16 32-bit-words
  */
@@ -192,7 +193,7 @@ static void Transform(sha1_context_t *hd, uint8_t *data)
     hd->h3 += d;
     hd->h4 += e;
 }
-
+#pragma GCC diagnostic pop
 
 /* Update the message digest with the contents
  * of INBUF with length INLEN.

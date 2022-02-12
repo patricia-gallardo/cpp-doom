@@ -219,7 +219,7 @@ static void P_LightningFlash()
                     || tempSec->special == LIGHTNING_SPECIAL
                     || tempSec->special == LIGHTNING_SPECIAL2)
                 {
-                    tempSec->lightlevel = *tempLight;
+                    tempSec->lightlevel = static_cast<short>(*tempLight);
                     tempLight++;
                 }
             }
@@ -244,7 +244,7 @@ static void P_LightningFlash()
                 tempSec->lightlevel += 64;
                 if (tempSec->lightlevel > flashLight)
                 {
-                    tempSec->lightlevel = flashLight;
+                    tempSec->lightlevel = static_cast<short>(flashLight);
                 }
             }
             else if (tempSec->special == LIGHTNING_SPECIAL2)
@@ -252,16 +252,16 @@ static void P_LightningFlash()
                 tempSec->lightlevel += 32;
                 if (tempSec->lightlevel > flashLight)
                 {
-                    tempSec->lightlevel = flashLight;
+                    tempSec->lightlevel = static_cast<short>(flashLight);
                 }
             }
             else
             {
-                tempSec->lightlevel = flashLight;
+                tempSec->lightlevel = static_cast<short>(flashLight);
             }
             if (tempSec->lightlevel < *tempLight)
             {
-                tempSec->lightlevel = *tempLight;
+                tempSec->lightlevel = static_cast<short>(*tempLight);
             }
             tempLight++;
             foundSec = true;

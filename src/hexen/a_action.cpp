@@ -427,7 +427,7 @@ void A_BridgeInit(mobj_t * actor)
     cx = actor->x;
     cy = actor->y;
     cz = actor->z;
-    startangle = P_Random();
+    startangle = static_cast<uint8_t>(P_Random());
     actor->special1.i = 0;
 
     // Spawn triad into world
@@ -700,7 +700,7 @@ void A_FogSpawn(mobj_t * actor)
         mo->target = actor;
         if (actor->args[0] < 1)
             actor->args[0] = 1;
-        mo->args[0] = (P_Random() % (actor->args[0])) + 1;      // Random speed
+        mo->args[0] = static_cast<uint8_t>((P_Random() % (actor->args[0])) + 1);      // Random speed
         mo->args[3] = actor->args[3];   // Set lifetime
         mo->args[4] = 1;        // Set to moving
         mo->special2.i = P_Random() & 63;

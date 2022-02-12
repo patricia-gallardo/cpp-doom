@@ -204,8 +204,8 @@ void P_LoadSectors(int lump)
     {
         ss->floorheight = SHORT(ms->floorheight) << FRACBITS;
         ss->ceilingheight = SHORT(ms->ceilingheight) << FRACBITS;
-        ss->floorpic = R_FlatNumForName(ms->floorpic);
-        ss->ceilingpic = R_FlatNumForName(ms->ceilingpic);
+        ss->floorpic = static_cast<short>(R_FlatNumForName(ms->floorpic));
+        ss->ceilingpic = static_cast<short>(R_FlatNumForName(ms->ceilingpic));
         ss->lightlevel = SHORT(ms->lightlevel);
         ss->special = SHORT(ms->special);
         ss->tag = SHORT(ms->tag);
@@ -410,9 +410,9 @@ void P_LoadSideDefs(int lump)
     {
         sd->textureoffset = SHORT(msd->textureoffset) << FRACBITS;
         sd->rowoffset = SHORT(msd->rowoffset) << FRACBITS;
-        sd->toptexture = R_TextureNumForName(msd->toptexture);
-        sd->bottomtexture = R_TextureNumForName(msd->bottomtexture);
-        sd->midtexture = R_TextureNumForName(msd->midtexture);
+        sd->toptexture = static_cast<short>(R_TextureNumForName(msd->toptexture));
+        sd->bottomtexture = static_cast<short>(R_TextureNumForName(msd->bottomtexture));
+        sd->midtexture = static_cast<short>(R_TextureNumForName(msd->midtexture));
         sd->sector = &sectors[SHORT(msd->sector)];
     }
 
@@ -431,13 +431,13 @@ void P_LoadSideDefs(int lump)
 
 void P_LoadBlockMap(int lump)
 {
-    int i, count;
+    int i;
     int lumplen;
     short *wadblockmaplump;
 
     lumplen = W_LumpLength(lump);
 
-    count = lumplen / 2; // [crispy] remove BLOCKMAP limit
+    int count = lumplen / 2; // [crispy] remove BLOCKMAP limit
 
     // [crispy] remove BLOCKMAP limit
     wadblockmaplump = zmalloc<short *>(lumplen, PU_LEVEL, nullptr);
@@ -467,9 +467,9 @@ void P_LoadBlockMap(int lump)
     bmapheight = blockmaplump[3];
 
 // clear out mobj chains
-    count = sizeof(*blocklinks) * bmapwidth * bmapheight;
-    blocklinks = zmalloc<mobj_t **>(count, PU_LEVEL, 0);
-    memset(blocklinks, 0, count);
+    size_t block_count = sizeof(*blocklinks) * bmapwidth * bmapheight;
+    blocklinks = zmalloc<mobj_t **>(block_count, PU_LEVEL, 0);
+    memset(blocklinks, 0, block_count);
 }
 
 
@@ -651,9 +651,9 @@ void P_SetupLevel(int episode, int map, int, skill_t)
 // look for a regular (development) map first
 //
     lumpname[0] = 'E';
-    lumpname[1] = '0' + episode;
+    lumpname[1] = static_cast<char>('0' + episode);
     lumpname[2] = 'M';
-    lumpname[3] = '0' + map;
+    lumpname[3] = static_cast<char>('0' + map);
     lumpname[4] = 0;
     leveltime = 0;
 

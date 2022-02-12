@@ -43,13 +43,13 @@ void T_Light(light_t * light)
             {
                 if (light->sector->lightlevel >= light->value1)
                 {
-                    light->sector->lightlevel = light->value1;
+                    light->sector->lightlevel = static_cast<short>(light->value1);
                     P_RemoveThinker(&light->thinker);
                 }
             }
             else if (light->sector->lightlevel <= light->value1)
             {
-                light->sector->lightlevel = light->value1;
+                light->sector->lightlevel = static_cast<short>(light->value1);
                 P_RemoveThinker(&light->thinker);
             }
             break;
@@ -61,14 +61,14 @@ void T_Light(light_t * light)
             {
                 if (light->sector->lightlevel >= light->value1)
                 {
-                    light->sector->lightlevel = light->value1;
+                    light->sector->lightlevel = static_cast<short>(light->value1);
                     light->tics1 = -light->tics1;
                     light->tics2 = -1;  // reverse direction
                 }
             }
             else if (light->sector->lightlevel <= light->value2)
             {
-                light->sector->lightlevel = light->value2;
+                light->sector->lightlevel = static_cast<short>(light->value2);
                 light->tics1 = -light->tics1;
                 light->tics2 = 1;       // reverse direction
             }
@@ -76,24 +76,24 @@ void T_Light(light_t * light)
         case LITE_FLICKER:
             if (light->sector->lightlevel == light->value1)
             {
-                light->sector->lightlevel = light->value2;
+                light->sector->lightlevel = static_cast<short>(light->value2);
                 light->count = (P_Random() & 7) + 1;
             }
             else
             {
-                light->sector->lightlevel = light->value1;
+                light->sector->lightlevel = static_cast<short>(light->value1);
                 light->count = (P_Random() & 31) + 1;
             }
             break;
         case LITE_STROBE:
             if (light->sector->lightlevel == light->value1)
             {
-                light->sector->lightlevel = light->value2;
+                light->sector->lightlevel = static_cast<short>(light->value2);
                 light->count = light->tics2;
             }
             else
             {
-                light->sector->lightlevel = light->value1;
+                light->sector->lightlevel = static_cast<short>(light->value1);
                 light->count = light->tics1;
             }
             break;
@@ -166,7 +166,7 @@ bool EV_SpawnLight(line_t *, uint8_t *arg, lighttype_t type)
                 }
                 break;
             case LITE_CHANGETOVALUE:
-                sec->lightlevel = arg1;
+                sec->lightlevel = static_cast<short>(arg1);
                 if (sec->lightlevel < 0)
                 {
                     sec->lightlevel = 0;
@@ -207,7 +207,7 @@ bool EV_SpawnLight(line_t *, uint8_t *arg, lighttype_t type)
                 think = true;
                 light->value1 = arg1;   // upper lightlevel
                 light->value2 = arg2;   // lower lightlevel
-                sec->lightlevel = light->value1;
+                sec->lightlevel = static_cast<short>(light->value1);
                 light->count = (P_Random() & 64) + 1;
                 break;
             case LITE_STROBE:
@@ -217,7 +217,7 @@ bool EV_SpawnLight(line_t *, uint8_t *arg, lighttype_t type)
                 light->tics1 = arg3;    // upper tics
                 light->tics2 = arg4;    // lower tics
                 light->count = arg3;
-                sec->lightlevel = light->value1;
+                sec->lightlevel = static_cast<short>(light->value1);
                 break;
             default:
                 rtn = false;
@@ -256,7 +256,7 @@ int PhaseTable[64] = {
 void T_Phase(phase_t * phase)
 {
     phase->index = (phase->index + 1) & 63;
-    phase->sector->lightlevel = phase->base + PhaseTable[phase->index];
+    phase->sector->lightlevel = static_cast<short>(phase->base + PhaseTable[phase->index]);
 }
 
 //==========================================================================
@@ -281,7 +281,7 @@ void P_SpawnPhasedLight(sector_t * sector, int base, int index)
         phase->index = index & 63;
     }
     phase->base = base & 255;
-    sector->lightlevel = phase->base + PhaseTable[phase->index];
+    sector->lightlevel = static_cast<short>(phase->base + PhaseTable[phase->index]);
     phase->thinker.function = T_Phase;
 
     sector->special = 0;

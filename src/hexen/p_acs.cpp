@@ -1035,7 +1035,7 @@ static int CmdLSpec1()
     int special;
 
     special = ReadCodeInt();
-    SpecArgs[0] = Pop();
+    SpecArgs[0] = static_cast<uint8_t>(Pop());
     P_ExecuteLineSpecial(special, SpecArgs, ACScript->line,
                          ACScript->side, ACScript->activator);
     return SCRIPT_CONTINUE;
@@ -1046,8 +1046,8 @@ static int CmdLSpec2()
     int special;
 
     special = ReadCodeInt();
-    SpecArgs[1] = Pop();
-    SpecArgs[0] = Pop();
+    SpecArgs[1] = static_cast<uint8_t>(Pop());
+    SpecArgs[0] = static_cast<uint8_t>(Pop());
     P_ExecuteLineSpecial(special, SpecArgs, ACScript->line,
                          ACScript->side, ACScript->activator);
     return SCRIPT_CONTINUE;
@@ -1058,9 +1058,9 @@ static int CmdLSpec3()
     int special;
 
     special = ReadCodeInt();
-    SpecArgs[2] = Pop();
-    SpecArgs[1] = Pop();
-    SpecArgs[0] = Pop();
+    SpecArgs[2] = static_cast<uint8_t>(Pop());
+    SpecArgs[1] = static_cast<uint8_t>(Pop());
+    SpecArgs[0] = static_cast<uint8_t>(Pop());
     P_ExecuteLineSpecial(special, SpecArgs, ACScript->line,
                          ACScript->side, ACScript->activator);
     return SCRIPT_CONTINUE;
@@ -1068,13 +1068,11 @@ static int CmdLSpec3()
 
 static int CmdLSpec4()
 {
-    int special;
-
-    special = ReadCodeInt();
-    SpecArgs[3] = Pop();
-    SpecArgs[2] = Pop();
-    SpecArgs[1] = Pop();
-    SpecArgs[0] = Pop();
+    int special = ReadCodeInt();
+    SpecArgs[3] = static_cast<uint8_t>(Pop());
+    SpecArgs[2] = static_cast<uint8_t>(Pop());
+    SpecArgs[1] = static_cast<uint8_t>(Pop());
+    SpecArgs[0] = static_cast<uint8_t>(Pop());
     P_ExecuteLineSpecial(special, SpecArgs, ACScript->line,
                          ACScript->side, ACScript->activator);
     return SCRIPT_CONTINUE;
@@ -1082,14 +1080,12 @@ static int CmdLSpec4()
 
 static int CmdLSpec5()
 {
-    int special;
-
-    special = ReadCodeInt();
-    SpecArgs[4] = Pop();
-    SpecArgs[3] = Pop();
-    SpecArgs[2] = Pop();
-    SpecArgs[1] = Pop();
-    SpecArgs[0] = Pop();
+    int special = ReadCodeInt();
+    SpecArgs[4] = static_cast<uint8_t>(Pop());
+    SpecArgs[3] = static_cast<uint8_t>(Pop());
+    SpecArgs[2] = static_cast<uint8_t>(Pop());
+    SpecArgs[1] = static_cast<uint8_t>(Pop());
+    SpecArgs[0] = static_cast<uint8_t>(Pop());
     P_ExecuteLineSpecial(special, SpecArgs, ACScript->line,
                          ACScript->side, ACScript->activator);
     return SCRIPT_CONTINUE;
@@ -1097,10 +1093,8 @@ static int CmdLSpec5()
 
 static int CmdLSpec1Direct()
 {
-    int special;
-
-    special = ReadCodeInt();
-    SpecArgs[0] = ReadCodeInt();
+    int special = ReadCodeInt();
+    SpecArgs[0] = static_cast<uint8_t>(ReadCodeInt());
     P_ExecuteLineSpecial(special, SpecArgs, ACScript->line,
                          ACScript->side, ACScript->activator);
     return SCRIPT_CONTINUE;
@@ -1108,11 +1102,9 @@ static int CmdLSpec1Direct()
 
 static int CmdLSpec2Direct()
 {
-    int special;
-
-    special = ReadCodeInt();
-    SpecArgs[0] = ReadCodeInt();
-    SpecArgs[1] = ReadCodeInt();
+    int special = ReadCodeInt();
+    SpecArgs[0] = static_cast<uint8_t>(ReadCodeInt());
+    SpecArgs[1] = static_cast<uint8_t>(ReadCodeInt());
     P_ExecuteLineSpecial(special, SpecArgs, ACScript->line,
                          ACScript->side, ACScript->activator);
     return SCRIPT_CONTINUE;
@@ -1120,12 +1112,10 @@ static int CmdLSpec2Direct()
 
 static int CmdLSpec3Direct()
 {
-    int special;
-
-    special = ReadCodeInt();
-    SpecArgs[0] = ReadCodeInt();
-    SpecArgs[1] = ReadCodeInt();
-    SpecArgs[2] = ReadCodeInt();
+    int special = ReadCodeInt();
+    SpecArgs[0] = static_cast<uint8_t>(ReadCodeInt());
+    SpecArgs[1] = static_cast<uint8_t>(ReadCodeInt());
+    SpecArgs[2] = static_cast<uint8_t>(ReadCodeInt());
     P_ExecuteLineSpecial(special, SpecArgs, ACScript->line,
                          ACScript->side, ACScript->activator);
     return SCRIPT_CONTINUE;
@@ -1133,13 +1123,11 @@ static int CmdLSpec3Direct()
 
 static int CmdLSpec4Direct()
 {
-    int special;
-
-    special = ReadCodeInt();
-    SpecArgs[0] = ReadCodeInt();
-    SpecArgs[1] = ReadCodeInt();
-    SpecArgs[2] = ReadCodeInt();
-    SpecArgs[3] = ReadCodeInt();
+    int special = ReadCodeInt();
+    SpecArgs[0] = static_cast<uint8_t>(ReadCodeInt());
+    SpecArgs[1] = static_cast<uint8_t>(ReadCodeInt());
+    SpecArgs[2] = static_cast<uint8_t>(ReadCodeInt());
+    SpecArgs[3] = static_cast<uint8_t>(ReadCodeInt());
     P_ExecuteLineSpecial(special, SpecArgs, ACScript->line,
                          ACScript->side, ACScript->activator);
     return SCRIPT_CONTINUE;
@@ -1147,14 +1135,12 @@ static int CmdLSpec4Direct()
 
 static int CmdLSpec5Direct()
 {
-    int special;
-
-    special = ReadCodeInt();
-    SpecArgs[0] = ReadCodeInt();
-    SpecArgs[1] = ReadCodeInt();
-    SpecArgs[2] = ReadCodeInt();
-    SpecArgs[3] = ReadCodeInt();
-    SpecArgs[4] = ReadCodeInt();
+    int special = ReadCodeInt();
+    SpecArgs[0] = static_cast<uint8_t>(ReadCodeInt());
+    SpecArgs[1] = static_cast<uint8_t>(ReadCodeInt());
+    SpecArgs[2] = static_cast<uint8_t>(ReadCodeInt());
+    SpecArgs[3] = static_cast<uint8_t>(ReadCodeInt());
+    SpecArgs[4] = static_cast<uint8_t>(ReadCodeInt());
     P_ExecuteLineSpecial(special, SpecArgs, ACScript->line,
                          ACScript->side, ACScript->activator);
     return SCRIPT_CONTINUE;
@@ -1583,7 +1569,7 @@ static int CmdChangeFloor()
     sectorIndex = -1;
     while ((sectorIndex = P_FindSectorFromTag(tag, sectorIndex)) >= 0)
     {
-        sectors[sectorIndex].floorpic = flat;
+        sectors[sectorIndex].floorpic = static_cast<short>(flat);
     }
     return SCRIPT_CONTINUE;
 }
@@ -1599,7 +1585,7 @@ static int CmdChangeFloorDirect()
     sectorIndex = -1;
     while ((sectorIndex = P_FindSectorFromTag(tag, sectorIndex)) >= 0)
     {
-        sectors[sectorIndex].floorpic = flat;
+        sectors[sectorIndex].floorpic = static_cast<short>(flat);
     }
     return SCRIPT_CONTINUE;
 }
@@ -1615,7 +1601,7 @@ static int CmdChangeCeiling()
     sectorIndex = -1;
     while ((sectorIndex = P_FindSectorFromTag(tag, sectorIndex)) >= 0)
     {
-        sectors[sectorIndex].ceilingpic = flat;
+        sectors[sectorIndex].ceilingpic = static_cast<short>(flat);
     }
     return SCRIPT_CONTINUE;
 }
@@ -1631,7 +1617,7 @@ static int CmdChangeCeilingDirect()
     sectorIndex = -1;
     while ((sectorIndex = P_FindSectorFromTag(tag, sectorIndex)) >= 0)
     {
-        sectors[sectorIndex].ceilingpic = flat;
+        sectors[sectorIndex].ceilingpic = static_cast<short>(flat);
     }
     return SCRIPT_CONTINUE;
 }
@@ -1816,7 +1802,7 @@ static int CmdPrintCharacter()
 {
     char tempStr[2];
 
-    tempStr[0] = Pop();
+    tempStr[0] = static_cast<char>(Pop());
     tempStr[1] = '\0';
     M_StringConcat(PrintBuffer, tempStr, sizeof(PrintBuffer));
 
@@ -1943,15 +1929,15 @@ static int CmdSetLineTexture()
     {
         if (position == TEXTURE_MIDDLE)
         {
-            sides[line->sidenum[side]].midtexture = texture;
+            sides[line->sidenum[side]].midtexture = static_cast<short>(texture);
         }
         else if (position == TEXTURE_BOTTOM)
         {
-            sides[line->sidenum[side]].bottomtexture = texture;
+            sides[line->sidenum[side]].bottomtexture = static_cast<short>(texture);
         }
         else
         {                       // TEXTURE_TOP
-            sides[line->sidenum[side]].toptexture = texture;
+            sides[line->sidenum[side]].toptexture = static_cast<short>(texture);
         }
     }
     return SCRIPT_CONTINUE;
@@ -1969,7 +1955,7 @@ static int CmdSetLineBlocking()
     searcher = -1;
     while ((line = P_FindLine(lineTag, &searcher)) != nullptr)
     {
-        line->flags = (line->flags & ~ML_BLOCKING) | static_cast<int>(blocking);
+        line->flags = static_cast<short>((line->flags & ~ML_BLOCKING) | static_cast<int>(blocking));
     }
     return SCRIPT_CONTINUE;
 }
@@ -1991,12 +1977,12 @@ static int CmdSetLineSpecial()
     searcher = -1;
     while ((line = P_FindLine(lineTag, &searcher)) != nullptr)
     {
-        line->special = special;
-        line->arg1 = arg1;
-        line->arg2 = arg2;
-        line->arg3 = arg3;
-        line->arg4 = arg4;
-        line->arg5 = arg5;
+        line->special = static_cast<uint8_t>(special);
+        line->arg1 = static_cast<uint8_t>(arg1);
+        line->arg2 = static_cast<uint8_t>(arg2);
+        line->arg3 = static_cast<uint8_t>(arg3);
+        line->arg4 = static_cast<uint8_t>(arg4);
+        line->arg5 = static_cast<uint8_t>(arg5);
     }
     return SCRIPT_CONTINUE;
 }

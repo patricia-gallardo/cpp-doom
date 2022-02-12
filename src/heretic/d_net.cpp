@@ -42,16 +42,14 @@ extern bool G_CheckDemoStatus();
 static void PlayerQuitGame(player_t *player)
 {
     static char exitmsg[80];
-    unsigned int player_num;
-
-    player_num = player - players;
+    unsigned int player_num = static_cast<unsigned int>(player - players);
 
     // Note:
     // The Heretic source code does this, which doesn't actually work.
     // As a result, the exit message is never seen.
 
     M_StringCopy(exitmsg, "PLAYER 1 LEFT THE GAME", sizeof(exitmsg));
-    exitmsg[7] += player_num;
+    exitmsg[7] += static_cast<char>(player_num);
     players[consoleplayer].message = exitmsg;
 
     playeringame[player_num] = false;

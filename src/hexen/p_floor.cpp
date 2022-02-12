@@ -536,15 +536,15 @@ static void ProcessStairSector(sector_t * sec, int type, int height,
                 floor->stairsDelayHeight = sec->floorheight + StepDelta;
                 floor->stairsDelayHeightDelta = StepDelta;
             }
-            floor->resetDelay = resetDelay;
-            floor->resetDelayCount = resetDelay;
+            floor->resetDelay = static_cast<short>(resetDelay);
+            floor->resetDelayCount = static_cast<short>(resetDelay);
             floor->resetHeight = sec->floorheight;
             break;
         case STAIRS_SYNC:
             floor->speed = FixedMul(Speed, FixedDiv(height - StartHeight,
                                                     StepDelta));
-            floor->resetDelay = delay;  //arg4
-            floor->resetDelayCount = delay;
+            floor->resetDelay = static_cast<short>(delay);  //arg4
+            floor->resetDelayCount = static_cast<short>(delay);
             floor->resetHeight = sec->floorheight;
             break;
 /*

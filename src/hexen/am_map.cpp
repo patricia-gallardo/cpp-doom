@@ -885,6 +885,8 @@ void AM_drawFline(fline_t * fl, int color)
                     //fprintf(stderr, "fuck %d \r", fuck++);
                     return;
                 }
+#pragma GCC diagnostic push
+#pragma GCC diagnostic ignored "-Wconversion"
 
 #define DOT(xx,yy,cc) fb[(yy)*f_w+(xx)]=(cc)    //the MACRO!
 
@@ -934,6 +936,7 @@ void AM_drawFline(fline_t * fl, int color)
                     }
                 }
             }
+#pragma GCC diagnostic pop
     }
 }
 
@@ -1000,18 +1003,18 @@ void DrawWuLine(int X0, int Y0, int X1, int Y1, uint8_t *BaseColor,
     /* Make sure the line runs top to bottom */
     if (Y0 > Y1)
     {
-        Temp = Y0;
+        Temp = static_cast<short>(Y0);
         Y0 = Y1;
         Y1 = Temp;
-        Temp = X0;
+        Temp = static_cast<short>(X0);
         X0 = X1;
         X1 = Temp;
     }
     /* Draw the initial pixel, which is always exactly intersected by
        the line and so needs no weighting */
-    PUTDOT(X0, Y0, &BaseColor[0], nullptr);
+    PUTDOT(static_cast<short>(X0), static_cast<short>(Y0), &BaseColor[0], nullptr);
 
-    if ((DeltaX = X1 - X0) >= 0)
+    if ((DeltaX = static_cast<short>(X1 - X0)) >= 0)
     {
         XDir = 1;
     }
@@ -1023,13 +1026,13 @@ void DrawWuLine(int X0, int Y0, int X1, int Y1, uint8_t *BaseColor,
     /* Special-case horizontal, vertical, and diagonal lines, which
        require no weighting because they go right through the center of
        every pixel */
-    if ((DeltaY = Y1 - Y0) == 0)
+    if ((DeltaY = static_cast<short>(Y1 - Y0)) == 0)
     {
         /* Horizontal line */
         while (DeltaX-- != 0)
         {
             X0 += XDir;
-            PUTDOT(X0, Y0, &BaseColor[0], nullptr);
+            PUTDOT(static_cast<short>(X0), static_cast<short>(Y0), &BaseColor[0], nullptr);
         }
         return;
     }
@@ -1039,7 +1042,7 @@ void DrawWuLine(int X0, int Y0, int X1, int Y1, uint8_t *BaseColor,
         do
         {
             Y0++;
-            PUTDOT(X0, Y0, &BaseColor[0], nullptr);
+            PUTDOT(static_cast<short>(X0), static_cast<short>(Y0), &BaseColor[0], nullptr);
         }
         while (--DeltaY != 0);
         return;
@@ -1051,7 +1054,7 @@ void DrawWuLine(int X0, int Y0, int X1, int Y1, uint8_t *BaseColor,
         {
             X0 += XDir;
             Y0++;
-            PUTDOT(X0, Y0, &BaseColor[0], nullptr);
+            PUTDOT(static_cast<short>(X0), static_cast<short>(Y0), &BaseColor[0], nullptr);
         }
         while (--DeltaY != 0);
         return;
@@ -1062,14 +1065,14 @@ void DrawWuLine(int X0, int Y0, int X1, int Y1, uint8_t *BaseColor,
     IntensityShift = 16 - IntensityBits;
     /* Mask used to flip all bits in an intensity weighting, producing the
        result (1 - intensity weighting) */
-    WeightingComplementMask = NumLevels - 1;
+    WeightingComplementMask = static_cast<unsigned short>(NumLevels - 1);
     /* Is this an X-major or Y-major line? */
     if (DeltaY > DeltaX)
     {
         /* Y-major line; calculate 16-bit fixed-point fractional part of a
            pixel that X advances each time Y advances 1 pixel, truncating the
            result so that we won't overrun the endpoint along the X axis */
-        ErrorAdj = (static_cast<unsigned long>(DeltaX) << 16) / static_cast<unsigned long>(DeltaY);
+        ErrorAdj = static_cast<unsigned short>((static_cast<unsigned long>(DeltaX) << 16) / static_cast<unsigned long>(DeltaY));
         /* Draw all pixels other than the first and last */
         while (--DeltaY)
         {
@@ -1085,20 +1088,20 @@ void DrawWuLine(int X0, int Y0, int X1, int Y1, uint8_t *BaseColor,
                intensity weighting for this pixel, and the complement of the
                weighting for the paired pixel */
             Weighting = ErrorAcc >> IntensityShift;
-            PUTDOT(X0, Y0, &BaseColor[Weighting], &BaseColor[7]);
-            PUTDOT(X0 + XDir, Y0,
+            PUTDOT(static_cast<short>(X0), static_cast<short>(Y0), &BaseColor[Weighting], &BaseColor[7]);
+            PUTDOT(static_cast<short>(X0 + XDir), static_cast<short>(Y0),
                    &BaseColor[(Weighting ^ WeightingComplementMask)],
                    &BaseColor[7]);
         }
         /* Draw the final pixel, which is always exactly intersected by the line
            and so needs no weighting */
-        PUTDOT(X1, Y1, &BaseColor[0], nullptr);
+        PUTDOT(static_cast<short>(X1), static_cast<short>(Y1), &BaseColor[0], nullptr);
         return;
     }
     /* It's an X-major line; calculate 16-bit fixed-point fractional part of a
        pixel that Y advances each time X advances 1 pixel, truncating the
        result to avoid overrunning the endpoint along the X axis */
-    ErrorAdj = (static_cast<unsigned long>(DeltaY) << 16) / static_cast<unsigned long>(DeltaX);
+    ErrorAdj = static_cast<unsigned short>((static_cast<unsigned long>(DeltaY) << 16) / static_cast<unsigned long>(DeltaX));
     /* Draw all pixels other than the first and last */
     while (--DeltaX)
     {
@@ -1114,15 +1117,15 @@ void DrawWuLine(int X0, int Y0, int X1, int Y1, uint8_t *BaseColor,
            intensity weighting for this pixel, and the complement of the
            weighting for the paired pixel */
         Weighting = ErrorAcc >> IntensityShift;
-        PUTDOT(X0, Y0, &BaseColor[Weighting], &BaseColor[7]);
-        PUTDOT(X0, Y0 + 1,
+        PUTDOT(static_cast<short>(X0), static_cast<short>(Y0), &BaseColor[Weighting], &BaseColor[7]);
+        PUTDOT(static_cast<short>(X0), static_cast<short>(Y0 + 1),
                &BaseColor[(Weighting ^ WeightingComplementMask)],
                &BaseColor[7]);
 
     }
     /* Draw the final pixel, which is always exactly intersected by the line
        and so needs no weighting */
-    PUTDOT(X1, Y1, &BaseColor[0], nullptr);
+    PUTDOT(static_cast<short>(X1), static_cast<short>(Y1), &BaseColor[0], nullptr);
 }
 
 void AM_drawMline(mline_t * ml, int color)
