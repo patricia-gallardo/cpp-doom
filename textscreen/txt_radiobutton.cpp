@@ -39,7 +39,6 @@ static void TXT_RadioButtonDrawer(void *uncast_radiobutton)
 {
     auto *radiobutton = reinterpret_cast<txt_radiobutton_t *>(uncast_radiobutton);
     txt_saved_colors_t colors;
-    int w = static_cast<int>(radiobutton->widget.w);
 
     TXT_SaveColors(&colors);
     TXT_FGColor(TXT_COLOR_BRIGHT_CYAN);
@@ -65,7 +64,7 @@ static void TXT_RadioButtonDrawer(void *uncast_radiobutton)
 
     TXT_DrawString(radiobutton->label);
 
-    for (unsigned int i= TXT_UTF8_Strlen(radiobutton->label); i < w-5; ++i)
+    for (unsigned int i= TXT_UTF8_Strlen(radiobutton->label); i < radiobutton->widget.w -5; ++i)
     {
         TXT_DrawString(" ");
     }

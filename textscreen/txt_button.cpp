@@ -36,13 +36,12 @@ static void TXT_ButtonSizeCalc(void *uncast_button)
 static void TXT_ButtonDrawer(void *uncast_button)
 {
     auto *button = reinterpret_cast<txt_button_t *>(uncast_button);
-    int w = static_cast<int>(button->widget.w);
 
     TXT_SetWidgetBG(button);
 
     TXT_DrawString(button->label);
 
-    for (unsigned int i = TXT_UTF8_Strlen(button->label); i < w; ++i)
+    for (unsigned int i = TXT_UTF8_Strlen(button->label); i < button->widget.w; ++i)
     {
         TXT_DrawString(" ");
     }
