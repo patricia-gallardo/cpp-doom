@@ -1723,7 +1723,7 @@ void G_ReadDemoTiccmd(ticcmd_t * cmd)
     }
     else
     {
-        cmd->angleturn = (static_cast<unsigned char>(*demo_p++)) << 8;
+        cmd->angleturn = static_cast<short>(static_cast<unsigned char>(*demo_p++) << 8);
     }
 
     cmd->buttons = static_cast<unsigned char>(*demo_p++);

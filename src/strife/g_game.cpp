@@ -2100,7 +2100,7 @@ void G_ReadDemoTiccmd (ticcmd_t* cmd)
     }
     cmd->forwardmove = static_cast<signed char>(*demo_p++);
     cmd->sidemove = static_cast<signed char>(*demo_p++);
-    cmd->angleturn = (static_cast<unsigned char>(*demo_p++))<<8;
+    cmd->angleturn = static_cast<short>(static_cast<unsigned char>(*demo_p++) << 8);
     cmd->buttons = static_cast<unsigned char>(*demo_p++);
     cmd->buttons2 = static_cast<unsigned char>(*demo_p++); // [STRIFE]
     cmd->inventory = static_cast<int>(*demo_p++);          // [STRIFE]

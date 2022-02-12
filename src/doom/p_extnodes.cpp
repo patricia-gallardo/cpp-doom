@@ -85,7 +85,7 @@ mapformat_t P_CheckMapFormat(int lumpnum)
 // adapted from prboom-plus/src/p_setup.c:633-752
 void P_LoadSegs_DeePBSP(int lump)
 {
-    numsegs = static_cast<unsigned long>(W_LumpLength(lump)) / sizeof(mapseg_deepbsp_t);
+    numsegs = W_LumpLength(lump) / sizeof(mapseg_deepbsp_t);
     segs    = zmalloc<decltype(segs)>(static_cast<int>(static_cast<unsigned long>(numsegs) * sizeof(seg_t)), PU_LEVEL, 0);
     mapseg_deepbsp_t *data    = cache_lump_num<mapseg_deepbsp_t *>(lump, PU_STATIC);
 
@@ -144,18 +144,15 @@ void P_LoadSegs_DeePBSP(int lump)
 // adapted from prboom-plus/src/p_setup.c:843-863
 void P_LoadSubsectors_DeePBSP(int lump)
 {
-    mapsubsector_deepbsp_t *data;
-    int                     i;
-
     numsubsectors = W_LumpLength(lump) / sizeof(mapsubsector_deepbsp_t);
     subsectors    = zmalloc<decltype(subsectors)>(numsubsectors * sizeof(subsector_t), PU_LEVEL, 0);
-    data          = cache_lump_num<mapsubsector_deepbsp_t *>(lump, PU_STATIC);
+    mapsubsector_deepbsp_t *data = cache_lump_num<mapsubsector_deepbsp_t *>(lump, PU_STATIC);
 
     // [crispy] fail on missing subsectors
     if (!data || !numsubsectors)
         I_Error("P_LoadSubsectors: No subsectors in map!");
 
-    for (i = 0; i < numsubsectors; i++)
+    for (int i = 0; i < numsubsectors; i++)
     {
         subsectors[i].numlines  = static_cast<int>(data[i].numsegs);
         subsectors[i].firstline = static_cast<int>(data[i].firstseg);
@@ -495,21 +492,15 @@ void P_LoadThings_Hexen(int lump)
 // adapted from chocolate-doom/src/hexen/p_setup.c:410-490
 void P_LoadLineDefs_Hexen(int lump)
 {
-    int                 i;
-    maplinedef_hexen_t *mld;
-    line_t *            ld;
-    vertex_t *          v1, *v2;
-    int                 warn; // [crispy] warn about unknown linedef types
-
     numlines = W_LumpLength(lump) / sizeof(maplinedef_hexen_t);
     lines    = zmalloc<decltype(lines)>(numlines * sizeof(line_t), PU_LEVEL, 0);
     memset(lines, 0, numlines * sizeof(line_t));
     auto *data = cache_lump_num<uint8_t *>(lump, PU_STATIC);
 
-    mld  = reinterpret_cast<maplinedef_hexen_t *>(data);
-    ld   = lines;
-    warn = 0; // [crispy] warn about unknown linedef types
-    for (i = 0; i < numlines; i++, mld++, ld++)
+    maplinedef_hexen_t *mld  = reinterpret_cast<maplinedef_hexen_t *>(data);
+    line_t *ld   = lines;
+    int warn = 0; // [crispy] warn about unknown linedef types
+    for (int i = 0; i < numlines; i++, mld++, ld++)
     {
         ld->flags = static_cast<unsigned short>(SHORT(mld->flags));
 
@@ -527,8 +518,8 @@ void P_LoadLineDefs_Hexen(int lump)
             warn++;
         }
 
-        v1 = ld->v1 = &vertexes[static_cast<unsigned short>(SHORT(mld->v1))];
-        v2 = ld->v2 = &vertexes[static_cast<unsigned short>(SHORT(mld->v2))];
+        vertex_t *v1 = ld->v1 = &vertexes[static_cast<unsigned short>(SHORT(mld->v1))];
+        vertex_t *v2 = ld->v2 = &vertexes[static_cast<unsigned short>(SHORT(mld->v2))];
 
         ld->dx = v2->x - v1->x;
         ld->dy = v2->y - v1->y;
