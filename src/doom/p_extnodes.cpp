@@ -85,19 +85,14 @@ mapformat_t P_CheckMapFormat(int lumpnum)
 // adapted from prboom-plus/src/p_setup.c:633-752
 void P_LoadSegs_DeePBSP(int lump)
 {
-    int               i;
-    mapseg_deepbsp_t *data;
+    numsegs = static_cast<unsigned long>(W_LumpLength(lump)) / sizeof(mapseg_deepbsp_t);
+    segs    = zmalloc<decltype(segs)>(static_cast<int>(static_cast<unsigned long>(numsegs) * sizeof(seg_t)), PU_LEVEL, 0);
+    mapseg_deepbsp_t *data    = cache_lump_num<mapseg_deepbsp_t *>(lump, PU_STATIC);
 
-    numsegs = W_LumpLength(lump) / sizeof(mapseg_deepbsp_t);
-    segs    = zmalloc<decltype(segs)>(numsegs * sizeof(seg_t), PU_LEVEL, 0);
-    data    = cache_lump_num<mapseg_deepbsp_t *>(lump, PU_STATIC);
-
-    for (i = 0; i < numsegs; i++)
+    for (int i = 0; i < numsegs; i++)
     {
         seg_t *           li = segs + i;
         mapseg_deepbsp_t *ml = data + i;
-        int               side, linedef_local;
-        line_t *          ldef;
 
         li->v1 = &vertexes[ml->v1];
         li->v2 = &vertexes[ml->v2];
@@ -105,10 +100,10 @@ void P_LoadSegs_DeePBSP(int lump)
         li->angle = (SHORT(ml->angle)) << FRACBITS;
 
         //	li->offset = (SHORT(ml->offset))<<FRACBITS; // [crispy] recalculated below
-        linedef_local = static_cast<unsigned short>(SHORT(ml->linedef));
-        ldef        = &lines[linedef_local];
+        int linedef_local = static_cast<unsigned short>(SHORT(ml->linedef));
+        line_t *ldef      = &lines[linedef_local];
         li->linedef = ldef;
-        side        = SHORT(ml->side);
+        int side        = SHORT(ml->side);
 
         // e6y: check for wrong indexes
         if (static_cast<unsigned>(ldef->sidenum[side]) >= static_cast<unsigned>(numsides))

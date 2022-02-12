@@ -1148,7 +1148,7 @@ bool PIT_VileCheck(mobj_t *thing)
     int     maxdist;
     bool check;
 
-    if (!(thing->flags & MF_CORPSE))
+    if (!(static_cast<unsigned int>(thing->flags) & MF_CORPSE))
         return true; // not a monster
 
     if (thing->tics != -1)
@@ -1229,7 +1229,7 @@ void A_VileChase(mobj_t *actor)
                     P_SetMobjState(corpsehit,
                         info->raisestate);
                     corpsehit->height <<= 2;
-                    corpsehit->flags  = info->flags;
+                    corpsehit->flags  = static_cast<int>(info->flags);
                     corpsehit->health = info->spawnhealth;
                     corpsehit->target = nullptr;
 
@@ -1876,7 +1876,7 @@ void A_BrainAwake(mobj_t *)
             if (numbraintargets == maxbraintargets)
             {
                 maxbraintargets = maxbraintargets ? 2 * maxbraintargets : 32;
-                braintargets    = static_cast<decltype(braintargets)>(I_Realloc(braintargets, maxbraintargets * sizeof(*braintargets)));
+                braintargets    = static_cast<decltype(braintargets)>(I_Realloc(braintargets, static_cast<unsigned long>(maxbraintargets) * sizeof(*braintargets)));
 
                 if (maxbraintargets > 32)
                     fprintf(stderr, "R_BrainAwake: Raised braintargets limit to %d.\n", maxbraintargets);

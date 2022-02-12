@@ -1871,17 +1871,17 @@ void WI_loadData()
     if (gamemode == commercial)
     {
         NUMCMAPS   = (crispy->havemap33) ? 33 : 32;
-        lnames     = zmalloc<patch_t **>(sizeof(patch_t *) * NUMCMAPS,
+        lnames     = zmalloc<patch_t **>(static_cast<int>(sizeof(patch_t *) * static_cast<unsigned long>(NUMCMAPS)),
             PU_STATIC, nullptr);
-        num_lnames = NUMCMAPS;
+        num_lnames = static_cast<unsigned int>(NUMCMAPS);
     }
     else
     {
         // [crispy] support E1M10 "Sewers"
         int nummaps = crispy->havee1m10 ? NUMMAPS + 1 : NUMMAPS;
-        lnames      = zmalloc<patch_t **>(sizeof(patch_t *) * nummaps,
+        lnames      = zmalloc<patch_t **>(static_cast<int>(sizeof(patch_t *) * static_cast<unsigned long>(nummaps)),
             PU_STATIC, nullptr);
-        num_lnames  = nummaps;
+        num_lnames  = static_cast<unsigned int>(nummaps);
     }
 
     WI_loadUnloadData(WI_loadCallback);

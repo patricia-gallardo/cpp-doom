@@ -752,7 +752,7 @@ void R_InitTranslationTables()
         else
         {
             // Keep all other colors as is.
-            translationtables[i] = translationtables[i + 256] = translationtables[i + 512] = i;
+            translationtables[i] = translationtables[i + 256] = translationtables[i + 512] = static_cast<uint8_t>(i);
         }
     }
 }
@@ -964,16 +964,15 @@ void R_DrawSpanLow()
 
     do
     {
-        uint8_t source;
         // Calculate current texture index in u,v.
         // [crispy] fix flats getting more distorted the closer they are to the right
         ytemp = (ds_yfrac >> 10) & 0x0fc0;
         xtemp = (ds_xfrac >> 16) & 0x3f;
-        spot  = xtemp | ytemp;
+        spot  = static_cast<int>(xtemp | ytemp);
 
         // Lowres/blocky mode does it twice,
         //  while scale is adjusted appropriately.
-        source = ds_source[spot];
+        uint8_t source = ds_source[spot];
         dest   = ylookup[ds_y] + columnofs[flipviewwidth[ds_x1++]];
         *dest  = ds_colormap[ds_brightmap[source]][source];
         dest   = ylookup[ds_y] + columnofs[flipviewwidth[ds_x1++]];
@@ -1178,7 +1177,7 @@ void R_DrawViewBorder()
 
     // copy one line of right side and bottom
     ofs = (viewheight + top) * SCREENWIDTH - side;
-    R_VideoErase(ofs, top * SCREENWIDTH + side);
+    R_VideoErase(static_cast<unsigned int>(ofs), top * SCREENWIDTH + side);
 
     // copy sides using wraparound
     ofs = top * SCREENWIDTH + SCREENWIDTH - side;
@@ -1186,7 +1185,7 @@ void R_DrawViewBorder()
 
     for (i = 1; i < viewheight; i++)
     {
-        R_VideoErase(ofs, side);
+        R_VideoErase(static_cast<unsigned int>(ofs), side);
         ofs += SCREENWIDTH;
     }
 
