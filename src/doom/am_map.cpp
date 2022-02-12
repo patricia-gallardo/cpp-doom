@@ -307,10 +307,8 @@ static angle_t  mapangle;
 void AM_getIslope(mline_t *ml,
     islope_t *             is)
 {
-    int dx, dy;
-
-    dy = ml->a.y - ml->b.y;
-    dx = ml->b.x - ml->a.x;
+    int dy = ml->a.y - ml->b.y;
+    int dx = ml->b.x - ml->a.x;
     if (!dy)
         is->islp = (dx < 0 ? -INT_MAX : INT_MAX);
     else

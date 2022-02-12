@@ -595,7 +595,7 @@ bool mus2mid(MEMFILE *musinput, MEMFILE *midioutput)
 
                 if (controllernumber == 0)
                 {
-                    if (WriteChangePatch(channel, controllervalue,
+                    if (WriteChangePatch(static_cast<uint8_t>(channel), controllervalue,
                             midioutput))
                     {
                         return true;
