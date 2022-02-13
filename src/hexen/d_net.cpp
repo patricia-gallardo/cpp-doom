@@ -48,14 +48,14 @@ extern bool demorecording;
 static void PlayerQuitGame(player_t *player)
 {
     static char exitmsg[80];
-    auto player_num = static_cast<uint8_t>(player - players);
+    auto player_num = static_cast<char>(player - players);
 
     M_StringCopy(exitmsg, "PLAYER 1 LEFT THE GAME", sizeof(exitmsg));
-    exitmsg[7] += static_cast<char>(player_num);
+    exitmsg[7] += player_num;
     P_SetMessage(&players[consoleplayer], exitmsg, true);
     S_StartSound(nullptr, SFX_CHAT);
 
-    playeringame[player_num] = false;
+    playeringame[static_cast<int>(player_num)] = false;
 
     // TODO: check if it is sensible to do this:
 
