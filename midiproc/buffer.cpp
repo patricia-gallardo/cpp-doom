@@ -155,7 +155,7 @@ void DeleteReader(buffer_reader_t *reader)
 //
 int Reader_BytesRead(buffer_reader_t *reader)
 {
-    return reader->pos - reader->buffer->data;
+    return static_cast<int>(reader->pos - reader->buffer->data);
 }
 
 //

@@ -1104,11 +1104,7 @@ static int GetSliceSize()
             return (1 << n);
         }
     }
-
-    // Should never happen?
-    // unreachable code
-    // return 1024;
-    assert(false);
+    [[unreachable]];
 }
 
 static bool I_SDL_InitSound(bool _use_sfx_prefix)
@@ -1189,7 +1185,7 @@ static snddevice_t sound_sdl_devices[] = {
 
 sound_module_t sound_sdl_module = {
     sound_sdl_devices,
-    std::size(sound_sdl_devices),
+    static_cast<int>(std::size(sound_sdl_devices)),
     I_SDL_InitSound,
     I_SDL_ShutdownSound,
     I_SDL_GetSfxLumpNum,

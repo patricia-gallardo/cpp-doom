@@ -842,10 +842,7 @@ P_LookForPlayers
         actor->target = player->mo;
         return true;
     }
-
-    // unreachable code
-    // return false;
-    assert(false);
+    [[unreachable]];
 }
 
 // haleyjd 09/05/10: [STRIFE] Removed A_KeenDie

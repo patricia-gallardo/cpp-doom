@@ -734,7 +734,7 @@ static default_t doom_defaults_list[] = {
 
 static default_collection_t doom_defaults = {
     doom_defaults_list,
-    std::size(doom_defaults_list),
+    static_cast<int>(std::size(doom_defaults_list)),
     nullptr,
 };
 
@@ -2195,7 +2195,7 @@ static default_t extra_defaults_list[] = {
 
 static default_collection_t extra_defaults = {
     extra_defaults_list,
-    std::size(extra_defaults_list),
+    static_cast<int>(std::size(extra_defaults_list)),
     nullptr,
 };
 
@@ -2787,7 +2787,7 @@ void M_SetMusicPackDir()
     // the directory.
     readme_path = M_StringJoin(music_pack_path, DIR_SEPARATOR_S,
         "README.txt", nullptr);
-    M_WriteFile(readme_path, MUSIC_PACK_README, strlen(MUSIC_PACK_README));
+    M_WriteFile(readme_path, MUSIC_PACK_README, static_cast<int>(strlen(MUSIC_PACK_README)));
 
     free(readme_path);
     free(music_pack_path);

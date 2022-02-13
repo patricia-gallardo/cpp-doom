@@ -262,9 +262,9 @@ static anim_t epsd2animinfo[] = {
 };
 
 static int NUMANIMS[NUMEPISODES] = {
-    std::size(epsd0animinfo),
-    std::size(epsd1animinfo),
-    std::size(epsd2animinfo),
+    static_cast<int>(std::size(epsd0animinfo)),
+    static_cast<int>(std::size(epsd1animinfo)),
+    static_cast<int>(std::size(epsd2animinfo)),
 };
 
 static anim_t *anims[NUMEPISODES] = {

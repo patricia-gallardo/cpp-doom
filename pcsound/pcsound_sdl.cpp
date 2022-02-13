@@ -177,11 +177,7 @@ static int GetSliceSize()
             return (1 << n);
         }
     }
-
-    // Should never happen?
-    // unreachable code
-    // return 1024;
-    assert(false);
+    [[unreachable]];
 }
 
 static int PCSound_SDL_Init(pcsound_callback_func callback_func)

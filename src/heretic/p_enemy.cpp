@@ -584,7 +584,7 @@ bool P_LookForPlayers(mobj_t * actor, bool allaround)
         actor->target = player->mo;
         return (true);
     }
-    return (false);
+    [[unreachable]];
 }
 
 /*

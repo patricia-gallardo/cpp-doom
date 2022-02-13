@@ -504,7 +504,7 @@ int P_FindSectorFromLineTag(line_t *line,
     // [crispy] emit a warning for linedefs without tags
     if (!line->tag)
     {
-        const long linedef_local = line - lines;
+        const long linedef_local = static_cast<long>(line - lines);
         fprintf(stderr, "P_FindSectorFromLineTag: Linedef %ld without tag\n", linedef_local);
     }
 #endif

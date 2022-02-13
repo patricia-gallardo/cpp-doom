@@ -2314,7 +2314,7 @@ static snddevice_t music_opl_devices[] = {
 
 music_module_t music_opl_module = {
     music_opl_devices,
-    std::size(music_opl_devices),
+    static_cast<int>(std::size(music_opl_devices)),
     I_OPL_InitMusic,
     I_OPL_ShutdownMusic,
     I_OPL_SetMusicVolume,

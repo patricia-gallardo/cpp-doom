@@ -272,11 +272,7 @@ static unsigned int GetSliceSize()
             return (1 << n);
         }
     }
-
-    // Should never happen?
-    // unreachable code
-    // return 1024;
-    assert(false);
+    [[unreachable]];
 }
 
 static int OPL_SDL_Init(unsigned int)

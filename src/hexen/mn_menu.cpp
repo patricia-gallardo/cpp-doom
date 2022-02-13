@@ -1721,9 +1721,7 @@ bool MN_Responder(event_t * event)
         }
         return (true);
     }
-    // unreachable code
-    // return (false);
-    assert(false);
+    [[unreachable]];
 }
 
 //---------------------------------------------------------------------------

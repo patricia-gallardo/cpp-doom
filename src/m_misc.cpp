@@ -627,14 +627,14 @@ int M_snprintf(char *buf, size_t buf_len, const char *s, ...)
 
 char *M_OEMToUTF8(const char *oem)
 {
-    unsigned int len = strlen(oem) + 1;
+    size_t len = strlen(oem) + 1;
     wchar_t *    tmp;
     char *       result;
 
     tmp = static_cast<wchar_t *>(malloc(len * sizeof(wchar_t)));
-    MultiByteToWideChar(CP_OEMCP, 0, oem, len, tmp, len);
+    MultiByteToWideChar(CP_OEMCP, 0, oem, static_cast<int>(len), tmp, static_cast<int>(len));
     result = static_cast<char *>(malloc(len * 4));
-    WideCharToMultiByte(CP_UTF8, 0, tmp, len, result, len * 4, nullptr, nullptr);
+    WideCharToMultiByte(CP_UTF8, 0, tmp, static_cast<int>(len), result, static_cast<int>(len) * 4, nullptr, nullptr);
     free(tmp);
 
     return result;

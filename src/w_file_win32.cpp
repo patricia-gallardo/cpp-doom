@@ -97,8 +97,8 @@ static wad_file_t *W_Win32_OpenFile(const char *path)
     // Open the file:
 
     MultiByteToWideChar(CP_OEMCP, 0,
-        path, strlen(path) + 1,
-        wpath, sizeof(wpath));
+        path, static_cast<int>(strlen(path) + 1),
+        wpath, static_cast<int>(sizeof(wpath)));
 
     handle = CreateFileW(wpath,
         GENERIC_READ,
@@ -180,7 +180,7 @@ size_t W_Win32_Read(wad_file_t *wad, unsigned int offset,
 
     // Read into the buffer.
 
-    if (!ReadFile(win32_wad->handle, buffer, buffer_len, &bytes_read, nullptr))
+    if (!ReadFile(win32_wad->handle, buffer, static_cast<DWORD>(buffer_len), &bytes_read, nullptr))
     {
         I_Error("W_Win32_Read: Error reading from file");
     }

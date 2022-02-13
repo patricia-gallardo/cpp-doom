@@ -424,7 +424,7 @@ static snddevice_t sound_pcsound_devices[] = {
 
 sound_module_t sound_pcsound_module = {
     sound_pcsound_devices,
-    std::size(sound_pcsound_devices),
+    static_cast<int>(std::size(sound_pcsound_devices)),
     I_PCS_InitSound,
     I_PCS_ShutdownSound,
     I_PCS_GetSfxLumpNum,

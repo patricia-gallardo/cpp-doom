@@ -1587,7 +1587,7 @@ static void M_CrispnessPrev(int)
 {
     if (--crispness_cur < 0)
     {
-        crispness_cur = std::size(CrispnessMenus) - 1;
+        crispness_cur = static_cast<int>(std::size(CrispnessMenus) - 1);
     }
 
     M_CrispnessCur(0);

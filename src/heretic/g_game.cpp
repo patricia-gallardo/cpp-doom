@@ -1870,7 +1870,7 @@ void G_RecordDemo(skill_t skill, int, int episode, int map,
     demoend = demobuffer + maxsize;
 
     demo_p = demobuffer;
-    *demo_p++ = skill;
+    *demo_p++ = static_cast<uint8_t>(skill);
     *demo_p++ = static_cast<uint8_t>(episode);
     *demo_p++ = static_cast<uint8_t>(map);
 
@@ -2089,7 +2089,7 @@ void G_DoSaveGame()
     memset(verString, 0, sizeof(verString));
     DEH_snprintf(verString, VERSIONSIZE, "version %i", HERETIC_VERSION);
     SV_Write(verString, VERSIONSIZE);
-    SV_WriteByte(gameskill);
+    SV_WriteByte(static_cast<uint8_t>(gameskill));
     SV_WriteByte(static_cast<uint8_t>(gameepisode));
     SV_WriteByte(static_cast<uint8_t>(gamemap));
     for (i = 0; i < MAXPLAYERS; i++)

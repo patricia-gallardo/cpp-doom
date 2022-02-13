@@ -60,7 +60,7 @@ static constexpr bex_thingbits_t bex_thingbitstable[] = {
     { "COUNTITEM", MF_COUNTITEM },
     { "SKULLFLY", MF_SKULLFLY },
     { "NOTDMATCH", MF_NOTDMATCH },
-    { "TRANSLUCENT", MF_TRANSLUCENT },
+    { "TRANSLUCENT", static_cast<unsigned int>(MF_TRANSLUCENT) },
     // TRANSLATION consists of 2 bits, not 1
     { "TRANSLATION", 0x04000000 },
     { "TRANSLATION1", 0x04000000 },
