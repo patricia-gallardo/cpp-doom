@@ -798,7 +798,7 @@ void AM_doFollowPlayer()
 //
 //
 //
-void AM_updateLightLev()
+[[maybe_unused]] void AM_updateLightLev()
 {
     static int nexttic = 0;
     //static int litelevels[] = { 0, 3, 5, 6, 6, 7, 7, 7 };

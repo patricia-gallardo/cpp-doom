@@ -20,7 +20,6 @@
 #include <cstdlib>
 
 #include "doomdef.hpp"
-#include "doomkeys.hpp"
 #include "doomstat.hpp"
 
 #include "deh_main.hpp"
@@ -75,7 +74,7 @@
 #include "g_game.hpp"
 #include "v_trans.hpp" // [crispy] colored "always run" message
 
-#define SAVEGAMESIZE 0x2c000
+[[maybe_unused]] constexpr auto SAVEGAMESIZE = 0x2c000;
 
 void G_ReadDemoTiccmd(ticcmd_t *cmd);
 void G_WriteDemoTiccmd(ticcmd_t *cmd);
@@ -156,7 +155,7 @@ uint8_t consistancy[MAXPLAYERS][BACKUPTICS];
 
 #define MAXPLMOVE (forwardmove[1])
 
-#define TURBOTHRESHOLD 0x32
+constexpr auto TURBOTHRESHOLD = 0x32;
 
 fixed_t forwardmove[2] = { 0x19, 0x32 };
 fixed_t sidemove[2]    = { 0x18, 0x28 };
@@ -195,10 +194,9 @@ static const struct
     { wp_bfg, wp_bfg }
 };
 
-#define SLOWTURNTICS 6
-
-#define NUMKEYS         256
-#define MAX_JOY_BUTTONS 20
+constexpr auto SLOWTURNTICS    = 6;
+constexpr auto NUMKEYS         = 256;
+constexpr auto MAX_JOY_BUTTONS = 20;
 
 static bool gamekeydown[NUMKEYS];
 static int     turnheld; // for accelerative turning
@@ -231,7 +229,7 @@ static char savename[256]; // [crispy] moved here, made static
 static int  savegameslot;
 static char savedescription[32];
 
-#define BODYQUESIZE 32
+constexpr auto BODYQUESIZE = 32;
 
 mobj_t *bodyque[BODYQUESIZE];
 int     bodyqueslot;
@@ -2389,7 +2387,7 @@ void G_InitNew(skill_t skill,
 //
 // DEMO RECORDING
 //
-#define DEMOMARKER 0x80
+constexpr auto DEMOMARKER = 0x80;
 
 // [crispy] demo progress bar and timer widget
 int defdemotics = 0, deftotaldemotics;

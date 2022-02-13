@@ -98,8 +98,8 @@ int messageToPrint;
 const char *messageString;
 
 // message x & y
-int messx;
-int messy;
+[[maybe_unused]] int messx;
+[[maybe_unused]] int messy;
 int messageLastMenuActive;
 
 // timed message = no input from user
@@ -131,9 +131,9 @@ char saveOldString[SAVESTRINGSIZE];
 bool inhelpscreens;
 bool menuactive;
 
-#define SKULLXOFF         -32
-#define LINEHEIGHT        16
-#define CRISPY_LINEHEIGHT 10 // [crispy] Crispness menu
+constexpr auto SKULLXOFF         = -32;
+constexpr auto LINEHEIGHT        = 16;
+constexpr auto CRISPY_LINEHEIGHT = 10; // [crispy] Crispness menu
 
 extern bool sendpause;
 char           savegamestrings[10][SAVESTRINGSIZE];
@@ -290,10 +290,10 @@ menu_t MainDef = {
 enum class episodes_e
 {
     ep1,
-    ep2,
-    ep3,
-    ep4,
-    ep5, // [crispy] Sigil
+    ep2 [[maybe_unused]],
+    ep3 [[maybe_unused]],
+    ep4 [[maybe_unused]],
+    ep5 [[maybe_unused]], // [crispy] Sigil
     ep_end
 };
 
@@ -319,7 +319,7 @@ menu_t EpiDef = {
 enum class expansions_e
 {
     ex1,
-    ex2,
+    ex2 [[maybe_unused]],
     ex_end
 };
 
@@ -342,10 +342,10 @@ static menu_t ExpDef = {
 //
 enum class newgame_e
 {
-    killthings,
+    killthings [[maybe_unused]],
     toorough,
     hurtme,
-    violence,
+    violence [[maybe_unused]],
     nightmare,
     newg_end
 };
@@ -377,9 +377,9 @@ enum class options_e
     messages,
     detail,
     scrnsize,
-    option_empty1,
+    option_empty1 [[maybe_unused]],
     mousesens,
-    soundvol,
+    soundvol [[maybe_unused]],
     crispness, // [crispy] Crispness menu
     opt_end
 };
@@ -445,7 +445,7 @@ enum class crispness1_e
     crispness_uncapped,
     crispness_vsync,
     crispness_smoothscaling,
-    crispness_sep_rendering_,
+    crispness_sep_rendering_ [[maybe_unused]],
 
     crispness_sep_visual,
     crispness_coloredhud,
@@ -454,7 +454,7 @@ enum class crispness1_e
     crispness_brightmaps,
     crispness_coloredblood,
     crispness_flipcorpses,
-    crispness_sep_visual_,
+    crispness_sep_visual_ [[maybe_unused]],
 
     crispness1_next,
     crispness1_prev,
@@ -497,7 +497,7 @@ enum class crispness2_e
     crispness_soundfix,
     crispness_sndchannels,
     crispness_soundmono,
-    crispness_sep_audible_,
+    crispness_sep_audible_ [[maybe_unused]],
 
     crispness_sep_navigational,
     crispness_extautomap,
@@ -505,7 +505,7 @@ enum class crispness2_e
     crispness_leveltime,
     crispness_playercoords,
     crispness_secretmessage,
-    crispness_sep_navigational_,
+    crispness_sep_navigational_ [[maybe_unused]],
 
     crispness2_next,
     crispness2_prev,
@@ -549,14 +549,14 @@ enum class crispness3_e
     crispness_weaponsquat,
     crispness_pitch,
     crispness_neghealth,
-    crispness_sep_tactical_,
+    crispness_sep_tactical_ [[maybe_unused]],
 
     crispness_sep_crosshair,
     crispness_crosshair,
     crispness_crosshairtype,
     crispness_crosshairhealth,
     crispness_crosshairtarget,
-    crispness_sep_crosshair_,
+    crispness_sep_crosshair_ [[maybe_unused]],
 
     crispness3_next,
     crispness3_prev,
@@ -599,13 +599,13 @@ enum class crispness4_e
     crispness_jumping,
     crispness_overunder,
     crispness_recoil,
-    crispness_sep_physical_,
+    crispness_sep_physical_ [[maybe_unused]],
 
     crispness_sep_demos,
     crispness_demotimer,
     crispness_demotimerdir,
     crispness_demobar,
-    crispness_sep_demos_,
+    crispness_sep_demos_ [[maybe_unused]],
 
     crispness4_next,
     crispness4_prev,
@@ -671,7 +671,7 @@ menu_t ReadDef1 = {
 
 enum class read_e2
 {
-    rdthsempty2,
+    rdthsempty2 [[maybe_unused]],
     read2_end
 };
 
@@ -694,9 +694,9 @@ menu_t ReadDef2 = {
 enum class sound_e
 {
     sfx_vol,
-    sfx_empty1,
+    sfx_empty1 [[maybe_unused]],
     music_vol,
-    sfx_empty2,
+    sfx_empty2 [[maybe_unused]],
     sound_end
 };
 
@@ -721,14 +721,14 @@ menu_t SoundDef = {
 //
 enum class load_e
 {
-    load1,
-    load2,
-    load3,
-    load4,
-    load5,
-    load6,
-    load7, // [crispy] up to 8 savegames
-    load8, // [crispy] up to 8 savegames
+    load1 [[maybe_unused]],
+    load2 [[maybe_unused]],
+    load3 [[maybe_unused]],
+    load4 [[maybe_unused]],
+    load5 [[maybe_unused]],
+    load6 [[maybe_unused]],
+    load7 [[maybe_unused]], // [crispy] up to 8 savegames
+    load8 [[maybe_unused]], // [crispy] up to 8 savegames
     load_end
 };
 
@@ -782,15 +782,12 @@ menu_t SaveDef = {
 //
 void M_ReadSaveStrings()
 {
-    FILE *handle;
-    int   i;
-    char  name[256];
-
-    for (i = 0; i < static_cast<int>(load_e::load_end); i++)
+    for (int i = 0; i < static_cast<int>(load_e::load_end); i++)
     {
+        char  name[256];
         M_StringCopy(name, P_SaveGameFile(i), sizeof(name));
 
-        handle = fopen(name, "rb");
+        FILE *handle = fopen(name, "rb");
         if (handle == nullptr)
         {
             M_StringCopy(savegamestrings[i], EMPTYSTRING, SAVESTRINGSIZE);
@@ -810,12 +807,10 @@ void M_ReadSaveStrings()
 static int LoadDef_x = 72, LoadDef_y = 28;
 void       M_DrawLoad()
 {
-    int i;
-
     V_DrawPatchDirect(LoadDef_x, LoadDef_y,
         cache_lump_name<patch_t *>(DEH_String("M_LOADG"), PU_CACHE));
 
-    for (i = 0; i < static_cast<int>(load_e::load_end); i++)
+    for (int i = 0; i < static_cast<int>(load_e::load_end); i++)
     {
         M_DrawSaveLoadBorder(LoadDef.x, LoadDef.y + LINEHEIGHT * i);
 
@@ -835,12 +830,10 @@ void       M_DrawLoad()
 //
 void M_DrawSaveLoadBorder(int x, int y)
 {
-    int i;
-
     V_DrawPatchDirect(x - 8, y + 7,
         cache_lump_name<patch_t *>(DEH_String("M_LSLEFT"), PU_CACHE));
 
-    for (i = 0; i < 24; i++)
+    for (int i = 0; i < 24; i++)
     {
         V_DrawPatchDirect(x, y + 7,
             cache_lump_name<patch_t *>(DEH_String("M_LSCNTR"), PU_CACHE));
@@ -894,10 +887,8 @@ void M_LoadGame(int)
 static int SaveDef_x = 72, SaveDef_y = 28;
 void       M_DrawSave()
 {
-    int i;
-
     V_DrawPatchDirect(SaveDef_x, SaveDef_y, cache_lump_name<patch_t *>(DEH_String("M_SAVEG"), PU_CACHE));
-    for (i = 0; i < static_cast<int>(load_e::load_end); i++)
+    for (int i = 0; i < static_cast<int>(load_e::load_end); i++)
     {
         M_DrawSaveLoadBorder(LoadDef.x, LoadDef.y + LINEHEIGHT * i);
         M_WriteText(LoadDef.x, LoadDef.y + LINEHEIGHT * i, savegamestrings[i]);
@@ -905,7 +896,7 @@ void       M_DrawSave()
 
     if (saveStringEnter)
     {
-        i = M_StringWidth(savegamestrings[saveSlot]);
+        int i = M_StringWidth(savegamestrings[saveSlot]);
         M_WriteText(LoadDef.x + i, LoadDef.y + LINEHEIGHT * saveSlot, "_");
     }
 }
@@ -930,7 +921,7 @@ void M_DoSave(int slot)
 static void SetDefaultSaveName(int)
 {
     // map from IWAD or PWAD?
-    if (W_IsIWADLump(maplumpinfo) && strcmp(savegamedir, ""))
+    if (W_IsIWADLump(maplumpinfo) && strcmp(savegamedir, "") != 0)
     {
         M_snprintf(savegamestrings[itemOn], SAVESTRINGSIZE,
             "%s", maplumpinfo->name);
@@ -1039,8 +1030,6 @@ void M_QuickSaveResponse(int key)
 
 void M_QuickSave()
 {
-    char *savegamestring;
-
     if (!usergame)
     {
         S_StartSound(nullptr, sfx_oof);
@@ -1059,7 +1048,7 @@ void M_QuickSave()
         return;
     }
     // [crispy] print savegame name in golden letters
-    savegamestring = M_StringJoin(crstr[static_cast<int>(cr_t::CR_GOLD)],
+    char *savegamestring = M_StringJoin(crstr[static_cast<int>(cr_t::CR_GOLD)],
         savegamestrings[quickSaveSlot],
         crstr[static_cast<int>(cr_t::CR_NONE)],
         nullptr);
@@ -1085,8 +1074,6 @@ void M_QuickLoadResponse(int key)
 
 void M_QuickLoad()
 {
-    char *savegamestring;
-
     // [crispy] allow quickloading game while multiplayer demo playback
     if (netgame && !demoplayback)
     {
@@ -1104,7 +1091,7 @@ void M_QuickLoad()
         return;
     }
     // [crispy] print savegame name in golden letters
-    savegamestring = M_StringJoin(crstr[static_cast<int>(cr_t::CR_GOLD)],
+    char *savegamestring = M_StringJoin(crstr[static_cast<int>(cr_t::CR_GOLD)],
         savegamestrings[quickSaveSlot],
         crstr[static_cast<int>(cr_t::CR_NONE)],
         nullptr);
@@ -2813,13 +2800,10 @@ static void M_DrawOPLDev()
 //
 void M_Drawer()
 {
-    static short x;
-    static short y;
+//    static short x;
+//    static short y;
     size_t i;
-    unsigned int max;
     char         string[80];
-    const char * name;
-    size_t       start;
 
     inhelpscreens = false;
 
@@ -2832,8 +2816,8 @@ void M_Drawer()
             M_DrawCrispnessBackground();
         }
 
-        start = 0;
-        y     = static_cast<short>(ORIGHEIGHT / 2 - M_StringHeight(messageString) / 2);
+        size_t start = 0;
+        static short y = static_cast<short>(ORIGHEIGHT / 2 - M_StringHeight(messageString) / 2);
         while (messageString[start] != '\0')
         {
             bool foundnewline = false;
@@ -2861,7 +2845,7 @@ void M_Drawer()
                 start += strlen(string);
             }
 
-            x = static_cast<short>(ORIGWIDTH / 2 - M_StringWidth(string) / 2);
+            static short x = static_cast<short>(ORIGWIDTH / 2 - M_StringWidth(string) / 2);
             M_WriteText(x > 0 ? x : 0, y, string); // [crispy] prevent negative x-coords
             y = static_cast<short>(y + SHORT(hu_font[0]->height));
         }
@@ -2881,13 +2865,13 @@ void M_Drawer()
         currentMenu->routine(); // call Draw routine
 
     // DRAW MENU
-    x   = currentMenu->x;
-    y   = currentMenu->y;
-    max = static_cast<unsigned int>(currentMenu->numitems);
+    static short x   = currentMenu->x;
+    static short y   = currentMenu->y;
+    unsigned int max = static_cast<unsigned int>(currentMenu->numitems);
 
     for (i = 0; i < max; i++)
     {
-        name = DEH_String(currentMenu->menuitems[i].name);
+        const char *name = DEH_String(currentMenu->menuitems[i].name);
 
         if (name[0]) // && W_CheckNumForName(name) > 0) // [crispy] moved...
         {
@@ -2934,7 +2918,7 @@ void M_Drawer()
 //
 void M_ClearMenus()
 {
-    menuactive = 0;
+    menuactive = false;
 
     // [crispy] entering menus while recording demos pauses the game
     if (demorecording && paused)
@@ -2974,7 +2958,7 @@ void M_Ticker()
 void M_Init()
 {
     currentMenu      = &MainDef;
-    menuactive       = 0;
+    menuactive       = false;
     itemOn           = currentMenu->lastOn;
     whichSkull       = 0;
     skullAnimCounter = 10;
@@ -3039,20 +3023,17 @@ void M_Init()
 
     // [crispy] rearrange Load Game and Save Game menus
     {
-        const patch_t *patchl, *patchs, *patchm;
-        short          captionheight, vstep;
-
-        patchl = cache_lump_name<patch_t *>(DEH_String("M_LOADG"), PU_CACHE);
-        patchs = cache_lump_name<patch_t *>(DEH_String("M_SAVEG"), PU_CACHE);
-        patchm = cache_lump_name<patch_t *>(DEH_String("M_LSLEFT"), PU_CACHE);
+        const patch_t *patchl = cache_lump_name<patch_t *>(DEH_String("M_LOADG"), PU_CACHE);
+        const patch_t *patchs = cache_lump_name<patch_t *>(DEH_String("M_SAVEG"), PU_CACHE);
+        const patch_t *patchm = cache_lump_name<patch_t *>(DEH_String("M_LSLEFT"), PU_CACHE);
 
         LoadDef_x = (ORIGWIDTH - SHORT(patchl->width)) / 2 + SHORT(patchl->leftoffset);
         SaveDef_x = (ORIGWIDTH - SHORT(patchs->width)) / 2 + SHORT(patchs->leftoffset);
         LoadDef.x = SaveDef.x = static_cast<short>((ORIGWIDTH - 24 * 8) / 2 + SHORT(patchm->leftoffset)); // [crispy] see M_DrawSaveLoadBorder()
 
-        captionheight = MAX(SHORT(patchl->height), SHORT(patchs->height));
+        short captionheight = MAX(SHORT(patchl->height), SHORT(patchs->height));
 
-        vstep = ORIGHEIGHT - 32; // [crispy] ST_HEIGHT
+        short vstep = ORIGHEIGHT - 32; // [crispy] ST_HEIGHT
         vstep = static_cast<short>(vstep - captionheight);
         vstep = static_cast<short>(vstep - (static_cast<int>(load_e::load_end) - 1) * LINEHEIGHT + SHORT(patchm->height));
         vstep /= 3;
@@ -3175,7 +3156,7 @@ void M_ConfirmDeleteGame()
 }
 
 // [crispy] indicate game version mismatch
-void M_LoadGameVerMismatch()
+[[maybe_unused]] void M_LoadGameVerMismatch()
 {
     M_StartMessage("Game Version Mismatch\n\n" PRESSKEY, nullptr, false);
     messageToPrint = 2;

@@ -30,7 +30,6 @@
 #include "m_cheat.hpp"
 #include "m_controls.hpp"
 #include "m_misc.hpp"
-#include "i_system.hpp"
 #include "i_timer.hpp"
 #include "i_video.hpp"
 
@@ -58,50 +57,54 @@ constexpr auto GREENRANGE  = 16;
 constexpr auto GRAYS       = (6 * 16);
 constexpr auto GRAYSRANGE  = 16;
 constexpr auto BROWNS      = (4 * 16);
+constexpr auto BROWNRANGE  = 16;
 constexpr auto YELLOWS     = (256 - 32 + 7);
+constexpr auto YELLOWRANGE = 1;
 constexpr auto BLACK       = 0;
 constexpr auto WHITE       = (256 - 47);
 
 // Automap colors
-#define BACKGROUND       BLACK
-#define YOURCOLORS       WHITE
-#define YOURRANGE        0
-#define WALLCOLORS       (crispy->extautomap ? 23 : REDS) // [crispy] red-brown
-#define WALLRANGE        REDRANGE
-#define TSWALLCOLORS     GRAYS
-#define TSWALLRANGE      GRAYSRANGE
-#define FDWALLCOLORS     (crispy->extautomap ? 55 : BROWNS) // [crispy] lt brown
-#define FDWALLRANGE      BROWNRANGE
-#define CDWALLCOLORS     (crispy->extautomap ? 215 : YELLOWS) // [crispy] orange
-#define CDWALLRANGE      YELLOWRANGE
-#define THINGCOLORS      GREENS
-#define THINGRANGE       GREENRANGE
-#define SECRETWALLCOLORS 252 // [crispy] purple
+constexpr auto                  BACKGROUND               = BLACK;
+[[maybe_unused]] constexpr auto YOURCOLORS               = WHITE;
+[[maybe_unused]] constexpr auto YOURRANGE                = 0;
+constexpr auto                  WALLRANGE                = REDRANGE;
+constexpr auto                  TSWALLCOLORS             = GRAYS;
+[[maybe_unused]] constexpr auto TSWALLRANGE              = GRAYSRANGE;
+[[maybe_unused]] constexpr auto FDWALLRANGE              = BROWNRANGE;
+[[maybe_unused]] constexpr auto CDWALLRANGE              = YELLOWRANGE;
+constexpr auto                  THINGCOLORS              = GREENS;
+constexpr auto                  THINGRANGE               = GREENRANGE;
+constexpr auto                  SECRETWALLCOLORS         = 252; // [crispy] purple
+constexpr auto                  REVEALEDSECRETWALLCOLORS = 112; // [crispy] green
+[[maybe_unused]] constexpr auto SECRETWALLRANGE          = WALLRANGE;
+constexpr auto                  GRIDCOLORS               = (GRAYS + GRAYSRANGE / 2);
+[[maybe_unused]] constexpr auto GRIDRANGE                = 0;
+constexpr auto                  XHAIRCOLORS              = GRAYS;
+
+constexpr auto WALLCOLORS()   { return (crispy->extautomap ? 23 : REDS); } // [crispy] red-brown
+constexpr auto FDWALLCOLORS() { return (crispy->extautomap ? 55 : BROWNS); } // [crispy] lt brown
+constexpr auto CDWALLCOLORS() { return (crispy->extautomap ? 215 : YELLOWS); } // [crispy] orange
+
 #define CRISPY_HIGHLIGHT_REVEALED_SECRETS
-#define REVEALEDSECRETWALLCOLORS 112 // [crispy] green
-#define SECRETWALLRANGE          WALLRANGE
-#define GRIDCOLORS               (GRAYS + GRAYSRANGE / 2)
-#define GRIDRANGE                0
-#define XHAIRCOLORS              GRAYS
 
 // drawing stuff
 
-#define AM_NUMMARKPOINTS 10
+constexpr auto AM_NUMMARKPOINTS =10;
 
 // scale on entry
-#define INITSCALEMTOF (.2 * FRACUNIT)
+constexpr auto INITSCALEMTOF = (.2 * FRACUNIT);
 // how much the automap moves window per tic in frame-buffer coordinates
 // moves 140 pixels in 1 second
-#define F_PANINC 4
+constexpr auto F_PANINC = 4;
 // how much zoom-in per tic
 // goes to 2x in 1 second
-#define M_ZOOMIN (static_cast<int>(1.02 * FRACUNIT))
+constexpr auto M_ZOOMIN = (static_cast<int>(1.02 * FRACUNIT));
 // how much zoom-out per tic
 // pulls out to 0.5x in 1 second
-#define M_ZOOMOUT (static_cast<int>(FRACUNIT / 1.02))
+constexpr auto M_ZOOMOUT = (static_cast<int>(FRACUNIT / 1.02));
 // [crispy] zoom faster with the mouse wheel
-#define M2_ZOOMIN  (static_cast<int>(1.08 * FRACUNIT))
-#define M2_ZOOMOUT (static_cast<int>(FRACUNIT / 1.08))
+constexpr auto M2_ZOOMIN  = (static_cast<int>(1.08 * FRACUNIT));
+constexpr auto M2_ZOOMOUT = (static_cast<int>(FRACUNIT / 1.08));
 
 // translates between frame-buffer and map distances
 // [crispy] fix int overflow that causes map and grid lines to disappear
@@ -112,7 +115,7 @@ constexpr auto WHITE       = (256 - 47);
 #define CYMTOF(y) (f_y + (f_h - MTOF((y)-m_y)))
 
 // the following is crap
-#define LINE_NEVERSEE ML_DONTDRAW
+constexpr auto LINE_NEVERSEE = ML_DONTDRAW;
 
 typedef struct
 {
@@ -217,7 +220,7 @@ static mline_t square_mark[] = {
 static int cheating = 0;
 static int grid     = 0;
 
-static int leveljuststarted = 1; // kluge until AM_LevelInit() is called
+[[maybe_unused]] static int leveljuststarted = 1; // kluge until AM_LevelInit() is called
 
 bool automapactive = false;
 //static int 	finit_width = SCREENWIDTH;
@@ -259,8 +262,8 @@ static fixed_t max_w; // max_x-min_x,
 static fixed_t max_h; // max_y-min_y
 
 // based on player size
-static fixed_t min_w;
-static fixed_t min_h;
+[[maybe_unused]] static fixed_t min_w;
+[[maybe_unused]] static fixed_t min_h;
 
 
 static fixed_t min_scale_mtof; // used to tell when to stop zooming out
@@ -300,7 +303,7 @@ static angle_t  mapangle;
 // segment in map coordinates (with the upright y-axis n' all) so
 // that it can be used with the brain-dead drawing stuff.
 
-void AM_getIslope(mline_t *ml,
+[[maybe_unused]] void AM_getIslope(mline_t *ml,
     islope_t *             is)
 {
     int dy = static_cast<int>(ml->a.y - ml->b.y);
@@ -393,14 +396,10 @@ void AM_addMark()
 //
 void AM_findMinMaxBoundaries()
 {
-    int     i;
-    fixed_t a;
-    fixed_t b;
-
     min_x = min_y = INT_MAX;
     max_x = max_y = -INT_MAX;
 
-    for (i = 0; i < numvertexes; i++)
+    for (int i = 0; i < numvertexes; i++)
     {
         if (vertexes[i].x < min_x)
             min_x = vertexes[i].x;
@@ -420,8 +419,8 @@ void AM_findMinMaxBoundaries()
     min_w = 2 * PLAYERRADIUS; // const? never changed?
     min_h = 2 * PLAYERRADIUS;
 
-    a = FixedDiv(f_w << FRACBITS, max_w);
-    b = FixedDiv(f_h << FRACBITS, max_h);
+    fixed_t a = FixedDiv(f_w << FRACBITS, max_w);
+    fixed_t b = FixedDiv(f_h << FRACBITS, max_h);
 
     min_scale_mtof = a < b ? a / 2 : b / 2;
     max_scale_mtof = FixedDiv(f_h << FRACBITS, 2 * PLAYERRADIUS);
@@ -433,16 +432,14 @@ void AM_findMinMaxBoundaries()
 //
 void AM_changeWindowLoc()
 {
-    int64_t incx, incy;
-
     if (m_paninc.x || m_paninc.y)
     {
         followplayer = 0;
         f_oldloc.x   = INT_MAX;
     }
 
-    incx = m_paninc.x;
-    incy = m_paninc.y;
+    int64_t incx = m_paninc.x;
+    int64_t incy = m_paninc.y;
     if (crispy->automaprotate)
     {
         // Subtracting from 0u avoids compiler warnings
@@ -478,7 +475,6 @@ void AM_changeWindowLoc()
 //
 void AM_initVariables()
 {
-    int            pnum;
     static event_t st_notify = { ev_keyup, AM_MSGENTERED, 0, 0 };
 
     automapactive = true;
@@ -504,7 +500,7 @@ void AM_initVariables()
     {
         plr = &players[0];
 
-        for (pnum = 0; pnum < MAXPLAYERS; pnum++)
+        for (int pnum = 0; pnum < MAXPLAYERS; pnum++)
         {
             if (playeringame[pnum])
             {
@@ -533,10 +529,9 @@ void AM_initVariables()
 //
 void AM_loadPics()
 {
-    int  i;
     char namebuf[9];
 
-    for (i = 0; i < 10; i++)
+    for (int i = 0; i < 10; i++)
     {
         DEH_snprintf(namebuf, 9, "AMMNUM%d", i);
         marknums[i] = cache_lump_name<patch_t *>(namebuf, PU_STATIC);
@@ -545,10 +540,9 @@ void AM_loadPics()
 
 void AM_unloadPics()
 {
-    int  i;
     char namebuf[9];
 
-    for (i = 0; i < 10; i++)
+    for (int i = 0; i < 10; i++)
     {
         DEH_snprintf(namebuf, 9, "AMMNUM%d", i);
         W_ReleaseLumpName(namebuf);
@@ -557,10 +551,8 @@ void AM_unloadPics()
 
 void AM_clearMarks()
 {
-    int i;
-
-    for (i = 0; i < AM_NUMMARKPOINTS; i++)
-        markpoints[i].x = -1; // means empty
+    for (auto & markpoint : markpoints)
+        markpoint.x = -1; // means empty
     markpointnum = 0;
 }
 
@@ -570,7 +562,6 @@ void AM_clearMarks()
 //
 void AM_LevelInit()
 {
-    fixed_t a, b;
     leveljuststarted = 0;
 
     f_x = f_y = 0;
@@ -587,8 +578,8 @@ void AM_LevelInit()
     AM_findMinMaxBoundaries();
     // [crispy] initialize zoomlevel on all maps so that a 4096 units
     // square map would just fit in (MAP01 is 3376x3648 units)
-    a          = FixedDiv(f_w, (max_w >> FRACBITS < 2048) ? 2 * (max_w >> FRACBITS) : 4096);
-    b          = FixedDiv(f_h, (max_h >> FRACBITS < 2048) ? 2 * (max_h >> FRACBITS) : 4096);
+    fixed_t a          = FixedDiv(f_w, (max_w >> FRACBITS < 2048) ? 2 * (max_w >> FRACBITS) : 4096);
+    fixed_t b          = FixedDiv(f_h, (max_h >> FRACBITS < 2048) ? 2 * (max_h >> FRACBITS) : 4096);
     scale_mtof = FixedDiv(a < b ? a : b, static_cast<int>(0.7 * FRACUNIT));
     if (scale_mtof > max_scale_mtof)
         scale_mtof = min_scale_mtof;
@@ -679,12 +670,10 @@ bool
     AM_Responder(event_t *ev)
 {
 
-    int         rc;
     static int  bigstate = 0;
     static char buffer[20];
-    int         key;
 
-    rc = false;
+    bool rc = false;
 
     if (ev->type == ev_joystick && joybautomap >= 0
         && (ev->data1 & (1 << joybautomap)) != 0)
@@ -742,7 +731,7 @@ bool
     else if (ev->type == ev_keydown)
     {
         rc  = true;
-        key = ev->data1;
+        int key = ev->data1;
 
         if (key == key_map_east) // pan right
         {
@@ -864,7 +853,7 @@ bool
     else if (ev->type == ev_keyup)
     {
         rc  = false;
-        key = ev->data1;
+        int key = ev->data1;
 
         if (key == key_map_east)
         {
@@ -944,7 +933,7 @@ void AM_doFollowPlayer()
 //
 //
 //
-void AM_updateLightLev()
+[[maybe_unused]] void AM_updateLightLev()
 {
     static int nexttic = 0;
     //static int litelevels[] = { 0, 3, 5, 6, 6, 7, 7, 7 };
@@ -1029,11 +1018,11 @@ bool
 
     int outcode1 = 0;
     int outcode2 = 0;
-    int outside;
+    int outside  = 0;
 
     fpoint_t tmp;
-    int      dx;
-    int      dy;
+    int      dx = 0;
+    int      dy = 0;
 
 
 #define DOOUTCODE(oc, mx, my) \
@@ -1157,15 +1146,15 @@ bool
 void AM_drawFline(fline_t *fl,
     int                    color)
 {
-    int x;
-    int y;
-    int dx;
-    int dy;
-    int sx;
-    int sy;
-    int ax;
-    int ay;
-    int d;
+    int x  = 0;
+    int y  = 0;
+    int dx = 0;
+    int dy = 0;
+    int sx = 0;
+    int sy = 0;
+    int ax = 0;
+    int ay = 0;
+    int d  = 0;
 
     static int fuck = 0;
 
@@ -1249,12 +1238,8 @@ void AM_drawMline(mline_t *ml,
 //
 void AM_drawGrid(int color)
 {
-    int64_t x, y;
-    int64_t start, end;
-    mline_t ml;
-
     // Figure out start of vertical gridlines
-    start = m_x;
+    int64_t start = m_x;
     if (crispy->automaprotate)
     {
         start -= m_h / 2;
@@ -1263,15 +1248,16 @@ void AM_drawGrid(int color)
     if ((start - bmaporgx) % (MAPBLOCKUNITS << FRACBITS))
         start += // (MAPBLOCKUNITS<<FRACBITS)
             -((start - bmaporgx) % (MAPBLOCKUNITS << FRACBITS));
-    end = m_x + m_w;
+    int64_t end = m_x + m_w;
     if (crispy->automaprotate)
     {
         end += m_h / 2;
     }
 
     // draw vertical gridlines
-    for (x = start; x < end; x += (MAPBLOCKUNITS << FRACBITS))
+    for (int64_t x = start; x < end; x += (MAPBLOCKUNITS << FRACBITS))
     {
+        mline_t ml;
         ml.a.x = x;
         ml.b.x = x;
         // [crispy] moved here
@@ -1304,8 +1290,9 @@ void AM_drawGrid(int color)
     }
 
     // draw horizontal gridlines
-    for (y = start; y < end; y += (MAPBLOCKUNITS << FRACBITS))
+    for (int64_t y = start; y < end; y += (MAPBLOCKUNITS << FRACBITS))
     {
+        mline_t ml;
         ml.a.y = y;
         ml.b.y = y;
         // [crispy] moved here
@@ -1356,10 +1343,9 @@ static keycolor_t AM_DoorColor(int type)
 
 void AM_drawWalls()
 {
-    int            i;
     static mline_t l;
 
-    for (i = 0; i < numlines; i++)
+    for (int i = 0; i < numlines; i++)
     {
         l.a.x = lines[i].v1->x;
         l.a.y = lines[i].v1->y;
@@ -1377,7 +1363,7 @@ void AM_drawWalls()
             {
                 // [crispy] draw keyed doors in their respective colors
                 // (no Boom multiple keys)
-                keycolor_t amd;
+                keycolor_t amd = no_key;
                 if (!(lines[i].flags & ML_SECRET) && (amd = AM_DoorColor(lines[i].special)) > no_key)
                 {
                     switch (amd)
@@ -1415,7 +1401,7 @@ void AM_drawWalls()
                     AM_drawMline(&l, REVEALEDSECRETWALLCOLORS);
 #endif
                 else
-                    AM_drawMline(&l, WALLCOLORS + lightlev);
+                    AM_drawMline(&l, WALLCOLORS() + lightlev);
             }
             else
             {
@@ -1424,11 +1410,11 @@ void AM_drawWalls()
                 // (no monsters-only teleporters 125, 126; no Boom teleporters)
                 if (lines[i].special == 39 || (crispy->extautomap && !(lines[i].flags & ML_SECRET) && lines[i].special == 97))
                 { // teleporters
-                    AM_drawMline(&l, crispy->extautomap ? (GREENS + GREENRANGE / 2) : (WALLCOLORS + WALLRANGE / 2));
+                    AM_drawMline(&l, crispy->extautomap ? (GREENS + GREENRANGE / 2) : (WALLCOLORS() + WALLRANGE / 2));
                 }
                 else if (lines[i].flags & ML_SECRET) // secret door
                 {
-                    AM_drawMline(&l, WALLCOLORS + lightlev);
+                    AM_drawMline(&l, WALLCOLORS() + lightlev);
                 }
 #if defined CRISPY_HIGHLIGHT_REVEALED_SECRETS
                 // [crispy] draw revealed secret sector boundaries in green
@@ -1445,12 +1431,12 @@ void AM_drawWalls()
                 else if (lines[i].backsector->floorheight
                          != lines[i].frontsector->floorheight)
                 {
-                    AM_drawMline(&l, FDWALLCOLORS + lightlev); // floor level change
+                    AM_drawMline(&l, FDWALLCOLORS() + lightlev); // floor level change
                 }
                 else if (lines[i].backsector->ceilingheight
                          != lines[i].frontsector->ceilingheight)
                 {
-                    AM_drawMline(&l, CDWALLCOLORS + lightlev); // ceiling level change
+                    AM_drawMline(&l, CDWALLCOLORS() + lightlev); // ceiling level change
                 }
                 else if (cheating)
                 {
@@ -1511,7 +1497,6 @@ void AM_drawLineCharacter(mline_t *lineguy,
     fixed_t                        x,
     fixed_t                        y)
 {
-    int     i;
     mline_t l;
 
     if (crispy->automaprotate)
@@ -1519,7 +1504,7 @@ void AM_drawLineCharacter(mline_t *lineguy,
         angle += mapangle;
     }
 
-    for (i = 0; i < lineguylines; i++)
+    for (int i = 0; i < lineguylines; i++)
     {
         l.a.x = lineguy[i].a.x;
         l.a.y = lineguy[i].a.y;
@@ -1557,11 +1542,8 @@ void AM_drawLineCharacter(mline_t *lineguy,
 
 void AM_drawPlayers()
 {
-    int        i;
-    player_t * p;
     static int their_colors[] = { GREENS, GRAYS, BROWNS, REDS };
     int        their_color    = -1;
-    int        color;
     mpoint_t   pt;
 
     if (!netgame)
@@ -1582,10 +1564,10 @@ void AM_drawPlayers()
         return;
     }
 
-    for (i = 0; i < MAXPLAYERS; i++)
+    for (int i = 0; i < MAXPLAYERS; i++)
     {
         their_color++;
-        p = &players[i];
+        player_t *p = &players[i];
 
         if ((deathmatch && !singledemo) && p != plr)
             continue;
@@ -1593,6 +1575,7 @@ void AM_drawPlayers()
         if (!playeringame[i])
             continue;
 
+        int color = 0;
         if (p->powers[pw_invisibility])
             color = 246; // *close* to black
         else
@@ -1612,14 +1595,9 @@ void AM_drawPlayers()
 
 void AM_drawThings(int colors, int)
 {
-    int        i;
-    mobj_t *   t;
-    keycolor_t key;
-    mpoint_t   pt;
-
-    for (i = 0; i < numsectors; i++)
+    for (int i = 0; i < numsectors; i++)
     {
-        t = sectors[i].thinglist;
+        mobj_t *t = sectors[i].thinglist;
         while (t)
         {
             // [crispy] do not draw an extra triangle for the player
@@ -1629,6 +1607,7 @@ void AM_drawThings(int colors, int)
                 continue;
             }
 
+            mpoint_t   pt;
             pt.x = t->x;
             pt.y = t->y;
             if (crispy->automaprotate)
@@ -1639,6 +1618,7 @@ void AM_drawThings(int colors, int)
             if (crispy->extautomap)
             {
                 // [crispy] skull keys and key cards
+                keycolor_t key = no_key;
                 switch (t->info->doomednum)
                 {
                 case 38:
@@ -1709,26 +1689,24 @@ void AM_drawThings(int colors, int)
 
 void AM_drawMarks()
 {
-    int      i, fx, fy, w, h;
-    mpoint_t pt;
-
-    for (i = 0; i < AM_NUMMARKPOINTS; i++)
+    for (int i = 0; i < AM_NUMMARKPOINTS; i++)
     {
         if (markpoints[i].x != -1)
         {
             //      w = SHORT(marknums[i]->width);
             //      h = SHORT(marknums[i]->height);
-            w = 5; // because something's wrong with the wad, i guess
-            h = 6; // because something's wrong with the wad, i guess
+            int w = 5; // because something's wrong with the wad, i guess
+            int h = 6; // because something's wrong with the wad, i guess
             // [crispy] center marks around player
+            mpoint_t pt;
             pt.x = markpoints[i].x;
             pt.y = markpoints[i].y;
             if (crispy->automaprotate)
             {
                 AM_rotatePoint(&pt);
             }
-            fx = (flipscreenwidth[CXMTOF(pt.x)] >> crispy->hires) - 1 - DELTAWIDTH;
-            fy = static_cast<int>((CYMTOF(pt.y) >> crispy->hires) - 2);
+            int fx = (flipscreenwidth[CXMTOF(pt.x)] >> crispy->hires) - 1 - DELTAWIDTH;
+            int fy = static_cast<int>((CYMTOF(pt.y) >> crispy->hires) - 2);
             if (fx >= f_x && fx <= (f_w >> crispy->hires) - w && fy >= f_y && fy <= (f_h >> crispy->hires) - h)
                 V_DrawPatch(fx, fy, marknums[i]);
         }
@@ -1788,35 +1766,31 @@ void AM_Drawer()
 // [crispy] extended savegames
 void AM_GetMarkPoints(int *n, long *p)
 {
-    int i;
-
     *n = markpointnum;
     *p = -1L;
 
     // [crispy] prevent saving markpoints from previous map
     if (lastlevel == gamemap && lastepisode == gameepisode)
     {
-        for (i = 0; i < AM_NUMMARKPOINTS; i++)
+        for (auto & markpoint : markpoints)
         {
-            *p++ = static_cast<long>(markpoints[i].x);
-            *p++ = (markpoints[i].x == -1) ? 0L : static_cast<long>(markpoints[i].y);
+            *p++ = static_cast<long>(markpoint.x);
+            *p++ = (markpoint.x == -1) ? 0L : static_cast<long>(markpoint.y);
         }
     }
 }
 
 void AM_SetMarkPoints(int n, long *p)
 {
-    int i;
-
     AM_LevelInit();
     lastlevel   = gamemap;
     lastepisode = gameepisode;
 
     markpointnum = n;
 
-    for (i = 0; i < AM_NUMMARKPOINTS; i++)
+    for (auto & markpoint : markpoints)
     {
-        markpoints[i].x = static_cast<int64_t>(*p++);
-        markpoints[i].y = static_cast<int64_t>(*p++);
+        markpoint.x = static_cast<int64_t>(*p++);
+        markpoint.y = static_cast<int64_t>(*p++);
     }
 }
