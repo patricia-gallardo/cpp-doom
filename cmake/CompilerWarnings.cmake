@@ -65,6 +65,8 @@ function(set_project_warnings)
             -Wno-unknown-warning-option # CLANG TODO turn it back on (patricia)
             -Wno-class-memaccess # GCC TODO turn it back on (patricia)
             -Wno-unknown-pragmas # GCC TODO turn it back on (patricia)
+            -Wno-unknown-attributes # unknown attribute 'unreachable' ignored
+            -Wno-attributes
             )
 
     if (WARNINGS_AS_ERRORS)
