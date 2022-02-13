@@ -3547,9 +3547,7 @@ mobjinfo_t mobjinfo[NUMMOBJTYPES] =
         1000,       //mass
         0,      //damage
         sfx_alnact,     //activesound
-        MF_SPECIAL|MF_SOLID|MF_SHOOTABLE|MF_NOGRAVITY|MF_GIVEQUEST
-        |MF_FLOAT|MF_NODIALOG|MF_SHADOW|MF_COUNTKILL|MF_NOTDMATCH
-        |MF_MVIS|MF_SPECTRAL,        //flags
+        static_cast<unsigned int>(MF_SPECIAL|MF_SOLID|MF_SHOOTABLE|MF_NOGRAVITY|MF_GIVEQUEST|MF_FLOAT|MF_NODIALOG|MF_SHADOW|MF_COUNTKILL|MF_NOTDMATCH|MF_MVIS|MF_SPECTRAL),        //flags
         nullptr,       //namepointer
     },
 
@@ -3576,9 +3574,7 @@ mobjinfo_t mobjinfo[NUMMOBJTYPES] =
         1000,       //mass
         0,      //damage
         sfx_alnact,     //activesound
-        MF_SPECIAL|MF_SOLID|MF_SHOOTABLE|MF_NOGRAVITY|MF_GIVEQUEST
-        |MF_FLOAT|MF_NODIALOG|MF_SHADOW|MF_COUNTKILL|MF_NOTDMATCH
-        |MF_MVIS|MF_SPECTRAL,        //flags
+        static_cast<unsigned int>(MF_SPECIAL|MF_SOLID|MF_SHOOTABLE|MF_NOGRAVITY|MF_GIVEQUEST|MF_FLOAT|MF_NODIALOG|MF_SHADOW|MF_COUNTKILL|MF_NOTDMATCH|MF_MVIS|MF_SPECTRAL),        //flags
         nullptr,       //namepointer
     },
 
@@ -3605,9 +3601,7 @@ mobjinfo_t mobjinfo[NUMMOBJTYPES] =
         1000,       //mass
         0,      //damage
         sfx_alnact,     //activesound
-        MF_SPECIAL|MF_SOLID|MF_SHOOTABLE|MF_NOGRAVITY|MF_GIVEQUEST
-        |MF_FLOAT|MF_NODIALOG|MF_SHADOW|MF_COUNTKILL|MF_NOTDMATCH
-        |MF_MVIS|MF_SPECTRAL,        //flags
+        static_cast<unsigned int>(MF_SPECIAL|MF_SOLID|MF_SHOOTABLE|MF_NOGRAVITY|MF_GIVEQUEST|MF_FLOAT|MF_NODIALOG|MF_SHADOW|MF_COUNTKILL|MF_NOTDMATCH|MF_MVIS|MF_SPECTRAL),        //flags
         nullptr,       //namepointer
     },
 
@@ -3634,9 +3628,7 @@ mobjinfo_t mobjinfo[NUMMOBJTYPES] =
         1000,       //mass
         0,      //damage
         sfx_alnact,     //activesound
-        MF_SPECIAL|MF_SOLID|MF_SHOOTABLE|MF_NOGRAVITY|MF_GIVEQUEST
-        |MF_FLOAT|MF_NODIALOG|MF_SHADOW|MF_COUNTKILL|MF_NOTDMATCH
-        |MF_MVIS|MF_SPECTRAL,        //flags
+        static_cast<unsigned int>(MF_SPECIAL|MF_SOLID|MF_SHOOTABLE|MF_NOGRAVITY|MF_GIVEQUEST|MF_FLOAT|MF_NODIALOG|MF_SHADOW|MF_COUNTKILL|MF_NOTDMATCH|MF_MVIS|MF_SPECTRAL),        //flags
         nullptr,       //namepointer
     },
 
@@ -3663,9 +3655,7 @@ mobjinfo_t mobjinfo[NUMMOBJTYPES] =
         1000,       //mass
         0,      //damage
         sfx_alnact,     //activesound
-        MF_SPECIAL|MF_SOLID|MF_SHOOTABLE|MF_NOGRAVITY|MF_GIVEQUEST
-        |MF_FLOAT|MF_NODIALOG|MF_SHADOW|MF_COUNTKILL|MF_NOTDMATCH
-        |MF_MVIS|MF_SPECTRAL,        //flags
+        static_cast<unsigned int>(MF_SPECIAL|MF_SOLID|MF_SHOOTABLE|MF_NOGRAVITY|MF_GIVEQUEST|MF_FLOAT|MF_NODIALOG|MF_SHADOW|MF_COUNTKILL|MF_NOTDMATCH|MF_MVIS|MF_SPECTRAL),        //flags
         nullptr,       //namepointer
     },
 
@@ -3746,7 +3736,7 @@ mobjinfo_t mobjinfo[NUMMOBJTYPES] =
         100,        //mass
         70,     //damage
         sfx_None,       //activesound
-        MF_NOBLOCKMAP|MF_NOGRAVITY|MF_DROPOFF|MF_MISSILE|MF_SPECTRAL,       //flags
+        static_cast<unsigned int>(MF_NOBLOCKMAP|MF_NOGRAVITY|MF_DROPOFF|MF_MISSILE|MF_SPECTRAL),       //flags
         nullptr,       //namepointer
     },
 
