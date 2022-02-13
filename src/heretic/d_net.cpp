@@ -42,7 +42,7 @@ extern bool G_CheckDemoStatus();
 static void PlayerQuitGame(player_t *player)
 {
     static char exitmsg[80];
-    unsigned int player_num = static_cast<unsigned int>(player - players);
+    auto player_num = static_cast<uint8_t>(player - players);
 
     // Note:
     // The Heretic source code does this, which doesn't actually work.

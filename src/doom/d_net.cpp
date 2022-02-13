@@ -43,7 +43,7 @@ ticcmd_t *netcmds;
 static void PlayerQuitGame(player_t *player)
 {
     static char  exitmsg[80];
-    uint8_t player_num = static_cast<uint8_t>(player - players);
+    auto player_num = static_cast<uint8_t>(player - players);
 
     // Do this the same way as Vanilla Doom does, to allow dehacked
     // replacements of this message

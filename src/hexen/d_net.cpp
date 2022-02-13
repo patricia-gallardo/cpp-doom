@@ -48,7 +48,7 @@ extern bool demorecording;
 static void PlayerQuitGame(player_t *player)
 {
     static char exitmsg[80];
-    auto player_num = static_cast<unsigned int>(player - players);
+    auto player_num = static_cast<uint8_t>(player - players);
 
     M_StringCopy(exitmsg, "PLAYER 1 LEFT THE GAME", sizeof(exitmsg));
     exitmsg[7] += static_cast<char>(player_num);
