@@ -2980,7 +2980,7 @@ mobjinfo_t mobjinfo[NUMMOBJTYPES] =
         100,        //mass
         0,      //damage
         sfx_rebact,     //activesound
-        MF_SOLID|MF_SHOOTABLE|MF_COUNTKILL|MF_NOTDMATCH|MF_SPECTRAL,     //flags
+        static_cast<unsigned int>(MF_SOLID|MF_SHOOTABLE|MF_COUNTKILL|MF_NOTDMATCH|MF_SPECTRAL),     //flags
         "MACIL",        //namepointer
     },
 
@@ -3007,7 +3007,7 @@ mobjinfo_t mobjinfo[NUMMOBJTYPES] =
         100,        //mass
         0,      //damage
         sfx_None,       //activesound
-        MF_NOBLOCKMAP|MF_NOGRAVITY|MF_SHADOW,       //flags
+        static_cast<unsigned int>(MF_NOBLOCKMAP|MF_NOGRAVITY|MF_SHADOW),       //flags
         nullptr,       //namepointer
     },
 
@@ -3034,7 +3034,7 @@ mobjinfo_t mobjinfo[NUMMOBJTYPES] =
         500,        //mass
         0,      //damage
         sfx_revact,     //activesound
-        MF_SOLID|MF_SHOOTABLE|MF_NODIALOG|MF_NOBLOOD|MF_COUNTKILL,      //flags
+        static_cast<unsigned int>(MF_SOLID|MF_SHOOTABLE|MF_NODIALOG|MF_NOBLOOD|MF_COUNTKILL),      //flags
         nullptr,       //namepointer
     },
 
@@ -3061,7 +3061,7 @@ mobjinfo_t mobjinfo[NUMMOBJTYPES] =
         400,        //mass
         0,      //damage
         sfx_agrac1,     //activesound
-        MF_SOLID|MF_SHOOTABLE|MF_COUNTKILL,     //flags
+        static_cast<unsigned int>(MF_SOLID|MF_SHOOTABLE|MF_COUNTKILL),     //flags
         "ACOLYTE",      //namepointer
     },
 
@@ -3088,7 +3088,7 @@ mobjinfo_t mobjinfo[NUMMOBJTYPES] =
         400,        //mass
         0,      //damage
         sfx_agrac2,     //activesound
-        MF_SOLID|MF_SHOOTABLE|MF_COUNTKILL|MF_COLORSWAP1,       //flags
+        static_cast<unsigned int>(MF_SOLID|MF_SHOOTABLE|MF_COUNTKILL|MF_COLORSWAP1),       //flags
         "ACOLYTE",      //namepointer
     },
 
@@ -3115,7 +3115,7 @@ mobjinfo_t mobjinfo[NUMMOBJTYPES] =
         400,        //mass
         0,      //damage
         sfx_agrac3,     //activesound
-        MF_SOLID|MF_SHOOTABLE|MF_COUNTKILL|MF_COLORSWAP2,       //flags
+        static_cast<unsigned int>(MF_SOLID|MF_SHOOTABLE|MF_COUNTKILL|MF_COLORSWAP2),       //flags
         "ACOLYTE",      //namepointer
     },
 
@@ -3142,7 +3142,7 @@ mobjinfo_t mobjinfo[NUMMOBJTYPES] =
         400,        //mass
         0,      //damage
         sfx_agrac1,     //activesound
-        MF_SOLID|MF_SHOOTABLE|MF_COUNTKILL|MF_COLORSWAP1|MF_COLORSWAP2,     //flags
+        static_cast<unsigned int>(MF_SOLID|MF_SHOOTABLE|MF_COUNTKILL|MF_COLORSWAP1|MF_COLORSWAP2),     //flags
         "ACOLYTE",      //namepointer
     },
 
@@ -3169,7 +3169,7 @@ mobjinfo_t mobjinfo[NUMMOBJTYPES] =
         400,        //mass
         0,      //damage
         sfx_agrac2,     //activesound
-        MF_SOLID|MF_SHOOTABLE|MF_COUNTKILL|MF_COLORSWAP3,       //flags
+        static_cast<unsigned int>(MF_SOLID|MF_SHOOTABLE|MF_COUNTKILL|MF_COLORSWAP3),       //flags
         "ACOLYTE",      //namepointer
     },
 
@@ -3196,7 +3196,7 @@ mobjinfo_t mobjinfo[NUMMOBJTYPES] =
         400,        //mass
         0,      //damage
         sfx_agrac3,     //activesound
-        MF_SOLID|MF_SHOOTABLE|MF_COUNTKILL|MF_COLORSWAP1|MF_COLORSWAP3,     //flags
+        static_cast<unsigned int>(MF_SOLID|MF_SHOOTABLE|MF_COUNTKILL|MF_COLORSWAP1|MF_COLORSWAP3),     //flags
         "ACOLYTE",      //namepointer
     },
 
@@ -3223,7 +3223,7 @@ mobjinfo_t mobjinfo[NUMMOBJTYPES] =
         400,        //mass
         0,      //damage
         sfx_agrac3,     //activesound
-        MF_SOLID|MF_SHOOTABLE|MF_COUNTKILL|MF_COLORSWAP2|MF_COLORSWAP3,     //flags
+        static_cast<unsigned int>(MF_SOLID|MF_SHOOTABLE|MF_COUNTKILL|MF_COLORSWAP2|MF_COLORSWAP3),     //flags
         "ACOLYTE",      //namepointer
     },
 
@@ -3250,8 +3250,7 @@ mobjinfo_t mobjinfo[NUMMOBJTYPES] =
         400,        //mass
         0,      //damage
         sfx_agrac3,     //activesound
-        MF_SOLID|MF_SHOOTABLE|MF_COUNTKILL|MF_COLORSWAP1|MF_COLORSWAP2
-        |MF_COLORSWAP3,     //flags
+        static_cast<unsigned int>(MF_SOLID|MF_SHOOTABLE|MF_COUNTKILL|MF_COLORSWAP1|MF_COLORSWAP2|MF_COLORSWAP3),     //flags
         "ACOLYTE",      //namepointer
     },
 
@@ -3278,7 +3277,7 @@ mobjinfo_t mobjinfo[NUMMOBJTYPES] =
         400,        //mass
         0,      //damage
         sfx_agrac2,     //activesound
-        MF_SOLID|MF_SHOOTABLE|MF_COUNTKILL,     //flags
+        static_cast<unsigned int>(MF_SOLID|MF_SHOOTABLE|MF_COUNTKILL),     //flags
         "ACOLYTE",      //namepointer
     },
 
@@ -3305,7 +3304,7 @@ mobjinfo_t mobjinfo[NUMMOBJTYPES] =
         500,        //mass
         0,      //damage
         sfx_pgract,     //activesound
-        MF_SOLID|MF_SHOOTABLE|MF_NOBLOOD|MF_COUNTKILL,      //flags
+        static_cast<unsigned int>(MF_SOLID|MF_SHOOTABLE|MF_NOBLOOD|MF_COUNTKILL),      //flags
         "TEMPLAR",      //namepointer
     },
 
@@ -3332,7 +3331,7 @@ mobjinfo_t mobjinfo[NUMMOBJTYPES] =
         400,        //mass
         0,      //damage
         sfx_rb2act,     //activesound
-        MF_SOLID|MF_SHOOTABLE|MF_NODIALOG|MF_NOBLOOD|MF_COUNTKILL,      //flags
+        static_cast<unsigned int>(MF_SOLID|MF_SHOOTABLE|MF_NODIALOG|MF_NOBLOOD|MF_COUNTKILL),      //flags
         nullptr,       //namepointer
     },
 
@@ -3359,8 +3358,7 @@ mobjinfo_t mobjinfo[NUMMOBJTYPES] =
         500,        //mass
         0,      //damage
         sfx_rb2act,     //activesound
-        MF_SOLID|MF_SHOOTABLE|MF_NODIALOG|MF_NOBLOOD|MF_COUNTKILL
-        |MF_NOTDMATCH,       //flags
+        static_cast<unsigned int>(MF_SOLID|MF_SHOOTABLE|MF_NODIALOG|MF_NOBLOOD|MF_COUNTKILL|MF_NOTDMATCH),       //flags
         nullptr,       //namepointer
     },
 
@@ -3387,7 +3385,7 @@ mobjinfo_t mobjinfo[NUMMOBJTYPES] =
         100,        //mass
         0,      //damage
         sfx_None,       //activesound
-        MF_SOLID|MF_SHOOTABLE|MF_NOBLOOD|MF_COUNTKILL|MF_NOTDMATCH,      //flags
+        static_cast<unsigned int>(MF_SOLID|MF_SHOOTABLE|MF_NOBLOOD|MF_COUNTKILL|MF_NOTDMATCH),      //flags
         "ORACLE",       //namepointer
     },
 
@@ -3414,8 +3412,7 @@ mobjinfo_t mobjinfo[NUMMOBJTYPES] =
         100,        //mass
         0,      //damage
         sfx_tend,       //activesound
-        MF_SOLID|MF_SHOOTABLE|MF_NOGRAVITY|MF_GIVEQUEST|MF_FLOAT
-        |MF_NODIALOG|MF_NOBLOOD|MF_COUNTKILL|MF_NOTDMATCH,       //flags
+        static_cast<unsigned int>(MF_SOLID|MF_SHOOTABLE|MF_NOGRAVITY|MF_GIVEQUEST|MF_FLOAT|MF_NODIALOG|MF_NOBLOOD|MF_COUNTKILL|MF_NOTDMATCH),       //flags
         "PRIEST",       //namepointer
     },
 
@@ -3442,9 +3439,7 @@ mobjinfo_t mobjinfo[NUMMOBJTYPES] =
         1000,       //mass
         0,      //damage
         sfx_alnact,     //activesound
-        MF_SPECIAL|MF_SOLID|MF_SHOOTABLE|MF_NOGRAVITY|MF_GIVEQUEST
-        |MF_FLOAT|MF_NODIALOG|MF_SHADOW|MF_COUNTKILL|MF_NOTDMATCH
-        |MF_MVIS|MF_SPECTRAL,        //flags
+        static_cast<unsigned int>(MF_SPECIAL|MF_SOLID|MF_SHOOTABLE|MF_NOGRAVITY|MF_GIVEQUEST|MF_FLOAT|MF_NODIALOG|MF_SHADOW|MF_COUNTKILL|MF_NOTDMATCH|MF_MVIS|MF_SPECTRAL),        //flags
         nullptr,       //namepointer
     },
 
@@ -3471,7 +3466,7 @@ mobjinfo_t mobjinfo[NUMMOBJTYPES] =
         100,        //mass
         0,      //damage
         sfx_None,       //activesound
-        MF_NOBLOCKMAP|MF_NOCLIP|MF_NOTDMATCH,        //flags
+        static_cast<unsigned int>(MF_NOBLOCKMAP|MF_NOCLIP|MF_NOTDMATCH),        //flags
         nullptr,       //namepointer
     },
 
@@ -3498,7 +3493,7 @@ mobjinfo_t mobjinfo[NUMMOBJTYPES] =
         100,        //mass
         0,      //damage
         sfx_None,       //activesound
-        MF_NOBLOCKMAP|MF_NOCLIP|MF_NOTDMATCH,        //flags
+        static_cast<unsigned int>(MF_NOBLOCKMAP|MF_NOCLIP|MF_NOTDMATCH),        //flags
         nullptr,       //namepointer
     },
 
