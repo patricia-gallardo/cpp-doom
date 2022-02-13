@@ -298,7 +298,7 @@ static char *GetFullExePath(const char *program)
     }
     else
     {
-        path_len = sep - myargv[0] + 1;
+        path_len = static_cast<unsigned int>(sep - myargv[0] + 1);
         result_len = strlen(program) + path_len + 1;
         result = static_cast<char *>(malloc(result_len));
 

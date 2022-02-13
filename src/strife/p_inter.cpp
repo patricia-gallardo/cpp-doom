@@ -312,8 +312,8 @@ bool P_GiveArmor(player_t* player, int armortype)
     if(player->armorpoints >= hits)
         return false;   // don't pick up
 
-    player->armortype = armortype;
-    player->armorpoints = hits;
+    player->armortype = static_cast<short>(armortype);
+    player->armorpoints = static_cast<short>(hits);
 
     return true;
 }
@@ -727,7 +727,7 @@ void P_TouchSpecialThing(mobj_t* special, mobj_t* toucher)
         // acquired by destroying the Front's working power coupling). BUT, the 
         // broken coupling object's speed is NOT 8... it is 512*FRACUNIT. For
         // strict portability beyond the x86, we need to AND the operand by 31.
-        if(special->info->speed != 8 || !(player->questflags & QF_QUEST6))
+        if(special->info->speed != 8 || !(static_cast<unsigned int>(player->questflags) & QF_QUEST6))
             player->questflags |= 1 << ((special->info->speed - 1) & 31);
     }
 
@@ -1283,7 +1283,7 @@ void P_DamageMobj(mobj_t* target, mobj_t* inflictor, mobj_t* source, int damage)
                 P_UseInventoryItem(player, SPR_ARM1);
                 P_UseInventoryItem(player, SPR_ARM2);
             }
-            player->armorpoints -= saved;
+            player->armorpoints = static_cast<short>(player->armorpoints - saved);
             damage -= saved;
         }
         player->health -= damage;   // mirror mobj health here for Dave

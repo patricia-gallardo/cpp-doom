@@ -853,7 +853,7 @@ void P_SpawnPlayer(mapthing_t *mthing)
 
     // set color translations for player sprites
     if (mthing->type > 1)
-        mobj->flags |= (mthing->type - 1) << MF_TRANSSHIFT;
+        mobj->flags |= static_cast<unsigned int>((mthing->type - 1) << MF_TRANSSHIFT);
 
     mobj->angle  = ANG45 * (mthing->angle / 45);
     mobj->player = p;
@@ -961,7 +961,7 @@ void P_SpawnMapThing(mapthing_t *mthing)
     if (mthing->type >= 14100 && mthing->type <= 14164)
     {
         musid        = mthing->type - 14100;
-        mthing->type = mobjinfo[MT_MUSICSOURCE].doomednum;
+        mthing->type = static_cast<short>(mobjinfo[MT_MUSICSOURCE].doomednum);
     }
 
     // find which type to spawn
@@ -1026,7 +1026,7 @@ void P_SpawnMapThing(mapthing_t *mthing)
     // [crispy] randomly colorize space marine corpse objects
     if (!netgame && crispy->coloredblood && (mobj->info->spawnstate == S_PLAY_DIE7 || mobj->info->spawnstate == S_PLAY_XDIE9))
     {
-        mobj->flags |= (Crispy_Random() & 3) << MF_TRANSSHIFT;
+        mobj->flags |= static_cast<unsigned int>((Crispy_Random() & 3) << MF_TRANSSHIFT);
     }
 
     // [crispy] blinking key or skull in the status bar
@@ -1179,7 +1179,7 @@ mobj_t *
 
     // fuzzy player
     if (dest->flags & MF_SHADOW)
-        an += P_SubRandom() << 20;
+        an += static_cast<unsigned int>(P_SubRandom() << 20);
 
     th->angle = an;
     an >>= ANGLETOFINESHIFT;

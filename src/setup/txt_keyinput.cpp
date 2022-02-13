@@ -99,7 +99,6 @@ static void TXT_KeyInputDrawer(void *uncast_key_input)
 {
     auto *key_input = reinterpret_cast<txt_key_input_t *>(uncast_key_input);
     char buf[20];
-    int i;
 
     if (*key_input->variable == 0)
     {
@@ -115,7 +114,7 @@ static void TXT_KeyInputDrawer(void *uncast_key_input)
 
     TXT_DrawString(buf);
 
-    for (i = TXT_UTF8_Strlen(buf); i < KEY_INPUT_WIDTH; ++i)
+    for (unsigned int i = TXT_UTF8_Strlen(buf); i < KEY_INPUT_WIDTH; ++i)
     {
         TXT_DrawString(" ");
     }

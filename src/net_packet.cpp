@@ -22,7 +22,7 @@
 #include <cctype>
 #include <cstring>
 
-static int total_packet_memory = 0;
+static size_t total_packet_memory = 0;
 
 net_packet_t *NET_NewPacket(int initial_size)
 {
@@ -31,12 +31,12 @@ net_packet_t *NET_NewPacket(int initial_size)
     if (initial_size == 0)
         initial_size = 256;
 
-    packet->alloced = initial_size;
-    packet->data    = zmalloc<uint8_t *>(initial_size, PU_STATIC, 0);
+    packet->alloced = static_cast<size_t>(initial_size);
+    packet->data    = zmalloc<uint8_t *>(static_cast<size_t>(initial_size), PU_STATIC, 0);
     packet->len     = 0;
     packet->pos     = 0;
 
-    total_packet_memory += sizeof(net_packet_t) + initial_size;
+    total_packet_memory += sizeof(net_packet_t) + static_cast<unsigned long>(initial_size);
 
     //printf("total packet memory: %i bytes\n", total_packet_memory);
     //printf("%p: allocated\n", packet);
@@ -48,9 +48,7 @@ net_packet_t *NET_NewPacket(int initial_size)
 
 net_packet_t *NET_PacketDup(net_packet_t *packet)
 {
-    net_packet_t *newpacket;
-
-    newpacket = NET_NewPacket(packet->len);
+    net_packet_t *newpacket = NET_NewPacket(static_cast<int>(packet->len));
     memcpy(newpacket->data, packet->data, packet->len);
     newpacket->len = packet->len;
 
@@ -93,7 +91,7 @@ bool NET_ReadInt16(net_packet_t *packet, unsigned int *data)
 
     p = packet->data + packet->pos;
 
-    *data = (p[0] << 8) | p[1];
+    *data = static_cast<unsigned int>((p[0] << 8) | p[1]);
     packet->pos += 2;
 
     return true;
@@ -111,7 +109,7 @@ bool NET_ReadInt32(net_packet_t *packet, unsigned int *data)
 
     p = packet->data + packet->pos;
 
-    *data = (p[0] << 24) | (p[1] << 16) | (p[2] << 8) | p[3];
+    *data = static_cast<unsigned int>((p[0] << 24) | (p[1] << 16) | (p[2] << 8) | p[3]);
     packet->pos += 4;
 
     return true;
@@ -157,7 +155,7 @@ bool NET_ReadSInt32(net_packet_t *packet, signed int *data)
 {
     if (NET_ReadInt32(packet, reinterpret_cast<unsigned int *>(data)))
     {
-        if (*data & (1U << 31))
+        if (static_cast<unsigned int>(*data) & (1U << 31))
         {
             *data &= ~(1U << 31);
             *data -= (1U << 31);
@@ -256,7 +254,7 @@ void NET_WriteInt8(net_packet_t *packet, unsigned int i)
     if (packet->len + 1 > packet->alloced)
         NET_IncreasePacket(packet);
 
-    packet->data[packet->len] = i;
+    packet->data[packet->len] = static_cast<uint8_t>(i);
     packet->len += 1;
 }
 
@@ -289,7 +287,7 @@ void NET_WriteInt32(net_packet_t *packet, unsigned int i)
 
     p = packet->data + packet->len;
 
-    p[0] = (i >> 24) & 0xff;
+    p[0] = static_cast<uint8_t>((i >> 24) & 0xff);
     p[1] = (i >> 16) & 0xff;
     p[2] = (i >> 8) & 0xff;
     p[3] = i & 0xff;
@@ -299,10 +297,7 @@ void NET_WriteInt32(net_packet_t *packet, unsigned int i)
 
 void NET_WriteString(net_packet_t *packet, const char *string)
 {
-    uint8_t *p;
-    size_t string_size;
-
-    string_size = strlen(string) + 1;
+    size_t string_size = strlen(string) + 1;
 
     // Increase the packet size until large enough to hold the string
 
@@ -311,7 +306,7 @@ void NET_WriteString(net_packet_t *packet, const char *string)
         NET_IncreasePacket(packet);
     }
 
-    p = packet->data + packet->len;
+    uint8_t *p = packet->data + packet->len;
 
     M_StringCopy(reinterpret_cast<char *>(p), string, string_size);
 

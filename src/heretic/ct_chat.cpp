@@ -192,7 +192,7 @@ bool CT_Responder(event_t * ev)
         {
             return false;
         }
-        CT_queueChatChar(sendto);
+        CT_queueChatChar(static_cast<char>(sendto));
         chatmodeon = true;
         I_StartTextInput(25, 10, SCREENWIDTH, 18);
         return true;
@@ -209,10 +209,10 @@ bool CT_Responder(event_t * ev)
                 }
                 macro = chat_macros[ev->data1 - '1'];
                 CT_queueChatChar(KEY_ENTER);    //send old message
-                CT_queueChatChar(chat_dest[consoleplayer]);     // chose the dest.
+                CT_queueChatChar(static_cast<char>(chat_dest[consoleplayer]));     // chose the dest.
                 while (*macro)
                 {
-                    CT_queueChatChar(toupper(*macro++));
+                    CT_queueChatChar(static_cast<char>(toupper(*macro++)));
                 }
                 CT_queueChatChar(KEY_ENTER);    //send it off...
                 CT_Stop();
@@ -236,9 +236,9 @@ bool CT_Responder(event_t * ev)
             CT_queueChatChar(KEY_BACKSPACE);
             return true;
         }
-        else if (ValidChatChar(ev->data3))
+        else if (ValidChatChar(static_cast<char>(ev->data3)))
         {
-            CT_queueChatChar(toupper(ev->data3));
+            CT_queueChatChar(static_cast<char>(toupper(ev->data3)));
             return true;
         }
     }

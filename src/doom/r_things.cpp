@@ -114,7 +114,7 @@ void R_InstallSpriteLump(int lump,
 {
     int r;
     // [crispy] support 16 sprite rotations
-    unsigned rotation = (rot >= 'A') ? rot - 'A' + 10 : (rot >= '0') ? rot - '0' : 17;
+    unsigned rotation = (rot >= 'A') ? static_cast<unsigned int>(rot - 'A' + 10) : (rot >= '0') ? static_cast<unsigned int>(rot - '0') : 17;
 
     if (frame >= 29 || rotation > 16) // [crispy] support 16 sprite rotations
         I_Error("R_InstallSpriteLump: "
@@ -122,7 +122,7 @@ void R_InstallSpriteLump(int lump,
             lump);
 
     if (static_cast<int>(frame) > maxframe)
-        maxframe = frame;
+        maxframe = static_cast<int>(frame);
 
     if (rotation == 0)
     {
@@ -146,7 +146,7 @@ void R_InstallSpriteLump(int lump,
             // [crispy] only if not yet substituted
             if (sprtemp[frame].lump[r] == -1)
             {
-                sprtemp[frame].lump[r] = lump - firstspritelump;
+                sprtemp[frame].lump[r] = static_cast<short>(lump - firstspritelump);
                 sprtemp[frame].flip[r] = static_cast<uint8_t>(flipped);
                 // [crispy] ... here
                 sprtemp[frame].rotate = false;
@@ -176,7 +176,7 @@ void R_InstallSpriteLump(int lump,
         return;
     }
 
-    sprtemp[frame].lump[rotation] = lump - firstspritelump;
+    sprtemp[frame].lump[rotation] = static_cast<short>(lump - firstspritelump);
     sprtemp[frame].flip[rotation] = static_cast<uint8_t>(flipped);
     // [crispy] ... here
     sprtemp[frame].rotate = true;
@@ -200,34 +200,28 @@ void R_InstallSpriteLump(int lump,
 //
 void R_InitSpriteDefs(const char **namelist)
 {
-    const char **check;
-    int          i;
-    int          l;
-    int          frame;
-    int          rotation;
-    int          start;
-    int          end;
-    int          patched;
+//    int          frame;
+//    int          rotation;
 
     // count the number of sprite names
-    check = namelist;
+    const char **check = namelist;
     while (*check != nullptr)
         check++;
 
-    numsprites = check - namelist;
+    numsprites = static_cast<int>(check - namelist);
 
     if (!numsprites)
         return;
 
-    sprites = zmalloc<decltype(sprites)>(numsprites * sizeof(*sprites), PU_STATIC, nullptr);
+    sprites = zmalloc<decltype(sprites)>(static_cast<unsigned long>(numsprites) * sizeof(*sprites), PU_STATIC, nullptr);
 
-    start = firstspritelump - 1;
-    end   = lastspritelump + 1;
+    int start = firstspritelump - 1;
+    int end   = lastspritelump + 1;
 
     // scan all the lump names for each of the names,
     //  noting the highest frame letter.
     // Just compare 4 characters as ints
-    for (i = 0; i < numsprites; i++)
+    for (int i = 0; i < numsprites; i++)
     {
         spritename = DEH_String(namelist[i]);
         memset(sprtemp, -1, sizeof(sprtemp));
@@ -236,25 +230,26 @@ void R_InitSpriteDefs(const char **namelist)
 
         // scan the lumps,
         //  filling in the frames for whatever is found
-        for (l = start + 1; l < end; l++)
+        for (int l = start + 1; l < end; l++)
         {
             if (!strncasecmp(lumpinfo[l]->name, spritename, 4))
             {
-                frame    = lumpinfo[l]->name[4] - 'A';
-                rotation = lumpinfo[l]->name[5];
+                int frame    = lumpinfo[l]->name[4] - 'A';
+                int rotation = lumpinfo[l]->name[5];
+                int patched;
 
                 if (modifiedgame)
                     patched = W_GetNumForName(lumpinfo[l]->name);
                 else
                     patched = l;
 
-                R_InstallSpriteLump(patched, frame, rotation, false);
+                R_InstallSpriteLump(patched, static_cast<unsigned int>(frame), static_cast<char>(rotation), false);
 
                 if (lumpinfo[l]->name[6])
                 {
                     frame    = lumpinfo[l]->name[6] - 'A';
                     rotation = lumpinfo[l]->name[7];
-                    R_InstallSpriteLump(l, frame, rotation, true);
+                    R_InstallSpriteLump(l, static_cast<unsigned int>(frame), static_cast<char>(rotation), true);
                 }
             }
         }
@@ -268,7 +263,7 @@ void R_InitSpriteDefs(const char **namelist)
 
         maxframe++;
 
-        for (frame = 0; frame < maxframe; frame++)
+        for (int frame = 0; frame < maxframe; frame++)
         {
             switch (static_cast<int>(sprtemp[frame].rotate))
             {
@@ -286,6 +281,7 @@ void R_InitSpriteDefs(const char **namelist)
 
             case 1:
                 // must have all 8 frames
+                int rotation;
                 for (rotation = 0; rotation < 8; rotation++)
                     if (sprtemp[frame].lump[rotation] == -1)
                         I_Error("R_InitSprites: Sprite %s frame %c "
@@ -307,8 +303,8 @@ void R_InitSpriteDefs(const char **namelist)
 
         // allocate space for the frames present and copy sprtemp to it
         sprites[i].numframes    = maxframe;
-        sprites[i].spriteframes = zmalloc<decltype(sprites[i].spriteframes)>(maxframe * sizeof(spriteframe_t), PU_STATIC, nullptr);
-        memcpy(sprites[i].spriteframes, sprtemp, maxframe * sizeof(spriteframe_t));
+        sprites[i].spriteframes = zmalloc<decltype(sprites[i].spriteframes)>(static_cast<unsigned long>(maxframe) * sizeof(spriteframe_t), PU_STATIC, nullptr);
+        memcpy(sprites[i].spriteframes, sprtemp, static_cast<unsigned long>(maxframe) * sizeof(spriteframe_t));
     }
 }
 
@@ -373,8 +369,8 @@ vissprite_t *R_NewVisSprite()
             return &overflowsprite;
 
         numvissprites = numvissprites ? 2 * numvissprites : MAXVISSPRITES;
-        vissprites    = static_cast<decltype(vissprites)>(I_Realloc(vissprites, numvissprites * sizeof(*vissprites)));
-        memset(vissprites + numvissprites_old, 0, (numvissprites - numvissprites_old) * sizeof(*vissprites));
+        vissprites    = static_cast<decltype(vissprites)>(I_Realloc(vissprites, static_cast<unsigned long>(numvissprites) * sizeof(*vissprites)));
+        memset(vissprites + numvissprites_old, 0, (static_cast<unsigned long>(numvissprites - numvissprites_old)) * sizeof(*vissprites));
 
         vissprite_p = vissprites + numvissprites_old;
 
@@ -475,10 +471,10 @@ void R_DrawVisSprite(vissprite_t *vis, int, int)
         // nullptr colormap = shadow draw
         colfunc = fuzzcolfunc;
     }
-    else if (vis->mobjflags & MF_TRANSLATION)
+    else if (static_cast<unsigned int>(vis->mobjflags) & MF_TRANSLATION)
     {
         colfunc        = transcolfunc;
-        dc_translation = translationtables - 256 + ((vis->mobjflags & MF_TRANSLATION) >> (MF_TRANSSHIFT - 8));
+        dc_translation = translationtables - 256 + ((static_cast<unsigned int>(vis->mobjflags) & MF_TRANSLATION) >> (MF_TRANSSHIFT - 8));
     }
     // [crispy] color-translated sprites (i.e. blood)
     else if (vis->translation)
@@ -487,9 +483,11 @@ void R_DrawVisSprite(vissprite_t *vis, int, int)
         dc_translation = vis->translation;
     }
     // [crispy] translucent sprites
-    else if (crispy->translucency && vis->mobjflags & MF_TRANSLUCENT)
+    else if (crispy->translucency && static_cast<unsigned int>(vis->mobjflags) & MF_TRANSLUCENT)
     {
-        if (!(vis->mobjflags & (MF_NOGRAVITY | MF_COUNTITEM)) || (vis->mobjflags & MF_NOGRAVITY && crispy->translucency & TRANSLUCENCY_MISSILE) || (vis->mobjflags & MF_COUNTITEM && crispy->translucency & TRANSLUCENCY_ITEM))
+        if (!(static_cast<unsigned int>(vis->mobjflags) & (MF_NOGRAVITY | MF_COUNTITEM))
+            || (static_cast<unsigned int>(vis->mobjflags) & MF_NOGRAVITY && crispy->translucency & TRANSLUCENCY_MISSILE)
+            || (static_cast<unsigned int>(vis->mobjflags) & MF_COUNTITEM && crispy->translucency & TRANSLUCENCY_ITEM))
         {
             colfunc = tlcolfunc;
         }
@@ -585,14 +583,14 @@ void R_ProjectSprite(mobj_t *thing)
         interpx     = thing->oldx + FixedMul(thing->x - thing->oldx, fractionaltic);
         interpy     = thing->oldy + FixedMul(thing->y - thing->oldy, fractionaltic);
         interpz     = thing->oldz + FixedMul(thing->z - thing->oldz, fractionaltic);
-        interpangle = R_InterpolateAngle(thing->oldangle, thing->angle, fractionaltic);
+        interpangle = static_cast<fixed_t>(R_InterpolateAngle(thing->oldangle, thing->angle, fractionaltic));
     }
     else
     {
         interpx     = thing->x;
         interpy     = thing->y;
         interpz     = thing->z;
-        interpangle = thing->angle;
+        interpangle = static_cast<fixed_t>(thing->angle);
     }
 
     // transform the origin point
@@ -650,12 +648,12 @@ void R_ProjectSprite(mobj_t *thing)
             // [crispy] support 16 sprite rotations
             if (sprframe->rotate == 2)
         {
-            const unsigned rot2 = (ang - interpangle + static_cast<unsigned>(ANG45 / 4) * 17);
+            const unsigned rot2 = (ang - static_cast<unsigned int>(interpangle) + static_cast<unsigned>(ANG45 / 4) * 17);
             rot                 = (rot2 >> 29) + ((rot2 >> 25) & 8);
         }
         else
         {
-            rot = (ang - interpangle + static_cast<unsigned>(ANG45 / 2) * 9) >> 29;
+            rot = (ang - static_cast<unsigned int>(interpangle) + static_cast<unsigned>(ANG45 / 2) * 9) >> 29;
         }
         lump = sprframe->lump[rot];
         flip = static_cast<bool>(sprframe->flip[rot]);
@@ -1042,7 +1040,7 @@ void R_DrawPSprite(pspdef_t *psp, psprnum_t psprnum) // [crispy] differentiate g
         vis->colormap[0] = spritelights[MAXLIGHTSCALE - 1];
         vis->colormap[1] = scalelight[LIGHTLEVELS - 1][MAXLIGHTSCALE - 1];
     }
-    vis->brightmap = R_BrightmapForState(psp->state - states);
+    vis->brightmap = R_BrightmapForState(static_cast<int>(psp->state - states));
 
     // [crispy] translucent gun flash sprites
     if (psprnum == ps_flash)
@@ -1109,26 +1107,23 @@ static inline int cmp_vissprites(const void *a, const void *b)
 
     const int ret = vsa->scale - vsb->scale;
 
-    return ret ? ret : vsa->next - vsb->next;
+    return static_cast<int>(ret ? ret : vsa->next - vsb->next);
 }
 
 void R_SortVisSprites()
 {
-    int          count;
-    vissprite_t *ds;
-
-    count = vissprite_p - vissprites;
+    int count = static_cast<int>(vissprite_p - vissprites);
 
     if (!count)
         return;
 
     // [crispy] maintain a stable sort for deliberately overlaid sprites
-    for (ds = vissprites; ds < vissprite_p; ds++)
+    for (vissprite_t *ds = vissprites; ds < vissprite_p; ds++)
     {
         ds->next = ds + 1;
     }
 
-    qsort(vissprites, count, sizeof(*vissprites), cmp_vissprites);
+    qsort(vissprites, static_cast<size_t>(count), sizeof(*vissprites), cmp_vissprites);
 }
 #else
 vissprite_t vsprsortedhead;

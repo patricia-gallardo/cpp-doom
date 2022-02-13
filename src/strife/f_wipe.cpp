@@ -53,13 +53,13 @@ wipe_shittyColMajorXform
     int		y;
     short*	dest;
 
-    dest = zmalloc<short*>(width*height*2, PU_STATIC, 0);
+    dest = zmalloc<short*>(static_cast<size_t>(width * height * 2), PU_STATIC, 0);
 
     for(y=0;y<height;y++)
 	for(x=0;x<width;x++)
 	    dest[x*height+y] = array[y*width+x];
 
-    memcpy(array, dest, width*height*2);
+    memcpy(array, dest, static_cast<size_t>(width * height * 2));
 
     Z_Free(dest);
 
@@ -68,7 +68,7 @@ wipe_shittyColMajorXform
 // haleyjd 08/26/10: [STRIFE] Verified unmodified.
 int wipe_initColorXForm(int width, int height, int)
 {
-    memcpy(wipe_scr, wipe_scr_start, width*height);
+    memcpy(wipe_scr, wipe_scr_start, static_cast<size_t>(width * height));
     return 0;
 }
 
@@ -115,7 +115,7 @@ int wipe_initMelt(int width, int height, int)
     int i, r;
     
     // copy start screen to main screen
-    memcpy(wipe_scr, wipe_scr_start, width*height);
+    memcpy(wipe_scr, wipe_scr_start, static_cast<size_t>(width * height));
     
     // makes this wipe faster (in theory)
     // to have stuff in column-major format
@@ -124,7 +124,7 @@ int wipe_initMelt(int width, int height, int)
     
     // setup initial column positions
     // (y<0 => not ready to scroll yet)
-    y = zmalloc<int *>(width*sizeof(int), PU_STATIC, 0);
+    y = zmalloc<int *>(static_cast<unsigned long>(width) *sizeof(int), PU_STATIC, 0);
     y[0] = -(M_Random()%16);
     for (i=1;i<width;i++)
     {
@@ -203,7 +203,7 @@ int wipe_exitMelt(int, int, int)
 // haleyjd 08/26/10: [STRIFE] Verified unmodified.
 int wipe_StartScreen(int, int, int, int)
 {
-    wipe_scr_start = zmalloc<uint8_t *>(SCREENWIDTH * SCREENHEIGHT, PU_STATIC, nullptr);
+    wipe_scr_start = zmalloc<uint8_t *>(static_cast<size_t>(SCREENWIDTH * SCREENHEIGHT), PU_STATIC, nullptr);
     I_ReadScreen(wipe_scr_start);
     return 0;
 }
@@ -216,7 +216,7 @@ wipe_EndScreen
   int	width,
   int	height )
 {
-    wipe_scr_end = zmalloc<uint8_t *>(SCREENWIDTH * SCREENHEIGHT, PU_STATIC, nullptr);
+    wipe_scr_end = zmalloc<uint8_t *>(static_cast<size_t>(SCREENWIDTH * SCREENHEIGHT), PU_STATIC, nullptr);
     I_ReadScreen(wipe_scr_end);
     V_DrawBlock(x, y_pos, width, height, wipe_scr_start); // restore start scr.
     return 0;
@@ -246,7 +246,7 @@ wipe_ScreenWipe
     {
 	go = 1;
         // haleyjd 20110629 [STRIFE]: We *must* use a temp buffer here.
-	wipe_scr = zmalloc<uint8_t *>(width * height, PU_STATIC, 0); // DEBUG
+	wipe_scr = zmalloc<uint8_t *>(static_cast<size_t>(width * height), PU_STATIC, 0); // DEBUG
 	//wipe_scr = I_VideoBuffer;
 	(*wipes[wipeno*3])(width, height, ticks);
     }

@@ -123,7 +123,7 @@ glob_t *I_StartMultiGlob(const char *directory, int flags,
         }
 
         new_globs = static_cast<char **>(
-            realloc(globs, sizeof(char *) * (num_globs + 1)));
+            realloc(globs, sizeof(char *) * (static_cast<unsigned long>(num_globs + 1))));
         if (new_globs == nullptr)
         {
             FreeStringList(globs, num_globs);
@@ -274,7 +274,7 @@ static void ReadAllFilenames(glob_t *glob)
             break;
         }
         glob->filenames                      = static_cast<char **>(realloc(
-            glob->filenames, (glob->filenames_len + 1) * sizeof(char *)));
+            glob->filenames, (static_cast<unsigned long>(glob->filenames_len + 1)) * sizeof(char *)));
         glob->filenames[glob->filenames_len] = name;
         ++glob->filenames_len;
     }

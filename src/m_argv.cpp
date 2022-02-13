@@ -71,20 +71,12 @@ int M_CheckParm(const char *check)
     return M_CheckParmWithArgs(check, 0);
 }
 
-#define MAXARGVS 100
+constexpr auto MAXARGVS = 100;
 
 static void LoadResponseFile(int argv_index, const char *filename)
 {
-    FILE * handle;
-    int    size;
-    char * infile;
-    char * file;
-    char **newargv;
-    int    newargc;
-    int    i, k;
-
     // Read the response file into memory
-    handle = fopen(filename, "rb");
+    FILE *handle = fopen(filename, "rb");
 
     if (handle == nullptr)
     {
@@ -94,47 +86,44 @@ static void LoadResponseFile(int argv_index, const char *filename)
 
     printf("Found response file %s!\n", filename);
 
-    size = M_FileLength(handle);
+    auto size = static_cast<size_t>(M_FileLength(handle));
 
     // Read in the entire file
     // Allocate one byte extra - this is in case there is an argument
     // at the end of the response file, in which case a '\0' will be
     // needed.
 
-    file = static_cast<char *>(malloc(size + 1));
-
-    i = 0;
-
-    while (i < size)
+    char *file = static_cast<char *>(malloc(static_cast<size_t>(size + 1)));
     {
-        k = fread(file + i, 1, size - i, handle);
-
-        if (k < 0)
+        size_t i = 0;
+        while (i < size)
         {
-            I_Error("Failed to read full contents of '%s'", filename);
+            size_t k = fread(file + i, 1, static_cast<size_t>(size - i), handle);
+
+            if (ferror(handle)) { I_Error("Failed to read full contents of '%s'", filename); }
+
+            i += k;
         }
 
-        i += k;
+        fclose(handle);
     }
-
-    fclose(handle);
 
     // Create new arguments list array
 
-    newargv = static_cast<char **>(malloc(sizeof(char *) * MAXARGVS));
-    newargc = 0;
+    char **newargv = static_cast<char **>(malloc(sizeof(char *) * MAXARGVS));
+    int newargc = 0;
     memset(newargv, 0, sizeof(char *) * MAXARGVS);
 
     // Copy all the arguments in the list up to the response file
 
-    for (i = 0; i < argv_index; ++i)
+    for (int i = 0; i < argv_index; ++i)
     {
         newargv[i] = myargv[i];
         ++newargc;
     }
 
-    infile = file;
-    k      = 0;
+    char *infile = file;
+    size_t k = 0;
 
     while (k < size)
     {
@@ -200,7 +189,7 @@ static void LoadResponseFile(int argv_index, const char *filename)
 
     // Add arguments following the response file argument
 
-    for (i = argv_index + 1; i < myargc; ++i)
+    for (int i = argv_index + 1; i < myargc; ++i)
     {
         newargv[newargc] = myargv[i];
         ++newargc;
@@ -228,9 +217,7 @@ static void LoadResponseFile(int argv_index, const char *filename)
 
 void M_FindResponseFile()
 {
-    int i;
-
-    for (i = 1; i < myargc; i++)
+    for (int i = 1; i < myargc; i++)
     {
         if (myargv[i][0] == '@')
         {
@@ -248,7 +235,7 @@ void M_FindResponseFile()
         // line replacing this argument. A response file can also be loaded
         // using the abbreviated syntax '@filename.rsp'.
         //
-        i = M_CheckParmWithArgs("-response", 1);
+        int i = M_CheckParmWithArgs("-response", 1);
         if (i <= 0)
         {
             break;

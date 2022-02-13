@@ -47,7 +47,7 @@ static wad_file_t *W_StdC_OpenFile(const char *path)
     result                 = zmalloc<decltype(result)>(sizeof(stdc_wad_file_t), PU_STATIC, 0);
     result->wad.file_class = &stdc_wad_file;
     result->wad.mapped     = nullptr;
-    result->wad.length     = M_FileLength(fstream);
+    result->wad.length     = static_cast<unsigned int>(M_FileLength(fstream));
     result->wad.path       = M_StringDuplicate(path);
     result->fstream        = fstream;
 

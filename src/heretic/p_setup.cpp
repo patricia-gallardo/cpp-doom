@@ -78,7 +78,7 @@ void P_LoadVertexes(int lump)
     mapvertex_t *ml;
     vertex_t *li;
 
-    numvertexes = W_LumpLength(lump) / sizeof(mapvertex_t);
+    numvertexes = static_cast<int>(W_LumpLength(lump) / sizeof(mapvertex_t));
     vertexes = zmalloc<vertex_t *>(numvertexes * sizeof(vertex_t), PU_LEVEL, 0);
     data = cache_lump_num<uint8_t *>(lump, PU_STATIC);
 
@@ -116,7 +116,7 @@ void P_LoadSegs(int lump)
     line_t *ldef;
     int linedef_local, side;
 
-    numsegs = W_LumpLength(lump) / sizeof(mapseg_t);
+    numsegs = static_cast<int>(W_LumpLength(lump) / sizeof(mapseg_t));
     segs = zmalloc<seg_t *>(numsegs * sizeof(seg_t), PU_LEVEL, 0);
     memset(segs, 0, numsegs * sizeof(seg_t));
     data = cache_lump_num<uint8_t *>(lump, PU_STATIC);
@@ -161,7 +161,7 @@ void P_LoadSubsectors(int lump)
     mapsubsector_t *ms;
     subsector_t *ss;
 
-    numsubsectors = W_LumpLength(lump) / sizeof(mapsubsector_t);
+    numsubsectors = static_cast<int>(W_LumpLength(lump) / sizeof(mapsubsector_t));
     subsectors = zmalloc<subsector_t *>(numsubsectors * sizeof(subsector_t), PU_LEVEL, 0);
     data = cache_lump_num<uint8_t *>(lump, PU_STATIC);
 
@@ -193,7 +193,7 @@ void P_LoadSectors(int lump)
     mapsector_t *ms;
     sector_t *ss;
 
-    numsectors = W_LumpLength(lump) / sizeof(mapsector_t);
+    numsectors = static_cast<int>(W_LumpLength(lump) / sizeof(mapsector_t));
     sectors = zmalloc<sector_t *>(numsectors * sizeof(sector_t), PU_LEVEL, 0);
     memset(sectors, 0, numsectors * sizeof(sector_t));
     data = cache_lump_num<uint8_t *>(lump, PU_STATIC);
@@ -204,8 +204,8 @@ void P_LoadSectors(int lump)
     {
         ss->floorheight = SHORT(ms->floorheight) << FRACBITS;
         ss->ceilingheight = SHORT(ms->ceilingheight) << FRACBITS;
-        ss->floorpic = R_FlatNumForName(ms->floorpic);
-        ss->ceilingpic = R_FlatNumForName(ms->ceilingpic);
+        ss->floorpic = static_cast<short>(R_FlatNumForName(ms->floorpic));
+        ss->ceilingpic = static_cast<short>(R_FlatNumForName(ms->ceilingpic));
         ss->lightlevel = SHORT(ms->lightlevel);
         ss->special = SHORT(ms->special);
         ss->tag = SHORT(ms->tag);
@@ -231,7 +231,7 @@ void P_LoadNodes(int lump)
     mapnode_t *mn;
     node_t *no;
 
-    numnodes = W_LumpLength(lump) / sizeof(mapnode_t);
+    numnodes = static_cast<int>(W_LumpLength(lump) / sizeof(mapnode_t));
     nodes = zmalloc<node_t *>(numnodes * sizeof(node_t), PU_LEVEL, 0);
     data = cache_lump_num<uint8_t *>(lump, PU_STATIC);
 
@@ -273,7 +273,7 @@ void P_LoadThings(int lump)
     int numthings;
 
     data = cache_lump_num<uint8_t *>(lump, PU_STATIC);
-    numthings = W_LumpLength(lump) / sizeof(mapthing_t);
+    numthings = static_cast<int>(W_LumpLength(lump) / sizeof(mapthing_t));
 
     mt = reinterpret_cast<mapthing_t *>(data);
     for (i = 0; i < numthings; i++, mt++)
@@ -320,7 +320,7 @@ void P_LoadLineDefs(int lump)
     line_t *ld;
     vertex_t *v1, *v2;
 
-    numlines = W_LumpLength(lump) / sizeof(maplinedef_t);
+    numlines = static_cast<int>(W_LumpLength(lump) / sizeof(maplinedef_t));
     lines = zmalloc<line_t *>(numlines * sizeof(line_t), PU_LEVEL, 0);
     memset(lines, 0, numlines * sizeof(line_t));
     data = cache_lump_num<uint8_t *>(lump, PU_STATIC);
@@ -399,7 +399,7 @@ void P_LoadSideDefs(int lump)
     mapsidedef_t *msd;
     side_t *sd;
 
-    numsides = W_LumpLength(lump) / sizeof(mapsidedef_t);
+    numsides = static_cast<int>(W_LumpLength(lump) / sizeof(mapsidedef_t));
     sides = zmalloc<side_t *>(numsides * sizeof(side_t), PU_LEVEL, 0);
     memset(sides, 0, numsides * sizeof(side_t));
     data = cache_lump_num<uint8_t *>(lump, PU_STATIC);
@@ -410,9 +410,9 @@ void P_LoadSideDefs(int lump)
     {
         sd->textureoffset = SHORT(msd->textureoffset) << FRACBITS;
         sd->rowoffset = SHORT(msd->rowoffset) << FRACBITS;
-        sd->toptexture = R_TextureNumForName(msd->toptexture);
-        sd->bottomtexture = R_TextureNumForName(msd->bottomtexture);
-        sd->midtexture = R_TextureNumForName(msd->midtexture);
+        sd->toptexture = static_cast<short>(R_TextureNumForName(msd->toptexture));
+        sd->bottomtexture = static_cast<short>(R_TextureNumForName(msd->bottomtexture));
+        sd->midtexture = static_cast<short>(R_TextureNumForName(msd->midtexture));
         sd->sector = &sectors[SHORT(msd->sector)];
     }
 
@@ -431,13 +431,13 @@ void P_LoadSideDefs(int lump)
 
 void P_LoadBlockMap(int lump)
 {
-    int i, count;
+    int i;
     int lumplen;
     short *wadblockmaplump;
 
-    lumplen = W_LumpLength(lump);
+    lumplen = static_cast<int>(W_LumpLength(lump));
 
-    count = lumplen / 2; // [crispy] remove BLOCKMAP limit
+    int count = lumplen / 2; // [crispy] remove BLOCKMAP limit
 
     // [crispy] remove BLOCKMAP limit
     wadblockmaplump = zmalloc<short *>(lumplen, PU_LEVEL, nullptr);
@@ -467,9 +467,9 @@ void P_LoadBlockMap(int lump)
     bmapheight = blockmaplump[3];
 
 // clear out mobj chains
-    count = sizeof(*blocklinks) * bmapwidth * bmapheight;
-    blocklinks = zmalloc<mobj_t **>(count, PU_LEVEL, 0);
-    memset(blocklinks, 0, count);
+    size_t block_count = sizeof(*blocklinks) * bmapwidth * bmapheight;
+    blocklinks = zmalloc<mobj_t **>(block_count, PU_LEVEL, 0);
+    memset(blocklinks, 0, block_count);
 }
 
 
@@ -651,9 +651,9 @@ void P_SetupLevel(int episode, int map, int, skill_t)
 // look for a regular (development) map first
 //
     lumpname[0] = 'E';
-    lumpname[1] = '0' + episode;
+    lumpname[1] = static_cast<char>('0' + episode);
     lumpname[2] = 'M';
-    lumpname[3] = '0' + map;
+    lumpname[3] = static_cast<char>('0' + map);
     lumpname[4] = 0;
     leveltime = 0;
 

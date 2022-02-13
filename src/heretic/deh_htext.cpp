@@ -781,7 +781,7 @@ static void *DEH_TextStart(deh_context_t *context, char *line)
 
         c = DEH_GetChar(context);
 
-        repl_text[i] = c;
+        repl_text[i] = static_cast<char>(c);
     }
     repl_text[repl_len] = '\0';
 
@@ -804,7 +804,7 @@ static void *DEH_TextStart(deh_context_t *context, char *line)
     // Chocolate Doom is unforgiving!
 
     else if (!deh_allow_long_strings
-          && repl_len > MaxStringLength(strlen(orig_text)))
+          && repl_len > MaxStringLength(static_cast<int>(strlen(orig_text))))
     {
         DEH_Error(context, "Replacement string is longer than the maximum "
                            "possible in heretic.exe");
@@ -836,4 +836,3 @@ deh_section_t deh_section_heretic_text =
     nullptr,
     nullptr,
 };
-

@@ -142,7 +142,7 @@ bool
 
     // kill anything occupying the position
     tmthing = thing;
-    tmflags = thing->flags;
+    tmflags = static_cast<int>(thing->flags);
 
     tmx = x;
     tmy = y;
@@ -230,7 +230,7 @@ bool PIT_CheckLine(line_t *ld)
     if (!ld->backsector)
         return false; // one sided line
 
-    if (!(tmthing->flags & MF_MISSILE))
+    if (!(static_cast<unsigned int>(tmthing->flags) & MF_MISSILE))
     {
         if (ld->flags & ML_BLOCKING)
             return false; // explicitly blocking everything
@@ -301,7 +301,7 @@ bool PIT_CheckThing(mobj_t *thing)
         return true;
 
     // check for skulls slamming into things
-    if (tmthing->flags & MF_SKULLFLY)
+    if (static_cast<unsigned int>(tmthing->flags) & MF_SKULLFLY)
     {
         // [crispy] check if attacking skull flies over player
         if (critical->overunder && thing->player)
@@ -327,7 +327,7 @@ bool PIT_CheckThing(mobj_t *thing)
 
 
     // missiles can hit other things
-    if (tmthing->flags & MF_MISSILE)
+    if (static_cast<unsigned int>(tmthing->flags) & MF_MISSILE)
     {
         // [crispy] mobj or actual sprite height
         const fixed_t thingheight = (tmthing->target && tmthing->target->player && critical->freeaim == FREEAIM_DIRECT) ?
@@ -376,7 +376,7 @@ bool PIT_CheckThing(mobj_t *thing)
     if (thing->flags & MF_SPECIAL)
     {
         solid = (thing->flags & MF_SOLID) != 0;
-        if (tmflags & MF_PICKUP)
+        if (static_cast<unsigned int>(tmflags) & MF_PICKUP)
         {
             // can remove thing
             P_TouchSpecialThing(thing, tmthing);
@@ -500,7 +500,7 @@ bool
     subsector_t *newsubsec;
 
     tmthing = thing;
-    tmflags = thing->flags;
+    tmflags = static_cast<int>(thing->flags);
 
     tmx = x;
     tmy = y;
@@ -523,7 +523,7 @@ bool
     validcount++;
     numspechit = 0;
 
-    if (tmflags & MF_NOCLIP)
+    if (static_cast<unsigned int>(tmflags) & MF_NOCLIP)
         return true;
 
     // Check things first, possibly picking things up.
@@ -621,7 +621,7 @@ bool
             if (side != oldside)
             {
                 if (ld->special)
-                    P_CrossSpecialLine(ld - lines, oldside, thing);
+                    P_CrossSpecialLine(static_cast<int>(ld - lines), oldside, thing);
             }
         }
     }
@@ -1190,7 +1190,7 @@ bool PTR_ShootTraverse(intercept_t *in)
 
     // Spawn bullet puffs or blod spots,
     // depending on target type.
-    if (in->d.thing->flags & MF_NOBLOOD)
+    if (static_cast<unsigned int>(in->d.thing->flags) & MF_NOBLOOD)
         P_SpawnPuff(x, y, z);
     else
         P_SpawnBlood(x, y, z, la_damage, th); // [crispy] pass thing type
@@ -1603,7 +1603,6 @@ bool
 static void SpechitOverrun(line_t *ld)
 {
     static unsigned int baseaddr = 0;
-    unsigned int        addr;
 
     if (baseaddr == 0)
     {
@@ -1634,7 +1633,7 @@ static void SpechitOverrun(line_t *ld)
 
     // Calculate address used in doom2.exe
 
-    addr = baseaddr + (ld - lines) * 0x3E;
+    unsigned int addr = static_cast<unsigned int>(baseaddr + (ld - lines) * 0x3E);
 
     switch (numspechit)
     {
@@ -1642,7 +1641,7 @@ static void SpechitOverrun(line_t *ld)
     case 10:
     case 11:
     case 12:
-        tmbbox[numspechit - 9] = addr;
+        tmbbox[numspechit - 9] = static_cast<fixed_t>(addr);
         break;
     case 13:
         crushchange = addr;

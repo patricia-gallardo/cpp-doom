@@ -198,7 +198,7 @@ static int DropdownListWidth(txt_dropdown_list_t *list)
 
     for (i=0; i<list->num_values; ++i)
     {
-        int w = TXT_UTF8_Strlen(list->values[i]);
+        int w = static_cast<int>(TXT_UTF8_Strlen(list->values[i]));
         if (w > result) 
         {
             result = w;
@@ -212,14 +212,13 @@ static void TXT_DropdownListSizeCalc(void *uncast_list)
 {
     auto *list = reinterpret_cast<txt_dropdown_list_t *>(uncast_list);
 
-    list->widget.w = DropdownListWidth(list);
+    list->widget.w = static_cast<unsigned int>(DropdownListWidth(list));
     list->widget.h = 1;
 }
 
 static void TXT_DropdownListDrawer(void *uncast_list)
 {
     auto *list = reinterpret_cast<txt_dropdown_list_t *>(uncast_list);
-    unsigned int i;
     const char *str;
 
     // Set bg/fg text colors.
@@ -242,7 +241,7 @@ static void TXT_DropdownListDrawer(void *uncast_list)
 
     TXT_DrawString(str);
 
-    for (i = TXT_UTF8_Strlen(str); i < list->widget.w; ++i)
+    for (unsigned int i = TXT_UTF8_Strlen(str); i < list->widget.w; ++i)
     {
         TXT_DrawString(" ");
     }

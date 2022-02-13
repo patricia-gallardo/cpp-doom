@@ -218,8 +218,8 @@ static void R_RaiseVisplanes(visplane_t **vp)
         visplane_t *visplanes_old    = visplanes;
 
         numvisplanes = numvisplanes ? 2 * numvisplanes : MAXVISPLANES;
-        visplanes    = static_cast<decltype(visplanes)>(I_Realloc(visplanes, numvisplanes * sizeof(*visplanes)));
-        memset(visplanes + numvisplanes_old, 0, (numvisplanes - numvisplanes_old) * sizeof(*visplanes));
+        visplanes    = static_cast<decltype(visplanes)>(I_Realloc(visplanes, static_cast<unsigned long>(numvisplanes) * sizeof(*visplanes)));
+        memset(visplanes + numvisplanes_old, 0, (static_cast<unsigned long>(numvisplanes - numvisplanes_old)) * sizeof(*visplanes));
 
         lastvisplane = visplanes + numvisplanes_old;
         floorplane   = visplanes + (floorplane - visplanes_old);
@@ -245,7 +245,7 @@ visplane_t *
     visplane_t *check;
 
     // [crispy] add support for MBF sky tranfers
-    if (picnum == skyflatnum || picnum & PL_SKYFLAT)
+    if (picnum == skyflatnum || static_cast<unsigned int>(picnum) & PL_SKYFLAT)
     {
         height     = 0; // all skys map together
         lightlevel = 0;
@@ -367,12 +367,12 @@ void R_MakeSpans(int x,
 {
     while (t1 < t2 && t1 <= b1)
     {
-        R_MapPlane(t1, spanstart[t1], x - 1);
+        R_MapPlane(static_cast<int>(t1), spanstart[t1], x - 1);
         t1++;
     }
     while (b1 > b2 && b1 >= t1)
     {
-        R_MapPlane(b1, spanstart[b1], x - 1);
+        R_MapPlane(static_cast<int>(b1), spanstart[b1], x - 1);
         b1--;
     }
 
@@ -426,13 +426,13 @@ void R_DrawPlanes()
 
         // sky flat
         // [crispy] add support for MBF sky tranfers
-        if (pl->picnum == skyflatnum || pl->picnum & PL_SKYFLAT)
+        if (pl->picnum == skyflatnum || static_cast<unsigned int>(pl->picnum) & PL_SKYFLAT)
         {
             int     texture;
             angle_t an = viewangle, flip;
-            if (pl->picnum & PL_SKYFLAT)
+            if (static_cast<unsigned int>(pl->picnum) & PL_SKYFLAT)
             {
-                const line_t *l = &lines[pl->picnum & ~PL_SKYFLAT];
+                const line_t *l = &lines[static_cast<unsigned int>(pl->picnum) & ~PL_SKYFLAT];
                 const side_t *s = *l->sidenum + sides;
                 texture         = texturetranslation[s->toptexture];
                 dc_texturemid   = s->rowoffset - 28 * FRACUNIT;
@@ -442,7 +442,7 @@ void R_DrawPlanes()
                     dc_texturemid = dc_texturemid * (textureheight[texture] >> FRACBITS) / SKYSTRETCH_HEIGHT;
                 }
                 flip = (l->special == 272) ? 0u : ~0u;
-                an += s->textureoffset;
+                an += static_cast<unsigned int>(s->textureoffset);
             }
             else
             {
@@ -465,8 +465,8 @@ void R_DrawPlanes()
                 dc_iscale = dc_iscale * dc_texheight / SKYSTRETCH_HEIGHT;
             for (x = pl->minx; x <= pl->maxx; x++)
             {
-                dc_yl = pl->top[x];
-                dc_yh = pl->bottom[x];
+                dc_yl = static_cast<int>(pl->top[x]);
+                dc_yh = static_cast<int>(pl->bottom[x]);
 
                 if (dc_yl <= dc_yh) // [crispy] 32-bit integer math
                 {

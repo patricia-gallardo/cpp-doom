@@ -27,11 +27,9 @@
 
 // Fixme. __USE_C_FIXED__ or something.
 
-fixed_t
-    FixedMul(fixed_t a,
-        fixed_t      b)
+fixed_t FixedMul(fixed_t a, fixed_t b)
 {
-    return (static_cast<int64_t>(a) * static_cast<int64_t>(b)) >> FRACBITS;
+    return static_cast<fixed_t>((static_cast<int64_t>(a) * static_cast<int64_t>(b)) >> FRACBITS);
 }
 
 

@@ -169,7 +169,7 @@ void P_LoadVertexes(int lump)
     mapvertex_t *ml;
     vertex_t *li;
 
-    numvertexes = W_LumpLength(lump) / sizeof(mapvertex_t);
+    numvertexes = static_cast<int>(W_LumpLength(lump) / sizeof(mapvertex_t));
     vertexes = zmalloc<vertex_t *>(numvertexes * sizeof(vertex_t), PU_LEVEL, 0);
     data = cache_lump_num<uint8_t *>(lump, PU_STATIC);
 
@@ -202,7 +202,7 @@ void P_LoadSegs(int lump)
     line_t *ldef;
     int linedef_local, side;
 
-    numsegs = W_LumpLength(lump) / sizeof(mapseg_t);
+    numsegs = static_cast<int>(W_LumpLength(lump) / sizeof(mapseg_t));
     segs = zmalloc<seg_t *>(numsegs * sizeof(seg_t), PU_LEVEL, 0);
     memset(segs, 0, numsegs * sizeof(seg_t));
     data = cache_lump_num<uint8_t *>(lump, PU_STATIC);
@@ -247,7 +247,7 @@ void P_LoadSubsectors(int lump)
     mapsubsector_t *ms;
     subsector_t *ss;
 
-    numsubsectors = W_LumpLength(lump) / sizeof(mapsubsector_t);
+    numsubsectors = static_cast<int>(W_LumpLength(lump) / sizeof(mapsubsector_t));
     subsectors = zmalloc<subsector_t *>(numsubsectors * sizeof(subsector_t), PU_LEVEL, 0);
     data = cache_lump_num<uint8_t *>(lump, PU_STATIC);
 
@@ -279,7 +279,7 @@ void P_LoadSectors(int lump)
     mapsector_t *ms;
     sector_t *ss;
 
-    numsectors = W_LumpLength(lump) / sizeof(mapsector_t);
+    numsectors = static_cast<int>(W_LumpLength(lump) / sizeof(mapsector_t));
     sectors = zmalloc<sector_t *>(numsectors * sizeof(sector_t), PU_LEVEL, 0);
     memset(sectors, 0, numsectors * sizeof(sector_t));
     data = cache_lump_num<uint8_t *>(lump, PU_STATIC);
@@ -291,8 +291,8 @@ void P_LoadSectors(int lump)
     {
         ss->floorheight = SHORT(ms->floorheight) << FRACBITS;
         ss->ceilingheight = SHORT(ms->ceilingheight) << FRACBITS;
-        ss->floorpic = R_FlatNumForName(ms->floorpic);
-        ss->ceilingpic = R_FlatNumForName(ms->ceilingpic);
+        ss->floorpic = static_cast<short>(R_FlatNumForName(ms->floorpic));
+        ss->ceilingpic = static_cast<short>(R_FlatNumForName(ms->ceilingpic));
         ss->lightlevel = SHORT(ms->lightlevel);
         ss->special = SHORT(ms->special);
         ss->tag = SHORT(ms->tag);
@@ -318,7 +318,7 @@ void P_LoadNodes(int lump)
     mapnode_t *mn;
     node_t *no;
 
-    numnodes = W_LumpLength(lump) / sizeof(mapnode_t);
+    numnodes = static_cast<int>(W_LumpLength(lump) / sizeof(mapnode_t));
     nodes = zmalloc<node_t *>(numnodes * sizeof(node_t), PU_LEVEL, 0);
     data = cache_lump_num<uint8_t *>(lump, PU_STATIC);
 
@@ -357,7 +357,7 @@ void P_LoadThings(int lump)
     int deathSpotsCount;
 
     data = cache_lump_num<uint8_t *>(lump, PU_STATIC);
-    numthings = W_LumpLength(lump) / sizeof(mapthing_t);
+    numthings = static_cast<int>(W_LumpLength(lump) / sizeof(mapthing_t));
 
     mt = reinterpret_cast<mapthing_t *>(data);
     for (i = 0; i < numthings; i++, mt++)
@@ -392,7 +392,7 @@ void P_LoadThings(int lump)
     {
         playerCount += playeringame[i];
     }
-    deathSpotsCount = deathmatch_p - deathmatchstarts;
+    deathSpotsCount = static_cast<int>(deathmatch_p - deathmatchstarts);
     if (deathSpotsCount < playerCount)
     {
         I_Error("P_LoadThings: Player count (%d) exceeds deathmatch "
@@ -416,7 +416,7 @@ void P_LoadLineDefs(int lump)
     line_t *ld;
     vertex_t *v1, *v2;
 
-    numlines = W_LumpLength(lump) / sizeof(maplinedef_t);
+    numlines = static_cast<int>(W_LumpLength(lump) / sizeof(maplinedef_t));
     lines = zmalloc<line_t *>(numlines * sizeof(line_t), PU_LEVEL, 0);
     memset(lines, 0, numlines * sizeof(line_t));
     data = cache_lump_num<uint8_t *>(lump, PU_STATIC);
@@ -506,7 +506,7 @@ void P_LoadSideDefs(int lump)
     mapsidedef_t *msd;
     side_t *sd;
 
-    numsides = W_LumpLength(lump) / sizeof(mapsidedef_t);
+    numsides = static_cast<int>(W_LumpLength(lump) / sizeof(mapsidedef_t));
     sides = zmalloc<side_t *>(numsides * sizeof(side_t), PU_LEVEL, 0);
     memset(sides, 0, numsides * sizeof(side_t));
     data = cache_lump_num<uint8_t *>(lump, PU_STATIC);
@@ -518,9 +518,9 @@ void P_LoadSideDefs(int lump)
     {
         sd->textureoffset = SHORT(msd->textureoffset) << FRACBITS;
         sd->rowoffset = SHORT(msd->rowoffset) << FRACBITS;
-        sd->toptexture = R_TextureNumForName(msd->toptexture);
-        sd->bottomtexture = R_TextureNumForName(msd->bottomtexture);
-        sd->midtexture = R_TextureNumForName(msd->midtexture);
+        sd->toptexture = static_cast<short>(R_TextureNumForName(msd->toptexture));
+        sd->bottomtexture = static_cast<short>(R_TextureNumForName(msd->bottomtexture));
+        sd->midtexture = static_cast<short>(R_TextureNumForName(msd->midtexture));
         sd->sector = &sectors[SHORT(msd->sector)];
     }
     W_ReleaseLumpNum(lump);
@@ -539,7 +539,7 @@ void P_LoadBlockMap(int lump)
     int i, count;
     int lumplen;
 
-    lumplen = W_LumpLength(lump);
+    lumplen = static_cast<int>(W_LumpLength(lump));
 
     blockmaplump = zmalloc<short *>(lumplen, PU_LEVEL, nullptr);
     W_ReadLump(lump, blockmaplump);
@@ -559,7 +559,7 @@ void P_LoadBlockMap(int lump)
 
     // clear out mobj chains
 
-    count = sizeof(*blocklinks) * bmapwidth * bmapheight;
+    count = static_cast<int>(sizeof(*blocklinks) * bmapwidth * bmapheight);
     blocklinks = zmalloc<mobj_t **>(count, PU_LEVEL, 0);
     memset(blocklinks, 0, count);
 }
@@ -812,7 +812,7 @@ static void InitMapInfo()
     info->warpTrans = 0;
     info->nextMap = 1;          // Always go to map 1 if not specified
     info->cdTrack = 1;
-    info->sky1Texture = R_TextureNumForName(default_sky_name);
+    info->sky1Texture = static_cast<short>(R_TextureNumForName(default_sky_name));
     info->sky2Texture = info->sky1Texture;
     info->sky1ScrollDelta = 0;
     info->sky2ScrollDelta = 0;
@@ -848,7 +848,7 @@ static void InitMapInfo()
         M_StringCopy(info->songLump, songMulch, sizeof(info->songLump));
 
         // The warp translation defaults to the map number
-        info->warpTrans = map;
+        info->warpTrans = static_cast<short>(map);
 
         // Map name must follow the number
         SC_MustGetString();
@@ -867,29 +867,29 @@ static void InitMapInfo()
             {
                 case MCMD_CLUSTER:
                     SC_MustGetNumber();
-                    info->cluster = sc_Number;
+                    info->cluster = static_cast<short>(sc_Number);
                     break;
                 case MCMD_WARPTRANS:
                     SC_MustGetNumber();
-                    info->warpTrans = sc_Number;
+                    info->warpTrans = static_cast<short>(sc_Number);
                     break;
                 case MCMD_NEXT:
                     SC_MustGetNumber();
-                    info->nextMap = sc_Number;
+                    info->nextMap = static_cast<short>(sc_Number);
                     break;
                 case MCMD_CDTRACK:
                     SC_MustGetNumber();
-                    info->cdTrack = sc_Number;
+                    info->cdTrack = static_cast<short>(sc_Number);
                     break;
                 case MCMD_SKY1:
                     SC_MustGetString();
-                    info->sky1Texture = R_TextureNumForName(sc_String);
+                    info->sky1Texture = static_cast<short>(R_TextureNumForName(sc_String));
                     SC_MustGetNumber();
                     info->sky1ScrollDelta = sc_Number << 8;
                     break;
                 case MCMD_SKY2:
                     SC_MustGetString();
-                    info->sky2Texture = R_TextureNumForName(sc_String);
+                    info->sky2Texture = static_cast<short>(R_TextureNumForName(sc_String));
                     SC_MustGetNumber();
                     info->sky2ScrollDelta = sc_Number << 8;
                     break;

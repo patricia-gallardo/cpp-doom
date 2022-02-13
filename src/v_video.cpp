@@ -138,7 +138,7 @@ void V_CopyRect(int srcx, int srcy, pixel_t *source,
 
     for (; height > 0; height--)
     {
-        memcpy(dest, src, width * sizeof(*dest));
+        memcpy(dest, src, static_cast<unsigned long>(width) * sizeof(*dest));
         src += SCREENWIDTH;
         dest += SCREENWIDTH;
     }
@@ -736,7 +736,7 @@ void V_DrawBlock(int x, int y, int width, int height, pixel_t *src)
 
     while (height--)
     {
-        memcpy(dest, src, width * sizeof(*dest));
+        memcpy(dest, src, static_cast<unsigned long>(width) * sizeof(*dest));
         src += width;
         dest += SCREENWIDTH;
     }
@@ -780,7 +780,7 @@ void V_DrawFilledBox(int x, int y, int w, int h, int c)
 
         for (int x1 = 0; x1 < w; ++x1)
         {
-            *buf1++ = c;
+            *buf1++ = static_cast<pixel_t>(c);
         }
 
         buf += SCREENWIDTH;
@@ -797,7 +797,7 @@ void V_DrawHorizLine(int x, int y, int w, int c)
 
     for (int x1 = 0; x1 < w; ++x1)
     {
-        *buf++ = c;
+        *buf++ = static_cast<pixel_t>(c);
     }
 }
 
@@ -807,7 +807,7 @@ void V_DrawVertLine(int x, int y, int h, int c)
 
     for (int y1 = 0; y1 < h; ++y1)
     {
-        *buf = c;
+        *buf = static_cast<pixel_t>(c);
         buf += SCREENWIDTH;
     }
 }
@@ -926,7 +926,7 @@ void WritePCXfile(char *filename, pixel_t *data,
     pcx_t *pcx;
     uint8_t *pack;
 
-    pcx = zmalloc<decltype(pcx)>(width * height * 2 + 1000, PU_STATIC, nullptr);
+    pcx = zmalloc<decltype(pcx)>(static_cast<size_t>(width * height * 2 + 1000), PU_STATIC, nullptr);
 
     pcx->manufacturer   = 0x0a; // PCX id
     pcx->version        = 5;    // 256 color
@@ -965,7 +965,7 @@ void WritePCXfile(char *filename, pixel_t *data,
         *pack++ = *palette++;
 
     // write output file
-    length = pack - reinterpret_cast<uint8_t *>(pcx);
+    length = static_cast<int>(pack - reinterpret_cast<uint8_t *>(pcx));
     M_WriteFile(filename, pcx, length);
 
     Z_Free(pcx);
@@ -1043,7 +1043,7 @@ void WritePNGfile(char *filename, pixel_t *,
     I_RenderReadPixels(&palette, &width, &height, &j);
     rowbuf = palette; // [crispy] pointer abuse!
 
-    png_set_IHDR(ppng, pinfo, width, height,
+    png_set_IHDR(ppng, pinfo, static_cast<png_uint_32>(width), static_cast<png_uint_32>(height),
 #if SDL_VERSION_ATLEAST(2, 0, 5)
         8, PNG_COLOR_TYPE_RGB, PNG_INTERLACE_NONE,
 #else
@@ -1213,7 +1213,7 @@ static void DrawAcceleratingBox(int speed)
     {
         // Undo acceleration and get back the original mouse speed
         original_speed = speed - mouse_threshold;
-        original_speed = static_cast<int>(original_speed / mouse_acceleration);
+        original_speed = static_cast<int>(static_cast<float>(original_speed) / mouse_acceleration);
         original_speed += mouse_threshold;
 
         linelen = (original_speed * redline_x) / mouse_threshold;

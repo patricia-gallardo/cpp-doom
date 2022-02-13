@@ -279,7 +279,7 @@ static void SetIcon()
     auto * ptr = const_cast<unsigned int *>(const_ptr);
     SDL_Surface *surface = SDL_CreateRGBSurfaceFrom(reinterpret_cast<void*>(ptr), setup_icon_w,
                                        setup_icon_h, 32, setup_icon_w * 4,
-                                       0xff << 24, 0xff << 16,
+                static_cast<Uint32>(0xff << 24), 0xff << 16,
                                        0xff << 8, 0xff << 0);
     SDL_SetWindowIcon(TXT_SDLWindow, surface);
     SDL_FreeSurface(surface);

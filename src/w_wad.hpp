@@ -41,7 +41,7 @@ struct lumpinfo_s {
     char        name[8];
     wad_file_t *wad_file;
     int         position;
-    int         size;
+    size_t      size;
     void *      cache;
 
     // Used for hash table lookups
@@ -50,7 +50,7 @@ struct lumpinfo_s {
 
 
 extern lumpinfo_t **lumpinfo;
-extern unsigned int numlumps;
+extern size_t numlumps;
 
 wad_file_t *W_AddFile(const char *filename);
 void        W_Reload();
@@ -59,7 +59,7 @@ lumpindex_t W_CheckNumForName(const char *name);
 lumpindex_t W_GetNumForName(const char *name);
 lumpindex_t W_CheckNumForNameFromTo(const char *name, int from, int to);
 
-int  W_LumpLength(lumpindex_t lump);
+size_t W_LumpLength(lumpindex_t lump);
 void W_ReadLump(lumpindex_t lump, void *dest);
 
 void *W_CacheLumpNum(lumpindex_t lump, int tag);

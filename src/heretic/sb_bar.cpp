@@ -1004,7 +1004,7 @@ bool SB_Responder(event_t * event)
 {
     if (event->type == ev_keydown)
     {
-        if (HandleCheats(event->data1))
+        if (HandleCheats(static_cast<uint8_t>(event->data1)))
         {                       // Need to eat the key
             return (true);
         }

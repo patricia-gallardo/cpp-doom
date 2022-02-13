@@ -102,7 +102,7 @@ typedef struct
 
 static inline uint8_t get_byte(const uint32_t x, const unsigned n)
 {
-    return x >> (n << 3);
+    return static_cast<uint8_t>(x >> (n << 3));
 }
 
 static const uint32_t rco_tab[10] = { 1, 2, 4, 8, 16, 32, 64, 128, 27, 54 };
@@ -2329,7 +2329,7 @@ static int AES_ExpandKey(aes_context_t *ctx, const uint8_t *in_key,
 
     for (i = 4; i < key_len + 24; ++i)
     {
-        j = key_len + 24 - (i & ~3) + (i & 3);
+        j = key_len + 24 - (i & static_cast<unsigned int>(~3)) + (i & 3);
         imix_col(ctx->key_dec[j], ctx->key_enc[i]);
     }
     return 0;
@@ -2392,11 +2392,11 @@ static int AES_SetKey(aes_context_t *ctx, const uint8_t *in_key,
 static void AES_Encrypt(aes_context_t *ctx, uint8_t *out,
     const uint8_t *in)
 {
-    const uint32_t *src = reinterpret_cast<const uint32_t *>(in);
-    uint32_t *      dst = reinterpret_cast<uint32_t *>(out);
+    const auto *src = reinterpret_cast<const uint32_t *>(in);
+    auto *      dst = reinterpret_cast<uint32_t *>(out);
     uint32_t        b0[4], b1[4];
     const uint32_t *kp      = ctx->key_enc + 4;
-    const int       key_len = ctx->key_length;
+    const int       key_len = static_cast<int>(ctx->key_length);
 
     b0[0] = le32_to_cpu(src[0]) ^ ctx->key_enc[0];
     b0[1] = le32_to_cpu(src[1]) ^ ctx->key_enc[1];
@@ -2468,7 +2468,7 @@ static void PRNG_Generate()
         input[4 * i]     = prng_input_counter & 0xff;
         input[4 * i + 1] = (prng_input_counter >> 8) & 0xff;
         input[4 * i + 2] = (prng_input_counter >> 16) & 0xff;
-        input[4 * i + 3] = (prng_input_counter >> 24) & 0xff;
+        input[4 * i + 3] = static_cast<uint8_t>((prng_input_counter >> 24) & 0xff);
         ++prng_input_counter;
     }
 
@@ -2476,10 +2476,8 @@ static void PRNG_Generate()
 
     for (i = 0; i < 4; ++i)
     {
-        prng_values[i] = output[4 * i]
-                         | (output[4 * i + 1] << 8)
-                         | (output[4 * i + 2] << 16)
-                         | (output[4 * i + 3] << 24);
+        prng_values[i] =
+            static_cast<uint32_t>(output[4 * i] | (output[4 * i + 1] << 8) | (output[4 * i + 2] << 16) | (output[4 * i + 3] << 24));
     }
 
     prng_value_index = 0;

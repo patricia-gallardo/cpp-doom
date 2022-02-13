@@ -569,7 +569,7 @@ static void OldNetSync()
     {
         if (local_playeringame[i])
         {
-            keyplayer = i;
+            keyplayer = static_cast<int>(i);
             break;
         }
     }

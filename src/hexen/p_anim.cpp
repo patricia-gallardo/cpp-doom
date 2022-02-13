@@ -203,7 +203,7 @@ static void P_LightningFlash()
                 {
                     if (*tempLight < tempSec->lightlevel - 4)
                     {
-                        tempSec->lightlevel -= 4;
+                        tempSec->lightlevel = static_cast<short>(tempSec->lightlevel - 4);
                     }
                     tempLight++;
                 }
@@ -219,7 +219,7 @@ static void P_LightningFlash()
                     || tempSec->special == LIGHTNING_SPECIAL
                     || tempSec->special == LIGHTNING_SPECIAL2)
                 {
-                    tempSec->lightlevel = *tempLight;
+                    tempSec->lightlevel = static_cast<short>(*tempLight);
                     tempLight++;
                 }
             }
@@ -241,27 +241,27 @@ static void P_LightningFlash()
             *tempLight = tempSec->lightlevel;
             if (tempSec->special == LIGHTNING_SPECIAL)
             {
-                tempSec->lightlevel += 64;
+                tempSec->lightlevel = static_cast<short>(tempSec->lightlevel + 64);
                 if (tempSec->lightlevel > flashLight)
                 {
-                    tempSec->lightlevel = flashLight;
+                    tempSec->lightlevel = static_cast<short>(flashLight);
                 }
             }
             else if (tempSec->special == LIGHTNING_SPECIAL2)
             {
-                tempSec->lightlevel += 32;
+                tempSec->lightlevel = static_cast<short>(tempSec->lightlevel + 32);
                 if (tempSec->lightlevel > flashLight)
                 {
-                    tempSec->lightlevel = flashLight;
+                    tempSec->lightlevel = static_cast<short>(flashLight);
                 }
             }
             else
             {
-                tempSec->lightlevel = flashLight;
+                tempSec->lightlevel = static_cast<short>(flashLight);
             }
             if (tempSec->lightlevel < *tempLight)
             {
-                tempSec->lightlevel = *tempLight;
+                tempSec->lightlevel = static_cast<short>(*tempLight);
             }
             tempLight++;
             foundSec = true;

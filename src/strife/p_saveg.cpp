@@ -113,18 +113,15 @@ static void saveg_write8(uint8_t value)
 
 static short saveg_read16()
 {
-    int result;
-
-    result = saveg_read8();
+    int result = saveg_read8();
     result |= saveg_read8() << 8;
-
-    return result;
+    return static_cast<short>(result);
 }
 
 static void saveg_write16(short value)
 {
-    saveg_write8(value & 0xff);
-    saveg_write8((value >> 8) & 0xff);
+    saveg_write8(static_cast<uint8_t>(value & 0xff));
+    saveg_write8(static_cast<uint8_t>((value >> 8) & 0xff));
 }
 
 static int saveg_read32()
@@ -141,10 +138,10 @@ static int saveg_read32()
 
 static void saveg_write32(int value)
 {
-    saveg_write8(value & 0xff);
-    saveg_write8((value >> 8) & 0xff);
-    saveg_write8((value >> 16) & 0xff);
-    saveg_write8((value >> 24) & 0xff);
+    saveg_write8(static_cast<uint8_t>(value & 0xff));
+    saveg_write8(static_cast<uint8_t>((value >> 8) & 0xff));
+    saveg_write8(static_cast<uint8_t>((value >> 16) & 0xff));
+    saveg_write8(static_cast<uint8_t>((value >> 24) & 0xff));
 }
 
 // Pad to 4-byte boundaries
@@ -155,7 +152,7 @@ static void saveg_read_pad()
     int padding;
     int i;
 
-    pos = ftell(save_stream);
+    pos = static_cast<unsigned long>(ftell(save_stream));
 
     padding = (4 - (pos & 3)) & 3;
 
@@ -171,7 +168,7 @@ static void saveg_write_pad()
     int padding;
     int i;
 
-    pos = ftell(save_stream);
+    pos = static_cast<unsigned long>(ftell(save_stream));
 
     padding = (4 - (pos & 3)) & 3;
 
@@ -191,7 +188,7 @@ static void *saveg_readp()
 
 static void saveg_writep(const void *p)
 {
-    saveg_write32(reinterpret_cast<intptr_t>(p));
+    saveg_write32(static_cast<int>(reinterpret_cast<intptr_t>(p)));
 }
 
 // Enum values are 32-bit integers.
@@ -328,7 +325,7 @@ static void saveg_read_mobj_t(mobj_t *str)
     str->sprev = static_cast<mobj_s *>(saveg_readp());
 
     // angle_t angle;
-    str->angle = saveg_read32();
+    str->angle = static_cast<angle_t>(saveg_read32());
 
     // spritenum_t sprite;
     str->sprite = static_cast<spritenum_t>(saveg_read_enum());
@@ -382,7 +379,7 @@ static void saveg_read_mobj_t(mobj_t *str)
     str->state = &states[saveg_read32()];
 
     // int flags;
-    str->flags = saveg_read32();
+    str->flags = static_cast<unsigned int>(saveg_read32());
 
     // int health;
     str->health = saveg_read32();
@@ -449,7 +446,7 @@ static void saveg_write_mobj_t(mobj_t *str)
     saveg_writep(str->sprev);
 
     // angle_t angle;
-    saveg_write32(str->angle);
+    saveg_write32(static_cast<int>(str->angle));
 
     // spritenum_t sprite;
     saveg_write_enum(str->sprite);
@@ -500,10 +497,10 @@ static void saveg_write_mobj_t(mobj_t *str)
     saveg_write32(str->tics);
 
     // state_t* state;
-    saveg_write32(str->state - states);
+    saveg_write32(static_cast<int>(str->state - states));
 
     // int flags;
-    saveg_write32(str->flags);
+    saveg_write32(static_cast<int>(str->flags));
 
     // int health;
     saveg_write32(str->health);
@@ -526,7 +523,7 @@ static void saveg_write_mobj_t(mobj_t *str)
     // struct player_s* player;
     if (str->player)
     {
-        saveg_write32(str->player - players + 1);
+        saveg_write32(static_cast<int>(str->player - players + 1));
     }
     else
     {
@@ -556,10 +553,10 @@ static void saveg_write_mobj_t(mobj_t *str)
 static void saveg_read_ticcmd_t(ticcmd_t *str)
 {
     // signed char forwardmove;
-    str->forwardmove = saveg_read8();
+    str->forwardmove = static_cast<signed char>(saveg_read8());
 
     // signed char sidemove;
-    str->sidemove = saveg_read8();
+    str->sidemove = static_cast<signed char>(saveg_read8());
 
     // short angleturn;
     str->angleturn = saveg_read16();
@@ -585,10 +582,10 @@ static void saveg_read_ticcmd_t(ticcmd_t *str)
 static void saveg_write_ticcmd_t(ticcmd_t *str)
 {
     // signed char forwardmove;
-    saveg_write8(str->forwardmove);
+    saveg_write8(static_cast<uint8_t>(str->forwardmove));
 
     // signed char sidemove;
-    saveg_write8(str->sidemove);
+    saveg_write8(static_cast<uint8_t>(str->sidemove));
 
     // short angleturn;
     saveg_write16(str->angleturn);
@@ -644,7 +641,7 @@ static void saveg_write_pspdef_t(pspdef_t *str)
     // state_t* state;
     if (str->state)
     {
-        saveg_write32(str->state - states);
+        saveg_write32(static_cast<int>(str->state - states));
     }
     else
     {
@@ -1107,7 +1104,7 @@ static void saveg_write_ceiling_t(ceiling_t *str)
     saveg_write_enum(str->type);
 
     // sector_t* sector;
-    saveg_write32(str->sector - sectors);
+    saveg_write32(static_cast<int>(str->sector - sectors));
 
     // fixed_t bottomheight;
     saveg_write32(str->bottomheight);
@@ -1184,7 +1181,7 @@ static void saveg_write_vldoor_t(vldoor_t *str)
     saveg_write_enum(str->type);
 
     // sector_t* sector;
-    saveg_write32(str->sector - sectors);
+    saveg_write32(static_cast<int>(str->sector - sectors));
 
     // fixed_t topheight;
     saveg_write32(str->topheight);
@@ -1259,10 +1256,10 @@ static void saveg_write_slidedoor_t(slidedoor_t *str)
     saveg_write_enum(str->type);
 
     // line_t *line1;
-    saveg_write32(str->line1 - lines);
+    saveg_write32(static_cast<int>(str->line1 - lines));
 
     // line_t *line2;
-    saveg_write32(str->line2 - lines);
+    saveg_write32(static_cast<int>(str->line2 - lines));
 
     // int frame;
     saveg_write32(str->frame);
@@ -1274,7 +1271,7 @@ static void saveg_write_slidedoor_t(slidedoor_t *str)
     saveg_write32(str->timer);
 
     // sector_t *frontsector;
-    saveg_write32(str->frontsector - sectors);
+    saveg_write32(static_cast<int>(str->frontsector - sectors));
 
     // sd_e status;
     saveg_write_enum(str->status);
@@ -1329,7 +1326,7 @@ static void saveg_write_floormove_t(floormove_t *str)
     saveg_write32(str->crush);
 
     // sector_t* sector;
-    saveg_write32(str->sector - sectors);
+    saveg_write32(static_cast<int>(str->sector - sectors));
 
     // int direction;
     saveg_write32(str->direction);
@@ -1399,7 +1396,7 @@ static void saveg_write_plat_t(plat_t *str)
     saveg_write_thinker_t(&str->thinker);
 
     // sector_t* sector;
-    saveg_write32(str->sector - sectors);
+    saveg_write32(static_cast<int>(str->sector - sectors));
 
     // fixed_t speed;
     saveg_write32(str->speed);
@@ -1469,7 +1466,7 @@ static void saveg_write_lightflash_t(lightflash_t *str)
     saveg_write_thinker_t(&str->thinker);
 
     // sector_t* sector;
-    saveg_write32(str->sector - sectors);
+    saveg_write32(static_cast<int>(str->sector - sectors));
 
     // int count;
     saveg_write32(str->count);
@@ -1524,7 +1521,7 @@ static void saveg_write_strobe_t(strobe_t *str)
     saveg_write_thinker_t(&str->thinker);
 
     // sector_t* sector;
-    saveg_write32(str->sector - sectors);
+    saveg_write32(static_cast<int>(str->sector - sectors));
 
     // int count;
     saveg_write32(str->count);
@@ -1573,7 +1570,7 @@ static void saveg_write_glow_t(glow_t *str)
     saveg_write_thinker_t(&str->thinker);
 
     // sector_t* sector;
-    saveg_write32(str->sector - sectors);
+    saveg_write32(static_cast<int>(str->sector - sectors));
 
     // int minlight;
     saveg_write32(str->minlight);
@@ -1608,9 +1605,9 @@ void P_WriteSaveGameHeader(char *)
     M_snprintf(name, sizeof(name), "ver %i", STRIFE_VERSION);
 
     for (i=0; i<VERSIONSIZE; ++i)
-        saveg_write8(name[i]);
+        saveg_write8(static_cast<uint8_t>(name[i]));
 
-    saveg_write8(gameskill);
+    saveg_write8(static_cast<uint8_t>(gameskill));
     
     // [STRIFE] This information is implicit in the file being loaded.
     //saveg_write8(gameepisode);
@@ -1619,9 +1616,9 @@ void P_WriteSaveGameHeader(char *)
     for (i=0 ; i<MAXPLAYERS ; i++)
         saveg_write8(playeringame[i]);
 
-    saveg_write8((leveltime >> 16) & 0xff);
-    saveg_write8((leveltime >> 8) & 0xff);
-    saveg_write8(leveltime & 0xff);
+    saveg_write8(static_cast<uint8_t>((leveltime >> 16) & 0xff));
+    saveg_write8(static_cast<uint8_t>((leveltime >> 8) & 0xff));
+    saveg_write8(static_cast<uint8_t>(leveltime & 0xff));
 }
 
 // 
@@ -1644,7 +1641,7 @@ bool P_ReadSaveGameHeader()
     */
     
     for (i=0; i<VERSIONSIZE; ++i)
-        read_vcheck[i] = saveg_read8();
+        read_vcheck[i] = static_cast<char>(saveg_read8());
 
     memset (vcheck,0,sizeof(vcheck));
     M_snprintf(vcheck, sizeof(vcheck), "ver %i", STRIFE_VERSION);
@@ -1766,8 +1763,8 @@ void P_ArchiveWorld ()
     // do sectors
     for (i=0, sec = sectors ; i<numsectors ; i++,sec++)
     {
-        saveg_write16(sec->floorheight >> FRACBITS);
-        saveg_write16(sec->ceilingheight >> FRACBITS);
+        saveg_write16(static_cast<short>(sec->floorheight >> FRACBITS));
+        saveg_write16(static_cast<short>(sec->ceilingheight >> FRACBITS));
         saveg_write16(sec->floorpic);
         //saveg_write16(sec->ceilingpic); [STRIFE] not saved.
         saveg_write16(sec->lightlevel);
@@ -1953,7 +1950,7 @@ void P_UnArchiveThinkers ()
             // the objects removed, including the player's previous body, from
             // being passed to Z_Free. One glitch relying on another!
 
-            if(mobj->target != nullptr && (mobj->flags & MF_ALLY) != MF_ALLY)
+            if(mobj->target != nullptr && (static_cast<unsigned int>(mobj->flags) & MF_ALLY) != MF_ALLY)
                 mobj->target = players[0].mo;
             else
                 mobj->target = nullptr;

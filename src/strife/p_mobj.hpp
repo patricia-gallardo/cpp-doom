@@ -218,7 +218,7 @@ typedef enum
     MF_COLORSWAP3       = 0x40000000,
 
     // villsa [STRIFE] spectral entity, only damaged by spectral missiles
-    MF_SPECTRAL         = 0x80000000,
+    MF_SPECTRAL         = 0x80000000, // TODO Clang-Tidy: Narrowing conversion from constant value 2147483648 (0x80000000) of type 'unsigned int' to signed type 'int' is implementation-defined
 
     // Player sprites in multiplayer modes are modified
     //  using an internal color lookup table for re-indexing.
@@ -285,7 +285,7 @@ typedef struct mobj_s
     
     int                 tics;   // state tic counter
     state_t*            state;
-    int                 flags;
+    unsigned int        flags;
     int                 health;
 
     // Movement direction, movement generation (zig-zagging).

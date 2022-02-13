@@ -47,7 +47,8 @@ void SHA1_Init(sha1_context_t *hd)
     hd->count   = 0;
 }
 
-
+#pragma GCC diagnostic push
+#pragma GCC diagnostic ignored "-Wconversion"
 /****************
  * Transform the message X which consists of 16 32-bit-words
  */
@@ -192,7 +193,7 @@ static void Transform(sha1_context_t *hd, uint8_t *data)
     hd->h3 += d;
     hd->h4 += e;
 }
-
+#pragma GCC diagnostic pop
 
 /* Update the message digest with the contents
  * of INBUF with length INLEN.
@@ -229,6 +230,23 @@ void SHA1_Update(sha1_context_t *hd, uint8_t *inbuf, size_t inlen)
         hd->buf[hd->count++] = *inbuf++;
 }
 
+#ifdef SYS_BIG_ENDIAN
+static uint8_t *write_uint32_big_endian(const uint32_t data, uint8_t *p)
+{
+    *(uint32_t *)p = data;
+    p += 4;
+    return p;
+}
+#else
+static uint8_t *write_uint32_little_endian(const uint32_t data, uint8_t *p)
+{
+    *p++ = static_cast<uint8_t>(data >> 24);
+    *p++ = static_cast<uint8_t>(data >> 16);
+    *p++ = static_cast<uint8_t>(data >> 8);
+    *p++ = static_cast<uint8_t>(data);
+    return p;
+}
+#endif
 
 /* The routine final terminates the computation and
  * returns the digest.
@@ -251,7 +269,7 @@ void SHA1_Final(sha1_digest_t digest, sha1_context_t *hd)
     msb = t >> 26;
     /* add the count */
     t = lsb;
-    if ((lsb += hd->count) < t)
+    if ((lsb += static_cast<unsigned int>(hd->count)) < t)
         msb++;
     /* multiply by 8 to make a bit count */
     t = lsb;
@@ -277,40 +295,31 @@ void SHA1_Final(sha1_digest_t digest, sha1_context_t *hd)
         memset(hd->buf, 0, 56); /* fill next block with zeroes */
     }
     /* append the 64 bit count */
-    hd->buf[56] = msb >> 24;
-    hd->buf[57] = msb >> 16;
-    hd->buf[58] = msb >> 8;
-    hd->buf[59] = msb;
-    hd->buf[60] = lsb >> 24;
-    hd->buf[61] = lsb >> 16;
-    hd->buf[62] = lsb >> 8;
-    hd->buf[63] = lsb;
+    hd->buf[56] = static_cast<uint8_t>(msb >> 24);
+    hd->buf[57] = static_cast<uint8_t>(msb >> 16);
+    hd->buf[58] = static_cast<uint8_t>(msb >> 8);
+    hd->buf[59] = static_cast<uint8_t>(msb);
+    hd->buf[60] = static_cast<uint8_t>(lsb >> 24);
+    hd->buf[61] = static_cast<uint8_t>(lsb >> 16);
+    hd->buf[62] = static_cast<uint8_t>(lsb >> 8);
+    hd->buf[63] = static_cast<uint8_t>(lsb);
     Transform(hd, hd->buf);
 
     p = hd->buf;
+
 #ifdef SYS_BIG_ENDIAN
-#define X(a)                       \
-    do                             \
-    {                              \
-        *(uint32_t *)p = hd->h##a; \
-        p += 4;                    \
-    } while (0)
-#else /* little endian */
-#define X(a)                   \
-    do                         \
-    {                          \
-        *p++ = hd->h##a >> 24; \
-        *p++ = hd->h##a >> 16; \
-        *p++ = hd->h##a >> 8;  \
-        *p++ = hd->h##a;       \
-    } while (0)
+    p = write_uint32_big_endian(hd->h0, p);
+    p = write_uint32_big_endian(hd->h1, p);
+    p = write_uint32_big_endian(hd->h2, p);
+    p = write_uint32_big_endian(hd->h3, p);
+    p = write_uint32_big_endian(hd->h4, p);
+#else
+    p = write_uint32_little_endian(hd->h0, p);
+    p = write_uint32_little_endian(hd->h1, p);
+    p = write_uint32_little_endian(hd->h2, p);
+    p = write_uint32_little_endian(hd->h3, p);
+    p = write_uint32_little_endian(hd->h4, p);
 #endif
-    X(0);
-    X(1);
-    X(2);
-    X(3);
-    X(4);
-#undef X
 
     memcpy(digest, hd->buf, sizeof(sha1_digest_t));
 }
@@ -319,7 +328,7 @@ void SHA1_UpdateInt32(sha1_context_t *context, unsigned int val)
 {
     uint8_t buf[4];
 
-    buf[0] = (val >> 24) & 0xff;
+    buf[0] = static_cast<uint8_t>((val >> 24) & 0xff);
     buf[1] = (val >> 16) & 0xff;
     buf[2] = (val >> 8) & 0xff;
     buf[3] = val & 0xff;

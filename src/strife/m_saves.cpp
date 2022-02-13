@@ -274,7 +274,7 @@ void M_ReadMisObj()
 
     if((f = fopen(srcpath, "rb")))
     {
-        int retval = fread(mission_objective, 1, OBJECTIVE_LEN, f);
+        size_t retval = fread(mission_objective, 1, OBJECTIVE_LEN, f);
         fclose(f);
         if (retval != OBJECTIVE_LEN)
         {
@@ -305,7 +305,7 @@ void M_ReadMisObj()
 //
 void *M_Calloc(size_t n1, size_t n2)
 {
-    return (n1 *= n2) ? memset(Z_Malloc(n1, PU_STATIC, nullptr), 0, n1) : nullptr;
+    return (n1 *= n2) ? memset(Z_Malloc(static_cast<int>(n1), PU_STATIC, nullptr), 0, n1) : nullptr;
 }
 
 //
@@ -357,7 +357,7 @@ int M_StringAlloc(char **str, int numstrs, size_t extra, const char *str1, ...)
 
     *str = reinterpret_cast<char *>(M_Calloc(1, len));
 
-    return len;
+    return static_cast<int>(len);
 }
 
 //
@@ -416,7 +416,7 @@ char *M_SafeFilePath(const char *basepath, const char *newcomponent)
     // that either basepath or newcomponent includes a redundant slash at the
     // end or beginning respectively.
     newstrlen = M_StringAlloc(&newstr, 3, 1, basepath, "/", newcomponent);
-    M_snprintf(newstr, newstrlen, "%s/%s", basepath, newcomponent);
+    M_snprintf(newstr, static_cast<size_t>(newstrlen), "%s/%s", basepath, newcomponent);
     M_NormalizeSlashes(newstr);
 
     return newstr;

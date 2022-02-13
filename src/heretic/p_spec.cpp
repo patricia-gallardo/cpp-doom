@@ -233,7 +233,7 @@ void P_InitTerrainTypes()
     int lump;
     int size;
 
-    size = (numflats + 1) * sizeof(int);
+    size = static_cast<int>((numflats + 1) * sizeof(int));
     TerrainTypes = zmalloc<int *>(size, PU_STATIC, 0);
     memset(TerrainTypes, 0, size);
     for (i = 0; TerrainTypeDefs[i].type != -1; i++)
@@ -1017,16 +1017,13 @@ void P_UpdateSpecials()
                 switch (buttonlist[i].where)
                 {
                     case top:
-                        sides[buttonlist[i].line->sidenum[0]].toptexture =
-                            buttonlist[i].btexture;
+                        sides[buttonlist[i].line->sidenum[0]].toptexture = static_cast<short>(buttonlist[i].btexture);
                         break;
                     case middle:
-                        sides[buttonlist[i].line->sidenum[0]].midtexture =
-                            buttonlist[i].btexture;
+                        sides[buttonlist[i].line->sidenum[0]].midtexture = static_cast<short>(buttonlist[i].btexture);
                         break;
                     case bottom:
-                        sides[buttonlist[i].line->sidenum[0]].bottomtexture =
-                            buttonlist[i].btexture;
+                        sides[buttonlist[i].line->sidenum[0]].bottomtexture = static_cast<short>(buttonlist[i].btexture);
                         break;
                 }
                 S_StartSound(buttonlist[i].soundorg, sfx_switch);

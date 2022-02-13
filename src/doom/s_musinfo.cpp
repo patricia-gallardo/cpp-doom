@@ -106,7 +106,7 @@ static void OpenScript(char *name, int type)
     { // Lump script
         ScriptLumpNum = W_GetNumForName(name);
         ScriptBuffer  = cache_lump_num<char *>(ScriptLumpNum, PU_STATIC);
-        ScriptSize    = W_LumpLength(ScriptLumpNum);
+        ScriptSize    = static_cast<int>(W_LumpLength(ScriptLumpNum));
         M_StringCopy(ScriptName, name, sizeof(ScriptName));
     }
     else if (type == FILE_ZONE_SCRIPT)

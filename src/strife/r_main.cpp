@@ -175,9 +175,9 @@ R_PointOnSide
     dy = (y - node->y);
 	
     // Try to quickly decide by looking at sign bits.
-    if ( (node->dy ^ node->dx ^ dx ^ dy)&0x80000000 )
+    if ( (static_cast<unsigned int>(node->dy ^ node->dx ^ dx ^ dy))&0x80000000 )
     {
-	if  ( (node->dy ^ dx) & 0x80000000 )
+	if  ( (static_cast<unsigned int>(node->dy ^ dx)) & 0x80000000 )
 	{
 	    // (left is negative)
 	    return 1;
@@ -238,9 +238,9 @@ R_PointOnSegSide
     dy = (y - ly);
 	
     // Try to quickly decide by looking at sign bits.
-    if ( (ldy ^ ldx ^ dx ^ dy)&0x80000000 )
+    if ( (static_cast<unsigned int>(ldy ^ ldx ^ dx ^ dy))&0x80000000 )
     {
-	if  ( (ldy ^ dx) & 0x80000000 )
+	if  ( (static_cast<unsigned int>(ldy ^ dx)) & 0x80000000 )
 	{
 	    // (left is negative)
 	    return 1;
@@ -296,12 +296,12 @@ R_PointToAngle
 	    if (x>y)
 	    {
 		// octant 0
-		return tantoangle[ SlopeDiv(y,x)];
+		return tantoangle[ SlopeDiv(static_cast<unsigned int>(y), static_cast<unsigned int>(x))];
 	    }
 	    else
 	    {
 		// octant 1
-		return ANG90-1-tantoangle[ SlopeDiv(x,y)];
+		return ANG90-1-tantoangle[ SlopeDiv(static_cast<unsigned int>(x), static_cast<unsigned int>(y))];
 	    }
 	}
 	else
@@ -312,12 +312,12 @@ R_PointToAngle
 	    if (x>y)
 	    {
 		// octant 8
-		return 0 - tantoangle[SlopeDiv(y,x)];
+		return 0 - tantoangle[SlopeDiv(static_cast<unsigned int>(y), static_cast<unsigned int>(x))];
 	    }
 	    else
 	    {
 		// octant 7
-		return ANG270+tantoangle[ SlopeDiv(x,y)];
+		return ANG270+tantoangle[ SlopeDiv(static_cast<unsigned int>(x), static_cast<unsigned int>(y))];
 	    }
 	}
     }
@@ -332,12 +332,12 @@ R_PointToAngle
 	    if (x>y)
 	    {
 		// octant 3
-		return ANG180-1-tantoangle[ SlopeDiv(y,x)];
+		return ANG180-1-tantoangle[ SlopeDiv(static_cast<unsigned int>(y), static_cast<unsigned int>(x))];
 	    }
 	    else
 	    {
 		// octant 2
-		return ANG90+ tantoangle[ SlopeDiv(x,y)];
+		return ANG90+ tantoangle[ SlopeDiv(static_cast<unsigned int>(x), static_cast<unsigned int>(y))];
 	    }
 	}
 	else
@@ -348,12 +348,12 @@ R_PointToAngle
 	    if (x>y)
 	    {
 		// octant 4
-		return ANG180+tantoangle[ SlopeDiv(y,x)];
+		return ANG180+tantoangle[ SlopeDiv(static_cast<unsigned int>(y), static_cast<unsigned int>(x))];
 	    }
 	    else
 	    {
 		 // octant 5
-		return ANG270-1-tantoangle[ SlopeDiv(x,y)];
+		return ANG270-1-tantoangle[ SlopeDiv(static_cast<unsigned int>(x), static_cast<unsigned int>(y))];
 	    }
 	}
     }
@@ -585,7 +585,7 @@ void R_InitTextureMapping ()
 	i = 0;
 	while (viewangletox[i]>x)
 	    i++;
-	xtoviewangle[x] = (i<<ANGLETOFINESHIFT)-ANG90;
+	xtoviewangle[x] = static_cast<angle_t>((i << ANGLETOFINESHIFT) - ANG90);
     }
     
     // Take out the fencepost cases from viewangletox.
@@ -696,7 +696,7 @@ void R_ExecuteSetViewSize ()
 	
     // villsa [STRIFE] calculate centery from player's pitch
     centery = (setblocks*players[consoleplayer].pitch);
-    centery = static_cast<unsigned int>(centery/10)+viewheight/2;
+    centery = static_cast<int>(centery/10)+viewheight/2;
 
     centerx = viewwidth/2;
     centerxfrac = centerx<<FRACBITS;
@@ -729,7 +729,7 @@ void R_ExecuteSetViewSize ()
     
     // thing clipping
     for (i=0 ; i<viewwidth ; i++)
-	screenheightarray[i] = viewheight;
+	screenheightarray[i] = static_cast<short>(viewheight);
     
     // planes
     for (i=0 ; i<viewheight ; i++)
@@ -883,7 +883,7 @@ void R_SetupFrame (player_t* player)
     viewplayer = player;
     viewx = player->mo->x;
     viewy = player->mo->y;
-    viewangle = player->mo->angle + viewangleoffset;
+    viewangle = player->mo->angle + static_cast<unsigned int>(viewangleoffset);
     extralight = player->extralight;
 
     viewz = player->viewz;
@@ -897,7 +897,7 @@ void R_SetupFrame (player_t* player)
     {
 	fixedcolormap =
 	    colormaps
-	    + player->fixedcolormap*256*sizeof(lighttable_t);
+	    + static_cast<unsigned long>(player->fixedcolormap * 256) *sizeof(lighttable_t);
 	
 	walllights = scalelightfixed;
 

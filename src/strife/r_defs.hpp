@@ -364,7 +364,7 @@ typedef struct vissprite_s
     //  maxbright frames as well
     lighttable_t*	colormap;
    
-    int			mobjflags;
+    unsigned int	mobjflags;
     
 } vissprite_t;
 

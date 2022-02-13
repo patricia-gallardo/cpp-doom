@@ -409,7 +409,7 @@ void A_BridgeOrbit(mobj_t * actor)
     {
         P_SetMobjState(actor, S_NULL);
     }
-    actor->args[0] += 3;
+    actor->args[0] = static_cast<uint8_t>(actor->args[0] + 3);
     actor->x = actor->target->x + orbitTableX[actor->args[0]];
     actor->y = actor->target->y + orbitTableY[actor->args[0]];
     actor->z = actor->target->z;
@@ -427,7 +427,7 @@ void A_BridgeInit(mobj_t * actor)
     cx = actor->x;
     cy = actor->y;
     cz = actor->z;
-    startangle = P_Random();
+    startangle = static_cast<uint8_t>(P_Random());
     actor->special1.i = 0;
 
     // Spawn triad into world
@@ -436,11 +436,11 @@ void A_BridgeInit(mobj_t * actor)
     ball1->target = actor;
 
     ball2 = P_SpawnMobj(cx, cy, cz, MT_BRIDGEBALL);
-    ball2->args[0] = (startangle + 85) & 255;
+    ball2->args[0] = static_cast<uint8_t>((startangle + 85) & 255);
     ball2->target = actor;
 
     ball3 = P_SpawnMobj(cx, cy, cz, MT_BRIDGEBALL);
-    ball3->args[0] = (startangle + 170) & 255;
+    ball3->args[0] = static_cast<uint8_t>((startangle + 170) & 255);
     ball3->target = actor;
 
     A_BridgeOrbit(ball1);
@@ -631,10 +631,10 @@ void A_Summon(mobj_t * actor)
 
         // Store leveltime into mo->args. This must be stored in little-
         // endian format for Vanilla savegame compatibility.
-        mo->args[0] = leveltime & 0xff;
-        mo->args[1] = (leveltime >> 8) & 0xff;
-        mo->args[2] = (leveltime >> 16) & 0xff;
-        mo->args[3] = (leveltime >> 24) & 0xff;
+        mo->args[0] = static_cast<uint8_t>(leveltime & 0xff);
+        mo->args[1] = static_cast<uint8_t>((leveltime >> 8) & 0xff);
+        mo->args[2] = static_cast<uint8_t>((leveltime >> 16) & 0xff);
+        mo->args[3] = static_cast<uint8_t>((leveltime >> 24) & 0xff);
         master = actor->special1.m;
         if (master->flags & MF_CORPSE)
         {                       // Master dead
@@ -700,7 +700,7 @@ void A_FogSpawn(mobj_t * actor)
         mo->target = actor;
         if (actor->args[0] < 1)
             actor->args[0] = 1;
-        mo->args[0] = (P_Random() % (actor->args[0])) + 1;      // Random speed
+        mo->args[0] = static_cast<uint8_t>((P_Random() % (actor->args[0])) + 1);      // Random speed
         mo->args[3] = actor->args[3];   // Set lifetime
         mo->args[4] = 1;        // Set to moving
         mo->special2.i = P_Random() & 63;
@@ -725,7 +725,7 @@ void A_FogMove(mobj_t * actor)
 
     if ((actor->args[3] % 4) == 0)
     {
-        weaveindex = actor->special2.i;
+        weaveindex = static_cast<int>(actor->special2.i);
         actor->z += FloatBobOffsets[weaveindex] >> 1;
         actor->special2.i = (weaveindex + 1) & 63;
     }
@@ -786,13 +786,11 @@ void A_PoisonBagCheck(mobj_t * actor)
 
 void A_PoisonBagDamage(mobj_t * actor)
 {
-    int bobIndex;
-
     extern void A_Explode(mobj_t * actor);
 
     A_Explode(actor);
 
-    bobIndex = actor->special2.i;
+    int bobIndex = static_cast<int>(actor->special2.i);
     actor->z += FloatBobOffsets[bobIndex] >> 4;
     actor->special2.i = (bobIndex + 1) & 63;
 }
@@ -866,7 +864,7 @@ bool A_LocalQuake(uint8_t *args, mobj_t *)
             if (focus)
             {
                 focus->args[0] = args[0];
-                focus->args[1] = args[1] >> 1;  // decremented every 2 tics
+                focus->args[1] = static_cast<uint8_t>(args[1] >> 1);  // decremented every 2 tics
                 focus->args[2] = args[2];
                 focus->args[3] = args[3];
                 focus->args[4] = args[4];

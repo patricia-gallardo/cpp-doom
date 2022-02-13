@@ -401,7 +401,7 @@ static void P_ParseDialogLump(uint8_t *lump, mapdialog_t **dialogs,
     int i;
     uint8_t *rover = lump;
 
-    *dialogs = zmalloc<mapdialog_t *>(numdialogs * sizeof(mapdialog_t), tag, nullptr);
+    *dialogs = zmalloc<mapdialog_t *>(static_cast<unsigned long>(numdialogs) * sizeof(mapdialog_t), tag, nullptr);
 
     for(i = 0; i < numdialogs; i++)
     {
@@ -458,7 +458,7 @@ void P_DialogLoad()
     else
     {
         uint8_t *leveldialogptr = cache_lump_num<uint8_t *>(lumpnum, PU_STATIC);
-        numleveldialogs = W_LumpLength(lumpnum) / ORIG_MAPDIALOG_SIZE;
+        numleveldialogs = static_cast<int>(W_LumpLength(lumpnum) / ORIG_MAPDIALOG_SIZE);
         P_ParseDialogLump(leveldialogptr, &leveldialogs, numleveldialogs, 
                           PU_LEVEL);
         Z_Free(leveldialogptr); // haleyjd: free the original lump
@@ -473,7 +473,7 @@ void P_DialogLoad()
         // BUG: Rogue should have used W_GetNumForName here...
         lumpnum = W_CheckNumForName(DEH_String("script00")); 
         script0ptr = cache_lump_num<uint8_t *>(lumpnum, PU_STATIC);
-        numscript0dialogs = W_LumpLength(lumpnum) / ORIG_MAPDIALOG_SIZE;
+        numscript0dialogs = static_cast<int>(W_LumpLength(lumpnum) / ORIG_MAPDIALOG_SIZE);
         P_ParseDialogLump(script0ptr, &script0dialogs, numscript0dialogs,
                           PU_STATIC);
         Z_Free(script0ptr); // haleyjd: free the original lump
@@ -946,7 +946,7 @@ bool P_GiveItemToPlayer(player_t *player, int sprnum, mobjtype_t type)
             if(player->stamina >= 100)
                 return false;
 
-            player->stamina += 10;
+            player->stamina = static_cast<short>(player->stamina + 10);
             P_GiveBody(player, 200); // full healing
             break;
 
@@ -954,7 +954,7 @@ bool P_GiveItemToPlayer(player_t *player, int sprnum, mobjtype_t type)
             if(player->accuracy >= 100)
                 return false;
 
-            player->accuracy += 10;
+            player->accuracy = static_cast<short>(player->accuracy + 10);
             break;
 
         case MT_SLIDESHOW: // Slideshow (start a finale)
@@ -1116,7 +1116,7 @@ static void P_DialogDrawer()
         // draw divider
         M_WriteText(42, finaly - 6, DEH_String("______________________________"));
 
-        dialogmenu.y = finaly + 6;
+        dialogmenu.y = static_cast<short>(finaly + 6);
         y = 0;
 
         // draw the menu items
@@ -1367,7 +1367,7 @@ void P_DialogStart(player_t *player)
     }
 
     // set number of choices to menu
-    dialogmenu.numitems = i + 1;
+    dialogmenu.numitems = static_cast<short>(i + 1);
 
     rnd = M_Random() % 3;
 

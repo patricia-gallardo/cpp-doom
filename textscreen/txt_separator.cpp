@@ -47,7 +47,7 @@ static void TXT_SeparatorDrawer(void *uncast_separator)
     int x, y;
     int w;
 
-    w = separator->widget.w;
+    w = static_cast<int>(separator->widget.w);
 
     TXT_GetXY(&x, &y);
 

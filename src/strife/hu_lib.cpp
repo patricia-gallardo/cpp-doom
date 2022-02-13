@@ -63,7 +63,7 @@ void HUlib_drawYellowText(int x, int y, const char *text)
         else if (c == ' ' && x == start_x) // skip spaces at the start of a line
             continue;
 
-        c = toupper(c) - HU_FONTSTART;
+        c = static_cast<char>(toupper(c) - HU_FONTSTART);
 
         if(c >= 0 && c < HU_FONTSIZE)
         {
@@ -191,7 +191,7 @@ HUlib_drawTextLine
 
     for(i = 0; i < l->len; i++)
     {
-        c = toupper(l->l[i]);
+        c = static_cast<unsigned char>(toupper(l->l[i]));
         if (c != ' ' && c >= l->sc && c < '_') // [STRIFE]: Underscores excluded
         {
             w = SHORT(l->f[c - l->sc]->width);
@@ -240,11 +240,11 @@ void HUlib_eraseTextLine(hu_textline_t* l)
         for (y=l->y,yoffset=y*SCREENWIDTH ; y<l->y+lh ; y++,yoffset+=SCREENWIDTH)
         {
             if (y < viewwindowy || y >= viewwindowy + viewheight)
-                R_VideoErase(yoffset, SCREENWIDTH); // erase entire line
+                R_VideoErase(static_cast<unsigned int>(yoffset), SCREENWIDTH); // erase entire line
             else
             {
-                R_VideoErase(yoffset, viewwindowx); // erase left border
-                R_VideoErase(yoffset + viewwindowx + viewwidth, viewwindowx);
+                R_VideoErase(static_cast<unsigned int>(yoffset), viewwindowx); // erase left border
+                R_VideoErase(static_cast<unsigned int>(yoffset + viewwindowx + viewwidth), viewwindowx);
                 // erase right border
             }
         }
@@ -433,7 +433,7 @@ HUlib_keyInIText
 ( hu_itext_t*	it,
   unsigned char ch )
 {
-    ch = toupper(ch);
+    ch = static_cast<unsigned char>(toupper(ch));
 
     if (ch >= ' ' && ch <= '_') 
         HUlib_addCharToTextLine(&it->l, static_cast<char>(ch));

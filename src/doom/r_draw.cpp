@@ -745,14 +745,14 @@ void R_InitTranslationTables()
         if (i >= 0x70 && i <= 0x7f)
         {
             // map green ramp to gray, brown, red
-            translationtables[i]       = 0x60 + (i & 0xf);
-            translationtables[i + 256] = 0x40 + (i & 0xf);
-            translationtables[i + 512] = 0x20 + (i & 0xf);
+            translationtables[i]       = static_cast<uint8_t>(0x60 + (i & 0xf));
+            translationtables[i + 256] = static_cast<uint8_t>(0x40 + (i & 0xf));
+            translationtables[i + 512] = static_cast<uint8_t>(0x20 + (i & 0xf));
         }
         else
         {
             // Keep all other colors as is.
-            translationtables[i] = translationtables[i + 256] = translationtables[i + 512] = i;
+            translationtables[i] = translationtables[i + 256] = translationtables[i + 512] = static_cast<uint8_t>(i);
         }
     }
 }
@@ -835,7 +835,7 @@ void R_DrawSpan()
         // [crispy] fix flats getting more distorted the closer they are to the right
         ytemp = (ds_yfrac >> 10) & 0x0fc0;
         xtemp = (ds_xfrac >> 16) & 0x3f;
-        spot  = xtemp | ytemp;
+        spot  = static_cast<int>(xtemp | ytemp);
 
         // Lookup pixel from flat texture tile,
         //  re-index using light/colormap.
@@ -964,16 +964,15 @@ void R_DrawSpanLow()
 
     do
     {
-        uint8_t source;
         // Calculate current texture index in u,v.
         // [crispy] fix flats getting more distorted the closer they are to the right
         ytemp = (ds_yfrac >> 10) & 0x0fc0;
         xtemp = (ds_xfrac >> 16) & 0x3f;
-        spot  = xtemp | ytemp;
+        spot  = static_cast<int>(xtemp | ytemp);
 
         // Lowres/blocky mode does it twice,
         //  while scale is adjusted appropriately.
-        source = ds_source[spot];
+        uint8_t source = ds_source[spot];
         dest   = ylookup[ds_y] + columnofs[flipviewwidth[ds_x1++]];
         *dest  = ds_colormap[ds_brightmap[source]][source];
         dest   = ylookup[ds_y] + columnofs[flipviewwidth[ds_x1++]];
@@ -1060,7 +1059,7 @@ void R_FillBackScreen()
 
     if (background_buffer == nullptr)
     {
-        background_buffer = zmalloc<decltype(background_buffer)>(MAXWIDTH * (MAXHEIGHT - SBARHEIGHT) * sizeof(*background_buffer),
+        background_buffer = zmalloc<decltype(background_buffer)>(static_cast<size_t>(MAXWIDTH * (MAXHEIGHT - SBARHEIGHT)) * sizeof(*background_buffer),
             PU_STATIC, nullptr);
     }
 
@@ -1150,7 +1149,7 @@ void R_VideoErase(unsigned ofs,
 
     if (background_buffer != nullptr)
     {
-        memcpy(I_VideoBuffer + ofs, background_buffer + ofs, count * sizeof(*I_VideoBuffer));
+        memcpy(I_VideoBuffer + ofs, background_buffer + ofs, static_cast<unsigned long>(count) * sizeof(*I_VideoBuffer));
     }
 }
 
@@ -1178,7 +1177,7 @@ void R_DrawViewBorder()
 
     // copy one line of right side and bottom
     ofs = (viewheight + top) * SCREENWIDTH - side;
-    R_VideoErase(ofs, top * SCREENWIDTH + side);
+    R_VideoErase(static_cast<unsigned int>(ofs), top * SCREENWIDTH + side);
 
     // copy sides using wraparound
     ofs = top * SCREENWIDTH + SCREENWIDTH - side;
@@ -1186,7 +1185,7 @@ void R_DrawViewBorder()
 
     for (i = 1; i < viewheight; i++)
     {
-        R_VideoErase(ofs, side);
+        R_VideoErase(static_cast<unsigned int>(ofs), side);
         ofs += SCREENWIDTH;
     }
 

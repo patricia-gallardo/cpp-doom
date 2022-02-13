@@ -174,9 +174,9 @@ int R_PointOnSide(fixed_t x,
     dy = (y - node->y);
 
     // Try to quickly decide by looking at sign bits.
-    if ((node->dy ^ node->dx ^ dx ^ dy) & 0x80000000)
+    if ((static_cast<unsigned int>(node->dy ^ node->dx ^ dx ^ dy)) & 0x80000000)
     {
-        if ((node->dy ^ dx) & 0x80000000)
+        if ((static_cast<unsigned int>(node->dy ^ dx)) & 0x80000000)
         {
             // (left is negative)
             return 1;
@@ -235,9 +235,9 @@ int R_PointOnSegSide(fixed_t x,
     dy = (y - ly);
 
     // Try to quickly decide by looking at sign bits.
-    if ((ldy ^ ldx ^ dx ^ dy) & 0x80000000)
+    if ((static_cast<unsigned int>(ldy ^ ldx ^ dx ^ dy)) & 0x80000000)
     {
-        if ((ldy ^ dx) & 0x80000000)
+        if ((static_cast<unsigned int>(ldy ^ dx)) & 0x80000000)
         {
             // (left is negative)
             return 1;
@@ -294,12 +294,12 @@ angle_t
             if (x > y)
             {
                 // octant 0
-                return tantoangle[slope_div(y, x)];
+                return tantoangle[slope_div(static_cast<unsigned int>(y), static_cast<unsigned int>(x))];
             }
             else
             {
                 // octant 1
-                return ANG90 - 1 - tantoangle[slope_div(x, y)];
+                return ANG90 - 1 - tantoangle[slope_div(static_cast<unsigned int>(x), static_cast<unsigned int>(y))];
             }
         }
         else
@@ -311,12 +311,12 @@ angle_t
             {
                 // octant 8
                 // Subtracting from 0u avoids compiler warnings
-                return 0u - tantoangle[slope_div(y, x)];
+                return 0u - tantoangle[slope_div(static_cast<unsigned int>(y), static_cast<unsigned int>(x))];
             }
             else
             {
                 // octant 7
-                return ANG270 + tantoangle[slope_div(x, y)];
+                return ANG270 + tantoangle[slope_div(static_cast<unsigned int>(x), static_cast<unsigned int>(y))];
             }
         }
     }
@@ -331,12 +331,12 @@ angle_t
             if (x > y)
             {
                 // octant 3
-                return ANG180 - 1 - tantoangle[slope_div(y, x)];
+                return ANG180 - 1 - tantoangle[slope_div(static_cast<unsigned int>(y), static_cast<unsigned int>(x))];
             }
             else
             {
                 // octant 2
-                return ANG90 + tantoangle[slope_div(x, y)];
+                return ANG90 + tantoangle[slope_div(static_cast<unsigned int>(x), static_cast<unsigned int>(y))];
             }
         }
         else
@@ -347,12 +347,12 @@ angle_t
             if (x > y)
             {
                 // octant 4
-                return ANG180 + tantoangle[slope_div(y, x)];
+                return ANG180 + tantoangle[slope_div(static_cast<unsigned int>(y), static_cast<unsigned int>(x))];
             }
             else
             {
                 // octant 5
-                return ANG270 - 1 - tantoangle[slope_div(x, y)];
+                return ANG270 - 1 - tantoangle[slope_div(static_cast<unsigned int>(x), static_cast<unsigned int>(y))];
             }
         }
     }
@@ -382,8 +382,8 @@ angle_t
     if (x_viewx < INT_MIN || x_viewx > INT_MAX || y_viewy < INT_MIN || y_viewy > INT_MAX)
     {
         // [crispy] preserving the angle by halfing the distance in both directions
-        x = x_viewx / 2 + viewx;
-        y = y_viewy / 2 + viewy;
+        x = static_cast<fixed_t >(x_viewx / 2 + viewx);
+        y = static_cast<fixed_t >(y_viewy / 2 + viewy);
     }
 
     return R_PointToAngleSlope(x, y, SlopeDivCrispy);
@@ -634,7 +634,7 @@ void R_InitTextureMapping()
         i = 0;
         while (viewangletox[i] > x)
             i++;
-        xtoviewangle[x] = (i << ANGLETOFINESHIFT) - ANG90;
+        xtoviewangle[x] = static_cast<angle_t>((i << ANGLETOFINESHIFT) - ANG90);
     }
 
     // Take out the fencepost cases from viewangletox.
@@ -713,16 +713,16 @@ void R_InitLightTables()
         LIGHTZSHIFT     = 20;
     }
 
-    scalelight      = static_cast<lighttable_t ***>(malloc(LIGHTLEVELS * sizeof(*scalelight)));
-    scalelightfixed = static_cast<lighttable_t **>(malloc(MAXLIGHTSCALE * sizeof(*scalelightfixed)));
-    zlight          = static_cast<lighttable_t ***>(malloc(LIGHTLEVELS * sizeof(*zlight)));
+    scalelight      = static_cast<lighttable_t ***>(malloc(static_cast<unsigned long>(LIGHTLEVELS) * sizeof(*scalelight)));
+    scalelightfixed = static_cast<lighttable_t **>(malloc(static_cast<unsigned long>(MAXLIGHTSCALE) * sizeof(*scalelightfixed)));
+    zlight          = static_cast<lighttable_t ***>(malloc(static_cast<unsigned long>(LIGHTLEVELS) * sizeof(*zlight)));
 
     // Calculate the light levels to use
     //  for each level / distance combination.
     for (i = 0; i < LIGHTLEVELS; i++)
     {
         zlight[i] =
-            static_cast<lighttable_t **>(malloc(MAXLIGHTZ * sizeof(**zlight)));
+            static_cast<lighttable_t **>(malloc(static_cast<unsigned long>(MAXLIGHTZ) * sizeof(**zlight)));
 
         startmap_local = ((LIGHTLEVELS - LIGHTBRIGHT - i) * 2) * NUMCOLORMAPS / LIGHTLEVELS;
         for (j = 0; j < MAXLIGHTZ; j++)
@@ -867,7 +867,7 @@ void R_ExecuteSetViewSize()
     //  for each level / scale combination.
     for (i = 0; i < LIGHTLEVELS; i++)
     {
-        scalelight[i] = static_cast<lighttable_t **>(malloc(MAXLIGHTSCALE * sizeof(**scalelight)));
+        scalelight[i] = static_cast<lighttable_t **>(malloc(static_cast<unsigned long>(MAXLIGHTSCALE) * sizeof(**scalelight)));
 
         startmap_local = ((LIGHTLEVELS - LIGHTBRIGHT - i) * 2) * NUMCOLORMAPS / LIGHTLEVELS;
         for (j = 0; j < MAXLIGHTSCALE; j++)
@@ -934,22 +934,21 @@ subsector_t *
 {
     node_t *node;
     int     side;
-    int     nodenum;
 
     // single subsector is a special case
     if (!numnodes)
         return subsectors;
 
-    nodenum = numnodes - 1;
+    int nodenum = numnodes - 1;
 
-    while (!(nodenum & NF_SUBSECTOR))
+    while (!(static_cast<unsigned int>(nodenum) & NF_SUBSECTOR))
     {
         node    = &nodes[nodenum];
         side    = R_PointOnSide(x, y, node);
         nodenum = node->children[side];
     }
 
-    return &subsectors[nodenum & ~NF_SUBSECTOR];
+    return &subsectors[static_cast<unsigned int>(nodenum) & ~NF_SUBSECTOR];
 }
 
 
@@ -978,8 +977,8 @@ void R_SetupFrame(player_t *player)
         // Interpolate player camera from their old position to their current one.
         viewx     = player->mo->oldx + FixedMul(player->mo->x - player->mo->oldx, fractionaltic);
         viewy     = player->mo->oldy + FixedMul(player->mo->y - player->mo->oldy, fractionaltic);
-        viewz     = player->oldviewz + FixedMul(player->viewz - player->oldviewz, fractionaltic);
-        viewangle = R_InterpolateAngle(player->mo->oldangle, player->mo->angle, fractionaltic) + viewangleoffset;
+        viewz     = static_cast<fixed_t>(player->oldviewz + static_cast<unsigned int>(FixedMul(static_cast<fixed_t>(static_cast<unsigned int>(player->viewz) - player->oldviewz), fractionaltic)));
+        viewangle = R_InterpolateAngle(player->mo->oldangle, player->mo->angle, fractionaltic) + static_cast<unsigned int>(viewangleoffset);
 
         double  oldlookdir = player->oldlookdir + (player->lookdir - player->oldlookdir) * FIXED2DOUBLE(fractionaltic);
         fixed_t recoil     = player->oldrecoilpitch + FixedMul(player->recoilpitch - player->oldrecoilpitch, fractionaltic);
@@ -990,7 +989,7 @@ void R_SetupFrame(player_t *player)
         viewx     = player->mo->x;
         viewy     = player->mo->y;
         viewz     = player->viewz;
-        viewangle = player->mo->angle + viewangleoffset;
+        viewangle = player->mo->angle + static_cast<unsigned int>(viewangleoffset);
 
         // [crispy] pitch is actual lookdir and weapon pitch
         pitch = player->lookdir / MLOOKUNIT + player->recoilpitch;

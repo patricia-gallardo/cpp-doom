@@ -184,7 +184,7 @@ P_NoiseAlert
 //
 static void P_WakeUpThing(mobj_t* puncher, mobj_t* bystander)
 {
-    if(!(bystander->flags & MF_NODIALOG))
+    if(!(static_cast<unsigned int>(bystander->flags) & MF_NODIALOG))
     {
         bystander->target = puncher;
         if(bystander->info->seesound)
@@ -213,7 +213,7 @@ void P_DoPunchAlert(mobj_t *puncher, mobj_t *punchee)
       return;
       
    // has to be something you can wake up and kill too
-   if(!(punchee->flags & MF_COUNTKILL) || punchee->flags & MF_NODIALOG)
+   if(!(static_cast<unsigned int>(punchee->flags) & MF_COUNTKILL) || static_cast<unsigned int>(punchee->flags) & MF_NODIALOG)
       return;
    
    // make the punchee hurt - haleyjd 09/05/10: Fixed to use painstate.
@@ -293,7 +293,7 @@ bool P_CheckMissileRange(mobj_t* actor)
     if(!P_CheckSight(actor, actor->target))
         return false;
 
-    if(actor->flags & MF_JUSTHIT)
+    if(static_cast<unsigned int>(actor->flags) & MF_JUSTHIT)
     {
         // the target just hit the enemy,
         // so fight back!
@@ -413,7 +413,7 @@ bool P_Move (mobj_t*	actor)
     if (!try_ok)
     {
         // open any specials
-        if (actor->flags & MF_FLOAT && floatok)
+        if (static_cast<unsigned int>(actor->flags) & MF_FLOAT && floatok)
         {
             // must adjust height
             if (actor->z < tmfloorz)
@@ -738,7 +738,7 @@ P_LookForPlayers
     mobj_t  *   master = players[actor->miscdata].mo;
 
     // haleyjd 09/05/10: handle Allies
-    if(actor->flags & MF_ALLY)
+    if(static_cast<unsigned int>(actor->flags) & MF_ALLY)
     {
         // Deathmatch: support team behavior for Rebels.
         if(netgame)
@@ -771,7 +771,7 @@ P_LookForPlayers
         else
         {
             // Single-player: Adopt any non-allied player target.
-            if(master && master->target && !(master->target->flags & MF_ALLY))
+            if(master && master->target && !(static_cast<unsigned int>(master->target->flags) & MF_ALLY))
             {
                 actor->target = master->target;
                 return true;
@@ -781,7 +781,7 @@ P_LookForPlayers
             P_BulletSlope(actor);
 
             // Clear target if nothing is visible, or if the target is an ally.
-            if(!linetarget || actor->target->flags & MF_ALLY)
+            if(!linetarget || static_cast<unsigned int>(actor->target->flags) & MF_ALLY)
             {
                 actor->target = nullptr;
                 return false;
@@ -869,16 +869,16 @@ void A_Look (mobj_t* actor)
     targ = actor->subsector->sector->soundtarget;
 
     if (targ
-        && (targ->flags & MF_SHOOTABLE) )
+        && (static_cast<unsigned int>(targ->flags) & MF_SHOOTABLE) )
     {
         // [STRIFE] Allies wander when they call this.
-        if(actor->flags & MF_ALLY)
+        if(static_cast<unsigned int>(actor->flags) & MF_ALLY)
             A_RandomWalk(actor);
         else
         {
             actor->target = targ;
 
-            if ( actor->flags & MF_AMBUSH )
+            if (static_cast<unsigned int>(actor->flags) & MF_AMBUSH )
             {
                 if (P_CheckSight (actor, actor->target))
                     goto seeyou;
@@ -892,7 +892,7 @@ void A_Look (mobj_t* actor)
     // as a parameter to control allaround look behavior. Did they just run out of
     // flags, or what? 
     // STRIFE-TODO: Needs serious verification.
-    if (!P_LookForPlayers(actor, (actor->flags & MF_GIVEQUEST) != 0))
+    if (!P_LookForPlayers(actor, (static_cast<unsigned int>(actor->flags) & MF_GIVEQUEST) != 0))
         return;
 
     // go into chase state
@@ -926,7 +926,7 @@ seeyou:
 void A_RandomWalk(mobj_t* actor)
 {
     // Standing actors do not wander.
-    if(actor->flags & MF_STAND)
+    if(static_cast<unsigned int>(actor->flags) & MF_STAND)
         return;
 
     if(actor->reactiontime)
@@ -938,8 +938,8 @@ void A_RandomWalk(mobj_t* actor)
         {
             int delta;
 
-            actor->angle &= (7 << 29);
-            delta = actor->angle - (actor->movedir << 29);
+            actor->angle &= (static_cast<unsigned int>(7 << 29));
+            delta = static_cast<int>(actor->angle - (static_cast<unsigned int>(actor->movedir << 29)));
 
             if(delta < 0)
                 actor->angle += ANG90/2;
@@ -969,14 +969,14 @@ void A_FriendLook(mobj_t* actor)
 
     actor->threshold = 0;
 
-    if(soundtarget_local && soundtarget_local->flags & MF_SHOOTABLE)
+    if(soundtarget_local && static_cast<unsigned int>(soundtarget_local->flags) & MF_SHOOTABLE)
     {
         // Handle allies, except on maps 3 and 34 (Front Base/Movement Base)
-        if((actor->flags & MF_ALLY) == (soundtarget_local->flags & MF_ALLY) &&
+        if((static_cast<unsigned int>(actor->flags) & MF_ALLY) == (static_cast<unsigned int>(soundtarget_local->flags) & MF_ALLY) &&
             gamemap != 3 && gamemap != 34)
         {
             // STRIFE-TODO: Needs serious verification.
-            if(P_LookForPlayers(actor, (actor->flags & MF_GIVEQUEST) != 0))
+            if(P_LookForPlayers(actor, (static_cast<unsigned int>(actor->flags) & MF_GIVEQUEST) != 0))
             {
                 P_SetMobjState(actor, actor->info->seestate);
                 actor->flags |= MF_NODIALOG;
@@ -987,7 +987,7 @@ void A_FriendLook(mobj_t* actor)
         {
             actor->target = soundtarget_local;
 
-            if(!(actor->flags & MF_AMBUSH) || P_CheckSight(actor, actor->target))
+            if(!(static_cast<unsigned int>(actor->flags) & MF_AMBUSH) || P_CheckSight(actor, actor->target))
             {
                 actor->threshold = 10;
                 P_SetMobjState(actor, actor->info->seestate);
@@ -1004,7 +1004,7 @@ void A_FriendLook(mobj_t* actor)
     }
 
     // wander around a bit
-    if(!(actor->flags & MF_STAND) && P_Random() < 40)
+    if(!(static_cast<unsigned int>(actor->flags) & MF_STAND) && P_Random() < 40)
         P_SetMobjState(actor, static_cast<statenum_t>(actor->info->spawnstate + 3));
 }
 
@@ -1020,13 +1020,13 @@ void A_Listen(mobj_t* actor)
 
     mobj_t *soundtarget_local = actor->subsector->sector->soundtarget;
 
-    if(soundtarget_local && (soundtarget_local->flags & MF_SHOOTABLE))
+    if(soundtarget_local && (static_cast<unsigned int>(soundtarget_local->flags) & MF_SHOOTABLE))
     {
-        if((actor->flags & MF_ALLY) != (soundtarget_local->flags & MF_ALLY))
+        if((static_cast<unsigned int>(actor->flags) & MF_ALLY) != (static_cast<unsigned int>(soundtarget_local->flags) & MF_ALLY))
         {
             actor->target = soundtarget_local;
 
-            if(!(actor->flags & MF_AMBUSH) || P_CheckSight(actor, actor->target))
+            if(!(static_cast<unsigned int>(actor->flags) & MF_AMBUSH) || P_CheckSight(actor, actor->target))
             {
                 if(actor->info->seesound)
                     S_StartSound(actor, actor->info->seesound);
@@ -1067,8 +1067,8 @@ void A_Chase (mobj_t*	actor)
     // turn towards movement direction if not there yet
     if (actor->movedir < 8)
     {
-        actor->angle &= (7<<29);
-        delta = actor->angle - (actor->movedir << 29);
+        actor->angle &= (static_cast<unsigned int>(7 << 29));
+        delta = static_cast<int>(actor->angle - (static_cast<unsigned int>(actor->movedir << 29)));
 
         if (delta > 0)
             actor->angle -= ANG90/2;
@@ -1077,7 +1077,7 @@ void A_Chase (mobj_t*	actor)
     }
 
     if (!actor->target
-        || !(actor->target->flags&MF_SHOOTABLE))
+        || !(static_cast<unsigned int>(actor->target->flags) &MF_SHOOTABLE))
     {
         // look for a new target
         if (P_LookForPlayers(actor, true))
@@ -1088,7 +1088,7 @@ void A_Chase (mobj_t*	actor)
     }
     
     // do not attack twice in a row
-    if (actor->flags & MF_JUSTATTACKED)
+    if (static_cast<unsigned int>(actor->flags) & MF_JUSTATTACKED)
     {
         actor->flags &= ~MF_JUSTATTACKED;
         // [STRIFE] Checks only against fastparm, not gameskill == 5
@@ -1181,17 +1181,17 @@ void A_FaceTarget (mobj_t* actor)
                                     actor->target->x,
                                     actor->target->y);
 
-    if(actor->target->flags & MF_SHADOW)
+    if(static_cast<unsigned int>(actor->target->flags) & MF_SHADOW)
     {
         // [STRIFE] increased SHADOW inaccuracy by a power of 2
         int t = P_Random();
-        actor->angle += (t - P_Random()) << 22;
+        actor->angle += static_cast<unsigned int>((t - P_Random()) << 22);
     }
-    else if(actor->target->flags & MF_MVIS)
+    else if(static_cast<unsigned int>(actor->target->flags) & MF_MVIS)
     {
         // [STRIFE] MVIS gives even worse aiming!
         int t = P_Random();
-        actor->angle += (t - P_Random()) << 23;
+        actor->angle += static_cast<unsigned int>((t - P_Random()) << 23);
     }
 }
 
@@ -1238,7 +1238,7 @@ void A_ReaverAttack(mobj_t* actor)
     do
     {
         int     t          = P_Random();
-        angle_t shootangle = actor->angle + ((t - P_Random()) << 20);
+        angle_t shootangle = actor->angle + (static_cast<unsigned int>((t - P_Random()) << 20));
         int     damage     = 3*((P_Random() & 7) + 1);
 
         P_LineAttack(actor, shootangle, 2048*FRACUNIT, slope, damage);
@@ -1268,7 +1268,7 @@ void A_BulletAttack(mobj_t* actor)
     
     slope = P_AimLineAttack(actor, actor->angle, 2048*FRACUNIT);
     t = P_Random();
-    shootangle = ((t - P_Random()) << 19) + actor->angle;
+    shootangle = (static_cast<unsigned int>((t - P_Random()) << 19)) + actor->angle;
     damage = 3 * (P_Random() % 5 + 1);
 
     P_LineAttack(actor, shootangle, 2048*FRACUNIT, slope, damage);
@@ -1347,7 +1347,7 @@ void A_StalkerThink(mobj_t* actor)
 {
     statenum_t statenum;
 
-    if(actor->flags & MF_NOGRAVITY)
+    if(static_cast<unsigned int>(actor->flags) & MF_NOGRAVITY)
     {
         if(actor->ceilingz - actor->info->height <= actor->z)
             return;
@@ -1373,7 +1373,7 @@ void A_StalkerSetLook(mobj_t* actor)
     if(!actor) // weird; totally unnecessary.
         return;
 
-    if(actor->flags & MF_NOGRAVITY)
+    if(static_cast<unsigned int>(actor->flags) & MF_NOGRAVITY)
     {
         if(actor->state->nextstate == S_SPID_01) // 1010
             return;
@@ -1408,7 +1408,7 @@ void A_StalkerDrop(mobj_t* actor)
 //
 void A_StalkerScratch(mobj_t* actor)
 {
-    if(actor->flags & MF_NOGRAVITY)
+    if(static_cast<unsigned int>(actor->flags) & MF_NOGRAVITY)
     {
         // Drop him down before he can attack
         P_SetMobjState(actor, S_SPID_11); // 1020
@@ -1439,7 +1439,7 @@ void A_FloatWeave(mobj_t* actor)
     if(actor->threshold)
         return;
 
-    if(actor->flags & MF_INFLOAT)
+    if(static_cast<unsigned int>(actor->flags) & MF_INFLOAT)
         return;
 
     height = actor->info->height;         // v2
@@ -1497,8 +1497,8 @@ void A_TemplarMauler(mobj_t* actor)
 
     S_StartSound(actor, sfx_pgrdat);
     A_FaceTarget(actor);
-    bangle = actor->angle;
-    slope = P_AimLineAttack(actor, bangle, 2048*FRACUNIT);
+    bangle = static_cast<int>(actor->angle);
+    slope = P_AimLineAttack(actor, static_cast<angle_t>(bangle), 2048*FRACUNIT);
 
     for(i = 0; i < 10; i++)
     {
@@ -1508,7 +1508,7 @@ void A_TemplarMauler(mobj_t* actor)
         angle = bangle + ((t - P_Random()) << 19);
         t = P_Random();
         slope = ((t - P_Random()) << 5) + slope;
-        P_LineAttack(actor, angle, 2112*FRACUNIT, slope, damage);
+        P_LineAttack(actor, static_cast<angle_t>(angle), 2112*FRACUNIT, slope, damage);
     }
 }
 
@@ -2164,13 +2164,13 @@ void A_Tracer (mobj_t* actor)
         // villsa [STRIFE] slightly different algorithm
         if(exact - actor->angle <= 0x80000000)
         {
-            actor->angle += TRACEANGLE;
+            actor->angle += static_cast<unsigned int>(TRACEANGLE);
             if(exact - actor->angle > 0x80000000)
                 actor->angle = exact;
         }
         else
         {
-            actor->angle -= TRACEANGLE;
+            actor->angle -= static_cast<unsigned int>(TRACEANGLE);
             if (exact - actor->angle < 0x80000000)
                 actor->angle = exact;
         }
@@ -2254,7 +2254,7 @@ void A_XScream(mobj_t* actor)
 {
     int sound;
 
-    if(actor->flags & MF_NOBLOOD && actor->info->deathsound)
+    if(static_cast<unsigned int>(actor->flags) & MF_NOBLOOD && actor->info->deathsound)
         sound = actor->info->deathsound;
     else
         sound = sfx_slop;
@@ -2382,7 +2382,7 @@ void A_ProgrammerDie(mobj_t* actor)
 
     // haleyjd 20110223: fix add w/ANG180
     r = P_Random();
-    an = ((r - P_Random()) << 22) + actor->angle + ANG180;
+    an = (static_cast<unsigned int>((r - P_Random()) << 22)) + actor->angle + ANG180;
     mo->angle = an;
 
     P_ThrustMobj(mo, an, mo->info->speed);  // inlined in asm
@@ -2405,7 +2405,7 @@ void A_InqTossArm(mobj_t* actor)
     mo = P_SpawnMobj(actor->x, actor->y, actor->z + (24*FRACUNIT), MT_INQARM);
 
     r = P_Random();
-    an = ((r - P_Random()) << 22) + actor->angle - ANG90;
+    an = (static_cast<unsigned int>((r - P_Random()) << 22)) + actor->angle - ANG90;
     mo->angle = an;
 
     P_ThrustMobj(mo, an, mo->info->speed);  // inlined in asm
@@ -2602,7 +2602,7 @@ void A_ZombieInSpecialSector(mobj_t* actor)
     {
         tagval = sector->tag - 100;
         force = (tagval % 10) << 12;
-        angle = (tagval / 10) << 29;
+        angle = static_cast<angle_t>((tagval / 10) << 29);
         P_ThrustMobj(actor, angle, force);  // inlined in asm
     }
 }
@@ -2885,7 +2885,7 @@ void A_BurnSpread(mobj_t* actor)
 
     S_StartSound(actor, sfx_lgfire);
 
-    if(actor->flags & MF_DROPPED)
+    if(static_cast<unsigned int>(actor->flags) & MF_DROPPED)
         return; // not the parent
 
     // haleyjd 20110223: match order of calls in binary
@@ -3000,14 +3000,14 @@ void A_BossDeath (mobj_t* actor)
         P_GiveItemToPlayer(&players[0], SPR_TOKN, MT_TOKEN_ORACLE);
         
         // Bishop is dead? - verify.
-        if(players[0].questflags & QF_QUEST21) 
+        if(static_cast<unsigned int>(players[0].questflags) & QF_QUEST21)
             P_GiveItemToPlayer(&players[0], SPR_TOKN, MT_TOKEN_QUEST22);
 
         // Macil is dead?
-        if(players[0].questflags & QF_QUEST24)
+        if(static_cast<unsigned int>(players[0].questflags) & QF_QUEST24)
         {
             // Loremaster is dead?
-            if(players[0].questflags & QF_QUEST26)
+            if(static_cast<unsigned int>(players[0].questflags) & QF_QUEST26)
             {
                 // We wield the complete sigil, blahblah
                 GiveVoiceObjective("VOC85", "LOG85", 0);
@@ -3024,7 +3024,7 @@ void A_BossDeath (mobj_t* actor)
 
     case MT_SPECTRE_D:
         P_GiveItemToPlayer(&players[0], SPR_TOKN, MT_TOKEN_MACIL);
-        if(players[0].questflags & QF_QUEST25) // Destroyed converter?
+        if(static_cast<unsigned int>(players[0].questflags) & QF_QUEST25) // Destroyed converter?
             GiveVoiceObjective("VOC106", "LOG106", 0);
         else
             GiveVoiceObjective("VOC79", "LOG79", 0);
@@ -3183,7 +3183,7 @@ void A_TeleportBeacon(mobj_t* actor)
     mobj->threshold = 100;
 
     // set rebel color and flags
-    mobj->flags |= ((actor->miscdata << MF_TRANSSHIFT) | MF_NODIALOG);
+    mobj->flags |= ((static_cast<unsigned int>(actor->miscdata << MF_TRANSSHIFT)) | MF_NODIALOG);
     mobj->target = nullptr;
 
     // double Rebel's health in deathmatch mode
@@ -3227,7 +3227,7 @@ void A_BodyParts(mobj_t* actor)
     mobj_t* mo;
     angle_t an;
 
-    if(actor->flags & MF_NOBLOOD) // Robots are flagged NOBLOOD
+    if(static_cast<unsigned int>(actor->flags) & MF_NOBLOOD) // Robots are flagged NOBLOOD
         type = MT_JUNK;
     else
         type = MT_MEAT;
@@ -3235,7 +3235,7 @@ void A_BodyParts(mobj_t* actor)
     mo = P_SpawnMobj(actor->x, actor->y, actor->z + (24*FRACUNIT), type);
     P_SetMobjState(mo, static_cast<statenum_t>(mo->info->spawnstate + (P_Random() % 19)));
 
-    an = (P_Random() << 13) / 255;
+    an = static_cast<angle_t>((P_Random() << 13) / 255);
     mo->angle = an << ANGLETOFINESHIFT;
 
     mo->momx = FixedMul(finecosine[an], (P_Random() & 0x0f) << FRACBITS);

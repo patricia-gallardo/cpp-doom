@@ -146,12 +146,10 @@ bool P_SightBlockLinesIterator(int x, int y)
 
 bool P_SightTraverseIntercepts()
 {
-    int count;
-    fixed_t dist;
-    intercept_t *scan, *in;
+    intercept_t *scan;
     divline_t dl;
 
-    count = intercept_p - intercepts;
+    int count = static_cast<int>(intercept_p - intercepts);
 //
 // calculate intercept distance
 //
@@ -164,11 +162,11 @@ bool P_SightTraverseIntercepts()
 //
 // go through in order
 //      
-    in = 0;                     // shut up compiler warning
+    intercept_t *in = 0;                     // shut up compiler warning
 
     while (count--)
     {
-        dist = INT_MAX;
+        fixed_t dist = INT_MAX;
         for (scan = intercepts; scan < intercept_p; scan++)
             if (scan->frac < dist)
             {
@@ -336,8 +334,8 @@ bool P_CheckSight(mobj_t * t1, mobj_t * t2)
 //
 // check for trivial rejection
 //
-    s1 = (t1->subsector->sector - sectors);
-    s2 = (t2->subsector->sector - sectors);
+    s1 = static_cast<int>(t1->subsector->sector - sectors);
+    s2 = static_cast<int>(t2->subsector->sector - sectors);
     pnum = s1 * numsectors + s2;
     bytenum = pnum >> 3;
     bitnum = 1 << (pnum & 7);

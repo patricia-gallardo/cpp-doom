@@ -152,7 +152,7 @@ void P_CalcHeight (player_t* player)
     player->viewz = player->mo->z + player->viewheight + bob;
 
     // villsa [STRIFE] account for terrain lowering the view
-    if(player->mo->flags & MF_FEETCLIPPED)
+    if(static_cast<unsigned int>(player->mo->flags) & MF_FEETCLIPPED)
         player->viewz -= 13*FRACUNIT;
 
     if (player->viewz > player->mo->ceilingz-4*FRACUNIT)
@@ -176,7 +176,7 @@ void P_MovePlayer (player_t* player)
 
     cmd = &player->cmd;
 
-    player->mo->angle += (cmd->angleturn<<16);
+    player->mo->angle += (static_cast<unsigned int>(cmd->angleturn << 16));
 
     // Do not let the player control movement
     //  if not onground.
@@ -359,7 +359,7 @@ void P_PlayerThink (player_t* player)
 
     // chain saw run forward
     cmd = &player->cmd;
-    if (player->mo->flags & MF_JUSTATTACKED)
+    if (static_cast<unsigned int>(player->mo->flags) & MF_JUSTATTACKED)
     {
         cmd->angleturn = 0;
         cmd->forwardmove = 0xc800/512;
@@ -688,7 +688,7 @@ void P_DropInventoryItem(player_t* player, int sprite)
 
         angle = player->mo->angle;
         r = P_Random();
-        angle = (angle + ((r - P_Random()) << 18)) >> ANGLETOFINESHIFT;
+        angle = (angle + (static_cast<unsigned int>((r - P_Random()) << 18))) >> ANGLETOFINESHIFT;
 
         if(angle < 7618 && angle >= 6718)
             angle = 7618;
@@ -795,7 +795,7 @@ bool P_SpawnTeleportBeacon(player_t* player)
 
     angle = player->mo->angle;
     r = P_Random();
-    angle = (angle + ((r - P_Random()) << 18)) >> ANGLETOFINESHIFT;
+    angle = (angle + (static_cast<unsigned int>((r - P_Random()) << 18))) >> ANGLETOFINESHIFT;
 
     if(angle < 7618 && angle >= 6718)
         angle = 7618;

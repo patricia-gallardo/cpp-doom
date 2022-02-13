@@ -188,7 +188,7 @@ void S_StartSong(int song, bool loop)
 
         lumpnum = W_GetNumForName(songLump);
         Mus_SndPtr = cache_lump_num<uint8_t *>(lumpnum, PU_STATIC);
-        length = W_LumpLength(lumpnum);
+        length = static_cast<int>(W_LumpLength(lumpnum));
 
         RegisteredSong = I_RegisterSong(Mus_SndPtr, length);
         I_PlaySong(RegisteredSong, loop);
@@ -299,7 +299,7 @@ void S_StartSongName(const char *songLump, bool loop)
 
         lumpnum = W_GetNumForName(songLump);
         Mus_SndPtr = cache_lump_num<uint8_t *>(lumpnum, PU_MUSIC);
-        length = W_LumpLength(lumpnum);
+        length = static_cast<int>(W_LumpLength(lumpnum));
 
         RegisteredSong = I_RegisterSong(Mus_SndPtr, length);
         I_PlaySong(RegisteredSong, loop);
@@ -853,7 +853,7 @@ void S_GetChannelInfo(SoundInfo_t * s)
     {
         c = &s->chan[i];
         c->id = Channel[i].sound_id;
-        c->priority = Channel[i].priority;
+        c->priority = static_cast<unsigned short>(Channel[i].priority);
         c->name = S_sfx[c->id].name;
         c->mo = Channel[i].mo;
 

@@ -223,7 +223,7 @@ static void P_SpawnBrokenGlass(line_t* line)
 
         P_SetMobjState(glass, static_cast<statenum_t>(P_Random() % 3 + S_SHRD_03)); // 284
 
-        an = ((P_Random() << 13) / 255);
+        an = (static_cast<angle_t>((P_Random() << 13) / 255));
 
         glass->angle = (an << ANGLETOFINESHIFT);
         glass->momx = FixedMul(finecosine[an], (P_Random() & 3) << FRACBITS);
@@ -290,7 +290,7 @@ void P_ChangeSwitchTexture(line_t* line, int useAgain)
 
             // haleyjd 20141026: [STRIFE]: Rogue fixed wrong sound origin
             S_StartSound(&line->frontsector->soundorg, sound);
-            sides[line->sidenum[0]].toptexture = switchlist[i^1];
+            sides[line->sidenum[0]].toptexture = static_cast<short>(switchlist[i ^ 1]);
 
             if(useAgain)
                 P_StartButton(line,top,switchlist[i],BUTTONTIME);
@@ -310,12 +310,12 @@ void P_ChangeSwitchTexture(line_t* line, int useAgain)
 
                 // haleyjd 20141026: [STRIFE]: Rogue fixed wrong sound origin
                 S_StartSound(&line->frontsector->soundorg, sound);
-                sides[line->sidenum[0]].midtexture = switchlist[i^1];
+                sides[line->sidenum[0]].midtexture = static_cast<short>(switchlist[i ^ 1]);
 
                 // villsa [STRIFE] affect second side of line
                 // BUG: will crash if 1S line is marked with TWOSIDED flag!
                 if(line->flags & ML_TWOSIDED)
-                    sides[line->sidenum[1]].midtexture = switchlist[i^1];
+                    sides[line->sidenum[1]].midtexture = static_cast<short>(switchlist[i ^ 1]);
 
                 if(useAgain)
                     P_StartButton(line, middle,switchlist[i],BUTTONTIME);
@@ -353,7 +353,7 @@ void P_ChangeSwitchTexture(line_t* line, int useAgain)
 
                     // haleyjd 20141026: [STRIFE]: Rogue fixed wrong sound origin
                     S_StartSound(&line->frontsector->soundorg, sound);
-                    sides[line->sidenum[0]].bottomtexture = switchlist[i^1];
+                    sides[line->sidenum[0]].bottomtexture = static_cast<short>(switchlist[i ^ 1]);
 
                     if(useAgain)
                         P_StartButton(line, bottom,switchlist[i],BUTTONTIME);
@@ -1047,7 +1047,7 @@ bool P_UseSpecialLine(mobj_t* thing, line_t* line, int side)
 
     case 234:
         // haleyjd 09/24/10: [STRIFE] SR Raise Door if Quest 3
-        if(!(thing->player->questflags & QF_QUEST3)) // QUEST3 == Irale
+        if(!(static_cast<unsigned int>(thing->player->questflags) & QF_QUEST3)) // QUEST3 == Irale
         {
             // BUG: doesn't make sfx_oof sound like all other message-
             // giving door types. I highly doubt this was intentional.

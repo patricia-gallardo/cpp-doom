@@ -209,7 +209,7 @@ static void DEH_MiscSHA1Sum(sha1_context_t *context)
 {
     for (auto & misc_setting : misc_settings)
     {
-        SHA1_UpdateInt32(context, *misc_setting.value);
+        SHA1_UpdateInt32(context, static_cast<unsigned int>(*misc_setting.value));
     }
 }
 

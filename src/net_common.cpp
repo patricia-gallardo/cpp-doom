@@ -495,20 +495,18 @@ void NET_Log(const char *fmt, ...)
 
 void NET_LogPacket(net_packet_t *packet)
 {
-    int i, bytes;
-
     if (net_debug == nullptr)
     {
         return;
     }
 
-    bytes = packet->len - packet->pos;
+    size_t bytes = packet->len - packet->pos;
     if (bytes == 0)
     {
         return;
     }
     fprintf(net_debug, "\t%02x", packet->data[packet->pos]);
-    for (i = 1; i < bytes; ++i)
+    for (size_t i = 1; i < bytes; ++i)
     {
         if ((i % 16) == 0)
         {

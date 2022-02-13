@@ -123,11 +123,11 @@ void F_Ticker()
         switch (FinaleStage)
         {
             case 1:            // Text 1
-                FinaleEndCount = strlen(FinaleText) * TEXTSPEED + TEXTWAIT;
+                FinaleEndCount = static_cast<int>(strlen(FinaleText) * TEXTSPEED + TEXTWAIT);
                 break;
             case 2:            // Pic 2, Text 2
                 FinaleText = GetFinaleText(1);
-                FinaleEndCount = strlen(FinaleText) * TEXTSPEED + TEXTWAIT;
+                FinaleEndCount = static_cast<int>(strlen(FinaleText) * TEXTSPEED + TEXTWAIT);
                 FinaleLumpNum = W_GetNumForName("FINALE2");
                 S_StartSongName("orb", false);
                 break;
@@ -298,7 +298,7 @@ static void FadePic()
     for (i = 0; i < 768; i++)
     {
         Palette[i] += PaletteDelta[i];
-        RealPalette[i] = Palette[i] >> FRACBITS;
+        RealPalette[i] = static_cast<uint8_t>(Palette[i] >> FRACBITS);
     }
     I_SetPalette(RealPalette);
 }
@@ -375,7 +375,7 @@ static char *GetFinaleText(int sequence)
 
     msgLumpName = winMsgLumpNames[sequence];
     msgLump = W_GetNumForName(msgLumpName);
-    msgSize = W_LumpLength(msgLump);
+    msgSize = static_cast<int>(W_LumpLength(msgLump));
     if (msgSize >= MAX_INTRMSN_MESSAGE_SIZE)
     {
         I_Error("Finale message too long (%s)", msgLumpName);

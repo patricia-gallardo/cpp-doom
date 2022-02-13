@@ -131,10 +131,7 @@ void I_SlamBlockHR(int x, int y, int w, int h, const uint8_t *src)
 
             // Reassemble the pixel value
 
-            *dest = (srcbits[0] << 0)
-                    | (srcbits[1] << 1)
-                    | (srcbits[2] << 2)
-                    | (srcbits[3] << 3);
+            *dest = static_cast<uint8_t>((srcbits[0] << 0) | (srcbits[1] << 1) | (srcbits[2] << 2) | (srcbits[3] << 3));
 
             // Next pixel!
 
@@ -173,9 +170,9 @@ void I_SetPaletteHR(const uint8_t *palette)
 
     for (i = 0; i < 16; ++i)
     {
-        sdlpal[i].r = palette[i * 3 + 0] * 4;
-        sdlpal[i].g = palette[i * 3 + 1] * 4;
-        sdlpal[i].b = palette[i * 3 + 2] * 4;
+        sdlpal[i].r = static_cast<Uint8>(palette[i * 3 + 0] * 4);
+        sdlpal[i].g = static_cast<Uint8>(palette[i * 3 + 1] * 4);
+        sdlpal[i].b = static_cast<Uint8>(palette[i * 3 + 2] * 4);
     }
 
     // After setting colors, update the screen.
@@ -207,7 +204,7 @@ void I_FadeToPaletteHR(const uint8_t *palette)
 
         for (i = 0; i < 16 * 3; ++i)
         {
-            tmppal[i] = (palette[i] * elapsed) / FADE_TIME;
+            tmppal[i] = static_cast<uint8_t>((palette[i] * elapsed) / FADE_TIME);
         }
 
         I_SetPaletteHR(tmppal);

@@ -380,7 +380,7 @@ static bool ConvertMus(uint8_t *musdata, int len, const char *filename)
     size_t   outbuf_len;
     int      result;
 
-    instream  = mem_fopen_read(musdata, len);
+    instream  = mem_fopen_read(musdata, static_cast<size_t>(len));
     outstream = mem_fopen_write();
 
     result = mus2mid(instream, outstream);
@@ -389,7 +389,7 @@ static bool ConvertMus(uint8_t *musdata, int len, const char *filename)
     {
         mem_get_buf(outstream, &outbuf, &outbuf_len);
 
-        M_WriteFile(filename, outbuf, outbuf_len);
+        M_WriteFile(filename, outbuf, static_cast<int>(outbuf_len));
     }
 
     mem_fclose(instream);

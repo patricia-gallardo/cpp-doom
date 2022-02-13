@@ -35,15 +35,15 @@ static struct
 
 void NET_WriteConnectData(net_packet_t *packet, net_connect_data_t *data)
 {
-    NET_WriteInt8(packet, data->gamemode);
-    NET_WriteInt8(packet, data->gamemission);
-    NET_WriteInt8(packet, data->lowres_turn);
-    NET_WriteInt8(packet, data->drone);
-    NET_WriteInt8(packet, data->max_players);
-    NET_WriteInt8(packet, data->is_freedoom);
+    NET_WriteInt8(packet, static_cast<unsigned int>(data->gamemode));
+    NET_WriteInt8(packet, static_cast<unsigned int>(data->gamemission));
+    NET_WriteInt8(packet, static_cast<unsigned int>(data->lowres_turn));
+    NET_WriteInt8(packet, static_cast<unsigned int>(data->drone));
+    NET_WriteInt8(packet, static_cast<unsigned int>(data->max_players));
+    NET_WriteInt8(packet, static_cast<unsigned int>(data->is_freedoom));
     NET_WriteSHA1Sum(packet, data->wad_sha1sum);
     NET_WriteSHA1Sum(packet, data->deh_sha1sum);
-    NET_WriteInt8(packet, data->player_class);
+    NET_WriteInt8(packet, static_cast<unsigned int>(data->player_class));
 }
 
 bool NET_ReadConnectData(net_packet_t *packet, net_connect_data_t *data)
@@ -61,38 +61,33 @@ bool NET_ReadConnectData(net_packet_t *packet, net_connect_data_t *data)
 
 void NET_WriteSettings(net_packet_t *packet, net_gamesettings_t *settings)
 {
-    int i;
+    NET_WriteInt8(packet, static_cast<unsigned int>(settings->ticdup));
+    NET_WriteInt8(packet, static_cast<unsigned int>(settings->extratics));
+    NET_WriteInt8(packet, static_cast<unsigned int>(settings->deathmatch));
+    NET_WriteInt8(packet, static_cast<unsigned int>(settings->nomonsters));
+    NET_WriteInt8(packet, static_cast<unsigned int>(settings->fast_monsters));
+    NET_WriteInt8(packet, static_cast<unsigned int>(settings->respawn_monsters));
+    NET_WriteInt8(packet, static_cast<unsigned int>(settings->episode));
+    NET_WriteInt8(packet, static_cast<unsigned int>(settings->map));
+    NET_WriteInt8(packet, static_cast<unsigned int>(settings->skill));
+    NET_WriteInt8(packet, static_cast<unsigned int>(settings->gameversion));
+    NET_WriteInt8(packet, static_cast<unsigned int>(settings->lowres_turn));
+    NET_WriteInt8(packet, static_cast<unsigned int>(settings->new_sync));
+    NET_WriteInt32(packet, static_cast<unsigned int>(settings->timelimit));
+    NET_WriteInt8(packet, static_cast<unsigned int>(settings->loadgame));
+    NET_WriteInt8(packet, static_cast<unsigned int>(settings->random));
+    NET_WriteInt8(packet, static_cast<unsigned int>(settings->num_players));
+    NET_WriteInt8(packet, static_cast<unsigned int>(settings->consoleplayer));
 
-    NET_WriteInt8(packet, settings->ticdup);
-    NET_WriteInt8(packet, settings->extratics);
-    NET_WriteInt8(packet, settings->deathmatch);
-    NET_WriteInt8(packet, settings->nomonsters);
-    NET_WriteInt8(packet, settings->fast_monsters);
-    NET_WriteInt8(packet, settings->respawn_monsters);
-    NET_WriteInt8(packet, settings->episode);
-    NET_WriteInt8(packet, settings->map);
-    NET_WriteInt8(packet, settings->skill);
-    NET_WriteInt8(packet, settings->gameversion);
-    NET_WriteInt8(packet, settings->lowres_turn);
-    NET_WriteInt8(packet, settings->new_sync);
-    NET_WriteInt32(packet, settings->timelimit);
-    NET_WriteInt8(packet, settings->loadgame);
-    NET_WriteInt8(packet, settings->random);
-    NET_WriteInt8(packet, settings->num_players);
-    NET_WriteInt8(packet, settings->consoleplayer);
-
-    for (i = 0; i < settings->num_players; ++i)
+    for (int i = 0; i < settings->num_players; ++i)
     {
-        NET_WriteInt8(packet, settings->player_classes[i]);
+        NET_WriteInt8(packet, static_cast<unsigned int>(settings->player_classes[i]));
     }
 }
 
 bool NET_ReadSettings(net_packet_t *packet, net_gamesettings_t *settings)
 {
-    bool success;
-    int     i;
-
-    success = NET_ReadInt8(packet, reinterpret_cast<unsigned int *>(&settings->ticdup))
+    bool success = NET_ReadInt8(packet, reinterpret_cast<unsigned int *>(&settings->ticdup))
               && NET_ReadInt8(packet, reinterpret_cast<unsigned int *>(&settings->extratics))
               && NET_ReadInt8(packet, reinterpret_cast<unsigned int *>(&settings->deathmatch))
               && NET_ReadInt8(packet, reinterpret_cast<unsigned int *>(&settings->nomonsters))
@@ -115,7 +110,7 @@ bool NET_ReadSettings(net_packet_t *packet, net_gamesettings_t *settings)
         return false;
     }
 
-    for (i = 0; i < settings->num_players; ++i)
+    for (int i = 0; i < settings->num_players; ++i)
     {
         if (!NET_ReadInt8(packet, reinterpret_cast<unsigned int *>(&settings->player_classes[i])))
         {
@@ -128,11 +123,9 @@ bool NET_ReadSettings(net_packet_t *packet, net_gamesettings_t *settings)
 
 bool NET_ReadQueryData(net_packet_t *packet, net_querydata_t *query)
 {
-    bool success;
-
     query->version = NET_ReadSafeString(packet);
 
-    success = query->version != nullptr
+    bool success = query->version != nullptr
               && NET_ReadInt8(packet, reinterpret_cast<unsigned int *>(&query->server_state))
               && NET_ReadInt8(packet, reinterpret_cast<unsigned int *>(&query->num_players))
               && NET_ReadInt8(packet, reinterpret_cast<unsigned int *>(&query->max_players))
@@ -157,11 +150,11 @@ bool NET_ReadQueryData(net_packet_t *packet, net_querydata_t *query)
 void NET_WriteQueryData(net_packet_t *packet, net_querydata_t *query)
 {
     NET_WriteString(packet, query->version);
-    NET_WriteInt8(packet, query->server_state);
-    NET_WriteInt8(packet, query->num_players);
-    NET_WriteInt8(packet, query->max_players);
-    NET_WriteInt8(packet, query->gamemode);
-    NET_WriteInt8(packet, query->gamemission);
+    NET_WriteInt8(packet, static_cast<unsigned int>(query->server_state));
+    NET_WriteInt8(packet, static_cast<unsigned int>(query->num_players));
+    NET_WriteInt8(packet, static_cast<unsigned int>(query->max_players));
+    NET_WriteInt8(packet, static_cast<unsigned int>(query->gamemode));
+    NET_WriteInt8(packet, static_cast<unsigned int>(query->gamemission));
     NET_WriteString(packet, query->description);
 
     // Write a list of all supported protocols. Note that the query->protocol
@@ -179,18 +172,18 @@ void NET_WriteTiccmdDiff(net_packet_t *packet, net_ticdiff_t *diff,
     // Write the fields which are enabled:
 
     if (diff->diff & NET_TICDIFF_FORWARD)
-        NET_WriteInt8(packet, diff->cmd.forwardmove);
+        NET_WriteInt8(packet, static_cast<unsigned int>(diff->cmd.forwardmove));
     if (diff->diff & NET_TICDIFF_SIDE)
-        NET_WriteInt8(packet, diff->cmd.sidemove);
+        NET_WriteInt8(packet, static_cast<unsigned int>(diff->cmd.sidemove));
     if (diff->diff & NET_TICDIFF_TURN)
     {
         if (lowres_turn)
         {
-            NET_WriteInt8(packet, diff->cmd.angleturn / 256);
+            NET_WriteInt8(packet, static_cast<unsigned int>(diff->cmd.angleturn / 256));
         }
         else
         {
-            NET_WriteInt16(packet, diff->cmd.angleturn);
+            NET_WriteInt16(packet, static_cast<unsigned int>(diff->cmd.angleturn));
         }
     }
     if (diff->diff & NET_TICDIFF_BUTTONS)
@@ -207,15 +200,15 @@ void NET_WriteTiccmdDiff(net_packet_t *packet, net_ticdiff_t *diff,
     if (diff->diff & NET_TICDIFF_STRIFE)
     {
         NET_WriteInt8(packet, diff->cmd.buttons2);
-        NET_WriteInt16(packet, diff->cmd.inventory);
+        NET_WriteInt16(packet, static_cast<unsigned int>(diff->cmd.inventory));
     }
 }
 
 bool NET_ReadTiccmdDiff(net_packet_t *packet, net_ticdiff_t *diff,
     bool lowres_turn)
 {
-    unsigned int val;
-    signed int   sval;
+    unsigned int val = 0;
+    signed int   sval = 0;
 
     // Read header
 
@@ -228,14 +221,14 @@ bool NET_ReadTiccmdDiff(net_packet_t *packet, net_ticdiff_t *diff,
     {
         if (!NET_ReadSInt8(packet, &sval))
             return false;
-        diff->cmd.forwardmove = sval;
+        diff->cmd.forwardmove = static_cast<signed char>(sval);
     }
 
     if (diff->diff & NET_TICDIFF_SIDE)
     {
         if (!NET_ReadSInt8(packet, &sval))
             return false;
-        diff->cmd.sidemove = sval;
+        diff->cmd.sidemove = static_cast<signed char>(sval);
     }
 
     if (diff->diff & NET_TICDIFF_TURN)
@@ -244,13 +237,13 @@ bool NET_ReadTiccmdDiff(net_packet_t *packet, net_ticdiff_t *diff,
         {
             if (!NET_ReadSInt8(packet, &sval))
                 return false;
-            diff->cmd.angleturn = sval * 256;
+            diff->cmd.angleturn = static_cast<short>(sval * 256);
         }
         else
         {
             if (!NET_ReadSInt16(packet, &sval))
                 return false;
-            diff->cmd.angleturn = sval;
+            diff->cmd.angleturn = static_cast<short>(sval);
         }
     }
 
@@ -258,43 +251,43 @@ bool NET_ReadTiccmdDiff(net_packet_t *packet, net_ticdiff_t *diff,
     {
         if (!NET_ReadInt8(packet, &val))
             return false;
-        diff->cmd.buttons = val;
+        diff->cmd.buttons = static_cast<uint8_t>(val);
     }
 
     if (diff->diff & NET_TICDIFF_CONSISTANCY)
     {
         if (!NET_ReadInt8(packet, &val))
             return false;
-        diff->cmd.consistancy = val;
+        diff->cmd.consistancy = static_cast<uint8_t>(val);
     }
 
     if (diff->diff & NET_TICDIFF_CHATCHAR)
     {
         if (!NET_ReadInt8(packet, &val))
             return false;
-        diff->cmd.chatchar = val;
+        diff->cmd.chatchar = static_cast<uint8_t>(val);
     }
 
     if (diff->diff & NET_TICDIFF_RAVEN)
     {
         if (!NET_ReadInt8(packet, &val))
             return false;
-        diff->cmd.lookfly = val;
+        diff->cmd.lookfly = static_cast<uint8_t>(val);
 
         if (!NET_ReadInt8(packet, &val))
             return false;
-        diff->cmd.arti = val;
+        diff->cmd.arti = static_cast<uint8_t>(val);
     }
 
     if (diff->diff & NET_TICDIFF_STRIFE)
     {
         if (!NET_ReadInt8(packet, &val))
             return false;
-        diff->cmd.buttons2 = val;
+        diff->cmd.buttons2 = static_cast<uint8_t>(val);
 
         if (!NET_ReadInt16(packet, &val))
             return false;
-        diff->cmd.inventory = val;
+        diff->cmd.inventory = static_cast<int>(val);
     }
 
     return true;
@@ -382,9 +375,6 @@ void NET_TiccmdPatch(ticcmd_t *src, net_ticdiff_t *diff, ticcmd_t *dest)
 
 bool NET_ReadFullTiccmd(net_packet_t *packet, net_full_ticcmd_t *cmd, bool lowres_turn)
 {
-    unsigned int bitfield;
-    int          i;
-
     // Latency
 
     if (!NET_ReadSInt16(packet, &cmd->latency))
@@ -394,19 +384,20 @@ bool NET_ReadFullTiccmd(net_packet_t *packet, net_full_ticcmd_t *cmd, bool lowre
 
     // Regenerate playeringame from the "header" bitfield
 
+    unsigned int bitfield = 0;
     if (!NET_ReadInt8(packet, &bitfield))
     {
         return false;
     }
 
-    for (i = 0; i < NET_MAXPLAYERS; ++i)
+    for (int i = 0; i < NET_MAXPLAYERS; ++i)
     {
         cmd->playeringame[i] = (bitfield & (1 << i)) != 0;
     }
 
     // Read cmds
 
-    for (i = 0; i < NET_MAXPLAYERS; ++i)
+    for (int i = 0; i < NET_MAXPLAYERS; ++i)
     {
         if (cmd->playeringame[i])
         {
@@ -422,19 +413,16 @@ bool NET_ReadFullTiccmd(net_packet_t *packet, net_full_ticcmd_t *cmd, bool lowre
 
 void NET_WriteFullTiccmd(net_packet_t *packet, net_full_ticcmd_t *cmd, bool lowres_turn)
 {
-    unsigned int bitfield;
-    int          i;
-
     // Write the latency
 
-    NET_WriteInt16(packet, cmd->latency);
+    NET_WriteInt16(packet, static_cast<unsigned int>(cmd->latency));
 
     // Write "header" byte indicating which players are active
     // in this ticcmd
 
-    bitfield = 0;
+    unsigned int bitfield = 0;
 
-    for (i = 0; i < NET_MAXPLAYERS; ++i)
+    for (int i = 0; i < NET_MAXPLAYERS; ++i)
     {
         if (cmd->playeringame[i])
         {
@@ -446,7 +434,7 @@ void NET_WriteFullTiccmd(net_packet_t *packet, net_full_ticcmd_t *cmd, bool lowr
 
     // Write player ticcmds
 
-    for (i = 0; i < NET_MAXPLAYERS; ++i)
+    for (int i = 0; i < NET_MAXPLAYERS; ++i)
     {
         if (cmd->playeringame[i])
         {
@@ -457,16 +445,14 @@ void NET_WriteFullTiccmd(net_packet_t *packet, net_full_ticcmd_t *cmd, bool lowr
 
 void NET_WriteWaitData(net_packet_t *packet, net_waitdata_t *data)
 {
-    int i;
+    NET_WriteInt8(packet, static_cast<unsigned int>(data->num_players));
+    NET_WriteInt8(packet, static_cast<unsigned int>(data->num_drones));
+    NET_WriteInt8(packet, static_cast<unsigned int>(data->ready_players));
+    NET_WriteInt8(packet, static_cast<unsigned int>(data->max_players));
+    NET_WriteInt8(packet, static_cast<unsigned int>(data->is_controller));
+    NET_WriteInt8(packet, static_cast<unsigned int>(data->consoleplayer));
 
-    NET_WriteInt8(packet, data->num_players);
-    NET_WriteInt8(packet, data->num_drones);
-    NET_WriteInt8(packet, data->ready_players);
-    NET_WriteInt8(packet, data->max_players);
-    NET_WriteInt8(packet, data->is_controller);
-    NET_WriteInt8(packet, data->consoleplayer);
-
-    for (i = 0; i < data->num_players && i < NET_MAXPLAYERS; ++i)
+    for (int i = 0; i < data->num_players && i < NET_MAXPLAYERS; ++i)
     {
         NET_WriteString(packet, data->player_names[i]);
         NET_WriteString(packet, data->player_addrs[i]);
@@ -474,14 +460,11 @@ void NET_WriteWaitData(net_packet_t *packet, net_waitdata_t *data)
 
     NET_WriteSHA1Sum(packet, data->wad_sha1sum);
     NET_WriteSHA1Sum(packet, data->deh_sha1sum);
-    NET_WriteInt8(packet, data->is_freedoom);
+    NET_WriteInt8(packet, static_cast<unsigned int>(data->is_freedoom));
 }
 
 bool NET_ReadWaitData(net_packet_t *packet, net_waitdata_t *data)
 {
-    int   i;
-    char *s;
-
     if (!NET_ReadInt8(packet, reinterpret_cast<unsigned int *>(&data->num_players))
         || !NET_ReadInt8(packet, reinterpret_cast<unsigned int *>(&data->num_drones))
         || !NET_ReadInt8(packet, reinterpret_cast<unsigned int *>(&data->ready_players))
@@ -492,9 +475,9 @@ bool NET_ReadWaitData(net_packet_t *packet, net_waitdata_t *data)
         return false;
     }
 
-    for (i = 0; i < data->num_players && i < NET_MAXPLAYERS; ++i)
+    for (int i = 0; i < data->num_players && i < NET_MAXPLAYERS; ++i)
     {
-        s = NET_ReadString(packet);
+        char *s = NET_ReadString(packet);
 
         if (s == nullptr || strlen(s) >= MAXPLAYERNAME)
         {
@@ -528,7 +511,7 @@ static bool NET_ReadBlob(net_packet_t *packet, uint8_t *buf, size_t len)
             return false;
         }
 
-        buf[i] = b;
+        buf[i] = static_cast<uint8_t>(b);
     }
 
     return true;
@@ -580,9 +563,7 @@ static net_protocol_t ParseProtocolName(const char *name)
 // protocol.
 net_protocol_t NET_ReadProtocol(net_packet_t *packet)
 {
-    const char *name;
-
-    name = NET_ReadString(packet);
+    const char *name = NET_ReadString(packet);
     if (name == nullptr)
     {
         return NET_PROTOCOL_UNKNOWN;
@@ -616,8 +597,7 @@ void NET_WriteProtocol(net_packet_t *packet, net_protocol_t protocol)
 // no recognized protocols are read, NET_PROTOCOL_UNKNOWN is returned.
 net_protocol_t NET_ReadProtocolList(net_packet_t *packet)
 {
-    unsigned int num_protocols;
-
+    unsigned int num_protocols = 0;
     if (!NET_ReadInt8(packet, &num_protocols))
     {
         return NET_PROTOCOL_UNKNOWN;
@@ -650,11 +630,9 @@ net_protocol_t NET_ReadProtocolList(net_packet_t *packet)
 // protocols is always sent.
 void NET_WriteProtocolList(net_packet_t *packet)
 {
-    int i;
-
     NET_WriteInt8(packet, NET_NUM_PROTOCOLS);
 
-    for (i = 0; i < NET_NUM_PROTOCOLS; ++i)
+    for (int i = 0; i < NET_NUM_PROTOCOLS; ++i)
     {
         NET_WriteProtocol(packet, static_cast<net_protocol_t>(i));
     }

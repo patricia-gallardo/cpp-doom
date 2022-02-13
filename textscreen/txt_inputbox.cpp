@@ -202,7 +202,7 @@ static void AddCharacter(txt_inputbox_t *inputbox, int key)
         // Add character to the buffer
 
         end = inputbox->buffer + strlen(inputbox->buffer);
-        p = TXT_EncodeUTF8(end, key);
+        p = TXT_EncodeUTF8(end, static_cast<unsigned int>(key));
         *p = '\0';
     }
 }
@@ -248,14 +248,14 @@ static int TXT_InputBoxKeyPress(void *uncast_inputbox, int key)
         Backspace(inputbox);
     }
 
-    c = TXT_KEY_TO_UNICODE(key);
+    c = TXT_KEY_TO_UNICODE(static_cast<unsigned int>(key));
 
     // Add character to the buffer, but only if it's a printable character
     // that we can represent on the screen.
-    if (isprint(c)
+    if (isprint(static_cast<int>(c))
      || (c >= 128 && TXT_UnicodeCharacter(c) >= 0))
     {
-        AddCharacter(inputbox, c);
+        AddCharacter(inputbox, static_cast<int>(c));
     }
 
     return 1;
@@ -322,11 +322,11 @@ static txt_inputbox_t *NewInputBox(txt_widget_class_t *widget_class,
 
     TXT_InitWidget(inputbox, widget_class);
     inputbox->value = value;
-    inputbox->size = size;
+    inputbox->size = static_cast<unsigned int>(size);
     // 'size' is the maximum number of characters that can be entered,
     // but for a UTF-8 string, each character can take up to four
     // characters.
-    inputbox->buffer_len = size * 4 + 1;
+    inputbox->buffer_len = static_cast<size_t>(size * 4 + 1);
     inputbox->buffer = static_cast<char *>(malloc(inputbox->buffer_len));
     inputbox->editing = 0;
 

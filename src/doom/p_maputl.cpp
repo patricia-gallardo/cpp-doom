@@ -174,9 +174,9 @@ int P_PointOnDivlineSide(fixed_t x,
     dy = (y - line->y);
 
     // try to quickly decide by looking at sign bits
-    if ((line->dy ^ line->dx ^ dx ^ dy) & 0x80000000)
+    if ((static_cast<unsigned int>(line->dy ^ line->dx ^ dx ^ dy)) & 0x80000000)
     {
-        if ((line->dy ^ dx) & 0x80000000)
+        if ((static_cast<unsigned int>(line->dy ^ dx)) & 0x80000000)
             return 1; // (left is negative)
         return 0;
     }
@@ -526,7 +526,7 @@ intercept_t *       intercept_p;
 static void check_intercept()
 {
     static size_t num_intercepts;
-    const size_t  offset = intercept_p - intercepts;
+    const size_t  offset = static_cast<size_t>(intercept_p - intercepts);
 
     if (offset >= num_intercepts)
     {
@@ -601,7 +601,7 @@ bool
     intercept_p->frac    = frac;
     intercept_p->isaline = true;
     intercept_p->d.line  = ld;
-    InterceptsOverrun(intercept_p - intercepts, intercept_p);
+    InterceptsOverrun(static_cast<int>(intercept_p - intercepts), intercept_p);
     // [crispy] intercepts overflow guard
     if (intercept_p - intercepts == MAXINTERCEPTS_ORIGINAL + 1)
     {
@@ -676,7 +676,7 @@ bool PIT_AddThingIntercepts(mobj_t *thing)
     intercept_p->frac    = frac;
     intercept_p->isaline = false;
     intercept_p->d.thing = thing;
-    InterceptsOverrun(intercept_p - intercepts, intercept_p);
+    InterceptsOverrun(static_cast<int>(intercept_p - intercepts), intercept_p);
     // [crispy] intercepts overflow guard
     if (intercept_p - intercepts == MAXINTERCEPTS_ORIGINAL + 1)
     {
@@ -698,22 +698,16 @@ bool PIT_AddThingIntercepts(mobj_t *thing)
 // for all lines.
 //
 bool
-    P_TraverseIntercepts(traverser_t func,
-        fixed_t                      maxfrac)
+    P_TraverseIntercepts(traverser_t func, fixed_t maxfrac)
 {
-    int          count;
-    fixed_t      dist;
-    intercept_t *scan;
-    intercept_t *in;
+    int count = static_cast<int>(intercept_p - intercepts);
 
-    count = intercept_p - intercepts;
-
-    in = 0; // shut up compiler warning
+    intercept_t *in = 0; // shut up compiler warning
 
     while (count--)
     {
-        dist = INT_MAX;
-        for (scan = intercepts; scan < intercept_p; scan++)
+        fixed_t dist = INT_MAX;
+        for (intercept_t *scan = intercepts; scan < intercept_p; scan++)
         {
             if (scan->frac < dist)
             {
@@ -820,14 +814,16 @@ static void InterceptsMemoryOverrun(int location, int value)
             {
                 if (intercepts_overrun[i].int16_array)
                 {
-                    index                      = (location - offset) / 2;
-                    (reinterpret_cast<short *>(addr))[index]     = value & 0xffff;
-                    (reinterpret_cast<short *>(addr))[index + 1] = (value >> 16) & 0xffff;
+                    index                 = (location - offset) / 2;
+                    short *addr_short     = reinterpret_cast<short *>(addr);
+                    addr_short[index]     = static_cast<short>(value & 0xffff);
+                    addr_short[index + 1] = static_cast<short>((value >> 16) & 0xffff);
                 }
                 else
                 {
                     index                = (location - offset) / 4;
-                    (reinterpret_cast<int *>(addr))[index] = value;
+                    int *addr_int        = reinterpret_cast<int *>(addr);
+                    addr_int[index] = value;
                 }
             }
 
@@ -863,7 +859,7 @@ static void InterceptsOverrun(int num_intercepts, intercept_t *intercept)
 
     InterceptsMemoryOverrun(location, intercept->frac);
     InterceptsMemoryOverrun(location + 4, intercept->isaline);
-    InterceptsMemoryOverrun(location + 8, reinterpret_cast<intptr_t>(intercept->d.thing));
+    InterceptsMemoryOverrun(location + 8, static_cast<int>(reinterpret_cast<intptr_t>(intercept->d.thing)));
 }
 
 

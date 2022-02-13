@@ -270,14 +270,14 @@ void R_InitTranslationTables()
     {
         if (i >= 225 && i <= 240)
         {
-            translationtables[i] = 114 + (i - 225);     // yellow
-            translationtables[i + 256] = 145 + (i - 225);       // red
-            translationtables[i + 512] = 190 + (i - 225);       // blue
+            translationtables[i]       = static_cast<uint8_t>(114 + (i - 225));     // yellow
+            translationtables[i + 256] = static_cast<uint8_t>(145 + (i - 225));     // red
+            translationtables[i + 512] = static_cast<uint8_t>(190 + (i - 225));     // blue
         }
         else
         {
             translationtables[i] = translationtables[i + 256]
-                = translationtables[i + 512] = i;
+                = translationtables[i + 512] = static_cast<uint8_t>(i);
         }
     }
 }

@@ -146,7 +146,7 @@ static void InitSpriteList()
     if (sprite_frames == nullptr)
     {
         sprite_frames_alloced = 128;
-        sprite_frames         = zmalloc<decltype(sprite_frames)>(sizeof(*sprite_frames) * sprite_frames_alloced,
+        sprite_frames         = zmalloc<decltype(sprite_frames)>(sizeof(*sprite_frames) * static_cast<unsigned long>(sprite_frames_alloced),
             PU_STATIC, nullptr);
     }
 
@@ -205,10 +205,10 @@ static sprite_frame_t *FindSpriteFrame(char *name, int frame)
     {
         sprite_frame_t *newframes;
 
-        newframes = zmalloc<decltype(newframes)>(sprite_frames_alloced * 2 * sizeof(*sprite_frames),
+        newframes = zmalloc<decltype(newframes)>(
+            static_cast<unsigned long>(sprite_frames_alloced * 2) * sizeof(*sprite_frames),
             PU_STATIC, nullptr);
-        memcpy(newframes, sprite_frames,
-            sprite_frames_alloced * sizeof(*sprite_frames));
+        memcpy(newframes, sprite_frames, static_cast<unsigned long>(sprite_frames_alloced) * sizeof(*sprite_frames));
         Z_Free(sprite_frames);
         sprite_frames_alloced *= 2;
         sprite_frames = newframes;
@@ -218,7 +218,7 @@ static sprite_frame_t *FindSpriteFrame(char *name, int frame)
 
     result = &sprite_frames[num_sprite_frames];
     memcpy(result->sprname, name, 4);
-    result->frame = frame;
+    result->frame = static_cast<char>(frame);
 
     for (i = 0; i < 8; ++i)
         result->angle_lumps[i] = nullptr;
@@ -550,7 +550,7 @@ static void DoMerge()
 
     free(lumpinfo);
     lumpinfo = newlumps;
-    numlumps = num_newlumps;
+    numlumps = static_cast<unsigned int>(num_newlumps);
 }
 
 void W_PrintDirectory()
@@ -570,9 +570,7 @@ void W_PrintDirectory()
 
 void W_MergeFile(const char *filename)
 {
-    int old_numlumps;
-
-    old_numlumps = numlumps;
+    int old_numlumps = static_cast<int>(numlumps);
 
     // Load PWAD
 
@@ -585,7 +583,7 @@ void W_MergeFile(const char *filename)
     iwad.numlumps = old_numlumps;
 
     pwad.lumps    = lumpinfo + old_numlumps;
-    pwad.numlumps = numlumps - old_numlumps;
+    pwad.numlumps = static_cast<int>(numlumps - static_cast<unsigned int>(old_numlumps));
 
     // Setup sprite/flat lists
 
@@ -627,9 +625,7 @@ static void W_NWTAddLumps(searchlist_t *list)
 
 void W_NWTMergeFile(const char *filename, int flags)
 {
-    int old_numlumps;
-
-    old_numlumps = numlumps;
+    int old_numlumps = static_cast<int>(numlumps);
 
     // Load PWAD
 
@@ -642,7 +638,7 @@ void W_NWTMergeFile(const char *filename, int flags)
     iwad.numlumps = old_numlumps;
 
     pwad.lumps    = lumpinfo + old_numlumps;
-    pwad.numlumps = numlumps - old_numlumps;
+    pwad.numlumps = static_cast<int>(numlumps - static_cast<unsigned int>(old_numlumps));
 
     // Setup sprite/flat lists
 
@@ -664,7 +660,7 @@ void W_NWTMergeFile(const char *filename, int flags)
 
     // Discard the PWAD
 
-    numlumps = old_numlumps;
+    numlumps = static_cast<unsigned int>(old_numlumps);
 }
 
 // Simulates the NWT -merge command line parameter.  What this does is load
@@ -673,15 +669,11 @@ void W_NWTMergeFile(const char *filename, int flags)
 
 void W_NWTDashMerge(const char *filename)
 {
-    wad_file_t *wad_file;
-    int         old_numlumps;
-    int         i;
-
-    old_numlumps = numlumps;
+    int old_numlumps = static_cast<int>(numlumps);
 
     // Load PWAD
 
-    wad_file = W_AddFile(filename);
+    wad_file_t *wad_file = W_AddFile(filename);
 
     if (wad_file == nullptr)
     {
@@ -694,7 +686,7 @@ void W_NWTDashMerge(const char *filename)
     iwad.numlumps = old_numlumps;
 
     pwad.lumps    = lumpinfo + old_numlumps;
-    pwad.numlumps = numlumps - old_numlumps;
+    pwad.numlumps = static_cast<int>(numlumps - static_cast<unsigned int>(old_numlumps));
 
     // Setup sprite/flat lists
 
@@ -702,7 +694,7 @@ void W_NWTDashMerge(const char *filename)
 
     // Search through the IWAD sprites list.
 
-    for (i = 0; i < iwad_sprites.numlumps; ++i)
+    for (int i = 0; i < iwad_sprites.numlumps; ++i)
     {
         if (FindInList(&pwad, iwad_sprites.lumps[i]->name) >= 0)
         {
@@ -716,7 +708,7 @@ void W_NWTDashMerge(const char *filename)
     // Discard PWAD
     // The PWAD must now be added in again with -file.
 
-    numlumps = old_numlumps;
+    numlumps = static_cast<unsigned int>(old_numlumps);
 
     W_CloseFile(wad_file);
 }
@@ -761,9 +753,9 @@ int W_MergeDump(const char *file)
         strncpy(dir[i].name, lumpinfo[i]->name, 8);
 
         // [crispy] avoid flooding Doom's Zone Memory
-        lump_p = static_cast<decltype(lump_p)>(I_Realloc(lump_p, lumpinfo[i]->size));
-        W_ReadLump(i, lump_p);
-        fwrite(lump_p, 1, lumpinfo[i]->size, fp);
+        lump_p = static_cast<decltype(lump_p)>(I_Realloc(lump_p, static_cast<size_t>(lumpinfo[i]->size)));
+        W_ReadLump(static_cast<lumpindex_t>(i), lump_p);
+        fwrite(lump_p, 1, static_cast<size_t>(lumpinfo[i]->size), fp);
     }
     free(lump_p);
 
@@ -781,5 +773,5 @@ int W_MergeDump(const char *file)
 
     fclose(fp);
 
-    return (i);
+    return static_cast<int>(i);
 }

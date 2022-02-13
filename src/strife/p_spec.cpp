@@ -970,7 +970,7 @@ P_CrossSpecialLine
     case 188:
         // haleyjd 09/21/10: [STRIFE] W1 Open Door if Quest 16 (Gate Mechanism 
         // Destroyed)
-        if(!(thing->player->questflags & QF_QUEST16))
+        if(!(static_cast<unsigned int>(thing->player->questflags) & QF_QUEST16))
             break;
         EV_DoDoor(line, vld_open);
         line->special = 0;
@@ -1099,10 +1099,10 @@ P_CrossSpecialLine
 
     case 228:
         // haleyjd 09/21/10: [STRIFE] W1 Entity Voice?
-        if(!(thing->player->questflags & QF_QUEST24)) // Not killed Macil???
+        if(!(static_cast<unsigned int>(thing->player->questflags) & QF_QUEST24)) // Not killed Macil???
             break; // STRIFE-TODO: verify...
 
-        if(!(thing->player->questflags & QF_QUEST28)) // ????? STRIFE-TODO
+        if(!(static_cast<unsigned int>(thing->player->questflags) & QF_QUEST28)) // ????? STRIFE-TODO
             I_StartVoice(DEH_String("voc128"));
         else
             I_StartVoice(DEH_String("voc130"));
@@ -1552,7 +1552,7 @@ void P_PlayerInSpecialSector (player_t* player)
                 return;
 
             force = (tagval % 10) << 12;
-            angle = (tagval / 10) << 29;
+            angle = static_cast<angle_t>((tagval / 10) << 29);
 
             P_Thrust(player, angle, force);
         }
@@ -1652,18 +1652,15 @@ void P_UpdateSpecials ()
                 switch(buttonlist[i].where)
                 {
                 case top:
-                    sides[buttonlist[i].line->sidenum[0]].toptexture =
-                        buttonlist[i].btexture;
+                    sides[buttonlist[i].line->sidenum[0]].toptexture = static_cast<short>(buttonlist[i].btexture);
                     break;
 
                 case middle:
-                    sides[buttonlist[i].line->sidenum[0]].midtexture =
-                        buttonlist[i].btexture;
+                    sides[buttonlist[i].line->sidenum[0]].midtexture = static_cast<short>(buttonlist[i].btexture);
                     break;
 
                 case bottom:
-                    sides[buttonlist[i].line->sidenum[0]].bottomtexture =
-                        buttonlist[i].btexture;
+                    sides[buttonlist[i].line->sidenum[0]].bottomtexture = static_cast<short>(buttonlist[i].btexture);
                     break;
                 }
                 S_StartSound(&buttonlist[i].soundorg,sfx_swtchn);

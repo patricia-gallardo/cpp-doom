@@ -788,7 +788,6 @@ void M_ReadSaveStrings()
 
     for (i = 0; i < static_cast<int>(load_e::load_end); i++)
     {
-        int retval;
         M_StringCopy(name, P_SaveGameFile(i), sizeof(name));
 
         handle = fopen(name, "rb");
@@ -798,7 +797,7 @@ void M_ReadSaveStrings()
             LoadMenu[i].status = 0;
             continue;
         }
-        retval = fread(&savegamestrings[i], 1, SAVESTRINGSIZE, handle);
+        size_t retval = fread(&savegamestrings[i], 1, SAVESTRINGSIZE, handle);
         fclose(handle);
         LoadMenu[i].status = retval == SAVESTRINGSIZE;
     }
@@ -863,7 +862,7 @@ void M_LoadSelect(int choice)
     M_StringCopy(name, P_SaveGameFile(choice), sizeof(name));
 
     // [crispy] save the last game you loaded
-    SaveDef.lastOn = choice;
+    SaveDef.lastOn = static_cast<short>(choice);
     G_LoadGame(name);
     M_ClearMenus();
 
@@ -978,17 +977,15 @@ static bool StartsWithMapIdentifier(char *str)
 //
 void M_SaveSelect(int choice)
 {
-    int x, y;
-
     // we are going to be intercepting all chars
     saveStringEnter = 1;
 
     // [crispy] load the last game you saved
-    LoadDef.lastOn = choice;
+    LoadDef.lastOn = static_cast<short>(choice);
 
     // We need to turn on text input:
-    x = LoadDef.x - 11;
-    y = LoadDef.y + choice * LINEHEIGHT - 4;
+    int x = LoadDef.x - 11;
+    int y = LoadDef.y + choice * LINEHEIGHT - 4;
     I_StartTextInput(x, y, x + 8 + 24 * 8 + 8, y + LINEHEIGHT - 2);
 
     saveSlot = choice;
@@ -1004,7 +1001,7 @@ void M_SaveSelect(int choice)
             SetDefaultSaveName(choice);
         }
     }
-    saveCharIndex = strlen(savegamestrings[choice]);
+    saveCharIndex = static_cast<int>(strlen(savegamestrings[choice]));
 }
 
 //
@@ -1913,11 +1910,9 @@ void M_StartMessage(const char *string,
 //
 int M_StringWidth(const char *string)
 {
-    size_t i;
-    int    w = 0;
-    int    c;
+    int w = 0;
 
-    for (i = 0; i < strlen(string); i++)
+    for (size_t i = 0; i < strlen(string); i++)
     {
         // [crispy] correctly center colorized strings
         if (string[i] == cr_esc)
@@ -1929,7 +1924,7 @@ int M_StringWidth(const char *string)
             }
         }
 
-        c = toupper(string[i]) - HU_FONTSTART;
+        int c = toupper(string[i]) - HU_FONTSTART;
         if (c < 0 || c >= HU_FONTSIZE)
             w += 4;
         else
@@ -1945,12 +1940,9 @@ int M_StringWidth(const char *string)
 //
 int M_StringHeight(const char *string)
 {
-    size_t i;
-    int    h;
-    int    height = SHORT(hu_font[0]->height);
-
-    h = height;
-    for (i = 0; i < strlen(string); i++)
+    int height = SHORT(hu_font[0]->height);
+    int h = height;
+    for (size_t i = 0; i < strlen(string); i++)
         if (string[i] == '\n')
             h += height;
 
@@ -2213,22 +2205,22 @@ bool M_Responder(event_t *ev)
             if (ev->data3 < 0)
             {
                 key     = key_menu_up;
-                joywait = I_GetTime() + 5;
+                joywait = static_cast<unsigned int>(I_GetTime() + 5);
             }
             else if (ev->data3 > 0)
             {
                 key     = key_menu_down;
-                joywait = I_GetTime() + 5;
+                joywait = static_cast<unsigned int>(I_GetTime() + 5);
             }
             if (ev->data2 < 0)
             {
                 key     = key_menu_left;
-                joywait = I_GetTime() + 2;
+                joywait = static_cast<unsigned int>(I_GetTime() + 2);
             }
             else if (ev->data2 > 0)
             {
                 key     = key_menu_right;
-                joywait = I_GetTime() + 2;
+                joywait = static_cast<unsigned int>(I_GetTime() + 2);
             }
 
 #define JOY_BUTTON_MAPPED(x)  ((x) >= 0)
@@ -2255,7 +2247,7 @@ bool M_Responder(event_t *ev)
                     }
                     key = key_menu_forward;
                 }
-                joywait = I_GetTime() + 5;
+                joywait = static_cast<unsigned int>(I_GetTime() + 5);
             }
             if (JOY_BUTTON_PRESSED(joybuse))
             {
@@ -2273,13 +2265,13 @@ bool M_Responder(event_t *ev)
                 {
                     key = key_menu_back;
                 }
-                joywait = I_GetTime() + 5;
+                joywait = static_cast<unsigned int>(I_GetTime() + 5);
             }
         }
         if (JOY_BUTTON_PRESSED(joybmenu))
         {
             key     = key_menu_activate;
-            joywait = I_GetTime() + 5;
+            joywait = static_cast<unsigned int>(I_GetTime() + 5);
         }
     }
     else
@@ -2414,7 +2406,7 @@ bool M_Responder(event_t *ev)
 
             if (ch >= 32 && ch <= 127 && saveCharIndex < SAVESTRINGSIZE - 1 && M_StringWidth(savegamestrings[saveSlot]) < (SAVESTRINGSIZE - 2) * 8)
             {
-                savegamestrings[saveSlot][saveCharIndex++] = ch;
+                savegamestrings[saveSlot][saveCharIndex++] = static_cast<char>(ch);
                 savegamestrings[saveSlot][saveCharIndex]   = 0;
             }
             break;
@@ -2620,7 +2612,7 @@ bool M_Responder(event_t *ev)
         do
         {
             if (!itemOn)
-                itemOn = currentMenu->numitems - 1;
+                itemOn = static_cast<short>(currentMenu->numitems - 1);
             else
                 itemOn--;
             S_StartSound(nullptr, sfx_pstop);
@@ -2741,7 +2733,7 @@ bool M_Responder(event_t *ev)
         {
             if (currentMenu->menuitems[i].alphaKey == ch)
             {
-                itemOn = i;
+                itemOn = static_cast<short>(i);
                 S_StartSound(nullptr, sfx_pstop);
                 return true;
             }
@@ -2751,7 +2743,7 @@ bool M_Responder(event_t *ev)
         {
             if (currentMenu->menuitems[i].alphaKey == ch)
             {
-                itemOn = i;
+                itemOn = static_cast<short>(i);
                 S_StartSound(nullptr, sfx_pstop);
                 return true;
             }
@@ -2823,11 +2815,11 @@ void M_Drawer()
 {
     static short x;
     static short y;
-    unsigned int i;
+    size_t i;
     unsigned int max;
     char         string[80];
     const char * name;
-    int          start;
+    size_t       start;
 
     inhelpscreens = false;
 
@@ -2841,7 +2833,7 @@ void M_Drawer()
         }
 
         start = 0;
-        y     = ORIGHEIGHT / 2 - M_StringHeight(messageString) / 2;
+        y     = static_cast<short>(ORIGHEIGHT / 2 - M_StringHeight(messageString) / 2);
         while (messageString[start] != '\0')
         {
             bool foundnewline = false;
@@ -2869,9 +2861,9 @@ void M_Drawer()
                 start += strlen(string);
             }
 
-            x = ORIGWIDTH / 2 - M_StringWidth(string) / 2;
+            x = static_cast<short>(ORIGWIDTH / 2 - M_StringWidth(string) / 2);
             M_WriteText(x > 0 ? x : 0, y, string); // [crispy] prevent negative x-coords
-            y += SHORT(hu_font[0]->height);
+            y = static_cast<short>(y + SHORT(hu_font[0]->height));
         }
 
         return;
@@ -2891,7 +2883,7 @@ void M_Drawer()
     // DRAW MENU
     x   = currentMenu->x;
     y   = currentMenu->y;
-    max = currentMenu->numitems;
+    max = static_cast<unsigned int>(currentMenu->numitems);
 
     for (i = 0; i < max; i++)
     {
@@ -2918,7 +2910,7 @@ void M_Drawer()
 
             dp_translation = nullptr;
         }
-        y += LINEHEIGHT;
+        y = static_cast<short>(y + LINEHEIGHT);
     }
 
 
@@ -3008,14 +3000,14 @@ void M_Init()
     {
         ReadDef2.routine = M_DrawReadThisCommercial;
         // [crispy] rearrange Skull in Final Doom HELP screen
-        ReadDef2.y -= 10;
+        ReadDef2.y = static_cast<short>(ReadDef2.y - 10);
     }
 
     if (gamemode == commercial)
     {
         MainMenu[static_cast<int>(main_e::readthis)] = MainMenu[static_cast<int>(main_e::quitdoom)];
         MainDef.numitems--;
-        MainDef.y += 8;
+        MainDef.y = static_cast<short>(MainDef.y + 8);
         NewDef.prevMenu                = nervewadfile ? &ExpDef : &MainDef;
         ReadDef1.routine               = M_DrawReadThisCommercial;
         ReadDef1.x                     = 330;
@@ -3056,20 +3048,21 @@ void M_Init()
 
         LoadDef_x = (ORIGWIDTH - SHORT(patchl->width)) / 2 + SHORT(patchl->leftoffset);
         SaveDef_x = (ORIGWIDTH - SHORT(patchs->width)) / 2 + SHORT(patchs->leftoffset);
-        LoadDef.x = SaveDef.x = (ORIGWIDTH - 24 * 8) / 2 + SHORT(patchm->leftoffset); // [crispy] see M_DrawSaveLoadBorder()
+        LoadDef.x = SaveDef.x = static_cast<short>((ORIGWIDTH - 24 * 8) / 2 + SHORT(patchm->leftoffset)); // [crispy] see M_DrawSaveLoadBorder()
 
         captionheight = MAX(SHORT(patchl->height), SHORT(patchs->height));
 
         vstep = ORIGHEIGHT - 32; // [crispy] ST_HEIGHT
-        vstep -= captionheight;
-        vstep -= (static_cast<int>(load_e::load_end) - 1) * LINEHEIGHT + SHORT(patchm->height);
+        vstep = static_cast<short>(vstep - captionheight);
+        vstep = static_cast<short>(vstep - (static_cast<int>(load_e::load_end) - 1) * LINEHEIGHT + SHORT(patchm->height));
         vstep /= 3;
 
         if (vstep > 0)
         {
             LoadDef_y = vstep + captionheight - SHORT(patchl->height) + SHORT(patchl->topoffset);
             SaveDef_y = vstep + captionheight - SHORT(patchs->height) + SHORT(patchs->topoffset);
-            LoadDef.y = SaveDef.y = vstep + captionheight + vstep + SHORT(patchm->topoffset) - 7; // [crispy] see M_DrawSaveLoadBorder()
+            int val   = vstep + captionheight + vstep + SHORT(patchm->topoffset) - 7;
+            LoadDef.y = SaveDef.y = static_cast<short>(val); // [crispy] see M_DrawSaveLoadBorder()
             MouseDef.y            = LoadDef.y;
         }
     }
@@ -3077,11 +3070,10 @@ void M_Init()
     // [crispy] remove DOS reference from the game quit confirmation dialogs
     if (!M_ParmExists("-nodeh"))
     {
-        const char *string;
-        char *      replace;
+        char *replace = nullptr;
 
         // [crispy] "i wouldn't leave if i were you.\ndos is much worse."
-        string = doom1_endmsg[3];
+        const char *string = doom1_endmsg[3];
         if (!DEH_HasStringReplacement(string))
         {
             replace = M_StringReplace(string, "dos", crispy->platform);

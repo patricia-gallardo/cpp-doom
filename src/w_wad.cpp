@@ -56,7 +56,7 @@ typedef PACKED_STRUCT(
 
 // Location of each lump on disk.
 lumpinfo_t **lumpinfo;
-unsigned int numlumps = 0;
+size_t numlumps = 0;
 
 // Hash table for fast lookups
 static lumpindex_t *lumphash;
@@ -80,7 +80,7 @@ unsigned int W_LumpNameHash(const char *s)
 
     for (i = 0; i < 8 && s[i] != '\0'; ++i)
     {
-        result = ((result << 5) ^ result) ^ toupper(s[i]);
+        result = ((result << 5) ^ result) ^ static_cast<unsigned int>(toupper(s[i]));
     }
 
     return result;
@@ -103,7 +103,6 @@ wad_file_t *W_AddFile(const char *filename)
 {
     wadinfo_t   header;
     wad_file_t *wad_file;
-    int         length;
     int         startlump;
     filelump_t *fileinfo;
     filelump_t *filerover;
@@ -125,7 +124,7 @@ wad_file_t *W_AddFile(const char *filename)
         }
 
         reloadname = strdup(filename);
-        reloadlump = numlumps;
+        reloadlump = static_cast<int>(numlumps);
         ++filename;
     }
 
@@ -190,27 +189,27 @@ wad_file_t *W_AddFile(const char *filename)
         }
 
         header.infotableofs = LONG(header.infotableofs);
-        length              = header.numlumps * sizeof(filelump_t);
+        size_t length       = static_cast<unsigned long>(header.numlumps) * sizeof(filelump_t);
         fileinfo            = zmalloc<decltype(fileinfo)>(length, PU_STATIC, 0);
 
-        W_Read(wad_file, header.infotableofs, fileinfo, length);
+        W_Read(wad_file, static_cast<unsigned int>(header.infotableofs), fileinfo, length);
         numfilelumps = header.numlumps;
     }
 
     // Increase size of numlumps array to accomodate the new file.
-    filelumps = static_cast<decltype(filelumps)>(calloc(numfilelumps, sizeof(lumpinfo_t)));
+    filelumps = static_cast<decltype(filelumps)>(calloc(static_cast<size_t>(numfilelumps), sizeof(lumpinfo_t)));
     if (filelumps == nullptr)
     {
         W_CloseFile(wad_file);
         I_Error("Failed to allocate array for lumps from new file.");
     }
 
-    startlump = numlumps;
-    numlumps += numfilelumps;
+    startlump = static_cast<int>(numlumps);
+    numlumps += static_cast<unsigned int>(numfilelumps);
     lumpinfo  = static_cast<decltype(lumpinfo)>(I_Realloc(lumpinfo, numlumps * sizeof(lumpinfo_t *)));
     filerover = fileinfo;
 
-    for (unsigned int i = startlump; i < numlumps; ++i)
+    for (lumpindex_t i = startlump; i < static_cast<int>(numlumps); ++i)
     {
         lumpinfo_t *lump_p = &filelumps[i - startlump];
         lump_p->wad_file   = wad_file;
@@ -248,7 +247,7 @@ wad_file_t *W_AddFile(const char *filename)
 //
 int W_NumLumps()
 {
-    return numlumps;
+    return static_cast<int>(numlumps);
 }
 
 
@@ -269,7 +268,7 @@ lumpindex_t W_CheckNumForName(const char *name)
 
         // We do! Excellent.
 
-        hash = W_LumpNameHash(name) % numlumps;
+        hash = static_cast<int>(W_LumpNameHash(name) % numlumps);
 
         for (i = lumphash[hash]; i != -1; i = lumpinfo[i]->next)
         {
@@ -285,7 +284,7 @@ lumpindex_t W_CheckNumForName(const char *name)
         //
         // scan backwards so patch lump files take precedence
 
-        for (i = numlumps - 1; i >= 0; --i)
+        for (i = static_cast<lumpindex_t>(numlumps - 1); i >= 0; --i)
         {
             if (!strncasecmp(lumpinfo[i]->name, name, 8))
             {
@@ -337,7 +336,7 @@ lumpindex_t W_CheckNumForNameFromTo(const char *name, int from, int to)
 // W_LumpLength
 // Returns the buffer size needed to load the given lump.
 //
-int W_LumpLength(lumpindex_t lump)
+size_t W_LumpLength(lumpindex_t lump)
 {
     if (lump >= static_cast<int>(numlumps))
     {
@@ -362,9 +361,9 @@ void W_ReadLump(lumpindex_t lump, void *dest)
 
     lumpinfo_t *l = lumpinfo[lump];
 
-    V_BeginRead(l->size);
+    V_BeginRead(static_cast<size_t>(l->size));
 
-    int c = W_Read(l->wad_file, l->position, dest, l->size);
+    size_t c = W_Read(l->wad_file, static_cast<unsigned int>(l->position), dest, static_cast<size_t>(l->size));
 
     if (c < l->size)
     {
@@ -561,12 +560,12 @@ void W_GenerateHashTable()
 
         for (unsigned int i = 0; i < numlumps; ++i)
         {
-            unsigned int hash = W_LumpNameHash(lumpinfo[i]->name) % numlumps;
+            unsigned int hash = static_cast<unsigned int>(W_LumpNameHash(lumpinfo[i]->name) % numlumps);
 
             // Hook into the hash table
 
             lumpinfo[i]->next = lumphash[hash];
-            lumphash[hash]    = i;
+            lumphash[hash]    = static_cast<lumpindex_t>(i);
         }
     }
 
@@ -587,7 +586,7 @@ void W_Reload()
     }
 
     // We must free any lumps being cached from the PWAD we're about to reload:
-    for (unsigned int i = reloadlump; i < numlumps; ++i)
+    for (unsigned int i = static_cast<unsigned int>(reloadlump); i < numlumps; ++i)
     {
         if (lumpinfo[i]->cache != nullptr)
         {
@@ -596,7 +595,7 @@ void W_Reload()
     }
 
     // Reset numlumps to remove the reload WAD file:
-    numlumps = reloadlump;
+    numlumps = static_cast<unsigned int>(reloadlump);
 
     // Now reload the WAD file.
     char *filename = reloadname;
@@ -644,9 +643,9 @@ int W_LumpDump(const char *lumpname)
         I_Error("W_LumpDump: Failed writing to file '%s'!", filename.c_str());
     }
 
-    std::string lump_p(lumpinfo[i]->size, 0);
+    std::string lump_p(static_cast<unsigned long>(lumpinfo[i]->size), 0);
     W_ReadLump(i, lump_p.data());
-    fwrite(lump_p.data(), 1, lumpinfo[i]->size, fp);
+    fwrite(lump_p.data(), 1, static_cast<size_t>(lumpinfo[i]->size), fp);
 
     fclose(fp);
 

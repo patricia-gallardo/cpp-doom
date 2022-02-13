@@ -1204,11 +1204,9 @@ void A_MStaffAttack(player_t * player, pspdef_t *)
 
 void A_MStaffPalette(player_t * player, pspdef_t * psp)
 {
-    int pal;
-
     if (player == &players[consoleplayer])
     {
-        pal = STARTSCOURGEPAL + psp->state - (&states[S_MSTAFFATK_2]);
+        int pal = static_cast<int>(STARTSCOURGEPAL + psp->state - (&states[S_MSTAFFATK_2]));
         if (pal == STARTSCOURGEPAL + 3)
         {                       // reset back to original playpal
             pal = 0;
@@ -1226,16 +1224,12 @@ void A_MStaffPalette(player_t * player, pspdef_t * psp)
 
 void A_MStaffWeave(mobj_t * actor)
 {
-    fixed_t newX, newY;
-    int weaveXY, weaveZ;
-    int angle;
-
-    weaveXY = actor->special2.i >> 16;
-    weaveZ = actor->special2.i & 0xFFFF;
-    angle = (actor->angle + ANG90) >> ANGLETOFINESHIFT;
-    newX = actor->x - FixedMul(finecosine[angle],
+    int weaveXY = static_cast<int>(actor->special2.i >> 16);
+    int weaveZ = actor->special2.i & 0xFFFF;
+    int angle = (actor->angle + ANG90) >> ANGLETOFINESHIFT;
+    fixed_t newX = actor->x - FixedMul(finecosine[angle],
                                FloatBobOffsets[weaveXY] << 2);
-    newY = actor->y - FixedMul(finesine[angle],
+    fixed_t newY = actor->y - FixedMul(finesine[angle],
                                FloatBobOffsets[weaveXY] << 2);
     weaveXY = (weaveXY + 6) & 63;
     newX += FixedMul(finecosine[angle], FloatBobOffsets[weaveXY] << 2);
@@ -1603,14 +1597,10 @@ void A_CStaffAttack(player_t * player, pspdef_t *)
 
 void A_CStaffMissileSlither(mobj_t * actor)
 {
-    fixed_t newX, newY;
-    int weaveXY;
-    int angle;
-
-    weaveXY = actor->special2.i;
-    angle = (actor->angle + ANG90) >> ANGLETOFINESHIFT;
-    newX = actor->x - FixedMul(finecosine[angle], FloatBobOffsets[weaveXY]);
-    newY = actor->y - FixedMul(finesine[angle], FloatBobOffsets[weaveXY]);
+    int weaveXY = static_cast<int>(actor->special2.i);
+    int angle = (actor->angle + ANG90) >> ANGLETOFINESHIFT;
+    fixed_t newX = actor->x - FixedMul(finecosine[angle], FloatBobOffsets[weaveXY]);
+    fixed_t newY = actor->y - FixedMul(finesine[angle], FloatBobOffsets[weaveXY]);
     weaveXY = (weaveXY + 3) & 63;
     newX += FixedMul(finecosine[angle], FloatBobOffsets[weaveXY]);
     newY += FixedMul(finesine[angle], FloatBobOffsets[weaveXY]);
@@ -1709,11 +1699,14 @@ void A_CFlameMissile(mobj_t * actor)
                              BlockingMobj->z + 5 * FRACUNIT, MT_CIRCLEFLAME);
             if (mo)
             {
-                mo->angle = an << ANGLETOFINESHIFT;
-                mo->target = actor->target;
-                mo->momx = mo->special1.i =
-                    FixedMul(static_cast<fixed_t>(FLAMESPEED), finecosine[an]);
-                mo->momy = mo->special2.i = FixedMul(static_cast<fixed_t>(FLAMESPEED), finesine[an]);
+                mo->angle      = an << ANGLETOFINESHIFT;
+                mo->target     = actor->target;
+                fixed_t cosine = FixedMul(static_cast<fixed_t>(FLAMESPEED), finecosine[an]);
+                mo->special1.i = cosine;
+                mo->momx       = cosine;
+                fixed_t sine   = FixedMul(static_cast<fixed_t>(FLAMESPEED), finesine[an]);
+                mo->special2.i = sine;
+                mo->momy       = sine;
                 mo->tics -= P_Random() & 3;
             }
             mo = P_SpawnMobj(BlockingMobj->x - FixedMul(dist, finecosine[an]),
@@ -1721,11 +1714,14 @@ void A_CFlameMissile(mobj_t * actor)
                              BlockingMobj->z + 5 * FRACUNIT, MT_CIRCLEFLAME);
             if (mo)
             {
-                mo->angle = ANG180 + (an << ANGLETOFINESHIFT);
-                mo->target = actor->target;
-                mo->momx = mo->special1.i = FixedMul(static_cast<fixed_t>(-FLAMESPEED),
-                                                     finecosine[an]);
-                mo->momy = mo->special2.i = FixedMul(static_cast<fixed_t>(-FLAMESPEED), finesine[an]);
+                mo->angle      = ANG180 + (an << ANGLETOFINESHIFT);
+                mo->target     = actor->target;
+                fixed_t cosine = FixedMul(static_cast<fixed_t>(-FLAMESPEED), finecosine[an]);
+                mo->special1.i = cosine;
+                mo->momx       = cosine;
+                fixed_t sine   = FixedMul(static_cast<fixed_t>(-FLAMESPEED), finesine[an]);
+                mo->special2.i = sine;
+                mo->momy       = sine;
                 mo->tics -= P_Random() & 3;
             }
         }
@@ -1826,11 +1822,9 @@ void A_CFlameAttack(player_t *player, pspdef_t *psp)
 
 void A_CFlameRotate(mobj_t * actor)
 {
-    int an;
-
-    an = (actor->angle + ANG90) >> ANGLETOFINESHIFT;
-    actor->momx = actor->special1.i + FixedMul(FLAMEROTSPEED, finecosine[an]);
-    actor->momy = actor->special2.i + FixedMul(FLAMEROTSPEED, finesine[an]);
+    int an = (actor->angle + ANG90) >> ANGLETOFINESHIFT;
+    actor->momx = static_cast<fixed_t>(actor->special1.i + FixedMul(FLAMEROTSPEED, finecosine[an]));
+    actor->momy = static_cast<fixed_t>(actor->special2.i + FixedMul(FLAMEROTSPEED, finesine[an]));
     actor->angle += ANG90 / 15;
 }
 
@@ -1950,7 +1944,7 @@ void A_CHolyPalette(player_t * player, pspdef_t * psp)
 
     if (player == &players[consoleplayer])
     {
-        pal = STARTHOLYPAL + psp->state - (&states[S_CHOLYATK_6]);
+        pal = static_cast<int>(STARTHOLYPAL + psp->state - (&states[S_CHOLYATK_6]));
         if (pal == STARTHOLYPAL + 3)
         {                       // reset back to original playpal
             pal = 0;
@@ -2071,7 +2065,7 @@ static void CHolyWeave(mobj_t * actor)
     int weaveXY, weaveZ;
     int angle;
 
-    weaveXY = actor->special2.i >> 16;
+    weaveXY = static_cast<int>(actor->special2.i >> 16);
     weaveZ = actor->special2.i & 0xFFFF;
     angle = (actor->angle + ANG90) >> ANGLETOFINESHIFT;
     newX = actor->x - FixedMul(finecosine[angle],
@@ -2112,7 +2106,7 @@ void A_CHolySeek(mobj_t * actor)
                            actor->args[0] * ANG1 * 2);
         if (!((leveltime + 7) & 15))
         {
-            actor->args[0] = 5 + (P_Random() / 20);
+            actor->args[0] = static_cast<uint8_t>(5 + (P_Random() / 20));
         }
     }
     CHolyWeave(actor);
@@ -2303,8 +2297,8 @@ void A_FireConePL1(player_t * player, pspdef_t *)
 void A_ShedShard(mobj_t * actor)
 {
     mobj_t *mo;
-    int spawndir = actor->special1.i;
-    int spermcount = actor->special2.i;
+    int spawndir = static_cast<int>(actor->special1.i);
+    int spermcount = static_cast<int>(actor->special2.i);
 
     if (spermcount <= 0)
         return;                 // No sperm left

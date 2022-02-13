@@ -363,9 +363,7 @@ static void UpdateSkillButton()
 
 static void SetExMyWarp(void *, void *val)
 {
-    int l;
-
-    l = reinterpret_cast<intptr_t>(val);
+    int l = static_cast<int>(reinterpret_cast<intptr_t>(val));
 
     warpepisode = l / 10;
     warpmap = l % 10;
@@ -375,9 +373,7 @@ static void SetExMyWarp(void *, void *val)
 
 static void SetMAPxyWarp(void *, void *val)
 {
-    int l;
-
-    l = reinterpret_cast<intptr_t>(val);
+    int l = static_cast<int>(reinterpret_cast<intptr_t>(val));
 
     warpmap = l;
 
@@ -421,7 +417,7 @@ static void LevelSelectDialog(void *, void *)
                     continue;
                 }
 
-                if (!D_ValidEpisodeMap(iwad->mission, iwad->mode, x, y))
+                if (!D_ValidEpisodeMap(iwad->mission, iwad->mode, static_cast<int>(x), static_cast<int>(y)))
                 {
                     TXT_AddWidget(window, nullptr);
                     continue;
@@ -454,7 +450,7 @@ static void LevelSelectDialog(void *, void *)
 
             l = x * 10 + y + 1;
 
-            if (!D_ValidEpisodeMap(iwad->mission, iwad->mode, 1, l))
+            if (!D_ValidEpisodeMap(iwad->mission, iwad->mode, 1, static_cast<int>(l)))
             {
                 TXT_AddWidget(window, nullptr);
                 continue;
@@ -564,7 +560,7 @@ static txt_widget_t *IWADSelector()
          ++num_iwads;
     }
 
-    iwad_labels = static_cast<const char **>(malloc(sizeof(*iwad_labels) * num_iwads));
+    iwad_labels = static_cast<const char **>(malloc(sizeof(*iwad_labels) * static_cast<unsigned long>(num_iwads)));
 
     for (int i=0; i < num_iwads; ++i)
     {

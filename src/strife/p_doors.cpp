@@ -705,7 +705,7 @@ void EV_VerticalDoor(line_t* line, mobj_t* thing)
         break;
 
     case 232: // DR Oracle Pass door
-        if(!(player->questflags & QF_QUEST18))
+        if(!(static_cast<unsigned int>(player->questflags) & QF_QUEST18))
         {
             player->message = DEH_String("You need the Oracle Pass!");
             S_StartSound(nullptr, sfx_oof);
@@ -1136,17 +1136,13 @@ void T_SlidingDoor(slidedoor_t* door)
                 // IF DOOR NEEDS TO ANIMATE TO NEXT FRAME...
                 door->timer = SWAITTICS;
 
-                sides[door->line2->sidenum[0]].midtexture =
-                    slideFrames[door->whichDoorIndex].frames[door->frame];
+                sides[door->line2->sidenum[0]].midtexture = static_cast<short>(slideFrames[door->whichDoorIndex].frames[door->frame]);
 
-                sides[door->line2->sidenum[1]].midtexture =
-                    slideFrames[door->whichDoorIndex].frames[door->frame];
+                sides[door->line2->sidenum[1]].midtexture = static_cast<short>(slideFrames[door->whichDoorIndex].frames[door->frame]);
 
-                sides[door->line1->sidenum[0]].midtexture =
-                    slideFrames[door->whichDoorIndex].frames[door->frame];
+                sides[door->line1->sidenum[0]].midtexture = static_cast<short>(slideFrames[door->whichDoorIndex].frames[door->frame]);
 
-                sides[door->line1->sidenum[1]].midtexture =
-                    slideFrames[door->whichDoorIndex].frames[door->frame];
+                sides[door->line1->sidenum[1]].midtexture = static_cast<short>(slideFrames[door->whichDoorIndex].frames[door->frame]);
             }
         }
 
@@ -1215,17 +1211,13 @@ void T_SlidingDoor(slidedoor_t* door)
                 // IF DOOR NEEDS TO ANIMATE TO NEXT FRAME...
                 door->timer = SWAITTICS;
 
-                sides[door->line2->sidenum[0]].midtexture =
-                    slideFrames[door->whichDoorIndex].frames[door->frame];
+                sides[door->line2->sidenum[0]].midtexture = static_cast<short>(slideFrames[door->whichDoorIndex].frames[door->frame]);
 
-                sides[door->line2->sidenum[1]].midtexture =
-                    slideFrames[door->whichDoorIndex].frames[door->frame];
+                sides[door->line2->sidenum[1]].midtexture = static_cast<short>(slideFrames[door->whichDoorIndex].frames[door->frame]);
 
-                sides[door->line1->sidenum[0]].midtexture =
-                    slideFrames[door->whichDoorIndex].frames[door->frame];
+                sides[door->line1->sidenum[0]].midtexture = static_cast<short>(slideFrames[door->whichDoorIndex].frames[door->frame]);
 
-                sides[door->line1->sidenum[1]].midtexture =
-                    slideFrames[door->whichDoorIndex].frames[door->frame];
+                sides[door->line1->sidenum[1]].midtexture = static_cast<short>(slideFrames[door->whichDoorIndex].frames[door->frame]);
             }
         }
 

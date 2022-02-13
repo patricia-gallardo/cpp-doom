@@ -390,7 +390,7 @@ static int GetMIDIChannel(int mus_channel, MEMFILE *midioutput)
             // First time using the channel, send an "all notes off"
             // event. This fixes "The D_DDTBLU disease" described here:
             // https://www.doomworld.com/vb/source-ports/66802-the
-            WriteChangeController_Valueless(channel_map[mus_channel], 0x7b,
+            WriteChangeController_Valueless(static_cast<uint8_t>(channel_map[mus_channel]), 0x7b,
                 midioutput);
         }
 
@@ -520,7 +520,7 @@ bool mus2mid(MEMFILE *musinput, MEMFILE *midioutput)
                     return true;
                 }
 
-                if (WriteReleaseKey(channel, key, midioutput))
+                if (WriteReleaseKey(static_cast<uint8_t>(channel), key, midioutput))
                 {
                     return true;
                 }
@@ -543,7 +543,7 @@ bool mus2mid(MEMFILE *musinput, MEMFILE *midioutput)
                     channelvelocities[channel] &= 0x7F;
                 }
 
-                if (WritePressKey(channel, key,
+                if (WritePressKey(static_cast<uint8_t>(channel), key,
                         channelvelocities[channel], midioutput))
                 {
                     return true;
@@ -556,7 +556,7 @@ bool mus2mid(MEMFILE *musinput, MEMFILE *midioutput)
                 {
                     break;
                 }
-                if (WritePitchWheel(channel, static_cast<short>(key * 64), midioutput))
+                if (WritePitchWheel(static_cast<uint8_t>(channel), static_cast<short>(key * 64), midioutput))
                 {
                     return true;
                 }
@@ -573,7 +573,7 @@ bool mus2mid(MEMFILE *musinput, MEMFILE *midioutput)
                     return true;
                 }
 
-                if (WriteChangeController_Valueless(channel,
+                if (WriteChangeController_Valueless(static_cast<uint8_t>(channel),
                         controller_map[controllernumber],
                         midioutput))
                 {
@@ -595,7 +595,7 @@ bool mus2mid(MEMFILE *musinput, MEMFILE *midioutput)
 
                 if (controllernumber == 0)
                 {
-                    if (WriteChangePatch(channel, controllervalue,
+                    if (WriteChangePatch(static_cast<uint8_t>(channel), controllervalue,
                             midioutput))
                     {
                         return true;
@@ -608,7 +608,8 @@ bool mus2mid(MEMFILE *musinput, MEMFILE *midioutput)
                         return true;
                     }
 
-                    if (WriteChangeController_Valued(channel,
+                    if (WriteChangeController_Valued(
+                            static_cast<uint8_t>(channel),
                             controller_map[controllernumber],
                             controllervalue,
                             midioutput))
@@ -666,7 +667,7 @@ bool mus2mid(MEMFILE *musinput, MEMFILE *midioutput)
         return true;
     }
 
-    tracksizebuffer[0] = (tracksize >> 24) & 0xff;
+    tracksizebuffer[0] = static_cast<uint8_t>((tracksize >> 24) & 0xff);
     tracksizebuffer[1] = (tracksize >> 16) & 0xff;
     tracksizebuffer[2] = (tracksize >> 8) & 0xff;
     tracksizebuffer[3] = tracksize & 0xff;
@@ -702,7 +703,7 @@ int main(int argc, char *argv[])
 
     infile_len = M_ReadFile(argv[1], &infile);
 
-    src = mem_fopen_read(infile, infile_len);
+    src = mem_fopen_read(infile, static_cast<size_t>(infile_len));
     dst = mem_fopen_write();
 
     if (mus2mid(src, dst))
@@ -715,7 +716,7 @@ int main(int argc, char *argv[])
 
     mem_get_buf(dst, &outfile, &outfile_len);
 
-    M_WriteFile(argv[2], outfile, outfile_len);
+    M_WriteFile(argv[2], outfile, static_cast<int>(outfile_len));
 
     return 0;
 }

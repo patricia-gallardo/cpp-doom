@@ -118,12 +118,10 @@ typedef struct vect {
 
 static void hsv_to_rgb(vect *hsv, vect *rgb)
 {
-    float h, s, v;
-
-    h = hsv->x;
-    s = hsv->y;
-    v = hsv->z;
-    h *= 360.0;
+    float h = hsv->x;
+    float s = hsv->y;
+    float v = hsv->z;
+    h *= static_cast<float>(360.0);
     if (s < CTOLERANCE)
     {
         rgb->x = v;
@@ -132,17 +130,14 @@ static void hsv_to_rgb(vect *hsv, vect *rgb)
     }
     else
     {
-        int   i;
-        float f, p, q, t;
-
         if (h >= 360.0)
-            h -= 360.0;
-        h /= 60.0;
-        i = static_cast<int>(floor(h));
-        f = h - i;
-        p = v * (1.0 - s);
-        q = v * (1.0 - (s * f));
-        t = v * (1.0 - (s * (1.0 - f)));
+            h -= static_cast<float>(360.0);
+        h /= static_cast<float>(60.0);
+        int i = static_cast<int>(floor(h));
+        float f = h - static_cast<float>(i);
+        float p = static_cast<float>(v * (1.0 - s));
+        float q = static_cast<float>(v * (1.0 - (s * f)));
+        float t = static_cast<float>(v * (1.0 - (s * (1.0 - f))));
         switch (i)
         {
         case 0:
@@ -217,14 +212,14 @@ static void rgb_to_hsv(vect *rgb, vect *hsv)
         if (r == cmax)
             h = bc - gc;
         else if (g == cmax)
-            h = 2.0 + rc - bc;
+            h = static_cast<float>(2.0 + rc - bc);
         else
-            h = 4.0 + gc - rc;
-        h = h * 60.0;
+            h = static_cast<float>(4.0 + gc - rc);
+        h = static_cast<float>(h * 60.0);
         if (h < 0.0)
-            h += 360.0;
+            h += static_cast<float>(360.0);
     }
-    hsv->x = h / 360.0;
+    hsv->x = static_cast<float>(h / 360.0);
     hsv->y = s;
     hsv->z = v;
 }
@@ -267,14 +262,14 @@ uint8_t V_Colorize(uint8_t *playpal, int cr, uint8_t source, bool keepgray109)
     if (cr == static_cast<int>(cr_t::CR_NONE) || (keepgray109 && source == 109))
         return source;
 
-    rgb.x = playpal[3 * source + 0] / 255.;
-    rgb.y = playpal[3 * source + 1] / 255.;
-    rgb.z = playpal[3 * source + 2] / 255.;
+    rgb.x = static_cast<float>(playpal[3 * source + 0] / 255.);
+    rgb.y = static_cast<float>(playpal[3 * source + 1] / 255.);
+    rgb.z = static_cast<float>(playpal[3 * source + 2] / 255.);
 
     rgb_to_hsv(&rgb, &hsv);
 
     if (cr == static_cast<int>(cr_t::CR_DARK))
-        hsv.z *= 0.5;
+        hsv.z *= static_cast<float>(0.5);
     else if (cr == static_cast<int>(cr_t::CR_GRAY))
         hsv.y = 0;
     else
@@ -285,15 +280,15 @@ uint8_t V_Colorize(uint8_t *playpal, int cr, uint8_t source, bool keepgray109)
         if (cr == static_cast<int>(cr_t::CR_GREEN))
         {
             //	    hsv.x = 135./360.;
-            hsv.x = (150. * hsv.z + 120. * (1. - hsv.z)) / 360.;
+            hsv.x = static_cast<float>((150. * hsv.z + 120. * (1. - hsv.z)) / 360.);
         }
         else if (cr == static_cast<int>(cr_t::CR_GOLD))
         {
             //	    hsv.x = 45./360.;
             //	    hsv.x = (50. * hsv.z + 30. * (1. - hsv.z))/360.;
-            hsv.x = (7.0 + 53. * hsv.z) / 360.;
-            hsv.y = 1.0 - 0.4 * hsv.z;
-            hsv.z = 0.2 + 0.8 * hsv.z;
+            hsv.x = static_cast<float>((7.0 + 53. * hsv.z) / 360.);
+            hsv.y = static_cast<float>(1.0 - 0.4 * hsv.z);
+            hsv.z = static_cast<float>(0.2 + 0.8 * hsv.z);
         }
         else if (cr == static_cast<int>(cr_t::CR_RED))
         {
@@ -307,9 +302,10 @@ uint8_t V_Colorize(uint8_t *playpal, int cr, uint8_t source, bool keepgray109)
 
     hsv_to_rgb(&hsv, &rgb);
 
-    rgb.x *= 255.;
-    rgb.y *= 255.;
-    rgb.z *= 255.;
+    rgb.x *= static_cast<float>(255.);
+    rgb.y *= static_cast<float>(255.);
+    rgb.z *= static_cast<float>(255.);
 
-    return I_GetPaletteIndex2(playpal, static_cast<int>(rgb.x), static_cast<int>(rgb.y), static_cast<int>(rgb.z));
+    int retval = I_GetPaletteIndex2(playpal, static_cast<int>(rgb.x), static_cast<int>(rgb.y), static_cast<int>(rgb.z));
+    return static_cast<uint8_t>(retval);
 }

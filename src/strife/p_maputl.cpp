@@ -188,9 +188,9 @@ P_PointOnDivlineSide
     dy = (y - line->y);
 
     // try to quickly decide by looking at sign bits
-    if ( (line->dy ^ line->dx ^ dx ^ dy)&0x80000000 )
+    if ( (static_cast<unsigned int>(line->dy ^ line->dx ^ dx ^ dy))&0x80000000 )
     {
-        if ( (line->dy ^ dx) & 0x80000000 )
+        if ( (static_cast<unsigned int>(line->dy ^ dx)) & 0x80000000 )
             return 1;		// (left is negative)
         return 0;
     }
@@ -731,7 +731,7 @@ P_TraverseIntercepts
     intercept_t*    scan;
     intercept_t*    in;
 
-    count = intercept_p - intercepts;
+    count = static_cast<int>(intercept_p - intercepts);
 
     in = 0;         // shut up compiler warning
 

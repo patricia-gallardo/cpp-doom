@@ -1079,8 +1079,8 @@ void P_MobjThinker(mobj_t * mobj)
     }
     if (mobj->flags2 & MF2_FLOATBOB)
     {                           // Floating item bobbing motion (special1 is height)
-        mobj->z = mobj->floorz +
-            mobj->special1.i + FloatBobOffsets[(mobj->health++) & 63];
+        mobj->z = static_cast<int>(mobj->floorz +
+            mobj->special1.i + FloatBobOffsets[(mobj->health++) & 63]);
     }
     else if ((mobj->z != mobj->floorz) || mobj->momz || BlockingMobj)
     {                           // Handle Z momentum and gravity
@@ -1440,7 +1440,7 @@ void P_SpawnMapThing(mapthing_t * mthing)
 
         player_start = &playerstarts[mthing->arg1][player];
         memcpy(player_start, mthing, sizeof(mapthing_t));
-        player_start->type = player + 1;
+        player_start->type = static_cast<short>(player + 1);
 
         if (!deathmatch && !player_start->arg1)
         {
@@ -1690,7 +1690,7 @@ void P_InsertMobjIntoTIDList(mobj_t * mobj, int tid)
         index = i;
         TIDList[index + 1] = 0;
     }
-    mobj->tid = tid;
+    mobj->tid = static_cast<short>(tid);
     TIDList[index] = tid;
     TIDMobj[index] = mobj;
 }

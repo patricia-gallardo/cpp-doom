@@ -639,16 +639,13 @@ bool PIT_AddThingIntercepts(mobj_t * thing)
 
 bool P_TraverseIntercepts(traverser_t func, fixed_t maxfrac)
 {
-    int count;
-    fixed_t dist;
-    intercept_t *scan, *in;
-
-    count = intercept_p - intercepts;
-    in = 0;                     // shut up compiler warning
+    intercept_t *scan = nullptr;
+    int count = static_cast<int>(intercept_p - intercepts);
+    intercept_t *in = 0;                     // shut up compiler warning
 
     while (count--)
     {
-        dist = INT_MAX;
+        fixed_t dist = INT_MAX;
         for (scan = intercepts; scan < intercept_p; scan++)
             if (scan->frac < dist)
             {

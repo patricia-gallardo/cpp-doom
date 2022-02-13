@@ -52,7 +52,7 @@ int SlopeDiv(unsigned int num, unsigned int den)
 
         if (ans <= SLOPERANGE)
         {
-            return ans;
+            return static_cast<int>(ans);
         }
         else
         {

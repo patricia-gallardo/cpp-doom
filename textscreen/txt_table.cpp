@@ -181,7 +181,7 @@ static void CalcRowColSizes(txt_table_t *table,
 
     rows = TableRows(table);
 
-    memset(col_widths, 0, sizeof(int) * table->columns);
+    memset(col_widths, 0, sizeof(int) * static_cast<unsigned long>(table->columns));
 
     for (y = 0; y < rows; ++y)
     {
@@ -251,28 +251,23 @@ static void CalcRowColSizes(txt_table_t *table,
 static void TXT_CalcTableSize(void *uncast_table)
 {
     auto  *table = reinterpret_cast<txt_table_t *>(uncast_table);
-    unsigned int *column_widths;
-    unsigned int *row_heights;
-    int x, y;
-    int rows;
+    int rows = TableRows(table);
 
-    rows = TableRows(table);
-
-    row_heights = create_struct<unsigned int>(rows);
-    column_widths = create_struct<unsigned int>(table->columns);
+    unsigned int *row_heights = create_struct<unsigned int>(static_cast<size_t>(rows));
+    unsigned int *column_widths = create_struct<unsigned int>(static_cast<size_t>(table->columns));
 
     CalcRowColSizes(table, row_heights, column_widths);
 
     table->widget.w = 0;
 
-    for (x=0; x<table->columns; ++x)
+    for (int x=0; x<table->columns; ++x)
     {
         table->widget.w += column_widths[x];
     }
 
     table->widget.h = 0;
 
-    for (y=0; y<rows; ++y)
+    for (int y=0; y<rows; ++y)
     {
         table->widget.h += row_heights[y];
     }
@@ -344,7 +339,7 @@ void TXT_AddWidget(void *uncast_table, void *uncast_widget)
 
     // todo make this a vector or something
     table->widgets = static_cast<txt_widget_t **>(realloc(table->widgets,
-                             sizeof(txt_widget_t *) * (table->num_widgets + 1)));
+                             sizeof(txt_widget_t *) * (static_cast<unsigned long>(table->num_widgets + 1))));
     table->widgets[table->num_widgets] = widget;
     ++table->num_widgets;
 
@@ -640,19 +635,15 @@ static void CheckValidSelection(txt_table_t *table)
 static void LayoutCell(txt_table_t *table, int x, int y,
                        int draw_x, int draw_y)
 {
-    txt_widget_t *widget;
-    int col_width;
-
-    widget = table->widgets[y * table->columns + x];
-
-    col_width = widget->w;
+    txt_widget_t *widget = table->widgets[y * table->columns + x];
+    int col_width = static_cast<int>(widget->w);
 
     // Adjust x position based on alignment property
 
     switch (widget->align)
     {
         case TXT_HORIZ_LEFT:
-            widget->w = col_width;
+            widget->w = static_cast<unsigned int>(col_width);
             break;
 
         case TXT_HORIZ_CENTER:
@@ -662,7 +653,7 @@ static void LayoutCell(txt_table_t *table, int x, int y,
 
             if (widget->widget_class != &txt_separator_class)
             {
-                draw_x += (col_width - widget->w) / 2;
+                draw_x += (static_cast<unsigned int>(col_width) - widget->w) / 2;
             }
 
             break;
@@ -672,7 +663,7 @@ static void LayoutCell(txt_table_t *table, int x, int y,
 
             if (widget->widget_class != &txt_separator_class)
             {
-                draw_x += col_width - widget->w;
+                draw_x += static_cast<unsigned int>(col_width) - widget->w;
             }
             break;
     }
@@ -693,11 +684,10 @@ static void TXT_TableLayout(void *uncast_table)
 
     // Work out the column widths and row heights
 
-    const auto rows = TableRows(table);
+    const auto rows = static_cast<unsigned long>(TableRows(table));
 
-    auto column_widths = std::vector<unsigned int>(table->columns);
-    auto row_heights = std::vector<unsigned int>(
-        rows);//    auto column_widths = std::make_unique<unsigned int[]>(table->columns);
+    auto column_widths = std::vector<unsigned int>(static_cast<unsigned long>(table->columns));
+    auto row_heights = std::vector<unsigned int>(rows);//    auto column_widths = std::make_unique<unsigned int[]>(table->columns);
 
     CalcRowColSizes(table, row_heights.data(), column_widths.data());
 
@@ -714,7 +704,7 @@ static void TXT_TableLayout(void *uncast_table)
 
     auto draw_y = table->widget.y;
 
-    for (int y=0; y<rows; ++y)
+    for (int y=0; y < static_cast<int>(rows); ++y)
     {
         auto draw_x = table->widget.x;
 
@@ -735,10 +725,10 @@ static void TXT_TableLayout(void *uncast_table)
                 LayoutCell(table, x, y, draw_x, draw_y);
             }
 
-            draw_x += column_widths[x];
+            draw_x += column_widths[static_cast<unsigned long>(x)];
         }
 
-        draw_y += row_heights[y];
+        draw_y += row_heights[static_cast<unsigned long>(y)];
     }
 }
 
@@ -783,8 +773,8 @@ static void TXT_TableMousePress(void *uncast_table, int x, int y, int b)
 
         if (IsActualWidget(widget))
         {
-            if (x >= widget->x && x < static_cast<signed>(widget->x + widget->w)
-             && y >= widget->y && y < static_cast<signed>(widget->y + widget->h))
+            if (x >= widget->x && x < static_cast<signed>(static_cast<unsigned int>(widget->x) + widget->w)
+             && y >= widget->y && y < static_cast<signed>(static_cast<unsigned int>(widget->y) + widget->h))
             {
                 // This is the widget that was clicked!
 
@@ -1084,7 +1074,7 @@ void TXT_SetTableColumns(void *uncast_table, int new_columns)
     // remainder from the last row.
     new_num_widgets = (table->num_widgets / table->columns) * new_columns
                     + (table->num_widgets % table->columns);
-    new_widgets = static_cast<txt_widget_t **>(calloc(new_num_widgets, sizeof(txt_widget_t *)));
+    new_widgets = static_cast<txt_widget_t **>(calloc(static_cast<size_t>(new_num_widgets), sizeof(txt_widget_t *)));
 
     // Reset and add one by one from the old table.
     new_num_widgets = 0;
@@ -1163,11 +1153,11 @@ int TXT_PageTable(void *uncast_table, int pagex, int pagey)
     auto *table   = reinterpret_cast<txt_table_t *>(uncast_table);
     int changed = 0;
 
-    const auto rows = TableRows(table);
+    const unsigned long rows = static_cast<unsigned long>(TableRows(table));
 
 
     std::vector<unsigned int> row_heights(rows, 0);
-    std::vector<unsigned int> column_widths(table->columns, 0);
+    std::vector<unsigned int> column_widths(static_cast<unsigned long>(table->columns), 0);
 
     CalcRowColSizes(table, row_heights.data(), column_widths.data());
 
@@ -1197,12 +1187,12 @@ int TXT_PageTable(void *uncast_table, int pagex, int pagey)
 
         new_y = table->selected_y;
 
-        while (new_y >= 0 && new_y < rows)
+        while (new_y >= 0 && new_y < static_cast<int>(rows))
         {
             // We are about to travel a distance equal to the height of the row
             // we are about to leave.
 
-            distance += row_heights[new_y];
+            distance += row_heights[static_cast<unsigned long>(new_y)];
 
             // *Now* increment the loop.
 

@@ -75,7 +75,7 @@ static deh_context_t *DEH_NewContext()
     // Initial read buffer size of 128 bytes
 
     context->readbuffer_size  = 128;
-    context->readbuffer       = zmalloc<decltype(context->readbuffer)>(context->readbuffer_size, PU_STATIC, nullptr);
+    context->readbuffer       = zmalloc<decltype(context->readbuffer)>(static_cast<size_t>(context->readbuffer_size), PU_STATIC, nullptr);
     context->linenum          = 0;
     context->last_was_newline = true;
 
@@ -209,13 +209,10 @@ int DEH_GetChar(deh_context_t *context)
 
 static void IncreaseReadBuffer(deh_context_t *context)
 {
-    char *newbuffer;
-    int   newbuffer_size;
+    int newbuffer_size = context->readbuffer_size * 2;
+    char *newbuffer      = zmalloc<decltype(newbuffer)>(static_cast<size_t>(newbuffer_size), PU_STATIC, nullptr);
 
-    newbuffer_size = context->readbuffer_size * 2;
-    newbuffer      = zmalloc<decltype(newbuffer)>(newbuffer_size, PU_STATIC, nullptr);
-
-    memcpy(newbuffer, context->readbuffer, context->readbuffer_size);
+    memcpy(newbuffer, context->readbuffer, static_cast<size_t>(context->readbuffer_size));
 
     Z_Free(context->readbuffer);
 
@@ -250,7 +247,7 @@ void DEH_RestoreLineStart(deh_context_t *context)
     }
     else if (context->type == DEH_INPUT_LUMP)
     {
-        context->input_buffer_pos = context->linestart;
+        context->input_buffer_pos = static_cast<unsigned int>(context->linestart);
     }
 
     // [crispy] don't count this line twice

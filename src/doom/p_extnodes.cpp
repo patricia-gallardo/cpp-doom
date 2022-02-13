@@ -85,30 +85,25 @@ mapformat_t P_CheckMapFormat(int lumpnum)
 // adapted from prboom-plus/src/p_setup.c:633-752
 void P_LoadSegs_DeePBSP(int lump)
 {
-    int               i;
-    mapseg_deepbsp_t *data;
+    numsegs = static_cast<int>(W_LumpLength(lump) / sizeof(mapseg_deepbsp_t));
+    segs    = zmalloc<decltype(segs)>(static_cast<unsigned long>(numsegs) * sizeof(seg_t), PU_LEVEL, 0);
+    mapseg_deepbsp_t *data    = cache_lump_num<mapseg_deepbsp_t *>(lump, PU_STATIC);
 
-    numsegs = W_LumpLength(lump) / sizeof(mapseg_deepbsp_t);
-    segs    = zmalloc<decltype(segs)>(numsegs * sizeof(seg_t), PU_LEVEL, 0);
-    data    = cache_lump_num<mapseg_deepbsp_t *>(lump, PU_STATIC);
-
-    for (i = 0; i < numsegs; i++)
+    for (int i = 0; i < numsegs; i++)
     {
         seg_t *           li = segs + i;
         mapseg_deepbsp_t *ml = data + i;
-        int               side, linedef_local;
-        line_t *          ldef;
 
         li->v1 = &vertexes[ml->v1];
         li->v2 = &vertexes[ml->v2];
 
-        li->angle = (SHORT(ml->angle)) << FRACBITS;
+        li->angle = static_cast<angle_t>((SHORT(ml->angle)) << FRACBITS);
 
         //	li->offset = (SHORT(ml->offset))<<FRACBITS; // [crispy] recalculated below
-        linedef_local = static_cast<unsigned short>(SHORT(ml->linedef));
-        ldef        = &lines[linedef_local];
+        int linedef_local = static_cast<unsigned short>(SHORT(ml->linedef));
+        line_t *ldef      = &lines[linedef_local];
         li->linedef = ldef;
-        side        = SHORT(ml->side);
+        int side        = SHORT(ml->side);
 
         // e6y: check for wrong indexes
         if (static_cast<unsigned>(ldef->sidenum[side]) >= static_cast<unsigned>(numsides))
@@ -149,18 +144,15 @@ void P_LoadSegs_DeePBSP(int lump)
 // adapted from prboom-plus/src/p_setup.c:843-863
 void P_LoadSubsectors_DeePBSP(int lump)
 {
-    mapsubsector_deepbsp_t *data;
-    int                     i;
-
-    numsubsectors = W_LumpLength(lump) / sizeof(mapsubsector_deepbsp_t);
-    subsectors    = zmalloc<decltype(subsectors)>(numsubsectors * sizeof(subsector_t), PU_LEVEL, 0);
-    data          = cache_lump_num<mapsubsector_deepbsp_t *>(lump, PU_STATIC);
+    numsubsectors = static_cast<int>(W_LumpLength(lump) / sizeof(mapsubsector_deepbsp_t));
+    subsectors    = zmalloc<decltype(subsectors)>(static_cast<unsigned long>(numsubsectors) * sizeof(subsector_t), PU_LEVEL, 0);
+    mapsubsector_deepbsp_t *data = cache_lump_num<mapsubsector_deepbsp_t *>(lump, PU_STATIC);
 
     // [crispy] fail on missing subsectors
     if (!data || !numsubsectors)
         I_Error("P_LoadSubsectors: No subsectors in map!");
 
-    for (i = 0; i < numsubsectors; i++)
+    for (int i = 0; i < numsubsectors; i++)
     {
         subsectors[i].numlines  = static_cast<int>(data[i].numsegs);
         subsectors[i].firstline = static_cast<int>(data[i].firstseg);
@@ -173,8 +165,8 @@ void P_LoadSubsectors_DeePBSP(int lump)
 void P_LoadNodes_DeePBSP(int lump)
 {
 
-    numnodes   = (W_LumpLength(lump) - 8) / sizeof(mapnode_deepbsp_t);
-    nodes      = zmalloc<decltype(nodes)>(numnodes * sizeof(node_t), PU_LEVEL, 0);
+    numnodes   = static_cast<int>((W_LumpLength(lump) - 8) / sizeof(mapnode_deepbsp_t));
+    nodes      = zmalloc<decltype(nodes)>(static_cast<unsigned long>(numnodes) * sizeof(node_t), PU_LEVEL, 0);
     auto *data = cache_lump_num<const uint8_t *>(lump, PU_STATIC);
 
     // [crispy] warn about missing nodes
@@ -203,7 +195,7 @@ void P_LoadNodes_DeePBSP(int lump)
         for (j = 0; j < 2; j++)
         {
             int k;
-            no->children[j] = static_cast<unsigned int>(mn->children[j]);
+            no->children[j] = static_cast<int>(mn->children[j]);
 
             for (k = 0; k < 4; k++)
                 no->bbox[j][k] = SHORT(mn->bbox[j][k]) << FRACBITS;
@@ -316,11 +308,11 @@ void P_LoadNodes_ZDBSP(int lump, bool compressed)
     for (unsigned int i = 0; i < newVerts; i++)
     {
         newvertarray[i + orgVerts].r_x =
-            newvertarray[i + orgVerts].x = *(reinterpret_cast<unsigned int *>(data));
+            newvertarray[i + orgVerts].x = static_cast<fixed_t>(*(reinterpret_cast<unsigned int *>(data)));
         data += sizeof(newvertarray[0].x);
 
         newvertarray[i + orgVerts].r_y =
-            newvertarray[i + orgVerts].y = *(reinterpret_cast<unsigned int *>(data));
+            newvertarray[i + orgVerts].y = static_cast<fixed_t>(*(reinterpret_cast<unsigned int *>(data)));
         data += sizeof(newvertarray[0].y);
     }
 
@@ -334,7 +326,7 @@ void P_LoadNodes_ZDBSP(int lump, bool compressed)
 
         Z_Free(vertexes);
         vertexes    = newvertarray;
-        numvertexes = orgVerts + newVerts;
+        numvertexes = static_cast<int>(orgVerts + newVerts);
     }
 
     // 2. Load subsectors
@@ -345,19 +337,19 @@ void P_LoadNodes_ZDBSP(int lump, bool compressed)
     if (numSubs < 1)
         I_Error("P_LoadNodes: No subsectors in map!");
 
-    numsubsectors = numSubs;
-    subsectors    = zmalloc<decltype(subsectors)>(numsubsectors * sizeof(subsector_t), PU_LEVEL, 0);
+    numsubsectors = static_cast<int>(numSubs);
+    subsectors    = zmalloc<decltype(subsectors)>(static_cast<unsigned long>(numsubsectors) * sizeof(subsector_t), PU_LEVEL, 0);
 
     for (int i = currSeg = 0; i < numsubsectors; i++)
     {
         mapsubsector_zdbsp_t *mseg = reinterpret_cast<mapsubsector_zdbsp_t *>(data) + i;
 
-        subsectors[i].firstline = currSeg;
-        subsectors[i].numlines  = mseg->numsegs;
+        subsectors[i].firstline = static_cast<int>(currSeg);
+        subsectors[i].numlines  = static_cast<int>(mseg->numsegs);
         currSeg += mseg->numsegs;
     }
 
-    data += numsubsectors * sizeof(mapsubsector_zdbsp_t);
+    data += static_cast<unsigned long>(numsubsectors) * sizeof(mapsubsector_zdbsp_t);
 
     // 3. Load segs
 
@@ -370,8 +362,8 @@ void P_LoadNodes_ZDBSP(int lump, bool compressed)
         I_Error("P_LoadNodes: Incorrect number of segs in ZDBSP nodes!");
     }
 
-    numsegs = numSegs;
-    segs    = zmalloc<decltype(segs)>(numsegs * sizeof(seg_t), PU_LEVEL, 0);
+    numsegs = static_cast<int>(numSegs);
+    segs    = zmalloc<decltype(segs)>(static_cast<unsigned long>(numsegs) * sizeof(seg_t), PU_LEVEL, 0);
 
     for (int i = 0; i < numsegs; i++)
     {
@@ -423,15 +415,15 @@ void P_LoadNodes_ZDBSP(int lump, bool compressed)
             li->backsector = 0;
     }
 
-    data += numsegs * sizeof(mapseg_zdbsp_t);
+    data += static_cast<unsigned long>(numsegs) * sizeof(mapseg_zdbsp_t);
 
     // 4. Load nodes
 
     numNodes = *(reinterpret_cast<unsigned int *>(data));
     data += sizeof(numNodes);
 
-    numnodes = numNodes;
-    nodes    = zmalloc<decltype(nodes)>(numnodes * sizeof(node_t), PU_LEVEL, 0);
+    numnodes = static_cast<int>(numNodes);
+    nodes    = zmalloc<decltype(nodes)>(static_cast<unsigned long>(numnodes) * sizeof(node_t), PU_LEVEL, 0);
 
     for (int i = 0; i < numnodes; i++)
     {
@@ -446,7 +438,7 @@ void P_LoadNodes_ZDBSP(int lump, bool compressed)
 
         for (j = 0; j < 2; j++)
         {
-            no->children[j] = static_cast<unsigned int>(mn->children[j]);
+            no->children[j] = static_cast<int>(mn->children[j]);
 
             for (k = 0; k < 4; k++)
                 no->bbox[j][k] = SHORT(mn->bbox[j][k]) << FRACBITS;
@@ -470,7 +462,7 @@ void P_LoadThings_Hexen(int lump)
     int               numthings;
 
     auto *data = cache_lump_num<uint8_t *>(lump, PU_STATIC);
-    numthings  = W_LumpLength(lump) / sizeof(mapthing_hexen_t);
+    numthings  = static_cast<int>(W_LumpLength(lump) / sizeof(mapthing_hexen_t));
 
     mt = reinterpret_cast<mapthing_hexen_t *>(data);
     for (int i = 0; i < numthings; i++, mt++)
@@ -500,21 +492,15 @@ void P_LoadThings_Hexen(int lump)
 // adapted from chocolate-doom/src/hexen/p_setup.c:410-490
 void P_LoadLineDefs_Hexen(int lump)
 {
-    int                 i;
-    maplinedef_hexen_t *mld;
-    line_t *            ld;
-    vertex_t *          v1, *v2;
-    int                 warn; // [crispy] warn about unknown linedef types
-
-    numlines = W_LumpLength(lump) / sizeof(maplinedef_hexen_t);
-    lines    = zmalloc<decltype(lines)>(numlines * sizeof(line_t), PU_LEVEL, 0);
-    memset(lines, 0, numlines * sizeof(line_t));
+    numlines = static_cast<int>(W_LumpLength(lump) / sizeof(maplinedef_hexen_t));
+    lines    = zmalloc<decltype(lines)>(static_cast<unsigned long>(numlines) * sizeof(line_t), PU_LEVEL, 0);
+    memset(lines, 0, static_cast<unsigned long>(numlines) * sizeof(line_t));
     auto *data = cache_lump_num<uint8_t *>(lump, PU_STATIC);
 
-    mld  = reinterpret_cast<maplinedef_hexen_t *>(data);
-    ld   = lines;
-    warn = 0; // [crispy] warn about unknown linedef types
-    for (i = 0; i < numlines; i++, mld++, ld++)
+    maplinedef_hexen_t *mld  = reinterpret_cast<maplinedef_hexen_t *>(data);
+    line_t *ld   = lines;
+    int warn = 0; // [crispy] warn about unknown linedef types
+    for (int i = 0; i < numlines; i++, mld++, ld++)
     {
         ld->flags = static_cast<unsigned short>(SHORT(mld->flags));
 
@@ -532,8 +518,8 @@ void P_LoadLineDefs_Hexen(int lump)
             warn++;
         }
 
-        v1 = ld->v1 = &vertexes[static_cast<unsigned short>(SHORT(mld->v1))];
-        v2 = ld->v2 = &vertexes[static_cast<unsigned short>(SHORT(mld->v2))];
+        vertex_t *v1 = ld->v1 = &vertexes[static_cast<unsigned short>(SHORT(mld->v1))];
+        vertex_t *v2 = ld->v2 = &vertexes[static_cast<unsigned short>(SHORT(mld->v2))];
 
         ld->dx = v2->x - v1->x;
         ld->dy = v2->y - v1->y;

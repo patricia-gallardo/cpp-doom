@@ -713,7 +713,7 @@ AM_Responder
             rc = false;
         }
 
-	if (!deathmatch && cht_CheckCheat(&cheat_amap, ev->data2))
+	if (!deathmatch && cht_CheckCheat(&cheat_amap, static_cast<char>(ev->data2)))
 	{
 	    rc = false;
 	    cheating = (cheating+1) % 3;
@@ -803,7 +803,7 @@ void AM_updateLightLev()
     static int nexttic = 0;
     //static int litelevels[] = { 0, 3, 5, 6, 6, 7, 7, 7 };
     static int litelevels[] = { 0, 4, 7, 10, 12, 14, 15, 15 };
-    static int litelevelscnt = 0;
+    static size_t litelevelscnt = 0;
    
     // Change light level
     if (amclock>nexttic)
@@ -849,7 +849,7 @@ void AM_Ticker ()
 //
 void AM_clearFB(int color)
 {
-    memset(fb, color, f_w*f_h);
+    memset(fb, color, static_cast<size_t>(f_w * f_h));
 }
 
 
@@ -1023,6 +1023,9 @@ AM_drawFline
 	return;
     }
 
+#pragma GCC diagnostic push
+#pragma GCC diagnostic ignored "-Wconversion"
+
 #define PUTDOT(xx,yy,cc) fb[(yy)*f_w+(xx)]=(cc)
 
     dx = fl->b.x - fl->a.x;
@@ -1068,6 +1071,7 @@ AM_drawFline
 	    d += ax;
 	}
     }
+#pragma GCC diagnostic pop
 }
 
 

@@ -357,7 +357,7 @@ static void UpdateMouseButtonState(unsigned int button, bool on)
     // Post an event with the new button state.
 
     event.type  = ev_mouse;
-    event.data1 = mouse_button_state;
+    event.data1 = static_cast<int>(mouse_button_state);
     event.data2 = event.data3 = 0;
     D_PostEvent(&event);
 }
@@ -382,14 +382,14 @@ static void MapMouseWheelToButtons(SDL_MouseWheelEvent *wheel)
     // post a button down event
     mouse_button_state |= (1 << button);
     down.type  = ev_mouse;
-    down.data1 = mouse_button_state;
+    down.data1 = static_cast<int>(mouse_button_state);
     down.data2 = down.data3 = 0;
     D_PostEvent(&down);
 
     // post a button up event
     mouse_button_state &= ~(1 << button);
     up.type  = ev_mouse;
-    up.data1 = mouse_button_state;
+    up.data1 = static_cast<int>(mouse_button_state);
     up.data2 = up.data3 = 0;
     D_PostEvent(&up);
 }
@@ -422,7 +422,7 @@ static int AccelerateMouse(int val)
 
     if (val > mouse_threshold)
     {
-        return static_cast<int>((val - mouse_threshold) * mouse_acceleration + mouse_threshold);
+        return static_cast<int>((static_cast<float>(val - mouse_threshold)) * mouse_acceleration + static_cast<float>(mouse_threshold));
     }
     else
     {
@@ -438,7 +438,7 @@ static int AccelerateMouseY(int val)
 
     if (val > mouse_threshold_y)
     {
-        return static_cast<int>((val - mouse_threshold_y) * mouse_acceleration_y + mouse_threshold_y);
+        return static_cast<int>((static_cast<float>(val - mouse_threshold_y)) * mouse_acceleration_y + static_cast<float>(mouse_threshold_y));
     }
     else
     {
@@ -461,7 +461,7 @@ void I_ReadMouse()
     if (x != 0 || y != 0)
     {
         ev.type  = ev_mouse;
-        ev.data1 = mouse_button_state;
+        ev.data1 = static_cast<int>(mouse_button_state);
         ev.data2 = AccelerateMouse(x);
         ev.data3 = -AccelerateMouseY(y); // [crispy]
 

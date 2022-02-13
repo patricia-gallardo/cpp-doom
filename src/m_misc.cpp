@@ -179,18 +179,14 @@ long M_FileLength(FILE *handle)
 
 bool M_WriteFile(const char *name, const void *source, int length)
 {
-    FILE *handle;
-    int   count;
-
-    handle = fopen(name, "wb");
-
+    FILE *handle = fopen(name, "wb");
     if (handle == nullptr)
         return false;
 
-    count = fwrite(source, 1, length, handle);
+    size_t count = fwrite(source, 1, static_cast<size_t>(length), handle);
     fclose(handle);
 
-    if (count < length)
+    if (count < static_cast<size_t>(length))
         return false;
 
     return true;
@@ -203,29 +199,25 @@ bool M_WriteFile(const char *name, const void *source, int length)
 
 int M_ReadFile(const char *name, uint8_t **buffer)
 {
-    FILE *handle;
-    int   count, length;
-    uint8_t *buf;
-
-    handle = fopen(name, "rb");
+    FILE *handle = fopen(name, "rb");
     if (handle == nullptr)
         I_Error("Couldn't read file %s", name);
 
     // find the size of the file by seeking to the end and
     // reading the current position
 
-    length = M_FileLength(handle);
+    long length = M_FileLength(handle);
 
-    buf   = zmalloc<uint8_t *>(length + 1, PU_STATIC, nullptr);
-    count = fread(buf, 1, length, handle);
+    uint8_t *buf = zmalloc<uint8_t *>(static_cast<size_t>(length + 1), PU_STATIC, nullptr);
+    size_t count = fread(buf, 1, static_cast<size_t>(length), handle);
     fclose(handle);
 
-    if (count < length)
+    if (static_cast<long>(count) < length)
         I_Error("Couldn't read file %s", name);
 
     buf[length] = '\0';
     *buffer     = buf;
-    return length;
+    return static_cast<int>(length);
 }
 
 // Returns the path to a temporary file of the given name, stored
@@ -334,7 +326,7 @@ void M_ExtractFileBase(const char *path, char *dest)
             break;
         }
 
-        dest[length++] = toupper(static_cast<int>(*src++));
+        dest[length++] = static_cast<char>(toupper(static_cast<int>(*src++)));
     }
 }
 
@@ -348,11 +340,9 @@ void M_ExtractFileBase(const char *path, char *dest)
 
 void M_ForceUppercase(char *text)
 {
-    char *p;
-
-    for (p = text; *p != '\0'; ++p)
+    for (char *p = text; *p != '\0'; ++p)
     {
-        *p = toupper(*p);
+        *p = static_cast<char>(toupper(*p));
     }
 }
 
@@ -370,7 +360,7 @@ void M_ForceLowercase(char *text)
 
     for (p = text; *p != '\0'; ++p)
     {
-        *p = tolower(*p);
+        *p = static_cast<char>(tolower(*p));
     }
 }
 
@@ -382,22 +372,17 @@ void M_ForceLowercase(char *text)
 
 const char *M_StrCaseStr(const char *haystack, const char *needle)
 {
-    unsigned int haystack_len;
-    unsigned int needle_len;
-    unsigned int len;
-    unsigned int i;
-
-    haystack_len = strlen(haystack);
-    needle_len   = strlen(needle);
+    size_t haystack_len = strlen(haystack);
+    size_t needle_len   = strlen(needle);
 
     if (haystack_len < needle_len)
     {
         return nullptr;
     }
 
-    len = haystack_len - needle_len;
+    size_t len = haystack_len - needle_len;
 
-    for (i = 0; i <= len; ++i)
+    for (size_t i = 0; i <= len; ++i)
     {
         if (!strncasecmp(haystack + i, needle, needle_len))
         {
@@ -607,8 +592,6 @@ char *M_StringJoin(const char *s, ...)
 // Safe, portable vsnprintf().
 int M_vsnprintf(char *buf, size_t buf_len, const char *s, va_list args)
 {
-    int result;
-
     if (buf_len < 1)
     {
         return 0;
@@ -617,14 +600,14 @@ int M_vsnprintf(char *buf, size_t buf_len, const char *s, va_list args)
     // Windows (and other OSes?) has a vsnprintf() that doesn't always
     // append a trailing \0. So we must do it, and write into a buffer
     // that is one byte shorter; otherwise this function is unsafe.
-    result = vsnprintf(buf, buf_len, s, args);
+    int result = vsnprintf(buf, buf_len, s, args);
 
     // If truncated, change the final char in the buffer to a \0.
     // A negative result indicates a truncated buffer on Windows.
     if (result < 0 || result >= static_cast<int>(buf_len))
     {
         buf[buf_len - 1] = '\0';
-        result           = buf_len - 1;
+        result           = static_cast<int>(buf_len - 1);
     }
 
     return result;
@@ -634,9 +617,8 @@ int M_vsnprintf(char *buf, size_t buf_len, const char *s, va_list args)
 int M_snprintf(char *buf, size_t buf_len, const char *s, ...)
 {
     va_list args;
-    int     result;
     va_start(args, s);
-    result = M_vsnprintf(buf, buf_len, s, args);
+    int result = M_vsnprintf(buf, buf_len, s, args);
     va_end(args);
     return result;
 }

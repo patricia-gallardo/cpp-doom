@@ -512,7 +512,7 @@ static int ST_cheat_massacre()
         {
             mobj_t *mo = reinterpret_cast<mobj_t *>(th);
 
-            if (mo->flags & MF_COUNTKILL || mo->type == MT_SKULL)
+            if (static_cast<unsigned int>(mo->flags) & MF_COUNTKILL || mo->type == MT_SKULL)
             {
                 if (mo->health > 0)
                 {
@@ -663,7 +663,7 @@ bool
 {
     // Filter automap on/off.
     if (ev->type == ev_keyup
-        && ((ev->data1 & 0xffff0000) == AM_MSGHEADER))
+        && ((static_cast<unsigned int>(ev->data1) & 0xffff0000) == AM_MSGHEADER))
     {
         switch (ev->data1)
         {
@@ -685,7 +685,7 @@ bool
         if (!netgame && gameskill != sk_nightmare)
         {
             // 'dqd' cheat for toggleable god mode
-            if (cht_CheckCheatSP(&cheat_god, ev->data2))
+            if (cht_CheckCheatSP(&cheat_god, static_cast<char>(ev->data2)))
             {
                 // [crispy] dead players are first respawned at the current position
                 mapthing_t mt = {};
@@ -694,10 +694,10 @@ bool
                     signed int  an;
                     extern void P_SpawnPlayer(mapthing_t * mthing);
 
-                    mt.x     = plyr->mo->x >> FRACBITS;
-                    mt.y     = plyr->mo->y >> FRACBITS;
-                    mt.angle = (plyr->mo->angle + ANG45 / 2) * static_cast<uint64_t>(45) / ANG45;
-                    mt.type  = consoleplayer + 1;
+                    mt.x     = static_cast<short>(plyr->mo->x >> FRACBITS);
+                    mt.y     = static_cast<short>(plyr->mo->y >> FRACBITS);
+                    mt.angle = static_cast<short>((plyr->mo->angle + ANG45 / 2) * static_cast<uint64_t>(45) / ANG45);
+                    mt.type  = static_cast<short>(consoleplayer + 1);
                     P_SpawnPlayer(&mt);
 
                     // [crispy] spawn a teleport fog
@@ -723,7 +723,7 @@ bool
                     return true;
             }
             // 'fa' cheat for killer fucking arsenal
-            else if (cht_CheckCheatSP(&cheat_ammonokey, ev->data2))
+            else if (cht_CheckCheatSP(&cheat_ammonokey, static_cast<char>(ev->data2)))
             {
                 plyr->armorpoints = deh_idfa_armor;
                 plyr->armortype   = deh_idfa_armor_class;
@@ -744,7 +744,7 @@ bool
                 plyr->message = DEH_String(STSTR_FAADDED);
             }
             // 'kfa' cheat for key full ammo
-            else if (cht_CheckCheatSP(&cheat_ammo, ev->data2))
+            else if (cht_CheckCheatSP(&cheat_ammo, static_cast<char>(ev->data2)))
             {
                 plyr->armorpoints = deh_idkfa_armor;
                 plyr->armortype   = deh_idkfa_armor_class;
@@ -768,7 +768,7 @@ bool
                 plyr->message = DEH_String(STSTR_KFAADDED);
             }
             // 'mus' cheat for changing music
-            else if (cht_CheckCheat(&cheat_mus, ev->data2))
+            else if (cht_CheckCheat(&cheat_mus, static_cast<char>(ev->data2)))
             {
 
                 char buf[3];
@@ -831,7 +831,7 @@ bool
                 }
             }
             // [crispy] eat up the first digit typed after a cheat expecting two parameters
-            else if (cht_CheckCheat(&cheat_mus1, ev->data2))
+            else if (cht_CheckCheat(&cheat_mus1, static_cast<char>(ev->data2)))
             {
                 char buf[2];
 
@@ -842,10 +842,10 @@ bool
             // [crispy] allow both idspispopd and idclip cheats in all gamemissions
             else if ((/* logical_gamemission == doom
                  && */
-                         cht_CheckCheatSP(&cheat_noclip, ev->data2))
+                         cht_CheckCheatSP(&cheat_noclip, static_cast<char>(ev->data2)))
                      || (/* logical_gamemission != doom
                  && */
-                         cht_CheckCheatSP(&cheat_commercial_noclip, ev->data2)))
+                         cht_CheckCheatSP(&cheat_commercial_noclip, static_cast<char>(ev->data2))))
             {
                 // Noclip cheat.
                 // For Doom 1, use the idspipsopd cheat; for all others, use
@@ -861,7 +861,7 @@ bool
             // 'behold?' power-up cheats
             for (int i = 0; i < 6; i++)
             {
-                if (i < 4 ? cht_CheckCheatSP(&cheat_powerup[i], ev->data2) : cht_CheckCheat(&cheat_powerup[i], ev->data2))
+                if (i < 4 ? cht_CheckCheatSP(&cheat_powerup[i], static_cast<char>(ev->data2)) : cht_CheckCheat(&cheat_powerup[i], static_cast<char>(ev->data2)))
                 {
                     if (!plyr->powers[i])
                         P_GivePower(plyr, i);
@@ -874,7 +874,7 @@ bool
                 }
             }
             // [crispy] idbehold0
-            if (cht_CheckCheatSP(&cheat_powerup[7], ev->data2))
+            if (cht_CheckCheatSP(&cheat_powerup[7], static_cast<char>(ev->data2)))
             {
                 memset(plyr->powers, 0, sizeof(plyr->powers));
                 plyr->mo->flags &= ~MF_SHADOW; // [crispy] cancel invisibility
@@ -882,19 +882,19 @@ bool
             }
 
             // 'behold' power-up menu
-            if (cht_CheckCheat(&cheat_powerup[6], ev->data2))
+            if (cht_CheckCheat(&cheat_powerup[6], static_cast<char>(ev->data2)))
             {
                 plyr->message = DEH_String(STSTR_BEHOLD);
             }
             // 'choppers' invulnerability & chainsaw
-            else if (cht_CheckCheatSP(&cheat_choppers, ev->data2))
+            else if (cht_CheckCheatSP(&cheat_choppers, static_cast<char>(ev->data2)))
             {
                 plyr->weaponowned[wp_chainsaw]   = true;
                 plyr->powers[pw_invulnerability] = true;
                 plyr->message                    = DEH_String(STSTR_CHOPPERS);
             }
             // 'mypos' for player position
-            else if (cht_CheckCheat(&cheat_mypos, ev->data2))
+            else if (cht_CheckCheat(&cheat_mypos, static_cast<char>(ev->data2)))
             {
                 /*
         static char buf[ST_MSGWIDTH];
@@ -911,7 +911,7 @@ bool
             // [crispy] now follow "critical" Crispy Doom specific cheats
 
             // [crispy] implement Boom's "tntem" cheat
-            else if (cht_CheckCheatSP(&cheat_massacre, ev->data2) || cht_CheckCheatSP(&cheat_massacre2, ev->data2) || cht_CheckCheatSP(&cheat_massacre3, ev->data2))
+            else if (cht_CheckCheatSP(&cheat_massacre, static_cast<char>(ev->data2)) || cht_CheckCheatSP(&cheat_massacre2, static_cast<char>(ev->data2)) || cht_CheckCheatSP(&cheat_massacre3, static_cast<char>(ev->data2)))
             {
                 int               killcount = ST_cheat_massacre();
                 const char *const monster   = (gameversion == exe_chex) ? "Flemoid" : "Monster";
@@ -923,7 +923,7 @@ bool
                 plyr->message = msg;
             }
             // [crispy] implement Crispy Doom's "spechits" cheat
-            else if (cht_CheckCheatSP(&cheat_spechits, ev->data2))
+            else if (cht_CheckCheatSP(&cheat_spechits, static_cast<char>(ev->data2)))
             {
                 int triggeredlines = ST_cheat_spechits();
 
@@ -933,7 +933,7 @@ bool
                 plyr->message = msg;
             }
             // [crispy] implement PrBoom+'s "notarget" cheat
-            else if (cht_CheckCheatSP(&cheat_notarget, ev->data2) || cht_CheckCheatSP(&cheat_notarget2, ev->data2))
+            else if (cht_CheckCheatSP(&cheat_notarget, static_cast<char>(ev->data2)) || cht_CheckCheatSP(&cheat_notarget2, static_cast<char>(ev->data2)))
             {
                 plyr->cheats ^= CF_NOTARGET;
 
@@ -975,7 +975,7 @@ bool
                 plyr->message = msg;
             }
             // [crispy] implement "nomomentum" cheat, ne debug aid -- pretty useless, though
-            else if (cht_CheckCheatSP(&cheat_nomomentum, ev->data2))
+            else if (cht_CheckCheatSP(&cheat_nomomentum, static_cast<char>(ev->data2)))
             {
                 plyr->cheats ^= CF_NOMOMENTUM;
 
@@ -985,7 +985,7 @@ bool
                 plyr->message = msg;
             }
             // [crispy] implement Crispy Doom's "goobers" cheat, ne easter egg
-            else if (cht_CheckCheatSP(&cheat_goobers, ev->data2))
+            else if (cht_CheckCheatSP(&cheat_goobers, static_cast<char>(ev->data2)))
             {
                 extern void EV_DoGoobers();
 
@@ -995,7 +995,7 @@ bool
                 plyr->message = msg;
             }
             // [crispy] implement Boom's "tntweap?" weapon cheats
-            else if (cht_CheckCheatSP(&cheat_weapon, ev->data2))
+            else if (cht_CheckCheatSP(&cheat_weapon, static_cast<char>(ev->data2)))
             {
                 char buf[2];
                 int  w;
@@ -1100,12 +1100,12 @@ bool
         // [crispy] now follow "harmless" Crispy Doom specific cheats
 
         // [crispy] implement Crispy Doom's "showfps" cheat, ne debug aid
-        if (cht_CheckCheat(&cheat_showfps, ev->data2) || cht_CheckCheat(&cheat_showfps2, ev->data2))
+        if (cht_CheckCheat(&cheat_showfps, static_cast<char>(ev->data2)) || cht_CheckCheat(&cheat_showfps2, static_cast<char>(ev->data2)))
         {
             plyr->powers[pw_showfps] ^= 1;
         }
         // [crispy] implement Boom's "tnthom" cheat
-        else if (cht_CheckCheat(&cheat_hom, ev->data2))
+        else if (cht_CheckCheat(&cheat_hom, static_cast<char>(ev->data2)))
         {
             crispy->flashinghom = !crispy->flashinghom;
 
@@ -1115,7 +1115,7 @@ bool
             plyr->message = msg;
         }
         // [crispy] Show engine version, build date and SDL version
-        else if (cht_CheckCheat(&cheat_version, ev->data2))
+        else if (cht_CheckCheat(&cheat_version, static_cast<char>(ev->data2)))
         {
 #ifndef BUILD_DATE
 #define BUILD_DATE __DATE__
@@ -1130,7 +1130,7 @@ bool
             fprintf(stderr, "%s\n", msg);
         }
         // [crispy] Show skill level
-        else if (cht_CheckCheat(&cheat_skill, ev->data2))
+        else if (cht_CheckCheat(&cheat_skill, static_cast<char>(ev->data2)))
         {
             extern const char *skilltable[];
 
@@ -1140,7 +1140,7 @@ bool
         }
 
         // 'clev' change-level cheat
-        if (!netgame && cht_CheckCheat(&cheat_clev, ev->data2) && !menuactive) // [crispy] prevent only half the screen being updated
+        if (!netgame && cht_CheckCheat(&cheat_clev, static_cast<char>(ev->data2)) && !menuactive) // [crispy] prevent only half the screen being updated
         {
             char buf[3];
             int  epsd;
@@ -1275,7 +1275,7 @@ bool
             }
         }
         // [crispy] eat up the first digit typed after a cheat expecting two parameters
-        else if (!netgame && cht_CheckCheat(&cheat_clev1, ev->data2) && !menuactive)
+        else if (!netgame && cht_CheckCheat(&cheat_clev1, static_cast<char>(ev->data2)) && !menuactive)
         {
             char buf[2];
 
@@ -1794,9 +1794,10 @@ static inline void ST_DrawGibbedPlayerSprites()
     sprframe = &sprdef->spriteframes[state->frame & FF_FRAMEMASK];
     patch    = cache_lump_num<patch_t *>(sprframe->lump[0] + firstspritelump, PU_CACHE);
 
-    if (plyr->mo->flags & MF_TRANSLATION)
+    unsigned int flag_check = static_cast<unsigned int>(plyr->mo->flags) & MF_TRANSLATION;
+    if (flag_check)
     {
-        dp_translation = translationtables - 256 + ((plyr->mo->flags & MF_TRANSLATION) >> (MF_TRANSSHIFT - 8));
+        dp_translation = translationtables - 256 + (flag_check >> (MF_TRANSSHIFT - 8));
     }
 
     V_DrawPatch(ST_HEALTHX - 17, 186, patch);

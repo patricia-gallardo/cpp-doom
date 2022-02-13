@@ -48,10 +48,8 @@ static void FloatFormatString(float step, char *buf, size_t buf_len)
 static unsigned int IntWidth(int val)
 {
     char buf[25];
-
     TXT_snprintf(buf, sizeof(buf), "%i", val);
-
-    return strlen(buf);
+    return static_cast<unsigned int>(strlen(buf));
 }
 
 static unsigned int FloatWidth(float val, float step)
@@ -167,8 +165,8 @@ static void TXT_SpinControlDrawer(void *uncast_spincontrol)
 
     i = 0;
 
-    bw = TXT_UTF8_Strlen(spincontrol->buffer);
-    padding = spincontrol->widget.w - bw - 4;
+    bw = static_cast<int>(TXT_UTF8_Strlen(spincontrol->buffer));
+    padding = spincontrol->widget.w - static_cast<unsigned int>(bw) - 4;
 
     while (i < padding)
     {
@@ -177,7 +175,7 @@ static void TXT_SpinControlDrawer(void *uncast_spincontrol)
     }
 
     TXT_DrawString(spincontrol->buffer);
-    i += bw;
+    i += static_cast<unsigned int>(bw);
 
     while (i < spincontrol->widget.w - 4)
     {
@@ -203,7 +201,7 @@ static void AddCharacter(txt_spincontrol_t *spincontrol, int key)
      && strlen(spincontrol->buffer) < spincontrol->buffer_len - 2)
     {
         spincontrol->buffer[strlen(spincontrol->buffer) + 1] = '\0';
-        spincontrol->buffer[strlen(spincontrol->buffer)] = key;
+        spincontrol->buffer[strlen(spincontrol->buffer)] = static_cast<char>(key);
     }
 }
 
@@ -339,7 +337,7 @@ static void TXT_SpinControlMousePress(void *uncast_spincontrol,
                                    int x, int, int)
 {
     auto *spincontrol = reinterpret_cast<txt_spincontrol_t *>(uncast_spincontrol);
-    unsigned int rel_x = x - spincontrol->widget.x;
+    unsigned int rel_x = static_cast<unsigned int>(x - spincontrol->widget.x);
 
     if (rel_x < 2)
     {

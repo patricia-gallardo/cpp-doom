@@ -42,7 +42,7 @@ static void TXT_CheckBoxDrawer(void *uncast_checkbox)
     int i;
     int w;
 
-    w = checkbox->widget.w;
+    w = static_cast<int>(checkbox->widget.w);
 
     TXT_SaveColors(&colors);
     TXT_FGColor(TXT_COLOR_BRIGHT_CYAN);
@@ -67,7 +67,7 @@ static void TXT_CheckBoxDrawer(void *uncast_checkbox)
     TXT_SetWidgetBG(checkbox);
     TXT_DrawString(checkbox->label);
 
-    for (i = TXT_UTF8_Strlen(checkbox->label); i < w-4; ++i)
+    for (i = static_cast<int>(TXT_UTF8_Strlen(checkbox->label)); i < w-4; ++i)
     {
         TXT_DrawString(" ");
     }

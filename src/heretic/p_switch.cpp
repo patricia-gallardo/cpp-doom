@@ -186,7 +186,7 @@ void P_ChangeSwitchTexture(line_t * line, int useAgain)
         if (switchlist[i] == texTop)
         {
             S_StartSound(buttonlist->soundorg, sound);
-            sides[line->sidenum[0]].toptexture = switchlist[i ^ 1];
+            sides[line->sidenum[0]].toptexture = static_cast<short>(switchlist[i ^ 1]);
             if (useAgain)
                 P_StartButton(line, top, switchlist[i], BUTTONTIME);
             return;
@@ -194,7 +194,7 @@ void P_ChangeSwitchTexture(line_t * line, int useAgain)
         else if (switchlist[i] == texMid)
         {
             S_StartSound(buttonlist->soundorg, sound);
-            sides[line->sidenum[0]].midtexture = switchlist[i ^ 1];
+            sides[line->sidenum[0]].midtexture = static_cast<short>(switchlist[i ^ 1]);
             if (useAgain)
                 P_StartButton(line, middle, switchlist[i], BUTTONTIME);
             return;
@@ -202,7 +202,7 @@ void P_ChangeSwitchTexture(line_t * line, int useAgain)
         else if (switchlist[i] == texBot)
         {
             S_StartSound(buttonlist->soundorg, sound);
-            sides[line->sidenum[0]].bottomtexture = switchlist[i ^ 1];
+            sides[line->sidenum[0]].bottomtexture = static_cast<short>(switchlist[i ^ 1]);
             if (useAgain)
                 P_StartButton(line, bottom, switchlist[i], BUTTONTIME);
             return;

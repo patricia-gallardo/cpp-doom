@@ -152,9 +152,7 @@ static void FreeAllocatedSound(allocated_sound_t *snd)
 
 static bool FindAndFreeSound()
 {
-    allocated_sound_t *snd;
-
-    snd = allocated_sounds_tail;
+    allocated_sound_t *snd = allocated_sounds_tail;
 
     while (snd != nullptr)
     {
@@ -201,7 +199,7 @@ static void ReserveCacheSpace(size_t len)
 
 static allocated_sound_t *AllocateSound(sfxinfo_t *sfxinfo, size_t len)
 {
-    allocated_sound_t *snd;
+    allocated_sound_t *snd = nullptr;
 
     // Keep allocated sounds within the cache size.
 
@@ -227,7 +225,7 @@ static allocated_sound_t *AllocateSound(sfxinfo_t *sfxinfo, size_t len)
     // Skip past the chunk structure for the audio buffer
 
     snd->chunk.abuf      = reinterpret_cast<uint8_t *>(snd + 1);
-    snd->chunk.alen      = len;
+    snd->chunk.alen      = static_cast<Uint32>(len);
     snd->chunk.allocated = 1;
     snd->chunk.volume    = MIX_MAX_VOLUME;
     snd->pitch           = NORM_PITCH;
@@ -237,7 +235,7 @@ static allocated_sound_t *AllocateSound(sfxinfo_t *sfxinfo, size_t len)
 
     // Keep track of how much memory all these cached sounds are using...
 
-    allocated_sounds_size += len;
+    allocated_sounds_size += static_cast<int>(len);
 
     AllocatedSoundLink(snd);
 
@@ -301,17 +299,12 @@ static allocated_sound_t *GetAllocatedSoundBySfxInfoAndPitch(sfxinfo_t *sfxinfo,
 
 static allocated_sound_t *PitchShift(allocated_sound_t *insnd, int pitch)
 {
-    allocated_sound_t *outsnd;
-    Sint16 *           inp, *outp;
-    Sint16 *           srcbuf, *dstbuf;
-    Uint32             srclen, dstlen;
-
-    srcbuf = reinterpret_cast<Sint16 *>(insnd->chunk.abuf);
-    srclen = insnd->chunk.alen;
+    auto *srcbuf = reinterpret_cast<Sint16 *>(insnd->chunk.abuf);
+    Uint32 srclen = insnd->chunk.alen;
 
     // determine ratio pitch:NORM_PITCH and apply to srclen, then invert.
     // This is an approximation of vanilla behaviour based on measurements
-    dstlen = static_cast<int>((1 + (1 - static_cast<float>(pitch) / NORM_PITCH)) * srclen);
+    Uint32 dstlen = static_cast<Uint32>((1 + (1 - static_cast<float>(pitch) / NORM_PITCH)) * static_cast<float>(srclen));
 
     // ensure that the new buffer is an even length
     if ((dstlen % 2) == 0)
@@ -319,7 +312,7 @@ static allocated_sound_t *PitchShift(allocated_sound_t *insnd, int pitch)
         dstlen++;
     }
 
-    outsnd = AllocateSound(insnd->sfxinfo, dstlen);
+    allocated_sound_t *outsnd = AllocateSound(insnd->sfxinfo, dstlen);
 
     if (!outsnd)
     {
@@ -327,12 +320,12 @@ static allocated_sound_t *PitchShift(allocated_sound_t *insnd, int pitch)
     }
 
     outsnd->pitch = pitch;
-    dstbuf        = reinterpret_cast<Sint16 *>(outsnd->chunk.abuf);
+    auto *dstbuf = reinterpret_cast<Sint16 *>(outsnd->chunk.abuf);
 
     // loop over output buffer. find corresponding input cell, copy over
-    for (outp = dstbuf; outp < dstbuf + dstlen / 2; ++outp)
+    for (Sint16 *outp = dstbuf; outp < dstbuf + dstlen / 2; ++outp)
     {
-        inp   = srcbuf + static_cast<int>(static_cast<float>(outp - dstbuf) / dstlen * srclen);
+        Sint16 *inp   = srcbuf + static_cast<int>(static_cast<float>(outp - dstbuf) / static_cast<float>(dstlen) * static_cast<float>(srclen));
         *outp = *inp;
     }
 
@@ -530,8 +523,6 @@ static bool ExpandSoundData_SRC(sfxinfo_t *sfxinfo,
 
 static bool ConvertibleRatio(int freq1, int freq2)
 {
-    int ratio;
-
     if (freq1 > freq2)
     {
         return ConvertibleRatio(freq2, freq1);
@@ -546,7 +537,7 @@ static bool ConvertibleRatio(int freq1, int freq2)
     {
         // Check the ratio is a power of 2
 
-        ratio = freq2 / freq1;
+        int ratio = freq2 / freq1;
 
         while ((ratio & 1) == 0)
         {
@@ -615,15 +606,11 @@ static bool ExpandSoundData_SDL(sfxinfo_t *sfxinfo, uint8_t *data,
     int                                       bits,
     int                                       length)
 {
-    SDL_AudioCVT       convertor;
-    allocated_sound_t *snd;
-    Mix_Chunk *        chunk;
-    uint32_t           expanded_length;
     uint32_t           samplecount = length / (bits / 8);
 
     // Calculate the length of the expanded version of the sample.
 
-    expanded_length = static_cast<uint32_t>((static_cast<uint64_t>(samplecount) * mixer_freq) / samplerate);
+    auto expanded_length = static_cast<uint32_t>((static_cast<uint64_t>(samplecount) * mixer_freq) / samplerate);
 
     // Double up twice: 8 -> 16 bit and mono -> stereo
 
@@ -631,22 +618,23 @@ static bool ExpandSoundData_SDL(sfxinfo_t *sfxinfo, uint8_t *data,
 
     // Allocate a chunk in which to expand the sound
 
-    snd = AllocateSound(sfxinfo, expanded_length);
+    allocated_sound_t *snd = AllocateSound(sfxinfo, expanded_length);
 
     if (snd == nullptr)
     {
         return false;
     }
 
-    chunk = &snd->chunk;
+    Mix_Chunk *chunk = &snd->chunk;
 
     // If we can, use the standard / optimized SDL conversion routines.
+    SDL_AudioCVT convertor;
 
     if (samplerate <= mixer_freq
         && ConvertibleRatio(samplerate, mixer_freq)
         && SDL_BuildAudioCVT(&convertor,
             bits == 16 ? AUDIO_S16 : AUDIO_U8, 1, samplerate,
-            mixer_format, mixer_channels, mixer_freq))
+            mixer_format, static_cast<Uint8>(mixer_channels), mixer_freq))
     {
         convertor.len = length;
         convertor.buf = static_cast<Uint8 *>(malloc(convertor.len * convertor.len_mult));
@@ -660,10 +648,7 @@ static bool ExpandSoundData_SDL(sfxinfo_t *sfxinfo, uint8_t *data,
     }
     else
     {
-        Sint16 *expanded = reinterpret_cast<Sint16 *>(chunk->abuf);
-        int     expanded_length_local;
-        int     expand_ratio;
-        int     i;
+        auto *expanded = reinterpret_cast<Sint16 *>(chunk->abuf);
 
         // Generic expansion if conversion does not work:
         //
@@ -673,25 +658,23 @@ static bool ExpandSoundData_SDL(sfxinfo_t *sfxinfo, uint8_t *data,
 
         // number of samples in the converted sound
 
-        expanded_length_local = (static_cast<uint64_t>(samplecount) * mixer_freq) / samplerate;
-        expand_ratio    = (samplecount << 8) / expanded_length_local;
+        int expanded_length_local = static_cast<int>((static_cast<uint64_t>(samplecount) * mixer_freq) / samplerate);
+        int expand_ratio    = (samplecount << 8) / expanded_length_local;
 
-        for (i = 0; i < expanded_length_local; ++i)
+        for (int i = 0; i < expanded_length_local; ++i)
         {
-            Sint16 sample;
-            int    src;
-
-            src = (i * expand_ratio) >> 8;
+            Sint16 sample = 0;
+            int    src = (i * expand_ratio) >> 8;
 
             // [crispy] Handle 16 bit audio data
             if (bits == 16)
             {
-                sample = data[src * 2] | (data[src * 2 + 1] << 8);
+                sample = static_cast<Sint16>(data[src * 2] | (data[src * 2 + 1] << 8));
             }
             else
             {
-                sample = data[src] | (data[src] << 8);
-                sample -= 32768;
+                sample = static_cast<Sint16>(data[src] | (data[src] << 8));
+                sample = static_cast<Sint16>(sample - 32768);
             }
 
             // expand mono->stereo
@@ -704,8 +687,6 @@ static bool ExpandSoundData_SDL(sfxinfo_t *sfxinfo, uint8_t *data,
         // out high-frequency noise from the conversion process.
 
         {
-            float rc, dt, alpha;
-
             // Low-pass filter for cutoff frequency f:
             //
             // For sampling rate r, dt = 1 / r
@@ -715,13 +696,13 @@ static bool ExpandSoundData_SDL(sfxinfo_t *sfxinfo, uint8_t *data,
             // Filter to the half sample rate of the original sound effect
             // (maximum frequency, by nyquist)
 
-            dt    = 1.0f / mixer_freq;
-            rc    = 1.0f / (3.14f * samplerate);
-            alpha = dt / (rc + dt);
+            float dt    = 1.0f / static_cast<float>(mixer_freq);
+            float rc    = 1.0f / (3.14f * static_cast<float>(samplerate));
+            float alpha = dt / (rc + dt);
 
             // Both channels are processed in parallel, hence [i-2]:
 
-            for (i = 2; i < expanded_length_local * 2; ++i)
+            for (int i = 2; i < expanded_length_local * 2; ++i)
             {
                 expanded[i] = static_cast<Sint16>(alpha * expanded[i]
                                        + (1 - alpha) * expanded[i - 2]);
@@ -738,27 +719,23 @@ static bool ExpandSoundData_SDL(sfxinfo_t *sfxinfo, uint8_t *data,
 
 static bool CacheSFX(sfxinfo_t *sfxinfo)
 {
-    int          lumpnum;
-    unsigned int lumplen;
-    int          samplerate;
-    unsigned int bits;
-    unsigned int length;
+    int          samplerate = 0;
+    unsigned int bits = 0;
+    unsigned int length = 0;
 
     // need to load the sound
 
-    lumpnum    = sfxinfo->lumpnum;
+    int lumpnum    = sfxinfo->lumpnum;
     auto *data = cache_lump_num<uint8_t *>(lumpnum, PU_STATIC);
-    lumplen    = W_LumpLength(lumpnum);
+    size_t lumplen = W_LumpLength(lumpnum);
 
     // [crispy] Check if this is a valid RIFF wav file
     if (lumplen > 44 && memcmp(data, "RIFF", 4) == 0 && memcmp(data + 8, "WAVEfmt ", 8) == 0)
     {
         // Valid RIFF wav file
-        int check;
-
         // Make sure this is a PCM format file
         // "fmt " chunk size must == 16
-        check = data[16] | (data[17] << 8) | (data[18] << 16) | (data[19] << 24);
+        int check = data[16] | (data[17] << 8) | (data[18] << 16) | (data[19] << 24);
         if (check != 16)
             return false;
 
@@ -777,7 +754,7 @@ static bool CacheSFX(sfxinfo_t *sfxinfo)
         length     = data[40] | (data[41] << 8) | (data[42] << 16) | (data[43] << 24);
 
         if (length > lumplen - 44)
-            length = lumplen - 44;
+            length = static_cast<unsigned int>(lumplen - 44);
 
         bits = data[34] | (data[35] << 8);
 
@@ -956,15 +933,13 @@ static int I_SDL_GetSfxLumpNum(sfxinfo_t *sfx)
 
 static void I_SDL_UpdateSoundParams(int handle, int vol, int sep)
 {
-    int left, right;
-
     if (!sound_initialized || handle < 0 || handle >= NUM_CHANNELS)
     {
         return;
     }
 
-    left  = ((254 - sep) * vol) / 127;
-    right = ((sep)*vol) / 127;
+    int left  = ((254 - sep) * vol) / 127;
+    int right = ((sep)*vol) / 127;
 
     if (left < 0)
         left = 0;
@@ -975,7 +950,7 @@ static void I_SDL_UpdateSoundParams(int handle, int vol, int sep)
     else if (right > 255)
         right = 255;
 
-    Mix_SetPanning(handle, left, right);
+    Mix_SetPanning(handle, static_cast<Uint8>(left), static_cast<Uint8>(right));
 }
 
 //
@@ -993,8 +968,6 @@ static void I_SDL_UpdateSoundParams(int handle, int vol, int sep)
 
 static int I_SDL_StartSound(sfxinfo_t *sfxinfo, int channel, int vol, int sep, int pitch)
 {
-    allocated_sound_t *snd;
-
     if (!sound_initialized || channel < 0 || channel >= NUM_CHANNELS)
     {
         return -1;
@@ -1012,11 +985,10 @@ static int I_SDL_StartSound(sfxinfo_t *sfxinfo, int channel, int vol, int sep, i
         return -1;
     }
 
-    snd = GetAllocatedSoundBySfxInfoAndPitch(sfxinfo, pitch);
+    allocated_sound_t *snd = GetAllocatedSoundBySfxInfoAndPitch(sfxinfo, pitch);
 
     if (snd == nullptr)
     {
-        allocated_sound_t *newsnd;
         // fetch the base sound effect, un-pitch-shifted
         snd = GetAllocatedSoundBySfxInfoAndPitch(sfxinfo, NORM_PITCH);
 
@@ -1027,7 +999,7 @@ static int I_SDL_StartSound(sfxinfo_t *sfxinfo, int channel, int vol, int sep, i
 
         if (snd_pitchshift)
         {
-            newsnd = PitchShift(snd, pitch);
+            allocated_sound_t *newsnd = PitchShift(snd, pitch);
 
             if (newsnd)
             {
@@ -1119,14 +1091,11 @@ static void I_SDL_ShutdownSound()
 
 static int GetSliceSize()
 {
-    int limit;
-    int n;
-
-    limit = (snd_samplerate * snd_maxslicetime_ms) / 1000;
+    int limit = (snd_samplerate * snd_maxslicetime_ms) / 1000;
 
     // Try all powers of two, not exceeding the limit.
 
-    for (n = 0;; ++n)
+    for (int n = 0;; ++n)
     {
         // 2^n <= limit < 2^n+1 ?
 
@@ -1144,8 +1113,6 @@ static int GetSliceSize()
 
 static bool I_SDL_InitSound(bool _use_sfx_prefix)
 {
-    int i;
-
     // SDL 2.0.6 has a bug that makes it unusable.
     if constexpr (SDL_COMPILEDVERSION == SDL_VERSIONNUM(2, 0, 6))
     {
@@ -1161,7 +1128,7 @@ static bool I_SDL_InitSound(bool _use_sfx_prefix)
     use_sfx_prefix = _use_sfx_prefix;
 
     // No sounds yet
-    for (i = 0; i < NUM_CHANNELS; ++i)
+    for (int i = 0; i < NUM_CHANNELS; ++i)
     {
         channels_playing[i] = nullptr;
     }

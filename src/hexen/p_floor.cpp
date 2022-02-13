@@ -206,7 +206,7 @@ void T_MoveFloor(floormove_t * floor)
         floor->delayCount--;
         if (!floor->delayCount && floor->textureChange)
         {
-            floor->sector->floorpic += floor->textureChange;
+            floor->sector->floorpic = static_cast<short>(floor->sector->floorpic + floor->textureChange);
         }
         return;
     }
@@ -262,7 +262,7 @@ void T_MoveFloor(floormove_t * floor)
          */
         if (floor->textureChange)
         {
-            floor->sector->floorpic -= floor->textureChange;
+            floor->sector->floorpic = static_cast<short>(floor->sector->floorpic - floor->textureChange);
         }
         P_TagFinished(floor->sector->tag);
         P_RemoveThinker(&floor->thinker);
@@ -536,15 +536,15 @@ static void ProcessStairSector(sector_t * sec, int type, int height,
                 floor->stairsDelayHeight = sec->floorheight + StepDelta;
                 floor->stairsDelayHeightDelta = StepDelta;
             }
-            floor->resetDelay = resetDelay;
-            floor->resetDelayCount = resetDelay;
+            floor->resetDelay = static_cast<short>(resetDelay);
+            floor->resetDelayCount = static_cast<short>(resetDelay);
             floor->resetHeight = sec->floorheight;
             break;
         case STAIRS_SYNC:
             floor->speed = FixedMul(Speed, FixedDiv(height - StartHeight,
                                                     StepDelta));
-            floor->resetDelay = delay;  //arg4
-            floor->resetDelayCount = delay;
+            floor->resetDelay = static_cast<short>(delay);  //arg4
+            floor->resetDelayCount = static_cast<short>(delay);
             floor->resetHeight = sec->floorheight;
             break;
 /*

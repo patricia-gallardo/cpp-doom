@@ -191,7 +191,7 @@ bool P_SightTraverseIntercepts()
     intercept_t *scan, *in;
     divline_t dl;
 
-    count = intercept_p - intercepts;
+    count = static_cast<int>(intercept_p - intercepts);
 //
 // calculate intercept distance
 //
@@ -376,8 +376,8 @@ bool P_CheckSight(mobj_t * t1, mobj_t * t2)
 //
 // check for trivial rejection
 //
-    s1 = (t1->subsector->sector - sectors);
-    s2 = (t2->subsector->sector - sectors);
+    s1 = static_cast<int>(t1->subsector->sector - sectors);
+    s2 = static_cast<int>(t2->subsector->sector - sectors);
     pnum = s1 * numsectors + s2;
     bytenum = pnum >> 3;
     bitnum = 1 << (pnum & 7);

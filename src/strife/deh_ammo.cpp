@@ -54,7 +54,7 @@ static void DEH_AmmoParseLine(deh_context_t *context, char *line, void *tag)
     if (tag == nullptr)
         return;
 
-    ammo_number = (reinterpret_cast<int *>(tag)) - maxammo;
+    ammo_number = static_cast<int>((reinterpret_cast<int *>(tag)) - maxammo);
 
     // Parse the assignment
 
@@ -86,8 +86,8 @@ static void DEH_AmmoSHA1Hash(sha1_context_t *context)
 
     for (i=0; i<NUMAMMO; ++i)
     {
-        SHA1_UpdateInt32(context, clipammo[i]);
-        SHA1_UpdateInt32(context, maxammo[i]);
+        SHA1_UpdateInt32(context, static_cast<unsigned int>(clipammo[i]));
+        SHA1_UpdateInt32(context, static_cast<unsigned int>(maxammo[i]));
     }
 }
 

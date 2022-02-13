@@ -91,7 +91,6 @@ static void TXT_MouseInputDrawer(void *uncast_mouse_input)
 {
     auto *mouse_input = reinterpret_cast<txt_mouse_input_t *>(uncast_mouse_input);
     char buf[20];
-    int i;
 
     if (*mouse_input->variable < 0)
     {
@@ -107,7 +106,7 @@ static void TXT_MouseInputDrawer(void *uncast_mouse_input)
     
     TXT_DrawString(buf);
     
-    for (i = TXT_UTF8_Strlen(buf); i < MOUSE_INPUT_WIDTH; ++i)
+    for (unsigned int i = TXT_UTF8_Strlen(buf); i < MOUSE_INPUT_WIDTH; ++i)
     {
         TXT_DrawString(" ");
     }

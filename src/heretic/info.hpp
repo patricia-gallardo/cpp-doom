@@ -1381,6 +1381,7 @@ extern const char *sprnames[];
 
 typedef enum
 {
+    NULL_MOBJ = -1,
     MT_MISC0,
     MT_ITEMSHIELD1,
     MT_ITEMSHIELD2,

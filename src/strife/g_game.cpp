@@ -318,7 +318,7 @@ static int G_NextWeapon(int direction)
     size_t start_i = i;
     do
     {
-        i += direction;
+        i += static_cast<unsigned long>(direction);
         i = (i + std::size(weapon_order_table)) % std::size(weapon_order_table);
     } while (i != start_i && !WeaponSelectable(weapon_order_table[i].weapon));
 
@@ -439,13 +439,13 @@ void G_BuildTiccmd (ticcmd_t* cmd, int maketic)
     else 
     { 
         if (gamekeydown[key_right]) 
-            cmd->angleturn -= angleturn[tspeed]; 
+            cmd->angleturn = static_cast<short>(cmd->angleturn - angleturn[tspeed]);
         if (gamekeydown[key_left]) 
-            cmd->angleturn += angleturn[tspeed]; 
+            cmd->angleturn = static_cast<short>(cmd->angleturn + angleturn[tspeed]);
         if (joyxmove > 0) 
-            cmd->angleturn -= angleturn[tspeed]; 
+            cmd->angleturn = static_cast<short>(cmd->angleturn - angleturn[tspeed]);
         if (joyxmove < 0) 
-            cmd->angleturn += angleturn[tspeed]; 
+            cmd->angleturn = static_cast<short>(cmd->angleturn + angleturn[tspeed]);
     } 
 
     if (gamekeydown[key_up]) 
@@ -481,7 +481,7 @@ void G_BuildTiccmd (ticcmd_t* cmd, int maketic)
     }
 
     // buttons
-    cmd->chatchar = HU_dequeueChatChar(); 
+    cmd->chatchar = static_cast<uint8_t>(HU_dequeueChatChar());
 
     // villsa [STRIFE] - add mouse button support for jump
     if (gamekeydown[key_jump] || mousebuttons[mousebjump]
@@ -518,7 +518,7 @@ void G_BuildTiccmd (ticcmd_t* cmd, int maketic)
     {
         int weapon = G_NextWeapon(next_weapon);
         cmd->buttons |= BT_CHANGE;
-        cmd->buttons |= weapon << BT_WEAPONSHIFT;
+        cmd->buttons |= static_cast<uint8_t>(weapon << BT_WEAPONSHIFT);
     }
     else
     {
@@ -531,7 +531,7 @@ void G_BuildTiccmd (ticcmd_t* cmd, int maketic)
             if (gamekeydown[key])
             {
                 cmd->buttons |= BT_CHANGE;
-                cmd->buttons |= i<<BT_WEAPONSHIFT;
+                cmd->buttons |= static_cast<uint8_t>(i<<BT_WEAPONSHIFT);
                 break;
             }
         }
@@ -609,7 +609,7 @@ void G_BuildTiccmd (ticcmd_t* cmd, int maketic)
     if (strafe) 
         side += mousex*2; 
     else 
-        cmd->angleturn -= mousex*0x8;
+        cmd->angleturn = static_cast<short>(cmd->angleturn - (mousex*0x8));
 
     if (mousex == 0)
     {
@@ -629,8 +629,8 @@ void G_BuildTiccmd (ticcmd_t* cmd, int maketic)
     else if (side < -MAXPLMOVE) 
         side = -MAXPLMOVE; 
  
-    cmd->forwardmove += forward; 
-    cmd->sidemove += side;
+    cmd->forwardmove = static_cast<signed char>(cmd->forwardmove + forward);
+    cmd->sidemove = static_cast<signed char>(cmd->sidemove + side);
     
     // special buttons
     if (sendpause) 
@@ -642,7 +642,7 @@ void G_BuildTiccmd (ticcmd_t* cmd, int maketic)
     if (sendsave) 
     { 
         sendsave = false; 
-        cmd->buttons = BT_SPECIAL | BTS_SAVEGAME | (savegameslot<<BTS_SAVESHIFT); 
+        cmd->buttons = static_cast<uint8_t>(BT_SPECIAL | BTS_SAVEGAME | (savegameslot << BTS_SAVESHIFT));
     } 
 
     // low-res turning
@@ -650,19 +650,17 @@ void G_BuildTiccmd (ticcmd_t* cmd, int maketic)
     if (lowres_turn)
     {
         static signed short carry = 0;
-        signed short desired_angleturn;
-
-        desired_angleturn = cmd->angleturn + carry;
+        signed short desired_angleturn = static_cast<signed short>(cmd->angleturn + carry);
 
         // round angleturn to the nearest 256 unit boundary
         // for recording demos with single byte values for turn
 
-        cmd->angleturn = (desired_angleturn + 128) & 0xff00;
+        cmd->angleturn = static_cast<short>((desired_angleturn + 128) & 0xff00);
 
         // Carry forward the error from the reduced resolution to the
         // next tic, so that successive small movements can accumulate.
 
-        carry = desired_angleturn - cmd->angleturn;
+        carry = static_cast<short>(desired_angleturn - cmd->angleturn);
     }
 } 
  
@@ -874,13 +872,13 @@ bool G_Responder (event_t* ev)
         return false;   // always let key up events filter down 
 
     case ev_mouse: 
-        SetMouseButtons(ev->data1);
+        SetMouseButtons(static_cast<unsigned int>(ev->data1));
         mousex = ev->data2*(mouseSensitivity+5)/10; 
         mousey = ev->data3*(mouseSensitivity+5)/10; 
         return true;    // eat events 
 
     case ev_joystick: 
-        SetJoyButtons(ev->data1);
+        SetJoyButtons(static_cast<unsigned int>(ev->data1));
         joyxmove = ev->data2; 
         joyymove = ev->data3; 
         joystrafemove = ev->data4;
@@ -1004,9 +1002,9 @@ void G_Ticker ()
                              cmd->consistancy, consistancy[i][buf]); 
                 } 
                 if (players[i].mo) 
-                    consistancy[i][buf] = players[i].mo->x; 
+                    consistancy[i][buf] = static_cast<uint8_t>(players[i].mo->x);
                 else 
-                    consistancy[i][buf] = rndindex; 
+                    consistancy[i][buf] = static_cast<uint8_t>(rndindex);
             } 
         }
     }
@@ -1080,6 +1078,8 @@ void G_Ticker ()
 
     case GS_DEMOSCREEN: 
         D_PageTicker (); 
+        break;
+    case NULL_GAMESTATE:
         break;
     }        
 } 
@@ -1169,8 +1169,8 @@ void G_PlayerReborn (int player)
     p->pendingweapon         = wp_fist;              // villsa [STRIFE] default to fists
     p->weaponowned[wp_fist]  = true;                 // villsa [STRIFE] default to fists
     p->cheats               |= CF_AUTOHEALTH;        // villsa [STRIFE]
-    p->killcount             = killcount;
-    p->allegiance            = allegiance;           // villsa [STRIFE]
+    p->killcount             = static_cast<short>(killcount);
+    p->allegiance            = static_cast<short>(allegiance);           // villsa [STRIFE]
     p->centerview            = true;                 // villsa [STRIFE]
 
     for(i = 0; i < NUMAMMO; i++) 
@@ -1262,9 +1262,8 @@ G_CheckSpot
 void G_DeathMatchSpawnPlayer (int playernum) 
 { 
     int             i,j; 
-    int             selections; 
 
-    selections = deathmatch_p - deathmatchstarts; 
+    int selections = static_cast<int>(deathmatch_p - deathmatchstarts);
     if (selections < 4) 
         I_Error ("Only %i deathmatch spots, at least 4 required!", selections); 
 
@@ -1273,7 +1272,7 @@ void G_DeathMatchSpawnPlayer (int playernum)
         i = P_Random() % selections; 
         if (G_CheckSpot (playernum, &deathmatchstarts[i]) ) 
         { 
-            deathmatchstarts[i].type = playernum+1; 
+            deathmatchstarts[i].type = static_cast<short>(playernum + 1);
             P_SpawnPlayer (&deathmatchstarts[i]); 
             return; 
         } 
@@ -1343,9 +1342,9 @@ void G_DoReborn (int playernum)
         {
             if (G_CheckSpot (playernum, &playerstarts[i]) ) 
             { 
-                playerstarts[i].type = playernum+1;     // fake as other player 
+                playerstarts[i].type = static_cast<short>(playernum + 1);     // fake as other player
                 P_SpawnPlayer (&playerstarts[i]);
-                playerstarts[i].type = i+1;             // restore 
+                playerstarts[i].type = static_cast<short>(i + 1);             // restore
                 return; 
             }
             // he's going to be inside something.  Too bad.
@@ -2101,7 +2100,7 @@ void G_ReadDemoTiccmd (ticcmd_t* cmd)
     }
     cmd->forwardmove = static_cast<signed char>(*demo_p++);
     cmd->sidemove = static_cast<signed char>(*demo_p++);
-    cmd->angleturn = (static_cast<unsigned char>(*demo_p++))<<8;
+    cmd->angleturn = static_cast<short>(static_cast<unsigned char>(*demo_p++) << 8);
     cmd->buttons = static_cast<unsigned char>(*demo_p++);
     cmd->buttons2 = static_cast<unsigned char>(*demo_p++); // [STRIFE]
     cmd->inventory = static_cast<int>(*demo_p++);          // [STRIFE]
@@ -2111,20 +2110,15 @@ void G_ReadDemoTiccmd (ticcmd_t* cmd)
 
 static void IncreaseDemoBuffer()
 {
-    int current_length;
-    uint8_t *new_demobuffer;
-    uint8_t *new_demop;
-    int new_length;
-
     // Find the current size
 
-    current_length = demoend - demobuffer;
+    auto current_length = static_cast<size_t>(demoend - demobuffer);
     
     // Generate a new buffer twice the size
-    new_length = current_length * 2;
+    size_t new_length = current_length * 2;
     
-    new_demobuffer = zmalloc<uint8_t *>(new_length, PU_STATIC, 0);
-    new_demop = new_demobuffer + (demo_p - demobuffer);
+    uint8_t *new_demobuffer = zmalloc<uint8_t *>(new_length, PU_STATIC, 0);
+    uint8_t *new_demop = new_demobuffer + (demo_p - demobuffer);
 
     // Copy over the old data
 
@@ -2153,9 +2147,9 @@ void G_WriteDemoTiccmd (ticcmd_t* cmd)
 
     demo_start = demo_p;
 
-    *demo_p++ = cmd->forwardmove; 
-    *demo_p++ = cmd->sidemove; 
-    *demo_p++ = cmd->angleturn >> 8; 
+    *demo_p++ = static_cast<uint8_t>(cmd->forwardmove);
+    *demo_p++ = static_cast<uint8_t>(cmd->sidemove);
+    *demo_p++ = static_cast<uint8_t>(cmd->angleturn >> 8);
     *demo_p++ = cmd->buttons; 
     *demo_p++ = cmd->buttons2;                 // [STRIFE]
     *demo_p++ = static_cast<uint8_t>(cmd->inventory & 0xff); // [STRIFE]
@@ -2213,7 +2207,7 @@ void G_RecordDemo (char* name)
     i = M_CheckParmWithArgs("-maxdemo", 1);
     if (i)
         maxsize = atoi(myargv[i+1])*1024;
-    demobuffer = zmalloc<uint8_t *>(maxsize, PU_STATIC, nullptr);
+    demobuffer = zmalloc<uint8_t *>(static_cast<size_t>(maxsize), PU_STATIC, nullptr);
     demoend = demobuffer + maxsize;
 
     demorecording = true; 
@@ -2244,14 +2238,14 @@ void G_BeginRecording ()
     // Save the right version code for this demo
     *demo_p++ = STRIFE_VERSION;
 
-    *demo_p++ = gameskill; 
+    *demo_p++ = static_cast<uint8_t>(gameskill);
     //*demo_p++ = gameepisode; [STRIFE] Doesn't have episodes.
-    *demo_p++ = gamemap; 
-    *demo_p++ = deathmatch; 
+    *demo_p++ = static_cast<uint8_t>(gamemap);
+    *demo_p++ = static_cast<uint8_t>(deathmatch);
     *demo_p++ = respawnparm;
     *demo_p++ = fastparm;
     *demo_p++ = nomonsters;
-    *demo_p++ = consoleplayer;
+    *demo_p++ = static_cast<uint8_t>(consoleplayer);
  
     for (i=0 ; i<MAXPLAYERS ; i++) 
         *demo_p++ = playeringame[i]; 
@@ -2425,7 +2419,7 @@ bool G_CheckDemoStatus ()
 
         endtime = I_GetTime (); 
         realtics = endtime - starttime;
-        fps = (static_cast<float>(gametic) * TICRATE) / realtics;
+        fps = (static_cast<float>(gametic) * TICRATE) / static_cast<float>(realtics);
 
         // Prevent recursive calls
         timingdemo = false;
@@ -2459,7 +2453,7 @@ bool G_CheckDemoStatus ()
     if (demorecording) 
     { 
         *demo_p++ = DEMOMARKER; 
-        M_WriteFile (demoname, demobuffer, demo_p - demobuffer); 
+        M_WriteFile (demoname, demobuffer, static_cast<int>(demo_p - demobuffer));
         Z_Free (demobuffer); 
         demorecording = false; 
         I_Error ("Demo %s recorded", demoname); 

@@ -42,12 +42,12 @@ void T_LightFlash(lightflash_t * flash)
 
     if (flash->sector->lightlevel == flash->maxlight)
     {
-        flash->sector->lightlevel = flash->minlight;
+        flash->sector->lightlevel = static_cast<short>(flash->minlight);
         flash->count = (P_Random() & flash->mintime) + 1;
     }
     else
     {
-        flash->sector->lightlevel = flash->maxlight;
+        flash->sector->lightlevel = static_cast<short>(flash->maxlight);
         flash->count = (P_Random() & flash->maxtime) + 1;
     }
 
@@ -99,12 +99,12 @@ void T_StrobeFlash(strobe_t * flash)
 
     if (flash->sector->lightlevel == flash->minlight)
     {
-        flash->sector->lightlevel = flash->maxlight;
+        flash->sector->lightlevel = static_cast<short>(flash->maxlight);
         flash->count = flash->brighttime;
     }
     else
     {
-        flash->sector->lightlevel = flash->minlight;
+        flash->sector->lightlevel = static_cast<short>(flash->minlight);
         flash->count = flash->darktime;
     }
 
@@ -189,7 +189,7 @@ void EV_TurnTagLightsOff(line_t * line)
                 if (tsec->lightlevel < min)
                     min = tsec->lightlevel;
             }
-            sector->lightlevel = min;
+            sector->lightlevel = static_cast<short>(min);
         }
 }
 
@@ -227,7 +227,7 @@ void EV_LightTurnOn(line_t * line, int bright)
                         bright = temp->lightlevel;
                 }
             }
-            sector->lightlevel = bright;
+            sector->lightlevel = static_cast<short>(bright);
         }
 }
 
@@ -241,18 +241,18 @@ void T_Glow(glow_t * g)
     switch (g->direction)
     {
         case -1:               // DOWN
-            g->sector->lightlevel -= GLOWSPEED;
+            g->sector->lightlevel = static_cast<short>(g->sector->lightlevel - GLOWSPEED);
             if (g->sector->lightlevel <= g->minlight)
             {
-                g->sector->lightlevel += GLOWSPEED;
+                g->sector->lightlevel = static_cast<short>(g->sector->lightlevel + GLOWSPEED);
                 g->direction = 1;
             }
             break;
         case 1:                // UP
-            g->sector->lightlevel += GLOWSPEED;
+            g->sector->lightlevel = static_cast<short>(g->sector->lightlevel + GLOWSPEED);
             if (g->sector->lightlevel >= g->maxlight)
             {
-                g->sector->lightlevel -= GLOWSPEED;
+                g->sector->lightlevel = static_cast<short>(g->sector->lightlevel - GLOWSPEED);
                 g->direction = -1;
             }
             break;

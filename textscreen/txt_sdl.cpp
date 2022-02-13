@@ -250,7 +250,7 @@ int TXT_Init()
 
     TXT_SDLWindow =
         SDL_CreateWindow("", SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED,
-                         screen_image_w, screen_image_h, flags);
+                         screen_image_w, screen_image_h, static_cast<Uint32>(flags));
 
     if (TXT_SDLWindow == nullptr)
         return 0;
@@ -287,9 +287,7 @@ int TXT_Init()
     // Instead, we draw everything into an intermediate 8-bit surface
     // the same dimensions as the screen. SDL then takes care of all the
     // 8->32 bit (or whatever depth) color conversions for us.
-    screenbuffer = SDL_CreateRGBSurface(0,
-                                        TXT_SCREEN_W * font->w,
-                                        TXT_SCREEN_H * font->h,
+    screenbuffer = SDL_CreateRGBSurface(0, static_cast<int>(TXT_SCREEN_W * font->w), static_cast<int>(TXT_SCREEN_H * font->h),
                                         8, 0, 0, 0, 0);
 
     SDL_LockSurface(screenbuffer);
@@ -358,8 +356,8 @@ static inline void UpdateCharacter(int x, int y)
     bit = 0;
 
     s = (reinterpret_cast<unsigned char *>(screenbuffer->pixels))
-      + (y * font->h * screenbuffer->pitch)
-      + (x * font->w);
+      + (static_cast<unsigned int>(y) * font->h * static_cast<unsigned int>(screenbuffer->pitch))
+      + (static_cast<unsigned int>(x) * font->w);
 
     for (y1=0; y1<font->h; ++y1)
     {
@@ -369,11 +367,11 @@ static inline void UpdateCharacter(int x, int y)
         {
             if (*p & (1 << bit))
             {
-                *s1++ = fg;
+                *s1++ = static_cast<unsigned char>(fg);
             }
             else
             {
-                *s1++ = bg;
+                *s1++ = static_cast<unsigned char>(bg);
             }
 
             ++bit;
@@ -656,7 +654,7 @@ signed int TXT_GetChar()
                 {
                     // TODO: Support input of more than just the first char?
                     const char *p = ev.text.text;
-                    int result = TXT_DecodeUTF8(&p);
+                    int result = static_cast<int>(TXT_DecodeUTF8(&p));
                     // 0-127 is ASCII, but we map non-ASCII Unicode chars into
                     // a higher range to avoid conflicts with special keys.
                     return TXT_UNICODE_TO_KEY(result);
@@ -791,7 +789,7 @@ void TXT_GetKeyDescription(int key, char *buf, size_t buf_len)
         // Key description should be all-uppercase to match setup.exe.
         for (i = 0; buf[i] != '\0'; ++i)
         {
-            buf[i] = toupper(buf[i]);
+            buf[i] = static_cast<char>(toupper(buf[i]));
         }
     }
     else
@@ -867,7 +865,7 @@ void TXT_Sleep(int timeout)
 
         start_time = SDL_GetTicks();
 
-        while (SDL_GetTicks() < start_time + timeout)
+        while (SDL_GetTicks() < start_time + static_cast<unsigned int>(timeout))
         {
             if (SDL_PollEvent(nullptr) != 0)
             {
@@ -959,7 +957,7 @@ int TXT_vsnprintf(char *buf, size_t buf_len, const char *s, va_list args)
     if (result < 0 || result >= static_cast<int>(buf_len))
     {
         buf[buf_len - 1] = '\0';
-        result = buf_len - 1;
+        result = static_cast<int>(buf_len - 1);
     }
 
     return result;

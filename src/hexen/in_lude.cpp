@@ -172,7 +172,6 @@ static void InitStats()
     int slaughtercount;
     int playercount;
     const char *msgLumpName;
-    int msgSize;
     int msgLump;
 
     extern int LeaveMap;
@@ -188,7 +187,7 @@ static void InitStats()
             {
                 msgLumpName = ClusMsgLumpNames[oldCluster - 1];
                 msgLump = W_GetNumForName(msgLumpName);
-                msgSize = W_LumpLength(msgLump);
+                size_t msgSize = W_LumpLength(msgLump);
                 if (msgSize >= MAX_INTRMSN_MESSAGE_SIZE)
                 {
                     I_Error("Cluster message too long (%s)", msgLumpName);
@@ -196,7 +195,7 @@ static void InitStats()
                 W_ReadLump(msgLump, ClusterMessage);
                 ClusterMessage[msgSize] = 0;    // Append terminator
                 HubText = ClusterMessage;
-                HubCount = strlen(HubText) * TEXTSPEED + TEXTWAIT;
+                HubCount = static_cast<int>(strlen(HubText) * TEXTSPEED + TEXTWAIT);
                 S_StartSongName("hub", true);
             }
         }

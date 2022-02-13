@@ -34,6 +34,7 @@ function(set_project_warnings)
             /wd4244 # disable warning C4244: '=': conversion, possible loss of data TODO turn it back on (patricia)
             /wd4267 # disable warning C4267: '=': conversion, possible loss of data TODO turn it back on (patricia)
             /wd4996 # disable warning C4996: was declared deprecated TODO turn it back on (patricia)
+            /wd4068 # disable unknown pragma warnings
             )
 
     set(CLANG_WARNINGS
@@ -46,7 +47,7 @@ function(set_project_warnings)
             -Wunused # warn on anything being unused
             -Woverloaded-virtual # warn if you overload (not override) a virtual function
             -Wpedantic # warn if non-standard C++ is used TODO turn it back on (patricia)
-            # -Wconversion # warn on type conversions that may lose data TODO turn it back on (patricia)
+            -Wconversion # warn on type conversions that may lose data TODO turn it back on (patricia)
             -Wnull-dereference # warn if a null dereference is detected
             -Wdouble-promotion # warn if float is implicit promoted to double
             #-Wformat=2 # warn on security issues around functions that format output (ie printf) TODO turn it back on (patricia)

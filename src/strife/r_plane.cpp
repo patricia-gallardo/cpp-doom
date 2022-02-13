@@ -153,7 +153,7 @@ R_MapPlane
 	ds_colormap = fixedcolormap;
     else
     {
-	index = distance >> LIGHTZSHIFT;
+	index = static_cast<unsigned int>(distance >> LIGHTZSHIFT);
 	
 	if (index >= MAXLIGHTZ )
 	    index = MAXLIGHTZ-1;
@@ -182,7 +182,7 @@ void R_ClearPlanes ()
     // opening / clipping determination
     for (i=0 ; i<viewwidth ; i++)
     {
-	floorclip[i] = viewheight;
+	floorclip[i] = static_cast<short>(viewheight);
 	ceilingclip[i] = -1;
     }
 

@@ -1442,7 +1442,7 @@ void PO_Init(int lump)
     memset(polyobjs, 0, po_NumPolyobjs * sizeof(polyobj_t));
 
     data = cache_lump_num<uint8_t *>(lump, PU_STATIC);
-    numthings = W_LumpLength(lump) / sizeof(mapthing_t);
+    numthings = static_cast<int>(W_LumpLength(lump) / sizeof(mapthing_t));
     mt = reinterpret_cast<mapthing_t *>(data);
     polyIndex = 0;              // index polyobj number
     // Find the startSpot points, and spawn each polyobj

@@ -165,7 +165,7 @@ bool P_TeleportMove(mobj_t*  thing, fixed_t  x, fixed_t  y)
     
     // kill anything occupying the position
     tmthing = thing;
-    tmflags = thing->flags;
+    tmflags = static_cast<int>(thing->flags);
 
     tmx = x;
     tmy = y;
@@ -250,7 +250,7 @@ bool PIT_CheckLine (line_t* ld)
     if (!ld->backsector)
         return false;           // one sided line
 
-    if (!(tmthing->flags & MF_MISSILE) )
+    if (!(static_cast<unsigned int>(tmthing->flags) & MF_MISSILE) )
     {
         // villsa [STRIFE] include jumpover flag
         if ( ld->flags & ML_BLOCKING &&
@@ -259,7 +259,7 @@ bool PIT_CheckLine (line_t* ld)
 
         // villsa [STRIFE] exclude floaters from blockmonster lines
         if ( !tmthing->player && (ld->flags & ML_BLOCKMONSTERS) &&
-            !(tmthing->flags & MF_FLOAT))
+            !(static_cast<unsigned int>(tmthing->flags) & MF_FLOAT))
             return false;   // block monsters only
 
         // villsa [STRIFE]
@@ -443,7 +443,7 @@ P_CheckPosition
     subsector_t*    newsubsec;
 
     tmthing = thing;
-    tmflags = thing->flags;
+    tmflags = static_cast<int>(thing->flags);
 
     tmx = x;
     tmy = y;
@@ -469,7 +469,7 @@ P_CheckPosition
     validcount++;
     numspechit = 0;
 
-    if ( tmflags & MF_NOCLIP )
+    if (static_cast<unsigned int>(tmflags) & MF_NOCLIP )
         return true;
     
     // Check things first, possibly picking things up.
@@ -575,7 +575,7 @@ P_TryMove
             if (side != oldside)
             {
                 if (ld->special)
-                    P_CrossSpecialLine (ld-lines, oldside, thing);
+                    P_CrossSpecialLine (static_cast<int>(ld-lines), oldside, thing);
             }
         }
     }
@@ -609,7 +609,7 @@ bool P_CheckPositionZ(mobj_t* thing, fixed_t height)
     thing->z = height;
 
     tmthing = thing;
-    tmflags = thing->flags;
+    tmflags = static_cast<int>(thing->flags);
     tmx = x;
     tmy = y;
 
@@ -629,7 +629,7 @@ bool P_CheckPositionZ(mobj_t* thing, fixed_t height)
     tmfloorz = tmdropoffz = newsubsec->sector->floorheight;
     tmceilingz = newsubsec->sector->ceilingheight;
 
-    if(tmflags & MF_NOCLIP)
+    if(static_cast<unsigned int>(tmflags) & MF_NOCLIP)
         return true;
 
     // Check things first, possibly picking things up.
@@ -1621,7 +1621,7 @@ static void SpechitOverrun(line_t *ld)
     
     // Calculate address used in doom2.exe
 
-    addr = baseaddr + (ld - lines) * 0x3E;
+    addr = static_cast<unsigned int>(baseaddr + (ld - lines) * 0x3E);
 
     switch(numspechit)
     {
@@ -1629,7 +1629,7 @@ static void SpechitOverrun(line_t *ld)
         case 10:
         case 11:
         case 12:
-            tmbbox[numspechit-9] = addr;
+            tmbbox[numspechit-9] = static_cast<fixed_t>(addr);
             break;
         case 13: 
             nofit = addr; // haleyjd 20110204: nofit/crushchange are in opposite 

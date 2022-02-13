@@ -95,7 +95,7 @@ void S_StartSong(int song, bool loop)
     }
     mus_lumpnum = W_GetNumForName(S_music[song].name);
     mus_sndptr = cache_lump_num<void *>(mus_lumpnum, PU_MUSIC);
-    mus_len = W_LumpLength(mus_lumpnum);
+    mus_len = static_cast<int>(W_LumpLength(mus_lumpnum));
     rs = I_RegisterSong(mus_sndptr, mus_len);
     I_PlaySong(rs, loop);       //'true' denotes endless looping.
     mus_song = song;
@@ -547,7 +547,7 @@ void S_GetChannelInfo(SoundInfo_t * s)
     {
         c = &s->chan[i];
         c->id = channel[i].sound_id;
-        c->priority = channel[i].priority;
+        c->priority = static_cast<unsigned short>(channel[i].priority);
         c->name = S_sfx[c->id].name;
         c->mo = channel[i].mo;
 
@@ -570,14 +570,14 @@ void S_SetMaxVolume(bool fullprocess)
     if (!fullprocess)
     {
         uint8_t *byte_ptr = cache_lump_name<uint8_t *>("SNDCURVE", PU_CACHE);
-        soundCurve[0]     = (*byte_ptr * (snd_MaxVolume * 8)) >> 7;
+        soundCurve[0]     = static_cast<uint8_t>((*byte_ptr * (snd_MaxVolume * 8)) >> 7);
     }
     else
     {
         for (i = 0; i < MAX_SND_DIST; i++)
         {
             uint8_t *byte_ptr = cache_lump_name<uint8_t *>("SNDCURVE", PU_CACHE);
-            soundCurve[i]     = (*(byte_ptr + i) * (snd_MaxVolume * 8)) >> 7;
+            soundCurve[i]     = static_cast<uint8_t>((*(byte_ptr + i) * (snd_MaxVolume * 8)) >> 7);
         }
     }
 }

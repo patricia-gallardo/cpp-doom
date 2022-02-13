@@ -2651,16 +2651,12 @@ void A_BishopAttack2(mobj_t * actor)
 
 void A_BishopMissileWeave(mobj_t * actor)
 {
-    fixed_t newX, newY;
-    int weaveXY, weaveZ;
-    int angle;
-
-    weaveXY = actor->special2.i >> 16;
-    weaveZ = actor->special2.i & 0xFFFF;
-    angle = (actor->angle + ANG90) >> ANGLETOFINESHIFT;
-    newX = actor->x - FixedMul(finecosine[angle],
+    int weaveXY = static_cast<int>(actor->special2.i >> 16);
+    int weaveZ = actor->special2.i & 0xFFFF;
+    int angle = (actor->angle + ANG90) >> ANGLETOFINESHIFT;
+    fixed_t newX = actor->x - FixedMul(finecosine[angle],
                                FloatBobOffsets[weaveXY] << 1);
-    newY = actor->y - FixedMul(finesine[angle],
+    fixed_t newY = actor->y - FixedMul(finesine[angle],
                                FloatBobOffsets[weaveXY] << 1);
     weaveXY = (weaveXY + 2) & 63;
     newX += FixedMul(finecosine[angle], FloatBobOffsets[weaveXY] << 1);
@@ -3328,7 +3324,7 @@ bool A_RaiseMobj(mobj_t * actor)
                 break;
             case MT_THRUSTFLOOR_DOWN:
             case MT_THRUSTFLOOR_UP:
-                actor->floorclip -= actor->special2.i * FRACUNIT;
+                actor->floorclip -= static_cast<fixed_t>(actor->special2.i * FRACUNIT);
                 break;
             default:
                 actor->floorclip -= 2 * FRACUNIT;
@@ -3527,7 +3523,7 @@ void A_WraithLook(mobj_t * actor)
 
 void A_WraithChase(mobj_t * actor)
 {
-    int weaveindex = actor->special1.i;
+    int weaveindex = static_cast<int>(actor->special1.i);
     actor->z += FloatBobOffsets[weaveindex];
     actor->special1.i = (weaveindex + 2) & 63;
 //      if (actor->floorclip > 0)
@@ -3651,7 +3647,7 @@ void A_SmBounce(mobj_t * actor)
 
 void A_FiredChase(mobj_t * actor)
 {
-    int weaveindex = actor->special1.i;
+    int weaveindex = static_cast<int>(actor->special1.i);
     mobj_t *target = actor->target;
     angle_t ang;
     fixed_t dist;
@@ -3997,7 +3993,7 @@ void A_SorcBallOrbit(mobj_t * actor)
     int mode = actor->target->args[3];
     mobj_t *parent = reinterpret_cast<mobj_t *>(actor->target);
     int dist = parent->radius - (actor->radius << 1);
-    angle_t prevangle = actor->special1.i;
+    angle_t prevangle = static_cast<angle_t>(actor->special1.i);
 
     if (actor->target->health <= 0)
         P_SetMobjState(actor, actor->info->painstate);
@@ -4333,7 +4329,7 @@ void A_SorcOffense2(mobj_t * actor)
     int dist;
 
     index = actor->args[4] << 5;
-    actor->args[4] += 15;
+    actor->args[4] = static_cast<uint8_t>(actor->args[4] + 15);
     delta = (finesine[index]) * SORCFX4_SPREAD_ANGLE;
     delta = (delta >> FRACBITS) * ANG1;
     ang1 = actor->angle + delta;
@@ -4997,7 +4993,7 @@ void A_KoraxChase(mobj_t * actor)
     {
         if (P_Random() < 10)
         {
-            lastfound = actor->special1.i;
+            lastfound = static_cast<int>(actor->special1.i);
             spot = P_FindMobjFromTID(KORAX_TELEPORT_TID, &lastfound);
             actor->special1.i = lastfound;
             if (spot)
@@ -5297,16 +5293,12 @@ void KoraxFire6(mobj_t * actor, int type)
 
 void A_KSpiritWeave(mobj_t * actor)
 {
-    fixed_t newX, newY;
-    int weaveXY, weaveZ;
-    int angle;
-
-    weaveXY = actor->special2.i >> 16;
-    weaveZ = actor->special2.i & 0xFFFF;
-    angle = (actor->angle + ANG90) >> ANGLETOFINESHIFT;
-    newX = actor->x - FixedMul(finecosine[angle],
+    int weaveXY = static_cast<int>(actor->special2.i >> 16);
+    int weaveZ = actor->special2.i & 0xFFFF;
+    int angle = (actor->angle + ANG90) >> ANGLETOFINESHIFT;
+    fixed_t newX = actor->x - FixedMul(finecosine[angle],
                                FloatBobOffsets[weaveXY] << 2);
-    newY = actor->y - FixedMul(finesine[angle],
+    fixed_t newY = actor->y - FixedMul(finesine[angle],
                                FloatBobOffsets[weaveXY] << 2);
     weaveXY = (weaveXY + (P_Random() % 5)) & 63;
     newX += FixedMul(finecosine[angle], FloatBobOffsets[weaveXY] << 2);
@@ -5320,20 +5312,14 @@ void A_KSpiritWeave(mobj_t * actor)
 
 void A_KSpiritSeeker(mobj_t * actor, angle_t thresh, angle_t turnMax)
 {
-    int dir;
-    int dist;
-    angle_t delta;
-    angle_t angle;
-    mobj_t *target;
-    fixed_t newZ;
-    fixed_t deltaZ;
-
-    target = actor->special1.m;
+    mobj_t *target = actor->special1.m;
     if (target == nullptr)
     {
         return;
     }
-    dir = P_FaceMobj(actor, target, &delta);
+
+    angle_t delta;
+    int dir = P_FaceMobj(actor, target, &delta);
     if (delta > thresh)
     {
         delta >>= 1;
@@ -5350,7 +5336,7 @@ void A_KSpiritSeeker(mobj_t * actor, angle_t thresh, angle_t turnMax)
     {                           // Turn counter clockwise
         actor->angle -= delta;
     }
-    angle = actor->angle >> ANGLETOFINESHIFT;
+    angle_t angle = actor->angle >> ANGLETOFINESHIFT;
     actor->momx = FixedMul(actor->info->speed, finecosine[angle]);
     actor->momy = FixedMul(actor->info->speed, finesine[angle]);
 
@@ -5358,8 +5344,8 @@ void A_KSpiritSeeker(mobj_t * actor, angle_t thresh, angle_t turnMax)
         || actor->z > target->z + (target->info->height)
         || actor->z + actor->height < target->z)
     {
-        newZ = target->z + ((P_Random() * target->info->height) >> 8);
-        deltaZ = newZ - actor->z;
+        fixed_t newZ = target->z + ((P_Random() * target->info->height) >> 8);
+        fixed_t deltaZ = newZ - actor->z;
         if (std::abs(deltaZ) > 15 * FRACUNIT)
         {
             if (deltaZ > 0)
@@ -5371,7 +5357,7 @@ void A_KSpiritSeeker(mobj_t * actor, angle_t thresh, angle_t turnMax)
                 deltaZ = -15 * FRACUNIT;
             }
         }
-        dist = P_AproxDistance(target->x - actor->x, target->y - actor->y);
+        int dist = P_AproxDistance(target->x - actor->x, target->y - actor->y);
         dist = dist / actor->info->speed;
         if (dist < 1)
         {

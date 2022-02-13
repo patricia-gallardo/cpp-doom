@@ -109,7 +109,7 @@ static void DEH_CheatParseLine(deh_context_t *context, char *line, void *)
 
         if (deh_apply_cheats)
         {
-            cheat->seq->sequence[i] = unsvalue[i];
+            cheat->seq->sequence[i] = static_cast<char>(unsvalue[i]);
         }
         ++i;
 

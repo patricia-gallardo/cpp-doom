@@ -698,8 +698,8 @@ void A_Chase(mobj_t *actor)
     // turn towards movement direction if not there yet
     if (actor->movedir < 8)
     {
-        actor->angle &= (7 << 29);
-        delta = actor->angle - (actor->movedir << 29);
+        actor->angle &= (static_cast<unsigned int>(7 << 29));
+        delta = static_cast<int>(actor->angle - (static_cast<unsigned int>(actor->movedir << 29)));
 
         if (delta > 0)
             actor->angle -= ANG90 / 2;
@@ -799,7 +799,7 @@ void A_FaceTarget(mobj_t *actor)
         actor->target->y);
 
     if (actor->target->flags & MF_SHADOW)
-        actor->angle += P_SubRandom() << 21;
+        actor->angle += static_cast<unsigned int>(P_SubRandom() << 21);
 }
 
 
@@ -816,13 +816,13 @@ void A_PosAttack(mobj_t *actor)
         return;
 
     A_FaceTarget(actor);
-    angle = actor->angle;
-    slope = P_AimLineAttack(actor, angle, MISSILERANGE);
+    angle = static_cast<int>(actor->angle);
+    slope = P_AimLineAttack(actor, static_cast<angle_t>(angle), MISSILERANGE);
 
     S_StartSound(actor, sfx_pistol);
     angle += P_SubRandom() << 20;
     damage = ((P_Random() % 5) + 1) * 3;
-    P_LineAttack(actor, angle, MISSILERANGE, slope, damage);
+    P_LineAttack(actor, static_cast<angle_t>(angle), MISSILERANGE, slope, damage);
 }
 
 void A_SPosAttack(mobj_t *actor)
@@ -838,14 +838,14 @@ void A_SPosAttack(mobj_t *actor)
 
     S_StartSound(actor, sfx_shotgn);
     A_FaceTarget(actor);
-    bangle = actor->angle;
-    slope  = P_AimLineAttack(actor, bangle, MISSILERANGE);
+    bangle = static_cast<int>(actor->angle);
+    slope  = P_AimLineAttack(actor, static_cast<angle_t>(bangle), MISSILERANGE);
 
     for (i = 0; i < 3; i++)
     {
         angle  = bangle + (P_SubRandom() << 20);
         damage = ((P_Random() % 5) + 1) * 3;
-        P_LineAttack(actor, angle, MISSILERANGE, slope, damage);
+        P_LineAttack(actor, static_cast<angle_t>(angle), MISSILERANGE, slope, damage);
     }
 }
 
@@ -861,12 +861,12 @@ void A_CPosAttack(mobj_t *actor)
 
     S_StartSound(actor, sfx_shotgn);
     A_FaceTarget(actor);
-    bangle = actor->angle;
-    slope  = P_AimLineAttack(actor, bangle, MISSILERANGE);
+    bangle = static_cast<int>(actor->angle);
+    slope  = P_AimLineAttack(actor, static_cast<angle_t>(bangle), MISSILERANGE);
 
     angle  = bangle + (P_SubRandom() << 20);
     damage = ((P_Random() % 5) + 1) * 3;
-    P_LineAttack(actor, angle, MISSILERANGE, slope, damage);
+    P_LineAttack(actor, static_cast<angle_t>(angle), MISSILERANGE, slope, damage);
 }
 
 void A_CPosRefire(mobj_t *actor)
@@ -1075,13 +1075,13 @@ void A_Tracer(mobj_t *actor)
     {
         if (exact - actor->angle > 0x80000000)
         {
-            actor->angle -= TRACEANGLE;
+            actor->angle -= static_cast<unsigned int>(TRACEANGLE);
             if (exact - actor->angle < 0x80000000)
                 actor->angle = exact;
         }
         else
         {
-            actor->angle += TRACEANGLE;
+            actor->angle += static_cast<unsigned int>(TRACEANGLE);
             if (exact - actor->angle > 0x80000000)
                 actor->angle = exact;
         }
@@ -1876,7 +1876,7 @@ void A_BrainAwake(mobj_t *)
             if (numbraintargets == maxbraintargets)
             {
                 maxbraintargets = maxbraintargets ? 2 * maxbraintargets : 32;
-                braintargets    = static_cast<decltype(braintargets)>(I_Realloc(braintargets, maxbraintargets * sizeof(*braintargets)));
+                braintargets    = static_cast<decltype(braintargets)>(I_Realloc(braintargets, static_cast<unsigned long>(maxbraintargets) * sizeof(*braintargets)));
 
                 if (maxbraintargets > 32)
                     fprintf(stderr, "R_BrainAwake: Raised braintargets limit to %d.\n", maxbraintargets);

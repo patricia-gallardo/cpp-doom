@@ -327,7 +327,7 @@ static void HU_addMessage(const char *prefix, const char *message)
     {
         while((c = *rover1))
         {
-            c = toupper(c) - HU_FONTSTART;
+            c = static_cast<char>(toupper(c) - HU_FONTSTART);
             ++rover1;
 
             if(c < 0 || c >= HU_FONTSIZE)
@@ -348,13 +348,13 @@ static void HU_addMessage(const char *prefix, const char *message)
         *bufptr = c;
         ++bufptr;       // BUG: No check for overflow.
         ++rover2;
-        c = toupper(c);
+        c = static_cast<char>(toupper(c));
 
         if(c == ' ' || c < '!' || c >= '_')
             width += 4;
         else
         {
-            c -= HU_FONTSTART;
+            c = static_cast<char>(c - HU_FONTSTART);
             width += SHORT(hu_font[static_cast<int>(c)]->width);
         }
     }
@@ -435,13 +435,13 @@ void HU_Ticker()
             if (!playeringame[i])
                 continue;
             if (i != consoleplayer
-                && (c = players[i].cmd.chatchar))
+                && (c = static_cast<char>(players[i].cmd.chatchar)))
             {
                 if (c <= HU_CHANGENAME) // [STRIFE]: allow HU_CHANGENAME here
                     chat_dest[i] = c;
                 else
                 {
-                    rc = HUlib_keyInIText(&w_inputbuffer[i], c);
+                    rc = HUlib_keyInIText(&w_inputbuffer[i], static_cast<unsigned char>(c));
                     if (rc && c == KEY_ENTER)
                     {
                         if (w_inputbuffer[i].l.len
@@ -586,11 +586,11 @@ bool HU_Responder(event_t *ev)
     }
     else
     {
-        c = ev->data3;
+        c = static_cast<unsigned char>(ev->data3);
         // send a macro
         if (altdown)
         {
-            c = c - '0';
+            c = static_cast<unsigned char>(c - '0');
             if (c > 9)
                 return false;
             // fprintf(stderr, "got here\n");
@@ -616,7 +616,7 @@ bool HU_Responder(event_t *ev)
             {
                 eatkey = HUlib_keyInIText(&w_chat, c);
                 if (eatkey)
-                    HU_queueChatChar(c);
+                    HU_queueChatChar(static_cast<char>(c));
             }
             else
             {
@@ -647,7 +647,7 @@ bool HU_Responder(event_t *ev)
                     else
                     {
                         eatkey = true;
-                        HU_queueChatChar(i+1);
+                        HU_queueChatChar(static_cast<char>(i + 1));
                         DEH_snprintf(lastmessage, sizeof(lastmessage),
                             "Talking to: %c", '1' + i);
                         plr->message = lastmessage;
@@ -666,7 +666,7 @@ bool HU_Responder(event_t *ev)
                 {
                     eatkey = HUlib_keyInIText(&w_chat, c);
                     if (eatkey)
-                        HU_queueChatChar(c);
+                        HU_queueChatChar(static_cast<char>(c));
                 }
             }
 

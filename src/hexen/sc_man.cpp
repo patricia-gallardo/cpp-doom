@@ -130,7 +130,7 @@ static void OpenScript(const char *name, int type)
     {                           // Lump script
         ScriptLumpNum = W_GetNumForName(name);
         ScriptBuffer = cache_lump_num<char *>(ScriptLumpNum, PU_STATIC);
-        ScriptSize = W_LumpLength(ScriptLumpNum);
+        ScriptSize = static_cast<int>(W_LumpLength(ScriptLumpNum));
         M_StringCopy(ScriptName, name, sizeof(ScriptName));
     }
     else if (type == FILE_ZONE_SCRIPT)
@@ -300,7 +300,7 @@ bool SC_GetNumber()
     CheckOpen();
     if (SC_GetString())
     {
-        sc_Number = strtol(sc_String, &stopper, 0);
+        sc_Number = static_cast<int>(strtol(sc_String, &stopper, 0));
         if (*stopper != 0)
         {
             I_Error("SC_GetNumber: Bad numeric constant \"%s\".\n"

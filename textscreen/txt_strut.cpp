@@ -21,8 +21,8 @@ static void TXT_StrutSizeCalc(void *uncast_strut)
 
     // Minimum width is the string length + two spaces for padding
 
-    strut->widget.w = strut->width;
-    strut->widget.h = strut->height;
+    strut->widget.w = static_cast<unsigned int>(strut->width);
+    strut->widget.h = static_cast<unsigned int>(strut->height);
 }
 
 static void TXT_StrutDrawer(void *)

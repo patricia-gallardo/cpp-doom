@@ -278,11 +278,11 @@ void R_RenderMaskedSegRange(drawseg_t *ds,
                 sprtopscreen = static_cast<int64_t>(t >> FRACBITS); // [crispy] WiggleFix
             }
 
-            dc_iscale = 0xffffffffu / static_cast<unsigned>(spryscale);
+            dc_iscale = static_cast<fixed_t>(0xffffffffu / static_cast<unsigned>(spryscale));
 
             // draw the texture
-            uint8_t *col_ptr = reinterpret_cast<uint8_t *>(R_GetColumn(texnum, maskedtexturecol[dc_x], false) - 3);
-            column_t *col = reinterpret_cast<column_t *>(col_ptr);
+            auto *col_ptr = reinterpret_cast<uint8_t *>(R_GetColumn(texnum, maskedtexturecol[dc_x], false) - 3);
+            auto *col = reinterpret_cast<column_t *>(col_ptr);
 
             R_DrawMaskedColumn(col);
             maskedtexturecol[dc_x] = INT_MAX; // [crispy] 32-bit integer math
@@ -332,8 +332,8 @@ void R_RenderSegLoop()
 
             if (top <= bottom)
             {
-                ceilingplane->top[rw_x]    = top;
-                ceilingplane->bottom[rw_x] = bottom;
+                ceilingplane->top[rw_x]    = static_cast<unsigned int>(top);
+                ceilingplane->bottom[rw_x] = static_cast<unsigned int>(bottom);
             }
         }
 
@@ -350,8 +350,8 @@ void R_RenderSegLoop()
                 top = ceilingclip[rw_x] + 1;
             if (top <= bottom)
             {
-                floorplane->top[rw_x]    = top;
-                floorplane->bottom[rw_x] = bottom;
+                floorplane->top[rw_x]    = static_cast<unsigned int>(top);
+                floorplane->bottom[rw_x] = static_cast<unsigned int>(bottom);
             }
         }
 
@@ -372,7 +372,7 @@ void R_RenderSegLoop()
             dc_colormap[0] = walllights[index];
             dc_colormap[1] = (!fixedcolormap && (crispy->brightmaps & BRIGHTMAPS_TEXTURES)) ? scalelight[LIGHTLEVELS - 1][MAXLIGHTSCALE - 1] : dc_colormap[0];
             dc_x           = rw_x;
-            dc_iscale      = 0xffffffffu / static_cast<unsigned>(rw_scale);
+            dc_iscale      = static_cast<fixed_t>(0xffffffffu / static_cast<unsigned>(rw_scale));
         }
         else
         {
@@ -479,8 +479,8 @@ void R_RenderSegLoop()
 // above R_StoreWallRange
 fixed_t R_ScaleFromGlobalAngle(angle_t visangle)
 {
-    int     anglea = ANG90 + (visangle - viewangle);
-    int     angleb = ANG90 + (visangle - rw_normalangle);
+    int     anglea = static_cast<int>(ANG90 + (visangle - viewangle));
+    int     angleb = static_cast<int>(ANG90 + (visangle - rw_normalangle));
     int     den    = FixedMul(rw_distance, finesine[anglea >> ANGLETOFINESHIFT]);
     fixed_t num    = FixedMul(projection, finesine[angleb >> ANGLETOFINESHIFT]) << detailshift;
     fixed_t scale;
@@ -521,8 +521,8 @@ void R_StoreWallRange(int start,
         int numdrawsegs_old = numdrawsegs;
 
         numdrawsegs = numdrawsegs ? 2 * numdrawsegs : MAXDRAWSEGS;
-        drawsegs    = static_cast<decltype(drawsegs)>(I_Realloc(drawsegs, numdrawsegs * sizeof(*drawsegs)));
-        memset(drawsegs + numdrawsegs_old, 0, (numdrawsegs - numdrawsegs_old) * sizeof(*drawsegs));
+        drawsegs    = static_cast<decltype(drawsegs)>(I_Realloc(drawsegs, static_cast<unsigned long>(numdrawsegs) * sizeof(*drawsegs)));
+        memset(drawsegs + numdrawsegs_old, 0, (static_cast<unsigned long>(numdrawsegs - numdrawsegs_old)) * sizeof(*drawsegs));
 
         ds_p = drawsegs + numdrawsegs_old;
 
@@ -883,7 +883,7 @@ void R_StoreWallRange(int start,
     if (((ds_p->silhouette & SIL_TOP) || maskedtexture)
         && !ds_p->sprtopclip)
     {
-        memcpy(lastopening, ceilingclip + start, sizeof(*lastopening) * (rw_stopx - start));
+        memcpy(lastopening, ceilingclip + start, sizeof(*lastopening) * (static_cast<unsigned long>(rw_stopx - start)));
         ds_p->sprtopclip = lastopening - start;
         lastopening += rw_stopx - start;
     }
@@ -891,7 +891,7 @@ void R_StoreWallRange(int start,
     if (((ds_p->silhouette & SIL_BOTTOM) || maskedtexture)
         && !ds_p->sprbottomclip)
     {
-        memcpy(lastopening, floorclip + start, sizeof(*lastopening) * (rw_stopx - start));
+        memcpy(lastopening, floorclip + start, sizeof(*lastopening) * (static_cast<unsigned long>(rw_stopx - start)));
         ds_p->sprbottomclip = lastopening - start;
         lastopening += rw_stopx - start;
     }

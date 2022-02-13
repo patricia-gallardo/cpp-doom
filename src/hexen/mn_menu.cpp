@@ -953,7 +953,7 @@ static void SCSaveGame(int option)
         *(ptr + 1) = 0;
         SlotStatus[option]++;
         currentSlot = option;
-        slotptr = ptr - SlotText[option];
+        slotptr = static_cast<int>(ptr - SlotText[option]);
         return;
     }
     else
@@ -1666,7 +1666,13 @@ bool MN_Responder(event_t * event)
             if (slotptr)
             {
                 *textBuffer-- = 0;
+#pragma GCC diagnostic push
+#pragma GCC diagnostic ignored "-Wstringop-overflow"
+                // error: writing 1 byte into a region of size 0 [-Werror=stringop-overflow=]
+                // note: at offset -1 to object ‘SlotText’ with size 108 declared here
+                // static char SlotText[6][SLOTTEXTLEN + 2];
                 *textBuffer = ASCII_CURSOR;
+#pragma GCC diagnostic pop
                 slotptr--;
             }
             return (true);
@@ -1698,7 +1704,7 @@ bool MN_Responder(event_t * event)
         {
             if (isalpha(charTyped))
             {
-                *textBuffer++ = toupper(charTyped);
+                *textBuffer++ = static_cast<char>(toupper(charTyped));
                 *textBuffer = ASCII_CURSOR;
                 slotptr++;
                 return (true);
@@ -1707,7 +1713,7 @@ bool MN_Responder(event_t * event)
              || charTyped == ',' || charTyped == '.' || charTyped == '-'
              || charTyped == '!')
             {
-                *textBuffer++ = charTyped;
+                *textBuffer++ = static_cast<char>(charTyped);
                 *textBuffer = ASCII_CURSOR;
                 slotptr++;
                 return (true);
