@@ -3763,7 +3763,7 @@ mobjinfo_t mobjinfo[NUMMOBJTYPES] =
         100,        //mass
         20,     //damage
         sfx_None,       //activesound
-        MF_NOBLOCKMAP|MF_NOGRAVITY|MF_DROPOFF|MF_MISSILE|MF_SPECTRAL,       //flags
+        static_cast<unsigned int>(MF_NOBLOCKMAP|MF_NOGRAVITY|MF_DROPOFF|MF_MISSILE|MF_SPECTRAL),       //flags
         nullptr,       //namepointer
     },
 
@@ -3790,7 +3790,7 @@ mobjinfo_t mobjinfo[NUMMOBJTYPES] =
         100,        //mass
         70,     //damage
         sfx_None,       //activesound
-        MF_NOBLOCKMAP|MF_NOGRAVITY|MF_DROPOFF|MF_MISSILE|MF_SPECTRAL,       //flags
+        static_cast<unsigned int>(MF_NOBLOCKMAP|MF_NOGRAVITY|MF_DROPOFF|MF_MISSILE|MF_SPECTRAL),       //flags
         nullptr,       //namepointer
     },
 
@@ -3817,7 +3817,7 @@ mobjinfo_t mobjinfo[NUMMOBJTYPES] =
         100,        //mass
         20,     //damage
         sfx_None,       //activesound
-        MF_NOBLOCKMAP|MF_NOGRAVITY|MF_DROPOFF|MF_MISSILE|MF_SPECTRAL,       //flags
+        static_cast<unsigned int>(MF_NOBLOCKMAP|MF_NOGRAVITY|MF_DROPOFF|MF_MISSILE|MF_SPECTRAL),       //flags
         nullptr,       //namepointer
     },
 
