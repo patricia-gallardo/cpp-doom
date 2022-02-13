@@ -43,7 +43,7 @@ ticcmd_t *netcmds;
 static void PlayerQuitGame(player_t *player)
 {
     static char  exitmsg[80];
-    auto player_num = static_cast<char>(player - players);
+    auto player_num = static_cast<unsigned int>(player - players);
 
     // Do this the same way as Vanilla Doom does, to allow dehacked
     // replacements of this message
@@ -51,9 +51,9 @@ static void PlayerQuitGame(player_t *player)
     M_StringCopy(exitmsg, DEH_String("Player 1 left the game"),
         sizeof(exitmsg));
 
-    exitmsg[7] += player_num;
+    exitmsg[7] = static_cast<char>(exitmsg[7] + player_num);
 
-    playeringame[static_cast<int>(player_num)]       = false;
+    playeringame[player_num]       = false;
     players[consoleplayer].message = exitmsg;
     // [crispy] don't interpolate players who left the game
     player->mo->interp = false;

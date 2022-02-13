@@ -130,8 +130,8 @@ static void PCSound_Mix_Callback(void *, Uint8 *stream, int len)
 
         // Use the same value for the left and right channels.
 
-        *leftptr += static_cast<Sint16>(this_value);
-        *rightptr += static_cast<Sint16>(this_value);
+        *leftptr  = static_cast<Sint16>(*leftptr + this_value);
+        *rightptr = static_cast<Sint16>(*rightptr + this_value);
 
         leftptr += 2;
         rightptr += 2;
