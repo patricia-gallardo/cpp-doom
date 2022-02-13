@@ -23,7 +23,7 @@
 #include "memory.hpp"
 #include "opl_queue.hpp"
 
-#define MAX_OPL_QUEUE 64
+constexpr auto MAX_OPL_QUEUE = 64;
 
 typedef struct
 {
@@ -66,9 +66,6 @@ void OPL_Queue_Push(opl_callback_queue_t *queue,
                     opl_callback_t callback, void *data,
                     uint64_t time)
 {
-    int entry_id;
-    int parent_id;
-
     if (queue->num_entries >= MAX_OPL_QUEUE)
     {
         fprintf(stderr, "OPL_Queue_Push: Exceeded maximum callbacks\n");
@@ -77,14 +74,14 @@ void OPL_Queue_Push(opl_callback_queue_t *queue,
 
     // Add to last queue entry.
 
-    entry_id = static_cast<int>(queue->num_entries);
+    int entry_id = static_cast<int>(queue->num_entries);
     ++queue->num_entries;
 
     // Shift existing entries down in the heap.
 
     while (entry_id > 0)
     {
-        parent_id = (entry_id - 1) / 2;
+        int parent_id = (entry_id - 1) / 2;
 
         // Is the heap condition satisfied?
 
@@ -138,8 +135,8 @@ int OPL_Queue_Pop(opl_callback_queue_t *queue,
 
     for (;;)
     {
-        unsigned int child1 = static_cast<unsigned int>(i * 2 + 1);
-        unsigned int child2 = static_cast<unsigned int>(i * 2 + 2);
+        auto child1 = static_cast<unsigned int>(i * 2 + 1);
+        auto child2 = static_cast<unsigned int>(i * 2 + 2);
 
         if (child1 < queue->num_entries
          && queue->entries[child1].time < entry->time)

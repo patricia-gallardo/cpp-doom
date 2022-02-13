@@ -21,53 +21,52 @@
 
 #include <cinttypes>
 
-typedef void (*opl_callback_t)(void *data);
+using opl_callback_t = void (*)(void *);
 
 // Result from OPL_Init(), indicating what type of OPL chip was detected,
 // if any.
-typedef enum
+enum opl_init_result_t
 {
     OPL_INIT_NONE,
     OPL_INIT_OPL2,
     OPL_INIT_OPL3,
-} opl_init_result_t;
+};
 
-typedef enum
+enum opl_port_t
 {
     OPL_REGISTER_PORT = 0,
     OPL_DATA_PORT = 1,
     OPL_REGISTER_PORT_OPL3 = 2
-} opl_port_t;
+};
 
-#define OPL_NUM_OPERATORS   21
-#define OPL_NUM_VOICES      9
+constexpr auto OPL_NUM_OPERATORS = 21;
+constexpr auto OPL_NUM_VOICES    = 9;
 
-#define OPL_REG_WAVEFORM_ENABLE   0x01
-#define OPL_REG_TIMER1            0x02
-#define OPL_REG_TIMER2            0x03
-#define OPL_REG_TIMER_CTRL        0x04
-#define OPL_REG_FM_MODE           0x08
-#define OPL_REG_NEW               0x105
+constexpr auto OPL_REG_WAVEFORM_ENABLE = 0x01;
+constexpr auto OPL_REG_TIMER1          = 0x02;
+constexpr auto OPL_REG_TIMER2          = 0x03;
+constexpr auto OPL_REG_TIMER_CTRL      = 0x04;
+constexpr auto OPL_REG_FM_MODE         = 0x08;
+constexpr auto OPL_REG_NEW             = 0x105;
 
 // Operator registers (21 of each):
 
-#define OPL_REGS_TREMOLO          0x20
-#define OPL_REGS_LEVEL            0x40
-#define OPL_REGS_ATTACK           0x60
-#define OPL_REGS_SUSTAIN          0x80
-#define OPL_REGS_WAVEFORM         0xE0
+constexpr auto OPL_REGS_TREMOLO  = 0x20;
+constexpr auto OPL_REGS_LEVEL    = 0x40;
+constexpr auto OPL_REGS_ATTACK   = 0x60;
+constexpr auto OPL_REGS_SUSTAIN  = 0x80;
+constexpr auto OPL_REGS_WAVEFORM = 0xE0;
 
 // Voice registers (9 of each):
 
-#define OPL_REGS_FREQ_1           0xA0
-#define OPL_REGS_FREQ_2           0xB0
-#define OPL_REGS_FEEDBACK         0xC0
+constexpr auto OPL_REGS_FREQ_1   = 0xA0;
+constexpr auto OPL_REGS_FREQ_2   = 0xB0;
+constexpr auto OPL_REGS_FEEDBACK = 0xC0;
 
 // Times
 
-#define OPL_SECOND (static_cast<uint64_t>(1000 * 1000))
-#define OPL_MS     (static_cast<uint64_t>(1000))
-#define OPL_US     (static_cast<uint64_t>(1))
+constexpr auto OPL_SECOND = (static_cast<uint64_t>(1000 * 1000));
+constexpr auto OPL_MS     = (static_cast<uint64_t>(1000));
 
 //
 // Low-level functions.

@@ -22,7 +22,6 @@
 #include "deh_main.hpp"
 
 #include "z_zone.hpp"
-#include "doomkeys.hpp"
 #include "doomdef.hpp"
 #include "st_stuff.hpp"
 #include "p_local.hpp"
@@ -51,20 +50,17 @@ extern bool inhelpscreens; // [crispy]
 
 
 // For use if I do walls with outsides/insides
-#define REDS        (256 - 5 * 16)
-#define REDRANGE    16
-#define BLUES       (256 - 4 * 16 + 8)
-#define BLUERANGE   8
-#define GREENS      (7 * 16)
-#define GREENRANGE  16
-#define GRAYS       (6 * 16)
-#define GRAYSRANGE  16
-#define BROWNS      (4 * 16)
-#define BROWNRANGE  16
-#define YELLOWS     (256 - 32 + 7)
-#define YELLOWRANGE 1
-#define BLACK       0
-#define WHITE       (256 - 47)
+constexpr auto REDS        = (256 - 5 * 16);
+constexpr auto REDRANGE    = 16;
+constexpr auto BLUES       = (256 - 4 * 16 + 8);
+constexpr auto GREENS      = (7 * 16);
+constexpr auto GREENRANGE  = 16;
+constexpr auto GRAYS       = (6 * 16);
+constexpr auto GRAYSRANGE  = 16;
+constexpr auto BROWNS      = (4 * 16);
+constexpr auto YELLOWS     = (256 - 32 + 7);
+constexpr auto BLACK       = 0;
+constexpr auto WHITE       = (256 - 47);
 
 // Automap colors
 #define BACKGROUND       BLACK

@@ -91,10 +91,10 @@ static int CallbackWaiting(uint64_t *next_time)
 
 static uint64_t GetNextTime()
 {
-    opl_callback_t callback{};
-    void *callback_data = nullptr;
-    uint64_t next_time;
-    int have_callback;
+    opl_callback_t callback {};
+    void          *callback_data = nullptr;
+    uint64_t       next_time     = 0;
+    int            have_callback = 0;
 
     // Keep running through callbacks until there are none ready to
     // run. When we run out of callbacks, next_time will be set.

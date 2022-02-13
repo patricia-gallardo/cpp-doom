@@ -31,7 +31,7 @@
 
 #include "opl_queue.hpp"
 
-#define MAX_SOUND_SLICE_TIME 100 /* ms */
+constexpr auto MAX_SOUND_SLICE_TIME = 100; /* ms */
 
 typedef struct
 {
@@ -93,9 +93,9 @@ static Uint16 mixing_format;
 
 static int SDLIsInitialized()
 {
-    int freq, channels;
-    Uint16 format;
-
+    int    freq     = 0;
+    int    channels = 0;
+    Uint16 format   = 0;
     return Mix_QuerySpec(&freq, &format, &channels);
 }
 
@@ -104,15 +104,14 @@ static int SDLIsInitialized()
 
 static void AdvanceTime(unsigned int nsamples)
 {
-    opl_callback_t callback;
-    void *callback_data;
-    uint64_t us;
+    opl_callback_t callback{};
+    void *callback_data = nullptr;
 
     SDL_LockMutex(callback_queue_mutex);
 
     // Advance time.
 
-    us = static_cast<uint64_t>(nsamples * OPL_SECOND) / static_cast<unsigned long long int>(mixing_freq);
+    uint64_t us = static_cast<uint64_t>(nsamples * OPL_SECOND) / static_cast<unsigned long long int>(mixing_freq);
     current_time += us;
 
     if (opl_sdl_paused)
@@ -172,17 +171,14 @@ static void FillBuffer(uint8_t *buffer, unsigned int nsamples)
 
 static void OPL_Mix_Callback(void *, Uint8 *buffer, int len)
 {
-    unsigned int filled, buffer_samples;
-
     // Repeatedly call the OPL emulator update function until the buffer is
     // full.
-    filled = 0;
-    buffer_samples = static_cast<unsigned int>(len / 4);
+    unsigned int filled = 0;
+    auto buffer_samples = static_cast<unsigned int>(len / 4);
 
     while (filled < buffer_samples)
     {
-        uint64_t next_callback_time;
-        uint64_t nsamples;
+        uint64_t nsamples = 0;
 
         SDL_LockMutex(callback_queue_mutex);
 
@@ -196,7 +192,7 @@ static void OPL_Mix_Callback(void *, Uint8 *buffer, int len)
         }
         else
         {
-            next_callback_time = OPL_Queue_Peek(callback_queue) + pause_offset;
+            uint64_t next_callback_time = OPL_Queue_Peek(callback_queue) + pause_offset;
 
             nsamples = (next_callback_time - current_time) * static_cast<unsigned long long int>(mixing_freq);
             nsamples = (nsamples + OPL_SECOND - 1) / OPL_SECOND;
@@ -377,14 +373,12 @@ static unsigned int OPL_SDL_PortRead(opl_port_t port)
 
 static void OPLTimer_CalculateEndTime(opl_timer_t *timer)
 {
-    int tics;
-
     // If the timer is enabled, calculate the time when the timer
     // will expire.
 
     if (timer->enabled)
     {
-        tics = static_cast<int>(0x100 - timer->value);
+        int tics = static_cast<int>(0x100 - timer->value);
         timer->expire_time = current_time
                            + (static_cast<uint64_t>(static_cast<unsigned long long int>(tics) * OPL_SECOND)) / timer->rate;
     }
