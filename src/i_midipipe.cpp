@@ -131,7 +131,7 @@ static bool UsingNativeMidi()
 static bool WritePipe(net_packet_t *packet)
 {
     DWORD bytes_written;
-    BOOL  ok = WriteFile(midi_process_in_writer, packet->data, packet->len,
+    BOOL  ok = WriteFile(midi_process_in_writer, packet->data, static_cast<DWORD>(packet->len),
         &bytes_written, nullptr);
 
     return ok;
@@ -176,7 +176,7 @@ static bool ExpectPipe(net_packet_t *packet)
         }
 
         // Read precisely the number of bytes we're expecting, and no more.
-        ok = ReadFile(midi_process_out_reader, pipe_buffer, packet->len,
+        ok = ReadFile(midi_process_out_reader, pipe_buffer, static_cast<DWORD>(packet->len),
             &pipe_buffer_read, nullptr);
         if (!ok || pipe_buffer_read != packet->len)
         {

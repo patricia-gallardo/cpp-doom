@@ -175,8 +175,8 @@ static unsigned int WaitForProcessExit(HANDLE subprocess)
 static void ConcatWCString(wchar_t *buf, const char *value)
 {
     MultiByteToWideChar(CP_OEMCP, 0,
-                        value, strlen(value) + 1,
-                        buf + wcslen(buf), strlen(value) + 1);
+                        value, static_cast<int>(strlen(value) + 1),
+                        buf + wcslen(buf), static_cast<int>(strlen(value) + 1));
 }
 
 // Build the command line string, a wide character string of the form:

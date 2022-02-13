@@ -1291,7 +1291,7 @@ void AM_drawPlayers()
         // villsa [STRIFE] don't draw cheating player arrow.
         // Player arrow is yellow instead of white
         AM_drawLineCharacter
-		(player_arrow, std::size(player_arrow), 0, plr->mo->angle,
+		(player_arrow, static_cast<int>(std::size(player_arrow)), 0, plr->mo->angle,
 		 224, plr->mo->x, plr->mo->y);
 	return;
     }
@@ -1315,7 +1315,7 @@ void AM_drawPlayers()
 	    color = their_colors[their_color];
 	
 	AM_drawLineCharacter
-	    (player_arrow, std::size(player_arrow), 0, p->mo->angle,
+	    (player_arrow, static_cast<int>(std::size(player_arrow)), 0, p->mo->angle,
 	     color, p->mo->x, p->mo->y);
     }
 
@@ -1356,7 +1356,7 @@ void AM_drawThings()
                 radius = (16<<FRACBITS);
             }
 
-            AM_drawLineCharacter (thintriangle_guy, std::size(thintriangle_guy),
+            AM_drawLineCharacter (thintriangle_guy, static_cast<int>(std::size(thintriangle_guy)),
                 radius, t->angle, colors, t->x, t->y);
 
             t = t->snext;

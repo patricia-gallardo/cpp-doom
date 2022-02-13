@@ -1578,10 +1578,10 @@ void AM_drawPlayers()
         }
 
         if (cheating)
-            AM_drawLineCharacter(cheat_player_arrow, std::size(cheat_player_arrow), 0,
+            AM_drawLineCharacter(cheat_player_arrow, static_cast<int>(std::size(cheat_player_arrow)), 0,
                 plr->mo->angle, WHITE, static_cast<fixed_t>(pt.x), static_cast<fixed_t>(pt.y));
         else
-            AM_drawLineCharacter(player_arrow, std::size(player_arrow), 0, plr->mo->angle,
+            AM_drawLineCharacter(player_arrow, static_cast<int>(std::size(player_arrow)), 0, plr->mo->angle,
                 WHITE, static_cast<fixed_t>(pt.x), static_cast<fixed_t>(pt.y));
         return;
     }
@@ -1609,7 +1609,7 @@ void AM_drawPlayers()
             AM_rotatePoint(&pt);
         }
 
-        AM_drawLineCharacter(player_arrow, std::size(player_arrow), 0, p->mo->angle,
+        AM_drawLineCharacter(player_arrow, static_cast<int>(std::size(player_arrow)), 0, p->mo->angle,
             color, static_cast<fixed_t>(pt.x), static_cast<fixed_t>(pt.y));
     }
 }
@@ -1665,7 +1665,7 @@ void AM_drawThings(int colors, int)
                 // [crispy] draw keys as crosses in their respective colors
                 if (key > no_key)
                 {
-                    AM_drawLineCharacter(cross_mark, std::size(cross_mark),
+                    AM_drawLineCharacter(cross_mark, static_cast<int>(std::size(cross_mark)),
                         16 << FRACBITS, t->angle,
                         (key == red_key) ? REDS :
                                            (key == yellow_key) ? YELLOWS :
@@ -1677,14 +1677,14 @@ void AM_drawThings(int colors, int)
                     // [crispy] draw blood splats and puffs as small squares
                     if (t->type == MT_BLOOD || t->type == MT_PUFF)
                 {
-                    AM_drawLineCharacter(square_mark, std::size(square_mark),
+                    AM_drawLineCharacter(square_mark, static_cast<int>(std::size(square_mark)),
                         t->radius >> 2, t->angle,
                         (t->type == MT_BLOOD) ? REDS : GRAYS,
                         static_cast<fixed_t>(pt.x), static_cast<fixed_t>(pt.y));
                 }
                 else
                 {
-                    AM_drawLineCharacter(thintriangle_guy, std::size(thintriangle_guy),
+                    AM_drawLineCharacter(thintriangle_guy, static_cast<int>(std::size(thintriangle_guy)),
                         // [crispy] triangle size represents actual thing size
                         t->radius, t->angle,
                         // [crispy] show countable kills in red ...
@@ -1703,7 +1703,7 @@ void AM_drawThings(int colors, int)
             }
             else
             {
-                AM_drawLineCharacter(thintriangle_guy, std::size(thintriangle_guy),
+                AM_drawLineCharacter(thintriangle_guy, static_cast<int>(std::size(thintriangle_guy)),
                     16 << FRACBITS, t->angle, colors + lightlev, t->x, t->y);
             }
             t = t->snext;

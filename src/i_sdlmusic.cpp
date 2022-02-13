@@ -494,7 +494,7 @@ static snddevice_t music_sdl_devices[] = {
 
 music_module_t music_sdl_module = {
     music_sdl_devices,
-    std::size(music_sdl_devices),
+    static_cast<int>(std::size(music_sdl_devices)),
     I_SDL_InitMusic,
     I_SDL_ShutdownMusic,
     I_SDL_SetMusicVolume,
