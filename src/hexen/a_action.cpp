@@ -409,7 +409,7 @@ void A_BridgeOrbit(mobj_t * actor)
     {
         P_SetMobjState(actor, S_NULL);
     }
-    actor->args[0] += static_cast<uint8_t>(3u);
+    actor->args[0] = static_cast<uint8_t>(actor->args[0] + 3);
     actor->x = actor->target->x + orbitTableX[actor->args[0]];
     actor->y = actor->target->y + orbitTableY[actor->args[0]];
     actor->z = actor->target->z;
@@ -864,7 +864,7 @@ bool A_LocalQuake(uint8_t *args, mobj_t *)
             if (focus)
             {
                 focus->args[0] = args[0];
-                focus->args[1] = args[1] >> 1u;  // decremented every 2 tics
+                focus->args[1] = static_cast<uint8_t>(args[1] >> 1);  // decremented every 2 tics
                 focus->args[2] = args[2];
                 focus->args[3] = args[3];
                 focus->args[4] = args[4];
