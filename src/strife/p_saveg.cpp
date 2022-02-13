@@ -379,7 +379,7 @@ static void saveg_read_mobj_t(mobj_t *str)
     str->state = &states[saveg_read32()];
 
     // int flags;
-    str->flags = saveg_read32();
+    str->flags = static_cast<unsigned int>(saveg_read32());
 
     // int health;
     str->health = saveg_read32();
@@ -500,7 +500,7 @@ static void saveg_write_mobj_t(mobj_t *str)
     saveg_write32(static_cast<int>(str->state - states));
 
     // int flags;
-    saveg_write32(str->flags);
+    saveg_write32(static_cast<int>(str->flags));
 
     // int health;
     saveg_write32(str->health);

@@ -386,7 +386,7 @@ typedef struct vissprite_s {
     lighttable_t *colormap[2];
     uint8_t      *brightmap;
 
-    int mobjflags;
+    size_t mobjflags;
     // [crispy] color translation table for blood colored by monster class
     uint8_t *translation;
 #ifdef CRISPY_TRUECOLOR

@@ -212,8 +212,8 @@ void F_StartFinale ()
                 slideshow_state = SLIDE_BADEND1;  // - Humanity goes extinct
             else
             {
-                if((players[0].questflags & QF_QUEST25) && // Converter destroyed
-                   (players[0].questflags & QF_QUEST27))   // Computer destroyed (wtf?!)
+                if((static_cast<unsigned int>(players[0].questflags) & QF_QUEST25) && // Converter destroyed
+                   (static_cast<unsigned int>(players[0].questflags) & QF_QUEST27))   // Computer destroyed (wtf?!)
                 {
                     // Good ending - You get the hot babe.
                     slideshow_state = SLIDE_GOODEND1; 

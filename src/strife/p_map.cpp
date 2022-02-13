@@ -165,7 +165,7 @@ bool P_TeleportMove(mobj_t*  thing, fixed_t  x, fixed_t  y)
     
     // kill anything occupying the position
     tmthing = thing;
-    tmflags = thing->flags;
+    tmflags = static_cast<int>(thing->flags);
 
     tmx = x;
     tmy = y;
@@ -443,7 +443,7 @@ P_CheckPosition
     subsector_t*    newsubsec;
 
     tmthing = thing;
-    tmflags = thing->flags;
+    tmflags = static_cast<int>(thing->flags);
 
     tmx = x;
     tmy = y;
@@ -469,7 +469,7 @@ P_CheckPosition
     validcount++;
     numspechit = 0;
 
-    if ( tmflags & MF_NOCLIP )
+    if (static_cast<unsigned int>(tmflags) & MF_NOCLIP )
         return true;
     
     // Check things first, possibly picking things up.
@@ -609,7 +609,7 @@ bool P_CheckPositionZ(mobj_t* thing, fixed_t height)
     thing->z = height;
 
     tmthing = thing;
-    tmflags = thing->flags;
+    tmflags = static_cast<int>(thing->flags);
     tmx = x;
     tmy = y;
 
@@ -629,7 +629,7 @@ bool P_CheckPositionZ(mobj_t* thing, fixed_t height)
     tmfloorz = tmdropoffz = newsubsec->sector->floorheight;
     tmceilingz = newsubsec->sector->ceilingheight;
 
-    if(tmflags & MF_NOCLIP)
+    if(static_cast<unsigned int>(tmflags) & MF_NOCLIP)
         return true;
 
     // Check things first, possibly picking things up.

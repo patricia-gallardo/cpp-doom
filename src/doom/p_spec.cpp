@@ -379,7 +379,7 @@ fixed_t
         {
             heightlist_size = heightlist_size ? 2 * heightlist_size : MAX_ADJOINING_SECTORS;
         } while (sec->linecount > heightlist_size);
-        heightlist = static_cast<decltype(heightlist)>(I_Realloc(heightlist, heightlist_size * sizeof(*heightlist)));
+        heightlist = static_cast<decltype(heightlist)>(I_Realloc(heightlist, static_cast<unsigned long>(heightlist_size) * sizeof(*heightlist)));
     }
 
     for (i = 0, h = 0; i < sec->linecount; i++)
@@ -1643,7 +1643,7 @@ void P_SpawnSpecials()
             {
                 if (sectors[secnum].tag == lines[i].tag)
                 {
-                    sectors[secnum].sky = i | PL_SKYFLAT;
+                    sectors[secnum].sky = static_cast<int>(static_cast<unsigned int>(i) | PL_SKYFLAT);
                 }
             }
         }

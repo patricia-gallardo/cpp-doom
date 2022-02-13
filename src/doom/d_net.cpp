@@ -180,7 +180,7 @@ static void InitConnectData(net_connect_data_t *connect_data)
 
     if (M_CheckParm("-right") > 0)
     {
-        viewangleoffset     = ANG270;
+        viewangleoffset     = static_cast<int>(ANG270);
         connect_data->drone = true;
     }
 

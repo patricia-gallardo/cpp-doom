@@ -174,9 +174,9 @@ int P_PointOnDivlineSide(fixed_t x,
     dy = (y - line->y);
 
     // try to quickly decide by looking at sign bits
-    if ((line->dy ^ line->dx ^ dx ^ dy) & 0x80000000)
+    if ((static_cast<unsigned int>(line->dy ^ line->dx ^ dx ^ dy)) & 0x80000000)
     {
-        if ((line->dy ^ dx) & 0x80000000)
+        if ((static_cast<unsigned int>(line->dy ^ dx)) & 0x80000000)
             return 1; // (left is negative)
         return 0;
     }
@@ -526,7 +526,7 @@ intercept_t *       intercept_p;
 static void check_intercept()
 {
     static size_t num_intercepts;
-    const size_t  offset = intercept_p - intercepts;
+    const size_t  offset = static_cast<size_t>(intercept_p - intercepts);
 
     if (offset >= num_intercepts)
     {

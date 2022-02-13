@@ -86,7 +86,7 @@ void R_InstallSpriteLump(int lump, unsigned frame, unsigned rotation,
         I_Error("R_InstallSpriteLump: Bad frame characters in lump %i", lump);
 
     if (static_cast<int>(frame) > maxframe)
-        maxframe = frame;
+        maxframe = static_cast<int>(frame);
 
     if (rotation == 0)
     {
@@ -158,7 +158,7 @@ void R_InitSpriteDefs(const char **namelist)
     if (!numsprites)
         return;
 
-    sprites = zmalloc<spritedef_t *>(numsprites * sizeof(*sprites), PU_STATIC, nullptr);
+    sprites = zmalloc<spritedef_t *>(static_cast<unsigned long>(numsprites) * sizeof(*sprites), PU_STATIC, nullptr);
 
     start = firstspritelump - 1;
     end = lastspritelump + 1;
@@ -181,12 +181,12 @@ void R_InitSpriteDefs(const char **namelist)
             {
                 frame = lumpinfo[l]->name[4] - 'A';
                 rotation = lumpinfo[l]->name[5] - '0';
-                R_InstallSpriteLump(l, frame, rotation, false);
+                R_InstallSpriteLump(l, static_cast<unsigned int>(frame), static_cast<unsigned int>(rotation), false);
                 if (lumpinfo[l]->name[6])
                 {
                     frame = lumpinfo[l]->name[6] - 'A';
                     rotation = lumpinfo[l]->name[7] - '0';
-                    R_InstallSpriteLump(l, frame, rotation, true);
+                    R_InstallSpriteLump(l, static_cast<unsigned int>(frame), static_cast<unsigned int>(rotation), true);
                 }
             }
 
@@ -228,9 +228,8 @@ void R_InitSpriteDefs(const char **namelist)
         //
         sprites[i].numframes = maxframe;
         sprites[i].spriteframes =
-            zmalloc<spriteframe_t *>(maxframe * sizeof(spriteframe_t), PU_STATIC, nullptr);
-        memcpy(sprites[i].spriteframes, sprtemp,
-               maxframe * sizeof(spriteframe_t));
+            zmalloc<spriteframe_t *>(static_cast<unsigned long>(maxframe) * sizeof(spriteframe_t), PU_STATIC, nullptr);
+        memcpy(sprites[i].spriteframes, sprtemp, static_cast<unsigned long>(maxframe) * sizeof(spriteframe_t));
     }
 
 }
@@ -315,8 +314,8 @@ vissprite_t *R_NewVisSprite()
         return &overflowsprite;
 
 	numvissprites = numvissprites ? 2 * numvissprites : MAXVISSPRITES;
-	vissprites = static_cast<vissprite_t *>(I_Realloc(vissprites, numvissprites * sizeof(*vissprites)));
-	memset(vissprites + numvissprites_old, 0, (numvissprites - numvissprites_old) * sizeof(*vissprites));
+	vissprites = static_cast<vissprite_t *>(I_Realloc(vissprites, static_cast<unsigned long>(numvissprites) * sizeof(*vissprites)));
+	memset(vissprites + numvissprites_old, 0, (static_cast<unsigned long>(numvissprites - numvissprites_old)) * sizeof(*vissprites));
 
 	vissprite_p = vissprites + numvissprites_old;
 

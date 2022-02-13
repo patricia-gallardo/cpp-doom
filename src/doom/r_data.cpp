@@ -225,7 +225,7 @@ void R_DrawColumnInCache(column_t *patch, uint8_t *cache,
 
         if (count > 0)
         {
-            memcpy(cache + position, source, count);
+            memcpy(cache + position, source, static_cast<size_t>(count));
 
             // killough 4/9/98: remember which cells in column have been drawn,
             // so that column can later be converted into a series of posts, to
@@ -266,7 +266,7 @@ void R_GenerateComposite(int texnum)
 
     texture = textures[texnum];
 
-    block = zmalloc<decltype(block)>(texturecompositesize[texnum],
+    block = zmalloc<decltype(block)>(static_cast<size_t>(texturecompositesize[texnum]),
         PU_STATIC,
         &texturecomposite[texnum]);
 
@@ -277,10 +277,10 @@ void R_GenerateComposite(int texnum)
     patch = texture->patches;
 
     // killough 4/9/98: marks to identify transparent regions in merged textures
-    marks = static_cast<decltype(marks)>(calloc(texture->width, texture->height));
+    marks = static_cast<decltype(marks)>(calloc(static_cast<size_t>(texture->width), static_cast<size_t>(texture->height)));
 
     // [crispy] initialize composite background to black (index 0)
-    memset(block, 0, texturecompositesize[texnum]);
+    memset(block, 0, static_cast<size_t>(texturecompositesize[texnum]));
 
     for (i = 0, patch = texture->patches;
          i < texture->patchcount;
@@ -408,8 +408,8 @@ void R_GenerateLookup(int texnum)
     //  that are covered by more than one patch.
     // Fill in the lump / offset, so columns
     //  with only a single patch are all done.
-    patchcount = zmalloc<uint8_t *>(texture->width, PU_STATIC, &patchcount);
-    postcount  = zmalloc<uint8_t *>(texture->width, PU_STATIC, &postcount);
+    patchcount = zmalloc<uint8_t *>(static_cast<size_t>(texture->width), PU_STATIC, &patchcount);
+    postcount  = zmalloc<uint8_t *>(static_cast<size_t>(texture->width), PU_STATIC, &postcount);
     memset(patchcount, 0, static_cast<size_t>(texture->width));
     memset(postcount, 0, static_cast<size_t>(texture->width));
     patch = texture->patches;
@@ -585,7 +585,7 @@ static void GenerateTextureHashTable()
     int         i;
     int         key;
 
-    textures_hashtable = zmalloc<decltype(textures_hashtable)>(static_cast<int>(sizeof(texture_t *) * static_cast<unsigned long>(numtextures)), PU_STATIC, 0);
+    textures_hashtable = zmalloc<decltype(textures_hashtable)>(sizeof(texture_t *) * static_cast<unsigned long>(numtextures), PU_STATIC, 0);
 
     memset(textures_hashtable, 0, sizeof(texture_t *) * static_cast<unsigned long>(numtextures));
 
@@ -748,7 +748,7 @@ void R_InitTextures()
 
     // [crispy] fill up the patch lookup table
     name[8]     = 0;
-    patchlookup = zmalloc<decltype(patchlookup)>(static_cast<int>(static_cast<unsigned long>(nummappatches) * sizeof(*patchlookup)), PU_STATIC, nullptr);
+    patchlookup = zmalloc<decltype(patchlookup)>(static_cast<unsigned long>(nummappatches) * sizeof(*patchlookup), PU_STATIC, nullptr);
     for (i = 0, k = 0; i < numpnameslumps; i++)
     {
         for (j = 0; j < pnameslumps[i].nummappatches; j++)
@@ -803,15 +803,15 @@ void R_InitTextures()
     // [crispy] pointer to (i.e. actually before) the first texture file
     texturelump = texturelumps - 1; // [crispy] gets immediately increased below
 
-    textures             = zmalloc<decltype(textures)>(static_cast<int>(static_cast<unsigned long>(numtextures) * sizeof(*textures)), PU_STATIC, 0);
-    texturecolumnlump    = zmalloc<decltype(texturecolumnlump)>(static_cast<int>(static_cast<unsigned long>(numtextures) * sizeof(*texturecolumnlump)), PU_STATIC, 0);
-    texturecolumnofs     = zmalloc<decltype(texturecolumnofs)>(static_cast<int>(static_cast<unsigned long>(numtextures) * sizeof(*texturecolumnofs)), PU_STATIC, 0);
-    texturecolumnofs2    = zmalloc<decltype(texturecolumnofs2)>(static_cast<int>(static_cast<unsigned long>(numtextures) * sizeof(*texturecolumnofs2)), PU_STATIC, 0);
-    texturecomposite     = zmalloc<decltype(texturecomposite)>(static_cast<int>(static_cast<unsigned long>(numtextures) * sizeof(*texturecomposite)), PU_STATIC, 0);
-    texturecompositesize = zmalloc<decltype(texturecompositesize)>(static_cast<int>(static_cast<unsigned long>(numtextures) * sizeof(*texturecompositesize)), PU_STATIC, 0);
-    texturewidthmask     = zmalloc<decltype(texturewidthmask)>(static_cast<int>(static_cast<unsigned long>(numtextures) * sizeof(*texturewidthmask)), PU_STATIC, 0);
-    textureheight        = zmalloc<decltype(textureheight)>(static_cast<int>(static_cast<unsigned long>(numtextures) * sizeof(*textureheight)), PU_STATIC, 0);
-    texturebrightmap     = zmalloc<decltype(texturebrightmap)>(static_cast<int>(static_cast<unsigned long>(numtextures) * sizeof(*texturebrightmap)), PU_STATIC, 0);
+    textures             = zmalloc<decltype(textures)>(static_cast<unsigned long>(numtextures) * sizeof(*textures), PU_STATIC, 0);
+    texturecolumnlump    = zmalloc<decltype(texturecolumnlump)>(static_cast<unsigned long>(numtextures) * sizeof(*texturecolumnlump), PU_STATIC, 0);
+    texturecolumnofs     = zmalloc<decltype(texturecolumnofs)>(static_cast<unsigned long>(numtextures) * sizeof(*texturecolumnofs), PU_STATIC, 0);
+    texturecolumnofs2    = zmalloc<decltype(texturecolumnofs2)>(static_cast<unsigned long>(numtextures) * sizeof(*texturecolumnofs2), PU_STATIC, 0);
+    texturecomposite     = zmalloc<decltype(texturecomposite)>(static_cast<unsigned long>(numtextures) * sizeof(*texturecomposite), PU_STATIC, 0);
+    texturecompositesize = zmalloc<decltype(texturecompositesize)>(static_cast<unsigned long>(numtextures) * sizeof(*texturecompositesize), PU_STATIC, 0);
+    texturewidthmask     = zmalloc<decltype(texturewidthmask)>(static_cast<unsigned long>(numtextures) * sizeof(*texturewidthmask), PU_STATIC, 0);
+    textureheight        = zmalloc<decltype(textureheight)>(static_cast<unsigned long>(numtextures) * sizeof(*textureheight), PU_STATIC, 0);
+    texturebrightmap     = zmalloc<decltype(texturebrightmap)>(static_cast<unsigned long>(numtextures) * sizeof(*texturebrightmap), PU_STATIC, 0);
 
     totalwidth = 0;
 
@@ -932,7 +932,7 @@ void R_InitTextures()
         R_GenerateLookup(i);
 
     // Create translation table for global animation.
-    texturetranslation = zmalloc<decltype(texturetranslation)>(static_cast<int>((static_cast<unsigned long>(numtextures + 1)) * sizeof(*texturetranslation)), PU_STATIC, 0);
+    texturetranslation = zmalloc<decltype(texturetranslation)>((static_cast<unsigned long>(numtextures + 1)) * sizeof(*texturetranslation), PU_STATIC, 0);
 
     for (i = 0; i < numtextures; i++)
         texturetranslation[i] = i;
@@ -953,7 +953,7 @@ void R_InitFlats()
     numflats  = lastflat - firstflat + 1;
 
     // Create translation table for global animation.
-    flattranslation = zmalloc<decltype(flattranslation)>(static_cast<int>((static_cast<unsigned long>(numflats + 1)) * sizeof(*flattranslation)), PU_STATIC, 0);
+    flattranslation = zmalloc<decltype(flattranslation)>((static_cast<unsigned long>(numflats + 1)) * sizeof(*flattranslation), PU_STATIC, 0);
 
     for (i = 0; i < numflats; i++)
         flattranslation[i] = i;
@@ -975,9 +975,9 @@ void R_InitSpriteLumps()
     lastspritelump  = W_GetNumForName(DEH_String("S_END")) - 1;
 
     numspritelumps  = lastspritelump - firstspritelump + 1;
-    spritewidth     = zmalloc<decltype(spritewidth)>(static_cast<int>(static_cast<unsigned long>(numspritelumps) * sizeof(*spritewidth)), PU_STATIC, 0);
-    spriteoffset    = zmalloc<decltype(spriteoffset)>(static_cast<int>(static_cast<unsigned long>(numspritelumps) * sizeof(*spriteoffset)), PU_STATIC, 0);
-    spritetopoffset = zmalloc<decltype(spritetopoffset)>(static_cast<int>(static_cast<unsigned long>(numspritelumps) * sizeof(*spritetopoffset)), PU_STATIC, 0);
+    spritewidth     = zmalloc<decltype(spritewidth)>(static_cast<unsigned long>(numspritelumps) * sizeof(*spritewidth), PU_STATIC, 0);
+    spriteoffset    = zmalloc<decltype(spriteoffset)>(static_cast<unsigned long>(numspritelumps) * sizeof(*spriteoffset), PU_STATIC, 0);
+    spritetopoffset = zmalloc<decltype(spritetopoffset)>(static_cast<unsigned long>(numspritelumps) * sizeof(*spritetopoffset), PU_STATIC, 0);
 
     for (i = 0; i < numspritelumps; i++)
     {
@@ -1367,7 +1367,7 @@ void R_PrecacheLevel()
         return;
 
     // Precache flats.
-    flatpresent = zmalloc<decltype(flatpresent)>(numflats, PU_STATIC, nullptr);
+    flatpresent = zmalloc<decltype(flatpresent)>(static_cast<size_t>(numflats), PU_STATIC, nullptr);
     memset(flatpresent, 0, static_cast<size_t>(numflats));
 
     for (i = 0; i < numsectors; i++)
@@ -1391,7 +1391,7 @@ void R_PrecacheLevel()
     Z_Free(flatpresent);
 
     // Precache textures.
-    texturepresent = zmalloc<decltype(texturepresent)>(numtextures, PU_STATIC, nullptr);
+    texturepresent = zmalloc<decltype(texturepresent)>(static_cast<size_t>(numtextures), PU_STATIC, nullptr);
     memset(texturepresent, 0, static_cast<size_t>(numtextures));
 
     for (i = 0; i < numsides; i++)
@@ -1431,7 +1431,7 @@ void R_PrecacheLevel()
     Z_Free(texturepresent);
 
     // Precache sprites.
-    spritepresent = zmalloc<decltype(spritepresent)>(numsprites, PU_STATIC, nullptr);
+    spritepresent = zmalloc<decltype(spritepresent)>(static_cast<size_t>(numsprites), PU_STATIC, nullptr);
     memset(spritepresent, 0, static_cast<size_t>(numsprites));
 
     action_hook needle = P_MobjThinker;

@@ -78,7 +78,7 @@ void P_CreateBlockMap()
         typedef struct {
             int n, nalloc, *list;
         } bmap_t;                                                         // blocklist structure
-        unsigned tot  = bmapwidth * bmapheight;                           // size of blockmap
+        unsigned tot  = static_cast<unsigned int>(bmapwidth * bmapheight);                           // size of blockmap
         bmap_t * bmap = static_cast<bmap_t *>(calloc(sizeof *bmap, tot)); // array of blocklists
         int      x, y, adx, ady, bend;
 
@@ -117,7 +117,7 @@ void P_CreateBlockMap()
                 if (bmap[b].n >= bmap[b].nalloc)
                     bmap[b].list = static_cast<int *>(I_Realloc(
                         bmap[b].list,
-                        (bmap[b].nalloc = bmap[b].nalloc ? bmap[b].nalloc * 2 : 8) * sizeof *bmap->list));
+                        (static_cast<unsigned long>(bmap[b].nalloc = bmap[b].nalloc ? bmap[b].nalloc * 2 : 8)) * sizeof *bmap->list));
 
                 // Add linedef to end of list
                 bmap[b].list[bmap[b].n++] = i;
@@ -142,19 +142,19 @@ void P_CreateBlockMap()
         // 4 words, unused if this routine is called, are reserved at the start.
 
         {
-            int count = tot + 6; // we need at least 1 word per block, plus reserved's
+            int count = static_cast<int>(tot + 6); // we need at least 1 word per block, plus reserved's
 
             for (unsigned int i = 0; i < tot; i++)
                 if (bmap[i].n)
                     count += bmap[i].n + 2; // 1 header word + 1 trailer word + blocklist
 
             // Allocate blockmap lump with computed count
-            blockmaplump = zmalloc<decltype(blockmaplump)>(sizeof(*blockmaplump) * count, PU_LEVEL, 0);
+            blockmaplump = zmalloc<decltype(blockmaplump)>(sizeof(*blockmaplump) * static_cast<unsigned long>(count), PU_LEVEL, 0);
         }
 
         // Now compress the blockmap.
         {
-            int     ndx = tot += 4; // Advance index to start of linedef lists
+            int     ndx = static_cast<int>(tot += 4); // Advance index to start of linedef lists
             bmap_t *bp  = bmap;     // Start of uncompressed blockmap
 
             blockmaplump[ndx++] = 0;  // Store an empty blockmap list at start
@@ -171,7 +171,7 @@ void P_CreateBlockMap()
                     free(bp->list);           // Free linedef list
                 }
                 else // Empty blocklist: point to reserved empty blocklist
-                    blockmaplump[i] = tot;
+                    blockmaplump[i] = static_cast<int32_t>(tot);
 
             free(bmap); // Free uncompressed blockmap
         }
@@ -180,8 +180,8 @@ void P_CreateBlockMap()
     // [crispy] copied over from P_LoadBlockMap()
     {
         int count  = static_cast<int>(sizeof(*blocklinks)) * bmapwidth * bmapheight;
-        blocklinks = zmalloc<decltype(blocklinks)>(count, PU_LEVEL, 0);
-        memset(blocklinks, 0, count);
+        blocklinks = zmalloc<decltype(blocklinks)>(static_cast<size_t>(count), PU_LEVEL, 0);
+        memset(blocklinks, 0, static_cast<size_t>(count));
         blockmap = blockmaplump + 4;
     }
 

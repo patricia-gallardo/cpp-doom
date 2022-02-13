@@ -2205,22 +2205,22 @@ bool M_Responder(event_t *ev)
             if (ev->data3 < 0)
             {
                 key     = key_menu_up;
-                joywait = I_GetTime() + 5;
+                joywait = static_cast<unsigned int>(I_GetTime() + 5);
             }
             else if (ev->data3 > 0)
             {
                 key     = key_menu_down;
-                joywait = I_GetTime() + 5;
+                joywait = static_cast<unsigned int>(I_GetTime() + 5);
             }
             if (ev->data2 < 0)
             {
                 key     = key_menu_left;
-                joywait = I_GetTime() + 2;
+                joywait = static_cast<unsigned int>(I_GetTime() + 2);
             }
             else if (ev->data2 > 0)
             {
                 key     = key_menu_right;
-                joywait = I_GetTime() + 2;
+                joywait = static_cast<unsigned int>(I_GetTime() + 2);
             }
 
 #define JOY_BUTTON_MAPPED(x)  ((x) >= 0)
@@ -2247,7 +2247,7 @@ bool M_Responder(event_t *ev)
                     }
                     key = key_menu_forward;
                 }
-                joywait = I_GetTime() + 5;
+                joywait = static_cast<unsigned int>(I_GetTime() + 5);
             }
             if (JOY_BUTTON_PRESSED(joybuse))
             {
@@ -2265,13 +2265,13 @@ bool M_Responder(event_t *ev)
                 {
                     key = key_menu_back;
                 }
-                joywait = I_GetTime() + 5;
+                joywait = static_cast<unsigned int>(I_GetTime() + 5);
             }
         }
         if (JOY_BUTTON_PRESSED(joybmenu))
         {
             key     = key_menu_activate;
-            joywait = I_GetTime() + 5;
+            joywait = static_cast<unsigned int>(I_GetTime() + 5);
         }
     }
     else
@@ -2883,7 +2883,7 @@ void M_Drawer()
     // DRAW MENU
     x   = currentMenu->x;
     y   = currentMenu->y;
-    max = currentMenu->numitems;
+    max = static_cast<unsigned int>(currentMenu->numitems);
 
     for (i = 0; i < max; i++)
     {

@@ -88,7 +88,7 @@ void Z_ClearZone(memzone_t *zone)
     // a free block.
     block->tag = PU_FREE;
 
-    block->size = static_cast<int>(zone->size - sizeof(memzone_t));
+    block->size = static_cast<int>(static_cast<unsigned long>(zone->size) - sizeof(memzone_t));
 }
 
 
@@ -117,7 +117,7 @@ void Z_Init()
     // free block
     block->tag = PU_FREE;
 
-    block->size = static_cast<int>(mainzone->size - sizeof(memzone_t));
+    block->size = static_cast<int>(static_cast<unsigned long>(mainzone->size) - sizeof(memzone_t));
 
     // [Deliberately undocumented]
     // Zone memory debugging flag. If set, memory is zeroed after it is freed
@@ -147,7 +147,7 @@ static void ScanForBlock(void *start, void *end)
             // Scan for pointers on the assumption that pointers are aligned
             // on word boundaries (word size depending on pointer size):
             void **mem = reinterpret_cast<void **>(reinterpret_cast<uint8_t *>(block) + sizeof(memblock_t));
-            int len = static_cast<int>((block->size - sizeof(memblock_t)) / sizeof(void *));
+            int len = static_cast<int>((static_cast<unsigned long>(block->size) - sizeof(memblock_t)) / sizeof(void *));
 
             for (int i = 0; i < len; ++i)
             {
@@ -193,7 +193,7 @@ void Z_Free(void *ptr)
     // to break code that depends on reading freed memory.
     if (zero_on_free)
     {
-        memset(ptr, 0, block->size - sizeof(memblock_t));
+        memset(ptr, 0, static_cast<unsigned long>(block->size) - sizeof(memblock_t));
     }
     if (scan_on_free)
     {
@@ -242,7 +242,7 @@ void *
         int      tag,
         void *   user)
 {
-    size = static_cast<int>((size + MEM_ALIGN - 1) & ~(MEM_ALIGN - 1));
+    size = static_cast<int>((static_cast<unsigned long>(size) + MEM_ALIGN - 1) & ~(MEM_ALIGN - 1));
 
     // scan through the block list,
     // looking for the first free block
@@ -529,5 +529,5 @@ int Z_FreeMemory()
 
 unsigned int Z_ZoneSize()
 {
-    return mainzone->size;
+    return static_cast<unsigned int>(mainzone->size);
 }

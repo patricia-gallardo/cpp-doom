@@ -847,7 +847,7 @@ void P_SpawnPlayer(mapthing_t* mthing)
 
     // set color translations for player sprites
     if(mthing->type > 1)
-        mobj->flags |= (mthing->type-1)<<MF_TRANSSHIFT;
+        mobj->flags |= static_cast<unsigned int>((mthing->type - 1) << MF_TRANSSHIFT);
 
     mobj->angle  = ANG45 * (mthing->angle/45);
     mobj->player = p;

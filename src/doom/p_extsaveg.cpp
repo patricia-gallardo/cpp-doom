@@ -199,7 +199,7 @@ static void P_ReadSoundTarget(const char *key)
             == 3
         && !strncmp(string, key, MAX_STRING_LEN))
     {
-        sectors[sector].soundtarget = reinterpret_cast<mobj_t *>(P_IndexToThinker(target));
+        sectors[sector].soundtarget = reinterpret_cast<mobj_t *>(P_IndexToThinker(static_cast<uint32_t>(target)));
     }
 }
 

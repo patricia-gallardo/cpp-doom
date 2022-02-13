@@ -269,7 +269,7 @@ void SHA1_Final(sha1_digest_t digest, sha1_context_t *hd)
     msb = t >> 26;
     /* add the count */
     t = lsb;
-    if ((lsb += hd->count) < t)
+    if ((lsb += static_cast<unsigned int>(hd->count)) < t)
         msb++;
     /* multiply by 8 to make a bit count */
     t = lsb;

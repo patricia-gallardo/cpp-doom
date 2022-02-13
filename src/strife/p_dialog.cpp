@@ -401,7 +401,7 @@ static void P_ParseDialogLump(uint8_t *lump, mapdialog_t **dialogs,
     int i;
     uint8_t *rover = lump;
 
-    *dialogs = zmalloc<mapdialog_t *>(numdialogs * sizeof(mapdialog_t), tag, nullptr);
+    *dialogs = zmalloc<mapdialog_t *>(static_cast<unsigned long>(numdialogs) * sizeof(mapdialog_t), tag, nullptr);
 
     for(i = 0; i < numdialogs; i++)
     {

@@ -963,13 +963,13 @@ void HU_Ticker()
             if (!playeringame[i])
                 continue;
             if (i != consoleplayer
-                && (c = players[i].cmd.chatchar))
+                && (c = static_cast<char>(players[i].cmd.chatchar)))
             {
                 if (c <= HU_BROADCAST)
                     chat_dest[i] = c;
                 else
                 {
-                    rc = HUlib_keyInIText(&w_inputbuffer[i], c);
+                    rc = HUlib_keyInIText(&w_inputbuffer[i], static_cast<unsigned char>(c));
                     if (rc && c == KEY_ENTER)
                     {
                         if (w_inputbuffer[i].l.len
@@ -1242,7 +1242,7 @@ bool HU_Responder(event_t *ev)
             if (eatkey)
             {
                 // static unsigned char buf[20]; // DEBUG
-                HU_queueChatChar(c);
+                HU_queueChatChar(static_cast<char>(c));
 
                 // M_snprintf(buf, sizeof(buf), "KEY: %d => %d", ev->data1, c);
                 //        plr->message = buf;

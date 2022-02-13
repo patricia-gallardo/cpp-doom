@@ -149,7 +149,7 @@ static void saveg_read_pad()
     int           padding;
     int           i;
 
-    pos = ftell(save_stream);
+    pos = static_cast<unsigned long>(ftell(save_stream));
 
     padding = (4 - (pos & 3)) & 3;
 
@@ -165,7 +165,7 @@ static void saveg_write_pad()
     int           padding;
     int           i;
 
-    pos = ftell(save_stream);
+    pos = static_cast<unsigned long>(ftell(save_stream));
 
     padding = (4 - (pos & 3)) & 3;
 
@@ -320,7 +320,7 @@ static void saveg_read_mobj_t(mobj_t *str)
     str->sprev = static_cast<mobj_t *>(saveg_readp());
 
     // angle_t angle;
-    str->angle = saveg_read32();
+    str->angle = static_cast<angle_t>(saveg_read32());
 
     // spritenum_t sprite;
     str->sprite = static_cast<spritenum_t>(saveg_read_enum());
@@ -374,7 +374,7 @@ static void saveg_read_mobj_t(mobj_t *str)
     str->state = &states[saveg_read32()];
 
     // int flags;
-    str->flags = saveg_read32();
+    str->flags = static_cast<unsigned int>(saveg_read32());
 
     // int health;
     str->health = saveg_read32();
@@ -487,7 +487,7 @@ static void saveg_write_mobj_t(mobj_t *str)
     saveg_writep(str->sprev);
 
     // angle_t angle;
-    saveg_write32(str->angle);
+    saveg_write32(static_cast<int>(str->angle));
 
     // spritenum_t sprite;
     saveg_write_enum(str->sprite);
@@ -541,7 +541,7 @@ static void saveg_write_mobj_t(mobj_t *str)
     saveg_write32(static_cast<int>(str->state - states));
 
     // int flags;
-    saveg_write32(str->flags);
+    saveg_write32(static_cast<int>(str->flags));
 
     // int health;
     saveg_write32(str->health);
@@ -599,10 +599,10 @@ static void saveg_read_ticcmd_t(ticcmd_t *str)
 {
 
     // signed char forwardmove;
-    str->forwardmove = saveg_read8();
+    str->forwardmove = static_cast<signed char>(saveg_read8());
 
     // signed char sidemove;
-    str->sidemove = saveg_read8();
+    str->sidemove = static_cast<signed char>(saveg_read8());
 
     // short angleturn;
     str->angleturn = saveg_read16();
@@ -621,10 +621,10 @@ static void saveg_write_ticcmd_t(ticcmd_t *str)
 {
 
     // signed char forwardmove;
-    saveg_write8(str->forwardmove);
+    saveg_write8(static_cast<uint8_t>(str->forwardmove));
 
     // signed char sidemove;
-    saveg_write8(str->sidemove);
+    saveg_write8(static_cast<uint8_t>(str->sidemove));
 
     // short angleturn;
     saveg_write16(str->angleturn);
@@ -1572,7 +1572,7 @@ void P_ArchiveWorld()
     // do lines
     for (i = 0, li = lines; i < numlines; i++, li++)
     {
-        saveg_write16(li->flags);
+        saveg_write16(static_cast<short>(li->flags));
         saveg_write16(li->special);
         saveg_write16(li->tag);
         for (j = 0; j < 2; j++)

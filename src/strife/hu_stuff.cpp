@@ -435,13 +435,13 @@ void HU_Ticker()
             if (!playeringame[i])
                 continue;
             if (i != consoleplayer
-                && (c = players[i].cmd.chatchar))
+                && (c = static_cast<char>(players[i].cmd.chatchar)))
             {
                 if (c <= HU_CHANGENAME) // [STRIFE]: allow HU_CHANGENAME here
                     chat_dest[i] = c;
                 else
                 {
-                    rc = HUlib_keyInIText(&w_inputbuffer[i], c);
+                    rc = HUlib_keyInIText(&w_inputbuffer[i], static_cast<unsigned char>(c));
                     if (rc && c == KEY_ENTER)
                     {
                         if (w_inputbuffer[i].l.len
@@ -616,7 +616,7 @@ bool HU_Responder(event_t *ev)
             {
                 eatkey = HUlib_keyInIText(&w_chat, c);
                 if (eatkey)
-                    HU_queueChatChar(c);
+                    HU_queueChatChar(static_cast<char>(c));
             }
             else
             {
@@ -666,7 +666,7 @@ bool HU_Responder(event_t *ev)
                 {
                     eatkey = HUlib_keyInIText(&w_chat, c);
                     if (eatkey)
-                        HU_queueChatChar(c);
+                        HU_queueChatChar(static_cast<char>(c));
                 }
             }
 

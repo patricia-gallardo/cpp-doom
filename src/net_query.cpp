@@ -227,7 +227,7 @@ static query_target_t *GetTargetForAddr(net_addr_t *addr, bool create)
         return nullptr;
     }
 
-    targets = static_cast<query_target_t *>(I_Realloc(targets, sizeof(query_target_t) * (num_targets + 1)));
+    targets = static_cast<query_target_t *>(I_Realloc(targets, sizeof(query_target_t) * (static_cast<unsigned long>(num_targets + 1))));
 
     target                 = &targets[num_targets];
     target->type           = QUERY_TARGET_SERVER;
@@ -335,7 +335,7 @@ static void NET_Query_ParseResponse(net_addr_t *addr, net_packet_t *packet,
 
         // Calculate RTT.
 
-        target->ping_time = I_GetTimeMS() - target->query_time;
+        target->ping_time = static_cast<unsigned int>(I_GetTimeMS()) - target->query_time;
 
         // Invoke callback to signal that we have a new address.
 
@@ -428,11 +428,11 @@ static void NET_Query_GetResponse(net_query_callback_t callback,
 
 static void SendOneQuery()
 {
-    unsigned int now = I_GetTimeMS();
+    unsigned int now = static_cast<unsigned int>(I_GetTimeMS());
 
     // Rate limit - only send one query every 50ms.
 
-    if (now - last_query_time < 50)
+    if (now - static_cast<unsigned int>(last_query_time) < 50)
     {
         return;
     }
@@ -479,14 +479,14 @@ static void SendOneQuery()
     targets[i].query_time = now;
     ++targets[i].query_attempts;
 
-    last_query_time = now;
+    last_query_time = static_cast<int>(now);
 }
 
 // Time out servers that have been queried and not responded.
 
 static void CheckTargetTimeouts()
 {
-    unsigned int now = I_GetTimeMS();
+    unsigned int now = static_cast<unsigned int>(I_GetTimeMS());
 
     for (int i = 0; i < num_targets; ++i)
     {
@@ -873,7 +873,7 @@ static net_packet_t *BlockForPacket(net_addr_t *addr, unsigned int packet_type,
     net_packet_t *packet;
     net_addr_t *  packet_src;
     unsigned int  read_packet_type;
-    unsigned int  start_time = I_GetTimeMS();
+    unsigned int  start_time = static_cast<unsigned int>(I_GetTimeMS());
 
     while (I_GetTimeMS() < static_cast<int>(start_time + timeout_ms))
     {

@@ -142,7 +142,7 @@ bool
 
     // kill anything occupying the position
     tmthing = thing;
-    tmflags = thing->flags;
+    tmflags = static_cast<int>(thing->flags);
 
     tmx = x;
     tmy = y;
@@ -376,7 +376,7 @@ bool PIT_CheckThing(mobj_t *thing)
     if (thing->flags & MF_SPECIAL)
     {
         solid = (thing->flags & MF_SOLID) != 0;
-        if (tmflags & MF_PICKUP)
+        if (static_cast<unsigned int>(tmflags) & MF_PICKUP)
         {
             // can remove thing
             P_TouchSpecialThing(thing, tmthing);
@@ -500,7 +500,7 @@ bool
     subsector_t *newsubsec;
 
     tmthing = thing;
-    tmflags = thing->flags;
+    tmflags = static_cast<int>(thing->flags);
 
     tmx = x;
     tmy = y;
@@ -523,7 +523,7 @@ bool
     validcount++;
     numspechit = 0;
 
-    if (tmflags & MF_NOCLIP)
+    if (static_cast<unsigned int>(tmflags) & MF_NOCLIP)
         return true;
 
     // Check things first, possibly picking things up.
@@ -1641,7 +1641,7 @@ static void SpechitOverrun(line_t *ld)
     case 10:
     case 11:
     case 12:
-        tmbbox[numspechit - 9] = addr;
+        tmbbox[numspechit - 9] = static_cast<fixed_t>(addr);
         break;
     case 13:
         crushchange = addr;

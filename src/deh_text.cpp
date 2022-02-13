@@ -51,7 +51,8 @@ static int TXT_MaxStringLength(int len)
 
 static void *DEH_TextStart(deh_context_t *context, char *line)
 {
-    int fromlen, tolen;
+    int fromlen;
+    int tolen;
 
     if (sscanf(line, "Text %i %i", &fromlen, &tolen) != 2)
     {

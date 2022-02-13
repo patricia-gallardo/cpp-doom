@@ -835,7 +835,7 @@ void R_DrawSpan()
         // [crispy] fix flats getting more distorted the closer they are to the right
         ytemp = (ds_yfrac >> 10) & 0x0fc0;
         xtemp = (ds_xfrac >> 16) & 0x3f;
-        spot  = xtemp | ytemp;
+        spot  = static_cast<int>(xtemp | ytemp);
 
         // Lookup pixel from flat texture tile,
         //  re-index using light/colormap.
@@ -1059,7 +1059,7 @@ void R_FillBackScreen()
 
     if (background_buffer == nullptr)
     {
-        background_buffer = zmalloc<decltype(background_buffer)>(MAXWIDTH * (MAXHEIGHT - SBARHEIGHT) * sizeof(*background_buffer),
+        background_buffer = zmalloc<decltype(background_buffer)>(static_cast<size_t>(MAXWIDTH * (MAXHEIGHT - SBARHEIGHT)) * sizeof(*background_buffer),
             PU_STATIC, nullptr);
     }
 
@@ -1149,7 +1149,7 @@ void R_VideoErase(unsigned ofs,
 
     if (background_buffer != nullptr)
     {
-        memcpy(I_VideoBuffer + ofs, background_buffer + ofs, count * sizeof(*I_VideoBuffer));
+        memcpy(I_VideoBuffer + ofs, background_buffer + ofs, static_cast<unsigned long>(count) * sizeof(*I_VideoBuffer));
     }
 }
 

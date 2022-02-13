@@ -44,7 +44,7 @@ static int GetFileNumber(wad_file_t *handle)
     // Allocate another slot for this file.
 
     open_wadfiles                    = static_cast<wad_file_t **>(I_Realloc(open_wadfiles,
-        sizeof(wad_file_t *) * (num_open_wadfiles + 1)));
+        sizeof(wad_file_t *) * (static_cast<unsigned long>(num_open_wadfiles + 1))));
     open_wadfiles[num_open_wadfiles] = handle;
 
     result = num_open_wadfiles;
@@ -59,8 +59,8 @@ static void ChecksumAddLump(sha1_context_t *sha1_context, lumpinfo_t *lump)
 
     M_StringCopy(buf, lump->name, sizeof(buf));
     SHA1_UpdateString(sha1_context, buf);
-    SHA1_UpdateInt32(sha1_context, GetFileNumber(lump->wad_file));
-    SHA1_UpdateInt32(sha1_context, lump->position);
+    SHA1_UpdateInt32(sha1_context, static_cast<unsigned int>(GetFileNumber(lump->wad_file)));
+    SHA1_UpdateInt32(sha1_context, static_cast<unsigned int>(lump->position));
     SHA1_UpdateInt32(sha1_context, static_cast<unsigned int>(lump->size));
 }
 

@@ -146,7 +146,7 @@ void P_MovePlayer(player_t *player)
 
     cmd = &player->cmd;
 
-    player->mo->angle += (cmd->angleturn << FRACBITS);
+    player->mo->angle += (static_cast<unsigned int>(cmd->angleturn << FRACBITS));
 
     // Do not let the player control movement
     //  if not onground.
@@ -274,7 +274,7 @@ void P_PlayerThink(player_t *player)
     player->mo->oldy       = player->mo->y;
     player->mo->oldz       = player->mo->z;
     player->mo->oldangle   = player->mo->angle;
-    player->oldviewz       = player->viewz;
+    player->oldviewz       = static_cast<angle_t>(player->viewz);
     player->oldlookdir     = player->lookdir;
     player->oldrecoilpitch = player->recoilpitch;
 

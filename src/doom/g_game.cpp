@@ -315,7 +315,7 @@ static int G_NextWeapon(int direction)
     size_t start_i = i;
     do
     {
-        i += direction;
+        i += static_cast<unsigned long>(direction);
         i = (i + std::size(weapon_order_table)) % std::size(weapon_order_table);
     } while (i != start_i && !WeaponSelectable(weapon_order_table[i].weapon));
 
@@ -536,12 +536,12 @@ void G_BuildTiccmd(ticcmd_t *cmd, int maketic)
         if (gamekeydown[key_lookup] || joylook < 0)
         {
             look = lspeed;
-            kbdlookctrl += ticdup;
+            kbdlookctrl += static_cast<unsigned int>(ticdup);
         }
         else if (gamekeydown[key_lookdown] || joylook > 0)
         {
             look = -lspeed;
-            kbdlookctrl += ticdup;
+            kbdlookctrl += static_cast<unsigned int>(ticdup);
         }
         else
             // [crispy] keyboard lookspring
@@ -563,7 +563,7 @@ void G_BuildTiccmd(ticcmd_t *cmd, int maketic)
     }
 
     // buttons
-    cmd->chatchar = HU_dequeueChatChar();
+    cmd->chatchar = static_cast<uint8_t>(HU_dequeueChatChar());
 
     if (gamekeydown[key_fire] || mousebuttons[mousebfire]
         || joybuttons[joybfire])
@@ -584,7 +584,7 @@ void G_BuildTiccmd(ticcmd_t *cmd, int maketic)
 
     if (gamestate == GS_LEVEL && next_weapon != 0)
     {
-        size_t i = G_NextWeapon(next_weapon);
+        size_t i = static_cast<size_t>(G_NextWeapon(next_weapon));
         cmd->buttons |= BT_CHANGE;
         cmd->buttons |= static_cast<uint8_t>(i << BT_WEAPONSHIFT);
     }
@@ -688,7 +688,7 @@ void G_BuildTiccmd(ticcmd_t *cmd, int maketic)
         // [crispy] single click view centering
         if (mousebuttons[mousebmouselook]) // [crispy] clicked
         {
-            mbmlookctrl += ticdup;
+            mbmlookctrl += static_cast<unsigned int>(ticdup);
         }
         else
             // [crispy] released
@@ -1016,7 +1016,7 @@ bool G_Responder(event_t *ev)
         return false; // always let key up events filter down
 
     case ev_mouse:
-        SetMouseButtons(ev->data1);
+        SetMouseButtons(static_cast<unsigned int>(ev->data1));
         if (mouseSensitivity)
             mousex = ev->data2 * (mouseSensitivity + 5) / 10;
         else
@@ -1032,7 +1032,7 @@ bool G_Responder(event_t *ev)
         return true;    // eat events
 
     case ev_joystick:
-        SetJoyButtons(ev->data1);
+        SetJoyButtons(static_cast<unsigned int>(ev->data1));
         joyxmove      = ev->data2;
         joyymove      = ev->data3;
         joystrafemove = ev->data4;
@@ -2462,12 +2462,12 @@ static void IncreaseDemoBuffer()
     // Generate a new buffer twice the size
     int new_length = current_length * 2;
 
-    uint8_t *new_demobuffer = zmalloc<decltype(new_demobuffer)>(new_length, PU_STATIC, 0);
+    uint8_t *new_demobuffer = zmalloc<decltype(new_demobuffer)>(static_cast<size_t>(new_length), PU_STATIC, 0);
     uint8_t *new_demop      = new_demobuffer + (demo_p - demobuffer);
 
     // Copy over the old data
 
-    memcpy(new_demobuffer, demobuffer, current_length);
+    memcpy(new_demobuffer, demobuffer, static_cast<size_t>(current_length));
 
     // Free the old buffer and point the demo pointers at the new buffer.
 
@@ -2487,8 +2487,8 @@ void G_WriteDemoTiccmd(ticcmd_t *cmd)
 
     demo_start = demo_p;
 
-    *demo_p++ = cmd->forwardmove;
-    *demo_p++ = cmd->sidemove;
+    *demo_p++ = static_cast<uint8_t>(cmd->forwardmove);
+    *demo_p++ = static_cast<uint8_t>(cmd->sidemove);
 
     // If this is a longtics demo, record in higher resolution
 
@@ -2575,7 +2575,7 @@ void G_RecordDemo(char *name)
     i = M_CheckParmWithArgs("-maxdemo", 1);
     if (i)
         maxsize = atoi(myargv[i + 1]) * 1024;
-    demobuffer = zmalloc<decltype(demobuffer)>(maxsize, PU_STATIC, nullptr);
+    demobuffer = zmalloc<decltype(demobuffer)>(static_cast<size_t>(maxsize), PU_STATIC, nullptr);
     demoend    = demobuffer + maxsize;
 
     demorecording = true;
@@ -2623,7 +2623,7 @@ void G_BeginRecording()
         *demo_p++ = static_cast<uint8_t>(G_VanillaVersionCode());
     }
 
-    *demo_p++ = gameskill;
+    *demo_p++ = static_cast<uint8_t>(gameskill);
     *demo_p++ = static_cast<uint8_t>(gameepisode);
     *demo_p++ = static_cast<uint8_t>(gamemap);
     if (longtics || gameversion > exe_doom_1_2)

@@ -367,7 +367,7 @@ void R_MakeSpans(int x,
 {
     while (t1 < t2 && t1 <= b1)
     {
-        R_MapPlane(t1, spanstart[t1], x - 1);
+        R_MapPlane(static_cast<int>(t1), spanstart[t1], x - 1);
         t1++;
     }
     while (b1 > b2 && b1 >= t1)

@@ -632,7 +632,7 @@ static void NET_CL_SendResendRequest(int start, int end)
 
     for (i = start; i <= end; ++i)
     {
-        int index = i - recvwindow_start;
+        int index = static_cast<int>(static_cast<unsigned int>(i) - recvwindow_start);
 
         if (index < 0 || index >= BACKUPTICS)
             continue;
@@ -696,11 +696,10 @@ static void NET_CL_CheckResends()
         {
             // End of a run of resend tics
             NET_Log("client: resend request timed out for %d-%d (%d)",
-                recvwindow_start + resend_start,
-                recvwindow_start + resend_end,
+                recvwindow_start + static_cast<unsigned int>(resend_start),
+                recvwindow_start + static_cast<unsigned int>(resend_end),
                 recvwindow[resend_start].resend_time);
-            NET_CL_SendResendRequest(recvwindow_start + resend_start,
-                recvwindow_start + resend_end);
+            NET_CL_SendResendRequest(static_cast<int>(recvwindow_start + resend_start), static_cast<int>(recvwindow_start + resend_end));
             resend_start = -1;
         }
     }
@@ -711,8 +710,7 @@ static void NET_CL_CheckResends()
             recvwindow_start + resend_start,
             recvwindow_start + resend_end,
             recvwindow[resend_start].resend_time);
-        NET_CL_SendResendRequest(recvwindow_start + resend_start,
-            recvwindow_start + resend_end);
+        NET_CL_SendResendRequest(static_cast<int>(recvwindow_start + resend_start), static_cast<int>(recvwindow_start + resend_end));
     }
 
     // We have received some data from the server and not acknowledged

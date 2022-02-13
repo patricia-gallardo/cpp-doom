@@ -48,20 +48,20 @@ void wipe_shittyColMajorXform(dpixel_t *array,
     int       y;
     dpixel_t *dest;
 
-    dest = zmalloc<dpixel_t *>(width * height * sizeof(*dest), PU_STATIC, 0);
+    dest = zmalloc<dpixel_t *>(static_cast<unsigned long>(width * height) * sizeof(*dest), PU_STATIC, 0);
 
     for (y = 0; y < height; y++)
         for (x = 0; x < width; x++)
             dest[x * height + y] = array[y * width + x];
 
-    memcpy(array, dest, width * height * sizeof(*dest));
+    memcpy(array, dest, static_cast<unsigned long>(width * height) * sizeof(*dest));
 
     Z_Free(dest);
 }
 
 int wipe_initColorXForm(int width, int height, int)
 {
-    memcpy(wipe_scr, wipe_scr_start, width * height * sizeof(*wipe_scr));
+    memcpy(wipe_scr, wipe_scr_start, static_cast<unsigned long>(width * height) * sizeof(*wipe_scr));
     return 0;
 }
 
@@ -121,7 +121,7 @@ int wipe_initMelt(int width, int height, int)
     int i, r;
 
     // copy start screen to main screen
-    memcpy(wipe_scr, wipe_scr_start, width * height * sizeof(*wipe_scr));
+    memcpy(wipe_scr, wipe_scr_start, static_cast<unsigned long>(width * height) * sizeof(*wipe_scr));
 
     // makes this wipe faster (in theory)
     // to have stuff in column-major format
@@ -130,7 +130,7 @@ int wipe_initMelt(int width, int height, int)
 
     // setup initial column positions
     // (y<0 => not ready to scroll yet)
-    y    = zmalloc<int *>(width * sizeof(int), PU_STATIC, 0);
+    y    = zmalloc<int *>(static_cast<unsigned long>(width) * sizeof(int), PU_STATIC, 0);
     y[0] = -(M_Random() % 16);
     for (i = 1; i < width; i++)
     {
@@ -212,7 +212,8 @@ int wipe_exitMelt(int, int, int)
 
 int wipe_StartScreen(int, int, int, int)
 {
-    wipe_scr_start = zmalloc<decltype(wipe_scr_start)>(SCREENWIDTH * SCREENHEIGHT * sizeof(*wipe_scr_start), PU_STATIC, nullptr);
+    wipe_scr_start = zmalloc<decltype(wipe_scr_start)>(
+        static_cast<unsigned long>(SCREENWIDTH * SCREENHEIGHT) * sizeof(*wipe_scr_start), PU_STATIC, nullptr);
     I_ReadScreen(wipe_scr_start);
     return 0;
 }
@@ -222,7 +223,7 @@ int wipe_EndScreen(int x,
     int                width,
     int                height)
 {
-    wipe_scr_end = zmalloc<decltype(wipe_scr_end)>(SCREENWIDTH * SCREENHEIGHT * sizeof(*wipe_scr_end), PU_STATIC, nullptr);
+    wipe_scr_end = zmalloc<decltype(wipe_scr_end)>(static_cast<unsigned long>(SCREENWIDTH * SCREENHEIGHT) * sizeof(*wipe_scr_end), PU_STATIC, nullptr);
     I_ReadScreen(wipe_scr_end);
     V_DrawBlock(x, y_param, width, height, wipe_scr_start); // restore start scr.
     return 0;

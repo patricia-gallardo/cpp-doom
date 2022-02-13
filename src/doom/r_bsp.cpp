@@ -289,7 +289,7 @@ void R_AddLine(seg_t *line)
         return;
 
     // Global angle needed by segcalc.
-    rw_angle1 = angle1;
+    rw_angle1 = static_cast<int>(angle1);
     angle1 -= viewangle;
     angle2 -= viewangle;
 
@@ -534,7 +534,7 @@ void R_Subsector(int num)
     {
         floorplane = R_FindPlane(frontsector->interpfloorheight,
             // [crispy] add support for MBF sky tranfers
-            frontsector->floorpic == skyflatnum && frontsector->sky & PL_SKYFLAT ? frontsector->sky :
+            frontsector->floorpic == skyflatnum && static_cast<unsigned int>(frontsector->sky) & PL_SKYFLAT ? frontsector->sky :
                                                                                    frontsector->floorpic,
             frontsector->lightlevel);
     }
@@ -546,7 +546,7 @@ void R_Subsector(int num)
     {
         ceilingplane = R_FindPlane(frontsector->interpceilingheight,
             // [crispy] add support for MBF sky tranfers
-            frontsector->ceilingpic == skyflatnum && frontsector->sky & PL_SKYFLAT ? frontsector->sky :
+            frontsector->ceilingpic == skyflatnum && static_cast<unsigned int>(frontsector->sky) & PL_SKYFLAT ? frontsector->sky :
                                                                                      frontsector->ceilingpic,
             frontsector->lightlevel);
     }
@@ -578,12 +578,12 @@ void R_RenderBSPNode(int bspnum)
     int     side;
 
     // Found a subsector?
-    if (bspnum & NF_SUBSECTOR)
+    if (static_cast<unsigned int>(bspnum) & NF_SUBSECTOR)
     {
         if (bspnum == -1)
             R_Subsector(0);
         else
-            R_Subsector(bspnum & (~NF_SUBSECTOR));
+            R_Subsector(static_cast<unsigned int>(bspnum) & (~NF_SUBSECTOR));
         return;
     }
 

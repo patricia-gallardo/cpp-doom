@@ -416,7 +416,7 @@ char *M_SafeFilePath(const char *basepath, const char *newcomponent)
     // that either basepath or newcomponent includes a redundant slash at the
     // end or beginning respectively.
     newstrlen = M_StringAlloc(&newstr, 3, 1, basepath, "/", newcomponent);
-    M_snprintf(newstr, newstrlen, "%s/%s", basepath, newcomponent);
+    M_snprintf(newstr, static_cast<size_t>(newstrlen), "%s/%s", basepath, newcomponent);
     M_NormalizeSlashes(newstr);
 
     return newstr;

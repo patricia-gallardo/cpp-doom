@@ -414,7 +414,7 @@ static void NET_SV_SendWaitingData(net_client_t *client)
         sizeof(sha1_digest_t));
     memcpy(&wait_data.deh_sha1sum, &controller->deh_sha1sum,
         sizeof(sha1_digest_t));
-    wait_data.is_freedoom = controller->is_freedoom;
+    wait_data.is_freedoom = static_cast<int>(controller->is_freedoom);
 
     // set name and address of each player:
 
@@ -560,7 +560,7 @@ static void NET_SV_InitNewClient(net_client_t *client, net_addr_t *addr,
     net_protocol_t protocol)
 {
     client->active       = true;
-    client->connect_time = I_GetTimeMS();
+    client->connect_time = static_cast<unsigned int>(I_GetTimeMS());
     NET_Conn_InitServer(&client->connection, addr, protocol);
     client->addr = addr;
     NET_ReferenceAddress(addr);
@@ -705,8 +705,8 @@ static void NET_SV_ParseSYN(net_packet_t *packet, net_client_t *client,
     // Adopt the game mode and mission of the first connecting client:
     if (num_players == 0 && !data.drone)
     {
-        sv_gamemode    = data.gamemode;
-        sv_gamemission = data.gamemission;
+        sv_gamemode    = static_cast<unsigned int>(data.gamemode);
+        sv_gamemission = static_cast<unsigned int>(data.gamemission);
         NET_Log("server: new game, mode=%d, mission=%d",
             sv_gamemode, sv_gamemission);
     }
@@ -772,7 +772,7 @@ static void NET_SV_ParseSYN(net_packet_t *packet, net_client_t *client,
     // Save the SHA1 checksums and other details.
     memcpy(client->wad_sha1sum, data.wad_sha1sum, sizeof(sha1_digest_t));
     memcpy(client->deh_sha1sum, data.deh_sha1sum, sizeof(sha1_digest_t));
-    client->is_freedoom      = data.is_freedoom;
+    client->is_freedoom      = static_cast<unsigned int>(data.is_freedoom);
     client->max_players      = data.max_players;
     client->name             = M_StringDuplicate(player_name);
     client->recording_lowres = data.lowres_turn;
@@ -827,7 +827,7 @@ static void NET_SV_ParseLaunch(net_packet_t *, net_client_t *client)
 
         launchpacket = NET_Conn_NewReliable(&clients[i].connection,
             NET_PACKET_TYPE_LAUNCH);
-        NET_WriteInt8(launchpacket, num_players);
+        NET_WriteInt8(launchpacket, static_cast<unsigned int>(num_players));
     }
 
     // Now in launch state.
@@ -1016,19 +1016,19 @@ static void NET_SV_SendResendRequest(net_client_t *client, int start, int end)
     packet = NET_NewPacket(20);
 
     NET_WriteInt16(packet, NET_PACKET_TYPE_GAMEDATA_RESEND);
-    NET_WriteInt32(packet, start);
-    NET_WriteInt8(packet, end - start + 1);
+    NET_WriteInt32(packet, static_cast<unsigned int>(start));
+    NET_WriteInt8(packet, static_cast<unsigned int>(end - start + 1));
 
     NET_Conn_SendPacket(&client->connection, packet);
     NET_FreePacket(packet);
 
     // Store the time we send the resend request
 
-    nowtime = I_GetTimeMS();
+    nowtime = static_cast<unsigned int>(I_GetTimeMS());
 
     for (i = start; i <= end; ++i)
     {
-        index = i - recvwindow_start;
+        index = static_cast<int>(static_cast<unsigned int>(i) - recvwindow_start);
 
         if (index >= BACKUPTICS)
         {
@@ -1052,7 +1052,7 @@ static void NET_SV_CheckResends(net_client_t *client)
     int          resend_start, resend_end;
     unsigned int nowtime;
 
-    nowtime = I_GetTimeMS();
+    nowtime = static_cast<unsigned int>(I_GetTimeMS());
 
     player       = client->player_number;
     resend_start = -1;
@@ -1086,12 +1086,10 @@ static void NET_SV_CheckResends(net_client_t *client)
             // End of a run of resend tics
             NET_Log("server: resend request to %s timed out for %d-%d (%d)",
                 NET_AddrToString(client->addr),
-                recvwindow_start + resend_start,
-                recvwindow_start + resend_end,
+                recvwindow_start + static_cast<unsigned int>(resend_start),
+                recvwindow_start + static_cast<unsigned int>(resend_end),
                 &recvwindow[resend_start][player].resend_time);
-            NET_SV_SendResendRequest(client,
-                recvwindow_start + resend_start,
-                recvwindow_start + resend_end);
+            NET_SV_SendResendRequest(client, static_cast<int>(recvwindow_start + static_cast<unsigned int>(resend_start)), static_cast<int>(recvwindow_start + static_cast<unsigned int>(resend_end)));
 
             resend_start = -1;
         }
@@ -1101,12 +1099,10 @@ static void NET_SV_CheckResends(net_client_t *client)
     {
         NET_Log("server: resend request to %s timed out for %d-%d (%d)",
             NET_AddrToString(client->addr),
-            recvwindow_start + resend_start,
-            recvwindow_start + resend_end,
+            recvwindow_start + static_cast<unsigned int>(resend_start),
+            recvwindow_start + static_cast<unsigned int>(resend_end),
             &recvwindow[resend_start][player].resend_time);
-        NET_SV_SendResendRequest(client,
-            recvwindow_start + resend_start,
-            recvwindow_start + resend_end);
+        NET_SV_SendResendRequest(client, static_cast<int>(recvwindow_start + static_cast<unsigned int>(resend_start)), static_cast<int>(recvwindow_start + static_cast<unsigned int>(resend_end)));
     }
 }
 
@@ -1153,7 +1149,7 @@ static void NET_SV_ParseGameData(net_packet_t *packet, net_client_t *client)
         seq, num_tics, ackseq);
 
     // Get the current time
-    nowtime = I_GetTimeMS();
+    nowtime = static_cast<unsigned int>(I_GetTimeMS());
 
     // Expand 8-bit values to the full sequence number
     ackseq = NET_SV_ExpandTicNum(ackseq);
@@ -1186,7 +1182,7 @@ static void NET_SV_ParseGameData(net_packet_t *packet, net_client_t *client)
         recvobj->diff    = diff;
         recvobj->latency = latency;
 
-        client->last_gamedata_time = nowtime;
+        client->last_gamedata_time = static_cast<int>(nowtime);
         NET_Log("server: stored tic %d for player %d", seq + i, player);
     }
 
@@ -1204,7 +1200,7 @@ static void NET_SV_ParseGameData(net_packet_t *packet, net_client_t *client)
 
     //printf("SV: %p: %i\n", client, seq);
 
-    resend_end = seq - recvwindow_start;
+    resend_end = static_cast<int>(seq - recvwindow_start);
 
     if (resend_end <= 0)
         return;
@@ -1241,11 +1237,9 @@ static void NET_SV_ParseGameData(net_packet_t *packet, net_client_t *client)
     if (resend_start < resend_end)
     {
         NET_Log("server: request resend for %d-%d before %d",
-            recvwindow_start + resend_start,
-            recvwindow_start + resend_end - 1, seq);
-        NET_SV_SendResendRequest(client,
-            recvwindow_start + resend_start,
-            recvwindow_start + resend_end - 1);
+            recvwindow_start + static_cast<unsigned int>(resend_start),
+            recvwindow_start + static_cast<unsigned int>(resend_end) - 1, seq);
+        NET_SV_SendResendRequest(client, static_cast<int>(recvwindow_start + static_cast<unsigned int>(resend_start)), static_cast<int>(recvwindow_start + static_cast<unsigned int>(resend_end) - 1));
     }
 }
 
@@ -1395,8 +1389,8 @@ void NET_SV_SendQueryResponse(net_addr_t *addr)
 
     // Game mode/mission
 
-    querydata.gamemode    = sv_gamemode;
-    querydata.gamemission = sv_gamemission;
+    querydata.gamemode    = static_cast<int>(sv_gamemode);
+    querydata.gamemission = static_cast<int>(sv_gamemission);
 
     //!
     // @category net
@@ -1509,7 +1503,7 @@ static void NET_SV_Packet(net_packet_t *packet, net_addr_t *addr)
     }
 
     NET_Log("server: packet from %s; type %d", NET_AddrToString(addr),
-        packet_type & ~NET_RELIABLE_PACKET);
+        packet_type & static_cast<unsigned int>(~NET_RELIABLE_PACKET));
     NET_LogPacket(packet);
 
     if (packet_type == NET_PACKET_TYPE_SYN)
@@ -1569,14 +1563,14 @@ static void NET_SV_PumpSendQueue(net_client_t *client)
     // If a client has not sent any acknowledgments for a while,
     // wait until they catch up.
 
-    if (client->sendseq - NET_SV_LatestAcknowledged() > 40)
+    if (static_cast<unsigned int>(client->sendseq) - NET_SV_LatestAcknowledged() > 40)
     {
         return;
     }
 
     // Work out the index into the receive window
 
-    recv_index = client->sendseq - recvwindow_start;
+    recv_index = static_cast<int>(static_cast<unsigned int>(client->sendseq) - recvwindow_start);
 
     if (recv_index < 0 || recv_index >= BACKUPTICS)
     {
@@ -1626,7 +1620,7 @@ static void NET_SV_PumpSendQueue(net_client_t *client)
 
     // We have all data we need to generate a command for this tic.
 
-    cmd.seq = client->sendseq;
+    cmd.seq = static_cast<unsigned int>(client->sendseq);
 
     // Add ticcmds from all players
 
@@ -1676,7 +1670,7 @@ static void NET_SV_PumpSendQueue(net_client_t *client)
 
     NET_Log("server: send tics %d-%d to %s", starttic, endtic,
         NET_AddrToString(client->addr));
-    NET_SV_SendTics(client, starttic, endtic);
+    NET_SV_SendTics(client, static_cast<unsigned int>(starttic), static_cast<unsigned int>(endtic));
 
     ++client->sendseq;
 }
@@ -1718,13 +1712,11 @@ void NET_SV_CheckDeadlock(net_client_t *client)
             if (!recvwindow[client->player_number][i].active)
             {
                 NET_Log("server: deadlock: sending resend request for %d-%d",
-                    recvwindow_start + i, recvwindow_start + i + 5);
+                    recvwindow_start + static_cast<unsigned int>(i), recvwindow_start + static_cast<unsigned int>(i) + 5);
 
                 // Found a tic we haven't received.  Send a resend request.
 
-                NET_SV_SendResendRequest(client,
-                    recvwindow_start + i,
-                    recvwindow_start + i + 5);
+                NET_SV_SendResendRequest(client, static_cast<int>(recvwindow_start + static_cast<unsigned int>(i)), static_cast<int>(recvwindow_start + static_cast<unsigned int>(i) + 5));
 
                 client->last_gamedata_time = nowtime;
                 break;
@@ -1740,7 +1732,7 @@ void NET_SV_CheckDeadlock(net_client_t *client)
         {
             NET_Log("server: also resending tics %d-%d to break deadlock",
                 client->acknowledged, client->sendseq - 1);
-            NET_SV_SendTics(client, client->acknowledged, client->sendseq - 1);
+            NET_SV_SendTics(client, client->acknowledged, static_cast<unsigned int>(client->sendseq - 1));
         }
     }
 }
@@ -1875,9 +1867,7 @@ void NET_SV_Init()
 
 static void UpdateMasterServer()
 {
-    unsigned int now;
-
-    now = I_GetTimeMS();
+    unsigned int now = static_cast<unsigned int>(I_GetTimeMS());
 
     // The address of the master server can change. Periodically
     // re-resolve the master server to update.
@@ -1925,7 +1915,7 @@ void NET_SV_RegisterWithMaster()
     if (master_server != nullptr)
     {
         NET_Query_AddToMaster(master_server);
-        master_refresh_time = I_GetTimeMS();
+        master_refresh_time = static_cast<unsigned int>(I_GetTimeMS());
         master_resolve_time = master_refresh_time;
     }
 }

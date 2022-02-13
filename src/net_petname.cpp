@@ -112,8 +112,8 @@ char *NET_GetRandomPetName()
     const char *a, *n;
 
     InitPetName();
-    a = adjectives[rand() % std::size(adjectives)];
-    n = nouns[rand() % std::size(nouns)];
+    a = adjectives[static_cast<unsigned long>(rand()) % std::size(adjectives)];
+    n = nouns[static_cast<unsigned long>(rand()) % std::size(nouns)];
 
     return M_StringJoin(a, " ", n, nullptr);
 }

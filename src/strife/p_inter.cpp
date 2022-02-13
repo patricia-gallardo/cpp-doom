@@ -727,7 +727,7 @@ void P_TouchSpecialThing(mobj_t* special, mobj_t* toucher)
         // acquired by destroying the Front's working power coupling). BUT, the 
         // broken coupling object's speed is NOT 8... it is 512*FRACUNIT. For
         // strict portability beyond the x86, we need to AND the operand by 31.
-        if(special->info->speed != 8 || !(player->questflags & QF_QUEST6))
+        if(special->info->speed != 8 || !(static_cast<unsigned int>(player->questflags) & QF_QUEST6))
             player->questflags |= 1 << ((special->info->speed - 1) & 31);
     }
 

@@ -173,11 +173,11 @@ void HUlib_eraseTextLine(hu_textline_t *l)
         for (y = (l->y << crispy->hires), yoffset = y * SCREENWIDTH; y < (l->y << crispy->hires) + lh; y++, yoffset += SCREENWIDTH)
         {
             if (y < viewwindowy || y >= viewwindowy + viewheight)
-                R_VideoErase(yoffset, SCREENWIDTH); // erase entire line
+                R_VideoErase(static_cast<unsigned int>(yoffset), SCREENWIDTH); // erase entire line
             else
             {
-                R_VideoErase(yoffset, viewwindowx); // erase left border
-                R_VideoErase(yoffset + viewwindowx + scaledviewwidth, viewwindowx);
+                R_VideoErase(static_cast<unsigned int>(yoffset), viewwindowx); // erase left border
+                R_VideoErase(static_cast<unsigned int>(yoffset + viewwindowx + scaledviewwidth), viewwindowx);
                 // erase right border
             }
         }
