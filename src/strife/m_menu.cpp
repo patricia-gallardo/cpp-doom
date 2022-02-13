@@ -2151,7 +2151,7 @@ bool M_Responder (event_t* ev)
         do
         {
             if (!itemOn)
-                itemOn = currentMenu->numitems-1;
+                itemOn = static_cast<short>(currentMenu->numitems-1);
             else itemOn--;
             S_StartSound(nullptr, sfx_pstop);
         } while(currentMenu->menuitems[itemOn].status==-1);
@@ -2333,7 +2333,7 @@ void M_Drawer ()
 
             x = static_cast<short>(160 - M_StringWidth(string) / 2);
             M_WriteText(x, y, string);
-            y += SHORT(hu_font[0]->height);
+            y = static_cast<short>(y + SHORT(hu_font[0]->height));
         }
 
         return;
@@ -2358,7 +2358,7 @@ void M_Drawer ()
         {
             V_DrawPatchDirect (x, y, cache_lump_name<patch_t *>(name, PU_CACHE));
         }
-        y += LINEHEIGHT;
+        y = static_cast<short>(y + LINEHEIGHT);
     }
 
     

@@ -148,14 +148,14 @@ bool EV_SpawnLight(line_t *, uint8_t *arg, lighttype_t type)
         switch (type)
         {
             case LITE_RAISEBYVALUE:
-                sec->lightlevel += static_cast<short>(arg1);
+                sec->lightlevel = static_cast<short>(sec->lightlevel + arg1);
                 if (sec->lightlevel > 255)
                 {
                     sec->lightlevel = 255;
                 }
                 break;
             case LITE_LOWERBYVALUE:
-                sec->lightlevel -= static_cast<short>(arg1);
+                sec->lightlevel = static_cast<short>(sec->lightlevel - arg1);
                 if (sec->lightlevel < 0)
                 {
                     sec->lightlevel = 0;

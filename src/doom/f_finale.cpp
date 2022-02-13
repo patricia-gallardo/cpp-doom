@@ -702,7 +702,7 @@ bool F_CastResponder(event_t *ev)
         // [crispy] ... and allow to skip through them ..
         if (ev->data1 == key_strafeleft || ev->data1 == key_alt_strafeleft)
     {
-        castskip = castnum ? -1 : std::size(castorder) - 2;
+        castskip = static_cast<signed char>(castnum ? -1 : std::size(castorder) - 2);
         return false;
     }
     else if (ev->data1 == key_straferight || ev->data1 == key_alt_straferight)

@@ -1605,7 +1605,13 @@ bool MN_Responder(event_t * event)
             if (slotptr)
             {
                 *textBuffer-- = 0;
+#pragma GCC diagnostic push
+#pragma GCC diagnostic ignored "-Wstringop-overflow"
+                // error: writing 1 byte into a region of size 0 [-Werror=stringop-overflow=]
+                // note: at offset -1 to object ‘SlotText’ with size 108 declared here
+                // static char SlotText[6][SLOTTEXTLEN + 2];
                 *textBuffer = ASCII_CURSOR;
+#pragma GCC diagnostic pop
                 slotptr--;
             }
             return (true);

@@ -4329,7 +4329,7 @@ void A_SorcOffense2(mobj_t * actor)
     int dist;
 
     index = actor->args[4] << 5;
-    actor->args[4] += 15;
+    actor->args[4] = static_cast<uint8_t>(actor->args[4] + 15);
     delta = (finesine[index]) * SORCFX4_SPREAD_ANGLE;
     delta = (delta >> FRACBITS) * ANG1;
     ang1 = actor->angle + delta;

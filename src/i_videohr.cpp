@@ -170,9 +170,9 @@ void I_SetPaletteHR(const uint8_t *palette)
 
     for (i = 0; i < 16; ++i)
     {
-        sdlpal[i].r = palette[i * 3 + 0] * 4;
-        sdlpal[i].g = palette[i * 3 + 1] * 4;
-        sdlpal[i].b = palette[i * 3 + 2] * 4;
+        sdlpal[i].r = static_cast<Uint8>(palette[i * 3 + 0] * 4);
+        sdlpal[i].g = static_cast<Uint8>(palette[i * 3 + 1] * 4);
+        sdlpal[i].b = static_cast<Uint8>(palette[i * 3 + 2] * 4);
     }
 
     // After setting colors, update the screen.

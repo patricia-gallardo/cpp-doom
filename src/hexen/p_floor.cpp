@@ -206,7 +206,7 @@ void T_MoveFloor(floormove_t * floor)
         floor->delayCount--;
         if (!floor->delayCount && floor->textureChange)
         {
-            floor->sector->floorpic += floor->textureChange;
+            floor->sector->floorpic = static_cast<short>(floor->sector->floorpic + floor->textureChange);
         }
         return;
     }
@@ -262,7 +262,7 @@ void T_MoveFloor(floormove_t * floor)
          */
         if (floor->textureChange)
         {
-            floor->sector->floorpic -= floor->textureChange;
+            floor->sector->floorpic = static_cast<short>(floor->sector->floorpic - floor->textureChange);
         }
         P_TagFinished(floor->sector->tag);
         P_RemoveThinker(&floor->thinker);

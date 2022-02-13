@@ -203,7 +203,7 @@ static void P_LightningFlash()
                 {
                     if (*tempLight < tempSec->lightlevel - 4)
                     {
-                        tempSec->lightlevel -= 4;
+                        tempSec->lightlevel = static_cast<short>(tempSec->lightlevel - 4);
                     }
                     tempLight++;
                 }
@@ -241,7 +241,7 @@ static void P_LightningFlash()
             *tempLight = tempSec->lightlevel;
             if (tempSec->special == LIGHTNING_SPECIAL)
             {
-                tempSec->lightlevel += 64;
+                tempSec->lightlevel = static_cast<short>(tempSec->lightlevel + 64);
                 if (tempSec->lightlevel > flashLight)
                 {
                     tempSec->lightlevel = static_cast<short>(flashLight);
@@ -249,7 +249,7 @@ static void P_LightningFlash()
             }
             else if (tempSec->special == LIGHTNING_SPECIAL2)
             {
-                tempSec->lightlevel += 32;
+                tempSec->lightlevel = static_cast<short>(tempSec->lightlevel + 32);
                 if (tempSec->lightlevel > flashLight)
                 {
                     tempSec->lightlevel = static_cast<short>(flashLight);

@@ -255,16 +255,16 @@ void AM_changeWindowLoc()
     // but I believe we need to do this here to stop the background moving
     // when we reach the map boundaries. (In the released source it's done
     // in AM_clearFB).
-    mapxstart += static_cast<short>(MTOF(m_paninc.x+FRACUNIT/2));
-    mapystart -= static_cast<short>(MTOF(m_paninc.y+FRACUNIT/2));
+    mapxstart = static_cast<short>(mapxstart + MTOF(m_paninc.x+FRACUNIT/2));
+    mapystart = static_cast<short>(mapystart - MTOF(m_paninc.y+FRACUNIT/2));
     if(mapxstart >= (finit_width >> crispy->hires))
-        mapxstart -= static_cast<short>(finit_width >> crispy->hires);
+        mapxstart = static_cast<short>(mapxstart - (finit_width >> crispy->hires));
     if(mapxstart < 0)
-        mapxstart += static_cast<short>(finit_width >> crispy->hires);
+        mapxstart = static_cast<short>(mapxstart + (finit_width >> crispy->hires));
     if(mapystart >= (finit_height >> crispy->hires))
-        mapystart -= static_cast<short>(finit_height >> crispy->hires);
+        mapystart = static_cast<short>(mapystart - (finit_height >> crispy->hires));
     if(mapystart < 0)
-        mapystart += static_cast<short>(finit_height >> crispy->hires);
+        mapystart = static_cast<short>(mapystart + (finit_height >> crispy->hires));
     // - end of code that was commented-out
 
     m_x2 = m_x + m_w;
@@ -697,17 +697,17 @@ void AM_clearFB(int)
         oldplr.y = plr->mo->y;
 //              if(f_oldloc.x == INT_MAX) //to eliminate an error when the user first
 //                      dmapx=0;  //goes into the automap.
-        mapxstart += static_cast<short>(dmapx >> 1);
-        mapystart += static_cast<short>(dmapy >> 1);
+        mapxstart = static_cast<short>(mapxstart + (dmapx >> 1));
+        mapystart = static_cast<short>(mapystart + (dmapy >> 1));
 
         while (mapxstart >= (finit_width >> crispy->hires))
-            mapxstart -= static_cast<short>(finit_width >> crispy->hires);
+            mapxstart = static_cast<short>(mapxstart - (finit_width >> crispy->hires));
         while (mapxstart < 0)
-            mapxstart += static_cast<short>(finit_width >> crispy->hires);
+            mapxstart = static_cast<short>(mapxstart + (finit_width >> crispy->hires));
         while (mapystart >= (finit_height >> crispy->hires))
-            mapystart -= static_cast<short>(finit_height >> crispy->hires);
+            mapystart = static_cast<short>(mapystart - (finit_height >> crispy->hires));
         while (mapystart < 0)
-            mapystart += static_cast<short>(finit_height >> crispy->hires);
+            mapystart = static_cast<short>(mapystart + (finit_height >> crispy->hires));
     }
     else
     {
@@ -904,7 +904,7 @@ void AM_drawFline(fline_t * fl, int color)
                 if (ax > ay)
                 {
                     d = ay - ax / 2;
-                    while (1)
+                    while (true)
                     {
                         DOT(x, y, color);
                         if (x == fl->b.x)
@@ -921,7 +921,7 @@ void AM_drawFline(fline_t * fl, int color)
                 else
                 {
                     d = ax - ay / 2;
-                    while (1)
+                    while (true)
                     {
                         DOT(x, y, color);
                         if (y == fl->b.y)
@@ -1021,7 +1021,7 @@ void DrawWuLine(int X0, int Y0, int X1, int Y1, uint8_t *BaseColor,
     else
     {
         XDir = -1;
-        DeltaX = -DeltaX;       /* make DeltaX positive */
+        DeltaX = static_cast<short>(-DeltaX);       /* make DeltaX positive */
     }
     /* Special-case horizontal, vertical, and diagonal lines, which
        require no weighting because they go right through the center of
@@ -1062,7 +1062,7 @@ void DrawWuLine(int X0, int Y0, int X1, int Y1, uint8_t *BaseColor,
     /* Line is not horizontal, diagonal, or vertical */
     ErrorAcc = 0;               /* initialize the line error accumulator to 0 */
     /* # of bits by which to shift ErrorAcc to get intensity level */
-    IntensityShift = 16 - IntensityBits;
+    IntensityShift = static_cast<unsigned short>(16 - IntensityBits);
     /* Mask used to flip all bits in an intensity weighting, producing the
        result (1 - intensity weighting) */
     WeightingComplementMask = static_cast<unsigned short>(NumLevels - 1);
@@ -1077,7 +1077,7 @@ void DrawWuLine(int X0, int Y0, int X1, int Y1, uint8_t *BaseColor,
         while (--DeltaY)
         {
             ErrorAccTemp = ErrorAcc;    /* remember currrent accumulated error */
-            ErrorAcc += ErrorAdj;       /* calculate error for next pixel */
+            ErrorAcc = static_cast<unsigned short>(ErrorAcc + ErrorAdj);       /* calculate error for next pixel */
             if (ErrorAcc <= ErrorAccTemp)
             {
                 /* The error accumulator turned over, so advance the X coord */
@@ -1087,7 +1087,7 @@ void DrawWuLine(int X0, int Y0, int X1, int Y1, uint8_t *BaseColor,
             /* The IntensityBits most significant bits of ErrorAcc give us the
                intensity weighting for this pixel, and the complement of the
                weighting for the paired pixel */
-            Weighting = ErrorAcc >> IntensityShift;
+            Weighting = static_cast<unsigned short>(ErrorAcc >> IntensityShift);
             PUTDOT(static_cast<short>(X0), static_cast<short>(Y0), &BaseColor[Weighting], &BaseColor[7]);
             PUTDOT(static_cast<short>(X0 + XDir), static_cast<short>(Y0),
                    &BaseColor[(Weighting ^ WeightingComplementMask)],
@@ -1106,7 +1106,7 @@ void DrawWuLine(int X0, int Y0, int X1, int Y1, uint8_t *BaseColor,
     while (--DeltaX)
     {
         ErrorAccTemp = ErrorAcc;        /* remember currrent accumulated error */
-        ErrorAcc += ErrorAdj;   /* calculate error for next pixel */
+        ErrorAcc = static_cast<unsigned short>(ErrorAcc + ErrorAdj);   /* calculate error for next pixel */
         if (ErrorAcc <= ErrorAccTemp)
         {
             /* The error accumulator turned over, so advance the Y coord */
@@ -1116,7 +1116,7 @@ void DrawWuLine(int X0, int Y0, int X1, int Y1, uint8_t *BaseColor,
         /* The IntensityBits most significant bits of ErrorAcc give us the
            intensity weighting for this pixel, and the complement of the
            weighting for the paired pixel */
-        Weighting = ErrorAcc >> IntensityShift;
+        Weighting = static_cast<unsigned short>(ErrorAcc >> IntensityShift);
         PUTDOT(static_cast<short>(X0), static_cast<short>(Y0), &BaseColor[Weighting], &BaseColor[7]);
         PUTDOT(static_cast<short>(X0), static_cast<short>(Y0 + 1),
                &BaseColor[(Weighting ^ WeightingComplementMask)],
@@ -1525,7 +1525,7 @@ static void DrawWorldTimer()
     char timeBuffer[15];
     char dayBuffer[20];
 
-    worldTimer = players[consoleplayer].worldTimer;
+    worldTimer = static_cast<int>(players[consoleplayer].worldTimer);
 
     worldTimer /= 35;
     days = worldTimer / 86400;

@@ -883,12 +883,11 @@ void R_InitTextures()
 
         for (j = 0; j < texture->patchcount; j++, mpatch++, patch++)
         {
-            short p;
             patch->originx = SHORT(mpatch->originx);
             patch->originy = SHORT(mpatch->originy);
             // [crispy] apply offset for patches not in the
             // first available patch offset table
-            p = SHORT(mpatch->patch) + texturelump->pnamesoffset;
+            short p = static_cast<short>(SHORT(mpatch->patch) + texturelump->pnamesoffset);
             // [crispy] catch out-of-range patches
             if (p < nummappatches)
                 patch->patch = patchlookup[p];

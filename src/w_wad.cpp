@@ -209,9 +209,9 @@ wad_file_t *W_AddFile(const char *filename)
     lumpinfo  = static_cast<decltype(lumpinfo)>(I_Realloc(lumpinfo, numlumps * sizeof(lumpinfo_t *)));
     filerover = fileinfo;
 
-    for (unsigned int i = static_cast<unsigned int>(startlump); i < numlumps; ++i)
+    for (lumpindex_t i = startlump; i < static_cast<int>(numlumps); ++i)
     {
-        lumpinfo_t *lump_p = &filelumps[i - static_cast<unsigned int>(startlump)];
+        lumpinfo_t *lump_p = &filelumps[i - startlump];
         lump_p->wad_file   = wad_file;
         lump_p->position   = LONG(filerover->filepos);
         lump_p->size       = LONG(filerover->size);

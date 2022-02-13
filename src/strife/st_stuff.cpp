@@ -458,7 +458,7 @@ bool ST_Responder(event_t* ev)
     else if(ev->data1 == key_invend)
     {
         if(plyr->numinventory)
-            plyr->inventorycursor = plyr->numinventory - 1;
+            plyr->inventorycursor = static_cast<short>(plyr->numinventory - 1);
         else 
             plyr->inventorycursor = 0;
         return true;

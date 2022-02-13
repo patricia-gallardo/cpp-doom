@@ -946,7 +946,7 @@ bool P_GiveItemToPlayer(player_t *player, int sprnum, mobjtype_t type)
             if(player->stamina >= 100)
                 return false;
 
-            player->stamina += 10;
+            player->stamina = static_cast<short>(player->stamina + 10);
             P_GiveBody(player, 200); // full healing
             break;
 
@@ -954,7 +954,7 @@ bool P_GiveItemToPlayer(player_t *player, int sprnum, mobjtype_t type)
             if(player->accuracy >= 100)
                 return false;
 
-            player->accuracy += 10;
+            player->accuracy = static_cast<short>(player->accuracy + 10);
             break;
 
         case MT_SLIDESHOW: // Slideshow (start a finale)

@@ -354,7 +354,7 @@ static void HU_addMessage(const char *prefix, const char *message)
             width += 4;
         else
         {
-            c -= HU_FONTSTART;
+            c = static_cast<char>(c - HU_FONTSTART);
             width += SHORT(hu_font[static_cast<int>(c)]->width);
         }
     }
@@ -590,7 +590,7 @@ bool HU_Responder(event_t *ev)
         // send a macro
         if (altdown)
         {
-            c = c - '0';
+            c = static_cast<unsigned char>(c - '0');
             if (c > 9)
                 return false;
             // fprintf(stderr, "got here\n");

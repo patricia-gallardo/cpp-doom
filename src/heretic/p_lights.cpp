@@ -241,18 +241,18 @@ void T_Glow(glow_t * g)
     switch (g->direction)
     {
         case -1:               // DOWN
-            g->sector->lightlevel -= GLOWSPEED;
+            g->sector->lightlevel = static_cast<short>(g->sector->lightlevel - GLOWSPEED);
             if (g->sector->lightlevel <= g->minlight)
             {
-                g->sector->lightlevel += GLOWSPEED;
+                g->sector->lightlevel = static_cast<short>(g->sector->lightlevel + GLOWSPEED);
                 g->direction = 1;
             }
             break;
         case 1:                // UP
-            g->sector->lightlevel += GLOWSPEED;
+            g->sector->lightlevel = static_cast<short>(g->sector->lightlevel + GLOWSPEED);
             if (g->sector->lightlevel >= g->maxlight)
             {
-                g->sector->lightlevel -= GLOWSPEED;
+                g->sector->lightlevel = static_cast<short>(g->sector->lightlevel - GLOWSPEED);
                 g->direction = -1;
             }
             break;

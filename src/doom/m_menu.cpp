@@ -2612,7 +2612,7 @@ bool M_Responder(event_t *ev)
         do
         {
             if (!itemOn)
-                itemOn = currentMenu->numitems - 1;
+                itemOn = static_cast<short>(currentMenu->numitems - 1);
             else
                 itemOn--;
             S_StartSound(nullptr, sfx_pstop);
@@ -2863,7 +2863,7 @@ void M_Drawer()
 
             x = static_cast<short>(ORIGWIDTH / 2 - M_StringWidth(string) / 2);
             M_WriteText(x > 0 ? x : 0, y, string); // [crispy] prevent negative x-coords
-            y += SHORT(hu_font[0]->height);
+            y = static_cast<short>(y + SHORT(hu_font[0]->height));
         }
 
         return;
@@ -2910,7 +2910,7 @@ void M_Drawer()
 
             dp_translation = nullptr;
         }
-        y += LINEHEIGHT;
+        y = static_cast<short>(y + LINEHEIGHT);
     }
 
 
@@ -3000,14 +3000,14 @@ void M_Init()
     {
         ReadDef2.routine = M_DrawReadThisCommercial;
         // [crispy] rearrange Skull in Final Doom HELP screen
-        ReadDef2.y -= 10;
+        ReadDef2.y = static_cast<short>(ReadDef2.y - 10);
     }
 
     if (gamemode == commercial)
     {
         MainMenu[static_cast<int>(main_e::readthis)] = MainMenu[static_cast<int>(main_e::quitdoom)];
         MainDef.numitems--;
-        MainDef.y += 8;
+        MainDef.y = static_cast<short>(MainDef.y + 8);
         NewDef.prevMenu                = nervewadfile ? &ExpDef : &MainDef;
         ReadDef1.routine               = M_DrawReadThisCommercial;
         ReadDef1.x                     = 330;
@@ -3048,13 +3048,13 @@ void M_Init()
 
         LoadDef_x = (ORIGWIDTH - SHORT(patchl->width)) / 2 + SHORT(patchl->leftoffset);
         SaveDef_x = (ORIGWIDTH - SHORT(patchs->width)) / 2 + SHORT(patchs->leftoffset);
-        LoadDef.x = SaveDef.x = (ORIGWIDTH - 24 * 8) / 2 + SHORT(patchm->leftoffset); // [crispy] see M_DrawSaveLoadBorder()
+        LoadDef.x = SaveDef.x = static_cast<short>((ORIGWIDTH - 24 * 8) / 2 + SHORT(patchm->leftoffset)); // [crispy] see M_DrawSaveLoadBorder()
 
         captionheight = MAX(SHORT(patchl->height), SHORT(patchs->height));
 
         vstep = ORIGHEIGHT - 32; // [crispy] ST_HEIGHT
-        vstep -= captionheight;
-        vstep -= static_cast<short>((static_cast<int>(load_e::load_end) - 1) * LINEHEIGHT + SHORT(patchm->height));
+        vstep = static_cast<short>(vstep - captionheight);
+        vstep = static_cast<short>(vstep - (static_cast<int>(load_e::load_end) - 1) * LINEHEIGHT + SHORT(patchm->height));
         vstep /= 3;
 
         if (vstep > 0)

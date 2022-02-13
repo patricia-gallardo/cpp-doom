@@ -146,7 +146,7 @@ static void CrispyDrawStats ()
 	const int FontABaseLump = W_GetNumForName(DEH_String("FONTA_S")) + 1;
 	const patch_t *const p = cache_lump_num<const patch_t *const>(FontABaseLump + 'A' - 33, PU_CACHE);
 
-	height = SHORT(p->height) + 1;
+	height = static_cast<short>(SHORT(p->height) + 1);
 	coord_x = static_cast<short>(ORIGWIDTH - 7 * SHORT(p->width));
     }
 

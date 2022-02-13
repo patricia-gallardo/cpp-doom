@@ -439,13 +439,13 @@ void G_BuildTiccmd (ticcmd_t* cmd, int maketic)
     else 
     { 
         if (gamekeydown[key_right]) 
-            cmd->angleturn -= static_cast<short>(angleturn[tspeed]);
+            cmd->angleturn = static_cast<short>(cmd->angleturn - angleturn[tspeed]);
         if (gamekeydown[key_left]) 
-            cmd->angleturn += static_cast<short>(angleturn[tspeed]);
+            cmd->angleturn = static_cast<short>(cmd->angleturn + angleturn[tspeed]);
         if (joyxmove > 0) 
-            cmd->angleturn -= static_cast<short>(angleturn[tspeed]);
+            cmd->angleturn = static_cast<short>(cmd->angleturn - angleturn[tspeed]);
         if (joyxmove < 0) 
-            cmd->angleturn += static_cast<short>(angleturn[tspeed]);
+            cmd->angleturn = static_cast<short>(cmd->angleturn + angleturn[tspeed]);
     } 
 
     if (gamekeydown[key_up]) 
@@ -609,7 +609,7 @@ void G_BuildTiccmd (ticcmd_t* cmd, int maketic)
     if (strafe) 
         side += mousex*2; 
     else 
-        cmd->angleturn -= static_cast<short>(mousex*0x8);
+        cmd->angleturn = static_cast<short>(cmd->angleturn - (mousex*0x8));
 
     if (mousex == 0)
     {
@@ -629,8 +629,8 @@ void G_BuildTiccmd (ticcmd_t* cmd, int maketic)
     else if (side < -MAXPLMOVE) 
         side = -MAXPLMOVE; 
  
-    cmd->forwardmove += static_cast<signed char>(forward);
-    cmd->sidemove += static_cast<signed char>(side);
+    cmd->forwardmove = static_cast<signed char>(cmd->forwardmove + forward);
+    cmd->sidemove = static_cast<signed char>(cmd->sidemove + side);
     
     // special buttons
     if (sendpause) 
@@ -650,9 +650,7 @@ void G_BuildTiccmd (ticcmd_t* cmd, int maketic)
     if (lowres_turn)
     {
         static signed short carry = 0;
-        signed short desired_angleturn;
-
-        desired_angleturn = cmd->angleturn + carry;
+        signed short desired_angleturn = static_cast<signed short>(cmd->angleturn + carry);
 
         // round angleturn to the nearest 256 unit boundary
         // for recording demos with single byte values for turn
@@ -662,7 +660,7 @@ void G_BuildTiccmd (ticcmd_t* cmd, int maketic)
         // Carry forward the error from the reduced resolution to the
         // next tic, so that successive small movements can accumulate.
 
-        carry = desired_angleturn - cmd->angleturn;
+        carry = static_cast<short>(desired_angleturn - cmd->angleturn);
     }
 } 
  

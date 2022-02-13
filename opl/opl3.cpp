@@ -386,16 +386,16 @@ static void OPL3_EnvelopeCalc(opl3_slot *slot)
         }
     }
     slot->pg_reset = reset;
-    Bit8u ks = slot->channel->ksv >> ((slot->reg_ksr ^ 1) << 1);
+    Bit8u ks = static_cast<Bit8u>(slot->channel->ksv >> ((slot->reg_ksr ^ 1) << 1));
     Bit8u nonzero = (reg_rate != 0);
     Bit8u rate = static_cast<Bit8u>(ks + (reg_rate << 2));
-    Bit8u rate_hi = rate >> 2;
+    Bit8u rate_hi = static_cast<Bit8u>(rate >> 2);
     Bit8u rate_lo = rate & 0x03;
     if (rate_hi & 0x10)
     {
         rate_hi = 0x0f;
     }
-    Bit8u eg_shift = rate_hi + slot->chip->eg_add;
+    Bit8u eg_shift = static_cast<Bit8u>(rate_hi + slot->chip->eg_add);
     Bit8u shift = 0;
     if (nonzero)
     {
@@ -421,7 +421,7 @@ static void OPL3_EnvelopeCalc(opl3_slot *slot)
         }
         else
         {
-            shift = (rate_hi & 0x03) + eg_incstep[rate_lo][slot->chip->timer & 0x03];
+            shift = static_cast<Bit8u>((rate_hi & 0x03) + eg_incstep[rate_lo][slot->chip->timer & 0x03]);
             if (shift & 0x04)
             {
                 shift = 0x03;
@@ -520,15 +520,15 @@ static void OPL3_PhaseGenerate(opl3_slot *slot)
         }
         else if (vibpos & 1)
         {
-            range >>= 1;
+            range = static_cast<Bit8s>(range >> 1);
         }
-        range >>= slot->chip->vibshift;
+        range = static_cast<Bit8s>(range >> slot->chip->vibshift);
 
         if (vibpos & 4)
         {
             range = static_cast<Bit8s>(-range);
         }
-        f_num += static_cast<Bit16u>(range);
+        f_num = static_cast<Bit16u>(f_num + range);
     }
     auto basefreq = static_cast<Bit32u>((f_num << slot->channel->block) >> 1);
     auto phase = static_cast<Bit16u>(slot->pg_phase >> 9);
@@ -990,7 +990,7 @@ static void OPL3_ChannelSet4Op(opl3_chip *chip, Bit8u data)
         chnum = bit;
         if (bit >= 3)
         {
-            chnum += 9 - 3;
+            chnum = static_cast<Bit8u>(chnum + (9 - 3));
         }
         if ((data >> bit) & 0x01)
         {
@@ -1041,7 +1041,7 @@ void OPL3_Generate(opl3_chip *chip, Bit16s *buf)
         accm = 0;
         for (jj = 0; jj < 4; jj++)
         {
-            accm += *chip->channel[ii].out[jj];
+            accm = static_cast<Bit16s>(accm + *chip->channel[ii].out[jj]);
         }
         chip->mixbuff[0] += static_cast<Bit16s>(accm & chip->channel[ii].cha);
     }
@@ -1070,7 +1070,7 @@ void OPL3_Generate(opl3_chip *chip, Bit16s *buf)
         accm = 0;
         for (jj = 0; jj < 4; jj++)
         {
-            accm += *chip->channel[ii].out[jj];
+            accm = static_cast<Bit16s>(accm + *chip->channel[ii].out[jj]);
         }
         chip->mixbuff[1] += static_cast<Bit16s>(accm & chip->channel[ii].chb);
     }
@@ -1089,7 +1089,7 @@ void OPL3_Generate(opl3_chip *chip, Bit16s *buf)
     }
     if (chip->tremolopos < 105)
     {
-        chip->tremolo = chip->tremolopos >> chip->tremoloshift;
+        chip->tremolo = static_cast<Bit8u>(chip->tremolopos >> chip->tremoloshift);
     }
     else
     {
@@ -1116,7 +1116,7 @@ void OPL3_Generate(opl3_chip *chip, Bit16s *buf)
         }
         else
         {
-            chip->eg_add = shift + 1;
+            chip->eg_add = static_cast<Bit8u>(shift + 1);
         }
     }
 

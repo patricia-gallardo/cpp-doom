@@ -674,7 +674,7 @@ static bool ExpandSoundData_SDL(sfxinfo_t *sfxinfo, uint8_t *data,
             else
             {
                 sample = static_cast<Sint16>(data[src] | (data[src] << 8));
-                sample -= 32768;
+                sample = static_cast<Sint16>(sample - 32768);
             }
 
             // expand mono->stereo

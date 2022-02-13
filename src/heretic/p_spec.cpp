@@ -233,7 +233,7 @@ void P_InitTerrainTypes()
     int lump;
     int size;
 
-    size = (numflats + 1) * sizeof(int);
+    size = static_cast<int>((numflats + 1) * sizeof(int));
     TerrainTypes = zmalloc<int *>(size, PU_STATIC, 0);
     memset(TerrainTypes, 0, size);
     for (i = 0; TerrainTypeDefs[i].type != -1; i++)

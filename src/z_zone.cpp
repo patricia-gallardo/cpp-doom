@@ -250,7 +250,7 @@ void *
     // throwing out any purgable blocks along the way.
 
     // account for size of block header
-    size += sizeof(memblock_t);
+    size = size + static_cast<int>(sizeof(memblock_t));
 
     // if there is a free block behind the rover,
     //  back up over them

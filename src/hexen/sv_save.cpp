@@ -3030,7 +3030,7 @@ static void ArchiveSounds()
             auto *begin  = reinterpret_cast<uint8_t *>(sec);
             auto *offset = reinterpret_cast<uint8_t *>(&sectors[0]);
             int   length = static_cast<int>(begin - offset);
-            difference   = length / sizeof(sector_t);
+            difference   = static_cast<int>(length / sizeof(sector_t));
             SV_WriteLong(0); // 0 -- sector sound origin
         }
         else
