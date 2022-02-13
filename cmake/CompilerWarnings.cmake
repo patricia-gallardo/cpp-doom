@@ -6,7 +6,7 @@ function(set_project_warnings)
     option(WARNINGS_AS_ERRORS "Treat compiler warnings as errors" TRUE)
 
     set(MSVC_WARNINGS
-            /W3 # Baseline reasonable warnings
+            /W4 # Baseline reasonable warnings
 #            /w14242 # 'identifier': conversion from 'type1' to 'type1', possible loss of data
             /w14254 # 'operator': conversion from 'type1:field_bits' to 'type2:field_bits', possible loss of data
             /w14263 # 'function': member function does not override any base class virtual member function
@@ -34,7 +34,10 @@ function(set_project_warnings)
 #            /wd4244 # disable warning C4244: '=': conversion, possible loss of data TODO turn it back on (patricia)
 #            /wd4267 # disable warning C4267: '=': conversion, possible loss of data TODO turn it back on (patricia)
             /wd4996 # disable warning C4996: was declared deprecated TODO turn it back on (patricia)
-            /wd4068 # disable unknown pragma warnings
+            /wd4068 # disable warning C4068: unknown pragma warnings
+            /wd5222 # disable warning C5222: 'unreachable': all unscoped attribute names are reserved for future standardization
+            /wd5030 # disable warning C5030: attribute 'unreachable' is not recognized
+            /wd4706 # disable warning C4706: assignment within conditional expression
             )
 
     set(CLANG_WARNINGS

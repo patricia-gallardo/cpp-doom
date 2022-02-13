@@ -1989,7 +1989,7 @@ void G_RecordDemo(skill_t skill, int, int episode, int map,
     demoend = demobuffer + maxsize;
 
     demo_p = demobuffer;
-    *demo_p++ = skill;
+    *demo_p++ = static_cast<uint8_t>(skill);
     *demo_p++ = static_cast<uint8_t>(episode);
     *demo_p++ = static_cast<uint8_t>(map);
 
@@ -2014,12 +2014,12 @@ void G_RecordDemo(skill_t skill, int, int episode, int map,
         *demo_p |= DEMOHEADER_NOMONSTERS;
     }
     demo_p++;
-    *demo_p++ = PlayerClass[0];
+    *demo_p++ = static_cast<uint8_t>(PlayerClass[0]);
 
     for (i = 1; i < maxplayers; i++)
     {
         *demo_p++ = playeringame[i];
-        *demo_p++ = PlayerClass[i];
+        *demo_p++ = static_cast<uint8_t>(PlayerClass[i]);
     }
 
     demorecording = true;

@@ -242,10 +242,7 @@ void P_StartButton(line_t *line,
         memset(buttonlist + maxbuttons / 2, 0, sizeof(*buttonlist) * static_cast<unsigned long>(maxbuttons) / 2);
         return P_StartButton(line, w, texture, time);
     }
-
-    // unreachable code
-    // I_Error("P_StartButton: no button slots left!");
-    assert(false);
+    [[unreachable]];
 }
 
 

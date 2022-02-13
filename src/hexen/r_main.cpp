@@ -243,9 +243,7 @@ angle_t R_PointToAngle(fixed_t x, fixed_t y)
                 return ANG270 - 1 - tantoangle[SlopeDiv(x, y)]; // octant 5
         }
     }
-    // unreachable code
-    // return 0;
-    assert(false);
+    [[unreachable]];
 }
 
 

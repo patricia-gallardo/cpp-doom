@@ -1906,7 +1906,7 @@ void SV_SaveGame(int slot, const char *description)
 
     // Write current map and difficulty
     SV_WriteByte(static_cast<uint8_t>(gamemap));
-    SV_WriteByte(gameskill);
+    SV_WriteByte(static_cast<uint8_t>(gameskill));
 
     // Write global script info
     for (int i = 0; i < MAX_ACS_WORLD_VARS; ++i)
@@ -2374,7 +2374,7 @@ static void ArchivePlayers()
         {
             continue;
         }
-        SV_WriteByte(PlayerClass[i]);
+        SV_WriteByte(static_cast<uint8_t>(PlayerClass[i]));
         StreamOut_player_t(&players[i]);
     }
 }
@@ -2430,7 +2430,7 @@ static void ArchiveWorld()
         SV_WriteWord(sec->lightlevel);
         SV_WriteWord(sec->special);
         SV_WriteWord(sec->tag);
-        SV_WriteWord(sec->seqType);
+        SV_WriteWord(static_cast<unsigned short>(sec->seqType));
     }
     for (i = 0, li = lines; i < numlines; i++, li++)
     {
@@ -2794,7 +2794,7 @@ static void ArchiveThinkers()
         {
             if (thinker->function == info->thinkerFunc)
             {
-                SV_WriteByte(info->tClass);
+                SV_WriteByte(static_cast<uint8_t>(info->tClass));
                 const auto & callback = std::get<thinker_param_action>(info->writeFunc);
                 callback(thinker);
                 break;
@@ -2895,7 +2895,7 @@ static void ArchiveScripts()
     SV_WriteLong(ASEG_SCRIPTS);
     for (i = 0; i < ACScriptCount; i++)
     {
-        SV_WriteWord(ACSInfo[i].state);
+        SV_WriteWord(static_cast<unsigned short>(ACSInfo[i].state));
         SV_WriteWord(static_cast<unsigned short>(ACSInfo[i].waitValue));
     }
 
@@ -3149,7 +3149,7 @@ static void UnarchivePolyobjs()
 
 static void AssertSegment(gameArchiveSegment_t segType)
 {
-    if (SV_ReadLong() != segType)
+    if (static_cast<gameArchiveSegment_t>(SV_ReadLong()) != segType)
     {
         I_Error("Corrupt save game: Segment [%d] failed alignment check",
                 segType);

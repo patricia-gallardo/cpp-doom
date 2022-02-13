@@ -1104,11 +1104,7 @@ static int GetSliceSize()
             return (1 << n);
         }
     }
-
-    // Should never happen?
-    // unreachable code
-    // return 1024;
-    assert(false);
+    [[unreachable]];
 }
 
 static bool I_SDL_InitSound(bool _use_sfx_prefix)

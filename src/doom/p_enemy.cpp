@@ -546,10 +546,7 @@ bool
         actor->target = player->mo;
         return true;
     }
-
-    // unreachable code
-    // return false;
-    assert(false);
+    [[unreachable]];
 }
 
 

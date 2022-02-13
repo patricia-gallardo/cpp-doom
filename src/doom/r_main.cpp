@@ -356,9 +356,7 @@ angle_t
             }
         }
     }
-    // unreachable code
-    // return 0;
-    assert(false);
+    [[unreachable]];
 }
 
 angle_t

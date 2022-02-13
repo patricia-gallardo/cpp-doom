@@ -357,9 +357,7 @@ R_PointToAngle
 	    }
 	}
     }
-    // unreachable code
-    // return 0;
-    assert(false);
+    [[unreachable]];
 }
 
 

@@ -1004,7 +1004,7 @@ void AM_drawFline(fline_t * fl, int color)
                     d = ay - ax / 2;
                     while (1)
                     {
-                        DOT(x, y, color);
+                        DOT(x, y, static_cast<uint8_t>(color));
                         if (x == fl->b.x)
                             return;
                         if (d >= 0)
@@ -1021,7 +1021,7 @@ void AM_drawFline(fline_t * fl, int color)
                     d = ax - ay / 2;
                     while (1)
                     {
-                        DOT(x, y, color);
+                        DOT(x, y, static_cast<uint8_t>(color));
                         if (y == fl->b.y)
                             return;
                         if (d >= 0)

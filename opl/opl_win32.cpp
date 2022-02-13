@@ -101,18 +101,18 @@ static void OPL_Win32_PortWrite(opl_port_t port, unsigned int value)
 
 #define NO_PORT_RW
 
-static unsigned int OPL_Win32_PortRead(opl_port_t port)
+static unsigned int OPL_Win32_PortRead(opl_port_t)
 {
     return 0;
 }
 
-static void OPL_Win32_PortWrite(opl_port_t port, unsigned int value)
+static void OPL_Win32_PortWrite(opl_port_t, unsigned int)
 {
 }
 
 #endif
 
-static int OPL_Win32_Init(unsigned int port_base)
+static int OPL_Win32_Init(unsigned int)
 {
 #ifndef NO_PORT_RW
 
