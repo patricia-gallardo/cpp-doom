@@ -81,9 +81,9 @@ constexpr auto                  GRIDCOLORS               = (GRAYS + GRAYSRANGE /
 [[maybe_unused]] constexpr auto GRIDRANGE                = 0;
 constexpr auto                  XHAIRCOLORS              = GRAYS;
 
-constexpr auto WALLCOLORS()   { return (crispy->extautomap ? 23 : REDS); } // [crispy] red-brown
-constexpr auto FDWALLCOLORS() { return (crispy->extautomap ? 55 : BROWNS); } // [crispy] lt brown
-constexpr auto CDWALLCOLORS() { return (crispy->extautomap ? 215 : YELLOWS); } // [crispy] orange
+#define WALLCOLORS       (crispy->extautomap ? 23 : REDS) // [crispy] red-brown
+#define FDWALLCOLORS     (crispy->extautomap ? 55 : BROWNS) // [crispy] lt brown
+#define CDWALLCOLORS     (crispy->extautomap ? 215 : YELLOWS) // [crispy] orange
 
 #define CRISPY_HIGHLIGHT_REVEALED_SECRETS
 
@@ -1401,7 +1401,7 @@ void AM_drawWalls()
                     AM_drawMline(&l, REVEALEDSECRETWALLCOLORS);
 #endif
                 else
-                    AM_drawMline(&l, WALLCOLORS() + lightlev);
+                    AM_drawMline(&l, WALLCOLORS + lightlev);
             }
             else
             {
@@ -1410,11 +1410,11 @@ void AM_drawWalls()
                 // (no monsters-only teleporters 125, 126; no Boom teleporters)
                 if (lines[i].special == 39 || (crispy->extautomap && !(lines[i].flags & ML_SECRET) && lines[i].special == 97))
                 { // teleporters
-                    AM_drawMline(&l, crispy->extautomap ? (GREENS + GREENRANGE / 2) : (WALLCOLORS() + WALLRANGE / 2));
+                    AM_drawMline(&l, crispy->extautomap ? (GREENS + GREENRANGE / 2) : (WALLCOLORS + WALLRANGE / 2));
                 }
                 else if (lines[i].flags & ML_SECRET) // secret door
                 {
-                    AM_drawMline(&l, WALLCOLORS() + lightlev);
+                    AM_drawMline(&l, WALLCOLORS + lightlev);
                 }
 #if defined CRISPY_HIGHLIGHT_REVEALED_SECRETS
                 // [crispy] draw revealed secret sector boundaries in green
@@ -1431,12 +1431,12 @@ void AM_drawWalls()
                 else if (lines[i].backsector->floorheight
                          != lines[i].frontsector->floorheight)
                 {
-                    AM_drawMline(&l, FDWALLCOLORS() + lightlev); // floor level change
+                    AM_drawMline(&l, FDWALLCOLORS + lightlev); // floor level change
                 }
                 else if (lines[i].backsector->ceilingheight
                          != lines[i].frontsector->ceilingheight)
                 {
-                    AM_drawMline(&l, CDWALLCOLORS() + lightlev); // ceiling level change
+                    AM_drawMline(&l, CDWALLCOLORS + lightlev); // ceiling level change
                 }
                 else if (cheating)
                 {
