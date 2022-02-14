@@ -31,7 +31,7 @@ enum txt_joystick_axis_stage_t
 };
 
 // Callback invoked when calibration is completed.
-typedef void (*txt_joystick_axis_callback_t)();
+using txt_joystick_axis_callback_t = void (*)();
 
 #include "txt_widget.hpp"
 #include "txt_window.hpp"

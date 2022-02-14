@@ -104,7 +104,7 @@ typedef struct
 //  which is composed of one or more mappatch_t structures
 //  that arrange graphic patches.
 
-typedef struct texture_s texture_t;
+using texture_t = struct texture_s;
 
 struct texture_s {
     // Keep name for switch changing, etc.
