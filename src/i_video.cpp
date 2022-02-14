@@ -1666,7 +1666,7 @@ void I_InitGraphics()
 
     // Clear the screen to black.
 
-    memset(I_VideoBuffer, 0, static_cast<unsigned long>(SCREENWIDTH * SCREENHEIGHT) * sizeof(*I_VideoBuffer));
+    std::memset(I_VideoBuffer, 0, static_cast<unsigned long>(SCREENWIDTH * SCREENHEIGHT) * sizeof(*I_VideoBuffer));
 
     // clear out any events waiting at the start and center the mouse
 

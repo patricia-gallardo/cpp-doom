@@ -158,7 +158,7 @@ static void ParseDMXConfig(char *dmxconf, gus_config_t *config)
     char *       p, *newline;
     unsigned int i;
 
-    memset(config, 0, sizeof(gus_config_t));
+    std::memset(config, 0, sizeof(gus_config_t));
 
     for (i = 0; i < MAX_INSTRUMENTS; ++i)
     {

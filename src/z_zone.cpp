@@ -193,7 +193,7 @@ void Z_Free(void *ptr)
     // to break code that depends on reading freed memory.
     if (zero_on_free)
     {
-        memset(ptr, 0, static_cast<unsigned long>(block->size) - sizeof(memblock_t));
+        std::memset(ptr, 0, static_cast<unsigned long>(block->size) - sizeof(memblock_t));
     }
     if (scan_on_free)
     {

@@ -1302,7 +1302,7 @@ static void D_InitIntroSequence()
 
         // Clear screen
         textScreen = TXT_GetScreenData();
-        memset(textScreen, 0, 4000);
+        std::memset(textScreen, 0, 4000);
 
         using_text_startup = true;
 

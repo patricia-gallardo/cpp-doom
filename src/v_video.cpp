@@ -938,12 +938,12 @@ void WritePCXfile(char *filename, pixel_t *data,
     pcx->ymax           = SHORT(height - 1);
     pcx->hres           = SHORT(1);
     pcx->vres           = SHORT(1);
-    memset(pcx->palette, 0, sizeof(pcx->palette));
+    std::memset(pcx->palette, 0, sizeof(pcx->palette));
     pcx->reserved       = 0; // PCX spec: reserved byte must be zero
     pcx->color_planes   = 1; // chunky image
     pcx->bytes_per_line = SHORT(width);
     pcx->palette_type   = SHORT(2); // not a grey scale
-    memset(pcx->filler, 0, sizeof(pcx->filler));
+    std::memset(pcx->filler, 0, sizeof(pcx->filler));
 
     // pack the image
     pack = &pcx->data;
@@ -1086,7 +1086,7 @@ void WritePNGfile(char *filename, pixel_t *,
             // expand the row 5x
             for (j = 0; j < SCREENWIDTH; j++)
             {
-                memset(rowbuf + j * w_factor, *(data + i*SCREENWIDTH + j), w_factor);
+                std::memset(rowbuf + j * w_factor, *(data + i*SCREENWIDTH + j), w_factor);
             }
 
             // write the row 6 times

@@ -110,7 +110,7 @@ static void InitHashTable()
     size_t size        = sizeof(deh_substitution_t *) * static_cast<unsigned long>(hash_table_length);
     hash_table         = zmalloc<decltype(hash_table)>(size,
         PU_STATIC, nullptr);
-    memset(hash_table, 0, sizeof(deh_substitution_t *) * static_cast<unsigned long>(hash_table_length));
+    std::memset(hash_table, 0, sizeof(deh_substitution_t *) * static_cast<unsigned long>(hash_table_length));
 }
 
 static void DEH_AddToHashtable(deh_substitution_t *sub);
@@ -127,7 +127,7 @@ static void IncreaseHashtable()
     hash_table_length *= 2;
     hash_table = zmalloc<decltype(hash_table)>(sizeof(deh_substitution_t *) * static_cast<unsigned long>(hash_table_length),
         PU_STATIC, nullptr);
-    memset(hash_table, 0, sizeof(deh_substitution_t *) * static_cast<unsigned long>(hash_table_length));
+    std::memset(hash_table, 0, sizeof(deh_substitution_t *) * static_cast<unsigned long>(hash_table_length));
 
     // go through the old table and insert all the old entries
 

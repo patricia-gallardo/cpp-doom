@@ -125,7 +125,7 @@ static void Z_RemoveBlock(memblock_t *block)
 //
 void Z_Init()
 {
-    memset(allocated_blocks, 0, sizeof(allocated_blocks));
+    std::memset(allocated_blocks, 0, sizeof(allocated_blocks));
     printf("zone memory: Using native C allocator.\n");
 }
 

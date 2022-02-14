@@ -529,7 +529,7 @@ static void ParseOggFile(file_metadata_t *metadata, FILE *fs)
 
     // Scan through the start of the file looking for headers. They
     // begin '[byte]vorbis' where the byte value indicates header type.
-    memset(buf, 0, sizeof(buf));
+    std::memset(buf, 0, sizeof(buf));
 
     for (offset = 0; offset < 100 * 1024; ++offset)
     {

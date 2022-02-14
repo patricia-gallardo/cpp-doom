@@ -624,7 +624,7 @@ static mobj_t *
     mobjinfo_t *info;
 
     mobj = zmalloc<decltype(mobj)>(sizeof(*mobj), PU_LEVEL, nullptr);
-    memset(mobj, 0, sizeof(*mobj));
+    std::memset(mobj, 0, sizeof(*mobj));
     info = &mobjinfo[type];
 
     mobj->type   = type;

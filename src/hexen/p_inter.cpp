@@ -1575,7 +1575,7 @@ bool P_MorphPlayer(player_t * player)
     beastMo->player = player;
     player->health = beastMo->health = MAXMORPHHEALTH;
     player->mo = beastMo;
-    memset(&player->armorpoints[0], 0, NUMARMOR * sizeof(int));
+    std::memset(&player->armorpoints[0], 0, NUMARMOR * sizeof(int));
     player->clazz = PCLASS_PIG;
     if (oldFlags2 & MF2_FLY)
     {

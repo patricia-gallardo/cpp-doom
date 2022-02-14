@@ -181,7 +181,7 @@ static bool BuildNewTic()
     }
 
     //printf ("mk:%i ",maketic);
-    memset(&cmd, 0, sizeof(ticcmd_t));
+    std::memset(&cmd, 0, sizeof(ticcmd_t));
     loop_interface->BuildTiccmd(&cmd, maketic);
 
     if (net_client_connected)

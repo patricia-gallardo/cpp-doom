@@ -1178,7 +1178,7 @@ mobj_t *P_SpawnMobj(fixed_t x, fixed_t y, fixed_t z, mobjtype_t type)
     fixed_t space;
 
     mobj = zmalloc<mobj_t *>(sizeof(*mobj), PU_LEVEL, nullptr);
-    memset(mobj, 0, sizeof(*mobj));
+    std::memset(mobj, 0, sizeof(*mobj));
     info = &mobjinfo[type];
     mobj->type = type;
     mobj->info = info;

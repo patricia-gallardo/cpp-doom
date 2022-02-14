@@ -312,7 +312,7 @@ void AM_initVariables()
 
     // load in the location of keys, if in baby mode
 
-//      memset(KeyPoints, 0, sizeof(vertex_t)*3);
+//      std::memset(KeyPoints, 0, sizeof(vertex_t)*3);
     if (gameskill == sk_baby)
     {
         action_hook needle = P_MobjThinker;
@@ -742,7 +742,7 @@ void AM_clearFB(int)
     }
 
 //       std::memcpy(I_VideoBuffer, maplump, finit_width*finit_height);
-//  memset(fb, color, f_w*f_h);
+//  std::memset(fb, color, f_w*f_h);
 }
 
 // Based on Cohen-Sutherland clipping algorithm but with a slightly

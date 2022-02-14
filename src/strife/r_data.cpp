@@ -315,7 +315,7 @@ void R_GenerateLookup (int texnum)
     // Fill in the lump / offset, so columns
     //  with only a single patch are all done.
     patchcount = zmalloc<uint8_t *>(static_cast<size_t>(texture->width), PU_STATIC, &patchcount);
-    memset (patchcount, 0, static_cast<size_t>(texture->width));
+    std::memset (patchcount, 0, static_cast<size_t>(texture->width));
     patch = texture->patches;
 
     for (i=0 , patch = texture->patches;
@@ -406,7 +406,7 @@ static void GenerateTextureHashTable()
     textures_hashtable 
             = zmalloc<texture_t **>(sizeof(texture_t *) * static_cast<unsigned long>(numtextures), PU_STATIC, 0);
 
-    memset(textures_hashtable, 0, sizeof(texture_t *) * static_cast<unsigned long>(numtextures));
+    std::memset(textures_hashtable, 0, sizeof(texture_t *) * static_cast<unsigned long>(numtextures));
 
     // Add all textures to hash table
 
@@ -923,7 +923,7 @@ void R_PrecacheLevel ()
     
     // Precache flats.
     flatpresent = zmalloc<char *>(static_cast<size_t>(numflats), PU_STATIC, nullptr);
-    memset (flatpresent,0, static_cast<size_t>(numflats));
+    std::memset (flatpresent,0, static_cast<size_t>(numflats));
 
     for (i=0 ; i<numsectors ; i++)
     {
@@ -947,7 +947,7 @@ void R_PrecacheLevel ()
     
     // Precache textures.
     texturepresent = zmalloc<char *>(static_cast<size_t>(numtextures), PU_STATIC, nullptr);
-    memset (texturepresent,0, static_cast<size_t>(numtextures));
+    std::memset (texturepresent,0, static_cast<size_t>(numtextures));
 	
     for (i=0 ; i<numsides ; i++)
     {
@@ -984,7 +984,7 @@ void R_PrecacheLevel ()
     
     // Precache sprites.
     spritepresent = zmalloc<char *>(static_cast<size_t>(numsprites), PU_STATIC, nullptr);
-    memset (spritepresent,0, static_cast<size_t>(numsprites));
+    std::memset (spritepresent,0, static_cast<size_t>(numsprites));
     action_hook needle = P_MobjThinker;
     for (th = thinkercap.next ; th != &thinkercap ; th=th->next)
     {

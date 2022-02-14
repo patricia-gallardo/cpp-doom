@@ -1908,7 +1908,7 @@ void P_InitCreatureCorpseQueue(bool corpseScan)
 
     // Initialize queue
     corpseQueueSlot = 0;
-    memset(corpseQueue, 0, sizeof(mobj_t *) * CORPSEQUEUESIZE);
+    std::memset(corpseQueue, 0, sizeof(mobj_t *) * CORPSEQUEUESIZE);
 
     if (!corpseScan)
         return;

@@ -749,7 +749,7 @@ int W_MergeDump(const char *file)
         dir[i].pos  = LONG(ftell(fp));
         dir[i].size = LONG(lumpinfo[i]->size);
         // [crispy] lump names are zero-byte padded
-        memset(dir[i].name, 0, 8);
+        std::memset(dir[i].name, 0, 8);
         strncpy(dir[i].name, lumpinfo[i]->name, 8);
 
         // [crispy] avoid flooding Doom's Zone Memory

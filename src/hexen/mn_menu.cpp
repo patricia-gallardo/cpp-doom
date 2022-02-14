@@ -726,7 +726,7 @@ void MN_LoadSlotText()
         }
         else
         {
-            memset(SlotText[slot], 0, SLOTTEXTLEN);
+            std::memset(SlotText[slot], 0, SLOTTEXTLEN);
             SlotStatus[slot] = 0;
         }
     }

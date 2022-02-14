@@ -231,7 +231,7 @@ void R_DrawColumnInCache(column_t *patch, uint8_t *cache,
             // so that column can later be converted into a series of posts, to
             // fix the Medusa bug.
 
-            memset(marks + position, 0xff, static_cast<size_t>(count));
+            std::memset(marks + position, 0xff, static_cast<size_t>(count));
         }
 
         uint8_t *col_ptr = reinterpret_cast<uint8_t *>(patch) + patch->length + 4;
@@ -280,7 +280,7 @@ void R_GenerateComposite(int texnum)
     marks = static_cast<decltype(marks)>(calloc(static_cast<size_t>(texture->width), static_cast<size_t>(texture->height)));
 
     // [crispy] initialize composite background to black (index 0)
-    memset(block, 0, static_cast<size_t>(texturecompositesize[texnum]));
+    std::memset(block, 0, static_cast<size_t>(texturecompositesize[texnum]));
 
     for (i = 0, patch = texture->patches;
          i < texture->patchcount;
@@ -410,8 +410,8 @@ void R_GenerateLookup(int texnum)
     //  with only a single patch are all done.
     patchcount = zmalloc<uint8_t *>(static_cast<size_t>(texture->width), PU_STATIC, &patchcount);
     postcount  = zmalloc<uint8_t *>(static_cast<size_t>(texture->width), PU_STATIC, &postcount);
-    memset(patchcount, 0, static_cast<size_t>(texture->width));
-    memset(postcount, 0, static_cast<size_t>(texture->width));
+    std::memset(patchcount, 0, static_cast<size_t>(texture->width));
+    std::memset(postcount, 0, static_cast<size_t>(texture->width));
     patch = texture->patches;
 
     for (i = 0, patch = texture->patches;
@@ -587,7 +587,7 @@ static void GenerateTextureHashTable()
 
     textures_hashtable = zmalloc<decltype(textures_hashtable)>(sizeof(texture_t *) * static_cast<unsigned long>(numtextures), PU_STATIC, 0);
 
-    memset(textures_hashtable, 0, sizeof(texture_t *) * static_cast<unsigned long>(numtextures));
+    std::memset(textures_hashtable, 0, sizeof(texture_t *) * static_cast<unsigned long>(numtextures));
 
     // Add all textures to hash table
 
@@ -1367,7 +1367,7 @@ void R_PrecacheLevel()
 
     // Precache flats.
     flatpresent = zmalloc<decltype(flatpresent)>(static_cast<size_t>(numflats), PU_STATIC, nullptr);
-    memset(flatpresent, 0, static_cast<size_t>(numflats));
+    std::memset(flatpresent, 0, static_cast<size_t>(numflats));
 
     for (i = 0; i < numsectors; i++)
     {
@@ -1391,7 +1391,7 @@ void R_PrecacheLevel()
 
     // Precache textures.
     texturepresent = zmalloc<decltype(texturepresent)>(static_cast<size_t>(numtextures), PU_STATIC, nullptr);
-    memset(texturepresent, 0, static_cast<size_t>(numtextures));
+    std::memset(texturepresent, 0, static_cast<size_t>(numtextures));
 
     for (i = 0; i < numsides; i++)
     {
@@ -1431,7 +1431,7 @@ void R_PrecacheLevel()
 
     // Precache sprites.
     spritepresent = zmalloc<decltype(spritepresent)>(static_cast<size_t>(numsprites), PU_STATIC, nullptr);
-    memset(spritepresent, 0, static_cast<size_t>(numsprites));
+    std::memset(spritepresent, 0, static_cast<size_t>(numsprites));
 
     action_hook needle = P_MobjThinker;
     for (th = thinkercap.next; th != &thinkercap; th = th->next)

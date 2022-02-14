@@ -110,7 +110,7 @@ static void LoadResponseFile(int argv_index, const char *filename)
 
     char **newargv = static_cast<char **>(malloc(sizeof(char *) * MAXARGVS));
     int newargc = 0;
-    memset(newargv, 0, sizeof(char *) * MAXARGVS);
+    std::memset(newargv, 0, sizeof(char *) * MAXARGVS);
 
     // Copy all the arguments in the list up to the response file
 
@@ -319,7 +319,7 @@ void M_AddLooseFiles()
     // allocate space for up to three additional regular parameters
 
     arguments = static_cast<argument_t *>(malloc((myargc + 3) * sizeof(*arguments)));
-    memset(arguments, 0, (myargc + 3) * sizeof(*arguments));
+    std::memset(arguments, 0, (myargc + 3) * sizeof(*arguments));
 
     // check the command line and make sure it does not already
     // contain any regular parameters or response files

@@ -849,7 +849,7 @@ void AM_Ticker ()
 //
 void AM_clearFB(int color)
 {
-    memset(fb, color, static_cast<size_t>(f_w * f_h));
+    std::memset(fb, color, static_cast<size_t>(f_w * f_h));
 }
 
 

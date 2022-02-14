@@ -234,9 +234,9 @@ void IN_InitStats()
     else if (netgame && !deathmatch)
     {
         gametype = COOPERATIVE;
-        memset(killPercent, 0, MAXPLAYERS * sizeof(int));
-        memset(bonusPercent, 0, MAXPLAYERS * sizeof(int));
-        memset(secretPercent, 0, MAXPLAYERS * sizeof(int));
+        std::memset(killPercent, 0, MAXPLAYERS * sizeof(int));
+        std::memset(bonusPercent, 0, MAXPLAYERS * sizeof(int));
+        std::memset(secretPercent, 0, MAXPLAYERS * sizeof(int));
         for (i = 0; i < MAXPLAYERS; i++)
         {
             if (playeringame[i])

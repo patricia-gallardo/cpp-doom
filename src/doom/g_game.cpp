@@ -346,7 +346,7 @@ void G_BuildTiccmd(ticcmd_t *cmd, int maketic)
     player_t *const player = &players[consoleplayer];
     static char     playermessage[48];
 
-    memset(cmd, 0, sizeof(ticcmd_t));
+    std::memset(cmd, 0, sizeof(ticcmd_t));
 
     cmd->consistancy =
         consistancy[consoleplayer][maketic % BACKUPTICS];
@@ -836,7 +836,7 @@ void G_DoLoadLevel()
         turbodetected[i] = false;
         if (playeringame[i] && players[i].playerstate == PST_DEAD)
             players[i].playerstate = PST_REBORN;
-        memset(players[i].frags, 0, sizeof(players[i].frags));
+        std::memset(players[i].frags, 0, sizeof(players[i].frags));
     }
 
     // [crispy] update the "singleplayer" variable
@@ -848,12 +848,12 @@ void G_DoLoadLevel()
 
     // clear cmd building stuff
 
-    memset(gamekeydown, 0, sizeof(gamekeydown));
+    std::memset(gamekeydown, 0, sizeof(gamekeydown));
     joyxmove = joyymove = joystrafemove = joylook = 0;
     mousex = mousex2 = mousey = 0;
     sendpause = sendsave = paused = false;
-    memset(mousearray, 0, sizeof(mousearray));
-    memset(joyarray, 0, sizeof(joyarray));
+    std::memset(mousearray, 0, sizeof(mousearray));
+    std::memset(joyarray, 0, sizeof(joyarray));
 
     if (testcontrols)
     {
@@ -1295,9 +1295,9 @@ void G_PlayerFinishLevel(int player)
 
     p = &players[player];
 
-    memset(p->powers, 0, sizeof(p->powers));
-    memset(p->cards, 0, sizeof(p->cards));
-    memset(p->tryopen, 0, sizeof(p->tryopen)); // [crispy] blinking key or skull in the status bar
+    std::memset(p->powers, 0, sizeof(p->powers));
+    std::memset(p->cards, 0, sizeof(p->cards));
+    std::memset(p->tryopen, 0, sizeof(p->tryopen)); // [crispy] blinking key or skull in the status bar
     p->mo->flags &= ~MF_SHADOW;                // cancel invisibility
     p->extralight    = 0;                      // cancel gun flashes
     p->fixedcolormap = 0;                      // cancel ir gogles
@@ -1334,7 +1334,7 @@ void G_PlayerReborn(int player)
     secretcount = players[player].secretcount;
 
     p = &players[player];
-    memset(p, 0, sizeof(*p));
+    std::memset(p, 0, sizeof(*p));
 
     std::memcpy(players[player].frags, frags, sizeof(players[player].frags));
     players[player].killcount   = killcount;

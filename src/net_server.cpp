@@ -514,7 +514,7 @@ static void NET_SV_AdvanceWindow()
 
         memmove(recvwindow, recvwindow + 1,
             sizeof(*recvwindow) * (BACKUPTICS - 1));
-        memset(&recvwindow[BACKUPTICS - 1], 0, sizeof(*recvwindow));
+        std::memset(&recvwindow[BACKUPTICS - 1], 0, sizeof(*recvwindow));
         ++recvwindow_start;
         NET_Log("server: advanced receive window to %d", recvwindow_start);
     }
@@ -573,7 +573,7 @@ static void NET_SV_InitNewClient(net_client_t *client, net_addr_t *addr,
 
     client->last_gamedata_time = 0;
 
-    memset(client->sendqueue, 0xff, sizeof(client->sendqueue));
+    std::memset(client->sendqueue, 0xff, sizeof(client->sendqueue));
 
     NET_Log("server: initialized new client from %s", NET_AddrToString(addr));
 }
@@ -898,7 +898,7 @@ static void StartGame()
     NET_Log("server: beginning game state");
     server_state = SERVER_IN_GAME;
 
-    memset(recvwindow, 0, sizeof(recvwindow));
+    std::memset(recvwindow, 0, sizeof(recvwindow));
     recvwindow_start = 0;
 }
 

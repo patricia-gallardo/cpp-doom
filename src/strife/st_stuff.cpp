@@ -1284,7 +1284,7 @@ static bool ST_drawKeysPopup()
         {
             char sprname[8];
             patch_t *patch;
-            memset(sprname, 0, sizeof(sprname));
+            std::memset(sprname, 0, sizeof(sprname));
 
             if(plyr->cards[key])
             {

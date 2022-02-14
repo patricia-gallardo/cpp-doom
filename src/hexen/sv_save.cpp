@@ -1897,7 +1897,7 @@ void SV_SaveGame(int slot, const char *description)
     SV_Write(description, HXS_DESCRIPTION_LENGTH);
 
     // Write version info
-    memset(versionText, 0, HXS_VERSION_TEXT_LENGTH);
+    std::memset(versionText, 0, HXS_VERSION_TEXT_LENGTH);
     M_StringCopy(versionText, HXS_VERSION_TEXT, HXS_VERSION_TEXT_LENGTH);
     SV_Write(versionText, HXS_VERSION_TEXT_LENGTH);
 
@@ -2197,7 +2197,7 @@ void SV_MapTeleport(int map, int position)
         playerWasReborn = (players[i].playerstate == PST_REBORN);
         if (deathmatch)
         {
-            memset(players[i].frags, 0, sizeof(players[i].frags));
+            std::memset(players[i].frags, 0, sizeof(players[i].frags));
             mobj = P_SpawnMobj(playerstarts[0][i].x << 16,
                                playerstarts[0][i].y << 16, 0,
                                MT_PLAYER_FIGHTER);

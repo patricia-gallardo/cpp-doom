@@ -204,7 +204,7 @@ void R_InitSpriteDefs (const char** namelist)
     for (i=0 ; i<numsprites ; i++)
     {
 	spritename = DEH_String(namelist[i]);
-	memset (sprtemp,-1, sizeof(sprtemp));
+	std::memset (sprtemp,-1, sizeof(sprtemp));
 		
 	maxframe = -1;
 	

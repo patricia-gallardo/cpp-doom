@@ -212,7 +212,7 @@ void R_GenerateLookup(int texnum)
 // all done
 //
     patchcount = zmalloc<uint8_t *>(texture->width, PU_STATIC, &patchcount);
-    memset(patchcount, 0, texture->width);
+    std::memset(patchcount, 0, texture->width);
     patch = texture->patches;
 
     for (i = 0, patch = texture->patches; i < texture->patchcount;
@@ -615,7 +615,7 @@ void R_PrecacheLevel()
 // precache flats
 //      
     flatpresent = zmalloc<char *>(numflats, PU_STATIC, nullptr);
-    memset(flatpresent, 0, numflats);
+    std::memset(flatpresent, 0, numflats);
     for (i = 0; i < numsectors; i++)
     {
         flatpresent[sectors[i].floorpic] = 1;
@@ -637,7 +637,7 @@ void R_PrecacheLevel()
 // precache textures
 //
     texturepresent = zmalloc<char *>(numtextures, PU_STATIC, nullptr);
-    memset(texturepresent, 0, numtextures);
+    std::memset(texturepresent, 0, numtextures);
 
     for (i = 0; i < numsides; i++)
     {
@@ -669,7 +669,7 @@ void R_PrecacheLevel()
 // precache sprites
 //
     spritepresent = zmalloc<char *>(numsprites, PU_STATIC, nullptr);
-    memset(spritepresent, 0, numsprites);
+    std::memset(spritepresent, 0, numsprites);
     action_hook needle = P_MobjThinker;
 
     for (th = thinkercap.next; th != &thinkercap; th = th->next)

@@ -67,7 +67,7 @@ static void SaveDiskData(const char *disk_lump, int xoffs, int yoffs)
     // Allocate a complete temporary screen where we'll draw the patch.
     pixel_t *tmpscreen = zmalloc<pixel_t *>(static_cast<unsigned long>(SCREENWIDTH * SCREENHEIGHT) * sizeof(*tmpscreen),
         PU_STATIC, nullptr);
-    memset(tmpscreen, 0, static_cast<unsigned long>(SCREENWIDTH * SCREENHEIGHT) * sizeof(*tmpscreen));
+    std::memset(tmpscreen, 0, static_cast<unsigned long>(SCREENWIDTH * SCREENHEIGHT) * sizeof(*tmpscreen));
     V_UseBuffer(tmpscreen);
 
     // Buffer where we'll save the disk data.

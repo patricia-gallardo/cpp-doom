@@ -285,7 +285,7 @@ void I_Error(const char *error, ...)
 
     // Write a copy of the message into buffer.
     va_start(argptr, error);
-    memset(msgbuf, 0, sizeof(msgbuf));
+    std::memset(msgbuf, 0, sizeof(msgbuf));
     M_vsnprintf(msgbuf, sizeof(msgbuf), error, argptr);
     va_end(argptr);
 

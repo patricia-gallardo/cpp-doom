@@ -273,7 +273,7 @@ static void NET_CL_AdvanceWindow()
 
         memmove(recvwindow, recvwindow + 1,
             sizeof(net_server_recv_t) * (BACKUPTICS - 1));
-        memset(&recvwindow[BACKUPTICS - 1], 0, sizeof(net_server_recv_t));
+        std::memset(&recvwindow[BACKUPTICS - 1], 0, sizeof(net_server_recv_t));
 
         ++recvwindow_start;
 
@@ -306,7 +306,7 @@ void NET_CL_StartGame(net_gamesettings_t *settings_param)
 
     // Start from a ticcmd of all zeros
 
-    memset(&last_ticcmd, 0, sizeof(ticcmd_t));
+    std::memset(&last_ticcmd, 0, sizeof(ticcmd_t));
 
     // Send packet
 
@@ -595,13 +595,13 @@ static void NET_CL_ParseGameStart(net_packet_t *packet)
 
     // Clear the receive window
 
-    memset(recvwindow, 0, sizeof(recvwindow));
+    std::memset(recvwindow, 0, sizeof(recvwindow));
     recvwindow_start = 0;
-    memset(&recvwindow_cmd_base, 0, sizeof(recvwindow_cmd_base));
+    std::memset(&recvwindow_cmd_base, 0, sizeof(recvwindow_cmd_base));
 
     // Clear the send queue
 
-    memset(&send_queue, 0x00, sizeof(send_queue));
+    std::memset(&send_queue, 0x00, sizeof(send_queue));
 }
 
 static void NET_CL_SendResendRequest(int start, int end)

@@ -1618,7 +1618,7 @@ bool MN_Responder(event_t * event)
         }
         if (key == KEY_ESCAPE)
         {
-            memset(SlotText[currentSlot], 0, SLOTTEXTLEN + 2);
+            std::memset(SlotText[currentSlot], 0, SLOTTEXTLEN + 2);
             M_StringCopy(SlotText[currentSlot], oldSlotText,
                          sizeof(SlotText[currentSlot]));
             SlotStatus[currentSlot]--;

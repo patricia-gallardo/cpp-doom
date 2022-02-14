@@ -993,7 +993,7 @@ void AM_Ticker()
 //
 void AM_clearFB(int color)
 {
-    memset(fb, color, static_cast<unsigned long>(f_w * f_h) * sizeof(*fb));
+    std::memset(fb, color, static_cast<unsigned long>(f_w * f_h) * sizeof(*fb));
 }
 
 

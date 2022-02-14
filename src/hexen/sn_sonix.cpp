@@ -200,7 +200,7 @@ void SN_InitSequenceScript()
             }
             tempDataStart = zmalloc<int *>(SS_TEMPBUFFER_SIZE,
                                              PU_STATIC, nullptr);
-            memset(tempDataStart, 0, SS_TEMPBUFFER_SIZE);
+            std::memset(tempDataStart, 0, SS_TEMPBUFFER_SIZE);
             tempDataPtr = tempDataStart;
             for (i = 0; i < SS_MAX_SCRIPTS; i++)
             {

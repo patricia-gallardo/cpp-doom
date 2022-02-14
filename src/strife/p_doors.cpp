@@ -1046,7 +1046,7 @@ void P_InitSlidingDoorFrames()
     int f3;
     int f4;
 
-    memset(slideFrames, 0, sizeof(slideframe_t) * MAXSLIDEDOORS);
+    std::memset(slideFrames, 0, sizeof(slideframe_t) * MAXSLIDEDOORS);
 	
     for(i = 0; i < MAXSLIDEDOORS; i++)
     {

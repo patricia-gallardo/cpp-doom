@@ -340,7 +340,7 @@ void G_BuildTiccmd (ticcmd_t* cmd, int maketic)
     int		forward;
     int		side;
 
-    memset(cmd, 0, sizeof(ticcmd_t));
+    std::memset(cmd, 0, sizeof(ticcmd_t));
 
     cmd->consistancy = 
         consistancy[consoleplayer][maketic%BACKUPTICS]; 
@@ -689,7 +689,7 @@ void G_DoLoadLevel ()
         // haleyjd 20110204 [STRIFE]: PST_REBORN if players[i].health <= 0
         if (playeringame[i] && (players[i].playerstate == PST_DEAD || players[i].health <= 0))
             players[i].playerstate = PST_REBORN; 
-        memset (players[i].frags,0,sizeof(players[i].frags)); 
+        std::memset (players[i].frags,0,sizeof(players[i].frags));
     } 
 
     P_SetupLevel (gamemap, 0, gameskill);    
@@ -700,12 +700,12 @@ void G_DoLoadLevel ()
 
     // clear cmd building stuff
 
-    memset (gamekeydown, 0, sizeof(gamekeydown));
+    std::memset (gamekeydown, 0, sizeof(gamekeydown));
     joyxmove = joyymove = joystrafemove = joylook = 0;
     mousex = mousey = 0;
     sendpause = sendsave = paused = false;
-    memset(mousearray, 0, sizeof(mousearray));
-    memset(joyarray, 0, sizeof(joyarray));
+    std::memset(mousearray, 0, sizeof(mousearray));
+    std::memset(joyarray, 0, sizeof(joyarray));
 
     if (testcontrols)
     {
@@ -1124,8 +1124,8 @@ void G_PlayerFinishLevel (int player)
 	 
     p = &players[player]; 
 	 
-    memset (p->powers, 0, sizeof (p->powers)); 
-    memset (p->cards, 0, sizeof (p->cards)); 
+    std::memset (p->powers, 0, sizeof (p->powers));
+    std::memset (p->cards, 0, sizeof (p->cards));
     p->mo->flags &= ~MF_SHADOW;		// cancel invisibility 
     p->extralight = 0;			// cancel gun flashes 
     p->fixedcolormap = 0;		// cancel ir gogles 
@@ -1156,7 +1156,7 @@ void G_PlayerReborn (int player)
     std::memcpy(frags,players[player].frags,sizeof(frags));
 
     p = &players[player]; 
-    memset (p, 0, sizeof(*p)); 
+    std::memset (p, 0, sizeof(*p));
 
     std::memcpy(p->frags, frags, sizeof(p->frags));
 
@@ -1292,7 +1292,7 @@ void G_LoadPath(int map)
 {
     char mapbuf[33];
 
-    memset(mapbuf, 0, sizeof(mapbuf));
+    std::memset(mapbuf, 0, sizeof(mapbuf));
     M_snprintf(mapbuf, sizeof(mapbuf), "%d", map);
 
     // haleyjd: free if already set, and use M_SafeFilePath
@@ -1762,8 +1762,8 @@ bool G_WriteSaveName(int slot, const char *charname)
         Z_Free(savepath);
     savepath = M_SafeFilePath(savegamedir, M_MakeStrifeSaveDir(savegameslot, ""));
 
-    // haleyjd: memset full character_name for safety
-    memset(character_name, 0, CHARACTER_NAME_LEN);
+    // haleyjd: std::memset full character_name for safety
+    std::memset(character_name, 0, CHARACTER_NAME_LEN);
     M_StringCopy(character_name, charname, sizeof(character_name));
 
     // haleyjd: use M_SafeFilePath
@@ -1807,7 +1807,7 @@ void G_DoSaveGame (char *path)
     temp_savegame_file = P_TempSaveGameFile();
     
     // [STRIFE] custom save file path logic
-    memset(gamemapstr, 0, sizeof(gamemapstr));
+    std::memset(gamemapstr, 0, sizeof(gamemapstr));
     M_snprintf(gamemapstr, sizeof(gamemapstr), "%d", gamemap);
     savegame_file = M_SafeFilePath(path, gamemapstr);
 

@@ -59,7 +59,7 @@ static void NET_SDL_InitAddrTable()
 
     addr_table = zmalloc<decltype(addr_table)>(sizeof(addrpair_t *) * static_cast<unsigned long>(addr_table_size),
         PU_STATIC, 0);
-    memset(addr_table, 0, sizeof(addrpair_t *) * static_cast<unsigned long>(addr_table_size));
+    std::memset(addr_table, 0, sizeof(addrpair_t *) * static_cast<unsigned long>(addr_table_size));
 }
 
 static bool AddressesEqual(IPaddress *a, IPaddress *b)
@@ -114,7 +114,7 @@ static net_addr_t *NET_SDL_FindAddress(IPaddress *addr)
         new_addr_table_size = addr_table_size * 2;
         new_addr_table      = zmalloc<decltype(new_addr_table)>(sizeof(addrpair_t *) * static_cast<unsigned long>(new_addr_table_size),
             PU_STATIC, 0);
-        memset(new_addr_table, 0, sizeof(addrpair_t *) * static_cast<unsigned long>(new_addr_table_size));
+        std::memset(new_addr_table, 0, sizeof(addrpair_t *) * static_cast<unsigned long>(new_addr_table_size));
         std::memcpy(new_addr_table, addr_table,
             sizeof(addrpair_t *) * static_cast<unsigned long>(addr_table_size));
         Z_Free(addr_table);

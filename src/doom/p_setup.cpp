@@ -178,7 +178,7 @@ sector_t *GetSectorAtNullAddress()
 
     if (!null_sector_is_initialized)
     {
-        memset(&null_sector, 0, sizeof(null_sector));
+        std::memset(&null_sector, 0, sizeof(null_sector));
         I_GetMemoryValue(0, &null_sector.floorheight, 4);
         I_GetMemoryValue(4, &null_sector.ceilingheight, 4);
         null_sector_is_initialized = true;
@@ -203,7 +203,7 @@ void P_LoadSegs(int lump)
 
     numsegs = static_cast<int>(W_LumpLength(lump) / sizeof(mapseg_t));
     segs    = zmalloc<decltype(segs)>(static_cast<unsigned long>(numsegs) * sizeof(seg_t), PU_LEVEL, 0);
-    memset(segs, 0, static_cast<unsigned long>(numsegs) * sizeof(seg_t));
+    std::memset(segs, 0, static_cast<unsigned long>(numsegs) * sizeof(seg_t));
     data = cache_lump_num<uint8_t *>(lump, PU_STATIC);
 
     ml = reinterpret_cast<mapseg_t *>(data);
@@ -325,7 +325,7 @@ void P_LoadSubsectors(int lump)
         I_Error("P_LoadSubsectors: No subsectors in map!");
 
     ms = reinterpret_cast<mapsubsector_t *>(data);
-    memset(subsectors, 0, static_cast<unsigned long>(numsubsectors) * sizeof(subsector_t));
+    std::memset(subsectors, 0, static_cast<unsigned long>(numsubsectors) * sizeof(subsector_t));
     ss = subsectors;
 
     for (i = 0; i < numsubsectors; i++, ss++, ms++)
@@ -354,7 +354,7 @@ void P_LoadSectors(int lump)
 
     numsectors = static_cast<int>(W_LumpLength(lump) / sizeof(mapsector_t));
     sectors    = zmalloc<decltype(sectors)>(static_cast<unsigned long>(numsectors) * sizeof(sector_t), PU_LEVEL, 0);
-    memset(sectors, 0, static_cast<unsigned long>(numsectors) * sizeof(sector_t));
+    std::memset(sectors, 0, static_cast<unsigned long>(numsectors) * sizeof(sector_t));
     data = cache_lump_num<uint8_t *>(lump, PU_STATIC);
 
     // [crispy] fail on missing sectors
@@ -535,7 +535,7 @@ void P_LoadLineDefs(int lump)
 
     numlines = static_cast<int>(W_LumpLength(lump) / sizeof(maplinedef_t));
     lines    = zmalloc<decltype(lines)>(static_cast<unsigned long>(numlines) * sizeof(line_t), PU_LEVEL, 0);
-    memset(lines, 0, static_cast<unsigned long>(numlines) * sizeof(line_t));
+    std::memset(lines, 0, static_cast<unsigned long>(numlines) * sizeof(line_t));
     data = cache_lump_num<uint8_t *>(lump, PU_STATIC);
 
     mld  = reinterpret_cast<maplinedef_t *>(data);
@@ -677,7 +677,7 @@ void P_LoadSideDefs(int lump)
 
     numsides = static_cast<int>(W_LumpLength(lump) / sizeof(mapsidedef_t));
     sides    = zmalloc<decltype(sides)>(static_cast<unsigned long>(numsides) * sizeof(side_t), PU_LEVEL, 0);
-    memset(sides, 0, static_cast<unsigned long>(numsides) * sizeof(side_t));
+    std::memset(sides, 0, static_cast<unsigned long>(numsides) * sizeof(side_t));
     data = cache_lump_num<uint8_t *>(lump, PU_STATIC);
 
     msd = reinterpret_cast<mapsidedef_t *>(data);
@@ -747,7 +747,7 @@ bool P_LoadBlockMap(int lump)
 
     count      = static_cast<int>(sizeof(*blocklinks)) * bmapwidth * bmapheight;
     blocklinks = zmalloc<decltype(blocklinks)>(count, PU_LEVEL, 0);
-    memset(blocklinks, 0, static_cast<size_t>(count));
+    std::memset(blocklinks, 0, static_cast<size_t>(count));
 
     // [crispy] (re-)create BLOCKMAP if necessary
     fprintf(stderr, ")\n");
@@ -976,7 +976,7 @@ static void PadRejectArray(uint8_t *array, unsigned int len)
             padvalue = 0xf00;
         }
 
-        memset(array + sizeof(rejectpad), static_cast<int>(padvalue), len - sizeof(rejectpad));
+        std::memset(array + sizeof(rejectpad), static_cast<int>(padvalue), len - sizeof(rejectpad));
     }
 }
 
@@ -1215,7 +1215,7 @@ void P_SetupLevel(int episode, int map, int, skill_t skill)
     // [crispy] fix long wall wobble
     P_SegLengths(false);
     // [crispy] blinking key or skull in the status bar
-    memset(st_keyorskull, 0, sizeof(st_keyorskull));
+    std::memset(st_keyorskull, 0, sizeof(st_keyorskull));
 
     bodyqueslot  = 0;
     deathmatch_p = deathmatchstarts;

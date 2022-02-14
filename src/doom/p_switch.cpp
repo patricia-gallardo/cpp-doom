@@ -191,7 +191,7 @@ void P_InitSwitchList()
 
     // [crispy] pre-allocate some memory for the buttonlist[] array
     buttonlist = static_cast<decltype(buttonlist)>(I_Realloc(nullptr, sizeof(*buttonlist) * (maxbuttons = MAXBUTTONS)));
-    memset(buttonlist, 0, sizeof(*buttonlist) * static_cast<unsigned long>(maxbuttons));
+    std::memset(buttonlist, 0, sizeof(*buttonlist) * static_cast<unsigned long>(maxbuttons));
 }
 
 
@@ -238,7 +238,7 @@ void P_StartButton(line_t *line,
     {
         maxbuttons = 2 * maxbuttons;
         buttonlist = static_cast<decltype(buttonlist)>(I_Realloc(buttonlist, sizeof(*buttonlist) * static_cast<unsigned long>(maxbuttons)));
-        memset(buttonlist + maxbuttons / 2, 0, sizeof(*buttonlist) * static_cast<unsigned long>(maxbuttons) / 2);
+        std::memset(buttonlist + maxbuttons / 2, 0, sizeof(*buttonlist) * static_cast<unsigned long>(maxbuttons) / 2);
         return P_StartButton(line, w, texture, time);
     }
     [[unreachable]];

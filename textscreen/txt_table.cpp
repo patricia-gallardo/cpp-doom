@@ -178,7 +178,7 @@ static void CalcRowColSizes(txt_table_t *table,
 
     rows = TableRows(table);
 
-    memset(col_widths, 0, sizeof(int) * static_cast<unsigned long>(table->columns));
+    std::memset(col_widths, 0, sizeof(int) * static_cast<unsigned long>(table->columns));
 
     for (y = 0; y < rows; ++y)
     {

@@ -1155,7 +1155,7 @@ void OPL3_GenerateResampled(opl3_chip *chip, Bit16s *buf)
 
 void OPL3_Reset(opl3_chip *chip, Bit32u samplerate)
 {
-    memset(chip, 0, sizeof(opl3_chip));
+    std::memset(chip, 0, sizeof(opl3_chip));
     for (Bit8u slotnum = 0; slotnum < 36; slotnum++)
     {
         chip->slot[slotnum].chip = chip;
