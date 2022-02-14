@@ -142,13 +142,13 @@ typedef struct
     fixed_t slp, islp;
 } islope_t;
 
-typedef enum
+enum keycolor_t
 {
     no_key,
     red_key,
     yellow_key,
     blue_key
-} keycolor_t;
+};
 
 
 //

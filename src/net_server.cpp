@@ -43,7 +43,7 @@
 // How often to re-resolve the address of the master server?
 #define MASTER_RESOLVE_PERIOD 8 * 60 * 60 /* 8 hours */
 
-typedef enum
+enum net_server_state_t
 {
     // waiting for the game to be "launched" (key player to press the start
     // button)
@@ -58,7 +58,7 @@ typedef enum
     // in a game
 
     SERVER_IN_GAME,
-} net_server_state_t;
+};
 
 typedef struct
 {

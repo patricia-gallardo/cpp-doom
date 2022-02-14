@@ -113,7 +113,7 @@ struct _net_addr_s {
 // to use, so the order matters.
 // NOTE: The values in this enum do not have any special value outside of
 // the program they're compiled in. What matters is the string representation.
-typedef enum
+enum net_protocol_t
 {
     // Protocol introduced with Chocolate Doom v3.0. Each compatibility-
     // breaking change to the network protocol will produce a new protocol
@@ -125,11 +125,11 @@ typedef enum
 
     NET_NUM_PROTOCOLS,
     NET_PROTOCOL_UNKNOWN,
-} net_protocol_t;
+};
 
 // packet types
 
-typedef enum
+enum net_packet_type_t
 {
     NET_PACKET_TYPE_SYN,
     NET_PACKET_TYPE_ACK, // deprecated
@@ -148,9 +148,9 @@ typedef enum
     NET_PACKET_TYPE_QUERY_RESPONSE,
     NET_PACKET_TYPE_LAUNCH,
     NET_PACKET_TYPE_NAT_HOLE_PUNCH,
-} net_packet_type_t;
+};
 
-typedef enum
+enum net_master_packet_type_t
 {
     NET_MASTER_PACKET_TYPE_ADD,
     NET_MASTER_PACKET_TYPE_ADD_RESPONSE,
@@ -164,7 +164,7 @@ typedef enum
     NET_MASTER_PACKET_TYPE_SIGN_END_RESPONSE,
     NET_MASTER_PACKET_TYPE_NAT_HOLE_PUNCH,
     NET_MASTER_PACKET_TYPE_NAT_HOLE_PUNCH_ALL,
-} net_master_packet_type_t;
+};
 
 // Settings specified when the client connects to the server.
 

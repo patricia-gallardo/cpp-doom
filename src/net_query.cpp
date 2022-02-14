@@ -48,20 +48,20 @@
 
 #define QUERY_MAX_ATTEMPTS 3
 
-typedef enum
+enum query_target_type_t
 {
     QUERY_TARGET_SERVER,   // Normal server target.
     QUERY_TARGET_MASTER,   // The master server.
     QUERY_TARGET_BROADCAST // Send a broadcast query
-} query_target_type_t;
+};
 
-typedef enum
+enum query_target_state_t
 {
     QUERY_TARGET_QUEUED,    // Query not yet sent
     QUERY_TARGET_QUERIED,   // Query sent, waiting response
     QUERY_TARGET_RESPONDED, // Response received
     QUERY_TARGET_NO_RESPONSE
-} query_target_state_t;
+};
 
 typedef struct
 {

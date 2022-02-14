@@ -59,7 +59,7 @@
 #define	MELEERANGE (64*FRACUNIT)
 #define	MISSILERANGE (32*64*FRACUNIT)
 
-typedef enum
+enum dirtype_t
 {
     DI_EAST,
     DI_NORTHEAST,
@@ -71,7 +71,7 @@ typedef enum
     DI_SOUTHEAST,
     DI_NODIR,
     NUMDIRS [[maybe_unused]]
-} dirtype_t;
+};
 
 #define BASETHRESHOLD 100       // follow a player exlusively for 3 seconds
 

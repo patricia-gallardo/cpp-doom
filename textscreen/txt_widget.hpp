@@ -35,19 +35,19 @@
 
 #include <memory>
 
-typedef enum
+enum txt_vert_align_t
 {
     TXT_VERT_TOP,
     TXT_VERT_CENTER,
     TXT_VERT_BOTTOM,
-} txt_vert_align_t;
+};
 
-typedef enum
+enum txt_horiz_align_t
 {
     TXT_HORIZ_LEFT,
     TXT_HORIZ_CENTER,
     TXT_HORIZ_RIGHT,
-} txt_horiz_align_t;
+};
 
 /**
  * A GUI widget.

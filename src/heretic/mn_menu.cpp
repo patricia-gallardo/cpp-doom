@@ -46,16 +46,16 @@ constexpr char ASCII_CURSOR = '[';
 
 // Types
 
-typedef enum
+enum ItemType_t
 {
     ITT_EMPTY,
     ITT_EFUNC,
     ITT_LRFUNC,
     ITT_SETMENU,
     ITT_INERT
-} ItemType_t;
+};
 
-typedef enum
+enum MenuType_t
 {
     MENU_MAIN,
     MENU_EPISODE,
@@ -67,7 +67,7 @@ typedef enum
     MENU_SAVE,
     MENU_CRISPNESS,
     MENU_NONE
-} MenuType_t;
+};
 
 typedef struct
 {

@@ -37,7 +37,7 @@
 
 extern void D_ReceiveTic(ticcmd_t *ticcmds, bool *playeringame);
 
-typedef enum
+enum net_clientstate_t
 {
     // waiting for the game to launch
 
@@ -51,7 +51,7 @@ typedef enum
 
     CLIENT_STATE_IN_GAME,
 
-} net_clientstate_t;
+};
 
 // Type of structure used in the receive window
 

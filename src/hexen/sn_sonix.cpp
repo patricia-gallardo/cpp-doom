@@ -44,7 +44,7 @@
 
 // TYPES -------------------------------------------------------------------
 
-typedef enum
+enum sscmds_t
 {
     SS_CMD_NONE,
     SS_CMD_PLAY,
@@ -56,7 +56,7 @@ typedef enum
     SS_CMD_VOLUME,
     SS_CMD_STOPSOUND,
     SS_CMD_END
-} sscmds_t;
+};
 
 // EXTERNAL FUNCTION PROTOTYPES --------------------------------------------
 

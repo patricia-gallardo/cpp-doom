@@ -30,11 +30,11 @@
 #include "deh_defs.hpp"
 #include "deh_io.hpp"
 
-typedef enum
+enum deh_input_type_t
 {
     DEH_INPUT_FILE,
     DEH_INPUT_LUMP
-} deh_input_type_t;
+};
 
 struct deh_context_s {
     deh_input_type_t type;

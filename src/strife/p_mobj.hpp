@@ -108,7 +108,7 @@
 //
 // Misc. mobj flags
 //
-typedef enum
+enum mobjflag_t
 {
     // Call P_SpecialThing when touched.
     MF_SPECIAL          = 1,
@@ -229,7 +229,7 @@ typedef enum
     // villsa [STRIFE] change from 26 to 28
     MF_TRANSSHIFT       = 28
 
-} mobjflag_t;
+};
 
 
 // Map Object definition.

@@ -108,13 +108,13 @@
 #define DM_VICTIMSY 50
 
 
-typedef enum
+enum animenum_t
 {
     ANIM_ALWAYS,
     ANIM_RANDOM,
     ANIM_LEVEL
 
-} animenum_t;
+};
 
 typedef struct
 {

@@ -25,7 +25,7 @@
 
 // Music identifiers
 
-typedef enum
+enum musicenum_t
 {
     mus_e1m1,
     mus_e1m2,
@@ -59,11 +59,11 @@ typedef enum
     mus_intr,
     mus_cptd,
     NUMMUSIC
-} musicenum_t;
+};
 
 // Sound identifiers
 
-typedef enum
+enum sfxenum_t
 {
     SFX_NONE,
     SFX_PLAYER_FIGHTER_NORMAL_DEATH,    // class specific death screams
@@ -311,6 +311,6 @@ typedef enum
     SFX_PUPPYBEAT,
     SFX_MYSTICINCANT,
     NUMSFX
-} sfxenum_t;
+};
 
 #endif

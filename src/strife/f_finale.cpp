@@ -42,12 +42,12 @@
 #include "p_dialog.hpp" // [STRIFE]
 #include "lump.hpp"
 
-typedef enum
+enum finalestage_t
 {
     F_STAGE_TEXT,
     F_STAGE_ARTSCREEN,
     F_STAGE_CAST,
-} finalestage_t;
+};
 
 // ?
 //#include "doomstat.hpp"

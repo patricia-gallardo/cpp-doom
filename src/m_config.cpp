@@ -52,14 +52,14 @@ static char *autoload_path = const_cast<char *>("");
 static const char *default_main_config;
 static const char *default_extra_config;
 
-typedef enum
+enum default_type_t
 {
     DEFAULT_INT,
     DEFAULT_INT_HEX,
     DEFAULT_STRING,
     DEFAULT_FLOAT,
     DEFAULT_KEY,
-} default_type_t;
+};
 
 typedef struct
 {

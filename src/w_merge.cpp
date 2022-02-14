@@ -31,12 +31,12 @@
 #include "w_wad.hpp"
 #include "z_zone.hpp"
 
-typedef enum
+enum section_t
 {
     SECTION_NORMAL,
     SECTION_FLATS,
     SECTION_SPRITES,
-} section_t;
+};
 
 typedef struct
 {

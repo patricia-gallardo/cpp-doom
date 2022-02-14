@@ -40,12 +40,12 @@
 #include "m_random.hpp"   // [crispy] Crispy_Random()
 #include "event_function_decls.hpp"
 
-typedef enum
+enum finalestage_t
 {
     F_STAGE_TEXT,
     F_STAGE_ARTSCREEN,
     F_STAGE_CAST,
-} finalestage_t;
+};
 
 // ?
 //#include "doomstat.hpp"

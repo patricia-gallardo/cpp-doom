@@ -23,7 +23,7 @@ using midi_track_iter_t = struct midi_track_iter_s;
 
 #define MIDI_CHANNELS_PER_TRACK 16
 
-typedef enum
+enum midi_event_type_t
 {
     MIDI_EVENT_NOTE_OFF        = 0x80,
     MIDI_EVENT_NOTE_ON         = 0x90,
@@ -36,9 +36,9 @@ typedef enum
     MIDI_EVENT_SYSEX       = 0xf0,
     MIDI_EVENT_SYSEX_SPLIT = 0xf7,
     MIDI_EVENT_META        = 0xff,
-} midi_event_type_t;
+};
 
-typedef enum
+enum midi_controller_t
 {
     MIDI_CONTROLLER_BANK_SELECT    = 0x0,
     MIDI_CONTROLLER_MODULATION     = 0x1,
@@ -51,9 +51,9 @@ typedef enum
     MIDI_CONTROLLER_PAN         = 0xa,
 
     MIDI_CONTROLLER_ALL_NOTES_OFF = 0x7b,
-} midi_controller_t;
+};
 
-typedef enum
+enum midi_meta_event_type_t
 {
     MIDI_META_SEQUENCE_NUMBER = 0x0,
 
@@ -73,7 +73,7 @@ typedef enum
     MIDI_META_TIME_SIGNATURE     = 0x58,
     MIDI_META_KEY_SIGNATURE      = 0x59,
     MIDI_META_SEQUENCER_SPECIFIC = 0x7f,
-} midi_meta_event_type_t;
+};
 
 typedef struct
 {

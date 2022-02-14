@@ -207,7 +207,7 @@ void DEH_AddStringReplacement(const char *from_text, const char *to_text)
     }
 }
 
-typedef enum
+enum format_arg_t
 {
     FORMAT_ARG_INVALID,
     FORMAT_ARG_INT,
@@ -216,7 +216,7 @@ typedef enum
     FORMAT_ARG_STRING,
     FORMAT_ARG_PTR,
     FORMAT_ARG_SAVE_POS
-} format_arg_t;
+};
 
 // Get the type of a format argument.
 // We can mix-and-match different format arguments as long as they

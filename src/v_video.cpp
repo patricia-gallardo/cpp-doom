@@ -211,7 +211,7 @@ static inline pixel_t drawpatchpx11(const pixel_t dest, const pixel_t source)
 }
 #endif
 // [crispy] array of function pointers holding the different rendering functions
-typedef pixel_t       drawpatchpx_t(const pixel_t dest, const pixel_t source);
+using drawpatchpx_t = pixel_t (const pixel_t, const pixel_t);
 static drawpatchpx_t *const drawpatchpx_a[2][2] = { { drawpatchpx11, drawpatchpx10 }, { drawpatchpx01, drawpatchpx00 } };
 
 static fixed_t dx, dxi, dy, dyi;

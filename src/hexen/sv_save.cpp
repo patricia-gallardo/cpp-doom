@@ -37,7 +37,7 @@
 
 // TYPES -------------------------------------------------------------------
 
-typedef enum
+enum gameArchiveSegment_t
 {
     ASEG_GAME_HEADER = 101,
     ASEG_MAP_HEADER,
@@ -50,9 +50,9 @@ typedef enum
     ASEG_SOUNDS,
     ASEG_MISC,
     ASEG_END
-} gameArchiveSegment_t;
+};
 
-typedef enum
+enum thinkClass_t
 {
     TC_NULL,
     TC_MOVE_CEILING,
@@ -67,7 +67,7 @@ typedef enum
     TC_ROTATE_POLY,
     TC_MOVE_POLY,
     TC_POLY_DOOR
-} thinkClass_t;
+};
 
 typedef struct
 {
