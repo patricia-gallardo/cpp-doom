@@ -208,7 +208,7 @@ static sprite_frame_t *FindSpriteFrame(char *name, int frame)
         newframes = zmalloc<decltype(newframes)>(
             static_cast<unsigned long>(sprite_frames_alloced * 2) * sizeof(*sprite_frames),
             PU_STATIC, nullptr);
-        memcpy(newframes, sprite_frames, static_cast<unsigned long>(sprite_frames_alloced) * sizeof(*sprite_frames));
+        std::memcpy(newframes, sprite_frames, static_cast<unsigned long>(sprite_frames_alloced) * sizeof(*sprite_frames));
         Z_Free(sprite_frames);
         sprite_frames_alloced *= 2;
         sprite_frames = newframes;
@@ -217,7 +217,7 @@ static sprite_frame_t *FindSpriteFrame(char *name, int frame)
     // Add to end of list
 
     result = &sprite_frames[num_sprite_frames];
-    memcpy(result->sprname, name, 4);
+    std::memcpy(result->sprname, name, 4);
     result->frame = static_cast<char>(frame);
 
     for (i = 0; i < 8; ++i)
@@ -614,7 +614,7 @@ static void W_NWTAddLumps(searchlist_t *list)
 
         if (index > 0)
         {
-            memcpy(list->lumps[i], pwad.lumps[index],
+            std::memcpy(list->lumps[i], pwad.lumps[index],
                 sizeof(lumpinfo_t));
         }
     }

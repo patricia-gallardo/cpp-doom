@@ -187,7 +187,7 @@ void DEH_AddStringReplacement(const char *from_text, const char *to_text)
 
         len          = strlen(to_text) + 1;
         sub->to_text = zmalloc<char *>(len, PU_STATIC, nullptr);
-        memcpy(sub->to_text, to_text, len);
+        std::memcpy(sub->to_text, to_text, len);
     }
     else
     {
@@ -197,11 +197,11 @@ void DEH_AddStringReplacement(const char *from_text, const char *to_text)
         // We need to create our own duplicates of the provided strings.
         len            = strlen(from_text) + 1;
         sub->from_text = zmalloc<char *>(len, PU_STATIC, nullptr);
-        memcpy(sub->from_text, from_text, len);
+        std::memcpy(sub->from_text, from_text, len);
 
         len          = strlen(to_text) + 1;
         sub->to_text = zmalloc<char *>(len, PU_STATIC, nullptr);
-        memcpy(sub->to_text, to_text, len);
+        std::memcpy(sub->to_text, to_text, len);
 
         DEH_AddToHashtable(sub);
     }

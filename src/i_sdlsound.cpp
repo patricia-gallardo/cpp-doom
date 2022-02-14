@@ -638,11 +638,11 @@ static bool ExpandSoundData_SDL(sfxinfo_t *sfxinfo, uint8_t *data,
         convertor.len = length;
         convertor.buf = static_cast<Uint8 *>(malloc(convertor.len * convertor.len_mult));
         assert(convertor.buf != nullptr);
-        memcpy(convertor.buf, data, length);
+        std::memcpy(convertor.buf, data, length);
 
         SDL_ConvertAudio(&convertor);
 
-        memcpy(chunk->abuf, convertor.buf, chunk->alen);
+        std::memcpy(chunk->abuf, convertor.buf, chunk->alen);
         free(convertor.buf);
     }
     else

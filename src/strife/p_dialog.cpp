@@ -58,7 +58,7 @@
     ptr += 4;
 
 #define DIALOG_STR(field, ptr, len) \
-    memcpy(field, ptr, len);        \
+    std::memcpy(field, ptr, len);        \
     ptr += len;
 
 //

@@ -1243,7 +1243,7 @@ static void D_IntroBackground()
     }
 
     // Draw a 95-pixel rect from STARTUP0 starting at y=57 to (0,41) on the
-    // screen (this was a memcpy directly to 0xA3340 in low DOS memory)
+    // screen (this was a std::memcpy directly to 0xA3340 in low DOS memory)
     V_DrawScaledBlock(0, 41, 320, 95, rawgfx_startup0 + (320*57));
 }
 

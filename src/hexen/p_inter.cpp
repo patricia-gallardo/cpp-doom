@@ -1637,7 +1637,7 @@ bool P_MorphMonster(mobj_t * actor)
     monster->tid = oldMonster.tid;
     monster->special = oldMonster.special;
     P_InsertMobjIntoTIDList(monster, oldMonster.tid);
-    memcpy(monster->args, oldMonster.args, 5);
+    std::memcpy(monster->args, oldMonster.args, 5);
 
     // check for turning off minotaur power for active icon
     if (moType == MT_MINOTAUR)

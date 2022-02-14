@@ -1139,7 +1139,7 @@ void G_Ticker()
         {
             cmd = &players[i].cmd;
 
-            memcpy(cmd, &netcmds[i], sizeof(ticcmd_t));
+            std::memcpy(cmd, &netcmds[i], sizeof(ticcmd_t));
 
             if (demoplayback)
                 G_ReadDemoTiccmd(cmd);
@@ -1328,7 +1328,7 @@ void G_PlayerReborn(int player)
     int       itemcount;
     int       secretcount;
 
-    memcpy(frags, players[player].frags, sizeof(frags));
+    std::memcpy(frags, players[player].frags, sizeof(frags));
     killcount   = players[player].killcount;
     itemcount   = players[player].itemcount;
     secretcount = players[player].secretcount;
@@ -1336,7 +1336,7 @@ void G_PlayerReborn(int player)
     p = &players[player];
     memset(p, 0, sizeof(*p));
 
-    memcpy(players[player].frags, frags, sizeof(players[player].frags));
+    std::memcpy(players[player].frags, frags, sizeof(players[player].frags));
     players[player].killcount   = killcount;
     players[player].itemcount   = itemcount;
     players[player].secretcount = secretcount;
@@ -1769,7 +1769,7 @@ void G_DoCompleted()
         {
             int cpars32;
 
-            memcpy(&cpars32, DEH_String(GAMMALVL0), sizeof(int));
+            std::memcpy(&cpars32, DEH_String(GAMMALVL0), sizeof(int));
             cpars32 = LONG(cpars32);
 
             wminfo.partime = TICRATE * cpars32;
@@ -1819,7 +1819,7 @@ void G_DoCompleted()
         wminfo.plyr[i].sitems  = players[i].itemcount;
         wminfo.plyr[i].ssecret = players[i].secretcount;
         wminfo.plyr[i].stime   = leveltime;
-        memcpy(wminfo.plyr[i].frags, players[i].frags, sizeof(wminfo.plyr[i].frags));
+        std::memcpy(wminfo.plyr[i].frags, players[i].frags, sizeof(wminfo.plyr[i].frags));
     }
 
     // [crispy] CPhipps - total time for all completed levels
@@ -2465,7 +2465,7 @@ static void IncreaseDemoBuffer()
 
     // Copy over the old data
 
-    memcpy(new_demobuffer, demobuffer, static_cast<size_t>(current_length));
+    std::memcpy(new_demobuffer, demobuffer, static_cast<size_t>(current_length));
 
     // Free the old buffer and point the demo pointers at the new buffer.
 

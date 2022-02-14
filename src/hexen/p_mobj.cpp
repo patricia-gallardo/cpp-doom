@@ -1404,7 +1404,7 @@ void P_SpawnMapThing(mapthing_t * mthing)
     {
         if (deathmatch_p < &deathmatchstarts[MAXDEATHMATCHSTARTS])
         {
-            memcpy(deathmatch_p, mthing, sizeof(*mthing));
+            std::memcpy(deathmatch_p, mthing, sizeof(*mthing));
             deathmatch_p++;
         }
         return;
@@ -1439,7 +1439,7 @@ void P_SpawnMapThing(mapthing_t * mthing)
         player = 4 + mthing->type - 9100;
 
         player_start = &playerstarts[mthing->arg1][player];
-        memcpy(player_start, mthing, sizeof(mapthing_t));
+        std::memcpy(player_start, mthing, sizeof(mapthing_t));
         player_start->type = static_cast<short>(player + 1);
 
         if (!deathmatch && !player_start->arg1)

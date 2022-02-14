@@ -842,7 +842,7 @@ static void InitMapInfo()
         M_StringCopy(songMulch, info->songLump, sizeof(songMulch));
 
         // Copy defaults to current map definition
-        memcpy(info, &MapInfo[0], sizeof(*info));
+        std::memcpy(info, &MapInfo[0], sizeof(*info));
 
         // Restore song lump name
         M_StringCopy(info->songLump, songMulch, sizeof(info->songLump));

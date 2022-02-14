@@ -663,7 +663,7 @@ static bool AddToACSStore(int map, int number, uint8_t *args)
     }
     ACSStore[index].map = map;
     ACSStore[index].script = number;
-    memcpy(ACSStore[index].args, args, MAX_SCRIPT_ARGS);
+    std::memcpy(ACSStore[index].args, args, MAX_SCRIPT_ARGS);
     return true;
 }
 

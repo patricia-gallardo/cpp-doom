@@ -65,7 +65,7 @@ static void Transform(sha1_context_t *hd, uint8_t *data)
     e = hd->h4;
 
 #ifdef SYS_BIG_ENDIAN
-    memcpy(x, data, 64);
+    std::memcpy(x, data, 64);
 #else
     {
         int   i;
@@ -321,7 +321,7 @@ void SHA1_Final(sha1_digest_t digest, sha1_context_t *hd)
     p = write_uint32_little_endian(hd->h4, p);
 #endif
 
-    memcpy(digest, hd->buf, sizeof(sha1_digest_t));
+    std::memcpy(digest, hd->buf, sizeof(sha1_digest_t));
 }
 
 void SHA1_UpdateInt32(sha1_context_t *context, unsigned int val)

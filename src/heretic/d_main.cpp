@@ -636,7 +636,7 @@ void initStartup()
     // Blit main screen
     textScreen = TXT_GetScreenData();
     loading = cache_lump_name<uint8_t *>(DEH_String("LOADING"), PU_CACHE);
-    memcpy(textScreen, loading, 4000);
+    std::memcpy(textScreen, loading, 4000);
 
     // Print version string
 

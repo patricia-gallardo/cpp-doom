@@ -331,7 +331,7 @@ static void NET_Query_ParseResponse(net_addr_t *addr, net_packet_t *packet,
     if (target->state != QUERY_TARGET_RESPONDED)
     {
         target->state = QUERY_TARGET_RESPONDED;
-        memcpy(&target->data, &querydata, sizeof(net_querydata_t));
+        std::memcpy(&target->data, &querydata, sizeof(net_querydata_t));
 
         // Calculate RTT.
 

@@ -448,7 +448,7 @@ void R_InitTranslationTables ()
     //   HIWORD(v8) = (Z_Malloc(131072, PU_STATIC, nullptr) + 65535) >> 16;
     //   LOWORD(v8) = 0; // aligning to a 64K boundary, as if this is Wolf3D.
     //   xlatab = v8;
-    //   memcpy(v8, v7, 65536);
+    //   std::memcpy(v8, v7, 65536);
     // As you can see, they copypasta'd id's unnecessary 64K boundary alignment
     // from the colormap code. Since this doesn't accomplish anything, and isn't
     // strictly portable, all we need to do is this:
@@ -855,13 +855,13 @@ void R_FillBackScreen ()
     { 
 	for (x=0 ; x<SCREENWIDTH/64 ; x++) 
 	{ 
-	    memcpy (dest, src+((y&63)<<6), 64); 
+	    std::memcpy (dest, src+((y&63)<<6), 64);
 	    dest += 64; 
 	} 
 
 	if (SCREENWIDTH&63) 
 	{ 
-	    memcpy (dest, src+((y&63)<<6), SCREENWIDTH&63); 
+	    std::memcpy (dest, src+((y&63)<<6), SCREENWIDTH&63);
 	    dest += (SCREENWIDTH&63); 
 	} 
     } 
@@ -917,14 +917,14 @@ R_VideoErase
   int		count ) 
 { 
   // LFB copy.
-  // This might not be a good idea if memcpy
+  // This might not be a good idea if std::memcpy
   //  is not optiomal, e.g. byte by byte on
   //  a 32bit CPU, as GNU GCC/Linux libc did
   //  at one point.
 
     if (background_buffer != nullptr)
     {
-        memcpy(I_VideoBuffer + ofs, background_buffer + ofs, static_cast<size_t>(count));
+        std::memcpy(I_VideoBuffer + ofs, background_buffer + ofs, static_cast<size_t>(count));
     }
 } 
 

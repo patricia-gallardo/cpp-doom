@@ -16,6 +16,8 @@
 //	Disk load indicator.
 //
 
+#include <cstring>
+
 #include "doomtype.hpp"
 #include "i_video.hpp"
 #include "v_video.hpp"
@@ -54,7 +56,7 @@ static void CopyRegion(pixel_t *dest, int dest_pitch,
     d = dest;
     for (y = 0; y < h; ++y)
     {
-        memcpy(d, s, static_cast<unsigned long>(w) * sizeof(*d));
+        std::memcpy(d, s, static_cast<unsigned long>(w) * sizeof(*d));
         s += src_pitch;
         d += dest_pitch;
     }

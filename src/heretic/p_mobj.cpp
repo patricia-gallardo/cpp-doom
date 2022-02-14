@@ -1044,7 +1044,7 @@ void P_SpawnMapThing(mapthing_t * mthing)
     {
         if (deathmatch_p < &deathmatchstarts[10])
         {
-            memcpy(deathmatch_p, mthing, sizeof(*mthing));
+            std::memcpy(deathmatch_p, mthing, sizeof(*mthing));
             deathmatch_p++;
         }
         return;

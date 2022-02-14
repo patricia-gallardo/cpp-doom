@@ -829,16 +829,16 @@ void AM_clearFB(int)
     j = (mapystart & ~crispy->hires) * (finit_width >> crispy->hires);
     for (i = 0; i < finit_height; i++)
     {
-        memcpy(I_VideoBuffer + i * finit_width, maplump + j + mapxstart,
+        std::memcpy(I_VideoBuffer + i * finit_width, maplump + j + mapxstart,
                finit_width - mapxstart);
-        memcpy(I_VideoBuffer + i * finit_width + finit_width - mapxstart,
+        std::memcpy(I_VideoBuffer + i * finit_width + finit_width - mapxstart,
                maplump + j, mapxstart);
         j += finit_width;
         if (j >= (finit_height >> crispy->hires) * (finit_width >> crispy->hires))
             j = 0;
     }
 
-//       memcpy(I_VideoBuffer, maplump, finit_width*finit_height);
+//       std::memcpy(I_VideoBuffer, maplump, finit_width*finit_height);
 //  memset(fb, color, f_w*f_h);
 }
 

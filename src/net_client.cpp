@@ -522,7 +522,7 @@ static void NET_CL_ParseWaitingData(net_packet_t *packet)
         return;
     }
 
-    memcpy(&net_client_wait_data, &wait_data, sizeof(net_waitdata_t));
+    std::memcpy(&net_client_wait_data, &wait_data, sizeof(net_waitdata_t));
     net_client_received_wait_data = true;
 }
 
@@ -1058,8 +1058,8 @@ bool NET_CL_Connect(net_addr_t *addr, net_connect_data_t *data)
     server_addr = addr;
     NET_ReferenceAddress(addr);
 
-    memcpy(net_local_wad_sha1sum, data->wad_sha1sum, sizeof(sha1_digest_t));
-    memcpy(net_local_deh_sha1sum, data->deh_sha1sum, sizeof(sha1_digest_t));
+    std::memcpy(net_local_wad_sha1sum, data->wad_sha1sum, sizeof(sha1_digest_t));
+    std::memcpy(net_local_deh_sha1sum, data->deh_sha1sum, sizeof(sha1_digest_t));
     net_local_is_freedoom = static_cast<unsigned int>(data->is_freedoom);
 
     // create a new network I/O context and add just the necessary module
@@ -1149,7 +1149,7 @@ bool NET_CL_GetSettings(net_gamesettings_t *_settings)
         return false;
     }
 
-    memcpy(_settings, &settings, sizeof(net_gamesettings_t));
+    std::memcpy(_settings, &settings, sizeof(net_gamesettings_t));
 
     return true;
 }

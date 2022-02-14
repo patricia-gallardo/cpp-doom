@@ -962,7 +962,7 @@ void G_Ticker ()
         { 
             cmd = &players[i].cmd; 
 
-            memcpy (cmd, &netcmds[i], sizeof(ticcmd_t)); 
+            std::memcpy (cmd, &netcmds[i], sizeof(ticcmd_t));
 
             if (demoplayback)
                 G_ReadDemoTiccmd (cmd); 
@@ -1153,12 +1153,12 @@ void G_PlayerReborn (int player)
     killcount = players[player].killcount;
     allegiance = players[player].allegiance; // [STRIFE]
 
-    memcpy(frags,players[player].frags,sizeof(frags));
+    std::memcpy(frags,players[player].frags,sizeof(frags));
 
     p = &players[player]; 
     memset (p, 0, sizeof(*p)); 
 
-    memcpy(p->frags, frags, sizeof(p->frags));
+    std::memcpy(p->frags, frags, sizeof(p->frags));
 
     p->usedown               = true;                 // don't do anything immediately
     p->attackdown            = true;
@@ -2122,7 +2122,7 @@ static void IncreaseDemoBuffer()
 
     // Copy over the old data
 
-    memcpy(new_demobuffer, demobuffer, current_length);
+    std::memcpy(new_demobuffer, demobuffer, current_length);
 
     // Free the old buffer and point the demo pointers at the new buffer.
 

@@ -16,6 +16,7 @@
 //	DOOM graphics stuff for SDL.
 //
 
+#include <cstring>
 
 #include "SDL.h"
 #include "SDL_opengl.h"
@@ -884,7 +885,7 @@ void I_FinishUpdate()
 //
 void I_ReadScreen(pixel_t *scr)
 {
-    memcpy(scr, I_VideoBuffer, static_cast<unsigned long>(SCREENWIDTH * SCREENHEIGHT) * sizeof(*scr));
+    std::memcpy(scr, I_VideoBuffer, static_cast<unsigned long>(SCREENWIDTH * SCREENHEIGHT) * sizeof(*scr));
 }
 
 

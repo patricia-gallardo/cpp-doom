@@ -115,7 +115,7 @@ static net_addr_t *NET_SDL_FindAddress(IPaddress *addr)
         new_addr_table      = zmalloc<decltype(new_addr_table)>(sizeof(addrpair_t *) * static_cast<unsigned long>(new_addr_table_size),
             PU_STATIC, 0);
         memset(new_addr_table, 0, sizeof(addrpair_t *) * static_cast<unsigned long>(new_addr_table_size));
-        memcpy(new_addr_table, addr_table,
+        std::memcpy(new_addr_table, addr_table,
             sizeof(addrpair_t *) * static_cast<unsigned long>(addr_table_size));
         Z_Free(addr_table);
         addr_table      = new_addr_table;
@@ -290,7 +290,7 @@ static bool NET_SDL_RecvPacket(net_addr_t **addr, net_packet_t **packet)
     // Put the data into a new packet structure
 
     *packet = NET_NewPacket(recvpacket->len);
-    memcpy((*packet)->data, recvpacket->data, static_cast<size_t>(recvpacket->len));
+    std::memcpy((*packet)->data, recvpacket->data, static_cast<size_t>(recvpacket->len));
     (*packet)->len = static_cast<size_t>(recvpacket->len);
 
     // Address

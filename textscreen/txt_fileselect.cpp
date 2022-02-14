@@ -104,7 +104,7 @@ static char *ExecReadOutput(char **argv)
                 break;
             }
             result = new_result;
-            memcpy(result + result_len, buf, static_cast<size_t>(bytes));
+            std::memcpy(result + result_len, buf, static_cast<size_t>(bytes));
             result_len += static_cast<int>(bytes);
             result[result_len] = '\0';
         }

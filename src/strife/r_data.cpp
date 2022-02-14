@@ -206,7 +206,7 @@ R_DrawColumnInCache
 	    count = cacheheight - position;
 
 	if (count > 0)
-	    memcpy (cache + position, source, static_cast<size_t>(count));
+	    std::memcpy (cache + position, source, static_cast<size_t>(count));
 		
 	patch = reinterpret_cast<column_t *>(  reinterpret_cast<uint8_t *>(patch) + patch->length + 4);
     }
@@ -579,7 +579,7 @@ void R_InitTextures ()
         texture->height = SHORT(mtexture->height);
         texture->patchcount = SHORT(mtexture->patchcount);
 
-        memcpy (texture->name, mtexture->name, sizeof(texture->name));
+        std::memcpy (texture->name, mtexture->name, sizeof(texture->name));
         mpatch = &mtexture->patches[0];
         patch = &texture->patches[0];
 
@@ -751,7 +751,7 @@ int R_FlatNumForName(const char *name)
     if (i == -1)
     {
 	namet[8] = 0;
-	memcpy (namet, name,8);
+	std::memcpy (namet, name,8);
 	I_Error ("R_FlatNumForName: %s not found",namet);
     }
     return i - firstflat;
@@ -839,7 +839,7 @@ void R_SoundNumForDoor(vldoor_t* door)
             continue;
 
         texture = textures[sides[line->sidenum[0]].toptexture];
-        memcpy(name, texture->name, 8);
+        std::memcpy(name, texture->name, 8);
 
         if(strncmp(name, "DOR", 3))
             continue;

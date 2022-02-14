@@ -212,7 +212,7 @@ static void IncreaseReadBuffer(deh_context_t *context)
     int newbuffer_size = context->readbuffer_size * 2;
     char *newbuffer      = zmalloc<decltype(newbuffer)>(static_cast<size_t>(newbuffer_size), PU_STATIC, nullptr);
 
-    memcpy(newbuffer, context->readbuffer, static_cast<size_t>(context->readbuffer_size));
+    std::memcpy(newbuffer, context->readbuffer, static_cast<size_t>(context->readbuffer_size));
 
     Z_Free(context->readbuffer);
 

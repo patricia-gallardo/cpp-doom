@@ -1076,13 +1076,13 @@ void R_FillBackScreen()
 #ifndef CRISPY_TRUECOLOR
         for (x = 0; x < SCREENWIDTH / 64; x++)
         {
-            memcpy(dest, src + ((y & 63) << 6), 64);
+            std::memcpy(dest, src + ((y & 63) << 6), 64);
             dest += 64;
         }
 
         if (SCREENWIDTH & 63)
         {
-            memcpy(dest, src + ((y & 63) << 6), SCREENWIDTH & 63);
+            std::memcpy(dest, src + ((y & 63) << 6), SCREENWIDTH & 63);
             dest += (SCREENWIDTH & 63);
         }
 #else
@@ -1142,14 +1142,14 @@ void R_VideoErase(unsigned ofs,
     int                    count)
 {
     // LFB copy.
-    // This might not be a good idea if memcpy
+    // This might not be a good idea if std::memcpy
     //  is not optiomal, e.g. byte by byte on
     //  a 32bit CPU, as GNU GCC/Linux libc did
     //  at one point.
 
     if (background_buffer != nullptr)
     {
-        memcpy(I_VideoBuffer + ofs, background_buffer + ofs, static_cast<unsigned long>(count) * sizeof(*I_VideoBuffer));
+        std::memcpy(I_VideoBuffer + ofs, background_buffer + ofs, static_cast<unsigned long>(count) * sizeof(*I_VideoBuffer));
     }
 }
 

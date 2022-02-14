@@ -59,7 +59,7 @@ wipe_shittyColMajorXform
 	for(x=0;x<width;x++)
 	    dest[x*height+y] = array[y*width+x];
 
-    memcpy(array, dest, static_cast<size_t>(width * height * 2));
+    std::memcpy(array, dest, static_cast<size_t>(width * height * 2));
 
     Z_Free(dest);
 
@@ -68,7 +68,7 @@ wipe_shittyColMajorXform
 // haleyjd 08/26/10: [STRIFE] Verified unmodified.
 int wipe_initColorXForm(int width, int height, int)
 {
-    memcpy(wipe_scr, wipe_scr_start, static_cast<size_t>(width * height));
+    std::memcpy(wipe_scr, wipe_scr_start, static_cast<size_t>(width * height));
     return 0;
 }
 
@@ -115,7 +115,7 @@ int wipe_initMelt(int width, int height, int)
     int i, r;
     
     // copy start screen to main screen
-    memcpy(wipe_scr, wipe_scr_start, static_cast<size_t>(width * height));
+    std::memcpy(wipe_scr, wipe_scr_start, static_cast<size_t>(width * height));
     
     // makes this wipe faster (in theory)
     // to have stuff in column-major format

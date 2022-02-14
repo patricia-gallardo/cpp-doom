@@ -111,7 +111,7 @@ void R_DrawColumnInCache(column_t * patch, uint8_t *cache, int originy,
         if (position + count > cacheheight)
             count = cacheheight - position;
         if (count > 0)
-            memcpy(cache + position, source, count);
+            std::memcpy(cache + position, source, count);
 
         patch = reinterpret_cast<column_t *>(reinterpret_cast<uint8_t *>(patch) + patch->length + 4);
     }
@@ -372,7 +372,7 @@ void R_InitTextures()
         texture->width = SHORT(mtexture->width);
         texture->height = SHORT(mtexture->height);
         texture->patchcount = SHORT(mtexture->patchcount);
-        memcpy(texture->name, mtexture->name, sizeof(texture->name));
+        std::memcpy(texture->name, mtexture->name, sizeof(texture->name));
         mpatch = &mtexture->patches[0];
         patch = &texture->patches[0];
         for (j = 0; j < texture->patchcount; j++, mpatch++, patch++)
@@ -536,7 +536,7 @@ int R_FlatNumForName(const char *name)
     if (i == -1)
     {
         namet[8] = 0;
-        memcpy(namet, name, 8);
+        std::memcpy(namet, name, 8);
         I_Error("R_FlatNumForName: %s not found", namet);
     }
     return i - firstflat;

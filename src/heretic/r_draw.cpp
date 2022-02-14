@@ -418,12 +418,12 @@ void R_DrawViewBorder()
     {
         for (x = 0; x < SCREENWIDTH / 64; x++)
         {
-            memcpy(dest, src + ((y & 63) << 6), 64);
+            std::memcpy(dest, src + ((y & 63) << 6), 64);
             dest += 64;
         }
         if (SCREENWIDTH & 63)
         {
-            memcpy(dest, src + ((y & 63) << 6), SCREENWIDTH & 63);
+            std::memcpy(dest, src + ((y & 63) << 6), SCREENWIDTH & 63);
             dest += (SCREENWIDTH & 63);
         }
     }
@@ -485,12 +485,12 @@ void R_DrawTopBorder()
     {
         for (x = 0; x < SCREENWIDTH / 64; x++)
         {
-            memcpy(dest, src + ((y & 63) << 6), 64);
+            std::memcpy(dest, src + ((y & 63) << 6), 64);
             dest += 64;
         }
         if (SCREENWIDTH & 63)
         {
-            memcpy(dest, src + ((y & 63) << 6), SCREENWIDTH & 63);
+            std::memcpy(dest, src + ((y & 63) << 6), SCREENWIDTH & 63);
             dest += (SCREENWIDTH & 63);
         }
     }

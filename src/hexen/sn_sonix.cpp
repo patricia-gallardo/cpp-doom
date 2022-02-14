@@ -288,7 +288,7 @@ void SN_InitSequenceScript()
             *tempDataPtr++ = SS_CMD_END;
             int dataSize = static_cast<int>((tempDataPtr - tempDataStart) * sizeof(int));
             SequenceData[i] = zmalloc<int *>(dataSize, PU_STATIC, nullptr);
-            memcpy(SequenceData[i], tempDataStart, dataSize);
+            std::memcpy(SequenceData[i], tempDataStart, dataSize);
             Z_Free(tempDataStart);
             inSequence = -1;
         }

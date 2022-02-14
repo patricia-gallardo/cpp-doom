@@ -1411,7 +1411,7 @@ static void LoadSigilWad()
 
             if (j != -1 && !strncasecmp(W_WadNameForLump(lumpinfo[j]), "SIGIL_SHREDS", 12))
             {
-                memcpy(lumpinfo[j]->name, sigil_lump.new_name, 8);
+                std::memcpy(lumpinfo[j]->name, sigil_lump.new_name, 8);
             }
         }
 
@@ -1422,7 +1422,7 @@ static void LoadSigilWad()
 
             if (j != -1 && !strncasecmp(W_WadNameForLump(lumpinfo[j]), "SIGIL", 5))
             {
-                memcpy(lumpinfo[j]->name, sigil_lump.new_name, 8);
+                std::memcpy(lumpinfo[j]->name, sigil_lump.new_name, 8);
             }
         }
 

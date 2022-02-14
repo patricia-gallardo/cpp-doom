@@ -82,7 +82,7 @@ bool Buffer_Push(buffer_t *buf, const void *data, int len)
     }
 
     // Append to the buffer.
-    memcpy(buf->data_end, data, len);
+    std::memcpy(buf->data_end, data, len);
     buf->data_len += len;
     buf->data_end = buf->data + buf->data_len;
 

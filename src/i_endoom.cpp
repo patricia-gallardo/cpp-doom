@@ -50,7 +50,7 @@ void I_Endoom(uint8_t *endoom_data)
 
     for (y = 0; y < TXT_SCREEN_H; ++y)
     {
-        memcpy(screendata + (y * TXT_SCREEN_W * 2),
+        std::memcpy(screendata + (y * TXT_SCREEN_W * 2),
             endoom_data + (y * ENDOOM_W + indent) * 2,
             TXT_SCREEN_W * 2);
     }

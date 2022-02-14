@@ -49,7 +49,7 @@ net_packet_t *NET_NewPacket(int initial_size)
 net_packet_t *NET_PacketDup(net_packet_t *packet)
 {
     net_packet_t *newpacket = NET_NewPacket(static_cast<int>(packet->len));
-    memcpy(newpacket->data, packet->data, packet->len);
+    std::memcpy(newpacket->data, packet->data, packet->len);
     newpacket->len = packet->len;
 
     return newpacket;
@@ -239,7 +239,7 @@ static void NET_IncreasePacket(net_packet_t *packet)
 
     auto *newdata = zmalloc<uint8_t *>(packet->alloced, PU_STATIC, 0);
 
-    memcpy(newdata, packet->data, packet->len);
+    std::memcpy(newdata, packet->data, packet->len);
 
     Z_Free(packet->data);
     packet->data = newdata;

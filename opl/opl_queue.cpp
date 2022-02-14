@@ -92,7 +92,7 @@ void OPL_Queue_Push(opl_callback_queue_t *queue,
 
         // Move the existing entry down in the heap.
 
-        memcpy(&queue->entries[entry_id],
+        std::memcpy(&queue->entries[entry_id],
                &queue->entries[parent_id],
                sizeof(opl_queue_entry_t));
 
@@ -169,7 +169,7 @@ int OPL_Queue_Pop(opl_callback_queue_t *queue,
 
         // Percolate the next value up and advance.
 
-        memcpy(&queue->entries[i],
+        std::memcpy(&queue->entries[i],
                &queue->entries[next_i],
                sizeof(opl_queue_entry_t));
         i = next_i;
@@ -177,7 +177,7 @@ int OPL_Queue_Pop(opl_callback_queue_t *queue,
 
     // Store the old last-entry at its new position.
 
-    memcpy(&queue->entries[i], entry, sizeof(opl_queue_entry_t));
+    std::memcpy(&queue->entries[i], entry, sizeof(opl_queue_entry_t));
 
     return 1;
 }

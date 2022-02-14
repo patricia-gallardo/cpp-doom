@@ -721,7 +721,7 @@ void MN_LoadSlotText()
     {
         if (ReadDescriptionForSlot(slot, description))
         {
-            memcpy(SlotText[slot], description, SLOTTEXTLEN);
+            std::memcpy(SlotText[slot], description, SLOTTEXTLEN);
             SlotStatus[slot] = 1;
         }
         else

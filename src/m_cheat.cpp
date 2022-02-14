@@ -77,5 +77,5 @@ int cht_CheckCheat(cheatseq_t *cht,
 void cht_GetParam(cheatseq_t *cht,
     char *                    buffer)
 {
-    memcpy(buffer, cht->parameter_buf, static_cast<size_t>(cht->parameter_chars));
+    std::memcpy(buffer, cht->parameter_buf, static_cast<size_t>(cht->parameter_chars));
 }
