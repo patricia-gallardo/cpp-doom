@@ -21,11 +21,8 @@
 //
 
 
-#include <cstdlib>
-
 #include "doomdef.hpp"
 #include "doomstat.hpp"
-
 #include "deh_main.hpp"
 #include "i_system.hpp"
 #include "i_swap.hpp" // [crispy] LONG()

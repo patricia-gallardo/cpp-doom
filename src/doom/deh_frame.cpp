@@ -18,10 +18,7 @@
 #include <cstdio>
 #include <cstdlib>
 
-#include "doomtype.hpp"
-#include "d_items.hpp"
 #include "info.hpp"
-
 #include "deh_defs.hpp"
 #include "deh_io.hpp"
 #include "deh_main.hpp"

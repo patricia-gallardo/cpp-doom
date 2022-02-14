@@ -17,9 +17,6 @@
 //   mode.
 //
 
-#include <array>
-
-#include "doomtype.hpp"
 #include "d_mode.hpp"
 
 // Valid game mode/mission combinations, with the number of

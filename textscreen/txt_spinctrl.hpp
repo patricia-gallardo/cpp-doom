@@ -29,7 +29,7 @@
  * to be increased or decreased.
  */
 
-typedef struct txt_spincontrol_s txt_spincontrol_t;
+using txt_spincontrol_t = struct txt_spincontrol_s;
 
 typedef enum
 {

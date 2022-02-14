@@ -16,8 +16,6 @@
 //     through the network module system
 //
 
-#include <cstdio>
-
 #include "memory.hpp"
 #include "i_system.hpp"
 #include "net_defs.hpp"

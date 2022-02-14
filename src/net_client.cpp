@@ -20,27 +20,20 @@
 #include <cstring>
 
 #include "config.h"
-#include "doomtype.hpp"
 #include "deh_main.hpp"
-#include "deh_str.hpp"
 #include "i_system.hpp"
 #include "i_timer.hpp"
-#include "m_argv.hpp"
 #include "m_fixed.hpp"
 #include "m_config.hpp"
-#include "m_misc.hpp"
 #include "net_client.hpp"
 #include "net_common.hpp"
 #include "net_defs.hpp"
-#include "net_gui.hpp"
 #include "net_io.hpp"
 #include "net_packet.hpp"
 #include "net_query.hpp"
 #include "net_server.hpp"
 #include "net_structrw.hpp"
 #include "net_petname.hpp"
-#include "w_checksum.hpp"
-#include "w_wad.hpp"
 
 extern void D_ReceiveTic(ticcmd_t *ticcmds, bool *playeringame);
 

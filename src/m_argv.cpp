@@ -23,8 +23,6 @@
 
 #include "SDL_stdinc.h"
 
-#include "doomtype.hpp"
-#include "d_iwad.hpp"
 #include "i_system.hpp"
 #include "m_misc.hpp"
 #include "m_argv.hpp" // haleyjd 20110212: warning fix

@@ -17,12 +17,7 @@
 #include <cstdio>
 
 #include "config.h"
-
-#include "m_argv.hpp"
-#include "net_defs.hpp"
-
 #include "net_dedicated.hpp"
-#include "net_server.hpp"
 #include "z_zone.hpp"
 
 void NET_CL_Run()

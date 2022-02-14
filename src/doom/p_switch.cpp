@@ -18,7 +18,6 @@
 //
 
 #include <cstdio>
-#include <cassert>
 
 #include "i_system.hpp"
 #include "deh_main.hpp"

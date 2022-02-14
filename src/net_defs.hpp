@@ -44,10 +44,10 @@
 
 #define BACKUPTICS 128
 
-typedef struct _net_module_s  net_module_t;
-typedef struct _net_packet_s  net_packet_t;
-typedef struct _net_addr_s    net_addr_t;
-typedef struct _net_context_s net_context_t;
+using net_module_t = struct _net_module_s;
+using net_packet_t = struct _net_packet_s;
+using net_addr_t = struct _net_addr_s;
+using net_context_t = struct _net_context_s;
 
 struct _net_packet_s {
     uint8_t     *data;

@@ -17,7 +17,6 @@
 
 #include <cstdlib>
 #include <cstring>
-#include <cstdio>
 
 #include "memory.hpp"
 #include "doomtype.hpp"

@@ -23,13 +23,9 @@
 #include "memory.hpp"
 #include "d_iwad.hpp"
 #include "deh_str.hpp"
-#include "doomkeys.hpp"
 #include "i_system.hpp"
 #include "m_argv.hpp"
-#include "m_config.hpp"
 #include "m_misc.hpp"
-#include "w_wad.hpp"
-#include "z_zone.hpp"
 
 static const iwad_t iwads[] = {
     { "doom2.wad", doom2, commercial, "Doom II" },

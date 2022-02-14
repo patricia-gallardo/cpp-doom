@@ -18,8 +18,8 @@
 #ifndef MIDIFILE_H
 #define MIDIFILE_H
 
-typedef struct midi_file_s       midi_file_t;
-typedef struct midi_track_iter_s midi_track_iter_t;
+using midi_file_t = struct midi_file_s;
+using midi_track_iter_t = struct midi_track_iter_s;
 
 #define MIDI_CHANNELS_PER_TRACK 16
 

@@ -26,7 +26,6 @@
 
 #include "i_swap.hpp"
 #include "i_system.hpp"
-#include "i_video.hpp"
 #include "m_misc.hpp"
 #include "v_diskicon.hpp"
 #include "z_zone.hpp"

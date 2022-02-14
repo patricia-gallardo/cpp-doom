@@ -18,9 +18,6 @@
 #include <vector>
 
 #include "doomkeys.hpp"
-
-#include "txt_desktop.hpp"
-#include "txt_gui.hpp"
 #include "txt_io.hpp"
 #include "txt_main.hpp"
 #include "txt_separator.hpp"

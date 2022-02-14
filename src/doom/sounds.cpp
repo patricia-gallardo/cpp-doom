@@ -17,11 +17,6 @@
 //	Kept as a sample, DOOM2 sounds.
 //
 
-
-#include <cstdlib>
-
-
-#include "doomtype.hpp"
 #include "sounds.hpp"
 
 //

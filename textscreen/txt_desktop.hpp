@@ -23,7 +23,7 @@
 
 #include "txt_window.hpp"
 
-typedef void (*TxtIdleCallback)(void *user_data);
+using TxtIdleCallback = void (*)(void *);
 
 void TXT_AddDesktopWindow(txt_window_t *win);
 void TXT_RemoveDesktopWindow(txt_window_t *win);

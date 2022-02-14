@@ -21,7 +21,6 @@
 #include "txt_gui.hpp"
 #include "txt_io.hpp"
 #include "txt_main.hpp"
-#include "txt_separator.hpp"
 #include "txt_window.hpp"
 
 #define HELP_KEY KEY_F1

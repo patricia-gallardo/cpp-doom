@@ -64,7 +64,7 @@ typedef enum
 
 #define MAX_RETRIES 5
 
-typedef struct net_reliable_packet_s net_reliable_packet_t;
+using net_reliable_packet_t = struct net_reliable_packet_s;
 
 typedef struct
 {

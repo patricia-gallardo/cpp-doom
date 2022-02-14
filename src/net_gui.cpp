@@ -19,13 +19,11 @@
 
 #include <cstdio>
 #include <cstdlib>
-#include <cctype>
 
 #include "config.h"
 #include "doomkeys.hpp"
 
 #include "i_system.hpp"
-#include "i_timer.hpp"
 #include "i_video.hpp"
 #include "m_argv.hpp"
 #include "m_misc.hpp"

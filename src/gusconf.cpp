@@ -46,7 +46,7 @@ int   gus_ram_kb     = 1024;
 
 static unsigned int MappingIndex()
 {
-    unsigned int result = static_cast<unsigned int>(gus_ram_kb / 256);
+    auto result = static_cast<unsigned int>(gus_ram_kb / 256);
 
     if (result < 1)
     {

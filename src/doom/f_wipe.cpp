@@ -33,7 +33,7 @@
 //
 
 // when zero, stop the wipe
-static bool go = 0;
+static bool go = false;
 
 static pixel_t *wipe_scr_start;
 static pixel_t *wipe_scr_end;

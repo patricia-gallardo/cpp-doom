@@ -20,7 +20,6 @@
 #include <cstring>
 
 #include "doomdef.hpp"
-#include "doomtype.hpp"
 #include "deh_defs.hpp"
 #include "deh_io.hpp"
 #include "deh_main.hpp"

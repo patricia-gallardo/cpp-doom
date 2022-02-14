@@ -17,14 +17,10 @@
 //
 
 #include "doomtype.hpp"
-#include "deh_str.hpp"
-#include "i_swap.hpp"
 #include "i_video.hpp"
-#include "m_argv.hpp"
 #include "v_video.hpp"
 #include "w_wad.hpp"
 #include "z_zone.hpp"
-
 #include "lump.hpp"
 #include "memory.hpp"
 #include "v_diskicon.hpp"

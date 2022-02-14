@@ -16,8 +16,6 @@
 //       Generate a checksum of the WAD directory.
 //
 
-#include <cstring>
-
 #include "i_system.hpp"
 #include "m_misc.hpp"
 #include "sha1.hpp"

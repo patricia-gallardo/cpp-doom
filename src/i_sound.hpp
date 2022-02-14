@@ -28,7 +28,7 @@
 //
 // SoundFX struct.
 //
-typedef struct sfxinfo_struct sfxinfo_t;
+using sfxinfo_t = struct sfxinfo_struct;
 
 struct sfxinfo_struct {
     // tag name, used for hexen.

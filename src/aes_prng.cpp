@@ -28,7 +28,6 @@
 #include <cstdint>
 
 #include "aes_prng.hpp"
-#include "doomtype.hpp"
 #include "i_swap.hpp"
 
 /*

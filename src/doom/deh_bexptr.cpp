@@ -16,12 +16,10 @@
 // Parses [CODEPTR] sections in BEX files
 //
 
-#include <array>
 #include <cstdio>
 #include <cstring>
 
 #include "info.hpp"
-
 #include "deh_io.hpp"
 #include "deh_main.hpp"
 #include "event_function_decls.hpp"

@@ -21,7 +21,7 @@
 
 // Functions.
 #include "deh_main.hpp"
-#include "i_system.hpp"
+#include "d_event.hpp"
 #include "i_swap.hpp"
 #include "z_zone.hpp"
 #include "v_video.hpp"

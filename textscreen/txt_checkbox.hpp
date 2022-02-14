@@ -34,7 +34,7 @@
  * When a checkbox is changed, it emits the "changed" signal.
  */
 
-typedef struct txt_checkbox_s txt_checkbox_t;
+using txt_checkbox_t = struct txt_checkbox_s;
 
 #include "txt_widget.hpp"
 

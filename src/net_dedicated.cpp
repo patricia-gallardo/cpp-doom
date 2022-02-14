@@ -15,10 +15,6 @@
 // Dedicated server code.
 //
 
-#include <cstdio>
-
-#include "doomtype.hpp"
-
 #include "i_system.hpp"
 #include "i_timer.hpp"
 

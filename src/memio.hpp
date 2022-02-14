@@ -16,7 +16,7 @@
 #ifndef MEMIO_H
 #define MEMIO_H
 
-typedef struct _MEMFILE MEMFILE;
+using MEMFILE = struct _MEMFILE;
 
 typedef enum
 {

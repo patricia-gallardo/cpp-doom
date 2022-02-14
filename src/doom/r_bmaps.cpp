@@ -19,8 +19,6 @@
 //	Adapted from doomretro/src/r_data.c:97-209
 //
 
-#include <array>
-
 #include "doomtype.hpp"
 #include "doomstat.hpp"
 #include "r_data.hpp"

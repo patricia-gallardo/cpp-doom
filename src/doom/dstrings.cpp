@@ -16,9 +16,6 @@
 //	Globally defined strings.
 //
 
-
-#include "dstrings.hpp"
-
 const char *doom1_endmsg[] = {
     "are you sure you want to\nquit this great game?",
     "please don't leave, there's more\ndemons to toast!",

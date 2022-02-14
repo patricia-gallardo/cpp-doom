@@ -30,7 +30,7 @@
  * Input box widgets can be of an integer or string type.
  */
 
-typedef struct txt_inputbox_s txt_inputbox_t;
+using txt_inputbox_t = struct txt_inputbox_s;
 
 #include "txt_widget.hpp"
 

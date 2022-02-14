@@ -18,15 +18,11 @@
 
 
 #include <cstdio>
-#include <cstdlib>
 
 #include "i_system.hpp"
-
 #include "doomdef.hpp"
 #include "doomstat.hpp"
-
 #include "r_local.hpp"
-#include "r_sky.hpp"
 #include "r_bmaps.hpp" // [crispy] brightmaps
 
 

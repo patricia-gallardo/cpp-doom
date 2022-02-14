@@ -18,7 +18,6 @@
 #include <array>
 #include <cstdlib>
 #include <ctime>
-#include "doomtype.hpp"
 #include "m_misc.hpp"
 
 static const char *const adjectives[] = {

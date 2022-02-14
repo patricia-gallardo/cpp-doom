@@ -13,15 +13,12 @@
 //
 
 #include <cstdlib>
-#include <cstring>
 
 #include "doomkeys.hpp"
-
 #include "memory.hpp"
 #include "txt_button.hpp"
 #include "txt_dropdown.hpp"
 #include "txt_gui.hpp"
-#include "txt_io.hpp"
 #include "txt_main.hpp"
 #include "txt_utf8.hpp"
 #include "txt_window.hpp"

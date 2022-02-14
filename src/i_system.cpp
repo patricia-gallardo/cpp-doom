@@ -32,20 +32,13 @@
 
 #include "config.h"
 
-#include "deh_str.hpp"
 #include "doomtype.hpp"
 #include "m_argv.hpp"
-#include "m_config.hpp"
 #include "m_misc.hpp"
-#include "i_joystick.hpp"
-#include "i_sound.hpp"
-#include "i_timer.hpp"
-#include "i_video.hpp"
 
 #include "i_system.hpp"
 
 #include "memory.hpp"
-#include "w_wad.hpp"
 #include "z_zone.hpp"
 
 #define DEFAULT_RAM 16 * 2 /* MiB [crispy] */

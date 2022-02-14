@@ -16,7 +16,6 @@
 //     Common code to parse command line, identifying WAD files to load.
 //
 
-#include <array>
 #include <cstdlib>
 
 #include "config.h"

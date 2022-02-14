@@ -47,7 +47,6 @@
 #include "tables.hpp"
 #include "v_diskicon.hpp"
 #include "v_video.hpp"
-#include "w_wad.hpp"
 #include "z_zone.hpp"
 
 int SCREENWIDTH, SCREENHEIGHT, SCREENHEIGHT_4_3;

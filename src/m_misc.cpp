@@ -35,16 +35,9 @@
 #endif
 
 #include "doomtype.hpp"
-
-#include "deh_str.hpp"
-
 #include "memory.hpp"
-#include "i_swap.hpp"
 #include "i_system.hpp"
-#include "i_video.hpp"
 #include "m_misc.hpp"
-#include "v_video.hpp"
-#include "w_wad.hpp"
 #include "z_zone.hpp"
 
 //

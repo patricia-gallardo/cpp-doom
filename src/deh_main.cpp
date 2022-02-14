@@ -20,13 +20,11 @@
 #include <cstring>
 #include <cctype>
 
-#include "doomtype.hpp"
 #include "i_glob.hpp"
 #include "i_system.hpp"
 #include "d_iwad.hpp"
 #include "m_argv.hpp"
 #include "w_wad.hpp"
-
 #include "deh_defs.hpp"
 #include "deh_io.hpp"
 #include "deh_main.hpp"

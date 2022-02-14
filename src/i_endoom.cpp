@@ -19,8 +19,6 @@
 
 #include "config.h"
 #include "doomtype.hpp"
-#include "i_video.hpp"
-
 #include "txt_main.hpp"
 
 #define ENDOOM_W 80

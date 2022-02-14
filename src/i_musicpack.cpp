@@ -26,15 +26,8 @@
 #include "SDL_mixer.h"
 
 #include "i_glob.hpp"
-#include "i_midipipe.hpp"
-
 #include "config.h"
 #include "doomtype.hpp"
-#include "memio.hpp"
-#include "mus2mid.hpp"
-
-#include "deh_str.hpp"
-#include "gusconf.hpp"
 #include "i_sound.hpp"
 #include "i_system.hpp"
 #include "i_swap.hpp"

@@ -29,7 +29,7 @@
 
 #define ZONEID 0x1d4a11
 
-typedef struct memblock_s memblock_t;
+using memblock_t = struct memblock_s;
 
 struct memblock_s {
     int         id; // = ZONEID
@@ -137,7 +137,7 @@ void Z_Free(void *ptr)
 {
     memblock_t *block;
 
-    uint8_t *byte_ptr = static_cast<uint8_t *>(ptr);
+    auto *byte_ptr = static_cast<uint8_t *>(ptr);
     block = reinterpret_cast<memblock_t *>(byte_ptr - sizeof(memblock_t));
 
     if (block->id != ZONEID)

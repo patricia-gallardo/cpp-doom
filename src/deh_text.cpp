@@ -15,13 +15,9 @@
 // Parses Text substitution sections in dehacked files
 //
 
-#include <cstring>
 #include <string>
 
-#include "doomtype.hpp"
-
 #include "z_zone.hpp"
-
 #include "deh_defs.hpp"
 #include "deh_io.hpp"
 #include "deh_main.hpp"

@@ -19,9 +19,7 @@
 #include <cstdlib>
 #include <cstring>
 
-#include "doomtype.hpp"
 #include "info.hpp"
-
 #include "deh_defs.hpp"
 #include "deh_io.hpp"
 #include "deh_main.hpp"

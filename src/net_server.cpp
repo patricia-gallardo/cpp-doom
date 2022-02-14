@@ -32,11 +32,9 @@
 #include "net_common.hpp"
 #include "net_defs.hpp"
 #include "net_io.hpp"
-#include "net_loop.hpp"
 #include "net_packet.hpp"
 #include "net_query.hpp"
 #include "net_server.hpp"
-#include "net_sdl.hpp"
 #include "net_structrw.hpp"
 
 // How often to refresh our registration with the master server.
