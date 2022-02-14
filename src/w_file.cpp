@@ -16,8 +16,6 @@
 //	WAD I/O functions.
 //
 
-#include <array>
-
 #include "config.h"
 #include "m_argv.hpp"
 #include "w_file.hpp"

@@ -66,7 +66,7 @@ static void DEH_AmmoParseLine(deh_context_t *context, char *line, void *tag)
         return;
     }
 
-    ivalue = atoi(value);
+    ivalue = std::atoi(value);
 
     if (!strcasecmp(variable_name, "Per ammo"))
     {

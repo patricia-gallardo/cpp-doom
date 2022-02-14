@@ -1698,7 +1698,7 @@ void D_DoomMain()
         extern int sidemove[2];
 
         if (p < myargc - 1)
-            scale = atoi(myargv[p + 1]);
+            scale = std::atoi(myargv[p + 1]);
         if (scale < 10)
             scale = 10;
         if (scale > 400)
@@ -2160,7 +2160,7 @@ void D_DoomMain()
 
     if (p)
     {
-        timelimit = atoi(myargv[p + 1]);
+        timelimit = std::atoi(myargv[p + 1]);
     }
 
     //!
@@ -2191,7 +2191,7 @@ void D_DoomMain()
     if (p)
     {
         if (gamemode == commercial)
-            startmap = atoi(myargv[p + 1]);
+            startmap = std::atoi(myargv[p + 1]);
         else
         {
             startepisode = myargv[p + 1][0] - '0';
@@ -2267,7 +2267,7 @@ void D_DoomMain()
 
     if (p)
     {
-        startloadgame = atoi(myargv[p + 1]);
+        startloadgame = std::atoi(myargv[p + 1]);
     }
     else
     {

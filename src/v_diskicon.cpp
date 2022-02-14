@@ -49,12 +49,9 @@ static void CopyRegion(pixel_t *dest, int dest_pitch,
     pixel_t *src, int src_pitch,
     int w, int h)
 {
-    pixel_t *s, *d;
-    int      y;
-
-    s = src;
-    d = dest;
-    for (y = 0; y < h; ++y)
+    pixel_t *s = src;
+    pixel_t *d = dest;
+    for (int y = 0; y < h; ++y)
     {
         std::memcpy(d, s, static_cast<unsigned long>(w) * sizeof(*d));
         s += src_pitch;

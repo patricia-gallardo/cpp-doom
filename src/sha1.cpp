@@ -33,7 +33,6 @@
 
 #include <cstring>
 
-#include "i_swap.hpp"
 #include "sha1.hpp"
 
 void SHA1_Init(sha1_context_t *hd)

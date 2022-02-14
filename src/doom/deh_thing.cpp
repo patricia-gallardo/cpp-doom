@@ -145,7 +145,7 @@ static void DEH_ThingParseLine(deh_context_t *context, char *line, void *tag)
 
     // all values are integers
 
-    ivalue = atoi(value);
+    ivalue = std::atoi(value);
 
     // [crispy] support BEX bits mnemonics in Things fields
     if (!ivalue && !strcasecmp(variable_name, "bits"))

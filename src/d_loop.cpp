@@ -353,7 +353,7 @@ void D_StartNetGame(net_gamesettings_t *settings,
         int i = M_CheckParmWithArgs("-extratics", 1);
 
         if (i > 0)
-            settings->extratics = atoi(myargv[i + 1]);
+            settings->extratics = std::atoi(myargv[i + 1]);
         else
             settings->extratics = 1;
     }
@@ -368,7 +368,7 @@ void D_StartNetGame(net_gamesettings_t *settings,
         int i = M_CheckParmWithArgs("-dup", 1);
 
         if (i > 0)
-            settings->ticdup = atoi(myargv[i + 1]);
+            settings->ticdup = std::atoi(myargv[i + 1]);
         else
             settings->ticdup = 1;
     }

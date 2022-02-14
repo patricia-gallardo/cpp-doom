@@ -747,7 +747,7 @@ void P_SetupLevel(int, int map, int, skill_t)
         parm = M_CheckParmWithArgs("-timer", 1);
         if (parm)
         {
-            TimerGame = atoi(myargv[parm + 1]) * 35 * 60;
+            TimerGame = std::atoi(myargv[parm + 1]) * 35 * 60;
         }
     }
 

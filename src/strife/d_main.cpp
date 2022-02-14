@@ -894,7 +894,7 @@ void DoTimeBomb()
     int serial_month;
 
     serial = cache_lump_name<patch_t *>("serial", PU_CACHE);
-    serialnum = atoi(serial);
+    serialnum = std::atoi(serial);
 
     // Rogue, much like Governor Mourel, were lousy liars. These deceptive
     // error messages are pretty low :P
@@ -1681,7 +1681,7 @@ void D_DoomMain ()
         extern int sidemove[2];
 
         if (p<myargc-1)
-            scale = atoi (myargv[p+1]);
+            scale = std::atoi (myargv[p+1]);
         if (scale < 10)
             scale = 10;
         if (scale > 400)
@@ -1750,7 +1750,7 @@ void D_DoomMain ()
     {
         char msgbuf[80];
         char *serial  = cache_lump_name<char *>("SERIAL", PU_CACHE);
-        int serialnum = atoi(serial);
+        int serialnum = std::atoi(serial);
 
         DEH_snprintf(msgbuf, sizeof(msgbuf), "Wad Serial Number: %d:", serialnum);
         printf("%s\n", msgbuf);
@@ -1943,7 +1943,7 @@ void D_DoomMain ()
 
     if (p)
     {
-        timelimit = atoi(myargv[p+1]);
+        timelimit = std::atoi(myargv[p+1]);
         printf("timer: %i\n", timelimit);
     }
 
@@ -1974,7 +1974,7 @@ void D_DoomMain ()
     if (p)
     {
         if (gamemode == commercial)
-            startmap = atoi (myargv[p+1]);
+            startmap = std::atoi (myargv[p+1]);
         else
         {
             startepisode = myargv[p+1][0]-'0';
@@ -2014,7 +2014,7 @@ void D_DoomMain ()
     
     if (p)
     {
-        startloadgame = atoi(myargv[p+1]);
+        startloadgame = std::atoi(myargv[p+1]);
     }
     else
     {

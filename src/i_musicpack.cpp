@@ -337,7 +337,7 @@ static unsigned int ParseVorbisTime(unsigned int samplerate_hz, char *value)
 
     if (strchr(value, ':') == nullptr)
     {
-        return static_cast<unsigned int>(atoi(value));
+        return static_cast<unsigned int>(std::atoi(value));
     }
 
     result    = 0;
@@ -349,7 +349,7 @@ static unsigned int ParseVorbisTime(unsigned int samplerate_hz, char *value)
         {
             c         = *p;
             *p        = '\0';
-            result    = result * 60 + static_cast<unsigned int>(atoi(num_start));
+            result    = result * 60 + static_cast<unsigned int>(std::atoi(num_start));
             num_start = p + 1;
             *p        = c;
         }
@@ -361,7 +361,7 @@ static unsigned int ParseVorbisTime(unsigned int samplerate_hz, char *value)
         }
     }
 
-    return (result * 60 + static_cast<unsigned int>(atoi(num_start))) * samplerate_hz;
+    return (result * 60 + static_cast<unsigned int>(std::atoi(num_start))) * samplerate_hz;
 }
 
 // Given a vorbis comment string (eg. "LOOP_START=12345"), set fields

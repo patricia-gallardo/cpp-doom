@@ -1127,7 +1127,7 @@ void I_GraphicsCheckCommandLine()
 
     if (i > 0)
     {
-        window_width = atoi(myargv[i + 1]);
+        window_width = std::atoi(myargv[i + 1]);
         fullscreen   = false;
     }
 
@@ -1142,7 +1142,7 @@ void I_GraphicsCheckCommandLine()
 
     if (i > 0)
     {
-        window_height = atoi(myargv[i + 1]);
+        window_height = std::atoi(myargv[i + 1]);
         fullscreen    = false;
     }
 

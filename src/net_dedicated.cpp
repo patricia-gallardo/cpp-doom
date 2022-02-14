@@ -63,9 +63,7 @@ static const char *not_dedicated_options[] = {
 
 static void CheckForClientOptions()
 {
-    int i;
-
-    for (i = 0; not_dedicated_options[i] != nullptr; ++i)
+    for (int i = 0; not_dedicated_options[i] != nullptr; ++i)
     {
         if (M_CheckParm(not_dedicated_options[i]) > 0)
         {
@@ -78,7 +76,7 @@ static void CheckForClientOptions()
     }
 }
 
-void NET_DedicatedServer()
+[[noreturn]] void NET_DedicatedServer()
 {
     CheckForClientOptions();
 

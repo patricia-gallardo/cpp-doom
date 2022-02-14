@@ -1984,7 +1984,7 @@ void G_RecordDemo(skill_t skill, int, int episode, int map,
 
     i = M_CheckParmWithArgs("-maxdemo", 1);
     if (i)
-        maxsize = atoi(myargv[i + 1]) * 1024;
+        maxsize = std::atoi(myargv[i + 1]) * 1024;
     demobuffer = zmalloc<uint8_t *>(maxsize, PU_STATIC, nullptr);
     demoend = demobuffer + maxsize;
 

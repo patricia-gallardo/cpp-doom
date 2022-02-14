@@ -14,7 +14,6 @@
 // Reading and writing various structures into packets
 //
 
-#include <array>
 #include <cstring>
 
 #include "doomtype.hpp"
@@ -540,7 +539,7 @@ bool NET_ReadPRNGSeed(net_packet_t *packet, prng_seed_t seed)
     return NET_ReadBlob(packet, seed, sizeof(prng_seed_t));
 }
 
-void NET_WritePRNGSeed(net_packet_t *packet, prng_seed_t seed)
+[[maybe_unused]] void NET_WritePRNGSeed(net_packet_t *packet, prng_seed_t seed)
 {
     NET_WriteBlob(packet, seed, sizeof(prng_seed_t));
 }

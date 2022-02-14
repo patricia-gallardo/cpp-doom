@@ -75,9 +75,8 @@ unsigned int W_LumpNameHash(const char *s)
     // that have a maximum length of 8.
 
     unsigned int result = 5381;
-    unsigned int i;
 
-    for (i = 0; i < 8 && s[i] != '\0'; ++i)
+    for (unsigned int i = 0; i < 8 && s[i] != '\0'; ++i)
     {
         result = ((result << 5) ^ result) ^ static_cast<unsigned int>(toupper(s[i]));
     }
@@ -100,14 +99,6 @@ unsigned int W_LumpNameHash(const char *s)
 
 wad_file_t *W_AddFile(const char *filename)
 {
-    wadinfo_t   header;
-    wad_file_t *wad_file;
-    int         startlump;
-    filelump_t *fileinfo;
-    filelump_t *filerover;
-    lumpinfo_t *filelumps;
-    int         numfilelumps;
-
     // If the filename begins with a ~, it indicates that we should use the
     // reload hack.
     if (filename[0] == '~')
@@ -128,7 +119,7 @@ wad_file_t *W_AddFile(const char *filename)
     }
 
     // Open the file and add to directory
-    wad_file = W_OpenFile(filename);
+    wad_file_t *wad_file = W_OpenFile(filename);
 
     if (wad_file == nullptr)
     {
@@ -136,7 +127,10 @@ wad_file_t *W_AddFile(const char *filename)
         return nullptr;
     }
 
-    if (strcasecmp(filename + strlen(filename) - 3, "wad"))
+    filelump_t *fileinfo = nullptr;
+    int         numfilelumps = 0;
+
+    if (strcasecmp(filename + strlen(filename) - 3, "wad") != 0)
     {
         // single lump file
 
@@ -145,7 +139,7 @@ wad_file_t *W_AddFile(const char *filename)
         // them back.  Effectively we're constructing a "fake WAD directory"
         // here, as it would appear on disk.
 
-        fileinfo          = zmalloc<decltype(fileinfo)>(sizeof(filelump_t), PU_STATIC, 0);
+        fileinfo = zmalloc<decltype(fileinfo)>(sizeof(filelump_t), PU_STATIC, 0);
         fileinfo->filepos = LONG(0);
         fileinfo->size    = LONG(wad_file->length);
 
@@ -158,12 +152,13 @@ wad_file_t *W_AddFile(const char *filename)
     else
     {
         // WAD file
+        wadinfo_t header;
         W_Read(wad_file, 0, &header, sizeof(header));
 
-        if (strncmp(header.identification, "IWAD", 4))
+        if (strncmp(header.identification, "IWAD", 4) != 0)
         {
             // Homebrew levels?
-            if (strncmp(header.identification, "PWAD", 4))
+            if (strncmp(header.identification, "PWAD", 4) != 0)
             {
                 W_CloseFile(wad_file);
                 I_Error("Wad file %s doesn't have IWAD "
@@ -196,17 +191,17 @@ wad_file_t *W_AddFile(const char *filename)
     }
 
     // Increase size of numlumps array to accomodate the new file.
-    filelumps = static_cast<decltype(filelumps)>(calloc(static_cast<size_t>(numfilelumps), sizeof(lumpinfo_t)));
+    auto *filelumps = static_cast<lumpinfo_t *>(calloc(static_cast<size_t>(numfilelumps), sizeof(lumpinfo_t)));
     if (filelumps == nullptr)
     {
         W_CloseFile(wad_file);
         I_Error("Failed to allocate array for lumps from new file.");
     }
 
-    startlump = static_cast<int>(numlumps);
+    int startlump = static_cast<int>(numlumps);
     numlumps += static_cast<unsigned int>(numfilelumps);
     lumpinfo  = static_cast<decltype(lumpinfo)>(I_Realloc(lumpinfo, numlumps * sizeof(lumpinfo_t *)));
-    filerover = fileinfo;
+    filelump_t *filerover = fileinfo;
 
     for (lumpindex_t i = startlump; i < static_cast<int>(numlumps); ++i)
     {
@@ -244,7 +239,7 @@ wad_file_t *W_AddFile(const char *filename)
 //
 // W_NumLumps
 //
-int W_NumLumps()
+[[maybe_unused]] int W_NumLumps()
 {
     return static_cast<int>(numlumps);
 }
@@ -257,19 +252,15 @@ int W_NumLumps()
 
 lumpindex_t W_CheckNumForName(const char *name)
 {
-    lumpindex_t i;
-
     // Do we have a hash table yet?
 
     if (lumphash != nullptr)
     {
-        int hash;
-
         // We do! Excellent.
 
-        hash = static_cast<int>(W_LumpNameHash(name) % numlumps);
+        int hash = static_cast<int>(W_LumpNameHash(name) % numlumps);
 
-        for (i = lumphash[hash]; i != -1; i = lumpinfo[i]->next)
+        for (lumpindex_t i = lumphash[hash]; i != -1; i = lumpinfo[i]->next)
         {
             if (!strncasecmp(lumpinfo[i]->name, name, 8))
             {
@@ -283,7 +274,7 @@ lumpindex_t W_CheckNumForName(const char *name)
         //
         // scan backwards so patch lump files take precedence
 
-        for (i = static_cast<lumpindex_t>(numlumps - 1); i >= 0; --i)
+        for (auto i = static_cast<lumpindex_t>(numlumps - 1); i >= 0; --i)
         {
             if (!strncasecmp(lumpinfo[i]->name, name, 8))
             {
@@ -304,9 +295,7 @@ lumpindex_t W_CheckNumForName(const char *name)
 //
 lumpindex_t W_GetNumForName(const char *name)
 {
-    lumpindex_t i;
-
-    i = W_CheckNumForName(name);
+    lumpindex_t i = W_CheckNumForName(name);
 
     if (i < 0)
     {
@@ -318,9 +307,7 @@ lumpindex_t W_GetNumForName(const char *name)
 
 lumpindex_t W_CheckNumForNameFromTo(const char *name, int from, int to)
 {
-    lumpindex_t i;
-
-    for (i = from; i >= to; i--)
+    for (lumpindex_t i = from; i >= to; i--)
     {
         if (!strncasecmp(lumpinfo[i]->name, name, 8))
         {
@@ -386,15 +373,14 @@ void W_ReadLump(lumpindex_t lump, void *dest)
 
 [[nodiscard]] void *W_CacheLumpNum(lumpindex_t lumpnum, int tag)
 {
-    void *      result;
-    lumpinfo_t *lump;
+    void *result = nullptr;
 
     if (static_cast<unsigned>(lumpnum) >= numlumps)
     {
         I_Error("W_CacheLumpNum: %i >= numlumps", lumpnum);
     }
 
-    lump = lumpinfo[lumpnum];
+    lumpinfo_t *lump = lumpinfo[lumpnum];
 
     // Get the pointer to return.  If the lump is in a memory-mapped
     // file, we can just return a pointer to within the memory-mapped
@@ -447,14 +433,12 @@ void W_ReadLump(lumpindex_t lump, void *dest)
 
 void W_ReleaseLumpNum(lumpindex_t lumpnum)
 {
-    lumpinfo_t *lump;
-
     if (static_cast<unsigned>(lumpnum) >= numlumps)
     {
         I_Error("W_ReleaseLumpNum: %i >= numlumps", lumpnum);
     }
 
-    lump = lumpinfo[lumpnum];
+    lumpinfo_t *lump = lumpinfo[lumpnum];
 
     if (lump->wad_file->mapped != nullptr)
     {

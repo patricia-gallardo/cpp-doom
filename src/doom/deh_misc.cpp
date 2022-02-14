@@ -168,7 +168,7 @@ static void DEH_MiscParseLine(deh_context_t *context, char *line, void *)
         return;
     }
 
-    int ivalue = atoi(value);
+    int ivalue = std::atoi(value);
 
     if (!strcasecmp(variable_name, "Monsters Infight"))
     {

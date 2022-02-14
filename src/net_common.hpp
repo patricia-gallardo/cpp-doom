@@ -62,7 +62,7 @@ enum net_disconnect_reason_t
 
 };
 
-#define MAX_RETRIES 5
+constexpr auto MAX_RETRIES = 5;
 
 using net_reliable_packet_t = struct net_reliable_packet_s;
 

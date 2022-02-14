@@ -135,10 +135,8 @@ void Z_Init()
 //
 void Z_Free(void *ptr)
 {
-    memblock_t *block;
-
     auto *byte_ptr = static_cast<uint8_t *>(ptr);
-    block = reinterpret_cast<memblock_t *>(byte_ptr - sizeof(memblock_t));
+    auto *block = reinterpret_cast<memblock_t *>(byte_ptr - sizeof(memblock_t));
 
     if (block->id != ZONEID)
     {
@@ -166,11 +164,8 @@ void Z_Free(void *ptr)
 
 static bool ClearCache(int size)
 {
-    memblock_t *block;
-    memblock_t *next_block;
-    int         remaining;
-
-    block = allocated_blocks[PU_CACHE];
+    memblock_t *next_block = nullptr;
+    memblock_t *block      = allocated_blocks[PU_CACHE];
 
     if (block == nullptr)
     {
@@ -193,7 +188,7 @@ static bool ClearCache(int size)
     // Search backwards through the list freeing blocks until we have
     // freed the amount of memory required.
 
-    remaining = size;
+    int remaining = size;
 
     while (remaining > 0)
     {
@@ -230,10 +225,6 @@ static bool ClearCache(int size)
 
 void *Z_Malloc(int size, int tag, void *user)
 {
-    memblock_t *   newblock;
-    unsigned char *data;
-    void *         result;
-
     if (tag < 0 || tag >= PU_NUM_TAGS || tag == PU_FREE)
     {
         I_Error("Z_Malloc: attempted to allocate a block with an invalid "
@@ -248,7 +239,7 @@ void *Z_Malloc(int size, int tag, void *user)
 
     // Malloc a block of the required size
 
-    newblock = nullptr;
+    memblock_t *newblock = nullptr;
 
     while (newblock == nullptr)
     {
@@ -273,8 +264,8 @@ void *Z_Malloc(int size, int tag, void *user)
 
     Z_InsertBlock(newblock);
 
-    data   = reinterpret_cast<unsigned char *>(newblock);
-    result = data + sizeof(memblock_t);
+    auto *data = reinterpret_cast<unsigned char *>(newblock);
+    void *result = data + sizeof(memblock_t);
 
     if (user != nullptr)
     {
@@ -291,16 +282,13 @@ void *Z_Malloc(int size, int tag, void *user)
 
 void Z_FreeTags(int lowtag, int hightag)
 {
-    int i;
-
-    for (i = lowtag; i <= hightag; ++i)
+    for (int i = lowtag; i <= hightag; ++i)
     {
-        memblock_t *block;
-        memblock_t *next;
+        memblock_t *next = nullptr;
 
         // Free all in this chain
 
-        for (block = allocated_blocks[i]; block != nullptr;)
+        for (memblock_t *block = allocated_blocks[i]; block != nullptr;)
         {
             next = block->next;
 
@@ -328,7 +316,7 @@ void Z_FreeTags(int lowtag, int hightag)
 //
 // Z_DumpHeap
 //
-void Z_DumpHeap(int /*lowtag*/, int /*hightag*/)
+[[maybe_unused]] void Z_DumpHeap(int /*lowtag*/, int /*hightag*/)
 {
     // broken
 
@@ -406,17 +394,13 @@ void Z_FileDumpHeap(FILE */*f*/)
 //
 void Z_CheckHeap()
 {
-    memblock_t *block;
-    memblock_t *prev;
-    int         i;
-
     // Check all chains
 
-    for (i = 0; i < PU_NUM_TAGS; ++i)
+    for (int i = 0; i < PU_NUM_TAGS; ++i)
     {
-        prev = nullptr;
+        memblock_t *prev = nullptr;
 
-        for (block = allocated_blocks[i]; block != nullptr; block = block->next)
+        for (memblock_t *block = allocated_blocks[i]; block != nullptr; block = block->next)
         {
             if (block->id != ZONEID)
             {
@@ -460,7 +444,7 @@ void Z_ChangeTag2(void *ptr, int tag, const char *file, int line)
     Z_InsertBlock(block);
 }
 
-void Z_ChangeUser(void *ptr, void **user)
+[[maybe_unused]] void Z_ChangeUser(void *ptr, void **user)
 {
     uint8_t    *byte_ptr = static_cast<uint8_t *>(ptr);
     memblock_t *block = reinterpret_cast<memblock_t *>(byte_ptr - sizeof(memblock_t));
@@ -479,14 +463,14 @@ void Z_ChangeUser(void *ptr, void **user)
 // Z_FreeMemory
 //
 
-int Z_FreeMemory()
+[[maybe_unused]] int Z_FreeMemory()
 {
     // Limited by the system??
 
     return -1;
 }
 
-unsigned int Z_ZoneSize()
+[[maybe_unused]] unsigned int Z_ZoneSize()
 {
     return 0;
 }

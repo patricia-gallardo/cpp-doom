@@ -541,7 +541,7 @@ void D_DoomMain()
     p = M_CheckParmWithArgs("-loadgame", 1);
     if (p)
     {
-        G_LoadGame(atoi(myargv[p + 1]));
+        G_LoadGame(std::atoi(myargv[p + 1]));
     }
 
     if (gameaction != ga_loadgame)
@@ -762,7 +762,7 @@ static void WarpCheck()
     p = M_CheckParm("-warp");
     if (p && p < myargc - 1)
     {
-        WarpMap = atoi(myargv[p + 1]);
+        WarpMap = std::atoi(myargv[p + 1]);
         map = P_TranslateMap(WarpMap);
         if (map == -1)
         {                       // Couldn't find real map number
@@ -1093,7 +1093,7 @@ static void CheckRecordFrom()
     {                           // Bad args
         return;
     }
-    G_LoadGame(atoi(myargv[p + 1]));
+    G_LoadGame(std::atoi(myargv[p + 1]));
     G_DoLoadGame();             // Load the gameskill etc info from savegame
     G_RecordDemo(gameskill, 1, gameepisode, gamemap, myargv[p + 2]);
 

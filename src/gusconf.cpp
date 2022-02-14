@@ -119,7 +119,7 @@ static void ParseLine(gus_config_t *config, char *line)
         return;
     }
 
-    auto instr_id = static_cast<unsigned int>(atoi(fields[0]));
+    auto instr_id = static_cast<unsigned int>(std::atoi(fields[0]));
 
     // Skip non GM percussions.
     if ((instr_id >= 128 && instr_id < 128 + 35) || instr_id > 128 + 81)
@@ -127,7 +127,7 @@ static void ParseLine(gus_config_t *config, char *line)
         return;
     }
 
-    auto mapped_id = static_cast<unsigned int>(atoi(fields[MappingIndex()]));
+    auto mapped_id = static_cast<unsigned int>(std::atoi(fields[MappingIndex()]));
     unsigned int i = 0;
 
     for (i = 0; i < config->count; i++)
