@@ -186,7 +186,7 @@ static void NET_SV_SendConsoleMessage(net_client_t *client, const char *s, ...) 
 static void NET_SV_SendConsoleMessage(net_client_t *client, const char *s, ...)
 {
     char          buf[1024];
-    va_list       args = nullptr;
+    va_list       args;
 
     va_start(args, s);
     M_vsnprintf(buf, sizeof(buf), s, args);
@@ -204,7 +204,7 @@ static void NET_SV_BroadcastMessage(const char *s, ...) PRINTF_ATTR(1, 2);
 static void NET_SV_BroadcastMessage(const char *s, ...)
 {
     char    buf[1024];
-    va_list args = nullptr;
+    va_list args;
 
     va_start(args, s);
     M_vsnprintf(buf, sizeof(buf), s, args);

@@ -24,8 +24,8 @@
 //
 // Fixed point, 32bit as 16.16.
 //
-#define FRACBITS        16
-#define FRACUNIT        (1 << FRACBITS)
+constexpr auto FRACBITS        = 16;
+constexpr auto FRACUNIT        = (1 << FRACBITS);
 #define FIXED2DOUBLE(x) (x / static_cast<double>(FRACUNIT))
 
 using fixed_t = int;

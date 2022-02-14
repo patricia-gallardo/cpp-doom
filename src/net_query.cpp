@@ -640,7 +640,7 @@ int NET_StartMasterQuery()
 static void formatted_printf(int wide, const char *s, ...) PRINTF_ATTR(2, 3);
 static void formatted_printf(int wide, const char *s, ...)
 {
-    va_list args = nullptr;
+    va_list args;
 
     va_start(args, s);
     int i = vprintf(s, args);
