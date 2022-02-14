@@ -55,12 +55,9 @@ static bool IsDirectory(char *dir, struct dirent *de)
     else
 #endif
     {
-        char *      filename;
-        struct stat sb;
-        int         result;
-
-        filename = M_StringJoin(dir, DIR_SEPARATOR_S, de->d_name, nullptr);
-        result   = stat(filename, &sb);
+        struct stat sb{};
+        char *filename = M_StringJoin(dir, DIR_SEPARATOR_S, de->d_name, nullptr);
+        int result   = stat(filename, &sb);
         free(filename);
 
         if (result != 0)
@@ -72,7 +69,7 @@ static bool IsDirectory(char *dir, struct dirent *de)
     }
 }
 
-struct glob_s {
+struct [[maybe_unused]] glob_s {
     char **globs;
     int    num_globs;
     int    flags;
@@ -87,8 +84,7 @@ struct glob_s {
 
 static void FreeStringList(char **globs, int num_globs)
 {
-    int i;
-    for (i = 0; i < num_globs; ++i)
+    for (int i = 0; i < num_globs; ++i)
     {
         free(globs[i]);
     }
@@ -98,31 +94,26 @@ static void FreeStringList(char **globs, int num_globs)
 glob_t *I_StartMultiGlob(const char *directory, int flags,
     const char *glob, ...)
 {
-    char ** globs;
-    int     num_globs;
-    glob_t *result;
     va_list args;
 
-    globs = static_cast<char **>(malloc(sizeof(char *)));
+    char **globs = static_cast<char **>(malloc(sizeof(char *)));
     if (globs == nullptr)
     {
         return nullptr;
     }
     globs[0]  = M_StringDuplicate(glob);
-    num_globs = 1;
+    int num_globs = 1;
 
     va_start(args, glob);
     for (;;)
     {
         const char *arg = va_arg(args, const char *);
-        char **     new_globs;
-
         if (arg == nullptr)
         {
             break;
         }
 
-        new_globs = static_cast<char **>(
+        char **new_globs = static_cast<char **>(
             realloc(globs, sizeof(char *) * (static_cast<unsigned long>(num_globs + 1))));
         if (new_globs == nullptr)
         {
@@ -134,7 +125,7 @@ glob_t *I_StartMultiGlob(const char *directory, int flags,
     }
     va_end(args);
 
-    result = static_cast<glob_t *>(malloc(sizeof(glob_t)));
+    auto *result = static_cast<glob_t *>(malloc(sizeof(glob_t)));
     if (result == nullptr)
     {
         FreeStringList(globs, num_globs);
@@ -183,12 +174,10 @@ void I_EndGlob(glob_t *glob)
 
 static bool MatchesGlob(const char *name, const char *glob, int flags)
 {
-    int n, g;
-
     while (*glob != '\0')
     {
-        n = *name;
-        g = *glob;
+        int n = *name;
+        int g = *glob;
 
         if ((flags & GLOB_FLAG_NOCASE) != 0)
         {
@@ -228,9 +217,7 @@ static bool MatchesGlob(const char *name, const char *glob, int flags)
 
 static bool MatchesAnyGlob(const char *name, glob_t *glob)
 {
-    int i;
-
-    for (i = 0; i < glob->num_globs; ++i)
+    for (int i = 0; i < glob->num_globs; ++i)
     {
         if (MatchesGlob(name, glob->globs[i], glob->flags))
         {
@@ -242,7 +229,7 @@ static bool MatchesAnyGlob(const char *name, glob_t *glob)
 
 static char *NextGlob(glob_t *glob)
 {
-    struct dirent *de;
+    struct dirent *de = nullptr;
 
     do
     {
@@ -260,15 +247,13 @@ static char *NextGlob(glob_t *glob)
 
 static void ReadAllFilenames(glob_t *glob)
 {
-    char *name;
-
     glob->filenames     = nullptr;
     glob->filenames_len = 0;
     glob->next_index    = 0;
 
     for (;;)
     {
-        name = NextGlob(glob);
+        char *name = NextGlob(glob);
         if (name == nullptr)
         {
             break;
@@ -282,17 +267,15 @@ static void ReadAllFilenames(glob_t *glob)
 
 static void SortFilenames(char **filenames, int len, int flags)
 {
-    char *pivot, *tmp;
-    int   i, left_len, cmp;
-
     if (len <= 1)
     {
         return;
     }
-    pivot    = filenames[len - 1];
-    left_len = 0;
-    for (i = 0; i < len - 1; ++i)
+    char *pivot    = filenames[len - 1];
+    int   left_len = 0;
+    for (int i = 0; i < len - 1; ++i)
     {
+        int cmp = 0;
         if ((flags & GLOB_FLAG_NOCASE) != 0)
         {
             cmp = strcasecmp(filenames[i], pivot);
@@ -304,7 +287,7 @@ static void SortFilenames(char **filenames, int len, int flags)
 
         if (cmp < 0)
         {
-            tmp                 = filenames[i];
+            char *tmp           = filenames[i];
             filenames[i]        = filenames[left_len];
             filenames[left_len] = tmp;
             ++left_len;
@@ -319,8 +302,6 @@ static void SortFilenames(char **filenames, int len, int flags)
 
 const char *I_NextGlob(glob_t *glob)
 {
-    const char *result;
-
     if (glob == nullptr)
     {
         return nullptr;
@@ -346,7 +327,7 @@ const char *I_NextGlob(glob_t *glob)
     {
         return nullptr;
     }
-    result = glob->filenames[glob->next_index];
+    const char *result = glob->filenames[glob->next_index];
     ++glob->next_index;
     return result;
 }

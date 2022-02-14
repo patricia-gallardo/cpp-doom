@@ -18,11 +18,10 @@
 #include <cstring>
 
 #include "config.h"
-#include "doomtype.hpp"
 #include "txt_main.hpp"
 
-#define ENDOOM_W 80
-#define ENDOOM_H 25
+constexpr auto                  ENDOOM_W = 80;
+[[maybe_unused]] constexpr auto ENDOOM_H = 25;
 
 //
 // Displays the text mode ending screen after the game quits
@@ -30,10 +29,6 @@
 
 void I_Endoom(uint8_t *endoom_data)
 {
-    unsigned char *screendata;
-    int            y;
-    int            indent;
-
     // Set up text mode screen
 
     TXT_Init();
@@ -44,11 +39,11 @@ void I_Endoom(uint8_t *endoom_data)
 
     // Write the data to the screen memory
 
-    screendata = TXT_GetScreenData();
+    unsigned char *screendata = TXT_GetScreenData();
 
-    indent = (ENDOOM_W - TXT_SCREEN_W) / 2;
+    int indent = (ENDOOM_W - TXT_SCREEN_W) / 2;
 
-    for (y = 0; y < TXT_SCREEN_H; ++y)
+    for (int y = 0; y < TXT_SCREEN_H; ++y)
     {
         std::memcpy(screendata + (y * TXT_SCREEN_W * 2),
             endoom_data + (y * ENDOOM_W + indent) * 2,

@@ -148,14 +148,11 @@ bool DEH_SetStringMapping(deh_context_t *context, deh_mapping_t *mapping,
 void DEH_StructSHA1Sum(sha1_context_t *context, deh_mapping_t *mapping,
     void *structptr)
 {
-    int i;
-
     // Go through each mapping
 
-    for (i = 0; mapping->entries[i].name != nullptr; ++i)
+    for (int i = 0; mapping->entries[i].name != nullptr; ++i)
     {
         deh_mapping_entry_t *entry = &mapping->entries[i];
-        void *               location;
 
         if (entry->location == nullptr)
         {
@@ -166,7 +163,7 @@ void DEH_StructSHA1Sum(sha1_context_t *context, deh_mapping_t *mapping,
 
         // Add in data for this field
 
-        location = reinterpret_cast<uint8_t *>(structptr) + (reinterpret_cast<uint8_t *>(entry->location) - reinterpret_cast<uint8_t *>(mapping->base));
+        void *location = reinterpret_cast<uint8_t *>(structptr) + (reinterpret_cast<uint8_t *>(entry->location) - reinterpret_cast<uint8_t *>(mapping->base));
 
         switch (entry->size)
         {

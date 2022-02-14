@@ -28,7 +28,7 @@ using deh_section_end_t   = void (*)(deh_context_t *, void *);
 using deh_line_parser_t   = void (*)(deh_context_t *, char *, void *);
 using deh_sha1_hash_t     = void (*)(sha1_context_t *);
 
-struct deh_section_s {
+struct [[maybe_unused]] deh_section_s {
     const char *name;
 
     // Called on startup to initialize code

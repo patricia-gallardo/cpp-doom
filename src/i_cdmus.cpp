@@ -20,7 +20,7 @@
 
 #include "i_cdmus.hpp"
 
-int cd_Error;
+[[maybe_unused]] int cd_Error;
 
 int I_CDMusInit()
 {

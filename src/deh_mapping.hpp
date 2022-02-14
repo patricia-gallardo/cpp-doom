@@ -77,7 +77,7 @@ struct deh_mapping_entry_s {
 };
 
 struct deh_mapping_s {
-    void *              base;
+    void *              base{};
     deh_mapping_entry_t entries[MAX_MAPPING_ENTRIES];
 };
 

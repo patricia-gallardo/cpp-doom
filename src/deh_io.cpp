@@ -36,7 +36,7 @@ enum deh_input_type_t
     DEH_INPUT_LUMP
 };
 
-struct deh_context_s {
+struct [[maybe_unused]] deh_context_s {
     deh_input_type_t type;
     char *           filename;
 
@@ -68,9 +68,7 @@ struct deh_context_s {
 
 static deh_context_t *DEH_NewContext()
 {
-    deh_context_t *context;
-
-    context = zmalloc<decltype(context)>(sizeof(*context), PU_STATIC, nullptr);
+    deh_context_t *context = zmalloc<decltype(context)>(sizeof(*context), PU_STATIC, nullptr);
 
     // Initial read buffer size of 128 bytes
 
@@ -90,15 +88,12 @@ static deh_context_t *DEH_NewContext()
 
 deh_context_t *DEH_OpenFile(const char *filename)
 {
-    FILE *         fstream;
-    deh_context_t *context;
-
-    fstream = fopen(filename, "r");
+    FILE *fstream = fopen(filename, "r");
 
     if (fstream == nullptr)
         return nullptr;
 
-    context = DEH_NewContext();
+    deh_context_t *context = DEH_NewContext();
 
     context->type     = DEH_INPUT_FILE;
     context->stream   = fstream;
@@ -157,14 +152,12 @@ int DEH_GetCharFile(deh_context_t *context)
 
 int DEH_GetCharLump(deh_context_t *context)
 {
-    int result;
-
     if (context->input_buffer_pos >= context->input_buffer_len)
     {
         return -1;
     }
 
-    result = context->input_buffer[context->input_buffer_pos];
+    int result = context->input_buffer[context->input_buffer_pos];
     ++context->input_buffer_pos;
 
     return result;
@@ -258,13 +251,10 @@ void DEH_RestoreLineStart(deh_context_t *context)
 
 char *DEH_ReadLine(deh_context_t *context, bool extended)
 {
-    int     c;
-    int     pos;
     bool escaped = false;
-
-    for (pos = 0;;)
+    for (int pos = 0;;)
     {
-        c = DEH_GetChar(context);
+        int c = DEH_GetChar(context);
 
         if (c < 0 && pos == 0)
         {
