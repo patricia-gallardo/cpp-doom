@@ -2458,7 +2458,7 @@ static void LoadDefaultCollection(default_collection_t *collection)
             && strparm[0] == '"' && strparm[strlen(strparm) - 1] == '"')
         {
             strparm[strlen(strparm) - 1] = '\0';
-            memmove(strparm, strparm + 1, sizeof(strparm) - 1);
+            std::memmove(strparm, strparm + 1, sizeof(strparm) - 1);
         }
 
         SetVariable(def, strparm);

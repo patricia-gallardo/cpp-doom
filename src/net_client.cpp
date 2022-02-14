@@ -271,7 +271,7 @@ static void NET_CL_AdvanceWindow()
 
         // Advance the window
 
-        memmove(recvwindow, recvwindow + 1,
+        std::memmove(recvwindow, recvwindow + 1,
             sizeof(net_server_recv_t) * (BACKUPTICS - 1));
         std::memset(&recvwindow[BACKUPTICS - 1], 0, sizeof(net_server_recv_t));
 

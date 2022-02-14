@@ -76,7 +76,7 @@ bool Buffer_Push(buffer_t *buf, const void *data, int len)
         }
 
         // Move our data to the front of the buffer.
-        memmove(buf->buffer, buf->data, buf->data_len);
+        std::memmove(buf->buffer, buf->data, buf->data_len);
         buf->data = buf->buffer;
         buf->data_end = buf->buffer + buf->data_len;
     }

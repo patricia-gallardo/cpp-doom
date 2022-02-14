@@ -795,7 +795,7 @@ static const char *GetGameName(const char *gamename)
 
             while (newgamename[0] != '\0' && isspace(newgamename[0]))
             {
-                memmove(newgamename, newgamename + 1, newgamename_size - 1);
+                std::memmove(newgamename, newgamename + 1, newgamename_size - 1);
             }
 
             while (newgamename[0] != '\0' && isspace(newgamename[strlen(newgamename) - 1]))

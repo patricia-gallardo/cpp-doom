@@ -38,7 +38,7 @@ static void NewLine(unsigned char *screendata)
 
         cur_y = TXT_SCREEN_H - 1;
 
-        memmove(screendata, screendata + TXT_SCREEN_W * 2,
+        std::memmove(screendata, screendata + TXT_SCREEN_W * 2,
                 TXT_SCREEN_W * 2 * (TXT_SCREEN_H -1));
 
         // Clear the bottom line

@@ -536,7 +536,7 @@ static void ParseOggFile(file_metadata_t *metadata, FILE *fs)
         // buf[] is used as a sliding window. Each iteration, we
         // move the buffer one byte to the left and read an extra
         // byte onto the end.
-        memmove(buf, buf + 1, sizeof(buf) - 1);
+        std::memmove(buf, buf + 1, sizeof(buf) - 1);
 
         if (fread(&buf[6], 1, 1, fs) < 1)
         {

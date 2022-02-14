@@ -512,7 +512,7 @@ static void NET_SV_AdvanceWindow()
 
         // Advance the window
 
-        memmove(recvwindow, recvwindow + 1,
+        std::memmove(recvwindow, recvwindow + 1,
             sizeof(*recvwindow) * (BACKUPTICS - 1));
         std::memset(&recvwindow[BACKUPTICS - 1], 0, sizeof(*recvwindow));
         ++recvwindow_start;

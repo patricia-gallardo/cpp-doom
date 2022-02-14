@@ -324,7 +324,7 @@ void NET_TiccmdDiff(ticcmd_t *tic1, ticcmd_t *tic2, net_ticdiff_t *diff)
 
 void NET_TiccmdPatch(ticcmd_t *src, net_ticdiff_t *diff, ticcmd_t *dest)
 {
-    memmove(dest, src, sizeof(ticcmd_t));
+    std::memmove(dest, src, sizeof(ticcmd_t));
 
     // Apply the diff
 
