@@ -1511,7 +1511,7 @@ void ST_unloadGraphics()
     ST_loadUnloadGraphics(ST_unloadCallback);
 }
 
-void ST_unloadData()
+[[maybe_unused]] void ST_unloadData()
 {
     ST_unloadGraphics();
 }

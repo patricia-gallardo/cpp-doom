@@ -820,7 +820,7 @@ void P_KillMobj(mobj_t* source, mobj_t* target)
             mobj_t* loot;
             int r = 0;
 
-            while(1)
+            while (true)
             {
                 if(target->player->inventory[0].amount <= 0)
                     break;

@@ -66,8 +66,8 @@ typedef enum
     DI_SOUTH,
     DI_SOUTHEAST,
     DI_NODIR,
-    NUMDIRS
-    
+    NUMDIRS [[maybe_unused]]
+
 } dirtype_t;
 
 
@@ -679,7 +679,7 @@ void P_NewRandomDir(mobj_t* actor)
     {
         // Try directions one at a time in backward order
         dir = DI_SOUTHEAST;
-        while(1)
+        while (true)
         {
             // haleyjd 09/05/10: missing random code.
             if(dir != omovedir)
@@ -709,7 +709,7 @@ void P_NewRandomDir(mobj_t* actor)
                     return;
                 }
             } // end if(--dir == -1)
-        } // end while(1)
+        } // end while (true)
     } // end else
 }
 

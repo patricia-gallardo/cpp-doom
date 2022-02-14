@@ -279,7 +279,7 @@ bool D_GrabMouseCallback()
 //
 //---------------------------------------------------------------------------
 
-void D_DoomLoop()
+[[noreturn]] void D_DoomLoop()
 {
     if (M_CheckParm("-debugfile"))
     {
@@ -293,7 +293,7 @@ void D_DoomLoop()
 
     main_loop_started = true;
 
-    while (1)
+    while (true)
     {
         // Frame syncronous IO operations
         I_StartFrame();

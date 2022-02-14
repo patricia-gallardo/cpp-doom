@@ -20,7 +20,6 @@
 
 #include <cstdio>
 #include <cstdlib>
-#include <cassert>
 
 #include "m_random.hpp"
 #include "i_system.hpp"
@@ -40,7 +39,7 @@
 #include "sounds.hpp"
 
 
-typedef enum
+enum dirtype_t
 {
     DI_EAST,
     DI_NORTHEAST,
@@ -51,9 +50,8 @@ typedef enum
     DI_SOUTH,
     DI_SOUTHEAST,
     DI_NODIR,
-    NUMDIRS
-
-} dirtype_t;
+    NUMDIRS [[maybe_unused]]
+};
 
 
 //
@@ -92,10 +90,6 @@ mobj_t *soundtarget;
 void P_RecursiveSound(sector_t *sec,
     int                         soundblocks)
 {
-    int       i;
-    line_t *  check;
-    sector_t *other;
-
     // wake up all monsters in this sector
     if (sec->validcount == validcount
         && sec->soundtraversed <= soundblocks + 1)
@@ -107,9 +101,9 @@ void P_RecursiveSound(sector_t *sec,
     sec->soundtraversed = soundblocks + 1;
     sec->soundtarget    = soundtarget;
 
-    for (i = 0; i < sec->linecount; i++)
+    for (int i = 0; i < sec->linecount; i++)
     {
-        check = sec->lines[i];
+        line_t *check = sec->lines[i];
         if (!(check->flags & ML_TWOSIDED))
             continue;
 
@@ -118,6 +112,7 @@ void P_RecursiveSound(sector_t *sec,
         if (openrange <= 0)
             continue; // closed door
 
+        sector_t *other = nullptr;
         if (sides[check->sidenum[0]].sector == sec)
             other = sides[check->sidenum[1]].sector;
         else
@@ -157,15 +152,13 @@ void P_NoiseAlert(mobj_t *target,
 //
 bool P_CheckMeleeRange(mobj_t *actor)
 {
-    mobj_t *pl;
-    fixed_t dist;
-    fixed_t range;
+    fixed_t range = 0;
 
     if (!actor->target)
         return false;
 
-    pl   = actor->target;
-    dist = P_AproxDistance(pl->x - actor->x, pl->y - actor->y);
+    mobj_t *pl   = actor->target;
+    fixed_t dist = P_AproxDistance(pl->x - actor->x, pl->y - actor->y);
 
     if (gameversion <= exe_doom_1_2)
         range = MELEERANGE;
@@ -196,7 +189,7 @@ bool P_CheckMeleeRange(mobj_t *actor)
 //
 bool P_CheckMissileRange(mobj_t *actor)
 {
-    fixed_t dist;
+    fixed_t dist = 0;
 
     if (!P_CheckSight(actor, actor->target))
         return false;
@@ -267,26 +260,18 @@ fixed_t yspeed[8] = { 0, 47000, FRACUNIT, 47000, 0, -47000, -FRACUNIT, -47000 };
 
 bool P_Move(mobj_t *actor)
 {
-    fixed_t tryx;
-    fixed_t tryy;
-
-    line_t *ld;
-
-    // warning: 'catch', 'throw', and 'try'
-    // are all C++ reserved words
-    bool try_ok;
-    bool good;
-
     if (actor->movedir == DI_NODIR)
         return false;
 
     if (static_cast<unsigned>(actor->movedir) >= 8)
         I_Error("Weird actor->movedir!");
 
-    tryx = actor->x + actor->info->speed * xspeed[actor->movedir];
-    tryy = actor->y + actor->info->speed * yspeed[actor->movedir];
+    fixed_t tryx = actor->x + actor->info->speed * xspeed[actor->movedir];
+    fixed_t tryy = actor->y + actor->info->speed * yspeed[actor->movedir];
 
-    try_ok = P_TryMove(actor, tryx, tryy);
+    // warning: 'catch', 'throw', and 'try'
+    // are all C++ reserved words
+    bool try_ok = P_TryMove(actor, tryx, tryy);
 
     if (!try_ok)
     {
@@ -307,10 +292,10 @@ bool P_Move(mobj_t *actor)
             return false;
 
         actor->movedir = DI_NODIR;
-        good           = false;
+        bool good      = false;
         while (numspechit--)
         {
-            ld = spechit[numspechit];
+            line_t *ld = spechit[numspechit];
             // if the special is not a door
             // that can be opened,
             // return false
@@ -356,24 +341,16 @@ bool P_TryWalk(mobj_t *actor)
 
 void P_NewChaseDir(mobj_t *actor)
 {
-    fixed_t deltax;
-    fixed_t deltay;
-
     dirtype_t d[3];
-
-    int       tdir;
-    dirtype_t olddir;
-
-    dirtype_t turnaround;
 
     if (!actor->target)
         I_Error("P_NewChaseDir: called with no target");
 
-    olddir     = static_cast<dirtype_t>(actor->movedir);
-    turnaround = opposite[olddir];
+    auto      olddir     = static_cast<dirtype_t>(actor->movedir);
+    dirtype_t turnaround = opposite[olddir];
 
-    deltax = actor->target->x - actor->x;
-    deltay = actor->target->y - actor->y;
+    fixed_t deltax = actor->target->x - actor->x;
+    fixed_t deltay = actor->target->y - actor->y;
 
     if (deltax > 10 * FRACUNIT)
         d[1] = DI_EAST;
@@ -402,7 +379,7 @@ void P_NewChaseDir(mobj_t *actor)
     if (P_Random() > 200
         || std::abs(deltay) > std::abs(deltax))
     {
-        tdir = d[1];
+        int tdir = d[1];
         d[1] = d[2];
         d[2] = static_cast<dirtype_t>(tdir);
     }
@@ -443,7 +420,7 @@ void P_NewChaseDir(mobj_t *actor)
     // randomly determine direction of search
     if (P_Random() & 1)
     {
-        for (tdir = DI_EAST;
+        for (int tdir = DI_EAST;
              tdir <= DI_SOUTHEAST;
              tdir++)
         {
@@ -458,7 +435,7 @@ void P_NewChaseDir(mobj_t *actor)
     }
     else
     {
-        for (tdir = DI_SOUTHEAST;
+        for (int tdir = DI_SOUTHEAST;
              tdir != (DI_EAST - 1);
              tdir--)
         {
@@ -492,14 +469,8 @@ bool
     P_LookForPlayers(mobj_t *actor,
         bool              allaround)
 {
-    int       c;
-    int       stop;
-    player_t *player;
-    angle_t   an;
-    fixed_t   dist;
-
-    c    = 0;
-    stop = (actor->lastlook - 1) & 3;
+    int c    = 0;
+    int stop = (actor->lastlook - 1) & 3;
 
     for (;; actor->lastlook = (actor->lastlook + 1) & 3)
     {
@@ -513,7 +484,7 @@ bool
             return false;
         }
 
-        player = &players[actor->lastlook];
+        player_t *player = &players[actor->lastlook];
 
         // [crispy] monsters don't look for players with NOTARGET cheat
         if (player->cheats & CF_NOTARGET)
@@ -527,7 +498,7 @@ bool
 
         if (!allaround)
         {
-            an = R_PointToAngle2(actor->x,
+            angle_t an = R_PointToAngle2(actor->x,
                      actor->y,
                      player->mo->x,
                      player->mo->y)
@@ -535,7 +506,7 @@ bool
 
             if (an > ANG90 && an < ANG270)
             {
-                dist = P_AproxDistance(player->mo->x - actor->x,
+                fixed_t dist = P_AproxDistance(player->mo->x - actor->x,
                     player->mo->y - actor->y);
                 // if real close, react anyway
                 if (dist > MELEERANGE)
@@ -557,21 +528,17 @@ bool
 //
 void A_KeenDie(mobj_t *mo)
 {
-    thinker_t *th;
-    mobj_t *   mo2;
-    line_t     junk;
-
     A_Fall(mo);
 
     // scan the remaining thinkers
     // to see if all Keens are dead
     action_hook needle = P_MobjThinker;
-    for (th = thinkercap.next; th != &thinkercap; th = th->next)
+    for (thinker_t *th = thinkercap.next; th != &thinkercap; th = th->next)
     {
         if (th->function != needle)
             continue;
 
-        mo2 = reinterpret_cast<mobj_t *>(th);
+        auto *mo2 = reinterpret_cast<mobj_t *>(th);
         if (mo2 != mo
             && mo2->type == mo->type
             && mo2->health > 0)
@@ -581,6 +548,7 @@ void A_KeenDie(mobj_t *mo)
         }
     }
 
+    line_t junk;
     junk.tag = 666;
     EV_DoDoor(&junk, vld_open);
 }
@@ -596,10 +564,8 @@ void A_KeenDie(mobj_t *mo)
 //
 void A_Look(mobj_t *actor)
 {
-    mobj_t *targ;
-
     actor->threshold = 0; // any shot will wake up
-    targ             = actor->subsector->sector->soundtarget;
+    mobj_t *targ     = actor->subsector->sector->soundtarget;
 
     // [crispy] monsters don't look for players with NOTARGET cheat
     if (targ && targ->player && (targ->player->cheats & CF_NOTARGET))
@@ -627,7 +593,7 @@ void A_Look(mobj_t *actor)
 seeyou:
     if (actor->info->seesound)
     {
-        int sound;
+        int sound = 0;
 
         switch (actor->info->seesound)
         {
@@ -675,11 +641,8 @@ seeyou:
 //
 void A_Chase(mobj_t *actor)
 {
-    int delta;
-
     if (actor->reactiontime)
         actor->reactiontime--;
-
 
     // modify target threshold
     if (actor->threshold)
@@ -696,7 +659,7 @@ void A_Chase(mobj_t *actor)
     if (actor->movedir < 8)
     {
         actor->angle &= (static_cast<unsigned int>(7 << 29));
-        delta = static_cast<int>(actor->angle - (static_cast<unsigned int>(actor->movedir << 29)));
+        int delta = static_cast<int>(actor->angle - (static_cast<unsigned int>(actor->movedir << 29)));
 
         if (delta > 0)
             actor->angle -= ANG90 / 2;
@@ -1136,7 +1099,7 @@ void A_SkelFist(mobj_t *actor)
 // Detect a corpse that could be raised.
 //
 mobj_t *corpsehit;
-mobj_t *vileobj;
+[[maybe_unused]] mobj_t *vileobj;
 fixed_t viletryx;
 fixed_t viletryy;
 
@@ -2008,23 +1971,19 @@ void A_SpawnSound(mobj_t *mo)
 
 void A_SpawnFly(mobj_t *mo)
 {
-    mobj_t *   newmobj;
-    mobj_t *   fog;
-    mobj_t *   targ;
-    int        r;
     mobjtype_t type;
 
     if (--mo->reactiontime)
         return; // still flying
 
-    targ = P_SubstNullMobj(mo->target);
+    mobj_t *targ = P_SubstNullMobj(mo->target);
 
     // First spawn teleport fog.
-    fog = P_SpawnMobj(targ->x, targ->y, targ->z, MT_SPAWNFIRE);
+    mobj_t *fog = P_SpawnMobj(targ->x, targ->y, targ->z, MT_SPAWNFIRE);
     S_StartSound(fog, sfx_telept);
 
     // Randomly select monster to spawn.
-    r = P_Random();
+    int r = P_Random();
 
     // Probability distribution (kind of :),
     // decreasing likelihood.
@@ -2051,7 +2010,7 @@ void A_SpawnFly(mobj_t *mo)
     else
         type = MT_BRUISER;
 
-    newmobj = P_SpawnMobj(targ->x, targ->y, targ->z, type);
+    mobj_t *newmobj = P_SpawnMobj(targ->x, targ->y, targ->z, type);
 
     // [crispy] count spawned monsters
     extrakills++;

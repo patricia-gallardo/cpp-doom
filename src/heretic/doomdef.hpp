@@ -596,7 +596,7 @@ void tprintf(const char *string, int initflag);
 // parses command line options
 // if not overrided, calls N_AdvanceDemo
 
-void D_DoomLoop();
+[[noreturn]] void D_DoomLoop();
 // not a globally visible function, just included for source reference
 // called by D_DoomMain, never exits
 // manages timing and IO

@@ -70,7 +70,7 @@ typedef enum
     DI_SOUTH,
     DI_SOUTHEAST,
     DI_NODIR,
-    NUMDIRS
+    NUMDIRS [[maybe_unused]]
 } dirtype_t;
 
 #define BASETHRESHOLD 100       // follow a player exlusively for 3 seconds

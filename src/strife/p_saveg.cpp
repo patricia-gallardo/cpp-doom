@@ -1924,7 +1924,7 @@ void P_UnArchiveThinkers ()
     P_InitThinkers ();
     
     // read in saved thinkers
-    while (1)
+    while (true)
     {
         tclass = saveg_read8();
         switch (tclass)

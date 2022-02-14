@@ -1042,7 +1042,7 @@ AM_drawFline
     if (ax > ay)
     {
 	d = ay - ax/2;
-	while (1)
+	while (true)
 	{
 	    PUTDOT(x,y,static_cast<uint8_t>(color));
 	    if (x == fl->b.x) return;
@@ -1058,7 +1058,7 @@ AM_drawFline
     else
     {
 	d = ax - ay/2;
-	while (1)
+	while (true)
 	{
 	    PUTDOT(x, y, static_cast<uint8_t>(color));
 	    if (y == fl->b.y) return;

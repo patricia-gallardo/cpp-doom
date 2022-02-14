@@ -1550,7 +1550,7 @@ M_WriteText
     cx = x;
     cy = y;
 
-    while(1)
+    while (true)
     {
         c = *ch++;
         if (!c)

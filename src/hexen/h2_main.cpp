@@ -805,7 +805,7 @@ void H2_GameLoop()
     I_SetGrabMouseCallback(D_GrabMouseCallback);
     I_InitGraphics();
 
-    while (1)
+    while (true)
     {
         // Frame syncronous IO operations
         I_StartFrame();

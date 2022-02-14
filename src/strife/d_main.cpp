@@ -90,7 +90,7 @@
 //  calls all ?_Responder, ?_Ticker, and ?_Drawer,
 //  calls I_GetTime, I_StartFrame, and I_StartTic
 //
-void D_DoomLoop ();
+[[noreturn]] void D_DoomLoop ();
 
 static bool D_AddFile(char *filename);
 
@@ -142,8 +142,8 @@ bool         isdemoversion;
 //bool         storedemo;
 
 
-char		wadfile[1024];          // primary wad file
-char		mapdir[1024];           // directory of development maps
+char                  wadfile[1024]; // primary wad file
+[[maybe_unused]] char mapdir[1024];  // directory of development maps
 
 int             show_endoom = 0;
 int             show_diskicon = 1;
@@ -501,7 +501,7 @@ static bool D_StartupGrabCallback()
 //
 //  haleyjd 08/23/10: [STRIFE] Verified unmodified.
 //
-void D_DoomLoop ()
+[[noreturn]] void D_DoomLoop ()
 {
     if (demorecording)
         G_BeginRecording ();
@@ -531,7 +531,7 @@ void D_DoomLoop ()
         wipegamestate = gamestate;
     }
 
-    while (1)
+    while (true)
     {
         // frame syncronous IO operations
         I_StartFrame ();
