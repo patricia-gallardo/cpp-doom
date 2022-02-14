@@ -18,7 +18,6 @@
 #include "config.h"
 
 #include <cstdio>
-#include <cstring>
 #include <cassert>
 
 #include "SDL.h"
@@ -70,7 +69,7 @@ static uint64_t pause_offset;
 // OPL software emulator structure.
 
 static opl3_chip opl_chip;
-static int opl_opl3mode;
+[[maybe_unused]] static int opl_opl3mode;
 
 // Temporary mixing buffer used by the mixing callback.
 
@@ -252,14 +251,11 @@ static void OPL_SDL_Shutdown()
 
 static unsigned int GetSliceSize()
 {
-    int limit;
-    int n;
-
-    limit = (opl_sample_rate * MAX_SOUND_SLICE_TIME) / 1000;
+    int limit = (opl_sample_rate * MAX_SOUND_SLICE_TIME) / 1000;
 
     // Try all powers of two, not exceeding the limit.
 
-    for (n=0;; ++n)
+    for (int n=0;; ++n)
     {
         // 2^n <= limit < 2^n+1 ?
 
@@ -424,7 +420,7 @@ static void WriteRegister(unsigned int reg_num, unsigned int value)
         case OPL_REG_NEW:
             opl_opl3mode = value & 0x01;
             [[fallthrough]];
-            default:
+        default:
             OPL3_WriteRegBuffered(&opl_chip, static_cast<Bit16u>(reg_num), static_cast<Bit8u>(value));
             break;
     }

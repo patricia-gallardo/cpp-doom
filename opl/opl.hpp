@@ -96,7 +96,7 @@ unsigned int OPL_ReadPort(opl_port_t port);
 // Higher-level functions.
 //
 
-// Read the cuurrent status byte of the OPL chip.
+// Read the current status byte of the OPL chip.
 
 unsigned int OPL_ReadStatus();
 

@@ -31,7 +31,7 @@
 
 vertex_t KeyPoints[NUMKEYS];
 
-#define NUMALIAS 3              // Number of antialiased lines.
+constexpr auto NUMALIAS = 3; // Number of antialiased lines.
 
 const char *LevelNames[] = {
     // EPISODE 1 - THE CITY OF THE DAMNED
@@ -93,7 +93,7 @@ const char *LevelNames[] = {
 static int cheating = 0;
 static int grid = 0;
 
-static int leveljuststarted = 1;        // kluge until AM_LevelInit() is called
+[[maybe_unused]] static int leveljuststarted = 1;        // kluge until AM_LevelInit() is called
 
 bool automapactive = false;
 static int finit_width;// = SCREENWIDTH;
@@ -245,12 +245,9 @@ void AM_addMark()
 */
 void AM_findMinMaxBoundaries()
 {
-    int i;
-    fixed_t a, b;
-
     min_x = min_y = INT_MAX;
     max_x = max_y = -INT_MAX;
-    for (i = 0; i < numvertexes; i++)
+    for (int i = 0; i < numvertexes; i++)
     {
         if (vertexes[i].x < min_x)
             min_x = vertexes[i].x;
@@ -266,8 +263,8 @@ void AM_findMinMaxBoundaries()
     min_w = 2 * PLAYERRADIUS;
     min_h = 2 * PLAYERRADIUS;
 
-    a = FixedDiv(f_w << FRACBITS, max_w);
-    b = FixedDiv(f_h << FRACBITS, max_h);
+    fixed_t a = FixedDiv(f_w << FRACBITS, max_w);
+    fixed_t b = FixedDiv(f_h << FRACBITS, max_h);
     min_scale_mtof = a < b ? a : b;
 
     max_scale_mtof = FixedDiv(f_h << FRACBITS, 2 * PLAYERRADIUS);
@@ -328,10 +325,6 @@ void AM_changeWindowLoc()
 
 void AM_initVariables()
 {
-    int pnum;
-    thinker_t *think;
-    mobj_t *mo;
-
     //static event_t st_notify = { ev_keyup, AM_MSGENTERED };
 
     automapactive = true;
@@ -349,6 +342,7 @@ void AM_initVariables()
     m_h = FTOM(f_h);
 
     // find player to center on initially
+    int pnum = 0;
     if (!playeringame[pnum = consoleplayer])
         for (pnum = 0; pnum < MAXPLAYERS; pnum++)
             if (playeringame[pnum])
@@ -372,14 +366,14 @@ void AM_initVariables()
     if (gameskill == sk_baby)
     {
         action_hook needle = P_MobjThinker;
-        for (think = thinkercap.next; think != &thinkercap;
+        for (thinker_t *think = thinkercap.next; think != &thinkercap;
              think = think->next)
         {
             if (think->function != needle )
             {                   //not a mobj
                 continue;
             }
-            mo = reinterpret_cast<mobj_t *>(think);
+            mobj_t *mo = reinterpret_cast<mobj_t *>(think);
             if (mo->type == MT_CKEY)
             {
                 KeyPoints[0].x = mo->x;
@@ -1237,21 +1231,18 @@ void AM_drawMline(mline_t * ml, int color)
 
 void AM_drawGrid(int color)
 {
-    fixed_t x, y;
-    fixed_t start, end;
-    mline_t ml;
-
     // Figure out start of vertical gridlines
-    start = m_x;
+    fixed_t start = m_x;
     if ((start - bmaporgx) % (MAPBLOCKUNITS << FRACBITS))
         start += (MAPBLOCKUNITS << FRACBITS)
             - ((start - bmaporgx) % (MAPBLOCKUNITS << FRACBITS));
-    end = m_x + m_w;
+    fixed_t end = m_x + m_w;
 
     // draw vertical gridlines
+    mline_t ml;
     ml.a.y = m_y;
     ml.b.y = m_y + m_h;
-    for (x = start; x < end; x += (MAPBLOCKUNITS << FRACBITS))
+    for (fixed_t x = start; x < end; x += (MAPBLOCKUNITS << FRACBITS))
     {
         ml.a.x = x;
         ml.b.x = x;
@@ -1268,7 +1259,7 @@ void AM_drawGrid(int color)
     // draw horizontal gridlines
     ml.a.x = m_x;
     ml.b.x = m_x + m_w;
-    for (y = start; y < end; y += (MAPBLOCKUNITS << FRACBITS))
+    for (fixed_t y = start; y < end; y += (MAPBLOCKUNITS << FRACBITS))
     {
         ml.a.y = y;
         ml.b.y = y;
@@ -1278,10 +1269,9 @@ void AM_drawGrid(int color)
 
 void AM_drawWalls()
 {
-    int i;
     static mline_t l;
 
-    for (i = 0; i < numlines; i++)
+    for (int i = 0; i < numlines; i++)
     {
         l.a.x = lines[i].v1->x;
         l.a.y = lines[i].v1->y;
@@ -1355,9 +1345,7 @@ void AM_drawWalls()
 
 void AM_rotate(fixed_t * x, fixed_t * y, angle_t a)
 {
-    fixed_t tmpx;
-
-    tmpx = FixedMul(*x, finecosine[a >> ANGLETOFINESHIFT])
+    fixed_t tmpx = FixedMul(*x, finecosine[a >> ANGLETOFINESHIFT])
         - FixedMul(*y, finesine[a >> ANGLETOFINESHIFT]);
     *y = FixedMul(*x, finesine[a >> ANGLETOFINESHIFT])
         + FixedMul(*y, finecosine[a >> ANGLETOFINESHIFT]);
@@ -1367,10 +1355,9 @@ void AM_rotate(fixed_t * x, fixed_t * y, angle_t a)
 void AM_drawLineCharacter(mline_t * lineguy, int lineguylines, fixed_t scale,
                           angle_t angle, int color, fixed_t x, fixed_t y)
 {
-    int i;
     mline_t l;
 
-    for (i = 0; i < lineguylines; i++)
+    for (int i = 0; i < lineguylines; i++)
     {
         l.a.x = lineguy[i].a.x;
         l.a.y = lineguy[i].a.y;
@@ -1403,12 +1390,8 @@ void AM_drawLineCharacter(mline_t * lineguy, int lineguylines, fixed_t scale,
 
 void AM_drawPlayers()
 {
-
-    int i;
-    player_t *p;
     static int their_colors[] = { GREENKEY, YELLOWKEY, BLOODRED, BLUEKEY };
     int their_color = -1;
-    int color;
 
     if (!netgame)
     {
@@ -1422,16 +1405,17 @@ void AM_drawPlayers()
         return;
     }
 
-    for (i = 0; i < MAXPLAYERS; i++)
+    for (int i = 0; i < MAXPLAYERS; i++)
     {
         their_color++;
-        p = &players[i];
+        player_t *p = &players[i];
         if (deathmatch && !singledemo && p != plr)
         {
             continue;
         }
         if (!playeringame[i])
             continue;
+        int color = 0;
         if (p->powers[pw_invisibility])
             color = 102;        // *close* to the automap color
         else
@@ -1443,12 +1427,9 @@ void AM_drawPlayers()
 
 void AM_drawThings(int colors, int)
 {
-    int i;
-    mobj_t *t;
-
-    for (i = 0; i < numsectors; i++)
+    for (int i = 0; i < numsectors; i++)
     {
-        t = sectors[i].thinglist;
+        mobj_t *t = sectors[i].thinglist;
         while (t)
         {
             AM_drawLineCharacter(thintriangle_guy, NUMTHINTRIANGLEGUYLINES,
@@ -1505,9 +1486,6 @@ void AM_drawCrosshair(int color)
 
 void AM_Drawer()
 {
-    const char *level_name;
-    int numepisodes;
-
     if (!automapactive)
         return;
 
@@ -1527,6 +1505,7 @@ void AM_Drawer()
         AM_drawkeys();
     }
 
+    int numepisodes = 0;
     if (gamemode == retail)
     {
         numepisodes = 5;
@@ -1538,7 +1517,7 @@ void AM_Drawer()
 
     if (gameepisode <= numepisodes && gamemap < 10)
     {
-        level_name = LevelNames[(gameepisode - 1) * 9 + gamemap - 1];
+        const char *level_name = LevelNames[(gameepisode - 1) * 9 + gamemap - 1];
         MN_DrTextA(DEH_String(level_name), 20, 145);
     }
 //  I_Update();
