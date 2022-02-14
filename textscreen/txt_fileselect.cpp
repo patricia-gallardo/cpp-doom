@@ -15,7 +15,6 @@
 // Routines for selecting files.
 //
 
-#include <cstdio>
 #include <cstdlib>
 #include <cstring>
 
@@ -29,12 +28,12 @@
 #include "txt_widget.hpp"
 #include "memory.hpp"
 
-struct txt_fileselect_s {
+struct [[maybe_unused]] txt_fileselect_s {
     txt_widget_t widget;
-    txt_inputbox_t *inputbox;
-    int size;
-    const char *prompt;
-    const char **extensions;
+    txt_inputbox_t *inputbox{};
+    int size{};
+    const char *prompt{};
+    const char **extensions{};
 };
 
 // Dummy value to select a directory.
@@ -708,7 +707,7 @@ static void TXT_FileSelectDestructor(void *uncast_fileselect)
 
 static int DoSelectFile(txt_fileselect_t *fileselect)
 {
-    char *path;
+    char *path = nullptr;
 
     if (TXT_CanSelectFiles())
     {

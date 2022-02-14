@@ -18,7 +18,7 @@
 #include "txt_strut.hpp"
 #include <new>
 
-struct txt_conditional_s
+struct [[maybe_unused]] txt_conditional_s
 {
     txt_widget_t widget;
     int *var{};
@@ -159,9 +159,8 @@ txt_widget_t *TXT_If(int conditional, void *uncast_child)
     }
     else
     {
-        txt_strut_t *nullwidget;
         TXT_DestroyWidget(child);
-        nullwidget = TXT_NewStrut(0, 0);
+        txt_strut_t *nullwidget = TXT_NewStrut(0, 0);
         return &nullwidget->widget;
     }
 }

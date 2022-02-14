@@ -42,9 +42,9 @@ using txt_dropdown_list_t = struct txt_dropdown_list_s;
 struct txt_dropdown_list_s
 {
     txt_widget_t widget;
-    int *variable;
-    const char **values;
-    int num_values;
+    int *variable{};
+    const char **values{};
+    int num_values{};
 };
 
 /**

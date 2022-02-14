@@ -35,7 +35,7 @@ using txt_button_t = struct txt_button_s;
 struct txt_button_s
 {
     txt_widget_t widget;
-    char *label;
+    char *label{};
 };
 
 /**
