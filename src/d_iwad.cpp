@@ -26,6 +26,9 @@
 #include "i_system.hpp"
 #include "m_argv.hpp"
 #include "m_misc.hpp"
+#ifdef WIN32
+#include "m_config.hpp"
+#endif
 
 static const iwad_t iwads[] = {
     { "doom2.wad", doom2, commercial, "Doom II" },

@@ -33,9 +33,9 @@
 #error i_opndir.c is for Microsoft Visual C++ only
 #endif
 
-#include <stdlib.h>
-#include <errno.h>
-#include <string.h>
+#include <cstdlib>
+#include <cerrno>
+#include <cstring>
 
 #define WIN32_LEAN_AND_MEAN
 #include <windows.h> /* for GetFileAttributes */

@@ -475,9 +475,7 @@ void D_CheckRecordFrom()
 
     G_RecordDemo(gameskill, 1, gameepisode, gamemap, myargv[p + 2]);
     D_DoomLoop();               // never returns
-    // unreachable code
-    // free(filename);
-    assert(false);
+    [[unreachable]];
 }
 
 /*

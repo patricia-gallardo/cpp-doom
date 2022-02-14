@@ -26,6 +26,9 @@
 #include "i_system.hpp"
 #include "m_misc.hpp"
 #include "m_argv.hpp" // haleyjd 20110212: warning fix
+#ifdef WIN32
+#include "d_iwad.hpp"
+#endif
 
 int    myargc;
 char **myargv;
