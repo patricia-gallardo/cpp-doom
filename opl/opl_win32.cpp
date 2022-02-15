@@ -31,6 +31,10 @@
 
 #include "ioperm_sys.hpp"
 
+#ifndef NO_PORT_RW
+#include <cstring>
+#endif
+
 static unsigned int opl_port_base;
 
 // MingW?
