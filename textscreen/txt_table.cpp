@@ -18,9 +18,6 @@
 #include <vector>
 
 #include "doomkeys.hpp"
-
-#include "txt_desktop.hpp"
-#include "txt_gui.hpp"
 #include "txt_io.hpp"
 #include "txt_main.hpp"
 #include "txt_separator.hpp"
@@ -181,7 +178,7 @@ static void CalcRowColSizes(txt_table_t *table,
 
     rows = TableRows(table);
 
-    memset(col_widths, 0, sizeof(int) * static_cast<unsigned long>(table->columns));
+    std::memset(col_widths, 0, sizeof(int) * static_cast<unsigned long>(table->columns));
 
     for (y = 0; y < rows; ++y)
     {

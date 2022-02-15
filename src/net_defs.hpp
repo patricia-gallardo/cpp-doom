@@ -28,26 +28,26 @@
 // NET_MAXPLAYERS, as there may be observers that are not participating
 // (eg. left/right monitors)
 
-#define MAXNETNODES 16
+constexpr auto MAXNETNODES = 16;
 
 // The maximum number of players, multiplayer/networking.
 // This is the maximum supported by the networking code; individual games
 // have their own values for MAXPLAYERS that can be smaller.
 
-#define NET_MAXPLAYERS 8
+constexpr auto NET_MAXPLAYERS = 8;
 
 // Maximum length of a player's name.
 
-#define MAXPLAYERNAME 30
+constexpr auto MAXPLAYERNAME = 30;
 
 // Networking and tick handling related.
 
-#define BACKUPTICS 128
+constexpr auto BACKUPTICS = 128;
 
-typedef struct _net_module_s  net_module_t;
-typedef struct _net_packet_s  net_packet_t;
-typedef struct _net_addr_s    net_addr_t;
-typedef struct _net_context_s net_context_t;
+using net_module_t  = struct _net_module_s;
+using net_packet_t  = struct _net_packet_s;
+using net_addr_t    = struct _net_addr_s;
+using net_context_t = struct _net_context_s;
 
 struct _net_packet_s {
     uint8_t     *data;
@@ -97,14 +97,14 @@ struct _net_addr_s {
 };
 
 // Magic number sent when connecting to check this is a valid client
-#define NET_MAGIC_NUMBER 1454104972U
+constexpr auto NET_MAGIC_NUMBER = 1454104972U;
 
 // Old magic number used by Chocolate Doom versions before v3.0:
-#define NET_OLD_MAGIC_NUMBER 3436803284U
+constexpr auto NET_OLD_MAGIC_NUMBER = 3436803284U;
 
 // header field value indicating that the packet is a reliable packet
 
-#define NET_RELIABLE_PACKET (1 << 15)
+constexpr auto NET_RELIABLE_PACKET = (1 << 15);
 
 // Supported protocols. If you're developing a fork of Chocolate
 // Doom, you can add your own entry to this list while maintaining
@@ -113,7 +113,7 @@ struct _net_addr_s {
 // to use, so the order matters.
 // NOTE: The values in this enum do not have any special value outside of
 // the program they're compiled in. What matters is the string representation.
-typedef enum
+enum net_protocol_t
 {
     // Protocol introduced with Chocolate Doom v3.0. Each compatibility-
     // breaking change to the network protocol will produce a new protocol
@@ -125,14 +125,14 @@ typedef enum
 
     NET_NUM_PROTOCOLS,
     NET_PROTOCOL_UNKNOWN,
-} net_protocol_t;
+};
 
 // packet types
 
-typedef enum
+enum net_packet_type_t
 {
     NET_PACKET_TYPE_SYN,
-    NET_PACKET_TYPE_ACK, // deprecated
+    NET_PACKET_TYPE_ACK [[maybe_unused]], // deprecated
     NET_PACKET_TYPE_REJECTED,
     NET_PACKET_TYPE_KEEPALIVE,
     NET_PACKET_TYPE_WAITING_DATA,
@@ -148,23 +148,23 @@ typedef enum
     NET_PACKET_TYPE_QUERY_RESPONSE,
     NET_PACKET_TYPE_LAUNCH,
     NET_PACKET_TYPE_NAT_HOLE_PUNCH,
-} net_packet_type_t;
+};
 
-typedef enum
+enum net_master_packet_type_t
 {
     NET_MASTER_PACKET_TYPE_ADD,
     NET_MASTER_PACKET_TYPE_ADD_RESPONSE,
     NET_MASTER_PACKET_TYPE_QUERY,
     NET_MASTER_PACKET_TYPE_QUERY_RESPONSE,
-    NET_MASTER_PACKET_TYPE_GET_METADATA,
-    NET_MASTER_PACKET_TYPE_GET_METADATA_RESPONSE,
+    NET_MASTER_PACKET_TYPE_GET_METADATA [[maybe_unused]],
+    NET_MASTER_PACKET_TYPE_GET_METADATA_RESPONSE [[maybe_unused]],
     NET_MASTER_PACKET_TYPE_SIGN_START,
     NET_MASTER_PACKET_TYPE_SIGN_START_RESPONSE,
     NET_MASTER_PACKET_TYPE_SIGN_END,
     NET_MASTER_PACKET_TYPE_SIGN_END_RESPONSE,
     NET_MASTER_PACKET_TYPE_NAT_HOLE_PUNCH,
     NET_MASTER_PACKET_TYPE_NAT_HOLE_PUNCH_ALL,
-} net_master_packet_type_t;
+};
 
 // Settings specified when the client connects to the server.
 
@@ -214,14 +214,14 @@ typedef struct
 
 } net_gamesettings_t;
 
-#define NET_TICDIFF_FORWARD     (1 << 0)
-#define NET_TICDIFF_SIDE        (1 << 1)
-#define NET_TICDIFF_TURN        (1 << 2)
-#define NET_TICDIFF_BUTTONS     (1 << 3)
-#define NET_TICDIFF_CONSISTANCY (1 << 4)
-#define NET_TICDIFF_CHATCHAR    (1 << 5)
-#define NET_TICDIFF_RAVEN       (1 << 6)
-#define NET_TICDIFF_STRIFE      (1 << 7)
+constexpr auto NET_TICDIFF_FORWARD     = (1 << 0);
+constexpr auto NET_TICDIFF_SIDE        = (1 << 1);
+constexpr auto NET_TICDIFF_TURN        = (1 << 2);
+constexpr auto NET_TICDIFF_BUTTONS     = (1 << 3);
+constexpr auto NET_TICDIFF_CONSISTANCY = (1 << 4);
+constexpr auto NET_TICDIFF_CHATCHAR    = (1 << 5);
+constexpr auto NET_TICDIFF_RAVEN       = (1 << 6);
+constexpr auto NET_TICDIFF_STRIFE      = (1 << 7);
 
 typedef struct
 {

@@ -224,7 +224,7 @@ void R_InitSpriteDefs(const char **namelist)
     for (int i = 0; i < numsprites; i++)
     {
         spritename = DEH_String(namelist[i]);
-        memset(sprtemp, -1, sizeof(sprtemp));
+        std::memset(sprtemp, -1, sizeof(sprtemp));
 
         maxframe = -1;
 
@@ -304,7 +304,7 @@ void R_InitSpriteDefs(const char **namelist)
         // allocate space for the frames present and copy sprtemp to it
         sprites[i].numframes    = maxframe;
         sprites[i].spriteframes = zmalloc<decltype(sprites[i].spriteframes)>(static_cast<unsigned long>(maxframe) * sizeof(spriteframe_t), PU_STATIC, nullptr);
-        memcpy(sprites[i].spriteframes, sprtemp, static_cast<unsigned long>(maxframe) * sizeof(spriteframe_t));
+        std::memcpy(sprites[i].spriteframes, sprtemp, static_cast<unsigned long>(maxframe) * sizeof(spriteframe_t));
     }
 }
 
@@ -370,7 +370,7 @@ vissprite_t *R_NewVisSprite()
 
         numvissprites = numvissprites ? 2 * numvissprites : MAXVISSPRITES;
         vissprites    = static_cast<decltype(vissprites)>(I_Realloc(vissprites, static_cast<unsigned long>(numvissprites) * sizeof(*vissprites)));
-        memset(vissprites + numvissprites_old, 0, (static_cast<unsigned long>(numvissprites - numvissprites_old)) * sizeof(*vissprites));
+        std::memset(vissprites + numvissprites_old, 0, (static_cast<unsigned long>(numvissprites - numvissprites_old)) * sizeof(*vissprites));
 
         vissprite_p = vissprites + numvissprites_old;
 
@@ -875,7 +875,7 @@ static void R_DrawLSprite()
         return;
 
     vis = R_NewVisSprite();
-    memset(vis, 0, sizeof(*vis));                                                    // [crispy] set all fields to nullptr, except ...
+    std::memset(vis, 0, sizeof(*vis));                                                    // [crispy] set all fields to nullptr, except ...
     vis->patch       = lump - firstspritelump;                                       // [crispy] not a sprite patch
     vis->colormap[0] = vis->colormap[1] = fixedcolormap ? fixedcolormap : colormaps; // [crispy] always full brightness
     vis->brightmap                      = dc_brightmap;

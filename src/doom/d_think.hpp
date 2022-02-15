@@ -27,7 +27,7 @@
 //  function pointer to a routine to handle
 //  an actor.
 using actionf_t = action_hook;
-typedef actionf_t think_t;
+using think_t   = actionf_t;
 
 // Doubly linked list of actors.
 typedef struct thinker_s {

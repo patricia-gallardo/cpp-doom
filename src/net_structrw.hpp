@@ -44,7 +44,7 @@ void    NET_WriteWaitData(net_packet_t *packet, net_waitdata_t *data);
 bool NET_ReadWaitData(net_packet_t *packet, net_waitdata_t *data);
 
 bool NET_ReadPRNGSeed(net_packet_t *packet, prng_seed_t seed);
-void    NET_WritePRNGSeed(net_packet_t *packet, prng_seed_t seed);
+[[maybe_unused]] void    NET_WritePRNGSeed(net_packet_t *packet, prng_seed_t seed);
 
 // Protocol list exchange.
 net_protocol_t NET_ReadProtocol(net_packet_t *packet);

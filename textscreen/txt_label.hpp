@@ -27,7 +27,7 @@
  * A label widget does nothing except show a text label.
  */
 
-typedef struct txt_label_s txt_label_t;
+using txt_label_t = struct txt_label_s;
 
 #include "txt_main.hpp"
 #include "txt_widget.hpp"

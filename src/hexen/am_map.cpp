@@ -312,7 +312,7 @@ void AM_initVariables()
 
     // load in the location of keys, if in baby mode
 
-//      memset(KeyPoints, 0, sizeof(vertex_t)*3);
+//      std::memset(KeyPoints, 0, sizeof(vertex_t)*3);
     if (gameskill == sk_baby)
     {
         action_hook needle = P_MobjThinker;
@@ -732,17 +732,17 @@ void AM_clearFB(int)
     j = (mapystart & ~crispy->hires) * (finit_width >> crispy->hires);
     for (i = 0; i < SCREENHEIGHT - SBARHEIGHT; i++)
     {
-        memcpy(I_VideoBuffer + i * finit_width, maplump + j + mapxstart,
+        std::memcpy(I_VideoBuffer + i * finit_width, maplump + j + mapxstart,
                finit_width - mapxstart);
-        memcpy(I_VideoBuffer + i * finit_width + finit_width - mapxstart,
+        std::memcpy(I_VideoBuffer + i * finit_width + finit_width - mapxstart,
                maplump + j, mapxstart);
         j += finit_width;
         if (j >= (finit_height >> crispy->hires) * (finit_width >> crispy->hires))
             j = 0;
     }
 
-//       memcpy(I_VideoBuffer, maplump, finit_width*finit_height);
-//  memset(fb, color, f_w*f_h);
+//       std::memcpy(I_VideoBuffer, maplump, finit_width*finit_height);
+//  std::memset(fb, color, f_w*f_h);
 }
 
 // Based on Cohen-Sutherland clipping algorithm but with a slightly

@@ -101,11 +101,11 @@
 #include <cinttypes>
 
 #ifndef CRISPY_TRUECOLOR
-typedef uint8_t pixel_t;
-typedef int16_t dpixel_t;
+using pixel_t  = uint8_t;
+using dpixel_t = int16_t;
 #else
-typedef uint32_t pixel_t;
-typedef int64_t  dpixel_t;
+using pixel_t = uint32_t;
+using dpixel_t = int64_t;
 #endif
 
 #include <climits>

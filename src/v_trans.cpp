@@ -108,7 +108,7 @@ then, to also use this routine to convert colors *to* gray?
     - Paul Haeberli
 */
 
-#define CTOLERANCE (0.0001)
+constexpr auto CTOLERANCE = (0.0001);
 
 typedef struct vect {
     float x;
@@ -135,9 +135,9 @@ static void hsv_to_rgb(vect *hsv, vect *rgb)
         h /= static_cast<float>(60.0);
         int i = static_cast<int>(floor(h));
         float f = h - static_cast<float>(i);
-        float p = static_cast<float>(v * (1.0 - s));
-        float q = static_cast<float>(v * (1.0 - (s * f)));
-        float t = static_cast<float>(v * (1.0 - (s * (1.0 - f))));
+        auto p = static_cast<float>(v * (1.0 - s));
+        auto q = static_cast<float>(v * (1.0 - (s * f)));
+        auto t = static_cast<float>(v * (1.0 - (s * (1.0 - f))));
         switch (i)
         {
         case 0:
@@ -176,21 +176,20 @@ static void hsv_to_rgb(vect *hsv, vect *rgb)
 
 static void rgb_to_hsv(vect *rgb, vect *hsv)
 {
-    float h, s, v;
-    float cmax, cmin;
-    float r, g, b;
+    float h = 0.0;
+    float s = 0.0;
 
-    r = rgb->x;
-    g = rgb->y;
-    b = rgb->z;
+    float r = rgb->x;
+    float g = rgb->y;
+    float b = rgb->z;
     /* find the cmax and cmin of r g b */
-    cmax = r;
-    cmin = r;
+    float cmax = r;
+    float cmin = r;
     cmax = (g > cmax ? g : cmax);
     cmin = (g < cmin ? g : cmin);
     cmax = (b > cmax ? b : cmax);
     cmin = (b < cmin ? b : cmin);
-    v    = cmax; /* value */
+    float v    = cmax; /* value */
     if (cmax > CTOLERANCE)
         s = (cmax - cmin) / cmax;
     else
@@ -202,13 +201,10 @@ static void rgb_to_hsv(vect *rgb, vect *hsv)
         h = 0.0;
     else
     {
-        float cdelta;
-        float rc, gc, bc;
-
-        cdelta = cmax - cmin;
-        rc     = (cmax - r) / cdelta;
-        gc     = (cmax - g) / cdelta;
-        bc     = (cmax - b) / cdelta;
+        float cdelta = cmax - cmin;
+        float rc     = (cmax - r) / cdelta;
+        float gc     = (cmax - g) / cdelta;
+        float bc     = (cmax - b) / cdelta;
         if (r == cmax)
             h = bc - gc;
         else if (g == cmax)
@@ -227,17 +223,14 @@ static void rgb_to_hsv(vect *rgb, vect *hsv)
 // [crispy] copied over from i_video.c
 static int I_GetPaletteIndex2(uint8_t *palette, int r, int g, int b)
 {
-    int best, best_diff, diff;
-    int i;
+    int best      = 0;
+    int best_diff = INT_MAX;
 
-    best      = 0;
-    best_diff = INT_MAX;
-
-    for (i = 0; i < 256; ++i)
+    for (int i = 0; i < 256; ++i)
     {
-        diff = (r - palette[3 * i + 0]) * (r - palette[3 * i + 0])
-               + (g - palette[3 * i + 1]) * (g - palette[3 * i + 1])
-               + (b - palette[3 * i + 2]) * (b - palette[3 * i + 2]);
+        int diff =   (r - palette[3 * i + 0]) * (r - palette[3 * i + 0])
+                   + (g - palette[3 * i + 1]) * (g - palette[3 * i + 1])
+                   + (b - palette[3 * i + 2]) * (b - palette[3 * i + 2]);
 
         if (diff < best_diff)
         {
@@ -254,7 +247,7 @@ static int I_GetPaletteIndex2(uint8_t *palette, int r, int g, int b)
     return best;
 }
 
-uint8_t V_Colorize(uint8_t *playpal, int cr, uint8_t source, bool keepgray109)
+[[maybe_unused]] uint8_t V_Colorize(uint8_t *playpal, int cr, uint8_t source, bool keepgray109)
 {
     vect rgb, hsv;
 

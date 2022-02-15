@@ -15,19 +15,15 @@
 // DESCRIPTION:  Heads-up displays
 //
 
-#include <array>
 #include <cctype>
 
 #include "doomdef.hpp"
 #include "doomkeys.hpp"
-
 #include "z_zone.hpp"
-
 #include "deh_main.hpp"
 #include "i_input.hpp"
 #include "i_swap.hpp"
 #include "i_video.hpp"
-
 #include "hu_stuff.hpp"
 #include "hu_lib.hpp"
 #include "m_controls.hpp"
@@ -36,9 +32,7 @@
 #include "m_argv.hpp"   // [crispy] M_ParmExists()
 #include "st_stuff.hpp" // [crispy] ST_HEIGHT
 #include "p_setup.hpp"  // maplumpinfo
-
 #include "s_sound.hpp"
-
 #include "doomstat.hpp"
 
 // Data.
@@ -46,7 +40,6 @@
 #include "sounds.hpp"
 
 #include "lump.hpp"
-#include "r_state.hpp" // [crispy] colormaps
 #include "v_trans.hpp" // [crispy] colored kills/items/secret/etc. messages
 #include "v_video.hpp" // [crispy] V_DrawPatch() et al.
 

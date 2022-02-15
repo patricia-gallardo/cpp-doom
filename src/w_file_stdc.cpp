@@ -32,10 +32,7 @@ extern wad_file_class_t stdc_wad_file;
 
 static wad_file_t *W_StdC_OpenFile(const char *path)
 {
-    stdc_wad_file_t *result;
-    FILE *           fstream;
-
-    fstream = fopen(path, "rb");
+    FILE *fstream = fopen(path, "rb");
 
     if (fstream == nullptr)
     {
@@ -44,7 +41,7 @@ static wad_file_t *W_StdC_OpenFile(const char *path)
 
     // Create a new stdc_wad_file_t to hold the file handle.
 
-    result                 = zmalloc<decltype(result)>(sizeof(stdc_wad_file_t), PU_STATIC, 0);
+    stdc_wad_file_t * result = zmalloc<stdc_wad_file_t *>(sizeof(stdc_wad_file_t), PU_STATIC, 0);
     result->wad.file_class = &stdc_wad_file;
     result->wad.mapped     = nullptr;
     result->wad.length     = static_cast<unsigned int>(M_FileLength(fstream));
@@ -56,9 +53,7 @@ static wad_file_t *W_StdC_OpenFile(const char *path)
 
 static void W_StdC_CloseFile(wad_file_t *wad)
 {
-    stdc_wad_file_t *stdc_wad;
-
-    stdc_wad = reinterpret_cast<stdc_wad_file_t *>(wad);
+    auto *stdc_wad = reinterpret_cast<stdc_wad_file_t *>(wad);
 
     fclose(stdc_wad->fstream);
     Z_Free(stdc_wad);
@@ -70,10 +65,7 @@ static void W_StdC_CloseFile(wad_file_t *wad)
 size_t W_StdC_Read(wad_file_t *wad, unsigned int offset,
     void *buffer, size_t buffer_len)
 {
-    stdc_wad_file_t *stdc_wad;
-    size_t           result;
-
-    stdc_wad = reinterpret_cast<stdc_wad_file_t *>(wad);
+    auto *stdc_wad = reinterpret_cast<stdc_wad_file_t *>(wad);
 
     // Jump to the specified position in the file.
 
@@ -81,7 +73,7 @@ size_t W_StdC_Read(wad_file_t *wad, unsigned int offset,
 
     // Read into the buffer.
 
-    result = fread(buffer, 1, buffer_len, stdc_wad->fstream);
+    size_t result = fread(buffer, 1, buffer_len, stdc_wad->fstream);
 
     return result;
 }

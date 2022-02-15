@@ -181,7 +181,7 @@ void P_CreateBlockMap()
     {
         int count  = static_cast<int>(sizeof(*blocklinks)) * bmapwidth * bmapheight;
         blocklinks = zmalloc<decltype(blocklinks)>(static_cast<size_t>(count), PU_LEVEL, 0);
-        memset(blocklinks, 0, static_cast<size_t>(count));
+        std::memset(blocklinks, 0, static_cast<size_t>(count));
         blockmap = blockmaplump + 4;
     }
 

@@ -16,10 +16,7 @@
 //
 
 #include <array>
-#include <cstdlib>
 #include <cstring>
-
-#include "doomtype.hpp"
 
 #include "deh_defs.hpp"
 #include "deh_io.hpp"

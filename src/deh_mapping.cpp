@@ -60,9 +60,9 @@ static void *GetStructField(void *structptr,
     deh_mapping_t *               mapping,
     deh_mapping_entry_t *         entry)
 {
-    uint8_t     *location_byte_ptr = reinterpret_cast<uint8_t *>(entry->location);
-    uint8_t     *base_byte_ptr     = reinterpret_cast<uint8_t *>(mapping->base);
-    unsigned int offset = static_cast<unsigned int>(location_byte_ptr - base_byte_ptr);
+    auto *location_byte_ptr = reinterpret_cast<uint8_t *>(entry->location);
+    auto *base_byte_ptr     = reinterpret_cast<uint8_t *>(mapping->base);
+    auto  offset            = static_cast<unsigned int>(location_byte_ptr - base_byte_ptr);
     return reinterpret_cast<uint8_t *>(structptr) + offset;
 }
 
@@ -148,14 +148,11 @@ bool DEH_SetStringMapping(deh_context_t *context, deh_mapping_t *mapping,
 void DEH_StructSHA1Sum(sha1_context_t *context, deh_mapping_t *mapping,
     void *structptr)
 {
-    int i;
-
     // Go through each mapping
 
-    for (i = 0; mapping->entries[i].name != nullptr; ++i)
+    for (int i = 0; mapping->entries[i].name != nullptr; ++i)
     {
         deh_mapping_entry_t *entry = &mapping->entries[i];
-        void *               location;
 
         if (entry->location == nullptr)
         {
@@ -166,7 +163,7 @@ void DEH_StructSHA1Sum(sha1_context_t *context, deh_mapping_t *mapping,
 
         // Add in data for this field
 
-        location = reinterpret_cast<uint8_t *>(structptr) + (reinterpret_cast<uint8_t *>(entry->location) - reinterpret_cast<uint8_t *>(mapping->base));
+        void *location = reinterpret_cast<uint8_t *>(structptr) + (reinterpret_cast<uint8_t *>(entry->location) - reinterpret_cast<uint8_t *>(mapping->base));
 
         switch (entry->size)
         {

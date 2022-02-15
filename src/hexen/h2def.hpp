@@ -115,15 +115,15 @@
 #define AFLAG_SUICIDE		0x40
 #define AFLAG_JUMP			0x80
 
-typedef enum
+enum gamestate_t
 {
     GS_LEVEL,
     GS_INTERMISSION,
     GS_FINALE,
     GS_DEMOSCREEN
-} gamestate_t;
+};
 
-typedef enum
+enum gameaction_t
 {
     ga_nothing,
     ga_loadlevel,
@@ -138,9 +138,9 @@ typedef enum
     ga_victory,
     ga_worlddone,
     ga_screenshot
-} gameaction_t;
+};
 
-typedef enum
+enum wipe_t
 {
     wipe_0,
     wipe_1,
@@ -149,7 +149,7 @@ typedef enum
     wipe_4,
     NUMWIPES,
     wipe_random
-} wipe_t;
+};
 
 /*
 ===============================================================================
@@ -160,7 +160,7 @@ typedef enum
 */
 
 // think_t is a function pointer to a routine to handle an actor
-typedef void (*think_t) ();
+using think_t = void (*)();
 
 typedef struct thinker_s
 {
@@ -326,30 +326,30 @@ typedef struct
 //=============================================================================
 
 // ===== Player Class Types =====
-typedef enum
+enum pclass_t
 {
     PCLASS_FIGHTER,
     PCLASS_CLERIC,
     PCLASS_MAGE,
     PCLASS_PIG,
     NUMCLASSES
-} pclass_t;
+};
 
-typedef enum
+enum playerstate_t
 {
     PST_LIVE,                   // playing
     PST_DEAD,                   // dead on the ground
     PST_REBORN                  // ready to restart
-} playerstate_t;
+};
 
 // psprites are scaled shapes directly on the view screen
 // coordinates are given for a 320*200 view screen
-typedef enum
+enum psprnum_t
 {
     ps_weapon,
     ps_flash,
     NUMPSPRITES
-} psprnum_t;
+};
 
 typedef struct pspdef_s
 {
@@ -359,16 +359,16 @@ typedef struct pspdef_s
 } pspdef_t;
 
 /* Old Heretic key type
-typedef enum
+enum keytype_t
 {
 	key_yellow,
 	key_green,
 	key_blue,
 	NUMKEYS
-} keytype_t;
+};
 */
 
-typedef enum
+enum keytype_t
 {
     KEY_1,
     KEY_2,
@@ -382,18 +382,18 @@ typedef enum
     KEY_A,
     KEY_B,
     NUMKEYS
-} keytype_t;
+};
 
-typedef enum
+enum armortype_t
 {
     ARMOR_ARMOR,
     ARMOR_SHIELD,
     ARMOR_HELMET,
     ARMOR_AMULET,
     NUMARMOR
-} armortype_t;
+};
 
-typedef enum
+enum weapontype_t
 {
     WP_FIRST,
     WP_SECOND,
@@ -401,16 +401,16 @@ typedef enum
     WP_FOURTH,
     NUMWEAPONS,
     WP_NOCHANGE
-} weapontype_t;
+};
 
-typedef enum
+enum manatype_t
 {
     MANA_1,
     MANA_2,
     NUMMANA,
     MANA_BOTH,
     MANA_NONE
-} manatype_t;
+};
 
 #define MAX_MANA	200
 
@@ -431,7 +431,7 @@ typedef struct
 
 extern weaponinfo_t WeaponInfo[NUMWEAPONS][NUMCLASSES];
 
-typedef enum
+enum artitype_t
 {
     arti_none,
     arti_invulnerability,
@@ -469,9 +469,9 @@ typedef enum
     arti_puzzgear3,
     arti_puzzgear4,
     NUMARTIFACTS
-} artitype_t;
+};
 
-typedef enum
+enum powertype_t
 {
     pw_None,
     pw_invulnerability,
@@ -483,7 +483,7 @@ typedef enum
     pw_speed,
     pw_minotaur,
     NUMPOWERS
-} powertype_t;
+};
 
 #define	INVULNTICS (30*35)
 #define	INVISTICS (60*35)
@@ -958,7 +958,7 @@ enum
     SEQ_NUMSEQ
 };
 
-typedef enum
+enum seqtype_t
 {
     SEQTYPE_STONE,
     SEQTYPE_HEAVY,
@@ -971,7 +971,7 @@ typedef enum
     SEQTYPE_EARTH,
     SEQTYPE_METAL2,
     SEQTYPE_NUMSEQ
-} seqtype_t;
+};
 
 void SN_InitSequenceScript();
 void SN_StartSequence(mobj_t * mobj, int sequence);

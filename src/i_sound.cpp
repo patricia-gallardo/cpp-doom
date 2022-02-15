@@ -20,7 +20,6 @@
 #include "SDL_mixer.h"
 
 #include "config.h"
-#include "doomtype.hpp"
 
 #include "gusconf.hpp"
 #include "i_sound.hpp"

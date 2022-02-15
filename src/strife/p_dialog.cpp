@@ -58,7 +58,7 @@
     ptr += 4;
 
 #define DIALOG_STR(field, ptr, len) \
-    memcpy(field, ptr, len);        \
+    std::memcpy(field, ptr, len);        \
     ptr += len;
 
 //
@@ -622,7 +622,7 @@ bool P_GiveInventoryItem(player_t *player, int sprnum, mobjtype_t type)
     // repaint the status bar due to inventory changing
     player->st_update = true;
 
-    while(1)
+    while (true)
     {
         // inventory is full
         if(curinv > player->numinventory)
@@ -1311,7 +1311,7 @@ void P_DialogStart(player_t *player)
     jumptoconv = linetarget->miscdata;
 
     // check item requirements
-    while(1)
+    while (true)
     {
         int i = 0;
         currentdialog = P_DialogFind(linetarget->type, jumptoconv);

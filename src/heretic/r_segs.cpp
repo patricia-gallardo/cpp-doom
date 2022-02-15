@@ -347,7 +347,7 @@ void R_StoreWallRange(int start, int stop)
 
 	numdrawsegs = numdrawsegs ? 2 * numdrawsegs : MAXDRAWSEGS;
 	drawsegs = static_cast<drawseg_t *>(I_Realloc(drawsegs, numdrawsegs * sizeof(*drawsegs)));
-	memset(drawsegs + numdrawsegs_old, 0, (numdrawsegs - numdrawsegs_old) * sizeof(*drawsegs));
+	std::memset(drawsegs + numdrawsegs_old, 0, (numdrawsegs - numdrawsegs_old) * sizeof(*drawsegs));
 
 	ds_p = drawsegs + numdrawsegs_old;
 
@@ -652,14 +652,14 @@ void R_StoreWallRange(int start, int stop)
 //
     if (((ds_p->silhouette & SIL_TOP) || maskedtexture) && !ds_p->sprtopclip)
     {
-        memcpy(lastopening, ceilingclip + start, sizeof(lastopening) * (rw_stopx - start)); // [crispy] 32-bit integer math
+        std::memcpy(lastopening, ceilingclip + start, sizeof(lastopening) * (rw_stopx - start)); // [crispy] 32-bit integer math
         ds_p->sprtopclip = lastopening - start;
         lastopening += rw_stopx - start;
     }
     if (((ds_p->silhouette & SIL_BOTTOM) || maskedtexture)
         && !ds_p->sprbottomclip)
     {
-        memcpy(lastopening, floorclip + start, sizeof(lastopening) * (rw_stopx - start)); // [crispy] 32-bit integer math
+        std::memcpy(lastopening, floorclip + start, sizeof(lastopening) * (rw_stopx - start)); // [crispy] 32-bit integer math
         ds_p->sprbottomclip = lastopening - start;
         lastopening += rw_stopx - start;
     }

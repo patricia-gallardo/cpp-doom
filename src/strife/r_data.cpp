@@ -206,7 +206,7 @@ R_DrawColumnInCache
 	    count = cacheheight - position;
 
 	if (count > 0)
-	    memcpy (cache + position, source, static_cast<size_t>(count));
+	    std::memcpy (cache + position, source, static_cast<size_t>(count));
 		
 	patch = reinterpret_cast<column_t *>(  reinterpret_cast<uint8_t *>(patch) + patch->length + 4);
     }
@@ -315,7 +315,7 @@ void R_GenerateLookup (int texnum)
     // Fill in the lump / offset, so columns
     //  with only a single patch are all done.
     patchcount = zmalloc<uint8_t *>(static_cast<size_t>(texture->width), PU_STATIC, &patchcount);
-    memset (patchcount, 0, static_cast<size_t>(texture->width));
+    std::memset (patchcount, 0, static_cast<size_t>(texture->width));
     patch = texture->patches;
 
     for (i=0 , patch = texture->patches;
@@ -406,7 +406,7 @@ static void GenerateTextureHashTable()
     textures_hashtable 
             = zmalloc<texture_t **>(sizeof(texture_t *) * static_cast<unsigned long>(numtextures), PU_STATIC, 0);
 
-    memset(textures_hashtable, 0, sizeof(texture_t *) * static_cast<unsigned long>(numtextures));
+    std::memset(textures_hashtable, 0, sizeof(texture_t *) * static_cast<unsigned long>(numtextures));
 
     // Add all textures to hash table
 
@@ -579,7 +579,7 @@ void R_InitTextures ()
         texture->height = SHORT(mtexture->height);
         texture->patchcount = SHORT(mtexture->patchcount);
 
-        memcpy (texture->name, mtexture->name, sizeof(texture->name));
+        std::memcpy (texture->name, mtexture->name, sizeof(texture->name));
         mpatch = &mtexture->patches[0];
         patch = &texture->patches[0];
 
@@ -751,7 +751,7 @@ int R_FlatNumForName(const char *name)
     if (i == -1)
     {
 	namet[8] = 0;
-	memcpy (namet, name,8);
+	std::memcpy (namet, name,8);
 	I_Error ("R_FlatNumForName: %s not found",namet);
     }
     return i - firstflat;
@@ -839,7 +839,7 @@ void R_SoundNumForDoor(vldoor_t* door)
             continue;
 
         texture = textures[sides[line->sidenum[0]].toptexture];
-        memcpy(name, texture->name, 8);
+        std::memcpy(name, texture->name, 8);
 
         if(strncmp(name, "DOR", 3))
             continue;
@@ -923,7 +923,7 @@ void R_PrecacheLevel ()
     
     // Precache flats.
     flatpresent = zmalloc<char *>(static_cast<size_t>(numflats), PU_STATIC, nullptr);
-    memset (flatpresent,0, static_cast<size_t>(numflats));
+    std::memset (flatpresent,0, static_cast<size_t>(numflats));
 
     for (i=0 ; i<numsectors ; i++)
     {
@@ -947,7 +947,7 @@ void R_PrecacheLevel ()
     
     // Precache textures.
     texturepresent = zmalloc<char *>(static_cast<size_t>(numtextures), PU_STATIC, nullptr);
-    memset (texturepresent,0, static_cast<size_t>(numtextures));
+    std::memset (texturepresent,0, static_cast<size_t>(numtextures));
 	
     for (i=0 ; i<numsides ; i++)
     {
@@ -984,7 +984,7 @@ void R_PrecacheLevel ()
     
     // Precache sprites.
     spritepresent = zmalloc<char *>(static_cast<size_t>(numsprites), PU_STATIC, nullptr);
-    memset (spritepresent,0, static_cast<size_t>(numsprites));
+    std::memset (spritepresent,0, static_cast<size_t>(numsprites));
     action_hook needle = P_MobjThinker;
     for (th = thinkercap.next ; th != &thinkercap ; th=th->next)
     {

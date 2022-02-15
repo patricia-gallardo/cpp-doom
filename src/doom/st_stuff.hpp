@@ -24,14 +24,14 @@
 #include "doomtype.hpp"
 #include "d_event.hpp"
 #include "m_cheat.hpp"
+#include "i_video.hpp"
 
 // Size of statusbar.
 // Now sensitive for scaling.
-#define ST_HEIGHT 32
-#define ST_WIDTH  ORIGWIDTH
-#define ST_Y      (ORIGHEIGHT - ST_HEIGHT)
-
-#define CRISPY_HUD 12
+constexpr auto ST_HEIGHT  = 32;
+constexpr auto ST_WIDTH   = ORIGWIDTH;
+constexpr auto ST_Y       = (ORIGHEIGHT - ST_HEIGHT);
+constexpr auto CRISPY_HUD = 12;
 
 // [crispy] Demo Timer widget
 extern void ST_DrawDemoTimer(const int time);
@@ -61,22 +61,20 @@ extern void ST_refreshBackground(bool force);
 
 
 // States for status bar code.
-typedef enum
+enum st_stateenum_t
 {
     AutomapState,
     FirstPersonState
-
-} st_stateenum_t;
+};
 
 
 // States for the chat code.
-typedef enum
+enum st_chatstateenum_t
 {
     StartChatState,
-    WaitDestState,
-    GetChatState
-
-} st_chatstateenum_t;
+    WaitDestState [[maybe_unused]],
+    GetChatState [[maybe_unused]]
+};
 
 
 extern pixel_t *  st_backing_screen;

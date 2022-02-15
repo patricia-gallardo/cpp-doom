@@ -24,7 +24,7 @@
 // Needed for action function pointer handling.
 #include "d_think.hpp"
 
-typedef enum
+enum spritenum_t
 {
     SPR_TROO,
     SPR_SHTG,
@@ -276,9 +276,9 @@ typedef enum
     SPR_SP99,
     NUMSPRITES
 
-} spritenum_t;
+};
 
-typedef enum
+enum statenum_t
 {
     S_NULL,
     S_LIGHTDONE,
@@ -1320,7 +1320,7 @@ typedef enum
     // [BH] extra dehacked states
     EXTRASTATES = 1089,
     NUMSTATES   = 4000
-} statenum_t;
+};
 
 
 typedef struct
@@ -1338,7 +1338,7 @@ typedef struct
 extern state_t     states[NUMSTATES];
 extern const char *sprnames[];
 
-typedef enum
+enum mobjtype_t
 {
     MT_PLAYER,
     MT_POSSESSED,
@@ -1590,7 +1590,7 @@ typedef enum
     MT_EXTRA99,
     NUMMOBJTYPES
 
-} mobjtype_t;
+};
 
 struct mobjinfo_t
 {

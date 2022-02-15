@@ -18,7 +18,6 @@
 #include <cstdio>
 #include <cstdlib>
 
-#include "doomtype.hpp"
 #include "deh_defs.hpp"
 #include "deh_main.hpp"
 #include "deh_mapping.hpp"
@@ -84,7 +83,7 @@ static void DEH_SoundParseLine(deh_context_t *context, char *line, void *tag)
 
     // all values are integers
 
-    ivalue = atoi(value);
+    ivalue = std::atoi(value);
 
     // Set the field value
 

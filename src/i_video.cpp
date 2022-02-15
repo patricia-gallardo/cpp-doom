@@ -16,6 +16,7 @@
 //	DOOM graphics stuff for SDL.
 //
 
+#include <cstring>
 
 #include "SDL.h"
 #include "SDL_opengl.h"
@@ -47,7 +48,6 @@
 #include "tables.hpp"
 #include "v_diskicon.hpp"
 #include "v_video.hpp"
-#include "w_wad.hpp"
 #include "z_zone.hpp"
 
 int SCREENWIDTH, SCREENHEIGHT, SCREENHEIGHT_4_3;
@@ -885,7 +885,7 @@ void I_FinishUpdate()
 //
 void I_ReadScreen(pixel_t *scr)
 {
-    memcpy(scr, I_VideoBuffer, static_cast<unsigned long>(SCREENWIDTH * SCREENHEIGHT) * sizeof(*scr));
+    std::memcpy(scr, I_VideoBuffer, static_cast<unsigned long>(SCREENWIDTH * SCREENHEIGHT) * sizeof(*scr));
 }
 
 
@@ -1127,7 +1127,7 @@ void I_GraphicsCheckCommandLine()
 
     if (i > 0)
     {
-        window_width = atoi(myargv[i + 1]);
+        window_width = std::atoi(myargv[i + 1]);
         fullscreen   = false;
     }
 
@@ -1142,7 +1142,7 @@ void I_GraphicsCheckCommandLine()
 
     if (i > 0)
     {
-        window_height = atoi(myargv[i + 1]);
+        window_height = std::atoi(myargv[i + 1]);
         fullscreen    = false;
     }
 
@@ -1666,7 +1666,7 @@ void I_InitGraphics()
 
     // Clear the screen to black.
 
-    memset(I_VideoBuffer, 0, static_cast<unsigned long>(SCREENWIDTH * SCREENHEIGHT) * sizeof(*I_VideoBuffer));
+    std::memset(I_VideoBuffer, 0, static_cast<unsigned long>(SCREENWIDTH * SCREENHEIGHT) * sizeof(*I_VideoBuffer));
 
     // clear out any events waiting at the start and center the mouse
 

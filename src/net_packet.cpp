@@ -49,7 +49,7 @@ net_packet_t *NET_NewPacket(int initial_size)
 net_packet_t *NET_PacketDup(net_packet_t *packet)
 {
     net_packet_t *newpacket = NET_NewPacket(static_cast<int>(packet->len));
-    memcpy(newpacket->data, packet->data, packet->len);
+    std::memcpy(newpacket->data, packet->data, packet->len);
     newpacket->len = packet->len;
 
     return newpacket;
@@ -84,12 +84,10 @@ bool NET_ReadInt8(net_packet_t *packet, unsigned int *data)
 
 bool NET_ReadInt16(net_packet_t *packet, unsigned int *data)
 {
-    uint8_t *p;
-
     if (packet->pos + 2 > packet->len)
         return false;
 
-    p = packet->data + packet->pos;
+    uint8_t *p = packet->data + packet->pos;
 
     *data = static_cast<unsigned int>((p[0] << 8) | p[1]);
     packet->pos += 2;
@@ -102,12 +100,10 @@ bool NET_ReadInt16(net_packet_t *packet, unsigned int *data)
 
 bool NET_ReadInt32(net_packet_t *packet, unsigned int *data)
 {
-    uint8_t *p;
-
     if (packet->pos + 4 > packet->len)
         return false;
 
-    p = packet->data + packet->pos;
+    uint8_t *p = packet->data + packet->pos;
 
     *data = static_cast<unsigned int>((p[0] << 24) | (p[1] << 16) | (p[2] << 8) | p[3]);
     packet->pos += 4;
@@ -151,7 +147,7 @@ bool NET_ReadSInt16(net_packet_t *packet, signed int *data)
     }
 }
 
-bool NET_ReadSInt32(net_packet_t *packet, signed int *data)
+[[maybe_unused]] bool NET_ReadSInt32(net_packet_t *packet, signed int *data)
 {
     if (NET_ReadInt32(packet, reinterpret_cast<unsigned int *>(data)))
     {
@@ -203,17 +199,15 @@ char *NET_ReadString(net_packet_t *packet)
 // Note that this may modify the original packet contents.
 char *NET_ReadSafeString(net_packet_t *packet)
 {
-    char *r, *w, *result;
-
-    result = NET_ReadString(packet);
+    char *result = NET_ReadString(packet);
     if (result == nullptr)
     {
         return nullptr;
     }
 
     // w is always <= r, so we never produce a longer string than the original.
-    w = result;
-    for (r = result; *r != '\0'; ++r)
+    char *w = result;
+    for (char *r = result; *r != '\0'; ++r)
     {
         // TODO: This is a very naive way of producing a safe string; only
         // ASCII characters are allowed. Probably this should really support
@@ -239,7 +233,7 @@ static void NET_IncreasePacket(net_packet_t *packet)
 
     auto *newdata = zmalloc<uint8_t *>(packet->alloced, PU_STATIC, 0);
 
-    memcpy(newdata, packet->data, packet->len);
+    std::memcpy(newdata, packet->data, packet->len);
 
     Z_Free(packet->data);
     packet->data = newdata;
@@ -262,12 +256,10 @@ void NET_WriteInt8(net_packet_t *packet, unsigned int i)
 
 void NET_WriteInt16(net_packet_t *packet, unsigned int i)
 {
-    uint8_t *p;
-
     if (packet->len + 2 > packet->alloced)
         NET_IncreasePacket(packet);
 
-    p = packet->data + packet->len;
+    uint8_t *p = packet->data + packet->len;
 
     p[0] = (i >> 8) & 0xff;
     p[1] = i & 0xff;
@@ -280,12 +272,10 @@ void NET_WriteInt16(net_packet_t *packet, unsigned int i)
 
 void NET_WriteInt32(net_packet_t *packet, unsigned int i)
 {
-    uint8_t *p;
-
     if (packet->len + 4 > packet->alloced)
         NET_IncreasePacket(packet);
 
-    p = packet->data + packet->len;
+    uint8_t *p = packet->data + packet->len;
 
     p[0] = static_cast<uint8_t>((i >> 24) & 0xff);
     p[1] = (i >> 16) & 0xff;

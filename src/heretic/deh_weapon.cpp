@@ -85,7 +85,7 @@ static void DEH_WeaponParseLine(deh_context_t *context, char *line, void *tag)
         return;
     }
 
-    ivalue = atoi(value);
+    ivalue = std::atoi(value);
 
     // If this is a frame field, we need to map from Heretic 1.0 frame
     // numbers to Heretic 1.3 frame numbers.

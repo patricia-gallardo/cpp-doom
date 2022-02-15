@@ -25,8 +25,8 @@
 
 // Screen width and height.
 
-#define ORIGWIDTH  320 // [crispy]
-#define ORIGHEIGHT 200 // [crispy]
+constexpr auto ORIGWIDTH  = 320; // [crispy]
+constexpr auto ORIGHEIGHT = 200; // [crispy]
 
 #define MAXWIDTH  (ORIGWIDTH << 2)  // [crispy]
 #define MAXHEIGHT (ORIGHEIGHT << 1) // [crispy]
@@ -44,7 +44,7 @@ void       I_GetScreenDimensions(); // [crispy] re-calculate DELTAWIDTH
 
 extern int SCREENHEIGHT_4_3;
 
-typedef bool (*grabmouse_callback_t)();
+using grabmouse_callback_t = bool (*)();
 
 // Called by D_DoomMain,
 // determines the hardware configuration

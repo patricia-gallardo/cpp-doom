@@ -198,7 +198,7 @@ void R_ClearPlanes()
     lastopening  = openings;
 
     // texture calculation
-    memset(cachedheight, 0, sizeof(cachedheight));
+    std::memset(cachedheight, 0, sizeof(cachedheight));
 
     // left to right mapping
     angle = (viewangle - ANG90) >> ANGLETOFINESHIFT;
@@ -219,7 +219,7 @@ static void R_RaiseVisplanes(visplane_t **vp)
 
         numvisplanes = numvisplanes ? 2 * numvisplanes : MAXVISPLANES;
         visplanes    = static_cast<decltype(visplanes)>(I_Realloc(visplanes, static_cast<unsigned long>(numvisplanes) * sizeof(*visplanes)));
-        memset(visplanes + numvisplanes_old, 0, (static_cast<unsigned long>(numvisplanes - numvisplanes_old)) * sizeof(*visplanes));
+        std::memset(visplanes + numvisplanes_old, 0, (static_cast<unsigned long>(numvisplanes - numvisplanes_old)) * sizeof(*visplanes));
 
         lastvisplane = visplanes + numvisplanes_old;
         floorplane   = visplanes + (floorplane - visplanes_old);
@@ -277,7 +277,7 @@ visplane_t *
     check->minx       = SCREENWIDTH;
     check->maxx       = -1;
 
-    memset(check->top, 0xff, sizeof(check->top));
+    std::memset(check->top, 0xff, sizeof(check->top));
 
     return check;
 }
@@ -350,7 +350,7 @@ visplane_t *
     pl->minx = start;
     pl->maxx = stop;
 
-    memset(pl->top, 0xff, sizeof(pl->top));
+    std::memset(pl->top, 0xff, sizeof(pl->top));
 
     return pl;
 }

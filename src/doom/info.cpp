@@ -18,9 +18,6 @@
 //	This one is the original DOOM version, preserved.
 //
 
-#include <cstdio>
-#include <cstdlib>
-
 // Data.
 #include "sounds.hpp"
 #include "m_fixed.hpp"

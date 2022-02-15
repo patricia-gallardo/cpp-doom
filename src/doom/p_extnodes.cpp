@@ -243,7 +243,7 @@ void P_LoadNodes_ZDBSP(int lump, bool compressed)
 
         // initialize stream state for decompression
         zstream = malloc(sizeof(*zstream));
-        memset(zstream, 0, sizeof(*zstream));
+        std::memset(zstream, 0, sizeof(*zstream));
         zstream->next_in   = data + 4;
         zstream->avail_in  = len - 4;
         zstream->next_out  = output;
@@ -301,8 +301,8 @@ void P_LoadNodes_ZDBSP(int lump, bool compressed)
     else
     {
         newvertarray = zmalloc<decltype(newvertarray)>((orgVerts + newVerts) * sizeof(vertex_t), PU_LEVEL, 0);
-        memcpy(newvertarray, vertexes, orgVerts * sizeof(vertex_t));
-        memset(newvertarray + orgVerts, 0, newVerts * sizeof(vertex_t));
+        std::memcpy(newvertarray, vertexes, orgVerts * sizeof(vertex_t));
+        std::memset(newvertarray + orgVerts, 0, newVerts * sizeof(vertex_t));
     }
 
     for (unsigned int i = 0; i < newVerts; i++)
@@ -494,7 +494,7 @@ void P_LoadLineDefs_Hexen(int lump)
 {
     numlines = static_cast<int>(W_LumpLength(lump) / sizeof(maplinedef_hexen_t));
     lines    = zmalloc<decltype(lines)>(static_cast<unsigned long>(numlines) * sizeof(line_t), PU_LEVEL, 0);
-    memset(lines, 0, static_cast<unsigned long>(numlines) * sizeof(line_t));
+    std::memset(lines, 0, static_cast<unsigned long>(numlines) * sizeof(line_t));
     auto *data = cache_lump_num<uint8_t *>(lump, PU_STATIC);
 
     maplinedef_hexen_t *mld  = reinterpret_cast<maplinedef_hexen_t *>(data);
