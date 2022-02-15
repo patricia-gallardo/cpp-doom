@@ -26,22 +26,27 @@ jobs:
               CC: clang-12
               CXX: clang++-12
             cmake_platform_option: ""
+            cache_name: "ubuntu-clang"
           - name: Ubuntu 20.04 GCC
             os: ubuntu-20.04
             cmake_env: {}
             cmake_platform_option: ""
+            cache_name: "ubuntu-gcc"
           - name: 64 Windows 2022
             os: windows-2022
             cmake_env: {}
             cmake_platform_option: "-A x64"
+            cache_name: "win64"
           - name: MacOS 11
             os: macos-11
             cmake_env: {}
             cmake_platform_option: ""
+            cache_name: "macos"
           - name: 32 Windows 2022
             os: windows-2022
             cmake_env: {}
             cmake_platform_option: "-A Win32"
+            cache_name: "win32"
         cmake-build-type: [Release]
         cmake-build-target: [opl, pcsound, crispy-doom, crispy-heretic, crispy-hexen, crispy-server, crispy-setup, crispy-strife, midiread, mus2mid, doom, heretic, hexen, setup, strife, textscreen]
 
@@ -61,7 +66,7 @@ jobs:
         path: |
           ${{runner.workspace}}/build/vcpkg_installed
           ${{runner.workspace}}/build/_deps
-        key: ${{ matrix.configurations.os }}-${{ matrix.cmake-build-type }}-${{ hashFiles('vcpkg.json') }}-${{ hashFiles('cmake/vcpkg.cmake') }}
+        key: ${{ matrix.configurations.os }}-${{ matrix.configurations.cache_name }}-${{ matrix.cmake-build-type }}-${{ hashFiles('vcpkg.json') }}-${{ hashFiles('cmake/vcpkg.cmake') }}
 
 #    - name: Fix Path on Ubuntu
 #      if: matrix.configurations.os == 'ubuntu-20.04'
