@@ -2525,8 +2525,9 @@ static void M_DrawOPLDev()
 //
 void M_Drawer()
 {
-    //    static short x;
-    //    static short y;
+    static short x = 0;
+    static short y = 0;
+
     char string[80];
     inhelpscreens = false;
 
@@ -2536,8 +2537,8 @@ void M_Drawer()
         // [crispy] draw a background for important questions
         if (messageToPrint == 2) { M_DrawCrispnessBackground(); }
 
-        size_t       start = 0;
-        static short y     = static_cast<short>(ORIGHEIGHT / 2 - M_StringHeight(messageString) / 2);
+        size_t start = 0;
+        y = static_cast<short>(ORIGHEIGHT / 2 - M_StringHeight(messageString) / 2);
         while (messageString[start] != '\0')
         {
             bool foundnewline = false;
@@ -2561,7 +2562,7 @@ void M_Drawer()
                 start += strlen(string);
             }
 
-            static short x = static_cast<short>(ORIGWIDTH / 2 - M_StringWidth(string) / 2);
+            x = static_cast<short>(ORIGWIDTH / 2 - M_StringWidth(string) / 2);
             M_WriteText(x > 0 ? x : 0, y, string); // [crispy] prevent negative x-coords
             y = static_cast<short>(y + SHORT(hu_font[0]->height));
         }
@@ -2576,9 +2577,9 @@ void M_Drawer()
     if (currentMenu->routine) currentMenu->routine(); // call Draw routine
 
     // DRAW MENU
-    static short x   = currentMenu->x;
-    static short y   = currentMenu->y;
-    auto         max = static_cast<unsigned int>(currentMenu->numitems);
+    x = currentMenu->x;
+    y = currentMenu->y;
+    auto max = static_cast<unsigned int>(currentMenu->numitems);
 
     for (size_t i = 0; i < max; i++)
     {
