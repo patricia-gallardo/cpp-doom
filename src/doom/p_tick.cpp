@@ -108,6 +108,11 @@ void P_RunThinkers()
                 const auto & callback = std::get<mobj_param_action>(currentthinker->function);
                 callback(reinterpret_cast<mobj_t *>(currentthinker));
             }
+            else if (currentthinker->function.index() == vldoor_param_action_hook)
+            {
+                const auto &callback = std::get<vldoor_param_action>(currentthinker->function);
+                callback(reinterpret_cast<vldoor_t *>(currentthinker));
+            }
             nextthinker = currentthinker->next;
         }
         currentthinker = nextthinker;
