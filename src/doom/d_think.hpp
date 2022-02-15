@@ -23,18 +23,5 @@
 #define __D_THINK__
 
 #include "action_hook.hpp"
-// Historically, "think_t" is yet another
-//  function pointer to a routine to handle
-//  an actor.
-using actionf_t = action_hook;
-using think_t   = actionf_t;
-
-// Doubly linked list of actors.
-typedef struct thinker_s {
-    struct thinker_s *prev{};
-    struct thinker_s *next{};
-    think_t           function{};
-} thinker_t;
-
 
 #endif

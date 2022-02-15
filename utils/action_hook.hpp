@@ -91,7 +91,7 @@ using floorWaggle_param_action = void (*)(floorWaggle_t *);
 using lightflash_param_action  = void (*)(lightflash_t *);
 using strobe_param_action      = void (*)(strobe_t *);
 using glow_param_action        = void (*)(glow_t *);
-using fireflicker_param_action = void (*)(fireflicker_t *flick);
+using fireflicker_param_action = void (*)(fireflicker_t *);
 using mobj_player_psp_param_action = void (*)(mobj_t *, player_t *, pspdef_t *);
 using slidedoor_param_action       = void (*)(slidedoor_t *);
 using action_hook              = std::variant<
@@ -136,6 +136,51 @@ constexpr int thinker_param_action_hook = alternative_index_v<thinker_param_acti
 
 static_assert(alternative_index_v<mobj_player_psp_param_action, action_hook> == 23);
 constexpr int mobj_player_psp_param_action_hook = alternative_index_v<mobj_player_psp_param_action, action_hook>;
+
+// Historically, "think_t" is yet another
+//  function pointer to a routine to handle
+//  an actor.
+using actionf_t = action_hook;
+typedef actionf_t think_t;
+
+// Doubly linked list of actors.
+typedef struct thinker_s {
+    struct thinker_s *prev {};
+    struct thinker_s *next {};
+    think_t           function {};
+} thinker_t;
+
+constexpr void call_thinker(thinker_t *thinker)
+{
+    std::visit(
+        overloaded {
+            [&](const zero_param_action &callback) { callback(); },
+            [&](const mobj_param_action &callback) { callback(reinterpret_cast<mobj_t *>(thinker)); },
+            [&](const player_psp_param_action &callback) { callback(reinterpret_cast<player_t *>(thinker), reinterpret_cast<pspdef_t *>(thinker)); },
+            [&](const thinker_param_action &callback) { callback(thinker); },
+            [&](const floormove_param_action &callback) { callback(reinterpret_cast<floormove_t *>(thinker)); },
+            [&](const polyevent_param_action &callback) { callback(reinterpret_cast<polyevent_t *>(thinker)); },
+            [&](const plat_param_action &callback) { callback(reinterpret_cast<plat_t *>(thinker)); },
+            [&](const ceiling_param_action &callback) { callback(reinterpret_cast<ceiling_t *>(thinker)); },
+            [&](const light_param_action &callback) { callback(reinterpret_cast<light_t *>(thinker)); },
+            [&](const ssthinker_param_action &callback) { callback(reinterpret_cast<ssthinker_t *>(thinker)); },
+            [&](const vldoor_param_action &callback) { callback(reinterpret_cast<vldoor_t *>(thinker)); },
+            [&](const phase_param_action &callback) { callback(reinterpret_cast<phase_t *>(thinker)); },
+            [&](const acs_param_action &callback) { callback(reinterpret_cast<acs_t *>(thinker)); },
+            [&](const pillar_param_action &callback) { callback(reinterpret_cast<pillar_t *>(thinker)); },
+            [&](const polydoor_param_action &callback) { callback(reinterpret_cast<polydoor_t *>(thinker)); },
+            [&](const floorWaggle_param_action &callback) { callback(reinterpret_cast<floorWaggle_t *>(thinker)); },
+            [&](const lightflash_param_action &callback) { callback(reinterpret_cast<lightflash_t *>(thinker)); },
+            [&](const strobe_param_action &callback) { callback(reinterpret_cast<strobe_t *>(thinker)); },
+            [&](const glow_param_action &callback) { callback(reinterpret_cast<glow_t *>(thinker)); },
+            [&](const fireflicker_param_action &callback) { callback(reinterpret_cast<fireflicker_t *>(thinker)); },
+            [&](const slidedoor_param_action &callback) { callback(reinterpret_cast<slidedoor_t *>(thinker)); },
+            [&](const mobj_player_psp_param_action &callback) {callback(reinterpret_cast<mobj_t *>(thinker), reinterpret_cast<player_t *>(thinker), reinterpret_cast<pspdef_t *>(thinker)); },
+            [&](const auto &) { return; } 
+        },
+        thinker->function
+    );
+}
 
 constexpr bool is_valid(const action_hook &hook)
 {

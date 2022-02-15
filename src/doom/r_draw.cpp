@@ -117,6 +117,10 @@ void R_DrawColumn()
     if (count < 0)
         return;
 
+    // todo waage - dc_yl is overflowing after being cast from uint_max to int, but this seems to only happen once
+    if (dc_yl < 0)
+        return;
+
 #ifdef RANGECHECK
     if (dc_x >= SCREENWIDTH
         || dc_yl < 0

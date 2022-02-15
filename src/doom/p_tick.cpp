@@ -103,11 +103,7 @@ void P_RunThinkers()
         }
         else
         {
-            if (currentthinker->function.index() == mobj_param_action_hook)
-            {
-                const auto & callback = std::get<mobj_param_action>(currentthinker->function);
-                callback(reinterpret_cast<mobj_t *>(currentthinker));
-            }
+            call_thinker(currentthinker);
             nextthinker = currentthinker->next;
         }
         currentthinker = nextthinker;

@@ -501,13 +501,13 @@ void EV_VerticalDoor(line_t *line,
 
     // new door thinker
     door = zmalloc<decltype(door)>(sizeof(*door), PU_LEVSPEC, 0);
-    P_AddThinker(&door->thinker);
     sec->specialdata            = door;
     door->thinker.function      = T_VerticalDoor;
     door->sector                = sec;
     door->direction             = 1;
     door->speed                 = VDOORSPEED;
     door->topwait               = VDOORWAIT;
+    P_AddThinker(&door->thinker);
 
     switch (line->special)
     {
