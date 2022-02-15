@@ -25,15 +25,23 @@ jobs:
             cmake_env:
               CC: clang-12
               CXX: clang++-12
+            cmake_platform_option: ""
           - name: Ubuntu 20.04 GCC
             os: ubuntu-20.04
             cmake_env: {}
-          - name: Windows 2022
+            cmake_platform_option: ""
+          - name: 64 Windows 2022
             os: windows-2022
             cmake_env: {}
+            cmake_platform_option: "-A x64"
           - name: MacOS 11
             os: macos-11
             cmake_env: {}
+            cmake_platform_option: ""
+          - name: 32 Windows 2022
+            os: windows-2022
+            cmake_env: {}
+            cmake_platform_option: "-A Win32"
         cmake-build-type: [Release]
         cmake-build-target: [opl, pcsound, crispy-doom, crispy-heretic, crispy-hexen, crispy-server, crispy-setup, crispy-strife, midiread, mus2mid, doom, heretic, hexen, setup, strife, textscreen]
 
@@ -73,7 +81,7 @@ jobs:
       # Use a bash shell so we can use the same syntax for environment variable
       # access regardless of the host operating system
       shell: bash
-      run: cmake $GITHUB_WORKSPACE -DCMAKE_BUILD_TYPE=${{ matrix.cmake-build-type }}
+      run: cmake $GITHUB_WORKSPACE -DCMAKE_BUILD_TYPE=${{ matrix.cmake-build-type }} ${{ matrix.cmake_platform_option }}
       env: ${{ matrix.configurations.cmake_env }}
 
     - name: Build
