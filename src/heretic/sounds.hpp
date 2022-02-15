@@ -20,74 +20,73 @@
 #define __SOUNDSH__
 
 #include "i_sound.hpp"
-#include "doomdef.hpp"
 
-constexpr auto MAX_SND_DIST = 1600;
-constexpr auto MAX_CHANNELS = 16;
+#define MAX_SND_DIST 	1600
+#define MAX_CHANNELS	16
 
 // Music identifiers
 
-enum musicenum_t
+typedef enum
 {
     mus_e1m1,
-    mus_e1m2 [[maybe_unused]],
-    mus_e1m3 [[maybe_unused]],
-    mus_e1m4 [[maybe_unused]],
+    mus_e1m2,
+    mus_e1m3,
+    mus_e1m4,
     mus_e1m5,
-    mus_e1m6 [[maybe_unused]],
-    mus_e1m7 [[maybe_unused]],
-    mus_e1m8 [[maybe_unused]],
+    mus_e1m6,
+    mus_e1m7,
+    mus_e1m8,
     mus_e1m9,
 
-    mus_e2m1 [[maybe_unused]],
-    mus_e2m2 [[maybe_unused]],
-    mus_e2m3 [[maybe_unused]],
+    mus_e2m1,
+    mus_e2m2,
+    mus_e2m3,
     mus_e2m4,
     mus_e2m5,
     mus_e2m6,
     mus_e2m7,
-    mus_e2m8 [[maybe_unused]],
-    mus_e2m9 [[maybe_unused]],
+    mus_e2m8,
+    mus_e2m9,
 
-    mus_e3m1 [[maybe_unused]],
+    mus_e3m1,
     mus_e3m2,
     mus_e3m3,
     mus_e3m4,
-    mus_e3m5 [[maybe_unused]],
-    mus_e3m6 [[maybe_unused]],
-    mus_e3m7 [[maybe_unused]],
-    mus_e3m8 [[maybe_unused]],
-    mus_e3m9 [[maybe_unused]],
+    mus_e3m5,
+    mus_e3m6,
+    mus_e3m7,
+    mus_e3m8,
+    mus_e3m9,
 
     mus_e4m1,
-    mus_e4m2 [[maybe_unused]],
-    mus_e4m3 [[maybe_unused]],
-    mus_e4m4 [[maybe_unused]],
-    mus_e4m5 [[maybe_unused]],
-    mus_e4m6 [[maybe_unused]],
-    mus_e4m7 [[maybe_unused]],
-    mus_e4m8 [[maybe_unused]],
-    mus_e4m9 [[maybe_unused]],
+    mus_e4m2,
+    mus_e4m3,
+    mus_e4m4,
+    mus_e4m5,
+    mus_e4m6,
+    mus_e4m7,
+    mus_e4m8,
+    mus_e4m9,
 
-    mus_e5m1 [[maybe_unused]],
-    mus_e5m2 [[maybe_unused]],
-    mus_e5m3 [[maybe_unused]],
-    mus_e5m4 [[maybe_unused]],
-    mus_e5m5 [[maybe_unused]],
-    mus_e5m6 [[maybe_unused]],
-    mus_e5m7 [[maybe_unused]],
-    mus_e5m8 [[maybe_unused]],
+    mus_e5m1,
+    mus_e5m2,
+    mus_e5m3,
+    mus_e5m4,
+    mus_e5m5,
+    mus_e5m6,
+    mus_e5m7,
+    mus_e5m8,
     mus_e5m9,
 
-    mus_e6m1 [[maybe_unused]],
-    mus_e6m2 [[maybe_unused]],
-    mus_e6m3 [[maybe_unused]],
+    mus_e6m1,
+    mus_e6m2,
+    mus_e6m3,
 
     mus_titl,
     mus_intr,
     mus_cptd,
     NUMMUSIC
-};
+} musicenum_t;
 
 #if 0
 typedef struct
@@ -108,32 +107,35 @@ typedef struct sfxinfo_s
 
 #endif
 
-struct channel_t {
-    mobj_t *mo       = nullptr;
-    int     sound_id = 0;
-    int     handle   = 0;
-    int     pitch    = 0;
-    int     priority = 0;
-};
+typedef struct
+{
+    mobj_t *mo;
+    int sound_id;
+    int handle;
+    int pitch;
+    int priority;
+} channel_t;
 
-struct ChanInfo_t {
-    int            id       = 0;
-    unsigned short priority = 0;
-    char          *name     = nullptr;
-    mobj_t        *mo       = nullptr;
-    int            distance = 0;
-};
+typedef struct
+{
+    int id;
+    unsigned short priority;
+    char *name;
+    mobj_t *mo;
+    int distance;
+} ChanInfo_t;
 
-struct SoundInfo_t {
-    int                  channelCount = 0;
-    int                  musicVolume  = 0;
-    [[maybe_unused]] int soundVolume  = 0;
-    ChanInfo_t           chan[8];
-};
+typedef struct
+{
+    int channelCount;
+    int musicVolume;
+    int soundVolume;
+    ChanInfo_t chan[8];
+} SoundInfo_t;
 
 // Sound identifiers
 
-enum sfxenum_t
+typedef enum
 {
     sfx_None,
     sfx_gldhit,
@@ -147,7 +149,7 @@ enum sfxenum_t
     sfx_phopow,
     sfx_lobsht,
     sfx_lobhit,
-    sfx_lobpow [[maybe_unused]],
+    sfx_lobpow,
     sfx_hrnsht,
     sfx_hrnhit,
     sfx_hrnpow,
@@ -246,8 +248,8 @@ enum sfxenum_t
     sfx_chicdth,
     sfx_chicact,
     sfx_chicpk1,
-    sfx_chicpk2 [[maybe_unused]],
-    sfx_chicpk3 [[maybe_unused]],
+    sfx_chicpk2,
+    sfx_chicpk3,
     sfx_keyup,
     sfx_ripslop,
     sfx_newpod,
@@ -281,7 +283,7 @@ enum sfxenum_t
     sfx_amb10,
     sfx_amb11,
     NUMSFX
-};
+} sfxenum_t;
 
 extern sfxinfo_t S_sfx[];
 extern musicinfo_t S_music[];

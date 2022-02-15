@@ -33,6 +33,7 @@
 
 #include <cstring>
 
+#include "i_swap.hpp"
 #include "sha1.hpp"
 
 void SHA1_Init(sha1_context_t *hd)
@@ -64,7 +65,7 @@ static void Transform(sha1_context_t *hd, uint8_t *data)
     e = hd->h4;
 
 #ifdef SYS_BIG_ENDIAN
-    std::memcpy(x, data, 64);
+    memcpy(x, data, 64);
 #else
     {
         int   i;
@@ -291,7 +292,7 @@ void SHA1_Final(sha1_digest_t digest, sha1_context_t *hd)
             hd->buf[hd->count++] = 0;
         SHA1_Update(hd, nullptr, 0); /* flush */
         ;
-        std::memset(hd->buf, 0, 56); /* fill next block with zeroes */
+        memset(hd->buf, 0, 56); /* fill next block with zeroes */
     }
     /* append the 64 bit count */
     hd->buf[56] = static_cast<uint8_t>(msb >> 24);
@@ -320,7 +321,7 @@ void SHA1_Final(sha1_digest_t digest, sha1_context_t *hd)
     p = write_uint32_little_endian(hd->h4, p);
 #endif
 
-    std::memcpy(digest, hd->buf, sizeof(sha1_digest_t));
+    memcpy(digest, hd->buf, sizeof(sha1_digest_t));
 }
 
 void SHA1_UpdateInt32(sha1_context_t *context, unsigned int val)

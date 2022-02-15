@@ -45,7 +45,7 @@
 //
 // Player states.
 //
-enum playerstate_t
+typedef enum
 {
     // Playing or camping.
     PST_LIVE,
@@ -54,13 +54,13 @@ enum playerstate_t
     // Ready to restart/respawn???
     PST_REBORN		
 
-};
+} playerstate_t;
 
 
 //
 // Player internal flags, for cheats and debug.
 //
-enum cheat_t
+typedef enum
 {
     // No clipping, walk through barriers.
     CF_NOCLIP		= 1,
@@ -75,7 +75,7 @@ enum cheat_t
     // auto-use medkits
     CF_AUTOHEALTH       = 16
 
-};
+} cheat_t;
 
 // haleyjd 08/30/10: [STRIFE]
 // Player Inventory Item Structure

@@ -16,8 +16,14 @@
 //	WAD I/O functions.
 //
 
+#include <array>
+#include <cstdio>
+
 #include "config.h"
+
+#include "doomtype.hpp"
 #include "m_argv.hpp"
+
 #include "w_file.hpp"
 
 extern wad_file_class_t stdc_wad_file;

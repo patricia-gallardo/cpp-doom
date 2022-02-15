@@ -19,7 +19,7 @@
 #include "config.h"
 #include "IWADController.h"
 
-enum IWAD
+typedef enum
 {
     IWAD_DOOM1,
     IWAD_DOOM2,
@@ -33,7 +33,7 @@ enum IWAD
     IWAD_FREEDOOM2,
     IWAD_FREEDM,
     NUM_IWAD_TYPES
-};
+} IWAD;
 
 static NSString *IWADLabels[NUM_IWAD_TYPES] =
 {

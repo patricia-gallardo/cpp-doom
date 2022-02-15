@@ -161,7 +161,7 @@ typedef struct
 //extern intercept_t	intercepts[MAXINTERCEPTS]; // [crispy] remove INTERCEPTS limit
 extern intercept_t *intercept_p;
 
-using traverser_t = bool (*)(intercept_t *);
+typedef bool (*traverser_t)(intercept_t *in);
 
 fixed_t P_AproxDistance(fixed_t dx, fixed_t dy);
 int     P_PointOnLineSide(fixed_t x, fixed_t y, line_t *line);

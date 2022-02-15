@@ -798,7 +798,7 @@ void AM_doFollowPlayer()
 //
 //
 //
-[[maybe_unused]] void AM_updateLightLev()
+void AM_updateLightLev()
 {
     static int nexttic = 0;
     //static int litelevels[] = { 0, 3, 5, 6, 6, 7, 7, 7 };
@@ -849,7 +849,7 @@ void AM_Ticker ()
 //
 void AM_clearFB(int color)
 {
-    std::memset(fb, color, static_cast<size_t>(f_w * f_h));
+    memset(fb, color, static_cast<size_t>(f_w * f_h));
 }
 
 
@@ -1042,7 +1042,7 @@ AM_drawFline
     if (ax > ay)
     {
 	d = ay - ax/2;
-	while (true)
+	while (1)
 	{
 	    PUTDOT(x,y,static_cast<uint8_t>(color));
 	    if (x == fl->b.x) return;
@@ -1058,7 +1058,7 @@ AM_drawFline
     else
     {
 	d = ax - ay/2;
-	while (true)
+	while (1)
 	{
 	    PUTDOT(x, y, static_cast<uint8_t>(color));
 	    if (y == fl->b.y) return;

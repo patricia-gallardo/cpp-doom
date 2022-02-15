@@ -73,41 +73,41 @@ extern bool inhelpscreens; // [crispy] prevent palette changes
 
 // Palette indices.
 // For damage/bonus red-/gold-shifts
-constexpr auto STARTREDPALS   = 1;
-constexpr auto STARTBONUSPALS = 9;
-constexpr auto NUMREDPALS     = 8;
-constexpr auto NUMBONUSPALS   = 4;
+#define STARTREDPALS   1
+#define STARTBONUSPALS 9
+#define NUMREDPALS     8
+#define NUMBONUSPALS   4
 // Radiation suit, green shift.
-constexpr auto RADIATIONPAL = 13;
+#define RADIATIONPAL 13
 
 // N/256*100% probability
 //  that the normal face state will change
-[[maybe_unused]] constexpr auto ST_FACEPROBABILITY = 96;
+#define ST_FACEPROBABILITY 96
 
 // For Responder
-[[maybe_unused]] constexpr auto ST_TOGGLECHAT = KEY_ENTER;
+#define ST_TOGGLECHAT KEY_ENTER
 
 // Location of status bar
-constexpr auto ST_X  = 0;
-[[maybe_unused]] constexpr auto ST_X2 = 104;
+#define ST_X  0
+#define ST_X2 104
 
-constexpr auto ST_FX = 143;
-[[maybe_unused]] constexpr auto ST_FY = 169;
+#define ST_FX 143
+#define ST_FY 169
 
 // Should be set to patch width
 //  for tall numbers later on
 #define ST_TALLNUMWIDTH (tallnum[0]->width)
 
 // Number of status faces.
-constexpr auto ST_NUMPAINFACES     = 5;
-constexpr auto ST_NUMSTRAIGHTFACES = 3;
-constexpr auto ST_NUMTURNFACES     = 2;
-constexpr auto ST_NUMSPECIALFACES  = 3;
+#define ST_NUMPAINFACES     5
+#define ST_NUMSTRAIGHTFACES 3
+#define ST_NUMTURNFACES     2
+#define ST_NUMSPECIALFACES  3
 
 #define ST_FACESTRIDE \
     (ST_NUMSTRAIGHTFACES + ST_NUMTURNFACES + ST_NUMSPECIALFACES)
 
-constexpr auto ST_NUMEXTRAFACES =2;
+#define ST_NUMEXTRAFACES 2
 
 #define ST_NUMFACES \
     (ST_FACESTRIDE * ST_NUMPAINFACES + ST_NUMEXTRAFACES)
@@ -119,8 +119,8 @@ constexpr auto ST_NUMEXTRAFACES =2;
 #define ST_GODFACE        (ST_NUMPAINFACES * ST_FACESTRIDE)
 #define ST_DEADFACE       (ST_GODFACE + 1)
 
-constexpr auto ST_FACESX = 143;
-constexpr auto ST_FACESY = 168;
+#define ST_FACESX 143
+#define ST_FACESY 168
 
 #define ST_EVILGRINCOUNT     (2 * TICRATE)
 #define ST_STRAIGHTFACECOUNT (TICRATE / 2)
@@ -128,7 +128,7 @@ constexpr auto ST_FACESY = 168;
 #define ST_OUCHCOUNT         (1 * TICRATE)
 #define ST_RAMPAGEDELAY      (2 * TICRATE)
 
-constexpr auto ST_MUCHPAIN = 20;
+#define ST_MUCHPAIN 20
 
 
 // Location and size of statistics,
@@ -142,22 +142,22 @@ constexpr auto ST_MUCHPAIN = 20;
 #define HORIZDELTA (crispy->widescreen == 1 ? DELTAWIDTH : 0)
 
 // AMMO number pos.
-constexpr auto ST_AMMOWIDTH = 3;
-#define ST_AMMOX (44 - HORIZDELTA)
-constexpr auto ST_AMMOY = 171;
+#define ST_AMMOWIDTH 3
+#define ST_AMMOX     (44 - HORIZDELTA)
+#define ST_AMMOY     171
 
 // HEALTH number pos.
-[[maybe_unused]] constexpr auto ST_HEALTHWIDTH = 3;
-#define ST_HEALTHX (90 - HORIZDELTA)
-constexpr auto ST_HEALTHY = 171;
+#define ST_HEALTHWIDTH 3
+#define ST_HEALTHX     (90 - HORIZDELTA)
+#define ST_HEALTHY     171
 
 // Weapon pos.
-#define ST_ARMSX (111 - HORIZDELTA)
-constexpr auto ST_ARMSY = 172;
-#define ST_ARMSBGX (104 - HORIZDELTA)
-constexpr auto ST_ARMSBGY    = 168;
-constexpr auto ST_ARMSXSPACE = 12;
-constexpr auto ST_ARMSYSPACE = 10;
+#define ST_ARMSX      (111 - HORIZDELTA)
+#define ST_ARMSY      172
+#define ST_ARMSBGX    (104 - HORIZDELTA)
+#define ST_ARMSBGY    168
+#define ST_ARMSXSPACE 12
+#define ST_ARMSYSPACE 10
 
 // Frags pos.
 #define ST_FRAGSX     (138 - HORIZDELTA)
@@ -501,7 +501,7 @@ void ST_refreshBackground(bool force)
 static int ST_cheat_massacre()
 {
     int         killcount = 0;
-    thinker_t * th = nullptr;
+    thinker_t * th;
     extern int  numbraintargets;
     extern void A_PainDie(mobj_t *);
 
@@ -510,7 +510,7 @@ static int ST_cheat_massacre()
     {
         if (th->function == needle)
         {
-            auto *mo = reinterpret_cast<mobj_t *>(th);
+            mobj_t *mo = reinterpret_cast<mobj_t *>(th);
 
             if (static_cast<unsigned int>(mo->flags) & MF_COUNTKILL || mo->type == MT_SKULL)
             {
@@ -537,18 +537,18 @@ static int ST_cheat_massacre()
 // [crispy] trigger all special lines available on the map
 static int ST_cheat_spechits()
 {
-    int    speciallines = 0;
-    bool   origcards[NUMCARDS];
-    line_t dummy;
+    int     i, speciallines = 0;
+    bool origcards[NUMCARDS];
+    line_t  dummy;
 
     // [crispy] temporarily give all keys
-    for (int i = 0; i < NUMCARDS; i++)
+    for (i = 0; i < NUMCARDS; i++)
     {
         origcards[i]   = plyr->cards[i];
         plyr->cards[i] = true;
     }
 
-    for (int i = 0; i < numlines; i++)
+    for (i = 0; i < numlines; i++)
     {
         if (lines[i].special)
         {
@@ -573,7 +573,7 @@ static int ST_cheat_spechits()
         }
     }
 
-    for (int i = 0; i < NUMCARDS; i++)
+    for (i = 0; i < NUMCARDS; i++)
     {
         plyr->cards[i] = origcards[i];
     }
@@ -636,9 +636,11 @@ static bool WeaponAvailable(int w)
 // [crispy] give or take backpack
 static void GiveBackpack(bool give)
 {
+    int i;
+
     if (give && !plyr->backpack)
     {
-        for (int i = 0; i < NUMAMMO; i++)
+        for (i = 0; i < NUMAMMO; i++)
         {
             plyr->maxammo[i] *= 2;
         }
@@ -646,7 +648,7 @@ static void GiveBackpack(bool give)
     }
     else if (!give && plyr->backpack)
     {
-        for (int i = 0; i < NUMAMMO; i++)
+        for (i = 0; i < NUMAMMO; i++)
         {
             plyr->maxammo[i] /= 2;
         }
@@ -689,6 +691,7 @@ bool
                 mapthing_t mt = {};
                 if (plyr->playerstate == PST_DEAD)
                 {
+                    signed int  an;
                     extern void P_SpawnPlayer(mapthing_t * mthing);
 
                     mt.x     = static_cast<short>(plyr->mo->x >> FRACBITS);
@@ -698,7 +701,7 @@ bool
                     P_SpawnPlayer(&mt);
 
                     // [crispy] spawn a teleport fog
-                    signed int an = plyr->mo->angle >> ANGLETOFINESHIFT;
+                    an = plyr->mo->angle >> ANGLETOFINESHIFT;
                     P_SpawnMobj(plyr->mo->x + 20 * finecosine[an], plyr->mo->y + 20 * finesine[an], plyr->mo->z, MT_TFOG);
                     S_StartSound(plyr, sfx_slop);
                 }
@@ -769,7 +772,7 @@ bool
             {
 
                 char buf[3];
-                int  musnum = 0;
+                int  musnum;
 
                 plyr->message = DEH_String(STSTR_MUS);
                 cht_GetParam(&cheat_mus, buf);
@@ -873,7 +876,7 @@ bool
             // [crispy] idbehold0
             if (cht_CheckCheatSP(&cheat_powerup[7], static_cast<char>(ev->data2)))
             {
-                std::memset(plyr->powers, 0, sizeof(plyr->powers));
+                memset(plyr->powers, 0, sizeof(plyr->powers));
                 plyr->mo->flags &= ~MF_SHADOW; // [crispy] cancel invisibility
                 plyr->message = DEH_String(STSTR_BEHOLDX);
             }
@@ -936,7 +939,7 @@ bool
 
                 if (plyr->cheats & CF_NOTARGET)
                 {
-                    thinker_t *th = nullptr;
+                    thinker_t *th;
 
                     // [crispy] let mobjs forget their target and tracer
                     action_hook needle = P_MobjThinker;
@@ -944,7 +947,7 @@ bool
                     {
                         if (th->function == needle)
                         {
-                            auto *const mo = reinterpret_cast<mobj_t *>(th);
+                            mobj_t *const mo = reinterpret_cast<mobj_t *>(th);
 
                             if (mo->target && mo->target->player)
                             {
@@ -995,9 +998,10 @@ bool
             else if (cht_CheckCheatSP(&cheat_weapon, static_cast<char>(ev->data2)))
             {
                 char buf[2];
+                int  w;
 
                 cht_GetParam(&cheat_weapon, buf);
-                int w = *buf - '1';
+                w = *buf - '1';
 
                 // [crispy] TNTWEAP0 takes away all weapons and ammo except for the pistol and 50 bullets
                 if (w == -1)
@@ -1139,8 +1143,8 @@ bool
         if (!netgame && cht_CheckCheat(&cheat_clev, static_cast<char>(ev->data2)) && !menuactive) // [crispy] prevent only half the screen being updated
         {
             char buf[3];
-            int  epsd = 0;
-            int  map = 0;
+            int  epsd;
+            int  map;
 
             cht_GetParam(&cheat_clev, buf);
 
@@ -1286,10 +1290,11 @@ bool
 
 int ST_calcPainOffset()
 {
-    static int lastcalc  = 0;
+    int        health;
+    static int lastcalc;
     static int oldhealth = -1;
 
-    int health = plyr->health > 100 ? 100 : plyr->health;
+    health = plyr->health > 100 ? 100 : plyr->health;
 
     if (health != oldhealth)
     {
@@ -1310,14 +1315,19 @@ int ST_calcPainOffset()
 static int faceindex;
 void       ST_updateFaceWidget()
 {
+    int        i;
+    angle_t    badguyangle;
+    angle_t    diffang;
     static int lastattackdown = -1;
     static int priority       = 0;
+    bool    doevilgrin;
 
+    // [crispy] fix status bar face hysteresis
+    int painoffset;
     // [crispy] no evil grin or rampage face in god mode
     const bool invul = (plyr->cheats & CF_GODMODE) || plyr->powers[pw_invulnerability];
 
-    // [crispy] fix status bar face hysteresis
-    int painoffset = ST_calcPainOffset();
+    painoffset = ST_calcPainOffset();
 
     if (priority < 10)
     {
@@ -1336,9 +1346,9 @@ void       ST_updateFaceWidget()
         if (plyr->bonuscount)
         {
             // picking up bonus
-            bool doevilgrin = false;
+            doevilgrin = false;
 
-            for (int i = 0; i < NUMWEAPONS; i++)
+            for (i = 0; i < NUMWEAPONS; i++)
             {
                 if (oldweaponsowned[i] != static_cast<bool>(plyr->weaponowned[i]))
                 {
@@ -1376,13 +1386,11 @@ void       ST_updateFaceWidget()
             }
             else
             {
-                angle_t badguyangle = R_PointToAngle2(plyr->mo->x,
+                badguyangle = R_PointToAngle2(plyr->mo->x,
                     plyr->mo->y,
                     plyr->attacker->x,
                     plyr->attacker->y);
 
-                angle_t    diffang = 0;
-                int i = 0;
                 if (badguyangle > plyr->mo->angle)
                 {
                     // whether right or left
@@ -1489,6 +1497,7 @@ void       ST_updateFaceWidget()
 void ST_updateWidgets()
 {
     static int largeammo = 1994; // means "n/a"
+    int        i;
 
     // must redirect the pointer if the ready weapon has changed.
     //  if (w_ready.data != plyr->readyweapon)
@@ -1514,7 +1523,7 @@ void ST_updateWidgets()
     //  }
 
     // update keycard multiple widgets
-    for (int i = 0; i < 3; i++)
+    for (i = 0; i < 3; i++)
     {
         keyboxes[i] = plyr->cards[i] ? i : -1;
 
@@ -1564,7 +1573,7 @@ void ST_updateWidgets()
     st_fragson    = deathmatch && st_statusbaron;
     st_fragscount = 0;
 
-    for (int i = 0; i < MAXPLAYERS; i++)
+    for (i = 0; i < MAXPLAYERS; i++)
     {
         if (i != consoleplayer)
             st_fragscount += plyr->frags[i];
@@ -1590,18 +1599,25 @@ static int st_palette = 0;
 
 void ST_doPaletteStuff()
 {
-    int cnt = plyr->damagecount;
+
+    int palette;
+#ifndef CRISPY_TRUECOLOR
+    uint8_t *pal;
+#endif
+    int cnt;
+    int bzc;
+
+    cnt = plyr->damagecount;
 
     if (plyr->powers[pw_strength])
     {
         // slowly fade the berzerk out
-        int bzc = 12 - (plyr->powers[pw_strength] >> 6);
+        bzc = 12 - (plyr->powers[pw_strength] >> 6);
 
         if (bzc > cnt)
             cnt = bzc;
     }
 
-    int palette = 0;
     if (cnt)
     {
         palette = (cnt + 7) >> 3;
@@ -1653,7 +1669,7 @@ void ST_doPaletteStuff()
     {
         st_palette = palette;
 #ifndef CRISPY_TRUECOLOR
-        uint8_t *pal = cache_lump_num<uint8_t *>(lu_palette, PU_CACHE) + palette * 768;
+        pal = cache_lump_num<uint8_t *>(lu_palette, PU_CACHE) + palette * 768;
         I_SetPalette(pal);
 #else
         I_SetPalette(palette);
@@ -1763,7 +1779,11 @@ static uint8_t *ST_WidgetColor(hudcolor_t i)
 static inline void ST_DrawGibbedPlayerSprites()
 {
     state_t const *state = plyr->mo->state;
-    spritedef_t *  sprdef = &sprites[state->sprite];
+    spritedef_t *  sprdef;
+    spriteframe_t *sprframe;
+    patch_t *      patch;
+
+    sprdef = &sprites[state->sprite];
 
     // [crispy] the TNT1 sprite is not supposed to be rendered anyway
     if (!sprdef->numframes && plyr->mo->sprite == SPR_TNT1)
@@ -1771,8 +1791,8 @@ static inline void ST_DrawGibbedPlayerSprites()
         return;
     }
 
-    spriteframe_t *sprframe = &sprdef->spriteframes[state->frame & FF_FRAMEMASK];
-    patch_t       *patch    = cache_lump_num<patch_t *>(sprframe->lump[0] + firstspritelump, PU_CACHE);
+    sprframe = &sprdef->spriteframes[state->frame & FF_FRAMEMASK];
+    patch    = cache_lump_num<patch_t *>(sprframe->lump[0] + firstspritelump, PU_CACHE);
 
     unsigned int flag_check = static_cast<unsigned int>(plyr->mo->flags) & MF_TRANSLATION;
     if (flag_check)
@@ -1786,6 +1806,7 @@ static inline void ST_DrawGibbedPlayerSprites()
 
 void ST_drawWidgets(bool refresh)
 {
+    int     i;
     bool gibbed = false;
 
     // used by w_arms[] widgets
@@ -1805,6 +1826,8 @@ void ST_drawWidgets(bool refresh)
         if (plyr->readyweapon == wp_fist && plyr->powers[pw_strength])
         {
             static int lump = -1;
+            patch_t *  patch;
+
             if (lump == -1)
             {
                 lump = W_CheckNumForName(DEH_String("PSTRA0"));
@@ -1815,7 +1838,7 @@ void ST_drawWidgets(bool refresh)
                 }
             }
 
-            patch_t *patch = cache_lump_num<patch_t *>(lump, PU_CACHE);
+            patch = cache_lump_num<patch_t *>(lump, PU_CACHE);
 
             // [crispy] (23,179) is the center of the Ammo widget
             V_DrawPatch(ST_AMMOX - 21 - SHORT(patch->width) / 2 + SHORT(patch->leftoffset),
@@ -1832,7 +1855,7 @@ void ST_drawWidgets(bool refresh)
         }
     }
 
-    for (int i = 0; i < 4; i++)
+    for (i = 0; i < 4; i++)
     {
         STlib_updateNum(&w_ammo[i], refresh);
         STlib_updateNum(&w_maxammo[i], refresh);
@@ -1854,8 +1877,8 @@ void ST_drawWidgets(bool refresh)
     // [crispy] show SSG availability in the Shotgun slot of the arms widget
     st_shotguns = plyr->weaponowned[wp_shotgun] | plyr->weaponowned[wp_supershotgun];
 
-    for (auto & w_arm : w_arms)
-        STlib_updateMultIcon(&w_arm, refresh);
+    for (i = 0; i < 6; i++)
+        STlib_updateMultIcon(&w_arms[i], refresh);
 
     // [crispy] draw the actual face widget background
     if (st_crispyhud && screenblocks == CRISPY_HUD)
@@ -1865,8 +1888,8 @@ void ST_drawWidgets(bool refresh)
 
     STlib_updateMultIcon(&w_faces, refresh);
 
-    for (auto & w_keyboxe : w_keyboxes)
-        STlib_updateMultIcon(&w_keyboxe, refresh);
+    for (i = 0; i < 3; i++)
+        STlib_updateMultIcon(&w_keyboxes[i], refresh);
 
     dp_translation = ST_WidgetColor(hudcolor_t::hudcolor_frags);
     STlib_updateNum(&w_frags, refresh);
@@ -1923,17 +1946,22 @@ void ST_Drawer(bool fullscreen_param, bool refresh)
     dp_translucent = false;
 }
 
-using load_callback_t = void (*)(const char *, patch_t **);
+typedef void (*load_callback_t)(const char *lumpname, patch_t **variable);
 
 // Iterates through all graphics to be loaded or unloaded, along with
 // the variable they use, invoking the specified callback function.
 
 static void ST_loadUnloadGraphics(load_callback_t callback)
 {
+
+    int i;
+    int j;
+    int facenum;
+
     char namebuf[9];
 
     // Load the numbers, tall and short
-    for (int i = 0; i < 10; i++)
+    for (i = 0; i < 10; i++)
     {
         DEH_snprintf(namebuf, 9, "STTNUM%d", i);
         callback(namebuf, &tallnum[i]);
@@ -1948,7 +1976,7 @@ static void ST_loadUnloadGraphics(load_callback_t callback)
     callback(DEH_String("STTPRCNT"), &tallpercent);
 
     // key cards
-    for (int i = 0; i < NUMCARDS; i++)
+    for (i = 0; i < NUMCARDS; i++)
     {
         DEH_snprintf(namebuf, 9, "STKEYS%d", i);
         callback(namebuf, &keys[i]);
@@ -1958,7 +1986,7 @@ static void ST_loadUnloadGraphics(load_callback_t callback)
     callback(DEH_String("STARMS"), &armsbg);
 
     // arms ownership widgets
-    for (int i = 0; i < 6; i++)
+    for (i = 0; i < 6; i++)
     {
         DEH_snprintf(namebuf, 9, "STGNUM%d", i + 2);
 
@@ -1986,10 +2014,10 @@ static void ST_loadUnloadGraphics(load_callback_t callback)
     }
 
     // face states
-    int facenum = 0;
-    for (int i = 0; i < ST_NUMPAINFACES; i++)
+    facenum = 0;
+    for (i = 0; i < ST_NUMPAINFACES; i++)
     {
-        for (int j = 0; j < ST_NUMSTRAIGHTFACES; j++)
+        for (j = 0; j < ST_NUMSTRAIGHTFACES; j++)
         {
             DEH_snprintf(namebuf, 9, "STFST%d%d", i, j);
             callback(namebuf, &faces[facenum]);
@@ -2030,17 +2058,20 @@ void ST_loadGraphics()
 
 void ST_loadData()
 {
+    int i;
+
     lu_palette = W_GetNumForName(DEH_String("PLAYPAL"));
     ST_loadGraphics();
 
     // [crispy] support combined card and skull keys (if provided by PWAD)
     // i.e. only for display in the status bar
-    for (int i = NUMCARDS; i < NUMCARDS + 3; i++)
+    for (i = NUMCARDS; i < NUMCARDS + 3; i++)
     {
         char lumpname[9];
+        int  lumpnum;
 
         DEH_snprintf(lumpname, 9, "STKEYS%d", i);
-        int lumpnum = W_CheckNumForName(lumpname);
+        lumpnum = W_CheckNumForName(lumpname);
 
         keys[i] = static_cast<patch_t *>(
             (lumpnum != -1) ? cache_lump_num<patch_t *>(lumpnum, PU_STATIC) : keys[i - 3]);
@@ -2058,13 +2089,16 @@ void ST_unloadGraphics()
     ST_loadUnloadGraphics(ST_unloadCallback);
 }
 
-[[maybe_unused]] void ST_unloadData()
+void ST_unloadData()
 {
     ST_unloadGraphics();
 }
 
 void ST_initData()
 {
+
+    int i;
+
     st_firsttime = true;
     plyr         = &players[consoleplayer];
 
@@ -2082,11 +2116,11 @@ void ST_initData()
 
     st_oldhealth = -1;
 
-    for (int i = 0; i < NUMWEAPONS; i++)
+    for (i = 0; i < NUMWEAPONS; i++)
         oldweaponsowned[i] = plyr->weaponowned[i];
 
-    for (int & keyboxe : keyboxes)
-        keyboxe = -1;
+    for (i = 0; i < 3; i++)
+        keyboxes[i] = -1;
 
     STlib_init();
 }
@@ -2094,6 +2128,9 @@ void ST_initData()
 
 void ST_createWidgets()
 {
+
+    int i;
+
     // [crispy] re-calculate DELTAWIDTH
     I_GetScreenDimensions();
 
@@ -2127,7 +2164,7 @@ void ST_createWidgets()
         &st_classicstatusbar);
 
     // weapons owned
-    for (int i = 0; i < 6; i++)
+    for (i = 0; i < 6; i++)
     {
         STlib_initMultIcon(&w_arms[i],
             ST_ARMSX + (i % 3) * ST_ARMSXSPACE,
@@ -2319,10 +2356,11 @@ void ST_DrawDemoTimer(const int time)
     const int   mins = time / (60 * TICRATE);
     const float secs = static_cast<float>(time % (60 * TICRATE)) / TICRATE;
     const int   w    = shortnum[0]->width;
+    int         n, x;
 
-    int n = M_snprintf(buffer, sizeof(buffer), "%02i %05.02f", mins, secs);
+    n = M_snprintf(buffer, sizeof(buffer), "%02i %05.02f", mins, secs);
 
-    int x = (viewwindowx >> crispy->hires) + (scaledviewwidth >> crispy->hires) - DELTAWIDTH;
+    x = (viewwindowx >> crispy->hires) + (scaledviewwidth >> crispy->hires) - DELTAWIDTH;
 
     // [crispy] draw the Demo Timer widget with gray numbers
     dp_translation = cr_colors[static_cast<int>(cr_t::CR_GRAY)];

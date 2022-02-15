@@ -17,6 +17,7 @@
 
 // sounds.c
 
+#include "doomdef.hpp"
 #include "i_sound.hpp"
 #include "sounds.hpp"
 

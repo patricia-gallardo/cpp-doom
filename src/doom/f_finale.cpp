@@ -21,7 +21,7 @@
 
 // Functions.
 #include "deh_main.hpp"
-#include "d_event.hpp"
+#include "i_system.hpp"
 #include "i_swap.hpp"
 #include "z_zone.hpp"
 #include "v_video.hpp"
@@ -40,12 +40,12 @@
 #include "m_random.hpp"   // [crispy] Crispy_Random()
 #include "event_function_decls.hpp"
 
-enum finalestage_t
+typedef enum
 {
     F_STAGE_TEXT,
     F_STAGE_ARTSCREEN,
     F_STAGE_CAST,
-};
+} finalestage_t;
 
 // ?
 //#include "doomstat.hpp"
@@ -289,12 +289,12 @@ void F_TextWrite()
 #ifndef CRISPY_TRUECOLOR
         for (x = 0; x < SCREENWIDTH / 64; x++)
         {
-            std::memcpy(dest, src + ((y & 63) << 6), 64);
+            memcpy(dest, src + ((y & 63) << 6), 64);
             dest += 64;
         }
         if (SCREENWIDTH & 63)
         {
-            std::memcpy(dest, src + ((y & 63) << 6), SCREENWIDTH & 63);
+            memcpy(dest, src + ((y & 63) << 6), SCREENWIDTH & 63);
             dest += (SCREENWIDTH & 63);
         }
 #else

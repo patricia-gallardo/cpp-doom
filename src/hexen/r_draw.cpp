@@ -328,7 +328,7 @@ void R_InitTranslationTables()
     {
         lumpnum = W_GetNumForName("trantbl0") + i;
         transLump = cache_lump_num<uint8_t *>(lumpnum, PU_STATIC);
-        std::memcpy(translationtables + i * 256, transLump, 256);
+        memcpy(translationtables + i * 256, transLump, 256);
         W_ReleaseLumpNum(lumpnum);
     }
 }
@@ -462,12 +462,12 @@ void R_DrawViewBorder()
     {
         for (x = 0; x < SCREENWIDTH / 64; x++)
         {
-            std::memcpy(dest, src + ((y & 63) << 6), 64);
+            memcpy(dest, src + ((y & 63) << 6), 64);
             dest += 64;
         }
         if (SCREENWIDTH & 63)
         {
-            std::memcpy(dest, src + ((y & 63) << 6), SCREENWIDTH & 63);
+            memcpy(dest, src + ((y & 63) << 6), SCREENWIDTH & 63);
             dest += (SCREENWIDTH & 63);
         }
     }
@@ -529,12 +529,12 @@ void R_DrawTopBorder()
     {
         for (x = 0; x < SCREENWIDTH / 64; x++)
         {
-            std::memcpy(dest, src + ((y & 63) << 6), 64);
+            memcpy(dest, src + ((y & 63) << 6), 64);
             dest += 64;
         }
         if (SCREENWIDTH & 63)
         {
-            std::memcpy(dest, src + ((y & 63) << 6), SCREENWIDTH & 63);
+            memcpy(dest, src + ((y & 63) << 6), SCREENWIDTH & 63);
             dest += (SCREENWIDTH & 63);
         }
     }

@@ -18,6 +18,7 @@
 
 #include <cstdio>
 #include <cstdlib>
+#include <cassert>
 
 #include "txt_main.hpp"
 #include "txt_io.hpp"
@@ -47,8 +48,8 @@
 #include "v_video.hpp"
 #include "lump.hpp"
 
-constexpr auto STARTUP_WINDOW_X = 17;
-constexpr auto STARTUP_WINDOW_Y = 7;
+#define STARTUP_WINDOW_X 17
+#define STARTUP_WINDOW_Y 7
 
 GameMode_t gamemode = indetermined;
 const char *gamedescription = "unknown";
@@ -58,7 +59,7 @@ bool respawnparm;            // checkparm of -respawn
 bool debugmode;              // checkparm of -debug
 bool ravpic;                 // checkparm of -ravpic
 bool cdrom;                  // true if cd-rom mode active
-[[maybe_unused]] bool noartiskip;             // whether shift-enter skips an artifact
+bool noartiskip;             // whether shift-enter skips an artifact
 
 skill_t startskill;
 int startepisode;
@@ -92,7 +93,7 @@ bool F_Responder(event_t * ev);
 
 void D_ProcessEvents()
 {
-    event_t *ev = nullptr;
+    event_t *ev;
 
     while ((ev = D_PopEvent()) != nullptr)
     {
@@ -116,7 +117,9 @@ void D_ProcessEvents()
 
 void DrawMessage()
 {
-    player_t *player = &players[consoleplayer];
+    player_t *player;
+
+    player = &players[consoleplayer];
     if (player->messageTics <= 0 || !player->message)
     {                           // No message
         return;
@@ -276,7 +279,7 @@ bool D_GrabMouseCallback()
 //
 //---------------------------------------------------------------------------
 
-[[noreturn]] void D_DoomLoop()
+void D_DoomLoop()
 {
     if (M_CheckParm("-debugfile"))
     {
@@ -290,7 +293,7 @@ bool D_GrabMouseCallback()
 
     main_loop_started = true;
 
-    while (true)
+    while (1)
     {
         // Frame syncronous IO operations
         I_StartFrame();
@@ -451,6 +454,9 @@ void D_StartTitle()
 
 void D_CheckRecordFrom()
 {
+    int p;
+    char *filename;
+
     //!
     // @vanilla
     // @category demo
@@ -459,17 +465,19 @@ void D_CheckRecordFrom()
     // Record a demo, loading from the given filename. Equivalent
     // to -loadgame <savenum> -record <demofile>.
 
-    int p = M_CheckParmWithArgs("-recordfrom", 2);
+    p = M_CheckParmWithArgs("-recordfrom", 2);
     if (!p)
         return;
 
-    char *filename = SV_Filename(myargv[p + 1][0] - '0');
+    filename = SV_Filename(myargv[p + 1][0] - '0');
     G_LoadGame(filename);
     G_DoLoadGame();             // load the gameskill etc info from savegame
 
     G_RecordDemo(gameskill, 1, gameepisode, gamemap, myargv[p + 2]);
     D_DoomLoop();               // never returns
-    [[unreachable]];
+    // unreachable code
+    // free(filename);
+    assert(false);
 }
 
 /*
@@ -500,9 +508,11 @@ void wadprintf()
 
 bool D_AddFile(char *file)
 {
+    wad_file_t *handle;
+
     printf("  adding %s\n", file);
 
-    wad_file_t *handle = W_AddFile(file);
+    handle = W_AddFile(file);
 
     return handle != nullptr;
 }
@@ -512,9 +522,9 @@ bool D_AddFile(char *file)
 //  Startup Thermo code
 //
 //==========================================================
-[[maybe_unused]] constexpr auto MSG_Y   = 9;
-constexpr auto                  THERM_X = 14;
-constexpr auto                  THERM_Y = 14;
+#define MSG_Y       9
+#define THERM_X     14
+#define THERM_Y     14
 
 int thermMax;
 int thermCurrent;
@@ -547,11 +557,13 @@ void hprintf(const char *string)
 
 void drawstatus()
 {
+    int i;
+
     TXT_GotoXY(1, 24);
     TXT_BGColor(TXT_COLOR_BLUE, 0);
     TXT_FGColor(TXT_COLOR_BRIGHT_WHITE);
 
-    for (int i=0; smsg[i] != '\0'; ++i)
+    for (i=0; smsg[i] != '\0'; ++i) 
     {
         TXT_PutChar(smsg[i]);
     }
@@ -569,6 +581,8 @@ static void status(const char *string)
 void DrawThermo()
 {
     static int last_progress = -1;
+    int progress;
+    int i;
 
     if (!using_graphical_startup)
     {
@@ -577,7 +591,7 @@ void DrawThermo()
 
     // No progress? Don't update the screen.
 
-    int progress = (50 * thermCurrent) / thermMax + 2;
+    progress = (50 * thermCurrent) / thermMax + 2;
 
     if (last_progress == progress)
     {
@@ -591,7 +605,7 @@ void DrawThermo()
     TXT_FGColor(TXT_COLOR_BRIGHT_GREEN);
     TXT_BGColor(TXT_COLOR_GREEN, 0);
 
-    for (int i = 0; i < progress; i++)
+    for (i = 0; i < progress; i++)
     {
         TXT_PutChar(0xdb);
     }
@@ -601,6 +615,9 @@ void DrawThermo()
 
 void initStartup()
 {
+    uint8_t *textScreen;
+    uint8_t *loading;
+
     if (!graphical_startup || debugmode || testcontrols)
     {
         using_graphical_startup = false;
@@ -617,9 +634,9 @@ void initStartup()
     I_InitWindowIcon();
 
     // Blit main screen
-    uint8_t *textScreen = TXT_GetScreenData();
-    uint8_t *loading = cache_lump_name<uint8_t *>(DEH_String("LOADING"), PU_CACHE);
-    std::memcpy(textScreen, loading, 4000);
+    textScreen = TXT_GetScreenData();
+    loading = cache_lump_name<uint8_t *>(DEH_String("LOADING"), PU_CACHE);
+    memcpy(textScreen, loading, 4000);
 
     // Print version string
 
@@ -687,6 +704,7 @@ void D_BindVariables()
 {
     extern int screenblocks;
     extern int snd_Channels;
+    int i;
 
     M_ApplyPlatformDefaults();
 
@@ -720,7 +738,7 @@ void D_BindVariables()
     M_BindIntVariable("show_endoom",            &show_endoom);
     M_BindIntVariable("graphical_startup",      &graphical_startup);
 
-    for (int i=0; i<10; ++i)
+    for (i=0; i<10; ++i)
     {
         char buf[12];
 
@@ -741,6 +759,8 @@ void D_BindVariables()
 
 static void D_Endoom()
 {
+    uint8_t *endoom_data;
+
     // Disable ENDOOM?
 
     if (!show_endoom || testcontrols || !main_loop_started)
@@ -748,7 +768,7 @@ static void D_Endoom()
         return;
     }
 
-    uint8_t *endoom_data = cache_lump_name<uint8_t *>(DEH_String("ENDTEXT"), PU_STATIC);
+    endoom_data = cache_lump_name<uint8_t *>(DEH_String("ENDTEXT"), PU_STATIC);
 
     I_Endoom(endoom_data);
 }
@@ -761,6 +781,7 @@ static void D_Endoom()
 
 void D_DoomMain()
 {
+    GameMission_t gamemission;
     int p;
     char file[256];
     char demolumpname[9];
@@ -923,7 +944,6 @@ void D_DoomMain()
 
     DEH_printf("W_Init: Init WADfiles.\n");
 
-    GameMission_t gamemission = heretic;
     iwadfile = D_FindIWAD(IWAD_MASK_HERETIC, &gamemission);
 
     if (iwadfile == nullptr)
@@ -942,7 +962,8 @@ void D_DoomMain()
     //
     if (!M_ParmExists("-noautoload"))
     {
-        char *autoload_dir = M_GetAutoloadDir("heretic.wad");
+        char *autoload_dir;
+        autoload_dir = M_GetAutoloadDir("heretic.wad");
         DEH_AutoLoadPatches(autoload_dir);
         W_AutoLoadWADs(autoload_dir);
         free(autoload_dir);
@@ -1169,7 +1190,9 @@ void D_DoomMain()
     p = M_CheckParmWithArgs("-loadgame", 1);
     if (p && p < myargc - 1)
     {
-        char *filename = SV_Filename(myargv[p + 1][0] - '0');
+        char *filename;
+
+	filename = SV_Filename(myargv[p + 1][0] - '0');
         G_LoadGame(filename);
 	free(filename);
     }

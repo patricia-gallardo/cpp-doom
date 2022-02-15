@@ -52,7 +52,7 @@ typedef struct
 // received before we bail out and render a frame anyway.
 // Vanilla Doom used 20 for this value, but we use a smaller value
 // instead for better responsiveness of the menu when we're stuck.
-constexpr auto MAX_NETGAME_STALL_TICS = 5;
+#define MAX_NETGAME_STALL_TICS 5
 
 //
 // gametic is the tic about to (or currently being) run
@@ -125,7 +125,9 @@ static int player_class;
 
 static int GetAdjustedTime()
 {
-    int time_ms = I_GetTimeMS();
+    int time_ms;
+
+    time_ms = I_GetTimeMS();
 
     if (new_sync)
     {
@@ -140,7 +142,10 @@ static int GetAdjustedTime()
 
 static bool BuildNewTic()
 {
-    int gameticdiv = gametic / ticdup;
+    int      gameticdiv;
+    ticcmd_t cmd;
+
+    gameticdiv = gametic / ticdup;
 
     I_StartTic();
     loop_interface->ProcessEvents();
@@ -176,8 +181,7 @@ static bool BuildNewTic()
     }
 
     //printf ("mk:%i ",maketic);
-    ticcmd_t cmd;
-    std::memset(&cmd, 0, sizeof(ticcmd_t));
+    memset(&cmd, 0, sizeof(ticcmd_t));
     loop_interface->BuildTiccmd(&cmd, maketic);
 
     if (net_client_connected)
@@ -202,6 +206,10 @@ int lasttime;
 
 void NetUpdate()
 {
+    int nowtime;
+    int newtics;
+    int i;
+
     // If we are running with singletics (timing a demo), this
     // is all done separately.
 
@@ -214,8 +222,8 @@ void NetUpdate()
     NET_SV_Run();
 
     // check time
-    int nowtime = GetAdjustedTime() / ticdup;
-    int newtics = nowtime - lasttime;
+    nowtime = GetAdjustedTime() / ticdup;
+    newtics = nowtime - lasttime;
 
     lasttime = nowtime;
 
@@ -232,7 +240,7 @@ void NetUpdate()
 
     // build new ticcmds for console player
 
-    for (int i = 0; i < newtics; i++)
+    for (i = 0; i < newtics; i++)
     {
         if (!BuildNewTic())
         {
@@ -262,6 +270,8 @@ static void D_Disconnected()
 
 void D_ReceiveTic(ticcmd_t *ticcmds, bool *players_mask)
 {
+    int i;
+
     // Disconnected from server?
 
     if (ticcmds == nullptr && players_mask == nullptr)
@@ -270,7 +280,7 @@ void D_ReceiveTic(ticcmd_t *ticcmds, bool *players_mask)
         return;
     }
 
-    for (int i = 0; i < NET_MAXPLAYERS; ++i)
+    for (i = 0; i < NET_MAXPLAYERS; ++i)
     {
         if (!drone && i == localplayer)
         {
@@ -326,6 +336,8 @@ static void BlockUntilStart(net_gamesettings_t *settings,
 void D_StartNetGame(net_gamesettings_t *settings,
     netgame_startup_callback_t          callback)
 {
+    int i;
+
     offsetms = 0;
     recvtic  = 0;
 
@@ -349,14 +361,13 @@ void D_StartNetGame(net_gamesettings_t *settings,
     // packets.
     //
 
-    {
-        int i = M_CheckParmWithArgs("-extratics", 1);
+    i = M_CheckParmWithArgs("-extratics", 1);
 
-        if (i > 0)
-            settings->extratics = std::atoi(myargv[i + 1]);
-        else
-            settings->extratics = 1;
-    }
+    if (i > 0)
+        settings->extratics = atoi(myargv[i + 1]);
+    else
+        settings->extratics = 1;
+
     //!
     // @category net
     // @arg <n>
@@ -364,14 +375,14 @@ void D_StartNetGame(net_gamesettings_t *settings,
     // Reduce the resolution of the game by a factor of n, reducing
     // the amount of network bandwidth needed.
     //
-    {
-        int i = M_CheckParmWithArgs("-dup", 1);
 
-        if (i > 0)
-            settings->ticdup = std::atoi(myargv[i + 1]);
-        else
-            settings->ticdup = 1;
-    }
+    i = M_CheckParmWithArgs("-dup", 1);
+
+    if (i > 0)
+        settings->ticdup = atoi(myargv[i + 1]);
+    else
+        settings->ticdup = 1;
+
     if (net_client_connected)
     {
         // Send our game settings and block until game start is received
@@ -394,7 +405,7 @@ void D_StartNetGame(net_gamesettings_t *settings,
 
     localplayer = settings->consoleplayer;
 
-    for (int i = 0; i < NET_MAXPLAYERS; ++i)
+    for (i = 0; i < NET_MAXPLAYERS; ++i)
     {
         local_playeringame[i] = i < settings->num_players;
     }
@@ -779,7 +790,7 @@ void TryRunTics()
             if (gametic / ticdup > lowtic)
                 I_Error("gametic>lowtic");
 
-            std::memcpy(local_playeringame, set->ingame, sizeof(local_playeringame));
+            memcpy(local_playeringame, set->ingame, sizeof(local_playeringame));
 
             loop_interface->RunTic(set->cmds, set->ingame);
             gametic++;
@@ -838,9 +849,12 @@ bool D_NonVanillaRecord(bool conditional, const char *feature)
 // file, as opposed to a WAD.
 static bool IsDemoFile(int lumpnum)
 {
-    char *lower = M_StringDuplicate(lumpinfo[lumpnum]->wad_file->path);
+    char *  lower;
+    bool result;
+
+    lower = M_StringDuplicate(lumpinfo[lumpnum]->wad_file->path);
     M_ForceLowercase(lower);
-    bool result = M_StringEndsWith(lower, ".lmp");
+    result = M_StringEndsWith(lower, ".lmp");
     free(lower);
 
     return result;

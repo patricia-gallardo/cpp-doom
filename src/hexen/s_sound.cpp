@@ -628,7 +628,7 @@ void S_StopAllSound()
             S_StopSound(Channel[i].mo);
         }
     }
-    std::memset(Channel, 0, 8 * sizeof(channel_t));
+    memset(Channel, 0, 8 * sizeof(channel_t));
 }
 
 //==========================================================================

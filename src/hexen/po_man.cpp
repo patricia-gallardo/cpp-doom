@@ -481,7 +481,7 @@ bool EV_OpenPolyDoor(line_t *, uint8_t *args, podoortype_t type)
         I_Error("EV_OpenPolyDoor:  Invalid polyobj num: %d\n", polyNum);
     }
     pd = zmalloc<polydoor_t *>(sizeof(polydoor_t), PU_LEVSPEC, 0);
-    std::memset(pd, 0, sizeof(polydoor_t));
+    memset(pd, 0, sizeof(polydoor_t));
     P_AddThinker(&pd->thinker);
     pd->thinker.function = T_PolyDoor;
     pd->type = type;
@@ -520,7 +520,7 @@ bool EV_OpenPolyDoor(line_t *, uint8_t *args, podoortype_t type)
             break;
         }
         pd = zmalloc<polydoor_t *>(sizeof(polydoor_t), PU_LEVSPEC, 0);
-        std::memset(pd, 0, sizeof(polydoor_t));
+        memset(pd, 0, sizeof(polydoor_t));
         P_AddThinker(&pd->thinker);
         pd->thinker.function = T_PolyDoor;
         pd->polyobj = mirror;
@@ -1130,7 +1130,7 @@ static void InitBlockMap()
 
     PolyBlockMap = zmalloc<polyblock_t **>(bmapwidth * bmapheight * sizeof(polyblock_t *),
         PU_LEVEL, 0);
-    std::memset(PolyBlockMap, 0, bmapwidth * bmapheight * sizeof(polyblock_t *));
+    memset(PolyBlockMap, 0, bmapwidth * bmapheight * sizeof(polyblock_t *));
 
     for (i = 0; i < po_NumPolyobjs; i++)
     {
@@ -1439,7 +1439,7 @@ void PO_Init(int lump)
     int polyIndex;
 
     polyobjs = zmalloc<polyobj_t *>(po_NumPolyobjs * sizeof(polyobj_t), PU_LEVEL, 0);
-    std::memset(polyobjs, 0, po_NumPolyobjs * sizeof(polyobj_t));
+    memset(polyobjs, 0, po_NumPolyobjs * sizeof(polyobj_t));
 
     data = cache_lump_num<uint8_t *>(lump, PU_STATIC);
     numthings = static_cast<int>(W_LumpLength(lump) / sizeof(mapthing_t));

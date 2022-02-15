@@ -23,6 +23,7 @@
 #include "txt_io.hpp"
 #include "txt_main.hpp"
 #include "txt_utf8.hpp"
+#include "txt_window.hpp"
 #include "memory.hpp"
 
 extern txt_widget_class_t txt_inputbox_class;

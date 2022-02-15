@@ -49,13 +49,13 @@
 // drawn directly on the view screen,
 // coordinates are given for a 320*200 view screen.
 //
-enum psprnum_t
+typedef enum
 {
     ps_weapon,
     ps_flash,
     NUMPSPRITES
 
-};
+} psprnum_t;
 
 typedef struct pspdef_s {
     state_t *state; // a nullptr state means not active

@@ -20,24 +20,31 @@
 #include <cstring>
 
 #include "config.h"
+#include "doomtype.hpp"
 #include "deh_main.hpp"
+#include "deh_str.hpp"
 #include "i_system.hpp"
 #include "i_timer.hpp"
+#include "m_argv.hpp"
 #include "m_fixed.hpp"
 #include "m_config.hpp"
+#include "m_misc.hpp"
 #include "net_client.hpp"
 #include "net_common.hpp"
 #include "net_defs.hpp"
+#include "net_gui.hpp"
 #include "net_io.hpp"
 #include "net_packet.hpp"
 #include "net_query.hpp"
 #include "net_server.hpp"
 #include "net_structrw.hpp"
 #include "net_petname.hpp"
+#include "w_checksum.hpp"
+#include "w_wad.hpp"
 
 extern void D_ReceiveTic(ticcmd_t *ticcmds, bool *playeringame);
 
-enum net_clientstate_t
+typedef enum
 {
     // waiting for the game to launch
 
@@ -51,7 +58,7 @@ enum net_clientstate_t
 
     CLIENT_STATE_IN_GAME,
 
-};
+} net_clientstate_t;
 
 // Type of structure used in the receive window
 
@@ -271,9 +278,9 @@ static void NET_CL_AdvanceWindow()
 
         // Advance the window
 
-        std::memmove(recvwindow, recvwindow + 1,
+        memmove(recvwindow, recvwindow + 1,
             sizeof(net_server_recv_t) * (BACKUPTICS - 1));
-        std::memset(&recvwindow[BACKUPTICS - 1], 0, sizeof(net_server_recv_t));
+        memset(&recvwindow[BACKUPTICS - 1], 0, sizeof(net_server_recv_t));
 
         ++recvwindow_start;
 
@@ -306,7 +313,7 @@ void NET_CL_StartGame(net_gamesettings_t *settings_param)
 
     // Start from a ticcmd of all zeros
 
-    std::memset(&last_ticcmd, 0, sizeof(ticcmd_t));
+    memset(&last_ticcmd, 0, sizeof(ticcmd_t));
 
     // Send packet
 
@@ -522,7 +529,7 @@ static void NET_CL_ParseWaitingData(net_packet_t *packet)
         return;
     }
 
-    std::memcpy(&net_client_wait_data, &wait_data, sizeof(net_waitdata_t));
+    memcpy(&net_client_wait_data, &wait_data, sizeof(net_waitdata_t));
     net_client_received_wait_data = true;
 }
 
@@ -595,13 +602,13 @@ static void NET_CL_ParseGameStart(net_packet_t *packet)
 
     // Clear the receive window
 
-    std::memset(recvwindow, 0, sizeof(recvwindow));
+    memset(recvwindow, 0, sizeof(recvwindow));
     recvwindow_start = 0;
-    std::memset(&recvwindow_cmd_base, 0, sizeof(recvwindow_cmd_base));
+    memset(&recvwindow_cmd_base, 0, sizeof(recvwindow_cmd_base));
 
     // Clear the send queue
 
-    std::memset(&send_queue, 0x00, sizeof(send_queue));
+    memset(&send_queue, 0x00, sizeof(send_queue));
 }
 
 static void NET_CL_SendResendRequest(int start, int end)
@@ -1058,8 +1065,8 @@ bool NET_CL_Connect(net_addr_t *addr, net_connect_data_t *data)
     server_addr = addr;
     NET_ReferenceAddress(addr);
 
-    std::memcpy(net_local_wad_sha1sum, data->wad_sha1sum, sizeof(sha1_digest_t));
-    std::memcpy(net_local_deh_sha1sum, data->deh_sha1sum, sizeof(sha1_digest_t));
+    memcpy(net_local_wad_sha1sum, data->wad_sha1sum, sizeof(sha1_digest_t));
+    memcpy(net_local_deh_sha1sum, data->deh_sha1sum, sizeof(sha1_digest_t));
     net_local_is_freedoom = static_cast<unsigned int>(data->is_freedoom);
 
     // create a new network I/O context and add just the necessary module
@@ -1149,7 +1156,7 @@ bool NET_CL_GetSettings(net_gamesettings_t *_settings)
         return false;
     }
 
-    std::memcpy(_settings, &settings, sizeof(net_gamesettings_t));
+    memcpy(_settings, &settings, sizeof(net_gamesettings_t));
 
     return true;
 }

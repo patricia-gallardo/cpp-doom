@@ -305,7 +305,7 @@ void M_ReadMisObj()
 //
 void *M_Calloc(size_t n1, size_t n2)
 {
-    return (n1 *= n2) ? std::memset(Z_Malloc(static_cast<int>(n1), PU_STATIC, nullptr), 0, n1) : nullptr;
+    return (n1 *= n2) ? memset(Z_Malloc(static_cast<int>(n1), PU_STATIC, nullptr), 0, n1) : nullptr;
 }
 
 //
@@ -474,7 +474,7 @@ char M_GetFilePath(const char *fn, char *dest, size_t len)
     char *p;
     char sepchar = '\0';
 
-    std::memset(dest, 0, len);
+    memset(dest, 0, len);
 
     p = dest + len - 1;
 

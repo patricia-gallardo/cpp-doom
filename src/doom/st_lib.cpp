@@ -16,14 +16,24 @@
 //	The status bar widget code.
 //
 
+
+#include <cstdio>
+
 #include "deh_main.hpp"
+#include "doomdef.hpp"
+
 #include "z_zone.hpp"
 #include "v_video.hpp"
+
 #include "i_swap.hpp"
 #include "i_system.hpp"
+
 #include "w_wad.hpp"
+
 #include "st_stuff.hpp"
 #include "st_lib.hpp"
+#include "r_local.hpp"
+
 #include "lump.hpp"
 #include "v_trans.hpp" // [crispy] colored status bar widgets
 

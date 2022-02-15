@@ -51,7 +51,7 @@
 // drawn directly on the view screen,
 // coordinates are given for a 320*200 view screen.
 //
-enum psprnum_t
+typedef enum
 {
     ps_weapon,
     ps_flash,
@@ -60,7 +60,7 @@ enum psprnum_t
     ps_targright,   // villsa [STRIFE]
     NUMPSPRITES
 
-};
+} psprnum_t;
 
 typedef struct pspdef_s
 {

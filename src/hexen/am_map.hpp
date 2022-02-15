@@ -19,25 +19,25 @@
 #define __AMMAP_H__
 
 // For use if I do walls with outsides/insides
-constexpr auto REDS        = 12 * 8;
-constexpr auto REDRANGE    = 1; // 16
-constexpr auto BLUES       = (256 - 4 * 16 + 8);
-constexpr auto BLUERANGE   = 1; // 8
-constexpr auto GREENS      = (33 * 8);
-constexpr auto GREENRANGE  = 1; // 16
-constexpr auto GRAYS       = (5 * 8);
-constexpr auto GRAYSRANGE  = 1; // 16
-constexpr auto BROWNS      = (14 * 8);
-constexpr auto BROWNRANGE  = 1; // 16
-constexpr auto YELLOWS     = 10 * 8;
-constexpr auto YELLOWRANGE = 1;
-constexpr auto BLACK       = 0;
-constexpr auto WHITE       = 4 * 8;
-constexpr auto PARCH       = 13 * 8 - 1;
-constexpr auto BLOODRED    = 177;
-constexpr auto BLUEKEY     = 157;
-constexpr auto YELLOWKEY   = 137;
-constexpr auto GREENKEY    = 198;
+#define REDS		12*8
+#define REDRANGE	1       //16
+#define BLUES		(256-4*16+8)
+#define BLUERANGE	1       //8
+#define GREENS		(33*8)
+#define GREENRANGE	1       //16
+#define GRAYS		(5*8)
+#define GRAYSRANGE	1       //16
+#define BROWNS		(14*8)
+#define BROWNRANGE	1       //16
+#define YELLOWS		10*8
+#define YELLOWRANGE	1
+#define BLACK		0
+#define WHITE		4*8
+#define PARCH		13*8-1
+#define BLOODRED  	177
+#define BLUEKEY 	157
+#define YELLOWKEY 	137
+#define GREENKEY  	198
 
 // Automap colors
 

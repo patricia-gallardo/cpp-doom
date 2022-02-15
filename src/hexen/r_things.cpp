@@ -172,7 +172,7 @@ void R_InitSpriteDefs(const char **namelist)
     for (i = 0; i < numsprites; i++)
     {
         spritename = namelist[i];
-        std::memset(sprtemp, -1, sizeof(sprtemp));
+        memset(sprtemp, -1, sizeof(sprtemp));
 
         maxframe = -1;
 
@@ -232,7 +232,7 @@ void R_InitSpriteDefs(const char **namelist)
         sprites[i].numframes = maxframe;
         sprites[i].spriteframes =
             zmalloc<spriteframe_t *>(maxframe * sizeof(spriteframe_t), PU_STATIC, nullptr);
-        std::memcpy(sprites[i].spriteframes, sprtemp,
+        memcpy(sprites[i].spriteframes, sprtemp,
                maxframe * sizeof(spriteframe_t));
     }
 

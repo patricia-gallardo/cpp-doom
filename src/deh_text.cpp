@@ -15,9 +15,13 @@
 // Parses Text substitution sections in dehacked files
 //
 
+#include <cstring>
 #include <string>
 
+#include "doomtype.hpp"
+
 #include "z_zone.hpp"
+
 #include "deh_defs.hpp"
 #include "deh_io.hpp"
 #include "deh_main.hpp"
@@ -47,8 +51,8 @@ static int TXT_MaxStringLength(int len)
 
 static void *DEH_TextStart(deh_context_t *context, char *line)
 {
-    int fromlen = 0;
-    int tolen = 0;
+    int fromlen;
+    int tolen;
 
     if (sscanf(line, "Text %i %i", &fromlen, &tolen) != 2)
     {

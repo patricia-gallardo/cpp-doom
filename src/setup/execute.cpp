@@ -237,8 +237,8 @@ static int ExecuteCommand(const char *program, const char *arg)
 
     // Invoke the program:
 
-    std::memset(&proc_info, 0, sizeof(proc_info));
-    std::memset(&startup_info, 0, sizeof(startup_info));
+    memset(&proc_info, 0, sizeof(proc_info));
+    memset(&startup_info, 0, sizeof(startup_info));
     startup_info.cb = sizeof(startup_info);
 
     if (!CreateProcessW(nullptr, command,

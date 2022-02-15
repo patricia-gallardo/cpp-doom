@@ -32,20 +32,27 @@
 
 #include "config.h"
 
+#include "deh_str.hpp"
 #include "doomtype.hpp"
 #include "m_argv.hpp"
+#include "m_config.hpp"
 #include "m_misc.hpp"
+#include "i_joystick.hpp"
+#include "i_sound.hpp"
+#include "i_timer.hpp"
+#include "i_video.hpp"
 
 #include "i_system.hpp"
 
 #include "memory.hpp"
+#include "w_wad.hpp"
 #include "z_zone.hpp"
 
 #define DEFAULT_RAM 16 * 2 /* MiB [crispy] */
 #define MIN_RAM     4 * 4  /* MiB [crispy] */
 
 
-using atexit_listentry_t = struct atexit_listentry_s;
+typedef struct atexit_listentry_s atexit_listentry_t;
 
 struct atexit_listentry_s {
     atexit_func_t       func;
@@ -131,7 +138,7 @@ uint8_t *I_ZoneBase(int *size)
 
     if (p > 0)
     {
-        default_ram = std::atoi(myargv[p + 1]);
+        default_ram = atoi(myargv[p + 1]);
         min_ram     = default_ram;
     }
     else
@@ -285,7 +292,7 @@ void I_Error(const char *error, ...)
 
     // Write a copy of the message into buffer.
     va_start(argptr, error);
-    std::memset(msgbuf, 0, sizeof(msgbuf));
+    memset(msgbuf, 0, sizeof(msgbuf));
     M_vsnprintf(msgbuf, sizeof(msgbuf), error, argptr);
     va_end(argptr);
 

@@ -28,12 +28,12 @@
 
 #define WINDOW_HELP_URL "https://www.chocolate-doom.org/setup-sound"
 
-enum oplmode_t
+typedef enum
 {
     OPLMODE_OPL2,
     OPLMODE_OPL3,
     NUM_OPLMODES,
-};
+} oplmode_t;
 
 static const char *opltype_strings[] =
 {

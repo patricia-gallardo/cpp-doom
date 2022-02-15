@@ -104,7 +104,7 @@ typedef struct
 //  which is composed of one or more mappatch_t structures
 //  that arrange graphic patches.
 
-using texture_t = struct texture_s;
+typedef struct texture_s texture_t;
 
 struct texture_s {
     // Keep name for switch changing, etc.
@@ -225,13 +225,13 @@ void R_DrawColumnInCache(column_t *patch, uint8_t *cache,
 
         if (count > 0)
         {
-            std::memcpy(cache + position, source, static_cast<size_t>(count));
+            memcpy(cache + position, source, static_cast<size_t>(count));
 
             // killough 4/9/98: remember which cells in column have been drawn,
             // so that column can later be converted into a series of posts, to
             // fix the Medusa bug.
 
-            std::memset(marks + position, 0xff, static_cast<size_t>(count));
+            memset(marks + position, 0xff, static_cast<size_t>(count));
         }
 
         uint8_t *col_ptr = reinterpret_cast<uint8_t *>(patch) + patch->length + 4;
@@ -280,7 +280,7 @@ void R_GenerateComposite(int texnum)
     marks = static_cast<decltype(marks)>(calloc(static_cast<size_t>(texture->width), static_cast<size_t>(texture->height)));
 
     // [crispy] initialize composite background to black (index 0)
-    std::memset(block, 0, static_cast<size_t>(texturecompositesize[texnum]));
+    memset(block, 0, static_cast<size_t>(texturecompositesize[texnum]));
 
     for (i = 0, patch = texture->patches;
          i < texture->patchcount;
@@ -332,7 +332,7 @@ void R_GenerateComposite(int texnum)
             int         j    = 0;
 
             // save column in temporary so we can shuffle it around
-            std::memcpy(source, reinterpret_cast<uint8_t *>(col) + 3, static_cast<size_t>(texture->height));
+            memcpy(source, reinterpret_cast<uint8_t *>(col) + 3, static_cast<size_t>(texture->height));
 
             for (;;) // reconstruct the column by scanning transparency marks
             {
@@ -356,7 +356,7 @@ void R_GenerateComposite(int texnum)
                 col->length = static_cast<uint8_t>(len); // killough 12/98: intentionally truncate length
 
                 // copy opaque cells from the temporary back into the column
-                std::memcpy(reinterpret_cast<uint8_t *>(col) + 3, source + col->topdelta, len);
+                memcpy(reinterpret_cast<uint8_t *>(col) + 3, source + col->topdelta, len);
                 uint8_t *col_ptr = reinterpret_cast<uint8_t *>(col) + len + 4;
                 col = reinterpret_cast<column_t *>(col_ptr); // next post
             }
@@ -410,8 +410,8 @@ void R_GenerateLookup(int texnum)
     //  with only a single patch are all done.
     patchcount = zmalloc<uint8_t *>(static_cast<size_t>(texture->width), PU_STATIC, &patchcount);
     postcount  = zmalloc<uint8_t *>(static_cast<size_t>(texture->width), PU_STATIC, &postcount);
-    std::memset(patchcount, 0, static_cast<size_t>(texture->width));
-    std::memset(postcount, 0, static_cast<size_t>(texture->width));
+    memset(patchcount, 0, static_cast<size_t>(texture->width));
+    memset(postcount, 0, static_cast<size_t>(texture->width));
     patch = texture->patches;
 
     for (i = 0, patch = texture->patches;
@@ -502,7 +502,7 @@ void R_GenerateLookup(int texnum)
             // [crispy] fix absurd texture name in error message
             char namet[9];
             namet[8] = 0;
-            std::memcpy(namet, texture->name, 8);
+            memcpy(namet, texture->name, 8);
             printf("R_GenerateLookup: column without a patch (%s)\n",
                 namet);
             // [crispy] do not return yet
@@ -587,7 +587,7 @@ static void GenerateTextureHashTable()
 
     textures_hashtable = zmalloc<decltype(textures_hashtable)>(sizeof(texture_t *) * static_cast<unsigned long>(numtextures), PU_STATIC, 0);
 
-    std::memset(textures_hashtable, 0, sizeof(texture_t *) * static_cast<unsigned long>(numtextures));
+    memset(textures_hashtable, 0, sizeof(texture_t *) * static_cast<unsigned long>(numtextures));
 
     // Add all textures to hash table
 
@@ -874,7 +874,7 @@ void R_InitTextures()
         texture->height     = SHORT(mtexture->height);
         texture->patchcount = SHORT(mtexture->patchcount);
 
-        std::memcpy(texture->name, mtexture->name, sizeof(texture->name));
+        memcpy(texture->name, mtexture->name, sizeof(texture->name));
         mpatch = &mtexture->patches[0];
         patch  = &texture->patches[0];
 
@@ -895,7 +895,7 @@ void R_InitTextures()
             {
                 char texturename[9];
                 texturename[8] = '\0';
-                std::memcpy(texturename, texture->name, 8);
+                memcpy(texturename, texture->name, 8);
                 // [crispy] make non-fatal
                 fprintf(stderr, "R_InitTextures: Missing patch in texture %s\n",
                     texturename);
@@ -1093,7 +1093,7 @@ static void R_InitTranMap()
                 // [crispy] set filter percents
                 cache.pct = tran_filter_pct;
                 // [crispy] set base palette
-                std::memcpy(cache.playpal, playpal, sizeof(cache.playpal));
+                memcpy(cache.playpal, playpal, sizeof(cache.playpal));
                 // [crispy] go to start of file
                 fseek(cachefp, 0, SEEK_SET);
                 // [crispy] write struct cache
@@ -1272,7 +1272,7 @@ int R_FlatNumForName(const char *name)
     if (i == -1)
     {
         namet[8] = 0;
-        std::memcpy(namet, name, 8);
+        memcpy(namet, name, 8);
         // [crispy] make non-fatal
         fprintf(stderr, "R_FlatNumForName: %s not found\n", namet);
         // [crispy] since there is no "No Flat" marker,
@@ -1329,7 +1329,7 @@ int R_TextureNumForName(const char *name)
         // [crispy] fix absurd texture name in error message
         char namet[9];
         namet[8] = '\0';
-        std::memcpy(namet, name, 8);
+        memcpy(namet, name, 8);
         // [crispy] make non-fatal
         fprintf(stderr, "R_TextureNumForName: %s not found\n",
             namet);
@@ -1367,7 +1367,7 @@ void R_PrecacheLevel()
 
     // Precache flats.
     flatpresent = zmalloc<decltype(flatpresent)>(static_cast<size_t>(numflats), PU_STATIC, nullptr);
-    std::memset(flatpresent, 0, static_cast<size_t>(numflats));
+    memset(flatpresent, 0, static_cast<size_t>(numflats));
 
     for (i = 0; i < numsectors; i++)
     {
@@ -1391,7 +1391,7 @@ void R_PrecacheLevel()
 
     // Precache textures.
     texturepresent = zmalloc<decltype(texturepresent)>(static_cast<size_t>(numtextures), PU_STATIC, nullptr);
-    std::memset(texturepresent, 0, static_cast<size_t>(numtextures));
+    memset(texturepresent, 0, static_cast<size_t>(numtextures));
 
     for (i = 0; i < numsides; i++)
     {
@@ -1431,7 +1431,7 @@ void R_PrecacheLevel()
 
     // Precache sprites.
     spritepresent = zmalloc<decltype(spritepresent)>(static_cast<size_t>(numsprites), PU_STATIC, nullptr);
-    std::memset(spritepresent, 0, static_cast<size_t>(numsprites));
+    memset(spritepresent, 0, static_cast<size_t>(numsprites));
 
     action_hook needle = P_MobjThinker;
     for (th = thinkercap.next; th != &thinkercap; th = th->next)

@@ -47,6 +47,6 @@ const iwad_t **D_FindAllIWADs(int mask);
 const char *   D_SaveGameIWADName(GameMission_t gamemission);
 const char *   D_SuggestIWADName(GameMission_t mission, GameMode_t mode);
 const char *   D_SuggestGameName(GameMission_t mission, GameMode_t mode);
-[[maybe_unused]] void D_CheckCorrectIWAD(GameMission_t mission);
+void           D_CheckCorrectIWAD(GameMission_t mission);
 
 #endif

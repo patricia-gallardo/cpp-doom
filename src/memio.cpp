@@ -23,11 +23,11 @@
 #include "memory.hpp"
 #include "z_zone.hpp"
 
-enum memfile_mode_t
+typedef enum
 {
     MODE_READ,
     MODE_WRITE,
-};
+} memfile_mode_t;
 
 struct _MEMFILE {
     unsigned char *buf;
@@ -72,7 +72,7 @@ size_t mem_fread(void *buf, size_t size, size_t nmemb, MEMFILE *stream)
 
     // Copy bytes to buffer
 
-    std::memcpy(buf, stream->buf + stream->position, items * size);
+    memcpy(buf, stream->buf + stream->position, items * size);
 
     // Update position
 
@@ -113,7 +113,7 @@ size_t mem_fwrite(const void *ptr, size_t size, size_t nmemb, MEMFILE *stream)
     while (bytes > stream->alloced - stream->position)
     {
         auto *newbuf = zmalloc<unsigned char *>(stream->alloced * 2, PU_STATIC, 0);
-        std::memcpy(newbuf, stream->buf, stream->alloced);
+        memcpy(newbuf, stream->buf, stream->alloced);
         Z_Free(stream->buf);
         stream->buf = newbuf;
         stream->alloced *= 2;
@@ -121,7 +121,7 @@ size_t mem_fwrite(const void *ptr, size_t size, size_t nmemb, MEMFILE *stream)
 
     // Copy into buffer
 
-    std::memcpy(stream->buf + stream->position, ptr, bytes);
+    memcpy(stream->buf + stream->position, ptr, bytes);
     stream->position += static_cast<unsigned int>(bytes);
 
     if (stream->position > stream->buflen)

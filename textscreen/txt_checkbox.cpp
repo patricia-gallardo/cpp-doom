@@ -22,6 +22,7 @@
 #include "txt_io.hpp"
 #include "txt_main.hpp"
 #include "txt_utf8.hpp"
+#include "txt_window.hpp"
 #include "memory.hpp"
 
 static void TXT_CheckBoxSizeCalc(void *uncast_checkbox)
@@ -37,9 +38,12 @@ static void TXT_CheckBoxSizeCalc(void *uncast_checkbox)
 static void TXT_CheckBoxDrawer(void *uncast_checkbox)
 {
     auto    *checkbox = reinterpret_cast<txt_checkbox_t *>(uncast_checkbox);;
-    unsigned int w = checkbox->widget.w;
+    txt_saved_colors_t colors;
+    int i;
+    int w;
 
-    txt_saved_colors_t colors{};
+    w = static_cast<int>(checkbox->widget.w);
+
     TXT_SaveColors(&colors);
     TXT_FGColor(TXT_COLOR_BRIGHT_CYAN);
     TXT_DrawString("(");
@@ -63,7 +67,7 @@ static void TXT_CheckBoxDrawer(void *uncast_checkbox)
     TXT_SetWidgetBG(checkbox);
     TXT_DrawString(checkbox->label);
 
-    for (unsigned int i = TXT_UTF8_Strlen(checkbox->label); i < w-4; ++i)
+    for (i = static_cast<int>(TXT_UTF8_Strlen(checkbox->label)); i < w-4; ++i)
     {
         TXT_DrawString(" ");
     }
@@ -127,7 +131,9 @@ txt_checkbox_t *TXT_NewCheckBox(const char *label, int *variable)
 
 txt_checkbox_t *TXT_NewInvertedCheckBox(const char *label, int *variable)
 {
-    txt_checkbox_t *result = TXT_NewCheckBox(label, variable);
+    txt_checkbox_t *result;
+
+    result = TXT_NewCheckBox(label, variable);
     result->inverted = 1;
 
     return result;

@@ -1575,7 +1575,7 @@ bool P_MorphPlayer(player_t * player)
     beastMo->player = player;
     player->health = beastMo->health = MAXMORPHHEALTH;
     player->mo = beastMo;
-    std::memset(&player->armorpoints[0], 0, NUMARMOR * sizeof(int));
+    memset(&player->armorpoints[0], 0, NUMARMOR * sizeof(int));
     player->clazz = PCLASS_PIG;
     if (oldFlags2 & MF2_FLY)
     {
@@ -1637,7 +1637,7 @@ bool P_MorphMonster(mobj_t * actor)
     monster->tid = oldMonster.tid;
     monster->special = oldMonster.special;
     P_InsertMobjIntoTIDList(monster, oldMonster.tid);
-    std::memcpy(monster->args, oldMonster.args, 5);
+    memcpy(monster->args, oldMonster.args, 5);
 
     // check for turning off minotaur power for active icon
     if (moType == MT_MINOTAUR)

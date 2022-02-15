@@ -251,7 +251,7 @@ void M_CrispyToggleExtAutomap(int)
     crispy->extautomap = !crispy->extautomap;
 }
 
-[[maybe_unused]] void M_CrispyToggleExtsaveg(int)
+void M_CrispyToggleExtsaveg(int)
 {
     crispy->extsaveg = !crispy->extsaveg;
 }

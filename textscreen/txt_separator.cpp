@@ -20,6 +20,7 @@
 #include "txt_io.hpp"
 #include "txt_main.hpp"
 #include "txt_utf8.hpp"
+#include "txt_window.hpp"
 #include "memory.hpp"
 
 static void TXT_SeparatorSizeCalc(void *uncast_separator)

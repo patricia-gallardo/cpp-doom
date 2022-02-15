@@ -18,9 +18,13 @@
 
 #include <cstdio>
 
+#include "SDL.h"
+
+#include "doomtype.hpp"
+
 #include "i_cdmus.hpp"
 
-[[maybe_unused]] int cd_Error;
+int cd_Error;
 
 int I_CDMusInit()
 {

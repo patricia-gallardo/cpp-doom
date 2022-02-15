@@ -40,7 +40,7 @@ enum musevent
 };
 
 // MIDI event codes
-enum midievent
+typedef enum
 {
     midi_releasekey        = 0x80,
     midi_presskey          = 0x90,
@@ -49,7 +49,7 @@ enum midievent
     midi_changepatch       = 0xC0,
     midi_aftertouchchannel = 0xD0,
     midi_pitchwheel        = 0xE0
-};
+} midievent;
 
 // Structure to hold MUS file header
 typedef PACKED_STRUCT({

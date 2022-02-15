@@ -15,6 +15,7 @@
 #include <cstdlib>
 #include <cstring>
 
+#include "memory.hpp"
 #include "txt_desktop.hpp"
 #include "txt_gui.hpp"
 #include "txt_io.hpp"

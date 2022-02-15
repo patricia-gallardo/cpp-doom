@@ -57,7 +57,7 @@ extern void M_CrispyToggleDemoBar(int choice);
 extern void M_CrispyToggleDemoTimer(int choice);
 extern void M_CrispyToggleDemoTimerDir(int choice);
 extern void M_CrispyToggleExtAutomap(int choice);
-[[maybe_unused]] extern void M_CrispyToggleExtsaveg(int choice);
+extern void M_CrispyToggleExtsaveg(int choice);
 extern void M_CrispyToggleFlipcorpses(int choice);
 extern void M_CrispyToggleFreeaim(int choice);
 extern void M_CrispyToggleFreelook(int choice);

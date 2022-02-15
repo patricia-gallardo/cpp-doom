@@ -16,13 +16,15 @@
 //	Disk load indicator.
 //
 
-#include <cstring>
-
 #include "doomtype.hpp"
+#include "deh_str.hpp"
+#include "i_swap.hpp"
 #include "i_video.hpp"
+#include "m_argv.hpp"
 #include "v_video.hpp"
 #include "w_wad.hpp"
 #include "z_zone.hpp"
+
 #include "lump.hpp"
 #include "memory.hpp"
 #include "v_diskicon.hpp"
@@ -49,11 +51,14 @@ static void CopyRegion(pixel_t *dest, int dest_pitch,
     pixel_t *src, int src_pitch,
     int w, int h)
 {
-    pixel_t *s = src;
-    pixel_t *d = dest;
-    for (int y = 0; y < h; ++y)
+    pixel_t *s, *d;
+    int      y;
+
+    s = src;
+    d = dest;
+    for (y = 0; y < h; ++y)
     {
-        std::memcpy(d, s, static_cast<unsigned long>(w) * sizeof(*d));
+        memcpy(d, s, static_cast<unsigned long>(w) * sizeof(*d));
         s += src_pitch;
         d += dest_pitch;
     }
@@ -64,7 +69,7 @@ static void SaveDiskData(const char *disk_lump, int xoffs, int yoffs)
     // Allocate a complete temporary screen where we'll draw the patch.
     pixel_t *tmpscreen = zmalloc<pixel_t *>(static_cast<unsigned long>(SCREENWIDTH * SCREENHEIGHT) * sizeof(*tmpscreen),
         PU_STATIC, nullptr);
-    std::memset(tmpscreen, 0, static_cast<unsigned long>(SCREENWIDTH * SCREENHEIGHT) * sizeof(*tmpscreen));
+    memset(tmpscreen, 0, static_cast<unsigned long>(SCREENWIDTH * SCREENHEIGHT) * sizeof(*tmpscreen));
     V_UseBuffer(tmpscreen);
 
     // Buffer where we'll save the disk data.

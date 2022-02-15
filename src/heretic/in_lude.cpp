@@ -31,12 +31,12 @@
 #include "v_video.hpp"
 #include "lump.hpp"
 
-enum gametype_t
+typedef enum
 {
     SINGLE,
     COOPERATIVE,
     DEATHMATCH
-};
+} gametype_t;
 
 // Public functions
 
@@ -234,9 +234,9 @@ void IN_InitStats()
     else if (netgame && !deathmatch)
     {
         gametype = COOPERATIVE;
-        std::memset(killPercent, 0, MAXPLAYERS * sizeof(int));
-        std::memset(bonusPercent, 0, MAXPLAYERS * sizeof(int));
-        std::memset(secretPercent, 0, MAXPLAYERS * sizeof(int));
+        memset(killPercent, 0, MAXPLAYERS * sizeof(int));
+        memset(bonusPercent, 0, MAXPLAYERS * sizeof(int));
+        memset(secretPercent, 0, MAXPLAYERS * sizeof(int));
         for (i = 0; i < MAXPLAYERS; i++)
         {
             if (playeringame[i])
@@ -589,12 +589,12 @@ void IN_DrawStatBack()
     {
         for (x = 0; x < SCREENWIDTH / 64; x++)
         {
-            std::memcpy(dest, src + ((y & 63) << 6), 64);
+            memcpy(dest, src + ((y & 63) << 6), 64);
             dest += 64;
         }
         if (SCREENWIDTH & 63)
         {
-            std::memcpy(dest, src + ((y & 63) << 6), SCREENWIDTH & 63);
+            memcpy(dest, src + ((y & 63) << 6), SCREENWIDTH & 63);
             dest += (SCREENWIDTH & 63);
         }
     }

@@ -20,6 +20,7 @@
 #include <cstring>
 
 #include "doomdef.hpp"
+#include "doomtype.hpp"
 #include "deh_defs.hpp"
 #include "deh_io.hpp"
 #include "deh_main.hpp"
@@ -62,7 +63,7 @@ static void DEH_AmmoParseLine(deh_context_t *context, char *line, void *tag)
         return;
     }
 
-    int ivalue = std::atoi(value);
+    int ivalue = atoi(value);
 
     // maxammo
 

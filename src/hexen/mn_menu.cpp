@@ -45,16 +45,16 @@ constexpr char ASCII_CURSOR ='[';
 
 // TYPES -------------------------------------------------------------------
 
-enum ItemType_t
+typedef enum
 {
     ITT_EMPTY,
     ITT_EFUNC,
     ITT_LRFUNC,
     ITT_SETMENU,
     ITT_INERT
-};
+} ItemType_t;
 
-enum MenuType_t
+typedef enum
 {
     MENU_MAIN,
     MENU_CLASS,
@@ -65,7 +65,7 @@ enum MenuType_t
     MENU_LOAD,
     MENU_SAVE,
     MENU_NONE
-};
+} MenuType_t;
 
 typedef struct
 {
@@ -721,12 +721,12 @@ void MN_LoadSlotText()
     {
         if (ReadDescriptionForSlot(slot, description))
         {
-            std::memcpy(SlotText[slot], description, SLOTTEXTLEN);
+            memcpy(SlotText[slot], description, SLOTTEXTLEN);
             SlotStatus[slot] = 1;
         }
         else
         {
-            std::memset(SlotText[slot], 0, SLOTTEXTLEN);
+            memset(SlotText[slot], 0, SLOTTEXTLEN);
             SlotStatus[slot] = 0;
         }
     }

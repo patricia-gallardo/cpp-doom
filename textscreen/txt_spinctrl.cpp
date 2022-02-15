@@ -25,6 +25,7 @@
 #include "txt_main.hpp"
 #include "txt_spinctrl.hpp"
 #include "txt_utf8.hpp"
+#include "txt_window.hpp"
 
 // Generate the format string to be used for displaying floats
 

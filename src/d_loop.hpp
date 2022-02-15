@@ -25,7 +25,8 @@
 // The callback is invoked when new players are ready. The callback
 // should return true, or return false to abort startup.
 
-using netgame_startup_callback_t = bool (*)(int, int);
+typedef bool (*netgame_startup_callback_t)(int ready_players,
+    int                                           num_players);
 
 typedef struct
 {

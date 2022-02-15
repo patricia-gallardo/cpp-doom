@@ -99,7 +99,7 @@ static void DEH_PointerParseLine(deh_context_t *context, char *line, void *tag)
 
     // all values are integers
 
-    ivalue = std::atoi(value);
+    ivalue = atoi(value);
     
     // set the appropriate field
 

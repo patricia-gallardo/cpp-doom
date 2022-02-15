@@ -18,7 +18,7 @@
 #define HERETIC_INFO_H
 
 #include "action_hook.hpp"
-enum spritenum_t
+typedef enum
 {
     SPR_IMPX,
     SPR_ACLO,
@@ -149,9 +149,9 @@ enum spritenum_t
     SPR_AMB1,
     SPR_AMB2,
     NUMSPRITES
-};
+} spritenum_t;
 
-enum statenum_t
+typedef enum
 {
     S_NULL,
     S_FREETARGMOBJ,
@@ -1362,7 +1362,7 @@ enum statenum_t
     S_SND_WIND,
     S_SND_WATERFALL,
     NUMSTATES
-};
+} statenum_t;
 
 typedef struct
 {
@@ -1379,7 +1379,7 @@ extern const char *sprnames[];
 
 
 
-enum mobjtype_t
+typedef enum
 {
     NULL_MOBJ = -1,
     MT_MISC0,
@@ -1544,7 +1544,7 @@ enum mobjtype_t
     MT_SOUNDWIND,
     MT_SOUNDWATERFALL,
     NUMMOBJTYPES
-};
+} mobjtype_t;
 
 typedef struct
 {

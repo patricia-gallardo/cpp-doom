@@ -33,6 +33,8 @@
 
 #include "m_misc.hpp"
 #include "m_random.hpp"
+#include "m_argv.hpp"
+
 #include "p_local.hpp"
 #include "w_wad.hpp"
 #include "z_zone.hpp"
@@ -441,7 +443,7 @@ void S_Start()
     }
 
     // [crispy] reset musinfo data at the start of a new map
-    std::memset(&musinfo, 0, sizeof(musinfo));
+    memset(&musinfo, 0, sizeof(musinfo));
 
     S_ChangeMusic(mnum, true);
 }

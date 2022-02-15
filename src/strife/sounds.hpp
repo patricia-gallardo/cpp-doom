@@ -33,7 +33,7 @@ extern musicinfo_t	S_music[];
 //
 
 // villsa [STRIFE]
-enum musicenum_t
+typedef enum
 {
     mus_None,
     mus_logo,
@@ -71,14 +71,14 @@ enum musicenum_t
     mus_happy,
     mus_end,
     NUMMUSIC
-};
+} musicenum_t;
 
 
 //
 // Identifiers for all sfx in game.
 //
 
-enum sfxenum_t
+typedef enum
 {
     sfx_None,
     sfx_swish,
@@ -217,6 +217,6 @@ enum sfxenum_t
     sfx_drchnc,
     sfx_valve,
     NUMSFX
-};
+} sfxenum_t;
 
 #endif

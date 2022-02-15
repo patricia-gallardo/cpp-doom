@@ -20,7 +20,10 @@
 
 #include "net_defs.hpp"
 
-using net_query_callback_t = void (*)(net_addr_t *, net_querydata_t *, unsigned int, void *);
+typedef void (*net_query_callback_t)(net_addr_t *addr,
+    net_querydata_t *                            querydata,
+    unsigned int                                 ping_time,
+    void *                                       user_data);
 
 extern int NET_StartLANQuery();
 extern int NET_StartMasterQuery();

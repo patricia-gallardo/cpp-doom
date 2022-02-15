@@ -17,8 +17,10 @@
 
 #include <cstdlib>
 #include <cstring>
+#include <cstdio>
 
 #include "memory.hpp"
+#include "doomtype.hpp"
 #include "i_system.hpp"
 #include "m_argv.hpp"
 #include "m_misc.hpp"
@@ -58,7 +60,7 @@ static void NET_SDL_InitAddrTable()
 
     addr_table = zmalloc<decltype(addr_table)>(sizeof(addrpair_t *) * static_cast<unsigned long>(addr_table_size),
         PU_STATIC, 0);
-    std::memset(addr_table, 0, sizeof(addrpair_t *) * static_cast<unsigned long>(addr_table_size));
+    memset(addr_table, 0, sizeof(addrpair_t *) * static_cast<unsigned long>(addr_table_size));
 }
 
 static bool AddressesEqual(IPaddress *a, IPaddress *b)
@@ -72,14 +74,16 @@ static bool AddressesEqual(IPaddress *a, IPaddress *b)
 
 static net_addr_t *NET_SDL_FindAddress(IPaddress *addr)
 {
-    int empty_entry = -1;
+    addrpair_t *new_entry;
+    int         empty_entry = -1;
+    int         i;
 
     if (addr_table_size < 0)
     {
         NET_SDL_InitAddrTable();
     }
 
-    for (int i = 0; i < addr_table_size; ++i)
+    for (i = 0; i < addr_table_size; ++i)
     {
         if (addr_table[i] != nullptr
             && AddressesEqual(addr, &addr_table[i]->sdl_addr))
@@ -97,6 +101,9 @@ static net_addr_t *NET_SDL_FindAddress(IPaddress *addr)
 
     if (empty_entry < 0)
     {
+        addrpair_t **new_addr_table;
+        int          new_addr_table_size;
+
         // after reallocing, we will add this in as the first entry
         // in the new block of memory
 
@@ -105,11 +112,11 @@ static net_addr_t *NET_SDL_FindAddress(IPaddress *addr)
         // allocate a new array twice the size, init to 0 and copy
         // the existing table in.  replace the old table.
 
-        int new_addr_table_size = addr_table_size * 2;
-        addrpair_t **new_addr_table = zmalloc<decltype(new_addr_table)>(sizeof(addrpair_t *) * static_cast<unsigned long>(new_addr_table_size),
+        new_addr_table_size = addr_table_size * 2;
+        new_addr_table      = zmalloc<decltype(new_addr_table)>(sizeof(addrpair_t *) * static_cast<unsigned long>(new_addr_table_size),
             PU_STATIC, 0);
-        std::memset(new_addr_table, 0, sizeof(addrpair_t *) * static_cast<unsigned long>(new_addr_table_size));
-        std::memcpy(new_addr_table, addr_table,
+        memset(new_addr_table, 0, sizeof(addrpair_t *) * static_cast<unsigned long>(new_addr_table_size));
+        memcpy(new_addr_table, addr_table,
             sizeof(addrpair_t *) * static_cast<unsigned long>(addr_table_size));
         Z_Free(addr_table);
         addr_table      = new_addr_table;
@@ -118,7 +125,8 @@ static net_addr_t *NET_SDL_FindAddress(IPaddress *addr)
 
     // Add a new entry
 
-    addrpair_t *new_entry = zmalloc<decltype(new_entry)>(sizeof(addrpair_t), PU_STATIC, 0);
+    new_entry = zmalloc<decltype(new_entry)>(sizeof(addrpair_t), PU_STATIC, 0);
+
     new_entry->sdl_addr          = *addr;
     new_entry->net_addr.refcount = 0;
     new_entry->net_addr.handle   = &new_entry->sdl_addr;
@@ -131,7 +139,9 @@ static net_addr_t *NET_SDL_FindAddress(IPaddress *addr)
 
 static void NET_SDL_FreeAddress(net_addr_t *addr)
 {
-    for (int i = 0; i < addr_table_size; ++i)
+    int i;
+
+    for (i = 0; i < addr_table_size; ++i)
     {
         if (addr == &addr_table[i]->net_addr)
         {
@@ -146,6 +156,8 @@ static void NET_SDL_FreeAddress(net_addr_t *addr)
 
 static bool NET_SDL_InitClient()
 {
+    int p;
+
     if (initted)
         return true;
 
@@ -157,9 +169,9 @@ static bool NET_SDL_InitClient()
     // the default (2342).
     //
 
-    int p = M_CheckParmWithArgs("-port", 1);
+    p = M_CheckParmWithArgs("-port", 1);
     if (p > 0)
-        port = std::atoi(myargv[p + 1]);
+        port = atoi(myargv[p + 1]);
 
     SDLNet_Init();
 
@@ -183,12 +195,14 @@ static bool NET_SDL_InitClient()
 
 static bool NET_SDL_InitServer()
 {
+    int p;
+
     if (initted)
         return true;
 
-    int p = M_CheckParmWithArgs("-port", 1);
+    p = M_CheckParmWithArgs("-port", 1);
     if (p > 0)
-        port = std::atoi(myargv[p + 1]);
+        port = atoi(myargv[p + 1]);
 
     SDLNet_Init();
 
@@ -259,7 +273,9 @@ static void NET_SDL_SendPacket(net_addr_t *addr, net_packet_t *packet)
 
 static bool NET_SDL_RecvPacket(net_addr_t **addr, net_packet_t **packet)
 {
-    int result = SDLNet_UDP_Recv(udpsocket, recvpacket);
+    int result;
+
+    result = SDLNet_UDP_Recv(udpsocket, recvpacket);
 
     if (result < 0)
     {
@@ -275,7 +291,7 @@ static bool NET_SDL_RecvPacket(net_addr_t **addr, net_packet_t **packet)
     // Put the data into a new packet structure
 
     *packet = NET_NewPacket(recvpacket->len);
-    std::memcpy((*packet)->data, recvpacket->data, static_cast<size_t>(recvpacket->len));
+    memcpy((*packet)->data, recvpacket->data, static_cast<size_t>(recvpacket->len));
     (*packet)->len = static_cast<size_t>(recvpacket->len);
 
     // Address
@@ -287,7 +303,7 @@ static bool NET_SDL_RecvPacket(net_addr_t **addr, net_packet_t **packet)
 
 void NET_SDL_AddrToString(net_addr_t *addr, char *buffer, int buffer_len)
 {
-    auto *ip   = reinterpret_cast<IPaddress *>(addr->handle);
+    IPaddress *ip   = reinterpret_cast<IPaddress *>(addr->handle);
     uint32_t   host = SDLNet_Read32(&ip->host);
     uint16_t   port_local = SDLNet_Read16(&ip->port);
 
@@ -309,22 +325,25 @@ void NET_SDL_AddrToString(net_addr_t *addr, char *buffer, int buffer_len)
 
 net_addr_t *NET_SDL_ResolveAddress(const char *address)
 {
+    IPaddress ip;
+    char *    addr_hostname;
+    int       addr_port;
+    int       result;
+
     const auto *colon = std::strchr(address, ':');
 
-    char *addr_hostname = M_StringDuplicate(address);
-    int addr_port = 0;
+    addr_hostname = M_StringDuplicate(address);
     if (colon != nullptr)
     {
         addr_hostname[colon - address] = '\0';
-        addr_port                      = std::atoi(colon + 1);
+        addr_port                      = atoi(colon + 1);
     }
     else
     {
         addr_port = port;
     }
 
-    IPaddress ip;
-    int result = SDLNet_ResolveHost(&ip, addr_hostname, static_cast<Uint16>(addr_port));
+    result = SDLNet_ResolveHost(&ip, addr_hostname, static_cast<Uint16>(addr_port));
 
     free(addr_hostname);
 

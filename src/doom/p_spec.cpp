@@ -21,8 +21,11 @@
 //
 
 
+#include <cstdlib>
+
 #include "doomdef.hpp"
 #include "doomstat.hpp"
+
 #include "deh_main.hpp"
 #include "i_system.hpp"
 #include "i_swap.hpp" // [crispy] LONG()
@@ -1280,7 +1283,7 @@ void P_UpdateSpecials()
                 {
                     S_StartSoundOnce(&buttonlist[i].soundorg, sfx_swtchn);
                 }
-                std::memset(&buttonlist[i], 0, sizeof(button_t));
+                memset(&buttonlist[i], 0, sizeof(button_t));
             }
         }
 
@@ -1657,7 +1660,7 @@ void P_SpawnSpecials()
         activeplats[i] = nullptr;
 
     for (i = 0; i < maxbuttons; i++)
-        std::memset(&buttonlist[i], 0, sizeof(button_t));
+        memset(&buttonlist[i], 0, sizeof(button_t));
 
     // UNUSED: no horizonal sliders.
     //	P_InitSlidingDoorFrames();

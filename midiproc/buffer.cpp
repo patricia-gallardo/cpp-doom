@@ -76,13 +76,13 @@ bool Buffer_Push(buffer_t *buf, const void *data, int len)
         }
 
         // Move our data to the front of the buffer.
-        std::memmove(buf->buffer, buf->data, buf->data_len);
+        memmove(buf->buffer, buf->data, buf->data_len);
         buf->data = buf->buffer;
         buf->data_end = buf->buffer + buf->data_len;
     }
 
     // Append to the buffer.
-    std::memcpy(buf->data_end, data, len);
+    memcpy(buf->data_end, data, len);
     buf->data_len += len;
     buf->data_end = buf->data + buf->data_len;
 

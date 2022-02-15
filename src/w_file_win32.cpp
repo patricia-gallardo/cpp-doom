@@ -76,7 +76,9 @@ static void MapFile(win32_wad_file_t *wad, const char *filename)
 
 unsigned int GetFileLength(HANDLE handle)
 {
-    DWORD result = SetFilePointer(handle, 0, nullptr, FILE_END);
+    DWORD result;
+
+    result = SetFilePointer(handle, 0, nullptr, FILE_END);
 
     if (result == INVALID_SET_FILE_POINTER)
     {
@@ -88,7 +90,9 @@ unsigned int GetFileLength(HANDLE handle)
 
 static wad_file_t *W_Win32_OpenFile(const char *path)
 {
-    wchar_t wpath[MAX_PATH + 1];
+    win32_wad_file_t *result;
+    wchar_t           wpath[MAX_PATH + 1];
+    HANDLE            handle;
 
     // Open the file:
 
@@ -96,7 +100,7 @@ static wad_file_t *W_Win32_OpenFile(const char *path)
         path, static_cast<int>(strlen(path) + 1),
         wpath, static_cast<int>(sizeof(wpath)));
 
-    HANDLE handle = CreateFileW(wpath,
+    handle = CreateFileW(wpath,
         GENERIC_READ,
         FILE_SHARE_READ,
         nullptr,
@@ -111,7 +115,7 @@ static wad_file_t *W_Win32_OpenFile(const char *path)
 
     // Create a new win32_wad_file_t to hold the file handle.
 
-    win32_wad_file_t *result = zmalloc<win32_wad_file_t *>(sizeof(win32_wad_file_t), PU_STATIC, 0);
+    result                 = zmalloc<win32_wad_file_t *>(sizeof(win32_wad_file_t), PU_STATIC, 0);
     result->wad.file_class = &win32_wad_file;
     result->wad.length     = GetFileLength(handle);
     result->wad.path       = M_StringDuplicate(path);
@@ -126,7 +130,9 @@ static wad_file_t *W_Win32_OpenFile(const char *path)
 
 static void W_Win32_CloseFile(wad_file_t *wad)
 {
-    auto *win32_wad = reinterpret_cast<win32_wad_file_t *>(wad);
+    win32_wad_file_t *win32_wad;
+
+    win32_wad = (win32_wad_file_t *)wad;
 
     // If mapped, unmap it.
 
@@ -156,11 +162,15 @@ static void W_Win32_CloseFile(wad_file_t *wad)
 size_t W_Win32_Read(wad_file_t *wad, unsigned int offset,
     void *buffer, size_t buffer_len)
 {
-    auto *win32_wad = reinterpret_cast<win32_wad_file_t *>(wad);
+    win32_wad_file_t *win32_wad;
+    DWORD             bytes_read;
+    DWORD             result;
+
+    win32_wad = (win32_wad_file_t *)wad;
 
     // Jump to the specified position in the file.
 
-    DWORD result = SetFilePointer(win32_wad->handle, offset, nullptr, FILE_BEGIN);
+    result = SetFilePointer(win32_wad->handle, offset, nullptr, FILE_BEGIN);
 
     if (result == INVALID_SET_FILE_POINTER)
     {
@@ -169,7 +179,7 @@ size_t W_Win32_Read(wad_file_t *wad, unsigned int offset,
     }
 
     // Read into the buffer.
-    DWORD bytes_read = 0;
+
     if (!ReadFile(win32_wad->handle, buffer, static_cast<DWORD>(buffer_len), &bytes_read, nullptr))
     {
         I_Error("W_Win32_Read: Error reading from file");

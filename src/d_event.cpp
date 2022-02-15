@@ -41,6 +41,8 @@ void D_PostEvent(event_t *ev)
 
 event_t *D_PopEvent()
 {
+    event_t *result;
+
     // No more events waiting.
 
     if (eventtail == eventhead)
@@ -48,7 +50,7 @@ event_t *D_PopEvent()
         return nullptr;
     }
 
-    event_t *result = &events[eventtail];
+    result = &events[eventtail];
 
     // Advance to the next event in the queue.
 

@@ -419,7 +419,7 @@ static void P_ReadMusInfo(const char *key)
 
         if ((i = W_CheckNumForName(lump)) > 0)
         {
-            std::memset(&musinfo, 0, sizeof(musinfo));
+            memset(&musinfo, 0, sizeof(musinfo));
             musinfo.current_item  = i;
             musinfo.from_savegame = true;
             S_ChangeMusInfoMusic(i, true);

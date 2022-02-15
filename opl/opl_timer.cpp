@@ -22,12 +22,12 @@
 #include "opl_timer.hpp"
 #include "opl_queue.hpp"
 
-enum thread_state_t
+typedef enum
 {
     THREAD_STATE_STOPPED,
     THREAD_STATE_RUNNING,
     THREAD_STATE_STOPPING,
-};
+} thread_state_t;
 
 static SDL_Thread *timer_thread = nullptr;
 static thread_state_t timer_thread_state;
@@ -91,10 +91,10 @@ static int CallbackWaiting(uint64_t *next_time)
 
 static uint64_t GetNextTime()
 {
-    opl_callback_t callback {};
-    void          *callback_data = nullptr;
-    uint64_t       next_time     = 0;
-    int            have_callback = 0;
+    opl_callback_t callback{};
+    void *callback_data = nullptr;
+    uint64_t next_time;
+    int have_callback;
 
     // Keep running through callbacks until there are none ready to
     // run. When we run out of callbacks, next_time will be set.
@@ -131,6 +131,9 @@ static uint64_t GetNextTime()
 
 static int ThreadFunction(void *)
 {
+    uint64_t next_time;
+    uint64_t now;
+
     // Keep running until OPL_Timer_StopThread is called.
 
     while (timer_thread_state == THREAD_STATE_RUNNING)
@@ -138,12 +141,12 @@ static int ThreadFunction(void *)
         // Get the next time that we must sleep until, and
         // wait until that time.
 
-        uint64_t next_time = GetNextTime();
-        uint64_t now = SDL_GetTicks() * OPL_MS;
+        next_time = GetNextTime();
+        now = SDL_GetTicks() * OPL_MS;
 
         if (next_time > now)
         {
-            auto ms = static_cast<Uint32>((next_time - now) / OPL_MS);
+            Uint32 ms = static_cast<Uint32>((next_time - now) / OPL_MS);
             SDL_Delay(ms);
         }
 

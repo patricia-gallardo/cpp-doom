@@ -46,16 +46,16 @@ constexpr char ASCII_CURSOR = '[';
 
 // Types
 
-enum ItemType_t
+typedef enum
 {
     ITT_EMPTY,
     ITT_EFUNC,
     ITT_LRFUNC,
     ITT_SETMENU,
     ITT_INERT
-};
+} ItemType_t;
 
-enum MenuType_t
+typedef enum
 {
     MENU_MAIN,
     MENU_EPISODE,
@@ -67,7 +67,7 @@ enum MenuType_t
     MENU_SAVE,
     MENU_CRISPNESS,
     MENU_NONE
-};
+} MenuType_t;
 
 typedef struct
 {
@@ -1618,7 +1618,7 @@ bool MN_Responder(event_t * event)
         }
         if (key == KEY_ESCAPE)
         {
-            std::memset(SlotText[currentSlot], 0, SLOTTEXTLEN + 2);
+            memset(SlotText[currentSlot], 0, SLOTTEXTLEN + 2);
             M_StringCopy(SlotText[currentSlot], oldSlotText,
                          sizeof(SlotText[currentSlot]));
             SlotStatus[currentSlot]--;

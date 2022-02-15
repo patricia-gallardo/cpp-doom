@@ -26,8 +26,15 @@
 #include "SDL_mixer.h"
 
 #include "i_glob.hpp"
+#include "i_midipipe.hpp"
+
 #include "config.h"
 #include "doomtype.hpp"
+#include "memio.hpp"
+#include "mus2mid.hpp"
+
+#include "deh_str.hpp"
+#include "gusconf.hpp"
 #include "i_sound.hpp"
 #include "i_system.hpp"
 #include "i_swap.hpp"
@@ -337,7 +344,7 @@ static unsigned int ParseVorbisTime(unsigned int samplerate_hz, char *value)
 
     if (strchr(value, ':') == nullptr)
     {
-        return static_cast<unsigned int>(std::atoi(value));
+        return static_cast<unsigned int>(atoi(value));
     }
 
     result    = 0;
@@ -349,7 +356,7 @@ static unsigned int ParseVorbisTime(unsigned int samplerate_hz, char *value)
         {
             c         = *p;
             *p        = '\0';
-            result    = result * 60 + static_cast<unsigned int>(std::atoi(num_start));
+            result    = result * 60 + static_cast<unsigned int>(atoi(num_start));
             num_start = p + 1;
             *p        = c;
         }
@@ -361,7 +368,7 @@ static unsigned int ParseVorbisTime(unsigned int samplerate_hz, char *value)
         }
     }
 
-    return (result * 60 + static_cast<unsigned int>(std::atoi(num_start))) * samplerate_hz;
+    return (result * 60 + static_cast<unsigned int>(atoi(num_start))) * samplerate_hz;
 }
 
 // Given a vorbis comment string (eg. "LOOP_START=12345"), set fields
@@ -529,14 +536,14 @@ static void ParseOggFile(file_metadata_t *metadata, FILE *fs)
 
     // Scan through the start of the file looking for headers. They
     // begin '[byte]vorbis' where the byte value indicates header type.
-    std::memset(buf, 0, sizeof(buf));
+    memset(buf, 0, sizeof(buf));
 
     for (offset = 0; offset < 100 * 1024; ++offset)
     {
         // buf[] is used as a sliding window. Each iteration, we
         // move the buffer one byte to the left and read an extra
         // byte onto the end.
-        std::memmove(buf, buf + 1, sizeof(buf) - 1);
+        memmove(buf, buf + 1, sizeof(buf) - 1);
 
         if (fread(&buf[6], 1, 1, fs) < 1)
         {

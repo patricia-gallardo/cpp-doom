@@ -16,6 +16,8 @@
 //     through the network module system
 //
 
+#include <cstdio>
+
 #include "memory.hpp"
 #include "i_system.hpp"
 #include "net_defs.hpp"
@@ -24,7 +26,7 @@
 
 #define MAX_MODULES 16
 
-struct [[maybe_unused]] _net_context_s {
+struct _net_context_s {
     net_module_t *modules[MAX_MODULES];
     int           num_modules;
 };
@@ -52,9 +54,12 @@ void NET_AddModule(net_context_t *context, net_module_t *module)
 
 net_addr_t *NET_ResolveAddress(net_context_t *context, const char *addr)
 {
-    for (int i = 0; i < context->num_modules; ++i)
+    int         i;
+    net_addr_t *result;
+
+    for (i = 0; i < context->num_modules; ++i)
     {
-        net_addr_t *result = context->modules[i]->ResolveAddress(addr);
+        result = context->modules[i]->ResolveAddress(addr);
 
         if (result != nullptr)
         {
@@ -73,7 +78,9 @@ void NET_SendPacket(net_addr_t *addr, net_packet_t *packet)
 
 void NET_SendBroadcast(net_context_t *context, net_packet_t *packet)
 {
-    for (int i = 0; i < context->num_modules; ++i)
+    int i;
+
+    for (i = 0; i < context->num_modules; ++i)
     {
         context->modules[i]->SendPacket(&net_broadcast_addr, packet);
     }
@@ -83,9 +90,11 @@ bool NET_RecvPacket(net_context_t *context,
     net_addr_t **                     addr,
     net_packet_t **                   packet)
 {
+    int i;
+
     // check all modules for new packets
 
-    for (int i = 0; i < context->num_modules; ++i)
+    for (i = 0; i < context->num_modules; ++i)
     {
         if (context->modules[i]->RecvPacket(addr, packet))
         {

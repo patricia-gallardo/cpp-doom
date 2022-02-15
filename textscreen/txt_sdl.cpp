@@ -295,7 +295,7 @@ int TXT_Init()
     SDL_UnlockSurface(screenbuffer);
 
     screendata = static_cast<unsigned char *>(malloc(TXT_SCREEN_W * TXT_SCREEN_H * 2));
-    std::memset(screendata, 0, TXT_SCREEN_W * TXT_SCREEN_H * 2);
+    memset(screendata, 0, TXT_SCREEN_W * TXT_SCREEN_H * 2);
 
     return 1;
 }

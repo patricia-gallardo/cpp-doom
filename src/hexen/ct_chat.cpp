@@ -117,13 +117,13 @@ void CT_Init()
     head = 0;                   //initialize the queue index
     tail = 0;
     chatmodeon = false;
-    std::memset(ChatQueue, 0, QUEUESIZE);
+    memset(ChatQueue, 0, QUEUESIZE);
     for (i = 0; i < maxplayers; i++)
     {
         chat_dest[i] = 0;
         msgptr[i] = 0;
-        std::memset(plr_lastmsg[i], 0, MESSAGESIZE);
-        std::memset(chat_msg[i], 0, MESSAGESIZE);
+        memset(plr_lastmsg[i], 0, MESSAGESIZE);
+        memset(chat_msg[i], 0, MESSAGESIZE);
     }
     FontABaseLump = W_GetNumForName("FONTA_S") + 1;
     return;
@@ -503,7 +503,7 @@ void CT_BackSpace(int player)
 
 void CT_ClearChatMessage(int player)
 {
-    std::memset(chat_msg[player], 0, MESSAGESIZE);
+    memset(chat_msg[player], 0, MESSAGESIZE);
     msgptr[player] = 0;
     msglen[player] = 0;
 }

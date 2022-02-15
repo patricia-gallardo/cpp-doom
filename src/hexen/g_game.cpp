@@ -214,7 +214,7 @@ void G_BuildTiccmd(ticcmd_t *cmd, int maketic)
     // haleyjd: removed externdriver crap
 
     pClass = players[consoleplayer].clazz;
-    std::memset(cmd, 0, sizeof(*cmd));
+    memset(cmd, 0, sizeof(*cmd));
 
 //      cmd->consistancy =
 //              consistancy[consoleplayer][(maketic*ticdup)%BACKUPTICS];
@@ -687,7 +687,7 @@ void G_DoLoadLevel()
     {
         if (playeringame[i] && players[i].playerstate == PST_DEAD)
             players[i].playerstate = PST_REBORN;
-        std::memset(players[i].frags, 0, sizeof(players[i].frags));
+        memset(players[i].frags, 0, sizeof(players[i].frags));
     }
 
     SN_StopAllSequences();
@@ -700,12 +700,12 @@ void G_DoLoadLevel()
 // clear cmd building stuff
 // 
 
-    std::memset(gamekeydown, 0, sizeof(gamekeydown));
+    memset(gamekeydown, 0, sizeof(gamekeydown));
     joyxmove = joyymove = joystrafemove = joylook = 0;
     mousex = mousey = 0;
     sendpause = sendsave = paused = false;
-    std::memset(mousearray, 0, sizeof(mousearray));
-    std::memset(joyarray, 0, sizeof(joyarray));
+    memset(mousearray, 0, sizeof(mousearray));
+    memset(joyarray, 0, sizeof(joyarray));
 
     if (testcontrols)
     {
@@ -1012,7 +1012,7 @@ void G_Ticker()
         {
             cmd = &players[i].cmd;
 
-            std::memcpy(cmd, &netcmds[i], sizeof(ticcmd_t));
+            memcpy(cmd, &netcmds[i], sizeof(ticcmd_t));
 
             if (demoplayback)
                 G_ReadDemoTiccmd(cmd);
@@ -1151,7 +1151,7 @@ void G_PlayerExitMap(int playerNumber)
 
     // Strip all current powers (retain flight)
     flightPower = player->powers[pw_flight];
-    std::memset(player->powers, 0, sizeof(player->powers));
+    memset(player->powers, 0, sizeof(player->powers));
     player->powers[pw_flight] = flightPower;
 
     if (deathmatch)
@@ -1211,16 +1211,16 @@ void G_PlayerReborn(int player)
     int killcount, itemcount, secretcount;
     unsigned int worldTimer;
 
-    std::memcpy(frags, players[player].frags, sizeof(frags));
+    memcpy(frags, players[player].frags, sizeof(frags));
     killcount = players[player].killcount;
     itemcount = players[player].itemcount;
     secretcount = players[player].secretcount;
     worldTimer = players[player].worldTimer;
 
     p = &players[player];
-    std::memset(p, 0, sizeof(*p));
+    memset(p, 0, sizeof(*p));
 
-    std::memcpy(players[player].frags, frags, sizeof(players[player].frags));
+    memcpy(players[player].frags, frags, sizeof(players[player].frags));
     players[player].killcount = killcount;
     players[player].itemcount = itemcount;
     players[player].secretcount = secretcount;
@@ -1807,8 +1807,8 @@ void G_InitNew(skill_t skill, int episode, int map)
     //maketic = 1;
     //for (i=0 ; i<maxplayers ; i++)
     //      nettics[i] = 1; // one null event for this gametic
-    //std::memset (localcmds,0,sizeof(localcmds));
-    //std::memset (netcmds,0,sizeof(netcmds));
+    //memset (localcmds,0,sizeof(localcmds));
+    //memset (netcmds,0,sizeof(netcmds));
 
     G_DoLoadLevel();
 }
@@ -1869,7 +1869,7 @@ static void IncreaseDemoBuffer()
 
     // Copy over the old data
 
-    std::memcpy(new_demobuffer, demobuffer, current_length);
+    memcpy(new_demobuffer, demobuffer, current_length);
 
     // Free the old buffer and point the demo pointers at the new buffer.
 
@@ -1984,7 +1984,7 @@ void G_RecordDemo(skill_t skill, int, int episode, int map,
 
     i = M_CheckParmWithArgs("-maxdemo", 1);
     if (i)
-        maxsize = std::atoi(myargv[i + 1]) * 1024;
+        maxsize = atoi(myargv[i + 1]) * 1024;
     demobuffer = zmalloc<uint8_t *>(maxsize, PU_STATIC, nullptr);
     demoend = demobuffer + maxsize;
 

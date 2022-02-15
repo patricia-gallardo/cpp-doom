@@ -16,6 +16,7 @@
 //
 
 #include <cstdio>
+#include <cassert>
 
 #include "SDL.h"
 #include "SDL_mixer.h"
@@ -23,8 +24,8 @@
 #include "pcsound.hpp"
 #include "pcsound_internal.hpp"
 
-constexpr auto MAX_SOUND_SLICE_TIME = 70; /* ms */
-constexpr auto SQUARE_WAVE_AMP      = 0x2000;
+#define MAX_SOUND_SLICE_TIME 70 /* ms */
+#define SQUARE_WAVE_AMP 0x2000
 
 // If true, we initialized SDL and have the responsibility to shut it 
 // down
@@ -54,24 +55,30 @@ static int phase_offset = 0;
 
 static void PCSound_Mix_Callback(void *, Uint8 *stream, int len)
 {
+    Sint16 *leftptr;
+    Sint16 *rightptr;
+    Sint16 this_value;
+    int oldfreq;
+    int i;
+    int nsamples;
+
     // Number of samples is quadrupled, because of 16-bit and stereo
 
-    int nsamples = len / 4;
+    nsamples = len / 4;
 
-    Sint16 *leftptr = reinterpret_cast<Sint16 *>(stream);
-    Sint16 *rightptr = leftptr + 1;
+    leftptr = reinterpret_cast<Sint16 *>(stream);
+    rightptr = leftptr + 1;
     
     // Fill the output buffer
-    Sint16 this_value = 0;
 
-    for (int i=0; i<nsamples; ++i)
+    for (i=0; i<nsamples; ++i)
     {
         // Has this sound expired? If so, invoke the callback to get 
         // the next frequency.
 
         while (current_remaining == 0) 
         {
-            int oldfreq = current_freq;
+            oldfreq = current_freq;
 
             // Get the next frequency to play
 
@@ -90,6 +97,7 @@ static void PCSound_Mix_Callback(void *, Uint8 *stream, int len)
         }
 
         // Set the value for this sample.
+        
         if (current_freq == 0)
         {
             // Silence
@@ -98,11 +106,13 @@ static void PCSound_Mix_Callback(void *, Uint8 *stream, int len)
         }
         else 
         {
+            int frac;
+
             // Determine whether we are at a peak or trough in the current
             // sound.  Multiply by 2 so that frac % 2 will give 0 or 1 
             // depending on whether we are at a peak or trough.
 
-            int frac = (phase_offset * current_freq * 2) / mixing_freq;
+            frac = (phase_offset * current_freq * 2) / mixing_freq;
 
             if ((frac % 2) == 0) 
             {
@@ -130,9 +140,8 @@ static void PCSound_Mix_Callback(void *, Uint8 *stream, int len)
 
 static int SDLIsInitialized()
 {
-    int    freq     = 0;
-    int    channels = 0;
-    Uint16 format   = 0;
+    int freq, channels;
+    Uint16 format;
 
     return Mix_QuerySpec(&freq, &format, &channels);
 }
@@ -152,11 +161,14 @@ static void PCSound_SDL_Shutdown()
 
 static int GetSliceSize()
 {
-    int limit = (pcsound_sample_rate * MAX_SOUND_SLICE_TIME) / 1000;
+    int limit;
+    int n;
+
+    limit = (pcsound_sample_rate * MAX_SOUND_SLICE_TIME) / 1000;
 
     // Try all powers of two, not exceeding the limit.
 
-    for (int n=0;; ++n)
+    for (n=0;; ++n)
     {
         // 2^n <= limit < 2^n+1 ?
 
@@ -170,6 +182,8 @@ static int GetSliceSize()
 
 static int PCSound_SDL_Init(pcsound_callback_func callback_func)
 {
+    int slicesize;
+
     // Check if SDL_mixer has been opened already
     // If not, we must initialize it now
 
@@ -181,7 +195,7 @@ static int PCSound_SDL_Init(pcsound_callback_func callback_func)
             return 0;
         }
 
-        int slicesize = GetSliceSize();
+        slicesize = GetSliceSize();
 
         if (Mix_OpenAudio(pcsound_sample_rate, AUDIO_S16SYS, 2, slicesize) < 0)
         {

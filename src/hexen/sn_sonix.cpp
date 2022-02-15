@@ -44,7 +44,7 @@
 
 // TYPES -------------------------------------------------------------------
 
-enum sscmds_t
+typedef enum
 {
     SS_CMD_NONE,
     SS_CMD_PLAY,
@@ -56,7 +56,7 @@ enum sscmds_t
     SS_CMD_VOLUME,
     SS_CMD_STOPSOUND,
     SS_CMD_END
-};
+} sscmds_t;
 
 // EXTERNAL FUNCTION PROTOTYPES --------------------------------------------
 
@@ -200,7 +200,7 @@ void SN_InitSequenceScript()
             }
             tempDataStart = zmalloc<int *>(SS_TEMPBUFFER_SIZE,
                                              PU_STATIC, nullptr);
-            std::memset(tempDataStart, 0, SS_TEMPBUFFER_SIZE);
+            memset(tempDataStart, 0, SS_TEMPBUFFER_SIZE);
             tempDataPtr = tempDataStart;
             for (i = 0; i < SS_MAX_SCRIPTS; i++)
             {
@@ -288,7 +288,7 @@ void SN_InitSequenceScript()
             *tempDataPtr++ = SS_CMD_END;
             int dataSize = static_cast<int>((tempDataPtr - tempDataStart) * sizeof(int));
             SequenceData[i] = zmalloc<int *>(dataSize, PU_STATIC, nullptr);
-            std::memcpy(SequenceData[i], tempDataStart, dataSize);
+            memcpy(SequenceData[i], tempDataStart, dataSize);
             Z_Free(tempDataStart);
             inSequence = -1;
         }

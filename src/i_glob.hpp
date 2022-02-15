@@ -22,7 +22,7 @@
 #define GLOB_FLAG_NOCASE 0x01
 #define GLOB_FLAG_SORTED 0x02
 
-using glob_t = struct glob_s;
+typedef struct glob_s glob_t;
 
 // Start reading a list of file paths from the given directory which match
 // the given glob pattern. I_EndGlob() must be called on completion.

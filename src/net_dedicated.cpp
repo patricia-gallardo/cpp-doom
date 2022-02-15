@@ -15,6 +15,10 @@
 // Dedicated server code.
 //
 
+#include <cstdio>
+
+#include "doomtype.hpp"
+
 #include "i_system.hpp"
 #include "i_timer.hpp"
 
@@ -63,7 +67,9 @@ static const char *not_dedicated_options[] = {
 
 static void CheckForClientOptions()
 {
-    for (int i = 0; not_dedicated_options[i] != nullptr; ++i)
+    int i;
+
+    for (i = 0; not_dedicated_options[i] != nullptr; ++i)
     {
         if (M_CheckParm(not_dedicated_options[i]) > 0)
         {
@@ -76,7 +82,7 @@ static void CheckForClientOptions()
     }
 }
 
-[[noreturn]] void NET_DedicatedServer()
+void NET_DedicatedServer()
 {
     CheckForClientOptions();
 

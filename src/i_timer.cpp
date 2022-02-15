@@ -19,6 +19,7 @@
 #include "SDL.h"
 
 #include "i_timer.hpp"
+#include "doomtype.hpp"
 
 //
 // I_GetTime

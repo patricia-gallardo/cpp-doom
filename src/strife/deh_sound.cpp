@@ -83,7 +83,7 @@ static void DEH_SoundParseLine(deh_context_t *context, char *line, void *tag)
     
     // all values are integers
 
-    ivalue = std::atoi(value);
+    ivalue = atoi(value);
     
     // Set the field value
 

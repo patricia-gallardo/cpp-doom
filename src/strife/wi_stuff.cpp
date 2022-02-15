@@ -106,13 +106,13 @@
 
 
 
-enum animenum_t
+typedef enum
 {
     ANIM_ALWAYS,
     ANIM_RANDOM,
     ANIM_LEVEL
 
-};
+} animenum_t;
 
 typedef struct
 {

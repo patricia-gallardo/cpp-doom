@@ -861,7 +861,7 @@ mobj_t *P_SpawnMobj(fixed_t x, fixed_t y, fixed_t z, mobjtype_t type)
     fixed_t space;
 
     mobj = zmalloc<mobj_t *>(sizeof(*mobj), PU_LEVEL, nullptr);
-    std::memset(mobj, 0, sizeof(*mobj));
+    memset(mobj, 0, sizeof(*mobj));
     info = &mobjinfo[type];
     mobj->type = type;
     mobj->info = info;
@@ -1044,7 +1044,7 @@ void P_SpawnMapThing(mapthing_t * mthing)
     {
         if (deathmatch_p < &deathmatchstarts[10])
         {
-            std::memcpy(deathmatch_p, mthing, sizeof(*mthing));
+            memcpy(deathmatch_p, mthing, sizeof(*mthing));
             deathmatch_p++;
         }
         return;

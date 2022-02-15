@@ -1601,7 +1601,7 @@ void P_WriteSaveGameHeader(char *)
         saveg_write8(0);
     */
 
-    std::memset (name,0,sizeof(name));
+    memset (name,0,sizeof(name)); 
     M_snprintf(name, sizeof(name), "ver %i", STRIFE_VERSION);
 
     for (i=0; i<VERSIONSIZE; ++i)
@@ -1643,7 +1643,7 @@ bool P_ReadSaveGameHeader()
     for (i=0; i<VERSIONSIZE; ++i)
         read_vcheck[i] = static_cast<char>(saveg_read8());
 
-    std::memset (vcheck,0,sizeof(vcheck));
+    memset (vcheck,0,sizeof(vcheck));
     M_snprintf(vcheck, sizeof(vcheck), "ver %i", STRIFE_VERSION);
     if (strcmp(read_vcheck, vcheck) != 0)
         return false;                       // bad version 
@@ -1851,12 +1851,12 @@ void P_UnArchiveWorld ()
 //
 // Thinkers
 //
-enum thinkerclass_t
+typedef enum
 {
     tc_end,
     tc_mobj
 
-};
+} thinkerclass_t;
 
 
 //
@@ -1924,7 +1924,7 @@ void P_UnArchiveThinkers ()
     P_InitThinkers ();
     
     // read in saved thinkers
-    while (true)
+    while (1)
     {
         tclass = saveg_read8();
         switch (tclass)

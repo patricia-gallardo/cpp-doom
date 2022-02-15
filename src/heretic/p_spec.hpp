@@ -167,12 +167,12 @@ typedef struct
     short episode;
 } switchlist_t;
 
-enum bwhere_e
+typedef enum
 {
     top,
     middle,
     bottom
-};
+} bwhere_e;
 
 typedef struct
 {
@@ -199,21 +199,21 @@ void P_InitSwitchList();
 
 ===============================================================================
 */
-enum plat_e
+typedef enum
 {
     up,
     down,
     waiting,
     in_stasis
-};
+} plat_e;
 
-enum plattype_e
+typedef enum
 {
     perpetualRaise,
     downWaitUpStay,
     raiseAndChange,
     raiseToNearestAndChange
-};
+} plattype_e;
 
 typedef struct plat_s
 {
@@ -251,14 +251,14 @@ void P_ActivateInStasis(int tag);
 
 ===============================================================================
 */
-enum vldoor_e
+typedef enum
 {
     vld_normal,
     vld_close30ThenOpen,
     vld_close,
     vld_open,
     vld_raiseIn5Mins
-};
+} vldoor_e;
 
 typedef struct vldoor_s
 {
@@ -289,14 +289,14 @@ void P_SpawnDoorRaiseIn5Mins(sector_t * sec, int secnum);
 
 ===============================================================================
 */
-enum ceiling_e
+typedef enum
 {
     lowerToFloor,
     raiseToHighest,
     lowerAndCrush,
     crushAndRaise,
     fastCrushAndRaise
-};
+} ceiling_e;
 
 typedef struct ceiling_s
 {
@@ -331,7 +331,7 @@ void P_ActivateInStasisCeiling(line_t * line);
 
 ===============================================================================
 */
-enum floor_e
+typedef enum
 {
     lowerFloor,                 // lower floor to highest surrounding floor
     lowerFloorToLowest,         // lower floor to lowest surrounding floor
@@ -346,7 +346,7 @@ enum floor_e
     raiseFloorCrush,
     donutRaise,
     raiseBuildStep              // One step of a staircase
-};
+} floor_e;
 
 typedef struct floormove_s
 {
@@ -363,12 +363,12 @@ typedef struct floormove_s
 
 #define	FLOORSPEED	FRACUNIT
 
-enum result_e
+typedef enum
 {
     ok,
     crushed,
     pastdest
-};
+} result_e;
 
 result_e T_MovePlane(sector_t * sector, fixed_t speed,
                      fixed_t dest, bool crush, int floorOrCeiling,

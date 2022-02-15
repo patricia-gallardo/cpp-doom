@@ -92,7 +92,7 @@ static void DEH_SoundParseLine(deh_context_t *context, char *line, void *tag)
     else
     {
         DEH_SetMapping(context, &sound_mapping, sfx,
-                       variable_name, std::atoi(value));
+                       variable_name, atoi(value));
     }
 }
 

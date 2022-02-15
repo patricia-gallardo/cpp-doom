@@ -90,7 +90,7 @@
 //  calls all ?_Responder, ?_Ticker, and ?_Drawer,
 //  calls I_GetTime, I_StartFrame, and I_StartTic
 //
-[[noreturn]] void D_DoomLoop ();
+void D_DoomLoop ();
 
 static bool D_AddFile(char *filename);
 
@@ -142,8 +142,8 @@ bool         isdemoversion;
 //bool         storedemo;
 
 
-char                  wadfile[1024]; // primary wad file
-[[maybe_unused]] char mapdir[1024];  // directory of development maps
+char		wadfile[1024];          // primary wad file
+char		mapdir[1024];           // directory of development maps
 
 int             show_endoom = 0;
 int             show_diskicon = 1;
@@ -501,7 +501,7 @@ static bool D_StartupGrabCallback()
 //
 //  haleyjd 08/23/10: [STRIFE] Verified unmodified.
 //
-[[noreturn]] void D_DoomLoop ()
+void D_DoomLoop ()
 {
     if (demorecording)
         G_BeginRecording ();
@@ -531,7 +531,7 @@ static bool D_StartupGrabCallback()
         wipegamestate = gamestate;
     }
 
-    while (true)
+    while (1)
     {
         // frame syncronous IO operations
         I_StartFrame ();
@@ -794,7 +794,7 @@ static char *GetGameName(char *gamename)
 
             while (newgamename[0] != '\0' && isspace(newgamename[0]))
             {
-                std::memmove(newgamename, newgamename + 1, newgamename_size - 1);
+                memmove(newgamename, newgamename + 1, newgamename_size - 1);
             }
 
             while (newgamename[0] != '\0' && isspace(newgamename[strlen(newgamename)-1]))
@@ -894,7 +894,7 @@ void DoTimeBomb()
     int serial_month;
 
     serial = cache_lump_name<patch_t *>("serial", PU_CACHE);
-    serialnum = std::atoi(serial);
+    serialnum = atoi(serial);
 
     // Rogue, much like Governor Mourel, were lousy liars. These deceptive
     // error messages are pretty low :P
@@ -1243,7 +1243,7 @@ static void D_IntroBackground()
     }
 
     // Draw a 95-pixel rect from STARTUP0 starting at y=57 to (0,41) on the
-    // screen (this was a std::memcpy directly to 0xA3340 in low DOS memory)
+    // screen (this was a memcpy directly to 0xA3340 in low DOS memory)
     V_DrawScaledBlock(0, 41, 320, 95, rawgfx_startup0 + (320*57));
 }
 
@@ -1302,7 +1302,7 @@ static void D_InitIntroSequence()
 
         // Clear screen
         textScreen = TXT_GetScreenData();
-        std::memset(textScreen, 0, 4000);
+        memset(textScreen, 0, 4000);
 
         using_text_startup = true;
 
@@ -1681,7 +1681,7 @@ void D_DoomMain ()
         extern int sidemove[2];
 
         if (p<myargc-1)
-            scale = std::atoi (myargv[p+1]);
+            scale = atoi (myargv[p+1]);
         if (scale < 10)
             scale = 10;
         if (scale > 400)
@@ -1750,7 +1750,7 @@ void D_DoomMain ()
     {
         char msgbuf[80];
         char *serial  = cache_lump_name<char *>("SERIAL", PU_CACHE);
-        int serialnum = std::atoi(serial);
+        int serialnum = atoi(serial);
 
         DEH_snprintf(msgbuf, sizeof(msgbuf), "Wad Serial Number: %d:", serialnum);
         printf("%s\n", msgbuf);
@@ -1943,7 +1943,7 @@ void D_DoomMain ()
 
     if (p)
     {
-        timelimit = std::atoi(myargv[p+1]);
+        timelimit = atoi(myargv[p+1]);
         printf("timer: %i\n", timelimit);
     }
 
@@ -1974,7 +1974,7 @@ void D_DoomMain ()
     if (p)
     {
         if (gamemode == commercial)
-            startmap = std::atoi (myargv[p+1]);
+            startmap = atoi (myargv[p+1]);
         else
         {
             startepisode = myargv[p+1][0]-'0';
@@ -2014,7 +2014,7 @@ void D_DoomMain ()
     
     if (p)
     {
-        startloadgame = std::atoi(myargv[p+1]);
+        startloadgame = atoi(myargv[p+1]);
     }
     else
     {

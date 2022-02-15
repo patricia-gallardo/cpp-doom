@@ -38,6 +38,6 @@ void W_NWTDashMerge(const char *filename);
 
 // Debug function that prints the WAD directory.
 
-[[maybe_unused]] void W_PrintDirectory();
+void W_PrintDirectory();
 
 #endif /* #ifndef W_MERGE_H */

@@ -22,7 +22,7 @@
 #define TXT_ACTIVE_WINDOW_BACKGROUND     TXT_COLOR_BLUE
 #define TXT_HOVER_BACKGROUND             TXT_COLOR_CYAN
 
-[[maybe_unused]] void TXT_DrawDesktopBackground(const char *title);
+void TXT_DrawDesktopBackground(const char *title);
 void TXT_DrawWindowFrame(const char *title, int x, int y, int w, int h);
 void TXT_DrawSeparator(int x, int y, int w);
 void TXT_DrawCodePageString(const char *s);

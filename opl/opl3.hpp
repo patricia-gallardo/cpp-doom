@@ -31,21 +31,23 @@
 
 #include <cinttypes>
 
-constexpr auto OPL_WRITEBUF_SIZE  = 1024;
-constexpr auto OPL_WRITEBUF_DELAY = 2;
+#define OPL_WRITEBUF_SIZE   1024
+#define OPL_WRITEBUF_DELAY  2
 
-using Bits   = intptr_t;
-using Bit64u = uint64_t;
-using Bit32u = uint32_t;
-using Bit32s = int32_t;
-using Bit16u = uint16_t;
-using Bit16s = int16_t;
-using Bit8u  = uint8_t;
-using Bit8s  = int8_t;
+typedef uintptr_t       Bitu;
+typedef intptr_t        Bits;
+typedef uint64_t        Bit64u;
+typedef int64_t         Bit64s;
+typedef uint32_t        Bit32u;
+typedef int32_t         Bit32s;
+typedef uint16_t        Bit16u;
+typedef int16_t         Bit16s;
+typedef uint8_t         Bit8u;
+typedef int8_t          Bit8s;
 
-using opl3_slot    = struct _opl3_slot;
-using opl3_channel = struct _opl3_channel;
-using opl3_chip    = struct _opl3_chip;
+typedef struct _opl3_slot opl3_slot;
+typedef struct _opl3_channel opl3_channel;
+typedef struct _opl3_chip opl3_chip;
 
 struct _opl3_slot {
     opl3_channel *channel;
@@ -56,7 +58,9 @@ struct _opl3_slot {
     Bit16s prout;
     Bit16s eg_rout;
     Bit16s eg_out;
+    Bit8u eg_inc;
     Bit8u eg_gen;
+    Bit8u eg_rate;
     Bit8u eg_ksl;
     Bit8u *trem;
     Bit8u reg_vib;

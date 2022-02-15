@@ -108,13 +108,13 @@
 #define DM_VICTIMSY 50
 
 
-enum animenum_t
+typedef enum
 {
     ANIM_ALWAYS,
     ANIM_RANDOM,
     ANIM_LEVEL
 
-};
+} animenum_t;
 
 typedef struct
 {
@@ -1668,7 +1668,7 @@ void WI_Ticker()
     }
 }
 
-using load_callback_t = void (*)(const char *, patch_t **);
+typedef void (*load_callback_t)(const char *lumpname, patch_t **variable);
 
 // Common load/unload function.  Iterates over all the graphics
 // lumps to be loaded/unloaded into memory.

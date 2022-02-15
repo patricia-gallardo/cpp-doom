@@ -18,11 +18,15 @@
 
 
 #include <cstdio>
+#include <cstdlib>
 
 #include "i_system.hpp"
+
 #include "doomdef.hpp"
 #include "doomstat.hpp"
+
 #include "r_local.hpp"
+#include "r_sky.hpp"
 #include "r_bmaps.hpp" // [crispy] brightmaps
 
 
@@ -518,7 +522,7 @@ void R_StoreWallRange(int start,
 
         numdrawsegs = numdrawsegs ? 2 * numdrawsegs : MAXDRAWSEGS;
         drawsegs    = static_cast<decltype(drawsegs)>(I_Realloc(drawsegs, static_cast<unsigned long>(numdrawsegs) * sizeof(*drawsegs)));
-        std::memset(drawsegs + numdrawsegs_old, 0, (static_cast<unsigned long>(numdrawsegs - numdrawsegs_old)) * sizeof(*drawsegs));
+        memset(drawsegs + numdrawsegs_old, 0, (static_cast<unsigned long>(numdrawsegs - numdrawsegs_old)) * sizeof(*drawsegs));
 
         ds_p = drawsegs + numdrawsegs_old;
 
@@ -879,7 +883,7 @@ void R_StoreWallRange(int start,
     if (((ds_p->silhouette & SIL_TOP) || maskedtexture)
         && !ds_p->sprtopclip)
     {
-        std::memcpy(lastopening, ceilingclip + start, sizeof(*lastopening) * (static_cast<unsigned long>(rw_stopx - start)));
+        memcpy(lastopening, ceilingclip + start, sizeof(*lastopening) * (static_cast<unsigned long>(rw_stopx - start)));
         ds_p->sprtopclip = lastopening - start;
         lastopening += rw_stopx - start;
     }
@@ -887,7 +891,7 @@ void R_StoreWallRange(int start,
     if (((ds_p->silhouette & SIL_BOTTOM) || maskedtexture)
         && !ds_p->sprbottomclip)
     {
-        std::memcpy(lastopening, floorclip + start, sizeof(*lastopening) * (static_cast<unsigned long>(rw_stopx - start)));
+        memcpy(lastopening, floorclip + start, sizeof(*lastopening) * (static_cast<unsigned long>(rw_stopx - start)));
         ds_p->sprbottomclip = lastopening - start;
         lastopening += rw_stopx - start;
     }

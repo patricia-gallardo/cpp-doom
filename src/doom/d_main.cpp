@@ -19,9 +19,11 @@
 //	and call the startup functions.
 //
 
+#include <array>
 #include <cctype>
 #include <cstdlib>
 #include <cstring>
+#include <ctime> // [crispy] time_t, time(), struct tm, localtime()
 
 #include "config.h"
 #include "deh_main.hpp"
@@ -84,7 +86,7 @@
 //  calls all ?_Responder, ?_Ticker, and ?_Drawer,
 //  calls I_GetTime, I_StartFrame, and I_StartTic
 //
-[[noreturn]] void D_DoomLoop();
+void D_DoomLoop();
 
 // Location where savegames are stored
 
@@ -121,7 +123,7 @@ bool storedemo;
 bool main_loop_started = false;
 
 char wadfile[1024]; // primary wad file
-[[maybe_unused]] char mapdir[1024];  // directory of development maps
+char mapdir[1024];  // directory of development maps
 
 int show_endoom   = 0; // [crispy] disable
 int show_diskicon = 1;
@@ -138,7 +140,7 @@ void D_CheckNetGame();
 //
 void D_ProcessEvents()
 {
-    event_t *ev = nullptr;
+    event_t *ev;
 
     // IF STORE DEMO, DO NOT ACCEPT INPUT
     if (storedemo)
@@ -166,14 +168,17 @@ void           R_ExecuteSetViewSize();
 
 bool D_Display()
 {
-    static bool        viewactivestate    = false;
-    static bool        menuactivestate    = false;
-    static bool        inhelpscreensstate = false;
-    static bool        fullscreen_local   = false;
+    static bool     viewactivestate    = false;
+    static bool     menuactivestate    = false;
+    static bool     inhelpscreensstate = false;
+    static bool     fullscreen_local   = false;
     static gamestate_t oldgamestate { GS_FORCE_WIPE };
     static int         borderdrawcount;
-    bool               wipe       = false;
-    bool               redrawsbar = false;
+    int                y;
+    bool            wipe;
+    bool            redrawsbar;
+
+    redrawsbar = false;
 
     // change the view size if needed
     if (setsizeneeded)
@@ -310,7 +315,6 @@ bool D_Display()
     // draw pause pic
     if (paused)
     {
-        int y = 0;
         if (automapactive && !crispy->automapoverlay)
             y = 4;
         else
@@ -329,7 +333,7 @@ bool D_Display()
 
 void EnableLoadingDisk() // [crispy] un-static
 {
-    const char *disk_lump_name = nullptr;
+    const char *disk_lump_name;
 
     if (show_diskicon)
     {
@@ -354,6 +358,8 @@ void EnableLoadingDisk() // [crispy] un-static
 
 void D_BindVariables()
 {
+    int i;
+
     M_ApplyPlatformDefaults();
 
     I_BindInputVariables();
@@ -391,7 +397,7 @@ void D_BindVariables()
 
     // Multiplayer chat macros
 
-    for (int i = 0; i < 10; ++i)
+    for (i = 0; i < 10; ++i)
     {
         char buf[12];
 
@@ -473,10 +479,10 @@ bool D_GrabMouseCallback()
 //
 void D_RunFrame()
 {
-    int         nowtime   = 0;
-    int         tics      = 0;
-    static int  wipestart = 0;
-    static bool wipe      = false;
+    int            nowtime;
+    int            tics;
+    static int     wipestart;
+    static bool wipe;
 
     if (wipe)
     {
@@ -533,7 +539,7 @@ void D_RunFrame()
 //
 //  D_DoomLoop
 //
-[[noreturn]] void D_DoomLoop()
+void D_DoomLoop()
 {
     if (gamevariant == bfgedition && (demorecording || (gameaction == ga_playdemo) || netgame))
     {
@@ -573,7 +579,7 @@ void D_RunFrame()
         wipegamestate = gamestate;
     }
 
-    while (true)
+    while (1)
     {
         D_RunFrame();
     }
@@ -795,7 +801,7 @@ static const char *GetGameName(const char *gamename)
 
             while (newgamename[0] != '\0' && isspace(newgamename[0]))
             {
-                std::memmove(newgamename, newgamename + 1, newgamename_size - 1);
+                memmove(newgamename, newgamename + 1, newgamename_size - 1);
             }
 
             while (newgamename[0] != '\0' && isspace(newgamename[strlen(newgamename) - 1]))
@@ -855,7 +861,9 @@ void D_IdentifyVersion()
 
     if (gamemission == none)
     {
-        for (unsigned int i = 0; i < numlumps; ++i)
+        unsigned int i;
+
+        for (i = 0; i < numlumps; ++i)
         {
             if (!strncasecmp(lumpinfo[i]->name, "MAP01", 8))
             {
@@ -900,6 +908,8 @@ void D_IdentifyVersion()
     }
     else
     {
+        int p;
+
         // Doom 2 of some kind.
         gamemode = commercial;
 
@@ -915,7 +925,7 @@ void D_IdentifyVersion()
         // detecting it based on the filename. Valid values are: "doom2",
         // "tnt" and "plutonia".
         //
-        int p = M_CheckParmWithArgs("-pack", 1);
+        p = M_CheckParmWithArgs("-pack", 1);
         if (p > 0)
         {
             SetMissionForPackName(myargv[p + 1]);
@@ -992,8 +1002,11 @@ char title[128];
 
 static bool D_AddFile(char *filename)
 {
+    wad_file_t *handle;
+
     printf(" adding %s\n", filename);
-    wad_file_t *handle = W_AddFile(filename);
+    handle = W_AddFile(filename);
+
     return handle != nullptr;
 }
 
@@ -1065,6 +1078,13 @@ static constexpr struct
 
 static void InitGameVersion()
 {
+    uint8_t *demolump;
+    char    demolumpname[6];
+    int     demoversion;
+    int     p;
+    int     i;
+    bool status;
+
     //!
     // @arg <version>
     // @category compat
@@ -1074,11 +1094,10 @@ static void InitGameVersion()
     // "hacx" and "chex".
     //
 
-    int p = M_CheckParmWithArgs("-gameversion", 1);
+    p = M_CheckParmWithArgs("-gameversion", 1);
 
     if (p)
     {
-        int i = 0;
         for (i = 0; gameversions[i].description != nullptr; ++i)
         {
             if (!strcmp(myargv[p + 1], gameversions[i].cmdline))
@@ -1124,16 +1143,15 @@ static void InitGameVersion()
             gameversion = exe_doom_1_9;
 
             // Detect version from demo lump
-            for (int i = 1; i <= 3; ++i)
+            for (i = 1; i <= 3; ++i)
             {
-                char demolumpname[6];
                 M_snprintf(demolumpname, 6, "demo%i", i);
                 if (W_CheckNumForName(demolumpname) > 0)
                 {
-                    uint8_t *demolump    = cache_lump_name<uint8_t *>(demolumpname, PU_STATIC);
-                    int demoversion = demolump[0];
+                    demolump    = cache_lump_name<uint8_t *>(demolumpname, PU_STATIC);
+                    demoversion = demolump[0];
                     W_ReleaseLumpName(demolumpname);
-                    bool status = true;
+                    status = true;
                     switch (demoversion)
                     {
                     case 0:
@@ -1206,7 +1224,9 @@ static void InitGameVersion()
 
 void PrintGameVersion()
 {
-    for (int i = 0; gameversions[i].description != nullptr; ++i)
+    int i;
+
+    for (i = 0; gameversions[i].description != nullptr; ++i)
     {
         if (gameversions[i].version == gameversion)
         {
@@ -1222,6 +1242,8 @@ void PrintGameVersion()
 
 static void D_Endoom()
 {
+    uint8_t *endoom;
+
     // Don't show ENDOOM if we have it disabled, or we're running
     // in screensaver or control test mode. Only show it once the
     // game has actually started.
@@ -1232,7 +1254,7 @@ static void D_Endoom()
         return;
     }
 
-    uint8_t *endoom = cache_lump_name<uint8_t *>(DEH_String("ENDOOM"), PU_STATIC);
+    endoom = cache_lump_name<uint8_t *>(DEH_String("ENDOOM"), PU_STATIC);
 
     I_Endoom(endoom);
 }
@@ -1263,9 +1285,12 @@ static void LoadIwadDeh()
     // and installed next to the IWAD.
     if (gameversion == exe_chex)
     {
+        char *chex_deh = nullptr;
+        char *dirname;
+
         // Look for chex.deh in the same directory as the IWAD file.
-        char *dirname  = M_DirName(iwadfile);
-        char *chex_deh = M_StringJoin(dirname, DIR_SEPARATOR_S, "chex.deh", nullptr);
+        dirname  = M_DirName(iwadfile);
+        chex_deh = M_StringJoin(dirname, DIR_SEPARATOR_S, "chex.deh", nullptr);
         free(dirname);
 
         // If the dehacked patch isn't found, try searching the WAD
@@ -1350,9 +1375,11 @@ static void LoadSigilWad()
             "SIGIL_v1_2.wad",
             "SIGIL.wad"
         };
-        char             *sigil_wad    = nullptr;
-        char             *dirname      = M_DirName(iwadfile);
-        char             *sigil_shreds = M_StringJoin(dirname, DIR_SEPARATOR_S, "SIGIL_SHREDS.wad", nullptr);
+        char *sigil_wad = nullptr, *sigil_shreds = nullptr;
+        char *dirname;
+
+        dirname      = M_DirName(iwadfile);
+        sigil_shreds = M_StringJoin(dirname, DIR_SEPARATOR_S, "SIGIL_SHREDS.wad", nullptr);
 
         // [crispy] load SIGIL.WAD
         for (auto sigil : sigil_wads)
@@ -1402,7 +1429,7 @@ static void LoadSigilWad()
         for (const auto & sigil_lump : sigil_lumps)
         {
             // [crispy] skip non-music lumps
-            if (strncasecmp(sigil_lump.name, "D_", 2) != 0)
+            if (strncasecmp(sigil_lump.name, "D_", 2))
             {
                 continue;
             }
@@ -1411,7 +1438,7 @@ static void LoadSigilWad()
 
             if (j != -1 && !strncasecmp(W_WadNameForLump(lumpinfo[j]), "SIGIL_SHREDS", 12))
             {
-                std::memcpy(lumpinfo[j]->name, sigil_lump.new_name, 8);
+                memcpy(lumpinfo[j]->name, sigil_lump.new_name, 8);
             }
         }
 
@@ -1422,7 +1449,7 @@ static void LoadSigilWad()
 
             if (j != -1 && !strncasecmp(W_WadNameForLump(lumpinfo[j]), "SIGIL", 5))
             {
-                std::memcpy(lumpinfo[j]->name, sigil_lump.new_name, 8);
+                memcpy(lumpinfo[j]->name, sigil_lump.new_name, 8);
             }
         }
 
@@ -1434,7 +1461,7 @@ static void LoadSigilWad()
 // [crispy] support loading NERVE.WAD alongside DOOM2.WAD
 static void LoadNerveWad()
 {
-    int i = 0, j = 0, k = 0;
+    int i, j, k;
 
     if (gamemission != doom2)
         return;
@@ -1452,7 +1479,8 @@ static void LoadNerveWad()
     {
         if (strrchr(iwadfile, DIR_SEPARATOR) != nullptr)
         {
-            char *dir    = M_DirName(iwadfile);
+            char *dir;
+            dir          = M_DirName(iwadfile);
             nervewadfile = M_StringJoin(dir, DIR_SEPARATOR_S, "nerve.wad", nullptr);
             free(dir);
         }
@@ -1492,7 +1520,7 @@ static void LoadNerveWad()
 // [crispy] support loading MASTERLEVELS.WAD alongside DOOM2.WAD
 static void LoadMasterlevelsWad()
 {
-    int i = 0, j = 0;
+    int i, j;
 
     if (gamemission != doom2)
         return;
@@ -1513,8 +1541,10 @@ static void G_CheckDemoStatusAtExit()
 //
 void D_DoomMain()
 {
+    int  p;
     char file[256];
     char demolumpname[9];
+    size_t numiwadlumps;
 
     I_AtExit(D_Endoom, false);
 
@@ -1561,7 +1591,7 @@ void D_DoomMain()
     // address.
     //
 
-    int p = M_CheckParmWithArgs("-query", 1);
+    p = M_CheckParmWithArgs("-query", 1);
 
     if (p)
     {
@@ -1698,7 +1728,7 @@ void D_DoomMain()
         extern int sidemove[2];
 
         if (p < myargc - 1)
-            scale = std::atoi(myargv[p + 1]);
+            scale = atoi(myargv[p + 1]);
         if (scale < 10)
             scale = 10;
         if (scale > 400)
@@ -1738,7 +1768,7 @@ void D_DoomMain()
 
     DEH_printf("W_Init: Init WADfiles.\n");
     D_AddFile(iwadfile);
-    size_t numiwadlumps = numlumps;
+    numiwadlumps = numlumps;
 
     W_CheckCorrectIWAD(doom);
 
@@ -1825,7 +1855,7 @@ void D_DoomMain()
     //
     if (!M_ParmExists("-noautoload") && gamemode != shareware)
     {
-        char *autoload_dir = nullptr;
+        char *autoload_dir;
 
         // common auto-loaded files for all Doom flavors
 
@@ -1872,6 +1902,8 @@ void D_DoomMain()
 
         if (p)
         {
+            int merged;
+
             if (M_StringEndsWith(myargv[p + 1], ".wad"))
             {
                 M_StringCopy(file, myargv[p + 1], sizeof(file));
@@ -1881,7 +1913,7 @@ void D_DoomMain()
                 DEH_snprintf(file, sizeof(file), "%s.wad", myargv[p + 1]);
             }
 
-            int merged = W_MergeDump(file);
+            merged = W_MergeDump(file);
             I_Error("W_MergeDump: Merged %d lumps into file '%s'.", merged, file);
         }
         else
@@ -1905,9 +1937,11 @@ void D_DoomMain()
 
         if (p)
         {
+            int dumped;
+
             M_StringCopy(file, myargv[p + 1], sizeof(file));
 
-            int dumped = W_LumpDump(file);
+            dumped = W_LumpDump(file);
 
             if (dumped < 0)
             {
@@ -2040,6 +2074,7 @@ void D_DoomMain()
             "e3m1", "e3m3", "e3m3", "e3m4", "e3m5", "e3m6", "e3m7", "e3m8", "e3m9",
             "dphoof", "bfgga0", "heada1", "cybra1", "spida1d1"
         };
+        int i;
 
         if (gamemode == shareware)
             I_Error(DEH_String("\nYou cannot -file with the shareware "
@@ -2048,7 +2083,7 @@ void D_DoomMain()
         // Check for fake IWAD with right name,
         // but w/o all the lumps of the registered version.
         if (gamemode == registered)
-            for (int i = 0; i < 23; i++)
+            for (i = 0; i < 23; i++)
                 if (W_CheckNumForName(name[i]) < 0)
                     I_Error(DEH_String("\nThis is not the registered version."));
     }
@@ -2160,7 +2195,7 @@ void D_DoomMain()
 
     if (p)
     {
-        timelimit = std::atoi(myargv[p + 1]);
+        timelimit = atoi(myargv[p + 1]);
     }
 
     //!
@@ -2191,7 +2226,7 @@ void D_DoomMain()
     if (p)
     {
         if (gamemode == commercial)
-            startmap = std::atoi(myargv[p + 1]);
+            startmap = atoi(myargv[p + 1]);
         else
         {
             startepisode = myargv[p + 1][0] - '0';
@@ -2267,7 +2302,7 @@ void D_DoomMain()
 
     if (p)
     {
-        startloadgame = std::atoi(myargv[p + 1]);
+        startloadgame = atoi(myargv[p + 1]);
     }
     else
     {

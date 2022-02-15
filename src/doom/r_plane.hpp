@@ -30,7 +30,7 @@
 extern int *lastopening; // [crispy] 32-bit integer math
 
 
-using planefunction_t = void (*)(int, int);
+typedef void (*planefunction_t)(int top, int bottom);
 
 extern planefunction_t floorfunc;
 extern planefunction_t ceilingfunc_t;

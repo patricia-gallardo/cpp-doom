@@ -32,7 +32,7 @@
 
 // Types
 
-enum afxcmd_t
+typedef enum
 {
     afxcmd_play,                // (sound)
     afxcmd_playabsvol,          // (sound, volume)
@@ -40,7 +40,7 @@ enum afxcmd_t
     afxcmd_delay,               // (ticks)
     afxcmd_delayrand,           // (andbits)
     afxcmd_end                  // ()
-};
+} afxcmd_t;
 
 // Data
 
@@ -216,7 +216,7 @@ mobj_t LavaInflictor;
 
 void P_InitLava()
 {
-    std::memset(&LavaInflictor, 0, sizeof(mobj_t));
+    memset(&LavaInflictor, 0, sizeof(mobj_t));
     LavaInflictor.type = MT_PHOENIXFX2;
     LavaInflictor.flags2 = MF2_FIREDAMAGE | MF2_NODMGTHRUST;
 }
@@ -235,7 +235,7 @@ void P_InitTerrainTypes()
 
     size = static_cast<int>((numflats + 1) * sizeof(int));
     TerrainTypes = zmalloc<int *>(size, PU_STATIC, 0);
-    std::memset(TerrainTypes, 0, size);
+    memset(TerrainTypes, 0, size);
     for (i = 0; TerrainTypeDefs[i].type != -1; i++)
     {
         lump = W_CheckNumForName(TerrainTypeDefs[i].name);
@@ -1027,7 +1027,7 @@ void P_UpdateSpecials()
                         break;
                 }
                 S_StartSound(buttonlist[i].soundorg, sfx_switch);
-                std::memset(&buttonlist[i], 0, sizeof(button_t));
+                memset(&buttonlist[i], 0, sizeof(button_t));
             }
         }
     }
@@ -1200,7 +1200,7 @@ void P_SpawnSpecials()
     for (i = 0; i < MAXPLATS; i++)
         activeplats[i] = nullptr;
     for (i = 0; i < MAXBUTTONS; i++)
-        std::memset(&buttonlist[i], 0, sizeof(button_t));
+        memset(&buttonlist[i], 0, sizeof(button_t));
 }
 
 //----------------------------------------------------------------------------

@@ -202,7 +202,7 @@ void R_ClearPlanes()
 //
 // texture calculation
 //
-    std::memset(cachedheight, 0, sizeof(cachedheight));
+    memset(cachedheight, 0, sizeof(cachedheight));
     angle = (viewangle - ANG90) >> ANGLETOFINESHIFT;    // left to right mapping
 
     // scale will be unit scale at SCREENWIDTH/2 distance
@@ -221,7 +221,7 @@ static void R_RaiseVisplanes (visplane_t** vp)
 
 	numvisplanes = numvisplanes ? 2 * numvisplanes : MAXVISPLANES;
 	visplanes = static_cast<visplane_t *>(I_Realloc(visplanes, numvisplanes * sizeof(*visplanes)));
-	std::memset(visplanes + numvisplanes_old, 0, (numvisplanes - numvisplanes_old) * sizeof(*visplanes));
+	memset(visplanes + numvisplanes_old, 0, (numvisplanes - numvisplanes_old) * sizeof(*visplanes));
 
 	lastvisplane = visplanes + numvisplanes_old;
 	floorplane = visplanes + (floorplane - visplanes_old);
@@ -278,7 +278,7 @@ visplane_t *R_FindPlane(fixed_t height, int picnum,
     check->special = special;
     check->minx = SCREENWIDTH;
     check->maxx = -1;
-    std::memset(check->top, 0xff, sizeof(check->top));
+    memset(check->top, 0xff, sizeof(check->top));
     return (check);
 }
 
@@ -339,7 +339,7 @@ visplane_t *R_CheckPlane(visplane_t * pl, int start, int stop)
     pl = lastvisplane++;
     pl->minx = start;
     pl->maxx = stop;
-    std::memset(pl->top, 0xff, sizeof(pl->top));
+    memset(pl->top, 0xff, sizeof(pl->top));
 
     return pl;
 }

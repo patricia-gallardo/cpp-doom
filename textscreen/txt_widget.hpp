@@ -35,19 +35,19 @@
 
 #include <memory>
 
-enum txt_vert_align_t
+typedef enum
 {
     TXT_VERT_TOP,
     TXT_VERT_CENTER,
     TXT_VERT_BOTTOM,
-};
+} txt_vert_align_t;
 
-enum txt_horiz_align_t
+typedef enum
 {
     TXT_HORIZ_LEFT,
     TXT_HORIZ_CENTER,
     TXT_HORIZ_RIGHT,
-};
+} txt_horiz_align_t;
 
 /**
  * A GUI widget.
@@ -60,20 +60,20 @@ enum txt_horiz_align_t
  * when a signal occurs using the @ref TXT_SignalConnect function.
  */
 
-using txt_widget_t = struct txt_widget_s;
+typedef struct txt_widget_s txt_widget_t;
 
-using txt_widget_class_t = struct txt_widget_class_s;
-using txt_callback_table_t = struct txt_callback_table_s;
+typedef struct txt_widget_class_s txt_widget_class_t;
+typedef struct txt_callback_table_s txt_callback_table_t;
 
-using TxtWidgetSizeCalc = void (*)(void *);
-using TxtWidgetDrawer = void (*)(void *);
-using TxtWidgetDestroy = void (*)(void *);
-using TxtWidgetKeyPress = int (*)(void *, int);
-using TxtWidgetSignalFunc = void (*)(void *, void *);
-using TxtMousePressFunc = void (*)(void *, int, int, int);
-using TxtWidgetLayoutFunc = void (*)(void *);
-using TxtWidgetSelectableFunc = int (*)(void *);
-using TxtWidgetFocusFunc = void (*)(void *, int);
+typedef void (*TxtWidgetSizeCalc)(void *uncast_widget);
+typedef void (*TxtWidgetDrawer)(void *uncast_widget);
+typedef void (*TxtWidgetDestroy)(void *uncast_widget);
+typedef int (*TxtWidgetKeyPress)(void *uncast_widget, int key);
+typedef void (*TxtWidgetSignalFunc)(void *uncast_widget, void *user_data);
+typedef void (*TxtMousePressFunc)(void *uncast_widget, int x, int y, int b);
+typedef void (*TxtWidgetLayoutFunc)(void *uncast_widget);
+typedef int (*TxtWidgetSelectableFunc)(void *uncast_widget);
+typedef void (*TxtWidgetFocusFunc)(void *uncast_widget, int focused);
 
 struct txt_widget_class_s
 {

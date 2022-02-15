@@ -49,7 +49,7 @@ enum class cr_t
     CRMAX
 };
 
-[[maybe_unused]] constexpr auto CR_GREY = cr_t::CR_GRAY;
+#define CR_GREY CR_GRAY
 
 extern uint8_t *cr_colors[static_cast<int>(cr_t::CRMAX)];
 extern char **crstr;

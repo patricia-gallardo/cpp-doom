@@ -473,7 +473,7 @@ void P_LoadACScripts(int lump)
     }
 
     ACSInfo = zmalloc<decltype(    ACSInfo)>(ACScriptCount * sizeof(acsInfo_t), PU_LEVEL, 0);
-    std::memset(ACSInfo, 0, ACScriptCount * sizeof(acsInfo_t));
+    memset(ACSInfo, 0, ACScriptCount * sizeof(acsInfo_t));
     for (i = 0, info = ACSInfo; i < ACScriptCount; i++, info++)
     {
         info->number = ReadCodeInt();
@@ -514,7 +514,7 @@ void P_LoadACScripts(int lump)
                   "string %d missing terminating NUL", i);
     }
 
-    std::memset(MapVars, 0, sizeof(MapVars));
+    memset(MapVars, 0, sizeof(MapVars));
 }
 
 //==========================================================================
@@ -528,7 +528,7 @@ static void StartOpenACS(int number, int infoIndex, int offset)
     acs_t *script;
 
     script = zmalloc<decltype(    script)>(sizeof(acs_t), PU_LEVSPEC, 0);
-    std::memset(script, 0, sizeof(acs_t));
+    memset(script, 0, sizeof(acs_t));
     script->number = number;
 
     // World objects are allotted 1 second for initialization
@@ -610,7 +610,7 @@ bool P_StartACS(int number, int map, uint8_t *args, mobj_t * activator,
         return false;
     }
     script = zmalloc<decltype(script)>(sizeof(acs_t), PU_LEVSPEC, 0);
-    std::memset(script, 0, sizeof(acs_t));
+    memset(script, 0, sizeof(acs_t));
     script->number = number;
     script->infoIndex = infoIndex;
     script->activator = activator;
@@ -663,7 +663,7 @@ static bool AddToACSStore(int map, int number, uint8_t *args)
     }
     ACSStore[index].map = map;
     ACSStore[index].script = number;
-    std::memcpy(ACSStore[index].args, args, MAX_SCRIPT_ARGS);
+    memcpy(ACSStore[index].args, args, MAX_SCRIPT_ARGS);
     return true;
 }
 
@@ -764,8 +764,8 @@ bool P_SuspendACS(int number, int)
 
 void P_ACSInitNewGame()
 {
-    std::memset(WorldVars, 0, sizeof(WorldVars));
-    std::memset(ACSStore, 0, sizeof(ACSStore));
+    memset(WorldVars, 0, sizeof(WorldVars));
+    memset(ACSStore, 0, sizeof(ACSStore));
 }
 
 //==========================================================================

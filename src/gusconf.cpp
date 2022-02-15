@@ -46,7 +46,7 @@ int   gus_ram_kb     = 1024;
 
 static unsigned int MappingIndex()
 {
-    auto result = static_cast<unsigned int>(gus_ram_kb / 256);
+    unsigned int result = static_cast<unsigned int>(gus_ram_kb / 256);
 
     if (result < 1)
     {
@@ -64,10 +64,11 @@ static unsigned int MappingIndex()
 
 static int SplitLine(char *line, char **fields, unsigned int max_fields)
 {
-    char *p = nullptr;
+    unsigned int num_fields;
+    char *       p;
 
     fields[0]  = line;
-    unsigned int num_fields = 1;
+    num_fields = 1;
 
     for (p = line; *p != '\0'; ++p)
     {
@@ -110,16 +111,19 @@ static int SplitLine(char *line, char **fields, unsigned int max_fields)
 
 static void ParseLine(gus_config_t *config, char *line)
 {
-    char *fields[6];
+    char *       fields[6];
+    unsigned int i;
+    unsigned int num_fields;
+    unsigned int instr_id, mapped_id;
 
-    auto num_fields = static_cast<unsigned int>(SplitLine(line, fields, 6));
+    num_fields = static_cast<unsigned int>(SplitLine(line, fields, 6));
 
     if (num_fields < 6)
     {
         return;
     }
 
-    auto instr_id = static_cast<unsigned int>(std::atoi(fields[0]));
+    instr_id = static_cast<unsigned int>(atoi(fields[0]));
 
     // Skip non GM percussions.
     if ((instr_id >= 128 && instr_id < 128 + 35) || instr_id > 128 + 81)
@@ -127,8 +131,7 @@ static void ParseLine(gus_config_t *config, char *line)
         return;
     }
 
-    auto mapped_id = static_cast<unsigned int>(std::atoi(fields[MappingIndex()]));
-    unsigned int i = 0;
+    mapped_id = static_cast<unsigned int>(atoi(fields[MappingIndex()]));
 
     for (i = 0; i < config->count; i++)
     {
@@ -152,9 +155,12 @@ static void ParseLine(gus_config_t *config, char *line)
 
 static void ParseDMXConfig(char *dmxconf, gus_config_t *config)
 {
-    std::memset(config, 0, sizeof(gus_config_t));
+    char *       p, *newline;
+    unsigned int i;
 
-    for (unsigned int i = 0; i < MAX_INSTRUMENTS; ++i)
+    memset(config, 0, sizeof(gus_config_t));
+
+    for (i = 0; i < MAX_INSTRUMENTS; ++i)
     {
         config->mapping[i] = -1;
         config->used[i]    = -1;
@@ -162,11 +168,11 @@ static void ParseDMXConfig(char *dmxconf, gus_config_t *config)
 
     config->count = 0;
 
-    char *p = dmxconf;
+    p = dmxconf;
 
     for (;;)
     {
-        char *newline = strchr(p, '\n');
+        newline = strchr(p, '\n');
 
         if (newline != nullptr)
         {
@@ -188,9 +194,11 @@ static void ParseDMXConfig(char *dmxconf, gus_config_t *config)
 
 static void FreeDMXConfig(gus_config_t *config)
 {
-    for (auto & patch_name : config->patch_names)
+    unsigned int i;
+
+    for (i = 0; i < MAX_INSTRUMENTS; ++i)
     {
-        free(patch_name);
+        free(config->patch_names[i]);
     }
 }
 
@@ -215,6 +223,8 @@ static char *ReadDMXConfig()
 
 static bool WriteTimidityConfig(char *path, gus_config_t *config)
 {
+    unsigned int i;
+
     FILE *fstream = fopen(path, "w");
 
     if (fstream == nullptr)
@@ -228,7 +238,7 @@ static bool WriteTimidityConfig(char *path, gus_config_t *config)
 
     fprintf(fstream, "\nbank 0\n\n");
 
-    for (unsigned int i = 0; i < 128; ++i)
+    for (i = 0; i < 128; ++i)
     {
         if (config->mapping[i] >= 0 && config->mapping[i] < MAX_INSTRUMENTS
             && config->patch_names[config->mapping[i]] != nullptr)
@@ -240,7 +250,7 @@ static bool WriteTimidityConfig(char *path, gus_config_t *config)
 
     fprintf(fstream, "\ndrumset 0\n\n");
 
-    for (unsigned int i = 128 + 35; i <= 128 + 81; ++i)
+    for (i = 128 + 35; i <= 128 + 81; ++i)
     {
         if (config->mapping[i] >= 0 && config->mapping[i] < MAX_INSTRUMENTS
             && config->patch_names[config->mapping[i]] != nullptr)
@@ -259,6 +269,10 @@ static bool WriteTimidityConfig(char *path, gus_config_t *config)
 
 bool GUS_WriteConfig(char *path)
 {
+    bool      result;
+    char *       dmxconf;
+    gus_config_t config;
+
     if (!strcmp(gus_patch_path, ""))
     {
         printf("You haven't configured gus_patch_path.\n");
@@ -270,11 +284,10 @@ bool GUS_WriteConfig(char *path)
         return false;
     }
 
-    gus_config_t config;
-    char *dmxconf = ReadDMXConfig();
+    dmxconf = ReadDMXConfig();
     ParseDMXConfig(dmxconf, &config);
 
-    bool result = WriteTimidityConfig(path, &config);
+    result = WriteTimidityConfig(path, &config);
 
     FreeDMXConfig(&config);
     Z_Free(dmxconf);

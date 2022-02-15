@@ -18,9 +18,12 @@
 
 #include <cctype>
 
+#include "doomdef.hpp"
 #include "doomkeys.hpp"
+
 #include "v_video.hpp"
 #include "i_swap.hpp"
+
 #include "hu_lib.hpp"
 #include "r_local.hpp"
 #include "r_draw.hpp"

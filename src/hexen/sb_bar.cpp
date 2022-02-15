@@ -246,7 +246,7 @@ static Cheat_t Cheats[] = {
 };
 
 #define SET_CHEAT(cheat, seq) \
-    { std::memcpy(cheat.sequence, seq, sizeof(seq)); \
+    { memcpy(cheat.sequence, seq, sizeof(seq)); \
       cheat.sequence_len = sizeof(seq) - 1; }
 
 // CODE --------------------------------------------------------------------

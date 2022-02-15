@@ -250,7 +250,7 @@ static void InitializeFade(bool fadeIn)
 
     if (fadeIn)
     {
-        std::memset(RealPalette, 0, 768 * sizeof(uint8_t));
+        memset(RealPalette, 0, 768 * sizeof(uint8_t));
         for (i = 0; i < 768; i++)
         {
             Palette[i] = 0;

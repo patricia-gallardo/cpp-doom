@@ -25,7 +25,10 @@
 // up to work independently.
 //
 
+#include <cstdint>
+
 #include "aes_prng.hpp"
+#include "doomtype.hpp"
 #include "i_swap.hpp"
 
 /*
@@ -77,14 +80,14 @@
  * ---------------------------------------------------------------------------
  */
 
-[[maybe_unused]] constexpr auto AES_MIN_KEY_SIZE      = 16;
-[[maybe_unused]] constexpr auto AES_MAX_KEY_SIZE      = 32;
-constexpr auto                  AES_KEYSIZE_128       = 16;
-constexpr auto                  AES_KEYSIZE_192       = 24;
-constexpr auto                  AES_KEYSIZE_256       = 32;
-[[maybe_unused]] constexpr auto AES_BLOCK_SIZE        = 16;
-constexpr auto                  AES_MAX_KEYLENGTH     = (15 * 16);
-constexpr auto                  AES_MAX_KEYLENGTH_U32 = (AES_MAX_KEYLENGTH / sizeof(uint32_t));
+#define AES_MIN_KEY_SIZE      16
+#define AES_MAX_KEY_SIZE      32
+#define AES_KEYSIZE_128       16
+#define AES_KEYSIZE_192       24
+#define AES_KEYSIZE_256       32
+#define AES_BLOCK_SIZE        16
+#define AES_MAX_KEYLENGTH     (15 * 16)
+#define AES_MAX_KEYLENGTH_U32 (AES_MAX_KEYLENGTH / sizeof(uint32_t))
 
 /*
  * Please ensure that the first two fields are 16-byte aligned
@@ -2344,7 +2347,9 @@ static int AES_ExpandKey(aes_context_t *ctx, const uint8_t *in_key,
 static int AES_SetKey(aes_context_t *ctx, const uint8_t *in_key,
     unsigned int key_len)
 {
-    int ret = AES_ExpandKey(ctx, in_key, key_len);
+    int ret;
+
+    ret = AES_ExpandKey(ctx, in_key, key_len);
     if (!ret)
         return 0;
 
@@ -2435,7 +2440,7 @@ static unsigned int  prng_value_index = 0;
 
 // Initialize Pseudo-RNG using the specified 128-bit key.
 
-[[maybe_unused]] void PRNG_Start(prng_seed_t key)
+void PRNG_Start(prng_seed_t key)
 {
     AES_SetKey(&prng_context, key, sizeof(prng_seed_t));
     prng_value_index   = 4;
@@ -2443,7 +2448,7 @@ static unsigned int  prng_value_index = 0;
     prng_enabled       = true;
 }
 
-[[maybe_unused]] void PRNG_Stop()
+void PRNG_Stop()
 {
     prng_enabled = false;
 }
@@ -2454,10 +2459,11 @@ static void PRNG_Generate()
 {
     uint8_t      input[16];
     uint8_t      output[16];
+    unsigned int i;
 
     // Input for the cipher is a consecutively increasing 32-bit counter.
 
-    for (unsigned int i = 0; i < 4; ++i)
+    for (i = 0; i < 4; ++i)
     {
         input[4 * i]     = prng_input_counter & 0xff;
         input[4 * i + 1] = (prng_input_counter >> 8) & 0xff;
@@ -2468,7 +2474,7 @@ static void PRNG_Generate()
 
     AES_Encrypt(&prng_context, output, input);
 
-    for (unsigned int i = 0; i < 4; ++i)
+    for (i = 0; i < 4; ++i)
     {
         prng_values[i] =
             static_cast<uint32_t>(output[4 * i] | (output[4 * i + 1] << 8) | (output[4 * i + 2] << 16) | (output[4 * i + 3] << 24));
@@ -2479,8 +2485,10 @@ static void PRNG_Generate()
 
 // Read a random 32-bit integer from the PRNG.
 
-[[maybe_unused]] unsigned int PRNG_Random()
+unsigned int PRNG_Random()
 {
+    unsigned int result;
+
     if (!prng_enabled)
     {
         return 0;
@@ -2491,7 +2499,7 @@ static void PRNG_Generate()
         PRNG_Generate();
     }
 
-    unsigned int result = prng_values[prng_value_index];
+    result = prng_values[prng_value_index];
     ++prng_value_index;
 
     return result;

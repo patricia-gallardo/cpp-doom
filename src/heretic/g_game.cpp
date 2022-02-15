@@ -302,7 +302,7 @@ void G_BuildTiccmd(ticcmd_t *cmd, int maketic)
 
     // haleyjd: removed externdriver crap
 
-    std::memset(cmd, 0, sizeof(*cmd));
+    memset(cmd, 0, sizeof(*cmd));
     //cmd->consistancy =
     //      consistancy[consoleplayer][(maketic*ticdup)%BACKUPTICS];
     cmd->consistancy = consistancy[consoleplayer][maketic % BACKUPTICS];
@@ -721,7 +721,7 @@ void G_DoLoadLevel()
     {
         if (playeringame[i] && players[i].playerstate == PST_DEAD)
             players[i].playerstate = PST_REBORN;
-        std::memset(players[i].frags, 0, sizeof(players[i].frags));
+        memset(players[i].frags, 0, sizeof(players[i].frags));
     }
 
     P_SetupLevel(gameepisode, gamemap, 0, gameskill);
@@ -733,12 +733,12 @@ void G_DoLoadLevel()
 // clear cmd building stuff
 //
 
-    std::memset(gamekeydown, 0, sizeof(gamekeydown));
+    memset(gamekeydown, 0, sizeof(gamekeydown));
     joyxmove = joyymove = joystrafemove = joylook = 0;
     mousex = mousey = 0;
     sendpause = sendsave = paused = false;
-    std::memset(mousearray, 0, sizeof(mousearray));
-    std::memset(joyarray, 0, sizeof(joyarray));
+    memset(mousearray, 0, sizeof(mousearray));
+    memset(joyarray, 0, sizeof(joyarray));
 
     if (testcontrols)
     {
@@ -1032,7 +1032,7 @@ void G_Ticker()
         {
             cmd = &players[i].cmd;
 
-            std::memcpy(cmd, &netcmds[i], sizeof(ticcmd_t));
+            memcpy(cmd, &netcmds[i], sizeof(ticcmd_t));
 
             if (demoplayback)
                 G_ReadDemoTiccmd(cmd);
@@ -1195,10 +1195,10 @@ void G_PlayerFinishLevel(int player)
             P_PlayerUseArtifact(p, arti_fly);
         }
     }
-    std::memset(p->powers, 0, sizeof(p->powers));
-    std::memset(p->keys, 0, sizeof(p->keys));
+    memset(p->powers, 0, sizeof(p->powers));
+    memset(p->keys, 0, sizeof(p->keys));
     playerkeys = 0;
-//      std::memset(p->inventory, 0, sizeof(p->inventory));
+//      memset(p->inventory, 0, sizeof(p->inventory));
     if (p->chickenTics)
     {
         p->readyweapon = static_cast<weapontype_t>(p->mo->special1.i);       // Restore weapon
@@ -1238,7 +1238,7 @@ void G_PlayerReborn(int player)
     bool secret;
 
     secret = false;
-    std::memcpy(frags, players[player].frags, sizeof(frags));
+    memcpy(frags, players[player].frags, sizeof(frags));
     killcount = players[player].killcount;
     itemcount = players[player].itemcount;
     secretcount = players[player].secretcount;
@@ -1248,9 +1248,9 @@ void G_PlayerReborn(int player)
     {
         secret = true;
     }
-    std::memset(p, 0, sizeof(*p));
+    memset(p, 0, sizeof(*p));
 
-    std::memcpy(players[player].frags, frags, sizeof(players[player].frags));
+    memcpy(players[player].frags, frags, sizeof(players[player].frags));
     players[player].killcount = killcount;
     players[player].itemcount = itemcount;
     players[player].secretcount = secretcount;
@@ -1539,7 +1539,7 @@ void G_DoLoadGame()
     // Skip the description field
     SV_Read(savestr, SAVESTRINGSIZE);
 
-    std::memset(vcheck, 0, sizeof(vcheck));
+    memset(vcheck, 0, sizeof(vcheck));
     DEH_snprintf(vcheck, VERSIONSIZE, "version %i", HERETIC_VERSION);
     SV_Read(readversion, VERSIONSIZE);
 
@@ -1682,8 +1682,8 @@ void G_InitNew(skill_t skill, int episode, int map)
     maketic = 1;
     for (i = 0; i < MAXPLAYERS; i++)
         nettics[i] = 1;         // one null event for this gametic
-    std::memset(localcmds, 0, sizeof(localcmds));
-    std::memset(netcmds, 0, sizeof(netcmds));
+    memset(localcmds, 0, sizeof(localcmds));
+    memset(netcmds, 0, sizeof(netcmds));
 #endif
     G_DoLoadLevel();
 }
@@ -1750,7 +1750,7 @@ static void IncreaseDemoBuffer()
 
     // Copy over the old data
 
-    std::memcpy(new_demobuffer, demobuffer, current_length);
+    memcpy(new_demobuffer, demobuffer, current_length);
 
     // Free the old buffer and point the demo pointers at the new buffer.
 
@@ -1865,7 +1865,7 @@ void G_RecordDemo(skill_t skill, int, int episode, int map,
 
     i = M_CheckParmWithArgs("-maxdemo", 1);
     if (i)
-        maxsize = std::atoi(myargv[i + 1]) * 1024;
+        maxsize = atoi(myargv[i + 1]) * 1024;
     demobuffer = zmalloc<uint8_t *>(maxsize, PU_STATIC, nullptr);
     demoend = demobuffer + maxsize;
 
@@ -2086,7 +2086,7 @@ void G_DoSaveGame()
 
     SV_Open(filename);
     SV_Write(description, SAVESTRINGSIZE);
-    std::memset(verString, 0, sizeof(verString));
+    memset(verString, 0, sizeof(verString));
     DEH_snprintf(verString, VERSIONSIZE, "version %i", HERETIC_VERSION);
     SV_Write(verString, VERSIONSIZE);
     SV_WriteByte(static_cast<uint8_t>(gameskill));

@@ -356,7 +356,7 @@
     detect these cases.
   * Mistaken assumptions about representations of bools that
     affected some ARM systems were fixed (thanks floppes).
-  * std::memcpy() uses on overlapping memory were changed to use std::memmove(),
+  * memcpy() uses on overlapping memory were changed to use memmove(),
     fixing abort traps on OpenBSD (thanks ryan-sg).
   * Hyphens in manpages were fixed (thanks chungy, Fabian).
   * Lots of compiler build warnings were fixed (thanks Fabian).

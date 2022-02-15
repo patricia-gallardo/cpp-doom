@@ -55,7 +55,7 @@ void A_SpectreEAttack(mobj_t *actor);
 
 void P_ThrustMobj(mobj_t *actor, angle_t angle, fixed_t force);
 
-enum dirtype_t
+typedef enum
 {
     DI_EAST,
     DI_NORTHEAST,
@@ -66,9 +66,9 @@ enum dirtype_t
     DI_SOUTH,
     DI_SOUTHEAST,
     DI_NODIR,
-    NUMDIRS [[maybe_unused]]
-
-};
+    NUMDIRS
+    
+} dirtype_t;
 
 
 //
@@ -679,7 +679,7 @@ void P_NewRandomDir(mobj_t* actor)
     {
         // Try directions one at a time in backward order
         dir = DI_SOUTHEAST;
-        while (true)
+        while(1)
         {
             // haleyjd 09/05/10: missing random code.
             if(dir != omovedir)
@@ -709,7 +709,7 @@ void P_NewRandomDir(mobj_t* actor)
                     return;
                 }
             } // end if(--dir == -1)
-        } // end while (true)
+        } // end while(1)
     } // end else
 }
 

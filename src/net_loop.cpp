@@ -15,6 +15,9 @@
 //      Loopback network module for server compiled into the client
 //
 
+#include <cstdio>
+
+#include "doomtype.hpp"
 #include "i_system.hpp"
 #include "m_misc.hpp"
 #include "net_defs.hpp"
@@ -41,7 +44,9 @@ static void QueueInit(packet_queue_t *queue)
 
 static void QueuePush(packet_queue_t *queue, net_packet_t *packet)
 {
-    int new_tail = (queue->tail + 1) % MAX_QUEUE_SIZE;
+    int new_tail;
+
+    new_tail = (queue->tail + 1) % MAX_QUEUE_SIZE;
 
     if (new_tail == queue->head)
     {
@@ -56,13 +61,16 @@ static void QueuePush(packet_queue_t *queue, net_packet_t *packet)
 
 static net_packet_t *QueuePop(packet_queue_t *queue)
 {
+    net_packet_t *packet;
+
     if (queue->tail == queue->head)
     {
         // queue empty
 
         return nullptr;
     }
-    net_packet_t *packet = queue->packets[queue->head];
+
+    packet      = queue->packets[queue->head];
     queue->head = (queue->head + 1) % MAX_QUEUE_SIZE;
 
     return packet;
@@ -94,7 +102,9 @@ static void NET_CL_SendPacket(net_addr_t *, net_packet_t *packet)
 
 static bool NET_CL_RecvPacket(net_addr_t **addr, net_packet_t **packet)
 {
-    net_packet_t *popped = QueuePop(&client_queue);
+    net_packet_t *popped;
+
+    popped = QueuePop(&client_queue);
 
     if (popped != nullptr)
     {
@@ -167,7 +177,9 @@ static void NET_SV_SendPacket(net_addr_t *, net_packet_t *packet)
 
 static bool NET_SV_RecvPacket(net_addr_t **addr, net_packet_t **packet)
 {
-    net_packet_t *popped = QueuePop(&server_queue);
+    net_packet_t *popped;
+
+    popped = QueuePop(&server_queue);
 
     if (popped != nullptr)
     {

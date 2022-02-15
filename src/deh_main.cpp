@@ -20,11 +20,13 @@
 #include <cstring>
 #include <cctype>
 
+#include "doomtype.hpp"
 #include "i_glob.hpp"
 #include "i_system.hpp"
 #include "d_iwad.hpp"
 #include "m_argv.hpp"
 #include "w_wad.hpp"
+
 #include "deh_defs.hpp"
 #include "deh_io.hpp"
 #include "deh_main.hpp"
@@ -53,10 +55,11 @@ bool deh_apply_cheats = true;
 void DEH_Checksum(sha1_digest_t digest)
 {
     sha1_context_t sha1_context;
+    unsigned int   i;
 
     SHA1_Init(&sha1_context);
 
-    for ( unsigned int i = 0; deh_section_types[i] != nullptr; ++i)
+    for (i = 0; deh_section_types[i] != nullptr; ++i)
     {
         if (deh_section_types[i]->sha1_hash != nullptr)
         {
@@ -71,7 +74,9 @@ void DEH_Checksum(sha1_digest_t digest)
 
 static void InitializeSections()
 {
-    for (unsigned int i = 0; deh_section_types[i] != nullptr; ++i)
+    unsigned int i;
+
+    for (i = 0; deh_section_types[i] != nullptr; ++i)
     {
         if (deh_section_types[i]->init != nullptr)
         {
@@ -103,6 +108,8 @@ static void DEH_Init()
 
 static deh_section_t *GetSectionByName(char *name)
 {
+    unsigned int i;
+
     // we explicitely do not recognize [STRINGS] sections at all
     // if extended strings are not allowed
 
@@ -111,7 +118,7 @@ static deh_section_t *GetSectionByName(char *name)
         return nullptr;
     }
 
-    for (unsigned int i = 0; deh_section_types[i] != nullptr; ++i)
+    for (i = 0; deh_section_types[i] != nullptr; ++i)
     {
         if (!strcasecmp(deh_section_types[i]->name, name))
         {
@@ -139,6 +146,8 @@ static bool IsWhitespace(char *s)
 
 static char *CleanString(char *s)
 {
+    char *strending;
+
     // Leading whitespace
 
     while (*s && isspace(*s))
@@ -146,7 +155,7 @@ static char *CleanString(char *s)
 
     // Trailing whitespace
 
-    char *strending = s + strlen(s) - 1;
+    strending = s + strlen(s) - 1;
 
     while (strlen(s) > 0 && isspace(*strending))
     {
@@ -169,9 +178,11 @@ static char *CleanString(char *s)
 
 bool DEH_ParseAssignment(char *line, char **variable_name, char **value)
 {
+    char *p;
+
     // find the equals
 
-    char *p = strchr(line, '=');
+    p = strchr(line, '=');
 
     if (p == nullptr)
     {
@@ -196,12 +207,15 @@ extern void DEH_RestoreLineStart(deh_context_t *context);
 
 static bool CheckSignatures(deh_context_t *context)
 {
+    size_t i;
+    char * line;
+
     // [crispy] save pointer to start of line (should be 0 here)
     DEH_SaveLineStart(context);
 
     // Read the first line
 
-    char *line = DEH_ReadLine(context, false);
+    line = DEH_ReadLine(context, false);
 
     if (line == nullptr)
     {
@@ -210,7 +224,7 @@ static bool CheckSignatures(deh_context_t *context)
 
     // Check all signatures to see if one matches
 
-    for (size_t i = 0; deh_signatures[i] != nullptr; ++i)
+    for (i = 0; deh_signatures[i] != nullptr; ++i)
     {
         if (!strcmp(deh_signatures[i], line))
         {
@@ -281,7 +295,9 @@ static void DEH_ParseContext(deh_context_t *context)
     deh_section_t *current_section = nullptr;
     deh_section_t *prev_section    = nullptr; // [crispy] remember previous line parser
     char           section_name[20];
-    void          *tag = nullptr;
+    void *         tag = nullptr;
+    bool        extended;
+    char *         line;
 
     // Read the header and check it matches the signature
 
@@ -297,11 +313,11 @@ static void DEH_ParseContext(deh_context_t *context)
     {
         // Read the next line. We only allow the special extended parsing
         // for the BEX [STRINGS] section.
-        bool extended = current_section != nullptr
+        extended = current_section != nullptr
                    && !strcasecmp(current_section->name, "[STRINGS]");
         // [crispy] save pointer to start of line, just in case
         DEH_SaveLineStart(context);
-        char *line = DEH_ReadLine(context, extended);
+        line = DEH_ReadLine(context, extended);
 
         // end of file?
 
@@ -388,6 +404,8 @@ static void DEH_ParseContext(deh_context_t *context)
 
 int DEH_LoadFile(const char *filename)
 {
+    deh_context_t *context;
+
     if (!deh_initialized)
     {
         DEH_Init();
@@ -405,7 +423,7 @@ int DEH_LoadFile(const char *filename)
 
     printf(" loading %s\n", filename);
 
-    deh_context_t *context = DEH_OpenFile(filename);
+    context = DEH_OpenFile(filename);
 
     if (context == nullptr)
     {
@@ -428,11 +446,14 @@ int DEH_LoadFile(const char *filename)
 // Load all dehacked patches from the given directory.
 void DEH_AutoLoadPatches(const char *path)
 {
-    glob_t *glob = I_StartMultiGlob(path, GLOB_FLAG_NOCASE | GLOB_FLAG_SORTED,
+    const char *filename;
+    glob_t *    glob;
+
+    glob = I_StartMultiGlob(path, GLOB_FLAG_NOCASE | GLOB_FLAG_SORTED,
         "*.deh", "*.bex", "*.hhe", "*.seh", nullptr); // [crispy] *.bex
     for (;;)
     {
-        const char *filename = I_NextGlob(glob);
+        filename = I_NextGlob(glob);
         if (filename == nullptr)
         {
             break;
@@ -449,6 +470,8 @@ void DEH_AutoLoadPatches(const char *path)
 
 int DEH_LoadLump(int lumpnum, bool, bool allow_error)
 {
+    deh_context_t *context;
+
     if (!deh_initialized)
     {
         DEH_Init();
@@ -462,7 +485,7 @@ int DEH_LoadLump(int lumpnum, bool, bool allow_error)
     deh_allow_extended_strings = false;
 */
 
-    deh_context_t *context = DEH_OpenLump(lumpnum);
+    context = DEH_OpenLump(lumpnum);
 
     if (context == nullptr)
     {
@@ -486,7 +509,9 @@ int DEH_LoadLump(int lumpnum, bool, bool allow_error)
 
 int DEH_LoadLumpByName(const char *name, bool allow_long, bool allow_error)
 {
-    int lumpnum = W_CheckNumForName(name);
+    int lumpnum;
+
+    lumpnum = W_CheckNumForName(name);
 
     if (lumpnum == -1)
     {
@@ -500,6 +525,9 @@ int DEH_LoadLumpByName(const char *name, bool allow_long, bool allow_error)
 // Check the command line for -deh argument, and others.
 void DEH_ParseCommandLine()
 {
+    char *filename;
+    int   p;
+
     //!
     // @arg <files>
     // @category mod
@@ -507,7 +535,7 @@ void DEH_ParseCommandLine()
     // Load the given dehacked patch(es)
     //
 
-    int p = M_CheckParm("-deh");
+    p = M_CheckParm("-deh");
 
     if (p > 0)
     {
@@ -515,7 +543,7 @@ void DEH_ParseCommandLine()
 
         while (p < myargc && myargv[p][0] != '-')
         {
-            char *filename = D_TryFindWADByName(myargv[p]);
+            filename = D_TryFindWADByName(myargv[p]);
             DEH_LoadFile(filename);
             free(filename);
             ++p;

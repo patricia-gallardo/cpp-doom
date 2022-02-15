@@ -19,6 +19,7 @@
 #include <cstdio>
 #include <cstring>
 
+#include "deh_bexpars.hpp"
 #include "deh_io.hpp"
 
 int bex_pars[6][10] = { { 0 } };

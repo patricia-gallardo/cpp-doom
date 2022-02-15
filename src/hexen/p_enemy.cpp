@@ -950,7 +950,7 @@ bool P_UpdateMorphedMonster(mobj_t * actor, int tics)
         mo->special1.i = 5 * 35;  // Next try in 5 seconds
         mo->special2.i = moType;
         mo->tid = oldMonster.tid;
-        std::memcpy(mo->args, oldMonster.args, 5);
+        memcpy(mo->args, oldMonster.args, 5);
         P_InsertMobjIntoTIDList(mo, oldMonster.tid);
         return (false);
     }
@@ -958,7 +958,7 @@ bool P_UpdateMorphedMonster(mobj_t * actor, int tics)
     mo->target = oldMonster.target;
     mo->tid = oldMonster.tid;
     mo->special = oldMonster.special;
-    std::memcpy(mo->args, oldMonster.args, 5);
+    memcpy(mo->args, oldMonster.args, 5);
     P_InsertMobjIntoTIDList(mo, oldMonster.tid);
     fog = P_SpawnMobj(x, y, z + TELEFOGHEIGHT, MT_TFOG);
     S_StartSound(fog, SFX_TELEPORT);
@@ -1119,7 +1119,7 @@ static bool CheckMinotaurAge(mobj_t *mo)
     // The start time is stored in the mobj_t structure, but it is stored
     // in little endian format. For Vanilla savegame compatibility we must
     // swap it to the native endianness.
-    std::memcpy(&starttime, mo->args, sizeof(unsigned int));
+    memcpy(&starttime, mo->args, sizeof(unsigned int));
 
     if (leveltime - LONG(starttime) >= MAULATORTICS)
     {
@@ -1908,7 +1908,7 @@ void P_InitCreatureCorpseQueue(bool corpseScan)
 
     // Initialize queue
     corpseQueueSlot = 0;
-    std::memset(corpseQueue, 0, sizeof(mobj_t *) * CORPSEQUEUESIZE);
+    memset(corpseQueue, 0, sizeof(mobj_t *) * CORPSEQUEUESIZE);
 
     if (!corpseScan)
         return;

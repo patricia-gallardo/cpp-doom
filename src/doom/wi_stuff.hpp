@@ -25,12 +25,12 @@
 
 // States for the intermission
 
-enum stateenum_t
+typedef enum
 {
     NoState = -1,
     StatCount,
     ShowNextLoc,
-};
+} stateenum_t;
 
 // Called by main loop, animate the intermission.
 void WI_Ticker();

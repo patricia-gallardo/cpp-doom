@@ -39,13 +39,13 @@ extern	int	levelTimeCount;
 void    P_InitPicAnims ();
 
 // villsa [STRIFE]
-enum terraintype_e
+typedef enum
 {
     FLOOR_WATER = 0,
     FLOOR_SLIME = 1,
     FLOOR_SOLID = 2,
     FLOOR_END   = -1
-};
+} terraintype_e;
 
 void P_InitTerrainTypes();                  // villsa [STRIFE]
 terraintype_e P_GetTerrainType(mobj_t* mobj);   // villsa [STRIFE]
@@ -225,13 +225,13 @@ typedef struct
 } switchlist_t;
 
 
-enum bwhere_e
+typedef enum
 {
     top,
     middle,
     bottom
 
-};
+} bwhere_e;
 
 
 typedef struct
@@ -269,18 +269,18 @@ void P_InitSwitchList();
 //
 // P_PLATS
 //
-enum plat_e
+typedef enum
 {
     up,
     down,
     waiting,
     in_stasis
 
-};
+} plat_e;
 
 
 
-enum plattype_e
+typedef enum
 {
     perpetualRaise,
     downWaitUpStay,
@@ -290,7 +290,7 @@ enum plattype_e
     blazeDWUS,
     upWaitDownStay      // villsa [STRIFE]
 
-};
+} plattype_e;
 
 
 
@@ -337,7 +337,7 @@ void    P_ActivateInStasis(int tag);
 //
 // P_DOORS
 //
-enum vldoor_e
+typedef enum
 {
     vld_normal,
     vld_close30ThenOpen,
@@ -351,7 +351,7 @@ enum vldoor_e
     vld_splitRaiseNearest,  // villsa [STRIFE]
     vld_splitOpen           // villsa [STRIFE]
 
-};
+} vldoor_e;
 
 
 
@@ -415,23 +415,23 @@ P_SpawnDoorRaiseIn5Mins
 //
 //      Sliding doors...
 //
-enum sd_e
+typedef enum
 {
     sd_opening,
     sd_waiting,
     sd_closing
 
-};
+} sd_e;
 
 
 
-enum sdt_e
+typedef enum
 {
     sdt_openOnly,
     sdt_closeOnly,
     sdt_openAndClose
 
-};
+} sdt_e;
 
 
 
@@ -494,7 +494,7 @@ int EV_RemoteSlidingDoor(line_t* line, mobj_t* thing);
 //
 // P_CEILNG
 //
-enum ceiling_e
+typedef enum
 {
     lowerToFloor,
     raiseToHighest,
@@ -503,7 +503,7 @@ enum ceiling_e
     fastCrushAndRaise,
     silentCrushAndRaise
 
-};
+} ceiling_e;
 
 
 
@@ -551,7 +551,7 @@ void    P_ActivateInStasisCeiling(line_t* line);
 //
 // P_FLOOR
 //
-enum floor_e
+typedef enum
 {
     // lower floor to highest surrounding floor
     lowerFloor,
@@ -587,17 +587,17 @@ enum floor_e
     // [STRIFE] New floor type - used for the coolant reactor pit
     raiseFloor512AndChange
     
-};
+} floor_e;
 
 
 
 
-enum stair_e
+typedef enum
 {
     build8,     // slowly build by 8
     turbo16,    // quickly build by 16
     buildDown16 // haleyjd 09/24/10: [STRIFE] new stair type
-};
+} stair_e;
 
 
 
@@ -619,13 +619,13 @@ typedef struct floormove_s
 
 #define FLOORSPEED		FRACUNIT
 
-enum result_e
+typedef enum
 {
     ok,
     crushed,
     pastdest
     
-};
+} result_e;
 
 result_e
 T_MovePlane
@@ -654,7 +654,7 @@ void T_MoveFloor( floormove_t* floor);
 
 // [STRIFE] Teleportation flags - teleflags
 // Not to be conflated with telefrags, though they be tangentially related ;)
-enum teleflags_e
+typedef enum teleflags
 {
     TF_NOSRCSND = 0x01,
     TF_NODSTSND = 0x02,
@@ -666,7 +666,7 @@ enum teleflags_e
     TF_SRCSILENCE  = (TF_NOSRCSND|TF_NOSRCFOG),    // 0x21 (33)
     TF_FULLSILENCE = (TF_SRCSILENCE|TF_DSTSILENCE) // 0x33 (51)
 
-};
+} teleflags_e;
 
 int
 EV_Teleport

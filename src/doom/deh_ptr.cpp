@@ -19,7 +19,9 @@
 #include <cstdlib>
 #include <cstring>
 
+#include "doomtype.hpp"
 #include "info.hpp"
+
 #include "deh_defs.hpp"
 #include "deh_io.hpp"
 #include "deh_main.hpp"
@@ -110,7 +112,7 @@ static void DEH_PointerParseLine(deh_context_t *context, char *line, void *tag)
 
     // all values are integers
 
-    ivalue = std::atoi(value);
+    ivalue = atoi(value);
 
     // set the appropriate field
 

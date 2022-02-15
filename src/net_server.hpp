@@ -26,7 +26,7 @@ void NET_SV_Init();
 void NET_SV_Run();
 
 // Shut down the server
-// Blocks until all clients disconnect, or until a 5-second timeout
+// Blocks until all clients disconnect, or until a 5 second timeout
 
 void NET_SV_Shutdown();
 

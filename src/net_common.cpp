@@ -17,7 +17,9 @@
 #include <cstdio>
 #include <cstdlib>
 #include <cstdarg>
+#include <cstring>
 
+#include "doomtype.hpp"
 #include "d_mode.hpp"
 #include "i_system.hpp"
 #include "i_timer.hpp"
@@ -27,6 +29,7 @@
 #include "net_common.hpp"
 #include "net_io.hpp"
 #include "net_packet.hpp"
+#include "net_structrw.hpp"
 
 // connections time out after 30 seconds
 

@@ -18,7 +18,7 @@
 #ifndef __PROTO__
 #define __PROTO__
 
-enum net_midipipe_packet_type_t {
+typedef enum {
     MIDIPIPE_PACKET_TYPE_REGISTER_SONG,
     MIDIPIPE_PACKET_TYPE__DEPRECATED_1,
     MIDIPIPE_PACKET_TYPE_SET_VOLUME,
@@ -27,7 +27,7 @@ enum net_midipipe_packet_type_t {
     MIDIPIPE_PACKET_TYPE_SHUTDOWN,
     MIDIPIPE_PACKET_TYPE_UNREGISTER_SONG,
     MIDIPIPE_PACKET_TYPE_ACK,
-};
+} net_midipipe_packet_type_t;
 
 #endif
 

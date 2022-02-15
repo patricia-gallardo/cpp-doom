@@ -97,8 +97,8 @@ int			messageToPrint;
 const char		*messageString;
 
 // message x & y
-[[maybe_unused]] int			messx;
-[[maybe_unused]] int			messy;
+int			messx;
+int			messy;
 int			messageLastMenuActive;
 
 // timed message = no input from user
@@ -293,10 +293,10 @@ menu_t  EpiDef =
 //
 enum class newgame_e
 {
-    killthings [[maybe_unused]],
+    killthings,
     toorough,
     hurtme,
-    violence [[maybe_unused]],
+    violence,
     nightmare,
     newg_end
 };
@@ -329,8 +329,8 @@ enum class options_e
     // haleyjd 08/28/10: [STRIFE] Removed messages, mouse sens., detail.
     endgame,
     scrnsize,
-    option_empty1 [[maybe_unused]],
-    soundvol [[maybe_unused]],
+    option_empty1,
+    soundvol,
     opt_end
 };
 
@@ -379,7 +379,7 @@ menu_t  ReadDef1 =
 
 enum class read_e2
 {
-    rdthsempty2 [[maybe_unused]],
+    rdthsempty2,
     read2_end
 };
 
@@ -426,9 +426,9 @@ menu_t  ReadDef3 =
 enum class sound_e
 {
     sfx_vol,
-    sfx_empty1 [[maybe_unused]],
+    sfx_empty1,
     music_vol,
-    sfx_empty2 [[maybe_unused]],
+    sfx_empty2,
     voice_vol,
     sfx_empty3,
     sfx_mouse,
@@ -467,12 +467,12 @@ menu_t  SoundDef =
 //
 enum class load_e
 {
-    load1 [[maybe_unused]],
-    load2 [[maybe_unused]],
-    load3 [[maybe_unused]],
-    load4 [[maybe_unused]],
-    load5 [[maybe_unused]],
-    load6 [[maybe_unused]],
+    load1,
+    load2,
+    load3,
+    load4,
+    load5,
+    load6,
     load_end
 };
 
@@ -1550,7 +1550,7 @@ M_WriteText
     cx = x;
     cy = y;
 
-    while (true)
+    while(1)
     {
         c = *ch++;
         if (!c)

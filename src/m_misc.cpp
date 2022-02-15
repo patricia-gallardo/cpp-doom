@@ -35,9 +35,16 @@
 #endif
 
 #include "doomtype.hpp"
+
+#include "deh_str.hpp"
+
 #include "memory.hpp"
+#include "i_swap.hpp"
 #include "i_system.hpp"
+#include "i_video.hpp"
 #include "m_misc.hpp"
+#include "v_video.hpp"
+#include "w_wad.hpp"
 #include "z_zone.hpp"
 
 //
@@ -308,7 +315,7 @@ void M_ExtractFileBase(const char *path, char *dest)
     // filename limit, instead we simply truncate the name.
 
     length = 0;
-    std::memset(dest, 0, 8);
+    memset(dest, 0, 8);
 
     while (*src != '\0' && *src != '.')
     {

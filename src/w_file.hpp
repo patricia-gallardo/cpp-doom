@@ -23,7 +23,7 @@
 #include <cstdio>
 #include "doomtype.hpp"
 
-using wad_file_t = struct _wad_file_s;
+typedef struct _wad_file_s wad_file_t;
 
 typedef struct
 {

@@ -1650,11 +1650,11 @@ void P_UnArchiveWorld()
 
 //=============================================================================
 
-enum thinkerclass_t
+typedef enum
 {
     tc_end,
     tc_mobj
-};
+} thinkerclass_t;
 
 /*
 ====================
@@ -1714,7 +1714,7 @@ void P_UnArchiveThinkers()
     P_InitThinkers();
 
     // read in saved thinkers
-    while (true)
+    while (1)
     {
         tclass = SV_ReadByte();
         switch (tclass)
@@ -1848,7 +1848,7 @@ void P_UnArchiveSpecials()
 
 
     // read in saved thinkers
-    while (true)
+    while (1)
     {
         tclass = static_cast<specials_e>(SV_ReadByte());
         switch (tclass)

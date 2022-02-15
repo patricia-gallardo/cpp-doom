@@ -33,12 +33,12 @@
 
 // TYPES -------------------------------------------------------------------
 
-enum gametype_t
+typedef enum
 {
     SINGLE,
     COOPERATIVE,
     DEATHMATCH
-};
+} gametype_t;
 
 // EXTERNAL FUNCTION PROTOTYPES --------------------------------------------
 

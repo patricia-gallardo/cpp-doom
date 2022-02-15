@@ -42,12 +42,12 @@
 #include "p_dialog.hpp" // [STRIFE]
 #include "lump.hpp"
 
-enum finalestage_t
+typedef enum
 {
     F_STAGE_TEXT,
     F_STAGE_ARTSCREEN,
     F_STAGE_CAST,
-};
+} finalestage_t;
 
 // ?
 //#include "doomstat.hpp"
@@ -545,12 +545,12 @@ void F_TextWrite ()
     {
 	for (x=0 ; x<SCREENWIDTH/64 ; x++)
 	{
-	    std::memcpy (dest, src+((y&63)<<6), 64);
+	    memcpy (dest, src+((y&63)<<6), 64);
 	    dest += 64;
 	}
 	if (SCREENWIDTH&63)
 	{
-	    std::memcpy (dest, src+((y&63)<<6), SCREENWIDTH&63);
+	    memcpy (dest, src+((y&63)<<6), SCREENWIDTH&63);
 	    dest += (SCREENWIDTH&63);
 	}
     }

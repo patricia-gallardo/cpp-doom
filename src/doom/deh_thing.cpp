@@ -15,13 +15,16 @@
 // Parses "Thing" sections in dehacked files
 //
 
+#include <array>
 #include <cstdio>
 #include <cstdlib>
 
 #include "doomtype.hpp"
+
 #include "deh_defs.hpp"
 #include "deh_main.hpp"
 #include "deh_mapping.hpp"
+
 #include "info.hpp"
 #include "p_mobj.hpp" // [crispy] MF_*
 
@@ -145,7 +148,7 @@ static void DEH_ThingParseLine(deh_context_t *context, char *line, void *tag)
 
     // all values are integers
 
-    ivalue = std::atoi(value);
+    ivalue = atoi(value);
 
     // [crispy] support BEX bits mnemonics in Things fields
     if (!ivalue && !strcasecmp(variable_name, "bits"))

@@ -16,6 +16,7 @@
 //     Common code to parse command line, identifying WAD files to load.
 //
 
+#include <array>
 #include <cstdlib>
 
 #include "config.h"
@@ -33,6 +34,7 @@
 bool W_ParseCommandLine()
 {
     bool modifiedgame = false;
+    int     p;
 
     // Merged PWADs are loaded first, because they are supposed to be
     // modified IWADs.
@@ -45,15 +47,18 @@ bool W_ParseCommandLine()
     // into the main IWAD.  Multiple files may be specified.
     //
 
-    int p = M_CheckParmWithArgs("-merge", 1);
+    p = M_CheckParmWithArgs("-merge", 1);
 
     if (p > 0)
     {
         for (p = p + 1; p < myargc && myargv[p][0] != '-'; ++p)
         {
+            char *filename;
+
             modifiedgame = true;
 
-            char *filename = D_TryFindWADByName(myargv[p]);
+            filename = D_TryFindWADByName(myargv[p]);
+
             printf(" merging %s\n", filename);
             W_MergeFile(filename);
             free(filename);
@@ -77,9 +82,12 @@ bool W_ParseCommandLine()
     {
         for (p = p + 1; p < myargc && myargv[p][0] != '-'; ++p)
         {
+            char *filename;
+
             modifiedgame = true;
 
-            char *filename = D_TryFindWADByName(myargv[p]);
+            filename = D_TryFindWADByName(myargv[p]);
+
             printf(" performing NWT-style merge of %s\n", filename);
             W_NWTDashMerge(filename);
             free(filename);
@@ -102,9 +110,12 @@ bool W_ParseCommandLine()
     {
         for (p = p + 1; p < myargc && myargv[p][0] != '-'; ++p)
         {
+            char *filename;
+
             modifiedgame = true;
 
-            char *filename = D_TryFindWADByName(myargv[p]);
+            filename = D_TryFindWADByName(myargv[p]);
+
             printf(" merging flats from %s\n", filename);
             W_NWTMergeFile(filename, W_NWT_MERGE_FLATS);
             free(filename);
@@ -125,8 +136,11 @@ bool W_ParseCommandLine()
     {
         for (p = p + 1; p < myargc && myargv[p][0] != '-'; ++p)
         {
+            char *filename;
+
             modifiedgame = true;
-            char *filename     = D_TryFindWADByName(myargv[p]);
+            filename     = D_TryFindWADByName(myargv[p]);
+
             printf(" merging sprites from %s\n", filename);
             W_NWTMergeFile(filename, W_NWT_MERGE_SPRITES);
             free(filename);
@@ -146,9 +160,12 @@ bool W_ParseCommandLine()
     {
         for (p = p + 1; p < myargc && myargv[p][0] != '-'; ++p)
         {
+            char *filename;
+
             modifiedgame = true;
 
-            char *filename = D_TryFindWADByName(myargv[p]);
+            filename = D_TryFindWADByName(myargv[p]);
+
             printf(" merging sprites and flats from %s\n", filename);
             W_NWTMergeFile(filename, W_NWT_MERGE_SPRITES | W_NWT_MERGE_FLATS);
             free(filename);
@@ -170,7 +187,9 @@ bool W_ParseCommandLine()
         modifiedgame = true; // homebrew levels
         while (++p != myargc && myargv[p][0] != '-')
         {
-            char *filename = D_TryFindWADByName(myargv[p]);
+            char *filename;
+
+            filename = D_TryFindWADByName(myargv[p]);
 
             // [crispy] always merge arguments of "-file" parameter
             printf(" merging %s !\n", filename);
@@ -187,11 +206,14 @@ bool W_ParseCommandLine()
 // Load all WAD files from the given directory.
 void W_AutoLoadWADs(const char *path)
 {
-    glob_t *glob = I_StartMultiGlob(path, GLOB_FLAG_NOCASE | GLOB_FLAG_SORTED,
+    glob_t *    glob;
+    const char *filename;
+
+    glob = I_StartMultiGlob(path, GLOB_FLAG_NOCASE | GLOB_FLAG_SORTED,
         "*.wad", "*.lmp", nullptr);
     for (;;)
     {
-        const char *filename = I_NextGlob(glob);
+        filename = I_NextGlob(glob);
         if (filename == nullptr)
         {
             break;

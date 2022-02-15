@@ -18,6 +18,6 @@
 #ifndef NET_DEDICATED_H
 #define NET_DEDICATED_H
 
-[[noreturn]] void NET_DedicatedServer();
+void NET_DedicatedServer();
 
 #endif /* #ifndef NET_DEDICATED_H */

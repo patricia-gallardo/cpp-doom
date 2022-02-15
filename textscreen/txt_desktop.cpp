@@ -21,6 +21,7 @@
 #include "txt_gui.hpp"
 #include "txt_io.hpp"
 #include "txt_main.hpp"
+#include "txt_separator.hpp"
 #include "txt_window.hpp"
 
 #define HELP_KEY KEY_F1
@@ -54,13 +55,13 @@ void TXT_AddDesktopWindow(txt_window_t *win)
 
 void TXT_RemoveDesktopWindow(txt_window_t *win)
 {
+    int from, to;
 
     // Window must lose focus if it's being removed:
 
     TXT_SetWindowFocus(win, 0);
 
-    int to = 0;
-    for (int from=0; from<num_windows; ++from)
+    for (from=0, to=0; from<num_windows; ++from)
     {
         if (all_windows[from] != win)
         {
@@ -89,9 +90,11 @@ txt_window_t *TXT_GetActiveWindow()
     return all_windows[num_windows - 1];
 }
 
-[[maybe_unused]] int TXT_RaiseWindow(txt_window_t *window)
+int TXT_RaiseWindow(txt_window_t *window)
 {
-    for (int i = 0; i < num_windows - 1; ++i)
+    int i;
+
+    for (i = 0; i < num_windows - 1; ++i)
     {
         if (all_windows[i] == window)
         {
@@ -115,7 +118,9 @@ txt_window_t *TXT_GetActiveWindow()
 
 int TXT_LowerWindow(txt_window_t *window)
 {
-    for (int i = 0; i < num_windows - 1; ++i)
+    int i;
+
+    for (i = 0; i < num_windows - 1; ++i)
     {
         if (all_windows[i + 1] == window)
         {
@@ -139,13 +144,17 @@ int TXT_LowerWindow(txt_window_t *window)
 
 static void DrawDesktopBackground(const char *title)
 {
-    unsigned char *screendata = TXT_GetScreenData();
+    int i;
+    unsigned char *screendata;
+    unsigned char *p;
+
+    screendata = TXT_GetScreenData();
     
     // Fill the screen with gradient characters
 
-    unsigned char *p = screendata;
+    p = screendata;
     
-    for (int i=0; i<TXT_SCREEN_W * TXT_SCREEN_H; ++i)
+    for (i=0; i<TXT_SCREEN_W * TXT_SCREEN_H; ++i)
     {
         *p++ = 0xb1;
         *p++ = TXT_COLOR_GREY | (TXT_COLOR_BLUE << 4);
@@ -155,7 +164,7 @@ static void DrawDesktopBackground(const char *title)
 
     p = screendata;
 
-    for (int i=0; i<TXT_SCREEN_W; ++i)
+    for (i=0; i<TXT_SCREEN_W; ++i)
     {
         *p++ = ' ';
         *p++ = TXT_COLOR_BLACK | (TXT_COLOR_GREY << 4);
@@ -163,7 +172,7 @@ static void DrawDesktopBackground(const char *title)
 
     p = screendata + (TXT_SCREEN_H - 1) * TXT_SCREEN_W * 2;
 
-    for (int i=0; i<TXT_SCREEN_W; ++i)
+    for (i=0; i<TXT_SCREEN_W; ++i)
     {
         *p++ = ' ';
         *p++ = TXT_COLOR_BLACK | (TXT_COLOR_GREY << 4);
@@ -182,13 +191,13 @@ static void DrawDesktopBackground(const char *title)
 static void DrawHelpIndicator()
 {
     char keybuf[10];
+    txt_color_t fgcolor;
+    int x, y;
 
     TXT_GetKeyDescription(HELP_KEY, keybuf, sizeof(keybuf));
 
-    int x = 0, y = 0;
     TXT_GetMousePosition(&x, &y);
 
-    txt_color_t fgcolor = TXT_COLOR_BLACK;
     if (y == 0 && x >= TXT_SCREEN_W - 9)
     {
         fgcolor = TXT_COLOR_GREY;
@@ -219,7 +228,9 @@ void TXT_SetDesktopTitle(const char *title)
 
 void TXT_DrawDesktop()
 {
-    const char *title = nullptr;
+    txt_window_t *active_window;
+    const char *title;
+    int i;
 
     TXT_InitClipArea();
 
@@ -230,13 +241,13 @@ void TXT_DrawDesktop()
 
     DrawDesktopBackground(title);
 
-    txt_window_t *active_window = TXT_GetActiveWindow();
+    active_window = TXT_GetActiveWindow();
     if (active_window != nullptr && active_window->help_url != nullptr)
     {
         DrawHelpIndicator();
     }
 
-    for (int i=0; i<num_windows; ++i)
+    for (i=0; i<num_windows; ++i)
     {
         TXT_DrawWindow(all_windows[i]);
     }
@@ -248,8 +259,8 @@ void TXT_DrawDesktop()
 // the active window.
 static void DesktopInputEvent(int c)
 {
-    txt_window_t *active_window = nullptr;
-    int x = 0, y = 0;
+    txt_window_t *active_window;
+    int x, y;
 
     switch (c)
     {
@@ -281,8 +292,8 @@ static void DesktopInputEvent(int c)
 
 void TXT_DispatchEvents()
 {
-    txt_window_t *active_window = nullptr;
-    int c = 0;
+    txt_window_t *active_window;
+    int c;
 
     while ((c = TXT_GetChar()) > 0)
     {
@@ -300,20 +311,23 @@ void TXT_ExitMainLoop()
     main_loop_running = 0;
 }
 
-[[maybe_unused]] void TXT_DrawASCIITable()
+void TXT_DrawASCIITable()
 {
+    unsigned char *screendata;
     char buf[10];
+    int x, y;
+    int n;
 
-    unsigned char *screendata = TXT_GetScreenData();
+    screendata = TXT_GetScreenData();
 
     TXT_FGColor(TXT_COLOR_BRIGHT_WHITE);
     TXT_BGColor(TXT_COLOR_BLACK, 0);
 
-    for (int y=0; y<16; ++y)
+    for (y=0; y<16; ++y)
     {
-        for (int x=0; x<16; ++x)
+        for (x=0; x<16; ++x)
         {
-            int n = y * 16 + x;
+            n = y * 16 + x;
 
             TXT_GotoXY(x * 5, y);
             TXT_snprintf(buf, sizeof(buf), "%02x   ", n);

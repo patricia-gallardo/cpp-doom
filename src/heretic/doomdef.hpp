@@ -87,15 +87,15 @@
 #define	BTS_SAVEGAME	2       // save the game at each console
 // savegame slot numbers occupy the second byte of buttons
 
-enum gamestate_t
+typedef enum
 {
     GS_LEVEL,
     GS_INTERMISSION,
     GS_FINALE,
     GS_DEMOSCREEN
-};
+} gamestate_t;
 
-enum gameaction_t
+typedef enum
 {
     ga_nothing,
     ga_loadlevel,
@@ -107,9 +107,9 @@ enum gameaction_t
     ga_victory,
     ga_worlddone,
     ga_screenshot
-};
+} gameaction_t;
 
-enum wipe_t
+typedef enum
 {
     wipe_0,
     wipe_1,
@@ -118,7 +118,7 @@ enum wipe_t
     wipe_4,
     NUMWIPES,
     wipe_random
-};
+} wipe_t;
 
 /*
 ===============================================================================
@@ -275,21 +275,21 @@ typedef struct
 #define MF2_DONTDRAW		0X00100000  // don't generate a vissprite
 
 //=============================================================================
-enum playerstate_t
+typedef enum
 {
     PST_LIVE,                   // playing
     PST_DEAD,                   // dead on the ground
     PST_REBORN                  // ready to restart
-};
+} playerstate_t;
 
 // psprites are scaled shapes directly on the view screen
 // coordinates are given for a 320*200 view screen
-enum psprnum_t
+typedef enum
 {
     ps_weapon,
     ps_flash,
     NUMPSPRITES
-};
+} psprnum_t;
 
 typedef struct pspdef_s
 {
@@ -298,15 +298,15 @@ typedef struct pspdef_s
     fixed_t sx, sy;
 } pspdef_t;
 
-enum keytype_t
+typedef enum
 {
     key_yellow,
     key_green,
     key_blue,
     NUMKEYS
-};
+} keytype_t;
 
-enum weapontype_t
+typedef enum
 {
     wp_staff,
     wp_goldwand,
@@ -319,7 +319,7 @@ enum weapontype_t
     wp_beak,
     NUMWEAPONS,
     wp_nochange
-};
+} weapontype_t;
 
 #define AMMO_GWND_WIMPY 10
 #define AMMO_GWND_HEFTY 50
@@ -334,7 +334,7 @@ enum weapontype_t
 #define AMMO_MACE_WIMPY 20
 #define AMMO_MACE_HEFTY 100
 
-enum ammotype_t
+typedef enum
 {
     am_goldwand,
     am_crossbow,
@@ -344,7 +344,7 @@ enum ammotype_t
     am_mace,
     NUMAMMO,
     am_noammo                   // staff, gauntlets
-};
+} ammotype_t;
 
 typedef struct
 {
@@ -360,7 +360,7 @@ typedef struct
 extern weaponinfo_t wpnlev1info[NUMWEAPONS];
 extern weaponinfo_t wpnlev2info[NUMWEAPONS];
 
-enum artitype_t
+typedef enum
 {
     arti_none,
     arti_invulnerability,
@@ -374,9 +374,9 @@ enum artitype_t
     arti_fly,
     arti_teleport,
     NUMARTIFACTS
-};
+} artitype_t;
 
-enum powertype_t
+typedef enum
 {
     pw_None,
     pw_invulnerability,
@@ -388,7 +388,7 @@ enum powertype_t
     pw_shield,
     pw_health2,
     NUMPOWERS
-};
+} powertype_t;
 
 #define	INVULNTICS (30*35)
 #define	INVISTICS (60*35)
@@ -596,7 +596,7 @@ void tprintf(const char *string, int initflag);
 // parses command line options
 // if not overrided, calls N_AdvanceDemo
 
-[[noreturn]] void D_DoomLoop();
+void D_DoomLoop();
 // not a globally visible function, just included for source reference
 // called by D_DoomMain, never exits
 // manages timing and IO

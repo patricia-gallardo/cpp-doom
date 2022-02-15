@@ -428,7 +428,7 @@ bool I_MidiPipe_InitServer()
     }
 
     // Get directory name
-    std::memset(dirname, 0, sizeof(dirname));
+    memset(dirname, 0, sizeof(dirname));
     dirname_len = GetModuleFileName(nullptr, dirname, MAX_PATH);
     if (dirname_len == 0)
     {
@@ -440,7 +440,7 @@ bool I_MidiPipe_InitServer()
     module = const_cast<char *>(PROGRAM_PREFIX "midiproc.exe");
 
     // Set up pipes
-    std::memset(&sec_attrs, 0, sizeof(SECURITY_ATTRIBUTES));
+    memset(&sec_attrs, 0, sizeof(SECURITY_ATTRIBUTES));
     sec_attrs.nLength              = sizeof(SECURITY_ATTRIBUTES);
     sec_attrs.bInheritHandle       = TRUE;
     sec_attrs.lpSecurityDescriptor = nullptr;
@@ -476,8 +476,8 @@ bool I_MidiPipe_InitServer()
     cmdline = M_StringJoin(module, " \"" PACKAGE_STRING "\"", " ", params_buf, nullptr);
 
     // Launch the subprocess
-    std::memset(&proc_info, 0, sizeof(proc_info));
-    std::memset(&startup_info, 0, sizeof(startup_info));
+    memset(&proc_info, 0, sizeof(proc_info));
+    memset(&startup_info, 0, sizeof(startup_info));
     startup_info.cb = sizeof(startup_info);
 
     ok = CreateProcess(TEXT(module), TEXT(cmdline), nullptr, nullptr, TRUE,

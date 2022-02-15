@@ -169,7 +169,7 @@ void R_InitSpriteDefs(const char **namelist)
     for (i = 0; i < numsprites; i++)
     {
         spritename = DEH_String(namelist[i]);
-        std::memset(sprtemp, -1, sizeof(sprtemp));
+        memset(sprtemp, -1, sizeof(sprtemp));
 
         maxframe = -1;
 
@@ -229,7 +229,7 @@ void R_InitSpriteDefs(const char **namelist)
         sprites[i].numframes = maxframe;
         sprites[i].spriteframes =
             zmalloc<spriteframe_t *>(static_cast<unsigned long>(maxframe) * sizeof(spriteframe_t), PU_STATIC, nullptr);
-        std::memcpy(sprites[i].spriteframes, sprtemp, static_cast<unsigned long>(maxframe) * sizeof(spriteframe_t));
+        memcpy(sprites[i].spriteframes, sprtemp, static_cast<unsigned long>(maxframe) * sizeof(spriteframe_t));
     }
 
 }
@@ -315,7 +315,7 @@ vissprite_t *R_NewVisSprite()
 
 	numvissprites = numvissprites ? 2 * numvissprites : MAXVISSPRITES;
 	vissprites = static_cast<vissprite_t *>(I_Realloc(vissprites, static_cast<unsigned long>(numvissprites) * sizeof(*vissprites)));
-	std::memset(vissprites + numvissprites_old, 0, (static_cast<unsigned long>(numvissprites - numvissprites_old)) * sizeof(*vissprites));
+	memset(vissprites + numvissprites_old, 0, (static_cast<unsigned long>(numvissprites - numvissprites_old)) * sizeof(*vissprites));
 
 	vissprite_p = vissprites + numvissprites_old;
 

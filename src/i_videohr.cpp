@@ -224,7 +224,7 @@ void I_BlackPaletteHR()
 {
     uint8_t blackpal[16 * 3];
 
-    std::memset(blackpal, 0, sizeof(blackpal));
+    memset(blackpal, 0, sizeof(blackpal));
 
     I_SetPaletteHR(blackpal);
 }

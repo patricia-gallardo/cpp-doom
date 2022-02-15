@@ -25,6 +25,7 @@
 #include "doomtype.hpp"
 #include "d_event.hpp"
 #include "i_input.hpp"
+#include "m_argv.hpp"
 #include "m_config.hpp"
 
 static const int scancode_translate_table[] = SCANCODE_TO_KEYS_ARRAY;

@@ -16,12 +16,14 @@
 // Parses [STRINGS] sections in BEX files
 //
 
+#include <array>
 #include <cstdio>
 #include <cstring>
 
 #include "deh_defs.hpp"
 #include "deh_io.hpp"
 #include "deh_main.hpp"
+
 #include "dstrings.hpp"
 
 typedef struct {

@@ -15,6 +15,7 @@
 //
 
 
+#include "doomtype.hpp"
 #include "doomkeys.hpp"
 
 #include "m_config.hpp"

@@ -789,7 +789,7 @@ void R_SetupFrame(player_t * player)
 #if 0
     {
         static int frame;
-        std::memset(screen, frame, SCREENWIDTH * SCREENHEIGHT);
+        memset(screen, frame, SCREENWIDTH * SCREENHEIGHT);
         frame++;
     }
 #endif

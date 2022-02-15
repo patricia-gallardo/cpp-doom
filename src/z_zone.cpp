@@ -70,9 +70,9 @@ static bool    scan_on_free;
 //
 // Z_ClearZone
 //
-[[maybe_unused]] void Z_ClearZone(memzone_t *zone)
+void Z_ClearZone(memzone_t *zone)
 {
-    memblock_t *block = nullptr;
+    memblock_t *block;
 
     // set the entire zone to one free block
     zone->blocklist.next =
@@ -97,8 +97,8 @@ static bool    scan_on_free;
 //
 void Z_Init()
 {
-    memblock_t *block = nullptr;
-    int         size = 0;
+    memblock_t *block;
+    int         size;
 
     mainzone       = reinterpret_cast<memzone_t *>(I_ZoneBase(&size));
     mainzone->size = size;
@@ -170,7 +170,10 @@ static void ScanForBlock(void *start, void *end)
 //
 void Z_Free(void *ptr)
 {
-    auto *block = reinterpret_cast<memblock_t *>(reinterpret_cast<uint8_t *>(ptr) - sizeof(memblock_t));
+    memblock_t *block;
+    memblock_t *other;
+
+    block = reinterpret_cast<memblock_t *>(reinterpret_cast<uint8_t *>(ptr) - sizeof(memblock_t));
 
     if (block->id != ZONEID)
         I_Error("Z_Free: freed a pointer without ZONEID");
@@ -190,7 +193,7 @@ void Z_Free(void *ptr)
     // to break code that depends on reading freed memory.
     if (zero_on_free)
     {
-        std::memset(ptr, 0, static_cast<unsigned long>(block->size) - sizeof(memblock_t));
+        memset(ptr, 0, static_cast<unsigned long>(block->size) - sizeof(memblock_t));
     }
     if (scan_on_free)
     {
@@ -198,7 +201,7 @@ void Z_Free(void *ptr)
             reinterpret_cast<uint8_t *>(ptr) + block->size - sizeof(memblock_t));
     }
 
-    memblock_t *other = block->prev;
+    other = block->prev;
 
     if (other->tag == PU_FREE)
     {
@@ -231,7 +234,7 @@ void Z_Free(void *ptr)
 // Z_Malloc
 // You can pass a nullptr user if the tag is < PU_PURGELEVEL.
 //
-constexpr auto MINFRAGMENT = 64;
+#define MINFRAGMENT 64
 
 
 void *
@@ -307,7 +310,7 @@ void *
     if (extra > MINFRAGMENT)
     {
         // there will be a free fragment after the allocated block
-        auto *newblock = reinterpret_cast<memblock_t *>(reinterpret_cast<uint8_t *>(base) + size);
+        memblock_t *newblock = reinterpret_cast<memblock_t *>(reinterpret_cast<uint8_t *>(base) + size);
         newblock->size = extra;
 
         newblock->tag        = PU_FREE;
@@ -348,9 +351,10 @@ void *
 void Z_FreeTags(int lowtag,
     int             hightag)
 {
-    memblock_t *next = nullptr;
+    memblock_t *block;
+    memblock_t *next;
 
-    for (memblock_t *block = mainzone->blocklist.next;
+    for (block = mainzone->blocklist.next;
          block != &mainzone->blocklist;
          block = next)
     {
@@ -371,16 +375,18 @@ void Z_FreeTags(int lowtag,
 // Z_DumpHeap
 // Note: TFileDumpHeap( stdout ) ?
 //
-[[maybe_unused]] void Z_DumpHeap(int lowtag,
+void Z_DumpHeap(int lowtag,
     int             hightag)
 {
+    memblock_t *block;
+
     printf("zone size: %i  location: %p\n",
         mainzone->size, mainzone);
 
     printf("tag range: %i to %i\n",
         lowtag, hightag);
 
-    for (memblock_t *block = mainzone->blocklist.next;; block = block->next)
+    for (block = mainzone->blocklist.next;; block = block->next)
     {
         if (block->tag >= lowtag && block->tag <= hightag)
             printf("block:%p    size:%7i    user:%p    tag:%3i\n",
@@ -409,9 +415,11 @@ void Z_FreeTags(int lowtag,
 //
 void Z_FileDumpHeap(FILE *f)
 {
+    memblock_t *block;
+
     fprintf(f, "zone size: %i  location: %p\n", mainzone->size, mainzone);
 
-    for (memblock_t *block = mainzone->blocklist.next;; block = block->next)
+    for (block = mainzone->blocklist.next;; block = block->next)
     {
         fprintf(f, "block:%p    size:%7i    user:%p    tag:%3i\n",
             block, block->size, block->user, block->tag);
@@ -439,7 +447,9 @@ void Z_FileDumpHeap(FILE *f)
 //
 void Z_CheckHeap()
 {
-    for (memblock_t *block = mainzone->blocklist.next;; block = block->next)
+    memblock_t *block;
+
+    for (block = mainzone->blocklist.next;; block = block->next)
     {
         if (block->next == &mainzone->blocklist)
         {
@@ -464,7 +474,9 @@ void Z_CheckHeap()
 //
 void Z_ChangeTag2(void *ptr, int tag, const char *file, int line)
 {
-    auto *block = reinterpret_cast<memblock_t *>(reinterpret_cast<uint8_t *>(ptr) - sizeof(memblock_t));
+    memblock_t *block;
+
+    block = reinterpret_cast<memblock_t *>(reinterpret_cast<uint8_t *>(ptr) - sizeof(memblock_t));
 
     if (block->id != ZONEID)
         I_Error("%s:%i: Z_ChangeTag: block without a ZONEID!",
@@ -478,9 +490,11 @@ void Z_ChangeTag2(void *ptr, int tag, const char *file, int line)
     block->tag = tag;
 }
 
-[[maybe_unused]] void Z_ChangeUser(void *ptr, void **user)
+void Z_ChangeUser(void *ptr, void **user)
 {
-    auto *block = reinterpret_cast<memblock_t *>(reinterpret_cast<uint8_t *>(ptr) - sizeof(memblock_t));
+    memblock_t *block;
+
+    block = reinterpret_cast<memblock_t *>(reinterpret_cast<uint8_t *>(ptr) - sizeof(memblock_t));
 
     if (block->id != ZONEID)
     {
@@ -495,11 +509,14 @@ void Z_ChangeTag2(void *ptr, int tag, const char *file, int line)
 //
 // Z_FreeMemory
 //
-[[maybe_unused]] int Z_FreeMemory()
+int Z_FreeMemory()
 {
-    int free = 0;
+    memblock_t *block;
+    int         free;
 
-    for (memblock_t *block = mainzone->blocklist.next;
+    free = 0;
+
+    for (block = mainzone->blocklist.next;
          block != &mainzone->blocklist;
          block = block->next)
     {
@@ -510,7 +527,7 @@ void Z_ChangeTag2(void *ptr, int tag, const char *file, int line)
     return free;
 }
 
-[[maybe_unused]] unsigned int Z_ZoneSize()
+unsigned int Z_ZoneSize()
 {
     return static_cast<unsigned int>(mainzone->size);
 }
