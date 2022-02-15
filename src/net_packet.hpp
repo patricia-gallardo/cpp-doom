@@ -30,7 +30,7 @@ bool NET_ReadInt32(net_packet_t *packet, unsigned int *data);
 
 bool NET_ReadSInt8(net_packet_t *packet, signed int *data);
 bool NET_ReadSInt16(net_packet_t *packet, signed int *data);
-bool NET_ReadSInt32(net_packet_t *packet, signed int *data);
+[[maybe_unused]] bool NET_ReadSInt32(net_packet_t *packet, signed int *data);
 
 char *NET_ReadString(net_packet_t *packet);
 char *NET_ReadSafeString(net_packet_t *packet);

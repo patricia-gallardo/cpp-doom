@@ -1664,7 +1664,7 @@ void P_UpdateSpecials ()
                     break;
                 }
                 S_StartSound(&buttonlist[i].soundorg,sfx_swtchn);
-                memset(&buttonlist[i],0,sizeof(button_t));
+                std::memset(&buttonlist[i],0,sizeof(button_t));
             }
         }
 }
@@ -1986,7 +1986,7 @@ void P_SpawnSpecials ()
         activeplats[i] = nullptr;
 
     for (i = 0;i < MAXBUTTONS;i++)
-        memset(&buttonlist[i],0,sizeof(button_t));
+        std::memset(&buttonlist[i],0,sizeof(button_t));
 
     // villsa [STRIFE]
     P_InitSlidingDoorFrames();

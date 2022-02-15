@@ -106,7 +106,7 @@ static void DEH_ThingParseLine(deh_context_t *context, char *line, void *tag)
 
     // all values are integers
 
-    ivalue = atoi(value);
+    ivalue = std::atoi(value);
 
     // If the value to be set is a frame, the frame number must
     // undergo transformation from a Heretic 1.0 index to a

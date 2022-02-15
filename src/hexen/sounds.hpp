@@ -25,45 +25,45 @@
 
 // Music identifiers
 
-typedef enum
+enum musicenum_t
 {
     mus_e1m1,
-    mus_e1m2,
-    mus_e1m3,
-    mus_e1m4,
+    mus_e1m2 [[maybe_unused]],
+    mus_e1m3 [[maybe_unused]],
+    mus_e1m4 [[maybe_unused]],
     mus_e1m5,
-    mus_e1m6,
-    mus_e1m7,
-    mus_e1m8,
+    mus_e1m6 [[maybe_unused]],
+    mus_e1m7 [[maybe_unused]],
+    mus_e1m8 [[maybe_unused]],
     mus_e1m9,
-    mus_e2m1,
-    mus_e2m2,
-    mus_e2m3,
+    mus_e2m1 [[maybe_unused]],
+    mus_e2m2 [[maybe_unused]],
+    mus_e2m3 [[maybe_unused]],
     mus_e2m4,
     mus_e2m5,
     mus_e2m6,
     mus_e2m7,
-    mus_e2m8,
-    mus_e2m9,
-    mus_e3m1,
+    mus_e2m8 [[maybe_unused]],
+    mus_e2m9 [[maybe_unused]],
+    mus_e3m1 [[maybe_unused]],
     mus_e3m2,
     mus_e3m3,
     mus_e3m4,
-    mus_e3m5,
-    mus_e3m6,
-    mus_e3m7,
-    mus_e3m8,
-    mus_e3m9,
+    mus_e3m5 [[maybe_unused]],
+    mus_e3m6 [[maybe_unused]],
+    mus_e3m7 [[maybe_unused]],
+    mus_e3m8 [[maybe_unused]],
+    mus_e3m9 [[maybe_unused]],
     mus_e4m1,
     mus_titl,
     mus_intr,
     mus_cptd,
     NUMMUSIC
-} musicenum_t;
+};
 
 // Sound identifiers
 
-typedef enum
+enum sfxenum_t
 {
     SFX_NONE,
     SFX_PLAYER_FIGHTER_NORMAL_DEATH,    // class specific death screams
@@ -311,6 +311,6 @@ typedef enum
     SFX_PUPPYBEAT,
     SFX_MYSTICINCANT,
     NUMSFX
-} sfxenum_t;
+};
 
 #endif

@@ -12,11 +12,8 @@
 // GNU General Public License for more details.
 //
 
-#include <cstdio>
-
 #include "txt_scrollpane.hpp"
 #include "txt_gui.hpp"
-#include "txt_io.hpp"
 #include "txt_main.hpp"
 #include "txt_table.hpp"
 

@@ -40,7 +40,7 @@
  * action to activate the currently-selected widget.
  */
 
-typedef struct txt_window_s txt_window_t;
+using txt_window_t = struct txt_window_s;
 
 #include "txt_widget.hpp"
 #include "txt_table.hpp"
@@ -48,11 +48,8 @@ typedef struct txt_window_s txt_window_t;
 
 // Callback function for window key presses
 
-typedef int (*TxtWindowKeyPress)(txt_window_t *window, int key,
-                                 void *user_data);
-typedef int (*TxtWindowMousePress)(txt_window_t *window,
-                                   int x, int y, int b,
-                                   void *user_data);
+using TxtWindowKeyPress = int (*)(txt_window_t *, int, void *);
+using TxtWindowMousePress = int (*)(txt_window_t *, int, int, int, void *);
 
 struct txt_window_s
 {

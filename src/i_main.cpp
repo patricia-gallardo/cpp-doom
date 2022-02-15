@@ -23,8 +23,6 @@
 
 #include "SDL.h"
 
-#include "doomtype.hpp"
-#include "i_system.hpp"
 #include "m_argv.hpp"
 #include "m_misc.hpp" // [crispy] M_snprintf()
 

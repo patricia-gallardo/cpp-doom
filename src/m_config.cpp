@@ -52,14 +52,14 @@ static char *autoload_path = const_cast<char *>("");
 static const char *default_main_config;
 static const char *default_extra_config;
 
-typedef enum
+enum default_type_t
 {
     DEFAULT_INT,
     DEFAULT_INT_HEX,
     DEFAULT_STRING,
     DEFAULT_FLOAT,
     DEFAULT_KEY,
-} default_type_t;
+};
 
 typedef struct
 {
@@ -2458,7 +2458,7 @@ static void LoadDefaultCollection(default_collection_t *collection)
             && strparm[0] == '"' && strparm[strlen(strparm) - 1] == '"')
         {
             strparm[strlen(strparm) - 1] = '\0';
-            memmove(strparm, strparm + 1, sizeof(strparm) - 1);
+            std::memmove(strparm, strparm + 1, sizeof(strparm) - 1);
         }
 
         SetVariable(def, strparm);

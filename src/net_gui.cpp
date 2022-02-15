@@ -19,13 +19,11 @@
 
 #include <cstdio>
 #include <cstdlib>
-#include <cctype>
 
 #include "config.h"
 #include "doomkeys.hpp"
 
 #include "i_system.hpp"
-#include "i_timer.hpp"
 #include "i_video.hpp"
 #include "m_argv.hpp"
 #include "m_misc.hpp"
@@ -63,15 +61,13 @@ static void StartGame(void *, void *)
 
 static void OpenWaitDialog()
 {
-    txt_window_action_t *cancel;
-
     TXT_SetDesktopTitle(PACKAGE_STRING);
 
     window = TXT_NewWindow("Waiting for game start...");
 
     TXT_AddWidget(window, TXT_NewLabel("\nPlease wait...\n\n"));
 
-    cancel = TXT_NewWindowAction(KEY_ESCAPE, "Cancel");
+    txt_window_action_t *cancel = TXT_NewWindowAction(KEY_ESCAPE, "Cancel");
     TXT_SignalConnect(cancel, "pressed", EscapePressed, nullptr);
 
     TXT_SetWindowAction(window, TXT_HORIZ_LEFT, cancel);
@@ -83,12 +79,10 @@ static void OpenWaitDialog()
 
 static void BuildWindow()
 {
-    char         buf[50];
-    txt_table_t *table;
-    int          i;
+    char buf[50];
 
     TXT_ClearTable(window);
-    table = TXT_NewTable(3);
+    txt_table_t *table = TXT_NewTable(3);
     TXT_AddWidget(window, table);
 
     // Add spacers
@@ -99,7 +93,7 @@ static void BuildWindow()
 
     // Player labels
 
-    for (i = 0; i < net_client_wait_data.max_players; ++i)
+    for (int i = 0; i < net_client_wait_data.max_players; ++i)
     {
         M_snprintf(buf, sizeof(buf), " %i. ", i + 1);
         TXT_AddWidget(table, TXT_NewLabel(buf));
@@ -116,9 +110,7 @@ static void BuildWindow()
 
 static void UpdateGUI()
 {
-    txt_window_action_t *startgame;
-    char                 buf[50];
-    int         i;
+    char buf[50];
 
     // If the value of max_players changes, we must rebuild the
     // contents of the window. This includes when the first
@@ -136,7 +128,7 @@ static void UpdateGUI()
         return;
     }
 
-    for (i = 0; i < net_client_wait_data.max_players; ++i)
+    for (int i = 0; i < net_client_wait_data.max_players; ++i)
     {
         txt_color_t color = TXT_COLOR_BRIGHT_WHITE;
 
@@ -173,14 +165,11 @@ static void UpdateGUI()
         TXT_SetLabel(drone_label, "");
     }
 
+    txt_window_action_t *startgame = nullptr;
     if (net_client_wait_data.is_controller)
     {
         startgame = TXT_NewWindowAction(' ', "Start game");
         TXT_SignalConnect(startgame, "pressed", StartGame, nullptr);
-    }
-    else
-    {
-        startgame = nullptr;
     }
 
     TXT_SetWindowAction(window, TXT_HORIZ_RIGHT, startgame);
@@ -188,9 +177,7 @@ static void UpdateGUI()
 
 static void BuildMasterStatusWindow()
 {
-    txt_window_t *master_window;
-
-    master_window    = TXT_NewWindow(nullptr);
+    txt_window_t *master_window = TXT_NewWindow(nullptr);
     master_msg_label = TXT_NewLabel("");
     TXT_AddWidget(master_window, master_msg_label);
 
@@ -207,8 +194,7 @@ static void BuildMasterStatusWindow()
 
 static void CheckMasterStatus()
 {
-    bool added;
-
+    bool added = false;
     if (!NET_Query_CheckAddedToMaster(&added))
     {
         return;
@@ -237,11 +223,9 @@ static void CheckMasterStatus()
 
 static void PrintSHA1Digest(const char *s, const uint8_t *digest)
 {
-    unsigned int i;
-
     printf("%s: ", s);
 
-    for (i = 0; i < sizeof(sha1_digest_t); ++i)
+    for (unsigned int i = 0; i < sizeof(sha1_digest_t); ++i)
     {
         printf("%02x", digest[i]);
     }
@@ -258,25 +242,20 @@ static void CloseWindow(void *, void *uncast_window)
 
 static void CheckSHA1Sums()
 {
-    bool              correct_wad, correct_deh;
-    bool              same_freedoom;
-    txt_window_t     *window_local;
-    txt_window_action_t *cont_button;
-
     if (!net_client_received_wait_data || had_warning)
     {
         return;
     }
 
-    correct_wad = memcmp(net_local_wad_sha1sum,
+    bool correct_wad = memcmp(net_local_wad_sha1sum,
                       net_client_wait_data.wad_sha1sum,
                       sizeof(sha1_digest_t))
                   == 0;
-    correct_deh = memcmp(net_local_deh_sha1sum,
+    bool correct_deh = memcmp(net_local_deh_sha1sum,
                       net_client_wait_data.deh_sha1sum,
                       sizeof(sha1_digest_t))
                   == 0;
-    same_freedoom = net_client_wait_data.is_freedoom == static_cast<int>(net_local_is_freedoom);
+    bool same_freedoom = net_client_wait_data.is_freedoom == static_cast<int>(net_local_is_freedoom);
 
     if (correct_wad && correct_deh && same_freedoom)
     {
@@ -305,9 +284,9 @@ static void CheckSHA1Sums()
         PrintSHA1Digest("Server", net_client_wait_data.deh_sha1sum);
     }
 
-    window_local = TXT_NewWindow("WARNING!");
+    txt_window_t *window_local = TXT_NewWindow("WARNING!");
 
-    cont_button = TXT_NewWindowAction(KEY_ENTER, "Continue");
+    txt_window_action_t *cont_button = TXT_NewWindowAction(KEY_ENTER, "Continue");
     TXT_SignalConnect(cont_button, "pressed", CloseWindow, window_local);
 
     TXT_SetWindowAction(window_local, TXT_HORIZ_LEFT, nullptr);
@@ -354,8 +333,6 @@ static void CheckSHA1Sums()
 
 static void ParseCommandLineArgs()
 {
-    int i;
-
     //!
     // @arg <n>
     // @category net
@@ -363,22 +340,20 @@ static void ParseCommandLineArgs()
     // Autostart the netgame when n nodes (clients) have joined the server.
     //
 
-    i = M_CheckParmWithArgs("-nodes", 1);
+    int i = M_CheckParmWithArgs("-nodes", 1);
     if (i > 0)
     {
-        expected_nodes = atoi(myargv[i + 1]);
+        expected_nodes = std::atoi(myargv[i + 1]);
     }
 }
 
 static void CheckAutoLaunch()
 {
-    int nodes;
-
     if (net_client_received_wait_data
         && net_client_wait_data.is_controller
         && expected_nodes > 0)
     {
-        nodes = net_client_wait_data.num_players
+        int nodes = net_client_wait_data.num_players
                 + net_client_wait_data.num_drones;
 
         if (nodes >= expected_nodes)

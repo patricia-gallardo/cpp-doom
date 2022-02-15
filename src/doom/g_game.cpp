@@ -20,7 +20,6 @@
 #include <cstdlib>
 
 #include "doomdef.hpp"
-#include "doomkeys.hpp"
 #include "doomstat.hpp"
 
 #include "deh_main.hpp"
@@ -75,7 +74,7 @@
 #include "g_game.hpp"
 #include "v_trans.hpp" // [crispy] colored "always run" message
 
-#define SAVEGAMESIZE 0x2c000
+[[maybe_unused]] constexpr auto SAVEGAMESIZE = 0x2c000;
 
 void G_ReadDemoTiccmd(ticcmd_t *cmd);
 void G_WriteDemoTiccmd(ticcmd_t *cmd);
@@ -156,7 +155,7 @@ uint8_t consistancy[MAXPLAYERS][BACKUPTICS];
 
 #define MAXPLMOVE (forwardmove[1])
 
-#define TURBOTHRESHOLD 0x32
+constexpr auto TURBOTHRESHOLD = 0x32;
 
 fixed_t forwardmove[2] = { 0x19, 0x32 };
 fixed_t sidemove[2]    = { 0x18, 0x28 };
@@ -195,10 +194,9 @@ static const struct
     { wp_bfg, wp_bfg }
 };
 
-#define SLOWTURNTICS 6
-
-#define NUMKEYS         256
-#define MAX_JOY_BUTTONS 20
+constexpr auto SLOWTURNTICS    = 6;
+constexpr auto NUMKEYS         = 256;
+constexpr auto MAX_JOY_BUTTONS = 20;
 
 static bool gamekeydown[NUMKEYS];
 static int     turnheld; // for accelerative turning
@@ -231,7 +229,7 @@ static char savename[256]; // [crispy] moved here, made static
 static int  savegameslot;
 static char savedescription[32];
 
-#define BODYQUESIZE 32
+constexpr auto BODYQUESIZE = 32;
 
 mobj_t *bodyque[BODYQUESIZE];
 int     bodyqueslot;
@@ -348,7 +346,7 @@ void G_BuildTiccmd(ticcmd_t *cmd, int maketic)
     player_t *const player = &players[consoleplayer];
     static char     playermessage[48];
 
-    memset(cmd, 0, sizeof(ticcmd_t));
+    std::memset(cmd, 0, sizeof(ticcmd_t));
 
     cmd->consistancy =
         consistancy[consoleplayer][maketic % BACKUPTICS];
@@ -838,7 +836,7 @@ void G_DoLoadLevel()
         turbodetected[i] = false;
         if (playeringame[i] && players[i].playerstate == PST_DEAD)
             players[i].playerstate = PST_REBORN;
-        memset(players[i].frags, 0, sizeof(players[i].frags));
+        std::memset(players[i].frags, 0, sizeof(players[i].frags));
     }
 
     // [crispy] update the "singleplayer" variable
@@ -850,12 +848,12 @@ void G_DoLoadLevel()
 
     // clear cmd building stuff
 
-    memset(gamekeydown, 0, sizeof(gamekeydown));
+    std::memset(gamekeydown, 0, sizeof(gamekeydown));
     joyxmove = joyymove = joystrafemove = joylook = 0;
     mousex = mousex2 = mousey = 0;
     sendpause = sendsave = paused = false;
-    memset(mousearray, 0, sizeof(mousearray));
-    memset(joyarray, 0, sizeof(joyarray));
+    std::memset(mousearray, 0, sizeof(mousearray));
+    std::memset(joyarray, 0, sizeof(joyarray));
 
     if (testcontrols)
     {
@@ -1141,7 +1139,7 @@ void G_Ticker()
         {
             cmd = &players[i].cmd;
 
-            memcpy(cmd, &netcmds[i], sizeof(ticcmd_t));
+            std::memcpy(cmd, &netcmds[i], sizeof(ticcmd_t));
 
             if (demoplayback)
                 G_ReadDemoTiccmd(cmd);
@@ -1297,9 +1295,9 @@ void G_PlayerFinishLevel(int player)
 
     p = &players[player];
 
-    memset(p->powers, 0, sizeof(p->powers));
-    memset(p->cards, 0, sizeof(p->cards));
-    memset(p->tryopen, 0, sizeof(p->tryopen)); // [crispy] blinking key or skull in the status bar
+    std::memset(p->powers, 0, sizeof(p->powers));
+    std::memset(p->cards, 0, sizeof(p->cards));
+    std::memset(p->tryopen, 0, sizeof(p->tryopen)); // [crispy] blinking key or skull in the status bar
     p->mo->flags &= ~MF_SHADOW;                // cancel invisibility
     p->extralight    = 0;                      // cancel gun flashes
     p->fixedcolormap = 0;                      // cancel ir gogles
@@ -1330,15 +1328,15 @@ void G_PlayerReborn(int player)
     int       itemcount;
     int       secretcount;
 
-    memcpy(frags, players[player].frags, sizeof(frags));
+    std::memcpy(frags, players[player].frags, sizeof(frags));
     killcount   = players[player].killcount;
     itemcount   = players[player].itemcount;
     secretcount = players[player].secretcount;
 
     p = &players[player];
-    memset(p, 0, sizeof(*p));
+    std::memset(p, 0, sizeof(*p));
 
-    memcpy(players[player].frags, frags, sizeof(players[player].frags));
+    std::memcpy(players[player].frags, frags, sizeof(players[player].frags));
     players[player].killcount   = killcount;
     players[player].itemcount   = itemcount;
     players[player].secretcount = secretcount;
@@ -1771,7 +1769,7 @@ void G_DoCompleted()
         {
             int cpars32;
 
-            memcpy(&cpars32, DEH_String(GAMMALVL0), sizeof(int));
+            std::memcpy(&cpars32, DEH_String(GAMMALVL0), sizeof(int));
             cpars32 = LONG(cpars32);
 
             wminfo.partime = TICRATE * cpars32;
@@ -1821,7 +1819,7 @@ void G_DoCompleted()
         wminfo.plyr[i].sitems  = players[i].itemcount;
         wminfo.plyr[i].ssecret = players[i].secretcount;
         wminfo.plyr[i].stime   = leveltime;
-        memcpy(wminfo.plyr[i].frags, players[i].frags, sizeof(wminfo.plyr[i].frags));
+        std::memcpy(wminfo.plyr[i].frags, players[i].frags, sizeof(wminfo.plyr[i].frags));
     }
 
     // [crispy] CPhipps - total time for all completed levels
@@ -2389,7 +2387,7 @@ void G_InitNew(skill_t skill,
 //
 // DEMO RECORDING
 //
-#define DEMOMARKER 0x80
+constexpr auto DEMOMARKER = 0x80;
 
 // [crispy] demo progress bar and timer widget
 int defdemotics = 0, deftotaldemotics;
@@ -2467,7 +2465,7 @@ static void IncreaseDemoBuffer()
 
     // Copy over the old data
 
-    memcpy(new_demobuffer, demobuffer, static_cast<size_t>(current_length));
+    std::memcpy(new_demobuffer, demobuffer, static_cast<size_t>(current_length));
 
     // Free the old buffer and point the demo pointers at the new buffer.
 
@@ -2574,7 +2572,7 @@ void G_RecordDemo(char *name)
 
     i = M_CheckParmWithArgs("-maxdemo", 1);
     if (i)
-        maxsize = atoi(myargv[i + 1]) * 1024;
+        maxsize = std::atoi(myargv[i + 1]) * 1024;
     demobuffer = zmalloc<decltype(demobuffer)>(static_cast<size_t>(maxsize), PU_STATIC, nullptr);
     demoend    = demobuffer + maxsize;
 

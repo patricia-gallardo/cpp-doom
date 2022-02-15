@@ -33,9 +33,9 @@
 #error i_opndir.c is for Microsoft Visual C++ only
 #endif
 
-#include <stdlib.h>
-#include <errno.h>
-#include <string.h>
+#include <cstdlib>
+#include <cerrno>
+#include <cstring>
 
 #define WIN32_LEAN_AND_MEAN
 #include <windows.h> /* for GetFileAttributes */
@@ -54,8 +54,6 @@
 //
 DIR *opendir(const _TCHAR *szPath)
 {
-   DIR *nd;
-   unsigned int rc;
    _TCHAR szFullPath[MAX_PATH];
 	
    errno = 0;
@@ -73,7 +71,7 @@ DIR *opendir(const _TCHAR *szPath)
    }
 
    /* Attempt to determine if the given path really is a directory. */
-   rc = GetFileAttributes(szPath);
+   unsigned int rc = GetFileAttributes(szPath);
    if(rc == (unsigned int)-1)
    {
       /* call GetLastError for more error info */
@@ -92,10 +90,7 @@ DIR *opendir(const _TCHAR *szPath)
 
    /* Allocate enough space to store DIR structure and the complete
    * directory path given. */
-   nd = (DIR *)(malloc(sizeof(DIR) + (_tcslen(szFullPath)
-                                       + _tcslen(SLASH)
-                                       + _tcslen(SUFFIX) + 1)
-                                     * sizeof(_TCHAR)));
+   DIR *nd = reinterpret_cast<DIR *>(malloc(sizeof(DIR) + (_tcslen(szFullPath) + _tcslen(SLASH) + _tcslen(SUFFIX) + 1) * sizeof(_TCHAR)));
 
    if(!nd)
    {
@@ -133,7 +128,7 @@ DIR *opendir(const _TCHAR *szPath)
    nd->dd_dir.d_ino = 0;
    nd->dd_dir.d_reclen = 0;
    nd->dd_dir.d_namlen = 0;
-   memset(nd->dd_dir.d_name, 0, FILENAME_MAX);
+   std::memset(nd->dd_dir.d_name, 0, FILENAME_MAX);
   
    return nd;
 }
@@ -222,10 +217,8 @@ struct dirent *readdir(DIR *dirp)
 //
 int closedir(DIR *dirp)
 {
-   int rc;
-   
    errno = 0;
-   rc = 0;
+   int rc = 0;
    
    if(!dirp)
    {
@@ -275,7 +268,7 @@ void rewinddir(DIR * dirp)
 // Returns the "position" in the "directory stream" which can be used with
 // seekdir to go back to an old entry. We simply return the value in stat.
 //
-long telldir(DIR *dirp)
+[[maybe_unused]] long telldir(DIR *dirp)
 {
    errno = 0;
    
@@ -296,7 +289,7 @@ long telldir(DIR *dirp)
 // have changed while we weren't looking. But that is probably the case with
 // any such system.
 //
-void seekdir(DIR *dirp, long lPos)
+[[maybe_unused]] void seekdir(DIR *dirp, long lPos)
 {
    errno = 0;
    

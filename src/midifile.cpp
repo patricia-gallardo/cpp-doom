@@ -506,7 +506,7 @@ static bool ReadAllTracks(midi_file_t *file, FILE *stream)
         return false;
     }
 
-    memset(file->tracks, 0, sizeof(midi_track_t) * file->num_tracks);
+    std::memset(file->tracks, 0, sizeof(midi_track_t) * file->num_tracks);
 
     // Read each track:
 

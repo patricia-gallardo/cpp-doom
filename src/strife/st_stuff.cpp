@@ -1284,7 +1284,7 @@ static bool ST_drawKeysPopup()
         {
             char sprname[8];
             patch_t *patch;
-            memset(sprname, 0, sizeof(sprname));
+            std::memset(sprname, 0, sizeof(sprname));
 
             if(plyr->cards[key])
             {
@@ -1417,7 +1417,7 @@ bool ST_DrawExternal()
     return true;
 }
 
-typedef void (*load_callback_t)(const char *lumpname, patch_t **variable);
+using load_callback_t = void (*)(const char *, patch_t **);
 
 //
 // ST_loadUnloadGraphics
@@ -1511,7 +1511,7 @@ void ST_unloadGraphics()
     ST_loadUnloadGraphics(ST_unloadCallback);
 }
 
-void ST_unloadData()
+[[maybe_unused]] void ST_unloadData()
 {
     ST_unloadGraphics();
 }

@@ -86,7 +86,7 @@ void P_ForceLightning();
 ===============================================================================
 */
 
-typedef enum
+enum lighttype_t
 {
     LITE_RAISEBYVALUE,
     LITE_LOWERBYVALUE,
@@ -95,7 +95,7 @@ typedef enum
     LITE_GLOW,
     LITE_FLICKER,
     LITE_STROBE
-} lighttype_t;
+};
 
 typedef struct light_s
 {
@@ -204,12 +204,12 @@ typedef struct
     int soundID;
 } switchlist_t;
 
-typedef enum
+enum bwhere_e
 {
     SWTCH_TOP,
     SWTCH_MIDDLE,
     SWTCH_BOTTOM
-} bwhere_e;
+};
 
 typedef struct
 {
@@ -237,15 +237,15 @@ void P_InitSwitchList();
 ===============================================================================
 */
 
-typedef enum
+enum plat_e
 {
     PLAT_UP,
     PLAT_DOWN,
     PLAT_WAITING,
 //      PLAT_IN_STASIS
-} plat_e;
+};
 
-typedef enum
+enum plattype_e
 {
     PLAT_PERPETUALRAISE,
     PLAT_DOWNWAITUPSTAY,
@@ -254,7 +254,7 @@ typedef enum
     PLAT_UPBYVALUEWAITDOWNSTAY,
     //PLAT_RAISEANDCHANGE,
     //PLAT_RAISETONEARESTANDCHANGE
-} plattype_e;
+};
 
 typedef struct plat_s
 {
@@ -291,14 +291,14 @@ void EV_StopPlat(line_t * line, uint8_t *args);
 
 ===============================================================================
 */
-typedef enum
+enum vldoor_e
 {
     DREV_NORMAL,
     DREV_CLOSE30THENOPEN,
     DREV_CLOSE,
     DREV_OPEN,
     DREV_RAISEIN5MINS,
-} vldoor_e;
+};
 
 typedef struct vldoor_s
 {
@@ -328,7 +328,7 @@ void T_VerticalDoor(vldoor_t * door);
 
 ===============================================================================
 */
-typedef enum
+enum ceiling_e
 {
     CLEV_LOWERTOFLOOR,
     CLEV_RAISETOHIGHEST,
@@ -338,7 +338,7 @@ typedef enum
     CLEV_RAISEBYVALUE,
     CLEV_CRUSHRAISEANDSTAY,
     CLEV_MOVETOVALUETIMES8
-} ceiling_e;
+};
 
 typedef struct ceiling_s
 {
@@ -372,7 +372,7 @@ int EV_CeilingCrushStop(line_t * line, uint8_t *args);
 
 ===============================================================================
 */
-typedef enum
+enum floor_e
 {
     FLEV_LOWERFLOOR,            // lower floor to highest surrounding floor
     FLEV_LOWERFLOORTOLOWEST,    // lower floor to lowest surrounding floor
@@ -387,7 +387,7 @@ typedef enum
     FLEV_LOWERTIMES8INSTANT,
     FLEV_RAISETIMES8INSTANT,
     FLEV_MOVETOVALUETIMES8
-} floor_e;
+};
 
 typedef struct floormove_s
 {
@@ -438,19 +438,19 @@ typedef struct floorWaggle_s
 
 #define FLOORSPEED FRACUNIT
 
-typedef enum
+enum result_e
 {
     RES_OK,
     RES_CRUSHED,
     RES_PASTDEST
-} result_e;
+};
 
-typedef enum
+enum stairs_e
 {
     STAIRS_NORMAL,
     STAIRS_SYNC,
     STAIRS_PHASED
-} stairs_e;
+};
 
 result_e T_MovePlane(sector_t * sector, fixed_t speed,
                      fixed_t dest, int crush, int floorOrCeiling,
@@ -490,7 +490,7 @@ bool EV_Teleport(int tid, mobj_t * thing, bool fog);
 #define ACS_STACK_DEPTH 32
 #define MAX_ACS_STORE 20
 
-typedef enum
+enum aste_t
 {
     ASTE_INACTIVE,
     ASTE_RUNNING,
@@ -499,7 +499,7 @@ typedef enum
     ASTE_WAITINGFORPOLY,
     ASTE_WAITINGFORSCRIPT,
     ASTE_TERMINATING
-} aste_t;
+};
 
 typedef struct acs_s acs_t;
 typedef struct acsInfo_s acsInfo_t;

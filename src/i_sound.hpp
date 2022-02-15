@@ -28,7 +28,7 @@
 //
 // SoundFX struct.
 //
-typedef struct sfxinfo_struct sfxinfo_t;
+using sfxinfo_t = struct sfxinfo_struct;
 
 struct sfxinfo_struct {
     // tag name, used for hexen.
@@ -237,12 +237,12 @@ extern int         snd_pitchshift;
 void I_BindSoundVariables();
 
 // DMX version to emulate for OPL emulation:
-typedef enum
+enum opl_driver_ver_t
 {
     opl_doom1_1_666, // Doom 1 v1.666
     opl_doom2_1_666, // Doom 2 v1.666, Hexen, Heretic
     opl_doom_1_9     // Doom v1.9, Strife
-} opl_driver_ver_t;
+};
 
 void I_SetOPLDriverVer(opl_driver_ver_t ver);
 

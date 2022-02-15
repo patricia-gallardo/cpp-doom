@@ -22,12 +22,11 @@
 #define FILENAME_MAX 260
 #endif
 
-struct dirent
-{
-   long		  d_ino;    /* Always zero. */
-   unsigned short d_reclen; /* Always zero. */
-   unsigned short d_namlen; /* Length of name in d_name. */
-   char           d_name[FILENAME_MAX]; /* File name. */
+struct dirent {
+    [[maybe_unused]] long           d_ino;                /* Always zero. */
+    [[maybe_unused]] unsigned short d_reclen;             /* Always zero. */
+    [[maybe_unused]] unsigned short d_namlen;             /* Length of name in d_name. */
+    char                            d_name[FILENAME_MAX]; /* File name. */
 };
 
 /*
@@ -64,8 +63,8 @@ DIR *opendir(const char *);
 struct dirent *readdir(DIR *);
 int closedir(DIR *);
 void rewinddir(DIR *);
-long telldir(DIR *);
-void seekdir(DIR *, long);
+[[maybe_unused]] long telldir(DIR *);
+[[maybe_unused]] void seekdir(DIR *, long);
 
 #endif
 

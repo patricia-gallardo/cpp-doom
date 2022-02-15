@@ -161,14 +161,14 @@ typedef struct
 //
 // Move clipping aid for LineDefs.
 //
-typedef enum
+enum slopetype_t
 {
     ST_HORIZONTAL,
     ST_VERTICAL,
     ST_POSITIVE,
     ST_NEGATIVE
 
-} slopetype_t;
+};
 
 
 

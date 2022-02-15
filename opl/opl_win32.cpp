@@ -122,7 +122,7 @@ static int OPL_Win32_Init(unsigned int port_base [[maybe_unused]])
 
     // Check the OS version.
 
-    memset(&version_info, 0, sizeof(version_info));
+    std::memset(&version_info, 0, sizeof(version_info));
     version_info.dwOSVersionInfoSize = sizeof(version_info);
 
     GetVersionEx(&version_info);

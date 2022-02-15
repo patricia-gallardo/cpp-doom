@@ -17,7 +17,6 @@
 
 
 #include "z_zone.hpp"
-#include "doomdef.hpp"
 #include "p_local.hpp"
 
 #include "s_sound.hpp"

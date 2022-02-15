@@ -61,7 +61,7 @@
 #define MELEERANGE (64*FRACUNIT)
 #define MISSILERANGE (32*64*FRACUNIT)
 
-typedef enum
+enum dirtype_t
 {
     DI_EAST,
     DI_NORTHEAST,
@@ -72,8 +72,8 @@ typedef enum
     DI_SOUTH,
     DI_SOUTHEAST,
     DI_NODIR,
-    NUMDIRS
-} dirtype_t;
+    NUMDIRS [[maybe_unused]]
+};
 
 #define BASETHRESHOLD 100       // follow a player exlusively for 3 seconds
 
@@ -314,12 +314,12 @@ void SB_PaletteFlash(bool forceChange);
 
 // ===== PO_MAN =====
 
-typedef enum
+enum podoortype_t
 {
     PODOOR_NONE,
     PODOOR_SLIDE,
     PODOOR_SWING,
-} podoortype_t;
+};
 
 typedef struct polyevent_s
 {
