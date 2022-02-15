@@ -106,13 +106,13 @@ typedef struct
     sector_t *sector;
 } side_t;
 
-typedef enum
+enum slopetype_t
 {
     ST_HORIZONTAL,
     ST_VERTICAL,
     ST_POSITIVE,
     ST_NEGATIVE
-} slopetype_t;
+};
 
 /*
 typedef struct line_s

@@ -104,7 +104,7 @@
 //
 // Misc. mobj flags
 //
-typedef enum
+enum mobjflag_t
 {
     // Call P_SpecialThing when touched.
     MF_SPECIAL = 1,
@@ -196,7 +196,7 @@ typedef enum
     // [crispy] translucent sprite
     MF_TRANSLUCENT = 0x80000000
 
-} mobjflag_t;
+};
 
 
 // Map Object definition.

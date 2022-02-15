@@ -31,7 +31,7 @@
  * but opens a file selector dialog box when clicked.
  */
 
-typedef struct txt_fileselect_s txt_fileselect_t;
+using txt_fileselect_t = struct txt_fileselect_s;
 
 /**
  * Returns non-zero if a native file selector is available on this

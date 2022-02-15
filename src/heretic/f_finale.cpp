@@ -102,8 +102,8 @@ bool F_Responder(event_t * event)
     {                           // we're showing the water pic, make any key kick to demo mode
         finalestage++;
         /*
-        memset((byte *) 0xa0000, 0, SCREENWIDTH * SCREENHEIGHT);
-        memset(I_VideoBuffer, 0, SCREENWIDTH * SCREENHEIGHT);
+        std::memset((byte *) 0xa0000, 0, SCREENWIDTH * SCREENHEIGHT);
+        std::memset(I_VideoBuffer, 0, SCREENWIDTH * SCREENHEIGHT);
         I_SetPalette(cache_lump_name<patch_t *>("PLAYPAL", PU_CACHE));
         */
         return true;
@@ -172,12 +172,12 @@ void F_TextWrite()
     {
         for (x = 0; x < SCREENWIDTH / 64; x++)
         {
-            memcpy(dest, src + ((y & 63) << 6), 64);
+            std::memcpy(dest, src + ((y & 63) << 6), 64);
             dest += 64;
         }
         if (SCREENWIDTH & 63)
         {
-            memcpy(dest, src + ((y & 63) << 6), SCREENWIDTH & 63);
+            std::memcpy(dest, src + ((y & 63) << 6), SCREENWIDTH & 63);
             dest += (SCREENWIDTH & 63);
         }
     }

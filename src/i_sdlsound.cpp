@@ -35,7 +35,6 @@
 #include "i_sound.hpp"
 #include "i_system.hpp"
 #include "i_swap.hpp"
-#include "m_argv.hpp"
 #include "m_misc.hpp"
 #include "w_wad.hpp"
 #include "z_zone.hpp"
@@ -47,7 +46,7 @@
 //#define DEBUG_DUMP_WAVS
 #define NUM_CHANNELS 16 * 2 // [crispy] support up to 32 sound channels
 
-typedef struct allocated_sound_s allocated_sound_t;
+using allocated_sound_t = struct allocated_sound_s;
 
 struct allocated_sound_s {
     sfxinfo_t *        sfxinfo;
@@ -639,11 +638,11 @@ static bool ExpandSoundData_SDL(sfxinfo_t *sfxinfo, uint8_t *data,
         convertor.len = length;
         convertor.buf = static_cast<Uint8 *>(malloc(convertor.len * convertor.len_mult));
         assert(convertor.buf != nullptr);
-        memcpy(convertor.buf, data, length);
+        std::memcpy(convertor.buf, data, length);
 
         SDL_ConvertAudio(&convertor);
 
-        memcpy(chunk->abuf, convertor.buf, chunk->alen);
+        std::memcpy(chunk->abuf, convertor.buf, chunk->alen);
         free(convertor.buf);
     }
     else

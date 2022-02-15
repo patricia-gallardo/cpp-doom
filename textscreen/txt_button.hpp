@@ -28,14 +28,14 @@
  * When a button is pressed, it emits the "pressed" signal.
  */
 
-typedef struct txt_button_s txt_button_t;
+using txt_button_t = struct txt_button_s;
 
 #include "txt_widget.hpp"
 
 struct txt_button_s
 {
     txt_widget_t widget;
-    char *label;
+    char *label{};
 };
 
 /**

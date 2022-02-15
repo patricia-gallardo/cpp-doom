@@ -23,7 +23,7 @@
 
 #include "txt_window.hpp"
 
-typedef void (*TxtIdleCallback)(void *user_data);
+using TxtIdleCallback = void (*)(void *);
 
 void TXT_AddDesktopWindow(txt_window_t *win);
 void TXT_RemoveDesktopWindow(txt_window_t *win);
@@ -92,7 +92,7 @@ void TXT_SetPeriodicCallback(TxtIdleCallback callback,
  *                      or zero if the window could not be raised further.
  */
 
-int TXT_RaiseWindow(txt_window_t *window);
+[[maybe_unused]] int TXT_RaiseWindow(txt_window_t *window);
 
 /**
  * Lower the z-position of the given window relative to other windows.

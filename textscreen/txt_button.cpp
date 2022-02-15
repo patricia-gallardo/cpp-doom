@@ -19,10 +19,8 @@
 
 #include "txt_button.hpp"
 #include "txt_gui.hpp"
-#include "txt_io.hpp"
 #include "txt_main.hpp"
 #include "txt_utf8.hpp"
-#include "txt_window.hpp"
 #include "memory.hpp"
 
 static void TXT_ButtonSizeCalc(void *uncast_button)
@@ -111,9 +109,7 @@ txt_button_t *TXT_NewButton(const char *label)
 txt_button_t *TXT_NewButton2(const char *label, TxtWidgetSignalFunc func,
                              void *user_data)
 {
-    txt_button_t *button;
-
-    button = TXT_NewButton(label);
+    txt_button_t *button = TXT_NewButton(label);
 
     TXT_SignalConnect(button, "pressed", func, user_data);
 

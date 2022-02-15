@@ -211,7 +211,7 @@ void R_ClearPlanes()
     lastopening = openings;
 
     // Texture calculation
-    memset(cachedheight, 0, sizeof(cachedheight));
+    std::memset(cachedheight, 0, sizeof(cachedheight));
     angle = (viewangle - ANG90) >> ANGLETOFINESHIFT;    // left to right mapping
     // Scale will be unit scale at SCREENWIDTH/2 distance
     basexscale = FixedDiv(finecosine[angle], centerxfrac);
@@ -265,7 +265,7 @@ visplane_t *R_FindPlane(fixed_t height, int picnum,
     check->special = special;
     check->minx = SCREENWIDTH;
     check->maxx = -1;
-    memset(check->top, 0xff, sizeof(check->top));
+    std::memset(check->top, 0xff, sizeof(check->top));
     return (check);
 }
 
@@ -325,7 +325,7 @@ visplane_t *R_CheckPlane(visplane_t * pl, int start, int stop)
     pl = lastvisplane++;
     pl->minx = start;
     pl->maxx = stop;
-    memset(pl->top, 0xff, sizeof(pl->top));
+    std::memset(pl->top, 0xff, sizeof(pl->top));
 
     return pl;
 }

@@ -33,7 +33,7 @@
 //
 
 // when zero, stop the wipe
-static bool go = 0;
+static bool go = false;
 
 static pixel_t *wipe_scr_start;
 static pixel_t *wipe_scr_end;
@@ -54,14 +54,14 @@ void wipe_shittyColMajorXform(dpixel_t *array,
         for (x = 0; x < width; x++)
             dest[x * height + y] = array[y * width + x];
 
-    memcpy(array, dest, static_cast<unsigned long>(width * height) * sizeof(*dest));
+    std::memcpy(array, dest, static_cast<unsigned long>(width * height) * sizeof(*dest));
 
     Z_Free(dest);
 }
 
 int wipe_initColorXForm(int width, int height, int)
 {
-    memcpy(wipe_scr, wipe_scr_start, static_cast<unsigned long>(width * height) * sizeof(*wipe_scr));
+    std::memcpy(wipe_scr, wipe_scr_start, static_cast<unsigned long>(width * height) * sizeof(*wipe_scr));
     return 0;
 }
 
@@ -121,7 +121,7 @@ int wipe_initMelt(int width, int height, int)
     int i, r;
 
     // copy start screen to main screen
-    memcpy(wipe_scr, wipe_scr_start, static_cast<unsigned long>(width * height) * sizeof(*wipe_scr));
+    std::memcpy(wipe_scr, wipe_scr_start, static_cast<unsigned long>(width * height) * sizeof(*wipe_scr));
 
     // makes this wipe faster (in theory)
     // to have stuff in column-major format

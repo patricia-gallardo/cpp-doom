@@ -15,9 +15,7 @@
 // Top-level dehacked definitions for Doom dehacked.
 //
 
-#include <cstdlib>
 #include "deh_defs.hpp"
-#include "deh_main.hpp"
 
 const char *deh_signatures[] = {
     "Patch File for DeHackEd v2.3",

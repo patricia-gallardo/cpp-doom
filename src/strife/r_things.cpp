@@ -204,7 +204,7 @@ void R_InitSpriteDefs (const char** namelist)
     for (i=0 ; i<numsprites ; i++)
     {
 	spritename = DEH_String(namelist[i]);
-	memset (sprtemp,-1, sizeof(sprtemp));
+	std::memset (sprtemp,-1, sizeof(sprtemp));
 		
 	maxframe = -1;
 	
@@ -271,7 +271,7 @@ void R_InitSpriteDefs (const char** namelist)
 	sprites[i].numframes = maxframe;
 	sprites[i].spriteframes =
             zmalloc<spriteframe_t *>(static_cast<unsigned long>(maxframe) * sizeof(spriteframe_t), PU_STATIC, nullptr);
-	memcpy (sprites[i].spriteframes, sprtemp, static_cast<unsigned long>(maxframe) *sizeof(spriteframe_t));
+	std::memcpy (sprites[i].spriteframes, sprtemp, static_cast<unsigned long>(maxframe) *sizeof(spriteframe_t));
     }
 
 }

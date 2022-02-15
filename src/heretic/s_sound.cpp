@@ -71,7 +71,7 @@ void S_Start()
             S_StopSound(channel[i].mo);
         }
     }
-    memset(channel, 0, 8 * sizeof(channel_t));
+    std::memset(channel, 0, 8 * sizeof(channel_t));
 }
 
 void S_StartSong(int song, bool loop)

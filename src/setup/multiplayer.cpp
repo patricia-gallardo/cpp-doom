@@ -43,11 +43,11 @@
 #define NUM_WADS 10
 #define NUM_EXTRA_PARAMS 10
 
-typedef enum
+enum warptype_t
 {
     WARP_ExMy,
     WARP_MAPxy,
-} warptype_t;
+};
 
 // Fallback IWADs to use if no IWADs are detected.
 

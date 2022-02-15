@@ -13,15 +13,12 @@
 //
 
 #include <cstdlib>
-#include <cstring>
 
 #include "doomkeys.hpp"
-
 #include "memory.hpp"
 #include "txt_button.hpp"
 #include "txt_dropdown.hpp"
 #include "txt_gui.hpp"
-#include "txt_io.hpp"
 #include "txt_main.hpp"
 #include "txt_utf8.hpp"
 #include "txt_window.hpp"
@@ -45,7 +42,7 @@ static int ValidSelection(txt_dropdown_list_t *list)
 
 static int SelectorWindowY(txt_dropdown_list_t *list)
 {
-    int result;
+    int result = 0;
 
     if (ValidSelection(list))
     {
@@ -129,12 +126,9 @@ static int SelectorMouseListener(txt_window_t *window, int x, int y, int,
 
 static void OpenSelectorWindow(txt_dropdown_list_t *list)
 {
-    txt_window_t *window;
-    int i;
-
     // Open a simple window with no title bar or action buttons.
 
-    window = TXT_NewWindow(nullptr);
+    txt_window_t *window = TXT_NewWindow(nullptr);
 
     TXT_SetWindowAction(window, TXT_HORIZ_LEFT, nullptr);
     TXT_SetWindowAction(window, TXT_HORIZ_CENTER, nullptr);
@@ -148,11 +142,9 @@ static void OpenSelectorWindow(txt_dropdown_list_t *list)
 
     // Add a button to the window for each option in the list.
 
-    for (i=0; i<list->num_values; ++i)
+    for (int i=0; i<list->num_values; ++i)
     {
-        txt_button_t *button;
-
-        button = TXT_NewButton(list->values[i]);
+        txt_button_t *button = TXT_NewButton(list->values[i]);
 
         TXT_AddWidget(window, button);
 
@@ -189,14 +181,11 @@ static void OpenSelectorWindow(txt_dropdown_list_t *list)
 
 static int DropdownListWidth(txt_dropdown_list_t *list)
 {
-    int i;
-    int result;
-
     // Find the maximum string width
  
-    result = 0;
+    int result = 0;
 
-    for (i=0; i<list->num_values; ++i)
+    for (int i=0; i<list->num_values; ++i)
     {
         int w = static_cast<int>(TXT_UTF8_Strlen(list->values[i]));
         if (w > result) 
@@ -219,7 +208,7 @@ static void TXT_DropdownListSizeCalc(void *uncast_list)
 static void TXT_DropdownListDrawer(void *uncast_list)
 {
     auto *list = reinterpret_cast<txt_dropdown_list_t *>(uncast_list);
-    const char *str;
+    const char *str = nullptr;
 
     // Set bg/fg text colors.
 

@@ -18,10 +18,7 @@
 #include <cstdio>
 #include <cstdlib>
 
-#include "doomtype.hpp"
-
 #include "d_items.hpp"
-
 #include "deh_defs.hpp"
 #include "deh_main.hpp"
 #include "deh_mapping.hpp"
@@ -73,7 +70,7 @@ static void DEH_WeaponParseLine(deh_context_t *context, char *line, void *tag)
         return;
     }
 
-    ivalue = atoi(value);
+    ivalue = std::atoi(value);
 
     DEH_SetMapping(context, &weapon_mapping, weapon, variable_name, ivalue);
 }

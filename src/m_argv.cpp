@@ -23,11 +23,12 @@
 
 #include "SDL_stdinc.h"
 
-#include "doomtype.hpp"
-#include "d_iwad.hpp"
 #include "i_system.hpp"
 #include "m_misc.hpp"
 #include "m_argv.hpp" // haleyjd 20110212: warning fix
+#ifdef WIN32
+#include "d_iwad.hpp"
+#endif
 
 int    myargc;
 char **myargv;
@@ -112,7 +113,7 @@ static void LoadResponseFile(int argv_index, const char *filename)
 
     char **newargv = static_cast<char **>(malloc(sizeof(char *) * MAXARGVS));
     int newargc = 0;
-    memset(newargv, 0, sizeof(char *) * MAXARGVS);
+    std::memset(newargv, 0, sizeof(char *) * MAXARGVS);
 
     // Copy all the arguments in the list up to the response file
 
@@ -321,7 +322,7 @@ void M_AddLooseFiles()
     // allocate space for up to three additional regular parameters
 
     arguments = static_cast<argument_t *>(malloc((myargc + 3) * sizeof(*arguments)));
-    memset(arguments, 0, (myargc + 3) * sizeof(*arguments));
+    std::memset(arguments, 0, (myargc + 3) * sizeof(*arguments));
 
     // check the command line and make sure it does not already
     // contain any regular parameters or response files

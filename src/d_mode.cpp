@@ -17,9 +17,6 @@
 //   mode.
 //
 
-#include <array>
-
-#include "doomtype.hpp"
 #include "d_mode.hpp"
 
 // Valid game mode/mission combinations, with the number of
@@ -102,9 +99,7 @@ bool D_ValidEpisodeMap(GameMission_t mission, GameMode_t mode,
 
 int D_GetNumEpisodes(GameMission_t mission, GameMode_t mode)
 {
-    int episode;
-
-    episode = 1;
+    int episode = 1;
 
     while (D_ValidEpisodeMap(mission, mode, episode, 1))
     {

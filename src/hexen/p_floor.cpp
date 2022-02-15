@@ -296,7 +296,7 @@ int EV_DoFloor(line_t *, uint8_t *args, floor_e floortype)
         //
         rtn = 1;
         floor = zmalloc<floormove_t *>(sizeof(*floor), PU_LEVSPEC, 0);
-        memset(floor, 0, sizeof(*floor));
+        std::memset(floor, 0, sizeof(*floor));
         P_AddThinker(&floor->thinker);
         sec->specialdata = floor;
         floor->thinker.function = T_MoveFloor;
@@ -518,7 +518,7 @@ static void ProcessStairSector(sector_t * sec, int type, int height,
     //
     height += StepDelta;
     floor = zmalloc<floormove_t *>(sizeof(*floor), PU_LEVSPEC, 0);
-    memset(floor, 0, sizeof(*floor));
+    std::memset(floor, 0, sizeof(*floor));
     P_AddThinker(&floor->thinker);
     sec->specialdata = floor;
     floor->thinker.function = T_MoveFloor;

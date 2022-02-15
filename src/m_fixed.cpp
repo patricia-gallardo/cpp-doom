@@ -16,14 +16,10 @@
 //	Fixed point implementation.
 //
 
-
 #include <cstdlib>
 
 #include "doomtype.hpp"
-#include "i_system.hpp"
-
 #include "m_fixed.hpp"
-
 
 // Fixme. __USE_C_FIXED__ or something.
 

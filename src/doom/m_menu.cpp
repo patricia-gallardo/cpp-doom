@@ -66,7 +66,7 @@
 #include "v_trans.hpp" // [crispy] colored "invert mouse" message
 
 extern patch_t *hu_font[HU_FONTSIZE];
-extern bool  message_dontfuckwithme;
+extern bool     message_dontfuckwithme;
 
 extern bool chat_on; // in heads-up code
 
@@ -98,9 +98,9 @@ int messageToPrint;
 const char *messageString;
 
 // message x & y
-int messx;
-int messy;
-int messageLastMenuActive;
+[[maybe_unused]] int messx;
+[[maybe_unused]] int messy;
+int                  messageLastMenuActive;
 
 // timed message = no input from user
 bool messageNeedsInput;
@@ -108,22 +108,12 @@ bool messageNeedsInput;
 void (*messageRoutine)(int response);
 
 // [crispy] intermediate gamma levels
-char gammamsg[5 + 4][26 + 2] = {
-    GAMMALVL0,
-    GAMMALVL05,
-    GAMMALVL1,
-    GAMMALVL15,
-    GAMMALVL2,
-    GAMMALVL25,
-    GAMMALVL3,
-    GAMMALVL35,
-    GAMMALVL4
-};
+char gammamsg[5 + 4][26 + 2] = { GAMMALVL0, GAMMALVL05, GAMMALVL1, GAMMALVL15, GAMMALVL2, GAMMALVL25, GAMMALVL3, GAMMALVL35, GAMMALVL4 };
 
 // we are going to be entering a savegame string
-int            saveStringEnter;
-int            saveSlot;           // which slot to save in
-int            saveCharIndex;      // which char we're editing
+int         saveStringEnter;
+int         saveSlot;           // which slot to save in
+int         saveCharIndex;      // which char we're editing
 static bool joypadSave = false; // was the save action initiated by joypad?
 // old save description before edit
 char saveOldString[SAVESTRINGSIZE];
@@ -131,12 +121,12 @@ char saveOldString[SAVESTRINGSIZE];
 bool inhelpscreens;
 bool menuactive;
 
-#define SKULLXOFF         -32
-#define LINEHEIGHT        16
-#define CRISPY_LINEHEIGHT 10 // [crispy] Crispness menu
+constexpr auto SKULLXOFF         = -32;
+constexpr auto LINEHEIGHT        = 16;
+constexpr auto CRISPY_LINEHEIGHT = 10; // [crispy] Crispness menu
 
 extern bool sendpause;
-char           savegamestrings[10][SAVESTRINGSIZE];
+char        savegamestrings[10][SAVESTRINGSIZE];
 
 char endstring[160];
 
@@ -147,28 +137,27 @@ extern bool speedkeydown();
 //
 // MENU TYPEDEFS
 //
-struct menuitem_t
-{
+struct menuitem_t {
     // 0 = no cursor here, 1 = ok, 2 = arrows ok
-    short status{};
+    short status {};
 
-    char name[10]{};
+    char name[10] {};
 
     // choice = menu item #.
     // if status = 2,
     //   choice=0:leftarrow,1:rightarrow
-    void (*routine)(int choice){};
+    void (*routine)(int choice) {};
 
     // hotkey in menu
-    char  alphaKey{};
-    char *alttext{}; // [crispy] alternative text for the Options menu
+    char  alphaKey {};
+    char *alttext {}; // [crispy] alternative text for the Options menu
 };
 
 
 typedef struct menu_s {
     short          numitems;  // # of menu items
     struct menu_s *prevMenu;  // previous menu
-    menuitem_t *   menuitems; // menu items
+    menuitem_t    *menuitems; // menu items
     void (*routine)();        // draw routine
     short x;
     short y;      // x,y of menu
@@ -264,24 +253,12 @@ enum class main_e
     main_end
 };
 
-menuitem_t MainMenu[] = {
-    { 1, "M_NGAME", M_NewGame, 'n' },
-    { 1, "M_OPTION", M_Options, 'o' },
-    { 1, "M_LOADG", M_LoadGame, 'l' },
+menuitem_t MainMenu[] = { { 1, "M_NGAME", M_NewGame, 'n' }, { 1, "M_OPTION", M_Options, 'o' }, { 1, "M_LOADG", M_LoadGame, 'l' },
     { 1, "M_SAVEG", M_SaveGame, 's' },
     // Another hickup with Special edition.
-    { 1, "M_RDTHIS", M_ReadThis, 'r' },
-    { 1, "M_QUITG", M_QuitDOOM, 'q' }
-};
+    { 1, "M_RDTHIS", M_ReadThis, 'r' }, { 1, "M_QUITG", M_QuitDOOM, 'q' } };
 
-menu_t MainDef = {
-    static_cast<short>(main_e::main_end),
-    nullptr,
-    MainMenu,
-    M_DrawMainMenu,
-    97, 64,
-    0
-};
+menu_t MainDef = { static_cast<short>(main_e::main_end), nullptr, MainMenu, M_DrawMainMenu, 97, 64, 0 };
 
 
 //
@@ -290,26 +267,24 @@ menu_t MainDef = {
 enum class episodes_e
 {
     ep1,
-    ep2,
-    ep3,
-    ep4,
-    ep5, // [crispy] Sigil
+    ep2 [[maybe_unused]],
+    ep3 [[maybe_unused]],
+    ep4 [[maybe_unused]],
+    ep5 [[maybe_unused]], // [crispy] Sigil
     ep_end
 };
 
 menuitem_t EpisodeMenu[] = {
-    { 1, "M_EPI1", M_Episode, 'k' },
-    { 1, "M_EPI2", M_Episode, 't' },
-    { 1, "M_EPI3", M_Episode, 'i' },
-    { 1, "M_EPI4", M_Episode, 't' }, { 1, "M_EPI5", M_Episode, 's' } // [crispy] Sigil
+    { 1, "M_EPI1", M_Episode, 'k' }, { 1, "M_EPI2", M_Episode, 't' }, { 1, "M_EPI3", M_Episode, 'i' }, { 1, "M_EPI4", M_Episode, 't' },
+    { 1, "M_EPI5", M_Episode, 's' } // [crispy] Sigil
 };
 
 menu_t EpiDef = {
-    static_cast<short>(episodes_e::ep_end),        // # of menu items
-    &MainDef,      // previous menu
-    EpisodeMenu,   // menuitem_t ->
-    M_DrawEpisode, // drawing routine ->
-    48, 63,        // x,y
+    static_cast<short>(episodes_e::ep_end), // # of menu items
+    &MainDef,                               // previous menu
+    EpisodeMenu,                            // menuitem_t ->
+    M_DrawEpisode,                          // drawing routine ->
+    48, 63,                                 // x,y
     static_cast<short>(episodes_e::ep1)     // lastOn
 };
 
@@ -319,7 +294,7 @@ menu_t EpiDef = {
 enum class expansions_e
 {
     ex1,
-    ex2,
+    ex2 [[maybe_unused]],
     ex_end
 };
 
@@ -329,11 +304,11 @@ static menuitem_t ExpansionMenu[] = {
 };
 
 static menu_t ExpDef = {
-    static_cast<short>(expansions_e::ex_end),        // # of menu items
-    &MainDef,      // previous menu
-    ExpansionMenu, // menuitem_t ->
-    M_DrawEpisode, // drawing routine ->
-    48, 63,        // x,y
+    static_cast<short>(expansions_e::ex_end), // # of menu items
+    &MainDef,                                 // previous menu
+    ExpansionMenu,                            // menuitem_t ->
+    M_DrawEpisode,                            // drawing routine ->
+    48, 63,                                   // x,y
     static_cast<short>(expansions_e::ex1)     // lastOn
 };
 
@@ -342,28 +317,23 @@ static menu_t ExpDef = {
 //
 enum class newgame_e
 {
-    killthings,
+    killthings [[maybe_unused]],
     toorough,
     hurtme,
-    violence,
+    violence [[maybe_unused]],
     nightmare,
     newg_end
 };
 
-menuitem_t NewGameMenu[] = {
-    { 1, "M_JKILL", M_ChooseSkill, 'i' },
-    { 1, "M_ROUGH", M_ChooseSkill, 'h' },
-    { 1, "M_HURT", M_ChooseSkill, 'h' },
-    { 1, "M_ULTRA", M_ChooseSkill, 'u' },
-    { 1, "M_NMARE", M_ChooseSkill, 'n' }
-};
+menuitem_t NewGameMenu[] = { { 1, "M_JKILL", M_ChooseSkill, 'i' }, { 1, "M_ROUGH", M_ChooseSkill, 'h' },
+    { 1, "M_HURT", M_ChooseSkill, 'h' }, { 1, "M_ULTRA", M_ChooseSkill, 'u' }, { 1, "M_NMARE", M_ChooseSkill, 'n' } };
 
 menu_t NewDef = {
-    static_cast<short>(newgame_e::newg_end),      // # of menu items
-    &EpiDef,       // previous menu
-    NewGameMenu,   // menuitem_t ->
-    M_DrawNewGame, // drawing routine ->
-    48, 63,        // x,y
+    static_cast<short>(newgame_e::newg_end), // # of menu items
+    &EpiDef,                                 // previous menu
+    NewGameMenu,                             // menuitem_t ->
+    M_DrawNewGame,                           // drawing routine ->
+    48, 63,                                  // x,y
     static_cast<short>(newgame_e::hurtme)    // lastOn
 };
 
@@ -377,9 +347,9 @@ enum class options_e
     messages,
     detail,
     scrnsize,
-    option_empty1,
+    option_empty1 [[maybe_unused]],
     mousesens,
-    soundvol,
+    soundvol [[maybe_unused]],
     crispness, // [crispy] Crispness menu
     opt_end
 };
@@ -388,21 +358,13 @@ menuitem_t OptionsMenu[] = {
     { 1, "M_ENDGAM", M_EndGame, 'e', const_cast<char *>("End Game") },
     { 1, "M_MESSG", M_ChangeMessages, 'm', const_cast<char *>("Messages: ") },
     { 1, "M_DETAIL", M_ChangeDetail, 'g', const_cast<char *>("Graphic Detail: ") },
-    { 2, "M_SCRNSZ", M_SizeDisplay, 's', const_cast<char *>("Screen Size") },
-    { -1, "", 0, '\0' },
+    { 2, "M_SCRNSZ", M_SizeDisplay, 's', const_cast<char *>("Screen Size") }, { -1, "", 0, '\0' },
     { 1, "M_MSENS", M_Mouse, 'm', const_cast<char *>("Mouse Sensitivity") }, // [crispy] mouse sensitivity menu
     { 1, "M_SVOL", M_Sound, 's', const_cast<char *>("Sound Volume") },
     { 1, "M_CRISPY", M_CrispnessCur, 'c', const_cast<char *>("Crispness") } // [crispy] Crispness menu
 };
 
-menu_t OptionsDef = {
-    static_cast<short>(options_e::opt_end),
-    &MainDef,
-    OptionsMenu,
-    M_DrawOptions,
-    60, 37,
-    0
-};
+menu_t OptionsDef = { static_cast<short>(options_e::opt_end), &MainDef, OptionsMenu, M_DrawOptions, 60, 37, 0 };
 
 // [crispy] mouse sensitivity menu
 enum class mouse_e
@@ -427,14 +389,7 @@ static menuitem_t MouseMenu[] = {
     { 1, "", M_MouseInvert, 'i' },
 };
 
-static menu_t MouseDef = {
-    static_cast<short>(mouse_e::mouse_end),
-    &OptionsDef,
-    MouseMenu,
-    M_DrawMouse,
-    80, 64,
-    0
-};
+static menu_t MouseDef = { static_cast<short>(mouse_e::mouse_end), &OptionsDef, MouseMenu, M_DrawMouse, 80, 64, 0 };
 
 // [crispy] Crispness menu
 enum class crispness1_e
@@ -445,7 +400,7 @@ enum class crispness1_e
     crispness_uncapped,
     crispness_vsync,
     crispness_smoothscaling,
-    crispness_sep_rendering_,
+    crispness_sep_rendering_ [[maybe_unused]],
 
     crispness_sep_visual,
     crispness_coloredhud,
@@ -454,7 +409,7 @@ enum class crispness1_e
     crispness_brightmaps,
     crispness_coloredblood,
     crispness_flipcorpses,
-    crispness_sep_visual_,
+    crispness_sep_visual_ [[maybe_unused]],
 
     crispness1_next,
     crispness1_prev,
@@ -481,14 +436,8 @@ static menuitem_t Crispness1Menu[] = {
     { 1, "", M_CrispnessPrev, 'p' },
 };
 
-static menu_t Crispness1Def = {
-    static_cast<short>(crispness1_e::crispness1_end),
-    &OptionsDef,
-    Crispness1Menu,
-    M_DrawCrispness1,
-    48, 28,
-    1
-};
+static menu_t Crispness1Def = { static_cast<short>(crispness1_e::crispness1_end), &OptionsDef, Crispness1Menu, M_DrawCrispness1, 48, 28,
+    1 };
 
 enum class crispness2_e
 {
@@ -497,7 +446,7 @@ enum class crispness2_e
     crispness_soundfix,
     crispness_sndchannels,
     crispness_soundmono,
-    crispness_sep_audible_,
+    crispness_sep_audible_ [[maybe_unused]],
 
     crispness_sep_navigational,
     crispness_extautomap,
@@ -505,7 +454,7 @@ enum class crispness2_e
     crispness_leveltime,
     crispness_playercoords,
     crispness_secretmessage,
-    crispness_sep_navigational_,
+    crispness_sep_navigational_ [[maybe_unused]],
 
     crispness2_next,
     crispness2_prev,
@@ -530,14 +479,8 @@ static menuitem_t Crispness2Menu[] = {
     { 1, "", M_CrispnessPrev, 'p' },
 };
 
-static menu_t Crispness2Def = {
-    static_cast<short>(crispness2_e::crispness2_end),
-    &OptionsDef,
-    Crispness2Menu,
-    M_DrawCrispness2,
-    48, 28,
-    1
-};
+static menu_t Crispness2Def = { static_cast<short>(crispness2_e::crispness2_end), &OptionsDef, Crispness2Menu, M_DrawCrispness2, 48, 28,
+    1 };
 
 enum class crispness3_e
 {
@@ -549,14 +492,14 @@ enum class crispness3_e
     crispness_weaponsquat,
     crispness_pitch,
     crispness_neghealth,
-    crispness_sep_tactical_,
+    crispness_sep_tactical_ [[maybe_unused]],
 
     crispness_sep_crosshair,
     crispness_crosshair,
     crispness_crosshairtype,
     crispness_crosshairhealth,
     crispness_crosshairtarget,
-    crispness_sep_crosshair_,
+    crispness_sep_crosshair_ [[maybe_unused]],
 
     crispness3_next,
     crispness3_prev,
@@ -583,14 +526,8 @@ static menuitem_t Crispness3Menu[] = {
     { 1, "", M_CrispnessPrev, 'p' },
 };
 
-static menu_t Crispness3Def = {
-    static_cast<short>(crispness3_e::crispness3_end),
-    &OptionsDef,
-    Crispness3Menu,
-    M_DrawCrispness3,
-    48, 28,
-    1
-};
+static menu_t Crispness3Def = { static_cast<short>(crispness3_e::crispness3_end), &OptionsDef, Crispness3Menu, M_DrawCrispness3, 48, 28,
+    1 };
 
 enum class crispness4_e
 {
@@ -599,13 +536,13 @@ enum class crispness4_e
     crispness_jumping,
     crispness_overunder,
     crispness_recoil,
-    crispness_sep_physical_,
+    crispness_sep_physical_ [[maybe_unused]],
 
     crispness_sep_demos,
     crispness_demotimer,
     crispness_demotimerdir,
     crispness_demobar,
-    crispness_sep_demos_,
+    crispness_sep_demos_ [[maybe_unused]],
 
     crispness4_next,
     crispness4_prev,
@@ -629,14 +566,8 @@ static menuitem_t Crispness4Menu[] = {
     { 1, "", M_CrispnessPrev, 'p' },
 };
 
-static menu_t Crispness4Def = {
-    static_cast<short>(crispness4_e::crispness4_end),
-    &OptionsDef,
-    Crispness4Menu,
-    M_DrawCrispness4,
-    48, 28,
-    1
-};
+static menu_t Crispness4Def = { static_cast<short>(crispness4_e::crispness4_end), &OptionsDef, Crispness4Menu, M_DrawCrispness4, 48, 28,
+    1 };
 
 static menu_t *CrispnessMenus[] = {
     &Crispness1Def,
@@ -656,37 +587,19 @@ enum class read_e
     read1_end
 };
 
-menuitem_t ReadMenu1[] = {
-    { 1, "", M_ReadThis2, 0 }
-};
+menuitem_t ReadMenu1[] = { { 1, "", M_ReadThis2, 0 } };
 
-menu_t ReadDef1 = {
-    static_cast<short>(read_e::read1_end),
-    &MainDef,
-    ReadMenu1,
-    M_DrawReadThis1,
-    280, 185,
-    0
-};
+menu_t ReadDef1 = { static_cast<short>(read_e::read1_end), &MainDef, ReadMenu1, M_DrawReadThis1, 280, 185, 0 };
 
 enum class read_e2
 {
-    rdthsempty2,
+    rdthsempty2 [[maybe_unused]],
     read2_end
 };
 
-menuitem_t ReadMenu2[] = {
-    { 1, "", M_FinishReadThis, 0 }
-};
+menuitem_t ReadMenu2[] = { { 1, "", M_FinishReadThis, 0 } };
 
-menu_t ReadDef2 = {
-    static_cast<short>(read_e2::read2_end),
-    &ReadDef1,
-    ReadMenu2,
-    M_DrawReadThis2,
-    330, 175,
-    0
-};
+menu_t ReadDef2 = { static_cast<short>(read_e2::read2_end), &ReadDef1, ReadMenu2, M_DrawReadThis2, 330, 175, 0 };
 
 //
 // SOUND VOLUME MENU
@@ -694,86 +607,50 @@ menu_t ReadDef2 = {
 enum class sound_e
 {
     sfx_vol,
-    sfx_empty1,
+    sfx_empty1 [[maybe_unused]],
     music_vol,
-    sfx_empty2,
+    sfx_empty2 [[maybe_unused]],
     sound_end
 };
 
-menuitem_t SoundMenu[] = {
-    { 2, "M_SFXVOL", M_SfxVol, 's' },
-    { -1, "", 0, '\0' },
-    { 2, "M_MUSVOL", M_MusicVol, 'm' },
-    { -1, "", 0, '\0' }
-};
+menuitem_t SoundMenu[] = { { 2, "M_SFXVOL", M_SfxVol, 's' }, { -1, "", 0, '\0' }, { 2, "M_MUSVOL", M_MusicVol, 'm' }, { -1, "", 0, '\0' } };
 
-menu_t SoundDef = {
-    static_cast<short>(sound_e::sound_end),
-    &OptionsDef,
-    SoundMenu,
-    M_DrawSound,
-    80, 64,
-    0
-};
+menu_t SoundDef = { static_cast<short>(sound_e::sound_end), &OptionsDef, SoundMenu, M_DrawSound, 80, 64, 0 };
 
 //
 // LOAD GAME MENU
 //
 enum class load_e
 {
-    load1,
-    load2,
-    load3,
-    load4,
-    load5,
-    load6,
-    load7, // [crispy] up to 8 savegames
-    load8, // [crispy] up to 8 savegames
+    load1 [[maybe_unused]],
+    load2 [[maybe_unused]],
+    load3 [[maybe_unused]],
+    load4 [[maybe_unused]],
+    load5 [[maybe_unused]],
+    load6 [[maybe_unused]],
+    load7 [[maybe_unused]], // [crispy] up to 8 savegames
+    load8 [[maybe_unused]], // [crispy] up to 8 savegames
     load_end
 };
 
 menuitem_t LoadMenu[] = {
-    { 1, "", M_LoadSelect, '1' },
-    { 1, "", M_LoadSelect, '2' },
-    { 1, "", M_LoadSelect, '3' },
-    { 1, "", M_LoadSelect, '4' },
-    { 1, "", M_LoadSelect, '5' },
-    { 1, "", M_LoadSelect, '6' },
-    { 1, "", M_LoadSelect, '7' }, // [crispy] up to 8 savegames
-    { 1, "", M_LoadSelect, '8' }  // [crispy] up to 8 savegames
+    { 1, "", M_LoadSelect, '1' }, { 1, "", M_LoadSelect, '2' }, { 1, "", M_LoadSelect, '3' }, { 1, "", M_LoadSelect, '4' },
+    { 1, "", M_LoadSelect, '5' }, { 1, "", M_LoadSelect, '6' }, { 1, "", M_LoadSelect, '7' }, // [crispy] up to 8 savegames
+    { 1, "", M_LoadSelect, '8' }                                                              // [crispy] up to 8 savegames
 };
 
-menu_t LoadDef = {
-    static_cast<short>(load_e::load_end),
-    &MainDef,
-    LoadMenu,
-    M_DrawLoad,
-    80, 54,
-    0
-};
+menu_t LoadDef = { static_cast<short>(load_e::load_end), &MainDef, LoadMenu, M_DrawLoad, 80, 54, 0 };
 
 //
 // SAVE GAME MENU
 //
 menuitem_t SaveMenu[] = {
-    { 1, "", M_SaveSelect, '1' },
-    { 1, "", M_SaveSelect, '2' },
-    { 1, "", M_SaveSelect, '3' },
-    { 1, "", M_SaveSelect, '4' },
-    { 1, "", M_SaveSelect, '5' },
-    { 1, "", M_SaveSelect, '6' },
-    { 1, "", M_SaveSelect, '7' }, // [crispy] up to 8 savegames
-    { 1, "", M_SaveSelect, '8' }  // [crispy] up to 8 savegames
+    { 1, "", M_SaveSelect, '1' }, { 1, "", M_SaveSelect, '2' }, { 1, "", M_SaveSelect, '3' }, { 1, "", M_SaveSelect, '4' },
+    { 1, "", M_SaveSelect, '5' }, { 1, "", M_SaveSelect, '6' }, { 1, "", M_SaveSelect, '7' }, // [crispy] up to 8 savegames
+    { 1, "", M_SaveSelect, '8' }                                                              // [crispy] up to 8 savegames
 };
 
-menu_t SaveDef = {
-    static_cast<short>(load_e::load_end),
-    &MainDef,
-    SaveMenu,
-    M_DrawSave,
-    80, 54,
-    0
-};
+menu_t SaveDef = { static_cast<short>(load_e::load_end), &MainDef, SaveMenu, M_DrawSave, 80, 54, 0 };
 
 
 //
@@ -782,15 +659,12 @@ menu_t SaveDef = {
 //
 void M_ReadSaveStrings()
 {
-    FILE *handle;
-    int   i;
-    char  name[256];
-
-    for (i = 0; i < static_cast<int>(load_e::load_end); i++)
+    for (int i = 0; i < static_cast<int>(load_e::load_end); i++)
     {
+        char name[256];
         M_StringCopy(name, P_SaveGameFile(i), sizeof(name));
 
-        handle = fopen(name, "rb");
+        FILE *handle = fopen(name, "rb");
         if (handle == nullptr)
         {
             M_StringCopy(savegamestrings[i], EMPTYSTRING, SAVESTRINGSIZE);
@@ -810,18 +684,14 @@ void M_ReadSaveStrings()
 static int LoadDef_x = 72, LoadDef_y = 28;
 void       M_DrawLoad()
 {
-    int i;
+    V_DrawPatchDirect(LoadDef_x, LoadDef_y, cache_lump_name<patch_t *>(DEH_String("M_LOADG"), PU_CACHE));
 
-    V_DrawPatchDirect(LoadDef_x, LoadDef_y,
-        cache_lump_name<patch_t *>(DEH_String("M_LOADG"), PU_CACHE));
-
-    for (i = 0; i < static_cast<int>(load_e::load_end); i++)
+    for (int i = 0; i < static_cast<int>(load_e::load_end); i++)
     {
         M_DrawSaveLoadBorder(LoadDef.x, LoadDef.y + LINEHEIGHT * i);
 
         // [crispy] shade empty savegame slots
-        if (!LoadMenu[i].status)
-            dp_translation = cr_colors[static_cast<int>(cr_t::CR_DARK)];
+        if (!LoadMenu[i].status) dp_translation = cr_colors[static_cast<int>(cr_t::CR_DARK)];
 
         M_WriteText(LoadDef.x, LoadDef.y + LINEHEIGHT * i, savegamestrings[i]);
 
@@ -835,20 +705,15 @@ void       M_DrawLoad()
 //
 void M_DrawSaveLoadBorder(int x, int y)
 {
-    int i;
+    V_DrawPatchDirect(x - 8, y + 7, cache_lump_name<patch_t *>(DEH_String("M_LSLEFT"), PU_CACHE));
 
-    V_DrawPatchDirect(x - 8, y + 7,
-        cache_lump_name<patch_t *>(DEH_String("M_LSLEFT"), PU_CACHE));
-
-    for (i = 0; i < 24; i++)
+    for (int i = 0; i < 24; i++)
     {
-        V_DrawPatchDirect(x, y + 7,
-            cache_lump_name<patch_t *>(DEH_String("M_LSCNTR"), PU_CACHE));
+        V_DrawPatchDirect(x, y + 7, cache_lump_name<patch_t *>(DEH_String("M_LSCNTR"), PU_CACHE));
         x += 8;
     }
 
-    V_DrawPatchDirect(x, y + 7,
-        cache_lump_name<patch_t *>(DEH_String("M_LSRGHT"), PU_CACHE));
+    V_DrawPatchDirect(x, y + 7, cache_lump_name<patch_t *>(DEH_String("M_LSRGHT"), PU_CACHE));
 }
 
 
@@ -867,8 +732,7 @@ void M_LoadSelect(int choice)
     M_ClearMenus();
 
     // [crispy] allow quickload before quicksave
-    if (quickSaveSlot == -2)
-        quickSaveSlot = choice;
+    if (quickSaveSlot == -2) quickSaveSlot = choice;
 }
 
 //
@@ -894,10 +758,8 @@ void M_LoadGame(int)
 static int SaveDef_x = 72, SaveDef_y = 28;
 void       M_DrawSave()
 {
-    int i;
-
     V_DrawPatchDirect(SaveDef_x, SaveDef_y, cache_lump_name<patch_t *>(DEH_String("M_SAVEG"), PU_CACHE));
-    for (i = 0; i < static_cast<int>(load_e::load_end); i++)
+    for (int i = 0; i < static_cast<int>(load_e::load_end); i++)
     {
         M_DrawSaveLoadBorder(LoadDef.x, LoadDef.y + LINEHEIGHT * i);
         M_WriteText(LoadDef.x, LoadDef.y + LINEHEIGHT * i, savegamestrings[i]);
@@ -905,7 +767,7 @@ void       M_DrawSave()
 
     if (saveStringEnter)
     {
-        i = M_StringWidth(savegamestrings[saveSlot]);
+        int i = M_StringWidth(savegamestrings[saveSlot]);
         M_WriteText(LoadDef.x + i, LoadDef.y + LINEHEIGHT * saveSlot, "_");
     }
 }
@@ -919,8 +781,7 @@ void M_DoSave(int slot)
     M_ClearMenus();
 
     // PICK QUICKSAVE SLOT YET?
-    if (quickSaveSlot == -2)
-        quickSaveSlot = slot;
+    if (quickSaveSlot == -2) quickSaveSlot = slot;
 }
 
 //
@@ -930,24 +791,18 @@ void M_DoSave(int slot)
 static void SetDefaultSaveName(int)
 {
     // map from IWAD or PWAD?
-    if (W_IsIWADLump(maplumpinfo) && strcmp(savegamedir, ""))
+    if (W_IsIWADLump(maplumpinfo) && strcmp(savegamedir, "") != 0)
     {
-        M_snprintf(savegamestrings[itemOn], SAVESTRINGSIZE,
-            "%s", maplumpinfo->name);
+        M_snprintf(savegamestrings[itemOn], SAVESTRINGSIZE, "%s", maplumpinfo->name);
     }
     else
     {
         char *wadname = M_StringDuplicate(W_WadNameForLump(maplumpinfo));
         char *ext     = strrchr(wadname, '.');
 
-        if (ext != nullptr)
-        {
-            *ext = '\0';
-        }
+        if (ext != nullptr) { *ext = '\0'; }
 
-        M_snprintf(savegamestrings[itemOn], SAVESTRINGSIZE,
-            "%s (%s)", maplumpinfo->name,
-            wadname);
+        M_snprintf(savegamestrings[itemOn], SAVESTRINGSIZE, "%s (%s)", maplumpinfo->name, wadname);
         free(wadname);
     }
     M_ForceUppercase(savegamestrings[itemOn]);
@@ -959,15 +814,9 @@ static bool StartsWithMapIdentifier(char *str)
 {
     M_ForceUppercase(str);
 
-    if (strlen(str) >= 4 && str[0] == 'E' && isdigit(str[1]) && str[2] == 'M' && isdigit(str[3]))
-    {
-        return true;
-    }
+    if (strlen(str) >= 4 && str[0] == 'E' && isdigit(str[1]) && str[2] == 'M' && isdigit(str[3])) { return true; }
 
-    if (strlen(str) >= 5 && str[0] == 'M' && str[1] == 'A' && str[2] == 'P' && isdigit(str[3]) && isdigit(str[4]))
-    {
-        return true;
-    }
+    if (strlen(str) >= 5 && str[0] == 'M' && str[1] == 'A' && str[2] == 'P' && isdigit(str[3]) && isdigit(str[4])) { return true; }
 
     return false;
 }
@@ -1015,8 +864,7 @@ void M_SaveGame(int)
         return;
     }
 
-    if (gamestate != GS_LEVEL)
-        return;
+    if (gamestate != GS_LEVEL) return;
 
     M_SetupNextMenu(&SaveDef);
     M_ReadSaveStrings();
@@ -1039,16 +887,13 @@ void M_QuickSaveResponse(int key)
 
 void M_QuickSave()
 {
-    char *savegamestring;
-
     if (!usergame)
     {
         S_StartSound(nullptr, sfx_oof);
         return;
     }
 
-    if (gamestate != GS_LEVEL)
-        return;
+    if (gamestate != GS_LEVEL) return;
 
     if (quickSaveSlot < 0)
     {
@@ -1059,12 +904,9 @@ void M_QuickSave()
         return;
     }
     // [crispy] print savegame name in golden letters
-    savegamestring = M_StringJoin(crstr[static_cast<int>(cr_t::CR_GOLD)],
-        savegamestrings[quickSaveSlot],
-        crstr[static_cast<int>(cr_t::CR_NONE)],
-        nullptr);
-    DEH_snprintf(tempstring, sizeof(tempstring),
-        QSPROMPT, savegamestring);
+    char *savegamestring = M_StringJoin(
+        crstr[static_cast<int>(cr_t::CR_GOLD)], savegamestrings[quickSaveSlot], crstr[static_cast<int>(cr_t::CR_NONE)], nullptr);
+    DEH_snprintf(tempstring, sizeof(tempstring), QSPROMPT, savegamestring);
     free(savegamestring);
     M_StartMessage(tempstring, M_QuickSaveResponse, true);
 }
@@ -1085,8 +927,6 @@ void M_QuickLoadResponse(int key)
 
 void M_QuickLoad()
 {
-    char *savegamestring;
-
     // [crispy] allow quickloading game while multiplayer demo playback
     if (netgame && !demoplayback)
     {
@@ -1104,12 +944,9 @@ void M_QuickLoad()
         return;
     }
     // [crispy] print savegame name in golden letters
-    savegamestring = M_StringJoin(crstr[static_cast<int>(cr_t::CR_GOLD)],
-        savegamestrings[quickSaveSlot],
-        crstr[static_cast<int>(cr_t::CR_NONE)],
-        nullptr);
-    DEH_snprintf(tempstring, sizeof(tempstring),
-        QLPROMPT, savegamestring);
+    char *savegamestring = M_StringJoin(
+        crstr[static_cast<int>(cr_t::CR_GOLD)], savegamestrings[quickSaveSlot], crstr[static_cast<int>(cr_t::CR_NONE)], nullptr);
+    DEH_snprintf(tempstring, sizeof(tempstring), QLPROMPT, savegamestring);
     free(savegamestring);
     M_StartMessage(tempstring, M_QuickLoadResponse, true);
 }
@@ -1155,11 +992,9 @@ void M_DrawSound()
 {
     V_DrawPatchDirect(60, 38, cache_lump_name<patch_t *>(DEH_String("M_SVOL"), PU_CACHE));
 
-    M_DrawThermo(SoundDef.x, SoundDef.y + LINEHEIGHT * (static_cast<int>(sound_e::sfx_vol) + 1),
-        16, sfxVolume);
+    M_DrawThermo(SoundDef.x, SoundDef.y + LINEHEIGHT * (static_cast<int>(sound_e::sfx_vol) + 1), 16, sfxVolume);
 
-    M_DrawThermo(SoundDef.x, SoundDef.y + LINEHEIGHT * (static_cast<int>(sound_e::music_vol) + 1),
-        16, musicVolume);
+    M_DrawThermo(SoundDef.x, SoundDef.y + LINEHEIGHT * (static_cast<int>(sound_e::music_vol) + 1), 16, musicVolume);
 }
 
 void M_Sound(int)
@@ -1172,12 +1007,10 @@ void M_SfxVol(int choice)
     switch (choice)
     {
     case 0:
-        if (sfxVolume)
-            sfxVolume--;
+        if (sfxVolume) sfxVolume--;
         break;
     case 1:
-        if (sfxVolume < 15)
-            sfxVolume++;
+        if (sfxVolume < 15) sfxVolume++;
         break;
     }
 
@@ -1189,12 +1022,10 @@ void M_MusicVol(int choice)
     switch (choice)
     {
     case 0:
-        if (musicVolume)
-            musicVolume--;
+        if (musicVolume) musicVolume--;
         break;
     case 1:
-        if (musicVolume < 15)
-            musicVolume++;
+        if (musicVolume < 15) musicVolume++;
         break;
     }
 
@@ -1207,8 +1038,7 @@ void M_MusicVol(int choice)
 //
 void M_DrawMainMenu()
 {
-    V_DrawPatchDirect(94, 2,
-        cache_lump_name<patch_t *>(DEH_String("M_DOOM"), PU_CACHE));
+    V_DrawPatchDirect(94, 2, cache_lump_name<patch_t *>(DEH_String("M_DOOM"), PU_CACHE));
 }
 
 
@@ -1224,10 +1054,7 @@ void M_DrawNewGame()
 void M_NewGame(int)
 {
     // [crispy] forbid New Game while recording a demo
-    if (demorecording)
-    {
-        return;
-    }
+    if (demorecording) { return; }
 
     if (netgame && !demoplayback)
     {
@@ -1258,8 +1085,7 @@ void M_DrawEpisode()
 
 void M_VerifyNightmare(int key)
 {
-    if (key != key_menu_confirm)
-        return;
+    if (key != key_menu_confirm) return;
 
     G_DeferedInitNew(skill_t::sk_nightmare, epi + 1, 1);
     M_ClearMenus();
@@ -1279,8 +1105,7 @@ void M_ChooseSkill(int choice)
 
 void M_Episode(int choice)
 {
-    if ((gamemode == shareware)
-        && choice)
+    if ((gamemode == shareware) && choice)
     {
         M_StartMessage(DEH_String(SWSTRING), nullptr, false);
         M_SetupNextMenu(&ReadDef1);
@@ -1314,8 +1139,8 @@ void M_DrawOptions()
     // [crispy] no patches are drawn in the Options menu anymore
     /*
     V_DrawPatchDirect(OptionsDef.x + 175, OptionsDef.y + LINEHEIGHT * detail,
-		      cache_lump_name<patch_t *>(DEH_String(detailNames[detailLevel]),
-			              PU_CACHE));
+                      cache_lump_name<patch_t *>(DEH_String(detailNames[detailLevel]),
+                                      PU_CACHE));
 */
 
     M_WriteText(OptionsDef.x + M_StringWidth("Graphic Detail: "),
@@ -1329,8 +1154,7 @@ void M_DrawOptions()
                                       PU_CACHE));
 */
     M_WriteText(OptionsDef.x + M_StringWidth("Messages: "),
-        OptionsDef.y + LINEHEIGHT * static_cast<int>(options_e::messages) + 8 - (M_StringHeight("OnOff") / 2),
-        showMessages ? "On" : "Off");
+        OptionsDef.y + LINEHEIGHT * static_cast<int>(options_e::messages) + 8 - (M_StringHeight("OnOff") / 2), showMessages ? "On" : "Off");
 
     M_DrawThermo(OptionsDef.x + screenSize_min * 8, OptionsDef.y + LINEHEIGHT * (static_cast<int>(options_e::scrnsize) + 1),
         9 + 3 - screenSize_min, screenSize - screenSize_min); // [crispy] Crispy HUD
@@ -1343,30 +1167,21 @@ static void M_DrawMouse()
 
     V_DrawPatchDirect(60, LoadDef_y, cache_lump_name<patch_t *>(DEH_String("M_MSENS"), PU_CACHE));
 
-    M_WriteText(MouseDef.x, MouseDef.y + LINEHEIGHT * static_cast<int>(mouse_e::mouse_horiz) + 6,
-        "HORIZONTAL: TURN");
+    M_WriteText(MouseDef.x, MouseDef.y + LINEHEIGHT * static_cast<int>(mouse_e::mouse_horiz) + 6, "HORIZONTAL: TURN");
 
-    M_DrawThermo(MouseDef.x, MouseDef.y + LINEHEIGHT * static_cast<int>(mouse_e::mouse_empty1),
-        21, mouseSensitivity);
+    M_DrawThermo(MouseDef.x, MouseDef.y + LINEHEIGHT * static_cast<int>(mouse_e::mouse_empty1), 21, mouseSensitivity);
 
-    M_WriteText(MouseDef.x, MouseDef.y + LINEHEIGHT * static_cast<int>(mouse_e::mouse_horiz2) + 6,
-        "HORIZONTAL: STRAFE");
+    M_WriteText(MouseDef.x, MouseDef.y + LINEHEIGHT * static_cast<int>(mouse_e::mouse_horiz2) + 6, "HORIZONTAL: STRAFE");
 
-    M_DrawThermo(MouseDef.x, MouseDef.y + LINEHEIGHT * static_cast<int>(mouse_e::mouse_empty2),
-        21, mouseSensitivity_x2);
+    M_DrawThermo(MouseDef.x, MouseDef.y + LINEHEIGHT * static_cast<int>(mouse_e::mouse_empty2), 21, mouseSensitivity_x2);
 
-    M_WriteText(MouseDef.x, MouseDef.y + LINEHEIGHT * static_cast<int>(mouse_e::mouse_vert) + 6,
-        "VERTICAL");
+    M_WriteText(MouseDef.x, MouseDef.y + LINEHEIGHT * static_cast<int>(mouse_e::mouse_vert) + 6, "VERTICAL");
 
-    M_DrawThermo(MouseDef.x, MouseDef.y + LINEHEIGHT * static_cast<int>(mouse_e::mouse_empty3),
-        21, mouseSensitivity_y);
+    M_DrawThermo(MouseDef.x, MouseDef.y + LINEHEIGHT * static_cast<int>(mouse_e::mouse_empty3), 21, mouseSensitivity_y);
 
-    M_snprintf(mouse_menu_text, sizeof(mouse_menu_text),
-        "%sInvert Vertical Axis: %s%s", crstr[static_cast<int>(cr_t::CR_NONE)],
-        mouse_y_invert ? crstr[static_cast<int>(cr_t::CR_GREEN)] : crstr[static_cast<int>(cr_t::CR_DARK)],
-        mouse_y_invert ? "On" : "Off");
-    M_WriteText(MouseDef.x, MouseDef.y + LINEHEIGHT * static_cast<int>(mouse_e::mouse_invert) + 6,
-        mouse_menu_text);
+    M_snprintf(mouse_menu_text, sizeof(mouse_menu_text), "%sInvert Vertical Axis: %s%s", crstr[static_cast<int>(cr_t::CR_NONE)],
+        mouse_y_invert ? crstr[static_cast<int>(cr_t::CR_GREEN)] : crstr[static_cast<int>(cr_t::CR_DARK)], mouse_y_invert ? "On" : "Off");
+    M_WriteText(MouseDef.x, MouseDef.y + LINEHEIGHT * static_cast<int>(mouse_e::mouse_invert) + 6, mouse_menu_text);
 
     dp_translation = nullptr;
 }
@@ -1376,15 +1191,12 @@ static void M_DrawMouse()
 #include "m_background.hpp"
 static void M_DrawCrispnessBackground()
 {
-    const uint8_t *const src = crispness_background;
-    pixel_t *         dest;
-    int               x, y;
+    const uint8_t *const src  = crispness_background;
+    pixel_t             *dest = I_VideoBuffer;
 
-    dest = I_VideoBuffer;
-
-    for (y = 0; y < SCREENHEIGHT; y++)
+    for (int y = 0; y < SCREENHEIGHT; y++)
     {
-        for (x = 0; x < SCREENWIDTH; x++)
+        for (int x = 0; x < SCREENWIDTH; x++)
         {
 #ifndef CRISPY_TRUECOLOR
             *dest++ = src[(y & 63) * 64 + (x & 63)];
@@ -1401,40 +1213,39 @@ static char crispy_menu_text[48];
 
 static void M_DrawCrispnessHeader(char *item)
 {
-    M_snprintf(crispy_menu_text, sizeof(crispy_menu_text),
-        "%s%s", crstr[static_cast<int>(cr_t::CR_GOLD)], item);
+    M_snprintf(crispy_menu_text, sizeof(crispy_menu_text), "%s%s", crstr[static_cast<int>(cr_t::CR_GOLD)], item);
     M_WriteText(ORIGWIDTH / 2 - M_StringWidth(item) / 2, 12, crispy_menu_text);
 }
 
 static void M_DrawCrispnessSeparator(int y, char *item)
 {
-    M_snprintf(crispy_menu_text, sizeof(crispy_menu_text),
-        "%s%s", crstr[static_cast<int>(cr_t::CR_GOLD)], item);
+    M_snprintf(crispy_menu_text, sizeof(crispy_menu_text), "%s%s", crstr[static_cast<int>(cr_t::CR_GOLD)], item);
     M_WriteText(currentMenu->x - 8, currentMenu->y + CRISPY_LINEHEIGHT * y, crispy_menu_text);
 }
 
 static void M_DrawCrispnessItem(int y, char *item, int feat, bool cond)
 {
-    M_snprintf(crispy_menu_text, sizeof(crispy_menu_text),
-        "%s%s: %s%s", cond ? crstr[static_cast<int>(cr_t::CR_NONE)] : crstr[static_cast<int>(cr_t::CR_DARK)], item,
-        cond ? (feat ? crstr[static_cast<int>(cr_t::CR_GREEN)] : crstr[static_cast<int>(cr_t::CR_DARK)]) : crstr[static_cast<int>(cr_t::CR_DARK)],
+    M_snprintf(crispy_menu_text, sizeof(crispy_menu_text), "%s%s: %s%s",
+        cond ? crstr[static_cast<int>(cr_t::CR_NONE)] : crstr[static_cast<int>(cr_t::CR_DARK)], item,
+        cond ? (feat ? crstr[static_cast<int>(cr_t::CR_GREEN)] : crstr[static_cast<int>(cr_t::CR_DARK)]) :
+               crstr[static_cast<int>(cr_t::CR_DARK)],
         cond && feat ? "On" : "Off");
     M_WriteText(currentMenu->x, currentMenu->y + CRISPY_LINEHEIGHT * y, crispy_menu_text);
 }
 
 static void M_DrawCrispnessMultiItem(int y, char *item, multiitem_t *multiitem, int feat, bool cond)
 {
-    M_snprintf(crispy_menu_text, sizeof(crispy_menu_text),
-        "%s%s: %s%s", cond ? crstr[static_cast<int>(cr_t::CR_NONE)] : crstr[static_cast<int>(cr_t::CR_DARK)], item,
-        cond ? (feat ? crstr[static_cast<int>(cr_t::CR_GREEN)] : crstr[static_cast<int>(cr_t::CR_DARK)]) : crstr[static_cast<int>(cr_t::CR_DARK)],
+    M_snprintf(crispy_menu_text, sizeof(crispy_menu_text), "%s%s: %s%s",
+        cond ? crstr[static_cast<int>(cr_t::CR_NONE)] : crstr[static_cast<int>(cr_t::CR_DARK)], item,
+        cond ? (feat ? crstr[static_cast<int>(cr_t::CR_GREEN)] : crstr[static_cast<int>(cr_t::CR_DARK)]) :
+               crstr[static_cast<int>(cr_t::CR_DARK)],
         cond && feat ? multiitem[feat].name : multiitem[0].name);
     M_WriteText(currentMenu->x, currentMenu->y + CRISPY_LINEHEIGHT * y, crispy_menu_text);
 }
 
 static void M_DrawCrispnessGoto(int y, char *item)
 {
-    M_snprintf(crispy_menu_text, sizeof(crispy_menu_text),
-        "%s%s", crstr[static_cast<int>(cr_t::CR_GOLD)], item);
+    M_snprintf(crispy_menu_text, sizeof(crispy_menu_text), "%s%s", crstr[static_cast<int>(cr_t::CR_GOLD)], item);
     M_WriteText(currentMenu->x, currentMenu->y + CRISPY_LINEHEIGHT * y, crispy_menu_text);
 }
 
@@ -1445,19 +1256,30 @@ static void M_DrawCrispness1()
     M_DrawCrispnessHeader(const_cast<char *>("Crispness 1/4"));
 
     M_DrawCrispnessSeparator(static_cast<int>(crispness1_e::crispness_sep_rendering), const_cast<char *>("Rendering"));
-    M_DrawCrispnessItem(static_cast<int>(crispness1_e::crispness_hires), const_cast<char *>("High Resolution Rendering"), crispy->hires, true);
-    M_DrawCrispnessMultiItem(static_cast<int>(crispness1_e::crispness_widescreen), const_cast<char *>("Widescreen Rendering"), multiitem_widescreen, crispy->widescreen, aspect_ratio_correct);
-    M_DrawCrispnessItem(static_cast<int>(crispness1_e::crispness_uncapped), const_cast<char *>("Uncapped Framerate"), crispy->uncapped, true);
-    M_DrawCrispnessItem(static_cast<int>(crispness1_e::crispness_vsync), const_cast<char *>("Enable VSync"), crispy->vsync, !force_software_renderer);
-    M_DrawCrispnessItem(static_cast<int>(crispness1_e::crispness_smoothscaling), const_cast<char *>("Smooth Pixel Scaling"), crispy->smoothscaling, true);
+    M_DrawCrispnessItem(
+        static_cast<int>(crispness1_e::crispness_hires), const_cast<char *>("High Resolution Rendering"), crispy->hires, true);
+    M_DrawCrispnessMultiItem(static_cast<int>(crispness1_e::crispness_widescreen), const_cast<char *>("Widescreen Rendering"),
+        multiitem_widescreen, crispy->widescreen, aspect_ratio_correct);
+    M_DrawCrispnessItem(
+        static_cast<int>(crispness1_e::crispness_uncapped), const_cast<char *>("Uncapped Framerate"), crispy->uncapped, true);
+    M_DrawCrispnessItem(
+        static_cast<int>(crispness1_e::crispness_vsync), const_cast<char *>("Enable VSync"), crispy->vsync, !force_software_renderer);
+    M_DrawCrispnessItem(
+        static_cast<int>(crispness1_e::crispness_smoothscaling), const_cast<char *>("Smooth Pixel Scaling"), crispy->smoothscaling, true);
 
     M_DrawCrispnessSeparator(static_cast<int>(crispness1_e::crispness_sep_visual), const_cast<char *>("Visual"));
-    M_DrawCrispnessMultiItem(static_cast<int>(crispness1_e::crispness_coloredhud), const_cast<char *>("Colorize HUD Elements"), multiitem_coloredhud, crispy->coloredhud, true);
-    M_DrawCrispnessMultiItem(static_cast<int>(crispness1_e::crispness_translucency), const_cast<char *>("Enable Translucency"), multiitem_translucency, crispy->translucency, true);
-    M_DrawCrispnessItem(static_cast<int>(crispness1_e::crispness_smoothlight), const_cast<char *>("Smooth Diminishing Lighting"), crispy->smoothlight, true);
-    M_DrawCrispnessMultiItem(static_cast<int>(crispness1_e::crispness_brightmaps), const_cast<char *>("Apply Brightmaps to"), multiitem_brightmaps, crispy->brightmaps, true);
-    M_DrawCrispnessItem(static_cast<int>(crispness1_e::crispness_coloredblood), const_cast<char *>("Colored Blood and Corpses"), crispy->coloredblood, gameversion != exe_chex);
-    M_DrawCrispnessItem(static_cast<int>(crispness1_e::crispness_flipcorpses), const_cast<char *>("Randomly Mirrored Corpses"), crispy->flipcorpses, gameversion != exe_chex);
+    M_DrawCrispnessMultiItem(static_cast<int>(crispness1_e::crispness_coloredhud), const_cast<char *>("Colorize HUD Elements"),
+        multiitem_coloredhud, crispy->coloredhud, true);
+    M_DrawCrispnessMultiItem(static_cast<int>(crispness1_e::crispness_translucency), const_cast<char *>("Enable Translucency"),
+        multiitem_translucency, crispy->translucency, true);
+    M_DrawCrispnessItem(static_cast<int>(crispness1_e::crispness_smoothlight), const_cast<char *>("Smooth Diminishing Lighting"),
+        crispy->smoothlight, true);
+    M_DrawCrispnessMultiItem(static_cast<int>(crispness1_e::crispness_brightmaps), const_cast<char *>("Apply Brightmaps to"),
+        multiitem_brightmaps, crispy->brightmaps, true);
+    M_DrawCrispnessItem(static_cast<int>(crispness1_e::crispness_coloredblood), const_cast<char *>("Colored Blood and Corpses"),
+        crispy->coloredblood, gameversion != exe_chex);
+    M_DrawCrispnessItem(static_cast<int>(crispness1_e::crispness_flipcorpses), const_cast<char *>("Randomly Mirrored Corpses"),
+        crispy->flipcorpses, gameversion != exe_chex);
 
     M_DrawCrispnessGoto(static_cast<int>(crispness1_e::crispness1_next), const_cast<char *>("Next Page >"));
     M_DrawCrispnessGoto(static_cast<int>(crispness1_e::crispness1_prev), const_cast<char *>("< Last Page"));
@@ -1472,17 +1294,25 @@ static void M_DrawCrispness2()
     M_DrawCrispnessHeader(const_cast<char *>("Crispness 2/4"));
 
     M_DrawCrispnessSeparator(static_cast<int>(crispness2_e::crispness_sep_audible), const_cast<char *>("Audible"));
-    M_DrawCrispnessItem(static_cast<int>(crispness2_e::crispness_soundfull), const_cast<char *>("Play sounds in full length"), crispy->soundfull, true);
-    M_DrawCrispnessItem(static_cast<int>(crispness2_e::crispness_soundfix), const_cast<char *>("Misc. Sound Fixes"), crispy->soundfix, true);
-    M_DrawCrispnessMultiItem(static_cast<int>(crispness2_e::crispness_sndchannels), const_cast<char *>("Sound Channels"), multiitem_sndchannels, snd_channels >> 4, snd_sfxdevice != SNDDEVICE_PCSPEAKER);
+    M_DrawCrispnessItem(
+        static_cast<int>(crispness2_e::crispness_soundfull), const_cast<char *>("Play sounds in full length"), crispy->soundfull, true);
+    M_DrawCrispnessItem(
+        static_cast<int>(crispness2_e::crispness_soundfix), const_cast<char *>("Misc. Sound Fixes"), crispy->soundfix, true);
+    M_DrawCrispnessMultiItem(static_cast<int>(crispness2_e::crispness_sndchannels), const_cast<char *>("Sound Channels"),
+        multiitem_sndchannels, snd_channels >> 4, snd_sfxdevice != SNDDEVICE_PCSPEAKER);
     M_DrawCrispnessItem(static_cast<int>(crispness2_e::crispness_soundmono), const_cast<char *>("Mono SFX"), crispy->soundmono, true);
 
     M_DrawCrispnessSeparator(static_cast<int>(crispness2_e::crispness_sep_navigational), const_cast<char *>("Navigational"));
-    M_DrawCrispnessItem(static_cast<int>(crispness2_e::crispness_extautomap), const_cast<char *>("Extended Automap colors"), crispy->extautomap, true);
-    M_DrawCrispnessMultiItem(static_cast<int>(crispness2_e::crispness_automapstats), const_cast<char *>("Show Level Stats"), multiitem_widgets, crispy->automapstats, true);
-    M_DrawCrispnessMultiItem(static_cast<int>(crispness2_e::crispness_leveltime), const_cast<char *>("Show Level Time"), multiitem_widgets, crispy->leveltime, true);
-    M_DrawCrispnessMultiItem(static_cast<int>(crispness2_e::crispness_playercoords), const_cast<char *>("Show Player Coords"), multiitem_widgets, crispy->playercoords, true);
-    M_DrawCrispnessMultiItem(static_cast<int>(crispness2_e::crispness_secretmessage), const_cast<char *>("Report Revealed Secrets"), multiitem_secretmessage, crispy->secretmessage, true);
+    M_DrawCrispnessItem(
+        static_cast<int>(crispness2_e::crispness_extautomap), const_cast<char *>("Extended Automap colors"), crispy->extautomap, true);
+    M_DrawCrispnessMultiItem(static_cast<int>(crispness2_e::crispness_automapstats), const_cast<char *>("Show Level Stats"),
+        multiitem_widgets, crispy->automapstats, true);
+    M_DrawCrispnessMultiItem(static_cast<int>(crispness2_e::crispness_leveltime), const_cast<char *>("Show Level Time"), multiitem_widgets,
+        crispy->leveltime, true);
+    M_DrawCrispnessMultiItem(static_cast<int>(crispness2_e::crispness_playercoords), const_cast<char *>("Show Player Coords"),
+        multiitem_widgets, crispy->playercoords, true);
+    M_DrawCrispnessMultiItem(static_cast<int>(crispness2_e::crispness_secretmessage), const_cast<char *>("Report Revealed Secrets"),
+        multiitem_secretmessage, crispy->secretmessage, true);
 
     M_DrawCrispnessGoto(static_cast<int>(crispness2_e::crispness2_next), const_cast<char *>("Next Page >"));
     M_DrawCrispnessGoto(static_cast<int>(crispness2_e::crispness2_prev), const_cast<char *>("< Prev Page"));
@@ -1498,21 +1328,31 @@ static void M_DrawCrispness3()
 
     M_DrawCrispnessSeparator(static_cast<int>(crispness3_e::crispness_sep_tactical), const_cast<char *>("Tactical"));
 
-    M_DrawCrispnessMultiItem(static_cast<int>(crispness3_e::crispness_freelook), const_cast<char *>("Allow Free Look"), multiitem_freelook, crispy->freelook, true);
-    M_DrawCrispnessItem(static_cast<int>(crispness3_e::crispness_mouselook), const_cast<char *>("Permanent Mouse Look"), crispy->mouselook, true);
-    M_DrawCrispnessMultiItem(static_cast<int>(crispness3_e::crispness_bobfactor), const_cast<char *>("Player View/Weapon Bobbing"), multiitem_bobfactor, crispy->bobfactor, true);
-    M_DrawCrispnessMultiItem(static_cast<int>(crispness3_e::crispness_centerweapon), const_cast<char *>("Weapon Attack Alignment"), multiitem_centerweapon, crispy->centerweapon, crispy->bobfactor != BOBFACTOR_OFF);
-    M_DrawCrispnessItem(static_cast<int>(crispness3_e::crispness_weaponsquat), const_cast<char *>("Squat weapon down on impact"), crispy->weaponsquat, true);
+    M_DrawCrispnessMultiItem(static_cast<int>(crispness3_e::crispness_freelook), const_cast<char *>("Allow Free Look"), multiitem_freelook,
+        crispy->freelook, true);
+    M_DrawCrispnessItem(
+        static_cast<int>(crispness3_e::crispness_mouselook), const_cast<char *>("Permanent Mouse Look"), crispy->mouselook, true);
+    M_DrawCrispnessMultiItem(static_cast<int>(crispness3_e::crispness_bobfactor), const_cast<char *>("Player View/Weapon Bobbing"),
+        multiitem_bobfactor, crispy->bobfactor, true);
+    M_DrawCrispnessMultiItem(static_cast<int>(crispness3_e::crispness_centerweapon), const_cast<char *>("Weapon Attack Alignment"),
+        multiitem_centerweapon, crispy->centerweapon, crispy->bobfactor != BOBFACTOR_OFF);
+    M_DrawCrispnessItem(static_cast<int>(crispness3_e::crispness_weaponsquat), const_cast<char *>("Squat weapon down on impact"),
+        crispy->weaponsquat, true);
     M_DrawCrispnessItem(static_cast<int>(crispness3_e::crispness_pitch), const_cast<char *>("Weapon Recoil Pitch"), crispy->pitch, true);
-    M_DrawCrispnessItem(static_cast<int>(crispness3_e::crispness_neghealth), const_cast<char *>("Negative Player Health"), crispy->neghealth, true);
+    M_DrawCrispnessItem(
+        static_cast<int>(crispness3_e::crispness_neghealth), const_cast<char *>("Negative Player Health"), crispy->neghealth, true);
     //  M_DrawCrispnessItem(crispness_extsaveg, "Extended Savegames", crispy->extsaveg, true);
 
     M_DrawCrispnessSeparator(static_cast<int>(crispness3_e::crispness_sep_crosshair), const_cast<char *>("Crosshair"));
 
-    M_DrawCrispnessMultiItem(static_cast<int>(crispness3_e::crispness_crosshair), const_cast<char *>("Draw Crosshair"), multiitem_crosshair, crispy->crosshair, true);
-    M_DrawCrispnessMultiItem(static_cast<int>(crispness3_e::crispness_crosshairtype), const_cast<char *>("Crosshair Shape"), multiitem_crosshairtype, crispy->crosshairtype + 1, crispy->crosshair);
-    M_DrawCrispnessItem(static_cast<int>(crispness3_e::crispness_crosshairhealth), const_cast<char *>("Color indicates Health"), crispy->crosshairhealth, crispy->crosshair);
-    M_DrawCrispnessItem(static_cast<int>(crispness3_e::crispness_crosshairtarget), const_cast<char *>("Highlight on target"), crispy->crosshairtarget, crispy->crosshair);
+    M_DrawCrispnessMultiItem(static_cast<int>(crispness3_e::crispness_crosshair), const_cast<char *>("Draw Crosshair"), multiitem_crosshair,
+        crispy->crosshair, true);
+    M_DrawCrispnessMultiItem(static_cast<int>(crispness3_e::crispness_crosshairtype), const_cast<char *>("Crosshair Shape"),
+        multiitem_crosshairtype, crispy->crosshairtype + 1, crispy->crosshair);
+    M_DrawCrispnessItem(static_cast<int>(crispness3_e::crispness_crosshairhealth), const_cast<char *>("Color indicates Health"),
+        crispy->crosshairhealth, crispy->crosshair);
+    M_DrawCrispnessItem(static_cast<int>(crispness3_e::crispness_crosshairtarget), const_cast<char *>("Highlight on target"),
+        crispy->crosshairtarget, crispy->crosshair);
 
     M_DrawCrispnessGoto(static_cast<int>(crispness3_e::crispness3_next), const_cast<char *>("Next Page >"));
     M_DrawCrispnessGoto(static_cast<int>(crispness3_e::crispness3_prev), const_cast<char *>("< Prev Page"));
@@ -1528,16 +1368,23 @@ static void M_DrawCrispness4()
 
     M_DrawCrispnessSeparator(static_cast<int>(crispness4_e::crispness_sep_physical), const_cast<char *>("Physical"));
 
-    M_DrawCrispnessMultiItem(static_cast<int>(crispness4_e::crispness_freeaim), const_cast<char *>("Vertical Aiming"), multiitem_freeaim, crispy->freeaim, crispy->singleplayer);
-    M_DrawCrispnessMultiItem(static_cast<int>(crispness4_e::crispness_jumping), const_cast<char *>("Allow Jumping"), multiitem_jump, crispy->jump, crispy->singleplayer);
-    M_DrawCrispnessItem(static_cast<int>(crispness4_e::crispness_overunder), const_cast<char *>("Walk over/under Monsters"), crispy->overunder, crispy->singleplayer);
-    M_DrawCrispnessItem(static_cast<int>(crispness4_e::crispness_recoil), const_cast<char *>("Weapon Recoil Thrust"), crispy->recoil, crispy->singleplayer);
+    M_DrawCrispnessMultiItem(static_cast<int>(crispness4_e::crispness_freeaim), const_cast<char *>("Vertical Aiming"), multiitem_freeaim,
+        crispy->freeaim, crispy->singleplayer);
+    M_DrawCrispnessMultiItem(static_cast<int>(crispness4_e::crispness_jumping), const_cast<char *>("Allow Jumping"), multiitem_jump,
+        crispy->jump, crispy->singleplayer);
+    M_DrawCrispnessItem(static_cast<int>(crispness4_e::crispness_overunder), const_cast<char *>("Walk over/under Monsters"),
+        crispy->overunder, crispy->singleplayer);
+    M_DrawCrispnessItem(
+        static_cast<int>(crispness4_e::crispness_recoil), const_cast<char *>("Weapon Recoil Thrust"), crispy->recoil, crispy->singleplayer);
 
     M_DrawCrispnessSeparator(static_cast<int>(crispness4_e::crispness_sep_demos), const_cast<char *>("Demos"));
 
-    M_DrawCrispnessMultiItem(static_cast<int>(crispness4_e::crispness_demotimer), const_cast<char *>("Show Demo Timer"), multiitem_demotimer, crispy->demotimer, true);
-    M_DrawCrispnessMultiItem(static_cast<int>(crispness4_e::crispness_demotimerdir), const_cast<char *>("Playback Timer Direction"), multiitem_demotimerdir, crispy->demotimerdir + 1, crispy->demotimer & DEMOTIMER_PLAYBACK);
-    M_DrawCrispnessItem(static_cast<int>(crispness4_e::crispness_demobar), const_cast<char *>("Show Demo Progress Bar"), crispy->demobar, true);
+    M_DrawCrispnessMultiItem(static_cast<int>(crispness4_e::crispness_demotimer), const_cast<char *>("Show Demo Timer"),
+        multiitem_demotimer, crispy->demotimer, true);
+    M_DrawCrispnessMultiItem(static_cast<int>(crispness4_e::crispness_demotimerdir), const_cast<char *>("Playback Timer Direction"),
+        multiitem_demotimerdir, crispy->demotimerdir + 1, crispy->demotimer & DEMOTIMER_PLAYBACK);
+    M_DrawCrispnessItem(
+        static_cast<int>(crispness4_e::crispness_demobar), const_cast<char *>("Show Demo Progress Bar"), crispy->demobar, true);
 
     M_DrawCrispnessGoto(static_cast<int>(crispness4_e::crispness4_next), const_cast<char *>("First Page >"));
     M_DrawCrispnessGoto(static_cast<int>(crispness4_e::crispness4_prev), const_cast<char *>("< Prev Page"));
@@ -1575,20 +1422,14 @@ static void M_CrispnessCur(int)
 
 static void M_CrispnessNext(int)
 {
-    if (++crispness_cur > static_cast<int>(std::size(CrispnessMenus)) - 1)
-    {
-        crispness_cur = 0;
-    }
+    if (++crispness_cur > static_cast<int>(std::size(CrispnessMenus)) - 1) { crispness_cur = 0; }
 
     M_CrispnessCur(0);
 }
 
 static void M_CrispnessPrev(int)
 {
-    if (--crispness_cur < 0)
-    {
-        crispness_cur = static_cast<int>(std::size(CrispnessMenus) - 1);
-    }
+    if (--crispness_cur < 0) { crispness_cur = static_cast<int>(std::size(CrispnessMenus) - 1); }
 
     M_CrispnessCur(0);
 }
@@ -1615,12 +1456,10 @@ void M_ChangeMessages(int)
 //
 void M_EndGameResponse(int key)
 {
-    if (key != key_menu_confirm)
-        return;
+    if (key != key_menu_confirm) return;
 
     // [crispy] killough 5/26/98: make endgame quit if recording or playing back demo
-    if (demorecording || singledemo)
-        G_CheckDemoStatus();
+    if (demorecording || singledemo) G_CheckDemoStatus();
 
     // [crispy] clear quicksave slot
     quickSaveSlot       = -1;
@@ -1669,35 +1508,16 @@ void M_FinishReadThis(int)
 //
 // M_QuitDOOM
 //
-int quitsounds[8] = {
-    sfx_pldeth,
-    sfx_dmpain,
-    sfx_popain,
-    sfx_slop,
-    sfx_telept,
-    sfx_posit1,
-    sfx_posit3,
-    sfx_sgtatk
-};
+int quitsounds[8] = { sfx_pldeth, sfx_dmpain, sfx_popain, sfx_slop, sfx_telept, sfx_posit1, sfx_posit3, sfx_sgtatk };
 
-int quitsounds2[8] = {
-    sfx_vilact,
-    sfx_getpow,
-    sfx_boscub,
-    sfx_slop,
-    sfx_skeswg,
-    sfx_kntdth,
-    sfx_bspact,
-    sfx_sgtatk
-};
+int quitsounds2[8] = { sfx_vilact, sfx_getpow, sfx_boscub, sfx_slop, sfx_skeswg, sfx_kntdth, sfx_bspact, sfx_sgtatk };
 
 
 void M_QuitResponse(int key)
 {
     extern int show_endoom;
 
-    if (key != key_menu_confirm)
-        return;
+    if (key != key_menu_confirm) return;
 
     // [crispy] play quit sound only if the ENDOOM screen is also shown
     if (!netgame && show_endoom)
@@ -1714,7 +1534,7 @@ void M_QuitResponse(int key)
 
 static const char *M_SelectEndMessage()
 {
-    const char **endmsg;
+    const char **endmsg = nullptr;
 
     if (logical_gamemission == doom)
     {
@@ -1736,11 +1556,9 @@ static const char *M_SelectEndMessage()
 void M_QuitDOOM(int)
 {
     // [crispy] fast exit if "run" key is held down
-    if (speedkeydown())
-        I_Quit();
+    if (speedkeydown()) I_Quit();
 
-    DEH_snprintf(endstring, sizeof(endstring), "%s\n\n" DOSY,
-        DEH_String(M_SelectEndMessage()));
+    DEH_snprintf(endstring, sizeof(endstring), "%s\n\n" DOSY, DEH_String(M_SelectEndMessage()));
 
     M_StartMessage(endstring, M_QuitResponse, true);
 }
@@ -1751,8 +1569,7 @@ void M_ChangeSensitivity(int choice)
     switch (choice)
     {
     case 0:
-        if (mouseSensitivity)
-            mouseSensitivity--;
+        if (mouseSensitivity) mouseSensitivity--;
         break;
     case 1:
         if (mouseSensitivity < 255) // [crispy] extended range
@@ -1766,8 +1583,7 @@ void M_ChangeSensitivity_x2(int choice)
     switch (choice)
     {
     case 0:
-        if (mouseSensitivity_x2)
-            mouseSensitivity_x2--;
+        if (mouseSensitivity_x2) mouseSensitivity_x2--;
         break;
     case 1:
         if (mouseSensitivity_x2 < 255) // [crispy] extended range
@@ -1781,8 +1597,7 @@ static void M_ChangeSensitivity_y(int choice)
     switch (choice)
     {
     case 0:
-        if (mouseSensitivity_y)
-            mouseSensitivity_y--;
+        if (mouseSensitivity_y) mouseSensitivity_y--;
         break;
     case 1:
         if (mouseSensitivity_y < 255) // [crispy] extended range
@@ -1835,34 +1650,23 @@ void M_SizeDisplay(int choice)
 
 
     // [crispy] initialize screenSize_min
-    if (choice == 0 || choice == 1)
-    {
-        R_SetViewSize(screenblocks, detailLevel);
-    }
+    if (choice == 0 || choice == 1) { R_SetViewSize(screenblocks, detailLevel); }
 }
 
 
 //
 //      Menu Functions
 //
-void M_DrawThermo(int x,
-    int               y,
-    int               thermWidth,
-    int               thermDot)
+void M_DrawThermo(int x, int y, int thermWidth, int thermDot)
 {
-    int  xx;
-    int  i;
     char num[4];
 
-    if (!thermDot)
-    {
-        dp_translation = cr_colors[static_cast<int>(cr_t::CR_DARK)];
-    }
+    if (!thermDot) { dp_translation = cr_colors[static_cast<int>(cr_t::CR_DARK)]; }
 
-    xx = x;
+    int xx = x;
     V_DrawPatchDirect(xx, y, cache_lump_name<patch_t *>(DEH_String("M_THERML"), PU_CACHE));
     xx += 8;
-    for (i = 0; i < thermWidth; i++)
+    for (int i = 0; i < thermWidth; i++)
     {
         V_DrawPatchDirect(xx, y, cache_lump_name<patch_t *>(DEH_String("M_THERMM"), PU_CACHE));
         xx += 8;
@@ -1879,16 +1683,13 @@ void M_DrawThermo(int x,
         dp_translation = cr_colors[static_cast<int>(cr_t::CR_DARK)];
     }
 
-    V_DrawPatchDirect((x + 8) + thermDot * 8, y,
-        cache_lump_name<patch_t *>(DEH_String("M_THERMO"), PU_CACHE));
+    V_DrawPatchDirect((x + 8) + thermDot * 8, y, cache_lump_name<patch_t *>(DEH_String("M_THERMO"), PU_CACHE));
 
     dp_translation = nullptr;
 }
 
 
-void M_StartMessage(const char *string,
-    void (*routine)(int),
-    bool input)
+void M_StartMessage(const char *string, void (*routine)(int), bool input)
 {
     messageLastMenuActive = menuactive;
     messageToPrint        = 1;
@@ -1897,10 +1698,7 @@ void M_StartMessage(const char *string,
     messageNeedsInput     = input;
     menuactive            = true;
     // [crispy] entering menus while recording demos pauses the game
-    if (demorecording && !paused)
-    {
-        sendpause = true;
-    }
+    if (demorecording && !paused) { sendpause = true; }
     return;
 }
 
@@ -1941,10 +1739,9 @@ int M_StringWidth(const char *string)
 int M_StringHeight(const char *string)
 {
     int height = SHORT(hu_font[0]->height);
-    int h = height;
+    int h      = height;
     for (size_t i = 0; i < strlen(string); i++)
-        if (string[i] == '\n')
-            h += height;
+        if (string[i] == '\n') h += height;
 
     return h;
 }
@@ -1953,26 +1750,16 @@ int M_StringHeight(const char *string)
 //
 //      Write a string using the hu_font
 //
-void M_WriteText(int x,
-    int              y,
-    const char *     string)
+void M_WriteText(int x, int y, const char *string)
 {
-    int         w;
-    const char *ch;
-    int         c;
-    int         cx;
-    int         cy;
+    const char *ch = string;
+    int         cx = x;
+    int         cy = y;
 
-
-    ch = string;
-    cx = x;
-    cy = y;
-
-    while (1)
+    while (true)
     {
-        c = *ch++;
-        if (!c)
-            break;
+        int c = static_cast<unsigned char>(*ch++);
+        if (!c) break;
         if (c == '\n')
         {
             cx = x;
@@ -1984,7 +1771,7 @@ void M_WriteText(int x,
         {
             if (*ch >= '0' && *ch <= '0' + static_cast<int>(cr_t::CRMAX) - 1)
             {
-                c              = *ch++;
+                c              = static_cast<unsigned char>(*ch++);
                 dp_translation = cr_colors[static_cast<int>(c - '0')];
                 continue;
             }
@@ -1997,9 +1784,8 @@ void M_WriteText(int x,
             continue;
         }
 
-        w = SHORT(hu_font[c]->width);
-        if (cx + w > ORIGWIDTH)
-            break;
+        int w = SHORT(hu_font[c]->width);
+        if (cx + w > ORIGWIDTH) break;
         V_DrawPatchDirect(cx, cy, hu_font[c]);
         cx += w;
     }
@@ -2010,8 +1796,7 @@ void M_WriteText(int x,
 
 static bool IsNullKey(int key)
 {
-    return key == KEY_PAUSE || key == KEY_CAPSLOCK
-           || key == KEY_SCRLCK || key == KEY_NUMLOCK;
+    return key == KEY_PAUSE || key == KEY_CAPSLOCK || key == KEY_SCRLCK || key == KEY_NUMLOCK;
 }
 
 // [crispy] reload current level / go to next level
@@ -2023,10 +1808,7 @@ static int G_ReloadLevel()
     if (gamestate == GS_LEVEL)
     {
         // [crispy] restart demos from the map they were started
-        if (demorecording)
-        {
-            gamemap = startmap;
-        }
+        if (demorecording) { gamemap = startmap; }
         G_DeferedInitNew(gameskill, gameepisode, gamemap);
         result = true;
     }
@@ -2043,15 +1825,9 @@ static int G_GotoNextLevel()
         { 42, 49, 44, 45, 46, 47, 48, 51, 43 },
         { 52, 53, 54, 55, 56, 59, 58, 11, 57 },
     };
-    static uint8_t doom2_next[33] = {
-        0, 3, 4, 5, 6, 7, 8, 9, 10, 11,
-        12, 13, 14, 15, 31, 17, 18, 19, 20, 21,
-        22, 23, 24, 25, 26, 27, 28, 29, 30, 1,
-        32, 16, 3
-    };
-    static uint8_t nerve_next[9]  = {
-        2, 3, 4, 9, 6, 7, 8, 1, 5
-    };
+    static uint8_t doom2_next[33] = { 0, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 31, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28,
+        29, 30, 1, 32, 16, 3 };
+    static uint8_t nerve_next[9]  = { 2, 3, 4, 9, 6, 7, 8, 1, 5 };
 
     int changed = false;
 
@@ -2062,11 +1838,9 @@ static int G_GotoNextLevel()
 
         if (gamemode == commercial)
         {
-            if (crispy->havemap33)
-                doom2_next[1] = 33;
+            if (crispy->havemap33) doom2_next[1] = 33;
 
-            if (W_CheckNumForName("map31") < 0)
-                doom2_next[14] = 16;
+            if (W_CheckNumForName("map31") < 0) doom2_next[14] = 16;
 
             if (gamemission == pack_hacx)
             {
@@ -2082,14 +1856,11 @@ static int G_GotoNextLevel()
         }
         else
         {
-            if (gamemode == shareware)
-                doom_next[0][7] = 11;
+            if (gamemode == shareware) doom_next[0][7] = 11;
 
-            if (gamemode == registered)
-                doom_next[2][7] = 11;
+            if (gamemode == registered) doom_next[2][7] = 11;
 
-            if (!crispy->haved1e5)
-                doom_next[3][7] = 11;
+            if (!crispy->haved1e5) doom_next[3][7] = 11;
 
             if (gameversion == exe_chex)
             {
@@ -2101,7 +1872,8 @@ static int G_GotoNextLevel()
 
     if (gamestate == GS_LEVEL)
     {
-        int epsd, map;
+        int epsd = 0;
+        int map  = 0;
 
         if (gamemode == commercial)
         {
@@ -2120,10 +1892,7 @@ static int G_GotoNextLevel()
         // [crispy] special-casing for E1M10 "Sewers" support
         if (crispy->havee1m10 && gameepisode == 1)
         {
-            if (gamemap == 1)
-            {
-                map = 10;
-            }
+            if (gamemap == 1) { map = 10; }
             else if (gamemap == 10)
             {
                 epsd = 1;
@@ -2147,9 +1916,6 @@ static int G_GotoNextLevel()
 //
 bool M_Responder(event_t *ev)
 {
-    int        ch;
-    int        key;
-    int        i;
     static int mousewait = 0;
     static int mousey    = 0;
     static int lasty     = 0;
@@ -2161,9 +1927,7 @@ bool M_Responder(event_t *ev)
 
     if (testcontrols)
     {
-        if (ev->type == ev_quit
-            || (ev->type == ev_keydown
-                && (ev->data1 == key_menu_activate || ev->data1 == key_menu_quit)))
+        if (ev->type == ev_quit || (ev->type == ev_keydown && (ev->data1 == key_menu_activate || ev->data1 == key_menu_quit)))
         {
             I_Quit();
             return true;
@@ -2178,10 +1942,7 @@ bool M_Responder(event_t *ev)
         // First click on close button = bring up quit confirm message.
         // Second click on close button = confirm quit
 
-        if (menuactive && messageToPrint && messageRoutine == M_QuitResponse)
-        {
-            M_QuitResponse(key_menu_confirm);
-        }
+        if (menuactive && messageToPrint && messageRoutine == M_QuitResponse) { M_QuitResponse(key_menu_confirm); }
         else
         {
             S_StartSound(nullptr, sfx_swtchn);
@@ -2193,8 +1954,8 @@ bool M_Responder(event_t *ev)
 
     // key is the key pressed, ch is the actual character typed
 
-    ch  = 0;
-    key = -1;
+    int ch  = 0;
+    int key = -1;
 
     if (ev->type == ev_joystick)
     {
@@ -2229,10 +1990,7 @@ bool M_Responder(event_t *ev)
             if (JOY_BUTTON_PRESSED(joybfire))
             {
                 // Simulate a 'Y' keypress when Doom show a Y/N dialog with Fire button.
-                if (messageToPrint && messageNeedsInput)
-                {
-                    key = key_menu_confirm;
-                }
+                if (messageToPrint && messageNeedsInput) { key = key_menu_confirm; }
                 // Simulate pressing "Enter" when we are supplying a save slot name
                 else if (saveStringEnter)
                 {
@@ -2241,10 +1999,7 @@ bool M_Responder(event_t *ev)
                 else
                 {
                     // if selecting a save slot via joypad, set a flag
-                    if (currentMenu == &SaveDef)
-                    {
-                        joypadSave = true;
-                    }
+                    if (currentMenu == &SaveDef) { joypadSave = true; }
                     key = key_menu_forward;
                 }
                 joywait = static_cast<unsigned int>(I_GetTime() + 5);
@@ -2252,10 +2007,7 @@ bool M_Responder(event_t *ev)
             if (JOY_BUTTON_PRESSED(joybuse))
             {
                 // Simulate a 'N' keypress when Doom show a Y/N dialog with Use button.
-                if (messageToPrint && messageNeedsInput)
-                {
-                    key = key_menu_abort;
-                }
+                if (messageToPrint && messageNeedsInput) { key = key_menu_abort; }
                 // If user was entering a save name, back out
                 else if (saveStringEnter)
                 {
@@ -2279,10 +2031,7 @@ bool M_Responder(event_t *ev)
         if (ev->type == ev_mouse && mousewait < I_GetTime())
         {
             // [crispy] novert disables controlling the menus with the mouse
-            if (!novert)
-            {
-                mousey += ev->data3;
-            }
+            if (!novert) { mousey += ev->data3; }
             if (mousey < lasty - 30)
             {
                 key       = key_menu_down;
@@ -2344,8 +2093,7 @@ bool M_Responder(event_t *ev)
         }
     }
 
-    if (key == -1)
-        return false;
+    if (key == -1) return false;
 
     // Save Game string input
     if (saveStringEnter)
@@ -2363,15 +2111,13 @@ bool M_Responder(event_t *ev)
         case KEY_ESCAPE:
             saveStringEnter = 0;
             I_StopTextInput();
-            M_StringCopy(savegamestrings[saveSlot], saveOldString,
-                SAVESTRINGSIZE);
+            M_StringCopy(savegamestrings[saveSlot], saveOldString, SAVESTRINGSIZE);
             break;
 
         case KEY_ENTER:
             saveStringEnter = 0;
             I_StopTextInput();
-            if (savegamestrings[saveSlot][0])
-                M_DoSave(saveSlot);
+            if (savegamestrings[saveSlot][0]) M_DoSave(saveSlot);
             break;
 
         default:
@@ -2383,14 +2129,8 @@ bool M_Responder(event_t *ev)
             // instead, use ev->data3 which gives the fully-translated and
             // modified key input.
 
-            if (ev->type != ev_keydown)
-            {
-                break;
-            }
-            if (vanilla_keyboard_mapping)
-            {
-                ch = ev->data1;
-            }
+            if (ev->type != ev_keydown) { break; }
+            if (vanilla_keyboard_mapping) { ch = ev->data1; }
             else
             {
                 ch = ev->data3;
@@ -2398,13 +2138,10 @@ bool M_Responder(event_t *ev)
 
             ch = toupper(ch);
 
-            if (ch != ' '
-                && (ch - HU_FONTSTART < 0 || ch - HU_FONTSTART >= HU_FONTSIZE))
-            {
-                break;
-            }
+            if (ch != ' ' && (ch - HU_FONTSTART < 0 || ch - HU_FONTSTART >= HU_FONTSIZE)) { break; }
 
-            if (ch >= 32 && ch <= 127 && saveCharIndex < SAVESTRINGSIZE - 1 && M_StringWidth(savegamestrings[saveSlot]) < (SAVESTRINGSIZE - 2) * 8)
+            if (ch >= 32 && ch <= 127 && saveCharIndex < SAVESTRINGSIZE - 1
+                && M_StringWidth(savegamestrings[saveSlot]) < (SAVESTRINGSIZE - 2) * 8)
             {
                 savegamestrings[saveSlot][saveCharIndex++] = static_cast<char>(ch);
                 savegamestrings[saveSlot][saveCharIndex]   = 0;
@@ -2419,32 +2156,21 @@ bool M_Responder(event_t *ev)
     {
         if (messageNeedsInput)
         {
-            if (key != ' ' && key != KEY_ESCAPE
-                && key != key_menu_confirm && key != key_menu_abort)
-            {
-                return false;
-            }
+            if (key != ' ' && key != KEY_ESCAPE && key != key_menu_confirm && key != key_menu_abort) { return false; }
         }
 
         menuactive = messageLastMenuActive;
-        if (messageRoutine)
-            messageRoutine(key);
+        if (messageRoutine) messageRoutine(key);
 
         // [crispy] stay in menu
-        if (messageToPrint < 2)
-        {
-            menuactive = false;
-        }
+        if (messageToPrint < 2) { menuactive = false; }
         messageToPrint = 0; // [crispy] moved here
         S_StartSound(nullptr, sfx_swtchx);
         return true;
     }
 
     // [crispy] take screen shot without weapons and HUD
-    if (key != 0 && key == key_menu_cleanscreenshot)
-    {
-        crispy->cleanscreenshot = (screenblocks > 10) ? 2 : 1;
-    }
+    if (key != 0 && key == key_menu_cleanscreenshot) { crispy->cleanscreenshot = (screenblocks > 10) ? 2 : 1; }
 
     if ((devparm && key == key_menu_help) || (key != 0 && (key == key_menu_screenshot || key == key_menu_cleanscreenshot)))
     {
@@ -2457,16 +2183,14 @@ bool M_Responder(event_t *ev)
     {
         if (key == key_menu_decscreen) // Screen size down
         {
-            if (automapactive || chat_on)
-                return false;
+            if (automapactive || chat_on) return false;
             M_SizeDisplay(0);
             S_StartSound(nullptr, sfx_stnmov);
             return true;
         }
         else if (key == key_menu_incscreen) // Screen size up
         {
-            if (automapactive || chat_on)
-                return false;
+            if (automapactive || chat_on) return false;
             M_SizeDisplay(1);
             S_StartSound(nullptr, sfx_stnmov);
             return true;
@@ -2566,13 +2290,11 @@ bool M_Responder(event_t *ev)
         // and should be treated as such, i.e. add "if (!netgame)"
         else if (!netgame && key != 0 && key == key_menu_reloadlevel)
         {
-            if (G_ReloadLevel())
-                return true;
+            if (G_ReloadLevel()) return true;
         }
         else if (!netgame && key != 0 && key == key_menu_nextlevel)
         {
-            if (G_GotoNextLevel())
-                return true;
+            if (G_GotoNextLevel()) return true;
         }
     }
 
@@ -2729,7 +2451,7 @@ bool M_Responder(event_t *ev)
 
     else if (ch != 0 || IsNullKey(key))
     {
-        for (i = itemOn + 1; i < currentMenu->numitems; i++)
+        for (int i = itemOn + 1; i < currentMenu->numitems; i++)
         {
             if (currentMenu->menuitems[i].alphaKey == ch)
             {
@@ -2739,7 +2461,7 @@ bool M_Responder(event_t *ev)
             }
         }
 
-        for (i = 0; i <= itemOn; i++)
+        for (int i = 0; i <= itemOn; i++)
         {
             if (currentMenu->menuitems[i].alphaKey == ch)
             {
@@ -2760,12 +2482,10 @@ bool M_Responder(event_t *ev)
 void M_StartControlPanel()
 {
     // intro might call this repeatedly
-    if (menuactive)
-        return;
+    if (menuactive) return;
 
     // [crispy] entering menus while recording demos pauses the game
-    if (demorecording && !paused)
-        sendpause = true;
+    if (demorecording && !paused) sendpause = true;
 
     menuactive  = 1;
     currentMenu = &MainDef;            // JDC
@@ -2778,29 +2498,21 @@ static void M_DrawOPLDev()
 {
     extern void I_OPL_DevMessages(char *, size_t);
     char        debug[1024];
-    char *      curr, *p;
-    int         line;
 
     I_OPL_DevMessages(debug, sizeof(debug));
-    curr = debug;
-    line = 0;
+    char *curr = debug;
+    int   line = 0;
 
     for (;;)
     {
-        p = strchr(curr, '\n');
+        char *p = strchr(curr, '\n');
 
-        if (p != nullptr)
-        {
-            *p = '\0';
-        }
+        if (p != nullptr) { *p = '\0'; }
 
         M_WriteText(0, line * 8, curr);
         ++line;
 
-        if (p == nullptr)
-        {
-            break;
-        }
+        if (p == nullptr) { break; }
 
         curr = p + 1;
     }
@@ -2813,41 +2525,30 @@ static void M_DrawOPLDev()
 //
 void M_Drawer()
 {
-    static short x;
-    static short y;
-    size_t i;
-    unsigned int max;
-    char         string[80];
-    const char * name;
-    size_t       start;
+    static short x = 0;
+    static short y = 0;
 
+    char string[80];
     inhelpscreens = false;
 
     // Horiz. & Vertically center string and print it.
     if (messageToPrint)
     {
         // [crispy] draw a background for important questions
-        if (messageToPrint == 2)
-        {
-            M_DrawCrispnessBackground();
-        }
+        if (messageToPrint == 2) { M_DrawCrispnessBackground(); }
 
-        start = 0;
-        y     = static_cast<short>(ORIGHEIGHT / 2 - M_StringHeight(messageString) / 2);
+        size_t start = 0;
+        y = static_cast<short>(ORIGHEIGHT / 2 - M_StringHeight(messageString) / 2);
         while (messageString[start] != '\0')
         {
             bool foundnewline = false;
 
-            for (i = 0; messageString[start + i] != '\0'; i++)
+            for (size_t i = 0; messageString[start + i] != '\0'; i++)
             {
                 if (messageString[start + i] == '\n')
                 {
-                    M_StringCopy(string, messageString + start,
-                        sizeof(string));
-                    if (i < sizeof(string))
-                    {
-                        string[i] = '\0';
-                    }
+                    M_StringCopy(string, messageString + start, sizeof(string));
+                    if (i < sizeof(string)) { string[i] = '\0'; }
 
                     foundnewline = true;
                     start += i + 1;
@@ -2869,25 +2570,20 @@ void M_Drawer()
         return;
     }
 
-    if (opldev)
-    {
-        M_DrawOPLDev();
-    }
+    if (opldev) { M_DrawOPLDev(); }
 
-    if (!menuactive)
-        return;
+    if (!menuactive) return;
 
-    if (currentMenu->routine)
-        currentMenu->routine(); // call Draw routine
+    if (currentMenu->routine) currentMenu->routine(); // call Draw routine
 
     // DRAW MENU
-    x   = currentMenu->x;
-    y   = currentMenu->y;
-    max = static_cast<unsigned int>(currentMenu->numitems);
+    x = currentMenu->x;
+    y = currentMenu->y;
+    auto max = static_cast<unsigned int>(currentMenu->numitems);
 
-    for (i = 0; i < max; i++)
+    for (size_t i = 0; i < max; i++)
     {
-        name = DEH_String(currentMenu->menuitems[i].name);
+        const char *name = DEH_String(currentMenu->menuitems[i].name);
 
         if (name[0]) // && W_CheckNumForName(name) > 0) // [crispy] moved...
         {
@@ -2934,7 +2630,7 @@ void M_Drawer()
 //
 void M_ClearMenus()
 {
-    menuactive = 0;
+    menuactive = false;
 
     // [crispy] entering menus while recording demos pauses the game
     if (demorecording && paused)
@@ -2974,7 +2670,7 @@ void M_Ticker()
 void M_Init()
 {
     currentMenu      = &MainDef;
-    menuactive       = 0;
+    menuactive       = false;
     itemOn           = currentMenu->lastOn;
     whichSkull       = 0;
     skullAnimCounter = 10;
@@ -2993,7 +2689,7 @@ void M_Init()
     if (gameversion >= exe_ultimate)
     {
         MainMenu[static_cast<int>(main_e::readthis)].routine = M_ReadThis2;
-        ReadDef2.prevMenu          = nullptr;
+        ReadDef2.prevMenu                                    = nullptr;
     }
 
     if (gameversion >= exe_final && gameversion <= exe_final2)
@@ -3007,11 +2703,11 @@ void M_Init()
     {
         MainMenu[static_cast<int>(main_e::readthis)] = MainMenu[static_cast<int>(main_e::quitdoom)];
         MainDef.numitems--;
-        MainDef.y = static_cast<short>(MainDef.y + 8);
-        NewDef.prevMenu                = nervewadfile ? &ExpDef : &MainDef;
-        ReadDef1.routine               = M_DrawReadThisCommercial;
-        ReadDef1.x                     = 330;
-        ReadDef1.y                     = 165;
+        MainDef.y                                                = static_cast<short>(MainDef.y + 8);
+        NewDef.prevMenu                                          = nervewadfile ? &ExpDef : &MainDef;
+        ReadDef1.routine                                         = M_DrawReadThisCommercial;
+        ReadDef1.x                                               = 330;
+        ReadDef1.y                                               = 165;
         ReadMenu1[static_cast<int>(read_e::rdthsempty1)].routine = M_FinishReadThis;
     }
 
@@ -3039,22 +2735,19 @@ void M_Init()
 
     // [crispy] rearrange Load Game and Save Game menus
     {
-        const patch_t *patchl, *patchs, *patchm;
-        short          captionheight, vstep;
-
-        patchl = cache_lump_name<patch_t *>(DEH_String("M_LOADG"), PU_CACHE);
-        patchs = cache_lump_name<patch_t *>(DEH_String("M_SAVEG"), PU_CACHE);
-        patchm = cache_lump_name<patch_t *>(DEH_String("M_LSLEFT"), PU_CACHE);
+        const patch_t *patchl = cache_lump_name<patch_t *>(DEH_String("M_LOADG"), PU_CACHE);
+        const patch_t *patchs = cache_lump_name<patch_t *>(DEH_String("M_SAVEG"), PU_CACHE);
+        const patch_t *patchm = cache_lump_name<patch_t *>(DEH_String("M_LSLEFT"), PU_CACHE);
 
         LoadDef_x = (ORIGWIDTH - SHORT(patchl->width)) / 2 + SHORT(patchl->leftoffset);
         SaveDef_x = (ORIGWIDTH - SHORT(patchs->width)) / 2 + SHORT(patchs->leftoffset);
         LoadDef.x = SaveDef.x = static_cast<short>((ORIGWIDTH - 24 * 8) / 2 + SHORT(patchm->leftoffset)); // [crispy] see M_DrawSaveLoadBorder()
 
-        captionheight = MAX(SHORT(patchl->height), SHORT(patchs->height));
+        short captionheight = MAX(SHORT(patchl->height), SHORT(patchs->height));
 
-        vstep = ORIGHEIGHT - 32; // [crispy] ST_HEIGHT
-        vstep = static_cast<short>(vstep - captionheight);
-        vstep = static_cast<short>(vstep - (static_cast<int>(load_e::load_end) - 1) * LINEHEIGHT + SHORT(patchm->height));
+        short vstep = ORIGHEIGHT - 32; // [crispy] ST_HEIGHT
+        vstep       = static_cast<short>(vstep - captionheight);
+        vstep       = static_cast<short>(vstep - (static_cast<int>(load_e::load_end) - 1) * LINEHEIGHT + SHORT(patchm->height));
         vstep /= 3;
 
         if (vstep > 0)
@@ -3175,7 +2868,7 @@ void M_ConfirmDeleteGame()
 }
 
 // [crispy] indicate game version mismatch
-void M_LoadGameVerMismatch()
+[[maybe_unused]] void M_LoadGameVerMismatch()
 {
     M_StartMessage("Game Version Mismatch\n\n" PRESSKEY, nullptr, false);
     messageToPrint = 2;

@@ -108,7 +108,7 @@ typedef struct
     midi_track_iter_t *iter;
 } opl_track_data_t;
 
-typedef struct opl_voice_s opl_voice_t;
+using opl_voice_t = struct opl_voice_s;
 
 struct opl_voice_s {
     // Index of this voice:

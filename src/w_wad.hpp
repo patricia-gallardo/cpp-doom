@@ -34,8 +34,8 @@
 // WADFILE I/O related stuff.
 //
 
-typedef struct lumpinfo_s lumpinfo_t;
-typedef int               lumpindex_t;
+using lumpinfo_t = struct lumpinfo_s;
+using lumpindex_t = int;
 
 struct lumpinfo_s {
     char        name[8];

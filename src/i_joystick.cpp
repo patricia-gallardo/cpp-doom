@@ -22,11 +22,9 @@
 #include <cstdio>
 #include <cstring>
 
-#include "doomtype.hpp"
 #include "d_event.hpp"
 #include "i_joystick.hpp"
 #include "i_system.hpp"
-
 #include "m_config.hpp"
 #include "m_misc.hpp"
 

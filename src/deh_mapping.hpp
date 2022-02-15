@@ -54,8 +54,8 @@
 
 #define MAX_MAPPING_ENTRIES 32
 
-typedef struct deh_mapping_s       deh_mapping_t;
-typedef struct deh_mapping_entry_s deh_mapping_entry_t;
+using deh_mapping_t       = struct deh_mapping_s;
+using deh_mapping_entry_t = struct deh_mapping_entry_s;
 
 struct deh_mapping_entry_s {
     // field name
@@ -77,7 +77,7 @@ struct deh_mapping_entry_s {
 };
 
 struct deh_mapping_s {
-    void *              base;
+    void *              base{};
     deh_mapping_entry_t entries[MAX_MAPPING_ENTRIES];
 };
 

@@ -111,7 +111,7 @@ void R_DrawColumnInCache(column_t * patch, uint8_t *cache, int originy,
         if (position + count > cacheheight)
             count = cacheheight - position;
         if (count > 0)
-            memcpy(cache + position, source, count);
+            std::memcpy(cache + position, source, count);
 
         patch = reinterpret_cast<column_t *>(reinterpret_cast<uint8_t *>(patch) + patch->length + 4);
     }
@@ -212,7 +212,7 @@ void R_GenerateLookup(int texnum)
 // all done
 //
     patchcount = zmalloc<uint8_t *>(texture->width, PU_STATIC, &patchcount);
-    memset(patchcount, 0, texture->width);
+    std::memset(patchcount, 0, texture->width);
     patch = texture->patches;
 
     for (i = 0, patch = texture->patches; i < texture->patchcount;
@@ -372,7 +372,7 @@ void R_InitTextures()
         texture->width = SHORT(mtexture->width);
         texture->height = SHORT(mtexture->height);
         texture->patchcount = SHORT(mtexture->patchcount);
-        memcpy(texture->name, mtexture->name, sizeof(texture->name));
+        std::memcpy(texture->name, mtexture->name, sizeof(texture->name));
         mpatch = &mtexture->patches[0];
         patch = &texture->patches[0];
         for (j = 0; j < texture->patchcount; j++, mpatch++, patch++)
@@ -536,7 +536,7 @@ int R_FlatNumForName(const char *name)
     if (i == -1)
     {
         namet[8] = 0;
-        memcpy(namet, name, 8);
+        std::memcpy(namet, name, 8);
         I_Error("R_FlatNumForName: %s not found", namet);
     }
     return i - firstflat;
@@ -615,7 +615,7 @@ void R_PrecacheLevel()
 // precache flats
 //      
     flatpresent = zmalloc<char *>(numflats, PU_STATIC, nullptr);
-    memset(flatpresent, 0, numflats);
+    std::memset(flatpresent, 0, numflats);
     for (i = 0; i < numsectors; i++)
     {
         flatpresent[sectors[i].floorpic] = 1;
@@ -637,7 +637,7 @@ void R_PrecacheLevel()
 // precache textures
 //
     texturepresent = zmalloc<char *>(numtextures, PU_STATIC, nullptr);
-    memset(texturepresent, 0, numtextures);
+    std::memset(texturepresent, 0, numtextures);
 
     for (i = 0; i < numsides; i++)
     {
@@ -669,7 +669,7 @@ void R_PrecacheLevel()
 // precache sprites
 //
     spritepresent = zmalloc<char *>(numsprites, PU_STATIC, nullptr);
-    memset(spritepresent, 0, numsprites);
+    std::memset(spritepresent, 0, numsprites);
     action_hook needle = P_MobjThinker;
 
     for (th = thinkercap.next; th != &thinkercap; th = th->next)

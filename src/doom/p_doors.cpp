@@ -15,15 +15,11 @@
 // DESCRIPTION: Door animation code (opening/closing)
 //
 
-
 #include "z_zone.hpp"
 #include "doomdef.hpp"
 #include "deh_main.hpp"
 #include "p_local.hpp"
-#include "i_system.hpp"
-
 #include "s_sound.hpp"
-
 
 // State.
 #include "doomstat.hpp"

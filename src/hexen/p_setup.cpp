@@ -204,7 +204,7 @@ void P_LoadSegs(int lump)
 
     numsegs = static_cast<int>(W_LumpLength(lump) / sizeof(mapseg_t));
     segs = zmalloc<seg_t *>(numsegs * sizeof(seg_t), PU_LEVEL, 0);
-    memset(segs, 0, numsegs * sizeof(seg_t));
+    std::memset(segs, 0, numsegs * sizeof(seg_t));
     data = cache_lump_num<uint8_t *>(lump, PU_STATIC);
 
     ml = reinterpret_cast<mapseg_t *>(data);
@@ -252,7 +252,7 @@ void P_LoadSubsectors(int lump)
     data = cache_lump_num<uint8_t *>(lump, PU_STATIC);
 
     ms = reinterpret_cast<mapsubsector_t *>(data);
-    memset(subsectors, 0, numsubsectors * sizeof(subsector_t));
+    std::memset(subsectors, 0, numsubsectors * sizeof(subsector_t));
     ss = subsectors;
     for (i = 0; i < numsubsectors; i++, ss++, ms++)
     {
@@ -281,7 +281,7 @@ void P_LoadSectors(int lump)
 
     numsectors = static_cast<int>(W_LumpLength(lump) / sizeof(mapsector_t));
     sectors = zmalloc<sector_t *>(numsectors * sizeof(sector_t), PU_LEVEL, 0);
-    memset(sectors, 0, numsectors * sizeof(sector_t));
+    std::memset(sectors, 0, numsectors * sizeof(sector_t));
     data = cache_lump_num<uint8_t *>(lump, PU_STATIC);
 
     ms = reinterpret_cast<mapsector_t *>(data);
@@ -418,7 +418,7 @@ void P_LoadLineDefs(int lump)
 
     numlines = static_cast<int>(W_LumpLength(lump) / sizeof(maplinedef_t));
     lines = zmalloc<line_t *>(numlines * sizeof(line_t), PU_LEVEL, 0);
-    memset(lines, 0, numlines * sizeof(line_t));
+    std::memset(lines, 0, numlines * sizeof(line_t));
     data = cache_lump_num<uint8_t *>(lump, PU_STATIC);
 
     mld = reinterpret_cast<maplinedef_t *>(data);
@@ -508,7 +508,7 @@ void P_LoadSideDefs(int lump)
 
     numsides = static_cast<int>(W_LumpLength(lump) / sizeof(mapsidedef_t));
     sides = zmalloc<side_t *>(numsides * sizeof(side_t), PU_LEVEL, 0);
-    memset(sides, 0, numsides * sizeof(side_t));
+    std::memset(sides, 0, numsides * sizeof(side_t));
     data = cache_lump_num<uint8_t *>(lump, PU_STATIC);
 
     msd = reinterpret_cast<mapsidedef_t *>(data);
@@ -561,7 +561,7 @@ void P_LoadBlockMap(int lump)
 
     count = static_cast<int>(sizeof(*blocklinks) * bmapwidth * bmapheight);
     blocklinks = zmalloc<mobj_t **>(count, PU_LEVEL, 0);
-    memset(blocklinks, 0, count);
+    std::memset(blocklinks, 0, count);
 }
 
 
@@ -747,7 +747,7 @@ void P_SetupLevel(int, int map, int, skill_t)
         parm = M_CheckParmWithArgs("-timer", 1);
         if (parm)
         {
-            TimerGame = atoi(myargv[parm + 1]) * 35 * 60;
+            TimerGame = std::atoi(myargv[parm + 1]) * 35 * 60;
         }
     }
 
@@ -842,7 +842,7 @@ static void InitMapInfo()
         M_StringCopy(songMulch, info->songLump, sizeof(songMulch));
 
         // Copy defaults to current map definition
-        memcpy(info, &MapInfo[0], sizeof(*info));
+        std::memcpy(info, &MapInfo[0], sizeof(*info));
 
         // Restore song lump name
         M_StringCopy(info->songLump, songMulch, sizeof(info->songLump));

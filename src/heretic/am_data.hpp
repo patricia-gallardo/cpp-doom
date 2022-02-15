@@ -57,8 +57,8 @@ mline_t keysquare[] = {
   };
 */
 #undef R
-#define NUMPLYRLINES (sizeof(player_arrow)/sizeof(mline_t))
-#define NUMKEYSQUARELINES (sizeof(keysquare)/sizeof(mline_t))
+constexpr auto NUMPLYRLINES      = (sizeof(player_arrow) / sizeof(mline_t));
+constexpr auto NUMKEYSQUARELINES = (sizeof(keysquare) / sizeof(mline_t));
 
 #define R ((8*PLAYERRADIUS)/7)
 mline_t cheat_player_arrow[] = {
@@ -80,7 +80,7 @@ mline_t cheat_player_arrow[] = {
   { { R/6+R/32, -R/7-R/32 }, { R/6+R/10, -R/7 } }
   };
 #undef R
-#define NUMCHEATPLYRLINES (sizeof(cheat_player_arrow)/sizeof(mline_t))
+[[maybe_unused]] constexpr auto NUMCHEATPLYRLINES = (sizeof(cheat_player_arrow) / sizeof(mline_t));
 
 #define R (FRACUNIT)
 mline_t triangle_guy[] = {
@@ -89,7 +89,7 @@ mline_t triangle_guy[] = {
   { { static_cast<fixed_t>(0      ), static_cast<fixed_t>(R    ) }, { static_cast<fixed_t>(-.867*R), static_cast<fixed_t>(-.5*R) } }
   };
 #undef R
-#define NUMTRIANGLEGUYLINES (sizeof(triangle_guy)/sizeof(mline_t))
+[[maybe_unused]] constexpr auto NUMTRIANGLEGUYLINES = (sizeof(triangle_guy) / sizeof(mline_t));
 
 #define R (FRACUNIT)
 mline_t thintriangle_guy[] = {
@@ -98,6 +98,6 @@ mline_t thintriangle_guy[] = {
   { { static_cast<fixed_t>(-.5*R), static_cast<fixed_t>(.7*R ) }, { static_cast<fixed_t>(-.5*R), static_cast<fixed_t>(-.7*R) } }
   };
 #undef R
-#define NUMTHINTRIANGLEGUYLINES (sizeof(thintriangle_guy)/sizeof(mline_t))
+constexpr auto NUMTHINTRIANGLEGUYLINES = (sizeof(thintriangle_guy) / sizeof(mline_t));
 
 #endif
