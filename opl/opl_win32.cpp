@@ -112,7 +112,7 @@ static void OPL_Win32_PortWrite(opl_port_t, unsigned int)
 
 #endif
 
-static int OPL_Win32_Init(unsigned int)
+static int OPL_Win32_Init(unsigned int port_base [[maybe_unused]])
 {
 #ifndef NO_PORT_RW
 
@@ -157,12 +157,9 @@ static int OPL_Win32_Init(unsigned int)
     }
 
     return 1;
-
-#endif
-    // unreachable code
-    assert(false);
-    // error C4716: 'OPL_Win32_Init': must return a value
+#else
     return 0;
+#endif
 }
 
 static void OPL_Win32_Shutdown()

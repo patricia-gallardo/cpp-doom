@@ -517,7 +517,7 @@ static int TranslateScancode(SDL_Scancode scancode)
             return KEY_RALT;
 
         default:
-            if (scancode < std::size(scancode_translate_table))
+            if (scancode < static_cast<int>(std::size(scancode_translate_table)))
             {
                 return scancode_translate_table[scancode];
             }
