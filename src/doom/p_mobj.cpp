@@ -73,12 +73,14 @@ bool
         mobj->sprite = st->sprite;
         mobj->frame  = st->frame;
 
-        // Modified handling.
-        // Call action functions when the state is set
-        if (st->action.index() == mobj_player_psp_param_action_hook) {
-            const auto & callback = std::get<mobj_player_psp_param_action>(st->action);
-            callback(mobj, nullptr, nullptr); // [crispy] let pspr action pointers get called from mobj states
-        }
+        std::visit(
+            overloaded {
+                [&](const mobj_param_action &callback) { callback(reinterpret_cast<mobj_t *>(mobj)); },
+                [&](const mobj_player_psp_param_action &callback) { callback(reinterpret_cast<mobj_t *>(mobj), nullptr, nullptr); },
+                [&](const auto &) { return; } 
+            },
+            st->action
+        );
 
         state = st->nextstate;
 

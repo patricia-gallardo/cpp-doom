@@ -134,9 +134,6 @@ constexpr int player_psp_action_hook = alternative_index_v<player_psp_param_acti
 static_assert(alternative_index_v<thinker_param_action, action_hook> == 5);
 constexpr int thinker_param_action_hook = alternative_index_v<thinker_param_action, action_hook>;
 
-static_assert(alternative_index_v<vldoor_param_action, action_hook> == 12);
-constexpr int vldoor_param_action_hook = alternative_index_v<vldoor_param_action, action_hook>;
-
 static_assert(alternative_index_v<mobj_player_psp_param_action, action_hook> == 23);
 constexpr int mobj_player_psp_param_action_hook = alternative_index_v<mobj_player_psp_param_action, action_hook>;
 
