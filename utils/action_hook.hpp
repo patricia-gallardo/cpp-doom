@@ -177,6 +177,8 @@ constexpr void call_thinker(thinker_t *thinker)
             [&](const strobe_param_action &callback) { callback(reinterpret_cast<strobe_t *>(thinker)); },
             [&](const glow_param_action &callback) { callback(reinterpret_cast<glow_t *>(thinker)); },
             [&](const fireflicker_param_action &callback) { callback(reinterpret_cast<fireflicker_t *>(thinker)); },
+            [&](const slidedoor_param_action &callback) { callback(reinterpret_cast<slidedoor_t *>(thinker)); },
+            [&](const mobj_player_psp_param_action &callback) {callback(reinterpret_cast<mobj_t *>(thinker), reinterpret_cast<player_t *>(thinker), reinterpret_cast<pspdef_t *>(thinker)); },
             [&](const auto &) { return; } 
         },
         thinker->function
