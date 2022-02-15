@@ -128,15 +128,6 @@ typedef enum
 ===============================================================================
 */
 
-// think_t is a function pointer to a routine to handle an actor
-typedef void (*think_t) ();
-
-typedef struct thinker_s
-{
-    struct thinker_s *prev, *next;
-    action_hook function;
-} thinker_t;
-
 typedef union
 {
     int i;
