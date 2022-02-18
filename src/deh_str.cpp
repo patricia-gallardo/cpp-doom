@@ -225,11 +225,11 @@ static bool ValidArgumentReplacement(format_arg_t original,
 
 // Return true if the specified string contains no format arguments.
 
-static bool ValidFormatReplacement(const char *original, const std::string & replacement)
+static bool ValidFormatReplacement(const std::string & original, const std::string & replacement)
 {
     // Check each argument in turn and compare types.
 
-    const char *rover1 = original;
+    const char *rover1 = original.c_str();
     const char *rover2 = replacement.c_str();
 
     for (;;)
@@ -262,7 +262,7 @@ static bool ValidFormatReplacement(const char *original, const std::string & rep
 
 // Get replacement format string, checking arguments.
 
-static std::string FormatStringReplacement(const char *s)
+static std::string FormatStringReplacement(const std::string & s)
 {
     auto repl = DEH_String(s);
 
@@ -270,7 +270,7 @@ static std::string FormatStringReplacement(const char *s)
     {
         printf("WARNING: Unsafe dehacked replacement provided for "
                "printf format string: %s\n",
-            s);
+            s.c_str());
 
         return s;
     }
