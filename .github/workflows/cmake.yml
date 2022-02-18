@@ -48,7 +48,7 @@ jobs:
             cmake_platform_option: "-A Win32"
             cache_name: "win32"
         cmake-build-type: [Release]
-        cmake-build-target: [opl, pcsound, crispy-doom, crispy-heretic, crispy-hexen, crispy-server, crispy-setup, crispy-strife, midiread, mus2mid, doom, heretic, hexen, setup, strife, textscreen]
+        cmake-build-target: [opl, pcsound, crispy-doom, crispy-server, crispy-setup, midiread, mus2mid, doom, setup, textscreen]
 
     steps:
     - uses: actions/checkout@v2
