@@ -1,4 +1,4 @@
-foreach(SUBDIR doom hexen strife setup)
+foreach(SUBDIR doom strife setup)
     add_subdirectory("${SUBDIR}")
 endforeach()
 
@@ -142,20 +142,6 @@ target_link_libraries("${PROGRAM_PREFIX}doom" doom ${EXTRA_LIBS})
 
 if(MSVC)
     set_target_properties("${PROGRAM_PREFIX}doom" PROPERTIES
-                          LINK_FLAGS "/MANIFEST:NO")
-endif()
-
-if(WIN32)
-    add_executable("${PROGRAM_PREFIX}hexen" WIN32 ${SOURCE_FILES} "${CMAKE_CURRENT_BINARY_DIR}/resource.rc")
-else()
-    add_executable("${PROGRAM_PREFIX}hexen" ${SOURCE_FILES})
-endif()
-
-target_include_directories("${PROGRAM_PREFIX}hexen" PRIVATE ${GAME_INCLUDE_DIRS})
-target_link_libraries("${PROGRAM_PREFIX}hexen" hexen ${EXTRA_LIBS})
-
-if(MSVC)
-    set_target_properties("${PROGRAM_PREFIX}hexen" PROPERTIES
                           LINK_FLAGS "/MANIFEST:NO")
 endif()
 
