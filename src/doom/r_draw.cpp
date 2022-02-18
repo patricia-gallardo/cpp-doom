@@ -1038,12 +1038,12 @@ void R_FillBackScreen()
     patch_t *patch;
 
     // DOOM border patch.
-    const char *name1 = DEH_String("FLOOR7_2");
+    auto name1 = DEH_String("FLOOR7_2");
 
     // DOOM II border patch.
-    const char *name2 = DEH_String("GRNROCK");
+    auto name2 = DEH_String("GRNROCK");
 
-    const char *name;
+    std::string name;
 
     // If we are running full screen, there is no need to do any of this,
     // and the background buffer can be freed if it was previously in use.

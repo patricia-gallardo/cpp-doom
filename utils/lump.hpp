@@ -7,9 +7,16 @@
 
 #include "../src/w_wad.hpp"
 
+#include <string>
+
 template <typename DataType>
 auto cache_lump_name(const char *name, const int tag) {
   return static_cast<DataType>(W_CacheLumpName(name, tag));
+}
+
+template <typename DataType>
+auto cache_lump_name(const std::string & name, const int tag) {
+    return cache_lump_name<DataType>(name.c_str(), tag);
 }
 
 template <typename DataType>

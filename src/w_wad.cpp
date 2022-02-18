@@ -288,6 +288,10 @@ lumpindex_t W_CheckNumForName(const char *name)
     return -1;
 }
 
+lumpindex_t W_CheckNumForName(const std::string & name)
+{
+    return W_CheckNumForName(name.c_str());
+}
 
 //
 // W_GetNumForName
@@ -303,6 +307,10 @@ lumpindex_t W_GetNumForName(const char *name)
     }
 
     return i;
+}
+
+lumpindex_t W_GetNumForName(const std::string & name) {
+    return W_GetNumForName(name.c_str());
 }
 
 lumpindex_t W_CheckNumForNameFromTo(const char *name, int from, int to)
@@ -453,6 +461,11 @@ void W_ReleaseLumpNum(lumpindex_t lumpnum)
 void W_ReleaseLumpName(const char *name)
 {
     W_ReleaseLumpNum(W_GetNumForName(name));
+}
+
+void W_ReleaseLumpName(const std::string & name)
+{
+    W_ReleaseLumpName(name.c_str());
 }
 
 #if 0

@@ -66,7 +66,7 @@ static void *DEH_BEXInclStart(deh_context_t *context, char *line)
     // first, try loading the file right away
     std::string try_path = inc_file;
 
-    if (!M_FileExists(try_path.c_str()))
+    if (!M_FileExists(try_path))
     {
         // second, try loading the file in the directory of the current file
         char *dir;
@@ -77,7 +77,7 @@ static void *DEH_BEXInclStart(deh_context_t *context, char *line)
 
     bex_nested = true;
 
-    if (!M_FileExists(try_path.c_str()) || !DEH_LoadFile(try_path.c_str()))
+    if (!M_FileExists(try_path) || !DEH_LoadFile(try_path.c_str()))
     {
         DEH_Warning(context, "Could not include \"%s\"", inc_file.c_str());
     }

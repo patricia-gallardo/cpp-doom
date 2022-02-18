@@ -428,17 +428,17 @@ static void CheckDOSDefaults()
 // Returns true if the specified path is a path to a file
 // of the specified name.
 
-static bool DirIsFile(const char *path, const char *filename)
+static bool DirIsFile(const std::string & path, const std::string & filename)
 {
-    return strchr(path, DIR_SEPARATOR) != nullptr
-           && !strcasecmp(M_BaseName(path), filename);
+    return strchr(path.c_str(), DIR_SEPARATOR) != nullptr
+           && !strcasecmp(M_BaseName(path.c_str()), filename.c_str());
 }
 
 // Check if the specified directory contains the specified IWAD
 // file, returning the full path to the IWAD if found, or NULL
 // if not found.
 
-static char *CheckDirectoryHasIWAD(const char *dir, const char *iwadname)
+static char *CheckDirectoryHasIWAD(const std::string & dir, const std::string & iwadname)
 {
     // As a special case, the "directory" may refer directly to an
     // IWAD file if the path comes from DOOMWADDIR or DOOMWADPATH.
@@ -453,13 +453,13 @@ static char *CheckDirectoryHasIWAD(const char *dir, const char *iwadname)
     // this directory, and check if it exists.
     char *filename = nullptr;
 
-    if (!strcmp(dir, "."))
+    if (!strcmp(dir.c_str(), "."))
     {
         filename = M_StringDuplicate(iwadname);
     }
     else
     {
-        filename = M_StringJoin(dir, DIR_SEPARATOR_S, iwadname, nullptr);
+        filename = M_StringJoin(dir.c_str(), DIR_SEPARATOR_S, iwadname.c_str(), nullptr);
     }
 
     free(probe);

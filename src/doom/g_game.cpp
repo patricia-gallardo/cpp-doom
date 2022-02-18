@@ -802,7 +802,7 @@ void G_DoLoadLevel()
     if ((gamemode == commercial)
         && (gameversion == exe_final2 || gameversion == exe_chex || true))
     {
-        const char *skytexturename;
+        std::string skytexturename;
 
         if (gamemap < 12)
         {
@@ -1769,7 +1769,7 @@ void G_DoCompleted()
         {
             int cpars32;
 
-            std::memcpy(&cpars32, DEH_String(GAMMALVL0), sizeof(int));
+            std::memcpy(&cpars32, DEH_String(GAMMALVL0).c_str(), sizeof(int));
             cpars32 = LONG(cpars32);
 
             wminfo.partime = TICRATE * cpars32;
@@ -2195,7 +2195,7 @@ void G_InitNew(skill_t skill,
     int                episode,
     int                map)
 {
-    const char *skytexturename;
+    std::string skytexturename;
     int         i;
     // [crispy] make sure "fast" parameters are really only applied once
     static bool fast_applied;
@@ -2655,6 +2655,11 @@ void G_DeferedPlayDemo(const char *name)
         nodrawers  = true;
         singletics = true;
     }
+}
+
+void G_DeferedPlayDemo(const std::string & name)
+{
+    G_DeferedPlayDemo(name.c_str());
 }
 
 // Generate a string describing a demo version

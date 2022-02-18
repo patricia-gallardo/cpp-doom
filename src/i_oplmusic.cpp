@@ -947,7 +947,7 @@ static bool opl_stereo_correct = false;
 
 static bool LoadInstrumentTable()
 {
-    auto *lump = cache_lump_name<uint8_t *>(DEH_String("genmidi"), PU_STATIC);
+    auto *lump = cache_lump_name<uint8_t *>(DEH_String("genmidi").c_str(), PU_STATIC);
 
     // DMX does not check header
 
@@ -2244,7 +2244,7 @@ static void I_OPL_ShutdownMusic()
 
         // Release GENMIDI lump
 
-        W_ReleaseLumpName(DEH_String("genmidi"));
+        W_ReleaseLumpName(DEH_String("genmidi").c_str());
 
         music_initialized = false;
     }
