@@ -16,8 +16,8 @@
 //
 
 #include <cstdarg>
+#include <optional>
 #include <string>
-#include <vector>
 #include <unordered_map>
 
 #include "deh_str.hpp"
