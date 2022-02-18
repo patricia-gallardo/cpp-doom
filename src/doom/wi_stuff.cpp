@@ -1715,13 +1715,13 @@ static void WI_loadUnloadData(load_callback_t callback)
         }
 
         // you are here
-        callback(DEH_String("WIURH0"), &yah[0]);
+        callback(DEH_String("WIURH0").c_str(), &yah[0]);
 
         // you are here (alt.)
-        callback(DEH_String("WIURH1"), &yah[1]);
+        callback(DEH_String("WIURH1").c_str(), &yah[1]);
 
         // splat
-        callback(DEH_String("WISPLAT"), &splat[0]);
+        callback(DEH_String("WISPLAT").c_str(), &splat[0]);
 
         if (wbs->epsd < 3)
         {
@@ -1749,7 +1749,7 @@ static void WI_loadUnloadData(load_callback_t callback)
 
     // More hacks on minus sign.
     if (W_CheckNumForName(DEH_String("WIMINUS")) > 0)
-        callback(DEH_String("WIMINUS"), &wiminus);
+        callback(DEH_String("WIMINUS").c_str(), &wiminus);
     else
         wiminus = nullptr;
 
@@ -1761,60 +1761,60 @@ static void WI_loadUnloadData(load_callback_t callback)
     }
 
     // percent sign
-    callback(DEH_String("WIPCNT"), &percent);
+    callback(DEH_String("WIPCNT").c_str(), &percent);
 
     // "finished"
-    callback(DEH_String("WIF"), &finished);
+    callback(DEH_String("WIF").c_str(), &finished);
 
     // "entering"
-    callback(DEH_String("WIENTER"), &entering);
+    callback(DEH_String("WIENTER").c_str(), &entering);
 
     // "kills"
-    callback(DEH_String("WIOSTK"), &kills);
+    callback(DEH_String("WIOSTK").c_str(), &kills);
 
     // "scrt"
-    callback(DEH_String("WIOSTS"), &secret);
+    callback(DEH_String("WIOSTS").c_str(), &secret);
 
     // "secret"
-    callback(DEH_String("WISCRT2"), &sp_secret);
+    callback(DEH_String("WISCRT2").c_str(), &sp_secret);
 
     // french wad uses WIOBJ (?)
     if (W_CheckNumForName(DEH_String("WIOBJ")) >= 0)
     {
         // "items"
         if (netgame && !deathmatch)
-            callback(DEH_String("WIOBJ"), &items);
+            callback(DEH_String("WIOBJ").c_str(), &items);
         else
-            callback(DEH_String("WIOSTI"), &items);
+            callback(DEH_String("WIOSTI").c_str(), &items);
     }
     else
     {
-        callback(DEH_String("WIOSTI"), &items);
+        callback(DEH_String("WIOSTI").c_str(), &items);
     }
 
     // "frgs"
-    callback(DEH_String("WIFRGS"), &frags);
+    callback(DEH_String("WIFRGS").c_str(), &frags);
 
     // ":"
-    callback(DEH_String("WICOLON"), &colon);
+    callback(DEH_String("WICOLON").c_str(), &colon);
 
     // "time"
-    callback(DEH_String("WITIME"), &timepatch);
+    callback(DEH_String("WITIME").c_str(), &timepatch);
 
     // "sucks"
-    callback(DEH_String("WISUCKS"), &sucks);
+    callback(DEH_String("WISUCKS").c_str(), &sucks);
 
     // "par"
-    callback(DEH_String("WIPAR"), &par);
+    callback(DEH_String("WIPAR").c_str(), &par);
 
     // "killers" (vertical)
-    callback(DEH_String("WIKILRS"), &killers);
+    callback(DEH_String("WIKILRS").c_str(), &killers);
 
     // "victims" (horiz)
-    callback(DEH_String("WIVCTMS"), &victims);
+    callback(DEH_String("WIVCTMS").c_str(), &victims);
 
     // "total"
-    callback(DEH_String("WIMSTT"), &total);
+    callback(DEH_String("WIMSTT").c_str(), &total);
 
     for (i = 0; i < MAXPLAYERS; i++)
     {

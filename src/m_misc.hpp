@@ -22,6 +22,7 @@
 
 #include <cstdio>
 #include <cstdarg>
+#include <string>
 
 #include "doomtype.hpp"
 
@@ -30,7 +31,9 @@ int         M_ReadFile(const char *name, uint8_t **buffer);
 void        M_MakeDirectory(const char *dir);
 char *      M_TempFile(const char *s);
 bool     M_FileExists(const char *file);
+bool     M_FileExists(const std::string & filename);
 char *      M_FileCaseExists(const char *file);
+char *      M_FileCaseExists(const std::string & path);
 long        M_FileLength(FILE *handle);
 bool     M_StrToInt(const char *str, int *result);
 char *      M_DirName(const char *path);
@@ -40,7 +43,9 @@ void        M_ForceUppercase(char *text);
 void        M_ForceLowercase(char *text);
 const char *M_StrCaseStr(const char *haystack, const char *needle);
 char *      M_StringDuplicate(const char *orig);
+char *      M_StringDuplicate(const std::string & orig);
 bool     M_StringCopy(char *dest, const char *src, size_t dest_size);
+bool     M_StringCopy(char *dest, const std::string & src, size_t dest_size);
 bool     M_StringConcat(char *dest, const char *src, size_t dest_size);
 char *      M_StringReplace(const char *haystack, const char *needle,
           const char *replacement);

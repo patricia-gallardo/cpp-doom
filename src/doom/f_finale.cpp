@@ -100,8 +100,8 @@ static textscreen_t textscreens[] = {
     { pack_master, 1, 20, "SLIME16", M1TEXT },
 };
 
-const char * finaletext;
-const char * finaleflat;
+std::string finaletext;
+std::string finaleflat;
 static char *finaletext_rw;
 
 void    F_StartCast();
@@ -233,7 +233,7 @@ void F_Ticker()
         return;
 
     if (finalestage == F_STAGE_TEXT
-        && finalecount > strlen(finaletext) * TEXTSPEED + TEXTWAIT)
+        && finalecount > strlen(finaletext.c_str()) * TEXTSPEED + TEXTWAIT)
     {
         finalecount   = 0;
         finalestage   = F_STAGE_ARTSCREEN;
@@ -817,7 +817,7 @@ void F_CastDrawer()
     // erase the entire screen to a background
     V_DrawPatchFullScreen(cache_lump_name<patch_t *>(DEH_String("BOSSBACK"), PU_CACHE), false);
 
-    F_CastPrint(DEH_String(castorder[castnum].name));
+    F_CastPrint(DEH_String(castorder[castnum].name).c_str());
 
     // draw the current frame in the middle of the screen
     sprdef = &sprites[caststate->sprite];
@@ -944,7 +944,7 @@ void F_BunnyScroll()
 
 static void F_ArtScreenDrawer()
 {
-    const char *lumpname;
+    std::string lumpname;
 
     if (gameepisode == 3)
     {

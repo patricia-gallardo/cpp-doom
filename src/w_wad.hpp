@@ -21,6 +21,7 @@
 #define __W_WAD__
 
 #include <cstdio>
+#include <string>
 
 #include "doomtype.hpp"
 #include "w_file.hpp"
@@ -56,7 +57,9 @@ wad_file_t *W_AddFile(const char *filename);
 void        W_Reload();
 
 lumpindex_t W_CheckNumForName(const char *name);
+lumpindex_t W_CheckNumForName(const std::string & name);
 lumpindex_t W_GetNumForName(const char *name);
+lumpindex_t W_GetNumForName(const std::string & name);
 lumpindex_t W_CheckNumForNameFromTo(const char *name, int from, int to);
 
 size_t W_LumpLength(lumpindex_t lump);
@@ -71,6 +74,7 @@ extern unsigned int W_LumpNameHash(const char *s);
 
 void W_ReleaseLumpNum(lumpindex_t lump);
 void W_ReleaseLumpName(const char *name);
+void W_ReleaseLumpName(const std::string & name);
 
 const char *W_WadNameForLump(const lumpinfo_t *lump);
 bool     W_IsIWADLump(const lumpinfo_t *lump);

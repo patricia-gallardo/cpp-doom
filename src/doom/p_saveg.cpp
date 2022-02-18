@@ -936,7 +936,7 @@ static void saveg_write_player_t(player_t *str)
     saveg_write32(str->secretcount);
 
     // char* message;
-    saveg_writep(str->message);
+    saveg_writep(str->message.c_str());
 
     // int damagecount;
     saveg_write32(str->damagecount);

@@ -161,8 +161,8 @@ void P_InitSwitchList()
         if (alphSwitchList_episode <= episode)
         {
             int         texture1, texture2;
-            const char *name1 = DEH_String(alphSwitchList[i].name1);
-            const char *name2 = DEH_String(alphSwitchList[i].name2);
+            auto name1 = DEH_String(alphSwitchList[i].name1);
+            auto name2 = DEH_String(alphSwitchList[i].name2);
 
             texture1 = R_CheckTextureNumForName(name1);
             texture2 = R_CheckTextureNumForName(name2);
@@ -170,7 +170,7 @@ void P_InitSwitchList()
             if (texture1 == -1 || texture2 == -1)
             {
                 fprintf(stderr, "P_InitSwitchList: could not add %s(%d)/%s(%d)\n",
-                    name1, texture1, name2, texture2);
+                    name1.c_str(), texture1, name2.c_str(), texture2);
             }
             else
             {
