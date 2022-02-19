@@ -38,7 +38,7 @@
 // to provide a complete scene geometry description.
 enum
 {
-    ML_LABEL,    // A separator, name, ExMx or MAPxx
+    ML_LABEL [[maybe_unused]],    // A separator, name, ExMx or MAPxx
     ML_THINGS,   // Monsters, items..
     ML_LINEDEFS, // LineDefs, from editing
     ML_SIDEDEFS, // SideDefs, from editing
@@ -108,14 +108,14 @@ typedef PACKED_STRUCT(
 //
 
 // Solid, is an obstacle.
-#define ML_BLOCKING 1
+constexpr auto ML_BLOCKING =1;
 
 // Blocks monsters only.
-#define ML_BLOCKMONSTERS 2
+constexpr auto ML_BLOCKMONSTERS =2;
 
 // Backside will not be present at all
 //  if not two sided.
-#define ML_TWOSIDED 4
+constexpr auto ML_TWOSIDED =4;
 
 // If a texture is pegged, the texture will have
 // the end exposed to air held constant at the
@@ -127,22 +127,22 @@ typedef PACKED_STRUCT(
 // top and bottom textures (use next to windows).
 
 // upper texture unpegged
-#define ML_DONTPEGTOP 8
+constexpr auto ML_DONTPEGTOP =8;
 
 // lower texture unpegged
-#define ML_DONTPEGBOTTOM 16
+constexpr auto ML_DONTPEGBOTTOM =16;
 
 // In AutoMap: don't map as two sided: IT'S A SECRET!
-#define ML_SECRET 32
+constexpr auto ML_SECRET =32;
 
 // Sound rendering: don't let sound cross two of these.
-#define ML_SOUNDBLOCK 64
+constexpr auto ML_SOUNDBLOCK =64;
 
 // Don't draw on the automap at all.
-#define ML_DONTDRAW 128
+constexpr auto ML_DONTDRAW =128;
 
 // Set if already seen, thus drawn in automap.
-#define ML_MAPPED 256
+constexpr auto ML_MAPPED =256;
 
 
 // Sector definition, from editing.

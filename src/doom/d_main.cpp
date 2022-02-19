@@ -120,7 +120,7 @@ bool storedemo;
 // If true, the main game loop has started.
 bool main_loop_started = false;
 
-char wadfile[1024]; // primary wad file
+[[maybe_unused]] char wadfile[1024]; // primary wad file
 [[maybe_unused]] char mapdir[1024];  // directory of development maps
 
 int show_endoom   = 0; // [crispy] disable

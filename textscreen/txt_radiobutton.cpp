@@ -37,7 +37,7 @@ static void TXT_RadioButtonSizeCalc(void *uncast_radiobutton)
 static void TXT_RadioButtonDrawer(void *uncast_radiobutton)
 {
     auto *radiobutton = reinterpret_cast<txt_radiobutton_t *>(uncast_radiobutton);
-    txt_saved_colors_t colors;
+    txt_saved_colors_t colors{};
 
     TXT_SaveColors(&colors);
     TXT_FGColor(TXT_COLOR_BRIGHT_CYAN);
@@ -129,7 +129,7 @@ txt_radiobutton_t *TXT_NewRadioButton(const char *label, int *variable, int valu
     return radiobutton;
 }
 
-void TXT_SetRadioButtonLabel(txt_radiobutton_t *radiobutton, const char *value)
+[[maybe_unused]] void TXT_SetRadioButtonLabel(txt_radiobutton_t *radiobutton, const char *value)
 {
     free(radiobutton->label);
     radiobutton->label = strdup(value);

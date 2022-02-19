@@ -21,7 +21,7 @@
 
 #include "d_event.hpp"
 
-#define MAXEVENTS 64
+constexpr auto MAXEVENTS = 64;
 
 static event_t events[MAXEVENTS];
 static int     eventhead;

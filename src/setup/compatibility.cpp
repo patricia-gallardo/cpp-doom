@@ -14,8 +14,6 @@
 
 // Sound control menu
 
-#include <cstdlib>
-
 #include "crispy.hpp"
 #include "m_config.hpp"
 #include "textscreen.hpp"
@@ -30,8 +28,6 @@ int vanilla_demo_limit = 0;
 
 void CompatibilitySettings(void *, void *)
 {
-    txt_window_t *window;
-
     // [crispy]
     if (gamemission == doom)
     {
@@ -39,7 +35,7 @@ void CompatibilitySettings(void *, void *)
     }
     else
     {
-    window = TXT_NewWindow("Compatibility");
+        txt_window_t *window = TXT_NewWindow("Compatibility");
 
     TXT_SetWindowHelpURL(window, WINDOW_HELP_URL);
 

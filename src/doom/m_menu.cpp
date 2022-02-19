@@ -318,10 +318,10 @@ static menu_t ExpDef = {
 enum class newgame_e
 {
     killthings [[maybe_unused]],
-    toorough,
+    toorough [[maybe_unused]],
     hurtme,
     violence [[maybe_unused]],
-    nightmare,
+    nightmare [[maybe_unused]],
     newg_end
 };
 
@@ -348,9 +348,9 @@ enum class options_e
     detail,
     scrnsize,
     option_empty1 [[maybe_unused]],
-    mousesens,
+    mousesens [[maybe_unused]],
     soundvol [[maybe_unused]],
-    crispness, // [crispy] Crispness menu
+    crispness [[maybe_unused]], // [crispy] Crispness menu
     opt_end
 };
 
@@ -2487,7 +2487,7 @@ void M_StartControlPanel()
     // [crispy] entering menus while recording demos pauses the game
     if (demorecording && !paused) sendpause = true;
 
-    menuactive  = 1;
+    menuactive  = true;
     currentMenu = &MainDef;            // JDC
     itemOn      = currentMenu->lastOn; // JDC
 }

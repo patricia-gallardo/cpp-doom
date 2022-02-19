@@ -568,15 +568,13 @@ static void AddIWADPath(const char *path, const char *suffix)
 // <http://standards.freedesktop.org/basedir-spec/basedir-spec-latest.html>
 static void AddXdgDirs()
 {
-    char *env, *tmp_env;
-
     // Quote:
     // > $XDG_DATA_HOME defines the base directory relative to which
     // > user specific data files should be stored. If $XDG_DATA_HOME
     // > is either not set or empty, a default equal to
     // > $HOME/.local/share should be used.
-    env     = getenv("XDG_DATA_HOME");
-    tmp_env = nullptr;
+    char *env     = getenv("XDG_DATA_HOME");
+    char *tmp_env = nullptr;
 
     if (env == nullptr)
     {
@@ -630,14 +628,12 @@ static void AddXdgDirs()
 // about everyone.
 static void AddSteamDirs()
 {
-    char *homedir, *steampath;
-
-    homedir = getenv("HOME");
+    char *homedir = getenv("HOME");
     if (homedir == nullptr)
     {
         homedir = const_cast<char *>("/");
     }
-    steampath = M_StringJoin(homedir, "/.steam/root/steamapps/common", nullptr);
+    char *steampath = M_StringJoin(homedir, "/.steam/root/steamapps/common", nullptr);
 
     AddIWADPath(steampath, "/Doom 2/base");
     AddIWADPath(steampath, "/Master Levels of Doom/doom2");

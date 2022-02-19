@@ -538,7 +538,7 @@ static void check_intercept()
 
 divline_t trace;
 bool   earlyout;
-int       ptflags;
+[[maybe_unused]] int       ptflags;
 
 static void InterceptsOverrun(int num_intercepts, intercept_t *intercept);
 
@@ -815,7 +815,7 @@ static void InterceptsMemoryOverrun(int location, int value)
                 if (intercepts_overrun[i].int16_array)
                 {
                     index                 = (location - offset) / 2;
-                    short *addr_short     = reinterpret_cast<short *>(addr);
+                    auto *addr_short     = reinterpret_cast<short *>(addr);
                     addr_short[index]     = static_cast<short>(value & 0xffff);
                     addr_short[index + 1] = static_cast<short>((value >> 16) & 0xffff);
                 }
@@ -839,8 +839,6 @@ static void InterceptsMemoryOverrun(int location, int value)
 
 static void InterceptsOverrun(int num_intercepts, intercept_t *intercept)
 {
-    int location;
-
     if (num_intercepts <= MAXINTERCEPTS_ORIGINAL)
     {
         // No overrun
@@ -848,7 +846,7 @@ static void InterceptsOverrun(int num_intercepts, intercept_t *intercept)
         return;
     }
 
-    location = (num_intercepts - MAXINTERCEPTS_ORIGINAL - 1) * 12;
+    int location = (num_intercepts - MAXINTERCEPTS_ORIGINAL - 1) * 12;
 
     // Overwrite memory that is overwritten in Vanilla Doom, using
     // the values from the intercept structure.

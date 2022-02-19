@@ -128,7 +128,7 @@ static void *DEH_BEXPtrStart(deh_context_t *context, char *line)
 {
     char s[10];
 
-    if (sscanf(line, "%9s", s) == 0 || strcmp("[CODEPTR]", s))
+    if (sscanf(line, "%9s", s) == 0 || strcmp("[CODEPTR]", s) != 0)
     {
         DEH_Warning(context, "Parse error on section start");
     }
@@ -138,8 +138,8 @@ static void *DEH_BEXPtrStart(deh_context_t *context, char *line)
 
 static void DEH_BEXPtrParseLine(deh_context_t *context, char *line, void *)
 {
-    char *   variable_name, *value, frame_str[6];
-    int      frame_number;
+    char *   variable_name = nullptr, *value = nullptr, frame_str[6];
+    int      frame_number = 0;
 
     // parse "FRAME nn = mnemonic", where
     // variable_name = "FRAME nn" and value = "mnemonic"
@@ -150,7 +150,7 @@ static void DEH_BEXPtrParseLine(deh_context_t *context, char *line, void *)
     }
 
     // parse "FRAME nn", where frame_number = "nn"
-    if (sscanf(variable_name, "%5s %32d", frame_str, &frame_number) != 2 || strcasecmp(frame_str, "FRAME"))
+    if (sscanf(variable_name, "%5s %32d", frame_str, &frame_number) != 2 || strcasecmp(frame_str, "FRAME") != 0)
     {
         DEH_Warning(context, "Failed to parse assignment: %s", variable_name);
         return;

@@ -304,7 +304,7 @@ void TXT_DrawHorizScrollbar(int x, int y, int w, int cursor, int range)
         return;
     }
 
-    txt_saved_colors_t colors;
+    txt_saved_colors_t colors{};
     TXT_SaveColors(&colors);
     TXT_FGColor(TXT_COLOR_BLACK);
     TXT_BGColor(TXT_COLOR_GREY, 0);

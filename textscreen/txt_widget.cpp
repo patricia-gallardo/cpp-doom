@@ -29,7 +29,7 @@ typedef struct
     void *user_data;
 } txt_callback_t;
 
-struct txt_callback_table_s
+struct [[maybe_unused]] txt_callback_table_s
 {
     std::vector<txt_callback_t> callbacks;
 
@@ -117,7 +117,7 @@ void TXT_CalcWidgetSize(void *uncast_widget)
 void TXT_DrawWidget(void *uncast_widget)
 {
     auto      *widget = reinterpret_cast<txt_widget_t *>(uncast_widget);
-    txt_saved_colors_t colors;
+    txt_saved_colors_t colors{};
 
     // The drawing function might change the fg/bg colors,
     // so make sure we restore them after it's done.
@@ -259,7 +259,7 @@ int TXT_HoveringOverWidget(void *uncast_widget)
 
     // Is the mouse cursor within the bounds of the widget?
 
-    int x, y;
+    int x = 0, y = 0;
     TXT_GetMousePosition(&x, &y);
 
     int width = static_cast<int>(widget->w);

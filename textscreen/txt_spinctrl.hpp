@@ -39,15 +39,15 @@ enum txt_spincontrol_type_t
 
 #include "txt_widget.hpp"
 
-struct txt_spincontrol_s
+struct [[maybe_unused]] txt_spincontrol_s
 {
     txt_widget_t widget;
     txt_spincontrol_type_t type;
-    union { float f; int i; } min, max, step;
-    union { float *f; int *i; } value;
-    int editing;
-    char *buffer;
-    size_t buffer_len;
+    union { float f; int i; } min{}, max{}, step{};
+    union { float *f; int *i; } value{};
+    int editing{};
+    char *buffer{};
+    size_t buffer_len{};
 };
 
 /**

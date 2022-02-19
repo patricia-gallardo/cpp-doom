@@ -32,7 +32,7 @@ typedef struct
     uint64_t time;
 } opl_queue_entry_t;
 
-struct opl_callback_queue_s
+struct [[maybe_unused]] opl_callback_queue_s
 {
     opl_queue_entry_t entries[MAX_OPL_QUEUE];
     unsigned int num_entries;

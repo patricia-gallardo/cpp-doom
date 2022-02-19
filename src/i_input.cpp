@@ -244,7 +244,7 @@ static int GetTypedChar(SDL_Keysym *sym)
     }
 }
 
-void I_HandleKeyboardEvent(SDL_Event *sdlevent)
+[[maybe_unused]] void I_HandleKeyboardEvent(SDL_Event *sdlevent)
 {
     // XXX: passing pointers to event for access after this function
     // has terminated is undefined behaviour
@@ -393,7 +393,7 @@ static void MapMouseWheelToButtons(SDL_MouseWheelEvent *wheel)
     D_PostEvent(&up);
 }
 
-void I_HandleMouseEvent(SDL_Event *sdlevent)
+[[maybe_unused]] void I_HandleMouseEvent(SDL_Event *sdlevent)
 {
     switch (sdlevent->type)
     {

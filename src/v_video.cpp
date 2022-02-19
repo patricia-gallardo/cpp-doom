@@ -151,7 +151,7 @@ void V_CopyRect(int srcx, int srcy, pixel_t *source,
 // implementation, so this could possibly be extended to those as well for
 // accurate emulation.
 //
-void V_SetPatchClipCallback(vpatchclipfunc_t func)
+[[maybe_unused]] void V_SetPatchClipCallback(vpatchclipfunc_t func)
 {
     patchclip_callback = func;
 }
@@ -462,7 +462,7 @@ void V_DrawPatchDirect(int x, int y, patch_t *patch)
 // Masks a column based translucent masked pic to the screen.
 //
 
-void V_DrawTLPatch(int x, int y, patch_t *patch)
+[[maybe_unused]] void V_DrawTLPatch(int x, int y, patch_t *patch)
 {
     y -= SHORT(patch->topoffset);
     x -= SHORT(patch->leftoffset);
@@ -508,7 +508,7 @@ void V_DrawTLPatch(int x, int y, patch_t *patch)
 // villsa [STRIFE] Masks a column based translucent masked pic to the screen.
 //
 
-void V_DrawXlaPatch(int x, int y, patch_t *patch)
+[[maybe_unused]] void V_DrawXlaPatch(int x, int y, patch_t *patch)
 {
     y -= SHORT(patch->topoffset);
     x -= SHORT(patch->leftoffset);
@@ -553,7 +553,7 @@ void V_DrawXlaPatch(int x, int y, patch_t *patch)
 // Masks a column based translucent masked pic to the screen.
 //
 
-void V_DrawAltTLPatch(int x, int y, patch_t *patch)
+[[maybe_unused]] void V_DrawAltTLPatch(int x, int y, patch_t *patch)
 {
     y -= SHORT(patch->topoffset);
     x -= SHORT(patch->leftoffset);
@@ -600,7 +600,7 @@ void V_DrawAltTLPatch(int x, int y, patch_t *patch)
 // Masks a column based masked pic to the screen.
 //
 
-void V_DrawShadowedPatch(int x, int y, patch_t *patch)
+[[maybe_unused]] void V_DrawShadowedPatch(int x, int y, patch_t *patch)
 {
     y -= SHORT(patch->topoffset);
     x -= SHORT(patch->leftoffset);
@@ -649,7 +649,7 @@ void V_DrawShadowedPatch(int x, int y, patch_t *patch)
 // Load tint table from TINTTAB lump.
 //
 
-void V_LoadTintTable()
+[[maybe_unused]] void V_LoadTintTable()
 {
     tinttable = cache_lump_name<uint8_t *>("TINTTAB", PU_STATIC);
 }
@@ -660,7 +660,7 @@ void V_LoadTintTable()
 // villsa [STRIFE] Load xla table from XLATAB lump.
 //
 
-void V_LoadXlaTable()
+[[maybe_unused]] void V_LoadXlaTable()
 {
     xlatab = cache_lump_name<uint8_t *>("XLATAB", PU_STATIC);
 }
@@ -694,7 +694,7 @@ void V_DrawBlock(int x, int y, int width, int height, pixel_t *src)
     }
 }
 
-void V_DrawScaledBlock(int x, int y, int width, int height, pixel_t *src)
+[[maybe_unused]] void V_DrawScaledBlock(int x, int y, int width, int height, pixel_t *src)
 {
 #ifdef RANGECHECK
     if (x < 0
@@ -795,7 +795,7 @@ void V_CopyScaledBuffer(pixel_t *dest, pixel_t *src, size_t size)
     }
 }
 
-void V_DrawRawScreen(pixel_t *raw)
+[[maybe_unused]] void V_DrawRawScreen(pixel_t *raw)
 {
     V_CopyScaledBuffer(dest_screen, raw, ORIGWIDTH * ORIGHEIGHT);
 }

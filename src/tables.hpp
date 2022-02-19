@@ -64,7 +64,7 @@ constexpr auto ANG45   = 0x20000000;
 constexpr auto ANG90   = 0x40000000;
 constexpr auto ANG180  = 0x80000000;
 constexpr auto ANG270  = 0xc0000000;
-constexpr auto ANG_MAX = 0xffffffff;
+[[maybe_unused]] constexpr auto ANG_MAX = 0xffffffff;
 
 constexpr auto ANG1  = (ANG45 / 45);
 constexpr auto ANG60 = (ANG180 / 3);
@@ -72,7 +72,7 @@ constexpr auto ANG60 = (ANG180 / 3);
 // Heretic code uses this definition as though it represents one
 // degree, but it is not!  This is actually ~1.40 degrees.
 
-constexpr auto ANG1_X = 0x01000000;
+[[maybe_unused]] constexpr auto ANG1_X = 0x01000000;
 
 constexpr auto SLOPERANGE = 2048;
 constexpr auto SLOPEBITS  = 11;

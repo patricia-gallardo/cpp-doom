@@ -78,7 +78,7 @@ void P_CreateBlockMap()
         typedef struct {
             int n, nalloc, *list;
         } bmap_t;                                                         // blocklist structure
-        unsigned tot  = static_cast<unsigned int>(bmapwidth * bmapheight);                           // size of blockmap
+        auto tot  = static_cast<unsigned int>(bmapwidth * bmapheight);                           // size of blockmap
         bmap_t * bmap = static_cast<bmap_t *>(calloc(sizeof *bmap, tot)); // array of blocklists
         int      x, y, adx, ady, bend;
 

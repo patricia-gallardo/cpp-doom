@@ -159,7 +159,7 @@ void M_CrispyToggleCenterweapon(int)
 
 void M_CrispyToggleColoredblood(int)
 {
-    thinker_t *th;
+    thinker_t *th = nullptr;
 
     if (gameversion == exe_chex)
     {

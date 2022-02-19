@@ -28,9 +28,9 @@
 #define KEY_LEFTARROW  0xac
 #define KEY_UPARROW    0xad
 #define KEY_DOWNARROW  0xaf
-#define KEY_ESCAPE     27
-#define KEY_ENTER      13
-#define KEY_TAB        9
+constexpr auto KEY_ESCAPE     = 27;
+constexpr auto KEY_ENTER      = 13;
+constexpr auto KEY_TAB        = 9;
 #define KEY_F1         (0x80 + 0x3b)
 #define KEY_F2         (0x80 + 0x3c)
 #define KEY_F3         (0x80 + 0x3d)
@@ -85,7 +85,7 @@ constexpr char KEYP_DIVIDE   = '/';
 constexpr char KEYP_PLUS     = '+';
 constexpr char KEYP_MINUS    = '-';
 constexpr char KEYP_MULTIPLY = '*';
-#define KEYP_PERIOD   0
+constexpr auto KEYP_PERIOD   = 0;
 #define KEYP_EQUALS   KEY_EQUALS
 #define KEYP_ENTER    KEY_ENTER
 

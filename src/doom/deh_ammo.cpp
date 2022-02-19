@@ -78,9 +78,7 @@ static void DEH_AmmoParseLine(deh_context_t *context, char *line, void *tag)
 
 static void DEH_AmmoSHA1Hash(sha1_context_t *context)
 {
-    int i;
-
-    for (i = 0; i < NUMAMMO; ++i)
+    for (int i = 0; i < NUMAMMO; ++i)
     {
         SHA1_UpdateInt32(context, static_cast<unsigned int>(clipammo[i]));
         SHA1_UpdateInt32(context, static_cast<unsigned int>(maxammo[i]));

@@ -28,7 +28,7 @@ static void *DEH_BEXParsStart(deh_context_t *context, char *line)
 {
     char s[7];
 
-    if (sscanf(line, "%6s", s) == 0 || strcmp("[PARS]", s))
+    if (sscanf(line, "%6s", s) == 0 || strcmp("[PARS]", s) != 0)
     {
         DEH_Warning(context, "Parse error on section start");
     }
@@ -38,7 +38,7 @@ static void *DEH_BEXParsStart(deh_context_t *context, char *line)
 
 static void DEH_BEXParsParseLine(deh_context_t *context, char *line, void *)
 {
-    int episode, map, partime;
+    int episode = 0, map = 0, partime = 0;
 
     if (sscanf(line, "par %32d %32d %32d", &episode, &map, &partime) == 3)
     {

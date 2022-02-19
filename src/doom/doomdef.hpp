@@ -31,10 +31,10 @@
 // Global parameters/defines.
 //
 // DOOM version
-#define DOOM_VERSION 109
+[[maybe_unused]] constexpr auto DOOM_VERSION =109;
 
 // Version code for cph's longtics hack ("v1.91")
-#define DOOM_191_VERSION 111
+constexpr auto DOOM_191_VERSION =111;
 
 
 // If rangecheck is undefined,
@@ -42,7 +42,7 @@
 #define RANGECHECK
 
 // The maximum number of players, multiplayer/networking.
-#define MAXPLAYERS 4
+constexpr auto MAXPLAYERS =4;
 
 // The current state of the game: whether we are
 // playing, gazing at the intermission screen,
@@ -75,12 +75,12 @@ enum gameaction_t
 //
 
 // Skill flags.
-#define MTF_EASY   1
-#define MTF_NORMAL 2
-#define MTF_HARD   4
+constexpr auto MTF_EASY   =1;
+constexpr auto MTF_NORMAL =2;
+constexpr auto MTF_HARD   =4;
 
 // Deaf monsters/do not react to sound.
-#define MTF_AMBUSH 8
+constexpr auto MTF_AMBUSH =8;
 
 
 //

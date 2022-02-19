@@ -55,7 +55,7 @@ struct execute_context_s
 
 static char *TempFile(const char *s)
 {
-    const char *tempdir;
+    const char *tempdir = nullptr;
 
 #ifdef _WIN32
     // Check the TEMP environment variable to find the location.
@@ -77,9 +77,7 @@ static char *TempFile(const char *s)
 
 static int ArgumentNeedsEscape(char *arg)
 {
-    char *p;
-
-    for (p = arg; *p != '\0'; ++p)
+    for (char *p = arg; *p != '\0'; ++p)
     {
         if (isspace(*p))
         {
@@ -96,9 +94,7 @@ static int ArgumentNeedsEscape(char *arg)
 
 void PassThroughArguments(execute_context_t *context)
 {
-    int i;
-
-    for (i = 1; i < myargc; ++i)
+    for (int i = 1; i < myargc; ++i)
     {
         if (ArgumentNeedsEscape(myargv[i]))
         {
@@ -113,9 +109,7 @@ void PassThroughArguments(execute_context_t *context)
 
 execute_context_t *NewExecuteContext()
 {
-    execute_context_t *result;
-
-    result = static_cast<execute_context_t *>(malloc(sizeof(execute_context_t)));
+    auto *result = static_cast<execute_context_t *>(malloc(sizeof(execute_context_t)));
     
     result->response_file = TempFile("chocolat.rsp");
     result->stream = fopen(result->response_file, "w");
@@ -266,15 +260,14 @@ static int ExecuteCommand(const char *program, const char *arg)
 
 bool OpenFolder(const char *path)
 {
-    char *cmd;
-    int result;
+    char *cmd = nullptr;
 
 #if defined(__MACOSX__)
     cmd = M_StringJoin("open \"", path, "\"", nullptr);
 #else
     cmd = M_StringJoin("xdg-open \"", path, "\"", nullptr);
 #endif
-    result = system(cmd);
+    int result = system(cmd);
     free(cmd);
 
     return result == 0;
@@ -285,12 +278,11 @@ bool OpenFolder(const char *path)
 
 static char *GetFullExePath(const char *program)
 {
-    char *result;
-    char *sep;
-    size_t result_len;
-    unsigned int path_len;
+    char *result = nullptr;
+    size_t result_len = 0;
+    unsigned int path_len = 0;
 
-    sep = strrchr(myargv[0], DIR_SEPARATOR);
+    char *sep = strrchr(myargv[0], DIR_SEPARATOR);
 
     if (sep == nullptr)
     {

@@ -31,7 +31,7 @@
 #include "sounds.hpp"
 
 // e6y
-#define STAIRS_UNINITIALIZED_CRUSH_FIELD_VALUE 10
+constexpr auto STAIRS_UNINITIALIZED_CRUSH_FIELD_VALUE =10;
 
 //
 // FLOORS
@@ -48,8 +48,8 @@ result_e
         int               floorOrCeiling,
         int               direction)
 {
-    bool flag;
-    fixed_t lastpos;
+    bool flag = false;
+    fixed_t lastpos = 0;
 
     // [AM] Store old sector heights for interpolation.
     sector->oldfloorheight   = sector->floorheight;
@@ -206,9 +206,7 @@ result_e
 //
 void T_MoveFloor(floormove_t *floor)
 {
-    result_e res;
-
-    res = T_MovePlane(floor->sector,
+    result_e res = T_MovePlane(floor->sector,
         floor->speed,
         floor->floordestheight,
         floor->crush, 0, floor->direction);
@@ -251,16 +249,14 @@ void T_MoveFloor(floormove_t *floor)
 // [crispy] easter egg: homage to an old friend (thinker)
 void T_MoveGoobers(floormove_t *floor)
 {
-    result_e res1, res2;
-
     // [crispy] one thinker for the floors ...
-    res1 = T_MovePlane(floor->sector, 2 * FLOORSPEED, 0,
+    result_e res1 = T_MovePlane(floor->sector, 2 * FLOORSPEED, 0,
         true, 0, (floor->direction & 1) * 2 - 1);
     // [crispy] ... and one for the ceilings
     // * floordestheight is actually the ceiling destination height (either 0 or 128)
     // * the 5th argument is "floorOrCeiling"
     // * the actual direction is given by the second-lowest bit of the "direction" field
-    res2 = T_MovePlane(floor->sector, 2 * FLOORSPEED, floor->floordestheight,
+    result_e res2 = T_MovePlane(floor->sector, 2 * FLOORSPEED, floor->floordestheight,
         true, 1, (floor->direction >> 1) * 2 - 1);
 
     if (!(leveltime & 7))
@@ -280,16 +276,13 @@ void T_MoveGoobers(floormove_t *floor)
 }
 
 // [crispy] easter egg: homage to an old friend
-void EV_DoGoobers()
+[[maybe_unused]] void EV_DoGoobers()
 {
-    int i;
-
-    for (i = 0; i < numsectors; i++)
+    for (int i = 0; i < numsectors; i++)
     {
-        sector_t *   sec;
-        floormove_t *floor;
+        floormove_t *floor = nullptr;
 
-        sec = &sectors[i];
+        sector_t *sec = &sectors[i];
 
         // [crispy] remove thinker for sectors that are already moving
         if (sec->specialdata)

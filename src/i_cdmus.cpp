@@ -22,7 +22,7 @@
 
 [[maybe_unused]] int cd_Error;
 
-int I_CDMusInit()
+[[maybe_unused]] int I_CDMusInit()
 {
     fprintf(stderr,
         "I_CDMusInit: CD music playback is no longer supported! "
@@ -34,41 +34,41 @@ int I_CDMusInit()
 // We cannot print status messages inline during startup, they must
 // be deferred until after I_CDMusInit has returned.
 
-void I_CDMusPrintStartup()
+[[maybe_unused]] void I_CDMusPrintStartup()
 {
 }
 
-int I_CDMusPlay(int)
-{
-    return 0;
-}
-
-int I_CDMusStop()
+[[maybe_unused]] int I_CDMusPlay(int)
 {
     return 0;
 }
 
-int I_CDMusResume()
+[[maybe_unused]] int I_CDMusStop()
 {
     return 0;
 }
 
-int I_CDMusSetVolume(int)
+[[maybe_unused]] int I_CDMusResume()
 {
     return 0;
 }
 
-int I_CDMusFirstTrack()
+[[maybe_unused]] int I_CDMusSetVolume(int)
 {
     return 0;
 }
 
-int I_CDMusLastTrack()
+[[maybe_unused]] int I_CDMusFirstTrack()
 {
     return 0;
 }
 
-int I_CDMusTrackLength(int)
+[[maybe_unused]] int I_CDMusLastTrack()
+{
+    return 0;
+}
+
+[[maybe_unused]] int I_CDMusTrackLength(int)
 {
     return 0;
 }

@@ -124,11 +124,11 @@ extern int musicVolume;
 //  w/o a reference LUT in a sound module.
 // Ideally, this would use indices found
 //  in: /usr/include/linux/soundcard.h
-extern int snd_MusicDevice;
-extern int snd_SfxDevice;
+[[maybe_unused]] extern int snd_MusicDevice;
+[[maybe_unused]] extern int snd_SfxDevice;
 // Config file? Same disclaimer as above.
-extern int snd_DesiredMusicDevice;
-extern int snd_DesiredSfxDevice;
+[[maybe_unused]] extern int snd_DesiredMusicDevice;
+[[maybe_unused]] extern int snd_DesiredSfxDevice;
 
 
 // -------------------------
@@ -138,7 +138,7 @@ extern int snd_DesiredSfxDevice;
 // Depending on view size - no status bar?
 // Note that there is no way to disable the
 //  status bar explicitely.
-extern bool statusbaractive;
+[[maybe_unused]] extern bool statusbaractive;
 
 extern bool automapactive; // In AutoMap mode?
 extern bool menuactive;    // Menu overlayed?
@@ -173,7 +173,7 @@ extern int totalsecret;
 extern int extrakills; // [crispy] count spawned monsters
 
 // Timer, for scores.
-extern int levelstarttic;   // gametic at level start
+[[maybe_unused]] extern int levelstarttic;   // gametic at level start
 extern int leveltime;       // tics in game play for par
 extern int totalleveltimes; // [crispy] CPhipps - total time for all completed levels
 
@@ -216,7 +216,7 @@ extern bool playeringame[MAXPLAYERS];
 
 
 // Player spawn spots for deathmatch.
-#define MAX_DM_STARTS 10
+constexpr auto MAX_DM_STARTS =10;
 extern mapthing_t  deathmatchstarts[MAX_DM_STARTS];
 extern mapthing_t *deathmatch_p;
 

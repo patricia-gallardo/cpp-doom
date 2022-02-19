@@ -28,9 +28,7 @@ actionf_t codeptrs[NUMSTATES]; // [crispy] share with deh_bexptr.c
 
 static int CodePointerIndex(actionf_t *ptr)
 {
-    int i;
-
-    for (i = 0; i < NUMSTATES; ++i)
+    for (int i = 0; i < NUMSTATES; ++i)
     {
         if (!memcmp(&codeptrs[i], ptr, sizeof(actionf_t)))
         {
@@ -43,7 +41,7 @@ static int CodePointerIndex(actionf_t *ptr)
 
 static void DEH_PointerInit()
 {
-    int i;
+    int i = 0;
 
     // Initialize list of dehacked pointers
 
@@ -89,9 +87,9 @@ static void *DEH_PointerStart(deh_context_t *context, char *line)
 
 static void DEH_PointerParseLine(deh_context_t *context, char *line, void *tag)
 {
-    state_t *state;
-    char    *variable_name, *value;
-    int      ivalue;
+    state_t *state = nullptr;
+    char    *variable_name = nullptr, *value = nullptr;
+    int      ivalue = 0;
 
     if (tag == nullptr) return;
 
@@ -133,11 +131,9 @@ static void DEH_PointerParseLine(deh_context_t *context, char *line, void *tag)
 
 static void DEH_PointerSHA1Sum(sha1_context_t *context)
 {
-    int i;
-
-    for (i = 0; i < NUMSTATES; ++i)
+    for (auto & state : states)
     {
-        SHA1_UpdateInt32(context, CodePointerIndex(&states[i].action));
+        SHA1_UpdateInt32(context, CodePointerIndex(&state.action));
     }
 }
 

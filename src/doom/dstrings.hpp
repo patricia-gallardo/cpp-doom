@@ -32,7 +32,7 @@
 
 // QuitDOOM messages
 // 8 per each game type
-#define NUM_QUITMESSAGES 8
+constexpr auto NUM_QUITMESSAGES =8;
 
 extern const char *doom1_endmsg[];
 extern const char *doom2_endmsg[];

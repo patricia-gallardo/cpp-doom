@@ -34,7 +34,7 @@
 constexpr auto OPL_WRITEBUF_SIZE  = 1024;
 constexpr auto OPL_WRITEBUF_DELAY = 2;
 
-using Bits   = intptr_t;
+using Bits [[maybe_unused]] = intptr_t;
 using Bit64u = uint64_t;
 using Bit32u = uint32_t;
 using Bit32s = int32_t;

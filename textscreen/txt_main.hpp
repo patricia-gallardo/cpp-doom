@@ -38,13 +38,13 @@
 
 // Special keypress values that correspond to mouse button clicks
 
-#define TXT_MOUSE_BASE         256
+constexpr auto TXT_MOUSE_BASE         =256;
 #define TXT_MOUSE_LEFT         (TXT_MOUSE_BASE + 0)
 #define TXT_MOUSE_RIGHT        (TXT_MOUSE_BASE + 1)
 #define TXT_MOUSE_MIDDLE       (TXT_MOUSE_BASE + 2)
 #define TXT_MOUSE_SCROLLUP     (TXT_MOUSE_BASE + 3)
 #define TXT_MOUSE_SCROLLDOWN   (TXT_MOUSE_BASE + 4)
-#define TXT_MAX_MOUSE_BUTTONS  16
+constexpr auto TXT_MAX_MOUSE_BUTTONS  =16;
 
 #define TXT_KEY_TO_MOUSE_BUTTON(x)                                        \
         ( (x) >= TXT_MOUSE_BASE                                           \
@@ -54,7 +54,7 @@
 // Unicode offset. Unicode values from 128 onwards are offset up into
 // this range, so TXT_UNICODE_BASE = Unicode character #128, and so on.
 
-#define TXT_UNICODE_BASE       512
+constexpr auto TXT_UNICODE_BASE       =512;
 
 // Convert a key value to a Unicode character:
 
@@ -69,8 +69,8 @@
 
 // Screen size
 
-#define TXT_SCREEN_W 80
-#define TXT_SCREEN_H 25
+constexpr auto TXT_SCREEN_W =80;
+constexpr auto TXT_SCREEN_H =25;
 
 #define TXT_COLOR_BLINKING (1 << 3)
 
@@ -78,18 +78,18 @@ enum txt_color_t
 {
     TXT_COLOR_BLACK,
     TXT_COLOR_BLUE,
-    TXT_COLOR_GREEN,
+    TXT_COLOR_GREEN [[maybe_unused]],
     TXT_COLOR_CYAN,
-    TXT_COLOR_RED,
-    TXT_COLOR_MAGENTA,
-    TXT_COLOR_BROWN,
+    TXT_COLOR_RED [[maybe_unused]],
+    TXT_COLOR_MAGENTA [[maybe_unused]],
+    TXT_COLOR_BROWN [[maybe_unused]],
     TXT_COLOR_GREY,
     TXT_COLOR_DARK_GREY,
-    TXT_COLOR_BRIGHT_BLUE,
+    TXT_COLOR_BRIGHT_BLUE [[maybe_unused]],
     TXT_COLOR_BRIGHT_GREEN,
     TXT_COLOR_BRIGHT_CYAN,
-    TXT_COLOR_BRIGHT_RED,
-    TXT_COLOR_BRIGHT_MAGENTA,
+    TXT_COLOR_BRIGHT_RED [[maybe_unused]],
+    TXT_COLOR_BRIGHT_MAGENTA [[maybe_unused]],
     TXT_COLOR_YELLOW,
     TXT_COLOR_BRIGHT_WHITE,
 };
@@ -101,7 +101,7 @@ enum txt_modifier_t
     TXT_MOD_SHIFT,
     TXT_MOD_CTRL,
     TXT_MOD_ALT,
-    TXT_NUM_MODIFIERS
+    TXT_NUM_MODIFIERS [[maybe_unused]]
 };
 
 // Due to the way the SDL API works, we provide different ways of configuring

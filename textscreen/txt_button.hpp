@@ -32,7 +32,7 @@ using txt_button_t = struct txt_button_s;
 
 #include "txt_widget.hpp"
 
-struct txt_button_s
+struct [[maybe_unused]] txt_button_s
 {
     txt_widget_t widget;
     char *label{};

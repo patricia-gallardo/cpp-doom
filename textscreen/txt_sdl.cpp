@@ -51,7 +51,7 @@ typedef struct
 
 // Time between character blinks in ms
 
-#define BLINK_PERIOD 250
+constexpr auto BLINK_PERIOD =250;
 
 SDL_Window *TXT_SDLWindow;
 static SDL_Surface *screenbuffer;
@@ -137,7 +137,6 @@ static int Win32_UseLargeFont()
 
 static const txt_font_t *FontForName(const char *name)
 {
-    int i;
     const txt_font_t *fonts[] =
     {
         &small_font,
@@ -147,7 +146,7 @@ static const txt_font_t *FontForName(const char *name)
         nullptr,
     };
 
-    for (i = 0; fonts[i]->name != nullptr; ++i)
+    for (int i = 0; fonts[i]->name != nullptr; ++i)
     {
         if (!strcmp(fonts[i]->name, name))
         {
@@ -167,10 +166,9 @@ static const txt_font_t *FontForName(const char *name)
 static void ChooseFont()
 {
     SDL_DisplayMode desktop_info;
-    char *env;
 
     // Allow normal selection to be overridden from an environment variable:
-    env = getenv("TEXTSCREEN_FONT");
+    char *env = getenv("TEXTSCREEN_FONT");
     if (env != nullptr)
     {
         font = FontForName(env);
@@ -326,18 +324,11 @@ unsigned char *TXT_GetScreenData()
 
 static inline void UpdateCharacter(int x, int y)
 {
-    unsigned char character;
-    const uint8_t *p;
-    unsigned char *s, *s1;
-    unsigned int bit;
-    int bg, fg;
-    unsigned int x1, y1;
+    const uint8_t *p = &screendata[(y * TXT_SCREEN_W + x) * 2];
+    unsigned char character = p[0];
 
-    p = &screendata[(y * TXT_SCREEN_W + x) * 2];
-    character = p[0];
-
-    fg = p[1] & 0xf;
-    bg = (p[1] >> 4) & 0xf;
+    int fg = p[1] & 0xf;
+    int bg = (p[1] >> 4) & 0xf;
 
     if (bg & 0x8)
     {
@@ -353,17 +344,18 @@ static inline void UpdateCharacter(int x, int y)
 
     // How many bytes per line?
     p = &font->data[(character * font->w * font->h) / 8];
-    bit = 0;
 
-    s = (reinterpret_cast<unsigned char *>(screenbuffer->pixels))
+    unsigned int bit = 0;
+
+    unsigned char *s = (reinterpret_cast<unsigned char *>(screenbuffer->pixels))
       + (static_cast<unsigned int>(y) * font->h * static_cast<unsigned int>(screenbuffer->pitch))
       + (static_cast<unsigned int>(x) * font->w);
 
-    for (y1=0; y1<font->h; ++y1)
+    for (unsigned int y1=0; y1<font->h; ++y1)
     {
-        s1 = s;
+        unsigned char *s1 = s;
 
-        for (x1=0; x1<font->w; ++x1)
+        for (unsigned int x1=0; x1<font->w; ++x1)
         {
             if (*p & (1 << bit))
             {
@@ -404,7 +396,7 @@ static int LimitToRange(int val, int min, int max)
 
 static void GetDestRect(SDL_Rect *rect)
 {
-    int w, h;
+    int w = 0, h = 0;
 
     SDL_GetRendererOutputSize(renderer, &w, &h);
     rect->x = (w - screenbuffer->w) / 2;
@@ -415,22 +407,16 @@ static void GetDestRect(SDL_Rect *rect)
 
 void TXT_UpdateScreenArea(int x, int y, int w, int h)
 {
-    SDL_Texture *screentx;
-    SDL_Rect rect;
-    int x1, y1;
-    int x_end;
-    int y_end;
-
     SDL_LockSurface(screenbuffer);
 
-    x_end = LimitToRange(x + w, 0, TXT_SCREEN_W);
-    y_end = LimitToRange(y + h, 0, TXT_SCREEN_H);
+    int x_end = LimitToRange(x + w, 0, TXT_SCREEN_W);
+    int y_end = LimitToRange(y + h, 0, TXT_SCREEN_H);
     x = LimitToRange(x, 0, TXT_SCREEN_W);
     y = LimitToRange(y, 0, TXT_SCREEN_H);
 
-    for (y1=y; y1<y_end; ++y1)
+    for (int y1=y; y1<y_end; ++y1)
     {
-        for (x1=x; x1<x_end; ++x1)
+        for (int x1=x; x1<x_end; ++x1)
         {
             UpdateCharacter(x1, y1);
         }
@@ -442,9 +428,10 @@ void TXT_UpdateScreenArea(int x, int y, int w, int h)
 
     // TODO: This is currently creating a new texture every time we render
     // the screen; find a more efficient way to do it.
-    screentx = SDL_CreateTextureFromSurface(renderer, screenbuffer);
+    SDL_Texture *screentx = SDL_CreateTextureFromSurface(renderer, screenbuffer);
 
     SDL_RenderClear(renderer);
+    SDL_Rect rect;
     GetDestRect(&rect);
     SDL_RenderCopy(renderer, screentx, nullptr, &rect);
     SDL_RenderPresent(renderer);
@@ -459,18 +446,16 @@ void TXT_UpdateScreen()
 
 void TXT_GetMousePosition(int *x, int *y)
 {
-    int window_w, window_h;
-    int origin_x, origin_y;
-
     SDL_GetMouseState(x, y);
 
     // Translate mouse position from 'pixel' position into character position.
     // We are working here in screen coordinates and not pixels, since this is
     // what SDL_GetWindowSize() returns; we must calculate and subtract the
     // origin position since we center the image within the window.
+    int window_w = 0, window_h = 0;
     SDL_GetWindowSize(TXT_SDLWindow, &window_w, &window_h);
-    origin_x = (window_w - screen_image_w) / 2;
-    origin_y = (window_h - screen_image_h) / 2;
+    int origin_x = (window_w - screen_image_w) / 2;
+    int origin_y = (window_h - screen_image_h) / 2;
     *x = ((*x - origin_x) * TXT_SCREEN_W) / screen_image_w;
     *y = ((*y - origin_y) * TXT_SCREEN_H) / screen_image_h;
 
@@ -530,12 +515,10 @@ static int TranslateScancode(SDL_Scancode scancode)
 
 static int TranslateKeysym(const SDL_Keysym *sym)
 {
-    int translated;
-
     // We cheat here and make use of TranslateScancode. The range of keys
     // associated with printable characters is pretty contiguous, so if it's
     // inside that range we want the localized version of the key instead.
-    translated = TranslateScancode(sym->scancode);
+    int translated = TranslateScancode(sym->scancode);
 
     if (translated >= 0x20 && translated < 0x7f)
     {
@@ -583,8 +566,8 @@ static int SDLWheelToTXTButton(const SDL_MouseWheelEvent *wheel)
 static int MouseHasMoved()
 {
     static int last_x = 0, last_y = 0;
-    int x, y;
 
+    int x = 0, y = 0;
     TXT_GetMousePosition(&x, &y);
 
     if (x != last_x || y != last_y)
@@ -681,9 +664,7 @@ signed int TXT_GetChar()
 
 int TXT_GetModifierState(txt_modifier_t mod)
 {
-    SDL_Keymod state;
-
-    state = SDL_GetModState();
+    SDL_Keymod state = SDL_GetModState();
 
     switch (mod)
     {
@@ -717,13 +698,10 @@ int TXT_UnicodeCharacter(unsigned int c)
 // Returns true if the given UTF8 key name is printable to the screen.
 static int PrintableName(const char *s)
 {
-    const char *p;
-    unsigned int c;
-
-    p = s;
+    const char *p = s;
     while (*p != '\0')
     {
-        c = TXT_DecodeUTF8(&p);
+        unsigned int c = TXT_DecodeUTF8(&p);
         if (TXT_UnicodeCharacter(c) < 0)
         {
             return 0;
@@ -777,17 +755,14 @@ static const char *NameForKey(int key)
 
 void TXT_GetKeyDescription(int key, char *buf, size_t buf_len)
 {
-    const char *keyname;
-    int i;
-
-    keyname = NameForKey(key);
+    const char *keyname = NameForKey(key);
 
     if (keyname != nullptr)
     {
         TXT_StringCopy(buf, keyname, buf_len);
 
         // Key description should be all-uppercase to match setup.exe.
-        for (i = 0; buf[i] != '\0'; ++i)
+        for (int i = 0; buf[i] != '\0'; ++i)
         {
             buf[i] = static_cast<char>(toupper(buf[i]));
         }
@@ -803,16 +778,13 @@ void TXT_GetKeyDescription(int key, char *buf, size_t buf_len)
 
 int TXT_ScreenHasBlinkingChars()
 {
-    int x, y;
-    unsigned char *p;
-
     // Check all characters in screen buffer
 
-    for (y=0; y<TXT_SCREEN_H; ++y)
+    for (int y=0; y<TXT_SCREEN_H; ++y)
     {
-        for (x=0; x<TXT_SCREEN_W; ++x) 
+        for (int x=0; x<TXT_SCREEN_W; ++x)
         {
-            p = &screendata[(y * TXT_SCREEN_W + x) * 2];
+            unsigned char *p = &screendata[(y * TXT_SCREEN_W + x) * 2];
 
             if (p[1] & 0x80)
             {
@@ -833,13 +805,9 @@ int TXT_ScreenHasBlinkingChars()
 
 void TXT_Sleep(int timeout)
 {
-    unsigned int start_time;
-
     if (TXT_ScreenHasBlinkingChars())
     {
-        int time_to_next_blink;
-
-        time_to_next_blink = BLINK_PERIOD - (SDL_GetTicks() % BLINK_PERIOD);
+        int time_to_next_blink = BLINK_PERIOD - (SDL_GetTicks() % BLINK_PERIOD);
 
         // There are blinking characters on the screen, so we 
         // must time out after a while
@@ -863,7 +831,7 @@ void TXT_Sleep(int timeout)
         // Sit in a busy loop until the timeout expires or we have to
         // redraw the blinking screen
 
-        start_time = SDL_GetTicks();
+        unsigned int start_time = SDL_GetTicks();
 
         while (SDL_GetTicks() < start_time + static_cast<unsigned int>(timeout))
         {
@@ -921,9 +889,7 @@ void TXT_StringCopy(char *dest, const char *src, size_t dest_len)
 
 void TXT_StringConcat(char *dest, const char *src, size_t dest_len)
 {
-    size_t offset;
-
-    offset = strlen(dest);
+    size_t offset = strlen(dest);
     if (offset > dest_len)
     {
         offset = dest_len;
@@ -967,9 +933,8 @@ int TXT_vsnprintf(char *buf, size_t buf_len, const char *s, va_list args)
 int TXT_snprintf(char *buf, size_t buf_len, const char *s, ...)
 {
     va_list args;
-    int result;
     va_start(args, s);
-    result = TXT_vsnprintf(buf, buf_len, s, args);
+    int result = TXT_vsnprintf(buf, buf_len, s, args);
     va_end(args);
     return result;
 }

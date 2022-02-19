@@ -43,11 +43,9 @@ static void TXT_SeparatorSizeCalc(void *uncast_separator)
 static void TXT_SeparatorDrawer(void *uncast_separator)
 {
     auto *separator = reinterpret_cast<txt_separator_t *>(uncast_separator);
-    int x, y;
-    int w;
+    int w = static_cast<int>(separator->widget.w);
 
-    w = static_cast<int>(separator->widget.w);
-
+    int x = 0, y = 0;
     TXT_GetXY(&x, &y);
 
     // Draw separator.  Go back one character and draw two extra

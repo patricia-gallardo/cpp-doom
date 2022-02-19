@@ -191,7 +191,7 @@ void TXT_SetFGColor(txt_label_t *label, txt_color_t color)
     label->fgcolor = color;
 }
 
-void TXT_SetBGColor(txt_label_t *label, txt_color_t color)
+[[maybe_unused]] void TXT_SetBGColor(txt_label_t *label, txt_color_t color)
 {
     label->bgcolor = color;
 }

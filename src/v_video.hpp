@@ -44,7 +44,7 @@ extern bool dp_translucent;
 // haleyjd 08/28/10: Patch clipping callback, implemented to support Choco
 // Strife.
 using vpatchclipfunc_t = bool (*)(patch_t *, int, int);
-void V_SetPatchClipCallback(vpatchclipfunc_t func);
+[[maybe_unused]] void V_SetPatchClipCallback(vpatchclipfunc_t func);
 
 
 // Allocates buffer screens, call before R_Init.
@@ -58,17 +58,17 @@ void V_CopyRect(int srcx, int srcy, pixel_t *source,
 
 void V_DrawPatch(int x, int y, patch_t *patch);
 void V_DrawPatchFlipped(int x, int y, patch_t *patch);
-void V_DrawTLPatch(int x, int y, patch_t *patch);
-void V_DrawAltTLPatch(int x, int y, patch_t *patch);
-void V_DrawShadowedPatch(int x, int y, patch_t *patch);
-void V_DrawXlaPatch(int x, int y, patch_t *patch); // villsa [STRIFE]
+[[maybe_unused]] void V_DrawTLPatch(int x, int y, patch_t *patch);
+[[maybe_unused]] void V_DrawAltTLPatch(int x, int y, patch_t *patch);
+[[maybe_unused]] void V_DrawShadowedPatch(int x, int y, patch_t *patch);
+[[maybe_unused]] void V_DrawXlaPatch(int x, int y, patch_t *patch); // villsa [STRIFE]
 void V_DrawPatchDirect(int x, int y, patch_t *patch);
 void V_DrawPatchFullScreen(patch_t *patch, bool flipped);
 
 // Draw a linear block of pixels into the view buffer.
 
 void V_DrawBlock(int x, int y, int width, int height, pixel_t *src);
-void V_DrawScaledBlock(int x, int y, int width, int height, pixel_t *src);
+[[maybe_unused]] void V_DrawScaledBlock(int x, int y, int width, int height, pixel_t *src);
 
 void V_MarkRect(int x, int y, int width, int height);
 
@@ -80,7 +80,7 @@ void V_CopyScaledBuffer(pixel_t *dest, pixel_t *src, size_t size);
 
 // Draw a raw screen lump
 
-void V_DrawRawScreen(pixel_t *raw);
+[[maybe_unused]] void V_DrawRawScreen(pixel_t *raw);
 
 // Temporarily switch to using a different buffer to draw graphics, etc.
 
@@ -99,13 +99,13 @@ void V_ScreenShot(const char *format);
 // Load the lookup table for translucency calculations from the TINTTAB
 // lump.
 
-void V_LoadTintTable();
+[[maybe_unused]] void V_LoadTintTable();
 
 // villsa [STRIFE]
 // Load the lookup table for translucency calculations from the XLATAB
 // lump.
 
-void V_LoadXlaTable();
+[[maybe_unused]] void V_LoadXlaTable();
 
 void V_DrawMouseSpeedBox(int speed);
 

@@ -156,7 +156,7 @@ void TXT_RestoreColors(txt_saved_colors_t *save)
     fgcolor = save->fgcolor;
 }
 
-void TXT_ClearScreen()
+[[maybe_unused]] void TXT_ClearScreen()
 {
     unsigned char *screen;
     int i;

@@ -32,8 +32,8 @@
 enum
 {
     PU_STATIC = 1, // static entire execution time
-    PU_SOUND,      // static while playing
-    PU_MUSIC,      // static while playing
+    PU_SOUND [[maybe_unused]],      // static while playing
+    PU_MUSIC [[maybe_unused]],      // static while playing
     PU_FREE,       // a free block
     PU_LEVEL,      // static until level exited
     PU_LEVSPEC,    // a special thinker in a level
@@ -54,7 +54,7 @@ void *       Z_Malloc(int size, int tag, void *ptr);
 void         Z_Free(void *ptr);
 void         Z_FreeTags(int lowtag, int hightag);
 [[maybe_unused]] void         Z_DumpHeap(int lowtag, int hightag);
-void         Z_FileDumpHeap(FILE *f);
+[[maybe_unused]] void         Z_FileDumpHeap(FILE *f);
 void         Z_CheckHeap();
 void         Z_ChangeTag2(void *ptr, int tag, const char *file, int line);
 [[maybe_unused]] void         Z_ChangeUser(void *ptr, void **user);

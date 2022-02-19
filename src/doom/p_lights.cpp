@@ -34,12 +34,10 @@
 //
 void T_FireFlicker(fireflicker_t *flick)
 {
-    int amount;
-
     if (--flick->count)
         return;
 
-    amount = (P_Random() & 3) * 16;
+    int amount = (P_Random() & 3) * 16;
 
     if (flick->sector->lightlevel - amount < flick->minlight)
         flick->sector->lightlevel = static_cast<short>(flick->minlight);
@@ -105,12 +103,10 @@ void T_LightFlash(lightflash_t *flash)
 //
 void P_SpawnLightFlash(sector_t *sector)
 {
-    lightflash_t *flash;
-
     // nothing special about it during gameplay
     sector->special = 0;
 
-    flash = zmalloc<decltype(flash)>(sizeof(*flash), PU_LEVSPEC, 0);
+    lightflash_t *flash = zmalloc<decltype(flash)>(sizeof(*flash), PU_LEVSPEC, 0);
 
     P_AddThinker(&flash->thinker);
 
@@ -160,9 +156,7 @@ void P_SpawnStrobeFlash(sector_t *sector,
     int                           fastOrSlow,
     int                           inSync)
 {
-    strobe_t *flash;
-
-    flash = zmalloc<decltype(flash)>(sizeof(*flash), PU_LEVSPEC, 0);
+    strobe_t *flash = zmalloc<decltype(flash)>(sizeof(*flash), PU_LEVSPEC, 0);
 
     P_AddThinker(&flash->thinker);
 
@@ -191,10 +185,9 @@ void P_SpawnStrobeFlash(sector_t *sector,
 //
 void EV_StartLightStrobing(line_t *line)
 {
-    int       secnum;
-    sector_t *sec;
+    sector_t *sec = nullptr;
 
-    secnum = -1;
+    int secnum = -1;
     while ((secnum = P_FindSectorFromLineTag(line, secnum)) >= 0)
     {
         sec = &sectors[secnum];
@@ -314,9 +307,7 @@ void T_Glow(glow_t *g)
 
 void P_SpawnGlowingLight(sector_t *sector)
 {
-    glow_t *g;
-
-    g = zmalloc<decltype(g)>(sizeof(*g), PU_LEVSPEC, 0);
+    glow_t *g = zmalloc<decltype(g)>(sizeof(*g), PU_LEVSPEC, 0);
 
     P_AddThinker(&g->thinker);
 

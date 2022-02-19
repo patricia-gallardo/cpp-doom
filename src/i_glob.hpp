@@ -19,8 +19,8 @@
 #ifndef __I_GLOB__
 #define __I_GLOB__
 
-#define GLOB_FLAG_NOCASE 0x01
-#define GLOB_FLAG_SORTED 0x02
+constexpr auto GLOB_FLAG_NOCASE = 0x01;
+constexpr auto GLOB_FLAG_SORTED = 0x02;
 
 using glob_t = struct glob_s;
 

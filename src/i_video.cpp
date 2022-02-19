@@ -50,7 +50,9 @@
 #include "v_video.hpp"
 #include "z_zone.hpp"
 
-int SCREENWIDTH, SCREENHEIGHT, SCREENHEIGHT_4_3;
+int SCREENWIDTH;
+int SCREENHEIGHT;
+[[maybe_unused]] int SCREENHEIGHT_4_3;
 int HIRESWIDTH; // [crispy] non-widescreen SCREENWIDTH
 int DELTAWIDTH; // [crispy] horizontal widescreen offset
 
@@ -212,7 +214,7 @@ static bool window_focused = true;
 
 static bool      need_resize = false;
 static unsigned int last_resize_time;
-#define RESIZE_DELAY 500
+constexpr auto RESIZE_DELAY = 500;
 
 // Gamma correction level to use
 

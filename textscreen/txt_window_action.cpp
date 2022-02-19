@@ -44,12 +44,11 @@ static void TXT_WindowActionSizeCalc(void *uncast_action)
 static void TXT_WindowActionDrawer(void *uncast_action)
 {
     auto *action = reinterpret_cast<txt_window_action_t *>(uncast_action);
-    int hovering;
     char buf[10];
 
     TXT_GetKeyDescription(action->key, buf, sizeof(buf));
 
-    hovering = TXT_HoveringOverWidget(action);
+    int hovering = TXT_HoveringOverWidget(action);
     TXT_SetWidgetBG(action);
 
     TXT_DrawString(" ");
@@ -136,9 +135,7 @@ static void WindowSelectCallback(void *, void *uncast_window)
 
 txt_window_action_t *TXT_NewWindowEscapeAction(txt_window_t *window)
 {
-    txt_window_action_t *action;
-
-    action = TXT_NewWindowAction(KEY_ESCAPE, "Close");
+    txt_window_action_t *action = TXT_NewWindowAction(KEY_ESCAPE, "Close");
     TXT_SignalConnect(action, "pressed", WindowCloseCallback, window);
 
     return action;
@@ -148,9 +145,7 @@ txt_window_action_t *TXT_NewWindowEscapeAction(txt_window_t *window)
 
 txt_window_action_t *TXT_NewWindowAbortAction(txt_window_t *window)
 {
-    txt_window_action_t *action;
-
-    action = TXT_NewWindowAction(KEY_ESCAPE, "Abort");
+    txt_window_action_t *action = TXT_NewWindowAction(KEY_ESCAPE, "Abort");
     TXT_SignalConnect(action, "pressed", WindowCloseCallback, window);
 
     return action;
@@ -158,9 +153,7 @@ txt_window_action_t *TXT_NewWindowAbortAction(txt_window_t *window)
 
 txt_window_action_t *TXT_NewWindowSelectAction(txt_window_t *window)
 {
-    txt_window_action_t *action;
-
-    action = TXT_NewWindowAction(KEY_ENTER, "Select");
+    txt_window_action_t *action = TXT_NewWindowAction(KEY_ENTER, "Select");
     TXT_SignalConnect(action, "pressed", WindowSelectCallback, window);
 
     return action;

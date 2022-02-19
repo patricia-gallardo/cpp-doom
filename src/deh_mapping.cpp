@@ -118,7 +118,7 @@ bool DEH_SetMapping(deh_context_t *context, deh_mapping_t *mapping,
 // Set the value of a string field in a structure by name
 //
 
-bool DEH_SetStringMapping(deh_context_t *context, deh_mapping_t *mapping,
+[[maybe_unused]] bool DEH_SetStringMapping(deh_context_t *context, deh_mapping_t *mapping,
     void *structptr, char *name, char *value)
 {
     deh_mapping_entry_t *entry = GetMappingEntryByName(context, mapping, name);

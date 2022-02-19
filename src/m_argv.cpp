@@ -21,13 +21,13 @@
 #include <cstdlib>
 #include <cstring>
 
-#include "SDL_stdinc.h"
-
 #include "i_system.hpp"
 #include "m_misc.hpp"
 #include "m_argv.hpp" // haleyjd 20110212: warning fix
+
 #ifdef WIN32
 #include "d_iwad.hpp"
+#include "SDL_stdinc.h"
 #endif
 
 int    myargc;
@@ -44,9 +44,7 @@ char **myargv;
 
 int M_CheckParmWithArgs(const char *check, int num_args)
 {
-    int i;
-
-    for (i = 1; i < myargc - num_args; i++)
+    for (int i = 1; i < myargc - num_args; i++)
     {
         if (!strcasecmp(check, myargv[i]))
             return i;

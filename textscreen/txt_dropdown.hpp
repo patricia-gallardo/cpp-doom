@@ -39,7 +39,7 @@ using txt_dropdown_list_t = struct txt_dropdown_list_s;
 // Drop-down list box.
 // 
 
-struct txt_dropdown_list_s
+struct [[maybe_unused]] txt_dropdown_list_s
 {
     txt_widget_t widget;
     int *variable{};

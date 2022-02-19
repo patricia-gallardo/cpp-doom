@@ -19,16 +19,18 @@
 #ifndef I_VIDEOHR_H
 #define I_VIDEOHR_H
 
-bool I_SetVideoModeHR();
-void    I_UnsetVideoModeHR();
-void    I_SetWindowTitleHR(const char *title);
-void    I_ClearScreenHR();
+#include <cstdint>
+
+[[maybe_unused]] bool I_SetVideoModeHR();
+[[maybe_unused]] void    I_UnsetVideoModeHR();
+[[maybe_unused]] void    I_SetWindowTitleHR(const char *title);
+[[maybe_unused]] void    I_ClearScreenHR();
 void    I_SlamBlockHR(int x, int y, int w, int h, const uint8_t *src);
-void    I_SlamHR(const uint8_t *buffer);
-void    I_InitPaletteHR();
+[[maybe_unused]] void    I_SlamHR(const uint8_t *buffer);
+[[maybe_unused]] void    I_InitPaletteHR();
 void    I_SetPaletteHR(const uint8_t *palette);
-void    I_FadeToPaletteHR(const uint8_t *palette);
-void    I_BlackPaletteHR();
-bool I_CheckAbortHR();
+[[maybe_unused]] void    I_FadeToPaletteHR(const uint8_t *palette);
+[[maybe_unused]] void    I_BlackPaletteHR();
+[[maybe_unused]] bool I_CheckAbortHR();
 
 #endif /* #ifndef I_VIDEOHR_H */

@@ -35,9 +35,9 @@ using txt_label_t = struct txt_label_s;
 struct txt_label_s
 {
     txt_widget_t widget;
-    char *label;
-    char **lines;
-    unsigned int w, h;
+    char *label{};
+    char **lines{};
+    unsigned int w{}, h{};
     txt_color_t fgcolor;
     txt_color_t bgcolor;
 };
@@ -67,7 +67,7 @@ void TXT_SetLabel(txt_label_t *label, const char *value);
  * @param color         The background color to use.
  */
 
-void TXT_SetBGColor(txt_label_t *label, txt_color_t color);
+[[maybe_unused]] void TXT_SetBGColor(txt_label_t *label, txt_color_t color);
 
 /**
  * Set the foreground color of a label widget.

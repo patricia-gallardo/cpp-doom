@@ -31,23 +31,23 @@
         value, sizeof(value) - 1, parameters, 0, 0, "" \
     }
 
-#define MAX_CHEAT_LEN    25
-#define MAX_CHEAT_PARAMS 5
+constexpr auto MAX_CHEAT_LEN    = 25;
+constexpr auto MAX_CHEAT_PARAMS = 5;
 
-typedef struct
+struct cheatseq_t
 {
     // settings for this cheat
 
-    char   sequence[MAX_CHEAT_LEN];
-    size_t sequence_len;
-    int    parameter_chars;
+    char   sequence[MAX_CHEAT_LEN]{};
+    size_t sequence_len{};
+    int    parameter_chars{};
 
     // state used during the game
 
-    size_t chars_read;
-    int    param_chars_read;
-    char   parameter_buf[MAX_CHEAT_PARAMS];
-} cheatseq_t;
+    size_t chars_read{};
+    int    param_chars_read{};
+    char   parameter_buf[MAX_CHEAT_PARAMS]{};
+};
 
 int cht_CheckCheat(cheatseq_t *cht,
     char                       key);

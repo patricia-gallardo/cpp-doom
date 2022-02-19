@@ -51,9 +51,7 @@ static int FullHeight(txt_scrollpane_t *scrollpane)
 
 static int NeedsScrollbars(txt_scrollpane_t *scrollpane)
 {
-    int result;
-
-    result = 0;
+    int result = 0;
 
     if (FullWidth(scrollpane) > scrollpane->w)
     {
@@ -71,10 +69,7 @@ static int NeedsScrollbars(txt_scrollpane_t *scrollpane)
 
 static void SanityCheckScrollbars(txt_scrollpane_t *scrollpane)
 {
-    int scrollbars;
-    int max_x, max_y;
-
-    scrollbars = NeedsScrollbars(scrollpane);
+    int scrollbars = NeedsScrollbars(scrollpane);
 
     if ((scrollbars & SCROLLBAR_HORIZONTAL) == 0)
     {
@@ -85,8 +80,8 @@ static void SanityCheckScrollbars(txt_scrollpane_t *scrollpane)
         scrollpane->y = 0;
     }
 
-    max_x = FullWidth(scrollpane) - scrollpane->w;
-    max_y = FullHeight(scrollpane) - scrollpane->h;
+    int max_x = FullWidth(scrollpane) - scrollpane->w;
+    int max_y = FullHeight(scrollpane) - scrollpane->h;
 
     if (scrollpane->x < 0)
     {
@@ -110,7 +105,6 @@ static void SanityCheckScrollbars(txt_scrollpane_t *scrollpane)
 static void TXT_ScrollPaneSizeCalc(void *uncast_scrollpane)
 {
     auto *scrollpane = reinterpret_cast<txt_scrollpane_t *>(uncast_scrollpane);
-    int scrollbars;
 
     if (scrollpane->child != nullptr)
     {
@@ -135,7 +129,7 @@ static void TXT_ScrollPaneSizeCalc(void *uncast_scrollpane)
     // accomodate them. Eg. if we have a vertical scrollbar, we
     // need to be an extra character wide.
 
-    scrollbars = NeedsScrollbars(scrollpane);
+    int scrollbars = NeedsScrollbars(scrollpane);
 
     if (scrollbars & SCROLLBAR_HORIZONTAL)
     {
@@ -162,17 +156,15 @@ static void TXT_ScrollPaneSizeCalc(void *uncast_scrollpane)
 static void TXT_ScrollPaneDrawer(void *uncast_scrollpane)
 {
     auto *scrollpane = reinterpret_cast<txt_scrollpane_t *>(uncast_scrollpane);
-    int x1, y1, x2, y2;
-    int scrollbars;
 
     // We set a clipping area of the scroll pane.
 
-    x1 = scrollpane->widget.x,
-    y1 = scrollpane->widget.y,
-    x2 = x1 + scrollpane->w,
-    y2 = y1 + scrollpane->h;
+    int x1 = scrollpane->widget.x;
+    int y1 = scrollpane->widget.y;
+    int x2 = x1 + scrollpane->w;
+    int y2 = y1 + scrollpane->h;
 
-    scrollbars = NeedsScrollbars(scrollpane);
+    int scrollbars = NeedsScrollbars(scrollpane);
 
     if (scrollbars & SCROLLBAR_HORIZONTAL)
     {
@@ -235,9 +227,7 @@ static void TXT_ScrollPaneFocused(void *uncast_scrollpane, int focused)
 
 static void ShowSelectedWidget(txt_scrollpane_t *scrollpane)
 {
-    txt_widget_t *selected;
-
-    selected = TXT_GetSelectedWidget(scrollpane->child);
+    txt_widget_t *selected = TXT_GetSelectedWidget(scrollpane->child);
 
     // Scroll up or down?
 
@@ -311,7 +301,7 @@ static int PageSelectedWidget(txt_scrollpane_t *scrollpane, int key)
 
 static int InterpretScrollKey(txt_scrollpane_t *scrollpane, int key)
 {
-    int maxy;
+    int maxy = 0;
 
     switch (key)
     {
@@ -382,9 +372,7 @@ static int InterpretScrollKey(txt_scrollpane_t *scrollpane, int key)
 static int TXT_ScrollPaneKeyPress(void *uncast_scrollpane, int key)
 {
     auto *scrollpane = reinterpret_cast<txt_scrollpane_t *>(uncast_scrollpane);
-    int result;
-
-    result = 0;
+    int result = 0;
 
     if (scrollpane->child != nullptr)
     {
@@ -424,10 +412,8 @@ static void TXT_ScrollPaneMousePress(void *uncast_scrollpane,
                                      int x, int y, int b)
 {
     auto *scrollpane = reinterpret_cast<txt_scrollpane_t *>(uncast_scrollpane);
-    int scrollbars;
-    int rel_x, rel_y;
 
-    scrollbars = NeedsScrollbars(scrollpane);
+    int scrollbars = NeedsScrollbars(scrollpane);
 
     if (b == TXT_MOUSE_SCROLLUP)
     {
@@ -456,8 +442,8 @@ static void TXT_ScrollPaneMousePress(void *uncast_scrollpane,
         return;
     }
 
-    rel_x = x - scrollpane->widget.x;
-    rel_y = y - scrollpane->widget.y;
+    int rel_x = x - scrollpane->widget.x;
+    int rel_y = y - scrollpane->widget.y;
 
     // Click on the horizontal scrollbar?
     if ((scrollbars & SCROLLBAR_HORIZONTAL) && rel_y == scrollpane->h)
