@@ -683,7 +683,7 @@ void TryRunTics()
 
         // [AM] If we've uncapped the framerate and there are no tics
         //      to run, return early instead of waiting around.
-        if ((crispy->uncapped && counts == 0 && leveltime > oldleveltime && screenvisible))
+        if ((crispy->uncapped && counts == 0 && leveltime > oldleveltime && g_i_video_globals->screenvisible))
             return;
     }
     else
@@ -698,7 +698,7 @@ void TryRunTics()
 
         // [AM] If we've uncapped the framerate and there are no tics
         //      to run, return early instead of waiting around.
-        if ((crispy->uncapped && counts == 0 && leveltime > oldleveltime && screenvisible))
+        if ((crispy->uncapped && counts == 0 && leveltime > oldleveltime && g_i_video_globals->screenvisible))
             return;
 
         if (counts < 1)

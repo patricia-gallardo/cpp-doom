@@ -503,7 +503,7 @@ void D_RunFrame()
     S_UpdateSounds(players[consoleplayer].mo); // move positional sounds
 
     // Update display, next frame, with current state if no profiling is on
-    if (screenvisible && !nodrawers)
+    if (g_i_video_globals->screenvisible && !nodrawers)
     {
         bool is_set = wipe = D_Display();
         if (is_set)
@@ -554,7 +554,7 @@ void D_RunFrame()
     I_SetGrabMouseCallback(D_GrabMouseCallback);
     I_InitGraphics();
     // [crispy] re-init HUD widgets now just in case graphics were not initialized before
-    if (crispy->widescreen && aspect_ratio_correct)
+    if (crispy->widescreen && g_i_video_globals->aspect_ratio_correct)
     {
         extern void M_CrispyReinitHUDWidgets();
         M_CrispyReinitHUDWidgets();
@@ -1227,7 +1227,7 @@ static void D_Endoom()
     // game has actually started.
 
     if (!show_endoom || !main_loop_started
-        || screensaver_mode || M_CheckParm("-testcontrols") > 0)
+        || g_i_video_globals->screensaver_mode || M_CheckParm("-testcontrols") > 0)
     {
         return;
     }

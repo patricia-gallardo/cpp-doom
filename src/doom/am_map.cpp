@@ -235,7 +235,7 @@ static int f_w;
 static int f_h;
 
 static int lightlev;     // used for funky strobing effect
-#define fb I_VideoBuffer // [crispy] simplify
+#define fb g_i_video_globals->I_VideoBuffer // [crispy] simplify
 //static pixel_t*	fb; 			// pseudo-frame buffer
 static int amclock;
 
@@ -678,7 +678,7 @@ bool
     if (ev->type == ev_joystick && joybautomap >= 0
         && (ev->data1 & (1 << joybautomap)) != 0)
     {
-        joywait = static_cast<unsigned int>(I_GetTime() + 5);
+        g_i_video_globals->joywait = static_cast<unsigned int>(I_GetTime() + 5);
 
         if (!automapactive)
         {
@@ -993,7 +993,7 @@ void AM_Ticker()
 //
 void AM_clearFB(int color)
 {
-    std::memset(fb, color, static_cast<unsigned long>(f_w * f_h) * sizeof(*fb));
+    std::memset(g_i_video_globals->I_VideoBuffer, color, static_cast<unsigned long>(f_w * f_h) * sizeof(*g_i_video_globals->I_VideoBuffer));
 }
 
 

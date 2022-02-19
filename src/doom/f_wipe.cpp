@@ -242,7 +242,7 @@ int wipe_ScreenWipe(int wipeno, int, int, int width, int height, int ticks)
     {
         go = 1;
         // wipe_scr = zmalloc<pixel_t *>(width*height, PU_STATIC, 0); // DEBUG
-        wipe_scr = I_VideoBuffer;
+        wipe_scr = g_i_video_globals->I_VideoBuffer;
         (*wipes[wipeno * 3])(width, height, ticks);
     }
 

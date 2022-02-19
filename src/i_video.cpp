@@ -120,14 +120,6 @@ int            usemouse = 1;
 
 int png_screenshots = 1; // [crispy]
 
-// SDL video driver name
-
-char *video_driver = const_cast<char *>("");
-
-// Window position:
-
-char *window_position = const_cast<char *>("center");
-
 // SDL display number on which to run.
 
 int video_display = 0;
@@ -145,27 +137,7 @@ int fullscreen_width = 0, fullscreen_height = 0;
 
 static int max_scaling_buffer_pixels = 16000000;
 
-// Run in full screen mode?  (int type for config code)
-
-int fullscreen = true;
-
-// Aspect ratio correction mode
-
-int        aspect_ratio_correct = true;
 static int actualheight;
-
-// Force integer scales for resolution-independent rendering
-
-int integer_scaling = false;
-
-// VGA Porch palette change emulation
-
-int vga_porch_flash = false;
-
-// Force software rendering, for systems which lack effective hardware
-// acceleration
-
-int force_software_renderer = false;
 
 // Time to wait for the screen to settle on startup before starting the
 // game (ms)
@@ -177,19 +149,6 @@ static int startup_delay = 1000;
 
 static int     grabmouse            = true;
 static bool nograbmouse_override = false;
-
-// The screen buffer; this is modified to draw things to the screen
-
-pixel_t *I_VideoBuffer = nullptr;
-
-// If true, game is running as a screensaver
-
-bool screensaver_mode = false;
-
-// Flag indicating whether the screen is currently visible:
-// when the screen isnt visible, don't render the screen
-
-bool screenvisible = true;
 
 // If true, we display dots at the bottom of the screen to
 // indicate FPS.
@@ -216,18 +175,34 @@ static bool      need_resize = false;
 static unsigned int last_resize_time;
 constexpr auto RESIZE_DELAY = 500;
 
-// Gamma correction level to use
+static i_video_t i_video_s = {
+    .video_driver = const_cast<char *>(""),
+    .screenvisible = true,
 
-int usegamma = 0;
+    .vanilla_keyboard_mapping = 0,
+    .screensaver_mode = false,
+    .usegamma = 0,
+    .I_VideoBuffer = nullptr,
 
-// Joystick/gamepad hysteresis
-unsigned int joywait = 0;
+    .screen_width = 0,
+    .screen_height = 0,
+    .fullscreen = true,
+    .aspect_ratio_correct = true,
+    .integer_scaling = false,
+    .vga_porch_flash = false,
+    .force_software_renderer = false,
+
+    .window_position = const_cast<char *>("center"),
+
+    .joywait = 0,
+};
+i_video_t *const g_i_video_globals = &i_video_s;
 
 static bool MouseShouldBeGrabbed()
 {
     // never grab the mouse when in screensaver mode
 
-    if (screensaver_mode)
+    if (g_i_video_globals->screensaver_mode)
         return false;
 
     // if the window doesn't have focus, never grab it
@@ -238,7 +213,7 @@ static bool MouseShouldBeGrabbed()
     // always grab the mouse when full screen (dont want to
     // see the mouse pointer)
 
-    if (fullscreen)
+    if (g_i_video_globals->fullscreen)
         return true;
 
     // Don't grab the mouse if mouse input is disabled
@@ -278,7 +253,7 @@ void I_DisplayFPSDots(bool dots_on)
 
 static void SetShowCursor(bool show)
 {
-    if (!screensaver_mode)
+    if (!g_i_video_globals->screensaver_mode)
     {
         // When the cursor is hidden, grab the input.
         // Relative mode implicitly hides the cursor.
@@ -312,7 +287,7 @@ void I_StartFrame()
 // ratio consistent with the aspect_ratio_correct variable.
 static void AdjustWindowSize()
 {
-    if (aspect_ratio_correct || integer_scaling)
+    if (g_i_video_globals->aspect_ratio_correct || g_i_video_globals->integer_scaling)
     {
         if (window_width * actualheight <= window_height * SCREENWIDTH)
         {
@@ -351,12 +326,12 @@ static void HandleWindowEvent(SDL_WindowEvent *event)
         // Don't render the screen when the window is minimized:
 
     case SDL_WINDOWEVENT_MINIMIZED:
-        screenvisible = false;
+        g_i_video_globals->screenvisible = false;
         break;
 
     case SDL_WINDOWEVENT_MAXIMIZED:
     case SDL_WINDOWEVENT_RESTORED:
-        screenvisible = true;
+        g_i_video_globals->screenvisible = true;
         break;
 
         // Update the value of window_focused when we get a focus event
@@ -412,16 +387,16 @@ static void I_ToggleFullScreen()
         return;
     }
 
-    fullscreen = !fullscreen;
+    g_i_video_globals->fullscreen = !g_i_video_globals->fullscreen;
 
-    if (fullscreen)
+    if (g_i_video_globals->fullscreen)
     {
         flags |= SDL_WINDOW_FULLSCREEN_DESKTOP;
     }
 
     SDL_SetWindowFullscreen(screen, flags);
 
-    if (!fullscreen)
+    if (!g_i_video_globals->fullscreen)
     {
         AdjustWindowSize();
         SDL_SetWindowSize(screen, window_width, window_height);
@@ -463,7 +438,7 @@ void I_GetEvent()
             break;
 
         case SDL_QUIT:
-            if (screensaver_mode)
+            if (g_i_video_globals->screensaver_mode)
             {
                 I_Quit();
             }
@@ -505,7 +480,7 @@ void I_StartTic()
         I_ReadMouse();
     }
 
-    if (static_cast<int>(joywait) < I_GetTime())
+    if (static_cast<int>(g_i_video_globals->joywait) < I_GetTime())
     {
         I_UpdateJoystick();
     }
@@ -527,7 +502,7 @@ static void UpdateGrab()
 
     grab = MouseShouldBeGrabbed();
 
-    if (screensaver_mode)
+    if (g_i_video_globals->screensaver_mode)
     {
         // Hide the cursor in screensaver mode
 
@@ -776,15 +751,15 @@ void I_FinishUpdate()
 
         for (i = 0; i < tics * 4; i += 4)
 #ifndef CRISPY_TRUECOLOR
-            I_VideoBuffer[(SCREENHEIGHT - 1) * SCREENWIDTH + i] = 0xff;
+            g_i_video_globals->I_VideoBuffer[(SCREENHEIGHT - 1) * SCREENWIDTH + i] = 0xff;
 #else
-            I_VideoBuffer[(SCREENHEIGHT - 1) * SCREENWIDTH + i] = colormaps[0xff];
+            g_i_video_globals->I_VideoBuffer[(SCREENHEIGHT - 1) * SCREENWIDTH + i] = colormaps[0xff];
 #endif
         for (; i < 20 * 4; i += 4)
 #ifndef CRISPY_TRUECOLOR
-            I_VideoBuffer[(SCREENHEIGHT - 1) * SCREENWIDTH + i] = 0x0;
+            g_i_video_globals->I_VideoBuffer[(SCREENHEIGHT - 1) * SCREENWIDTH + i] = 0x0;
 #else
-            I_VideoBuffer[(SCREENHEIGHT - 1) * SCREENWIDTH + i] = colormaps[0x0];
+            g_i_video_globals->I_VideoBuffer[(SCREENHEIGHT - 1) * SCREENWIDTH + i] = colormaps[0x0];
 #endif
     }
 
@@ -817,7 +792,7 @@ void I_FinishUpdate()
         SDL_SetPaletteColors(screenbuffer->format->palette, palette, 0, 256);
         palette_to_set = false;
 
-        if (vga_porch_flash)
+        if (g_i_video_globals->vga_porch_flash)
         {
             // "flash" the pillars/letterboxes with palette changes, emulating
             // VGA "porch" behaviour (GitHub issue #832)
@@ -887,7 +862,7 @@ void I_FinishUpdate()
 //
 void I_ReadScreen(pixel_t *scr)
 {
-    std::memcpy(scr, I_VideoBuffer, static_cast<unsigned long>(SCREENWIDTH * SCREENHEIGHT) * sizeof(*scr));
+    std::memcpy(scr, g_i_video_globals->I_VideoBuffer, static_cast<unsigned long>(SCREENWIDTH * SCREENHEIGHT) * sizeof(*scr));
 }
 
 
@@ -939,11 +914,11 @@ void I_SetPalette(uint8_t *doompalette)
         // controller only supports 6 bits of accuracy.
 
         // [crispy] intermediate gamma levels
-        int red      = gamma2table[usegamma][*doompalette++] & ~3;
+        int red      = gamma2table[g_i_video_globals->usegamma][*doompalette++] & ~3;
         palette[i].r = static_cast<Uint8>(red);
-        int green    = gamma2table[usegamma][*doompalette++] & ~3;
+        int green    = gamma2table[g_i_video_globals->usegamma][*doompalette++] & ~3;
         palette[i].g = static_cast<Uint8>(green);
-        int blue     = gamma2table[usegamma][*doompalette++] & ~3;
+        int blue     = gamma2table[g_i_video_globals->usegamma][*doompalette++] & ~3;
         palette[i].b = static_cast<Uint8>(blue);
     }
 
@@ -1061,7 +1036,7 @@ static void SetScaleFactor(int factor)
 
     window_width  = factor * SCREENWIDTH;
     window_height = factor * actualheight;
-    fullscreen    = false;
+    g_i_video_globals->fullscreen    = false;
 }
 
 void I_GraphicsCheckCommandLine()
@@ -1096,7 +1071,7 @@ void I_GraphicsCheckCommandLine()
 
     if (M_CheckParm("-window") || M_CheckParm("-nofullscreen"))
     {
-        fullscreen = false;
+        g_i_video_globals->fullscreen = false;
     }
 
     //!
@@ -1107,7 +1082,7 @@ void I_GraphicsCheckCommandLine()
 
     if (M_CheckParm("-fullscreen"))
     {
-        fullscreen = true;
+        g_i_video_globals->fullscreen = true;
     }
 
     //!
@@ -1130,7 +1105,7 @@ void I_GraphicsCheckCommandLine()
     if (i > 0)
     {
         window_width = std::atoi(myargv[i + 1]);
-        fullscreen   = false;
+        g_i_video_globals->fullscreen   = false;
     }
 
     //!
@@ -1145,7 +1120,7 @@ void I_GraphicsCheckCommandLine()
     if (i > 0)
     {
         window_height = std::atoi(myargv[i + 1]);
-        fullscreen    = false;
+        g_i_video_globals->fullscreen    = false;
     }
 
     //!
@@ -1166,7 +1141,7 @@ void I_GraphicsCheckCommandLine()
         {
             window_width  = w;
             window_height = h;
-            fullscreen    = false;
+            g_i_video_globals->fullscreen    = false;
         }
     }
 
@@ -1214,7 +1189,7 @@ void I_CheckIsScreensaver()
 
     if (env != nullptr)
     {
-        screensaver_mode = true;
+        g_i_video_globals->screensaver_mode = true;
     }
 }
 
@@ -1223,11 +1198,11 @@ static void SetSDLVideoDriver()
     // Allow a default value for the SDL video driver to be specified
     // in the configuration file.
 
-    if (strcmp(video_driver, "") != 0)
+    if (strcmp(g_i_video_globals->video_driver, "") != 0)
     {
         char *env_string;
 
-        env_string = M_StringJoin("SDL_VIDEODRIVER=", video_driver, nullptr);
+        env_string = M_StringJoin("SDL_VIDEODRIVER=", g_i_video_globals->video_driver, nullptr);
         putenv(env_string);
         free(env_string);
     }
@@ -1268,7 +1243,7 @@ void I_GetWindowPosition(int *x, int *y, int w, int h)
     // in fullscreen mode, the window "position" still matters, because
     // we use it to control which display we run fullscreen on.
 
-    if (fullscreen)
+    if (g_i_video_globals->fullscreen)
     {
         CenterWindow(x, y, w, h);
         return;
@@ -1277,18 +1252,18 @@ void I_GetWindowPosition(int *x, int *y, int w, int h)
     // in windowed mode, the desired window position can be specified
     // in the configuration file.
 
-    if (window_position == nullptr || !strcmp(window_position, ""))
+    if (g_i_video_globals->window_position == nullptr || !strcmp(g_i_video_globals->window_position, ""))
     {
         *x = *y = SDL_WINDOWPOS_UNDEFINED;
     }
-    else if (!strcmp(window_position, "center"))
+    else if (!strcmp(g_i_video_globals->window_position, "center"))
     {
         // Note: SDL has a SDL_WINDOWPOS_CENTER, but this is useless for our
         // purposes, since we also want to control which display we appear on.
         // So we have to do this ourselves.
         CenterWindow(x, y, w, h);
     }
-    else if (sscanf(window_position, "%i,%i", x, y) != 2)
+    else if (sscanf(g_i_video_globals->window_position, "%i,%i", x, y) != 2)
     {
         // invalid format: revert to default
         fprintf(stderr, "I_GetWindowPosition: invalid window_position setting\n");
@@ -1318,7 +1293,7 @@ static void SetVideoMode()
     // retina displays, especially when using small window sizes.
     window_flags |= SDL_WINDOW_ALLOW_HIGHDPI;
 
-    if (fullscreen)
+    if (g_i_video_globals->fullscreen)
     {
         if (fullscreen_width == 0 && fullscreen_height == 0)
         {
@@ -1388,7 +1363,7 @@ static void SetVideoMode()
         }
     }
 
-    if (force_software_renderer)
+    if (g_i_video_globals->force_software_renderer)
     {
         renderer_flags |= SDL_RENDERER_SOFTWARE;
         renderer_flags &= ~SDL_RENDERER_PRESENTVSYNC;
@@ -1408,7 +1383,7 @@ static void SetVideoMode()
     // If we could not find a matching render driver,
     // try again without hardware acceleration.
 
-    if (renderer == nullptr && !force_software_renderer)
+    if (renderer == nullptr && !g_i_video_globals->force_software_renderer)
     {
         renderer_flags |= SDL_RENDERER_SOFTWARE;
         renderer_flags &= ~SDL_RENDERER_PRESENTVSYNC;
@@ -1418,7 +1393,7 @@ static void SetVideoMode()
         // If this helped, save the setting for later.
         if (renderer != nullptr)
         {
-            force_software_renderer = 1;
+            g_i_video_globals->force_software_renderer = 1;
         }
     }
 
@@ -1432,7 +1407,7 @@ static void SetVideoMode()
     // time this also defines the aspect ratio that is preserved while scaling
     // and stretching the texture into the window.
 
-    if (aspect_ratio_correct || integer_scaling)
+    if (g_i_video_globals->aspect_ratio_correct || g_i_video_globals->integer_scaling)
     {
         SDL_RenderSetLogicalSize(renderer,
             SCREENWIDTH,
@@ -1442,7 +1417,7 @@ static void SetVideoMode()
     // Force integer scales for resolution-independent rendering.
 
 #if SDL_VERSION_ATLEAST(2, 0, 5)
-    SDL_RenderSetIntegerScale(renderer, static_cast<SDL_bool>(integer_scaling));
+    SDL_RenderSetIntegerScale(renderer, static_cast<SDL_bool>(g_i_video_globals->integer_scaling));
 #endif
 
     // Blank out the full screen area in case there is any junk in
@@ -1539,7 +1514,7 @@ void I_GetScreenDimensions()
 
     HIRESWIDTH = SCREENWIDTH;
 
-    ah = (aspect_ratio_correct == 1) ? (6 * SCREENHEIGHT / 5) : SCREENHEIGHT;
+    ah = (g_i_video_globals->aspect_ratio_correct == 1) ? (6 * SCREENHEIGHT / 5) : SCREENHEIGHT;
 
     if (SDL_GetCurrentDisplayMode(video_display, &mode) == 0)
     {
@@ -1552,7 +1527,7 @@ void I_GetScreenDimensions()
     }
 
     // [crispy] widescreen rendering makes no sense without aspect ratio correction
-    if (crispy->widescreen && aspect_ratio_correct)
+    if (crispy->widescreen && g_i_video_globals->aspect_ratio_correct)
     {
         SCREENWIDTH = w * ah / h;
         // [crispy] make sure SCREENWIDTH is an integer multiple of 4 ...
@@ -1598,9 +1573,9 @@ void I_InitGraphics()
 
     // When in screensaver mode, run full screen and auto detect
     // screen dimensions (don't change video mode)
-    if (screensaver_mode)
+    if (g_i_video_globals->screensaver_mode)
     {
-        fullscreen = true;
+        g_i_video_globals->fullscreen = true;
     }
 
     // [crispy] run-time variable high-resolution rendering
@@ -1614,7 +1589,7 @@ void I_InitGraphics()
     // [crispy] (re-)initialize resolution-agnostic patch drawing
     V_Init();
 
-    if (aspect_ratio_correct == 1)
+    if (g_i_video_globals->aspect_ratio_correct == 1)
     {
         actualheight = 6 * SCREENHEIGHT / 5;
     }
@@ -1649,7 +1624,7 @@ void I_InitGraphics()
     // setting the screen mode, so that the game doesn't start immediately
     // with the player unable to see anything.
 
-    if (fullscreen && !screensaver_mode)
+    if (g_i_video_globals->fullscreen && !g_i_video_globals->screensaver_mode)
     {
         SDL_Delay(static_cast<Uint32>(startup_delay));
     }
@@ -1660,15 +1635,15 @@ void I_InitGraphics()
     // finally rendered into our window or full screen in I_FinishUpdate().
 
 #ifndef CRISPY_TRUECOLOR
-    I_VideoBuffer = static_cast<pixel_t *>(screenbuffer->pixels);
+    g_i_video_globals->I_VideoBuffer = static_cast<pixel_t *>(screenbuffer->pixels);
 #else
-    I_VideoBuffer = argbbuffer->pixels;
+    g_i_video_globals->I_VideoBuffer = argbbuffer->pixels;
 #endif
     V_RestoreBuffer();
 
     // Clear the screen to black.
 
-    std::memset(I_VideoBuffer, 0, static_cast<unsigned long>(SCREENWIDTH * SCREENHEIGHT) * sizeof(*I_VideoBuffer));
+    std::memset(g_i_video_globals->I_VideoBuffer, 0, static_cast<unsigned long>(SCREENWIDTH * SCREENHEIGHT) * sizeof(*g_i_video_globals->I_VideoBuffer));
 
     // clear out any events waiting at the start and center the mouse
 
@@ -1717,9 +1692,9 @@ void I_ReInitGraphics(int reinit)
             rmask, gmask, bmask, amask);
 #ifndef CRISPY_TRUECOLOR
         // [crispy] re-set the framebuffer pointer
-        I_VideoBuffer = static_cast<pixel_t *>(screenbuffer->pixels);
+        g_i_video_globals->I_VideoBuffer = static_cast<pixel_t *>(screenbuffer->pixels);
 #else
-        I_VideoBuffer = argbbuffer->pixels;
+        g_i_video_globals->I_VideoBuffer = argbbuffer->pixels;
 #endif
         V_RestoreBuffer();
 
@@ -1770,7 +1745,7 @@ void I_ReInitGraphics(int reinit)
     // [crispy] re-set logical rendering resolution
     if (reinit & REINIT_ASPECTRATIO)
     {
-        if (aspect_ratio_correct == 1)
+        if (g_i_video_globals->aspect_ratio_correct == 1)
         {
             actualheight = 6 * SCREENHEIGHT / 5;
         }
@@ -1779,7 +1754,7 @@ void I_ReInitGraphics(int reinit)
             actualheight = SCREENHEIGHT;
         }
 
-        if (aspect_ratio_correct || integer_scaling)
+        if (g_i_video_globals->aspect_ratio_correct || g_i_video_globals->integer_scaling)
         {
             SDL_RenderSetLogicalSize(renderer,
                 SCREENWIDTH,
@@ -1791,7 +1766,7 @@ void I_ReInitGraphics(int reinit)
         }
 
 #if SDL_VERSION_ATLEAST(2, 0, 5)
-        SDL_RenderSetIntegerScale(renderer, static_cast<SDL_bool>(integer_scaling));
+        SDL_RenderSetIntegerScale(renderer, static_cast<SDL_bool>(g_i_video_globals->integer_scaling));
 #endif
     }
 
@@ -1812,9 +1787,9 @@ void I_RenderReadPixels(uint8_t **data, int *w, int *h, int *p)
     // [crispy] adjust cropping rectangle if necessary
     rect.x = rect.y = 0;
     SDL_GetRendererOutputSize(renderer, &rect.w, &rect.h);
-    if (aspect_ratio_correct || integer_scaling)
+    if (g_i_video_globals->aspect_ratio_correct || g_i_video_globals->integer_scaling)
     {
-        if (integer_scaling)
+        if (g_i_video_globals->integer_scaling)
         {
             int temp1, temp2, scale;
             temp1 = rect.w;
@@ -1885,22 +1860,22 @@ void I_RenderReadPixels(uint8_t **data, int *w, int *h, int *p)
 void I_BindVideoVariables()
 {
     M_BindIntVariable("use_mouse", &usemouse);
-    M_BindIntVariable("fullscreen", &fullscreen);
+    M_BindIntVariable("fullscreen", &g_i_video_globals->fullscreen);
     M_BindIntVariable("video_display", &video_display);
-    M_BindIntVariable("aspect_ratio_correct", &aspect_ratio_correct);
-    M_BindIntVariable("integer_scaling", &integer_scaling);
-    M_BindIntVariable("vga_porch_flash", &vga_porch_flash);
+    M_BindIntVariable("aspect_ratio_correct", &g_i_video_globals->aspect_ratio_correct);
+    M_BindIntVariable("integer_scaling", &g_i_video_globals->integer_scaling);
+    M_BindIntVariable("vga_porch_flash", &g_i_video_globals->vga_porch_flash);
     M_BindIntVariable("startup_delay", &startup_delay);
     M_BindIntVariable("fullscreen_width", &fullscreen_width);
     M_BindIntVariable("fullscreen_height", &fullscreen_height);
-    M_BindIntVariable("force_software_renderer", &force_software_renderer);
+    M_BindIntVariable("force_software_renderer", &g_i_video_globals->force_software_renderer);
     M_BindIntVariable("max_scaling_buffer_pixels", &max_scaling_buffer_pixels);
     M_BindIntVariable("window_width", &window_width);
     M_BindIntVariable("window_height", &window_height);
     M_BindIntVariable("grabmouse", &grabmouse);
-    M_BindStringVariable("video_driver", &video_driver);
-    M_BindStringVariable("window_position", &window_position);
-    M_BindIntVariable("usegamma", &usegamma);
+    M_BindStringVariable("video_driver", &g_i_video_globals->video_driver);
+    M_BindStringVariable("window_position", &g_i_video_globals->window_position);
+    M_BindIntVariable("usegamma", &g_i_video_globals->usegamma);
     M_BindIntVariable("png_screenshots", &png_screenshots);
 }
 

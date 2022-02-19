@@ -282,7 +282,7 @@ void F_TextWrite()
 
     // erase the entire screen to a tiled background
     auto *src  = cache_lump_name<uint8_t *>(finaleflat, PU_CACHE);
-    auto *dest = I_VideoBuffer;
+    auto *dest = g_i_video_globals->I_VideoBuffer;
 
     for (y = 0; y < SCREENHEIGHT; y++)
     {
@@ -854,7 +854,7 @@ void F_DrawPatchCol(int x,
     int       count;
 
     column  = reinterpret_cast<column_t *>(reinterpret_cast<uint8_t *>(patch) + LONG(patch->columnofs[col >> FRACBITS]));
-    desttop = I_VideoBuffer + x + (DELTAWIDTH << crispy->hires);
+    desttop = g_i_video_globals->I_VideoBuffer + x + (DELTAWIDTH << crispy->hires);
 
     // step through the posts in a column
     while (column->topdelta != 0xff)

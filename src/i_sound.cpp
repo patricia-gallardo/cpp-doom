@@ -214,7 +214,7 @@ void I_InitSound(bool use_sfx_prefix)
 
     // Initialize the sound and music subsystems.
 
-    if (!nosound && !screensaver_mode)
+    if (!nosound && !g_i_video_globals->screensaver_mode)
     {
         // This is kind of a hack. If native MIDI is enabled, set up
         // the TIMIDITY_CFG environment variable here before SDL_mixer

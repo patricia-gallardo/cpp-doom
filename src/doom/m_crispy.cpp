@@ -458,7 +458,7 @@ void M_CrispyToggleVsyncHook()
 
 void M_CrispyToggleVsync(int)
 {
-    if (force_software_renderer)
+    if (g_i_video_globals->force_software_renderer)
     {
         return;
     }
