@@ -386,7 +386,7 @@ static bool I_PCS_InitSound(bool _use_sfx_prefix)
 
     // Use the sample rate from the configuration file
 
-    PCSound_SetSampleRate(snd_samplerate);
+    PCSound_SetSampleRate(g_i_sound_globals->snd_samplerate);
 
     // Initialize the PC speaker subsystem.
 

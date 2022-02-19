@@ -1119,7 +1119,7 @@ static bool I_MP_InitMusic()
     {
         fprintf(stderr, "Unable to set up sound.\n");
     }
-    else if (Mix_OpenAudio(snd_samplerate, AUDIO_S16SYS, 2, 1024) < 0)
+    else if (Mix_OpenAudio(g_i_sound_globals->snd_samplerate, AUDIO_S16SYS, 2, 1024) < 0)
     {
         fprintf(stderr, "Error initializing SDL_mixer: %s\n",
             Mix_GetError());
