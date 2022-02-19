@@ -1019,7 +1019,7 @@ void R_InitBuffer(int width,
 
     // Preclaculate all row offsets.
     for (i = 0; i < height; i++)
-        ylookup[i] = I_VideoBuffer + (i + viewwindowy) * SCREENWIDTH;
+        ylookup[i] = g_i_video_globals->I_VideoBuffer + (i + viewwindowy) * SCREENWIDTH;
 }
 
 
@@ -1153,7 +1153,7 @@ void R_VideoErase(unsigned ofs,
 
     if (background_buffer != nullptr)
     {
-        std::memcpy(I_VideoBuffer + ofs, background_buffer + ofs, static_cast<unsigned long>(count) * sizeof(*I_VideoBuffer));
+        std::memcpy(g_i_video_globals->I_VideoBuffer + ofs, background_buffer + ofs, static_cast<unsigned long>(count) * sizeof(*g_i_video_globals->I_VideoBuffer));
     }
 }
 

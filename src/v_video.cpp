@@ -86,7 +86,7 @@ void V_MarkRect(int x, int y, int width, int height)
     // If we are temporarily using an alternate screen, do not
     // affect the update box.
 
-    if (dest_screen == I_VideoBuffer)
+    if (dest_screen == g_i_video_globals->I_VideoBuffer)
     {
         M_AddToBox(dirtybox, x, y);
         M_AddToBox(dirtybox, x + width - 1, y + height - 1);
@@ -721,7 +721,7 @@ void V_DrawBlock(int x, int y, int width, int height, pixel_t *src)
 
 void V_DrawFilledBox(int x, int y, int w, int h, int c)
 {
-    pixel_t *buf = I_VideoBuffer + SCREENWIDTH * y + x;
+    pixel_t *buf = g_i_video_globals->I_VideoBuffer + SCREENWIDTH * y + x;
 
     for (int y1 = 0; y1 < h; ++y1)
     {
@@ -742,7 +742,7 @@ void V_DrawHorizLine(int x, int y, int w, int c)
     if (x + w > SCREENWIDTH)
         w = SCREENWIDTH - x;
 
-    pixel_t *buf = I_VideoBuffer + SCREENWIDTH * y + x;
+    pixel_t *buf = g_i_video_globals->I_VideoBuffer + SCREENWIDTH * y + x;
 
     for (int x1 = 0; x1 < w; ++x1)
     {
@@ -752,7 +752,7 @@ void V_DrawHorizLine(int x, int y, int w, int c)
 
 void V_DrawVertLine(int x, int y, int h, int c)
 {
-    pixel_t *buf = I_VideoBuffer + SCREENWIDTH * y + x;
+    pixel_t *buf = g_i_video_globals->I_VideoBuffer + SCREENWIDTH * y + x;
 
     for (int y1 = 0; y1 < h; ++y1)
     {
@@ -829,7 +829,7 @@ void V_UseBuffer(pixel_t *buffer)
 
 void V_RestoreBuffer()
 {
-    dest_screen = I_VideoBuffer;
+    dest_screen = g_i_video_globals->I_VideoBuffer;
 }
 
 //
@@ -1104,7 +1104,7 @@ void V_ScreenShot(const char *format)
 #ifdef HAVE_LIBPNG
     if (png_screenshots)
     {
-        WritePNGfile(lbmname, I_VideoBuffer,
+        WritePNGfile(lbmname, g_i_video_globals->I_VideoBuffer,
             SCREENWIDTH, SCREENHEIGHT,
             cache_lump_name<uint8_t *>(DEH_String("PLAYPAL"), PU_CACHE));
     }
@@ -1112,7 +1112,7 @@ void V_ScreenShot(const char *format)
 #endif
     {
         // save the pcx file
-        WritePCXfile(lbmname, I_VideoBuffer,
+        WritePCXfile(lbmname, g_i_video_globals->I_VideoBuffer,
             SCREENWIDTH, SCREENHEIGHT,
             cache_lump_name<uint8_t *>(DEH_String("PLAYPAL"), PU_CACHE));
     }

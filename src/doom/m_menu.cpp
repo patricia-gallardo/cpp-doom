@@ -1192,7 +1192,7 @@ static void M_DrawMouse()
 static void M_DrawCrispnessBackground()
 {
     const uint8_t *const src  = crispness_background;
-    pixel_t             *dest = I_VideoBuffer;
+    pixel_t             *dest = g_i_video_globals->I_VideoBuffer;
 
     for (int y = 0; y < SCREENHEIGHT; y++)
     {
@@ -1259,11 +1259,11 @@ static void M_DrawCrispness1()
     M_DrawCrispnessItem(
         static_cast<int>(crispness1_e::crispness_hires), const_cast<char *>("High Resolution Rendering"), crispy->hires, true);
     M_DrawCrispnessMultiItem(static_cast<int>(crispness1_e::crispness_widescreen), const_cast<char *>("Widescreen Rendering"),
-        multiitem_widescreen, crispy->widescreen, aspect_ratio_correct);
+        multiitem_widescreen, crispy->widescreen, g_i_video_globals->aspect_ratio_correct);
     M_DrawCrispnessItem(
         static_cast<int>(crispness1_e::crispness_uncapped), const_cast<char *>("Uncapped Framerate"), crispy->uncapped, true);
     M_DrawCrispnessItem(
-        static_cast<int>(crispness1_e::crispness_vsync), const_cast<char *>("Enable VSync"), crispy->vsync, !force_software_renderer);
+        static_cast<int>(crispness1_e::crispness_vsync), const_cast<char *>("Enable VSync"), crispy->vsync, !g_i_video_globals->force_software_renderer);
     M_DrawCrispnessItem(
         static_cast<int>(crispness1_e::crispness_smoothscaling), const_cast<char *>("Smooth Pixel Scaling"), crispy->smoothscaling, true);
 
@@ -1966,22 +1966,22 @@ bool M_Responder(event_t *ev)
             if (ev->data3 < 0)
             {
                 key     = key_menu_up;
-                joywait = static_cast<unsigned int>(I_GetTime() + 5);
+                g_i_video_globals->joywait = static_cast<unsigned int>(I_GetTime() + 5);
             }
             else if (ev->data3 > 0)
             {
                 key     = key_menu_down;
-                joywait = static_cast<unsigned int>(I_GetTime() + 5);
+                g_i_video_globals->joywait = static_cast<unsigned int>(I_GetTime() + 5);
             }
             if (ev->data2 < 0)
             {
                 key     = key_menu_left;
-                joywait = static_cast<unsigned int>(I_GetTime() + 2);
+                g_i_video_globals->joywait = static_cast<unsigned int>(I_GetTime() + 2);
             }
             else if (ev->data2 > 0)
             {
                 key     = key_menu_right;
-                joywait = static_cast<unsigned int>(I_GetTime() + 2);
+                g_i_video_globals->joywait = static_cast<unsigned int>(I_GetTime() + 2);
             }
 
 #define JOY_BUTTON_MAPPED(x)  ((x) >= 0)
@@ -2002,7 +2002,7 @@ bool M_Responder(event_t *ev)
                     if (currentMenu == &SaveDef) { joypadSave = true; }
                     key = key_menu_forward;
                 }
-                joywait = static_cast<unsigned int>(I_GetTime() + 5);
+                g_i_video_globals->joywait = static_cast<unsigned int>(I_GetTime() + 5);
             }
             if (JOY_BUTTON_PRESSED(joybuse))
             {
@@ -2017,13 +2017,13 @@ bool M_Responder(event_t *ev)
                 {
                     key = key_menu_back;
                 }
-                joywait = static_cast<unsigned int>(I_GetTime() + 5);
+                g_i_video_globals->joywait = static_cast<unsigned int>(I_GetTime() + 5);
             }
         }
         if (JOY_BUTTON_PRESSED(joybmenu))
         {
             key     = key_menu_activate;
-            joywait = static_cast<unsigned int>(I_GetTime() + 5);
+            g_i_video_globals->joywait = static_cast<unsigned int>(I_GetTime() + 5);
         }
     }
     else
@@ -2130,7 +2130,7 @@ bool M_Responder(event_t *ev)
             // modified key input.
 
             if (ev->type != ev_keydown) { break; }
-            if (vanilla_keyboard_mapping) { ch = ev->data1; }
+            if (g_i_video_globals->vanilla_keyboard_mapping) { ch = ev->data1; }
             else
             {
                 ch = ev->data3;
@@ -2268,10 +2268,10 @@ bool M_Responder(event_t *ev)
         }
         else if (key == key_menu_gamma) // gamma toggle
         {
-            usegamma++;
-            if (usegamma > 4 + 4) // [crispy] intermediate gamma levels
-                usegamma = 0;
-            players[consoleplayer].message = DEH_String(gammamsg[usegamma]);
+            g_i_video_globals->usegamma++;
+            if (g_i_video_globals->usegamma > 4 + 4) // [crispy] intermediate gamma levels
+                g_i_video_globals->usegamma = 0;
+            players[consoleplayer].message = DEH_String(gammamsg[g_i_video_globals->usegamma]);
 #ifndef CRISPY_TRUECOLOR
             I_SetPalette(cache_lump_name<uint8_t *>(DEH_String("PLAYPAL"), PU_CACHE));
 #else

@@ -114,7 +114,7 @@ void V_BeginRead(size_t nbytes)
 
 static pixel_t *DiskRegionPointer()
 {
-    return I_VideoBuffer
+    return g_i_video_globals->I_VideoBuffer
            + loading_disk_yoffs * SCREENWIDTH
            + loading_disk_xoffs;
 }
