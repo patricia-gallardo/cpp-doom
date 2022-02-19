@@ -523,12 +523,8 @@ void TXT_OpenURL(const char *url)
 
 void TXT_OpenURL(const char *url)
 {
-    char *cmd;
-    size_t cmd_len;
-    int retval;
-
-    cmd_len = strlen(url) + 30;
-    cmd = static_cast<char *>(malloc(cmd_len));
+    size_t cmd_len = strlen(url) + 30;
+    char *cmd = static_cast<char *>(malloc(cmd_len));
 
 #if defined(__MACOSX__)
     TXT_snprintf(cmd, cmd_len, "open \"%s\"", url);
@@ -546,7 +542,7 @@ void TXT_OpenURL(const char *url)
     TXT_snprintf(cmd, cmd_len, "xdg-open \"%s\"", url);
 #endif
 
-    retval = system(cmd);
+    int retval = system(cmd);
     free(cmd);
     if (retval != 0)
     {
@@ -567,7 +563,6 @@ void TXT_OpenWindowHelpURL(txt_window_t *window)
 
 txt_window_t *TXT_MessageBox(const char *title, const char *message, ...)
 {
-    txt_window_t *window;
     char buf[256];
     va_list args;
 
@@ -575,7 +570,7 @@ txt_window_t *TXT_MessageBox(const char *title, const char *message, ...)
     TXT_vsnprintf(buf, sizeof(buf), message, args);
     va_end(args);
 
-    window = TXT_NewWindow(title);
+    txt_window_t *window = TXT_NewWindow(title);
     TXT_AddWidget(window, TXT_NewLabel(buf));
 
     TXT_SetWindowAction(window, TXT_HORIZ_LEFT, nullptr);

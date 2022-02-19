@@ -36,11 +36,11 @@ using txt_window_action_t = struct txt_window_action_s;
 #include "txt_widget.hpp"
 #include "txt_window.hpp"
 
-struct txt_window_action_s
+struct [[maybe_unused]] txt_window_action_s
 {
     txt_widget_t widget;
-    char *label;
-    int key;
+    char *label{};
+    int key{};
 };
 
 /**

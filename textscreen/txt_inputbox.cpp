@@ -117,7 +117,6 @@ static void TXT_InputBoxSizeCalc(void *uncast_inputbox)
 static void TXT_InputBoxDrawer(void *uncast_inputbox)
 {
     auto *inputbox = reinterpret_cast<txt_inputbox_t *>(uncast_inputbox);;
-    unsigned int chars;
 
     int focused = inputbox->widget.focused;
     unsigned int w = inputbox->widget.w;
@@ -143,6 +142,7 @@ static void TXT_InputBoxDrawer(void *uncast_inputbox)
 
     // If string size exceeds the widget's width, show only the end.
 
+    unsigned int chars = 0;
     if (TXT_UTF8_Strlen(inputbox->buffer) > w - 1)
     {
         TXT_DrawCodePageString("\xae");

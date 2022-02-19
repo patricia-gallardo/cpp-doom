@@ -35,7 +35,7 @@ void TXT_FGColor(txt_color_t color);
 void TXT_BGColor(txt_color_t color, int blinking);
 void TXT_SaveColors(txt_saved_colors_t *save);
 void TXT_RestoreColors(txt_saved_colors_t *save);
-void TXT_ClearScreen();
+[[maybe_unused]] void TXT_ClearScreen();
 
 #endif /* #ifndef TXT_IO_H */
 

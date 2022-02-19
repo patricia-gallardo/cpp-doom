@@ -24,7 +24,7 @@
 #include "txt_window.hpp"
 
 #define HELP_KEY KEY_F1
-#define MAXWINDOWS 128
+constexpr auto MAXWINDOWS =128;
 
 static char *desktop_title;
 static txt_window_t *all_windows[MAXWINDOWS];

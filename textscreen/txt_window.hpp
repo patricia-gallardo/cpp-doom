@@ -51,7 +51,7 @@ using txt_window_t = struct txt_window_s;
 using TxtWindowKeyPress = int (*)(txt_window_t *, int, void *);
 using TxtWindowMousePress = int (*)(txt_window_t *, int, int, int, void *);
 
-struct txt_window_s
+struct [[maybe_unused]] txt_window_s
 {
     // Base class: all windows are tables with one column.
 
@@ -59,33 +59,33 @@ struct txt_window_s
 
     // Window title
 
-    char *title;
+    char *title{};
 
     // Screen coordinates of the window
 
     txt_vert_align_t vert_align;
     txt_horiz_align_t horiz_align;
-    int x, y;
+    int x{}, y{};
 
     // Actions that appear in the box at the bottom of the window
 
-    txt_widget_t *actions[3];
+    txt_widget_t *actions[3]{};
 
     // Callback functions to invoke when keys/mouse buttons are pressed
 
-    TxtWindowKeyPress key_listener;
-    void *key_listener_data;
-    TxtWindowMousePress mouse_listener;
-    void *mouse_listener_data;
+    TxtWindowKeyPress key_listener{};
+    void *key_listener_data{};
+    TxtWindowMousePress mouse_listener{};
+    void *mouse_listener_data{};
 
     // These are set automatically when the window is drawn
 
-    int window_x, window_y;
-    unsigned int window_w, window_h;
+    int window_x{}, window_y{};
+    unsigned int window_w{}, window_h{};
 
     // URL of a webpage with help about this window. If set, a help key
     // indicator is shown while this window is active.
-    const char *help_url;
+    const char *help_url{};
 };
 
 /**

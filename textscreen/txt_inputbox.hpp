@@ -34,14 +34,14 @@ using txt_inputbox_t = struct txt_inputbox_s;
 
 #include "txt_widget.hpp"
 
-struct txt_inputbox_s
+struct [[maybe_unused]] txt_inputbox_s
 {
     txt_widget_t widget;
-    char *buffer;
-    size_t buffer_len;
-    unsigned int size;
-    int editing;
-    void *value;
+    char *buffer{};
+    size_t buffer_len{};
+    unsigned int size{};
+    int editing{};
+    void *value{};
 };
 
 /**

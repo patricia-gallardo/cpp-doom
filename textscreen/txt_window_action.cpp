@@ -136,9 +136,7 @@ static void WindowSelectCallback(void *, void *uncast_window)
 
 txt_window_action_t *TXT_NewWindowEscapeAction(txt_window_t *window)
 {
-    txt_window_action_t *action;
-
-    action = TXT_NewWindowAction(KEY_ESCAPE, "Close");
+    txt_window_action_t *action = TXT_NewWindowAction(KEY_ESCAPE, "Close");
     TXT_SignalConnect(action, "pressed", WindowCloseCallback, window);
 
     return action;
@@ -148,9 +146,7 @@ txt_window_action_t *TXT_NewWindowEscapeAction(txt_window_t *window)
 
 txt_window_action_t *TXT_NewWindowAbortAction(txt_window_t *window)
 {
-    txt_window_action_t *action;
-
-    action = TXT_NewWindowAction(KEY_ESCAPE, "Abort");
+    txt_window_action_t *action = TXT_NewWindowAction(KEY_ESCAPE, "Abort");
     TXT_SignalConnect(action, "pressed", WindowCloseCallback, window);
 
     return action;
@@ -158,9 +154,7 @@ txt_window_action_t *TXT_NewWindowAbortAction(txt_window_t *window)
 
 txt_window_action_t *TXT_NewWindowSelectAction(txt_window_t *window)
 {
-    txt_window_action_t *action;
-
-    action = TXT_NewWindowAction(KEY_ENTER, "Select");
+    txt_window_action_t *action = TXT_NewWindowAction(KEY_ENTER, "Select");
     TXT_SignalConnect(action, "pressed", WindowSelectCallback, window);
 
     return action;

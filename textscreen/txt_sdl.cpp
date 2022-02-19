@@ -51,7 +51,7 @@ typedef struct
 
 // Time between character blinks in ms
 
-#define BLINK_PERIOD 250
+constexpr auto BLINK_PERIOD =250;
 
 SDL_Window *TXT_SDLWindow;
 static SDL_Surface *screenbuffer;
