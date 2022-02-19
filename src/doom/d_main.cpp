@@ -455,7 +455,7 @@ bool D_GrabMouseCallback()
 {
     // Drone players don't need mouse focus
 
-    if (drone)
+    if (g_net_client_globals->drone)
         return false;
 
     // when menu is active or game is paused, release the mouse

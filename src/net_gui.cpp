@@ -93,7 +93,7 @@ static void BuildWindow()
 
     // Player labels
 
-    for (int i = 0; i < net_client_wait_data.max_players; ++i)
+    for (int i = 0; i < g_net_client_globals->net_client_wait_data.max_players; ++i)
     {
         M_snprintf(buf, sizeof(buf), " %i. ", i + 1);
         TXT_AddWidget(table, TXT_NewLabel(buf));
@@ -116,9 +116,9 @@ static void UpdateGUI()
     // contents of the window. This includes when the first
     // waiting data packet is received.
 
-    if (net_client_received_wait_data)
+    if (g_net_client_globals->net_client_received_wait_data)
     {
-        if (net_client_wait_data.max_players != old_max_players)
+        if (g_net_client_globals->net_client_wait_data.max_players != old_max_players)
         {
             BuildWindow();
         }
@@ -128,11 +128,11 @@ static void UpdateGUI()
         return;
     }
 
-    for (int i = 0; i < net_client_wait_data.max_players; ++i)
+    for (int i = 0; i < g_net_client_globals->net_client_wait_data.max_players; ++i)
     {
         txt_color_t color = TXT_COLOR_BRIGHT_WHITE;
 
-        if (i == net_client_wait_data.consoleplayer)
+        if (i == g_net_client_globals->net_client_wait_data.consoleplayer)
         {
             color = TXT_COLOR_YELLOW;
         }
@@ -140,12 +140,12 @@ static void UpdateGUI()
         TXT_SetFGColor(player_labels[i], color);
         TXT_SetFGColor(ip_labels[i], color);
 
-        if (i < net_client_wait_data.num_players)
+        if (i < g_net_client_globals->net_client_wait_data.num_players)
         {
             TXT_SetLabel(player_labels[i],
-                net_client_wait_data.player_names[i]);
+                g_net_client_globals->net_client_wait_data.player_names[i]);
             TXT_SetLabel(ip_labels[i],
-                net_client_wait_data.player_addrs[i]);
+                g_net_client_globals->net_client_wait_data.player_addrs[i]);
         }
         else
         {
@@ -154,10 +154,10 @@ static void UpdateGUI()
         }
     }
 
-    if (net_client_wait_data.num_drones > 0)
+    if (g_net_client_globals->net_client_wait_data.num_drones > 0)
     {
         M_snprintf(buf, sizeof(buf), " (+%i observer clients)",
-            net_client_wait_data.num_drones);
+            g_net_client_globals->net_client_wait_data.num_drones);
         TXT_SetLabel(drone_label, buf);
     }
     else
@@ -166,7 +166,7 @@ static void UpdateGUI()
     }
 
     txt_window_action_t *startgame = nullptr;
-    if (net_client_wait_data.is_controller)
+    if (g_net_client_globals->net_client_wait_data.is_controller)
     {
         startgame = TXT_NewWindowAction(' ', "Start game");
         TXT_SignalConnect(startgame, "pressed", StartGame, nullptr);
@@ -242,20 +242,19 @@ static void CloseWindow(void *, void *uncast_window)
 
 static void CheckSHA1Sums()
 {
-    if (!net_client_received_wait_data || had_warning)
+    if (!g_net_client_globals->net_client_received_wait_data || had_warning)
     {
         return;
     }
 
-    bool correct_wad = memcmp(net_local_wad_sha1sum,
-                      net_client_wait_data.wad_sha1sum,
+    bool correct_wad = memcmp(g_net_client_globals->net_local_wad_sha1sum, g_net_client_globals->net_client_wait_data.wad_sha1sum,
                       sizeof(sha1_digest_t))
                   == 0;
-    bool correct_deh = memcmp(net_local_deh_sha1sum,
-                      net_client_wait_data.deh_sha1sum,
+    bool correct_deh = memcmp(g_net_client_globals->net_local_deh_sha1sum, g_net_client_globals->net_client_wait_data.deh_sha1sum,
                       sizeof(sha1_digest_t))
                   == 0;
-    bool same_freedoom = net_client_wait_data.is_freedoom == static_cast<int>(net_local_is_freedoom);
+    bool same_freedoom =
+        g_net_client_globals->net_client_wait_data.is_freedoom == static_cast<int>(g_net_client_globals->net_local_is_freedoom);
 
     if (correct_wad && correct_deh && same_freedoom)
     {
@@ -265,23 +264,21 @@ static void CheckSHA1Sums()
     if (!correct_wad)
     {
         printf("Warning: WAD SHA1 does not match server:\n");
-        PrintSHA1Digest("Local", net_local_wad_sha1sum);
-        PrintSHA1Digest("Server", net_client_wait_data.wad_sha1sum);
+        PrintSHA1Digest("Local", g_net_client_globals->net_local_wad_sha1sum);
+        PrintSHA1Digest("Server", g_net_client_globals->net_client_wait_data.wad_sha1sum);
     }
 
     if (!same_freedoom)
     {
         printf("Warning: Mixing Freedoom with non-Freedoom\n");
-        printf("Local: %u  Server: %i\n",
-            net_local_is_freedoom,
-            net_client_wait_data.is_freedoom);
+        printf("Local: %u  Server: %i\n", g_net_client_globals->net_local_is_freedoom, g_net_client_globals->net_client_wait_data.is_freedoom);
     }
 
     if (!correct_deh)
     {
         printf("Warning: Dehacked SHA1 does not match server:\n");
-        PrintSHA1Digest("Local", net_local_deh_sha1sum);
-        PrintSHA1Digest("Server", net_client_wait_data.deh_sha1sum);
+        PrintSHA1Digest("Local", g_net_client_globals->net_local_deh_sha1sum);
+        PrintSHA1Digest("Server", g_net_client_globals->net_client_wait_data.deh_sha1sum);
     }
 
     txt_window_t *window_local = TXT_NewWindow("WARNING!");
@@ -299,7 +296,7 @@ static void CheckSHA1Sums()
         // will be wrong, but this is not neccessarily a problem.
         // Display a different message to the WAD directory message.
 
-        if (net_local_is_freedoom)
+        if (g_net_client_globals->net_local_is_freedoom)
         {
             TXT_AddWidget(window_local, TXT_NewLabel("You are using the Freedoom IWAD to play with players\n"
                                                "using an official Doom IWAD.  Make sure that you are\n"
@@ -349,12 +346,12 @@ static void ParseCommandLineArgs()
 
 static void CheckAutoLaunch()
 {
-    if (net_client_received_wait_data
-        && net_client_wait_data.is_controller
+    if (g_net_client_globals->net_client_received_wait_data
+        && g_net_client_globals->net_client_wait_data.is_controller
         && expected_nodes > 0)
     {
-        int nodes = net_client_wait_data.num_players
-                + net_client_wait_data.num_drones;
+        int nodes = g_net_client_globals->net_client_wait_data.num_players
+                + g_net_client_globals->net_client_wait_data.num_drones;
 
         if (nodes >= expected_nodes)
         {
@@ -385,7 +382,7 @@ void NET_WaitForLaunch()
     OpenWaitDialog();
     had_warning = false;
 
-    while (net_waiting_for_launch)
+    while (g_net_client_globals->net_waiting_for_launch)
     {
         UpdateGUI();
         CheckAutoLaunch();
@@ -398,7 +395,7 @@ void NET_WaitForLaunch()
         NET_CL_Run();
         NET_SV_Run();
 
-        if (!net_client_connected)
+        if (!g_net_client_globals->net_client_connected)
         {
             I_Error("Lost connection to server");
         }

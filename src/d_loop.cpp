@@ -149,7 +149,7 @@ static bool BuildNewTic()
 
     loop_interface->RunMenu();
 
-    if (drone)
+    if (g_net_client_globals->drone)
     {
         // In drone mode, do not generate any ticcmds.
 
@@ -161,7 +161,7 @@ static bool BuildNewTic()
         // If playing single player, do not allow tics to buffer
         // up very far
 
-        if (!net_client_connected && maketic - gameticdiv > 2)
+        if (!g_net_client_globals->net_client_connected && maketic - gameticdiv > 2)
             return false;
 
         // Never go more than ~200ms ahead
@@ -180,7 +180,7 @@ static bool BuildNewTic()
     std::memset(&cmd, 0, sizeof(ticcmd_t));
     loop_interface->BuildTiccmd(&cmd, maketic);
 
-    if (net_client_connected)
+    if (g_net_client_globals->net_client_connected)
     {
         NET_CL_SendTiccmd(&cmd, maketic);
     }
@@ -245,7 +245,7 @@ static void D_Disconnected()
 {
     // In drone mode, the game cannot continue once disconnected.
 
-    if (drone)
+    if (g_net_client_globals->drone)
     {
         I_Error("Disconnected from server in drone mode.");
     }
@@ -272,7 +272,7 @@ void D_ReceiveTic(ticcmd_t *ticcmds, bool *players_mask)
 
     for (int i = 0; i < NET_MAXPLAYERS; ++i)
     {
-        if (!drone && i == localplayer)
+        if (!g_net_client_globals->drone && i == localplayer)
         {
             // This is us.  Don't overwrite it.
         }
@@ -309,12 +309,12 @@ static void BlockUntilStart(net_gamesettings_t *settings,
         NET_CL_Run();
         NET_SV_Run();
 
-        if (!net_client_connected)
+        if (!g_net_client_globals->net_client_connected)
         {
             I_Error("Lost connection to server");
         }
 
-        if (callback != nullptr && !callback(net_client_wait_data.ready_players, net_client_wait_data.num_players))
+        if (callback != nullptr && !callback(g_net_client_globals->net_client_wait_data.ready_players, g_net_client_globals->net_client_wait_data.num_players))
         {
             I_Error("Netgame startup aborted.");
         }
@@ -372,7 +372,7 @@ void D_StartNetGame(net_gamesettings_t *settings,
         else
             settings->ticdup = 1;
     }
-    if (net_client_connected)
+    if (g_net_client_globals->net_client_connected)
     {
         // Send our game settings and block until game start is received
         // from the server.
@@ -385,7 +385,7 @@ void D_StartNetGame(net_gamesettings_t *settings,
         NET_CL_GetSettings(settings);
     }
 
-    if (drone)
+    if (g_net_client_globals->drone)
     {
         settings->consoleplayer = 0;
     }
@@ -489,7 +489,7 @@ bool D_InitNetGame(net_connect_data_t *connect_data)
         if (!NET_CL_Connect(addr, connect_data))
         {
             I_Error("D_InitNetGame: Failed to connect to %s:\n%s\n",
-                NET_AddrToString(addr), net_client_reject_reason);
+                NET_AddrToString(addr), g_net_client_globals->net_client_reject_reason);
         }
 
         printf("D_InitNetGame: Connected to %s\n", NET_AddrToString(addr));
@@ -521,9 +521,9 @@ static int GetLowTic()
 {
     int lowtic = maketic;
 
-    if (net_client_connected)
+    if (g_net_client_globals->net_client_connected)
     {
-        if (drone || recvtic < lowtic)
+        if (g_net_client_globals->drone || recvtic < lowtic)
         {
             lowtic = recvtic;
         }
@@ -593,7 +593,7 @@ static bool PlayersInGame()
     // If we are connected to a server, check if there are any players
     // in the game.
 
-    if (net_client_connected)
+    if (g_net_client_globals->net_client_connected)
     {
         for (unsigned int i = 0; i < NET_MAXPLAYERS; ++i)
         {
@@ -604,7 +604,7 @@ static bool PlayersInGame()
     // Whether single or multi-player, unless we are running as a drone,
     // we are in the game.
 
-    if (!drone)
+    if (!g_net_client_globals->drone)
     {
         result = true;
     }
@@ -704,7 +704,7 @@ void TryRunTics()
         if (counts < 1)
             counts = 1;
 
-        if (net_client_connected)
+        if (g_net_client_globals->net_client_connected)
         {
             OldNetSync();
         }
@@ -748,7 +748,7 @@ void TryRunTics()
 
         ticcmd_set_t *set = &ticdata[(gametic / ticdup) % BACKUPTICS];
 
-        if (!net_client_connected)
+        if (!g_net_client_globals->net_client_connected)
         {
             SinglePlayerClear(set);
         }
