@@ -1299,7 +1299,7 @@ static void M_DrawCrispness2()
     M_DrawCrispnessItem(
         static_cast<int>(crispness2_e::crispness_soundfix), const_cast<char *>("Misc. Sound Fixes"), crispy->soundfix, true);
     M_DrawCrispnessMultiItem(static_cast<int>(crispness2_e::crispness_sndchannels), const_cast<char *>("Sound Channels"),
-        multiitem_sndchannels, snd_channels >> 4, snd_sfxdevice != SNDDEVICE_PCSPEAKER);
+        multiitem_sndchannels, snd_channels >> 4, g_i_sound_globals->snd_sfxdevice != SNDDEVICE_PCSPEAKER);
     M_DrawCrispnessItem(static_cast<int>(crispness2_e::crispness_soundmono), const_cast<char *>("Mono SFX"), crispy->soundmono, true);
 
     M_DrawCrispnessSeparator(static_cast<int>(crispness2_e::crispness_sep_navigational), const_cast<char *>("Navigational"));

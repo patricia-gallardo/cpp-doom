@@ -2254,7 +2254,7 @@ static void I_OPL_ShutdownMusic()
 
 static bool I_OPL_InitMusic()
 {
-    OPL_SetSampleRate(static_cast<unsigned int>(snd_samplerate));
+    OPL_SetSampleRate(static_cast<unsigned int>(g_i_sound_globals->snd_samplerate));
 
     opl_init_result_t chip_type = OPL_Init(static_cast<unsigned int>(opl_io_port));
     if (chip_type == OPL_INIT_NONE)

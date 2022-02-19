@@ -45,15 +45,19 @@ static const char *cfg_extension[] = { "cfg", nullptr };
 
 // Config file variables:
 
-int snd_sfxdevice = SNDDEVICE_SB;
-int snd_musicdevice = SNDDEVICE_SB;
-int snd_samplerate = 44100;
 int opl_io_port = 0x388;
-int snd_cachesize = 64 * 1024 * 1024;
-int snd_maxslicetime_ms = 28;
-char *snd_musiccmd = const_cast<char *>("");
-int snd_pitchshift = 0;
 char *snd_dmxoption = const_cast<char *>("-opl3"); // [crispy] default to OPL3 emulation
+
+static i_sound_t i_sound_s = {
+    .snd_sfxdevice = SNDDEVICE_SB,
+    .snd_musicdevice = SNDDEVICE_SB,
+    .snd_samplerate = 44100,
+    .snd_cachesize = 64 * 1024 * 1024,
+    .snd_maxslicetime_ms = 28,
+    .snd_musiccmd = const_cast<char *>(""),
+    .snd_pitchshift = 0
+};
+i_sound_t *const g_i_sound_globals = &i_sound_s;
 
 static int numChannels = 8;
 static int sfxVolume = 8;
@@ -145,41 +149,41 @@ void ConfigSound(void *, void *)
 
     TXT_AddWidgets(window,
         TXT_NewSeparator("Sound effects"),
-        TXT_NewRadioButton("Disabled", &snd_sfxdevice, SNDDEVICE_NONE),
+        TXT_NewRadioButton("Disabled", &g_i_sound_globals->snd_sfxdevice, SNDDEVICE_NONE),
         TXT_If(gamemission == doom,
-            TXT_NewRadioButton("PC speaker effects", &snd_sfxdevice,
+            TXT_NewRadioButton("PC speaker effects", &g_i_sound_globals->snd_sfxdevice,
                                SNDDEVICE_PCSPEAKER)),
         TXT_NewRadioButton("Digital sound effects",
-                           &snd_sfxdevice,
+                           &g_i_sound_globals->snd_sfxdevice,
                            SNDDEVICE_SB),
         TXT_If(gamemission == doom || gamemission == heretic
             || gamemission == hexen,
-            TXT_NewConditional(&snd_sfxdevice, SNDDEVICE_SB,
+            TXT_NewConditional(&g_i_sound_globals->snd_sfxdevice, SNDDEVICE_SB,
                 TXT_NewHorizBox(
                     TXT_NewStrut(4, 0),
-                    TXT_NewCheckBox("Pitch-shifted sounds", &snd_pitchshift),
+                    TXT_NewCheckBox("Pitch-shifted sounds", &g_i_sound_globals->snd_pitchshift),
                     nullptr))),
         TXT_If(gamemission == strife,
-            TXT_NewConditional(&snd_sfxdevice, SNDDEVICE_SB,
+            TXT_NewConditional(&g_i_sound_globals->snd_sfxdevice, SNDDEVICE_SB,
                 TXT_NewHorizBox(
                     TXT_NewStrut(4, 0),
                     TXT_NewCheckBox("Show text with voices", &show_talk),
                     nullptr))),
 
         TXT_NewSeparator("Music"),
-        TXT_NewRadioButton("Disabled", &snd_musicdevice, SNDDEVICE_NONE),
+        TXT_NewRadioButton("Disabled", &g_i_sound_globals->snd_musicdevice, SNDDEVICE_NONE),
 
-        TXT_NewRadioButton("OPL (Adlib/Soundblaster)", &snd_musicdevice,
+        TXT_NewRadioButton("OPL (Adlib/Soundblaster)", &g_i_sound_globals->snd_musicdevice,
                            SNDDEVICE_SB),
-        TXT_NewConditional(&snd_musicdevice, SNDDEVICE_SB,
+        TXT_NewConditional(&g_i_sound_globals->snd_musicdevice, SNDDEVICE_SB,
             TXT_NewHorizBox(
                 TXT_NewStrut(4, 0),
                 TXT_NewLabel("Chip type: "),
                 OPLTypeSelector(),
                 nullptr)),
 
-        TXT_NewRadioButton("GUS (emulated)", &snd_musicdevice, SNDDEVICE_GUS),
-        TXT_NewConditional(&snd_musicdevice, SNDDEVICE_GUS,
+        TXT_NewRadioButton("GUS (emulated)", &g_i_sound_globals->snd_musicdevice, SNDDEVICE_GUS),
+        TXT_NewConditional(&g_i_sound_globals->snd_musicdevice, SNDDEVICE_GUS,
             TXT_MakeTable(2,
                 TXT_NewStrut(4, 0),
                 TXT_NewLabel("Path to patch files: "),
@@ -189,8 +193,8 @@ void ConfigSound(void *, void *)
                                     TXT_DIRECTORY),
                 nullptr)),
 
-        TXT_NewRadioButton("MIDI/MP3/OGG/FLAC", &snd_musicdevice, SNDDEVICE_GENMIDI), // [crispy] improve ambigious music backend name
-        TXT_NewConditional(&snd_musicdevice, SNDDEVICE_GENMIDI,
+        TXT_NewRadioButton("MIDI/MP3/OGG/FLAC", &g_i_sound_globals->snd_musicdevice, SNDDEVICE_GENMIDI), // [crispy] improve ambigious music backend name
+        TXT_NewConditional(&g_i_sound_globals->snd_musicdevice, SNDDEVICE_GENMIDI,
             TXT_MakeTable(2,
                 TXT_NewStrut(4, 0),
                 TXT_NewLabel("Timidity configuration file: "),
@@ -204,10 +208,10 @@ void ConfigSound(void *, void *)
 
 void BindSoundVariables()
 {
-    M_BindIntVariable("snd_sfxdevice",            &snd_sfxdevice);
-    M_BindIntVariable("snd_musicdevice",          &snd_musicdevice);
+    M_BindIntVariable("snd_sfxdevice",            &g_i_sound_globals->snd_sfxdevice);
+    M_BindIntVariable("snd_musicdevice",          &g_i_sound_globals->snd_musicdevice);
     M_BindIntVariable("snd_channels",             &numChannels);
-    M_BindIntVariable("snd_samplerate",           &snd_samplerate);
+    M_BindIntVariable("snd_samplerate",           &g_i_sound_globals->snd_samplerate);
     M_BindIntVariable("sfx_volume",               &sfxVolume);
     M_BindIntVariable("music_volume",             &musicVolume);
 
@@ -223,14 +227,14 @@ void BindSoundVariables()
     M_BindIntVariable("snd_sbirq",                &snd_sbirq);
     M_BindIntVariable("snd_sbdma",                &snd_sbdma);
     M_BindIntVariable("snd_mport",                &snd_mport);
-    M_BindIntVariable("snd_maxslicetime_ms",      &snd_maxslicetime_ms);
-    M_BindStringVariable("snd_musiccmd",          &snd_musiccmd);
+    M_BindIntVariable("snd_maxslicetime_ms",      &g_i_sound_globals->snd_maxslicetime_ms);
+    M_BindStringVariable("snd_musiccmd",          &g_i_sound_globals->snd_musiccmd);
     M_BindStringVariable("snd_dmxoption",         &snd_dmxoption);
 
-    M_BindIntVariable("snd_cachesize",            &snd_cachesize);
+    M_BindIntVariable("snd_cachesize",            &g_i_sound_globals->snd_cachesize);
     M_BindIntVariable("opl_io_port",              &opl_io_port);
 
-    M_BindIntVariable("snd_pitchshift",           &snd_pitchshift);
+    M_BindIntVariable("snd_pitchshift",           &g_i_sound_globals->snd_pitchshift);
 
     if (gamemission == strife)
     {
@@ -244,7 +248,7 @@ void BindSoundVariables()
 
     // All versions of Heretic and Hexen did pitch-shifting.
     // Most versions of Doom did not and Strife never did.
-    snd_pitchshift = gamemission == heretic || gamemission == hexen;
+    g_i_sound_globals->snd_pitchshift = gamemission == heretic || gamemission == hexen;
 
     // Default sound volumes - different games use different values.
 

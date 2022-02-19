@@ -282,9 +282,8 @@ void S_Init(int sfxVolume_param, int musicVolume_param)
     }
 
     // Doom defaults to pitch-shifting off.
-    if (snd_pitchshift == -1)
-    {
-        snd_pitchshift = 0;
+    if (g_i_sound_globals->snd_pitchshift == -1)
+    { g_i_sound_globals->snd_pitchshift = 0;
     }
 
     I_AtExit(S_Shutdown, true);
@@ -920,7 +919,7 @@ void S_ChangeMusic(int musicnum, int looping)
     // The Doom IWAD file has two versions of the intro music: d_intro
     // and d_introa.  The latter is used for OPL playback.
 
-    if (musicnum == mus_intro && (snd_musicdevice == SNDDEVICE_ADLIB || snd_musicdevice == SNDDEVICE_SB)
+    if (musicnum == mus_intro && (g_i_sound_globals->snd_musicdevice == SNDDEVICE_ADLIB || g_i_sound_globals->snd_musicdevice == SNDDEVICE_SB)
         && W_CheckNumForName("D_INTROA") >= 0)
     {
         const int intro  = W_GetNumForName("D_INTRO"),

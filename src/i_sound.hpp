@@ -226,13 +226,22 @@ void    I_PlaySong(void *handle, bool looping);
 void    I_StopSong();
 bool I_MusicIsPlaying();
 
-extern int         snd_sfxdevice;
-extern int         snd_musicdevice;
-extern int         snd_samplerate;
-extern int         snd_cachesize;
-extern int         snd_maxslicetime_ms;
-extern char *      snd_musiccmd;
-extern int         snd_pitchshift;
+struct i_sound_t {
+    int snd_sfxdevice {};
+    int snd_musicdevice {};
+    // Sound sample rate to use for digital output (Hz)
+    int snd_samplerate {};
+    // Maximum number of bytes to dedicate to allocated sound effects. (Default: 64MB)
+    int snd_cachesize {};
+    // Config variable that controls the sound buffer size. We default to 28ms (1000 / 35fps = 1 buffer per tic).
+    int snd_maxslicetime_ms {};
+    // External command to invoke to play back music.
+    char *snd_musiccmd {};
+    // Whether to vary the pitch of sound effects. Each game will set the default differently
+    int snd_pitchshift {};
+};
+
+extern i_sound_t *const g_i_sound_globals;
 
 void I_BindSoundVariables();
 

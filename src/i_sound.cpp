@@ -27,32 +27,6 @@
 #include "m_argv.hpp"
 #include "m_config.hpp"
 
-// Sound sample rate to use for digital output (Hz)
-
-int snd_samplerate = 44100;
-
-// Maximum number of bytes to dedicate to allocated sound effects.
-// (Default: 64MB)
-
-int snd_cachesize = 64 * 1024 * 1024;
-
-// Config variable that controls the sound buffer size.
-// We default to 28ms (1000 / 35fps = 1 buffer per tic).
-
-int snd_maxslicetime_ms = 28;
-
-// External command to invoke to play back music.
-
-char *snd_musiccmd = const_cast<char *>("");
-
-// Whether to vary the pitch of sound effects
-// Each game will set the default differently
-
-int snd_pitchshift = -1;
-
-int snd_musicdevice = SNDDEVICE_SB;
-int snd_sfxdevice   = SNDDEVICE_SB;
-
 // Low-level sound and music modules we are using
 static sound_module_t *sound_module;
 static music_module_t *music_module;
@@ -108,6 +82,17 @@ static music_module_t *music_modules[] = {
     nullptr,
 };
 
+static i_sound_t i_sound_s = {
+    .snd_sfxdevice = SNDDEVICE_SB,
+    .snd_musicdevice = SNDDEVICE_SB,
+    .snd_samplerate = 44100,
+    .snd_cachesize = 64 * 1024 * 1024,
+    .snd_maxslicetime_ms = 28,
+    .snd_musiccmd = const_cast<char *>(""),
+    .snd_pitchshift = -1
+};
+i_sound_t *const g_i_sound_globals = &i_sound_s;
+
 // Check if a sound device is in the given list of devices
 
 static bool SndDeviceInList(snddevice_t device, snddevice_t *list,
@@ -140,7 +125,7 @@ static void InitSfxModule(bool use_sfx_prefix)
         // Is the sfx device in the list of devices supported by
         // this module?
 
-        if (SndDeviceInList(static_cast<snddevice_t>(snd_sfxdevice),
+        if (SndDeviceInList(static_cast<snddevice_t>(g_i_sound_globals->snd_sfxdevice),
                 sound_modules[i]->sound_devices,
                 sound_modules[i]->num_sound_devices))
         {
@@ -168,7 +153,7 @@ static void InitMusicModule()
         // Is the music device in the list of devices supported
         // by this module?
 
-        if (SndDeviceInList(static_cast<snddevice_t>(snd_musicdevice),
+        if (SndDeviceInList(static_cast<snddevice_t>(g_i_sound_globals->snd_musicdevice),
                 music_modules[i]->sound_devices,
                 music_modules[i]->num_sound_devices))
         {
@@ -236,8 +221,8 @@ void I_InitSound(bool use_sfx_prefix)
         // is opened.
 
         if (!nomusic
-            && (snd_musicdevice == SNDDEVICE_GENMIDI
-                || snd_musicdevice == SNDDEVICE_GUS))
+            && (g_i_sound_globals->snd_musicdevice == SNDDEVICE_GENMIDI
+                || g_i_sound_globals->snd_musicdevice == SNDDEVICE_GUS))
         {
             I_InitTimidityConfig();
         }
@@ -485,19 +470,19 @@ void I_BindSoundVariables()
     extern int   use_libsamplerate;
     extern float libsamplerate_scale;
 
-    M_BindIntVariable("snd_musicdevice", reinterpret_cast<int *>(&snd_musicdevice));
-    M_BindIntVariable("snd_sfxdevice", reinterpret_cast<int *>(&snd_sfxdevice));
+    M_BindIntVariable("snd_musicdevice", &g_i_sound_globals->snd_musicdevice);
+    M_BindIntVariable("snd_sfxdevice", &g_i_sound_globals->snd_sfxdevice);
     M_BindIntVariable("snd_sbport", &snd_sbport);
     M_BindIntVariable("snd_sbirq", &snd_sbirq);
     M_BindIntVariable("snd_sbdma", &snd_sbdma);
     M_BindIntVariable("snd_mport", &snd_mport);
-    M_BindIntVariable("snd_maxslicetime_ms", &snd_maxslicetime_ms);
-    M_BindStringVariable("snd_musiccmd", &snd_musiccmd);
+    M_BindIntVariable("snd_maxslicetime_ms", &g_i_sound_globals->snd_maxslicetime_ms);
+    M_BindStringVariable("snd_musiccmd", &g_i_sound_globals->snd_musiccmd);
     M_BindStringVariable("snd_dmxoption", &snd_dmxoption);
-    M_BindIntVariable("snd_samplerate", &snd_samplerate);
-    M_BindIntVariable("snd_cachesize", &snd_cachesize);
+    M_BindIntVariable("snd_samplerate", &g_i_sound_globals->snd_samplerate);
+    M_BindIntVariable("snd_cachesize", &g_i_sound_globals->snd_cachesize);
     M_BindIntVariable("opl_io_port", &opl_io_port);
-    M_BindIntVariable("snd_pitchshift", &snd_pitchshift);
+    M_BindIntVariable("snd_pitchshift", &g_i_sound_globals->snd_pitchshift);
 
     M_BindStringVariable("music_pack_path", &music_pack_path);
     M_BindStringVariable("timidity_cfg_path", &timidity_cfg_path);

@@ -89,7 +89,7 @@ void I_InitTimidityConfig()
 
     temp_timidity_cfg = M_TempFile("timidity.cfg");
 
-    if (snd_musicdevice == SNDDEVICE_GUS)
+    if (g_i_sound_globals->snd_musicdevice == SNDDEVICE_GUS)
     {
         success = GUS_WriteConfig(temp_timidity_cfg);
     }
@@ -169,7 +169,7 @@ static bool I_SDL_InitMusic()
         {
             fprintf(stderr, "Unable to set up sound.\n");
         }
-        else if (Mix_OpenAudio(snd_samplerate, AUDIO_S16SYS, 2, 1024) < 0)
+        else if (Mix_OpenAudio(g_i_sound_globals->snd_samplerate, AUDIO_S16SYS, 2, 1024) < 0)
         {
             fprintf(stderr, "Error initializing SDL_mixer: %s\n",
                 Mix_GetError());
@@ -199,15 +199,15 @@ static bool I_SDL_InitMusic()
     // If snd_musiccmd is set, we need to call Mix_SetMusicCMD to
     // configure an external music playback program.
 
-    if (strlen(snd_musiccmd) > 0)
+    if (strlen(g_i_sound_globals->snd_musiccmd) > 0)
     {
-        Mix_SetMusicCMD(snd_musiccmd);
+        Mix_SetMusicCMD(g_i_sound_globals->snd_musiccmd);
     }
 
 #if defined(_WIN32)
     // [AM] Start up midiproc to handle playing MIDI music.
     // Don't enable it for GUS, since it handles its own volume just fine.
-    if (snd_musicdevice != SNDDEVICE_GUS)
+    if (g_i_sound_globals->snd_musicdevice != SNDDEVICE_GUS)
     {
         I_MidiPipe_InitServer();
     }
@@ -453,7 +453,7 @@ static void *I_SDL_RegisterSong(void *data, int len)
         // won't find the file to play. This means we leave a mess on
         // disk :(
 
-        if (strlen(snd_musiccmd) == 0)
+        if (strlen(g_i_sound_globals->snd_musiccmd) == 0)
         {
             remove(filename);
         }

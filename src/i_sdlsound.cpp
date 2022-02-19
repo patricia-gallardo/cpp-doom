@@ -175,7 +175,7 @@ static bool FindAndFreeSound()
 
 static void ReserveCacheSpace(size_t len)
 {
-    if (snd_cachesize <= 0)
+    if (g_i_sound_globals->snd_cachesize <= 0)
     {
         return;
     }
@@ -183,7 +183,7 @@ static void ReserveCacheSpace(size_t len)
     // Keep freeing sound effects that aren't currently being played,
     // until there is enough space for the new sound.
 
-    while (allocated_sounds_size + len > static_cast<size_t>(snd_cachesize))
+    while (allocated_sounds_size + len > static_cast<size_t>(g_i_sound_globals->snd_cachesize))
     {
         // Free a sound.  If there is nothing more to free, stop.
 
@@ -996,7 +996,7 @@ static int I_SDL_StartSound(sfxinfo_t *sfxinfo, int channel, int vol, int sep, i
             return -1;
         }
 
-        if (snd_pitchshift)
+        if (g_i_sound_globals->snd_pitchshift)
         {
             allocated_sound_t *newsnd = PitchShift(snd, pitch);
 
@@ -1090,7 +1090,7 @@ static void I_SDL_ShutdownSound()
 
 static int GetSliceSize()
 {
-    int limit = (snd_samplerate * snd_maxslicetime_ms) / 1000;
+    int limit = (g_i_sound_globals->snd_samplerate * g_i_sound_globals->snd_maxslicetime_ms) / 1000;
 
     // Try all powers of two, not exceeding the limit.
 
@@ -1134,7 +1134,7 @@ static bool I_SDL_InitSound(bool _use_sfx_prefix)
         return false;
     }
 
-    if (Mix_OpenAudio(snd_samplerate, AUDIO_S16SYS, 2, GetSliceSize()) < 0)
+    if (Mix_OpenAudio(g_i_sound_globals->snd_samplerate, AUDIO_S16SYS, 2, GetSliceSize()) < 0)
     {
         fprintf(stderr, "Error initialising SDL_mixer: %s\n", Mix_GetError());
         return false;

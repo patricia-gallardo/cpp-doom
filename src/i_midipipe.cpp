@@ -420,7 +420,7 @@ bool I_MidiPipe_InitServer()
     STARTUPINFO         startup_info;
     BOOL                ok;
 
-    if (!UsingNativeMidi() || strlen(snd_musiccmd) > 0)
+    if (!UsingNativeMidi() || strlen(g_i_sound_globals->snd_musiccmd) > 0)
     {
         // If we're not using native MIDI, or if we're playing music through
         // an exteranl program, we don't need to start the server.
@@ -472,7 +472,7 @@ bool I_MidiPipe_InitServer()
     // Define the command line.  Version, Sample Rate, and handles follow
     // the executable name.
     M_snprintf(params_buf, sizeof(params_buf), "%d %Iu %Iu",
-        snd_samplerate, (size_t)midi_process_in_reader, (size_t)midi_process_out_writer);
+        g_i_sound_globals->snd_samplerate, (size_t)midi_process_in_reader, (size_t)midi_process_out_writer);
     cmdline = M_StringJoin(module, " \"" PACKAGE_STRING "\"", " ", params_buf, nullptr);
 
     // Launch the subprocess
