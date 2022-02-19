@@ -52,7 +52,7 @@
     ;
 
 
-#define MAX_MAPPING_ENTRIES 32
+constexpr auto MAX_MAPPING_ENTRIES = 32;
 
 using deh_mapping_t       = struct deh_mapping_s;
 using deh_mapping_entry_t = struct deh_mapping_entry_s;
@@ -83,7 +83,7 @@ struct deh_mapping_s {
 
 bool DEH_SetMapping(deh_context_t *context, deh_mapping_t *mapping,
     void *structptr, char *name, int value);
-bool DEH_SetStringMapping(deh_context_t *context, deh_mapping_t *mapping,
+[[maybe_unused]] bool DEH_SetStringMapping(deh_context_t *context, deh_mapping_t *mapping,
     void *structptr, char *name, char *value);
 void    DEH_StructSHA1Sum(sha1_context_t *context, deh_mapping_t *mapping,
        void *structptr);

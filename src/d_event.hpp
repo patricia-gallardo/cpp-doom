@@ -115,19 +115,19 @@ enum buttoncode_t
 enum buttoncode2_t
 {
     // Player view look up
-    BT2_LOOKUP = 1,
+    BT2_LOOKUP [[maybe_unused]] = 1,
     // Player view look down
-    BT2_LOOKDOWN = 2,
+    BT2_LOOKDOWN [[maybe_unused]] = 2,
     // Center player's view
-    BT2_CENTERVIEW = 4,
+    BT2_CENTERVIEW [[maybe_unused]] = 4,
     // Use inventory item
-    BT2_INVUSE = 8,
+    BT2_INVUSE [[maybe_unused]] = 8,
     // Drop inventory item
-    BT2_INVDROP = 16,
+    BT2_INVDROP [[maybe_unused]] = 16,
     // Jump up and down
-    BT2_JUMP = 32,
+    BT2_JUMP [[maybe_unused]] = 32,
     // Use medkit
-    BT2_HEALTH = 128,
+    BT2_HEALTH [[maybe_unused]] = 128,
 
 };
 

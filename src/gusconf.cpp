@@ -31,7 +31,7 @@
 #include "w_wad.hpp"
 #include "z_zone.hpp"
 
-#define MAX_INSTRUMENTS 256
+constexpr auto MAX_INSTRUMENTS = 256;
 
 typedef struct
 {

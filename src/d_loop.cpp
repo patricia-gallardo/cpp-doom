@@ -415,7 +415,6 @@ bool D_InitNetGame(net_connect_data_t *connect_data)
 {
     bool     result = false;
     net_addr_t *addr   = nullptr;
-    int         i;
 
     // Call D_QuitNetGame on exit:
 
@@ -449,19 +448,16 @@ bool D_InitNetGame(net_connect_data_t *connect_data)
         // Automatically search the local LAN for a multiplayer
         // server and join it.
         //
-
-        i = M_CheckParm("-autojoin");
-
-        if (i > 0)
         {
-            addr = NET_FindLANServer();
+            int i = M_CheckParm("-autojoin");
 
-            if (addr == nullptr)
+            if (i > 0)
             {
-                I_Error("No server found on local LAN");
+                addr = NET_FindLANServer();
+
+                if (addr == nullptr) { I_Error("No server found on local LAN"); }
             }
         }
-
         //!
         // @arg <address>
         // @category net
@@ -469,18 +465,16 @@ bool D_InitNetGame(net_connect_data_t *connect_data)
         // Connect to a multiplayer server running on the given
         // address.
         //
-
-        i = M_CheckParmWithArgs("-connect", 1);
-
-        if (i > 0)
         {
-            net_sdl_module.InitClient();
-            addr = net_sdl_module.ResolveAddress(myargv[i + 1]);
-            NET_ReferenceAddress(addr);
+            int i = M_CheckParmWithArgs("-connect", 1);
 
-            if (addr == nullptr)
+            if (i > 0)
             {
-                I_Error("Unable to resolve '%s'\n", myargv[i + 1]);
+                net_sdl_module.InitClient();
+                addr = net_sdl_module.ResolveAddress(myargv[i + 1]);
+                NET_ReferenceAddress(addr);
+
+                if (addr == nullptr) { I_Error("Unable to resolve '%s'\n", myargv[i + 1]); }
             }
         }
     }
@@ -525,9 +519,7 @@ void D_QuitNetGame()
 
 static int GetLowTic()
 {
-    int lowtic;
-
-    lowtic = maketic;
+    int lowtic = maketic;
 
     if (net_client_connected)
     {
@@ -546,7 +538,6 @@ static int oldnettics;
 
 static void OldNetSync()
 {
-    unsigned int i;
     int          keyplayer = -1;
 
     frameon++;
@@ -554,7 +545,7 @@ static void OldNetSync()
     // ideally maketic should be 1 - 3 tics above lowtic
     // if we are consistantly slower, speed up time
 
-    for (i = 0; i < NET_MAXPLAYERS; i++)
+    for (unsigned int i = 0; i < NET_MAXPLAYERS; i++)
     {
         if (local_playeringame[i])
         {
@@ -598,14 +589,13 @@ static void OldNetSync()
 static bool PlayersInGame()
 {
     bool      result = false;
-    unsigned int i;
 
     // If we are connected to a server, check if there are any players
     // in the game.
 
     if (net_client_connected)
     {
-        for (i = 0; i < NET_MAXPLAYERS; ++i)
+        for (unsigned int i = 0; i < NET_MAXPLAYERS; ++i)
         {
             result = result || local_playeringame[i];
         }
@@ -627,12 +617,9 @@ static bool PlayersInGame()
 
 static void TicdupSquash(ticcmd_set_t *set)
 {
-    ticcmd_t *   cmd;
-    unsigned int i;
-
-    for (i = 0; i < NET_MAXPLAYERS; ++i)
+    for (unsigned int i = 0; i < NET_MAXPLAYERS; ++i)
     {
-        cmd           = &set->cmds[i];
+        ticcmd_t *cmd = &set->cmds[i];
         cmd->chatchar = 0;
         if (cmd->buttons & BT_SPECIAL)
             cmd->buttons = 0;
@@ -660,22 +647,16 @@ static void SinglePlayerClear(ticcmd_set_t *set)
 
 void TryRunTics()
 {
-    int        i;
-    int        lowtic;
-    int        entertic;
     static int oldentertics;
-    int        realtics;
-    int        availabletics;
-    int        counts;
+    int        counts = 0;
 
     // [AM] If we've uncapped the framerate and there are no tics
     //      to run, return early instead of waiting around.
     extern int leveltime;
-#define return_early (crispy->uncapped && counts == 0 && leveltime > oldleveltime && screenvisible)
 
     // get real tics
-    entertic     = I_GetTime() / ticdup;
-    realtics     = entertic - oldentertics;
+    int entertic     = I_GetTime() / ticdup;
+    int realtics     = entertic - oldentertics;
     oldentertics = entertic;
 
     // in singletics mode, run a single tic every time this function
@@ -690,9 +671,9 @@ void TryRunTics()
         NetUpdate();
     }
 
-    lowtic = GetLowTic();
+    int lowtic = GetLowTic();
 
-    availabletics = lowtic - gametic / ticdup;
+    int availabletics = lowtic - gametic / ticdup;
 
     // decide how many tics to run
 
@@ -702,7 +683,7 @@ void TryRunTics()
 
         // [AM] If we've uncapped the framerate and there are no tics
         //      to run, return early instead of waiting around.
-        if (return_early)
+        if ((crispy->uncapped && counts == 0 && leveltime > oldleveltime && screenvisible))
             return;
     }
     else
@@ -717,7 +698,7 @@ void TryRunTics()
 
         // [AM] If we've uncapped the framerate and there are no tics
         //      to run, return early instead of waiting around.
-        if (return_early)
+        if ((crispy->uncapped && counts == 0 && leveltime > oldleveltime && screenvisible))
             return;
 
         if (counts < 1)
@@ -760,21 +741,19 @@ void TryRunTics()
     // run the count * ticdup dics
     while (counts--)
     {
-        ticcmd_set_t *set;
-
         if (!PlayersInGame())
         {
             return;
         }
 
-        set = &ticdata[(gametic / ticdup) % BACKUPTICS];
+        ticcmd_set_t *set = &ticdata[(gametic / ticdup) % BACKUPTICS];
 
         if (!net_client_connected)
         {
             SinglePlayerClear(set);
         }
 
-        for (i = 0; i < ticdup; i++)
+        for (int i = 0; i < ticdup; i++)
         {
             if (gametic / ticdup > lowtic)
                 I_Error("gametic>lowtic");

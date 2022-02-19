@@ -28,8 +28,8 @@
 constexpr auto ORIGWIDTH  = 320; // [crispy]
 constexpr auto ORIGHEIGHT = 200; // [crispy]
 
-#define MAXWIDTH  (ORIGWIDTH << 2)  // [crispy]
-#define MAXHEIGHT (ORIGHEIGHT << 1) // [crispy]
+constexpr auto MAXWIDTH  = (ORIGWIDTH << 2);  // [crispy]
+constexpr auto MAXHEIGHT = (ORIGHEIGHT << 1); // [crispy]
 
 extern int SCREENWIDTH;
 extern int SCREENHEIGHT;
@@ -39,10 +39,10 @@ void       I_GetScreenDimensions(); // [crispy] re-calculate DELTAWIDTH
 
 // Screen height used when aspect_ratio_correct=true.
 
-#define ORIGHEIGHT_4_3 240                   // [crispy]
-#define MAXHEIGHT_4_3  (ORIGHEIGHT_4_3 << 1) // [crispy]
+constexpr auto ORIGHEIGHT_4_3 = 240;                   // [crispy]
+[[maybe_unused]] constexpr auto MAXHEIGHT_4_3  = (ORIGHEIGHT_4_3 << 1); // [crispy]
 
-extern int SCREENHEIGHT_4_3;
+[[maybe_unused]] extern int SCREENHEIGHT_4_3;
 
 using grabmouse_callback_t = bool (*)();
 
@@ -69,7 +69,7 @@ void I_FinishUpdate();
 
 void I_ReadScreen(pixel_t *scr);
 
-void I_BeginRead();
+[[maybe_unused]] void I_BeginRead();
 
 void I_SetWindowTitle(const char *title);
 
@@ -94,7 +94,7 @@ void I_StartTic();
 
 // Enable the loading disk image displayed when reading from disk.
 
-void I_EnableLoadingDisk(int xoffs, int yoffs);
+[[maybe_unused]] void I_EnableLoadingDisk(int xoffs, int yoffs);
 
 extern char *  video_driver;
 extern bool screenvisible;
@@ -104,8 +104,8 @@ extern bool  screensaver_mode;
 extern int      usegamma;
 extern pixel_t *I_VideoBuffer;
 
-extern int screen_width;
-extern int screen_height;
+[[maybe_unused]] extern int screen_width;
+[[maybe_unused]] extern int screen_height;
 extern int fullscreen;
 extern int aspect_ratio_correct;
 extern int integer_scaling;

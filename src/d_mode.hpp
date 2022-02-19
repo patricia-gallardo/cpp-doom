@@ -94,7 +94,7 @@ enum skill_t
     sk_baby    = 0,
     sk_easy,
     sk_medium,
-    sk_hard,
+    sk_hard [[maybe_unused]],
     sk_nightmare
 };
 

@@ -673,7 +673,6 @@ void P_TouchSpecialThing(mobj_t *special,
         S_StartSound(nullptr, sound);
 }
 
-
 //
 // KillMobj
 //

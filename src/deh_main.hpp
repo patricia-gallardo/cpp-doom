@@ -26,8 +26,8 @@
 // source).  If these limits are exceeded, it does not generate an error, but
 // a warning is displayed.
 
-#define DEH_VANILLA_NUMSTATES 966
-#define DEH_VANILLA_NUMSFX    107
+constexpr auto DEH_VANILLA_NUMSTATES = 966;
+constexpr auto DEH_VANILLA_NUMSFX    = 107;
 
 void DEH_ParseCommandLine();
 int  DEH_LoadFile(const char *filename);

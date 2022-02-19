@@ -61,7 +61,7 @@ static const char *player_colors[] = {
 
 // Array of end-of-level statistics that have been captured.
 
-#define MAX_CAPTURES 32
+constexpr auto MAX_CAPTURES = 32;
 static wbstartstruct_t captured_stats[MAX_CAPTURES];
 static int             num_captured_stats = 0;
 
@@ -74,18 +74,14 @@ static GameMission_t discovered_gamemission = none;
 
 static void DiscoverGamemode(const wbstartstruct_t *stats, int num_stats)
 {
-    int partime;
-    int level;
-    int i;
-
     if (discovered_gamemission != none)
     {
         return;
     }
 
-    for (i = 0; i < num_stats; ++i)
+    for (int i = 0; i < num_stats; ++i)
     {
-        level = stats[i].last;
+        int level = stats[i].last;
 
         /* If episode 2, 3 or 4, this is Doom 1. */
 
@@ -107,7 +103,7 @@ static void DiscoverGamemode(const wbstartstruct_t *stats, int num_stats)
         /* Try to work out if this is Doom 1 or Doom 2 by looking
            at the par time. */
 
-        partime = stats[i].partime;
+        int partime = stats[i].partime;
 
         if (partime == doom1_par_times[level] * TICRATE
             && partime != doom2_par_times[level] * TICRATE)
@@ -129,10 +125,9 @@ static void DiscoverGamemode(const wbstartstruct_t *stats, int num_stats)
 
 static int GetNumPlayers(const wbstartstruct_t *stats)
 {
-    int i;
     int num_players = 0;
 
-    for (i = 0; i < MAXPLAYERS; ++i)
+    for (int i = 0; i < MAXPLAYERS; ++i)
     {
         if (stats->plyr[i].in)
         {
@@ -200,15 +195,13 @@ static void PrintPlayerStats(FILE *stream, const wbstartstruct_t *stats,
 
 static void PrintFragsTable(FILE *stream, const wbstartstruct_t *stats)
 {
-    int x, y;
-
     fprintf(stream, "Frags:\n");
 
     /* Print header */
 
     fprintf(stream, "\t\t");
 
-    for (x = 0; x < MAXPLAYERS; ++x)
+    for (int x = 0; x < MAXPLAYERS; ++x)
     {
 
         if (!stats->plyr[x].in)
@@ -225,7 +218,7 @@ static void PrintFragsTable(FILE *stream, const wbstartstruct_t *stats)
 
     /* Print table */
 
-    for (y = 0; y < MAXPLAYERS; ++y)
+    for (int y = 0; y < MAXPLAYERS; ++y)
     {
         if (!stats->plyr[y].in)
         {
@@ -234,7 +227,7 @@ static void PrintFragsTable(FILE *stream, const wbstartstruct_t *stats)
 
         fprintf(stream, "\t%s\t|", player_colors[y]);
 
-        for (x = 0; x < MAXPLAYERS; ++x)
+        for (int x = 0; x < MAXPLAYERS; ++x)
         {
             if (!stats->plyr[x].in)
             {
@@ -280,19 +273,16 @@ static void PrintLevelName(FILE *stream, int episode, int level)
 
 static void PrintStats(FILE *stream, const wbstartstruct_t *stats)
 {
-    short leveltime, partime;
-    int   i;
-
     PrintLevelName(stream, stats->epsd, stats->last);
     fprintf(stream, "\n");
 
-    leveltime = static_cast<short>(stats->plyr[0].stime / TICRATE);
-    partime   = static_cast<short>(stats->partime / TICRATE);
+    auto leveltime = static_cast<short>(stats->plyr[0].stime / TICRATE);
+    auto partime   = static_cast<short>(stats->partime / TICRATE);
     fprintf(stream, "Time: %i:%02i", leveltime / 60, leveltime % 60);
     fprintf(stream, " (par: %i:%02i)\n", partime / 60, partime % 60);
     fprintf(stream, "\n");
 
-    for (i = 0; i < MAXPLAYERS; ++i)
+    for (int i = 0; i < MAXPLAYERS; ++i)
     {
         if (stats->plyr[i].in)
         {
@@ -320,9 +310,6 @@ void StatCopy(const wbstartstruct_t *stats)
 
 void StatDump()
 {
-    FILE *dumpfile;
-    int   i;
-
     //!
     // @category compat
     // @arg <filename>
@@ -332,9 +319,9 @@ void StatDump()
     // from statdump.exe (see ctrlapi.zip in the /idgames archive).
     //
 
-    i = M_CheckParmWithArgs("-statdump", 1);
+    int index_of_arg = M_CheckParmWithArgs("-statdump", 1);
 
-    if (i > 0)
+    if (index_of_arg > 0)
     {
         printf("Statistics captured for %i level(s)\n", num_captured_stats);
 
@@ -345,16 +332,20 @@ void StatDump()
 
         // Allow "-" as output file, for stdout.
 
-        if (strcmp(myargv[i + 1], "-") != 0)
+        FILE *dumpfile = nullptr;
+
+        char *filename = myargv[index_of_arg + 1];
+
+        if (strcmp(filename, "-") != 0)
         {
-            dumpfile = fopen(myargv[i + 1], "w");
+            dumpfile = fopen(filename, "w");
         }
         else
         {
             dumpfile = stdout;
         }
 
-        for (i = 0; i < num_captured_stats; ++i)
+        for (int i = 0; i < num_captured_stats; ++i)
         {
             PrintStats(dumpfile, &captured_stats[i]);
         }

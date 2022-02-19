@@ -28,14 +28,14 @@
 
 [[maybe_unused]] extern int cd_Error;
 
-int  I_CDMusInit();
-void I_CDMusPrintStartup();
-int  I_CDMusPlay(int track);
-int  I_CDMusStop();
-int  I_CDMusResume();
-int  I_CDMusSetVolume(int volume);
-int  I_CDMusFirstTrack();
-int  I_CDMusLastTrack();
-int  I_CDMusTrackLength(int track);
+[[maybe_unused]] int  I_CDMusInit();
+[[maybe_unused]] void I_CDMusPrintStartup();
+[[maybe_unused]] int  I_CDMusPlay(int track);
+[[maybe_unused]] int  I_CDMusStop();
+[[maybe_unused]] int  I_CDMusResume();
+[[maybe_unused]] int  I_CDMusSetVolume(int volume);
+[[maybe_unused]] int  I_CDMusFirstTrack();
+[[maybe_unused]] int  I_CDMusLastTrack();
+[[maybe_unused]] int  I_CDMusTrackLength(int track);
 
 #endif
