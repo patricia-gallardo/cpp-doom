@@ -327,7 +327,7 @@ static void InitTextscreen()
 // Restart the textscreen library.  Used when the video_driver variable
 // is changed.
 
-void RestartTextscreen()
+[[maybe_unused]] void RestartTextscreen()
 {
     TXT_Shutdown();
     InitTextscreen();

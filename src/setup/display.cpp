@@ -30,7 +30,7 @@
 
 #define WINDOW_HELP_URL "https://www.chocolate-doom.org/setup-display"
 
-extern void RestartTextscreen();
+[[maybe_unused]] extern void RestartTextscreen();
 
 typedef struct
 {
@@ -112,9 +112,7 @@ void SetDisplayDriver()
 
     if (strcmp(video_driver, "") != 0)
     {
-        char *env_string;
-
-        env_string = M_StringJoin("SDL_VIDEODRIVER=", video_driver, nullptr);
+        char *env_string = M_StringJoin("SDL_VIDEODRIVER=", video_driver, nullptr);
         putenv(env_string);
         free(env_string);
     }
@@ -134,10 +132,9 @@ static void WindowSizeSelected(void *, void *uncast_size)
 static txt_radiobutton_t *SizeSelectButton(window_size_t *size)
 {
     char buf[15];
-    txt_radiobutton_t *result;
 
     M_snprintf(buf, sizeof(buf), "%ix%i", size->w, size->h);
-    result = TXT_NewRadioButton(buf, &window_width, size->w);
+    txt_radiobutton_t *result = TXT_NewRadioButton(buf, &window_width, size->w);
     TXT_SignalConnect(result, "selected", WindowSizeSelected, size);
 
     return result;
@@ -148,9 +145,7 @@ static txt_radiobutton_t *SizeSelectButton(window_size_t *size)
 static void GenerateSizesTable(void *, void *uncast_sizes_table)
 {
     auto   *sizes_table = reinterpret_cast<txt_table_t *>(uncast_sizes_table);
-    window_size_t *sizes;
-    bool have_size;
-    int i;
+    window_size_t *sizes = nullptr;
 
     // Pick which window sizes list to use
     if (aspect_ratio_correct == 1)
@@ -168,9 +163,9 @@ static void GenerateSizesTable(void *, void *uncast_sizes_table)
 
     TXT_AddWidget(sizes_table, TXT_NewSeparator("Window size"));
 
-    have_size = false;
+    bool have_size = false;
 
-    for (i = 0; sizes[i].w != 0; ++i)
+    for (int i = 0; sizes[i].w != 0; ++i)
     {
         TXT_AddWidget(sizes_table, SizeSelectButton(&sizes[i]));
         have_size = have_size || window_width == sizes[i].w;
@@ -195,10 +190,9 @@ static void GenerateSizesTable(void *, void *uncast_sizes_table)
 static void AdvancedDisplayConfig(void *, void *uncast_sizes_table)
 {
     auto    *sizes_table = reinterpret_cast<txt_table_t *>(uncast_sizes_table);
-    txt_window_t *window;
-    txt_checkbox_t *ar_checkbox;
+    txt_checkbox_t *ar_checkbox = nullptr;
 
-    window = TXT_NewWindow("Advanced display options");
+    txt_window_t *window = TXT_NewWindow("Advanced display options");
 
     TXT_SetWindowHelpURL(window, WINDOW_HELP_URL);
 
@@ -228,12 +222,10 @@ static void AdvancedDisplayConfig(void *, void *uncast_sizes_table)
 
 void ConfigDisplay(void *, void *)
 {
-    txt_window_t *window;
-    txt_table_t *sizes_table;
-    txt_window_action_t *advanced_button;
+    txt_table_t *sizes_table = nullptr;
 
     // Open the window
-    window = TXT_NewWindow("Display Configuration");
+    txt_window_t *window = TXT_NewWindow("Display Configuration");
     TXT_SetWindowHelpURL(window, WINDOW_HELP_URL);
 
     // Build window:
@@ -257,7 +249,7 @@ void ConfigDisplay(void *, void *)
     // Button to open "advanced" window.
     // Need to pass a pointer to the window sizes table, as some of the options
     // in there trigger a rebuild of it.
-    advanced_button = TXT_NewWindowAction('a', "Advanced");
+    txt_window_action_t *advanced_button = TXT_NewWindowAction('a', "Advanced");
     TXT_SetWindowAction(window, TXT_HORIZ_CENTER, advanced_button);
     TXT_SignalConnect(advanced_button, "pressed",
                       AdvancedDisplayConfig, sizes_table);
