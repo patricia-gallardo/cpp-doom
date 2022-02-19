@@ -34,20 +34,33 @@ void    NET_Init();
 
 void NET_BindVariables();
 
-extern bool        net_client_connected;
-extern bool        net_client_received_wait_data;
-extern net_waitdata_t net_client_wait_data;
-extern char *         net_client_reject_reason;
-extern bool        net_waiting_for_launch;
-extern char *         net_player_name;
+struct net_client_globals_t {
+    // true if the client code is in use
+    bool net_client_connected {};
+    // true if we have received waiting data from the server,
+    // and the wait data that was received.
+    bool           net_client_received_wait_data {};
+    net_waitdata_t net_client_wait_data {};
+    // Why did the server reject us?
+    char *net_client_reject_reason {};
+    // Waiting at the initial wait screen for the game to be launched?
+    bool net_waiting_for_launch {};
+    // Name that we send to the server
+    char *net_player_name {};
 
-extern sha1_digest_t net_server_wad_sha1sum;
-extern sha1_digest_t net_server_deh_sha1sum;
-extern unsigned int  net_server_is_freedoom;
-extern sha1_digest_t net_local_wad_sha1sum;
-extern sha1_digest_t net_local_deh_sha1sum;
-extern unsigned int  net_local_is_freedoom;
+    sha1_digest_t net_server_wad_sha1sum {};
+    sha1_digest_t net_server_deh_sha1sum {};
+    unsigned int  net_server_is_freedoom {};
+    // Hash checksums of our wad directory and dehacked data.
+    sha1_digest_t net_local_wad_sha1sum {};
+    sha1_digest_t net_local_deh_sha1sum {};
+    // Are we playing with the freedoom IWAD?
+    unsigned int net_local_is_freedoom {};
 
-extern bool drone;
+    // Connected but not participating in the game (observer)
+    bool drone {};
+};
+
+extern net_client_globals_t *const g_net_client_globals;
 
 #endif /* #ifndef NET_CLIENT_H */

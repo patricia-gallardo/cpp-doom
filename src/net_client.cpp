@@ -103,31 +103,6 @@ static net_context_t *   client_context;
 
 static net_gamesettings_t settings;
 
-// Why did the server reject us?
-char *net_client_reject_reason = nullptr;
-
-// true if the client code is in use
-
-bool net_client_connected;
-
-// true if we have received waiting data from the server,
-// and the wait data that was received.
-
-bool        net_client_received_wait_data;
-net_waitdata_t net_client_wait_data;
-
-// Waiting at the initial wait screen for the game to be launched?
-
-bool net_waiting_for_launch = false;
-
-// Name that we send to the server
-
-char *net_player_name = nullptr;
-
-// Connected but not participating in the game (observer)
-
-bool drone = false;
-
 // The last ticcmd constructed
 
 static ticcmd_t last_ticcmd;
@@ -154,14 +129,22 @@ static unsigned int gamedata_recv_time;
 // that they can adjust to us.
 static int last_latency;
 
-// Hash checksums of our wad directory and dehacked data.
-
-sha1_digest_t net_local_wad_sha1sum;
-sha1_digest_t net_local_deh_sha1sum;
-
-// Are we playing with the freedoom IWAD?
-
-unsigned int net_local_is_freedoom;
+static net_client_globals_t net_client_s = {
+    .net_client_connected = false,
+    .net_client_received_wait_data = false,
+    .net_client_wait_data = {},
+    .net_client_reject_reason = nullptr,
+    .net_waiting_for_launch = false,
+    .net_player_name = nullptr,
+    .net_server_wad_sha1sum = {},
+    .net_server_deh_sha1sum = {},
+    .net_server_is_freedoom = 0,
+    .net_local_wad_sha1sum = {},
+    .net_local_deh_sha1sum = {},
+    .net_local_is_freedoom = {},
+    .drone = false
+};
+net_client_globals_t *const g_net_client_globals = &net_client_s;
 
 #define NET_CL_ExpandTicNum(b) NET_ExpandTicNum(recvwindow_start, (b))
 
@@ -232,7 +215,7 @@ static void NET_CL_ExpandFullTiccmd(net_full_ticcmd_t *cmd, unsigned int,
 
     for (i = 0; i < NET_MAXPLAYERS; ++i)
     {
-        if (i == settings.consoleplayer && !drone)
+        if (i == settings.consoleplayer && !g_net_client_globals->drone)
         {
             continue;
         }
@@ -285,9 +268,9 @@ static void NET_CL_AdvanceWindow()
 
 static void NET_CL_Shutdown()
 {
-    if (net_client_connected)
+    if (g_net_client_globals->net_client_connected)
     {
-        net_client_connected = false;
+        g_net_client_globals->net_client_connected = false;
 
         NET_ReleaseAddress(server_addr);
 
@@ -337,7 +320,7 @@ static void NET_CL_SendTics(int start, int end)
     net_packet_t *packet;
     int           i;
 
-    if (!net_client_connected)
+    if (!g_net_client_globals->net_client_connected)
     {
         // Disconnected from server
 
@@ -463,14 +446,14 @@ static void NET_CL_ParseSYN(net_packet_t *packet)
 
 static void SetRejectReason(const char *s)
 {
-    free(net_client_reject_reason);
+    free(g_net_client_globals->net_client_reject_reason);
     if (s != nullptr)
     {
-        net_client_reject_reason = strdup(s);
+        g_net_client_globals->net_client_reject_reason = strdup(s);
     }
     else
     {
-        net_client_reject_reason = nullptr;
+        g_net_client_globals->net_client_reject_reason = nullptr;
     }
 }
 
@@ -513,8 +496,8 @@ static void NET_CL_ParseWaitingData(net_packet_t *packet)
         return;
     }
 
-    if ((wait_data.consoleplayer >= 0 && drone)
-        || (wait_data.consoleplayer < 0 && !drone)
+    if ((wait_data.consoleplayer >= 0 && g_net_client_globals->drone)
+        || (wait_data.consoleplayer < 0 && !g_net_client_globals->drone)
         || (wait_data.consoleplayer >= wait_data.num_players))
     {
         // Invalid player number
@@ -522,8 +505,8 @@ static void NET_CL_ParseWaitingData(net_packet_t *packet)
         return;
     }
 
-    std::memcpy(&net_client_wait_data, &wait_data, sizeof(net_waitdata_t));
-    net_client_received_wait_data = true;
+    std::memcpy(&g_net_client_globals->net_client_wait_data, &wait_data, sizeof(net_waitdata_t));
+    g_net_client_globals->net_client_received_wait_data = true;
 }
 
 static void NET_CL_ParseLaunch(net_packet_t *packet)
@@ -549,7 +532,7 @@ static void NET_CL_ParseLaunch(net_packet_t *packet)
         return;
     }
 
-    net_client_wait_data.num_players = static_cast<int>(num_players);
+    g_net_client_globals->net_client_wait_data.num_players = static_cast<int>(num_players);
     client_state                     = CLIENT_STATE_WAITING_START;
     NET_Log("client: now waiting for game start");
 }
@@ -580,13 +563,12 @@ static void NET_CL_ParseGameStart(net_packet_t *packet)
         return;
     }
 
-    if ((drone && settings.consoleplayer >= 0)
-        || (!drone && settings.consoleplayer < 0))
+    if ((g_net_client_globals->drone && settings.consoleplayer >= 0)
+        || (!g_net_client_globals->drone && settings.consoleplayer < 0))
     {
         // Invalid player number: must be positive for real players,
         // negative for drones
-        NET_Log("client: error: mismatch: drone=%d, consoleplayer=%d",
-            drone, settings.consoleplayer);
+        NET_Log("client: error: mismatch: drone=%d, consoleplayer=%d", g_net_client_globals->drone, settings.consoleplayer);
         return;
     }
 
@@ -852,7 +834,7 @@ static void NET_CL_ParseResendRequest(net_packet_t *packet)
 
     NET_Log("client: processing resend request");
 
-    if (drone)
+    if (g_net_client_globals->drone)
     {
         // Drones don't send gamedata.
         NET_Log("client: error: resend request but we're a drone?");
@@ -985,7 +967,7 @@ void NET_CL_Run()
     net_addr_t *  addr;
     net_packet_t *packet;
 
-    if (!net_client_connected)
+    if (!g_net_client_globals->net_client_connected)
     {
         return;
     }
@@ -1015,7 +997,7 @@ void NET_CL_Run()
         NET_CL_Shutdown();
     }
 
-    net_waiting_for_launch =
+    g_net_client_globals->net_waiting_for_launch =
         client_connection.state == NET_CONN_STATE_CONNECTED
         && client_state == CLIENT_STATE_WAITING_LAUNCH;
 
@@ -1043,7 +1025,7 @@ static void NET_CL_SendSYN(net_connect_data_t *data)
     NET_WriteString(packet, PACKAGE_STRING);
     NET_WriteProtocolList(packet);
     NET_WriteConnectData(packet, data);
-    NET_WriteString(packet, net_player_name);
+    NET_WriteString(packet, g_net_client_globals->net_player_name);
     NET_Conn_SendPacket(&client_connection, packet);
     NET_FreePacket(packet);
 }
@@ -1058,9 +1040,9 @@ bool NET_CL_Connect(net_addr_t *addr, net_connect_data_t *data)
     server_addr = addr;
     NET_ReferenceAddress(addr);
 
-    std::memcpy(net_local_wad_sha1sum, data->wad_sha1sum, sizeof(sha1_digest_t));
-    std::memcpy(net_local_deh_sha1sum, data->deh_sha1sum, sizeof(sha1_digest_t));
-    net_local_is_freedoom = static_cast<unsigned int>(data->is_freedoom);
+    std::memcpy(g_net_client_globals->net_local_wad_sha1sum, data->wad_sha1sum, sizeof(sha1_digest_t));
+    std::memcpy(g_net_client_globals->net_local_deh_sha1sum, data->deh_sha1sum, sizeof(sha1_digest_t));
+    g_net_client_globals->net_local_is_freedoom = static_cast<unsigned int>(data->is_freedoom);
 
     // create a new network I/O context and add just the necessary module
     client_context = NET_NewContext();
@@ -1074,8 +1056,8 @@ bool NET_CL_Connect(net_addr_t *addr, net_connect_data_t *data)
 
     NET_AddModule(client_context, addr->module);
 
-    net_client_connected          = true;
-    net_client_received_wait_data = false;
+    g_net_client_globals->net_client_connected          = true;
+    g_net_client_globals->net_client_received_wait_data = false;
     sent_hole_punch               = false;
 
     NET_Conn_InitClient(&client_connection, addr, NET_PROTOCOL_UNKNOWN);
@@ -1126,7 +1108,7 @@ bool NET_CL_Connect(net_addr_t *addr, net_connect_data_t *data)
         NET_Log("client: connected successfully");
         SetRejectReason(nullptr);
         client_state = CLIENT_STATE_WAITING_LAUNCH;
-        drone        = data->drone;
+        g_net_client_globals->drone        = data->drone;
 
         return true;
     }
@@ -1160,7 +1142,7 @@ void NET_CL_Disconnect()
 {
     int start_time;
 
-    if (!net_client_connected)
+    if (!g_net_client_globals->net_client_connected)
     {
         return;
     }
@@ -1201,9 +1183,9 @@ void NET_CL_Init()
     // Try to set from the USER and USERNAME environment variables
     // Otherwise, fallback to "Player"
 
-    if (net_player_name == nullptr)
+    if (g_net_client_globals->net_player_name == nullptr)
     {
-        net_player_name = NET_GetRandomPetName();
+        g_net_client_globals->net_player_name = NET_GetRandomPetName();
     }
 }
 
@@ -1215,5 +1197,5 @@ void NET_Init()
 
 void NET_BindVariables()
 {
-    M_BindStringVariable("player_name", &net_player_name);
+    M_BindStringVariable("player_name", &g_net_client_globals->net_player_name);
 }
