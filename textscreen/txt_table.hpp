@@ -72,15 +72,15 @@ struct txt_table_s
 
     // Widgets in this table
     // The widget at (x,y) in the table is widgets[columns * y + x]
-    txt_widget_t **widgets;
-    int num_widgets;
+    txt_widget_t **widgets{};
+    int num_widgets{};
 
     // Number of columns
-    int columns;
+    int columns{};
 
     // Currently selected:
-    int selected_x;
-    int selected_y;
+    int selected_x{};
+    int selected_y{};
 };
 
 extern txt_widget_class_t txt_table_class;

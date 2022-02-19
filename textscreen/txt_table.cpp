@@ -44,13 +44,12 @@ static int IsActualWidget(txt_widget_t *widget)
 void TXT_ClearTable(void *uncast_table)
 {
     auto *table = reinterpret_cast<txt_table_t *>(uncast_table);
-    int i;
 
     // Free all widgets
     // Skip over the first (num_columns) widgets in the array, as these
     // are the column struts used to control column width
 
-    for (i=table->columns; i<table->num_widgets; ++i)
+    for (int i=table->columns; i<table->num_widgets; ++i)
     {
         if (IsActualWidget(table->widgets[i]))
         {
@@ -82,8 +81,6 @@ static int TableRows(txt_table_t *table)
 static void CellOverflowedSize(txt_table_t *table, int x, int y,
                                int *w, int *h)
 {
-    txt_widget_t *widget;
-    int x1, y1;
 
     if (!IsActualWidget(table->widgets[y * table->columns + x]))
     {
@@ -93,7 +90,7 @@ static void CellOverflowedSize(txt_table_t *table, int x, int y,
 
     *w = table->columns - x;
     *h = 0;
-    for (y1 = y; y1 < TableRows(table); ++y1)
+    for (int y1 = y; y1 < TableRows(table); ++y1)
     {
         // Every overflow cell must point to either (x, y) or another
         // overflow cell. This means the first in every row must be
@@ -104,14 +101,14 @@ static void CellOverflowedSize(txt_table_t *table, int x, int y,
             break;
         }
 
-        widget = table->widgets[y1 * table->columns + x];
+        txt_widget_t *widget = table->widgets[y1 * table->columns + x];
 
         if (y1 != y && widget != &txt_table_overflow_down)
         {
             break;
         }
 
-        for (x1 = x + 1; x1 < x + *w; ++x1)
+        for (int x1 = x + 1; x1 < x + *w; ++x1)
         {
             if (y1 * table->columns + x1 >= table->num_widgets)
             {
@@ -135,7 +132,7 @@ static void CellOverflowedSize(txt_table_t *table, int x, int y,
 
 static int IsOverflowingCell(txt_table_t *table, int x, int y)
 {
-    int w, h;
+    int w = 0, h = 0;
     CellOverflowedSize(table, x, y, &w, &h);
     return w > 1 || h > 1;
 }
@@ -148,21 +145,20 @@ static void CalculateWidgetDimensions(txt_table_t *table,
                                       unsigned int *row_heights,
                                       unsigned int *w, unsigned int *h)
 {
-    int cell_w, cell_h;
-    int x1, y1;
+    int cell_w = 0, cell_h = 0;
 
     // Find which cells this widget occupies.
     CellOverflowedSize(table, x, y, &cell_w, &cell_h);
 
     // Add up column / row widths / heights to get the actual dimensions.
     *w = 0;
-    for (x1 = x; x1 < x + cell_w; ++x1)
+    for (int x1 = x; x1 < x + cell_w; ++x1)
     {
         *w += column_widths[x1];
     }
 
     *h = 0;
-    for (y1 = y; y1 < y + cell_h; ++y1)
+    for (int y1 = y; y1 < y + cell_h; ++y1)
     {
         *h += row_heights[y1];
     }
@@ -172,18 +168,17 @@ static void CalcRowColSizes(txt_table_t *table,
                             unsigned int *row_heights,
                             unsigned int *col_widths)
 {
-    int x, y;
-    txt_widget_t *widget;
+    txt_widget_t *widget = nullptr;
 
     int rows = TableRows(table);
 
     std::memset(col_widths, 0, sizeof(int) * static_cast<unsigned long>(table->columns));
 
-    for (y = 0; y < rows; ++y)
+    for (int y = 0; y < rows; ++y)
     {
         row_heights[y] = 0;
 
-        for (x = 0; x < table->columns; ++x)
+        for (int x = 0; x < table->columns; ++x)
         {
             if (y * table->columns + x >= table->num_widgets)
                 break;
@@ -214,11 +209,10 @@ static void CalcRowColSizes(txt_table_t *table,
 
     // In the second pass, we go through again and process overflowing
     // widgets, to ensure that they will fit.
-    for (y = 0; y < rows; ++y)
+    for (int y = 0; y < rows; ++y)
     {
-        for (x = 0; x < table->columns; ++x)
+        for (int x = 0; x < table->columns; ++x)
         {
-            unsigned int w, h;
 
             if (y * table->columns + x >= table->num_widgets)
                 break;
@@ -230,6 +224,7 @@ static void CalcRowColSizes(txt_table_t *table,
             }
 
             // Expand column width and row heights as needed.
+            unsigned int w = 0, h = 0;
             CalculateWidgetDimensions(table, x, y, col_widths, row_heights,
                                       &w, &h);
             if (w < widget->w)
@@ -355,7 +350,6 @@ void TXT_AddWidgets(void *uncast_table, ...)
 {
     auto  *table = reinterpret_cast<txt_table_t *>(uncast_table);
     va_list args;
-    txt_widget_t *widget;
 
     va_start(args, uncast_table);
 
@@ -363,7 +357,7 @@ void TXT_AddWidgets(void *uncast_table, ...)
    
     for (;;) 
     {
-        widget = va_arg(args, txt_widget_t *);
+        txt_widget_t *widget = va_arg(args, txt_widget_t *);
 
         if (widget == nullptr)
         {
@@ -378,19 +372,16 @@ void TXT_AddWidgets(void *uncast_table, ...)
 
 static int SelectableCell(txt_table_t *table, int x, int y)
 {
-    txt_widget_t *widget;
-    int i;
-
     if (x < 0 || x >= table->columns)
     {
         return 0;
     }
 
-    i = y * table->columns + x;
+    int i = y * table->columns + x;
 
     if (i >= 0 && i < table->num_widgets)
     {
-        widget = table->widgets[i];
+        txt_widget_t *widget = table->widgets[i];
         return IsActualWidget(widget)
             && TXT_SelectableWidget(widget)
             && widget->visible;
@@ -407,9 +398,7 @@ static int SelectableCell(txt_table_t *table, int x, int y)
 
 static int FindSelectableColumn(txt_table_t *table, int row, int start_col)
 {
-    int x;
-
-    for (x=0; x<table->columns; ++x)
+    for (int x=0; x<table->columns; ++x)
     {
         // Search to the right
 
@@ -435,10 +424,6 @@ static int FindSelectableColumn(txt_table_t *table, int row, int start_col)
 
 static void ChangeSelection(txt_table_t *table, int x, int y)
 {
-    txt_widget_t *cur_widget;
-    txt_widget_t *new_widget;
-    int i;
-
     // No change?
 
     if (x == table->selected_x && y == table->selected_y)
@@ -448,11 +433,11 @@ static void ChangeSelection(txt_table_t *table, int x, int y)
 
     // Unfocus current widget:
 
-    i = table->selected_y * table->columns + table->selected_x;
+    int i = table->selected_y * table->columns + table->selected_x;
 
     if (i < table->num_widgets)
     {
-        cur_widget = table->widgets[i];
+        txt_widget_t *cur_widget = table->widgets[i];
 
         if (table->widget.focused && IsActualWidget(cur_widget))
         {
@@ -462,7 +447,7 @@ static void ChangeSelection(txt_table_t *table, int x, int y)
 
     // Focus new widget.
 
-    new_widget = table->widgets[y * table->columns + x];
+    txt_widget_t *new_widget = table->widgets[y * table->columns + x];
 
     table->selected_x = x;
     table->selected_y = y;
@@ -476,14 +461,11 @@ static void ChangeSelection(txt_table_t *table, int x, int y)
 static int TXT_TableKeyPress(void *uncast_table, int key)
 {
     auto *table = reinterpret_cast<txt_table_t *>(uncast_table);
-    int selected;
-    int rows;
-
-    rows = TableRows(table);
+    int rows = TableRows(table);
 
     // Send to the currently selected widget first
 
-    selected = table->selected_y * table->columns + table->selected_x;
+    int selected = table->selected_y * table->columns + table->selected_x;
 
     if (selected >= 0 && selected < table->num_widgets)
     {
@@ -497,13 +479,10 @@ static int TXT_TableKeyPress(void *uncast_table, int key)
 
     if (key == KEY_TAB)
     {
-        int dir;
-        int i;
-
-        dir = TXT_GetModifierState(TXT_MOD_SHIFT) ? -1 : 1;
+        int dir = TXT_GetModifierState(TXT_MOD_SHIFT) ? -1 : 1;
 
         // Cycle through all widgets until we find one that can be selected.
-        for (i = table->selected_y * table->columns + table->selected_x + dir;
+        for (int i = table->selected_y * table->columns + table->selected_x + dir;
              i >= 0 && i < table->num_widgets;
              i += dir)
         {
@@ -520,13 +499,11 @@ static int TXT_TableKeyPress(void *uncast_table, int key)
 
     if (key == KEY_DOWNARROW)
     {
-        int new_x, new_y;
-
         // Move cursor down to the next selectable widget
 
-        for (new_y = table->selected_y + 1; new_y < rows; ++new_y)
+        for (int new_y = table->selected_y + 1; new_y < rows; ++new_y)
         {
-            new_x = FindSelectableColumn(table, new_y, table->selected_x);
+            int new_x = FindSelectableColumn(table, new_y, table->selected_x);
 
             if (new_x >= 0)
             {
@@ -541,13 +518,11 @@ static int TXT_TableKeyPress(void *uncast_table, int key)
 
     if (key == KEY_UPARROW)
     {
-        int new_x, new_y;
-
         // Move cursor up to the next selectable widget
 
-        for (new_y = table->selected_y - 1; new_y >= 0; --new_y)
+        for (int new_y = table->selected_y - 1; new_y >= 0; --new_y)
         {
-            new_x = FindSelectableColumn(table, new_y, table->selected_x);
+            int new_x = FindSelectableColumn(table, new_y, table->selected_x);
 
             if (new_x >= 0)
             {
@@ -562,11 +537,9 @@ static int TXT_TableKeyPress(void *uncast_table, int key)
 
     if (key == KEY_LEFTARROW)
     {
-        int new_x;
-
         // Move cursor left
 
-        for (new_x = table->selected_x - 1; new_x >= 0; --new_x)
+        for (int new_x = table->selected_x - 1; new_x >= 0; --new_x)
         {
             if (SelectableCell(table, new_x, table->selected_y))
             {
@@ -581,11 +554,9 @@ static int TXT_TableKeyPress(void *uncast_table, int key)
 
     if (key == KEY_RIGHTARROW)
     {
-        int new_x;
-
         // Move cursor left
 
-        for (new_x = table->selected_x + 1; new_x < table->columns; ++new_x)
+        for (int new_x = table->selected_x + 1; new_x < table->columns; ++new_x)
         {
             if (SelectableCell(table, new_x, table->selected_y))
             {
@@ -605,14 +576,11 @@ static int TXT_TableKeyPress(void *uncast_table, int key)
 
 static void CheckValidSelection(txt_table_t *table)
 {
-    int rows;
-    int new_x, new_y;
+    int rows = TableRows(table);
 
-    rows = TableRows(table);
-
-    for (new_y = table->selected_y; new_y < rows; ++new_y)
+    for (int new_y = table->selected_y; new_y < rows; ++new_y)
     {
-        new_x = FindSelectableColumn(table, new_y, table->selected_x);
+        int new_x = FindSelectableColumn(table, new_y, table->selected_x);
 
         if (new_x >= 0)
         {
@@ -728,8 +696,6 @@ static void TXT_TableLayout(void *uncast_table)
 static void TXT_TableDrawer(void *uncast_table)
 {
     auto  *table = reinterpret_cast<txt_table_t *>(uncast_table);
-    txt_widget_t *widget;
-    int i;
 
     // Check the table's current selection points at something valid before
     // drawing.
@@ -738,9 +704,9 @@ static void TXT_TableDrawer(void *uncast_table)
 
     // Draw all cells
 
-    for (i=0; i<table->num_widgets; ++i)
+    for (int i=0; i<table->num_widgets; ++i)
     {
-        widget = table->widgets[i];
+        txt_widget_t *widget = table->widgets[i];
 
         if (IsActualWidget(widget))
         {
@@ -755,12 +721,10 @@ static void TXT_TableDrawer(void *uncast_table)
 static void TXT_TableMousePress(void *uncast_table, int x, int y, int b)
 {
     auto  *table = reinterpret_cast<txt_table_t *>(uncast_table);
-    txt_widget_t *widget;
-    int i;
 
-    for (i=0; i<table->num_widgets; ++i)
+    for (int i=0; i<table->num_widgets; ++i)
     {
-        widget = table->widgets[i];
+        txt_widget_t *widget = table->widgets[i];
 
         // nullptr widgets are spacers
 
@@ -794,7 +758,6 @@ static void TXT_TableMousePress(void *uncast_table, int x, int y, int b)
 static int TXT_TableSelectable(void *uncast_table)
 {
     auto *table = reinterpret_cast<txt_table_t *>(uncast_table);
-    int i;
 
     // Is the currently-selected cell selectable?
 
@@ -805,7 +768,7 @@ static int TXT_TableSelectable(void *uncast_table)
 
     // Find the first selectable cell and set selected_x, selected_y.
 
-    for (i = 0; i < table->num_widgets; ++i)
+    for (int i = 0; i < table->num_widgets; ++i)
     {
         if (IsActualWidget(table->widgets[i])
          && TXT_SelectableWidget(table->widgets[i]))
@@ -825,9 +788,7 @@ static int TXT_TableSelectable(void *uncast_table)
 static void TXT_TableFocused(void *uncast_table, int focused)
 {
     auto *table = reinterpret_cast<txt_table_t *>(uncast_table);
-    int i;
-
-    i = table->selected_y * table->columns + table->selected_x;
+    int i = table->selected_y * table->columns + table->selected_x;
 
     if (i < table->num_widgets)
     {
@@ -852,8 +813,6 @@ txt_widget_class_t txt_table_class =
 
 void TXT_InitTable(txt_table_t *table, int columns)
 {
-    int i;
-
     TXT_InitWidget(table, &txt_table_class);
     table->columns = columns;
     table->widgets = nullptr;
@@ -866,7 +825,7 @@ void TXT_InitTable(txt_table_t *table, int columns)
     // the struts are created with widths of 0 each, but this
     // function changes them.
 
-    for (i=0; i<columns; ++i)
+    for (int i=0; i<columns; ++i)
     {
         TXT_AddWidget(table, TXT_NewStrut(0, 0));
     }
@@ -874,9 +833,7 @@ void TXT_InitTable(txt_table_t *table, int columns)
 
 txt_table_t *TXT_NewTable(int columns)
 {
-    txt_table_t *table;
-
-    table = create_struct<txt_table_t>();
+    txt_table_t *table = create_struct<txt_table_t>();
 
     TXT_InitTable(table, columns);
 
@@ -887,16 +844,14 @@ txt_table_t *TXT_NewTable(int columns)
 // provided in its arguments.
 txt_table_t *TXT_MakeTable(int columns, ...)
 {
-    txt_table_t *table;
     va_list args;
 
-    table = TXT_NewTable(columns);
+    txt_table_t *table = TXT_NewTable(columns);
     va_start(args, columns);
 
     for (;;)
     {
-        txt_widget_t *widget;
-        widget = va_arg(args, txt_widget_t *);
+        txt_widget_t *widget = va_arg(args, txt_widget_t *);
 
         if (widget == nullptr)
         {
@@ -916,22 +871,18 @@ txt_table_t *TXT_MakeTable(int columns, ...)
 txt_table_t *TXT_NewHorizBox(void *uncast_first_widget, ...)
 {
     auto *first_widget = reinterpret_cast<txt_widget_t *>(uncast_first_widget);
-    txt_table_t *result;
     va_list args;
-    int num_args;
 
     // First, find the number of arguments to determine the width of
     // the box.
 
     va_start(args, uncast_first_widget);
 
-    num_args = 1;
+    int num_args = 1;
 
     for (;;)
     {
-        txt_widget_t *widget;
-
-        widget = va_arg(args, txt_widget_t *);
+        txt_widget_t *widget = va_arg(args, txt_widget_t *);
 
         if (widget == nullptr)
         {
@@ -949,7 +900,7 @@ txt_table_t *TXT_NewHorizBox(void *uncast_first_widget, ...)
 
     // Create the table.
 
-    result = TXT_NewTable(num_args);
+    txt_table_t *result = TXT_NewTable(num_args);
     TXT_AddWidget(result, first_widget);
 
     // Go through the list again and add each widget.
@@ -958,9 +909,7 @@ txt_table_t *TXT_NewHorizBox(void *uncast_first_widget, ...)
 
     for (;;)
     {
-        txt_widget_t *widget;
-
-        widget = va_arg(args, txt_widget_t *);
+        txt_widget_t *widget = va_arg(args, txt_widget_t *);
 
         if (widget == nullptr)
         {
@@ -985,12 +934,9 @@ txt_table_t *TXT_NewHorizBox(void *uncast_first_widget, ...)
 txt_widget_t *TXT_GetSelectedWidget(void *uncast_table)
 {
     auto  *table = reinterpret_cast<txt_table_t *>(uncast_table);
-    txt_widget_t *result;
-    int index;
+    int index = table->selected_y * table->columns + table->selected_x;
 
-    index = table->selected_y * table->columns + table->selected_x;
-
-    result = nullptr;
+    txt_widget_t *result = nullptr;
 
     if (index >= 0 && index < table->num_widgets)
     {
@@ -1015,11 +961,10 @@ txt_widget_t *TXT_GetSelectedWidget(void *uncast_table)
 
 int TXT_SelectWidget(void *uncast_table, void *uncast_widget)
 {
-    auto  *table  = reinterpret_cast<txt_table_t *>(uncast_table);
+    auto *table  = reinterpret_cast<txt_table_t *>(uncast_table);
     auto *widget = reinterpret_cast<txt_widget_t *>(uncast_widget);
-    int i;
 
-    for (i=0; i<table->num_widgets; ++i)
+    for (int i=0; i<table->num_widgets; ++i)
     {
         if (!IsActualWidget(table->widgets[i]))
         {
@@ -1058,24 +1003,20 @@ int TXT_SelectWidget(void *uncast_table, void *uncast_widget)
 void TXT_SetTableColumns(void *uncast_table, int new_columns)
 {
     auto   *table = reinterpret_cast<txt_table_t *>(uncast_table);
-    txt_widget_t **new_widgets;
-    txt_widget_t *widget;
-    int new_num_widgets;
-    int i, j, x;
 
     // We need as many full rows as are in the current list, plus the
     // remainder from the last row.
-    new_num_widgets = (table->num_widgets / table->columns) * new_columns
+    int new_num_widgets = (table->num_widgets / table->columns) * new_columns
                     + (table->num_widgets % table->columns);
-    new_widgets = static_cast<txt_widget_t **>(calloc(static_cast<size_t>(new_num_widgets), sizeof(txt_widget_t *)));
+    txt_widget_t **new_widgets = static_cast<txt_widget_t **>(calloc(static_cast<size_t>(new_num_widgets), sizeof(txt_widget_t *)));
 
     // Reset and add one by one from the old table.
     new_num_widgets = 0;
 
-    for (i = 0; i < table->num_widgets; ++i)
+    for (int i = 0; i < table->num_widgets; ++i)
     {
-        widget = table->widgets[i];
-        x = i % table->columns;
+        txt_widget_t *widget = table->widgets[i];
+        int x = i % table->columns;
 
         if (x < new_columns)
         {
@@ -1091,7 +1032,7 @@ void TXT_SetTableColumns(void *uncast_table, int new_columns)
         // extra widgets to reach the next row.
         if (x == table->columns - 1)
         {
-            for (j = table->columns; j < new_columns; ++j)
+            for (int j = table->columns; j < new_columns; ++j)
             {
                 // First row? We need to add struts that are used to apply
                 // the column widths.
@@ -1121,17 +1062,14 @@ void TXT_SetColumnWidths(void *uncast_table, ...)
 {
     auto *table = reinterpret_cast<txt_table_t *>(uncast_table);
     va_list args;
-    txt_strut_t *strut;
-    int i;
-    int width;
 
     va_start(args, uncast_table);
 
-    for (i=0; i<table->columns; ++i)
+    for (int i=0; i<table->columns; ++i)
     {
-        width = va_arg(args, int);
+        int width = va_arg(args, int);
 
-        strut = reinterpret_cast<txt_strut_t *>(table->widgets[i]);
+        auto *strut = reinterpret_cast<txt_strut_t *>(table->widgets[i]);
         strut->width = width;
     }
 
@@ -1146,7 +1084,7 @@ int TXT_PageTable(void *uncast_table, int pagex, int pagey)
     auto *table   = reinterpret_cast<txt_table_t *>(uncast_table);
     int changed = 0;
 
-    const unsigned long rows = static_cast<unsigned long>(TableRows(table));
+    const auto rows = static_cast<unsigned long>(TableRows(table));
 
 
     std::vector<unsigned int> row_heights(rows, 0);
@@ -1161,9 +1099,8 @@ int TXT_PageTable(void *uncast_table, int pagex, int pagey)
 
     if (pagey)
     {
-        int new_x, new_y;
         int distance = 0;
-        int dir;
+        int dir = 0;
 
         // What direction are we moving?
 
@@ -1178,7 +1115,7 @@ int TXT_PageTable(void *uncast_table, int pagex, int pagey)
 
         // Move the cursor until the desired distance is reached.
 
-        new_y = table->selected_y;
+        int new_y = table->selected_y;
 
         while (new_y >= 0 && new_y < static_cast<int>(rows))
         {
@@ -1191,7 +1128,7 @@ int TXT_PageTable(void *uncast_table, int pagex, int pagey)
 
             new_y += dir;
 
-            new_x = FindSelectableColumn(table, new_y, table->selected_x);
+            int new_x = FindSelectableColumn(table, new_y, table->selected_x);
 
             if (new_x >= 0)
             {
