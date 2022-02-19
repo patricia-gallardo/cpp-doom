@@ -22,6 +22,7 @@
 #include "m_misc.hpp"
 
 #include "z_zone.hpp"
+#include "memory.hpp"
 
 typedef struct
 {
