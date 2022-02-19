@@ -53,9 +53,9 @@ static void *DEH_WeaponStart(deh_context_t *context, char *line)
 
 static void DEH_WeaponParseLine(deh_context_t *context, char *line, void *tag)
 {
-    char *        variable_name, *value;
-    weaponinfo_t *weapon;
-    int           ivalue;
+    char *        variable_name = nullptr, *value = nullptr;
+    weaponinfo_t *weapon = nullptr;
+    int           ivalue = 0;
 
     if (tag == nullptr)
         return;
@@ -77,11 +77,9 @@ static void DEH_WeaponParseLine(deh_context_t *context, char *line, void *tag)
 
 static void DEH_WeaponSHA1Sum(sha1_context_t *context)
 {
-    int i;
-
-    for (i = 0; i < NUMWEAPONS; ++i)
+    for (auto & i : weaponinfo)
     {
-        DEH_StructSHA1Sum(context, &weapon_mapping, &weaponinfo[i]);
+        DEH_StructSHA1Sum(context, &weapon_mapping, &i);
     }
 }
 

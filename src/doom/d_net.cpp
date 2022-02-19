@@ -65,11 +65,10 @@ static void PlayerQuitGame(player_t *player)
 static void RunTic(ticcmd_t *cmds, bool *ingame)
 {
     extern bool advancedemo;
-    unsigned int   i;
 
     // Check for player quits.
 
-    for (i = 0; i < MAXPLAYERS; ++i)
+    for (unsigned int i = 0; i < MAXPLAYERS; ++i)
     {
         if (!demoplayback && playeringame[i] && !ingame[i])
         {
@@ -151,8 +150,6 @@ static void SaveGameSettings(net_gamesettings_t *settings)
 
 static void InitConnectData(net_connect_data_t *connect_data)
 {
-    bool shorttics;
-
     connect_data->max_players = MAXPLAYERS;
     connect_data->drone       = false;
 
@@ -195,7 +192,7 @@ static void InitConnectData(net_connect_data_t *connect_data)
     // Play with low turning resolution to emulate demo recording.
     //
 
-    shorttics = M_ParmExists("-shorttics");
+    bool shorttics = M_ParmExists("-shorttics");
 
     // Are we recording a demo? Possibly set lowres turn mode
 

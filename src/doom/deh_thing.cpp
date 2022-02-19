@@ -98,7 +98,7 @@ DEH_END_MAPPING
 static void *DEH_ThingStart(deh_context_t *context, char *line)
 {
     int         thing_number = 0;
-    mobjinfo_t *mobj;
+    mobjinfo_t *mobj = nullptr;
 
     if (sscanf(line, "Thing %i", &thing_number) != 1)
     {
@@ -122,9 +122,9 @@ static void *DEH_ThingStart(deh_context_t *context, char *line)
 
 static void DEH_ThingParseLine(deh_context_t *context, char *line, void *tag)
 {
-    mobjinfo_t *mobj;
-    char *      variable_name, *value;
-    int         ivalue;
+    mobjinfo_t *mobj = nullptr;
+    char *      variable_name = nullptr, *value = nullptr;
+    int         ivalue = 0;
 
     if (tag == nullptr)
         return;
@@ -168,11 +168,9 @@ static void DEH_ThingParseLine(deh_context_t *context, char *line, void *tag)
 
 static void DEH_ThingSHA1Sum(sha1_context_t *context)
 {
-    int i;
-
-    for (i = 0; i < NUMMOBJTYPES; ++i)
+    for (auto & i : mobjinfo)
     {
-        DEH_StructSHA1Sum(context, &thing_mapping, &mobjinfo[i]);
+        DEH_StructSHA1Sum(context, &thing_mapping, &i);
     }
 }
 

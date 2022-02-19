@@ -190,7 +190,7 @@ mline_t cheat_player_arrow[] = {
 #undef R
 
 #define R (FRACUNIT)
-mline_t triangle_guy[] = {
+[[maybe_unused]] mline_t triangle_guy[] = {
     { { static_cast<fixed_t>(-.867 * R), static_cast<fixed_t>(-.5 * R) }, { static_cast<fixed_t>(.867 * R), static_cast<fixed_t>(-.5 * R) } },
     { { static_cast<fixed_t>(.867 * R), static_cast<fixed_t>(-.5 * R) }, { static_cast<fixed_t>(0), static_cast<fixed_t>(R) } },
     { { static_cast<fixed_t>(0), static_cast<fixed_t>(R) }, { static_cast<fixed_t>(-.867 * R), static_cast<fixed_t>(-.5 * R) } }

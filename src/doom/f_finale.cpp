@@ -57,8 +57,8 @@ finalestage_t finalestage;
 
 unsigned int finalecount;
 
-#define TEXTSPEED 3
-#define TEXTWAIT  250
+constexpr auto TEXTSPEED =3;
+constexpr auto TEXTWAIT  =250;
 
 typedef struct
 {

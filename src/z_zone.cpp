@@ -407,7 +407,7 @@ void Z_FreeTags(int lowtag,
 //
 // Z_FileDumpHeap
 //
-void Z_FileDumpHeap(FILE *f)
+[[maybe_unused]] void Z_FileDumpHeap(FILE *f)
 {
     fprintf(f, "zone size: %i  location: %p\n", mainzone->size, mainzone);
 

@@ -37,7 +37,7 @@ DEH_END_MAPPING
 static void *DEH_FrameStart(deh_context_t *context, char *line)
 {
     int      frame_number = 0;
-    state_t *state;
+    state_t *state = nullptr;
 
     if (sscanf(line, "Frame %i", &frame_number) != 1)
     {
@@ -73,9 +73,9 @@ static void *DEH_FrameStart(deh_context_t *context, char *line)
 
 static void DEH_FrameParseLine(deh_context_t *context, char *line, void *tag)
 {
-    state_t *state;
-    char *   variable_name, *value;
-    int      ivalue;
+    state_t *state = nullptr;
+    char *   variable_name = nullptr, *value = nullptr;
+    int      ivalue = 0;
 
     if (tag == nullptr)
         return;
@@ -102,11 +102,9 @@ static void DEH_FrameParseLine(deh_context_t *context, char *line, void *tag)
 
 static void DEH_FrameSHA1Sum(sha1_context_t *context)
 {
-    int i;
-
-    for (i = 0; i < NUMSTATES; ++i)
+    for (auto & state : states)
     {
-        DEH_StructSHA1Sum(context, &state_mapping, &states[i]);
+        DEH_StructSHA1Sum(context, &state_mapping, &state);
     }
 }
 

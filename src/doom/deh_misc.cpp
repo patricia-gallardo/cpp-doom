@@ -158,7 +158,7 @@ static void *DEH_MiscStart(deh_context_t *, char *)
 
 static void DEH_MiscParseLine(deh_context_t *context, char *line, void *)
 {
-    char * variable_name, *value;
+    char * variable_name = nullptr, *value = nullptr;
 
     if (!DEH_ParseAssignment(line, &variable_name, &value))
     {

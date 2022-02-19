@@ -125,7 +125,7 @@ bool turbodetected[MAXPLAYERS];
 
 int consoleplayer;                       // player taking events and displaying
 int displayplayer;                       // view being displayed
-int levelstarttic;                       // gametic at level start
+[[maybe_unused]] int levelstarttic;                       // gametic at level start
 int totalkills, totalitems, totalsecret; // for intermission
 int extrakills;                          // [crispy] count spawned monsters
 int totalleveltimes;                     // [crispy] CPhipps - total time for all completed levels

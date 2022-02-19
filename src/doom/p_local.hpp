@@ -29,12 +29,12 @@
 #define FLOATSPEED (FRACUNIT * 4)
 
 
-#define MAXHEALTH  100
+constexpr auto MAXHEALTH  =100;
 #define VIEWHEIGHT (41 * FRACUNIT)
 
 // mapblocks are used to check movement
 // against lines and things
-#define MAPBLOCKUNITS 128
+constexpr auto MAPBLOCKUNITS =128;
 #define MAPBLOCKSIZE  (MAPBLOCKUNITS * FRACUNIT)
 #define MAPBLOCKSHIFT (FRACBITS + 7)
 #define MAPBMASK      (MAPBLOCKSIZE - 1)
@@ -57,7 +57,7 @@
 #define MISSILERANGE (32 * 64 * FRACUNIT)
 
 // follow a player exlusively for 3 seconds
-#define BASETHRESHOLD 100
+constexpr auto BASETHRESHOLD =100;
 
 
 //
@@ -84,7 +84,7 @@ void P_DropWeapon(player_t *player);
 //
 // P_USER
 //
-#define MLOOKUNIT       8
+constexpr auto MLOOKUNIT       =8;
 #define PLAYER_SLOPE(a) ((((a)->lookdir / MLOOKUNIT) << FRACBITS) / 173)
 void P_PlayerThink(player_t *player);
 
@@ -96,7 +96,7 @@ void P_PlayerThink(player_t *player);
 #define ONCEILINGZ INT_MAX
 
 // Time interval for item respawning.
-#define ITEMQUESIZE 128
+constexpr auto ITEMQUESIZE =128;
 
 extern mapthing_t itemrespawnque[ITEMQUESIZE];
 extern int        itemrespawntime[ITEMQUESIZE];
@@ -155,8 +155,8 @@ typedef struct
 
 // Extended MAXINTERCEPTS, to allow for intercepts overrun emulation.
 
-#define MAXINTERCEPTS_ORIGINAL 128
-#define MAXINTERCEPTS          (MAXINTERCEPTS_ORIGINAL + 61)
+constexpr auto MAXINTERCEPTS_ORIGINAL =128;
+constexpr auto MAXINTERCEPTS          =(MAXINTERCEPTS_ORIGINAL + 61);
 
 //extern intercept_t	intercepts[MAXINTERCEPTS]; // [crispy] remove INTERCEPTS limit
 extern intercept_t *intercept_p;
@@ -180,9 +180,9 @@ void P_LineOpening(line_t *linedef_param);
 bool P_BlockLinesIterator(int x, int y, bool (*func)(line_t *));
 bool P_BlockThingsIterator(int x, int y, bool (*func)(mobj_t *));
 
-#define PT_ADDLINES  1
-#define PT_ADDTHINGS 2
-#define PT_EARLYOUT  4
+constexpr auto PT_ADDLINES  =1;
+constexpr auto PT_ADDTHINGS =2;
+constexpr auto PT_EARLYOUT  =4;
 
 extern divline_t trace;
 
@@ -219,8 +219,8 @@ extern line_t *ceilingline;
 // We keep the original limit, to detect what variables in memory were
 // overwritten (see SpechitOverrun())
 
-#define MAXSPECIALCROSS          20
-#define MAXSPECIALCROSS_ORIGINAL 8
+constexpr auto MAXSPECIALCROSS          =20;
+constexpr auto MAXSPECIALCROSS_ORIGINAL =8;
 
 extern line_t *spechit[MAXSPECIALCROSS];
 extern int     numspechit;

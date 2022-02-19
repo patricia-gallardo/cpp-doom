@@ -68,8 +68,8 @@ static void *DEH_CheatStart(deh_context_t *, char *)
 
 static void DEH_CheatParseLine(deh_context_t *context, char *line, void *)
 {
-    char *         variable_name;
-    char *         value;
+    char *         variable_name = nullptr;
+    char *         value = nullptr;
     if (!DEH_ParseAssignment(line, &variable_name, &value))
     {
         // Failed to parse

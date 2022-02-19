@@ -543,7 +543,7 @@ void W_GenerateHashTable()
 
         for (unsigned int i = 0; i < numlumps; ++i)
         {
-            unsigned int hash = static_cast<unsigned int>(W_LumpNameHash(lumpinfo[i]->name) % numlumps);
+            auto hash = static_cast<unsigned int>(W_LumpNameHash(lumpinfo[i]->name) % numlumps);
 
             // Hook into the hash table
 
@@ -569,7 +569,7 @@ void W_Reload()
     }
 
     // We must free any lumps being cached from the PWAD we're about to reload:
-    for (unsigned int i = static_cast<unsigned int>(reloadlump); i < numlumps; ++i)
+    for (auto i = static_cast<unsigned int>(reloadlump); i < numlumps; ++i)
     {
         if (lumpinfo[i]->cache != nullptr)
         {

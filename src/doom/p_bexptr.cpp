@@ -51,7 +51,7 @@ void A_Detonate(mobj_t *mo)
 
 void A_Mushroom(mobj_t *actor)
 {
-    int i, j, n = actor->info->damage;
+    int n = actor->info->damage;
 
     // Mushroom parameters are part of code pointer's state
     fixed_t misc1 = actor->state->misc1 ? actor->state->misc1 : FRACUNIT * 4;
@@ -59,10 +59,10 @@ void A_Mushroom(mobj_t *actor)
 
     A_Explode(actor); // make normal explosion
 
-    for (i = -n; i <= n; i += 8) // launch mushroom cloud
-        for (j = -n; j <= n; j += 8)
+    for (int i = -n; i <= n; i += 8) // launch mushroom cloud
+        for (int j = -n; j <= n; j += 8)
         {
-            mobj_t target = *actor, *mo;
+            mobj_t target = *actor, *mo = nullptr;
             target.x += i << FRACBITS; // Aim in many directions from source
             target.y += j << FRACBITS;
             target.z += P_AproxDistance(i, j) * misc1;             // Aim fairly high
@@ -81,7 +81,7 @@ void A_Mushroom(mobj_t *actor)
 
 void A_BetaSkullAttack(mobj_t *actor)
 {
-    int damage;
+    int damage = 0;
     if (!actor->target || actor->target->type == MT_SKULL)
         return;
     S_StartSound(actor, actor->info->attacksound);
@@ -212,7 +212,7 @@ void A_FireOldBFG(mobj_t *, player_t *player, pspdef_t *)
 
     do
     {
-        mobj_t *th, *mo = player->mo;
+        mobj_t *th = nullptr, *mo = player->mo;
         angle_t an  = mo->angle;
         angle_t an1 = ((P_Random(/* pr_bfg */) & 127) - 64) * (ANG90 / 768) + an;
         angle_t an2 = ((P_Random(/* pr_bfg */) & 127) - 64) * (ANG90 / 640) + ANG90;
@@ -222,7 +222,7 @@ void A_FireOldBFG(mobj_t *, player_t *player, pspdef_t *)
         {
             // killough 8/2/98: make autoaiming prefer enemies
             int     mask = 0; //MF_FRIEND;
-            fixed_t slope;
+            fixed_t slope = 0;
             if (critical->freeaim == FREEAIM_DIRECT)
                 slope = PLAYER_SLOPE(player);
             else
