@@ -15,10 +15,8 @@
 // Parses Text substitution sections in dehacked files
 //
 
+#include <cstring>
 #include <cstdarg>
-#include <optional>
-#include <string>
-#include <unordered_map>
 
 #include "deh_str.hpp"
 #include "m_misc.hpp"
@@ -26,40 +24,69 @@
 #include "memory.hpp"
 #include "z_zone.hpp"
 
-struct deh_substitution_t {
-    std::string from_text;
-    std::string to_text;
-};
-
-static std::unordered_map<std::string, deh_substitution_t> hash_table;
-
-static std::optional<deh_substitution_t> SubstitutionForString(std::string s)
+typedef struct
 {
-    auto search = hash_table.find(s);
-    if (search != hash_table.end()) {
-        return search->second;
-    }
-    else
+    char *from_text;
+    char *to_text;
+} deh_substitution_t;
+
+static deh_substitution_t **hash_table = nullptr;
+static int                  hash_table_entries;
+static int                  hash_table_length = -1;
+
+// This is the algorithm used by glib
+
+static unsigned int strhash(const char *s)
+{
+    const char * p = s;
+    auto h = static_cast<unsigned int>(*p);
+
+    if (h)
     {
-        return {};
+        for (p += 1; *p; p++)
+            h = (h << 5) - h + static_cast<unsigned int>(*p);
     }
+
+    return h;
+}
+
+static deh_substitution_t *SubstitutionForString(const char *s)
+{
+    // Fallback if we have not initialized the hash table yet
+    if (hash_table_length < 0)
+        return nullptr;
+
+    int entry = static_cast<int>(strhash(s) % static_cast<unsigned int>(hash_table_length));
+
+    while (hash_table[entry] != nullptr)
+    {
+        if (!strcmp(hash_table[entry]->from_text, s))
+        {
+            // substitution found!
+            return hash_table[entry];
+        }
+
+        entry = (entry + 1) % hash_table_length;
+    }
+
+    // no substitution found
+    return nullptr;
 }
 
 // Look up a string to see if it has been replaced with something else
 // This will be used throughout the program to substitute text
 
-std::string DEH_String(std::string_view s)
+const char *DEH_String(const char *s)
 {
-    std::string needle(s);
-    auto subst = SubstitutionForString(needle);
+    deh_substitution_t *subst = SubstitutionForString(s);
 
-    if (subst)
+    if (subst != nullptr)
     {
         return subst->to_text;
     }
     else
     {
-        return needle;
+        return s;
     }
 }
 
@@ -70,27 +97,107 @@ bool DEH_HasStringReplacement(const char *s)
     return DEH_String(s) != s;
 }
 
+static void InitHashTable()
+{
+    // init hash table
+
+    hash_table_entries = 0;
+    hash_table_length  = 16;
+    size_t size        = sizeof(deh_substitution_t *) * static_cast<unsigned long>(hash_table_length);
+    hash_table         = zmalloc<decltype(hash_table)>(size,
+        PU_STATIC, nullptr);
+    std::memset(hash_table, 0, sizeof(deh_substitution_t *) * static_cast<unsigned long>(hash_table_length));
+}
+
+static void DEH_AddToHashtable(deh_substitution_t *sub);
+
+static void IncreaseHashtable()
+{
+    // save the old table
+
+    deh_substitution_t **old_table = hash_table;
+    int old_table_length = hash_table_length;
+
+    // double the size
+
+    hash_table_length *= 2;
+    hash_table = zmalloc<decltype(hash_table)>(sizeof(deh_substitution_t *) * static_cast<unsigned long>(hash_table_length),
+        PU_STATIC, nullptr);
+    std::memset(hash_table, 0, sizeof(deh_substitution_t *) * static_cast<unsigned long>(hash_table_length));
+
+    // go through the old table and insert all the old entries
+
+    for (int i = 0; i < old_table_length; ++i)
+    {
+        if (old_table[i] != nullptr)
+        {
+            DEH_AddToHashtable(old_table[i]);
+        }
+    }
+
+    // free the old table
+
+    Z_Free(old_table);
+}
+
+static void DEH_AddToHashtable(deh_substitution_t *sub)
+{
+    // if the hash table is more than 60% full, increase its size
+
+    if ((hash_table_entries * 10) / hash_table_length > 6)
+    {
+        IncreaseHashtable();
+    }
+
+    // find where to insert it
+    int entry = static_cast<int>(strhash(sub->from_text) % static_cast<unsigned int>(hash_table_length));
+
+    while (hash_table[entry] != nullptr)
+    {
+        entry = (entry + 1) % hash_table_length;
+    }
+
+    hash_table[entry] = sub;
+    ++hash_table_entries;
+}
+
 void DEH_AddStringReplacement(const char *from_text, const char *to_text)
 {
-    // Check to see if there is an existing substitution already in place.
-    auto sub = SubstitutionForString(from_text);
+    size_t len = 0;
 
-    if (sub)
+    // Initialize the hash table if this is the first time
+    if (hash_table_length < 0)
     {
-        sub->to_text = to_text;
+        InitHashTable();
+    }
+
+    // Check to see if there is an existing substitution already in place.
+    deh_substitution_t *sub = SubstitutionForString(from_text);
+
+    if (sub != nullptr)
+    {
+        Z_Free(sub->to_text);
+
+        len          = strlen(to_text) + 1;
+        sub->to_text = zmalloc<char *>(len, PU_STATIC, nullptr);
+        std::memcpy(sub->to_text, to_text, len);
     }
     else
     {
-        deh_substitution_t substitution;
-        substitution.from_text = from_text;
-        substitution.to_text = to_text;
-        hash_table[substitution.from_text] = substitution;
-    }
-}
+        // We need to allocate a new substitution.
+        sub = zmalloc<decltype(sub)>(sizeof(*sub), PU_STATIC, 0);
 
-void DEH_AddStringReplacement(const std::string & from_text, const std::string & to_text)
-{
-    DEH_AddStringReplacement(from_text.c_str(), to_text.c_str());
+        // We need to create our own duplicates of the provided strings.
+        len            = strlen(from_text) + 1;
+        sub->from_text = zmalloc<char *>(len, PU_STATIC, nullptr);
+        std::memcpy(sub->from_text, from_text, len);
+
+        len          = strlen(to_text) + 1;
+        sub->to_text = zmalloc<char *>(len, PU_STATIC, nullptr);
+        std::memcpy(sub->to_text, to_text, len);
+
+        DEH_AddToHashtable(sub);
+    }
 }
 
 enum format_arg_t
@@ -225,12 +332,12 @@ static bool ValidArgumentReplacement(format_arg_t original,
 
 // Return true if the specified string contains no format arguments.
 
-static bool ValidFormatReplacement(const std::string & original, const std::string & replacement)
+static bool ValidFormatReplacement(const char *original, const char *replacement)
 {
     // Check each argument in turn and compare types.
 
-    const char *rover1 = original.c_str();
-    const char *rover2 = replacement.c_str();
+    const char *rover1 = original;
+    const char *rover2 = replacement;
 
     for (;;)
     {
@@ -262,15 +369,15 @@ static bool ValidFormatReplacement(const std::string & original, const std::stri
 
 // Get replacement format string, checking arguments.
 
-static std::string FormatStringReplacement(const std::string & s)
+static const char *FormatStringReplacement(const char *s)
 {
-    auto repl = DEH_String(s);
+    const char *repl = DEH_String(s);
 
     if (!ValidFormatReplacement(s, repl))
     {
         printf("WARNING: Unsafe dehacked replacement provided for "
                "printf format string: %s\n",
-            s.c_str());
+            s);
 
         return s;
     }
@@ -283,11 +390,11 @@ static std::string FormatStringReplacement(const std::string & s)
 void DEH_printf(const char *fmt, ...)
 {
     va_list     args;
-    auto repl = FormatStringReplacement(fmt);
+    const char *repl = FormatStringReplacement(fmt);
 
     va_start(args, fmt);
 
-    vprintf(repl.c_str(), args);
+    vprintf(repl, args);
 
     va_end(args);
 }
@@ -297,11 +404,11 @@ void DEH_printf(const char *fmt, ...)
 void DEH_fprintf(FILE *fstream, const char *fmt, ...)
 {
     va_list     args;
-    auto repl = FormatStringReplacement(fmt);
+    const char *repl = FormatStringReplacement(fmt);
 
     va_start(args, fmt);
 
-    vfprintf(fstream, repl.c_str(), args);
+    vfprintf(fstream, repl, args);
 
     va_end(args);
 }
@@ -311,11 +418,11 @@ void DEH_fprintf(FILE *fstream, const char *fmt, ...)
 void DEH_snprintf(char *buffer, size_t len, const char *fmt, ...)
 {
     va_list     args;
-    auto repl = FormatStringReplacement(fmt);
+    const char *repl = FormatStringReplacement(fmt);
 
     va_start(args, fmt);
 
-    M_vsnprintf(buffer, len, repl.c_str(), args);
+    M_vsnprintf(buffer, len, repl, args);
 
     va_end(args);
 }

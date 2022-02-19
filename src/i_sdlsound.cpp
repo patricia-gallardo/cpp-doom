@@ -841,7 +841,7 @@ static void GetSfxLumpName(sfxinfo_t *sfx, char *buf, size_t buf_len)
 
     if (use_sfx_prefix)
     {
-        M_snprintf(buf, buf_len, "ds%s", DEH_String(sfx->name).c_str());
+        M_snprintf(buf, buf_len, "ds%s", DEH_String(sfx->name));
     }
     else
     {

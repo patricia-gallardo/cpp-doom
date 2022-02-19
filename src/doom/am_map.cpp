@@ -810,7 +810,7 @@ bool
         else if (key == key_map_mark)
         {
             M_snprintf(buffer, sizeof(buffer), "%s %d",
-                DEH_String(AMSTR_MARKEDSPOT).c_str(), markpointnum);
+                DEH_String(AMSTR_MARKEDSPOT), markpointnum);
             plr->message = buffer;
             AM_addMark();
         }

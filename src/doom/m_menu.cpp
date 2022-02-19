@@ -227,7 +227,6 @@ static void M_WriteText(int x, int y, const char *string);
 int         M_StringWidth(const char *string); // [crispy] un-static
 static int  M_StringHeight(const char *string);
 static void M_StartMessage(const char *string, void (*routine)(int), bool input);
-static void M_StartMessage(const std::string & string, void (*routine)(int), bool input);
 static void M_ClearMenus();
 
 // [crispy] Crispness menu
@@ -1559,7 +1558,7 @@ void M_QuitDOOM(int)
     // [crispy] fast exit if "run" key is held down
     if (speedkeydown()) I_Quit();
 
-    DEH_snprintf(endstring, sizeof(endstring), "%s\n\n" DOSY, DEH_String(M_SelectEndMessage()).c_str());
+    DEH_snprintf(endstring, sizeof(endstring), "%s\n\n" DOSY, DEH_String(M_SelectEndMessage()));
 
     M_StartMessage(endstring, M_QuitResponse, true);
 }
@@ -1703,10 +1702,6 @@ void M_StartMessage(const char *string, void (*routine)(int), bool input)
     return;
 }
 
-void M_StartMessage(const std::string & string, void (*routine)(int), bool input)
-{
-    M_StartMessage(string.c_str(), routine, input);
-}
 
 //
 // Find string width from hu_font chars
@@ -2588,7 +2583,7 @@ void M_Drawer()
 
     for (size_t i = 0; i < max; i++)
     {
-        auto name = DEH_String(currentMenu->menuitems[i].name);
+        const char *name = DEH_String(currentMenu->menuitems[i].name);
 
         if (name[0]) // && W_CheckNumForName(name) > 0) // [crispy] moved...
         {

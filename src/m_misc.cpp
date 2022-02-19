@@ -75,11 +75,6 @@ bool M_FileExists(const char *filename)
     }
 }
 
-bool M_FileExists(const std::string & filename)
-{
-    return M_FileExists(filename.c_str());
-}
-
 // Check if a file exists by probing for common case variation of its filename.
 // Returns a newly allocated string that the caller is responsible for freeing.
 
@@ -147,11 +142,6 @@ char *M_FileCaseExists(const char *path)
     // 5. no luck
     free(path_dup);
     return nullptr;
-}
-
-char *M_FileCaseExists(const std::string & path)
-{
-    return M_FileCaseExists(path.c_str());
 }
 
 //
@@ -416,11 +406,6 @@ char *M_StringDuplicate(const char *orig)
     return result;
 }
 
-char *M_StringDuplicate(const std::string & orig)
-{
-    return M_StringDuplicate(orig.c_str());
-}
-
 //
 // String replace function.
 //
@@ -505,11 +490,6 @@ bool M_StringCopy(char *dest, const char *src, size_t dest_size)
 
     len = strlen(dest);
     return src[len] == '\0';
-}
-
-bool M_StringCopy(char *dest, const std::string & src, size_t dest_size)
-{
-    return M_StringCopy(dest, src.c_str(), dest_size);
 }
 
 // Safe string concat function that works like OpenBSD's strlcat().

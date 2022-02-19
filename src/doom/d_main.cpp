@@ -329,7 +329,7 @@ bool D_Display()
 
 void EnableLoadingDisk() // [crispy] un-static
 {
-    std::string disk_lump_name;
+    const char *disk_lump_name = nullptr;
 
     if (show_diskicon)
     {
@@ -585,7 +585,7 @@ void D_RunFrame()
 //
 int         demosequence;
 int         pagetic;
-std::string pagename;
+const char *pagename;
 
 
 //
@@ -705,7 +705,7 @@ void D_DoAdvanceDemo()
 
     // The Doom 3: BFG Edition version of doom2.wad does not have a
     // TITLETPIC lump. Use INTERPIC instead as a workaround.
-    if (gamevariant == bfgedition && !strcasecmp(pagename.c_str(), "TITLEPIC")
+    if (gamevariant == bfgedition && !strcasecmp(pagename, "TITLEPIC")
         && W_CheckNumForName("titlepic") < 0)
     {
         // [crispy] use DMENUPIC instead of TITLEPIC, it's awesome
@@ -779,7 +779,7 @@ static const char *GetGameName(const char *gamename)
     {
         // Has the banner been replaced?
 
-        auto deh_sub = DEH_String(banner);
+        const char *deh_sub = DEH_String(banner);
 
         if (deh_sub != banner)
         {
@@ -787,10 +787,10 @@ static const char *GetGameName(const char *gamename)
             // We need to expand via printf to include the Doom version number
             // We also need to cut off spaces to get the basic name
 
-            const auto newgamename_size = strlen(deh_sub.c_str()) + 10;
+            const auto newgamename_size = strlen(deh_sub) + 10;
             auto *     newgamename      = zmalloc<char *>(newgamename_size, PU_STATIC, 0);
             int version                     = G_VanillaVersionCode();
-            M_snprintf(newgamename, newgamename_size, deh_sub.c_str(),
+            M_snprintf(newgamename, newgamename_size, deh_sub,
                 version / 100, version % 100);
 
             while (newgamename[0] != '\0' && isspace(newgamename[0]))
@@ -1025,16 +1025,16 @@ void PrintDehackedBanners()
 {
     for (auto & copyright_banner : copyright_banners)
     {
-        auto deh_s = DEH_String(copyright_banner);
+        const char *deh_s = DEH_String(copyright_banner);
 
         if (deh_s != copyright_banner)
         {
-            printf("%s", deh_s.c_str());
+            printf("%s", deh_s);
 
             // Make sure the modified banner always ends in a newline character.
             // If it doesn't, add a newline.  This fixes av.wad.
 
-            if (deh_s.back() != '\n')
+            if (deh_s[strlen(deh_s) - 1] != '\n')
             {
                 printf("\n");
             }
@@ -2043,14 +2043,14 @@ void D_DoomMain()
 
         if (gamemode == shareware)
             I_Error(DEH_String("\nYou cannot -file with the shareware "
-                               "version. Register!").c_str());
+                               "version. Register!"));
 
         // Check for fake IWAD with right name,
         // but w/o all the lumps of the registered version.
         if (gamemode == registered)
-            for (auto &item : name)
-                if (W_CheckNumForName(item) < 0)
-                    I_Error(DEH_String("\nThis is not the registered version.").c_str());
+            for (int i = 0; i < 23; i++)
+                if (W_CheckNumForName(name[i]) < 0)
+                    I_Error(DEH_String("\nThis is not the registered version."));
     }
 
 // [crispy] disable meaningless warning, we always use "-merge" anyway

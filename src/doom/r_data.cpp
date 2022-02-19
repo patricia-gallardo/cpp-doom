@@ -699,7 +699,7 @@ void R_InitTextures()
     nummappatches = 0;
     for (i = static_cast<int>(numlumps - 1); i >= 0; i--)
     {
-        if (!strncasecmp(lumpinfo[i]->name, DEH_String("PNAMES").c_str(), 6))
+        if (!strncasecmp(lumpinfo[i]->name, DEH_String("PNAMES"), 6))
         {
             if (numpnameslumps == maxpnameslumps)
             {
@@ -721,7 +721,7 @@ void R_InitTextures()
             nummappatches += lump.nummappatches;
             numpnameslumps++;
         }
-        else if (!strncasecmp(lumpinfo[i]->name, DEH_String("TEXTURE").c_str(), 7))
+        else if (!strncasecmp(lumpinfo[i]->name, DEH_String("TEXTURE"), 7))
         {
             // [crispy] support only TEXTURE1/2 lumps, not TEXTURE3 etc.
             if (lumpinfo[i]->name[7] != '1' && lumpinfo[i]->name[7] != '2')
@@ -1282,11 +1282,6 @@ int R_FlatNumForName(const char *name)
     return i - firstflat;
 }
 
-int R_FlatNumForName(const std::string & name)
-{
-    return R_FlatNumForName(name.c_str());
-}
-
 
 //
 // R_CheckTextureNumForName
@@ -1317,10 +1312,6 @@ int R_CheckTextureNumForName(const char *name)
     return -1;
 }
 
-int R_CheckTextureNumForName(const std::string & name)
-{
-    return R_CheckTextureNumForName(name.c_str());
-}
 
 //
 // R_TextureNumForName
@@ -1347,10 +1338,6 @@ int R_TextureNumForName(const char *name)
     return i;
 }
 
-int R_TextureNumForName(const std::string & name)
-{
-    return R_TextureNumForName(name.c_str());
-}
 
 //
 // R_PrecacheLevel

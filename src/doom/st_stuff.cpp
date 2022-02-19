@@ -1083,7 +1083,7 @@ bool
                     }
                 }
 
-                if (plyr->message.empty())
+                if (!plyr->message)
                 {
                     M_snprintf(msg, sizeof(msg), "Weapon %s%d%s %s",
                         crstr[static_cast<int>(cr_t::CR_GOLD)], w + 1, crstr[static_cast<int>(cr_t::CR_NONE)],
@@ -1945,7 +1945,7 @@ static void ST_loadUnloadGraphics(load_callback_t callback)
     // Load percent key.
     //Note: why not load STMINUS here, too?
 
-    callback(DEH_String("STTPRCNT").c_str(), &tallpercent);
+    callback(DEH_String("STTPRCNT"), &tallpercent);
 
     // key cards
     for (int i = 0; i < NUMCARDS; i++)
@@ -1955,7 +1955,7 @@ static void ST_loadUnloadGraphics(load_callback_t callback)
     }
 
     // arms background
-    callback(DEH_String("STARMS").c_str(), &armsbg);
+    callback(DEH_String("STARMS"), &armsbg);
 
     // arms ownership widgets
     for (int i = 0; i < 6; i++)
@@ -1976,13 +1976,13 @@ static void ST_loadUnloadGraphics(load_callback_t callback)
     // status bar background bits
     if (W_CheckNumForName("STBAR") >= 0)
     {
-        callback(DEH_String("STBAR").c_str(), &sbar);
+        callback(DEH_String("STBAR"), &sbar);
         sbarr = nullptr;
     }
     else
     {
-        callback(DEH_String("STMBARL").c_str(), &sbar);
-        callback(DEH_String("STMBARR").c_str(), &sbarr);
+        callback(DEH_String("STMBARL"), &sbar);
+        callback(DEH_String("STMBARR"), &sbarr);
     }
 
     // face states
@@ -2012,9 +2012,9 @@ static void ST_loadUnloadGraphics(load_callback_t callback)
         ++facenum;
     }
 
-    callback(DEH_String("STFGOD0").c_str(), &faces[facenum]);
+    callback(DEH_String("STFGOD0"), &faces[facenum]);
     ++facenum;
-    callback(DEH_String("STFDEAD0").c_str(), &faces[facenum]);
+    callback(DEH_String("STFDEAD0"), &faces[facenum]);
     ++facenum;
 }
 

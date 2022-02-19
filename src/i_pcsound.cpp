@@ -353,11 +353,11 @@ static int I_PCS_GetSfxLumpNum(sfxinfo_t *sfx)
 
     if (use_sfx_prefix)
     {
-        M_snprintf(namebuf, sizeof(namebuf), "dp%s", DEH_String(sfx->name).c_str());
+        M_snprintf(namebuf, sizeof(namebuf), "dp%s", DEH_String(sfx->name));
     }
     else
     {
-        M_StringCopy(namebuf, DEH_String(sfx->name).c_str(), sizeof(namebuf));
+        M_StringCopy(namebuf, DEH_String(sfx->name), sizeof(namebuf));
     }
 
     // [crispy] make missing sounds non-fatal

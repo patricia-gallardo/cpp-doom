@@ -562,13 +562,13 @@ static const speciallevel_t speciallevels[] = {
     { doom2, 0, 32, "teeth.wad", MHUSTR_21 },
 };
 
-static void HU_SetSpecialLevelName(const char *wad, std::string & name)
+static void HU_SetSpecialLevelName(const char *wad, const char **name)
 {
     for (auto speciallevel : speciallevels)
     {
         if (logical_gamemission == speciallevel.mission && (!speciallevel.episode || gameepisode == speciallevel.episode) && gamemap == speciallevel.map && (!speciallevel.wad || !strcasecmp(wad, speciallevel.wad)))
         {
-            name = speciallevel.name ? speciallevel.name : maplumpinfo->name;
+            *name = speciallevel.name ? speciallevel.name : maplumpinfo->name;
             break;
         }
     }
@@ -578,7 +578,7 @@ void HU_Start()
 {
 
     int         i;
-    std::string s;
+    const char *s;
     // [crispy] string buffers for map title and WAD file name
     char buf[8], *ptr;
 
@@ -702,11 +702,11 @@ void HU_Start()
     }
 
     // [crispy] display names of single special levels in Automap
-    HU_SetSpecialLevelName(W_WadNameForLump(maplumpinfo), s);
+    HU_SetSpecialLevelName(W_WadNameForLump(maplumpinfo), &s);
 
     // [crispy] explicitely display (episode and) map if the
     // map is from a PWAD or if the map title string has been dehacked
-    if (DEH_HasStringReplacement(s.c_str()) || (!W_IsIWADLump(maplumpinfo) && (!nervewadfile || gamemission != pack_nerve)))
+    if (DEH_HasStringReplacement(s) || (!W_IsIWADLump(maplumpinfo) && (!nervewadfile || gamemission != pack_nerve)))
     {
         char *m;
 
@@ -725,11 +725,11 @@ void HU_Start()
 
     // [crispy] print the map title in white from the first colon onward
     M_snprintf(buf, sizeof(buf), "%s%s", ":", crstr[static_cast<int>(cr_t::CR_GRAY)]);
-    ptr = M_StringReplace(s.c_str(), ":", buf);
+    ptr = M_StringReplace(s, ":", buf);
     s   = ptr;
 
-    for(char& c : s)
-        HUlib_addCharToTextLine(&w_title, c);
+    while (*s)
+        HUlib_addCharToTextLine(&w_title, *(s++));
 
     free(ptr);
 
@@ -934,11 +934,11 @@ void HU_Ticker()
         }
 
         // display message if necessary
-        if ((!plr->message.empty() && !message_nottobefuckedwith)
-            || (!plr->message.empty() && message_dontfuckwithme))
+        if ((plr->message && !message_nottobefuckedwith)
+            || (plr->message && message_dontfuckwithme))
         {
-            HUlib_addMessageToSText(&w_message, 0, plr->message.c_str());
-            plr->message              = "";
+            HUlib_addMessageToSText(&w_message, 0, plr->message);
+            plr->message              = 0;
             message_on                = true;
             message_counter           = HU_MSGTIMEOUT;
             message_nottobefuckedwith = message_dontfuckwithme;
@@ -970,7 +970,7 @@ void HU_Ticker()
                                 || chat_dest[i] == HU_BROADCAST))
                         {
                             HUlib_addMessageToSText(&w_message,
-                                DEH_String(player_names[i]).c_str(),
+                                DEH_String(player_names[i]),
                                 w_inputbuffer[i].l.l);
 
                             message_nottobefuckedwith = true;

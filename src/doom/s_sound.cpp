@@ -295,7 +295,7 @@ void S_Init(int sfxVolume_param, int musicVolume_param)
         musicinfo_t *const music = &S_music[i];
         char               namebuf[9];
 
-        M_snprintf(namebuf, sizeof(namebuf), "d_%s", DEH_String(music->name).c_str());
+        M_snprintf(namebuf, sizeof(namebuf), "d_%s", DEH_String(music->name));
         music->lumpnum = W_CheckNumForName(namebuf);
     }
 
@@ -969,7 +969,7 @@ void S_ChangeMusic(int musicnum, int looping)
     // get lumpnum if neccessary
     if (!music->lumpnum)
     {
-        M_snprintf(namebuf, sizeof(namebuf), "d_%s", DEH_String(music->name).c_str());
+        M_snprintf(namebuf, sizeof(namebuf), "d_%s", DEH_String(music->name));
         music->lumpnum = W_GetNumForName(namebuf);
     }
 

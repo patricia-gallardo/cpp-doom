@@ -107,11 +107,6 @@ void V_EnableLoadingDisk(const char *lump_name, int xoffs, int yoffs)
     SaveDiskData(lump_name, xoffs, yoffs);
 }
 
-void V_EnableLoadingDisk(const std::string & lump_name, int xoffs, int yoffs)
-{
-    V_EnableLoadingDisk(lump_name.c_str(), xoffs, yoffs);
-}
-
 void V_BeginRead(size_t nbytes)
 {
     recent_bytes_read += nbytes;

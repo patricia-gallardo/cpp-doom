@@ -167,7 +167,7 @@ void P_InitPicAnims()
     lastanim = anims;
     for (i = 0; animdefs[i].istexture != -1; i++)
     {
-        std::string startname, endname;
+        const char *startname, *endname;
 
         // [crispy] remove MAXANIMS limit
         if (lastanim >= anims + maxanims)
@@ -210,7 +210,7 @@ void P_InitPicAnims()
         }
         else if (lastanim->numpics < 2)
             I_Error("P_InitPicAnims: bad cycle from %s to %s",
-                startname.c_str(), endname.c_str());
+                startname, endname);
 
         lastanim++;
     }

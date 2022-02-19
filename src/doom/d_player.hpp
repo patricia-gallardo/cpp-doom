@@ -39,7 +39,6 @@
 
 #include "net_defs.hpp"
 
-#include <string>
 
 //
 // Player states.
@@ -132,7 +131,7 @@ typedef struct player_s {
     int secretcount;
 
     // Hint messages.
-    std::string message;
+    const char *message;
 
     // For screen flashing (red or bright).
     int damagecount;
