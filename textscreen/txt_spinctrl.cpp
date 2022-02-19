@@ -73,7 +73,7 @@ static unsigned int FloatWidth(float val, float step)
 
 static unsigned int SpinControlWidth(txt_spincontrol_t *spincontrol)
 {
-    unsigned int minw, maxw;
+    unsigned int minw = 0, maxw = 0;
 
     switch (spincontrol->type)
     {
@@ -336,7 +336,7 @@ static void TXT_SpinControlMousePress(void *uncast_spincontrol,
                                    int x, int, int)
 {
     auto *spincontrol = reinterpret_cast<txt_spincontrol_t *>(uncast_spincontrol);
-    unsigned int rel_x = static_cast<unsigned int>(x - spincontrol->widget.x);
+    auto rel_x = static_cast<unsigned int>(x - spincontrol->widget.x);
 
     if (rel_x < 2)
     {
@@ -382,9 +382,7 @@ static txt_spincontrol_t *TXT_BaseSpinControl()
 
 txt_spincontrol_t *TXT_NewSpinControl(int *value, int min, int max)
 {
-    txt_spincontrol_t *spincontrol;
-
-    spincontrol = TXT_BaseSpinControl();
+    txt_spincontrol_t *spincontrol = TXT_BaseSpinControl();
     spincontrol->type = TXT_SPINCONTROL_INT;
     spincontrol->value.i = value;
     spincontrol->min.i = min;
@@ -396,9 +394,7 @@ txt_spincontrol_t *TXT_NewSpinControl(int *value, int min, int max)
 
 txt_spincontrol_t *TXT_NewFloatSpinControl(float *value, float min, float max)
 {
-    txt_spincontrol_t *spincontrol;
-
-    spincontrol = TXT_BaseSpinControl();
+    txt_spincontrol_t *spincontrol = TXT_BaseSpinControl();
     spincontrol->type = TXT_SPINCONTROL_FLOAT;
     spincontrol->value.f = value;
     spincontrol->min.f = min;

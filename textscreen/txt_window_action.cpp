@@ -44,12 +44,11 @@ static void TXT_WindowActionSizeCalc(void *uncast_action)
 static void TXT_WindowActionDrawer(void *uncast_action)
 {
     auto *action = reinterpret_cast<txt_window_action_t *>(uncast_action);
-    int hovering;
     char buf[10];
 
     TXT_GetKeyDescription(action->key, buf, sizeof(buf));
 
-    hovering = TXT_HoveringOverWidget(action);
+    int hovering = TXT_HoveringOverWidget(action);
     TXT_SetWidgetBG(action);
 
     TXT_DrawString(" ");

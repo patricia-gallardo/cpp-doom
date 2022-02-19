@@ -173,10 +173,9 @@ static void CalcRowColSizes(txt_table_t *table,
                             unsigned int *col_widths)
 {
     int x, y;
-    int rows;
     txt_widget_t *widget;
 
-    rows = TableRows(table);
+    int rows = TableRows(table);
 
     std::memset(col_widths, 0, sizeof(int) * static_cast<unsigned long>(table->columns));
 
@@ -285,8 +284,6 @@ void TXT_AddWidget(void *uncast_table, void *uncast_widget)
 {
     auto *table  = reinterpret_cast<txt_table_t *>(uncast_table);
     auto *widget = reinterpret_cast<txt_widget_t *>(uncast_widget);
-    int is_separator;
-    int i;
 
     // Convenience alias for NULL:
     if (widget == &txt_table_empty)
@@ -300,7 +297,7 @@ void TXT_AddWidget(void *uncast_table, void *uncast_widget)
     }
 
     // We have special handling for the separator widget:
-    is_separator = IsActualWidget(widget)
+    int is_separator = IsActualWidget(widget)
                 && widget->widget_class == &txt_separator_class;
 
     // If we add two separators consecutively, the new separator replaces the
@@ -308,10 +305,9 @@ void TXT_AddWidget(void *uncast_table, void *uncast_widget)
     // added at the top of a window when it is created.
     if (is_separator)
     {
-        for (i = table->num_widgets - 1; i >= 0; --i)
+        for (int i = table->num_widgets - 1; i >= 0; --i)
         {
-            txt_widget_t *last_widget;
-            last_widget = table->widgets[i];
+            txt_widget_t *last_widget = table->widgets[i];
 
             if (IsActualWidget(last_widget)
              && widget->widget_class == &txt_separator_class

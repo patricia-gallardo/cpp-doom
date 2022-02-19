@@ -34,10 +34,10 @@ using txt_separator_t = struct txt_separator_s;
 
 #include "txt_widget.hpp"
 
-struct txt_separator_s
+struct [[maybe_unused]] txt_separator_s
 {
     txt_widget_t widget;
-    char *label;
+    char *label{};
 };
 
 extern txt_widget_class_t txt_separator_class;

@@ -149,16 +149,14 @@ static void CalcWindowPosition(txt_window_t *window)
 
 static void LayoutActionArea(txt_window_t *window)
 {
-    txt_widget_t *widget;
-    int space_available;
-    int space_left_offset;
+    txt_widget_t *widget = nullptr;
 
     // We need to calculate the available horizontal space for the center
     // action widget, so that we can center it within it.
     // To start with, we have the entire action area available.
 
-    space_available = static_cast<int>(window->window_w);
-    space_left_offset = 0;
+    int space_available = static_cast<int>(window->window_w);
+    int space_left_offset = 0;
 
     // Left action
 

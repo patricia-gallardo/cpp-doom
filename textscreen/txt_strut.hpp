@@ -33,11 +33,11 @@ using txt_strut_t = struct txt_strut_s;
 
 #include "txt_widget.hpp"
 
-struct txt_strut_s
+struct [[maybe_unused]] txt_strut_s
 {
     txt_widget_t widget;
-    int width;
-    int height;
+    int width{};
+    int height{};
 };
 
 /**
