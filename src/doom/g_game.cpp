@@ -86,7 +86,7 @@ void G_DoLoadLevel();
 void G_DoNewGame();
 void G_DoPlayDemo();
 void G_DoCompleted();
-void G_DoVictory();
+[[maybe_unused]] void G_DoVictory();
 void G_DoWorldDone();
 void G_DoSaveGame();
 
@@ -95,61 +95,26 @@ void G_DoSaveGame();
 gamestate_t oldgamestate;
 
 gameaction_t gameaction;
-gamestate_t  gamestate;
-skill_t      gameskill;
-bool      respawnmonsters;
-int          gameepisode;
-int          gamemap;
 
 // If non-zero, exit the level after this number of minutes.
 
-int timelimit;
-
-bool paused;
 bool sendpause; // send a pause event next tic
 bool sendsave;  // send a save event next tic
-bool usergame;  // ok to save / end game
 
 bool timingdemo; // if true, exit with report on completion
-bool nodrawers;  // for comparative timing purposes
 int     starttime;  // for comparative timing purposes
-
-bool viewactive;
-
-int      deathmatch; // only if started as net death
-bool  netgame;    // only true if packets are broadcast
-bool  playeringame[MAXPLAYERS];
-player_t players[MAXPLAYERS];
 
 bool turbodetected[MAXPLAYERS];
 
-int consoleplayer;                       // player taking events and displaying
-int displayplayer;                       // view being displayed
-[[maybe_unused]] int levelstarttic;                       // gametic at level start
-int totalkills, totalitems, totalsecret; // for intermission
-int extrakills;                          // [crispy] count spawned monsters
-int totalleveltimes;                     // [crispy] CPhipps - total time for all completed levels
 int demostarttic;                        // [crispy] fix revenant internal demo bug
 
 char *  demoname;
 char *  orig_demoname; // [crispy] the name originally chosen for the demo, i.e. without "-00000"
-bool demorecording;
 bool longtics;    // cph's doom 1.91 longtics hack
-bool lowres_turn; // low resolution turning for longtics
-bool demoplayback;
 bool netdemo;
 uint8_t *demobuffer;
 uint8_t *demo_p;
 uint8_t *demoend;
-bool singledemo; // quit after playing a demo from cmdline
-
-bool precache = true; // if true, load all graphics at start
-
-bool testcontrols = false; // Invoked by setup to test controls
-int     testcontrols_mousespeed;
-
-
-wbstartstruct_t wminfo; // parms for world map / intermission
 
 uint8_t consistancy[MAXPLAYERS][BACKUPTICS];
 
@@ -232,7 +197,6 @@ static char savedescription[32];
 constexpr auto BODYQUESIZE = 32;
 
 mobj_t *bodyque[BODYQUESIZE];
-int     bodyqueslot;
 
 int vanilla_savegame_limit = 1;
 int vanilla_demo_limit     = 1;
@@ -260,14 +224,14 @@ static bool WeaponSelectable(weapontype_t weapon)
     // These weapons aren't available in shareware.
 
     if ((weapon == wp_plasma || weapon == wp_bfg)
-        && gamemission == doom && gamemode == shareware)
+        && g_doomstat_globals->gamemission == doom && g_doomstat_globals->gamemode == shareware)
     {
         return false;
     }
 
     // Can't select a weapon if we don't own it.
 
-    if (!players[consoleplayer].weaponowned[weapon])
+    if (!g_doomstat_globals->players[g_doomstat_globals->consoleplayer].weaponowned[weapon])
     {
         return false;
     }
@@ -276,8 +240,8 @@ static bool WeaponSelectable(weapontype_t weapon)
     // we also have the berserk pack.
 
     if (weapon == wp_fist
-        && players[consoleplayer].weaponowned[wp_chainsaw]
-        && !players[consoleplayer].powers[pw_strength])
+        && g_doomstat_globals->players[g_doomstat_globals->consoleplayer].weaponowned[wp_chainsaw]
+        && !g_doomstat_globals->players[g_doomstat_globals->consoleplayer].powers[pw_strength])
     {
         return false;
     }
@@ -291,13 +255,13 @@ static int G_NextWeapon(int direction)
 
     // Find index in the table.
 
-    if (players[consoleplayer].pendingweapon == wp_nochange)
+    if (g_doomstat_globals->players[g_doomstat_globals->consoleplayer].pendingweapon == wp_nochange)
     {
-        weapon = players[consoleplayer].readyweapon;
+        weapon = g_doomstat_globals->players[g_doomstat_globals->consoleplayer].readyweapon;
     }
     else
     {
-        weapon = players[consoleplayer].pendingweapon;
+        weapon = g_doomstat_globals->players[g_doomstat_globals->consoleplayer].pendingweapon;
     }
 
     size_t i = 0;
@@ -343,13 +307,13 @@ void G_BuildTiccmd(ticcmd_t *cmd, int maketic)
     int             forward;
     int             side;
     int             look;
-    player_t *const player = &players[consoleplayer];
+    player_t *const player = &g_doomstat_globals->players[g_doomstat_globals->consoleplayer];
     static char     playermessage[48];
 
     std::memset(cmd, 0, sizeof(ticcmd_t));
 
     cmd->consistancy =
-        consistancy[consoleplayer][maketic % BACKUPTICS];
+        consistancy[g_doomstat_globals->consoleplayer][maketic % BACKUPTICS];
 
     strafe = gamekeydown[g_m_controls_globals->key_strafe] || mousebuttons[g_m_controls_globals->mousebstrafe]
              || joybuttons[g_m_controls_globals->joybstrafe];
@@ -580,7 +544,7 @@ void G_BuildTiccmd(ticcmd_t *cmd, int maketic)
     // next_weapon variable is set to change weapons when
     // we generate a ticcmd.  Choose a new weapon.
 
-    if (gamestate == GS_LEVEL && next_weapon != 0)
+    if (g_doomstat_globals->gamestate == GS_LEVEL && next_weapon != 0)
     {
         size_t i = static_cast<size_t>(G_NextWeapon(next_weapon));
         cmd->buttons |= BT_CHANGE;
@@ -709,7 +673,7 @@ void G_BuildTiccmd(ticcmd_t *cmd, int maketic)
     {
         // No movement in the previous frame
 
-        testcontrols_mousespeed = 0;
+        g_doomstat_globals->testcontrols_mousespeed = 0;
     }
 
     mousex = mousex2 = mousey = 0;
@@ -741,7 +705,7 @@ void G_BuildTiccmd(ticcmd_t *cmd, int maketic)
     {
         sendpause = false;
         // [crispy] ignore un-pausing in menus during demo recording
-        if (!(menuactive && demorecording && paused) && gameaction != ga_loadgame)
+        if (!(g_doomstat_globals->menuactive && g_doomstat_globals->demorecording && g_doomstat_globals->paused) && gameaction != ga_loadgame)
         {
             cmd->buttons = BT_SPECIAL | BTS_PAUSE;
         }
@@ -761,7 +725,7 @@ void G_BuildTiccmd(ticcmd_t *cmd, int maketic)
 
     // low-res turning
 
-    if (lowres_turn)
+    if (g_doomstat_globals->lowres_turn)
     {
         static signed short carry = 0;
         signed short        desired_angleturn;
@@ -794,21 +758,21 @@ void G_DoLoadLevel()
     //  we look for an actual index, instead of simply
     //  setting one.
 
-    skyflatnum = R_FlatNumForName(DEH_String(SKYFLATNAME));
+    g_doomstat_globals->skyflatnum = R_FlatNumForName(DEH_String(SKYFLATNAME));
 
     // The "Sky never changes in Doom II" bug was fixed in
     // the id Anthology version of doom2.exe for Final Doom.
     // [crispy] correct "Sky never changes in Doom II" bug
-    if ((gamemode == commercial)
-        && (gameversion == exe_final2 || gameversion == exe_chex || true))
+    if ((g_doomstat_globals->gamemode == commercial)
+        && (g_doomstat_globals->gameversion == exe_final2 || g_doomstat_globals->gameversion == exe_chex || true))
     {
         const char *skytexturename;
 
-        if (gamemap < 12)
+        if (g_doomstat_globals->gamemap < 12)
         {
             skytexturename = "SKY1";
         }
-        else if (gamemap < 21)
+        else if (g_doomstat_globals->gamemap < 21)
         {
             skytexturename = "SKY2";
         }
@@ -824,25 +788,25 @@ void G_DoLoadLevel()
     // [crispy] sky texture scales
     R_InitSkyMap();
 
-    levelstarttic = gametic; // for time calculation
+    g_doomstat_globals->levelstarttic = gametic; // for time calculation
 
-    if (wipegamestate == GS_LEVEL)
-        wipegamestate = gamestate_t::GS_FORCE_WIPE; // force a wipe
+    if (g_doomstat_globals->wipegamestate == GS_LEVEL)
+        g_doomstat_globals->wipegamestate = gamestate_t::GS_FORCE_WIPE; // force a wipe
 
-    gamestate = GS_LEVEL;
+    g_doomstat_globals->gamestate = GS_LEVEL;
 
     for (i = 0; i < MAXPLAYERS; i++)
     {
         turbodetected[i] = false;
-        if (playeringame[i] && players[i].playerstate == PST_DEAD)
-            players[i].playerstate = PST_REBORN;
-        std::memset(players[i].frags, 0, sizeof(players[i].frags));
+        if (g_doomstat_globals->playeringame[i] && g_doomstat_globals->players[i].playerstate == PST_DEAD)
+            g_doomstat_globals->players[i].playerstate = PST_REBORN;
+        std::memset(g_doomstat_globals->players[i].frags, 0, sizeof(g_doomstat_globals->players[i].frags));
     }
 
     // [crispy] update the "singleplayer" variable
-    CheckCrispySingleplayer(!demorecording && !demoplayback && !netgame);
-    P_SetupLevel(gameepisode, gamemap, 0, gameskill);
-    displayplayer = consoleplayer; // view the guy you are playing
+    CheckCrispySingleplayer(!g_doomstat_globals->demorecording && !g_doomstat_globals->demoplayback && !g_doomstat_globals->netgame);
+    P_SetupLevel(g_doomstat_globals->gameepisode, g_doomstat_globals->gamemap, 0, g_doomstat_globals->gameskill);
+    g_doomstat_globals->displayplayer = g_doomstat_globals->consoleplayer; // view the guy you are playing
     gameaction    = ga_nothing;
     Z_CheckHeap();
 
@@ -851,13 +815,13 @@ void G_DoLoadLevel()
     std::memset(gamekeydown, 0, sizeof(gamekeydown));
     joyxmove = joyymove = joystrafemove = joylook = 0;
     mousex = mousex2 = mousey = 0;
-    sendpause = sendsave = paused = false;
+    sendpause = sendsave = g_doomstat_globals->paused = false;
     std::memset(mousearray, 0, sizeof(mousearray));
     std::memset(joyarray, 0, sizeof(joyarray));
 
-    if (testcontrols)
+    if (g_doomstat_globals->testcontrols)
     {
-        players[consoleplayer].message = "Press escape to quit.";
+        g_doomstat_globals->players[g_doomstat_globals->consoleplayer].message = "Press escape to quit.";
     }
 }
 
@@ -922,21 +886,21 @@ static void SetMouseButtons(unsigned int buttons_mask)
 bool G_Responder(event_t *ev)
 {
     // allow spy mode changes even during the demo
-    if (gamestate == GS_LEVEL && ev->type == ev_keydown
-        && ev->data1 == g_m_controls_globals->key_spy && (singledemo || !deathmatch))
+    if (g_doomstat_globals->gamestate == GS_LEVEL && ev->type == ev_keydown
+        && ev->data1 == g_m_controls_globals->key_spy && (g_doomstat_globals->singledemo || !g_doomstat_globals->deathmatch))
     {
         // spy mode
         do
         {
-            displayplayer++;
-            if (displayplayer == MAXPLAYERS)
-                displayplayer = 0;
-        } while (!playeringame[displayplayer] && displayplayer != consoleplayer);
+            g_doomstat_globals->displayplayer++;
+            if (g_doomstat_globals->displayplayer == MAXPLAYERS)
+                g_doomstat_globals->displayplayer = 0;
+        } while (!g_doomstat_globals->playeringame[g_doomstat_globals->displayplayer] && g_doomstat_globals->displayplayer != g_doomstat_globals->consoleplayer);
         return true;
     }
 
     // any other key pops up menu if in demos
-    if (gameaction == ga_nothing && !singledemo && (demoplayback || gamestate == GS_DEMOSCREEN))
+    if (gameaction == ga_nothing && !g_doomstat_globals->singledemo && (g_doomstat_globals->demoplayback || g_doomstat_globals->gamestate == GS_DEMOSCREEN))
     {
         if (ev->type == ev_keydown || (ev->type == ev_mouse && ev->data1) || (ev->type == ev_joystick && ev->data1))
         {
@@ -949,7 +913,7 @@ bool G_Responder(event_t *ev)
         return false;
     }
 
-    if (gamestate == GS_LEVEL)
+    if (g_doomstat_globals->gamestate == GS_LEVEL)
     {
 #if 0 
 	if (devparm && ev->type == ev_keydown && ev->data1 == ';') 
@@ -966,20 +930,20 @@ bool G_Responder(event_t *ev)
             return true; // automap ate it
     }
 
-    if (gamestate == GS_FINALE)
+    if (g_doomstat_globals->gamestate == GS_FINALE)
     {
         if (F_Responder(ev))
             return true; // finale ate the event
     }
 
-    if (testcontrols && ev->type == ev_mouse)
+    if (g_doomstat_globals->testcontrols && ev->type == ev_mouse)
     {
         // If we are invoked by setup to test the controls, save the
         // mouse speed so that we can display it on-screen.
         // Perform a low pass filter on this so that the thermometer
         // appears to move smoothly.
 
-        testcontrols_mousespeed = std::abs(ev->data2);
+        g_doomstat_globals->testcontrols_mousespeed = std::abs(ev->data2);
     }
 
     // If the next/previous weapon keys are pressed, set the next_weapon
@@ -1015,16 +979,16 @@ bool G_Responder(event_t *ev)
 
     case ev_mouse:
         SetMouseButtons(static_cast<unsigned int>(ev->data1));
-        if (mouseSensitivity)
-            mousex = ev->data2 * (mouseSensitivity + 5) / 10;
+        if (g_doomstat_globals->mouseSensitivity)
+            mousex = ev->data2 * (g_doomstat_globals->mouseSensitivity + 5) / 10;
         else
             mousex = 0; // [crispy] disable entirely
-        if (mouseSensitivity_x2)
-            mousex2 = ev->data2 * (mouseSensitivity_x2 + 5) / 10; // [crispy] separate sensitivity for strafe
+        if (g_doomstat_globals->mouseSensitivity_x2)
+            mousex2 = ev->data2 * (g_doomstat_globals->mouseSensitivity_x2 + 5) / 10; // [crispy] separate sensitivity for strafe
         else
             mousex2 = 0; // [crispy] disable entirely
-        if (mouseSensitivity_y)
-            mousey = ev->data3 * (mouseSensitivity_y + 5) / 10; // [crispy] separate sensitivity for y-axis
+        if (g_doomstat_globals->mouseSensitivity_y)
+            mousey = ev->data3 * (g_doomstat_globals->mouseSensitivity_y + 5) / 10; // [crispy] separate sensitivity for y-axis
         else
             mousey = 0; // [crispy] disable entirely
         return true;    // eat events
@@ -1048,9 +1012,9 @@ bool G_Responder(event_t *ev)
 // [crispy] re-read game parameters from command line
 static void G_ReadGameParms()
 {
-    respawnparm = M_CheckParm("-respawn");
-    fastparm    = M_CheckParm("-fast");
-    nomonsters  = M_CheckParm("-nomonsters");
+    g_doomstat_globals->respawnparm = M_CheckParm("-respawn");
+    g_doomstat_globals->fastparm    = M_CheckParm("-fast");
+    g_doomstat_globals->nomonsters  = M_CheckParm("-nomonsters");
 }
 
 // [crispy] take a screenshot after rendering the next frame
@@ -1058,7 +1022,7 @@ static void G_CrispyScreenShot()
 {
     // [crispy] increase screenshot filename limit
     V_ScreenShot("DOOM%04i.%s");
-    players[consoleplayer].message = DEH_String("screen shot");
+    g_doomstat_globals->players[g_doomstat_globals->consoleplayer].message = DEH_String("screen shot");
     crispy->cleanscreenshot        = 0;
     crispy->screenshotmsg          = 2;
 }
@@ -1075,7 +1039,7 @@ void G_Ticker()
 
     // do player reborns if needed
     for (i = 0; i < MAXPLAYERS; i++)
-        if (playeringame[i] && players[i].playerstate == PST_REBORN)
+        if (g_doomstat_globals->playeringame[i] && g_doomstat_globals->players[i].playerstate == PST_REBORN)
             G_DoReborn(i);
 
     // do things to change the game state
@@ -1113,7 +1077,7 @@ void G_Ticker()
             break;
         case ga_screenshot:
             // [crispy] redraw view without weapons and HUD
-            if (gamestate == GS_LEVEL && (crispy->cleanscreenshot || crispy->screenshotmsg == 1))
+            if (g_doomstat_globals->gamestate == GS_LEVEL && (crispy->cleanscreenshot || crispy->screenshotmsg == 1))
             {
                 crispy->screenshotmsg       = 4;
                 crispy->post_rendering_hook = G_CrispyScreenShot;
@@ -1135,16 +1099,16 @@ void G_Ticker()
 
     for (i = 0; i < MAXPLAYERS; i++)
     {
-        if (playeringame[i])
+        if (g_doomstat_globals->playeringame[i])
         {
-            cmd = &players[i].cmd;
+            cmd = &g_doomstat_globals->players[i].cmd;
 
-            std::memcpy(cmd, &netcmds[i], sizeof(ticcmd_t));
+            std::memcpy(cmd, &g_doomstat_globals->netcmds[i], sizeof(ticcmd_t));
 
-            if (demoplayback)
+            if (g_doomstat_globals->demoplayback)
                 G_ReadDemoTiccmd(cmd);
             // [crispy] do not record tics while still playing back in demo continue mode
-            if (demorecording && !demoplayback)
+            if (g_doomstat_globals->demorecording && !g_doomstat_globals->demoplayback)
                 G_WriteDemoTiccmd(cmd);
 
             // check for turbo cheats
@@ -1168,11 +1132,11 @@ void G_Ticker()
                 extern char *player_names[4];
                 M_snprintf(turbomessage, sizeof(turbomessage),
                     "%s is turbo!", player_names[i]);
-                players[consoleplayer].message = turbomessage;
+                g_doomstat_globals->players[g_doomstat_globals->consoleplayer].message = turbomessage;
                 turbodetected[i]               = false;
             }
 
-            if (netgame && !netdemo && !(gametic % ticdup))
+            if (g_doomstat_globals->netgame && !netdemo && !(gametic % ticdup))
             {
                 if (gametic > BACKUPTICS
                     && consistancy[i][buf] != cmd->consistancy)
@@ -1180,10 +1144,10 @@ void G_Ticker()
                     I_Error("consistency failure (%i should be %i)",
                         cmd->consistancy, consistancy[i][buf]);
                 }
-                if (players[i].mo)
-                    consistancy[i][buf] = static_cast<uint8_t>(players[i].mo->x);
+                if (g_doomstat_globals->players[i].mo)
+                    consistancy[i][buf] = static_cast<uint8_t>(g_doomstat_globals->players[i].mo->x);
                 else
-                    consistancy[i][buf] = static_cast<uint8_t>(rndindex);
+                    consistancy[i][buf] = static_cast<uint8_t>(g_doomstat_globals->rndindex);
             }
         }
     }
@@ -1191,25 +1155,25 @@ void G_Ticker()
     // check for special buttons
     for (i = 0; i < MAXPLAYERS; i++)
     {
-        if (playeringame[i])
+        if (g_doomstat_globals->playeringame[i])
         {
-            if (players[i].cmd.buttons & BT_SPECIAL)
+            if (g_doomstat_globals->players[i].cmd.buttons & BT_SPECIAL)
             {
-                switch (players[i].cmd.buttons & BT_SPECIALMASK)
+                switch (g_doomstat_globals->players[i].cmd.buttons & BT_SPECIALMASK)
                 {
                 case BTS_PAUSE:
-                    paused ^= 1;
-                    if (paused)
+                    g_doomstat_globals->paused ^= 1;
+                    if (g_doomstat_globals->paused)
                         S_PauseSound();
                     else
                         // [crispy] Fixed bug when music was hearable with zero volume
-                        if (musicVolume)
+                        if (g_doomstat_globals->musicVolume)
                         S_ResumeSound();
                     break;
 
                 case BTS_SAVEGAME:
                     // [crispy] never override savegames by demo playback
-                    if (demoplayback)
+                    if (g_doomstat_globals->demoplayback)
                         break;
                     if (!savedescription[0])
                     {
@@ -1218,11 +1182,11 @@ void G_Ticker()
                     }
 
                     savegameslot =
-                        (players[i].cmd.buttons & BTS_SAVEMASK) >> BTS_SAVESHIFT;
+                        (g_doomstat_globals->players[i].cmd.buttons & BTS_SAVEMASK) >> BTS_SAVESHIFT;
                     gameaction = ga_savegame;
                     // [crispy] un-pause immediately after saving
                     // (impossible to send save and pause specials within the same tic)
-                    if (demorecording && paused)
+                    if (g_doomstat_globals->demorecording && g_doomstat_globals->paused)
                         sendpause = true;
                     break;
                 }
@@ -1232,16 +1196,16 @@ void G_Ticker()
 
     // Have we just finished displaying an intermission screen?
 
-    if (oldgamestate == GS_INTERMISSION && gamestate != GS_INTERMISSION)
+    if (oldgamestate == GS_INTERMISSION && g_doomstat_globals->gamestate != GS_INTERMISSION)
     {
         WI_End();
     }
 
-    oldgamestate = gamestate;
+    oldgamestate = g_doomstat_globals->gamestate;
     oldleveltime = leveltime;
 
     // do main actions
-    switch (gamestate)
+    switch (g_doomstat_globals->gamestate)
     {
     case GS_LEVEL:
         P_Ticker();
@@ -1293,7 +1257,7 @@ void G_PlayerFinishLevel(int player)
 {
     player_t *p;
 
-    p = &players[player];
+    p = &g_doomstat_globals->players[player];
 
     std::memset(p->powers, 0, sizeof(p->powers));
     std::memset(p->cards, 0, sizeof(p->cards));
@@ -1328,18 +1292,18 @@ void G_PlayerReborn(int player)
     int       itemcount;
     int       secretcount;
 
-    std::memcpy(frags, players[player].frags, sizeof(frags));
-    killcount   = players[player].killcount;
-    itemcount   = players[player].itemcount;
-    secretcount = players[player].secretcount;
+    std::memcpy(frags, g_doomstat_globals->players[player].frags, sizeof(frags));
+    killcount   = g_doomstat_globals->players[player].killcount;
+    itemcount   = g_doomstat_globals->players[player].itemcount;
+    secretcount = g_doomstat_globals->players[player].secretcount;
 
-    p = &players[player];
+    p = &g_doomstat_globals->players[player];
     std::memset(p, 0, sizeof(*p));
 
-    std::memcpy(players[player].frags, frags, sizeof(players[player].frags));
-    players[player].killcount   = killcount;
-    players[player].itemcount   = itemcount;
-    players[player].secretcount = secretcount;
+    std::memcpy(g_doomstat_globals->players[player].frags, frags, sizeof(g_doomstat_globals->players[player].frags));
+    g_doomstat_globals->players[player].killcount   = killcount;
+    g_doomstat_globals->players[player].itemcount   = itemcount;
+    g_doomstat_globals->players[player].secretcount = secretcount;
 
     p->usedown = p->attackdown = true; // don't do anything immediately
     p->playerstate             = PST_LIVE;
@@ -1373,12 +1337,12 @@ bool
     mobj_t *     mo;
     int          i;
 
-    if (!players[playernum].mo)
+    if (!g_doomstat_globals->players[playernum].mo)
     {
         // first spawn of level, before corpses
         for (i = 0; i < playernum; i++)
-            if (players[i].mo->x == mthing->x << FRACBITS
-                && players[i].mo->y == mthing->y << FRACBITS)
+            if (g_doomstat_globals->players[i].mo->x == mthing->x << FRACBITS
+                && g_doomstat_globals->players[i].mo->y == mthing->y << FRACBITS)
                 return false;
         return true;
     }
@@ -1386,14 +1350,14 @@ bool
     x = mthing->x << FRACBITS;
     y = mthing->y << FRACBITS;
 
-    if (!P_CheckPosition(players[playernum].mo, x, y))
+    if (!P_CheckPosition(g_doomstat_globals->players[playernum].mo, x, y))
         return false;
 
     // flush an old corpse if needed
-    if (bodyqueslot >= BODYQUESIZE)
-        P_RemoveMobj(bodyque[bodyqueslot % BODYQUESIZE]);
-    bodyque[bodyqueslot % BODYQUESIZE] = players[playernum].mo;
-    bodyqueslot++;
+    if (g_doomstat_globals->bodyqueslot >= BODYQUESIZE)
+        P_RemoveMobj(bodyque[g_doomstat_globals->bodyqueslot % BODYQUESIZE]);
+    bodyque[g_doomstat_globals->bodyqueslot % BODYQUESIZE] = g_doomstat_globals->players[playernum].mo;
+    g_doomstat_globals->bodyqueslot++;
 
     // spawn a teleport fog
     ss = R_PointInSubsector(x, y);
@@ -1458,7 +1422,7 @@ bool
             ss->sector->floorheight, MT_TFOG);
     }
 
-    if (players[consoleplayer].viewz != 1)
+    if (g_doomstat_globals->players[g_doomstat_globals->consoleplayer].viewz != 1)
         S_StartSound(mo, sfx_telept); // don't start sound on first frame
 
     return true;
@@ -1472,23 +1436,23 @@ bool
 //
 void G_DeathMatchSpawnPlayer(int playernum)
 {
-    int selections = static_cast<int>(deathmatch_p - deathmatchstarts);
+    int selections = static_cast<int>(g_doomstat_globals->deathmatch_p - g_doomstat_globals->deathmatchstarts);
     if (selections < 4)
         I_Error("Only %i deathmatch spots, 4 required", selections);
 
     for (int j = 0; j < 20; j++)
     {
         int i = P_Random() % selections;
-        if (G_CheckSpot(playernum, &deathmatchstarts[i]))
+        if (G_CheckSpot(playernum, &g_doomstat_globals->deathmatchstarts[i]))
         {
-            deathmatchstarts[i].type = static_cast<short>(playernum + 1);
-            P_SpawnPlayer(&deathmatchstarts[i]);
+            g_doomstat_globals->deathmatchstarts[i].type = static_cast<short>(playernum + 1);
+            P_SpawnPlayer(&g_doomstat_globals->deathmatchstarts[i]);
             return;
         }
     }
 
     // no good spot, so the player will probably get stuck
-    P_SpawnPlayer(&playerstarts[playernum]);
+    P_SpawnPlayer(&g_doomstat_globals->playerstarts[playernum]);
 }
 
 // [crispy] clear the "savename" variable,
@@ -1503,7 +1467,7 @@ static inline void G_ClearSavename()
 //
 void G_DoReborn(int playernum)
 {
-    if (!netgame)
+    if (!g_doomstat_globals->netgame)
     {
         // [crispy] if the player dies and the game has been loaded or saved
         // in the mean time, reload that savegame instead of restarting the level
@@ -1522,34 +1486,34 @@ void G_DoReborn(int playernum)
         // respawn at the start
 
         // first dissasociate the corpse
-        players[playernum].mo->player = nullptr;
+        g_doomstat_globals->players[playernum].mo->player = nullptr;
 
         // spawn at random spot if in death match
-        if (deathmatch)
+        if (g_doomstat_globals->deathmatch)
         {
             G_DeathMatchSpawnPlayer(playernum);
             return;
         }
 
-        if (G_CheckSpot(playernum, &playerstarts[playernum]))
+        if (G_CheckSpot(playernum, &g_doomstat_globals->playerstarts[playernum]))
         {
-            P_SpawnPlayer(&playerstarts[playernum]);
+            P_SpawnPlayer(&g_doomstat_globals->playerstarts[playernum]);
             return;
         }
 
         // try to spawn at one of the other players spots
         for (int i = 0; i < MAXPLAYERS; i++)
         {
-            if (G_CheckSpot(playernum, &playerstarts[i]))
+            if (G_CheckSpot(playernum, &g_doomstat_globals->playerstarts[i]))
             {
-                playerstarts[i].type = static_cast<short>(playernum + 1); // fake as other player
-                P_SpawnPlayer(&playerstarts[i]);
-                playerstarts[i].type = static_cast<short>(i + 1); // restore
+                g_doomstat_globals->playerstarts[i].type = static_cast<short>(playernum + 1); // fake as other player
+                P_SpawnPlayer(&g_doomstat_globals->playerstarts[i]);
+                g_doomstat_globals->playerstarts[i].type = static_cast<short>(i + 1); // restore
                 return;
             }
             // he's going to be inside something.  Too bad.
         }
-        P_SpawnPlayer(&playerstarts[playernum]);
+        P_SpawnPlayer(&g_doomstat_globals->playerstarts[playernum]);
     }
 }
 
@@ -1604,7 +1568,7 @@ void G_ExitLevel()
 void G_SecretExitLevel()
 {
     // IF NO WOLF3D LEVELS, NO SECRET EXIT!
-    if ((gamemode == commercial)
+    if ((g_doomstat_globals->gamemode == commercial)
         && (W_CheckNumForName("map31") < 0))
         secretexit = false;
     else
@@ -1618,19 +1582,19 @@ void G_DoCompleted()
     gameaction = ga_nothing;
 
     for (int i = 0; i < MAXPLAYERS; i++)
-        if (playeringame[i])
+        if (g_doomstat_globals->playeringame[i])
             G_PlayerFinishLevel(i); // take away cards and stuff
 
-    if (automapactive)
+    if (g_doomstat_globals->automapactive)
         AM_Stop();
 
-    if (gamemode != commercial)
+    if (g_doomstat_globals->gamemode != commercial)
     {
         // Chex Quest ends after 5 levels, rather than 8.
 
-        if (gameversion == exe_chex)
+        if (g_doomstat_globals->gameversion == exe_chex)
         {
-            if (gamemap == 5)
+            if (g_doomstat_globals->gamemap == 5)
             {
                 gameaction = ga_victory;
                 return;
@@ -1638,7 +1602,7 @@ void G_DoCompleted()
         }
         else
         {
-            switch (gamemap)
+            switch (g_doomstat_globals->gamemap)
             {
                 // [crispy] display tally screen after ExM8
                 /*
@@ -1648,7 +1612,7 @@ void G_DoCompleted()
             */
             case 9:
                 for (int i = 0; i < MAXPLAYERS; i++)
-                    players[i].didsecret = true;
+                    g_doomstat_globals->players[i].didsecret = true;
                 break;
             }
         }
@@ -1676,150 +1640,150 @@ void G_DoCompleted()
 */
 
 
-    wminfo.didsecret = players[consoleplayer].didsecret;
-    wminfo.epsd      = gameepisode - 1;
-    wminfo.last      = gamemap - 1;
+    g_doomstat_globals->wminfo.didsecret = g_doomstat_globals->players[g_doomstat_globals->consoleplayer].didsecret;
+    g_doomstat_globals->wminfo.epsd      = g_doomstat_globals->gameepisode - 1;
+    g_doomstat_globals->wminfo.last      = g_doomstat_globals->gamemap - 1;
 
     // wminfo.next is 0 biased, unlike gamemap
-    if (gamemission == pack_nerve && gamemap <= 9 && crispy->singleplayer)
+    if (g_doomstat_globals->gamemission == pack_nerve && g_doomstat_globals->gamemap <= 9 && crispy->singleplayer)
     {
         if (secretexit)
-            switch (gamemap)
+            switch (g_doomstat_globals->gamemap)
             {
-            case 4: wminfo.next = 8; break;
+            case 4: g_doomstat_globals->wminfo.next = 8; break;
             }
         else
-            switch (gamemap)
+            switch (g_doomstat_globals->gamemap)
             {
-            case 9: wminfo.next = 4; break;
-            default: wminfo.next = gamemap;
+            case 9: g_doomstat_globals->wminfo.next = 4; break;
+            default: g_doomstat_globals->wminfo.next = g_doomstat_globals->gamemap;
             }
     }
-    else if (gamemission == pack_master && gamemap <= 21 && crispy->singleplayer)
+    else if (g_doomstat_globals->gamemission == pack_master && g_doomstat_globals->gamemap <= 21 && crispy->singleplayer)
     {
-        wminfo.next = gamemap;
+        g_doomstat_globals->wminfo.next = g_doomstat_globals->gamemap;
     }
-    else if (gamemode == commercial)
+    else if (g_doomstat_globals->gamemode == commercial)
     {
         if (secretexit)
-            if (gamemap == 2 && critical->havemap33)
-                wminfo.next = 32;
+            if (g_doomstat_globals->gamemap == 2 && critical->havemap33)
+                g_doomstat_globals->wminfo.next = 32;
             else
-                switch (gamemap)
+                switch (g_doomstat_globals->gamemap)
                 {
-                case 15: wminfo.next = 30; break;
-                case 31: wminfo.next = 31; break;
+                case 15: g_doomstat_globals->wminfo.next = 30; break;
+                case 31: g_doomstat_globals->wminfo.next = 31; break;
                 }
-        else if (gamemap == 33 && critical->havemap33)
-            wminfo.next = 2;
+        else if (g_doomstat_globals->gamemap == 33 && critical->havemap33)
+            g_doomstat_globals->wminfo.next = 2;
         else
-            switch (gamemap)
+            switch (g_doomstat_globals->gamemap)
             {
             case 31:
-            case 32: wminfo.next = 15; break;
-            default: wminfo.next = gamemap;
+            case 32: g_doomstat_globals->wminfo.next = 15; break;
+            default: g_doomstat_globals->wminfo.next = g_doomstat_globals->gamemap;
             }
     }
     else
     {
         if (secretexit)
         {
-            if (critical->havee1m10 && gameepisode == 1 && gamemap == 1)
-                wminfo.next = 9; // [crispy] go to secret level E1M10 "Sewers"
+            if (critical->havee1m10 && g_doomstat_globals->gameepisode == 1 && g_doomstat_globals->gamemap == 1)
+                g_doomstat_globals->wminfo.next = 9; // [crispy] go to secret level E1M10 "Sewers"
             else
-                wminfo.next = 8; // go to secret level
+                g_doomstat_globals->wminfo.next = 8; // go to secret level
         }
-        else if (gamemap == 9)
+        else if (g_doomstat_globals->gamemap == 9)
         {
             // returning from secret level
-            switch (gameepisode)
+            switch (g_doomstat_globals->gameepisode)
             {
             case 1:
-                wminfo.next = 3;
+                g_doomstat_globals->wminfo.next = 3;
                 break;
             case 2:
-                wminfo.next = 5;
+                g_doomstat_globals->wminfo.next = 5;
                 break;
             case 3:
             case 5: // [crispy] Sigil
-                wminfo.next = 6;
+                g_doomstat_globals->wminfo.next = 6;
                 break;
             case 4:
-                wminfo.next = 2;
+                g_doomstat_globals->wminfo.next = 2;
                 break;
             }
         }
-        else if (critical->havee1m10 && gameepisode == 1 && gamemap == 10)
-            wminfo.next = 1; // [crispy] returning from secret level E1M10 "Sewers"
+        else if (critical->havee1m10 && g_doomstat_globals->gameepisode == 1 && g_doomstat_globals->gamemap == 10)
+            g_doomstat_globals->wminfo.next = 1; // [crispy] returning from secret level E1M10 "Sewers"
         else
-            wminfo.next = gamemap; // go to next level
+            g_doomstat_globals->wminfo.next = g_doomstat_globals->gamemap; // go to next level
     }
 
-    wminfo.maxkills  = totalkills;
-    wminfo.maxitems  = totalitems;
-    wminfo.maxsecret = totalsecret;
-    wminfo.maxfrags  = 0;
+    g_doomstat_globals->wminfo.maxkills  = g_doomstat_globals->totalkills;
+    g_doomstat_globals->wminfo.maxitems  = g_doomstat_globals->totalitems;
+    g_doomstat_globals->wminfo.maxsecret = g_doomstat_globals->totalsecret;
+    g_doomstat_globals->wminfo.maxfrags  = 0;
 
     // Set par time. Exceptions are added for purposes of
     // statcheck regression testing.
-    if (gamemode == commercial)
+    if (g_doomstat_globals->gamemode == commercial)
     {
         // map33 reads its par time from beyond the cpars[] array
-        if (gamemap == 33)
+        if (g_doomstat_globals->gamemap == 33)
         {
             int cpars32;
 
             std::memcpy(&cpars32, DEH_String(GAMMALVL0), sizeof(int));
             cpars32 = LONG(cpars32);
 
-            wminfo.partime = TICRATE * cpars32;
+            g_doomstat_globals->wminfo.partime = TICRATE * cpars32;
         }
         // [crispy] support [PARS] sections in BEX files
-        else if (bex_cpars[gamemap - 1])
+        else if (bex_cpars[g_doomstat_globals->gamemap - 1])
         {
-            wminfo.partime = TICRATE * bex_cpars[gamemap - 1];
+            g_doomstat_globals->wminfo.partime = TICRATE * bex_cpars[g_doomstat_globals->gamemap - 1];
         }
         // [crispy] single player par times for NRFTL
-        else if (gamemission == pack_nerve && crispy->singleplayer)
+        else if (g_doomstat_globals->gamemission == pack_nerve && crispy->singleplayer)
         {
-            wminfo.partime = TICRATE * npars[gamemap - 1];
+            g_doomstat_globals->wminfo.partime = TICRATE * npars[g_doomstat_globals->gamemap - 1];
         }
         else
         {
-            wminfo.partime = TICRATE * cpars[gamemap - 1];
+            g_doomstat_globals->wminfo.partime = TICRATE * cpars[g_doomstat_globals->gamemap - 1];
         }
     }
     // Doom episode 4 doesn't have a par time, so this
     // overflows into the cpars array.
-    else if (gameepisode < 4 ||
+    else if (g_doomstat_globals->gameepisode < 4 ||
              // [crispy] single player par times for episode 4
-             (gameepisode == 4 && crispy->singleplayer) ||
+             (g_doomstat_globals->gameepisode == 4 && crispy->singleplayer) ||
              // [crispy] par times for Sigil
-             gameepisode == 5)
+             g_doomstat_globals->gameepisode == 5)
     {
         // [crispy] support [PARS] sections in BEX files
-        if (bex_pars[gameepisode][gamemap])
+        if (bex_pars[g_doomstat_globals->gameepisode][g_doomstat_globals->gamemap])
         {
-            wminfo.partime = TICRATE * bex_pars[gameepisode][gamemap];
+            g_doomstat_globals->wminfo.partime = TICRATE * bex_pars[g_doomstat_globals->gameepisode][g_doomstat_globals->gamemap];
         }
         else
-            wminfo.partime = TICRATE * pars[gameepisode][gamemap];
+            g_doomstat_globals->wminfo.partime = TICRATE * pars[g_doomstat_globals->gameepisode][g_doomstat_globals->gamemap];
     }
     else
     {
-        wminfo.partime = TICRATE * cpars[gamemap];
+        g_doomstat_globals->wminfo.partime = TICRATE * cpars[g_doomstat_globals->gamemap];
     }
 
-    wminfo.pnum = consoleplayer;
+    g_doomstat_globals->wminfo.pnum = g_doomstat_globals->consoleplayer;
 
     for (int i = 0; i < MAXPLAYERS; i++)
     {
-        wminfo.plyr[i].in      = playeringame[i];
-        wminfo.plyr[i].skills  = players[i].killcount;
-        wminfo.plyr[i].sitems  = players[i].itemcount;
-        wminfo.plyr[i].ssecret = players[i].secretcount;
-        wminfo.plyr[i].stime   = leveltime;
-        std::memcpy(wminfo.plyr[i].frags, players[i].frags, sizeof(wminfo.plyr[i].frags));
+        g_doomstat_globals->wminfo.plyr[i].in      = g_doomstat_globals->playeringame[i];
+        g_doomstat_globals->wminfo.plyr[i].skills  = g_doomstat_globals->players[i].killcount;
+        g_doomstat_globals->wminfo.plyr[i].sitems  = g_doomstat_globals->players[i].itemcount;
+        g_doomstat_globals->wminfo.plyr[i].ssecret = g_doomstat_globals->players[i].secretcount;
+        g_doomstat_globals->wminfo.plyr[i].stime   = leveltime;
+        std::memcpy(g_doomstat_globals->wminfo.plyr[i].frags, g_doomstat_globals->players[i].frags, sizeof(g_doomstat_globals->wminfo.plyr[i].frags));
     }
 
     // [crispy] CPhipps - total time for all completed levels
@@ -1827,19 +1791,19 @@ void G_DoCompleted()
     // value; so our total is compatible with the "naive" total of just adding
     // the times in seconds shown for each level. Also means our total time
     // will agree with Compet-n.
-    wminfo.totaltimes = (totalleveltimes += (leveltime - leveltime % TICRATE));
+    g_doomstat_globals->wminfo.totaltimes = (g_doomstat_globals->totalleveltimes += (leveltime - leveltime % TICRATE));
 
-    gamestate     = GS_INTERMISSION;
-    viewactive    = false;
-    automapactive = false;
+    g_doomstat_globals->gamestate     = GS_INTERMISSION;
+    g_doomstat_globals->viewactive    = false;
+    g_doomstat_globals->automapactive = false;
 
     // [crispy] no statdump output for ExM8
-    if (gamemode == commercial || gamemap != 8)
+    if (g_doomstat_globals->gamemode == commercial || g_doomstat_globals->gamemap != 8)
     {
-        StatCopy(&wminfo);
+        StatCopy(&g_doomstat_globals->wminfo);
     }
 
-    WI_Start(&wminfo);
+    WI_Start(&g_doomstat_globals->wminfo);
 }
 
 
@@ -1853,21 +1817,21 @@ void G_WorldDone()
     if (secretexit)
         // [crispy] special-casing for E1M10 "Sewers" support
         // i.e. avoid drawing the splat for E1M9 already
-        if (!crispy->havee1m10 || gameepisode != 1 || gamemap != 1)
-            players[consoleplayer].didsecret = true;
+        if (!crispy->havee1m10 || g_doomstat_globals->gameepisode != 1 || g_doomstat_globals->gamemap != 1)
+            g_doomstat_globals->players[g_doomstat_globals->consoleplayer].didsecret = true;
 
-    if (gamemission == pack_nerve && crispy->singleplayer)
+    if (g_doomstat_globals->gamemission == pack_nerve && crispy->singleplayer)
     {
-        switch (gamemap)
+        switch (g_doomstat_globals->gamemap)
         {
         case 8:
             F_StartFinale();
             break;
         }
     }
-    else if (gamemission == pack_master && crispy->singleplayer)
+    else if (g_doomstat_globals->gamemission == pack_master && crispy->singleplayer)
     {
-        switch (gamemap)
+        switch (g_doomstat_globals->gamemap)
         {
         case 20:
             if (secretexit)
@@ -1878,9 +1842,9 @@ void G_WorldDone()
             break;
         }
     }
-    else if (gamemode == commercial)
+    else if (g_doomstat_globals->gamemode == commercial)
     {
-        switch (gamemap)
+        switch (g_doomstat_globals->gamemap)
         {
         case 15:
         case 31:
@@ -1896,7 +1860,7 @@ void G_WorldDone()
         }
     }
     // [crispy] display tally screen after ExM8
-    else if (gamemap == 8)
+    else if (g_doomstat_globals->gamemap == 8)
     {
         gameaction = ga_victory;
     }
@@ -1904,11 +1868,11 @@ void G_WorldDone()
 
 void G_DoWorldDone()
 {
-    gamestate = GS_LEVEL;
-    gamemap   = wminfo.next + 1;
+    g_doomstat_globals->gamestate = GS_LEVEL;
+    g_doomstat_globals->gamemap   = g_doomstat_globals->wminfo.next + 1;
     G_DoLoadLevel();
     gameaction = ga_nothing;
-    viewactive = true;
+    g_doomstat_globals->viewactive = true;
 }
 
 
@@ -1933,11 +1897,11 @@ void G_DoLoadGame()
     // [crispy] loaded game must always be single player.
     // Needed for ability to use a further game loading, as well as
     // cheat codes and other single player only specifics.
-    if (startloadgame == -1)
+    if (g_doomstat_globals->startloadgame == -1)
     {
         netdemo    = false;
-        netgame    = false;
-        deathmatch = false;
+        g_doomstat_globals->netgame    = false;
+        g_doomstat_globals->deathmatch = false;
     }
     gameaction = ga_nothing;
 
@@ -1989,7 +1953,7 @@ void G_DoLoadGame()
     savedleveltime = leveltime;
 
     // load a base level
-    G_InitNew(gameskill, gameepisode, gamemap);
+    G_InitNew(g_doomstat_globals->gameskill, g_doomstat_globals->gameepisode, g_doomstat_globals->gamemap);
 
     leveltime      = savedleveltime;
     savedleveltime = 0;
@@ -2020,12 +1984,12 @@ void G_DoLoadGame()
 
     // [crispy] if the player is dead in this savegame,
     // do not consider it for reload
-    if (players[consoleplayer].health <= 0)
+    if (g_doomstat_globals->players[g_doomstat_globals->consoleplayer].health <= 0)
         G_ClearSavename();
 
     // [crisy] once loaded from the command line,
     // the next savegame will be loaded from the menu
-    startloadgame = -1;
+    g_doomstat_globals->startloadgame = -1;
 }
 
 
@@ -2078,11 +2042,11 @@ void G_DoSaveGame()
     // [crispy] some logging when saving
     {
         const int ltime = leveltime / TICRATE,
-                  ttime = (totalleveltimes + leveltime) / TICRATE;
+                  ttime = (g_doomstat_globals->totalleveltimes + leveltime) / TICRATE;
         extern const char *skilltable[];
 
         fprintf(stderr, "G_DoSaveGame: Episode %d, Map %d, %s, Time %d:%02d:%02d, Total %d:%02d:%02d.\n",
-            gameepisode, gamemap, skilltable[BETWEEN(0, 5, static_cast<int>(gameskill) + 1)],
+            g_doomstat_globals->gameepisode, g_doomstat_globals->gamemap, skilltable[BETWEEN(0, 5, static_cast<int>(g_doomstat_globals->gameskill) + 1)],
             ltime / 3600, (ltime % 3600) / 60, ltime % 60,
             ttime / 3600, (ttime % 3600) / 60, ttime % 60);
     }
@@ -2134,7 +2098,7 @@ void G_DoSaveGame()
     M_StringCopy(savedescription, "", sizeof(savedescription));
     M_StringCopy(savename, savegame_file, sizeof(savename));
 
-    players[consoleplayer].message = DEH_String(GGSAVED);
+    g_doomstat_globals->players[g_doomstat_globals->consoleplayer].message = DEH_String(GGSAVED);
 
     // draw the pattern into the back screen
     R_FillBackScreen();
@@ -2161,7 +2125,7 @@ void G_DeferedInitNew(skill_t skill,
     gameaction = ga_newgame;
 
     // [crispy] if a new game is started during demo recording, start a new demo
-    if (demorecording)
+    if (g_doomstat_globals->demorecording)
     {
         G_CheckDemoStatus();
         Z_Free(demoname);
@@ -2174,18 +2138,18 @@ void G_DeferedInitNew(skill_t skill,
 
 void G_DoNewGame()
 {
-    demoplayback    = false;
+    g_doomstat_globals->demoplayback    = false;
     netdemo         = false;
-    netgame         = false;
-    deathmatch      = false;
-    playeringame[1] = playeringame[2] = playeringame[3] = 0;
+    g_doomstat_globals->netgame         = false;
+    g_doomstat_globals->deathmatch      = false;
+    g_doomstat_globals->playeringame[1] = g_doomstat_globals->playeringame[2] = g_doomstat_globals->playeringame[3] = 0;
     // [crispy] do not reset -respawn, -fast and -nomonsters parameters
     /*
     respawnparm = false;
     fastparm = false;
     nomonsters = false;
     */
-    consoleplayer = 0;
+    g_doomstat_globals->consoleplayer = 0;
     G_InitNew(d_skill, d_episode, d_map);
     gameaction = ga_nothing;
 }
@@ -2200,9 +2164,9 @@ void G_InitNew(skill_t skill,
     // [crispy] make sure "fast" parameters are really only applied once
     static bool fast_applied;
 
-    if (paused)
+    if (g_doomstat_globals->paused)
     {
-        paused = false;
+        g_doomstat_globals->paused = false;
         S_ResumeSound();
     }
 
@@ -2242,7 +2206,7 @@ void G_InitNew(skill_t skill,
     // [crispy] only fix episode/map if it doesn't exist
     if (P_GetNumForMap(episode, map, false) < 0)
     {
-        if (gameversion >= exe_ultimate)
+        if (g_doomstat_globals->gameversion >= exe_ultimate)
         {
             if (episode == 0)
             {
@@ -2261,7 +2225,7 @@ void G_InitNew(skill_t skill,
             }
         }
 
-        if (episode > 1 && gamemode == shareware)
+        if (episode > 1 && g_doomstat_globals->gamemode == shareware)
         {
             episode = 1;
         }
@@ -2270,7 +2234,7 @@ void G_InitNew(skill_t skill,
             map = 1;
 
         if ((map > 9)
-            && (gamemode != commercial))
+            && (g_doomstat_globals->gamemode != commercial))
         {
             // [crispy] support E1M10 "Sewers"
             if (!crispy->havee1m10 || episode != 1)
@@ -2282,13 +2246,13 @@ void G_InitNew(skill_t skill,
 
     M_ClearRandom();
 
-    if (skill == sk_nightmare || respawnparm)
-        respawnmonsters = true;
+    if (skill == sk_nightmare || g_doomstat_globals->respawnparm)
+        g_doomstat_globals->respawnmonsters = true;
     else
-        respawnmonsters = false;
+        g_doomstat_globals->respawnmonsters = false;
 
     // [crispy] make sure "fast" parameters are really only applied once
-    if ((fastparm || skill == sk_nightmare) && !fast_applied)
+    if ((g_doomstat_globals->fastparm || skill == sk_nightmare) && !fast_applied)
     {
         for (i = S_SARG_RUN1; i <= S_SARG_PAIN2; i++)
             // [crispy] Fix infinite loop caused by Demon speed bug
@@ -2301,7 +2265,7 @@ void G_InitNew(skill_t skill,
         mobjinfo[MT_TROOPSHOT].speed   = 20 * FRACUNIT;
         fast_applied                   = true;
     }
-    else if (!fastparm && skill != sk_nightmare && fast_applied)
+    else if (!g_doomstat_globals->fastparm && skill != sk_nightmare && fast_applied)
     {
         for (i = S_SARG_RUN1; i <= S_SARG_PAIN2; i++)
             states[i].tics <<= 1;
@@ -2313,23 +2277,23 @@ void G_InitNew(skill_t skill,
 
     // force players to be initialized upon first level load
     for (i = 0; i < MAXPLAYERS; i++)
-        players[i].playerstate = PST_REBORN;
+        g_doomstat_globals->players[i].playerstate = PST_REBORN;
 
-    usergame      = true; // will be set false if a demo
-    paused        = false;
-    demoplayback  = false;
-    automapactive = false;
-    viewactive    = true;
-    gameepisode   = episode;
-    gamemap       = map;
-    gameskill     = skill;
+    g_doomstat_globals->usergame      = true; // will be set false if a demo
+    g_doomstat_globals->paused        = false;
+    g_doomstat_globals->demoplayback  = false;
+    g_doomstat_globals->automapactive = false;
+    g_doomstat_globals->viewactive    = true;
+    g_doomstat_globals->gameepisode   = episode;
+    g_doomstat_globals->gamemap       = map;
+    g_doomstat_globals->gameskill     = skill;
 
     // [crispy] CPhipps - total time for all completed levels
-    totalleveltimes = 0;
+    g_doomstat_globals->totalleveltimes = 0;
     defdemotics     = 0;
     demostarttic    = gametic; // [crispy] fix revenant internal demo bug
 
-    viewactive = true;
+    g_doomstat_globals->viewactive = true;
 
     // Set the sky to use.
     //
@@ -2341,19 +2305,19 @@ void G_InitNew(skill_t skill,
     // restore from a saved game.  This was fixed before the Doom
     // source release, but this IS the way Vanilla DOS Doom behaves.
 
-    if (gamemode == commercial)
+    if (g_doomstat_globals->gamemode == commercial)
     {
         skytexturename = DEH_String("SKY3");
         skytexture     = R_TextureNumForName(skytexturename);
-        if (gamemap < 21)
+        if (g_doomstat_globals->gamemap < 21)
         {
-            skytexturename = DEH_String(gamemap < 12 ? "SKY1" : "SKY2");
+            skytexturename = DEH_String(g_doomstat_globals->gamemap < 12 ? "SKY1" : "SKY2");
             skytexture     = R_TextureNumForName(skytexturename);
         }
     }
     else
     {
-        switch (gameepisode)
+        switch (g_doomstat_globals->gameepisode)
         {
         default:
         case 1:
@@ -2406,7 +2370,7 @@ void G_ReadDemoTiccmd(ticcmd_t *cmd)
     // [crispy] if demo playback is quit by pressing 'q',
     // stay in the game, hand over controls to the player and
     // continue recording the demo under a different name
-    if (gamekeydown[g_m_controls_globals->key_demo_quit] && singledemo && !netgame)
+    if (gamekeydown[g_m_controls_globals->key_demo_quit] && g_doomstat_globals->singledemo && !g_doomstat_globals->netgame)
     {
         uint8_t *actualbuffer = demobuffer;
         char *actualname   = M_StringDuplicate(defdemoname);
@@ -2548,7 +2512,7 @@ void G_RecordDemo(char *name)
         orig_demoname = name;
     }
 
-    usergame      = false;
+    g_doomstat_globals->usergame      = false;
     demoname_size = strlen(name) + 5 + 6; // [crispy] + 6 for "-00000"
     demoname      = zmalloc<decltype(demoname)>(demoname_size, PU_STATIC, nullptr);
     M_snprintf(demoname, demoname_size, "%s.lmp", name);
@@ -2576,13 +2540,13 @@ void G_RecordDemo(char *name)
     demobuffer = zmalloc<decltype(demobuffer)>(static_cast<size_t>(maxsize), PU_STATIC, nullptr);
     demoend    = demobuffer + maxsize;
 
-    demorecording = true;
+    g_doomstat_globals->demorecording = true;
 }
 
 // Get the demo version code appropriate for the version set in gameversion.
 int G_VanillaVersionCode()
 {
-    switch (gameversion)
+    switch (g_doomstat_globals->gameversion)
     {
     case exe_doom_1_666:
         return 106;
@@ -2610,31 +2574,31 @@ void G_BeginRecording()
         "Doom 1.91 demo format");
 
     // If not recording a longtics demo, record in low res
-    lowres_turn = !longtics;
+    g_doomstat_globals->lowres_turn = !longtics;
 
     if (longtics)
     {
         *demo_p++ = DOOM_191_VERSION;
     }
-    else if (gameversion > exe_doom_1_2)
+    else if (g_doomstat_globals->gameversion > exe_doom_1_2)
     {
         *demo_p++ = static_cast<uint8_t>(G_VanillaVersionCode());
     }
 
-    *demo_p++ = static_cast<uint8_t>(gameskill);
-    *demo_p++ = static_cast<uint8_t>(gameepisode);
-    *demo_p++ = static_cast<uint8_t>(gamemap);
-    if (longtics || gameversion > exe_doom_1_2)
+    *demo_p++ = static_cast<uint8_t>(g_doomstat_globals->gameskill);
+    *demo_p++ = static_cast<uint8_t>(g_doomstat_globals->gameepisode);
+    *demo_p++ = static_cast<uint8_t>(g_doomstat_globals->gamemap);
+    if (longtics || g_doomstat_globals->gameversion > exe_doom_1_2)
     {
-        *demo_p++ = static_cast<uint8_t>(deathmatch);
-        *demo_p++ = respawnparm;
-        *demo_p++ = fastparm;
-        *demo_p++ = nomonsters;
-        *demo_p++ = static_cast<uint8_t>(consoleplayer);
+        *demo_p++ = static_cast<uint8_t>(g_doomstat_globals->deathmatch);
+        *demo_p++ = g_doomstat_globals->respawnparm;
+        *demo_p++ = g_doomstat_globals->fastparm;
+        *demo_p++ = g_doomstat_globals->nomonsters;
+        *demo_p++ = static_cast<uint8_t>(g_doomstat_globals->consoleplayer);
     }
 
     for (int i = 0; i < MAXPLAYERS; i++)
-        *demo_p++ = playeringame[i];
+        *demo_p++ = g_doomstat_globals->playeringame[i];
 }
 
 
@@ -2650,9 +2614,9 @@ void G_DeferedPlayDemo(const char *name)
 
     // [crispy] fast-forward demo up to the desired map
     // in demo warp mode or to the end of the demo in continue mode
-    if (crispy->demowarp || demorecording)
+    if (crispy->demowarp || g_doomstat_globals->demorecording)
     {
-        nodrawers  = true;
+        g_doomstat_globals->nodrawers  = true;
         singletics = true;
     }
 }
@@ -2707,7 +2671,7 @@ void G_DoPlayDemo()
 
     // [crispy] in demo continue mode free the obsolete demo buffer
     // of size 'maxsize' previously allocated in G_RecordDemo()
-    if (demorecording)
+    if (g_doomstat_globals->demorecording)
     {
         Z_Free(demobuffer);
     }
@@ -2721,7 +2685,7 @@ void G_DoPlayDemo()
     size_t lumplength = W_LumpLength(lumpnum);
     if (lumplength < 0xd)
     {
-        demoplayback = true;
+        g_doomstat_globals->demoplayback = true;
         G_CheckDemoStatus();
         return;
     }
@@ -2743,7 +2707,7 @@ void G_DoPlayDemo()
     {
         longtics = true;
     }
-    else if (demoversion != G_VanillaVersionCode() && !(gameversion <= exe_doom_1_2 && olddemo))
+    else if (demoversion != G_VanillaVersionCode() && !(g_doomstat_globals->gameversion <= exe_doom_1_2 && olddemo))
     {
         const char *message = "Demo is from a different game version!\n"
                               "(read %i, should be %i)\n"
@@ -2754,7 +2718,7 @@ void G_DoPlayDemo()
                               "/info/patches.php\n"
                               "    This appears to be %s.";
 
-        if (singledemo)
+        if (g_doomstat_globals->singledemo)
             I_Error(message, demoversion, G_VanillaVersionCode(),
                 DemoVersionDescription(demoversion));
         // [crispy] make non-fatal
@@ -2763,7 +2727,7 @@ void G_DoPlayDemo()
             fprintf(stderr, message, demoversion, G_VanillaVersionCode(),
                 DemoVersionDescription(demoversion));
             fprintf(stderr, "\n");
-            demoplayback = true;
+            g_doomstat_globals->demoplayback = true;
             G_CheckDemoStatus();
             return;
         }
@@ -2774,54 +2738,54 @@ void G_DoPlayDemo()
     map     = *demo_p++;
     if (!olddemo)
     {
-        deathmatch    = *demo_p++;
-        respawnparm   = *demo_p++;
-        fastparm      = *demo_p++;
-        nomonsters    = *demo_p++;
-        consoleplayer = *demo_p++;
+        g_doomstat_globals->deathmatch    = *demo_p++;
+        g_doomstat_globals->respawnparm   = *demo_p++;
+        g_doomstat_globals->fastparm      = *demo_p++;
+        g_doomstat_globals->nomonsters    = *demo_p++;
+        g_doomstat_globals->consoleplayer = *demo_p++;
     }
     else
     {
-        deathmatch    = 0;
-        respawnparm   = 0;
-        fastparm      = 0;
-        nomonsters    = 0;
-        consoleplayer = 0;
+        g_doomstat_globals->deathmatch    = 0;
+        g_doomstat_globals->respawnparm   = 0;
+        g_doomstat_globals->fastparm      = 0;
+        g_doomstat_globals->nomonsters    = 0;
+        g_doomstat_globals->consoleplayer = 0;
     }
 
 
     for (int i = 0; i < MAXPLAYERS; i++)
-        playeringame[i] = *demo_p++;
+        g_doomstat_globals->playeringame[i] = *demo_p++;
 
-    if (playeringame[1] || M_CheckParm("-solo-net") > 0
+    if (g_doomstat_globals->playeringame[1] || M_CheckParm("-solo-net") > 0
         || M_CheckParm("-netdemo") > 0)
     {
-        netgame = true;
+        g_doomstat_globals->netgame = true;
         netdemo = true;
         // [crispy] impossible to continue a multiplayer demo
-        demorecording = false;
+        g_doomstat_globals->demorecording = false;
     }
 
     // don't spend a lot of time in loadlevel
-    precache = false;
+    g_doomstat_globals->precache = false;
     // [crispy] support playing demos from savegames
-    if (startloadgame >= 0)
+    if (g_doomstat_globals->startloadgame >= 0)
     {
-        M_StringCopy(savename, P_SaveGameFile(startloadgame), sizeof(savename));
+        M_StringCopy(savename, P_SaveGameFile(g_doomstat_globals->startloadgame), sizeof(savename));
         G_DoLoadGame();
     }
     else
     {
         G_InitNew(skill, episode, map);
     }
-    precache     = true;
+    g_doomstat_globals->precache     = true;
     starttime    = I_GetTime();
     demostarttic = gametic; // [crispy] fix revenant internal demo bug
 
-    usergame     = false;
-    demoplayback = true;
+    g_doomstat_globals->usergame     = false;
+    g_doomstat_globals->demoplayback = true;
     // [crispy] update the "singleplayer" variable
-    CheckCrispySingleplayer(!demorecording && !demoplayback && !netgame);
+    CheckCrispySingleplayer(!g_doomstat_globals->demorecording && !g_doomstat_globals->demoplayback && !g_doomstat_globals->netgame);
 
     // [crispy] demo progress bar
     {
@@ -2830,7 +2794,7 @@ void G_DoPlayDemo()
 
         for (int i = 0; i < MAXPLAYERS; i++)
         {
-            if (playeringame[i])
+            if (g_doomstat_globals->playeringame[i])
             {
                 numplayersingame++;
             }
@@ -2858,7 +2822,7 @@ void G_TimeDemo(char *name)
     // Disable rendering the screen entirely.
     //
 
-    nodrawers = M_CheckParm("-nodraw");
+    g_doomstat_globals->nodrawers = M_CheckParm("-nodraw");
 
     timingdemo = true;
     singletics = true;
@@ -2893,41 +2857,41 @@ bool G_CheckDemoStatus()
 
         // Prevent recursive calls
         timingdemo   = false;
-        demoplayback = false;
+        g_doomstat_globals->demoplayback = false;
 
         I_Error("timed %i gametics in %i realtics (%f fps)",
             gametic, realtics, fps);
     }
 
-    if (demoplayback)
+    if (g_doomstat_globals->demoplayback)
     {
         W_ReleaseLumpName(defdemoname);
-        demoplayback    = false;
+        g_doomstat_globals->demoplayback    = false;
         netdemo         = false;
-        netgame         = false;
-        deathmatch      = false;
-        playeringame[1] = playeringame[2] = playeringame[3] = 0;
+        g_doomstat_globals->netgame         = false;
+        g_doomstat_globals->deathmatch      = false;
+        g_doomstat_globals->playeringame[1] = g_doomstat_globals->playeringame[2] = g_doomstat_globals->playeringame[3] = 0;
         // [crispy] leave game parameters intact when continuing a demo
-        if (!demorecording)
+        if (!g_doomstat_globals->demorecording)
         {
-            respawnparm = false;
-            fastparm    = false;
-            nomonsters  = false;
+            g_doomstat_globals->respawnparm = false;
+            g_doomstat_globals->fastparm    = false;
+            g_doomstat_globals->nomonsters  = false;
         }
-        consoleplayer = 0;
+        g_doomstat_globals->consoleplayer = 0;
 
         // [crispy] in demo continue mode increase the demo buffer and
         // continue recording once we are done with playback
-        if (demorecording)
+        if (g_doomstat_globals->demorecording)
         {
             demoend = demo_p;
             IncreaseDemoBuffer();
 
-            nodrawers  = false;
+            g_doomstat_globals->nodrawers  = false;
             singletics = false;
 
             // [crispy] start music for the current level
-            if (gamestate == GS_LEVEL)
+            if (g_doomstat_globals->gamestate == GS_LEVEL)
             {
                 S_Start();
             }
@@ -2935,7 +2899,7 @@ bool G_CheckDemoStatus()
             return true;
         }
 
-        if (singledemo)
+        if (g_doomstat_globals->singledemo)
             I_Quit();
         else
             D_AdvanceDemo();
@@ -2943,12 +2907,12 @@ bool G_CheckDemoStatus()
         return true;
     }
 
-    if (demorecording)
+    if (g_doomstat_globals->demorecording)
     {
         *demo_p++ = DEMOMARKER;
         M_WriteFile(demoname, demobuffer, static_cast<int>(demo_p - demobuffer));
         Z_Free(demobuffer);
-        demorecording = false;
+        g_doomstat_globals->demorecording = false;
         // [crispy] if a new game is started during demo recording, start a new demo
         if (gameaction != ga_newgame)
         {

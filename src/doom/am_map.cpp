@@ -222,10 +222,6 @@ static int grid     = 0;
 
 [[maybe_unused]] static int leveljuststarted = 1; // kluge until AM_LevelInit() is called
 
-bool automapactive = false;
-//static int 	finit_width = SCREENWIDTH;
-//static int 	finit_height = SCREENHEIGHT - (ST_HEIGHT << crispy->hires);
-
 // location of window on screen
 static int f_x;
 static int f_y;
@@ -236,7 +232,6 @@ static int f_h;
 
 static int lightlev;     // used for funky strobing effect
 #define fb g_i_video_globals->I_VideoBuffer // [crispy] simplify
-//static pixel_t*	fb; 			// pseudo-frame buffer
 static int amclock;
 
 static mpoint_t m_paninc;     // how far the window pans each tic (map coords)
@@ -477,7 +472,7 @@ void AM_initVariables()
 {
     static event_t st_notify = { ev_keyup, AM_MSGENTERED, 0, 0 };
 
-    automapactive = true;
+    g_doomstat_globals->automapactive = true;
     //  fb = I_VideoBuffer; // [crispy] simplify
 
     f_oldloc.x = INT_MAX;
@@ -492,19 +487,19 @@ void AM_initVariables()
     m_h = FTOM(f_h);
 
     // find player to center on initially
-    if (playeringame[consoleplayer])
+    if (g_doomstat_globals->playeringame[g_doomstat_globals->consoleplayer])
     {
-        plr = &players[consoleplayer];
+        plr = &g_doomstat_globals->players[g_doomstat_globals->consoleplayer];
     }
     else
     {
-        plr = &players[0];
+        plr = &g_doomstat_globals->players[0];
 
         for (int pnum = 0; pnum < MAXPLAYERS; pnum++)
         {
-            if (playeringame[pnum])
+            if (g_doomstat_globals->playeringame[pnum])
             {
-                plr = &players[pnum];
+                plr = &g_doomstat_globals->players[pnum];
                 break;
             }
         }
@@ -613,7 +608,7 @@ void AM_Stop()
     static event_t st_notify = { {}, ev_keyup, AM_MSGEXITED, 0 };
 
     AM_unloadPics();
-    automapactive = false;
+    g_doomstat_globals->automapactive = false;
     ST_Responder(&st_notify);
     stopped = true;
 }
@@ -627,14 +622,14 @@ void       AM_Start()
 {
     if (!stopped) AM_Stop();
     stopped = false;
-    if (lastlevel != gamemap || lastepisode != gameepisode)
+    if (lastlevel != g_doomstat_globals->gamemap || lastepisode != g_doomstat_globals->gameepisode)
     {
         AM_LevelInit();
-        lastlevel   = gamemap;
-        lastepisode = gameepisode;
+        lastlevel   = g_doomstat_globals->gamemap;
+        lastepisode = g_doomstat_globals->gameepisode;
     }
     // [crispy] reset IDDT cheat when re-starting map during demo recording
-    else if (demorecording)
+    else if (g_doomstat_globals->demorecording)
     {
         cheating = 0;
     }
@@ -680,32 +675,32 @@ bool
     {
         g_i_video_globals->joywait = static_cast<unsigned int>(I_GetTime() + 5);
 
-        if (!automapactive)
+        if (!g_doomstat_globals->automapactive)
         {
             AM_Start();
-            viewactive = false;
+            g_doomstat_globals->viewactive = false;
         }
         else
         {
             bigstate   = 0;
-            viewactive = true;
+            g_doomstat_globals->viewactive = true;
             AM_Stop();
         }
 
         return true;
     }
 
-    if (!automapactive)
+    if (!g_doomstat_globals->automapactive)
     {
         if (ev->type == ev_keydown && ev->data1 == g_m_controls_globals->key_map_toggle)
         {
             AM_Start();
-            viewactive = false;
+            g_doomstat_globals->viewactive = false;
             rc         = true;
         }
     }
     // [crispy] zoom and move Automap with the mouse (wheel)
-    else if (ev->type == ev_mouse && !crispy->automapoverlay && !menuactive && !inhelpscreens)
+    else if (ev->type == ev_mouse && !crispy->automapoverlay && !g_doomstat_globals->menuactive && !inhelpscreens)
     {
         if (g_m_controls_globals->mousebprevweapon >= 0 && ev->data1 & (1 << g_m_controls_globals->mousebprevweapon))
         {
@@ -722,8 +717,8 @@ bool
         else if (!followplayer && (ev->data2 || ev->data3))
         {
             // [crispy] mouse sensitivity for strafe
-            m_paninc.x = FTOM(ev->data2 * (mouseSensitivity_x2 + 5) / 80);
-            m_paninc.y = FTOM(ev->data3 * (mouseSensitivity_x2 + 5) / 80);
+            m_paninc.x = FTOM(ev->data2 * (g_doomstat_globals->mouseSensitivity_x2 + 5) / 80);
+            m_paninc.y = FTOM(ev->data3 * (g_doomstat_globals->mouseSensitivity_x2 + 5) / 80);
             f_oldloc.y = INT_MAX;
             rc         = true;
         }
@@ -776,7 +771,7 @@ bool
         else if (key == g_m_controls_globals->key_map_toggle)
         {
             bigstate   = 0;
-            viewactive = true;
+            g_doomstat_globals->viewactive = true;
             AM_Stop();
         }
         else if (key == g_m_controls_globals->key_map_maxzoom)
@@ -843,7 +838,7 @@ bool
             rc = false;
         }
 
-        if ((!deathmatch || gameversion <= exe_doom_1_8)
+        if ((!g_doomstat_globals->deathmatch || g_doomstat_globals->gameversion <= exe_doom_1_8)
             && cht_CheckCheat(&cheat_amap, static_cast<char>(ev->data2)))
         {
             rc       = false;
@@ -956,7 +951,7 @@ void AM_doFollowPlayer()
 void AM_Ticker()
 {
 
-    if (!automapactive)
+    if (!g_doomstat_globals->automapactive)
         return;
 
     amclock++;
@@ -1546,7 +1541,7 @@ void AM_drawPlayers()
     int        their_color    = -1;
     mpoint_t   pt;
 
-    if (!netgame)
+    if (!g_doomstat_globals->netgame)
     {
         pt.x = plr->mo->x;
         pt.y = plr->mo->y;
@@ -1567,12 +1562,12 @@ void AM_drawPlayers()
     for (int i = 0; i < MAXPLAYERS; i++)
     {
         their_color++;
-        player_t *p = &players[i];
+        player_t *p = &g_doomstat_globals->players[i];
 
-        if ((deathmatch && !singledemo) && p != plr)
+        if ((g_doomstat_globals->deathmatch && !g_doomstat_globals->singledemo) && p != plr)
             continue;
 
-        if (!playeringame[i])
+        if (!g_doomstat_globals->playeringame[i])
             continue;
 
         int color = 0;
@@ -1746,7 +1741,7 @@ void AM_drawCrosshair(int color)
 
 void AM_Drawer()
 {
-    if (!automapactive) return;
+    if (!g_doomstat_globals->automapactive) return;
 
     if (!crispy->automapoverlay)
         AM_clearFB(BACKGROUND);
@@ -1770,7 +1765,7 @@ void AM_GetMarkPoints(int *n, long *p)
     *p = -1L;
 
     // [crispy] prevent saving markpoints from previous map
-    if (lastlevel == gamemap && lastepisode == gameepisode)
+    if (lastlevel == g_doomstat_globals->gamemap && lastepisode == g_doomstat_globals->gameepisode)
     {
         for (auto & markpoint : markpoints)
         {
@@ -1783,8 +1778,8 @@ void AM_GetMarkPoints(int *n, long *p)
 void AM_SetMarkPoints(int n, long *p)
 {
     AM_LevelInit();
-    lastlevel   = gamemap;
-    lastepisode = gameepisode;
+    lastlevel   = g_doomstat_globals->gamemap;
+    lastepisode = g_doomstat_globals->gameepisode;
 
     markpointnum = n;
 

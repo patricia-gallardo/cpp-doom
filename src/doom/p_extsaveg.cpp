@@ -60,7 +60,7 @@ static void P_ReadWadFileName(const char *key)
     if (!savewadfilename &&
         // [crispy] only check if loaded from the menu,
         // we have no chance to show a dialog otherwise
-        startloadgame == -1)
+        g_doomstat_globals->startloadgame == -1)
     {
         if (sscanf(line, "%s", string) == 1 && !strncmp(string, key, MAX_STRING_LEN))
         {
@@ -76,9 +76,9 @@ static void P_ReadWadFileName(const char *key)
 
 static void P_WriteExtraKills(const char *key)
 {
-    if (extrakills)
+    if (g_doomstat_globals->extrakills)
     {
-        M_snprintf(line, MAX_LINE_LEN, "%s %d\n", key, extrakills);
+        M_snprintf(line, MAX_LINE_LEN, "%s %d\n", key, g_doomstat_globals->extrakills);
         fputs(line, save_stream);
     }
 }
@@ -89,7 +89,7 @@ static void P_ReadExtraKills(const char *key)
 
     if (sscanf(line, "%s %d", string, &value) == 2 && !strncmp(string, key, MAX_STRING_LEN))
     {
-        extrakills = value;
+        g_doomstat_globals->extrakills = value;
     }
 }
 
@@ -97,9 +97,9 @@ static void P_ReadExtraKills(const char *key)
 
 static void P_WriteTotalLevelTimes(const char *key)
 {
-    if (totalleveltimes)
+    if (g_doomstat_globals->totalleveltimes)
     {
-        M_snprintf(line, MAX_LINE_LEN, "%s %d\n", key, totalleveltimes);
+        M_snprintf(line, MAX_LINE_LEN, "%s %d\n", key, g_doomstat_globals->totalleveltimes);
         fputs(line, save_stream);
     }
 }
@@ -110,7 +110,7 @@ static void P_ReadTotalLevelTimes(const char *key)
 
     if (sscanf(line, "%s %d", string, &value) == 2 && !strncmp(string, key, MAX_STRING_LEN))
     {
-        totalleveltimes = value;
+        g_doomstat_globals->totalleveltimes = value;
     }
 }
 
@@ -372,9 +372,9 @@ static void P_WritePlayersLookdir(const char *key)
 
     for (i = 0; i < MAXPLAYERS; i++)
     {
-        if (playeringame[i] && players[i].lookdir)
+        if (g_doomstat_globals->playeringame[i] && g_doomstat_globals->players[i].lookdir)
         {
-            M_snprintf(line, MAX_LINE_LEN, "%s %d %d\n", key, i, players[i].lookdir);
+            M_snprintf(line, MAX_LINE_LEN, "%s %d %d\n", key, i, g_doomstat_globals->players[i].lookdir);
             fputs(line, save_stream);
         }
     }
@@ -386,7 +386,7 @@ static void P_ReadPlayersLookdir(const char *key)
 
     if (sscanf(line, "%s %d %d", string, &i, &value) == 3 && !strncmp(string, key, MAX_STRING_LEN) && i < MAXPLAYERS && (crispy->freelook || crispy->mouselook))
     {
-        players[i].lookdir = value;
+        g_doomstat_globals->players[i].lookdir = value;
     }
 }
 

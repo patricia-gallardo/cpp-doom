@@ -3877,7 +3877,7 @@ static uint8_t *R_BrightmapForTexName_Doom(const char *texname)
     {
         const fullbright_t *fullbright = &i;
 
-        if ((gamemission == doom && fullbright->game == DOOM2ONLY) || (gamemission != doom && fullbright->game == DOOM1ONLY))
+        if ((g_doomstat_globals->gamemission == doom && fullbright->game == DOOM2ONLY) || (g_doomstat_globals->gamemission != doom && fullbright->game == DOOM1ONLY))
         {
             continue;
         }
@@ -4144,7 +4144,7 @@ uint8_t *(*R_BrightmapForState)(const int state);
 
 void R_InitBrightmaps()
 {
-    if (gameversion == exe_hacx)
+    if (g_doomstat_globals->gameversion == exe_hacx)
     {
         bmapflatnum[0]  = R_FlatNumForName("FLOOR1_1");
         bmapflatnum[1]  = R_FlatNumForName("FLOOR1_7");
@@ -4164,7 +4164,7 @@ void R_InitBrightmaps()
         R_BrightmapForFlatNum = R_BrightmapForFlatNum_Hacx;
         R_BrightmapForState   = R_BrightmapForState_Hacx;
     }
-    else if (gameversion == exe_chex)
+    else if (g_doomstat_globals->gameversion == exe_chex)
     {
         // [crispy] detect Chex Quest 2
         int lump = W_CheckNumForName("INTERPIC");

@@ -161,7 +161,7 @@ void M_CrispyToggleColoredblood(int)
 {
     thinker_t *th = nullptr;
 
-    if (gameversion == exe_chex)
+    if (g_doomstat_globals->gameversion == exe_chex)
     {
         return;
     }
@@ -258,7 +258,7 @@ void M_CrispyToggleExtAutomap(int)
 
 void M_CrispyToggleFlipcorpses(int)
 {
-    if (gameversion == exe_chex)
+    if (g_doomstat_globals->gameversion == exe_chex)
     {
         return;
     }
@@ -276,12 +276,12 @@ void M_CrispyToggleFreeaim(int)
     crispy->freeaim = (crispy->freeaim + 1) % NUM_FREEAIMS;
 
     // [crispy] update the "critical" struct
-    CheckCrispySingleplayer(!demorecording && !demoplayback && !netgame);
+    CheckCrispySingleplayer(!g_doomstat_globals->demorecording && !g_doomstat_globals->demoplayback && !g_doomstat_globals->netgame);
 }
 
 static void M_CrispyToggleSkyHook()
 {
-    players[consoleplayer].lookdir = 0;
+    g_doomstat_globals->players[g_doomstat_globals->consoleplayer].lookdir = 0;
     R_InitSkyMap();
 }
 
@@ -299,9 +299,9 @@ void M_CrispyToggleFullsounds(int)
     // [crispy] weapon sound sources
     for (int i = 0; i < MAXPLAYERS; i++)
     {
-        if (playeringame[i])
+        if (g_doomstat_globals->playeringame[i])
         {
-            players[i].so = Crispy_PlayerSO(i);
+            g_doomstat_globals->players[i].so = Crispy_PlayerSO(i);
         }
     }
 }
@@ -337,7 +337,7 @@ void M_CrispyToggleJumping(int)
     crispy->jump = (crispy->jump + 1) % NUM_JUMPS;
 
     // [crispy] update the "critical" struct
-    CheckCrispySingleplayer(!demorecording && !demoplayback && !netgame);
+    CheckCrispySingleplayer(!g_doomstat_globals->demorecording && !g_doomstat_globals->demoplayback && !g_doomstat_globals->netgame);
 }
 
 void M_CrispyToggleLeveltime(int)
@@ -367,7 +367,7 @@ void M_CrispyToggleOverunder(int)
     crispy->overunder = !crispy->overunder;
 
     // [crispy] update the "critical" struct
-    CheckCrispySingleplayer(!demorecording && !demoplayback && !netgame);
+    CheckCrispySingleplayer(!g_doomstat_globals->demorecording && !g_doomstat_globals->demoplayback && !g_doomstat_globals->netgame);
 }
 
 void M_CrispyTogglePitch(int)
@@ -392,7 +392,7 @@ void M_CrispyToggleRecoil(int)
     crispy->recoil = !crispy->recoil;
 
     // [crispy] update the "critical" struct
-    CheckCrispySingleplayer(!demorecording && !demoplayback && !netgame);
+    CheckCrispySingleplayer(!g_doomstat_globals->demorecording && !g_doomstat_globals->demoplayback && !g_doomstat_globals->netgame);
 }
 
 void M_CrispyToggleSecretmessage(int)
@@ -473,7 +473,7 @@ void M_CrispyToggleWeaponSquat(int)
 
 void M_CrispyReinitHUDWidgets()
 {
-    if (gamestate == GS_LEVEL && gamemap > 0)
+    if (g_doomstat_globals->gamestate == GS_LEVEL && g_doomstat_globals->gamemap > 0)
     {
         // [crispy] re-arrange status bar widgets
         ST_createWidgets();

@@ -35,14 +35,10 @@
 
 
 // Fineangles in the SCREENWIDTH wide window.
-#define FIELDOFVIEW 2048
-
-
-int viewangleoffset;
+constexpr auto FIELDOFVIEW = 2048;
 
 // increment every time a check is made
 int validcount = 1;
-
 
 lighttable_t *        fixedcolormap;
 extern lighttable_t **walllights;
@@ -994,7 +990,7 @@ void R_SetupFrame(player_t *player)
         g_r_state_globals->viewx     = player->mo->oldx + FixedMul(player->mo->x - player->mo->oldx, fractionaltic);
         g_r_state_globals->viewy     = player->mo->oldy + FixedMul(player->mo->y - player->mo->oldy, fractionaltic);
         g_r_state_globals->viewz     = static_cast<fixed_t>(player->oldviewz + static_cast<unsigned int>(FixedMul(static_cast<fixed_t>(static_cast<unsigned int>(player->viewz) - player->oldviewz), fractionaltic)));
-        g_r_state_globals->viewangle = R_InterpolateAngle(player->mo->oldangle, player->mo->angle, fractionaltic) + static_cast<unsigned int>(viewangleoffset);
+        g_r_state_globals->viewangle = R_InterpolateAngle(player->mo->oldangle, player->mo->angle, fractionaltic) + static_cast<unsigned int>(g_doomstat_globals->viewangleoffset);
 
         double  oldlookdir = player->oldlookdir + (player->lookdir - player->oldlookdir) * FIXED2DOUBLE(fractionaltic);
         fixed_t recoil     = player->oldrecoilpitch + FixedMul(player->recoilpitch - player->oldrecoilpitch, fractionaltic);
@@ -1005,7 +1001,7 @@ void R_SetupFrame(player_t *player)
         g_r_state_globals->viewx     = player->mo->x;
         g_r_state_globals->viewy     = player->mo->y;
         g_r_state_globals->viewz     = player->viewz;
-        g_r_state_globals->viewangle = player->mo->angle + static_cast<unsigned int>(viewangleoffset);
+        g_r_state_globals->viewangle = player->mo->angle + static_cast<unsigned int>(g_doomstat_globals->viewangleoffset);
 
         // [crispy] pitch is actual lookdir and weapon pitch
         pitch = player->lookdir / MLOOKUNIT + player->recoilpitch;
@@ -1066,7 +1062,7 @@ void R_RenderPlayerView(player_t *player)
     R_ClearDrawSegs();
     R_ClearPlanes();
     R_ClearSprites();
-    if (automapactive && !crispy->automapoverlay)
+    if (g_doomstat_globals->automapactive && !crispy->automapoverlay)
     {
         R_RenderBSPNode(g_r_state_globals->numnodes - 1);
         return;

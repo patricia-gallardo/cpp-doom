@@ -361,7 +361,7 @@ bool
     topslope    = (t2->z + t2->height) - sightzstart;
     bottomslope = (t2->z) - sightzstart;
 
-    if (gameversion <= exe_doom_1_2)
+    if (g_doomstat_globals->gameversion <= exe_doom_1_2)
     {
         return P_PathTraverse(t1->x, t1->y, t2->x, t2->y,
             PT_EARLYOUT | PT_ADDLINES, PTR_SightTraverse);

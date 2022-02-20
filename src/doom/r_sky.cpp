@@ -27,16 +27,13 @@
 // Needed for Flat retrieval.
 #include "r_data.hpp"
 
-
 #include "r_sky.hpp"
 
 //
 // sky mapping
 //
-int skyflatnum;
 int skytexture = -1; // [crispy] initialize
 int skytexturemid;
-
 
 //
 // R_InitSkyMap

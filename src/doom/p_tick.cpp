@@ -118,22 +118,22 @@ void P_Ticker()
     int i;
 
     // run the tic
-    if (paused)
+    if (g_doomstat_globals->paused)
         return;
 
     // pause if in menu and at least one tic has been run
-    if (!netgame
-        && menuactive
-        && !demoplayback
-        && players[consoleplayer].viewz != 1)
+    if (!g_doomstat_globals->netgame
+        && g_doomstat_globals->menuactive
+        && !g_doomstat_globals->demoplayback
+        && g_doomstat_globals->players[g_doomstat_globals->consoleplayer].viewz != 1)
     {
         return;
     }
 
 
     for (i = 0; i < MAXPLAYERS; i++)
-        if (playeringame[i])
-            P_PlayerThink(&players[i]);
+        if (g_doomstat_globals->playeringame[i])
+            P_PlayerThink(&g_doomstat_globals->players[i]);
 
     P_RunThinkers();
     P_UpdateSpecials();

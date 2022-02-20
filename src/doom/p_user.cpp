@@ -191,7 +191,7 @@ void P_MovePlayer(player_t *player)
             cmd->lookdir = MLOOKUNIT * 5 * look;
         }
     }
-    if (!menuactive && !demoplayback)
+    if (!g_doomstat_globals->menuactive && !g_doomstat_globals->demoplayback)
     {
         player->lookdir = BETWEEN(-LOOKDIRMIN * MLOOKUNIT,
             LOOKDIRMAX * MLOOKUNIT,
@@ -417,7 +417,7 @@ void P_PlayerThink(player_t *player)
             //  even if cheated.
             if ((newweapon != wp_plasma
                     && newweapon != wp_bfg)
-                || (gamemode != shareware))
+                || (g_doomstat_globals->gamemode != shareware))
             {
                 player->pendingweapon = newweapon;
             }

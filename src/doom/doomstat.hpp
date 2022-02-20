@@ -40,38 +40,45 @@
 
 #include "crispy.hpp"
 
+#define logical_gamemission            \
+    (g_doomstat_globals->gamemission == pack_chex ? doom : \
+                                g_doomstat_globals->gamemission == pack_hacx ? doom2 : g_doomstat_globals->gamemission)
+
+// Maintain single and multi player starting spots.
+constexpr auto MAX_DEATHMATCH_STARTS =10;
+
+// TODO
+extern int leveltime; // tics in game play for par
+
+struct doomstat_t {
 
 // ------------------------
 // Command line parameters.
 //
-extern bool nomonsters;  // checkparm of -nomonsters
-extern bool respawnparm; // checkparm of -respawn
-extern bool fastparm;    // checkparm of -fast
+bool nomonsters;  // checkparm of -nomonsters
+bool respawnparm; // checkparm of -respawn
+bool fastparm;    // checkparm of -fast
 
-extern bool devparm; // DEBUG: launched with -devparm
+bool devparm; // DEBUG: launched with -devparm
 
 
 // -----------------------------------------------------
 // Game Mode - identify IWAD as shareware, retail etc.
 //
-extern GameMode_t    gamemode;
-extern GameMission_t gamemission;
-extern GameVersion_t gameversion;
-extern GameVariant_t gamevariant;
-extern const char *  gamedescription;
-extern char *        nervewadfile;
+GameMode_t    gamemode;
+GameMission_t gamemission;
+GameVersion_t gameversion;
+GameVariant_t gamevariant;
+const char *  gamedescription;
+char *        nervewadfile;
 
 // Convenience macro.
 // 'gamemission' can be equal to pack_chex or pack_hacx, but these are
 // just modified versions of doom and doom2, and should be interpreted
 // as the same most of the time.
 
-#define logical_gamemission            \
-    (gamemission == pack_chex ? doom : \
-                                gamemission == pack_hacx ? doom2 : gamemission)
-
 // Set if homebrew PWAD stuff has been added.
-extern bool modifiedgame;
+bool modifiedgame;
 
 
 // -------------------------------------------
@@ -79,33 +86,33 @@ extern bool modifiedgame;
 //
 
 // Defaults for menu, methinks.
-extern skill_t startskill;
-extern int     startepisode;
-extern int     startmap;
+skill_t startskill;
+int     startepisode;
+int     startmap;
 
 // Savegame slot to load on startup.  This is the value provided to
 // the -loadgame option.  If this has not been provided, this is -1.
 
-extern int startloadgame;
+int startloadgame;
 
-extern bool autostart;
+bool autostart;
 
 // Selected by user.
-extern skill_t gameskill;
-extern int     gameepisode;
-extern int     gamemap;
+skill_t gameskill;
+int     gameepisode;
+int     gamemap;
 
 // If non-zero, exit the level after this number of minutes
-extern int timelimit;
+int timelimit;
 
 // Nightmare mode flag, single player.
-extern bool respawnmonsters;
+bool respawnmonsters;
 
 // Netgame? Only true if >1 player.
-extern bool netgame;
+bool netgame; // only true if packets are broadcast
 
 // 0=Cooperative; 1=Deathmatch; 2=Altdeath
-extern int deathmatch;
+int deathmatch; // only if started as net death
 
 // -------------------------
 // Internal parameters for sound rendering.
@@ -117,18 +124,23 @@ extern int deathmatch;
 //  Sound FX volume has default, 0 - 15
 //  Music volume has default, 0 - 15
 // These are multiplied by 8.
-extern int sfxVolume;
-extern int musicVolume;
+
+// Maximum volume of a sound effect.
+// Internal default is max out of 0-15.
+int sfxVolume;
+
+// Maximum volume of music.
+int musicVolume;
 
 // Current music/sfx card - index useless
 //  w/o a reference LUT in a sound module.
 // Ideally, this would use indices found
 //  in: /usr/include/linux/soundcard.h
-[[maybe_unused]] extern int snd_MusicDevice;
-[[maybe_unused]] extern int snd_SfxDevice;
+int snd_MusicDevice;
+int snd_SfxDevice;
 // Config file? Same disclaimer as above.
-[[maybe_unused]] extern int snd_DesiredMusicDevice;
-[[maybe_unused]] extern int snd_DesiredSfxDevice;
+int snd_DesiredMusicDevice;
+int snd_DesiredSfxDevice;
 
 
 // -------------------------
@@ -138,67 +150,67 @@ extern int musicVolume;
 // Depending on view size - no status bar?
 // Note that there is no way to disable the
 //  status bar explicitely.
-[[maybe_unused]] extern bool statusbaractive;
+bool statusbaractive;
 
-extern bool automapactive; // In AutoMap mode?
-extern bool menuactive;    // Menu overlayed?
-extern bool paused;        // Game Pause?
-
-
-extern bool viewactive;
-
-extern bool nodrawers;
+// in AM_map.c
+bool automapactive; // In AutoMap mode?
+bool menuactive;    // Menu overlayed?
+bool paused;        // Game Pause?
 
 
-extern bool testcontrols;
-extern int     testcontrols_mousespeed;
+bool viewactive;
+
+bool nodrawers; // for comparative timing purposes
+
+
+bool testcontrols; // Invoked by setup to test controls
+int     testcontrols_mousespeed;
 
 
 // This one is related to the 3-screen display mode.
 // ANG90 = left side, ANG270 = right
-extern int viewangleoffset;
+int viewangleoffset;
 
 // Player taking events, and displaying.
-extern int consoleplayer;
-extern int displayplayer;
+int consoleplayer; // player taking events and displaying
+int displayplayer; // view being displayed
 
 
 // -------------------------------------
 // Scores, rating.
 // Statistics on a given map, for intermission.
-//
-extern int totalkills;
-extern int totalitems;
-extern int totalsecret;
-extern int extrakills; // [crispy] count spawned monsters
+// for intermission
+int totalkills;
+int totalitems;
+int totalsecret;
+int extrakills; // [crispy] count spawned monsters
 
 // Timer, for scores.
-[[maybe_unused]] extern int levelstarttic;   // gametic at level start
-extern int leveltime;       // tics in game play for par
-extern int totalleveltimes; // [crispy] CPhipps - total time for all completed levels
+[[maybe_unused]] int levelstarttic;   // gametic at level start
+int totalleveltimes; // [crispy] CPhipps - total time for all completed levels
 
 
 // --------------------------------------
 // DEMO playback/recording related stuff.
 // No demo, there is a human player in charge?
 // Disable save/end game?
-extern bool usergame;
+bool usergame; // ok to save / end game
 
 //?
-extern bool demoplayback;
-extern bool demorecording;
+bool demoplayback;
+bool demorecording;
 
 // Round angleturn in ticcmds to the nearest 256.  This is used when
 // recording Vanilla demos in netgames.
 
-extern bool lowres_turn;
+bool lowres_turn; // low resolution turning for longtics
 
 // Quit after playing a demo from cmdline.
-extern bool singledemo;
+bool singledemo;
 
 
 //?
-extern gamestate_t gamestate;
+gamestate_t gamestate;
 
 
 //-----------------------------
@@ -209,23 +221,22 @@ extern gamestate_t gamestate;
 
 
 // Bookkeeping on players - state.
-extern player_t players[MAXPLAYERS];
+player_t players[MAXPLAYERS];
 
 // Alive? Disconnected?
-extern bool playeringame[MAXPLAYERS];
+bool playeringame[MAXPLAYERS];
 
 
 // Player spawn spots for deathmatch.
-constexpr auto MAX_DM_STARTS =10;
-extern mapthing_t  deathmatchstarts[MAX_DM_STARTS];
-extern mapthing_t *deathmatch_p;
+mapthing_t  deathmatchstarts[MAX_DEATHMATCH_STARTS];
+mapthing_t *deathmatch_p;
 
 // Player spawn spots.
-extern mapthing_t playerstarts[MAXPLAYERS];
-extern bool    playerstartsingame[MAXPLAYERS];
+mapthing_t playerstarts[MAXPLAYERS];
+bool    playerstartsingame[MAXPLAYERS];
 // Intermission stats.
 // Parameters for world map / intermission.
-extern wbstartstruct_t wminfo;
+wbstartstruct_t wminfo;
 
 
 //-----------------------------------------
@@ -233,35 +244,37 @@ extern wbstartstruct_t wminfo;
 //
 
 // File handling stuff.
-extern char *savegamedir;
+// Location where savegames are stored
+char *savegamedir;
 
 // if true, load all graphics at level load
-extern bool precache;
+bool precache; // if true, load all graphics at start
 
 
-// wipegamestate can be set to -1
-//  to force a wipe on the next draw
-extern gamestate_t wipegamestate;
+// wipegamestate can be set to -1 to force a wipe on the next draw
+gamestate_t wipegamestate;
 
-extern int mouseSensitivity;
-extern int mouseSensitivity_x2;
-extern int mouseSensitivity_y;
+int mouseSensitivity;
+int mouseSensitivity_x2; // [crispy] mouse sensitivity menu
+int mouseSensitivity_y; // [crispy] mouse sensitivity menu
 
-extern int bodyqueslot;
+int bodyqueslot;
 
 
 // Needed to store the number of the dummy sky flat.
 // Used for rendering,
 //  as well as tracking projectiles etc.
-extern int skyflatnum;
+int skyflatnum; // sky mapping
 
 
 // Netgame stuff (buffers and pointers, i.e. indices).
 
 
-extern int rndindex;
+int rndindex;
 
-extern ticcmd_t *netcmds;
+ticcmd_t *netcmds;
+};
 
+extern doomstat_t *const g_doomstat_globals;
 
 #endif

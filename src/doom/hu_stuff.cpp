@@ -46,13 +46,13 @@
 //
 // Locally used constants, shortcuts.
 //
-#define HU_TITLE       (mapnames[(gameepisode - 1) * 9 + gamemap - 1])
-#define HU_TITLE2      (mapnames_commercial[gamemap - 1])
-#define HU_TITLEP      (mapnames_commercial[gamemap - 1 + 32])
-#define HU_TITLET      (mapnames_commercial[gamemap - 1 + 64])
-#define HU_TITLEN      (mapnames_commercial[gamemap - 1 + 96 + 3])
-#define HU_TITLEM      (mapnames_commercial[gamemap - 1 + 105 + 3])
-#define HU_TITLE_CHEX  (mapnames_chex[(gameepisode - 1) * 9 + gamemap - 1])
+#define HU_TITLE       (mapnames[(g_doomstat_globals->gameepisode - 1) * 9 + g_doomstat_globals->gamemap - 1])
+#define HU_TITLE2      (mapnames_commercial[g_doomstat_globals->gamemap - 1])
+#define HU_TITLEP      (mapnames_commercial[g_doomstat_globals->gamemap - 1 + 32])
+#define HU_TITLET      (mapnames_commercial[g_doomstat_globals->gamemap - 1 + 64])
+#define HU_TITLEN      (mapnames_commercial[g_doomstat_globals->gamemap - 1 + 96 + 3])
+#define HU_TITLEM      (mapnames_commercial[g_doomstat_globals->gamemap - 1 + 105 + 3])
+#define HU_TITLE_CHEX  (mapnames_chex[(g_doomstat_globals->gameepisode - 1) * 9 + g_doomstat_globals->gamemap - 1])
 #define HU_TITLEHEIGHT 1
 #define HU_TITLEX      (0 - DELTAWIDTH)
 #define HU_TITLEY      (167 - SHORT(hu_font[0]->height))
@@ -433,7 +433,7 @@ void HU_Init()
         hu_font[i] = cache_lump_name<patch_t *>(buffer, PU_STATIC);
     }
 
-    if (gameversion == exe_chex)
+    if (g_doomstat_globals->gameversion == exe_chex)
     {
         cr_stat  = crstr[static_cast<int>(cr_t::CR_GREEN)];
         cr_stat2 = crstr[static_cast<int>(cr_t::CR_GOLD)];
@@ -441,7 +441,7 @@ void HU_Init()
     }
     else
     {
-        if (gameversion == exe_hacx)
+        if (g_doomstat_globals->gameversion == exe_hacx)
         {
             cr_stat = crstr[static_cast<int>(cr_t::CR_BLUE)];
         }
@@ -566,7 +566,7 @@ static void HU_SetSpecialLevelName(const char *wad, const char **name)
 {
     for (auto speciallevel : speciallevels)
     {
-        if (logical_gamemission == speciallevel.mission && (!speciallevel.episode || gameepisode == speciallevel.episode) && gamemap == speciallevel.map && (!speciallevel.wad || !strcasecmp(wad, speciallevel.wad)))
+        if (logical_gamemission == speciallevel.mission && (!speciallevel.episode || g_doomstat_globals->gameepisode == speciallevel.episode) && g_doomstat_globals->gamemap == speciallevel.map && (!speciallevel.wad || !strcasecmp(wad, speciallevel.wad)))
         {
             *name = speciallevel.name ? speciallevel.name : maplumpinfo->name;
             break;
@@ -585,7 +585,7 @@ void HU_Start()
     if (headsupactive)
         HU_Stop();
 
-    plr                       = &players[consoleplayer];
+    plr                       = &g_doomstat_globals->players[g_doomstat_globals->consoleplayer];
     message_on                = false;
     message_dontfuckwithme    = false;
     message_nottobefuckedwith = false;
@@ -668,7 +668,7 @@ void HU_Start()
     case doom2:
         s = HU_TITLE2;
         // Pre-Final Doom compatibility: map33-map35 names don't spill over
-        if (gameversion <= exe_doom_1_9 && gamemap >= 33 && false) // [crispy] disable
+        if (g_doomstat_globals->gameversion <= exe_doom_1_9 && g_doomstat_globals->gamemap >= 33 && false) // [crispy] disable
         {
             s = "";
         }
@@ -680,13 +680,13 @@ void HU_Start()
         s = HU_TITLET;
         break;
     case pack_nerve:
-        if (gamemap <= 9)
+        if (g_doomstat_globals->gamemap <= 9)
             s = HU_TITLEN;
         else
             s = HU_TITLE2;
         break;
     case pack_master:
-        if (gamemap <= 21)
+        if (g_doomstat_globals->gamemap <= 21)
             s = HU_TITLEM;
         else
             s = HU_TITLE2;
@@ -696,7 +696,7 @@ void HU_Start()
         break;
     }
 
-    if (logical_gamemission == doom && gameversion == exe_chex)
+    if (logical_gamemission == doom && g_doomstat_globals->gameversion == exe_chex)
     {
         s = HU_TITLE_CHEX;
     }
@@ -706,7 +706,7 @@ void HU_Start()
 
     // [crispy] explicitely display (episode and) map if the
     // map is from a PWAD or if the map title string has been dehacked
-    if (DEH_HasStringReplacement(s) || (!W_IsIWADLump(maplumpinfo) && (!nervewadfile || gamemission != pack_nerve)))
+    if (DEH_HasStringReplacement(s) || (!W_IsIWADLump(maplumpinfo) && (!g_doomstat_globals->nervewadfile || g_doomstat_globals->gamemission != pack_nerve)))
     {
         char *m;
 
@@ -775,7 +775,7 @@ static void HU_DrawCrosshair()
     static patch_t *patch;
     extern uint8_t *R_LaserspotColor();
 
-    if (weaponinfo[plr->readyweapon].ammo == am_noammo || plr->playerstate != PST_LIVE || automapactive || menuactive || paused || secret_on)
+    if (weaponinfo[plr->readyweapon].ammo == am_noammo || plr->playerstate != PST_LIVE || g_doomstat_globals->automapactive || g_doomstat_globals->menuactive || g_doomstat_globals->paused || secret_on)
         return;
 
     if (lump != laserpatch[crispy->crosshairtype].l)
@@ -804,10 +804,10 @@ void HU_Drawer()
     }
 
     // [crispy] translucent messages for translucent HUD
-    if (screenblocks > CRISPY_HUD + 1 && (!automapactive || crispy->automapoverlay))
+    if (screenblocks > CRISPY_HUD + 1 && (!g_doomstat_globals->automapactive || crispy->automapoverlay))
         dp_translucent = true;
 
-    if (secret_on && !menuactive)
+    if (secret_on && !g_doomstat_globals->menuactive)
     {
         dp_translation = cr_colors[static_cast<int>(cr_t::CR_GOLD)];
         HUlib_drawSText(&w_secret);
@@ -823,15 +823,15 @@ void HU_Drawer()
     if (crispy->coloredhud & COLOREDHUD_TEXT)
         dp_translation = cr_colors[static_cast<int>(cr_t::CR_GOLD)];
 
-    if (automapactive)
+    if (g_doomstat_globals->automapactive)
     {
         HUlib_drawTextLine(&w_title, false);
     }
 
-    if (crispy->automapstats == WIDGETS_ALWAYS || (automapactive && crispy->automapstats == WIDGETS_AUTOMAP))
+    if (crispy->automapstats == WIDGETS_ALWAYS || (g_doomstat_globals->automapactive && crispy->automapstats == WIDGETS_AUTOMAP))
     {
         // [crispy] move obtrusive line out of player view
-        if (automapactive && (!crispy->automapoverlay || screenblocks < CRISPY_HUD - 1) && !crispy->widescreen)
+        if (g_doomstat_globals->automapactive && (!crispy->automapoverlay || screenblocks < CRISPY_HUD - 1) && !crispy->widescreen)
             HUlib_drawTextLine(&w_map, false);
 
         HUlib_drawTextLine(&w_kills, false);
@@ -839,12 +839,12 @@ void HU_Drawer()
         HUlib_drawTextLine(&w_scrts, false);
     }
 
-    if (crispy->leveltime == WIDGETS_ALWAYS || (automapactive && crispy->leveltime == WIDGETS_AUTOMAP))
+    if (crispy->leveltime == WIDGETS_ALWAYS || (g_doomstat_globals->automapactive && crispy->leveltime == WIDGETS_AUTOMAP))
     {
         HUlib_drawTextLine(&w_ltime, false);
     }
 
-    if (crispy->playercoords == WIDGETS_ALWAYS || (automapactive && crispy->playercoords == WIDGETS_AUTOMAP))
+    if (crispy->playercoords == WIDGETS_ALWAYS || (g_doomstat_globals->automapactive && crispy->playercoords == WIDGETS_AUTOMAP))
     {
         HUlib_drawTextLine(&w_coordx, false);
         HUlib_drawTextLine(&w_coordy, false);
@@ -865,17 +865,17 @@ void HU_Drawer()
         dp_translucent = false;
 
     // [crispy] demo timer widget
-    if (demoplayback && (crispy->demotimer & DEMOTIMER_PLAYBACK))
+    if (g_doomstat_globals->demoplayback && (crispy->demotimer & DEMOTIMER_PLAYBACK))
     {
         ST_DrawDemoTimer(crispy->demotimerdir ? (deftotaldemotics - defdemotics) : defdemotics);
     }
-    else if (demorecording && (crispy->demotimer & DEMOTIMER_RECORD))
+    else if (g_doomstat_globals->demorecording && (crispy->demotimer & DEMOTIMER_RECORD))
     {
         ST_DrawDemoTimer(leveltime);
     }
 
     // [crispy] demo progress bar
-    if (demoplayback && crispy->demobar)
+    if (g_doomstat_globals->demoplayback && crispy->demobar)
     {
         HU_DemoProgressBar();
     }
@@ -949,14 +949,14 @@ void HU_Ticker()
     } // else message_on = false;
 
     // check for incoming chat characters
-    if (netgame)
+    if (g_doomstat_globals->netgame)
     {
         for (i = 0; i < MAXPLAYERS; i++)
         {
-            if (!playeringame[i])
+            if (!g_doomstat_globals->playeringame[i])
                 continue;
-            if (i != consoleplayer
-                && (c = static_cast<char>(players[i].cmd.chatchar)))
+            if (i != g_doomstat_globals->consoleplayer
+                && (c = static_cast<char>(g_doomstat_globals->players[i].cmd.chatchar)))
             {
                 if (c <= HU_BROADCAST)
                     chat_dest[i] = c;
@@ -966,7 +966,7 @@ void HU_Ticker()
                     if (rc && c == KEY_ENTER)
                     {
                         if (w_inputbuffer[i].l.len
-                            && (chat_dest[i] == consoleplayer + 1
+                            && (chat_dest[i] == g_doomstat_globals->consoleplayer + 1
                                 || chat_dest[i] == HU_BROADCAST))
                         {
                             HUlib_addMessageToSText(&w_message,
@@ -976,20 +976,20 @@ void HU_Ticker()
                             message_nottobefuckedwith = true;
                             message_on                = true;
                             message_counter           = HU_MSGTIMEOUT;
-                            if (gamemode == commercial)
+                            if (g_doomstat_globals->gamemode == commercial)
                                 S_StartSound(0, sfx_radio);
-                            else if (gameversion > exe_doom_1_2)
+                            else if (g_doomstat_globals->gameversion > exe_doom_1_2)
                                 S_StartSound(0, sfx_tink);
                         }
                         HUlib_resetIText(&w_inputbuffer[i]);
                     }
                 }
-                players[i].cmd.chatchar = 0;
+                g_doomstat_globals->players[i].cmd.chatchar = 0;
             }
         }
     }
 
-    if (automapactive)
+    if (g_doomstat_globals->automapactive)
     {
         // [crispy] move map title to the bottom
         if ((crispy->automapoverlay && screenblocks >= CRISPY_HUD - 1) || crispy->widescreen)
@@ -998,36 +998,36 @@ void HU_Ticker()
             w_title.y = HU_TITLEY;
     }
 
-    if (crispy->automapstats == WIDGETS_ALWAYS || (automapactive && crispy->automapstats == WIDGETS_AUTOMAP))
+    if (crispy->automapstats == WIDGETS_ALWAYS || (g_doomstat_globals->automapactive && crispy->automapstats == WIDGETS_AUTOMAP))
     {
         // [crispy] count spawned monsters
-        if (extrakills)
+        if (g_doomstat_globals->extrakills)
             M_snprintf(str, sizeof(str), "%s%s%s%d/%d+%d", cr_stat, kills, crstr[static_cast<int>(cr_t::CR_GRAY)],
-                plr->killcount, totalkills, extrakills);
+                plr->killcount, g_doomstat_globals->totalkills, g_doomstat_globals->extrakills);
         else
             M_snprintf(str, sizeof(str), "%s%s%s%d/%d", cr_stat, kills, crstr[static_cast<int>(cr_t::CR_GRAY)],
-                plr->killcount, totalkills);
+                plr->killcount, g_doomstat_globals->totalkills);
         HUlib_clearTextLine(&w_kills);
         s = str;
         while (*s)
             HUlib_addCharToTextLine(&w_kills, *(s++));
 
         M_snprintf(str, sizeof(str), "%sI %s%d/%d", cr_stat, crstr[static_cast<int>(cr_t::CR_GRAY)],
-            plr->itemcount, totalitems);
+            plr->itemcount, g_doomstat_globals->totalitems);
         HUlib_clearTextLine(&w_items);
         s = str;
         while (*s)
             HUlib_addCharToTextLine(&w_items, *(s++));
 
         M_snprintf(str, sizeof(str), "%sS %s%d/%d", cr_stat, crstr[static_cast<int>(cr_t::CR_GRAY)],
-            plr->secretcount, totalsecret);
+            plr->secretcount, g_doomstat_globals->totalsecret);
         HUlib_clearTextLine(&w_scrts);
         s = str;
         while (*s)
             HUlib_addCharToTextLine(&w_scrts, *(s++));
     }
 
-    if (crispy->leveltime == WIDGETS_ALWAYS || (automapactive && crispy->leveltime == WIDGETS_AUTOMAP))
+    if (crispy->leveltime == WIDGETS_ALWAYS || (g_doomstat_globals->automapactive && crispy->leveltime == WIDGETS_AUTOMAP))
     {
         const int time = leveltime / TICRATE;
 
@@ -1043,7 +1043,7 @@ void HU_Ticker()
             HUlib_addCharToTextLine(&w_ltime, *(s++));
     }
 
-    if (crispy->playercoords == WIDGETS_ALWAYS || (automapactive && crispy->playercoords == WIDGETS_AUTOMAP))
+    if (crispy->playercoords == WIDGETS_ALWAYS || (g_doomstat_globals->automapactive && crispy->playercoords == WIDGETS_AUTOMAP))
     {
         M_snprintf(str, sizeof(str), "%sX %s%-5d", cr_stat2, crstr[static_cast<int>(cr_t::CR_GRAY)],
             (plr->mo->x) >> FRACBITS);
@@ -1144,7 +1144,7 @@ bool HU_Responder(event_t *ev)
 
     numplayers = 0;
     for (i = 0; i < MAXPLAYERS; i++)
-        numplayers += playeringame[i];
+        numplayers += g_doomstat_globals->playeringame[i];
 
     if (ev->data1 == KEY_RSHIFT)
     {
@@ -1167,24 +1167,24 @@ bool HU_Responder(event_t *ev)
             message_counter = HU_MSGTIMEOUT;
             eatkey          = true;
         }
-        else if (netgame && ev->data2 == g_m_controls_globals->key_multi_msg)
+        else if (g_doomstat_globals->netgame && ev->data2 == g_m_controls_globals->key_multi_msg)
         {
             eatkey = true;
             StartChatInput(HU_BROADCAST);
         }
-        else if (netgame && numplayers > 2)
+        else if (g_doomstat_globals->netgame && numplayers > 2)
         {
             for (i = 0; i < MAXPLAYERS; i++)
             {
                 if (ev->data2 == g_m_controls_globals->key_multi_msgplayer[i])
                 {
-                    if (playeringame[i] && i != consoleplayer)
+                    if (g_doomstat_globals->playeringame[i] && i != g_doomstat_globals->consoleplayer)
                     {
                         eatkey = true;
                         StartChatInput(i + 1);
                         break;
                     }
-                    else if (i == consoleplayer)
+                    else if (i == g_doomstat_globals->consoleplayer)
                     {
                         num_nobrainers++;
                         if (num_nobrainers < 3)

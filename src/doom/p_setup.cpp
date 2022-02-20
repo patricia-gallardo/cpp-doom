@@ -49,14 +49,6 @@ void P_SpawnMapThing(mapthing_t *mthing);
 
 static int totallines;
 
-// Maintain single and multi player starting spots.
-#define MAX_DEATHMATCH_STARTS 10
-
-mapthing_t  deathmatchstarts[MAX_DEATHMATCH_STARTS];
-mapthing_t *deathmatch_p;
-mapthing_t  playerstarts[MAXPLAYERS];
-bool     playerstartsingame[MAXPLAYERS];
-
 // [crispy] recalculate seg offsets
 // adapted from prboom-plus/src/p_setup.c:474-482
 fixed_t GetOffset(vertex_t *v1, vertex_t *v2)
@@ -416,7 +408,7 @@ void P_LoadThings(int lump)
         spawn = true;
 
         // Do not spawn cool, new monsters if !commercial
-        if (gamemode != commercial)
+        if (g_doomstat_globals->gamemode != commercial)
         {
             switch (SHORT(mt->type))
             {
@@ -447,15 +439,15 @@ void P_LoadThings(int lump)
         P_SpawnMapThing(&spawnthing);
     }
 
-    if (!deathmatch)
+    if (!g_doomstat_globals->deathmatch)
     {
         for (i = 0; i < MAXPLAYERS; i++)
         {
-            if (playeringame[i] && !playerstartsingame[i])
+            if (g_doomstat_globals->playeringame[i] && !g_doomstat_globals->playerstartsingame[i])
             {
                 I_Error("P_LoadThings: Player %d start missing (vanilla crashes here)", i + 1);
             }
-            playerstartsingame[i] = false;
+            g_doomstat_globals->playerstartsingame[i] = false;
         }
     }
 
@@ -966,7 +958,7 @@ int P_GetNumForMap(int episode, int map, bool critical_param)
     int  lumpnum;
 
     // find map name
-    if (gamemode == commercial)
+    if (g_doomstat_globals->gamemode == commercial)
     {
         if (map < 10)
             DEH_snprintf(lumpname, 9, "map0%i", map);
@@ -988,7 +980,7 @@ int P_GetNumForMap(int episode, int map, bool critical_param)
 
     lumpnum = critical_param ? W_GetNumForName(lumpname) : W_CheckNumForName(lumpname);
 
-    if (nervewadfile && episode != 2 && map <= 9)
+    if (g_doomstat_globals->nervewadfile && episode != 2 && map <= 9)
     {
         lumpnum = W_CheckNumForNameFromTo(lumpname, lumpnum - 1, 0);
     }
@@ -1010,44 +1002,44 @@ void P_SetupLevel(int episode, int map, int, skill_t skill)
     bool     crispy_validblockmap;
     mapformat_t crispy_mapformat;
 
-    totalkills = totalitems = totalsecret = wminfo.maxfrags = 0;
+    g_doomstat_globals->totalkills = g_doomstat_globals->totalitems = g_doomstat_globals->totalsecret = g_doomstat_globals->wminfo.maxfrags = 0;
     // [crispy] count spawned monsters
-    extrakills     = 0;
-    wminfo.partime = 180;
+    g_doomstat_globals->extrakills     = 0;
+    g_doomstat_globals->wminfo.partime = 180;
     for (i = 0; i < MAXPLAYERS; i++)
     {
-        players[i].killcount = players[i].secretcount = players[i].itemcount = 0;
+        g_doomstat_globals->players[i].killcount = g_doomstat_globals->players[i].secretcount = g_doomstat_globals->players[i].itemcount = 0;
     }
 
     // [crispy] No Rest for the Living ...
-    if (nervewadfile)
+    if (g_doomstat_globals->nervewadfile)
     {
         if (episode == 2)
         {
-            gamemission = pack_nerve;
+            g_doomstat_globals->gamemission = pack_nerve;
         }
         else
         {
-            gamemission = doom2;
+            g_doomstat_globals->gamemission = doom2;
         }
     }
     else
     {
-        if (gamemission == pack_nerve)
+        if (g_doomstat_globals->gamemission == pack_nerve)
         {
-            episode = gameepisode = 2;
+            episode = g_doomstat_globals->gameepisode = 2;
         }
     }
 
     // Initial height of PointOfView
     // will be set by player think.
-    players[consoleplayer].viewz = 1;
+    g_doomstat_globals->players[g_doomstat_globals->consoleplayer].viewz = 1;
 
     // [crispy] stop demo warp mode now
     if (crispy->demowarp == map)
     {
         crispy->demowarp = 0;
-        nodrawers        = false;
+        g_doomstat_globals->nodrawers        = false;
         singletics       = false;
     }
 
@@ -1100,13 +1092,13 @@ void P_SetupLevel(int episode, int map, int, skill_t skill)
     {
         extern int savedleveltime;
         const int  ltime = savedleveltime / TICRATE,
-                  ttime  = (totalleveltimes + savedleveltime) / TICRATE;
+                  ttime  = (g_doomstat_globals->totalleveltimes + savedleveltime) / TICRATE;
         char *rfn_str;
 
         rfn_str = M_StringJoin(
-            respawnparm ? " -respawn" : "",
-            fastparm ? " -fast" : "",
-            nomonsters ? " -nomonsters" : "",
+            g_doomstat_globals->respawnparm ? " -respawn" : "",
+            g_doomstat_globals->fastparm ? " -fast" : "",
+            g_doomstat_globals->nomonsters ? " -nomonsters" : "",
             nullptr);
 
         fprintf(stderr, "P_SetupLevel: %s (%s) %s%s %d:%02d:%02d/%d:%02d:%02d ",
@@ -1161,25 +1153,25 @@ void P_SetupLevel(int episode, int map, int, skill_t skill)
     // [crispy] blinking key or skull in the status bar
     std::memset(g_p_local_globals->st_keyorskull, 0, sizeof(g_p_local_globals->st_keyorskull));
 
-    bodyqueslot  = 0;
-    deathmatch_p = deathmatchstarts;
+    g_doomstat_globals->bodyqueslot  = 0;
+    g_doomstat_globals->deathmatch_p = g_doomstat_globals->deathmatchstarts;
     if (crispy_mapformat & MFMT_HEXEN)
         P_LoadThings_Hexen(lumpnum + ML_THINGS);
     else
         P_LoadThings(lumpnum + ML_THINGS);
 
     // if deathmatch, randomly spawn the active players
-    if (deathmatch)
+    if (g_doomstat_globals->deathmatch)
     {
         for (i = 0; i < MAXPLAYERS; i++)
-            if (playeringame[i])
+            if (g_doomstat_globals->playeringame[i])
             {
-                players[i].mo = nullptr;
+                g_doomstat_globals->players[i].mo = nullptr;
                 G_DeathMatchSpawnPlayer(i);
             }
     }
     // [crispy] support MUSINFO lump (dynamic music changing)
-    if (gamemode != shareware)
+    if (g_doomstat_globals->gamemode != shareware)
     {
         S_ParseMusInfo(lumpname);
     }
@@ -1194,7 +1186,7 @@ void P_SetupLevel(int episode, int map, int, skill_t skill)
     //	UNUSED P_ConnectSubsectors ();
 
     // preload graphics
-    if (precache)
+    if (g_doomstat_globals->precache)
         R_PrecacheLevel();
 
     //printf ("free memory: 0x%x\n", Z_FreeMemory());

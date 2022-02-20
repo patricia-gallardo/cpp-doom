@@ -532,7 +532,7 @@ void R_StoreWallRange(int start,
     linedef->flags |= ML_MAPPED;
 
     // [crispy] (flags & ML_MAPPED) is all we need to know for automap
-    if (automapactive && !crispy->automapoverlay)
+    if (g_doomstat_globals->automapactive && !crispy->automapoverlay)
         return;
 
     // calculate rw_distance for scale calculation
@@ -633,7 +633,7 @@ void R_StoreWallRange(int start,
             && (backsector->interpceilingheight >= frontsector->interpceilingheight || curline->sidedef->toptexture)
             && (backsector->interpfloorheight <= frontsector->interpfloorheight || curline->sidedef->bottomtexture)
             // properly render skies (consider door "open" if both ceilings are sky):
-            && (backsector->ceilingpic != skyflatnum || frontsector->ceilingpic != skyflatnum);
+            && (backsector->ceilingpic != g_doomstat_globals->skyflatnum || frontsector->ceilingpic != g_doomstat_globals->skyflatnum);
 
         // two sided line
         ds_p->sprtopclip = ds_p->sprbottomclip = nullptr;
@@ -681,8 +681,8 @@ void R_StoreWallRange(int start,
         worldlow  = backsector->interpfloorheight - g_r_state_globals->viewz;
 
         // hack to allow height changes in outdoor areas
-        if (frontsector->ceilingpic == skyflatnum
-            && backsector->ceilingpic == skyflatnum)
+        if (frontsector->ceilingpic == g_doomstat_globals->skyflatnum
+            && backsector->ceilingpic == g_doomstat_globals->skyflatnum)
         {
             worldtop = worldhigh;
         }
@@ -816,7 +816,7 @@ void R_StoreWallRange(int start,
     }
 
     if (frontsector->interpceilingheight <= g_r_state_globals->viewz
-        && frontsector->ceilingpic != skyflatnum)
+        && frontsector->ceilingpic != g_doomstat_globals->skyflatnum)
     {
         // below view plane
         markceiling = false;

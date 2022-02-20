@@ -160,7 +160,7 @@ bool P_CheckMeleeRange(mobj_t *actor)
     mobj_t *pl   = actor->target;
     fixed_t dist = P_AproxDistance(pl->x - actor->x, pl->y - actor->y);
 
-    if (gameversion <= exe_doom_1_2)
+    if (g_doomstat_globals->gameversion <= exe_doom_1_2)
         range = MELEERANGE;
     else
         range = MELEERANGE - 20 * FRACUNIT + pl->info->radius;
@@ -474,7 +474,7 @@ bool
 
     for (;; actor->lastlook = (actor->lastlook + 1) & 3)
     {
-        if (!playeringame[actor->lastlook])
+        if (!g_doomstat_globals->playeringame[actor->lastlook])
             continue;
 
         if (c++ == 2
@@ -484,7 +484,7 @@ bool
             return false;
         }
 
-        player_t *player = &players[actor->lastlook];
+        player_t *player = &g_doomstat_globals->players[actor->lastlook];
 
         // [crispy] monsters don't look for players with NOTARGET cheat
         if (player->cheats & CF_NOTARGET)
@@ -647,7 +647,7 @@ void A_Chase(mobj_t *actor)
     // modify target threshold
     if (actor->threshold)
     {
-        if (gameversion > exe_doom_1_2 && (!actor->target || actor->target->health <= 0))
+        if (g_doomstat_globals->gameversion > exe_doom_1_2 && (!actor->target || actor->target->health <= 0))
         {
             actor->threshold = 0;
         }
@@ -682,7 +682,7 @@ void A_Chase(mobj_t *actor)
     if (actor->flags & MF_JUSTATTACKED)
     {
         actor->flags &= ~MF_JUSTATTACKED;
-        if (gameskill != sk_nightmare && !fastparm)
+        if (g_doomstat_globals->gameskill != sk_nightmare && !g_doomstat_globals->fastparm)
             P_NewChaseDir(actor);
         return;
     }
@@ -701,8 +701,8 @@ void A_Chase(mobj_t *actor)
     // check for missile attack
     if (actor->info->missilestate)
     {
-        if (gameskill < sk_nightmare
-            && !fastparm && actor->movecount)
+        if (g_doomstat_globals->gameskill < sk_nightmare
+            && !g_doomstat_globals->fastparm && actor->movecount)
         {
             goto nomissile;
         }
@@ -719,7 +719,7 @@ void A_Chase(mobj_t *actor)
     // ?
 nomissile:
     // possibly choose another target
-    if (netgame
+    if (g_doomstat_globals->netgame
         && !actor->threshold
         && !P_CheckSight(actor, actor->target))
     {
@@ -908,7 +908,7 @@ void A_SargAttack(mobj_t *actor)
 
     A_FaceTarget(actor);
 
-    if (gameversion > exe_doom_1_2)
+    if (g_doomstat_globals->gameversion > exe_doom_1_2)
     {
         if (!P_CheckMeleeRange(actor))
             return;
@@ -916,7 +916,7 @@ void A_SargAttack(mobj_t *actor)
 
     damage = ((P_Random() % 10) + 1) * 4;
 
-    if (gameversion <= exe_doom_1_2)
+    if (g_doomstat_globals->gameversion <= exe_doom_1_2)
         P_LineAttack(actor, actor->angle, MELEERANGE, 0, damage);
     else
         P_DamageMobj(actor->target, actor, actor, damage);
@@ -1194,7 +1194,7 @@ void A_VileChase(mobj_t *actor)
                     corpsehit->target = nullptr;
 
                     // [crispy] count resurrected monsters
-                    extrakills++;
+                    g_doomstat_globals->extrakills++;
 
                     // [crispy] resurrected pools of gore ("ghost monsters") are translucent
                     if (corpsehit->height == 0 && corpsehit->radius == 0)
@@ -1604,16 +1604,16 @@ void A_Explode(mobj_t *thingy)
 
 static bool CheckBossEnd(mobjtype_t motype)
 {
-    if (gameversion < exe_ultimate)
+    if (g_doomstat_globals->gameversion < exe_ultimate)
     {
-        if (gamemap != 8)
+        if (g_doomstat_globals->gamemap != 8)
         {
             return false;
         }
 
         // Baron death on later episodes is nothing special.
 
-        if (motype == MT_BRUISER && gameepisode != 1)
+        if (motype == MT_BRUISER && g_doomstat_globals->gameepisode != 1)
         {
             return false;
         }
@@ -1627,27 +1627,27 @@ static bool CheckBossEnd(mobjtype_t motype)
         // episode 4 support.  Now bosses only trigger on their
         // specific episode.
 
-        switch (gameepisode)
+        switch (g_doomstat_globals->gameepisode)
         {
         case 1:
-            return gamemap == 8 && motype == MT_BRUISER;
+            return g_doomstat_globals->gamemap == 8 && motype == MT_BRUISER;
 
         case 2:
-            return gamemap == 8 && motype == MT_CYBORG;
+            return g_doomstat_globals->gamemap == 8 && motype == MT_CYBORG;
 
         case 3:
-            return gamemap == 8 && motype == MT_SPIDER;
+            return g_doomstat_globals->gamemap == 8 && motype == MT_SPIDER;
 
         case 4:
-            return (gamemap == 6 && motype == MT_CYBORG)
-                   || (gamemap == 8 && motype == MT_SPIDER);
+            return (g_doomstat_globals->gamemap == 6 && motype == MT_CYBORG)
+                   || (g_doomstat_globals->gamemap == 8 && motype == MT_SPIDER);
 
         // [crispy] Sigil
         case 5:
             return false;
 
         default:
-            return gamemap == 8;
+            return g_doomstat_globals->gamemap == 8;
         }
     }
 }
@@ -1664,11 +1664,11 @@ void A_BossDeath(mobj_t *mo)
     line_t     junk;
     int        i;
 
-    if (gamemode == commercial)
+    if (g_doomstat_globals->gamemode == commercial)
     {
-        if (gamemap != 7 &&
+        if (g_doomstat_globals->gamemap != 7 &&
             // [crispy] Master Levels in PC slot 7
-            !(crispy->singleplayer && gamemission == pack_master && (gamemap == 14 || gamemap == 15 || gamemap == 16)))
+            !(crispy->singleplayer && g_doomstat_globals->gamemission == pack_master && (g_doomstat_globals->gamemap == 14 || g_doomstat_globals->gamemap == 15 || g_doomstat_globals->gamemap == 16)))
             return;
 
         if ((mo->type != MT_FATSO)
@@ -1685,7 +1685,7 @@ void A_BossDeath(mobj_t *mo)
 
     // make sure there is a player alive for victory
     for (i = 0; i < MAXPLAYERS; i++)
-        if (playeringame[i] && players[i].health > 0)
+        if (g_doomstat_globals->playeringame[i] && g_doomstat_globals->players[i].health > 0)
             break;
 
     if (i == MAXPLAYERS)
@@ -1710,11 +1710,11 @@ void A_BossDeath(mobj_t *mo)
     }
 
     // victory!
-    if (gamemode == commercial)
+    if (g_doomstat_globals->gamemode == commercial)
     {
-        if (gamemap == 7 ||
+        if (g_doomstat_globals->gamemap == 7 ||
             // [crispy] Master Levels in PC slot 7
-            (crispy->singleplayer && gamemission == pack_master && (gamemap == 14 || gamemap == 15 || gamemap == 16)))
+            (crispy->singleplayer && g_doomstat_globals->gamemission == pack_master && (g_doomstat_globals->gamemap == 14 || g_doomstat_globals->gamemap == 15 || g_doomstat_globals->gamemap == 16)))
         {
             if (mo->type == MT_FATSO)
             {
@@ -1733,7 +1733,7 @@ void A_BossDeath(mobj_t *mo)
     }
     else
     {
-        switch (gameepisode)
+        switch (g_doomstat_globals->gameepisode)
         {
         case 1:
             junk.tag = 666;
@@ -1742,7 +1742,7 @@ void A_BossDeath(mobj_t *mo)
             break;
 
         case 4:
-            switch (gamemap)
+            switch (g_doomstat_globals->gamemap)
             {
             case 6:
                 junk.tag = 666;
@@ -1931,7 +1931,7 @@ void A_BrainSpit(mobj_t *mo)
     static int easy = 0;
 
     easy ^= 1;
-    if (gameskill <= sk_easy && (!easy))
+    if (g_doomstat_globals->gameskill <= sk_easy && (!easy))
         return;
 
     // [crispy] avoid division by zero by recalculating the number of spawn spots
@@ -2013,7 +2013,7 @@ void A_SpawnFly(mobj_t *mo)
     mobj_t *newmobj = P_SpawnMobj(targ->x, targ->y, targ->z, type);
 
     // [crispy] count spawned monsters
-    extrakills++;
+    g_doomstat_globals->extrakills++;
 
     if (P_LookForPlayers(newmobj, true))
         P_SetMobjState(newmobj, newmobj->info->seestate);
@@ -2031,7 +2031,7 @@ void A_PlayerScream(mobj_t *mo)
     // Default death sound.
     int sound = sfx_pldeth;
 
-    if ((gamemode == commercial)
+    if ((g_doomstat_globals->gamemode == commercial)
         && (mo->health < -50))
     {
         // IF THE PLAYER DIES

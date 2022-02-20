@@ -233,7 +233,7 @@ void R_InitSpriteDefs(const char **namelist)
                 int rotation = lumpinfo[l]->name[5];
                 int patched;
 
-                if (modifiedgame)
+                if (g_doomstat_globals->modifiedgame)
                     patched = W_GetNumForName(lumpinfo[l]->name);
                 else
                     patched = l;
@@ -759,7 +759,7 @@ void R_ProjectSprite(mobj_t *thing)
     if (crispy->coloredblood && (thing->type == MT_BLOOD || thing->state - states == S_GIBS) && thing->target)
     {
         // [crispy] Thorn Things in Hacx bleed green blood
-        if (gamemission == pack_hacx)
+        if (g_doomstat_globals->gamemission == pack_hacx)
         {
             if (thing->target->type == MT_BABY)
             {
@@ -1328,6 +1328,6 @@ void R_DrawMasked()
 
     // draw the psprites on top of everything
     //  but does not draw on side views
-    if (!viewangleoffset)
+    if (!g_doomstat_globals->viewangleoffset)
         R_DrawPlayerSprites();
 }

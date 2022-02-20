@@ -96,7 +96,7 @@ bool PIT_StompThing(mobj_t *thing)
         return true;
 
     // monsters don't stomp things except on boss level
-    if (!tmthing->player && gamemap != 30)
+    if (!tmthing->player && g_doomstat_globals->gamemap != 30)
         return false;
 
     P_DamageMobj(thing, tmthing, tmthing, 10000);
@@ -1066,14 +1066,14 @@ bool PTR_ShootTraverse(intercept_t *in)
         y    = g_p_local_globals->trace.y + FixedMul(g_p_local_globals->trace.dy, frac);
         z    = shootz + FixedMul(aimslope, FixedMul(frac, attackrange));
 
-        if (li->frontsector->ceilingpic == skyflatnum)
+        if (li->frontsector->ceilingpic == g_doomstat_globals->skyflatnum)
         {
             // don't shoot the sky!
             if (z > li->frontsector->ceilingheight)
                 return false;
 
             // it's a sky hack wall
-            if (li->backsector && li->backsector->ceilingpic == skyflatnum)
+            if (li->backsector && li->backsector->ceilingpic == g_doomstat_globals->skyflatnum)
             {
                 // [crispy] fix bullet puffs and laser spot not appearing in outdoor areas
                 if (li->backsector->ceilingheight < z)
@@ -1095,7 +1095,7 @@ bool PTR_ShootTraverse(intercept_t *in)
             {
                 const sector_t *const sector = g_r_state_globals->sides[side].sector;
 
-                if (z < sector->floorheight || (z > sector->ceilingheight && sector->ceilingpic != skyflatnum))
+                if (z < sector->floorheight || (z > sector->ceilingheight && sector->ceilingpic != g_doomstat_globals->skyflatnum))
                 {
                     z    = BETWEEN(sector->floorheight, sector->ceilingheight, z);
                     frac = FixedDiv(z - shootz, FixedMul(aimslope, attackrange));
@@ -1500,7 +1500,7 @@ bool PIT_ChangeSector(mobj_t *thing)
         // TODO: Add a check for DEHACKED states
         P_SetMobjState(thing, (thing->flags & MF_NOBLOOD) ? S_NULL : S_GIBS);
 
-        if (gameversion > exe_doom_1_2)
+        if (g_doomstat_globals->gameversion > exe_doom_1_2)
             thing->flags &= ~MF_SOLID;
         thing->height = 0;
         thing->radius = 0;

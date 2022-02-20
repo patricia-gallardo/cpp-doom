@@ -759,7 +759,7 @@ static intercepts_overrun_t intercepts_overrun[] = {
     { 4, nullptr, /* &swingx, */ false },
     { 4, nullptr, /* &swingy, */ false },
     { 4, nullptr, false },
-    { 40, &playerstarts, true },
+    { 40, &g_doomstat_globals->playerstarts, true },
     { 4, nullptr, /* &blocklinks, */ false },
     { 4, &g_p_local_globals->bmapwidth, false },
     { 4, nullptr, /* &blockmap, */ false },

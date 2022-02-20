@@ -424,7 +424,7 @@ void WI_drawLF()
         return;
     }
 
-    if (gamemode != commercial || wbs->last < NUMCMAPS)
+    if (g_doomstat_globals->gamemode != commercial || wbs->last < NUMCMAPS)
     {
         // draw <LevelName>
         V_DrawPatch((ORIGWIDTH - SHORT(lnames[wbs->last]->width)) / 2,
@@ -530,7 +530,7 @@ void WI_initAnimatedBack()
     int     i;
     anim_t *a;
 
-    if (gamemode == commercial)
+    if (g_doomstat_globals->gamemode == commercial)
         return;
 
     if (wbs->epsd > 2)
@@ -558,7 +558,7 @@ void WI_updateAnimatedBack()
     int     i;
     anim_t *a;
 
-    if (gamemode == commercial)
+    if (g_doomstat_globals->gamemode == commercial)
         return;
 
     if (wbs->epsd > 2)
@@ -608,7 +608,7 @@ void WI_drawAnimatedBack()
     int     i;
     anim_t *a;
 
-    if (gamemode == commercial)
+    if (g_doomstat_globals->gamemode == commercial)
         return;
 
     if (wbs->epsd > 2)
@@ -786,7 +786,7 @@ static bool snl_pointeron = false;
 void WI_initShowNextLoc()
 {
     // [crispy] display tally screen after ExM8
-    if ((gamemode != commercial) && (gamemap == 8))
+    if ((g_doomstat_globals->gamemode != commercial) && (g_doomstat_globals->gamemap == 8))
     {
         G_WorldDone();
         return;
@@ -821,7 +821,7 @@ void WI_drawShowNextLoc()
     // draw animated background
     WI_drawAnimatedBack();
 
-    if (gamemode != commercial)
+    if (g_doomstat_globals->gamemode != commercial)
     {
         if (wbs->epsd > 2)
         {
@@ -850,11 +850,11 @@ void WI_drawShowNextLoc()
             WI_drawOnLnode(wbs->next, yah);
     }
 
-    if (crispy->singleplayer && ((gamemission == pack_nerve && wbs->last == 7) || (gamemission == pack_master && wbs->last == 19 && !secretexit) || (gamemission == pack_master && wbs->last == 20)))
+    if (crispy->singleplayer && ((g_doomstat_globals->gamemission == pack_nerve && wbs->last == 7) || (g_doomstat_globals->gamemission == pack_master && wbs->last == 19 && !secretexit) || (g_doomstat_globals->gamemission == pack_master && wbs->last == 20)))
         return;
 
     // draws which level you are entering..
-    if ((gamemode != commercial)
+    if ((g_doomstat_globals->gamemode != commercial)
         || wbs->next != 30)
         WI_drawEL();
 }
@@ -872,7 +872,7 @@ int WI_fragSum(int playernum)
 
     for (i = 0; i < MAXPLAYERS; i++)
     {
-        if (playeringame[i]
+        if (g_doomstat_globals->playeringame[i]
             && i != playernum)
         { frags_local += plrs[playernum].frags[i];
         }
@@ -907,10 +907,10 @@ void WI_initDeathmatchStats()
 
     for (i = 0; i < MAXPLAYERS; i++)
     {
-        if (playeringame[i])
+        if (g_doomstat_globals->playeringame[i])
         {
             for (j = 0; j < MAXPLAYERS; j++)
-                if (playeringame[j])
+                if (g_doomstat_globals->playeringame[j])
                     dm_frags[i][j] = 0;
 
             dm_totals[i] = 0;
@@ -937,10 +937,10 @@ void WI_updateDeathmatchStats()
 
         for (i = 0; i < MAXPLAYERS; i++)
         {
-            if (playeringame[i])
+            if (g_doomstat_globals->playeringame[i])
             {
                 for (j = 0; j < MAXPLAYERS; j++)
-                    if (playeringame[j])
+                    if (g_doomstat_globals->playeringame[j])
                         dm_frags[i][j] = plrs[i].frags[j];
 
                 dm_totals[i] = WI_fragSum(i);
@@ -962,11 +962,11 @@ void WI_updateDeathmatchStats()
 
         for (i = 0; i < MAXPLAYERS; i++)
         {
-            if (playeringame[i])
+            if (g_doomstat_globals->playeringame[i])
             {
                 for (j = 0; j < MAXPLAYERS; j++)
                 {
-                    if (playeringame[j]
+                    if (g_doomstat_globals->playeringame[j]
                         && dm_frags[i][j] != plrs[i].frags[j])
                     {
                         if (plrs[i].frags[j] < 0)
@@ -1004,7 +1004,7 @@ void WI_updateDeathmatchStats()
         {
             S_StartSound(0, sfx_slop);
 
-            if (gamemode == commercial)
+            if (g_doomstat_globals->gamemode == commercial)
                 WI_initNoState();
             else
                 WI_initShowNextLoc();
@@ -1050,7 +1050,7 @@ void WI_drawDeathmatchStats()
 
     for (i = 0; i < MAXPLAYERS; i++)
     {
-        if (playeringame[i])
+        if (g_doomstat_globals->playeringame[i])
         {
             V_DrawPatch(x - SHORT(p[i]->width) / 2,
                 DM_MATRIXY - WI_SPACINGY,
@@ -1090,11 +1090,11 @@ void WI_drawDeathmatchStats()
     {
         x = DM_MATRIXX + DM_SPACINGX;
 
-        if (playeringame[i])
+        if (g_doomstat_globals->playeringame[i])
         {
             for (j = 0; j < MAXPLAYERS; j++)
             {
-                if (playeringame[j])
+                if (g_doomstat_globals->playeringame[j])
                     WI_drawNum(x + w, y, dm_frags[i][j], 2);
 
                 x += DM_SPACINGX;
@@ -1122,7 +1122,7 @@ void WI_initNetgameStats()
 
     for (i = 0; i < MAXPLAYERS; i++)
     {
-        if (!playeringame[i])
+        if (!g_doomstat_globals->playeringame[i])
             continue;
 
         cnt_kills[i] = cnt_items[i] = cnt_secret[i] = cnt_frags[i] = 0;
@@ -1152,7 +1152,7 @@ void WI_updateNetgameStats()
 
         for (i = 0; i < MAXPLAYERS; i++)
         {
-            if (!playeringame[i])
+            if (!g_doomstat_globals->playeringame[i])
                 continue;
 
             cnt_kills[i]  = (plrs[i].skills * 100) / wbs->maxkills;
@@ -1175,7 +1175,7 @@ void WI_updateNetgameStats()
 
         for (i = 0; i < MAXPLAYERS; i++)
         {
-            if (!playeringame[i])
+            if (!g_doomstat_globals->playeringame[i])
                 continue;
 
             cnt_kills[i] += 2;
@@ -1201,7 +1201,7 @@ void WI_updateNetgameStats()
 
         for (i = 0; i < MAXPLAYERS; i++)
         {
-            if (!playeringame[i])
+            if (!g_doomstat_globals->playeringame[i])
                 continue;
 
             cnt_items[i] += 2;
@@ -1225,7 +1225,7 @@ void WI_updateNetgameStats()
 
         for (i = 0; i < MAXPLAYERS; i++)
         {
-            if (!playeringame[i])
+            if (!g_doomstat_globals->playeringame[i])
                 continue;
 
             cnt_secret[i] += 2;
@@ -1251,7 +1251,7 @@ void WI_updateNetgameStats()
 
         for (i = 0; i < MAXPLAYERS; i++)
         {
-            if (!playeringame[i])
+            if (!g_doomstat_globals->playeringame[i])
                 continue;
 
             cnt_frags[i] += 1;
@@ -1273,7 +1273,7 @@ void WI_updateNetgameStats()
         if (acceleratestage)
         {
             S_StartSound(0, sfx_sgcock);
-            if (gamemode == commercial)
+            if (g_doomstat_globals->gamemode == commercial)
                 WI_initNoState();
             else
                 WI_initShowNextLoc();
@@ -1323,7 +1323,7 @@ void WI_drawNetgameStats()
 
     for (i = 0; i < MAXPLAYERS; i++)
     {
-        if (!playeringame[i])
+        if (!g_doomstat_globals->playeringame[i])
             continue;
 
         x = NG_STATSX;
@@ -1450,7 +1450,7 @@ void WI_updateStats()
         {
             S_StartSound(0, sfx_sgcock);
 
-            if (gamemode == commercial)
+            if (g_doomstat_globals->gamemode == commercial)
                 WI_initNoState();
             else
                 WI_initShowNextLoc();
@@ -1479,16 +1479,16 @@ static bool WI_drawParTime()
         result = false;
     }
 
-    if (gamemode == commercial)
+    if (g_doomstat_globals->gamemode == commercial)
     {
         // [crispy] IWAD: Final Doom has no par times
-        if (gamemission == pack_tnt || gamemission == pack_plut)
+        if (g_doomstat_globals->gamemission == pack_tnt || g_doomstat_globals->gamemission == pack_plut)
         {
             result = false;
         }
 
         // [crispy] PWAD: NRFTL has par times (for singleplayer games)
-        if (gamemission == pack_nerve && crispy->singleplayer)
+        if (g_doomstat_globals->gamemission == pack_nerve && crispy->singleplayer)
         {
             result = true;
         }
@@ -1576,19 +1576,19 @@ void WI_drawStats()
     }
 
     // [crispy] exit early from the tally screen after ExM8
-    if (sp_state == 10 && gamemode != commercial && gamemap == 8)
+    if (sp_state == 10 && g_doomstat_globals->gamemode != commercial && g_doomstat_globals->gamemap == 8)
     {
         acceleratestage = 1;
     }
 
     // [crispy] demo timer widget
-    if ((demoplayback && (crispy->demotimer & DEMOTIMER_PLAYBACK)) || (demorecording && (crispy->demotimer & DEMOTIMER_RECORD)))
+    if ((g_doomstat_globals->demoplayback && (crispy->demotimer & DEMOTIMER_PLAYBACK)) || (g_doomstat_globals->demorecording && (crispy->demotimer & DEMOTIMER_RECORD)))
     {
         ST_DrawDemoTimer(leveltime);
     }
 
     // [crispy] demo progress bar
-    if (demoplayback && crispy->demobar)
+    if (g_doomstat_globals->demoplayback && crispy->demobar)
     {
         extern void HU_DemoProgressBar();
 
@@ -1602,9 +1602,9 @@ void WI_checkForAccelerate()
     player_t *player;
 
     // check for button presses to skip delays
-    for (i = 0, player = players; i < MAXPLAYERS; i++, player++)
+    for (i = 0, player = g_doomstat_globals->players; i < MAXPLAYERS; i++, player++)
     {
-        if (playeringame[i])
+        if (g_doomstat_globals->playeringame[i])
         {
             if (player->cmd.buttons & BT_ATTACK)
             {
@@ -1636,7 +1636,7 @@ void WI_Ticker()
     if (bcnt == 1)
     {
         // intermission music
-        if (gamemode == commercial)
+        if (g_doomstat_globals->gamemode == commercial)
             S_ChangeMusic(mus_dm2int, true);
         // [crispy] Sigil
         else if (crispy->haved1e5 && wbs->epsd == 4 && W_CheckNumForName(DEH_String("D_SIGINT")) != -1)
@@ -1650,9 +1650,9 @@ void WI_Ticker()
     switch (state)
     {
     case StatCount:
-        if (deathmatch)
+        if (g_doomstat_globals->deathmatch)
             WI_updateDeathmatchStats();
-        else if (netgame)
+        else if (g_doomstat_globals->netgame)
             WI_updateNetgameStats();
         else
             WI_updateStats();
@@ -1679,7 +1679,7 @@ static void WI_loadUnloadData(load_callback_t callback)
     char    name[9];
     anim_t *a;
 
-    if (nervewadfile && gamemission == pack_nerve)
+    if (g_doomstat_globals->nervewadfile && g_doomstat_globals->gamemission == pack_nerve)
     {
         for (i = 0; i < 9; i++)
         {
@@ -1692,7 +1692,7 @@ static void WI_loadUnloadData(load_callback_t callback)
             callback(name, &lnames[i]);
         }
     }
-    else if (gamemode == commercial)
+    else if (g_doomstat_globals->gamemode == commercial)
     {
         for (i = 0; i < NUMCMAPS; i++)
         {
@@ -1782,7 +1782,7 @@ static void WI_loadUnloadData(load_callback_t callback)
     if (W_CheckNumForName(DEH_String("WIOBJ")) >= 0)
     {
         // "items"
-        if (netgame && !deathmatch)
+        if (g_doomstat_globals->netgame && !g_doomstat_globals->deathmatch)
             callback(DEH_String("WIOBJ"), &items);
         else
             callback(DEH_String("WIOSTI"), &items);
@@ -1829,11 +1829,11 @@ static void WI_loadUnloadData(load_callback_t callback)
 
     // Background image
 
-    if (gamemode == commercial)
+    if (g_doomstat_globals->gamemode == commercial)
     {
         M_StringCopy(name, DEH_String("INTERPIC"), sizeof(name));
     }
-    else if (gameversion >= exe_ultimate && wbs->epsd == 3)
+    else if (g_doomstat_globals->gameversion >= exe_ultimate && wbs->epsd == 3)
     {
         M_StringCopy(name, DEH_String("INTERPIC"), sizeof(name));
     }
@@ -1868,7 +1868,7 @@ static void WI_loadCallback(const char *name, patch_t **variable)
 
 void WI_loadData()
 {
-    if (gamemode == commercial)
+    if (g_doomstat_globals->gamemode == commercial)
     {
         NUMCMAPS   = (crispy->havemap33) ? 33 : 32;
         lnames     = zmalloc<patch_t **>(sizeof(patch_t *) * static_cast<unsigned long>(NUMCMAPS),
@@ -1918,9 +1918,9 @@ void WI_Drawer()
     switch (state)
     {
     case StatCount:
-        if (deathmatch)
+        if (g_doomstat_globals->deathmatch)
             WI_drawDeathmatchStats();
-        else if (netgame)
+        else if (g_doomstat_globals->netgame)
             WI_drawNetgameStats();
         else
             WI_drawStats();
@@ -1974,7 +1974,7 @@ void WI_initVariables(wbstartstruct_t *wbstartstruct)
     if (!wbs->maxsecret)
         wbs->maxsecret = 1;
 
-    if (gameversion < exe_ultimate)
+    if (g_doomstat_globals->gameversion < exe_ultimate)
         if (wbs->epsd > 2)
             wbs->epsd -= 3;
 }
@@ -1984,9 +1984,9 @@ void WI_Start(wbstartstruct_t *wbstartstruct)
     WI_initVariables(wbstartstruct);
     WI_loadData();
 
-    if (deathmatch)
+    if (g_doomstat_globals->deathmatch)
         WI_initDeathmatchStats();
-    else if (netgame)
+    else if (g_doomstat_globals->netgame)
         WI_initNetgameStats();
     else
         WI_initStats();

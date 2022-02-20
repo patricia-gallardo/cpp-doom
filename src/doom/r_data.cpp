@@ -1258,7 +1258,7 @@ int R_FlatNumForName(const char *name)
         fprintf(stderr, "R_FlatNumForName: %s not found\n", namet);
         // [crispy] since there is no "No Flat" marker,
         // render missing flats as SKY
-        return skyflatnum;
+        return g_doomstat_globals->skyflatnum;
     }
     return i - g_r_state_globals->firstflat;
 }
@@ -1343,7 +1343,7 @@ void R_PrecacheLevel()
     thinker_t *    th;
     spriteframe_t *sf;
 
-    if (demoplayback)
+    if (g_doomstat_globals->demoplayback)
         return;
 
     // Precache flats.

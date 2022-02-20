@@ -84,14 +84,6 @@ static channel_t *  channels;
 static degenmobj_t *sobjs;
 
 // Maximum volume of a sound effect.
-// Internal default is max out of 0-15.
-
-int sfxVolume = 8;
-
-// Maximum volume of music.
-
-int musicVolume = 8;
-
 // Internal volume level, ranging from 0-127
 
 static int snd_SfxVolume;
@@ -196,11 +188,11 @@ static void S_RegisterAltMusic()
 {
     const altmusic_t *altmusic_fromto, *altmusic;
 
-    if (gamemission == pack_tnt)
+    if (g_doomstat_globals->gamemission == pack_tnt)
     {
         altmusic_fromto = altmusic_tnt;
     }
-    else if (gamemission == pack_plut)
+    else if (g_doomstat_globals->gamemission == pack_plut)
     {
         altmusic_fromto = altmusic_plut;
     }
@@ -238,7 +230,7 @@ void S_Init(int sfxVolume_param, int musicVolume_param)
 {
     int i;
 
-    if (gameversion == exe_doom_1_666)
+    if (g_doomstat_globals->gameversion == exe_doom_1_666)
     {
         if (logical_gamemission == doom)
         {
@@ -369,10 +361,10 @@ void S_Start()
     }
 
     // start new music for the level
-    if (musicVolume) // [crispy] do not reset pause state at zero music volume
+    if (g_doomstat_globals->musicVolume) // [crispy] do not reset pause state at zero music volume
         mus_paused = 0;
 
-    if (gamemode == commercial)
+    if (g_doomstat_globals->gamemode == commercial)
     {
         const int nmus[] = {
             mus_messag,
@@ -386,12 +378,12 @@ void S_Start()
             mus_ddtbl2,
         };
 
-        if ((gameepisode == 2 || gamemission == pack_nerve) && gamemap <= static_cast<int>(std::size(nmus)))
+        if ((g_doomstat_globals->gameepisode == 2 || g_doomstat_globals->gamemission == pack_nerve) && g_doomstat_globals->gamemap <= static_cast<int>(std::size(nmus)))
         {
-            mnum = nmus[gamemap - 1];
+            mnum = nmus[g_doomstat_globals->gamemap - 1];
         }
         else
-            mnum = mus_runnin + gamemap - 1;
+            mnum = mus_runnin + g_doomstat_globals->gamemap - 1;
     }
     else
     {
@@ -409,17 +401,17 @@ void S_Start()
             mus_e1m9, // Tim          e4m9
         };
 
-        if (gameepisode < 4 || gameepisode == 5) // [crispy] Sigil
+        if (g_doomstat_globals->gameepisode < 4 || g_doomstat_globals->gameepisode == 5) // [crispy] Sigil
         {
-            mnum = mus_e1m1 + (gameepisode - 1) * 9 + gamemap - 1;
+            mnum = mus_e1m1 + (g_doomstat_globals->gameepisode - 1) * 9 + g_doomstat_globals->gamemap - 1;
         }
         else
         {
-            mnum = spmus[gamemap - 1];
+            mnum = spmus[g_doomstat_globals->gamemap - 1];
 
             // [crispy] support dedicated music tracks for the 4th episode
             {
-                const int sp_mnum = mus_e1m1 + 3 * 9 + gamemap - 1;
+                const int sp_mnum = mus_e1m1 + 3 * 9 + g_doomstat_globals->gamemap - 1;
 
                 if (S_music[sp_mnum].lumpnum > 0)
                 {
@@ -431,9 +423,9 @@ void S_Start()
 
     // [crispy] do not change music if not changing map (preserves IDMUS choice)
     {
-        const auto curmap = static_cast<short>((gameepisode << 8) + gamemap);
+        const auto curmap = static_cast<short>((g_doomstat_globals->gameepisode << 8) + g_doomstat_globals->gamemap);
 
-        if (prevmap == curmap || (nodrawers && singletics))
+        if (prevmap == curmap || (g_doomstat_globals->nodrawers && singletics))
             return;
 
         prevmap = curmap;
@@ -560,7 +552,7 @@ static int S_AdjustSoundParams(mobj_t *listener, mobj_t *source,
     angle_t angle;
 
     // [crispy] proper sound clipping in Doom 2 MAP08 and The Ultimate Doom E4M8 / Sigil E5M8
-    const bool doom1map8 = (gamemap == 8 && ((gamemode != commercial && gameepisode < 4) || !crispy->soundfix));
+    const bool doom1map8 = (g_doomstat_globals->gamemap == 8 && ((g_doomstat_globals->gamemode != commercial && g_doomstat_globals->gameepisode < 4) || !crispy->soundfix));
 
     // calculate the distance to sound origin
     //  and clip it if necessary
@@ -649,7 +641,7 @@ void S_StartSound(void *origin_p, int sfx_id)
     volume = snd_SfxVolume;
 
     // [crispy] make non-fatal, consider zero volume
-    if (sfx_id == sfx_None || !snd_SfxVolume || (nodrawers && singletics))
+    if (sfx_id == sfx_None || !snd_SfxVolume || (g_doomstat_globals->nodrawers && singletics))
     {
         return;
     }
@@ -682,15 +674,15 @@ void S_StartSound(void *origin_p, int sfx_id)
 
     // Check to see if it is audible,
     //  and if not, modify the params
-    if (origin && origin != players[consoleplayer].mo && origin != players[consoleplayer].so) // [crispy] weapon sound source
+    if (origin && origin != g_doomstat_globals->players[g_doomstat_globals->consoleplayer].mo && origin != g_doomstat_globals->players[g_doomstat_globals->consoleplayer].so) // [crispy] weapon sound source
     {
-        rc = S_AdjustSoundParams(players[consoleplayer].mo,
+        rc = S_AdjustSoundParams(g_doomstat_globals->players[g_doomstat_globals->consoleplayer].mo,
             origin,
             &volume,
             &sep);
 
-        if (origin->x == players[consoleplayer].mo->x
-            && origin->y == players[consoleplayer].mo->y)
+        if (origin->x == g_doomstat_globals->players[g_doomstat_globals->consoleplayer].mo->x
+            && origin->y == g_doomstat_globals->players[g_doomstat_globals->consoleplayer].mo->y)
         {
             sep = NORM_SEP;
         }
@@ -717,7 +709,7 @@ void S_StartSound(void *origin_p, int sfx_id)
     pitch = Clamp(pitch);
 
     // kill old sound
-    if (!crispy->soundfull || origin || gamestate != GS_LEVEL)
+    if (!crispy->soundfull || origin || g_doomstat_globals->gamestate != GS_LEVEL)
     {
         S_StopSound(origin);
     }
@@ -827,7 +819,7 @@ void S_UpdateSounds(mobj_t *listener)
 
                 // check non-local sounds for distance clipping
                 //  or modify their params
-                if (c->origin && listener != c->origin && c->origin != players[consoleplayer].so) // [crispy] weapon sound source
+                if (c->origin && listener != c->origin && c->origin != g_doomstat_globals->players[g_doomstat_globals->consoleplayer].so) // [crispy] weapon sound source
                 {
                     audible = S_AdjustSoundParams(listener,
                         c->origin,
@@ -863,11 +855,11 @@ void S_SetMusicVolume(int volume)
     }
 
     // [crispy] [JN] Fixed bug when music was hearable with zero volume
-    if (!musicVolume)
+    if (!g_doomstat_globals->musicVolume)
     {
         S_PauseSound();
     }
-    else if (!paused)
+    else if (!g_doomstat_globals->paused)
     {
         S_ResumeSound();
     }
@@ -900,14 +892,14 @@ void S_ChangeMusic(int musicnum, int looping)
     char         namebuf[9];
     void *       handle;
 
-    if (gamestate != GS_LEVEL)
+    if (g_doomstat_globals->gamestate != GS_LEVEL)
     {
         prevmap = -1;
     }
     musinfo.current_item = -1;
 
     // [crispy] play no music if this is not the right map
-    if (nodrawers && singletics)
+    if (g_doomstat_globals->nodrawers && singletics)
         return;
 
     // [crispy] restart current music if IDMUS00 is entered
@@ -932,11 +924,11 @@ void S_ChangeMusic(int musicnum, int looping)
     }
 
     // [crispy] prevent music number under- and overflows
-    if (musicnum <= mus_None || (gamemode == commercial && musicnum < mus_runnin) || musicnum >= NUMMUSIC || (gamemode != commercial && musicnum >= mus_runnin) || S_music[musicnum].lumpnum == -1)
+    if (musicnum <= mus_None || (g_doomstat_globals->gamemode == commercial && musicnum < mus_runnin) || musicnum >= NUMMUSIC || (g_doomstat_globals->gamemode != commercial && musicnum >= mus_runnin) || S_music[musicnum].lumpnum == -1)
     {
         const auto umusicnum = static_cast<unsigned int>(musicnum);
 
-        if (gamemode == commercial)
+        if (g_doomstat_globals->gamemode == commercial)
         {
             musicnum = mus_runnin + (umusicnum % (NUMMUSIC - mus_runnin));
         }
@@ -1005,7 +997,7 @@ void S_ChangeMusInfoMusic(int lumpnum, int looping)
     prevmap = -1;
 
     // [crispy] play no music if this is not the right map
-    if (nodrawers && singletics)
+    if (g_doomstat_globals->nodrawers && singletics)
     {
         musinfo.current_item = lumpnum;
         return;
