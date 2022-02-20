@@ -1039,7 +1039,7 @@ void R_FillBackScreen()
             PU_STATIC, nullptr);
     }
 
-    if (gamemode == commercial)
+    if (g_doomstat_globals->gamemode == commercial)
         name = name2;
     else
         name = name1;

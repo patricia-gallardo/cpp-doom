@@ -32,14 +32,12 @@
 #include "deh_main.hpp"
 #include "d_loop.hpp"
 
-ticcmd_t *netcmds;
-
 // Called when a player leaves the game
 
 static void PlayerQuitGame(player_t *player)
 {
     static char  exitmsg[80];
-    auto player_num = static_cast<unsigned int>(player - players);
+    auto player_num = static_cast<unsigned int>(player - g_doomstat_globals->players);
 
     // Do this the same way as Vanilla Doom does, to allow dehacked
     // replacements of this message
@@ -49,14 +47,14 @@ static void PlayerQuitGame(player_t *player)
 
     exitmsg[7] = static_cast<char>(exitmsg[7] + player_num);
 
-    playeringame[player_num]       = false;
-    players[consoleplayer].message = exitmsg;
+    g_doomstat_globals->playeringame[player_num]       = false;
+    g_doomstat_globals->players[g_doomstat_globals->consoleplayer].message = exitmsg;
     // [crispy] don't interpolate players who left the game
     player->mo->interp = false;
 
     // TODO: check if it is sensible to do this:
 
-    if (demorecording)
+    if (g_doomstat_globals->demorecording)
     {
         G_CheckDemoStatus();
     }
@@ -70,13 +68,13 @@ static void RunTic(ticcmd_t *cmds, bool *ingame)
 
     for (unsigned int i = 0; i < MAXPLAYERS; ++i)
     {
-        if (!demoplayback && playeringame[i] && !ingame[i])
+        if (!g_doomstat_globals->demoplayback && g_doomstat_globals->playeringame[i] && !ingame[i])
         {
-            PlayerQuitGame(&players[i]);
+            PlayerQuitGame(&g_doomstat_globals->players[i]);
         }
     }
 
-    netcmds = cmds;
+    g_doomstat_globals->netcmds = cmds;
 
     // check that there are players in the game.  if not, we cannot
     // run a tic.
@@ -100,19 +98,19 @@ static loop_interface_t doom_loop_interface = {
 
 static void LoadGameSettings(net_gamesettings_t *settings)
 {
-    deathmatch    = settings->deathmatch;
-    startepisode  = settings->episode;
-    startmap      = settings->map;
-    startskill    = static_cast<skill_t>(settings->skill);
-    startloadgame = settings->loadgame;
-    lowres_turn   = settings->lowres_turn;
-    nomonsters    = settings->nomonsters;
-    fastparm      = settings->fast_monsters;
-    respawnparm   = settings->respawn_monsters;
-    timelimit     = settings->timelimit;
-    consoleplayer = settings->consoleplayer;
+    g_doomstat_globals->deathmatch    = settings->deathmatch;
+    g_doomstat_globals->startepisode  = settings->episode;
+    g_doomstat_globals->startmap      = settings->map;
+    g_doomstat_globals->startskill    = static_cast<skill_t>(settings->skill);
+    g_doomstat_globals->startloadgame = settings->loadgame;
+    g_doomstat_globals->lowres_turn   = settings->lowres_turn;
+    g_doomstat_globals->nomonsters    = settings->nomonsters;
+    g_doomstat_globals->fastparm      = settings->fast_monsters;
+    g_doomstat_globals->respawnparm   = settings->respawn_monsters;
+    g_doomstat_globals->timelimit     = settings->timelimit;
+    g_doomstat_globals->consoleplayer = settings->consoleplayer;
 
-    if (lowres_turn)
+    if (g_doomstat_globals->lowres_turn)
     {
         printf("NOTE: Turning resolution is reduced; this is probably "
                "because there is a client recording a Vanilla demo.\n");
@@ -120,7 +118,7 @@ static void LoadGameSettings(net_gamesettings_t *settings)
 
     for (std::size_t i = 0; i < MAXPLAYERS; ++i)
     {
-        playeringame[i] = static_cast<int>(i) < settings->num_players;
+        g_doomstat_globals->playeringame[i] = static_cast<int>(i) < settings->num_players;
     }
 }
 
@@ -132,16 +130,16 @@ static void SaveGameSettings(net_gamesettings_t *settings)
     // Fill in game settings structure with appropriate parameters
     // for the new game
 
-    settings->deathmatch       = deathmatch;
-    settings->episode          = startepisode;
-    settings->map              = startmap;
-    settings->skill            = startskill;
-    settings->loadgame         = startloadgame;
-    settings->gameversion      = gameversion;
-    settings->nomonsters       = nomonsters;
-    settings->fast_monsters    = fastparm;
-    settings->respawn_monsters = respawnparm;
-    settings->timelimit        = timelimit;
+    settings->deathmatch       = g_doomstat_globals->deathmatch;
+    settings->episode          = g_doomstat_globals->startepisode;
+    settings->map              = g_doomstat_globals->startmap;
+    settings->skill            = g_doomstat_globals->startskill;
+    settings->loadgame         = g_doomstat_globals->startloadgame;
+    settings->gameversion      = g_doomstat_globals->gameversion;
+    settings->nomonsters       = g_doomstat_globals->nomonsters;
+    settings->fast_monsters    = g_doomstat_globals->fastparm;
+    settings->respawn_monsters = g_doomstat_globals->respawnparm;
+    settings->timelimit        = g_doomstat_globals->timelimit;
 
     settings->lowres_turn = (M_ParmExists("-record")
                                 && !M_ParmExists("-longtics"))
@@ -161,7 +159,7 @@ static void InitConnectData(net_connect_data_t *connect_data)
 
     if (M_CheckParm("-left") > 0)
     {
-        viewangleoffset     = ANG90;
+        g_doomstat_globals->viewangleoffset     = ANG90;
         connect_data->drone = true;
     }
 
@@ -173,7 +171,7 @@ static void InitConnectData(net_connect_data_t *connect_data)
 
     if (M_CheckParm("-right") > 0)
     {
-        viewangleoffset     = static_cast<int>(ANG270);
+        g_doomstat_globals->viewangleoffset     = static_cast<int>(ANG270);
         connect_data->drone = true;
     }
 
@@ -183,8 +181,8 @@ static void InitConnectData(net_connect_data_t *connect_data)
 
     // Game type fields:
 
-    connect_data->gamemode    = gamemode;
-    connect_data->gamemission = gamemission;
+    connect_data->gamemode    = g_doomstat_globals->gamemode;
+    connect_data->gamemission = g_doomstat_globals->gamemission;
 
     //!
     // @category demo
@@ -215,7 +213,7 @@ void D_ConnectNetGame()
     net_connect_data_t connect_data;
 
     InitConnectData(&connect_data);
-    netgame = D_InitNetGame(&connect_data);
+    g_doomstat_globals->netgame = D_InitNetGame(&connect_data);
 
     //!
     // @category net
@@ -227,7 +225,7 @@ void D_ConnectNetGame()
 
     if (M_CheckParm("-solo-net") > 0)
     {
-        netgame = true;
+        g_doomstat_globals->netgame = true;
     }
 }
 
@@ -239,9 +237,9 @@ void D_CheckNetGame()
 {
     net_gamesettings_t settings;
 
-    if (netgame)
+    if (g_doomstat_globals->netgame)
     {
-        autostart = true;
+        g_doomstat_globals->autostart = true;
     }
 
     D_RegisterLoopCallbacks(&doom_loop_interface);
@@ -251,26 +249,26 @@ void D_CheckNetGame()
     LoadGameSettings(&settings);
 
     DEH_printf("startskill %i  deathmatch: %i  startmap: %i  startepisode: %i\n",
-        startskill, deathmatch, startmap, startepisode);
+        g_doomstat_globals->startskill, g_doomstat_globals->deathmatch, g_doomstat_globals->startmap, g_doomstat_globals->startepisode);
 
     DEH_printf("player %i of %i (%i nodes)\n",
-        consoleplayer + 1, settings.num_players, settings.num_players);
+        g_doomstat_globals->consoleplayer + 1, settings.num_players, settings.num_players);
 
     // Show players here; the server might have specified a time limit
 
-    if (timelimit > 0 && deathmatch)
+    if (g_doomstat_globals->timelimit > 0 && g_doomstat_globals->deathmatch)
     {
         // Gross hack to work like Vanilla:
 
-        if (timelimit == 20 && M_CheckParm("-avg"))
+        if (g_doomstat_globals->timelimit == 20 && M_CheckParm("-avg"))
         {
             DEH_printf("Austin Virtual Gaming: Levels will end "
                        "after 20 minutes\n");
         }
         else
         {
-            DEH_printf("Levels will end after %d minute", timelimit);
-            if (timelimit > 1)
+            DEH_printf("Levels will end after %d minute", g_doomstat_globals->timelimit);
+            if (g_doomstat_globals->timelimit > 1)
                 printf("s");
             printf(".\n");
         }

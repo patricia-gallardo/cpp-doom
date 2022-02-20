@@ -569,7 +569,7 @@ void P_CrossSpecialLinePtr(line_t *line,
 
     //  line = &lines[linenum];
 
-    if (gameversion <= exe_doom_1_2)
+    if (g_doomstat_globals->gameversion <= exe_doom_1_2)
     {
         if (line->special > 98 && line->special != 104)
         {
@@ -1133,12 +1133,12 @@ void P_PlayerInSpecialSector(player_t *player)
         // SECRET SECTOR
         player->secretcount++;
         // [crispy] show centered "Secret Revealed!" message
-        if (showMessages && crispy->secretmessage && player == &players[consoleplayer])
+        if (showMessages && crispy->secretmessage && player == &g_doomstat_globals->players[g_doomstat_globals->consoleplayer])
         {
             int         sfx_id;
             static char str_count[32];
 
-            M_snprintf(str_count, sizeof(str_count), "Secret %d of %d revealed!", player->secretcount, totalsecret);
+            M_snprintf(str_count, sizeof(str_count), "Secret %d of %d revealed!", player->secretcount, g_doomstat_globals->totalsecret);
 
             // [crispy] play DSSECRET if available
             sfx_id = I_GetSfxLumpNum(&S_sfx[sfx_secret]) != -1 ? sfx_secret : sfx_itmbk;
@@ -1536,10 +1536,10 @@ void P_SpawnSpecials()
 
     // See if -TIMER was specified.
 
-    if (timelimit > 0 && deathmatch)
+    if (g_doomstat_globals->timelimit > 0 && g_doomstat_globals->deathmatch)
     {
         levelTimer     = true;
-        levelTimeCount = timelimit * 60 * TICRATE;
+        levelTimeCount = g_doomstat_globals->timelimit * 60 * TICRATE;
     }
     else
     {
@@ -1582,7 +1582,7 @@ void P_SpawnSpecials()
             break;
         case 9:
             // SECRET SECTOR
-            totalsecret++;
+            g_doomstat_globals->totalsecret++;
             break;
 
         case 10:

@@ -243,7 +243,7 @@ visplane_t *
     visplane_t *check;
 
     // [crispy] add support for MBF sky tranfers
-    if (picnum == skyflatnum || static_cast<unsigned int>(picnum) & PL_SKYFLAT)
+    if (picnum == g_doomstat_globals->skyflatnum || static_cast<unsigned int>(picnum) & PL_SKYFLAT)
     {
         height     = 0; // all skys map together
         lightlevel = 0;
@@ -424,7 +424,7 @@ void R_DrawPlanes()
 
         // sky flat
         // [crispy] add support for MBF sky tranfers
-        if (pl->picnum == skyflatnum || static_cast<unsigned int>(pl->picnum) & PL_SKYFLAT)
+        if (pl->picnum == g_doomstat_globals->skyflatnum || static_cast<unsigned int>(pl->picnum) & PL_SKYFLAT)
         {
             int     texture;
             angle_t an = g_r_state_globals->viewangle, flip;

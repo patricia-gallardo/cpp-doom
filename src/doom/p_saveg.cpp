@@ -48,7 +48,7 @@ char *P_TempSaveGameFile()
 
     if (filename == nullptr)
     {
-        filename = M_StringJoin(savegamedir, "temp.dsg", nullptr);
+        filename = M_StringJoin(g_doomstat_globals->savegamedir, "temp.dsg", nullptr);
     }
 
     return filename;
@@ -64,12 +64,12 @@ char *P_SaveGameFile(int slot)
 
     if (filename == nullptr)
     {
-        filename_size = strlen(savegamedir) + 32;
+        filename_size = strlen(g_doomstat_globals->savegamedir) + 32;
         filename      = static_cast<char *>(malloc(filename_size));
     }
 
     DEH_snprintf(basename, 32, SAVEGAMENAME "%d.dsg", slot);
-    M_snprintf(filename, filename_size, "%s%s", savegamedir, basename);
+    M_snprintf(filename, filename_size, "%s%s", g_doomstat_globals->savegamedir, basename);
 
     return filename;
 }
@@ -399,7 +399,7 @@ static void saveg_read_mobj_t(mobj_t *str)
 
     if (pl > 0)
     {
-        str->player     = &players[pl - 1];
+        str->player     = &g_doomstat_globals->players[pl - 1];
         str->player->mo = str;
         str->player->so = Crispy_PlayerSO(pl - 1); // [crispy] weapon sound sources
     }
@@ -569,7 +569,7 @@ static void saveg_write_mobj_t(mobj_t *str)
     // struct player_s* player;
     if (str->player)
     {
-        saveg_write32(static_cast<int>(str->player - players + 1));
+        saveg_write32(static_cast<int>(str->player - g_doomstat_globals->players + 1));
     }
     else
     {
@@ -1426,12 +1426,12 @@ void P_WriteSaveGameHeader(char *description)
     for (i = 0; i < VERSIONSIZE; ++i)
         saveg_write8(static_cast<uint8_t>(name[i]));
 
-    saveg_write8(static_cast<uint8_t>(gameskill));
-    saveg_write8(static_cast<uint8_t>(gameepisode));
-    saveg_write8(static_cast<uint8_t>(gamemap));
+    saveg_write8(static_cast<uint8_t>(g_doomstat_globals->gameskill));
+    saveg_write8(static_cast<uint8_t>(g_doomstat_globals->gameepisode));
+    saveg_write8(static_cast<uint8_t>(g_doomstat_globals->gamemap));
 
     for (i = 0; i < MAXPLAYERS; i++)
-        saveg_write8(playeringame[i]);
+        saveg_write8(g_doomstat_globals->playeringame[i]);
 
     saveg_write8(static_cast<uint8_t>((leveltime >> 16) & 0xff));
     saveg_write8(static_cast<uint8_t>((leveltime >> 8) & 0xff));
@@ -1464,12 +1464,12 @@ bool P_ReadSaveGameHeader()
     if (strcmp(read_vcheck, vcheck) != 0)
         return false; // bad version
 
-    gameskill   = static_cast<skill_t>(saveg_read8());
-    gameepisode = saveg_read8();
-    gamemap     = saveg_read8();
+    g_doomstat_globals->gameskill   = static_cast<skill_t>(saveg_read8());
+    g_doomstat_globals->gameepisode = saveg_read8();
+    g_doomstat_globals->gamemap     = saveg_read8();
 
     for (i = 0; i < MAXPLAYERS; i++)
-        playeringame[i] = saveg_read8();
+        g_doomstat_globals->playeringame[i] = saveg_read8();
 
     // get the times
     a         = saveg_read8();
@@ -1511,12 +1511,12 @@ void P_ArchivePlayers()
 
     for (i = 0; i < MAXPLAYERS; i++)
     {
-        if (!playeringame[i])
+        if (!g_doomstat_globals->playeringame[i])
             continue;
 
         saveg_write_pad();
 
-        saveg_write_player_t(&players[i]);
+        saveg_write_player_t(&g_doomstat_globals->players[i]);
     }
 }
 
@@ -1530,17 +1530,17 @@ void P_UnArchivePlayers()
 
     for (i = 0; i < MAXPLAYERS; i++)
     {
-        if (!playeringame[i])
+        if (!g_doomstat_globals->playeringame[i])
             continue;
 
         saveg_read_pad();
 
-        saveg_read_player_t(&players[i]);
+        saveg_read_player_t(&g_doomstat_globals->players[i]);
 
         // will be set when unarc thinker
-        players[i].mo       = nullptr;
-        players[i].message  = nullptr;
-        players[i].attacker = nullptr;
+        g_doomstat_globals->players[i].mo       = nullptr;
+        g_doomstat_globals->players[i].message  = nullptr;
+        g_doomstat_globals->players[i].attacker = nullptr;
     }
 }
 

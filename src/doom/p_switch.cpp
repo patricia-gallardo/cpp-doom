@@ -126,7 +126,7 @@ void P_InitSwitchList()
     // Note that this is called "episode" here but it's actually something
     // quite different. As we progress from Shareware->Registered->Doom II
     // we support more switch textures.
-    switch (gamemode)
+    switch (g_doomstat_globals->gamemode)
     {
     case registered:
     case retail:

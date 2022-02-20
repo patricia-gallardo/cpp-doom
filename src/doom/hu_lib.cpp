@@ -25,6 +25,7 @@
 #include "r_local.hpp"
 #include "r_draw.hpp"
 #include "v_trans.hpp" // [crispy] colored HUlib_drawTextLine()
+#include "doomstat.hpp"
 
 // bool : whether the screen is always erased
 #define noterased viewwindowx
@@ -154,7 +155,7 @@ void HUlib_eraseTextLine(hu_textline_t *l)
     // and the text must either need updating or refreshing
     // (because of a recent change back from the automap)
 
-    if (!automapactive && viewwindowx && (l->needsupdate || crispy->cleanscreenshot || crispy->screenshotmsg == 4))
+    if (!g_doomstat_globals->automapactive && viewwindowx && (l->needsupdate || crispy->cleanscreenshot || crispy->screenshotmsg == 4))
     {
         lh = (SHORT(l->f[0]->height) + 1) << crispy->hires;
         // [crispy] support line breaks

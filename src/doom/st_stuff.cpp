@@ -122,11 +122,11 @@ constexpr auto ST_NUMEXTRAFACES =2;
 constexpr auto ST_FACESX = 143;
 constexpr auto ST_FACESY = 168;
 
-#define ST_EVILGRINCOUNT     (2 * TICRATE)
-#define ST_STRAIGHTFACECOUNT (TICRATE / 2)
-#define ST_TURNCOUNT         (1 * TICRATE)
-#define ST_OUCHCOUNT         (1 * TICRATE)
-#define ST_RAMPAGEDELAY      (2 * TICRATE)
+constexpr auto ST_EVILGRINCOUNT     = (2 * TICRATE);
+constexpr auto ST_STRAIGHTFACECOUNT = (TICRATE / 2);
+constexpr auto ST_TURNCOUNT         = (1 * TICRATE);
+constexpr auto ST_OUCHCOUNT         = (1 * TICRATE);
+constexpr auto ST_RAMPAGEDELAY      = (2 * TICRATE);
 
 constexpr auto ST_MUCHPAIN = 20;
 
@@ -480,10 +480,10 @@ void ST_refreshBackground(bool force)
             V_DrawPatch(ST_ARMSBGX, 0, sbarr);
 
         // [crispy] back up arms widget background
-        if (!deathmatch)
+        if (!g_doomstat_globals->deathmatch)
             V_DrawPatch(ST_ARMSBGX, 0, armsbg);
 
-        if (netgame)
+        if (g_doomstat_globals->netgame)
             V_DrawPatch(ST_FX, 0, faceback);
 
         V_RestoreBuffer();
@@ -576,11 +576,11 @@ static int ST_cheat_spechits()
 
     // [crispy] trigger tag 666/667 events
     dummy.tag = 666;
-    if (gamemode == commercial)
+    if (g_doomstat_globals->gamemode == commercial)
     {
-        if (gamemap == 7 ||
+        if (g_doomstat_globals->gamemap == 7 ||
             // [crispy] Master Levels in PC slot 7
-            (gamemission == pack_master && (gamemap == 14 || gamemap == 15 || gamemap == 16)))
+            (g_doomstat_globals->gamemission == pack_master && (g_doomstat_globals->gamemap == 14 || g_doomstat_globals->gamemap == 15 || g_doomstat_globals->gamemap == 16)))
         {
             // Mancubi
             speciallines += EV_DoFloor(&dummy, lowerFloorToLowest);
@@ -593,15 +593,15 @@ static int ST_cheat_spechits()
     }
     else
     {
-        if (gameepisode == 1)
+        if (g_doomstat_globals->gameepisode == 1)
             // Barons of Hell
             speciallines += EV_DoFloor(&dummy, lowerFloorToLowest);
-        else if (gameepisode == 4)
+        else if (g_doomstat_globals->gameepisode == 4)
         {
-            if (gamemap == 6)
+            if (g_doomstat_globals->gamemap == 6)
                 // Cyberdemons
                 speciallines += EV_DoDoor(&dummy, vld_blazeOpen);
-            else if (gamemap == 8)
+            else if (g_doomstat_globals->gamemap == 8)
                 // Spider Masterminds
                 speciallines += EV_DoFloor(&dummy, lowerFloorToLowest);
         }
@@ -623,7 +623,7 @@ static bool WeaponAvailable(int w)
     if (w == wp_supershotgun && !crispy->havessg)
         return false;
 
-    if ((w == wp_bfg || w == wp_plasma) && gamemode == shareware)
+    if ((w == wp_bfg || w == wp_plasma) && g_doomstat_globals->gamemode == shareware)
         return false;
 
     return true;
@@ -676,7 +676,7 @@ bool
     // if a user keypress...
     else if (ev->type == ev_keydown)
     {
-        if (!netgame && gameskill != sk_nightmare)
+        if (!g_doomstat_globals->netgame && g_doomstat_globals->gameskill != sk_nightmare)
         {
             // 'dqd' cheat for toggleable god mode
             if (cht_CheckCheatSP(&g_st_stuff_globals->cheat_god, static_cast<char>(ev->data2)))
@@ -690,7 +690,7 @@ bool
                     mt.x     = static_cast<short>(plyr->mo->x >> FRACBITS);
                     mt.y     = static_cast<short>(plyr->mo->y >> FRACBITS);
                     mt.angle = static_cast<short>((plyr->mo->angle + ANG45 / 2) * static_cast<uint64_t>(45) / ANG45);
-                    mt.type  = static_cast<short>(consoleplayer + 1);
+                    mt.type  = static_cast<short>(g_doomstat_globals->consoleplayer + 1);
                     P_SpawnPlayer(&mt);
 
                     // [crispy] spawn a teleport fog
@@ -785,7 +785,7 @@ bool
                 else
                     // [JN] Fixed: using a proper IDMUS selection for shareware
                     // and registered game versions.
-                    if (gamemode == commercial /* || gameversion < exe_ultimate */)
+                    if (g_doomstat_globals->gamemode == commercial /* || gameversion < exe_ultimate */)
                 {
                     musnum = mus_runnin + (buf[0] - '0') * 10 + buf[1] - '0' - 1;
 
@@ -907,8 +907,8 @@ bool
             else if (cht_CheckCheatSP(&cheat_massacre, static_cast<char>(ev->data2)) || cht_CheckCheatSP(&cheat_massacre2, static_cast<char>(ev->data2)) || cht_CheckCheatSP(&cheat_massacre3, static_cast<char>(ev->data2)))
             {
                 int               killcount = ST_cheat_massacre();
-                const char *const monster   = (gameversion == exe_chex) ? "Flemoid" : "Monster";
-                const char *const killed    = (gameversion == exe_chex) ? "returned" : "killed";
+                const char *const monster   = (g_doomstat_globals->gameversion == exe_chex) ? "Flemoid" : "Monster";
+                const char *const killed    = (g_doomstat_globals->gameversion == exe_chex) ? "returned" : "killed";
 
                 M_snprintf(msg, sizeof(msg), "%s%d %s%s%s %s",
                     crstr[static_cast<int>(cr_t::CR_GOLD)],
@@ -1127,12 +1127,12 @@ bool
             extern const char *skilltable[];
 
             M_snprintf(msg, sizeof(msg), "Skill: %s",
-                skilltable[BETWEEN(0, 5, static_cast<int>(gameskill) + 1)]);
+                skilltable[BETWEEN(0, 5, static_cast<int>(g_doomstat_globals->gameskill) + 1)]);
             plyr->message = msg;
         }
 
         // 'clev' change-level cheat
-        if (!netgame && cht_CheckCheat(&g_st_stuff_globals->cheat_clev, static_cast<char>(ev->data2)) && !menuactive) // [crispy] prevent only half the screen being updated
+        if (!g_doomstat_globals->netgame && cht_CheckCheat(&g_st_stuff_globals->cheat_clev, static_cast<char>(ev->data2)) && !g_doomstat_globals->menuactive) // [crispy] prevent only half the screen being updated
         {
             char buf[3];
             int  epsd = 0;
@@ -1140,9 +1140,9 @@ bool
 
             cht_GetParam(&g_st_stuff_globals->cheat_clev, buf);
 
-            if (gamemode == commercial)
+            if (g_doomstat_globals->gamemode == commercial)
             {
-                if (gamemission == pack_nerve)
+                if (g_doomstat_globals->gamemission == pack_nerve)
                     epsd = 2;
                 else
                     epsd = 0;
@@ -1155,7 +1155,7 @@ bool
 
                 // Chex.exe always warps to episode 1.
 
-                if (gameversion == exe_chex)
+                if (g_doomstat_globals->gameversion == exe_chex)
                 {
                     if (epsd > 1)
                     {
@@ -1172,12 +1172,12 @@ bool
             if (P_GetNumForMap(epsd, map, false) < 0)
             {
                 // Catch invalid maps.
-                if (gamemode != commercial)
+                if (g_doomstat_globals->gamemode != commercial)
                 {
                     // [crispy] allow IDCLEV0x to work in Doom 1
                     if (epsd == 0)
                     {
-                        epsd = gameepisode;
+                        epsd = g_doomstat_globals->gameepisode;
                     }
                     if (epsd < 1)
                     {
@@ -1189,14 +1189,14 @@ bool
                         if (!(crispy->haved1e5 && epsd == 5))
                             return false;
                     }
-                    if (epsd == 4 && gameversion < exe_ultimate)
+                    if (epsd == 4 && g_doomstat_globals->gameversion < exe_ultimate)
                     {
                         return false;
                     }
                     // [crispy] IDCLEV00 restarts current map
                     if ((map == 0) && (buf[0] - '0' == 0))
                     {
-                        map = gamemap;
+                        map = g_doomstat_globals->gamemap;
                     }
                     // [crispy] support E1M10 "Sewers"
                     if ((map == 0 || map > 9) && crispy->havee1m10 && epsd == 1)
@@ -1219,7 +1219,7 @@ bool
                     // [crispy] IDCLEV00 restarts current map
                     if ((map == 0) && (buf[0] - '0' == 0))
                     {
-                        map = gamemap;
+                        map = g_doomstat_globals->gamemap;
                     }
                     if (map < 1)
                     {
@@ -1229,11 +1229,11 @@ bool
                     {
                         return false;
                     }
-                    if (map > 9 && gamemission == pack_nerve)
+                    if (map > 9 && g_doomstat_globals->gamemission == pack_nerve)
                     {
                         return false;
                     }
-                    if (map > 21 && gamemission == pack_master)
+                    if (map > 21 && g_doomstat_globals->gamemission == pack_master)
                     {
                         return false;
                     }
@@ -1246,12 +1246,12 @@ bool
                 // So be it.
                 plyr->message = DEH_String(STSTR_CLEV);
                 // [crisp] allow IDCLEV during demo playback and warp to the requested map
-                if (demoplayback)
+                if (g_doomstat_globals->demoplayback)
                 {
-                    if (map > gamemap)
+                    if (map > g_doomstat_globals->gamemap)
                     {
                         crispy->demowarp = map;
-                        nodrawers        = true;
+                        g_doomstat_globals->nodrawers        = true;
                         singletics       = true;
                         return true;
                     }
@@ -1261,13 +1261,13 @@ bool
                     }
                 }
                 else
-                    G_DeferedInitNew(gameskill, epsd, map);
+                    G_DeferedInitNew(g_doomstat_globals->gameskill, epsd, map);
                 // [crispy] eat key press, i.e. don't change weapon upon level change
                 return true;
             }
         }
         // [crispy] eat up the first digit typed after a cheat expecting two parameters
-        else if (!netgame && cht_CheckCheat(&cheat_clev1, static_cast<char>(ev->data2)) && !menuactive)
+        else if (!g_doomstat_globals->netgame && cht_CheckCheat(&cheat_clev1, static_cast<char>(ev->data2)) && !g_doomstat_globals->menuactive)
         {
             char buf[2];
 
@@ -1551,18 +1551,18 @@ void ST_updateWidgets()
     ST_updateFaceWidget();
 
     // used by the w_armsbg widget
-    st_notdeathmatch = !deathmatch;
+    st_notdeathmatch = !g_doomstat_globals->deathmatch;
 
     // used by w_arms[] widgets
-    st_armson = st_statusbaron && !deathmatch;
+    st_armson = st_statusbaron && !g_doomstat_globals->deathmatch;
 
     // used by w_frags widget
-    st_fragson    = deathmatch && st_statusbaron;
+    st_fragson    = g_doomstat_globals->deathmatch && st_statusbaron;
     st_fragscount = 0;
 
     for (int i = 0; i < MAXPLAYERS; i++)
     {
-        if (i != consoleplayer)
+        if (i != g_doomstat_globals->consoleplayer)
             st_fragscount += plyr->frags[i];
         else
             st_fragscount -= plyr->frags[i];
@@ -1606,7 +1606,7 @@ void ST_doPaletteStuff()
             palette = NUMREDPALS - 1;
 
         // [crispy] tune down a bit so the menu remains legible
-        if (menuactive || paused)
+        if (g_doomstat_globals->menuactive || g_doomstat_globals->paused)
             palette >>= 1;
 
         palette += STARTREDPALS;
@@ -1633,7 +1633,7 @@ void ST_doPaletteStuff()
     // as though the player is being covered in goo by an
     // attacking flemoid.
 
-    if (gameversion == exe_chex
+    if (g_doomstat_globals->gameversion == exe_chex
         && palette >= STARTREDPALS && palette < STARTREDPALS + NUMREDPALS)
     {
         palette = RADIATIONPAL;
@@ -1785,10 +1785,10 @@ void ST_drawWidgets(bool refresh)
     bool gibbed = false;
 
     // used by w_arms[] widgets
-    st_armson = st_statusbaron && !deathmatch;
+    st_armson = st_statusbaron && !g_doomstat_globals->deathmatch;
 
     // used by w_frags widget
-    st_fragson = deathmatch && st_statusbaron;
+    st_fragson = g_doomstat_globals->deathmatch && st_statusbaron;
 
     dp_translation = ST_WidgetColor(hudcolor_t::hudcolor_ammo);
     STlib_updateNum(&w_ready, refresh);
@@ -1891,12 +1891,12 @@ void ST_diffDraw()
 void ST_Drawer(bool fullscreen_param, bool refresh)
 {
 
-    st_statusbaron = (!fullscreen_param) || (automapactive && !crispy->automapoverlay && !crispy->widescreen);
+    st_statusbaron = (!fullscreen_param) || (g_doomstat_globals->automapactive && !crispy->automapoverlay && !crispy->widescreen);
     // [crispy] immediately redraw status bar after help screens have been shown
     st_firsttime = st_firsttime || refresh || inhelpscreens;
 
     // [crispy] distinguish classic status bar with background and player face from Crispy HUD
-    st_crispyhud        = screenblocks >= CRISPY_HUD && (!automapactive || crispy->automapoverlay);
+    st_crispyhud        = screenblocks >= CRISPY_HUD && (!g_doomstat_globals->automapactive || crispy->automapoverlay);
     st_classicstatusbar = st_statusbaron && !st_crispyhud && !crispy->widescreen;
     st_statusbarface    = st_classicstatusbar || (st_crispyhud && screenblocks == CRISPY_HUD);
 
@@ -1966,7 +1966,7 @@ static void ST_loadUnloadGraphics(load_callback_t callback)
     }
 
     // face backgrounds for different color players
-    DEH_snprintf(namebuf, 9, "STFB%d", consoleplayer);
+    DEH_snprintf(namebuf, 9, "STFB%d", g_doomstat_globals->consoleplayer);
     callback(namebuf, &faceback);
 
     // status bar background bits
@@ -2062,7 +2062,7 @@ void ST_unloadGraphics()
 void ST_initData()
 {
     st_firsttime = true;
-    plyr         = &players[consoleplayer];
+    plyr         = &g_doomstat_globals->players[g_doomstat_globals->consoleplayer];
 
     st_clock     = 0;
     st_chatstate = StartChatState;
@@ -2264,11 +2264,11 @@ void ST_Start()
 
     // [crispy] correctly color the status bar face background in multiplayer
     // demos recorded by another player than player 1
-    if (netgame && consoleplayer)
+    if (g_doomstat_globals->netgame && g_doomstat_globals->consoleplayer)
     {
         char namebuf[8];
 
-        DEH_snprintf(namebuf, 7, "STFB%d", consoleplayer);
+        DEH_snprintf(namebuf, 7, "STFB%d", g_doomstat_globals->consoleplayer);
         faceback = cache_lump_name<patch_t *>(namebuf, PU_STATIC);
     }
 }
@@ -2322,7 +2322,7 @@ void ST_DrawDemoTimer(const int time)
 
     // [crispy] draw the Demo Timer widget with gray numbers
     dp_translation = cr_colors[static_cast<int>(cr_t::CR_GRAY)];
-    dp_translucent = (gamestate == GS_LEVEL);
+    dp_translucent = (g_doomstat_globals->gamestate == GS_LEVEL);
 
     while (n-- > 0)
     {

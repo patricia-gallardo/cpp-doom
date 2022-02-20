@@ -534,7 +534,7 @@ void R_Subsector(int num)
     {
         g_r_state_globals->floorplane = R_FindPlane(frontsector->interpfloorheight,
             // [crispy] add support for MBF sky tranfers
-            frontsector->floorpic == skyflatnum && static_cast<unsigned int>(frontsector->sky) & PL_SKYFLAT ? frontsector->sky :
+            frontsector->floorpic == g_doomstat_globals->skyflatnum && static_cast<unsigned int>(frontsector->sky) & PL_SKYFLAT ? frontsector->sky :
                                                                                    frontsector->floorpic,
             frontsector->lightlevel);
     }
@@ -542,11 +542,11 @@ void R_Subsector(int num)
         g_r_state_globals->floorplane = nullptr;
 
     if (frontsector->interpceilingheight > g_r_state_globals->viewz
-        || frontsector->ceilingpic == skyflatnum)
+        || frontsector->ceilingpic == g_doomstat_globals->skyflatnum)
     {
         g_r_state_globals->ceilingplane = R_FindPlane(frontsector->interpceilingheight,
             // [crispy] add support for MBF sky tranfers
-            frontsector->ceilingpic == skyflatnum && static_cast<unsigned int>(frontsector->sky) & PL_SKYFLAT ? frontsector->sky :
+            frontsector->ceilingpic == g_doomstat_globals->skyflatnum && static_cast<unsigned int>(frontsector->sky) & PL_SKYFLAT ? frontsector->sky :
                                                                                      frontsector->ceilingpic,
             frontsector->lightlevel);
     }

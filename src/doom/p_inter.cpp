@@ -73,8 +73,8 @@ bool
     else
         num = g_p_local_globals->clipammo[ammo] / 2;
 
-    if (gameskill == sk_baby
-        || gameskill == sk_nightmare)
+    if (g_doomstat_globals->gameskill == sk_baby
+        || g_doomstat_globals->gameskill == sk_nightmare)
     {
         // give double ammo in trainer mode,
         // you'll need in nightmare
@@ -161,8 +161,8 @@ bool
     bool gaveammo;
     bool gaveweapon;
 
-    if (netgame
-        && (deathmatch != 2)
+    if (g_doomstat_globals->netgame
+        && (g_doomstat_globals->deathmatch != 2)
         && !dropped)
     {
         // leave placed weapons forever on net games
@@ -172,7 +172,7 @@ bool
         player->bonuscount += BONUSADD;
         player->weaponowned[weapon] = true;
 
-        if (deathmatch)
+        if (g_doomstat_globals->deathmatch)
             P_GiveAmmo(player, weaponinfo[weapon].ammo, 5, false);
         else
             P_GiveAmmo(player, weaponinfo[weapon].ammo, 2, false);
@@ -180,7 +180,7 @@ bool
         // [crispy] show weapon pickup messages in multiplayer games
         player->message = DEH_String(WeaponPickupMessages[weapon]);
 
-        if (player == &players[consoleplayer])
+        if (player == &g_doomstat_globals->players[g_doomstat_globals->consoleplayer])
             S_StartSound(nullptr, sfx_wpnup);
         return false;
     }
@@ -265,7 +265,7 @@ void P_GiveCard(player_t *player,
     if (player->cards[card])
         return;
 
-    player->bonuscount += netgame ? BONUSADD : 0; // [crispy] Fix "Key pickup resets palette"
+    player->bonuscount += g_doomstat_globals->netgame ? BONUSADD : 0; // [crispy] Fix "Key pickup resets palette"
     player->cards[card] = 1;
 }
 
@@ -374,7 +374,7 @@ void P_TouchSpecialThing(mobj_t *special,
 
     case SPR_BON2:
         player->armorpoints++; // can go over 100%
-        if (player->armorpoints > deh_max_armor && gameversion > exe_doom_1_2)
+        if (player->armorpoints > deh_max_armor && g_doomstat_globals->gameversion > exe_doom_1_2)
             player->armorpoints = deh_max_armor;
         // deh_green_armor_class only applies to the green armor shirt;
         // for the armor helmets, armortype 1 is always used.
@@ -389,12 +389,12 @@ void P_TouchSpecialThing(mobj_t *special,
             player->health = deh_max_soulsphere;
         player->mo->health = player->health;
         player->message    = DEH_String(GOTSUPER);
-        if (gameversion > exe_doom_1_2)
+        if (g_doomstat_globals->gameversion > exe_doom_1_2)
             sound = sfx_getpow;
         break;
 
     case SPR_MEGA:
-        if (gamemode != commercial)
+        if (g_doomstat_globals->gamemode != commercial)
             return;
         player->health     = deh_megasphere_health;
         player->mo->health = player->health;
@@ -402,7 +402,7 @@ void P_TouchSpecialThing(mobj_t *special,
         // affects the MegaArmor.
         P_GiveArmor(player, 2);
         player->message = DEH_String(GOTMSPHERE);
-        if (gameversion > exe_doom_1_2)
+        if (g_doomstat_globals->gameversion > exe_doom_1_2)
             sound = sfx_getpow;
         break;
 
@@ -412,7 +412,7 @@ void P_TouchSpecialThing(mobj_t *special,
         if (!player->cards[it_bluecard])
             player->message = DEH_String(GOTBLUECARD);
         P_GiveCard(player, it_bluecard);
-        if (!netgame)
+        if (!g_doomstat_globals->netgame)
             break;
         return;
 
@@ -420,7 +420,7 @@ void P_TouchSpecialThing(mobj_t *special,
         if (!player->cards[it_yellowcard])
             player->message = DEH_String(GOTYELWCARD);
         P_GiveCard(player, it_yellowcard);
-        if (!netgame)
+        if (!g_doomstat_globals->netgame)
             break;
         return;
 
@@ -428,7 +428,7 @@ void P_TouchSpecialThing(mobj_t *special,
         if (!player->cards[it_redcard])
             player->message = DEH_String(GOTREDCARD);
         P_GiveCard(player, it_redcard);
-        if (!netgame)
+        if (!g_doomstat_globals->netgame)
             break;
         return;
 
@@ -436,7 +436,7 @@ void P_TouchSpecialThing(mobj_t *special,
         if (!player->cards[it_blueskull])
             player->message = DEH_String(GOTBLUESKUL);
         P_GiveCard(player, it_blueskull);
-        if (!netgame)
+        if (!g_doomstat_globals->netgame)
             break;
         return;
 
@@ -444,7 +444,7 @@ void P_TouchSpecialThing(mobj_t *special,
         if (!player->cards[it_yellowskull])
             player->message = DEH_String(GOTYELWSKUL);
         P_GiveCard(player, it_yellowskull);
-        if (!netgame)
+        if (!g_doomstat_globals->netgame)
             break;
         return;
 
@@ -452,7 +452,7 @@ void P_TouchSpecialThing(mobj_t *special,
         if (!player->cards[it_redskull])
             player->message = DEH_String(GOTREDSKULL);
         P_GiveCard(player, it_redskull);
-        if (!netgame)
+        if (!g_doomstat_globals->netgame)
             break;
         return;
 
@@ -480,7 +480,7 @@ void P_TouchSpecialThing(mobj_t *special,
         if (!P_GivePower(player, pw_invulnerability))
             return;
         player->message = DEH_String(GOTINVUL);
-        if (gameversion > exe_doom_1_2)
+        if (g_doomstat_globals->gameversion > exe_doom_1_2)
             sound = sfx_getpow;
         break;
 
@@ -490,7 +490,7 @@ void P_TouchSpecialThing(mobj_t *special,
         player->message = DEH_String(GOTBERSERK);
         if (player->readyweapon != wp_fist)
             player->pendingweapon = wp_fist;
-        if (gameversion > exe_doom_1_2)
+        if (g_doomstat_globals->gameversion > exe_doom_1_2)
             sound = sfx_getpow;
         break;
 
@@ -498,7 +498,7 @@ void P_TouchSpecialThing(mobj_t *special,
         if (!P_GivePower(player, pw_invisibility))
             return;
         player->message = DEH_String(GOTINVIS);
-        if (gameversion > exe_doom_1_2)
+        if (g_doomstat_globals->gameversion > exe_doom_1_2)
             sound = sfx_getpow;
         break;
 
@@ -506,7 +506,7 @@ void P_TouchSpecialThing(mobj_t *special,
         if (!P_GivePower(player, pw_ironfeet))
             return;
         player->message = DEH_String(GOTSUIT);
-        if (gameversion > exe_doom_1_2)
+        if (g_doomstat_globals->gameversion > exe_doom_1_2)
             sound = sfx_getpow;
         break;
 
@@ -514,7 +514,7 @@ void P_TouchSpecialThing(mobj_t *special,
         if (!P_GivePower(player, pw_allmap))
             return;
         player->message = DEH_String(GOTMAP);
-        if (gameversion > exe_doom_1_2)
+        if (g_doomstat_globals->gameversion > exe_doom_1_2)
             sound = sfx_getpow;
         break;
 
@@ -522,7 +522,7 @@ void P_TouchSpecialThing(mobj_t *special,
         if (!P_GivePower(player, pw_infrared))
             return;
         player->message = DEH_String(GOTVISOR);
-        if (gameversion > exe_doom_1_2)
+        if (g_doomstat_globals->gameversion > exe_doom_1_2)
             sound = sfx_getpow;
         break;
 
@@ -662,7 +662,7 @@ void P_TouchSpecialThing(mobj_t *special,
         player->itemcount++;
     P_RemoveMobj(special);
     player->bonuscount += BONUSADD;
-    if (player == &players[consoleplayer])
+    if (player == &g_doomstat_globals->players[g_doomstat_globals->consoleplayer])
         S_StartSound(nullptr, sound);
 }
 
@@ -690,20 +690,20 @@ void P_KillMobj(mobj_t *source,
             source->player->killcount++;
 
         if (target->player)
-            source->player->frags[target->player - players]++;
+            source->player->frags[target->player - g_doomstat_globals->players]++;
     }
-    else if (!netgame && (target->flags & MF_COUNTKILL))
+    else if (!g_doomstat_globals->netgame && (target->flags & MF_COUNTKILL))
     {
         // count all monster deaths,
         // even those caused by other monsters
-        players[0].killcount++;
+        g_doomstat_globals->players[0].killcount++;
     }
 
     if (target->player)
     {
         // count environment kills against you
         if (!source)
-            target->player->frags[target->player - players]++;
+            target->player->frags[target->player - g_doomstat_globals->players]++;
 
         target->flags &= ~MF_SOLID;
         target->player->playerstate = PST_DEAD;
@@ -715,8 +715,8 @@ void P_KillMobj(mobj_t *source,
         // [JN] & [crispy] Remove the effect of the inverted palette when the player dies
         target->player->fixedcolormap = target->player->powers[pw_infrared] ? 1 : 0;
 
-        if (target->player == &players[consoleplayer]
-            && automapactive)
+        if (target->player == &g_doomstat_globals->players[g_doomstat_globals->consoleplayer]
+            && g_doomstat_globals->automapactive)
         {
             // don't die in auto map,
             // switch view prior to dying
@@ -751,7 +751,7 @@ void P_KillMobj(mobj_t *source,
 
     // In Chex Quest, monsters don't drop items.
 
-    if (gameversion == exe_chex)
+    if (g_doomstat_globals->gameversion == exe_chex)
     {
         return;
     }
@@ -817,7 +817,7 @@ void P_DamageMobj(mobj_t *target,
     }
 
     player = target->player;
-    if (player && gameskill == sk_baby)
+    if (player && g_doomstat_globals->gameskill == sk_baby)
         damage >>= 1; // take half damage in trainer mode
 
 
@@ -904,7 +904,7 @@ void P_DamageMobj(mobj_t *target,
 
         temp = damage < 100 ? damage : 100;
 
-        if (player == &players[consoleplayer])
+        if (player == &g_doomstat_globals->players[g_doomstat_globals->consoleplayer])
             I_Tactile(40, 10, 40 + temp * 2);
     }
 
@@ -928,7 +928,7 @@ void P_DamageMobj(mobj_t *target,
     target->reactiontime = 0; // we're awake now...
 
     if ((!target->threshold || target->type == MT_VILE)
-        && source && (source != target || gameversion <= exe_doom_1_2)
+        && source && (source != target || g_doomstat_globals->gameversion <= exe_doom_1_2)
         && source->type != MT_VILE)
     {
         // if not intent on another player,

@@ -26,9 +26,8 @@
 #include "st_lib.hpp"
 #include "lump.hpp"
 #include "v_trans.hpp" // [crispy] colored status bar widgets
+#include "doomstat.hpp"
 
-// in AM_map.c
-extern bool automapactive;
 extern int     screenblocks;
 
 
@@ -110,7 +109,7 @@ void STlib_drawNum(st_number_t *n,
     if (n->y - ST_Y < 0)
         I_Error("drawNum: n->y - ST_Y < 0");
 
-    if (screenblocks < CRISPY_HUD || (automapactive && !crispy->automapoverlay && !crispy->widescreen))
+    if (screenblocks < CRISPY_HUD || (g_doomstat_globals->automapactive && !crispy->automapoverlay && !crispy->widescreen))
         V_CopyRect(x, n->y - ST_Y, g_st_stuff_globals->st_backing_screen, w * numdigits, h, x, n->y);
 
     // if non-number, do not draw it
@@ -222,7 +221,7 @@ void STlib_updateMultIcon(st_multicon_t *mi,
             if (y - ST_Y < 0)
                 I_Error("updateMultIcon: y - ST_Y < 0");
 
-            if (screenblocks < CRISPY_HUD || (automapactive && !crispy->automapoverlay && !crispy->widescreen))
+            if (screenblocks < CRISPY_HUD || (g_doomstat_globals->automapactive && !crispy->automapoverlay && !crispy->widescreen))
                 V_CopyRect(x, y - ST_Y, g_st_stuff_globals->st_backing_screen, w, h, x, y);
         }
         V_DrawPatch(mi->x, mi->y, mi->p[*mi->inum]);
@@ -268,7 +267,7 @@ void STlib_updateBinIcon(st_binicon_t *bi,
 
         if (*bi->val)
             V_DrawPatch(bi->x, bi->y, bi->p);
-        else if (screenblocks < CRISPY_HUD || (automapactive && !crispy->automapoverlay && !crispy->widescreen))
+        else if (screenblocks < CRISPY_HUD || (g_doomstat_globals->automapactive && !crispy->automapoverlay && !crispy->widescreen))
             V_CopyRect(x, y - ST_Y, g_st_stuff_globals->st_backing_screen, w, h, x, y);
 
         bi->oldval = *bi->val;

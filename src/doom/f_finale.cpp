@@ -116,9 +116,9 @@ void    F_CastDrawer();
 void F_StartFinale()
 {
     gameaction    = ga_nothing;
-    gamestate     = GS_FINALE;
-    viewactive    = false;
-    automapactive = false;
+    g_doomstat_globals->gamestate     = GS_FINALE;
+    g_doomstat_globals->viewactive    = false;
+    g_doomstat_globals->automapactive = false;
 
     if (logical_gamemission == doom)
     {
@@ -137,28 +137,28 @@ void F_StartFinale()
 
         // Hack for Chex Quest
 
-        if (gameversion == exe_chex && screen->mission == doom)
+        if (g_doomstat_globals->gameversion == exe_chex && screen->mission == doom)
         {
             screen->level = 5;
         }
 
         // [crispy] Hack for Master Levels MAP21: Bad Dream
-        if (gamemission == pack_master && screen->mission == pack_master && gamemap == 21)
+        if (g_doomstat_globals->gamemission == pack_master && screen->mission == pack_master && g_doomstat_globals->gamemap == 21)
         {
             screen->level = 21;
         }
 
         // [crispy] During demo recording/playback or network games
         // these two packs behave like any other ordinary PWAD
-        if (!crispy->singleplayer && (gamemission == pack_nerve || gamemission == pack_master)
+        if (!crispy->singleplayer && (g_doomstat_globals->gamemission == pack_nerve || g_doomstat_globals->gamemission == pack_master)
             && screen->mission == doom2)
         {
-            screen->mission = gamemission;
+            screen->mission = g_doomstat_globals->gamemission;
         }
 
         if (logical_gamemission == screen->mission
-            && (logical_gamemission != doom || gameepisode == screen->episode)
-            && gamemap == screen->level)
+            && (logical_gamemission != doom || g_doomstat_globals->gameepisode == screen->episode)
+            && g_doomstat_globals->gamemap == screen->level)
         {
             finaletext = screen->text;
             finaleflat = screen->background;
@@ -199,21 +199,21 @@ void F_Ticker()
     size_t i;
 
     // check for skipping
-    if ((gamemode == commercial)
+    if ((g_doomstat_globals->gamemode == commercial)
         && (finalecount > 50))
     {
         // go on to the next level
         for (i = 0; i < MAXPLAYERS; i++)
-            if (players[i].cmd.buttons)
+            if (g_doomstat_globals->players[i].cmd.buttons)
                 break;
 
         if (i < MAXPLAYERS)
         {
-            if (gamemission == pack_nerve && crispy->singleplayer && gamemap == 8)
+            if (g_doomstat_globals->gamemission == pack_nerve && crispy->singleplayer && g_doomstat_globals->gamemap == 8)
                 F_StartCast();
-            else if (gamemission == pack_master && crispy->singleplayer && (gamemap == 20 || gamemap == 21))
+            else if (g_doomstat_globals->gamemission == pack_master && crispy->singleplayer && (g_doomstat_globals->gamemap == 20 || g_doomstat_globals->gamemap == 21))
                 F_StartCast();
-            else if (gamemap == 30)
+            else if (g_doomstat_globals->gamemap == 30)
                 F_StartCast();
             else
                 gameaction = ga_worlddone;
@@ -229,7 +229,7 @@ void F_Ticker()
         return;
     }
 
-    if (gamemode == commercial)
+    if (g_doomstat_globals->gamemode == commercial)
         return;
 
     if (finalestage == F_STAGE_TEXT
@@ -237,8 +237,8 @@ void F_Ticker()
     {
         finalecount   = 0;
         finalestage   = F_STAGE_ARTSCREEN;
-        wipegamestate = gamestate_t::GS_FORCE_WIPE; // force a wipe
-        if (gameepisode == 3)
+        g_doomstat_globals->wipegamestate = gamestate_t::GS_FORCE_WIPE; // force a wipe
+        if (g_doomstat_globals->gameepisode == 3)
             S_StartMusic(mus_bunny);
     }
 }
@@ -505,7 +505,7 @@ static int F_SoundForState(int st)
 //
 void F_StartCast()
 {
-    wipegamestate = gamestate_t::GS_FORCE_WIPE; // force a screen wipe
+    g_doomstat_globals->wipegamestate = gamestate_t::GS_FORCE_WIPE; // force a screen wipe
     castnum       = 0;
     caststate     = &states[mobjinfo[castorder[castnum].type].seestate];
     casttics      = caststate->tics;
@@ -946,16 +946,16 @@ static void F_ArtScreenDrawer()
 {
     const char *lumpname;
 
-    if (gameepisode == 3)
+    if (g_doomstat_globals->gameepisode == 3)
     {
         F_BunnyScroll();
     }
     else
     {
-        switch (gameepisode)
+        switch (g_doomstat_globals->gameepisode)
         {
         case 1:
-            if (gameversion >= exe_ultimate)
+            if (g_doomstat_globals->gameversion >= exe_ultimate)
             {
                 lumpname = "CREDIT";
             }

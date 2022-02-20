@@ -70,16 +70,8 @@ extern bool     message_dontfuckwithme;
 
 extern bool chat_on; // in heads-up code
 
-//
-// defaulted values
-//
-int mouseSensitivity    = 5;
-int mouseSensitivity_x2 = 5; // [crispy] mouse sensitivity menu
-int mouseSensitivity_y  = 5; // [crispy] mouse sensitivity menu
-
 // Show messages has default, 0 = off, 1 = on
 int showMessages = 1;
-
 
 // Blocky mode, has default, 0 = high, 1 = normal
 int detailLevel  = 0;
@@ -119,7 +111,6 @@ static bool joypadSave = false; // was the save action initiated by joypad?
 char saveOldString[SAVESTRINGSIZE];
 
 bool inhelpscreens;
-bool menuactive;
 
 constexpr auto SKULLXOFF         = -32;
 constexpr auto LINEHEIGHT        = 16;
@@ -741,7 +732,7 @@ void M_LoadSelect(int choice)
 void M_LoadGame(int)
 {
     // [crispy] allow loading game while multiplayer demo playback
-    if (netgame && !demoplayback)
+    if (g_doomstat_globals->netgame && !g_doomstat_globals->demoplayback)
     {
         M_StartMessage(DEH_String(LOADNET), nullptr, false);
         return;
@@ -791,7 +782,7 @@ void M_DoSave(int slot)
 static void SetDefaultSaveName(int)
 {
     // map from IWAD or PWAD?
-    if (W_IsIWADLump(maplumpinfo) && strcmp(savegamedir, "") != 0)
+    if (W_IsIWADLump(maplumpinfo) && strcmp(g_doomstat_globals->savegamedir, "") != 0)
     {
         M_snprintf(savegamestrings[itemOn], SAVESTRINGSIZE, "%s", maplumpinfo->name);
     }
@@ -858,13 +849,13 @@ void M_SaveSelect(int choice)
 //
 void M_SaveGame(int)
 {
-    if (!usergame)
+    if (!g_doomstat_globals->usergame)
     {
         M_StartMessage(DEH_String(SAVEDEAD), nullptr, false);
         return;
     }
 
-    if (gamestate != GS_LEVEL) return;
+    if (g_doomstat_globals->gamestate != GS_LEVEL) return;
 
     M_SetupNextMenu(&SaveDef);
     M_ReadSaveStrings();
@@ -887,13 +878,13 @@ void M_QuickSaveResponse(int key)
 
 void M_QuickSave()
 {
-    if (!usergame)
+    if (!g_doomstat_globals->usergame)
     {
         S_StartSound(nullptr, sfx_oof);
         return;
     }
 
-    if (gamestate != GS_LEVEL) return;
+    if (g_doomstat_globals->gamestate != GS_LEVEL) return;
 
     if (quickSaveSlot < 0)
     {
@@ -928,7 +919,7 @@ void M_QuickLoadResponse(int key)
 void M_QuickLoad()
 {
     // [crispy] allow quickloading game while multiplayer demo playback
-    if (netgame && !demoplayback)
+    if (g_doomstat_globals->netgame && !g_doomstat_globals->demoplayback)
     {
         M_StartMessage(DEH_String(QLOADNET), nullptr, false);
         return;
@@ -992,9 +983,9 @@ void M_DrawSound()
 {
     V_DrawPatchDirect(60, 38, cache_lump_name<patch_t *>(DEH_String("M_SVOL"), PU_CACHE));
 
-    M_DrawThermo(SoundDef.x, SoundDef.y + LINEHEIGHT * (static_cast<int>(sound_e::sfx_vol) + 1), 16, sfxVolume);
+    M_DrawThermo(SoundDef.x, SoundDef.y + LINEHEIGHT * (static_cast<int>(sound_e::sfx_vol) + 1), 16, g_doomstat_globals->sfxVolume);
 
-    M_DrawThermo(SoundDef.x, SoundDef.y + LINEHEIGHT * (static_cast<int>(sound_e::music_vol) + 1), 16, musicVolume);
+    M_DrawThermo(SoundDef.x, SoundDef.y + LINEHEIGHT * (static_cast<int>(sound_e::music_vol) + 1), 16, g_doomstat_globals->musicVolume);
 }
 
 void M_Sound(int)
@@ -1007,14 +998,14 @@ void M_SfxVol(int choice)
     switch (choice)
     {
     case 0:
-        if (sfxVolume) sfxVolume--;
+        if (g_doomstat_globals->sfxVolume) g_doomstat_globals->sfxVolume--;
         break;
     case 1:
-        if (sfxVolume < 15) sfxVolume++;
+        if (g_doomstat_globals->sfxVolume < 15) g_doomstat_globals->sfxVolume++;
         break;
     }
 
-    S_SetSfxVolume(sfxVolume * 8);
+    S_SetSfxVolume(g_doomstat_globals->sfxVolume * 8);
 }
 
 void M_MusicVol(int choice)
@@ -1022,14 +1013,14 @@ void M_MusicVol(int choice)
     switch (choice)
     {
     case 0:
-        if (musicVolume) musicVolume--;
+        if (g_doomstat_globals->musicVolume) g_doomstat_globals->musicVolume--;
         break;
     case 1:
-        if (musicVolume < 15) musicVolume++;
+        if (g_doomstat_globals->musicVolume < 15) g_doomstat_globals->musicVolume++;
         break;
     }
 
-    S_SetMusicVolume(musicVolume * 8);
+    S_SetMusicVolume(g_doomstat_globals->musicVolume * 8);
 }
 
 
@@ -1054,9 +1045,9 @@ void M_DrawNewGame()
 void M_NewGame(int)
 {
     // [crispy] forbid New Game while recording a demo
-    if (demorecording) { return; }
+    if (g_doomstat_globals->demorecording) { return; }
 
-    if (netgame && !demoplayback)
+    if (g_doomstat_globals->netgame && !g_doomstat_globals->demoplayback)
     {
         M_StartMessage(DEH_String(NEWGAME), nullptr, false);
         return;
@@ -1064,9 +1055,9 @@ void M_NewGame(int)
 
     // Chex Quest disabled the episode select screen, as did Doom II.
 
-    if (nervewadfile)
+    if (g_doomstat_globals->nervewadfile)
         M_SetupNextMenu(&ExpDef);
-    else if (gamemode == commercial || gameversion == exe_chex)
+    else if (g_doomstat_globals->gamemode == commercial || g_doomstat_globals->gameversion == exe_chex)
         M_SetupNextMenu(&NewDef);
     else
         M_SetupNextMenu(&EpiDef);
@@ -1105,7 +1096,7 @@ void M_ChooseSkill(int choice)
 
 void M_Episode(int choice)
 {
-    if ((gamemode == shareware) && choice)
+    if ((g_doomstat_globals->gamemode == shareware) && choice)
     {
         M_StartMessage(DEH_String(SWSTRING), nullptr, false);
         M_SetupNextMenu(&ReadDef1);
@@ -1169,15 +1160,15 @@ static void M_DrawMouse()
 
     M_WriteText(MouseDef.x, MouseDef.y + LINEHEIGHT * static_cast<int>(mouse_e::mouse_horiz) + 6, "HORIZONTAL: TURN");
 
-    M_DrawThermo(MouseDef.x, MouseDef.y + LINEHEIGHT * static_cast<int>(mouse_e::mouse_empty1), 21, mouseSensitivity);
+    M_DrawThermo(MouseDef.x, MouseDef.y + LINEHEIGHT * static_cast<int>(mouse_e::mouse_empty1), 21, g_doomstat_globals->mouseSensitivity);
 
     M_WriteText(MouseDef.x, MouseDef.y + LINEHEIGHT * static_cast<int>(mouse_e::mouse_horiz2) + 6, "HORIZONTAL: STRAFE");
 
-    M_DrawThermo(MouseDef.x, MouseDef.y + LINEHEIGHT * static_cast<int>(mouse_e::mouse_empty2), 21, mouseSensitivity_x2);
+    M_DrawThermo(MouseDef.x, MouseDef.y + LINEHEIGHT * static_cast<int>(mouse_e::mouse_empty2), 21, g_doomstat_globals->mouseSensitivity_x2);
 
     M_WriteText(MouseDef.x, MouseDef.y + LINEHEIGHT * static_cast<int>(mouse_e::mouse_vert) + 6, "VERTICAL");
 
-    M_DrawThermo(MouseDef.x, MouseDef.y + LINEHEIGHT * static_cast<int>(mouse_e::mouse_empty3), 21, mouseSensitivity_y);
+    M_DrawThermo(MouseDef.x, MouseDef.y + LINEHEIGHT * static_cast<int>(mouse_e::mouse_empty3), 21, g_doomstat_globals->mouseSensitivity_y);
 
     M_snprintf(mouse_menu_text, sizeof(mouse_menu_text), "%sInvert Vertical Axis: %s%s", crstr[static_cast<int>(cr_t::CR_NONE)],
         mouse_y_invert ? crstr[static_cast<int>(cr_t::CR_GREEN)] : crstr[static_cast<int>(cr_t::CR_DARK)], mouse_y_invert ? "On" : "Off");
@@ -1277,9 +1268,9 @@ static void M_DrawCrispness1()
     M_DrawCrispnessMultiItem(static_cast<int>(crispness1_e::crispness_brightmaps), const_cast<char *>("Apply Brightmaps to"),
         multiitem_brightmaps, crispy->brightmaps, true);
     M_DrawCrispnessItem(static_cast<int>(crispness1_e::crispness_coloredblood), const_cast<char *>("Colored Blood and Corpses"),
-        crispy->coloredblood, gameversion != exe_chex);
+        crispy->coloredblood, g_doomstat_globals->gameversion != exe_chex);
     M_DrawCrispnessItem(static_cast<int>(crispness1_e::crispness_flipcorpses), const_cast<char *>("Randomly Mirrored Corpses"),
-        crispy->flipcorpses, gameversion != exe_chex);
+        crispy->flipcorpses, g_doomstat_globals->gameversion != exe_chex);
 
     M_DrawCrispnessGoto(static_cast<int>(crispness1_e::crispness1_next), const_cast<char *>("Next Page >"));
     M_DrawCrispnessGoto(static_cast<int>(crispness1_e::crispness1_prev), const_cast<char *>("< Last Page"));
@@ -1400,9 +1391,9 @@ void M_Options(int)
 // [crispy] correctly handle inverted y-axis
 static void M_Mouse(int)
 {
-    if (mouseSensitivity_y < 0)
+    if (g_doomstat_globals->mouseSensitivity_y < 0)
     {
-        mouseSensitivity_y = -mouseSensitivity_y;
+        g_doomstat_globals->mouseSensitivity_y = -g_doomstat_globals->mouseSensitivity_y;
         mouse_y_invert     = 1;
     }
 
@@ -1443,9 +1434,9 @@ void M_ChangeMessages(int)
     showMessages = 1 - showMessages;
 
     if (!showMessages)
-        players[consoleplayer].message = DEH_String(MSGOFF);
+        g_doomstat_globals->players[g_doomstat_globals->consoleplayer].message = DEH_String(MSGOFF);
     else
-        players[consoleplayer].message = DEH_String(MSGON);
+        g_doomstat_globals->players[g_doomstat_globals->consoleplayer].message = DEH_String(MSGON);
 
     message_dontfuckwithme = true;
 }
@@ -1459,7 +1450,7 @@ void M_EndGameResponse(int key)
     if (key != g_m_controls_globals->key_menu_confirm) return;
 
     // [crispy] killough 5/26/98: make endgame quit if recording or playing back demo
-    if (demorecording || singledemo) G_CheckDemoStatus();
+    if (g_doomstat_globals->demorecording || g_doomstat_globals->singledemo) G_CheckDemoStatus();
 
     // [crispy] clear quicksave slot
     quickSaveSlot       = -1;
@@ -1470,13 +1461,13 @@ void M_EndGameResponse(int key)
 
 void M_EndGame(int)
 {
-    if (!usergame)
+    if (!g_doomstat_globals->usergame)
     {
         S_StartSound(nullptr, sfx_oof);
         return;
     }
 
-    if (netgame)
+    if (g_doomstat_globals->netgame)
     {
         M_StartMessage(DEH_String(NETEND), nullptr, false);
         return;
@@ -1520,9 +1511,9 @@ void M_QuitResponse(int key)
     if (key != g_m_controls_globals->key_menu_confirm) return;
 
     // [crispy] play quit sound only if the ENDOOM screen is also shown
-    if (!netgame && show_endoom)
+    if (!g_doomstat_globals->netgame && show_endoom)
     {
-        if (gamemode == commercial)
+        if (g_doomstat_globals->gamemode == commercial)
             S_StartSound(nullptr, quitsounds2[(gametic >> 2) & 7]);
         else
             S_StartSound(nullptr, quitsounds[(gametic >> 2) & 7]);
@@ -1569,11 +1560,11 @@ void M_ChangeSensitivity(int choice)
     switch (choice)
     {
     case 0:
-        if (mouseSensitivity) mouseSensitivity--;
+        if (g_doomstat_globals->mouseSensitivity) g_doomstat_globals->mouseSensitivity--;
         break;
     case 1:
-        if (mouseSensitivity < 255) // [crispy] extended range
-            mouseSensitivity++;
+        if (g_doomstat_globals->mouseSensitivity < 255) // [crispy] extended range
+            g_doomstat_globals->mouseSensitivity++;
         break;
     }
 }
@@ -1583,11 +1574,11 @@ void M_ChangeSensitivity_x2(int choice)
     switch (choice)
     {
     case 0:
-        if (mouseSensitivity_x2) mouseSensitivity_x2--;
+        if (g_doomstat_globals->mouseSensitivity_x2) g_doomstat_globals->mouseSensitivity_x2--;
         break;
     case 1:
-        if (mouseSensitivity_x2 < 255) // [crispy] extended range
-            mouseSensitivity_x2++;
+        if (g_doomstat_globals->mouseSensitivity_x2 < 255) // [crispy] extended range
+            g_doomstat_globals->mouseSensitivity_x2++;
         break;
     }
 }
@@ -1597,11 +1588,11 @@ static void M_ChangeSensitivity_y(int choice)
     switch (choice)
     {
     case 0:
-        if (mouseSensitivity_y) mouseSensitivity_y--;
+        if (g_doomstat_globals->mouseSensitivity_y) g_doomstat_globals->mouseSensitivity_y--;
         break;
     case 1:
-        if (mouseSensitivity_y < 255) // [crispy] extended range
-            mouseSensitivity_y++;
+        if (g_doomstat_globals->mouseSensitivity_y < 255) // [crispy] extended range
+            g_doomstat_globals->mouseSensitivity_y++;
         break;
     }
 }
@@ -1619,9 +1610,9 @@ void M_ChangeDetail(int)
     R_SetViewSize(screenblocks, detailLevel);
 
     if (!detailLevel)
-        players[consoleplayer].message = DEH_String(DETAILHI);
+        g_doomstat_globals->players[g_doomstat_globals->consoleplayer].message = DEH_String(DETAILHI);
     else
-        players[consoleplayer].message = DEH_String(DETAILLO);
+        g_doomstat_globals->players[g_doomstat_globals->consoleplayer].message = DEH_String(DETAILLO);
 }
 
 
@@ -1691,14 +1682,14 @@ void M_DrawThermo(int x, int y, int thermWidth, int thermDot)
 
 void M_StartMessage(const char *string, void (*routine)(int), bool input)
 {
-    messageLastMenuActive = menuactive;
+    messageLastMenuActive = g_doomstat_globals->menuactive;
     messageToPrint        = 1;
     messageString         = string;
     messageRoutine        = routine;
     messageNeedsInput     = input;
-    menuactive            = true;
+    g_doomstat_globals->menuactive            = true;
     // [crispy] entering menus while recording demos pauses the game
-    if (demorecording && !paused) { sendpause = true; }
+    if (g_doomstat_globals->demorecording && !g_doomstat_globals->paused) { sendpause = true; }
     return;
 }
 
@@ -1805,11 +1796,11 @@ static int G_ReloadLevel()
 {
     int result = false;
 
-    if (gamestate == GS_LEVEL)
+    if (g_doomstat_globals->gamestate == GS_LEVEL)
     {
         // [crispy] restart demos from the map they were started
-        if (demorecording) { gamemap = startmap; }
-        G_DeferedInitNew(gameskill, gameepisode, gamemap);
+        if (g_doomstat_globals->demorecording) { g_doomstat_globals->gamemap = g_doomstat_globals->startmap; }
+        G_DeferedInitNew(g_doomstat_globals->gameskill, g_doomstat_globals->gameepisode, g_doomstat_globals->gamemap);
         result = true;
     }
 
@@ -1836,18 +1827,18 @@ static int G_GotoNextLevel()
     {
         doom2_next[0] = 2;
 
-        if (gamemode == commercial)
+        if (g_doomstat_globals->gamemode == commercial)
         {
             if (crispy->havemap33) doom2_next[1] = 33;
 
             if (W_CheckNumForName("map31") < 0) doom2_next[14] = 16;
 
-            if (gamemission == pack_hacx)
+            if (g_doomstat_globals->gamemission == pack_hacx)
             {
                 doom2_next[30] = 16;
                 doom2_next[20] = 1;
             }
-            if (gamemission == pack_master)
+            if (g_doomstat_globals->gamemission == pack_master)
             {
                 doom2_next[1]  = 3;
                 doom2_next[14] = 16;
@@ -1856,13 +1847,13 @@ static int G_GotoNextLevel()
         }
         else
         {
-            if (gamemode == shareware) doom_next[0][7] = 11;
+            if (g_doomstat_globals->gamemode == shareware) doom_next[0][7] = 11;
 
-            if (gamemode == registered) doom_next[2][7] = 11;
+            if (g_doomstat_globals->gamemode == registered) doom_next[2][7] = 11;
 
             if (!crispy->haved1e5) doom_next[3][7] = 11;
 
-            if (gameversion == exe_chex)
+            if (g_doomstat_globals->gameversion == exe_chex)
             {
                 doom_next[0][2] = 14;
                 doom_next[0][4] = 11;
@@ -1870,37 +1861,37 @@ static int G_GotoNextLevel()
         }
     }
 
-    if (gamestate == GS_LEVEL)
+    if (g_doomstat_globals->gamestate == GS_LEVEL)
     {
         int epsd = 0;
         int map  = 0;
 
-        if (gamemode == commercial)
+        if (g_doomstat_globals->gamemode == commercial)
         {
-            epsd = gameepisode;
-            if (gamemission == pack_nerve)
-                map = nerve_next[gamemap - 1];
+            epsd = g_doomstat_globals->gameepisode;
+            if (g_doomstat_globals->gamemission == pack_nerve)
+                map = nerve_next[g_doomstat_globals->gamemap - 1];
             else
-                map = doom2_next[gamemap - 1];
+                map = doom2_next[g_doomstat_globals->gamemap - 1];
         }
         else
         {
-            epsd = doom_next[gameepisode - 1][gamemap - 1] / 10;
-            map  = doom_next[gameepisode - 1][gamemap - 1] % 10;
+            epsd = doom_next[g_doomstat_globals->gameepisode - 1][g_doomstat_globals->gamemap - 1] / 10;
+            map  = doom_next[g_doomstat_globals->gameepisode - 1][g_doomstat_globals->gamemap - 1] % 10;
         }
 
         // [crispy] special-casing for E1M10 "Sewers" support
-        if (crispy->havee1m10 && gameepisode == 1)
+        if (crispy->havee1m10 && g_doomstat_globals->gameepisode == 1)
         {
-            if (gamemap == 1) { map = 10; }
-            else if (gamemap == 10)
+            if (g_doomstat_globals->gamemap == 1) { map = 10; }
+            else if (g_doomstat_globals->gamemap == 10)
             {
                 epsd = 1;
                 map  = 2;
             }
         }
 
-        G_DeferedInitNew(gameskill, epsd, map);
+        G_DeferedInitNew(g_doomstat_globals->gameskill, epsd, map);
         changed = true;
     }
 
@@ -1925,7 +1916,7 @@ bool M_Responder(event_t *ev)
     // In testcontrols mode, none of the function keys should do anything
     // - the only key is escape to quit.
 
-    if (testcontrols)
+    if (g_doomstat_globals->testcontrols)
     {
         if (ev->type == ev_quit || (ev->type == ev_keydown && (ev->data1 == g_m_controls_globals->key_menu_activate || ev->data1 == g_m_controls_globals->key_menu_quit)))
         {
@@ -1942,7 +1933,7 @@ bool M_Responder(event_t *ev)
         // First click on close button = bring up quit confirm message.
         // Second click on close button = confirm quit
 
-        if (menuactive && messageToPrint && messageRoutine == M_QuitResponse) { M_QuitResponse(g_m_controls_globals->key_menu_confirm); }
+        if (g_doomstat_globals->menuactive && messageToPrint && messageRoutine == M_QuitResponse) { M_QuitResponse(g_m_controls_globals->key_menu_confirm); }
         else
         {
             S_StartSound(nullptr, sfx_swtchn);
@@ -1961,7 +1952,7 @@ bool M_Responder(event_t *ev)
     {
         // Simulate key presses from joystick events to interact with the menu.
 
-        if (menuactive)
+        if (g_doomstat_globals->menuactive)
         {
             if (ev->data3 < 0)
             {
@@ -2159,11 +2150,11 @@ bool M_Responder(event_t *ev)
             if (key != ' ' && key != KEY_ESCAPE && key != g_m_controls_globals->key_menu_confirm && key != g_m_controls_globals->key_menu_abort) { return false; }
         }
 
-        menuactive = messageLastMenuActive;
+        g_doomstat_globals->menuactive = messageLastMenuActive;
         if (messageRoutine) messageRoutine(key);
 
         // [crispy] stay in menu
-        if (messageToPrint < 2) { menuactive = false; }
+        if (messageToPrint < 2) { g_doomstat_globals->menuactive = false; }
         messageToPrint = 0; // [crispy] moved here
         S_StartSound(nullptr, sfx_swtchx);
         return true;
@@ -2172,25 +2163,25 @@ bool M_Responder(event_t *ev)
     // [crispy] take screen shot without weapons and HUD
     if (key != 0 && key == g_m_controls_globals->key_menu_cleanscreenshot) { crispy->cleanscreenshot = (screenblocks > 10) ? 2 : 1; }
 
-    if ((devparm && key == g_m_controls_globals->key_menu_help) || (key != 0 && (key == g_m_controls_globals->key_menu_screenshot || key == g_m_controls_globals->key_menu_cleanscreenshot)))
+    if ((g_doomstat_globals->devparm && key == g_m_controls_globals->key_menu_help) || (key != 0 && (key == g_m_controls_globals->key_menu_screenshot || key == g_m_controls_globals->key_menu_cleanscreenshot)))
     {
         G_ScreenShot();
         return true;
     }
 
     // F-Keys
-    if (!menuactive)
+    if (!g_doomstat_globals->menuactive)
     {
         if (key == g_m_controls_globals->key_menu_decscreen) // Screen size down
         {
-            if (automapactive || chat_on) return false;
+            if (g_doomstat_globals->automapactive || chat_on) return false;
             M_SizeDisplay(0);
             S_StartSound(nullptr, sfx_stnmov);
             return true;
         }
         else if (key == g_m_controls_globals->key_menu_incscreen) // Screen size up
         {
-            if (automapactive || chat_on) return false;
+            if (g_doomstat_globals->automapactive || chat_on) return false;
             M_SizeDisplay(1);
             S_StartSound(nullptr, sfx_stnmov);
             return true;
@@ -2199,7 +2190,7 @@ bool M_Responder(event_t *ev)
         {
             M_StartControlPanel();
 
-            if (gameversion >= exe_ultimate)
+            if (g_doomstat_globals->gameversion >= exe_ultimate)
                 currentMenu = &ReadDef2;
             else
                 currentMenu = &ReadDef1;
@@ -2271,7 +2262,7 @@ bool M_Responder(event_t *ev)
             g_i_video_globals->usegamma++;
             if (g_i_video_globals->usegamma > 4 + 4) // [crispy] intermediate gamma levels
                 g_i_video_globals->usegamma = 0;
-            players[consoleplayer].message = DEH_String(gammamsg[g_i_video_globals->usegamma]);
+            g_doomstat_globals->players[g_doomstat_globals->consoleplayer].message = DEH_String(gammamsg[g_i_video_globals->usegamma]);
 #ifndef CRISPY_TRUECOLOR
             I_SetPalette(cache_lump_name<uint8_t *>(DEH_String("PLAYPAL"), PU_CACHE));
 #else
@@ -2288,18 +2279,18 @@ bool M_Responder(event_t *ev)
         }
         // [crispy] those two can be considered as shortcuts for the IDCLEV cheat
         // and should be treated as such, i.e. add "if (!netgame)"
-        else if (!netgame && key != 0 && key == g_m_controls_globals->key_menu_reloadlevel)
+        else if (!g_doomstat_globals->netgame && key != 0 && key == g_m_controls_globals->key_menu_reloadlevel)
         {
             if (G_ReloadLevel()) return true;
         }
-        else if (!netgame && key != 0 && key == g_m_controls_globals->key_menu_nextlevel)
+        else if (!g_doomstat_globals->netgame && key != 0 && key == g_m_controls_globals->key_menu_nextlevel)
         {
             if (G_GotoNextLevel()) return true;
         }
     }
 
     // Pop-up menu?
-    if (!menuactive)
+    if (!g_doomstat_globals->menuactive)
     {
         if (key == g_m_controls_globals->key_menu_activate)
         {
@@ -2482,12 +2473,12 @@ bool M_Responder(event_t *ev)
 void M_StartControlPanel()
 {
     // intro might call this repeatedly
-    if (menuactive) return;
+    if (g_doomstat_globals->menuactive) return;
 
     // [crispy] entering menus while recording demos pauses the game
-    if (demorecording && !paused) sendpause = true;
+    if (g_doomstat_globals->demorecording && !g_doomstat_globals->paused) sendpause = true;
 
-    menuactive  = true;
+    g_doomstat_globals->menuactive  = true;
     currentMenu = &MainDef;            // JDC
     itemOn      = currentMenu->lastOn; // JDC
 }
@@ -2572,7 +2563,7 @@ void M_Drawer()
 
     if (opldev) { M_DrawOPLDev(); }
 
-    if (!menuactive) return;
+    if (!g_doomstat_globals->menuactive) return;
 
     if (currentMenu->routine) currentMenu->routine(); // call Draw routine
 
@@ -2588,10 +2579,10 @@ void M_Drawer()
         if (name[0]) // && W_CheckNumForName(name) > 0) // [crispy] moved...
         {
             // [crispy] shade unavailable menu items
-            if ((currentMenu == &MainDef && static_cast<main_e>(i) == main_e::savegame && (!usergame || gamestate != GS_LEVEL))
-                || (currentMenu == &OptionsDef && static_cast<options_e>(i) == options_e::endgame && (!usergame || netgame))
-                || (currentMenu == &MainDef && static_cast<main_e>(i) == main_e::loadgame && (netgame && !demoplayback))
-                || (currentMenu == &MainDef && static_cast<main_e>(i) == main_e::newgame && (demorecording || (netgame && !demoplayback))))
+            if ((currentMenu == &MainDef && static_cast<main_e>(i) == main_e::savegame && (!g_doomstat_globals->usergame || g_doomstat_globals->gamestate != GS_LEVEL))
+                || (currentMenu == &OptionsDef && static_cast<options_e>(i) == options_e::endgame && (!g_doomstat_globals->usergame || g_doomstat_globals->netgame))
+                || (currentMenu == &MainDef && static_cast<main_e>(i) == main_e::loadgame && (g_doomstat_globals->netgame && !g_doomstat_globals->demoplayback))
+                || (currentMenu == &MainDef && static_cast<main_e>(i) == main_e::newgame && (g_doomstat_globals->demorecording || (g_doomstat_globals->netgame && !g_doomstat_globals->demoplayback))))
                 dp_translation = cr_colors[static_cast<int>(cr_t::CR_DARK)];
 
             if (currentMenu == &OptionsDef)
@@ -2630,10 +2621,10 @@ void M_Drawer()
 //
 void M_ClearMenus()
 {
-    menuactive = false;
+    g_doomstat_globals->menuactive = false;
 
     // [crispy] entering menus while recording demos pauses the game
-    if (demorecording && paused)
+    if (g_doomstat_globals->demorecording && g_doomstat_globals->paused)
         sendpause = true;
 
     // if (!netgame && usergame && paused)
@@ -2670,7 +2661,7 @@ void M_Ticker()
 void M_Init()
 {
     currentMenu      = &MainDef;
-    menuactive       = false;
+    g_doomstat_globals->menuactive       = false;
     itemOn           = currentMenu->lastOn;
     whichSkull       = 0;
     skullAnimCounter = 10;
@@ -2678,7 +2669,7 @@ void M_Init()
     M_SizeDisplay(-1); // [crispy] initialize screenSize_min
     messageToPrint        = 0;
     messageString         = nullptr;
-    messageLastMenuActive = menuactive;
+    messageLastMenuActive = g_doomstat_globals->menuactive;
     quickSaveSlot         = -1;
 
     // Here we could catch other version dependencies,
@@ -2686,25 +2677,25 @@ void M_Init()
 
     // The same hacks were used in the original Doom EXEs.
 
-    if (gameversion >= exe_ultimate)
+    if (g_doomstat_globals->gameversion >= exe_ultimate)
     {
         MainMenu[static_cast<int>(main_e::readthis)].routine = M_ReadThis2;
         ReadDef2.prevMenu                                    = nullptr;
     }
 
-    if (gameversion >= exe_final && gameversion <= exe_final2)
+    if (g_doomstat_globals->gameversion >= exe_final && g_doomstat_globals->gameversion <= exe_final2)
     {
         ReadDef2.routine = M_DrawReadThisCommercial;
         // [crispy] rearrange Skull in Final Doom HELP screen
         ReadDef2.y = static_cast<short>(ReadDef2.y - 10);
     }
 
-    if (gamemode == commercial)
+    if (g_doomstat_globals->gamemode == commercial)
     {
         MainMenu[static_cast<int>(main_e::readthis)] = MainMenu[static_cast<int>(main_e::quitdoom)];
         MainDef.numitems--;
         MainDef.y                                                = static_cast<short>(MainDef.y + 8);
-        NewDef.prevMenu                                          = nervewadfile ? &ExpDef : &MainDef;
+        NewDef.prevMenu                                          = g_doomstat_globals->nervewadfile ? &ExpDef : &MainDef;
         ReadDef1.routine                                         = M_DrawReadThisCommercial;
         ReadDef1.x                                               = 330;
         ReadDef1.y                                               = 165;
@@ -2721,12 +2712,12 @@ void M_Init()
     // three episodes; if we're emulating one of those then don't try
     // to show episode four. If we are, then do show episode four
     // (should crash if missing).
-    if (gameversion < exe_ultimate)
+    if (g_doomstat_globals->gameversion < exe_ultimate)
     {
         EpiDef.numitems--;
     }
     // chex.exe shows only one episode.
-    else if (gameversion == exe_chex)
+    else if (g_doomstat_globals->gameversion == exe_chex)
     {
         EpiDef.numitems = 1;
         // [crispy] never show the Episode menu
