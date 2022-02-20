@@ -220,24 +220,24 @@ void R_RenderMaskedSegRange(drawseg_t *ds,
     // find positioning
     if (curline->linedef->flags & ML_DONTPEGBOTTOM)
     {
-        dc_texturemid = frontsector->interpfloorheight > backsector->interpfloorheight ? frontsector->interpfloorheight : backsector->interpfloorheight;
-        dc_texturemid = dc_texturemid + textureheight[texnum] - viewz;
+        g_r_draw_globals->dc_texturemid = frontsector->interpfloorheight > backsector->interpfloorheight ? frontsector->interpfloorheight : backsector->interpfloorheight;
+        g_r_draw_globals->dc_texturemid = g_r_draw_globals->dc_texturemid + textureheight[texnum] - viewz;
     }
     else
     {
-        dc_texturemid = frontsector->interpceilingheight < backsector->interpceilingheight ? frontsector->interpceilingheight : backsector->interpceilingheight;
-        dc_texturemid = dc_texturemid - viewz;
+        g_r_draw_globals->dc_texturemid = frontsector->interpceilingheight < backsector->interpceilingheight ? frontsector->interpceilingheight : backsector->interpceilingheight;
+        g_r_draw_globals->dc_texturemid = g_r_draw_globals->dc_texturemid - viewz;
     }
-    dc_texturemid += curline->sidedef->rowoffset;
+    g_r_draw_globals->dc_texturemid += curline->sidedef->rowoffset;
 
     if (fixedcolormap)
-        dc_colormap[0] = dc_colormap[1] = fixedcolormap;
+        g_r_draw_globals->dc_colormap[0] = g_r_draw_globals->dc_colormap[1] = fixedcolormap;
 
     // draw the columns
-    for (dc_x = x1; dc_x <= x2; dc_x++)
+    for (g_r_draw_globals->dc_x = x1; g_r_draw_globals->dc_x <= x2; g_r_draw_globals->dc_x++)
     {
         // calculate lighting
-        if (maskedtexturecol[dc_x] != INT_MAX) // [crispy] 32-bit integer math
+        if (maskedtexturecol[g_r_draw_globals->dc_x] != INT_MAX) // [crispy] 32-bit integer math
         {
             if (!fixedcolormap)
             {
@@ -247,7 +247,7 @@ void R_RenderMaskedSegRange(drawseg_t *ds,
                     index = MAXLIGHTSCALE - 1;
 
                 // [crispy] no brightmaps for mid-textures
-                dc_colormap[0] = dc_colormap[1] = walllights[index];
+                g_r_draw_globals->dc_colormap[0] = g_r_draw_globals->dc_colormap[1] = walllights[index];
             }
 
             // [crispy] apply Killough's int64 sprtopscreen overflow fix
@@ -263,7 +263,7 @@ void R_RenderMaskedSegRange(drawseg_t *ds,
             // mapping to screen coordinates is totally out of range:
 
             {
-                int64_t t = (static_cast<int64_t>(centeryfrac) << FRACBITS) - static_cast<int64_t>(dc_texturemid) * spryscale;
+                int64_t t = (static_cast<int64_t>(centeryfrac) << FRACBITS) - static_cast<int64_t>(g_r_draw_globals->dc_texturemid) * spryscale;
 
                 if (t + static_cast<int64_t>(textureheight[texnum]) * spryscale < 0 || t > static_cast<int64_t>(SCREENHEIGHT) << FRACBITS * 2)
                 {
@@ -274,14 +274,14 @@ void R_RenderMaskedSegRange(drawseg_t *ds,
                 sprtopscreen = static_cast<int64_t>(t >> FRACBITS); // [crispy] WiggleFix
             }
 
-            dc_iscale = static_cast<fixed_t>(0xffffffffu / static_cast<unsigned>(spryscale));
+            g_r_draw_globals->dc_iscale = static_cast<fixed_t>(0xffffffffu / static_cast<unsigned>(spryscale));
 
             // draw the texture
-            auto *col_ptr = reinterpret_cast<uint8_t *>(R_GetColumn(texnum, maskedtexturecol[dc_x], false) - 3);
+            auto *col_ptr = reinterpret_cast<uint8_t *>(R_GetColumn(texnum, maskedtexturecol[g_r_draw_globals->dc_x], false) - 3);
             auto *col = reinterpret_cast<column_t *>(col_ptr);
 
             R_DrawMaskedColumn(col);
-            maskedtexturecol[dc_x] = INT_MAX; // [crispy] 32-bit integer math
+            maskedtexturecol[g_r_draw_globals->dc_x] = INT_MAX; // [crispy] 32-bit integer math
         }
         spryscale += rw_scalestep;
     }
@@ -365,10 +365,10 @@ void R_RenderSegLoop()
                 index = MAXLIGHTSCALE - 1;
 
             // [crispy] optional brightmaps
-            dc_colormap[0] = walllights[index];
-            dc_colormap[1] = (!fixedcolormap && (crispy->brightmaps & BRIGHTMAPS_TEXTURES)) ? scalelight[LIGHTLEVELS - 1][MAXLIGHTSCALE - 1] : dc_colormap[0];
-            dc_x           = rw_x;
-            dc_iscale      = static_cast<fixed_t>(0xffffffffu / static_cast<unsigned>(rw_scale));
+            g_r_draw_globals->dc_colormap[0] = walllights[index];
+            g_r_draw_globals->dc_colormap[1] = (!fixedcolormap && (crispy->brightmaps & BRIGHTMAPS_TEXTURES)) ? scalelight[LIGHTLEVELS - 1][MAXLIGHTSCALE - 1] : g_r_draw_globals->dc_colormap[0];
+            g_r_draw_globals->dc_x           = rw_x;
+            g_r_draw_globals->dc_iscale      = static_cast<fixed_t>(0xffffffffu / static_cast<unsigned>(rw_scale));
         }
         else
         {
@@ -381,12 +381,12 @@ void R_RenderSegLoop()
         if (midtexture)
         {
             // single sided line
-            dc_yl         = yl;
-            dc_yh         = yh;
-            dc_texturemid = rw_midtexturemid;
-            dc_source     = R_GetColumn(midtexture, texturecolumn, true);
-            dc_texheight  = textureheight[midtexture] >> FRACBITS; // [crispy] Tutti-Frutti fix
-            dc_brightmap  = texturebrightmap[midtexture];
+            g_r_draw_globals->dc_yl         = yl;
+            g_r_draw_globals->dc_yh         = yh;
+            g_r_draw_globals->dc_texturemid = rw_midtexturemid;
+            g_r_draw_globals->dc_source     = R_GetColumn(midtexture, texturecolumn, true);
+            g_r_draw_globals->dc_texheight  = textureheight[midtexture] >> FRACBITS; // [crispy] Tutti-Frutti fix
+            g_r_draw_globals->dc_brightmap  = texturebrightmap[midtexture];
             colfunc();
             ceilingclip[rw_x] = viewheight;
             floorclip[rw_x]   = -1;
@@ -405,12 +405,12 @@ void R_RenderSegLoop()
 
                 if (mid >= yl)
                 {
-                    dc_yl         = yl;
-                    dc_yh         = mid;
-                    dc_texturemid = rw_toptexturemid;
-                    dc_source     = R_GetColumn(toptexture, texturecolumn, true);
-                    dc_texheight  = textureheight[toptexture] >> FRACBITS; // [crispy] Tutti-Frutti fix
-                    dc_brightmap  = texturebrightmap[toptexture];
+                    g_r_draw_globals->dc_yl         = yl;
+                    g_r_draw_globals->dc_yh         = mid;
+                    g_r_draw_globals->dc_texturemid = rw_toptexturemid;
+                    g_r_draw_globals->dc_source     = R_GetColumn(toptexture, texturecolumn, true);
+                    g_r_draw_globals->dc_texheight  = textureheight[toptexture] >> FRACBITS; // [crispy] Tutti-Frutti fix
+                    g_r_draw_globals->dc_brightmap  = texturebrightmap[toptexture];
                     colfunc();
                     ceilingclip[rw_x] = mid;
                 }
@@ -436,13 +436,13 @@ void R_RenderSegLoop()
 
                 if (mid <= yh)
                 {
-                    dc_yl         = mid;
-                    dc_yh         = yh;
-                    dc_texturemid = rw_bottomtexturemid;
-                    dc_source     = R_GetColumn(bottomtexture,
+                    g_r_draw_globals->dc_yl         = mid;
+                    g_r_draw_globals->dc_yh         = yh;
+                    g_r_draw_globals->dc_texturemid = rw_bottomtexturemid;
+                    g_r_draw_globals->dc_source     = R_GetColumn(bottomtexture,
                         texturecolumn, true);
-                    dc_texheight  = textureheight[bottomtexture] >> FRACBITS; // [crispy] Tutti-Frutti fix
-                    dc_brightmap  = texturebrightmap[bottomtexture];
+                    g_r_draw_globals->dc_texheight  = textureheight[bottomtexture] >> FRACBITS; // [crispy] Tutti-Frutti fix
+                    g_r_draw_globals->dc_brightmap  = texturebrightmap[bottomtexture];
                     colfunc();
                     floorclip[rw_x] = mid;
                 }

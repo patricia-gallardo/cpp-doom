@@ -402,8 +402,8 @@ void R_DrawMaskedColumn(column_t *column)
     fixed_t basetexturemid;
     int     top = -1;
 
-    basetexturemid = dc_texturemid;
-    dc_texheight   = 0; // [crispy] Tutti-Frutti fix
+    basetexturemid = g_r_draw_globals->dc_texturemid;
+    g_r_draw_globals->dc_texheight   = 0; // [crispy] Tutti-Frutti fix
 
     for (; column->topdelta != 0xff;)
     {
@@ -421,18 +421,18 @@ void R_DrawMaskedColumn(column_t *column)
         topscreen    = sprtopscreen + spryscale * top;
         bottomscreen = topscreen + spryscale * column->length;
 
-        dc_yl = static_cast<int>((topscreen + FRACUNIT - 1) >> FRACBITS); // [crispy] WiggleFix
-        dc_yh = static_cast<int>((bottomscreen - 1) >> FRACBITS);         // [crispy] WiggleFix
+        g_r_draw_globals->dc_yl = static_cast<int>((topscreen + FRACUNIT - 1) >> FRACBITS); // [crispy] WiggleFix
+        g_r_draw_globals->dc_yh = static_cast<int>((bottomscreen - 1) >> FRACBITS);         // [crispy] WiggleFix
 
-        if (dc_yh >= mfloorclip[dc_x])
-            dc_yh = mfloorclip[dc_x] - 1;
-        if (dc_yl <= mceilingclip[dc_x])
-            dc_yl = mceilingclip[dc_x] + 1;
+        if (g_r_draw_globals->dc_yh >= mfloorclip[g_r_draw_globals->dc_x])
+            g_r_draw_globals->dc_yh = mfloorclip[g_r_draw_globals->dc_x] - 1;
+        if (g_r_draw_globals->dc_yl <= mceilingclip[g_r_draw_globals->dc_x])
+            g_r_draw_globals->dc_yl = mceilingclip[g_r_draw_globals->dc_x] + 1;
 
-        if (dc_yl <= dc_yh)
+        if (g_r_draw_globals->dc_yl <= g_r_draw_globals->dc_yh)
         {
-            dc_source     = reinterpret_cast<uint8_t *>(column) + 3;
-            dc_texturemid = basetexturemid - (top << FRACBITS);
+            g_r_draw_globals->dc_source     = reinterpret_cast<uint8_t *>(column) + 3;
+            g_r_draw_globals->dc_texturemid = basetexturemid - (top << FRACBITS);
             // dc_source = (byte *)column + 3 - top;
 
             // Drawn by either R_DrawColumn
@@ -443,7 +443,7 @@ void R_DrawMaskedColumn(column_t *column)
         column = reinterpret_cast<column_t *>(col_ptr);
     }
 
-    dc_texturemid = basetexturemid;
+    g_r_draw_globals->dc_texturemid = basetexturemid;
 }
 
 
@@ -462,11 +462,11 @@ void R_DrawVisSprite(vissprite_t *vis, int, int)
     patch = cache_lump_num<patch_t *>(vis->patch + firstspritelump, PU_CACHE);
 
     // [crispy] brightmaps for select sprites
-    dc_colormap[0] = vis->colormap[0];
-    dc_colormap[1] = vis->colormap[1];
-    dc_brightmap   = vis->brightmap;
+    g_r_draw_globals->dc_colormap[0] = vis->colormap[0];
+    g_r_draw_globals->dc_colormap[1] = vis->colormap[1];
+    g_r_draw_globals->dc_brightmap   = vis->brightmap;
 
-    if (!dc_colormap[0])
+    if (!g_r_draw_globals->dc_colormap[0])
     {
         // nullptr colormap = shadow draw
         colfunc = fuzzcolfunc;
@@ -474,13 +474,13 @@ void R_DrawVisSprite(vissprite_t *vis, int, int)
     else if (static_cast<unsigned int>(vis->mobjflags) & MF_TRANSLATION)
     {
         colfunc        = transcolfunc;
-        dc_translation = translationtables - 256 + ((static_cast<unsigned int>(vis->mobjflags) & MF_TRANSLATION) >> (MF_TRANSSHIFT - 8));
+        g_r_draw_globals->dc_translation = g_r_draw_globals->translationtables - 256 + ((static_cast<unsigned int>(vis->mobjflags) & MF_TRANSLATION) >> (MF_TRANSSHIFT - 8));
     }
     // [crispy] color-translated sprites (i.e. blood)
     else if (vis->translation)
     {
         colfunc        = transcolfunc;
-        dc_translation = vis->translation;
+        g_r_draw_globals->dc_translation = vis->translation;
     }
     // [crispy] translucent sprites
     else if (crispy->translucency && static_cast<unsigned int>(vis->mobjflags) & MF_TRANSLUCENT)
@@ -496,13 +496,13 @@ void R_DrawVisSprite(vissprite_t *vis, int, int)
 #endif
     }
 
-    dc_iscale     = std::abs(vis->xiscale) >> detailshift;
-    dc_texturemid = vis->texturemid;
+    g_r_draw_globals->dc_iscale     = std::abs(vis->xiscale) >> detailshift;
+    g_r_draw_globals->dc_texturemid = vis->texturemid;
     frac          = vis->startfrac;
     spryscale     = vis->scale;
-    sprtopscreen  = centeryfrac - FixedMul(dc_texturemid, spryscale);
+    sprtopscreen  = centeryfrac - FixedMul(g_r_draw_globals->dc_texturemid, spryscale);
 
-    for (dc_x = vis->x1; dc_x <= vis->x2; dc_x++, frac += vis->xiscale)
+    for (g_r_draw_globals->dc_x = vis->x1; g_r_draw_globals->dc_x <= vis->x2; g_r_draw_globals->dc_x++, frac += vis->xiscale)
     {
         static bool error = false;
         texturecolumn        = frac >> FRACBITS;
@@ -878,7 +878,7 @@ static void R_DrawLSprite()
     std::memset(vis, 0, sizeof(*vis));                                                    // [crispy] set all fields to nullptr, except ...
     vis->patch       = lump - firstspritelump;                                       // [crispy] not a sprite patch
     vis->colormap[0] = vis->colormap[1] = fixedcolormap ? fixedcolormap : colormaps; // [crispy] always full brightness
-    vis->brightmap                      = dc_brightmap;
+    vis->brightmap                      = g_r_draw_globals->dc_brightmap;
     vis->translation                    = R_LaserspotColor();
 #ifdef CRISPY_TRUECOLOR
     vis->mobjflags |= MF_TRANSLUCENT;

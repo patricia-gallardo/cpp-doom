@@ -1773,7 +1773,7 @@ static inline void ST_DrawGibbedPlayerSprites()
     unsigned int flag_check = static_cast<unsigned int>(plyr->mo->flags) & MF_TRANSLATION;
     if (flag_check)
     {
-        dp_translation = translationtables - 256 + (flag_check >> (MF_TRANSSHIFT - 8));
+        dp_translation = g_r_draw_globals->translationtables - 256 + (flag_check >> (MF_TRANSSHIFT - 8));
     }
 
     V_DrawPatch(ST_HEALTHX - 17, 186, patch);
