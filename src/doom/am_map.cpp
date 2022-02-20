@@ -675,8 +675,8 @@ bool
 
     bool rc = false;
 
-    if (ev->type == ev_joystick && joybautomap >= 0
-        && (ev->data1 & (1 << joybautomap)) != 0)
+    if (ev->type == ev_joystick && g_m_controls_globals->joybautomap >= 0
+        && (ev->data1 & (1 << g_m_controls_globals->joybautomap)) != 0)
     {
         g_i_video_globals->joywait = static_cast<unsigned int>(I_GetTime() + 5);
 
@@ -697,7 +697,7 @@ bool
 
     if (!automapactive)
     {
-        if (ev->type == ev_keydown && ev->data1 == key_map_toggle)
+        if (ev->type == ev_keydown && ev->data1 == g_m_controls_globals->key_map_toggle)
         {
             AM_Start();
             viewactive = false;
@@ -707,13 +707,13 @@ bool
     // [crispy] zoom and move Automap with the mouse (wheel)
     else if (ev->type == ev_mouse && !crispy->automapoverlay && !menuactive && !inhelpscreens)
     {
-        if (mousebprevweapon >= 0 && ev->data1 & (1 << mousebprevweapon))
+        if (g_m_controls_globals->mousebprevweapon >= 0 && ev->data1 & (1 << g_m_controls_globals->mousebprevweapon))
         {
             mtof_zoommul = M2_ZOOMOUT;
             ftom_zoommul = M2_ZOOMIN;
             rc           = true;
         }
-        else if (mousebnextweapon >= 0 && ev->data1 & (1 << mousebnextweapon))
+        else if (g_m_controls_globals->mousebnextweapon >= 0 && ev->data1 & (1 << g_m_controls_globals->mousebnextweapon))
         {
             mtof_zoommul = M2_ZOOMIN;
             ftom_zoommul = M2_ZOOMOUT;
@@ -733,7 +733,7 @@ bool
         rc  = true;
         int key = ev->data1;
 
-        if (key == key_map_east) // pan right
+        if (key == g_m_controls_globals->key_map_east) // pan right
         {
             // [crispy] keep the map static in overlay mode
             // if not following the player
@@ -742,44 +742,44 @@ bool
             else
                 rc = false;
         }
-        else if (key == key_map_west) // pan left
+        else if (key == g_m_controls_globals->key_map_west) // pan left
         {
             if (!followplayer && !crispy->automapoverlay)
                 m_paninc.x = crispy->fliplevels ? FTOM(F_PANINC) : -FTOM(F_PANINC);
             else
                 rc = false;
         }
-        else if (key == key_map_north) // pan up
+        else if (key == g_m_controls_globals->key_map_north) // pan up
         {
             if (!followplayer && !crispy->automapoverlay)
                 m_paninc.y = FTOM(F_PANINC);
             else
                 rc = false;
         }
-        else if (key == key_map_south) // pan down
+        else if (key == g_m_controls_globals->key_map_south) // pan down
         {
             if (!followplayer && !crispy->automapoverlay)
                 m_paninc.y = -FTOM(F_PANINC);
             else
                 rc = false;
         }
-        else if (key == key_map_zoomout) // zoom out
+        else if (key == g_m_controls_globals->key_map_zoomout) // zoom out
         {
             mtof_zoommul = M_ZOOMOUT;
             ftom_zoommul = M_ZOOMIN;
         }
-        else if (key == key_map_zoomin) // zoom in
+        else if (key == g_m_controls_globals->key_map_zoomin) // zoom in
         {
             mtof_zoommul = M_ZOOMIN;
             ftom_zoommul = M_ZOOMOUT;
         }
-        else if (key == key_map_toggle)
+        else if (key == g_m_controls_globals->key_map_toggle)
         {
             bigstate   = 0;
             viewactive = true;
             AM_Stop();
         }
-        else if (key == key_map_maxzoom)
+        else if (key == g_m_controls_globals->key_map_maxzoom)
         {
             bigstate = !bigstate;
             if (bigstate)
@@ -790,7 +790,7 @@ bool
             else
                 AM_restoreScaleAndLoc();
         }
-        else if (key == key_map_follow)
+        else if (key == g_m_controls_globals->key_map_follow)
         {
             followplayer = !followplayer;
             f_oldloc.x   = INT_MAX;
@@ -799,7 +799,7 @@ bool
             else
                 plr->message = DEH_String(AMSTR_FOLLOWOFF);
         }
-        else if (key == key_map_grid)
+        else if (key == g_m_controls_globals->key_map_grid)
         {
             grid = !grid;
             if (grid)
@@ -807,19 +807,19 @@ bool
             else
                 plr->message = DEH_String(AMSTR_GRIDOFF);
         }
-        else if (key == key_map_mark)
+        else if (key == g_m_controls_globals->key_map_mark)
         {
             M_snprintf(buffer, sizeof(buffer), "%s %d",
                 DEH_String(AMSTR_MARKEDSPOT), markpointnum);
             plr->message = buffer;
             AM_addMark();
         }
-        else if (key == key_map_clearmark)
+        else if (key == g_m_controls_globals->key_map_clearmark)
         {
             AM_clearMarks();
             plr->message = DEH_String(AMSTR_MARKSCLEARED);
         }
-        else if (key == key_map_overlay)
+        else if (key == g_m_controls_globals->key_map_overlay)
         {
             // [crispy] force redraw status bar
             inhelpscreens = true;
@@ -830,7 +830,7 @@ bool
             else
                 plr->message = DEH_String(AMSTR_OVERLAYOFF);
         }
-        else if (key == key_map_rotate)
+        else if (key == g_m_controls_globals->key_map_rotate)
         {
             crispy->automaprotate = !crispy->automaprotate;
             if (crispy->automaprotate)
@@ -855,23 +855,23 @@ bool
         rc  = false;
         int key = ev->data1;
 
-        if (key == key_map_east)
+        if (key == g_m_controls_globals->key_map_east)
         {
             if (!followplayer) m_paninc.x = 0;
         }
-        else if (key == key_map_west)
+        else if (key == g_m_controls_globals->key_map_west)
         {
             if (!followplayer) m_paninc.x = 0;
         }
-        else if (key == key_map_north)
+        else if (key == g_m_controls_globals->key_map_north)
         {
             if (!followplayer) m_paninc.y = 0;
         }
-        else if (key == key_map_south)
+        else if (key == g_m_controls_globals->key_map_south)
         {
             if (!followplayer) m_paninc.y = 0;
         }
-        else if (key == key_map_zoomout || key == key_map_zoomin)
+        else if (key == g_m_controls_globals->key_map_zoomout || key == g_m_controls_globals->key_map_zoomin)
         {
             mtof_zoommul = FRACUNIT;
             ftom_zoommul = FRACUNIT;

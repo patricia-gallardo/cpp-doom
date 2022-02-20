@@ -45,17 +45,17 @@ extern int joystick_physical_buttons[NUM_VIRTUAL_BUTTONS];
 // button #0 = select menu item, button #1 = go back to previous menu).
 static int *all_joystick_buttons[NUM_VIRTUAL_BUTTONS] =
 {
-    &joybfire,
-    &joybuse,
-    &joybstrafe,
-    &joybspeed,
-    &joybstrafeleft,
-    &joybstraferight,
-    &joybprevweapon,
-    &joybnextweapon,
-    &joybjump,
-    &joybmenu,
-    &joybautomap,
+    &g_m_controls_globals->joybfire,
+    &g_m_controls_globals->joybuse,
+    &g_m_controls_globals->joybstrafe,
+    &g_m_controls_globals->joybspeed,
+    &g_m_controls_globals->joybstrafeleft,
+    &g_m_controls_globals->joybstraferight,
+    &g_m_controls_globals->joybprevweapon,
+    &g_m_controls_globals->joybnextweapon,
+    &g_m_controls_globals->joybjump,
+    &g_m_controls_globals->joybmenu,
+    &g_m_controls_globals->joybautomap,
 };
 
 static int PhysicalForVirtualButton(int vbutton)
@@ -99,7 +99,7 @@ static void CanonicalizeButtons()
 
         // Don't remap the speed key if it's bound to "always run".
         // Also preserve "unbound" variables.
-        if ((all_joystick_buttons[i] == &joybspeed && vbutton >= 20)
+        if ((all_joystick_buttons[i] == &g_m_controls_globals->joybspeed && vbutton >= 20)
          || vbutton < 0)
         {
             new_mapping[i] = static_cast<int>(i);

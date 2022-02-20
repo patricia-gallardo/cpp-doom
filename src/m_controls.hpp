@@ -17,167 +17,185 @@
 #ifndef __M_CONTROLS_H__
 #define __M_CONTROLS_H__
 
-extern int key_right;
-extern int key_left;
-extern int key_reverse;
+struct m_controls_t {
+    int key_right;
+    int key_left;
+    int key_reverse;
 
-extern int key_up;
-extern int key_alt_up;
-extern int key_down;
-extern int key_alt_down;
-extern int key_strafeleft;
-extern int key_alt_strafeleft;
-extern int key_straferight;
-extern int key_alt_straferight;
-extern int key_fire;
-extern int key_use;
-extern int key_strafe;
-extern int key_speed;
+    int key_up;
+    int key_alt_up;
+    int key_down;
+    int key_alt_down;
+    int key_strafeleft;
+    int key_alt_strafeleft;
+    int key_straferight;
+    int key_alt_straferight;
+    int key_fire;
+    int key_use;
+    int key_strafe;
+    int key_speed;
 
-extern int key_jump;
-extern int key_toggleautorun;
-extern int key_togglenovert;
+    int key_jump;
+    int key_toggleautorun;
+    int key_togglenovert;
 
-extern int key_flyup;
-extern int key_flydown;
-extern int key_flycenter;
-extern int key_lookup;
-extern int key_lookdown;
-extern int key_lookcenter;
-extern int key_invleft;
-extern int key_invright;
-extern int key_useartifact;
+    int key_flyup;
+    int key_flydown;
+    int key_flycenter;
+    int key_lookup;
+    int key_lookdown;
+    int key_lookcenter;
+    int key_invleft;
+    int key_invright;
+    int key_useartifact;
 
-// villsa [STRIFE] strife keys
-extern int key_usehealth;
-extern int key_invquery;
-extern int key_mission;
-extern int key_invpop;
-extern int key_invkey;
-extern int key_invhome;
-extern int key_invend;
-extern int key_invuse;
-extern int key_invdrop;
+    // villsa [STRIFE] strife keys
+    int key_usehealth;
+    int key_invquery;
+    int key_mission;
+    int key_invpop;
+    int key_invkey;
+    int key_invhome;
+    int key_invend;
+    int key_invuse;
+    int key_invdrop;
 
-extern int key_message_refresh;
-extern int key_pause;
+    int key_message_refresh;
+    int key_pause;
 
-extern int key_multi_msg;
-extern int key_multi_msgplayer[8];
+    // Multiplayer chat keys:
 
-extern int key_weapon1;
-extern int key_weapon2;
-extern int key_weapon3;
-extern int key_weapon4;
-extern int key_weapon5;
-extern int key_weapon6;
-extern int key_weapon7;
-extern int key_weapon8;
+    int key_multi_msg;
+    int key_multi_msgplayer[8];
 
-extern int key_arti_quartz;
-extern int key_arti_urn;
-extern int key_arti_bomb;
-extern int key_arti_tome;
-extern int key_arti_ring;
-extern int key_arti_chaosdevice;
-extern int key_arti_shadowsphere;
-extern int key_arti_wings;
-extern int key_arti_torch;
+    // Weapon selection keys:
 
-extern int key_arti_all;
-extern int key_arti_health;
-extern int key_arti_poisonbag;
-extern int key_arti_blastradius;
-extern int key_arti_teleport;
-extern int key_arti_teleportother;
-extern int key_arti_egg;
-extern int key_arti_invulnerability;
+    int key_weapon1;
+    int key_weapon2;
+    int key_weapon3;
+    int key_weapon4;
+    int key_weapon5;
+    int key_weapon6;
+    int key_weapon7;
+    int key_weapon8;
 
-extern int key_demo_quit;
-extern int key_spy;
-extern int key_prevweapon;
-extern int key_nextweapon;
+    int key_arti_quartz;
+    int key_arti_urn;
+    int key_arti_bomb;
+    int key_arti_tome;
+    int key_arti_ring;
+    int key_arti_chaosdevice;
+    int key_arti_shadowsphere;
+    int key_arti_wings;
+    int key_arti_torch;
 
-extern int key_map_north;
-extern int key_map_south;
-extern int key_map_east;
-extern int key_map_west;
-extern int key_map_zoomin;
-extern int key_map_zoomout;
-extern int key_map_toggle;
-extern int key_map_maxzoom;
-extern int key_map_follow;
-extern int key_map_grid;
-extern int key_map_mark;
-extern int key_map_clearmark;
-extern int key_map_overlay;
-extern int key_map_rotate;
+    int key_arti_all;
+    int key_arti_health;
+    int key_arti_poisonbag;
+    int key_arti_blastradius;
+    int key_arti_teleport;
+    int key_arti_teleportother;
+    int key_arti_egg;
+    int key_arti_invulnerability;
 
-// menu keys:
+    int key_demo_quit;
+    int key_spy;
+    int key_prevweapon;
+    int key_nextweapon;
 
-extern int key_menu_activate;
-extern int key_menu_up;
-extern int key_menu_down;
-extern int key_menu_left;
-extern int key_menu_right;
-extern int key_menu_back;
-extern int key_menu_forward;
-extern int key_menu_confirm;
-extern int key_menu_abort;
+    int key_map_north;
+    int key_map_south;
+    int key_map_east;
+    int key_map_west;
+    int key_map_zoomin;
+    int key_map_zoomout;
+    int key_map_toggle;
+    int key_map_maxzoom;
+    int key_map_follow;
+    int key_map_grid;
+    int key_map_mark;
+    int key_map_clearmark;
+    int key_map_overlay;
+    int key_map_rotate;
 
-extern int key_menu_help;
-extern int key_menu_save;
-extern int key_menu_load;
-extern int key_menu_volume;
-extern int key_menu_detail;
-extern int key_menu_qsave;
-extern int key_menu_endgame;
-extern int key_menu_messages;
-extern int key_menu_qload;
-extern int key_menu_quit;
-extern int key_menu_gamma;
+    // menu keys:
 
-extern int key_menu_incscreen;
-extern int key_menu_decscreen;
-extern int key_menu_screenshot;
-extern int key_menu_cleanscreenshot; // [crispy]
-extern int key_menu_del;             // [crispy]
-extern int key_menu_nextlevel;       // [crispy]
-extern int key_menu_reloadlevel;     // [crispy]
+    int key_menu_activate;
+    int key_menu_up;
+    int key_menu_down;
+    int key_menu_left;
+    int key_menu_right;
+    int key_menu_back;
+    int key_menu_forward;
+    int key_menu_confirm;
+    int key_menu_abort;
 
-extern int mousebfire;
-extern int mousebstrafe;
-extern int mousebforward;
+    int key_menu_help;
+    int key_menu_save;
+    int key_menu_load;
+    int key_menu_volume;
+    int key_menu_detail;
+    int key_menu_qsave;
+    int key_menu_endgame;
+    int key_menu_messages;
+    int key_menu_qload;
+    int key_menu_quit;
+    int key_menu_gamma;
 
-extern int mousebjump;
+    int key_menu_incscreen;
+    int key_menu_decscreen;
+    int key_menu_screenshot;
+    int key_menu_cleanscreenshot; // [crispy]
+    int key_menu_del;             // [crispy]
+    int key_menu_nextlevel;       // [crispy]
+    int key_menu_reloadlevel;     // [crispy]
 
-extern int mousebstrafeleft;
-extern int mousebstraferight;
-extern int mousebbackward;
-extern int mousebuse;
-extern int mousebmouselook;
-extern int mousebreverse;
+    //
+    // Mouse controls
+    //
 
-extern int mousebprevweapon;
-extern int mousebnextweapon;
+    int mousebfire;
+    int mousebstrafe;
+    int mousebforward;
 
-extern int joybfire;
-extern int joybstrafe;
-extern int joybuse;
-extern int joybspeed;
+    int mousebjump;
 
-extern int joybjump;
+    int mousebstrafeleft;
+    int mousebstraferight;
+    int mousebbackward;
+    int mousebuse;
+    int mousebmouselook;
+    int mousebreverse;
 
-extern int joybstrafeleft;
-extern int joybstraferight;
+    int mousebprevweapon;
+    int mousebnextweapon;
 
-extern int joybprevweapon;
-extern int joybnextweapon;
+    //
+    // Joystick controls
+    //
 
-extern int joybmenu;
-extern int joybautomap;
+    int joybfire;
+    int joybstrafe;
+    int joybuse;
+    int joybspeed;
 
-extern int dclick_use;
+    int joybjump;
+
+    int joybstrafeleft;
+    int joybstraferight;
+
+    int joybprevweapon;
+    int joybnextweapon;
+
+    int joybmenu;
+    int joybautomap;
+
+    // Control whether if a mouse button is double clicked, it acts like
+    // "use" has been pressed
+    int dclick_use;
+};
+
+extern m_controls_t *const g_m_controls_globals;
 
 void M_BindBaseControls();
 void M_BindHereticControls();

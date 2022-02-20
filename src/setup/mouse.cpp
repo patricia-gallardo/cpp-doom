@@ -42,18 +42,18 @@ static int grabmouse = 1;
 int novert = 1;
 
 static int *all_mouse_buttons[] = {
-    &mousebfire,
-    &mousebstrafe,
-    &mousebforward,
-    &mousebstrafeleft,
-    &mousebstraferight,
-    &mousebbackward,
-    &mousebuse,
-    &mousebjump,
-    &mousebprevweapon,
-    &mousebnextweapon,
-    &mousebmouselook, // [crispy]
-    &mousebreverse // [crispy]
+    &g_m_controls_globals->mousebfire,
+    &g_m_controls_globals->mousebstrafe,
+    &g_m_controls_globals->mousebforward,
+    &g_m_controls_globals->mousebstrafeleft,
+    &g_m_controls_globals->mousebstraferight,
+    &g_m_controls_globals->mousebbackward,
+    &g_m_controls_globals->mousebuse,
+    &g_m_controls_globals->mousebjump,
+    &g_m_controls_globals->mousebprevweapon,
+    &g_m_controls_globals->mousebnextweapon,
+    &g_m_controls_globals->mousebmouselook, // [crispy]
+    &g_m_controls_globals->mousebreverse // [crispy]
 };
 
 static void MouseSetCallback(void *, void *uncast_variable)
@@ -101,24 +101,24 @@ static void ConfigExtraButtons(void *, void *)
 
     TXT_SetColumnWidths(buttons_table, 16, 11, 14, 10);
 
-    AddMouseControl(buttons_table, "Move forward", &mousebforward);
-    AddMouseControl(buttons_table, "Strafe left", &mousebstrafeleft);
-    AddMouseControl(buttons_table, "Move backward", &mousebbackward);
-    AddMouseControl(buttons_table, "Strafe right", &mousebstraferight);
-    AddMouseControl(buttons_table, "Previous weapon", &mousebprevweapon);
-    AddMouseControl(buttons_table, "Strafe on", &mousebstrafe);
-    AddMouseControl(buttons_table, "Next weapon", &mousebnextweapon);
+    AddMouseControl(buttons_table, "Move forward", &g_m_controls_globals->mousebforward);
+    AddMouseControl(buttons_table, "Strafe left", &g_m_controls_globals->mousebstrafeleft);
+    AddMouseControl(buttons_table, "Move backward", &g_m_controls_globals->mousebbackward);
+    AddMouseControl(buttons_table, "Strafe right", &g_m_controls_globals->mousebstraferight);
+    AddMouseControl(buttons_table, "Previous weapon", &g_m_controls_globals->mousebprevweapon);
+    AddMouseControl(buttons_table, "Strafe on", &g_m_controls_globals->mousebstrafe);
+    AddMouseControl(buttons_table, "Next weapon", &g_m_controls_globals->mousebnextweapon);
 
     if (gamemission == hexen || gamemission == strife)
     {
-        AddMouseControl(buttons_table, "Jump", &mousebjump);
+        AddMouseControl(buttons_table, "Jump", &g_m_controls_globals->mousebjump);
     }
 
     if (gamemission == doom) // [crispy]
     {
-        AddMouseControl(buttons_table, "Quick Reverse", &mousebreverse);
-        AddMouseControl(buttons_table, "Mouse Look [*]", &mousebmouselook);
-        AddMouseControl(buttons_table, "Jump [*]", &mousebjump);
+        AddMouseControl(buttons_table, "Quick Reverse", &g_m_controls_globals->mousebreverse);
+        AddMouseControl(buttons_table, "Mouse Look [*]", &g_m_controls_globals->mousebmouselook);
+        AddMouseControl(buttons_table, "Jump [*]", &g_m_controls_globals->mousebjump);
     }
 }
 
@@ -145,7 +145,7 @@ void ConfigMouse(void *, void *)
                                    &grabmouse),
                    TXT_TABLE_OVERFLOW_RIGHT,
                    TXT_NewCheckBox("Double click acts as \"use\"",
-                                   &dclick_use),
+                                   &g_m_controls_globals->dclick_use),
                    TXT_TABLE_OVERFLOW_RIGHT,
 
                    TXT_NewSeparator("Mouse motion"),
@@ -179,7 +179,7 @@ void ConfigMouse(void *, void *)
                                    &grabmouse),
                    TXT_TABLE_OVERFLOW_RIGHT,
                    TXT_NewCheckBox("Double click acts as \"use\"",
-                                   &dclick_use),
+                                   &g_m_controls_globals->dclick_use),
                    TXT_TABLE_OVERFLOW_RIGHT,
 
                    TXT_NewSeparator("Mouse motion"),
@@ -194,8 +194,8 @@ void ConfigMouse(void *, void *)
                    nullptr);
     }
 
-    AddMouseControl(window, "Fire/Attack", &mousebfire);
-    AddMouseControl(window, "Use", &mousebuse);
+    AddMouseControl(window, "Fire/Attack", &g_m_controls_globals->mousebfire);
+    AddMouseControl(window, "Use", &g_m_controls_globals->mousebuse);
 
     TXT_AddWidget(window,
                   TXT_NewButton2("More controls...", ConfigExtraButtons, nullptr));

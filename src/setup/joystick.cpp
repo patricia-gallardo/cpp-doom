@@ -664,7 +664,7 @@ static void LoadConfigurationSet(const joystick_config_t *configs)
         config = &configs[i];
 
         // Don't overwrite autorun if it is set.
-        if (!strcmp(config->name, "joyb_speed") && joybspeed >= 20)
+        if (!strcmp(config->name, "joyb_speed") && g_m_controls_globals->joybspeed >= 20)
         {
             continue;
         }
@@ -1045,34 +1045,34 @@ void ConfigJoystick(void *, void *)
 
     TXT_AddWidget(window, TXT_NewSeparator("Buttons"));
 
-    AddJoystickControl(window, "Fire/Attack", &joybfire);
-    AddJoystickControl(window, "Strafe Left", &joybstrafeleft);
+    AddJoystickControl(window, "Fire/Attack", &g_m_controls_globals->joybfire);
+    AddJoystickControl(window, "Strafe Left", &g_m_controls_globals->joybstrafeleft);
 
-    AddJoystickControl(window, "Use", &joybuse);
-    AddJoystickControl(window, "Strafe Right", &joybstraferight);
+    AddJoystickControl(window, "Use", &g_m_controls_globals->joybuse);
+    AddJoystickControl(window, "Strafe Right", &g_m_controls_globals->joybstraferight);
 
-    AddJoystickControl(window, "Previous weapon", &joybprevweapon);
-    AddJoystickControl(window, "Strafe", &joybstrafe);
+    AddJoystickControl(window, "Previous weapon", &g_m_controls_globals->joybprevweapon);
+    AddJoystickControl(window, "Strafe", &g_m_controls_globals->joybstrafe);
 
-    AddJoystickControl(window, "Next weapon", &joybnextweapon);
+    AddJoystickControl(window, "Next weapon", &g_m_controls_globals->joybnextweapon);
 
     // High values of joybspeed are used to activate the "always run mode"
     // trick in Vanilla Doom.  If this has been enabled, not only is the
     // joybspeed value meaningless, but the control itself is useless.
 
-    if (joybspeed < 20)
+    if (g_m_controls_globals->joybspeed < 20)
     {
-        AddJoystickControl(window, "Speed", &joybspeed);
+        AddJoystickControl(window, "Speed", &g_m_controls_globals->joybspeed);
     }
 
     if (gamemission == doom || gamemission == hexen || gamemission == strife) // [crispy]
     {
-        AddJoystickControl(window, "Jump", &joybjump);
+        AddJoystickControl(window, "Jump", &g_m_controls_globals->joybjump);
     }
 
-    AddJoystickControl(window, "Activate menu", &joybmenu);
+    AddJoystickControl(window, "Activate menu", &g_m_controls_globals->joybmenu);
 
-    AddJoystickControl(window, "Toggle Automap", &joybautomap);
+    AddJoystickControl(window, "Toggle Automap", &g_m_controls_globals->joybautomap);
 
     TXT_SignalConnect(joystick_button, "pressed", CalibrateJoystick, nullptr);
     TXT_SetWindowAction(window, TXT_HORIZ_CENTER, TestConfigAction());
