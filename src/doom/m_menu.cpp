@@ -878,7 +878,7 @@ static char tempstring[90];
 
 void M_QuickSaveResponse(int key)
 {
-    if (key == key_menu_confirm)
+    if (key == g_m_controls_globals->key_menu_confirm)
     {
         M_DoSave(quickSaveSlot);
         S_StartSound(nullptr, sfx_swtchx);
@@ -917,7 +917,7 @@ void M_QuickSave()
 //
 void M_QuickLoadResponse(int key)
 {
-    if (key == key_menu_confirm)
+    if (key == g_m_controls_globals->key_menu_confirm)
     {
         M_LoadSelect(quickSaveSlot);
         S_StartSound(nullptr, sfx_swtchx);
@@ -1085,7 +1085,7 @@ void M_DrawEpisode()
 
 void M_VerifyNightmare(int key)
 {
-    if (key != key_menu_confirm) return;
+    if (key != g_m_controls_globals->key_menu_confirm) return;
 
     G_DeferedInitNew(skill_t::sk_nightmare, epi + 1, 1);
     M_ClearMenus();
@@ -1456,7 +1456,7 @@ void M_ChangeMessages(int)
 //
 void M_EndGameResponse(int key)
 {
-    if (key != key_menu_confirm) return;
+    if (key != g_m_controls_globals->key_menu_confirm) return;
 
     // [crispy] killough 5/26/98: make endgame quit if recording or playing back demo
     if (demorecording || singledemo) G_CheckDemoStatus();
@@ -1517,7 +1517,7 @@ void M_QuitResponse(int key)
 {
     extern int show_endoom;
 
-    if (key != key_menu_confirm) return;
+    if (key != g_m_controls_globals->key_menu_confirm) return;
 
     // [crispy] play quit sound only if the ENDOOM screen is also shown
     if (!netgame && show_endoom)
@@ -1927,7 +1927,7 @@ bool M_Responder(event_t *ev)
 
     if (testcontrols)
     {
-        if (ev->type == ev_quit || (ev->type == ev_keydown && (ev->data1 == key_menu_activate || ev->data1 == key_menu_quit)))
+        if (ev->type == ev_quit || (ev->type == ev_keydown && (ev->data1 == g_m_controls_globals->key_menu_activate || ev->data1 == g_m_controls_globals->key_menu_quit)))
         {
             I_Quit();
             return true;
@@ -1942,7 +1942,7 @@ bool M_Responder(event_t *ev)
         // First click on close button = bring up quit confirm message.
         // Second click on close button = confirm quit
 
-        if (menuactive && messageToPrint && messageRoutine == M_QuitResponse) { M_QuitResponse(key_menu_confirm); }
+        if (menuactive && messageToPrint && messageRoutine == M_QuitResponse) { M_QuitResponse(g_m_controls_globals->key_menu_confirm); }
         else
         {
             S_StartSound(nullptr, sfx_swtchn);
@@ -1965,32 +1965,32 @@ bool M_Responder(event_t *ev)
         {
             if (ev->data3 < 0)
             {
-                key     = key_menu_up;
+                key     = g_m_controls_globals->key_menu_up;
                 g_i_video_globals->joywait = static_cast<unsigned int>(I_GetTime() + 5);
             }
             else if (ev->data3 > 0)
             {
-                key     = key_menu_down;
+                key     = g_m_controls_globals->key_menu_down;
                 g_i_video_globals->joywait = static_cast<unsigned int>(I_GetTime() + 5);
             }
             if (ev->data2 < 0)
             {
-                key     = key_menu_left;
+                key     = g_m_controls_globals->key_menu_left;
                 g_i_video_globals->joywait = static_cast<unsigned int>(I_GetTime() + 2);
             }
             else if (ev->data2 > 0)
             {
-                key     = key_menu_right;
+                key     = g_m_controls_globals->key_menu_right;
                 g_i_video_globals->joywait = static_cast<unsigned int>(I_GetTime() + 2);
             }
 
 #define JOY_BUTTON_MAPPED(x)  ((x) >= 0)
 #define JOY_BUTTON_PRESSED(x) (JOY_BUTTON_MAPPED(x) && (ev->data1 & (1 << (x))) != 0)
 
-            if (JOY_BUTTON_PRESSED(joybfire))
+            if (JOY_BUTTON_PRESSED(g_m_controls_globals->joybfire))
             {
                 // Simulate a 'Y' keypress when Doom show a Y/N dialog with Fire button.
-                if (messageToPrint && messageNeedsInput) { key = key_menu_confirm; }
+                if (messageToPrint && messageNeedsInput) { key = g_m_controls_globals->key_menu_confirm; }
                 // Simulate pressing "Enter" when we are supplying a save slot name
                 else if (saveStringEnter)
                 {
@@ -2000,14 +2000,14 @@ bool M_Responder(event_t *ev)
                 {
                     // if selecting a save slot via joypad, set a flag
                     if (currentMenu == &SaveDef) { joypadSave = true; }
-                    key = key_menu_forward;
+                    key = g_m_controls_globals->key_menu_forward;
                 }
                 g_i_video_globals->joywait = static_cast<unsigned int>(I_GetTime() + 5);
             }
-            if (JOY_BUTTON_PRESSED(joybuse))
+            if (JOY_BUTTON_PRESSED(g_m_controls_globals->joybuse))
             {
                 // Simulate a 'N' keypress when Doom show a Y/N dialog with Use button.
-                if (messageToPrint && messageNeedsInput) { key = key_menu_abort; }
+                if (messageToPrint && messageNeedsInput) { key = g_m_controls_globals->key_menu_abort; }
                 // If user was entering a save name, back out
                 else if (saveStringEnter)
                 {
@@ -2015,14 +2015,14 @@ bool M_Responder(event_t *ev)
                 }
                 else
                 {
-                    key = key_menu_back;
+                    key = g_m_controls_globals->key_menu_back;
                 }
                 g_i_video_globals->joywait = static_cast<unsigned int>(I_GetTime() + 5);
             }
         }
-        if (JOY_BUTTON_PRESSED(joybmenu))
+        if (JOY_BUTTON_PRESSED(g_m_controls_globals->joybmenu))
         {
-            key     = key_menu_activate;
+            key     = g_m_controls_globals->key_menu_activate;
             g_i_video_globals->joywait = static_cast<unsigned int>(I_GetTime() + 5);
         }
     }
@@ -2034,13 +2034,13 @@ bool M_Responder(event_t *ev)
             if (!novert) { mousey += ev->data3; }
             if (mousey < lasty - 30)
             {
-                key       = key_menu_down;
+                key       = g_m_controls_globals->key_menu_down;
                 mousewait = I_GetTime() + 5;
                 mousey    = lasty -= 30;
             }
             else if (mousey > lasty + 30)
             {
-                key       = key_menu_up;
+                key       = g_m_controls_globals->key_menu_up;
                 mousewait = I_GetTime() + 5;
                 mousey    = lasty += 30;
             }
@@ -2048,38 +2048,38 @@ bool M_Responder(event_t *ev)
             mousex += ev->data2;
             if (mousex < lastx - 30)
             {
-                key       = key_menu_left;
+                key       = g_m_controls_globals->key_menu_left;
                 mousewait = I_GetTime() + 5;
                 mousex    = lastx -= 30;
             }
             else if (mousex > lastx + 30)
             {
-                key       = key_menu_right;
+                key       = g_m_controls_globals->key_menu_right;
                 mousewait = I_GetTime() + 5;
                 mousex    = lastx += 30;
             }
 
             if (ev->data1 & 1)
             {
-                key       = key_menu_forward;
+                key       = g_m_controls_globals->key_menu_forward;
                 mousewait = I_GetTime() + 15;
             }
 
             if (ev->data1 & 2)
             {
-                key       = key_menu_back;
+                key       = g_m_controls_globals->key_menu_back;
                 mousewait = I_GetTime() + 15;
             }
 
             // [crispy] scroll menus with mouse wheel
-            if (mousebprevweapon >= 0 && ev->data1 & (1 << mousebprevweapon))
+            if (g_m_controls_globals->mousebprevweapon >= 0 && ev->data1 & (1 << g_m_controls_globals->mousebprevweapon))
             {
-                key       = key_menu_down;
+                key       = g_m_controls_globals->key_menu_down;
                 mousewait = I_GetTime() + 5;
             }
-            else if (mousebnextweapon >= 0 && ev->data1 & (1 << mousebnextweapon))
+            else if (g_m_controls_globals->mousebnextweapon >= 0 && ev->data1 & (1 << g_m_controls_globals->mousebnextweapon))
             {
-                key       = key_menu_up;
+                key       = g_m_controls_globals->key_menu_up;
                 mousewait = I_GetTime() + 5;
             }
         }
@@ -2156,7 +2156,7 @@ bool M_Responder(event_t *ev)
     {
         if (messageNeedsInput)
         {
-            if (key != ' ' && key != KEY_ESCAPE && key != key_menu_confirm && key != key_menu_abort) { return false; }
+            if (key != ' ' && key != KEY_ESCAPE && key != g_m_controls_globals->key_menu_confirm && key != g_m_controls_globals->key_menu_abort) { return false; }
         }
 
         menuactive = messageLastMenuActive;
@@ -2170,9 +2170,9 @@ bool M_Responder(event_t *ev)
     }
 
     // [crispy] take screen shot without weapons and HUD
-    if (key != 0 && key == key_menu_cleanscreenshot) { crispy->cleanscreenshot = (screenblocks > 10) ? 2 : 1; }
+    if (key != 0 && key == g_m_controls_globals->key_menu_cleanscreenshot) { crispy->cleanscreenshot = (screenblocks > 10) ? 2 : 1; }
 
-    if ((devparm && key == key_menu_help) || (key != 0 && (key == key_menu_screenshot || key == key_menu_cleanscreenshot)))
+    if ((devparm && key == g_m_controls_globals->key_menu_help) || (key != 0 && (key == g_m_controls_globals->key_menu_screenshot || key == g_m_controls_globals->key_menu_cleanscreenshot)))
     {
         G_ScreenShot();
         return true;
@@ -2181,21 +2181,21 @@ bool M_Responder(event_t *ev)
     // F-Keys
     if (!menuactive)
     {
-        if (key == key_menu_decscreen) // Screen size down
+        if (key == g_m_controls_globals->key_menu_decscreen) // Screen size down
         {
             if (automapactive || chat_on) return false;
             M_SizeDisplay(0);
             S_StartSound(nullptr, sfx_stnmov);
             return true;
         }
-        else if (key == key_menu_incscreen) // Screen size up
+        else if (key == g_m_controls_globals->key_menu_incscreen) // Screen size up
         {
             if (automapactive || chat_on) return false;
             M_SizeDisplay(1);
             S_StartSound(nullptr, sfx_stnmov);
             return true;
         }
-        else if (key == key_menu_help) // Help key
+        else if (key == g_m_controls_globals->key_menu_help) // Help key
         {
             M_StartControlPanel();
 
@@ -2208,21 +2208,21 @@ bool M_Responder(event_t *ev)
             S_StartSound(nullptr, sfx_swtchn);
             return true;
         }
-        else if (key == key_menu_save) // Save
+        else if (key == g_m_controls_globals->key_menu_save) // Save
         {
             M_StartControlPanel();
             S_StartSound(nullptr, sfx_swtchn);
             M_SaveGame(0);
             return true;
         }
-        else if (key == key_menu_load) // Load
+        else if (key == g_m_controls_globals->key_menu_load) // Load
         {
             M_StartControlPanel();
             S_StartSound(nullptr, sfx_swtchn);
             M_LoadGame(0);
             return true;
         }
-        else if (key == key_menu_volume) // Sound Volume
+        else if (key == g_m_controls_globals->key_menu_volume) // Sound Volume
         {
             M_StartControlPanel();
             currentMenu = &SoundDef;
@@ -2230,43 +2230,43 @@ bool M_Responder(event_t *ev)
             S_StartSound(nullptr, sfx_swtchn);
             return true;
         }
-        else if (key == key_menu_detail) // Detail toggle
+        else if (key == g_m_controls_globals->key_menu_detail) // Detail toggle
         {
             M_ChangeDetail(0);
             S_StartSound(nullptr, sfx_swtchn);
             return true;
         }
-        else if (key == key_menu_qsave) // Quicksave
+        else if (key == g_m_controls_globals->key_menu_qsave) // Quicksave
         {
             S_StartSound(nullptr, sfx_swtchn);
             M_QuickSave();
             return true;
         }
-        else if (key == key_menu_endgame) // End game
+        else if (key == g_m_controls_globals->key_menu_endgame) // End game
         {
             S_StartSound(nullptr, sfx_swtchn);
             M_EndGame(0);
             return true;
         }
-        else if (key == key_menu_messages) // Toggle messages
+        else if (key == g_m_controls_globals->key_menu_messages) // Toggle messages
         {
             M_ChangeMessages(0);
             S_StartSound(nullptr, sfx_swtchn);
             return true;
         }
-        else if (key == key_menu_qload) // Quickload
+        else if (key == g_m_controls_globals->key_menu_qload) // Quickload
         {
             S_StartSound(nullptr, sfx_swtchn);
             M_QuickLoad();
             return true;
         }
-        else if (key == key_menu_quit) // Quit DOOM
+        else if (key == g_m_controls_globals->key_menu_quit) // Quit DOOM
         {
             S_StartSound(nullptr, sfx_swtchn);
             M_QuitDOOM(0);
             return true;
         }
-        else if (key == key_menu_gamma) // gamma toggle
+        else if (key == g_m_controls_globals->key_menu_gamma) // gamma toggle
         {
             g_i_video_globals->usegamma++;
             if (g_i_video_globals->usegamma > 4 + 4) // [crispy] intermediate gamma levels
@@ -2288,11 +2288,11 @@ bool M_Responder(event_t *ev)
         }
         // [crispy] those two can be considered as shortcuts for the IDCLEV cheat
         // and should be treated as such, i.e. add "if (!netgame)"
-        else if (!netgame && key != 0 && key == key_menu_reloadlevel)
+        else if (!netgame && key != 0 && key == g_m_controls_globals->key_menu_reloadlevel)
         {
             if (G_ReloadLevel()) return true;
         }
-        else if (!netgame && key != 0 && key == key_menu_nextlevel)
+        else if (!netgame && key != 0 && key == g_m_controls_globals->key_menu_nextlevel)
         {
             if (G_GotoNextLevel()) return true;
         }
@@ -2301,7 +2301,7 @@ bool M_Responder(event_t *ev)
     // Pop-up menu?
     if (!menuactive)
     {
-        if (key == key_menu_activate)
+        if (key == g_m_controls_globals->key_menu_activate)
         {
             M_StartControlPanel();
             S_StartSound(nullptr, sfx_swtchn);
@@ -2312,7 +2312,7 @@ bool M_Responder(event_t *ev)
 
     // Keys usable within menu
 
-    if (key == key_menu_down)
+    if (key == g_m_controls_globals->key_menu_down)
     {
         // Move down to next item
 
@@ -2327,7 +2327,7 @@ bool M_Responder(event_t *ev)
 
         return true;
     }
-    else if (key == key_menu_up)
+    else if (key == g_m_controls_globals->key_menu_up)
     {
         // Move back up to previous item
 
@@ -2342,7 +2342,7 @@ bool M_Responder(event_t *ev)
 
         return true;
     }
-    else if (key == key_menu_left)
+    else if (key == g_m_controls_globals->key_menu_left)
     {
         // Slide slider left
 
@@ -2353,7 +2353,7 @@ bool M_Responder(event_t *ev)
         }
         return true;
     }
-    else if (key == key_menu_right)
+    else if (key == g_m_controls_globals->key_menu_right)
     {
         // Slide slider right
 
@@ -2364,7 +2364,7 @@ bool M_Responder(event_t *ev)
         }
         return true;
     }
-    else if (key == key_menu_forward)
+    else if (key == g_m_controls_globals->key_menu_forward)
     {
         // Activate menu item
 
@@ -2384,7 +2384,7 @@ bool M_Responder(event_t *ev)
         }
         return true;
     }
-    else if (key == key_menu_activate)
+    else if (key == g_m_controls_globals->key_menu_activate)
     {
         // Deactivate menu
 
@@ -2393,7 +2393,7 @@ bool M_Responder(event_t *ev)
         S_StartSound(nullptr, sfx_swtchx);
         return true;
     }
-    else if (key == key_menu_back)
+    else if (key == g_m_controls_globals->key_menu_back)
     {
         // Go back to previous menu
 
@@ -2407,7 +2407,7 @@ bool M_Responder(event_t *ev)
         return true;
     }
     // [crispy] delete a savegame
-    else if (key == key_menu_del)
+    else if (key == g_m_controls_globals->key_menu_del)
     {
         if (currentMenu == &LoadDef || currentMenu == &SaveDef)
         {
@@ -2803,7 +2803,7 @@ static void  M_ForceLoadGameResponse(int key)
     free(savegwarning);
     free(savewadfilename);
 
-    if (key != key_menu_confirm || !savemaplumpinfo)
+    if (key != g_m_controls_globals->key_menu_confirm || !savemaplumpinfo)
     {
         // [crispy] no need to end game anymore when denied to load savegame
         //M_EndGameResponse(key_menu_confirm);
@@ -2844,7 +2844,7 @@ static void M_ConfirmDeleteGameResponse(int key)
 {
     free(savegwarning);
 
-    if (key == key_menu_confirm)
+    if (key == g_m_controls_globals->key_menu_confirm)
     {
         char name[256];
 

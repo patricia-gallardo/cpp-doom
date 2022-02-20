@@ -24,31 +24,31 @@
 // This is the stuff configured by Setup.Exe.
 // Most key data are simple ascii (uppercased).
 //
-#define KEY_RIGHTARROW 0xae
-#define KEY_LEFTARROW  0xac
-#define KEY_UPARROW    0xad
-#define KEY_DOWNARROW  0xaf
+constexpr auto KEY_RIGHTARROW = 0xae;
+constexpr auto KEY_LEFTARROW  = 0xac;
+constexpr auto KEY_UPARROW    = 0xad;
+constexpr auto KEY_DOWNARROW  = 0xaf;
 constexpr auto KEY_ESCAPE     = 27;
 constexpr auto KEY_ENTER      = 13;
 constexpr auto KEY_TAB        = 9;
-#define KEY_F1         (0x80 + 0x3b)
-#define KEY_F2         (0x80 + 0x3c)
-#define KEY_F3         (0x80 + 0x3d)
-#define KEY_F4         (0x80 + 0x3e)
-#define KEY_F5         (0x80 + 0x3f)
-#define KEY_F6         (0x80 + 0x40)
-#define KEY_F7         (0x80 + 0x41)
-#define KEY_F8         (0x80 + 0x42)
-#define KEY_F9         (0x80 + 0x43)
-#define KEY_F10        (0x80 + 0x44)
-#define KEY_F11        (0x80 + 0x57)
-#define KEY_F12        (0x80 + 0x58)
+constexpr auto KEY_F1         = (0x80 + 0x3b);
+constexpr auto KEY_F2         = (0x80 + 0x3c);
+constexpr auto KEY_F3         = (0x80 + 0x3d);
+constexpr auto KEY_F4         = (0x80 + 0x3e);
+constexpr auto KEY_F5         = (0x80 + 0x3f);
+constexpr auto KEY_F6         = (0x80 + 0x40);
+constexpr auto KEY_F7         = (0x80 + 0x41);
+constexpr auto KEY_F8         = (0x80 + 0x42);
+constexpr auto KEY_F9         = (0x80 + 0x43);
+constexpr auto KEY_F10        = (0x80 + 0x44);
+constexpr auto KEY_F11        = (0x80 + 0x57);
+constexpr auto KEY_F12        = (0x80 + 0x58);
 
-#define KEY_BACKSPACE 0x7f
-#define KEY_PAUSE     0xff
+constexpr auto KEY_BACKSPACE = 0x7f;
+constexpr auto KEY_PAUSE     = 0xff;
 
-#define KEY_EQUALS 0x3d
-#define KEY_MINUS  0x2d
+constexpr auto KEY_EQUALS = 0x3d;
+constexpr auto KEY_MINUS  = 0x2d;
 
 #define KEY_RSHIFT (0x80 + 0x36)
 #define KEY_RCTRL  (0x80 + 0x1d)
@@ -63,12 +63,12 @@ constexpr auto KEY_TAB        = 9;
 #define KEY_SCRLCK   (0x80 + 0x46)
 #define KEY_PRTSCR   (0x80 + 0x59)
 
-#define KEY_HOME (0x80 + 0x47)
-#define KEY_END  (0x80 + 0x4f)
-#define KEY_PGUP (0x80 + 0x49)
-#define KEY_PGDN (0x80 + 0x51)
-#define KEY_INS  (0x80 + 0x52)
-#define KEY_DEL  (0x80 + 0x53)
+constexpr auto KEY_HOME = (0x80 + 0x47);
+constexpr auto KEY_END  = (0x80 + 0x4f);
+constexpr auto KEY_PGUP = (0x80 + 0x49);
+constexpr auto KEY_PGDN = (0x80 + 0x51);
+constexpr auto KEY_INS  = (0x80 + 0x52);
+constexpr auto KEY_DEL  = (0x80 + 0x53);
 
 #define KEYP_0 KEY_INS
 #define KEYP_1 KEY_END

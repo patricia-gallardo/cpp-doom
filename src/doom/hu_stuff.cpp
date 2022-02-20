@@ -1161,13 +1161,13 @@ bool HU_Responder(event_t *ev)
 
     if (!chat_on)
     {
-        if (ev->data1 == key_message_refresh)
+        if (ev->data1 == g_m_controls_globals->key_message_refresh)
         {
             message_on      = true;
             message_counter = HU_MSGTIMEOUT;
             eatkey          = true;
         }
-        else if (netgame && ev->data2 == key_multi_msg)
+        else if (netgame && ev->data2 == g_m_controls_globals->key_multi_msg)
         {
             eatkey = true;
             StartChatInput(HU_BROADCAST);
@@ -1176,7 +1176,7 @@ bool HU_Responder(event_t *ev)
         {
             for (i = 0; i < MAXPLAYERS; i++)
             {
-                if (ev->data2 == key_multi_msgplayer[i])
+                if (ev->data2 == g_m_controls_globals->key_multi_msgplayer[i])
                 {
                     if (playeringame[i] && i != consoleplayer)
                     {

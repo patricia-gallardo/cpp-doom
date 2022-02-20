@@ -686,13 +686,13 @@ bool F_CastResponder(event_t *ev)
         return false;
 
     // [crispy] make monsters turnable in cast ...
-    if (ev->data1 == key_left)
+    if (ev->data1 == g_m_controls_globals->key_left)
     {
         if (++castangle > 7)
             castangle = 0;
         return false;
     }
-    else if (ev->data1 == key_right)
+    else if (ev->data1 == g_m_controls_globals->key_right)
     {
         if (--castangle < 0)
             castangle = 7;
@@ -700,18 +700,18 @@ bool F_CastResponder(event_t *ev)
     }
     else
         // [crispy] ... and allow to skip through them ..
-        if (ev->data1 == key_strafeleft || ev->data1 == key_alt_strafeleft)
+        if (ev->data1 == g_m_controls_globals->key_strafeleft || ev->data1 == g_m_controls_globals->key_alt_strafeleft)
     {
         castskip = static_cast<signed char>(castnum ? -1 : std::size(castorder) - 2);
         return false;
     }
-    else if (ev->data1 == key_straferight || ev->data1 == key_alt_straferight)
+    else if (ev->data1 == g_m_controls_globals->key_straferight || ev->data1 == g_m_controls_globals->key_alt_straferight)
     {
         castskip = +1;
         return false;
     }
     // [crispy] ... and finally turn them into gibbs
-    if (ev->data1 == key_speed)
+    if (ev->data1 == g_m_controls_globals->key_speed)
         xdeath = true;
 
     if (castdeath)

@@ -1144,30 +1144,30 @@ void BindMultiplayerVariables()
     {
         case doom:
             M_BindChatControls(4);
-            key_multi_msgplayer[0] = 'g';
-            key_multi_msgplayer[1] = 'i';
-            key_multi_msgplayer[2] = 'b';
-            key_multi_msgplayer[3] = 'r';
+            g_m_controls_globals->key_multi_msgplayer[0] = 'g';
+            g_m_controls_globals->key_multi_msgplayer[1] = 'i';
+            g_m_controls_globals->key_multi_msgplayer[2] = 'b';
+            g_m_controls_globals->key_multi_msgplayer[3] = 'r';
             break;
 
         case heretic:
             M_BindChatControls(4);
-            key_multi_msgplayer[0] = 'g';
-            key_multi_msgplayer[1] = 'y';
-            key_multi_msgplayer[2] = 'r';
-            key_multi_msgplayer[3] = 'b';
+            g_m_controls_globals->key_multi_msgplayer[0] = 'g';
+            g_m_controls_globals->key_multi_msgplayer[1] = 'y';
+            g_m_controls_globals->key_multi_msgplayer[2] = 'r';
+            g_m_controls_globals->key_multi_msgplayer[3] = 'b';
             break;
 
         case hexen:
             M_BindChatControls(8);
-            key_multi_msgplayer[0] = 'b';
-            key_multi_msgplayer[1] = 'r';
-            key_multi_msgplayer[2] = 'y';
-            key_multi_msgplayer[3] = 'g';
-            key_multi_msgplayer[4] = 'j';
-            key_multi_msgplayer[5] = 'w';
-            key_multi_msgplayer[6] = 'h';
-            key_multi_msgplayer[7] = 'p';
+            g_m_controls_globals->key_multi_msgplayer[0] = 'b';
+            g_m_controls_globals->key_multi_msgplayer[1] = 'r';
+            g_m_controls_globals->key_multi_msgplayer[2] = 'y';
+            g_m_controls_globals->key_multi_msgplayer[3] = 'g';
+            g_m_controls_globals->key_multi_msgplayer[4] = 'j';
+            g_m_controls_globals->key_multi_msgplayer[5] = 'w';
+            g_m_controls_globals->key_multi_msgplayer[6] = 'h';
+            g_m_controls_globals->key_multi_msgplayer[7] = 'p';
             break;
 
         default:
