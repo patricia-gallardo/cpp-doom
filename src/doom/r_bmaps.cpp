@@ -3660,8 +3660,6 @@ static uint8_t hacxlightning[256] = {
     0,
 };
 
-uint8_t *dc_brightmap = nobrightmap;
-
 // [crispy] brightmaps for textures
 
 enum

@@ -74,24 +74,41 @@ uint8_t translations[3][256];
 
 static pixel_t *background_buffer = nullptr;
 
-
-//
-// R_DrawColumn
-// Source is the top of the column to scale.
-//
-lighttable_t *dc_colormap[2]; // [crispy] brightmaps
-int           dc_x;
-int           dc_yl;
-int           dc_yh;
-fixed_t       dc_iscale;
-fixed_t       dc_texturemid;
-int           dc_texheight; // [crispy] Tutti-Frutti fix
-
-// first pixel in a column (possibly virtual)
-uint8_t *dc_source;
-
 // just for profiling
 int dccount;
+
+static uint8_t nobrightmap[256] = { 0 };
+
+static r_draw_t r_draw_s = {
+    .dc_colormap = {},
+    .dc_x = 0,
+    .dc_yl = 0,
+    .dc_yh = 0,
+    .dc_iscale = 0,
+    .dc_texturemid = 0,
+    .dc_texheight = 0,
+    .dc_brightmap = nobrightmap,
+
+    .dc_source = nullptr,
+
+    .ds_y = 0,
+    .ds_x1 = 0,
+    .ds_x2 = 0,
+
+    .ds_colormap = {},
+    .ds_brightmap = nullptr,
+
+    .ds_xfrac = 0,
+    .ds_yfrac = 0,
+    .ds_xstep = 0,
+    .ds_ystep = 0,
+
+    .ds_source = nullptr,
+
+    .translationtables = nullptr,
+    .dc_translation = nullptr
+};
+r_draw_t *const g_r_draw_globals = &r_draw_s;
 
 //
 // A column is a vertical slice/span from a wall texture that,
@@ -109,41 +126,41 @@ void R_DrawColumn()
     pixel_t *dest;
     fixed_t  frac;
     fixed_t  fracstep;
-    int      heightmask = dc_texheight - 1;
+    int      heightmask = g_r_draw_globals->dc_texheight - 1;
 
-    count = dc_yh - dc_yl;
+    count = g_r_draw_globals->dc_yh - g_r_draw_globals->dc_yl;
 
     // Zero length, column does not exceed a pixel.
     if (count < 0)
         return;
 
     // todo waage - dc_yl is overflowing after being cast from uint_max to int, but this seems to only happen once
-    if (dc_yl < 0)
+    if (g_r_draw_globals->dc_yl < 0)
         return;
 
 #ifdef RANGECHECK
-    if (dc_x >= SCREENWIDTH
-        || dc_yl < 0
-        || dc_yh >= SCREENHEIGHT)
-        I_Error("R_DrawColumn: %i to %i at %i", dc_yl, dc_yh, dc_x);
+    if (g_r_draw_globals->dc_x >= SCREENWIDTH
+        || g_r_draw_globals->dc_yl < 0
+        || g_r_draw_globals->dc_yh >= SCREENHEIGHT)
+        I_Error("R_DrawColumn: %i to %i at %i", g_r_draw_globals->dc_yl, g_r_draw_globals->dc_yh, g_r_draw_globals->dc_x);
 #endif
 
     // Framebuffer destination address.
     // Use ylookup LUT to avoid multiply with ScreenWidth.
     // Use columnofs LUT for subwindows?
-    dest = ylookup[dc_yl] + columnofs[flipviewwidth[dc_x]];
+    dest = ylookup[g_r_draw_globals->dc_yl] + columnofs[flipviewwidth[g_r_draw_globals->dc_x]];
 
     // Determine scaling,
     //  which is the only mapping to be done.
-    fracstep = dc_iscale;
-    frac     = dc_texturemid + (dc_yl - centery) * fracstep;
+    fracstep = g_r_draw_globals->dc_iscale;
+    frac     = g_r_draw_globals->dc_texturemid + (g_r_draw_globals->dc_yl - centery) * fracstep;
 
     // Inner loop that does the actual texture mapping,
     //  e.g. a DDA-lile scaling.
     // This is as fast as it gets.
 
     // heightmask is the Tutti-Frutti fix -- killough
-    if (dc_texheight & heightmask) // not a power of 2 -- killough
+    if (g_r_draw_globals->dc_texheight & heightmask) // not a power of 2 -- killough
     {
         heightmask++;
         heightmask <<= FRACBITS;
@@ -158,8 +175,8 @@ void R_DrawColumn()
         do
         {
             // [crispy] brightmaps
-            const uint8_t source = dc_source[frac >> FRACBITS];
-            *dest             = dc_colormap[dc_brightmap[source]][source];
+            const uint8_t source = g_r_draw_globals->dc_source[frac >> FRACBITS];
+            *dest             = g_r_draw_globals->dc_colormap[g_r_draw_globals->dc_brightmap[source]][source];
 
             dest += SCREENWIDTH;
             if ((frac += fracstep) >= heightmask)
@@ -173,8 +190,8 @@ void R_DrawColumn()
             // Re-map color indices from wall texture column
             //  using a lighting/special effects LUT.
             // [crispy] brightmaps
-            const uint8_t source = dc_source[(frac >> FRACBITS) & heightmask];
-            *dest             = dc_colormap[dc_brightmap[source]][source];
+            const uint8_t source = g_r_draw_globals->dc_source[(frac >> FRACBITS) & heightmask];
+            *dest             = g_r_draw_globals->dc_colormap[g_r_draw_globals->dc_brightmap[source]][source];
 
             dest += SCREENWIDTH;
             frac += fracstep;
@@ -251,35 +268,35 @@ void R_DrawColumnLow()
     fixed_t  frac;
     fixed_t  fracstep;
     int      x;
-    int      heightmask = dc_texheight - 1;
+    int      heightmask = g_r_draw_globals->dc_texheight - 1;
 
-    count = dc_yh - dc_yl;
+    count = g_r_draw_globals->dc_yh - g_r_draw_globals->dc_yl;
 
     // Zero length.
     if (count < 0)
         return;
 
 #ifdef RANGECHECK
-    if (dc_x >= SCREENWIDTH
-        || dc_yl < 0
-        || dc_yh >= SCREENHEIGHT)
+    if (g_r_draw_globals->dc_x >= SCREENWIDTH
+        || g_r_draw_globals->dc_yl < 0
+        || g_r_draw_globals->dc_yh >= SCREENHEIGHT)
     {
 
-        I_Error("R_DrawColumn: %i to %i at %i", dc_yl, dc_yh, dc_x);
+        I_Error("R_DrawColumn: %i to %i at %i", g_r_draw_globals->dc_yl, g_r_draw_globals->dc_yh, g_r_draw_globals->dc_x);
     }
     //	dccount++;
 #endif
     // Blocky mode, need to multiply by 2.
-    x = dc_x << 1;
+    x = g_r_draw_globals->dc_x << 1;
 
-    dest  = ylookup[dc_yl] + columnofs[flipviewwidth[x]];
-    dest2 = ylookup[dc_yl] + columnofs[flipviewwidth[x + 1]];
+    dest  = ylookup[g_r_draw_globals->dc_yl] + columnofs[flipviewwidth[x]];
+    dest2 = ylookup[g_r_draw_globals->dc_yl] + columnofs[flipviewwidth[x + 1]];
 
-    fracstep = dc_iscale;
-    frac     = dc_texturemid + (dc_yl - centery) * fracstep;
+    fracstep = g_r_draw_globals->dc_iscale;
+    frac     = g_r_draw_globals->dc_texturemid + (g_r_draw_globals->dc_yl - centery) * fracstep;
 
     // heightmask is the Tutti-Frutti fix -- killough
-    if (dc_texheight & heightmask) // not a power of 2 -- killough
+    if (g_r_draw_globals->dc_texheight & heightmask) // not a power of 2 -- killough
     {
         heightmask++;
         heightmask <<= FRACBITS;
@@ -294,8 +311,8 @@ void R_DrawColumnLow()
         do
         {
             // [crispy] brightmaps
-            const uint8_t source = dc_source[frac >> FRACBITS];
-            *dest2 = *dest = dc_colormap[dc_brightmap[source]][source];
+            const uint8_t source = g_r_draw_globals->dc_source[frac >> FRACBITS];
+            *dest2 = *dest = g_r_draw_globals->dc_colormap[g_r_draw_globals->dc_brightmap[source]][source];
 
             dest += SCREENWIDTH;
             dest2 += SCREENWIDTH;
@@ -310,8 +327,8 @@ void R_DrawColumnLow()
         {
             // Hack. Does not work corretly.
             // [crispy] brightmaps
-            const uint8_t source = dc_source[(frac >> FRACBITS) & heightmask];
-            *dest2 = *dest = dc_colormap[dc_brightmap[source]][source];
+            const uint8_t source = g_r_draw_globals->dc_source[(frac >> FRACBITS) & heightmask];
+            *dest2 = *dest = g_r_draw_globals->dc_colormap[g_r_draw_globals->dc_brightmap[source]][source];
             dest += SCREENWIDTH;
             dest2 += SCREENWIDTH;
 
@@ -374,36 +391,36 @@ void R_DrawFuzzColumn()
     bool  cutoff = false;
 
     // Adjust borders. Low...
-    if (!dc_yl)
-        dc_yl = 1;
+    if (!g_r_draw_globals->dc_yl)
+        g_r_draw_globals->dc_yl = 1;
 
     // .. and high.
-    if (dc_yh == viewheight - 1)
+    if (g_r_draw_globals->dc_yh == viewheight - 1)
     {
-        dc_yh  = viewheight - 2;
+        g_r_draw_globals->dc_yh  = viewheight - 2;
         cutoff = true;
     }
 
-    count = dc_yh - dc_yl;
+    count = g_r_draw_globals->dc_yh - g_r_draw_globals->dc_yl;
 
     // Zero length.
     if (count < 0)
         return;
 
 #ifdef RANGECHECK
-    if (dc_x >= SCREENWIDTH
-        || dc_yl < 0 || dc_yh >= SCREENHEIGHT)
+    if (g_r_draw_globals->dc_x >= SCREENWIDTH
+        || g_r_draw_globals->dc_yl < 0 || g_r_draw_globals->dc_yh >= SCREENHEIGHT)
     {
         I_Error("R_DrawFuzzColumn: %i to %i at %i",
-            dc_yl, dc_yh, dc_x);
+            g_r_draw_globals->dc_yl, g_r_draw_globals->dc_yh, g_r_draw_globals->dc_x);
     }
 #endif
 
-    dest = ylookup[dc_yl] + columnofs[flipviewwidth[dc_x]];
+    dest = ylookup[g_r_draw_globals->dc_yl] + columnofs[flipviewwidth[g_r_draw_globals->dc_x]];
 
     // Looks familiar.
-    fracstep = dc_iscale;
-    frac     = dc_texturemid + (dc_yl - centery) * fracstep;
+    fracstep = g_r_draw_globals->dc_iscale;
+    frac     = g_r_draw_globals->dc_texturemid + (g_r_draw_globals->dc_yl - centery) * fracstep;
 
     // Looks like an attempt at dithering,
     //  using the colormap #6 (of 0-31, a bit
@@ -454,17 +471,17 @@ void R_DrawFuzzColumnLow()
     bool  cutoff = false;
 
     // Adjust borders. Low...
-    if (!dc_yl)
-        dc_yl = 1;
+    if (!g_r_draw_globals->dc_yl)
+        g_r_draw_globals->dc_yl = 1;
 
     // .. and high.
-    if (dc_yh == viewheight - 1)
+    if (g_r_draw_globals->dc_yh == viewheight - 1)
     {
-        dc_yh  = viewheight - 2;
+        g_r_draw_globals->dc_yh  = viewheight - 2;
         cutoff = true;
     }
 
-    count = dc_yh - dc_yl;
+    count = g_r_draw_globals->dc_yh - g_r_draw_globals->dc_yl;
 
     // Zero length.
     if (count < 0)
@@ -472,23 +489,23 @@ void R_DrawFuzzColumnLow()
 
     // low detail mode, need to multiply by 2
 
-    x = dc_x << 1;
+    x = g_r_draw_globals->dc_x << 1;
 
 #ifdef RANGECHECK
     if (x >= SCREENWIDTH
-        || dc_yl < 0 || dc_yh >= SCREENHEIGHT)
+        || g_r_draw_globals->dc_yl < 0 || g_r_draw_globals->dc_yh >= SCREENHEIGHT)
     {
         I_Error("R_DrawFuzzColumn: %i to %i at %i",
-            dc_yl, dc_yh, dc_x);
+            g_r_draw_globals->dc_yl, g_r_draw_globals->dc_yh, g_r_draw_globals->dc_x);
     }
 #endif
 
-    dest  = ylookup[dc_yl] + columnofs[flipviewwidth[x]];
-    dest2 = ylookup[dc_yl] + columnofs[flipviewwidth[x + 1]];
+    dest  = ylookup[g_r_draw_globals->dc_yl] + columnofs[flipviewwidth[x]];
+    dest2 = ylookup[g_r_draw_globals->dc_yl] + columnofs[flipviewwidth[x + 1]];
 
     // Looks familiar.
-    fracstep = dc_iscale;
-    frac     = dc_texturemid + (dc_yl - centery) * fracstep;
+    fracstep = g_r_draw_globals->dc_iscale;
+    frac     = g_r_draw_globals->dc_texturemid + (g_r_draw_globals->dc_yl - centery) * fracstep;
 
     // Looks like an attempt at dithering,
     //  using the colormap #6 (of 0-31, a bit
@@ -531,19 +548,6 @@ void R_DrawFuzzColumnLow()
     }
 }
 
-
-//
-// R_DrawTranslatedColumn
-// Used to draw player sprites
-//  with the green colorramp mapped to others.
-// Could be used with different translation
-//  tables, e.g. the lighter colored version
-//  of the BaronOfHell, the HellKnight, uses
-//  identical sprites, kinda brightened up.
-//
-uint8_t *dc_translation;
-uint8_t *translationtables;
-
 void R_DrawTranslatedColumn()
 {
     int      count;
@@ -551,27 +555,27 @@ void R_DrawTranslatedColumn()
     fixed_t  frac;
     fixed_t  fracstep;
 
-    count = dc_yh - dc_yl;
+    count = g_r_draw_globals->dc_yh - g_r_draw_globals->dc_yl;
     if (count < 0)
         return;
 
 #ifdef RANGECHECK
-    if (dc_x >= SCREENWIDTH
-        || dc_yl < 0
-        || dc_yh >= SCREENHEIGHT)
+    if (g_r_draw_globals->dc_x >= SCREENWIDTH
+        || g_r_draw_globals->dc_yl < 0
+        || g_r_draw_globals->dc_yh >= SCREENHEIGHT)
     {
         I_Error("R_DrawColumn: %i to %i at %i",
-            dc_yl, dc_yh, dc_x);
+            g_r_draw_globals->dc_yl, g_r_draw_globals->dc_yh, g_r_draw_globals->dc_x);
     }
 
 #endif
 
 
-    dest = ylookup[dc_yl] + columnofs[flipviewwidth[dc_x]];
+    dest = ylookup[g_r_draw_globals->dc_yl] + columnofs[flipviewwidth[g_r_draw_globals->dc_x]];
 
     // Looks familiar.
-    fracstep = dc_iscale;
-    frac     = dc_texturemid + (dc_yl - centery) * fracstep;
+    fracstep = g_r_draw_globals->dc_iscale;
+    frac     = g_r_draw_globals->dc_texturemid + (g_r_draw_globals->dc_yl - centery) * fracstep;
 
     // Here we do an additional index re-mapping.
     do
@@ -581,7 +585,7 @@ void R_DrawTranslatedColumn()
         //  used with PLAY sprites.
         // Thus the "green" ramp of the player 0 sprite
         //  is mapped to gray, red, black/indigo.
-        *dest = dc_colormap[0][dc_translation[dc_source[frac >> FRACBITS]]];
+        *dest = g_r_draw_globals->dc_colormap[0][g_r_draw_globals->dc_translation[g_r_draw_globals->dc_source[frac >> FRACBITS]]];
         dest += SCREENWIDTH;
 
         frac += fracstep;
@@ -597,31 +601,31 @@ void R_DrawTranslatedColumnLow()
     fixed_t  fracstep;
     int      x;
 
-    count = dc_yh - dc_yl;
+    count = g_r_draw_globals->dc_yh - g_r_draw_globals->dc_yl;
     if (count < 0)
         return;
 
     // low detail, need to scale by 2
-    x = dc_x << 1;
+    x = g_r_draw_globals->dc_x << 1;
 
 #ifdef RANGECHECK
     if (x >= SCREENWIDTH
-        || dc_yl < 0
-        || dc_yh >= SCREENHEIGHT)
+        || g_r_draw_globals->dc_yl < 0
+        || g_r_draw_globals->dc_yh >= SCREENHEIGHT)
     {
         I_Error("R_DrawColumn: %i to %i at %i",
-            dc_yl, dc_yh, x);
+            g_r_draw_globals->dc_yl, g_r_draw_globals->dc_yh, x);
     }
 
 #endif
 
 
-    dest  = ylookup[dc_yl] + columnofs[flipviewwidth[x]];
-    dest2 = ylookup[dc_yl] + columnofs[flipviewwidth[x + 1]];
+    dest  = ylookup[g_r_draw_globals->dc_yl] + columnofs[flipviewwidth[x]];
+    dest2 = ylookup[g_r_draw_globals->dc_yl] + columnofs[flipviewwidth[x + 1]];
 
     // Looks familiar.
-    fracstep = dc_iscale;
-    frac     = dc_texturemid + (dc_yl - centery) * fracstep;
+    fracstep = g_r_draw_globals->dc_iscale;
+    frac     = g_r_draw_globals->dc_texturemid + (g_r_draw_globals->dc_yl - centery) * fracstep;
 
     // Here we do an additional index re-mapping.
     do
@@ -631,8 +635,8 @@ void R_DrawTranslatedColumnLow()
         //  used with PLAY sprites.
         // Thus the "green" ramp of the player 0 sprite
         //  is mapped to gray, red, black/indigo.
-        *dest  = dc_colormap[0][dc_translation[dc_source[frac >> FRACBITS]]];
-        *dest2 = dc_colormap[0][dc_translation[dc_source[frac >> FRACBITS]]];
+        *dest  = g_r_draw_globals->dc_colormap[0][g_r_draw_globals->dc_translation[g_r_draw_globals->dc_source[frac >> FRACBITS]]];
+        *dest2 = g_r_draw_globals->dc_colormap[0][g_r_draw_globals->dc_translation[g_r_draw_globals->dc_source[frac >> FRACBITS]]];
         dest += SCREENWIDTH;
         dest2 += SCREENWIDTH;
 
@@ -647,30 +651,30 @@ void R_DrawTLColumn()
     fixed_t  frac;
     fixed_t  fracstep;
 
-    count = dc_yh - dc_yl;
+    count = g_r_draw_globals->dc_yh - g_r_draw_globals->dc_yl;
     if (count < 0)
         return;
 
 #ifdef RANGECHECK
-    if (dc_x >= SCREENWIDTH
-        || dc_yl < 0
-        || dc_yh >= SCREENHEIGHT)
+    if (g_r_draw_globals->dc_x >= SCREENWIDTH
+        || g_r_draw_globals->dc_yl < 0
+        || g_r_draw_globals->dc_yh >= SCREENHEIGHT)
     {
         I_Error("R_DrawColumn: %i to %i at %i",
-            dc_yl, dc_yh, dc_x);
+            g_r_draw_globals->dc_yl, g_r_draw_globals->dc_yh, g_r_draw_globals->dc_x);
     }
 #endif
 
-    dest = ylookup[dc_yl] + columnofs[flipviewwidth[dc_x]];
+    dest = ylookup[g_r_draw_globals->dc_yl] + columnofs[flipviewwidth[g_r_draw_globals->dc_x]];
 
-    fracstep = dc_iscale;
-    frac     = dc_texturemid + (dc_yl - centery) * fracstep;
+    fracstep = g_r_draw_globals->dc_iscale;
+    frac     = g_r_draw_globals->dc_texturemid + (g_r_draw_globals->dc_yl - centery) * fracstep;
 
     do
     {
 #ifndef CRISPY_TRUECOLOR
         // actual translucency map lookup taken from boom202s/R_DRAW.C:255
-        *dest = tranmap[(*dest << 8) + dc_colormap[0][dc_source[frac >> FRACBITS]]];
+        *dest = tranmap[(*dest << 8) + g_r_draw_globals->dc_colormap[0][g_r_draw_globals->dc_source[frac >> FRACBITS]]];
 #else
         const pixel_t destrgb = dc_colormap[0][dc_source[frac >> FRACBITS]];
         *dest                 = blendfunc(*dest, destrgb);
@@ -691,35 +695,35 @@ void R_DrawTLColumnLow()
     fixed_t  fracstep;
     int      x;
 
-    count = dc_yh - dc_yl;
+    count = g_r_draw_globals->dc_yh - g_r_draw_globals->dc_yl;
     if (count < 0)
         return;
 
-    x = dc_x << 1;
+    x = g_r_draw_globals->dc_x << 1;
 
 #ifdef RANGECHECK
     if (x >= SCREENWIDTH
-        || dc_yl < 0
-        || dc_yh >= SCREENHEIGHT)
+        || g_r_draw_globals->dc_yl < 0
+        || g_r_draw_globals->dc_yh >= SCREENHEIGHT)
     {
         I_Error("R_DrawColumn: %i to %i at %i",
-            dc_yl, dc_yh, x);
+            g_r_draw_globals->dc_yl, g_r_draw_globals->dc_yh, x);
     }
 #endif
 
-    dest  = ylookup[dc_yl] + columnofs[flipviewwidth[x]];
-    dest2 = ylookup[dc_yl] + columnofs[flipviewwidth[x + 1]];
+    dest  = ylookup[g_r_draw_globals->dc_yl] + columnofs[flipviewwidth[x]];
+    dest2 = ylookup[g_r_draw_globals->dc_yl] + columnofs[flipviewwidth[x + 1]];
 
-    fracstep = dc_iscale;
-    frac     = dc_texturemid + (dc_yl - centery) * fracstep;
+    fracstep = g_r_draw_globals->dc_iscale;
+    frac     = g_r_draw_globals->dc_texturemid + (g_r_draw_globals->dc_yl - centery) * fracstep;
 
     do
     {
 #ifndef CRISPY_TRUECOLOR
-        *dest  = tranmap[(*dest << 8) + dc_colormap[0][dc_source[frac >> FRACBITS]]];
-        *dest2 = tranmap[(*dest2 << 8) + dc_colormap[0][dc_source[frac >> FRACBITS]]];
+        *dest  = tranmap[(*dest << 8) + g_r_draw_globals->dc_colormap[0][g_r_draw_globals->dc_source[frac >> FRACBITS]]];
+        *dest2 = tranmap[(*dest2 << 8) + g_r_draw_globals->dc_colormap[0][g_r_draw_globals->dc_source[frac >> FRACBITS]]];
 #else
-        const pixel_t destrgb = dc_colormap[0][dc_source[frac >> FRACBITS]];
+        const pixel_t destrgb = g_r_draw_globals->dc_colormap[0][g_r_draw_globals->dc_source[frac >> FRACBITS]];
         *dest                 = blendfunc(*dest, destrgb);
         *dest2                = blendfunc(*dest2, destrgb);
 #endif
@@ -741,7 +745,7 @@ void R_InitTranslationTables()
 {
     int i;
 
-    translationtables = zmalloc<decltype(translationtables)>(256 * 3, PU_STATIC, 0);
+    g_r_draw_globals->translationtables = zmalloc<decltype(g_r_draw_globals->translationtables)>(256 * 3, PU_STATIC, 0);
 
     // translate just the 16 green colors
     for (i = 0; i < 256; i++)
@@ -749,49 +753,20 @@ void R_InitTranslationTables()
         if (i >= 0x70 && i <= 0x7f)
         {
             // map green ramp to gray, brown, red
-            translationtables[i]       = static_cast<uint8_t>(0x60 + (i & 0xf));
-            translationtables[i + 256] = static_cast<uint8_t>(0x40 + (i & 0xf));
-            translationtables[i + 512] = static_cast<uint8_t>(0x20 + (i & 0xf));
+            g_r_draw_globals->translationtables[i]       = static_cast<uint8_t>(0x60 + (i & 0xf));
+            g_r_draw_globals->translationtables[i + 256] = static_cast<uint8_t>(0x40 + (i & 0xf));
+            g_r_draw_globals->translationtables[i + 512] = static_cast<uint8_t>(0x20 + (i & 0xf));
         }
         else
         {
             // Keep all other colors as is.
-            translationtables[i] = translationtables[i + 256] = translationtables[i + 512] = static_cast<uint8_t>(i);
+            g_r_draw_globals->translationtables[i] = g_r_draw_globals->translationtables[i + 256] = g_r_draw_globals->translationtables[i + 512] = static_cast<uint8_t>(i);
         }
     }
 }
 
-
-//
-// R_DrawSpan
-// With DOOM style restrictions on view orientation,
-//  the floors and ceilings consist of horizontal slices
-//  or spans with constant z depth.
-// However, rotation around the world z axis is possible,
-//  thus this mapping, while simpler and faster than
-//  perspective correct texture mapping, has to traverse
-//  the texture at an angle in all but a few cases.
-// In consequence, flats are not stored by column (like walls),
-//  and the inner loop has to step in texture space u and v.
-//
-int ds_y;
-int ds_x1;
-int ds_x2;
-
-lighttable_t *ds_colormap[2];
-uint8_t      *ds_brightmap;
-
-fixed_t ds_xfrac;
-fixed_t ds_yfrac;
-fixed_t ds_xstep;
-fixed_t ds_ystep;
-
-// start of a 64*64 tile image
-uint8_t *ds_source;
-
 // just for profiling
 int dscount;
-
 
 //
 // Draws the actual span.
@@ -804,13 +779,13 @@ void R_DrawSpan()
     unsigned int xtemp, ytemp;
 
 #ifdef RANGECHECK
-    if (ds_x2 < ds_x1
-        || ds_x1 < 0
-        || ds_x2 >= SCREENWIDTH
-        || ds_y > SCREENHEIGHT)
+    if (g_r_draw_globals->ds_x2 < g_r_draw_globals->ds_x1
+        || g_r_draw_globals->ds_x1 < 0
+        || g_r_draw_globals->ds_x2 >= SCREENWIDTH
+        || g_r_draw_globals->ds_y > SCREENHEIGHT)
     {
         I_Error("R_DrawSpan: %i to %i at %i",
-            ds_x1, ds_x2, ds_y);
+            g_r_draw_globals->ds_x1, g_r_draw_globals->ds_x2, g_r_draw_globals->ds_y);
     }
 //	dscount++;
 #endif
@@ -830,26 +805,26 @@ void R_DrawSpan()
     //  dest = ylookup[ds_y] + columnofs[ds_x1];
 
     // We do not check for zero spans here?
-    count = ds_x2 - ds_x1;
+    count = g_r_draw_globals->ds_x2 - g_r_draw_globals->ds_x1;
 
     do
     {
         uint8_t source;
         // Calculate current texture index in u,v.
         // [crispy] fix flats getting more distorted the closer they are to the right
-        ytemp = (ds_yfrac >> 10) & 0x0fc0;
-        xtemp = (ds_xfrac >> 16) & 0x3f;
+        ytemp = (g_r_draw_globals->ds_yfrac >> 10) & 0x0fc0;
+        xtemp = (g_r_draw_globals->ds_xfrac >> 16) & 0x3f;
         spot  = static_cast<int>(xtemp | ytemp);
 
         // Lookup pixel from flat texture tile,
         //  re-index using light/colormap.
-        source = ds_source[spot];
-        dest   = ylookup[ds_y] + columnofs[flipviewwidth[ds_x1++]];
-        *dest  = ds_colormap[ds_brightmap[source]][source];
+        source = g_r_draw_globals->ds_source[spot];
+        dest   = ylookup[g_r_draw_globals->ds_y] + columnofs[flipviewwidth[g_r_draw_globals->ds_x1++]];
+        *dest  = g_r_draw_globals->ds_colormap[g_r_draw_globals->ds_brightmap[source]][source];
 
         //      position += step;
-        ds_xfrac += ds_xstep;
-        ds_yfrac += ds_ystep;
+        g_r_draw_globals->ds_xfrac += g_r_draw_globals->ds_xstep;
+        g_r_draw_globals->ds_yfrac += g_r_draw_globals->ds_ystep;
 
     } while (count--);
 }
@@ -940,13 +915,13 @@ void R_DrawSpanLow()
     int          spot;
 
 #ifdef RANGECHECK
-    if (ds_x2 < ds_x1
-        || ds_x1 < 0
-        || ds_x2 >= SCREENWIDTH
-        || ds_y > SCREENHEIGHT)
+    if (g_r_draw_globals->ds_x2 < g_r_draw_globals->ds_x1
+        || g_r_draw_globals->ds_x1 < 0
+        || g_r_draw_globals->ds_x2 >= SCREENWIDTH
+        || g_r_draw_globals->ds_y > SCREENHEIGHT)
     {
         I_Error("R_DrawSpan: %i to %i at %i",
-            ds_x1, ds_x2, ds_y);
+            g_r_draw_globals->ds_x1, g_r_draw_globals->ds_x2, g_r_draw_globals->ds_y);
     }
 //	dscount++;
 #endif
@@ -958,11 +933,11 @@ void R_DrawSpanLow()
          | ((ds_ystep >> 6)  & 0x0000ffff);
 */
 
-    count = (ds_x2 - ds_x1);
+    count = (g_r_draw_globals->ds_x2 - g_r_draw_globals->ds_x1);
 
     // Blocky mode, need to multiply by 2.
-    ds_x1 <<= 1;
-    ds_x2 <<= 1;
+    g_r_draw_globals->ds_x1 <<= 1;
+    g_r_draw_globals->ds_x2 <<= 1;
 
     //  dest = ylookup[ds_y] + columnofs[ds_x1];
 
@@ -970,21 +945,21 @@ void R_DrawSpanLow()
     {
         // Calculate current texture index in u,v.
         // [crispy] fix flats getting more distorted the closer they are to the right
-        ytemp = (ds_yfrac >> 10) & 0x0fc0;
-        xtemp = (ds_xfrac >> 16) & 0x3f;
+        ytemp = (g_r_draw_globals->ds_yfrac >> 10) & 0x0fc0;
+        xtemp = (g_r_draw_globals->ds_xfrac >> 16) & 0x3f;
         spot  = static_cast<int>(xtemp | ytemp);
 
         // Lowres/blocky mode does it twice,
         //  while scale is adjusted appropriately.
-        uint8_t source = ds_source[spot];
-        dest   = ylookup[ds_y] + columnofs[flipviewwidth[ds_x1++]];
-        *dest  = ds_colormap[ds_brightmap[source]][source];
-        dest   = ylookup[ds_y] + columnofs[flipviewwidth[ds_x1++]];
-        *dest  = ds_colormap[ds_brightmap[source]][source];
+        uint8_t source = g_r_draw_globals->ds_source[spot];
+        dest   = ylookup[g_r_draw_globals->ds_y] + columnofs[flipviewwidth[g_r_draw_globals->ds_x1++]];
+        *dest  = g_r_draw_globals->ds_colormap[g_r_draw_globals->ds_brightmap[source]][source];
+        dest   = ylookup[g_r_draw_globals->ds_y] + columnofs[flipviewwidth[g_r_draw_globals->ds_x1++]];
+        *dest  = g_r_draw_globals->ds_colormap[g_r_draw_globals->ds_brightmap[source]][source];
 
         //	position += step;
-        ds_xfrac += ds_xstep;
-        ds_yfrac += ds_ystep;
+        g_r_draw_globals->ds_xfrac += g_r_draw_globals->ds_xstep;
+        g_r_draw_globals->ds_yfrac += g_r_draw_globals->ds_ystep;
 
 
     } while (count--);
