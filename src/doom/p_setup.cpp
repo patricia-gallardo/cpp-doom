@@ -75,36 +75,6 @@ side_t *sides;
 
 static int totallines;
 
-// BLOCKMAP
-// Created from axis aligned bounding box
-// of the map, a rectangular array of
-// blocks of size ...
-// Used to speed up collision detection
-// by spatial subdivision in 2D.
-//
-// Blockmap size.
-int      bmapwidth;
-int      bmapheight; // size in mapblocks
-int32_t *blockmap;   // int for larger maps // [crispy] BLOCKMAP limit
-// offsets in blockmap are from here
-int32_t *blockmaplump; // [crispy] BLOCKMAP limit
-// origin of block map
-fixed_t bmaporgx;
-fixed_t bmaporgy;
-// for thing chains
-mobj_t **blocklinks;
-
-
-// REJECT
-// For fast sight rejection.
-// Speeds up enemy AI by skipping detailed
-//  LineOf Sight calculation.
-// Without special effect, this could be
-//  used as a PVS lookup as well.
-//
-uint8_t *rejectmatrix;
-
-
 // Maintain single and multi player starting spots.
 #define MAX_DEATHMATCH_STARTS 10
 
@@ -718,36 +688,36 @@ bool P_LoadBlockMap(int lump)
     // adapted from boom202s/P_SETUP.C:1025-1076
     wadblockmaplump = zmalloc<decltype(wadblockmaplump)>(lumplen, PU_LEVEL, nullptr);
     W_ReadLump(lump, wadblockmaplump);
-    blockmaplump = zmalloc<decltype(blockmaplump)>(sizeof(*blockmaplump) * static_cast<unsigned long>(count), PU_LEVEL, nullptr);
-    blockmap     = blockmaplump + 4;
+    g_p_local_globals->blockmaplump = zmalloc<decltype(g_p_local_globals->blockmaplump)>(sizeof(*g_p_local_globals->blockmaplump) * static_cast<unsigned long>(count), PU_LEVEL, nullptr);
+    g_p_local_globals->blockmap     = g_p_local_globals->blockmaplump + 4;
 
-    blockmaplump[0] = SHORT(wadblockmaplump[0]);
-    blockmaplump[1] = SHORT(wadblockmaplump[1]);
-    blockmaplump[2] = static_cast<int32_t>(SHORT(wadblockmaplump[2])) & 0xffff;
-    blockmaplump[3] = static_cast<int32_t>(SHORT(wadblockmaplump[3])) & 0xffff;
+    g_p_local_globals->blockmaplump[0] = SHORT(wadblockmaplump[0]);
+    g_p_local_globals->blockmaplump[1] = SHORT(wadblockmaplump[1]);
+    g_p_local_globals->blockmaplump[2] = static_cast<int32_t>(SHORT(wadblockmaplump[2])) & 0xffff;
+    g_p_local_globals->blockmaplump[3] = static_cast<int32_t>(SHORT(wadblockmaplump[3])) & 0xffff;
 
     // Swap all short integers to native byte ordering.
 
     for (i = 4; i < count; i++)
     {
         short t         = SHORT(wadblockmaplump[i]);
-        blockmaplump[i] = (t == -1) ? -1l : static_cast<int32_t>(t) & 0xffff;
+        g_p_local_globals->blockmaplump[i] = (t == -1) ? -1l : static_cast<int32_t>(t) & 0xffff;
     }
 
     Z_Free(wadblockmaplump);
 
     // Read the header
 
-    bmaporgx   = blockmaplump[0] << FRACBITS;
-    bmaporgy   = blockmaplump[1] << FRACBITS;
-    bmapwidth  = blockmaplump[2];
-    bmapheight = blockmaplump[3];
+    g_p_local_globals->bmaporgx   = g_p_local_globals->blockmaplump[0] << FRACBITS;
+    g_p_local_globals->bmaporgy   = g_p_local_globals->blockmaplump[1] << FRACBITS;
+    g_p_local_globals->bmapwidth  = g_p_local_globals->blockmaplump[2];
+    g_p_local_globals->bmapheight = g_p_local_globals->blockmaplump[3];
 
     // Clear out mobj chains
 
-    count      = static_cast<int>(sizeof(*blocklinks)) * bmapwidth * bmapheight;
-    blocklinks = zmalloc<decltype(blocklinks)>(count, PU_LEVEL, 0);
-    std::memset(blocklinks, 0, static_cast<size_t>(count));
+    count      = static_cast<int>(sizeof(*g_p_local_globals->blocklinks)) * g_p_local_globals->bmapwidth * g_p_local_globals->bmapheight;
+    g_p_local_globals->blocklinks = zmalloc<decltype(g_p_local_globals->blocklinks)>(count, PU_LEVEL, 0);
+    std::memset(g_p_local_globals->blocklinks, 0, static_cast<size_t>(count));
 
     // [crispy] (re-)create BLOCKMAP if necessary
     fprintf(stderr, ")\n");
@@ -854,19 +824,19 @@ void P_GroupLines()
         sector->soundorg.y = (bbox[BOXTOP] + bbox[BOXBOTTOM]) / 2;
 
         // adjust bounding box to map blocks
-        block                    = (bbox[BOXTOP] - bmaporgy + MAXRADIUS) >> MAPBLOCKSHIFT;
-        block                    = block >= bmapheight ? bmapheight - 1 : block;
+        block                    = (bbox[BOXTOP] - g_p_local_globals->bmaporgy + MAXRADIUS) >> MAPBLOCKSHIFT;
+        block                    = block >= g_p_local_globals->bmapheight ? g_p_local_globals->bmapheight - 1 : block;
         sector->blockbox[BOXTOP] = block;
 
-        block                       = (bbox[BOXBOTTOM] - bmaporgy - MAXRADIUS) >> MAPBLOCKSHIFT;
+        block                       = (bbox[BOXBOTTOM] - g_p_local_globals->bmaporgy - MAXRADIUS) >> MAPBLOCKSHIFT;
         block                       = block < 0 ? 0 : block;
         sector->blockbox[BOXBOTTOM] = block;
 
-        block                      = (bbox[BOXRIGHT] - bmaporgx + MAXRADIUS) >> MAPBLOCKSHIFT;
-        block                      = block >= bmapwidth ? bmapwidth - 1 : block;
+        block                      = (bbox[BOXRIGHT] - g_p_local_globals->bmaporgx + MAXRADIUS) >> MAPBLOCKSHIFT;
+        block                      = block >= g_p_local_globals->bmapwidth ? g_p_local_globals->bmapwidth - 1 : block;
         sector->blockbox[BOXRIGHT] = block;
 
-        block                     = (bbox[BOXLEFT] - bmaporgx - MAXRADIUS) >> MAPBLOCKSHIFT;
+        block                     = (bbox[BOXLEFT] - g_p_local_globals->bmaporgx - MAXRADIUS) >> MAPBLOCKSHIFT;
         block                     = block < 0 ? 0 : block;
         sector->blockbox[BOXLEFT] = block;
     }
@@ -994,14 +964,14 @@ static void P_LoadReject(int lumpnum)
 
     if (lumplen >= minlength)
     {
-        rejectmatrix = cache_lump_num<uint8_t *>(lumpnum, PU_LEVEL);
+        g_p_local_globals->rejectmatrix = cache_lump_num<uint8_t *>(lumpnum, PU_LEVEL);
     }
     else
     {
-        rejectmatrix = zmalloc<decltype(rejectmatrix)>(minlength, PU_LEVEL, &rejectmatrix);
-        W_ReadLump(lumpnum, rejectmatrix);
+        g_p_local_globals->rejectmatrix = zmalloc<decltype(g_p_local_globals->rejectmatrix)>(minlength, PU_LEVEL, &g_p_local_globals->rejectmatrix);
+        W_ReadLump(lumpnum, g_p_local_globals->rejectmatrix);
 
-        PadRejectArray(rejectmatrix + lumplen, static_cast<unsigned int>(minlength - lumplen));
+        PadRejectArray(g_p_local_globals->rejectmatrix + lumplen, static_cast<unsigned int>(minlength - lumplen));
     }
 }
 
@@ -1215,7 +1185,7 @@ void P_SetupLevel(int episode, int map, int, skill_t skill)
     // [crispy] fix long wall wobble
     P_SegLengths(false);
     // [crispy] blinking key or skull in the status bar
-    std::memset(st_keyorskull, 0, sizeof(st_keyorskull));
+    std::memset(g_p_local_globals->st_keyorskull, 0, sizeof(g_p_local_globals->st_keyorskull));
 
     bodyqueslot  = 0;
     deathmatch_p = deathmatchstarts;
@@ -1241,7 +1211,7 @@ void P_SetupLevel(int episode, int map, int, skill_t skill)
     }
 
     // clear special respawning que
-    iquehead = iquetail = 0;
+    g_p_local_globals->iquehead = g_p_local_globals->iquetail = 0;
 
     // set up world state
     P_SpawnSpecials();

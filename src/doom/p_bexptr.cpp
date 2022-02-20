@@ -229,13 +229,13 @@ void A_FireOldBFG(mobj_t *, player_t *player, pspdef_t *)
                 do
                 {
                     slope = P_AimLineAttack(mo, an, 16 * 64 * FRACUNIT); //, mask);
-                    if (!linetarget)
+                    if (!g_p_local_globals->linetarget)
                         slope = P_AimLineAttack(mo, an += 1 << 26, 16 * 64 * FRACUNIT); //, mask);
-                    if (!linetarget)
+                    if (!g_p_local_globals->linetarget)
                         slope = P_AimLineAttack(mo, an -= 2 << 26, 16 * 64 * FRACUNIT); //, mask);
-                    if (!linetarget)
+                    if (!g_p_local_globals->linetarget)
                         slope = (critical->freeaim == FREEAIM_BOTH) ? PLAYER_SLOPE(player) : 0, an = mo->angle;
-                } while (mask && (mask = 0, !linetarget)); // killough 8/2/98
+                } while (mask && (mask = 0, !g_p_local_globals->linetarget)); // killough 8/2/98
             an1 += an - mo->angle;
             // [crispy] consider negative slope
             if (slope < 0)

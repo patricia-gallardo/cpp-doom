@@ -1352,7 +1352,7 @@ void G_PlayerReborn(int player)
     p->ammo[am_clip]                  = deh_initial_bullets;
 
     for (i = 0; i < NUMAMMO; i++)
-        p->maxammo[i] = maxammo[i];
+        p->maxammo[i] = g_p_local_globals->maxammo[i];
 }
 
 //

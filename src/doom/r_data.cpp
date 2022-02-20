@@ -1434,7 +1434,7 @@ void R_PrecacheLevel()
     std::memset(spritepresent, 0, static_cast<size_t>(numsprites));
 
     action_hook needle = P_MobjThinker;
-    for (th = thinkercap.next; th != &thinkercap; th = th->next)
+    for (th = g_p_local_globals->thinkercap.next; th != &g_p_local_globals->thinkercap; th = th->next)
     {
         if (th->function == needle)
         {

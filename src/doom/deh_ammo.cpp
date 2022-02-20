@@ -41,7 +41,7 @@ static void *DEH_AmmoStart(deh_context_t *context, char *line)
         return nullptr;
     }
 
-    return &maxammo[ammo_number];
+    return &g_p_local_globals->maxammo[ammo_number];
 }
 
 static void DEH_AmmoParseLine(deh_context_t *context, char *line, void *tag)
@@ -49,7 +49,7 @@ static void DEH_AmmoParseLine(deh_context_t *context, char *line, void *tag)
     if (tag == nullptr)
         return;
 
-    int ammo_number = static_cast<int>(reinterpret_cast<int *>(tag) - maxammo);
+    int ammo_number = static_cast<int>(reinterpret_cast<int *>(tag) - g_p_local_globals->maxammo);
 
     // Parse the assignment
     char *variable_name = nullptr;
@@ -67,9 +67,9 @@ static void DEH_AmmoParseLine(deh_context_t *context, char *line, void *tag)
     // maxammo
 
     if (!strcasecmp(variable_name, "Per ammo"))
-        clipammo[ammo_number] = ivalue;
+        g_p_local_globals->clipammo[ammo_number] = ivalue;
     else if (!strcasecmp(variable_name, "Max ammo"))
-        maxammo[ammo_number] = ivalue;
+        g_p_local_globals->maxammo[ammo_number] = ivalue;
     else
     {
         DEH_Warning(context, "Field named '%s' not found", variable_name);
@@ -80,8 +80,8 @@ static void DEH_AmmoSHA1Hash(sha1_context_t *context)
 {
     for (int i = 0; i < NUMAMMO; ++i)
     {
-        SHA1_UpdateInt32(context, static_cast<unsigned int>(clipammo[i]));
-        SHA1_UpdateInt32(context, static_cast<unsigned int>(maxammo[i]));
+        SHA1_UpdateInt32(context, static_cast<unsigned int>(g_p_local_globals->clipammo[i]));
+        SHA1_UpdateInt32(context, static_cast<unsigned int>(g_p_local_globals->maxammo[i]));
     }
 }
 

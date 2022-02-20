@@ -808,7 +808,7 @@ uint8_t *R_LaserspotColor()
             P_LineLaser(viewplayer->mo, viewangle,
                 16 * 64 * FRACUNIT, PLAYER_SLOPE(viewplayer));
         }
-        if (linetarget)
+        if (g_p_local_globals->linetarget)
         {
             return cr_colors[static_cast<int>(cr_t::CR_GRAY)];
         }

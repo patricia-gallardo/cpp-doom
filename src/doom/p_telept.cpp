@@ -65,9 +65,9 @@ int EV_Teleport(line_t *line,
     {
         if (sectors[i].tag == tag)
         {
-            thinker = thinkercap.next;
-            for (thinker = thinkercap.next;
-                 thinker != &thinkercap;
+            thinker = g_p_local_globals->thinkercap.next;
+            for (thinker = g_p_local_globals->thinkercap.next;
+                 thinker != &g_p_local_globals->thinkercap;
                  thinker = thinker->next)
             {
                 // not a mobj

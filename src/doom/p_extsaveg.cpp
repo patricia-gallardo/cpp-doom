@@ -123,7 +123,7 @@ static void P_WriteFireFlicker(const char *key)
     thinker_t *th;
 
     action_hook needle = T_FireFlicker;
-    for (th = thinkercap.next; th != &thinkercap; th = th->next)
+    for (th = g_p_local_globals->thinkercap.next; th != &g_p_local_globals->thinkercap; th = th->next)
     {
         if (th->function == needle)
         {
@@ -290,7 +290,7 @@ static void P_WriteBrainTarget(const char *key)
     thinker_t *th;
 
     action_hook needle = P_MobjThinker;
-    for (th = thinkercap.next; th != &thinkercap; th = th->next)
+    for (th = g_p_local_globals->thinkercap.next; th != &g_p_local_globals->thinkercap; th = th->next)
     {
         if (th->function == needle)
         {

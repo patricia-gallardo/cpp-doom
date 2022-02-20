@@ -54,19 +54,19 @@ bool PTR_SightTraverse(intercept_t *in)
     //
     P_LineOpening(li);
 
-    if (openbottom >= opentop) // quick test for totally closed doors
+    if (g_p_local_globals->openbottom >= g_p_local_globals->opentop) // quick test for totally closed doors
         return false;          // stop
 
     if (li->frontsector->floorheight != li->backsector->floorheight)
     {
-        slope = FixedDiv(openbottom - sightzstart, in->frac);
+        slope = FixedDiv(g_p_local_globals->openbottom - sightzstart, in->frac);
         if (slope > bottomslope)
             bottomslope = slope;
     }
 
     if (li->frontsector->ceilingheight != li->backsector->ceilingheight)
     {
-        slope = FixedDiv(opentop - sightzstart, in->frac);
+        slope = FixedDiv(g_p_local_globals->opentop - sightzstart, in->frac);
         if (slope < topslope)
             topslope = slope;
     }
@@ -343,7 +343,7 @@ bool
     int bitnum  = 1 << (pnum & 7);
 
     // Check in REJECT table.
-    if (rejectmatrix[bytenum] & bitnum)
+    if (g_p_local_globals->rejectmatrix[bytenum] & bitnum)
     {
         sightcounts[0]++;
 

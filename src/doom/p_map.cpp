@@ -66,25 +66,7 @@ int     tmflags;
 fixed_t tmx;
 fixed_t tmy;
 
-
-// If "floatok" true, move would be ok
-// if within "tmfloorz - tmceilingz".
-bool floatok;
-
-fixed_t tmfloorz;
-fixed_t tmceilingz;
 fixed_t tmdropoffz;
-
-// keep track of the line that lowers the ceiling,
-// so missiles don't explode against sky hack walls
-line_t *ceilingline;
-
-// keep track of special lines as they are hit,
-// but don't process them until the move is proven valid
-
-line_t *spechit[MAXSPECIALCROSS];
-int     numspechit;
-
 
 //
 // TELEPORT MOVE
@@ -153,23 +135,23 @@ bool
     tmbbox[BOXLEFT]   = x - tmthing->radius;
 
     newsubsec   = R_PointInSubsector(x, y);
-    ceilingline = nullptr;
+    g_p_local_globals->ceilingline = nullptr;
 
     // The base floor/ceiling is from the subsector
     // that contains the point.
     // Any contacted lines the step closer together
     // will adjust them.
-    tmfloorz = tmdropoffz = newsubsec->sector->floorheight;
-    tmceilingz            = newsubsec->sector->ceilingheight;
+    g_p_local_globals->tmfloorz = tmdropoffz = newsubsec->sector->floorheight;
+    g_p_local_globals->tmceilingz            = newsubsec->sector->ceilingheight;
 
     validcount++;
-    numspechit = 0;
+    g_p_local_globals->numspechit = 0;
 
     // stomp on any things contacted
-    xl = (tmbbox[BOXLEFT] - bmaporgx - MAXRADIUS) >> MAPBLOCKSHIFT;
-    xh = (tmbbox[BOXRIGHT] - bmaporgx + MAXRADIUS) >> MAPBLOCKSHIFT;
-    yl = (tmbbox[BOXBOTTOM] - bmaporgy - MAXRADIUS) >> MAPBLOCKSHIFT;
-    yh = (tmbbox[BOXTOP] - bmaporgy + MAXRADIUS) >> MAPBLOCKSHIFT;
+    xl = (tmbbox[BOXLEFT] - g_p_local_globals->bmaporgx - MAXRADIUS) >> MAPBLOCKSHIFT;
+    xh = (tmbbox[BOXRIGHT] - g_p_local_globals->bmaporgx + MAXRADIUS) >> MAPBLOCKSHIFT;
+    yl = (tmbbox[BOXBOTTOM] - g_p_local_globals->bmaporgy - MAXRADIUS) >> MAPBLOCKSHIFT;
+    yh = (tmbbox[BOXTOP] - g_p_local_globals->bmaporgy + MAXRADIUS) >> MAPBLOCKSHIFT;
 
     for (bx = xl; bx <= xh; bx++)
         for (by = yl; by <= yh; by++)
@@ -180,8 +162,8 @@ bool
     // so link the thing into its new position
     P_UnsetThingPosition(thing);
 
-    thing->floorz   = tmfloorz;
-    thing->ceilingz = tmceilingz;
+    thing->floorz   = g_p_local_globals->tmfloorz;
+    thing->ceilingz = g_p_local_globals->tmceilingz;
     thing->x        = x;
     thing->y        = y;
 
@@ -243,29 +225,29 @@ bool PIT_CheckLine(line_t *ld)
     P_LineOpening(ld);
 
     // adjust floor / ceiling heights
-    if (opentop < tmceilingz)
+    if (g_p_local_globals->opentop < g_p_local_globals->tmceilingz)
     {
-        tmceilingz  = opentop;
-        ceilingline = ld;
+        g_p_local_globals->tmceilingz  = g_p_local_globals->opentop;
+        g_p_local_globals->ceilingline = ld;
     }
 
-    if (openbottom > tmfloorz)
-        tmfloorz = openbottom;
+    if (g_p_local_globals->openbottom > g_p_local_globals->tmfloorz)
+        g_p_local_globals->tmfloorz = g_p_local_globals->openbottom;
 
-    if (lowfloor < tmdropoffz)
-        tmdropoffz = lowfloor;
+    if (g_p_local_globals->lowfloor < tmdropoffz)
+        tmdropoffz = g_p_local_globals->lowfloor;
 
     // if contacted a special line, add it to the list
     if (ld->special)
     {
-        spechit[numspechit] = ld;
-        numspechit++;
+        g_p_local_globals->spechit[g_p_local_globals->numspechit] = ld;
+        g_p_local_globals->numspechit++;
 
         // fraggle: spechits overrun emulation code from prboom-plus
-        if (numspechit > MAXSPECIALCROSS_ORIGINAL)
+        if (g_p_local_globals->numspechit > MAXSPECIALCROSS_ORIGINAL)
         {
             // [crispy] print a warning
-            if (numspechit == MAXSPECIALCROSS_ORIGINAL + 1)
+            if (g_p_local_globals->numspechit == MAXSPECIALCROSS_ORIGINAL + 1)
                 fprintf(stderr, "PIT_CheckLine: Triggered SPECHITS overflow!\n");
             SpechitOverrun(ld);
         }
@@ -391,9 +373,9 @@ bool PIT_CheckThing(mobj_t *thing)
         {
             if (tmthing->z + tmthing->height <= thing->z)
             {
-                if (thing->z < tmceilingz)
+                if (thing->z < g_p_local_globals->tmceilingz)
                 {
-                    tmceilingz = thing->z;
+                    g_p_local_globals->tmceilingz = thing->z;
                 }
                 return true;
             }
@@ -410,9 +392,9 @@ bool PIT_CheckThing(mobj_t *thing)
             if (tmthing->z + step_up >= thing->z + thing->height)
             {
                 // player walks over object
-                if ((newfloorz = thing->z + thing->height) > tmfloorz)
+                if ((newfloorz = thing->z + thing->height) > g_p_local_globals->tmfloorz)
                 {
-                    tmfloorz = newfloorz;
+                    g_p_local_globals->tmfloorz = newfloorz;
                 }
                 if ((newceilingz = tmthing->z) < thing->ceilingz)
                 {
@@ -423,9 +405,9 @@ bool PIT_CheckThing(mobj_t *thing)
             else if (tmthing->z + tmthing->height <= thing->z)
             {
                 // player walks underneath object
-                if ((newceilingz = thing->z) < tmceilingz)
+                if ((newceilingz = thing->z) < g_p_local_globals->tmceilingz)
                 {
-                    tmceilingz = newceilingz;
+                    g_p_local_globals->tmceilingz = newceilingz;
                 }
                 if ((newfloorz = tmthing->z + tmthing->height) > thing->floorz)
                 {
@@ -511,17 +493,17 @@ bool
     tmbbox[BOXLEFT]   = x - tmthing->radius;
 
     newsubsec   = R_PointInSubsector(x, y);
-    ceilingline = nullptr;
+    g_p_local_globals->ceilingline = nullptr;
 
     // The base floor / ceiling is from the subsector
     // that contains the point.
     // Any contacted lines the step closer together
     // will adjust them.
-    tmfloorz = tmdropoffz = newsubsec->sector->floorheight;
-    tmceilingz            = newsubsec->sector->ceilingheight;
+    g_p_local_globals->tmfloorz = tmdropoffz = newsubsec->sector->floorheight;
+    g_p_local_globals->tmceilingz            = newsubsec->sector->ceilingheight;
 
     validcount++;
-    numspechit = 0;
+    g_p_local_globals->numspechit = 0;
 
     if (static_cast<unsigned int>(tmflags) & MF_NOCLIP)
         return true;
@@ -531,10 +513,10 @@ bool
     // because mobj_ts are grouped into mapblocks
     // based on their origin point, and can overlap
     // into adjacent blocks by up to MAXRADIUS units.
-    xl = (tmbbox[BOXLEFT] - bmaporgx - MAXRADIUS) >> MAPBLOCKSHIFT;
-    xh = (tmbbox[BOXRIGHT] - bmaporgx + MAXRADIUS) >> MAPBLOCKSHIFT;
-    yl = (tmbbox[BOXBOTTOM] - bmaporgy - MAXRADIUS) >> MAPBLOCKSHIFT;
-    yh = (tmbbox[BOXTOP] - bmaporgy + MAXRADIUS) >> MAPBLOCKSHIFT;
+    xl = (tmbbox[BOXLEFT] - g_p_local_globals->bmaporgx - MAXRADIUS) >> MAPBLOCKSHIFT;
+    xh = (tmbbox[BOXRIGHT] - g_p_local_globals->bmaporgx + MAXRADIUS) >> MAPBLOCKSHIFT;
+    yl = (tmbbox[BOXBOTTOM] - g_p_local_globals->bmaporgy - MAXRADIUS) >> MAPBLOCKSHIFT;
+    yh = (tmbbox[BOXTOP] - g_p_local_globals->bmaporgy + MAXRADIUS) >> MAPBLOCKSHIFT;
 
     for (bx = xl; bx <= xh; bx++)
         for (by = yl; by <= yh; by++)
@@ -542,10 +524,10 @@ bool
                 return false;
 
     // check lines
-    xl = (tmbbox[BOXLEFT] - bmaporgx) >> MAPBLOCKSHIFT;
-    xh = (tmbbox[BOXRIGHT] - bmaporgx) >> MAPBLOCKSHIFT;
-    yl = (tmbbox[BOXBOTTOM] - bmaporgy) >> MAPBLOCKSHIFT;
-    yh = (tmbbox[BOXTOP] - bmaporgy) >> MAPBLOCKSHIFT;
+    xl = (tmbbox[BOXLEFT] - g_p_local_globals->bmaporgx) >> MAPBLOCKSHIFT;
+    xh = (tmbbox[BOXRIGHT] - g_p_local_globals->bmaporgx) >> MAPBLOCKSHIFT;
+    yl = (tmbbox[BOXBOTTOM] - g_p_local_globals->bmaporgy) >> MAPBLOCKSHIFT;
+    yh = (tmbbox[BOXTOP] - g_p_local_globals->bmaporgy) >> MAPBLOCKSHIFT;
 
     for (bx = xl; bx <= xh; bx++)
         for (by = yl; by <= yh; by++)
@@ -572,27 +554,27 @@ bool
     int     oldside;
     line_t *ld;
 
-    floatok = false;
+    g_p_local_globals->floatok = false;
     if (!P_CheckPosition(thing, x, y))
         return false; // solid wall or thing
 
     if (!(thing->flags & MF_NOCLIP))
     {
-        if (tmceilingz - tmfloorz < thing->height)
+        if (g_p_local_globals->tmceilingz - g_p_local_globals->tmfloorz < thing->height)
             return false; // doesn't fit
 
-        floatok = true;
+        g_p_local_globals->floatok = true;
 
         if (!(thing->flags & MF_TELEPORT)
-            && tmceilingz - thing->z < thing->height)
+            && g_p_local_globals->tmceilingz - thing->z < thing->height)
             return false; // mobj must lower itself to fit
 
         if (!(thing->flags & MF_TELEPORT)
-            && tmfloorz - thing->z > 24 * FRACUNIT)
+            && g_p_local_globals->tmfloorz - thing->z > 24 * FRACUNIT)
             return false; // too big a step up
 
         if (!(thing->flags & (MF_DROPOFF | MF_FLOAT))
-            && tmfloorz - tmdropoffz > 24 * FRACUNIT)
+            && g_p_local_globals->tmfloorz - tmdropoffz > 24 * FRACUNIT)
             return false; // don't stand over a dropoff
     }
 
@@ -602,8 +584,8 @@ bool
 
     oldx            = thing->x;
     oldy            = thing->y;
-    thing->floorz   = tmfloorz;
-    thing->ceilingz = tmceilingz;
+    thing->floorz   = g_p_local_globals->tmfloorz;
+    thing->ceilingz = g_p_local_globals->tmceilingz;
     thing->x        = x;
     thing->y        = y;
 
@@ -612,10 +594,10 @@ bool
     // if any special lines were hit, do the effect
     if (!(thing->flags & (MF_TELEPORT | MF_NOCLIP)))
     {
-        while (numspechit--)
+        while (g_p_local_globals->numspechit--)
         {
             // see if the line was crossed
-            ld      = spechit[numspechit];
+            ld      = g_p_local_globals->spechit[g_p_local_globals->numspechit];
             side    = P_PointOnLineSide(thing->x, thing->y, ld);
             oldside = P_PointOnLineSide(oldx, oldy, ld);
             if (side != oldside)
@@ -649,8 +631,8 @@ bool P_ThingHeightClip(mobj_t *thing)
     P_CheckPosition(thing, thing->x, thing->y);
     // what about stranding a monster partially off an edge?
 
-    thing->floorz   = tmfloorz;
-    thing->ceilingz = tmceilingz;
+    thing->floorz   = g_p_local_globals->tmfloorz;
+    thing->ceilingz = g_p_local_globals->tmceilingz;
 
     if (onfloor)
     {
@@ -766,13 +748,13 @@ bool PTR_SlideTraverse(intercept_t *in)
     // set openrange, opentop, openbottom
     P_LineOpening(li);
 
-    if (openrange < slidemo->height)
+    if (g_p_local_globals->openrange < slidemo->height)
         goto isblocking; // doesn't fit
 
-    if (opentop - slidemo->z < slidemo->height)
+    if (g_p_local_globals->opentop - slidemo->z < slidemo->height)
         goto isblocking; // mobj is too high
 
-    if (openbottom - slidemo->z > 24 * FRACUNIT)
+    if (g_p_local_globals->openbottom - slidemo->z > 24 * FRACUNIT)
         goto isblocking; // too big a step up
 
     // this line doesn't block movement
@@ -901,7 +883,6 @@ retry:
 //
 // P_LineAttack
 //
-mobj_t *linetarget; // who got hit (or nullptr)
 mobj_t *shootthing;
 
 // Height if not aiming up or down
@@ -945,7 +926,7 @@ bool
         // the possible target ranges.
         P_LineOpening(li);
 
-        if (openbottom >= opentop)
+        if (g_p_local_globals->openbottom >= g_p_local_globals->opentop)
             return false; // stop
 
         dist = FixedMul(attackrange, in->frac);
@@ -953,7 +934,7 @@ bool
         if (li->backsector == nullptr
             || li->frontsector->floorheight != li->backsector->floorheight)
         {
-            slope = FixedDiv(openbottom - shootz, dist);
+            slope = FixedDiv(g_p_local_globals->openbottom - shootz, dist);
             if (slope > bottomslope)
                 bottomslope = slope;
         }
@@ -961,7 +942,7 @@ bool
         if (li->backsector == nullptr
             || li->frontsector->ceilingheight != li->backsector->ceilingheight)
         {
-            slope = FixedDiv(opentop - shootz, dist);
+            slope = FixedDiv(g_p_local_globals->opentop - shootz, dist);
             if (slope < topslope)
                 topslope = slope;
         }
@@ -1000,7 +981,7 @@ bool
         thingbottomslope = bottomslope;
 
     aimslope   = (thingtopslope + thingbottomslope) / 2;
-    linetarget = th;
+    g_p_local_globals->linetarget = th;
 
     return false; // don't go any farther
 }
@@ -1048,11 +1029,11 @@ bool PTR_ShootTraverse(intercept_t *in)
 
         if (li->backsector == nullptr)
         {
-            slope = FixedDiv(openbottom - shootz, dist);
+            slope = FixedDiv(g_p_local_globals->openbottom - shootz, dist);
             if (slope > aimslope)
                 goto hitline;
 
-            slope = FixedDiv(opentop - shootz, dist);
+            slope = FixedDiv(g_p_local_globals->opentop - shootz, dist);
             if (slope < aimslope)
                 goto hitline;
         }
@@ -1060,14 +1041,14 @@ bool PTR_ShootTraverse(intercept_t *in)
         {
             if (li->frontsector->floorheight != li->backsector->floorheight)
             {
-                slope = FixedDiv(openbottom - shootz, dist);
+                slope = FixedDiv(g_p_local_globals->openbottom - shootz, dist);
                 if (slope > aimslope)
                     goto hitline;
             }
 
             if (li->frontsector->ceilingheight != li->backsector->ceilingheight)
             {
-                slope = FixedDiv(opentop - shootz, dist);
+                slope = FixedDiv(g_p_local_globals->opentop - shootz, dist);
                 if (slope < aimslope)
                     goto hitline;
             }
@@ -1081,8 +1062,8 @@ bool PTR_ShootTraverse(intercept_t *in)
     hitline:
         // position a bit closer
         frac = in->frac - FixedDiv(4 * FRACUNIT, attackrange);
-        x    = trace.x + FixedMul(trace.dx, frac);
-        y    = trace.y + FixedMul(trace.dy, frac);
+        x    = g_p_local_globals->trace.x + FixedMul(g_p_local_globals->trace.dx, frac);
+        y    = g_p_local_globals->trace.y + FixedMul(g_p_local_globals->trace.dy, frac);
         z    = shootz + FixedMul(aimslope, FixedMul(frac, attackrange));
 
         if (li->frontsector->ceilingpic == skyflatnum)
@@ -1118,8 +1099,8 @@ bool PTR_ShootTraverse(intercept_t *in)
                 {
                     z    = BETWEEN(sector->floorheight, sector->ceilingheight, z);
                     frac = FixedDiv(z - shootz, FixedMul(aimslope, attackrange));
-                    x    = trace.x + FixedMul(trace.dx, frac);
-                    y    = trace.y + FixedMul(trace.dy, frac);
+                    x    = g_p_local_globals->trace.x + FixedMul(g_p_local_globals->trace.dx, frac);
+                    y    = g_p_local_globals->trace.y + FixedMul(g_p_local_globals->trace.dy, frac);
                 }
             }
         }
@@ -1170,8 +1151,8 @@ bool PTR_ShootTraverse(intercept_t *in)
     // position a bit closer
     frac = in->frac - FixedDiv(10 * FRACUNIT, attackrange);
 
-    x = trace.x + FixedMul(trace.dx, frac);
-    y = trace.y + FixedMul(trace.dy, frac);
+    x = g_p_local_globals->trace.x + FixedMul(g_p_local_globals->trace.dx, frac);
+    y = g_p_local_globals->trace.y + FixedMul(g_p_local_globals->trace.dy, frac);
     z = shootz + FixedMul(aimslope, FixedMul(frac, attackrange));
 
     // [crispy] update laser spot position and return
@@ -1228,14 +1209,14 @@ fixed_t
     bottomslope = -(ORIGHEIGHT / 2) * FRACUNIT / (ORIGWIDTH / 2);
 
     attackrange = distance;
-    linetarget  = nullptr;
+    g_p_local_globals->linetarget  = nullptr;
 
     P_PathTraverse(t1->x, t1->y,
         x2, y2,
         PT_ADDLINES | PT_ADDTHINGS,
         PTR_AimTraverse);
 
-    if (linetarget)
+    if (g_p_local_globals->linetarget)
         return aimslope;
 
     return 0;
@@ -1301,19 +1282,19 @@ void P_LineLaser(mobj_t *t1,
     else
     {
         // [crispy] increase accuracy
-        if (!linetarget)
+        if (!g_p_local_globals->linetarget)
         {
             angle_t an = angle;
 
             an += 1 << 26;
             lslope = P_AimLineAttack(t1, an, distance);
 
-            if (!linetarget)
+            if (!g_p_local_globals->linetarget)
             {
                 an -= 2 << 26;
                 lslope = P_AimLineAttack(t1, an, distance);
 
-                if (!linetarget && critical->freeaim == FREEAIM_BOTH)
+                if (!g_p_local_globals->linetarget && critical->freeaim == FREEAIM_BOTH)
                 {
                     lslope = slope;
                 }
@@ -1324,7 +1305,7 @@ void P_LineLaser(mobj_t *t1,
     if ((crispy->crosshair & ~CROSSHAIR_INTERCEPT) == CROSSHAIR_PROJECTED)
     {
         // [crispy] don't aim at Spectres
-        if (linetarget && !(linetarget->flags & MF_SHADOW) && (crispy->freeaim != FREEAIM_DIRECT))
+        if (g_p_local_globals->linetarget && !(g_p_local_globals->linetarget->flags & MF_SHADOW) && (crispy->freeaim != FREEAIM_DIRECT))
             P_LineAttack(t1, angle, distance, aimslope, INT_MIN);
         else
             // [crispy] double the auto aim distance
@@ -1348,7 +1329,7 @@ bool PTR_UseTraverse(intercept_t *in)
     if (!in->d.line->special)
     {
         P_LineOpening(in->d.line);
-        if (openrange <= 0)
+        if (g_p_local_globals->openrange <= 0)
         {
             S_StartSound(usething, sfx_noway);
 
@@ -1466,10 +1447,10 @@ void P_RadiusAttack(mobj_t *spot,
     fixed_t dist;
 
     dist       = (damage + MAXRADIUS) << FRACBITS;
-    yh         = (spot->y + dist - bmaporgy) >> MAPBLOCKSHIFT;
-    yl         = (spot->y - dist - bmaporgy) >> MAPBLOCKSHIFT;
-    xh         = (spot->x + dist - bmaporgx) >> MAPBLOCKSHIFT;
-    xl         = (spot->x - dist - bmaporgx) >> MAPBLOCKSHIFT;
+    yh         = (spot->y + dist - g_p_local_globals->bmaporgy) >> MAPBLOCKSHIFT;
+    yl         = (spot->y - dist - g_p_local_globals->bmaporgy) >> MAPBLOCKSHIFT;
+    xh         = (spot->x + dist - g_p_local_globals->bmaporgx) >> MAPBLOCKSHIFT;
+    xl         = (spot->x - dist - g_p_local_globals->bmaporgx) >> MAPBLOCKSHIFT;
     bombspot   = spot;
     bombsource = source;
     bombdamage = damage;
@@ -1635,13 +1616,13 @@ static void SpechitOverrun(line_t *ld)
 
     unsigned int addr = static_cast<unsigned int>(baseaddr + (ld - lines) * 0x3E);
 
-    switch (numspechit)
+    switch (g_p_local_globals->numspechit)
     {
     case 9:
     case 10:
     case 11:
     case 12:
-        tmbbox[numspechit - 9] = static_cast<fixed_t>(addr);
+        tmbbox[g_p_local_globals->numspechit - 9] = static_cast<fixed_t>(addr);
         break;
     case 13:
         crushchange = addr;
@@ -1652,7 +1633,7 @@ static void SpechitOverrun(line_t *ld)
     default:
         fprintf(stderr, "SpechitOverrun: Warning: unable to emulate"
                         "an overrun where numspechit=%i\n",
-            numspechit);
+            g_p_local_globals->numspechit);
         break;
     }
 }

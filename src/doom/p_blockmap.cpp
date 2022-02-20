@@ -52,10 +52,10 @@ void P_CreateBlockMap()
 
     // Save blockmap parameters
 
-    bmaporgx   = minx << FRACBITS;
-    bmaporgy   = miny << FRACBITS;
-    bmapwidth  = ((maxx - minx) >> MAPBTOFRAC) + 1;
-    bmapheight = ((maxy - miny) >> MAPBTOFRAC) + 1;
+    g_p_local_globals->bmaporgx   = minx << FRACBITS;
+    g_p_local_globals->bmaporgy   = miny << FRACBITS;
+    g_p_local_globals->bmapwidth  = ((maxx - minx) >> MAPBTOFRAC) + 1;
+    g_p_local_globals->bmapheight = ((maxy - miny) >> MAPBTOFRAC) + 1;
 
     // Compute blockmap, which is stored as a 2d array of variable-sized lists.
     //
@@ -78,7 +78,7 @@ void P_CreateBlockMap()
         typedef struct {
             int n, nalloc, *list;
         } bmap_t;                                                         // blocklist structure
-        auto tot  = static_cast<unsigned int>(bmapwidth * bmapheight);                           // size of blockmap
+        auto tot  = static_cast<unsigned int>(g_p_local_globals->bmapwidth * g_p_local_globals->bmapheight);                           // size of blockmap
         bmap_t * bmap = static_cast<bmap_t *>(calloc(sizeof *bmap, tot)); // array of blocklists
         int      x, y, adx, ady, bend;
 
@@ -98,13 +98,13 @@ void P_CreateBlockMap()
             diff = !adx ? 1 : !ady ? -1 : (((x >> MAPBTOFRAC) << MAPBTOFRAC) + (dx > 0 ? MAPBLOCKUNITS - 1 : 0) - x) * (ady = std::abs(ady)) * dx - (((y >> MAPBTOFRAC) << MAPBTOFRAC) + (dy > 0 ? MAPBLOCKUNITS - 1 : 0) - y) * (adx = std::abs(adx)) * dy;
 
             // starting block, and pointer to its blocklist structure
-            b = (y >> MAPBTOFRAC) * bmapwidth + (x >> MAPBTOFRAC);
+            b = (y >> MAPBTOFRAC) * g_p_local_globals->bmapwidth + (x >> MAPBTOFRAC);
 
             // ending block
-            bend = (((lines[i].v2->y >> FRACBITS) - miny) >> MAPBTOFRAC) * bmapwidth + (((lines[i].v2->x >> FRACBITS) - minx) >> MAPBTOFRAC);
+            bend = (((lines[i].v2->y >> FRACBITS) - miny) >> MAPBTOFRAC) * g_p_local_globals->bmapwidth + (((lines[i].v2->x >> FRACBITS) - minx) >> MAPBTOFRAC);
 
             // delta for pointer when moving across y
-            dy *= bmapwidth;
+            dy *= g_p_local_globals->bmapwidth;
 
             // deltas for diff inside the loop
             adx <<= MAPBTOFRAC;
@@ -149,7 +149,7 @@ void P_CreateBlockMap()
                     count += bmap[i].n + 2; // 1 header word + 1 trailer word + blocklist
 
             // Allocate blockmap lump with computed count
-            blockmaplump = zmalloc<decltype(blockmaplump)>(sizeof(*blockmaplump) * static_cast<unsigned long>(count), PU_LEVEL, 0);
+            g_p_local_globals->blockmaplump = zmalloc<decltype(g_p_local_globals->blockmaplump)>(sizeof(*g_p_local_globals->blockmaplump) * static_cast<unsigned long>(count), PU_LEVEL, 0);
         }
 
         // Now compress the blockmap.
@@ -157,21 +157,21 @@ void P_CreateBlockMap()
             int     ndx = static_cast<int>(tot += 4); // Advance index to start of linedef lists
             bmap_t *bp  = bmap;     // Start of uncompressed blockmap
 
-            blockmaplump[ndx++] = 0;  // Store an empty blockmap list at start
-            blockmaplump[ndx++] = -1; // (Used for compression)
+            g_p_local_globals->blockmaplump[ndx++] = 0;  // Store an empty blockmap list at start
+            g_p_local_globals->blockmaplump[ndx++] = -1; // (Used for compression)
 
             for (unsigned int i = 4; i < tot; i++, bp++)
                 if (bp->n) // Non-empty blocklist
                 {
-                    blockmaplump[blockmaplump[i] = ndx++] = 0; // Store index & header
+                    g_p_local_globals->blockmaplump[g_p_local_globals->blockmaplump[i] = ndx++] = 0; // Store index & header
                     do
-                        blockmaplump[ndx++] = bp->list[--bp->n]; // Copy linedef list
+                        g_p_local_globals->blockmaplump[ndx++] = bp->list[--bp->n]; // Copy linedef list
                     while (bp->n);
-                    blockmaplump[ndx++] = -1; // Store trailer
+                    g_p_local_globals->blockmaplump[ndx++] = -1; // Store trailer
                     free(bp->list);           // Free linedef list
                 }
                 else // Empty blocklist: point to reserved empty blocklist
-                    blockmaplump[i] = static_cast<int32_t>(tot);
+                    g_p_local_globals->blockmaplump[i] = static_cast<int32_t>(tot);
 
             free(bmap); // Free uncompressed blockmap
         }
@@ -179,10 +179,10 @@ void P_CreateBlockMap()
 
     // [crispy] copied over from P_LoadBlockMap()
     {
-        int count  = static_cast<int>(sizeof(*blocklinks)) * bmapwidth * bmapheight;
-        blocklinks = zmalloc<decltype(blocklinks)>(static_cast<size_t>(count), PU_LEVEL, 0);
-        std::memset(blocklinks, 0, static_cast<size_t>(count));
-        blockmap = blockmaplump + 4;
+        int count  = static_cast<int>(sizeof(*g_p_local_globals->blocklinks)) * g_p_local_globals->bmapwidth * g_p_local_globals->bmapheight;
+        g_p_local_globals->blocklinks = zmalloc<decltype(g_p_local_globals->blocklinks)>(static_cast<size_t>(count), PU_LEVEL, 0);
+        std::memset(g_p_local_globals->blocklinks, 0, static_cast<size_t>(count));
+        g_p_local_globals->blockmap = g_p_local_globals->blockmaplump + 4;
     }
 
     fprintf(stderr, "+BLOCKMAP)\n");

@@ -35,17 +35,12 @@ int leveltime;
 // but the first element must be thinker_t.
 //
 
-
-// Both the head and tail of the thinker list.
-thinker_t thinkercap;
-
-
 //
 // P_InitThinkers
 //
 void P_InitThinkers()
 {
-    thinkercap.prev = thinkercap.next = &thinkercap;
+    g_p_local_globals->thinkercap.prev = g_p_local_globals->thinkercap.next = &g_p_local_globals->thinkercap;
 }
 
 
@@ -55,10 +50,10 @@ void P_InitThinkers()
 //
 void P_AddThinker(thinker_t *thinker)
 {
-    thinkercap.prev->next = thinker;
-    thinker->next         = &thinkercap;
-    thinker->prev         = thinkercap.prev;
-    thinkercap.prev       = thinker;
+    g_p_local_globals->thinkercap.prev->next = thinker;
+    thinker->next         = &g_p_local_globals->thinkercap;
+    thinker->prev         = g_p_local_globals->thinkercap.prev;
+    g_p_local_globals->thinkercap.prev       = thinker;
 }
 
 
@@ -89,8 +84,8 @@ void P_RunThinkers()
 {
     thinker_t *currentthinker, *nextthinker;
 
-    currentthinker = thinkercap.next;
-    while (currentthinker != &thinkercap)
+    currentthinker = g_p_local_globals->thinkercap.next;
+    while (currentthinker != &g_p_local_globals->thinkercap)
     {
         action_hook invalid_hook = valid_hook(false);
         if (currentthinker->function == invalid_hook)
