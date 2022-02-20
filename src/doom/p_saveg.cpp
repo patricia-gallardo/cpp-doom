@@ -428,7 +428,7 @@ uint32_t P_ThinkerToIndex(thinker_t *thinker)
         return 0;
 
     action_hook needle = P_MobjThinker;
-    for (th = thinkercap.next, i = 0; th != &thinkercap; th = th->next)
+    for (th = g_p_local_globals->thinkercap.next, i = 0; th != &g_p_local_globals->thinkercap; th = th->next)
     {
         if (th->function == needle)
         {
@@ -451,7 +451,7 @@ thinker_t *P_IndexToThinker(uint32_t index)
         return nullptr;
 
     action_hook needle = P_MobjThinker;
-    for (th = thinkercap.next, i = 0; th != &thinkercap; th = th->next)
+    for (th = g_p_local_globals->thinkercap.next, i = 0; th != &g_p_local_globals->thinkercap; th = th->next)
     {
         if (th->function == needle)
         {
@@ -1670,7 +1670,7 @@ void P_ArchiveThinkers()
 
     // save off the current thinkers
     action_hook needle = P_MobjThinker;
-    for (th = thinkercap.next; th != &thinkercap; th = th->next)
+    for (th = g_p_local_globals->thinkercap.next; th != &g_p_local_globals->thinkercap; th = th->next)
     {
         if (th->function == needle)
         {
@@ -1700,9 +1700,9 @@ void P_UnArchiveThinkers()
     mobj_t *   mobj;
 
     // remove all the current thinkers
-    currentthinker = thinkercap.next;
+    currentthinker = g_p_local_globals->thinkercap.next;
     action_hook needle = P_MobjThinker;
-    while (currentthinker != &thinkercap)
+    while (currentthinker != &g_p_local_globals->thinkercap)
     {
         next = currentthinker->next;
 
@@ -1755,7 +1755,7 @@ void P_RestoreTargets()
     thinker_t *th;
 
     action_hook needle = P_MobjThinker;
-    for (th = thinkercap.next; th != &thinkercap; th = th->next)
+    for (th = g_p_local_globals->thinkercap.next; th != &g_p_local_globals->thinkercap; th = th->next)
     {
         if (th->function == needle)
         {
@@ -1816,7 +1816,7 @@ void P_ArchiveSpecials()
     action_hook needle_light_flash   = T_LightFlash;
     action_hook needle_strobe_flash  = T_StrobeFlash;
     action_hook needle_glow          = T_Glow;
-    for (th = thinkercap.next; th != &thinkercap; th = th->next)
+    for (th = g_p_local_globals->thinkercap.next; th != &g_p_local_globals->thinkercap; th = th->next)
     {
         if (th->function == null_needle)
         {

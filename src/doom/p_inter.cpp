@@ -38,14 +38,7 @@
 #include "p_inter.hpp"
 
 
-#define BONUSADD 6
-
-
-// a weapon is found with two clip loads,
-// a big item has five clip loads
-int maxammo[NUMAMMO]  = { 200, 50, 300, 50 };
-int clipammo[NUMAMMO] = { 10, 4, 20, 1 };
-
+constexpr auto BONUSADD = 6;
 
 //
 // GET STUFF
@@ -76,9 +69,9 @@ bool
         return false;
 
     if (num)
-        num *= clipammo[ammo];
+        num *= g_p_local_globals->clipammo[ammo];
     else
-        num = clipammo[ammo] / 2;
+        num = g_p_local_globals->clipammo[ammo] / 2;
 
     if (gameskill == sk_baby
         || gameskill == sk_nightmare)

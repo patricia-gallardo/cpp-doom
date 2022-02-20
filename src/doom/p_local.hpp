@@ -59,15 +59,6 @@ constexpr auto MAPBLOCKUNITS =128;
 // follow a player exlusively for 3 seconds
 constexpr auto BASETHRESHOLD =100;
 
-
-//
-// P_TICK
-//
-
-// both the head and tail of the thinker list
-extern thinker_t thinkercap;
-
-
 void P_InitThinkers();
 void P_AddThinker(thinker_t *thinker);
 void P_RemoveThinker(thinker_t *thinker);
@@ -97,12 +88,6 @@ void P_PlayerThink(player_t *player);
 
 // Time interval for item respawning.
 constexpr auto ITEMQUESIZE =128;
-
-extern mapthing_t itemrespawnque[ITEMQUESIZE];
-extern int        itemrespawntime[ITEMQUESIZE];
-extern int        iquehead;
-extern int        iquetail;
-
 
 void P_RespawnSpecials();
 
@@ -158,9 +143,6 @@ typedef struct
 constexpr auto MAXINTERCEPTS_ORIGINAL =128;
 constexpr auto MAXINTERCEPTS          =(MAXINTERCEPTS_ORIGINAL + 61);
 
-//extern intercept_t	intercepts[MAXINTERCEPTS]; // [crispy] remove INTERCEPTS limit
-extern intercept_t *intercept_p;
-
 using traverser_t = bool (*)(intercept_t *);
 
 fixed_t P_AproxDistance(fixed_t dx, fixed_t dy);
@@ -170,11 +152,6 @@ void    P_MakeDivline(line_t *li, divline_t *dl);
 fixed_t P_InterceptVector(divline_t *v2, divline_t *v1);
 int     P_BoxOnLineSide(fixed_t *tmbox, line_t *ld);
 
-extern fixed_t opentop;
-extern fixed_t openbottom;
-extern fixed_t openrange;
-extern fixed_t lowfloor;
-
 void P_LineOpening(line_t *linedef_param);
 
 bool P_BlockLinesIterator(int x, int y, bool (*func)(line_t *));
@@ -183,8 +160,6 @@ bool P_BlockThingsIterator(int x, int y, bool (*func)(mobj_t *));
 constexpr auto PT_ADDLINES  =1;
 constexpr auto PT_ADDTHINGS =2;
 constexpr auto PT_EARLYOUT  =4;
-
-extern divline_t trace;
 
 bool
     P_PathTraverse(fixed_t x1,
@@ -197,20 +172,6 @@ bool
 void P_UnsetThingPosition(mobj_t *thing);
 void P_SetThingPosition(mobj_t *thing);
 
-
-//
-// P_MAP
-//
-
-// If "floatok" true, move would be ok
-// if within "tmfloorz - tmceilingz".
-extern bool floatok;
-extern fixed_t tmfloorz;
-extern fixed_t tmceilingz;
-
-
-extern line_t *ceilingline;
-
 // fraggle: I have increased the size of this buffer.  In the original Doom,
 // overrunning past this limit caused other bits of memory to be overwritten,
 // affecting demo playback.  However, in doing so, the limit was still
@@ -222,9 +183,6 @@ extern line_t *ceilingline;
 constexpr auto MAXSPECIALCROSS          =20;
 constexpr auto MAXSPECIALCROSS_ORIGINAL =8;
 
-extern line_t *spechit[MAXSPECIALCROSS];
-extern int     numspechit;
-
 bool P_CheckPosition(mobj_t *thing, fixed_t x, fixed_t y);
 bool P_TryMove(mobj_t *thing, fixed_t x, fixed_t y);
 bool P_TeleportMove(mobj_t *thing, fixed_t x, fixed_t y);
@@ -233,8 +191,6 @@ bool P_CheckSight(mobj_t *t1, mobj_t *t2);
 void    P_UseLines(player_t *player);
 
 bool P_ChangeSector(sector_t *sector, bool crunch);
-
-extern mobj_t *linetarget; // who got hit (or nullptr)
 
 fixed_t
     P_AimLineAttack(mobj_t *t1,
@@ -251,32 +207,12 @@ void P_RadiusAttack(mobj_t *spot,
     mobj_t *                source,
     int                     damage);
 
-
-//
-// P_SETUP
-//
-extern uint8_t *rejectmatrix; // for fast sight rejection
-extern int32_t *blockmaplump; // offsets in blockmap are from here // [crispy] BLOCKMAP limit
-extern int32_t *blockmap;     // [crispy] BLOCKMAP limit
-extern int      bmapwidth;
-extern int      bmapheight; // in mapblocks
-extern fixed_t  bmaporgx;
-extern fixed_t  bmaporgy;   // origin of block map
-extern mobj_t **blocklinks; // for thing chains
-
 // [crispy] factor out map lump name and number finding into a separate function
 extern int P_GetNumForMap(int episode, int map, bool critical_param);
 
 // [crispy] blinking key or skull in the status bar
-#define KEYBLINKMASK 0x8
-#define KEYBLINKTICS (7 * KEYBLINKMASK)
-extern int st_keyorskull[3];
-
-//
-// P_INTER
-//
-extern int maxammo[NUMAMMO];
-extern int clipammo[NUMAMMO];
+constexpr auto KEYBLINKMASK = 0x8;
+constexpr auto KEYBLINKTICS = (7 * KEYBLINKMASK);
 
 void P_TouchSpecialThing(mobj_t *special,
     mobj_t *                     toucher);
@@ -286,6 +222,100 @@ void P_DamageMobj(mobj_t *target,
     mobj_t *              source,
     int                   damage);
 
+struct p_local_t {
+    //
+    // P_TICK
+    //
+
+    // both the head and tail of the thinker list
+    thinker_t thinkercap;
+
+    mapthing_t itemrespawnque[ITEMQUESIZE]{};
+    int        itemrespawntime[ITEMQUESIZE]{};
+    int        iquehead{};
+    int        iquetail{};
+
+    intercept_t *intercept_p{}; // [crispy] remove INTERCEPTS limit
+
+    //
+    // P_LineOpening
+    // Sets opentop and openbottom to the window
+    // through a two sided line.
+    // OPTIMIZE: keep this precalculated
+    //
+    fixed_t   opentop{};
+    fixed_t   openbottom{};
+    fixed_t   openrange{};
+    fixed_t   lowfloor{};
+    divline_t trace{};
+
+    //
+    // P_MAP
+    //
+
+    // If "floatok" true, move would be ok
+    // if within "tmfloorz - tmceilingz".
+    bool    floatok{};
+    fixed_t tmfloorz{};
+    fixed_t tmceilingz{};
+
+    // keep track of the line that lowers the ceiling,
+    // so missiles don't explode against sky hack walls
+    line_t *ceilingline{};
+
+    // keep track of special lines as they are hit,
+    // but don't process them until the move is proven valid
+    line_t *spechit[MAXSPECIALCROSS]{};
+    int     numspechit{};
+
+    //
+    // P_LineAttack
+    //
+    mobj_t *linetarget{}; // who got hit (or nullptr)
+
+    //
+    // P_SETUP
+    //
+
+    // REJECT
+    // For fast sight rejection.
+    // Speeds up enemy AI by skipping detailed
+    //  LineOf Sight calculation.
+    // Without special effect, this could be
+    //  used as a PVS lookup as well.
+    //
+    uint8_t *rejectmatrix{}; // for fast sight rejection
+
+    // BLOCKMAP
+    // Created from axis aligned bounding box
+    // of the map, a rectangular array of
+    // blocks of size ...
+    // Used to speed up collision detection
+    // by spatial subdivision in 2D.
+    //
+    // Blockmap size.
+    int32_t *blockmaplump{}; // offsets in blockmap are from here // [crispy] BLOCKMAP limit
+    int32_t *blockmap{};     // int for larger maps // [crispy] BLOCKMAP limit
+    int      bmapwidth{};
+    int      bmapheight{}; // size in mapblocks
+
+    // origin of block map
+    fixed_t  bmaporgx{};
+    fixed_t  bmaporgy{};   // origin of block map
+    mobj_t **blocklinks{}; // for thing chains
+    // [crispy] blinking key or skull in the status bar
+    int st_keyorskull[3]{};
+    //
+    // P_INTER
+    //
+
+    // a weapon is found with two clip loads,
+    // a big item has five clip loads
+    int maxammo[NUMAMMO]{};
+    int clipammo[NUMAMMO]{};
+};
+
+extern p_local_t *const g_p_local_globals;
 
 //
 // P_SPEC

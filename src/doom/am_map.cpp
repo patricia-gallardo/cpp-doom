@@ -1245,9 +1245,9 @@ void AM_drawGrid(int color)
         start -= m_h / 2;
     }
     // [crispy] fix losing grid lines near the automap boundary
-    if ((start - bmaporgx) % (MAPBLOCKUNITS << FRACBITS))
+    if ((start - g_p_local_globals->bmaporgx) % (MAPBLOCKUNITS << FRACBITS))
         start += // (MAPBLOCKUNITS<<FRACBITS)
-            -((start - bmaporgx) % (MAPBLOCKUNITS << FRACBITS));
+            -((start - g_p_local_globals->bmaporgx) % (MAPBLOCKUNITS << FRACBITS));
     int64_t end = m_x + m_w;
     if (crispy->automaprotate)
     {
@@ -1280,9 +1280,9 @@ void AM_drawGrid(int color)
         start -= m_w / 2;
     }
     // [crispy] fix losing grid lines near the automap boundary
-    if ((start - bmaporgy) % (MAPBLOCKUNITS << FRACBITS))
+    if ((start - g_p_local_globals->bmaporgy) % (MAPBLOCKUNITS << FRACBITS))
         start += // (MAPBLOCKUNITS<<FRACBITS)
-            -((start - bmaporgy) % (MAPBLOCKUNITS << FRACBITS));
+            -((start - g_p_local_globals->bmaporgy) % (MAPBLOCKUNITS << FRACBITS));
     end = m_y + m_h;
     if (crispy->automaprotate)
     {

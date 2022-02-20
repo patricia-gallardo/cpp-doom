@@ -226,9 +226,9 @@ void P_XYMovement(mobj_t *mo)
             {
                 bool safe = false;
                 // explode a missile
-                if (ceilingline && ceilingline->backsector && ceilingline->backsector->ceilingpic == skyflatnum)
+                if (g_p_local_globals->ceilingline && g_p_local_globals->ceilingline->backsector && g_p_local_globals->ceilingline->backsector->ceilingpic == skyflatnum)
                 {
-                    if (mo->z > ceilingline->backsector->ceilingheight)
+                    if (mo->z > g_p_local_globals->ceilingline->backsector->ceilingheight)
                     {
                         // Hack to prevent missiles exploding
                         // against the sky.
@@ -697,14 +697,49 @@ mobj_t *
     return P_SpawnMobjSafe(x, y, z, type, false);
 }
 
-//
-// P_RemoveMobj
-//
-mapthing_t itemrespawnque[ITEMQUESIZE];
-int        itemrespawntime[ITEMQUESIZE];
-int        iquehead;
-int        iquetail;
+static p_local_t p_local_s = {
+    .thinkercap = {},
 
+    .itemrespawnque  = {},
+    .itemrespawntime = {},
+    .iquehead        = 0,
+    .iquetail        = 0,
+
+    .intercept_p = nullptr,
+
+    .opentop = 0,
+    .openbottom = 0,
+    .openrange = 0,
+    .lowfloor = 0,
+    .trace = {},
+
+    .floatok = false,
+    .tmfloorz = 0,
+    .tmceilingz = 0,
+
+    .ceilingline = nullptr,
+
+    .spechit = {},
+    .numspechit = 0,
+
+    .linetarget = nullptr,
+
+    .rejectmatrix = nullptr,
+    .blockmaplump = nullptr,
+    .blockmap = nullptr,
+    .bmapwidth = 0,
+    .bmapheight = 0,
+    .bmaporgx = 0,
+    .bmaporgy = 0,
+    .blocklinks = nullptr,
+
+    .st_keyorskull = {},
+
+    .maxammo = { 200, 50, 300, 50 },
+    .clipammo = { 10, 4, 20, 1 }
+};
+
+extern p_local_t *const g_p_local_globals = &p_local_s;
 
 void P_RemoveMobj(mobj_t *mobj)
 {
@@ -713,13 +748,13 @@ void P_RemoveMobj(mobj_t *mobj)
         && (mobj->type != MT_INV)
         && (mobj->type != MT_INS))
     {
-        itemrespawnque[iquehead]  = mobj->spawnpoint;
-        itemrespawntime[iquehead] = leveltime;
-        iquehead                  = (iquehead + 1) & (ITEMQUESIZE - 1);
+        g_p_local_globals->itemrespawnque[g_p_local_globals->iquehead]  = mobj->spawnpoint;
+        g_p_local_globals->itemrespawntime[g_p_local_globals->iquehead] = leveltime;
+        g_p_local_globals->iquehead                  = (g_p_local_globals->iquehead + 1) & (ITEMQUESIZE - 1);
 
         // lose one off the end?
-        if (iquehead == iquetail)
-            iquetail = (iquetail + 1) & (ITEMQUESIZE - 1);
+        if (g_p_local_globals->iquehead == g_p_local_globals->iquetail)
+            g_p_local_globals->iquetail = (g_p_local_globals->iquetail + 1) & (ITEMQUESIZE - 1);
     }
 
     // unlink from sector and block lists
@@ -762,14 +797,14 @@ void P_RespawnSpecials()
         return; //
 
     // nothing left to respawn?
-    if (iquehead == iquetail)
+    if (g_p_local_globals->iquehead == g_p_local_globals->iquetail)
         return;
 
     // wait at least 30 seconds
-    if (leveltime - itemrespawntime[iquetail] < 30 * TICRATE)
+    if (leveltime - g_p_local_globals->itemrespawntime[g_p_local_globals->iquetail] < 30 * TICRATE)
         return;
 
-    mthing = &itemrespawnque[iquetail];
+    mthing = &g_p_local_globals->itemrespawnque[g_p_local_globals->iquetail];
 
     x = mthing->x << FRACBITS;
     y = mthing->y << FRACBITS;
@@ -805,7 +840,7 @@ void P_RespawnSpecials()
     mo->angle      = ANG45 * (mthing->angle / 45);
 
     // pull it from the que
-    iquetail = (iquetail + 1) & (ITEMQUESIZE - 1);
+    g_p_local_globals->iquetail = (g_p_local_globals->iquetail + 1) & (ITEMQUESIZE - 1);
 }
 
 
@@ -1033,11 +1068,11 @@ void P_SpawnMapThing(mapthing_t *mthing)
 
     // [crispy] blinking key or skull in the status bar
     if (mobj->sprite == SPR_BSKU)
-        st_keyorskull[it_bluecard] = 3;
+        g_p_local_globals->st_keyorskull[it_bluecard] = 3;
     else if (mobj->sprite == SPR_RSKU)
-        st_keyorskull[it_redcard] = 3;
+        g_p_local_globals->st_keyorskull[it_redcard] = 3;
     else if (mobj->sprite == SPR_YSKU)
-        st_keyorskull[it_yellowcard] = 3;
+        g_p_local_globals->st_keyorskull[it_yellowcard] = 3;
 }
 
 
@@ -1228,18 +1263,18 @@ void P_SpawnPlayerMissile(mobj_t *source,
     {
         slope = P_AimLineAttack(source, an, 16 * 64 * FRACUNIT);
 
-        if (!linetarget)
+        if (!g_p_local_globals->linetarget)
         {
             an += 1 << 26;
             slope = P_AimLineAttack(source, an, 16 * 64 * FRACUNIT);
 
-            if (!linetarget)
+            if (!g_p_local_globals->linetarget)
             {
                 an -= 2 << 26;
                 slope = P_AimLineAttack(source, an, 16 * 64 * FRACUNIT);
             }
 
-            if (!linetarget)
+            if (!g_p_local_globals->linetarget)
             {
                 an = source->angle;
                 if (critical->freeaim == FREEAIM_BOTH)

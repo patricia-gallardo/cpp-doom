@@ -517,13 +517,13 @@ void A_Punch(mobj_t *, player_t *player, pspdef_t *)
     P_LineAttack(player->mo, angle, MELEERANGE, slope, damage);
 
     // turn to face target
-    if (linetarget)
+    if (g_p_local_globals->linetarget)
     {
         S_StartSound(player->so, sfx_punch); // [crispy] weapon sound source
         player->mo->angle = R_PointToAngle2(player->mo->x,
             player->mo->y,
-            linetarget->x,
-            linetarget->y);
+            g_p_local_globals->linetarget->x,
+            g_p_local_globals->linetarget->y);
     }
 }
 
@@ -548,7 +548,7 @@ void A_Saw(mobj_t *, player_t *player, pspdef_t *)
 
     A_Recoil(player);
 
-    if (!linetarget)
+    if (!g_p_local_globals->linetarget)
     {
         S_StartSound(player->so, sfx_sawful); // [crispy] weapon sound source
         return;
@@ -557,7 +557,7 @@ void A_Saw(mobj_t *, player_t *player, pspdef_t *)
 
     // turn to face target
     angle = R_PointToAngle2(player->mo->x, player->mo->y,
-        linetarget->x, linetarget->y);
+        g_p_local_globals->linetarget->x, g_p_local_globals->linetarget->y);
     if (angle - player->mo->angle > ANG180)
     {
         if (static_cast<signed int>(angle - player->mo->angle) < -ANG90 / 20)
@@ -660,15 +660,15 @@ void P_BulletSlope(mobj_t *mo)
         an          = mo->angle;
         bulletslope = P_AimLineAttack(mo, an, 16 * 64 * FRACUNIT);
 
-        if (!linetarget)
+        if (!g_p_local_globals->linetarget)
         {
             an += 1 << 26;
             bulletslope = P_AimLineAttack(mo, an, 16 * 64 * FRACUNIT);
-            if (!linetarget)
+            if (!g_p_local_globals->linetarget)
             {
                 an -= 2 << 26;
                 bulletslope = P_AimLineAttack(mo, an, 16 * 64 * FRACUNIT);
-                if (!linetarget && critical->freeaim == FREEAIM_BOTH)
+                if (!g_p_local_globals->linetarget && critical->freeaim == FREEAIM_BOTH)
                 {
                     bulletslope = PLAYER_SLOPE(mo->player);
                 }
@@ -850,19 +850,19 @@ void A_BFGSpray(mobj_t *mo)
         //  of the missile
         P_AimLineAttack(mo->target, an, 16 * 64 * FRACUNIT);
 
-        if (!linetarget)
+        if (!g_p_local_globals->linetarget)
             continue;
 
-        P_SpawnMobj(linetarget->x,
-            linetarget->y,
-            linetarget->z + (linetarget->height >> 2),
+        P_SpawnMobj(g_p_local_globals->linetarget->x,
+            g_p_local_globals->linetarget->y,
+            g_p_local_globals->linetarget->z + (g_p_local_globals->linetarget->height >> 2),
             MT_EXTRABFG);
 
         damage = 0;
         for (j = 0; j < 15; j++)
             damage += (P_Random() & 7) + 1;
 
-        P_DamageMobj(linetarget, mo->target, mo->target, damage);
+        P_DamageMobj(g_p_local_globals->linetarget, mo->target, mo->target, damage);
     }
 }
 

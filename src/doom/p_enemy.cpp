@@ -109,7 +109,7 @@ void P_RecursiveSound(sector_t *sec,
 
         P_LineOpening(check);
 
-        if (openrange <= 0)
+        if (g_p_local_globals->openrange <= 0)
             continue; // closed door
 
         sector_t *other = nullptr;
@@ -276,10 +276,10 @@ bool P_Move(mobj_t *actor)
     if (!try_ok)
     {
         // open any specials
-        if (actor->flags & MF_FLOAT && floatok)
+        if (actor->flags & MF_FLOAT && g_p_local_globals->floatok)
         {
             // must adjust height
-            if (actor->z < tmfloorz)
+            if (actor->z < g_p_local_globals->tmfloorz)
                 actor->z += FLOATSPEED;
             else
                 actor->z -= FLOATSPEED;
@@ -288,14 +288,14 @@ bool P_Move(mobj_t *actor)
             return true;
         }
 
-        if (!numspechit)
+        if (!g_p_local_globals->numspechit)
             return false;
 
         actor->movedir = DI_NODIR;
         bool good      = false;
-        while (numspechit--)
+        while (g_p_local_globals->numspechit--)
         {
-            line_t *ld = spechit[numspechit];
+            line_t *ld = g_p_local_globals->spechit[g_p_local_globals->numspechit];
             // if the special is not a door
             // that can be opened,
             // return false
@@ -533,7 +533,7 @@ void A_KeenDie(mobj_t *mo)
     // scan the remaining thinkers
     // to see if all Keens are dead
     action_hook needle = P_MobjThinker;
-    for (thinker_t *th = thinkercap.next; th != &thinkercap; th = th->next)
+    for (thinker_t *th = g_p_local_globals->thinkercap.next; th != &g_p_local_globals->thinkercap; th = th->next)
     {
         if (th->function != needle)
             continue;
@@ -1161,10 +1161,10 @@ void A_VileChase(mobj_t *actor)
         viletryy =
             actor->y + actor->info->speed * yspeed[actor->movedir];
 
-        xl = (viletryx - bmaporgx - MAXRADIUS * 2) >> MAPBLOCKSHIFT;
-        xh = (viletryx - bmaporgx + MAXRADIUS * 2) >> MAPBLOCKSHIFT;
-        yl = (viletryy - bmaporgy - MAXRADIUS * 2) >> MAPBLOCKSHIFT;
-        yh = (viletryy - bmaporgy + MAXRADIUS * 2) >> MAPBLOCKSHIFT;
+        xl = (viletryx - g_p_local_globals->bmaporgx - MAXRADIUS * 2) >> MAPBLOCKSHIFT;
+        xh = (viletryx - g_p_local_globals->bmaporgx + MAXRADIUS * 2) >> MAPBLOCKSHIFT;
+        yl = (viletryy - g_p_local_globals->bmaporgy - MAXRADIUS * 2) >> MAPBLOCKSHIFT;
+        yh = (viletryy - g_p_local_globals->bmaporgy + MAXRADIUS * 2) >> MAPBLOCKSHIFT;
 
         vileobj = actor;
         for (bx = xl; bx <= xh; bx++)
@@ -1459,9 +1459,9 @@ void A_PainShootSkull(mobj_t *actor,
     // count total number of skull currently on the level
     count = 0;
 
-    currentthinker = thinkercap.next;
+    currentthinker = g_p_local_globals->thinkercap.next;
     action_hook needle = P_MobjThinker;
-    while (currentthinker != &thinkercap)
+    while (currentthinker != &g_p_local_globals->thinkercap)
     {
         if ((currentthinker->function == needle)
             && (reinterpret_cast<mobj_t *>(currentthinker))->type == MT_SKULL)
@@ -1694,7 +1694,7 @@ void A_BossDeath(mobj_t *mo)
     // scan the remaining thinkers to see
     // if all bosses are dead
     action_hook needle = P_MobjThinker;
-    for (th = thinkercap.next; th != &thinkercap; th = th->next)
+    for (th = g_p_local_globals->thinkercap.next; th != &g_p_local_globals->thinkercap; th = th->next)
     {
         if (th->function != needle)
             continue;
@@ -1819,10 +1819,10 @@ void A_BrainAwake(mobj_t *)
     numbraintargets = 0;
     braintargeton   = 0;
 
-    thinker = thinkercap.next;
+    thinker = g_p_local_globals->thinkercap.next;
     action_hook needle = P_MobjThinker;
-    for (thinker = thinkercap.next;
-         thinker != &thinkercap;
+    for (thinker = g_p_local_globals->thinkercap.next;
+         thinker != &g_p_local_globals->thinkercap;
          thinker = thinker->next)
     {
         if (thinker->function != needle)

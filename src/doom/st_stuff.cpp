@@ -397,8 +397,6 @@ static int st_faceindex = 0;
 
 // holds key-type for each key box on bar
 static int keyboxes[3];
-// [crispy] blinking key or skull in the status bar
-int st_keyorskull[3];
 
 // a random number per tick
 static int st_randomnumber;
@@ -504,7 +502,7 @@ static int ST_cheat_massacre()
     extern void A_PainDie(mobj_t *);
 
     action_hook needle = P_MobjThinker;
-    for (th = thinkercap.next; th != &thinkercap; th = th->next)
+    for (th = g_p_local_globals->thinkercap.next; th != &g_p_local_globals->thinkercap; th = th->next)
     {
         if (th->function == needle)
         {
@@ -938,7 +936,7 @@ bool
 
                     // [crispy] let mobjs forget their target and tracer
                     action_hook needle = P_MobjThinker;
-                    for (th = thinkercap.next; th != &thinkercap; th = th->next)
+                    for (th = g_p_local_globals->thinkercap.next; th != &g_p_local_globals->thinkercap; th = th->next)
                     {
                         if (th->function == needle)
                         {
@@ -1539,7 +1537,7 @@ void ST_updateWidgets()
             if (st_crispyhud)
 #endif
             {
-                keyboxes[i] = (plyr->tryopen[i] & KEYBLINKMASK) ? i + st_keyorskull[i] : -1;
+                keyboxes[i] = (plyr->tryopen[i] & KEYBLINKMASK) ? i + g_p_local_globals->st_keyorskull[i] : -1;
             }
 
             if (!plyr->tryopen[i])
@@ -1683,7 +1681,7 @@ static uint8_t *ST_WidgetColor(hudcolor_t i)
         else
         {
             int ammo     = plyr->ammo[weaponinfo[plyr->readyweapon].ammo];
-            int fullammo = maxammo[weaponinfo[plyr->readyweapon].ammo];
+            int fullammo = g_p_local_globals->maxammo[weaponinfo[plyr->readyweapon].ammo];
 
             if (ammo < fullammo / 4)
                 return cr_colors[static_cast<int>(cr_t::CR_RED)];

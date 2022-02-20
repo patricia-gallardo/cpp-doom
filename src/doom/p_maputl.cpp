@@ -266,51 +266,35 @@ fixed_t
 #endif
 }
 
-
-//
-// P_LineOpening
-// Sets opentop and openbottom to the window
-// through a two sided line.
-// OPTIMIZE: keep this precalculated
-//
-fixed_t opentop;
-fixed_t openbottom;
-fixed_t openrange;
-fixed_t lowfloor;
-
-
 void P_LineOpening(line_t *linedef_param)
 {
-    sector_t *front;
-    sector_t *back;
-
     if (linedef_param->sidenum[1] == NO_INDEX) // [crispy] extended nodes
     {
         // single sided line
-        openrange = 0;
+        g_p_local_globals->openrange = 0;
         return;
     }
 
-    front = linedef_param->frontsector;
-    back  = linedef_param->backsector;
+    sector_t *front = linedef_param->frontsector;
+    sector_t *back  = linedef_param->backsector;
 
     if (front->ceilingheight < back->ceilingheight)
-        opentop = front->ceilingheight;
+        g_p_local_globals->opentop = front->ceilingheight;
     else
-        opentop = back->ceilingheight;
+        g_p_local_globals->opentop = back->ceilingheight;
 
     if (front->floorheight > back->floorheight)
     {
-        openbottom = front->floorheight;
-        lowfloor   = back->floorheight;
+        g_p_local_globals->openbottom = front->floorheight;
+        g_p_local_globals->lowfloor   = back->floorheight;
     }
     else
     {
-        openbottom = back->floorheight;
-        lowfloor   = front->floorheight;
+        g_p_local_globals->openbottom = back->floorheight;
+        g_p_local_globals->lowfloor   = front->floorheight;
     }
 
-    openrange = opentop - openbottom;
+    g_p_local_globals->openrange = g_p_local_globals->opentop - g_p_local_globals->openbottom;
 }
 
 
@@ -355,13 +339,13 @@ void P_UnsetThingPosition(mobj_t *thing)
             thing->bprev->bnext = thing->bnext;
         else
         {
-            blockx = (thing->x - bmaporgx) >> MAPBLOCKSHIFT;
-            blocky = (thing->y - bmaporgy) >> MAPBLOCKSHIFT;
+            blockx = (thing->x - g_p_local_globals->bmaporgx) >> MAPBLOCKSHIFT;
+            blocky = (thing->y - g_p_local_globals->bmaporgy) >> MAPBLOCKSHIFT;
 
-            if (blockx >= 0 && blockx < bmapwidth
-                && blocky >= 0 && blocky < bmapheight)
+            if (blockx >= 0 && blockx < g_p_local_globals->bmapwidth
+                && blocky >= 0 && blocky < g_p_local_globals->bmapheight)
             {
-                blocklinks[blocky * bmapwidth + blockx] = thing->bnext;
+                g_p_local_globals->blocklinks[blocky * g_p_local_globals->bmapwidth + blockx] = thing->bnext;
             }
         }
     }
@@ -406,15 +390,15 @@ void P_SetThingPosition(mobj_t *thing)
     if (!(thing->flags & MF_NOBLOCKMAP))
     {
         // inert things don't need to be in blockmap
-        blockx = (thing->x - bmaporgx) >> MAPBLOCKSHIFT;
-        blocky = (thing->y - bmaporgy) >> MAPBLOCKSHIFT;
+        blockx = (thing->x - g_p_local_globals->bmaporgx) >> MAPBLOCKSHIFT;
+        blocky = (thing->y - g_p_local_globals->bmaporgy) >> MAPBLOCKSHIFT;
 
         if (blockx >= 0
-            && blockx < bmapwidth
+            && blockx < g_p_local_globals->bmapwidth
             && blocky >= 0
-            && blocky < bmapheight)
+            && blocky < g_p_local_globals->bmapheight)
         {
-            link         = &blocklinks[blocky * bmapwidth + blockx];
+            link         = &g_p_local_globals->blocklinks[blocky * g_p_local_globals->bmapwidth + blockx];
             thing->bprev = nullptr;
             thing->bnext = *link;
             if (*link)
@@ -459,17 +443,17 @@ bool
 
     if (x < 0
         || y < 0
-        || x >= bmapwidth
-        || y >= bmapheight)
+        || x >= g_p_local_globals->bmapwidth
+        || y >= g_p_local_globals->bmapheight)
     {
         return true;
     }
 
-    offset = y * bmapwidth + x;
+    offset = y * g_p_local_globals->bmapwidth + x;
 
-    offset = *(blockmap + offset);
+    offset = *(g_p_local_globals->blockmap + offset);
 
-    for (list = blockmaplump + offset; *list != -1; list++)
+    for (list = g_p_local_globals->blockmaplump + offset; *list != -1; list++)
     {
         ld = &lines[*list];
 
@@ -497,14 +481,14 @@ bool
 
     if (x < 0
         || y < 0
-        || x >= bmapwidth
-        || y >= bmapheight)
+        || x >= g_p_local_globals->bmapwidth
+        || y >= g_p_local_globals->bmapheight)
     {
         return true;
     }
 
 
-    for (mobj = blocklinks[y * bmapwidth + x];
+    for (mobj = g_p_local_globals->blocklinks[y * g_p_local_globals->bmapwidth + x];
          mobj;
          mobj = mobj->bnext)
     {
@@ -519,24 +503,22 @@ bool
 // INTERCEPT ROUTINES
 //
 static intercept_t *intercepts; // [crispy] remove INTERCEPTS limit
-intercept_t *       intercept_p;
 
 // [crispy] remove INTERCEPTS limit
 // taken from PrBoom+/src/p_maputl.c:422-433
 static void check_intercept()
 {
     static size_t num_intercepts;
-    const size_t  offset = static_cast<size_t>(intercept_p - intercepts);
+    const size_t  offset = static_cast<size_t>(g_p_local_globals->intercept_p - intercepts);
 
     if (offset >= num_intercepts)
     {
         num_intercepts = num_intercepts ? num_intercepts * 2 : MAXINTERCEPTS_ORIGINAL;
         intercepts     = static_cast<decltype(intercepts)>(I_Realloc(intercepts, sizeof(*intercepts) * num_intercepts));
-        intercept_p    = intercepts + offset;
+        g_p_local_globals->intercept_p    = intercepts + offset;
     }
 }
 
-divline_t trace;
 bool   earlyout;
 [[maybe_unused]] int       ptflags;
 
@@ -564,18 +546,18 @@ bool
     divline_t dl;
 
     // avoid precision problems with two routines
-    if (trace.dx > FRACUNIT * 16
-        || trace.dy > FRACUNIT * 16
-        || trace.dx < -FRACUNIT * 16
-        || trace.dy < -FRACUNIT * 16)
+    if (g_p_local_globals->trace.dx > FRACUNIT * 16
+        || g_p_local_globals->trace.dy > FRACUNIT * 16
+        || g_p_local_globals->trace.dx < -FRACUNIT * 16
+        || g_p_local_globals->trace.dy < -FRACUNIT * 16)
     {
-        s1 = P_PointOnDivlineSide(ld->v1->x, ld->v1->y, &trace);
-        s2 = P_PointOnDivlineSide(ld->v2->x, ld->v2->y, &trace);
+        s1 = P_PointOnDivlineSide(ld->v1->x, ld->v1->y, &g_p_local_globals->trace);
+        s2 = P_PointOnDivlineSide(ld->v2->x, ld->v2->y, &g_p_local_globals->trace);
     }
     else
     {
-        s1 = P_PointOnLineSide(trace.x, trace.y, ld);
-        s2 = P_PointOnLineSide(trace.x + trace.dx, trace.y + trace.dy, ld);
+        s1 = P_PointOnLineSide(g_p_local_globals->trace.x, g_p_local_globals->trace.y, ld);
+        s2 = P_PointOnLineSide(g_p_local_globals->trace.x + g_p_local_globals->trace.dx, g_p_local_globals->trace.y + g_p_local_globals->trace.dy, ld);
     }
 
     if (s1 == s2)
@@ -583,7 +565,7 @@ bool
 
     // hit the line
     P_MakeDivline(ld, &dl);
-    frac = P_InterceptVector(&trace, &dl);
+    frac = P_InterceptVector(&g_p_local_globals->trace, &dl);
 
     if (frac < 0)
         return true; // behind source
@@ -598,12 +580,12 @@ bool
 
 
     check_intercept(); // [crispy] remove INTERCEPTS limit
-    intercept_p->frac    = frac;
-    intercept_p->isaline = true;
-    intercept_p->d.line  = ld;
-    InterceptsOverrun(static_cast<int>(intercept_p - intercepts), intercept_p);
+    g_p_local_globals->intercept_p->frac    = frac;
+    g_p_local_globals->intercept_p->isaline = true;
+    g_p_local_globals->intercept_p->d.line  = ld;
+    InterceptsOverrun(static_cast<int>(g_p_local_globals->intercept_p - intercepts), g_p_local_globals->intercept_p);
     // [crispy] intercepts overflow guard
-    if (intercept_p - intercepts == MAXINTERCEPTS_ORIGINAL + 1)
+    if (g_p_local_globals->intercept_p - intercepts == MAXINTERCEPTS_ORIGINAL + 1)
     {
         if (crispy->crosshair & CROSSHAIR_INTERCEPT)
             return false;
@@ -611,7 +593,7 @@ bool
             // [crispy] print a warning
             fprintf(stderr, "PIT_AddLineIntercepts: Triggered INTERCEPTS overflow!\n");
     }
-    intercept_p++;
+    g_p_local_globals->intercept_p++;
 
     return true; // continue
 }
@@ -636,7 +618,7 @@ bool PIT_AddThingIntercepts(mobj_t *thing)
 
     fixed_t frac;
 
-    tracepositive = (trace.dx ^ trace.dy) > 0;
+    tracepositive = (g_p_local_globals->trace.dx ^ g_p_local_globals->trace.dy) > 0;
 
     // check a corner to corner crossection for hit
     if (tracepositive)
@@ -656,8 +638,8 @@ bool PIT_AddThingIntercepts(mobj_t *thing)
         y2 = thing->y + thing->radius;
     }
 
-    s1 = P_PointOnDivlineSide(x1, y1, &trace);
-    s2 = P_PointOnDivlineSide(x2, y2, &trace);
+    s1 = P_PointOnDivlineSide(x1, y1, &g_p_local_globals->trace);
+    s2 = P_PointOnDivlineSide(x2, y2, &g_p_local_globals->trace);
 
     if (s1 == s2)
         return true; // line isn't crossed
@@ -667,18 +649,18 @@ bool PIT_AddThingIntercepts(mobj_t *thing)
     dl.dx = x2 - x1;
     dl.dy = y2 - y1;
 
-    frac = P_InterceptVector(&trace, &dl);
+    frac = P_InterceptVector(&g_p_local_globals->trace, &dl);
 
     if (frac < 0)
         return true; // behind source
 
     check_intercept(); // [crispy] remove INTERCEPTS limit
-    intercept_p->frac    = frac;
-    intercept_p->isaline = false;
-    intercept_p->d.thing = thing;
-    InterceptsOverrun(static_cast<int>(intercept_p - intercepts), intercept_p);
+    g_p_local_globals->intercept_p->frac    = frac;
+    g_p_local_globals->intercept_p->isaline = false;
+    g_p_local_globals->intercept_p->d.thing = thing;
+    InterceptsOverrun(static_cast<int>(g_p_local_globals->intercept_p - intercepts), g_p_local_globals->intercept_p);
     // [crispy] intercepts overflow guard
-    if (intercept_p - intercepts == MAXINTERCEPTS_ORIGINAL + 1)
+    if (g_p_local_globals->intercept_p - intercepts == MAXINTERCEPTS_ORIGINAL + 1)
     {
         if (crispy->crosshair & CROSSHAIR_INTERCEPT)
             return false;
@@ -686,7 +668,7 @@ bool PIT_AddThingIntercepts(mobj_t *thing)
             // [crispy] print a warning
             fprintf(stderr, "PIT_AddThingIntercepts: Triggered INTERCEPTS overflow!\n");
     }
-    intercept_p++;
+    g_p_local_globals->intercept_p++;
 
     return true; // keep going
 }
@@ -700,14 +682,14 @@ bool PIT_AddThingIntercepts(mobj_t *thing)
 bool
     P_TraverseIntercepts(traverser_t func, fixed_t maxfrac)
 {
-    int count = static_cast<int>(intercept_p - intercepts);
+    int count = static_cast<int>(g_p_local_globals->intercept_p - intercepts);
 
     intercept_t *in = 0; // shut up compiler warning
 
     while (count--)
     {
         fixed_t dist = INT_MAX;
-        for (intercept_t *scan = intercepts; scan < intercept_p; scan++)
+        for (intercept_t *scan = intercepts; scan < g_p_local_globals->intercept_p; scan++)
         {
             if (scan->frac < dist)
             {
@@ -766,10 +748,10 @@ static intercepts_overrun_t intercepts_overrun[] = {
     { 4, nullptr, false },
     { 4, nullptr, /* &earlyout, */ false },
     { 4, nullptr, /* &intercept_p, */ false },
-    { 4, &lowfloor, false },
-    { 4, &openbottom, false },
-    { 4, &opentop, false },
-    { 4, &openrange, false },
+    { 4, &g_p_local_globals->lowfloor, false },
+    { 4, &g_p_local_globals->openbottom, false },
+    { 4, &g_p_local_globals->opentop, false },
+    { 4, &g_p_local_globals->openrange, false },
     { 4, nullptr, false },
     { 120, nullptr, /* &activeplats, */ false },
     { 8, nullptr, false },
@@ -779,12 +761,12 @@ static intercepts_overrun_t intercepts_overrun[] = {
     { 4, nullptr, false },
     { 40, &playerstarts, true },
     { 4, nullptr, /* &blocklinks, */ false },
-    { 4, &bmapwidth, false },
+    { 4, &g_p_local_globals->bmapwidth, false },
     { 4, nullptr, /* &blockmap, */ false },
-    { 4, &bmaporgx, false },
-    { 4, &bmaporgy, false },
+    { 4, &g_p_local_globals->bmaporgx, false },
+    { 4, &g_p_local_globals->bmaporgy, false },
     { 4, nullptr, /* &blockmaplump, */ false },
-    { 4, &bmapheight, false },
+    { 4, &g_p_local_globals->bmapheight, false },
     { 0, nullptr, false },
 };
 
@@ -900,26 +882,26 @@ bool
     earlyout = (flags & PT_EARLYOUT) != 0;
 
     validcount++;
-    intercept_p = intercepts;
+    g_p_local_globals->intercept_p = intercepts;
 
-    if (((x1 - bmaporgx) & (MAPBLOCKSIZE - 1)) == 0)
+    if (((x1 - g_p_local_globals->bmaporgx) & (MAPBLOCKSIZE - 1)) == 0)
         x1 += FRACUNIT; // don't side exactly on a line
 
-    if (((y1 - bmaporgy) & (MAPBLOCKSIZE - 1)) == 0)
+    if (((y1 - g_p_local_globals->bmaporgy) & (MAPBLOCKSIZE - 1)) == 0)
         y1 += FRACUNIT; // don't side exactly on a line
 
-    trace.x  = x1;
-    trace.y  = y1;
-    trace.dx = x2 - x1;
-    trace.dy = y2 - y1;
+    g_p_local_globals->trace.x  = x1;
+    g_p_local_globals->trace.y  = y1;
+    g_p_local_globals->trace.dx = x2 - x1;
+    g_p_local_globals->trace.dy = y2 - y1;
 
-    x1 -= bmaporgx;
-    y1 -= bmaporgy;
+    x1 -= g_p_local_globals->bmaporgx;
+    y1 -= g_p_local_globals->bmaporgy;
     xt1 = x1 >> MAPBLOCKSHIFT;
     yt1 = y1 >> MAPBLOCKSHIFT;
 
-    x2 -= bmaporgx;
-    y2 -= bmaporgy;
+    x2 -= g_p_local_globals->bmaporgx;
+    y2 -= g_p_local_globals->bmaporgy;
     xt2 = x2 >> MAPBLOCKSHIFT;
     yt2 = y2 >> MAPBLOCKSHIFT;
 
