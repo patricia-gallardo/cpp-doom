@@ -76,18 +76,21 @@ enum st_chatstateenum_t
     GetChatState [[maybe_unused]]
 };
 
+struct st_stuff_t {
+    // graphics are drawn to a backing screen and blitted to the real screen
+    pixel_t *  st_backing_screen;
+    cheatseq_t cheat_mus;
+    cheatseq_t cheat_god;
+    cheatseq_t cheat_ammo;
+    cheatseq_t cheat_ammonokey;
+    cheatseq_t cheat_noclip;
+    cheatseq_t cheat_commercial_noclip;
+    cheatseq_t cheat_powerup[8]; // [crispy] idbehold0
+    cheatseq_t cheat_choppers;
+    cheatseq_t cheat_clev;
+    cheatseq_t cheat_mypos;
+};
 
-extern pixel_t *  st_backing_screen;
-extern cheatseq_t cheat_mus;
-extern cheatseq_t cheat_god;
-extern cheatseq_t cheat_ammo;
-extern cheatseq_t cheat_ammonokey;
-extern cheatseq_t cheat_noclip;
-extern cheatseq_t cheat_commercial_noclip;
-extern cheatseq_t cheat_powerup[8]; // [crispy] idbehold0
-extern cheatseq_t cheat_choppers;
-extern cheatseq_t cheat_clev;
-extern cheatseq_t cheat_mypos;
-
+extern st_stuff_t *const g_st_stuff_globals;
 
 #endif
