@@ -262,9 +262,9 @@ void P_ChangeSwitchTexture(line_t *line,
     if (!useAgain)
         line->special = 0;
 
-    texTop = sides[line->sidenum[0]].toptexture;
-    texMid = sides[line->sidenum[0]].midtexture;
-    texBot = sides[line->sidenum[0]].bottomtexture;
+    texTop = g_r_state_globals->sides[line->sidenum[0]].toptexture;
+    texMid = g_r_state_globals->sides[line->sidenum[0]].midtexture;
+    texBot = g_r_state_globals->sides[line->sidenum[0]].bottomtexture;
 
     sound = sfx_swtchn;
 
@@ -278,7 +278,7 @@ void P_ChangeSwitchTexture(line_t *line,
         {
             //	    S_StartSound(buttonlist->soundorg,sound);
             playsound                          = true;
-            sides[line->sidenum[0]].toptexture = static_cast<short>(switchlist[i ^ 1]);
+            g_r_state_globals->sides[line->sidenum[0]].toptexture = static_cast<short>(switchlist[i ^ 1]);
 
             if (useAgain)
                 P_StartButton(line, top, switchlist[i], BUTTONTIME);
@@ -292,7 +292,7 @@ void P_ChangeSwitchTexture(line_t *line,
             {
                 //		S_StartSound(buttonlist->soundorg,sound);
                 playsound                          = true;
-                sides[line->sidenum[0]].midtexture = static_cast<short>(switchlist[i ^ 1]);
+                g_r_state_globals->sides[line->sidenum[0]].midtexture = static_cast<short>(switchlist[i ^ 1]);
 
                 if (useAgain)
                     P_StartButton(line, middle, switchlist[i], BUTTONTIME);
@@ -306,7 +306,7 @@ void P_ChangeSwitchTexture(line_t *line,
                 {
                     //		    S_StartSound(buttonlist->soundorg,sound);
                     playsound                             = true;
-                    sides[line->sidenum[0]].bottomtexture = static_cast<short>(switchlist[i ^ 1]);
+                    g_r_state_globals->sides[line->sidenum[0]].bottomtexture = static_cast<short>(switchlist[i ^ 1]);
 
                     if (useAgain)
                         P_StartButton(line, bottom, switchlist[i], BUTTONTIME);

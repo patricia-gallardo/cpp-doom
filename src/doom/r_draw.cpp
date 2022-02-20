@@ -55,9 +55,6 @@
 
 
 uint8_t *viewimage;
-int      viewwidth;
-int      scaledviewwidth;
-int      viewheight;
 int      viewwindowx;
 int      viewwindowy;
 pixel_t *ylookup[MAXHEIGHT];
@@ -148,7 +145,7 @@ void R_DrawColumn()
     // Framebuffer destination address.
     // Use ylookup LUT to avoid multiply with ScreenWidth.
     // Use columnofs LUT for subwindows?
-    dest = ylookup[g_r_draw_globals->dc_yl] + columnofs[flipviewwidth[g_r_draw_globals->dc_x]];
+    dest = ylookup[g_r_draw_globals->dc_yl] + columnofs[g_r_state_globals->flipviewwidth[g_r_draw_globals->dc_x]];
 
     // Determine scaling,
     //  which is the only mapping to be done.
@@ -289,8 +286,8 @@ void R_DrawColumnLow()
     // Blocky mode, need to multiply by 2.
     x = g_r_draw_globals->dc_x << 1;
 
-    dest  = ylookup[g_r_draw_globals->dc_yl] + columnofs[flipviewwidth[x]];
-    dest2 = ylookup[g_r_draw_globals->dc_yl] + columnofs[flipviewwidth[x + 1]];
+    dest  = ylookup[g_r_draw_globals->dc_yl] + columnofs[g_r_state_globals->flipviewwidth[x]];
+    dest2 = ylookup[g_r_draw_globals->dc_yl] + columnofs[g_r_state_globals->flipviewwidth[x + 1]];
 
     fracstep = g_r_draw_globals->dc_iscale;
     frac     = g_r_draw_globals->dc_texturemid + (g_r_draw_globals->dc_yl - centery) * fracstep;
@@ -395,9 +392,9 @@ void R_DrawFuzzColumn()
         g_r_draw_globals->dc_yl = 1;
 
     // .. and high.
-    if (g_r_draw_globals->dc_yh == viewheight - 1)
+    if (g_r_draw_globals->dc_yh == g_r_state_globals->viewheight - 1)
     {
-        g_r_draw_globals->dc_yh  = viewheight - 2;
+        g_r_draw_globals->dc_yh  = g_r_state_globals->viewheight - 2;
         cutoff = true;
     }
 
@@ -416,7 +413,7 @@ void R_DrawFuzzColumn()
     }
 #endif
 
-    dest = ylookup[g_r_draw_globals->dc_yl] + columnofs[flipviewwidth[g_r_draw_globals->dc_x]];
+    dest = ylookup[g_r_draw_globals->dc_yl] + columnofs[g_r_state_globals->flipviewwidth[g_r_draw_globals->dc_x]];
 
     // Looks familiar.
     fracstep = g_r_draw_globals->dc_iscale;
@@ -432,7 +429,7 @@ void R_DrawFuzzColumn()
         //  left or right of the current one.
         // Add index from colormap to index.
 #ifndef CRISPY_TRUECOLOR
-        *dest = colormaps[6 * 256 + dest[SCREENWIDTH * fuzzoffset[fuzzpos]]];
+        *dest = g_r_state_globals->colormaps[6 * 256 + dest[SCREENWIDTH * fuzzoffset[fuzzpos]]];
 #else
         *dest                 = I_BlendDark(dest[fuzzoffset[fuzzpos]], 0xc0);
 #endif
@@ -451,7 +448,7 @@ void R_DrawFuzzColumn()
     if (cutoff)
     {
 #ifndef CRISPY_TRUECOLOR
-        *dest = colormaps[6 * 256 + dest[SCREENWIDTH * (fuzzoffset[fuzzpos] - FUZZOFF) / 2]];
+        *dest = g_r_state_globals->colormaps[6 * 256 + dest[SCREENWIDTH * (fuzzoffset[fuzzpos] - FUZZOFF) / 2]];
 #else
         *dest                 = I_BlendDark(dest[(fuzzoffset[fuzzpos] - FUZZOFF) / 2], 0xc0);
 #endif
@@ -475,9 +472,9 @@ void R_DrawFuzzColumnLow()
         g_r_draw_globals->dc_yl = 1;
 
     // .. and high.
-    if (g_r_draw_globals->dc_yh == viewheight - 1)
+    if (g_r_draw_globals->dc_yh == g_r_state_globals->viewheight - 1)
     {
-        g_r_draw_globals->dc_yh  = viewheight - 2;
+        g_r_draw_globals->dc_yh  = g_r_state_globals->viewheight - 2;
         cutoff = true;
     }
 
@@ -500,8 +497,8 @@ void R_DrawFuzzColumnLow()
     }
 #endif
 
-    dest  = ylookup[g_r_draw_globals->dc_yl] + columnofs[flipviewwidth[x]];
-    dest2 = ylookup[g_r_draw_globals->dc_yl] + columnofs[flipviewwidth[x + 1]];
+    dest  = ylookup[g_r_draw_globals->dc_yl] + columnofs[g_r_state_globals->flipviewwidth[x]];
+    dest2 = ylookup[g_r_draw_globals->dc_yl] + columnofs[g_r_state_globals->flipviewwidth[x + 1]];
 
     // Looks familiar.
     fracstep = g_r_draw_globals->dc_iscale;
@@ -517,8 +514,8 @@ void R_DrawFuzzColumnLow()
         //  left or right of the current one.
         // Add index from colormap to index.
 #ifndef CRISPY_TRUECOLOR
-        *dest  = colormaps[6 * 256 + dest[SCREENWIDTH * fuzzoffset[fuzzpos]]];
-        *dest2 = colormaps[6 * 256 + dest2[SCREENWIDTH * fuzzoffset[fuzzpos]]];
+        *dest  = g_r_state_globals->colormaps[6 * 256 + dest[SCREENWIDTH * fuzzoffset[fuzzpos]]];
+        *dest2 = g_r_state_globals->colormaps[6 * 256 + dest2[SCREENWIDTH * fuzzoffset[fuzzpos]]];
 #else
         *dest                 = I_BlendDark(dest[fuzzoffset[fuzzpos]], 0xc0);
         *dest2                = I_BlendDark(dest2[fuzzoffset[fuzzpos]], 0xc0);
@@ -539,8 +536,8 @@ void R_DrawFuzzColumnLow()
     if (cutoff)
     {
 #ifndef CRISPY_TRUECOLOR
-        *dest  = colormaps[6 * 256 + dest[SCREENWIDTH * (fuzzoffset[fuzzpos] - FUZZOFF) / 2]];
-        *dest2 = colormaps[6 * 256 + dest2[SCREENWIDTH * (fuzzoffset[fuzzpos] - FUZZOFF) / 2]];
+        *dest  = g_r_state_globals->colormaps[6 * 256 + dest[SCREENWIDTH * (fuzzoffset[fuzzpos] - FUZZOFF) / 2]];
+        *dest2 = g_r_state_globals->colormaps[6 * 256 + dest2[SCREENWIDTH * (fuzzoffset[fuzzpos] - FUZZOFF) / 2]];
 #else
         *dest                 = I_BlendDark(dest[(fuzzoffset[fuzzpos] - FUZZOFF) / 2], 0xc0);
         *dest2                = I_BlendDark(dest2[(fuzzoffset[fuzzpos] - FUZZOFF) / 2], 0xc0);
@@ -571,7 +568,7 @@ void R_DrawTranslatedColumn()
 #endif
 
 
-    dest = ylookup[g_r_draw_globals->dc_yl] + columnofs[flipviewwidth[g_r_draw_globals->dc_x]];
+    dest = ylookup[g_r_draw_globals->dc_yl] + columnofs[g_r_state_globals->flipviewwidth[g_r_draw_globals->dc_x]];
 
     // Looks familiar.
     fracstep = g_r_draw_globals->dc_iscale;
@@ -620,8 +617,8 @@ void R_DrawTranslatedColumnLow()
 #endif
 
 
-    dest  = ylookup[g_r_draw_globals->dc_yl] + columnofs[flipviewwidth[x]];
-    dest2 = ylookup[g_r_draw_globals->dc_yl] + columnofs[flipviewwidth[x + 1]];
+    dest  = ylookup[g_r_draw_globals->dc_yl] + columnofs[g_r_state_globals->flipviewwidth[x]];
+    dest2 = ylookup[g_r_draw_globals->dc_yl] + columnofs[g_r_state_globals->flipviewwidth[x + 1]];
 
     // Looks familiar.
     fracstep = g_r_draw_globals->dc_iscale;
@@ -665,7 +662,7 @@ void R_DrawTLColumn()
     }
 #endif
 
-    dest = ylookup[g_r_draw_globals->dc_yl] + columnofs[flipviewwidth[g_r_draw_globals->dc_x]];
+    dest = ylookup[g_r_draw_globals->dc_yl] + columnofs[g_r_state_globals->flipviewwidth[g_r_draw_globals->dc_x]];
 
     fracstep = g_r_draw_globals->dc_iscale;
     frac     = g_r_draw_globals->dc_texturemid + (g_r_draw_globals->dc_yl - centery) * fracstep;
@@ -711,8 +708,8 @@ void R_DrawTLColumnLow()
     }
 #endif
 
-    dest  = ylookup[g_r_draw_globals->dc_yl] + columnofs[flipviewwidth[x]];
-    dest2 = ylookup[g_r_draw_globals->dc_yl] + columnofs[flipviewwidth[x + 1]];
+    dest  = ylookup[g_r_draw_globals->dc_yl] + columnofs[g_r_state_globals->flipviewwidth[x]];
+    dest2 = ylookup[g_r_draw_globals->dc_yl] + columnofs[g_r_state_globals->flipviewwidth[x + 1]];
 
     fracstep = g_r_draw_globals->dc_iscale;
     frac     = g_r_draw_globals->dc_texturemid + (g_r_draw_globals->dc_yl - centery) * fracstep;
@@ -819,7 +816,7 @@ void R_DrawSpan()
         // Lookup pixel from flat texture tile,
         //  re-index using light/colormap.
         source = g_r_draw_globals->ds_source[spot];
-        dest   = ylookup[g_r_draw_globals->ds_y] + columnofs[flipviewwidth[g_r_draw_globals->ds_x1++]];
+        dest   = ylookup[g_r_draw_globals->ds_y] + columnofs[g_r_state_globals->flipviewwidth[g_r_draw_globals->ds_x1++]];
         *dest  = g_r_draw_globals->ds_colormap[g_r_draw_globals->ds_brightmap[source]][source];
 
         //      position += step;
@@ -952,9 +949,9 @@ void R_DrawSpanLow()
         // Lowres/blocky mode does it twice,
         //  while scale is adjusted appropriately.
         uint8_t source = g_r_draw_globals->ds_source[spot];
-        dest   = ylookup[g_r_draw_globals->ds_y] + columnofs[flipviewwidth[g_r_draw_globals->ds_x1++]];
+        dest   = ylookup[g_r_draw_globals->ds_y] + columnofs[g_r_state_globals->flipviewwidth[g_r_draw_globals->ds_x1++]];
         *dest  = g_r_draw_globals->ds_colormap[g_r_draw_globals->ds_brightmap[source]][source];
-        dest   = ylookup[g_r_draw_globals->ds_y] + columnofs[flipviewwidth[g_r_draw_globals->ds_x1++]];
+        dest   = ylookup[g_r_draw_globals->ds_y] + columnofs[g_r_state_globals->flipviewwidth[g_r_draw_globals->ds_x1++]];
         *dest  = g_r_draw_globals->ds_colormap[g_r_draw_globals->ds_brightmap[source]][source];
 
         //	position += step;
@@ -1023,7 +1020,7 @@ void R_FillBackScreen()
     // If we are running full screen, there is no need to do any of this,
     // and the background buffer can be freed if it was previously in use.
 
-    if (scaledviewwidth == SCREENWIDTH)
+    if (g_r_state_globals->scaledviewwidth == SCREENWIDTH)
     {
         if (background_buffer != nullptr)
         {
@@ -1078,36 +1075,36 @@ void R_FillBackScreen()
 
     patch = cache_lump_name<patch_t *>(DEH_String("brdr_t"), PU_CACHE);
 
-    for (x = 0; x < (scaledviewwidth >> crispy->hires); x += 8)
+    for (x = 0; x < (g_r_state_globals->scaledviewwidth >> crispy->hires); x += 8)
         V_DrawPatch((viewwindowx >> crispy->hires) + x, (viewwindowy >> crispy->hires) - 8, patch);
     patch = cache_lump_name<patch_t *>(DEH_String("brdr_b"), PU_CACHE);
 
-    for (x = 0; x < (scaledviewwidth >> crispy->hires); x += 8)
-        V_DrawPatch((viewwindowx >> crispy->hires) + x, (viewwindowy >> crispy->hires) + (viewheight >> crispy->hires), patch);
+    for (x = 0; x < (g_r_state_globals->scaledviewwidth >> crispy->hires); x += 8)
+        V_DrawPatch((viewwindowx >> crispy->hires) + x, (viewwindowy >> crispy->hires) + (g_r_state_globals->viewheight >> crispy->hires), patch);
     patch = cache_lump_name<patch_t *>(DEH_String("brdr_l"), PU_CACHE);
 
-    for (y = 0; y < (viewheight >> crispy->hires); y += 8)
+    for (y = 0; y < (g_r_state_globals->viewheight >> crispy->hires); y += 8)
         V_DrawPatch((viewwindowx >> crispy->hires) - 8, (viewwindowy >> crispy->hires) + y, patch);
     patch = cache_lump_name<patch_t *>(DEH_String("brdr_r"), PU_CACHE);
 
-    for (y = 0; y < (viewheight >> crispy->hires); y += 8)
-        V_DrawPatch((viewwindowx >> crispy->hires) + (scaledviewwidth >> crispy->hires), (viewwindowy >> crispy->hires) + y, patch);
+    for (y = 0; y < (g_r_state_globals->viewheight >> crispy->hires); y += 8)
+        V_DrawPatch((viewwindowx >> crispy->hires) + (g_r_state_globals->scaledviewwidth >> crispy->hires), (viewwindowy >> crispy->hires) + y, patch);
 
     // Draw beveled edge.
     V_DrawPatch((viewwindowx >> crispy->hires) - 8,
         (viewwindowy >> crispy->hires) - 8,
         cache_lump_name<patch_t *>(DEH_String("brdr_tl"), PU_CACHE));
 
-    V_DrawPatch((viewwindowx >> crispy->hires) + (scaledviewwidth >> crispy->hires),
+    V_DrawPatch((viewwindowx >> crispy->hires) + (g_r_state_globals->scaledviewwidth >> crispy->hires),
         (viewwindowy >> crispy->hires) - 8,
         cache_lump_name<patch_t *>(DEH_String("brdr_tr"), PU_CACHE));
 
     V_DrawPatch((viewwindowx >> crispy->hires) - 8,
-        (viewwindowy >> crispy->hires) + (viewheight >> crispy->hires),
+        (viewwindowy >> crispy->hires) + (g_r_state_globals->viewheight >> crispy->hires),
         cache_lump_name<patch_t *>(DEH_String("brdr_bl"), PU_CACHE));
 
-    V_DrawPatch((viewwindowx >> crispy->hires) + (scaledviewwidth >> crispy->hires),
-        (viewwindowy >> crispy->hires) + (viewheight >> crispy->hires),
+    V_DrawPatch((viewwindowx >> crispy->hires) + (g_r_state_globals->scaledviewwidth >> crispy->hires),
+        (viewwindowy >> crispy->hires) + (g_r_state_globals->viewheight >> crispy->hires),
         cache_lump_name<patch_t *>(DEH_String("brdr_br"), PU_CACHE));
 
     V_RestoreBuffer();
@@ -1145,24 +1142,24 @@ void R_DrawViewBorder()
     int ofs;
     int i;
 
-    if (scaledviewwidth == SCREENWIDTH)
+    if (g_r_state_globals->scaledviewwidth == SCREENWIDTH)
         return;
 
-    top  = ((SCREENHEIGHT - SBARHEIGHT) - viewheight) / 2;
-    side = (SCREENWIDTH - scaledviewwidth) / 2;
+    top  = ((SCREENHEIGHT - SBARHEIGHT) - g_r_state_globals->viewheight) / 2;
+    side = (SCREENWIDTH - g_r_state_globals->scaledviewwidth) / 2;
 
     // copy top and one line of left side
     R_VideoErase(0, top * SCREENWIDTH + side);
 
     // copy one line of right side and bottom
-    ofs = (viewheight + top) * SCREENWIDTH - side;
+    ofs = (g_r_state_globals->viewheight + top) * SCREENWIDTH - side;
     R_VideoErase(static_cast<unsigned int>(ofs), top * SCREENWIDTH + side);
 
     // copy sides using wraparound
     ofs = top * SCREENWIDTH + SCREENWIDTH - side;
     side <<= 1;
 
-    for (i = 1; i < viewheight; i++)
+    for (i = 1; i < g_r_state_globals->viewheight; i++)
     {
         R_VideoErase(static_cast<unsigned int>(ofs), side);
         ofs += SCREENWIDTH;

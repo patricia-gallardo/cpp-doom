@@ -127,17 +127,12 @@ struct texture_s {
 };
 
 
-int firstflat;
 int lastflat;
 int numflats;
 
 int firstpatch;
 int lastpatch;
 int numpatches;
-
-int firstspritelump;
-int lastspritelump;
-int numspritelumps;
 
 int         numtextures;
 texture_t **textures;
@@ -146,25 +141,12 @@ texture_t **textures_hashtable;
 
 int *texturewidthmask;
 // needed for texture pegging
-fixed_t *  textureheight;
 int *      texturecompositesize;
 short **   texturecolumnlump;
 unsigned **texturecolumnofs;  // killough 4/9/98: make 32-bit
 unsigned **texturecolumnofs2; // [crispy] original column offsets for single-patched textures
 uint8_t  **texturecomposite;
 uint8_t  **texturebrightmap; // [crispy] brightmaps
-
-// for global animation
-int *flattranslation;
-int *texturetranslation;
-
-// needed for pre rendering
-fixed_t *spritewidth;
-fixed_t *spriteoffset;
-fixed_t *spritetopoffset;
-
-lighttable_t *colormaps;
-
 
 //
 // MAPTEXTURE_T CACHING
@@ -758,7 +740,7 @@ void R_InitTextures()
             M_StringCopy(name, pnameslumps[i].name_p + j * 8, sizeof(name));
             p = po = W_CheckNumForName(name);
             // [crispy] prevent flat lumps from being mistaken as patches
-            while (p >= firstflat && p <= lastflat)
+            while (p >= g_r_state_globals->firstflat && p <= lastflat)
             {
                 p = W_CheckNumForNameFromTo(name, p - 1, 0);
             }
@@ -810,7 +792,7 @@ void R_InitTextures()
     texturecomposite     = zmalloc<decltype(texturecomposite)>(static_cast<unsigned long>(numtextures) * sizeof(*texturecomposite), PU_STATIC, 0);
     texturecompositesize = zmalloc<decltype(texturecompositesize)>(static_cast<unsigned long>(numtextures) * sizeof(*texturecompositesize), PU_STATIC, 0);
     texturewidthmask     = zmalloc<decltype(texturewidthmask)>(static_cast<unsigned long>(numtextures) * sizeof(*texturewidthmask), PU_STATIC, 0);
-    textureheight        = zmalloc<decltype(textureheight)>(static_cast<unsigned long>(numtextures) * sizeof(*textureheight), PU_STATIC, 0);
+    g_r_state_globals->textureheight        = zmalloc<decltype(g_r_state_globals->textureheight)>(static_cast<unsigned long>(numtextures) * sizeof(*g_r_state_globals->textureheight), PU_STATIC, 0);
     texturebrightmap     = zmalloc<decltype(texturebrightmap)>(static_cast<unsigned long>(numtextures) * sizeof(*texturebrightmap), PU_STATIC, 0);
 
     totalwidth = 0;
@@ -911,7 +893,7 @@ void R_InitTextures()
             j <<= 1;
 
         texturewidthmask[i] = j - 1;
-        textureheight[i]    = texture->height << FRACBITS;
+        g_r_state_globals->textureheight[i]    = texture->height << FRACBITS;
 
         totalwidth += texture->width;
     }
@@ -931,10 +913,10 @@ void R_InitTextures()
         R_GenerateLookup(i);
 
     // Create translation table for global animation.
-    texturetranslation = zmalloc<decltype(texturetranslation)>((static_cast<unsigned long>(numtextures + 1)) * sizeof(*texturetranslation), PU_STATIC, 0);
+    g_r_state_globals->texturetranslation = zmalloc<decltype(g_r_state_globals->texturetranslation)>((static_cast<unsigned long>(numtextures + 1)) * sizeof(*g_r_state_globals->texturetranslation), PU_STATIC, 0);
 
     for (i = 0; i < numtextures; i++)
-        texturetranslation[i] = i;
+        g_r_state_globals->texturetranslation[i] = i;
 
     GenerateTextureHashTable();
 }
@@ -947,15 +929,15 @@ void R_InitFlats()
 {
     int i;
 
-    firstflat = W_GetNumForName(DEH_String("F_START")) + 1;
+    g_r_state_globals->firstflat = W_GetNumForName(DEH_String("F_START")) + 1;
     lastflat  = W_GetNumForName(DEH_String("F_END")) - 1;
-    numflats  = lastflat - firstflat + 1;
+    numflats  = lastflat - g_r_state_globals->firstflat + 1;
 
     // Create translation table for global animation.
-    flattranslation = zmalloc<decltype(flattranslation)>((static_cast<unsigned long>(numflats + 1)) * sizeof(*flattranslation), PU_STATIC, 0);
+    g_r_state_globals->flattranslation = zmalloc<decltype(g_r_state_globals->flattranslation)>((static_cast<unsigned long>(numflats + 1)) * sizeof(*g_r_state_globals->flattranslation), PU_STATIC, 0);
 
     for (i = 0; i < numflats; i++)
-        flattranslation[i] = i;
+        g_r_state_globals->flattranslation[i] = i;
 }
 
 
@@ -967,26 +949,25 @@ void R_InitFlats()
 //
 void R_InitSpriteLumps()
 {
-    int      i;
     patch_t *patch;
 
-    firstspritelump = W_GetNumForName(DEH_String("S_START")) + 1;
-    lastspritelump  = W_GetNumForName(DEH_String("S_END")) - 1;
+    g_r_state_globals->firstspritelump = W_GetNumForName(DEH_String("S_START")) + 1;
+    g_r_state_globals->lastspritelump  = W_GetNumForName(DEH_String("S_END")) - 1;
 
-    numspritelumps  = lastspritelump - firstspritelump + 1;
-    spritewidth     = zmalloc<decltype(spritewidth)>(static_cast<unsigned long>(numspritelumps) * sizeof(*spritewidth), PU_STATIC, 0);
-    spriteoffset    = zmalloc<decltype(spriteoffset)>(static_cast<unsigned long>(numspritelumps) * sizeof(*spriteoffset), PU_STATIC, 0);
-    spritetopoffset = zmalloc<decltype(spritetopoffset)>(static_cast<unsigned long>(numspritelumps) * sizeof(*spritetopoffset), PU_STATIC, 0);
+    g_r_state_globals->numspritelumps  = g_r_state_globals->lastspritelump - g_r_state_globals->firstspritelump + 1;
+    g_r_state_globals->spritewidth     = zmalloc<decltype(g_r_state_globals->spritewidth)>(static_cast<unsigned long>(g_r_state_globals->numspritelumps) * sizeof(*g_r_state_globals->spritewidth), PU_STATIC, 0);
+    g_r_state_globals->spriteoffset    = zmalloc<decltype(g_r_state_globals->spriteoffset)>(static_cast<unsigned long>(g_r_state_globals->numspritelumps) * sizeof(*g_r_state_globals->spriteoffset), PU_STATIC, 0);
+    g_r_state_globals->spritetopoffset = zmalloc<decltype(g_r_state_globals->spritetopoffset)>(static_cast<unsigned long>(g_r_state_globals->numspritelumps) * sizeof(*g_r_state_globals->spritetopoffset), PU_STATIC, 0);
 
-    for (i = 0; i < numspritelumps; i++)
+    for (int i = 0; i < g_r_state_globals->numspritelumps; i++)
     {
         if (!(i & 63))
             printf(".");
 
-        patch              = cache_lump_num<patch_t *>(firstspritelump + i, PU_CACHE);
-        spritewidth[i]     = SHORT(patch->width) << FRACBITS;
-        spriteoffset[i]    = SHORT(patch->leftoffset) << FRACBITS;
-        spritetopoffset[i] = SHORT(patch->topoffset) << FRACBITS;
+        patch              = cache_lump_num<patch_t *>(g_r_state_globals->firstspritelump + i, PU_CACHE);
+        g_r_state_globals->spritewidth[i]     = SHORT(patch->width) << FRACBITS;
+        g_r_state_globals->spriteoffset[i]    = SHORT(patch->leftoffset) << FRACBITS;
+        g_r_state_globals->spritetopoffset[i] = SHORT(patch->topoffset) << FRACBITS;
     }
 }
 
@@ -1132,7 +1113,7 @@ void R_InitColormaps()
     // Load in the light tables,
     //  256 byte align tables.
     lump      = W_GetNumForName(DEH_String("COLORMAP"));
-    colormaps = cache_lump_num<lighttable_t *>(lump, PU_STATIC);
+    g_r_state_globals->colormaps = cache_lump_num<lighttable_t *>(lump, PU_STATIC);
 #else
     byte *playpal;
     int c, i, j = 0;
@@ -1148,9 +1129,9 @@ void R_InitColormaps()
 
     playpal = cache_lump_name<patch_t *>("PLAYPAL", PU_STATIC);
 
-    if (!colormaps)
+    if (!g_r_state_globals->colormaps)
     {
-        colormaps = zmalloc<lighttable_t *>((NUMCOLORMAPS + 1) * 256 * sizeof(lighttable_t), PU_STATIC, 0);
+        g_r_state_globals->colormaps = zmalloc<lighttable_t *>((NUMCOLORMAPS + 1) * 256 * sizeof(lighttable_t), PU_STATIC, 0);
     }
 
     if (crispy->truecolor)
@@ -1165,7 +1146,7 @@ void R_InitColormaps()
                 g = gamma2table[usegamma][playpal[3 * i + 1]] * (1. - scale) + gamma2table[usegamma][0] * scale;
                 b = gamma2table[usegamma][playpal[3 * i + 2]] * (1. - scale) + gamma2table[usegamma][0] * scale;
 
-                colormaps[j++] = 0xff000000 | (r << 16) | (g << 8) | b;
+                g_r_state_globals->colormaps[j++] = 0xff000000 | (r << 16) | (g << 8) | b;
             }
         }
 
@@ -1175,7 +1156,7 @@ void R_InitColormaps()
             const byte gray = 0xff - (byte)(0.299 * playpal[3 * i + 0] + 0.587 * playpal[3 * i + 1] + 0.114 * playpal[3 * i + 2]);
             r = g = b = gamma2table[usegamma][gray];
 
-            colormaps[j++] = 0xff000000 | (r << 16) | (g << 8) | b;
+            g_r_state_globals->colormaps[j++] = 0xff000000 | (r << 16) | (g << 8) | b;
         }
     }
     else
@@ -1190,7 +1171,7 @@ void R_InitColormaps()
                 g = gamma2table[usegamma][playpal[3 * colormap[c * 256 + i] + 1]] & ~3;
                 b = gamma2table[usegamma][playpal[3 * colormap[c * 256 + i] + 2]] & ~3;
 
-                colormaps[j++] = 0xff000000 | (r << 16) | (g << 8) | b;
+                g_r_state_globals->colormaps[j++] = 0xff000000 | (r << 16) | (g << 8) | b;
             }
         }
 
@@ -1267,7 +1248,7 @@ int R_FlatNumForName(const char *name)
     int  i;
     char namet[9];
 
-    i = W_CheckNumForNameFromTo(name, lastflat, firstflat);
+    i = W_CheckNumForNameFromTo(name, lastflat, g_r_state_globals->firstflat);
 
     if (i == -1)
     {
@@ -1279,7 +1260,7 @@ int R_FlatNumForName(const char *name)
         // render missing flats as SKY
         return skyflatnum;
     }
-    return i - firstflat;
+    return i - g_r_state_globals->firstflat;
 }
 
 
@@ -1369,10 +1350,10 @@ void R_PrecacheLevel()
     flatpresent = zmalloc<decltype(flatpresent)>(static_cast<size_t>(numflats), PU_STATIC, nullptr);
     std::memset(flatpresent, 0, static_cast<size_t>(numflats));
 
-    for (i = 0; i < numsectors; i++)
+    for (i = 0; i < g_r_state_globals->numsectors; i++)
     {
-        flatpresent[sectors[i].floorpic]   = 1;
-        flatpresent[sectors[i].ceilingpic] = 1;
+        flatpresent[g_r_state_globals->sectors[i].floorpic]   = 1;
+        flatpresent[g_r_state_globals->sectors[i].ceilingpic] = 1;
     }
 
     flatmemory = 0;
@@ -1381,7 +1362,7 @@ void R_PrecacheLevel()
     {
         if (flatpresent[i])
         {
-            lump = firstflat + i;
+            lump = g_r_state_globals->firstflat + i;
             flatmemory += static_cast<int>(lumpinfo[lump]->size);
             W_CacheLumpNum(lump, PU_CACHE);
         }
@@ -1393,11 +1374,11 @@ void R_PrecacheLevel()
     texturepresent = zmalloc<decltype(texturepresent)>(static_cast<size_t>(numtextures), PU_STATIC, nullptr);
     std::memset(texturepresent, 0, static_cast<size_t>(numtextures));
 
-    for (i = 0; i < numsides; i++)
+    for (i = 0; i < g_r_state_globals->numsides; i++)
     {
-        texturepresent[sides[i].toptexture]    = 1;
-        texturepresent[sides[i].midtexture]    = 1;
-        texturepresent[sides[i].bottomtexture] = 1;
+        texturepresent[g_r_state_globals->sides[i].toptexture]    = 1;
+        texturepresent[g_r_state_globals->sides[i].midtexture]    = 1;
+        texturepresent[g_r_state_globals->sides[i].bottomtexture] = 1;
     }
 
     // Sky texture is always present.
@@ -1430,8 +1411,8 @@ void R_PrecacheLevel()
     Z_Free(texturepresent);
 
     // Precache sprites.
-    spritepresent = zmalloc<decltype(spritepresent)>(static_cast<size_t>(numsprites), PU_STATIC, nullptr);
-    std::memset(spritepresent, 0, static_cast<size_t>(numsprites));
+    spritepresent = zmalloc<decltype(spritepresent)>(static_cast<size_t>(g_r_state_globals->numsprites), PU_STATIC, nullptr);
+    std::memset(spritepresent, 0, static_cast<size_t>(g_r_state_globals->numsprites));
 
     action_hook needle = P_MobjThinker;
     for (th = g_p_local_globals->thinkercap.next; th != &g_p_local_globals->thinkercap; th = th->next)
@@ -1444,17 +1425,17 @@ void R_PrecacheLevel()
     }
 
     spritememory = 0;
-    for (i = 0; i < numsprites; i++)
+    for (i = 0; i < g_r_state_globals->numsprites; i++)
     {
         if (!spritepresent[i])
             continue;
 
-        for (j = 0; j < sprites[i].numframes; j++)
+        for (j = 0; j < g_r_state_globals->sprites[i].numframes; j++)
         {
-            sf = &sprites[i].spriteframes[j];
+            sf = &g_r_state_globals->sprites[i].spriteframes[j];
             for (k = 0; k < 8; k++)
             {
-                lump = firstspritelump + sf->lump[k];
+                lump = g_r_state_globals->firstspritelump + sf->lump[k];
                 spritememory += static_cast<int>(lumpinfo[lump]->size);
                 W_CacheLumpNum(lump, PU_CACHE);
             }

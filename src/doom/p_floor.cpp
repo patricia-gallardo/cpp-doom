@@ -278,11 +278,11 @@ void T_MoveGoobers(floormove_t *floor)
 // [crispy] easter egg: homage to an old friend
 [[maybe_unused]] void EV_DoGoobers()
 {
-    for (int i = 0; i < numsectors; i++)
+    for (int i = 0; i < g_r_state_globals->numsectors; i++)
     {
         floormove_t *floor = nullptr;
 
-        sector_t *sec = &sectors[i];
+        sector_t *sec = &g_r_state_globals->sectors[i];
 
         // [crispy] remove thinker for sectors that are already moving
         if (sec->specialdata)
@@ -323,7 +323,7 @@ int EV_DoFloor(line_t *line,
     rtn    = 0;
     while ((secnum = P_FindSectorFromLineTag(line, secnum)) >= 0)
     {
-        sec = &sectors[secnum];
+        sec = &g_r_state_globals->sectors[secnum];
 
         // ALREADY MOVING?  IF SO, KEEP GOING...
         if (sec->specialdata)
@@ -431,14 +431,14 @@ int EV_DoFloor(line_t *line,
                 {
                     side = getSide(secnum, i, 0);
                     if (side->bottomtexture >= 0)
-                        if (textureheight[side->bottomtexture] < minsize)
+                        if (g_r_state_globals->textureheight[side->bottomtexture] < minsize)
                             minsize =
-                                textureheight[side->bottomtexture];
+                                g_r_state_globals->textureheight[side->bottomtexture];
                     side = getSide(secnum, i, 1);
                     if (side->bottomtexture >= 0)
-                        if (textureheight[side->bottomtexture] < minsize)
+                        if (g_r_state_globals->textureheight[side->bottomtexture] < minsize)
                             minsize =
-                                textureheight[side->bottomtexture];
+                                g_r_state_globals->textureheight[side->bottomtexture];
                 }
             }
             floor->floordestheight =
@@ -458,7 +458,7 @@ int EV_DoFloor(line_t *line,
             {
                 if (twoSided(secnum, i))
                 {
-                    if (getSide(secnum, i, 0)->sector - sectors == secnum)
+                    if (getSide(secnum, i, 0)->sector - g_r_state_globals->sectors == secnum)
                     {
                         sec = getSector(secnum, i, 1);
 
@@ -516,7 +516,7 @@ int EV_BuildStairs(line_t *line,
     rtn    = 0;
     while ((secnum = P_FindSectorFromLineTag(line, secnum)) >= 0)
     {
-        sec = &sectors[secnum];
+        sec = &g_r_state_globals->sectors[secnum];
 
         // ALREADY MOVING?  IF SO, KEEP GOING...
         if (sec->specialdata)
@@ -565,13 +565,13 @@ int EV_BuildStairs(line_t *line,
                     continue;
 
                 tsec      = (sec->lines[i])->frontsector;
-                newsecnum = static_cast<int>(tsec - sectors);
+                newsecnum = static_cast<int>(tsec - g_r_state_globals->sectors);
 
                 if (secnum != newsecnum)
                     continue;
 
                 tsec      = (sec->lines[i])->backsector;
-                newsecnum = static_cast<int>(tsec - sectors);
+                newsecnum = static_cast<int>(tsec - g_r_state_globals->sectors);
 
                 if (tsec->floorpic != texture)
                     continue;

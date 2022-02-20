@@ -820,7 +820,7 @@ void F_CastDrawer()
     F_CastPrint(DEH_String(castorder[castnum].name));
 
     // draw the current frame in the middle of the screen
-    sprdef = &sprites[caststate->sprite];
+    sprdef = &g_r_state_globals->sprites[caststate->sprite];
     // [crispy] the TNT1 sprite is not supposed to be rendered anyway
     if (!sprdef->numframes && caststate->sprite == SPR_TNT1)
     {
@@ -830,7 +830,7 @@ void F_CastDrawer()
     lump     = sprframe->lump[castangle];                     // [crispy] turnable cast
     flip     = static_cast<bool>(sprframe->flip[castangle] ^ static_cast<uint8_t>(castflip)); // [crispy] turnable cast, flippable death sequence
 
-    patch = cache_lump_num<patch_t *>(lump + firstspritelump, PU_CACHE);
+    patch = cache_lump_num<patch_t *>(lump + g_r_state_globals->firstspritelump, PU_CACHE);
     if (flip)
         V_DrawPatchFlipped(ORIGWIDTH / 2, 170, patch);
     else

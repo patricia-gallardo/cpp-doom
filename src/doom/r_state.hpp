@@ -29,97 +29,115 @@
 // Refresh internal data structures,
 //  for rendering.
 //
+struct r_state_t {
 
-// needed for texture pegging
-extern fixed_t *textureheight;
+    // needed for texture pegging
+    fixed_t *textureheight;
 
-// needed for pre rendering (fracs)
-extern fixed_t *spritewidth;
+    // needed for pre rendering (fracs)
+    fixed_t *spritewidth;
 
-extern fixed_t *spriteoffset;
-extern fixed_t *spritetopoffset;
+    fixed_t *spriteoffset;
+    fixed_t *spritetopoffset;
 
-extern lighttable_t *colormaps;
+    lighttable_t *colormaps;
 
-extern int viewwidth;
-extern int scaledviewwidth;
-extern int viewheight;
+    int viewwidth;
+    int scaledviewwidth;
+    int viewheight;
 
-// [crispy] lookup table for horizontal screen coordinates
-extern int  flipscreenwidth[MAXWIDTH];
-extern int *flipviewwidth;
+    // [crispy] lookup table for horizontal screen coordinates
+    int  flipscreenwidth[MAXWIDTH];
+    int *flipviewwidth;
 
-extern int firstflat;
+    int firstflat;
 
-// for global animation
-extern int *flattranslation;
-extern int *texturetranslation;
+    // for global animation
+    int *flattranslation;
+    int *texturetranslation;
 
+    // Sprite....
+    int firstspritelump;
+    int lastspritelump;
+    int numspritelumps;
 
-// Sprite....
-extern int firstspritelump;
-extern int lastspritelump;
-extern int numspritelumps;
+    //
+    // Lookup tables for map data.
+    //
 
+    // variables used to look up
+    //  and range check thing_t sprites patches
+    int          numsprites;
+    spritedef_t *sprites;
 
-//
-// Lookup tables for map data.
-//
-extern int          numsprites;
-extern spritedef_t *sprites;
+    //
+    // MAP related Lookup tables.
+    // Store VERTEXES, LINEDEFS, SIDEDEFS, etc.
+    //
 
-extern int       numvertexes;
-extern vertex_t *vertexes;
+    int       numvertexes;
+    vertex_t *vertexes;
 
-extern int    numsegs;
-extern seg_t *segs;
+    int    numsegs;
+    seg_t *segs;
 
-extern int       numsectors;
-extern sector_t *sectors;
+    int       numsectors;
+    sector_t *sectors;
 
-extern int          numsubsectors;
-extern subsector_t *subsectors;
+    int          numsubsectors;
+    subsector_t *subsectors;
 
-extern int     numnodes;
-extern node_t *nodes;
+    int     numnodes;
+    node_t *nodes;
 
-extern int     numlines;
-extern line_t *lines;
+    int     numlines;
+    line_t *lines;
 
-extern int     numsides;
-extern side_t *sides;
-
-
-//
-// POV data.
-//
-extern fixed_t viewx;
-extern fixed_t viewy;
-extern fixed_t viewz;
-
-extern angle_t   viewangle;
-extern player_t *viewplayer;
+    int     numsides;
+    side_t *sides;
 
 
-// ?
-extern angle_t clipangle;
+    //
+    // POV data.
+    //
+    fixed_t viewx;
+    fixed_t viewy;
+    fixed_t viewz;
 
-extern int     viewangletox[FINEANGLES / 2];
-extern angle_t xtoviewangle[MAXWIDTH + 1];
-//extern fixed_t		finetangent[FINEANGLES/2];
-
-extern fixed_t rw_distance;
-extern angle_t rw_normalangle;
+    angle_t   viewangle;
+    player_t *viewplayer;
 
 
-// angle to line origin
-extern int rw_angle1;
+    //
+    // precalculated math tables
+    //
+    angle_t clipangle;
 
-// Segs count?
-extern int sscount;
+    // The viewangletox[viewangle + FINEANGLES/4] lookup
+    // maps the visible view angles to screen X coordinates,
+    // flattening the arc to a flat projection plane.
+    // There will be many angles mapped to the same X.
+    int     viewangletox[FINEANGLES / 2];
 
-extern visplane_t *floorplane;
-extern visplane_t *ceilingplane;
+    // The xtoviewangleangle[] table maps a screen pixel
+    // to the lowest viewangle that maps back to x ranges
+    // from clipangle to -clipangle.
+    angle_t xtoviewangle[MAXWIDTH + 1];
 
+    fixed_t rw_distance;
+    angle_t rw_normalangle;
+
+
+    // angle to line origin
+    int rw_angle1;
+
+    // Segs count?
+    int sscount;
+
+    visplane_t *floorplane;
+    visplane_t *ceilingplane;
+};
+
+extern r_state_t *const g_r_state_globals;
 
 #endif

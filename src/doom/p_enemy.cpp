@@ -113,10 +113,10 @@ void P_RecursiveSound(sector_t *sec,
             continue; // closed door
 
         sector_t *other = nullptr;
-        if (sides[check->sidenum[0]].sector == sec)
-            other = sides[check->sidenum[1]].sector;
+        if (g_r_state_globals->sides[check->sidenum[0]].sector == sec)
+            other = g_r_state_globals->sides[check->sidenum[1]].sector;
         else
-            other = sides[check->sidenum[0]].sector;
+            other = g_r_state_globals->sides[check->sidenum[0]].sector;
 
         if (check->flags & ML_SOUNDBLOCK)
         {

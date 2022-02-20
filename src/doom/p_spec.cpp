@@ -243,7 +243,7 @@ side_t *
         int     line,
         int     side)
 {
-    return &sides[(sectors[currentSector].lines[line])->sidenum[side]];
+    return &g_r_state_globals->sides[(g_r_state_globals->sectors[currentSector].lines[line])->sidenum[side]];
 }
 
 
@@ -258,7 +258,7 @@ sector_t *
         int       line,
         int       side)
 {
-    return sides[(sectors[currentSector].lines[line])->sidenum[side]].sector;
+    return g_r_state_globals->sides[(g_r_state_globals->sectors[currentSector].lines[line])->sidenum[side]].sector;
 }
 
 
@@ -270,7 +270,7 @@ sector_t *
 int twoSided(int sector,
     int          line)
 {
-    return (sectors[sector].lines[line])->flags & ML_TWOSIDED;
+    return (g_r_state_globals->sectors[sector].lines[line])->flags & ML_TWOSIDED;
 }
 
 
@@ -501,13 +501,13 @@ int P_FindSectorFromLineTag(line_t *line,
     // [crispy] emit a warning for linedefs without tags
     if (!line->tag)
     {
-        const long linedef_local = static_cast<long>(line - lines);
+        const long linedef_local = static_cast<long>(line - g_r_state_globals->lines);
         fprintf(stderr, "P_FindSectorFromLineTag: Linedef %ld without tag\n", linedef_local);
     }
 #endif
 
-    for (i = start + 1; i < numsectors; i++)
-        if (sectors[i].tag == line->tag)
+    for (i = start + 1; i < g_r_state_globals->numsectors; i++)
+        if (g_r_state_globals->sectors[i].tag == line->tag)
             return i;
 
     return -1;
@@ -556,7 +556,7 @@ void P_CrossSpecialLine(int linenum,
     int                     side,
     mobj_t *                thing)
 {
-    return P_CrossSpecialLinePtr(&lines[linenum], side, thing);
+    return P_CrossSpecialLinePtr(&g_r_state_globals->lines[linenum], side, thing);
 }
 
 // [crispy] more MBF code pointers
@@ -1206,16 +1206,16 @@ void P_UpdateSpecials()
         {
             pic = anim->basepic + ((leveltime / anim->speed + i) % anim->numpics);
             if (anim->istexture)
-                texturetranslation[i] = pic;
+                g_r_state_globals->texturetranslation[i] = pic;
             else
             {
                 // [crispy] add support for SMMU swirling flats
                 if (anim->speed > 65535 || anim->numpics == 1)
                 {
-                    flattranslation[i] = -1;
+                    g_r_state_globals->flattranslation[i] = -1;
                 }
                 else
-                    flattranslation[i] = pic;
+                    g_r_state_globals->flattranslation[i] = pic;
             }
         }
     }
@@ -1230,16 +1230,16 @@ void P_UpdateSpecials()
         case 48:
             // EFFECT FIRSTCOL SCROLL +
             // [crispy] smooth texture scrolling
-            sides[line->sidenum[0]].basetextureoffset += FRACUNIT;
-            sides[line->sidenum[0]].textureoffset =
-                sides[line->sidenum[0]].basetextureoffset;
+            g_r_state_globals->sides[line->sidenum[0]].basetextureoffset += FRACUNIT;
+            g_r_state_globals->sides[line->sidenum[0]].textureoffset =
+                g_r_state_globals->sides[line->sidenum[0]].basetextureoffset;
             break;
         case 85:
             // [JN] (Boom) Scroll Texture Right
             // [crispy] smooth texture scrolling
-            sides[line->sidenum[0]].basetextureoffset -= FRACUNIT;
-            sides[line->sidenum[0]].textureoffset =
-                sides[line->sidenum[0]].basetextureoffset;
+            g_r_state_globals->sides[line->sidenum[0]].basetextureoffset -= FRACUNIT;
+            g_r_state_globals->sides[line->sidenum[0]].textureoffset =
+                g_r_state_globals->sides[line->sidenum[0]].basetextureoffset;
             break;
         }
     }
@@ -1255,15 +1255,15 @@ void P_UpdateSpecials()
                 switch (buttonlist[i].where)
                 {
                 case top:
-                    sides[buttonlist[i].line->sidenum[0]].toptexture = static_cast<short>(buttonlist[i].btexture);
+                    g_r_state_globals->sides[buttonlist[i].line->sidenum[0]].toptexture = static_cast<short>(buttonlist[i].btexture);
                     break;
 
                 case middle:
-                    sides[buttonlist[i].line->sidenum[0]].midtexture = static_cast<short>(buttonlist[i].btexture);
+                    g_r_state_globals->sides[buttonlist[i].line->sidenum[0]].midtexture = static_cast<short>(buttonlist[i].btexture);
                     break;
 
                 case bottom:
-                    sides[buttonlist[i].line->sidenum[0]].bottomtexture = static_cast<short>(buttonlist[i].btexture);
+                    g_r_state_globals->sides[buttonlist[i].line->sidenum[0]].bottomtexture = static_cast<short>(buttonlist[i].btexture);
                     break;
                 }
                 // [crispy] & [JN] Logically proper sound behavior.
@@ -1298,7 +1298,7 @@ void R_InterpolateTextureOffsets()
         for (i = 0; i < numlinespecials; i++)
         {
             const line_t *const line = linespeciallist[i];
-            side_t *const       side = &sides[line->sidenum[0]];
+            side_t *const       side = &g_r_state_globals->sides[line->sidenum[0]];
 
             if (line->special == 48)
             {
@@ -1416,7 +1416,7 @@ int EV_DoDonut(line_t *line)
     rtn    = 0;
     while ((secnum = P_FindSectorFromLineTag(line, secnum)) >= 0)
     {
-        s1 = &sectors[secnum];
+        s1 = &g_r_state_globals->sectors[secnum];
 
         // ALREADY MOVING?  IF SO, KEEP GOING...
         if (s1->specialdata)
@@ -1518,9 +1518,9 @@ static unsigned int NumScrollers()
 {
     unsigned int scrollers = 0;
 
-    for (int i = 0; i < numlines; i++)
+    for (int i = 0; i < g_r_state_globals->numlines; i++)
     {
-        if (48 == lines[i].special)
+        if (48 == g_r_state_globals->lines[i].special)
         {
             scrollers++;
         }
@@ -1547,8 +1547,8 @@ void P_SpawnSpecials()
     }
 
     //	Init special SECTORs.
-    sector = sectors;
-    for (i = 0; i < numsectors; i++, sector++)
+    sector = g_r_state_globals->sectors;
+    for (i = 0; i < g_r_state_globals->numsectors; i++, sector++)
     {
         if (!sector->special)
             continue;
@@ -1614,9 +1614,9 @@ void P_SpawnSpecials()
 
     //	Init line EFFECTs
     numlinespecials = 0;
-    for (i = 0; i < numlines; i++)
+    for (i = 0; i < g_r_state_globals->numlines; i++)
     {
-        switch (lines[i].special)
+        switch (g_r_state_globals->lines[i].special)
         {
         case 48:
         case 85: // [crispy] [JN] (Boom) Scroll Texture Right
@@ -1627,7 +1627,7 @@ void P_SpawnSpecials()
                     NumScrollers());
             }
             // EFFECT FIRSTCOL SCROLL+
-            linespeciallist[numlinespecials] = &lines[i];
+            linespeciallist[numlinespecials] = &g_r_state_globals->lines[i];
             numlinespecials++;
             break;
 
@@ -1636,11 +1636,11 @@ void P_SpawnSpecials()
         case 272: {
             int secnum;
 
-            for (secnum = 0; secnum < numsectors; secnum++)
+            for (secnum = 0; secnum < g_r_state_globals->numsectors; secnum++)
             {
-                if (sectors[secnum].tag == lines[i].tag)
+                if (g_r_state_globals->sectors[secnum].tag == g_r_state_globals->lines[i].tag)
                 {
-                    sectors[secnum].sky = static_cast<int>(static_cast<unsigned int>(i) | PL_SKYFLAT);
+                    g_r_state_globals->sectors[secnum].sky = static_cast<int>(static_cast<unsigned int>(i) | PL_SKYFLAT);
                 }
             }
         }

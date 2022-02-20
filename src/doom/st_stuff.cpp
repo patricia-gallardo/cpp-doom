@@ -544,26 +544,26 @@ static int ST_cheat_spechits()
         plyr->cards[i] = true;
     }
 
-    for (int i = 0; i < numlines; i++)
+    for (int i = 0; i < g_r_state_globals->numlines; i++)
     {
-        if (lines[i].special)
+        if (g_r_state_globals->lines[i].special)
         {
             // [crispy] do not trigger level exit switches/lines or teleporters
-            if (lines[i].special == 11 || lines[i].special == 51 || lines[i].special == 52 || lines[i].special == 124 || lines[i].special == 39 || lines[i].special == 97)
+            if (g_r_state_globals->lines[i].special == 11 || g_r_state_globals->lines[i].special == 51 || g_r_state_globals->lines[i].special == 52 || g_r_state_globals->lines[i].special == 124 || g_r_state_globals->lines[i].special == 39 || g_r_state_globals->lines[i].special == 97)
             {
                 continue;
             }
 
             // [crispy] special without tag --> DR linedef type
             // do not change door direction if it is already moving
-            if (lines[i].tag == 0 && lines[i].sidenum[1] != NO_INDEX && sides[lines[i].sidenum[1]].sector->specialdata)
+            if (g_r_state_globals->lines[i].tag == 0 && g_r_state_globals->lines[i].sidenum[1] != NO_INDEX && g_r_state_globals->sides[g_r_state_globals->lines[i].sidenum[1]].sector->specialdata)
             {
                 continue;
             }
 
             P_CrossSpecialLine(i, 0, plyr->mo);
-            P_ShootSpecialLine(plyr->mo, &lines[i]);
-            P_UseSpecialLine(plyr->mo, &lines[i], 0);
+            P_ShootSpecialLine(plyr->mo, &g_r_state_globals->lines[i]);
+            P_UseSpecialLine(plyr->mo, &g_r_state_globals->lines[i], 0);
 
             speciallines++;
         }
@@ -954,9 +954,9 @@ bool
                         }
                     }
                     // [crispy] let sectors forget their soundtarget
-                    for (int i = 0; i < numsectors; i++)
+                    for (int i = 0; i < g_r_state_globals->numsectors; i++)
                     {
-                        sector_t *const sector = &sectors[i];
+                        sector_t *const sector = &g_r_state_globals->sectors[i];
 
                         sector->soundtarget = nullptr;
                     }
@@ -1759,7 +1759,7 @@ static uint8_t *ST_WidgetColor(hudcolor_t i)
 static inline void ST_DrawGibbedPlayerSprites()
 {
     state_t const *state = plyr->mo->state;
-    spritedef_t *  sprdef = &sprites[state->sprite];
+    spritedef_t *  sprdef = &g_r_state_globals->sprites[state->sprite];
 
     // [crispy] the TNT1 sprite is not supposed to be rendered anyway
     if (!sprdef->numframes && plyr->mo->sprite == SPR_TNT1)
@@ -1768,7 +1768,7 @@ static inline void ST_DrawGibbedPlayerSprites()
     }
 
     spriteframe_t *sprframe = &sprdef->spriteframes[state->frame & FF_FRAMEMASK];
-    patch_t       *patch    = cache_lump_num<patch_t *>(sprframe->lump[0] + firstspritelump, PU_CACHE);
+    patch_t       *patch    = cache_lump_num<patch_t *>(sprframe->lump[0] + g_r_state_globals->firstspritelump, PU_CACHE);
 
     unsigned int flag_check = static_cast<unsigned int>(plyr->mo->flags) & MF_TRANSLATION;
     if (flag_check)
@@ -2318,7 +2318,7 @@ void ST_DrawDemoTimer(const int time)
 
     int n = M_snprintf(buffer, sizeof(buffer), "%02i %05.02f", mins, secs);
 
-    int x = (viewwindowx >> crispy->hires) + (scaledviewwidth >> crispy->hires) - DELTAWIDTH;
+    int x = (viewwindowx >> crispy->hires) + (g_r_state_globals->scaledviewwidth >> crispy->hires) - DELTAWIDTH;
 
     // [crispy] draw the Demo Timer widget with gray numbers
     dp_translation = cr_colors[static_cast<int>(cr_t::CR_GRAY)];

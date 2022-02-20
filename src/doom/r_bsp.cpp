@@ -230,7 +230,7 @@ void R_ClearClipSegs()
 {
     solidsegs[0].first = -0x7fffffff;
     solidsegs[0].last  = -1;
-    solidsegs[1].first = viewwidth;
+    solidsegs[1].first = g_r_state_globals->viewwidth;
     solidsegs[1].last  = 0x7fffffff;
     newend             = solidsegs + 2;
 }
@@ -289,39 +289,39 @@ void R_AddLine(seg_t *line)
         return;
 
     // Global angle needed by segcalc.
-    rw_angle1 = static_cast<int>(angle1);
-    angle1 -= viewangle;
-    angle2 -= viewangle;
+    g_r_state_globals->rw_angle1 = static_cast<int>(angle1);
+    angle1 -= g_r_state_globals->viewangle;
+    angle2 -= g_r_state_globals->viewangle;
 
-    tspan = angle1 + clipangle;
-    if (tspan > 2 * clipangle)
+    tspan = angle1 + g_r_state_globals->clipangle;
+    if (tspan > 2 * g_r_state_globals->clipangle)
     {
-        tspan -= 2 * clipangle;
+        tspan -= 2 * g_r_state_globals->clipangle;
 
         // Totally off the left edge?
         if (tspan >= span)
             return;
 
-        angle1 = clipangle;
+        angle1 = g_r_state_globals->clipangle;
     }
-    tspan = clipangle - angle2;
-    if (tspan > 2 * clipangle)
+    tspan = g_r_state_globals->clipangle - angle2;
+    if (tspan > 2 * g_r_state_globals->clipangle)
     {
-        tspan -= 2 * clipangle;
+        tspan -= 2 * g_r_state_globals->clipangle;
 
         // Totally off the left edge?
         if (tspan >= span)
             return;
         // Subtracting from 0u avoids compiler warnings
-        angle2 = 0u - clipangle;
+        angle2 = 0u - g_r_state_globals->clipangle;
     }
 
     // The seg is in the view range,
     // but not necessarily visible.
     angle1 = (angle1 + ANG90) >> ANGLETOFINESHIFT;
     angle2 = (angle2 + ANG90) >> ANGLETOFINESHIFT;
-    x1     = viewangletox[angle1];
-    x2     = viewangletox[angle2];
+    x1     = g_r_state_globals->viewangletox[angle1];
+    x2     = g_r_state_globals->viewangletox[angle2];
 
     // Does not cross a pixel?
     if (x1 == x2)
@@ -415,16 +415,16 @@ bool R_CheckBBox(fixed_t *bspcoord)
 
     // Find the corners of the box
     // that define the edges from current viewpoint.
-    if (viewx <= bspcoord[BOXLEFT])
+    if (g_r_state_globals->viewx <= bspcoord[BOXLEFT])
         boxx = 0;
-    else if (viewx < bspcoord[BOXRIGHT])
+    else if (g_r_state_globals->viewx < bspcoord[BOXRIGHT])
         boxx = 1;
     else
         boxx = 2;
 
-    if (viewy >= bspcoord[BOXTOP])
+    if (g_r_state_globals->viewy >= bspcoord[BOXTOP])
         boxy = 0;
-    else if (viewy > bspcoord[BOXBOTTOM])
+    else if (g_r_state_globals->viewy > bspcoord[BOXBOTTOM])
         boxy = 1;
     else
         boxy = 2;
@@ -439,8 +439,8 @@ bool R_CheckBBox(fixed_t *bspcoord)
     y2 = bspcoord[checkcoord[boxpos][3]];
 
     // check clip list for an open space
-    angle1 = R_PointToAngleCrispy(x1, y1) - viewangle;
-    angle2 = R_PointToAngleCrispy(x2, y2) - viewangle;
+    angle1 = R_PointToAngleCrispy(x1, y1) - g_r_state_globals->viewangle;
+    angle2 = R_PointToAngleCrispy(x2, y2) - g_r_state_globals->viewangle;
 
     span = angle1 - angle2;
 
@@ -448,28 +448,28 @@ bool R_CheckBBox(fixed_t *bspcoord)
     if (span >= ANG180)
         return true;
 
-    tspan = angle1 + clipangle;
+    tspan = angle1 + g_r_state_globals->clipangle;
 
-    if (tspan > 2 * clipangle)
+    if (tspan > 2 * g_r_state_globals->clipangle)
     {
-        tspan -= 2 * clipangle;
+        tspan -= 2 * g_r_state_globals->clipangle;
 
         // Totally off the left edge?
         if (tspan >= span)
             return false;
 
-        angle1 = clipangle;
+        angle1 = g_r_state_globals->clipangle;
     }
-    tspan = clipangle - angle2;
-    if (tspan > 2 * clipangle)
+    tspan = g_r_state_globals->clipangle - angle2;
+    if (tspan > 2 * g_r_state_globals->clipangle)
     {
-        tspan -= 2 * clipangle;
+        tspan -= 2 * g_r_state_globals->clipangle;
 
         // Totally off the left edge?
         if (tspan >= span)
             return false;
         // Subtracting from 0u avoids compiler warnings
-        angle2 = 0u - clipangle;
+        angle2 = 0u - g_r_state_globals->clipangle;
     }
 
 
@@ -478,8 +478,8 @@ bool R_CheckBBox(fixed_t *bspcoord)
     //  (adjacent pixels are touching).
     angle1 = (angle1 + ANG90) >> ANGLETOFINESHIFT;
     angle2 = (angle2 + ANG90) >> ANGLETOFINESHIFT;
-    sx1    = viewangletox[angle1];
-    sx2    = viewangletox[angle2];
+    sx1    = g_r_state_globals->viewangletox[angle1];
+    sx2    = g_r_state_globals->viewangletox[angle2];
 
     // Does not cross a pixel.
     if (sx1 == sx2)
@@ -514,44 +514,44 @@ void R_Subsector(int num)
     subsector_t *sub;
 
 #ifdef RANGECHECK
-    if (num >= numsubsectors)
+    if (num >= g_r_state_globals->numsubsectors)
         I_Error("R_Subsector: ss %i with numss = %i",
             num,
-            numsubsectors);
+            g_r_state_globals->numsubsectors);
 #endif
 
-    sscount++;
-    sub         = &subsectors[num];
+    g_r_state_globals->sscount++;
+    sub         = &g_r_state_globals->subsectors[num];
     frontsector = sub->sector;
     count       = sub->numlines;
-    line        = &segs[sub->firstline];
+    line        = &g_r_state_globals->segs[sub->firstline];
 
     // [AM] Interpolate sector movement.  Usually only needed
     //      when you're standing inside the sector.
     R_MaybeInterpolateSector(frontsector);
 
-    if (frontsector->interpfloorheight < viewz)
+    if (frontsector->interpfloorheight < g_r_state_globals->viewz)
     {
-        floorplane = R_FindPlane(frontsector->interpfloorheight,
+        g_r_state_globals->floorplane = R_FindPlane(frontsector->interpfloorheight,
             // [crispy] add support for MBF sky tranfers
             frontsector->floorpic == skyflatnum && static_cast<unsigned int>(frontsector->sky) & PL_SKYFLAT ? frontsector->sky :
                                                                                    frontsector->floorpic,
             frontsector->lightlevel);
     }
     else
-        floorplane = nullptr;
+        g_r_state_globals->floorplane = nullptr;
 
-    if (frontsector->interpceilingheight > viewz
+    if (frontsector->interpceilingheight > g_r_state_globals->viewz
         || frontsector->ceilingpic == skyflatnum)
     {
-        ceilingplane = R_FindPlane(frontsector->interpceilingheight,
+        g_r_state_globals->ceilingplane = R_FindPlane(frontsector->interpceilingheight,
             // [crispy] add support for MBF sky tranfers
             frontsector->ceilingpic == skyflatnum && static_cast<unsigned int>(frontsector->sky) & PL_SKYFLAT ? frontsector->sky :
                                                                                      frontsector->ceilingpic,
             frontsector->lightlevel);
     }
     else
-        ceilingplane = nullptr;
+        g_r_state_globals->ceilingplane = nullptr;
 
     R_AddSprites(frontsector);
 
@@ -587,10 +587,10 @@ void R_RenderBSPNode(int bspnum)
         return;
     }
 
-    bsp = &nodes[bspnum];
+    bsp = &g_r_state_globals->nodes[bspnum];
 
     // Decide which side the view point is on.
-    side = R_PointOnSide(viewx, viewy, bsp);
+    side = R_PointOnSide(g_r_state_globals->viewx, g_r_state_globals->viewy, bsp);
 
     // Recursively divide front space.
     R_RenderBSPNode(bsp->children[side]);

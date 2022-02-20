@@ -190,7 +190,7 @@ void EV_StartLightStrobing(line_t *line)
     int secnum = -1;
     while ((secnum = P_FindSectorFromLineTag(line, secnum)) >= 0)
     {
-        sec = &sectors[secnum];
+        sec = &g_r_state_globals->sectors[secnum];
         if (sec->specialdata)
             continue;
 
@@ -211,9 +211,9 @@ void EV_TurnTagLightsOff(line_t *line)
     sector_t *tsec;
     line_t *  templine;
 
-    sector = sectors;
+    sector = g_r_state_globals->sectors;
 
-    for (j = 0; j < numsectors; j++, sector++)
+    for (j = 0; j < g_r_state_globals->numsectors; j++, sector++)
     {
         if (sector->tag == line->tag)
         {
@@ -245,9 +245,9 @@ void EV_LightTurnOn(line_t *line,
     sector_t *temp;
     line_t *  templine;
 
-    sector = sectors;
+    sector = g_r_state_globals->sectors;
 
-    for (i = 0; i < numsectors; i++, sector++)
+    for (i = 0; i < g_r_state_globals->numsectors; i++, sector++)
     {
         if (sector->tag == line->tag)
         {

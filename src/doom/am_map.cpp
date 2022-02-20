@@ -399,17 +399,17 @@ void AM_findMinMaxBoundaries()
     min_x = min_y = INT_MAX;
     max_x = max_y = -INT_MAX;
 
-    for (int i = 0; i < numvertexes; i++)
+    for (int i = 0; i < g_r_state_globals->numvertexes; i++)
     {
-        if (vertexes[i].x < min_x)
-            min_x = vertexes[i].x;
-        else if (vertexes[i].x > max_x)
-            max_x = vertexes[i].x;
+        if (g_r_state_globals->vertexes[i].x < min_x)
+            min_x = g_r_state_globals->vertexes[i].x;
+        else if (g_r_state_globals->vertexes[i].x > max_x)
+            max_x = g_r_state_globals->vertexes[i].x;
 
-        if (vertexes[i].y < min_y)
-            min_y = vertexes[i].y;
-        else if (vertexes[i].y > max_y)
-            max_y = vertexes[i].y;
+        if (g_r_state_globals->vertexes[i].y < min_y)
+            min_y = g_r_state_globals->vertexes[i].y;
+        else if (g_r_state_globals->vertexes[i].y > max_y)
+            max_y = g_r_state_globals->vertexes[i].y;
     }
 
     // [crispy] cope with huge level dimensions which span the entire INT range
@@ -983,7 +983,7 @@ void AM_Ticker()
         // [crispy] keep the map static in overlay mode
         // if not following the player
         if (!(!followplayer && crispy->automapoverlay))
-            mapangle = ANG90 - viewangle;
+            mapangle = ANG90 - g_r_state_globals->viewangle;
     }
 }
 
@@ -1169,7 +1169,7 @@ void AM_drawFline(fline_t *fl,
     }
 
 #ifndef CRISPY_TRUECOLOR
-#define PUTDOT(xx, yy, cc) fb[(yy)*f_w + (flipscreenwidth[xx])] = (cc)
+#define PUTDOT(xx, yy, cc) fb[(yy)*f_w + (g_r_state_globals->flipscreenwidth[xx])] = (cc)
 #else
 #define PUTDOT(xx, yy, cc) fb[(yy)*f_w + (flipscreenwidth[xx])] = (colormaps[(cc)])
 #endif
@@ -1345,26 +1345,26 @@ void AM_drawWalls()
 {
     static mline_t l;
 
-    for (int i = 0; i < numlines; i++)
+    for (int i = 0; i < g_r_state_globals->numlines; i++)
     {
-        l.a.x = lines[i].v1->x;
-        l.a.y = lines[i].v1->y;
-        l.b.x = lines[i].v2->x;
-        l.b.y = lines[i].v2->y;
+        l.a.x = g_r_state_globals->lines[i].v1->x;
+        l.a.y = g_r_state_globals->lines[i].v1->y;
+        l.b.x = g_r_state_globals->lines[i].v2->x;
+        l.b.y = g_r_state_globals->lines[i].v2->y;
         if (crispy->automaprotate)
         {
             AM_rotatePoint(&l.a);
             AM_rotatePoint(&l.b);
         }
-        if (cheating || (lines[i].flags & ML_MAPPED))
+        if (cheating || (g_r_state_globals->lines[i].flags & ML_MAPPED))
         {
-            if ((lines[i].flags & LINE_NEVERSEE) && !cheating)
+            if ((g_r_state_globals->lines[i].flags & LINE_NEVERSEE) && !cheating)
                 continue;
             {
                 // [crispy] draw keyed doors in their respective colors
                 // (no Boom multiple keys)
                 keycolor_t amd = no_key;
-                if (!(lines[i].flags & ML_SECRET) && (amd = AM_DoorColor(lines[i].special)) > no_key)
+                if (!(g_r_state_globals->lines[i].flags & ML_SECRET) && (amd = AM_DoorColor(g_r_state_globals->lines[i].special)) > no_key)
                 {
                     switch (amd)
                     {
@@ -1385,19 +1385,19 @@ void AM_drawWalls()
             }
             // [crispy] draw exit lines in white (no Boom exit lines 197, 198)
             // NB: Choco does not have this at all, Boom/PrBoom+ have this disabled by default
-            if (crispy->extautomap && (lines[i].special == 11 || lines[i].special == 51 || lines[i].special == 52 || lines[i].special == 124))
+            if (crispy->extautomap && (g_r_state_globals->lines[i].special == 11 || g_r_state_globals->lines[i].special == 51 || g_r_state_globals->lines[i].special == 52 || g_r_state_globals->lines[i].special == 124))
             {
                 AM_drawMline(&l, WHITE);
                 continue;
             }
-            if (!lines[i].backsector)
+            if (!g_r_state_globals->lines[i].backsector)
             {
                 // [crispy] draw 1S secret sector boundaries in purple
-                if (crispy->extautomap && cheating && (lines[i].frontsector->special == 9))
+                if (crispy->extautomap && cheating && (g_r_state_globals->lines[i].frontsector->special == 9))
                     AM_drawMline(&l, SECRETWALLCOLORS);
 #if defined CRISPY_HIGHLIGHT_REVEALED_SECRETS
                 // [crispy] draw revealed secret sector boundaries in green
-                else if (crispy->extautomap && crispy->secretmessage && (lines[i].frontsector->oldspecial == 9))
+                else if (crispy->extautomap && crispy->secretmessage && (g_r_state_globals->lines[i].frontsector->oldspecial == 9))
                     AM_drawMline(&l, REVEALEDSECRETWALLCOLORS);
 #endif
                 else
@@ -1408,33 +1408,33 @@ void AM_drawWalls()
                 // [crispy] draw teleporters in green
                 // and also WR teleporters 97 if they are not secret
                 // (no monsters-only teleporters 125, 126; no Boom teleporters)
-                if (lines[i].special == 39 || (crispy->extautomap && !(lines[i].flags & ML_SECRET) && lines[i].special == 97))
+                if (g_r_state_globals->lines[i].special == 39 || (crispy->extautomap && !(g_r_state_globals->lines[i].flags & ML_SECRET) && g_r_state_globals->lines[i].special == 97))
                 { // teleporters
                     AM_drawMline(&l, crispy->extautomap ? (GREENS + GREENRANGE / 2) : (WALLCOLORS + WALLRANGE / 2));
                 }
-                else if (lines[i].flags & ML_SECRET) // secret door
+                else if (g_r_state_globals->lines[i].flags & ML_SECRET) // secret door
                 {
                     AM_drawMline(&l, WALLCOLORS + lightlev);
                 }
 #if defined CRISPY_HIGHLIGHT_REVEALED_SECRETS
                 // [crispy] draw revealed secret sector boundaries in green
-                else if (crispy->extautomap && crispy->secretmessage && (lines[i].backsector->oldspecial == 9 || lines[i].frontsector->oldspecial == 9))
+                else if (crispy->extautomap && crispy->secretmessage && (g_r_state_globals->lines[i].backsector->oldspecial == 9 || g_r_state_globals->lines[i].frontsector->oldspecial == 9))
                 {
                     AM_drawMline(&l, REVEALEDSECRETWALLCOLORS);
                 }
 #endif
                 // [crispy] draw 2S secret sector boundaries in purple
-                else if (crispy->extautomap && cheating && (lines[i].backsector->special == 9 || lines[i].frontsector->special == 9))
+                else if (crispy->extautomap && cheating && (g_r_state_globals->lines[i].backsector->special == 9 || g_r_state_globals->lines[i].frontsector->special == 9))
                 {
                     AM_drawMline(&l, SECRETWALLCOLORS);
                 }
-                else if (lines[i].backsector->floorheight
-                         != lines[i].frontsector->floorheight)
+                else if (g_r_state_globals->lines[i].backsector->floorheight
+                         != g_r_state_globals->lines[i].frontsector->floorheight)
                 {
                     AM_drawMline(&l, FDWALLCOLORS + lightlev); // floor level change
                 }
-                else if (lines[i].backsector->ceilingheight
-                         != lines[i].frontsector->ceilingheight)
+                else if (g_r_state_globals->lines[i].backsector->ceilingheight
+                         != g_r_state_globals->lines[i].frontsector->ceilingheight)
                 {
                     AM_drawMline(&l, CDWALLCOLORS + lightlev); // ceiling level change
                 }
@@ -1446,7 +1446,7 @@ void AM_drawWalls()
         }
         else if (plr->powers[pw_allmap])
         {
-            if (!(lines[i].flags & LINE_NEVERSEE)) AM_drawMline(&l, GRAYS + 3);
+            if (!(g_r_state_globals->lines[i].flags & LINE_NEVERSEE)) AM_drawMline(&l, GRAYS + 3);
         }
     }
 }
@@ -1595,9 +1595,9 @@ void AM_drawPlayers()
 
 void AM_drawThings(int colors, int)
 {
-    for (int i = 0; i < numsectors; i++)
+    for (int i = 0; i < g_r_state_globals->numsectors; i++)
     {
-        mobj_t *t = sectors[i].thinglist;
+        mobj_t *t = g_r_state_globals->sectors[i].thinglist;
         while (t)
         {
             // [crispy] do not draw an extra triangle for the player
@@ -1705,7 +1705,7 @@ void AM_drawMarks()
             {
                 AM_rotatePoint(&pt);
             }
-            int fx = (flipscreenwidth[CXMTOF(pt.x)] >> crispy->hires) - 1 - DELTAWIDTH;
+            int fx = (g_r_state_globals->flipscreenwidth[CXMTOF(pt.x)] >> crispy->hires) - 1 - DELTAWIDTH;
             int fy = static_cast<int>((CYMTOF(pt.y) >> crispy->hires) - 2);
             if (fx >= f_x && fx <= (f_w >> crispy->hires) - w && fy >= f_y && fy <= (f_h >> crispy->hires) - h)
                 V_DrawPatch(fx, fy, marknums[i]);

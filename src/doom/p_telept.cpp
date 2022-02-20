@@ -61,9 +61,9 @@ int EV_Teleport(line_t *line,
 
 
     tag = line->tag;
-    for (i = 0; i < numsectors; i++)
+    for (i = 0; i < g_r_state_globals->numsectors; i++)
     {
-        if (sectors[i].tag == tag)
+        if (g_r_state_globals->sectors[i].tag == tag)
         {
             thinker = g_p_local_globals->thinkercap.next;
             for (thinker = g_p_local_globals->thinkercap.next;
@@ -83,7 +83,7 @@ int EV_Teleport(line_t *line,
 
                 sector = m->subsector->sector;
                 // wrong sector
-                if (sector - sectors != i)
+                if (sector - g_r_state_globals->sectors != i)
                     continue;
 
                 oldx = thing->x;
