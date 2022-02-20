@@ -266,7 +266,7 @@ int EV_DoDoor(line_t *line,
 
     while ((secnum = P_FindSectorFromLineTag(line, secnum)) >= 0)
     {
-        sec = &sectors[secnum];
+        sec = &g_r_state_globals->sectors[secnum];
         if (sec->specialdata)
             continue;
 
@@ -412,7 +412,7 @@ void EV_VerticalDoor(line_t *line,
         return;
     }
 
-    sec = sides[line->sidenum[side ^ 1]].sector;
+    sec = g_r_state_globals->sides[line->sidenum[side ^ 1]].sector;
 
     if (sec->specialdata)
     {

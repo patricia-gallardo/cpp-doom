@@ -182,7 +182,7 @@ int EV_DoCeiling(line_t *line,
 
     while ((secnum = P_FindSectorFromLineTag(line, secnum)) >= 0)
     {
-        sec = &sectors[secnum];
+        sec = &g_r_state_globals->sectors[secnum];
         if (sec->specialdata)
             continue;
 

@@ -603,7 +603,7 @@ bool
             if (side != oldside)
             {
                 if (ld->special)
-                    P_CrossSpecialLine(static_cast<int>(ld - lines), oldside, thing);
+                    P_CrossSpecialLine(static_cast<int>(ld - g_r_state_globals->lines), oldside, thing);
             }
         }
     }
@@ -1093,7 +1093,7 @@ bool PTR_ShootTraverse(intercept_t *in)
 
             if ((side = li->sidenum[lineside]) != NO_INDEX)
             {
-                const sector_t *const sector = sides[side].sector;
+                const sector_t *const sector = g_r_state_globals->sides[side].sector;
 
                 if (z < sector->floorheight || (z > sector->ceilingheight && sector->ceilingpic != skyflatnum))
                 {
@@ -1237,8 +1237,8 @@ void P_LineAttack(mobj_t *t1,
     int                   damage)
 {
     // [crispy] smooth laser spot movement with uncapped framerate
-    const fixed_t t1x = (damage == INT_MIN) ? viewx : t1->x;
-    const fixed_t t1y = (damage == INT_MIN) ? viewy : t1->y;
+    const fixed_t t1x = (damage == INT_MIN) ? g_r_state_globals->viewx : t1->x;
+    const fixed_t t1y = (damage == INT_MIN) ? g_r_state_globals->viewy : t1->y;
     fixed_t       x2;
     fixed_t       y2;
 
@@ -1247,7 +1247,7 @@ void P_LineAttack(mobj_t *t1,
     la_damage   = damage;
     x2          = t1x + (distance >> FRACBITS) * finecosine[angle];
     y2          = t1y + (distance >> FRACBITS) * finesine[angle];
-    shootz      = (damage == INT_MIN) ? viewz : t1->z + (t1->height >> 1) + 8 * FRACUNIT;
+    shootz      = (damage == INT_MIN) ? g_r_state_globals->viewz : t1->z + (t1->height >> 1) + 8 * FRACUNIT;
     attackrange = distance;
     aimslope    = slope;
 
@@ -1614,7 +1614,7 @@ static void SpechitOverrun(line_t *ld)
 
     // Calculate address used in doom2.exe
 
-    unsigned int addr = static_cast<unsigned int>(baseaddr + (ld - lines) * 0x3E);
+    unsigned int addr = static_cast<unsigned int>(baseaddr + (ld - g_r_state_globals->lines) * 0x3E);
 
     switch (g_p_local_globals->numspechit)
     {

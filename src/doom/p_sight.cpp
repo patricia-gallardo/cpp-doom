@@ -178,17 +178,17 @@ bool P_CrossSubsector(int num)
     fixed_t      slope;
 
 #ifdef RANGECHECK
-    if (num >= numsubsectors)
+    if (num >= g_r_state_globals->numsubsectors)
         I_Error("P_CrossSubsector: ss %i with numss = %i",
             num,
-            numsubsectors);
+            g_r_state_globals->numsubsectors);
 #endif
 
-    sub = &subsectors[num];
+    sub = &g_r_state_globals->subsectors[num];
 
     // check lines
     count = sub->numlines;
-    seg   = &segs[sub->firstline];
+    seg   = &g_r_state_globals->segs[sub->firstline];
 
     for (; count; seg++, count--)
     {
@@ -301,7 +301,7 @@ bool P_CrossBSPNode(int bspnum)
             return P_CrossSubsector(static_cast<unsigned int>(bspnum) & (~NF_SUBSECTOR));
     }
 
-    bsp = &nodes[bspnum];
+    bsp = &g_r_state_globals->nodes[bspnum];
 
     // decide which side the start point is on
     side = P_DivlineSide(strace.x, strace.y, reinterpret_cast<divline_t *>(bsp));
@@ -336,9 +336,9 @@ bool
 {
     // First check for trivial rejection.
     // Determine subsector entries in REJECT table.
-    int s1      = static_cast<int>(t1->subsector->sector - sectors);
-    int s2      = static_cast<int>(t2->subsector->sector - sectors);
-    int pnum    = s1 * numsectors + s2;
+    int s1      = static_cast<int>(t1->subsector->sector - g_r_state_globals->sectors);
+    int s2      = static_cast<int>(t2->subsector->sector - g_r_state_globals->sectors);
+    int pnum    = s1 * g_r_state_globals->numsectors + s2;
     int bytenum = pnum >> 3;
     int bitnum  = 1 << (pnum & 7);
 
@@ -375,5 +375,5 @@ bool
     strace.dy = t2->y - t1->y;
 
     // the head node is the last node output
-    return P_CrossBSPNode(numnodes - 1);
+    return P_CrossBSPNode(g_r_state_globals->numnodes - 1);
 }

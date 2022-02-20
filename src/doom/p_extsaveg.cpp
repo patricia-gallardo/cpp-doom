@@ -131,7 +131,7 @@ static void P_WriteFireFlicker(const char *key)
 
             M_snprintf(line, MAX_LINE_LEN, "%s %d %d %d %d\n",
                 key,
-                static_cast<int>(flick->sector - sectors),
+                static_cast<int>(flick->sector - g_r_state_globals->sectors),
                 static_cast<int>(flick->count),
                 static_cast<int>(flick->maxlight),
                 static_cast<int>(flick->minlight));
@@ -157,7 +157,7 @@ static void P_ReadFireFlicker(const char *key)
 
         flick = zmalloc<decltype(flick)>(sizeof(*flick), PU_LEVEL, nullptr);
 
-        flick->sector   = &sectors[sector];
+        flick->sector   = &g_r_state_globals->sectors[sector];
         flick->count    = count;
         flick->maxlight = maxlight;
         flick->minlight = minlight;
@@ -175,7 +175,7 @@ static void P_WriteSoundTarget(const char *key)
     int       i;
     sector_t *sector;
 
-    for (i = 0, sector = sectors; i < numsectors; i++, sector++)
+    for (i = 0, sector = g_r_state_globals->sectors; i < g_r_state_globals->numsectors; i++, sector++)
     {
         if (sector->soundtarget)
         {
@@ -199,7 +199,7 @@ static void P_ReadSoundTarget(const char *key)
             == 3
         && !strncmp(string, key, MAX_STRING_LEN))
     {
-        sectors[sector].soundtarget = reinterpret_cast<mobj_t *>(P_IndexToThinker(static_cast<uint32_t>(target)));
+        g_r_state_globals->sectors[sector].soundtarget = reinterpret_cast<mobj_t *>(P_IndexToThinker(static_cast<uint32_t>(target)));
     }
 }
 
@@ -210,7 +210,7 @@ static void P_WriteOldSpecial(const char *key)
     int       i;
     sector_t *sector;
 
-    for (i = 0, sector = sectors; i < numsectors; i++, sector++)
+    for (i = 0, sector = g_r_state_globals->sectors; i < g_r_state_globals->numsectors; i++, sector++)
     {
         if (sector->oldspecial)
         {
@@ -235,7 +235,7 @@ static void P_ReadOldSpecial(const char *key)
             == 3
         && !strncmp(string, key, MAX_STRING_LEN))
     {
-        sectors[sector].oldspecial = static_cast<short>(oldspecial);
+        g_r_state_globals->sectors[sector].oldspecial = static_cast<short>(oldspecial);
     }
 }
 
@@ -255,7 +255,7 @@ static void P_WriteButton(const char *key)
         {
             M_snprintf(line, MAX_LINE_LEN, "%s %d %d %d %d\n",
                 key,
-                static_cast<int>(button->line - lines),
+                static_cast<int>(button->line - g_r_state_globals->lines),
                 static_cast<int>(button->where),
                 static_cast<int>(button->btexture),
                 static_cast<int>(button->btimer));
@@ -277,7 +277,7 @@ static void P_ReadButton(const char *key)
             == 5
         && !strncmp(string, key, MAX_STRING_LEN))
     {
-        P_StartButton(&lines[linedef_local], static_cast<bwhere_e>(where), btexture, btimer);
+        P_StartButton(&g_r_state_globals->lines[linedef_local], static_cast<bwhere_e>(where), btexture, btimer);
     }
 }
 

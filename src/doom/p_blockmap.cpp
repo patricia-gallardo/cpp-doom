@@ -32,16 +32,16 @@ void P_CreateBlockMap()
 
     // First find limits of map
 
-    for (int i = 0; i < numvertexes; i++)
+    for (int i = 0; i < g_r_state_globals->numvertexes; i++)
     {
-        if (vertexes[i].x >> FRACBITS < minx)
-            minx = vertexes[i].x >> FRACBITS;
-        else if (vertexes[i].x >> FRACBITS > maxx)
-            maxx = vertexes[i].x >> FRACBITS;
-        if (vertexes[i].y >> FRACBITS < miny)
-            miny = vertexes[i].y >> FRACBITS;
-        else if (vertexes[i].y >> FRACBITS > maxy)
-            maxy = vertexes[i].y >> FRACBITS;
+        if (g_r_state_globals->vertexes[i].x >> FRACBITS < minx)
+            minx = g_r_state_globals->vertexes[i].x >> FRACBITS;
+        else if (g_r_state_globals->vertexes[i].x >> FRACBITS > maxx)
+            maxx = g_r_state_globals->vertexes[i].x >> FRACBITS;
+        if (g_r_state_globals->vertexes[i].y >> FRACBITS < miny)
+            miny = g_r_state_globals->vertexes[i].y >> FRACBITS;
+        else if (g_r_state_globals->vertexes[i].y >> FRACBITS > maxy)
+            maxy = g_r_state_globals->vertexes[i].y >> FRACBITS;
     }
 
     // [crispy] doombsp/DRAWING.M:175-178
@@ -82,17 +82,17 @@ void P_CreateBlockMap()
         bmap_t * bmap = static_cast<bmap_t *>(calloc(sizeof *bmap, tot)); // array of blocklists
         int      x, y, adx, ady, bend;
 
-        for (int i = 0; i < numlines; i++)
+        for (int i = 0; i < g_r_state_globals->numlines; i++)
         {
             int dx, dy, diff, b;
 
             // starting coordinates
-            x = (lines[i].v1->x >> FRACBITS) - minx;
-            y = (lines[i].v1->y >> FRACBITS) - miny;
+            x = (g_r_state_globals->lines[i].v1->x >> FRACBITS) - minx;
+            y = (g_r_state_globals->lines[i].v1->y >> FRACBITS) - miny;
 
             // x-y deltas
-            adx = lines[i].dx >> FRACBITS, dx = adx < 0 ? -1 : 1;
-            ady = lines[i].dy >> FRACBITS, dy = ady < 0 ? -1 : 1;
+            adx = g_r_state_globals->lines[i].dx >> FRACBITS, dx = adx < 0 ? -1 : 1;
+            ady = g_r_state_globals->lines[i].dy >> FRACBITS, dy = ady < 0 ? -1 : 1;
 
             // difference in preferring to move across y (>0) instead of x (<0)
             diff = !adx ? 1 : !ady ? -1 : (((x >> MAPBTOFRAC) << MAPBTOFRAC) + (dx > 0 ? MAPBLOCKUNITS - 1 : 0) - x) * (ady = std::abs(ady)) * dx - (((y >> MAPBTOFRAC) << MAPBTOFRAC) + (dy > 0 ? MAPBLOCKUNITS - 1 : 0) - y) * (adx = std::abs(adx)) * dy;
@@ -101,7 +101,7 @@ void P_CreateBlockMap()
             b = (y >> MAPBTOFRAC) * g_p_local_globals->bmapwidth + (x >> MAPBTOFRAC);
 
             // ending block
-            bend = (((lines[i].v2->y >> FRACBITS) - miny) >> MAPBTOFRAC) * g_p_local_globals->bmapwidth + (((lines[i].v2->x >> FRACBITS) - minx) >> MAPBTOFRAC);
+            bend = (((g_r_state_globals->lines[i].v2->y >> FRACBITS) - miny) >> MAPBTOFRAC) * g_p_local_globals->bmapwidth + (((g_r_state_globals->lines[i].v2->x >> FRACBITS) - minx) >> MAPBTOFRAC);
 
             // delta for pointer when moving across y
             dy *= g_p_local_globals->bmapwidth;

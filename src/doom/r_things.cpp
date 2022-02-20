@@ -93,11 +93,6 @@ int screenheightarray[MAXWIDTH]; // [crispy] 32-bit integer math
 // INITIALIZATION FUNCTIONS
 //
 
-// variables used to look up
-//  and range check thing_t sprites patches
-spritedef_t *sprites;
-int          numsprites;
-
 spriteframe_t sprtemp[29];
 int           maxframe;
 const char *  spritename;
@@ -146,7 +141,7 @@ void R_InstallSpriteLump(int lump,
             // [crispy] only if not yet substituted
             if (sprtemp[frame].lump[r] == -1)
             {
-                sprtemp[frame].lump[r] = static_cast<short>(lump - firstspritelump);
+                sprtemp[frame].lump[r] = static_cast<short>(lump - g_r_state_globals->firstspritelump);
                 sprtemp[frame].flip[r] = static_cast<uint8_t>(flipped);
                 // [crispy] ... here
                 sprtemp[frame].rotate = false;
@@ -176,7 +171,7 @@ void R_InstallSpriteLump(int lump,
         return;
     }
 
-    sprtemp[frame].lump[rotation] = static_cast<short>(lump - firstspritelump);
+    sprtemp[frame].lump[rotation] = static_cast<short>(lump - g_r_state_globals->firstspritelump);
     sprtemp[frame].flip[rotation] = static_cast<uint8_t>(flipped);
     // [crispy] ... here
     sprtemp[frame].rotate = true;
@@ -208,20 +203,20 @@ void R_InitSpriteDefs(const char **namelist)
     while (*check != nullptr)
         check++;
 
-    numsprites = static_cast<int>(check - namelist);
+    g_r_state_globals->numsprites = static_cast<int>(check - namelist);
 
-    if (!numsprites)
+    if (!g_r_state_globals->numsprites)
         return;
 
-    sprites = zmalloc<decltype(sprites)>(static_cast<unsigned long>(numsprites) * sizeof(*sprites), PU_STATIC, nullptr);
+    g_r_state_globals->sprites = zmalloc<decltype(g_r_state_globals->sprites)>(static_cast<unsigned long>(g_r_state_globals->numsprites) * sizeof(*g_r_state_globals->sprites), PU_STATIC, nullptr);
 
-    int start = firstspritelump - 1;
-    int end   = lastspritelump + 1;
+    int start = g_r_state_globals->firstspritelump - 1;
+    int end   = g_r_state_globals->lastspritelump + 1;
 
     // scan all the lump names for each of the names,
     //  noting the highest frame letter.
     // Just compare 4 characters as ints
-    for (int i = 0; i < numsprites; i++)
+    for (int i = 0; i < g_r_state_globals->numsprites; i++)
     {
         spritename = DEH_String(namelist[i]);
         std::memset(sprtemp, -1, sizeof(sprtemp));
@@ -257,7 +252,7 @@ void R_InitSpriteDefs(const char **namelist)
         // check the frames that were found for completeness
         if (maxframe == -1)
         {
-            sprites[i].numframes = 0;
+            g_r_state_globals->sprites[i].numframes = 0;
             continue;
         }
 
@@ -302,9 +297,9 @@ void R_InitSpriteDefs(const char **namelist)
         }
 
         // allocate space for the frames present and copy sprtemp to it
-        sprites[i].numframes    = maxframe;
-        sprites[i].spriteframes = zmalloc<decltype(sprites[i].spriteframes)>(static_cast<unsigned long>(maxframe) * sizeof(spriteframe_t), PU_STATIC, nullptr);
-        std::memcpy(sprites[i].spriteframes, sprtemp, static_cast<unsigned long>(maxframe) * sizeof(spriteframe_t));
+        g_r_state_globals->sprites[i].numframes    = maxframe;
+        g_r_state_globals->sprites[i].spriteframes = zmalloc<decltype(g_r_state_globals->sprites[i].spriteframes)>(static_cast<unsigned long>(maxframe) * sizeof(spriteframe_t), PU_STATIC, nullptr);
+        std::memcpy(g_r_state_globals->sprites[i].spriteframes, sprtemp, static_cast<unsigned long>(maxframe) * sizeof(spriteframe_t));
     }
 }
 
@@ -459,7 +454,7 @@ void R_DrawVisSprite(vissprite_t *vis, int, int)
     patch_t * patch;
 
 
-    patch = cache_lump_num<patch_t *>(vis->patch + firstspritelump, PU_CACHE);
+    patch = cache_lump_num<patch_t *>(vis->patch + g_r_state_globals->firstspritelump, PU_CACHE);
 
     // [crispy] brightmaps for select sprites
     g_r_draw_globals->dc_colormap[0] = vis->colormap[0];
@@ -594,8 +589,8 @@ void R_ProjectSprite(mobj_t *thing)
     }
 
     // transform the origin point
-    tr_x = interpx - viewx;
-    tr_y = interpy - viewy;
+    tr_x = interpx - g_r_state_globals->viewx;
+    tr_y = interpy - g_r_state_globals->viewy;
 
     gxt = FixedMul(tr_x, viewcos);
     gyt = -FixedMul(tr_y, viewsin);
@@ -618,11 +613,11 @@ void R_ProjectSprite(mobj_t *thing)
 
         // decide which patch to use for sprite relative to player
 #ifdef RANGECHECK
-    if (static_cast<unsigned int>(thing->sprite) >= static_cast<unsigned int>(numsprites))
+    if (static_cast<unsigned int>(thing->sprite) >= static_cast<unsigned int>(g_r_state_globals->numsprites))
         I_Error("R_ProjectSprite: invalid sprite number %i ",
             thing->sprite);
 #endif
-    sprdef = &sprites[thing->sprite];
+    sprdef = &g_r_state_globals->sprites[thing->sprite];
     // [crispy] the TNT1 sprite is not supposed to be rendered anyway
     if (!sprdef->numframes && thing->sprite == SPR_TNT1)
     {
@@ -673,14 +668,14 @@ void R_ProjectSprite(mobj_t *thing)
 
     // calculate edges of the shape
     // [crispy] fix sprite offsets for mirrored sprites
-    tx -= flip ? spritewidth[lump] - spriteoffset[lump] : spriteoffset[lump];
+    tx -= flip ? g_r_state_globals->spritewidth[lump] - g_r_state_globals->spriteoffset[lump] : g_r_state_globals->spriteoffset[lump];
     x1 = (centerxfrac + FixedMul(tx, xscale)) >> FRACBITS;
 
     // off the right side?
-    if (x1 > viewwidth)
+    if (x1 > g_r_state_globals->viewwidth)
         return;
 
-    tx += spritewidth[lump];
+    tx += g_r_state_globals->spritewidth[lump];
     x2 = ((centerxfrac + FixedMul(tx, xscale)) >> FRACBITS) - 1;
 
     // off the left side
@@ -688,8 +683,8 @@ void R_ProjectSprite(mobj_t *thing)
         return;
 
     // [JN] killough 4/9/98: clip things which are out of view due to height
-    gzt = interpz + spritetopoffset[lump];
-    if (interpz > viewz + FixedDiv(viewheight << FRACBITS, xscale) || gzt < viewz - FixedDiv((viewheight << FRACBITS) - viewheight, xscale))
+    gzt = interpz + g_r_state_globals->spritetopoffset[lump];
+    if (interpz > g_r_state_globals->viewz + FixedDiv(g_r_state_globals->viewheight << FRACBITS, xscale) || gzt < g_r_state_globals->viewz - FixedDiv((g_r_state_globals->viewheight << FRACBITS) - g_r_state_globals->viewheight, xscale))
     {
         return;
     }
@@ -709,14 +704,14 @@ void R_ProjectSprite(mobj_t *thing)
     vis->gy          = interpy;
     vis->gz          = interpz;
     vis->gzt         = gzt; // [JN] killough 3/27/98
-    vis->texturemid  = gzt - viewz;
+    vis->texturemid  = gzt - g_r_state_globals->viewz;
     vis->x1          = x1 < 0 ? 0 : x1;
-    vis->x2          = x2 >= viewwidth ? viewwidth - 1 : x2;
+    vis->x2          = x2 >= g_r_state_globals->viewwidth ? g_r_state_globals->viewwidth - 1 : x2;
     iscale           = FixedDiv(FRACUNIT, xscale);
 
     if (flip)
     {
-        vis->startfrac = spritewidth[lump] - 1;
+        vis->startfrac = g_r_state_globals->spritewidth[lump] - 1;
         vis->xiscale   = -iscale;
     }
     else
@@ -743,7 +738,7 @@ void R_ProjectSprite(mobj_t *thing)
     else if (thing->frame & FF_FULLBRIGHT)
     {
         // full bright
-        vis->colormap[0] = vis->colormap[1] = colormaps;
+        vis->colormap[0] = vis->colormap[1] = g_r_state_globals->colormaps;
     }
 
     else
@@ -805,8 +800,8 @@ uint8_t *R_LaserspotColor()
         // [crispy] the projected crosshair code calls P_LineLaser() itself
         if (crispy->crosshair == CROSSHAIR_STATIC)
         {
-            P_LineLaser(viewplayer->mo, viewangle,
-                16 * 64 * FRACUNIT, PLAYER_SLOPE(viewplayer));
+            P_LineLaser(g_r_state_globals->viewplayer->mo, g_r_state_globals->viewangle,
+                16 * 64 * FRACUNIT, PLAYER_SLOPE(g_r_state_globals->viewplayer));
         }
         if (g_p_local_globals->linetarget)
         {
@@ -817,10 +812,10 @@ uint8_t *R_LaserspotColor()
     // [crispy] keep in sync with st_stuff.c:ST_WidgetColor(hudcolor_health)
     if (crispy->crosshairhealth)
     {
-        const int health = viewplayer->health;
+        const int health = g_r_state_globals->viewplayer->health;
 
         // [crispy] Invulnerability powerup and God Mode cheat turn Health values gray
-        if (viewplayer->cheats & CF_GODMODE || viewplayer->powers[pw_invulnerability])
+        if (g_r_state_globals->viewplayer->cheats & CF_GODMODE || g_r_state_globals->viewplayer->powers[pw_invulnerability])
             return cr_colors[static_cast<int>(cr_t::CR_GRAY)];
         else if (health < 25)
             return cr_colors[static_cast<int>(cr_t::CR_RED)];
@@ -845,7 +840,7 @@ static void R_DrawLSprite()
     static int      lump;
     static patch_t *patch;
 
-    if (weaponinfo[viewplayer->readyweapon].ammo == am_noammo || viewplayer->playerstate != PST_LIVE)
+    if (weaponinfo[g_r_state_globals->viewplayer->readyweapon].ammo == am_noammo || g_r_state_globals->viewplayer->playerstate != PST_LIVE)
         return;
 
     if (lump != laserpatch[crispy->crosshairtype].l)
@@ -854,13 +849,13 @@ static void R_DrawLSprite()
         patch = cache_lump_num<patch_t *>(lump, PU_STATIC);
     }
 
-    P_LineLaser(viewplayer->mo, viewangle,
-        16 * 64 * FRACUNIT, PLAYER_SLOPE(viewplayer));
+    P_LineLaser(g_r_state_globals->viewplayer->mo, g_r_state_globals->viewangle,
+        16 * 64 * FRACUNIT, PLAYER_SLOPE(g_r_state_globals->viewplayer));
 
     if (action_hook_is_empty(laserspot->thinker.function))
         return;
 
-    tz = FixedMul(laserspot->x - viewx, viewcos) + FixedMul(laserspot->y - viewy, viewsin);
+    tz = FixedMul(laserspot->x - g_r_state_globals->viewx, viewcos) + FixedMul(laserspot->y - g_r_state_globals->viewy, viewsin);
 
     if (tz < MINZ)
         return;
@@ -869,15 +864,15 @@ static void R_DrawLSprite()
     // [crispy] the original patch has 5x5 pixels, cap the projection at 20x20
     xscale = (xscale > 4 * FRACUNIT) ? 4 * FRACUNIT : xscale;
 
-    tx = -(FixedMul(laserspot->y - viewy, viewcos) - FixedMul(laserspot->x - viewx, viewsin));
+    tx = -(FixedMul(laserspot->y - g_r_state_globals->viewy, viewcos) - FixedMul(laserspot->x - g_r_state_globals->viewx, viewsin));
 
     if (std::abs(tx) > (tz << 2))
         return;
 
     vis = R_NewVisSprite();
     std::memset(vis, 0, sizeof(*vis));                                                    // [crispy] set all fields to nullptr, except ...
-    vis->patch       = lump - firstspritelump;                                       // [crispy] not a sprite patch
-    vis->colormap[0] = vis->colormap[1] = fixedcolormap ? fixedcolormap : colormaps; // [crispy] always full brightness
+    vis->patch       = lump - g_r_state_globals->firstspritelump;                                       // [crispy] not a sprite patch
+    vis->colormap[0] = vis->colormap[1] = fixedcolormap ? fixedcolormap : g_r_state_globals->colormaps; // [crispy] always full brightness
     vis->brightmap                      = g_r_draw_globals->dc_brightmap;
     vis->translation                    = R_LaserspotColor();
 #ifdef CRISPY_TRUECOLOR
@@ -885,7 +880,7 @@ static void R_DrawLSprite()
     vis->blendfunc = I_BlendAdd;
 #endif
     vis->xiscale    = FixedDiv(FRACUNIT, xscale);
-    vis->texturemid = laserspot->z - viewz;
+    vis->texturemid = laserspot->z - g_r_state_globals->viewz;
     vis->scale      = xscale << detailshift;
 
     tx -= SHORT(patch->width / 2) << FRACBITS;
@@ -893,7 +888,7 @@ static void R_DrawLSprite()
     tx += SHORT(patch->width) << FRACBITS;
     vis->x2 = ((centerxfrac + FixedMul(tx, xscale)) >> FRACBITS) - 1;
 
-    if (vis->x1 < 0 || vis->x1 >= viewwidth || vis->x2 < 0 || vis->x2 >= viewwidth)
+    if (vis->x1 < 0 || vis->x1 >= g_r_state_globals->viewwidth || vis->x2 < 0 || vis->x2 >= g_r_state_globals->viewwidth)
         return;
 
     R_DrawVisSprite(vis, vis->x1, vis->x2);
@@ -951,11 +946,11 @@ void R_DrawPSprite(pspdef_t *psp, psprnum_t psprnum) // [crispy] differentiate g
 
     // decide which patch to use
 #ifdef RANGECHECK
-    if (static_cast<unsigned>(psp->state->sprite) >= static_cast<unsigned int>(numsprites))
+    if (static_cast<unsigned>(psp->state->sprite) >= static_cast<unsigned int>(g_r_state_globals->numsprites))
         I_Error("R_ProjectSprite: invalid sprite number %i ",
             psp->state->sprite);
 #endif
-    sprdef = &sprites[psp->state->sprite];
+    sprdef = &g_r_state_globals->sprites[psp->state->sprite];
     // [crispy] the TNT1 sprite is not supposed to be rendered anyway
     if (!sprdef->numframes && psp->state->sprite == SPR_TNT1)
     {
@@ -975,14 +970,14 @@ void R_DrawPSprite(pspdef_t *psp, psprnum_t psprnum) // [crispy] differentiate g
     tx = psp->sx2 - (ORIGWIDTH / 2) * FRACUNIT;
 
     // [crispy] fix sprite offsets for mirrored sprites
-    tx -= flip ? 2 * tx - spriteoffset[lump] + spritewidth[lump] : spriteoffset[lump];
+    tx -= flip ? 2 * tx - g_r_state_globals->spriteoffset[lump] + g_r_state_globals->spritewidth[lump] : g_r_state_globals->spriteoffset[lump];
     x1 = (centerxfrac + FixedMul(tx, pspritescale)) >> FRACBITS;
 
     // off the right side
-    if (x1 > viewwidth)
+    if (x1 > g_r_state_globals->viewwidth)
         return;
 
-    tx += spritewidth[lump];
+    tx += g_r_state_globals->spritewidth[lump];
     x2 = ((centerxfrac + FixedMul(tx, pspritescale)) >> FRACBITS) - 1;
 
     // off the left side
@@ -994,15 +989,15 @@ void R_DrawPSprite(pspdef_t *psp, psprnum_t psprnum) // [crispy] differentiate g
     vis->translation = nullptr; // [crispy] no color translation
     vis->mobjflags   = 0;
     // [crispy] weapons drawn 1 pixel too high when player is idle
-    vis->texturemid = (BASEYCENTER << FRACBITS) + FRACUNIT / 4 - (psp->sy2 + std::abs(psp->dy) - spritetopoffset[lump]);
+    vis->texturemid = (BASEYCENTER << FRACBITS) + FRACUNIT / 4 - (psp->sy2 + std::abs(psp->dy) - g_r_state_globals->spritetopoffset[lump]);
     vis->x1         = x1 < 0 ? 0 : x1;
-    vis->x2         = x2 >= viewwidth ? viewwidth - 1 : x2;
+    vis->x2         = x2 >= g_r_state_globals->viewwidth ? g_r_state_globals->viewwidth - 1 : x2;
     vis->scale      = pspritescale << detailshift;
 
     if (flip)
     {
         vis->xiscale   = -pspriteiscale;
-        vis->startfrac = spritewidth[lump] - 1;
+        vis->startfrac = g_r_state_globals->spritewidth[lump] - 1;
     }
     else
     {
@@ -1011,15 +1006,15 @@ void R_DrawPSprite(pspdef_t *psp, psprnum_t psprnum) // [crispy] differentiate g
     }
 
     // [crispy] free look
-    vis->texturemid += FixedMul(((centery - viewheight / 2) << FRACBITS), pspriteiscale) >> detailshift;
+    vis->texturemid += FixedMul(((centery - g_r_state_globals->viewheight / 2) << FRACBITS), pspriteiscale) >> detailshift;
 
     if (vis->x1 > x1)
         vis->startfrac += vis->xiscale * (vis->x1 - x1);
 
     vis->patch = lump;
 
-    if (viewplayer->powers[pw_invisibility] > 4 * 32
-        || viewplayer->powers[pw_invisibility] & 8)
+    if (g_r_state_globals->viewplayer->powers[pw_invisibility] > 4 * 32
+        || g_r_state_globals->viewplayer->powers[pw_invisibility] & 8)
     {
         // shadow draw
         vis->colormap[0] = vis->colormap[1] = nullptr;
@@ -1032,7 +1027,7 @@ void R_DrawPSprite(pspdef_t *psp, psprnum_t psprnum) // [crispy] differentiate g
     else if (psp->state->frame & FF_FULLBRIGHT)
     {
         // full bright
-        vis->colormap[0] = vis->colormap[1] = colormaps;
+        vis->colormap[0] = vis->colormap[1] = g_r_state_globals->colormaps;
     }
     else
     {
@@ -1066,7 +1061,7 @@ void R_DrawPlayerSprites()
 
     // get light level
     lightnum =
-        (viewplayer->mo->subsector->sector->lightlevel >> LIGHTSEGSHIFT)
+        (g_r_state_globals->viewplayer->mo->subsector->sector->lightlevel >> LIGHTSEGSHIFT)
         + (extralight * LIGHTBRIGHT);
 
     if (lightnum < 0)
@@ -1084,7 +1079,7 @@ void R_DrawPlayerSprites()
         R_DrawLSprite();
 
     // add all active psprites
-    for (i = 0, psp = viewplayer->psprites;
+    for (i = 0, psp = g_r_state_globals->viewplayer->psprites;
          i < NUMPSPRITES;
          i++, psp++)
     {
@@ -1283,7 +1278,7 @@ void R_DrawSprite(vissprite_t *spr)
     for (x = spr->x1; x <= spr->x2; x++)
     {
         if (clipbot[x] == -2)
-            clipbot[x] = viewheight;
+            clipbot[x] = g_r_state_globals->viewheight;
 
         if (cliptop[x] == -2)
             cliptop[x] = -1;

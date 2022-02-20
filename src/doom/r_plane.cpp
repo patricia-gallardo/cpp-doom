@@ -47,8 +47,6 @@ planefunction_t ceilingfunc;
 #define MAXVISPLANES 128
 visplane_t *visplanes = nullptr;
 visplane_t *lastvisplane;
-visplane_t *floorplane;
-visplane_t *ceilingplane;
 static int  numvisplanes;
 
 // ?
@@ -120,8 +118,8 @@ void R_MapPlane(int y,
 #ifdef RANGECHECK
     if (x2 < x1
         || x1 < 0
-        || x2 >= viewwidth
-        || y > viewheight)
+        || x2 >= g_r_state_globals->viewwidth
+        || y > g_r_state_globals->viewheight)
     {
         I_Error("R_MapPlane: %i, %i at %i", x1, x2, y);
     }
@@ -153,8 +151,8 @@ void R_MapPlane(int y,
 
     int dx = x1 - centerx;
 
-    g_r_draw_globals->ds_xfrac = viewx + FixedMul(viewcos, distance) + dx * g_r_draw_globals->ds_xstep;
-    g_r_draw_globals->ds_yfrac = -viewy - FixedMul(viewsin, distance) + dx * g_r_draw_globals->ds_ystep;
+    g_r_draw_globals->ds_xfrac = g_r_state_globals->viewx + FixedMul(viewcos, distance) + dx * g_r_draw_globals->ds_xstep;
+    g_r_draw_globals->ds_yfrac = -g_r_state_globals->viewy - FixedMul(viewsin, distance) + dx * g_r_draw_globals->ds_ystep;
 
     if (fixedcolormap)
         g_r_draw_globals->ds_colormap[0] = g_r_draw_globals->ds_colormap[1] = fixedcolormap;
@@ -188,9 +186,9 @@ void R_ClearPlanes()
     angle_t angle;
 
     // opening / clipping determination
-    for (i = 0; i < viewwidth; i++)
+    for (i = 0; i < g_r_state_globals->viewwidth; i++)
     {
-        floorclip[i]   = viewheight;
+        floorclip[i]   = g_r_state_globals->viewheight;
         ceilingclip[i] = -1;
     }
 
@@ -201,7 +199,7 @@ void R_ClearPlanes()
     std::memset(cachedheight, 0, sizeof(cachedheight));
 
     // left to right mapping
-    angle = (viewangle - ANG90) >> ANGLETOFINESHIFT;
+    angle = (g_r_state_globals->viewangle - ANG90) >> ANGLETOFINESHIFT;
 
     // scale will be unit scale at SCREENWIDTH/2 distance
     basexscale = FixedDiv(finecosine[angle], centerxfrac);
@@ -222,8 +220,8 @@ static void R_RaiseVisplanes(visplane_t **vp)
         std::memset(visplanes + numvisplanes_old, 0, (static_cast<unsigned long>(numvisplanes - numvisplanes_old)) * sizeof(*visplanes));
 
         lastvisplane = visplanes + numvisplanes_old;
-        floorplane   = visplanes + (floorplane - visplanes_old);
-        ceilingplane = visplanes + (ceilingplane - visplanes_old);
+        g_r_state_globals->floorplane   = visplanes + (g_r_state_globals->floorplane - visplanes_old);
+        g_r_state_globals->ceilingplane = visplanes + (g_r_state_globals->ceilingplane - visplanes_old);
 
         if (numvisplanes_old)
             fprintf(stderr, "R_FindPlane: Hit MAXVISPLANES limit at %d, raised to %d.\n", numvisplanes_old, numvisplanes);
@@ -325,7 +323,7 @@ visplane_t *
 
     // [crispy] fix HOM if ceilingplane and floorplane are the same
     // visplane (e.g. both are skies)
-    if (!(pl == floorplane && markceiling && floorplane == ceilingplane))
+    if (!(pl == g_r_state_globals->floorplane && markceiling && g_r_state_globals->floorplane == g_r_state_globals->ceilingplane))
     {
         if (x > intrh)
         {
@@ -418,7 +416,7 @@ void R_DrawPlanes()
 
     for (pl = visplanes; pl < lastvisplane; pl++)
     {
-        const bool swirling = (flattranslation[pl->picnum] == -1);
+        const bool swirling = (g_r_state_globals->flattranslation[pl->picnum] == -1);
 
         if (pl->minx > pl->maxx)
             continue;
@@ -429,17 +427,17 @@ void R_DrawPlanes()
         if (pl->picnum == skyflatnum || static_cast<unsigned int>(pl->picnum) & PL_SKYFLAT)
         {
             int     texture;
-            angle_t an = viewangle, flip;
+            angle_t an = g_r_state_globals->viewangle, flip;
             if (static_cast<unsigned int>(pl->picnum) & PL_SKYFLAT)
             {
-                const line_t *l = &lines[static_cast<unsigned int>(pl->picnum) & ~PL_SKYFLAT];
-                const side_t *s = *l->sidenum + sides;
-                texture         = texturetranslation[s->toptexture];
+                const line_t *l = &g_r_state_globals->lines[static_cast<unsigned int>(pl->picnum) & ~PL_SKYFLAT];
+                const side_t *s = *l->sidenum + g_r_state_globals->sides;
+                texture         = g_r_state_globals->texturetranslation[s->toptexture];
                 g_r_draw_globals->dc_texturemid   = s->rowoffset - 28 * FRACUNIT;
                 // [crispy] stretch sky
                 if (crispy->stretchsky)
                 {
-                    g_r_draw_globals->dc_texturemid = g_r_draw_globals->dc_texturemid * (textureheight[texture] >> FRACBITS) / SKYSTRETCH_HEIGHT;
+                    g_r_draw_globals->dc_texturemid = g_r_draw_globals->dc_texturemid * (g_r_state_globals->textureheight[texture] >> FRACBITS) / SKYSTRETCH_HEIGHT;
                 }
                 flip = (l->special == 272) ? 0u : ~0u;
                 an += static_cast<unsigned int>(s->textureoffset);
@@ -457,9 +455,9 @@ void R_DrawPlanes()
             // Because of this hack, sky is not affected
             //  by INVUL inverse mapping.
             // [crispy] no brightmaps for sky
-            g_r_draw_globals->dc_colormap[0] = g_r_draw_globals->dc_colormap[1] = colormaps;
+            g_r_draw_globals->dc_colormap[0] = g_r_draw_globals->dc_colormap[1] = g_r_state_globals->colormaps;
             //	    dc_texturemid = skytexturemid;
-            g_r_draw_globals->dc_texheight = textureheight[texture] >> FRACBITS; // [crispy] Tutti-Frutti fix
+            g_r_draw_globals->dc_texheight = g_r_state_globals->textureheight[texture] >> FRACBITS; // [crispy] Tutti-Frutti fix
             // [crispy] stretch sky
             if (crispy->stretchsky)
                 g_r_draw_globals->dc_iscale = g_r_draw_globals->dc_iscale * g_r_draw_globals->dc_texheight / SKYSTRETCH_HEIGHT;
@@ -470,7 +468,7 @@ void R_DrawPlanes()
 
                 if (g_r_draw_globals->dc_yl <= g_r_draw_globals->dc_yh) // [crispy] 32-bit integer math
                 {
-                    angle     = ((an + xtoviewangle[x]) ^ flip) >> ANGLETOSKYSHIFT;
+                    angle     = ((an + g_r_state_globals->xtoviewangle[x]) ^ flip) >> ANGLETOSKYSHIFT;
                     g_r_draw_globals->dc_x      = x;
                     g_r_draw_globals->dc_source = R_GetColumn(texture, angle, false);
                     colfunc();
@@ -480,13 +478,13 @@ void R_DrawPlanes()
         }
 
         // regular flat
-        lumpnum = firstflat + (swirling ? pl->picnum : flattranslation[pl->picnum]);
+        lumpnum = g_r_state_globals->firstflat + (swirling ? pl->picnum : g_r_state_globals->flattranslation[pl->picnum]);
         // [crispy] add support for SMMU swirling flats
         g_r_draw_globals->ds_source =
             static_cast<uint8_t *>(swirling ? reinterpret_cast<unsigned char *>(R_DistortedFlat(lumpnum)) : cache_lump_num<uint8_t *>(lumpnum, PU_STATIC));
-        g_r_draw_globals->ds_brightmap = R_BrightmapForFlatNum(lumpnum - firstflat);
+        g_r_draw_globals->ds_brightmap = R_BrightmapForFlatNum(lumpnum - g_r_state_globals->firstflat);
 
-        planeheight = std::abs(pl->height - viewz);
+        planeheight = std::abs(pl->height - g_r_state_globals->viewz);
         light       = (pl->lightlevel >> LIGHTSEGSHIFT) + (extralight * LIGHTBRIGHT);
 
         if (light >= LIGHTLEVELS)

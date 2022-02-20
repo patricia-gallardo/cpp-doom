@@ -47,32 +47,6 @@
 
 void P_SpawnMapThing(mapthing_t *mthing);
 
-
-//
-// MAP related Lookup tables.
-// Store VERTEXES, LINEDEFS, SIDEDEFS, etc.
-//
-int       numvertexes;
-vertex_t *vertexes;
-
-int    numsegs;
-seg_t *segs;
-
-int       numsectors;
-sector_t *sectors;
-
-int          numsubsectors;
-subsector_t *subsectors;
-
-int     numnodes;
-node_t *nodes;
-
-int     numlines;
-line_t *lines;
-
-int     numsides;
-side_t *sides;
-
 static int totallines;
 
 // Maintain single and multi player starting spots.
@@ -110,20 +84,20 @@ void P_LoadVertexes(int lump)
 
     // Determine number of lumps:
     //  total lump length / vertex record length.
-    numvertexes = static_cast<int>(W_LumpLength(lump) / sizeof(mapvertex_t));
+    g_r_state_globals->numvertexes = static_cast<int>(W_LumpLength(lump) / sizeof(mapvertex_t));
 
     // Allocate zone memory for buffer.
-    vertexes = zmalloc<decltype(vertexes)>(static_cast<unsigned long>(numvertexes) * sizeof(vertex_t), PU_LEVEL, 0);
+    g_r_state_globals->vertexes = zmalloc<decltype(g_r_state_globals->vertexes)>(static_cast<unsigned long>(g_r_state_globals->numvertexes) * sizeof(vertex_t), PU_LEVEL, 0);
 
     // Load data into cache.
     data = cache_lump_num<uint8_t *>(lump, PU_STATIC);
 
     ml = reinterpret_cast<mapvertex_t *>(data);
-    li = vertexes;
+    li = g_r_state_globals->vertexes;
 
     // Copy and convert vertex coordinates,
     // internal representation as fixed.
-    for (i = 0; i < numvertexes; i++, li++, ml++)
+    for (i = 0; i < g_r_state_globals->numvertexes; i++, li++, ml++)
     {
         li->x = SHORT(ml->x) << FRACBITS;
         li->y = SHORT(ml->y) << FRACBITS;
@@ -171,33 +145,33 @@ void P_LoadSegs(int lump)
     int       side;
     int       sidenum;
 
-    numsegs = static_cast<int>(W_LumpLength(lump) / sizeof(mapseg_t));
-    segs    = zmalloc<decltype(segs)>(static_cast<unsigned long>(numsegs) * sizeof(seg_t), PU_LEVEL, 0);
-    std::memset(segs, 0, static_cast<unsigned long>(numsegs) * sizeof(seg_t));
+    g_r_state_globals->numsegs = static_cast<int>(W_LumpLength(lump) / sizeof(mapseg_t));
+    g_r_state_globals->segs    = zmalloc<decltype(g_r_state_globals->segs)>(static_cast<unsigned long>(g_r_state_globals->numsegs) * sizeof(seg_t), PU_LEVEL, 0);
+    std::memset(g_r_state_globals->segs, 0, static_cast<unsigned long>(g_r_state_globals->numsegs) * sizeof(seg_t));
     data = cache_lump_num<uint8_t *>(lump, PU_STATIC);
 
     ml = reinterpret_cast<mapseg_t *>(data);
-    li = segs;
-    for (i = 0; i < numsegs; i++, li++, ml++)
+    li = g_r_state_globals->segs;
+    for (i = 0; i < g_r_state_globals->numsegs; i++, li++, ml++)
     {
-        li->v1 = &vertexes[static_cast<unsigned short>(SHORT(ml->v1))]; // [crispy] extended nodes
-        li->v2 = &vertexes[static_cast<unsigned short>(SHORT(ml->v2))]; // [crispy] extended nodes
+        li->v1 = &g_r_state_globals->vertexes[static_cast<unsigned short>(SHORT(ml->v1))]; // [crispy] extended nodes
+        li->v2 = &g_r_state_globals->vertexes[static_cast<unsigned short>(SHORT(ml->v2))]; // [crispy] extended nodes
 
         li->angle = (SHORT(ml->angle)) << FRACBITS;
         //	li->offset = (SHORT(ml->offset))<<FRACBITS; // [crispy] recalculated below
         linedef_local = static_cast<unsigned short>(SHORT(ml->linedef)); // [crispy] extended nodes
-        ldef        = &lines[linedef_local];
+        ldef        = &g_r_state_globals->lines[linedef_local];
         li->linedef = ldef;
         side        = SHORT(ml->side);
 
         // e6y: check for wrong indexes
-        if (static_cast<unsigned>(ldef->sidenum[side]) >= static_cast<unsigned>(numsides))
+        if (static_cast<unsigned>(ldef->sidenum[side]) >= static_cast<unsigned>(g_r_state_globals->numsides))
         {
             I_Error("P_LoadSegs: linedef %d for seg %d references a non-existent sidedef %d", linedef_local, i, static_cast<unsigned>(ldef->sidenum[side]));
         }
 
-        li->sidedef     = &sides[ldef->sidenum[side]];
-        li->frontsector = sides[ldef->sidenum[side]].sector;
+        li->sidedef     = &g_r_state_globals->sides[ldef->sidenum[side]];
+        li->frontsector = g_r_state_globals->sides[ldef->sidenum[side]].sector;
         // [crispy] recalculate
         li->offset = GetOffset(li->v1, (ml->side ? ldef->v2 : ldef->v1));
 
@@ -211,7 +185,7 @@ void P_LoadSegs(int lump)
             // OTTAWAU.WAD, which is the one place I've seen this trick
             // used).
 
-            if (sidenum < 0 || sidenum >= numsides)
+            if (sidenum < 0 || sidenum >= g_r_state_globals->numsides)
             {
                 // [crispy] linedef has two-sided flag set, but no valid second sidedef;
                 // but since it has a midtexture, it is supposed to be rendered just
@@ -226,7 +200,7 @@ void P_LoadSegs(int lump)
             }
             else
             {
-                li->backsector = sides[sidenum].sector;
+                li->backsector = g_r_state_globals->sides[sidenum].sector;
             }
         }
         else
@@ -244,9 +218,9 @@ void P_SegLengths(bool contrast_only)
     int       i;
     const int rightangle = std::abs(finesine[(ANG60 / 2) >> ANGLETOFINESHIFT]);
 
-    for (i = 0; i < numsegs; i++)
+    for (i = 0; i < g_r_state_globals->numsegs; i++)
     {
-        seg_t *const li = &segs[i];
+        seg_t *const li = &g_r_state_globals->segs[i];
         int64_t      dx, dy;
 
         dx = li->v2->r_x - li->v1->r_x;
@@ -257,8 +231,8 @@ void P_SegLengths(bool contrast_only)
             li->length = static_cast<uint32_t>(sqrt(static_cast<double>(dx) * static_cast<double>(dx) + static_cast<double>(dy) * static_cast<double>(dy)) / 2);
 
             // [crispy] re-calculate angle used for rendering
-            viewx       = li->v1->r_x;
-            viewy       = li->v1->r_y;
+            g_r_state_globals->viewx       = li->v1->r_x;
+            g_r_state_globals->viewy       = li->v1->r_y;
             li->r_angle = R_PointToAngleCrispy(li->v2->r_x, li->v2->r_y);
         }
 
@@ -286,19 +260,19 @@ void P_LoadSubsectors(int lump)
     mapsubsector_t *ms;
     subsector_t *   ss;
 
-    numsubsectors = static_cast<int>(W_LumpLength(lump) / sizeof(mapsubsector_t));
-    subsectors    = zmalloc<decltype(subsectors)>(static_cast<unsigned long>(numsubsectors) * sizeof(subsector_t), PU_LEVEL, 0);
+    g_r_state_globals->numsubsectors = static_cast<int>(W_LumpLength(lump) / sizeof(mapsubsector_t));
+    g_r_state_globals->subsectors    = zmalloc<decltype(g_r_state_globals->subsectors)>(static_cast<unsigned long>(g_r_state_globals->numsubsectors) * sizeof(subsector_t), PU_LEVEL, 0);
     data          = cache_lump_num<uint8_t *>(lump, PU_STATIC);
 
     // [crispy] fail on missing subsectors
-    if (!data || !numsubsectors)
+    if (!data || !g_r_state_globals->numsubsectors)
         I_Error("P_LoadSubsectors: No subsectors in map!");
 
     ms = reinterpret_cast<mapsubsector_t *>(data);
-    std::memset(subsectors, 0, static_cast<unsigned long>(numsubsectors) * sizeof(subsector_t));
-    ss = subsectors;
+    std::memset(g_r_state_globals->subsectors, 0, static_cast<unsigned long>(g_r_state_globals->numsubsectors) * sizeof(subsector_t));
+    ss = g_r_state_globals->subsectors;
 
-    for (i = 0; i < numsubsectors; i++, ss++, ms++)
+    for (i = 0; i < g_r_state_globals->numsubsectors; i++, ss++, ms++)
     {
         ss->numlines  = static_cast<unsigned short>(SHORT(ms->numsegs));  // [crispy] extended nodes
         ss->firstline = static_cast<unsigned short>(SHORT(ms->firstseg)); // [crispy] extended nodes
@@ -322,18 +296,18 @@ void P_LoadSectors(int lump)
     if (lump >= static_cast<int>(numlumps))
         I_Error("P_LoadSectors: No sectors in map!");
 
-    numsectors = static_cast<int>(W_LumpLength(lump) / sizeof(mapsector_t));
-    sectors    = zmalloc<decltype(sectors)>(static_cast<unsigned long>(numsectors) * sizeof(sector_t), PU_LEVEL, 0);
-    std::memset(sectors, 0, static_cast<unsigned long>(numsectors) * sizeof(sector_t));
+    g_r_state_globals->numsectors = static_cast<int>(W_LumpLength(lump) / sizeof(mapsector_t));
+    g_r_state_globals->sectors    = zmalloc<decltype(g_r_state_globals->sectors)>(static_cast<unsigned long>(g_r_state_globals->numsectors) * sizeof(sector_t), PU_LEVEL, 0);
+    std::memset(g_r_state_globals->sectors, 0, static_cast<unsigned long>(g_r_state_globals->numsectors) * sizeof(sector_t));
     data = cache_lump_num<uint8_t *>(lump, PU_STATIC);
 
     // [crispy] fail on missing sectors
-    if (!data || !numsectors)
+    if (!data || !g_r_state_globals->numsectors)
         I_Error("P_LoadSectors: No sectors in map!");
 
     ms = reinterpret_cast<mapsector_t *>(data);
-    ss = sectors;
-    for (i = 0; i < numsectors; i++, ss++, ms++)
+    ss = g_r_state_globals->sectors;
+    for (i = 0; i < g_r_state_globals->numsectors; i++, ss++, ms++)
     {
         ss->floorheight   = SHORT(ms->floorheight) << FRACBITS;
         ss->ceilingheight = SHORT(ms->ceilingheight) << FRACBITS;
@@ -372,23 +346,23 @@ void P_LoadNodes(int lump)
     mapnode_t *mn;
     node_t *   no;
 
-    numnodes = static_cast<int>(W_LumpLength(lump) / sizeof(mapnode_t));
-    nodes    = zmalloc<decltype(nodes)>(static_cast<unsigned long>(numnodes) * sizeof(node_t), PU_LEVEL, 0);
+    g_r_state_globals->numnodes = static_cast<int>(W_LumpLength(lump) / sizeof(mapnode_t));
+    g_r_state_globals->nodes    = zmalloc<decltype(g_r_state_globals->nodes)>(static_cast<unsigned long>(g_r_state_globals->numnodes) * sizeof(node_t), PU_LEVEL, 0);
     data     = cache_lump_num<uint8_t *>(lump, PU_STATIC);
 
     // [crispy] warn about missing nodes
-    if (!data || !numnodes)
+    if (!data || !g_r_state_globals->numnodes)
     {
-        if (numsubsectors == 1)
+        if (g_r_state_globals->numsubsectors == 1)
             fprintf(stderr, "P_LoadNodes: No nodes in map, but only one subsector.\n");
         else
             I_Error("P_LoadNodes: No nodes in map!");
     }
 
     mn = reinterpret_cast<mapnode_t *>(data);
-    no = nodes;
+    no = g_r_state_globals->nodes;
 
-    for (i = 0; i < numnodes; i++, no++, mn++)
+    for (i = 0; i < g_r_state_globals->numnodes; i++, no++, mn++)
     {
         no->x  = SHORT(mn->x) << FRACBITS;
         no->y  = SHORT(mn->y) << FRACBITS;
@@ -406,7 +380,7 @@ void P_LoadNodes(int lump)
             {
                 no->children[j] &= ~0x8000;
 
-                if (no->children[j] >= numsubsectors)
+                if (no->children[j] >= g_r_state_globals->numsubsectors)
                     no->children[j] = 0;
 
                 no->children[j] |= NF_SUBSECTOR;
@@ -503,15 +477,15 @@ void P_LoadLineDefs(int lump)
     vertex_t *    v2;
     int           warn, warn2; // [crispy] warn about invalid linedefs
 
-    numlines = static_cast<int>(W_LumpLength(lump) / sizeof(maplinedef_t));
-    lines    = zmalloc<decltype(lines)>(static_cast<unsigned long>(numlines) * sizeof(line_t), PU_LEVEL, 0);
-    std::memset(lines, 0, static_cast<unsigned long>(numlines) * sizeof(line_t));
+    g_r_state_globals->numlines = static_cast<int>(W_LumpLength(lump) / sizeof(maplinedef_t));
+    g_r_state_globals->lines    = zmalloc<decltype(g_r_state_globals->lines)>(static_cast<unsigned long>(g_r_state_globals->numlines) * sizeof(line_t), PU_LEVEL, 0);
+    std::memset(g_r_state_globals->lines, 0, static_cast<unsigned long>(g_r_state_globals->numlines) * sizeof(line_t));
     data = cache_lump_num<uint8_t *>(lump, PU_STATIC);
 
     mld  = reinterpret_cast<maplinedef_t *>(data);
-    ld   = lines;
+    ld   = g_r_state_globals->lines;
     warn = warn2 = 0; // [crispy] warn about invalid linedefs
-    for (i = 0; i < numlines; i++, mld++, ld++)
+    for (i = 0; i < g_r_state_globals->numlines; i++, mld++, ld++)
     {
         ld->flags   = static_cast<unsigned short>(SHORT(mld->flags)); // [crispy] extended nodes
         ld->special = SHORT(mld->special);
@@ -552,8 +526,8 @@ void P_LoadLineDefs(int lump)
                 break;
             }
         }
-        v1 = ld->v1 = &vertexes[static_cast<unsigned short>(SHORT(mld->v1))]; // [crispy] extended nodes
-        v2 = ld->v2 = &vertexes[static_cast<unsigned short>(SHORT(mld->v2))]; // [crispy] extended nodes
+        v1 = ld->v1 = &g_r_state_globals->vertexes[static_cast<unsigned short>(SHORT(mld->v1))]; // [crispy] extended nodes
+        v2 = ld->v2 = &g_r_state_globals->vertexes[static_cast<unsigned short>(SHORT(mld->v2))]; // [crispy] extended nodes
         ld->dx      = v2->x - v1->x;
         ld->dy      = v2->y - v1->y;
 
@@ -606,12 +580,12 @@ void P_LoadLineDefs(int lump)
         }
 
         if (ld->sidenum[0] != NO_INDEX) // [crispy] extended nodes
-            ld->frontsector = sides[ld->sidenum[0]].sector;
+            ld->frontsector = g_r_state_globals->sides[ld->sidenum[0]].sector;
         else
             ld->frontsector = 0;
 
         if (ld->sidenum[1] != NO_INDEX) // [crispy] extended nodes
-            ld->backsector = sides[ld->sidenum[1]].sector;
+            ld->backsector = g_r_state_globals->sides[ld->sidenum[1]].sector;
         else
             ld->backsector = 0;
     }
@@ -645,21 +619,21 @@ void P_LoadSideDefs(int lump)
     mapsidedef_t *msd;
     side_t *      sd;
 
-    numsides = static_cast<int>(W_LumpLength(lump) / sizeof(mapsidedef_t));
-    sides    = zmalloc<decltype(sides)>(static_cast<unsigned long>(numsides) * sizeof(side_t), PU_LEVEL, 0);
-    std::memset(sides, 0, static_cast<unsigned long>(numsides) * sizeof(side_t));
+    g_r_state_globals->numsides = static_cast<int>(W_LumpLength(lump) / sizeof(mapsidedef_t));
+    g_r_state_globals->sides    = zmalloc<decltype(g_r_state_globals->sides)>(static_cast<unsigned long>(g_r_state_globals->numsides) * sizeof(side_t), PU_LEVEL, 0);
+    std::memset(g_r_state_globals->sides, 0, static_cast<unsigned long>(g_r_state_globals->numsides) * sizeof(side_t));
     data = cache_lump_num<uint8_t *>(lump, PU_STATIC);
 
     msd = reinterpret_cast<mapsidedef_t *>(data);
-    sd  = sides;
-    for (i = 0; i < numsides; i++, msd++, sd++)
+    sd  = g_r_state_globals->sides;
+    for (i = 0; i < g_r_state_globals->numsides; i++, msd++, sd++)
     {
         sd->textureoffset = SHORT(msd->textureoffset) << FRACBITS;
         sd->rowoffset     = SHORT(msd->rowoffset) << FRACBITS;
         sd->toptexture    = static_cast<short>(R_TextureNumForName(msd->toptexture));
         sd->bottomtexture = static_cast<short>(R_TextureNumForName(msd->bottomtexture));
         sd->midtexture    = static_cast<short>(R_TextureNumForName(msd->midtexture));
-        sd->sector        = &sectors[SHORT(msd->sector)];
+        sd->sector        = &g_r_state_globals->sectors[SHORT(msd->sector)];
         // [crispy] smooth texture scrolling
         sd->basetextureoffset = sd->textureoffset;
     }
@@ -743,17 +717,17 @@ void P_GroupLines()
     int          block;
 
     // look up sector number for each subsector
-    ss = subsectors;
-    for (i = 0; i < numsubsectors; i++, ss++)
+    ss = g_r_state_globals->subsectors;
+    for (i = 0; i < g_r_state_globals->numsubsectors; i++, ss++)
     {
-        seg        = &segs[ss->firstline];
+        seg        = &g_r_state_globals->segs[ss->firstline];
         ss->sector = seg->sidedef->sector;
     }
 
     // count number of lines in each sector
-    li         = lines;
+    li         = g_r_state_globals->lines;
     totallines = 0;
-    for (i = 0; i < numlines; i++, li++)
+    for (i = 0; i < g_r_state_globals->numlines; i++, li++)
     {
         totallines++;
         li->frontsector->linecount++;
@@ -768,24 +742,24 @@ void P_GroupLines()
     // build line tables for each sector
     linebuffer = zmalloc<decltype(linebuffer)>(static_cast<unsigned long>(totallines) * sizeof(line_t *), PU_LEVEL, 0);
 
-    for (i = 0; i < numsectors; ++i)
+    for (i = 0; i < g_r_state_globals->numsectors; ++i)
     {
         // Assign the line buffer for this sector
 
-        sectors[i].lines = linebuffer;
-        linebuffer += sectors[i].linecount;
+        g_r_state_globals->sectors[i].lines = linebuffer;
+        linebuffer += g_r_state_globals->sectors[i].linecount;
 
         // Reset linecount to zero so in the next stage we can count
         // lines into the list.
 
-        sectors[i].linecount = 0;
+        g_r_state_globals->sectors[i].linecount = 0;
     }
 
     // Assign lines to sectors
 
-    for (i = 0; i < numlines; ++i)
+    for (i = 0; i < g_r_state_globals->numlines; ++i)
     {
-        li = &lines[i];
+        li = &g_r_state_globals->lines[i];
 
         if (li->frontsector != nullptr)
         {
@@ -806,8 +780,8 @@ void P_GroupLines()
 
     // Generate bounding boxes for sectors
 
-    sector = sectors;
-    for (i = 0; i < numsectors; i++, sector++)
+    sector = g_r_state_globals->sectors;
+    for (i = 0; i < g_r_state_globals->numsectors; i++, sector++)
     {
         M_ClearBox(bbox);
 
@@ -852,10 +826,10 @@ static void P_RemoveSlimeTrails()
 {
     int i;
 
-    for (i = 0; i < numsegs; i++)
+    for (i = 0; i < g_r_state_globals->numsegs; i++)
     {
-        const line_t *l = segs[i].linedef;
-        vertex_t *    v = segs[i].v1;
+        const line_t *l = g_r_state_globals->segs[i].linedef;
+        vertex_t *    v = g_r_state_globals->segs[i].v1;
 
         // [crispy] ignore exactly vertical or horizontal linedefs
         if (l->dx && l->dy)
@@ -890,7 +864,7 @@ static void P_RemoveSlimeTrails()
                     }
                 }
                 // [crispy] if v doesn't point to the second vertex of the seg already, point it there
-            } while ((v != segs[i].v2) && (v = segs[i].v2));
+            } while ((v != g_r_state_globals->segs[i].v2) && (v = g_r_state_globals->segs[i].v2));
         }
     }
 }
@@ -954,7 +928,7 @@ static void P_LoadReject(int lumpnum)
 {
     // Calculate the size that the REJECT lump *should* be.
 
-    size_t minlength = static_cast<size_t>((numsectors * numsectors + 7) / 8);
+    size_t minlength = static_cast<size_t>((g_r_state_globals->numsectors * g_r_state_globals->numsectors + 7) / 8);
 
     // If the lump meets the minimum length, it can be loaded directly.
     // Otherwise, we need to allocate a buffer of the correct size
@@ -1240,7 +1214,7 @@ static void P_InitActualHeights()
         patch_t *      patch;
 
         state  = &states[mobjinfo[i].spawnstate];
-        sprdef = &sprites[state->sprite];
+        sprdef = &g_r_state_globals->sprites[state->sprite];
 
         if (!sprdef->numframes || !(mobjinfo[i].flags & (MF_SOLID | MF_SHOOTABLE)))
         {
@@ -1250,7 +1224,7 @@ static void P_InitActualHeights()
 
         sprframe = &sprdef->spriteframes[state->frame & FF_FRAMEMASK];
         lump     = sprframe->lump[0];
-        patch    = cache_lump_num<patch_t *>(lump + firstspritelump, PU_CACHE);
+        patch    = cache_lump_num<patch_t *>(lump + g_r_state_globals->firstspritelump, PU_CACHE);
 
         // [crispy] round to the next integer multiple of 8
         mobjinfo[i].actualheight = ((patch->height + 7) & (~7)) << FRACBITS;

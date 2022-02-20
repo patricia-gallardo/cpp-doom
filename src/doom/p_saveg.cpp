@@ -983,7 +983,7 @@ static void saveg_read_ceiling_t(ceiling_t *str)
 
     // sector_t* sector;
     sector      = saveg_read32();
-    str->sector = &sectors[sector];
+    str->sector = &g_r_state_globals->sectors[sector];
 
     // fixed_t bottomheight;
     str->bottomheight = saveg_read32();
@@ -1016,7 +1016,7 @@ static void saveg_write_ceiling_t(ceiling_t *str)
     saveg_write_enum(str->type);
 
     // sector_t* sector;
-    saveg_write32(static_cast<int>(str->sector - sectors));
+    saveg_write32(static_cast<int>(str->sector - g_r_state_globals->sectors));
 
     // fixed_t bottomheight;
     saveg_write32(str->bottomheight);
@@ -1056,7 +1056,7 @@ static void saveg_read_vldoor_t(vldoor_t *str)
 
     // sector_t* sector;
     sector      = saveg_read32();
-    str->sector = &sectors[sector];
+    str->sector = &g_r_state_globals->sectors[sector];
 
     // fixed_t topheight;
     str->topheight = saveg_read32();
@@ -1083,7 +1083,7 @@ static void saveg_write_vldoor_t(vldoor_t *str)
     saveg_write_enum(str->type);
 
     // sector_t* sector;
-    saveg_write32(static_cast<int>(str->sector - sectors));
+    saveg_write32(static_cast<int>(str->sector - g_r_state_globals->sectors));
 
     // fixed_t topheight;
     saveg_write32(str->topheight);
@@ -1120,7 +1120,7 @@ static void saveg_read_floormove_t(floormove_t *str)
 
     // sector_t* sector;
     sector      = saveg_read32();
-    str->sector = &sectors[sector];
+    str->sector = &g_r_state_globals->sectors[sector];
 
     // int direction;
     str->direction = saveg_read32();
@@ -1150,7 +1150,7 @@ static void saveg_write_floormove_t(floormove_t *str)
     saveg_write32(str->crush);
 
     // sector_t* sector;
-    saveg_write32(static_cast<int>(str->sector - sectors));
+    saveg_write32(static_cast<int>(str->sector - g_r_state_globals->sectors));
 
     // int direction;
     saveg_write32(str->direction);
@@ -1181,7 +1181,7 @@ static void saveg_read_plat_t(plat_t *str)
 
     // sector_t* sector;
     sector      = saveg_read32();
-    str->sector = &sectors[sector];
+    str->sector = &g_r_state_globals->sectors[sector];
 
     // fixed_t speed;
     str->speed = saveg_read32();
@@ -1220,7 +1220,7 @@ static void saveg_write_plat_t(plat_t *str)
     saveg_write_thinker_t(&str->thinker);
 
     // sector_t* sector;
-    saveg_write32(static_cast<int>(str->sector - sectors));
+    saveg_write32(static_cast<int>(str->sector - g_r_state_globals->sectors));
 
     // fixed_t speed;
     saveg_write32(str->speed);
@@ -1266,7 +1266,7 @@ static void saveg_read_lightflash_t(lightflash_t *str)
 
     // sector_t* sector;
     sector      = saveg_read32();
-    str->sector = &sectors[sector];
+    str->sector = &g_r_state_globals->sectors[sector];
 
     // int count;
     str->count = saveg_read32();
@@ -1290,7 +1290,7 @@ static void saveg_write_lightflash_t(lightflash_t *str)
     saveg_write_thinker_t(&str->thinker);
 
     // sector_t* sector;
-    saveg_write32(static_cast<int>(str->sector - sectors));
+    saveg_write32(static_cast<int>(str->sector - g_r_state_globals->sectors));
 
     // int count;
     saveg_write32(str->count);
@@ -1321,7 +1321,7 @@ static void saveg_read_strobe_t(strobe_t *str)
 
     // sector_t* sector;
     sector      = saveg_read32();
-    str->sector = &sectors[sector];
+    str->sector = &g_r_state_globals->sectors[sector];
 
     // int count;
     str->count = saveg_read32();
@@ -1345,7 +1345,7 @@ static void saveg_write_strobe_t(strobe_t *str)
     saveg_write_thinker_t(&str->thinker);
 
     // sector_t* sector;
-    saveg_write32(static_cast<int>(str->sector - sectors));
+    saveg_write32(static_cast<int>(str->sector - g_r_state_globals->sectors));
 
     // int count;
     saveg_write32(str->count);
@@ -1376,7 +1376,7 @@ static void saveg_read_glow_t(glow_t *str)
 
     // sector_t* sector;
     sector      = saveg_read32();
-    str->sector = &sectors[sector];
+    str->sector = &g_r_state_globals->sectors[sector];
 
     // int minlight;
     str->minlight = saveg_read32();
@@ -1394,7 +1394,7 @@ static void saveg_write_glow_t(glow_t *str)
     saveg_write_thinker_t(&str->thinker);
 
     // sector_t* sector;
-    saveg_write32(static_cast<int>(str->sector - sectors));
+    saveg_write32(static_cast<int>(str->sector - g_r_state_globals->sectors));
 
     // int minlight;
     saveg_write32(str->minlight);
@@ -1557,7 +1557,7 @@ void P_ArchiveWorld()
     side_t *  si;
 
     // do sectors
-    for (i = 0, sec = sectors; i < numsectors; i++, sec++)
+    for (i = 0, sec = g_r_state_globals->sectors; i < g_r_state_globals->numsectors; i++, sec++)
     {
         saveg_write16(static_cast<short>(sec->floorheight >> FRACBITS));
         saveg_write16(static_cast<short>(sec->ceilingheight >> FRACBITS));
@@ -1570,7 +1570,7 @@ void P_ArchiveWorld()
 
 
     // do lines
-    for (i = 0, li = lines; i < numlines; i++, li++)
+    for (i = 0, li = g_r_state_globals->lines; i < g_r_state_globals->numlines; i++, li++)
     {
         saveg_write16(static_cast<short>(li->flags));
         saveg_write16(li->special);
@@ -1580,7 +1580,7 @@ void P_ArchiveWorld()
             if (li->sidenum[j] == NO_INDEX) // [crispy] extended nodes
                 continue;
 
-            si = &sides[li->sidenum[j]];
+            si = &g_r_state_globals->sides[li->sidenum[j]];
 
             saveg_write16(static_cast<short>(si->textureoffset >> FRACBITS));
             saveg_write16(static_cast<short>(si->rowoffset >> FRACBITS));
@@ -1604,7 +1604,7 @@ void P_UnArchiveWorld()
     side_t *  si;
 
     // do sectors
-    for (i = 0, sec = sectors; i < numsectors; i++, sec++)
+    for (i = 0, sec = g_r_state_globals->sectors; i < g_r_state_globals->numsectors; i++, sec++)
     {
         // [crispy] add overflow guard for the flattranslation[] array
         short      floorpic, ceilingpic;
@@ -1630,7 +1630,7 @@ void P_UnArchiveWorld()
     }
 
     // do lines
-    for (i = 0, li = lines; i < numlines; i++, li++)
+    for (i = 0, li = g_r_state_globals->lines; i < g_r_state_globals->numlines; i++, li++)
     {
         li->flags   = static_cast<unsigned short>(saveg_read16());
         li->special = saveg_read16();
@@ -1639,7 +1639,7 @@ void P_UnArchiveWorld()
         {
             if (li->sidenum[j] == NO_INDEX) // [crispy] extended nodes
                 continue;
-            si                = &sides[li->sidenum[j]];
+            si                = &g_r_state_globals->sides[li->sidenum[j]];
             si->textureoffset = saveg_read16() << FRACBITS;
             si->rowoffset     = saveg_read16() << FRACBITS;
             si->toptexture    = saveg_read16();

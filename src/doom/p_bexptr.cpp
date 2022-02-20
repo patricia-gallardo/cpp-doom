@@ -169,7 +169,7 @@ void A_LineEffect(mobj_t *mo)
 {
     //if (!(mo->intflags & MIF_LINEDONE))                // Unless already used up
     {
-        line_t junk = *lines;                         // Fake linedef set to 1st
+        line_t junk = *g_r_state_globals->lines;                         // Fake linedef set to 1st
         short  is_set = junk.special = static_cast<short>(mo->state->misc1);
         if (is_set) // Linedef type
         {

@@ -455,7 +455,7 @@ bool
 
     for (list = g_p_local_globals->blockmaplump + offset; *list != -1; list++)
     {
-        ld = &lines[*list];
+        ld = &g_r_state_globals->lines[*list];
 
         if (ld->validcount == validcount)
             continue; // line has already been checked

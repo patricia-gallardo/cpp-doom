@@ -207,12 +207,12 @@ bool D_Display()
             R_RenderPlayerView(&players[displayplayer]);
             AM_Drawer();
         }
-        if (wipe || (viewheight != SCREENHEIGHT && fullscreen_local))
+        if (wipe || (g_r_state_globals->viewheight != SCREENHEIGHT && fullscreen_local))
             redrawsbar = true;
         if (inhelpscreensstate && !inhelpscreens)
             redrawsbar = true; // just put away the help screen
-        ST_Drawer(viewheight == SCREENHEIGHT, redrawsbar);
-        fullscreen_local = viewheight == SCREENHEIGHT;
+        ST_Drawer(g_r_state_globals->viewheight == SCREENHEIGHT, redrawsbar);
+        fullscreen_local = g_r_state_globals->viewheight == SCREENHEIGHT;
         break;
 
     case GS_INTERMISSION:
@@ -266,7 +266,7 @@ bool D_Display()
     }
 
     // see if the border needs to be updated to the screen
-    if (gamestate == GS_LEVEL && (!automapactive || crispy->automapoverlay) && scaledviewwidth != SCREENWIDTH)
+    if (gamestate == GS_LEVEL && (!automapactive || crispy->automapoverlay) && g_r_state_globals->scaledviewwidth != SCREENWIDTH)
     {
         if (menuactive || menuactivestate || !viewactivestate)
             borderdrawcount = 3;
@@ -315,7 +315,7 @@ bool D_Display()
             y = 4;
         else
             y = (viewwindowy >> crispy->hires) + 4;
-        V_DrawPatchDirect((viewwindowx >> crispy->hires) + ((scaledviewwidth >> crispy->hires) - 68) / 2 - DELTAWIDTH, y,
+        V_DrawPatchDirect((viewwindowx >> crispy->hires) + ((g_r_state_globals->scaledviewwidth >> crispy->hires) - 68) / 2 - DELTAWIDTH, y,
             cache_lump_name<patch_t *>(DEH_String("M_PAUSE"), PU_CACHE));
     }
 
