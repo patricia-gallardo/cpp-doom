@@ -269,9 +269,6 @@ constexpr auto ST_ARMSYSPACE = 10;
 #define ST_MAPTITLEY 0
 #define ST_MAPHEIGHT 1
 
-// graphics are drawn to a backing screen and blitted to the real screen
-pixel_t *st_backing_screen;
-
 // main player in game
 static player_t *plyr;
 
@@ -406,15 +403,15 @@ int st_keyorskull[3];
 // a random number per tick
 static int st_randomnumber;
 
-cheatseq_t cheat_mus               = CHEAT("idmus", 2);
-cheatseq_t cheat_god               = CHEAT("iddqd", 0);
-cheatseq_t cheat_ammo              = CHEAT("idkfa", 0);
-cheatseq_t cheat_ammonokey         = CHEAT("idfa", 0);
-cheatseq_t cheat_noclip            = CHEAT("idspispopd", 0);
-cheatseq_t cheat_commercial_noclip = CHEAT("idclip", 0);
-
-cheatseq_t cheat_powerup[8] = // [crispy] idbehold0
-    {
+static st_stuff_t st_stuff_s = {
+    .st_backing_screen = nullptr,
+    .cheat_mus = CHEAT("idmus", 2),
+    .cheat_god = CHEAT("iddqd", 0),
+    .cheat_ammo = CHEAT("idkfa", 0),
+    .cheat_ammonokey = CHEAT("idfa", 0),
+    .cheat_noclip = CHEAT("idspispopd", 0),
+    .cheat_commercial_noclip = CHEAT("idclip", 0),
+    .cheat_powerup = {
         CHEAT("idbeholdv", 0),
         CHEAT("idbeholds", 0),
         CHEAT("idbeholdi", 0),
@@ -423,11 +420,12 @@ cheatseq_t cheat_powerup[8] = // [crispy] idbehold0
         CHEAT("idbeholdl", 0),
         CHEAT("idbehold", 0),
         CHEAT("idbehold0", 0), // [crispy] idbehold0
-    };
-
-cheatseq_t cheat_choppers = CHEAT("idchoppers", 0);
-cheatseq_t cheat_clev     = CHEAT("idclev", 2);
-cheatseq_t cheat_mypos    = CHEAT("idmypos", 0);
+    }, // [crispy] idbehold0
+    .cheat_choppers = CHEAT("idchoppers", 0),
+    .cheat_clev = CHEAT("idclev", 2),
+    .cheat_mypos = CHEAT("idmypos", 0)
+};
+st_stuff_t *const g_st_stuff_globals = &st_stuff_s;
 
 // [crispy] pseudo cheats to eat up the first digit typed after a cheat expecting two parameters
 cheatseq_t cheat_mus1  = CHEAT("idmus", 1);
@@ -475,7 +473,7 @@ void ST_refreshBackground(bool force)
 
     if (st_classicstatusbar || force)
     {
-        V_UseBuffer(st_backing_screen);
+        V_UseBuffer(g_st_stuff_globals->st_backing_screen);
 
         V_DrawPatch(ST_X, 0, sbar);
 
@@ -493,7 +491,7 @@ void ST_refreshBackground(bool force)
         V_RestoreBuffer();
 
         if (!force)
-            V_CopyRect(ST_X, 0, st_backing_screen, ST_WIDTH, ST_HEIGHT, ST_X, ST_Y);
+            V_CopyRect(ST_X, 0, g_st_stuff_globals->st_backing_screen, ST_WIDTH, ST_HEIGHT, ST_X, ST_Y);
     }
 }
 
@@ -683,7 +681,7 @@ bool
         if (!netgame && gameskill != sk_nightmare)
         {
             // 'dqd' cheat for toggleable god mode
-            if (cht_CheckCheatSP(&cheat_god, static_cast<char>(ev->data2)))
+            if (cht_CheckCheatSP(&g_st_stuff_globals->cheat_god, static_cast<char>(ev->data2)))
             {
                 // [crispy] dead players are first respawned at the current position
                 mapthing_t mt = {};
@@ -720,7 +718,7 @@ bool
                     return true;
             }
             // 'fa' cheat for killer fucking arsenal
-            else if (cht_CheckCheatSP(&cheat_ammonokey, static_cast<char>(ev->data2)))
+            else if (cht_CheckCheatSP(&g_st_stuff_globals->cheat_ammonokey, static_cast<char>(ev->data2)))
             {
                 plyr->armorpoints = deh_idfa_armor;
                 plyr->armortype   = deh_idfa_armor_class;
@@ -741,7 +739,7 @@ bool
                 plyr->message = DEH_String(STSTR_FAADDED);
             }
             // 'kfa' cheat for key full ammo
-            else if (cht_CheckCheatSP(&cheat_ammo, static_cast<char>(ev->data2)))
+            else if (cht_CheckCheatSP(&g_st_stuff_globals->cheat_ammo, static_cast<char>(ev->data2)))
             {
                 plyr->armorpoints = deh_idkfa_armor;
                 plyr->armortype   = deh_idkfa_armor_class;
@@ -765,14 +763,14 @@ bool
                 plyr->message = DEH_String(STSTR_KFAADDED);
             }
             // 'mus' cheat for changing music
-            else if (cht_CheckCheat(&cheat_mus, static_cast<char>(ev->data2)))
+            else if (cht_CheckCheat(&g_st_stuff_globals->cheat_mus, static_cast<char>(ev->data2)))
             {
 
                 char buf[3];
                 int  musnum = 0;
 
                 plyr->message = DEH_String(STSTR_MUS);
-                cht_GetParam(&cheat_mus, buf);
+                cht_GetParam(&g_st_stuff_globals->cheat_mus, buf);
 
                 // Note: The original v1.9 had a bug that tried to play back
                 // the Doom II music regardless of gamemode.  This was fixed
@@ -839,10 +837,10 @@ bool
             // [crispy] allow both idspispopd and idclip cheats in all gamemissions
             else if ((/* logical_gamemission == doom
                  && */
-                         cht_CheckCheatSP(&cheat_noclip, static_cast<char>(ev->data2)))
+                         cht_CheckCheatSP(&g_st_stuff_globals->cheat_noclip, static_cast<char>(ev->data2)))
                      || (/* logical_gamemission != doom
                  && */
-                         cht_CheckCheatSP(&cheat_commercial_noclip, static_cast<char>(ev->data2))))
+                         cht_CheckCheatSP(&g_st_stuff_globals->cheat_commercial_noclip, static_cast<char>(ev->data2))))
             {
                 // Noclip cheat.
                 // For Doom 1, use the idspipsopd cheat; for all others, use
@@ -858,7 +856,7 @@ bool
             // 'behold?' power-up cheats
             for (int i = 0; i < 6; i++)
             {
-                if (i < 4 ? cht_CheckCheatSP(&cheat_powerup[i], static_cast<char>(ev->data2)) : cht_CheckCheat(&cheat_powerup[i], static_cast<char>(ev->data2)))
+                if (i < 4 ? cht_CheckCheatSP(&g_st_stuff_globals->cheat_powerup[i], static_cast<char>(ev->data2)) : cht_CheckCheat(&g_st_stuff_globals->cheat_powerup[i], static_cast<char>(ev->data2)))
                 {
                     if (!plyr->powers[i])
                         P_GivePower(plyr, i);
@@ -871,7 +869,7 @@ bool
                 }
             }
             // [crispy] idbehold0
-            if (cht_CheckCheatSP(&cheat_powerup[7], static_cast<char>(ev->data2)))
+            if (cht_CheckCheatSP(&g_st_stuff_globals->cheat_powerup[7], static_cast<char>(ev->data2)))
             {
                 std::memset(plyr->powers, 0, sizeof(plyr->powers));
                 plyr->mo->flags &= ~MF_SHADOW; // [crispy] cancel invisibility
@@ -879,19 +877,19 @@ bool
             }
 
             // 'behold' power-up menu
-            if (cht_CheckCheat(&cheat_powerup[6], static_cast<char>(ev->data2)))
+            if (cht_CheckCheat(&g_st_stuff_globals->cheat_powerup[6], static_cast<char>(ev->data2)))
             {
                 plyr->message = DEH_String(STSTR_BEHOLD);
             }
             // 'choppers' invulnerability & chainsaw
-            else if (cht_CheckCheatSP(&cheat_choppers, static_cast<char>(ev->data2)))
+            else if (cht_CheckCheatSP(&g_st_stuff_globals->cheat_choppers, static_cast<char>(ev->data2)))
             {
                 plyr->weaponowned[wp_chainsaw]   = true;
                 plyr->powers[pw_invulnerability] = true;
                 plyr->message                    = DEH_String(STSTR_CHOPPERS);
             }
             // 'mypos' for player position
-            else if (cht_CheckCheat(&cheat_mypos, static_cast<char>(ev->data2)))
+            else if (cht_CheckCheat(&g_st_stuff_globals->cheat_mypos, static_cast<char>(ev->data2)))
             {
                 /*
         static char buf[ST_MSGWIDTH];
@@ -1136,13 +1134,13 @@ bool
         }
 
         // 'clev' change-level cheat
-        if (!netgame && cht_CheckCheat(&cheat_clev, static_cast<char>(ev->data2)) && !menuactive) // [crispy] prevent only half the screen being updated
+        if (!netgame && cht_CheckCheat(&g_st_stuff_globals->cheat_clev, static_cast<char>(ev->data2)) && !menuactive) // [crispy] prevent only half the screen being updated
         {
             char buf[3];
             int  epsd = 0;
             int  map = 0;
 
-            cht_GetParam(&cheat_clev, buf);
+            cht_GetParam(&g_st_stuff_globals->cheat_clev, buf);
 
             if (gamemode == commercial)
             {
@@ -1860,7 +1858,7 @@ void ST_drawWidgets(bool refresh)
     // [crispy] draw the actual face widget background
     if (st_crispyhud && screenblocks == CRISPY_HUD)
     {
-        V_CopyRect(ST_FX + DELTAWIDTH, 1, st_backing_screen, SHORT(faceback->width), ST_HEIGHT - 1, ST_FX + DELTAWIDTH, ST_Y + 1);
+        V_CopyRect(ST_FX + DELTAWIDTH, 1, g_st_stuff_globals->st_backing_screen, SHORT(faceback->width), ST_HEIGHT - 1, ST_FX + DELTAWIDTH, ST_Y + 1);
     }
 
     STlib_updateMultIcon(&w_faces, refresh);
@@ -2309,7 +2307,7 @@ void ST_Init()
     }
 
     ST_loadData();
-    st_backing_screen = zmalloc<pixel_t *>(MAXWIDTH * (ST_HEIGHT << 1) * sizeof(*st_backing_screen), PU_STATIC, 0);
+    g_st_stuff_globals->st_backing_screen = zmalloc<pixel_t *>(MAXWIDTH * (ST_HEIGHT << 1) * sizeof(*g_st_stuff_globals->st_backing_screen), PU_STATIC, 0);
 }
 
 // [crispy] Demo Timer widget

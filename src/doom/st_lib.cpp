@@ -111,7 +111,7 @@ void STlib_drawNum(st_number_t *n,
         I_Error("drawNum: n->y - ST_Y < 0");
 
     if (screenblocks < CRISPY_HUD || (automapactive && !crispy->automapoverlay && !crispy->widescreen))
-        V_CopyRect(x, n->y - ST_Y, st_backing_screen, w * numdigits, h, x, n->y);
+        V_CopyRect(x, n->y - ST_Y, g_st_stuff_globals->st_backing_screen, w * numdigits, h, x, n->y);
 
     // if non-number, do not draw it
     if (num == 1994)
@@ -223,7 +223,7 @@ void STlib_updateMultIcon(st_multicon_t *mi,
                 I_Error("updateMultIcon: y - ST_Y < 0");
 
             if (screenblocks < CRISPY_HUD || (automapactive && !crispy->automapoverlay && !crispy->widescreen))
-                V_CopyRect(x, y - ST_Y, st_backing_screen, w, h, x, y);
+                V_CopyRect(x, y - ST_Y, g_st_stuff_globals->st_backing_screen, w, h, x, y);
         }
         V_DrawPatch(mi->x, mi->y, mi->p[*mi->inum]);
         mi->oldinum = *mi->inum;
@@ -269,7 +269,7 @@ void STlib_updateBinIcon(st_binicon_t *bi,
         if (*bi->val)
             V_DrawPatch(bi->x, bi->y, bi->p);
         else if (screenblocks < CRISPY_HUD || (automapactive && !crispy->automapoverlay && !crispy->widescreen))
-            V_CopyRect(x, y - ST_Y, st_backing_screen, w, h, x, y);
+            V_CopyRect(x, y - ST_Y, g_st_stuff_globals->st_backing_screen, w, h, x, y);
 
         bi->oldval = *bi->val;
     }
