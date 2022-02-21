@@ -125,7 +125,7 @@ constexpr auto ST_FACESY = 168;
 constexpr auto ST_EVILGRINCOUNT     = (2 * TICRATE);
 constexpr auto ST_STRAIGHTFACECOUNT = (TICRATE / 2);
 constexpr auto ST_TURNCOUNT         = (1 * TICRATE);
-constexpr auto ST_OUCHCOUNT         = (1 * TICRATE);
+[[maybe_unused]] constexpr auto ST_OUCHCOUNT         = (1 * TICRATE);
 constexpr auto ST_RAMPAGEDELAY      = (2 * TICRATE);
 
 constexpr auto ST_MUCHPAIN = 20;
