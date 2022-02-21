@@ -132,9 +132,9 @@ void P_SetPsprite(player_t *player,
 // P_CalcSwing
 //
 fixed_t swingx;
-fixed_t swingy;
+[[maybe_unused]] fixed_t swingy;
 
-void P_CalcSwing(player_t *player)
+[[maybe_unused]] void P_CalcSwing(player_t *player)
 {
     fixed_t swing;
     int     angle;
@@ -903,13 +903,12 @@ void P_MovePsprites(player_t *player)
 {
     int       i;
     pspdef_t *psp;
-    state_t * state;
 
     psp = &player->psprites[0];
     for (i = 0; i < NUMPSPRITES; i++, psp++)
     {
         // a null state means not active
-        state_t *is_set = state = psp->state;
+        state_t *is_set = psp->state;
         if (is_set)
         {
             // drop tic count and possibly change state

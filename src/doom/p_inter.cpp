@@ -57,7 +57,7 @@ bool
         int              num,
         bool          dropped) // [NS] Dropped ammo/weapons give half as much.
 {
-    int oldammo;
+    int oldammo = 0;
 
     if (ammo == am_noammo)
         return false;
@@ -158,8 +158,8 @@ bool
         weapontype_t       weapon,
         bool            dropped)
 {
-    bool gaveammo;
-    bool gaveweapon;
+    bool gaveammo = false;
+    bool gaveweapon = false;
 
     if (g_doomstat_globals->netgame
         && (g_doomstat_globals->deathmatch != 2)
@@ -243,9 +243,7 @@ bool
     P_GiveArmor(player_t *player,
         int               armortype)
 {
-    int hits;
-
-    hits = armortype * 100;
+    int hits = armortype * 100;
     if (player->armorpoints >= hits)
         return false; // don't pick up
 
@@ -266,7 +264,7 @@ void P_GiveCard(player_t *player,
         return;
 
     player->bonuscount += g_doomstat_globals->netgame ? BONUSADD : 0; // [crispy] Fix "Key pickup resets palette"
-    player->cards[card] = 1;
+    player->cards[card] = true;
 }
 
 
@@ -323,13 +321,12 @@ bool
 void P_TouchSpecialThing(mobj_t *special,
     mobj_t *                     toucher)
 {
-    player_t *    player;
-    int           i;
-    fixed_t       delta;
+    player_t *    player = nullptr;
+    int           i = 0;
     int           sound;
     const bool dropped = ((special->flags & MF_DROPPED) != 0);
 
-    delta = special->z - toucher->z;
+    fixed_t delta = special->z - toucher->z;
 
     if (delta > toucher->height
         || delta < -8 * FRACUNIT)
@@ -673,7 +670,7 @@ void P_KillMobj(mobj_t *source,
     mobj_t *            target)
 {
     mobjtype_t item;
-    mobj_t *   mo;
+    mobj_t *   mo = nullptr;
 
     target->flags &= ~(MF_SHOOTABLE | MF_FLOAT | MF_SKULLFLY);
 
@@ -799,11 +796,11 @@ void P_DamageMobj(mobj_t *target,
     mobj_t *              source,
     int                   damage)
 {
-    unsigned  ang;
-    int       saved;
-    player_t *player;
-    fixed_t   thrust;
-    int       temp;
+    unsigned  ang = 0;
+    int       saved = 0;
+    player_t *player = nullptr;
+    fixed_t   thrust = 0;
+    int       temp = 0;
 
     if (!(target->flags & MF_SHOOTABLE))
         return; // shouldn't happen...

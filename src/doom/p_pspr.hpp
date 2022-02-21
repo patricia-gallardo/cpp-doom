@@ -40,8 +40,8 @@
 // Frame flags:
 // handles maximum brightness (torches, muzzle flare, light sources)
 //
-#define FF_FULLBRIGHT 0x8000 // flag in thing->frame
-#define FF_FRAMEMASK  0x7fff
+constexpr auto FF_FULLBRIGHT = 0x8000; // flag in thing->frame
+constexpr auto FF_FRAMEMASK  = 0x7fff;
 
 
 //

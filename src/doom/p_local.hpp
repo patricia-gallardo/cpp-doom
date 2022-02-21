@@ -24,8 +24,8 @@
 #include "r_local.hpp"
 #endif
 
-#define TOCENTER   -8
-#define AFLAG_JUMP 0x80
+constexpr auto TOCENTER   = -8;
+constexpr auto AFLAG_JUMP = 0x80;
 #define FLOATSPEED (FRACUNIT * 4)
 
 
@@ -37,7 +37,7 @@ constexpr auto MAXHEALTH  =100;
 constexpr auto MAPBLOCKUNITS =128;
 #define MAPBLOCKSIZE  (MAPBLOCKUNITS * FRACUNIT)
 #define MAPBLOCKSHIFT (FRACBITS + 7)
-#define MAPBMASK      (MAPBLOCKSIZE - 1)
+[[maybe_unused]] constexpr auto MAPBMASK = (MAPBLOCKSIZE - 1);
 #define MAPBTOFRAC    (MAPBLOCKSHIFT - FRACBITS)
 
 
@@ -141,7 +141,7 @@ typedef struct
 // Extended MAXINTERCEPTS, to allow for intercepts overrun emulation.
 
 constexpr auto MAXINTERCEPTS_ORIGINAL =128;
-constexpr auto MAXINTERCEPTS          =(MAXINTERCEPTS_ORIGINAL + 61);
+[[maybe_unused]] constexpr auto MAXINTERCEPTS          =(MAXINTERCEPTS_ORIGINAL + 61);
 
 using traverser_t = bool (*)(intercept_t *);
 

@@ -34,8 +34,8 @@
 #include "s_sound.hpp"
 #include "z_zone.hpp"
 
-#define MAX_LINE_LEN   260
-#define MAX_STRING_LEN 80
+constexpr auto MAX_LINE_LEN   = 260;
+constexpr auto MAX_STRING_LEN = 80;
 
 static char *line, *string;
 
@@ -85,7 +85,7 @@ static void P_WriteExtraKills(const char *key)
 
 static void P_ReadExtraKills(const char *key)
 {
-    int value;
+    int value = 0;
 
     if (sscanf(line, "%s %d", string, &value) == 2 && !strncmp(string, key, MAX_STRING_LEN))
     {
@@ -106,7 +106,7 @@ static void P_WriteTotalLevelTimes(const char *key)
 
 static void P_ReadTotalLevelTimes(const char *key)
 {
-    int value;
+    int value = 0;
 
     if (sscanf(line, "%s %d", string, &value) == 2 && !strncmp(string, key, MAX_STRING_LEN))
     {
@@ -120,10 +120,8 @@ extern void T_FireFlicker(fireflicker_t *flick);
 
 static void P_WriteFireFlicker(const char *key)
 {
-    thinker_t *th;
-
     action_hook needle = T_FireFlicker;
-    for (th = g_p_local_globals->thinkercap.next; th != &g_p_local_globals->thinkercap; th = th->next)
+    for (thinker_t *th = g_p_local_globals->thinkercap.next; th != &g_p_local_globals->thinkercap; th = th->next)
     {
         if (th->function == needle)
         {
@@ -142,7 +140,7 @@ static void P_WriteFireFlicker(const char *key)
 
 static void P_ReadFireFlicker(const char *key)
 {
-    int sector, count, maxlight, minlight;
+    int sector = 0, count = 0, maxlight = 0, minlight = 0;
 
     if (sscanf(line, "%s %d %d %d %d\n",
             string,
@@ -153,9 +151,7 @@ static void P_ReadFireFlicker(const char *key)
             == 5
         && !strncmp(string, key, MAX_STRING_LEN))
     {
-        fireflicker_t *flick;
-
-        flick = zmalloc<decltype(flick)>(sizeof(*flick), PU_LEVEL, nullptr);
+        fireflicker_t *flick = zmalloc<decltype(flick)>(sizeof(*flick), PU_LEVEL, nullptr);
 
         flick->sector   = &g_r_state_globals->sectors[sector];
         flick->count    = count;
@@ -172,8 +168,8 @@ static void P_ReadFireFlicker(const char *key)
 
 static void P_WriteSoundTarget(const char *key)
 {
-    int       i;
-    sector_t *sector;
+    int       i = 0;
+    sector_t *sector = nullptr;
 
     for (i = 0, sector = g_r_state_globals->sectors; i < g_r_state_globals->numsectors; i++, sector++)
     {
@@ -190,7 +186,7 @@ static void P_WriteSoundTarget(const char *key)
 
 static void P_ReadSoundTarget(const char *key)
 {
-    int sector, target;
+    int sector = 0, target = 0;
 
     if (sscanf(line, "%s %d %d\n",
             string,
@@ -207,8 +203,8 @@ static void P_ReadSoundTarget(const char *key)
 
 static void P_WriteOldSpecial(const char *key)
 {
-    int       i;
-    sector_t *sector;
+    int       i = 0;
+    sector_t *sector = nullptr;
 
     for (i = 0, sector = g_r_state_globals->sectors; i < g_r_state_globals->numsectors; i++, sector++)
     {
@@ -245,9 +241,7 @@ extern void P_StartButton(line_t *line, bwhere_e w, int texture, int time);
 
 static void P_WriteButton(const char *key)
 {
-    int i;
-
-    for (i = 0; i < maxbuttons; i++)
+    for (int i = 0; i < maxbuttons; i++)
     {
         button_t *button = &buttonlist[i];
 
@@ -266,7 +260,7 @@ static void P_WriteButton(const char *key)
 
 static void P_ReadButton(const char *key)
 {
-    int linedef_local, where, btexture, btimer;
+    int linedef_local = 0, where, btexture, btimer = 0;
 
     if (sscanf(line, "%s %d %d %d %d\n",
             string,
@@ -287,10 +281,8 @@ extern int numbraintargets, braintargeton;
 
 static void P_WriteBrainTarget(const char *key)
 {
-    thinker_t *th;
-
     action_hook needle = P_MobjThinker;
-    for (th = g_p_local_globals->thinkercap.next; th != &g_p_local_globals->thinkercap; th = th->next)
+    for (thinker_t *th = g_p_local_globals->thinkercap.next; th != &g_p_local_globals->thinkercap; th = th->next)
     {
         if (th->function == needle)
         {
@@ -313,7 +305,7 @@ static void P_WriteBrainTarget(const char *key)
 
 static void P_ReadBrainTarget(const char *key)
 {
-    int numtargets, targeton;
+    int numtargets = 0, targeton = 0;
 
     if (sscanf(line, "%s %d %d", string, &numtargets, &targeton) == 3 && !strncmp(string, key, MAX_STRING_LEN))
     {
@@ -329,7 +321,7 @@ extern void AM_SetMarkPoints(int n, long *p);
 
 static void P_WriteMarkPoints(const char *key)
 {
-    int  n;
+    int  n = 0;
     long p[20];
 
     AM_GetMarkPoints(&n, p);
@@ -348,7 +340,7 @@ static void P_WriteMarkPoints(const char *key)
 
 static void P_ReadMarkPoints(const char *key)
 {
-    int  n;
+    int  n = 0;
     long p[20];
 
     if (sscanf(line, "%s %d %ld %ld %ld %ld %ld %ld %ld %ld %ld %ld %ld %ld %ld %ld %ld %ld %ld %ld %ld %ld\n",
@@ -368,9 +360,7 @@ static void P_ReadMarkPoints(const char *key)
 
 static void P_WritePlayersLookdir(const char *key)
 {
-    int i;
-
-    for (i = 0; i < MAXPLAYERS; i++)
+    for (int i = 0; i < MAXPLAYERS; i++)
     {
         if (g_doomstat_globals->playeringame[i] && g_doomstat_globals->players[i].lookdir)
         {
@@ -382,7 +372,7 @@ static void P_WritePlayersLookdir(const char *key)
 
 static void P_ReadPlayersLookdir(const char *key)
 {
-    int i, value;
+    int i = 0, value = 0;
 
     if (sscanf(line, "%s %d %d", string, &i, &value) == 3 && !strncmp(string, key, MAX_STRING_LEN) && i < MAXPLAYERS && (crispy->freelook || crispy->mouselook))
     {
@@ -408,14 +398,13 @@ static void P_WriteMusInfo(const char *key)
 
 static void P_ReadMusInfo(const char *key)
 {
-    int  items;
     char lump[9] = { 0 }, orig[9] = { 0 };
 
-    items = sscanf(line, "%s %s %s", string, lump, orig);
+    int items = sscanf(line, "%s %s %s", string, lump, orig);
 
     if (items >= 2 && !strncmp(string, key, MAX_STRING_LEN))
     {
-        int i;
+        int i = 0;
 
         if ((i = W_CheckNumForName(lump)) > 0)
         {
@@ -490,9 +479,9 @@ lumpinfo_t *savemaplumpinfo = nullptr;
 
 void P_ReadExtendedSaveGameData(int pass)
 {
-    long p, curpos, endpos;
-    uint8_t episode;
-    uint8_t map;
+    long p = 0, curpos = 0, endpos = 0;
+    uint8_t episode = 0;
+    uint8_t map = 0;
     int  lumpnum = -1;
 
     line   = static_cast<char *>(malloc(MAX_LINE_LEN));
@@ -534,7 +523,7 @@ void P_ReadExtendedSaveGameData(int pass)
 
     for (p = endpos - 1; p > 0; p--)
     {
-        uint8_t curbyte;
+        uint8_t curbyte = 0;
 
         fseek(save_stream, p, SEEK_SET);
 
