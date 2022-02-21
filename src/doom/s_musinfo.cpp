@@ -41,11 +41,11 @@
 
 // MACROS ------------------------------------------------------------------
 
-#define MAX_STRING_SIZE  64
+constexpr auto MAX_STRING_SIZE = 64;
 #define ASCII_COMMENT    (';')
 #define ASCII_QUOTE      (34)
-#define LUMP_SCRIPT      1
-#define FILE_ZONE_SCRIPT 2
+constexpr auto LUMP_SCRIPT      = 1;
+constexpr auto FILE_ZONE_SCRIPT = 2;
 
 // TYPES -------------------------------------------------------------------
 
@@ -67,8 +67,8 @@ static bool SC_Compare(const char *text);
 
 static char *  sc_String;
 static int     sc_Line;
-static bool sc_End;
-static bool sc_Crossed;
+[[maybe_unused]] static bool sc_End;
+[[maybe_unused]] static bool sc_Crossed;
 
 // PRIVATE DATA DEFINITIONS ------------------------------------------------
 
@@ -158,16 +158,13 @@ static void SC_Close()
 
 static bool SC_GetString()
 {
-    char *  text;
-    bool foundToken;
-
     CheckOpen();
     if (AlreadyGot)
     {
         AlreadyGot = false;
         return true;
     }
-    foundToken = false;
+    bool foundToken = false;
     sc_Crossed = false;
     if (ScriptPtr >= ScriptEndPtr)
     {
@@ -207,7 +204,7 @@ static bool SC_GetString()
             sc_Crossed = true;
         }
     }
-    text = sc_String;
+    char *text = sc_String;
     if (*ScriptPtr == ASCII_QUOTE)
     { // Quoted string
         ScriptPtr++;
@@ -280,7 +277,6 @@ void S_ParseMusInfo(const char *mapid)
 {
     if (W_CheckNumForName("MUSINFO") != -1)
     {
-        int num, lumpnum;
         int inMap = false;
 
         SC_OpenLump(const_cast<char *>("MUSINFO"));
@@ -301,11 +297,12 @@ void S_ParseMusInfo(const char *mapid)
                 }
 
                 // Check number in range
+                int num = 0;
                 if (M_StrToInt(sc_String, &num) && num > 0 && num < MAX_MUS_ENTRIES)
                 {
                     if (SC_GetString())
                     {
-                        lumpnum = W_CheckNumForName(sc_String);
+                        int lumpnum = W_CheckNumForName(sc_String);
 
                         if (lumpnum > 0)
                         {

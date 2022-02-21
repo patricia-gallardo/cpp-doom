@@ -63,8 +63,8 @@
 #define S_STEREO_SWING (96 * FRACUNIT)
 static int stereo_swing;
 
-#define NORM_PRIORITY 64
-#define NORM_SEP      128
+[[maybe_unused]] constexpr auto NORM_PRIORITY = 64;
+constexpr auto NORM_SEP      = 128;
 
 typedef struct
 {
@@ -1039,7 +1039,7 @@ void S_ChangeMusInfoMusic(int lumpnum, int looping)
     musinfo.current_item = lumpnum;
 }
 
-bool S_MusicPlaying()
+[[maybe_unused]] bool S_MusicPlaying()
 {
     return I_MusicIsPlaying();
 }

@@ -293,8 +293,8 @@ void R_RenderMaskedSegRange(drawseg_t *ds,
 //  textures.
 // CALLED: CORE LOOPING ROUTINE.
 //
-#define HEIGHTBITS 12
-#define HEIGHTUNIT (1 << HEIGHTBITS)
+constexpr auto HEIGHTBITS = 12;
+[[maybe_unused]] constexpr auto HEIGHTUNIT = (1 << HEIGHTBITS);
 
 void R_RenderSegLoop()
 {
@@ -597,7 +597,8 @@ void R_StoreWallRange(int start,
     worldtop    = frontsector->interpceilingheight - g_r_state_globals->viewz;
     worldbottom = frontsector->interpfloorheight - g_r_state_globals->viewz;
 
-    midtexture = toptexture = bottomtexture = maskedtexture = 0;
+    midtexture = toptexture = bottomtexture = 0;
+    maskedtexture = false;
     ds_p->maskedtexturecol                                  = nullptr;
 
     if (!backsector)
@@ -831,12 +832,12 @@ void R_StoreWallRange(int start,
     worldbottom >>= invhgtbits;
 
     topstep = -FixedMul(rw_scalestep, worldtop);
-    int64_t aa =  static_cast<int64_t>(centeryfrac);
+    auto aa =  static_cast<int64_t>(centeryfrac);
     int64_t bb =  static_cast<int64_t>(worldtop) * rw_scale;
     topfrac = (aa >> invhgtbits) - (bb >> FRACBITS); // [crispy] WiggleFix
 
     bottomstep = -FixedMul(rw_scalestep, worldbottom);
-    int64_t aaa  =  static_cast<int64_t>(centeryfrac);
+    auto aaa  =  static_cast<int64_t>(centeryfrac);
     int64_t bbb  =  static_cast<int64_t>(worldbottom) * rw_scale;
     bottomfrac = (aaa >> invhgtbits) - (bbb >> FRACBITS); // [crispy] WiggleFix
 

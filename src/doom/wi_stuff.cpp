@@ -65,8 +65,8 @@
 // This is supposedly ignored for commercial
 //  release (aka DOOM II), which had 34 maps
 //  in one episode. So there.
-#define NUMEPISODES 4
-#define NUMMAPS     9
+constexpr auto NUMEPISODES = 4;
+constexpr auto NUMMAPS     = 9;
 
 
 // in tics
@@ -79,36 +79,36 @@
 
 
 // GLOBAL LOCATIONS
-#define WI_TITLEY   2
-#define WI_SPACINGY 33
+constexpr auto WI_TITLEY   = 2;
+constexpr auto WI_SPACINGY = 33;
 
 // SINGPLE-PLAYER STUFF
-#define SP_STATSX 50
-#define SP_STATSY 50
+constexpr auto SP_STATSX = 50;
+constexpr auto SP_STATSY = 50;
 
-#define SP_TIMEX 16
-#define SP_TIMEY (ORIGHEIGHT - 32)
+constexpr auto SP_TIMEX = 16;
+constexpr auto SP_TIMEY = (ORIGHEIGHT - 32);
 
 
 // NET GAME STUFF
-#define NG_STATSY 50
+constexpr auto NG_STATSY = 50;
 #define NG_STATSX (32 + SHORT(star->width) / 2 + 32 * !dofrags)
 
-#define NG_SPACINGX 64
+constexpr auto NG_SPACINGX = 64;
 
 
 // DEATHMATCH STUFF
-#define DM_MATRIXX 42
-#define DM_MATRIXY 68
+constexpr auto DM_MATRIXX = 42;
+constexpr auto DM_MATRIXY = 68;
 
-#define DM_SPACINGX 40
+constexpr auto DM_SPACINGX = 40;
 
-#define DM_TOTALSX 269
+constexpr auto DM_TOTALSX = 269;
 
-#define DM_KILLERSX 10
-#define DM_KILLERSY 100
-#define DM_VICTIMSX 5
-#define DM_VICTIMSY 50
+constexpr auto DM_KILLERSX = 10;
+constexpr auto DM_KILLERSY = 100;
+constexpr auto DM_VICTIMSX = 5;
+constexpr auto DM_VICTIMSY = 50;
 
 
 enum animenum_t
@@ -286,17 +286,17 @@ static anim_t *anims[NUMEPISODES] = {
 //
 
 // States for single-player
-#define SP_KILLS  0
-#define SP_ITEMS  2
-#define SP_SECRET 4
-#define SP_FRAGS  6
-#define SP_TIME   8
+[[maybe_unused]] constexpr auto SP_KILLS  = 0;
+[[maybe_unused]] constexpr auto SP_ITEMS  = 2;
+[[maybe_unused]] constexpr auto SP_SECRET = 4;
+[[maybe_unused]] constexpr auto SP_FRAGS  = 6;
+[[maybe_unused]] constexpr auto SP_TIME   = 8;
 #define SP_PAR    ST_TIME
 
-#define SP_PAUSE 1
+[[maybe_unused]] constexpr auto SP_PAUSE = 1;
 
 // in seconds
-#define SHOWNEXTLOCDELAY 4
+constexpr auto SHOWNEXTLOCDELAY = 4;
 //#define SHOWLASTLOCDELAY	SHOWNEXTLOCDELAY
 
 
@@ -321,7 +321,7 @@ static int cnt;
 static int bcnt;
 
 // signals to refresh everything for one frame
-static int firstrefresh;
+[[maybe_unused]] static int firstrefresh;
 
 static int cnt_kills[MAXPLAYERS];
 static int cnt_items[MAXPLAYERS];
@@ -409,7 +409,7 @@ void WI_slamBackground()
 
 // The ticker is used to detect keys
 //  because of timing issues in netgames.
-bool WI_Responder(event_t *)
+[[maybe_unused]] bool WI_Responder(event_t *)
 {
     return false;
 }
