@@ -54,13 +54,11 @@ static void *DEH_WeaponStart(deh_context_t *context, char *line)
 static void DEH_WeaponParseLine(deh_context_t *context, char *line, void *tag)
 {
     char *        variable_name = nullptr, *value = nullptr;
-    weaponinfo_t *weapon = nullptr;
-    int           ivalue = 0;
 
     if (tag == nullptr)
         return;
 
-    weapon = reinterpret_cast<weaponinfo_t *>(tag);
+    auto *weapon = reinterpret_cast<weaponinfo_t *>(tag);
 
     if (!DEH_ParseAssignment(line, &variable_name, &value))
     {
@@ -70,7 +68,7 @@ static void DEH_WeaponParseLine(deh_context_t *context, char *line, void *tag)
         return;
     }
 
-    ivalue = std::atoi(value);
+    int ivalue = std::atoi(value);
 
     DEH_SetMapping(context, &weapon_mapping, weapon, variable_name, ivalue);
 }

@@ -63,14 +63,12 @@ static void *DEH_SoundStart(deh_context_t *context, char *line)
 
 static void DEH_SoundParseLine(deh_context_t *context, char *line, void *tag)
 {
-    sfxinfo_t *sfx = nullptr;
     char *     variable_name = nullptr, *value = nullptr;
-    int        ivalue = 0;
 
     if (tag == nullptr)
         return;
 
-    sfx = reinterpret_cast<sfxinfo_t *>(tag);
+    auto *sfx = reinterpret_cast<sfxinfo_t *>(tag);
 
     // Parse the assignment
 
@@ -83,7 +81,7 @@ static void DEH_SoundParseLine(deh_context_t *context, char *line, void *tag)
 
     // all values are integers
 
-    ivalue = std::atoi(value);
+    int ivalue = std::atoi(value);
 
     // Set the field value
 

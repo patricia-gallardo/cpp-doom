@@ -101,7 +101,6 @@ DEH_END_MAPPING
 static void *DEH_ThingStart(deh_context_t *context, char *line)
 {
     int         thing_number = 0;
-    mobjinfo_t *mobj = nullptr;
 
     if (sscanf(line, "Thing %i", &thing_number) != 1)
     {
@@ -118,21 +117,19 @@ static void *DEH_ThingStart(deh_context_t *context, char *line)
         return nullptr;
     }
 
-    mobj = &mobjinfo[thing_number];
+    mobjinfo_t *mobj = &mobjinfo[thing_number];
 
     return mobj;
 }
 
 static void DEH_ThingParseLine(deh_context_t *context, char *line, void *tag)
 {
-    mobjinfo_t *mobj = nullptr;
     char *      variable_name = nullptr, *value = nullptr;
-    int         ivalue = 0;
 
     if (tag == nullptr)
         return;
 
-    mobj = reinterpret_cast<mobjinfo_t *>(tag);
+    auto *mobj = reinterpret_cast<mobjinfo_t *>(tag);
 
     // Parse the assignment
 
@@ -148,7 +145,7 @@ static void DEH_ThingParseLine(deh_context_t *context, char *line, void *tag)
 
     // all values are integers
 
-    ivalue = std::atoi(value);
+    int ivalue = std::atoi(value);
 
     // [crispy] support BEX bits mnemonics in Things fields
     if (!ivalue && !strcasecmp(variable_name, "bits"))

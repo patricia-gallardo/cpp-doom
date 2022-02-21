@@ -37,7 +37,6 @@ DEH_END_MAPPING
 static void *DEH_FrameStart(deh_context_t *context, char *line)
 {
     int      frame_number = 0;
-    state_t *state = nullptr;
 
     if (sscanf(line, "Frame %i", &frame_number) != 1)
     {
@@ -58,7 +57,7 @@ static void *DEH_FrameStart(deh_context_t *context, char *line)
             frame_number);
     }
 
-    state = &states[frame_number];
+    state_t *state = &states[frame_number];
 
     return state;
 }
@@ -73,14 +72,12 @@ static void *DEH_FrameStart(deh_context_t *context, char *line)
 
 static void DEH_FrameParseLine(deh_context_t *context, char *line, void *tag)
 {
-    state_t *state = nullptr;
     char *   variable_name = nullptr, *value = nullptr;
-    int      ivalue = 0;
 
     if (tag == nullptr)
         return;
 
-    state = reinterpret_cast<state_t *>(tag);
+    auto *state = reinterpret_cast<state_t *>(tag);
 
     // Parse the assignment
 
@@ -94,7 +91,7 @@ static void DEH_FrameParseLine(deh_context_t *context, char *line, void *tag)
 
     // all values are integers
 
-    ivalue = std::atoi(value);
+    int ivalue = std::atoi(value);
 
 
     DEH_SetMapping(context, &state_mapping, state, variable_name, ivalue);
