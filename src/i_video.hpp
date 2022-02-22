@@ -64,7 +64,6 @@ void                 I_SetPalette(int palette);
 extern const pixel_t I_MapRGB(const uint8_t r, const uint8_t g, const uint8_t b);
 #endif
 
-void I_UpdateNoBlit();
 void I_FinishUpdate();
 
 void I_ReadScreen(pixel_t *scr);

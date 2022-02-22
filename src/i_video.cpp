@@ -155,10 +155,9 @@ static bool nograbmouse_override = false;
 
 static bool display_fps_dots;
 
-// If this is true, the screen is rendered but not blitted to the
-// video buffer.
+// If this is true, the dummy renderer will be used and no screen shown
 
-static bool noblit;
+static bool nographics;
 
 // Callback function to invoke to determine whether to grab the
 // mouse pointer.
@@ -486,15 +485,6 @@ void I_StartTic()
     }
 }
 
-
-//
-// I_UpdateNoBlit
-//
-void I_UpdateNoBlit()
-{
-    // what is this?
-}
-
 static void UpdateGrab()
 {
     static bool currently_grabbed = false;
@@ -699,7 +689,7 @@ void I_FinishUpdate()
     if (!initialized)
         return;
 
-    if (noblit)
+    if (nographics)
         return;
 
     if (need_resize)
@@ -1044,13 +1034,10 @@ void I_GraphicsCheckCommandLine()
     int i;
 
     //!
-    // @category video
-    // @vanilla
-    //
-    // Disable blitting the screen.
+    // Disable graphics, use dummy renderer
     //
 
-    noblit = M_CheckParm("-noblit");
+    nographics = M_CheckParm("-nographics");
 
     //!
     // @category video
@@ -1198,11 +1185,13 @@ static void SetSDLVideoDriver()
     // Allow a default value for the SDL video driver to be specified
     // in the configuration file.
 
-    if (strcmp(g_i_video_globals->video_driver, "") != 0)
+    if (nographics)
     {
-        char *env_string;
-
-        env_string = M_StringJoin("SDL_VIDEODRIVER=", g_i_video_globals->video_driver, nullptr);
+        putenv("SDL_VIDEODRIVER=dummy");
+    }
+    else if (strcmp(g_i_video_globals->video_driver, "") != 0)
+    {
+        char *env_string = M_StringJoin("SDL_VIDEODRIVER=", g_i_video_globals->video_driver, nullptr);
         putenv(env_string);
         free(env_string);
     }
@@ -1541,17 +1530,15 @@ void I_GetScreenDimensions()
 
 void I_InitGraphics()
 {
-    SDL_Event dummy;
 #ifndef CRISPY_TRUECOLOR
     uint8_t *doompal;
 #endif
-    char *env;
-
+    
     // Pass through the XSCREENSAVER_WINDOW environment variable to
     // SDL_WINDOWID, to embed the SDL window into the Xscreensaver
     // window.
 
-    env = getenv("XSCREENSAVER_WINDOW");
+    char* env = getenv("XSCREENSAVER_WINDOW");
 
     if (env != nullptr)
     {
@@ -1647,8 +1634,8 @@ void I_InitGraphics()
 
     // clear out any events waiting at the start and center the mouse
 
-    while (SDL_PollEvent(&dummy))
-        ;
+    SDL_Event dummy;
+    while (SDL_PollEvent(&dummy));
 
     initialized = true;
 

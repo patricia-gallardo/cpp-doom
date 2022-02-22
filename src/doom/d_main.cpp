@@ -208,9 +208,6 @@ bool D_Display()
         break;
     }
 
-    // draw buffered stuff to screen
-    I_UpdateNoBlit();
-
     // draw the view directly
     if (g_doomstat_globals->gamestate == GS_LEVEL && (!g_doomstat_globals->automapactive || crispy->automapoverlay) && gametic)
     {
@@ -465,7 +462,6 @@ void D_RunFrame()
 
         wipestart = nowtime;
         wipe      = !wipe_ScreenWipe(wipe_Melt, 0, 0, SCREENWIDTH, SCREENHEIGHT, tics);
-        I_UpdateNoBlit();
         M_Drawer();       // menu is drawn even on top of wipes
         I_FinishUpdate(); // page flip or blit buffer
         return;
