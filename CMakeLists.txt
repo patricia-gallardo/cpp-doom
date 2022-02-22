@@ -32,6 +32,7 @@ else()
                         "-Wredundant-decls")
 endif()
 
+find_package(fmt CONFIG REQUIRED)
 find_package(SDL2 CONFIG REQUIRED)
 find_package(sdl2-mixer CONFIG REQUIRED)
 find_package(sdl2-net CONFIG REQUIRED)
