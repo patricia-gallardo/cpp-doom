@@ -30,42 +30,6 @@
 #include "deh_defs.hpp"
 #include "deh_io.hpp"
 
-enum deh_input_type_t
-{
-    DEH_INPUT_FILE,
-    DEH_INPUT_LUMP
-};
-
-struct [[maybe_unused]] deh_context_s {
-    deh_input_type_t type;
-    char *           filename;
-
-    // If the input comes from a memory buffer, pointer to the memory
-    // buffer.
-    unsigned char *input_buffer;
-    size_t         input_buffer_len;
-    unsigned int   input_buffer_pos;
-    int            lumpnum;
-
-    // If the input comes from a file, the file stream for reading
-    // data.
-    FILE *stream;
-
-    // Current line number that we have reached:
-    int linenum;
-
-    // Used by DEH_ReadLine:
-    bool last_was_newline;
-    char *  readbuffer;
-    int     readbuffer_size;
-
-    // Error handling.
-    bool had_error;
-
-    // [crispy] pointer to start of current line
-    long linestart;
-};
-
 static deh_context_t *DEH_NewContext()
 {
     deh_context_t *context = zmalloc<decltype(context)>(sizeof(*context), PU_STATIC, nullptr);
@@ -321,19 +285,6 @@ char *DEH_ReadLine(deh_context_t *context, bool extended)
     }
 
     return context->readbuffer;
-}
-
-void DEH_Warning(deh_context_t *context, const char *msg, ...)
-{
-    va_list args;
-
-    va_start(args, msg);
-
-    fprintf(stderr, "%s:%i: warning: ", context->filename, context->linenum);
-    vfprintf(stderr, msg, args);
-    fprintf(stderr, "\n");
-
-    va_end(args);
 }
 
 void DEH_Error(deh_context_t *context, const char *msg, ...)

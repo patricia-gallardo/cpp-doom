@@ -20,7 +20,7 @@
 
 #include "sha1.hpp"
 
-using deh_context_t       = struct deh_context_s;
+struct deh_context_t;
 using deh_section_t       = struct deh_section_s;
 using deh_section_init_t  = void (*)();
 using deh_section_start_t = void *(*)(deh_context_t *, char *);
