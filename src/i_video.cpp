@@ -1187,7 +1187,8 @@ static void SetSDLVideoDriver()
 
     if (nographics)
     {
-        putenv("SDL_VIDEODRIVER=dummy");
+        const char *env_string = "SDL_VIDEODRIVER=dummy";
+        putenv(env_string);
     }
     else if (strcmp(g_i_video_globals->video_driver, "") != 0)
     {
