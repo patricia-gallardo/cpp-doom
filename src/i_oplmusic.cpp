@@ -1770,7 +1770,7 @@ static void ControllerEvent(opl_track_data_t *track, midi_event_t *event)
 
     default:
 #ifdef OPL_MIDI_DEBUG
-        fprintf(stderr, "Unknown MIDI controller type: %u\n", controller);
+        fmt::fprintf(stderr, "Unknown MIDI controller type: %u\n", controller);
 #endif
         break;
     }
@@ -1862,7 +1862,7 @@ static void MetaEvent(opl_track_data_t *, midi_event_t *event)
 
     default:
 #ifdef OPL_MIDI_DEBUG
-        fprintf(stderr, "Unknown MIDI meta event type: %u\n",
+        fmt::fprintf(stderr, "Unknown MIDI meta event type: %u\n",
             event->data.meta.type);
 #endif
         break;
@@ -1907,7 +1907,7 @@ static void ProcessEvent(opl_track_data_t *track, midi_event_t *event)
 
     default:
 #ifdef OPL_MIDI_DEBUG
-        fprintf(stderr, "Unknown MIDI event type %i\n", event->event_type);
+        fmt::fprintf(stderr, "Unknown MIDI event type %i\n", event->event_type);
 #endif
         break;
     }
@@ -2207,7 +2207,7 @@ static void *I_OPL_RegisterSong(void *data, int len)
 
     if (result == nullptr)
     {
-        fprintf(stderr, "I_OPL_RegisterSong: Failed to load MID.\n");
+        fmt::fprintf(stderr, "I_OPL_RegisterSong: Failed to load MID.\n");
     }
 
     // remove file now

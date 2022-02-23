@@ -22,6 +22,9 @@
 
 #include <cstdio>
 
+#include <fmt/format.h>
+#include <fmt/printf.h>
+
 #define WIN32_LEAN_AND_MEAN
 #include <windows.h>
 #include <memory.hpp>
@@ -57,7 +60,7 @@ static void MapFile(win32_wad_file_t *wad, const char *filename)
 
     if (wad->handle_map == nullptr)
     {
-        fprintf(stderr, "W_Win32_OpenFile: Unable to CreateFileMapping() "
+        fmt::fprintf(stderr, "W_Win32_OpenFile: Unable to CreateFileMapping() "
                         "for %s\n",
             filename);
         return;
@@ -69,7 +72,7 @@ static void MapFile(win32_wad_file_t *wad, const char *filename)
 
     if (wad->wad.mapped == nullptr)
     {
-        fprintf(stderr, "W_Win32_OpenFile: Unable to MapViewOfFile() for %s\n",
+        fmt::fprintf(stderr, "W_Win32_OpenFile: Unable to MapViewOfFile() for %s\n",
             filename);
     }
 }

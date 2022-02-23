@@ -20,6 +20,9 @@
 #include <cstdlib>
 #include <cstring>
 
+#include <fmt/format.h>
+#include <fmt/printf.h>
+
 #include "SDL.h"
 #include "SDL_mixer.h"
 
@@ -73,10 +76,10 @@ static bool WriteWrapperTimidityConfig(char *write_path)
     }
 
     path = M_DirName(timidity_cfg_path);
-    fprintf(fstream, "dir %s\n", path);
+    fmt::fprintf(fstream, "dir %s\n", path);
     free(path);
 
-    fprintf(fstream, "source %s\n", timidity_cfg_path);
+    fmt::fprintf(fstream, "source %s\n", timidity_cfg_path);
     fclose(fstream);
 
     return true;
@@ -165,11 +168,11 @@ static bool I_SDL_InitMusic()
     {
         if (SDL_Init(SDL_INIT_AUDIO) < 0)
         {
-            fprintf(stderr, "Unable to set up sound.\n");
+            fmt::fprintf(stderr, "Unable to set up sound.\n");
         }
         else if (Mix_OpenAudio(g_i_sound_globals->snd_samplerate, AUDIO_S16SYS, 2, 1024) < 0)
         {
-            fprintf(stderr, "Error initializing SDL_mixer: %s\n",
+            fmt::fprintf(stderr, "Error initializing SDL_mixer: %s\n",
                 Mix_GetError());
             SDL_QuitSubSystem(SDL_INIT_AUDIO);
         }
@@ -432,7 +435,7 @@ static void *I_SDL_RegisterSong(void *data, int len)
         music = nullptr;
         if (!I_MidiPipe_RegisterSong(filename))
         {
-            fprintf(stderr, "Error loading midi: %s\n",
+            fmt::fprintf(stderr, "Error loading midi: %s\n",
                 "Could not communicate with midiproc.");
         }
     }
@@ -443,7 +446,7 @@ static void *I_SDL_RegisterSong(void *data, int len)
         if (music == nullptr)
         {
             // Failed to load
-            fprintf(stderr, "Error loading midi: %s\n", Mix_GetError());
+            fmt::fprintf(stderr, "Error loading midi: %s\n", Mix_GetError());
         }
 
         // Remove the temporary MIDI file; however, when using an external

@@ -18,6 +18,9 @@
 
 #include <cstring>
 
+#include <fmt/format.h>
+#include <fmt/printf.h>
+
 #include "doomtype.hpp"
 #include "i_system.hpp"
 #include "m_argv.hpp"
@@ -153,10 +156,10 @@ static void ScanForBlock(void *start, void *end)
             {
                 if (start <= mem[i] && mem[i] <= end)
                 {
-                    fprintf(stderr,
+                    fmt::fprintf(stderr,
                         "%p has dangling pointer into freed block "
                         "%p (%p -> %p)\n",
-                        mem, start, &mem[i], mem[i]);
+                        reinterpret_cast<void*>(mem), start, reinterpret_cast<void*>(&mem[i]), reinterpret_cast<void*>(mem[i]));
                 }
             }
         }
@@ -409,12 +412,12 @@ void Z_FreeTags(int lowtag,
 //
 [[maybe_unused]] void Z_FileDumpHeap(FILE *f)
 {
-    fprintf(f, "zone size: %i  location: %p\n", mainzone->size, mainzone);
+    fmt::fprintf(f, "zone size: %i  location: %p\n", mainzone->size, reinterpret_cast<void*>(mainzone));
 
     for (memblock_t *block = mainzone->blocklist.next;; block = block->next)
     {
-        fprintf(f, "block:%p    size:%7i    user:%p    tag:%3i\n",
-            block, block->size, block->user, block->tag);
+        fmt::fprintf(f, "block:%p    size:%7i    user:%p    tag:%3i\n",
+            reinterpret_cast<void*>(block), block->size, reinterpret_cast<void*>(block->user), block->tag);
 
         if (block->next == &mainzone->blocklist)
         {
@@ -423,13 +426,13 @@ void Z_FreeTags(int lowtag,
         }
 
         if (reinterpret_cast<uint8_t *>(block) + block->size != reinterpret_cast<uint8_t *>(block->next))
-            fprintf(f, "ERROR: block size does not touch the next block\n");
+            fmt::fprintf(f, "ERROR: block size does not touch the next block\n");
 
         if (block->next->prev != block)
-            fprintf(f, "ERROR: next block doesn't have proper back link\n");
+            fmt::fprintf(f, "ERROR: next block doesn't have proper back link\n");
 
         if (block->tag == PU_FREE && block->next->tag == PU_FREE)
-            fprintf(f, "ERROR: two consecutive free blocks\n");
+            fmt::fprintf(f, "ERROR: two consecutive free blocks\n");
     }
 }
 

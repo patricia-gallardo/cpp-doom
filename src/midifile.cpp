@@ -20,6 +20,9 @@
 #include <cstring>
 #include <cassert>
 
+#include <fmt/format.h>
+#include <fmt/printf.h>
+
 #include "memory.hpp"
 #include "doomtype.hpp"
 #include "i_swap.hpp"
@@ -93,7 +96,7 @@ static bool CheckChunkHeader(chunk_header_t *chunk,
 
     if (!result)
     {
-        fprintf(stderr, "CheckChunkHeader: Expected '%s' chunk header, "
+        fmt::fprintf(stderr, "CheckChunkHeader: Expected '%s' chunk header, "
                         "got '%c%c%c%c'\n",
             expected_id,
             chunk->chunk_id[0], chunk->chunk_id[1],
@@ -113,7 +116,7 @@ static bool ReadByte(uint8_t *result, FILE *stream)
 
     if (c == EOF)
     {
-        fprintf(stderr, "ReadByte: Unexpected end of file\n");
+        fmt::fprintf(stderr, "ReadByte: Unexpected end of file\n");
         return false;
     }
     else
@@ -137,7 +140,7 @@ static bool ReadVariableLength(unsigned int *result, FILE *stream)
     {
         if (!ReadByte(&b, stream))
         {
-            fprintf(stderr, "ReadVariableLength: Error while reading "
+            fmt::fprintf(stderr, "ReadVariableLength: Error while reading "
                             "variable-length value\n");
             return false;
         }
@@ -155,7 +158,7 @@ static bool ReadVariableLength(unsigned int *result, FILE *stream)
         }
     }
 
-    fprintf(stderr, "ReadVariableLength: Variable-length value too "
+    fmt::fprintf(stderr, "ReadVariableLength: Variable-length value too "
                     "long: maximum of four bytes\n");
     return false;
 }
@@ -174,7 +177,7 @@ static uint8_t *ReadByteSequence(unsigned int num_bytes, FILE *stream)
 
     if (result == nullptr)
     {
-        fprintf(stderr, "ReadByteSequence: Failed to allocate buffer\n");
+        fmt::fprintf(stderr, "ReadByteSequence: Failed to allocate buffer\n");
         return nullptr;
     }
 
@@ -184,7 +187,7 @@ static uint8_t *ReadByteSequence(unsigned int num_bytes, FILE *stream)
     {
         if (!ReadByte(&result[i], stream))
         {
-            fprintf(stderr, "ReadByteSequence: Error while reading byte %u\n",
+            fmt::fprintf(stderr, "ReadByteSequence: Error while reading byte %u\n",
                 i);
             free(result);
             return nullptr;
@@ -212,7 +215,7 @@ static bool ReadChannelEvent(midi_event_t *event, uint8_t event_type, bool two_p
 
     if (!ReadByte(&b, stream))
     {
-        fprintf(stderr, "ReadChannelEvent: Error while reading channel "
+        fmt::fprintf(stderr, "ReadChannelEvent: Error while reading channel "
                         "event parameters\n");
         return false;
     }
@@ -225,7 +228,7 @@ static bool ReadChannelEvent(midi_event_t *event, uint8_t event_type, bool two_p
     {
         if (!ReadByte(&b, stream))
         {
-            fprintf(stderr, "ReadChannelEvent: Error while reading channel "
+            fmt::fprintf(stderr, "ReadChannelEvent: Error while reading channel "
                             "event parameters\n");
             return false;
         }
@@ -245,7 +248,7 @@ static bool ReadSysExEvent(midi_event_t *event, int event_type,
 
     if (!ReadVariableLength(&event->data.sysex.length, stream))
     {
-        fprintf(stderr, "ReadSysExEvent: Failed to read length of "
+        fmt::fprintf(stderr, "ReadSysExEvent: Failed to read length of "
                         "SysEx block\n");
         return false;
     }
@@ -256,7 +259,7 @@ static bool ReadSysExEvent(midi_event_t *event, int event_type,
 
     if (event->data.sysex.data == nullptr)
     {
-        fprintf(stderr, "ReadSysExEvent: Failed while reading SysEx event\n");
+        fmt::fprintf(stderr, "ReadSysExEvent: Failed while reading SysEx event\n");
         return false;
     }
 
@@ -275,7 +278,7 @@ static bool ReadMetaEvent(midi_event_t *event, FILE *stream)
 
     if (!ReadByte(&b, stream))
     {
-        fprintf(stderr, "ReadMetaEvent: Failed to read meta event type\n");
+        fmt::fprintf(stderr, "ReadMetaEvent: Failed to read meta event type\n");
         return false;
     }
 
@@ -285,7 +288,7 @@ static bool ReadMetaEvent(midi_event_t *event, FILE *stream)
 
     if (!ReadVariableLength(&event->data.meta.length, stream))
     {
-        fprintf(stderr, "ReadSysExEvent: Failed to read length of "
+        fmt::fprintf(stderr, "ReadSysExEvent: Failed to read length of "
                         "SysEx block\n");
         return false;
     }
@@ -296,7 +299,7 @@ static bool ReadMetaEvent(midi_event_t *event, FILE *stream)
 
     if (event->data.meta.data == nullptr)
     {
-        fprintf(stderr, "ReadSysExEvent: Failed while reading SysEx event\n");
+        fmt::fprintf(stderr, "ReadSysExEvent: Failed while reading SysEx event\n");
         return false;
     }
 
@@ -310,13 +313,13 @@ static bool ReadEvent(midi_event_t *event, unsigned int *last_event_type,
 
     if (!ReadVariableLength(&event->delta_time, stream))
     {
-        fprintf(stderr, "ReadEvent: Failed to read event timestamp\n");
+        fmt::fprintf(stderr, "ReadEvent: Failed to read event timestamp\n");
         return false;
     }
 
     if (!ReadByte(&event_type, stream))
     {
-        fprintf(stderr, "ReadEvent: Failed to read event type\n");
+        fmt::fprintf(stderr, "ReadEvent: Failed to read event type\n");
         return false;
     }
 
@@ -331,7 +334,7 @@ static bool ReadEvent(midi_event_t *event, unsigned int *last_event_type,
 
         if (fseek(stream, -1, SEEK_CUR) < 0)
         {
-            fprintf(stderr, "ReadEvent: Unable to seek in stream\n");
+            fmt::fprintf(stderr, "ReadEvent: Unable to seek in stream\n");
             return false;
         }
     }
@@ -378,7 +381,7 @@ static bool ReadEvent(midi_event_t *event, unsigned int *last_event_type,
         break;
     }
 
-    fprintf(stderr, "ReadEvent: Unknown MIDI event type: 0x%x\n", event_type);
+    fmt::fprintf(stderr, "ReadEvent: Unknown MIDI event type: 0x%x\n", event_type);
     return false;
 }
 
@@ -538,7 +541,7 @@ static bool ReadFileHeader(midi_file_t *file, FILE *stream)
     if (!CheckChunkHeader(&file->header.chunk_header, HEADER_CHUNK_ID)
         || SDL_SwapBE32(file->header.chunk_header.chunk_size) != 6)
     {
-        fprintf(stderr, "ReadFileHeader: Invalid MIDI chunk header! "
+        fmt::fprintf(stderr, "ReadFileHeader: Invalid MIDI chunk header! "
                         "chunk_size=%i\n",
             SDL_SwapBE32(file->header.chunk_header.chunk_size));
         return false;
@@ -550,7 +553,7 @@ static bool ReadFileHeader(midi_file_t *file, FILE *stream)
     if ((format_type != 0 && format_type != 1)
         || file->num_tracks < 1)
     {
-        fprintf(stderr, "ReadFileHeader: Only type 0/1 "
+        fmt::fprintf(stderr, "ReadFileHeader: Only type 0/1 "
                         "MIDI files supported!\n");
         return false;
     }
@@ -595,7 +598,7 @@ midi_file_t *MIDI_LoadFile(char *filename)
 
     if (stream == nullptr)
     {
-        fprintf(stderr, "MIDI_LoadFile: Failed to open '%s'\n", filename);
+        fmt::fprintf(stderr, "MIDI_LoadFile: Failed to open '%s'\n", filename);
         MIDI_FreeFile(file);
         return nullptr;
     }
@@ -795,7 +798,7 @@ int main(int argc, char *argv[])
 
     if (file == nullptr)
     {
-        fprintf(stderr, "Failed to open %s\n", argv[1]);
+        fmt::fprintf(stderr, "Failed to open %s\n", argv[1]);
         exit(1);
     }
 

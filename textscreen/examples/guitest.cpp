@@ -287,7 +287,7 @@ int main(int argc, char *argv[])
 {
     if (!TXT_Init())
     {
-        fprintf(stderr, "Failed to initialise GUI\n");
+        fmt::fprintf(stderr, "Failed to initialise GUI\n");
         exit(-1);
     }
 

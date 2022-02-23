@@ -19,6 +19,9 @@
 #include <cstring>
 #include <cstdlib>
 
+#include <fmt/format.h>
+#include <fmt/printf.h>
+
 #include "doomdef.hpp"
 #include "doomstat.hpp"
 
@@ -433,7 +436,7 @@ void G_BuildTiccmd(ticcmd_t *cmd, int maketic)
     {
         if (gamekeydown[g_m_controls_globals->key_right])
         {
-            // fprintf(stderr, "strafe right\n");
+            // fmt::fprintf(stderr, "strafe right\n");
             side += sidemove[speed];
         }
         if (gamekeydown[g_m_controls_globals->key_left])
@@ -460,12 +463,12 @@ void G_BuildTiccmd(ticcmd_t *cmd, int maketic)
 
     if (gamekeydown[g_m_controls_globals->key_up] || gamekeydown[g_m_controls_globals->key_alt_up]) // [crispy] add key_alt_*
     {
-        // fprintf(stderr, "up\n");
+        // fmt::fprintf(stderr, "up\n");
         forward += forwardmove[speed];
     }
     if (gamekeydown[g_m_controls_globals->key_down] || gamekeydown[g_m_controls_globals->key_alt_down]) // [crispy] add key_alt_*
     {
-        // fprintf(stderr, "down\n");
+        // fmt::fprintf(stderr, "down\n");
         forward -= forwardmove[speed];
     }
 
@@ -2045,7 +2048,7 @@ void G_DoSaveGame()
                   ttime = (g_doomstat_globals->totalleveltimes + leveltime) / TICRATE;
         extern const char *skilltable[];
 
-        fprintf(stderr, "G_DoSaveGame: Episode %d, Map %d, %s, Time %d:%02d:%02d, Total %d:%02d:%02d.\n",
+        fmt::fprintf(stderr, "G_DoSaveGame: Episode %d, Map %d, %s, Time %d:%02d:%02d, Total %d:%02d:%02d.\n",
             g_doomstat_globals->gameepisode, g_doomstat_globals->gamemap, skilltable[BETWEEN(0, 5, static_cast<int>(g_doomstat_globals->gameskill) + 1)],
             ltime / 3600, (ltime % 3600) / 60, ltime % 60,
             ttime / 3600, (ttime % 3600) / 60, ttime % 60);
@@ -2724,9 +2727,9 @@ void G_DoPlayDemo()
         // [crispy] make non-fatal
         else
         {
-            fprintf(stderr, message, demoversion, G_VanillaVersionCode(),
+            fmt::fprintf(stderr, message, demoversion, G_VanillaVersionCode(),
                 DemoVersionDescription(demoversion));
-            fprintf(stderr, "\n");
+            fmt::fprintf(stderr, "\n");
             g_doomstat_globals->demoplayback = true;
             G_CheckDemoStatus();
             return;
@@ -2920,7 +2923,7 @@ bool G_CheckDemoStatus()
         }
         else
         {
-            fprintf(stderr, "Demo %s recorded\n", demoname);
+            fmt::fprintf(stderr, "Demo %s recorded\n", demoname);
         }
     }
 

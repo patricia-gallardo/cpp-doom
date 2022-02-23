@@ -140,25 +140,25 @@ static int GetNumPlayers(const wbstartstruct_t *stats)
 
 static void PrintBanner(FILE *stream)
 {
-    fprintf(stream, "===========================================\n");
+    fmt::fprintf(stream, "===========================================\n");
 }
 
 static void PrintPercentage(FILE *stream, int amount, int total)
 {
     if (total == 0)
     {
-        fprintf(stream, "0");
+        fmt::fprintf(stream, "0");
     }
     else
     {
-        fprintf(stream, "%i / %i", amount, total);
+        fmt::fprintf(stream, "%i / %i", amount, total);
 
         // statdump.exe is a 16-bit program, so very occasionally an
         // integer overflow can occur when doing this calculation with
         // a large value. Therefore, cast to short to give the same
         // output.
 
-        fprintf(stream, " (%i%%)", static_cast<short>(amount * 100) / total);
+        fmt::fprintf(stream, " (%i%%)", static_cast<short>(amount * 100) / total);
     }
 }
 
@@ -169,37 +169,37 @@ static void PrintPlayerStats(FILE *stream, const wbstartstruct_t *stats,
 {
     const wbplayerstruct_t *player = &stats->plyr[player_num];
 
-    fprintf(stream, "Player %i (%s):\n", player_num + 1,
+    fmt::fprintf(stream, "Player %i (%s):\n", player_num + 1,
         player_colors[player_num]);
 
     /* Kills percentage */
 
-    fprintf(stream, "\tKills: ");
+    fmt::fprintf(stream, "\tKills: ");
     PrintPercentage(stream, player->skills, stats->maxkills);
-    fprintf(stream, "\n");
+    fmt::fprintf(stream, "\n");
 
     /* Items percentage */
 
-    fprintf(stream, "\tItems: ");
+    fmt::fprintf(stream, "\tItems: ");
     PrintPercentage(stream, player->sitems, stats->maxitems);
-    fprintf(stream, "\n");
+    fmt::fprintf(stream, "\n");
 
     /* Secrets percentage */
 
-    fprintf(stream, "\tSecrets: ");
+    fmt::fprintf(stream, "\tSecrets: ");
     PrintPercentage(stream, player->ssecret, stats->maxsecret);
-    fprintf(stream, "\n");
+    fmt::fprintf(stream, "\n");
 }
 
 /* Frags table for multiplayer games. */
 
 static void PrintFragsTable(FILE *stream, const wbstartstruct_t *stats)
 {
-    fprintf(stream, "Frags:\n");
+    fmt::fprintf(stream, "Frags:\n");
 
     /* Print header */
 
-    fprintf(stream, "\t\t");
+    fmt::fprintf(stream, "\t\t");
 
     for (int x = 0; x < MAXPLAYERS; ++x)
     {
@@ -209,12 +209,12 @@ static void PrintFragsTable(FILE *stream, const wbstartstruct_t *stats)
             continue;
         }
 
-        fprintf(stream, "%s\t", player_colors[x]);
+        fmt::fprintf(stream, "%s\t", player_colors[x]);
     }
 
-    fprintf(stream, "\n");
+    fmt::fprintf(stream, "\n");
 
-    fprintf(stream, "\t\t-------------------------------- VICTIMS\n");
+    fmt::fprintf(stream, "\t\t-------------------------------- VICTIMS\n");
 
     /* Print table */
 
@@ -225,7 +225,7 @@ static void PrintFragsTable(FILE *stream, const wbstartstruct_t *stats)
             continue;
         }
 
-        fprintf(stream, "\t%s\t|", player_colors[y]);
+        fmt::fprintf(stream, "\t%s\t|", player_colors[y]);
 
         for (int x = 0; x < MAXPLAYERS; ++x)
         {
@@ -234,14 +234,14 @@ static void PrintFragsTable(FILE *stream, const wbstartstruct_t *stats)
                 continue;
             }
 
-            fprintf(stream, "%i\t", stats->plyr[y].frags[x]);
+            fmt::fprintf(stream, "%i\t", stats->plyr[y].frags[x]);
         }
 
-        fprintf(stream, "\n");
+        fmt::fprintf(stream, "\n");
     }
 
-    fprintf(stream, "\t\t|\n");
-    fprintf(stream, "\t     KILLERS\n");
+    fmt::fprintf(stream, "\t\t|\n");
+    fmt::fprintf(stream, "\t     KILLERS\n");
 }
 
 /* Displays the level name: MAPxy or ExMy, depending on game mode. */
@@ -254,14 +254,14 @@ static void PrintLevelName(FILE *stream, int episode, int level)
     {
 
     case doom:
-        fprintf(stream, "E%iM%i\n", episode + 1, level + 1);
+        fmt::fprintf(stream, "E%iM%i\n", episode + 1, level + 1);
         break;
     case doom2:
-        fprintf(stream, "MAP%02i\n", level + 1);
+        fmt::fprintf(stream, "MAP%02i\n", level + 1);
         break;
     default:
     case none:
-        fprintf(stream, "E%iM%i / MAP%02i\n",
+        fmt::fprintf(stream, "E%iM%i / MAP%02i\n",
             episode + 1, level + 1, level + 1);
         break;
     }
@@ -274,13 +274,13 @@ static void PrintLevelName(FILE *stream, int episode, int level)
 static void PrintStats(FILE *stream, const wbstartstruct_t *stats)
 {
     PrintLevelName(stream, stats->epsd, stats->last);
-    fprintf(stream, "\n");
+    fmt::fprintf(stream, "\n");
 
     auto leveltime = static_cast<short>(stats->plyr[0].stime / TICRATE);
     auto partime   = static_cast<short>(stats->partime / TICRATE);
-    fprintf(stream, "Time: %i:%02i", leveltime / 60, leveltime % 60);
-    fprintf(stream, " (par: %i:%02i)\n", partime / 60, partime % 60);
-    fprintf(stream, "\n");
+    fmt::fprintf(stream, "Time: %i:%02i", leveltime / 60, leveltime % 60);
+    fmt::fprintf(stream, " (par: %i:%02i)\n", partime / 60, partime % 60);
+    fmt::fprintf(stream, "\n");
 
     for (int i = 0; i < MAXPLAYERS; ++i)
     {
@@ -295,7 +295,7 @@ static void PrintStats(FILE *stream, const wbstartstruct_t *stats)
         PrintFragsTable(stream, stats);
     }
 
-    fprintf(stream, "\n");
+    fmt::fprintf(stream, "\n");
 }
 
 void StatCopy(const wbstartstruct_t *stats)

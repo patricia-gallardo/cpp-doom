@@ -19,6 +19,9 @@
 #include <cstdlib>
 #include <cstring>
 
+#include <fmt/format.h>
+#include <fmt/printf.h>
+
 #include "config.h"
 
 #include "doomtype.hpp"
@@ -1871,7 +1874,7 @@ void NET_SV_Shutdown()
         return;
     }
 
-    fprintf(stderr, "SV: Shutting down server...\n");
+    fmt::fprintf(stderr, "SV: Shutting down server...\n");
 
     // Disconnect all clients
 
@@ -1907,7 +1910,7 @@ void NET_SV_Shutdown()
         if (I_GetTimeMS() - start_time > 5000)
         {
             running = false;
-            fprintf(stderr, "SV: Timed out waiting for clients to disconnect.\n");
+            fmt::fprintf(stderr, "SV: Timed out waiting for clients to disconnect.\n");
         }
 
         // Run the client code in case this is a loopback client.

@@ -19,6 +19,9 @@
 
 #include <cstdlib>
 
+#include <fmt/format.h>
+#include <fmt/printf.h>
+
 #include "dstrings.hpp"
 #include "deh_main.hpp"
 #include "i_system.hpp"
@@ -84,7 +87,7 @@ static uint8_t saveg_read8()
     {
         if (!savegame_error)
         {
-            fprintf(stderr, "saveg_read8: Unexpected end of file while "
+            fmt::fprintf(stderr, "saveg_read8: Unexpected end of file while "
                             "reading save game\n");
 
             savegame_error = true;
@@ -100,7 +103,7 @@ static void saveg_write8(uint8_t value)
     {
         if (!savegame_error)
         {
-            fprintf(stderr, "saveg_write8: Error while writing save game\n");
+            fmt::fprintf(stderr, "saveg_write8: Error while writing save game\n");
 
             savegame_error = true;
         }
@@ -1769,7 +1772,7 @@ void P_RestoreTargets()
 
     if (restoretargets_fail)
     {
-        fprintf(stderr, "P_RestoreTargets: Failed to restore %d target pointers.\n", restoretargets_fail);
+        fmt::fprintf(stderr, "P_RestoreTargets: Failed to restore %d target pointers.\n", restoretargets_fail);
         restoretargets_fail = 0;
     }
 }

@@ -399,7 +399,7 @@ void DEH_printf(const char *fmt, ...)
     va_end(args);
 }
 
-// fprintf(), performing a replacement on the format string.
+// fmt::fprintf(), performing a replacement on the format string.
 
 void DEH_fprintf(FILE *fstream, const char *fmt, ...)
 {

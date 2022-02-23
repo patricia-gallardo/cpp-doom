@@ -20,6 +20,9 @@
 #include <cstdio>
 #include <cstdlib>
 
+#include <fmt/format.h>
+#include <fmt/printf.h>
+
 #include "config.h"
 #include "doomkeys.hpp"
 
@@ -365,7 +368,7 @@ void NET_WaitForLaunch()
 {
     if (!TXT_Init())
     {
-        fprintf(stderr, "Failed to initialize GUI\n");
+        fmt::fprintf(stderr, "Failed to initialize GUI\n");
         exit(-1);
     }
 

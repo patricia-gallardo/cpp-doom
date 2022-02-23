@@ -20,6 +20,9 @@
 #include <cstdio>
 #include <cassert>
 
+#include <fmt/format.h>
+#include <fmt/printf.h>
+
 #include "SDL.h"
 #include "SDL_mixer.h"
 
@@ -276,13 +279,13 @@ static int OPL_SDL_Init(unsigned int)
     {
         if (SDL_Init(SDL_INIT_AUDIO) < 0)
         {
-            fprintf(stderr, "Unable to set up sound.\n");
+            fmt::fprintf(stderr, "Unable to set up sound.\n");
             return 0;
         }
 
         if (Mix_OpenAudio(static_cast<int>(opl_sample_rate), AUDIO_S16SYS, 2, static_cast<int>(GetSliceSize())) < 0)
         {
-            fprintf(stderr, "Error initialising SDL_mixer: %s\n", Mix_GetError());
+            fmt::fprintf(stderr, "Error initialising SDL_mixer: %s\n", Mix_GetError());
 
             SDL_QuitSubSystem(SDL_INIT_AUDIO);
             return 0;
@@ -316,7 +319,7 @@ static int OPL_SDL_Init(unsigned int)
 
     if (mixing_format != AUDIO_S16SYS || mixing_channels != 2)
     {
-        fprintf(stderr, 
+        fmt::fprintf(stderr,
                 "OPL_SDL only supports native signed 16-bit LSB, "
                 "stereo format!\n");
 

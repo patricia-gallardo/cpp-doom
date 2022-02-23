@@ -879,7 +879,7 @@ void R_InitTextures()
                 texturename[8] = '\0';
                 std::memcpy(texturename, texture->name, 8);
                 // [crispy] make non-fatal
-                fprintf(stderr, "R_InitTextures: Missing patch in texture %s\n",
+                fmt::fprintf(stderr, "R_InitTextures: Missing patch in texture %s\n",
                     texturename);
                 patch->patch = 0;
             }
@@ -1255,7 +1255,7 @@ int R_FlatNumForName(const char *name)
         namet[8] = 0;
         std::memcpy(namet, name, 8);
         // [crispy] make non-fatal
-        fprintf(stderr, "R_FlatNumForName: %s not found\n", namet);
+        fmt::fprintf(stderr, "R_FlatNumForName: %s not found\n", namet);
         // [crispy] since there is no "No Flat" marker,
         // render missing flats as SKY
         return g_doomstat_globals->skyflatnum;
@@ -1312,7 +1312,7 @@ int R_TextureNumForName(const char *name)
         namet[8] = '\0';
         std::memcpy(namet, name, 8);
         // [crispy] make non-fatal
-        fprintf(stderr, "R_TextureNumForName: %s not found\n",
+        fmt::fprintf(stderr, "R_TextureNumForName: %s not found\n",
             namet);
         return 0;
     }

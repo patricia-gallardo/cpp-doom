@@ -1210,7 +1210,7 @@ bool HU_Responder(event_t *ev)
             c = static_cast<unsigned char>(ev->data1 - '0');
             if (c > 9)
                 return false;
-            // fprintf(stderr, "got here\n");
+            // fmt::fprintf(stderr, "got here\n");
             macromessage = chat_macros[c];
 
             // kill last message with a '\n'

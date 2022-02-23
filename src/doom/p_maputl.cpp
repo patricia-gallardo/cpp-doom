@@ -23,6 +23,8 @@
 
 #include <cstdlib>
 
+#include <fmt/format.h>
+#include <fmt/printf.h>
 
 #include "i_system.hpp" // [crispy] I_Realloc()
 #include "m_bbox.hpp"
@@ -591,7 +593,7 @@ bool
             return false;
         else
             // [crispy] print a warning
-            fprintf(stderr, "PIT_AddLineIntercepts: Triggered INTERCEPTS overflow!\n");
+            fmt::fprintf(stderr, "PIT_AddLineIntercepts: Triggered INTERCEPTS overflow!\n");
     }
     g_p_local_globals->intercept_p++;
 
@@ -666,7 +668,7 @@ bool PIT_AddThingIntercepts(mobj_t *thing)
             return false;
         else
             // [crispy] print a warning
-            fprintf(stderr, "PIT_AddThingIntercepts: Triggered INTERCEPTS overflow!\n");
+            fmt::fprintf(stderr, "PIT_AddThingIntercepts: Triggered INTERCEPTS overflow!\n");
     }
     g_p_local_globals->intercept_p++;
 

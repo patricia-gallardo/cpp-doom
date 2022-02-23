@@ -33,7 +33,7 @@ set(DEDSERV_FILES
 add_executable("${PROGRAM_PREFIX}server" WIN32 ${COMMON_SOURCE_FILES} ${DEDSERV_FILES})
 target_include_directories("${PROGRAM_PREFIX}server"
                            PRIVATE "${CMAKE_CURRENT_BINARY_DIR}/../")
-target_link_libraries("${PROGRAM_PREFIX}server" SDL2::SDL2 SDL2::SDL2main SDL2::SDL2_net)
+target_link_libraries("${PROGRAM_PREFIX}server" fmt::fmt SDL2::SDL2 SDL2::SDL2main SDL2::SDL2_net)
 
 # Source files used by the game binaries (chocolate-doom, etc.)
 
@@ -170,7 +170,7 @@ endif()
 
 target_include_directories("${PROGRAM_PREFIX}setup"
                            PRIVATE "${CMAKE_CURRENT_BINARY_DIR}/../")
-target_link_libraries("${PROGRAM_PREFIX}setup" SDL2::SDL2main SDL2::SDL2 SDL2::SDL2_mixer SDL2::SDL2_net setup textscreen)
+target_link_libraries("${PROGRAM_PREFIX}setup" fmt::fmt SDL2::SDL2main SDL2::SDL2 SDL2::SDL2_mixer SDL2::SDL2_net setup textscreen)
 
 if(MSVC)
     set_target_properties("${PROGRAM_PREFIX}setup" PROPERTIES
@@ -180,9 +180,9 @@ endif()
 add_executable(midiread midifile.cpp z_native.cpp i_system.cpp m_argv.cpp m_misc.cpp d_iwad.cpp deh_str.cpp m_config.cpp)
 target_compile_definitions(midiread PRIVATE "-DTEST")
 target_include_directories(midiread PRIVATE "${CMAKE_CURRENT_BINARY_DIR}/../")
-target_link_libraries(midiread SDL2::SDL2main SDL2::SDL2)
+target_link_libraries(midiread fmt::fmt SDL2::SDL2main SDL2::SDL2)
 
 add_executable(mus2mid mus2mid.cpp memio.cpp z_native.cpp i_system.cpp m_argv.cpp m_misc.cpp d_iwad.cpp deh_str.cpp m_config.cpp)
 target_compile_definitions(mus2mid PRIVATE "-DSTANDALONE")
 target_include_directories(mus2mid PRIVATE "${CMAKE_CURRENT_BINARY_DIR}/../")
-target_link_libraries(mus2mid SDL2::SDL2main SDL2::SDL2)
+target_link_libraries(mus2mid fmt::fmt SDL2::SDL2main SDL2::SDL2)

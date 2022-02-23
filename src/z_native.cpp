@@ -23,6 +23,9 @@
 #include <cstdlib>
 #include <cstring>
 
+#include <fmt/format.h>
+#include <fmt/printf.h>
+
 #include "z_zone.hpp"
 #include "i_system.hpp"
 #include "doomtype.hpp"
@@ -363,11 +366,11 @@ void Z_FreeTags(int lowtag, int hightag)
 #if 0
     memblock_t*	block;
 	
-    fprintf (f,"zone size: %i  location: %p\n",mainzone->size,mainzone);
+    fmt::fprintf (f,"zone size: %i  location: %p\n",mainzone->size,mainzone);
 	
     for (block = mainzone->blocklist.next ; ; block = block->next)
     {
-	fprintf (f,"block:%p    size:%7i    user:%p    tag:%3i\n",
+	fmt::fprintf (f,"block:%p    size:%7i    user:%p    tag:%3i\n",
 		 block, block->size, block->user, block->tag);
 		
 	if (block->next == &mainzone->blocklist)
@@ -377,13 +380,13 @@ void Z_FreeTags(int lowtag, int hightag)
 	}
 	
 	if ( (byte *)block + block->size != (byte *)block->next)
-	    fprintf (f,"ERROR: block size does not touch the next block\n");
+	    fmt::fprintf (f,"ERROR: block size does not touch the next block\n");
 
 	if ( block->next->prev != block)
-	    fprintf (f,"ERROR: next block doesn't have proper back link\n");
+	    fmt::fprintf (f,"ERROR: next block doesn't have proper back link\n");
 
 	if (block->tag == PU_FREE && block->next->tag == PU_FREE)
-	    fprintf (f,"ERROR: two consecutive free blocks\n");
+	    fmt::fprintf (f,"ERROR: two consecutive free blocks\n");
     }
 #endif
 }

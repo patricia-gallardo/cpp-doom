@@ -21,6 +21,9 @@
 
 #include <cstdio>
 
+#include <fmt/format.h>
+#include <fmt/printf.h>
+
 #include "i_swap.hpp" // [crispy] SHORT()
 #include "i_system.hpp"
 #include "i_video.hpp"
@@ -1119,7 +1122,7 @@ bool
                 crispy->sdlversion);
 #undef BUILD_DATE
             plyr->message = msg;
-            fprintf(stderr, "%s\n", msg);
+            fmt::fprintf(stderr, "%s\n", msg);
         }
         // [crispy] Show skill level
         else if (cht_CheckCheat(&cheat_skill, static_cast<char>(ev->data2)))

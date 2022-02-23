@@ -20,6 +20,8 @@
 #include <cstdio>
 #include <cstdlib>
 
+#include <fmt/format.h>
+#include <fmt/printf.h>
 
 #include "deh_main.hpp"
 #include "doomdef.hpp"
@@ -124,13 +126,13 @@ void R_InstallSpriteLump(int lump,
         // the lump should be used for all rotations
         // [crispy] make non-fatal
         if (sprtemp[frame].rotate == false)
-            fprintf(stderr, "R_InitSprites: Sprite %s frame %c has "
+            fmt::fprintf(stderr, "R_InitSprites: Sprite %s frame %c has "
                             "multip rot=0 lump\n",
                 spritename, 'A' + frame);
 
         // [crispy] make non-fatal
         if (sprtemp[frame].rotate == 1)
-            fprintf(stderr, "R_InitSprites: Sprite %s frame %c has rotations "
+            fmt::fprintf(stderr, "R_InitSprites: Sprite %s frame %c has rotations "
                             "and a rot=0 lump\n",
                 spritename, 'A' + frame);
 
@@ -153,7 +155,7 @@ void R_InstallSpriteLump(int lump,
     // the lump is only used for one rotation
     // [crispy] make non-fatal
     if (sprtemp[frame].rotate == false)
-        fprintf(stderr, "R_InitSprites: Sprite %s frame %c has rotations "
+        fmt::fprintf(stderr, "R_InitSprites: Sprite %s frame %c has rotations "
                         "and a rot=0 lump\n",
             spritename, 'A' + frame);
 
@@ -165,7 +167,7 @@ void R_InstallSpriteLump(int lump,
     if (sprtemp[frame].lump[rotation] != -1)
     {
         // [crispy] make non-fatal
-        fprintf(stderr, "R_InitSprites: Sprite %s : %c : %c "
+        fmt::fprintf(stderr, "R_InitSprites: Sprite %s : %c : %c "
                         "has two lumps mapped to it\n",
             spritename, 'A' + frame, '1' + rotation);
         return;
@@ -265,7 +267,7 @@ void R_InitSpriteDefs(const char **namelist)
             case -1:
                 // no rotations were found for that frame at all
                 // [crispy] make non-fatal
-                fprintf(stderr, "R_InitSprites: No patches found "
+                fmt::fprintf(stderr, "R_InitSprites: No patches found "
                                 "for %s frame %c\n",
                     spritename, frame + 'A');
                 break;
@@ -356,7 +358,7 @@ vissprite_t *R_NewVisSprite()
         // [crispy] cap MAXVISSPRITES limit at 4096
         if (!max && numvissprites == 32 * MAXVISSPRITES)
         {
-            fprintf(stderr, "R_NewVisSprite: MAXVISSPRITES limit capped at %d.\n", numvissprites);
+            fmt::fprintf(stderr, "R_NewVisSprite: MAXVISSPRITES limit capped at %d.\n", numvissprites);
             max++;
         }
 
@@ -370,7 +372,7 @@ vissprite_t *R_NewVisSprite()
         vissprite_p = vissprites + numvissprites_old;
 
         if (numvissprites_old)
-            fprintf(stderr, "R_NewVisSprite: Hit MAXVISSPRITES limit at %d, raised to %d.\n", numvissprites_old, numvissprites);
+            fmt::fprintf(stderr, "R_NewVisSprite: Hit MAXVISSPRITES limit at %d, raised to %d.\n", numvissprites_old, numvissprites);
     }
 
     vissprite_p++;
@@ -507,7 +509,7 @@ void R_DrawVisSprite(vissprite_t *vis, int, int)
             // [crispy] make non-fatal
             if (!error)
             {
-                fprintf(stderr, "R_DrawSpriteRange: bad texturecolumn\n");
+                fmt::fprintf(stderr, "R_DrawSpriteRange: bad texturecolumn\n");
                 error = true;
             }
             continue;

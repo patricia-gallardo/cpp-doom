@@ -18,6 +18,9 @@
 #include <cstdlib>
 #include <cstdarg>
 
+#include <fmt/format.h>
+#include <fmt/printf.h>
+
 #include "d_mode.hpp"
 #include "i_system.hpp"
 #include "i_timer.hpp"
@@ -483,11 +486,11 @@ void NET_Log(const char *fmt, ...)
         return;
     }
 
-    fprintf(net_debug, "%8d: ", I_GetTimeMS());
+    fmt::fprintf(net_debug, "%8d: ", I_GetTimeMS());
     va_start(args, fmt);
     vfprintf(net_debug, fmt, args);
     va_end(args);
-    fprintf(net_debug, "\n");
+    fmt::fprintf(net_debug, "\n");
 }
 
 void NET_LogPacket(net_packet_t *packet)
@@ -502,18 +505,18 @@ void NET_LogPacket(net_packet_t *packet)
     {
         return;
     }
-    fprintf(net_debug, "\t%02x", packet->data[packet->pos]);
+    fmt::fprintf(net_debug, "\t%02x", packet->data[packet->pos]);
     for (size_t i = 1; i < bytes; ++i)
     {
         if ((i % 16) == 0)
         {
-            fprintf(net_debug, "\n\t");
+            fmt::fprintf(net_debug, "\n\t");
         }
         else
         {
-            fprintf(net_debug, " ");
+            fmt::fprintf(net_debug, " ");
         }
-        fprintf(net_debug, "%02x", packet->data[packet->pos + i]);
+        fmt::fprintf(net_debug, "%02x", packet->data[packet->pos + i]);
     }
-    fprintf(net_debug, "\n");
+    fmt::fprintf(net_debug, "\n");
 }

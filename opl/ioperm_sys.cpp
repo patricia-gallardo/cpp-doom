@@ -21,6 +21,9 @@
 
 #include <cstdio>
 
+#include <fmt/format.h>
+#include <fmt/printf.h>
+
 #define WIN32_LEAN_AND_MEAN
 #include <windows.h>
 #include <winioctl.h>
@@ -111,7 +114,7 @@ static int LoadLibraryPointers()
 
     if (dll == nullptr)
     {
-        fprintf(stderr, "LoadLibraryPointers: Failed to open advapi32.dll\n");
+        fmt::fprintf(stderr, "LoadLibraryPointers: Failed to open advapi32.dll\n");
         return 0;
     }
 
@@ -121,7 +124,7 @@ static int LoadLibraryPointers()
 
         if (*dll_functions[i].fn == nullptr)
         {
-            fprintf(stderr, "LoadLibraryPointers: Failed to get address "
+            fmt::fprintf(stderr, "LoadLibraryPointers: Failed to get address "
                             "for '%s'\n", dll_functions[i].name);
             return 0;
         }
@@ -185,7 +188,7 @@ int IOperm_InstallDriver()
     if (scm == nullptr)
     {
         error = GetLastError();
-        fprintf(stderr, "IOperm_InstallDriver: OpenSCManager failed (%i).\n",
+        fmt::fprintf(stderr, "IOperm_InstallDriver: OpenSCManager failed (%i).\n",
                         error);
         return 0;
     }
@@ -216,7 +219,7 @@ int IOperm_InstallDriver()
 
         if (error != ERROR_SERVICE_EXISTS)
         {
-            fprintf(stderr,
+            fmt::fprintf(stderr,
                     "IOperm_InstallDriver: Failed to create service (%i).\n",
                     error);
         }
@@ -228,7 +231,7 @@ int IOperm_InstallDriver()
             {
                 error = GetLastError();
 
-                fprintf(stderr,
+                fmt::fprintf(stderr,
                         "IOperm_InstallDriver: Failed to open service (%i).\n",
                         error);
             }
@@ -254,7 +257,7 @@ int IOperm_InstallDriver()
 
         if (error != ERROR_SERVICE_ALREADY_RUNNING)
         {
-            fprintf(stderr, "IOperm_InstallDriver: Failed to start service (%i).\n",
+            fmt::fprintf(stderr, "IOperm_InstallDriver: Failed to start service (%i).\n",
                             error);
 
             result = 0;
@@ -297,13 +300,13 @@ int IOperm_UninstallDriver()
 
             if (error == ERROR_SERVICE_NOT_ACTIVE)
             {
-                fprintf(stderr,
+                fmt::fprintf(stderr,
                         "IOperm_UninstallDriver: Service not active? (%i)\n",
                         error);
             }
             else
             {
-                fprintf(stderr,
+                fmt::fprintf(stderr,
                         "IOperm_UninstallDriver: Failed to stop service (%i).\n",
                         error);
                 result = 0;
@@ -319,7 +322,7 @@ int IOperm_UninstallDriver()
         {
             error = GetLastError();
 
-            fprintf(stderr,
+            fmt::fprintf(stderr,
                     "IOperm_UninstallDriver: DeleteService failed (%i).\n",
                     error);
 

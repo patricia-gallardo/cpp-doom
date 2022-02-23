@@ -891,7 +891,7 @@ static bool ReadSubstituteConfig(char *musicdir, const char *filename)
 
         if (error != nullptr)
         {
-            fprintf(stderr, "%s:%i: Error: %s\n", filename, linenum, error);
+            fmt::fprintf(stderr, "%s:%i: Error: %s\n", filename, linenum, error);
         }
 
         ++linenum;
@@ -1011,8 +1011,8 @@ static void DumpSubstituteConfig(char *filename)
         return;
     }
 
-    fprintf(fs, "# Example %s substitute MIDI file.\n\n", PACKAGE_NAME);
-    fprintf(fs, "# SHA1 hash                              = filename\n");
+    fmt::fprintf(fs, "# Example %s substitute MIDI file.\n\n", PACKAGE_NAME);
+    fmt::fprintf(fs, "# SHA1 hash                              = filename\n");
 
     for (lumpindex_t lumpnum = 0; lumpnum < static_cast<int>(numlumps); ++lumpnum)
     {
@@ -1034,13 +1034,13 @@ static void DumpSubstituteConfig(char *filename)
         // Print line.
         for (h = 0; h < sizeof(sha1_digest_t); ++h)
         {
-            fprintf(fs, "%02x", digest[h]);
+            fmt::fprintf(fs, "%02x", digest[h]);
         }
 
-        fprintf(fs, " = %s.ogg\n", name);
+        fmt::fprintf(fs, " = %s.ogg\n", name);
     }
 
-    fprintf(fs, "\n");
+    fmt::fprintf(fs, "\n");
     fclose(fs);
 
     printf("Substitute MIDI config file written to %s.\n", filename);
@@ -1117,11 +1117,11 @@ static bool I_MP_InitMusic()
     }
     else if (SDL_Init(SDL_INIT_AUDIO) < 0)
     {
-        fprintf(stderr, "Unable to set up sound.\n");
+        fmt::fprintf(stderr, "Unable to set up sound.\n");
     }
     else if (Mix_OpenAudio(g_i_sound_globals->snd_samplerate, AUDIO_S16SYS, 2, 1024) < 0)
     {
-        fprintf(stderr, "Error initializing SDL_mixer: %s\n",
+        fmt::fprintf(stderr, "Error initializing SDL_mixer: %s\n",
             Mix_GetError());
         SDL_QuitSubSystem(SDL_INIT_AUDIO);
     }
@@ -1189,7 +1189,7 @@ static void I_MP_PlaySong(void *handle, bool looping)
 
     if (Mix_PlayMusic(current_track_music, loops) == -1)
     {
-        fprintf(stderr, "I_MP_PlaySong: Error starting track: %s\n",
+        fmt::fprintf(stderr, "I_MP_PlaySong: Error starting track: %s\n",
             Mix_GetError());
     }
 }
@@ -1264,7 +1264,7 @@ static void *I_MP_RegisterSong(void *data, int len)
     {
         // Fall through and play MIDI normally, but print an error
         // message.
-        fprintf(stderr, "Failed to load substitute music file: %s: %s\n",
+        fmt::fprintf(stderr, "Failed to load substitute music file: %s: %s\n",
             filename, Mix_GetError());
         return nullptr;
     }

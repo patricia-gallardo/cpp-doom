@@ -17,6 +17,9 @@
 #include <cstdarg>
 #include <cstring>
 
+#include <fmt/format.h>
+#include <fmt/printf.h>
+
 #include "memory.hpp"
 #include "txt_desktop.hpp"
 #include "txt_gui.hpp"
@@ -508,7 +511,7 @@ void TXT_OpenURL(const char *url)
     // standard that exists is the xdg-utils package.
     if (system("xdg-open --version 2>/dev/null") != 0)
     {
-        fprintf(stderr,
+        fmt::fprintf(stderr,
                 "xdg-utils is not installed. Can't open this URL:\n%s\n", url);
         free(cmd);
         return;
@@ -521,7 +524,7 @@ void TXT_OpenURL(const char *url)
     free(cmd);
     if (retval != 0)
     {
-        fprintf(stderr, "TXT_OpenURL: error executing '%s'; return code %d\n",
+        fmt::fprintf(stderr, "TXT_OpenURL: error executing '%s'; return code %d\n",
             cmd, retval);
     }
 }

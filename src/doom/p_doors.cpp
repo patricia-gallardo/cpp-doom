@@ -15,6 +15,9 @@
 // DESCRIPTION: Door animation code (opening/closing)
 //
 
+#include <fmt/format.h>
+#include <fmt/printf.h>
+
 #include "z_zone.hpp"
 #include "doomdef.hpp"
 #include "deh_main.hpp"
@@ -408,7 +411,7 @@ void EV_VerticalDoor(line_t *line,
     if (line->sidenum[side ^ 1] == NO_INDEX)
     {
         // [crispy] do not crash if the wrong side of the door is pushed
-        fprintf(stderr, "EV_VerticalDoor: DR special type on 1-sided linedef\n");
+        fmt::fprintf(stderr, "EV_VerticalDoor: DR special type on 1-sided linedef\n");
         return;
     }
 
@@ -467,7 +470,7 @@ void EV_VerticalDoor(line_t *line,
                 {
                     // This isn't a door OR a plat.  Now we're in trouble.
 
-                    fprintf(stderr, "EV_VerticalDoor: Tried to close "
+                    fmt::fprintf(stderr, "EV_VerticalDoor: Tried to close "
                                     "something that wasn't a door.\n");
 
                     // Try closing it anyway. At least it will work on 32-bit

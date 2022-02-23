@@ -18,6 +18,9 @@
 
 #include <cstring>
 
+#include <fmt/format.h>
+#include <fmt/printf.h>
+
 #include "SDL.h"
 #include "SDL_opengl.h"
 
@@ -1204,7 +1207,7 @@ static void CenterWindow(int *x, int *y, int w, int h)
 
     if (SDL_GetDisplayBounds(video_display, &bounds) < 0)
     {
-        fprintf(stderr, "CenterWindow: Failed to read display bounds "
+        fmt::fprintf(stderr, "CenterWindow: Failed to read display bounds "
                         "for display #%d!\n",
             video_display);
         return;
@@ -1220,7 +1223,7 @@ void I_GetWindowPosition(int *x, int *y, int w, int h)
     // and if it doesn't, reset it.
     if (video_display < 0 || video_display >= SDL_GetNumVideoDisplays())
     {
-        fprintf(stderr,
+        fmt::fprintf(stderr,
             "I_GetWindowPosition: We were configured to run on display #%d, "
             "but it no longer exists (max %d). Moving to display 0.\n",
             video_display, SDL_GetNumVideoDisplays() - 1);
@@ -1253,7 +1256,7 @@ void I_GetWindowPosition(int *x, int *y, int w, int h)
     else if (sscanf(g_i_video_globals->window_position, "%i,%i", x, y) != 2)
     {
         // invalid format: revert to default
-        fprintf(stderr, "I_GetWindowPosition: invalid window_position setting\n");
+        fmt::fprintf(stderr, "I_GetWindowPosition: invalid window_position setting\n");
         *x = *y = SDL_WINDOWPOS_UNDEFINED;
     }
 }

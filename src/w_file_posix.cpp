@@ -26,6 +26,9 @@
 #include <sys/mman.h>
 #include <string.h>
 
+#include <fmt/format.h>
+#include <fmt/printf.h>
+
 #include "m_misc.hpp"
 #include "w_file.hpp"
 #include "z_zone.hpp"
@@ -64,7 +67,7 @@ static void MapFile(posix_wad_file_t *wad, const char *filename)
 
     if (result == nullptr)
     {
-        fprintf(stderr, "W_POSIX_OpenFile: Unable to mmap() %s - %s\n",
+        fmt::fprintf(stderr, "W_POSIX_OpenFile: Unable to mmap() %s - %s\n",
             filename, strerror(errno));
     }
 }
