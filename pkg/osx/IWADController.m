@@ -387,21 +387,16 @@ static const char *NameForIWAD(IWAD iwad)
 - (void) setEnvironment
 {
     char *doomwadpath;
-    char *env;
 
     // Get the value for the path.
 
     doomwadpath = [self doomWadPath];
 
-    asprintf(&env, "DOOMWADPATH=%s", doomwadpath);
-
-    free(doomwadpath);
-
     // Load into environment:
 
-    putenv(env);
+    setenv("DOOMWADPATH", doomwadpath, 1);
 
-    //free(env);
+    free(doomwadpath);
 }
 
 // Examine a path to a WAD and determine whether it is an IWAD file.

@@ -112,9 +112,7 @@ void SetDisplayDriver()
 
     if (strcmp(video_driver, "") != 0)
     {
-        char *env_string = M_StringJoin("SDL_VIDEODRIVER=", video_driver, nullptr);
-        putenv(env_string);
-        free(env_string);
+        setenv("SDL_VIDEODRIVER", video_driver, 1);
     }
 }
 
