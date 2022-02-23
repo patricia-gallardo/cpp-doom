@@ -55,12 +55,9 @@ static int totallines;
 // adapted from prboom-plus/src/p_setup.c:474-482
 fixed_t GetOffset(vertex_t *v1, vertex_t *v2)
 {
-    fixed_t dx, dy;
-    fixed_t r;
-
-    dx = (v1->x - v2->x) >> FRACBITS;
-    dy = (v1->y - v2->y) >> FRACBITS;
-    r  = static_cast<fixed_t>(sqrt(dx * dx + dy * dy)) << FRACBITS;
+    fixed_t dx = (v1->x - v2->x) >> FRACBITS;
+    fixed_t dy = (v1->y - v2->y) >> FRACBITS;
+    fixed_t r  = static_cast<fixed_t>(sqrt(dx * dx + dy * dy)) << FRACBITS;
 
     return r;
 }
@@ -71,11 +68,6 @@ fixed_t GetOffset(vertex_t *v1, vertex_t *v2)
 //
 void P_LoadVertexes(int lump)
 {
-    uint8_t     *data;
-    int          i;
-    mapvertex_t *ml;
-    vertex_t *   li;
-
     // Determine number of lumps:
     //  total lump length / vertex record length.
     g_r_state_globals->numvertexes = static_cast<int>(W_LumpLength(lump) / sizeof(mapvertex_t));
@@ -84,14 +76,14 @@ void P_LoadVertexes(int lump)
     g_r_state_globals->vertexes = zmalloc<decltype(g_r_state_globals->vertexes)>(static_cast<unsigned long>(g_r_state_globals->numvertexes) * sizeof(vertex_t), PU_LEVEL, 0);
 
     // Load data into cache.
-    data = cache_lump_num<uint8_t *>(lump, PU_STATIC);
+    uint8_t *data = cache_lump_num<uint8_t *>(lump, PU_STATIC);
 
-    ml = reinterpret_cast<mapvertex_t *>(data);
-    li = g_r_state_globals->vertexes;
+    mapvertex_t *ml = reinterpret_cast<mapvertex_t *>(data);
+    vertex_t *li = g_r_state_globals->vertexes;
 
     // Copy and convert vertex coordinates,
     // internal representation as fixed.
-    for (i = 0; i < g_r_state_globals->numvertexes; i++, li++, ml++)
+    for (int i = 0; i < g_r_state_globals->numvertexes; i++, li++, ml++)
     {
         li->x = SHORT(ml->x) << FRACBITS;
         li->y = SHORT(ml->y) << FRACBITS;
@@ -130,14 +122,14 @@ sector_t *GetSectorAtNullAddress()
 //
 void P_LoadSegs(int lump)
 {
-    uint8_t  *data;
-    int       i;
-    mapseg_t *ml;
-    seg_t *   li;
-    line_t *  ldef;
-    int       linedef_local;
-    int       side;
-    int       sidenum;
+    uint8_t  *data = nullptr;
+    int       i = 0;
+    mapseg_t *ml = nullptr;
+    seg_t *   li = nullptr;
+    line_t *  ldef = nullptr;
+    int       linedef_local = 0;
+    int       side = 0;
+    int       sidenum = 0;
 
     g_r_state_globals->numsegs = static_cast<int>(W_LumpLength(lump) / sizeof(mapseg_t));
     g_r_state_globals->segs    = zmalloc<decltype(g_r_state_globals->segs)>(static_cast<unsigned long>(g_r_state_globals->numsegs) * sizeof(seg_t), PU_LEVEL, 0);
@@ -209,16 +201,14 @@ void P_LoadSegs(int lump)
 // [crispy] fix long wall wobble
 void P_SegLengths(bool contrast_only)
 {
-    int       i;
     const int rightangle = std::abs(finesine[(ANG60 / 2) >> ANGLETOFINESHIFT]);
 
-    for (i = 0; i < g_r_state_globals->numsegs; i++)
+    for (int i = 0; i < g_r_state_globals->numsegs; i++)
     {
         seg_t *const li = &g_r_state_globals->segs[i];
-        int64_t      dx, dy;
 
-        dx = li->v2->r_x - li->v1->r_x;
-        dy = li->v2->r_y - li->v1->r_y;
+        int64_t dx = li->v2->r_x - li->v1->r_x;
+        int64_t dy = li->v2->r_y - li->v1->r_y;
 
         if (!contrast_only)
         {
@@ -249,24 +239,19 @@ void P_SegLengths(bool contrast_only)
 //
 void P_LoadSubsectors(int lump)
 {
-    uint8_t        *data;
-    int             i;
-    mapsubsector_t *ms;
-    subsector_t *   ss;
-
     g_r_state_globals->numsubsectors = static_cast<int>(W_LumpLength(lump) / sizeof(mapsubsector_t));
     g_r_state_globals->subsectors    = zmalloc<decltype(g_r_state_globals->subsectors)>(static_cast<unsigned long>(g_r_state_globals->numsubsectors) * sizeof(subsector_t), PU_LEVEL, 0);
-    data          = cache_lump_num<uint8_t *>(lump, PU_STATIC);
+    uint8_t        *data          = cache_lump_num<uint8_t *>(lump, PU_STATIC);
 
     // [crispy] fail on missing subsectors
     if (!data || !g_r_state_globals->numsubsectors)
         I_Error("P_LoadSubsectors: No subsectors in map!");
 
-    ms = reinterpret_cast<mapsubsector_t *>(data);
+    auto *ms = reinterpret_cast<mapsubsector_t *>(data);
     std::memset(g_r_state_globals->subsectors, 0, static_cast<unsigned long>(g_r_state_globals->numsubsectors) * sizeof(subsector_t));
-    ss = g_r_state_globals->subsectors;
+    subsector_t *ss = g_r_state_globals->subsectors;
 
-    for (i = 0; i < g_r_state_globals->numsubsectors; i++, ss++, ms++)
+    for (int i = 0; i < g_r_state_globals->numsubsectors; i++, ss++, ms++)
     {
         ss->numlines  = static_cast<unsigned short>(SHORT(ms->numsegs));  // [crispy] extended nodes
         ss->firstline = static_cast<unsigned short>(SHORT(ms->firstseg)); // [crispy] extended nodes
@@ -281,11 +266,6 @@ void P_LoadSubsectors(int lump)
 //
 void P_LoadSectors(int lump)
 {
-    uint8_t     *data;
-    int          i;
-    mapsector_t *ms;
-    sector_t *   ss;
-
     // [crispy] fail on missing sectors
     if (lump >= static_cast<int>(numlumps))
         I_Error("P_LoadSectors: No sectors in map!");
@@ -293,15 +273,15 @@ void P_LoadSectors(int lump)
     g_r_state_globals->numsectors = static_cast<int>(W_LumpLength(lump) / sizeof(mapsector_t));
     g_r_state_globals->sectors    = zmalloc<decltype(g_r_state_globals->sectors)>(static_cast<unsigned long>(g_r_state_globals->numsectors) * sizeof(sector_t), PU_LEVEL, 0);
     std::memset(g_r_state_globals->sectors, 0, static_cast<unsigned long>(g_r_state_globals->numsectors) * sizeof(sector_t));
-    data = cache_lump_num<uint8_t *>(lump, PU_STATIC);
+    uint8_t *data = cache_lump_num<uint8_t *>(lump, PU_STATIC);
 
     // [crispy] fail on missing sectors
     if (!data || !g_r_state_globals->numsectors)
         I_Error("P_LoadSectors: No sectors in map!");
 
-    ms = reinterpret_cast<mapsector_t *>(data);
-    ss = g_r_state_globals->sectors;
-    for (i = 0; i < g_r_state_globals->numsectors; i++, ss++, ms++)
+    auto *ms = reinterpret_cast<mapsector_t *>(data);
+    sector_t *ss = g_r_state_globals->sectors;
+    for (int i = 0; i < g_r_state_globals->numsectors; i++, ss++, ms++)
     {
         ss->floorheight   = SHORT(ms->floorheight) << FRACBITS;
         ss->ceilingheight = SHORT(ms->ceilingheight) << FRACBITS;
@@ -333,16 +313,9 @@ void P_LoadSectors(int lump)
 //
 void P_LoadNodes(int lump)
 {
-    uint8_t   *data;
-    int        i;
-    int        j;
-    int        k;
-    mapnode_t *mn;
-    node_t *   no;
-
     g_r_state_globals->numnodes = static_cast<int>(W_LumpLength(lump) / sizeof(mapnode_t));
     g_r_state_globals->nodes    = zmalloc<decltype(g_r_state_globals->nodes)>(static_cast<unsigned long>(g_r_state_globals->numnodes) * sizeof(node_t), PU_LEVEL, 0);
-    data     = cache_lump_num<uint8_t *>(lump, PU_STATIC);
+    uint8_t *data     = cache_lump_num<uint8_t *>(lump, PU_STATIC);
 
     // [crispy] warn about missing nodes
     if (!data || !g_r_state_globals->numnodes)
@@ -353,16 +326,16 @@ void P_LoadNodes(int lump)
             I_Error("P_LoadNodes: No nodes in map!");
     }
 
-    mn = reinterpret_cast<mapnode_t *>(data);
-    no = g_r_state_globals->nodes;
+    auto *mn = reinterpret_cast<mapnode_t *>(data);
+    node_t *no = g_r_state_globals->nodes;
 
-    for (i = 0; i < g_r_state_globals->numnodes; i++, no++, mn++)
+    for (int i = 0; i < g_r_state_globals->numnodes; i++, no++, mn++)
     {
         no->x  = SHORT(mn->x) << FRACBITS;
         no->y  = SHORT(mn->y) << FRACBITS;
         no->dx = SHORT(mn->dx) << FRACBITS;
         no->dy = SHORT(mn->dy) << FRACBITS;
-        for (j = 0; j < 2; j++)
+        for (int j = 0; j < 2; j++)
         {
             no->children[j] = static_cast<unsigned short>(SHORT(mn->children[j])); // [crispy] extended nodes
 
@@ -380,7 +353,7 @@ void P_LoadNodes(int lump)
                 no->children[j] |= NF_SUBSECTOR;
             }
 
-            for (k = 0; k < 4; k++)
+            for (int k = 0; k < 4; k++)
                 no->bbox[j][k] = SHORT(mn->bbox[j][k]) << FRACBITS;
         }
     }
@@ -394,20 +367,13 @@ void P_LoadNodes(int lump)
 //
 void P_LoadThings(int lump)
 {
-    uint8_t    *data;
-    int         i;
-    mapthing_t *mt;
-    mapthing_t  spawnthing;
-    int         numthings;
-    bool     spawn;
+    uint8_t *data = cache_lump_num<uint8_t *>(lump, PU_STATIC);
+    int numthings = static_cast<int>(W_LumpLength(lump) / sizeof(mapthing_t));
 
-    data      = cache_lump_num<uint8_t *>(lump, PU_STATIC);
-    numthings = static_cast<int>(W_LumpLength(lump) / sizeof(mapthing_t));
-
-    mt = reinterpret_cast<mapthing_t *>(data);
-    for (i = 0; i < numthings; i++, mt++)
+    mapthing_t *mt = reinterpret_cast<mapthing_t *>(data);
+    for (int i = 0; i < numthings; i++, mt++)
     {
-        spawn = true;
+        bool spawn = true;
 
         // Do not spawn cool, new monsters if !commercial
         if (g_doomstat_globals->gamemode != commercial)
@@ -432,6 +398,7 @@ void P_LoadThings(int lump)
             break;
 
         // Do spawn all other stuff.
+        mapthing_t  spawnthing;
         spawnthing.x       = SHORT(mt->x);
         spawnthing.y       = SHORT(mt->y);
         spawnthing.angle   = SHORT(mt->angle);
@@ -443,7 +410,7 @@ void P_LoadThings(int lump)
 
     if (!g_doomstat_globals->deathmatch)
     {
-        for (i = 0; i < MAXPLAYERS; i++)
+        for (int i = 0; i < MAXPLAYERS; i++)
         {
             if (g_doomstat_globals->playeringame[i] && !g_doomstat_globals->playerstartsingame[i])
             {

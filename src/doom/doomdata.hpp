@@ -217,8 +217,8 @@ typedef PACKED_STRUCT(
 // BSP node structure.
 
 // Indicate a leaf.
-#define NF_SUBSECTOR 0x80000000           // [crispy] extended nodes
-#define NO_INDEX     (static_cast<unsigned short>(-1)) // [crispy] extended nodes
+constexpr auto NF_SUBSECTOR = 0x80000000;           // [crispy] extended nodes
+constexpr auto NO_INDEX     = (static_cast<unsigned short>(-1)); // [crispy] extended nodes
 
 typedef PACKED_STRUCT(
     {

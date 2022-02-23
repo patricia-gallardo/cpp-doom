@@ -51,13 +51,13 @@ int test;
 // of times the loop in P_SetMobjState() executes and exit with an error once
 // an arbitrary very large limit is reached.
 
-#define MOBJ_CYCLE_LIMIT 1000000
+constexpr auto MOBJ_CYCLE_LIMIT = 1000000;
 
 bool
     P_SetMobjState(mobj_t *mobj,
         statenum_t         state)
 {
-    state_t *st;
+    state_t *st = nullptr;
     int      cycle_counter = 0;
 
     do
@@ -162,16 +162,16 @@ void P_ExplodeMissile(mobj_t *mo)
 //
 // P_XYMovement
 //
-#define STOPSPEED 0x1000
-#define FRICTION  0xe800
+constexpr auto STOPSPEED = 0x1000;
+constexpr auto FRICTION  = 0xe800;
 
 void P_XYMovement(mobj_t *mo)
 {
-    fixed_t   ptryx;
-    fixed_t   ptryy;
-    player_t *player;
-    fixed_t   xmove;
-    fixed_t   ymove;
+    fixed_t   ptryx = 0;
+    fixed_t   ptryy = 0;
+    player_t *player = nullptr;
+    fixed_t   xmove = 0;
+    fixed_t   ymove = 0;
 
     if (!mo->momx && !mo->momy)
     {

@@ -136,11 +136,11 @@ int musicVolume;
 //  w/o a reference LUT in a sound module.
 // Ideally, this would use indices found
 //  in: /usr/include/linux/soundcard.h
-int snd_MusicDevice;
-int snd_SfxDevice;
+[[maybe_unused]] int snd_MusicDevice;
+[[maybe_unused]] int snd_SfxDevice;
 // Config file? Same disclaimer as above.
-int snd_DesiredMusicDevice;
-int snd_DesiredSfxDevice;
+[[maybe_unused]] int snd_DesiredMusicDevice;
+[[maybe_unused]] int snd_DesiredSfxDevice;
 
 
 // -------------------------
@@ -150,7 +150,7 @@ int snd_DesiredSfxDevice;
 // Depending on view size - no status bar?
 // Note that there is no way to disable the
 //  status bar explicitely.
-bool statusbaractive;
+[[maybe_unused]] bool statusbaractive;
 
 // in AM_map.c
 bool automapactive; // In AutoMap mode?

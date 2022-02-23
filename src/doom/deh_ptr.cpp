@@ -89,13 +89,11 @@ static void *DEH_PointerStart(deh_context_t *context, char *line)
 
 static void DEH_PointerParseLine(deh_context_t *context, char *line, void *tag)
 {
-    state_t *state = nullptr;
     char    *variable_name = nullptr, *value = nullptr;
-    int      ivalue = 0;
 
     if (tag == nullptr) return;
 
-    state = reinterpret_cast<state_t *>(tag);
+    auto *state = reinterpret_cast<state_t *>(tag);
 
     // Parse the assignment
 
@@ -110,7 +108,7 @@ static void DEH_PointerParseLine(deh_context_t *context, char *line, void *tag)
 
     // all values are integers
 
-    ivalue = std::atoi(value);
+    int ivalue = std::atoi(value);
 
     // set the appropriate field
 

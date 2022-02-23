@@ -38,7 +38,7 @@
 #include "lump.hpp"
 
 
-planefunction_t floorfunc;
+[[maybe_unused]] planefunction_t floorfunc;
 planefunction_t ceilingfunc;
 
 //
@@ -80,7 +80,7 @@ fixed_t        planeheight;
 
 fixed_t *yslope;
 fixed_t  yslopes[LOOKDIRS][MAXHEIGHT];
-fixed_t  distscale[MAXWIDTH];
+[[maybe_unused]] fixed_t  distscale[MAXWIDTH];
 fixed_t  basexscale;
 fixed_t  baseyscale;
 

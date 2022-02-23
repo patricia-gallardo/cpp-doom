@@ -32,15 +32,15 @@ extern int *lastopening; // [crispy] 32-bit integer math
 
 using planefunction_t = void (*)(int, int);
 
-extern planefunction_t floorfunc;
-extern planefunction_t ceilingfunc_t;
+[[maybe_unused]] extern planefunction_t floorfunc;
+[[maybe_unused]] extern planefunction_t ceilingfunc_t;
 
 extern int floorclip[MAXWIDTH];   // [crispy] 32-bit integer math
 extern int ceilingclip[MAXWIDTH]; // [crispy] 32-bit integer math
 
 extern fixed_t *yslope;
 extern fixed_t  yslopes[LOOKDIRS][MAXHEIGHT];
-extern fixed_t  distscale[MAXWIDTH];
+[[maybe_unused]] extern fixed_t  distscale[MAXWIDTH];
 
 void R_InitPlanes();
 void R_ClearPlanes();

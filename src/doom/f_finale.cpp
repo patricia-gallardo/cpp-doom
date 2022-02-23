@@ -196,7 +196,7 @@ bool F_Responder(event_t *event)
 //
 void F_Ticker()
 {
-    size_t i;
+    size_t i = 0;
 
     // check for skipping
     if ((g_doomstat_globals->gamemode == commercial)

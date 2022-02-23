@@ -660,10 +660,10 @@ bool P_ThingHeightClip(mobj_t *thing)
 // Allows the player to slide along any angled walls.
 //
 fixed_t bestslidefrac;
-fixed_t secondslidefrac;
+[[maybe_unused]] fixed_t secondslidefrac;
 
 line_t *bestslideline;
-line_t *secondslideline;
+[[maybe_unused]] line_t *secondslideline;
 
 mobj_t *slidemo;
 
