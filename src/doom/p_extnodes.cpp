@@ -18,6 +18,9 @@
 // 	format or DeePBSP format and/or LINEDEFS and THINGS lumps in Hexen format
 //
 
+#include <fmt/format.h>
+#include <fmt/printf.h>
+
 #include "m_bbox.hpp"
 #include "p_local.hpp"
 #include "i_swap.hpp"
@@ -49,31 +52,31 @@ mapformat_t P_CheckMapFormat(int lumpnum)
 
     if ((b = lumpnum + ML_BLOCKMAP + 1) < static_cast<int>(numlumps) && !strncasecmp(lumpinfo[b]->name, "BEHAVIOR", 8))
     {
-        fprintf(stderr, "Hexen (");
+        fmt::fprintf(stderr, "Hexen (");
         format = static_cast<mapformat_t>(format | MFMT_HEXEN);
     }
     else
-        fprintf(stderr, "Doom (");
+        fmt::fprintf(stderr, "Doom (");
 
     if (!((b = lumpnum + ML_NODES) < static_cast<int>(numlumps) && (nodes_local = cache_lump_num<uint8_t *>(b, PU_CACHE)) && W_LumpLength(b) > 0))
-        fprintf(stderr, "no nodes");
+        fmt::fprintf(stderr, "no nodes");
     else if (!memcmp(nodes_local, "xNd4\0\0\0\0", 8))
     {
-        fprintf(stderr, "DeePBSP");
+        fmt::fprintf(stderr, "DeePBSP");
         format = static_cast<mapformat_t>(format | MFMT_DEEPBSP);
     }
     else if (!memcmp(nodes_local, "XNOD", 4))
     {
-        fprintf(stderr, "ZDBSP");
+        fmt::fprintf(stderr, "ZDBSP");
         format = static_cast<mapformat_t>(format | MFMT_ZDBSPX);
     }
     else if (!memcmp(nodes_local, "ZNOD", 4))
     {
-        fprintf(stderr, "compressed ZDBSP");
+        fmt::fprintf(stderr, "compressed ZDBSP");
         format = static_cast<mapformat_t>(format | MFMT_ZDBSPZ);
     }
     else
-        fprintf(stderr, "BSP");
+        fmt::fprintf(stderr, "BSP");
 
     if (nodes_local)
         W_ReleaseLumpNum(b);
@@ -125,7 +128,7 @@ void P_LoadSegs_DeePBSP(int lump)
                 if (li->sidedef->midtexture)
                 {
                     li->backsector = 0;
-                    fprintf(stderr, "P_LoadSegs: Linedef %d has two-sided flag set, but no second sidedef\n", i);
+                    fmt::fprintf(stderr, "P_LoadSegs: Linedef %d has two-sided flag set, but no second sidedef\n", i);
                 }
                 else
                     li->backsector = GetSectorAtNullAddress();
@@ -173,7 +176,7 @@ void P_LoadNodes_DeePBSP(int lump)
     if (!data || !g_r_state_globals->numnodes)
     {
         if (g_r_state_globals->numsubsectors == 1)
-            fprintf(stderr, "P_LoadNodes: No nodes in map, but only one subsector.\n");
+            fmt::fprintf(stderr, "P_LoadNodes: No nodes in map, but only one subsector.\n");
         else
             I_Error("P_LoadNodes: No nodes in map!");
     }
@@ -265,7 +268,7 @@ void P_LoadNodes_ZDBSP(int lump, bool compressed)
         if (err != Z_STREAM_END)
             I_Error("P_LoadNodes: Error during ZDBSP nodes decompression!");
 
-        fprintf(stderr, "P_LoadNodes: ZDBSP nodes compression ratio %.3f\n",
+        fmt::fprintf(stderr, "P_LoadNodes: ZDBSP nodes compression ratio %.3f\n",
             (float)zstream->total_out / zstream->total_in);
 
         data = output;
@@ -403,7 +406,7 @@ void P_LoadNodes_ZDBSP(int lump, bool compressed)
                 if (li->sidedef->midtexture)
                 {
                     li->backsector = 0;
-                    fprintf(stderr, "P_LoadSegs: Linedef %u has two-sided flag set, but no second sidedef\n", i);
+                    fmt::fprintf(stderr, "P_LoadSegs: Linedef %u has two-sided flag set, but no second sidedef\n", i);
                 }
                 else
                     li->backsector = GetSectorAtNullAddress();
@@ -514,7 +517,7 @@ void P_LoadLineDefs_Hexen(int lump)
         // [crispy] warn about unknown linedef types
         if (static_cast<unsigned short>(ld->special > 141))
         {
-            fprintf(stderr, "P_LoadLineDefs: Unknown special %d at line %d\n", ld->special, i);
+            fmt::fprintf(stderr, "P_LoadLineDefs: Unknown special %d at line %d\n", ld->special, i);
             warn++;
         }
 
@@ -567,7 +570,7 @@ void P_LoadLineDefs_Hexen(int lump)
         if (ld->sidenum[0] == NO_INDEX)
         {
             ld->sidenum[0] = 0;
-            fprintf(stderr, "P_LoadLineDefs: linedef %d without first sidedef!\n", i);
+            fmt::fprintf(stderr, "P_LoadLineDefs: linedef %d without first sidedef!\n", i);
         }
 
         if (ld->sidenum[0] != NO_INDEX)
@@ -583,7 +586,7 @@ void P_LoadLineDefs_Hexen(int lump)
     // [crispy] warn about unknown linedef types
     if (warn)
     {
-        fprintf(stderr, "P_LoadLineDefs: Found %d line%s with unknown linedef type.\n"
+        fmt::fprintf(stderr, "P_LoadLineDefs: Found %d line%s with unknown linedef type.\n"
                         "THIS MAP MAY NOT WORK AS EXPECTED!\n",
             warn, (warn > 1) ? "s" : "");
     }

@@ -48,6 +48,9 @@
 #include <errno.h>
 #include <unistd.h>
 
+#include <fmt/format.h>
+#include <fmt/printf.h>
+
 #include "opl.hpp"
 #include "opl_internal.hpp"
 #include "opl_timer.hpp"
@@ -60,7 +63,7 @@ static int OPL_OpenBSD_Init(unsigned int port_base)
 
     if (set_iopl(3) < 0)
     {
-        fprintf(stderr, "Failed to get raise I/O privilege level: "
+        fmt::fprintf(stderr, "Failed to get raise I/O privilege level: "
                         "check that you are running as root.\n");
         return 0;
     }

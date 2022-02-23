@@ -17,6 +17,9 @@
 
 #include <cstdio>
 
+#include <fmt/format.h>
+#include <fmt/printf.h>
+
 #include "SDL_mixer.h"
 
 #include "config.h"
@@ -248,7 +251,7 @@ void I_InitSound(bool use_sfx_prefix)
     {
         const char *driver_name = SDL_GetCurrentAudioDriver();
 
-        fprintf(stderr, "I_InitSound: SDL audio driver is %s\n", driver_name ? driver_name : "none");
+        fmt::fprintf(stderr, "I_InitSound: SDL audio driver is %s\n", driver_name ? driver_name : "none");
     }
 }
 

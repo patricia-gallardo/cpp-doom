@@ -19,6 +19,9 @@
 #include <cstdlib>
 #include <cstring>
 
+#include <fmt/format.h>
+#include <fmt/printf.h>
+
 #include "config.h"
 #include "deh_main.hpp"
 #include "i_system.hpp"
@@ -437,7 +440,7 @@ static void NET_CL_ParseSYN(net_packet_t *packet)
     // fixes a compatibility issue, we may still have problems.
     if (strcmp(server_version, PACKAGE_STRING) != 0)
     {
-        fprintf(stderr, "NET_CL_ParseSYN: This is '%s', but the server is "
+        fmt::fprintf(stderr, "NET_CL_ParseSYN: This is '%s', but the server is "
                         "'%s'. It is possible that this mismatch may cause the game "
                         "to desync.\n",
             PACKAGE_STRING, server_version);
@@ -1162,7 +1165,7 @@ void NET_CL_Disconnect()
             NET_Log("client: no acknowledgement of disconnect received");
             client_state = CLIENT_STATE_WAITING_START;
 
-            fprintf(stderr, "NET_CL_Disconnect: Timeout while disconnecting "
+            fmt::fprintf(stderr, "NET_CL_Disconnect: Timeout while disconnecting "
                             "from server\n");
             break;
         }

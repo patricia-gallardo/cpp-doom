@@ -20,6 +20,9 @@
 #include <cstdlib>
 #include <cstring>
 
+#include <fmt/format.h>
+#include <fmt/printf.h>
+
 #include "i_system.hpp"
 #include "i_timer.hpp"
 #include "m_misc.hpp"
@@ -96,7 +99,7 @@ net_addr_t *NET_Query_ResolveMaster(net_context_t *context)
 
     if (addr == nullptr)
     {
-        fprintf(stderr, "Warning: Failed to resolve address "
+        fmt::fprintf(stderr, "Warning: Failed to resolve address "
                         "for master server: %s\n",
             MASTER_SERVER_ADDRESS);
     }
@@ -480,7 +483,7 @@ static void CheckTargetTimeouts()
 
             if (targets[i].type == QUERY_TARGET_MASTER)
             {
-                fprintf(stderr, "NET_MasterQuery: no response "
+                fmt::fprintf(stderr, "NET_MasterQuery: no response "
                                 "from master server.\n");
             }
         }

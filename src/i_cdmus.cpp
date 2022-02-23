@@ -18,13 +18,16 @@
 
 #include <cstdio>
 
+#include <fmt/format.h>
+#include <fmt/printf.h>
+
 #include "i_cdmus.hpp"
 
 [[maybe_unused]] int cd_Error;
 
 [[maybe_unused]] int I_CDMusInit()
 {
-    fprintf(stderr,
+    fmt::fprintf(stderr,
         "I_CDMusInit: CD music playback is no longer supported! "
         "Please use digital music packs instead:\n"
         "https://www.chocolate-doom.org/wiki/index.php/Digital_music_packs\n");

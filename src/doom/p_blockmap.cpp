@@ -18,11 +18,15 @@
 //	[crispy] Create Blockmap
 //
 
+#include <cstdlib>
+
+#include <fmt/format.h>
+#include <fmt/printf.h>
+
 #include "memory.hpp"
 #include "i_system.hpp"
 #include "p_local.hpp"
 #include "z_zone.hpp"
-#include <cstdlib>
 
 // [crispy] taken from mbfsrc/P_SETUP.C:547-707, slightly adapted
 
@@ -185,5 +189,5 @@ void P_CreateBlockMap()
         g_p_local_globals->blockmap = g_p_local_globals->blockmaplump + 4;
     }
 
-    fprintf(stderr, "+BLOCKMAP)\n");
+    fmt::fprintf(stderr, "+BLOCKMAP)\n");
 }

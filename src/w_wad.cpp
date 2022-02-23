@@ -22,6 +22,9 @@
 #include <cstring>
 #include <string>
 
+#include <fmt/format.h>
+#include <fmt/printf.h>
+
 #include "doomtype.hpp"
 
 #include "i_swap.hpp"
@@ -508,12 +511,12 @@ void W_Profile ()
 	for ( ; j<8 ; j++)
 	    name[j] = ' ';
 
-	fprintf (f,"%s ",name);
+	fmt::fprintf (f,"%s ",name);
 
 	for (j=0 ; j<profilecount ; j++)
-	    fprintf (f,"    %c",info[i][j]);
+	    fmt::fprintf (f,"    %c",info[i][j]);
 
-	fprintf (f,"\n");
+	fmt::fprintf (f,"\n");
     }
     fclose (f);
 }

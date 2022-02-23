@@ -20,6 +20,9 @@
 #include <cstdlib>
 #include <cstring>
 
+#include <fmt/format.h>
+#include <fmt/printf.h>
+
 #include "memory.hpp"
 #include "opl_queue.hpp"
 
@@ -68,7 +71,7 @@ void OPL_Queue_Push(opl_callback_queue_t *queue,
 {
     if (queue->num_entries >= MAX_OPL_QUEUE)
     {
-        fprintf(stderr, "OPL_Queue_Push: Exceeded maximum callbacks\n");
+        fmt::fprintf(stderr, "OPL_Queue_Push: Exceeded maximum callbacks\n");
         return;
     }
 

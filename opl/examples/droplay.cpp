@@ -70,13 +70,13 @@ void Init()
 {
     if (SDL_Init(SDL_INIT_TIMER) < 0)
     {
-        fprintf(stderr, "Unable to initialise SDL timer\n");
+        fmt::fprintf(stderr, "Unable to initialise SDL timer\n");
         exit(-1);
     }
 
     if (!OPL_Init(ADLIB_PORT))
     {
-        fprintf(stderr, "Unable to initialise OPL layer\n");
+        fmt::fprintf(stderr, "Unable to initialise OPL layer\n");
         exit(-1);
     }
 }
@@ -153,19 +153,19 @@ void PlayFile(char *filename)
 
     if (timer_data.fstream == nullptr)
     {
-        fprintf(stderr, "Failed to open %s\n", filename);
+        fmt::fprintf(stderr, "Failed to open %s\n", filename);
         exit(-1);
     }
 
     if (fread(buf, 1, 8, timer_data.fstream) < 8)
     {
-        fprintf(stderr, "failed to read raw OPL header\n");
+        fmt::fprintf(stderr, "failed to read raw OPL header\n");
         exit(-1);
     }
 
     if (strncmp(buf, HEADER_STRING, 8) != 0)
     {
-        fprintf(stderr, "Raw OPL header not found\n");
+        fmt::fprintf(stderr, "Raw OPL header not found\n");
         exit(-1);
     }
 

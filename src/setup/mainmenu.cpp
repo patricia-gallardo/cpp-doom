@@ -15,6 +15,9 @@
 #include <cstdio>
 #include <cstdlib>
 
+#include <fmt/format.h>
+#include <fmt/printf.h>
+
 #include "config.h"
 #include "textscreen.hpp"
 
@@ -307,7 +310,7 @@ static void InitTextscreen()
 
     if (!TXT_Init())
     {
-        fprintf(stderr, "Failed to initialize GUI\n");
+        fmt::fprintf(stderr, "Failed to initialize GUI\n");
         exit(-1);
     }
 

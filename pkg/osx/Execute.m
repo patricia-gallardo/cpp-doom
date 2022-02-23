@@ -53,12 +53,12 @@ static void WriteResponseFile(const char *iwad, const char *args)
 
     if (iwad != nullptr)
     {
-        fprintf(fstream, "-iwad \"%s\"", iwad);
+        fmt::fprintf(fstream, "-iwad \"%s\"", iwad);
     }
 
     if (args != nullptr)
     {
-        fprintf(fstream, "%s", args);
+        fmt::fprintf(fstream, "%s", args);
     }
 
     fclose(fstream);
@@ -125,7 +125,7 @@ static void WriteMessage(FILE *script, char *msg)
 {
     char *p;
 
-    fprintf(script, "echo \"");
+    fmt::fprintf(script, "echo \"");
 
     for (p=msg; *p != '\0'; ++p)
     {
@@ -133,7 +133,7 @@ static void WriteMessage(FILE *script, char *msg)
 
         if (*p == '\n')
         {
-            fprintf(script, "\"\necho \"");
+            fmt::fprintf(script, "\"\necho \"");
             continue;
         }
 
@@ -141,13 +141,13 @@ static void WriteMessage(FILE *script, char *msg)
 
         if (*p == '\\' || *p == '\"')
         {
-            fprintf(script, "\\");
+            fmt::fprintf(script, "\\");
         }
 
-        fprintf(script, "%c", *p);
+        fmt::fprintf(script, "%c", *p);
     }
 
-    fprintf(script, "\"\n");
+    fmt::fprintf(script, "\"\n");
 }
 
 // Open a terminal window with the PATH set appropriately, and DOOMWADPATH
@@ -164,9 +164,9 @@ void OpenTerminalWindow(const char *doomwadpath)
 
     stream = fopen(TEMP_SCRIPT, "w");
 
-    fprintf(stream, "#!/bin/sh\n");
+    fmt::fprintf(stream, "#!/bin/sh\n");
     //fprintf(stream, "set -x\n");
-    fprintf(stream, "PATH=\"%s:$PATH\"\n", executable_path);
+    fmt::fprintf(stream, "PATH=\"%s:$PATH\"\n", executable_path);
 
     // MANPATH is set to point to the directory within the bundle that
     // contains the Unix manpages.  However, the bundle name or path to
@@ -174,22 +174,22 @@ void OpenTerminalWindow(const char *doomwadpath)
     // workaround, create a symlink in /tmp to point to the real directory,
     // and put *this* in MANPATH.
 
-    fprintf(stream, "rm -f \"/tmp/%s.man\"\n", PACKAGE_TARNAME);
-    fprintf(stream, "ln -s \"%s/man\" \"/tmp/%s.man\"\n",
+    fmt::fprintf(stream, "rm -f \"/tmp/%s.man\"\n", PACKAGE_TARNAME);
+    fmt::fprintf(stream, "ln -s \"%s/man\" \"/tmp/%s.man\"\n",
                     executable_path, PACKAGE_TARNAME);
-    fprintf(stream, "MANPATH=\"/tmp/%s.man:$(manpath)\"\n", PACKAGE_TARNAME);
-    fprintf(stream, "export MANPATH\n");
+    fmt::fprintf(stream, "MANPATH=\"/tmp/%s.man:$(manpath)\"\n", PACKAGE_TARNAME);
+    fmt::fprintf(stream, "export MANPATH\n");
 
-    fprintf(stream, "DOOMWADPATH=\"%s\"\n", doomwadpath);
-    fprintf(stream, "export DOOMWADPATH\n");
-    fprintf(stream, "rm -f \"%s\"\n", TEMP_SCRIPT);
+    fmt::fprintf(stream, "DOOMWADPATH=\"%s\"\n", doomwadpath);
+    fmt::fprintf(stream, "export DOOMWADPATH\n");
+    fmt::fprintf(stream, "rm -f \"%s\"\n", TEMP_SCRIPT);
 
     // Window title to something more interesting than "tempscript":
-    fprintf(stream, "echo -en \"\\033]0;%s\\a\"\n", WINDOW_TITLE);
+    fmt::fprintf(stream, "echo -en \"\\033]0;%s\\a\"\n", WINDOW_TITLE);
 
     // Display a useful message:
 
-    fprintf(stream, "clear\n");
+    fmt::fprintf(stream, "clear\n");
     WriteMessage(stream,
         "\n"
         "This command line has the PATH variable configured so that you may\n"
@@ -201,8 +201,8 @@ void OpenTerminalWindow(const char *doomwadpath)
         "\n"
         "Type 'exit' to exit.\n");
 
-    fprintf(stream, "exec $SHELL\n");
-    fprintf(stream, "\n");
+    fmt::fprintf(stream, "exec $SHELL\n");
+    fmt::fprintf(stream, "\n");
 
     fclose(stream);
 

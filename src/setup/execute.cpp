@@ -20,6 +20,8 @@
 #include <cstring>
 #include <cctype>
 
+#include <fmt/format.h>
+#include <fmt/printf.h>
 
 #ifdef _WIN32
 
@@ -116,7 +118,7 @@ execute_context_t *NewExecuteContext()
 
     if (result->stream == nullptr)
     {
-        fprintf(stderr, "Error opening response file\n");
+        fmt::fprintf(stderr, "Error opening response file\n");
         exit(-1);
     }
     
@@ -130,7 +132,7 @@ void AddCmdLineParameter(execute_context_t *context, const char *s, ...)
     va_start(args, s);
 
     vfprintf(context->stream, s, args);
-    fprintf(context->stream, "\n");
+    fmt::fprintf(context->stream, "\n");
 
     va_end(args);
 }

@@ -267,7 +267,7 @@ void I_Error(const char *error, ...)
 
     if (already_quitting)
     {
-        fprintf(stderr, "Warning: recursive call to I_Error detected.\n");
+        fmt::fprintf(stderr, "Warning: recursive call to I_Error detected.\n");
         exit(-1);
     }
     else
@@ -279,7 +279,7 @@ void I_Error(const char *error, ...)
     va_start(argptr, error);
     //fprintf(stderr, "\nError: ");
     vfprintf(stderr, error, argptr);
-    fprintf(stderr, "\n\n");
+    fmt::fprintf(stderr, "\n\n");
     va_end(argptr);
     fflush(stderr);
 

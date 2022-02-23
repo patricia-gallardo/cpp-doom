@@ -19,6 +19,9 @@
 
 #include <cstdio>
 
+#include <fmt/format.h>
+#include <fmt/printf.h>
+
 #include "i_system.hpp"
 #include "deh_main.hpp"
 #include "doomdef.hpp"
@@ -169,7 +172,7 @@ void P_InitSwitchList()
 
             if (texture1 == -1 || texture2 == -1)
             {
-                fprintf(stderr, "P_InitSwitchList: could not add %s(%d)/%s(%d)\n",
+                fmt::fprintf(stderr, "P_InitSwitchList: could not add %s(%d)/%s(%d)\n",
                     name1, texture1, name2, texture2);
             }
             else

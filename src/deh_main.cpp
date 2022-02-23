@@ -288,7 +288,7 @@ static void DEH_ParseContext(deh_context_t *context)
     if (!CheckSignatures(context))
     {
         // [crispy] make non-fatal
-        fprintf(stderr, "This is not a valid dehacked patch file!\n");
+        fmt::fprintf(stderr, "This is not a valid dehacked patch file!\n");
     }
 
     // Read the file
@@ -409,7 +409,7 @@ int DEH_LoadFile(const char *filename)
 
     if (context == nullptr)
     {
-        fprintf(stderr, "DEH_LoadFile: Unable to open %s\n", filename);
+        fmt::fprintf(stderr, "DEH_LoadFile: Unable to open %s\n", filename);
         return 0;
     }
 
@@ -466,7 +466,7 @@ int DEH_LoadLump(int lumpnum, bool, bool allow_error)
 
     if (context == nullptr)
     {
-        fprintf(stderr, "DEH_LoadFile: Unable to open lump %i\n", lumpnum);
+        fmt::fprintf(stderr, "DEH_LoadFile: Unable to open lump %i\n", lumpnum);
         return 0;
     }
 
@@ -490,7 +490,7 @@ int DEH_LoadLumpByName(const char *name, bool allow_long, bool allow_error)
 
     if (lumpnum == -1)
     {
-        fprintf(stderr, "DEH_LoadLumpByName: '%s' lump not found\n", name);
+        fmt::fprintf(stderr, "DEH_LoadLumpByName: '%s' lump not found\n", name);
         return 0;
     }
 

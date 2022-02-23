@@ -310,13 +310,13 @@ void S_ParseMusInfo(const char *mapid)
                         }
                         else
                         {
-                            fprintf(stderr, "S_ParseMusInfo: Unknown MUS lump %s\n", sc_String);
+                            fmt::fprintf(stderr, "S_ParseMusInfo: Unknown MUS lump %s\n", sc_String);
                         }
                     }
                 }
                 else
                 {
-                    fprintf(stderr, "S_ParseMusInfo: Number not in range 1 to %d\n", MAX_MUS_ENTRIES - 1);
+                    fmt::fprintf(stderr, "S_ParseMusInfo: Number not in range 1 to %d\n", MAX_MUS_ENTRIES - 1);
                 }
             }
         }

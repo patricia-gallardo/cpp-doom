@@ -20,6 +20,9 @@
 #include <cstdio>
 #include <cstdlib>
 
+#include <fmt/format.h>
+#include <fmt/printf.h>
+
 #include "deh_misc.hpp"
 
 #include "m_bbox.hpp"
@@ -248,7 +251,7 @@ bool PIT_CheckLine(line_t *ld)
         {
             // [crispy] print a warning
             if (g_p_local_globals->numspechit == MAXSPECIALCROSS_ORIGINAL + 1)
-                fprintf(stderr, "PIT_CheckLine: Triggered SPECHITS overflow!\n");
+                fmt::fprintf(stderr, "PIT_CheckLine: Triggered SPECHITS overflow!\n");
             SpechitOverrun(ld);
         }
     }
@@ -1631,7 +1634,7 @@ static void SpechitOverrun(line_t *ld)
         nofit = addr;
         break;
     default:
-        fprintf(stderr, "SpechitOverrun: Warning: unable to emulate"
+        fmt::fprintf(stderr, "SpechitOverrun: Warning: unable to emulate"
                         "an overrun where numspechit=%i\n",
             g_p_local_globals->numspechit);
         break;

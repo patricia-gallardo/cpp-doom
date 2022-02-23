@@ -510,7 +510,7 @@ static bool ExpandSoundData_SRC(sfxinfo_t *sfxinfo,
 
     if (clipped > 0)
     {
-        fprintf(stderr, "Sound '%s': clipped %u samples (%0.2f %%)\n",
+        fmt::fprintf(stderr, "Sound '%s': clipped %u samples (%0.2f %%)\n",
             sfxinfo->name, clipped,
             400.0 * clipped / chunk->alen);
     }
@@ -1130,13 +1130,13 @@ static bool I_SDL_InitSound(bool _use_sfx_prefix)
 
     if (SDL_Init(SDL_INIT_AUDIO) < 0)
     {
-        fprintf(stderr, "Unable to set up sound.\n");
+        fmt::fprintf(stderr, "Unable to set up sound.\n");
         return false;
     }
 
     if (Mix_OpenAudio(g_i_sound_globals->snd_samplerate, AUDIO_S16SYS, 2, GetSliceSize()) < 0)
     {
-        fprintf(stderr, "Error initialising SDL_mixer: %s\n", Mix_GetError());
+        fmt::fprintf(stderr, "Error initialising SDL_mixer: %s\n", Mix_GetError());
         return false;
     }
 
@@ -1158,7 +1158,7 @@ static bool I_SDL_InitSound(bool _use_sfx_prefix)
 #else
     if (use_libsamplerate != 0)
     {
-        fprintf(stderr, "I_SDL_InitSound: use_libsamplerate=%i, but "
+        fmt::fprintf(stderr, "I_SDL_InitSound: use_libsamplerate=%i, but "
                         "libsamplerate support not compiled in.\n",
             use_libsamplerate);
     }

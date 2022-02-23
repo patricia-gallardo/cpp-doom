@@ -21,6 +21,9 @@
 #include <cstdio>
 #include <cstdlib>
 
+#include <fmt/format.h>
+#include <fmt/printf.h>
+
 #include "m_random.hpp"
 #include "i_system.hpp"
 
@@ -1200,7 +1203,7 @@ void A_VileChase(mobj_t *actor)
                     if (corpsehit->height == 0 && corpsehit->radius == 0)
                     {
                         corpsehit->flags |= MF_TRANSLUCENT;
-                        fprintf(stderr, "A_VileChase: Resurrected ghost monster (%d) at (%d/%d)!\n",
+                        fmt::fprintf(stderr, "A_VileChase: Resurrected ghost monster (%d) at (%d/%d)!\n",
                             corpsehit->type, corpsehit->x >> FRACBITS, corpsehit->y >> FRACBITS);
                     }
 
@@ -1839,7 +1842,7 @@ void A_BrainAwake(mobj_t *)
                 braintargets    = static_cast<decltype(braintargets)>(I_Realloc(braintargets, static_cast<unsigned long>(maxbraintargets) * sizeof(*braintargets)));
 
                 if (maxbraintargets > 32)
-                    fprintf(stderr, "R_BrainAwake: Raised braintargets limit to %d.\n", maxbraintargets);
+                    fmt::fprintf(stderr, "R_BrainAwake: Raised braintargets limit to %d.\n", maxbraintargets);
             }
 
             braintargets[numbraintargets] = m;

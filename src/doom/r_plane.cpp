@@ -22,6 +22,9 @@
 #include <cstdio>
 #include <cstdlib>
 
+#include <fmt/format.h>
+#include <fmt/printf.h>
+
 #include "i_system.hpp"
 #include "z_zone.hpp"
 #include "w_wad.hpp"
@@ -224,7 +227,7 @@ static void R_RaiseVisplanes(visplane_t **vp)
         g_r_state_globals->ceilingplane = visplanes + (g_r_state_globals->ceilingplane - visplanes_old);
 
         if (numvisplanes_old)
-            fprintf(stderr, "R_FindPlane: Hit MAXVISPLANES limit at %d, raised to %d.\n", numvisplanes_old, numvisplanes);
+            fmt::fprintf(stderr, "R_FindPlane: Hit MAXVISPLANES limit at %d, raised to %d.\n", numvisplanes_old, numvisplanes);
 
         // keep the pointer passed as argument in relation to the visplanes pointer
         if (vp)

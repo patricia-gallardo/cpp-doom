@@ -20,6 +20,8 @@
 //	Line Tag handling. Line and Sector triggers.
 //
 
+#include <fmt/format.h>
+#include <fmt/printf.h>
 
 #include "doomdef.hpp"
 #include "doomstat.hpp"
@@ -397,7 +399,7 @@ fixed_t
             else if (h == MAX_ADJOINING_SECTORS + 2)
             {
                 // Fatal overflow: game crashes at 22 sectors
-                fprintf(stderr, "Sector with more than 22 adjoining sectors. "
+                fmt::fprintf(stderr, "Sector with more than 22 adjoining sectors. "
                                 "Vanilla will crash here\n");
             }
 
@@ -492,7 +494,7 @@ int P_FindSectorFromLineTag(line_t *line,
 	if (&sectors[i] == line->backsector)
 	{
 	    const long linedef = line - lines;
-	    fprintf(stderr, "P_FindSectorFromLineTag: Linedef %ld without tag applied to sector %d\n", linedef, i);
+	    fmt::fprintf(stderr, "P_FindSectorFromLineTag: Linedef %ld without tag applied to sector %d\n", linedef, i);
 	    return i;
 	}
     }
@@ -502,7 +504,7 @@ int P_FindSectorFromLineTag(line_t *line,
     if (!line->tag)
     {
         const long linedef_local = static_cast<long>(line - g_r_state_globals->lines);
-        fprintf(stderr, "P_FindSectorFromLineTag: Linedef %ld without tag\n", linedef_local);
+        fmt::fprintf(stderr, "P_FindSectorFromLineTag: Linedef %ld without tag\n", linedef_local);
     }
 #endif
 
@@ -1167,7 +1169,7 @@ void P_PlayerInSpecialSector(player_t *player)
         if (error != sector)
         {
             error = sector;
-            fprintf(stderr, "P_PlayerInSpecialSector: "
+            fmt::fprintf(stderr, "P_PlayerInSpecialSector: "
                             "unknown special %i\n",
                 sector->special);
         }
@@ -1374,7 +1376,7 @@ static void DonutOverrun(fixed_t *s3_floorheight, short *s3_floorpic, line_t *, 
 
             if (tmp_s3_floorpic >= numflats)
             {
-                fprintf(stderr,
+                fmt::fprintf(stderr,
                     "DonutOverrun: The second parameter for \"-donut\" "
                     "switch should be greater than 0 and less than number "
                     "of flats (%d). Using default value (%d) instead. \n",
@@ -1385,7 +1387,7 @@ static void DonutOverrun(fixed_t *s3_floorheight, short *s3_floorpic, line_t *, 
     }
 
     /*
-    fprintf(stderr,
+    fmt::fprintf(stderr,
             "Linedef: %d; Sector: %d; "
             "New floor height: %d; New floor pic: %d\n",
             line->iLineID, pillar_sector->iSectorID,
@@ -1436,7 +1438,7 @@ int EV_DoDonut(line_t *line)
 
         if (s2 == nullptr)
         {
-            fprintf(stderr,
+            fmt::fprintf(stderr,
                 "EV_DoDonut: linedef had no second sidedef! "
                 "Unexpected behavior may occur in Vanilla Doom. \n");
             break;
@@ -1457,7 +1459,7 @@ int EV_DoDonut(line_t *line)
                 // s3->floorpic is a short at 0000:0008
                 // Trying to emulate
 
-                fprintf(stderr,
+                fmt::fprintf(stderr,
                     "EV_DoDonut: WARNING: emulating buffer overrun due to "
                     "NULL back sector. "
                     "Unexpected behavior may occur in Vanilla Doom.\n");

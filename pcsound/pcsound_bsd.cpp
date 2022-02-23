@@ -211,7 +211,7 @@ static int StartSoundServer()
 
     if (result < 0)
     {
-        fprintf(stderr, "Failed to fork sound server!\n");
+        fmt::fprintf(stderr, "Failed to fork sound server!\n");
         close(speaker_handle);
         return 0;
     }
@@ -286,7 +286,7 @@ static int PCSound_BSD_Init(pcsound_callback_func callback_func)
 
     if (!StartSoundServer())
     {
-        fprintf(stderr, "PCSound_BSD_Init: Failed to start sound server.\n");
+        fmt::fprintf(stderr, "PCSound_BSD_Init: Failed to start sound server.\n");
         return 0;
     }
 

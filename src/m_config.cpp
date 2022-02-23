@@ -23,6 +23,9 @@
 #include <cctype>
 #include <cassert>
 
+#include <fmt/format.h>
+#include <fmt/printf.h>
+
 #include "SDL_filesystem.h"
 
 #include "config.h"
@@ -2264,10 +2267,10 @@ static void SaveDefaultCollection(default_collection_t *collection)
 
         // Print the name and line up all values at 30 characters
 
-        int chars_written = fprintf(f, "%s ", defaults[i].name);
+        int chars_written = fmt::fprintf(f, "%s ", defaults[i].name);
 
         for (; chars_written < 30; ++chars_written)
-            fprintf(f, " ");
+            fmt::fprintf(f, " ");
 
         // Print the value
 
@@ -2314,27 +2317,27 @@ static void SaveDefaultCollection(default_collection_t *collection)
                 }
             }
 
-            fprintf(f, "%i", v);
+            fmt::fprintf(f, "%i", v);
             break;
 
         case DEFAULT_INT:
-            fprintf(f, "%i", *defaults[i].location.i);
+            fmt::fprintf(f, "%i", *defaults[i].location.i);
             break;
 
         case DEFAULT_INT_HEX:
-            fprintf(f, "0x%x", *defaults[i].location.i);
+            fmt::fprintf(f, "0x%x", *defaults[i].location.i);
             break;
 
         case DEFAULT_FLOAT:
-            fprintf(f, "%f", *defaults[i].location.f);
+            fmt::fprintf(f, "%f", *defaults[i].location.f);
             break;
 
         case DEFAULT_STRING:
-            fprintf(f, "\"%s\"", *defaults[i].location.s);
+            fmt::fprintf(f, "\"%s\"", *defaults[i].location.s);
             break;
         }
 
-        fprintf(f, "\n");
+        fmt::fprintf(f, "\n");
     }
 
     fclose(f);
