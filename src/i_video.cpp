@@ -1187,14 +1187,11 @@ static void SetSDLVideoDriver()
 
     if (nographics)
     {
-        char env_string[] = "SDL_VIDEODRIVER=dummy";
-        putenv(env_string);
+        setenv("SDL_VIDEODRIVER", "dummy", 1);
     }
     else if (strcmp(g_i_video_globals->video_driver, "") != 0)
     {
-        char *env_string = M_StringJoin("SDL_VIDEODRIVER=", g_i_video_globals->video_driver, nullptr);
-        putenv(env_string);
-        free(env_string);
+        setenv("SDL_VIDEODRIVER", g_i_video_globals->video_driver, 1);
     }
 }
 
@@ -1543,13 +1540,7 @@ void I_InitGraphics()
 
     if (env != nullptr)
     {
-        char winenv[30];
-        int  winid;
-
-        sscanf(env, "0x%x", &winid);
-        M_snprintf(winenv, sizeof(winenv), "SDL_WINDOWID=%i", winid);
-
-        putenv(winenv);
+        setenv("SDL_WINDOWID", env, 1);
     }
 
     SetSDLVideoDriver();

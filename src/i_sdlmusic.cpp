@@ -84,7 +84,6 @@ static bool WriteWrapperTimidityConfig(char *write_path)
 
 void I_InitTimidityConfig()
 {
-    char *  env_string;
     bool success;
 
     temp_timidity_cfg = M_TempFile("timidity.cfg");
@@ -103,8 +102,7 @@ void I_InitTimidityConfig()
 
     if (success)
     {
-        env_string = M_StringJoin("TIMIDITY_CFG=", temp_timidity_cfg, nullptr);
-        putenv(env_string);
+        setenv("TIMIDITY_CFG", temp_timidity_cfg, 1);
     }
     else
     {
