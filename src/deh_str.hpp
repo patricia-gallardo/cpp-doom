@@ -20,26 +20,52 @@
 
 #include <cstdio>
 
+#include <fmt/format.h>
+#include <fmt/printf.h>
+
 #include "doomtype.hpp"
 
 // Used to do dehacked text substitutions throughout the program
 
 const char *DEH_String(const char *s) PRINTF_ARG_ATTR(1);
-void        DEH_printf(const char *fmt, ...) PRINTF_ATTR(1, 2);
-void        DEH_fprintf(FILE *fstream, const char *fmt, ...) PRINTF_ATTR(2, 3);
-void        DEH_snprintf(char *buffer, size_t len, const char *fmt, ...) PRINTF_ATTR(3, 4);
-void        DEH_AddStringReplacement(const char *from_text, const char *to_text);
+
+// fmt::printf(), performing a replacement on the format string.
+template <typename ...Args>
+void DEH_printf(const char *fmt, Args && ...args)
+{
+    fmt::printf(fmt, args...);
+}
+
+// fmt::fprintf(), performing a replacement on the format string.
+template <typename ...Args>
+void DEH_fprintf(FILE *fstream, const char *fmt, Args && ...args)
+{
+    fmt::fprintf(fstream, fmt, args...);
+}
+
+// snprintf(), performing a replacement on the format string.
+template <typename ...Args>
+void DEH_snprintf(char *buffer, size_t len, const char *fmt, Args && ...args)
+{
+    if (len < 1)
+    {
+        return;
+    }
+
+    // Windows (and other OSes?) has a vsnprintf() that doesn't always
+    // append a trailing \0. So we must do it, and write into a buffer
+    // that is one byte shorter; otherwise this function is unsafe.
+    int result = snprintf(buffer, len, fmt, args...);
+
+    // If truncated, change the final char in the buffer to a \0.
+    // A negative result indicates a truncated buffer on Windows.
+    if (result < 0 || result >= static_cast<int>(len))
+    {
+        buffer[len - 1] = '\0';
+    }
+}
+
+void     DEH_AddStringReplacement(const char *from_text, const char *to_text);
 bool     DEH_HasStringReplacement(const char *s);
-
-
-#if 0
-// Static macro versions of the functions above
-
-#define DEH_String(x) (x)
-#define DEH_printf    printf
-#define DEH_fprintf   fprintf
-#define DEH_snprintf  snprintf
-
-#endif
 
 #endif /* #ifndef DEH_STR_H */
