@@ -1497,7 +1497,7 @@ void D_DoomMain()
 
     I_PrintBanner(PACKAGE_STRING);
 
-    DEH_printf("Z_Init: Init zone memory allocation daemon. \n");
+    fmt::printf("Z_Init: Init zone memory allocation daemon. \n");
     Z_Init();
 
     //!
@@ -1627,7 +1627,7 @@ void D_DoomMain()
         g_doomstat_globals->deathmatch = 3;
 
     if (g_doomstat_globals->devparm)
-        DEH_printf(D_DEVSTR);
+        fmt::printf(D_DEVSTR);
 
         // find which dir to use for config files
 
@@ -1678,7 +1678,7 @@ void D_DoomMain()
             scale = 10;
         if (scale > 400)
             scale = 400;
-        DEH_printf("turbo scale: %i%%\n", scale);
+        fmt::printf("turbo scale: %i%%\n", scale);
         forwardmove[0] = forwardmove[0] * scale / 100;
         forwardmove[1] = forwardmove[1] * scale / 100;
         sidemove[0]    = sidemove[0] * scale / 100;
@@ -1686,11 +1686,11 @@ void D_DoomMain()
     }
 
     // init subsystems
-    DEH_printf("V_Init: allocate screens.\n");
+    fmt::printf("V_Init: allocate screens.\n");
     V_Init();
 
     // Load configuration files before initialising other subsystems.
-    DEH_printf("M_LoadDefaults: Load system defaults.\n");
+    fmt::printf("M_LoadDefaults: Load system defaults.\n");
     M_SetConfigFilenames("default.cfg", PROGRAM_PREFIX "doom.cfg");
     D_BindVariables();
     M_LoadDefaults();
@@ -1711,7 +1711,7 @@ void D_DoomMain()
 
     g_doomstat_globals->modifiedgame = false;
 
-    DEH_printf("W_Init: Init WADfiles.\n");
+    fmt::printf("W_Init: Init WADfiles.\n");
     D_AddFile(iwadfile);
     size_t numiwadlumps = numlumps;
 
@@ -2043,7 +2043,7 @@ void D_DoomMain()
     I_PrintStartupBanner(g_doomstat_globals->gamedescription);
     PrintDehackedBanners();
 
-    DEH_printf("I_Init: Setting up machine state.\n");
+    fmt::printf("I_Init: Setting up machine state.\n");
     I_CheckIsScreensaver();
     I_InitTimer();
     I_InitJoystick();
@@ -2250,27 +2250,27 @@ void D_DoomMain()
         g_doomstat_globals->startloadgame = -1;
     }
 
-    DEH_printf("M_Init: Init miscellaneous info.\n");
+    fmt::printf("M_Init: Init miscellaneous info.\n");
     M_Init();
 
-    DEH_printf("R_Init: Init DOOM refresh daemon - ");
+    fmt::printf("R_Init: Init DOOM refresh daemon - ");
     R_Init();
 
-    DEH_printf("\nP_Init: Init Playloop state.\n");
+    fmt::printf("\nP_Init: Init Playloop state.\n");
     P_Init();
 
-    DEH_printf("S_Init: Setting up sound.\n");
+    fmt::printf("S_Init: Setting up sound.\n");
     S_Init(g_doomstat_globals->sfxVolume * 8, g_doomstat_globals->musicVolume * 8);
 
-    DEH_printf("D_CheckNetGame: Checking network game status.\n");
+    fmt::printf("D_CheckNetGame: Checking network game status.\n");
     D_CheckNetGame();
 
     PrintGameVersion();
 
-    DEH_printf("HU_Init: Setting up heads up display.\n");
+    fmt::printf("HU_Init: Setting up heads up display.\n");
     HU_Init();
 
-    DEH_printf("ST_Init: Init status bar.\n");
+    fmt::printf("ST_Init: Init status bar.\n");
     ST_Init();
 
     // If Doom II without a MAP01 lump, this is a store demo.
@@ -2283,7 +2283,7 @@ void D_DoomMain()
     if (M_CheckParmWithArgs("-statdump", 1))
     {
         I_AtExit(StatDump, true);
-        DEH_printf("External statistics registered.\n");
+        fmt::printf("External statistics registered.\n");
     }
 
     //!
