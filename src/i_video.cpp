@@ -1554,7 +1554,7 @@ void I_InitGraphics()
 
     SetSDLVideoDriver();
 
-    if (SDL_Init(SDL_INIT_VIDEO) < 0)
+    if (!nographics && SDL_Init(SDL_INIT_VIDEO) < 0)
     {
         I_Error("Failed to initialize video: %s", SDL_GetError());
     }
