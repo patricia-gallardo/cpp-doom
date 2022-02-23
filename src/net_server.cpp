@@ -221,7 +221,7 @@ static void NET_SV_BroadcastMessage(const char *s, ...)
         }
     }
 
-    printf("%s\n", buf);
+    fmt::printf("%s\n", buf);
 }
 
 

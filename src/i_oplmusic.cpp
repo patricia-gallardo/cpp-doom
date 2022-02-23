@@ -21,6 +21,9 @@
 #include <cstdlib>
 #include <cstring>
 
+#include <fmt/format.h>
+#include <fmt/printf.h>
+
 #include "memio.hpp"
 #include "mus2mid.hpp"
 
@@ -1276,7 +1279,7 @@ static void KeyOffEvent(opl_track_data_t *track, midi_event_t *event)
     unsigned int        key;
 
     /*
-    printf("note off: channel %i, %i, %i\n",
+   fmt::printf("note off: channel %i, %i, %i\n",
            event->data.channel.channel,
            event->data.channel.param1,
            event->data.channel.param2);
@@ -1535,7 +1538,7 @@ static void VoiceKeyOn(opl_channel_data_t *channel,
 static void KeyOnEvent(opl_track_data_t *track, midi_event_t *event)
 {
     /*
-    printf("note on: channel %i, %i, %i\n",
+   fmt::printf("note on: channel %i, %i, %i\n",
            event->data.channel.channel,
            event->data.channel.param1,
            event->data.channel.param2);
@@ -1744,7 +1747,7 @@ static void AllNotesOff(opl_channel_data_t *channel, unsigned int)
 static void ControllerEvent(opl_track_data_t *track, midi_event_t *event)
 {
     /*
-    printf("change controller: channel %i, %i, %i\n",
+   fmt::printf("change controller: channel %i, %i, %i\n",
            event->data.channel.channel,
            event->data.channel.param1,
            event->data.channel.param2);
@@ -2259,7 +2262,7 @@ static bool I_OPL_InitMusic()
     opl_init_result_t chip_type = OPL_Init(static_cast<unsigned int>(opl_io_port));
     if (chip_type == OPL_INIT_NONE)
     {
-        printf("Dude.  The Adlib isn't responding.\n");
+       fmt::printf("Dude.  The Adlib isn't responding.\n");
         return false;
     }
 

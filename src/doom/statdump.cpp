@@ -22,6 +22,9 @@
 #include <cstdio>
 #include <cstring>
 
+#include <fmt/format.h>
+#include <fmt/printf.h>
+
 #include "d_player.hpp"
 #include "d_mode.hpp"
 #include "m_argv.hpp"
@@ -323,7 +326,7 @@ void StatDump()
 
     if (index_of_arg > 0)
     {
-        printf("Statistics captured for %i level(s)\n", num_captured_stats);
+        fmt::printf("Statistics captured for %i level(s)\n", num_captured_stats);
 
         // We actually know what the real gamemission is, but this has
         // to match the output from statdump.exe.

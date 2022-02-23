@@ -20,6 +20,9 @@
 #include <cstring>
 #include <cctype>
 
+#include <fmt/format.h>
+#include <fmt/printf.h>
+
 #include "i_glob.hpp"
 #include "i_system.hpp"
 #include "d_iwad.hpp"
@@ -403,7 +406,7 @@ int DEH_LoadFile(const char *filename)
     deh_allow_extended_strings = false;
 */
 
-    printf(" loading %s\n", filename);
+   fmt::printf(" loading %s\n", filename);
 
     deh_context_t *context = DEH_OpenFile(filename);
 
@@ -437,7 +440,7 @@ void DEH_AutoLoadPatches(const char *path)
         {
             break;
         }
-        printf(" [autoload]");
+       fmt::printf(" [autoload]");
         DEH_LoadFile(filename);
     }
 

@@ -595,7 +595,7 @@ static void NET_CL_SendResendRequest(int start, int end)
     unsigned int  nowtime;
     int           i;
 
-    //printf("CL: Send resend %i-%i\n", start, end);
+    //fmt::printf("CL: Send resend %i-%i\n", start, end);
 
     packet = NET_NewPacket(64);
     NET_WriteInt16(packet, NET_PACKET_TYPE_GAMEDATA_RESEND);
@@ -781,7 +781,7 @@ static void NET_CL_ParseGameData(net_packet_t *packet)
     // all tics before the first tic in this packet?  If so, send a
     // resend request.
 
-    //printf("CL: %p: %i\n", client, seq);
+    //fmt::printf("CL: %p: %i\n", client, seq);
 
     resend_end = static_cast<int>(seq - recvwindow_start);
 
@@ -853,7 +853,7 @@ static void NET_CL_ParseResendRequest(net_packet_t *packet)
 
     end = start + num_tics - 1;
 
-    //printf("requested resend %i-%i .. ", start, end);
+    //fmt::printf("requested resend %i-%i .. ", start, end);
     NET_Log("client: resend request: start=%d, num_tics=%d", start, num_tics);
 
     // Check we have the tics being requested.  If not, reduce the
@@ -898,7 +898,7 @@ static void NET_CL_ParseConsoleMessage(net_packet_t *packet)
         return;
     }
 
-    printf("Message from server:\n%s\n", msg);
+    fmt::printf("Message from server:\n%s\n", msg);
 }
 
 // parse a received packet

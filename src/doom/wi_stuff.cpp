@@ -19,6 +19,9 @@
 #include <array>
 #include <cstdio>
 
+#include <fmt/format.h>
+#include <fmt/printf.h>
+
 #include "z_zone.hpp"
 
 #include "m_misc.hpp"
@@ -381,7 +384,7 @@ static patch_t *star;
 static patch_t *bstar;
 
 // "red P[1..MAXPLAYERS]"
-static patch_t *p[MAXPLAYERS];
+static patch_t *patches[MAXPLAYERS];
 
 // "gray P[1..MAXPLAYERS]"
 static patch_t *bp[MAXPLAYERS];
@@ -520,7 +523,7 @@ void WI_drawOnLnode(int n,
     else
     {
         // DEBUG
-        printf("Could not place patch on level %d", n + 1);
+        fmt::printf("Could not place patch on level %d", n + 1);
     }
 }
 
@@ -1052,21 +1055,21 @@ void WI_drawDeathmatchStats()
     {
         if (g_doomstat_globals->playeringame[i])
         {
-            V_DrawPatch(x - SHORT(p[i]->width) / 2,
+            V_DrawPatch(x - SHORT(patches[i]->width) / 2,
                 DM_MATRIXY - WI_SPACINGY,
-                p[i]);
+                patches[i]);
 
-            V_DrawPatch(DM_MATRIXX - SHORT(p[i]->width) / 2,
+            V_DrawPatch(DM_MATRIXX - SHORT(patches[i]->width) / 2,
                 y,
-                p[i]);
+                patches[i]);
 
             if (i == me)
             {
-                V_DrawPatch(x - SHORT(p[i]->width) / 2,
+                V_DrawPatch(x - SHORT(patches[i]->width) / 2,
                     DM_MATRIXY - WI_SPACINGY,
                     bstar);
 
-                V_DrawPatch(DM_MATRIXX - SHORT(p[i]->width) / 2,
+                V_DrawPatch(DM_MATRIXX - SHORT(patches[i]->width) / 2,
                     y,
                     star);
             }
@@ -1327,10 +1330,10 @@ void WI_drawNetgameStats()
             continue;
 
         x = NG_STATSX;
-        V_DrawPatch(x - SHORT(p[i]->width), y, p[i]);
+        V_DrawPatch(x - SHORT(patches[i]->width), y, patches[i]);
 
         if (i == me)
-            V_DrawPatch(x - SHORT(p[i]->width), y, star);
+            V_DrawPatch(x - SHORT(patches[i]->width), y, star);
 
         x += NG_SPACINGX;
         WI_drawPercent(x - pwidth, y + 10, cnt_kills[i]);
@@ -1820,7 +1823,7 @@ static void WI_loadUnloadData(load_callback_t callback)
     {
         // "1,2,3,4"
         DEH_snprintf(name, 9, "STPB%d", i);
-        callback(name, &p[i]);
+        callback(name, &patches[i]);
 
         // "1,2,3,4"
         DEH_snprintf(name, 9, "WIBP%d", i + 1);

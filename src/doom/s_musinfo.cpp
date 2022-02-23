@@ -24,6 +24,10 @@
 // HEADER FILES ------------------------------------------------------------
 
 #include <cstring>
+
+#include <fmt/format.h>
+#include <fmt/printf.h>
+
 #include "doomstat.hpp"
 #include "i_system.hpp"
 #include "m_misc.hpp"
@@ -306,7 +310,7 @@ void S_ParseMusInfo(const char *mapid)
                         if (lumpnum > 0)
                         {
                             musinfo.items[num] = lumpnum;
-                            //            printf("S_ParseMusInfo: (%d) %s\n", num, sc_String);
+                            //           fmt::printf("S_ParseMusInfo: (%d) %s\n", num, sc_String);
                         }
                         else
                         {

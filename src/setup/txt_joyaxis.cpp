@@ -15,6 +15,9 @@
 #include <cstdio>
 #include <cstdlib>
 
+#include <fmt/format.h>
+#include <fmt/printf.h>
+
 #include "SDL.h"
 
 #include "joystick.hpp"
@@ -239,7 +242,7 @@ static void IdentifyBadAxes(txt_joystick_axis_t *joystick_axis)
 
         if (joystick_axis->bad_axis[i])
         {
-            printf("Ignoring uncentered joystick axis #%i: %i\n", i, val);
+            fmt::printf("Ignoring uncentered joystick axis #%i: %i\n", i, val);
         }
     }
 }

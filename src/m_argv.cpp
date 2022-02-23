@@ -21,6 +21,9 @@
 #include <cstdlib>
 #include <cstring>
 
+#include <fmt/format.h>
+#include <fmt/printf.h>
+
 #include "i_system.hpp"
 #include "m_misc.hpp"
 #include "m_argv.hpp" // haleyjd 20110212: warning fix
@@ -79,11 +82,11 @@ static void LoadResponseFile(int argv_index, const char *filename)
 
     if (handle == nullptr)
     {
-        printf("\nNo such response file!");
+       fmt::printf("\nNo such response file!");
         exit(1);
     }
 
-    printf("Found response file %s!\n", filename);
+   fmt::printf("Found response file %s!\n", filename);
 
     auto size = static_cast<size_t>(M_FileLength(handle));
 
@@ -201,11 +204,11 @@ static void LoadResponseFile(int argv_index, const char *filename)
     // Disabled - Vanilla Doom does not do this.
     // Display arguments
 
-    printf("%d command-line args:\n", myargc);
+   fmt::printf("%d command-line args:\n", myargc);
 
     for (k=1; k<myargc; k++)
     {
-        printf("'%s'\n", myargv[k]);
+       fmt::printf("'%s'\n", myargv[k]);
     }
 #endif
 }

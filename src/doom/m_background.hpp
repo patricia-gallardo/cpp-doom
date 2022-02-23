@@ -28,6 +28,9 @@ you so incredibly much for this! - Fabian
 
 #include <stdio.h>
 
+#include <fmt/format.h>
+#include <fmt/printf.h>
+
 int main (int argc, char **argv)
 {
 	FILE *file;
@@ -40,10 +43,10 @@ int main (int argc, char **argv)
 
 	while ((c = getc(file)) != EOF)
 	{
-		printf("0x%02x, ", c);
+		fmt::printf("0x%02x, ", c);
 		if (!(++i % 64))
 		{
-			printf("\n");
+			fmt::printf("\n");
 		}
 	}
 

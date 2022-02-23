@@ -135,7 +135,7 @@ void NET_Query_AddResponse(net_packet_t *packet)
 
         if (!registered_with_master)
         {
-            printf("Registered with master server at %s\n",
+           fmt::printf("Registered with master server at %s\n",
                 MASTER_SERVER_ADDRESS);
             registered_with_master = true;
         }
@@ -144,7 +144,7 @@ void NET_Query_AddResponse(net_packet_t *packet)
     {
         // Always show rejections.
 
-        printf("Failed to register with master server at %s\n",
+       fmt::printf("Failed to register with master server at %s\n",
             MASTER_SERVER_ADDRESS);
     }
 
@@ -466,7 +466,7 @@ static void CheckTargetTimeouts()
     for (int i = 0; i < num_targets; ++i)
     {
         /*
-        printf("target %i: state %i, queries %i, query time %i\n",
+       fmt::printf("target %i: state %i, queries %i, query time %i\n",
                i, targets[i].state, targets[i].query_attempts,
                now - targets[i].query_time);
         */
@@ -722,27 +722,27 @@ static void NET_QueryPrintCallback(net_addr_t *addr, net_querydata_t *data, unsi
 
     if (data->gamemode != indetermined)
     {
-        printf("(%s) ", GameDescription(data->gamemode,
+       fmt::printf("(%s) ", GameDescription(data->gamemode,
                             data->gamemission));
     }
 
     if (data->server_state)
     {
-        printf("(game running) ");
+       fmt::printf("(game running) ");
     }
 
-    printf("%s\n", data->description);
+   fmt::printf("%s\n", data->description);
 }
 
 void NET_LANQuery()
 {
     if (NET_StartLANQuery())
     {
-        printf("\nSearching for servers on local LAN ...\n");
+       fmt::printf("\nSearching for servers on local LAN ...\n");
 
         NET_Query_QueryLoop(NET_QueryPrintCallback, nullptr);
 
-        printf("\n%i server(s) found.\n", GetNumResponses());
+       fmt::printf("\n%i server(s) found.\n", GetNumResponses());
         FreeTargets();
     }
 }
@@ -751,11 +751,11 @@ void NET_MasterQuery()
 {
     if (NET_StartMasterQuery())
     {
-        printf("\nSearching for servers on Internet ...\n");
+       fmt::printf("\nSearching for servers on Internet ...\n");
 
         NET_Query_QueryLoop(NET_QueryPrintCallback, nullptr);
 
-        printf("\n%i server(s) found.\n", GetNumResponses());
+       fmt::printf("\n%i server(s) found.\n", GetNumResponses());
         FreeTargets();
     }
 }
@@ -775,7 +775,7 @@ void NET_QueryAddress(char *addr_str)
 
     query_target_t *target = GetTargetForAddr(addr, true);
 
-    printf("\nQuerying '%s'...\n", addr_str);
+   fmt::printf("\nQuerying '%s'...\n", addr_str);
 
     // Run query loop.
 

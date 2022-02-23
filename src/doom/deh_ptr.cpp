@@ -19,6 +19,9 @@
 #include <cstdlib>
 #include <cstring>
 
+#include <fmt/format.h>
+#include <fmt/printf.h>
+
 #include "info.hpp"
 #include "deh_defs.hpp"
 #include "deh_io.hpp"
@@ -104,7 +107,7 @@ static void DEH_PointerParseLine(deh_context_t *context, char *line, void *tag)
         return;
     }
 
-    //    printf("Set %s to %s for state\n", variable_name, value);
+    //   fmt::printf("Set %s to %s for state\n", variable_name, value);
 
     // all values are integers
 

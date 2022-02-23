@@ -20,6 +20,9 @@
 #include <cstdio>
 #include <cstdlib>
 
+#include <fmt/format.h>
+#include <fmt/printf.h>
+
 #include "SDL.h"
 
 #include "opl.hpp"
@@ -87,7 +90,7 @@ static opl_init_result_t InitDriver(opl_driver_t *_driver,
     opl_init_result_t result2 = OPL_Detect();
     if (result1 == OPL_INIT_NONE || result2 == OPL_INIT_NONE)
     {
-        printf("OPL_Init: No OPL detected using '%s' driver.\n", _driver->name);
+        fmt::printf("OPL_Init: No OPL detected using '%s' driver.\n", _driver->name);
         _driver->shutdown_func();
         driver = nullptr;
         return OPL_INIT_NONE;
@@ -95,7 +98,7 @@ static opl_init_result_t InitDriver(opl_driver_t *_driver,
 
     init_stage_reg_writes = 0;
 
-    printf("OPL_Init: Using driver '%s'.\n", driver->name);
+    fmt::printf("OPL_Init: Using driver '%s'.\n", driver->name);
 
     return result2;
 }
@@ -113,7 +116,7 @@ static opl_init_result_t AutoSelectDriver(unsigned int port_base)
         }
     }
 
-    printf("OPL_Init: Failed to find a working driver.\n");
+    fmt::printf("OPL_Init: Failed to find a working driver.\n");
 
     return OPL_INIT_NONE;
 }
@@ -140,14 +143,14 @@ opl_init_result_t OPL_Init(unsigned int port_base)
                 }
                 else
                 {
-                    printf("OPL_Init: Failed to initialize "
+                    fmt::printf("OPL_Init: Failed to initialize "
                            "driver: '%s'.\n", driver_name);
                     return OPL_INIT_NONE;
                 }
             }
         }
 
-        printf("OPL_Init: unknown driver: '%s'.\n", driver_name);
+        fmt::printf("OPL_Init: unknown driver: '%s'.\n", driver_name);
 
         return OPL_INIT_NONE;
     }
@@ -180,7 +183,7 @@ void OPL_WritePort(opl_port_t port, unsigned int value)
     if (driver != nullptr)
     {
 #ifdef OPL_DEBUG_TRACE
-        printf("OPL_write: %i, %x\n", port, value);
+        fmt::printf("OPL_write: %i, %x\n", port, value);
         fflush(stdout);
 #endif
         driver->write_port_func(port, value);
@@ -192,14 +195,14 @@ unsigned int OPL_ReadPort(opl_port_t port)
     if (driver != nullptr)
     {
 #ifdef OPL_DEBUG_TRACE
-        printf("OPL_read: %i...\n", port);
+        fmt::printf("OPL_read: %i...\n", port);
         fflush(stdout);
 #endif
 
         unsigned int result = driver->read_port_func(port);
 
 #ifdef OPL_DEBUG_TRACE
-        printf("OPL_read: %i -> %x\n", port, result);
+        fmt::printf("OPL_read: %i -> %x\n", port, result);
         fflush(stdout);
 #endif
 

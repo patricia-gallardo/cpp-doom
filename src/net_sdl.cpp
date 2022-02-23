@@ -18,6 +18,9 @@
 #include <cstdlib>
 #include <cstring>
 
+#include <fmt/format.h>
+#include <fmt/printf.h>
+
 #include "memory.hpp"
 #include "i_system.hpp"
 #include "m_argv.hpp"
@@ -233,7 +236,7 @@ static void NET_SDL_SendPacket(net_addr_t *addr, net_packet_t *packet)
 
         if (I_GetTime() - lasttime > TICRATE)
         {
-            printf("%i bytes sent in the last second\n", this_second_sent);
+            fmt::printf("%i bytes sent in the last second\n", this_second_sent);
             lasttime = I_GetTime();
             this_second_sent = 0;
         }

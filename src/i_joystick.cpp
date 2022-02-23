@@ -22,6 +22,9 @@
 #include <cstdio>
 #include <cstring>
 
+#include <fmt/format.h>
+#include <fmt/printf.h>
+
 #include "d_event.hpp"
 #include "i_joystick.hpp"
 #include "i_system.hpp"
@@ -132,7 +135,7 @@ static int DeviceIndex()
         dev_guid = SDL_JoystickGetDeviceGUID(i);
         if (!memcmp(&guid, &dev_guid, sizeof(SDL_JoystickGUID)))
         {
-            printf("I_InitJoystick: Joystick moved to index %d.\n", i);
+            fmt::printf("I_InitJoystick: Joystick moved to index %d.\n", i);
             return i;
         }
     }
@@ -159,7 +162,7 @@ void I_InitJoystick()
 
     if (index < 0)
     {
-        printf("I_InitJoystick: Couldn't find joystick with GUID \"%s\": "
+        fmt::printf("I_InitJoystick: Couldn't find joystick with GUID \"%s\": "
                "device not found or not connected?\n",
             joystick_guid);
         SDL_QuitSubSystem(SDL_INIT_JOYSTICK);
@@ -172,7 +175,7 @@ void I_InitJoystick()
 
     if (joystick == nullptr)
     {
-        printf("I_InitJoystick: Failed to open joystick #%i\n", index);
+        fmt::printf("I_InitJoystick: Failed to open joystick #%i\n", index);
         SDL_QuitSubSystem(SDL_INIT_JOYSTICK);
         return;
     }
@@ -182,7 +185,7 @@ void I_InitJoystick()
         || !IsValidAxis(joystick_strafe_axis)
         || !IsValidAxis(joystick_look_axis))
     {
-        printf("I_InitJoystick: Invalid joystick axis for configured joystick "
+        fmt::printf("I_InitJoystick: Invalid joystick axis for configured joystick "
                "(run joystick setup again)\n");
 
         SDL_JoystickClose(joystick);
@@ -194,7 +197,7 @@ void I_InitJoystick()
 
     // Initialized okay!
 
-    printf("I_InitJoystick: %s\n", SDL_JoystickName(joystick));
+    fmt::printf("I_InitJoystick: %s\n", SDL_JoystickName(joystick));
 
     I_AtExit(I_ShutdownJoystick, true);
 }

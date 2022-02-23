@@ -2523,14 +2523,14 @@ void M_LoadDefaults()
         if (i)
         {
             doom_defaults.filename = myargv[i + 1];
-            printf("	default file: %s\n", doom_defaults.filename);
+            fmt::printf("	default file: %s\n", doom_defaults.filename);
         }
         else
         {
             doom_defaults.filename = M_StringJoin(configdir, default_main_config, nullptr);
         }
 
-        printf("saving config in %s\n", doom_defaults.filename);
+        fmt::printf("saving config in %s\n", doom_defaults.filename);
     }
     //!
     // @arg <file>
@@ -2544,7 +2544,7 @@ void M_LoadDefaults()
     if (i)
     {
         extra_defaults.filename = myargv[i + 1];
-        printf("        extra configuration file: %s\n",
+        fmt::printf("        extra configuration file: %s\n",
             extra_defaults.filename);
     }
     else
@@ -2715,7 +2715,7 @@ void M_SetConfigDir(const char *dir)
 
     if (strcmp(configdir, "") != 0)
     {
-        printf("Using %s for configuration and saves\n", configdir);
+        fmt::printf("Using %s for configuration and saves\n", configdir);
     }
 
     // Make the directory if it doesn't already exist:
@@ -2787,7 +2787,7 @@ char *M_GetSaveGameDir(const char *iwadname)
         // add separator at end just in case
         savegamedir = M_StringJoin(savegamedir, DIR_SEPARATOR_S, nullptr);
 
-        printf("Save directory changed to %s.\n", savegamedir);
+        fmt::printf("Save directory changed to %s.\n", savegamedir);
     }
 #ifdef _WIN32
     // In -cdrom mode, we write savegames to a specific directory

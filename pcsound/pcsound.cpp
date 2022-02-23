@@ -19,6 +19,9 @@
 #include <cstdlib>
 #include <cstring>
 
+#include <fmt/format.h>
+#include <fmt/printf.h>
+
 #include "config.h"
 #include "pcsound.hpp"
 #include "pcsound_internal.hpp"
@@ -94,7 +97,7 @@ int PCSound_Init(pcsound_callback_func callback_func)
                 }
                 else
                 {
-                    printf("Failed to initialize PC sound driver: %s\n",
+                   fmt::printf("Failed to initialize PC sound driver: %s\n",
                            drivers[i]->name);
                     break;
                 }
@@ -117,12 +120,12 @@ int PCSound_Init(pcsound_callback_func callback_func)
     
     if (pcsound_driver != nullptr)
     {
-        printf("Using PC sound driver: %s\n", pcsound_driver->name);
+       fmt::printf("Using PC sound driver: %s\n", pcsound_driver->name);
         return 1;
     }
     else
     {
-        printf("Failed to find a working PC sound driver.\n");
+       fmt::printf("Failed to find a working PC sound driver.\n");
         return 0;
     }
 }

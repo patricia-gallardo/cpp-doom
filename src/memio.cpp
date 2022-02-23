@@ -18,6 +18,9 @@
 
 #include <cstring>
 
+#include <fmt/format.h>
+#include <fmt/printf.h>
+
 #include "memio.hpp"
 
 #include "memory.hpp"
@@ -57,7 +60,7 @@ size_t mem_fread(void *buf, size_t size, size_t nmemb, MEMFILE *stream)
 {
     if (stream->mode != MODE_READ)
     {
-        printf("not a read stream\n");
+       fmt::printf("not a read stream\n");
         return static_cast<size_t>(-1);
     }
 
@@ -179,7 +182,7 @@ int mem_fseek(MEMFILE *stream, signed long position, mem_rel_t whence)
     }
     else
     {
-        printf("Error seeking to %u\n", newpos);
+       fmt::printf("Error seeking to %u\n", newpos);
         return -1;
     }
 }

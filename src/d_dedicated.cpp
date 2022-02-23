@@ -16,6 +16,9 @@
 
 #include <cstdio>
 
+#include <fmt/format.h>
+#include <fmt/printf.h>
+
 #include "config.h"
 #include "net_dedicated.hpp"
 #include "z_zone.hpp"
@@ -31,7 +34,7 @@ void NET_CL_Run()
 
 void D_DoomMain()
 {
-    printf(PACKAGE_NAME " standalone dedicated server\n");
+    fmt::printf(PACKAGE_NAME " standalone dedicated server\n");
 
     Z_Init();
 

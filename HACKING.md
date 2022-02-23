@@ -173,7 +173,7 @@ replacement by the Dehacked tool. Be careful when using Dehacked
 replacements of printf format strings. For example, do not do this:
 
 ```c
-printf(DEH_String("foo %s"), s);
+fmt::printf(DEH_String("foo %s"), s);
 sprintf(mybuf, DEH_String("bar %s"), t);
 ```
 

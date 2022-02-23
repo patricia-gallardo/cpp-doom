@@ -377,17 +377,17 @@ void Z_FreeTags(int lowtag,
 [[maybe_unused]] void Z_DumpHeap(int lowtag,
     int             hightag)
 {
-    printf("zone size: %i  location: %p\n",
-        mainzone->size, mainzone);
+   fmt::printf("zone size: %i  location: %p\n",
+        mainzone->size, reinterpret_cast<void*>(mainzone));
 
-    printf("tag range: %i to %i\n",
+   fmt::printf("tag range: %i to %i\n",
         lowtag, hightag);
 
     for (memblock_t *block = mainzone->blocklist.next;; block = block->next)
     {
         if (block->tag >= lowtag && block->tag <= hightag)
-            printf("block:%p    size:%7i    user:%p    tag:%3i\n",
-                block, block->size, block->user, block->tag);
+           fmt::printf("block:%p    size:%7i    user:%p    tag:%3i\n",
+                reinterpret_cast<void*>(block), block->size, reinterpret_cast<void*>(block->user), block->tag);
 
         if (block->next == &mainzone->blocklist)
         {
@@ -396,13 +396,13 @@ void Z_FreeTags(int lowtag,
         }
 
         if (reinterpret_cast<uint8_t *>(block) + block->size != reinterpret_cast<uint8_t *>(block->next))
-            printf("ERROR: block size does not touch the next block\n");
+           fmt::printf("ERROR: block size does not touch the next block\n");
 
         if (block->next->prev != block)
-            printf("ERROR: next block doesn't have proper back link\n");
+           fmt::printf("ERROR: next block doesn't have proper back link\n");
 
         if (block->tag == PU_FREE && block->next->tag == PU_FREE)
-            printf("ERROR: two consecutive free blocks\n");
+           fmt::printf("ERROR: two consecutive free blocks\n");
     }
 }
 

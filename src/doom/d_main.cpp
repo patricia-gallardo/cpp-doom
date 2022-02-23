@@ -23,6 +23,9 @@
 #include <cstdlib>
 #include <cstring>
 
+#include <fmt/format.h>
+#include <fmt/printf.h>
+
 #include "config.h"
 #include "deh_main.hpp"
 #include "doomdef.hpp"
@@ -509,7 +512,7 @@ void D_RunFrame()
 {
     if (g_doomstat_globals->gamevariant == bfgedition && (g_doomstat_globals->demorecording || (gameaction == ga_playdemo) || g_doomstat_globals->netgame))
     {
-        printf(" WARNING: You are playing using one of the Doom Classic\n"
+       fmt::printf(" WARNING: You are playing using one of the Doom Classic\n"
                " IWAD files shipped with the Doom 3: BFG Edition. These are\n"
                " known to be incompatible with the regular IWAD files and\n"
                " may cause demos and network games to get out of sync.\n");
@@ -803,11 +806,11 @@ static void SetMissionForPackName(const char *pack_name)
         }
     }
 
-    printf("Valid mission packs are:\n");
+   fmt::printf("Valid mission packs are:\n");
 
     for (const auto &pack : packs)
     {
-        printf("\t%s\n", pack.name);
+       fmt::printf("\t%s\n", pack.name);
     }
 
     I_Error("Unknown mission pack name: %s", pack_name);
@@ -964,7 +967,7 @@ char title[128];
 
 static bool D_AddFile(char *filename)
 {
-    printf(" adding %s\n", filename);
+   fmt::printf(" adding %s\n", filename);
     wad_file_t *handle = W_AddFile(filename);
     return handle != nullptr;
 }
@@ -1001,14 +1004,14 @@ void PrintDehackedBanners()
 
         if (deh_s != copyright_banner)
         {
-            printf("%s", deh_s);
+           fmt::printf("%s", deh_s);
 
             // Make sure the modified banner always ends in a newline character.
             // If it doesn't, add a newline.  This fixes av.wad.
 
             if (deh_s[strlen(deh_s) - 1] != '\n')
             {
-                printf("\n");
+               fmt::printf("\n");
             }
         }
     }
@@ -1062,11 +1065,11 @@ static void InitGameVersion()
 
         if (gameversions[i].description == nullptr)
         {
-            printf("Supported game versions:\n");
+           fmt::printf("Supported game versions:\n");
 
             for (i = 0; gameversions[i].description != nullptr; ++i)
             {
-                printf("\t%s (%s)\n", gameversions[i].cmdline,
+               fmt::printf("\t%s (%s)\n", gameversions[i].cmdline,
                     gameversions[i].description);
             }
 
@@ -1182,7 +1185,7 @@ void PrintGameVersion()
     {
         if (gameversions[i].version == g_doomstat_globals->gameversion)
         {
-            printf("Emulating the behavior of the "
+           fmt::printf("Emulating the behavior of the "
                    "'%s' executable.\n",
                 gameversions[i].description);
             break;
@@ -1352,7 +1355,7 @@ static void LoadSigilWad()
             return;
         }
 
-        printf(" [expansion]");
+       fmt::printf(" [expansion]");
         D_AddFile(sigil_wad);
         free(sigil_wad);
 
@@ -1365,7 +1368,7 @@ static void LoadSigilWad()
 
         if (sigil_shreds != nullptr)
         {
-            printf(" [expansion]");
+           fmt::printf(" [expansion]");
             D_AddFile(sigil_shreds);
             free(sigil_shreds);
         }
@@ -1444,7 +1447,7 @@ static void LoadNerveWad()
             return;
         }
 
-        printf(" [expansion]");
+       fmt::printf(" [expansion]");
         D_AddFile(g_doomstat_globals->nervewadfile);
 
         // [crispy] rename level name patch lumps out of the way
@@ -1506,7 +1509,7 @@ void D_DoomMain()
 
     if (M_CheckParm("-dedicated") > 0)
     {
-        printf("Dedicated server mode.\n");
+       fmt::printf("Dedicated server mode.\n");
         NET_DedicatedServer();
 
         // Never returns
@@ -1641,7 +1644,7 @@ void D_DoomMain()
 
     if (M_ParmExists("-cdrom"))
     {
-        printf(D_CDROM);
+       fmt::printf(D_CDROM);
 
         M_SetConfigDir("c:\\doomdata\\");
     }
@@ -1760,7 +1763,7 @@ void D_DoomMain()
 
     if (g_doomstat_globals->gamevariant == bfgedition)
     {
-        printf("BFG Edition: Using workarounds as needed.\n");
+       fmt::printf("BFG Edition: Using workarounds as needed.\n");
 
         // BFG Edition changes the names of the secret levels to
         // censor the Wolfenstein references. It also has an extra
@@ -1954,7 +1957,7 @@ void D_DoomMain()
             M_StringCopy(demolumpname, myargv[p + 1], sizeof(demolumpname));
         }
 
-        printf("Playing demo %s.\n", file);
+       fmt::printf("Playing demo %s.\n", file);
     }
 
     I_AtExit(G_CheckDemoStatusAtExit, true);
@@ -1993,7 +1996,7 @@ void D_DoomMain()
             }
         }
 
-        printf("  loaded %i DEHACKED lumps from PWAD files.\n", loaded);
+       fmt::printf("  loaded %i DEHACKED lumps from PWAD files.\n", loaded);
     }
 
     // Set the gamedescription string. This is only possible now that
@@ -2031,7 +2034,7 @@ void D_DoomMain()
      || W_CheckNumForName("FF_END") >= 0)
     {
         I_PrintDivider();
-        printf(" WARNING: The loaded WAD file contains modified sprites or\n"
+       fmt::printf(" WARNING: The loaded WAD file contains modified sprites or\n"
                " floor textures.  You may want to use the '-merge' command\n"
                " line option instead of '-file'.\n");
     }
@@ -2071,7 +2074,7 @@ void D_DoomMain()
         DEH_AddStringReplacement(PHUSTR_1, "level 33: betray");
     }
 
-    printf("NET_Init: Init network subsystem.\n");
+   fmt::printf("NET_Init: Init network subsystem.\n");
     NET_Init();
 
     // Initial netgame startup. Connect to server etc.

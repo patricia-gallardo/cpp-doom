@@ -126,7 +126,7 @@ wad_file_t *W_AddFile(const char *filename)
 
     if (wad_file == nullptr)
     {
-        printf(" couldn't open %s\n", filename);
+        fmt::printf(" couldn't open %s\n", filename);
         return nullptr;
     }
 
