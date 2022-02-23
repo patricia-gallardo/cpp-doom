@@ -23,7 +23,6 @@
 #include <cctype>
 #include <cassert>
 
-#include <fmt/format.h>
 #include <fmt/printf.h>
 
 #include "SDL_filesystem.h"

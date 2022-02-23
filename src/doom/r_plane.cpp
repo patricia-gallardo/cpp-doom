@@ -22,7 +22,6 @@
 #include <cstdio>
 #include <cstdlib>
 
-#include <fmt/format.h>
 #include <fmt/printf.h>
 
 #include "i_system.hpp"

@@ -23,7 +23,6 @@
 #include <cctype>
 #include <cerrno>
 
-#include <fmt/format.h>
 #include <fmt/printf.h>
 
 #ifdef _WIN32

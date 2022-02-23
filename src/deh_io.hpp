@@ -20,7 +20,6 @@
 
 #include <cstdio>
 
-#include <fmt/format.h>
 #include <fmt/printf.h>
 
 #include "deh_defs.hpp"

@@ -28,7 +28,6 @@ you so incredibly much for this! - Fabian
 
 #include <stdio.h>
 
-#include <fmt/format.h>
 #include <fmt/printf.h>
 
 int main (int argc, char **argv)

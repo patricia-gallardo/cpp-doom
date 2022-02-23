@@ -23,7 +23,6 @@
 
 #include <cstdlib>
 
-#include <fmt/format.h>
 #include <fmt/printf.h>
 
 #include "i_system.hpp" // [crispy] I_Realloc()

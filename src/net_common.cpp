@@ -18,7 +18,6 @@
 #include <cstdlib>
 #include <cstdarg>
 
-#include <fmt/format.h>
 #include <fmt/printf.h>
 
 #include "d_mode.hpp"

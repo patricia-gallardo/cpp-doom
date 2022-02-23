@@ -21,7 +21,6 @@
 
 #include <cstdio>
 
-#include <fmt/format.h>
 #include <fmt/printf.h>
 
 #include "i_swap.hpp" // [crispy] SHORT()

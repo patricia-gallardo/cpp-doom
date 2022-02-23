@@ -22,7 +22,6 @@
 
 #include <cstdio>
 
-#include <fmt/format.h>
 #include <fmt/printf.h>
 
 #define WIN32_LEAN_AND_MEAN

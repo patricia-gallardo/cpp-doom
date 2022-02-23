@@ -22,7 +22,6 @@
 #include <cstring>
 #include <string>
 
-#include <fmt/format.h>
 #include <fmt/printf.h>
 
 #include "SDL.h"
