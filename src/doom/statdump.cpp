@@ -22,7 +22,6 @@
 #include <cstdio>
 #include <cstring>
 
-#include <fmt/format.h>
 #include <fmt/printf.h>
 
 #include "d_player.hpp"

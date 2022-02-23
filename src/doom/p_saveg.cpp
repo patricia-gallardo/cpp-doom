@@ -19,7 +19,6 @@
 
 #include <cstdlib>
 
-#include <fmt/format.h>
 #include <fmt/printf.h>
 
 #include "dstrings.hpp"

@@ -48,7 +48,6 @@
 #include <errno.h>
 #include <unistd.h>
 
-#include <fmt/format.h>
 #include <fmt/printf.h>
 
 #include "opl.hpp"

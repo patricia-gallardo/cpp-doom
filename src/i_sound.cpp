@@ -17,7 +17,6 @@
 
 #include <cstdio>
 
-#include <fmt/format.h>
 #include <fmt/printf.h>
 
 #include "SDL_mixer.h"

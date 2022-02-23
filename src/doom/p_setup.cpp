@@ -20,7 +20,6 @@
 
 #include <cmath>
 
-#include <fmt/format.h>
 #include <fmt/printf.h>
 
 #include "z_zone.hpp"

@@ -19,7 +19,6 @@
 #include <array>
 #include <cstdio>
 
-#include <fmt/format.h>
 #include <fmt/printf.h>
 
 #include "z_zone.hpp"

@@ -26,7 +26,6 @@
 #include <cstring>
 #include <cctype>
 
-#include <fmt/format.h>
 #include <fmt/printf.h>
 
 #include "memory.hpp"

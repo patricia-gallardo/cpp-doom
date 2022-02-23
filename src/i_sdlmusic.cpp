@@ -20,7 +20,6 @@
 #include <cstdlib>
 #include <cstring>
 
-#include <fmt/format.h>
 #include <fmt/printf.h>
 
 #include "SDL.h"

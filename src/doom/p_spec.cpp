@@ -20,7 +20,6 @@
 //	Line Tag handling. Line and Sector triggers.
 //
 
-#include <fmt/format.h>
 #include <fmt/printf.h>
 
 #include "doomdef.hpp"

@@ -18,7 +18,6 @@
 // 	format or DeePBSP format and/or LINEDEFS and THINGS lumps in Hexen format
 //
 
-#include <fmt/format.h>
 #include <fmt/printf.h>
 
 #include "m_bbox.hpp"

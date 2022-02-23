@@ -26,7 +26,6 @@
 #include <sys/mman.h>
 #include <string.h>
 
-#include <fmt/format.h>
 #include <fmt/printf.h>
 
 #include "m_misc.hpp"

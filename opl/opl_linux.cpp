@@ -25,7 +25,6 @@
 #include <unistd.h>
 #include <sys/io.h>
 
-#include <fmt/format.h>
 #include <fmt/printf.h>
 
 #include "opl.hpp"

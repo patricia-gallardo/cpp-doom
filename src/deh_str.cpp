@@ -18,7 +18,6 @@
 #include <cstring>
 #include <cstdarg>
 
-#include <fmt/format.h>
 #include <fmt/printf.h>
 
 #include "deh_str.hpp"

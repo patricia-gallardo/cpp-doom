@@ -17,7 +17,6 @@
 #include <cstdarg>
 #include <cstring>
 
-#include <fmt/format.h>
 #include <fmt/printf.h>
 
 #include "memory.hpp"
