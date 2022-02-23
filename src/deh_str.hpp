@@ -30,11 +30,11 @@
 const char *DEH_String(const char *s) PRINTF_ARG_ATTR(1);
 
 // fmt::printf(), performing a replacement on the format string.
-template <typename ...Args>
-void DEH_printf(const char *fmt, Args && ...args)
-{
-    fmt::printf(fmt, args...);
-}
+//template <typename ...Args>
+//void DEH_printf(const char *fmt, Args && ...args)
+//{
+//    fmt::printf(fmt, args...);
+//}
 
 // fmt::fprintf(), performing a replacement on the format string.
 template <typename ...Args>

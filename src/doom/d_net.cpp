@@ -251,10 +251,10 @@ void D_CheckNetGame()
     D_StartNetGame(&settings, nullptr);
     LoadGameSettings(&settings);
 
-    DEH_printf("startskill %i  deathmatch: %i  startmap: %i  startepisode: %i\n",
+    fmt::printf("startskill %i  deathmatch: %i  startmap: %i  startepisode: %i\n",
         g_doomstat_globals->startskill, g_doomstat_globals->deathmatch, g_doomstat_globals->startmap, g_doomstat_globals->startepisode);
 
-    DEH_printf("player %i of %i (%i nodes)\n",
+    fmt::printf("player %i of %i (%i nodes)\n",
         g_doomstat_globals->consoleplayer + 1, settings.num_players, settings.num_players);
 
     // Show players here; the server might have specified a time limit
@@ -265,12 +265,12 @@ void D_CheckNetGame()
 
         if (g_doomstat_globals->timelimit == 20 && M_CheckParm("-avg"))
         {
-            DEH_printf("Austin Virtual Gaming: Levels will end "
+            fmt::printf("Austin Virtual Gaming: Levels will end "
                        "after 20 minutes\n");
         }
         else
         {
-            DEH_printf("Levels will end after %d minute", g_doomstat_globals->timelimit);
+            fmt::printf("Levels will end after %d minute", g_doomstat_globals->timelimit);
             if (g_doomstat_globals->timelimit > 1)
                fmt::printf("s");
            fmt::printf(".\n");

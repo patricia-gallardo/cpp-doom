@@ -180,7 +180,7 @@ sprintf(mybuf, DEH_String("bar %s"), t);
 Instead do this:
 
 ```c
-DEH_printf("foo %s", s);
+fmt::printf("foo %s", s);
 DEH_snprintf(mybuf, sizeof(mybuf), "bar %s", t);
 ```
 
