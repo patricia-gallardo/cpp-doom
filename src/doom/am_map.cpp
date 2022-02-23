@@ -19,6 +19,9 @@
 #include <array>
 #include <cstdio>
 
+#include <fmt/format.h>
+#include <fmt/printf.h>
+
 #include "deh_main.hpp"
 
 #include "z_zone.hpp"
@@ -1159,7 +1162,7 @@ void AM_drawFline(fline_t *fl,
         || fl->b.x < 0 || fl->b.x >= f_w
         || fl->b.y < 0 || fl->b.y >= f_h)
     {
-        DEH_fprintf(stderr, "fuck %d \r", fuck++);
+        fmt::fprintf(stderr, "fuck %d \r", fuck++);
         return;
     }
 
