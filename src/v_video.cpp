@@ -25,6 +25,9 @@
 #include <cstring>
 #include <cmath>
 
+#include <fmt/format.h>
+#include <fmt/printf.h>
+
 #include "i_system.hpp"
 
 #include "doomtype.hpp"
@@ -922,12 +925,12 @@ void WritePCXfile(char *filename, pixel_t *data,
 
 static void error_fn(png_structp, png_const_charp s)
 {
-    printf("libpng error: %s\n", s);
+    fmt::printf("libpng error: %s\n", s);
 }
 
 static void warning_fn(png_structp, png_const_charp s)
 {
-    printf("libpng warning: %s\n", s);
+    fmt::printf("libpng warning: %s\n", s);
 }
 
 void WritePNGfile(char *filename, pixel_t *,

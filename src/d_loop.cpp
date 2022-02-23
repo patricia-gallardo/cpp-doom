@@ -19,6 +19,9 @@
 #include <cstdlib>
 #include <cstring>
 
+#include <fmt/format.h>
+#include <fmt/printf.h>
+
 #include "d_event.hpp"
 #include "d_loop.hpp"
 #include "d_ticcmd.hpp"
@@ -252,7 +255,7 @@ static void D_Disconnected()
 
     // disconnected from server
 
-    printf("Disconnected from server.\n");
+    fmt::printf("Disconnected from server.\n");
 }
 
 //
@@ -407,7 +410,7 @@ void D_StartNetGame(net_gamesettings_t *settings,
     // TODO: Message disabled until we fix new_sync.
     //if (!new_sync)
     //{
-    //    printf("Syncing netgames like Vanilla Doom.\n");
+    //    fmt::printf("Syncing netgames like Vanilla Doom.\n");
     //}
 }
 
@@ -492,7 +495,7 @@ bool D_InitNetGame(net_connect_data_t *connect_data)
                 NET_AddrToString(addr), g_net_client_globals->net_client_reject_reason);
         }
 
-        printf("D_InitNetGame: Connected to %s\n", NET_AddrToString(addr));
+        fmt::printf("D_InitNetGame: Connected to %s\n", NET_AddrToString(addr));
         NET_ReleaseAddress(addr);
 
         // Wait for launch message received from server.
@@ -570,7 +573,7 @@ static void OldNetSync()
         if (maketic <= recvtic)
         {
             lasttime--;
-            // printf ("-");
+            //fmt::printf("-");
         }
 
         frameskip[frameon & 3] = oldnettics > recvtic;
@@ -579,7 +582,7 @@ static void OldNetSync()
         if (frameskip[0] && frameskip[1] && frameskip[2] && frameskip[3])
         {
             skiptics = 1;
-            // printf ("+");
+            //fmt::printf("+");
         }
     }
 }
@@ -806,7 +809,7 @@ bool D_NonVanillaRecord(bool conditional, const char *feature)
         return false;
     }
 
-    printf("Warning: Recording a demo file with a non-vanilla extension "
+    fmt::printf("Warning: Recording a demo file with a non-vanilla extension "
            "(%s). Use -strictdemos to disable this extension.\n",
         feature);
 
@@ -843,13 +846,13 @@ bool D_NonVanillaPlayback(bool conditional, int lumpnum,
 
     if (!IsDemoFile(lumpnum))
     {
-        printf("Warning: WAD contains demo with a non-vanilla extension "
+       fmt::printf("Warning: WAD contains demo with a non-vanilla extension "
                "(%s)\n",
             feature);
         return false;
     }
 
-    printf("Warning: Playing back a demo file with a non-vanilla extension "
+   fmt::printf("Warning: Playing back a demo file with a non-vanilla extension "
            "(%s). Use -strictdemos to disable this extension.\n",
         feature);
 

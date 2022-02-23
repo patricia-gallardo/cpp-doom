@@ -19,6 +19,9 @@
 
 #include <cstddef>
 
+#include <fmt/format.h>
+#include <fmt/printf.h>
+
 #include "d_main.hpp"
 #include "m_argv.hpp"
 #include "m_menu.hpp"
@@ -112,7 +115,7 @@ static void LoadGameSettings(net_gamesettings_t *settings)
 
     if (g_doomstat_globals->lowres_turn)
     {
-        printf("NOTE: Turning resolution is reduced; this is probably "
+       fmt::printf("NOTE: Turning resolution is reduced; this is probably "
                "because there is a client recording a Vanilla demo.\n");
     }
 
@@ -269,8 +272,8 @@ void D_CheckNetGame()
         {
             DEH_printf("Levels will end after %d minute", g_doomstat_globals->timelimit);
             if (g_doomstat_globals->timelimit > 1)
-                printf("s");
-            printf(".\n");
+               fmt::printf("s");
+           fmt::printf(".\n");
         }
     }
 }

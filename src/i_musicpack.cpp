@@ -22,6 +22,9 @@
 #include <cstring>
 #include <string>
 
+#include <fmt/format.h>
+#include <fmt/printf.h>
+
 #include "SDL.h"
 #include "SDL_mixer.h"
 
@@ -943,7 +946,7 @@ static void LoadSubstituteConfigs()
 
     if (subst_music_len > 0)
     {
-        printf("Loaded %u music substitutions from config files.\n",
+       fmt::printf("Loaded %u music substitutions from config files.\n",
             subst_music_len);
     }
 
@@ -959,7 +962,7 @@ static void LoadSubstituteConfigs()
 
     if (subst_music_len > old_music_len)
     {
-        printf("Configured %u music substitutions based on filename.\n",
+       fmt::printf("Configured %u music substitutions based on filename.\n",
             subst_music_len - old_music_len);
     }
 
@@ -1043,7 +1046,7 @@ static void DumpSubstituteConfig(char *filename)
     fmt::fprintf(fs, "\n");
     fclose(fs);
 
-    printf("Substitute MIDI config file written to %s.\n", filename);
+   fmt::printf("Substitute MIDI config file written to %s.\n", filename);
     I_Quit();
 }
 

@@ -264,12 +264,12 @@ int IOperm_InstallDriver()
         }
         else
         {
-            printf("IOperm_InstallDriver: ioperm driver already running.\n");
+            fmt::printf("IOperm_InstallDriver: ioperm driver already running.\n");
         }
     }
     else
     {
-        printf("IOperm_InstallDriver: ioperm driver installed.\n");
+        fmt::printf("IOperm_InstallDriver: ioperm driver installed.\n");
         service_was_started = 1;
     }
 
@@ -330,7 +330,7 @@ int IOperm_UninstallDriver()
         }
         else if (service_was_started)
         {
-            printf("IOperm_UnInstallDriver: ioperm driver uninstalled.\n");
+            fmt::printf("IOperm_UnInstallDriver: ioperm driver uninstalled.\n");
         }
     }
 

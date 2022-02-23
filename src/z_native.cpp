@@ -129,7 +129,7 @@ static void Z_RemoveBlock(memblock_t *block)
 void Z_Init()
 {
     std::memset(allocated_blocks, 0, sizeof(allocated_blocks));
-    printf("zone memory: Using native C allocator.\n");
+    fmt::printf("zone memory: Using native C allocator.\n");
 }
 
 
@@ -326,16 +326,16 @@ void Z_FreeTags(int lowtag, int hightag)
 #if 0
     memblock_t*	block;
 	
-    printf ("zone size: %i  location: %p\n",
+   fmt::printf("zone size: %i  location: %p\n",
 	    mainzone->size,mainzone);
     
-    printf ("tag range: %i to %i\n",
+   fmt::printf("tag range: %i to %i\n",
 	    lowtag, hightag);
 	
     for (block = mainzone->blocklist.next ; ; block = block->next)
     {
 	if (block->tag >= lowtag && block->tag <= hightag)
-	    printf ("block:%p    size:%7i    user:%p    tag:%3i\n",
+	   fmt::printf("block:%p    size:%7i    user:%p    tag:%3i\n",
 		    block, block->size, block->user, block->tag);
 		
 	if (block->next == &mainzone->blocklist)
@@ -345,13 +345,13 @@ void Z_FreeTags(int lowtag, int hightag)
 	}
 	
 	if ( (byte *)block + block->size != (byte *)block->next)
-	    printf ("ERROR: block size does not touch the next block\n");
+	   fmt::printf("ERROR: block size does not touch the next block\n");
 
 	if ( block->next->prev != block)
-	    printf ("ERROR: next block doesn't have proper back link\n");
+	   fmt::printf("ERROR: next block doesn't have proper back link\n");
 
 	if (block->tag == PU_FREE && block->next->tag == PU_FREE)
-	    printf ("ERROR: two consecutive free blocks\n");
+	   fmt::printf("ERROR: two consecutive free blocks\n");
     }
 #endif
 }

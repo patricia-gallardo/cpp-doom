@@ -20,6 +20,9 @@
 #include <cstdio>
 #include <cstdlib> // [crispy] calloc()
 
+#include <fmt/format.h>
+#include <fmt/printf.h>
+
 #include "deh_main.hpp"
 #include "i_swap.hpp"
 #include "i_system.hpp"
@@ -485,7 +488,7 @@ void R_GenerateLookup(int texnum)
             char namet[9];
             namet[8] = 0;
             std::memcpy(namet, texture->name, 8);
-            printf("R_GenerateLookup: column without a patch (%s)\n",
+            fmt::printf("R_GenerateLookup: column without a patch (%s)\n",
                 namet);
             // [crispy] do not return yet
             /*
@@ -808,26 +811,26 @@ void R_InitTextures()
 
     if (I_ConsoleStdout())
     {
-        printf("[");
+        fmt::printf("[");
 #ifndef CRISPY_TRUECOLOR
         for (i = 0; i < temp3 + 9 + 1; i++) // [crispy] one more for R_InitTranMap()
 #else
         for (i = 0; i < temp3 + 9; i++)
 #endif
-            printf(" ");
-        printf("]");
+            fmt::printf(" ");
+        fmt::printf("]");
 #ifndef CRISPY_TRUECOLOR
         for (i = 0; i < temp3 + 10 + 1; i++) // [crispy] one more for R_InitTranMap()
 #else
         for (i = 0; i < temp3 + 10; i++)
 #endif
-            printf("\b");
+            fmt::printf("\b");
     }
 
     for (i = 0; i < numtextures; i++, directory++)
     {
         if (!(i & 63))
-            printf(".");
+            fmt::printf(".");
 
         // [crispy] initialize for the first texture file lump,
         // skip through empty texture file lumps which do not contain any texture
@@ -962,7 +965,7 @@ void R_InitSpriteLumps()
     for (int i = 0; i < g_r_state_globals->numspritelumps; i++)
     {
         if (!(i & 63))
-            printf(".");
+            fmt::printf(".");
 
         patch              = cache_lump_num<patch_t *>(g_r_state_globals->firstspritelump + i, PU_CACHE);
         g_r_state_globals->spritewidth[i]     = SHORT(patch->width) << FRACBITS;
@@ -994,7 +997,7 @@ static void R_InitTranMap()
         // Set a pointer to the translucency filter maps.
         tranmap = cache_lump_num<uint8_t *>(lump, PU_STATIC);
         // [crispy] loaded from a lump
-        printf(":");
+        fmt::printf(":");
     }
     else
     {
@@ -1024,7 +1027,7 @@ static void R_InitTranMap()
             fread(tranmap, 256, 256, cachefp) == 256)
         {
             // [crispy] loaded from a file
-            printf(".");
+            fmt::printf(".");
         }
         // [crispy] file not readable
         else
@@ -1083,12 +1086,12 @@ static void R_InitTranMap()
                 fwrite(tranmap, 256, 256, cachefp);
 
                 // [crispy] generated and saved
-                printf("!");
+                fmt::printf("!");
             }
             else
             {
                 // [crispy] generated, but not saved
-                printf("?");
+                fmt::printf("?");
             }
         }
 
@@ -1227,11 +1230,11 @@ void R_InitData()
     R_InitFlats();
     R_InitBrightmaps();
     R_InitTextures();
-    printf(".");
+    fmt::printf(".");
     //  R_InitFlats (); [crispy] moved ...
-    printf(".");
+    fmt::printf(".");
     R_InitSpriteLumps();
-    printf(".");
+    fmt::printf(".");
     R_InitColormaps();
 #ifndef CRISPY_TRUECOLOR
     R_InitTranMap(); // [crispy] prints a mark itself

@@ -18,6 +18,9 @@
 #include <cstdio>
 #include <cstdlib>
 
+#include <fmt/format.h>
+#include <fmt/printf.h>
+
 #include "doomtype.hpp"
 #include "deh_defs.hpp"
 #include "deh_main.hpp"
@@ -141,7 +144,7 @@ static void DEH_ThingParseLine(deh_context_t *context, char *line, void *tag)
         return;
     }
 
-    //    printf("Set %s to %s for mobj\n", variable_name, value);
+    //   fmt::printf("Set %s to %s for mobj\n", variable_name, value);
 
     // all values are integers
 

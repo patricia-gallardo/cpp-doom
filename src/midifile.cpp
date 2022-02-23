@@ -749,10 +749,10 @@ void PrintTrack(midi_track_t *track)
 
         if (event->delta_time > 0)
         {
-            printf("Delay: %u ticks\n", event->delta_time);
+            fmt::printf("Delay: %u ticks\n", event->delta_time);
         }
 
-        printf("Event type: %s (%i)\n",
+        fmt::printf("Event type: %s (%i)\n",
             MIDI_EventTypeToString(event->event_type),
             event->event_type);
 
@@ -765,19 +765,19 @@ void PrintTrack(midi_track_t *track)
         case MIDI_EVENT_PROGRAM_CHANGE:
         case MIDI_EVENT_CHAN_AFTERTOUCH:
         case MIDI_EVENT_PITCH_BEND:
-            printf("\tChannel: %u\n", event->data.channel.channel);
-            printf("\tParameter 1: %u\n", event->data.channel.param1);
-            printf("\tParameter 2: %u\n", event->data.channel.param2);
+            fmt::printf("\tChannel: %u\n", event->data.channel.channel);
+            fmt::printf("\tParameter 1: %u\n", event->data.channel.param1);
+            fmt::printf("\tParameter 2: %u\n", event->data.channel.param2);
             break;
 
         case MIDI_EVENT_SYSEX:
         case MIDI_EVENT_SYSEX_SPLIT:
-            printf("\tLength: %u\n", event->data.sysex.length);
+            fmt::printf("\tLength: %u\n", event->data.sysex.length);
             break;
 
         case MIDI_EVENT_META:
-            printf("\tMeta type: %u\n", event->data.meta.type);
-            printf("\tLength: %u\n", event->data.meta.length);
+            fmt::printf("\tMeta type: %u\n", event->data.meta.type);
+            fmt::printf("\tLength: %u\n", event->data.meta.length);
             break;
         }
     }
@@ -790,7 +790,7 @@ int main(int argc, char *argv[])
 
     if (argc < 2)
     {
-        printf("Usage: %s <filename>\n", argv[0]);
+        fmt::printf("Usage: %s <filename>\n", argv[0]);
         exit(1);
     }
 
@@ -804,7 +804,7 @@ int main(int argc, char *argv[])
 
     for (i = 0; i < file->num_tracks; ++i)
     {
-        printf("\n== Track %u ==\n\n", i);
+        fmt::printf("\n== Track %u ==\n\n", i);
 
         PrintTrack(&file->tracks[i]);
     }

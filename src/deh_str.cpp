@@ -18,6 +18,9 @@
 #include <cstring>
 #include <cstdarg>
 
+#include <fmt/format.h>
+#include <fmt/printf.h>
+
 #include "deh_str.hpp"
 #include "m_misc.hpp"
 
@@ -375,7 +378,7 @@ static const char *FormatStringReplacement(const char *s)
 
     if (!ValidFormatReplacement(s, repl))
     {
-        printf("WARNING: Unsafe dehacked replacement provided for "
+        fmt::printf("WARNING: Unsafe dehacked replacement provided for "
                "printf format string: %s\n",
             s);
 
@@ -385,7 +388,7 @@ static const char *FormatStringReplacement(const char *s)
     return repl;
 }
 
-// printf(), performing a replacement on the format string.
+// fmt::printf(), performing a replacement on the format string.
 
 void DEH_printf(const char *fmt, ...)
 {

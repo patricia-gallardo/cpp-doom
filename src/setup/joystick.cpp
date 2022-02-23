@@ -16,6 +16,9 @@
 #include <cstdlib>
 #include <cstring>
 
+#include <fmt/format.h>
+#include <fmt/printf.h>
+
 #include "doomtype.hpp"
 #include "i_joystick.hpp"
 #include "m_config.hpp"
@@ -636,9 +639,9 @@ static const known_joystick_t *GetJoystickType(int index)
         }
     }
 
-    printf("Unknown joystick '%s' with %i axes, %i buttons, %i hats\n",
+    fmt::printf("Unknown joystick '%s' with %i axes, %i buttons, %i hats\n",
            name, axes, buttons, hats);
-    printf("Please consider sending in details about your gamepad!\n");
+    fmt::printf("Please consider sending in details about your gamepad!\n");
 
     return nullptr;
 }

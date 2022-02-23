@@ -23,6 +23,10 @@
 #include <cstdlib>
 #include <cstring>
 #include <cassert>
+
+#include <fmt/format.h>
+#include <fmt/printf.h>
+
 #include "SDL.h"
 #include "SDL_mixer.h"
 #include <vector>
@@ -865,13 +869,13 @@ static void I_SDL_PrecacheSounds(sfxinfo_t *sounds, int num_sounds)
         return;
     }
 
-    printf("I_SDL_PrecacheSounds: Precaching all sound effects..");
+   fmt::printf("I_SDL_PrecacheSounds: Precaching all sound effects..");
 
     for (i = 0; i < num_sounds; ++i)
     {
         if ((i % 6) == 0)
         {
-            printf(".");
+           fmt::printf(".");
             fflush(stdout);
         }
 
@@ -885,7 +889,7 @@ static void I_SDL_PrecacheSounds(sfxinfo_t *sounds, int num_sounds)
         }
     }
 
-    printf("\n");
+   fmt::printf("\n");
 }
 
 #else

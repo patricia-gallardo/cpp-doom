@@ -23,6 +23,9 @@
 #include <cctype>
 #include <cerrno>
 
+#include <fmt/format.h>
+#include <fmt/printf.h>
+
 #ifdef _WIN32
 #define WIN32_LEAN_AND_MEAN
 #include <windows.h>
@@ -314,7 +317,7 @@ void M_ExtractFileBase(const char *path, char *dest)
     {
         if (length >= 8)
         {
-            printf("Warning: Truncated '%s' lump name to '%.8s'.\n",
+           fmt::printf("Warning: Truncated '%s' lump name to '%.8s'.\n",
                 filename, dest);
             break;
         }

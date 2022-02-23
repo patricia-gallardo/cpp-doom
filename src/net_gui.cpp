@@ -226,14 +226,14 @@ static void CheckMasterStatus()
 
 static void PrintSHA1Digest(const char *s, const uint8_t *digest)
 {
-    printf("%s: ", s);
+    fmt::printf("%s: ", s);
 
     for (unsigned int i = 0; i < sizeof(sha1_digest_t); ++i)
     {
-        printf("%02x", digest[i]);
+       fmt::printf("%02x", digest[i]);
     }
 
-    printf("\n");
+   fmt::printf("\n");
 }
 
 static void CloseWindow(void *, void *uncast_window)
@@ -266,20 +266,20 @@ static void CheckSHA1Sums()
 
     if (!correct_wad)
     {
-        printf("Warning: WAD SHA1 does not match server:\n");
+       fmt::printf("Warning: WAD SHA1 does not match server:\n");
         PrintSHA1Digest("Local", g_net_client_globals->net_local_wad_sha1sum);
         PrintSHA1Digest("Server", g_net_client_globals->net_client_wait_data.wad_sha1sum);
     }
 
     if (!same_freedoom)
     {
-        printf("Warning: Mixing Freedoom with non-Freedoom\n");
-        printf("Local: %u  Server: %i\n", g_net_client_globals->net_local_is_freedoom, g_net_client_globals->net_client_wait_data.is_freedoom);
+       fmt::printf("Warning: Mixing Freedoom with non-Freedoom\n");
+       fmt::printf("Local: %u  Server: %i\n", g_net_client_globals->net_local_is_freedoom, g_net_client_globals->net_client_wait_data.is_freedoom);
     }
 
     if (!correct_deh)
     {
-        printf("Warning: Dehacked SHA1 does not match server:\n");
+       fmt::printf("Warning: Dehacked SHA1 does not match server:\n");
         PrintSHA1Digest("Local", g_net_client_globals->net_local_deh_sha1sum);
         PrintSHA1Digest("Server", g_net_client_globals->net_client_wait_data.deh_sha1sum);
     }

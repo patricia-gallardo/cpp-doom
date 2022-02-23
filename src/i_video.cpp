@@ -584,7 +584,7 @@ static void LimitTextureSize(int *w_upscale, int *h_upscale)
 
     if (*w_upscale != orig_w || *h_upscale != orig_h)
     {
-        printf("CreateUpscaledTexture: Limited texture size to %dx%d "
+        fmt::printf("CreateUpscaledTexture: Limited texture size to %dx%d "
                "(max %d pixels, max texture size %dx%d)\n",
             *w_upscale * SCREENWIDTH, *h_upscale * SCREENHEIGHT,
             max_scaling_buffer_pixels,

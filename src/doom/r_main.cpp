@@ -21,6 +21,9 @@
 
 #include <cstdlib>
 
+#include <fmt/format.h>
+#include <fmt/printf.h>
+
 #include "doomdef.hpp"
 #include "doomstat.hpp" // [AM] leveltime, paused, menuactive
 #include "d_loop.hpp"
@@ -917,21 +920,21 @@ void R_ExecuteSetViewSize()
 void R_Init()
 {
     R_InitData();
-    printf(".");
+   fmt::printf(".");
     R_InitPointToAngle();
-    printf(".");
+   fmt::printf(".");
     R_InitTables();
     // viewwidth / viewheight / detailLevel are set by the defaults
-    printf(".");
+   fmt::printf(".");
 
     R_SetViewSize(screenblocks, detailLevel);
     R_InitPlanes();
-    printf(".");
+   fmt::printf(".");
     R_InitLightTables();
-    printf(".");
+   fmt::printf(".");
     R_InitSkyMap();
     R_InitTranslationTables();
-    printf(".");
+   fmt::printf(".");
 
     framecount = 0;
 }

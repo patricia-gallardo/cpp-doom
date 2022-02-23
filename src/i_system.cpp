@@ -19,6 +19,9 @@
 #include <cstdlib>
 #include <cstring>
 
+#include <fmt/format.h>
+#include <fmt/printf.h>
+
 #include <cstdarg>
 
 #ifdef _WIN32
@@ -151,7 +154,7 @@ uint8_t *I_ZoneBase(int *size)
     // [crispy] if called again, allocate another zone twice as big
     i *= 2;
 
-    printf("zone memory: %p, %d MiB allocated for zone\n",
+    fmt::printf("zone memory: %p, %d MiB allocated for zone\n",
         zonemem, *size >> 20); // [crispy] human-understandable zone heap size
 
     return zonemem;
@@ -185,7 +188,7 @@ void I_PrintStartupBanner(const char *gamedescription)
     I_PrintBanner(gamedescription);
     I_PrintDivider();
 
-    printf(
+    fmt::printf(
         " " PACKAGE_NAME " is free software, covered by the GNU General Public\n"
         " License.  There is NO warranty; not even for MERCHANTABILITY or FITNESS\n"
         " FOR A PARTICULAR PURPOSE. You are welcome to change and distribute\n"

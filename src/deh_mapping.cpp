@@ -19,6 +19,9 @@
 
 #include <cstring>
 
+#include <fmt/format.h>
+#include <fmt/printf.h>
+
 #include "doomtype.hpp"
 #include "i_system.hpp"
 #include "m_misc.hpp"
@@ -90,7 +93,7 @@ bool DEH_SetMapping(deh_context_t *context, deh_mapping_t *mapping,
 
     void *location = GetStructField(structptr, mapping, entry);
 
-    //       printf("Setting %p::%s to %i (%i bytes)\n",
+    //      fmt::printf("Setting %p::%s to %i (%i bytes)\n",
     //               structptr, name, value, entry->size);
 
     // Set field content based on its type:

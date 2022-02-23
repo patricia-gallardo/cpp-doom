@@ -15,6 +15,9 @@
 #include <cstdlib>
 #include <cstring>
 
+#include <fmt/format.h>
+#include <fmt/printf.h>
+
 #include "memory.hpp"
 #include "txt_gui.hpp"
 #include "txt_io.hpp"
@@ -428,7 +431,7 @@ void TXT_PushClipArea(int x1, int x2, int y1, int y2)
         newarea->y2 = y2;
 
 #if 0
-    printf("New scrollable area: %i,%i-%i,%i\n", x1, y1, x2, y2);
+    fmt::printf("New scrollable area: %i,%i-%i,%i\n", x1, y1, x2, y2);
 #endif
 
     // Hook into the list

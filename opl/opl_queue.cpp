@@ -222,10 +222,10 @@ static void PrintQueueNode(opl_callback_queue_t *queue, int node, int depth)
 
     for (i=0; i<depth * 3; ++i)
     {
-        printf(" ");
+        fmt::printf(" ");
     }
 
-    printf("%i\n", queue->entries[node].time);
+    fmt::printf("%i\n", queue->entries[node].time);
 
     PrintQueueNode(queue, node * 2 + 1, depth + 1);
     PrintQueueNode(queue, node * 2 + 2, depth + 1);
