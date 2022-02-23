@@ -20,28 +20,11 @@
 
 #include <cstdio>
 
-#include <fmt/format.h>
-#include <fmt/printf.h>
-
 #include "doomtype.hpp"
 
 // Used to do dehacked text substitutions throughout the program
 
 const char *DEH_String(const char *s) PRINTF_ARG_ATTR(1);
-
-// fmt::printf(), performing a replacement on the format string.
-//template <typename ...Args>
-//void DEH_printf(const char *fmt, Args && ...args)
-//{
-//    fmt::printf(fmt, args...);
-//}
-
-// fmt::fprintf(), performing a replacement on the format string.
-template <typename ...Args>
-void DEH_fprintf(FILE *fstream, const char *fmt, Args && ...args)
-{
-    fmt::fprintf(fstream, fmt, args...);
-}
 
 // snprintf(), performing a replacement on the format string.
 template <typename ...Args>
