@@ -202,11 +202,9 @@ static void UpdateClockSync(unsigned int seq,
 // back into recvwindow_cmd_base.
 
 static void NET_CL_ExpandFullTiccmd(net_full_ticcmd_t * cmd, unsigned int, ticcmd_t * ticcmds) {
-  int i;
-
   // Expand tic diffs for all players
 
-  for (i = 0; i < NET_MAXPLAYERS; ++i) {
+  for (int i = 0; i < NET_MAXPLAYERS; ++i) {
     if (i == settings.consoleplayer && !g_net_client_globals->drone) {
       continue;
     }
@@ -575,7 +573,6 @@ static void NET_CL_SendResendRequest(int start, int end) {
 // Check for expired resend requests
 
 static void NET_CL_CheckResends() {
-  int          i;
   int          resend_start, resend_end;
   unsigned int nowtime;
   bool         maybe_deadlocked;
@@ -586,7 +583,7 @@ static void NET_CL_CheckResends() {
   resend_start = -1;
   resend_end   = -1;
 
-  for (i = 0; i < BACKUPTICS; ++i) {
+  for (int i = 0; i < BACKUPTICS; ++i) {
     net_server_recv_t * recvobj;
     bool                need_resend;
 

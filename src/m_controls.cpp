@@ -383,11 +383,10 @@ void M_BindMenuControls() {
 
 void M_BindChatControls(unsigned int num_players) {
   char         name[32]; // haleyjd: 20 not large enough - Thank you, come again!
-  unsigned int i;        // haleyjd: signedness conflict
 
   M_BindIntVariable("key_multi_msg", &g_m_controls_globals->key_multi_msg);
 
-  for (i = 0; i < num_players; ++i) {
+  for (unsigned int i = 0; i < num_players; ++i) {
     M_snprintf(name, sizeof(name), "key_multi_msgplayer%i", i + 1);
     M_BindIntVariable(name, &g_m_controls_globals->key_multi_msgplayer[i]);
   }

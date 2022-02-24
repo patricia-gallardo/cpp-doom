@@ -445,8 +445,6 @@ static void FreeTrack(midi_track_t * track) {
 }
 
 static bool ReadAllTracks(midi_file_t * file, FILE * stream) {
-  unsigned int i;
-
   // Allocate list of tracks and read each track:
 
   file->tracks = create_struct<midi_track_t>(file->num_tracks);
@@ -459,7 +457,7 @@ static bool ReadAllTracks(midi_file_t * file, FILE * stream) {
 
   // Read each track:
 
-  for (i = 0; i < file->num_tracks; ++i) {
+  for (unsigned int i = 0; i < file->num_tracks; ++i) {
     if (!ReadTrack(&file->tracks[i], stream)) {
       return false;
     }

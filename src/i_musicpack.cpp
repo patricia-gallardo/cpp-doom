@@ -573,7 +573,6 @@ static const char * GetSubstituteMusicFile(void * data, size_t data_len) {
   sha1_digest_t  hash;
   const char *   filename;
   char           hash_str[sizeof(sha1_digest_t) * 2 + 1];
-  unsigned int   i;
 
   // Don't bother doing a hash if we're never going to find anything.
   if (subst_music_len == 0) {
@@ -585,7 +584,7 @@ static const char * GetSubstituteMusicFile(void * data, size_t data_len) {
   SHA1_Final(hash, &context);
 
   // Build a string representation of the hash.
-  for (i = 0; i < sizeof(sha1_digest_t); ++i) {
+  for (unsigned int i = 0; i < sizeof(sha1_digest_t); ++i) {
     M_snprintf(hash_str + i * 2, sizeof(hash_str) - i * 2, "%02x", hash[i]);
   }
 
@@ -596,7 +595,7 @@ static const char * GetSubstituteMusicFile(void * data, size_t data_len) {
 
   filename = nullptr;
 
-  for (i = 0; i < subst_music_len; ++i) {
+  for (unsigned int i = 0; i < subst_music_len; ++i) {
     if (M_StringStartsWith(hash_str, subst_music[i].hash_prefix)) {
       filename = subst_music[i].filename;
 

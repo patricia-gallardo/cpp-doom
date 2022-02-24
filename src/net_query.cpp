@@ -363,28 +363,28 @@ static void SendOneQuery() {
     return;
   }
 
-  int i = 0;
-  for (i = 0; i < num_targets; ++i) {
+  int index = 0;
+  for (index = 0; index < num_targets; ++index) {
     // Not queried yet?
     // Or last query timed out without a response?
 
-    if (targets[i].state == QUERY_TARGET_QUEUED
-        || (targets[i].state == QUERY_TARGET_QUERIED
-            && now - targets[i].query_time > QUERY_TIMEOUT_SECS * 1000)) {
+    if (targets[index].state == QUERY_TARGET_QUEUED
+        || (targets[index].state == QUERY_TARGET_QUERIED
+            && now - targets[index].query_time > QUERY_TIMEOUT_SECS * 1000)) {
       break;
     }
   }
 
-  if (i >= num_targets) {
+  if (index >= num_targets) {
     return;
   }
 
   // Found a target to query.  Send a query; how to do this depends on
   // the target type.
 
-  switch (targets[i].type) {
+  switch (targets[index].type) {
   case QUERY_TARGET_SERVER:
-    NET_Query_SendQuery(targets[i].addr);
+    NET_Query_SendQuery(targets[index].addr);
     break;
 
   case QUERY_TARGET_BROADCAST:
@@ -392,14 +392,14 @@ static void SendOneQuery() {
     break;
 
   case QUERY_TARGET_MASTER:
-    NET_Query_SendMasterQuery(targets[i].addr);
+    NET_Query_SendMasterQuery(targets[index].addr);
     break;
   }
 
   // printf("Queried %s\n", NET_AddrToString(targets[i].addr));
-  targets[i].state      = QUERY_TARGET_QUERIED;
-  targets[i].query_time = now;
-  ++targets[i].query_attempts;
+  targets[index].state      = QUERY_TARGET_QUERIED;
+  targets[index].query_time = now;
+  ++targets[index].query_attempts;
 
   last_query_time = static_cast<int>(now);
 }

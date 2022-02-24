@@ -859,7 +859,6 @@ lumpinfo_t * maplumpinfo;
 // P_SetupLevel
 //
 void P_SetupLevel(int episode, int map, int, skill_t skill) {
-  int         i;
   char        lumpname[9];
   int         lumpnum;
   bool        crispy_validblockmap;
@@ -869,7 +868,7 @@ void P_SetupLevel(int episode, int map, int, skill_t skill) {
   // [crispy] count spawned monsters
   g_doomstat_globals->extrakills     = 0;
   g_doomstat_globals->wminfo.partime = 180;
-  for (i = 0; i < MAXPLAYERS; i++) {
+  for (int i = 0; i < MAXPLAYERS; i++) {
     g_doomstat_globals->players[i].killcount = g_doomstat_globals->players[i].secretcount = g_doomstat_globals->players[i].itemcount = 0;
   }
 
@@ -1007,7 +1006,7 @@ void P_SetupLevel(int episode, int map, int, skill_t skill) {
 
   // if deathmatch, randomly spawn the active players
   if (g_doomstat_globals->deathmatch) {
-    for (i = 0; i < MAXPLAYERS; i++)
+    for (int i = 0; i < MAXPLAYERS; i++)
       if (g_doomstat_globals->playeringame[i]) {
         g_doomstat_globals->players[i].mo = nullptr;
         G_DeathMatchSpawnPlayer(i);
@@ -1036,9 +1035,7 @@ void P_SetupLevel(int episode, int map, int, skill_t skill) {
 
 // [crispy] height of the spawnstate's first sprite in pixels
 static void P_InitActualHeights() {
-  int i;
-
-  for (i = 0; i < NUMMOBJTYPES; i++) {
+  for (int i = 0; i < NUMMOBJTYPES; i++) {
     state_t *       state;
     spritedef_t *   sprdef;
     spriteframe_t * sprframe;

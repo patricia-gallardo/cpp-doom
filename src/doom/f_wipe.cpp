@@ -135,7 +135,6 @@ int wipe_initMelt(int width, int height, int) {
 int wipe_doMelt(int width,
                 int height,
                 int ticks) {
-  int i;
   int j;
   int dy;
   int idx;
@@ -147,7 +146,7 @@ int wipe_doMelt(int width,
   width /= 2;
 
   while (ticks--) {
-    for (i = 0; i < width; i++) {
+    for (int i = 0; i < width; i++) {
       if (y[i] < 0) {
         y[i]++;
         done = false;

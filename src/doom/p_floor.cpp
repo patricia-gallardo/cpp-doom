@@ -276,7 +276,6 @@ int EV_DoFloor(line_t * line,
                floor_e  floortype) {
   int           secnum;
   int           rtn;
-  int           i;
   sector_t *    sec;
   floormove_t * floor;
 
@@ -384,7 +383,7 @@ int EV_DoFloor(line_t * line,
       floor->direction = 1;
       floor->sector    = sec;
       floor->speed     = FLOORSPEED;
-      for (i = 0; i < sec->linecount; i++) {
+      for (int i = 0; i < sec->linecount; i++) {
         if (twoSided(secnum, i)) {
           side = getSide(secnum, i, 0);
           if (side->bottomtexture >= 0)
@@ -410,7 +409,7 @@ int EV_DoFloor(line_t * line,
           P_FindLowestFloorSurrounding(sec);
       floor->texture = sec->floorpic;
 
-      for (i = 0; i < sec->linecount; i++) {
+      for (int i = 0; i < sec->linecount; i++) {
         if (twoSided(secnum, i)) {
           if (getSide(secnum, i, 0)->sector - g_r_state_globals->sectors == secnum) {
             sec = getSector(secnum, i, 1);
@@ -445,7 +444,6 @@ int EV_BuildStairs(line_t * line,
                    stair_e  type) {
   int secnum;
   int height;
-  int i;
   int newsecnum;
   int texture;
   int ok;
@@ -503,7 +501,7 @@ int EV_BuildStairs(line_t * line,
     // 2.	Other side is the next sector to raise
     do {
       ok = 0;
-      for (i = 0; i < sec->linecount; i++) {
+      for (int i = 0; i < sec->linecount; i++) {
         if (!((sec->lines[i])->flags & ML_TWOSIDED))
           continue;
 

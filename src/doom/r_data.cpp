@@ -954,11 +954,11 @@ static void R_InitTranMap() {
       uint8_t * bg;
       uint8_t   blend[3];
       uint8_t * tp = tranmap;
-      int       i, j, btmp;
+      int       j, btmp;
 
       I_SetPalette(playpal);
       // [crispy] background color
-      for (i = 0; i < 256; i++) {
+      for (int i = 0; i < 256; i++) {
         // [crispy] foreground color
         for (j = 0; j < 256; j++) {
           // [crispy] shortcut: identical foreground and background
@@ -1087,7 +1087,7 @@ void R_InitColormaps() {
   {
     uint8_t *      playpal = cache_lump_name<uint8_t *>("PLAYPAL", PU_STATIC);
     char           c[3];
-    int            i, j;
+    int            j;
     bool           keepgray = false;
     extern uint8_t V_Colorize(uint8_t * playpal, int cr, uint8_t source, bool keepgray109);
 
@@ -1095,11 +1095,11 @@ void R_InitColormaps() {
       crstr = static_cast<decltype(crstr)>(I_Realloc(nullptr, static_cast<int>(cr_t::CRMAX) * sizeof(*crstr)));
 
     // [crispy] check for status bar graphics replacements
-    i        = W_CheckNumForName(DEH_String("sttnum0")); // [crispy] Status Bar '0'
-    keepgray = (i >= 0 && W_IsIWADLump(lumpinfo[i]));
+    int num  = W_CheckNumForName(DEH_String("sttnum0")); // [crispy] Status Bar '0'
+    keepgray = (num >= 0 && W_IsIWADLump(lumpinfo[num]));
 
     // [crispy] CRMAX - 2: don't override the original GREN and BLUE2 Boom tables
-    for (i = 0; i < static_cast<int>(cr_t::CRMAX) - 2; i++) {
+    for (int i = 0; i < static_cast<int>(cr_t::CRMAX) - 2; i++) {
       for (j = 0; j < 256; j++) {
         cr_colors[i][j] = V_Colorize(playpal, i, static_cast<uint8_t>(j), keepgray);
       }
@@ -1222,7 +1222,6 @@ void R_PrecacheLevel() {
   char * texturepresent;
   char * spritepresent;
 
-  int i;
   int j;
   int k;
   int lump;
@@ -1238,14 +1237,14 @@ void R_PrecacheLevel() {
   flatpresent = zmalloc<decltype(flatpresent)>(static_cast<size_t>(numflats), PU_STATIC, nullptr);
   std::memset(flatpresent, 0, static_cast<size_t>(numflats));
 
-  for (i = 0; i < g_r_state_globals->numsectors; i++) {
+  for (int i = 0; i < g_r_state_globals->numsectors; i++) {
     flatpresent[g_r_state_globals->sectors[i].floorpic]   = 1;
     flatpresent[g_r_state_globals->sectors[i].ceilingpic] = 1;
   }
 
   flatmemory = 0;
 
-  for (i = 0; i < numflats; i++) {
+  for (int i = 0; i < numflats; i++) {
     if (flatpresent[i]) {
       lump = g_r_state_globals->firstflat + i;
       flatmemory += static_cast<int>(lumpinfo[lump]->size);
@@ -1259,7 +1258,7 @@ void R_PrecacheLevel() {
   texturepresent = zmalloc<decltype(texturepresent)>(static_cast<size_t>(numtextures), PU_STATIC, nullptr);
   std::memset(texturepresent, 0, static_cast<size_t>(numtextures));
 
-  for (i = 0; i < g_r_state_globals->numsides; i++) {
+  for (int i = 0; i < g_r_state_globals->numsides; i++) {
     texturepresent[g_r_state_globals->sides[i].toptexture]    = 1;
     texturepresent[g_r_state_globals->sides[i].midtexture]    = 1;
     texturepresent[g_r_state_globals->sides[i].bottomtexture] = 1;
@@ -1274,7 +1273,7 @@ void R_PrecacheLevel() {
   texturepresent[skytexture] = 1;
 
   texturememory = 0;
-  for (i = 0; i < numtextures; i++) {
+  for (int i = 0; i < numtextures; i++) {
     if (!texturepresent[i])
       continue;
 
@@ -1305,7 +1304,7 @@ void R_PrecacheLevel() {
   }
 
   spritememory = 0;
-  for (i = 0; i < g_r_state_globals->numsprites; i++) {
+  for (int i = 0; i < g_r_state_globals->numsprites; i++) {
     if (!spritepresent[i])
       continue;
 

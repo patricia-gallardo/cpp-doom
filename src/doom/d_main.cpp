@@ -1240,19 +1240,19 @@ static void LoadSigilWad() {
 
 // [crispy] support loading NERVE.WAD alongside DOOM2.WAD
 static void LoadNerveWad() {
-  int i = 0, j = 0, k = 0;
+  int num = 0, j = 0, k = 0;
 
   if (g_doomstat_globals->gamemission != doom2)
     return;
 
-  if ((i = W_GetNumForName("map01")) != -1 && (j = W_GetNumForName("map09")) != -1 && !strcasecmp(W_WadNameForLump(lumpinfo[i]), "nerve.wad") && !strcasecmp(W_WadNameForLump(lumpinfo[j]), "nerve.wad")) {
+  if ((num = W_GetNumForName("map01")) != -1 && (j = W_GetNumForName("map09")) != -1 && !strcasecmp(W_WadNameForLump(lumpinfo[num]), "nerve.wad") && !strcasecmp(W_WadNameForLump(lumpinfo[j]), "nerve.wad")) {
     g_doomstat_globals->gamemission = pack_nerve;
     DEH_AddStringReplacement("TITLEPIC", "INTERPIC");
   } else
     // [crispy] The "New Game -> Which Expansion" menu is only shown if the
     // menu graphics lumps are available and (a) if they are from the IWAD
     // and that is the BFG Edition DOOM2.WAD or (b) if they are from a PWAD.
-    if ((i = W_CheckNumForName("M_EPI1")) != -1 && (j = W_CheckNumForName("M_EPI2")) != -1 && (k = W_CheckNumForName("M_EPISOD")) != -1 && (g_doomstat_globals->gamevariant == bfgedition || (!W_IsIWADLump(lumpinfo[i]) && !W_IsIWADLump(lumpinfo[j]) && !W_IsIWADLump(lumpinfo[k])))) {
+    if ((num = W_CheckNumForName("M_EPI1")) != -1 && (j = W_CheckNumForName("M_EPI2")) != -1 && (k = W_CheckNumForName("M_EPISOD")) != -1 && (g_doomstat_globals->gamevariant == bfgedition || (!W_IsIWADLump(lumpinfo[num]) && !W_IsIWADLump(lumpinfo[j]) && !W_IsIWADLump(lumpinfo[k])))) {
       if (strrchr(iwadfile, DIR_SEPARATOR) != nullptr) {
         char * dir                       = M_DirName(iwadfile);
         g_doomstat_globals->nervewadfile = M_StringJoin(dir, DIR_SEPARATOR_S, "nerve.wad", nullptr);
@@ -1274,7 +1274,7 @@ static void LoadNerveWad() {
       D_AddFile(g_doomstat_globals->nervewadfile);
 
       // [crispy] rename level name patch lumps out of the way
-      for (i = 0; i < 9; i++) {
+      for (int i = 0; i < 9; i++) {
         char lumpname[9];
 
         M_snprintf(lumpname, 9, "CWILV%2.2d", i);

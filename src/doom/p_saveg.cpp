@@ -773,8 +773,6 @@ static void saveg_read_player_t(player_t * str) {
 }
 
 static void saveg_write_player_t(player_t * str) {
-  int i;
-
   // mobj_t* mo;
   saveg_writep(str->mo);
 
@@ -806,12 +804,12 @@ static void saveg_write_player_t(player_t * str) {
   saveg_write32(str->armortype);
 
   // int powers[NUMPOWERS];
-  for (i = 0; i < NUMPOWERS; ++i) {
+  for (int i = 0; i < NUMPOWERS; ++i) {
     saveg_write32(str->powers[i]);
   }
 
   // bool cards[NUMCARDS];
-  for (i = 0; i < NUMCARDS; ++i) {
+  for (int i = 0; i < NUMCARDS; ++i) {
     saveg_write32(str->cards[i]);
   }
 
@@ -819,7 +817,7 @@ static void saveg_write_player_t(player_t * str) {
   saveg_write32(str->backpack);
 
   // int frags[MAXPLAYERS];
-  for (i = 0; i < MAXPLAYERS; ++i) {
+  for (int i = 0; i < MAXPLAYERS; ++i) {
     saveg_write32(str->frags[i]);
   }
 
@@ -830,17 +828,17 @@ static void saveg_write_player_t(player_t * str) {
   saveg_write_enum(str->pendingweapon);
 
   // bool weaponowned[NUMWEAPONS];
-  for (i = 0; i < NUMWEAPONS; ++i) {
+  for (int i = 0; i < NUMWEAPONS; ++i) {
     saveg_write32(str->weaponowned[i]);
   }
 
   // int ammo[NUMAMMO];
-  for (i = 0; i < NUMAMMO; ++i) {
+  for (int i = 0; i < NUMAMMO; ++i) {
     saveg_write32(str->ammo[i]);
   }
 
   // int maxammo[NUMAMMO];
-  for (i = 0; i < NUMAMMO; ++i) {
+  for (int i = 0; i < NUMAMMO; ++i) {
     saveg_write32(str->maxammo[i]);
   }
 
@@ -887,7 +885,7 @@ static void saveg_write_player_t(player_t * str) {
   saveg_write32(str->colormap);
 
   // pspdef_t psprites[NUMPSPRITES];
-  for (i = 0; i < NUMPSPRITES; ++i) {
+  for (int i = 0; i < NUMPSPRITES; ++i) {
     saveg_write_pspdef_t(&str->psprites[i]);
   }
 
@@ -1326,24 +1324,23 @@ static void saveg_write_glow_t(glow_t * str) {
 
 void P_WriteSaveGameHeader(char * description) {
   char name[VERSIONSIZE];
-  int  i;
-
-  for (i = 0; description[i] != '\0'; ++i)
-    saveg_write8(static_cast<uint8_t>(description[i]));
-  for (; i < SAVESTRINGSIZE; ++i)
+  int  index = 0;
+  for (index = 0; description[index] != '\0'; ++index)
+    saveg_write8(static_cast<uint8_t>(description[index]));
+  for (; index < SAVESTRINGSIZE; ++index)
     saveg_write8(0);
 
   std::memset(name, 0, sizeof(name));
   M_snprintf(name, sizeof(name), "version %i", G_VanillaVersionCode());
 
-  for (i = 0; i < VERSIONSIZE; ++i)
+  for (int i = 0; i < VERSIONSIZE; ++i)
     saveg_write8(static_cast<uint8_t>(name[i]));
 
   saveg_write8(static_cast<uint8_t>(g_doomstat_globals->gameskill));
   saveg_write8(static_cast<uint8_t>(g_doomstat_globals->gameepisode));
   saveg_write8(static_cast<uint8_t>(g_doomstat_globals->gamemap));
 
-  for (i = 0; i < MAXPLAYERS; i++)
+  for (int i = 0; i < MAXPLAYERS; i++)
     saveg_write8(g_doomstat_globals->playeringame[i]);
 
   saveg_write8(static_cast<uint8_t>((leveltime >> 16) & 0xff));
@@ -1356,7 +1353,6 @@ void P_WriteSaveGameHeader(char * description) {
 //
 
 bool P_ReadSaveGameHeader() {
-  int     i;
   uint8_t a;
   uint8_t b;
   uint8_t c;
@@ -1365,10 +1361,10 @@ bool P_ReadSaveGameHeader() {
 
   // skip the description field
 
-  for (i = 0; i < SAVESTRINGSIZE; ++i)
+  for (int i = 0; i < SAVESTRINGSIZE; ++i)
     saveg_read8();
 
-  for (i = 0; i < VERSIONSIZE; ++i)
+  for (int i = 0; i < VERSIONSIZE; ++i)
     read_vcheck[i] = static_cast<char>(saveg_read8());
 
   std::memset(vcheck, 0, sizeof(vcheck));
@@ -1380,7 +1376,7 @@ bool P_ReadSaveGameHeader() {
   g_doomstat_globals->gameepisode = saveg_read8();
   g_doomstat_globals->gamemap     = saveg_read8();
 
-  for (i = 0; i < MAXPLAYERS; i++)
+  for (int i = 0; i < MAXPLAYERS; i++)
     g_doomstat_globals->playeringame[i] = saveg_read8();
 
   // get the times
@@ -1416,9 +1412,7 @@ void P_WriteSaveGameEOF() {
 // P_ArchivePlayers
 //
 void P_ArchivePlayers() {
-  int i;
-
-  for (i = 0; i < MAXPLAYERS; i++) {
+  for (int i = 0; i < MAXPLAYERS; i++) {
     if (!g_doomstat_globals->playeringame[i])
       continue;
 
@@ -1432,9 +1426,7 @@ void P_ArchivePlayers() {
 // P_UnArchivePlayers
 //
 void P_UnArchivePlayers() {
-  int i;
-
-  for (i = 0; i < MAXPLAYERS; i++) {
+  for (int i = 0; i < MAXPLAYERS; i++) {
     if (!g_doomstat_globals->playeringame[i])
       continue;
 
@@ -1681,7 +1673,6 @@ enum class specials_e
 //
 void P_ArchiveSpecials() {
   thinker_t * th;
-  int         i;
 
   // save off the current thinkers
   action_hook null_needle          = null_hook();
@@ -1694,21 +1685,23 @@ void P_ArchiveSpecials() {
   action_hook needle_glow          = T_Glow;
   for (th = g_p_local_globals->thinkercap.next; th != &g_p_local_globals->thinkercap; th = th->next) {
     if (th->function == null_needle) {
-      for (i = 0; i < MAXCEILINGS; i++)
-        if (activeceilings[i] == reinterpret_cast<ceiling_t *>(th))
+      int index1 = 0;
+      for (index1 = 0; index1 < MAXCEILINGS; index1++)
+        if (activeceilings[index1] == reinterpret_cast<ceiling_t *>(th))
           break;
 
-      if (i < MAXCEILINGS) {
+      if (index1 < MAXCEILINGS) {
         saveg_write8(static_cast<uint8_t>(specials_e::tc_ceiling));
         saveg_write_pad();
         saveg_write_ceiling_t(reinterpret_cast<ceiling_t *>(th));
       }
       // [crispy] save plats in statis
-      for (i = 0; i < MAXPLATS; i++)
-        if (activeplats[i] == reinterpret_cast<plat_t *>(th))
+      int index2 = 0;
+      for (index2 = 0; index2 < MAXPLATS; index2++)
+        if (activeplats[index2] == reinterpret_cast<plat_t *>(th))
           break;
 
-      if (i < MAXPLATS) {
+      if (index2 < MAXPLATS) {
         saveg_write8(static_cast<uint8_t>(specials_e::tc_plat));
         saveg_write_pad();
         saveg_write_plat_t(reinterpret_cast<plat_t *>(th));

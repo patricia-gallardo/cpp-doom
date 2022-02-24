@@ -302,13 +302,12 @@ static bool WriteChangeController_Valueless(uint8_t channel, uint8_t control, ME
 static int AllocateMIDIChannel() {
   int result;
   int max;
-  int i;
 
   // Find the current highest-allocated channel.
 
   max = -1;
 
-  for (i = 0; i < NUM_CHANNELS; ++i) {
+  for (int i = 0; i < NUM_CHANNELS; ++i) {
     if (channel_map[i] > max) {
       max = channel_map[i];
     }

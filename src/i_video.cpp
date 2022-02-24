@@ -785,17 +785,16 @@ void I_ReadScreen(pixel_t * scr) {
 // [crispy] intermediate gamma levels
 uint8_t ** gamma2table = nullptr;
 void       I_SetGammaTable() {
-  int i;
 
   gamma2table = static_cast<uint8_t **>(malloc(9 * sizeof(*gamma2table)));
 
   // [crispy] 5 original gamma levels
-  for (i = 0; i < 5; i++) {
+  for (int i = 0; i < 5; i++) {
     gamma2table[2 * i] = const_cast<uint8_t *>(gammatable[i]);
   }
 
   // [crispy] 4 intermediate gamma levels
-  for (i = 0; i < 4; i++) {
+  for (int i = 0; i < 4; i++) {
     int j;
 
     gamma2table[2 * i + 1] = static_cast<uint8_t *>(malloc(256 * sizeof(**gamma2table)));
@@ -808,14 +807,12 @@ void       I_SetGammaTable() {
 
 #ifndef CRISPY_TRUECOLOR
 void I_SetPalette(uint8_t * doompalette) {
-  int i;
-
   // [crispy] intermediate gamma levels
   if (!gamma2table) {
     I_SetGammaTable();
   }
 
-  for (i = 0; i < 256; ++i) {
+  for (int i = 0; i < 256; ++i) {
     // Zero out the bottom two bits of each channel - the PC VGA
     // controller only supports 6 bits of accuracy.
 
@@ -835,12 +832,11 @@ void I_SetPalette(uint8_t * doompalette) {
 
 int I_GetPaletteIndex(int r, int g, int b) {
   int best, best_diff, diff;
-  int i;
 
   best      = 0;
   best_diff = INT_MAX;
 
-  for (i = 0; i < 256; ++i) {
+  for (int i = 0; i < 256; ++i) {
     diff = (r - palette[i].r) * (r - palette[i].r)
            + (g - palette[i].g) * (g - palette[i].g)
            + (b - palette[i].b) * (b - palette[i].b);

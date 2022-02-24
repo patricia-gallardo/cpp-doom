@@ -79,7 +79,6 @@ bool HUlib_delCharFromTextLine(hu_textline_t * t) {
 void HUlib_drawTextLine(hu_textline_t * l,
                         bool            drawcursor) {
 
-  int           i;
   int           w;
   int           x;
   int           y;
@@ -88,7 +87,7 @@ void HUlib_drawTextLine(hu_textline_t * l,
   // draw the new stuff
   x = l->x;
   y = l->y; // [crispy] support line breaks
-  for (i = 0; i < l->len; i++) {
+  for (int i = 0; i < l->len; i++) {
     c = static_cast<unsigned char>(toupper(l->l[i]));
     // [crispy] support multi-colored text lines
     if (c == cr_esc) {
@@ -164,14 +163,11 @@ void HUlib_initSText(hu_stext_t * s,
                      patch_t **   font,
                      int          startchar,
                      bool *       on) {
-
-  int i;
-
   s->h      = h;
   s->on     = on;
   s->laston = true;
   s->cl     = 0;
-  for (i = 0; i < h; i++)
+  for (int i = 0; i < h; i++)
     HUlib_initTextLine(&s->l[i],
                        x,
                        y - i * (SHORT(font[0]->height) + 1),
@@ -180,16 +176,13 @@ void HUlib_initSText(hu_stext_t * s,
 }
 
 void HUlib_addLineToSText(hu_stext_t * s) {
-
-  int i;
-
   // add a clear line
   if (++s->cl == s->h)
     s->cl = 0;
   HUlib_clearTextLine(&s->l[s->cl]);
 
   // everything needs updating
-  for (i = 0; i < s->h; i++)
+  for (int i = 0; i < s->h; i++)
     s->l[i].needsupdate = 4;
 }
 
@@ -206,14 +199,14 @@ void HUlib_addMessageToSText(hu_stext_t * s,
 }
 
 void HUlib_drawSText(hu_stext_t * s) {
-  int             i, idx;
+  int             idx;
   hu_textline_t * l;
 
   if (!*s->on)
     return; // if not on, don't draw
 
   // draw everything
-  for (i = 0; i < s->h; i++) {
+  for (int i = 0; i < s->h; i++) {
     idx = s->cl - i;
     if (idx < 0)
       idx += s->h; // handle queue of lines
@@ -226,10 +219,7 @@ void HUlib_drawSText(hu_stext_t * s) {
 }
 
 void HUlib_eraseSText(hu_stext_t * s) {
-
-  int i;
-
-  for (i = 0; i < s->h; i++) {
+  for (int i = 0; i < s->h; i++) {
     if (s->laston && !*s->on)
       s->l[i].needsupdate = 4;
     HUlib_eraseTextLine(&s->l[i]);
