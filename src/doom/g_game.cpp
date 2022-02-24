@@ -1525,7 +1525,7 @@ void G_ScreenShot()
     gameaction = ga_screenshot;
 }
 
-
+// clang-format off
 // DOOM Par Times
 int pars[6][10] = {
     { 0 },
@@ -1552,6 +1552,7 @@ int cpars[32] = {
 static int npars[9] = {
     75, 105, 120, 105, 210, 105, 165, 105, 135
 };
+// clang-format on
 
 //
 // G_DoCompleted

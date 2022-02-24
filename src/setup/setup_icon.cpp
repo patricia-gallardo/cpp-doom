@@ -1,6 +1,7 @@
 static int setup_icon_w = 128;
 static int setup_icon_h = 128;
 
+// clang-format off
 static const unsigned int setup_icon_data[] = {
     0xce9b35ff, 0xca982eff, 0xcb972bff, 0xd4a648ff, 0xd7ab5bff, 0xd7ac5cff, 
     0xd7ac5eff, 0xd5a448ff, 0xc18a20ff, 0xb37a0cff, 0xb37a0cff, 0xb37606ff, 
@@ -2734,3 +2735,4 @@ static const unsigned int setup_icon_data[] = {
     0xddbf89ff, 0xdfc18bff, 0xdcbc7eff, 0xdab876ff, 0xd9b876ff, 0xd7b56eff, 
     0xd7b571ff, 0xd7b675ff, 0xd3b06aff, 0xd3ac63ff, 
 };
+// clang-format on

@@ -869,6 +869,7 @@ static const unsigned short frequency_curve[] = {
 
 // Mapping from MIDI volume level to OPL level value.
 
+// clang-format off
 static const unsigned int volume_mapping_table[] = {
     0, 1, 3, 5, 6, 8, 10, 11,
     13, 14, 16, 17, 19, 20, 22, 23,
@@ -887,6 +888,7 @@ static const unsigned int volume_mapping_table[] = {
     120, 121, 121, 122, 122, 123, 123, 123,
     124, 124, 125, 125, 126, 126, 127, 127
 };
+// clang-format on
 
 static opl_driver_ver_t opl_drv_ver       = opl_doom_1_9;
 static bool          music_initialized = false;

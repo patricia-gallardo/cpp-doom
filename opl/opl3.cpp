@@ -53,6 +53,7 @@ enum
 // logsin table
 //
 
+// clang-format off
 static const Bit16u logsinrom[256] = {
   0x859, 0x6c3, 0x607, 0x58b, 0x52e, 0x4e4, 0x4a6, 0x471,
   0x443, 0x41a, 0x3f5, 0x3d3, 0x3b5, 0x398, 0x37e, 0x365,
@@ -172,6 +173,7 @@ static const Bit8s ad_slot[0x20] = {
 static const Bit8u ch_slot[18] = {
   0, 1, 2, 6, 7, 8, 12, 13, 14, 18, 19, 20, 24, 25, 26, 30, 31, 32
 };
+// clang-format on
 
 //
 // Envelope generator

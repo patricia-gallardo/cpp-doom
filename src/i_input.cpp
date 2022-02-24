@@ -32,6 +32,7 @@ static const int scancode_translate_table[] = SCANCODE_TO_KEYS_ARRAY;
 // Lookup table for mapping ASCII characters to their equivalent when
 // shift is pressed on a US layout keyboard. This is the original table
 // as found in the Doom sources, comments and all.
+// clang-format off
 static const char shiftxform[] = {
     0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10,
     11, 12, 13, 14, 15, 16, 17, 18, 19, 20,
@@ -69,6 +70,7 @@ static const char shiftxform[] = {
     'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z',
     '{', '|', '}', '~', 127
 };
+// clang-format on
 
 // If true, I_StartTextInput() has been called, and we are populating
 // the data3 field of ev_keydown events.
