@@ -21,13 +21,13 @@
 #include "doomtype.hpp"
 
 using sha1_context_t = struct sha1_context_s;
-typedef uint8_t               sha1_digest_t[20];
+typedef uint8_t sha1_digest_t[20];
 
 struct sha1_context_s {
-    uint32_t h0, h1, h2, h3, h4;
-    uint32_t nblocks;
-    uint8_t  buf[64];
-    int      count;
+  uint32_t h0, h1, h2, h3, h4;
+  uint32_t nblocks;
+  uint8_t  buf[64];
+  int      count;
 };
 
 void SHA1_Init(sha1_context_t *context);

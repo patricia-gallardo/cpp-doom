@@ -18,114 +18,114 @@
 #ifndef MIDIFILE_H
 #define MIDIFILE_H
 
-using midi_file_t = struct midi_file_s;
+using midi_file_t       = struct midi_file_s;
 using midi_track_iter_t = struct midi_track_iter_s;
 
 #define MIDI_CHANNELS_PER_TRACK 16
 
 enum midi_event_type_t
 {
-    MIDI_EVENT_NOTE_OFF        = 0x80,
-    MIDI_EVENT_NOTE_ON         = 0x90,
-    MIDI_EVENT_AFTERTOUCH      = 0xa0,
-    MIDI_EVENT_CONTROLLER      = 0xb0,
-    MIDI_EVENT_PROGRAM_CHANGE  = 0xc0,
-    MIDI_EVENT_CHAN_AFTERTOUCH = 0xd0,
-    MIDI_EVENT_PITCH_BEND      = 0xe0,
+  MIDI_EVENT_NOTE_OFF        = 0x80,
+  MIDI_EVENT_NOTE_ON         = 0x90,
+  MIDI_EVENT_AFTERTOUCH      = 0xa0,
+  MIDI_EVENT_CONTROLLER      = 0xb0,
+  MIDI_EVENT_PROGRAM_CHANGE  = 0xc0,
+  MIDI_EVENT_CHAN_AFTERTOUCH = 0xd0,
+  MIDI_EVENT_PITCH_BEND      = 0xe0,
 
-    MIDI_EVENT_SYSEX       = 0xf0,
-    MIDI_EVENT_SYSEX_SPLIT = 0xf7,
-    MIDI_EVENT_META        = 0xff,
+  MIDI_EVENT_SYSEX       = 0xf0,
+  MIDI_EVENT_SYSEX_SPLIT = 0xf7,
+  MIDI_EVENT_META        = 0xff,
 };
 
 enum midi_controller_t
 {
-    MIDI_CONTROLLER_BANK_SELECT    = 0x0,
-    MIDI_CONTROLLER_MODULATION     = 0x1,
-    MIDI_CONTROLLER_BREATH_CONTROL = 0x2,
-    MIDI_CONTROLLER_FOOT_CONTROL   = 0x3,
-    MIDI_CONTROLLER_PORTAMENTO     = 0x4,
-    MIDI_CONTROLLER_DATA_ENTRY     = 0x5,
+  MIDI_CONTROLLER_BANK_SELECT    = 0x0,
+  MIDI_CONTROLLER_MODULATION     = 0x1,
+  MIDI_CONTROLLER_BREATH_CONTROL = 0x2,
+  MIDI_CONTROLLER_FOOT_CONTROL   = 0x3,
+  MIDI_CONTROLLER_PORTAMENTO     = 0x4,
+  MIDI_CONTROLLER_DATA_ENTRY     = 0x5,
 
-    MIDI_CONTROLLER_MAIN_VOLUME = 0x7,
-    MIDI_CONTROLLER_PAN         = 0xa,
+  MIDI_CONTROLLER_MAIN_VOLUME = 0x7,
+  MIDI_CONTROLLER_PAN         = 0xa,
 
-    MIDI_CONTROLLER_ALL_NOTES_OFF = 0x7b,
+  MIDI_CONTROLLER_ALL_NOTES_OFF = 0x7b,
 };
 
 enum midi_meta_event_type_t
 {
-    MIDI_META_SEQUENCE_NUMBER = 0x0,
+  MIDI_META_SEQUENCE_NUMBER = 0x0,
 
-    MIDI_META_TEXT       = 0x1,
-    MIDI_META_COPYRIGHT  = 0x2,
-    MIDI_META_TRACK_NAME = 0x3,
-    MIDI_META_INSTR_NAME = 0x4,
-    MIDI_META_LYRICS     = 0x5,
-    MIDI_META_MARKER     = 0x6,
-    MIDI_META_CUE_POINT  = 0x7,
+  MIDI_META_TEXT       = 0x1,
+  MIDI_META_COPYRIGHT  = 0x2,
+  MIDI_META_TRACK_NAME = 0x3,
+  MIDI_META_INSTR_NAME = 0x4,
+  MIDI_META_LYRICS     = 0x5,
+  MIDI_META_MARKER     = 0x6,
+  MIDI_META_CUE_POINT  = 0x7,
 
-    MIDI_META_CHANNEL_PREFIX = 0x20,
-    MIDI_META_END_OF_TRACK   = 0x2f,
+  MIDI_META_CHANNEL_PREFIX = 0x20,
+  MIDI_META_END_OF_TRACK   = 0x2f,
 
-    MIDI_META_SET_TEMPO          = 0x51,
-    MIDI_META_SMPTE_OFFSET       = 0x54,
-    MIDI_META_TIME_SIGNATURE     = 0x58,
-    MIDI_META_KEY_SIGNATURE      = 0x59,
-    MIDI_META_SEQUENCER_SPECIFIC = 0x7f,
+  MIDI_META_SET_TEMPO          = 0x51,
+  MIDI_META_SMPTE_OFFSET       = 0x54,
+  MIDI_META_TIME_SIGNATURE     = 0x58,
+  MIDI_META_KEY_SIGNATURE      = 0x59,
+  MIDI_META_SEQUENCER_SPECIFIC = 0x7f,
 };
 
 typedef struct
 {
-    // Meta event type:
+  // Meta event type:
 
-    unsigned int type;
+  unsigned int type;
 
-    // Length:
+  // Length:
 
-    unsigned int length;
+  unsigned int length;
 
-    // Meta event data:
+  // Meta event data:
 
-    uint8_t *data;
+  uint8_t *data;
 } midi_meta_event_data_t;
 
 typedef struct
 {
-    // Length:
+  // Length:
 
-    unsigned int length;
+  unsigned int length;
 
-    // Event data:
+  // Event data:
 
-    uint8_t *data;
+  uint8_t *data;
 } midi_sysex_event_data_t;
 
 typedef struct
 {
-    // The channel number to which this applies:
+  // The channel number to which this applies:
 
-    unsigned int channel;
+  unsigned int channel;
 
-    // Extra parameters:
+  // Extra parameters:
 
-    unsigned int param1;
-    unsigned int param2;
+  unsigned int param1;
+  unsigned int param2;
 } midi_channel_event_data_t;
 
 typedef struct
 {
-    // Time between the previous event and this event.
-    unsigned int delta_time;
+  // Time between the previous event and this event.
+  unsigned int delta_time;
 
-    // Type of event:
-    midi_event_type_t event_type;
+  // Type of event:
+  midi_event_type_t event_type;
 
-    union {
-        midi_channel_event_data_t channel;
-        midi_meta_event_data_t    meta;
-        midi_sysex_event_data_t   sysex;
-    } data;
+  union {
+    midi_channel_event_data_t channel;
+    midi_meta_event_data_t    meta;
+    midi_sysex_event_data_t   sysex;
+  } data;
 } midi_event_t;
 
 // Load a MIDI file.

@@ -15,7 +15,6 @@
 //      System-specific joystick interface.
 //
 
-
 #ifndef __I_JOYSTICK__
 #define __I_JOYSTICK__
 
@@ -55,7 +54,7 @@
 #define HAT_AXIS_DIRECTION(axis) (((axis) >> 8) & 0xff)
 
 #define CREATE_HAT_AXIS(hat, direction) \
-    (HAT_AXIS | (hat) | ((direction) << 8))
+  (HAT_AXIS | (hat) | ((direction) << 8))
 
 #define HAT_AXIS_HORIZONTAL 1
 #define HAT_AXIS_VERTICAL   2

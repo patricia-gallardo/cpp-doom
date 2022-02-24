@@ -16,7 +16,6 @@
 //	System specific interface stuff.
 //
 
-
 #ifndef __I_VIDEO__
 #define __I_VIDEO__
 
@@ -33,13 +32,13 @@ constexpr auto MAXHEIGHT = (ORIGHEIGHT << 1); // [crispy]
 
 extern int SCREENWIDTH;
 extern int SCREENHEIGHT;
-extern int HIRESWIDTH;                  // [crispy] non-widescreen SCREENWIDTH
-extern int DELTAWIDTH;                  // [crispy] horizontal widescreen offset
+extern int HIRESWIDTH;              // [crispy] non-widescreen SCREENWIDTH
+extern int DELTAWIDTH;              // [crispy] horizontal widescreen offset
 void       I_GetScreenDimensions(); // [crispy] re-calculate DELTAWIDTH
 
 // Screen height used when aspect_ratio_correct=true.
 
-constexpr auto ORIGHEIGHT_4_3 = 240;                   // [crispy]
+constexpr auto                  ORIGHEIGHT_4_3 = 240;                   // [crispy]
 [[maybe_unused]] constexpr auto MAXHEIGHT_4_3  = (ORIGHEIGHT_4_3 << 1); // [crispy]
 
 [[maybe_unused]] extern int SCREENHEIGHT_4_3;
@@ -96,43 +95,43 @@ void I_StartTic();
 [[maybe_unused]] void I_EnableLoadingDisk(int xoffs, int yoffs);
 
 struct i_video_t {
-    // SDL video driver name
-    char *video_driver;
-    // Flag indicating whether the screen is currently visible:
-    // when the screen isnt visible, don't render the screen
-    bool  screenvisible;
+  // SDL video driver name
+  char *video_driver;
+  // Flag indicating whether the screen is currently visible:
+  // when the screen isnt visible, don't render the screen
+  bool screenvisible;
 
-    int      vanilla_keyboard_mapping;
-    // If true, game is running as a screensaver
-    bool     screensaver_mode;
-    // Gamma correction level to use
-    int      usegamma;
-    // The screen buffer; this is modified to draw things to the screen
-    pixel_t *I_VideoBuffer;
+  int vanilla_keyboard_mapping;
+  // If true, game is running as a screensaver
+  bool screensaver_mode;
+  // Gamma correction level to use
+  int usegamma;
+  // The screen buffer; this is modified to draw things to the screen
+  pixel_t *I_VideoBuffer;
 
-    int screen_width;
-    int screen_height;
-    // Run in full screen mode?  (int type for config code)
-    int fullscreen;
-    // Aspect ratio correction mode
-    int aspect_ratio_correct;
-    // Force integer scales for resolution-independent rendering
-    int integer_scaling;
-    // VGA Porch palette change emulation
-    int vga_porch_flash;
-    // Force software rendering, for systems which lack effective hardware
-    // acceleration
-    int force_software_renderer;
+  int screen_width;
+  int screen_height;
+  // Run in full screen mode?  (int type for config code)
+  int fullscreen;
+  // Aspect ratio correction mode
+  int aspect_ratio_correct;
+  // Force integer scales for resolution-independent rendering
+  int integer_scaling;
+  // VGA Porch palette change emulation
+  int vga_porch_flash;
+  // Force software rendering, for systems which lack effective hardware
+  // acceleration
+  int force_software_renderer;
 
-    // Window position:
-    char *window_position;
+  // Window position:
+  char *window_position;
 
-    // Joystic/gamepad hysteresis
-    unsigned int joywait;
+  // Joystic/gamepad hysteresis
+  unsigned int joywait;
 };
 
 extern i_video_t *const g_i_video_globals;
 
-void         I_GetWindowPosition(int *x, int *y, int w, int h);
+void I_GetWindowPosition(int *x, int *y, int w, int h);
 
 #endif

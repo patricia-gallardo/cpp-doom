@@ -16,7 +16,6 @@
 //	Endianess handling, swapping 16bit and 32bit.
 //
 
-
 #ifndef __I_SWAP__
 #define __I_SWAP__
 
