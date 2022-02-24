@@ -15,7 +15,6 @@
 //     OPL internal interface.
 //
 
-
 #ifndef OPL_INTERNAL_H
 #define OPL_INTERNAL_H
 
