@@ -15,7 +15,6 @@
 // DESCRIPTION:
 //
 
-
 #include <cctype>
 #include <cstdio>
 #include <cstdlib>
@@ -35,7 +34,6 @@
 int    myargc;
 char **myargv;
 
-
 //
 // M_CheckParm
 // Checks for the given parameter
@@ -44,15 +42,13 @@ char **myargv;
 // or 0 if not present
 //
 
-int M_CheckParmWithArgs(const char *check, int num_args)
-{
-    for (int i = 1; i < myargc - num_args; i++)
-    {
-        if (!strcasecmp(check, myargv[i]))
-            return i;
-    }
+int M_CheckParmWithArgs(const char *check, int num_args) {
+  for (int i = 1; i < myargc - num_args; i++) {
+    if (!strcasecmp(check, myargv[i]))
+      return i;
+  }
 
-    return 0;
+  return 0;
 }
 
 //
@@ -62,142 +58,126 @@ int M_CheckParmWithArgs(const char *check, int num_args)
 // line arguments, false if not.
 //
 
-bool M_ParmExists(const char *check)
-{
-    return M_CheckParm(check) != 0;
+bool M_ParmExists(const char *check) {
+  return M_CheckParm(check) != 0;
 }
 
-int M_CheckParm(const char *check)
-{
-    return M_CheckParmWithArgs(check, 0);
+int M_CheckParm(const char *check) {
+  return M_CheckParmWithArgs(check, 0);
 }
 
 constexpr auto MAXARGVS = 100;
 
-static void LoadResponseFile(int argv_index, const char *filename)
-{
-    // Read the response file into memory
-    FILE *handle = fopen(filename, "rb");
+static void LoadResponseFile(int argv_index, const char *filename) {
+  // Read the response file into memory
+  FILE *handle = fopen(filename, "rb");
 
-    if (handle == nullptr)
-    {
-       fmt::printf("\nNo such response file!");
-        exit(1);
+  if (handle == nullptr) {
+    fmt::printf("\nNo such response file!");
+    exit(1);
+  }
+
+  fmt::printf("Found response file %s!\n", filename);
+
+  auto size = static_cast<size_t>(M_FileLength(handle));
+
+  // Read in the entire file
+  // Allocate one byte extra - this is in case there is an argument
+  // at the end of the response file, in which case a '\0' will be
+  // needed.
+
+  char *file = static_cast<char *>(malloc(static_cast<size_t>(size + 1)));
+  {
+    size_t i = 0;
+    while (i < size) {
+      size_t k = fread(file + i, 1, static_cast<size_t>(size - i), handle);
+
+      if (ferror(handle)) { I_Error("Failed to read full contents of '%s'", filename); }
+
+      i += k;
     }
 
-   fmt::printf("Found response file %s!\n", filename);
+    fclose(handle);
+  }
 
-    auto size = static_cast<size_t>(M_FileLength(handle));
+  // Create new arguments list array
 
-    // Read in the entire file
-    // Allocate one byte extra - this is in case there is an argument
-    // at the end of the response file, in which case a '\0' will be
-    // needed.
+  char **newargv = static_cast<char **>(malloc(sizeof(char *) * MAXARGVS));
+  int    newargc = 0;
+  std::memset(newargv, 0, sizeof(char *) * MAXARGVS);
 
-    char *file = static_cast<char *>(malloc(static_cast<size_t>(size + 1)));
-    {
-        size_t i = 0;
-        while (i < size)
-        {
-            size_t k = fread(file + i, 1, static_cast<size_t>(size - i), handle);
+  // Copy all the arguments in the list up to the response file
 
-            if (ferror(handle)) { I_Error("Failed to read full contents of '%s'", filename); }
+  for (int i = 0; i < argv_index; ++i) {
+    newargv[i] = myargv[i];
+    ++newargc;
+  }
 
-            i += k;
-        }
+  char  *infile = file;
+  size_t k      = 0;
 
-        fclose(handle);
+  while (k < size) {
+    // Skip past space characters to the next argument
+
+    while (k < size && isspace(infile[k])) {
+      ++k;
     }
 
-    // Create new arguments list array
-
-    char **newargv = static_cast<char **>(malloc(sizeof(char *) * MAXARGVS));
-    int newargc = 0;
-    std::memset(newargv, 0, sizeof(char *) * MAXARGVS);
-
-    // Copy all the arguments in the list up to the response file
-
-    for (int i = 0; i < argv_index; ++i)
-    {
-        newargv[i] = myargv[i];
-        ++newargc;
+    if (k >= size) {
+      break;
     }
 
-    char *infile = file;
-    size_t k = 0;
+    // If the next argument is enclosed in quote marks, treat
+    // the contents as a single argument.  This allows long filenames
+    // to be specified.
 
-    while (k < size)
-    {
-        // Skip past space characters to the next argument
+    if (infile[k] == '\"') {
+      // Skip the first character(")
+      ++k;
 
-        while (k < size && isspace(infile[k]))
-        {
-            ++k;
-        }
+      newargv[newargc++] = &infile[k];
 
-        if (k >= size)
-        {
-            break;
-        }
+      // Read all characters between quotes
 
-        // If the next argument is enclosed in quote marks, treat
-        // the contents as a single argument.  This allows long filenames
-        // to be specified.
+      while (k < size && infile[k] != '\"' && infile[k] != '\n') {
+        ++k;
+      }
 
-        if (infile[k] == '\"')
-        {
-            // Skip the first character(")
-            ++k;
+      if (k >= size || infile[k] == '\n') {
+        I_Error("Quotes unclosed in response file '%s'",
+                filename);
+      }
 
-            newargv[newargc++] = &infile[k];
+      // Cut off the string at the closing quote
 
-            // Read all characters between quotes
+      infile[k] = '\0';
+      ++k;
+    } else {
+      // Read in the next argument until a space is reached
 
-            while (k < size && infile[k] != '\"' && infile[k] != '\n')
-            {
-                ++k;
-            }
+      newargv[newargc++] = &infile[k];
 
-            if (k >= size || infile[k] == '\n')
-            {
-                I_Error("Quotes unclosed in response file '%s'",
-                    filename);
-            }
+      while (k < size && !isspace(infile[k])) {
+        ++k;
+      }
 
-            // Cut off the string at the closing quote
+      // Cut off the end of the argument at the first space
 
-            infile[k] = '\0';
-            ++k;
-        }
-        else
-        {
-            // Read in the next argument until a space is reached
+      infile[k] = '\0';
 
-            newargv[newargc++] = &infile[k];
-
-            while (k < size && !isspace(infile[k]))
-            {
-                ++k;
-            }
-
-            // Cut off the end of the argument at the first space
-
-            infile[k] = '\0';
-
-            ++k;
-        }
+      ++k;
     }
+  }
 
-    // Add arguments following the response file argument
+  // Add arguments following the response file argument
 
-    for (int i = argv_index + 1; i < myargc; ++i)
-    {
-        newargv[newargc] = myargv[i];
-        ++newargc;
-    }
+  for (int i = argv_index + 1; i < myargc; ++i) {
+    newargv[newargc] = myargv[i];
+    ++newargc;
+  }
 
-    myargv = newargv;
-    myargc = newargc;
+  myargv = newargv;
+  myargc = newargc;
 
 #if 0
     // Disabled - Vanilla Doom does not do this.
@@ -216,182 +196,161 @@ static void LoadResponseFile(int argv_index, const char *filename)
 // Find a Response File
 //
 
-void M_FindResponseFile()
-{
-    for (int i = 1; i < myargc; i++)
-    {
-        if (myargv[i][0] == '@')
-        {
-            LoadResponseFile(i, myargv[i] + 1);
-        }
+void M_FindResponseFile() {
+  for (int i = 1; i < myargc; i++) {
+    if (myargv[i][0] == '@') {
+      LoadResponseFile(i, myargv[i] + 1);
     }
+  }
 
-    for (;;)
-    {
-        //!
-        // @arg <filename>
-        //
-        // Load extra command line arguments from the given response file.
-        // Arguments read from the file will be inserted into the command
-        // line replacing this argument. A response file can also be loaded
-        // using the abbreviated syntax '@filename.rsp'.
-        //
-        int i = M_CheckParmWithArgs("-response", 1);
-        if (i <= 0)
-        {
-            break;
-        }
-        // Replace the -response argument so that the next time through
-        // the loop we'll ignore it. Since some parameters stop reading when
-        // an argument beginning with a '-' is encountered, we keep something
-        // that starts with a '-'.
-        myargv[i] = const_cast<char *>("-_");
-        LoadResponseFile(i + 1, myargv[i + 1]);
+  for (;;) {
+    //!
+    // @arg <filename>
+    //
+    // Load extra command line arguments from the given response file.
+    // Arguments read from the file will be inserted into the command
+    // line replacing this argument. A response file can also be loaded
+    // using the abbreviated syntax '@filename.rsp'.
+    //
+    int i = M_CheckParmWithArgs("-response", 1);
+    if (i <= 0) {
+      break;
     }
+    // Replace the -response argument so that the next time through
+    // the loop we'll ignore it. Since some parameters stop reading when
+    // an argument beginning with a '-' is encountered, we keep something
+    // that starts with a '-'.
+    myargv[i] = const_cast<char *>("-_");
+    LoadResponseFile(i + 1, myargv[i + 1]);
+  }
 }
 
 #if defined(_WIN32)
 enum
 {
-    FILETYPE_UNKNOWN = 0x0,
-    FILETYPE_IWAD    = 0x2,
-    FILETYPE_PWAD    = 0x4,
-    FILETYPE_DEH     = 0x8,
+  FILETYPE_UNKNOWN = 0x0,
+  FILETYPE_IWAD    = 0x2,
+  FILETYPE_PWAD    = 0x4,
+  FILETYPE_DEH     = 0x8,
 };
 
-static int GuessFileType(const char *name)
-{
-    int            ret = FILETYPE_UNKNOWN;
-    const char *   base;
-    char *         lower;
-    static bool iwad_found = false;
+static int GuessFileType(const char *name) {
+  int         ret = FILETYPE_UNKNOWN;
+  const char *base;
+  char       *lower;
+  static bool iwad_found = false;
 
-    base  = M_BaseName(name);
-    lower = M_StringDuplicate(base);
-    M_ForceLowercase(lower);
+  base  = M_BaseName(name);
+  lower = M_StringDuplicate(base);
+  M_ForceLowercase(lower);
 
-    // only ever add one argument to the -iwad parameter
+  // only ever add one argument to the -iwad parameter
 
-    if (iwad_found == false && D_IsIWADName(lower))
-    {
-        ret        = FILETYPE_IWAD;
-        iwad_found = true;
-    }
-    else if (M_StringEndsWith(lower, ".wad") || M_StringEndsWith(lower, ".lmp"))
-    {
-        ret = FILETYPE_PWAD;
-    }
-    else if (M_StringEndsWith(lower, ".deh") || M_StringEndsWith(lower, ".bex") || // [crispy] *.bex
-             M_StringEndsWith(lower, ".hhe") || M_StringEndsWith(lower, ".seh"))
-    {
-        ret = FILETYPE_DEH;
-    }
+  if (iwad_found == false && D_IsIWADName(lower)) {
+    ret        = FILETYPE_IWAD;
+    iwad_found = true;
+  } else if (M_StringEndsWith(lower, ".wad") || M_StringEndsWith(lower, ".lmp")) {
+    ret = FILETYPE_PWAD;
+  } else if (M_StringEndsWith(lower, ".deh") || M_StringEndsWith(lower, ".bex") || // [crispy] *.bex
+             M_StringEndsWith(lower, ".hhe") || M_StringEndsWith(lower, ".seh")) {
+    ret = FILETYPE_DEH;
+  }
 
-    free(lower);
+  free(lower);
 
-    return ret;
+  return ret;
 }
 
 typedef struct
 {
-    char *str;
-    int   type, stable;
+  char *str;
+  int   type, stable;
 } argument_t;
 
-static int CompareByFileType(const void *a, const void *b)
-{
-    const argument_t *arg_a = (const argument_t *)a;
-    const argument_t *arg_b = (const argument_t *)b;
+static int CompareByFileType(const void *a, const void *b) {
+  const argument_t *arg_a = (const argument_t *)a;
+  const argument_t *arg_b = (const argument_t *)b;
 
-    const int ret = arg_a->type - arg_b->type;
+  const int ret = arg_a->type - arg_b->type;
 
-    return ret ? ret : (arg_a->stable - arg_b->stable);
+  return ret ? ret : (arg_a->stable - arg_b->stable);
 }
 
-void M_AddLooseFiles()
-{
-    int         i, types = 0;
-    char **     newargv;
-    argument_t *arguments;
+void M_AddLooseFiles() {
+  int         i, types = 0;
+  char      **newargv;
+  argument_t *arguments;
 
-    if (myargc < 2)
-    {
-        return;
+  if (myargc < 2) {
+    return;
+  }
+
+  // allocate space for up to three additional regular parameters
+
+  arguments = static_cast<argument_t *>(malloc((myargc + 3) * sizeof(*arguments)));
+  std::memset(arguments, 0, (myargc + 3) * sizeof(*arguments));
+
+  // check the command line and make sure it does not already
+  // contain any regular parameters or response files
+  // but only fully-qualified LFS or UNC file paths
+
+  for (i = 1; i < myargc; i++) {
+    char *arg = myargv[i];
+    int   type;
+
+    if (strlen(arg) < 3 || arg[0] == '-' || arg[0] == '@' || ((!isalpha(arg[0]) || arg[1] != ':' || arg[2] != '\\') && (arg[0] != '\\' || arg[1] != '\\'))) {
+      free(arguments);
+      return;
     }
 
-    // allocate space for up to three additional regular parameters
+    type                = GuessFileType(arg);
+    arguments[i].str    = arg;
+    arguments[i].type   = type;
+    arguments[i].stable = i;
+    types |= type;
+  }
 
-    arguments = static_cast<argument_t *>(malloc((myargc + 3) * sizeof(*arguments)));
-    std::memset(arguments, 0, (myargc + 3) * sizeof(*arguments));
+  // add space for one additional regular parameter
+  // for each discovered file type in the new argument  list
+  // and sort parameters right before their corresponding file paths
 
-    // check the command line and make sure it does not already
-    // contain any regular parameters or response files
-    // but only fully-qualified LFS or UNC file paths
+  if (types & FILETYPE_IWAD) {
+    arguments[myargc].str  = M_StringDuplicate("-iwad");
+    arguments[myargc].type = FILETYPE_IWAD - 1;
+    myargc++;
+  }
+  if (types & FILETYPE_PWAD) {
+    arguments[myargc].str  = M_StringDuplicate("-merge");
+    arguments[myargc].type = FILETYPE_PWAD - 1;
+    myargc++;
+  }
+  if (types & FILETYPE_DEH) {
+    arguments[myargc].str  = M_StringDuplicate("-deh");
+    arguments[myargc].type = FILETYPE_DEH - 1;
+    myargc++;
+  }
 
-    for (i = 1; i < myargc; i++)
-    {
-        char *arg = myargv[i];
-        int   type;
+  newargv = static_cast<char **>(malloc(myargc * sizeof(*newargv)));
 
-        if (strlen(arg) < 3 || arg[0] == '-' || arg[0] == '@' || ((!isalpha(arg[0]) || arg[1] != ':' || arg[2] != '\\') && (arg[0] != '\\' || arg[1] != '\\')))
-        {
-            free(arguments);
-            return;
-        }
+  // sort the argument list by file type, except for the zeroth argument
+  // which is the executable invocation itself
 
-        type                = GuessFileType(arg);
-        arguments[i].str    = arg;
-        arguments[i].type   = type;
-        arguments[i].stable = i;
-        types |= type;
-    }
+  SDL_qsort(arguments + 1, myargc - 1, sizeof(*arguments), CompareByFileType);
 
-    // add space for one additional regular parameter
-    // for each discovered file type in the new argument  list
-    // and sort parameters right before their corresponding file paths
+  newargv[0] = myargv[0];
 
-    if (types & FILETYPE_IWAD)
-    {
-        arguments[myargc].str  = M_StringDuplicate("-iwad");
-        arguments[myargc].type = FILETYPE_IWAD - 1;
-        myargc++;
-    }
-    if (types & FILETYPE_PWAD)
-    {
-        arguments[myargc].str  = M_StringDuplicate("-merge");
-        arguments[myargc].type = FILETYPE_PWAD - 1;
-        myargc++;
-    }
-    if (types & FILETYPE_DEH)
-    {
-        arguments[myargc].str  = M_StringDuplicate("-deh");
-        arguments[myargc].type = FILETYPE_DEH - 1;
-        myargc++;
-    }
+  for (i = 1; i < myargc; i++) {
+    newargv[i] = arguments[i].str;
+  }
 
-    newargv = static_cast<char **>(malloc(myargc * sizeof(*newargv)));
+  free(arguments);
 
-    // sort the argument list by file type, except for the zeroth argument
-    // which is the executable invocation itself
-
-    SDL_qsort(arguments + 1, myargc - 1, sizeof(*arguments), CompareByFileType);
-
-    newargv[0] = myargv[0];
-
-    for (i = 1; i < myargc; i++)
-    {
-        newargv[i] = arguments[i].str;
-    }
-
-    free(arguments);
-
-    myargv = newargv;
+  myargv = newargv;
 }
 #endif
 
 // Return the name of the executable used to start the program:
 
-const char *M_GetExecutableName()
-{
-    return M_BaseName(myargv[0]);
+const char *M_GetExecutableName() {
+  return M_BaseName(myargv[0]);
 }

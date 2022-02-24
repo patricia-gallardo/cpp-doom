@@ -23,28 +23,22 @@
 
 // Fixme. __USE_C_FIXED__ or something.
 
-fixed_t FixedMul(fixed_t a, fixed_t b)
-{
-    return static_cast<fixed_t>((static_cast<int64_t>(a) * static_cast<int64_t>(b)) >> FRACBITS);
+fixed_t FixedMul(fixed_t a, fixed_t b) {
+  return static_cast<fixed_t>((static_cast<int64_t>(a) * static_cast<int64_t>(b)) >> FRACBITS);
 }
-
 
 //
 // FixedDiv, C version.
 //
 
-fixed_t FixedDiv(fixed_t a, fixed_t b)
-{
-    if ((std::abs(a) >> 14) >= std::abs(b))
-    {
-        return (a ^ b) < 0 ? INT_MIN : INT_MAX;
-    }
-    else
-    {
-        int64_t result;
+fixed_t FixedDiv(fixed_t a, fixed_t b) {
+  if ((std::abs(a) >> 14) >= std::abs(b)) {
+    return (a ^ b) < 0 ? INT_MIN : INT_MAX;
+  } else {
+    int64_t result;
 
-        result = (static_cast<int64_t>(a) << FRACBITS) / b;
+    result = (static_cast<int64_t>(a) << FRACBITS) / b;
 
-        return static_cast<fixed_t>(result);
-    }
+    return static_cast<fixed_t>(result);
+  }
 }

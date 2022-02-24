@@ -19,7 +19,6 @@
 //	uses native calls to malloc() and free().
 //
 
-
 #include <cstdlib>
 #include <cstring>
 
@@ -34,12 +33,12 @@
 using memblock_t = struct memblock_s;
 
 struct memblock_s {
-    int         id; // = ZONEID
-    int         tag;
-    int         size;
-    void **     user;
-    memblock_t *prev;
-    memblock_t *next;
+  int         id; // = ZONEID
+  int         tag;
+  int         size;
+  void      **user;
+  memblock_t *prev;
+  memblock_t *next;
 };
 
 // Linked list of allocated blocks for each tag type
@@ -50,33 +49,30 @@ static memblock_t *allocated_blocks[PU_NUM_TAGS];
 
 static int test_malloced = 0;
 
-void *test_malloc(size_t size)
-{
-    int *result;
+void *test_malloc(size_t size) {
+  int *result;
 
-    if (test_malloced + size > 2 * 1024 * 1024)
-    {
-        return nullptr;
-    }
+  if (test_malloced + size > 2 * 1024 * 1024) {
+    return nullptr;
+  }
 
-    test_malloced += size;
+  test_malloced += size;
 
-    result = malloc(size + sizeof(int));
+  result = malloc(size + sizeof(int));
 
-    *result = size;
+  *result = size;
 
-    return result + 1;
+  return result + 1;
 }
 
-void test_free(void *data)
-{
-    int *i;
+void test_free(void *data) {
+  int *i;
 
-    i = ((int *)data) - 1;
+  i = ((int *)data) - 1;
 
-    test_malloced -= *i;
+  test_malloced -= *i;
 
-    free(i);
+  free(i);
 }
 
 #define malloc test_malloc
@@ -84,79 +80,66 @@ void test_free(void *data)
 
 #endif /* #ifdef TESTING */
 
-
 // Add a block into the linked list for its type.
 
-static void Z_InsertBlock(memblock_t *block)
-{
-    block->prev                  = nullptr;
-    block->next                  = allocated_blocks[block->tag];
-    allocated_blocks[block->tag] = block;
+static void Z_InsertBlock(memblock_t *block) {
+  block->prev                  = nullptr;
+  block->next                  = allocated_blocks[block->tag];
+  allocated_blocks[block->tag] = block;
 
-    if (block->next != nullptr)
-    {
-        block->next->prev = block;
-    }
+  if (block->next != nullptr) {
+    block->next->prev = block;
+  }
 }
 
 // Remove a block from its linked list.
 
-static void Z_RemoveBlock(memblock_t *block)
-{
-    // Unlink from list
+static void Z_RemoveBlock(memblock_t *block) {
+  // Unlink from list
 
-    if (block->prev == nullptr)
-    {
-        // Start of list
+  if (block->prev == nullptr) {
+    // Start of list
 
-        allocated_blocks[block->tag] = block->next;
-    }
-    else
-    {
-        block->prev->next = block->next;
-    }
+    allocated_blocks[block->tag] = block->next;
+  } else {
+    block->prev->next = block->next;
+  }
 
-    if (block->next != nullptr)
-    {
-        block->next->prev = block->prev;
-    }
+  if (block->next != nullptr) {
+    block->next->prev = block->prev;
+  }
 }
 
 //
 // Z_Init
 //
-void Z_Init()
-{
-    std::memset(allocated_blocks, 0, sizeof(allocated_blocks));
-    fmt::printf("zone memory: Using native C allocator.\n");
+void Z_Init() {
+  std::memset(allocated_blocks, 0, sizeof(allocated_blocks));
+  fmt::printf("zone memory: Using native C allocator.\n");
 }
-
 
 //
 // Z_Free
 //
-void Z_Free(void *ptr)
-{
-    auto *byte_ptr = static_cast<uint8_t *>(ptr);
-    auto *block = reinterpret_cast<memblock_t *>(byte_ptr - sizeof(memblock_t));
+void Z_Free(void *ptr) {
+  auto *byte_ptr = static_cast<uint8_t *>(ptr);
+  auto *block    = reinterpret_cast<memblock_t *>(byte_ptr - sizeof(memblock_t));
 
-    if (block->id != ZONEID)
-    {
-        I_Error("Z_Free: freed a pointer without ZONEID");
-    }
+  if (block->id != ZONEID) {
+    I_Error("Z_Free: freed a pointer without ZONEID");
+  }
 
-    if (block->tag != PU_FREE && block->user != nullptr)
-    {
-        // clear the user's mark
+  if (block->tag != PU_FREE && block->user != nullptr) {
+    // clear the user's mark
 
-        *block->user = nullptr;
-    }
+    *block->user = nullptr;
+  }
 
-    Z_RemoveBlock(block);
+  Z_RemoveBlock(block);
 
-    // Free back to system
+  // Free back to system
 
-    free(block);
+  free(block);
 }
 
 // Empty data from the cache list to allocate enough data of the size
@@ -164,60 +147,54 @@ void Z_Free(void *ptr)
 //
 // Returns true if any blocks were freed.
 
-static bool ClearCache(int size)
-{
-    memblock_t *next_block = nullptr;
-    memblock_t *block      = allocated_blocks[PU_CACHE];
+static bool ClearCache(int size) {
+  memblock_t *next_block = nullptr;
+  memblock_t *block      = allocated_blocks[PU_CACHE];
 
-    if (block == nullptr)
-    {
-        // Cache is already empty.
+  if (block == nullptr) {
+    // Cache is already empty.
 
-        return false;
+    return false;
+  }
+
+  // Search to the end of the PU_CACHE list.  The blocks at the end
+  // of the list are the ones that have been free for longer and
+  // are more likely to be unneeded now.
+
+  while (block->next != nullptr) {
+    block = block->next;
+  }
+
+  // printf("out of memory; cleaning out the cache: %i\n", test_malloced);
+
+  // Search backwards through the list freeing blocks until we have
+  // freed the amount of memory required.
+
+  int remaining = size;
+
+  while (remaining > 0) {
+    if (block == nullptr) {
+      // No blocks left to free; we've done our best.
+
+      break;
     }
 
-    // Search to the end of the PU_CACHE list.  The blocks at the end
-    // of the list are the ones that have been free for longer and
-    // are more likely to be unneeded now.
+    next_block = block->prev;
 
-    while (block->next != nullptr)
-    {
-        block = block->next;
+    Z_RemoveBlock(block);
+
+    remaining -= block->size;
+
+    if (block->user) {
+      *block->user = nullptr;
     }
 
-    //printf("out of memory; cleaning out the cache: %i\n", test_malloced);
+    free(block);
 
-    // Search backwards through the list freeing blocks until we have
-    // freed the amount of memory required.
+    block = next_block;
+  }
 
-    int remaining = size;
-
-    while (remaining > 0)
-    {
-        if (block == nullptr)
-        {
-            // No blocks left to free; we've done our best.
-
-            break;
-        }
-
-        next_block = block->prev;
-
-        Z_RemoveBlock(block);
-
-        remaining -= block->size;
-
-        if (block->user)
-        {
-            *block->user = nullptr;
-        }
-
-        free(block);
-
-        block = next_block;
-    }
-
-    return true;
+  return true;
 }
 
 //
@@ -225,102 +202,88 @@ static bool ClearCache(int size)
 // You can pass a nullptr user if the tag is < PU_PURGELEVEL.
 //
 
-void *Z_Malloc(int size, int tag, void *user)
-{
-    if (tag < 0 || tag >= PU_NUM_TAGS || tag == PU_FREE)
-    {
-        I_Error("Z_Malloc: attempted to allocate a block with an invalid "
-                "tag: %i",
+void *Z_Malloc(int size, int tag, void *user) {
+  if (tag < 0 || tag >= PU_NUM_TAGS || tag == PU_FREE) {
+    I_Error("Z_Malloc: attempted to allocate a block with an invalid "
+            "tag: %i",
             tag);
+  }
+
+  if (user == nullptr && tag >= PU_PURGELEVEL) {
+    I_Error("Z_Malloc: an owner is required for purgable blocks");
+  }
+
+  // Malloc a block of the required size
+
+  memblock_t *newblock = nullptr;
+
+  while (newblock == nullptr) {
+    newblock = static_cast<memblock_t *>(malloc(sizeof(memblock_t) + static_cast<unsigned long>(size)));
+
+    if (newblock == nullptr) {
+      if (!ClearCache(static_cast<int>(sizeof(memblock_t) + static_cast<unsigned long>(size)))) {
+        I_Error("Z_Malloc: failed on allocation of %i bytes", size);
+      }
     }
+  }
 
-    if (user == nullptr && tag >= PU_PURGELEVEL)
-    {
-        I_Error("Z_Malloc: an owner is required for purgable blocks");
-    }
+  newblock->tag = tag;
 
-    // Malloc a block of the required size
+  // Hook into the linked list for this tag type
 
-    memblock_t *newblock = nullptr;
+  newblock->id   = ZONEID;
+  newblock->user = static_cast<void **>(user);
+  newblock->size = size;
 
-    while (newblock == nullptr)
-    {
-        newblock = static_cast<memblock_t *>(malloc(sizeof(memblock_t) + static_cast<unsigned long>(size)));
+  Z_InsertBlock(newblock);
 
-        if (newblock == nullptr)
-        {
-            if (!ClearCache(static_cast<int>(sizeof(memblock_t) + static_cast<unsigned long>(size))))
-            {
-                I_Error("Z_Malloc: failed on allocation of %i bytes", size);
-            }
-        }
-    }
+  auto *data   = reinterpret_cast<unsigned char *>(newblock);
+  void *result = data + sizeof(memblock_t);
 
-    newblock->tag = tag;
+  if (user != nullptr) {
+    *newblock->user = result;
+  }
 
-    // Hook into the linked list for this tag type
-
-    newblock->id   = ZONEID;
-    newblock->user = static_cast<void **>(user);
-    newblock->size = size;
-
-    Z_InsertBlock(newblock);
-
-    auto *data = reinterpret_cast<unsigned char *>(newblock);
-    void *result = data + sizeof(memblock_t);
-
-    if (user != nullptr)
-    {
-        *newblock->user = result;
-    }
-
-    return result;
+  return result;
 }
-
 
 //
 // Z_FreeTags
 //
 
-void Z_FreeTags(int lowtag, int hightag)
-{
-    for (int i = lowtag; i <= hightag; ++i)
-    {
-        memblock_t *next = nullptr;
+void Z_FreeTags(int lowtag, int hightag) {
+  for (int i = lowtag; i <= hightag; ++i) {
+    memblock_t *next = nullptr;
 
-        // Free all in this chain
+    // Free all in this chain
 
-        for (memblock_t *block = allocated_blocks[i]; block != nullptr;)
-        {
-            next = block->next;
+    for (memblock_t *block = allocated_blocks[i]; block != nullptr;) {
+      next = block->next;
 
-            // Free this block
+      // Free this block
 
-            if (block->user != nullptr)
-            {
-                *block->user = nullptr;
-            }
+      if (block->user != nullptr) {
+        *block->user = nullptr;
+      }
 
-            free(block);
+      free(block);
 
-            // Jump to the next in the chain
+      // Jump to the next in the chain
 
-            block = next;
-        }
-
-        // This chain is empty now
-
-        allocated_blocks[i] = nullptr;
+      block = next;
     }
-}
 
+    // This chain is empty now
+
+    allocated_blocks[i] = nullptr;
+  }
+}
 
 //
 // Z_DumpHeap
 //
-[[maybe_unused]] void Z_DumpHeap(int /*lowtag*/, int /*hightag*/)
-{
-    // broken
+[[maybe_unused]] void Z_DumpHeap(int /*lowtag*/, int /*hightag*/) {
+  // broken
 
 #if 0
     memblock_t*	block;
@@ -355,13 +318,11 @@ void Z_FreeTags(int lowtag, int hightag)
 #endif
 }
 
-
 //
 // Z_FileDumpHeap
 //
-[[maybe_unused]] void Z_FileDumpHeap(FILE */*f*/)
-{
-    // broken
+[[maybe_unused]] void Z_FileDumpHeap(FILE * /*f*/) {
+  // broken
 #if 0
     memblock_t*	block;
 	
@@ -390,89 +351,78 @@ void Z_FreeTags(int lowtag, int hightag)
 #endif
 }
 
-
 //
 // Z_CheckHeap
 //
-void Z_CheckHeap()
-{
-    // Check all chains
+void Z_CheckHeap() {
+  // Check all chains
 
-    for (int i = 0; i < PU_NUM_TAGS; ++i)
-    {
-        memblock_t *prev = nullptr;
+  for (int i = 0; i < PU_NUM_TAGS; ++i) {
+    memblock_t *prev = nullptr;
 
-        for (memblock_t *block = allocated_blocks[i]; block != nullptr; block = block->next)
-        {
-            if (block->id != ZONEID)
-            {
-                I_Error("Z_CheckHeap: Block without a ZONEID!");
-            }
+    for (memblock_t *block = allocated_blocks[i]; block != nullptr; block = block->next) {
+      if (block->id != ZONEID) {
+        I_Error("Z_CheckHeap: Block without a ZONEID!");
+      }
 
-            if (block->prev != prev)
-            {
-                I_Error("Z_CheckHeap: Doubly-linked list corrupted!");
-            }
+      if (block->prev != prev) {
+        I_Error("Z_CheckHeap: Doubly-linked list corrupted!");
+      }
 
-            prev = block;
-        }
+      prev = block;
     }
+  }
 }
-
 
 //
 // Z_ChangeTag
 //
 
-void Z_ChangeTag2(void *ptr, int tag, const char *file, int line)
-{
-    auto *byte_ptr = static_cast<uint8_t *>(ptr);
-    auto *block = reinterpret_cast<memblock_t *>(byte_ptr - sizeof(memblock_t));
+void Z_ChangeTag2(void *ptr, int tag, const char *file, int line) {
+  auto *byte_ptr = static_cast<uint8_t *>(ptr);
+  auto *block    = reinterpret_cast<memblock_t *>(byte_ptr - sizeof(memblock_t));
 
-    if (block->id != ZONEID)
-        I_Error("%s:%i: Z_ChangeTag: block without a ZONEID!",
-            file, line);
+  if (block->id != ZONEID)
+    I_Error("%s:%i: Z_ChangeTag: block without a ZONEID!",
+            file,
+            line);
 
-    if (tag >= PU_PURGELEVEL && block->user == nullptr)
-        I_Error("%s:%i: Z_ChangeTag: an owner is required "
-                "for purgable blocks",
-            file, line);
+  if (tag >= PU_PURGELEVEL && block->user == nullptr)
+    I_Error("%s:%i: Z_ChangeTag: an owner is required "
+            "for purgable blocks",
+            file,
+            line);
 
-    // Remove the block from its current list, and rehook it into
-    // its new list.
+  // Remove the block from its current list, and rehook it into
+  // its new list.
 
-    Z_RemoveBlock(block);
-    block->tag = tag;
-    Z_InsertBlock(block);
+  Z_RemoveBlock(block);
+  block->tag = tag;
+  Z_InsertBlock(block);
 }
 
-[[maybe_unused]] void Z_ChangeUser(void *ptr, void **user)
-{
-    uint8_t    *byte_ptr = static_cast<uint8_t *>(ptr);
-    memblock_t *block = reinterpret_cast<memblock_t *>(byte_ptr - sizeof(memblock_t));
+[[maybe_unused]] void Z_ChangeUser(void *ptr, void **user) {
+  uint8_t    *byte_ptr = static_cast<uint8_t *>(ptr);
+  memblock_t *block    = reinterpret_cast<memblock_t *>(byte_ptr - sizeof(memblock_t));
 
-    if (block->id != ZONEID)
-    {
-        I_Error("Z_ChangeUser: Tried to change user for invalid block!");
-    }
+  if (block->id != ZONEID) {
+    I_Error("Z_ChangeUser: Tried to change user for invalid block!");
+  }
 
-    block->user = user;
-    *user       = ptr;
+  block->user = user;
+  *user       = ptr;
 }
-
 
 //
 // Z_FreeMemory
 //
 
-[[maybe_unused]] int Z_FreeMemory()
-{
-    // Limited by the system??
+[[maybe_unused]] int Z_FreeMemory() {
+  // Limited by the system??
 
-    return -1;
+  return -1;
 }
 
-[[maybe_unused]] unsigned int Z_ZoneSize()
-{
-    return 0;
+[[maybe_unused]] unsigned int Z_ZoneSize() {
+  return 0;
 }

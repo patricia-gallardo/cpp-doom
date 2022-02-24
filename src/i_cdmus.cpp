@@ -24,53 +24,44 @@
 
 [[maybe_unused]] int cd_Error;
 
-[[maybe_unused]] int I_CDMusInit()
-{
-    fmt::fprintf(stderr,
-        "I_CDMusInit: CD music playback is no longer supported! "
-        "Please use digital music packs instead:\n"
-        "https://www.chocolate-doom.org/wiki/index.php/Digital_music_packs\n");
-    return -1;
+[[maybe_unused]] int I_CDMusInit() {
+  fmt::fprintf(stderr,
+               "I_CDMusInit: CD music playback is no longer supported! "
+               "Please use digital music packs instead:\n"
+               "https://www.chocolate-doom.org/wiki/index.php/Digital_music_packs\n");
+  return -1;
 }
 
 // We cannot print status messages inline during startup, they must
 // be deferred until after I_CDMusInit has returned.
 
-[[maybe_unused]] void I_CDMusPrintStartup()
-{
+[[maybe_unused]] void I_CDMusPrintStartup() {
 }
 
-[[maybe_unused]] int I_CDMusPlay(int)
-{
-    return 0;
+[[maybe_unused]] int I_CDMusPlay(int) {
+  return 0;
 }
 
-[[maybe_unused]] int I_CDMusStop()
-{
-    return 0;
+[[maybe_unused]] int I_CDMusStop() {
+  return 0;
 }
 
-[[maybe_unused]] int I_CDMusResume()
-{
-    return 0;
+[[maybe_unused]] int I_CDMusResume() {
+  return 0;
 }
 
-[[maybe_unused]] int I_CDMusSetVolume(int)
-{
-    return 0;
+[[maybe_unused]] int I_CDMusSetVolume(int) {
+  return 0;
 }
 
-[[maybe_unused]] int I_CDMusFirstTrack()
-{
-    return 0;
+[[maybe_unused]] int I_CDMusFirstTrack() {
+  return 0;
 }
 
-[[maybe_unused]] int I_CDMusLastTrack()
-{
-    return 0;
+[[maybe_unused]] int I_CDMusLastTrack() {
+  return 0;
 }
 
-[[maybe_unused]] int I_CDMusTrackLength(int)
-{
-    return 0;
+[[maybe_unused]] int I_CDMusTrackLength(int) {
+  return 0;
 }

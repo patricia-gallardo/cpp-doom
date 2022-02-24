@@ -27,44 +27,40 @@ constexpr auto                  ENDOOM_W = 80;
 // Displays the text mode ending screen after the game quits
 //
 
-void I_Endoom(uint8_t *endoom_data)
-{
-    // Set up text mode screen
+void I_Endoom(uint8_t *endoom_data) {
+  // Set up text mode screen
 
-    TXT_Init();
+  TXT_Init();
 
-    TXT_SetWindowTitle(PACKAGE_STRING);
-    // SDL2-TODO I_InitWindowTitle();
-    // SDL2-TODO I_InitWindowIcon();
+  TXT_SetWindowTitle(PACKAGE_STRING);
+  // SDL2-TODO I_InitWindowTitle();
+  // SDL2-TODO I_InitWindowIcon();
 
-    // Write the data to the screen memory
+  // Write the data to the screen memory
 
-    unsigned char *screendata = TXT_GetScreenData();
+  unsigned char *screendata = TXT_GetScreenData();
 
-    int indent = (ENDOOM_W - TXT_SCREEN_W) / 2;
+  int indent = (ENDOOM_W - TXT_SCREEN_W) / 2;
 
-    for (int y = 0; y < TXT_SCREEN_H; ++y)
-    {
-        std::memcpy(screendata + (y * TXT_SCREEN_W * 2),
-            endoom_data + (y * ENDOOM_W + indent) * 2,
-            TXT_SCREEN_W * 2);
+  for (int y = 0; y < TXT_SCREEN_H; ++y) {
+    std::memcpy(screendata + (y * TXT_SCREEN_W * 2),
+                endoom_data + (y * ENDOOM_W + indent) * 2,
+                TXT_SCREEN_W * 2);
+  }
+
+  // Wait for a keypress
+
+  while (true) {
+    TXT_UpdateScreen();
+
+    if (TXT_GetChar() > 0) {
+      break;
     }
 
-    // Wait for a keypress
+    TXT_Sleep(0);
+  }
 
-    while (true)
-    {
-        TXT_UpdateScreen();
+  // Shut down text mode screen
 
-        if (TXT_GetChar() > 0)
-        {
-            break;
-        }
-
-        TXT_Sleep(0);
-    }
-
-    // Shut down text mode screen
-
-    TXT_Shutdown();
+  TXT_Shutdown();
 }

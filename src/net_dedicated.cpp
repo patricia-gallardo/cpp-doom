@@ -32,63 +32,58 @@
 //
 
 static const char *not_dedicated_options[] = {
-    "-deh",
-    "-iwad",
-    "-cdrom",
-    "-gameversion",
-    "-nomonsters",
-    "-respawn",
-    "-fast",
-    "-altdeath",
-    "-deathmatch",
-    "-turbo",
-    "-merge",
-    "-af",
-    "-as",
-    "-aa",
-    "-file",
-    "-wart",
-    "-skill",
-    "-episode",
-    "-timer",
-    "-avg",
-    "-warp",
-    "-loadgame",
-    "-longtics",
-    "-extratics",
-    "-dup",
-    "-shorttics",
-    nullptr,
+  "-deh",
+  "-iwad",
+  "-cdrom",
+  "-gameversion",
+  "-nomonsters",
+  "-respawn",
+  "-fast",
+  "-altdeath",
+  "-deathmatch",
+  "-turbo",
+  "-merge",
+  "-af",
+  "-as",
+  "-aa",
+  "-file",
+  "-wart",
+  "-skill",
+  "-episode",
+  "-timer",
+  "-avg",
+  "-warp",
+  "-loadgame",
+  "-longtics",
+  "-extratics",
+  "-dup",
+  "-shorttics",
+  nullptr,
 };
 
-static void CheckForClientOptions()
-{
-    for (int i = 0; not_dedicated_options[i] != nullptr; ++i)
-    {
-        if (M_CheckParm(not_dedicated_options[i]) > 0)
-        {
-            I_Error("The command line parameter '%s' was specified to a "
-                    "dedicated server.\nGame parameters should be specified "
-                    "to the first player to join a server, \nnot to the "
-                    "server itself. ",
-                not_dedicated_options[i]);
-        }
+static void CheckForClientOptions() {
+  for (int i = 0; not_dedicated_options[i] != nullptr; ++i) {
+    if (M_CheckParm(not_dedicated_options[i]) > 0) {
+      I_Error("The command line parameter '%s' was specified to a "
+              "dedicated server.\nGame parameters should be specified "
+              "to the first player to join a server, \nnot to the "
+              "server itself. ",
+              not_dedicated_options[i]);
     }
+  }
 }
 
-[[noreturn]] void NET_DedicatedServer()
-{
-    CheckForClientOptions();
+[[noreturn]] void NET_DedicatedServer() {
+  CheckForClientOptions();
 
-    NET_OpenLog();
-    NET_SV_Init();
-    NET_SV_AddModule(&net_sdl_module);
-    NET_SV_RegisterWithMaster();
+  NET_OpenLog();
+  NET_SV_Init();
+  NET_SV_AddModule(&net_sdl_module);
+  NET_SV_RegisterWithMaster();
 
-    while (true)
-    {
-        NET_SV_Run();
-        // TODO: Block on socket instead of polling.
-        I_Sleep(1);
-    }
+  while (true) {
+    NET_SV_Run();
+    // TODO: Block on socket instead of polling.
+    I_Sleep(1);
+  }
 }
