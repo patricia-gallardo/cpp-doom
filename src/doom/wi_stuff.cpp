@@ -147,7 +147,7 @@ typedef struct
   int data2;
 
   // actual graphics for frames of animations
-  patch_t *p[3];
+  patch_t * p[3];
 
   // following must be initialized to zero before use!
 
@@ -258,7 +258,7 @@ static int NUMANIMS[NUMEPISODES] = {
   static_cast<int>(std::size(epsd2animinfo)),
 };
 
-static anim_t *anims[NUMEPISODES] = {
+static anim_t * anims[NUMEPISODES] = {
   epsd0animinfo,
   epsd1animinfo,
   epsd2animinfo
@@ -296,9 +296,9 @@ static int me;
 static stateenum_t state;
 
 // contains information passed into intermission
-static wbstartstruct_t *wbs;
+static wbstartstruct_t * wbs;
 
-static wbplayerstruct_t *plrs; // wbs->plyr[]
+static wbplayerstruct_t * plrs; // wbs->plyr[]
 
 // used for general timing
 static int cnt;
@@ -324,63 +324,63 @@ static int NUMCMAPS = 32;
 //
 
 // You Are Here graphic
-static patch_t *yah[3] = { nullptr, nullptr, nullptr };
+static patch_t * yah[3] = { nullptr, nullptr, nullptr };
 
 // splat
-static patch_t *splat[2] = { nullptr, nullptr };
+static patch_t * splat[2] = { nullptr, nullptr };
 
 // %, : graphics
-static patch_t *percent;
-static patch_t *colon;
+static patch_t * percent;
+static patch_t * colon;
 
 // 0-9 graphic
-static patch_t *num[10];
+static patch_t * num[10];
 
 // minus sign
-static patch_t *wiminus;
+static patch_t * wiminus;
 
 // "Finished!" graphics
-static patch_t *finished;
+static patch_t * finished;
 
 // "Entering" graphic
-static patch_t *entering;
+static patch_t * entering;
 
 // "secret"
-static patch_t *sp_secret;
+static patch_t * sp_secret;
 
 // "Kills", "Scrt", "Items", "Frags"
-static patch_t *kills;
-static patch_t *secret;
-static patch_t *items;
-static patch_t *frags;
+static patch_t * kills;
+static patch_t * secret;
+static patch_t * items;
+static patch_t * frags;
 
 // Time sucks.
-static patch_t *timepatch;
-static patch_t *par;
-static patch_t *sucks;
+static patch_t * timepatch;
+static patch_t * par;
+static patch_t * sucks;
 
 // "killers", "victims"
-static patch_t *killers;
-static patch_t *victims;
+static patch_t * killers;
+static patch_t * victims;
 
 // "Total", your face, your dead face
-static patch_t *total;
-static patch_t *star;
-static patch_t *bstar;
+static patch_t * total;
+static patch_t * star;
+static patch_t * bstar;
 
 // "red P[1..MAXPLAYERS]"
-static patch_t *patches[MAXPLAYERS];
+static patch_t * patches[MAXPLAYERS];
 
 // "gray P[1..MAXPLAYERS]"
-static patch_t *bp[MAXPLAYERS];
+static patch_t * bp[MAXPLAYERS];
 
 // Name graphics of each level (centered)
-static patch_t **lnames;
+static patch_t ** lnames;
 // [crispy] prevent crashes with maps without map title graphics lump
 static unsigned int num_lnames;
 
 // Buffer storing the backdrop
-static patch_t *background;
+static patch_t * background;
 
 //
 // CODE
@@ -460,8 +460,8 @@ void WI_drawEL() {
               lnames[wbs->next]);
 }
 
-void WI_drawOnLnode(int      n,
-                    patch_t *c[]) {
+void WI_drawOnLnode(int       n,
+                    patch_t * c[]) {
 
   int  i;
   int  left;
@@ -498,8 +498,8 @@ void WI_drawOnLnode(int      n,
 }
 
 void WI_initAnimatedBack() {
-  int     i;
-  anim_t *a;
+  int      i;
+  anim_t * a;
 
   if (g_doomstat_globals->gamemode == commercial)
     return;
@@ -524,8 +524,8 @@ void WI_initAnimatedBack() {
 }
 
 void WI_updateAnimatedBack() {
-  int     i;
-  anim_t *a;
+  int      i;
+  anim_t * a;
 
   if (g_doomstat_globals->gamemode == commercial)
     return;
@@ -567,8 +567,8 @@ void WI_updateAnimatedBack() {
 }
 
 void WI_drawAnimatedBack() {
-  int     i;
-  anim_t *a;
+  int      i;
+  anim_t * a;
 
   if (g_doomstat_globals->gamemode == commercial)
     return;
@@ -1317,7 +1317,7 @@ void WI_updateStats() {
 
 // [crispy] conditionally draw par times on intermission screen
 static bool WI_drawParTime() {
-  extern lumpinfo_t *maplumpinfo;
+  extern lumpinfo_t * maplumpinfo;
 
   bool result = true;
 
@@ -1428,8 +1428,8 @@ void WI_drawStats() {
 }
 
 void WI_checkForAccelerate() {
-  int       i;
-  player_t *player;
+  int        i;
+  player_t * player;
 
   // check for button presses to skip delays
   for (i = 0, player = g_doomstat_globals->players; i < MAXPLAYERS; i++, player++) {
@@ -1494,9 +1494,9 @@ using load_callback_t = void (*)(const char *, patch_t **);
 // lumps to be loaded/unloaded into memory.
 
 static void WI_loadUnloadData(load_callback_t callback) {
-  int     i, j;
-  char    name[9];
-  anim_t *a;
+  int      i, j;
+  char     name[9];
+  anim_t * a;
 
   if (g_doomstat_globals->nervewadfile && g_doomstat_globals->gamemission == pack_nerve) {
     for (i = 0; i < 9; i++) {
@@ -1648,7 +1648,7 @@ static void WI_loadUnloadData(load_callback_t callback) {
   callback(name, &background);
 }
 
-static void WI_loadCallback(const char *name, patch_t **variable) {
+static void WI_loadCallback(const char * name, patch_t ** variable) {
   // [crispy] prevent crashes with maps without map title graphics lump
   if (W_CheckNumForName(name) != -1)
     *variable = cache_lump_name<patch_t *>(name, PU_STATIC);
@@ -1684,7 +1684,7 @@ void WI_loadData() {
   bstar = cache_lump_name<patch_t *>(DEH_String("STFDEAD0"), PU_STATIC);
 }
 
-static void WI_unloadCallback(const char *name, patch_t **variable) {
+static void WI_unloadCallback(const char * name, patch_t ** variable) {
   W_ReleaseLumpName(name);
   *variable = nullptr;
 }
@@ -1720,7 +1720,7 @@ void WI_Drawer() {
   }
 }
 
-void WI_initVariables(wbstartstruct_t *wbstartstruct) {
+void WI_initVariables(wbstartstruct_t * wbstartstruct) {
 
   wbs = wbstartstruct;
 
@@ -1758,7 +1758,7 @@ void WI_initVariables(wbstartstruct_t *wbstartstruct) {
       wbs->epsd -= 3;
 }
 
-void WI_Start(wbstartstruct_t *wbstartstruct) {
+void WI_Start(wbstartstruct_t * wbstartstruct) {
   WI_initVariables(wbstartstruct);
   WI_loadData();
 

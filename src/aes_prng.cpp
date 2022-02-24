@@ -2270,9 +2270,9 @@ static uint32_t aes_ror32(uint32_t word, unsigned int shift) {
  * described in FIPS-197. The first slot (16 bytes) of each key (enc or dec) is
  * for the initial combination, the second slot for the first round and so on.
  */
-static int AES_ExpandKey(aes_context_t *ctx, const uint8_t *in_key, unsigned int key_len) {
-  const uint32_t *key = reinterpret_cast<const uint32_t *>(in_key);
-  uint32_t        i, t, u, v, w, j;
+static int AES_ExpandKey(aes_context_t * ctx, const uint8_t * in_key, unsigned int key_len) {
+  const uint32_t * key = reinterpret_cast<const uint32_t *>(in_key);
+  uint32_t         i, t, u, v, w, j;
 
   if (key_len != AES_KEYSIZE_128 && key_len != AES_KEYSIZE_192 && key_len != AES_KEYSIZE_256)
     return -1;
@@ -2330,7 +2330,7 @@ static int AES_ExpandKey(aes_context_t *ctx, const uint8_t *in_key, unsigned int
  * Returns 0 on success, on failure -1 is returned.
  * The function uses AES_ExpandKey() to expand the key.
  */
-static int AES_SetKey(aes_context_t *ctx, const uint8_t *in_key, unsigned int key_len) {
+static int AES_SetKey(aes_context_t * ctx, const uint8_t * in_key, unsigned int key_len) {
   int ret = AES_ExpandKey(ctx, in_key, key_len);
   if (!ret)
     return 0;
@@ -2367,12 +2367,12 @@ static int AES_SetKey(aes_context_t *ctx, const uint8_t *in_key, unsigned int ke
     f_rl(bo, bi, 3, k);     \
   } while (0)
 
-static void AES_Encrypt(aes_context_t *ctx, uint8_t *out, const uint8_t *in) {
-  const auto     *src = reinterpret_cast<const uint32_t *>(in);
-  auto           *dst = reinterpret_cast<uint32_t *>(out);
-  uint32_t        b0[4], b1[4];
-  const uint32_t *kp      = ctx->key_enc + 4;
-  const int       key_len = static_cast<int>(ctx->key_length);
+static void AES_Encrypt(aes_context_t * ctx, uint8_t * out, const uint8_t * in) {
+  const auto *     src = reinterpret_cast<const uint32_t *>(in);
+  auto *           dst = reinterpret_cast<uint32_t *>(out);
+  uint32_t         b0[4], b1[4];
+  const uint32_t * kp      = ctx->key_enc + 4;
+  const int        key_len = static_cast<int>(ctx->key_length);
 
   b0[0] = le32_to_cpu(src[0]) ^ ctx->key_enc[0];
   b0[1] = le32_to_cpu(src[1]) ^ ctx->key_enc[1];

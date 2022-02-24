@@ -40,8 +40,8 @@ constexpr auto FIELDOFVIEW = 2048;
 // increment every time a check is made
 int validcount = 1;
 
-lighttable_t         *fixedcolormap;
-extern lighttable_t **walllights;
+lighttable_t *         fixedcolormap;
+extern lighttable_t ** walllights;
 
 int centerx;
 int centery;
@@ -63,9 +63,9 @@ fixed_t viewsin;
 int detailshift;
 
 // [crispy] parameterized for smooth diminishing lighting
-lighttable_t ***scalelight      = nullptr;
-lighttable_t  **scalelightfixed = nullptr;
-lighttable_t ***zlight          = nullptr;
+lighttable_t *** scalelight      = nullptr;
+lighttable_t **  scalelightfixed = nullptr;
+lighttable_t *** zlight          = nullptr;
 
 // bumped light from gun blasts
 int extralight;
@@ -135,16 +135,16 @@ static r_state_t r_state_s = {
   .ceilingplane       = nullptr  // X
 };
 
-r_state_t *const g_r_state_globals = &r_state_s;
+r_state_t * const g_r_state_globals = &r_state_s;
 
 //
 // R_AddPointToBox
 // Expand a given bbox
 // so that it encloses a given point.
 //
-void R_AddPointToBox(int      x,
-                     int      y,
-                     fixed_t *box) {
+void R_AddPointToBox(int       x,
+                     int       y,
+                     fixed_t * box) {
   if (x < box[BOXLEFT])
     box[BOXLEFT] = x;
   if (x > box[BOXRIGHT])
@@ -161,9 +161,9 @@ void R_AddPointToBox(int      x,
 //  check point against partition plane.
 // Returns side 0 (front) or 1 (back).
 //
-int R_PointOnSide(fixed_t x,
-                  fixed_t y,
-                  node_t *node) {
+int R_PointOnSide(fixed_t  x,
+                  fixed_t  y,
+                  node_t * node) {
   fixed_t dx;
   fixed_t dy;
   fixed_t left;
@@ -207,7 +207,7 @@ int R_PointOnSide(fixed_t x,
 
 int R_PointOnSegSide(fixed_t x,
                      fixed_t y,
-                     seg_t  *line) {
+                     seg_t * line) {
   fixed_t lx;
   fixed_t ly;
   fixed_t ldx;
@@ -846,8 +846,8 @@ void R_Init() {
 subsector_t *
     R_PointInSubsector(fixed_t x,
                        fixed_t y) {
-  node_t *node;
-  int     side;
+  node_t * node;
+  int      side;
 
   // single subsector is a special case
   if (!g_r_state_globals->numnodes)
@@ -867,7 +867,7 @@ subsector_t *
 //
 // R_SetupFrame
 //
-void R_SetupFrame(player_t *player) {
+void R_SetupFrame(player_t * player) {
   int i;
   int tempCentery;
   int pitch;
@@ -942,7 +942,7 @@ void R_SetupFrame(player_t *player) {
 //
 // R_RenderView
 //
-void R_RenderPlayerView(player_t *player) {
+void R_RenderPlayerView(player_t * player) {
   extern void V_DrawFilledBox(int x, int y, int w, int h, int c);
   extern void R_InterpolateTextureOffsets();
 

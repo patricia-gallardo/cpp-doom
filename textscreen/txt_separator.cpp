@@ -22,8 +22,8 @@
 #include "txt_utf8.hpp"
 #include "memory.hpp"
 
-static void TXT_SeparatorSizeCalc(void *uncast_separator) {
-  auto *separator = reinterpret_cast<txt_separator_t *>(uncast_separator);
+static void TXT_SeparatorSizeCalc(void * uncast_separator) {
+  auto * separator = reinterpret_cast<txt_separator_t *>(uncast_separator);
 
   if (separator->label != nullptr) {
     // Minimum width is the string length + two spaces for padding
@@ -36,9 +36,9 @@ static void TXT_SeparatorSizeCalc(void *uncast_separator) {
   separator->widget.h = 1;
 }
 
-static void TXT_SeparatorDrawer(void *uncast_separator) {
-  auto *separator = reinterpret_cast<txt_separator_t *>(uncast_separator);
-  int   w         = static_cast<int>(separator->widget.w);
+static void TXT_SeparatorDrawer(void * uncast_separator) {
+  auto * separator = reinterpret_cast<txt_separator_t *>(uncast_separator);
+  int    w         = static_cast<int>(separator->widget.w);
 
   int x = 0, y = 0;
   TXT_GetXY(&x, &y);
@@ -58,13 +58,13 @@ static void TXT_SeparatorDrawer(void *uncast_separator) {
   }
 }
 
-static void TXT_SeparatorDestructor(void *uncast_separator) {
-  auto *separator = reinterpret_cast<txt_separator_t *>(uncast_separator);
+static void TXT_SeparatorDestructor(void * uncast_separator) {
+  auto * separator = reinterpret_cast<txt_separator_t *>(uncast_separator);
 
   free(separator->label);
 }
 
-void TXT_SetSeparatorLabel(txt_separator_t *separator, const char *label) {
+void TXT_SetSeparatorLabel(txt_separator_t * separator, const char * label) {
   free(separator->label);
 
   if (label != nullptr) {
@@ -84,8 +84,8 @@ txt_widget_class_t txt_separator_class = {
   nullptr,
 };
 
-txt_separator_t *TXT_NewSeparator(const char *label) {
-  auto *separator = create_struct<txt_separator_t>();
+txt_separator_t * TXT_NewSeparator(const char * label) {
+  auto * separator = create_struct<txt_separator_t>();
 
   TXT_InitWidget(separator, &txt_separator_class);
 

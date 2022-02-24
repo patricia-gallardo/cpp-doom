@@ -41,15 +41,15 @@
 // reliable packet that is guaranteed to reach its destination
 
 struct net_reliable_packet_s {
-  net_packet_t          *packet;
-  int                    last_send_time;
-  int                    seq;
-  net_reliable_packet_t *next;
+  net_packet_t *          packet;
+  int                     last_send_time;
+  int                     seq;
+  net_reliable_packet_t * next;
 };
 
-static FILE *net_debug = nullptr;
+static FILE * net_debug = nullptr;
 
-static void NET_Conn_Init(net_connection_t *conn, net_addr_t *addr, net_protocol_t protocol) {
+static void NET_Conn_Init(net_connection_t * conn, net_addr_t * addr, net_protocol_t protocol) {
   conn->last_send_time      = -1;
   conn->num_retries         = 0;
   conn->addr                = addr;
@@ -62,14 +62,14 @@ static void NET_Conn_Init(net_connection_t *conn, net_addr_t *addr, net_protocol
 
 // Initialize as a client connection
 
-void NET_Conn_InitClient(net_connection_t *conn, net_addr_t *addr, net_protocol_t protocol) {
+void NET_Conn_InitClient(net_connection_t * conn, net_addr_t * addr, net_protocol_t protocol) {
   NET_Conn_Init(conn, addr, protocol);
   conn->state = NET_CONN_STATE_CONNECTING;
 }
 
 // Initialize as a server connection
 
-void NET_Conn_InitServer(net_connection_t *conn, net_addr_t *addr, net_protocol_t protocol) {
+void NET_Conn_InitServer(net_connection_t * conn, net_addr_t * addr, net_protocol_t protocol) {
   NET_Conn_Init(conn, addr, protocol);
   conn->state = NET_CONN_STATE_CONNECTED;
 }
@@ -78,13 +78,13 @@ void NET_Conn_InitServer(net_connection_t *conn, net_addr_t *addr, net_protocol_
 // All packets should be sent through this interface, as it maintains the
 // keepalive_send_time counter.
 
-void NET_Conn_SendPacket(net_connection_t *conn, net_packet_t *packet) {
+void NET_Conn_SendPacket(net_connection_t * conn, net_packet_t * packet) {
   conn->keepalive_send_time = I_GetTimeMS();
   NET_SendPacket(conn->addr, packet);
 }
 
-static void NET_Conn_ParseDisconnect(net_connection_t *conn, net_packet_t *) {
-  net_packet_t *reply;
+static void NET_Conn_ParseDisconnect(net_connection_t * conn, net_packet_t *) {
+  net_packet_t * reply;
 
   // Other end wants to disconnect
   // Send a DISCONNECT_ACK reply.
@@ -102,7 +102,7 @@ static void NET_Conn_ParseDisconnect(net_connection_t *conn, net_packet_t *) {
 
 // Parse a DISCONNECT_ACK packet
 
-static void NET_Conn_ParseDisconnectACK(net_connection_t *conn, net_packet_t *) {
+static void NET_Conn_ParseDisconnectACK(net_connection_t * conn, net_packet_t *) {
 
   if (conn->state == NET_CONN_STATE_DISCONNECTING) {
     // We have received an acknowledgement to our disconnect
@@ -114,7 +114,7 @@ static void NET_Conn_ParseDisconnectACK(net_connection_t *conn, net_packet_t *) 
   }
 }
 
-static void NET_Conn_ParseReliableACK(net_connection_t *conn, net_packet_t *packet) {
+static void NET_Conn_ParseReliableACK(net_connection_t * conn, net_packet_t * packet) {
   unsigned int seq;
 
   if (!NET_ReadInt8(packet, &seq)) {
@@ -128,7 +128,7 @@ static void NET_Conn_ParseReliableACK(net_connection_t *conn, net_packet_t *pack
   // Is this an acknowledgement for the first packet in the list?
 
   if (seq == static_cast<unsigned int>((conn->reliable_packets->seq + 1) & 0xff)) {
-    net_reliable_packet_t *rp;
+    net_reliable_packet_t * rp;
 
     // Discard it, then.
     // Unlink from the list.
@@ -145,11 +145,11 @@ static void NET_Conn_ParseReliableACK(net_connection_t *conn, net_packet_t *pack
 //
 // Returns true if the packet should be discarded (incorrect sequence)
 
-static bool NET_Conn_ReliablePacket(net_connection_t *conn,
-                                    net_packet_t     *packet) {
-  unsigned int  seq;
-  net_packet_t *reply;
-  bool          result;
+static bool NET_Conn_ReliablePacket(net_connection_t * conn,
+                                    net_packet_t *     packet) {
+  unsigned int   seq;
+  net_packet_t * reply;
+  bool           result;
 
   // Read the sequence number
 
@@ -194,7 +194,7 @@ static bool NET_Conn_ReliablePacket(net_connection_t *conn,
 //
 // Returns true if eaten by common code
 
-bool NET_Conn_Packet(net_connection_t *conn, net_packet_t *packet, unsigned int *packet_type) {
+bool NET_Conn_Packet(net_connection_t * conn, net_packet_t * packet, unsigned int * packet_type) {
   conn->keepalive_recv_time = I_GetTimeMS();
 
   // Is this a reliable packet?
@@ -235,7 +235,7 @@ bool NET_Conn_Packet(net_connection_t *conn, net_packet_t *packet, unsigned int 
   return true;
 }
 
-void NET_Conn_Disconnect(net_connection_t *conn) {
+void NET_Conn_Disconnect(net_connection_t * conn) {
   if (conn->state != NET_CONN_STATE_DISCONNECTED
       && conn->state != NET_CONN_STATE_DISCONNECTING
       && conn->state != NET_CONN_STATE_DISCONNECTED_SLEEP) {
@@ -246,9 +246,9 @@ void NET_Conn_Disconnect(net_connection_t *conn) {
   }
 }
 
-void NET_Conn_Run(net_connection_t *conn) {
-  net_packet_t *packet;
-  unsigned int  nowtime;
+void NET_Conn_Run(net_connection_t * conn) {
+  net_packet_t * packet;
+  unsigned int   nowtime;
 
   nowtime = I_GetTimeMS();
 
@@ -325,9 +325,9 @@ void NET_Conn_Run(net_connection_t *conn) {
   }
 }
 
-net_packet_t *NET_Conn_NewReliable(net_connection_t *conn, int packet_type) {
-  net_packet_t           *packet;
-  net_reliable_packet_t **listend;
+net_packet_t * NET_Conn_NewReliable(net_connection_t * conn, int packet_type) {
+  net_packet_t *           packet;
+  net_reliable_packet_t ** listend;
 
   // Generate a packet with the right header
 
@@ -341,7 +341,7 @@ net_packet_t *NET_Conn_NewReliable(net_connection_t *conn, int packet_type) {
 
   // Add to the list of reliable packets
 
-  auto *rp           = create_struct<net_reliable_packet_t>();
+  auto * rp          = create_struct<net_reliable_packet_t>();
   rp->packet         = packet;
   rp->next           = nullptr;
   rp->seq            = conn->reliable_send_seq;
@@ -385,7 +385,7 @@ unsigned int NET_ExpandTicNum(unsigned int relative, unsigned int b) {
 
 // Check that game settings are valid
 
-bool NET_ValidGameSettings(GameMode_t mode, GameMission_t mission, net_gamesettings_t *settings) {
+bool NET_ValidGameSettings(GameMode_t mode, GameMission_t mission, net_gamesettings_t * settings) {
   if (settings->ticdup <= 0)
     return false;
 
@@ -427,7 +427,7 @@ void NET_OpenLog() {
   }
 }
 
-void NET_Log(const char *fmt, ...) {
+void NET_Log(const char * fmt, ...) {
   va_list args;
 
   if (net_debug == nullptr) {
@@ -441,7 +441,7 @@ void NET_Log(const char *fmt, ...) {
   fmt::fprintf(net_debug, "\n");
 }
 
-void NET_LogPacket(net_packet_t *packet) {
+void NET_LogPacket(net_packet_t * packet) {
   if (net_debug == nullptr) {
     return;
   }

@@ -108,7 +108,7 @@ static bool new_sync = true;
 
 // Callback functions for loop code.
 
-static loop_interface_t *loop_interface = nullptr;
+static loop_interface_t * loop_interface = nullptr;
 
 // Current players in the multiplayer game.
 // This is distinct from playeringame[] used by the game code, which may
@@ -245,7 +245,7 @@ static void D_Disconnected() {
 // available.
 //
 
-void D_ReceiveTic(ticcmd_t *ticcmds, bool *players_mask) {
+void D_ReceiveTic(ticcmd_t * ticcmds, bool * players_mask) {
   // Disconnected from server?
 
   if (ticcmds == nullptr && players_mask == nullptr) {
@@ -279,7 +279,7 @@ void D_StartGameLoop() {
 // Block until the game start message is received from the server.
 //
 
-static void BlockUntilStart(net_gamesettings_t        *settings,
+static void BlockUntilStart(net_gamesettings_t *       settings,
                             netgame_startup_callback_t callback) {
   while (!NET_CL_GetSettings(settings)) {
     NET_CL_Run();
@@ -297,7 +297,7 @@ static void BlockUntilStart(net_gamesettings_t        *settings,
   }
 }
 
-void D_StartNetGame(net_gamesettings_t        *settings,
+void D_StartNetGame(net_gamesettings_t *       settings,
                     netgame_startup_callback_t callback) {
   offsetms = 0;
   recvtic  = 0;
@@ -381,9 +381,9 @@ void D_StartNetGame(net_gamesettings_t        *settings,
   //}
 }
 
-bool D_InitNetGame(net_connect_data_t *connect_data) {
-  bool        result = false;
-  net_addr_t *addr   = nullptr;
+bool D_InitNetGame(net_connect_data_t * connect_data) {
+  bool         result = false;
+  net_addr_t * addr   = nullptr;
 
   // Call D_QuitNetGame on exit:
 
@@ -559,10 +559,10 @@ static bool PlayersInGame() {
 // When using ticdup, certain values must be cleared out when running
 // the duplicate ticcmds.
 
-static void TicdupSquash(ticcmd_set_t *set) {
+static void TicdupSquash(ticcmd_set_t * set) {
   for (unsigned int i = 0; i < NET_MAXPLAYERS; ++i) {
-    ticcmd_t *cmd = &set->cmds[i];
-    cmd->chatchar = 0;
+    ticcmd_t * cmd = &set->cmds[i];
+    cmd->chatchar  = 0;
     if (cmd->buttons & BT_SPECIAL)
       cmd->buttons = 0;
   }
@@ -571,7 +571,7 @@ static void TicdupSquash(ticcmd_set_t *set) {
 // When running in single player mode, clear all the ingame[] array
 // except the local player.
 
-static void SinglePlayerClear(ticcmd_set_t *set) {
+static void SinglePlayerClear(ticcmd_set_t * set) {
   for (int i = 0; i < NET_MAXPLAYERS; ++i) {
     if (i != localplayer) {
       set->ingame[i] = false;
@@ -671,7 +671,7 @@ void TryRunTics() {
       return;
     }
 
-    ticcmd_set_t *set = &ticdata[(gametic / ticdup) % BACKUPTICS];
+    ticcmd_set_t * set = &ticdata[(gametic / ticdup) % BACKUPTICS];
 
     if (!g_net_client_globals->net_client_connected) {
       SinglePlayerClear(set);
@@ -695,7 +695,7 @@ void TryRunTics() {
   }
 }
 
-void D_RegisterLoopCallbacks(loop_interface_t *i) {
+void D_RegisterLoopCallbacks(loop_interface_t * i) {
   loop_interface = i;
 }
 
@@ -720,7 +720,7 @@ static bool StrictDemos() {
 // this extension (no extensions are allowed if -strictdemos is given
 // on the command line). A warning is shown on the console using the
 // provided string describing the non-vanilla expansion.
-bool D_NonVanillaRecord(bool conditional, const char *feature) {
+bool D_NonVanillaRecord(bool conditional, const char * feature) {
   if (!conditional || StrictDemos()) {
     return false;
   }
@@ -735,7 +735,7 @@ bool D_NonVanillaRecord(bool conditional, const char *feature) {
 // Returns true if the given lump number corresponds to data from a .lmp
 // file, as opposed to a WAD.
 static bool IsDemoFile(int lumpnum) {
-  char *lower = M_StringDuplicate(lumpinfo[lumpnum]->wad_file->path);
+  char * lower = M_StringDuplicate(lumpinfo[lumpnum]->wad_file->path);
   M_ForceLowercase(lower);
   bool result = M_StringEndsWith(lower, ".lmp");
   free(lower);
@@ -751,7 +751,7 @@ static bool IsDemoFile(int lumpnum) {
 //  - The given lumpnum identifying the demo to play back identifies a
 //    demo that comes from a .lmp file, not a .wad file.
 //  - Before proceeding, a warning is shown to the user on the console.
-bool D_NonVanillaPlayback(bool conditional, int lumpnum, const char *feature) {
+bool D_NonVanillaPlayback(bool conditional, int lumpnum, const char * feature) {
   if (!conditional || StrictDemos()) {
     return false;
   }

@@ -66,18 +66,18 @@ static window_size_t window_sizes_scaled[] = {
   { 0,    0   },
 };
 
-static char *video_driver            = const_cast<char *>("");
-static char *window_position         = const_cast<char *>("");
-static int   aspect_ratio_correct    = 1;
-static int   integer_scaling         = 0;
-static int   vga_porch_flash         = 0;
-static int   force_software_renderer = 0;
-static int   fullscreen              = 1;
-static int   fullscreen_width = 0, fullscreen_height = 0;
-static int   window_width = 800, window_height = 600;
-static int   startup_delay             = 1000;
-static int   max_scaling_buffer_pixels = 16000000;
-static int   usegamma                  = 0;
+static char * video_driver            = const_cast<char *>("");
+static char * window_position         = const_cast<char *>("");
+static int    aspect_ratio_correct    = 1;
+static int    integer_scaling         = 0;
+static int    vga_porch_flash         = 0;
+static int    force_software_renderer = 0;
+static int    fullscreen              = 1;
+static int    fullscreen_width = 0, fullscreen_height = 0;
+static int    window_width = 800, window_height = 600;
+static int    startup_delay             = 1000;
+static int    max_scaling_buffer_pixels = 16000000;
+static int    usegamma                  = 0;
 
 int graphical_startup = 0; // [crispy]
 int show_endoom       = 0; // [crispy]
@@ -110,26 +110,26 @@ void SetDisplayDriver() {
   }
 }
 
-static void WindowSizeSelected(void *, void *uncast_size) {
-  auto *size = reinterpret_cast<window_size_t *>(uncast_size);
+static void WindowSizeSelected(void *, void * uncast_size) {
+  auto * size = reinterpret_cast<window_size_t *>(uncast_size);
 
   window_width  = size->w;
   window_height = size->h;
 }
 
-static txt_radiobutton_t *SizeSelectButton(window_size_t *size) {
+static txt_radiobutton_t * SizeSelectButton(window_size_t * size) {
   char buf[15];
 
   M_snprintf(buf, sizeof(buf), "%ix%i", size->w, size->h);
-  txt_radiobutton_t *result = TXT_NewRadioButton(buf, &window_width, size->w);
+  txt_radiobutton_t * result = TXT_NewRadioButton(buf, &window_width, size->w);
   TXT_SignalConnect(result, "selected", WindowSizeSelected, size);
 
   return result;
 }
 
-static void GenerateSizesTable(void *, void *uncast_sizes_table) {
-  auto          *sizes_table = reinterpret_cast<txt_table_t *>(uncast_sizes_table);
-  window_size_t *sizes       = nullptr;
+static void GenerateSizesTable(void *, void * uncast_sizes_table) {
+  auto *          sizes_table = reinterpret_cast<txt_table_t *>(uncast_sizes_table);
+  window_size_t * sizes       = nullptr;
 
   // Pick which window sizes list to use
   if (aspect_ratio_correct == 1) {
@@ -163,11 +163,11 @@ static void GenerateSizesTable(void *, void *uncast_sizes_table) {
   }
 }
 
-static void AdvancedDisplayConfig(void *, void *uncast_sizes_table) {
-  auto           *sizes_table = reinterpret_cast<txt_table_t *>(uncast_sizes_table);
-  txt_checkbox_t *ar_checkbox = nullptr;
+static void AdvancedDisplayConfig(void *, void * uncast_sizes_table) {
+  auto *           sizes_table = reinterpret_cast<txt_table_t *>(uncast_sizes_table);
+  txt_checkbox_t * ar_checkbox = nullptr;
 
-  txt_window_t *window = TXT_NewWindow("Advanced display options");
+  txt_window_t * window = TXT_NewWindow("Advanced display options");
 
   TXT_SetWindowHelpURL(window, WINDOW_HELP_URL);
 
@@ -193,10 +193,10 @@ static void AdvancedDisplayConfig(void *, void *uncast_sizes_table) {
 }
 
 void ConfigDisplay(void *, void *) {
-  txt_table_t *sizes_table = nullptr;
+  txt_table_t * sizes_table = nullptr;
 
   // Open the window
-  txt_window_t *window = TXT_NewWindow("Display Configuration");
+  txt_window_t * window = TXT_NewWindow("Display Configuration");
   TXT_SetWindowHelpURL(window, WINDOW_HELP_URL);
 
   // Build window:
@@ -218,7 +218,7 @@ void ConfigDisplay(void *, void *) {
   // Button to open "advanced" window.
   // Need to pass a pointer to the window sizes table, as some of the options
   // in there trigger a rebuild of it.
-  txt_window_action_t *advanced_button = TXT_NewWindowAction('a', "Advanced");
+  txt_window_action_t * advanced_button = TXT_NewWindowAction('a', "Advanced");
   TXT_SetWindowAction(window, TXT_HORIZ_CENTER, advanced_button);
   TXT_SignalConnect(advanced_button, "pressed", AdvancedDisplayConfig, sizes_table);
 }

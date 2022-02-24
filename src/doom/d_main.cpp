@@ -90,7 +90,7 @@
 
 // location of IWAD and WAD files
 
-char *iwadfile;
+char * iwadfile;
 
 extern bool inhelpscreens;
 
@@ -116,7 +116,7 @@ void D_CheckNetGame();
 // Send all the events of the given timestamp down the responder chain
 //
 void D_ProcessEvents() {
-  event_t *ev = nullptr;
+  event_t * ev = nullptr;
 
   // IF STORE DEMO, DO NOT ACCEPT INPUT
   if (storedemo)
@@ -284,7 +284,7 @@ bool D_Display() {
 
 void EnableLoadingDisk() // [crispy] un-static
 {
-  const char *disk_lump_name = nullptr;
+  const char * disk_lump_name = nullptr;
 
   if (show_diskicon) {
     if (M_CheckParm("-cdrom") > 0) {
@@ -516,9 +516,9 @@ void D_RunFrame() {
 //
 //  DEMO LOOP
 //
-int         demosequence;
-int         pagetic;
-const char *pagename;
+int          demosequence;
+int          pagetic;
+const char * pagename;
 
 //
 // D_PageTicker
@@ -646,7 +646,7 @@ void D_StartTitle() {
 // These are from the original source: some of them are perhaps
 // not used in any dehacked patches
 
-static const char *banners[] = {
+static const char * banners[] = {
   // doom2.wad
   "                         "
   "DOOM 2: Hell on Earth v%i.%i"
@@ -690,11 +690,11 @@ static const char *banners[] = {
 // Otherwise, use the name given
 //
 
-static const char *GetGameName(const char *gamename) {
-  for (auto &banner : banners) {
+static const char * GetGameName(const char * gamename) {
+  for (auto & banner : banners) {
     // Has the banner been replaced?
 
-    const char *deh_sub = DEH_String(banner);
+    const char * deh_sub = DEH_String(banner);
 
     if (deh_sub != banner) {
       // Has been replaced.
@@ -702,7 +702,7 @@ static const char *GetGameName(const char *gamename) {
       // We also need to cut off spaces to get the basic name
 
       const auto newgamename_size = strlen(deh_sub) + 10;
-      auto      *newgamename      = zmalloc<char *>(newgamename_size, PU_STATIC, 0);
+      auto *     newgamename      = zmalloc<char *>(newgamename_size, PU_STATIC, 0);
       int        version          = G_VanillaVersionCode();
       M_snprintf(newgamename, newgamename_size, deh_sub, version / 100, version % 100);
 
@@ -721,10 +721,10 @@ static const char *GetGameName(const char *gamename) {
   return gamename;
 }
 
-static void SetMissionForPackName(const char *pack_name) {
+static void SetMissionForPackName(const char * pack_name) {
   static constexpr struct
   {
-    const char   *name;
+    const char *  name;
     GameMission_t mission;
   } packs[] = {
     {"doom2",     doom2    },
@@ -732,7 +732,7 @@ static void SetMissionForPackName(const char *pack_name) {
     { "plutonia", pack_plut},
   };
 
-  for (const auto &pack : packs) {
+  for (const auto & pack : packs) {
     if (!strcasecmp(pack_name, pack.name)) {
       g_doomstat_globals->gamemission = pack.mission;
       return;
@@ -741,7 +741,7 @@ static void SetMissionForPackName(const char *pack_name) {
 
   fmt::printf("Valid mission packs are:\n");
 
-  for (const auto &pack : packs) {
+  for (const auto & pack : packs) {
     fmt::printf("\t%s\n", pack.name);
   }
 
@@ -857,9 +857,9 @@ void D_SetGameDescription() {
 //      print title for every printed line
 char title[128];
 
-static bool D_AddFile(char *filename) {
+static bool D_AddFile(char * filename) {
   fmt::printf(" adding %s\n", filename);
-  wad_file_t *handle = W_AddFile(filename);
+  wad_file_t * handle = W_AddFile(filename);
   return handle != nullptr;
 }
 
@@ -867,7 +867,7 @@ static bool D_AddFile(char *filename) {
 // Some dehacked mods replace these.  These are only displayed if they are
 // replaced by dehacked.
 
-static const char *copyright_banners[] = {
+static const char * copyright_banners[] = {
   "===========================================================================\n"
   "ATTENTION:  This version of DOOM has been modified.  If you would like to\n"
   "get a copy of the original game, call 1-800-IDGAMES or see the readme file.\n"
@@ -888,8 +888,8 @@ static const char *copyright_banners[] = {
 // Prints a message only if it has been modified by dehacked.
 
 void PrintDehackedBanners() {
-  for (auto &copyright_banner : copyright_banners) {
-    const char *deh_s = DEH_String(copyright_banner);
+  for (auto & copyright_banner : copyright_banners) {
+    const char * deh_s = DEH_String(copyright_banner);
 
     if (deh_s != copyright_banner) {
       fmt::printf("%s", deh_s);
@@ -906,8 +906,8 @@ void PrintDehackedBanners() {
 
 static constexpr struct
 {
-  const char   *description;
-  const char   *cmdline;
+  const char *  description;
+  const char *  cmdline;
   GameVersion_t version;
 } gameversions[] = {
   {"Doom 1.2",          "1.2",      exe_doom_1_2  },
@@ -976,8 +976,8 @@ static void InitGameVersion() {
         char demolumpname[6];
         M_snprintf(demolumpname, 6, "demo%i", i);
         if (W_CheckNumForName(demolumpname) > 0) {
-          uint8_t *demolump    = cache_lump_name<uint8_t *>(demolumpname, PU_STATIC);
-          int      demoversion = demolump[0];
+          uint8_t * demolump    = cache_lump_name<uint8_t *>(demolumpname, PU_STATIC);
+          int       demoversion = demolump[0];
           W_ReleaseLumpName(demolumpname);
           bool status = true;
           switch (demoversion) {
@@ -1064,7 +1064,7 @@ static void D_Endoom() {
     return;
   }
 
-  uint8_t *endoom = cache_lump_name<uint8_t *>(DEH_String("ENDOOM"), PU_STATIC);
+  uint8_t * endoom = cache_lump_name<uint8_t *>(DEH_String("ENDOOM"), PU_STATIC);
 
   I_Endoom(endoom);
 }
@@ -1091,8 +1091,8 @@ static void LoadIwadDeh() {
   // and installed next to the IWAD.
   if (g_doomstat_globals->gameversion == exe_chex) {
     // Look for chex.deh in the same directory as the IWAD file.
-    char *dirname  = M_DirName(iwadfile);
-    char *chex_deh = M_StringJoin(dirname, DIR_SEPARATOR_S, "chex.deh", nullptr);
+    char * dirname  = M_DirName(iwadfile);
+    char * chex_deh = M_StringJoin(dirname, DIR_SEPARATOR_S, "chex.deh", nullptr);
     free(dirname);
 
     // If the dehacked patch isn't found, try searching the WAD
@@ -1120,8 +1120,8 @@ static void LoadIwadDeh() {
 // [crispy] support loading SIGIL.WAD (and SIGIL_SHREDS.WAD) alongside DOOM.WAD
 static void LoadSigilWad() {
   static constexpr struct {
-    const char *name;
-    const char  new_name[9];
+    const char * name;
+    const char   new_name[9];
   } sigil_lumps[] = {
     {"CREDIT",    "SIGCREDI"},
     { "HELP1",    "SIGHELP1"},
@@ -1135,7 +1135,7 @@ static void LoadSigilWad() {
     { "D_INTRO",  "D_SIGTIT"},
   };
 
-  const char *const texture_files[] = {
+  const char * const texture_files[] = {
     "PNAMES",
     "TEXTURE1",
     "TEXTURE2",
@@ -1163,14 +1163,14 @@ static void LoadSigilWad() {
   }
 
   if (g_doomstat_globals->gameversion == exe_ultimate) {
-    const char *const sigil_wads[] = {
+    const char * const sigil_wads[] = {
       "SIGIL_v1_21.wad",
       "SIGIL_v1_2.wad",
       "SIGIL.wad"
     };
-    char *sigil_wad    = nullptr;
-    char *dirname      = M_DirName(iwadfile);
-    char *sigil_shreds = M_StringJoin(dirname, DIR_SEPARATOR_S, "SIGIL_SHREDS.wad", nullptr);
+    char * sigil_wad    = nullptr;
+    char * dirname      = M_DirName(iwadfile);
+    char * sigil_shreds = M_StringJoin(dirname, DIR_SEPARATOR_S, "SIGIL_SHREDS.wad", nullptr);
 
     // [crispy] load SIGIL.WAD
     for (auto sigil : sigil_wads) {
@@ -1211,7 +1211,7 @@ static void LoadSigilWad() {
     }
 
     // [crispy] rename intrusive SIGIL_SHREDS.wad music lumps out of the way
-    for (const auto &sigil_lump : sigil_lumps) {
+    for (const auto & sigil_lump : sigil_lumps) {
       // [crispy] skip non-music lumps
       if (strncasecmp(sigil_lump.name, "D_", 2) != 0) {
         continue;
@@ -1225,7 +1225,7 @@ static void LoadSigilWad() {
     }
 
     // [crispy] rename intrusive SIGIL.wad graphics, demos and music lumps out of the way
-    for (const auto &sigil_lump : sigil_lumps) {
+    for (const auto & sigil_lump : sigil_lumps) {
       int j = W_CheckNumForName(sigil_lump.name);
 
       if (j != -1 && !strncasecmp(W_WadNameForLump(lumpinfo[j]), "SIGIL", 5)) {
@@ -1254,7 +1254,7 @@ static void LoadNerveWad() {
     // and that is the BFG Edition DOOM2.WAD or (b) if they are from a PWAD.
     if ((i = W_CheckNumForName("M_EPI1")) != -1 && (j = W_CheckNumForName("M_EPI2")) != -1 && (k = W_CheckNumForName("M_EPISOD")) != -1 && (g_doomstat_globals->gamevariant == bfgedition || (!W_IsIWADLump(lumpinfo[i]) && !W_IsIWADLump(lumpinfo[j]) && !W_IsIWADLump(lumpinfo[k])))) {
       if (strrchr(iwadfile, DIR_SEPARATOR) != nullptr) {
-        char *dir                        = M_DirName(iwadfile);
+        char * dir                       = M_DirName(iwadfile);
         g_doomstat_globals->nervewadfile = M_StringJoin(dir, DIR_SEPARATOR_S, "nerve.wad", nullptr);
         free(dir);
       } else {
@@ -1601,7 +1601,7 @@ void D_DoomMain() {
   // Disable auto-loading of .wad and .deh files.
   //
   if (!M_ParmExists("-noautoload") && g_doomstat_globals->gamemode != shareware) {
-    char *autoload_dir = nullptr;
+    char * autoload_dir = nullptr;
 
     // common auto-loaded files for all Doom flavors
 
@@ -1711,7 +1711,7 @@ void D_DoomMain() {
   }
 
   if (p) {
-    char *uc_filename = strdup(myargv[p + 1]);
+    char * uc_filename = strdup(myargv[p + 1]);
     M_ForceUppercase(uc_filename);
 
     // With Vanilla you have to specify the file without extension,
@@ -1984,8 +1984,8 @@ void D_DoomMain() {
   // [crispy] port level flipping feature over from Strawberry Doom
 #ifdef ENABLE_APRIL_1ST_JOKE
   {
-    time_t     curtime = time(nullptr);
-    struct tm *curtm   = localtime(&curtime);
+    time_t      curtime = time(nullptr);
+    struct tm * curtm   = localtime(&curtime);
 
     if (curtm && curtm->tm_mon == 3 && curtm->tm_mday == 1)
       crispy->fliplevels = true;

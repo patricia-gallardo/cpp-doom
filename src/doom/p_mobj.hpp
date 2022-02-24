@@ -207,8 +207,8 @@ typedef struct mobj_s {
   fixed_t z {};
 
   // More list: links in sector (if needed)
-  mobj_t *snext {};
-  mobj_t *sprev {};
+  mobj_t * snext {};
+  mobj_t * sprev {};
 
   // More drawing info: to determine current sprite.
   angle_t     angle {};                             // orientation
@@ -217,10 +217,10 @@ typedef struct mobj_s {
 
   // Interaction info, by BLOCKMAP.
   // Links in blocks (if needed).
-  mobj_t *bnext {};
-  mobj_t *bprev {};
+  mobj_t * bnext {};
+  mobj_t * bprev {};
 
-  struct subsector_s *subsector {};
+  struct subsector_s * subsector {};
 
   // The closest interval over all contacted Sectors.
   fixed_t floorz {};
@@ -238,11 +238,11 @@ typedef struct mobj_s {
   // If == validcount, already checked.
   int validcount {};
 
-  mobjtype_t  type { MT_PLAYER };
-  mobjinfo_t *info {}; // &mobjinfo[mobj->type]
+  mobjtype_t   type { MT_PLAYER };
+  mobjinfo_t * info {}; // &mobjinfo[mobj->type]
 
   int          tics {}; // state tic counter
-  state_t     *state {};
+  state_t *    state {};
   unsigned int flags {};
   int          health {};
 
@@ -252,7 +252,7 @@ typedef struct mobj_s {
 
   // Thing being chased/attacked (or nullptr),
   // also the originator for missiles.
-  mobj_t *target {};
+  mobj_t * target {};
 
   // Reaction time: if non 0, don't attack yet.
   // Used by player to freeze a bit after teleporting.
@@ -264,7 +264,7 @@ typedef struct mobj_s {
 
   // Additional info record for player avatars only.
   // Only valid if type == MT_PLAYER
-  player_t *player {};
+  player_t * player {};
 
   // Player number last looked for.
   int lastlook {};
@@ -273,7 +273,7 @@ typedef struct mobj_s {
   mapthing_t spawnpoint {};
 
   // Thing being chased/attacked for tracers.
-  mobj_t *tracer {};
+  mobj_t * tracer {};
 
   // [AM] If true, ok to interpolate this tic.
   int interp {};

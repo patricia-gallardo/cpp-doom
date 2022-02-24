@@ -24,7 +24,7 @@
 bool P_GivePower(player_t *, int);
 
 // [crispy] show weapon pickup messages in multiplayer games
-static constexpr const char *const WeaponPickupMessages[NUMWEAPONS] = {
+static constexpr const char * const WeaponPickupMessages[NUMWEAPONS] = {
   nullptr, // wp_fist
   nullptr, // wp_pistol
   GOTSHOTGUN,

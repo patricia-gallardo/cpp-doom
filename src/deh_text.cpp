@@ -44,7 +44,7 @@ static int TXT_MaxStringLength(int len) {
   return len - 1;
 }
 
-static void *DEH_TextStart(deh_context_t *context, char *line) {
+static void * DEH_TextStart(deh_context_t * context, char * line) {
   int fromlen = 0;
   int tolen   = 0;
 

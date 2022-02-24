@@ -71,7 +71,7 @@ enum cheat_t
 // Extended player object info: player_t
 //
 typedef struct player_s {
-  mobj_t       *mo;
+  mobj_t *      mo;
   playerstate_t playerstate;
   ticcmd_t      cmd;
 
@@ -126,14 +126,14 @@ typedef struct player_s {
   int secretcount;
 
   // Hint messages.
-  const char *message;
+  const char * message;
 
   // For screen flashing (red or bright).
   int damagecount;
   int bonuscount;
 
   // Who did damage (NULL for floors/ceilings).
-  mobj_t *attacker;
+  mobj_t * attacker;
 
   // So gun flashes light up areas.
   int extralight;
@@ -159,7 +159,7 @@ typedef struct player_s {
   angle_t oldviewz;
 
   // [crispy] show centered "Secret Revealed!" message
-  const char *centermessage;
+  const char * centermessage;
 
   // [crispy] free look / mouse look
   int  lookdir, oldlookdir;
@@ -172,7 +172,7 @@ typedef struct player_s {
   fixed_t recoilpitch, oldrecoilpitch;
 
   // [crispy] weapon sound source
-  mobj_t *so;
+  mobj_t * so;
 
   // [crispy] squat down weapon sprite
   fixed_t psp_dy_max;

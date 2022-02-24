@@ -59,20 +59,20 @@
 // Blending table used for fuzzpatch, etc.
 // Only used in Heretic/Hexen
 
-uint8_t *tinttable      = nullptr;
-uint8_t *tranmap        = nullptr;
-uint8_t *dp_translation = nullptr;
-bool     dp_translucent = false;
+uint8_t * tinttable      = nullptr;
+uint8_t * tranmap        = nullptr;
+uint8_t * dp_translation = nullptr;
+bool      dp_translucent = false;
 #ifdef CRISPY_TRUECOLOR
-extern pixel_t *colormaps;
+extern pixel_t * colormaps;
 #endif
 
 // villsa [STRIFE] Blending table used for Strife
-uint8_t *xlatab = nullptr;
+uint8_t * xlatab = nullptr;
 
 // The screen buffer that the v_video.c code draws to.
 
-static pixel_t *dest_screen = nullptr;
+static pixel_t * dest_screen = nullptr;
 
 int dirtybox[4];
 
@@ -96,7 +96,7 @@ void V_MarkRect(int x, int y, int width, int height) {
 //
 // V_CopyRect
 //
-void V_CopyRect(int srcx, int srcy, pixel_t *source, int width, int height, int destx, int desty) {
+void V_CopyRect(int srcx, int srcy, pixel_t * source, int width, int height, int destx, int desty) {
   srcx <<= crispy->hires;
   srcy <<= crispy->hires;
   width <<= crispy->hires;
@@ -125,8 +125,8 @@ void V_CopyRect(int srcx, int srcy, pixel_t *source, int width, int height, int 
 
   V_MarkRect(destx, desty, width, height);
 
-  pixel_t *src  = source + SCREENWIDTH * srcy + srcx;
-  pixel_t *dest = dest_screen + SCREENWIDTH * desty + destx;
+  pixel_t * src  = source + SCREENWIDTH * srcy + srcx;
+  pixel_t * dest = dest_screen + SCREENWIDTH * desty + destx;
 
   for (; height > 0; height--) {
     std::memcpy(dest, src, static_cast<unsigned long>(width) * sizeof(*dest));
@@ -201,17 +201,17 @@ static inline pixel_t drawpatchpx11(const pixel_t dest, const pixel_t source)
 }
 #endif
 // [crispy] array of function pointers holding the different rendering functions
-using drawpatchpx_t                             = pixel_t(const pixel_t, const pixel_t);
-static drawpatchpx_t *const drawpatchpx_a[2][2] = {
+using drawpatchpx_t                              = pixel_t(const pixel_t, const pixel_t);
+static drawpatchpx_t * const drawpatchpx_a[2][2] = {
   {drawpatchpx11,  drawpatchpx10},
   { drawpatchpx01, drawpatchpx00}
 };
 
 static fixed_t dx, dxi, dy, dyi;
 
-void V_DrawPatch(int x, int y, patch_t *patch) {
+void V_DrawPatch(int x, int y, patch_t * patch) {
   // [crispy] four different rendering functions
-  drawpatchpx_t *const drawpatchpx = drawpatchpx_a[!dp_translucent][!dp_translation];
+  drawpatchpx_t * const drawpatchpx = drawpatchpx_a[!dp_translucent][!dp_translation];
 
   y -= SHORT(patch->topoffset);
   x -= SHORT(patch->leftoffset);
@@ -234,9 +234,9 @@ void V_DrawPatch(int x, int y, patch_t *patch) {
 
   V_MarkRect(x, y, SHORT(patch->width), SHORT(patch->height));
 
-  pixel_t *desttop = dest_screen + ((y * dy) >> FRACBITS) * SCREENWIDTH + ((x * dx) >> FRACBITS);
-  int      col     = 0;
-  int      w       = SHORT(patch->width);
+  pixel_t * desttop = dest_screen + ((y * dy) >> FRACBITS) * SCREENWIDTH + ((x * dx) >> FRACBITS);
+  int       col     = 0;
+  int       w       = SHORT(patch->width);
 
   for (; col < w << FRACBITS; x++, col += dxi, desttop++) {
     int topdelta = -1;
@@ -251,7 +251,7 @@ void V_DrawPatch(int x, int y, patch_t *patch) {
       break;
     }
 
-    auto *column = reinterpret_cast<column_t *>(reinterpret_cast<uint8_t *>(patch) + LONG(patch->columnofs[col >> FRACBITS]));
+    auto * column = reinterpret_cast<column_t *>(reinterpret_cast<uint8_t *>(patch) + LONG(patch->columnofs[col >> FRACBITS]));
 
     // step through the posts in a column
     while (column->topdelta != 0xff) {
@@ -263,10 +263,10 @@ void V_DrawPatch(int x, int y, patch_t *patch) {
         topdelta = column->topdelta;
       }
 
-      int      top    = ((y + topdelta) * dy) >> FRACBITS;
-      uint8_t *source = reinterpret_cast<uint8_t *>(column) + 3;
-      pixel_t *dest   = desttop + ((topdelta * dy) >> FRACBITS) * SCREENWIDTH;
-      int      count  = (column->length * dy) >> FRACBITS;
+      int       top    = ((y + topdelta) * dy) >> FRACBITS;
+      uint8_t * source = reinterpret_cast<uint8_t *>(column) + 3;
+      pixel_t * dest   = desttop + ((topdelta * dy) >> FRACBITS) * SCREENWIDTH;
+      int       count  = (column->length * dy) >> FRACBITS;
 
       // [crispy] too low / height
       if (top + count > SCREENHEIGHT) {
@@ -291,7 +291,7 @@ void V_DrawPatch(int x, int y, patch_t *patch) {
   }
 }
 
-void V_DrawPatchFullScreen(patch_t *patch, bool flipped) {
+void V_DrawPatchFullScreen(patch_t * patch, bool flipped) {
   const short width  = SHORT(patch->width);
   const short height = SHORT(patch->height);
 
@@ -326,7 +326,7 @@ void V_DrawPatchFullScreen(patch_t *patch, bool flipped) {
 // Flips horizontally, e.g. to mirror face.
 //
 
-void V_DrawPatchFlipped(int x, int y, patch_t *patch) {
+void V_DrawPatchFlipped(int x, int y, patch_t * patch) {
   y -= SHORT(patch->topoffset);
   x -= SHORT(patch->leftoffset);
   x += DELTAWIDTH; // [crispy] horizontal widescreen offset
@@ -348,9 +348,9 @@ void V_DrawPatchFlipped(int x, int y, patch_t *patch) {
 
   V_MarkRect(x, y, SHORT(patch->width), SHORT(patch->height));
 
-  pixel_t *desttop = dest_screen + ((y * dy) >> FRACBITS) * SCREENWIDTH + ((x * dx) >> FRACBITS);
-  int      col     = 0;
-  int      w       = SHORT(patch->width);
+  pixel_t * desttop = dest_screen + ((y * dy) >> FRACBITS) * SCREENWIDTH + ((x * dx) >> FRACBITS);
+  int       col     = 0;
+  int       w       = SHORT(patch->width);
 
   for (; col < w << FRACBITS; x++, col += dxi, desttop++) {
     int topdelta = -1;
@@ -365,7 +365,7 @@ void V_DrawPatchFlipped(int x, int y, patch_t *patch) {
       break;
     }
 
-    auto *column = reinterpret_cast<column_t *>(reinterpret_cast<uint8_t *>(patch) + LONG(patch->columnofs[w - 1 - (col >> FRACBITS)]));
+    auto * column = reinterpret_cast<column_t *>(reinterpret_cast<uint8_t *>(patch) + LONG(patch->columnofs[w - 1 - (col >> FRACBITS)]));
 
     // step through the posts in a column
     while (column->topdelta != 0xff) {
@@ -376,10 +376,10 @@ void V_DrawPatchFlipped(int x, int y, patch_t *patch) {
       } else {
         topdelta = column->topdelta;
       }
-      int      top    = ((y + topdelta) * dy) >> FRACBITS;
-      uint8_t *source = reinterpret_cast<uint8_t *>(column) + 3;
-      pixel_t *dest   = desttop + ((topdelta * dy) >> FRACBITS) * SCREENWIDTH;
-      int      count  = (column->length * dy) >> FRACBITS;
+      int       top    = ((y + topdelta) * dy) >> FRACBITS;
+      uint8_t * source = reinterpret_cast<uint8_t *>(column) + 3;
+      pixel_t * dest   = desttop + ((topdelta * dy) >> FRACBITS) * SCREENWIDTH;
+      int       count  = (column->length * dy) >> FRACBITS;
 
       // [crispy] too low / height
       if (top + count > SCREENHEIGHT) {
@@ -413,7 +413,7 @@ void V_DrawPatchFlipped(int x, int y, patch_t *patch) {
 // Draws directly to the screen on the pc.
 //
 
-void V_DrawPatchDirect(int x, int y, patch_t *patch) {
+void V_DrawPatchDirect(int x, int y, patch_t * patch) {
   V_DrawPatch(x, y, patch);
 }
 
@@ -423,7 +423,7 @@ void V_DrawPatchDirect(int x, int y, patch_t *patch) {
 // Masks a column based translucent masked pic to the screen.
 //
 
-[[maybe_unused]] void V_DrawTLPatch(int x, int y, patch_t *patch) {
+[[maybe_unused]] void V_DrawTLPatch(int x, int y, patch_t * patch) {
   y -= SHORT(patch->topoffset);
   x -= SHORT(patch->leftoffset);
 
@@ -434,19 +434,19 @@ void V_DrawPatchDirect(int x, int y, patch_t *patch) {
     I_Error("Bad V_DrawTLPatch");
   }
 
-  pixel_t *desttop = dest_screen + ((y * dy) >> FRACBITS) * SCREENWIDTH + ((x * dx) >> FRACBITS);
-  int      col     = 0;
-  int      w       = SHORT(patch->width);
+  pixel_t * desttop = dest_screen + ((y * dy) >> FRACBITS) * SCREENWIDTH + ((x * dx) >> FRACBITS);
+  int       col     = 0;
+  int       w       = SHORT(patch->width);
   for (; col < w << FRACBITS; x++, col += dxi, desttop++) {
-    auto *column = reinterpret_cast<column_t *>(reinterpret_cast<uint8_t *>(patch) + LONG(patch->columnofs[col >> FRACBITS]));
+    auto * column = reinterpret_cast<column_t *>(reinterpret_cast<uint8_t *>(patch) + LONG(patch->columnofs[col >> FRACBITS]));
 
     // step through the posts in a column
 
     while (column->topdelta != 0xff) {
-      int      srccol = 0;
-      uint8_t *source = reinterpret_cast<uint8_t *>(column) + 3;
-      pixel_t *dest   = desttop + ((column->topdelta * dy) >> FRACBITS) * SCREENWIDTH;
-      int      count  = (column->length * dy) >> FRACBITS;
+      int       srccol = 0;
+      uint8_t * source = reinterpret_cast<uint8_t *>(column) + 3;
+      pixel_t * dest   = desttop + ((column->topdelta * dy) >> FRACBITS) * SCREENWIDTH;
+      int       count  = (column->length * dy) >> FRACBITS;
 
       while (count--) {
         *dest = tinttable[((*dest) << 8) + source[srccol >> FRACBITS]];
@@ -464,7 +464,7 @@ void V_DrawPatchDirect(int x, int y, patch_t *patch) {
 // villsa [STRIFE] Masks a column based translucent masked pic to the screen.
 //
 
-[[maybe_unused]] void V_DrawXlaPatch(int x, int y, patch_t *patch) {
+[[maybe_unused]] void V_DrawXlaPatch(int x, int y, patch_t * patch) {
   y -= SHORT(patch->topoffset);
   x -= SHORT(patch->leftoffset);
 
@@ -473,20 +473,20 @@ void V_DrawPatchDirect(int x, int y, patch_t *patch) {
       return;
   }
 
-  pixel_t *desttop = dest_screen + ((y * dy) >> FRACBITS) * SCREENWIDTH + ((x * dx) >> FRACBITS);
-  int      col     = 0;
-  int      w       = SHORT(patch->width);
+  pixel_t * desttop = dest_screen + ((y * dy) >> FRACBITS) * SCREENWIDTH + ((x * dx) >> FRACBITS);
+  int       col     = 0;
+  int       w       = SHORT(patch->width);
 
   for (; col < w << FRACBITS; x++, col += dxi, desttop++) {
-    auto *column = reinterpret_cast<column_t *>(reinterpret_cast<uint8_t *>(patch) + LONG(patch->columnofs[col >> FRACBITS]));
+    auto * column = reinterpret_cast<column_t *>(reinterpret_cast<uint8_t *>(patch) + LONG(patch->columnofs[col >> FRACBITS]));
 
     // step through the posts in a column
 
     while (column->topdelta != 0xff) {
-      int      srccol = 0;
-      uint8_t *source = reinterpret_cast<uint8_t *>(column) + 3;
-      pixel_t *dest   = desttop + ((column->topdelta * dy) >> FRACBITS) * SCREENWIDTH;
-      int      count  = (column->length * dy) >> FRACBITS;
+      int       srccol = 0;
+      uint8_t * source = reinterpret_cast<uint8_t *>(column) + 3;
+      pixel_t * dest   = desttop + ((column->topdelta * dy) >> FRACBITS) * SCREENWIDTH;
+      int       count  = (column->length * dy) >> FRACBITS;
 
       while (count--) {
         *dest = xlatab[*dest + (source[srccol >> FRACBITS] << 8)];
@@ -504,7 +504,7 @@ void V_DrawPatchDirect(int x, int y, patch_t *patch) {
 // Masks a column based translucent masked pic to the screen.
 //
 
-[[maybe_unused]] void V_DrawAltTLPatch(int x, int y, patch_t *patch) {
+[[maybe_unused]] void V_DrawAltTLPatch(int x, int y, patch_t * patch) {
   y -= SHORT(patch->topoffset);
   x -= SHORT(patch->leftoffset);
 
@@ -515,20 +515,20 @@ void V_DrawPatchDirect(int x, int y, patch_t *patch) {
     I_Error("Bad V_DrawAltTLPatch");
   }
 
-  pixel_t *dest_top = dest_screen + ((y * dy) >> FRACBITS) * SCREENWIDTH + ((x * dx) >> FRACBITS);
-  int      col      = 0;
-  int      w        = SHORT(patch->width);
+  pixel_t * dest_top = dest_screen + ((y * dy) >> FRACBITS) * SCREENWIDTH + ((x * dx) >> FRACBITS);
+  int       col      = 0;
+  int       w        = SHORT(patch->width);
 
   for (; col < w << FRACBITS; x++, col += dxi, dest_top++) {
-    auto *column = reinterpret_cast<column_t *>(reinterpret_cast<uint8_t *>(patch) + LONG(patch->columnofs[col >> FRACBITS]));
+    auto * column = reinterpret_cast<column_t *>(reinterpret_cast<uint8_t *>(patch) + LONG(patch->columnofs[col >> FRACBITS]));
 
     // step through the posts in a column
 
     while (column->topdelta != 0xff) {
-      int      srccol = 0;
-      uint8_t *source = reinterpret_cast<uint8_t *>(column) + 3;
-      pixel_t *dest   = dest_top + ((column->topdelta * dy) >> FRACBITS) * SCREENWIDTH;
-      int      count  = (column->length * dy) >> FRACBITS;
+      int       srccol = 0;
+      uint8_t * source = reinterpret_cast<uint8_t *>(column) + 3;
+      pixel_t * dest   = dest_top + ((column->topdelta * dy) >> FRACBITS) * SCREENWIDTH;
+      int       count  = (column->length * dy) >> FRACBITS;
 
       while (count--) {
         *dest = tinttable[((*dest) << 8) + source[srccol >> FRACBITS]];
@@ -546,7 +546,7 @@ void V_DrawPatchDirect(int x, int y, patch_t *patch) {
 // Masks a column based masked pic to the screen.
 //
 
-[[maybe_unused]] void V_DrawShadowedPatch(int x, int y, patch_t *patch) {
+[[maybe_unused]] void V_DrawShadowedPatch(int x, int y, patch_t * patch) {
   y -= SHORT(patch->topoffset);
   x -= SHORT(patch->leftoffset);
 
@@ -557,22 +557,22 @@ void V_DrawPatchDirect(int x, int y, patch_t *patch) {
     I_Error("Bad V_DrawShadowedPatch");
   }
 
-  int      col      = 0;
-  pixel_t *desttop  = dest_screen + ((y * dy) >> FRACBITS) * SCREENWIDTH + ((x * dx) >> FRACBITS);
-  pixel_t *desttop2 = dest_screen + (((y + 2) * dy) >> FRACBITS) * SCREENWIDTH + (((x + 2) * dx) >> FRACBITS);
+  int       col      = 0;
+  pixel_t * desttop  = dest_screen + ((y * dy) >> FRACBITS) * SCREENWIDTH + ((x * dx) >> FRACBITS);
+  pixel_t * desttop2 = dest_screen + (((y + 2) * dy) >> FRACBITS) * SCREENWIDTH + (((x + 2) * dx) >> FRACBITS);
 
   int w = SHORT(patch->width);
   for (; col < w << FRACBITS; x++, col += dxi, desttop++, desttop2++) {
-    auto *column = reinterpret_cast<column_t *>(reinterpret_cast<uint8_t *>(patch) + LONG(patch->columnofs[col >> FRACBITS]));
+    auto * column = reinterpret_cast<column_t *>(reinterpret_cast<uint8_t *>(patch) + LONG(patch->columnofs[col >> FRACBITS]));
 
     // step through the posts in a column
 
     while (column->topdelta != 0xff) {
-      int      srccol = 0;
-      uint8_t *source = reinterpret_cast<uint8_t *>(column) + 3;
-      pixel_t *dest   = desttop + ((column->topdelta * dy) >> FRACBITS) * SCREENWIDTH;
-      pixel_t *dest2  = desttop2 + ((column->topdelta * dy) >> FRACBITS) * SCREENWIDTH;
-      int      count  = (column->length * dy) >> FRACBITS;
+      int       srccol = 0;
+      uint8_t * source = reinterpret_cast<uint8_t *>(column) + 3;
+      pixel_t * dest   = desttop + ((column->topdelta * dy) >> FRACBITS) * SCREENWIDTH;
+      pixel_t * dest2  = desttop2 + ((column->topdelta * dy) >> FRACBITS) * SCREENWIDTH;
+      int       count  = (column->length * dy) >> FRACBITS;
 
       while (count--) {
         *dest2 = tinttable[((*dest2) << 8)];
@@ -609,7 +609,7 @@ void V_DrawPatchDirect(int x, int y, patch_t *patch) {
 // Draw a linear block of pixels into the view buffer.
 //
 
-void V_DrawBlock(int x, int y, int width, int height, pixel_t *src) {
+void V_DrawBlock(int x, int y, int width, int height, pixel_t * src) {
 #ifdef RANGECHECK
   if (x < 0
       || x + width > SCREENWIDTH
@@ -621,7 +621,7 @@ void V_DrawBlock(int x, int y, int width, int height, pixel_t *src) {
 
   V_MarkRect(x, y, width, height);
 
-  pixel_t *dest = dest_screen + (y << crispy->hires) * SCREENWIDTH + x;
+  pixel_t * dest = dest_screen + (y << crispy->hires) * SCREENWIDTH + x;
 
   while (height--) {
     std::memcpy(dest, src, static_cast<unsigned long>(width) * sizeof(*dest));
@@ -630,7 +630,7 @@ void V_DrawBlock(int x, int y, int width, int height, pixel_t *src) {
   }
 }
 
-[[maybe_unused]] void V_DrawScaledBlock(int x, int y, int width, int height, pixel_t *src) {
+[[maybe_unused]] void V_DrawScaledBlock(int x, int y, int width, int height, pixel_t * src) {
 #ifdef RANGECHECK
   if (x < 0
       || x + width > ORIGWIDTH
@@ -642,7 +642,7 @@ void V_DrawBlock(int x, int y, int width, int height, pixel_t *src) {
 
   V_MarkRect(x, y, width, height);
 
-  pixel_t *dest = dest_screen + (y << crispy->hires) * SCREENWIDTH + (x << crispy->hires);
+  pixel_t * dest = dest_screen + (y << crispy->hires) * SCREENWIDTH + (x << crispy->hires);
 
   for (int i = 0; i < (height << crispy->hires); i++) {
     for (int j = 0; j < (width << crispy->hires); j++) {
@@ -652,10 +652,10 @@ void V_DrawBlock(int x, int y, int width, int height, pixel_t *src) {
 }
 
 void V_DrawFilledBox(int x, int y, int w, int h, int c) {
-  pixel_t *buf = g_i_video_globals->I_VideoBuffer + SCREENWIDTH * y + x;
+  pixel_t * buf = g_i_video_globals->I_VideoBuffer + SCREENWIDTH * y + x;
 
   for (int y1 = 0; y1 < h; ++y1) {
-    pixel_t *buf1 = buf;
+    pixel_t * buf1 = buf;
 
     for (int x1 = 0; x1 < w; ++x1) {
       *buf1++ = static_cast<pixel_t>(c);
@@ -670,7 +670,7 @@ void V_DrawHorizLine(int x, int y, int w, int c) {
   if (x + w > SCREENWIDTH)
     w = SCREENWIDTH - x;
 
-  pixel_t *buf = g_i_video_globals->I_VideoBuffer + SCREENWIDTH * y + x;
+  pixel_t * buf = g_i_video_globals->I_VideoBuffer + SCREENWIDTH * y + x;
 
   for (int x1 = 0; x1 < w; ++x1) {
     *buf++ = static_cast<pixel_t>(c);
@@ -678,7 +678,7 @@ void V_DrawHorizLine(int x, int y, int w, int c) {
 }
 
 void V_DrawVertLine(int x, int y, int h, int c) {
-  pixel_t *buf = g_i_video_globals->I_VideoBuffer + SCREENWIDTH * y + x;
+  pixel_t * buf = g_i_video_globals->I_VideoBuffer + SCREENWIDTH * y + x;
 
   for (int y1 = 0; y1 < h; ++y1) {
     *buf = static_cast<pixel_t>(c);
@@ -698,7 +698,7 @@ void V_DrawBox(int x, int y, int w, int h, int c) {
 // to the screen)
 //
 
-void V_CopyScaledBuffer(pixel_t *dest, pixel_t *src, size_t size) {
+void V_CopyScaledBuffer(pixel_t * dest, pixel_t * src, size_t size) {
 #ifdef RANGECHECK
   if (size > ORIGWIDTH * ORIGHEIGHT) {
     I_Error("Bad V_CopyScaledBuffer");
@@ -714,7 +714,7 @@ void V_CopyScaledBuffer(pixel_t *dest, pixel_t *src, size_t size) {
   }
 }
 
-[[maybe_unused]] void V_DrawRawScreen(pixel_t *raw) {
+[[maybe_unused]] void V_DrawRawScreen(pixel_t * raw) {
   V_CopyScaledBuffer(dest_screen, raw, ORIGWIDTH * ORIGHEIGHT);
 }
 
@@ -736,7 +736,7 @@ void V_Init() {
 
 // Set the buffer that the code draws to.
 
-void V_UseBuffer(pixel_t *buffer) {
+void V_UseBuffer(pixel_t * buffer) {
   dest_screen = buffer;
 }
 
@@ -780,8 +780,8 @@ typedef PACKED_STRUCT(
 // WritePCXfile
 //
 
-void WritePCXfile(char *filename, pixel_t *data, int width, int height, uint8_t *palette) {
-  pcx_t *pcx = zmalloc<pcx_t *>(static_cast<size_t>(width * height * 2 + 1000), PU_STATIC, nullptr);
+void WritePCXfile(char * filename, pixel_t * data, int width, int height, uint8_t * palette) {
+  pcx_t * pcx = zmalloc<pcx_t *>(static_cast<size_t>(width * height * 2 + 1000), PU_STATIC, nullptr);
 
   pcx->manufacturer   = 0x0a; // PCX id
   pcx->version        = 5;    // 256 color
@@ -801,7 +801,7 @@ void WritePCXfile(char *filename, pixel_t *data, int width, int height, uint8_t 
   std::memset(pcx->filler, 0, sizeof(pcx->filler));
 
   // pack the image
-  uint8_t *pack = &pcx->data;
+  uint8_t * pack = &pcx->data;
 
   for (int i = 0; i < width * height; i++) {
     if ((*data & 0xc0) != 0xc0)
@@ -837,12 +837,12 @@ static void warning_fn(png_structp, png_const_charp s) {
   fmt::printf("libpng warning: %s\n", s);
 }
 
-void WritePNGfile(char *filename, pixel_t *, int width, int height, uint8_t *palette) {
+void WritePNGfile(char * filename, pixel_t *, int width, int height, uint8_t * palette) {
   //  png_colorp pcolor;
   int j = 0;
   //  int w_factor, h_factor;
 
-  extern void I_RenderReadPixels(uint8_t * *data, int *w, int *h, int *p);
+  extern void I_RenderReadPixels(uint8_t * *data, int * w, int * h, int * p);
 
   /*
   if (aspect_ratio_correct == 1)
@@ -861,7 +861,7 @@ void WritePNGfile(char *filename, pixel_t *, int width, int height, uint8_t *pal
   }
 */
 
-  FILE *handle = fopen(filename, "wb");
+  FILE * handle = fopen(filename, "wb");
   if (!handle) {
     return;
   }
@@ -882,7 +882,7 @@ void WritePNGfile(char *filename, pixel_t *, int width, int height, uint8_t *pal
   png_init_io(ppng, handle);
 
   I_RenderReadPixels(&palette, &width, &height, &j);
-  uint8_t *rowbuf = palette; // [crispy] pointer abuse!
+  uint8_t * rowbuf = palette; // [crispy] pointer abuse!
 
   png_set_IHDR(ppng, pinfo, static_cast<png_uint_32>(width), static_cast<png_uint_32>(height),
 #if SDL_VERSION_ATLEAST(2, 0, 5)
@@ -962,9 +962,9 @@ void WritePNGfile(char *filename, pixel_t *, int width, int height, uint8_t *pal
 // V_ScreenShot
 //
 
-void V_ScreenShot(const char *format) {
-  char        lbmname[16]; // haleyjd 20110213: BUG FIX - 12 is too small!
-  const char *ext = nullptr;
+void V_ScreenShot(const char * format) {
+  char         lbmname[16]; // haleyjd 20110213: BUG FIX - 12 is too small!
+  const char * ext = nullptr;
 
   // find a file name to save it to
 

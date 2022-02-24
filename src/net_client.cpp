@@ -37,7 +37,7 @@
 #include "net_structrw.hpp"
 #include "net_petname.hpp"
 
-extern void D_ReceiveTic(ticcmd_t *ticcmds, bool *playeringame);
+extern void D_ReceiveTic(ticcmd_t * ticcmds, bool * playeringame);
 
 enum net_clientstate_t
 {
@@ -98,8 +98,8 @@ extern fixed_t offsetms;
 
 static net_connection_t  client_connection;
 static net_clientstate_t client_state;
-static net_addr_t       *server_addr;
-static net_context_t    *client_context;
+static net_addr_t *      server_addr;
+static net_context_t *   client_context;
 
 // game settings, as received from the server when the game started
 
@@ -146,7 +146,7 @@ static net_client_globals_t net_client_s = {
   .net_local_is_freedoom         = {},
   .drone                         = false
 };
-net_client_globals_t *const g_net_client_globals = &net_client_s;
+net_client_globals_t * const g_net_client_globals = &net_client_s;
 
 #define NET_CL_ExpandTicNum(b) NET_ExpandTicNum(recvwindow_start, (b))
 
@@ -204,7 +204,7 @@ static void UpdateClockSync(unsigned int seq,
 // the d_net.c structures (netcmds/nettics) and save the new ticcmd
 // back into recvwindow_cmd_base.
 
-static void NET_CL_ExpandFullTiccmd(net_full_ticcmd_t *cmd, unsigned int, ticcmd_t *ticcmds) {
+static void NET_CL_ExpandFullTiccmd(net_full_ticcmd_t * cmd, unsigned int, ticcmd_t * ticcmds) {
   int i;
 
   // Expand tic diffs for all players
@@ -215,7 +215,7 @@ static void NET_CL_ExpandFullTiccmd(net_full_ticcmd_t *cmd, unsigned int, ticcmd
     }
 
     if (cmd->playeringame[i]) {
-      net_ticdiff_t *diff;
+      net_ticdiff_t * diff;
 
       diff = &cmd->cmds[i];
 
@@ -269,8 +269,8 @@ void NET_CL_LaunchGame() {
   NET_Conn_NewReliable(&client_connection, NET_PACKET_TYPE_LAUNCH);
 }
 
-void NET_CL_StartGame(net_gamesettings_t *settings_param) {
-  net_packet_t *packet;
+void NET_CL_StartGame(net_gamesettings_t * settings_param) {
+  net_packet_t * packet;
 
   // Start from a ticcmd of all zeros
 
@@ -285,7 +285,7 @@ void NET_CL_StartGame(net_gamesettings_t *settings_param) {
 }
 
 static void NET_CL_SendGameDataACK() {
-  net_packet_t *packet;
+  net_packet_t * packet;
 
   packet = NET_NewPacket(10);
 
@@ -300,8 +300,8 @@ static void NET_CL_SendGameDataACK() {
 }
 
 static void NET_CL_SendTics(int start, int end) {
-  net_packet_t *packet;
-  int           i;
+  net_packet_t * packet;
+  int            i;
 
   if (!g_net_client_globals->net_client_connected) {
     // Disconnected from server
@@ -327,7 +327,7 @@ static void NET_CL_SendTics(int start, int end) {
   // Add the tics.
 
   for (i = start; i <= end; ++i) {
-    net_server_send_t *sendobj;
+    net_server_send_t * sendobj;
 
     sendobj = &send_queue[i % BACKUPTICS];
 
@@ -351,10 +351,10 @@ static void NET_CL_SendTics(int start, int end) {
 
 // Add a new ticcmd to the send queue
 
-void NET_CL_SendTiccmd(ticcmd_t *ticcmd, int maketic) {
-  net_ticdiff_t      diff;
-  net_server_send_t *sendobj;
-  int                starttic, endtic;
+void NET_CL_SendTiccmd(ticcmd_t * ticcmd, int maketic) {
+  net_ticdiff_t       diff;
+  net_server_send_t * sendobj;
+  int                 starttic, endtic;
 
   // Calculate the difference to the last ticcmd
 
@@ -387,9 +387,9 @@ void NET_CL_SendTiccmd(ticcmd_t *ticcmd, int maketic) {
 
 // Parse a SYN packet received back from the server indicating a successful
 // connection attempt.
-static void NET_CL_ParseSYN(net_packet_t *packet) {
+static void NET_CL_ParseSYN(net_packet_t * packet) {
   net_protocol_t protocol;
-  char          *server_version;
+  char *         server_version;
 
   NET_Log("client: processing SYN response");
 
@@ -423,7 +423,7 @@ static void NET_CL_ParseSYN(net_packet_t *packet) {
   }
 }
 
-static void SetRejectReason(const char *s) {
+static void SetRejectReason(const char * s) {
   free(g_net_client_globals->net_client_reject_reason);
   if (s != nullptr) {
     g_net_client_globals->net_client_reject_reason = strdup(s);
@@ -432,8 +432,8 @@ static void SetRejectReason(const char *s) {
   }
 }
 
-static void NET_CL_ParseReject(net_packet_t *packet) {
-  char *msg;
+static void NET_CL_ParseReject(net_packet_t * packet) {
+  char * msg;
 
   msg = NET_ReadSafeString(packet);
   if (msg == nullptr) {
@@ -449,7 +449,7 @@ static void NET_CL_ParseReject(net_packet_t *packet) {
 
 // data received while we are waiting for the game to start
 
-static void NET_CL_ParseWaitingData(net_packet_t *packet) {
+static void NET_CL_ParseWaitingData(net_packet_t * packet) {
   net_waitdata_t wait_data;
 
   if (!NET_ReadWaitData(packet, &wait_data)) {
@@ -477,7 +477,7 @@ static void NET_CL_ParseWaitingData(net_packet_t *packet) {
   g_net_client_globals->net_client_received_wait_data = true;
 }
 
-static void NET_CL_ParseLaunch(net_packet_t *packet) {
+static void NET_CL_ParseLaunch(net_packet_t * packet) {
   unsigned int num_players;
 
   NET_Log("client: processing launch packet");
@@ -502,7 +502,7 @@ static void NET_CL_ParseLaunch(net_packet_t *packet) {
   NET_Log("client: now waiting for game start");
 }
 
-static void NET_CL_ParseGameStart(net_packet_t *packet) {
+static void NET_CL_ParseGameStart(net_packet_t * packet) {
   NET_Log("client: processing game start packet");
 
   if (!NET_ReadSettings(packet, &settings)) {
@@ -548,9 +548,9 @@ static void NET_CL_ParseGameStart(net_packet_t *packet) {
 }
 
 static void NET_CL_SendResendRequest(int start, int end) {
-  net_packet_t *packet;
-  unsigned int  nowtime;
-  int           i;
+  net_packet_t * packet;
+  unsigned int   nowtime;
+  int            i;
 
   // fmt::printf("CL: Send resend %i-%i\n", start, end);
 
@@ -590,8 +590,8 @@ static void NET_CL_CheckResends() {
   resend_end   = -1;
 
   for (i = 0; i < BACKUPTICS; ++i) {
-    net_server_recv_t *recvobj;
-    bool               need_resend;
+    net_server_recv_t * recvobj;
+    bool                need_resend;
 
     recvobj = &recvwindow[i];
 
@@ -653,11 +653,11 @@ static void NET_CL_CheckResends() {
 // Parsing of NET_PACKET_TYPE_GAMEDATA packets
 // (packets containing the actual ticcmd data)
 
-static void NET_CL_ParseGameData(net_packet_t *packet) {
-  net_server_recv_t *recvobj = nullptr;
-  unsigned int       seq = 0, num_tics = 0;
-  int                resend_start = 0, resend_end = 0;
-  int                index = 0;
+static void NET_CL_ParseGameData(net_packet_t * packet) {
+  net_server_recv_t * recvobj = nullptr;
+  unsigned int        seq = 0, num_tics = 0;
+  int                 resend_start = 0, resend_end = 0;
+  int                 index = 0;
 
   NET_Log("client: processing game data packet");
 
@@ -765,7 +765,7 @@ static void NET_CL_ParseGameData(net_packet_t *packet) {
 
 // Parse a resend request from the server due to a dropped packet
 
-static void NET_CL_ParseResendRequest(net_packet_t *packet) {
+static void NET_CL_ParseResendRequest(net_packet_t * packet) {
   static unsigned int start;
   static unsigned int end;
   static unsigned int num_tics;
@@ -815,8 +815,8 @@ static void NET_CL_ParseResendRequest(net_packet_t *packet) {
 
 // Console message that the server wants the client to print
 
-static void NET_CL_ParseConsoleMessage(net_packet_t *packet) {
-  char *msg;
+static void NET_CL_ParseConsoleMessage(net_packet_t * packet) {
+  char * msg;
 
   msg = NET_ReadSafeString(packet);
 
@@ -829,7 +829,7 @@ static void NET_CL_ParseConsoleMessage(net_packet_t *packet) {
 
 // parse a received packet
 
-static void NET_CL_ParsePacket(net_packet_t *packet) {
+static void NET_CL_ParsePacket(net_packet_t * packet) {
   unsigned int packet_type;
 
   if (!NET_ReadInt16(packet, &packet_type)) {
@@ -886,8 +886,8 @@ static void NET_CL_ParsePacket(net_packet_t *packet) {
 // needed
 
 void NET_CL_Run() {
-  net_addr_t   *addr;
-  net_packet_t *packet;
+  net_addr_t *   addr;
+  net_packet_t * packet;
 
   if (!g_net_client_globals->net_client_connected) {
     return;
@@ -930,8 +930,8 @@ void NET_CL_Run() {
   }
 }
 
-static void NET_CL_SendSYN(net_connect_data_t *data) {
-  net_packet_t *packet;
+static void NET_CL_SendSYN(net_connect_data_t * data) {
+  net_packet_t * packet;
 
   NET_Log("client: sending SYN");
 
@@ -947,7 +947,7 @@ static void NET_CL_SendSYN(net_connect_data_t *data) {
 }
 
 // Connect to a server
-bool NET_CL_Connect(net_addr_t *addr, net_connect_data_t *data) {
+bool NET_CL_Connect(net_addr_t * addr, net_connect_data_t * data) {
   int  start_time;
   int  last_send_time;
   bool sent_hole_punch;
@@ -1031,7 +1031,7 @@ bool NET_CL_Connect(net_addr_t *addr, net_connect_data_t *data) {
 
 // read game settings received from server
 
-bool NET_CL_GetSettings(net_gamesettings_t *_settings) {
+bool NET_CL_GetSettings(net_gamesettings_t * _settings) {
   if (client_state != CLIENT_STATE_IN_GAME) {
     return false;
   }

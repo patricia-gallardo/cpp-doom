@@ -33,7 +33,7 @@
 
 #define JOYSTICK_AXIS_WIDTH 20
 
-static const char *CalibrationLabel(txt_joystick_axis_t *joystick_axis) {
+static const char * CalibrationLabel(txt_joystick_axis_t * joystick_axis) {
   switch (joystick_axis->config_stage) {
   case CONFIG_CENTER:
     return "Center the D-pad or joystick,\n"
@@ -61,14 +61,14 @@ static const char *CalibrationLabel(txt_joystick_axis_t *joystick_axis) {
   return nullptr;
 }
 
-static void SetCalibrationLabel(txt_joystick_axis_t *joystick_axis) {
+static void SetCalibrationLabel(txt_joystick_axis_t * joystick_axis) {
   TXT_SetLabel(joystick_axis->config_label, CalibrationLabel(joystick_axis));
 }
 
 // Search all axes on joystick being configured; find a button that is
 // pressed (other than the calibrate button). Returns the button number.
 
-static int FindPressedAxisButton(txt_joystick_axis_t *joystick_axis) {
+static int FindPressedAxisButton(txt_joystick_axis_t * joystick_axis) {
   int i;
 
   for (i = 0; i < SDL_JoystickNumButtons(joystick_axis->joystick); ++i) {
@@ -86,7 +86,7 @@ static int FindPressedAxisButton(txt_joystick_axis_t *joystick_axis) {
 
 // Look for a hat that isn't centered. Returns the encoded hat axis.
 
-static int FindUncenteredHat(SDL_Joystick *joystick, int *axis_invert) {
+static int FindUncenteredHat(SDL_Joystick * joystick, int * axis_invert) {
   int i, hatval;
 
   for (i = 0; i < SDL_JoystickNumHats(joystick); ++i) {
@@ -117,7 +117,7 @@ static int FindUncenteredHat(SDL_Joystick *joystick, int *axis_invert) {
   return -1;
 }
 
-static bool CalibrateAxis(txt_joystick_axis_t *joystick_axis) {
+static bool CalibrateAxis(txt_joystick_axis_t * joystick_axis) {
   int    best_axis;
   int    best_value;
   int    best_invert;
@@ -183,7 +183,7 @@ static bool CalibrateAxis(txt_joystick_axis_t *joystick_axis) {
   return false;
 }
 
-static bool SetButtonAxisPositive(txt_joystick_axis_t *joystick_axis) {
+static bool SetButtonAxisPositive(txt_joystick_axis_t * joystick_axis) {
   int button;
 
   button = FindPressedAxisButton(joystick_axis);
@@ -196,7 +196,7 @@ static bool SetButtonAxisPositive(txt_joystick_axis_t *joystick_axis) {
   return false;
 }
 
-static void IdentifyBadAxes(txt_joystick_axis_t *joystick_axis) {
+static void IdentifyBadAxes(txt_joystick_axis_t * joystick_axis) {
   int i, val;
 
   free(joystick_axis->bad_axis);
@@ -217,7 +217,7 @@ static void IdentifyBadAxes(txt_joystick_axis_t *joystick_axis) {
   }
 }
 
-static int NextCalibrateStage(txt_joystick_axis_t *joystick_axis) {
+static int NextCalibrateStage(txt_joystick_axis_t * joystick_axis) {
   switch (joystick_axis->config_stage) {
   case CONFIG_CENTER:
     return CONFIG_STAGE1;
@@ -239,9 +239,9 @@ static int NextCalibrateStage(txt_joystick_axis_t *joystick_axis) {
   return -1;
 }
 
-static int EventCallback(SDL_Event *event, void *uncast_joystick_axis) {
-  auto *joystick_axis = reinterpret_cast<txt_joystick_axis_t *>(uncast_joystick_axis);
-  bool  advance;
+static int EventCallback(SDL_Event * event, void * uncast_joystick_axis) {
+  auto * joystick_axis = reinterpret_cast<txt_joystick_axis_t *>(uncast_joystick_axis);
+  bool   advance;
 
   if (event->type != SDL_JOYBUTTONDOWN) {
     return 0;
@@ -299,8 +299,8 @@ static int EventCallback(SDL_Event *event, void *uncast_joystick_axis) {
   return 0;
 }
 
-static void CalibrateWindowClosed(void *, void *uncast_joystick_axis) {
-  auto *joystick_axis = reinterpret_cast<txt_joystick_axis_t *>(uncast_joystick_axis);
+static void CalibrateWindowClosed(void *, void * uncast_joystick_axis) {
+  auto * joystick_axis = reinterpret_cast<txt_joystick_axis_t *>(uncast_joystick_axis);
 
   free(joystick_axis->bad_axis);
   joystick_axis->bad_axis = nullptr;
@@ -311,7 +311,7 @@ static void CalibrateWindowClosed(void *, void *uncast_joystick_axis) {
   TXT_SDL_SetEventCallback(nullptr, nullptr);
 }
 
-void TXT_ConfigureJoystickAxis(txt_joystick_axis_t         *joystick_axis,
+void TXT_ConfigureJoystickAxis(txt_joystick_axis_t *        joystick_axis,
                                int                          using_button,
                                txt_joystick_axis_callback_t callback) {
   // Open the joystick first.
@@ -361,8 +361,8 @@ void TXT_ConfigureJoystickAxis(txt_joystick_axis_t         *joystick_axis,
   joystick_axis->callback = callback;
 }
 
-static void TXT_JoystickAxisSizeCalc(void *uncast_joystick_axis) {
-  auto *joystick_axis = reinterpret_cast<txt_joystick_axis_t *>(uncast_joystick_axis);
+static void TXT_JoystickAxisSizeCalc(void * uncast_joystick_axis) {
+  auto * joystick_axis = reinterpret_cast<txt_joystick_axis_t *>(uncast_joystick_axis);
 
   // All joystickinputs are the same size.
 
@@ -370,9 +370,9 @@ static void TXT_JoystickAxisSizeCalc(void *uncast_joystick_axis) {
   joystick_axis->widget.h = 1;
 }
 
-static void TXT_JoystickAxisDrawer(void *uncast_joystick_axis) {
-  auto *joystick_axis = reinterpret_cast<txt_joystick_axis_t *>(uncast_joystick_axis);
-  char  buf[JOYSTICK_AXIS_WIDTH + 1];
+static void TXT_JoystickAxisDrawer(void * uncast_joystick_axis) {
+  auto * joystick_axis = reinterpret_cast<txt_joystick_axis_t *>(uncast_joystick_axis);
+  char   buf[JOYSTICK_AXIS_WIDTH + 1];
 
   if (*joystick_axis->axis < 0) {
     M_StringCopy(buf, "(none)", sizeof(buf));
@@ -406,8 +406,8 @@ static void TXT_JoystickAxisDrawer(void *uncast_joystick_axis) {
 static void TXT_JoystickAxisDestructor(void *) {
 }
 
-static int TXT_JoystickAxisKeyPress(void *uncast_joystick_axis, int key) {
-  auto *joystick_axis = reinterpret_cast<txt_joystick_axis_t *>(uncast_joystick_axis);
+static int TXT_JoystickAxisKeyPress(void * uncast_joystick_axis, int key) {
+  auto * joystick_axis = reinterpret_cast<txt_joystick_axis_t *>(uncast_joystick_axis);
 
   if (key == KEY_ENTER) {
     TXT_ConfigureJoystickAxis(joystick_axis, -1, nullptr);
@@ -421,8 +421,8 @@ static int TXT_JoystickAxisKeyPress(void *uncast_joystick_axis, int key) {
   return 0;
 }
 
-static void TXT_JoystickAxisMousePress(void *uncast_widget, int, int, int b) {
-  auto *widget = reinterpret_cast<txt_joystick_axis_t *>(uncast_widget);
+static void TXT_JoystickAxisMousePress(void * uncast_widget, int, int, int b) {
+  auto * widget = reinterpret_cast<txt_joystick_axis_t *>(uncast_widget);
 
   // Clicking is like pressing enter
 
@@ -441,8 +441,8 @@ txt_widget_class_t txt_joystick_axis_class = {
   nullptr,
 };
 
-txt_joystick_axis_t *TXT_NewJoystickAxis(int *axis, int *invert, txt_joystick_axis_direction_t dir) {
-  txt_joystick_axis_t *joystick_axis;
+txt_joystick_axis_t * TXT_NewJoystickAxis(int * axis, int * invert, txt_joystick_axis_direction_t dir) {
+  txt_joystick_axis_t * joystick_axis;
 
   joystick_axis = static_cast<txt_joystick_axis_t *>(malloc(sizeof(txt_joystick_axis_t)));
 

@@ -53,9 +53,9 @@ fixed_t
 // P_PointOnLineSide
 // Returns 0 or 1
 //
-int P_PointOnLineSide(fixed_t x,
-                      fixed_t y,
-                      line_t *line) {
+int P_PointOnLineSide(fixed_t  x,
+                      fixed_t  y,
+                      line_t * line) {
   fixed_t dx;
   fixed_t dy;
   fixed_t left;
@@ -90,8 +90,8 @@ int P_PointOnLineSide(fixed_t x,
 // Considers the line to be infinite
 // Returns side 0 or 1, -1 if box crosses the line.
 //
-int P_BoxOnLineSide(fixed_t *tmbox,
-                    line_t  *ld) {
+int P_BoxOnLineSide(fixed_t * tmbox,
+                    line_t *  ld) {
   int p1 = 0;
   int p2 = 0;
 
@@ -134,9 +134,9 @@ int P_BoxOnLineSide(fixed_t *tmbox,
 // P_PointOnDivlineSide
 // Returns 0 or 1.
 //
-int P_PointOnDivlineSide(fixed_t    x,
-                         fixed_t    y,
-                         divline_t *line) {
+int P_PointOnDivlineSide(fixed_t     x,
+                         fixed_t     y,
+                         divline_t * line) {
   fixed_t dx;
   fixed_t dy;
   fixed_t left;
@@ -176,8 +176,8 @@ int P_PointOnDivlineSide(fixed_t    x,
 //
 // P_MakeDivline
 //
-void P_MakeDivline(line_t    *li,
-                   divline_t *dl) {
+void P_MakeDivline(line_t *    li,
+                   divline_t * dl) {
   dl->x  = li->v1->x;
   dl->y  = li->v1->y;
   dl->dx = li->dx;
@@ -192,8 +192,8 @@ void P_MakeDivline(line_t    *li,
 // and addlines traversers.
 //
 fixed_t
-    P_InterceptVector(divline_t *v2,
-                      divline_t *v1) {
+    P_InterceptVector(divline_t * v2,
+                      divline_t * v1) {
 #if 1
   fixed_t frac;
   fixed_t num;
@@ -246,7 +246,7 @@ fixed_t
 #endif
 }
 
-void P_LineOpening(line_t *linedef_param) {
+void P_LineOpening(line_t * linedef_param) {
   if (linedef_param->sidenum[1] == NO_INDEX) // [crispy] extended nodes
   {
     // single sided line
@@ -254,8 +254,8 @@ void P_LineOpening(line_t *linedef_param) {
     return;
   }
 
-  sector_t *front = linedef_param->frontsector;
-  sector_t *back  = linedef_param->backsector;
+  sector_t * front = linedef_param->frontsector;
+  sector_t * back  = linedef_param->backsector;
 
   if (front->ceilingheight < back->ceilingheight)
     g_p_local_globals->opentop = front->ceilingheight;
@@ -284,7 +284,7 @@ void P_LineOpening(line_t *linedef_param) {
 // lookups maintaining lists ot things inside
 // these structures need to be updated.
 //
-void P_UnsetThingPosition(mobj_t *thing) {
+void P_UnsetThingPosition(mobj_t * thing) {
   int blockx;
   int blocky;
 
@@ -326,12 +326,12 @@ void P_UnsetThingPosition(mobj_t *thing) {
 // based on it's x y.
 // Sets thing->subsector properly
 //
-void P_SetThingPosition(mobj_t *thing) {
-  subsector_t *ss;
-  sector_t    *sec;
-  int          blockx;
-  int          blocky;
-  mobj_t     **link;
+void P_SetThingPosition(mobj_t * thing) {
+  subsector_t * ss;
+  sector_t *    sec;
+  int           blockx;
+  int           blocky;
+  mobj_t **     link;
 
   // link into subsector
   ss               = R_PointInSubsector(thing->x, thing->y);
@@ -393,9 +393,9 @@ void P_SetThingPosition(mobj_t *thing) {
 bool P_BlockLinesIterator(int x,
                           int y,
                           bool (*func)(line_t *)) {
-  int      offset;
-  int32_t *list; // [crispy] BLOCKMAP limit
-  line_t  *ld;
+  int       offset;
+  int32_t * list; // [crispy] BLOCKMAP limit
+  line_t *  ld;
 
   if (x < 0
       || y < 0
@@ -428,7 +428,7 @@ bool P_BlockLinesIterator(int x,
 bool P_BlockThingsIterator(int x,
                            int y,
                            bool (*func)(mobj_t *)) {
-  mobj_t *mobj;
+  mobj_t * mobj;
 
   if (x < 0
       || y < 0
@@ -449,7 +449,7 @@ bool P_BlockThingsIterator(int x,
 //
 // INTERCEPT ROUTINES
 //
-static intercept_t *intercepts; // [crispy] remove INTERCEPTS limit
+static intercept_t * intercepts; // [crispy] remove INTERCEPTS limit
 
 // [crispy] remove INTERCEPTS limit
 // taken from PrBoom+/src/p_maputl.c:422-433
@@ -467,10 +467,10 @@ static void check_intercept() {
 bool                 earlyout;
 [[maybe_unused]] int ptflags;
 
-static void InterceptsOverrun(int num_intercepts, intercept_t *intercept);
+static void InterceptsOverrun(int num_intercepts, intercept_t * intercept);
 
 // [crispy] show mapthing number in INTERCEPTS overflow warnings
-extern mobj_t *shootthing;
+extern mobj_t * shootthing;
 
 //
 // PIT_AddLineIntercepts.
@@ -482,7 +482,7 @@ extern mobj_t *shootthing;
 // are on opposite sides of the trace.
 // Returns true if earlyout and a solid line hit.
 //
-bool PIT_AddLineIntercepts(line_t *ld) {
+bool PIT_AddLineIntercepts(line_t * ld) {
   int       s1;
   int       s2;
   fixed_t   frac;
@@ -538,7 +538,7 @@ bool PIT_AddLineIntercepts(line_t *ld) {
 //
 // PIT_AddThingIntercepts
 //
-bool PIT_AddThingIntercepts(mobj_t *thing) {
+bool PIT_AddThingIntercepts(mobj_t * thing) {
   fixed_t x1;
   fixed_t y1;
   fixed_t x2;
@@ -612,11 +612,11 @@ bool PIT_AddThingIntercepts(mobj_t *thing) {
 bool P_TraverseIntercepts(traverser_t func, fixed_t maxfrac) {
   int count = static_cast<int>(g_p_local_globals->intercept_p - intercepts);
 
-  intercept_t *in = 0; // shut up compiler warning
+  intercept_t * in = 0; // shut up compiler warning
 
   while (count--) {
     fixed_t dist = INT_MAX;
-    for (intercept_t *scan = intercepts; scan < g_p_local_globals->intercept_p; scan++) {
+    for (intercept_t * scan = intercepts; scan < g_p_local_globals->intercept_p; scan++) {
       if (scan->frac < dist) {
         dist = scan->frac;
         in   = scan;
@@ -656,9 +656,9 @@ extern fixed_t bulletslope;
 
 typedef struct
 {
-  int   len;
-  void *addr;
-  bool  int16_array;
+  int    len;
+  void * addr;
+  bool   int16_array;
 } intercepts_overrun_t;
 
 // Intercepts memory table.  This is where various variables are located
@@ -698,9 +698,9 @@ static intercepts_overrun_t intercepts_overrun[] = {
 // Overwrite a specific memory location with a value.
 
 static void InterceptsMemoryOverrun(int location, int value) {
-  int   i, offset;
-  int   index;
-  void *addr;
+  int    i, offset;
+  int    index;
+  void * addr;
 
   i      = 0;
   offset = 0;
@@ -717,12 +717,12 @@ static void InterceptsMemoryOverrun(int location, int value) {
       if (addr != nullptr) {
         if (intercepts_overrun[i].int16_array) {
           index                 = (location - offset) / 2;
-          auto *addr_short      = reinterpret_cast<short *>(addr);
+          auto * addr_short     = reinterpret_cast<short *>(addr);
           addr_short[index]     = static_cast<short>(value & 0xffff);
           addr_short[index + 1] = static_cast<short>((value >> 16) & 0xffff);
         } else {
           index           = (location - offset) / 4;
-          int *addr_int   = reinterpret_cast<int *>(addr);
+          int * addr_int  = reinterpret_cast<int *>(addr);
           addr_int[index] = value;
         }
       }
@@ -737,7 +737,7 @@ static void InterceptsMemoryOverrun(int location, int value) {
 
 // Emulate overruns of the intercepts[] array.
 
-static void InterceptsOverrun(int num_intercepts, intercept_t *intercept) {
+static void InterceptsOverrun(int num_intercepts, intercept_t * intercept) {
   if (num_intercepts <= MAXINTERCEPTS_ORIGINAL) {
     // No overrun
 

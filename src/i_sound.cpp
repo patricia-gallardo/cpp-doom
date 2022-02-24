@@ -30,15 +30,15 @@
 #include "m_config.hpp"
 
 // Low-level sound and music modules we are using
-static sound_module_t *sound_module;
-static music_module_t *music_module;
+static sound_module_t * sound_module;
+static music_module_t * music_module;
 
 // If true, the music pack module was successfully initialized.
 static bool music_packs_active = false;
 
 // This is either equal to music_module or &music_pack_module,
 // depending on whether the current track is substituted.
-static music_module_t *active_music_module;
+static music_module_t * active_music_module;
 
 // Sound modules
 
@@ -56,8 +56,8 @@ extern int              opl_io_port;
 
 // For native music module:
 
-extern char *music_pack_path;
-extern char *timidity_cfg_path;
+extern char * music_pack_path;
+extern char * timidity_cfg_path;
 
 // DOS-specific options: These are unused but should be maintained
 // so that the config file can be shared between chocolate
@@ -70,7 +70,7 @@ static int snd_mport  = 0;
 
 // Compiled-in sound modules:
 
-static sound_module_t *sound_modules[] = {
+static sound_module_t * sound_modules[] = {
   &sound_sdl_module,
   &sound_pcsound_module,
   nullptr,
@@ -78,7 +78,7 @@ static sound_module_t *sound_modules[] = {
 
 // Compiled-in music modules:
 
-static music_module_t *music_modules[] = {
+static music_module_t * music_modules[] = {
   &music_sdl_module,
   &music_opl_module,
   nullptr,
@@ -93,11 +93,11 @@ static i_sound_t i_sound_s = {
   .snd_musiccmd        = const_cast<char *>(""),
   .snd_pitchshift      = -1
 };
-i_sound_t *const g_i_sound_globals = &i_sound_s;
+i_sound_t * const g_i_sound_globals = &i_sound_s;
 
 // Check if a sound device is in the given list of devices
 
-static bool SndDeviceInList(snddevice_t device, snddevice_t *list, int len) {
+static bool SndDeviceInList(snddevice_t device, snddevice_t * list, int len) {
   int i;
 
   for (i = 0; i < len; ++i) {
@@ -230,7 +230,7 @@ void I_InitSound(bool use_sfx_prefix) {
   }
   // [crispy] print the SDL audio backend
   {
-    const char *driver_name = SDL_GetCurrentAudioDriver();
+    const char * driver_name = SDL_GetCurrentAudioDriver();
 
     fmt::fprintf(stderr, "I_InitSound: SDL audio driver is %s\n", driver_name ? driver_name : "none");
   }
@@ -250,7 +250,7 @@ void I_ShutdownSound() {
   }
 }
 
-int I_GetSfxLumpNum(sfxinfo_t *sfxinfo) {
+int I_GetSfxLumpNum(sfxinfo_t * sfxinfo) {
   if (sound_module != nullptr) {
     return sound_module->GetSfxLumpNum(sfxinfo);
   } else {
@@ -268,7 +268,7 @@ void I_UpdateSound() {
   }
 }
 
-static void CheckVolumeSeparation(int *vol, int *sep) {
+static void CheckVolumeSeparation(int * vol, int * sep) {
   if (*sep < 0) {
     *sep = 0;
   } else if (*sep > 254) {
@@ -289,7 +289,7 @@ void I_UpdateSoundParams(int channel, int vol, int sep) {
   }
 }
 
-int I_StartSound(sfxinfo_t *sfxinfo, int channel, int vol, int sep, int pitch) {
+int I_StartSound(sfxinfo_t * sfxinfo, int channel, int vol, int sep, int pitch) {
   if (sound_module != nullptr) {
     CheckVolumeSeparation(&vol, &sep);
     return sound_module->StartSound(sfxinfo, channel, vol, sep, pitch);
@@ -312,7 +312,7 @@ bool I_SoundIsPlaying(int channel) {
   }
 }
 
-void I_PrecacheSounds(sfxinfo_t *sounds, int num_sounds) {
+void I_PrecacheSounds(sfxinfo_t * sounds, int num_sounds) {
   if (sound_module != nullptr && sound_module->CacheSounds != nullptr) {
     sound_module->CacheSounds(sounds, num_sounds);
   }
@@ -342,13 +342,13 @@ void I_ResumeSong() {
   }
 }
 
-void *I_RegisterSong(void *data, int len) {
+void * I_RegisterSong(void * data, int len) {
   // If the music pack module is active, check to see if there is a
   // valid substitution for this track. If there is, we set the
   // active_music_module pointer to the music pack module for the
   // duration of this particular track.
   if (music_packs_active) {
-    void *handle;
+    void * handle;
 
     handle = music_pack_module.RegisterSong(data, len);
     if (handle != nullptr) {
@@ -366,13 +366,13 @@ void *I_RegisterSong(void *data, int len) {
   }
 }
 
-void I_UnRegisterSong(void *handle) {
+void I_UnRegisterSong(void * handle) {
   if (active_music_module != nullptr) {
     active_music_module->UnRegisterSong(handle);
   }
 }
 
-void I_PlaySong(void *handle, bool looping) {
+void I_PlaySong(void * handle, bool looping) {
   if (active_music_module != nullptr) {
     active_music_module->PlaySong(handle, looping);
   }
@@ -393,9 +393,9 @@ bool I_MusicIsPlaying() {
 }
 
 void I_BindSoundVariables() {
-  extern char *snd_dmxoption;
-  extern int   use_libsamplerate;
-  extern float libsamplerate_scale;
+  extern char * snd_dmxoption;
+  extern int    use_libsamplerate;
+  extern float  libsamplerate_scale;
 
   M_BindIntVariable("snd_musicdevice", &g_i_sound_globals->snd_musicdevice);
   M_BindIntVariable("snd_sfxdevice", &g_i_sound_globals->snd_sfxdevice);

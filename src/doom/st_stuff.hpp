@@ -42,7 +42,7 @@ extern int  defdemotics, deftotaldemotics;
 //
 
 // Called by main loop.
-bool ST_Responder(event_t *ev);
+bool ST_Responder(event_t * ev);
 
 // Called by main loop.
 void ST_Ticker();
@@ -76,7 +76,7 @@ enum st_chatstateenum_t
 
 struct st_stuff_t {
   // graphics are drawn to a backing screen and blitted to the real screen
-  pixel_t   *st_backing_screen;
+  pixel_t *  st_backing_screen;
   cheatseq_t cheat_mus;
   cheatseq_t cheat_god;
   cheatseq_t cheat_ammo;
@@ -89,6 +89,6 @@ struct st_stuff_t {
   cheatseq_t cheat_mypos;
 };
 
-extern st_stuff_t *const g_st_stuff_globals;
+extern st_stuff_t * const g_st_stuff_globals;
 
 #endif

@@ -31,7 +31,7 @@
 // specified to a dedicated server.
 //
 
-static const char *not_dedicated_options[] = {
+static const char * not_dedicated_options[] = {
   "-deh",
   "-iwad",
   "-cdrom",

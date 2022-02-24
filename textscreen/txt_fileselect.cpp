@@ -29,16 +29,16 @@
 #include "memory.hpp"
 
 struct [[maybe_unused]] txt_fileselect_s {
-  txt_widget_t    widget;
-  txt_inputbox_t *inputbox {};
-  int             size {};
-  const char     *prompt {};
-  const char    **extensions {};
+  txt_widget_t     widget;
+  txt_inputbox_t * inputbox {};
+  int              size {};
+  const char *     prompt {};
+  const char **    extensions {};
 };
 
 // Dummy value to select a directory.
 
-const char *TXT_DIRECTORY[] = { "__directory__", nullptr };
+const char * TXT_DIRECTORY[] = { "__directory__", nullptr };
 
 #ifndef _WIN32
 
@@ -47,7 +47,7 @@ const char *TXT_DIRECTORY[] = { "__directory__", nullptr };
 #include <cerrno>
 #include <sys/wait.h>
 
-static char *ExecReadOutput(char **argv) {
+static char * ExecReadOutput(char ** argv) {
   int status;
   int pipefd[2];
 
@@ -69,9 +69,9 @@ static char *ExecReadOutput(char **argv) {
   // Wait until the program has completed and (if it was successful)
   // a full line has been read.
 
-  char *result     = nullptr;
-  int   result_len = 0;
-  int   completed  = 0;
+  char * result     = nullptr;
+  int    result_len = 0;
+  int    completed  = 0;
 
   while (!completed
          || (status == 0 && (result == nullptr || strchr(result, '\n') == nullptr))) {
@@ -88,7 +88,7 @@ static char *ExecReadOutput(char **argv) {
         break;
       }
     } else {
-      char *new_result = static_cast<char *>(realloc(result, (static_cast<size_t>(result_len + bytes + 1))));
+      char * new_result = static_cast<char *>(realloc(result, (static_cast<size_t>(result_len + bytes + 1))));
       if (new_result == nullptr) {
         break;
       }
@@ -138,7 +138,7 @@ int TXT_CanSelectFiles() {
   return 0;
 }
 
-char *TXT_SelectFile(const char *, const char **) {
+char * TXT_SelectFile(const char *, const char **) {
   return nullptr;
 }
 
@@ -194,10 +194,10 @@ static int InitLibraries() {
 
 // Generate the "filter" string from the list of extensions.
 
-static char *GenerateFilterString(const char **extensions) {
+static char * GenerateFilterString(const char ** extensions) {
   unsigned int result_len = 1;
   unsigned int i;
-  char        *result, *out;
+  char *       result, *out;
   size_t       out_len, offset;
 
   if (extensions == nullptr) {
@@ -233,11 +233,11 @@ int TXT_CanSelectFiles() {
   return InitLibraries();
 }
 
-static char *SelectDirectory(char *window_title) {
+static char * SelectDirectory(char * window_title) {
   LPITEMIDLIST pidl;
   BROWSEINFO   bi;
   char         selected[MAX_PATH] = "";
-  char        *result;
+  char *       result;
 
   ZeroMemory(&bi, sizeof(bi));
   bi.hwndOwner      = nullptr;
@@ -260,10 +260,10 @@ static char *SelectDirectory(char *window_title) {
   return result;
 }
 
-char *TXT_SelectFile(const char *window_title, const char **extensions) {
+char * TXT_SelectFile(const char * window_title, const char ** extensions) {
   OPENFILENAME fm;
   char         selected[MAX_PATH] = "";
-  char        *filter_string, *result;
+  char *       filter_string, *result;
 
   if (!InitLibraries()) {
     return nullptr;
@@ -305,10 +305,10 @@ char *TXT_SelectFile(const char *window_title, const char **extensions) {
 // Printf format string for the "wrapper" portion of the AppleScript:
 #define APPLESCRIPT_WRAPPER "copy POSIX path of (%s) to stdout"
 
-static char *CreateEscapedString(const char *original) {
-  char       *result;
-  const char *in;
-  char       *out;
+static char * CreateEscapedString(const char * original) {
+  char *       result;
+  const char * in;
+  char *       out;
 
   // We need to take care not to overflow the buffer, so count exactly.
 #define ESCAPED_CHARS       "\"\\"
@@ -340,8 +340,8 @@ static char *CreateEscapedString(const char *original) {
 
 // Build list of extensions, like: {"wad","lmp","txt"}
 
-static char *CreateExtensionsList(const char **extensions) {
-  char        *result, *escaped;
+static char * CreateExtensionsList(const char ** extensions) {
+  char *       result, *escaped;
   unsigned int result_len;
   unsigned int i;
 
@@ -379,11 +379,11 @@ static char *CreateExtensionsList(const char **extensions) {
   return result;
 }
 
-static char *GenerateSelector(const char *const window_title, const char **extensions) {
-  const char  *chooser;
-  char        *ext_list             = nullptr;
-  char        *window_title_escaped = nullptr;
-  char        *result               = nullptr;
+static char * GenerateSelector(const char * const window_title, const char ** extensions) {
+  const char * chooser;
+  char *       ext_list             = nullptr;
+  char *       window_title_escaped = nullptr;
+  char *       result               = nullptr;
   unsigned int result_len           = 64;
 
   if (extensions == TXT_DIRECTORY) {
@@ -434,8 +434,8 @@ static char *GenerateSelector(const char *const window_title, const char **exten
   return result;
 }
 
-static char *GenerateAppleScript(const char *window_title, const char **extensions) {
-  char  *selector, *result;
+static char * GenerateAppleScript(const char * window_title, const char ** extensions) {
+  char * selector, *result;
   size_t result_len;
 
   selector = GenerateSelector(window_title, extensions);
@@ -460,9 +460,9 @@ int TXT_CanSelectFiles() {
   return 1;
 }
 
-char *TXT_SelectFile(const char *window_title, const char **extensions) {
-  char *argv[4];
-  char *result, *applescript;
+char * TXT_SelectFile(const char * window_title, const char ** extensions) {
+  char * argv[4];
+  char * result, *applescript;
 
   applescript = GenerateAppleScript(window_title, extensions);
   if (!applescript) {
@@ -488,7 +488,7 @@ char *TXT_SelectFile(const char *window_title, const char **extensions) {
 
 #define ZENITY_BINARY "/usr/bin/zenity"
 
-static unsigned int NumExtensions(const char **extensions) {
+static unsigned int NumExtensions(const char ** extensions) {
   unsigned int result = 0;
 
   if (extensions != nullptr) {
@@ -513,16 +513,16 @@ int TXT_CanSelectFiles() {
 // return a pointer to a string that is a case-insensitive
 // pattern representation (like [Ww][Aa][Dd])
 //
-static char *ExpandExtension(const char *orig) {
+static char * ExpandExtension(const char * orig) {
   size_t oldlen = strlen(orig);
   size_t newlen = oldlen * 4; // pathological case: 'w' => '[Ww]'
-  char  *newext = static_cast<char *>(malloc(static_cast<size_t>(newlen + 1)));
+  char * newext = static_cast<char *>(malloc(static_cast<size_t>(newlen + 1)));
 
   if (newext == nullptr) {
     return nullptr;
   }
 
-  char *c = newext;
+  char * c = newext;
   for (size_t i = 0; i < oldlen; ++i) {
     if (isalpha(orig[i])) {
       *c++ = '[';
@@ -537,15 +537,15 @@ static char *ExpandExtension(const char *orig) {
   return newext;
 }
 
-char *TXT_SelectFile(const char *window_title, const char **extensions) {
+char * TXT_SelectFile(const char * window_title, const char ** extensions) {
   if (!ZenityAvailable()) {
     return nullptr;
   }
 
-  char **argv = static_cast<char **>(std::calloc(5 + NumExtensions(extensions), sizeof(char *)));
-  argv[0]     = strdup(ZENITY_BINARY);
-  argv[1]     = strdup("--file-selection");
-  int argc    = 2;
+  char ** argv = static_cast<char **>(std::calloc(5 + NumExtensions(extensions), sizeof(char *)));
+  argv[0]      = strdup(ZENITY_BINARY);
+  argv[1]      = strdup("--file-selection");
+  int argc     = 2;
 
   if (window_title != nullptr) {
     size_t len = 10 + strlen(window_title);
@@ -559,7 +559,7 @@ char *TXT_SelectFile(const char *window_title, const char **extensions) {
     ++argc;
   } else if (extensions != nullptr) {
     for (int i = 0; extensions[i] != nullptr; ++i) {
-      char *newext = ExpandExtension(extensions[i]);
+      char * newext = ExpandExtension(extensions[i]);
       if (newext) {
         size_t len = 30 + strlen(extensions[i]) + strlen(newext);
         argv[argc] = static_cast<char *>(malloc(len));
@@ -575,7 +575,7 @@ char *TXT_SelectFile(const char *window_title, const char **extensions) {
 
   argv[argc] = nullptr;
 
-  char *result = ExecReadOutput(argv);
+  char * result = ExecReadOutput(argv);
 
   for (int i = 0; i < argc; ++i) {
     free(argv[i]);
@@ -588,8 +588,8 @@ char *TXT_SelectFile(const char *window_title, const char **extensions) {
 
 #endif
 
-static void TXT_FileSelectSizeCalc(void *uncast_fileselect) {
-  auto *fileselect = reinterpret_cast<txt_fileselect_t *>(uncast_fileselect);
+static void TXT_FileSelectSizeCalc(void * uncast_fileselect) {
+  auto * fileselect = reinterpret_cast<txt_fileselect_t *>(uncast_fileselect);
 
   // Calculate widget size, but override the width to always
   // be the configured size.
@@ -599,8 +599,8 @@ static void TXT_FileSelectSizeCalc(void *uncast_fileselect) {
   fileselect->widget.h = fileselect->inputbox->widget.h;
 }
 
-static void TXT_FileSelectDrawer(void *uncast_fileselect) {
-  auto *fileselect = reinterpret_cast<txt_fileselect_t *>(uncast_fileselect);
+static void TXT_FileSelectDrawer(void * uncast_fileselect) {
+  auto * fileselect = reinterpret_cast<txt_fileselect_t *>(uncast_fileselect);
 
   // Input box widget inherits all the properties of the
   // file selector.
@@ -616,14 +616,14 @@ static void TXT_FileSelectDrawer(void *uncast_fileselect) {
   TXT_DrawWidget(fileselect->inputbox);
 }
 
-static void TXT_FileSelectDestructor(void *uncast_fileselect) {
-  auto *fileselect = reinterpret_cast<txt_fileselect_t *>(uncast_fileselect);
+static void TXT_FileSelectDestructor(void * uncast_fileselect) {
+  auto * fileselect = reinterpret_cast<txt_fileselect_t *>(uncast_fileselect);
 
   TXT_DestroyWidget(fileselect->inputbox);
 }
 
-static int DoSelectFile(txt_fileselect_t *fileselect) {
-  char *path = nullptr;
+static int DoSelectFile(txt_fileselect_t * fileselect) {
+  char * path = nullptr;
 
   if (TXT_CanSelectFiles()) {
     path = TXT_SelectFile(fileselect->prompt,
@@ -637,7 +637,7 @@ static int DoSelectFile(txt_fileselect_t *fileselect) {
       path = strdup("");
     }
 
-    char **var = static_cast<char **>(fileselect->inputbox->value);
+    char ** var = static_cast<char **>(fileselect->inputbox->value);
     free(*var);
     *var = path;
     return 1;
@@ -646,8 +646,8 @@ static int DoSelectFile(txt_fileselect_t *fileselect) {
   return 0;
 }
 
-static int TXT_FileSelectKeyPress(void *uncast_fileselect, int key) {
-  auto *fileselect = reinterpret_cast<txt_fileselect_t *>(uncast_fileselect);
+static int TXT_FileSelectKeyPress(void * uncast_fileselect, int key) {
+  auto * fileselect = reinterpret_cast<txt_fileselect_t *>(uncast_fileselect);
 
   // When the enter key is pressed, pop up a file selection dialog,
   // if file selectors work. Allow holding down 'alt' to override
@@ -664,11 +664,11 @@ static int TXT_FileSelectKeyPress(void *uncast_fileselect, int key) {
   return TXT_WidgetKeyPress(fileselect->inputbox, key);
 }
 
-static void TXT_FileSelectMousePress(void *uncast_fileselect,
-                                     int   x,
-                                     int   y,
-                                     int   b) {
-  auto *fileselect = reinterpret_cast<txt_fileselect_t *>(uncast_fileselect);
+static void TXT_FileSelectMousePress(void * uncast_fileselect,
+                                     int    x,
+                                     int    y,
+                                     int    b) {
+  auto * fileselect = reinterpret_cast<txt_fileselect_t *>(uncast_fileselect);
 
   if (!fileselect->inputbox->editing
       && !TXT_GetModifierState(TXT_MOD_ALT)
@@ -681,8 +681,8 @@ static void TXT_FileSelectMousePress(void *uncast_fileselect,
   TXT_WidgetMousePress(fileselect->inputbox, x, y, b);
 }
 
-static void TXT_FileSelectFocused(void *uncast_fileselect, int focused) {
-  auto *fileselect = reinterpret_cast<txt_fileselect_t *>(uncast_fileselect);
+static void TXT_FileSelectFocused(void * uncast_fileselect, int focused) {
+  auto * fileselect = reinterpret_cast<txt_fileselect_t *>(uncast_fileselect);
 
   TXT_SetWidgetFocus(fileselect->inputbox, focused);
 }
@@ -701,14 +701,14 @@ txt_widget_class_t txt_fileselect_class = {
 // If the (inner) inputbox widget is changed, emit a change to the
 // outer (fileselect) widget.
 
-static void InputBoxChanged(void *, void *uncast_fileselect) {
-  auto *fileselect = reinterpret_cast<txt_fileselect_t *>(uncast_fileselect);
+static void InputBoxChanged(void *, void * uncast_fileselect) {
+  auto * fileselect = reinterpret_cast<txt_fileselect_t *>(uncast_fileselect);
 
   TXT_EmitSignal(&fileselect->widget, "changed");
 }
 
-txt_fileselect_t *TXT_NewFileSelector(char **variable, int size, const char *prompt, const char **extensions) {
-  auto *fileselect = create_struct<txt_fileselect_t>();
+txt_fileselect_t * TXT_NewFileSelector(char ** variable, int size, const char * prompt, const char ** extensions) {
+  auto * fileselect = create_struct<txt_fileselect_t>();
 
   TXT_InitWidget(fileselect, &txt_fileselect_class);
   fileselect->inputbox                = TXT_NewInputBox(variable, 1024);

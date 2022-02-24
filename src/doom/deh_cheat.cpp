@@ -26,8 +26,8 @@
 
 typedef struct
 {
-  const char *name;
-  cheatseq_t *seq;
+  const char * name;
+  cheatseq_t * seq;
 } deh_cheat_t;
 
 static deh_cheat_t allcheats[] = {
@@ -50,8 +50,8 @@ static deh_cheat_t allcheats[] = {
   { "Map cheat",        &cheat_amap                                 },
 };
 
-static deh_cheat_t *FindCheatByName(char *name) {
-  for (auto &allcheat : allcheats) {
+static deh_cheat_t * FindCheatByName(char * name) {
+  for (auto & allcheat : allcheats) {
     if (!strcasecmp(allcheat.name, name))
       return &allcheat;
   }
@@ -59,13 +59,13 @@ static deh_cheat_t *FindCheatByName(char *name) {
   return nullptr;
 }
 
-static void *DEH_CheatStart(deh_context_t *, char *) {
+static void * DEH_CheatStart(deh_context_t *, char *) {
   return nullptr;
 }
 
-static void DEH_CheatParseLine(deh_context_t *context, char *line, void *) {
-  char *variable_name = nullptr;
-  char *value         = nullptr;
+static void DEH_CheatParseLine(deh_context_t * context, char * line, void *) {
+  char * variable_name = nullptr;
+  char * value         = nullptr;
   if (!DEH_ParseAssignment(line, &variable_name, &value)) {
     // Failed to parse
 
@@ -73,9 +73,9 @@ static void DEH_CheatParseLine(deh_context_t *context, char *line, void *) {
     return;
   }
 
-  unsigned char *unsvalue = reinterpret_cast<unsigned char *>(value);
+  unsigned char * unsvalue = reinterpret_cast<unsigned char *>(value);
 
-  deh_cheat_t *cheat = FindCheatByName(variable_name);
+  deh_cheat_t * cheat = FindCheatByName(variable_name);
 
   if (cheat == nullptr) {
     DEH_Warning(context, "Unknown cheat '%s'", variable_name);

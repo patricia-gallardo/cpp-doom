@@ -31,7 +31,7 @@ void CompatibilitySettings(void *, void *) {
   if (gamemission == doom) {
     TXT_MessageBox(nullptr, "Please refer to the in-game Crispness menu.");
   } else {
-    txt_window_t *window = TXT_NewWindow("Compatibility");
+    txt_window_t * window = TXT_NewWindow("Compatibility");
 
     TXT_SetWindowHelpURL(window, WINDOW_HELP_URL);
 

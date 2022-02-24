@@ -61,11 +61,11 @@
 
 //#define DEFAULT_SPECHIT_MAGIC 0x84f968e8
 
-fixed_t tmbbox[4];
-mobj_t *tmthing;
-int     tmflags;
-fixed_t tmx;
-fixed_t tmy;
+fixed_t  tmbbox[4];
+mobj_t * tmthing;
+int      tmflags;
+fixed_t  tmx;
+fixed_t  tmy;
 
 fixed_t tmdropoffz;
 
@@ -76,7 +76,7 @@ fixed_t tmdropoffz;
 //
 // PIT_StompThing
 //
-bool PIT_StompThing(mobj_t *thing) {
+bool PIT_StompThing(mobj_t * thing) {
   fixed_t blockdist;
 
   if (!(thing->flags & MF_SHOOTABLE))
@@ -106,9 +106,9 @@ bool PIT_StompThing(mobj_t *thing) {
 //
 // P_TeleportMove
 //
-bool P_TeleportMove(mobj_t *thing,
-                    fixed_t x,
-                    fixed_t y) {
+bool P_TeleportMove(mobj_t * thing,
+                    fixed_t  x,
+                    fixed_t  y) {
   int xl;
   int xh;
   int yl;
@@ -116,7 +116,7 @@ bool P_TeleportMove(mobj_t *thing,
   int bx;
   int by;
 
-  subsector_t *newsubsec;
+  subsector_t * newsubsec;
 
   // kill anything occupying the position
   tmthing = thing;
@@ -176,13 +176,13 @@ bool P_TeleportMove(mobj_t *thing,
 // MOVEMENT ITERATOR FUNCTIONS
 //
 
-static void SpechitOverrun(line_t *ld);
+static void SpechitOverrun(line_t * ld);
 
 //
 // PIT_CheckLine
 // Adjusts tmfloorz and tmceilingz as lines are contacted
 //
-bool PIT_CheckLine(line_t *ld) {
+bool PIT_CheckLine(line_t * ld) {
   if (tmbbox[BOXRIGHT] <= ld->bbox[BOXLEFT]
       || tmbbox[BOXLEFT] >= ld->bbox[BOXRIGHT]
       || tmbbox[BOXTOP] <= ld->bbox[BOXBOTTOM]
@@ -249,7 +249,7 @@ bool PIT_CheckLine(line_t *ld) {
 //
 // PIT_CheckThing
 //
-bool PIT_CheckThing(mobj_t *thing) {
+bool PIT_CheckThing(mobj_t * thing) {
   fixed_t blockdist;
   bool    solid;
   bool    unblocking = false;
@@ -429,16 +429,16 @@ bool PIT_CheckThing(mobj_t *thing) {
 //  speciallines[]
 //  numspeciallines
 //
-bool P_CheckPosition(mobj_t *thing,
-                     fixed_t x,
-                     fixed_t y) {
-  int          xl;
-  int          xh;
-  int          yl;
-  int          yh;
-  int          bx;
-  int          by;
-  subsector_t *newsubsec;
+bool P_CheckPosition(mobj_t * thing,
+                     fixed_t  x,
+                     fixed_t  y) {
+  int           xl;
+  int           xh;
+  int           yl;
+  int           yh;
+  int           bx;
+  int           by;
+  subsector_t * newsubsec;
 
   tmthing = thing;
   tmflags = static_cast<int>(thing->flags);
@@ -501,14 +501,14 @@ bool P_CheckPosition(mobj_t *thing,
 // Attempt to move to a new position,
 // crossing special lines unless MF_TELEPORT is set.
 //
-bool P_TryMove(mobj_t *thing,
-               fixed_t x,
-               fixed_t y) {
-  fixed_t oldx;
-  fixed_t oldy;
-  int     side;
-  int     oldside;
-  line_t *ld;
+bool P_TryMove(mobj_t * thing,
+               fixed_t  x,
+               fixed_t  y) {
+  fixed_t  oldx;
+  fixed_t  oldy;
+  int      side;
+  int      oldside;
+  line_t * ld;
 
   g_p_local_globals->floatok = false;
   if (!P_CheckPosition(thing, x, y))
@@ -573,7 +573,7 @@ bool P_TryMove(mobj_t *thing,
 // the z will be set to the lowest value
 // and false will be returned.
 //
-bool P_ThingHeightClip(mobj_t *thing) {
+bool P_ThingHeightClip(mobj_t * thing) {
   bool onfloor;
 
   onfloor = (thing->z == thing->floorz);
@@ -606,10 +606,10 @@ bool P_ThingHeightClip(mobj_t *thing) {
 fixed_t                  bestslidefrac;
 [[maybe_unused]] fixed_t secondslidefrac;
 
-line_t                  *bestslideline;
-[[maybe_unused]] line_t *secondslideline;
+line_t *                  bestslideline;
+[[maybe_unused]] line_t * secondslideline;
 
-mobj_t *slidemo;
+mobj_t * slidemo;
 
 fixed_t tmxmove;
 fixed_t tmymove;
@@ -619,7 +619,7 @@ fixed_t tmymove;
 // Adjusts the xmove / ymove
 // so that the next move will slide along the wall.
 //
-void P_HitSlideLine(line_t *ld) {
+void P_HitSlideLine(line_t * ld) {
   int side;
 
   angle_t lineangle;
@@ -666,8 +666,8 @@ void P_HitSlideLine(line_t *ld) {
 //
 // PTR_SlideTraverse
 //
-bool PTR_SlideTraverse(intercept_t *in) {
-  line_t *li;
+bool PTR_SlideTraverse(intercept_t * in) {
+  line_t * li;
 
   if (!in->isaline)
     I_Error("PTR_SlideTraverse: not a line?");
@@ -719,7 +719,7 @@ isblocking:
 //
 // This is a kludgy mess.
 //
-void P_SlideMove(mobj_t *mo) {
+void P_SlideMove(mobj_t * mo) {
   fixed_t leadx;
   fixed_t leady;
   fixed_t trailx;
@@ -803,7 +803,7 @@ retry:
 //
 // P_LineAttack
 //
-mobj_t *shootthing;
+mobj_t * shootthing;
 
 // Height if not aiming up or down
 // ???: use slope for monsters?
@@ -818,19 +818,19 @@ fixed_t aimslope;
 extern fixed_t topslope;
 extern fixed_t bottomslope;
 
-extern degenmobj_t *laserspot;
+extern degenmobj_t * laserspot;
 
 //
 // PTR_AimTraverse
 // Sets linetaget and aimslope when a target is aimed at.
 //
-bool PTR_AimTraverse(intercept_t *in) {
-  line_t *li;
-  mobj_t *th;
-  fixed_t slope;
-  fixed_t thingtopslope;
-  fixed_t thingbottomslope;
-  fixed_t dist;
+bool PTR_AimTraverse(intercept_t * in) {
+  line_t * li;
+  mobj_t * th;
+  fixed_t  slope;
+  fixed_t  thingtopslope;
+  fixed_t  thingbottomslope;
+  fixed_t  dist;
 
   if (in->isaline) {
     li = in->d.line;
@@ -904,15 +904,15 @@ bool PTR_AimTraverse(intercept_t *in) {
 //
 // PTR_ShootTraverse
 //
-bool PTR_ShootTraverse(intercept_t *in) {
+bool PTR_ShootTraverse(intercept_t * in) {
   fixed_t x;
   fixed_t y;
   fixed_t z;
   fixed_t frac;
 
-  line_t *li;
+  line_t * li;
 
-  mobj_t *th;
+  mobj_t * th;
 
   fixed_t slope;
   fixed_t dist;
@@ -995,7 +995,7 @@ bool PTR_ShootTraverse(intercept_t *in) {
       int       side;
 
       if ((side = li->sidenum[lineside]) != NO_INDEX) {
-        const sector_t *const sector = g_r_state_globals->sides[side].sector;
+        const sector_t * const sector = g_r_state_globals->sides[side].sector;
 
         if (z < sector->floorheight || (z > sector->ceilingheight && sector->ceilingpic != g_doomstat_globals->skyflatnum)) {
           z    = BETWEEN(sector->floorheight, sector->ceilingheight, z);
@@ -1085,9 +1085,9 @@ bool PTR_ShootTraverse(intercept_t *in) {
 // P_AimLineAttack
 //
 fixed_t
-    P_AimLineAttack(mobj_t *t1,
-                    angle_t angle,
-                    fixed_t distance) {
+    P_AimLineAttack(mobj_t * t1,
+                    angle_t  angle,
+                    fixed_t  distance) {
   fixed_t x2;
   fixed_t y2;
 
@@ -1122,11 +1122,11 @@ fixed_t
 // [crispy] if damage == INT_MIN, it is a trace
 // to update the laser spot position
 //
-void P_LineAttack(mobj_t *t1,
-                  angle_t angle,
-                  fixed_t distance,
-                  fixed_t slope,
-                  int     damage) {
+void P_LineAttack(mobj_t * t1,
+                  angle_t  angle,
+                  fixed_t  distance,
+                  fixed_t  slope,
+                  int      damage) {
   // [crispy] smooth laser spot movement with uncapped framerate
   const fixed_t t1x = (damage == INT_MIN) ? g_r_state_globals->viewx : t1->x;
   const fixed_t t1y = (damage == INT_MIN) ? g_r_state_globals->viewy : t1->y;
@@ -1148,10 +1148,10 @@ void P_LineAttack(mobj_t *t1,
 // [crispy] update laser spot position
 // call P_AimLineAttack() to check if a target is aimed at (linetarget)
 // then call P_LineAttack() with either aimslope or the passed slope
-void P_LineLaser(mobj_t *t1,
-                 angle_t angle,
-                 fixed_t distance,
-                 fixed_t slope) {
+void P_LineLaser(mobj_t * t1,
+                 angle_t  angle,
+                 fixed_t  distance,
+                 fixed_t  slope) {
   fixed_t lslope;
 
   laserspot->thinker.function = null_hook();
@@ -1199,9 +1199,9 @@ void P_LineLaser(mobj_t *t1,
 //
 // USE LINES
 //
-mobj_t *usething;
+mobj_t * usething;
 
-bool PTR_UseTraverse(intercept_t *in) {
+bool PTR_UseTraverse(intercept_t * in) {
   int side;
 
   if (!in->d.line->special) {
@@ -1232,7 +1232,7 @@ bool PTR_UseTraverse(intercept_t *in) {
 // P_UseLines
 // Looks for special lines in front of the player to activate.
 //
-void P_UseLines(player_t *player) {
+void P_UseLines(player_t * player) {
   int     angle;
   fixed_t x1;
   fixed_t y1;
@@ -1254,16 +1254,16 @@ void P_UseLines(player_t *player) {
 //
 // RADIUS ATTACK
 //
-mobj_t *bombsource;
-mobj_t *bombspot;
-int     bombdamage;
+mobj_t * bombsource;
+mobj_t * bombspot;
+int      bombdamage;
 
 //
 // PIT_RadiusAttack
 // "bombsource" is the creature
 // that caused the explosion at "bombspot".
 //
-bool PIT_RadiusAttack(mobj_t *thing) {
+bool PIT_RadiusAttack(mobj_t * thing) {
   fixed_t dx;
   fixed_t dy;
   fixed_t dist;
@@ -1301,9 +1301,9 @@ bool PIT_RadiusAttack(mobj_t *thing) {
 // P_RadiusAttack
 // Source is the creature that caused the explosion at spot.
 //
-void P_RadiusAttack(mobj_t *spot,
-                    mobj_t *source,
-                    int     damage) {
+void P_RadiusAttack(mobj_t * spot,
+                    mobj_t * source,
+                    int      damage) {
   int x;
   int y;
 
@@ -1347,8 +1347,8 @@ bool nofit;
 //
 // PIT_ChangeSector
 //
-bool PIT_ChangeSector(mobj_t *thing) {
-  mobj_t *mo;
+bool PIT_ChangeSector(mobj_t * thing) {
+  mobj_t * mo;
 
   if (P_ThingHeightClip(thing)) {
     // keep checking
@@ -1417,8 +1417,8 @@ bool PIT_ChangeSector(mobj_t *thing) {
 //
 // P_ChangeSector
 //
-bool P_ChangeSector(sector_t *sector,
-                    bool      crunch) {
+bool P_ChangeSector(sector_t * sector,
+                    bool       crunch) {
   int x;
   int y;
 
@@ -1437,7 +1437,7 @@ bool P_ChangeSector(sector_t *sector,
 // of the spechit array.  This is by Andrey Budko (e6y) and comes from his
 // PrBoom plus port.  A big thanks to Andrey for this.
 
-static void SpechitOverrun(line_t *ld) {
+static void SpechitOverrun(line_t * ld) {
   static unsigned int baseaddr = 0;
 
   if (baseaddr == 0) {

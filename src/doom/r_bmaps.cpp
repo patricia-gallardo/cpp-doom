@@ -3671,9 +3671,9 @@ enum
 
 typedef struct
 {
-  const char *const texture;
-  const int         game;
-  uint8_t          *colormask;
+  const char * const texture;
+  const int          game;
+  uint8_t *          colormask;
 } fullbright_t;
 
 static const fullbright_t fullbright_doom[] = {
@@ -3871,9 +3871,9 @@ static const fullbright_t fullbright_hacx[] = {
   { "HW512",    DOOM2ONLY, notgrayorbrown},
 };
 
-static uint8_t *R_BrightmapForTexName_Doom(const char *texname) {
-  for (const auto &i : fullbright_doom) {
-    const fullbright_t *fullbright = &i;
+static uint8_t * R_BrightmapForTexName_Doom(const char * texname) {
+  for (const auto & i : fullbright_doom) {
+    const fullbright_t * fullbright = &i;
 
     if ((g_doomstat_globals->gamemission == doom && fullbright->game == DOOM2ONLY) || (g_doomstat_globals->gamemission != doom && fullbright->game == DOOM1ONLY)) {
       continue;
@@ -3889,9 +3889,9 @@ static uint8_t *R_BrightmapForTexName_Doom(const char *texname) {
 
 static bool chex2 = false;
 
-static uint8_t *R_BrightmapForTexName_Chex(const char *texname) {
-  for (const auto &i : fullbright_chex) {
-    const fullbright_t *fullbright = &i;
+static uint8_t * R_BrightmapForTexName_Chex(const char * texname) {
+  for (const auto & i : fullbright_chex) {
+    const fullbright_t * fullbright = &i;
 
     if ((chex2 && fullbright->game == DOOM1ONLY) || (!chex2 && fullbright->game == DOOM2ONLY)) {
       continue;
@@ -3905,9 +3905,9 @@ static uint8_t *R_BrightmapForTexName_Chex(const char *texname) {
   return nobrightmap;
 }
 
-static uint8_t *R_BrightmapForTexName_Hacx(const char *texname) {
-  for (const auto &i : fullbright_hacx) {
-    const fullbright_t *fullbright = &i;
+static uint8_t * R_BrightmapForTexName_Hacx(const char * texname) {
+  for (const auto & i : fullbright_hacx) {
+    const fullbright_t * fullbright = &i;
 
     if (!strncasecmp(fullbright->texture, texname, 8)) {
       return fullbright->colormask;
@@ -3920,7 +3920,7 @@ static uint8_t *R_BrightmapForTexName_Hacx(const char *texname) {
 // [crispy] brightmaps for sprites
 
 // [crispy] adapted from russian-doom/src/doom/r_things.c:617-639
-static uint8_t *R_BrightmapForSprite_Doom(const int type) {
+static uint8_t * R_BrightmapForSprite_Doom(const int type) {
   if (crispy->brightmaps & BRIGHTMAPS_SPRITES) {
     switch (type) {
     // Armor Bonus
@@ -3953,7 +3953,7 @@ static uint8_t *R_BrightmapForSprite_Doom(const int type) {
   return nobrightmap;
 }
 
-static uint8_t *R_BrightmapForSprite_Chex(const int) {
+static uint8_t * R_BrightmapForSprite_Chex(const int) {
   // [crispy] TODO
   /*
       if (crispy->brightmaps & BRIGHTMAPS_SPRITES)
@@ -3982,7 +3982,7 @@ static uint8_t *R_BrightmapForSprite_Chex(const int) {
   return nobrightmap;
 }
 
-static uint8_t *R_BrightmapForSprite_Hacx(const int type) {
+static uint8_t * R_BrightmapForSprite_Hacx(const int type) {
   if (crispy->brightmaps & BRIGHTMAPS_SPRITES) {
     switch (type) {
     // Chainsaw
@@ -4027,7 +4027,7 @@ static uint8_t *R_BrightmapForSprite_Hacx(const int type) {
 
 static int bmapflatnum[12];
 
-static uint8_t *R_BrightmapForFlatNum_Doom(const int num) {
+static uint8_t * R_BrightmapForFlatNum_Doom(const int num) {
   if (crispy->brightmaps & BRIGHTMAPS_TEXTURES) {
     if (num == bmapflatnum[0] || num == bmapflatnum[1] || num == bmapflatnum[2]) {
       return notgrayorbrown;
@@ -4037,7 +4037,7 @@ static uint8_t *R_BrightmapForFlatNum_Doom(const int num) {
   return nobrightmap;
 }
 
-static uint8_t *R_BrightmapForFlatNum_Hacx(const int num) {
+static uint8_t * R_BrightmapForFlatNum_Hacx(const int num) {
   if (crispy->brightmaps & BRIGHTMAPS_TEXTURES) {
     if (num == bmapflatnum[0] || num == bmapflatnum[1] || num == bmapflatnum[2] || num == bmapflatnum[3] || num == bmapflatnum[4] || num == bmapflatnum[5] || num == bmapflatnum[9] || num == bmapflatnum[10] || num == bmapflatnum[11]) {
       return notgrayorbrown;
@@ -4051,13 +4051,13 @@ static uint8_t *R_BrightmapForFlatNum_Hacx(const int num) {
   return nobrightmap;
 }
 
-static uint8_t *R_BrightmapForFlatNum_None(const int) {
+static uint8_t * R_BrightmapForFlatNum_None(const int) {
   return nobrightmap;
 }
 
 // [crispy] brightmaps for states
 
-static uint8_t *R_BrightmapForState_Doom(const int state) {
+static uint8_t * R_BrightmapForState_Doom(const int state) {
   if (crispy->brightmaps & BRIGHTMAPS_SPRITES) {
     switch (state) {
     case S_BFG1:
@@ -4073,7 +4073,7 @@ static uint8_t *R_BrightmapForState_Doom(const int state) {
   return nobrightmap;
 }
 
-static uint8_t *R_BrightmapForState_Hacx(const int state) {
+static uint8_t * R_BrightmapForState_Hacx(const int state) {
   if (crispy->brightmaps & BRIGHTMAPS_SPRITES) {
     switch (state) {
     case S_SAW2:
@@ -4098,16 +4098,16 @@ static uint8_t *R_BrightmapForState_Hacx(const int state) {
   return nobrightmap;
 }
 
-static uint8_t *R_BrightmapForState_None(const int) {
+static uint8_t * R_BrightmapForState_None(const int) {
   return nobrightmap;
 }
 
 // [crispy] initialize brightmaps
 
-uint8_t *(*R_BrightmapForTexName)(const char *texname);
-uint8_t *(*R_BrightmapForSprite)(const int type);
-uint8_t *(*R_BrightmapForFlatNum)(const int num);
-uint8_t *(*R_BrightmapForState)(const int state);
+uint8_t * (*R_BrightmapForTexName)(const char * texname);
+uint8_t * (*R_BrightmapForSprite)(const int type);
+uint8_t * (*R_BrightmapForFlatNum)(const int num);
+uint8_t * (*R_BrightmapForState)(const int state);
 
 void R_InitBrightmaps() {
   if (g_doomstat_globals->gameversion == exe_hacx) {

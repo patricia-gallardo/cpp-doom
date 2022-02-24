@@ -21,9 +21,9 @@
 
 #include "w_wad.hpp"
 
-extern lumpinfo_t *maplumpinfo;
+extern lumpinfo_t * maplumpinfo;
 // [crispy] pointer to the map lump about to load
-extern lumpinfo_t *savemaplumpinfo;
+extern lumpinfo_t * savemaplumpinfo;
 
 // NOT called by W_Ticker. Fixme.
 void P_SetupLevel(int     episode,

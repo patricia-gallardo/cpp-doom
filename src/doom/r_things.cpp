@@ -57,7 +57,7 @@ typedef struct
 } maskdraw_t;
 
 static degenmobj_t laserspot_m = { {} };
-degenmobj_t       *laserspot   = &laserspot_m;
+degenmobj_t *      laserspot   = &laserspot_m;
 
 // [crispy] extendable, but the last char element must be zero,
 // keep in sync with multiitem_t multiitem_crosshairtype[] in m_menu.c
@@ -67,7 +67,7 @@ static laserpatch_t laserpatch_m[] = {
   { '.', "cross3", 0, 0, 0},
   { 0,   "",       0, 0, 0},
 };
-laserpatch_t *laserpatch = laserpatch_m;
+laserpatch_t * laserpatch = laserpatch_m;
 
 //
 // Sprite rotation 0 is facing the viewer,
@@ -79,7 +79,7 @@ laserpatch_t *laserpatch = laserpatch_m;
 fixed_t pspritescale;
 fixed_t pspriteiscale;
 
-lighttable_t **spritelights;
+lighttable_t ** spritelights;
 
 // constant arrays
 //  used for psprite clipping and initializing clipping
@@ -92,7 +92,7 @@ int screenheightarray[MAXWIDTH]; // [crispy] 32-bit integer math
 
 spriteframe_t sprtemp[29];
 int           maxframe;
-const char   *spritename;
+const char *  spritename;
 
 //
 // R_InstallSpriteLump
@@ -189,12 +189,12 @@ void R_InstallSpriteLump(int      lump,
 //  letter/number appended.
 // The rotation character can be 0 to signify no rotations.
 //
-void R_InitSpriteDefs(const char **namelist) {
+void R_InitSpriteDefs(const char ** namelist) {
   //    int          frame;
   //    int          rotation;
 
   // count the number of sprite names
-  const char **check = namelist;
+  const char ** check = namelist;
   while (*check != nullptr)
     check++;
 
@@ -295,16 +295,16 @@ void R_InitSpriteDefs(const char **namelist) {
 //
 // GAME FUNCTIONS
 //
-vissprite_t *vissprites = nullptr;
-vissprite_t *vissprite_p;
-int          newvissprite;
-static int   numvissprites;
+vissprite_t * vissprites = nullptr;
+vissprite_t * vissprite_p;
+int           newvissprite;
+static int    numvissprites;
 
 //
 // R_InitSprites
 // Called at program start.
 //
-void R_InitSprites(const char **namelist) {
+void R_InitSprites(const char ** namelist) {
   int i;
 
   for (i = 0; i < SCREENWIDTH; i++) {
@@ -327,7 +327,7 @@ void R_ClearSprites() {
 //
 vissprite_t overflowsprite;
 
-vissprite_t *R_NewVisSprite() {
+vissprite_t * R_NewVisSprite() {
   // [crispy] remove MAXVISSPRITE Vanilla limit
   if (vissprite_p == &vissprites[numvissprites]) {
     static int max;
@@ -362,13 +362,13 @@ vissprite_t *R_NewVisSprite() {
 // Masked means: partly transparent, i.e. stored
 //  in posts/runs of opaque pixels.
 //
-int *mfloorclip;   // [crispy] 32-bit integer math
-int *mceilingclip; // [crispy] 32-bit integer math
+int * mfloorclip;   // [crispy] 32-bit integer math
+int * mceilingclip; // [crispy] 32-bit integer math
 
 fixed_t spryscale;
 int64_t sprtopscreen; // [crispy] WiggleFix
 
-void R_DrawMaskedColumn(column_t *column) {
+void R_DrawMaskedColumn(column_t * column) {
   int64_t topscreen;    // [crispy] WiggleFix
   int64_t bottomscreen; // [crispy] WiggleFix
   fixed_t basetexturemid;
@@ -406,8 +406,8 @@ void R_DrawMaskedColumn(column_t *column) {
       //  or (SHADOW) R_DrawFuzzColumn.
       colfunc();
     }
-    uint8_t *col_ptr = reinterpret_cast<uint8_t *>(column) + column->length + 4;
-    column           = reinterpret_cast<column_t *>(col_ptr);
+    uint8_t * col_ptr = reinterpret_cast<uint8_t *>(column) + column->length + 4;
+    column            = reinterpret_cast<column_t *>(col_ptr);
   }
 
   g_r_draw_globals->dc_texturemid = basetexturemid;
@@ -417,11 +417,11 @@ void R_DrawMaskedColumn(column_t *column) {
 // R_DrawVisSprite
 //  mfloorclip and mceilingclip should also be set.
 //
-void R_DrawVisSprite(vissprite_t *vis, int, int) {
-  column_t *column;
-  int       texturecolumn;
-  fixed_t   frac;
-  patch_t  *patch;
+void R_DrawVisSprite(vissprite_t * vis, int, int) {
+  column_t * column;
+  int        texturecolumn;
+  fixed_t    frac;
+  patch_t *  patch;
 
   patch = cache_lump_num<patch_t *>(vis->patch + g_r_state_globals->firstspritelump, PU_CACHE);
 
@@ -473,8 +473,8 @@ void R_DrawVisSprite(vissprite_t *vis, int, int) {
       continue;
     }
 #endif
-    uint8_t *col_ptr = reinterpret_cast<uint8_t *>(patch) + LONG(patch->columnofs[texturecolumn]);
-    column           = reinterpret_cast<column_t *>(col_ptr);
+    uint8_t * col_ptr = reinterpret_cast<uint8_t *>(patch) + LONG(patch->columnofs[texturecolumn]);
+    column            = reinterpret_cast<column_t *>(col_ptr);
     R_DrawMaskedColumn(column);
   }
 
@@ -489,7 +489,7 @@ void R_DrawVisSprite(vissprite_t *vis, int, int) {
 // Generates a vissprite for a thing
 //  if it might be visible.
 //
-void R_ProjectSprite(mobj_t *thing) {
+void R_ProjectSprite(mobj_t * thing) {
   fixed_t tr_x;
   fixed_t tr_y;
 
@@ -505,16 +505,16 @@ void R_ProjectSprite(mobj_t *thing) {
   int x1;
   int x2;
 
-  spritedef_t   *sprdef;
-  spriteframe_t *sprframe;
-  int            lump;
+  spritedef_t *   sprdef;
+  spriteframe_t * sprframe;
+  int             lump;
 
   unsigned rot;
   bool     flip;
 
   int index;
 
-  vissprite_t *vis;
+  vissprite_t * vis;
 
   angle_t ang;
   fixed_t iscale;
@@ -717,9 +717,9 @@ void R_ProjectSprite(mobj_t *thing) {
 #endif
 }
 
-extern void P_LineLaser(mobj_t *t1, angle_t angle, fixed_t distance, fixed_t slope);
+extern void P_LineLaser(mobj_t * t1, angle_t angle, fixed_t distance, fixed_t slope);
 
-uint8_t *R_LaserspotColor() {
+uint8_t * R_LaserspotColor() {
   if (crispy->crosshairtarget) {
     // [crispy] the projected crosshair code calls P_LineLaser() itself
     if (crispy->crosshair == CROSSHAIR_STATIC) {
@@ -752,12 +752,12 @@ uint8_t *R_LaserspotColor() {
 
 // [crispy] generate a vissprite for the laser spot
 static void R_DrawLSprite() {
-  fixed_t      xscale;
-  fixed_t      tx, tz;
-  vissprite_t *vis;
+  fixed_t       xscale;
+  fixed_t       tx, tz;
+  vissprite_t * vis;
 
-  static int      lump;
-  static patch_t *patch;
+  static int       lump;
+  static patch_t * patch;
 
   if (weaponinfo[g_r_state_globals->viewplayer->readyweapon].ammo == am_noammo || g_r_state_globals->viewplayer->playerstate != PST_LIVE)
     return;
@@ -815,9 +815,9 @@ static void R_DrawLSprite() {
 // R_AddSprites
 // During BSP traversal, this adds sprites by sector.
 //
-void R_AddSprites(sector_t *sec) {
-  mobj_t *thing;
-  int     lightnum;
+void R_AddSprites(sector_t * sec) {
+  mobj_t * thing;
+  int      lightnum;
 
   // BSP is traversed by subsector.
   // A sector might have been split into several
@@ -846,17 +846,17 @@ void R_AddSprites(sector_t *sec) {
 //
 // R_DrawPSprite
 //
-void R_DrawPSprite(pspdef_t *psp, psprnum_t psprnum) // [crispy] differentiate gun from flash sprites
+void R_DrawPSprite(pspdef_t * psp, psprnum_t psprnum) // [crispy] differentiate gun from flash sprites
 {
-  fixed_t        tx;
-  int            x1;
-  int            x2;
-  spritedef_t   *sprdef;
-  spriteframe_t *sprframe;
-  int            lump;
-  bool           flip;
-  vissprite_t   *vis;
-  vissprite_t    avis;
+  fixed_t         tx;
+  int             x1;
+  int             x2;
+  spritedef_t *   sprdef;
+  spriteframe_t * sprframe;
+  int             lump;
+  bool            flip;
+  vissprite_t *   vis;
+  vissprite_t     avis;
 
   // decide which patch to use
 #ifdef RANGECHECK
@@ -956,9 +956,9 @@ void R_DrawPSprite(pspdef_t *psp, psprnum_t psprnum) // [crispy] differentiate g
 // R_DrawPlayerSprites
 //
 void R_DrawPlayerSprites() {
-  int       i;
-  int       lightnum;
-  pspdef_t *psp;
+  int        i;
+  int        lightnum;
+  pspdef_t * psp;
 
   // get light level
   lightnum =
@@ -993,9 +993,9 @@ void R_DrawPlayerSprites() {
 //
 #ifdef HAVE_QSORT
 // [crispy] use stdlib's qsort() function for sorting the vissprites[] array
-static inline int cmp_vissprites(const void *a, const void *b) {
-  const auto *vsa = static_cast<const vissprite_t *>(a);
-  const auto *vsb = static_cast<const vissprite_t *>(b);
+static inline int cmp_vissprites(const void * a, const void * b) {
+  const auto * vsa = static_cast<const vissprite_t *>(a);
+  const auto * vsb = static_cast<const vissprite_t *>(b);
 
   const int ret = vsa->scale - vsb->scale;
 
@@ -1009,7 +1009,7 @@ void R_SortVisSprites() {
     return;
 
   // [crispy] maintain a stable sort for deliberately overlaid sprites
-  for (vissprite_t *ds = vissprites; ds < vissprite_p; ds++) {
+  for (vissprite_t * ds = vissprites; ds < vissprite_p; ds++) {
     ds->next = ds + 1;
   }
 
@@ -1019,12 +1019,12 @@ void R_SortVisSprites() {
 vissprite_t vsprsortedhead;
 
 void R_SortVisSprites() {
-  int          i;
-  int          count;
-  vissprite_t *ds;
-  vissprite_t *best;
-  vissprite_t  unsorted;
-  fixed_t      bestscale;
+  int           i;
+  int           count;
+  vissprite_t * ds;
+  vissprite_t * best;
+  vissprite_t   unsorted;
+  fixed_t       bestscale;
 
   count = vissprite_p - vissprites;
 
@@ -1068,16 +1068,16 @@ void R_SortVisSprites() {
 //
 // R_DrawSprite
 //
-void R_DrawSprite(vissprite_t *spr) {
-  drawseg_t *ds;
-  int        clipbot[MAXWIDTH]; // [crispy] 32-bit integer math
-  int        cliptop[MAXWIDTH]; // [crispy] 32-bit integer math
-  int        x;
-  int        r1;
-  int        r2;
-  fixed_t    scale;
-  fixed_t    lowscale;
-  int        silhouette;
+void R_DrawSprite(vissprite_t * spr) {
+  drawseg_t * ds;
+  int         clipbot[MAXWIDTH]; // [crispy] 32-bit integer math
+  int         cliptop[MAXWIDTH]; // [crispy] 32-bit integer math
+  int         x;
+  int         r1;
+  int         r2;
+  fixed_t     scale;
+  fixed_t     lowscale;
+  int         silhouette;
 
   for (x = spr->x1; x <= spr->x2; x++)
     clipbot[x] = cliptop[x] = -2;
@@ -1166,8 +1166,8 @@ void R_DrawSprite(vissprite_t *spr) {
 // R_DrawMasked
 //
 void R_DrawMasked() {
-  vissprite_t *spr;
-  drawseg_t   *ds;
+  vissprite_t * spr;
+  drawseg_t *   ds;
 
   R_SortVisSprites();
 

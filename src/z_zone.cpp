@@ -41,12 +41,12 @@
 #define ZONEID    0x1d4a11
 
 typedef struct memblock_s {
-  int                size; // including the header and possibly tiny fragments
-  void             **user;
-  int                tag; // PU_FREE if this is free
-  int                id;  // should be ZONEID
-  struct memblock_s *next;
-  struct memblock_s *prev;
+  int                 size; // including the header and possibly tiny fragments
+  void **             user;
+  int                 tag; // PU_FREE if this is free
+  int                 id;  // should be ZONEID
+  struct memblock_s * next;
+  struct memblock_s * prev;
 } memblock_t;
 
 typedef struct
@@ -57,19 +57,19 @@ typedef struct
   // start / end cap for linked list
   memblock_t blocklist;
 
-  memblock_t *rover;
+  memblock_t * rover;
 
 } memzone_t;
 
-static memzone_t *mainzone;
-static bool       zero_on_free;
-static bool       scan_on_free;
+static memzone_t * mainzone;
+static bool        zero_on_free;
+static bool        scan_on_free;
 
 //
 // Z_ClearZone
 //
-[[maybe_unused]] void Z_ClearZone(memzone_t *zone) {
-  memblock_t *block = nullptr;
+[[maybe_unused]] void Z_ClearZone(memzone_t * zone) {
+  memblock_t * block = nullptr;
 
   // set the entire zone to one free block
   zone->blocklist.next =
@@ -92,8 +92,8 @@ static bool       scan_on_free;
 // Z_Init
 //
 void Z_Init() {
-  memblock_t *block = nullptr;
-  int         size  = 0;
+  memblock_t * block = nullptr;
+  int          size  = 0;
 
   mainzone       = reinterpret_cast<memzone_t *>(I_ZoneBase(&size));
   mainzone->size = size;
@@ -129,8 +129,8 @@ void Z_Init() {
 
 // Scan the zone heap for pointers within the specified range, and warn about
 // any remaining pointers.
-static void ScanForBlock(void *start, void *end) {
-  memblock_t *block = mainzone->blocklist.next;
+static void ScanForBlock(void * start, void * end) {
+  memblock_t * block = mainzone->blocklist.next;
 
   while (block->next != &mainzone->blocklist) {
     int tag = block->tag;
@@ -138,8 +138,8 @@ static void ScanForBlock(void *start, void *end) {
     if (tag == PU_STATIC || tag == PU_LEVEL || tag == PU_LEVSPEC) {
       // Scan for pointers on the assumption that pointers are aligned
       // on word boundaries (word size depending on pointer size):
-      void **mem = reinterpret_cast<void **>(reinterpret_cast<uint8_t *>(block) + sizeof(memblock_t));
-      int    len = static_cast<int>((static_cast<unsigned long>(block->size) - sizeof(memblock_t)) / sizeof(void *));
+      void ** mem = reinterpret_cast<void **>(reinterpret_cast<uint8_t *>(block) + sizeof(memblock_t));
+      int     len = static_cast<int>((static_cast<unsigned long>(block->size) - sizeof(memblock_t)) / sizeof(void *));
 
       for (int i = 0; i < len; ++i) {
         if (start <= mem[i] && mem[i] <= end) {
@@ -161,8 +161,8 @@ static void ScanForBlock(void *start, void *end) {
 //
 // Z_Free
 //
-void Z_Free(void *ptr) {
-  auto *block = reinterpret_cast<memblock_t *>(reinterpret_cast<uint8_t *>(ptr) - sizeof(memblock_t));
+void Z_Free(void * ptr) {
+  auto * block = reinterpret_cast<memblock_t *>(reinterpret_cast<uint8_t *>(ptr) - sizeof(memblock_t));
 
   if (block->id != ZONEID)
     I_Error("Z_Free: freed a pointer without ZONEID");
@@ -187,7 +187,7 @@ void Z_Free(void *ptr) {
                  reinterpret_cast<uint8_t *>(ptr) + block->size - sizeof(memblock_t));
   }
 
-  memblock_t *other = block->prev;
+  memblock_t * other = block->prev;
 
   if (other->tag == PU_FREE) {
     // merge with previous free block
@@ -220,9 +220,9 @@ void Z_Free(void *ptr) {
 constexpr auto MINFRAGMENT = 64;
 
 void *
-    Z_Malloc(int   size,
-             int   tag,
-             void *user) {
+    Z_Malloc(int    size,
+             int    tag,
+             void * user) {
   size = static_cast<int>((static_cast<unsigned long>(size) + MEM_ALIGN - 1) & ~(MEM_ALIGN - 1));
 
   // scan through the block list,
@@ -235,13 +235,13 @@ void *
 
   // if there is a free block behind the rover,
   //  back up over them
-  memblock_t *base = mainzone->rover;
+  memblock_t * base = mainzone->rover;
 
   if (base->prev->tag == PU_FREE)
     base = base->prev;
 
-  memblock_t *rover = base;
-  memblock_t *start = base->prev;
+  memblock_t * rover = base;
+  memblock_t * start = base->prev;
 
   do {
     if (rover == start) {
@@ -281,8 +281,8 @@ void *
 
   if (extra > MINFRAGMENT) {
     // there will be a free fragment after the allocated block
-    auto *newblock = reinterpret_cast<memblock_t *>(reinterpret_cast<uint8_t *>(base) + size);
-    newblock->size = extra;
+    auto * newblock = reinterpret_cast<memblock_t *>(reinterpret_cast<uint8_t *>(base) + size);
+    newblock->size  = extra;
 
     newblock->tag        = PU_FREE;
     newblock->user       = nullptr;
@@ -300,7 +300,7 @@ void *
   base->user = reinterpret_cast<void **>(user);
   base->tag  = tag;
 
-  void *result = (reinterpret_cast<uint8_t *>(base) + sizeof(memblock_t));
+  void * result = (reinterpret_cast<uint8_t *>(base) + sizeof(memblock_t));
 
   if (base->user) {
     *base->user = result;
@@ -319,9 +319,9 @@ void *
 //
 void Z_FreeTags(int lowtag,
                 int hightag) {
-  memblock_t *next = nullptr;
+  memblock_t * next = nullptr;
 
-  for (memblock_t *block = mainzone->blocklist.next;
+  for (memblock_t * block = mainzone->blocklist.next;
        block != &mainzone->blocklist;
        block = next) {
     // get link before freeing
@@ -350,7 +350,7 @@ void Z_FreeTags(int lowtag,
               lowtag,
               hightag);
 
-  for (memblock_t *block = mainzone->blocklist.next;; block = block->next) {
+  for (memblock_t * block = mainzone->blocklist.next;; block = block->next) {
     if (block->tag >= lowtag && block->tag <= hightag)
       fmt::printf("block:%p    size:%7i    user:%p    tag:%3i\n",
                   reinterpret_cast<void *>(block),
@@ -377,10 +377,10 @@ void Z_FreeTags(int lowtag,
 //
 // Z_FileDumpHeap
 //
-[[maybe_unused]] void Z_FileDumpHeap(FILE *f) {
+[[maybe_unused]] void Z_FileDumpHeap(FILE * f) {
   fmt::fprintf(f, "zone size: %i  location: %p\n", mainzone->size, reinterpret_cast<void *>(mainzone));
 
-  for (memblock_t *block = mainzone->blocklist.next;; block = block->next) {
+  for (memblock_t * block = mainzone->blocklist.next;; block = block->next) {
     fmt::fprintf(f, "block:%p    size:%7i    user:%p    tag:%3i\n", reinterpret_cast<void *>(block), block->size, reinterpret_cast<void *>(block->user), block->tag);
 
     if (block->next == &mainzone->blocklist) {
@@ -403,7 +403,7 @@ void Z_FreeTags(int lowtag,
 // Z_CheckHeap
 //
 void Z_CheckHeap() {
-  for (memblock_t *block = mainzone->blocklist.next;; block = block->next) {
+  for (memblock_t * block = mainzone->blocklist.next;; block = block->next) {
     if (block->next == &mainzone->blocklist) {
       // all blocks have been hit
       break;
@@ -423,8 +423,8 @@ void Z_CheckHeap() {
 //
 // Z_ChangeTag
 //
-void Z_ChangeTag2(void *ptr, int tag, const char *file, int line) {
-  auto *block = reinterpret_cast<memblock_t *>(reinterpret_cast<uint8_t *>(ptr) - sizeof(memblock_t));
+void Z_ChangeTag2(void * ptr, int tag, const char * file, int line) {
+  auto * block = reinterpret_cast<memblock_t *>(reinterpret_cast<uint8_t *>(ptr) - sizeof(memblock_t));
 
   if (block->id != ZONEID)
     I_Error("%s:%i: Z_ChangeTag: block without a ZONEID!",
@@ -440,8 +440,8 @@ void Z_ChangeTag2(void *ptr, int tag, const char *file, int line) {
   block->tag = tag;
 }
 
-[[maybe_unused]] void Z_ChangeUser(void *ptr, void **user) {
-  auto *block = reinterpret_cast<memblock_t *>(reinterpret_cast<uint8_t *>(ptr) - sizeof(memblock_t));
+[[maybe_unused]] void Z_ChangeUser(void * ptr, void ** user) {
+  auto * block = reinterpret_cast<memblock_t *>(reinterpret_cast<uint8_t *>(ptr) - sizeof(memblock_t));
 
   if (block->id != ZONEID) {
     I_Error("Z_ChangeUser: Tried to change user for invalid block!");
@@ -457,7 +457,7 @@ void Z_ChangeTag2(void *ptr, int tag, const char *file, int line) {
 [[maybe_unused]] int Z_FreeMemory() {
   int free = 0;
 
-  for (memblock_t *block = mainzone->blocklist.next;
+  for (memblock_t * block = mainzone->blocklist.next;
        block != &mainzone->blocklist;
        block = block->next) {
     if (block->tag == PU_FREE || block->tag >= PU_PURGELEVEL)

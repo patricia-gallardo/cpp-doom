@@ -34,10 +34,10 @@
 #include <shellapi.h>
 #endif
 
-void TXT_SetWindowAction(txt_window_t     *window,
+void TXT_SetWindowAction(txt_window_t *    window,
                          txt_horiz_align_t position,
-                         void             *uncast_action) {
-  auto *action = reinterpret_cast<txt_widget_t *>(uncast_action);
+                         void *            uncast_action) {
+  auto * action = reinterpret_cast<txt_widget_t *>(uncast_action);
 
   if (window->actions[position] != nullptr) {
     TXT_DestroyWidget(window->actions[position]);
@@ -52,8 +52,8 @@ void TXT_SetWindowAction(txt_window_t     *window,
   }
 }
 
-txt_window_t *TXT_NewWindow(const char *title) {
-  auto *win = create_struct<txt_window_t>();
+txt_window_t * TXT_NewWindow(const char * title) {
+  auto * win = create_struct<txt_window_t>();
 
   TXT_InitTable(&win->table, 1);
 
@@ -73,7 +73,7 @@ txt_window_t *TXT_NewWindow(const char *title) {
 
   TXT_AddWidget(win, TXT_NewSeparator(nullptr));
 
-  for (auto &action : win->actions) {
+  for (auto & action : win->actions) {
     action = nullptr;
   }
 
@@ -87,7 +87,7 @@ txt_window_t *TXT_NewWindow(const char *title) {
   return win;
 }
 
-void TXT_CloseWindow(txt_window_t *window) {
+void TXT_CloseWindow(txt_window_t * window) {
   TXT_EmitSignal(window, "closed");
   TXT_RemoveDesktopWindow(window);
 
@@ -95,7 +95,7 @@ void TXT_CloseWindow(txt_window_t *window) {
 
   // Destroy all actions
 
-  for (auto &action : window->actions) {
+  for (auto & action : window->actions) {
     if (action != nullptr) {
       TXT_DestroyWidget(action);
     }
@@ -106,7 +106,7 @@ void TXT_CloseWindow(txt_window_t *window) {
   TXT_DestroyWidget(window);
 }
 
-static void CalcWindowPosition(txt_window_t *window) {
+static void CalcWindowPosition(txt_window_t * window) {
   switch (window->horiz_align) {
   case TXT_HORIZ_LEFT:
     window->window_x = window->x;
@@ -132,8 +132,8 @@ static void CalcWindowPosition(txt_window_t *window) {
   }
 }
 
-static void LayoutActionArea(txt_window_t *window) {
-  txt_widget_t *widget = nullptr;
+static void LayoutActionArea(txt_window_t * window) {
+  txt_widget_t * widget = nullptr;
 
   // We need to calculate the available horizontal space for the center
   // action widget, so that we can center it within it.
@@ -191,17 +191,17 @@ static void LayoutActionArea(txt_window_t *window) {
   }
 }
 
-static void DrawActionArea(txt_window_t *window) {
-  for (auto &action : window->actions) {
+static void DrawActionArea(txt_window_t * window) {
+  for (auto & action : window->actions) {
     if (action != nullptr) {
       TXT_DrawWidget(action);
     }
   }
 }
 
-static void CalcActionAreaSize(txt_window_t *window,
-                               unsigned int *w,
-                               unsigned int *h) {
+static void CalcActionAreaSize(txt_window_t * window,
+                               unsigned int * w,
+                               unsigned int * h) {
   *w = 0;
   *h = 0;
 
@@ -222,8 +222,8 @@ static void CalcActionAreaSize(txt_window_t *window,
 
 // Sets size and position of all widgets in a window
 
-void TXT_LayoutWindow(txt_window_t *window) {
-  auto *widgets = reinterpret_cast<txt_widget_t *>(window);
+void TXT_LayoutWindow(txt_window_t * window) {
+  auto * widgets = reinterpret_cast<txt_widget_t *>(window);
 
   // Calculate size of table
 
@@ -281,7 +281,7 @@ void TXT_LayoutWindow(txt_window_t *window) {
   TXT_LayoutWidget(widgets);
 }
 
-void TXT_DrawWindow(txt_window_t *window) {
+void TXT_DrawWindow(txt_window_t * window) {
   TXT_LayoutWindow(window);
 
   if (window->table.widget.focused) {
@@ -306,7 +306,7 @@ void TXT_DrawWindow(txt_window_t *window) {
 
   // Draw an action area, if we have one
 
-  auto *widgets = reinterpret_cast<txt_widget_t *>(window);
+  auto * widgets = reinterpret_cast<txt_widget_t *>(window);
 
   if (static_cast<unsigned int>(widgets->y) + widgets->h < static_cast<unsigned int>(window->window_y) + window->window_h - 1) {
     // Separator for action area
@@ -319,7 +319,7 @@ void TXT_DrawWindow(txt_window_t *window) {
   }
 }
 
-void TXT_SetWindowPosition(txt_window_t     *window,
+void TXT_SetWindowPosition(txt_window_t *    window,
                            txt_horiz_align_t horiz_align,
                            txt_vert_align_t  vert_align,
                            int               x,
@@ -330,7 +330,7 @@ void TXT_SetWindowPosition(txt_window_t     *window,
   window->y           = y;
 }
 
-static int MouseButtonPress(txt_window_t *window, int b) {
+static int MouseButtonPress(txt_window_t * window, int b) {
   // Lay out the window, set positions and sizes of all widgets
 
   TXT_LayoutWindow(window);
@@ -353,7 +353,7 @@ static int MouseButtonPress(txt_window_t *window, int b) {
 
   // Is it within the table range?
 
-  auto *widgets = reinterpret_cast<txt_widget_t *>(window);
+  auto * widgets = reinterpret_cast<txt_widget_t *>(window);
 
   if (x >= widgets->x && x < static_cast<signed>(static_cast<unsigned int>(widgets->x) + widgets->w)
       && y >= widgets->y && y < static_cast<signed>(static_cast<unsigned int>(widgets->y) + widgets->h)) {
@@ -386,7 +386,7 @@ static int MouseButtonPress(txt_window_t *window, int b) {
   return 0;
 }
 
-int TXT_WindowKeyPress(txt_window_t *window, int c) {
+int TXT_WindowKeyPress(txt_window_t * window, int c) {
   // Is this a mouse button ?
 
   if (c >= TXT_MOUSE_BASE && c < TXT_MOUSE_BASE + TXT_MAX_MOUSE_BUTTONS) {
@@ -411,7 +411,7 @@ int TXT_WindowKeyPress(txt_window_t *window, int c) {
 
   // Try all of the action buttons
 
-  for (auto &action : window->actions) {
+  for (auto & action : window->actions) {
     if (action != nullptr
         && TXT_WidgetKeyPress(action, c)) {
       return 1;
@@ -421,37 +421,37 @@ int TXT_WindowKeyPress(txt_window_t *window, int c) {
   return 0;
 }
 
-void TXT_SetKeyListener(txt_window_t *window, TxtWindowKeyPress key_listener, void *user_data) {
+void TXT_SetKeyListener(txt_window_t * window, TxtWindowKeyPress key_listener, void * user_data) {
   window->key_listener      = key_listener;
   window->key_listener_data = user_data;
 }
 
-void TXT_SetMouseListener(txt_window_t       *window,
+void TXT_SetMouseListener(txt_window_t *      window,
                           TxtWindowMousePress mouse_listener,
-                          void               *user_data) {
+                          void *              user_data) {
   window->mouse_listener      = mouse_listener;
   window->mouse_listener_data = user_data;
 }
 
-void TXT_SetWindowFocus(txt_window_t *window, int focused) {
+void TXT_SetWindowFocus(txt_window_t * window, int focused) {
   TXT_SetWidgetFocus(window, focused);
 }
 
-void TXT_SetWindowHelpURL(txt_window_t *window, const char *help_url) {
+void TXT_SetWindowHelpURL(txt_window_t * window, const char * help_url) {
   window->help_url = help_url;
 }
 
 #ifdef _WIN32
 
-void TXT_OpenURL(const char *url) {
+void TXT_OpenURL(const char * url) {
   ShellExecute(nullptr, "open", url, nullptr, nullptr, SW_SHOWNORMAL);
 }
 
 #else
 
-void TXT_OpenURL(const char *url) {
+void TXT_OpenURL(const char * url) {
   size_t cmd_len = strlen(url) + 30;
-  char  *cmd     = static_cast<char *>(malloc(cmd_len));
+  char * cmd     = static_cast<char *>(malloc(cmd_len));
 
 #if defined(__MACOSX__)
   TXT_snprintf(cmd, cmd_len, "open \"%s\"", url);
@@ -478,13 +478,13 @@ void TXT_OpenURL(const char *url) {
 
 #endif /* #ifndef _WIN32 */
 
-void TXT_OpenWindowHelpURL(txt_window_t *window) {
+void TXT_OpenWindowHelpURL(txt_window_t * window) {
   if (window->help_url != nullptr) {
     TXT_OpenURL(window->help_url);
   }
 }
 
-txt_window_t *TXT_MessageBox(const char *title, const char *message, ...) {
+txt_window_t * TXT_MessageBox(const char * title, const char * message, ...) {
   char    buf[256];
   va_list args;
 
@@ -492,7 +492,7 @@ txt_window_t *TXT_MessageBox(const char *title, const char *message, ...) {
   TXT_vsnprintf(buf, sizeof(buf), message, args);
   va_end(args);
 
-  txt_window_t *window = TXT_NewWindow(title);
+  txt_window_t * window = TXT_NewWindow(title);
   TXT_AddWidget(window, TXT_NewLabel(buf));
 
   TXT_SetWindowAction(window, TXT_HORIZ_LEFT, nullptr);

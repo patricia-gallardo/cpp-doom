@@ -34,7 +34,7 @@
 #include "m_misc.hpp"
 #include "r_state.hpp"
 
-FILE      *save_stream;
+FILE *     save_stream;
 int        savegamelength;
 bool       savegame_error;
 static int restoretargets_fail;
@@ -43,8 +43,8 @@ static int restoretargets_fail;
 // the file has been successfully saved, it will be renamed to the
 // real file.
 
-char *P_TempSaveGameFile() {
-  static char *filename = nullptr;
+char * P_TempSaveGameFile() {
+  static char * filename = nullptr;
 
   if (filename == nullptr) {
     filename = M_StringJoin(g_doomstat_globals->savegamedir, "temp.dsg", nullptr);
@@ -55,8 +55,8 @@ char *P_TempSaveGameFile() {
 
 // Get the filename of the save game file to use for the specified slot.
 
-char *P_SaveGameFile(int slot) {
-  static char  *filename      = nullptr;
+char * P_SaveGameFile(int slot) {
+  static char * filename      = nullptr;
   static size_t filename_size = 0;
   char          basename[32];
 
@@ -160,11 +160,11 @@ static void saveg_write_pad() {
 
 // Pointers
 
-static void *saveg_readp() {
+static void * saveg_readp() {
   return reinterpret_cast<void *>(static_cast<intptr_t>(saveg_read32()));
 }
 
-static void saveg_writep(const void *p) {
+static void saveg_writep(const void * p) {
   saveg_write32(static_cast<int>(reinterpret_cast<intptr_t>(p)));
 }
 
@@ -181,7 +181,7 @@ static void saveg_writep(const void *p) {
 // mapthing_t
 //
 
-static void saveg_read_mapthing_t(mapthing_t *str) {
+static void saveg_read_mapthing_t(mapthing_t * str) {
   // short x;
   str->x = saveg_read16();
 
@@ -198,7 +198,7 @@ static void saveg_read_mapthing_t(mapthing_t *str) {
   str->options = saveg_read16();
 }
 
-static void saveg_write_mapthing_t(mapthing_t *str) {
+static void saveg_write_mapthing_t(mapthing_t * str) {
   // short x;
   saveg_write16(str->x);
 
@@ -219,12 +219,12 @@ static void saveg_write_mapthing_t(mapthing_t *str) {
 // actionf_t
 //
 
-static void saveg_read_actionf_t(actionf_t &actionf) {
-  void *pVoid = saveg_readp();
-  actionf     = reinterpret_cast<mobj_param_action>(pVoid);
+static void saveg_read_actionf_t(actionf_t & actionf) {
+  void * pVoid = saveg_readp();
+  actionf      = reinterpret_cast<mobj_param_action>(pVoid);
 }
 
-static void saveg_write_actionf_t(actionf_t &actionf) {
+static void saveg_write_actionf_t(actionf_t & actionf) {
   std::visit(overloaded {
                  [](const mobj_param_action hook) { saveg_writep(reinterpret_cast<const void *>(hook)); },
                  [](const auto &) {},
@@ -245,7 +245,7 @@ static void saveg_write_actionf_t(actionf_t &actionf) {
 // thinker_t
 //
 
-static void saveg_read_thinker_t(thinker_t *str) {
+static void saveg_read_thinker_t(thinker_t * str) {
   // struct thinker_s* prev;
   str->prev = static_cast<thinker_s *>(saveg_readp());
 
@@ -256,7 +256,7 @@ static void saveg_read_thinker_t(thinker_t *str) {
   saveg_read_think_t(str->function);
 }
 
-static void saveg_write_thinker_t(thinker_t *str) {
+static void saveg_write_thinker_t(thinker_t * str) {
   // struct thinker_s* prev;
   saveg_writep(str->prev);
 
@@ -271,7 +271,7 @@ static void saveg_write_thinker_t(thinker_t *str) {
 // mobj_t
 //
 
-static void saveg_read_mobj_t(mobj_t *str) {
+static void saveg_read_mobj_t(mobj_t * str) {
   int pl;
 
   // thinker_t thinker;
@@ -389,9 +389,9 @@ static void saveg_read_mobj_t(mobj_t *str) {
 }
 
 // [crispy] enumerate all thinker pointers
-uint32_t P_ThinkerToIndex(thinker_t *thinker) {
-  thinker_t *th;
-  uint32_t   i;
+uint32_t P_ThinkerToIndex(thinker_t * thinker) {
+  thinker_t * th;
+  uint32_t    i;
 
   if (!thinker)
     return 0;
@@ -409,9 +409,9 @@ uint32_t P_ThinkerToIndex(thinker_t *thinker) {
 }
 
 // [crispy] replace indizes with corresponding pointers
-thinker_t *P_IndexToThinker(uint32_t index) {
-  thinker_t *th;
-  uint32_t   i;
+thinker_t * P_IndexToThinker(uint32_t index) {
+  thinker_t * th;
+  uint32_t    i;
 
   if (!index)
     return nullptr;
@@ -430,7 +430,7 @@ thinker_t *P_IndexToThinker(uint32_t index) {
   return nullptr;
 }
 
-static void saveg_write_mobj_t(mobj_t *str) {
+static void saveg_write_mobj_t(mobj_t * str) {
   // thinker_t thinker;
   saveg_write_thinker_t(&str->thinker);
 
@@ -518,9 +518,9 @@ static void saveg_write_mobj_t(mobj_t *str) {
   // struct mobj_s* target;
   // [crispy] instead of the actual pointer, store the
   // corresponding index in the mobj->target field
-  auto *thinker = reinterpret_cast<thinker_t *>(str->target);
-  auto  intptr  = static_cast<uintptr_t>(P_ThinkerToIndex(thinker));
-  void *pointer = reinterpret_cast<void *>(intptr);
+  auto * thinker = reinterpret_cast<thinker_t *>(str->target);
+  auto   intptr  = static_cast<uintptr_t>(P_ThinkerToIndex(thinker));
+  void * pointer = reinterpret_cast<void *>(intptr);
   saveg_writep(pointer);
 
   // int reactiontime;
@@ -545,8 +545,8 @@ static void saveg_write_mobj_t(mobj_t *str) {
   // struct mobj_s* tracer;
   // [crispy] instead of the actual pointer, store the
   // corresponding index in the mobj->tracers field
-  auto *thinker2 = reinterpret_cast<thinker_t *>(str->tracer);
-  auto  intptr2  = static_cast<uintptr_t>(P_ThinkerToIndex(thinker2));
+  auto * thinker2 = reinterpret_cast<thinker_t *>(str->tracer);
+  auto   intptr2  = static_cast<uintptr_t>(P_ThinkerToIndex(thinker2));
   saveg_writep(reinterpret_cast<void *>(intptr2));
 }
 
@@ -554,7 +554,7 @@ static void saveg_write_mobj_t(mobj_t *str) {
 // ticcmd_t
 //
 
-static void saveg_read_ticcmd_t(ticcmd_t *str) {
+static void saveg_read_ticcmd_t(ticcmd_t * str) {
 
   // signed char forwardmove;
   str->forwardmove = static_cast<signed char>(saveg_read8());
@@ -575,7 +575,7 @@ static void saveg_read_ticcmd_t(ticcmd_t *str) {
   str->buttons = saveg_read8();
 }
 
-static void saveg_write_ticcmd_t(ticcmd_t *str) {
+static void saveg_write_ticcmd_t(ticcmd_t * str) {
 
   // signed char forwardmove;
   saveg_write8(static_cast<uint8_t>(str->forwardmove));
@@ -600,7 +600,7 @@ static void saveg_write_ticcmd_t(ticcmd_t *str) {
 // pspdef_t
 //
 
-static void saveg_read_pspdef_t(pspdef_t *str) {
+static void saveg_read_pspdef_t(pspdef_t * str) {
   int state;
 
   // state_t* state;
@@ -627,7 +627,7 @@ static void saveg_read_pspdef_t(pspdef_t *str) {
   str->sy2 = str->sy;
 }
 
-static void saveg_write_pspdef_t(pspdef_t *str) {
+static void saveg_write_pspdef_t(pspdef_t * str) {
   // state_t* state;
   if (str->state) {
     saveg_write32(static_cast<int>(str->state - states));
@@ -649,7 +649,7 @@ static void saveg_write_pspdef_t(pspdef_t *str) {
 // player_t
 //
 
-static void saveg_read_player_t(player_t *str) {
+static void saveg_read_player_t(player_t * str) {
   int i;
 
   // mobj_t* mo;
@@ -776,7 +776,7 @@ static void saveg_read_player_t(player_t *str) {
   str->didsecret = saveg_read32();
 }
 
-static void saveg_write_player_t(player_t *str) {
+static void saveg_write_player_t(player_t * str) {
   int i;
 
   // mobj_t* mo;
@@ -903,7 +903,7 @@ static void saveg_write_player_t(player_t *str) {
 // ceiling_t
 //
 
-static void saveg_read_ceiling_t(ceiling_t *str) {
+static void saveg_read_ceiling_t(ceiling_t * str) {
   int sector;
 
   // thinker_t thinker;
@@ -938,7 +938,7 @@ static void saveg_read_ceiling_t(ceiling_t *str) {
   str->olddirection = saveg_read32();
 }
 
-static void saveg_write_ceiling_t(ceiling_t *str) {
+static void saveg_write_ceiling_t(ceiling_t * str) {
   // thinker_t thinker;
   saveg_write_thinker_t(&str->thinker);
 
@@ -974,7 +974,7 @@ static void saveg_write_ceiling_t(ceiling_t *str) {
 // vldoor_t
 //
 
-static void saveg_read_vldoor_t(vldoor_t *str) {
+static void saveg_read_vldoor_t(vldoor_t * str) {
   int sector;
 
   // thinker_t thinker;
@@ -1003,7 +1003,7 @@ static void saveg_read_vldoor_t(vldoor_t *str) {
   str->topcountdown = saveg_read32();
 }
 
-static void saveg_write_vldoor_t(vldoor_t *str) {
+static void saveg_write_vldoor_t(vldoor_t * str) {
   // thinker_t thinker;
   saveg_write_thinker_t(&str->thinker);
 
@@ -1033,7 +1033,7 @@ static void saveg_write_vldoor_t(vldoor_t *str) {
 // floormove_t
 //
 
-static void saveg_read_floormove_t(floormove_t *str) {
+static void saveg_read_floormove_t(floormove_t * str) {
   int sector;
 
   // thinker_t thinker;
@@ -1065,7 +1065,7 @@ static void saveg_read_floormove_t(floormove_t *str) {
   str->speed = saveg_read32();
 }
 
-static void saveg_write_floormove_t(floormove_t *str) {
+static void saveg_write_floormove_t(floormove_t * str) {
   // thinker_t thinker;
   saveg_write_thinker_t(&str->thinker);
 
@@ -1098,7 +1098,7 @@ static void saveg_write_floormove_t(floormove_t *str) {
 // plat_t
 //
 
-static void saveg_read_plat_t(plat_t *str) {
+static void saveg_read_plat_t(plat_t * str) {
   int sector;
 
   // thinker_t thinker;
@@ -1139,7 +1139,7 @@ static void saveg_read_plat_t(plat_t *str) {
   str->type = static_cast<plattype_e>(saveg_read_enum());
 }
 
-static void saveg_write_plat_t(plat_t *str) {
+static void saveg_write_plat_t(plat_t * str) {
   // thinker_t thinker;
   saveg_write_thinker_t(&str->thinker);
 
@@ -1181,7 +1181,7 @@ static void saveg_write_plat_t(plat_t *str) {
 // lightflash_t
 //
 
-static void saveg_read_lightflash_t(lightflash_t *str) {
+static void saveg_read_lightflash_t(lightflash_t * str) {
   int sector;
 
   // thinker_t thinker;
@@ -1207,7 +1207,7 @@ static void saveg_read_lightflash_t(lightflash_t *str) {
   str->mintime = saveg_read32();
 }
 
-static void saveg_write_lightflash_t(lightflash_t *str) {
+static void saveg_write_lightflash_t(lightflash_t * str) {
   // thinker_t thinker;
   saveg_write_thinker_t(&str->thinker);
 
@@ -1234,7 +1234,7 @@ static void saveg_write_lightflash_t(lightflash_t *str) {
 // strobe_t
 //
 
-static void saveg_read_strobe_t(strobe_t *str) {
+static void saveg_read_strobe_t(strobe_t * str) {
   int sector;
 
   // thinker_t thinker;
@@ -1260,7 +1260,7 @@ static void saveg_read_strobe_t(strobe_t *str) {
   str->brighttime = saveg_read32();
 }
 
-static void saveg_write_strobe_t(strobe_t *str) {
+static void saveg_write_strobe_t(strobe_t * str) {
   // thinker_t thinker;
   saveg_write_thinker_t(&str->thinker);
 
@@ -1287,7 +1287,7 @@ static void saveg_write_strobe_t(strobe_t *str) {
 // glow_t
 //
 
-static void saveg_read_glow_t(glow_t *str) {
+static void saveg_read_glow_t(glow_t * str) {
   int sector;
 
   // thinker_t thinker;
@@ -1307,7 +1307,7 @@ static void saveg_read_glow_t(glow_t *str) {
   str->direction = saveg_read32();
 }
 
-static void saveg_write_glow_t(glow_t *str) {
+static void saveg_write_glow_t(glow_t * str) {
   // thinker_t thinker;
   saveg_write_thinker_t(&str->thinker);
 
@@ -1328,7 +1328,7 @@ static void saveg_write_glow_t(glow_t *str) {
 // Write the header for a savegame
 //
 
-void P_WriteSaveGameHeader(char *description) {
+void P_WriteSaveGameHeader(char * description) {
   char name[VERSIONSIZE];
   int  i;
 
@@ -1457,11 +1457,11 @@ void P_UnArchivePlayers() {
 // P_ArchiveWorld
 //
 void P_ArchiveWorld() {
-  int       i;
-  int       j;
-  sector_t *sec;
-  line_t   *li;
-  side_t   *si;
+  int        i;
+  int        j;
+  sector_t * sec;
+  line_t *   li;
+  side_t *   si;
 
   // do sectors
   for (i = 0, sec = g_r_state_globals->sectors; i < g_r_state_globals->numsectors; i++, sec++) {
@@ -1498,11 +1498,11 @@ void P_ArchiveWorld() {
 // P_UnArchiveWorld
 //
 void P_UnArchiveWorld() {
-  int       i;
-  int       j;
-  sector_t *sec;
-  line_t   *li;
-  side_t   *si;
+  int        i;
+  int        j;
+  sector_t * sec;
+  line_t *   li;
+  side_t *   si;
 
   // do sectors
   for (i = 0, sec = g_r_state_globals->sectors; i < g_r_state_globals->numsectors; i++, sec++) {
@@ -1559,7 +1559,7 @@ enum thinkerclass_t
 // P_ArchiveThinkers
 //
 void P_ArchiveThinkers() {
-  thinker_t *th;
+  thinker_t * th;
 
   // save off the current thinkers
   action_hook needle = P_MobjThinker;
@@ -1583,10 +1583,10 @@ void P_ArchiveThinkers() {
 // P_UnArchiveThinkers
 //
 void P_UnArchiveThinkers() {
-  uint8_t    tclass;
-  thinker_t *currentthinker;
-  thinker_t *next;
-  mobj_t    *mobj;
+  uint8_t     tclass;
+  thinker_t * currentthinker;
+  thinker_t * next;
+  mobj_t *    mobj;
 
   // remove all the current thinkers
   currentthinker     = g_p_local_globals->thinkercap.next;
@@ -1636,8 +1636,8 @@ void P_UnArchiveThinkers() {
 // [crispy] after all the thinkers have been restored, replace all indices in
 // the mobj->target and mobj->tracers fields by the corresponding current pointers again
 void P_RestoreTargets() {
-  mobj_t    *mo;
-  thinker_t *th;
+  mobj_t *    mo;
+  thinker_t * th;
 
   action_hook needle = P_MobjThinker;
   for (th = g_p_local_globals->thinkercap.next; th != &g_p_local_globals->thinkercap; th = th->next) {
@@ -1684,8 +1684,8 @@ enum class specials_e
 // T_PlatRaise, (plat_t: sector_t *), - active list
 //
 void P_ArchiveSpecials() {
-  thinker_t *th;
-  int        i;
+  thinker_t * th;
+  int         i;
 
   // save off the current thinkers
   action_hook null_needle          = null_hook();
@@ -1778,14 +1778,14 @@ void P_ArchiveSpecials() {
 // P_UnArchiveSpecials
 //
 void P_UnArchiveSpecials() {
-  specials_e    tclass;
-  ceiling_t    *ceiling;
-  vldoor_t     *door;
-  floormove_t  *floor;
-  plat_t       *plat;
-  lightflash_t *flash;
-  strobe_t     *strobe;
-  glow_t       *glow;
+  specials_e     tclass;
+  ceiling_t *    ceiling;
+  vldoor_t *     door;
+  floormove_t *  floor;
+  plat_t *       plat;
+  lightflash_t * flash;
+  strobe_t *     strobe;
+  glow_t *       glow;
 
   // read in saved thinkers
   while (true) {

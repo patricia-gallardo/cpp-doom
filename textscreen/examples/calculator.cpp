@@ -30,11 +30,11 @@ enum operator_t
   OP_DIV,
 };
 
-int          starting_input = 0;
-int          input_value    = 0;
-txt_label_t *input_box;
-int          first_operand;
-operator_t   operator= OP_NONE;
+int           starting_input = 0;
+int           input_value    = 0;
+txt_label_t * input_box;
+int           first_operand;
+operator_t    operator= OP_NONE;
 
 void UpdateInputBox() {
   char buf[20];
@@ -56,9 +56,9 @@ void InsertNumber(TXT_UNCAST_ARG(button), TXT_UNCAST_ARG(value)) {
   UpdateInputBox();
 }
 
-void AddNumberButton(txt_table_t *table, int value) {
-  char buf[10];
-  int *val_copy;
+void AddNumberButton(txt_table_t * table, int value) {
+  char  buf[10];
+  int * val_copy;
 
   val_copy  = malloc(sizeof(int));
   *val_copy = value;
@@ -76,9 +76,9 @@ void Operator(TXT_UNCAST_ARG(button), TXT_UNCAST_ARG(op)) {
   starting_input = 1;
 }
 
-void AddOperatorButton(txt_table_t *table, const char *label, operator_t op) {
-  char        buf[10];
-  operator_t *op_copy;
+void AddOperatorButton(txt_table_t * table, const char * label, operator_t op) {
+  char         buf[10];
+  operator_t * op_copy;
 
   op_copy  = malloc(sizeof(operator_t));
   *op_copy = op;
@@ -88,7 +88,7 @@ void AddOperatorButton(txt_table_t *table, const char *label, operator_t op) {
   TXT_AddWidget(table, TXT_NewButton2(buf, Operator, op_copy));
 }
 
-void Calculate(TXT_UNCAST_ARG(button), void *unused) {
+void Calculate(TXT_UNCAST_ARG(button), void * unused) {
   switch (operator) {
   case OP_PLUS:
     input_value = first_operand + input_value;
@@ -113,8 +113,8 @@ void Calculate(TXT_UNCAST_ARG(button), void *unused) {
 }
 
 void BuildGUI() {
-  txt_window_t *window;
-  txt_table_t  *table;
+  txt_window_t * window;
+  txt_table_t *  table;
 
   window = TXT_NewWindow("Calculator");
 
@@ -150,7 +150,7 @@ void BuildGUI() {
   UpdateInputBox();
 }
 
-int main(int argc, char *argv[]) {
+int main(int argc, char * argv[]) {
   if (!TXT_Init()) {
     fmt::fprintf(stderr, "Failed to initialise GUI\n");
     exit(-1);

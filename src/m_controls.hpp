@@ -195,7 +195,7 @@ struct m_controls_t {
   int dclick_use;
 };
 
-extern m_controls_t *const g_m_controls_globals;
+extern m_controls_t * const g_m_controls_globals;
 
 void M_BindBaseControls();
 void M_BindHereticControls();

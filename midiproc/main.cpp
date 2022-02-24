@@ -47,7 +47,7 @@ static HANDLE midi_process_out; // Standard Out.
 static int snd_samplerate = 0;
 
 // Currently playing music track.
-static Mix_Music *music = nullptr;
+static Mix_Music * music = nullptr;
 
 //=============================================================================
 //
@@ -57,7 +57,7 @@ static Mix_Music *music = nullptr;
 //
 // Write an unsigned integer into a simple CHAR buffer.
 //
-static bool WriteInt16(CHAR *out, size_t osize, unsigned int in) {
+static bool WriteInt16(CHAR * out, size_t osize, unsigned int in) {
   if (osize < 2) {
     return false;
   }
@@ -109,7 +109,7 @@ static void ShutdownSDL() {
 // SDL_mixer Interface
 //
 
-static bool RegisterSong(const char *filename) {
+static bool RegisterSong(const char * filename) {
   music = Mix_LoadMUS(filename);
 
   // Remove the temporary MIDI file
@@ -149,8 +149,8 @@ static void StopSong() {
 // Pipe Server Interface
 //
 
-static bool MidiPipe_RegisterSong(buffer_reader_t *reader) {
-  char *filename = Reader_ReadString(reader);
+static bool MidiPipe_RegisterSong(buffer_reader_t * reader) {
+  char * filename = Reader_ReadString(reader);
   if (filename == nullptr) {
     return false;
   }
@@ -163,7 +163,7 @@ static bool MidiPipe_UnregisterSong(buffer_reader_t *) {
   return true;
 }
 
-bool MidiPipe_SetVolume(buffer_reader_t *reader) {
+bool MidiPipe_SetVolume(buffer_reader_t * reader) {
   int  vol;
   bool ok = Reader_ReadInt32(reader, (uint32_t *)&vol);
   if (!ok) {
@@ -175,7 +175,7 @@ bool MidiPipe_SetVolume(buffer_reader_t *reader) {
   return true;
 }
 
-bool MidiPipe_PlaySong(buffer_reader_t *reader) {
+bool MidiPipe_PlaySong(buffer_reader_t * reader) {
   int  loops;
   bool ok = Reader_ReadInt32(reader, (uint32_t *)&loops);
   if (!ok) {
@@ -205,7 +205,7 @@ bool MidiPipe_Shutdown() {
 //
 // Parses a command and directs to the proper read function.
 //
-bool ParseCommand(buffer_reader_t *reader, uint16_t command) {
+bool ParseCommand(buffer_reader_t * reader, uint16_t command) {
   switch (command) {
   case MIDIPIPE_PACKET_TYPE_REGISTER_SONG:
     return MidiPipe_RegisterSong(reader);
@@ -227,12 +227,12 @@ bool ParseCommand(buffer_reader_t *reader, uint16_t command) {
 //
 // Server packet parser
 //
-bool ParseMessage(buffer_t *buf) {
-  CHAR             buffer[2];
-  DWORD            bytes_written;
-  int              bytes_read;
-  uint16_t         command;
-  buffer_reader_t *reader = NewReader(buf);
+bool ParseMessage(buffer_t * buf) {
+  CHAR              buffer[2];
+  DWORD             bytes_written;
+  int               bytes_read;
+  uint16_t          command;
+  buffer_reader_t * reader = NewReader(buf);
 
   // Attempt to read a command out of the buffer.
   if (!Reader_ReadInt16(reader, &command)) {
@@ -274,8 +274,8 @@ bool ListenForever() {
   CHAR  pipe_buffer[8192];
   DWORD pipe_buffer_read = 0;
 
-  bool      ok     = false;
-  buffer_t *buffer = NewBuffer();
+  bool       ok     = false;
+  buffer_t * buffer = NewBuffer();
 
   for (;;) {
     // Wait until we see some data on the pipe.
@@ -348,7 +348,7 @@ void InitPipes(HANDLE in, HANDLE out) {
 //
 // Application entry point.
 //
-int main(int argc, char *argv[]) {
+int main(int argc, char * argv[]) {
   HANDLE in, out;
 
   // Make sure we're not launching this process by itself.

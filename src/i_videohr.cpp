@@ -30,9 +30,9 @@ constexpr auto FADE_TIME = 2000;
 constexpr auto HR_SCREENWIDTH  = 640;
 constexpr auto HR_SCREENHEIGHT = 480;
 
-static SDL_Window  *hr_screen    = nullptr;
-static SDL_Surface *hr_surface   = nullptr;
-static const char  *window_title = "";
+static SDL_Window *  hr_screen    = nullptr;
+static SDL_Surface * hr_surface   = nullptr;
+static const char *  window_title = "";
 
 [[maybe_unused]] bool I_SetVideoModeHR() {
   int x = 0, y = 0;
@@ -58,7 +58,7 @@ static const char  *window_title = "";
   return true;
 }
 
-[[maybe_unused]] void I_SetWindowTitleHR(const char *title) {
+[[maybe_unused]] void I_SetWindowTitleHR(const char * title) {
   window_title = title;
 }
 
@@ -77,11 +77,11 @@ static const char  *window_title = "";
   SDL_FillRect(hr_surface, &area, 0);
 }
 
-void I_SlamBlockHR(int x, int y, int w, int h, const uint8_t *src) {
-  SDL_Rect       blit_rect;
-  const uint8_t *srcptrs[4];
-  uint8_t        srcbits[4];
-  int            bit;
+void I_SlamBlockHR(int x, int y, int w, int h, const uint8_t * src) {
+  SDL_Rect        blit_rect;
+  const uint8_t * srcptrs[4];
+  uint8_t         srcbits[4];
+  int             bit;
 
   // Set up source pointers to read from source buffer - each 4-bit
   // pixel has its bits split into four sub-buffers
@@ -99,7 +99,7 @@ void I_SlamBlockHR(int x, int y, int w, int h, const uint8_t *src) {
   bit = 0;
 
   for (int y1 = y; y1 < y + h; ++y1) {
-    uint8_t *dest = (reinterpret_cast<uint8_t *>(hr_surface->pixels)) + y1 * hr_surface->pitch + x;
+    uint8_t * dest = (reinterpret_cast<uint8_t *>(hr_surface->pixels)) + y1 * hr_surface->pitch + x;
 
     for (int x1 = x; x1 < x + w; ++x1) {
       // Get the bits for this pixel
@@ -132,7 +132,7 @@ void I_SlamBlockHR(int x, int y, int w, int h, const uint8_t *src) {
   SDL_UpdateWindowSurfaceRects(hr_screen, &blit_rect, 1);
 }
 
-[[maybe_unused]] void I_SlamHR(const uint8_t *buffer) {
+[[maybe_unused]] void I_SlamHR(const uint8_t * buffer) {
   I_SlamBlockHR(0, 0, HR_SCREENWIDTH, HR_SCREENHEIGHT, buffer);
 }
 
@@ -140,7 +140,7 @@ void I_SlamBlockHR(int x, int y, int w, int h, const uint8_t *src) {
   // ...
 }
 
-void I_SetPaletteHR(const uint8_t *palette) {
+void I_SetPaletteHR(const uint8_t * palette) {
   SDL_Rect  screen_rect = { 0, 0, HR_SCREENWIDTH, HR_SCREENHEIGHT };
   SDL_Color sdlpal[16];
 
@@ -156,7 +156,7 @@ void I_SetPaletteHR(const uint8_t *palette) {
   SDL_UpdateWindowSurfaceRects(hr_screen, &screen_rect, 1);
 }
 
-[[maybe_unused]] void I_FadeToPaletteHR(const uint8_t *palette) {
+[[maybe_unused]] void I_FadeToPaletteHR(const uint8_t * palette) {
   uint8_t tmppal[48];
 
   int starttime = I_GetTimeMS();

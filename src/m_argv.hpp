@@ -24,26 +24,26 @@
 //
 // MISC
 //
-extern int    myargc;
-extern char **myargv;
+extern int     myargc;
+extern char ** myargv;
 
 // Returns the position of the given parameter
 // in the arg list (0 if not found).
-int M_CheckParm(const char *check);
+int M_CheckParm(const char * check);
 
 // Same as M_CheckParm, but checks that num_args arguments are available
 // following the specified argument.
-int M_CheckParmWithArgs(const char *check, int num_args);
+int M_CheckParmWithArgs(const char * check, int num_args);
 
 void M_FindResponseFile();
 void M_AddLooseFiles();
 
 // Parameter has been specified?
 
-bool M_ParmExists(const char *check);
+bool M_ParmExists(const char * check);
 
 // Get name of executable used to run this program:
 
-const char *M_GetExecutableName();
+const char * M_GetExecutableName();
 
 #endif

@@ -33,7 +33,7 @@ static int always_run = 0;
 
 // Keys within these groups cannot have the same value.
 
-static int *controls[] = {
+static int * controls[] = {
   &g_m_controls_globals->key_left,
   &g_m_controls_globals->key_right,
   &g_m_controls_globals->key_up,
@@ -121,7 +121,7 @@ static int *controls[] = {
   nullptr
 };
 
-static int *menu_nav[] = {
+static int * menu_nav[] = {
   &g_m_controls_globals->key_menu_activate,
   &g_m_controls_globals->key_menu_up,
   &g_m_controls_globals->key_menu_down,
@@ -135,7 +135,7 @@ static int *menu_nav[] = {
   nullptr
 };
 
-static int *shortcuts[] = {
+static int * shortcuts[] = {
   &g_m_controls_globals->key_menu_help,
   &g_m_controls_globals->key_menu_save,
   &g_m_controls_globals->key_menu_load,
@@ -171,7 +171,7 @@ static int *shortcuts[] = {
   &g_m_controls_globals->key_multi_msgplayer[3]
 };
 
-static int *map_keys[] = {
+static int * map_keys[] = {
   &g_m_controls_globals->key_map_north,
   &g_m_controls_globals->key_map_south,
   &g_m_controls_globals->key_map_east,
@@ -210,7 +210,7 @@ static void UpdateJoybSpeed(void *, void *) {
   }
 }
 
-static int VarInGroup(int *variable, int **group) {
+static int VarInGroup(int * variable, int ** group) {
   unsigned int i;
 
   for (i = 0; group[i] != nullptr; ++i) {
@@ -222,7 +222,7 @@ static int VarInGroup(int *variable, int **group) {
   return 0;
 }
 
-static void CheckKeyGroup(int *variable, int **group) {
+static void CheckKeyGroup(int * variable, int ** group) {
   unsigned int i;
 
   // Don't check unless the variable is in this group.
@@ -246,8 +246,8 @@ static void CheckKeyGroup(int *variable, int **group) {
 
 // Callback invoked when a key control is set
 
-static void KeySetCallback(void *, void *uncast_variable) {
-  auto *variable = reinterpret_cast<int *>(uncast_variable);
+static void KeySetCallback(void *, void * uncast_variable) {
+  auto * variable = reinterpret_cast<int *>(uncast_variable);
 
   CheckKeyGroup(variable, controls);
   CheckKeyGroup(variable, menu_nav);
@@ -257,9 +257,9 @@ static void KeySetCallback(void *, void *uncast_variable) {
 
 // Add a label and keyboard input to the specified table.
 
-static void AddKeyControl(void *uncast_table, const char *name, int *var) {
-  auto            *table = reinterpret_cast<txt_table_t *>(uncast_table);
-  txt_key_input_t *key_input;
+static void AddKeyControl(void * uncast_table, const char * name, int * var) {
+  auto *            table = reinterpret_cast<txt_table_t *>(uncast_table);
+  txt_key_input_t * key_input;
 
   TXT_AddWidget(table, TXT_NewLabel(name));
   key_input = TXT_NewKeyInput(var);
@@ -268,9 +268,9 @@ static void AddKeyControl(void *uncast_table, const char *name, int *var) {
   TXT_SignalConnect(key_input, "set", KeySetCallback, var);
 }
 
-static void AddSectionLabel(void *uncast_table, const char *title, bool add_space) {
-  auto *table = reinterpret_cast<txt_table_t *>(uncast_table);
-  char  buf[64];
+static void AddSectionLabel(void * uncast_table, const char * title, bool add_space) {
+  auto * table = reinterpret_cast<txt_table_t *>(uncast_table);
+  char   buf[64];
 
   if (add_space) {
     TXT_AddWidgets(table,
@@ -288,10 +288,10 @@ static void AddSectionLabel(void *uncast_table, const char *title, bool add_spac
 }
 
 static void ConfigExtraKeys(void *, void *) {
-  txt_window_t     *window;
-  txt_scrollpane_t *scrollpane;
-  txt_table_t      *table;
-  bool              extra_keys = gamemission == heretic
+  txt_window_t *     window;
+  txt_scrollpane_t * scrollpane;
+  txt_table_t *      table;
+  bool               extra_keys = gamemission == heretic
                     || gamemission == hexen
                     || gamemission == strife;
 
@@ -407,9 +407,9 @@ static void ConfigExtraKeys(void *, void *) {
 }
 
 static void OtherKeysDialog(void *, void *) {
-  txt_window_t     *window;
-  txt_table_t      *table;
-  txt_scrollpane_t *scrollpane;
+  txt_window_t *     window;
+  txt_table_t *      table;
+  txt_scrollpane_t * scrollpane;
 
   window = TXT_NewWindow("Other keys");
 
@@ -495,8 +495,8 @@ static void OtherKeysDialog(void *, void *) {
 }
 
 void ConfigKeyboard(void *, void *) {
-  txt_window_t   *window;
-  txt_checkbox_t *run_control;
+  txt_window_t *   window;
+  txt_checkbox_t * run_control;
 
   always_run = g_m_controls_globals->joybspeed >= 20;
 

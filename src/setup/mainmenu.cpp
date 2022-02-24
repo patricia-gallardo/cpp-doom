@@ -122,7 +122,7 @@ static int MainMenuKeyPress(txt_window_t *, int key, void *) {
   return 0;
 }
 
-static void DoQuit(void *, void *dosave) {
+static void DoQuit(void *, void * dosave) {
   if (dosave != nullptr) {
     M_SaveDefaults();
   }
@@ -133,10 +133,10 @@ static void DoQuit(void *, void *dosave) {
 }
 
 static void QuitConfirm(void *, void *) {
-  txt_window_t *window;
-  txt_label_t  *label;
-  txt_button_t *yes_button;
-  txt_button_t *no_button;
+  txt_window_t * window;
+  txt_label_t *  label;
+  txt_button_t * yes_button;
+  txt_button_t * no_button;
 
   window = TXT_NewWindow(nullptr);
 
@@ -158,7 +158,7 @@ static void QuitConfirm(void *, void *) {
 }
 
 static void LaunchDoom(void *, void *) {
-  execute_context_t *exec;
+  execute_context_t * exec;
 
   // Save configuration first
 
@@ -177,8 +177,8 @@ static void LaunchDoom(void *, void *) {
   exit(0);
 }
 
-static txt_button_t *GetLaunchButton() {
-  const char *label;
+static txt_button_t * GetLaunchButton() {
+  const char * label;
 
   switch (gamemission) {
   case doom:
@@ -202,9 +202,9 @@ static txt_button_t *GetLaunchButton() {
 }
 
 void MainMenu() {
-  txt_window_t        *window;
-  txt_window_action_t *quit_action;
-  txt_window_action_t *warp_action;
+  txt_window_t *        window;
+  txt_window_action_t * quit_action;
+  txt_window_action_t * warp_action;
 
   window = TXT_NewWindow("Main Menu");
 
@@ -275,17 +275,17 @@ static void InitConfig() {
 //
 
 static void SetIcon() {
-  extern SDL_Window *TXT_SDLWindow;
+  extern SDL_Window * TXT_SDLWindow;
 
-  const unsigned int *const_ptr = setup_icon_data;
-  auto               *ptr       = const_cast<unsigned int *>(const_ptr);
-  SDL_Surface        *surface   = SDL_CreateRGBSurfaceFrom(reinterpret_cast<void *>(ptr), setup_icon_w, setup_icon_h, 32, setup_icon_w * 4, static_cast<Uint32>(0xff << 24), 0xff << 16, 0xff << 8, 0xff << 0);
+  const unsigned int * const_ptr = setup_icon_data;
+  auto *               ptr       = const_cast<unsigned int *>(const_ptr);
+  SDL_Surface *        surface   = SDL_CreateRGBSurfaceFrom(reinterpret_cast<void *>(ptr), setup_icon_w, setup_icon_h, 32, setup_icon_w * 4, static_cast<Uint32>(0xff << 24), 0xff << 16, 0xff << 8, 0xff << 0);
   SDL_SetWindowIcon(TXT_SDLWindow, surface);
   SDL_FreeSurface(surface);
 }
 
 static void SetWindowTitle() {
-  char *title;
+  char * title;
 
   title = M_StringReplace(PACKAGE_NAME " Setup ver " PACKAGE_VERSION,
                           "Doom",

@@ -27,7 +27,7 @@ using pcsound_init_func     = int (*)(pcsound_callback_func);
 using pcsound_shutdown_func = void (*)();
 
 struct pcsound_driver_s {
-  const char           *name;
+  const char *          name;
   pcsound_init_func     init_func;
   pcsound_shutdown_func shutdown_func;
 };

@@ -36,10 +36,10 @@
 
 typedef struct
 {
-  const char    *name;
-  const uint8_t *data;
-  unsigned int   w;
-  unsigned int   h;
+  const char *    name;
+  const uint8_t * data;
+  unsigned int    w;
+  unsigned int    h;
 } txt_font_t;
 
 // Fonts:
@@ -53,10 +53,10 @@ typedef struct
 
 constexpr auto BLINK_PERIOD = 250;
 
-SDL_Window           *TXT_SDLWindow;
-static SDL_Surface   *screenbuffer;
-static unsigned char *screendata;
-static SDL_Renderer  *renderer;
+SDL_Window *           TXT_SDLWindow;
+static SDL_Surface *   screenbuffer;
+static unsigned char * screendata;
+static SDL_Renderer *  renderer;
 
 // Current input mode.
 static txt_input_mode_t input_mode = TXT_INPUT_NORMAL;
@@ -66,10 +66,10 @@ static txt_input_mode_t input_mode = TXT_INPUT_NORMAL;
 static int screen_image_w, screen_image_h;
 
 static TxtSDLEventCallbackFunc event_callback;
-static void                   *event_callback_data;
+static void *                  event_callback_data;
 
 // Font we are using:
-static const txt_font_t *font;
+static const txt_font_t * font;
 
 // Dummy "font" that means to try highdpi rendering, or fallback to
 // normal_font otherwise.
@@ -80,8 +80,8 @@ static const int scancode_translate_table[] = SCANCODE_TO_KEYS_ARRAY;
 
 // String names of keys. This is a fallback; we usually use the SDL API.
 static const struct {
-  int         key;
-  const char *name;
+  int          key;
+  const char * name;
 } key_names[] = KEY_NAMES_ARRAY;
 
 // Unicode key mapping; see codepage.h.
@@ -132,8 +132,8 @@ static int Win32_UseLargeFont() {
 
 #endif
 
-static const txt_font_t *FontForName(const char *name) {
-  const txt_font_t *fonts[] = {
+static const txt_font_t * FontForName(const char * name) {
+  const txt_font_t * fonts[] = {
     &small_font,
     &normal_font,
     &large_font,
@@ -160,7 +160,7 @@ static void ChooseFont() {
   SDL_DisplayMode desktop_info;
 
   // Allow normal selection to be overridden from an environment variable:
-  char *env = getenv("TEXTSCREEN_FONT");
+  char * env = getenv("TEXTSCREEN_FONT");
   if (env != nullptr) {
     font = FontForName(env);
 
@@ -292,13 +292,13 @@ void TXT_SetColor(txt_color_t color, std::uint8_t r, std::uint8_t g, std::uint8_
   SDL_UnlockSurface(screenbuffer);
 }
 
-unsigned char *TXT_GetScreenData() {
+unsigned char * TXT_GetScreenData() {
   return screendata;
 }
 
 static inline void UpdateCharacter(int x, int y) {
-  const uint8_t *p         = &screendata[(y * TXT_SCREEN_W + x) * 2];
-  unsigned char  character = p[0];
+  const uint8_t * p         = &screendata[(y * TXT_SCREEN_W + x) * 2];
+  unsigned char   character = p[0];
 
   int fg = p[1] & 0xf;
   int bg = (p[1] >> 4) & 0xf;
@@ -318,12 +318,12 @@ static inline void UpdateCharacter(int x, int y) {
 
   unsigned int bit = 0;
 
-  unsigned char *s = (reinterpret_cast<unsigned char *>(screenbuffer->pixels))
-                     + (static_cast<unsigned int>(y) * font->h * static_cast<unsigned int>(screenbuffer->pitch))
-                     + (static_cast<unsigned int>(x) * font->w);
+  unsigned char * s = (reinterpret_cast<unsigned char *>(screenbuffer->pixels))
+                      + (static_cast<unsigned int>(y) * font->h * static_cast<unsigned int>(screenbuffer->pitch))
+                      + (static_cast<unsigned int>(x) * font->w);
 
   for (unsigned int y1 = 0; y1 < font->h; ++y1) {
-    unsigned char *s1 = s;
+    unsigned char * s1 = s;
 
     for (unsigned int x1 = 0; x1 < font->w; ++x1) {
       if (*p & (1 << bit)) {
@@ -353,7 +353,7 @@ static int LimitToRange(int val, int min, int max) {
   }
 }
 
-static void GetDestRect(SDL_Rect *rect) {
+static void GetDestRect(SDL_Rect * rect) {
   int w = 0, h = 0;
 
   SDL_GetRendererOutputSize(renderer, &w, &h);
@@ -383,7 +383,7 @@ void TXT_UpdateScreenArea(int x, int y, int w, int h) {
 
   // TODO: This is currently creating a new texture every time we render
   // the screen; find a more efficient way to do it.
-  SDL_Texture *screentx = SDL_CreateTextureFromSurface(renderer, screenbuffer);
+  SDL_Texture * screentx = SDL_CreateTextureFromSurface(renderer, screenbuffer);
 
   SDL_RenderClear(renderer);
   SDL_Rect rect;
@@ -398,7 +398,7 @@ void TXT_UpdateScreen() {
   TXT_UpdateScreenArea(0, 0, TXT_SCREEN_W, TXT_SCREEN_H);
 }
 
-void TXT_GetMousePosition(int *x, int *y) {
+void TXT_GetMousePosition(int * x, int * y) {
   SDL_GetMouseState(x, y);
 
   // Translate mouse position from 'pixel' position into character position.
@@ -455,7 +455,7 @@ static int TranslateScancode(SDL_Scancode scancode) {
   }
 }
 
-static int TranslateKeysym(const SDL_Keysym *sym) {
+static int TranslateKeysym(const SDL_Keysym * sym) {
   // We cheat here and make use of TranslateScancode. The range of keys
   // associated with printable characters is pretty contiguous, so if it's
   // inside that range we want the localized version of the key instead.
@@ -487,7 +487,7 @@ static int SDLButtonToTXTButton(int button) {
 
 // Convert an SDL wheel motion to a textscreen button index.
 
-static int SDLWheelToTXTButton(const SDL_MouseWheelEvent *wheel) {
+static int SDLWheelToTXTButton(const SDL_MouseWheelEvent * wheel) {
   if (wheel->y <= 0) {
     return TXT_MOUSE_SCROLLDOWN;
   } else {
@@ -556,8 +556,8 @@ signed int TXT_GetChar() {
     case SDL_TEXTINPUT:
       if (input_mode == TXT_INPUT_TEXT) {
         // TODO: Support input of more than just the first char?
-        const char *p      = ev.text.text;
-        int         result = static_cast<int>(TXT_DecodeUTF8(&p));
+        const char * p      = ev.text.text;
+        int          result = static_cast<int>(TXT_DecodeUTF8(&p));
         // 0-127 is ASCII, but we map non-ASCII Unicode chars into
         // a higher range to avoid conflicts with special keys.
         return TXT_UNICODE_TO_KEY(result);
@@ -610,8 +610,8 @@ int TXT_UnicodeCharacter(unsigned int c) {
 }
 
 // Returns true if the given UTF8 key name is printable to the screen.
-static int PrintableName(const char *s) {
-  const char *p = s;
+static int PrintableName(const char * s) {
+  const char * p = s;
   while (*p != '\0') {
     unsigned int c = TXT_DecodeUTF8(&p);
     if (TXT_UnicodeCharacter(c) < 0) {
@@ -622,7 +622,7 @@ static int PrintableName(const char *s) {
   return 1;
 }
 
-static const char *NameForKey(int key) {
+static const char * NameForKey(int key) {
   // Overrides purely for aesthetical reasons, so that default
   // window accelerator keys match those of setup.exe.
   switch (key) {
@@ -637,7 +637,7 @@ static const char *NameForKey(int key) {
   // we can convert it into a virtual key, then a string via SDL.
   for (size_t i = 0; i < std::size(scancode_translate_table); ++i) {
     if (scancode_translate_table[i] == key) {
-      const char *result = SDL_GetKeyName(SDL_GetKeyFromScancode(static_cast<SDL_Scancode>(i)));
+      const char * result = SDL_GetKeyName(SDL_GetKeyFromScancode(static_cast<SDL_Scancode>(i)));
       if (TXT_UTF8_Strlen(result) > 6 || !PrintableName(result)) {
         break;
       }
@@ -657,8 +657,8 @@ static const char *NameForKey(int key) {
   return nullptr;
 }
 
-void TXT_GetKeyDescription(int key, char *buf, size_t buf_len) {
-  const char *keyname = NameForKey(key);
+void TXT_GetKeyDescription(int key, char * buf, size_t buf_len) {
+  const char * keyname = NameForKey(key);
 
   if (keyname != nullptr) {
     TXT_StringCopy(buf, keyname, buf_len);
@@ -680,7 +680,7 @@ int TXT_ScreenHasBlinkingChars() {
 
   for (int y = 0; y < TXT_SCREEN_H; ++y) {
     for (int x = 0; x < TXT_SCREEN_W; ++x) {
-      unsigned char *p = &screendata[(y * TXT_SCREEN_W + x) * 2];
+      unsigned char * p = &screendata[(y * TXT_SCREEN_W + x) * 2];
 
       if (p[1] & 0x80) {
         // This character is blinking
@@ -746,18 +746,18 @@ void TXT_SetInputMode(txt_input_mode_t mode) {
   input_mode = mode;
 }
 
-void TXT_SetWindowTitle(const char *title) {
+void TXT_SetWindowTitle(const char * title) {
   SDL_SetWindowTitle(TXT_SDLWindow, title);
 }
 
-void TXT_SDL_SetEventCallback(TxtSDLEventCallbackFunc callback, void *user_data) {
+void TXT_SDL_SetEventCallback(TxtSDLEventCallbackFunc callback, void * user_data) {
   event_callback      = callback;
   event_callback_data = user_data;
 }
 
 // Safe string functions.
 
-void TXT_StringCopy(char *dest, const char *src, size_t dest_len) {
+void TXT_StringCopy(char * dest, const char * src, size_t dest_len) {
   if (dest_len < 1) {
     return;
   }
@@ -766,7 +766,7 @@ void TXT_StringCopy(char *dest, const char *src, size_t dest_len) {
   strncpy(dest, src, dest_len - 1);
 }
 
-void TXT_StringConcat(char *dest, const char *src, size_t dest_len) {
+void TXT_StringConcat(char * dest, const char * src, size_t dest_len) {
   size_t offset = strlen(dest);
   if (offset > dest_len) {
     offset = dest_len;
@@ -783,7 +783,7 @@ void TXT_StringConcat(char *dest, const char *src, size_t dest_len) {
 #endif
 
 // Safe, portable vsnprintf().
-int TXT_vsnprintf(char *buf, size_t buf_len, const char *s, va_list args) {
+int TXT_vsnprintf(char * buf, size_t buf_len, const char * s, va_list args) {
   if (buf_len < 1) {
     return 0;
   }
@@ -804,7 +804,7 @@ int TXT_vsnprintf(char *buf, size_t buf_len, const char *s, va_list args) {
 }
 
 // Safe, portable snprintf().
-int TXT_snprintf(char *buf, size_t buf_len, const char *s, ...) {
+int TXT_snprintf(char * buf, size_t buf_len, const char * s, ...) {
   va_list args;
   va_start(args, s);
   int result = TXT_vsnprintf(buf, buf_len, s, args);

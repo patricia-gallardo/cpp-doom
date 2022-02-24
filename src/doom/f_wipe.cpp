@@ -35,16 +35,16 @@
 // when zero, stop the wipe
 static bool go = false;
 
-static pixel_t *wipe_scr_start;
-static pixel_t *wipe_scr_end;
-static pixel_t *wipe_scr;
+static pixel_t * wipe_scr_start;
+static pixel_t * wipe_scr_end;
+static pixel_t * wipe_scr;
 
-void wipe_shittyColMajorXform(dpixel_t *array,
-                              int       width,
-                              int       height) {
-  int       x;
-  int       y;
-  dpixel_t *dest;
+void wipe_shittyColMajorXform(dpixel_t * array,
+                              int        width,
+                              int        height) {
+  int        x;
+  int        y;
+  dpixel_t * dest;
 
   dest = zmalloc<dpixel_t *>(static_cast<unsigned long>(width * height) * sizeof(*dest), PU_STATIC, 0);
 
@@ -65,10 +65,10 @@ int wipe_initColorXForm(int width, int height, int) {
 int wipe_doColorXForm(int width,
                       int height,
                       int ticks) {
-  bool     changed;
-  pixel_t *w;
-  pixel_t *e;
-  int      newval;
+  bool      changed;
+  pixel_t * w;
+  pixel_t * e;
+  int       newval;
 
   changed = false;
   w       = wipe_scr;
@@ -103,7 +103,7 @@ int wipe_exitColorXForm(int, int, int) {
   return 0;
 }
 
-static int *y;
+static int * y;
 
 int wipe_initMelt(int width, int height, int) {
   int i, r;
@@ -140,9 +140,9 @@ int wipe_doMelt(int width,
   int dy;
   int idx;
 
-  dpixel_t *s;
-  dpixel_t *d;
-  bool      done = true;
+  dpixel_t * s;
+  dpixel_t * d;
+  bool       done = true;
 
   width /= 2;
 
@@ -154,21 +154,21 @@ int wipe_doMelt(int width,
       } else if (y[i] < height) {
         dy = (y[i] < 16) ? y[i] + 1 : (8 << crispy->hires);
         if (y[i] + dy >= height) dy = height - y[i];
-        dpixel_t *pixel1 = reinterpret_cast<dpixel_t *>(wipe_scr_end);
-        s                = &pixel1[i * height + y[i]];
-        dpixel_t *pixel2 = reinterpret_cast<dpixel_t *>(wipe_scr);
-        d                = &pixel2[y[i] * width + i];
-        idx              = 0;
+        dpixel_t * pixel1 = reinterpret_cast<dpixel_t *>(wipe_scr_end);
+        s                 = &pixel1[i * height + y[i]];
+        dpixel_t * pixel2 = reinterpret_cast<dpixel_t *>(wipe_scr);
+        d                 = &pixel2[y[i] * width + i];
+        idx               = 0;
         for (j = dy; j; j--) {
           d[idx] = *(s++);
           idx += width;
         }
         y[i] += dy;
-        dpixel_t *pixel11 = reinterpret_cast<dpixel_t *>(wipe_scr_start);
-        s                 = &pixel11[i * height];
-        dpixel_t *pixel22 = reinterpret_cast<dpixel_t *>(wipe_scr);
-        d                 = &pixel22[y[i] * width + i];
-        idx               = 0;
+        dpixel_t * pixel11 = reinterpret_cast<dpixel_t *>(wipe_scr_start);
+        s                  = &pixel11[i * height];
+        dpixel_t * pixel22 = reinterpret_cast<dpixel_t *>(wipe_scr);
+        d                  = &pixel22[y[i] * width + i];
+        idx                = 0;
         for (j = height - y[i]; j; j--) {
           d[idx] = *(s++);
           idx += width;

@@ -37,15 +37,15 @@
 #include "memory.hpp"
 #include "p_extnodes.hpp"
 
-void      P_SpawnMapThing(mapthing_t *mthing);
-fixed_t   GetOffset(vertex_t *v1, vertex_t *v2);
-sector_t *GetSectorAtNullAddress();
+void       P_SpawnMapThing(mapthing_t * mthing);
+fixed_t    GetOffset(vertex_t * v1, vertex_t * v2);
+sector_t * GetSectorAtNullAddress();
 
 // [crispy] support maps with NODES in compressed or uncompressed ZDBSP
 // format or DeePBSP format and/or LINEDEFS and THINGS lumps in Hexen format
 mapformat_t P_CheckMapFormat(int lumpnum) {
   mapformat_t format      = mapformat_t::MFMT_DOOMBSP;
-  uint8_t    *nodes_local = nullptr;
+  uint8_t *   nodes_local = nullptr;
   int         b;
 
   if ((b = lumpnum + ML_BLOCKMAP + 1) < static_cast<int>(numlumps) && !strncasecmp(lumpinfo[b]->name, "BEHAVIOR", 8)) {
@@ -79,11 +79,11 @@ mapformat_t P_CheckMapFormat(int lumpnum) {
 void P_LoadSegs_DeePBSP(int lump) {
   g_r_state_globals->numsegs = static_cast<int>(W_LumpLength(lump) / sizeof(mapseg_deepbsp_t));
   g_r_state_globals->segs    = zmalloc<decltype(g_r_state_globals->segs)>(static_cast<unsigned long>(g_r_state_globals->numsegs) * sizeof(seg_t), PU_LEVEL, 0);
-  mapseg_deepbsp_t *data     = cache_lump_num<mapseg_deepbsp_t *>(lump, PU_STATIC);
+  mapseg_deepbsp_t * data    = cache_lump_num<mapseg_deepbsp_t *>(lump, PU_STATIC);
 
   for (int i = 0; i < g_r_state_globals->numsegs; i++) {
-    seg_t            *li = g_r_state_globals->segs + i;
-    mapseg_deepbsp_t *ml = data + i;
+    seg_t *            li = g_r_state_globals->segs + i;
+    mapseg_deepbsp_t * ml = data + i;
 
     li->v1 = &g_r_state_globals->vertexes[ml->v1];
     li->v2 = &g_r_state_globals->vertexes[ml->v2];
@@ -91,10 +91,10 @@ void P_LoadSegs_DeePBSP(int lump) {
     li->angle = static_cast<angle_t>((SHORT(ml->angle)) << FRACBITS);
 
     //	li->offset = (SHORT(ml->offset))<<FRACBITS; // [crispy] recalculated below
-    int     linedef_local = static_cast<unsigned short>(SHORT(ml->linedef));
-    line_t *ldef          = &g_r_state_globals->lines[linedef_local];
-    li->linedef           = ldef;
-    int side              = SHORT(ml->side);
+    int      linedef_local = static_cast<unsigned short>(SHORT(ml->linedef));
+    line_t * ldef          = &g_r_state_globals->lines[linedef_local];
+    li->linedef            = ldef;
+    int side               = SHORT(ml->side);
 
     // e6y: check for wrong indexes
     if (static_cast<unsigned>(ldef->sidenum[side]) >= static_cast<unsigned>(g_r_state_globals->numsides)) {
@@ -129,7 +129,7 @@ void P_LoadSegs_DeePBSP(int lump) {
 void P_LoadSubsectors_DeePBSP(int lump) {
   g_r_state_globals->numsubsectors = static_cast<int>(W_LumpLength(lump) / sizeof(mapsubsector_deepbsp_t));
   g_r_state_globals->subsectors    = zmalloc<decltype(g_r_state_globals->subsectors)>(static_cast<unsigned long>(g_r_state_globals->numsubsectors) * sizeof(subsector_t), PU_LEVEL, 0);
-  mapsubsector_deepbsp_t *data     = cache_lump_num<mapsubsector_deepbsp_t *>(lump, PU_STATIC);
+  mapsubsector_deepbsp_t * data    = cache_lump_num<mapsubsector_deepbsp_t *>(lump, PU_STATIC);
 
   // [crispy] fail on missing subsectors
   if (!data || !g_r_state_globals->numsubsectors)
@@ -148,7 +148,7 @@ void P_LoadNodes_DeePBSP(int lump) {
 
   g_r_state_globals->numnodes = static_cast<int>((W_LumpLength(lump) - 8) / sizeof(mapnode_deepbsp_t));
   g_r_state_globals->nodes    = zmalloc<decltype(g_r_state_globals->nodes)>(static_cast<unsigned long>(g_r_state_globals->numnodes) * sizeof(node_t), PU_LEVEL, 0);
-  auto *data                  = cache_lump_num<const uint8_t *>(lump, PU_STATIC);
+  auto * data                 = cache_lump_num<const uint8_t *>(lump, PU_STATIC);
 
   // [crispy] warn about missing nodes
   if (!data || !g_r_state_globals->numnodes) {
@@ -162,9 +162,9 @@ void P_LoadNodes_DeePBSP(int lump) {
   data += 8;
 
   for (int i = 0; i < g_r_state_globals->numnodes; i++) {
-    node_t                  *no = g_r_state_globals->nodes + i;
-    const mapnode_deepbsp_t *mn = reinterpret_cast<const mapnode_deepbsp_t *>(data) + i;
-    int                      j;
+    node_t *                  no = g_r_state_globals->nodes + i;
+    const mapnode_deepbsp_t * mn = reinterpret_cast<const mapnode_deepbsp_t *>(data) + i;
+    int                       j;
 
     no->x  = SHORT(mn->x) << FRACBITS;
     no->y  = SHORT(mn->y) << FRACBITS;
@@ -193,24 +193,24 @@ void P_LoadNodes_DeePBSP(int lump) {
 // - added support for flipped levels
 void P_LoadNodes_ZDBSP(int lump, bool compressed) {
 #ifdef HAVE_LIBZ
-  byte *output;
+  byte * output;
 #endif
 
   unsigned int orgVerts, newVerts;
   unsigned int numSubs, currSeg;
   unsigned int numSegs;
   unsigned int numNodes;
-  vertex_t    *newvertarray = nullptr;
+  vertex_t *   newvertarray = nullptr;
 
-  auto *data = cache_lump_num<uint8_t *>(lump, PU_LEVEL);
+  auto * data = cache_lump_num<uint8_t *>(lump, PU_LEVEL);
 
   // 0. Uncompress nodes lump (or simply skip header)
 
   if (compressed) {
 #ifdef HAVE_LIBZ
-    const int len = W_LumpLength(lump);
-    int       outlen, err;
-    z_stream *zstream;
+    const int  len = W_LumpLength(lump);
+    int        outlen, err;
+    z_stream * zstream;
 
     // first estimate for compression rate:
     // output buffer size == 2.5 * input size
@@ -307,7 +307,7 @@ void P_LoadNodes_ZDBSP(int lump, bool compressed) {
   g_r_state_globals->subsectors    = zmalloc<decltype(g_r_state_globals->subsectors)>(static_cast<unsigned long>(g_r_state_globals->numsubsectors) * sizeof(subsector_t), PU_LEVEL, 0);
 
   for (int i = currSeg = 0; i < g_r_state_globals->numsubsectors; i++) {
-    mapsubsector_zdbsp_t *mseg = reinterpret_cast<mapsubsector_zdbsp_t *>(data) + i;
+    mapsubsector_zdbsp_t * mseg = reinterpret_cast<mapsubsector_zdbsp_t *>(data) + i;
 
     g_r_state_globals->subsectors[i].firstline = static_cast<int>(currSeg);
     g_r_state_globals->subsectors[i].numlines  = static_cast<int>(mseg->numsegs);
@@ -330,11 +330,11 @@ void P_LoadNodes_ZDBSP(int lump, bool compressed) {
   g_r_state_globals->segs    = zmalloc<decltype(g_r_state_globals->segs)>(static_cast<unsigned long>(g_r_state_globals->numsegs) * sizeof(seg_t), PU_LEVEL, 0);
 
   for (int i = 0; i < g_r_state_globals->numsegs; i++) {
-    line_t         *ldef;
-    unsigned int    linedef_local;
-    unsigned char   side;
-    seg_t          *li = g_r_state_globals->segs + i;
-    mapseg_zdbsp_t *ml = reinterpret_cast<mapseg_zdbsp_t *>(data) + i;
+    line_t *         ldef;
+    unsigned int     linedef_local;
+    unsigned char    side;
+    seg_t *          li = g_r_state_globals->segs + i;
+    mapseg_zdbsp_t * ml = reinterpret_cast<mapseg_zdbsp_t *>(data) + i;
 
     li->v1 = &g_r_state_globals->vertexes[ml->v1];
     li->v2 = &g_r_state_globals->vertexes[ml->v2];
@@ -382,9 +382,9 @@ void P_LoadNodes_ZDBSP(int lump, bool compressed) {
   g_r_state_globals->nodes    = zmalloc<decltype(g_r_state_globals->nodes)>(static_cast<unsigned long>(g_r_state_globals->numnodes) * sizeof(node_t), PU_LEVEL, 0);
 
   for (int i = 0; i < g_r_state_globals->numnodes; i++) {
-    int              j, k;
-    node_t          *no = g_r_state_globals->nodes + i;
-    mapnode_zdbsp_t *mn = reinterpret_cast<mapnode_zdbsp_t *>(data) + i;
+    int               j, k;
+    node_t *          no = g_r_state_globals->nodes + i;
+    mapnode_zdbsp_t * mn = reinterpret_cast<mapnode_zdbsp_t *>(data) + i;
 
     no->x  = SHORT(mn->x) << FRACBITS;
     no->y  = SHORT(mn->y) << FRACBITS;
@@ -410,12 +410,12 @@ void P_LoadNodes_ZDBSP(int lump, bool compressed) {
 // [crispy] allow loading of Hexen-format maps
 // adapted from chocolate-doom/src/hexen/p_setup.c:348-400
 void P_LoadThings_Hexen(int lump) {
-  mapthing_t        spawnthing;
-  mapthing_hexen_t *mt;
-  int               numthings;
+  mapthing_t         spawnthing;
+  mapthing_hexen_t * mt;
+  int                numthings;
 
-  auto *data = cache_lump_num<uint8_t *>(lump, PU_STATIC);
-  numthings  = static_cast<int>(W_LumpLength(lump) / sizeof(mapthing_hexen_t));
+  auto * data = cache_lump_num<uint8_t *>(lump, PU_STATIC);
+  numthings   = static_cast<int>(W_LumpLength(lump) / sizeof(mapthing_hexen_t));
 
   mt = reinterpret_cast<mapthing_hexen_t *>(data);
   for (int i = 0; i < numthings; i++, mt++) {
@@ -446,11 +446,11 @@ void P_LoadLineDefs_Hexen(int lump) {
   g_r_state_globals->numlines = static_cast<int>(W_LumpLength(lump) / sizeof(maplinedef_hexen_t));
   g_r_state_globals->lines    = zmalloc<decltype(g_r_state_globals->lines)>(static_cast<unsigned long>(g_r_state_globals->numlines) * sizeof(line_t), PU_LEVEL, 0);
   std::memset(g_r_state_globals->lines, 0, static_cast<unsigned long>(g_r_state_globals->numlines) * sizeof(line_t));
-  auto *data = cache_lump_num<uint8_t *>(lump, PU_STATIC);
+  auto * data = cache_lump_num<uint8_t *>(lump, PU_STATIC);
 
-  maplinedef_hexen_t *mld  = reinterpret_cast<maplinedef_hexen_t *>(data);
-  line_t             *ld   = g_r_state_globals->lines;
-  int                 warn = 0; // [crispy] warn about unknown linedef types
+  maplinedef_hexen_t * mld  = reinterpret_cast<maplinedef_hexen_t *>(data);
+  line_t *             ld   = g_r_state_globals->lines;
+  int                  warn = 0; // [crispy] warn about unknown linedef types
   for (int i = 0; i < g_r_state_globals->numlines; i++, mld++, ld++) {
     ld->flags = static_cast<unsigned short>(SHORT(mld->flags));
 
@@ -467,8 +467,8 @@ void P_LoadLineDefs_Hexen(int lump) {
       warn++;
     }
 
-    vertex_t *v1 = ld->v1 = &g_r_state_globals->vertexes[static_cast<unsigned short>(SHORT(mld->v1))];
-    vertex_t *v2 = ld->v2 = &g_r_state_globals->vertexes[static_cast<unsigned short>(SHORT(mld->v2))];
+    vertex_t * v1 = ld->v1 = &g_r_state_globals->vertexes[static_cast<unsigned short>(SHORT(mld->v1))];
+    vertex_t * v2 = ld->v2 = &g_r_state_globals->vertexes[static_cast<unsigned short>(SHORT(mld->v2))];
 
     ld->dx = v2->x - v1->x;
     ld->dy = v2->y - v1->y;

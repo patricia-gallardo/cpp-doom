@@ -28,8 +28,8 @@
 // Called in st_stuff module, which handles the input.
 // Returns a 1 if the cheat was successful, 0 if failed.
 //
-int cht_CheckCheat(cheatseq_t *cht,
-                   char        key) {
+int cht_CheckCheat(cheatseq_t * cht,
+                   char         key) {
   // if we make a short sequence on a cheat with parameters, this
   // will not work in vanilla doom.  behave the same.
 
@@ -68,7 +68,7 @@ int cht_CheckCheat(cheatseq_t *cht,
   return false;
 }
 
-void cht_GetParam(cheatseq_t *cht,
-                  char       *buffer) {
+void cht_GetParam(cheatseq_t * cht,
+                  char *       buffer) {
   std::memcpy(buffer, cht->parameter_buf, static_cast<size_t>(cht->parameter_chars));
 }

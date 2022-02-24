@@ -30,7 +30,7 @@ constexpr auto MAX_OPL_QUEUE = 64;
 typedef struct
 {
   opl_callback_t callback;
-  void          *data;
+  void *         data;
   uint64_t       time;
 } opl_queue_entry_t;
 
@@ -39,30 +39,30 @@ struct [[maybe_unused]] opl_callback_queue_s {
   unsigned int      num_entries;
 };
 
-opl_callback_queue_t *OPL_Queue_Create() {
-  auto *queue = create_struct<opl_callback_queue_t>();
+opl_callback_queue_t * OPL_Queue_Create() {
+  auto * queue = create_struct<opl_callback_queue_t>();
 
   queue->num_entries = 0;
 
   return queue;
 }
 
-void OPL_Queue_Destroy(opl_callback_queue_t *queue) {
+void OPL_Queue_Destroy(opl_callback_queue_t * queue) {
   free(queue);
 }
 
-int OPL_Queue_IsEmpty(opl_callback_queue_t *queue) {
+int OPL_Queue_IsEmpty(opl_callback_queue_t * queue) {
   return queue->num_entries == 0;
 }
 
-void OPL_Queue_Clear(opl_callback_queue_t *queue) {
+void OPL_Queue_Clear(opl_callback_queue_t * queue) {
   queue->num_entries = 0;
 }
 
-void OPL_Queue_Push(opl_callback_queue_t *queue,
-                    opl_callback_t        callback,
-                    void                 *data,
-                    uint64_t              time) {
+void OPL_Queue_Push(opl_callback_queue_t * queue,
+                    opl_callback_t         callback,
+                    void *                 data,
+                    uint64_t               time) {
   if (queue->num_entries >= MAX_OPL_QUEUE) {
     fmt::fprintf(stderr, "OPL_Queue_Push: Exceeded maximum callbacks\n");
     return;
@@ -102,9 +102,9 @@ void OPL_Queue_Push(opl_callback_queue_t *queue,
   queue->entries[entry_id].time     = time;
 }
 
-int OPL_Queue_Pop(opl_callback_queue_t *queue,
-                  opl_callback_t       *callback,
-                  void                **data) {
+int OPL_Queue_Pop(opl_callback_queue_t * queue,
+                  opl_callback_t *       callback,
+                  void **                data) {
   // Empty?
   if (queue->num_entries <= 0) {
     return 0;
@@ -119,7 +119,7 @@ int OPL_Queue_Pop(opl_callback_queue_t *queue,
   // the heap, which must now be percolated down from the top.
 
   --queue->num_entries;
-  opl_queue_entry_t *entry = &queue->entries[queue->num_entries];
+  opl_queue_entry_t * entry = &queue->entries[queue->num_entries];
 
   // Percolate down.
 
@@ -166,7 +166,7 @@ int OPL_Queue_Pop(opl_callback_queue_t *queue,
   return 1;
 }
 
-uint64_t OPL_Queue_Peek(opl_callback_queue_t *queue) {
+uint64_t OPL_Queue_Peek(opl_callback_queue_t * queue) {
   if (queue->num_entries > 0) {
     return queue->entries[0].time;
   } else {
@@ -174,9 +174,9 @@ uint64_t OPL_Queue_Peek(opl_callback_queue_t *queue) {
   }
 }
 
-void OPL_Queue_AdjustCallbacks(opl_callback_queue_t *queue,
-                               uint64_t              time,
-                               float                 factor) {
+void OPL_Queue_AdjustCallbacks(opl_callback_queue_t * queue,
+                               uint64_t               time,
+                               float                  factor) {
   for (unsigned int i = 0; i < queue->num_entries; ++i) {
     auto offset            = queue->entries[i].time - time;
     queue->entries[i].time = time + static_cast<uint64_t>(static_cast<float>(offset) / factor);
@@ -187,7 +187,7 @@ void OPL_Queue_AdjustCallbacks(opl_callback_queue_t *queue,
 
 #include <assert.h>
 
-static void PrintQueueNode(opl_callback_queue_t *queue, int node, int depth) {
+static void PrintQueueNode(opl_callback_queue_t * queue, int node, int depth) {
   int i;
 
   if (node >= queue->num_entries) {
@@ -204,19 +204,19 @@ static void PrintQueueNode(opl_callback_queue_t *queue, int node, int depth) {
   PrintQueueNode(queue, node * 2 + 2, depth + 1);
 }
 
-static void PrintQueue(opl_callback_queue_t *queue) {
+static void PrintQueue(opl_callback_queue_t * queue) {
   PrintQueueNode(queue, 0, 0);
 }
 
 int main() {
-  opl_callback_queue_t *queue;
-  int                   iteration;
+  opl_callback_queue_t * queue;
+  int                    iteration;
 
   queue = OPL_Queue_Create();
 
   for (iteration = 0; iteration < 5000; ++iteration) {
     opl_callback_t callback;
-    void          *data;
+    void *         data;
     unsigned int   time;
     unsigned int   newtime;
     int            i;

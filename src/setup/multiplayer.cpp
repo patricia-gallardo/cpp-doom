@@ -60,8 +60,8 @@ static const iwad_t fallback_iwads[] = {
 
 // Array of IWADs found to be installed
 
-static const iwad_t **found_iwads;
-static const char   **iwad_labels;
+static const iwad_t ** found_iwads;
+static const char **   iwad_labels;
 
 // Index of the currently selected IWAD
 
@@ -69,11 +69,11 @@ static int found_iwad_selected = -1;
 
 // Filename to pass to '-iwad'.
 
-static const char *iwadfile;
+static const char * iwadfile;
 
-static const char *wad_extensions[] = { "wad", "lmp", "deh", nullptr };
+static const char * wad_extensions[] = { "wad", "lmp", "deh", nullptr };
 
-static const char *doom_skills[] = {
+static const char * doom_skills[] = {
   "I'm too young to die.",
   "Hey, not too rough.",
   "Hurt me plenty.",
@@ -81,7 +81,7 @@ static const char *doom_skills[] = {
   "NIGHTMARE!",
 };
 
-static const char *chex_skills[] = {
+static const char * chex_skills[] = {
   "Easy does it",
   "Not so sticky",
   "Gobs of goo",
@@ -89,7 +89,7 @@ static const char *chex_skills[] = {
   "SUPER SLIMEY!"
 };
 
-static const char *heretic_skills[] = {
+static const char * heretic_skills[] = {
   "Thou needeth a wet-nurse",
   "Yellowbellies-R-us",
   "Bringest them oneth",
@@ -97,7 +97,7 @@ static const char *heretic_skills[] = {
   "Black plague possesses thee"
 };
 
-static const char *hexen_fighter_skills[] = {
+static const char * hexen_fighter_skills[] = {
   "Squire",
   "Knight",
   "Warrior",
@@ -105,7 +105,7 @@ static const char *hexen_fighter_skills[] = {
   "Titan"
 };
 
-static const char *hexen_cleric_skills[] = {
+static const char * hexen_cleric_skills[] = {
   "Altar boy",
   "Acolyte",
   "Priest",
@@ -113,7 +113,7 @@ static const char *hexen_cleric_skills[] = {
   "Pope"
 };
 
-static const char *hexen_mage_skills[] = {
+static const char * hexen_mage_skills[] = {
   "Apprentice",
   "Enchanter",
   "Sorceror",
@@ -121,7 +121,7 @@ static const char *hexen_mage_skills[] = {
   "Archimage"
 };
 
-static const char *strife_skills[] = {
+static const char * strife_skills[] = {
   "Training",
   "Rookie",
   "Veteran",
@@ -129,57 +129,57 @@ static const char *strife_skills[] = {
   "Bloodbath"
 };
 
-static const char *character_classes[] = { "Fighter", "Cleric", "Mage" };
+static const char * character_classes[] = { "Fighter", "Cleric", "Mage" };
 
-static const char *gamemodes[] = { "Co-operative", "Deathmatch", "Deathmatch 2.0", "Deathmatch 3.0" };
+static const char * gamemodes[] = { "Co-operative", "Deathmatch", "Deathmatch 2.0", "Deathmatch 3.0" };
 
-static const char *strife_gamemodes[] = {
+static const char * strife_gamemodes[] = {
   "Normal deathmatch",
   "Items respawn", // (altdeath)
 };
 
-static char *net_player_name;
-static char *chat_macros[10];
+static char * net_player_name;
+static char * chat_macros[10];
 
-static char *wads[NUM_WADS];
-static char *extra_params[NUM_EXTRA_PARAMS];
-static int   character_class = 0;
-static int   skill           = 2;
-static int   nomonsters      = 0;
-static int   deathmatch      = 0;
-static int   strife_altdeath = 0;
-static int   fast            = 0;
-static int   respawn         = 0;
-static int   udpport         = 2342;
-static int   timer           = 0;
-static int   privateserver   = 0;
+static char * wads[NUM_WADS];
+static char * extra_params[NUM_EXTRA_PARAMS];
+static int    character_class = 0;
+static int    skill           = 2;
+static int    nomonsters      = 0;
+static int    deathmatch      = 0;
+static int    strife_altdeath = 0;
+static int    fast            = 0;
+static int    respawn         = 0;
+static int    udpport         = 2342;
+static int    timer           = 0;
+static int    privateserver   = 0;
 
-static txt_dropdown_list_t *skillbutton;
-static txt_button_t        *warpbutton;
-static warptype_t           warptype    = WARP_MAPxy;
-static int                  warpepisode = 1;
-static int                  warpmap     = 1;
+static txt_dropdown_list_t * skillbutton;
+static txt_button_t *        warpbutton;
+static warptype_t            warptype    = WARP_MAPxy;
+static int                   warpepisode = 1;
+static int                   warpmap     = 1;
 
 // Address to connect to when joining a game
 
-static char *connect_address = nullptr;
+static char * connect_address = nullptr;
 
-static txt_window_t *query_window;
-static int           query_servers_found;
+static txt_window_t * query_window;
+static int            query_servers_found;
 
 // Find an IWAD from its description
 
-static const iwad_t *GetCurrentIWAD() {
+static const iwad_t * GetCurrentIWAD() {
   return found_iwads[found_iwad_selected];
 }
 
 // Is the currently selected IWAD the Chex Quest chex.wad?
 
-static bool IsChexQuest(const iwad_t *iwad) {
+static bool IsChexQuest(const iwad_t * iwad) {
   return !strcmp(iwad->name, "chex.wad");
 }
 
-static void AddWADs(execute_context_t *exec) {
+static void AddWADs(execute_context_t * exec) {
   int have_wads = 0;
   int i;
 
@@ -194,7 +194,7 @@ static void AddWADs(execute_context_t *exec) {
   }
 }
 
-static void AddExtraParameters(execute_context_t *exec) {
+static void AddExtraParameters(execute_context_t * exec) {
   int i;
 
   for (i = 0; i < NUM_EXTRA_PARAMS; ++i) {
@@ -204,7 +204,7 @@ static void AddExtraParameters(execute_context_t *exec) {
   }
 }
 
-static void AddIWADParameter(execute_context_t *exec) {
+static void AddIWADParameter(execute_context_t * exec) {
   if (iwadfile != nullptr) {
     AddCmdLineParameter(exec, "-iwad %s", iwadfile);
   }
@@ -215,7 +215,7 @@ static void AddIWADParameter(execute_context_t *exec) {
 // single player game via the "warp" menu.
 
 static void StartGame(int multiplayer) {
-  execute_context_t *exec;
+  execute_context_t * exec;
 
   exec = NewExecuteContext();
 
@@ -307,7 +307,7 @@ static void UpdateWarpButton() {
 }
 
 static void UpdateSkillButton() {
-  const iwad_t *iwad = GetCurrentIWAD();
+  const iwad_t * iwad = GetCurrentIWAD();
 
   if (IsChexQuest(iwad)) {
     skillbutton->values = chex_skills;
@@ -338,7 +338,7 @@ static void UpdateSkillButton() {
     }
 }
 
-static void SetExMyWarp(void *, void *val) {
+static void SetExMyWarp(void *, void * val) {
   int l = static_cast<int>(reinterpret_cast<intptr_t>(val));
 
   warpepisode = l / 10;
@@ -347,7 +347,7 @@ static void SetExMyWarp(void *, void *val) {
   UpdateWarpButton();
 }
 
-static void SetMAPxyWarp(void *, void *val) {
+static void SetMAPxyWarp(void *, void * val) {
   int l = static_cast<int>(reinterpret_cast<intptr_t>(val));
 
   warpmap = l;
@@ -355,21 +355,21 @@ static void SetMAPxyWarp(void *, void *val) {
   UpdateWarpButton();
 }
 
-static void CloseLevelSelectDialog(void *, void *uncast_window) {
-  auto *window = reinterpret_cast<txt_window_t *>(uncast_window);
+static void CloseLevelSelectDialog(void *, void * uncast_window) {
+  auto * window = reinterpret_cast<txt_window_t *>(uncast_window);
 
   TXT_CloseWindow(window);
 }
 
 static void LevelSelectDialog(void *, void *) {
-  txt_window_t *window;
-  txt_button_t *button;
-  const iwad_t *iwad;
-  char          buf[10];
-  int           episodes;
-  intptr_t      x, y;
-  intptr_t      l;
-  int           i;
+  txt_window_t * window;
+  txt_button_t * button;
+  const iwad_t * iwad;
+  char           buf[10];
+  int            episodes;
+  intptr_t       x, y;
+  intptr_t       l;
+  int            i;
 
   window = TXT_NewWindow("Select level");
   iwad   = GetCurrentIWAD();
@@ -430,7 +430,7 @@ static void LevelSelectDialog(void *, void *) {
 }
 
 static void IWADSelected(void *, void *) {
-  const iwad_t *iwad;
+  const iwad_t * iwad;
 
   // Find the iwad_t selected
 
@@ -444,8 +444,8 @@ static void IWADSelected(void *, void *) {
 // Called when the IWAD button is changed, to update warptype.
 
 static void UpdateWarpType(void *, void *) {
-  warptype_t    new_warptype;
-  const iwad_t *iwad;
+  warptype_t     new_warptype;
+  const iwad_t * iwad;
 
   // Get the selected IWAD
 
@@ -475,15 +475,15 @@ static void UpdateWarpType(void *, void *) {
 // Get an IWAD list with a default fallback IWAD that is appropriate
 // for the game we are configuring (matches gamemission global variable).
 
-static const iwad_t **GetFallbackIwadList() {
-  static const iwad_t *fallback_iwad_list[2] = {};
+static const iwad_t ** GetFallbackIwadList() {
+  static const iwad_t * fallback_iwad_list[2] = {};
 
   // Default to use if we don't find something better.
 
   fallback_iwad_list[0] = &fallback_iwads[0];
   fallback_iwad_list[1] = nullptr;
 
-  for (const auto &fallback_iwad : fallback_iwads) {
+  for (const auto & fallback_iwad : fallback_iwads) {
     if (gamemission == fallback_iwad.mission) {
       fallback_iwad_list[0] = &fallback_iwad;
       break;
@@ -493,7 +493,7 @@ static const iwad_t **GetFallbackIwadList() {
   return fallback_iwad_list;
 }
 
-static txt_widget_t *IWADSelector() {
+static txt_widget_t * IWADSelector() {
   // Find out what WADs are installed
 
   found_iwads = GetIwads();
@@ -521,7 +521,7 @@ static txt_widget_t *IWADSelector() {
   }
 
   // Build a dropdown list of IWADs
-  txt_widget_t *result = nullptr;
+  txt_widget_t * result = nullptr;
 
   if (num_iwads < 2) {
     // We have only one IWAD.  Show as a label.
@@ -530,9 +530,9 @@ static txt_widget_t *IWADSelector() {
   } else {
     // Dropdown list allowing IWAD to be selected.
 
-    txt_dropdown_list_t *dropdown = TXT_NewDropdownList(&found_iwad_selected,
-                                                        iwad_labels,
-                                                        num_iwads);
+    txt_dropdown_list_t * dropdown = TXT_NewDropdownList(&found_iwad_selected,
+                                                         iwad_labels,
+                                                         num_iwads);
 
     TXT_SignalConnect(dropdown, "changed", IWADSelected, nullptr);
 
@@ -556,9 +556,9 @@ static txt_widget_t *IWADSelector() {
 // a different callback depending on whether to start a multiplayer
 // or single player game.
 
-static txt_window_action_t *StartGameAction(int multiplayer) {
-  txt_window_action_t *action;
-  TxtWidgetSignalFunc  callback;
+static txt_window_action_t * StartGameAction(int multiplayer) {
+  txt_window_action_t * action;
+  TxtWidgetSignalFunc   callback;
 
   action = TXT_NewWindowAction(KEY_F10, "Start");
 
@@ -574,8 +574,8 @@ static txt_window_action_t *StartGameAction(int multiplayer) {
 }
 
 static void OpenWadsWindow(void *, void *) {
-  txt_window_t *window;
-  int           i;
+  txt_window_t * window;
+  int            i;
 
   window = TXT_NewWindow("Add WADs");
 
@@ -586,8 +586,8 @@ static void OpenWadsWindow(void *, void *) {
 }
 
 static void OpenExtraParamsWindow(void *, void *) {
-  txt_window_t *window;
-  int           i;
+  txt_window_t * window;
+  int            i;
 
   window = TXT_NewWindow("Extra command line parameters");
 
@@ -596,8 +596,8 @@ static void OpenExtraParamsWindow(void *, void *) {
   }
 }
 
-static txt_window_action_t *WadWindowAction() {
-  txt_window_action_t *action;
+static txt_window_action_t * WadWindowAction() {
+  txt_window_action_t * action;
 
   action = TXT_NewWindowAction('w', "Add WADs");
   TXT_SignalConnect(action, "pressed", OpenWadsWindow, nullptr);
@@ -605,7 +605,7 @@ static txt_window_action_t *WadWindowAction() {
   return action;
 }
 
-static txt_dropdown_list_t *GameTypeDropdown() {
+static txt_dropdown_list_t * GameTypeDropdown() {
   switch (gamemission) {
   case doom:
   default:
@@ -630,9 +630,9 @@ static txt_dropdown_list_t *GameTypeDropdown() {
 // and the single player warp menu.  The parameters specify
 // the window title and whether to display multiplayer options.
 
-static void StartGameMenu(const char *window_title, int multiplayer) {
-  txt_window_t *window;
-  txt_widget_t *iwad_selector;
+static void StartGameMenu(const char * window_title, int multiplayer) {
+  txt_window_t * window;
+  txt_widget_t * iwad_selector;
 
   window = TXT_NewWindow(window_title);
   TXT_SetTableColumns(window, 2);
@@ -653,7 +653,7 @@ static void StartGameMenu(const char *window_title, int multiplayer) {
                  nullptr);
 
   if (gamemission == hexen) {
-    txt_dropdown_list_t *cc_dropdown;
+    txt_dropdown_list_t * cc_dropdown;
     TXT_AddWidgets(window,
                    TXT_NewLabel("Character class "),
                    cc_dropdown = TXT_NewDropdownList(&character_class,
@@ -733,7 +733,7 @@ static void DoJoinGame(void *, void *) {
     return;
   }
 
-  execute_context_t *exec = NewExecuteContext();
+  execute_context_t * exec = NewExecuteContext();
 
   AddCmdLineParameter(exec, "-connect %s", connect_address);
 
@@ -759,8 +759,8 @@ static void DoJoinGame(void *, void *) {
   exit(0);
 }
 
-static txt_window_action_t *JoinGameAction() {
-  txt_window_action_t *action;
+static txt_window_action_t * JoinGameAction() {
+  txt_window_action_t * action;
 
   action = TXT_NewWindowAction(KEY_F10, "Connect");
   TXT_SignalConnect(action, "pressed", DoJoinGame, nullptr);
@@ -768,10 +768,10 @@ static txt_window_action_t *JoinGameAction() {
   return action;
 }
 
-static void SelectQueryAddress(void *uncast_button, void *uncast_querydata) {
-  auto *button    = reinterpret_cast<txt_button_t *>(uncast_button);
-  auto *querydata = reinterpret_cast<net_querydata_t *>(uncast_querydata);
-  int   i;
+static void SelectQueryAddress(void * uncast_button, void * uncast_querydata) {
+  auto * button    = reinterpret_cast<txt_button_t *>(uncast_button);
+  auto * querydata = reinterpret_cast<net_querydata_t *>(uncast_querydata);
+  int    i;
 
   if (querydata->server_state != 0) {
     TXT_MessageBox("Cannot connect to server",
@@ -818,10 +818,10 @@ static void SelectQueryAddress(void *uncast_button, void *uncast_querydata) {
   TXT_CloseWindow(query_window);
 }
 
-static void QueryResponseCallback(net_addr_t *addr, net_querydata_t *querydata, unsigned int ping_time, void *uncast_results_table) {
-  auto *results_table = reinterpret_cast<txt_table_t *>(uncast_results_table);
-  char  ping_time_str[16];
-  char  description[47];
+static void QueryResponseCallback(net_addr_t * addr, net_querydata_t * querydata, unsigned int ping_time, void * uncast_results_table) {
+  auto * results_table = reinterpret_cast<txt_table_t *>(uncast_results_table);
+  char   ping_time_str[16];
+  char   description[47];
 
   // When we connect we'll have to negotiate a common protocol that we
   // can agree upon between the client and server. If we can't then we
@@ -857,8 +857,8 @@ static void QueryResponseCallback(net_addr_t *addr, net_querydata_t *querydata, 
   ++query_servers_found;
 }
 
-static void QueryPeriodicCallback(void *uncast_results_table) {
-  auto *results_table = reinterpret_cast<txt_table_t *>(uncast_results_table);
+static void QueryPeriodicCallback(void * uncast_results_table) {
+  auto * results_table = reinterpret_cast<txt_table_t *>(uncast_results_table);
 
   if (!NET_Query_Poll(QueryResponseCallback, results_table)) {
     TXT_SetPeriodicCallback(nullptr, nullptr, 0);
@@ -876,8 +876,8 @@ static void QueryWindowClosed(void *, void *) {
   TXT_SetPeriodicCallback(nullptr, nullptr, 0);
 }
 
-static void ServerQueryWindow(const char *title) {
-  txt_table_t *results_table;
+static void ServerQueryWindow(const char * title) {
+  txt_table_t * results_table;
 
   query_servers_found = 0;
 
@@ -903,8 +903,8 @@ static void FindLANServer(void *, void *) {
 }
 
 void JoinMultiGame(void *, void *) {
-  txt_window_t   *window;
-  txt_inputbox_t *address_box;
+  txt_window_t *   window;
+  txt_inputbox_t * address_box;
 
   window = TXT_NewWindow("Join multiplayer game");
   TXT_SetTableColumns(window, 2);
@@ -953,8 +953,8 @@ void JoinMultiGame(void *, void *) {
 }
 
 void SetChatMacroDefaults() {
-  int               i;
-  const char *const defaults[] = {
+  int                i;
+  const char * const defaults[] = {
     HUSTR_CHATMACRO0,
     HUSTR_CHATMACRO1,
     HUSTR_CHATMACRO2,
@@ -983,11 +983,11 @@ void SetPlayerNameDefault() {
 }
 
 void MultiplayerConfig(void *, void *) {
-  txt_window_t *window;
-  txt_label_t  *label;
-  txt_table_t  *table;
-  char          buf[10];
-  int           i;
+  txt_window_t * window;
+  txt_label_t *  label;
+  txt_table_t *  table;
+  char           buf[10];
+  int            i;
 
   window = TXT_NewWindow("Multiplayer Configuration");
   TXT_SetWindowHelpURL(window, MULTI_CONFIG_HELP_URL);

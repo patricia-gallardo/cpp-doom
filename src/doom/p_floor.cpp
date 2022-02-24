@@ -40,12 +40,12 @@ constexpr auto STAIRS_UNINITIALIZED_CRUSH_FIELD_VALUE = 10;
 // Move a plane (floor or ceiling) and check for crushing
 //
 result_e
-    T_MovePlane(sector_t *sector,
-                fixed_t   speed,
-                fixed_t   dest,
-                bool      crush,
-                int       floorOrCeiling,
-                int       direction) {
+    T_MovePlane(sector_t * sector,
+                fixed_t    speed,
+                fixed_t    dest,
+                bool       crush,
+                int        floorOrCeiling,
+                int        direction) {
   bool    flag    = false;
   fixed_t lastpos = 0;
 
@@ -179,7 +179,7 @@ result_e
 //
 // MOVE A FLOOR TO IT'S DESTINATION (UP OR DOWN)
 //
-void T_MoveFloor(floormove_t *floor) {
+void T_MoveFloor(floormove_t * floor) {
   result_e res = T_MovePlane(floor->sector,
                              floor->speed,
                              floor->floordestheight,
@@ -217,7 +217,7 @@ void T_MoveFloor(floormove_t *floor) {
 }
 
 // [crispy] easter egg: homage to an old friend (thinker)
-void T_MoveGoobers(floormove_t *floor) {
+void T_MoveGoobers(floormove_t * floor) {
   // [crispy] one thinker for the floors ...
   result_e res1 = T_MovePlane(floor->sector, 2 * FLOORSPEED, 0, true, 0, (floor->direction & 1) * 2 - 1);
   // [crispy] ... and one for the ceilings
@@ -243,9 +243,9 @@ void T_MoveGoobers(floormove_t *floor) {
 // [crispy] easter egg: homage to an old friend
 [[maybe_unused]] void EV_DoGoobers() {
   for (int i = 0; i < g_r_state_globals->numsectors; i++) {
-    floormove_t *floor = nullptr;
+    floormove_t * floor = nullptr;
 
-    sector_t *sec = &g_r_state_globals->sectors[i];
+    sector_t * sec = &g_r_state_globals->sectors[i];
 
     // [crispy] remove thinker for sectors that are already moving
     if (sec->specialdata) {
@@ -272,13 +272,13 @@ void T_MoveGoobers(floormove_t *floor) {
 //
 // HANDLE FLOOR TYPES
 //
-int EV_DoFloor(line_t *line,
-               floor_e floortype) {
-  int          secnum;
-  int          rtn;
-  int          i;
-  sector_t    *sec;
-  floormove_t *floor;
+int EV_DoFloor(line_t * line,
+               floor_e  floortype) {
+  int           secnum;
+  int           rtn;
+  int           i;
+  sector_t *    sec;
+  floormove_t * floor;
 
   secnum = -1;
   rtn    = 0;
@@ -378,8 +378,8 @@ int EV_DoFloor(line_t *line,
       break;
 
     case raiseToTexture: {
-      int     minsize = INT_MAX;
-      side_t *side;
+      int      minsize = INT_MAX;
+      side_t * side;
 
       floor->direction = 1;
       floor->sector    = sec;
@@ -441,8 +441,8 @@ int EV_DoFloor(line_t *line,
 //
 // BUILD A STAIRCASE!
 //
-int EV_BuildStairs(line_t *line,
-                   stair_e type) {
+int EV_BuildStairs(line_t * line,
+                   stair_e  type) {
   int secnum;
   int height;
   int i;
@@ -451,10 +451,10 @@ int EV_BuildStairs(line_t *line,
   int ok;
   int rtn;
 
-  sector_t *sec;
-  sector_t *tsec;
+  sector_t * sec;
+  sector_t * tsec;
 
-  floormove_t *floor;
+  floormove_t * floor;
 
   fixed_t stairsize = 0;
   fixed_t speed     = 0;

@@ -87,7 +87,7 @@ typedef struct
 
   // Meta event data:
 
-  uint8_t *data;
+  uint8_t * data;
 } midi_meta_event_data_t;
 
 typedef struct
@@ -98,7 +98,7 @@ typedef struct
 
   // Event data:
 
-  uint8_t *data;
+  uint8_t * data;
 } midi_sysex_event_data_t;
 
 typedef struct
@@ -130,38 +130,38 @@ typedef struct
 
 // Load a MIDI file.
 
-midi_file_t *MIDI_LoadFile(char *filename);
+midi_file_t * MIDI_LoadFile(char * filename);
 
 // Free a MIDI file.
 
-void MIDI_FreeFile(midi_file_t *file);
+void MIDI_FreeFile(midi_file_t * file);
 
 // Get the time division value from the MIDI header.
 
-unsigned int MIDI_GetFileTimeDivision(midi_file_t *file);
+unsigned int MIDI_GetFileTimeDivision(midi_file_t * file);
 
 // Get the number of tracks in a MIDI file.
 
-unsigned int MIDI_NumTracks(midi_file_t *file);
+unsigned int MIDI_NumTracks(midi_file_t * file);
 
 // Start iterating over the events in a track.
 
-midi_track_iter_t *MIDI_IterateTrack(midi_file_t *file, unsigned int track_num);
+midi_track_iter_t * MIDI_IterateTrack(midi_file_t * file, unsigned int track_num);
 
 // Free an iterator.
 
-void MIDI_FreeIterator(midi_track_iter_t *iter);
+void MIDI_FreeIterator(midi_track_iter_t * iter);
 
 // Get the time until the next MIDI event in a track.
 
-unsigned int MIDI_GetDeltaTime(midi_track_iter_t *iter);
+unsigned int MIDI_GetDeltaTime(midi_track_iter_t * iter);
 
 // Get a pointer to the next MIDI event.
 
-int MIDI_GetNextEvent(midi_track_iter_t *iter, midi_event_t **event);
+int MIDI_GetNextEvent(midi_track_iter_t * iter, midi_event_t ** event);
 
 // Reset an iterator to the beginning of a track.
 
-void MIDI_RestartIterator(midi_track_iter_t *iter);
+void MIDI_RestartIterator(midi_track_iter_t * iter);
 
 #endif /* #ifndef MIDIFILE_H */

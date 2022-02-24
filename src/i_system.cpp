@@ -48,15 +48,15 @@
 using atexit_listentry_t = struct atexit_listentry_s;
 
 struct atexit_listentry_s {
-  atexit_func_t       func;
-  bool                run_on_error;
-  atexit_listentry_t *next;
+  atexit_func_t        func;
+  bool                 run_on_error;
+  atexit_listentry_t * next;
 };
 
-static atexit_listentry_t *exit_funcs = nullptr;
+static atexit_listentry_t * exit_funcs = nullptr;
 
 void I_AtExit(atexit_func_t func, bool run_on_error) {
-  auto *entry = create_struct<atexit_listentry_t>();
+  auto * entry = create_struct<atexit_listentry_t>();
 
   entry->func         = func;
   entry->run_on_error = run_on_error;
@@ -73,8 +73,8 @@ void I_Tactile(int, int, int) {
 // by trying progressively smaller zone sizes until one is found that
 // works.
 
-static uint8_t *AutoAllocMemory(int *size, int default_ram, int min_ram) {
-  uint8_t *zonemem;
+static uint8_t * AutoAllocMemory(int * size, int default_ram, int min_ram) {
+  uint8_t * zonemem;
 
   // Allocate the zone memory.  This loop tries progressively smaller
   // zone sizes until a size is found that can be allocated.
@@ -107,8 +107,8 @@ static uint8_t *AutoAllocMemory(int *size, int default_ram, int min_ram) {
   return zonemem;
 }
 
-uint8_t *I_ZoneBase(int *size) {
-  uint8_t   *zonemem;
+uint8_t * I_ZoneBase(int * size) {
+  uint8_t *  zonemem;
   int        min_ram, default_ram;
   int        p;
   static int i = 1;
@@ -147,7 +147,7 @@ uint8_t *I_ZoneBase(int *size) {
   return zonemem;
 }
 
-void I_PrintBanner(const char *msg) {
+void I_PrintBanner(const char * msg) {
   size_t spaces = 35 - (strlen(msg) / 2);
 
   for (size_t i = 0; i < spaces; ++i)
@@ -166,7 +166,7 @@ void I_PrintDivider() {
   putchar('\n');
 }
 
-void I_PrintStartupBanner(const char *gamedescription) {
+void I_PrintStartupBanner(const char * gamedescription) {
   I_PrintDivider();
   I_PrintBanner(gamedescription);
   I_PrintDivider();
@@ -218,7 +218,7 @@ void I_BindVariables()
 //
 
 void I_Quit() {
-  atexit_listentry_t *entry;
+  atexit_listentry_t * entry;
 
   // Run through all exit functions
 
@@ -240,11 +240,11 @@ void I_Quit() {
 
 static bool already_quitting = false;
 
-void I_Error(const char *error, ...) {
-  char                msgbuf[512];
-  va_list             argptr;
-  atexit_listentry_t *entry;
-  bool                exit_gui_popup;
+void I_Error(const char * error, ...) {
+  char                 msgbuf[512];
+  va_list              argptr;
+  atexit_listentry_t * entry;
+  bool                 exit_gui_popup;
 
   if (already_quitting) {
     fmt::fprintf(stderr, "Warning: recursive call to I_Error detected.\n");
@@ -308,8 +308,8 @@ void I_Error(const char *error, ...) {
 // I_Realloc
 //
 
-void *I_Realloc(void *ptr, size_t size) {
-  void *new_ptr;
+void * I_Realloc(void * ptr, size_t size) {
+  void * new_ptr;
 
   new_ptr = realloc(ptr, size);
 
@@ -378,9 +378,9 @@ static const unsigned char mem_dump_dosbox[DOS_MEM_DUMP_SIZE] = {
 };
 static unsigned char mem_dump_custom[DOS_MEM_DUMP_SIZE];
 
-static const unsigned char *dos_mem_dump = mem_dump_dos622;
+static const unsigned char * dos_mem_dump = mem_dump_dos622;
 
-bool I_GetMemoryValue(unsigned int offset, void *value, int size) {
+bool I_GetMemoryValue(unsigned int offset, void * value, int size) {
   static bool firsttime = true;
 
   if (firsttime) {

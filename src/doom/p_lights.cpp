@@ -32,7 +32,7 @@
 //
 // T_FireFlicker
 //
-void T_FireFlicker(fireflicker_t *flick) {
+void T_FireFlicker(fireflicker_t * flick) {
   if (--flick->count)
     return;
 
@@ -49,12 +49,12 @@ void T_FireFlicker(fireflicker_t *flick) {
 //
 // P_SpawnFireFlicker
 //
-void P_SpawnFireFlicker(sector_t *sector) {
+void P_SpawnFireFlicker(sector_t * sector) {
   // Note that we are resetting sector attributes.
   // Nothing special about it during gameplay.
   sector->special = 0;
 
-  fireflicker_t *flick = zmalloc<decltype(flick)>(sizeof(*flick), PU_LEVSPEC, 0);
+  fireflicker_t * flick = zmalloc<decltype(flick)>(sizeof(*flick), PU_LEVSPEC, 0);
 
   P_AddThinker(&flick->thinker);
 
@@ -73,7 +73,7 @@ void P_SpawnFireFlicker(sector_t *sector) {
 // T_LightFlash
 // Do flashing lights.
 //
-void T_LightFlash(lightflash_t *flash) {
+void T_LightFlash(lightflash_t * flash) {
   if (--flash->count)
     return;
 
@@ -91,11 +91,11 @@ void T_LightFlash(lightflash_t *flash) {
 // After the map has been loaded, scan each sector
 // for specials that spawn thinkers
 //
-void P_SpawnLightFlash(sector_t *sector) {
+void P_SpawnLightFlash(sector_t * sector) {
   // nothing special about it during gameplay
   sector->special = 0;
 
-  lightflash_t *flash = zmalloc<decltype(flash)>(sizeof(*flash), PU_LEVSPEC, 0);
+  lightflash_t * flash = zmalloc<decltype(flash)>(sizeof(*flash), PU_LEVSPEC, 0);
 
   P_AddThinker(&flash->thinker);
 
@@ -116,7 +116,7 @@ void P_SpawnLightFlash(sector_t *sector) {
 //
 // T_StrobeFlash
 //
-void T_StrobeFlash(strobe_t *flash) {
+void T_StrobeFlash(strobe_t * flash) {
   if (--flash->count)
     return;
 
@@ -134,10 +134,10 @@ void T_StrobeFlash(strobe_t *flash) {
 // After the map has been loaded, scan each sector
 // for specials that spawn thinkers
 //
-void P_SpawnStrobeFlash(sector_t *sector,
-                        int       fastOrSlow,
-                        int       inSync) {
-  strobe_t *flash = zmalloc<decltype(flash)>(sizeof(*flash), PU_LEVSPEC, 0);
+void P_SpawnStrobeFlash(sector_t * sector,
+                        int        fastOrSlow,
+                        int        inSync) {
+  strobe_t * flash = zmalloc<decltype(flash)>(sizeof(*flash), PU_LEVSPEC, 0);
 
   P_AddThinker(&flash->thinker);
 
@@ -163,8 +163,8 @@ void P_SpawnStrobeFlash(sector_t *sector,
 //
 // Start strobing lights (usually from a trigger)
 //
-void EV_StartLightStrobing(line_t *line) {
-  sector_t *sec = nullptr;
+void EV_StartLightStrobing(line_t * line) {
+  sector_t * sec = nullptr;
 
   int secnum = -1;
   while ((secnum = P_FindSectorFromLineTag(line, secnum)) >= 0) {
@@ -179,13 +179,13 @@ void EV_StartLightStrobing(line_t *line) {
 //
 // TURN LINE'S TAG LIGHTS OFF
 //
-void EV_TurnTagLightsOff(line_t *line) {
-  int       i;
-  int       j;
-  int       min;
-  sector_t *sector;
-  sector_t *tsec;
-  line_t   *templine;
+void EV_TurnTagLightsOff(line_t * line) {
+  int        i;
+  int        j;
+  int        min;
+  sector_t * sector;
+  sector_t * tsec;
+  line_t *   templine;
 
   sector = g_r_state_globals->sectors;
 
@@ -208,13 +208,13 @@ void EV_TurnTagLightsOff(line_t *line) {
 //
 // TURN LINE'S TAG LIGHTS ON
 //
-void EV_LightTurnOn(line_t *line,
-                    int     bright) {
-  int       i;
-  int       j;
-  sector_t *sector;
-  sector_t *temp;
-  line_t   *templine;
+void EV_LightTurnOn(line_t * line,
+                    int      bright) {
+  int        i;
+  int        j;
+  sector_t * sector;
+  sector_t * temp;
+  line_t *   templine;
 
   sector = g_r_state_globals->sectors;
 
@@ -244,7 +244,7 @@ void EV_LightTurnOn(line_t *line,
 // Spawn glowing light
 //
 
-void T_Glow(glow_t *g) {
+void T_Glow(glow_t * g) {
   switch (g->direction) {
   case -1:
     // DOWN
@@ -266,8 +266,8 @@ void T_Glow(glow_t *g) {
   }
 }
 
-void P_SpawnGlowingLight(sector_t *sector) {
-  glow_t *g = zmalloc<decltype(g)>(sizeof(*g), PU_LEVSPEC, 0);
+void P_SpawnGlowingLight(sector_t * sector) {
+  glow_t * g = zmalloc<decltype(g)>(sizeof(*g), PU_LEVSPEC, 0);
 
   P_AddThinker(&g->thinker);
 

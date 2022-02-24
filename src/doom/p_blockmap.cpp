@@ -78,10 +78,10 @@ void P_CreateBlockMap() {
   {
     typedef struct {
       int n, nalloc, *list;
-    } bmap_t;                                                                                               // blocklist structure
-    auto    tot  = static_cast<unsigned int>(g_p_local_globals->bmapwidth * g_p_local_globals->bmapheight); // size of blockmap
-    bmap_t *bmap = static_cast<bmap_t *>(calloc(sizeof *bmap, tot));                                        // array of blocklists
-    int     x, y, adx, ady, bend;
+    } bmap_t;                                                                                                // blocklist structure
+    auto     tot  = static_cast<unsigned int>(g_p_local_globals->bmapwidth * g_p_local_globals->bmapheight); // size of blockmap
+    bmap_t * bmap = static_cast<bmap_t *>(calloc(sizeof *bmap, tot));                                        // array of blocklists
+    int      x, y, adx, ady, bend;
 
     for (int i = 0; i < g_r_state_globals->numlines; i++) {
       int dx, dy, diff, b;
@@ -155,8 +155,8 @@ void P_CreateBlockMap() {
 
     // Now compress the blockmap.
     {
-      int     ndx = static_cast<int>(tot += 4); // Advance index to start of linedef lists
-      bmap_t *bp  = bmap;                       // Start of uncompressed blockmap
+      int      ndx = static_cast<int>(tot += 4); // Advance index to start of linedef lists
+      bmap_t * bp  = bmap;                       // Start of uncompressed blockmap
 
       g_p_local_globals->blockmaplump[ndx++] = 0;  // Store an empty blockmap list at start
       g_p_local_globals->blockmaplump[ndx++] = -1; // (Used for compression)

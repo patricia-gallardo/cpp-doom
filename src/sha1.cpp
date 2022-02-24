@@ -34,7 +34,7 @@
 
 #include "sha1.hpp"
 
-void SHA1_Init(sha1_context_t *hd) {
+void SHA1_Init(sha1_context_t * hd) {
   hd->h0      = 0x67452301;
   hd->h1      = 0xefcdab89;
   hd->h2      = 0x98badcfe;
@@ -49,7 +49,7 @@ void SHA1_Init(sha1_context_t *hd) {
 /****************
  * Transform the message X which consists of 16 32-bit-words
  */
-static void Transform(sha1_context_t *hd, uint8_t *data) {
+static void Transform(sha1_context_t * hd, uint8_t * data) {
   uint32_t a, b, c, d, e, tm;
   uint32_t x[16];
 
@@ -64,8 +64,8 @@ static void Transform(sha1_context_t *hd, uint8_t *data) {
   std::memcpy(x, data, 64);
 #else
   {
-    int      i;
-    uint8_t *p2;
+    int       i;
+    uint8_t * p2;
     for (i = 0, p2 = reinterpret_cast<uint8_t *>(x); i < 16; i++, p2 += 4) {
       p2[3] = *data++;
       p2[2] = *data++;
@@ -191,7 +191,7 @@ static void Transform(sha1_context_t *hd, uint8_t *data) {
 /* Update the message digest with the contents
  * of INBUF with length INLEN.
  */
-void SHA1_Update(sha1_context_t *hd, uint8_t *inbuf, size_t inlen) {
+void SHA1_Update(sha1_context_t * hd, uint8_t * inbuf, size_t inlen) {
   if (hd->count == 64) {
     /* flush the buffer */
     Transform(hd, hd->buf);
@@ -220,13 +220,13 @@ void SHA1_Update(sha1_context_t *hd, uint8_t *inbuf, size_t inlen) {
 }
 
 #ifdef SYS_BIG_ENDIAN
-static uint8_t *write_uint32_big_endian(const uint32_t data, uint8_t *p) {
+static uint8_t * write_uint32_big_endian(const uint32_t data, uint8_t * p) {
   *(uint32_t *)p = data;
   p += 4;
   return p;
 }
 #else
-static uint8_t *write_uint32_little_endian(const uint32_t data, uint8_t *p) {
+static uint8_t * write_uint32_little_endian(const uint32_t data, uint8_t * p) {
   *p++ = static_cast<uint8_t>(data >> 24);
   *p++ = static_cast<uint8_t>(data >> 16);
   *p++ = static_cast<uint8_t>(data >> 8);
@@ -242,9 +242,9 @@ static uint8_t *write_uint32_little_endian(const uint32_t data, uint8_t *p) {
  * Returns: 20 bytes representing the digest.
  */
 
-void SHA1_Final(sha1_digest_t digest, sha1_context_t *hd) {
-  uint32_t t, msb, lsb;
-  uint8_t *p;
+void SHA1_Final(sha1_digest_t digest, sha1_context_t * hd) {
+  uint32_t  t, msb, lsb;
+  uint8_t * p;
 
   SHA1_Update(hd, nullptr, 0); /* flush */
   ;
@@ -307,7 +307,7 @@ void SHA1_Final(sha1_digest_t digest, sha1_context_t *hd) {
   std::memcpy(digest, hd->buf, sizeof(sha1_digest_t));
 }
 
-void SHA1_UpdateInt32(sha1_context_t *context, unsigned int val) {
+void SHA1_UpdateInt32(sha1_context_t * context, unsigned int val) {
   uint8_t buf[4];
 
   buf[0] = static_cast<uint8_t>((val >> 24) & 0xff);
@@ -318,6 +318,6 @@ void SHA1_UpdateInt32(sha1_context_t *context, unsigned int val) {
   SHA1_Update(context, buf, 4);
 }
 
-void SHA1_UpdateString(sha1_context_t *context, char *str) {
+void SHA1_UpdateString(sha1_context_t * context, char * str) {
   SHA1_Update(context, reinterpret_cast<uint8_t *>(str), strlen(str) + 1);
 }

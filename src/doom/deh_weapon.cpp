@@ -32,7 +32,7 @@ DEH_MAPPING("Shooting frame", atkstate)
 DEH_MAPPING("Firing frame", flashstate)
 DEH_END_MAPPING
 
-static void *DEH_WeaponStart(deh_context_t *context, char *line) {
+static void * DEH_WeaponStart(deh_context_t * context, char * line) {
   int weapon_number = 0;
 
   if (sscanf(line, "Weapon %i", &weapon_number) != 1) {
@@ -48,13 +48,13 @@ static void *DEH_WeaponStart(deh_context_t *context, char *line) {
   return &weaponinfo[weapon_number];
 }
 
-static void DEH_WeaponParseLine(deh_context_t *context, char *line, void *tag) {
+static void DEH_WeaponParseLine(deh_context_t * context, char * line, void * tag) {
   char *variable_name = nullptr, *value = nullptr;
 
   if (tag == nullptr)
     return;
 
-  auto *weapon = reinterpret_cast<weaponinfo_t *>(tag);
+  auto * weapon = reinterpret_cast<weaponinfo_t *>(tag);
 
   if (!DEH_ParseAssignment(line, &variable_name, &value)) {
     // Failed to parse
@@ -68,8 +68,8 @@ static void DEH_WeaponParseLine(deh_context_t *context, char *line, void *tag) {
   DEH_SetMapping(context, &weapon_mapping, weapon, variable_name, ivalue);
 }
 
-static void DEH_WeaponSHA1Sum(sha1_context_t *context) {
-  for (auto &i : weaponinfo) {
+static void DEH_WeaponSHA1Sum(sha1_context_t * context) {
+  for (auto & i : weaponinfo) {
     DEH_StructSHA1Sum(context, &weapon_mapping, &i);
   }
 }

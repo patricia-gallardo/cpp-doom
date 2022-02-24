@@ -29,7 +29,7 @@
 
 #else
 
-#define TXT_UNCAST_ARG(name) txt_widget_t *name
+#define TXT_UNCAST_ARG(name) txt_widget_t * name
 
 #endif
 
@@ -87,7 +87,7 @@ struct txt_widget_class_s {
 };
 
 struct txt_widget_s {
-  txt_widget_class_t                   *widget_class;
+  txt_widget_class_t *                  widget_class;
   std::shared_ptr<txt_callback_table_t> callback_table;
   int                                   visible;
   txt_horiz_align_t                     align;
@@ -101,20 +101,20 @@ struct txt_widget_s {
 
   // Pointer up to parent widget that contains this widget.
 
-  txt_widget_t *parent;
+  txt_widget_t * parent;
 };
 
-void TXT_InitWidget(void *uncast_widget, txt_widget_class_t *widget_class);
-void TXT_CalcWidgetSize(void *uncast_widget);
-void TXT_DrawWidget(void *uncast_widget);
-void TXT_EmitSignal(void *uncast_widget, const char *signal_name);
-int  TXT_WidgetKeyPress(void *uncast_widget, int key);
-void TXT_WidgetMousePress(void *uncast_widget, int x, int y, int b);
-void TXT_DestroyWidget(void *uncast_widget);
-void TXT_LayoutWidget(void *uncast_widget);
-int  TXT_AlwaysSelectable(void *uncast_widget);
-int  TXT_NeverSelectable(void *uncast_widget);
-void TXT_SetWidgetFocus(void *uncast_widget, int focused);
+void TXT_InitWidget(void * uncast_widget, txt_widget_class_t * widget_class);
+void TXT_CalcWidgetSize(void * uncast_widget);
+void TXT_DrawWidget(void * uncast_widget);
+void TXT_EmitSignal(void * uncast_widget, const char * signal_name);
+int  TXT_WidgetKeyPress(void * uncast_widget, int key);
+void TXT_WidgetMousePress(void * uncast_widget, int x, int y, int b);
+void TXT_DestroyWidget(void * uncast_widget);
+void TXT_LayoutWidget(void * uncast_widget);
+int  TXT_AlwaysSelectable(void * uncast_widget);
+int  TXT_NeverSelectable(void * uncast_widget);
+void TXT_SetWidgetFocus(void * uncast_widget, int focused);
 
 /**
  * Set a callback function to be invoked when a signal occurs.
@@ -125,7 +125,7 @@ void TXT_SetWidgetFocus(void *uncast_widget, int focused);
  * @param user_data    User-specified pointer to pass to the callback function.
  */
 
-void TXT_SignalConnect(void *uncast_widget, const char *signal_name, TxtWidgetSignalFunc func, void *user_data);
+void TXT_SignalConnect(void * uncast_widget, const char * signal_name, TxtWidgetSignalFunc func, void * user_data);
 
 /**
  * Set the policy for how a widget should be aligned within a table.
@@ -135,7 +135,7 @@ void TXT_SignalConnect(void *uncast_widget, const char *signal_name, TxtWidgetSi
  * @param horiz_align  The alignment to use.
  */
 
-void TXT_SetWidgetAlign(void *uncast_widget, txt_horiz_align_t horiz_align);
+void TXT_SetWidgetAlign(void * uncast_widget, txt_horiz_align_t horiz_align);
 
 /**
  * Query whether a widget is selectable with the cursor.
@@ -144,7 +144,7 @@ void TXT_SetWidgetAlign(void *uncast_widget, txt_horiz_align_t horiz_align);
  * @return             Non-zero if the widget is selectable.
  */
 
-int TXT_SelectableWidget(void *uncast_widget);
+int TXT_SelectableWidget(void * uncast_widget);
 
 /**
  * Query whether the mouse is hovering over the specified widget.
@@ -153,7 +153,7 @@ int TXT_SelectableWidget(void *uncast_widget);
  * @return             Non-zero if the mouse cursor is over the widget.
  */
 
-int TXT_HoveringOverWidget(void *uncast_widget);
+int TXT_HoveringOverWidget(void * uncast_widget);
 
 /**
  * Set the background to draw the specified widget, depending on
@@ -162,7 +162,7 @@ int TXT_HoveringOverWidget(void *uncast_widget);
  * @param widget       The widget.
  */
 
-void TXT_SetWidgetBG(void *uncast_widget);
+void TXT_SetWidgetBG(void * uncast_widget);
 
 /**
  * Query whether the specified widget is contained within another
@@ -172,6 +172,6 @@ void TXT_SetWidgetBG(void *uncast_widget);
  * @param needle       The widget being queried.
  */
 
-int TXT_ContainsWidget(void *uncast_haystack, void *uncast_needle);
+int TXT_ContainsWidget(void * uncast_haystack, void * uncast_needle);
 
 #endif /* #ifndef TXT_WIDGET_H */

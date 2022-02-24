@@ -52,7 +52,7 @@
 // Returns a pointer to a DIR structure appropriately filled in to begin
 // searching a directory.
 //
-DIR *opendir(const _TCHAR *szPath) {
+DIR * opendir(const _TCHAR * szPath) {
   _TCHAR szFullPath[MAX_PATH];
 
   errno = 0;
@@ -85,7 +85,7 @@ DIR *opendir(const _TCHAR *szPath) {
 
   /* Allocate enough space to store DIR structure and the complete
    * directory path given. */
-  DIR *nd = reinterpret_cast<DIR *>(malloc(sizeof(DIR) + (_tcslen(szFullPath) + _tcslen(SLASH) + _tcslen(SUFFIX) + 1) * sizeof(_TCHAR)));
+  DIR * nd = reinterpret_cast<DIR *>(malloc(sizeof(DIR) + (_tcslen(szFullPath) + _tcslen(SLASH) + _tcslen(SUFFIX) + 1) * sizeof(_TCHAR)));
 
   if (!nd) {
     /* Error, out of memory. */
@@ -130,7 +130,7 @@ DIR *opendir(const _TCHAR *szPath) {
 // Return a pointer to a dirent structure filled with the information on the
 // next entry in the directory.
 //
-struct dirent *readdir(DIR *dirp) {
+struct dirent * readdir(DIR * dirp) {
   errno = 0;
 
   /* Check for valid DIR struct. */
@@ -191,7 +191,7 @@ struct dirent *readdir(DIR *dirp) {
 //
 // Frees up resources allocated by opendir.
 //
-int closedir(DIR *dirp) {
+int closedir(DIR * dirp) {
   errno  = 0;
   int rc = 0;
 
@@ -216,7 +216,7 @@ int closedir(DIR *dirp) {
 // Return to the beginning of the directory "stream". We simply call findclose
 // and then reset things like an opendir.
 //
-void rewinddir(DIR *dirp) {
+void rewinddir(DIR * dirp) {
   errno = 0;
 
   if (!dirp) {
@@ -238,7 +238,7 @@ void rewinddir(DIR *dirp) {
 // Returns the "position" in the "directory stream" which can be used with
 // seekdir to go back to an old entry. We simply return the value in stat.
 //
-[[maybe_unused]] long telldir(DIR *dirp) {
+[[maybe_unused]] long telldir(DIR * dirp) {
   errno = 0;
 
   if (!dirp) {
@@ -257,7 +257,7 @@ void rewinddir(DIR *dirp) {
 // have changed while we weren't looking. But that is probably the case with
 // any such system.
 //
-[[maybe_unused]] void seekdir(DIR *dirp, long lPos) {
+[[maybe_unused]] void seekdir(DIR * dirp, long lPos) {
   errno = 0;
 
   if (!dirp) {

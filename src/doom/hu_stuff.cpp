@@ -64,7 +64,7 @@
 
 #define HU_COORDX ((ORIGWIDTH - 7 * hu_font['A' - HU_FONTSTART]->width) + DELTAWIDTH)
 
-char *chat_macros[10] = {
+char * chat_macros[10] = {
   const_cast<char *>(HUSTR_CHATMACRO0),
   const_cast<char *>(HUSTR_CHATMACRO1),
   const_cast<char *>(HUSTR_CHATMACRO2),
@@ -77,7 +77,7 @@ char *chat_macros[10] = {
   const_cast<char *>(HUSTR_CHATMACRO9)
 };
 
-char *player_names[] = {
+char * player_names[] = {
   const_cast<char *>(HUSTR_PLRGREEN),
   const_cast<char *>(HUSTR_PLRINDIGO),
   const_cast<char *>(HUSTR_PLRBROWN),
@@ -85,8 +85,8 @@ char *player_names[] = {
 };
 
 char                 chat_char; // remove later.
-static player_t     *plr;
-patch_t             *hu_font[HU_FONTSIZE];
+static player_t *    plr;
+patch_t *            hu_font[HU_FONTSIZE];
 static hu_textline_t w_title;
 static hu_textline_t w_map;
 static hu_textline_t w_kills;
@@ -124,7 +124,7 @@ extern int screenblocks; // [crispy]
 // The actual names can be found in DStrings.h.
 //
 
-const char *mapnames[] = // DOOM shareware/registered/retail (Ultimate) names.
+const char * mapnames[] = // DOOM shareware/registered/retail (Ultimate) names.
     {
 
       HUSTR_E1M1,
@@ -189,7 +189,7 @@ const char *mapnames[] = // DOOM shareware/registered/retail (Ultimate) names.
       "NEWLEVEL"
     };
 
-const char *mapnames_chex[] = // Chex Quest names.
+const char * mapnames_chex[] = // Chex Quest names.
     {
 
       HUSTR_E1M1,
@@ -249,7 +249,7 @@ const char *mapnames_chex[] = // Chex Quest names.
 // the layout in the Vanilla executable, where it is possible to
 // overflow the end of one array into the next.
 
-const char *mapnames_commercial[] = {
+const char * mapnames_commercial[] = {
   // DOOM 2 map names.
 
   HUSTR_1,
@@ -399,7 +399,7 @@ const char *mapnames_commercial[] = {
   MHUSTR_21
 };
 
-static void CrispyReplaceColor(char *str, const int cr, const char *col) {
+static void CrispyReplaceColor(char * str, const int cr, const char * col) {
   char *str_replace, col_replace[16];
 
   if (DEH_HasStringReplacement(str)) {
@@ -443,7 +443,7 @@ void HU_Init() {
 
   // [crispy] initialize the crosshair types
   for (i = 0; laserpatch[i].c; i++) {
-    patch_t *patch = nullptr;
+    patch_t * patch = nullptr;
 
     // [crispy] check for alternative crosshair patches from e.g. prboom-plus.wad first
     //	if ((laserpatch[i].l = W_CheckNumForName(laserpatch[i].a)) == -1)
@@ -506,8 +506,8 @@ typedef struct
   GameMission_t mission;
   int           episode;
   int           map;
-  const char   *wad;
-  const char   *name;
+  const char *  wad;
+  const char *  name;
 } speciallevel_t;
 
 static const speciallevel_t speciallevels[] = {
@@ -545,7 +545,7 @@ static const speciallevel_t speciallevels[] = {
   { doom2, 0, 32, "teeth.wad",    MHUSTR_21  },
 };
 
-static void HU_SetSpecialLevelName(const char *wad, const char **name) {
+static void HU_SetSpecialLevelName(const char * wad, const char ** name) {
   for (auto speciallevel : speciallevels) {
     if (logical_gamemission == speciallevel.mission && (!speciallevel.episode || g_doomstat_globals->gameepisode == speciallevel.episode) && g_doomstat_globals->gamemap == speciallevel.map && (!speciallevel.wad || !strcasecmp(wad, speciallevel.wad))) {
       *name = speciallevel.name ? speciallevel.name : maplumpinfo->name;
@@ -556,8 +556,8 @@ static void HU_SetSpecialLevelName(const char *wad, const char **name) {
 
 void HU_Start() {
 
-  int         i;
-  const char *s;
+  int          i;
+  const char * s;
   // [crispy] string buffers for map title and WAD file name
   char buf[8], *ptr;
 
@@ -699,7 +699,7 @@ void HU_Start() {
   // [crispy] explicitely display (episode and) map if the
   // map is from a PWAD or if the map title string has been dehacked
   if (DEH_HasStringReplacement(s) || (!W_IsIWADLump(maplumpinfo) && (!g_doomstat_globals->nervewadfile || g_doomstat_globals->gamemission != pack_nerve))) {
-    char *m;
+    char * m;
 
     ptr = M_StringJoin(crstr[static_cast<int>(cr_t::CR_GOLD)], W_WadNameForLump(maplumpinfo), ": ", crstr[static_cast<int>(cr_t::CR_GRAY)], maplumpinfo->name, nullptr);
     m   = ptr;
@@ -762,9 +762,9 @@ void HU_DemoProgressBar() {
 
 // [crispy] static, non-projected crosshair
 static void HU_DrawCrosshair() {
-  static int      lump;
-  static patch_t *patch;
-  extern uint8_t *R_LaserspotColor();
+  static int       lump;
+  static patch_t * patch;
+  extern uint8_t * R_LaserspotColor();
 
   if (weaponinfo[plr->readyweapon].ammo == am_noammo || plr->playerstate != PST_LIVE || g_doomstat_globals->automapactive || g_doomstat_globals->menuactive || g_doomstat_globals->paused || secret_on)
     return;
@@ -896,7 +896,7 @@ void HU_Ticker() {
 
     // [crispy] display centered message
     if (plr->centermessage) {
-      extern int M_StringWidth(const char *string);
+      extern int M_StringWidth(const char * string);
       w_secret.l[0].x = ORIGWIDTH / 2 - M_StringWidth(plr->centermessage) / 2;
 
       HUlib_addMessageToSText(&w_secret, 0, plr->centermessage);
@@ -1069,10 +1069,10 @@ static void StopChatInput() {
   I_StopTextInput();
 }
 
-bool HU_Responder(event_t *ev) {
+bool HU_Responder(event_t * ev) {
 
   static char   lastmessage[HU_MAXLINELENGTH + 1];
-  const char   *macromessage;
+  const char *  macromessage;
   bool          eatkey  = false;
   static bool   altdown = false;
   unsigned char c;

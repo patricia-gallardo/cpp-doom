@@ -39,7 +39,7 @@
 static int                   console_handle;
 static pcsound_callback_func callback;
 static int                   sound_thread_running = 0;
-static SDL_Thread           *sound_thread_handle;
+static SDL_Thread *          sound_thread_handle;
 static int                   sleep_adjust = 0;
 
 static void AdjustedSleep(unsigned int ms) {
@@ -79,7 +79,7 @@ static void AdjustedSleep(unsigned int ms) {
   sleep_adjust = actual_time - ms;
 }
 
-static int SoundThread(void *unused) {
+static int SoundThread(void * unused) {
   int frequency;
   int duration;
   int cycles;

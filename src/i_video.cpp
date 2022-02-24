@@ -61,12 +61,12 @@ int                  DELTAWIDTH; // [crispy] horizontal widescreen offset
 // These are (1) the window (or the full screen) that our game is rendered to
 // and (2) the renderer that scales the texture (see below) into this window.
 
-static SDL_Window   *screen;
-static SDL_Renderer *renderer;
+static SDL_Window *   screen;
+static SDL_Renderer * renderer;
 
 // Window title
 
-static const char *window_title = "";
+static const char * window_title = "";
 
 // These are (1) the 320x200x8 paletted buffer that we draw to (i.e. the one
 // that holds I_VideoBuffer), (2) the 320x200x32 RGBA intermediate buffer that
@@ -76,11 +76,11 @@ static const char *window_title = "";
 // in turn is finally rendered to screen using "linear" scaling.
 
 #ifndef CRISPY_TRUECOLOR
-static SDL_Surface *screenbuffer = nullptr;
+static SDL_Surface * screenbuffer = nullptr;
 #endif
-static SDL_Surface *argbbuffer       = nullptr;
-static SDL_Texture *texture          = nullptr;
-static SDL_Texture *texture_upscaled = nullptr;
+static SDL_Surface * argbbuffer       = nullptr;
+static SDL_Texture * texture          = nullptr;
+static SDL_Texture * texture_upscaled = nullptr;
 
 #ifndef CRISPY_TRUECOLOR
 static SDL_Rect blit_rect = {
@@ -96,14 +96,14 @@ static uint32_t pixel_format;
 // palette
 
 #ifdef CRISPY_TRUECOLOR
-static SDL_Texture  *curpane = nullptr;
-static SDL_Texture  *redpane = nullptr;
-static SDL_Texture  *yelpane = nullptr;
-static SDL_Texture  *grnpane = nullptr;
+static SDL_Texture * curpane = nullptr;
+static SDL_Texture * redpane = nullptr;
+static SDL_Texture * yelpane = nullptr;
+static SDL_Texture * grnpane = nullptr;
 static int           pane_alpha;
 static unsigned int  rmask, gmask, bmask, amask; // [crispy] moved up here
 static const uint8_t blend_alpha = 0xa8;
-extern pixel_t      *colormaps; // [crispy] evil hack to get FPS dots working as in Vanilla
+extern pixel_t *     colormaps; // [crispy] evil hack to get FPS dots working as in Vanilla
 #else
 static SDL_Color palette[256];
 #endif
@@ -197,7 +197,7 @@ static i_video_t i_video_s = {
 
   .joywait = 0,
 };
-i_video_t *const g_i_video_globals = &i_video_s;
+i_video_t * const g_i_video_globals = &i_video_s;
 
 static bool MouseShouldBeGrabbed() {
   // never grab the mouse when in screensaver mode
@@ -286,7 +286,7 @@ static void AdjustWindowSize() {
   }
 }
 
-static void HandleWindowEvent(SDL_WindowEvent *event) {
+static void HandleWindowEvent(SDL_WindowEvent * event) {
   int i;
 
   switch (event->event) {
@@ -347,7 +347,7 @@ static void HandleWindowEvent(SDL_WindowEvent *event) {
   }
 }
 
-static bool ToggleFullScreenKeyShortcut(SDL_Keysym *sym) {
+static bool ToggleFullScreenKeyShortcut(SDL_Keysym * sym) {
   Uint16 flags = (KMOD_LALT | KMOD_RALT);
 #if defined(__MACOSX__)
   flags |= (KMOD_LGUI | KMOD_RGUI);
@@ -480,7 +480,7 @@ static void UpdateGrab() {
   currently_grabbed = grab;
 }
 
-static void LimitTextureSize(int *w_upscale, int *h_upscale) {
+static void LimitTextureSize(int * w_upscale, int * h_upscale) {
   SDL_RendererInfo rinfo;
   int              orig_w, orig_h;
 
@@ -775,7 +775,7 @@ void I_FinishUpdate() {
 //
 // I_ReadScreen
 //
-void I_ReadScreen(pixel_t *scr) {
+void I_ReadScreen(pixel_t * scr) {
   std::memcpy(scr, g_i_video_globals->I_VideoBuffer, static_cast<unsigned long>(SCREENWIDTH * SCREENHEIGHT) * sizeof(*scr));
 }
 
@@ -783,8 +783,8 @@ void I_ReadScreen(pixel_t *scr) {
 // I_SetPalette
 //
 // [crispy] intermediate gamma levels
-uint8_t **gamma2table = nullptr;
-void      I_SetGammaTable() {
+uint8_t ** gamma2table = nullptr;
+void       I_SetGammaTable() {
   int i;
 
   gamma2table = static_cast<uint8_t **>(malloc(9 * sizeof(*gamma2table)));
@@ -807,7 +807,7 @@ void      I_SetGammaTable() {
 }
 
 #ifndef CRISPY_TRUECOLOR
-void I_SetPalette(uint8_t *doompalette) {
+void I_SetPalette(uint8_t * doompalette) {
   int i;
 
   // [crispy] intermediate gamma levels
@@ -896,7 +896,7 @@ void I_SetPalette(int palette) {
 // Set the window title
 //
 
-void I_SetWindowTitle(const char *title) {
+void I_SetWindowTitle(const char * title) {
   window_title = title;
 }
 
@@ -906,7 +906,7 @@ void I_SetWindowTitle(const char *title) {
 //
 
 void I_InitWindowTitle() {
-  char *buf;
+  char * buf;
 
   buf = M_StringJoin(window_title, " - ", PACKAGE_STRING, nullptr);
   SDL_SetWindowTitle(screen, buf);
@@ -916,9 +916,9 @@ void I_InitWindowTitle() {
 // Set the application icon
 
 void I_InitWindowIcon() {
-  const unsigned int *const_ptr = icon_data;
-  auto               *ptr       = const_cast<unsigned int *>(const_ptr);
-  SDL_Surface        *surface   = SDL_CreateRGBSurfaceFrom(reinterpret_cast<void *>(ptr), icon_w, icon_h, 32, icon_w * 4, static_cast<Uint32>(0xff << 24), 0xff << 16, 0xff << 8, 0xff << 0);
+  const unsigned int * const_ptr = icon_data;
+  auto *               ptr       = const_cast<unsigned int *>(const_ptr);
+  SDL_Surface *        surface   = SDL_CreateRGBSurfaceFrom(reinterpret_cast<void *>(ptr), icon_w, icon_h, 32, icon_w * 4, static_cast<Uint32>(0xff << 24), 0xff << 16, 0xff << 8, 0xff << 0);
   SDL_SetWindowIcon(screen, surface);
   SDL_FreeSurface(surface);
 }
@@ -1063,7 +1063,7 @@ void I_GraphicsCheckCommandLine() {
 // Check if we have been invoked as a screensaver by xscreensaver.
 
 void I_CheckIsScreensaver() {
-  char *env;
+  char * env;
 
   env = getenv("XSCREENSAVER_WINDOW");
 
@@ -1086,7 +1086,7 @@ static void SetSDLVideoDriver() {
 // Check the display bounds of the display referred to by 'video_display' and
 // set x and y to a location that places the window in the center of that
 // display.
-static void CenterWindow(int *x, int *y, int w, int h) {
+static void CenterWindow(int * x, int * y, int w, int h) {
   SDL_Rect bounds;
 
   if (SDL_GetDisplayBounds(video_display, &bounds) < 0) {
@@ -1100,7 +1100,7 @@ static void CenterWindow(int *x, int *y, int w, int h) {
   *y = bounds.y + SDL_max((bounds.h - h) / 2, 0);
 }
 
-void I_GetWindowPosition(int *x, int *y, int w, int h) {
+void I_GetWindowPosition(int * x, int * y, int w, int h) {
   // Check that video_display corresponds to a display that really exists,
   // and if it doesn't, reset it.
   if (video_display < 0 || video_display >= SDL_GetNumVideoDisplays()) {
@@ -1393,14 +1393,14 @@ void I_GetScreenDimensions() {
 
 void I_InitGraphics() {
 #ifndef CRISPY_TRUECOLOR
-  uint8_t *doompal;
+  uint8_t * doompal;
 #endif
 
   // Pass through the XSCREENSAVER_WINDOW environment variable to
   // SDL_WINDOWID, to embed the SDL window into the Xscreensaver
   // window.
 
-  char *env = getenv("XSCREENSAVER_WINDOW");
+  char * env = getenv("XSCREENSAVER_WINDOW");
 
   if (env != nullptr) {
     setenv("SDL_WINDOWID", env, 1);
@@ -1609,12 +1609,12 @@ void I_ReInitGraphics(int reinit) {
 
 // [crispy] take screenshot of the rendered image
 
-void I_RenderReadPixels(uint8_t **data, int *w, int *h, int *p) {
-  SDL_Rect         rect;
-  SDL_PixelFormat *format;
-  int              temp;
-  uint32_t         png_format;
-  uint8_t         *pixels;
+void I_RenderReadPixels(uint8_t ** data, int * w, int * h, int * p) {
+  SDL_Rect          rect;
+  SDL_PixelFormat * format;
+  int               temp;
+  uint32_t          png_format;
+  uint8_t *         pixels;
 
   // [crispy] adjust cropping rectangle if necessary
   rect.x = rect.y = 0;

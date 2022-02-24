@@ -58,7 +58,7 @@ struct [[maybe_unused]] txt_window_s {
 
   // Window title
 
-  char *title {};
+  char * title {};
 
   // Screen coordinates of the window
 
@@ -68,14 +68,14 @@ struct [[maybe_unused]] txt_window_s {
 
   // Actions that appear in the box at the bottom of the window
 
-  txt_widget_t *actions[3] {};
+  txt_widget_t * actions[3] {};
 
   // Callback functions to invoke when keys/mouse buttons are pressed
 
   TxtWindowKeyPress   key_listener {};
-  void               *key_listener_data {};
+  void *              key_listener_data {};
   TxtWindowMousePress mouse_listener {};
-  void               *mouse_listener_data {};
+  void *              mouse_listener_data {};
 
   // These are set automatically when the window is drawn
 
@@ -84,7 +84,7 @@ struct [[maybe_unused]] txt_window_s {
 
   // URL of a webpage with help about this window. If set, a help key
   // indicator is shown while this window is active.
-  const char *help_url {};
+  const char * help_url {};
 };
 
 /**
@@ -96,7 +96,7 @@ struct [[maybe_unused]] txt_window_s {
  *                     representing the new window.
  */
 
-txt_window_t *TXT_NewWindow(const char *title);
+txt_window_t * TXT_NewWindow(const char * title);
 
 /**
  * Close a window.
@@ -104,7 +104,7 @@ txt_window_t *TXT_NewWindow(const char *title);
  * @param window       Tine window to close.
  */
 
-void TXT_CloseWindow(txt_window_t *window);
+void TXT_CloseWindow(txt_window_t * window);
 
 /**
  * Set the position of a window on the screen.
@@ -137,7 +137,7 @@ void TXT_CloseWindow(txt_window_t *window);
  * @param y            Y coordinate (vertical axis) for window position.
  */
 
-void TXT_SetWindowPosition(txt_window_t     *window,
+void TXT_SetWindowPosition(txt_window_t *    window,
                            txt_horiz_align_t horiz_align,
                            txt_vert_align_t  vert_align,
                            int               x,
@@ -155,7 +155,7 @@ void TXT_SetWindowPosition(txt_window_t     *window,
  *                    current window action in the given slot is removed.
  */
 
-void TXT_SetWindowAction(txt_window_t *window, txt_horiz_align_t position, void *uncast_action);
+void TXT_SetWindowAction(txt_window_t * window, txt_horiz_align_t position, void * uncast_action);
 
 /**
  * Set a callback function to be invoked whenever a key is pressed within
@@ -167,9 +167,9 @@ void TXT_SetWindowAction(txt_window_t *window, txt_horiz_align_t position, void 
  *                      function.
  */
 
-void TXT_SetKeyListener(txt_window_t     *window,
+void TXT_SetKeyListener(txt_window_t *    window,
                         TxtWindowKeyPress key_listener,
-                        void             *user_data);
+                        void *            user_data);
 
 /**
  * Set a callback function to be invoked whenever a mouse button is pressed
@@ -181,9 +181,9 @@ void TXT_SetKeyListener(txt_window_t     *window,
  *                        function.
  */
 
-void TXT_SetMouseListener(txt_window_t       *window,
+void TXT_SetMouseListener(txt_window_t *      window,
                           TxtWindowMousePress mouse_listener,
-                          void               *user_data);
+                          void *              user_data);
 
 /**
  * Open a window displaying a message.
@@ -193,7 +193,7 @@ void TXT_SetMouseListener(txt_window_t       *window,
  * @return                The new window.
  */
 
-txt_window_t *TXT_MessageBox(const char *title, const char *message, ...);
+txt_window_t * TXT_MessageBox(const char * title, const char * message, ...);
 
 /**
  * Set the help URL for the given window.
@@ -203,7 +203,7 @@ txt_window_t *TXT_MessageBox(const char *title, const char *message, ...);
  *                        window, or nullptr to set no help for this window.
  */
 
-void TXT_SetWindowHelpURL(txt_window_t *window, const char *help_url);
+void TXT_SetWindowHelpURL(txt_window_t * window, const char * help_url);
 
 /**
  * Open the help URL for the given window, if one is set.
@@ -211,6 +211,6 @@ void TXT_SetWindowHelpURL(txt_window_t *window, const char *help_url);
  * @param window          The window.
  */
 
-void TXT_OpenWindowHelpURL(txt_window_t *window);
+void TXT_OpenWindowHelpURL(txt_window_t * window);
 
 #endif /* #ifndef TXT_WINDOW_H */

@@ -63,8 +63,8 @@
 #include "lump.hpp"
 #include "v_trans.hpp" // [crispy] colored "invert mouse" message
 
-extern patch_t *hu_font[HU_FONTSIZE];
-extern bool     message_dontfuckwithme;
+extern patch_t * hu_font[HU_FONTSIZE];
+extern bool      message_dontfuckwithme;
 
 extern bool chat_on; // in heads-up code
 
@@ -85,7 +85,7 @@ int quickSaveSlot;
 // 1 = message to be printed
 int messageToPrint;
 // ...and here is the message string!
-const char *messageString;
+const char * messageString;
 
 // message x & y
 [[maybe_unused]] int messx;
@@ -138,15 +138,15 @@ struct menuitem_t {
   void (*routine)(int choice) {};
 
   // hotkey in menu
-  char  alphaKey {};
-  char *alttext {}; // [crispy] alternative text for the Options menu
+  char   alphaKey {};
+  char * alttext {}; // [crispy] alternative text for the Options menu
 };
 
 typedef struct menu_s {
-  short          numitems;  // # of menu items
-  struct menu_s *prevMenu;  // previous menu
-  menuitem_t    *menuitems; // menu items
-  void (*routine)();        // draw routine
+  short           numitems;  // # of menu items
+  struct menu_s * prevMenu;  // previous menu
+  menuitem_t *    menuitems; // menu items
+  void (*routine)();         // draw routine
   short x;
   short y;      // x,y of menu
   short lastOn; // last item user was on in menu
@@ -158,10 +158,10 @@ short whichSkull;       // which skull to draw
 
 // graphic name of skulls
 // warning: initializer-string for array of chars is too long
-const char *skullName[2] = { "M_SKULL1", "M_SKULL2" };
+const char * skullName[2] = { "M_SKULL1", "M_SKULL2" };
 
 // current menudef
-menu_t *currentMenu;
+menu_t * currentMenu;
 
 //
 // PROTOTYPES
@@ -209,12 +209,12 @@ static void M_DrawLoad();
 static void M_DrawSave();
 
 static void M_DrawSaveLoadBorder(int x, int y);
-static void M_SetupNextMenu(menu_t *menudef);
+static void M_SetupNextMenu(menu_t * menudef);
 static void M_DrawThermo(int x, int y, int thermWidth, int thermDot);
-static void M_WriteText(int x, int y, const char *string);
-int         M_StringWidth(const char *string); // [crispy] un-static
-static int  M_StringHeight(const char *string);
-static void M_StartMessage(const char *string, void (*routine)(int), bool input);
+static void M_WriteText(int x, int y, const char * string);
+int         M_StringWidth(const char * string); // [crispy] un-static
+static int  M_StringHeight(const char * string);
+static void M_StartMessage(const char * string, void (*routine)(int), bool input);
 static void M_ClearMenus();
 
 // [crispy] Crispness menu
@@ -566,7 +566,7 @@ static menuitem_t Crispness4Menu[] = {
 
 static menu_t Crispness4Def = { static_cast<short>(crispness4_e::crispness4_end), &OptionsDef, Crispness4Menu, M_DrawCrispness4, 48, 28, 1 };
 
-static menu_t *CrispnessMenus[] = {
+static menu_t * CrispnessMenus[] = {
   &Crispness1Def,
   &Crispness2Def,
   &Crispness3Def,
@@ -677,7 +677,7 @@ void M_ReadSaveStrings() {
     char name[256];
     M_StringCopy(name, P_SaveGameFile(i), sizeof(name));
 
-    FILE *handle = fopen(name, "rb");
+    FILE * handle = fopen(name, "rb");
     if (handle == nullptr) {
       M_StringCopy(savegamestrings[i], EMPTYSTRING, SAVESTRINGSIZE);
       LoadMenu[i].status = 0;
@@ -790,8 +790,8 @@ static void SetDefaultSaveName(int) {
   if (W_IsIWADLump(maplumpinfo) && strcmp(g_doomstat_globals->savegamedir, "") != 0) {
     M_snprintf(savegamestrings[itemOn], SAVESTRINGSIZE, "%s", maplumpinfo->name);
   } else {
-    char *wadname = M_StringDuplicate(W_WadNameForLump(maplumpinfo));
-    char *ext     = strrchr(wadname, '.');
+    char * wadname = M_StringDuplicate(W_WadNameForLump(maplumpinfo));
+    char * ext     = strrchr(wadname, '.');
 
     if (ext != nullptr) { *ext = '\0'; }
 
@@ -803,7 +803,7 @@ static void SetDefaultSaveName(int) {
 }
 
 // [crispy] override savegame name if it already starts with a map identifier
-static bool StartsWithMapIdentifier(char *str) {
+static bool StartsWithMapIdentifier(char * str) {
   M_ForceUppercase(str);
 
   if (strlen(str) >= 4 && str[0] == 'E' && isdigit(str[1]) && str[2] == 'M' && isdigit(str[3])) { return true; }
@@ -886,7 +886,7 @@ void M_QuickSave() {
     return;
   }
   // [crispy] print savegame name in golden letters
-  char *savegamestring = M_StringJoin(
+  char * savegamestring = M_StringJoin(
       crstr[static_cast<int>(cr_t::CR_GOLD)],
       savegamestrings[quickSaveSlot],
       crstr[static_cast<int>(cr_t::CR_NONE)],
@@ -922,7 +922,7 @@ void M_QuickLoad() {
     return;
   }
   // [crispy] print savegame name in golden letters
-  char *savegamestring = M_StringJoin(
+  char * savegamestring = M_StringJoin(
       crstr[static_cast<int>(cr_t::CR_GOLD)],
       savegamestrings[quickSaveSlot],
       crstr[static_cast<int>(cr_t::CR_NONE)],
@@ -1141,8 +1141,8 @@ static void M_DrawMouse() {
 #include "memory.hpp"
 #include "m_background.hpp"
 static void M_DrawCrispnessBackground() {
-  const uint8_t *const src  = crispness_background;
-  pixel_t             *dest = g_i_video_globals->I_VideoBuffer;
+  const uint8_t * const src  = crispness_background;
+  pixel_t *             dest = g_i_video_globals->I_VideoBuffer;
 
   for (int y = 0; y < SCREENHEIGHT; y++) {
     for (int x = 0; x < SCREENWIDTH; x++) {
@@ -1159,27 +1159,27 @@ static void M_DrawCrispnessBackground() {
 
 static char crispy_menu_text[48];
 
-static void M_DrawCrispnessHeader(char *item) {
+static void M_DrawCrispnessHeader(char * item) {
   M_snprintf(crispy_menu_text, sizeof(crispy_menu_text), "%s%s", crstr[static_cast<int>(cr_t::CR_GOLD)], item);
   M_WriteText(ORIGWIDTH / 2 - M_StringWidth(item) / 2, 12, crispy_menu_text);
 }
 
-static void M_DrawCrispnessSeparator(int y, char *item) {
+static void M_DrawCrispnessSeparator(int y, char * item) {
   M_snprintf(crispy_menu_text, sizeof(crispy_menu_text), "%s%s", crstr[static_cast<int>(cr_t::CR_GOLD)], item);
   M_WriteText(currentMenu->x - 8, currentMenu->y + CRISPY_LINEHEIGHT * y, crispy_menu_text);
 }
 
-static void M_DrawCrispnessItem(int y, char *item, int feat, bool cond) {
+static void M_DrawCrispnessItem(int y, char * item, int feat, bool cond) {
   M_snprintf(crispy_menu_text, sizeof(crispy_menu_text), "%s%s: %s%s", cond ? crstr[static_cast<int>(cr_t::CR_NONE)] : crstr[static_cast<int>(cr_t::CR_DARK)], item, cond ? (feat ? crstr[static_cast<int>(cr_t::CR_GREEN)] : crstr[static_cast<int>(cr_t::CR_DARK)]) : crstr[static_cast<int>(cr_t::CR_DARK)], cond && feat ? "On" : "Off");
   M_WriteText(currentMenu->x, currentMenu->y + CRISPY_LINEHEIGHT * y, crispy_menu_text);
 }
 
-static void M_DrawCrispnessMultiItem(int y, char *item, multiitem_t *multiitem, int feat, bool cond) {
+static void M_DrawCrispnessMultiItem(int y, char * item, multiitem_t * multiitem, int feat, bool cond) {
   M_snprintf(crispy_menu_text, sizeof(crispy_menu_text), "%s%s: %s%s", cond ? crstr[static_cast<int>(cr_t::CR_NONE)] : crstr[static_cast<int>(cr_t::CR_DARK)], item, cond ? (feat ? crstr[static_cast<int>(cr_t::CR_GREEN)] : crstr[static_cast<int>(cr_t::CR_DARK)]) : crstr[static_cast<int>(cr_t::CR_DARK)], cond && feat ? multiitem[feat].name : multiitem[0].name);
   M_WriteText(currentMenu->x, currentMenu->y + CRISPY_LINEHEIGHT * y, crispy_menu_text);
 }
 
-static void M_DrawCrispnessGoto(int y, char *item) {
+static void M_DrawCrispnessGoto(int y, char * item) {
   M_snprintf(crispy_menu_text, sizeof(crispy_menu_text), "%s%s", crstr[static_cast<int>(cr_t::CR_GOLD)], item);
   M_WriteText(currentMenu->x, currentMenu->y + CRISPY_LINEHEIGHT * y, crispy_menu_text);
 }
@@ -1448,8 +1448,8 @@ void M_QuitResponse(int key) {
   I_Quit();
 }
 
-static const char *M_SelectEndMessage() {
-  const char **endmsg = nullptr;
+static const char * M_SelectEndMessage() {
+  const char ** endmsg = nullptr;
 
   if (logical_gamemission == doom) {
     // Doom 1
@@ -1579,7 +1579,7 @@ void M_DrawThermo(int x, int y, int thermWidth, int thermDot) {
   dp_translation = nullptr;
 }
 
-void M_StartMessage(const char *string, void (*routine)(int), bool input) {
+void M_StartMessage(const char * string, void (*routine)(int), bool input) {
   messageLastMenuActive          = g_doomstat_globals->menuactive;
   messageToPrint                 = 1;
   messageString                  = string;
@@ -1594,7 +1594,7 @@ void M_StartMessage(const char *string, void (*routine)(int), bool input) {
 //
 // Find string width from hu_font chars
 //
-int M_StringWidth(const char *string) {
+int M_StringWidth(const char * string) {
   int w = 0;
 
   for (size_t i = 0; i < strlen(string); i++) {
@@ -1619,7 +1619,7 @@ int M_StringWidth(const char *string) {
 //
 //      Find string height from hu_font chars
 //
-int M_StringHeight(const char *string) {
+int M_StringHeight(const char * string) {
   int height = SHORT(hu_font[0]->height);
   int h      = height;
   for (size_t i = 0; i < strlen(string); i++)
@@ -1631,10 +1631,10 @@ int M_StringHeight(const char *string) {
 //
 //      Write a string using the hu_font
 //
-void M_WriteText(int x, int y, const char *string) {
-  const char *ch = string;
-  int         cx = x;
-  int         cy = y;
+void M_WriteText(int x, int y, const char * string) {
+  const char * ch = string;
+  int          cx = x;
+  int          cy = y;
 
   while (true) {
     int c = static_cast<unsigned char>(*ch++);
@@ -1772,7 +1772,7 @@ static int G_GotoNextLevel() {
 //
 // M_Responder
 //
-bool M_Responder(event_t *ev) {
+bool M_Responder(event_t * ev) {
   static int mousewait = 0;
   static int mousey    = 0;
   static int lasty     = 0;
@@ -2255,11 +2255,11 @@ static void M_DrawOPLDev() {
   char        debug[1024];
 
   I_OPL_DevMessages(debug, sizeof(debug));
-  char *curr = debug;
-  int   line = 0;
+  char * curr = debug;
+  int    line = 0;
 
   for (;;) {
-    char *p = strchr(curr, '\n');
+    char * p = strchr(curr, '\n');
 
     if (p != nullptr) { *p = '\0'; }
 
@@ -2330,7 +2330,7 @@ void M_Drawer() {
   auto max = static_cast<unsigned int>(currentMenu->numitems);
 
   for (size_t i = 0; i < max; i++) {
-    const char *name = DEH_String(currentMenu->menuitems[i].name);
+    const char * name = DEH_String(currentMenu->menuitems[i].name);
 
     if (name[0]) // && W_CheckNumForName(name) > 0) // [crispy] moved...
     {
@@ -2342,7 +2342,7 @@ void M_Drawer() {
         dp_translation = cr_colors[static_cast<int>(cr_t::CR_DARK)];
 
       if (currentMenu == &OptionsDef) {
-        char *alttext = currentMenu->menuitems[i].alttext;
+        char * alttext = currentMenu->menuitems[i].alttext;
 
         if (alttext)
           M_WriteText(x, y + 8 - (M_StringHeight(alttext) / 2), alttext);
@@ -2381,7 +2381,7 @@ void M_ClearMenus() {
 //
 // M_SetupNextMenu
 //
-void M_SetupNextMenu(menu_t *menudef) {
+void M_SetupNextMenu(menu_t * menudef) {
   currentMenu = menudef;
   itemOn      = currentMenu->lastOn;
 }
@@ -2460,9 +2460,9 @@ void M_Init() {
 
   // [crispy] rearrange Load Game and Save Game menus
   {
-    const patch_t *patchl = cache_lump_name<patch_t *>(DEH_String("M_LOADG"), PU_CACHE);
-    const patch_t *patchs = cache_lump_name<patch_t *>(DEH_String("M_SAVEG"), PU_CACHE);
-    const patch_t *patchm = cache_lump_name<patch_t *>(DEH_String("M_LSLEFT"), PU_CACHE);
+    const patch_t * patchl = cache_lump_name<patch_t *>(DEH_String("M_LOADG"), PU_CACHE);
+    const patch_t * patchs = cache_lump_name<patch_t *>(DEH_String("M_SAVEG"), PU_CACHE);
+    const patch_t * patchm = cache_lump_name<patch_t *>(DEH_String("M_LSLEFT"), PU_CACHE);
 
     LoadDef_x = (ORIGWIDTH - SHORT(patchl->width)) / 2 + SHORT(patchl->leftoffset);
     SaveDef_x = (ORIGWIDTH - SHORT(patchs->width)) / 2 + SHORT(patchs->leftoffset);
@@ -2486,10 +2486,10 @@ void M_Init() {
 
   // [crispy] remove DOS reference from the game quit confirmation dialogs
   if (!M_ParmExists("-nodeh")) {
-    char *replace = nullptr;
+    char * replace = nullptr;
 
     // [crispy] "i wouldn't leave if i were you.\ndos is much worse."
-    const char *string = doom1_endmsg[3];
+    const char * string = doom1_endmsg[3];
     if (!DEH_HasStringReplacement(string)) {
       replace = M_StringReplace(string, "dos", crispy->platform);
       DEH_AddStringReplacement(string, replace);
@@ -2517,8 +2517,8 @@ void M_Init() {
 }
 
 // [crispy] extended savegames
-static char *savegwarning;
-static void  M_ForceLoadGameResponse(int key) {
+static char * savegwarning;
+static void   M_ForceLoadGameResponse(int key) {
   free(savegwarning);
   free(savewadfilename);
 

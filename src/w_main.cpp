@@ -52,7 +52,7 @@ bool W_ParseCommandLine() {
     for (p = p + 1; p < myargc && myargv[p][0] != '-'; ++p) {
       modifiedgame = true;
 
-      char *filename = D_TryFindWADByName(myargv[p]);
+      char * filename = D_TryFindWADByName(myargv[p]);
       fmt::printf(" merging %s\n", filename);
       W_MergeFile(filename);
       free(filename);
@@ -76,7 +76,7 @@ bool W_ParseCommandLine() {
     for (p = p + 1; p < myargc && myargv[p][0] != '-'; ++p) {
       modifiedgame = true;
 
-      char *filename = D_TryFindWADByName(myargv[p]);
+      char * filename = D_TryFindWADByName(myargv[p]);
       fmt::printf(" performing NWT-style merge of %s\n", filename);
       W_NWTDashMerge(filename);
       free(filename);
@@ -99,7 +99,7 @@ bool W_ParseCommandLine() {
     for (p = p + 1; p < myargc && myargv[p][0] != '-'; ++p) {
       modifiedgame = true;
 
-      char *filename = D_TryFindWADByName(myargv[p]);
+      char * filename = D_TryFindWADByName(myargv[p]);
       fmt::printf(" merging flats from %s\n", filename);
       W_NWTMergeFile(filename, W_NWT_MERGE_FLATS);
       free(filename);
@@ -118,8 +118,8 @@ bool W_ParseCommandLine() {
 
   if (p > 0) {
     for (p = p + 1; p < myargc && myargv[p][0] != '-'; ++p) {
-      modifiedgame   = true;
-      char *filename = D_TryFindWADByName(myargv[p]);
+      modifiedgame    = true;
+      char * filename = D_TryFindWADByName(myargv[p]);
       fmt::printf(" merging sprites from %s\n", filename);
       W_NWTMergeFile(filename, W_NWT_MERGE_SPRITES);
       free(filename);
@@ -139,7 +139,7 @@ bool W_ParseCommandLine() {
     for (p = p + 1; p < myargc && myargv[p][0] != '-'; ++p) {
       modifiedgame = true;
 
-      char *filename = D_TryFindWADByName(myargv[p]);
+      char * filename = D_TryFindWADByName(myargv[p]);
       fmt::printf(" merging sprites and flats from %s\n", filename);
       W_NWTMergeFile(filename, W_NWT_MERGE_SPRITES | W_NWT_MERGE_FLATS);
       free(filename);
@@ -159,7 +159,7 @@ bool W_ParseCommandLine() {
     // until end of parms or another - preceded parm
     modifiedgame = true; // homebrew levels
     while (++p != myargc && myargv[p][0] != '-') {
-      char *filename = D_TryFindWADByName(myargv[p]);
+      char * filename = D_TryFindWADByName(myargv[p]);
 
       // [crispy] always merge arguments of "-file" parameter
       fmt::printf(" merging %s !\n", filename);
@@ -174,10 +174,10 @@ bool W_ParseCommandLine() {
 }
 
 // Load all WAD files from the given directory.
-void W_AutoLoadWADs(const char *path) {
-  glob_t *glob = I_StartMultiGlob(path, GLOB_FLAG_NOCASE | GLOB_FLAG_SORTED, "*.wad", "*.lmp", nullptr);
+void W_AutoLoadWADs(const char * path) {
+  glob_t * glob = I_StartMultiGlob(path, GLOB_FLAG_NOCASE | GLOB_FLAG_SORTED, "*.wad", "*.lmp", nullptr);
   for (;;) {
-    const char *filename = I_NextGlob(glob);
+    const char * filename = I_NextGlob(glob);
     if (filename == nullptr) {
       break;
     }
@@ -194,7 +194,7 @@ void W_AutoLoadWADs(const char *path) {
 static const struct
 {
   GameMission_t mission;
-  const char   *lumpname;
+  const char *  lumpname;
 } unique_lumps[] = {
   {doom,     "POSSA1"},
   { heretic, "IMPXA1"},

@@ -34,17 +34,17 @@ extern bool automapactive; // in AM_map.c
 void HUlib_init() {
 }
 
-void HUlib_clearTextLine(hu_textline_t *t) {
+void HUlib_clearTextLine(hu_textline_t * t) {
   t->len         = 0;
   t->l[0]        = 0;
   t->needsupdate = true;
 }
 
-void HUlib_initTextLine(hu_textline_t *t,
-                        int            x,
-                        int            y,
-                        patch_t      **f,
-                        int            sc) {
+void HUlib_initTextLine(hu_textline_t * t,
+                        int             x,
+                        int             y,
+                        patch_t **      f,
+                        int             sc) {
   t->x  = x;
   t->y  = y;
   t->f  = f;
@@ -52,8 +52,8 @@ void HUlib_initTextLine(hu_textline_t *t,
   HUlib_clearTextLine(t);
 }
 
-bool HUlib_addCharToTextLine(hu_textline_t *t,
-                             char           ch) {
+bool HUlib_addCharToTextLine(hu_textline_t * t,
+                             char            ch) {
 
   if (t->len == HU_MAXLINELENGTH)
     return false;
@@ -65,7 +65,7 @@ bool HUlib_addCharToTextLine(hu_textline_t *t,
   }
 }
 
-bool HUlib_delCharFromTextLine(hu_textline_t *t) {
+bool HUlib_delCharFromTextLine(hu_textline_t * t) {
 
   if (!t->len)
     return false;
@@ -76,8 +76,8 @@ bool HUlib_delCharFromTextLine(hu_textline_t *t) {
   }
 }
 
-void HUlib_drawTextLine(hu_textline_t *l,
-                        bool           drawcursor) {
+void HUlib_drawTextLine(hu_textline_t * l,
+                        bool            drawcursor) {
 
   int           i;
   int           w;
@@ -124,7 +124,7 @@ void HUlib_drawTextLine(hu_textline_t *l,
 }
 
 // sorta called by HU_Erase and just better darn get things straight
-void HUlib_eraseTextLine(hu_textline_t *l) {
+void HUlib_eraseTextLine(hu_textline_t * l) {
   int lh;
   int y;
   int yoffset;
@@ -157,13 +157,13 @@ void HUlib_eraseTextLine(hu_textline_t *l) {
   if (l->needsupdate) l->needsupdate--;
 }
 
-void HUlib_initSText(hu_stext_t *s,
-                     int         x,
-                     int         y,
-                     int         h,
-                     patch_t   **font,
-                     int         startchar,
-                     bool       *on) {
+void HUlib_initSText(hu_stext_t * s,
+                     int          x,
+                     int          y,
+                     int          h,
+                     patch_t **   font,
+                     int          startchar,
+                     bool *       on) {
 
   int i;
 
@@ -179,7 +179,7 @@ void HUlib_initSText(hu_stext_t *s,
                        startchar);
 }
 
-void HUlib_addLineToSText(hu_stext_t *s) {
+void HUlib_addLineToSText(hu_stext_t * s) {
 
   int i;
 
@@ -193,9 +193,9 @@ void HUlib_addLineToSText(hu_stext_t *s) {
     s->l[i].needsupdate = 4;
 }
 
-void HUlib_addMessageToSText(hu_stext_t *s,
-                             const char *prefix,
-                             const char *msg) {
+void HUlib_addMessageToSText(hu_stext_t * s,
+                             const char * prefix,
+                             const char * msg) {
   HUlib_addLineToSText(s);
   if (prefix)
     while (*prefix)
@@ -205,9 +205,9 @@ void HUlib_addMessageToSText(hu_stext_t *s,
     HUlib_addCharToTextLine(&s->l[s->cl], *(msg++));
 }
 
-void HUlib_drawSText(hu_stext_t *s) {
-  int            i, idx;
-  hu_textline_t *l;
+void HUlib_drawSText(hu_stext_t * s) {
+  int             i, idx;
+  hu_textline_t * l;
 
   if (!*s->on)
     return; // if not on, don't draw
@@ -225,7 +225,7 @@ void HUlib_drawSText(hu_stext_t *s) {
   }
 }
 
-void HUlib_eraseSText(hu_stext_t *s) {
+void HUlib_eraseSText(hu_stext_t * s) {
 
   int i;
 
@@ -237,12 +237,12 @@ void HUlib_eraseSText(hu_stext_t *s) {
   s->laston = *s->on;
 }
 
-void HUlib_initIText(hu_itext_t *it,
-                     int         x,
-                     int         y,
-                     patch_t   **font,
-                     int         startchar,
-                     bool       *on) {
+void HUlib_initIText(hu_itext_t * it,
+                     int          x,
+                     int          y,
+                     patch_t **   font,
+                     int          startchar,
+                     bool *       on) {
   it->lm     = 0; // default left margin is start of text
   it->on     = on;
   it->laston = true;
@@ -250,24 +250,24 @@ void HUlib_initIText(hu_itext_t *it,
 }
 
 // The following deletion routines adhere to the left margin restriction
-void HUlib_delCharFromIText(hu_itext_t *it) {
+void HUlib_delCharFromIText(hu_itext_t * it) {
   if (it->l.len != it->lm)
     HUlib_delCharFromTextLine(&it->l);
 }
 
-void HUlib_eraseLineFromIText(hu_itext_t *it) {
+void HUlib_eraseLineFromIText(hu_itext_t * it) {
   while (it->lm != it->l.len)
     HUlib_delCharFromTextLine(&it->l);
 }
 
 // Resets left margin as well
-void HUlib_resetIText(hu_itext_t *it) {
+void HUlib_resetIText(hu_itext_t * it) {
   it->lm = 0;
   HUlib_clearTextLine(&it->l);
 }
 
-void HUlib_addPrefixToIText(hu_itext_t *it,
-                            char       *str) {
+void HUlib_addPrefixToIText(hu_itext_t * it,
+                            char *       str) {
   while (*str)
     HUlib_addCharToTextLine(&it->l, *(str++));
   it->lm = it->l.len;
@@ -275,7 +275,7 @@ void HUlib_addPrefixToIText(hu_itext_t *it,
 
 // wrapper function for handling general keyed input.
 // returns true if it ate the key
-bool HUlib_keyInIText(hu_itext_t   *it,
+bool HUlib_keyInIText(hu_itext_t *  it,
                       unsigned char ch) {
   ch = static_cast<unsigned char>(toupper(ch));
 
@@ -289,16 +289,16 @@ bool HUlib_keyInIText(hu_itext_t   *it,
   return true; // ate the key
 }
 
-void HUlib_drawIText(hu_itext_t *it) {
+void HUlib_drawIText(hu_itext_t * it) {
 
-  hu_textline_t *l = &it->l;
+  hu_textline_t * l = &it->l;
 
   if (!*it->on)
     return;
   HUlib_drawTextLine(l, true); // draw the line w/ cursor
 }
 
-void HUlib_eraseIText(hu_itext_t *it) {
+void HUlib_eraseIText(hu_itext_t * it) {
   if (it->laston && !*it->on)
     it->l.needsupdate = 4;
   HUlib_eraseTextLine(&it->l);

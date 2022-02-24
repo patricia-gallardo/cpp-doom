@@ -64,33 +64,33 @@ typedef struct
 
   // Events in this track:
 
-  midi_event_t *events;
-  size_t        num_events;
+  midi_event_t * events;
+  size_t         num_events;
 } midi_track_t;
 
 struct midi_track_iter_s {
-  midi_track_t *track;
-  unsigned int  position;
+  midi_track_t * track;
+  unsigned int   position;
 };
 
 struct midi_file_s {
   midi_header_t header;
 
   // All tracks in this file:
-  midi_track_t *tracks;
-  unsigned int  num_tracks;
+  midi_track_t * tracks;
+  unsigned int   num_tracks;
 
   // Data buffer used to store data read for SysEx or meta events:
-  uint8_t     *buffer;
+  uint8_t *    buffer;
   unsigned int buffer_size;
 };
 
 // Check the header of a chunk:
 
-static bool CheckChunkHeader(chunk_header_t *chunk,
-                             const char     *expected_id) {
-  char *chunk_ptr = reinterpret_cast<char *>(chunk->chunk_id);
-  bool  result    = (memcmp(chunk_ptr, expected_id, 4) == 0);
+static bool CheckChunkHeader(chunk_header_t * chunk,
+                             const char *     expected_id) {
+  char * chunk_ptr = reinterpret_cast<char *>(chunk->chunk_id);
+  bool   result    = (memcmp(chunk_ptr, expected_id, 4) == 0);
 
   if (!result) {
     fmt::fprintf(stderr, "CheckChunkHeader: Expected '%s' chunk header, "
@@ -107,7 +107,7 @@ static bool CheckChunkHeader(chunk_header_t *chunk,
 
 // Read a single byte.  Returns false on error.
 
-static bool ReadByte(uint8_t *result, FILE *stream) {
+static bool ReadByte(uint8_t * result, FILE * stream) {
   int c;
 
   c = fgetc(stream);
@@ -124,7 +124,7 @@ static bool ReadByte(uint8_t *result, FILE *stream) {
 
 // Read a variable-length value.
 
-static bool ReadVariableLength(unsigned int *result, FILE *stream) {
+static bool ReadVariableLength(unsigned int * result, FILE * stream) {
   int     i;
   uint8_t b = 0;
 
@@ -156,9 +156,9 @@ static bool ReadVariableLength(unsigned int *result, FILE *stream) {
 
 // Read a byte sequence into the data buffer.
 
-static uint8_t *ReadByteSequence(unsigned int num_bytes, FILE *stream) {
+static uint8_t * ReadByteSequence(unsigned int num_bytes, FILE * stream) {
   unsigned int i;
-  uint8_t     *result;
+  uint8_t *    result;
 
   // Allocate a buffer. Allocate one extra byte, as malloc(0) is
   // non-portable.
@@ -187,7 +187,7 @@ static uint8_t *ReadByteSequence(unsigned int num_bytes, FILE *stream) {
 // two_param indicates that the event type takes two parameters
 // (three byte) otherwise it is single parameter (two byte)
 
-static bool ReadChannelEvent(midi_event_t *event, uint8_t event_type, bool two_param, FILE *stream) {
+static bool ReadChannelEvent(midi_event_t * event, uint8_t event_type, bool two_param, FILE * stream) {
   uint8_t b = 0;
 
   // Set basics:
@@ -222,7 +222,7 @@ static bool ReadChannelEvent(midi_event_t *event, uint8_t event_type, bool two_p
 
 // Read sysex event:
 
-static bool ReadSysExEvent(midi_event_t *event, int event_type, FILE *stream) {
+static bool ReadSysExEvent(midi_event_t * event, int event_type, FILE * stream) {
   event->event_type = static_cast<midi_event_type_t>(event_type);
 
   if (!ReadVariableLength(&event->data.sysex.length, stream)) {
@@ -245,7 +245,7 @@ static bool ReadSysExEvent(midi_event_t *event, int event_type, FILE *stream) {
 
 // Read meta event:
 
-static bool ReadMetaEvent(midi_event_t *event, FILE *stream) {
+static bool ReadMetaEvent(midi_event_t * event, FILE * stream) {
   uint8_t b = 0;
 
   event->event_type = MIDI_EVENT_META;
@@ -279,7 +279,7 @@ static bool ReadMetaEvent(midi_event_t *event, FILE *stream) {
   return true;
 }
 
-static bool ReadEvent(midi_event_t *event, unsigned int *last_event_type, FILE *stream) {
+static bool ReadEvent(midi_event_t * event, unsigned int * last_event_type, FILE * stream) {
   uint8_t event_type = 0;
 
   if (!ReadVariableLength(&event->delta_time, stream)) {
@@ -350,7 +350,7 @@ static bool ReadEvent(midi_event_t *event, unsigned int *last_event_type, FILE *
 
 // Free an event:
 
-static void FreeEvent(midi_event_t *event) {
+static void FreeEvent(midi_event_t * event) {
   // Some event types have dynamically allocated buffers assigned
   // to them that must be freed.
 
@@ -372,7 +372,7 @@ static void FreeEvent(midi_event_t *event) {
 
 // Read and check the track chunk header
 
-static bool ReadTrackHeader(midi_track_t *track, FILE *stream) {
+static bool ReadTrackHeader(midi_track_t * track, FILE * stream) {
   size_t         records_read;
   chunk_header_t chunk_header;
 
@@ -391,10 +391,10 @@ static bool ReadTrackHeader(midi_track_t *track, FILE *stream) {
   return true;
 }
 
-static bool ReadTrack(midi_track_t *track, FILE *stream) {
-  midi_event_t *new_events;
-  midi_event_t *event;
-  unsigned int  last_event_type;
+static bool ReadTrack(midi_track_t * track, FILE * stream) {
+  midi_event_t * new_events;
+  midi_event_t * event;
+  unsigned int   last_event_type;
 
   track->num_events = 0;
   track->events     = nullptr;
@@ -439,7 +439,7 @@ static bool ReadTrack(midi_track_t *track, FILE *stream) {
 
 // Free a track:
 
-static void FreeTrack(midi_track_t *track) {
+static void FreeTrack(midi_track_t * track) {
   for (size_t i = 0; i < track->num_events; ++i) {
     FreeEvent(&track->events[i]);
   }
@@ -447,7 +447,7 @@ static void FreeTrack(midi_track_t *track) {
   free(track->events);
 }
 
-static bool ReadAllTracks(midi_file_t *file, FILE *stream) {
+static bool ReadAllTracks(midi_file_t * file, FILE * stream) {
   unsigned int i;
 
   // Allocate list of tracks and read each track:
@@ -473,7 +473,7 @@ static bool ReadAllTracks(midi_file_t *file, FILE *stream) {
 
 // Read and check the header chunk.
 
-static bool ReadFileHeader(midi_file_t *file, FILE *stream) {
+static bool ReadFileHeader(midi_file_t * file, FILE * stream) {
   size_t       records_read;
   unsigned int format_type;
 
@@ -504,7 +504,7 @@ static bool ReadFileHeader(midi_file_t *file, FILE *stream) {
   return true;
 }
 
-void MIDI_FreeFile(midi_file_t *file) {
+void MIDI_FreeFile(midi_file_t * file) {
   if (file->tracks != nullptr) {
     for (unsigned int i = 0; i < file->num_tracks; ++i) {
       FreeTrack(&file->tracks[i]);
@@ -516,10 +516,10 @@ void MIDI_FreeFile(midi_file_t *file) {
   free(file);
 }
 
-midi_file_t *MIDI_LoadFile(char *filename) {
-  FILE *stream;
+midi_file_t * MIDI_LoadFile(char * filename) {
+  FILE * stream;
 
-  auto *file = create_struct<midi_file_t>();
+  auto * file = create_struct<midi_file_t>();
 
   if (file == nullptr) {
     return nullptr;
@@ -563,31 +563,31 @@ midi_file_t *MIDI_LoadFile(char *filename) {
 
 // Get the number of tracks in a MIDI file.
 
-unsigned int MIDI_NumTracks(midi_file_t *file) {
+unsigned int MIDI_NumTracks(midi_file_t * file) {
   return file->num_tracks;
 }
 
 // Start iterating over the events in a track.
 
-midi_track_iter_t *MIDI_IterateTrack(midi_file_t *file, unsigned int track) {
+midi_track_iter_t * MIDI_IterateTrack(midi_file_t * file, unsigned int track) {
   assert(track < file->num_tracks);
 
-  auto *iter     = create_struct<midi_track_iter_t>();
+  auto * iter    = create_struct<midi_track_iter_t>();
   iter->track    = &file->tracks[track];
   iter->position = 0;
 
   return iter;
 }
 
-void MIDI_FreeIterator(midi_track_iter_t *iter) {
+void MIDI_FreeIterator(midi_track_iter_t * iter) {
   free(iter);
 }
 
 // Get the time until the next MIDI event in a track.
 
-unsigned int MIDI_GetDeltaTime(midi_track_iter_t *iter) {
+unsigned int MIDI_GetDeltaTime(midi_track_iter_t * iter) {
   if (iter->position < iter->track->num_events) {
-    midi_event_t *next_event;
+    midi_event_t * next_event;
 
     next_event = &iter->track->events[iter->position];
 
@@ -599,7 +599,7 @@ unsigned int MIDI_GetDeltaTime(midi_track_iter_t *iter) {
 
 // Get a pointer to the next MIDI event.
 
-int MIDI_GetNextEvent(midi_track_iter_t *iter, midi_event_t **event) {
+int MIDI_GetNextEvent(midi_track_iter_t * iter, midi_event_t ** event) {
   if (iter->position < iter->track->num_events) {
     *event = &iter->track->events[iter->position];
     ++iter->position;
@@ -610,7 +610,7 @@ int MIDI_GetNextEvent(midi_track_iter_t *iter, midi_event_t **event) {
   }
 }
 
-unsigned int MIDI_GetFileTimeDivision(midi_file_t *file) {
+unsigned int MIDI_GetFileTimeDivision(midi_file_t * file) {
   short result = SDL_SwapBE16(file->header.time_division);
 
   // Negative time division indicates SMPTE time and must be handled
@@ -622,13 +622,13 @@ unsigned int MIDI_GetFileTimeDivision(midi_file_t *file) {
   }
 }
 
-void MIDI_RestartIterator(midi_track_iter_t *iter) {
+void MIDI_RestartIterator(midi_track_iter_t * iter) {
   iter->position = 0;
 }
 
 #ifdef TEST
 
-static char *MIDI_EventTypeToString(midi_event_type_t event_type) {
+static char * MIDI_EventTypeToString(midi_event_type_t event_type) {
   switch (event_type) {
   case MIDI_EVENT_NOTE_OFF:
     return const_cast<char *>("MIDI_EVENT_NOTE_OFF");
@@ -656,8 +656,8 @@ static char *MIDI_EventTypeToString(midi_event_type_t event_type) {
   }
 }
 
-void PrintTrack(midi_track_t *track) {
-  midi_event_t *event;
+void PrintTrack(midi_track_t * track) {
+  midi_event_t * event;
 
   for (size_t i = 0; i < track->num_events; ++i) {
     event = &track->events[i];
@@ -696,9 +696,9 @@ void PrintTrack(midi_track_t *track) {
   }
 }
 
-int main(int argc, char *argv[]) {
-  midi_file_t *file;
-  unsigned int i;
+int main(int argc, char * argv[]) {
+  midi_file_t * file;
+  unsigned int  i;
 
   if (argc < 2) {
     fmt::printf("Usage: %s <filename>\n", argv[0]);

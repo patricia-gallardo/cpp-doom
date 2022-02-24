@@ -34,7 +34,7 @@
 
 #define DEAD_ZONE (32768 / 3)
 
-static SDL_Joystick *joystick = nullptr;
+static SDL_Joystick * joystick = nullptr;
 
 // Configuration variables:
 
@@ -43,8 +43,8 @@ static SDL_Joystick *joystick = nullptr;
 static int usejoystick = 0;
 
 // SDL GUID and index of the joystick to use.
-static char *joystick_guid  = const_cast<char *>("");
-static int   joystick_index = -1;
+static char * joystick_guid  = const_cast<char *>("");
+static int    joystick_index = -1;
 
 // Which joystick axis to use for horizontal movement, and whether to
 // invert the direction:

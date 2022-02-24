@@ -55,12 +55,12 @@ using deh_mapping_entry_t = struct deh_mapping_entry_s;
 struct deh_mapping_entry_s {
   // field name
 
-  const char *name {};
+  const char * name {};
 
   // location relative to the base in the deh_mapping_t struct
   // If this is nullptr, it is an unsupported mapping
 
-  void *location {};
+  void * location {};
 
   // field size
 
@@ -72,12 +72,12 @@ struct deh_mapping_entry_s {
 };
 
 struct deh_mapping_s {
-  void               *base {};
+  void *              base {};
   deh_mapping_entry_t entries[MAX_MAPPING_ENTRIES];
 };
 
-bool                  DEH_SetMapping(deh_context_t *context, deh_mapping_t *mapping, void *structptr, char *name, int value);
-[[maybe_unused]] bool DEH_SetStringMapping(deh_context_t *context, deh_mapping_t *mapping, void *structptr, char *name, char *value);
-void                  DEH_StructSHA1Sum(sha1_context_t *context, deh_mapping_t *mapping, void *structptr);
+bool                  DEH_SetMapping(deh_context_t * context, deh_mapping_t * mapping, void * structptr, char * name, int value);
+[[maybe_unused]] bool DEH_SetStringMapping(deh_context_t * context, deh_mapping_t * mapping, void * structptr, char * name, char * value);
+void                  DEH_StructSHA1Sum(sha1_context_t * context, deh_mapping_t * mapping, void * structptr);
 
 #endif /* #ifndef DEH_MAPPING_H */

@@ -24,8 +24,8 @@
 #include "txt_utf8.hpp"
 #include "memory.hpp"
 
-static void TXT_RadioButtonSizeCalc(void *uncast_radiobutton) {
-  auto *radiobutton = reinterpret_cast<txt_radiobutton_t *>(uncast_radiobutton);
+static void TXT_RadioButtonSizeCalc(void * uncast_radiobutton) {
+  auto * radiobutton = reinterpret_cast<txt_radiobutton_t *>(uncast_radiobutton);
 
   // Minimum width is the string length + right-side spaces for padding
 
@@ -33,8 +33,8 @@ static void TXT_RadioButtonSizeCalc(void *uncast_radiobutton) {
   radiobutton->widget.h = 1;
 }
 
-static void TXT_RadioButtonDrawer(void *uncast_radiobutton) {
-  auto              *radiobutton = reinterpret_cast<txt_radiobutton_t *>(uncast_radiobutton);
+static void TXT_RadioButtonDrawer(void * uncast_radiobutton) {
+  auto *             radiobutton = reinterpret_cast<txt_radiobutton_t *>(uncast_radiobutton);
   txt_saved_colors_t colors {};
 
   TXT_SaveColors(&colors);
@@ -63,14 +63,14 @@ static void TXT_RadioButtonDrawer(void *uncast_radiobutton) {
   }
 }
 
-static void TXT_RadioButtonDestructor(void *uncast_radiobutton) {
-  auto *radiobutton = reinterpret_cast<txt_radiobutton_t *>(uncast_radiobutton);
+static void TXT_RadioButtonDestructor(void * uncast_radiobutton) {
+  auto * radiobutton = reinterpret_cast<txt_radiobutton_t *>(uncast_radiobutton);
 
   free(radiobutton->label);
 }
 
-static int TXT_RadioButtonKeyPress(void *uncast_radiobutton, int key) {
-  auto *radiobutton = reinterpret_cast<txt_radiobutton_t *>(uncast_radiobutton);
+static int TXT_RadioButtonKeyPress(void * uncast_radiobutton, int key) {
+  auto * radiobutton = reinterpret_cast<txt_radiobutton_t *>(uncast_radiobutton);
 
   if (key == KEY_ENTER || key == ' ') {
     if (*radiobutton->variable != radiobutton->value) {
@@ -83,11 +83,11 @@ static int TXT_RadioButtonKeyPress(void *uncast_radiobutton, int key) {
   return 0;
 }
 
-static void TXT_RadioButtonMousePress(void *uncast_radiobutton,
+static void TXT_RadioButtonMousePress(void * uncast_radiobutton,
                                       int,
                                       int,
                                       int b) {
-  auto *radiobutton = reinterpret_cast<txt_radiobutton_t *>(uncast_radiobutton);
+  auto * radiobutton = reinterpret_cast<txt_radiobutton_t *>(uncast_radiobutton);
 
   if (b == TXT_MOUSE_LEFT) {
     // Equivalent to pressing enter
@@ -106,8 +106,8 @@ txt_widget_class_t txt_radiobutton_class = {
   nullptr,
 };
 
-txt_radiobutton_t *TXT_NewRadioButton(const char *label, int *variable, int value) {
-  auto *radiobutton = create_struct<txt_radiobutton_t>();
+txt_radiobutton_t * TXT_NewRadioButton(const char * label, int * variable, int value) {
+  auto * radiobutton = create_struct<txt_radiobutton_t>();
 
   TXT_InitWidget(radiobutton, &txt_radiobutton_class);
   radiobutton->label    = strdup(label);
@@ -117,7 +117,7 @@ txt_radiobutton_t *TXT_NewRadioButton(const char *label, int *variable, int valu
   return radiobutton;
 }
 
-[[maybe_unused]] void TXT_SetRadioButtonLabel(txt_radiobutton_t *radiobutton, const char *value) {
+[[maybe_unused]] void TXT_SetRadioButtonLabel(txt_radiobutton_t * radiobutton, const char * value) {
   free(radiobutton->label);
   radiobutton->label = strdup(value);
 }

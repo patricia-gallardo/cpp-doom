@@ -69,9 +69,9 @@ fixed_t topstep;
 int64_t bottomfrac; // [crispy] WiggleFix
 fixed_t bottomstep;
 
-lighttable_t **walllights;
+lighttable_t ** walllights;
 
-int *maskedtexturecol; // [crispy] 32-bit integer math
+int * maskedtexturecol; // [crispy] 32-bit integer math
 
 // [crispy] WiggleFix: add this code block near the top of r_segs.c
 //
@@ -134,7 +134,7 @@ static const struct
   { 128 * FRACUNIT,  9 }
 };
 
-void R_FixWiggle(sector_t *sector) {
+void R_FixWiggle(sector_t * sector) {
   static int lastheight = 0;
   int        height     = (sector->interpceilingheight - sector->interpfloorheight) >> FRACBITS;
 
@@ -168,9 +168,9 @@ void R_FixWiggle(sector_t *sector) {
 //
 // R_RenderMaskedSegRange
 //
-void R_RenderMaskedSegRange(drawseg_t *ds,
-                            int        x1,
-                            int        x2) {
+void R_RenderMaskedSegRange(drawseg_t * ds,
+                            int         x1,
+                            int         x2) {
   // Calculate light table.
   // Use different light tables
   //   for horizontal / vertical / diagonal. Diagonal?
@@ -259,8 +259,8 @@ void R_RenderMaskedSegRange(drawseg_t *ds,
       g_r_draw_globals->dc_iscale = static_cast<fixed_t>(0xffffffffu / static_cast<unsigned>(spryscale));
 
       // draw the texture
-      auto *col_ptr = reinterpret_cast<uint8_t *>(R_GetColumn(texnum, maskedtexturecol[g_r_draw_globals->dc_x], false) - 3);
-      auto *col     = reinterpret_cast<column_t *>(col_ptr);
+      auto * col_ptr = reinterpret_cast<uint8_t *>(R_GetColumn(texnum, maskedtexturecol[g_r_draw_globals->dc_x], false) - 3);
+      auto * col     = reinterpret_cast<column_t *>(col_ptr);
 
       R_DrawMaskedColumn(col);
       maskedtexturecol[g_r_draw_globals->dc_x] = INT_MAX; // [crispy] 32-bit integer math

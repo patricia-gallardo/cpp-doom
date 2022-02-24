@@ -30,29 +30,29 @@
 struct r_state_t {
 
   // needed for texture pegging
-  fixed_t *textureheight;
+  fixed_t * textureheight;
 
   // needed for pre rendering (fracs)
-  fixed_t *spritewidth;
+  fixed_t * spritewidth;
 
-  fixed_t *spriteoffset;
-  fixed_t *spritetopoffset;
+  fixed_t * spriteoffset;
+  fixed_t * spritetopoffset;
 
-  lighttable_t *colormaps;
+  lighttable_t * colormaps;
 
   int viewwidth;
   int scaledviewwidth;
   int viewheight;
 
   // [crispy] lookup table for horizontal screen coordinates
-  int  flipscreenwidth[MAXWIDTH];
-  int *flipviewwidth;
+  int   flipscreenwidth[MAXWIDTH];
+  int * flipviewwidth;
 
   int firstflat;
 
   // for global animation
-  int *flattranslation;
-  int *texturetranslation;
+  int * flattranslation;
+  int * texturetranslation;
 
   // Sprite....
   int firstspritelump;
@@ -65,34 +65,34 @@ struct r_state_t {
 
   // variables used to look up
   //  and range check thing_t sprites patches
-  int          numsprites;
-  spritedef_t *sprites;
+  int           numsprites;
+  spritedef_t * sprites;
 
   //
   // MAP related Lookup tables.
   // Store VERTEXES, LINEDEFS, SIDEDEFS, etc.
   //
 
-  int       numvertexes;
-  vertex_t *vertexes;
+  int        numvertexes;
+  vertex_t * vertexes;
 
-  int    numsegs;
-  seg_t *segs;
+  int     numsegs;
+  seg_t * segs;
 
-  int       numsectors;
-  sector_t *sectors;
+  int        numsectors;
+  sector_t * sectors;
 
-  int          numsubsectors;
-  subsector_t *subsectors;
+  int           numsubsectors;
+  subsector_t * subsectors;
 
-  int     numnodes;
-  node_t *nodes;
+  int      numnodes;
+  node_t * nodes;
 
-  int     numlines;
-  line_t *lines;
+  int      numlines;
+  line_t * lines;
 
-  int     numsides;
-  side_t *sides;
+  int      numsides;
+  side_t * sides;
 
   //
   // POV data.
@@ -101,8 +101,8 @@ struct r_state_t {
   fixed_t viewy;
   fixed_t viewz;
 
-  angle_t   viewangle;
-  player_t *viewplayer;
+  angle_t    viewangle;
+  player_t * viewplayer;
 
   //
   // precalculated math tables
@@ -129,10 +129,10 @@ struct r_state_t {
   // Segs count?
   int sscount;
 
-  visplane_t *floorplane;
-  visplane_t *ceilingplane;
+  visplane_t * floorplane;
+  visplane_t * ceilingplane;
 };
 
-extern r_state_t *const g_r_state_globals;
+extern r_state_t * const g_r_state_globals;
 
 #endif

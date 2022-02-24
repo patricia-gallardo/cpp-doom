@@ -97,10 +97,10 @@ switchlist_t alphSwitchList_vanilla[] = {
 };
 
 // [crispy] remove MAXSWITCHES limit
-int          *switchlist;
+int *         switchlist;
 int           numswitches;
 static size_t maxswitches;
-button_t     *buttonlist; // [crispy] remove MAXBUTTONS limit
+button_t *    buttonlist; // [crispy] remove MAXBUTTONS limit
 int           maxbuttons; // [crispy] remove MAXBUTTONS limit
 
 //
@@ -111,8 +111,8 @@ void P_InitSwitchList() {
   int i, slindex, episode;
 
   // [crispy] add support for SWITCHES lumps
-  switchlist_t *alphSwitchList;
-  bool          from_lump;
+  switchlist_t * alphSwitchList;
+  bool           from_lump;
 
   bool is_set = from_lump = (W_CheckNumForName("SWITCHES") != -1);
   if (is_set) {
@@ -154,9 +154,9 @@ void P_InitSwitchList() {
     // [crispy] ignore switches referencing unknown texture names,
     // warn if either one is missing, but only add if both are valid
     if (alphSwitchList_episode <= episode) {
-      int         texture1, texture2;
-      const char *name1 = DEH_String(alphSwitchList[i].name1);
-      const char *name2 = DEH_String(alphSwitchList[i].name2);
+      int          texture1, texture2;
+      const char * name1 = DEH_String(alphSwitchList[i].name1);
+      const char * name2 = DEH_String(alphSwitchList[i].name2);
 
       texture1 = R_CheckTextureNumForName(name1);
       texture2 = R_CheckTextureNumForName(name2);
@@ -186,7 +186,7 @@ void P_InitSwitchList() {
 //
 // Start a button counting down till it turns off.
 //
-void P_StartButton(line_t  *line,
+void P_StartButton(line_t * line,
                    bwhere_e w,
                    int      texture,
                    int      time) {
@@ -229,8 +229,8 @@ void P_StartButton(line_t  *line,
 // Function that changes wall texture.
 // Tell it if switch is ok to use again (1=yes, it's a button).
 //
-void P_ChangeSwitchTexture(line_t *line,
-                           int     useAgain) {
+void P_ChangeSwitchTexture(line_t * line,
+                           int      useAgain) {
   int  texTop;
   int  texMid;
   int  texBot;
@@ -303,9 +303,9 @@ void P_ChangeSwitchTexture(line_t *line,
 // Called when a thing uses a special line.
 // Only the front sides of lines are usable.
 //
-bool P_UseSpecialLine(mobj_t *thing,
-                      line_t *line,
-                      int     side) {
+bool P_UseSpecialLine(mobj_t * thing,
+                      line_t * line,
+                      int      side) {
 
   // Err...
   // Use the back sides of VERY SPECIAL lines...

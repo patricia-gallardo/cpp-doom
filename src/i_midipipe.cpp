@@ -120,7 +120,7 @@ static bool UsingNativeMidi() {
 //
 // Writes packet data to the subprocess' standard in.
 //
-static bool WritePipe(net_packet_t *packet) {
+static bool WritePipe(net_packet_t * packet) {
   DWORD bytes_written;
   BOOL  ok = WriteFile(midi_process_in_writer, packet->data, static_cast<DWORD>(packet->len), &bytes_written, nullptr);
 
@@ -134,7 +134,7 @@ static bool WritePipe(net_packet_t *packet) {
 // response is unexpected, or doesn't arrive within a specific amuont of time,
 // assume the subprocess is in an unknown state.
 //
-static bool ExpectPipe(net_packet_t *packet) {
+static bool ExpectPipe(net_packet_t * packet) {
   int   start;
   BOOL  ok;
   CHAR  pipe_buffer[8192];
@@ -183,8 +183,8 @@ static bool ExpectPipe(net_packet_t *packet) {
 //
 // A reimplementation of PathRemoveFileSpec that doesn't bring in Shlwapi
 //
-void RemoveFileSpec(TCHAR *path, size_t size) {
-  TCHAR *fp = nullptr;
+void RemoveFileSpec(TCHAR * path, size_t size) {
+  TCHAR * fp = nullptr;
 
   fp = &path[size];
   while (path <= fp && *fp != DIR_SEPARATOR) {
@@ -194,8 +194,8 @@ void RemoveFileSpec(TCHAR *path, size_t size) {
 }
 
 static bool BlockForAck() {
-  bool          ok;
-  net_packet_t *packet;
+  bool           ok;
+  net_packet_t * packet;
 
   packet = NET_NewPacket(2);
   NET_WriteInt16(packet, MIDIPIPE_PACKET_TYPE_ACK);
@@ -216,9 +216,9 @@ static bool BlockForAck() {
 // Tells the MIDI subprocess to load a specific filename for playing.  This
 // function blocks until there is an acknowledgement from the server.
 //
-bool I_MidiPipe_RegisterSong(char *filename) {
-  bool          ok;
-  net_packet_t *packet;
+bool I_MidiPipe_RegisterSong(char * filename) {
+  bool           ok;
+  net_packet_t * packet;
 
   packet = NET_NewPacket(64);
   NET_WriteInt16(packet, MIDIPIPE_PACKET_TYPE_REGISTER_SONG);
@@ -246,8 +246,8 @@ bool I_MidiPipe_RegisterSong(char *filename) {
 // Tells the MIDI subprocess to unload the current song.
 //
 void I_MidiPipe_UnregisterSong() {
-  bool          ok;
-  net_packet_t *packet;
+  bool           ok;
+  net_packet_t * packet;
 
   packet = NET_NewPacket(64);
   NET_WriteInt16(packet, MIDIPIPE_PACKET_TYPE_UNREGISTER_SONG);
@@ -271,8 +271,8 @@ void I_MidiPipe_UnregisterSong() {
 // Tells the MIDI subprocess to set a specific volume for the song.
 //
 void I_MidiPipe_SetVolume(int vol) {
-  bool          ok;
-  net_packet_t *packet;
+  bool           ok;
+  net_packet_t * packet;
 
   packet = NET_NewPacket(6);
   NET_WriteInt16(packet, MIDIPIPE_PACKET_TYPE_SET_VOLUME);
@@ -295,8 +295,8 @@ void I_MidiPipe_SetVolume(int vol) {
 // Tells the MIDI subprocess to play the currently loaded song.
 //
 void I_MidiPipe_PlaySong(int loops) {
-  bool          ok;
-  net_packet_t *packet;
+  bool           ok;
+  net_packet_t * packet;
 
   packet = NET_NewPacket(6);
   NET_WriteInt16(packet, MIDIPIPE_PACKET_TYPE_PLAY_SONG);
@@ -319,8 +319,8 @@ void I_MidiPipe_PlaySong(int loops) {
 // Tells the MIDI subprocess to stop playing the currently loaded song.
 //
 void I_MidiPipe_StopSong() {
-  bool          ok;
-  net_packet_t *packet;
+  bool           ok;
+  net_packet_t * packet;
 
   packet = NET_NewPacket(2);
   NET_WriteInt16(packet, MIDIPIPE_PACKET_TYPE_STOP_SONG);
@@ -342,8 +342,8 @@ void I_MidiPipe_StopSong() {
 // Tells the MIDI subprocess to shutdown.
 //
 void I_MidiPipe_ShutdownServer() {
-  bool          ok;
-  net_packet_t *packet;
+  bool           ok;
+  net_packet_t * packet;
 
   packet = NET_NewPacket(2);
   NET_WriteInt16(packet, MIDIPIPE_PACKET_TYPE_SHUTDOWN);
@@ -376,8 +376,8 @@ void I_MidiPipe_ShutdownServer() {
 bool I_MidiPipe_InitServer() {
   TCHAR               dirname[MAX_PATH + 1];
   DWORD               dirname_len;
-  char               *module  = nullptr;
-  char               *cmdline = nullptr;
+  char *              module  = nullptr;
+  char *              cmdline = nullptr;
   char                params_buf[128];
   SECURITY_ATTRIBUTES sec_attrs;
   PROCESS_INFORMATION proc_info;

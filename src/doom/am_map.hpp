@@ -28,7 +28,7 @@ constexpr auto AM_MSGENTERED = (AM_MSGHEADER | ('e' << 8));
 constexpr auto AM_MSGEXITED  = (AM_MSGHEADER | ('x' << 8));
 
 // Called by main loop.
-bool AM_Responder(event_t *ev);
+bool AM_Responder(event_t * ev);
 
 // Called by main loop.
 void AM_Ticker();

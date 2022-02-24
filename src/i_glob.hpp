@@ -25,17 +25,17 @@ using glob_t = struct glob_s;
 
 // Start reading a list of file paths from the given directory which match
 // the given glob pattern. I_EndGlob() must be called on completion.
-glob_t *I_StartGlob(const char *directory, const char *glob, int flags);
+glob_t * I_StartGlob(const char * directory, const char * glob, int flags);
 
 // Same as I_StartGlob but multiple glob patterns can be provided. The list
 // of patterns must be terminated with NULL.
-glob_t *I_StartMultiGlob(const char *directory, int flags, const char *glob, ...);
+glob_t * I_StartMultiGlob(const char * directory, int flags, const char * glob, ...);
 
 // Finish reading file list.
-void I_EndGlob(glob_t *glob);
+void I_EndGlob(glob_t * glob);
 
 // Read the name of the next globbed filename. nullptr is returned if there
 // are no more found.
-const char *I_NextGlob(glob_t *glob);
+const char * I_NextGlob(glob_t * glob);
 
 #endif

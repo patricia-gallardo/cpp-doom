@@ -17,7 +17,7 @@
 // Encode a Unicode character as UTF-8, storing it in the buffer 'p'
 // and returning the new, incremented position.
 
-char *TXT_EncodeUTF8(char *p, unsigned int c) {
+char * TXT_EncodeUTF8(char * p, unsigned int c) {
   if (c < 0x80) // 1 character (ASCII):
   {
     p[0] = static_cast<char>(c);
@@ -49,8 +49,8 @@ char *TXT_EncodeUTF8(char *p, unsigned int c) {
 
 // Decode UTF-8 character, incrementing *ptr over the decoded bytes.
 
-unsigned int TXT_DecodeUTF8(const char **ptr) {
-  const char  *p = *ptr;
+unsigned int TXT_DecodeUTF8(const char ** ptr) {
+  const char * p = *ptr;
   unsigned int c;
 
   // UTF-8 decode.
@@ -86,8 +86,8 @@ unsigned int TXT_DecodeUTF8(const char **ptr) {
 
 // Count the number of characters in a UTF-8 string.
 
-unsigned int TXT_UTF8_Strlen(const char *s) {
-  const char  *p;
+unsigned int TXT_UTF8_Strlen(const char * s) {
+  const char * p;
   unsigned int result = 0;
   unsigned int c;
 
@@ -106,9 +106,9 @@ unsigned int TXT_UTF8_Strlen(const char *s) {
 
 // Skip past the first n characters in a UTF-8 string.
 
-char *TXT_UTF8_SkipChars(const char *s, unsigned int n) {
+char * TXT_UTF8_SkipChars(const char * s, unsigned int n) {
   unsigned int i;
-  const char  *p;
+  const char * p;
 
   p = s;
 

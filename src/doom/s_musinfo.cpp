@@ -55,31 +55,31 @@ constexpr auto FILE_ZONE_SCRIPT = 2;
 // PRIVATE FUNCTION PROTOTYPES ---------------------------------------------
 
 static void CheckOpen();
-static void OpenScript(char *name, int type);
-static void SC_OpenLump(char *name);
+static void OpenScript(char * name, int type);
+static void SC_OpenLump(char * name);
 static void SC_Close();
-static bool SC_Compare(const char *text);
+static bool SC_Compare(const char * text);
 
 // EXTERNAL DATA DECLARATIONS ----------------------------------------------
 
 // PUBLIC DATA DEFINITIONS -------------------------------------------------
 
-static char                 *sc_String;
+static char *                sc_String;
 static int                   sc_Line;
 [[maybe_unused]] static bool sc_End;
 [[maybe_unused]] static bool sc_Crossed;
 
 // PRIVATE DATA DEFINITIONS ------------------------------------------------
 
-static char  ScriptName[16];
-static char *ScriptBuffer;
-static char *ScriptPtr;
-static char *ScriptEndPtr;
-static char  StringBuffer[MAX_STRING_SIZE];
-static int   ScriptLumpNum;
-static bool  ScriptOpen = false;
-static int   ScriptSize;
-static bool  AlreadyGot = false;
+static char   ScriptName[16];
+static char * ScriptBuffer;
+static char * ScriptPtr;
+static char * ScriptEndPtr;
+static char   StringBuffer[MAX_STRING_SIZE];
+static int    ScriptLumpNum;
+static bool   ScriptOpen = false;
+static int    ScriptSize;
+static bool   AlreadyGot = false;
 
 // CODE --------------------------------------------------------------------
 
@@ -91,7 +91,7 @@ static bool  AlreadyGot = false;
 //
 //==========================================================================
 
-static void SC_OpenLump(char *name) {
+static void SC_OpenLump(char * name) {
   OpenScript(name, LUMP_SCRIPT);
 }
 
@@ -101,7 +101,7 @@ static void SC_OpenLump(char *name) {
 //
 //==========================================================================
 
-static void OpenScript(char *name, int type) {
+static void OpenScript(char * name, int type) {
   SC_Close();
   if (type == LUMP_SCRIPT) { // Lump script
     ScriptLumpNum = W_GetNumForName(name);
@@ -181,7 +181,7 @@ static bool SC_GetString() {
       sc_Crossed = true;
     }
   }
-  char *text = sc_String;
+  char * text = sc_String;
   if (*ScriptPtr == ASCII_QUOTE) { // Quoted string
     ScriptPtr++;
     while (*ScriptPtr != ASCII_QUOTE) {
@@ -211,7 +211,7 @@ static bool SC_GetString() {
 //
 //==========================================================================
 
-static bool SC_Compare(const char *text) {
+static bool SC_Compare(const char * text) {
   if (strcasecmp(text, sc_String) == 0) {
     return true;
   }
@@ -239,7 +239,7 @@ musinfo_t musinfo = {};
 // Parses MUSINFO lump.
 //
 
-void S_ParseMusInfo(const char *mapid) {
+void S_ParseMusInfo(const char * mapid) {
   if (W_CheckNumForName("MUSINFO") != -1) {
     int inMap = false;
 

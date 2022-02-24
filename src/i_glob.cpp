@@ -45,7 +45,7 @@
 // in POSIX.1.  Other than Linux, the d_type field is available mainly
 // only on BSD systems.  The remaining fields are available on many, but
 // not all systems.
-static bool IsDirectory(char *dir, struct dirent *de) {
+static bool IsDirectory(char * dir, struct dirent * de) {
 #if defined(_DIRENT_HAVE_D_TYPE)
   if (de->d_type != DT_UNKNOWN && de->d_type != DT_LNK) {
     return de->d_type == DT_DIR;
@@ -53,7 +53,7 @@ static bool IsDirectory(char *dir, struct dirent *de) {
 #endif
   {
     struct stat sb { };
-    char       *filename = M_StringJoin(dir, DIR_SEPARATOR_S, de->d_name, nullptr);
+    char *      filename = M_StringJoin(dir, DIR_SEPARATOR_S, de->d_name, nullptr);
     int         result   = stat(filename, &sb);
     free(filename);
 
@@ -66,29 +66,29 @@ static bool IsDirectory(char *dir, struct dirent *de) {
 }
 
 struct [[maybe_unused]] glob_s {
-  char **globs;
-  int    num_globs;
-  int    flags;
-  DIR   *dir;
-  char  *directory;
-  char  *last_filename;
+  char ** globs;
+  int     num_globs;
+  int     flags;
+  DIR *   dir;
+  char *  directory;
+  char *  last_filename;
   // These fields are only used when the GLOB_FLAG_SORTED flag is set:
-  char **filenames;
-  int    filenames_len;
-  int    next_index;
+  char ** filenames;
+  int     filenames_len;
+  int     next_index;
 };
 
-static void FreeStringList(char **globs, int num_globs) {
+static void FreeStringList(char ** globs, int num_globs) {
   for (int i = 0; i < num_globs; ++i) {
     free(globs[i]);
   }
   free(globs);
 }
 
-glob_t *I_StartMultiGlob(const char *directory, int flags, const char *glob, ...) {
+glob_t * I_StartMultiGlob(const char * directory, int flags, const char * glob, ...) {
   va_list args;
 
-  char **globs = static_cast<char **>(malloc(sizeof(char *)));
+  char ** globs = static_cast<char **>(malloc(sizeof(char *)));
   if (globs == nullptr) {
     return nullptr;
   }
@@ -97,12 +97,12 @@ glob_t *I_StartMultiGlob(const char *directory, int flags, const char *glob, ...
 
   va_start(args, glob);
   for (;;) {
-    const char *arg = va_arg(args, const char *);
+    const char * arg = va_arg(args, const char *);
     if (arg == nullptr) {
       break;
     }
 
-    char **new_globs = static_cast<char **>(
+    char ** new_globs = static_cast<char **>(
         realloc(globs, sizeof(char *) * (static_cast<unsigned long>(num_globs + 1))));
     if (new_globs == nullptr) {
       FreeStringList(globs, num_globs);
@@ -113,7 +113,7 @@ glob_t *I_StartMultiGlob(const char *directory, int flags, const char *glob, ...
   }
   va_end(args);
 
-  auto *result = static_cast<glob_t *>(malloc(sizeof(glob_t)));
+  auto * result = static_cast<glob_t *>(malloc(sizeof(glob_t)));
   if (result == nullptr) {
     FreeStringList(globs, num_globs);
     return nullptr;
@@ -137,11 +137,11 @@ glob_t *I_StartMultiGlob(const char *directory, int flags, const char *glob, ...
   return result;
 }
 
-glob_t *I_StartGlob(const char *directory, const char *glob, int flags) {
+glob_t * I_StartGlob(const char * directory, const char * glob, int flags) {
   return I_StartMultiGlob(directory, flags, glob, nullptr);
 }
 
-void I_EndGlob(glob_t *glob) {
+void I_EndGlob(glob_t * glob) {
   if (glob == nullptr) {
     return;
   }
@@ -155,7 +155,7 @@ void I_EndGlob(glob_t *glob) {
   free(glob);
 }
 
-static bool MatchesGlob(const char *name, const char *glob, int flags) {
+static bool MatchesGlob(const char * name, const char * glob, int flags) {
   while (*glob != '\0') {
     int n = *name;
     int g = *glob;
@@ -190,7 +190,7 @@ static bool MatchesGlob(const char *name, const char *glob, int flags) {
   return *name == '\0';
 }
 
-static bool MatchesAnyGlob(const char *name, glob_t *glob) {
+static bool MatchesAnyGlob(const char * name, glob_t * glob) {
   for (int i = 0; i < glob->num_globs; ++i) {
     if (MatchesGlob(name, glob->globs[i], glob->flags)) {
       return true;
@@ -199,8 +199,8 @@ static bool MatchesAnyGlob(const char *name, glob_t *glob) {
   return false;
 }
 
-static char *NextGlob(glob_t *glob) {
-  struct dirent *de = nullptr;
+static char * NextGlob(glob_t * glob) {
+  struct dirent * de = nullptr;
 
   do {
     de = readdir(glob->dir);
@@ -214,13 +214,13 @@ static char *NextGlob(glob_t *glob) {
   return M_StringJoin(glob->directory, DIR_SEPARATOR_S, de->d_name, nullptr);
 }
 
-static void ReadAllFilenames(glob_t *glob) {
+static void ReadAllFilenames(glob_t * glob) {
   glob->filenames     = nullptr;
   glob->filenames_len = 0;
   glob->next_index    = 0;
 
   for (;;) {
-    char *name = NextGlob(glob);
+    char * name = NextGlob(glob);
     if (name == nullptr) {
       break;
     }
@@ -232,12 +232,12 @@ static void ReadAllFilenames(glob_t *glob) {
   }
 }
 
-static void SortFilenames(char **filenames, int len, int flags) {
+static void SortFilenames(char ** filenames, int len, int flags) {
   if (len <= 1) {
     return;
   }
-  char *pivot    = filenames[len - 1];
-  int   left_len = 0;
+  char * pivot    = filenames[len - 1];
+  int    left_len = 0;
   for (int i = 0; i < len - 1; ++i) {
     int cmp = 0;
     if ((flags & GLOB_FLAG_NOCASE) != 0) {
@@ -247,7 +247,7 @@ static void SortFilenames(char **filenames, int len, int flags) {
     }
 
     if (cmp < 0) {
-      char *tmp           = filenames[i];
+      char * tmp          = filenames[i];
       filenames[i]        = filenames[left_len];
       filenames[left_len] = tmp;
       ++left_len;
@@ -260,7 +260,7 @@ static void SortFilenames(char **filenames, int len, int flags) {
   SortFilenames(&filenames[left_len + 1], len - left_len - 1, flags);
 }
 
-const char *I_NextGlob(glob_t *glob) {
+const char * I_NextGlob(glob_t * glob) {
   if (glob == nullptr) {
     return nullptr;
   }
@@ -282,7 +282,7 @@ const char *I_NextGlob(glob_t *glob) {
   if (glob->next_index >= glob->filenames_len) {
     return nullptr;
   }
-  const char *result = glob->filenames[glob->next_index];
+  const char * result = glob->filenames[glob->next_index];
   ++glob->next_index;
   return result;
 }
@@ -291,14 +291,14 @@ const char *I_NextGlob(glob_t *glob) {
 
 #warning No native implementation of file globbing.
 
-glob_t *I_StartGlob(const char *directory, const char *glob, int flags) {
+glob_t * I_StartGlob(const char * directory, const char * glob, int flags) {
   return nullptr;
 }
 
-void I_EndGlob(glob_t *glob) {
+void I_EndGlob(glob_t * glob) {
 }
 
-const char *I_NextGlob(glob_t *glob) {
+const char * I_NextGlob(glob_t * glob) {
   return "";
 }
 

@@ -22,14 +22,14 @@
 #include "sha1.hpp"
 #include "net_defs.hpp"
 
-bool NET_CL_Connect(net_addr_t *addr, net_connect_data_t *data);
+bool NET_CL_Connect(net_addr_t * addr, net_connect_data_t * data);
 void NET_CL_Disconnect();
 void NET_CL_Run();
 void NET_CL_Init();
 void NET_CL_LaunchGame();
-void NET_CL_StartGame(net_gamesettings_t *settings_param);
-void NET_CL_SendTiccmd(ticcmd_t *ticcmd, int maketic);
-bool NET_CL_GetSettings(net_gamesettings_t *_settings);
+void NET_CL_StartGame(net_gamesettings_t * settings_param);
+void NET_CL_SendTiccmd(ticcmd_t * ticcmd, int maketic);
+bool NET_CL_GetSettings(net_gamesettings_t * _settings);
 void NET_Init();
 
 void NET_BindVariables();
@@ -42,11 +42,11 @@ struct net_client_globals_t {
   bool           net_client_received_wait_data {};
   net_waitdata_t net_client_wait_data {};
   // Why did the server reject us?
-  char *net_client_reject_reason {};
+  char * net_client_reject_reason {};
   // Waiting at the initial wait screen for the game to be launched?
   bool net_waiting_for_launch {};
   // Name that we send to the server
-  char *net_player_name {};
+  char * net_player_name {};
 
   sha1_digest_t net_server_wad_sha1sum {};
   sha1_digest_t net_server_deh_sha1sum {};
@@ -61,6 +61,6 @@ struct net_client_globals_t {
   bool drone {};
 };
 
-extern net_client_globals_t *const g_net_client_globals;
+extern net_client_globals_t * const g_net_client_globals;
 
 #endif /* #ifndef NET_CLIENT_H */

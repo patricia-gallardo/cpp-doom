@@ -28,7 +28,7 @@
 
 // Generate the format string to be used for displaying floats
 
-static void FloatFormatString(float step, char *buf, size_t buf_len) {
+static void FloatFormatString(float step, char * buf, size_t buf_len) {
   int precision = static_cast<int>(ceil(-log(step) / log(10)));
 
   if (precision > 0) {
@@ -64,7 +64,7 @@ static unsigned int FloatWidth(float val, float step) {
 
 // Returns the minimum width of the input box
 
-static unsigned int SpinControlWidth(txt_spincontrol_t *spincontrol) {
+static unsigned int SpinControlWidth(txt_spincontrol_t * spincontrol) {
   unsigned int minw = 0, maxw = 0;
 
   switch (spincontrol->type) {
@@ -90,14 +90,14 @@ static unsigned int SpinControlWidth(txt_spincontrol_t *spincontrol) {
   }
 }
 
-static void TXT_SpinControlSizeCalc(void *uncast_spincontrol) {
-  auto *spincontrol = reinterpret_cast<txt_spincontrol_t *>(uncast_spincontrol);
+static void TXT_SpinControlSizeCalc(void * uncast_spincontrol) {
+  auto * spincontrol = reinterpret_cast<txt_spincontrol_t *>(uncast_spincontrol);
 
   spincontrol->widget.w = SpinControlWidth(spincontrol) + 5;
   spincontrol->widget.h = 1;
 }
 
-static void SetBuffer(txt_spincontrol_t *spincontrol) {
+static void SetBuffer(txt_spincontrol_t * spincontrol) {
   char format[25];
 
   switch (spincontrol->type) {
@@ -112,8 +112,8 @@ static void SetBuffer(txt_spincontrol_t *spincontrol) {
   }
 }
 
-static void TXT_SpinControlDrawer(void *uncast_spincontrol) {
-  auto              *spincontrol = reinterpret_cast<txt_spincontrol_t *>(uncast_spincontrol);
+static void TXT_SpinControlDrawer(void * uncast_spincontrol) {
+  auto *             spincontrol = reinterpret_cast<txt_spincontrol_t *>(uncast_spincontrol);
   unsigned int       i           = 0;
   unsigned int       padding     = 0;
   txt_saved_colors_t colors {};
@@ -162,13 +162,13 @@ static void TXT_SpinControlDrawer(void *uncast_spincontrol) {
   TXT_DrawCodePageString(" \x1a");
 }
 
-static void TXT_SpinControlDestructor(void *uncast_spincontrol) {
-  auto *spincontrol = reinterpret_cast<txt_spincontrol_t *>(uncast_spincontrol);
+static void TXT_SpinControlDestructor(void * uncast_spincontrol) {
+  auto * spincontrol = reinterpret_cast<txt_spincontrol_t *>(uncast_spincontrol);
 
   free(spincontrol->buffer);
 }
 
-static void AddCharacter(txt_spincontrol_t *spincontrol, int key) {
+static void AddCharacter(txt_spincontrol_t * spincontrol, int key) {
   if (TXT_UTF8_Strlen(spincontrol->buffer) < SpinControlWidth(spincontrol)
       && strlen(spincontrol->buffer) < spincontrol->buffer_len - 2) {
     spincontrol->buffer[strlen(spincontrol->buffer) + 1] = '\0';
@@ -176,13 +176,13 @@ static void AddCharacter(txt_spincontrol_t *spincontrol, int key) {
   }
 }
 
-static void Backspace(txt_spincontrol_t *spincontrol) {
+static void Backspace(txt_spincontrol_t * spincontrol) {
   if (TXT_UTF8_Strlen(spincontrol->buffer) > 0) {
     spincontrol->buffer[strlen(spincontrol->buffer) - 1] = '\0';
   }
 }
 
-static void EnforceLimits(txt_spincontrol_t *spincontrol) {
+static void EnforceLimits(txt_spincontrol_t * spincontrol) {
   switch (spincontrol->type) {
   case TXT_SPINCONTROL_INT:
     if (*spincontrol->value.i > spincontrol->max.i)
@@ -200,7 +200,7 @@ static void EnforceLimits(txt_spincontrol_t *spincontrol) {
   }
 }
 
-static void FinishEditing(txt_spincontrol_t *spincontrol) {
+static void FinishEditing(txt_spincontrol_t * spincontrol) {
   switch (spincontrol->type) {
   case TXT_SPINCONTROL_INT:
     *spincontrol->value.i = std::atoi(spincontrol->buffer);
@@ -215,8 +215,8 @@ static void FinishEditing(txt_spincontrol_t *spincontrol) {
   EnforceLimits(spincontrol);
 }
 
-static int TXT_SpinControlKeyPress(void *uncast_spincontrol, int key) {
-  auto *spincontrol = reinterpret_cast<txt_spincontrol_t *>(uncast_spincontrol);
+static int TXT_SpinControlKeyPress(void * uncast_spincontrol, int key) {
+  auto * spincontrol = reinterpret_cast<txt_spincontrol_t *>(uncast_spincontrol);
 
   // Enter to enter edit mode
 
@@ -285,12 +285,12 @@ static int TXT_SpinControlKeyPress(void *uncast_spincontrol, int key) {
   return 0;
 }
 
-static void TXT_SpinControlMousePress(void *uncast_spincontrol,
-                                      int   x,
+static void TXT_SpinControlMousePress(void * uncast_spincontrol,
+                                      int    x,
                                       int,
                                       int) {
-  auto *spincontrol = reinterpret_cast<txt_spincontrol_t *>(uncast_spincontrol);
-  auto  rel_x       = static_cast<unsigned int>(x - spincontrol->widget.x);
+  auto * spincontrol = reinterpret_cast<txt_spincontrol_t *>(uncast_spincontrol);
+  auto   rel_x       = static_cast<unsigned int>(x - spincontrol->widget.x);
 
   if (rel_x < 2) {
     TXT_SpinControlKeyPress(spincontrol, KEY_LEFTARROW);
@@ -299,8 +299,8 @@ static void TXT_SpinControlMousePress(void *uncast_spincontrol,
   }
 }
 
-static void TXT_SpinControlFocused(void *uncast_spincontrol, int) {
-  auto *spincontrol = reinterpret_cast<txt_spincontrol_t *>(uncast_spincontrol);
+static void TXT_SpinControlFocused(void * uncast_spincontrol, int) {
+  auto * spincontrol = reinterpret_cast<txt_spincontrol_t *>(uncast_spincontrol);
 
   FinishEditing(spincontrol);
 }
@@ -316,8 +316,8 @@ txt_widget_class_t txt_spincontrol_class = {
   TXT_SpinControlFocused,
 };
 
-static txt_spincontrol_t *TXT_BaseSpinControl() {
-  auto *spincontrol = create_struct<txt_spincontrol_t>();
+static txt_spincontrol_t * TXT_BaseSpinControl() {
+  auto * spincontrol = create_struct<txt_spincontrol_t>();
 
   TXT_InitWidget(spincontrol, &txt_spincontrol_class);
   spincontrol->buffer_len = 25;
@@ -328,24 +328,24 @@ static txt_spincontrol_t *TXT_BaseSpinControl() {
   return spincontrol;
 }
 
-txt_spincontrol_t *TXT_NewSpinControl(int *value, int min, int max) {
-  txt_spincontrol_t *spincontrol = TXT_BaseSpinControl();
-  spincontrol->type              = TXT_SPINCONTROL_INT;
-  spincontrol->value.i           = value;
-  spincontrol->min.i             = min;
-  spincontrol->max.i             = max;
-  spincontrol->step.i            = 1;
+txt_spincontrol_t * TXT_NewSpinControl(int * value, int min, int max) {
+  txt_spincontrol_t * spincontrol = TXT_BaseSpinControl();
+  spincontrol->type               = TXT_SPINCONTROL_INT;
+  spincontrol->value.i            = value;
+  spincontrol->min.i              = min;
+  spincontrol->max.i              = max;
+  spincontrol->step.i             = 1;
 
   return spincontrol;
 }
 
-txt_spincontrol_t *TXT_NewFloatSpinControl(float *value, float min, float max) {
-  txt_spincontrol_t *spincontrol = TXT_BaseSpinControl();
-  spincontrol->type              = TXT_SPINCONTROL_FLOAT;
-  spincontrol->value.f           = value;
-  spincontrol->min.f             = min;
-  spincontrol->max.f             = max;
-  spincontrol->step.f            = 0.1f;
+txt_spincontrol_t * TXT_NewFloatSpinControl(float * value, float min, float max) {
+  txt_spincontrol_t * spincontrol = TXT_BaseSpinControl();
+  spincontrol->type               = TXT_SPINCONTROL_FLOAT;
+  spincontrol->value.f            = value;
+  spincontrol->min.f              = min;
+  spincontrol->max.f              = max;
+  spincontrol->step.f             = 0.1f;
 
   return spincontrol;
 }

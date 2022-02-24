@@ -48,7 +48,7 @@ typedef struct
 
 extern wad_file_class_t win32_wad_file;
 
-static void MapFile(win32_wad_file_t *wad, const char *filename) {
+static void MapFile(win32_wad_file_t * wad, const char * filename) {
   wad->handle_map = CreateFileMapping(wad->handle,
                                       nullptr,
                                       PAGE_WRITECOPY,
@@ -84,7 +84,7 @@ unsigned int GetFileLength(HANDLE handle) {
   return result;
 }
 
-static wad_file_t *W_Win32_OpenFile(const char *path) {
+static wad_file_t * W_Win32_OpenFile(const char * path) {
   wchar_t wpath[MAX_PATH + 1];
 
   // Open the file:
@@ -105,11 +105,11 @@ static wad_file_t *W_Win32_OpenFile(const char *path) {
 
   // Create a new win32_wad_file_t to hold the file handle.
 
-  win32_wad_file_t *result = zmalloc<win32_wad_file_t *>(sizeof(win32_wad_file_t), PU_STATIC, 0);
-  result->wad.file_class   = &win32_wad_file;
-  result->wad.length       = GetFileLength(handle);
-  result->wad.path         = M_StringDuplicate(path);
-  result->handle           = handle;
+  win32_wad_file_t * result = zmalloc<win32_wad_file_t *>(sizeof(win32_wad_file_t), PU_STATIC, 0);
+  result->wad.file_class    = &win32_wad_file;
+  result->wad.length        = GetFileLength(handle);
+  result->wad.path          = M_StringDuplicate(path);
+  result->handle            = handle;
 
   // Try to map the file into memory with mmap:
 
@@ -118,8 +118,8 @@ static wad_file_t *W_Win32_OpenFile(const char *path) {
   return &result->wad;
 }
 
-static void W_Win32_CloseFile(wad_file_t *wad) {
-  auto *win32_wad = reinterpret_cast<win32_wad_file_t *>(wad);
+static void W_Win32_CloseFile(wad_file_t * wad) {
+  auto * win32_wad = reinterpret_cast<win32_wad_file_t *>(wad);
 
   // If mapped, unmap it.
 
@@ -143,8 +143,8 @@ static void W_Win32_CloseFile(wad_file_t *wad) {
 // Read data from the specified position in the file into the
 // provided buffer.  Returns the number of bytes read.
 
-size_t W_Win32_Read(wad_file_t *wad, unsigned int offset, void *buffer, size_t buffer_len) {
-  auto *win32_wad = reinterpret_cast<win32_wad_file_t *>(wad);
+size_t W_Win32_Read(wad_file_t * wad, unsigned int offset, void * buffer, size_t buffer_len) {
+  auto * win32_wad = reinterpret_cast<win32_wad_file_t *>(wad);
 
   // Jump to the specified position in the file.
 

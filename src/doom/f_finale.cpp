@@ -64,8 +64,8 @@ typedef struct
 {
   GameMission_t mission;
   int           episode, level;
-  const char   *background;
-  const char   *text;
+  const char *  background;
+  const char *  text;
 } textscreen_t;
 
 static textscreen_t textscreens[] = {
@@ -100,13 +100,13 @@ static textscreen_t textscreens[] = {
   { pack_master, 1, 20, "SLIME16",  M1TEXT},
 };
 
-const char  *finaletext;
-const char  *finaleflat;
-static char *finaletext_rw;
+const char *  finaletext;
+const char *  finaleflat;
+static char * finaletext_rw;
 
 void F_StartCast();
 void F_CastTicker();
-bool F_CastResponder(event_t *ev);
+bool F_CastResponder(event_t * ev);
 void F_CastDrawer();
 
 //
@@ -126,8 +126,8 @@ void F_StartFinale() {
 
   // Find the right screen and set the text and background
 
-  for (auto &textscreen : textscreens) {
-    textscreen_t *screen = &textscreen;
+  for (auto & textscreen : textscreens) {
+    textscreen_t * screen = &textscreen;
 
     // Hack for Chex Quest
 
@@ -170,7 +170,7 @@ void F_StartFinale() {
   finalecount = 0;
 }
 
-bool F_Responder(event_t *event) {
+bool F_Responder(event_t * event) {
   if (finalestage == F_STAGE_CAST)
     return F_CastResponder(event);
 
@@ -230,10 +230,10 @@ void F_Ticker() {
 
 #include "lump.hpp"
 #include "hu_stuff.hpp"
-extern patch_t *hu_font[HU_FONTSIZE];
+extern patch_t * hu_font[HU_FONTSIZE];
 
 // [crispy] add line breaks for lines exceeding screenwidth
-static inline bool F_AddLineBreak(char *c) {
+static inline bool F_AddLineBreak(char * c) {
   while (c-- > finaletext_rw) {
     if (*c == '\n') {
       return false;
@@ -249,14 +249,14 @@ static inline bool F_AddLineBreak(char *c) {
 void F_TextWrite() {
   int        x, y, w;
   signed int count;
-  char      *ch; // [crispy] un-const
+  char *     ch; // [crispy] un-const
   int        c;
   int        cx;
   int        cy;
 
   // erase the entire screen to a tiled background
-  auto *src  = cache_lump_name<uint8_t *>(finaleflat, PU_CACHE);
-  auto *dest = g_i_video_globals->I_VideoBuffer;
+  auto * src  = cache_lump_name<uint8_t *>(finaleflat, PU_CACHE);
+  auto * dest = g_i_video_globals->I_VideoBuffer;
 
   for (y = 0; y < SCREENHEIGHT; y++) {
 #ifndef CRISPY_TRUECOLOR
@@ -325,8 +325,8 @@ void F_TextWrite() {
 //
 typedef struct
 {
-  const char *name;
-  mobjtype_t  type;
+  const char * name;
+  mobjtype_t   type;
 } castinfo_t;
 
 castinfo_t castorder[] = {
@@ -353,7 +353,7 @@ castinfo_t castorder[] = {
 
 int                castnum;
 int                casttics;
-state_t           *caststate;
+state_t *          caststate;
 bool               castdeath;
 int                castframes;
 int                castonmelee;
@@ -431,12 +431,12 @@ static const actionsound_t actionsounds[] = {
 static int F_SoundForState(int st) {
   return std::visit(overloaded {
                         [st](const null_hook &) { return (st == S_PLAY_ATK2) ? sfx_dshtgn : 0; },
-                        [](const valid_hook &cast_action) {
-                          const auto &next = states[caststate->nextstate].action;
-                          for (const auto &action_sound : actionsounds) {
+                        [](const valid_hook & cast_action) {
+                          const auto & next = states[caststate->nextstate].action;
+                          for (const auto & action_sound : actionsounds) {
                             if (action_sound.action.index() != valid_hook_action_hook)
                               continue;
-                            const auto &soundaction = std::get<valid_hook>(action_sound.action);
+                            const auto & soundaction = std::get<valid_hook>(action_sound.action);
 
                             if (!action_sound.early && is_valid(cast_action) == is_valid(soundaction)) {
                               return action_sound.sound;
@@ -444,7 +444,7 @@ static int F_SoundForState(int st) {
 
                             if (next.index() != valid_hook_action_hook)
                               continue;
-                            const auto &next_action = std::get<valid_hook>(next);
+                            const auto & next_action = std::get<valid_hook>(next);
 
                             if (action_sound.early && is_valid(next_action) == is_valid(soundaction)) {
                               return action_sound.sound;
@@ -614,7 +614,7 @@ void F_CastTicker() {
 // F_CastResponder
 //
 
-bool F_CastResponder(event_t *ev) {
+bool F_CastResponder(event_t * ev) {
   bool xdeath = false;
 
   if (ev->type != ev_keydown)
@@ -675,12 +675,12 @@ bool F_CastResponder(event_t *ev) {
   return true;
 }
 
-void F_CastPrint(const char *text) {
-  const char *ch;
-  int         c;
-  int         cx;
-  int         w;
-  int         width;
+void F_CastPrint(const char * text) {
+  const char * ch;
+  int          c;
+  int          cx;
+  int          w;
+  int          width;
 
   // find width
   ch    = text;
@@ -724,11 +724,11 @@ void F_CastPrint(const char *text) {
 //
 
 void F_CastDrawer() {
-  spritedef_t   *sprdef;
-  spriteframe_t *sprframe;
-  int            lump;
-  bool           flip;
-  patch_t       *patch;
+  spritedef_t *   sprdef;
+  spriteframe_t * sprframe;
+  int             lump;
+  bool            flip;
+  patch_t *       patch;
 
   // erase the entire screen to a background
   V_DrawPatchFullScreen(cache_lump_name<patch_t *>(DEH_String("BOSSBACK"), PU_CACHE), false);
@@ -757,14 +757,14 @@ void F_CastDrawer() {
 //
 static fixed_t dxi, dy, dyi;
 
-void F_DrawPatchCol(int      x,
-                    patch_t *patch,
-                    int      col) {
-  column_t *column;
-  uint8_t  *source;
-  pixel_t  *dest;
-  pixel_t  *desttop;
-  int       count;
+void F_DrawPatchCol(int       x,
+                    patch_t * patch,
+                    int       col) {
+  column_t * column;
+  uint8_t *  source;
+  pixel_t *  dest;
+  pixel_t *  desttop;
+  int        count;
 
   column  = reinterpret_cast<column_t *>(reinterpret_cast<uint8_t *>(patch) + LONG(patch->columnofs[col >> FRACBITS]));
   desttop = g_i_video_globals->I_VideoBuffer + x + (DELTAWIDTH << crispy->hires);
@@ -804,8 +804,8 @@ void F_BunnyScroll() {
     V_DrawFilledBox(0, 0, SCREENWIDTH, SCREENHEIGHT, 0);
   }
 
-  auto *p1 = cache_lump_name<patch_t *>(DEH_String("PFUB2"), PU_LEVEL);
-  auto *p2 = cache_lump_name<patch_t *>(DEH_String("PFUB1"), PU_LEVEL);
+  auto * p1 = cache_lump_name<patch_t *>(DEH_String("PFUB2"), PU_LEVEL);
+  auto * p2 = cache_lump_name<patch_t *>(DEH_String("PFUB1"), PU_LEVEL);
 
   V_MarkRect(0, 0, SCREENWIDTH, SCREENHEIGHT);
 
@@ -848,7 +848,7 @@ void F_BunnyScroll() {
 }
 
 static void F_ArtScreenDrawer() {
-  const char *lumpname;
+  const char * lumpname;
 
   if (g_doomstat_globals->gameepisode == 3) {
     F_BunnyScroll();

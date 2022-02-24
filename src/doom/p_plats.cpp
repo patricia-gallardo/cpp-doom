@@ -31,12 +31,12 @@
 #include "memory.hpp"
 #include "sounds.hpp"
 
-plat_t *activeplats[MAXPLATS];
+plat_t * activeplats[MAXPLATS];
 
 //
 // Move a plat up and down
 //
-void T_PlatRaise(plat_t *plat) {
+void T_PlatRaise(plat_t * plat) {
   result_e res;
 
   switch (plat->status) {
@@ -109,13 +109,13 @@ void T_PlatRaise(plat_t *plat) {
 // Do Platforms
 //  "amount" is only used for SOME platforms.
 //
-int EV_DoPlat(line_t    *line,
+int EV_DoPlat(line_t *   line,
               plattype_e type,
               int        amount) {
-  plat_t   *plat;
-  int       secnum;
-  int       rtn;
-  sector_t *sec;
+  plat_t *   plat;
+  int        secnum;
+  int        rtn;
+  sector_t * sec;
 
   secnum = -1;
   rtn    = 0;
@@ -232,7 +232,7 @@ void P_ActivateInStasis(int tag) {
     }
 }
 
-void EV_StopPlat(line_t *line) {
+void EV_StopPlat(line_t * line) {
   int j;
 
   for (j = 0; j < MAXPLATS; j++)
@@ -245,7 +245,7 @@ void EV_StopPlat(line_t *line) {
     }
 }
 
-void P_AddActivePlat(plat_t *plat) {
+void P_AddActivePlat(plat_t * plat) {
   int i;
 
   for (i = 0; i < MAXPLATS; i++)
@@ -256,7 +256,7 @@ void P_AddActivePlat(plat_t *plat) {
   I_Error("P_AddActivePlat: no more plats!");
 }
 
-void P_RemoveActivePlat(plat_t *plat) {
+void P_RemoveActivePlat(plat_t * plat) {
   int i;
   for (i = 0; i < MAXPLATS; i++)
     if (plat == activeplats[i]) {

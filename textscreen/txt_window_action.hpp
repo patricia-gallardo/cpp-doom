@@ -38,7 +38,7 @@ using txt_window_action_t = struct txt_window_action_s;
 
 struct [[maybe_unused]] txt_window_action_s {
   txt_widget_t widget;
-  char        *label {};
+  char *       label {};
   int          key {};
 };
 
@@ -51,7 +51,7 @@ struct [[maybe_unused]] txt_window_action_s {
  * @return              Pointer to the new window action widget.
  */
 
-txt_window_action_t *TXT_NewWindowAction(int key, const char *label);
+txt_window_action_t * TXT_NewWindowAction(int key, const char * label);
 
 /**
  * Create a new window action that closes the window when the
@@ -61,7 +61,7 @@ txt_window_action_t *TXT_NewWindowAction(int key, const char *label);
  * @return              Pointer to the new window action widget.
  */
 
-txt_window_action_t *TXT_NewWindowEscapeAction(txt_window_t *window);
+txt_window_action_t * TXT_NewWindowEscapeAction(txt_window_t * window);
 
 /**
  * Create a new window action that closes the window when the
@@ -71,7 +71,7 @@ txt_window_action_t *TXT_NewWindowEscapeAction(txt_window_t *window);
  * @return              Pointer to the new window action widget.
  */
 
-txt_window_action_t *TXT_NewWindowAbortAction(txt_window_t *window);
+txt_window_action_t * TXT_NewWindowAbortAction(txt_window_t * window);
 
 /**
  * Create a new "select" window action.  This does not really do
@@ -82,6 +82,6 @@ txt_window_action_t *TXT_NewWindowAbortAction(txt_window_t *window);
  * @return              Pointer to the new window action widget.
  */
 
-txt_window_action_t *TXT_NewWindowSelectAction(txt_window_t *window);
+txt_window_action_t * TXT_NewWindowSelectAction(txt_window_t * window);
 
 #endif /* #ifndef TXT_WINDOW_ACTION_H */

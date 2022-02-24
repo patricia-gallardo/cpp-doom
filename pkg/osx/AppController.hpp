@@ -20,8 +20,8 @@
 #include "LauncherManager.hpp"
 
 @interface AppController : NSObject {
-  LauncherManager *launcherManager;
-  BOOL             filesAdded;
+  LauncherManager * launcherManager;
+  BOOL              filesAdded;
 }
 
 + (void)initialize;

@@ -31,16 +31,16 @@ enum
 };
 
 // also put some crazy extensions to test the escape function. a"b"c"""dd
-const char   *extensions[]   = { "wad", "lmp", "txt", "a\"b\"c\"\"\"dd", "", "\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"", nullptr };
-const char   *radio_values[] = { "Badger", "Mushroom", "Snake" };
-char         *textbox_value  = nullptr;
-int           numbox_value   = 0;
-int           radiobutton_value;
-char         *file_path = nullptr;
-char         *dir_path  = nullptr;
-txt_label_t  *value_label;
-txt_window_t *firstwin;
-int           cheesy;
+const char *   extensions[]   = { "wad", "lmp", "txt", "a\"b\"c\"\"\"dd", "", "\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"", nullptr };
+const char *   radio_values[] = { "Badger", "Mushroom", "Snake" };
+char *         textbox_value  = nullptr;
+int            numbox_value   = 0;
+int            radiobutton_value;
+char *         file_path = nullptr;
+char *         dir_path  = nullptr;
+txt_label_t *  value_label;
+txt_window_t * firstwin;
+int            cheesy;
 
 void ClosePwnBox(TXT_UNCAST_ARG(widget), TXT_UNCAST_ARG(window)) {
   TXT_CAST_ARG(txt_window_t, window);
@@ -48,9 +48,9 @@ void ClosePwnBox(TXT_UNCAST_ARG(widget), TXT_UNCAST_ARG(window)) {
   TXT_CloseWindow(window);
 }
 
-void PwnBox(TXT_UNCAST_ARG(widget), void *user_data) {
-  txt_window_t        *window;
-  txt_window_action_t *close_button;
+void PwnBox(TXT_UNCAST_ARG(widget), void * user_data) {
+  txt_window_t *        window;
+  txt_window_action_t * close_button;
 
   window = TXT_NewWindow("Pwned!");
   TXT_AddWidget(window, TXT_NewLabel(" BOOM! HEADSHOT! "));
@@ -62,7 +62,7 @@ void PwnBox(TXT_UNCAST_ARG(widget), void *user_data) {
   TXT_SetWindowAction(window, TXT_HORIZ_RIGHT, close_button);
 }
 
-void UpdateLabel(TXT_UNCAST_ARG(widget), void *user_data) {
+void UpdateLabel(TXT_UNCAST_ARG(widget), void * user_data) {
   char buf[40];
 
   TXT_StringCopy(buf, " Current value: ", sizeof(buf));
@@ -75,12 +75,12 @@ void UpdateLabel(TXT_UNCAST_ARG(widget), void *user_data) {
   TXT_SetLabel(value_label, buf);
 }
 
-void CloseWindow(TXT_UNCAST_ARG(button), void *user_data) {
+void CloseWindow(TXT_UNCAST_ARG(button), void * user_data) {
   TXT_CloseWindow(firstwin);
 }
 
-void UnicodeWindow(TXT_UNCAST_ARG(widget), void *user_data) {
-  static const char *strings[] = {
+void UnicodeWindow(TXT_UNCAST_ARG(widget), void * user_data) {
+  static const char * strings[] = {
     "lunedì",
     "martedì",
     "mercoledì",
@@ -89,8 +89,8 @@ void UnicodeWindow(TXT_UNCAST_ARG(widget), void *user_data) {
     "sabato",
     "domenica",
   };
-  static int    var1, var2;
-  txt_window_t *window;
+  static int     var1, var2;
+  txt_window_t * window;
 
   window = TXT_NewWindow("Questo è in Italiano");
 
@@ -109,14 +109,14 @@ void UnicodeWindow(TXT_UNCAST_ARG(widget), void *user_data) {
 }
 
 void SetupWindow() {
-  txt_window_t        *window;
-  txt_table_t         *table;
-  txt_table_t         *rightpane;
-  txt_checkbox_t      *cheesy_checkbox;
-  txt_window_action_t *pwn;
-  txt_label_t         *toplabel;
-  char                 buf[100];
-  int                  i;
+  txt_window_t *        window;
+  txt_table_t *         table;
+  txt_table_t *         rightpane;
+  txt_checkbox_t *      cheesy_checkbox;
+  txt_window_action_t * pwn;
+  txt_label_t *         toplabel;
+  char                  buf[100];
+  int                   i;
 
   window = TXT_NewWindow("Window test");
 
@@ -170,7 +170,7 @@ void SetupWindow() {
   TXT_AddWidget(table, rightpane);
 
   for (i = 0; i < 3; ++i) {
-    txt_radiobutton_t *rbut;
+    txt_radiobutton_t * rbut;
 
     rbut = TXT_NewRadioButton(radio_values[i], &radiobutton_value, i);
     TXT_AddWidget(rightpane, rbut);
@@ -189,10 +189,10 @@ void SetupWindow() {
 }
 
 void Window2() {
-  txt_window_t     *window;
-  txt_table_t      *table;
-  txt_table_t      *unselectable_table;
-  txt_scrollpane_t *scrollpane;
+  txt_window_t *     window;
+  txt_table_t *      table;
+  txt_table_t *      unselectable_table;
+  txt_scrollpane_t * scrollpane;
 
   window = TXT_NewWindow("Another test");
   TXT_SetWindowPosition(window,
@@ -243,9 +243,9 @@ void Window2() {
 }
 
 void ScrollingMenu() {
-  txt_window_t *window;
-  txt_button_t *button;
-  txt_table_t  *table;
+  txt_window_t * window;
+  txt_button_t * button;
+  txt_table_t *  table;
 
   window = TXT_NewWindow("Scrollable menu");
 
@@ -270,7 +270,7 @@ void ScrollingMenu() {
   TXT_AddWidget(window, TXT_NewScrollPane(0, 6, table));
 }
 
-int main(int argc, char *argv[]) {
+int main(int argc, char * argv[]) {
   if (!TXT_Init()) {
     fmt::fprintf(stderr, "Failed to initialise GUI\n");
     exit(-1);

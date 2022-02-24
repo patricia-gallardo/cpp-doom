@@ -97,14 +97,14 @@ struct crispy_t {
   bool singleplayer {};
   bool stretchsky {};
 
-  const char *sdlversion {};
-  const char *platform {};
+  const char * sdlversion {};
+  const char * platform {};
 
   void (*post_rendering_hook)() {};
 };
 
-extern crispy_t *const crispy;
-extern const crispy_t *critical;
+extern crispy_t * const crispy;
+extern const crispy_t * critical;
 
 extern void CheckCrispySingleplayer(bool singleplayer);
 

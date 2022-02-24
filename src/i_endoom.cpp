@@ -27,7 +27,7 @@ constexpr auto                  ENDOOM_W = 80;
 // Displays the text mode ending screen after the game quits
 //
 
-void I_Endoom(uint8_t *endoom_data) {
+void I_Endoom(uint8_t * endoom_data) {
   // Set up text mode screen
 
   TXT_Init();
@@ -38,7 +38,7 @@ void I_Endoom(uint8_t *endoom_data) {
 
   // Write the data to the screen memory
 
-  unsigned char *screendata = TXT_GetScreenData();
+  unsigned char * screendata = TXT_GetScreenData();
 
   int indent = (ENDOOM_W - TXT_SCREEN_W) / 2;
 
