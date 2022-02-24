@@ -342,7 +342,7 @@ void R_DrawColumnLow()
 #define FUZZTABLE 50
 #define FUZZOFF   (1)
 
-
+// clang-format off
 int fuzzoffset[FUZZTABLE] = {
     FUZZOFF, -FUZZOFF, FUZZOFF, -FUZZOFF, FUZZOFF, FUZZOFF, -FUZZOFF,
     FUZZOFF, FUZZOFF, -FUZZOFF, FUZZOFF, FUZZOFF, FUZZOFF, -FUZZOFF,
@@ -352,6 +352,7 @@ int fuzzoffset[FUZZTABLE] = {
     FUZZOFF, -FUZZOFF, -FUZZOFF, -FUZZOFF, -FUZZOFF, FUZZOFF, FUZZOFF,
     FUZZOFF, FUZZOFF, -FUZZOFF, FUZZOFF, FUZZOFF, -FUZZOFF, FUZZOFF
 };
+// clang-format on
 
 int fuzzpos = 0;
 
