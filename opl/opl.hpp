@@ -15,7 +15,6 @@
 //     OPL interface.
 //
 
-
 #ifndef OPL_OPL_H
 #define OPL_OPL_H
 
@@ -27,16 +26,16 @@ using opl_callback_t = void (*)(void *);
 // if any.
 enum opl_init_result_t
 {
-    OPL_INIT_NONE,
-    OPL_INIT_OPL2,
-    OPL_INIT_OPL3,
+  OPL_INIT_NONE,
+  OPL_INIT_OPL2,
+  OPL_INIT_OPL3,
 };
 
 enum opl_port_t
 {
-    OPL_REGISTER_PORT = 0,
-    OPL_DATA_PORT = 1,
-    OPL_REGISTER_PORT_OPL3 = 2
+  OPL_REGISTER_PORT      = 0,
+  OPL_DATA_PORT          = 1,
+  OPL_REGISTER_PORT_OPL3 = 2
 };
 
 constexpr auto OPL_NUM_OPERATORS = 21;
@@ -120,7 +119,7 @@ void OPL_InitRegisters(int opl3);
 // Set a timer callback.  After the specified number of microseconds
 // have elapsed, the callback will be invoked.
 
-void OPL_SetCallback(uint64_t us, opl_callback_t callback, void *data);
+void OPL_SetCallback(uint64_t us, opl_callback_t callback, void * data);
 
 // Adjust callback times by the specified factor. For example, a value of
 // 0.5 will halve all remaining times.
@@ -149,4 +148,3 @@ void OPL_Delay(uint64_t us);
 void OPL_SetPaused(int paused);
 
 #endif
-

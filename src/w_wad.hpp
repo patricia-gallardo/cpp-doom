@@ -16,7 +16,6 @@
 //	WAD I/O functions.
 //
 
-
 #ifndef __W_WAD__
 #define __W_WAD__
 
@@ -24,7 +23,6 @@
 
 #include "doomtype.hpp"
 #include "w_file.hpp"
-
 
 //
 // TYPES
@@ -34,45 +32,44 @@
 // WADFILE I/O related stuff.
 //
 
-using lumpinfo_t = struct lumpinfo_s;
+using lumpinfo_t  = struct lumpinfo_s;
 using lumpindex_t = int;
 
 struct lumpinfo_s {
-    char        name[8];
-    wad_file_t *wad_file;
-    int         position;
-    size_t      size;
-    void *      cache;
+  char         name[8];
+  wad_file_t * wad_file;
+  int          position;
+  size_t       size;
+  void *       cache;
 
-    // Used for hash table lookups
-    lumpindex_t next;
+  // Used for hash table lookups
+  lumpindex_t next;
 };
 
+extern lumpinfo_t ** lumpinfo;
+extern size_t        numlumps;
 
-extern lumpinfo_t **lumpinfo;
-extern size_t numlumps;
+wad_file_t * W_AddFile(const char * filename);
+void         W_Reload();
 
-wad_file_t *W_AddFile(const char *filename);
-void        W_Reload();
-
-lumpindex_t W_CheckNumForName(const char *name);
-lumpindex_t W_GetNumForName(const char *name);
-lumpindex_t W_CheckNumForNameFromTo(const char *name, int from, int to);
+lumpindex_t W_CheckNumForName(const char * name);
+lumpindex_t W_GetNumForName(const char * name);
+lumpindex_t W_CheckNumForNameFromTo(const char * name, int from, int to);
 
 size_t W_LumpLength(lumpindex_t lump);
-void W_ReadLump(lumpindex_t lump, void *dest);
+void   W_ReadLump(lumpindex_t lump, void * dest);
 
-void *W_CacheLumpNum(lumpindex_t lump, int tag);
-void *W_CacheLumpName(const char *name, int tag);
+void * W_CacheLumpNum(lumpindex_t lump, int tag);
+void * W_CacheLumpName(const char * name, int tag);
 
 void W_GenerateHashTable();
 
-extern unsigned int W_LumpNameHash(const char *s);
+extern unsigned int W_LumpNameHash(const char * s);
 
 void W_ReleaseLumpNum(lumpindex_t lump);
-void W_ReleaseLumpName(const char *name);
+void W_ReleaseLumpName(const char * name);
 
-const char *W_WadNameForLump(const lumpinfo_t *lump);
-bool     W_IsIWADLump(const lumpinfo_t *lump);
+const char * W_WadNameForLump(const lumpinfo_t * lump);
+bool         W_IsIWADLump(const lumpinfo_t * lump);
 
 #endif

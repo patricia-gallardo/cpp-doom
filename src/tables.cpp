@@ -38,49 +38,36 @@
 // which is looked up in the tantoangle[] table.  The +1 size is to handle
 // the case when x==y without additional checking.
 
-int SlopeDiv(unsigned int num, unsigned int den)
-{
-    if (den < 512)
-    {
-        return SLOPERANGE;
-    }
-    else
-    {
-        unsigned ans = (num << 3) / (den >> 8);
+int SlopeDiv(unsigned int num, unsigned int den) {
+  if (den < 512) {
+    return SLOPERANGE;
+  } else {
+    unsigned ans = (num << 3) / (den >> 8);
 
-        if (ans <= SLOPERANGE)
-        {
-            return static_cast<int>(ans);
-        }
-        else
-        {
-            return SLOPERANGE;
-        }
+    if (ans <= SLOPERANGE) {
+      return static_cast<int>(ans);
+    } else {
+      return SLOPERANGE;
     }
+  }
 }
 
 // [crispy] catch SlopeDiv overflows, only used in rendering
-int SlopeDivCrispy(unsigned int num, unsigned int den)
-{
-    if (den < 512)
-    {
-        return SLOPERANGE;
-    }
-    else
-    {
-        uint64_t ans = (static_cast<uint64_t>(num) << 3) / (den >> 8);
+int SlopeDivCrispy(unsigned int num, unsigned int den) {
+  if (den < 512) {
+    return SLOPERANGE;
+  } else {
+    uint64_t ans = (static_cast<uint64_t>(num) << 3) / (den >> 8);
 
-        if (ans <= SLOPERANGE)
-        {
-            return static_cast<int>(ans);
-        }
-        else
-        {
-            return SLOPERANGE;
-        }
+    if (ans <= SLOPERANGE) {
+      return static_cast<int>(ans);
+    } else {
+      return SLOPERANGE;
     }
+  }
 }
 
+// clang-format off
 const fixed_t finetangent[4096] = {
     -170910304, -56965752, -34178904, -24413316, -18988036, -15535599, -13145455, -11392683,
     -10052327, -8994149, -8137527, -7429880, -6835455, -6329090, -5892567, -5512368,
@@ -2230,3 +2217,4 @@ const uint8_t gammatable[5][256] = {
         239, 240, 240, 241, 241, 242, 242, 243, 243, 244, 244, 245, 245, 246, 246, 247,
         247, 248, 248, 249, 249, 250, 250, 251, 251, 252, 252, 253, 254, 254, 255, 255 }
 };
+// clang-format on

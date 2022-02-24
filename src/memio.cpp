@@ -27,161 +27,144 @@
 
 enum memfile_mode_t
 {
-    MODE_READ,
-    MODE_WRITE,
+  MODE_READ,
+  MODE_WRITE,
 };
 
 struct _MEMFILE {
-    unsigned char *buf;
-    size_t         buflen;
-    size_t         alloced;
-    unsigned int   position;
-    memfile_mode_t mode;
+  unsigned char * buf;
+  size_t          buflen;
+  size_t          alloced;
+  unsigned int    position;
+  memfile_mode_t  mode;
 };
 
 // Open a memory area for reading
 
-MEMFILE *mem_fopen_read(void *buf, size_t buflen)
-{
-    auto *file = zmalloc<MEMFILE *>(sizeof(MEMFILE), PU_STATIC, 0);
+MEMFILE * mem_fopen_read(void * buf, size_t buflen) {
+  auto * file = zmalloc<MEMFILE *>(sizeof(MEMFILE), PU_STATIC, 0);
 
-    file->buf      = static_cast<unsigned char *>(buf);
-    file->buflen   = buflen;
-    file->position = 0;
-    file->mode     = MODE_READ;
+  file->buf      = static_cast<unsigned char *>(buf);
+  file->buflen   = buflen;
+  file->position = 0;
+  file->mode     = MODE_READ;
 
-    return file;
+  return file;
 }
 
 // Read bytes
 
-size_t mem_fread(void *buf, size_t size, size_t nmemb, MEMFILE *stream)
-{
-    if (stream->mode != MODE_READ)
-    {
-       fmt::printf("not a read stream\n");
-        return static_cast<size_t>(-1);
-    }
+size_t mem_fread(void * buf, size_t size, size_t nmemb, MEMFILE * stream) {
+  if (stream->mode != MODE_READ) {
+    fmt::printf("not a read stream\n");
+    return static_cast<size_t>(-1);
+  }
 
-    // Trying to read more bytes than we have left?
+  // Trying to read more bytes than we have left?
 
-    size_t items = nmemb;
+  size_t items = nmemb;
 
-    if (items * size > stream->buflen - stream->position)
-    {
-        items = (stream->buflen - stream->position) / size;
-    }
+  if (items * size > stream->buflen - stream->position) {
+    items = (stream->buflen - stream->position) / size;
+  }
 
-    // Copy bytes to buffer
+  // Copy bytes to buffer
 
-    std::memcpy(buf, stream->buf + stream->position, items * size);
+  std::memcpy(buf, stream->buf + stream->position, items * size);
 
-    // Update position
+  // Update position
 
-    stream->position += static_cast<unsigned int>(items * size);
+  stream->position += static_cast<unsigned int>(items * size);
 
-    return items;
+  return items;
 }
 
 // Open a memory area for writing
 
-MEMFILE *mem_fopen_write()
-{
-    auto *file = zmalloc<MEMFILE *>(sizeof(MEMFILE), PU_STATIC, 0);
+MEMFILE * mem_fopen_write() {
+  auto * file = zmalloc<MEMFILE *>(sizeof(MEMFILE), PU_STATIC, 0);
 
-    file->alloced  = 1024;
-    file->buf      = zmalloc<unsigned char *>(file->alloced, PU_STATIC, 0);
-    file->buflen   = 0;
-    file->position = 0;
-    file->mode     = MODE_WRITE;
+  file->alloced  = 1024;
+  file->buf      = zmalloc<unsigned char *>(file->alloced, PU_STATIC, 0);
+  file->buflen   = 0;
+  file->position = 0;
+  file->mode     = MODE_WRITE;
 
-    return file;
+  return file;
 }
 
 // Write bytes to stream
 
-size_t mem_fwrite(const void *ptr, size_t size, size_t nmemb, MEMFILE *stream)
-{
-    if (stream->mode != MODE_WRITE)
-    {
-        return static_cast<size_t>(-1);
-    }
+size_t mem_fwrite(const void * ptr, size_t size, size_t nmemb, MEMFILE * stream) {
+  if (stream->mode != MODE_WRITE) {
+    return static_cast<size_t>(-1);
+  }
 
-    // More bytes than can fit in the buffer?
-    // If so, reallocate bigger.
+  // More bytes than can fit in the buffer?
+  // If so, reallocate bigger.
 
-    size_t bytes = size * nmemb;
+  size_t bytes = size * nmemb;
 
-    while (bytes > stream->alloced - stream->position)
-    {
-        auto *newbuf = zmalloc<unsigned char *>(stream->alloced * 2, PU_STATIC, 0);
-        std::memcpy(newbuf, stream->buf, stream->alloced);
-        Z_Free(stream->buf);
-        stream->buf = newbuf;
-        stream->alloced *= 2;
-    }
+  while (bytes > stream->alloced - stream->position) {
+    auto * newbuf = zmalloc<unsigned char *>(stream->alloced * 2, PU_STATIC, 0);
+    std::memcpy(newbuf, stream->buf, stream->alloced);
+    Z_Free(stream->buf);
+    stream->buf = newbuf;
+    stream->alloced *= 2;
+  }
 
-    // Copy into buffer
+  // Copy into buffer
 
-    std::memcpy(stream->buf + stream->position, ptr, bytes);
-    stream->position += static_cast<unsigned int>(bytes);
+  std::memcpy(stream->buf + stream->position, ptr, bytes);
+  stream->position += static_cast<unsigned int>(bytes);
 
-    if (stream->position > stream->buflen)
-        stream->buflen = stream->position;
+  if (stream->position > stream->buflen)
+    stream->buflen = stream->position;
 
-    return nmemb;
+  return nmemb;
 }
 
-void mem_get_buf(MEMFILE *stream, void **buf, size_t *buflen)
-{
-    *buf    = stream->buf;
-    *buflen = stream->buflen;
+void mem_get_buf(MEMFILE * stream, void ** buf, size_t * buflen) {
+  *buf    = stream->buf;
+  *buflen = stream->buflen;
 }
 
-void mem_fclose(MEMFILE *stream)
-{
-    if (stream->mode == MODE_WRITE)
-    {
-        Z_Free(stream->buf);
-    }
+void mem_fclose(MEMFILE * stream) {
+  if (stream->mode == MODE_WRITE) {
+    Z_Free(stream->buf);
+  }
 
-    Z_Free(stream);
+  Z_Free(stream);
 }
 
-long mem_ftell(MEMFILE *stream)
-{
-    return stream->position;
+long mem_ftell(MEMFILE * stream) {
+  return stream->position;
 }
 
-int mem_fseek(MEMFILE *stream, signed long position, mem_rel_t whence)
-{
-    unsigned int newpos = 0;
+int mem_fseek(MEMFILE * stream, signed long position, mem_rel_t whence) {
+  unsigned int newpos = 0;
 
-    switch (whence)
-    {
-    case MEM_SEEK_SET:
-        newpos = static_cast<unsigned int>(position);
-        break;
+  switch (whence) {
+  case MEM_SEEK_SET:
+    newpos = static_cast<unsigned int>(position);
+    break;
 
-    case MEM_SEEK_CUR:
-        newpos = static_cast<unsigned int>(stream->position + position);
-        break;
+  case MEM_SEEK_CUR:
+    newpos = static_cast<unsigned int>(stream->position + position);
+    break;
 
-    case MEM_SEEK_END:
-        newpos = static_cast<unsigned int>(stream->buflen + static_cast<unsigned long>(position));
-        break;
-    default:
-        return -1;
-    }
+  case MEM_SEEK_END:
+    newpos = static_cast<unsigned int>(stream->buflen + static_cast<unsigned long>(position));
+    break;
+  default:
+    return -1;
+  }
 
-    if (newpos < stream->buflen)
-    {
-        stream->position = newpos;
-        return 0;
-    }
-    else
-    {
-       fmt::printf("Error seeking to %u\n", newpos);
-        return -1;
-    }
+  if (newpos < stream->buflen) {
+    stream->position = newpos;
+    return 0;
+  } else {
+    fmt::printf("Error seeking to %u\n", newpos);
+    return -1;
+  }
 }

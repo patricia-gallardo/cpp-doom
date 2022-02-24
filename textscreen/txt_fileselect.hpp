@@ -50,7 +50,7 @@ int TXT_CanSelectFiles();
  *                    to select directories.
  */
 
-char *TXT_SelectFile(const char *prompt, const char **extensions);
+char * TXT_SelectFile(const char * prompt, const char ** extensions);
 
 /**
  * Create a new txt_fileselect_t widget.
@@ -65,15 +65,13 @@ char *TXT_SelectFile(const char *prompt, const char **extensions);
  *                    to select directories.
  */
 
-txt_fileselect_t *TXT_NewFileSelector(char **variable, int size,
-                                      const char *prompt, const char **extensions);
+txt_fileselect_t * TXT_NewFileSelector(char ** variable, int size, const char * prompt, const char ** extensions);
 
 /**
  * Special value to use for 'extensions' that selects a directory
  * instead of a file.
  */
 
-extern const char *TXT_DIRECTORY[];
+extern const char * TXT_DIRECTORY[];
 
 #endif /* #ifndef TXT_FILESELECT_H */
-

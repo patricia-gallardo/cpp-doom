@@ -17,7 +17,6 @@
 //	 separating modules.
 //
 
-
 #ifndef __DOOMTYPE__
 #define __DOOMTYPE__
 
@@ -29,7 +28,6 @@
 
 // #define macros to provide functions missing in Windows.
 // Outside Windows, we use strings.h for str[n]casecmp.
-
 
 #if defined(_WIN32) && (!HAVE_DECL_STRCASECMP || !HAVE_DECL_STRNCASECMP)
 
@@ -46,7 +44,6 @@
 #include <strings.h>
 
 #endif
-
 
 //
 // The packed attribute forces structures to be packed into the minimum
@@ -104,7 +101,7 @@
 using pixel_t  = uint8_t;
 using dpixel_t = int16_t;
 #else
-using pixel_t = uint32_t;
+using pixel_t  = uint32_t;
 using dpixel_t = int64_t;
 #endif
 
@@ -118,22 +115,20 @@ using dpixel_t = int64_t;
 
 #else
 
-constexpr char        DIR_SEPARATOR   = '/';
+constexpr char DIR_SEPARATOR  = '/';
 #define DIR_SEPARATOR_S "/"
-constexpr char        PATH_SEPARATOR  = ':';
+constexpr char PATH_SEPARATOR = ':';
 
 #endif
-
 
 #if defined(_WIN32)
 #include <stdlib.h>
 
 // Windows doesn't have setenv
-inline void setenv(const char* key, const char* value, int) {
-    _putenv_s(key, value);
+inline void setenv(const char * key, const char * value, int) {
+  _putenv_s(key, value);
 }
 
 #endif
-
 
 #endif

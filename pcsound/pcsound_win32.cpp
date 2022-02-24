@@ -24,8 +24,8 @@
 #include "pcsound.hpp"
 #include "pcsound_internal.hpp"
 
-static SDL_Thread *sound_thread_handle;
-static int sound_thread_running;
+static SDL_Thread *          sound_thread_handle;
+static int                   sound_thread_running;
 static pcsound_callback_func callback;
 
 // Use within PCSound_Win32_Init below is disabled
@@ -53,9 +53,8 @@ static int SoundThread(void *)
 }
 #endif
 
-static int PCSound_Win32_Init(pcsound_callback_func)
-{
-    return 0;
+static int PCSound_Win32_Init(pcsound_callback_func) {
+  return 0;
 
 // Temporarily disabled - the Windows scheduler is strange and
 // stupid.
@@ -93,18 +92,15 @@ static int PCSound_Win32_Init(pcsound_callback_func)
 #endif
 }
 
-static void PCSound_Win32_Shutdown()
-{
-    sound_thread_running = 0;
-    SDL_WaitThread(sound_thread_handle, nullptr);
+static void PCSound_Win32_Shutdown() {
+  sound_thread_running = 0;
+  SDL_WaitThread(sound_thread_handle, nullptr);
 }
 
-pcsound_driver_t pcsound_win32_driver = 
-{
-    "Windows",
-    PCSound_Win32_Init,
-    PCSound_Win32_Shutdown,
+pcsound_driver_t pcsound_win32_driver = {
+  "Windows",
+  PCSound_Win32_Init,
+  PCSound_Win32_Shutdown,
 };
 
 #endif /* #ifdef _WIN32 */
-

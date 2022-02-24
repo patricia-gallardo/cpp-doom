@@ -15,7 +15,6 @@
 //     OPL internal interface.
 //
 
-
 #ifndef OPL_INTERNAL_H
 #define OPL_INTERNAL_H
 
@@ -34,18 +33,18 @@ using opl_adjust_callbacks_func = void (*)(float);
 
 typedef struct
 {
-    const char *name;
+  const char * name;
 
-    opl_init_func init_func;
-    opl_shutdown_func shutdown_func;
-    opl_read_port_func read_port_func;
-    opl_write_port_func write_port_func;
-    opl_set_callback_func set_callback_func;
-    opl_clear_callbacks_func clear_callbacks_func;
-    opl_lock_func lock_func;
-    opl_unlock_func unlock_func;
-    opl_set_paused_func set_paused_func;
-    opl_adjust_callbacks_func adjust_callbacks_func;
+  opl_init_func             init_func;
+  opl_shutdown_func         shutdown_func;
+  opl_read_port_func        read_port_func;
+  opl_write_port_func       write_port_func;
+  opl_set_callback_func     set_callback_func;
+  opl_clear_callbacks_func  clear_callbacks_func;
+  opl_lock_func             lock_func;
+  opl_unlock_func           unlock_func;
+  opl_set_paused_func       set_paused_func;
+  opl_adjust_callbacks_func adjust_callbacks_func;
 } opl_driver_t;
 
 // Sample rate to use when doing software emulation.
@@ -53,4 +52,3 @@ typedef struct
 extern unsigned int opl_sample_rate;
 
 #endif /* #ifndef OPL_INTERNAL_H */
-

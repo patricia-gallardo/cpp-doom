@@ -16,7 +16,6 @@
 //	Items: key cards, artifacts, weapon, ammunition.
 //
 
-
 #ifndef __D_ITEMS__
 #define __D_ITEMS__
 
@@ -26,12 +25,12 @@
 // Weapon info: sprite frames, ammunition use.
 typedef struct
 {
-    ammotype_t ammo;
-    statenum_t upstate;
-    statenum_t downstate;
-    statenum_t readystate;
-    statenum_t atkstate;
-    statenum_t flashstate;
+  ammotype_t ammo;
+  statenum_t upstate;
+  statenum_t downstate;
+  statenum_t readystate;
+  statenum_t atkstate;
+  statenum_t flashstate;
 
 } weaponinfo_t;
 

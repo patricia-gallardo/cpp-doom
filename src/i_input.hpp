@@ -16,7 +16,6 @@
 //    System-specific keyboard/mouse input.
 //
 
-
 #ifndef __I_INPUT__
 #define __I_INPUT__
 

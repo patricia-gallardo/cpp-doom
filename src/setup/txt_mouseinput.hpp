@@ -24,15 +24,12 @@ typedef struct txt_mouse_input_s txt_mouse_input_t;
 // allowing a mouse to be selected.
 //
 
-struct txt_mouse_input_s
-{
-    txt_widget_t widget;
-    int *variable;
-    int check_conflicts;
+struct txt_mouse_input_s {
+  txt_widget_t widget;
+  int *        variable;
+  int          check_conflicts;
 };
 
-txt_mouse_input_t *TXT_NewMouseInput(int *variable);
+txt_mouse_input_t * TXT_NewMouseInput(int * variable);
 
 #endif /* #ifndef TXT_MOUSE_INPUT_H */
-
-

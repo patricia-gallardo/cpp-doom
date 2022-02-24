@@ -25,16 +25,13 @@ typedef struct txt_joystick_input_s txt_joystick_input_t;
 // allowing a joystick button to be pressed to select it.
 //
 
-struct txt_joystick_input_s
-{
-    txt_widget_t widget;
-    int *variable;
-    txt_window_t *prompt_window;
-    int check_conflicts;
+struct txt_joystick_input_s {
+  txt_widget_t   widget;
+  int *          variable;
+  txt_window_t * prompt_window;
+  int            check_conflicts;
 };
 
-txt_joystick_input_t *TXT_NewJoystickInput(int *variable);
+txt_joystick_input_t * TXT_NewJoystickInput(int * variable);
 
 #endif /* #ifndef TXT_JOYB_INPUT_H */
-
-

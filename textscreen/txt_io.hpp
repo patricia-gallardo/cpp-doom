@@ -20,22 +20,20 @@
 
 #include "txt_main.hpp"
 
-struct txt_saved_colors_t
-{
-    txt_color_t bgcolor;
-    txt_color_t fgcolor;
+struct txt_saved_colors_t {
+  txt_color_t bgcolor;
+  txt_color_t fgcolor;
 };
 
-void TXT_PutSymbol(int c);
-void TXT_PutChar(int c);
-void TXT_Puts(const char *s);
-void TXT_GotoXY(int x, int y);
-void TXT_GetXY(int *x, int *y);
-void TXT_FGColor(txt_color_t color);
-void TXT_BGColor(txt_color_t color, int blinking);
-void TXT_SaveColors(txt_saved_colors_t *save);
-void TXT_RestoreColors(txt_saved_colors_t *save);
+void                  TXT_PutSymbol(int c);
+void                  TXT_PutChar(int c);
+void                  TXT_Puts(const char * s);
+void                  TXT_GotoXY(int x, int y);
+void                  TXT_GetXY(int * x, int * y);
+void                  TXT_FGColor(txt_color_t color);
+void                  TXT_BGColor(txt_color_t color, int blinking);
+void                  TXT_SaveColors(txt_saved_colors_t * save);
+void                  TXT_RestoreColors(txt_saved_colors_t * save);
 [[maybe_unused]] void TXT_ClearScreen();
 
 #endif /* #ifndef TXT_IO_H */
-

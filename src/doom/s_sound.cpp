@@ -63,27 +63,27 @@
 static int stereo_swing;
 
 [[maybe_unused]] constexpr auto NORM_PRIORITY = 64;
-constexpr auto NORM_SEP      = 128;
+constexpr auto                  NORM_SEP      = 128;
 
 typedef struct
 {
-    // sound information (if null, channel avail.)
-    sfxinfo_t *sfxinfo;
+  // sound information (if null, channel avail.)
+  sfxinfo_t * sfxinfo;
 
-    // origin of sound
-    mobj_t *origin;
+  // origin of sound
+  mobj_t * origin;
 
-    // handle of the sound being played
-    int handle;
+  // handle of the sound being played
+  int handle;
 
-    int pitch;
+  int pitch;
 
 } channel_t;
 
 // The set of channels available
 
-static channel_t *  channels;
-static degenmobj_t *sobjs;
+static channel_t *   channels;
+static degenmobj_t * sobjs;
 
 // Maximum volume of a sound effect.
 // Internal volume level, ranging from 0-127
@@ -96,7 +96,7 @@ static bool mus_paused;
 
 // Music currently being played
 
-static musicinfo_t *mus_playing = nullptr;
+static musicinfo_t * mus_playing = nullptr;
 
 // Number of channels to use
 
@@ -106,44 +106,44 @@ int snd_channels = 8;
 // TNT and Plutonia as introduced in DoomMetalVol5.wad
 
 typedef struct {
-    const char *const from;
-    const char *const to;
+  const char * const from;
+  const char * const to;
 } altmusic_t;
 
 static const altmusic_t altmusic_tnt[] = {
-    { "runnin", "sadist" }, // MAP01
-    { "stalks", "burn" },   // MAP02
-    { "countd", "messag" }, // MAP03
-    { "betwee", "bells" },  // MAP04
-    { "doom", "more" },     // MAP05
-    { "the_da", "agony" },  // MAP06
-    { "shawn", "chaos" },   // MAP07
-    { "ddtblu", "beast" },  // MAP08
-    { "in_cit", "sadist" }, // MAP09
-    { "dead", "infini" },   // MAP10
-    { "stlks2", "kill" },   // MAP11
-    { "theda2", "ddtbl3" }, // MAP12
-    { "doom2", "bells" },   // MAP13
-    { "ddtbl2", "cold" },   // MAP14
-    { "runni2", "burn2" },  // MAP15
-    { "dead2", "blood" },   // MAP16
-    { "stlks3", "more" },   // MAP17
-    { "romero", "infini" }, // MAP18
-    { "shawn2", "countd" }, // MAP19
-    { "messag", "horizo" }, // MAP20
-    { "count2", "in_cit" }, // MAP21
-    { "ddtbl3", "aim" },    // MAP22
-                            //	{"ampie",  "ampie"},  // MAP23
-    { "theda3", "betwee" }, // MAP24
-    { "adrian", "doom" },   // MAP25
-    { "messg2", "blood" },  // MAP26
-    { "romer2", "beast" },  // MAP27
-    { "tense", "aim" },     // MAP28
-    { "shawn3", "bells" },  // MAP29
-    { "openin", "beast" },  // MAP30
-                            //	{"evil",   "evil"},   // MAP31
-    { "ultima", "in_cit" }, // MAP32
-    { nullptr, nullptr },
+  {"runnin",  "sadist"}, // MAP01
+  { "stalks", "burn"  }, // MAP02
+  { "countd", "messag"}, // MAP03
+  { "betwee", "bells" }, // MAP04
+  { "doom",   "more"  }, // MAP05
+  { "the_da", "agony" }, // MAP06
+  { "shawn",  "chaos" }, // MAP07
+  { "ddtblu", "beast" }, // MAP08
+  { "in_cit", "sadist"}, // MAP09
+  { "dead",   "infini"}, // MAP10
+  { "stlks2", "kill"  }, // MAP11
+  { "theda2", "ddtbl3"}, // MAP12
+  { "doom2",  "bells" }, // MAP13
+  { "ddtbl2", "cold"  }, // MAP14
+  { "runni2", "burn2" }, // MAP15
+  { "dead2",  "blood" }, // MAP16
+  { "stlks3", "more"  }, // MAP17
+  { "romero", "infini"}, // MAP18
+  { "shawn2", "countd"}, // MAP19
+  { "messag", "horizo"}, // MAP20
+  { "count2", "in_cit"}, // MAP21
+  { "ddtbl3", "aim"   }, // MAP22
+  //	{"ampie",  "ampie"},  // MAP23
+  { "theda3", "betwee"}, // MAP24
+  { "adrian", "doom"  }, // MAP25
+  { "messg2", "blood" }, // MAP26
+  { "romer2", "beast" }, // MAP27
+  { "tense",  "aim"   }, // MAP28
+  { "shawn3", "bells" }, // MAP29
+  { "openin", "beast" }, // MAP30
+  //	{"evil",   "evil"},   // MAP31
+  { "ultima", "in_cit"}, // MAP32
+  { nullptr,  nullptr },
 };
 
 // Plutonia music is completely taken from Doom 1 and 2, but re-arranged.
@@ -151,75 +151,66 @@ static const altmusic_t altmusic_tnt[] = {
 // it makes sense to play the D_E1M2 replacement from DoomMetal in Plutonia.
 
 static const altmusic_t altmusic_plut[] = {
-    { "runnin", "e1m2" },  // MAP01
-    { "stalks", "e1m3" },  // MAP02
-    { "countd", "e1m6" },  // MAP03
-    { "betwee", "e1m4" },  // MAP04
-    { "doom", "e1m9" },    // MAP05
-    { "the_da", "e1m8" },  // MAP06
-    { "shawn", "e2m1" },   // MAP07
-    { "ddtblu", "e2m2" },  // MAP08
-    { "in_cit", "e3m3" },  // MAP09
-    { "dead", "e1m7" },    // MAP10
-    { "stlks2", "bunny" }, // MAP11
-    { "theda2", "e3m8" },  // MAP12
-    { "doom2", "e3m2" },   // MAP13
-    { "ddtbl2", "e2m8" },  // MAP14
-    { "runni2", "e2m7" },  // MAP15
-    { "dead2", "e3m1" },   // MAP16
-    { "stlks3", "e1m1" },  // MAP17
-    { "romero", "e2m5" },  // MAP18
-    { "shawn2", "e1m5" },  // MAP19
-                           //	{"messag", "messag"}, // MAP20
-                           //	{"count2", "count2"}, // MAP21 (d_read_m has no instumental cover in Doom Metal)
-                           //	{"ddtbl3", "ddtbl3"}, // MAP22
-                           //	{"ampie",  "ampie"},  // MAP23
-                           //	{"theda3", "theda3"}, // MAP24
-                           //	{"adrian", "adrian"}, // MAP25
-                           //	{"messg2", "messg2"}, // MAP26
-    { "romer2", "e2m1" },  // MAP27
-    { "tense", "e2m2" },   // MAP28
-    { "shawn3", "e1m1" },  // MAP29
-                           //	{"openin", "openin"}, // MAP30 (d_victor has no instumental cover in Doom Metal)
-    { "evil", "e3m4" },    // MAP31
-    { "ultima", "e2m8" },  // MAP32
-    { nullptr, nullptr },
+  {"runnin",  "e1m2" }, // MAP01
+  { "stalks", "e1m3" }, // MAP02
+  { "countd", "e1m6" }, // MAP03
+  { "betwee", "e1m4" }, // MAP04
+  { "doom",   "e1m9" }, // MAP05
+  { "the_da", "e1m8" }, // MAP06
+  { "shawn",  "e2m1" }, // MAP07
+  { "ddtblu", "e2m2" }, // MAP08
+  { "in_cit", "e3m3" }, // MAP09
+  { "dead",   "e1m7" }, // MAP10
+  { "stlks2", "bunny"}, // MAP11
+  { "theda2", "e3m8" }, // MAP12
+  { "doom2",  "e3m2" }, // MAP13
+  { "ddtbl2", "e2m8" }, // MAP14
+  { "runni2", "e2m7" }, // MAP15
+  { "dead2",  "e3m1" }, // MAP16
+  { "stlks3", "e1m1" }, // MAP17
+  { "romero", "e2m5" }, // MAP18
+  { "shawn2", "e1m5" }, // MAP19
+  //	{"messag", "messag"}, // MAP20
+  //	{"count2", "count2"}, // MAP21 (d_read_m has no instumental cover in Doom Metal)
+  //	{"ddtbl3", "ddtbl3"}, // MAP22
+  //	{"ampie",  "ampie"},  // MAP23
+  //	{"theda3", "theda3"}, // MAP24
+  //	{"adrian", "adrian"}, // MAP25
+  //	{"messg2", "messg2"}, // MAP26
+  { "romer2", "e2m1" }, // MAP27
+  { "tense",  "e2m2" }, // MAP28
+  { "shawn3", "e1m1" }, // MAP29
+  //	{"openin", "openin"}, // MAP30 (d_victor has no instumental cover in Doom Metal)
+  { "evil",   "e3m4" }, // MAP31
+  { "ultima", "e2m8" }, // MAP32
+  { nullptr,  nullptr},
 };
 
-static void S_RegisterAltMusic()
-{
-    const altmusic_t *altmusic_fromto, *altmusic;
+static void S_RegisterAltMusic() {
+  const altmusic_t *altmusic_fromto, *altmusic;
 
-    if (g_doomstat_globals->gamemission == pack_tnt)
-    {
-        altmusic_fromto = altmusic_tnt;
-    }
-    else if (g_doomstat_globals->gamemission == pack_plut)
-    {
-        altmusic_fromto = altmusic_plut;
-    }
-    else
-    {
-        return;
-    }
+  if (g_doomstat_globals->gamemission == pack_tnt) {
+    altmusic_fromto = altmusic_tnt;
+  } else if (g_doomstat_globals->gamemission == pack_plut) {
+    altmusic_fromto = altmusic_plut;
+  } else {
+    return;
+  }
 
-    // [crispy] chicken-out if only one lump is missing, something must be wrong
-    for (altmusic = altmusic_fromto; altmusic->from; altmusic++)
-    {
-        char name[9];
+  // [crispy] chicken-out if only one lump is missing, something must be wrong
+  for (altmusic = altmusic_fromto; altmusic->from; altmusic++) {
+    char name[9];
 
-        M_snprintf(name, sizeof(name), "d_%s", altmusic->to);
+    M_snprintf(name, sizeof(name), "d_%s", altmusic->to);
 
-        if (W_CheckNumForName(name) == -1)
-        {
-            return;
-        }
+    if (W_CheckNumForName(name) == -1) {
+      return;
     }
+  }
 
-    for (altmusic = altmusic_fromto; altmusic->from; altmusic++)
-    {
-        DEH_AddStringReplacement(altmusic->from, altmusic->to);
-    }
+  for (altmusic = altmusic_fromto; altmusic->from; altmusic++) {
+    DEH_AddStringReplacement(altmusic->from, altmusic->to);
+  }
 }
 
 //
@@ -228,116 +219,100 @@ static void S_RegisterAltMusic()
 //  allocates channel buffer, sets S_sfx lookup.
 //
 
-void S_Init(int sfxVolume_param, int musicVolume_param)
-{
-    int i;
+void S_Init(int sfxVolume_param, int musicVolume_param) {
+  int i;
 
-    if (g_doomstat_globals->gameversion == exe_doom_1_666)
-    {
-        if (logical_gamemission == doom)
-        {
-            I_SetOPLDriverVer(opl_doom1_1_666);
-        }
-        else
-        {
-            I_SetOPLDriverVer(opl_doom2_1_666);
-        }
+  if (g_doomstat_globals->gameversion == exe_doom_1_666) {
+    if (logical_gamemission == doom) {
+      I_SetOPLDriverVer(opl_doom1_1_666);
+    } else {
+      I_SetOPLDriverVer(opl_doom2_1_666);
     }
-    else
-    {
-        I_SetOPLDriverVer(opl_doom_1_9);
-    }
+  } else {
+    I_SetOPLDriverVer(opl_doom_1_9);
+  }
 
-    I_PrecacheSounds(S_sfx, NUMSFX);
+  I_PrecacheSounds(S_sfx, NUMSFX);
 
-    S_SetSfxVolume(sfxVolume_param);
-    S_SetMusicVolume(musicVolume_param);
+  S_SetSfxVolume(sfxVolume_param);
+  S_SetMusicVolume(musicVolume_param);
 
-    // Allocating the internal channels for mixing
-    // (the maximum numer of sounds rendered
-    // simultaneously) within zone memory.
-    // [crispy] variable number of sound channels
-    channels = static_cast<decltype(channels)>(I_Realloc(nullptr, static_cast<unsigned long>(snd_channels) * sizeof(channel_t)));
-    sobjs    = static_cast<decltype(sobjs)>(I_Realloc(nullptr, static_cast<unsigned long>(snd_channels) * sizeof(degenmobj_t)));
+  // Allocating the internal channels for mixing
+  // (the maximum numer of sounds rendered
+  // simultaneously) within zone memory.
+  // [crispy] variable number of sound channels
+  channels = static_cast<decltype(channels)>(I_Realloc(nullptr, static_cast<unsigned long>(snd_channels) * sizeof(channel_t)));
+  sobjs    = static_cast<decltype(sobjs)>(I_Realloc(nullptr, static_cast<unsigned long>(snd_channels) * sizeof(degenmobj_t)));
 
-    // Free all channels for use
-    for (i = 0; i < snd_channels; i++)
-    {
-        channels[i].sfxinfo = 0;
-    }
+  // Free all channels for use
+  for (i = 0; i < snd_channels; i++) {
+    channels[i].sfxinfo = 0;
+  }
 
-    // no sounds are playing, and they are not mus_paused
-    mus_paused = 0;
+  // no sounds are playing, and they are not mus_paused
+  mus_paused = 0;
 
-    // Note that sounds have not been cached (yet).
-    for (i = 1; i < NUMSFX; i++)
-    {
-        S_sfx[i].lumpnum = S_sfx[i].usefulness = -1;
-    }
+  // Note that sounds have not been cached (yet).
+  for (i = 1; i < NUMSFX; i++) {
+    S_sfx[i].lumpnum = S_sfx[i].usefulness = -1;
+  }
 
-    // Doom defaults to pitch-shifting off.
-    if (g_i_sound_globals->snd_pitchshift == -1)
-    { g_i_sound_globals->snd_pitchshift = 0;
-    }
+  // Doom defaults to pitch-shifting off.
+  if (g_i_sound_globals->snd_pitchshift == -1) {
+    g_i_sound_globals->snd_pitchshift = 0;
+  }
 
-    I_AtExit(S_Shutdown, true);
+  I_AtExit(S_Shutdown, true);
 
-    // [crispy] initialize dedicated music tracks for the 4th episode
-    for (i = mus_e4m1; i <= mus_e5m9; i++)
-    {
-        musicinfo_t *const music = &S_music[i];
-        char               namebuf[9];
+  // [crispy] initialize dedicated music tracks for the 4th episode
+  for (i = mus_e4m1; i <= mus_e5m9; i++) {
+    musicinfo_t * const music = &S_music[i];
+    char                namebuf[9];
 
-        M_snprintf(namebuf, sizeof(namebuf), "d_%s", DEH_String(music->name));
-        music->lumpnum = W_CheckNumForName(namebuf);
-    }
+    M_snprintf(namebuf, sizeof(namebuf), "d_%s", DEH_String(music->name));
+    music->lumpnum = W_CheckNumForName(namebuf);
+  }
 
-    // [crispy] add support for alternative music tracks for Final Doom's
-    // TNT and Plutonia as introduced in DoomMetalVol5.wad
-    S_RegisterAltMusic();
+  // [crispy] add support for alternative music tracks for Final Doom's
+  // TNT and Plutonia as introduced in DoomMetalVol5.wad
+  S_RegisterAltMusic();
 
-    // [crispy] handle stereo separation for mono-sfx and flipped levels
-    S_UpdateStereoSeparation();
+  // [crispy] handle stereo separation for mono-sfx and flipped levels
+  S_UpdateStereoSeparation();
 }
 
-void S_Shutdown()
-{
-    I_ShutdownSound();
-    I_ShutdownMusic();
+void S_Shutdown() {
+  I_ShutdownSound();
+  I_ShutdownMusic();
 }
 
-static void S_StopChannel(int cnum)
-{
-    int        i;
-    channel_t *c;
+static void S_StopChannel(int cnum) {
+  int         i;
+  channel_t * c;
 
-    c = &channels[cnum];
+  c = &channels[cnum];
 
-    if (c->sfxinfo)
-    {
-        // stop the sound playing
+  if (c->sfxinfo) {
+    // stop the sound playing
 
-        if (I_SoundIsPlaying(c->handle))
-        {
-            I_StopSound(c->handle);
-        }
-
-        // check to see if other channels are playing the sound
-
-        for (i = 0; i < snd_channels; i++)
-        {
-            if (cnum != i && c->sfxinfo == channels[i].sfxinfo)
-            {
-                break;
-            }
-        }
-
-        // degrade usefulness of sound data
-
-        c->sfxinfo->usefulness--;
-        c->sfxinfo = nullptr;
-        c->origin  = nullptr;
+    if (I_SoundIsPlaying(c->handle)) {
+      I_StopSound(c->handle);
     }
+
+    // check to see if other channels are playing the sound
+
+    for (i = 0; i < snd_channels; i++) {
+      if (cnum != i && c->sfxinfo == channels[i].sfxinfo) {
+        break;
+      }
+    }
+
+    // degrade usefulness of sound data
+
+    c->sfxinfo->usefulness--;
+    c->sfxinfo = nullptr;
+    c->origin  = nullptr;
+  }
 }
 
 //
@@ -347,108 +322,94 @@ static void S_StopChannel(int cnum)
 //
 static short prevmap = -1;
 
-void S_Start()
-{
-    int cnum;
-    int mnum;
+void S_Start() {
+  int cnum;
+  int mnum;
 
-    // kill all playing sounds at start of level
-    //  (trust me - a good idea)
-    for (cnum = 0; cnum < snd_channels; cnum++)
-    {
-        if (channels[cnum].sfxinfo)
-        {
-            S_StopChannel(cnum);
-        }
+  // kill all playing sounds at start of level
+  //  (trust me - a good idea)
+  for (cnum = 0; cnum < snd_channels; cnum++) {
+    if (channels[cnum].sfxinfo) {
+      S_StopChannel(cnum);
     }
+  }
 
-    // start new music for the level
-    if (g_doomstat_globals->musicVolume) // [crispy] do not reset pause state at zero music volume
-        mus_paused = 0;
+  // start new music for the level
+  if (g_doomstat_globals->musicVolume) // [crispy] do not reset pause state at zero music volume
+    mus_paused = 0;
 
-    if (g_doomstat_globals->gamemode == commercial)
+  if (g_doomstat_globals->gamemode == commercial) {
+    const int nmus[] = {
+      mus_messag,
+      mus_ddtblu,
+      mus_doom,
+      mus_shawn,
+      mus_in_cit,
+      mus_the_da,
+      mus_in_cit,
+      mus_shawn2,
+      mus_ddtbl2,
+    };
+
+    if ((g_doomstat_globals->gameepisode == 2 || g_doomstat_globals->gamemission == pack_nerve) && g_doomstat_globals->gamemap <= static_cast<int>(std::size(nmus))) {
+      mnum = nmus[g_doomstat_globals->gamemap - 1];
+    } else
+      mnum = mus_runnin + g_doomstat_globals->gamemap - 1;
+  } else {
+    int spmus[] = {
+      // Song - Who? - Where?
+
+      mus_e3m4, // American     e4m1
+      mus_e3m2, // Romero       e4m2
+      mus_e3m3, // Shawn        e4m3
+      mus_e1m5, // American     e4m4
+      mus_e2m7, // Tim          e4m5
+      mus_e2m4, // Romero       e4m6
+      mus_e2m6, // J.Anderson   e4m7 CHIRON.WAD
+      mus_e2m5, // Shawn        e4m8
+      mus_e1m9, // Tim          e4m9
+    };
+
+    if (g_doomstat_globals->gameepisode < 4 || g_doomstat_globals->gameepisode == 5) // [crispy] Sigil
     {
-        const int nmus[] = {
-            mus_messag,
-            mus_ddtblu,
-            mus_doom,
-            mus_shawn,
-            mus_in_cit,
-            mus_the_da,
-            mus_in_cit,
-            mus_shawn2,
-            mus_ddtbl2,
-        };
+      mnum = mus_e1m1 + (g_doomstat_globals->gameepisode - 1) * 9 + g_doomstat_globals->gamemap - 1;
+    } else {
+      mnum = spmus[g_doomstat_globals->gamemap - 1];
 
-        if ((g_doomstat_globals->gameepisode == 2 || g_doomstat_globals->gamemission == pack_nerve) && g_doomstat_globals->gamemap <= static_cast<int>(std::size(nmus)))
-        {
-            mnum = nmus[g_doomstat_globals->gamemap - 1];
+      // [crispy] support dedicated music tracks for the 4th episode
+      {
+        const int sp_mnum = mus_e1m1 + 3 * 9 + g_doomstat_globals->gamemap - 1;
+
+        if (S_music[sp_mnum].lumpnum > 0) {
+          mnum = sp_mnum;
         }
-        else
-            mnum = mus_runnin + g_doomstat_globals->gamemap - 1;
+      }
     }
-    else
-    {
-        int spmus[] = {
-            // Song - Who? - Where?
+  }
 
-            mus_e3m4, // American     e4m1
-            mus_e3m2, // Romero       e4m2
-            mus_e3m3, // Shawn        e4m3
-            mus_e1m5, // American     e4m4
-            mus_e2m7, // Tim          e4m5
-            mus_e2m4, // Romero       e4m6
-            mus_e2m6, // J.Anderson   e4m7 CHIRON.WAD
-            mus_e2m5, // Shawn        e4m8
-            mus_e1m9, // Tim          e4m9
-        };
+  // [crispy] do not change music if not changing map (preserves IDMUS choice)
+  {
+    const auto curmap = static_cast<short>((g_doomstat_globals->gameepisode << 8) + g_doomstat_globals->gamemap);
 
-        if (g_doomstat_globals->gameepisode < 4 || g_doomstat_globals->gameepisode == 5) // [crispy] Sigil
-        {
-            mnum = mus_e1m1 + (g_doomstat_globals->gameepisode - 1) * 9 + g_doomstat_globals->gamemap - 1;
-        }
-        else
-        {
-            mnum = spmus[g_doomstat_globals->gamemap - 1];
+    if (prevmap == curmap || (g_doomstat_globals->nodrawers && singletics))
+      return;
 
-            // [crispy] support dedicated music tracks for the 4th episode
-            {
-                const int sp_mnum = mus_e1m1 + 3 * 9 + g_doomstat_globals->gamemap - 1;
+    prevmap = curmap;
+  }
 
-                if (S_music[sp_mnum].lumpnum > 0)
-                {
-                    mnum = sp_mnum;
-                }
-            }
-        }
-    }
+  // [crispy] reset musinfo data at the start of a new map
+  std::memset(&musinfo, 0, sizeof(musinfo));
 
-    // [crispy] do not change music if not changing map (preserves IDMUS choice)
-    {
-        const auto curmap = static_cast<short>((g_doomstat_globals->gameepisode << 8) + g_doomstat_globals->gamemap);
-
-        if (prevmap == curmap || (g_doomstat_globals->nodrawers && singletics))
-            return;
-
-        prevmap = curmap;
-    }
-
-    // [crispy] reset musinfo data at the start of a new map
-    std::memset(&musinfo, 0, sizeof(musinfo));
-
-    S_ChangeMusic(mnum, true);
+  S_ChangeMusic(mnum, true);
 }
 
-void S_StopSound(mobj_t *origin)
-{
-    for (int cnum = 0; cnum < snd_channels; cnum++)
-    {
-        if (channels[cnum].sfxinfo && channels[cnum].origin == origin)
-        {
-            S_StopChannel(cnum);
-            break;
-        }
+void S_StopSound(mobj_t * origin) {
+  for (int cnum = 0; cnum < snd_channels; cnum++) {
+    if (channels[cnum].sfxinfo && channels[cnum].origin == origin) {
+      S_StopChannel(cnum);
+      break;
     }
+  }
 }
 
 // [crispy] removed map objects may finish their sounds
@@ -458,25 +419,21 @@ void S_StopSound(mobj_t *origin)
 // the corresponding map object has already disappeared.
 // Thanks to jeff-d and kb1 for discussing this feature and the former for the
 // original implementation idea: https://www.doomworld.com/vb/post/1585325
-void S_UnlinkSound(mobj_t *origin)
-{
-    int cnum;
+void S_UnlinkSound(mobj_t * origin) {
+  int cnum;
 
-    if (origin)
-    {
-        for (cnum = 0; cnum < snd_channels; cnum++)
-        {
-            if (channels[cnum].sfxinfo && channels[cnum].origin == origin)
-            {
-                degenmobj_t *const sobj = &sobjs[cnum];
-                sobj->x                 = origin->x;
-                sobj->y                 = origin->y;
-                sobj->z                 = origin->z;
-                channels[cnum].origin   = reinterpret_cast<mobj_t *>(sobj);
-                break;
-            }
-        }
+  if (origin) {
+    for (cnum = 0; cnum < snd_channels; cnum++) {
+      if (channels[cnum].sfxinfo && channels[cnum].origin == origin) {
+        degenmobj_t * const sobj = &sobjs[cnum];
+        sobj->x                  = origin->x;
+        sobj->y                  = origin->y;
+        sobj->z                  = origin->z;
+        channels[cnum].origin    = reinterpret_cast<mobj_t *>(sobj);
+        break;
+      }
     }
+  }
 }
 
 //
@@ -484,58 +441,47 @@ void S_UnlinkSound(mobj_t *origin)
 //   If none available, return -1.  Otherwise channel #.
 //
 
-static int S_GetChannel(mobj_t *origin, sfxinfo_t *sfxinfo)
-{
-    // channel number to use
-    int cnum;
+static int S_GetChannel(mobj_t * origin, sfxinfo_t * sfxinfo) {
+  // channel number to use
+  int cnum;
 
-    channel_t *c;
+  channel_t * c;
 
-    // Find an open channel
-    for (cnum = 0; cnum < snd_channels; cnum++)
-    {
-        if (!channels[cnum].sfxinfo)
-        {
-            break;
-        }
-        else if (origin && channels[cnum].origin == origin)
-        {
-            S_StopChannel(cnum);
-            break;
-        }
+  // Find an open channel
+  for (cnum = 0; cnum < snd_channels; cnum++) {
+    if (!channels[cnum].sfxinfo) {
+      break;
+    } else if (origin && channels[cnum].origin == origin) {
+      S_StopChannel(cnum);
+      break;
+    }
+  }
+
+  // None available
+  if (cnum == snd_channels) {
+    // Look for lower priority
+    for (cnum = 0; cnum < snd_channels; cnum++) {
+      if (channels[cnum].sfxinfo->priority >= sfxinfo->priority) {
+        break;
+      }
     }
 
-    // None available
-    if (cnum == snd_channels)
-    {
-        // Look for lower priority
-        for (cnum = 0; cnum < snd_channels; cnum++)
-        {
-            if (channels[cnum].sfxinfo->priority >= sfxinfo->priority)
-            {
-                break;
-            }
-        }
-
-        if (cnum == snd_channels)
-        {
-            // FUCK!  No lower priority.  Sorry, Charlie.
-            return -1;
-        }
-        else
-        {
-            // Otherwise, kick out lower priority.
-            S_StopChannel(cnum);
-        }
+    if (cnum == snd_channels) {
+      // FUCK!  No lower priority.  Sorry, Charlie.
+      return -1;
+    } else {
+      // Otherwise, kick out lower priority.
+      S_StopChannel(cnum);
     }
+  }
 
-    c = &channels[cnum];
+  c = &channels[cnum];
 
-    // channel is decided to be cnum.
-    c->sfxinfo = sfxinfo;
-    c->origin  = origin;
+  // channel is decided to be cnum.
+  c->sfxinfo = sfxinfo;
+  c->origin  = origin;
 
-    return cnum;
+  return cnum;
 }
 
 //
@@ -545,562 +491,464 @@ static int S_GetChannel(mobj_t *origin, sfxinfo_t *sfxinfo)
 // Otherwise, modifies parameters and returns 1.
 //
 
-static int S_AdjustSoundParams(mobj_t *listener, mobj_t *source,
-    int *vol, int *sep)
-{
-    fixed_t approx_dist;
-    fixed_t adx;
-    fixed_t ady;
-    angle_t angle;
+static int S_AdjustSoundParams(mobj_t * listener, mobj_t * source, int * vol, int * sep) {
+  fixed_t approx_dist;
+  fixed_t adx;
+  fixed_t ady;
+  angle_t angle;
 
-    // [crispy] proper sound clipping in Doom 2 MAP08 and The Ultimate Doom E4M8 / Sigil E5M8
-    const bool doom1map8 = (g_doomstat_globals->gamemap == 8 && ((g_doomstat_globals->gamemode != commercial && g_doomstat_globals->gameepisode < 4) || !crispy->soundfix));
+  // [crispy] proper sound clipping in Doom 2 MAP08 and The Ultimate Doom E4M8 / Sigil E5M8
+  const bool doom1map8 = (g_doomstat_globals->gamemap == 8 && ((g_doomstat_globals->gamemode != commercial && g_doomstat_globals->gameepisode < 4) || !crispy->soundfix));
 
-    // calculate the distance to sound origin
-    //  and clip it if necessary
-    adx = std::abs(listener->x - source->x);
-    ady = std::abs(listener->y - source->y);
+  // calculate the distance to sound origin
+  //  and clip it if necessary
+  adx = std::abs(listener->x - source->x);
+  ady = std::abs(listener->y - source->y);
 
-    // From _GG1_ p.428. Appox. eucledian distance fast.
-    approx_dist = adx + ady - ((adx < ady ? adx : ady) >> 1);
+  // From _GG1_ p.428. Appox. eucledian distance fast.
+  approx_dist = adx + ady - ((adx < ady ? adx : ady) >> 1);
 
-    if (!doom1map8 && approx_dist > S_CLIPPING_DIST)
-    {
-        return 0;
+  if (!doom1map8 && approx_dist > S_CLIPPING_DIST) {
+    return 0;
+  }
+
+  // angle of source to listener
+  angle = R_PointToAngle2(listener->x,
+                          listener->y,
+                          source->x,
+                          source->y);
+
+  if (angle > listener->angle) {
+    angle = angle - listener->angle;
+  } else {
+    angle = angle + (0xffffffff - listener->angle);
+  }
+
+  angle >>= ANGLETOFINESHIFT;
+
+  // stereo separation
+  *sep = 128 - (FixedMul(stereo_swing, finesine[angle]) >> FRACBITS);
+
+  // volume calculation
+  if (approx_dist < S_CLOSE_DIST) {
+    *vol = snd_SfxVolume;
+  } else if (doom1map8) {
+    if (approx_dist > S_CLIPPING_DIST) {
+      approx_dist = S_CLIPPING_DIST;
     }
 
-    // angle of source to listener
-    angle = R_PointToAngle2(listener->x,
-        listener->y,
-        source->x,
-        source->y);
+    *vol = 15 + ((snd_SfxVolume - 15) * ((S_CLIPPING_DIST - approx_dist) >> FRACBITS)) / S_ATTENUATOR;
+  } else {
+    // distance effect
+    *vol = (snd_SfxVolume
+            * ((S_CLIPPING_DIST - approx_dist) >> FRACBITS))
+           / S_ATTENUATOR;
+  }
 
-    if (angle > listener->angle)
-    {
-        angle = angle - listener->angle;
-    }
-    else
-    {
-        angle = angle + (0xffffffff - listener->angle);
-    }
-
-    angle >>= ANGLETOFINESHIFT;
-
-    // stereo separation
-    *sep = 128 - (FixedMul(stereo_swing, finesine[angle]) >> FRACBITS);
-
-    // volume calculation
-    if (approx_dist < S_CLOSE_DIST)
-    {
-        *vol = snd_SfxVolume;
-    }
-    else if (doom1map8)
-    {
-        if (approx_dist > S_CLIPPING_DIST)
-        {
-            approx_dist = S_CLIPPING_DIST;
-        }
-
-        *vol = 15 + ((snd_SfxVolume - 15) * ((S_CLIPPING_DIST - approx_dist) >> FRACBITS)) / S_ATTENUATOR;
-    }
-    else
-    {
-        // distance effect
-        *vol = (snd_SfxVolume
-                   * ((S_CLIPPING_DIST - approx_dist) >> FRACBITS))
-               / S_ATTENUATOR;
-    }
-
-    return (*vol > 0);
+  return (*vol > 0);
 }
 
 // clamp supplied integer to the range 0 <= x <= 255.
 
-static int Clamp(int x)
-{
-    if (x < 0)
-    {
-        return 0;
-    }
-    else if (x > 255)
-    {
-        return 255;
-    }
-    return x;
+static int Clamp(int x) {
+  if (x < 0) {
+    return 0;
+  } else if (x > 255) {
+    return 255;
+  }
+  return x;
 }
 
-void S_StartSound(void *origin_p, int sfx_id)
-{
-    sfxinfo_t *sfx;
-    mobj_t *   origin;
-    int        rc;
-    int        sep;
-    int        pitch;
-    int        cnum;
-    int        volume;
+void S_StartSound(void * origin_p, int sfx_id) {
+  sfxinfo_t * sfx;
+  mobj_t *    origin;
+  int         rc;
+  int         sep;
+  int         pitch;
+  int         cnum;
+  int         volume;
 
-    origin = reinterpret_cast<mobj_t *>(origin_p);
-    volume = snd_SfxVolume;
+  origin = reinterpret_cast<mobj_t *>(origin_p);
+  volume = snd_SfxVolume;
 
-    // [crispy] make non-fatal, consider zero volume
-    if (sfx_id == sfx_None || !snd_SfxVolume || (g_doomstat_globals->nodrawers && singletics))
-    {
-        return;
-    }
-    // check for bogus sound #
-    if (sfx_id < 1 || sfx_id > NUMSFX)
-    {
-        I_Error("Bad sfx #: %d", sfx_id);
-    }
+  // [crispy] make non-fatal, consider zero volume
+  if (sfx_id == sfx_None || !snd_SfxVolume || (g_doomstat_globals->nodrawers && singletics)) {
+    return;
+  }
+  // check for bogus sound #
+  if (sfx_id < 1 || sfx_id > NUMSFX) {
+    I_Error("Bad sfx #: %d", sfx_id);
+  }
 
-    sfx = &S_sfx[sfx_id];
+  sfx = &S_sfx[sfx_id];
 
-    // Initialize sound parameters
-    pitch = NORM_PITCH;
-    if (sfx->link)
-    {
-        volume += sfx->volume;
-        pitch = sfx->pitch;
+  // Initialize sound parameters
+  pitch = NORM_PITCH;
+  if (sfx->link) {
+    volume += sfx->volume;
+    pitch = sfx->pitch;
 
-        if (volume < 1)
-        {
-            return;
-        }
-
-        if (volume > snd_SfxVolume)
-        {
-            volume = snd_SfxVolume;
-        }
+    if (volume < 1) {
+      return;
     }
 
-
-    // Check to see if it is audible,
-    //  and if not, modify the params
-    if (origin && origin != g_doomstat_globals->players[g_doomstat_globals->consoleplayer].mo && origin != g_doomstat_globals->players[g_doomstat_globals->consoleplayer].so) // [crispy] weapon sound source
-    {
-        rc = S_AdjustSoundParams(g_doomstat_globals->players[g_doomstat_globals->consoleplayer].mo,
-            origin,
-            &volume,
-            &sep);
-
-        if (origin->x == g_doomstat_globals->players[g_doomstat_globals->consoleplayer].mo->x
-            && origin->y == g_doomstat_globals->players[g_doomstat_globals->consoleplayer].mo->y)
-        {
-            sep = NORM_SEP;
-        }
-
-        if (!rc)
-        {
-            return;
-        }
+    if (volume > snd_SfxVolume) {
+      volume = snd_SfxVolume;
     }
-    else
-    {
-        sep = NORM_SEP;
+  }
+
+  // Check to see if it is audible,
+  //  and if not, modify the params
+  if (origin && origin != g_doomstat_globals->players[g_doomstat_globals->consoleplayer].mo && origin != g_doomstat_globals->players[g_doomstat_globals->consoleplayer].so) // [crispy] weapon sound source
+  {
+    rc = S_AdjustSoundParams(g_doomstat_globals->players[g_doomstat_globals->consoleplayer].mo,
+                             origin,
+                             &volume,
+                             &sep);
+
+    if (origin->x == g_doomstat_globals->players[g_doomstat_globals->consoleplayer].mo->x
+        && origin->y == g_doomstat_globals->players[g_doomstat_globals->consoleplayer].mo->y) {
+      sep = NORM_SEP;
     }
 
-    // hacks to vary the sfx pitches
-    if (sfx_id >= sfx_sawup && sfx_id <= sfx_sawhit)
-    {
-        pitch += 8 - (M_Random() & 15);
+    if (!rc) {
+      return;
     }
-    else if (sfx_id != sfx_itemup && sfx_id != sfx_tink)
-    {
-        pitch += 16 - (M_Random() & 31);
-    }
-    pitch = Clamp(pitch);
+  } else {
+    sep = NORM_SEP;
+  }
 
-    // kill old sound
-    if (!crispy->soundfull || origin || g_doomstat_globals->gamestate != GS_LEVEL)
-    {
-        S_StopSound(origin);
-    }
+  // hacks to vary the sfx pitches
+  if (sfx_id >= sfx_sawup && sfx_id <= sfx_sawhit) {
+    pitch += 8 - (M_Random() & 15);
+  } else if (sfx_id != sfx_itemup && sfx_id != sfx_tink) {
+    pitch += 16 - (M_Random() & 31);
+  }
+  pitch = Clamp(pitch);
 
-    // try to find a channel
-    cnum = S_GetChannel(origin, sfx);
+  // kill old sound
+  if (!crispy->soundfull || origin || g_doomstat_globals->gamestate != GS_LEVEL) {
+    S_StopSound(origin);
+  }
 
-    if (cnum < 0)
-    {
-        return;
-    }
+  // try to find a channel
+  cnum = S_GetChannel(origin, sfx);
 
-    // increase the usefulness
-    if (sfx->usefulness++ < 0)
-    {
-        sfx->usefulness = 1;
-    }
+  if (cnum < 0) {
+    return;
+  }
 
-    if (sfx->lumpnum < 0)
-    {
-        sfx->lumpnum = I_GetSfxLumpNum(sfx);
-    }
+  // increase the usefulness
+  if (sfx->usefulness++ < 0) {
+    sfx->usefulness = 1;
+  }
 
-    channels[cnum].pitch  = pitch;
-    channels[cnum].handle = I_StartSound(sfx, cnum, volume, sep, channels[cnum].pitch);
+  if (sfx->lumpnum < 0) {
+    sfx->lumpnum = I_GetSfxLumpNum(sfx);
+  }
+
+  channels[cnum].pitch  = pitch;
+  channels[cnum].handle = I_StartSound(sfx, cnum, volume, sep, channels[cnum].pitch);
 }
 
-void S_StartSoundOnce(void *origin_p, int sfx_id)
-{
-    int                    cnum;
-    const sfxinfo_t *const sfx = &S_sfx[sfx_id];
+void S_StartSoundOnce(void * origin_p, int sfx_id) {
+  int                     cnum;
+  const sfxinfo_t * const sfx = &S_sfx[sfx_id];
 
-    for (cnum = 0; cnum < snd_channels; cnum++)
-    {
-        if (channels[cnum].sfxinfo == sfx && channels[cnum].origin == origin_p)
-        {
-            return;
-        }
+  for (cnum = 0; cnum < snd_channels; cnum++) {
+    if (channels[cnum].sfxinfo == sfx && channels[cnum].origin == origin_p) {
+      return;
     }
+  }
 
-    S_StartSound(origin_p, sfx_id);
+  S_StartSound(origin_p, sfx_id);
 }
 
 //
 // Stop and resume music, during game PAUSE.
 //
 
-void S_PauseSound()
-{
-    if (mus_playing && !mus_paused)
-    {
-        I_PauseSong();
-        mus_paused = true;
-    }
+void S_PauseSound() {
+  if (mus_playing && !mus_paused) {
+    I_PauseSong();
+    mus_paused = true;
+  }
 }
 
-void S_ResumeSound()
-{
-    if (mus_playing && mus_paused)
-    {
-        I_ResumeSong();
-        mus_paused = false;
-    }
+void S_ResumeSound() {
+  if (mus_playing && mus_paused) {
+    I_ResumeSong();
+    mus_paused = false;
+  }
 }
 
 //
 // Updates music & sounds
 //
 
-void S_UpdateSounds(mobj_t *listener)
-{
-    int        audible;
-    int        cnum;
-    int        volume;
-    int        sep;
-    sfxinfo_t *sfx;
-    channel_t *c;
+void S_UpdateSounds(mobj_t * listener) {
+  int         audible;
+  int         cnum;
+  int         volume;
+  int         sep;
+  sfxinfo_t * sfx;
+  channel_t * c;
 
-    I_UpdateSound();
+  I_UpdateSound();
 
-    for (cnum = 0; cnum < snd_channels; cnum++)
-    {
-        c   = &channels[cnum];
-        sfx = c->sfxinfo;
+  for (cnum = 0; cnum < snd_channels; cnum++) {
+    c   = &channels[cnum];
+    sfx = c->sfxinfo;
 
-        if (c->sfxinfo)
-        {
-            if (I_SoundIsPlaying(c->handle))
-            {
-                // initialize parameters
-                volume = snd_SfxVolume;
-                sep    = NORM_SEP;
+    if (c->sfxinfo) {
+      if (I_SoundIsPlaying(c->handle)) {
+        // initialize parameters
+        volume = snd_SfxVolume;
+        sep    = NORM_SEP;
 
-                if (sfx->link)
-                {
-                    volume += sfx->volume;
-                    if (volume < 1)
-                    {
-                        S_StopChannel(cnum);
-                        continue;
-                    }
-                    else if (volume > snd_SfxVolume)
-                    {
-                        volume = snd_SfxVolume;
-                    }
-                }
-
-                // check non-local sounds for distance clipping
-                //  or modify their params
-                if (c->origin && listener != c->origin && c->origin != g_doomstat_globals->players[g_doomstat_globals->consoleplayer].so) // [crispy] weapon sound source
-                {
-                    audible = S_AdjustSoundParams(listener,
-                        c->origin,
-                        &volume,
-                        &sep);
-
-                    if (!audible)
-                    {
-                        S_StopChannel(cnum);
-                    }
-                    else
-                    {
-                        I_UpdateSoundParams(c->handle, volume, sep);
-                    }
-                }
-            }
-            else
-            {
-                // if channel is allocated but sound has stopped,
-                //  free it
-                S_StopChannel(cnum);
-            }
+        if (sfx->link) {
+          volume += sfx->volume;
+          if (volume < 1) {
+            S_StopChannel(cnum);
+            continue;
+          } else if (volume > snd_SfxVolume) {
+            volume = snd_SfxVolume;
+          }
         }
+
+        // check non-local sounds for distance clipping
+        //  or modify their params
+        if (c->origin && listener != c->origin && c->origin != g_doomstat_globals->players[g_doomstat_globals->consoleplayer].so) // [crispy] weapon sound source
+        {
+          audible = S_AdjustSoundParams(listener,
+                                        c->origin,
+                                        &volume,
+                                        &sep);
+
+          if (!audible) {
+            S_StopChannel(cnum);
+          } else {
+            I_UpdateSoundParams(c->handle, volume, sep);
+          }
+        }
+      } else {
+        // if channel is allocated but sound has stopped,
+        //  free it
+        S_StopChannel(cnum);
+      }
     }
+  }
 }
 
-void S_SetMusicVolume(int volume)
-{
-    if (volume < 0 || volume > 127)
-    {
-        I_Error("Attempt to set music volume at %d",
+void S_SetMusicVolume(int volume) {
+  if (volume < 0 || volume > 127) {
+    I_Error("Attempt to set music volume at %d",
             volume);
-    }
+  }
 
-    // [crispy] [JN] Fixed bug when music was hearable with zero volume
-    if (!g_doomstat_globals->musicVolume)
-    {
-        S_PauseSound();
-    }
-    else if (!g_doomstat_globals->paused)
-    {
-        S_ResumeSound();
-    }
+  // [crispy] [JN] Fixed bug when music was hearable with zero volume
+  if (!g_doomstat_globals->musicVolume) {
+    S_PauseSound();
+  } else if (!g_doomstat_globals->paused) {
+    S_ResumeSound();
+  }
 
-    I_SetMusicVolume(volume);
+  I_SetMusicVolume(volume);
 }
 
-void S_SetSfxVolume(int volume)
-{
-    if (volume < 0 || volume > 127)
-    {
-        I_Error("Attempt to set sfx volume at %d", volume);
-    }
+void S_SetSfxVolume(int volume) {
+  if (volume < 0 || volume > 127) {
+    I_Error("Attempt to set sfx volume at %d", volume);
+  }
 
-    snd_SfxVolume = volume;
+  snd_SfxVolume = volume;
 }
 
 //
 // Starts some music with the music id found in sounds.h.
 //
 
-void S_StartMusic(int m_id)
-{
-    S_ChangeMusic(m_id, false);
+void S_StartMusic(int m_id) {
+  S_ChangeMusic(m_id, false);
 }
 
-void S_ChangeMusic(int musicnum, int looping)
-{
-    musicinfo_t *music = nullptr;
-    char         namebuf[9];
-    void *       handle;
+void S_ChangeMusic(int musicnum, int looping) {
+  musicinfo_t * music = nullptr;
+  char          namebuf[9];
+  void *        handle;
 
-    if (g_doomstat_globals->gamestate != GS_LEVEL)
-    {
-        prevmap = -1;
+  if (g_doomstat_globals->gamestate != GS_LEVEL) {
+    prevmap = -1;
+  }
+  musinfo.current_item = -1;
+
+  // [crispy] play no music if this is not the right map
+  if (g_doomstat_globals->nodrawers && singletics)
+    return;
+
+  // [crispy] restart current music if IDMUS00 is entered
+  if (looping == 2) {
+    music = mus_playing;
+  }
+
+  // The Doom IWAD file has two versions of the intro music: d_intro
+  // and d_introa.  The latter is used for OPL playback.
+
+  if (musicnum == mus_intro && (g_i_sound_globals->snd_musicdevice == SNDDEVICE_ADLIB || g_i_sound_globals->snd_musicdevice == SNDDEVICE_SB)
+      && W_CheckNumForName("D_INTROA") >= 0) {
+    const int intro  = W_GetNumForName("D_INTRO"),
+              introa = W_GetNumForName("D_INTROA");
+    // [crispy] if D_INTRO is from a PWAD, and D_INTROA is from a different WAD file, play the former
+    if (W_IsIWADLump(lumpinfo[intro]) || (lumpinfo[intro]->wad_file == lumpinfo[introa]->wad_file)) {
+      musicnum = mus_introa;
     }
-    musinfo.current_item = -1;
+  }
 
-    // [crispy] play no music if this is not the right map
-    if (g_doomstat_globals->nodrawers && singletics)
-        return;
+  // [crispy] prevent music number under- and overflows
+  if (musicnum <= mus_None || (g_doomstat_globals->gamemode == commercial && musicnum < mus_runnin) || musicnum >= NUMMUSIC || (g_doomstat_globals->gamemode != commercial && musicnum >= mus_runnin) || S_music[musicnum].lumpnum == -1) {
+    const auto umusicnum = static_cast<unsigned int>(musicnum);
 
-    // [crispy] restart current music if IDMUS00 is entered
-    if (looping == 2)
-    {
-        music = mus_playing;
+    if (g_doomstat_globals->gamemode == commercial) {
+      musicnum = mus_runnin + (umusicnum % (NUMMUSIC - mus_runnin));
+    } else {
+      musicnum = mus_e1m1 + (umusicnum % (mus_e4m1 - mus_e1m1));
     }
+  }
 
-    // The Doom IWAD file has two versions of the intro music: d_intro
-    // and d_introa.  The latter is used for OPL playback.
+  if (musicnum <= mus_None || musicnum >= NUMMUSIC) {
+    I_Error("Bad music number %d", musicnum);
+  } else {
+    if (!music) // [crispy] restart current music if IDMUS00 is entered
+      music = &S_music[musicnum];
+  }
 
-    if (musicnum == mus_intro && (g_i_sound_globals->snd_musicdevice == SNDDEVICE_ADLIB || g_i_sound_globals->snd_musicdevice == SNDDEVICE_SB)
-        && W_CheckNumForName("D_INTROA") >= 0)
-    {
-        const int intro  = W_GetNumForName("D_INTRO"),
-                  introa = W_GetNumForName("D_INTROA");
-        // [crispy] if D_INTRO is from a PWAD, and D_INTROA is from a different WAD file, play the former
-        if (W_IsIWADLump(lumpinfo[intro]) || (lumpinfo[intro]->wad_file == lumpinfo[introa]->wad_file))
-        {
-            musicnum = mus_introa;
-        }
-    }
+  if (mus_playing == music) {
+    if (looping != 2) // [crispy] restart current music if IDMUS00 is entered
+      return;
+  }
 
-    // [crispy] prevent music number under- and overflows
-    if (musicnum <= mus_None || (g_doomstat_globals->gamemode == commercial && musicnum < mus_runnin) || musicnum >= NUMMUSIC || (g_doomstat_globals->gamemode != commercial && musicnum >= mus_runnin) || S_music[musicnum].lumpnum == -1)
-    {
-        const auto umusicnum = static_cast<unsigned int>(musicnum);
+  // shutdown old music
+  S_StopMusic();
 
-        if (g_doomstat_globals->gamemode == commercial)
-        {
-            musicnum = mus_runnin + (umusicnum % (NUMMUSIC - mus_runnin));
-        }
-        else
-        {
-            musicnum = mus_e1m1 + (umusicnum % (mus_e4m1 - mus_e1m1));
-        }
-    }
+  // get lumpnum if neccessary
+  if (!music->lumpnum) {
+    M_snprintf(namebuf, sizeof(namebuf), "d_%s", DEH_String(music->name));
+    music->lumpnum = W_GetNumForName(namebuf);
+  }
 
-    if (musicnum <= mus_None || musicnum >= NUMMUSIC)
-    {
-        I_Error("Bad music number %d", musicnum);
-    }
-    else
-    {
-        if (!music) // [crispy] restart current music if IDMUS00 is entered
-            music = &S_music[musicnum];
-    }
+  music->data = cache_lump_num<void *>(music->lumpnum, PU_STATIC);
 
-    if (mus_playing == music)
-    {
-        if (looping != 2) // [crispy] restart current music if IDMUS00 is entered
-            return;
-    }
+  handle        = I_RegisterSong(music->data, static_cast<int>(W_LumpLength(music->lumpnum)));
+  music->handle = handle;
+  I_PlaySong(handle, looping);
+  // [crispy] log played music
+  {
+    char name[9];
+    M_snprintf(name, sizeof(name), "%s", lumpinfo[music->lumpnum]->name);
+    fmt::fprintf(stderr, "S_ChangeMusic: %s (%s)\n", name, W_WadNameForLump(lumpinfo[music->lumpnum]));
+  }
 
-    // shutdown old music
-    S_StopMusic();
+  mus_playing = music;
 
-    // get lumpnum if neccessary
-    if (!music->lumpnum)
-    {
-        M_snprintf(namebuf, sizeof(namebuf), "d_%s", DEH_String(music->name));
-        music->lumpnum = W_GetNumForName(namebuf);
-    }
-
-    music->data = cache_lump_num<void *>(music->lumpnum, PU_STATIC);
-
-    handle        = I_RegisterSong(music->data, static_cast<int>(W_LumpLength(music->lumpnum)));
-    music->handle = handle;
-    I_PlaySong(handle, looping);
-    // [crispy] log played music
-    {
-        char name[9];
-        M_snprintf(name, sizeof(name), "%s", lumpinfo[music->lumpnum]->name);
-        fmt::fprintf(stderr, "S_ChangeMusic: %s (%s)\n", name,
-            W_WadNameForLump(lumpinfo[music->lumpnum]));
-    }
-
-    mus_playing = music;
-
-    // [crispy] musinfo.items[0] is reserved for the map's default music
-    if (!musinfo.items[0])
-    {
-        musinfo.items[0]             = music->lumpnum;
-        S_music[mus_musinfo].lumpnum = -1;
-    }
+  // [crispy] musinfo.items[0] is reserved for the map's default music
+  if (!musinfo.items[0]) {
+    musinfo.items[0]             = music->lumpnum;
+    S_music[mus_musinfo].lumpnum = -1;
+  }
 }
 
 // [crispy] adapted from prboom-plus/src/s_sound.c:552-590
 
-void S_ChangeMusInfoMusic(int lumpnum, int looping)
-{
-    musicinfo_t *music;
+void S_ChangeMusInfoMusic(int lumpnum, int looping) {
+  musicinfo_t * music;
 
-    // [crispy] restarting the map plays the original music
-    prevmap = -1;
+  // [crispy] restarting the map plays the original music
+  prevmap = -1;
 
-    // [crispy] play no music if this is not the right map
-    if (g_doomstat_globals->nodrawers && singletics)
-    {
-        musinfo.current_item = lumpnum;
-        return;
-    }
-
-    if (mus_playing && mus_playing->lumpnum == lumpnum)
-    {
-        return;
-    }
-
-    music = &S_music[mus_musinfo];
-
-    if (music->lumpnum == lumpnum)
-    {
-        return;
-    }
-
-    S_StopMusic();
-
-    music->lumpnum = lumpnum;
-
-    music->data   = cache_lump_num<void *>(music->lumpnum, PU_STATIC);
-    music->handle = I_RegisterSong(music->data, static_cast<int>(W_LumpLength(music->lumpnum)));
-
-    I_PlaySong(music->handle, looping);
-    // [crispy] log played music
-    {
-        char name[9];
-        M_snprintf(name, sizeof(name), "%s", lumpinfo[music->lumpnum]->name);
-        fmt::fprintf(stderr, "S_ChangeMusInfoMusic: %s (%s)\n", name,
-            W_WadNameForLump(lumpinfo[music->lumpnum]));
-    }
-
-    mus_playing = music;
-
+  // [crispy] play no music if this is not the right map
+  if (g_doomstat_globals->nodrawers && singletics) {
     musinfo.current_item = lumpnum;
+    return;
+  }
+
+  if (mus_playing && mus_playing->lumpnum == lumpnum) {
+    return;
+  }
+
+  music = &S_music[mus_musinfo];
+
+  if (music->lumpnum == lumpnum) {
+    return;
+  }
+
+  S_StopMusic();
+
+  music->lumpnum = lumpnum;
+
+  music->data   = cache_lump_num<void *>(music->lumpnum, PU_STATIC);
+  music->handle = I_RegisterSong(music->data, static_cast<int>(W_LumpLength(music->lumpnum)));
+
+  I_PlaySong(music->handle, looping);
+  // [crispy] log played music
+  {
+    char name[9];
+    M_snprintf(name, sizeof(name), "%s", lumpinfo[music->lumpnum]->name);
+    fmt::fprintf(stderr, "S_ChangeMusInfoMusic: %s (%s)\n", name, W_WadNameForLump(lumpinfo[music->lumpnum]));
+  }
+
+  mus_playing = music;
+
+  musinfo.current_item = lumpnum;
 }
 
-[[maybe_unused]] bool S_MusicPlaying()
-{
-    return I_MusicIsPlaying();
+[[maybe_unused]] bool S_MusicPlaying() {
+  return I_MusicIsPlaying();
 }
 
-void S_StopMusic()
-{
-    if (mus_playing)
-    {
-        if (mus_paused)
-        {
-            I_ResumeSong();
-        }
-
-        I_StopSong();
-        I_UnRegisterSong(mus_playing->handle);
-        W_ReleaseLumpNum(mus_playing->lumpnum);
-        mus_playing->data = nullptr;
-        mus_playing       = nullptr;
+void S_StopMusic() {
+  if (mus_playing) {
+    if (mus_paused) {
+      I_ResumeSong();
     }
+
+    I_StopSong();
+    I_UnRegisterSong(mus_playing->handle);
+    W_ReleaseLumpNum(mus_playing->lumpnum);
+    mus_playing->data = nullptr;
+    mus_playing       = nullptr;
+  }
 }
 
 // [crispy] variable number of sound channels
-void S_UpdateSndChannels()
-{
-    int i;
+void S_UpdateSndChannels() {
+  int i;
 
-    for (i = 0; i < snd_channels; i++)
-    {
-        if (channels[i].sfxinfo)
-        {
-            S_StopChannel(i);
-        }
+  for (i = 0; i < snd_channels; i++) {
+    if (channels[i].sfxinfo) {
+      S_StopChannel(i);
     }
+  }
 
-    snd_channels <<= 1;
-    if (snd_channels > 32)
-    {
-        snd_channels = 8;
-    }
+  snd_channels <<= 1;
+  if (snd_channels > 32) {
+    snd_channels = 8;
+  }
 
-    channels = static_cast<decltype(channels)>(I_Realloc(channels, static_cast<unsigned long>(snd_channels) * sizeof(channel_t)));
-    sobjs    = static_cast<decltype(sobjs)>(I_Realloc(sobjs, static_cast<unsigned long>(snd_channels) * sizeof(degenmobj_t)));
+  channels = static_cast<decltype(channels)>(I_Realloc(channels, static_cast<unsigned long>(snd_channels) * sizeof(channel_t)));
+  sobjs    = static_cast<decltype(sobjs)>(I_Realloc(sobjs, static_cast<unsigned long>(snd_channels) * sizeof(degenmobj_t)));
 
-    for (i = 0; i < snd_channels; i++)
-    {
-        channels[i].sfxinfo = 0;
-    }
+  for (i = 0; i < snd_channels; i++) {
+    channels[i].sfxinfo = 0;
+  }
 }
 
-void S_UpdateStereoSeparation()
-{
-    // [crispy] play all sound effects in mono
-    if (crispy->soundmono)
-    {
-        stereo_swing = 0;
-    }
-    else if (crispy->fliplevels)
-    {
-        stereo_swing = -S_STEREO_SWING;
-    }
-    else
-    {
-        stereo_swing = S_STEREO_SWING;
-    }
+void S_UpdateStereoSeparation() {
+  // [crispy] play all sound effects in mono
+  if (crispy->soundmono) {
+    stereo_swing = 0;
+  } else if (crispy->fliplevels) {
+    stereo_swing = -S_STEREO_SWING;
+  } else {
+    stereo_swing = S_STEREO_SWING;
+  }
 }

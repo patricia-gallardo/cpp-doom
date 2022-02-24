@@ -20,36 +20,36 @@
 #include "net_defs.hpp"
 #include "net_packet.hpp"
 
-void    NET_WriteConnectData(net_packet_t *packet, net_connect_data_t *data);
-bool NET_ReadConnectData(net_packet_t *packet, net_connect_data_t *data);
+void NET_WriteConnectData(net_packet_t * packet, net_connect_data_t * data);
+bool NET_ReadConnectData(net_packet_t * packet, net_connect_data_t * data);
 
-extern void    NET_WriteSettings(net_packet_t *packet, net_gamesettings_t *settings);
-extern bool NET_ReadSettings(net_packet_t *packet, net_gamesettings_t *settings);
+extern void NET_WriteSettings(net_packet_t * packet, net_gamesettings_t * settings);
+extern bool NET_ReadSettings(net_packet_t * packet, net_gamesettings_t * settings);
 
-extern void    NET_WriteQueryData(net_packet_t *packet, net_querydata_t *querydata);
-extern bool NET_ReadQueryData(net_packet_t *packet, net_querydata_t *querydata);
+extern void NET_WriteQueryData(net_packet_t * packet, net_querydata_t * querydata);
+extern bool NET_ReadQueryData(net_packet_t * packet, net_querydata_t * querydata);
 
-extern void    NET_WriteTiccmdDiff(net_packet_t *packet, net_ticdiff_t *diff, bool lowres_turn);
-extern bool NET_ReadTiccmdDiff(net_packet_t *packet, net_ticdiff_t *diff, bool lowres_turn);
-extern void    NET_TiccmdDiff(ticcmd_t *tic1, ticcmd_t *tic2, net_ticdiff_t *diff);
-extern void    NET_TiccmdPatch(ticcmd_t *src, net_ticdiff_t *diff, ticcmd_t *dest);
+extern void NET_WriteTiccmdDiff(net_packet_t * packet, net_ticdiff_t * diff, bool lowres_turn);
+extern bool NET_ReadTiccmdDiff(net_packet_t * packet, net_ticdiff_t * diff, bool lowres_turn);
+extern void NET_TiccmdDiff(ticcmd_t * tic1, ticcmd_t * tic2, net_ticdiff_t * diff);
+extern void NET_TiccmdPatch(ticcmd_t * src, net_ticdiff_t * diff, ticcmd_t * dest);
 
-bool NET_ReadFullTiccmd(net_packet_t *packet, net_full_ticcmd_t *cmd, bool lowres_turn);
-void    NET_WriteFullTiccmd(net_packet_t *packet, net_full_ticcmd_t *cmd, bool lowres_turn);
+bool NET_ReadFullTiccmd(net_packet_t * packet, net_full_ticcmd_t * cmd, bool lowres_turn);
+void NET_WriteFullTiccmd(net_packet_t * packet, net_full_ticcmd_t * cmd, bool lowres_turn);
 
-bool NET_ReadSHA1Sum(net_packet_t *packet, sha1_digest_t digest);
-void    NET_WriteSHA1Sum(net_packet_t *packet, sha1_digest_t digest);
+bool NET_ReadSHA1Sum(net_packet_t * packet, sha1_digest_t digest);
+void NET_WriteSHA1Sum(net_packet_t * packet, sha1_digest_t digest);
 
-void    NET_WriteWaitData(net_packet_t *packet, net_waitdata_t *data);
-bool NET_ReadWaitData(net_packet_t *packet, net_waitdata_t *data);
+void NET_WriteWaitData(net_packet_t * packet, net_waitdata_t * data);
+bool NET_ReadWaitData(net_packet_t * packet, net_waitdata_t * data);
 
-bool NET_ReadPRNGSeed(net_packet_t *packet, prng_seed_t seed);
-[[maybe_unused]] void    NET_WritePRNGSeed(net_packet_t *packet, prng_seed_t seed);
+bool                  NET_ReadPRNGSeed(net_packet_t * packet, prng_seed_t seed);
+[[maybe_unused]] void NET_WritePRNGSeed(net_packet_t * packet, prng_seed_t seed);
 
 // Protocol list exchange.
-net_protocol_t NET_ReadProtocol(net_packet_t *packet);
-void           NET_WriteProtocol(net_packet_t *packet, net_protocol_t protocol);
-net_protocol_t NET_ReadProtocolList(net_packet_t *packet);
-void           NET_WriteProtocolList(net_packet_t *packet);
+net_protocol_t NET_ReadProtocol(net_packet_t * packet);
+void           NET_WriteProtocol(net_packet_t * packet, net_protocol_t protocol);
+net_protocol_t NET_ReadProtocolList(net_packet_t * packet);
+void           NET_WriteProtocolList(net_packet_t * packet);
 
 #endif /* #ifndef NET_STRUCTRW_H */

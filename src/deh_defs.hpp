@@ -23,34 +23,34 @@
 struct deh_context_t;
 using deh_section_t       = struct deh_section_s;
 using deh_section_init_t  = void (*)();
-using deh_section_start_t = void *(*)(deh_context_t *, char *);
+using deh_section_start_t = void * (*)(deh_context_t *, char *);
 using deh_section_end_t   = void (*)(deh_context_t *, void *);
 using deh_line_parser_t   = void (*)(deh_context_t *, char *, void *);
 using deh_sha1_hash_t     = void (*)(sha1_context_t *);
 
 struct [[maybe_unused]] deh_section_s {
-    const char *name;
+  const char * name;
 
-    // Called on startup to initialize code
+  // Called on startup to initialize code
 
-    deh_section_init_t init;
+  deh_section_init_t init;
 
-    // This is called when a new section is started.  The pointer
-    // returned is used as a tag for the following calls.
+  // This is called when a new section is started.  The pointer
+  // returned is used as a tag for the following calls.
 
-    deh_section_start_t start;
+  deh_section_start_t start;
 
-    // This is called for each line in the section
+  // This is called for each line in the section
 
-    deh_line_parser_t line_parser;
+  deh_line_parser_t line_parser;
 
-    // This is called at the end of the section for any cleanup
+  // This is called at the end of the section for any cleanup
 
-    deh_section_end_t end;
+  deh_section_end_t end;
 
-    // Called when generating an SHA1 sum of the dehacked state
+  // Called when generating an SHA1 sum of the dehacked state
 
-    deh_sha1_hash_t sha1_hash;
+  deh_sha1_hash_t sha1_hash;
 };
 
 #endif /* #ifndef DEH_DEFS_H */

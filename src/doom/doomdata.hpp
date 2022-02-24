@@ -27,7 +27,6 @@
 // Some global defines, that configure the game.
 #include "doomdef.hpp"
 
-
 //
 // Map level types.
 // The following data structures define the persistent format
@@ -38,69 +37,66 @@
 // to provide a complete scene geometry description.
 enum
 {
-    ML_LABEL [[maybe_unused]],    // A separator, name, ExMx or MAPxx
-    ML_THINGS,   // Monsters, items..
-    ML_LINEDEFS, // LineDefs, from editing
-    ML_SIDEDEFS, // SideDefs, from editing
-    ML_VERTEXES, // Vertices, edited and BSP splits generated
-    ML_SEGS,     // LineSegs, from LineDefs split by BSP
-    ML_SSECTORS, // SubSectors, list of LineSegs
-    ML_NODES,    // BSP nodes
-    ML_SECTORS,  // Sectors, from editing
-    ML_REJECT,   // LUT, sector-sector visibility
-    ML_BLOCKMAP  // LUT, motion clipping, walls/grid element
+  ML_LABEL [[maybe_unused]], // A separator, name, ExMx or MAPxx
+  ML_THINGS,                 // Monsters, items..
+  ML_LINEDEFS,               // LineDefs, from editing
+  ML_SIDEDEFS,               // SideDefs, from editing
+  ML_VERTEXES,               // Vertices, edited and BSP splits generated
+  ML_SEGS,                   // LineSegs, from LineDefs split by BSP
+  ML_SSECTORS,               // SubSectors, list of LineSegs
+  ML_NODES,                  // BSP nodes
+  ML_SECTORS,                // Sectors, from editing
+  ML_REJECT,                 // LUT, sector-sector visibility
+  ML_BLOCKMAP                // LUT, motion clipping, walls/grid element
 };
-
 
 // A single Vertex.
 typedef PACKED_STRUCT(
     {
-        short x;
-        short y;
+      short x;
+      short y;
     }) mapvertex_t;
-
 
 // A SideDef, defining the visual appearance of a wall,
 // by setting textures and offsets.
 typedef PACKED_STRUCT(
     {
-        short textureoffset;
-        short rowoffset;
-        char  toptexture[8];
-        char  bottomtexture[8];
-        char  midtexture[8];
-        // Front sector, towards viewer.
-        short sector;
+      short textureoffset;
+      short rowoffset;
+      char  toptexture[8];
+      char  bottomtexture[8];
+      char  midtexture[8];
+      // Front sector, towards viewer.
+      short sector;
     }) mapsidedef_t;
-
 
 // A LineDef, as used for editing, and as input
 // to the BSP builder.
 typedef PACKED_STRUCT(
     {
-        unsigned short v1;    // [crispy] extended nodes
-        unsigned short v2;    // [crispy] extended nodes
-        unsigned short flags; // [crispy] extended nodes
-        short          special;
-        short          tag;
-        // sidenum[1] will be -1 (NO_INDEX) if one sided
-        unsigned short sidenum[2]; // [crispy] extended nodes
+      unsigned short v1;    // [crispy] extended nodes
+      unsigned short v2;    // [crispy] extended nodes
+      unsigned short flags; // [crispy] extended nodes
+      short          special;
+      short          tag;
+      // sidenum[1] will be -1 (NO_INDEX) if one sided
+      unsigned short sidenum[2]; // [crispy] extended nodes
     }) maplinedef_t;
 
 // [crispy] allow loading of Hexen-format maps
 // taken from chocolate-doom/src/hexen/xddefs.h:63-75
 typedef PACKED_STRUCT(
     {
-        short v1;
-        short v2;
-        short flags;
-        uint8_t special;
-        uint8_t arg1;
-        uint8_t arg2;
-        uint8_t arg3;
-        uint8_t arg4;
-        uint8_t arg5;
-        short sidenum[2];
+      short   v1;
+      short   v2;
+      short   flags;
+      uint8_t special;
+      uint8_t arg1;
+      uint8_t arg2;
+      uint8_t arg3;
+      uint8_t arg4;
+      uint8_t arg5;
+      short   sidenum[2];
     }) maplinedef_hexen_t;
 
 //
@@ -108,14 +104,14 @@ typedef PACKED_STRUCT(
 //
 
 // Solid, is an obstacle.
-constexpr auto ML_BLOCKING =1;
+constexpr auto ML_BLOCKING = 1;
 
 // Blocks monsters only.
-constexpr auto ML_BLOCKMONSTERS =2;
+constexpr auto ML_BLOCKMONSTERS = 2;
 
 // Backside will not be present at all
 //  if not two sided.
-constexpr auto ML_TWOSIDED =4;
+constexpr auto ML_TWOSIDED = 4;
 
 // If a texture is pegged, the texture will have
 // the end exposed to air held constant at the
@@ -127,170 +123,166 @@ constexpr auto ML_TWOSIDED =4;
 // top and bottom textures (use next to windows).
 
 // upper texture unpegged
-constexpr auto ML_DONTPEGTOP =8;
+constexpr auto ML_DONTPEGTOP = 8;
 
 // lower texture unpegged
-constexpr auto ML_DONTPEGBOTTOM =16;
+constexpr auto ML_DONTPEGBOTTOM = 16;
 
 // In AutoMap: don't map as two sided: IT'S A SECRET!
-constexpr auto ML_SECRET =32;
+constexpr auto ML_SECRET = 32;
 
 // Sound rendering: don't let sound cross two of these.
-constexpr auto ML_SOUNDBLOCK =64;
+constexpr auto ML_SOUNDBLOCK = 64;
 
 // Don't draw on the automap at all.
-constexpr auto ML_DONTDRAW =128;
+constexpr auto ML_DONTDRAW = 128;
 
 // Set if already seen, thus drawn in automap.
-constexpr auto ML_MAPPED =256;
-
+constexpr auto ML_MAPPED = 256;
 
 // Sector definition, from editing.
 typedef PACKED_STRUCT(
     {
-        short floorheight;
-        short ceilingheight;
-        char  floorpic[8];
-        char  ceilingpic[8];
-        short lightlevel;
-        short special;
-        short tag;
+      short floorheight;
+      short ceilingheight;
+      char  floorpic[8];
+      char  ceilingpic[8];
+      short lightlevel;
+      short special;
+      short tag;
     }) mapsector_t;
 
 // SubSector, as generated by BSP.
 typedef PACKED_STRUCT(
     {
-        unsigned short numsegs; // [crispy] extended nodes
-        // Index of first one, segs are stored sequentially.
-        unsigned short firstseg; // [crispy] extended nodes
+      unsigned short numsegs; // [crispy] extended nodes
+      // Index of first one, segs are stored sequentially.
+      unsigned short firstseg; // [crispy] extended nodes
     }) mapsubsector_t;
 
 // [crispy] allow loading of maps with DeePBSP nodes
 // taken from prboom-plus/src/doomdata.h:163-166
 typedef PACKED_STRUCT(
     {
-        unsigned short numsegs;
-        int            firstseg;
+      unsigned short numsegs;
+      int            firstseg;
     }) mapsubsector_deepbsp_t;
 
 // [crispy] allow loading of maps with ZDBSP nodes
 // taken from prboom-plus/src/doomdata.h:168-170
 typedef PACKED_STRUCT(
     {
-        unsigned int numsegs;
+      unsigned int numsegs;
     }) mapsubsector_zdbsp_t;
 
 // LineSeg, generated by splitting LineDefs
 // using partition lines selected by BSP builder.
 typedef PACKED_STRUCT(
     {
-        unsigned short v1; // [crispy] extended nodes
-        unsigned short v2; // [crispy] extended nodes
-        short          angle;
-        unsigned short linedef; // [crispy] extended nodes
-        short          side;
-        short          offset;
+      unsigned short v1; // [crispy] extended nodes
+      unsigned short v2; // [crispy] extended nodes
+      short          angle;
+      unsigned short linedef; // [crispy] extended nodes
+      short          side;
+      short          offset;
     }) mapseg_t;
 
 // [crispy] allow loading of maps with DeePBSP nodes
 // taken from prboom-plus/src/doomdata.h:183-190
 typedef PACKED_STRUCT(
     {
-        int            v1;
-        int            v2;
-        unsigned short angle;
-        unsigned short linedef;
-        short          side;
-        unsigned short offset;
+      int            v1;
+      int            v2;
+      unsigned short angle;
+      unsigned short linedef;
+      short          side;
+      unsigned short offset;
     }) mapseg_deepbsp_t;
 
 // [crispy] allow loading of maps with ZDBSP nodes
 // taken from prboom-plus/src/doomdata.h:192-196
 typedef PACKED_STRUCT(
     {
-        unsigned int   v1, v2;
-        unsigned short linedef;
-        unsigned char  side;
+      unsigned int   v1, v2;
+      unsigned short linedef;
+      unsigned char  side;
     }) mapseg_zdbsp_t;
-
 
 // BSP node structure.
 
 // Indicate a leaf.
-constexpr auto NF_SUBSECTOR = 0x80000000;           // [crispy] extended nodes
+constexpr auto NF_SUBSECTOR = 0x80000000;                        // [crispy] extended nodes
 constexpr auto NO_INDEX     = (static_cast<unsigned short>(-1)); // [crispy] extended nodes
 
 typedef PACKED_STRUCT(
     {
-        // Partition line from (x,y) to x+dx,y+dy)
-        short x;
-        short y;
-        short dx;
-        short dy;
+      // Partition line from (x,y) to x+dx,y+dy)
+      short x;
+      short y;
+      short dx;
+      short dy;
 
-        // Bounding box for each child,
-        // clip against view frustum.
-        short bbox[2][4];
+      // Bounding box for each child,
+      // clip against view frustum.
+      short bbox[2][4];
 
-        // If NF_SUBSECTOR its a subsector,
-        // else it's a node of another subtree.
-        unsigned short children[2];
+      // If NF_SUBSECTOR its a subsector,
+      // else it's a node of another subtree.
+      unsigned short children[2];
     }) mapnode_t;
 
 // [crispy] allow loading of maps with DeePBSP nodes
 // taken from prboom-plus/src/doomdata.h:216-225
 typedef PACKED_STRUCT(
     {
-        short x;
-        short y;
-        short dx;
-        short dy;
-        short bbox[2][4];
-        int   children[2];
+      short x;
+      short y;
+      short dx;
+      short dy;
+      short bbox[2][4];
+      int   children[2];
     }) mapnode_deepbsp_t;
 
 // [crispy] allow loading of maps with ZDBSP nodes
 // taken from prboom-plus/src/doomdata.h:227-136
 typedef PACKED_STRUCT(
     {
-        short x;
-        short y;
-        short dx;
-        short dy;
-        short bbox[2][4];
-        int   children[2];
+      short x;
+      short y;
+      short dx;
+      short dy;
+      short bbox[2][4];
+      int   children[2];
     }) mapnode_zdbsp_t;
-
 
 // Thing definition, position, orientation and type,
 // plus skill/visibility flags and attributes.
 typedef PACKED_STRUCT(
     {
-        short x;
-        short y;
-        short angle;
-        short type;
-        short options;
+      short x;
+      short y;
+      short angle;
+      short type;
+      short options;
     }) mapthing_t;
 
 // [crispy] allow loading of Hexen-format maps
 // taken from chocolate-doom/src/hexen/xddefs.h:134-149
 typedef PACKED_STRUCT(
     {
-        short tid;
-        short x;
-        short y;
-        short height;
-        short angle;
-        short type;
-        short options;
-        uint8_t  special;
-        uint8_t  arg1;
-        uint8_t  arg2;
-        uint8_t  arg3;
-        uint8_t  arg4;
-        uint8_t  arg5;
+      short   tid;
+      short   x;
+      short   y;
+      short   height;
+      short   angle;
+      short   type;
+      short   options;
+      uint8_t special;
+      uint8_t arg1;
+      uint8_t arg2;
+      uint8_t arg3;
+      uint8_t arg4;
+      uint8_t arg5;
     }) mapthing_hexen_t;
-
 
 #endif // __DOOMDATA__

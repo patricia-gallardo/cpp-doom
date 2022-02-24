@@ -34,10 +34,9 @@ using txt_separator_t = struct txt_separator_s;
 
 #include "txt_widget.hpp"
 
-struct [[maybe_unused]] txt_separator_s
-{
-    txt_widget_t widget;
-    char *label{};
+struct [[maybe_unused]] txt_separator_s {
+  txt_widget_t widget;
+  char *       label {};
 };
 
 extern txt_widget_class_t txt_separator_class;
@@ -50,7 +49,7 @@ extern txt_widget_class_t txt_separator_class;
  * @return              The new separator widget.
  */
 
-txt_separator_t *TXT_NewSeparator(const char *label);
+txt_separator_t * TXT_NewSeparator(const char * label);
 
 /**
  * Change the label on a separator.
@@ -59,7 +58,6 @@ txt_separator_t *TXT_NewSeparator(const char *label);
  * @param label         The new label (UTF-8 format).
  */
 
-void TXT_SetSeparatorLabel(txt_separator_t *separator, const char *label);
+void TXT_SetSeparatorLabel(txt_separator_t * separator, const char * label);
 
 #endif /* #ifndef TXT_SEPARATOR_H */
-

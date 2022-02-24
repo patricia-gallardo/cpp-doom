@@ -131,91 +131,79 @@ int deh_species_infighting = DEH_DEFAULT_SPECIES_INFIGHTING;
 
 static struct
 {
-    const char *deh_name;
-    int *       value;
+  const char * deh_name;
+  int *        value;
 } misc_settings[] = {
-    { "Initial Health", &deh_initial_health },
-    { "Initial Bullets", &deh_initial_bullets },
-    { "Max Health", &deh_max_health },
-    { "Max Armor", &deh_max_armor },
-    { "Green Armor Class", &deh_green_armor_class },
-    { "Blue Armor Class", &deh_blue_armor_class },
-    { "Max Soulsphere", &deh_max_soulsphere },
-    { "Soulsphere Health", &deh_soulsphere_health },
-    { "Megasphere Health", &deh_megasphere_health },
-    { "God Mode Health", &deh_god_mode_health },
-    { "IDFA Armor", &deh_idfa_armor },
-    { "IDFA Armor Class", &deh_idfa_armor_class },
-    { "IDKFA Armor", &deh_idkfa_armor },
-    { "IDKFA Armor Class", &deh_idkfa_armor_class },
-    { "BFG Cells/Shot", &deh_bfg_cells_per_shot },
+  {"Initial Health",     &deh_initial_health    },
+  { "Initial Bullets",   &deh_initial_bullets   },
+  { "Max Health",        &deh_max_health        },
+  { "Max Armor",         &deh_max_armor         },
+  { "Green Armor Class", &deh_green_armor_class },
+  { "Blue Armor Class",  &deh_blue_armor_class  },
+  { "Max Soulsphere",    &deh_max_soulsphere    },
+  { "Soulsphere Health", &deh_soulsphere_health },
+  { "Megasphere Health", &deh_megasphere_health },
+  { "God Mode Health",   &deh_god_mode_health   },
+  { "IDFA Armor",        &deh_idfa_armor        },
+  { "IDFA Armor Class",  &deh_idfa_armor_class  },
+  { "IDKFA Armor",       &deh_idkfa_armor       },
+  { "IDKFA Armor Class", &deh_idkfa_armor_class },
+  { "BFG Cells/Shot",    &deh_bfg_cells_per_shot},
 };
 
-static void *DEH_MiscStart(deh_context_t *, char *)
-{
-    return nullptr;
+static void * DEH_MiscStart(deh_context_t *, char *) {
+  return nullptr;
 }
 
-static void DEH_MiscParseLine(deh_context_t *context, char *line, void *)
-{
-    char * variable_name = nullptr, *value = nullptr;
+static void DEH_MiscParseLine(deh_context_t * context, char * line, void *) {
+  char *variable_name = nullptr, *value = nullptr;
 
-    if (!DEH_ParseAssignment(line, &variable_name, &value))
-    {
-        // Failed to parse
+  if (!DEH_ParseAssignment(line, &variable_name, &value)) {
+    // Failed to parse
 
-        DEH_Warning(context, "Failed to parse assignment");
-        return;
+    DEH_Warning(context, "Failed to parse assignment");
+    return;
+  }
+
+  int ivalue = std::atoi(value);
+
+  if (!strcasecmp(variable_name, "Monsters Infight")) {
+    // See notes above.
+
+    if (ivalue == 202) {
+      deh_species_infighting = 0;
+    } else if (ivalue == 221) {
+      deh_species_infighting = 1;
+    } else {
+      DEH_Warning(context,
+                  "Invalid value for 'Monsters Infight': %i",
+                  ivalue);
     }
 
-    int ivalue = std::atoi(value);
+    return;
+  }
 
-    if (!strcasecmp(variable_name, "Monsters Infight"))
-    {
-        // See notes above.
-
-        if (ivalue == 202)
-        {
-            deh_species_infighting = 0;
-        }
-        else if (ivalue == 221)
-        {
-            deh_species_infighting = 1;
-        }
-        else
-        {
-            DEH_Warning(context,
-                "Invalid value for 'Monsters Infight': %i", ivalue);
-        }
-
-        return;
+  for (auto & misc_setting : misc_settings) {
+    if (!strcasecmp(variable_name, misc_setting.deh_name)) {
+      *misc_setting.value = ivalue;
+      return;
     }
+  }
 
-    for (auto & misc_setting : misc_settings)
-    {
-        if (!strcasecmp(variable_name, misc_setting.deh_name))
-        {
-            *misc_setting.value = ivalue;
-            return;
-        }
-    }
-
-    DEH_Warning(context, "Unknown Misc variable '%s'", variable_name);
+  DEH_Warning(context, "Unknown Misc variable '%s'", variable_name);
 }
 
-static void DEH_MiscSHA1Sum(sha1_context_t *context)
-{
-    for (auto & misc_setting : misc_settings)
-    {
-        SHA1_UpdateInt32(context, static_cast<unsigned int>(*misc_setting.value));
-    }
+static void DEH_MiscSHA1Sum(sha1_context_t * context) {
+  for (auto & misc_setting : misc_settings) {
+    SHA1_UpdateInt32(context, static_cast<unsigned int>(*misc_setting.value));
+  }
 }
 
 deh_section_t deh_section_misc = {
-    "Misc",
-    nullptr,
-    DEH_MiscStart,
-    DEH_MiscParseLine,
-    nullptr,
-    DEH_MiscSHA1Sum,
+  "Misc",
+  nullptr,
+  DEH_MiscStart,
+  DEH_MiscParseLine,
+  nullptr,
+  DEH_MiscSHA1Sum,
 };

@@ -28,7 +28,7 @@
 constexpr auto MAX_SOUND_SLICE_TIME = 70; /* ms */
 constexpr auto SQUARE_WAVE_AMP      = 0x2000;
 
-// If true, we initialized SDL and have the responsibility to shut it 
+// If true, we initialized SDL and have the responsibility to shut it
 // down
 
 static int sdl_was_initialized = 0;
@@ -39,9 +39,9 @@ static pcsound_callback_func callback;
 
 // Output sound format
 
-static int mixing_freq;
+static int    mixing_freq;
 static Uint16 mixing_format;
-static int mixing_channels;
+static int    mixing_channels;
 
 // Currently playing sound
 // current_remaining is the number of remaining samples that must be played
@@ -54,182 +54,159 @@ static int phase_offset = 0;
 
 // Mixer function that does the PC speaker emulation
 
-static void PCSound_Mix_Callback(void *, Uint8 *stream, int len)
-{
-    // Number of samples is quadrupled, because of 16-bit and stereo
+static void PCSound_Mix_Callback(void *, Uint8 * stream, int len) {
+  // Number of samples is quadrupled, because of 16-bit and stereo
 
-    int nsamples = len / 4;
+  int nsamples = len / 4;
 
-    auto *leftptr = reinterpret_cast<Sint16 *>(stream);
-    Sint16 *rightptr = leftptr + 1;
-    
-    // Fill the output buffer
-    Sint16 this_value = 0;
+  auto *   leftptr  = reinterpret_cast<Sint16 *>(stream);
+  Sint16 * rightptr = leftptr + 1;
 
-    for (int i=0; i<nsamples; ++i)
-    {
-        // Has this sound expired? If so, invoke the callback to get 
-        // the next frequency.
+  // Fill the output buffer
+  Sint16 this_value = 0;
 
-        while (current_remaining == 0) 
-        {
-            int oldfreq = current_freq;
+  for (int i = 0; i < nsamples; ++i) {
+    // Has this sound expired? If so, invoke the callback to get
+    // the next frequency.
 
-            // Get the next frequency to play
+    while (current_remaining == 0) {
+      int oldfreq = current_freq;
 
-            callback(&current_remaining, &current_freq);
+      // Get the next frequency to play
 
-            if (current_freq != 0)
-            {
-                // Adjust phase to match to the new frequency.
-                // This gives us a smooth transition between different tones,
-                // with no impulse changes.
+      callback(&current_remaining, &current_freq);
 
-                phase_offset = (phase_offset * oldfreq) / current_freq;
-            }
+      if (current_freq != 0) {
+        // Adjust phase to match to the new frequency.
+        // This gives us a smooth transition between different tones,
+        // with no impulse changes.
 
-            current_remaining = (current_remaining * mixing_freq) / 1000;
-        }
+        phase_offset = (phase_offset * oldfreq) / current_freq;
+      }
 
-        // Set the value for this sample.
-        if (current_freq == 0)
-        {
-            // Silence
-
-            this_value = 0;
-        }
-        else 
-        {
-            // Determine whether we are at a peak or trough in the current
-            // sound.  Multiply by 2 so that frac % 2 will give 0 or 1 
-            // depending on whether we are at a peak or trough.
-
-            int frac = (phase_offset * current_freq * 2) / mixing_freq;
-
-            if ((frac % 2) == 0) 
-            {
-                this_value = SQUARE_WAVE_AMP;
-            }
-            else
-            {
-                this_value = -SQUARE_WAVE_AMP;
-            }
-
-            ++phase_offset;
-        }
-
-        --current_remaining;
-
-        // Use the same value for the left and right channels.
-
-        *leftptr  = static_cast<Sint16>(*leftptr + this_value);
-        *rightptr = static_cast<Sint16>(*rightptr + this_value);
-
-        leftptr += 2;
-        rightptr += 2;
+      current_remaining = (current_remaining * mixing_freq) / 1000;
     }
+
+    // Set the value for this sample.
+    if (current_freq == 0) {
+      // Silence
+
+      this_value = 0;
+    } else {
+      // Determine whether we are at a peak or trough in the current
+      // sound.  Multiply by 2 so that frac % 2 will give 0 or 1
+      // depending on whether we are at a peak or trough.
+
+      int frac = (phase_offset * current_freq * 2) / mixing_freq;
+
+      if ((frac % 2) == 0) {
+        this_value = SQUARE_WAVE_AMP;
+      } else {
+        this_value = -SQUARE_WAVE_AMP;
+      }
+
+      ++phase_offset;
+    }
+
+    --current_remaining;
+
+    // Use the same value for the left and right channels.
+
+    *leftptr  = static_cast<Sint16>(*leftptr + this_value);
+    *rightptr = static_cast<Sint16>(*rightptr + this_value);
+
+    leftptr += 2;
+    rightptr += 2;
+  }
 }
 
-static int SDLIsInitialized()
-{
-    int    freq     = 0;
-    int    channels = 0;
-    Uint16 format   = 0;
+static int SDLIsInitialized() {
+  int    freq     = 0;
+  int    channels = 0;
+  Uint16 format   = 0;
 
-    return Mix_QuerySpec(&freq, &format, &channels);
+  return Mix_QuerySpec(&freq, &format, &channels);
 }
 
-static void PCSound_SDL_Shutdown()
-{
-    if (sdl_was_initialized)
-    {
-        Mix_CloseAudio();
-        SDL_QuitSubSystem(SDL_INIT_AUDIO);
-        sdl_was_initialized = 0;
-    }
+static void PCSound_SDL_Shutdown() {
+  if (sdl_was_initialized) {
+    Mix_CloseAudio();
+    SDL_QuitSubSystem(SDL_INIT_AUDIO);
+    sdl_was_initialized = 0;
+  }
 }
 
 // Calculate slice size, based on MAX_SOUND_SLICE_TIME.
 // The result must be a power of two.
 
-static int GetSliceSize()
-{
-    int limit = (pcsound_sample_rate * MAX_SOUND_SLICE_TIME) / 1000;
+static int GetSliceSize() {
+  int limit = (pcsound_sample_rate * MAX_SOUND_SLICE_TIME) / 1000;
 
-    // Try all powers of two, not exceeding the limit.
+  // Try all powers of two, not exceeding the limit.
 
-    for (int n=0;; ++n)
-    {
-        // 2^n <= limit < 2^n+1 ?
+  for (int n = 0;; ++n) {
+    // 2^n <= limit < 2^n+1 ?
 
-        if ((1 << (n + 1)) > limit)
-        {
-            return (1 << n);
-        }
+    if ((1 << (n + 1)) > limit) {
+      return (1 << n);
     }
-    [[unreachable]];
+  }
+  [[unreachable]];
 }
 
-static int PCSound_SDL_Init(pcsound_callback_func callback_func)
-{
-    // Check if SDL_mixer has been opened already
-    // If not, we must initialize it now
+static int PCSound_SDL_Init(pcsound_callback_func callback_func) {
+  // Check if SDL_mixer has been opened already
+  // If not, we must initialize it now
 
-    if (!SDLIsInitialized())
-    {
-        if (SDL_Init(SDL_INIT_AUDIO) < 0)
-        {
-            fmt::fprintf(stderr, "Unable to set up sound.\n");
-            return 0;
-        }
-
-        int slicesize = GetSliceSize();
-
-        if (Mix_OpenAudio(pcsound_sample_rate, AUDIO_S16SYS, 2, slicesize) < 0)
-        {
-            fmt::fprintf(stderr, "Error initializing SDL_mixer: %s\n", Mix_GetError());
-
-            SDL_QuitSubSystem(SDL_INIT_AUDIO);
-            return 0;
-        }
-
-        SDL_PauseAudio(0);
-
-        // When this module shuts down, it has the responsibility to 
-        // shut down SDL.
-
-        sdl_was_initialized = 1;
+  if (!SDLIsInitialized()) {
+    if (SDL_Init(SDL_INIT_AUDIO) < 0) {
+      fmt::fprintf(stderr, "Unable to set up sound.\n");
+      return 0;
     }
 
-    // Get the mixer frequency, format and number of channels.
+    int slicesize = GetSliceSize();
 
-    Mix_QuerySpec(&mixing_freq, &mixing_format, &mixing_channels);
+    if (Mix_OpenAudio(pcsound_sample_rate, AUDIO_S16SYS, 2, slicesize) < 0) {
+      fmt::fprintf(stderr, "Error initializing SDL_mixer: %s\n", Mix_GetError());
 
-    // Only supports AUDIO_S16SYS
-
-    if (mixing_format != AUDIO_S16SYS || mixing_channels != 2)
-    {
-        fmt::fprintf(stderr,
-                "PCSound_SDL only supports native signed 16-bit LSB, "
-                "stereo format!\n");
-
-        PCSound_SDL_Shutdown();
-        return 0;
+      SDL_QuitSubSystem(SDL_INIT_AUDIO);
+      return 0;
     }
 
-    callback = callback_func;
-    current_freq = 0;
-    current_remaining = 0;
+    SDL_PauseAudio(0);
 
-    Mix_SetPostMix(PCSound_Mix_Callback, nullptr);
+    // When this module shuts down, it has the responsibility to
+    // shut down SDL.
 
-    return 1;
+    sdl_was_initialized = 1;
+  }
+
+  // Get the mixer frequency, format and number of channels.
+
+  Mix_QuerySpec(&mixing_freq, &mixing_format, &mixing_channels);
+
+  // Only supports AUDIO_S16SYS
+
+  if (mixing_format != AUDIO_S16SYS || mixing_channels != 2) {
+    fmt::fprintf(stderr,
+                 "PCSound_SDL only supports native signed 16-bit LSB, "
+                 "stereo format!\n");
+
+    PCSound_SDL_Shutdown();
+    return 0;
+  }
+
+  callback          = callback_func;
+  current_freq      = 0;
+  current_remaining = 0;
+
+  Mix_SetPostMix(PCSound_Mix_Callback, nullptr);
+
+  return 1;
 }
 
-pcsound_driver_t pcsound_sdl_driver = 
-{
-    "SDL",
-    PCSound_SDL_Init,
-    PCSound_SDL_Shutdown,
+pcsound_driver_t pcsound_sdl_driver = {
+  "SDL",
+  PCSound_SDL_Init,
+  PCSound_SDL_Shutdown,
 };
-

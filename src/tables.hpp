@@ -30,7 +30,6 @@
 //	  maps tan(angle) to angle fast. Gotta search.
 //
 
-
 #ifndef __TABLES__
 #define __TABLES__
 
@@ -41,7 +40,6 @@
 #define FINEANGLES 8192
 #define FINEMASK   (FINEANGLES - 1)
 
-
 // 0x100000000 to 0x2000
 #define ANGLETOFINESHIFT 19
 
@@ -49,8 +47,7 @@
 extern const fixed_t finesine[5 * FINEANGLES / 4];
 
 // Re-use data, is just PI/2 pahse shift.
-extern const fixed_t *finecosine;
-
+extern const fixed_t * finecosine;
 
 // Effective size is 4096.
 extern const fixed_t finetangent[FINEANGLES / 2];
@@ -60,10 +57,10 @@ const uint8_t extern gammatable[5][256];
 
 // Binary Angle Measument, BAM.
 
-constexpr auto ANG45   = 0x20000000;
-constexpr auto ANG90   = 0x40000000;
-constexpr auto ANG180  = 0x80000000;
-constexpr auto ANG270  = 0xc0000000;
+constexpr auto                  ANG45   = 0x20000000;
+constexpr auto                  ANG90   = 0x40000000;
+constexpr auto                  ANG180  = 0x80000000;
+constexpr auto                  ANG270  = 0xc0000000;
 [[maybe_unused]] constexpr auto ANG_MAX = 0xffffffff;
 
 constexpr auto ANG1  = (ANG45 / 45);
@@ -80,17 +77,14 @@ constexpr auto DBITS      = (FRACBITS - SLOPEBITS);
 
 using angle_t = unsigned int;
 
-
 // Effective size is 2049;
 // The +1 size is to handle the case when x==y
 //  without additional checking.
 extern const angle_t tantoangle[SLOPERANGE + 1];
 
-
 // Utility function,
 //  called by R_PointToAngle.
 int SlopeDiv(unsigned int num, unsigned int den);
 int SlopeDivCrispy(unsigned int num, unsigned int den);
-
 
 #endif

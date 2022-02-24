@@ -2,6 +2,7 @@
    Please see textscreen/fonts/README for copyright
    information. */
 
+// clang-format off
 static const uint8_t large_font_data[] =
 {
     0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
@@ -2053,8 +2054,11 @@ static const uint8_t large_font_data[] =
     0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
     0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
 };
+// clang-format on
 
-static const txt_font_t large_font =
-{
-    "large", large_font_data, 16, 32,
+static const txt_font_t large_font = {
+  "large",
+  large_font_data,
+  16,
+  32,
 };

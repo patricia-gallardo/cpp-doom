@@ -15,49 +15,42 @@
 #include "txt_strut.hpp"
 #include "memory.hpp"
 
-static void TXT_StrutSizeCalc(void *uncast_strut)
-{
-    auto *strut = reinterpret_cast<txt_strut_t *>(uncast_strut);
+static void TXT_StrutSizeCalc(void * uncast_strut) {
+  auto * strut = reinterpret_cast<txt_strut_t *>(uncast_strut);
 
-    // Minimum width is the string length + two spaces for padding
+  // Minimum width is the string length + two spaces for padding
 
-    strut->widget.w = static_cast<unsigned int>(strut->width);
-    strut->widget.h = static_cast<unsigned int>(strut->height);
+  strut->widget.w = static_cast<unsigned int>(strut->width);
+  strut->widget.h = static_cast<unsigned int>(strut->height);
 }
 
-static void TXT_StrutDrawer(void *)
-{
-    // Nothing is drawn for a strut.
+static void TXT_StrutDrawer(void *) {
+  // Nothing is drawn for a strut.
 }
 
-static void TXT_StrutDestructor(void *)
-{
+static void TXT_StrutDestructor(void *) {
 }
 
-static int TXT_StrutKeyPress(void *, int)
-{
-    return 0;
+static int TXT_StrutKeyPress(void *, int) {
+  return 0;
 }
 
-txt_widget_class_t txt_strut_class =
-{
-    TXT_NeverSelectable,
-    TXT_StrutSizeCalc,
-    TXT_StrutDrawer,
-    TXT_StrutKeyPress,
-    TXT_StrutDestructor,
-    nullptr,
-    nullptr,
+txt_widget_class_t txt_strut_class = {
+  TXT_NeverSelectable,
+  TXT_StrutSizeCalc,
+  TXT_StrutDrawer,
+  TXT_StrutKeyPress,
+  TXT_StrutDestructor,
+  nullptr,
+  nullptr,
 };
 
-txt_strut_t *TXT_NewStrut(int width, int height)
-{
-    auto *strut = create_struct<txt_strut_t>();
+txt_strut_t * TXT_NewStrut(int width, int height) {
+  auto * strut = create_struct<txt_strut_t>();
 
-    TXT_InitWidget(strut, &txt_strut_class);
-    strut->width = width;
-    strut->height = height;
+  TXT_InitWidget(strut, &txt_strut_class);
+  strut->width  = width;
+  strut->height = height;
 
-    return strut;
+  return strut;
 }
-

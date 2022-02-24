@@ -24,203 +24,180 @@
 
 static struct
 {
-    GameMission_t mission;
-    GameMode_t    mode;
-    int           episode;
-    int           map;
+  GameMission_t mission;
+  GameMode_t    mode;
+  int           episode;
+  int           map;
 } valid_modes[] = {
-    { pack_chex, retail, 1, 5 },
-    { doom, shareware, 1, 9 },
-    { doom, registered, 3, 9 },
-    { doom, retail, 4, 9 },
-    { doom2, commercial, 1, 32 },
-    { pack_tnt, commercial, 1, 32 },
-    { pack_plut, commercial, 1, 32 },
-    { pack_hacx, commercial, 1, 32 },
-    { pack_nerve, commercial, 1, 9 },
-    { pack_master, commercial, 1, 21 },
-    { heretic, shareware, 1, 9 },
-    { heretic, registered, 3, 9 },
-    { heretic, retail, 5, 9 },
-    { hexen, commercial, 1, 60 },
-    { strife, commercial, 1, 34 },
+  {pack_chex,    retail,     1, 5 },
+  { doom,        shareware,  1, 9 },
+  { doom,        registered, 3, 9 },
+  { doom,        retail,     4, 9 },
+  { doom2,       commercial, 1, 32},
+  { pack_tnt,    commercial, 1, 32},
+  { pack_plut,   commercial, 1, 32},
+  { pack_hacx,   commercial, 1, 32},
+  { pack_nerve,  commercial, 1, 9 },
+  { pack_master, commercial, 1, 21},
+  { heretic,     shareware,  1, 9 },
+  { heretic,     registered, 3, 9 },
+  { heretic,     retail,     5, 9 },
+  { hexen,       commercial, 1, 60},
+  { strife,      commercial, 1, 34},
 };
 
 // Check that a gamemode+gamemission received over the network is valid.
 
-bool D_ValidGameMode(int mission, int mode)
-{
-    for (auto & valid_mode : valid_modes)
-    {
-        if (valid_mode.mode == mode && valid_mode.mission == mission)
-        {
-            return true;
-        }
+bool D_ValidGameMode(int mission, int mode) {
+  for (auto & valid_mode : valid_modes) {
+    if (valid_mode.mode == mode && valid_mode.mission == mission) {
+      return true;
     }
+  }
 
-    return false;
+  return false;
 }
 
-bool D_ValidEpisodeMap(GameMission_t mission, GameMode_t mode,
-    int episode, int map)
-{
-    // Hacks for Heretic secret episodes
+bool D_ValidEpisodeMap(GameMission_t mission, GameMode_t mode, int episode, int map) {
+  // Hacks for Heretic secret episodes
 
-    if (mission == heretic)
-    {
-        if (mode == retail && episode == 6)
-        {
-            return map >= 1 && map <= 3;
-        }
-        else if (mode == registered && episode == 4)
-        {
-            return map == 1;
-        }
+  if (mission == heretic) {
+    if (mode == retail && episode == 6) {
+      return map >= 1 && map <= 3;
+    } else if (mode == registered && episode == 4) {
+      return map == 1;
     }
+  }
 
-    // Find the table entry for this mission/mode combination.
+  // Find the table entry for this mission/mode combination.
 
-    for (auto & valid_mode : valid_modes)
-    {
-        if (mission == valid_mode.mission
-            && mode == valid_mode.mode)
-        {
-            return episode >= 1 && episode <= valid_mode.episode
-                   && map >= 1 && map <= valid_mode.map;
-        }
+  for (auto & valid_mode : valid_modes) {
+    if (mission == valid_mode.mission
+        && mode == valid_mode.mode) {
+      return episode >= 1 && episode <= valid_mode.episode
+             && map >= 1 && map <= valid_mode.map;
     }
+  }
 
-    // Unknown mode/mission combination
+  // Unknown mode/mission combination
 
-    return false;
+  return false;
 }
 
 // Get the number of valid episodes for the specified mission/mode.
 
-int D_GetNumEpisodes(GameMission_t mission, GameMode_t mode)
-{
-    int episode = 1;
+int D_GetNumEpisodes(GameMission_t mission, GameMode_t mode) {
+  int episode = 1;
 
-    while (D_ValidEpisodeMap(mission, mode, episode, 1))
-    {
-        ++episode;
-    }
+  while (D_ValidEpisodeMap(mission, mode, episode, 1)) {
+    ++episode;
+  }
 
-    return episode - 1;
+  return episode - 1;
 }
 
 // Table of valid versions
 
 static struct {
-    GameMission_t mission;
-    GameVersion_t version;
+  GameMission_t mission;
+  GameVersion_t version;
 } valid_versions[] = {
-    { doom, exe_doom_1_2 },
-    { doom, exe_doom_1_666 },
-    { doom, exe_doom_1_7 },
-    { doom, exe_doom_1_8 },
-    { doom, exe_doom_1_9 },
-    { doom, exe_hacx },
-    { doom, exe_ultimate },
-    { doom, exe_final },
-    { doom, exe_final2 },
-    { doom, exe_chex },
-    { heretic, exe_heretic_1_3 },
-    { hexen, exe_hexen_1_1 },
-    { strife, exe_strife_1_2 },
-    { strife, exe_strife_1_31 },
+  {doom,     exe_doom_1_2   },
+  { doom,    exe_doom_1_666 },
+  { doom,    exe_doom_1_7   },
+  { doom,    exe_doom_1_8   },
+  { doom,    exe_doom_1_9   },
+  { doom,    exe_hacx       },
+  { doom,    exe_ultimate   },
+  { doom,    exe_final      },
+  { doom,    exe_final2     },
+  { doom,    exe_chex       },
+  { heretic, exe_heretic_1_3},
+  { hexen,   exe_hexen_1_1  },
+  { strife,  exe_strife_1_2 },
+  { strife,  exe_strife_1_31},
 };
 
-bool D_ValidGameVersion(GameMission_t mission, GameVersion_t version)
-{
-    // All Doom variants can use the Doom versions.
+bool D_ValidGameVersion(GameMission_t mission, GameVersion_t version) {
+  // All Doom variants can use the Doom versions.
 
-    if (mission == doom2 || mission == pack_plut || mission == pack_tnt
-        || mission == pack_hacx || mission == pack_chex
-        || mission == pack_nerve || mission == pack_master)
-    {
-        mission = doom;
+  if (mission == doom2 || mission == pack_plut || mission == pack_tnt
+      || mission == pack_hacx || mission == pack_chex
+      || mission == pack_nerve || mission == pack_master) {
+    mission = doom;
+  }
+
+  for (auto & valid_version : valid_versions) {
+    if (valid_version.mission == mission
+        && valid_version.version == version) {
+      return true;
     }
+  }
 
-    for (auto & valid_version : valid_versions)
-    {
-        if (valid_version.mission == mission
-            && valid_version.version == version)
-        {
-            return true;
-        }
-    }
-
-    return false;
+  return false;
 }
 
 // Does this mission type use ExMy form, rather than MAPxy form?
 
-bool D_IsEpisodeMap(GameMission_t mission)
-{
-    switch (mission)
-    {
-    case doom:
-    case heretic:
-    case pack_chex:
-        return true;
+bool D_IsEpisodeMap(GameMission_t mission) {
+  switch (mission) {
+  case doom:
+  case heretic:
+  case pack_chex:
+    return true;
 
-    case none:
-    case hexen:
-    case doom2:
-    case pack_hacx:
-    case pack_tnt:
-    case pack_plut:
-    case pack_nerve:
-    case pack_master:
-    case strife:
-    default:
-        return false;
-    }
+  case none:
+  case hexen:
+  case doom2:
+  case pack_hacx:
+  case pack_tnt:
+  case pack_plut:
+  case pack_nerve:
+  case pack_master:
+  case strife:
+  default:
+    return false;
+  }
 }
 
-const char *D_GameMissionString(GameMission_t mission)
-{
-    switch (mission)
-    {
-    case none:
-    default:
-        return "none";
-    case doom:
-        return "doom";
-    case doom2:
-        return "doom2";
-    case pack_tnt:
-        return "tnt";
-    case pack_plut:
-        return "plutonia";
-    case pack_hacx:
-        return "hacx";
-    case pack_chex:
-        return "chex";
-    case heretic:
-        return "heretic";
-    case hexen:
-        return "hexen";
-    case strife:
-        return "strife";
-    }
+const char * D_GameMissionString(GameMission_t mission) {
+  switch (mission) {
+  case none:
+  default:
+    return "none";
+  case doom:
+    return "doom";
+  case doom2:
+    return "doom2";
+  case pack_tnt:
+    return "tnt";
+  case pack_plut:
+    return "plutonia";
+  case pack_hacx:
+    return "hacx";
+  case pack_chex:
+    return "chex";
+  case heretic:
+    return "heretic";
+  case hexen:
+    return "hexen";
+  case strife:
+    return "strife";
+  }
 }
 
-const char *D_GameModeString(GameMode_t mode)
-{
-    switch (mode)
-    {
-    case shareware:
-        return "shareware";
-    case registered:
-        return "registered";
-    case commercial:
-        return "commercial";
-    case retail:
-        return "retail";
-    case indetermined:
-    default:
-        return "unknown";
-    }
+const char * D_GameModeString(GameMode_t mode) {
+  switch (mode) {
+  case shareware:
+    return "shareware";
+  case registered:
+    return "registered";
+  case commercial:
+    return "commercial";
+  case retail:
+    return "retail";
+  case indetermined:
+  default:
+    return "unknown";
+  }
 }

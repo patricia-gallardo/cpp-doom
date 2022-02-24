@@ -16,16 +16,14 @@
 //	Refresh module, BSP traversal and handling.
 //
 
-
 #ifndef __R_BSP__
 #define __R_BSP__
 
-
-extern seg_t *   curline;
-extern side_t *  sidedef;
-extern line_t *  linedef;
-extern sector_t *frontsector;
-extern sector_t *backsector;
+extern seg_t *    curline;
+extern side_t *   sidedef;
+extern line_t *   linedef;
+extern sector_t * frontsector;
+extern sector_t * backsector;
 
 extern int rw_x;
 extern int rw_stopx;
@@ -38,24 +36,20 @@ extern bool markceiling;
 
 extern bool skymap;
 
-extern drawseg_t *drawsegs;
-extern drawseg_t *ds_p;
-extern int        numdrawsegs;
+extern drawseg_t * drawsegs;
+extern drawseg_t * ds_p;
+extern int         numdrawsegs;
 
-extern lighttable_t **hscalelight;
-extern lighttable_t **vscalelight;
-extern lighttable_t **dscalelight;
-
+extern lighttable_t ** hscalelight;
+extern lighttable_t ** vscalelight;
+extern lighttable_t ** dscalelight;
 
 using drawfunc_t = void (*)(int, int);
-
 
 // BSP?
 void R_ClearClipSegs();
 void R_ClearDrawSegs();
 
-
 void R_RenderBSPNode(int bspnum);
-
 
 #endif

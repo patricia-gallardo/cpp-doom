@@ -22,6 +22,7 @@
 //
 
 #include "doomstat.hpp"
+// clang-format off
 static const unsigned char rndtable[256] = {
     0, 8, 109, 220, 222, 241, 149, 107, 75, 248, 254, 140, 16, 66,
     74, 21, 211, 47, 80, 242, 154, 27, 205, 128, 161, 89, 77, 36,
@@ -43,45 +44,40 @@ static const unsigned char rndtable[256] = {
     197, 242, 98, 43, 39, 175, 254, 145, 190, 84, 118, 222, 187, 136,
     120, 163, 236, 249
 };
+// clang-format on
 
 int prndindex = 0;
 int crndindex = 0;
 
 // Which one is deterministic?
-int P_Random()
-{
-    prndindex = (prndindex + 1) & 0xff;
-    return rndtable[prndindex];
+int P_Random() {
+  prndindex = (prndindex + 1) & 0xff;
+  return rndtable[prndindex];
 }
 
-int M_Random()
-{
-    g_doomstat_globals->rndindex = (g_doomstat_globals->rndindex + 1) & 0xff;
-    return rndtable[g_doomstat_globals->rndindex];
+int M_Random() {
+  g_doomstat_globals->rndindex = (g_doomstat_globals->rndindex + 1) & 0xff;
+  return rndtable[g_doomstat_globals->rndindex];
 }
 
 // [crispy] our own private random function
-int Crispy_Random()
-{
-    crndindex = (crndindex + 1) & 0xff;
-    return rndtable[crndindex];
+int Crispy_Random() {
+  crndindex = (crndindex + 1) & 0xff;
+  return rndtable[crndindex];
 }
 
-void M_ClearRandom()
-{
-    g_doomstat_globals->rndindex = prndindex = 0;
-    crndindex            = 0;
+void M_ClearRandom() {
+  g_doomstat_globals->rndindex = prndindex = 0;
+  crndindex                                = 0;
 }
 
 // inspired by the same routine in Eternity, thanks haleyjd
-int P_SubRandom()
-{
-    int r = P_Random();
-    return r - P_Random();
+int P_SubRandom() {
+  int r = P_Random();
+  return r - P_Random();
 }
 
-int Crispy_SubRandom()
-{
-    int r = Crispy_Random();
-    return r - Crispy_Random();
+int Crispy_SubRandom() {
+  int r = Crispy_Random();
+  return r - Crispy_Random();
 }

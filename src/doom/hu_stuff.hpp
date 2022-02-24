@@ -20,7 +20,6 @@
 
 #include "d_event.hpp"
 
-
 //
 // Globally visible constants.
 //
@@ -46,13 +45,13 @@ constexpr char HU_FONTEND   = '_'; // the last font characters
 void HU_Init();
 void HU_Start();
 
-bool HU_Responder(event_t *ev);
+bool HU_Responder(event_t * ev);
 
 void HU_Ticker();
 void HU_Drawer();
 char HU_dequeueChatChar();
 void HU_Erase();
 
-extern char *chat_macros[10];
+extern char * chat_macros[10];
 
 #endif

@@ -2,6 +2,7 @@
    Please see textscreen/fonts/README for copyright
    information. */
 
+// clang-format off
 static const uint8_t normal_font_data[] =
 {
     0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
@@ -517,8 +518,11 @@ static const uint8_t normal_font_data[] =
     0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
     0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
 };
+// clang-format on
 
-static const txt_font_t normal_font =
-{
-    "normal", normal_font_data, 8, 16,
+static const txt_font_t normal_font = {
+  "normal",
+  normal_font_data,
+  8,
+  16,
 };

@@ -28,12 +28,12 @@
 extern bool midi_server_initialized;
 extern bool midi_server_registered;
 
-bool I_MidiPipe_RegisterSong(char *filename);
-void    I_MidiPipe_UnregisterSong();
-void    I_MidiPipe_SetVolume(int vol);
-void    I_MidiPipe_PlaySong(int loops);
-void    I_MidiPipe_StopSong();
-void    I_MidiPipe_ShutdownServer();
+bool I_MidiPipe_RegisterSong(char * filename);
+void I_MidiPipe_UnregisterSong();
+void I_MidiPipe_SetVolume(int vol);
+void I_MidiPipe_PlaySong(int loops);
+void I_MidiPipe_StopSong();
+void I_MidiPipe_ShutdownServer();
 
 bool I_MidiPipe_InitServer();
 

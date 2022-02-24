@@ -24,15 +24,12 @@ typedef struct txt_key_input_s txt_key_input_t;
 // allowing a key to be selected.
 //
 
-struct txt_key_input_s
-{
-    txt_widget_t widget;
-    int *variable;
-    int check_conflicts;
+struct txt_key_input_s {
+  txt_widget_t widget;
+  int *        variable;
+  int          check_conflicts;
 };
 
-txt_key_input_t *TXT_NewKeyInput(int *variable);
+txt_key_input_t * TXT_NewKeyInput(int * variable);
 
 #endif /* #ifndef TXT_KEY_INPUT_H */
-
-

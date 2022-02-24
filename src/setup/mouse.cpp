@@ -30,111 +30,104 @@
 
 static int usemouse = 1;
 
-static int mouseSensitivity = 5;
-static int mouseSensitivity_x2 = 5; // [crispy]
-static float mouse_acceleration = 2.0;
-static int mouse_threshold = 10;
-static int mouseSensitivity_y = 5; // [crispy]
+static int   mouseSensitivity     = 5;
+static int   mouseSensitivity_x2  = 5; // [crispy]
+static float mouse_acceleration   = 2.0;
+static int   mouse_threshold      = 10;
+static int   mouseSensitivity_y   = 5;   // [crispy]
 static float mouse_acceleration_y = 1.0; // [crispy]
-static int mouse_threshold_y = 0; // [crispy]
-static int grabmouse = 1;
+static int   mouse_threshold_y    = 0;   // [crispy]
+static int   grabmouse            = 1;
 
 int novert = 1;
 
-static int *all_mouse_buttons[] = {
-    &g_m_controls_globals->mousebfire,
-    &g_m_controls_globals->mousebstrafe,
-    &g_m_controls_globals->mousebforward,
-    &g_m_controls_globals->mousebstrafeleft,
-    &g_m_controls_globals->mousebstraferight,
-    &g_m_controls_globals->mousebbackward,
-    &g_m_controls_globals->mousebuse,
-    &g_m_controls_globals->mousebjump,
-    &g_m_controls_globals->mousebprevweapon,
-    &g_m_controls_globals->mousebnextweapon,
-    &g_m_controls_globals->mousebmouselook, // [crispy]
-    &g_m_controls_globals->mousebreverse // [crispy]
+static int * all_mouse_buttons[] = {
+  &g_m_controls_globals->mousebfire,
+  &g_m_controls_globals->mousebstrafe,
+  &g_m_controls_globals->mousebforward,
+  &g_m_controls_globals->mousebstrafeleft,
+  &g_m_controls_globals->mousebstraferight,
+  &g_m_controls_globals->mousebbackward,
+  &g_m_controls_globals->mousebuse,
+  &g_m_controls_globals->mousebjump,
+  &g_m_controls_globals->mousebprevweapon,
+  &g_m_controls_globals->mousebnextweapon,
+  &g_m_controls_globals->mousebmouselook, // [crispy]
+  &g_m_controls_globals->mousebreverse    // [crispy]
 };
 
-static void MouseSetCallback(void *, void *uncast_variable)
-{
-    int         *variable = reinterpret_cast<int *>(uncast_variable);
+static void MouseSetCallback(void *, void * uncast_variable) {
+  int * variable = reinterpret_cast<int *>(uncast_variable);
 
-    // Check if the same mouse button is used for a different action
-    // If so, set the other action(s) to -1 (unset)
+  // Check if the same mouse button is used for a different action
+  // If so, set the other action(s) to -1 (unset)
 
-    for (auto & all_mouse_button : all_mouse_buttons)
-    {
-        if (*all_mouse_button == *variable
-         && all_mouse_button != variable)
-        {
-            *all_mouse_button = -1;
-        }
+  for (auto & all_mouse_button : all_mouse_buttons) {
+    if (*all_mouse_button == *variable
+        && all_mouse_button != variable) {
+      *all_mouse_button = -1;
     }
+  }
 }
 
-static void AddMouseControl(void *uncast_table, const char *label, int *var)
-{
-    auto              *table = reinterpret_cast<txt_table_t *>(uncast_table);
-    txt_mouse_input_t *mouse_input;
+static void AddMouseControl(void * uncast_table, const char * label, int * var) {
+  auto *              table = reinterpret_cast<txt_table_t *>(uncast_table);
+  txt_mouse_input_t * mouse_input;
 
-    TXT_AddWidget(table, TXT_NewLabel(label));
+  TXT_AddWidget(table, TXT_NewLabel(label));
 
-    mouse_input = TXT_NewMouseInput(var);
-    TXT_AddWidget(table, mouse_input);
+  mouse_input = TXT_NewMouseInput(var);
+  TXT_AddWidget(table, mouse_input);
 
-    TXT_SignalConnect(mouse_input, "set", MouseSetCallback, var);
+  TXT_SignalConnect(mouse_input, "set", MouseSetCallback, var);
 }
 
-static void ConfigExtraButtons(void *, void *)
-{
-    txt_window_t *window;
-    txt_table_t *buttons_table;
+static void ConfigExtraButtons(void *, void *) {
+  txt_window_t * window;
+  txt_table_t *  buttons_table;
 
-    window = TXT_NewWindow("Additional mouse buttons");
+  window = TXT_NewWindow("Additional mouse buttons");
 
-    TXT_SetWindowHelpURL(window, WINDOW_HELP_URL);
+  TXT_SetWindowHelpURL(window, WINDOW_HELP_URL);
 
-    TXT_AddWidgets(window,
-                   buttons_table = TXT_NewTable(4),
-                   nullptr);
+  TXT_AddWidgets(window,
+                 buttons_table = TXT_NewTable(4),
+                 nullptr);
 
-    TXT_SetColumnWidths(buttons_table, 16, 11, 14, 10);
+  TXT_SetColumnWidths(buttons_table, 16, 11, 14, 10);
 
-    AddMouseControl(buttons_table, "Move forward", &g_m_controls_globals->mousebforward);
-    AddMouseControl(buttons_table, "Strafe left", &g_m_controls_globals->mousebstrafeleft);
-    AddMouseControl(buttons_table, "Move backward", &g_m_controls_globals->mousebbackward);
-    AddMouseControl(buttons_table, "Strafe right", &g_m_controls_globals->mousebstraferight);
-    AddMouseControl(buttons_table, "Previous weapon", &g_m_controls_globals->mousebprevweapon);
-    AddMouseControl(buttons_table, "Strafe on", &g_m_controls_globals->mousebstrafe);
-    AddMouseControl(buttons_table, "Next weapon", &g_m_controls_globals->mousebnextweapon);
+  AddMouseControl(buttons_table, "Move forward", &g_m_controls_globals->mousebforward);
+  AddMouseControl(buttons_table, "Strafe left", &g_m_controls_globals->mousebstrafeleft);
+  AddMouseControl(buttons_table, "Move backward", &g_m_controls_globals->mousebbackward);
+  AddMouseControl(buttons_table, "Strafe right", &g_m_controls_globals->mousebstraferight);
+  AddMouseControl(buttons_table, "Previous weapon", &g_m_controls_globals->mousebprevweapon);
+  AddMouseControl(buttons_table, "Strafe on", &g_m_controls_globals->mousebstrafe);
+  AddMouseControl(buttons_table, "Next weapon", &g_m_controls_globals->mousebnextweapon);
 
-    if (gamemission == hexen || gamemission == strife)
-    {
-        AddMouseControl(buttons_table, "Jump", &g_m_controls_globals->mousebjump);
-    }
+  if (gamemission == hexen || gamemission == strife) {
+    AddMouseControl(buttons_table, "Jump", &g_m_controls_globals->mousebjump);
+  }
 
-    if (gamemission == doom) // [crispy]
-    {
-        AddMouseControl(buttons_table, "Quick Reverse", &g_m_controls_globals->mousebreverse);
-        AddMouseControl(buttons_table, "Mouse Look [*]", &g_m_controls_globals->mousebmouselook);
-        AddMouseControl(buttons_table, "Jump [*]", &g_m_controls_globals->mousebjump);
-    }
+  if (gamemission == doom) // [crispy]
+  {
+    AddMouseControl(buttons_table, "Quick Reverse", &g_m_controls_globals->mousebreverse);
+    AddMouseControl(buttons_table, "Mouse Look [*]", &g_m_controls_globals->mousebmouselook);
+    AddMouseControl(buttons_table, "Jump [*]", &g_m_controls_globals->mousebjump);
+  }
 }
 
-void ConfigMouse(void *, void *)
-{
-    txt_window_t *window;
+void ConfigMouse(void *, void *) {
+  txt_window_t * window;
 
-    window = TXT_NewWindow("Mouse configuration");
+  window = TXT_NewWindow("Mouse configuration");
 
-    TXT_SetTableColumns(window, 2);
+  TXT_SetTableColumns(window, 2);
 
-    TXT_SetWindowAction(window, TXT_HORIZ_CENTER, TestConfigAction());
-    TXT_SetWindowHelpURL(window, WINDOW_HELP_URL);
+  TXT_SetWindowAction(window, TXT_HORIZ_CENTER, TestConfigAction());
+  TXT_SetWindowHelpURL(window, WINDOW_HELP_URL);
 
-    if (gamemission == doom) // [crispy]
-    {
+  if (gamemission == doom) // [crispy]
+  {
     TXT_AddWidgets(window,
                    TXT_NewCheckBox("Enable mouse", &usemouse),
                    TXT_TABLE_OVERFLOW_RIGHT,
@@ -166,16 +159,14 @@ void ConfigMouse(void *, void *)
 
                    TXT_NewSeparator("Buttons"),
                    nullptr);
-    }
-    else
-    {
+  } else {
     TXT_AddWidgets(window,
                    TXT_NewCheckBox("Enable mouse", &usemouse),
                    TXT_TABLE_OVERFLOW_RIGHT,
-                   TXT_NewInvertedCheckBox("Allow vertical mouse movement", 
+                   TXT_NewInvertedCheckBox("Allow vertical mouse movement",
                                            &novert),
                    TXT_TABLE_OVERFLOW_RIGHT,
-                   TXT_NewCheckBox("Grab mouse in windowed mode", 
+                   TXT_NewCheckBox("Grab mouse in windowed mode",
                                    &grabmouse),
                    TXT_TABLE_OVERFLOW_RIGHT,
                    TXT_NewCheckBox("Double click acts as \"use\"",
@@ -192,29 +183,28 @@ void ConfigMouse(void *, void *)
 
                    TXT_NewSeparator("Buttons"),
                    nullptr);
-    }
+  }
 
-    AddMouseControl(window, "Fire/Attack", &g_m_controls_globals->mousebfire);
-    AddMouseControl(window, "Use", &g_m_controls_globals->mousebuse);
+  AddMouseControl(window, "Fire/Attack", &g_m_controls_globals->mousebfire);
+  AddMouseControl(window, "Use", &g_m_controls_globals->mousebuse);
 
-    TXT_AddWidget(window,
-                  TXT_NewButton2("More controls...", ConfigExtraButtons, nullptr));
+  TXT_AddWidget(window,
+                TXT_NewButton2("More controls...", ConfigExtraButtons, nullptr));
 }
 
-void BindMouseVariables()
-{
-    M_BindIntVariable("use_mouse",               &usemouse);
-    M_BindIntVariable("novert",                  &novert);
-    M_BindIntVariable("grabmouse",               &grabmouse);
-    M_BindIntVariable("mouse_sensitivity",       &mouseSensitivity);
-    M_BindIntVariable("mouse_threshold",         &mouse_threshold);
-    M_BindFloatVariable("mouse_acceleration",    &mouse_acceleration);
-    if (gamemission == doom) // [crispy]
-    {
-    M_BindIntVariable("mouse_sensitivity_x2",    &mouseSensitivity_x2);
-    M_BindIntVariable("mouse_sensitivity_y",     &mouseSensitivity_y);
-    M_BindIntVariable("mouse_threshold_y",       &mouse_threshold_y);
-    M_BindFloatVariable("mouse_acceleration_y",  &mouse_acceleration_y);
-    M_BindIntVariable("crispy_mouselook",        &crispy->mouselook);
-    }
+void BindMouseVariables() {
+  M_BindIntVariable("use_mouse", &usemouse);
+  M_BindIntVariable("novert", &novert);
+  M_BindIntVariable("grabmouse", &grabmouse);
+  M_BindIntVariable("mouse_sensitivity", &mouseSensitivity);
+  M_BindIntVariable("mouse_threshold", &mouse_threshold);
+  M_BindFloatVariable("mouse_acceleration", &mouse_acceleration);
+  if (gamemission == doom) // [crispy]
+  {
+    M_BindIntVariable("mouse_sensitivity_x2", &mouseSensitivity_x2);
+    M_BindIntVariable("mouse_sensitivity_y", &mouseSensitivity_y);
+    M_BindIntVariable("mouse_threshold_y", &mouse_threshold_y);
+    M_BindFloatVariable("mouse_acceleration_y", &mouse_acceleration_y);
+    M_BindIntVariable("crispy_mouselook", &crispy->mouselook);
+  }
 }

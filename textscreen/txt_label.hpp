@@ -32,14 +32,13 @@ using txt_label_t = struct txt_label_s;
 #include "txt_main.hpp"
 #include "txt_widget.hpp"
 
-struct txt_label_s
-{
-    txt_widget_t widget;
-    char *label{};
-    char **lines{};
-    unsigned int w{}, h{};
-    txt_color_t fgcolor;
-    txt_color_t bgcolor;
+struct txt_label_s {
+  txt_widget_t widget;
+  char *       label {};
+  char **      lines {};
+  unsigned int w {}, h {};
+  txt_color_t  fgcolor;
+  txt_color_t  bgcolor;
 };
 
 /**
@@ -49,7 +48,7 @@ struct txt_label_s
  * @return              Pointer to the new label widget.
  */
 
-txt_label_t *TXT_NewLabel(const char *label);
+txt_label_t * TXT_NewLabel(const char * label);
 
 /**
  * Set the string displayed in a label widget.
@@ -58,7 +57,7 @@ txt_label_t *TXT_NewLabel(const char *label);
  * @param value         The string to display (UTF-8 format).
  */
 
-void TXT_SetLabel(txt_label_t *label, const char *value);
+void TXT_SetLabel(txt_label_t * label, const char * value);
 
 /**
  * Set the background color of a label widget.
@@ -67,7 +66,7 @@ void TXT_SetLabel(txt_label_t *label, const char *value);
  * @param color         The background color to use.
  */
 
-[[maybe_unused]] void TXT_SetBGColor(txt_label_t *label, txt_color_t color);
+[[maybe_unused]] void TXT_SetBGColor(txt_label_t * label, txt_color_t color);
 
 /**
  * Set the foreground color of a label widget.
@@ -76,8 +75,6 @@ void TXT_SetLabel(txt_label_t *label, const char *value);
  * @param color         The foreground color to use.
  */
 
-void TXT_SetFGColor(txt_label_t *label, txt_color_t color);
+void TXT_SetFGColor(txt_label_t * label, txt_color_t color);
 
 #endif /* #ifndef TXT_LABEL_H */
-
-

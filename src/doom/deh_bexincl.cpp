@@ -28,74 +28,63 @@
 
 static bool bex_nested = false;
 
-static void *DEH_BEXInclStart(deh_context_t *context, char *line)
-{
-    extern bool bex_notext;
+static void * DEH_BEXInclStart(deh_context_t * context, char * line) {
+  extern bool bex_notext;
 
-    if (!DEH_FileName(context))
-    {
-        DEH_Warning(context, "DEHACKED lumps may not include files");
-        return nullptr;
-    }
-
-    char *deh_file = DEH_FileName(context);
-
-    if (bex_nested)
-    {
-        DEH_Warning(context, "Included files may not include other files");
-        return nullptr;
-    }
-
-    std::string inc_file(strlen(line) + 1, '\0');
-
-    if (sscanf(line, "INCLUDE NOTEXT %32s", inc_file.data()) == 1)
-    {
-        bex_notext = true;
-    }
-    else if (sscanf(line, "INCLUDE %32s", inc_file.data()) == 1)
-    {
-        // well, fine
-    }
-    else
-    {
-        DEH_Warning(context, "Parse error on section start");
-        return nullptr;
-    }
-
-    // first, try loading the file right away
-    std::string try_path = inc_file;
-
-    if (!M_FileExists(try_path.c_str()))
-    {
-        // second, try loading the file in the directory of the current file
-        char *dir = M_DirName(deh_file);
-        try_path = std::string(dir) + DIR_SEPARATOR_S + inc_file;
-        free(dir);
-    }
-
-    bex_nested = true;
-
-    if (!M_FileExists(try_path.c_str()) || !DEH_LoadFile(try_path.c_str()))
-    {
-        DEH_Warning(context, "Could not include \"%s\"", inc_file.c_str());
-    }
-
-    bex_nested = false;
-    bex_notext = false;
-
+  if (!DEH_FileName(context)) {
+    DEH_Warning(context, "DEHACKED lumps may not include files");
     return nullptr;
+  }
+
+  char * deh_file = DEH_FileName(context);
+
+  if (bex_nested) {
+    DEH_Warning(context, "Included files may not include other files");
+    return nullptr;
+  }
+
+  std::string inc_file(strlen(line) + 1, '\0');
+
+  if (sscanf(line, "INCLUDE NOTEXT %32s", inc_file.data()) == 1) {
+    bex_notext = true;
+  } else if (sscanf(line, "INCLUDE %32s", inc_file.data()) == 1) {
+    // well, fine
+  } else {
+    DEH_Warning(context, "Parse error on section start");
+    return nullptr;
+  }
+
+  // first, try loading the file right away
+  std::string try_path = inc_file;
+
+  if (!M_FileExists(try_path.c_str())) {
+    // second, try loading the file in the directory of the current file
+    char * dir = M_DirName(deh_file);
+    try_path   = std::string(dir) + DIR_SEPARATOR_S + inc_file;
+    free(dir);
+  }
+
+  bex_nested = true;
+
+  if (!M_FileExists(try_path.c_str()) || !DEH_LoadFile(try_path.c_str())) {
+    DEH_Warning(context, "Could not include \"%s\"", inc_file.c_str());
+  }
+
+  bex_nested = false;
+  bex_notext = false;
+
+  return nullptr;
 }
 
-static void DEH_BEXInclParseLine(deh_context_t *, char *, void *)
-{
-    // not used
+static void DEH_BEXInclParseLine(deh_context_t *, char *, void *) {
+  // not used
 }
 
 deh_section_t deh_section_bexincl = {
-    "INCLUDE",
-    nullptr,
-    DEH_BEXInclStart,
-    DEH_BEXInclParseLine,
-    nullptr,
-    nullptr,
+  "INCLUDE",
+  nullptr,
+  DEH_BEXInclStart,
+  DEH_BEXInclParseLine,
+  nullptr,
+  nullptr,
 };

@@ -16,7 +16,6 @@
 //	The not so system specific sound interface.
 //
 
-
 #ifndef __S_SOUND__
 #define __S_SOUND__
 
@@ -31,11 +30,9 @@
 
 void S_Init(int sfxVolume_param, int musicVolume_param);
 
-
 // Shut down sound
 
 void S_Shutdown();
-
 
 //
 // Per level startup code.
@@ -50,13 +47,12 @@ void S_Start();
 //  using <sound_id> from sounds.h
 //
 
-void S_StartSound(void *origin, int sound_id);
-void S_StartSoundOnce(void *origin, int sound_id);
+void S_StartSound(void * origin, int sound_id);
+void S_StartSoundOnce(void * origin, int sound_id);
 
 // Stop sound for thing at <origin>
-void S_StopSound(mobj_t *origin);
-void S_UnlinkSound(mobj_t *origin);
-
+void S_StopSound(mobj_t * origin);
+void S_UnlinkSound(mobj_t * origin);
 
 // Start music using <music_id> from sounds.h
 void S_StartMusic(int music_id);
@@ -76,11 +72,10 @@ void S_StopMusic();
 void S_PauseSound();
 void S_ResumeSound();
 
-
 //
 // Updates music & sounds
 //
-void S_UpdateSounds(mobj_t *listener);
+void S_UpdateSounds(mobj_t * listener);
 
 void S_SetMusicVolume(int volume);
 void S_SetSfxVolume(int volume);

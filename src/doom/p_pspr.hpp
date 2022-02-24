@@ -16,7 +16,6 @@
 //  Sprite animation.
 //
 
-
 #ifndef __P_PSPR__
 #define __P_PSPR__
 
@@ -24,7 +23,6 @@
 // Needs fixed point, and BAM angles.
 #include "m_fixed.hpp"
 #include "tables.hpp"
-
 
 //
 // Needs to include the precompiled
@@ -35,14 +33,12 @@
 // and the Frame Sequence table.
 #include "info.hpp"
 
-
 //
 // Frame flags:
 // handles maximum brightness (torches, muzzle flare, light sources)
 //
 constexpr auto FF_FULLBRIGHT = 0x8000; // flag in thing->frame
 constexpr auto FF_FRAMEMASK  = 0x7fff;
-
 
 //
 // Overlay psprites are scaled shapes
@@ -51,23 +47,23 @@ constexpr auto FF_FRAMEMASK  = 0x7fff;
 //
 enum psprnum_t
 {
-    ps_weapon,
-    ps_flash,
-    NUMPSPRITES
+  ps_weapon,
+  ps_flash,
+  NUMPSPRITES
 
 };
 
 typedef struct pspdef_s {
-    state_t *state; // a nullptr state means not active
-    int      tics;
-    fixed_t  sx;
-    fixed_t  sy;
+  state_t * state; // a nullptr state means not active
+  int       tics;
+  fixed_t   sx;
+  fixed_t   sy;
 
-    // [crispy] squat down weapon sprite
-    fixed_t dy;
-    // [crispy] variable weapon sprite bob
-    fixed_t sx2;
-    fixed_t sy2;
+  // [crispy] squat down weapon sprite
+  fixed_t dy;
+  // [crispy] variable weapon sprite bob
+  fixed_t sx2;
+  fixed_t sy2;
 } pspdef_t;
 
 #endif
