@@ -27,16 +27,16 @@ using opl_callback_t = void (*)(void *);
 // if any.
 enum opl_init_result_t
 {
-    OPL_INIT_NONE,
-    OPL_INIT_OPL2,
-    OPL_INIT_OPL3,
+  OPL_INIT_NONE,
+  OPL_INIT_OPL2,
+  OPL_INIT_OPL3,
 };
 
 enum opl_port_t
 {
-    OPL_REGISTER_PORT = 0,
-    OPL_DATA_PORT = 1,
-    OPL_REGISTER_PORT_OPL3 = 2
+  OPL_REGISTER_PORT      = 0,
+  OPL_DATA_PORT          = 1,
+  OPL_REGISTER_PORT_OPL3 = 2
 };
 
 constexpr auto OPL_NUM_OPERATORS = 21;
@@ -149,4 +149,3 @@ void OPL_Delay(uint64_t us);
 void OPL_SetPaused(int paused);
 
 #endif
-
