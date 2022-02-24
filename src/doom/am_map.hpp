@@ -27,7 +27,6 @@ constexpr auto AM_MSGHEADER  = (('a' << 24) + ('m' << 16));
 constexpr auto AM_MSGENTERED = (AM_MSGHEADER | ('e' << 8));
 constexpr auto AM_MSGEXITED  = (AM_MSGHEADER | ('x' << 8));
 
-
 // Called by main loop.
 bool AM_Responder(event_t *ev);
 
@@ -42,8 +41,6 @@ void AM_Drawer();
 // if the level is completed while it is up.
 void AM_Stop();
 
-
 extern cheatseq_t cheat_amap;
-
 
 #endif

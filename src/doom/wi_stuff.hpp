@@ -27,9 +27,9 @@
 
 enum stateenum_t
 {
-    NoState = -1,
-    StatCount,
-    ShowNextLoc,
+  NoState = -1,
+  StatCount,
+  ShowNextLoc,
 };
 
 // Called by main loop, animate the intermission.

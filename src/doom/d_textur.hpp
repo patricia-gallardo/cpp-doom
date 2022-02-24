@@ -17,7 +17,6 @@
 //	 isolated here to make it easier separating modules.
 //
 
-
 #ifndef __D_TEXTUR__
 #define __D_TEXTUR__
 
@@ -28,10 +27,9 @@
 // a pic is an unmasked block of pixels
 [[maybe_unused]] typedef struct
 {
-    uint8_t width{};
-    uint8_t height{};
-    uint8_t data{};
+  uint8_t width {};
+  uint8_t height {};
+  uint8_t data {};
 } pic_t;
-
 
 #endif

@@ -18,22 +18,22 @@
 #ifndef DEH_MISC_H
 #define DEH_MISC_H
 
-constexpr auto DEH_DEFAULT_INITIAL_HEALTH     =100;
-constexpr auto DEH_DEFAULT_INITIAL_BULLETS    =50;
-constexpr auto DEH_DEFAULT_MAX_HEALTH         =200;
-constexpr auto DEH_DEFAULT_MAX_ARMOR          =200;
-constexpr auto DEH_DEFAULT_GREEN_ARMOR_CLASS  =1;
-constexpr auto DEH_DEFAULT_BLUE_ARMOR_CLASS   =2;
-constexpr auto DEH_DEFAULT_MAX_SOULSPHERE     =200;
-constexpr auto DEH_DEFAULT_SOULSPHERE_HEALTH  =100;
-constexpr auto DEH_DEFAULT_MEGASPHERE_HEALTH  =200;
-constexpr auto DEH_DEFAULT_GOD_MODE_HEALTH    =100;
-constexpr auto DEH_DEFAULT_IDFA_ARMOR         =200;
-constexpr auto DEH_DEFAULT_IDFA_ARMOR_CLASS   =2;
-constexpr auto DEH_DEFAULT_IDKFA_ARMOR        =200;
-constexpr auto DEH_DEFAULT_IDKFA_ARMOR_CLASS  =2;
-constexpr auto DEH_DEFAULT_BFG_CELLS_PER_SHOT =40;
-constexpr auto DEH_DEFAULT_SPECIES_INFIGHTING =0;
+constexpr auto DEH_DEFAULT_INITIAL_HEALTH     = 100;
+constexpr auto DEH_DEFAULT_INITIAL_BULLETS    = 50;
+constexpr auto DEH_DEFAULT_MAX_HEALTH         = 200;
+constexpr auto DEH_DEFAULT_MAX_ARMOR          = 200;
+constexpr auto DEH_DEFAULT_GREEN_ARMOR_CLASS  = 1;
+constexpr auto DEH_DEFAULT_BLUE_ARMOR_CLASS   = 2;
+constexpr auto DEH_DEFAULT_MAX_SOULSPHERE     = 200;
+constexpr auto DEH_DEFAULT_SOULSPHERE_HEALTH  = 100;
+constexpr auto DEH_DEFAULT_MEGASPHERE_HEALTH  = 200;
+constexpr auto DEH_DEFAULT_GOD_MODE_HEALTH    = 100;
+constexpr auto DEH_DEFAULT_IDFA_ARMOR         = 200;
+constexpr auto DEH_DEFAULT_IDFA_ARMOR_CLASS   = 2;
+constexpr auto DEH_DEFAULT_IDKFA_ARMOR        = 200;
+constexpr auto DEH_DEFAULT_IDKFA_ARMOR_CLASS  = 2;
+constexpr auto DEH_DEFAULT_BFG_CELLS_PER_SHOT = 40;
+constexpr auto DEH_DEFAULT_SPECIES_INFIGHTING = 0;
 
 extern int deh_initial_health;
 extern int deh_initial_bullets;

@@ -16,22 +16,20 @@
 //   Setup a game, startup stuff.
 //
 
-
 #ifndef __P_SETUP__
 #define __P_SETUP__
 
 #include "w_wad.hpp"
-
 
 extern lumpinfo_t *maplumpinfo;
 // [crispy] pointer to the map lump about to load
 extern lumpinfo_t *savemaplumpinfo;
 
 // NOT called by W_Ticker. Fixme.
-void P_SetupLevel(int episode,
-    int               map,
-    int               playermask,
-    skill_t           skill);
+void P_SetupLevel(int     episode,
+                  int     map,
+                  int     playermask,
+                  skill_t skill);
 
 // Called by startup code.
 void P_Init();

@@ -16,13 +16,11 @@
 //	System specific interface stuff.
 //
 
-
 #ifndef __R_MAIN__
 #define __R_MAIN__
 
 #include "d_player.hpp"
 #include "r_data.hpp"
-
 
 //
 // POV related.
@@ -32,7 +30,6 @@ extern fixed_t viewsin;
 
 extern int viewwindowx;
 extern int viewwindowy;
-
 
 extern int centerx;
 extern int centery;
@@ -45,7 +42,6 @@ extern int validcount;
 
 extern int linecount;
 extern int loopcount;
-
 
 //
 // Lighting LUT.
@@ -65,12 +61,11 @@ extern int MAXLIGHTZ;
 extern int LIGHTZSHIFT;
 
 extern lighttable_t ***scalelight;
-extern lighttable_t ** scalelightfixed;
+extern lighttable_t  **scalelightfixed;
 extern lighttable_t ***zlight;
 
 extern int           extralight;
 extern lighttable_t *fixedcolormap;
-
 
 // Number of diminishing brightness levels.
 // There a 0-31, i.e. 32 LUT in the COLORMAP lump.
@@ -81,10 +76,9 @@ extern lighttable_t *fixedcolormap;
 extern fixed_t fractionaltic;
 
 // Blocky/low detail mode.
-//B remove this?
+// B remove this?
 //  0 = high, 1 = low
 extern int detailshift;
-
 
 //
 // Function pointers to switch refresh/drawing functions.
@@ -98,46 +92,43 @@ extern void (*tlcolfunc)();
 // No shadow effects on floors.
 extern void (*spanfunc)();
 
-
 //
 // Utility functions.
 int R_PointOnSide(fixed_t x,
-    fixed_t               y,
-    node_t *              node);
+                  fixed_t y,
+                  node_t *node);
 
 int R_PointOnSegSide(fixed_t x,
-    fixed_t                  y,
-    seg_t *                  line);
+                     fixed_t y,
+                     seg_t  *line);
 
 angle_t
     R_PointToAngle(fixed_t x,
-        fixed_t            y);
+                   fixed_t y);
 
 angle_t
     R_PointToAngleCrispy(fixed_t x,
-        fixed_t                  y);
+                         fixed_t y);
 
 angle_t
     R_PointToAngle2(fixed_t x1,
-        fixed_t             y1,
-        fixed_t             x2,
-        fixed_t             y2);
+                    fixed_t y1,
+                    fixed_t x2,
+                    fixed_t y2);
 
 fixed_t
     R_PointToDist(fixed_t x,
-        fixed_t           y);
-
+                  fixed_t y);
 
 fixed_t R_ScaleFromGlobalAngle(angle_t visangle);
 
 subsector_t *
     R_PointInSubsector(fixed_t x,
-        fixed_t                y);
+                       fixed_t y);
 
-void R_AddPointToBox(int x,
-    int                  y,
-    fixed_t *            box);
-
+void R_AddPointToBox(int      x,
+                     int      y,
+                     fixed_t *box);
 
 // [AM] Interpolate between two angles.
 angle_t R_InterpolateAngle(angle_t oangle, angle_t nangle, fixed_t scale);
