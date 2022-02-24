@@ -20,9 +20,9 @@ using MEMFILE = struct _MEMFILE;
 
 enum mem_rel_t
 {
-    MEM_SEEK_SET,
-    MEM_SEEK_CUR,
-    MEM_SEEK_END,
+  MEM_SEEK_SET,
+  MEM_SEEK_CUR,
+  MEM_SEEK_END,
 };
 
 MEMFILE *mem_fopen_read(void *buf, size_t buflen);

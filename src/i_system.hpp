@@ -16,13 +16,11 @@
 //	System specific interface stuff.
 //
 
-
 #ifndef __I_SYSTEM__
 #define __I_SYSTEM__
 
 #include "d_ticcmd.hpp"
 #include "d_event.hpp"
-
 
 using atexit_func_t = void (*)();
 
@@ -36,7 +34,6 @@ uint8_t *I_ZoneBase(int *size);
 
 bool I_ConsoleStdout();
 
-
 // Asynchronous interrupt functions should maintain private queues
 // that are read by the synchronous functions
 // to be converted into events.
@@ -46,7 +43,6 @@ bool I_ConsoleStdout();
 // This ticcmd will then be modified by the gameloop
 // for normal input.
 ticcmd_t *I_BaseTiccmd();
-
 
 // Called by M_Responder when quit is selected.
 // Clean exit, displays sell blurb.

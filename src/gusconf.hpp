@@ -21,8 +21,8 @@
 #include "doomtype.hpp"
 
 struct gusconf_t {
-    char *gus_patch_path = nullptr;
-    int   gus_ram_kb     = 0;
+  char *gus_patch_path = nullptr;
+  int   gus_ram_kb     = 0;
 };
 
 extern gusconf_t *const g_gusconf_globals;

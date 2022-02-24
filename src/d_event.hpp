@@ -16,13 +16,10 @@
 //
 //
 
-
 #ifndef __D_EVENT__
 #define __D_EVENT__
 
-
 #include "doomtype.hpp"
-
 
 //
 // Event handling.
@@ -31,82 +28,80 @@
 // Input event types.
 enum evtype_t
 {
-    // Key press/release events.
-    //    data1: Key code (from doomkeys.h) of the key that was
-    //           pressed or released. This is the key as it appears
-    //           on a US keyboard layout, and does not change with
-    //           layout.
-    // For ev_keydown only:
-    //    data2: ASCII representation of the key that was pressed that
-    //           changes with the keyboard layout; eg. if 'Z' is
-    //           pressed on a German keyboard, data1='y',data2='z'.
-    //           Not affected by modifier keys.
-    //    data3: ASCII input, fully modified according to keyboard
-    //           layout and any modifier keys that are held down.
-    //           Only set if I_StartTextInput() has been called.
-    ev_keydown,
-    ev_keyup,
+  // Key press/release events.
+  //    data1: Key code (from doomkeys.h) of the key that was
+  //           pressed or released. This is the key as it appears
+  //           on a US keyboard layout, and does not change with
+  //           layout.
+  // For ev_keydown only:
+  //    data2: ASCII representation of the key that was pressed that
+  //           changes with the keyboard layout; eg. if 'Z' is
+  //           pressed on a German keyboard, data1='y',data2='z'.
+  //           Not affected by modifier keys.
+  //    data3: ASCII input, fully modified according to keyboard
+  //           layout and any modifier keys that are held down.
+  //           Only set if I_StartTextInput() has been called.
+  ev_keydown,
+  ev_keyup,
 
-    // Mouse movement event.
-    //    data1: Bitfield of buttons currently held down.
-    //           (bit 0 = left; bit 1 = right; bit 2 = middle).
-    //    data2: X axis mouse movement (turn).
-    //    data3: Y axis mouse movement (forward/backward).
-    ev_mouse,
+  // Mouse movement event.
+  //    data1: Bitfield of buttons currently held down.
+  //           (bit 0 = left; bit 1 = right; bit 2 = middle).
+  //    data2: X axis mouse movement (turn).
+  //    data3: Y axis mouse movement (forward/backward).
+  ev_mouse,
 
-    // Joystick state.
-    //    data1: Bitfield of buttons currently pressed.
-    //    data2: X axis mouse movement (turn).
-    //    data3: Y axis mouse movement (forward/backward).
-    //    data4: Third axis mouse movement (strafe).
-    //    data5: Fourth axis mouse movement (look)
-    ev_joystick,
+  // Joystick state.
+  //    data1: Bitfield of buttons currently pressed.
+  //    data2: X axis mouse movement (turn).
+  //    data3: Y axis mouse movement (forward/backward).
+  //    data4: Third axis mouse movement (strafe).
+  //    data5: Fourth axis mouse movement (look)
+  ev_joystick,
 
-    // Quit event. Triggered when the user clicks the "close" button
-    // to terminate the application.
-    ev_quit
+  // Quit event. Triggered when the user clicks the "close" button
+  // to terminate the application.
+  ev_quit
 };
 
 // Event structure.
-struct event_t
-{
-    evtype_t type;
+struct event_t {
+  evtype_t type;
 
-    // Event-specific data; see the descriptions given above.
-    int data1{}, data2{}, data3{}, data4{}, data5{};
+  // Event-specific data; see the descriptions given above.
+  int data1 {}, data2 {}, data3 {}, data4 {}, data5 {};
 };
-
 
 //
 // Button/action code definitions.
 //
 enum buttoncode_t
 {
-    // Press "Fire".
-    BT_ATTACK = 1,
-    // Use button, to open doors, activate switches.
-    BT_USE = 2,
+  // Press "Fire".
+  BT_ATTACK = 1,
+  // Use button, to open doors, activate switches.
+  BT_USE = 2,
 
-    // Flag: game events, not really buttons.
-    BT_SPECIAL     = 128,
-    BT_SPECIALMASK = 3,
+  // Flag: game events, not really buttons.
+  BT_SPECIAL     = 128,
+  BT_SPECIALMASK = 3,
 
-    // Flag, weapon change pending.
-    // If true, the next 3 bits hold weapon num.
-    BT_CHANGE = 4,
-    // The 3bit weapon mask and shift, convenience.
-    BT_WEAPONMASK  = (8 + 16 + 32),
-    BT_WEAPONSHIFT = 3,
+  // Flag, weapon change pending.
+  // If true, the next 3 bits hold weapon num.
+  BT_CHANGE = 4,
+  // The 3bit weapon mask and shift, convenience.
+  BT_WEAPONMASK  = (8 + 16 + 32),
+  BT_WEAPONSHIFT = 3,
 
-    // Pause the game.
-    BTS_PAUSE = 1,
-    // Save the game at each console.
-    BTS_SAVEGAME = 2,
+  // Pause the game.
+  BTS_PAUSE = 1,
+  // Save the game at each console.
+  BTS_SAVEGAME = 2,
 
-    // Savegame slot numbers
-    //  occupy the second byte of buttons.
-    BTS_SAVEMASK  = (4 + 8 + 16),
-    BTS_SAVESHIFT = 2,
+  // Savegame slot numbers
+  //  occupy the second byte of buttons.
+  BTS_SAVEMASK  = (4 + 8 + 16),
+  BTS_SAVESHIFT = 2,
 
 };
 
@@ -114,23 +109,22 @@ enum buttoncode_t
 // TODO - not finished
 enum buttoncode2_t
 {
-    // Player view look up
-    BT2_LOOKUP [[maybe_unused]] = 1,
-    // Player view look down
-    BT2_LOOKDOWN [[maybe_unused]] = 2,
-    // Center player's view
-    BT2_CENTERVIEW [[maybe_unused]] = 4,
-    // Use inventory item
-    BT2_INVUSE [[maybe_unused]] = 8,
-    // Drop inventory item
-    BT2_INVDROP [[maybe_unused]] = 16,
-    // Jump up and down
-    BT2_JUMP [[maybe_unused]] = 32,
-    // Use medkit
-    BT2_HEALTH [[maybe_unused]] = 128,
+  // Player view look up
+  BT2_LOOKUP [[maybe_unused]] = 1,
+  // Player view look down
+  BT2_LOOKDOWN [[maybe_unused]] = 2,
+  // Center player's view
+  BT2_CENTERVIEW [[maybe_unused]] = 4,
+  // Use inventory item
+  BT2_INVUSE [[maybe_unused]] = 8,
+  // Drop inventory item
+  BT2_INVDROP [[maybe_unused]] = 16,
+  // Jump up and down
+  BT2_JUMP [[maybe_unused]] = 32,
+  // Use medkit
+  BT2_HEALTH [[maybe_unused]] = 128,
 
 };
-
 
 // Called by IO functions when input is detected.
 void D_PostEvent(event_t *ev);
@@ -138,6 +132,5 @@ void D_PostEvent(event_t *ev);
 // Read an event from the event queue
 
 event_t *D_PopEvent();
-
 
 #endif

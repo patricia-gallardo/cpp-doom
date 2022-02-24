@@ -17,12 +17,10 @@
 //	System specific interface stuff.
 //
 
-
 #ifndef __D_TICCMD__
 #define __D_TICCMD__
 
 #include "doomtype.hpp"
-
 
 // The data sampled per tick (single player)
 // and transmitted to other peers (multiplayer).
@@ -31,27 +29,26 @@
 
 typedef struct
 {
-    signed char forwardmove; // *2048 for move
-    signed char sidemove;    // *2048 for move
-    short       angleturn;   // <<16 for angle delta
-    uint8_t     chatchar;
-    uint8_t     buttons;
-    // villsa [STRIFE] according to the asm,
-    // consistancy is a short, not a byte
-    uint8_t     consistancy; // checks for net game
+  signed char forwardmove; // *2048 for move
+  signed char sidemove;    // *2048 for move
+  short       angleturn;   // <<16 for angle delta
+  uint8_t     chatchar;
+  uint8_t     buttons;
+  // villsa [STRIFE] according to the asm,
+  // consistancy is a short, not a byte
+  uint8_t consistancy; // checks for net game
 
-    // villsa - Strife specific:
+  // villsa - Strife specific:
 
-    uint8_t buttons2;
-    int  inventory;
+  uint8_t buttons2;
+  int     inventory;
 
-    // Heretic/Hexen specific:
+  // Heretic/Hexen specific:
 
-    uint8_t lookfly; // look/fly up/down/centering
-    uint8_t arti;    // artitype_t to use
+  uint8_t lookfly; // look/fly up/down/centering
+  uint8_t arti;    // artitype_t to use
 
-    int lookdir;
+  int lookdir;
 } ticcmd_t;
-
 
 #endif

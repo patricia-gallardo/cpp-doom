@@ -37,22 +37,22 @@
 
 enum class cr_t
 {
-    CR_NONE,
-    CR_DARK,
-    CR_GRAY,
-    CR_GREEN,
-    CR_GOLD,
-    CR_RED,
-    CR_BLUE,
-    CR_RED2BLUE,
-    CR_RED2GREEN,
-    CRMAX
+  CR_NONE,
+  CR_DARK,
+  CR_GRAY,
+  CR_GREEN,
+  CR_GOLD,
+  CR_RED,
+  CR_BLUE,
+  CR_RED2BLUE,
+  CR_RED2GREEN,
+  CRMAX
 };
 
 [[maybe_unused]] constexpr auto CR_GREY = cr_t::CR_GRAY;
 
 extern uint8_t *cr_colors[static_cast<int>(cr_t::CRMAX)];
-extern char **crstr;
+extern char   **crstr;
 
 constexpr char cr_esc = '~';
 

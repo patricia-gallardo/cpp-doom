@@ -27,28 +27,25 @@
 const char *DEH_String(const char *s) PRINTF_ARG_ATTR(1);
 
 // snprintf(), performing a replacement on the format string.
-template <typename ...Args>
-void DEH_snprintf(char *buffer, size_t len, const char *fmt, Args && ...args)
-{
-    if (len < 1)
-    {
-        return;
-    }
+template <typename... Args>
+void DEH_snprintf(char *buffer, size_t len, const char *fmt, Args &&...args) {
+  if (len < 1) {
+    return;
+  }
 
-    // Windows (and other OSes?) has a vsnprintf() that doesn't always
-    // append a trailing \0. So we must do it, and write into a buffer
-    // that is one byte shorter; otherwise this function is unsafe.
-    int result = snprintf(buffer, len, fmt, args...);
+  // Windows (and other OSes?) has a vsnprintf() that doesn't always
+  // append a trailing \0. So we must do it, and write into a buffer
+  // that is one byte shorter; otherwise this function is unsafe.
+  int result = snprintf(buffer, len, fmt, args...);
 
-    // If truncated, change the final char in the buffer to a \0.
-    // A negative result indicates a truncated buffer on Windows.
-    if (result < 0 || result >= static_cast<int>(len))
-    {
-        buffer[len - 1] = '\0';
-    }
+  // If truncated, change the final char in the buffer to a \0.
+  // A negative result indicates a truncated buffer on Windows.
+  if (result < 0 || result >= static_cast<int>(len)) {
+    buffer[len - 1] = '\0';
+  }
 }
 
-void     DEH_AddStringReplacement(const char *from_text, const char *to_text);
-bool     DEH_HasStringReplacement(const char *s);
+void DEH_AddStringReplacement(const char *from_text, const char *to_text);
+bool DEH_HasStringReplacement(const char *s);
 
 #endif /* #ifndef DEH_STR_H */

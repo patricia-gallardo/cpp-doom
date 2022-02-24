@@ -16,7 +16,6 @@
 //      System-specific timer interface
 //
 
-
 #ifndef __I_TIMER__
 #define __I_TIMER__
 

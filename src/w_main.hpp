@@ -21,7 +21,7 @@
 #include "d_mode.hpp"
 
 bool W_ParseCommandLine();
-void    W_CheckCorrectIWAD(GameMission_t mission);
+void W_CheckCorrectIWAD(GameMission_t mission);
 
 int W_MergeDump(const char *file);
 int W_LumpDump(const char *lumpname);

@@ -16,7 +16,6 @@
 //	Cheat code checking.
 //
 
-
 #ifndef __M_CHEAT__
 #define __M_CHEAT__
 
@@ -26,35 +25,32 @@
 
 // declaring a cheat
 
-#define CHEAT(value, parameters)                       \
-    {                                                  \
-        value, sizeof(value) - 1, parameters, 0, 0, "" \
-    }
+#define CHEAT(value, parameters)                   \
+  {                                                \
+    value, sizeof(value) - 1, parameters, 0, 0, "" \
+  }
 
 constexpr auto MAX_CHEAT_LEN    = 25;
 constexpr auto MAX_CHEAT_PARAMS = 5;
 
-struct cheatseq_t
-{
-    // settings for this cheat
+struct cheatseq_t {
+  // settings for this cheat
 
-    char   sequence[MAX_CHEAT_LEN]{};
-    size_t sequence_len{};
-    int    parameter_chars{};
+  char   sequence[MAX_CHEAT_LEN] {};
+  size_t sequence_len {};
+  int    parameter_chars {};
 
-    // state used during the game
+  // state used during the game
 
-    size_t chars_read{};
-    int    param_chars_read{};
-    char   parameter_buf[MAX_CHEAT_PARAMS]{};
+  size_t chars_read {};
+  int    param_chars_read {};
+  char   parameter_buf[MAX_CHEAT_PARAMS] {};
 };
 
 int cht_CheckCheat(cheatseq_t *cht,
-    char                       key);
-
+                   char        key);
 
 void cht_GetParam(cheatseq_t *cht,
-    char *                    buffer);
-
+                  char       *buffer);
 
 #endif

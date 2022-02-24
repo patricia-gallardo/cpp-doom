@@ -29,22 +29,22 @@ using netgame_startup_callback_t = bool (*)(int, int);
 
 typedef struct
 {
-    // Read events from the event queue, and process them.
+  // Read events from the event queue, and process them.
 
-    void (*ProcessEvents)();
+  void (*ProcessEvents)();
 
-    // Given the current input state, fill in the fields of the specified
-    // ticcmd_t structure with data for a new tic.
+  // Given the current input state, fill in the fields of the specified
+  // ticcmd_t structure with data for a new tic.
 
-    void (*BuildTiccmd)(ticcmd_t *cmd, int maketic);
+  void (*BuildTiccmd)(ticcmd_t *cmd, int maketic);
 
-    // Advance the game forward one tic, using the specified player input.
+  // Advance the game forward one tic, using the specified player input.
 
-    void (*RunTic)(ticcmd_t *cmds, bool *ingame);
+  void (*RunTic)(ticcmd_t *cmds, bool *ingame);
 
-    // Run the menu (runs independently of the game).
+  // Run the menu (runs independently of the game).
 
-    void (*RunMenu)();
+  void (*RunMenu)();
 } loop_interface_t;
 
 // Register callback functions for the main loop code to use.
@@ -70,18 +70,17 @@ bool D_InitNetGame(net_connect_data_t *connect_data);
 // Start game with specified settings. The structure will be updated
 // with the actual settings for the game.
 
-void D_StartNetGame(net_gamesettings_t *settings,
-    netgame_startup_callback_t          callback);
+void D_StartNetGame(net_gamesettings_t        *settings,
+                    netgame_startup_callback_t callback);
 
 extern bool singletics;
-extern int     gametic, ticdup;
-extern int     oldleveltime; // [crispy] check if leveltime keeps tickin'
+extern int  gametic, ticdup;
+extern int  oldleveltime; // [crispy] check if leveltime keeps tickin'
 
 // Check if it is permitted to record a demo with a non-vanilla feature.
 bool D_NonVanillaRecord(bool conditional, const char *feature);
 
 // Check if it is permitted to play back a demo with a non-vanilla feature.
-bool D_NonVanillaPlayback(bool conditional, int lumpnum,
-    const char *feature);
+bool D_NonVanillaPlayback(bool conditional, int lumpnum, const char *feature);
 
 #endif

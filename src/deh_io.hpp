@@ -26,65 +26,63 @@
 
 enum deh_input_type_t
 {
-    DEH_INPUT_FILE,
-    DEH_INPUT_LUMP
+  DEH_INPUT_FILE,
+  DEH_INPUT_LUMP
 };
 
 struct deh_context_t {
-    deh_input_type_t type;
-    char *           filename;
+  deh_input_type_t type;
+  char            *filename;
 
-    // If the input comes from a memory buffer, pointer to the memory
-    // buffer.
-    unsigned char *input_buffer;
-    size_t         input_buffer_len;
-    unsigned int   input_buffer_pos;
-    int            lumpnum;
+  // If the input comes from a memory buffer, pointer to the memory
+  // buffer.
+  unsigned char *input_buffer;
+  size_t         input_buffer_len;
+  unsigned int   input_buffer_pos;
+  int            lumpnum;
 
-    // If the input comes from a file, the file stream for reading
-    // data.
-    FILE *stream;
+  // If the input comes from a file, the file stream for reading
+  // data.
+  FILE *stream;
 
-    // Current line number that we have reached:
-    int linenum;
+  // Current line number that we have reached:
+  int linenum;
 
-    // Used by DEH_ReadLine:
-    bool last_was_newline;
-    char *  readbuffer;
-    int     readbuffer_size;
+  // Used by DEH_ReadLine:
+  bool  last_was_newline;
+  char *readbuffer;
+  int   readbuffer_size;
 
-    // Error handling.
-    bool had_error;
+  // Error handling.
+  bool had_error;
 
-    // [crispy] pointer to start of current line
-    long linestart;
+  // [crispy] pointer to start of current line
+  long linestart;
 };
 
 deh_context_t *DEH_OpenFile(const char *filename);
 deh_context_t *DEH_OpenLump(int lumpnum);
 void           DEH_CloseFile(deh_context_t *context);
 int            DEH_GetChar(deh_context_t *context);
-char *         DEH_ReadLine(deh_context_t *context, bool extended);
+char          *DEH_ReadLine(deh_context_t *context, bool extended);
 
-template <typename ...Args>
-inline void DEH_Error(deh_context_t *context, const char *msg, Args && ...args)
-{
-    fmt::fprintf(stderr, "%s:%i: ", context->filename, context->linenum);
-    fmt::fprintf(stderr, msg, args...);
-    fmt::fprintf(stderr, "\n");
+template <typename... Args>
+inline void DEH_Error(deh_context_t *context, const char *msg, Args &&...args) {
+  fmt::fprintf(stderr, "%s:%i: ", context->filename, context->linenum);
+  fmt::fprintf(stderr, msg, args...);
+  fmt::fprintf(stderr, "\n");
 
-    context->had_error = true;
+  context->had_error = true;
 }
 
-
-template <typename ...Args>
-inline void DEH_Warning(const deh_context_t *context, const char *msg, Args && ...args) {
-    fmt::fprintf(stderr, "%s:%i: warning: ", context->filename, context->linenum);
-    fmt::fprintf(stderr, msg, args...);
-    fmt::fprintf(stderr, "\n");
+template <typename... Args>
+inline void DEH_Warning(const deh_context_t *context, const char *msg, Args &&...args) {
+  fmt::fprintf(stderr, "%s:%i: warning: ", context->filename, context->linenum);
+  fmt::fprintf(stderr, msg, args...);
+  fmt::fprintf(stderr, "\n");
 }
 
-bool        DEH_HadError(deh_context_t *context);
-char *         DEH_FileName(deh_context_t *context); // [crispy] returns filename
+bool  DEH_HadError(deh_context_t *context);
+char *DEH_FileName(deh_context_t *context); // [crispy] returns filename
 
 #endif /* #ifndef DEH_IO_H */
