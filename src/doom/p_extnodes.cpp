@@ -379,7 +379,6 @@ void P_LoadNodes_ZDBSP(int lump, bool compressed) {
   g_r_state_globals->nodes    = zmalloc<decltype(g_r_state_globals->nodes)>(static_cast<unsigned long>(g_r_state_globals->numnodes) * sizeof(node_t), PU_LEVEL, 0);
 
   for (int i = 0; i < g_r_state_globals->numnodes; i++) {
-    int               k;
     node_t *          no = g_r_state_globals->nodes + i;
     mapnode_zdbsp_t * mn = reinterpret_cast<mapnode_zdbsp_t *>(data) + i;
 
@@ -391,7 +390,7 @@ void P_LoadNodes_ZDBSP(int lump, bool compressed) {
     for (int j = 0; j < 2; j++) {
       no->children[j] = static_cast<int>(mn->children[j]);
 
-      for (k = 0; k < 4; k++)
+      for (int k = 0; k < 4; k++)
         no->bbox[j][k] = SHORT(mn->bbox[j][k]) << FRACBITS;
     }
   }

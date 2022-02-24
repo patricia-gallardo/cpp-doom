@@ -1219,7 +1219,6 @@ void R_PrecacheLevel() {
   char * texturepresent;
   char * spritepresent;
 
-  int k;
   int lump;
 
   texture_t *     texture;
@@ -1306,7 +1305,7 @@ void R_PrecacheLevel() {
 
     for (int j = 0; j < g_r_state_globals->sprites[i].numframes; j++) {
       sf = &g_r_state_globals->sprites[i].spriteframes[j];
-      for (k = 0; k < 8; k++) {
+      for (int k = 0; k < 8; k++) {
         lump = g_r_state_globals->firstspritelump + sf->lump[k];
         spritememory += static_cast<int>(lumpinfo[lump]->size);
         W_CacheLumpNum(lump, PU_CACHE);
