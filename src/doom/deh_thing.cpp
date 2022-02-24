@@ -28,47 +28,47 @@
 #include "p_mobj.hpp" // [crispy] MF_*
 
 typedef struct {
-    const char * flag;
-    unsigned int bits;
+  const char  *flag;
+  unsigned int bits;
 } bex_thingbits_t;
 
 static constexpr bex_thingbits_t bex_thingbitstable[] = {
-    { "SPECIAL", MF_SPECIAL },
-    { "SOLID", MF_SOLID },
-    { "SHOOTABLE", MF_SHOOTABLE },
-    { "NOSECTOR", MF_NOSECTOR },
-    { "NOBLOCKMAP", MF_NOBLOCKMAP },
-    { "AMBUSH", MF_AMBUSH },
-    { "JUSTHIT", MF_JUSTHIT },
-    { "JUSTATTACKED", MF_JUSTATTACKED },
-    { "SPAWNCEILING", MF_SPAWNCEILING },
-    { "NOGRAVITY", MF_NOGRAVITY },
-    { "DROPOFF", MF_DROPOFF },
-    { "PICKUP", MF_PICKUP },
-    { "NOCLIP", MF_NOCLIP },
-    { "SLIDE", MF_SLIDE },
-    { "FLOAT", MF_FLOAT },
-    { "TELEPORT", MF_TELEPORT },
-    { "MISSILE", MF_MISSILE },
-    { "DROPPED", MF_DROPPED },
-    { "SHADOW", MF_SHADOW },
-    { "NOBLOOD", MF_NOBLOOD },
-    { "CORPSE", MF_CORPSE },
-    { "INFLOAT", MF_INFLOAT },
-    { "COUNTKILL", MF_COUNTKILL },
-    { "COUNTITEM", MF_COUNTITEM },
-    { "SKULLFLY", MF_SKULLFLY },
-    { "NOTDMATCH", MF_NOTDMATCH },
-    { "TRANSLUCENT", static_cast<unsigned int>(MF_TRANSLUCENT) },
-    // TRANSLATION consists of 2 bits, not 1
-    { "TRANSLATION", 0x04000000 },
-    { "TRANSLATION1", 0x04000000 },
-    { "TRANSLATION2", 0x08000000 },
-    // unused bits, for Boom compatibility
-    { "UNUSED1", 0x08000000 },
-    { "UNUSED2", 0x10000000 },
-    { "UNUSED3", 0x20000000 },
-    { "UNUSED4", 0x40000000 },
+  {"SPECIAL",       MF_SPECIAL                               },
+  { "SOLID",        MF_SOLID                                 },
+  { "SHOOTABLE",    MF_SHOOTABLE                             },
+  { "NOSECTOR",     MF_NOSECTOR                              },
+  { "NOBLOCKMAP",   MF_NOBLOCKMAP                            },
+  { "AMBUSH",       MF_AMBUSH                                },
+  { "JUSTHIT",      MF_JUSTHIT                               },
+  { "JUSTATTACKED", MF_JUSTATTACKED                          },
+  { "SPAWNCEILING", MF_SPAWNCEILING                          },
+  { "NOGRAVITY",    MF_NOGRAVITY                             },
+  { "DROPOFF",      MF_DROPOFF                               },
+  { "PICKUP",       MF_PICKUP                                },
+  { "NOCLIP",       MF_NOCLIP                                },
+  { "SLIDE",        MF_SLIDE                                 },
+  { "FLOAT",        MF_FLOAT                                 },
+  { "TELEPORT",     MF_TELEPORT                              },
+  { "MISSILE",      MF_MISSILE                               },
+  { "DROPPED",      MF_DROPPED                               },
+  { "SHADOW",       MF_SHADOW                                },
+  { "NOBLOOD",      MF_NOBLOOD                               },
+  { "CORPSE",       MF_CORPSE                                },
+  { "INFLOAT",      MF_INFLOAT                               },
+  { "COUNTKILL",    MF_COUNTKILL                             },
+  { "COUNTITEM",    MF_COUNTITEM                             },
+  { "SKULLFLY",     MF_SKULLFLY                              },
+  { "NOTDMATCH",    MF_NOTDMATCH                             },
+  { "TRANSLUCENT",  static_cast<unsigned int>(MF_TRANSLUCENT)},
+ // TRANSLATION consists of 2 bits, not 1
+  { "TRANSLATION",  0x04000000                               },
+  { "TRANSLATION1", 0x04000000                               },
+  { "TRANSLATION2", 0x08000000                               },
+ // unused bits, for Boom compatibility
+  { "UNUSED1",      0x08000000                               },
+  { "UNUSED2",      0x10000000                               },
+  { "UNUSED3",      0x20000000                               },
+  { "UNUSED4",      0x40000000                               },
 };
 
 DEH_BEGIN_MAPPING(thing_mapping, mobjinfo_t)
@@ -97,87 +97,77 @@ DEH_MAPPING("Bits", flags)
 DEH_MAPPING("Respawn frame", raisestate)
 DEH_END_MAPPING
 
-static void *DEH_ThingStart(deh_context_t *context, char *line)
-{
-    int         thing_number = 0;
+static void *DEH_ThingStart(deh_context_t *context, char *line) {
+  int thing_number = 0;
 
-    if (sscanf(line, "Thing %i", &thing_number) != 1)
-    {
-        DEH_Warning(context, "Parse error on section start");
-        return nullptr;
-    }
+  if (sscanf(line, "Thing %i", &thing_number) != 1) {
+    DEH_Warning(context, "Parse error on section start");
+    return nullptr;
+  }
 
-    // dehacked files are indexed from 1
-    --thing_number;
+  // dehacked files are indexed from 1
+  --thing_number;
 
-    if (thing_number < 0 || thing_number >= NUMMOBJTYPES)
-    {
-        DEH_Warning(context, "Invalid thing number: %i", thing_number);
-        return nullptr;
-    }
+  if (thing_number < 0 || thing_number >= NUMMOBJTYPES) {
+    DEH_Warning(context, "Invalid thing number: %i", thing_number);
+    return nullptr;
+  }
 
-    mobjinfo_t *mobj = &mobjinfo[thing_number];
+  mobjinfo_t *mobj = &mobjinfo[thing_number];
 
-    return mobj;
+  return mobj;
 }
 
-static void DEH_ThingParseLine(deh_context_t *context, char *line, void *tag)
-{
-    char *      variable_name = nullptr, *value = nullptr;
+static void DEH_ThingParseLine(deh_context_t *context, char *line, void *tag) {
+  char *variable_name = nullptr, *value = nullptr;
 
-    if (tag == nullptr)
-        return;
+  if (tag == nullptr)
+    return;
 
-    auto *mobj = reinterpret_cast<mobjinfo_t *>(tag);
+  auto *mobj = reinterpret_cast<mobjinfo_t *>(tag);
 
-    // Parse the assignment
+  // Parse the assignment
 
-    if (!DEH_ParseAssignment(line, &variable_name, &value))
-    {
-        // Failed to parse
+  if (!DEH_ParseAssignment(line, &variable_name, &value)) {
+    // Failed to parse
 
-        DEH_Warning(context, "Failed to parse assignment");
-        return;
-    }
+    DEH_Warning(context, "Failed to parse assignment");
+    return;
+  }
 
-    //   fmt::printf("Set %s to %s for mobj\n", variable_name, value);
+  //   fmt::printf("Set %s to %s for mobj\n", variable_name, value);
 
-    // all values are integers
+  // all values are integers
 
-    int ivalue = std::atoi(value);
+  int ivalue = std::atoi(value);
 
-    // [crispy] support BEX bits mnemonics in Things fields
-    if (!ivalue && !strcasecmp(variable_name, "bits"))
-    {
-        for (; (value = strtok(value, ",+| \t\f\r")); value = nullptr)
-        {
-            for (auto i : bex_thingbitstable)
-                if (!strcasecmp(value, i.flag))
-                {
-                    ivalue |= i.bits;
-                    break;
-                }
+  // [crispy] support BEX bits mnemonics in Things fields
+  if (!ivalue && !strcasecmp(variable_name, "bits")) {
+    for (; (value = strtok(value, ",+| \t\f\r")); value = nullptr) {
+      for (auto i : bex_thingbitstable)
+        if (!strcasecmp(value, i.flag)) {
+          ivalue |= i.bits;
+          break;
         }
     }
+  }
 
-    // Set the field value
+  // Set the field value
 
-    DEH_SetMapping(context, &thing_mapping, mobj, variable_name, ivalue);
+  DEH_SetMapping(context, &thing_mapping, mobj, variable_name, ivalue);
 }
 
-static void DEH_ThingSHA1Sum(sha1_context_t *context)
-{
-    for (auto & i : mobjinfo)
-    {
-        DEH_StructSHA1Sum(context, &thing_mapping, &i);
-    }
+static void DEH_ThingSHA1Sum(sha1_context_t *context) {
+  for (auto &i : mobjinfo) {
+    DEH_StructSHA1Sum(context, &thing_mapping, &i);
+  }
 }
 
 deh_section_t deh_section_thing = {
-    "Thing",
-    nullptr,
-    DEH_ThingStart,
-    DEH_ThingParseLine,
-    nullptr,
-    DEH_ThingSHA1Sum,
+  "Thing",
+  nullptr,
+  DEH_ThingStart,
+  DEH_ThingParseLine,
+  nullptr,
+  DEH_ThingSHA1Sum,
 };

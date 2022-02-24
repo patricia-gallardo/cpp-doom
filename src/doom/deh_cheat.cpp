@@ -26,110 +26,99 @@
 
 typedef struct
 {
-    const char *name;
-    cheatseq_t *seq;
+  const char *name;
+  cheatseq_t *seq;
 } deh_cheat_t;
 
 static deh_cheat_t allcheats[] = {
-    { "Change music", &g_st_stuff_globals->cheat_mus },
-    { "Chainsaw", &g_st_stuff_globals->cheat_choppers },
-    { "God mode", &g_st_stuff_globals->cheat_god },
-    { "Ammo & Keys", &g_st_stuff_globals->cheat_ammo },
-    { "Ammo", &g_st_stuff_globals->cheat_ammonokey },
-    { "No Clipping 1", &g_st_stuff_globals->cheat_noclip },
-    { "No Clipping 2", &g_st_stuff_globals->cheat_commercial_noclip },
-    { "Invincibility", &g_st_stuff_globals->cheat_powerup[0] },
-    { "Berserk", &g_st_stuff_globals->cheat_powerup[1] },
-    { "Invisibility", &g_st_stuff_globals->cheat_powerup[2] },
-    { "Radiation Suit", &g_st_stuff_globals->cheat_powerup[3] },
-    { "Auto-map", &g_st_stuff_globals->cheat_powerup[4] },
-    { "Lite-Amp Goggles", &g_st_stuff_globals->cheat_powerup[5] },
-    { "BEHOLD menu", &g_st_stuff_globals->cheat_powerup[6] },
-    { "Level Warp", &g_st_stuff_globals->cheat_clev },
-    { "Player Position", &g_st_stuff_globals->cheat_mypos },
-    { "Map cheat", &cheat_amap },
+  {"Change music",      &g_st_stuff_globals->cheat_mus              },
+  { "Chainsaw",         &g_st_stuff_globals->cheat_choppers         },
+  { "God mode",         &g_st_stuff_globals->cheat_god              },
+  { "Ammo & Keys",      &g_st_stuff_globals->cheat_ammo             },
+  { "Ammo",             &g_st_stuff_globals->cheat_ammonokey        },
+  { "No Clipping 1",    &g_st_stuff_globals->cheat_noclip           },
+  { "No Clipping 2",    &g_st_stuff_globals->cheat_commercial_noclip},
+  { "Invincibility",    &g_st_stuff_globals->cheat_powerup[0]       },
+  { "Berserk",          &g_st_stuff_globals->cheat_powerup[1]       },
+  { "Invisibility",     &g_st_stuff_globals->cheat_powerup[2]       },
+  { "Radiation Suit",   &g_st_stuff_globals->cheat_powerup[3]       },
+  { "Auto-map",         &g_st_stuff_globals->cheat_powerup[4]       },
+  { "Lite-Amp Goggles", &g_st_stuff_globals->cheat_powerup[5]       },
+  { "BEHOLD menu",      &g_st_stuff_globals->cheat_powerup[6]       },
+  { "Level Warp",       &g_st_stuff_globals->cheat_clev             },
+  { "Player Position",  &g_st_stuff_globals->cheat_mypos            },
+  { "Map cheat",        &cheat_amap                                 },
 };
 
-static deh_cheat_t *FindCheatByName(char *name)
-{
-    for (auto & allcheat : allcheats)
-    {
-        if (!strcasecmp(allcheat.name, name))
-            return &allcheat;
-    }
+static deh_cheat_t *FindCheatByName(char *name) {
+  for (auto &allcheat : allcheats) {
+    if (!strcasecmp(allcheat.name, name))
+      return &allcheat;
+  }
 
-    return nullptr;
+  return nullptr;
 }
 
-static void *DEH_CheatStart(deh_context_t *, char *)
-{
-    return nullptr;
+static void *DEH_CheatStart(deh_context_t *, char *) {
+  return nullptr;
 }
 
-static void DEH_CheatParseLine(deh_context_t *context, char *line, void *)
-{
-    char *         variable_name = nullptr;
-    char *         value = nullptr;
-    if (!DEH_ParseAssignment(line, &variable_name, &value))
-    {
-        // Failed to parse
+static void DEH_CheatParseLine(deh_context_t *context, char *line, void *) {
+  char *variable_name = nullptr;
+  char *value         = nullptr;
+  if (!DEH_ParseAssignment(line, &variable_name, &value)) {
+    // Failed to parse
 
-        DEH_Warning(context, "Failed to parse assignment");
-        return;
+    DEH_Warning(context, "Failed to parse assignment");
+    return;
+  }
+
+  unsigned char *unsvalue = reinterpret_cast<unsigned char *>(value);
+
+  deh_cheat_t *cheat = FindCheatByName(variable_name);
+
+  if (cheat == nullptr) {
+    DEH_Warning(context, "Unknown cheat '%s'", variable_name);
+    return;
+  }
+
+  // write the value into the cheat sequence
+
+  size_t i = 0;
+
+  while (unsvalue[i] != 0 && unsvalue[i] != 0xff) {
+    // If the cheat length exceeds the Vanilla limit, stop.  This
+    // does not apply if we have the limit turned off.
+
+    if (!deh_allow_long_cheats && i >= cheat->seq->sequence_len) {
+      DEH_Warning(context, "Cheat sequence longer than supported by "
+                           "Vanilla dehacked");
+      break;
     }
 
-    unsigned char *unsvalue = reinterpret_cast<unsigned char *>(value);
-
-    deh_cheat_t *cheat = FindCheatByName(variable_name);
-
-    if (cheat == nullptr)
-    {
-        DEH_Warning(context, "Unknown cheat '%s'", variable_name);
-        return;
+    if (deh_apply_cheats) {
+      cheat->seq->sequence[i] = static_cast<char>(unsvalue[i]);
     }
+    ++i;
 
-    // write the value into the cheat sequence
+    // Absolute limit - don't exceed
 
-    size_t i = 0;
-
-    while (unsvalue[i] != 0 && unsvalue[i] != 0xff)
-    {
-        // If the cheat length exceeds the Vanilla limit, stop.  This
-        // does not apply if we have the limit turned off.
-
-        if (!deh_allow_long_cheats && i >= cheat->seq->sequence_len)
-        {
-            DEH_Warning(context, "Cheat sequence longer than supported by "
-                                 "Vanilla dehacked");
-            break;
-        }
-
-        if (deh_apply_cheats)
-        {
-            cheat->seq->sequence[i] = static_cast<char>(unsvalue[i]);
-        }
-        ++i;
-
-        // Absolute limit - don't exceed
-
-        if (static_cast<int>(i) >= MAX_CHEAT_LEN - cheat->seq->parameter_chars)
-        {
-            DEH_Error(context, "Cheat sequence too long!");
-            return;
-        }
+    if (static_cast<int>(i) >= MAX_CHEAT_LEN - cheat->seq->parameter_chars) {
+      DEH_Error(context, "Cheat sequence too long!");
+      return;
     }
+  }
 
-    if (deh_apply_cheats)
-    {
-        cheat->seq->sequence[i] = '\0';
-    }
+  if (deh_apply_cheats) {
+    cheat->seq->sequence[i] = '\0';
+  }
 }
 
 deh_section_t deh_section_cheat = {
-    "Cheat",
-    nullptr,
-    DEH_CheatStart,
-    DEH_CheatParseLine,
-    nullptr,
-    nullptr,
+  "Cheat",
+  nullptr,
+  DEH_CheatStart,
+  DEH_CheatParseLine,
+  nullptr,
+  nullptr,
 };
