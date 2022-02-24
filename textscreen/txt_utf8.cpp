@@ -107,12 +107,9 @@ unsigned int TXT_UTF8_Strlen(const char * s) {
 // Skip past the first n characters in a UTF-8 string.
 
 char * TXT_UTF8_SkipChars(const char * s, unsigned int n) {
-  unsigned int i;
-  const char * p;
+  const char * p = s;
 
-  p = s;
-
-  for (i = 0; i < n; ++i) {
+  for (unsigned int i = 0; i < n; ++i) {
     if (TXT_DecodeUTF8(&p) == 0) {
       break;
     }

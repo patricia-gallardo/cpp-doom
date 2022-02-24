@@ -39,24 +39,23 @@ static int CodePointerIndex(actionf_t * ptr) {
 }
 
 static void DEH_PointerInit() {
-  int i = 0;
-
   // Initialize list of dehacked pointers
 
-  for (i = 0; i < EXTRASTATES; ++i)
-    codeptrs[i] = states[i].action;
+  int index = 0;
+  for (index = 0; index < EXTRASTATES; ++index)
+    codeptrs[index] = states[index].action;
 
   // [BH] Initialize extra dehacked states
-  for (; i < NUMSTATES; i++) {
-    states[i].sprite    = SPR_TNT1;
-    states[i].frame     = 0;
-    states[i].tics      = -1;
-    states[i].action    = null_hook();
-    states[i].nextstate = static_cast<statenum_t>(i);
-    states[i].misc1     = S_NULL;
-    states[i].misc2     = 0;
+  for (; index < NUMSTATES; index++) {
+    states[index].sprite    = SPR_TNT1;
+    states[index].frame     = 0;
+    states[index].tics      = -1;
+    states[index].action    = null_hook();
+    states[index].nextstate = static_cast<statenum_t>(index);
+    states[index].misc1     = S_NULL;
+    states[index].misc2     = 0;
     //	states[i].dehacked = false;
-    codeptrs[i] = states[i].action;
+    codeptrs[index] = states[index].action;
   }
 }
 

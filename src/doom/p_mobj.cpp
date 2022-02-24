@@ -708,8 +708,6 @@ void P_RespawnSpecials() {
   mobj_t      *mo;
   mapthing_t  *mthing;
 
-  int i;
-
   // only respawn items in deathmatch
   // AX: deathmatch 3 is a Crispy-specific change
   if (g_doomstat_globals->deathmatch != 2 && g_doomstat_globals->deathmatch != 3)
@@ -734,12 +732,13 @@ void P_RespawnSpecials() {
   S_StartSound(mo, sfx_itmbk);
 
   // find which type to spawn
-  for (i = 0; i < NUMMOBJTYPES; i++) {
-    if (mthing->type == mobjinfo[i].doomednum)
+  int index = 0;
+  for (index = 0; index < NUMMOBJTYPES; index++) {
+    if (mthing->type == mobjinfo[index].doomednum)
       break;
   }
 
-  if (i >= NUMMOBJTYPES) {
+  if (index >= NUMMOBJTYPES) {
     I_Error("P_RespawnSpecials: Failed to find mobj type with doomednum "
             "%d when respawning thing. This would cause a buffer overrun "
             "in vanilla Doom",
@@ -747,12 +746,12 @@ void P_RespawnSpecials() {
   }
 
   // spawn it
-  if (mobjinfo[i].flags & MF_SPAWNCEILING)
+  if (mobjinfo[index].flags & MF_SPAWNCEILING)
     z = ONCEILINGZ;
   else
     z = ONFLOORZ;
 
-  mo             = P_SpawnMobj(x, y, z, static_cast<mobjtype_t>(i));
+  mo             = P_SpawnMobj(x, y, z, static_cast<mobjtype_t>(index));
   mo->spawnpoint = *mthing;
   mo->angle      = ANG45 * (mthing->angle / 45);
 
@@ -780,8 +779,6 @@ void P_SpawnPlayer(mapthing_t *mthing) {
   fixed_t   z;
 
   mobj_t *mobj;
-
-  int i;
 
   if (mthing->type == 0) {
     return;
@@ -827,7 +824,7 @@ void P_SpawnPlayer(mapthing_t *mthing) {
 
   // give all cards in death match mode
   if (g_doomstat_globals->deathmatch)
-    for (i = 0; i < NUMCARDS; i++)
+    for (int i = 0; i < NUMCARDS; i++)
       p->cards[i] = true;
 
   if (mthing->type - 1 == g_doomstat_globals->consoleplayer) {
@@ -844,7 +841,6 @@ void P_SpawnPlayer(mapthing_t *mthing) {
 // already be in host byte order.
 //
 void P_SpawnMapThing(mapthing_t *mthing) {
-  int     i;
   int     bit;
   mobj_t *mobj;
   fixed_t x;
@@ -905,24 +901,25 @@ void P_SpawnMapThing(mapthing_t *mthing) {
   }
 
   // find which type to spawn
-  for (i = 0; i < NUMMOBJTYPES; i++)
-    if (mthing->type == mobjinfo[i].doomednum)
+  int index = 0;
+  for (index = 0; index < NUMMOBJTYPES; index++)
+    if (mthing->type == mobjinfo[index].doomednum)
       break;
 
-  if (i == NUMMOBJTYPES) {
+  if (index == NUMMOBJTYPES) {
     // [crispy] ignore unknown map things
     fmt::fprintf(stderr, "P_SpawnMapThing: Unknown type %i at (%i, %i)\n", mthing->type, mthing->x, mthing->y);
     return;
   }
 
   // don't spawn keycards and players in deathmatch
-  if (g_doomstat_globals->deathmatch && mobjinfo[i].flags & MF_NOTDMATCH)
+  if (g_doomstat_globals->deathmatch && mobjinfo[index].flags & MF_NOTDMATCH)
     return;
 
   // don't spawn any monsters if -nomonsters
   if (g_doomstat_globals->nomonsters
-      && (i == MT_SKULL
-          || (mobjinfo[i].flags & MF_COUNTKILL))) {
+      && (index == MT_SKULL
+          || (mobjinfo[index].flags & MF_COUNTKILL))) {
     return;
   }
 
@@ -930,12 +927,12 @@ void P_SpawnMapThing(mapthing_t *mthing) {
   x = mthing->x << FRACBITS;
   y = mthing->y << FRACBITS;
 
-  if (mobjinfo[i].flags & MF_SPAWNCEILING)
+  if (mobjinfo[index].flags & MF_SPAWNCEILING)
     z = ONCEILINGZ;
   else
     z = ONFLOORZ;
 
-  mobj             = P_SpawnMobj(x, y, z, static_cast<mobjtype_t>(i));
+  mobj             = P_SpawnMobj(x, y, z, static_cast<mobjtype_t>(index));
   mobj->spawnpoint = *mthing;
 
   if (mobj->tics > 0)
@@ -950,12 +947,12 @@ void P_SpawnMapThing(mapthing_t *mthing) {
     mobj->flags |= MF_AMBUSH;
 
   // [crispy] support MUSINFO lump (dynamic music changing)
-  if (i == MT_MUSICSOURCE) {
+  if (index == MT_MUSICSOURCE) {
     mobj->health = 1000 + musid;
   }
 
   // [crispy] Lost Souls bleed Puffs
-  if (crispy->coloredblood && i == MT_SKULL)
+  if (crispy->coloredblood && index == MT_SKULL)
     mobj->flags |= MF_NOBLOOD;
 
   // [crispy] randomly colorize space marine corpse objects

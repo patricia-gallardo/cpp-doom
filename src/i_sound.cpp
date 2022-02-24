@@ -98,9 +98,7 @@ i_sound_t * const g_i_sound_globals = &i_sound_s;
 // Check if a sound device is in the given list of devices
 
 static bool SndDeviceInList(snddevice_t device, snddevice_t * list, int len) {
-  int i;
-
-  for (i = 0; i < len; ++i) {
+  for (int i = 0; i < len; ++i) {
     if (device == list[i]) {
       return true;
     }
@@ -113,11 +111,9 @@ static bool SndDeviceInList(snddevice_t device, snddevice_t * list, int len) {
 // in snd_sfxdevice.
 
 static void InitSfxModule(bool use_sfx_prefix) {
-  int i;
-
   sound_module = nullptr;
 
-  for (i = 0; sound_modules[i] != nullptr; ++i) {
+  for (int i = 0; sound_modules[i] != nullptr; ++i) {
     // Is the sfx device in the list of devices supported by
     // this module?
 
@@ -137,11 +133,9 @@ static void InitSfxModule(bool use_sfx_prefix) {
 // Initialize music according to snd_musicdevice.
 
 static void InitMusicModule() {
-  int i;
-
   music_module = nullptr;
 
-  for (i = 0; music_modules[i] != nullptr; ++i) {
+  for (int i = 0; music_modules[i] != nullptr; ++i) {
     // Is the music device in the list of devices supported
     // by this module?
 

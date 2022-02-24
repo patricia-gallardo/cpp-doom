@@ -142,7 +142,6 @@ extern short    numlinespecials;
 extern line_t * linespeciallist[MAXLINEANIMS];
 
 void P_InitPicAnims() {
-  int  i;
   bool init_swirl = false;
 
   // [crispy] add support for ANIMATED lumps
@@ -157,7 +156,7 @@ void P_InitPicAnims() {
 
   //	Init animation
   lastanim = anims;
-  for (i = 0; animdefs[i].istexture != -1; i++) {
+  for (int i = 0; animdefs[i].istexture != -1; i++) {
     const char *startname, *endname;
 
     // [crispy] remove MAXANIMS limit
@@ -272,12 +271,11 @@ sector_t *
 // FIND LOWEST FLOOR HEIGHT IN SURROUNDING SECTORS
 //
 fixed_t P_FindLowestFloorSurrounding(sector_t * sec) {
-  int        i;
   line_t *   check;
   sector_t * other;
   fixed_t    floor = sec->floorheight;
 
-  for (i = 0; i < sec->linecount; i++) {
+  for (int i = 0; i < sec->linecount; i++) {
     check = sec->lines[i];
     other = getNextSector(check, sec);
 
@@ -295,12 +293,11 @@ fixed_t P_FindLowestFloorSurrounding(sector_t * sec) {
 // FIND HIGHEST FLOOR HEIGHT IN SURROUNDING SECTORS
 //
 fixed_t P_FindHighestFloorSurrounding(sector_t * sec) {
-  int        i;
   line_t *   check;
   sector_t * other;
   fixed_t    floor = -500 * FRACUNIT;
 
-  for (i = 0; i < sec->linecount; i++) {
+  for (int i = 0; i < sec->linecount; i++) {
     check = sec->lines[i];
     other = getNextSector(check, sec);
 
@@ -387,12 +384,11 @@ fixed_t
 //
 fixed_t
     P_FindLowestCeilingSurrounding(sector_t * sec) {
-  int        i;
   line_t *   check;
   sector_t * other;
   fixed_t    height = INT_MAX;
 
-  for (i = 0; i < sec->linecount; i++) {
+  for (int i = 0; i < sec->linecount; i++) {
     check = sec->lines[i];
     other = getNextSector(check, sec);
 
@@ -409,12 +405,11 @@ fixed_t
 // FIND HIGHEST CEILING IN THE SURROUNDING SECTORS
 //
 fixed_t P_FindHighestCeilingSurrounding(sector_t * sec) {
-  int        i;
   line_t *   check;
   sector_t * other;
   fixed_t    height = 0;
 
-  for (i = 0; i < sec->linecount; i++) {
+  for (int i = 0; i < sec->linecount; i++) {
     check = sec->lines[i];
     other = getNextSector(check, sec);
 
@@ -467,13 +462,12 @@ int P_FindSectorFromLineTag(line_t * line,
 //
 int P_FindMinSurroundingLight(sector_t * sector,
                               int        max) {
-  int        i;
   int        min;
   line_t *   line;
   sector_t * check;
 
   min = max;
-  for (i = 0; i < sector->linecount; i++) {
+  for (int i = 0; i < sector->linecount; i++) {
     line  = sector->lines[i];
     check = getNextSector(line, sector);
 
@@ -1106,7 +1100,6 @@ int  levelTimeCount;
 void P_UpdateSpecials() {
   anim_t * anim;
   int      pic;
-  int      i;
   line_t * line;
 
   //	LEVEL TIMER
@@ -1118,7 +1111,7 @@ void P_UpdateSpecials() {
 
   //	ANIMATE FLATS AND TEXTURES GLOBALLY
   for (anim = anims; anim < lastanim; anim++) {
-    for (i = anim->basepic; i < anim->basepic + anim->numpics; i++) {
+    for (int i = anim->basepic; i < anim->basepic + anim->numpics; i++) {
       pic = anim->basepic + ((leveltime / anim->speed + i) % anim->numpics);
       if (anim->istexture)
         g_r_state_globals->texturetranslation[i] = pic;
@@ -1133,7 +1126,7 @@ void P_UpdateSpecials() {
   }
 
   //	ANIMATE LINE SPECIALS
-  for (i = 0; i < numlinespecials; i++) {
+  for (int i = 0; i < numlinespecials; i++) {
     line = linespeciallist[i];
     switch (line->special) {
     case 48:
@@ -1154,7 +1147,7 @@ void P_UpdateSpecials() {
   }
 
   //	DO BUTTONS
-  for (i = 0; i < maxbuttons; i++)
+  for (int i = 0; i < maxbuttons; i++)
     if (buttonlist[i].btimer) {
       buttonlist[i].btimer--;
       if (!buttonlist[i].btimer) {
@@ -1192,9 +1185,7 @@ void P_UpdateSpecials() {
 // [crispy] smooth texture scrolling
 void R_InterpolateTextureOffsets() {
   if (crispy->uncapped && leveltime > oldleveltime) {
-    int i;
-
-    for (i = 0; i < numlinespecials; i++) {
+    for (int i = 0; i < numlinespecials; i++) {
       const line_t * const line = linespeciallist[i];
       side_t * const       side = &g_r_state_globals->sides[line->sidenum[0]];
 
@@ -1297,7 +1288,6 @@ int EV_DoDonut(line_t * line) {
   sector_t *    s3;
   int           secnum;
   int           rtn;
-  int           i;
   floormove_t * floor;
   fixed_t       s3_floorheight;
   short         s3_floorpic;
@@ -1330,7 +1320,7 @@ int EV_DoDonut(line_t * line) {
       break;
     }
 
-    for (i = 0; i < s2->linecount; i++) {
+    for (int i = 0; i < s2->linecount; i++) {
       s3 = s2->lines[i]->backsector;
 
       if (s3 == s1)
@@ -1411,7 +1401,6 @@ static unsigned int NumScrollers() {
 // Parses command line parameters.
 void P_SpawnSpecials() {
   sector_t * sector;
-  int        i;
 
   // See if -TIMER was specified.
 
@@ -1424,7 +1413,7 @@ void P_SpawnSpecials() {
 
   //	Init special SECTORs.
   sector = g_r_state_globals->sectors;
-  for (i = 0; i < g_r_state_globals->numsectors; i++, sector++) {
+  for (int i = 0; i < g_r_state_globals->numsectors; i++, sector++) {
     if (!sector->special)
       continue;
 
@@ -1487,7 +1476,7 @@ void P_SpawnSpecials() {
 
   //	Init line EFFECTs
   numlinespecials = 0;
-  for (i = 0; i < g_r_state_globals->numlines; i++) {
+  for (int i = 0; i < g_r_state_globals->numlines; i++) {
     switch (g_r_state_globals->lines[i].special) {
     case 48:
     case 85: // [crispy] [JN] (Boom) Scroll Texture Right
@@ -1516,13 +1505,13 @@ void P_SpawnSpecials() {
   }
 
   //	Init other misc stuff
-  for (i = 0; i < MAXCEILINGS; i++)
+  for (int i = 0; i < MAXCEILINGS; i++)
     activeceilings[i] = nullptr;
 
-  for (i = 0; i < MAXPLATS; i++)
+  for (int i = 0; i < MAXPLATS; i++)
     activeplats[i] = nullptr;
 
-  for (i = 0; i < maxbuttons; i++)
+  for (int i = 0; i < maxbuttons; i++)
     std::memset(&buttonlist[i], 0, sizeof(button_t));
 
   // UNUSED: no horizonal sliders.

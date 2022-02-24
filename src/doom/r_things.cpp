@@ -303,9 +303,7 @@ static int    numvissprites;
 // Called at program start.
 //
 void R_InitSprites(const char ** namelist) {
-  int i;
-
-  for (i = 0; i < SCREENWIDTH; i++) {
+  for (int i = 0; i < SCREENWIDTH; i++) {
     negonearray[i] = -1;
   }
 
@@ -1017,7 +1015,6 @@ void R_SortVisSprites() {
 vissprite_t vsprsortedhead;
 
 void R_SortVisSprites() {
-  int           i;
   int           count;
   vissprite_t * ds;
   vissprite_t * best;
@@ -1044,7 +1041,7 @@ void R_SortVisSprites() {
   // pull the vissprites out by scale
 
   vsprsortedhead.next = vsprsortedhead.prev = &vsprsortedhead;
-  for (i = 0; i < count; i++) {
+  for (int i = 0; i < count; i++) {
     bestscale = INT_MAX;
     best      = unsorted.next;
     for (ds = unsorted.next; ds != &unsorted; ds = ds->next) {

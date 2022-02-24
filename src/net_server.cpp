@@ -1430,16 +1430,16 @@ void NET_SV_CheckDeadlock(net_client_t * client) {
 
     // Search the receive window for the first tic we are expecting
     // from this player.
-    int i = 0;
-    for (i = 0; i < BACKUPTICS; ++i) {
-      if (!recvwindow[client->player_number][i].active) {
+    int index = 0;
+    for (index = 0; index < BACKUPTICS; ++index) {
+      if (!recvwindow[client->player_number][index].active) {
         NET_Log("server: deadlock: sending resend request for %d-%d",
-                recvwindow_start + static_cast<unsigned int>(i),
-                recvwindow_start + static_cast<unsigned int>(i) + 5);
+                recvwindow_start + static_cast<unsigned int>(index),
+                recvwindow_start + static_cast<unsigned int>(index) + 5);
 
         // Found a tic we haven't received.  Send a resend request.
 
-        NET_SV_SendResendRequest(client, static_cast<int>(recvwindow_start + static_cast<unsigned int>(i)), static_cast<int>(recvwindow_start + static_cast<unsigned int>(i) + 5));
+        NET_SV_SendResendRequest(client, static_cast<int>(recvwindow_start + static_cast<unsigned int>(index)), static_cast<int>(recvwindow_start + static_cast<unsigned int>(index) + 5));
 
         client->last_gamedata_time = nowtime;
         break;
@@ -1451,7 +1451,7 @@ void NET_SV_CheckDeadlock(net_client_t * client) {
     // client is blocked waiting on tics from us that have been lost.
     // This fixes deadlock with some older clients which do not send
     // resends to break deadlock.
-    if (i < BACKUPTICS && client->sendseq > static_cast<int>(client->acknowledged)) {
+    if (index < BACKUPTICS && client->sendseq > static_cast<int>(client->acknowledged)) {
       NET_Log("server: also resending tics %d-%d to break deadlock",
               client->acknowledged,
               client->sendseq - 1);

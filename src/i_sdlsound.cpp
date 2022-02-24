@@ -947,11 +947,9 @@ static bool I_SDL_SoundIsPlaying(int handle) {
 //
 
 static void I_SDL_UpdateSound() {
-  int i;
-
   // Check all channels to see if a sound has finished
 
-  for (i = 0; i < NUM_CHANNELS; ++i) {
+  for (int i = 0; i < NUM_CHANNELS; ++i) {
     if (channels_playing[i] && !I_SDL_SoundIsPlaying(i)) {
       // Sound has finished playing on this channel,
       // but sound data has not been released to cache

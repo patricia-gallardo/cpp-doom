@@ -180,17 +180,16 @@ bool F_Responder(event_t * event) {
 // F_Ticker
 //
 void F_Ticker() {
-  size_t i = 0;
-
   // check for skipping
   if ((g_doomstat_globals->gamemode == commercial)
       && (finalecount > 50)) {
     // go on to the next level
-    for (i = 0; i < MAXPLAYERS; i++)
-      if (g_doomstat_globals->players[i].cmd.buttons)
+    size_t index = 0;
+    for (index = 0; index < MAXPLAYERS; index++)
+      if (g_doomstat_globals->players[index].cmd.buttons)
         break;
 
-    if (i < MAXPLAYERS) {
+    if (index < MAXPLAYERS) {
       if (g_doomstat_globals->gamemission == pack_nerve && crispy->singleplayer && g_doomstat_globals->gamemap == 8)
         F_StartCast();
       else if (g_doomstat_globals->gamemission == pack_master && crispy->singleplayer && (g_doomstat_globals->gamemap == 20 || g_doomstat_globals->gamemap == 21))

@@ -416,13 +416,12 @@ static const char *cr_stat, *cr_stat2, *kills;
 
 void HU_Init() {
 
-  int  i;
   int  j;
   char buffer[9];
 
   // load the heads-up font
   j = HU_FONTSTART;
-  for (i = 0; i < HU_FONTSIZE; i++) {
+  for (int i = 0; i < HU_FONTSIZE; i++) {
     DEH_snprintf(buffer, 9, "STCFN%.3d", j++);
     hu_font[i] = cache_lump_name<patch_t *>(buffer, PU_STATIC);
   }
@@ -442,7 +441,7 @@ void HU_Init() {
   }
 
   // [crispy] initialize the crosshair types
-  for (i = 0; laserpatch[i].c; i++) {
+  for (int i = 0; laserpatch[i].c; i++) {
     patch_t * patch = nullptr;
 
     // [crispy] check for alternative crosshair patches from e.g. prboom-plus.wad first
@@ -554,8 +553,6 @@ static void HU_SetSpecialLevelName(const char * wad, const char ** name) {
 }
 
 void HU_Start() {
-
-  int          i;
   const char * s;
   // [crispy] string buffers for map title and WAD file name
   char buf[8], *ptr;
@@ -732,7 +729,7 @@ void HU_Start() {
                   &chat_on);
 
   // create the inputbuffer widgets
-  for (i = 0; i < MAXPLAYERS; i++)
+  for (int i = 0; i < MAXPLAYERS; i++)
     HUlib_initIText(&w_inputbuffer[i], 0, 0, 0, 0, &always_off);
 
   headsupactive = true;
@@ -876,7 +873,7 @@ void HU_Erase() {
 
 void HU_Ticker() {
 
-  int  i, rc;
+  int  rc;
   char c;
   char str[32], *s;
 
@@ -920,7 +917,7 @@ void HU_Ticker() {
 
   // check for incoming chat characters
   if (g_doomstat_globals->netgame) {
-    for (i = 0; i < MAXPLAYERS; i++) {
+    for (int i = 0; i < MAXPLAYERS; i++) {
       if (!g_doomstat_globals->playeringame[i])
         continue;
       if (i != g_doomstat_globals->consoleplayer
@@ -1075,13 +1072,12 @@ bool HU_Responder(event_t * ev) {
   bool          eatkey  = false;
   static bool   altdown = false;
   unsigned char c;
-  int           i;
   int           numplayers;
 
   static int num_nobrainers = 0;
 
   numplayers = 0;
-  for (i = 0; i < MAXPLAYERS; i++)
+  for (int i = 0; i < MAXPLAYERS; i++)
     numplayers += g_doomstat_globals->playeringame[i];
 
   if (ev->data1 == KEY_RSHIFT) {
@@ -1103,7 +1099,7 @@ bool HU_Responder(event_t * ev) {
       eatkey = true;
       StartChatInput(HU_BROADCAST);
     } else if (g_doomstat_globals->netgame && numplayers > 2) {
-      for (i = 0; i < MAXPLAYERS; i++) {
+      for (int i = 0; i < MAXPLAYERS; i++) {
         if (ev->data2 == g_m_controls_globals->key_multi_msgplayer[i]) {
           if (g_doomstat_globals->playeringame[i] && i != g_doomstat_globals->consoleplayer) {
             eatkey = true;

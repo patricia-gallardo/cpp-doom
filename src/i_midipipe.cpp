@@ -103,10 +103,9 @@ static void FreePipes() {
 // we're likely using Timidity and thus don't need to start the server.
 //
 static bool UsingNativeMidi() {
-  int i;
   int decoders = Mix_GetNumMusicDecoders();
 
-  for (i = 0; i < decoders; i++) {
+  for (int i = 0; i < decoders; i++) {
     if (strcmp(Mix_GetMusicDecoder(i), "NATIVEMIDI") == 0) {
       return true;
     }

@@ -48,12 +48,10 @@ static int * offset;
 
 void R_InitDistortedFlats() {
   if (!offsets) {
-    int i;
-
     offsets = static_cast<decltype(offsets)>(I_Realloc(nullptr, SEQUENCE * FLATSIZE * sizeof(*offsets)));
     offset  = offsets;
 
-    for (i = 0; i < SEQUENCE; i++) {
+    for (int i = 0; i < SEQUENCE; i++) {
       int x, y;
 
       for (x = 0; x < 64; x++) {
@@ -98,11 +96,9 @@ char * R_DistortedFlat(int flatnum) {
   }
 
   if (swirlflat != flatnum) {
-    int i;
-
     auto * normalflat = cache_lump_num<char *>(flatnum, PU_STATIC);
 
-    for (i = 0; i < FLATSIZE; i++) {
+    for (int i = 0; i < FLATSIZE; i++) {
       distortedflat[i] = normalflat[offset[i]];
     }
 

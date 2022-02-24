@@ -35,7 +35,6 @@
 int EV_Teleport(line_t * line,
                 int      side,
                 mobj_t * thing) {
-  int         i;
   int         tag;
   mobj_t *    m;
   mobj_t *    fog;
@@ -56,7 +55,7 @@ int EV_Teleport(line_t * line,
     return 0;
 
   tag = line->tag;
-  for (i = 0; i < g_r_state_globals->numsectors; i++) {
+  for (int i = 0; i < g_r_state_globals->numsectors; i++) {
     if (g_r_state_globals->sectors[i].tag == tag) {
       thinker = g_p_local_globals->thinkercap.next;
       for (thinker = g_p_local_globals->thinkercap.next;

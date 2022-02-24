@@ -157,9 +157,7 @@ void I_PrintBanner(const char * msg) {
 }
 
 void I_PrintDivider() {
-  int i;
-
-  for (i = 0; i < 75; ++i) {
+  for (int i = 0; i < 75; ++i) {
     putchar('=');
   }
 
@@ -384,10 +382,9 @@ bool I_GetMemoryValue(unsigned int offset, void * value, int size) {
   static bool firsttime = true;
 
   if (firsttime) {
-    int p, i, val;
+    int p, val;
 
     firsttime = false;
-    i         = 0;
 
     //!
     // @category compat
@@ -409,7 +406,7 @@ bool I_GetMemoryValue(unsigned int offset, void * value, int size) {
       } else if (!strcasecmp(myargv[p + 1], "dosbox")) {
         dos_mem_dump = mem_dump_dosbox;
       } else {
-        for (i = 0; i < DOS_MEM_DUMP_SIZE; ++i) {
+        for (int i = 0; i < DOS_MEM_DUMP_SIZE; ++i) {
           ++p;
 
           if (p >= myargc || myargv[p][0] == '-') {

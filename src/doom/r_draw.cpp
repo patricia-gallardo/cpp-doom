@@ -711,12 +711,10 @@ void R_DrawTLColumnLow() {
 // Could be read from a lump instead.
 //
 void R_InitTranslationTables() {
-  int i;
-
   g_r_draw_globals->translationtables = zmalloc<decltype(g_r_draw_globals->translationtables)>(256 * 3, PU_STATIC, 0);
 
   // translate just the 16 green colors
-  for (i = 0; i < 256; i++) {
+  for (int i = 0; i < 256; i++) {
     if (i >= 0x70 && i <= 0x7f) {
       // map green ramp to gray, brown, red
       g_r_draw_globals->translationtables[i]       = static_cast<uint8_t>(0x60 + (i & 0xf));
@@ -933,15 +931,13 @@ void R_DrawSpanLow() {
 //
 void R_InitBuffer(int width,
                   int height) {
-  int i;
-
   // Handle resize,
   //  e.g. smaller view windows
   //  with border and/or status bar.
   viewwindowx = (SCREENWIDTH - width) >> 1;
 
   // Column offset. For windows.
-  for (i = 0; i < width; i++)
+  for (int i = 0; i < width; i++)
     columnofs[i] = viewwindowx + i;
 
   // Samw with base row offset.
@@ -951,7 +947,7 @@ void R_InitBuffer(int width,
     viewwindowy = (SCREENHEIGHT - SBARHEIGHT - height) >> 1;
 
   // Preclaculate all row offsets.
-  for (i = 0; i < height; i++)
+  for (int i = 0; i < height; i++)
     ylookup[i] = g_i_video_globals->I_VideoBuffer + (i + viewwindowy) * SCREENWIDTH;
 }
 

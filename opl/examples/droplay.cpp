@@ -29,8 +29,6 @@
 #define ADLIB_PORT    0x388
 
 void WriteReg(unsigned int reg, unsigned int val) {
-  int i;
-
   // This was recorded from an OPL2, but we are probably playing
   // back on an OPL3, so we need to enable the original OPL2
   // channels.  Doom does this already, but other games don't.
@@ -41,21 +39,19 @@ void WriteReg(unsigned int reg, unsigned int val) {
 
   OPL_WritePort(OPL_REGISTER_PORT, reg);
 
-  for (i = 0; i < 6; ++i) {
+  for (int i = 0; i < 6; ++i) {
     OPL_ReadPort(OPL_REGISTER_PORT);
   }
 
   OPL_WritePort(OPL_DATA_PORT, val);
 
-  for (i = 0; i < 35; ++i) {
+  for (int i = 0; i < 35; ++i) {
     OPL_ReadPort(OPL_REGISTER_PORT);
   }
 }
 
 void ClearAllRegs() {
-  int i;
-
-  for (i = 0; i <= 0xff; ++i) {
+  for (int i = 0; i <= 0xff; ++i) {
     WriteReg(i, 0x00);
   }
 }

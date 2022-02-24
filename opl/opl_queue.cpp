@@ -187,13 +187,11 @@ void OPL_Queue_AdjustCallbacks(opl_callback_queue_t * queue,
 #include <assert.h>
 
 static void PrintQueueNode(opl_callback_queue_t * queue, int node, int depth) {
-  int i;
-
   if (node >= queue->num_entries) {
     return;
   }
 
-  for (i = 0; i < depth * 3; ++i) {
+  for (int i = 0; i < depth * 3; ++i) {
     fmt::printf(" ");
   }
 
@@ -218,16 +216,15 @@ int main() {
     void *         data;
     unsigned int   time;
     unsigned int   newtime;
-    int            i;
 
-    for (i = 0; i < MAX_OPL_QUEUE; ++i) {
+    for (int i = 0; i < MAX_OPL_QUEUE; ++i) {
       time = rand() % 0x10000;
       OPL_Queue_Push(queue, nullptr, nullptr, time);
     }
 
     time = 0;
 
-    for (i = 0; i < MAX_OPL_QUEUE; ++i) {
+    for (int i = 0; i < MAX_OPL_QUEUE; ++i) {
       assert(!OPL_Queue_IsEmpty(queue));
       newtime = OPL_Queue_Peek(queue);
       assert(OPL_Queue_Pop(queue, &callback, &data));

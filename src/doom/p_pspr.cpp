@@ -624,8 +624,6 @@ void A_FirePistol(mobj_t *, player_t * player, pspdef_t *) {
 // A_FireShotgun
 //
 void A_FireShotgun(mobj_t *, player_t * player, pspdef_t *) {
-  int i;
-
   if (!player) return;                  // [crispy] let pspr action pointers get called from mobj states
   S_StartSound(player->so, sfx_shotgn); // [crispy] weapon sound source
   P_SetMobjState(player->mo, S_PLAY_ATK2);
@@ -638,7 +636,7 @@ void A_FireShotgun(mobj_t *, player_t * player, pspdef_t *) {
 
   P_BulletSlope(player->mo);
 
-  for (i = 0; i < 7; i++)
+  for (int i = 0; i < 7; i++)
     P_GunShot(player->mo, false);
 
   A_Recoil(player);
@@ -648,7 +646,6 @@ void A_FireShotgun(mobj_t *, player_t * player, pspdef_t *) {
 // A_FireShotgun2
 //
 void A_FireShotgun2(mobj_t *, player_t * player, pspdef_t *) {
-  int     i;
   angle_t angle;
   int     damage;
 
@@ -664,7 +661,7 @@ void A_FireShotgun2(mobj_t *, player_t * player, pspdef_t *) {
 
   P_BulletSlope(player->mo);
 
-  for (i = 0; i < 20; i++) {
+  for (int i = 0; i < 20; i++) {
     damage = 5 * (P_Random() % 3 + 1);
     angle  = player->mo->angle;
     angle += static_cast<unsigned int>(P_SubRandom() << ANGLETOFINESHIFT);
@@ -725,13 +722,11 @@ void A_Light2(mobj_t *, player_t * player, pspdef_t *) {
 // Spawn a BFG explosion on every monster in view
 //
 void A_BFGSpray(mobj_t * mo) {
-  int     i;
-  int     j;
   int     damage;
   angle_t an;
 
   // offset angles from its attack angle
-  for (i = 0; i < 40; i++) {
+  for (int i = 0; i < 40; i++) {
     an = mo->angle - ANG90 / 2 + ANG90 / 40 * i;
 
     // mo->target is the originator (player)
@@ -747,7 +742,7 @@ void A_BFGSpray(mobj_t * mo) {
                 MT_EXTRABFG);
 
     damage = 0;
-    for (j = 0; j < 15; j++)
+    for (int j = 0; j < 15; j++)
       damage += (P_Random() & 7) + 1;
 
     P_DamageMobj(g_p_local_globals->linetarget, mo->target, mo->target, damage);
@@ -767,10 +762,8 @@ void A_BFGsound(mobj_t *, player_t * player, pspdef_t *) {
 // Called at start of level for each player.
 //
 void P_SetupPsprites(player_t * player) {
-  int i;
-
   // remove all psprites
-  for (i = 0; i < NUMPSPRITES; i++)
+  for (int i = 0; i < NUMPSPRITES; i++)
     player->psprites[i].state = nullptr;
 
   // spawn the gun
@@ -783,11 +776,10 @@ void P_SetupPsprites(player_t * player) {
 // Called every tic by player thinking routine.
 //
 void P_MovePsprites(player_t * player) {
-  int        i;
   pspdef_t * psp;
 
   psp = &player->psprites[0];
-  for (i = 0; i < NUMPSPRITES; i++, psp++) {
+  for (int i = 0; i < NUMPSPRITES; i++, psp++) {
     // a null state means not active
     state_t * is_set = psp->state;
     if (is_set) {

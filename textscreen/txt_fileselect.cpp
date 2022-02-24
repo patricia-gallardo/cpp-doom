@@ -196,7 +196,6 @@ static int InitLibraries() {
 
 static char * GenerateFilterString(const char ** extensions) {
   unsigned int result_len = 1;
-  unsigned int i;
   char *       result, *out;
   size_t       out_len, offset;
 
@@ -204,7 +203,7 @@ static char * GenerateFilterString(const char ** extensions) {
     return nullptr;
   }
 
-  for (i = 0; extensions[i] != nullptr; ++i) {
+  for (unsigned int i = 0; extensions[i] != nullptr; ++i) {
     result_len += 16 + strlen(extensions[i]) * 3;
   }
 
@@ -212,7 +211,7 @@ static char * GenerateFilterString(const char ** extensions) {
   out     = result;
   out_len = result_len;
 
-  for (i = 0; extensions[i] != nullptr; ++i) {
+  for (unsigned int i = 0; extensions[i] != nullptr; ++i) {
     // .wad files (*.wad)\0
     offset = TXT_snprintf(out, out_len, "%s files (*.%s)", extensions[i], extensions[i]);
     out += offset + 1;
@@ -343,14 +342,13 @@ static char * CreateEscapedString(const char * original) {
 static char * CreateExtensionsList(const char ** extensions) {
   char *       result, *escaped;
   unsigned int result_len;
-  unsigned int i;
 
   if (extensions == nullptr) {
     return nullptr;
   }
 
   result_len = 3;
-  for (i = 0; extensions[i] != nullptr; ++i) {
+  for (unsigned int i = 0; extensions[i] != nullptr; ++i) {
     result_len += 5 + strlen(extensions[i]) * 2;
   }
 
@@ -360,7 +358,7 @@ static char * CreateExtensionsList(const char ** extensions) {
   }
   TXT_StringCopy(result, "{", result_len);
 
-  for (i = 0; extensions[i] != nullptr; ++i) {
+  for (unsigned int i = 0; extensions[i] != nullptr; ++i) {
     escaped = CreateEscapedString(extensions[i]);
     if (!escaped) {
       free(result);

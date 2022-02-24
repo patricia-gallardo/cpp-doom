@@ -115,23 +115,22 @@ static void ParseLine(gus_config_t * config, char * line) {
   }
 
   auto         mapped_id = static_cast<unsigned int>(std::atoi(fields[MappingIndex()]));
-  unsigned int i         = 0;
-
-  for (i = 0; i < config->count; i++) {
-    if (config->used[i] == static_cast<int>(mapped_id)) {
+  unsigned int index     = 0;
+  for (index = 0; index < config->count; index++) {
+    if (config->used[index] == static_cast<int>(mapped_id)) {
       break;
     }
   }
 
-  if (i == config->count) {
+  if (index == config->count) {
     // DMX uses wrong patch name (we should use name of 'mapped_id'
     // instrument, but DMX uses name of 'instr_id' instead).
-    free(config->patch_names[i]);
-    config->patch_names[i] = M_StringDuplicate(fields[5]);
-    config->used[i]        = static_cast<int>(mapped_id);
+    free(config->patch_names[index]);
+    config->patch_names[index] = M_StringDuplicate(fields[5]);
+    config->used[index]        = static_cast<int>(mapped_id);
     config->count++;
   }
-  config->mapping[instr_id] = static_cast<int>(i);
+  config->mapping[instr_id] = static_cast<int>(index);
 }
 
 static void ParseDMXConfig(char * dmxconf, gus_config_t * config) {

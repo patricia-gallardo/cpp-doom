@@ -545,7 +545,6 @@ void R_InitTables() {
 // R_InitTextureMapping
 //
 void R_InitTextureMapping() {
-  int     i;
   int     x;
   int     t;
   fixed_t focallength;
@@ -563,7 +562,7 @@ void R_InitTextureMapping() {
   focallength = FixedDiv(focalwidth,
                          finetangent[FINEANGLES / 4 + FIELDOFVIEW / 2]);
 
-  for (i = 0; i < FINEANGLES / 2; i++) {
+  for (int i = 0; i < FINEANGLES / 2; i++) {
     if (finetangent[i] > FRACUNIT * 2)
       t = -1;
     else if (finetangent[i] < -FRACUNIT * 2)
@@ -584,14 +583,14 @@ void R_InitTextureMapping() {
   //  xtoviewangle will give the smallest view angle
   //  that maps to x.
   for (x = 0; x <= g_r_state_globals->viewwidth; x++) {
-    i = 0;
+    int i = 0;
     while (g_r_state_globals->viewangletox[i] > x)
       i++;
     g_r_state_globals->xtoviewangle[x] = static_cast<angle_t>((i << ANGLETOFINESHIFT) - ANG90);
   }
 
   // Take out the fencepost cases from viewangletox.
-  for (i = 0; i < FINEANGLES / 2; i++) {
+  for (int i = 0; i < FINEANGLES / 2; i++) {
     t = FixedMul(finetangent[i], focallength);
     t = centerx - t;
 
@@ -612,14 +611,12 @@ void R_InitTextureMapping() {
 #define DISTMAP 2
 
 void R_InitLightTables() {
-  int i;
-  int j;
   int level;
   int startmap_local;
   int scale;
 
   if (scalelight) {
-    for (i = 0; i < LIGHTLEVELS; i++) {
+    for (int i = 0; i < LIGHTLEVELS; i++) {
       free(scalelight[i]);
     }
     free(scalelight);
@@ -630,7 +627,7 @@ void R_InitLightTables() {
   }
 
   if (zlight) {
-    for (i = 0; i < LIGHTLEVELS; i++) {
+    for (int i = 0; i < LIGHTLEVELS; i++) {
       free(zlight[i]);
     }
     free(zlight);
@@ -661,12 +658,12 @@ void R_InitLightTables() {
 
   // Calculate the light levels to use
   //  for each level / distance combination.
-  for (i = 0; i < LIGHTLEVELS; i++) {
+  for (int i = 0; i < LIGHTLEVELS; i++) {
     zlight[i] =
         static_cast<lighttable_t **>(malloc(static_cast<unsigned long>(MAXLIGHTZ) * sizeof(**zlight)));
 
     startmap_local = ((LIGHTLEVELS - LIGHTBRIGHT - i) * 2) * NUMCOLORMAPS / LIGHTLEVELS;
-    for (j = 0; j < MAXLIGHTZ; j++) {
+    for (int j = 0; j < MAXLIGHTZ; j++) {
       scale = FixedDiv((ORIGWIDTH / 2 * FRACUNIT), (j + 1) << LIGHTZSHIFT);
       scale >>= LIGHTSCALESHIFT;
       level = startmap_local - scale / DISTMAP;
@@ -705,8 +702,6 @@ void R_SetViewSize(int blocks,
 void R_ExecuteSetViewSize() {
   fixed_t cosadj;
   fixed_t dy;
-  int     i;
-  int     j;
   int     level;
   int     startmap_local;
 
@@ -764,15 +759,15 @@ void R_ExecuteSetViewSize() {
   pspriteiscale = FRACUNIT * ORIGWIDTH / MIN(g_r_state_globals->viewwidth, HIRESWIDTH >> detailshift);
 
   // thing clipping
-  for (i = 0; i < g_r_state_globals->viewwidth; i++)
+  for (int i = 0; i < g_r_state_globals->viewwidth; i++)
     screenheightarray[i] = g_r_state_globals->viewheight;
 
   // planes
-  for (i = 0; i < g_r_state_globals->viewheight; i++) {
+  for (int i = 0; i < g_r_state_globals->viewheight; i++) {
     // [crispy] re-generate lookup-table for yslope[] (free look)
     // whenever "detailshift" or "screenblocks" change
     const fixed_t num = MIN(g_r_state_globals->viewwidth << detailshift, HIRESWIDTH) / 2 * FRACUNIT;
-    for (j = 0; j < LOOKDIRS; j++) {
+    for (int j = 0; j < LOOKDIRS; j++) {
       dy            = ((i - (g_r_state_globals->viewheight / 2 + ((j - LOOKDIRMIN) * (1 << crispy->hires)) * (screenblocks < 11 ? screenblocks : 11) / 10)) << FRACBITS) + FRACUNIT / 2;
       dy            = std::abs(dy);
       yslopes[j][i] = FixedDiv(num, dy);
@@ -780,18 +775,18 @@ void R_ExecuteSetViewSize() {
   }
   yslope = yslopes[LOOKDIRMIN];
 
-  for (i = 0; i < g_r_state_globals->viewwidth; i++) {
+  for (int i = 0; i < g_r_state_globals->viewwidth; i++) {
     cosadj       = std::abs(finecosine[g_r_state_globals->xtoviewangle[i] >> ANGLETOFINESHIFT]);
     distscale[i] = FixedDiv(FRACUNIT, cosadj);
   }
 
   // Calculate the light levels to use
   //  for each level / scale combination.
-  for (i = 0; i < LIGHTLEVELS; i++) {
+  for (int i = 0; i < LIGHTLEVELS; i++) {
     scalelight[i] = static_cast<lighttable_t **>(malloc(static_cast<unsigned long>(MAXLIGHTSCALE) * sizeof(**scalelight)));
 
     startmap_local = ((LIGHTLEVELS - LIGHTBRIGHT - i) * 2) * NUMCOLORMAPS / LIGHTLEVELS;
-    for (j = 0; j < MAXLIGHTSCALE; j++) {
+    for (int j = 0; j < MAXLIGHTSCALE; j++) {
       level = startmap_local - j * HIRESWIDTH / MIN(g_r_state_globals->viewwidth << detailshift, HIRESWIDTH) / DISTMAP;
 
       if (level < 0)
@@ -805,7 +800,7 @@ void R_ExecuteSetViewSize() {
   }
 
   // [crispy] lookup table for horizontal screen coordinates
-  for (i = 0, j = SCREENWIDTH - 1; i < SCREENWIDTH; i++, j--) {
+  for (int i = 0, j = SCREENWIDTH - 1; i < SCREENWIDTH; i++, j--) {
     g_r_state_globals->flipscreenwidth[i] = crispy->fliplevels ? j : i;
   }
 
@@ -868,7 +863,6 @@ subsector_t *
 // R_SetupFrame
 //
 void R_SetupFrame(player_t * player) {
-  int i;
   int tempCentery;
   int pitch;
 
@@ -930,7 +924,7 @@ void R_SetupFrame(player_t * player) {
 
     walllights = scalelightfixed;
 
-    for (i = 0; i < MAXLIGHTSCALE; i++)
+    for (int i = 0; i < MAXLIGHTSCALE; i++)
       scalelightfixed[i] = fixedcolormap;
   } else
     fixedcolormap = 0;

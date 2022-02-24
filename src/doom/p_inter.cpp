@@ -287,7 +287,6 @@ bool P_GivePower(player_t *          player,
 void P_TouchSpecialThing(mobj_t * special,
                          mobj_t * toucher) {
   player_t * player = nullptr;
-  int        i      = 0;
   int        sound;
   const bool dropped = ((special->flags & MF_DROPPED) != 0);
 
@@ -548,11 +547,11 @@ void P_TouchSpecialThing(mobj_t * special,
 
   case SPR_BPAK:
     if (!player->backpack) {
-      for (i = 0; i < NUMAMMO; i++)
+      for (int i = 0; i < NUMAMMO; i++)
         player->maxammo[i] *= 2;
       player->backpack = true;
     }
-    for (i = 0; i < NUMAMMO; i++)
+    for (int i = 0; i < NUMAMMO; i++)
       P_GiveAmmo(player, static_cast<ammotype_t>(i), 1, false);
     player->message = DEH_String(GOTBACKPACK);
     break;

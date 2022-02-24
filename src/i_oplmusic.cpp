@@ -964,7 +964,6 @@ static bool LoadInstrumentTable() {
 
 static opl_voice_t * GetFreeVoice() {
   opl_voice_t * result;
-  int           i;
 
   // None available?
 
@@ -978,7 +977,7 @@ static opl_voice_t * GetFreeVoice() {
 
   voice_free_num--;
 
-  for (i = 0; i < voice_free_num; i++) {
+  for (int i = 0; i < voice_free_num; i++) {
     voice_free_list[i] = voice_free_list[i + 1];
   }
 
@@ -1162,8 +1161,6 @@ static void SetVoicePan(opl_voice_t * voice, unsigned int pan) {
 // Initialize the voice table and freelist
 
 static void InitVoices() {
-  int i;
-
   // Start with an empty free list.
 
   voice_free_num    = num_opl_voices;
@@ -1171,7 +1168,7 @@ static void InitVoices() {
 
   // Initialize each voice.
 
-  for (i = 0; i < num_opl_voices; ++i) {
+  for (int i = 0; i < num_opl_voices; ++i) {
     voices[i].index         = i % OPL_NUM_VOICES;
     voices[i].op1           = voice_operators[0][i % OPL_NUM_VOICES];
     voices[i].op2           = voice_operators[1][i % OPL_NUM_VOICES];
@@ -1189,7 +1186,6 @@ static void SetChannelVolume(opl_channel_data_t * channel, unsigned int volume, 
 // Set music volume (0 - 127)
 
 static void I_OPL_SetMusicVolume(int volume) {
-  unsigned int i;
 
   if (current_music_volume == volume) {
     return;
@@ -1201,7 +1197,7 @@ static void I_OPL_SetMusicVolume(int volume) {
 
   // Update the volume of all voices.
 
-  for (i = 0; i < MIDI_CHANNELS_PER_TRACK; ++i) {
+  for (unsigned int i = 0; i < MIDI_CHANNELS_PER_TRACK; ++i) {
     if (i == 15) {
       SetChannelVolume(&channels[i], static_cast<unsigned int>(volume), false);
     } else {
@@ -1235,7 +1231,6 @@ static opl_channel_data_t * TrackChannelForEvent(opl_track_data_t *,
 
 static void KeyOffEvent(opl_track_data_t * track, midi_event_t * event) {
   opl_channel_data_t * channel;
-  int                  i;
   unsigned int         key;
 
   /*
@@ -1251,7 +1246,7 @@ static void KeyOffEvent(opl_track_data_t * track, midi_event_t * event) {
   // Turn off voices being used to play this key.
   // If it is a double voice instrument there will be two.
 
-  for (i = 0; i < voice_alloced_num; i++) {
+  for (int i = 0; i < voice_alloced_num; i++) {
     if (voice_alloced_list[i]->channel == channel
         && voice_alloced_list[i]->key == key) {
       // Finished with this voice now.
@@ -1269,9 +1264,6 @@ static void KeyOffEvent(opl_track_data_t * track, midi_event_t * event) {
 // played.
 
 static void ReplaceExistingVoice() {
-  int i;
-  int result;
-
   // Check the allocated voices, if we find an instrument that is
   // of a lower priority to the new instrument, discard it.
   // If a voice is being used to play the second voice of an instrument,
@@ -1280,9 +1272,9 @@ static void ReplaceExistingVoice() {
   // than higher-numbered channels, eg. MIDI channel 1 is never
   // discarded for MIDI channel 2.
 
-  result = 0;
+  int result = 0;
 
-  for (i = 0; i < voice_alloced_num; i++) {
+  for (int i = 0; i < voice_alloced_num; i++) {
     if (voice_alloced_list[i]->current_instr_voice != 0
         || voice_alloced_list[i]->channel
                >= voice_alloced_list[result]->channel) {
@@ -1297,12 +1289,9 @@ static void ReplaceExistingVoice() {
 // versions of the DMX library used in Doom 1.666, Heretic and Hexen.
 
 static void ReplaceExistingVoiceDoom1() {
-  int i;
-  int result;
+  int result = 0;
 
-  result = 0;
-
-  for (i = 0; i < voice_alloced_num; i++) {
+  for (int i = 0; i < voice_alloced_num; i++) {
     if (voice_alloced_list[i]->channel
         > voice_alloced_list[result]->channel) {
       result = i;

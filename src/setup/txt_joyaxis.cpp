@@ -69,9 +69,7 @@ static void SetCalibrationLabel(txt_joystick_axis_t * joystick_axis) {
 // pressed (other than the calibrate button). Returns the button number.
 
 static int FindPressedAxisButton(txt_joystick_axis_t * joystick_axis) {
-  int i;
-
-  for (i = 0; i < SDL_JoystickNumButtons(joystick_axis->joystick); ++i) {
+  for (int i = 0; i < SDL_JoystickNumButtons(joystick_axis->joystick); ++i) {
     if (i == joystick_axis->config_button) {
       continue;
     }
@@ -87,10 +85,8 @@ static int FindPressedAxisButton(txt_joystick_axis_t * joystick_axis) {
 // Look for a hat that isn't centered. Returns the encoded hat axis.
 
 static int FindUncenteredHat(SDL_Joystick * joystick, int * axis_invert) {
-  int i, hatval;
-
-  for (i = 0; i < SDL_JoystickNumHats(joystick); ++i) {
-    hatval = SDL_JoystickGetHat(joystick, i);
+  for (int i = 0; i < SDL_JoystickNumHats(joystick); ++i) {
+    int hatval = SDL_JoystickGetHat(joystick, i);
 
     switch (hatval) {
     case SDL_HAT_LEFT:
@@ -122,7 +118,6 @@ static bool CalibrateAxis(txt_joystick_axis_t * joystick_axis) {
   int    best_value;
   int    best_invert;
   Sint16 axis_value;
-  int    i;
 
   // Check all axes to find which axis has the largest value.  We test
   // for one axis at a time, so eg. when we prompt to push the joystick
@@ -132,17 +127,18 @@ static bool CalibrateAxis(txt_joystick_axis_t * joystick_axis) {
   best_value  = 0;
   best_invert = 0;
 
-  for (i = 0; i < SDL_JoystickNumAxes(joystick_axis->joystick); ++i) {
-    axis_value = SDL_JoystickGetAxis(joystick_axis->joystick, i);
+  int index = 0;
+  for (index = 0; index < SDL_JoystickNumAxes(joystick_axis->joystick); ++index) {
+    axis_value = SDL_JoystickGetAxis(joystick_axis->joystick, index);
 
-    if (joystick_axis->bad_axis[i]) {
+    if (joystick_axis->bad_axis[index]) {
       continue;
     }
 
     if (std::abs(axis_value) > best_value) {
       best_value  = std::abs(axis_value);
       best_invert = axis_value > 0;
-      best_axis   = i;
+      best_axis   = index;
     }
   }
 
@@ -160,10 +156,10 @@ static bool CalibrateAxis(txt_joystick_axis_t * joystick_axis) {
   // controller that exposes the D-pad as four individual buttons.
   // Search for a button.
 
-  i = FindPressedAxisButton(joystick_axis);
+  index = FindPressedAxisButton(joystick_axis);
 
-  if (i >= 0) {
-    *joystick_axis->axis   = CREATE_BUTTON_AXIS(i, 0);
+  if (index >= 0) {
+    *joystick_axis->axis   = CREATE_BUTTON_AXIS(index, 0);
     *joystick_axis->invert = 0;
     return true;
   }
@@ -172,10 +168,10 @@ static bool CalibrateAxis(txt_joystick_axis_t * joystick_axis) {
   // but gamepads like this really do exist; an example is the
   // Nyko AIRFLO Ex.
 
-  i = FindUncenteredHat(joystick_axis->joystick, joystick_axis->invert);
+  index = FindUncenteredHat(joystick_axis->joystick, joystick_axis->invert);
 
-  if (i >= 0) {
-    *joystick_axis->axis = i;
+  if (index >= 0) {
+    *joystick_axis->axis = index;
     return true;
   }
 
@@ -197,8 +193,6 @@ static bool SetButtonAxisPositive(txt_joystick_axis_t * joystick_axis) {
 }
 
 static void IdentifyBadAxes(txt_joystick_axis_t * joystick_axis) {
-  int i, val;
-
   free(joystick_axis->bad_axis);
 
   joystick_axis->bad_axis = static_cast<bool *>(calloc(static_cast<size_t>(SDL_JoystickNumAxes(joystick_axis->joystick)),
@@ -206,8 +200,8 @@ static void IdentifyBadAxes(txt_joystick_axis_t * joystick_axis) {
 
   // Look for uncentered axes.
 
-  for (i = 0; i < SDL_JoystickNumAxes(joystick_axis->joystick); ++i) {
-    val = SDL_JoystickGetAxis(joystick_axis->joystick, i);
+  for (int i = 0; i < SDL_JoystickNumAxes(joystick_axis->joystick); ++i) {
+    int val = SDL_JoystickGetAxis(joystick_axis->joystick, i);
 
     joystick_axis->bad_axis[i] = std::abs(val) > (32768 / 5);
 

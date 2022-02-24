@@ -2271,7 +2271,7 @@ static uint32_t aes_ror32(uint32_t word, unsigned int shift) {
  */
 static int AES_ExpandKey(aes_context_t * ctx, const uint8_t * in_key, unsigned int key_len) {
   const uint32_t * key = reinterpret_cast<const uint32_t *>(in_key);
-  uint32_t         i, t, u, v, w, j;
+  uint32_t         t, u, v, w, j;
 
   if (key_len != AES_KEYSIZE_128 && key_len != AES_KEYSIZE_192 && key_len != AES_KEYSIZE_256)
     return -1;
@@ -2286,14 +2286,14 @@ static int AES_ExpandKey(aes_context_t * ctx, const uint8_t * in_key, unsigned i
   switch (key_len) {
   case AES_KEYSIZE_128:
     t = ctx->key_enc[3];
-    for (i = 0; i < 10; ++i)
+    for (uint32_t i = 0; i < 10; ++i)
       loop4(i);
     break;
 
   case AES_KEYSIZE_192:
     ctx->key_enc[4] = le32_to_cpu(key[4]);
     t = ctx->key_enc[5] = le32_to_cpu(key[5]);
-    for (i = 0; i < 8; ++i)
+    for (uint32_t i = 0; i < 8; ++i)
       loop6(i);
     break;
 
@@ -2302,9 +2302,10 @@ static int AES_ExpandKey(aes_context_t * ctx, const uint8_t * in_key, unsigned i
     ctx->key_enc[5] = le32_to_cpu(key[5]);
     ctx->key_enc[6] = le32_to_cpu(key[6]);
     t = ctx->key_enc[7] = le32_to_cpu(key[7]);
-    for (i = 0; i < 6; ++i)
-      loop8(i);
-    loop8tophalf(i);
+    uint32_t index      = 0;
+    for (index = 0; index < 6; ++index)
+      loop8(index);
+    loop8tophalf(index);
     break;
   }
 
@@ -2313,7 +2314,7 @@ static int AES_ExpandKey(aes_context_t * ctx, const uint8_t * in_key, unsigned i
   ctx->key_dec[2] = ctx->key_enc[key_len + 26];
   ctx->key_dec[3] = ctx->key_enc[key_len + 27];
 
-  for (i = 4; i < key_len + 24; ++i) {
+  for (uint32_t i = 4; i < key_len + 24; ++i) {
     j = key_len + 24 - (i & static_cast<unsigned int>(~3)) + (i & 3);
     imix_col(ctx->key_dec[j], ctx->key_enc[i]);
   }

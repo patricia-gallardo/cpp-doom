@@ -220,9 +220,7 @@ int EV_DoCeiling(line_t *  line,
 // Add an active ceiling
 //
 void P_AddActiveCeiling(ceiling_t * c) {
-  int i;
-
-  for (i = 0; i < MAXCEILINGS; i++) {
+  for (int i = 0; i < MAXCEILINGS; i++) {
     if (activeceilings[i] == nullptr) {
       activeceilings[i] = c;
       return;
@@ -234,9 +232,7 @@ void P_AddActiveCeiling(ceiling_t * c) {
 // Remove a ceiling's thinker
 //
 void P_RemoveActiveCeiling(ceiling_t * c) {
-  int i;
-
-  for (i = 0; i < MAXCEILINGS; i++) {
+  for (int i = 0; i < MAXCEILINGS; i++) {
     if (activeceilings[i] == c) {
       activeceilings[i]->sector->specialdata = nullptr;
       P_RemoveThinker(&activeceilings[i]->thinker);
@@ -250,9 +246,7 @@ void P_RemoveActiveCeiling(ceiling_t * c) {
 // Restart a ceiling that's in-stasis
 //
 void P_ActivateInStasisCeiling(line_t * line) {
-  int i;
-
-  for (i = 0; i < MAXCEILINGS; i++) {
+  for (int i = 0; i < MAXCEILINGS; i++) {
     if (activeceilings[i]
         && (activeceilings[i]->tag == line->tag)
         && (activeceilings[i]->direction == 0)) {
@@ -267,11 +261,10 @@ void P_ActivateInStasisCeiling(line_t * line) {
 // Stop a ceiling from crushing!
 //
 int EV_CeilingCrushStop(line_t * line) {
-  int i;
   int rtn;
 
   rtn = 0;
-  for (i = 0; i < MAXCEILINGS; i++) {
+  for (int i = 0; i < MAXCEILINGS; i++) {
     if (activeceilings[i]
         && (activeceilings[i]->tag == line->tag)
         && (activeceilings[i]->direction != 0)) {

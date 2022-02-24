@@ -108,7 +108,7 @@ int           maxbuttons; // [crispy] remove MAXBUTTONS limit
 // Only called at game initialization.
 //
 void P_InitSwitchList() {
-  int i, slindex, episode;
+  int slindex, episode;
 
   // [crispy] add support for SWITCHES lumps
   switchlist_t * alphSwitchList;
@@ -139,7 +139,7 @@ void P_InitSwitchList() {
 
   slindex = 0;
 
-  for (i = 0; alphSwitchList[i].episode; i++) {
+  for (int i = 0; alphSwitchList[i].episode; i++) {
     const short alphSwitchList_episode = from_lump ?
                                              SHORT(alphSwitchList[i].episode) :
                                              alphSwitchList[i].episode;
@@ -190,10 +190,8 @@ void P_StartButton(line_t * line,
                    bwhere_e w,
                    int      texture,
                    int      time) {
-  int i;
-
   // See if button is already pressed
-  for (i = 0; i < maxbuttons; i++) {
+  for (int i = 0; i < maxbuttons; i++) {
     if (buttonlist[i].btimer
         && buttonlist[i].line == line) {
 
@@ -204,7 +202,7 @@ void P_StartButton(line_t * line,
     }
   }
 
-  for (i = 0; i < maxbuttons; i++) {
+  for (int i = 0; i < maxbuttons; i++) {
     if (!buttonlist[i].btimer) {
       buttonlist[i].line     = line;
       buttonlist[i].where    = w;
@@ -234,7 +232,6 @@ void P_ChangeSwitchTexture(line_t * line,
   int  texTop;
   int  texMid;
   int  texBot;
-  int  i;
   int  sound;
   bool playsound = false;
 
@@ -251,7 +248,7 @@ void P_ChangeSwitchTexture(line_t * line,
   if (line->special == 11)
     sound = sfx_swtchx;
 
-  for (i = 0; i < numswitches * 2; i++) {
+  for (int i = 0; i < numswitches * 2; i++) {
     if (switchlist[i] == texTop) {
       //	    S_StartSound(buttonlist->soundorg,sound);
       playsound                                             = true;

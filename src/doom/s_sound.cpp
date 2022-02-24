@@ -218,8 +218,6 @@ static void S_RegisterAltMusic() {
 //
 
 void S_Init(int sfxVolume_param, int musicVolume_param) {
-  int i;
-
   if (g_doomstat_globals->gameversion == exe_doom_1_666) {
     if (logical_gamemission == doom) {
       I_SetOPLDriverVer(opl_doom1_1_666);
@@ -243,7 +241,7 @@ void S_Init(int sfxVolume_param, int musicVolume_param) {
   sobjs    = static_cast<decltype(sobjs)>(I_Realloc(nullptr, static_cast<unsigned long>(snd_channels) * sizeof(degenmobj_t)));
 
   // Free all channels for use
-  for (i = 0; i < snd_channels; i++) {
+  for (int i = 0; i < snd_channels; i++) {
     channels[i].sfxinfo = 0;
   }
 
@@ -251,7 +249,7 @@ void S_Init(int sfxVolume_param, int musicVolume_param) {
   mus_paused = 0;
 
   // Note that sounds have not been cached (yet).
-  for (i = 1; i < NUMSFX; i++) {
+  for (int i = 1; i < NUMSFX; i++) {
     S_sfx[i].lumpnum = S_sfx[i].usefulness = -1;
   }
 
@@ -263,7 +261,7 @@ void S_Init(int sfxVolume_param, int musicVolume_param) {
   I_AtExit(S_Shutdown, true);
 
   // [crispy] initialize dedicated music tracks for the 4th episode
-  for (i = mus_e4m1; i <= mus_e5m9; i++) {
+  for (int i = mus_e4m1; i <= mus_e5m9; i++) {
     musicinfo_t * const music = &S_music[i];
     char                namebuf[9];
 
@@ -285,7 +283,6 @@ void S_Shutdown() {
 }
 
 static void S_StopChannel(int cnum) {
-  int         i;
   channel_t * c;
 
   c = &channels[cnum];
@@ -299,7 +296,7 @@ static void S_StopChannel(int cnum) {
 
     // check to see if other channels are playing the sound
 
-    for (i = 0; i < snd_channels; i++) {
+    for (int i = 0; i < snd_channels; i++) {
       if (cnum != i && c->sfxinfo == channels[i].sfxinfo) {
         break;
       }
@@ -919,9 +916,7 @@ void S_StopMusic() {
 
 // [crispy] variable number of sound channels
 void S_UpdateSndChannels() {
-  int i;
-
-  for (i = 0; i < snd_channels; i++) {
+  for (int i = 0; i < snd_channels; i++) {
     if (channels[i].sfxinfo) {
       S_StopChannel(i);
     }
@@ -935,7 +930,7 @@ void S_UpdateSndChannels() {
   channels = static_cast<decltype(channels)>(I_Realloc(channels, static_cast<unsigned long>(snd_channels) * sizeof(channel_t)));
   sobjs    = static_cast<decltype(sobjs)>(I_Realloc(sobjs, static_cast<unsigned long>(snd_channels) * sizeof(degenmobj_t)));
 
-  for (i = 0; i < snd_channels; i++) {
+  for (int i = 0; i < snd_channels; i++) {
     channels[i].sfxinfo = 0;
   }
 }

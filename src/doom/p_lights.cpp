@@ -180,8 +180,6 @@ void EV_StartLightStrobing(line_t * line) {
 // TURN LINE'S TAG LIGHTS OFF
 //
 void EV_TurnTagLightsOff(line_t * line) {
-  int        i;
-  int        j;
   int        min;
   sector_t * sector;
   sector_t * tsec;
@@ -189,10 +187,10 @@ void EV_TurnTagLightsOff(line_t * line) {
 
   sector = g_r_state_globals->sectors;
 
-  for (j = 0; j < g_r_state_globals->numsectors; j++, sector++) {
+  for (int j = 0; j < g_r_state_globals->numsectors; j++, sector++) {
     if (sector->tag == line->tag) {
       min = sector->lightlevel;
-      for (i = 0; i < sector->linecount; i++) {
+      for (int i = 0; i < sector->linecount; i++) {
         templine = sector->lines[i];
         tsec     = getNextSector(templine, sector);
         if (!tsec)
@@ -210,21 +208,19 @@ void EV_TurnTagLightsOff(line_t * line) {
 //
 void EV_LightTurnOn(line_t * line,
                     int      bright) {
-  int        i;
-  int        j;
   sector_t * sector;
   sector_t * temp;
   line_t *   templine;
 
   sector = g_r_state_globals->sectors;
 
-  for (i = 0; i < g_r_state_globals->numsectors; i++, sector++) {
+  for (int i = 0; i < g_r_state_globals->numsectors; i++, sector++) {
     if (sector->tag == line->tag) {
       // bright = 0 means to search
       // for highest light level
       // surrounding sector
       if (!bright) {
-        for (j = 0; j < sector->linecount; j++) {
+        for (int j = 0; j < sector->linecount; j++) {
           templine = sector->lines[j];
           temp     = getNextSector(templine, sector);
 

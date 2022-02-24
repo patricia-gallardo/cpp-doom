@@ -114,7 +114,6 @@ static bool IsValidAxis(int axis) {
 
 static int DeviceIndex() {
   SDL_JoystickGUID guid, dev_guid;
-  int              i;
 
   guid = SDL_JoystickGetGUIDFromString(joystick_guid);
 
@@ -129,7 +128,7 @@ static int DeviceIndex() {
   }
 
   // Check all devices to look for one with the expected GUID.
-  for (i = 0; i < SDL_NumJoysticks(); ++i) {
+  for (int i = 0; i < SDL_NumJoysticks(); ++i) {
     dev_guid = SDL_JoystickGetDeviceGUID(i);
     if (!memcmp(&guid, &dev_guid, sizeof(SDL_JoystickGUID))) {
       fmt::printf("I_InitJoystick: Joystick moved to index %d.\n", i);
@@ -245,12 +244,9 @@ static int ReadButtonState(int vbutton) {
 // Get a bitmask of all currently-pressed buttons
 
 static int GetButtonsState() {
-  int i;
-  int result;
+  int result = 0;
 
-  result = 0;
-
-  for (i = 0; i < 20; ++i) {
+  for (int i = 0; i < 20; ++i) {
     if (ReadButtonState(i)) {
       result |= 1 << i;
     }
@@ -330,8 +326,6 @@ void I_UpdateJoystick() {
 }
 
 void I_BindJoystickVariables() {
-  int i;
-
   M_BindIntVariable("use_joystick", &usejoystick);
   M_BindStringVariable("joystick_guid", &joystick_guid);
   M_BindIntVariable("joystick_index", &joystick_index);
@@ -344,7 +338,7 @@ void I_BindJoystickVariables() {
   M_BindIntVariable("joystick_look_axis", &joystick_look_axis);
   M_BindIntVariable("joystick_look_invert", &joystick_look_invert);
 
-  for (i = 0; i < NUM_VIRTUAL_BUTTONS; ++i) {
+  for (int i = 0; i < NUM_VIRTUAL_BUTTONS; ++i) {
     char name[32];
     M_snprintf(name, sizeof(name), "joystick_physical_button%i", i);
     M_BindIntVariable(name, &joystick_physical_buttons[i]);

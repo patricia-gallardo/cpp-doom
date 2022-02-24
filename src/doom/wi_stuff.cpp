@@ -494,7 +494,6 @@ void WI_drawOnLnode(int       n,
 }
 
 void WI_initAnimatedBack() {
-  int      i;
   anim_t * a;
 
   if (g_doomstat_globals->gamemode == commercial)
@@ -503,7 +502,7 @@ void WI_initAnimatedBack() {
   if (wbs->epsd > 2)
     return;
 
-  for (i = 0; i < NUMANIMS[wbs->epsd]; i++) {
+  for (int i = 0; i < NUMANIMS[wbs->epsd]; i++) {
     a = &anims[wbs->epsd][i];
 
     // init variables
@@ -520,7 +519,6 @@ void WI_initAnimatedBack() {
 }
 
 void WI_updateAnimatedBack() {
-  int      i;
   anim_t * a;
 
   if (g_doomstat_globals->gamemode == commercial)
@@ -529,7 +527,7 @@ void WI_updateAnimatedBack() {
   if (wbs->epsd > 2)
     return;
 
-  for (i = 0; i < NUMANIMS[wbs->epsd]; i++) {
+  for (int i = 0; i < NUMANIMS[wbs->epsd]; i++) {
     a = &anims[wbs->epsd][i];
 
     if (bcnt == a->nexttic) {
@@ -563,7 +561,6 @@ void WI_updateAnimatedBack() {
 }
 
 void WI_drawAnimatedBack() {
-  int      i;
   anim_t * a;
 
   if (g_doomstat_globals->gamemode == commercial)
@@ -572,7 +569,7 @@ void WI_drawAnimatedBack() {
   if (wbs->epsd > 2)
     return;
 
-  for (i = 0; i < NUMANIMS[wbs->epsd]; i++) {
+  for (int i = 0; i < NUMANIMS[wbs->epsd]; i++) {
     a = &anims[wbs->epsd][i];
 
     if (a->ctr >= 0)
@@ -742,8 +739,6 @@ void WI_updateShowNextLoc() {
 }
 
 void WI_drawShowNextLoc() {
-
-  int         i;
   int         last;
   extern bool secretexit; // [crispy] Master Level support
 
@@ -761,7 +756,7 @@ void WI_drawShowNextLoc() {
     last = (wbs->last == 8 || wbs->last == 9) ? wbs->next - 1 : wbs->last; // [crispy] support E1M10 "Sewers"
 
     // draw a splat on taken cities.
-    for (i = 0; i <= last; i++)
+    for (int i = 0; i <= last; i++)
       WI_drawOnLnode(i, splat);
 
     // splat the secret level?
@@ -794,10 +789,9 @@ void WI_drawNoState() {
 }
 
 int WI_fragSum(int playernum) {
-  int i;
   int frags_local = 0;
 
-  for (i = 0; i < MAXPLAYERS; i++) {
+  for (int i = 0; i < MAXPLAYERS; i++) {
     if (g_doomstat_globals->playeringame[i]
         && i != playernum) {
       frags_local += plrs[playernum].frags[i];
@@ -817,19 +811,15 @@ static int dm_frags[MAXPLAYERS][MAXPLAYERS];
 static int dm_totals[MAXPLAYERS];
 
 void WI_initDeathmatchStats() {
-
-  int i;
-  int j;
-
   state           = StatCount;
   acceleratestage = 0;
   dm_state        = 1;
 
   cnt_pause = TICRATE;
 
-  for (i = 0; i < MAXPLAYERS; i++) {
+  for (int i = 0; i < MAXPLAYERS; i++) {
     if (g_doomstat_globals->playeringame[i]) {
-      for (j = 0; j < MAXPLAYERS; j++)
+      for (int j = 0; j < MAXPLAYERS; j++)
         if (g_doomstat_globals->playeringame[j])
           dm_frags[i][j] = 0;
 
@@ -841,10 +831,6 @@ void WI_initDeathmatchStats() {
 }
 
 void WI_updateDeathmatchStats() {
-
-  int i;
-  int j;
-
   bool stillticking;
 
   WI_updateAnimatedBack();
@@ -852,9 +838,9 @@ void WI_updateDeathmatchStats() {
   if (acceleratestage && dm_state != 4) {
     acceleratestage = 0;
 
-    for (i = 0; i < MAXPLAYERS; i++) {
+    for (int i = 0; i < MAXPLAYERS; i++) {
       if (g_doomstat_globals->playeringame[i]) {
-        for (j = 0; j < MAXPLAYERS; j++)
+        for (int j = 0; j < MAXPLAYERS; j++)
           if (g_doomstat_globals->playeringame[j])
             dm_frags[i][j] = plrs[i].frags[j];
 
@@ -872,9 +858,9 @@ void WI_updateDeathmatchStats() {
 
     stillticking = false;
 
-    for (i = 0; i < MAXPLAYERS; i++) {
+    for (int i = 0; i < MAXPLAYERS; i++) {
       if (g_doomstat_globals->playeringame[i]) {
-        for (j = 0; j < MAXPLAYERS; j++) {
+        for (int j = 0; j < MAXPLAYERS; j++) {
           if (g_doomstat_globals->playeringame[j]
               && dm_frags[i][j] != plrs[i].frags[j]) {
             if (plrs[i].frags[j] < 0)
@@ -922,9 +908,6 @@ void WI_updateDeathmatchStats() {
 }
 
 void WI_drawDeathmatchStats() {
-
-  int i;
-  int j;
   int x;
   int y;
   int w;
@@ -947,7 +930,7 @@ void WI_drawDeathmatchStats() {
   x = DM_MATRIXX + DM_SPACINGX;
   y = DM_MATRIXY;
 
-  for (i = 0; i < MAXPLAYERS; i++) {
+  for (int i = 0; i < MAXPLAYERS; i++) {
     if (g_doomstat_globals->playeringame[i]) {
       V_DrawPatch(x - SHORT(patches[i]->width) / 2,
                   DM_MATRIXY - WI_SPACINGY,
@@ -980,11 +963,11 @@ void WI_drawDeathmatchStats() {
   y = DM_MATRIXY + 10;
   w = SHORT(num[0]->width);
 
-  for (i = 0; i < MAXPLAYERS; i++) {
+  for (int i = 0; i < MAXPLAYERS; i++) {
     x = DM_MATRIXX + DM_SPACINGX;
 
     if (g_doomstat_globals->playeringame[i]) {
-      for (j = 0; j < MAXPLAYERS; j++) {
+      for (int j = 0; j < MAXPLAYERS; j++) {
         if (g_doomstat_globals->playeringame[j])
           WI_drawNum(x + w, y, dm_frags[i][j], 2);
 
@@ -1001,16 +984,13 @@ static int dofrags;
 static int ng_state;
 
 void WI_initNetgameStats() {
-
-  int i;
-
   state           = StatCount;
   acceleratestage = 0;
   ng_state        = 1;
 
   cnt_pause = TICRATE;
 
-  for (i = 0; i < MAXPLAYERS; i++) {
+  for (int i = 0; i < MAXPLAYERS; i++) {
     if (!g_doomstat_globals->playeringame[i])
       continue;
 
@@ -1026,7 +1006,6 @@ void WI_initNetgameStats() {
 
 void WI_updateNetgameStats() {
 
-  int i;
   int fsum;
 
   bool stillticking;
@@ -1036,7 +1015,7 @@ void WI_updateNetgameStats() {
   if (acceleratestage && ng_state != 10) {
     acceleratestage = 0;
 
-    for (i = 0; i < MAXPLAYERS; i++) {
+    for (int i = 0; i < MAXPLAYERS; i++) {
       if (!g_doomstat_globals->playeringame[i])
         continue;
 
@@ -1057,7 +1036,7 @@ void WI_updateNetgameStats() {
 
     stillticking = false;
 
-    for (i = 0; i < MAXPLAYERS; i++) {
+    for (int i = 0; i < MAXPLAYERS; i++) {
       if (!g_doomstat_globals->playeringame[i])
         continue;
 
@@ -1079,7 +1058,7 @@ void WI_updateNetgameStats() {
 
     stillticking = false;
 
-    for (i = 0; i < MAXPLAYERS; i++) {
+    for (int i = 0; i < MAXPLAYERS; i++) {
       if (!g_doomstat_globals->playeringame[i])
         continue;
 
@@ -1099,7 +1078,7 @@ void WI_updateNetgameStats() {
 
     stillticking = false;
 
-    for (i = 0; i < MAXPLAYERS; i++) {
+    for (int i = 0; i < MAXPLAYERS; i++) {
       if (!g_doomstat_globals->playeringame[i])
         continue;
 
@@ -1121,7 +1100,7 @@ void WI_updateNetgameStats() {
 
     stillticking = false;
 
-    for (i = 0; i < MAXPLAYERS; i++) {
+    for (int i = 0; i < MAXPLAYERS; i++) {
       if (!g_doomstat_globals->playeringame[i])
         continue;
 
@@ -1154,7 +1133,6 @@ void WI_updateNetgameStats() {
 }
 
 void WI_drawNetgameStats() {
-  int i;
   int x;
   int y;
   int pwidth = SHORT(percent->width);
@@ -1187,7 +1165,7 @@ void WI_drawNetgameStats() {
   // draw stats
   y = NG_STATSY + SHORT(kills->height);
 
-  for (i = 0; i < MAXPLAYERS; i++) {
+  for (int i = 0; i < MAXPLAYERS; i++) {
     if (!g_doomstat_globals->playeringame[i])
       continue;
 
@@ -1490,33 +1468,34 @@ using load_callback_t = void (*)(const char *, patch_t **);
 // lumps to be loaded/unloaded into memory.
 
 static void WI_loadUnloadData(load_callback_t callback) {
-  int      i, j;
   char     name[9];
   anim_t * a;
 
   if (g_doomstat_globals->nervewadfile && g_doomstat_globals->gamemission == pack_nerve) {
-    for (i = 0; i < 9; i++) {
-      DEH_snprintf(name, 9, "NWILV%2.2d", i);
-      callback(name, &lnames[i]);
+    int index = 0;
+    for (index = 0; index < 9; index++) {
+      DEH_snprintf(name, 9, "NWILV%2.2d", index);
+      callback(name, &lnames[index]);
     }
-    for (; i < NUMCMAPS; i++) {
-      DEH_snprintf(name, 9, "CWILV%2.2d", i);
-      callback(name, &lnames[i]);
+    for (; index < NUMCMAPS; index++) {
+      DEH_snprintf(name, 9, "CWILV%2.2d", index);
+      callback(name, &lnames[index]);
     }
   } else if (g_doomstat_globals->gamemode == commercial) {
-    for (i = 0; i < NUMCMAPS; i++) {
+    for (int i = 0; i < NUMCMAPS; i++) {
       DEH_snprintf(name, 9, "CWILV%2.2d", i);
       callback(name, &lnames[i]);
     }
   } else {
-    for (i = 0; i < NUMMAPS; i++) {
-      DEH_snprintf(name, 9, "WILV%d%d", wbs->epsd, i);
-      callback(name, &lnames[i]);
+    int index = 0;
+    for (index = 0; index < NUMMAPS; index++) {
+      DEH_snprintf(name, 9, "WILV%d%d", wbs->epsd, index);
+      callback(name, &lnames[index]);
     }
     // [crispy] special-casing for E1M10 "Sewers" support
     if (crispy->havee1m10) {
       DEH_snprintf(name, 9, "SEWERS");
-      callback(name, &lnames[i]);
+      callback(name, &lnames[index]);
     }
 
     // you are here
@@ -1529,17 +1508,17 @@ static void WI_loadUnloadData(load_callback_t callback) {
     callback(DEH_String("WISPLAT"), &splat[0]);
 
     if (wbs->epsd < 3) {
-      for (j = 0; j < NUMANIMS[wbs->epsd]; j++) {
+      for (int j = 0; j < NUMANIMS[wbs->epsd]; j++) {
         a = &anims[wbs->epsd][j];
-        for (i = 0; i < a->nanims; i++) {
+        for (index = 0; index < a->nanims; index++) {
           // MONDO HACK!
           if (wbs->epsd != 1 || j != 8) {
             // animations
-            DEH_snprintf(name, 9, "WIA%d%.2d%.2d", wbs->epsd, j, i);
-            callback(name, &a->p[i]);
+            DEH_snprintf(name, 9, "WIA%d%.2d%.2d", wbs->epsd, j, index);
+            callback(name, &a->p[index]);
           } else {
             // HACK ALERT!
-            a->p[i] = anims[1][4].p[i];
+            a->p[index] = anims[1][4].p[index];
           }
         }
       }
@@ -1552,7 +1531,7 @@ static void WI_loadUnloadData(load_callback_t callback) {
   else
     wiminus = nullptr;
 
-  for (i = 0; i < 10; i++) {
+  for (int i = 0; i < 10; i++) {
     // numbers 0-9
     DEH_snprintf(name, 9, "WINUM%d", i);
     callback(name, &num[i]);
@@ -1611,7 +1590,7 @@ static void WI_loadUnloadData(load_callback_t callback) {
   // "total"
   callback(DEH_String("WIMSTT"), &total);
 
-  for (i = 0; i < MAXPLAYERS; i++) {
+  for (int i = 0; i < MAXPLAYERS; i++) {
     // "1,2,3,4"
     DEH_snprintf(name, 9, "STPB%d", i);
     callback(name, &patches[i]);

@@ -624,34 +624,34 @@ int W_MergeDump(const char * file) {
   // [crispy] write lumps to file, starting at offset 12
   fseek(fp, 12, SEEK_SET);
   char *   lump_p = nullptr;
-  uint32_t i      = 0;
-  for (i = 0; i < numlumps; i++) {
-    dir[i].pos  = LONG(ftell(fp));
-    dir[i].size = LONG(lumpinfo[i]->size);
+  uint32_t index  = 0;
+  for (index = 0; index < numlumps; index++) {
+    dir[index].pos  = LONG(ftell(fp));
+    dir[index].size = LONG(lumpinfo[index]->size);
     // [crispy] lump names are zero-byte padded
-    std::memset(dir[i].name, 0, 8);
-    strncpy(dir[i].name, lumpinfo[i]->name, 8);
+    std::memset(dir[index].name, 0, 8);
+    strncpy(dir[index].name, lumpinfo[index]->name, 8);
 
     // [crispy] avoid flooding Doom's Zone Memory
-    lump_p = static_cast<decltype(lump_p)>(I_Realloc(lump_p, static_cast<size_t>(lumpinfo[i]->size)));
-    W_ReadLump(static_cast<lumpindex_t>(i), lump_p);
-    fwrite(lump_p, 1, static_cast<size_t>(lumpinfo[i]->size), fp);
+    lump_p = static_cast<decltype(lump_p)>(I_Realloc(lump_p, static_cast<size_t>(lumpinfo[index]->size)));
+    W_ReadLump(static_cast<lumpindex_t>(index), lump_p);
+    fwrite(lump_p, 1, static_cast<size_t>(lumpinfo[index]->size), fp);
   }
   free(lump_p);
 
   // [crispy] write directory
   uint32_t dir_p = LONG(ftell(fp));
-  fwrite(dir, sizeof(*dir), i, fp);
+  fwrite(dir, sizeof(*dir), index, fp);
   free(dir);
 
   // [crispy] write WAD header
   fseek(fp, 0, SEEK_SET);
   fwrite("IWAD", 1, 4, fp);
-  i = LONG(i);
-  fwrite(&i, 4, 1, fp);
+  index = LONG(index);
+  fwrite(&index, 4, 1, fp);
   fwrite(&dir_p, 4, 1, fp);
 
   fclose(fp);
 
-  return static_cast<int>(i);
+  return static_cast<int>(index);
 }

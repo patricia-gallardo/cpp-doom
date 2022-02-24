@@ -116,7 +116,6 @@ void SetupWindow() {
   txt_window_action_t * pwn;
   txt_label_t *         toplabel;
   char                  buf[100];
-  int                   i;
 
   window = TXT_NewWindow("Window test");
 
@@ -134,7 +133,7 @@ void SetupWindow() {
   // TXT_AddWidget(window, TXT_NewScrollPane(15, 4, table));
   TXT_AddWidget(window, table);
 
-  for (i = 0; i < 3; ++i) {
+  for (int i = 0; i < 3; ++i) {
     TXT_snprintf(buf, sizeof(buf), "Option %i in a table:", i + 1);
     TXT_AddWidget(table, TXT_NewLabel(buf));
     TXT_snprintf(buf, sizeof(buf), " Button %i-1 ", i + 1);
@@ -169,7 +168,7 @@ void SetupWindow() {
   rightpane = TXT_NewTable(1);
   TXT_AddWidget(table, rightpane);
 
-  for (i = 0; i < 3; ++i) {
+  for (int i = 0; i < 3; ++i) {
     txt_radiobutton_t * rbut;
 
     rbut = TXT_NewRadioButton(radio_values[i], &radiobutton_value, i);

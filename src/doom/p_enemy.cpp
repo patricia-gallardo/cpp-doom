@@ -707,7 +707,6 @@ void A_PosAttack(mobj_t * actor) {
 }
 
 void A_SPosAttack(mobj_t * actor) {
-  int i;
   int angle;
   int bangle;
   int damage;
@@ -721,7 +720,7 @@ void A_SPosAttack(mobj_t * actor) {
   bangle = static_cast<int>(actor->angle);
   slope  = P_AimLineAttack(actor, static_cast<angle_t>(bangle), MISSILERANGE);
 
-  for (i = 0; i < 3; i++) {
+  for (int i = 0; i < 3; i++) {
     angle  = bangle + (P_SubRandom() << 20);
     damage = ((P_Random() % 5) + 1) * 3;
     P_LineAttack(actor, static_cast<angle_t>(angle), MISSILERANGE, slope, damage);
@@ -1495,7 +1494,6 @@ void A_BossDeath(mobj_t * mo) {
   thinker_t * th;
   mobj_t *    mo2;
   line_t      junk;
-  int         i;
 
   if (g_doomstat_globals->gamemode == commercial) {
     if (g_doomstat_globals->gamemap != 7 &&
@@ -1513,11 +1511,12 @@ void A_BossDeath(mobj_t * mo) {
   }
 
   // make sure there is a player alive for victory
-  for (i = 0; i < MAXPLAYERS; i++)
-    if (g_doomstat_globals->playeringame[i] && g_doomstat_globals->players[i].health > 0)
+  int index = 0;
+  for (index = 0; index < MAXPLAYERS; index++)
+    if (g_doomstat_globals->playeringame[index] && g_doomstat_globals->players[index].health > 0)
       break;
 
-  if (i == MAXPLAYERS)
+  if (index == MAXPLAYERS)
     return; // no one left alive, so do not end game
 
   // scan the remaining thinkers to see
