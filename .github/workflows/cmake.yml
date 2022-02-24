@@ -105,6 +105,5 @@ jobs:
 
     - name: Demo Check
       if: matrix.configurations.os == 'ubuntu-20.04' && matrix.cmake-build-target == 'crispy-doom'
-      working-directory: ${{runner.workspace}}
       shell: bash
       run: sudo ./demo-check.sh
