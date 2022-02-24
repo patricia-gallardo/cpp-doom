@@ -24,14 +24,14 @@
 
 enum thread_state_t
 {
-    THREAD_STATE_STOPPED,
-    THREAD_STATE_RUNNING,
-    THREAD_STATE_STOPPING,
+  THREAD_STATE_STOPPED,
+  THREAD_STATE_RUNNING,
+  THREAD_STATE_STOPPING,
 };
 
-static SDL_Thread *timer_thread = nullptr;
+static SDL_Thread    *timer_thread = nullptr;
 static thread_state_t timer_thread_state;
-static uint64_t current_time;
+static uint64_t       current_time;
 
 // If non-zero, callbacks are currently paused.
 
@@ -47,7 +47,7 @@ static uint64_t pause_offset = 0;
 // or current_time is being accessed.
 
 static opl_callback_queue_t *callback_queue;
-static SDL_mutex *callback_queue_mutex;
+static SDL_mutex            *callback_queue_mutex;
 
 // The timer mutex is held while timer callback functions are being
 // invoked, so that the calling code can prevent clashes.
@@ -58,191 +58,167 @@ static SDL_mutex *timer_mutex;
 // to be invoked.  Otherwise, next_time is set to the time when the
 // timer thread must wake up again to check.
 
-static int CallbackWaiting(uint64_t *next_time)
-{
-    // If paused, just wait in 50ms increments until unpaused.
-    // Update pause_offset so after we unpause, the callback 
-    // times will be right.
+static int CallbackWaiting(uint64_t *next_time) {
+  // If paused, just wait in 50ms increments until unpaused.
+  // Update pause_offset so after we unpause, the callback
+  // times will be right.
 
-    if (opl_timer_paused)
-    {
-        *next_time = current_time + 50 * OPL_MS;
-        pause_offset += 50 * OPL_MS;
-        return 0;
-    }
+  if (opl_timer_paused) {
+    *next_time = current_time + 50 * OPL_MS;
+    pause_offset += 50 * OPL_MS;
+    return 0;
+  }
 
-    // If there are no queued callbacks, sleep for 50ms at a time
-    // until a callback is added.
+  // If there are no queued callbacks, sleep for 50ms at a time
+  // until a callback is added.
 
-    if (OPL_Queue_IsEmpty(callback_queue))
-    {
-        *next_time = current_time + 50 * OPL_MS;
-        return 0;
-    }
+  if (OPL_Queue_IsEmpty(callback_queue)) {
+    *next_time = current_time + 50 * OPL_MS;
+    return 0;
+  }
 
-    // Read the time of the first callback in the queue.
-    // If the time for the callback has not yet arrived,
-    // we must sleep until the callback time.
+  // Read the time of the first callback in the queue.
+  // If the time for the callback has not yet arrived,
+  // we must sleep until the callback time.
 
-    *next_time = OPL_Queue_Peek(callback_queue) + pause_offset;
+  *next_time = OPL_Queue_Peek(callback_queue) + pause_offset;
 
-    return *next_time <= current_time;
+  return *next_time <= current_time;
 }
 
-static uint64_t GetNextTime()
-{
-    opl_callback_t callback {};
-    void          *callback_data = nullptr;
-    uint64_t       next_time     = 0;
-    int            have_callback = 0;
+static uint64_t GetNextTime() {
+  opl_callback_t callback {};
+  void          *callback_data = nullptr;
+  uint64_t       next_time     = 0;
+  int            have_callback = 0;
 
-    // Keep running through callbacks until there are none ready to
-    // run. When we run out of callbacks, next_time will be set.
+  // Keep running through callbacks until there are none ready to
+  // run. When we run out of callbacks, next_time will be set.
 
-    do
-    {
-        SDL_LockMutex(callback_queue_mutex);
+  do {
+    SDL_LockMutex(callback_queue_mutex);
 
-        // Check if the callback at the head of the list is ready to
-        // be invoked.  If so, pop from the head of the queue.
+    // Check if the callback at the head of the list is ready to
+    // be invoked.  If so, pop from the head of the queue.
 
-        have_callback = CallbackWaiting(&next_time);
+    have_callback = CallbackWaiting(&next_time);
 
-        if (have_callback)
-        {
-            OPL_Queue_Pop(callback_queue, &callback, &callback_data);
-        }
-
-        SDL_UnlockMutex(callback_queue_mutex);
-
-        // Now invoke the callback, if we have one.
-        // The timer mutex is held while the callback is invoked.
-
-        if (have_callback)
-        {
-            SDL_LockMutex(timer_mutex);
-            callback(callback_data);
-            SDL_UnlockMutex(timer_mutex);
-        }
-    } while (have_callback);
-
-    return next_time;
-}
-
-static int ThreadFunction(void *)
-{
-    // Keep running until OPL_Timer_StopThread is called.
-
-    while (timer_thread_state == THREAD_STATE_RUNNING)
-    {
-        // Get the next time that we must sleep until, and
-        // wait until that time.
-
-        uint64_t next_time = GetNextTime();
-        uint64_t now = SDL_GetTicks() * OPL_MS;
-
-        if (next_time > now)
-        {
-            auto ms = static_cast<Uint32>((next_time - now) / OPL_MS);
-            SDL_Delay(ms);
-        }
-
-        // Update the current time.
-
-        SDL_LockMutex(callback_queue_mutex);
-        current_time = next_time;
-        SDL_UnlockMutex(callback_queue_mutex);
+    if (have_callback) {
+      OPL_Queue_Pop(callback_queue, &callback, &callback_data);
     }
 
+    SDL_UnlockMutex(callback_queue_mutex);
+
+    // Now invoke the callback, if we have one.
+    // The timer mutex is held while the callback is invoked.
+
+    if (have_callback) {
+      SDL_LockMutex(timer_mutex);
+      callback(callback_data);
+      SDL_UnlockMutex(timer_mutex);
+    }
+  } while (have_callback);
+
+  return next_time;
+}
+
+static int ThreadFunction(void *) {
+  // Keep running until OPL_Timer_StopThread is called.
+
+  while (timer_thread_state == THREAD_STATE_RUNNING) {
+    // Get the next time that we must sleep until, and
+    // wait until that time.
+
+    uint64_t next_time = GetNextTime();
+    uint64_t now       = SDL_GetTicks() * OPL_MS;
+
+    if (next_time > now) {
+      auto ms = static_cast<Uint32>((next_time - now) / OPL_MS);
+      SDL_Delay(ms);
+    }
+
+    // Update the current time.
+
+    SDL_LockMutex(callback_queue_mutex);
+    current_time = next_time;
+    SDL_UnlockMutex(callback_queue_mutex);
+  }
+
+  timer_thread_state = THREAD_STATE_STOPPED;
+
+  return 0;
+}
+
+static void InitResources() {
+  callback_queue       = OPL_Queue_Create();
+  timer_mutex          = SDL_CreateMutex();
+  callback_queue_mutex = SDL_CreateMutex();
+}
+
+static void FreeResources() {
+  OPL_Queue_Destroy(callback_queue);
+  SDL_DestroyMutex(callback_queue_mutex);
+  SDL_DestroyMutex(timer_mutex);
+}
+
+int OPL_Timer_StartThread() {
+  InitResources();
+
+  timer_thread_state = THREAD_STATE_RUNNING;
+  current_time       = SDL_GetTicks();
+  opl_timer_paused   = 0;
+  pause_offset       = 0;
+
+  timer_thread = SDL_CreateThread(ThreadFunction, "OPL timer thread", nullptr);
+
+  if (timer_thread == nullptr) {
     timer_thread_state = THREAD_STATE_STOPPED;
+    FreeResources();
 
     return 0;
+  }
+
+  return 1;
 }
 
-static void InitResources()
-{
-    callback_queue = OPL_Queue_Create();
-    timer_mutex = SDL_CreateMutex();
-    callback_queue_mutex = SDL_CreateMutex();
+void OPL_Timer_StopThread() {
+  timer_thread_state = THREAD_STATE_STOPPING;
+
+  while (timer_thread_state != THREAD_STATE_STOPPED) {
+    SDL_Delay(1);
+  }
+
+  FreeResources();
 }
 
-static void FreeResources()
-{
-    OPL_Queue_Destroy(callback_queue);
-    SDL_DestroyMutex(callback_queue_mutex);
-    SDL_DestroyMutex(timer_mutex);
+void OPL_Timer_SetCallback(uint64_t us, opl_callback_t callback, void *data) {
+  SDL_LockMutex(callback_queue_mutex);
+  OPL_Queue_Push(callback_queue, callback, data, current_time + us - pause_offset);
+  SDL_UnlockMutex(callback_queue_mutex);
 }
 
-int OPL_Timer_StartThread()
-{
-    InitResources();
-
-    timer_thread_state = THREAD_STATE_RUNNING;
-    current_time = SDL_GetTicks();
-    opl_timer_paused = 0;
-    pause_offset = 0;
-
-    timer_thread = SDL_CreateThread(ThreadFunction, "OPL timer thread", nullptr);
-
-    if (timer_thread == nullptr)
-    {
-        timer_thread_state = THREAD_STATE_STOPPED;
-        FreeResources();
-
-        return 0;
-    }
-
-    return 1;
+void OPL_Timer_ClearCallbacks() {
+  SDL_LockMutex(callback_queue_mutex);
+  OPL_Queue_Clear(callback_queue);
+  SDL_UnlockMutex(callback_queue_mutex);
 }
 
-void OPL_Timer_StopThread()
-{
-    timer_thread_state = THREAD_STATE_STOPPING;
-
-    while (timer_thread_state != THREAD_STATE_STOPPED)
-    {
-        SDL_Delay(1);
-    }
-
-    FreeResources();
+void OPL_Timer_AdjustCallbacks(float factor) {
+  SDL_LockMutex(callback_queue_mutex);
+  OPL_Queue_AdjustCallbacks(callback_queue, current_time, factor);
+  SDL_UnlockMutex(callback_queue_mutex);
 }
 
-void OPL_Timer_SetCallback(uint64_t us, opl_callback_t callback, void *data)
-{
-    SDL_LockMutex(callback_queue_mutex);
-    OPL_Queue_Push(callback_queue, callback, data,
-                   current_time + us - pause_offset);
-    SDL_UnlockMutex(callback_queue_mutex);
+void OPL_Timer_Lock() {
+  SDL_LockMutex(timer_mutex);
 }
 
-void OPL_Timer_ClearCallbacks()
-{
-    SDL_LockMutex(callback_queue_mutex);
-    OPL_Queue_Clear(callback_queue);
-    SDL_UnlockMutex(callback_queue_mutex);
+void OPL_Timer_Unlock() {
+  SDL_UnlockMutex(timer_mutex);
 }
 
-void OPL_Timer_AdjustCallbacks(float factor)
-{
-    SDL_LockMutex(callback_queue_mutex);
-    OPL_Queue_AdjustCallbacks(callback_queue, current_time, factor);
-    SDL_UnlockMutex(callback_queue_mutex);
+void OPL_Timer_SetPaused(int paused) {
+  SDL_LockMutex(callback_queue_mutex);
+  opl_timer_paused = paused;
+  SDL_UnlockMutex(callback_queue_mutex);
 }
-
-void OPL_Timer_Lock()
-{
-    SDL_LockMutex(timer_mutex);
-}
-
-void OPL_Timer_Unlock()
-{
-    SDL_UnlockMutex(timer_mutex);
-}
-
-void OPL_Timer_SetPaused(int paused)
-{
-    SDL_LockMutex(callback_queue_mutex);
-    opl_timer_paused = paused;
-    SDL_UnlockMutex(callback_queue_mutex);
-}
-
