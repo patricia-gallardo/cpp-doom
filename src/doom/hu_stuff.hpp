@@ -27,16 +27,15 @@ constexpr char HU_FONTSTART = '!'; // the first font characters
 constexpr char HU_FONTEND   = '_'; // the last font characters
 
 // Calculate # of glyphs in font.
-#define HU_FONTSIZE (HU_FONTEND - HU_FONTSTART + 1)
+constexpr auto HU_FONTSIZE = (HU_FONTEND - HU_FONTSTART + 1);
 
-#define HU_BROADCAST 5
+constexpr auto HU_BROADCAST = 5;
 
-#define HU_MSGX      (0 - DELTAWIDTH)
-#define HU_MSGY      0
-#define HU_MSGWIDTH  64 // in characters
-#define HU_MSGHEIGHT 1  // in lines
+#define HU_MSGX (0 - DELTAWIDTH)
+constexpr auto HU_MSGY      = 0;
+constexpr auto HU_MSGHEIGHT = 1; // in lines
 
-#define HU_MSGTIMEOUT (4 * TICRATE)
+constexpr auto HU_MSGTIMEOUT = (4 * TICRATE);
 
 //
 // HEADS UP TEXT

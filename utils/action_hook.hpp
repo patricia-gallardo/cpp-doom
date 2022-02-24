@@ -143,7 +143,7 @@ constexpr int mobj_player_psp_param_action_hook = alternative_index_v<mobj_playe
 //  function pointer to a routine to handle
 //  an actor.
 using actionf_t = action_hook;
-using think_t = actionf_t;
+using think_t   = actionf_t;
 
 // Doubly linked list of actors.
 struct thinker_t {

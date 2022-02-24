@@ -26,12 +26,12 @@
 enum
 {
   // simple gradual pixel change for 8-bit only
-  wipe_ColorXForm,
+  wipe_ColorXForm [[maybe_unused]],
 
   // weird screen melt
   wipe_Melt,
 
-  wipe_NUMWIPES
+  wipe_NUMWIPES [[maybe_unused]]
 };
 
 int wipe_StartScreen(int x,

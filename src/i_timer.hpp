@@ -19,7 +19,7 @@
 #ifndef __I_TIMER__
 #define __I_TIMER__
 
-#define TICRATE 35
+constexpr auto TICRATE = 35;
 
 // Called by D_DoomLoop,
 // returns current time in tics.

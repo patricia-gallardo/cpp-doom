@@ -382,7 +382,7 @@ void M_BindMenuControls() {
 }
 
 void M_BindChatControls(unsigned int num_players) {
-  char         name[32]; // haleyjd: 20 not large enough - Thank you, come again!
+  char name[32]; // haleyjd: 20 not large enough - Thank you, come again!
 
   M_BindIntVariable("key_multi_msg", &g_m_controls_globals->key_multi_msg);
 

@@ -15,7 +15,6 @@
 // Parses "Cheat" sections in dehacked files
 //
 
-#include <array>
 #include <cstring>
 
 #include "deh_defs.hpp"

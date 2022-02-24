@@ -45,13 +45,13 @@
 // void R_DrawColumn ();
 // void R_DrawFuzzColumn ();
 
-struct maskdraw_t {
+struct [[maybe_unused]] maskdraw_t {
   int x1;
   int x2;
 
-  int column;
-  int topclip;
-  int bottomclip;
+  int                  column;
+  [[maybe_unused]] int topclip;
+  [[maybe_unused]] int bottomclip;
 };
 
 static degenmobj_t laserspot_m = { {} };
@@ -295,7 +295,6 @@ void R_InitSpriteDefs(const char ** namelist) {
 //
 vissprite_t * vissprites = nullptr;
 vissprite_t * vissprite_p;
-int           newvissprite;
 static int    numvissprites;
 
 //

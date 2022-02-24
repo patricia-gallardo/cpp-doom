@@ -46,21 +46,18 @@
 //
 // Locally used constants, shortcuts.
 //
-#define HU_TITLE       (mapnames[(g_doomstat_globals->gameepisode - 1) * 9 + g_doomstat_globals->gamemap - 1])
-#define HU_TITLE2      (mapnames_commercial[g_doomstat_globals->gamemap - 1])
-#define HU_TITLEP      (mapnames_commercial[g_doomstat_globals->gamemap - 1 + 32])
-#define HU_TITLET      (mapnames_commercial[g_doomstat_globals->gamemap - 1 + 64])
-#define HU_TITLEN      (mapnames_commercial[g_doomstat_globals->gamemap - 1 + 96 + 3])
-#define HU_TITLEM      (mapnames_commercial[g_doomstat_globals->gamemap - 1 + 105 + 3])
-#define HU_TITLE_CHEX  (mapnames_chex[(g_doomstat_globals->gameepisode - 1) * 9 + g_doomstat_globals->gamemap - 1])
-#define HU_TITLEHEIGHT 1
-#define HU_TITLEX      (0 - DELTAWIDTH)
-#define HU_TITLEY      (167 - SHORT(hu_font[0]->height))
+#define HU_TITLE      (mapnames[(g_doomstat_globals->gameepisode - 1) * 9 + g_doomstat_globals->gamemap - 1])
+#define HU_TITLE2     (mapnames_commercial[g_doomstat_globals->gamemap - 1])
+#define HU_TITLEP     (mapnames_commercial[g_doomstat_globals->gamemap - 1 + 32])
+#define HU_TITLET     (mapnames_commercial[g_doomstat_globals->gamemap - 1 + 64])
+#define HU_TITLEN     (mapnames_commercial[g_doomstat_globals->gamemap - 1 + 96 + 3])
+#define HU_TITLEM     (mapnames_commercial[g_doomstat_globals->gamemap - 1 + 105 + 3])
+#define HU_TITLE_CHEX (mapnames_chex[(g_doomstat_globals->gameepisode - 1) * 9 + g_doomstat_globals->gamemap - 1])
+#define HU_TITLEX     (0 - DELTAWIDTH)
+#define HU_TITLEY     (167 - SHORT(hu_font[0]->height))
 
-#define HU_INPUTX      HU_MSGX
-#define HU_INPUTY      (HU_MSGY + HU_MSGHEIGHT * (SHORT(hu_font[0]->height) + 1))
-#define HU_INPUTWIDTH  64
-#define HU_INPUTHEIGHT 1
+#define HU_INPUTX HU_MSGX
+#define HU_INPUTY (HU_MSGY + HU_MSGHEIGHT * (SHORT(hu_font[0]->height) + 1))
 
 #define HU_COORDX ((ORIGWIDTH - 7 * hu_font['A' - HU_FONTSTART]->width) + DELTAWIDTH)
 

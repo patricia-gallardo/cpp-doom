@@ -31,7 +31,7 @@
 
 extern bool automapactive; // in AM_map.c
 
-void HUlib_init() {
+[[maybe_unused]] void HUlib_init() {
 }
 
 void HUlib_clearTextLine(hu_textline_t * t) {
@@ -245,7 +245,7 @@ void HUlib_delCharFromIText(hu_itext_t * it) {
     HUlib_delCharFromTextLine(&it->l);
 }
 
-void HUlib_eraseLineFromIText(hu_itext_t * it) {
+[[maybe_unused]] void HUlib_eraseLineFromIText(hu_itext_t * it) {
   while (it->lm != it->l.len)
     HUlib_delCharFromTextLine(&it->l);
 }
@@ -256,8 +256,8 @@ void HUlib_resetIText(hu_itext_t * it) {
   HUlib_clearTextLine(&it->l);
 }
 
-void HUlib_addPrefixToIText(hu_itext_t * it,
-                            char *       str) {
+[[maybe_unused]] void HUlib_addPrefixToIText(hu_itext_t * it,
+                                             char *       str) {
   while (*str)
     HUlib_addCharToTextLine(&it->l, *(str++));
   it->lm = it->l.len;
