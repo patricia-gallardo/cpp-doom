@@ -15,7 +15,7 @@
 #ifndef TXT_MOUSE_INPUT_H
 #define TXT_MOUSE_INPUT_H
 
-typedef struct txt_mouse_input_s txt_mouse_input_t;
+struct txt_mouse_input_t;
 
 #include "txt_widget.hpp"
 
@@ -24,7 +24,7 @@ typedef struct txt_mouse_input_s txt_mouse_input_t;
 // allowing a mouse to be selected.
 //
 
-struct txt_mouse_input_s {
+struct txt_mouse_input_t {
   txt_widget_t widget;
   int *        variable;
   int          check_conflicts;

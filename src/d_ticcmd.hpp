@@ -27,8 +27,7 @@
 // Mainly movements/button commands per game tick,
 // plus a checksum for internal state consistency.
 
-typedef struct
-{
+struct ticcmd_t {
   signed char forwardmove; // *2048 for move
   signed char sidemove;    // *2048 for move
   short       angleturn;   // <<16 for angle delta
@@ -49,6 +48,6 @@ typedef struct
   uint8_t arti;    // artitype_t to use
 
   int lookdir;
-} ticcmd_t;
+};
 
 #endif

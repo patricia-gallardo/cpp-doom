@@ -40,17 +40,16 @@
 #define MEM_ALIGN sizeof(void *)
 #define ZONEID    0x1d4a11
 
-typedef struct memblock_s {
+struct memblock_t {
   int                 size; // including the header and possibly tiny fragments
   void **             user;
   int                 tag; // PU_FREE if this is free
   int                 id;  // should be ZONEID
-  struct memblock_s * next;
-  struct memblock_s * prev;
-} memblock_t;
+  struct memblock_t * next;
+  struct memblock_t * prev;
+};
 
-typedef struct
-{
+struct memzone_t {
   // total bytes malloced, including header
   int size;
 
@@ -58,8 +57,7 @@ typedef struct
   memblock_t blocklist;
 
   memblock_t * rover;
-
-} memzone_t;
+};
 
 static memzone_t * mainzone;
 static bool        zero_on_free;

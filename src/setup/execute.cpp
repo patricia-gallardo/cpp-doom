@@ -45,7 +45,7 @@
 #include "m_config.hpp"
 #include "m_misc.hpp"
 
-struct execute_context_s {
+struct execute_context_t {
   char * response_file;
   FILE * stream;
 };

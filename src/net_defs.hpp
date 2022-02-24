@@ -168,8 +168,7 @@ enum net_master_packet_type_t
 
 // Settings specified when the client connects to the server.
 
-typedef struct
-{
+struct net_connect_data_t {
   int           gamemode;
   int           gamemission;
   int           lowres_turn;
@@ -179,13 +178,12 @@ typedef struct
   sha1_digest_t wad_sha1sum;
   sha1_digest_t deh_sha1sum;
   int           player_class;
-} net_connect_data_t;
+};
 
 // Game settings sent by client to server when initiating game start,
 // and received from the server by clients when the game starts.
 
-typedef struct
-{
+struct net_gamesettings_t {
   int ticdup;
   int extratics;
   int deathmatch;
@@ -211,8 +209,7 @@ typedef struct
   // Hexen player classes:
 
   int player_classes[NET_MAXPLAYERS];
-
-} net_gamesettings_t;
+};
 
 constexpr auto NET_TICDIFF_FORWARD     = (1 << 0);
 constexpr auto NET_TICDIFF_SIDE        = (1 << 1);
@@ -223,26 +220,23 @@ constexpr auto NET_TICDIFF_CHATCHAR    = (1 << 5);
 constexpr auto NET_TICDIFF_RAVEN       = (1 << 6);
 constexpr auto NET_TICDIFF_STRIFE      = (1 << 7);
 
-typedef struct
-{
+struct net_ticdiff_t {
   unsigned int diff;
   ticcmd_t     cmd;
-} net_ticdiff_t;
+};
 
 // Complete set of ticcmds from all players
 
-typedef struct
-{
+struct net_full_ticcmd_t {
   signed int    latency;
   unsigned int  seq;
   bool          playeringame[NET_MAXPLAYERS];
   net_ticdiff_t cmds[NET_MAXPLAYERS];
-} net_full_ticcmd_t;
+};
 
 // Data sent in response to server queries
 
-typedef struct
-{
+struct net_querydata_t {
   const char *   version;
   int            server_state;
   int            num_players;
@@ -251,12 +245,11 @@ typedef struct
   int            gamemission;
   const char *   description;
   net_protocol_t protocol;
-} net_querydata_t;
+};
 
 // Data sent by the server while waiting for the game to start.
 
-typedef struct
-{
+struct net_waitdata_t {
   int           num_players;
   int           num_drones;
   int           ready_players;
@@ -268,6 +261,6 @@ typedef struct
   sha1_digest_t wad_sha1sum;
   sha1_digest_t deh_sha1sum;
   int           is_freedoom;
-} net_waitdata_t;
+};
 
 #endif /* #ifndef NET_DEFS_H */

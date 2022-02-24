@@ -63,8 +63,7 @@ enum default_type_t
   DEFAULT_KEY,
 };
 
-typedef struct
-{
+struct default_t {
   // Name of the variable
   const char * name;
 
@@ -92,14 +91,13 @@ typedef struct
   // If true, this config variable has been bound to a variable
   // and is being used.
   bool bound;
-} default_t;
+};
 
-typedef struct
-{
+struct default_collection_t {
   default_t *  defaults;
   int          numdefaults;
   const char * filename;
-} default_collection_t;
+};
 
 #define CONFIG_VARIABLE_GENERIC(name, type) \
   {                                         \

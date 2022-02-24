@@ -72,19 +72,17 @@
 //  * If a PWAD reuses music from an IWAD (even from a different game), we get
 //    the high quality version of the music automatically (neat!)
 
-typedef struct
-{
+struct subst_music_t {
   const char * hash_prefix;
   const char * filename;
-} subst_music_t;
+};
 
 // Structure containing parsed metadata read from a digital music track:
-typedef struct
-{
+struct file_metadata_t {
   bool         valid;
   unsigned int samplerate_hz;
   int          start_time, end_time;
-} file_metadata_t;
+};
 
 static subst_music_t * subst_music     = nullptr;
 static unsigned int    subst_music_len = 0;

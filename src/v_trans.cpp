@@ -113,11 +113,11 @@ then, to also use this routine to convert colors *to* gray?
 
 constexpr auto CTOLERANCE = (0.0001);
 
-typedef struct vect {
+struct vect {
   float x;
   float y;
   float z;
-} vect;
+};
 
 static void hsv_to_rgb(vect * hsv, vect * rgb) {
   float h = hsv->x;

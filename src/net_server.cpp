@@ -62,8 +62,7 @@ enum net_server_state_t
   SERVER_IN_GAME,
 };
 
-typedef struct
-{
+struct net_client_t {
   bool             active;
   int              player_number;
   net_addr_t *     addr;
@@ -119,13 +118,11 @@ typedef struct
   // Player class (for Hexen)
 
   int player_class;
-
-} net_client_t;
+};
 
 // structure used for the recv window
 
-typedef struct
-{
+struct net_client_recv_t {
   // Whether this tic has been received yet
 
   bool active;
@@ -141,7 +138,7 @@ typedef struct
   // Tic data itself
 
   net_ticdiff_t diff;
-} net_client_recv_t;
+};
 
 static net_server_state_t server_state;
 static bool               server_initialized = false;

@@ -38,18 +38,16 @@ enum section_t
   SECTION_SPRITES,
 };
 
-typedef struct
-{
+struct searchlist_t {
   lumpinfo_t ** lumps;
   int           numlumps;
-} searchlist_t;
+};
 
-typedef struct
-{
+struct sprite_frame_t {
   char         sprname[4];
   char         frame;
   lumpinfo_t * angle_lumps[8];
-} sprite_frame_t;
+};
 
 static searchlist_t iwad;
 static searchlist_t iwad_sprites;
@@ -604,11 +602,11 @@ void W_NWTDashMerge(const char * filename) {
 // [crispy] dump merged WAD data into a new IWAD file
 int W_MergeDump(const char * file) {
   // [crispy] WAD directory structure
-  typedef struct {
+  struct directory_t {
     uint32_t pos;
     uint32_t size;
     char     name[8];
-  } directory_t;
+  };
   directory_t * dir = nullptr;
 
   // [crispy] open file for writing

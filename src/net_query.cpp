@@ -65,8 +65,7 @@ enum query_target_state_t
   QUERY_TARGET_NO_RESPONSE
 };
 
-typedef struct
-{
+struct query_target_t {
   query_target_type_t  type;
   query_target_state_t state;
   net_addr_t *         addr;
@@ -75,7 +74,7 @@ typedef struct
   unsigned int         query_time;
   unsigned int         query_attempts;
   bool                 printed;
-} query_target_t;
+};
 
 static bool registered_with_master = false;
 static bool got_master_response    = false;

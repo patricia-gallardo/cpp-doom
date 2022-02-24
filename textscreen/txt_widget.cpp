@@ -22,12 +22,11 @@
 #include <vector>
 #include <memory>
 
-typedef struct
-{
+struct txt_callback_t {
   char *              signal_name;
   TxtWidgetSignalFunc func;
   void *              user_data;
-} txt_callback_t;
+};
 
 struct [[maybe_unused]] txt_callback_table_s {
   std::vector<txt_callback_t> callbacks;

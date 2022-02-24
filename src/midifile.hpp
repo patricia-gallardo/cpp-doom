@@ -75,8 +75,7 @@ enum midi_meta_event_type_t
   MIDI_META_SEQUENCER_SPECIFIC = 0x7f,
 };
 
-typedef struct
-{
+struct midi_meta_event_data_t {
   // Meta event type:
 
   unsigned int type;
@@ -88,10 +87,9 @@ typedef struct
   // Meta event data:
 
   uint8_t * data;
-} midi_meta_event_data_t;
+};
 
-typedef struct
-{
+struct midi_sysex_event_data_t {
   // Length:
 
   unsigned int length;
@@ -99,10 +97,9 @@ typedef struct
   // Event data:
 
   uint8_t * data;
-} midi_sysex_event_data_t;
+};
 
-typedef struct
-{
+struct midi_channel_event_data_t {
   // The channel number to which this applies:
 
   unsigned int channel;
@@ -111,10 +108,9 @@ typedef struct
 
   unsigned int param1;
   unsigned int param2;
-} midi_channel_event_data_t;
+};
 
-typedef struct
-{
+struct midi_event_t {
   // Time between the previous event and this event.
   unsigned int delta_time;
 
@@ -126,7 +122,7 @@ typedef struct
     midi_meta_event_data_t    meta;
     midi_sysex_event_data_t   sysex;
   } data;
-} midi_event_t;
+};
 
 // Load a MIDI file.
 

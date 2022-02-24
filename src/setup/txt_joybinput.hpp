@@ -15,7 +15,7 @@
 #ifndef TXT_JOYB_INPUT_H
 #define TXT_JOYB_INPUT_H
 
-typedef struct txt_joystick_input_s txt_joystick_input_t;
+struct txt_joystick_input_t;
 
 #include "txt_widget.hpp"
 #include "txt_window.hpp"
@@ -25,7 +25,7 @@ typedef struct txt_joystick_input_s txt_joystick_input_t;
 // allowing a joystick button to be pressed to select it.
 //
 
-struct txt_joystick_input_s {
+struct txt_joystick_input_t {
   txt_widget_t   widget;
   int *          variable;
   txt_window_t * prompt_window;

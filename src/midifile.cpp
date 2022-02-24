@@ -56,8 +56,7 @@ typedef PACKED_STRUCT(
 #pragma pack(pop)
 #endif
 
-typedef struct
-{
+struct midi_track_t {
   // Length in bytes:
 
   unsigned int data_len;
@@ -66,7 +65,7 @@ typedef struct
 
   midi_event_t * events;
   size_t         num_events;
-} midi_track_t;
+};
 
 struct midi_track_iter_s {
   midi_track_t * track;

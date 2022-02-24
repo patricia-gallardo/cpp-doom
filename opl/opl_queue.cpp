@@ -27,12 +27,11 @@
 
 constexpr auto MAX_OPL_QUEUE = 64;
 
-typedef struct
-{
+struct opl_queue_entry_t {
   opl_callback_t callback;
   void *         data;
   uint64_t       time;
-} opl_queue_entry_t;
+};
 
 struct [[maybe_unused]] opl_callback_queue_s {
   opl_queue_entry_t entries[MAX_OPL_QUEUE];

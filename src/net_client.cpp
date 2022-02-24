@@ -57,8 +57,7 @@ enum net_clientstate_t
 
 // Type of structure used in the receive window
 
-typedef struct
-{
+struct net_server_recv_t {
   // Whether this tic has been received yet
 
   bool active;
@@ -70,13 +69,11 @@ typedef struct
   // Tic data from server
 
   net_full_ticcmd_t cmd;
-
-} net_server_recv_t;
+};
 
 // Type of structure used in the send window
 
-typedef struct
-{
+struct net_server_send_t {
   // Whether this slot is active yet
 
   bool active;
@@ -92,7 +89,7 @@ typedef struct
   // Ticcmd diff
 
   net_ticdiff_t cmd;
-} net_server_send_t;
+};
 
 extern fixed_t offsetms;
 

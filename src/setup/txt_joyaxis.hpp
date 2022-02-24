@@ -15,7 +15,7 @@
 #ifndef TXT_JOY_AXIS_H
 #define TXT_JOY_AXIS_H
 
-typedef struct txt_joystick_axis_s txt_joystick_axis_t;
+struct txt_joystick_axis_t;
 
 enum txt_joystick_axis_direction_t
 {
@@ -42,7 +42,7 @@ using txt_joystick_axis_callback_t = void (*)();
 // A joystick axis.
 //
 
-struct txt_joystick_axis_s {
+struct txt_joystick_axis_t {
   txt_widget_t                  widget;
   int *                         axis, *invert;
   txt_joystick_axis_direction_t dir;
