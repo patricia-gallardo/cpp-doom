@@ -16,14 +16,12 @@
 //	Refresh module, BSP traversal and handling.
 //
 
-
 #ifndef __R_BSP__
 #define __R_BSP__
 
-
-extern seg_t *   curline;
-extern side_t *  sidedef;
-extern line_t *  linedef;
+extern seg_t    *curline;
+extern side_t   *sidedef;
+extern line_t   *linedef;
 extern sector_t *frontsector;
 extern sector_t *backsector;
 
@@ -46,16 +44,12 @@ extern lighttable_t **hscalelight;
 extern lighttable_t **vscalelight;
 extern lighttable_t **dscalelight;
 
-
 using drawfunc_t = void (*)(int, int);
-
 
 // BSP?
 void R_ClearClipSegs();
 void R_ClearDrawSegs();
 
-
 void R_RenderBSPNode(int bspnum);
-
 
 #endif

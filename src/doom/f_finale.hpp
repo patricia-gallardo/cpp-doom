@@ -16,10 +16,8 @@
 //
 //
 
-
 #ifndef __F_FINALE__
 #define __F_FINALE__
-
 
 #include "doomtype.hpp"
 #include "d_event.hpp"
@@ -36,8 +34,6 @@ void F_Ticker();
 // Called by main loop.
 void F_Drawer();
 
-
 void F_StartFinale();
-
 
 #endif

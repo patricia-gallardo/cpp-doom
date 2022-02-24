@@ -16,17 +16,14 @@
 //	System specific interface stuff.
 //
 
-
 #ifndef __D_MAIN__
 #define __D_MAIN__
 
 #include "doomdef.hpp"
 
-
 // Read events from all input devices
 
 void D_ProcessEvents();
-
 
 //
 // BASE LEVEL
@@ -42,6 +39,5 @@ void D_StartTitle();
 //
 
 extern gameaction_t gameaction;
-
 
 #endif

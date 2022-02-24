@@ -16,14 +16,12 @@
 //   Duh.
 //
 
-
 #ifndef __G_GAME__
 #define __G_GAME__
 
 #include "doomdef.hpp"
 #include "d_event.hpp"
 #include "d_ticcmd.hpp"
-
 
 //
 // GAME
@@ -53,8 +51,8 @@ void G_RecordDemo(char *name);
 
 void G_BeginRecording();
 
-void    G_PlayDemo(char *name);
-void    G_TimeDemo(char *name);
+void G_PlayDemo(char *name);
+void G_TimeDemo(char *name);
 bool G_CheckDemoStatus();
 
 void G_ExitLevel();
@@ -66,7 +64,7 @@ void G_WorldDone();
 
 void G_BuildTiccmd(ticcmd_t *cmd, int maketic);
 
-void    G_Ticker();
+void G_Ticker();
 bool G_Responder(event_t *ev);
 
 void G_ScreenShot();

@@ -16,7 +16,6 @@
 //	Play functions, animation, global header.
 //
 
-
 #ifndef __P_LOCAL__
 #define __P_LOCAL__
 
@@ -28,18 +27,16 @@ constexpr auto TOCENTER   = -8;
 constexpr auto AFLAG_JUMP = 0x80;
 #define FLOATSPEED (FRACUNIT * 4)
 
-
-constexpr auto MAXHEALTH  =100;
+constexpr auto MAXHEALTH = 100;
 #define VIEWHEIGHT (41 * FRACUNIT)
 
 // mapblocks are used to check movement
 // against lines and things
-constexpr auto MAPBLOCKUNITS =128;
+constexpr auto MAPBLOCKUNITS = 128;
 #define MAPBLOCKSIZE  (MAPBLOCKUNITS * FRACUNIT)
 #define MAPBLOCKSHIFT (FRACBITS + 7)
 [[maybe_unused]] constexpr auto MAPBMASK = (MAPBLOCKSIZE - 1);
-#define MAPBTOFRAC    (MAPBLOCKSHIFT - FRACBITS)
-
+#define MAPBTOFRAC (MAPBLOCKSHIFT - FRACBITS)
 
 // player radius for movement checking
 #define PLAYERRADIUS 16 * FRACUNIT
@@ -57,12 +54,11 @@ constexpr auto MAPBLOCKUNITS =128;
 #define MISSILERANGE (32 * 64 * FRACUNIT)
 
 // follow a player exlusively for 3 seconds
-constexpr auto BASETHRESHOLD =100;
+constexpr auto BASETHRESHOLD = 100;
 
 void P_InitThinkers();
 void P_AddThinker(thinker_t *thinker);
 void P_RemoveThinker(thinker_t *thinker);
-
 
 //
 // P_PSPR
@@ -71,14 +67,12 @@ void P_SetupPsprites(player_t *curplayer);
 void P_MovePsprites(player_t *curplayer);
 void P_DropWeapon(player_t *player);
 
-
 //
 // P_USER
 //
-constexpr auto MLOOKUNIT       =8;
+constexpr auto MLOOKUNIT = 8;
 #define PLAYER_SLOPE(a) ((((a)->lookdir / MLOOKUNIT) << FRACBITS) / 173)
 void P_PlayerThink(player_t *player);
-
 
 //
 // P_MOBJ
@@ -87,19 +81,19 @@ void P_PlayerThink(player_t *player);
 #define ONCEILINGZ INT_MAX
 
 // Time interval for item respawning.
-constexpr auto ITEMQUESIZE =128;
+constexpr auto ITEMQUESIZE = 128;
 
 void P_RespawnSpecials();
 
 mobj_t *
-    P_SpawnMobj(fixed_t x,
-        fixed_t         y,
-        fixed_t         z,
-        mobjtype_t      type);
+    P_SpawnMobj(fixed_t    x,
+                fixed_t    y,
+                fixed_t    z,
+                mobjtype_t type);
 
 void    P_RemoveMobj(mobj_t *th);
 mobj_t *P_SubstNullMobj(mobj_t *th);
-bool P_SetMobjState(mobj_t *mobj, statenum_t state);
+bool    P_SetMobjState(mobj_t *mobj, statenum_t state);
 void    P_MobjThinker(mobj_t *mobj);
 mobj_t *Crispy_PlayerSO(int p); // [crispy] weapon sound sources
 
@@ -115,33 +109,32 @@ void P_SpawnPuffSafe(fixed_t x, fixed_t y, fixed_t z, bool safe);
 //
 void P_NoiseAlert(mobj_t *target, mobj_t *emmiter);
 
-
 //
 // P_MAPUTL
 //
 typedef struct
 {
-    fixed_t x;
-    fixed_t y;
-    fixed_t dx;
-    fixed_t dy;
+  fixed_t x;
+  fixed_t y;
+  fixed_t dx;
+  fixed_t dy;
 
 } divline_t;
 
 typedef struct
 {
-    fixed_t frac; // along trace line
-    bool isaline;
-    union {
-        mobj_t *thing;
-        line_t *line;
-    } d;
+  fixed_t frac; // along trace line
+  bool    isaline;
+  union {
+    mobj_t *thing;
+    line_t *line;
+  } d;
 } intercept_t;
 
 // Extended MAXINTERCEPTS, to allow for intercepts overrun emulation.
 
-constexpr auto MAXINTERCEPTS_ORIGINAL =128;
-[[maybe_unused]] constexpr auto MAXINTERCEPTS          =(MAXINTERCEPTS_ORIGINAL + 61);
+constexpr auto                  MAXINTERCEPTS_ORIGINAL = 128;
+[[maybe_unused]] constexpr auto MAXINTERCEPTS          = (MAXINTERCEPTS_ORIGINAL + 61);
 
 using traverser_t = bool (*)(intercept_t *);
 
@@ -157,17 +150,16 @@ void P_LineOpening(line_t *linedef_param);
 bool P_BlockLinesIterator(int x, int y, bool (*func)(line_t *));
 bool P_BlockThingsIterator(int x, int y, bool (*func)(mobj_t *));
 
-constexpr auto PT_ADDLINES  =1;
-constexpr auto PT_ADDTHINGS =2;
-constexpr auto PT_EARLYOUT  =4;
+constexpr auto PT_ADDLINES  = 1;
+constexpr auto PT_ADDTHINGS = 2;
+constexpr auto PT_EARLYOUT  = 4;
 
-bool
-    P_PathTraverse(fixed_t x1,
-        fixed_t            y1,
-        fixed_t            x2,
-        fixed_t            y2,
-        int                flags,
-        bool (*trav)(intercept_t *));
+bool P_PathTraverse(fixed_t x1,
+                    fixed_t y1,
+                    fixed_t x2,
+                    fixed_t y2,
+                    int     flags,
+                    bool (*trav)(intercept_t *));
 
 void P_UnsetThingPosition(mobj_t *thing);
 void P_SetThingPosition(mobj_t *thing);
@@ -180,32 +172,32 @@ void P_SetThingPosition(mobj_t *thing);
 // We keep the original limit, to detect what variables in memory were
 // overwritten (see SpechitOverrun())
 
-constexpr auto MAXSPECIALCROSS          =20;
-constexpr auto MAXSPECIALCROSS_ORIGINAL =8;
+constexpr auto MAXSPECIALCROSS          = 20;
+constexpr auto MAXSPECIALCROSS_ORIGINAL = 8;
 
 bool P_CheckPosition(mobj_t *thing, fixed_t x, fixed_t y);
 bool P_TryMove(mobj_t *thing, fixed_t x, fixed_t y);
 bool P_TeleportMove(mobj_t *thing, fixed_t x, fixed_t y);
-void    P_SlideMove(mobj_t *mo);
+void P_SlideMove(mobj_t *mo);
 bool P_CheckSight(mobj_t *t1, mobj_t *t2);
-void    P_UseLines(player_t *player);
+void P_UseLines(player_t *player);
 
 bool P_ChangeSector(sector_t *sector, bool crunch);
 
 fixed_t
     P_AimLineAttack(mobj_t *t1,
-        angle_t             angle,
-        fixed_t             distance);
+                    angle_t angle,
+                    fixed_t distance);
 
 void P_LineAttack(mobj_t *t1,
-    angle_t               angle,
-    fixed_t               distance,
-    fixed_t               slope,
-    int                   damage);
+                  angle_t angle,
+                  fixed_t distance,
+                  fixed_t slope,
+                  int     damage);
 
 void P_RadiusAttack(mobj_t *spot,
-    mobj_t *                source,
-    int                     damage);
+                    mobj_t *source,
+                    int     damage);
 
 // [crispy] factor out map lump name and number finding into a separate function
 extern int P_GetNumForMap(int episode, int map, bool critical_param);
@@ -215,104 +207,104 @@ constexpr auto KEYBLINKMASK = 0x8;
 constexpr auto KEYBLINKTICS = (7 * KEYBLINKMASK);
 
 void P_TouchSpecialThing(mobj_t *special,
-    mobj_t *                     toucher);
+                         mobj_t *toucher);
 
 void P_DamageMobj(mobj_t *target,
-    mobj_t *              inflictor,
-    mobj_t *              source,
-    int                   damage);
+                  mobj_t *inflictor,
+                  mobj_t *source,
+                  int     damage);
 
 struct p_local_t {
-    //
-    // P_TICK
-    //
+  //
+  // P_TICK
+  //
 
-    // both the head and tail of the thinker list
-    thinker_t thinkercap;
+  // both the head and tail of the thinker list
+  thinker_t thinkercap;
 
-    mapthing_t itemrespawnque[ITEMQUESIZE]{};
-    int        itemrespawntime[ITEMQUESIZE]{};
-    int        iquehead{};
-    int        iquetail{};
+  mapthing_t itemrespawnque[ITEMQUESIZE] {};
+  int        itemrespawntime[ITEMQUESIZE] {};
+  int        iquehead {};
+  int        iquetail {};
 
-    intercept_t *intercept_p{}; // [crispy] remove INTERCEPTS limit
+  intercept_t *intercept_p {}; // [crispy] remove INTERCEPTS limit
 
-    //
-    // P_LineOpening
-    // Sets opentop and openbottom to the window
-    // through a two sided line.
-    // OPTIMIZE: keep this precalculated
-    //
-    fixed_t   opentop{};
-    fixed_t   openbottom{};
-    fixed_t   openrange{};
-    fixed_t   lowfloor{};
-    divline_t trace{};
+  //
+  // P_LineOpening
+  // Sets opentop and openbottom to the window
+  // through a two sided line.
+  // OPTIMIZE: keep this precalculated
+  //
+  fixed_t   opentop {};
+  fixed_t   openbottom {};
+  fixed_t   openrange {};
+  fixed_t   lowfloor {};
+  divline_t trace {};
 
-    //
-    // P_MAP
-    //
+  //
+  // P_MAP
+  //
 
-    // If "floatok" true, move would be ok
-    // if within "tmfloorz - tmceilingz".
-    bool    floatok{};
-    fixed_t tmfloorz{};
-    fixed_t tmceilingz{};
+  // If "floatok" true, move would be ok
+  // if within "tmfloorz - tmceilingz".
+  bool    floatok {};
+  fixed_t tmfloorz {};
+  fixed_t tmceilingz {};
 
-    // keep track of the line that lowers the ceiling,
-    // so missiles don't explode against sky hack walls
-    line_t *ceilingline{};
+  // keep track of the line that lowers the ceiling,
+  // so missiles don't explode against sky hack walls
+  line_t *ceilingline {};
 
-    // keep track of special lines as they are hit,
-    // but don't process them until the move is proven valid
-    line_t *spechit[MAXSPECIALCROSS]{};
-    int     numspechit{};
+  // keep track of special lines as they are hit,
+  // but don't process them until the move is proven valid
+  line_t *spechit[MAXSPECIALCROSS] {};
+  int     numspechit {};
 
-    //
-    // P_LineAttack
-    //
-    mobj_t *linetarget{}; // who got hit (or nullptr)
+  //
+  // P_LineAttack
+  //
+  mobj_t *linetarget {}; // who got hit (or nullptr)
 
-    //
-    // P_SETUP
-    //
+  //
+  // P_SETUP
+  //
 
-    // REJECT
-    // For fast sight rejection.
-    // Speeds up enemy AI by skipping detailed
-    //  LineOf Sight calculation.
-    // Without special effect, this could be
-    //  used as a PVS lookup as well.
-    //
-    uint8_t *rejectmatrix{}; // for fast sight rejection
+  // REJECT
+  // For fast sight rejection.
+  // Speeds up enemy AI by skipping detailed
+  //  LineOf Sight calculation.
+  // Without special effect, this could be
+  //  used as a PVS lookup as well.
+  //
+  uint8_t *rejectmatrix {}; // for fast sight rejection
 
-    // BLOCKMAP
-    // Created from axis aligned bounding box
-    // of the map, a rectangular array of
-    // blocks of size ...
-    // Used to speed up collision detection
-    // by spatial subdivision in 2D.
-    //
-    // Blockmap size.
-    int32_t *blockmaplump{}; // offsets in blockmap are from here // [crispy] BLOCKMAP limit
-    int32_t *blockmap{};     // int for larger maps // [crispy] BLOCKMAP limit
-    int      bmapwidth{};
-    int      bmapheight{}; // size in mapblocks
+  // BLOCKMAP
+  // Created from axis aligned bounding box
+  // of the map, a rectangular array of
+  // blocks of size ...
+  // Used to speed up collision detection
+  // by spatial subdivision in 2D.
+  //
+  // Blockmap size.
+  int32_t *blockmaplump {}; // offsets in blockmap are from here // [crispy] BLOCKMAP limit
+  int32_t *blockmap {};     // int for larger maps // [crispy] BLOCKMAP limit
+  int      bmapwidth {};
+  int      bmapheight {}; // size in mapblocks
 
-    // origin of block map
-    fixed_t  bmaporgx{};
-    fixed_t  bmaporgy{};   // origin of block map
-    mobj_t **blocklinks{}; // for thing chains
-    // [crispy] blinking key or skull in the status bar
-    int st_keyorskull[3]{};
-    //
-    // P_INTER
-    //
+  // origin of block map
+  fixed_t  bmaporgx {};
+  fixed_t  bmaporgy {};   // origin of block map
+  mobj_t **blocklinks {}; // for thing chains
+  // [crispy] blinking key or skull in the status bar
+  int st_keyorskull[3] {};
+  //
+  // P_INTER
+  //
 
-    // a weapon is found with two clip loads,
-    // a big item has five clip loads
-    int maxammo[NUMAMMO]{};
-    int clipammo[NUMAMMO]{};
+  // a weapon is found with two clip loads,
+  // a big item has five clip loads
+  int maxammo[NUMAMMO] {};
+  int clipammo[NUMAMMO] {};
 };
 
 extern p_local_t *const g_p_local_globals;
@@ -321,6 +313,5 @@ extern p_local_t *const g_p_local_globals;
 // P_SPEC
 //
 #include "p_spec.hpp"
-
 
 #endif // __P_LOCAL__

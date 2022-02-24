@@ -16,19 +16,15 @@
 //	Refresh, visplane stuff (floor, ceilings).
 //
 
-
 #ifndef __R_PLANE__
 #define __R_PLANE__
 
-
 #include "r_data.hpp"
-
 
 #define PL_SKYFLAT (0x80000000)
 
 // Visplane related.
 extern int *lastopening; // [crispy] 32-bit integer math
-
 
 using planefunction_t = void (*)(int, int);
 
@@ -38,34 +34,33 @@ using planefunction_t = void (*)(int, int);
 extern int floorclip[MAXWIDTH];   // [crispy] 32-bit integer math
 extern int ceilingclip[MAXWIDTH]; // [crispy] 32-bit integer math
 
-extern fixed_t *yslope;
-extern fixed_t  yslopes[LOOKDIRS][MAXHEIGHT];
-[[maybe_unused]] extern fixed_t  distscale[MAXWIDTH];
+extern fixed_t                 *yslope;
+extern fixed_t                  yslopes[LOOKDIRS][MAXHEIGHT];
+[[maybe_unused]] extern fixed_t distscale[MAXWIDTH];
 
 void R_InitPlanes();
 void R_ClearPlanes();
 
 void R_MapPlane(int y,
-    int             x1,
-    int             x2);
+                int x1,
+                int x2);
 
-void R_MakeSpans(int x,
-    unsigned int     t1, // [crispy] 32-bit integer math
-    unsigned int     b1, // [crispy] 32-bit integer math
-    unsigned int     t2, // [crispy] 32-bit integer math
-    unsigned int     b2);    // [crispy] 32-bit integer math
+void R_MakeSpans(int          x,
+                 unsigned int t1,  // [crispy] 32-bit integer math
+                 unsigned int b1,  // [crispy] 32-bit integer math
+                 unsigned int t2,  // [crispy] 32-bit integer math
+                 unsigned int b2); // [crispy] 32-bit integer math
 
 void R_DrawPlanes();
 
 visplane_t *
     R_FindPlane(fixed_t height,
-        int             picnum,
-        int             lightlevel);
+                int     picnum,
+                int     lightlevel);
 
 visplane_t *
     R_CheckPlane(visplane_t *pl,
-        int                  start,
-        int                  stop);
-
+                 int         start,
+                 int         stop);
 
 #endif

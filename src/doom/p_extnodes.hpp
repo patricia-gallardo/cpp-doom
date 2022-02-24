@@ -18,17 +18,16 @@
 // 	format or DeePBSP format and/or LINEDEFS and THINGS lumps in Hexen format
 //
 
-
 #ifndef __P_EXTNODES__
 #define __P_EXTNODES__
 
 enum mapformat_t
 {
-    MFMT_DOOMBSP = 0x000,
-    MFMT_DEEPBSP = 0x001,
-    MFMT_ZDBSPX  = 0x002,
-    MFMT_ZDBSPZ  = 0x004,
-    MFMT_HEXEN   = 0x100,
+  MFMT_DOOMBSP = 0x000,
+  MFMT_DEEPBSP = 0x001,
+  MFMT_ZDBSPX  = 0x002,
+  MFMT_ZDBSPZ  = 0x004,
+  MFMT_HEXEN   = 0x100,
 };
 
 extern mapformat_t P_CheckMapFormat(int lumpnum);

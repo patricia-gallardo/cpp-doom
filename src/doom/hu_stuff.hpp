@@ -20,7 +20,6 @@
 
 #include "d_event.hpp"
 
-
 //
 // Globally visible constants.
 //
