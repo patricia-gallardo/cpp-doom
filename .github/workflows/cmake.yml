@@ -104,6 +104,6 @@ jobs:
       run: ctest -C ${{ matrix.cmake-build-type }}
 
     - name: Demo Check
-      if: matrix.configurations.os == 'ubuntu-20.04'
+      if: matrix.configurations.os == 'ubuntu-20.04' && matrix.cmake-build-target == 'crispy-doom'
       shell: bash
-      run: ./demo-check.sh
+      run: sudo ./demo-check.sh
