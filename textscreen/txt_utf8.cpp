@@ -12,134 +12,111 @@
 // GNU General Public License for more details.
 //
 
-
 #include "txt_utf8.hpp"
 
 // Encode a Unicode character as UTF-8, storing it in the buffer 'p'
 // and returning the new, incremented position.
 
-char *TXT_EncodeUTF8(char *p, unsigned int c)
-{
-    if (c < 0x80)                             // 1 character (ASCII):
-    {
-        p[0] = static_cast<char>(c);
-        return p + 1;
-    }
-    else if (c < 0x800)                       // 2 character:
-    {
-        p[0] = static_cast<char>(0xc0 | (c >> 6));
-        p[1] = static_cast<char>(0x80 | (c & 0x3f));
-        return p + 2;
-    }
-    else if (c < 0x10000)                     // 3 chacater:
-    {
-        p[0] = static_cast<char>(0xe0 | (c >> 12));
-        p[1] = static_cast<char>(0x80 | ((c >> 6) & 0x3f));
-        p[2] = static_cast<char>(0x80 | (c & 0x3f));
-        return p + 3;
-    }
-    else if (c < 0x200000)                    // 4 character:
-    {
-        p[0] = static_cast<char>(0xf0 | (c >> 18));
-        p[1] = static_cast<char>(0x80 | ((c >> 12) & 0x3f));
-        p[2] = static_cast<char>(0x80 | ((c >> 6) & 0x3f));
-        p[3] = static_cast<char>(0x80 | (c & 0x3f));
-        return p + 4;
-    }
-    else
-    {
-        // Too big!
+char *TXT_EncodeUTF8(char *p, unsigned int c) {
+  if (c < 0x80) // 1 character (ASCII):
+  {
+    p[0] = static_cast<char>(c);
+    return p + 1;
+  } else if (c < 0x800) // 2 character:
+  {
+    p[0] = static_cast<char>(0xc0 | (c >> 6));
+    p[1] = static_cast<char>(0x80 | (c & 0x3f));
+    return p + 2;
+  } else if (c < 0x10000) // 3 chacater:
+  {
+    p[0] = static_cast<char>(0xe0 | (c >> 12));
+    p[1] = static_cast<char>(0x80 | ((c >> 6) & 0x3f));
+    p[2] = static_cast<char>(0x80 | (c & 0x3f));
+    return p + 3;
+  } else if (c < 0x200000) // 4 character:
+  {
+    p[0] = static_cast<char>(0xf0 | (c >> 18));
+    p[1] = static_cast<char>(0x80 | ((c >> 12) & 0x3f));
+    p[2] = static_cast<char>(0x80 | ((c >> 6) & 0x3f));
+    p[3] = static_cast<char>(0x80 | (c & 0x3f));
+    return p + 4;
+  } else {
+    // Too big!
 
-        return p;
-    }
+    return p;
+  }
 }
 
 // Decode UTF-8 character, incrementing *ptr over the decoded bytes.
 
-unsigned int TXT_DecodeUTF8(const char **ptr)
-{
-    const char *p = *ptr;
-    unsigned int c;
+unsigned int TXT_DecodeUTF8(const char **ptr) {
+  const char  *p = *ptr;
+  unsigned int c;
 
-    // UTF-8 decode.
+  // UTF-8 decode.
 
-    if ((*p & 0x80) == 0)                     // 1 character (ASCII):
-    {
-        c = static_cast<unsigned int>(*p);
-        *ptr += 1;
-    }
-    else if ((p[0] & 0xe0) == 0xc0            // 2 character:
-          && (p[1] & 0xc0) == 0x80)
-    {
-        c = static_cast<unsigned int>(((p[0] & 0x1f) << 6) | (p[1] & 0x3f));
-        *ptr += 2;
-    }
-    else if ((p[0] & 0xf0) == 0xe0            // 3 character:
-          && (p[1] & 0xc0) == 0x80
-          && (p[2] & 0xc0) == 0x80)
-    {
-        c = static_cast<unsigned int>(((p[0] & 0x0f) << 12) | ((p[1] & 0x3f) << 6) | (p[2] & 0x3f));
-        *ptr += 3;
-    }
-    else if ((p[0] & 0xf8) == 0xf0            // 4 character:
-          && (p[1] & 0xc0) == 0x80
-          && (p[2] & 0xc0) == 0x80
-          && (p[3] & 0xc0) == 0x80)
-    {
-        c = static_cast<unsigned int>(((p[0] & 0x07) << 18) | ((p[1] & 0x3f) << 12) | ((p[2] & 0x3f) << 6) | (p[3] & 0x3f));
-        *ptr += 4;
-    }
-    else
-    {
-        // Decode failure.
-        // Don't bother with 5/6 byte sequences.
+  if ((*p & 0x80) == 0) // 1 character (ASCII):
+  {
+    c = static_cast<unsigned int>(*p);
+    *ptr += 1;
+  } else if ((p[0] & 0xe0) == 0xc0 // 2 character:
+             && (p[1] & 0xc0) == 0x80) {
+    c = static_cast<unsigned int>(((p[0] & 0x1f) << 6) | (p[1] & 0x3f));
+    *ptr += 2;
+  } else if ((p[0] & 0xf0) == 0xe0 // 3 character:
+             && (p[1] & 0xc0) == 0x80
+             && (p[2] & 0xc0) == 0x80) {
+    c = static_cast<unsigned int>(((p[0] & 0x0f) << 12) | ((p[1] & 0x3f) << 6) | (p[2] & 0x3f));
+    *ptr += 3;
+  } else if ((p[0] & 0xf8) == 0xf0 // 4 character:
+             && (p[1] & 0xc0) == 0x80
+             && (p[2] & 0xc0) == 0x80
+             && (p[3] & 0xc0) == 0x80) {
+    c = static_cast<unsigned int>(((p[0] & 0x07) << 18) | ((p[1] & 0x3f) << 12) | ((p[2] & 0x3f) << 6) | (p[3] & 0x3f));
+    *ptr += 4;
+  } else {
+    // Decode failure.
+    // Don't bother with 5/6 byte sequences.
 
-        c = 0;
-    }
+    c = 0;
+  }
 
-    return c;
+  return c;
 }
 
 // Count the number of characters in a UTF-8 string.
 
-unsigned int TXT_UTF8_Strlen(const char *s)
-{
-    const char *p;
-    unsigned int result = 0;
-    unsigned int c;
+unsigned int TXT_UTF8_Strlen(const char *s) {
+  const char  *p;
+  unsigned int result = 0;
+  unsigned int c;
 
-    for (p = s; *p != '\0';)
-    {
-        c = TXT_DecodeUTF8(&p);
+  for (p = s; *p != '\0';) {
+    c = TXT_DecodeUTF8(&p);
 
-        if (c == 0)
-        {
-            break;
-        }
-
-        ++result;
+    if (c == 0) {
+      break;
     }
 
-    return result;
+    ++result;
+  }
+
+  return result;
 }
 
 // Skip past the first n characters in a UTF-8 string.
 
-char *TXT_UTF8_SkipChars(const char *s, unsigned int n)
-{
-    unsigned int i;
-    const char *p;
+char *TXT_UTF8_SkipChars(const char *s, unsigned int n) {
+  unsigned int i;
+  const char  *p;
 
-    p = s;
+  p = s;
 
-    for (i = 0; i < n; ++i)
-    {
-        if (TXT_DecodeUTF8(&p) == 0)
-        {
-            break;
-        }
+  for (i = 0; i < n; ++i) {
+    if (TXT_DecodeUTF8(&p) == 0) {
+      break;
     }
+  }
 
-    return const_cast<char *>(p);
+  return const_cast<char *>(p);
 }
-
