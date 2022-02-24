@@ -25,7 +25,6 @@ static txt_color_t fgcolor = TXT_COLOR_GREY;
 static txt_color_t bgcolor = TXT_COLOR_BLACK;
 
 static void NewLine(unsigned char * screendata) {
-  int             i;
   unsigned char * p;
 
   cur_x = 0;
@@ -42,7 +41,7 @@ static void NewLine(unsigned char * screendata) {
 
     p = screendata + (TXT_SCREEN_H - 1) * 2 * TXT_SCREEN_W;
 
-    for (i = 0; i < TXT_SCREEN_W; ++i) {
+    for (int i = 0; i < TXT_SCREEN_W; ++i) {
       *p++ = ' ';
       *p++ = static_cast<unsigned char>(fgcolor | (bgcolor << 4));
     }
@@ -140,11 +139,10 @@ void TXT_RestoreColors(txt_saved_colors_t * save) {
 
 [[maybe_unused]] void TXT_ClearScreen() {
   unsigned char * screen;
-  int             i;
 
   screen = TXT_GetScreenData();
 
-  for (i = 0; i < TXT_SCREEN_W * TXT_SCREEN_H; ++i) {
+  for (int i = 0; i < TXT_SCREEN_W * TXT_SCREEN_H; ++i) {
     screen[i * 2]     = ' ';
     screen[i * 2 + 1] = static_cast<unsigned char>((bgcolor << 4) | fgcolor);
   }

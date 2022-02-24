@@ -181,9 +181,8 @@ static bool IsChexQuest(const iwad_t * iwad) {
 
 static void AddWADs(execute_context_t * exec) {
   int have_wads = 0;
-  int i;
 
-  for (i = 0; i < NUM_WADS; ++i) {
+  for (int i = 0; i < NUM_WADS; ++i) {
     if (wads[i] != nullptr && strlen(wads[i]) > 0) {
       if (!have_wads) {
         AddCmdLineParameter(exec, "-file");
@@ -195,9 +194,7 @@ static void AddWADs(execute_context_t * exec) {
 }
 
 static void AddExtraParameters(execute_context_t * exec) {
-  int i;
-
-  for (i = 0; i < NUM_EXTRA_PARAMS; ++i) {
+  for (int i = 0; i < NUM_EXTRA_PARAMS; ++i) {
     if (extra_params[i] != nullptr && strlen(extra_params[i]) > 0) {
       AddCmdLineParameter(exec, "%s", extra_params[i]);
     }
@@ -369,7 +366,6 @@ static void LevelSelectDialog(void *, void *) {
   int            episodes;
   intptr_t       x, y;
   intptr_t       l;
-  int            i;
 
   window = TXT_NewWindow("Select level");
   iwad   = GetCurrentIWAD();
@@ -405,7 +401,7 @@ static void LevelSelectDialog(void *, void *) {
   } else {
     TXT_SetTableColumns(window, 6);
 
-    for (i = 0; i < 60; ++i) {
+    for (int i = 0; i < 60; ++i) {
       x = i % 6;
       y = i / 6;
 
@@ -575,11 +571,10 @@ static txt_window_action_t * StartGameAction(int multiplayer) {
 
 static void OpenWadsWindow(void *, void *) {
   txt_window_t * window;
-  int            i;
 
   window = TXT_NewWindow("Add WADs");
 
-  for (i = 0; i < NUM_WADS; ++i) {
+  for (int i = 0; i < NUM_WADS; ++i) {
     TXT_AddWidget(window,
                   TXT_NewFileSelector(&wads[i], 60, "Select a WAD file", wad_extensions));
   }
@@ -587,11 +582,10 @@ static void OpenWadsWindow(void *, void *) {
 
 static void OpenExtraParamsWindow(void *, void *) {
   txt_window_t * window;
-  int            i;
 
   window = TXT_NewWindow("Extra command line parameters");
 
-  for (i = 0; i < NUM_EXTRA_PARAMS; ++i) {
+  for (int i = 0; i < NUM_EXTRA_PARAMS; ++i) {
     TXT_AddWidget(window, TXT_NewInputBox(&extra_params[i], 70));
   }
 }
@@ -771,7 +765,6 @@ static txt_window_action_t * JoinGameAction() {
 static void SelectQueryAddress(void * uncast_button, void * uncast_querydata) {
   auto * button    = reinterpret_cast<txt_button_t *>(uncast_button);
   auto * querydata = reinterpret_cast<net_querydata_t *>(uncast_querydata);
-  int    i;
 
   if (querydata->server_state != 0) {
     TXT_MessageBox("Cannot connect to server",
@@ -788,16 +781,17 @@ static void SelectQueryAddress(void * uncast_button, void * uncast_querydata) {
   // Auto-choose IWAD if there is already a player connected.
 
   if (querydata->num_players > 0) {
-    for (i = 0; found_iwads[i] != nullptr; ++i) {
-      if (found_iwads[i]->mode == querydata->gamemode
-          && found_iwads[i]->mission == querydata->gamemission) {
-        found_iwad_selected = i;
-        iwadfile            = found_iwads[i]->name;
+    int index = 0;
+    for (index = 0; found_iwads[index] != nullptr; ++index) {
+      if (found_iwads[index]->mode == querydata->gamemode
+          && found_iwads[index]->mission == querydata->gamemission) {
+        found_iwad_selected = index;
+        iwadfile            = found_iwads[index]->name;
         break;
       }
     }
 
-    if (found_iwads[i] == nullptr) {
+    if (found_iwads[index] == nullptr) {
       TXT_MessageBox(nullptr,
                      "The game on this server seems to be:\n"
                      "\n"
@@ -953,7 +947,6 @@ void JoinMultiGame(void *, void *) {
 }
 
 void SetChatMacroDefaults() {
-  int                i;
   const char * const defaults[] = {
     HUSTR_CHATMACRO0,
     HUSTR_CHATMACRO1,
@@ -969,7 +962,7 @@ void SetChatMacroDefaults() {
 
   // If the chat macros have not been set, initialize with defaults.
 
-  for (i = 0; i < 10; ++i) {
+  for (int i = 0; i < 10; ++i) {
     if (chat_macros[i] == nullptr) {
       chat_macros[i] = M_StringDuplicate(defaults[i]);
     }
@@ -987,7 +980,6 @@ void MultiplayerConfig(void *, void *) {
   txt_label_t *  label;
   txt_table_t *  table;
   char           buf[10];
-  int            i;
 
   window = TXT_NewWindow("Multiplayer Configuration");
   TXT_SetWindowHelpURL(window, MULTI_CONFIG_HELP_URL);
@@ -1003,7 +995,7 @@ void MultiplayerConfig(void *, void *) {
 
   table = TXT_NewTable(2);
 
-  for (i = 0; i < 10; ++i) {
+  for (int i = 0; i < 10; ++i) {
     M_snprintf(buf, sizeof(buf), "#%i ", i + 1);
 
     label = TXT_NewLabel(buf);
@@ -1020,11 +1012,10 @@ void MultiplayerConfig(void *, void *) {
 
 void BindMultiplayerVariables() {
   char buf[15];
-  int  i;
 
   M_BindStringVariable("player_name", &net_player_name);
 
-  for (i = 0; i < 10; ++i) {
+  for (int i = 0; i < 10; ++i) {
     M_snprintf(buf, sizeof(buf), "chatmacro%i", i);
     M_BindStringVariable(buf, &chat_macros[i]);
   }

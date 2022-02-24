@@ -211,9 +211,7 @@ static void UpdateJoybSpeed(void *, void *) {
 }
 
 static int VarInGroup(int * variable, int ** group) {
-  unsigned int i;
-
-  for (i = 0; group[i] != nullptr; ++i) {
+  for (unsigned int i = 0; group[i] != nullptr; ++i) {
     if (group[i] == variable) {
       return 1;
     }
@@ -223,8 +221,6 @@ static int VarInGroup(int * variable, int ** group) {
 }
 
 static void CheckKeyGroup(int * variable, int ** group) {
-  unsigned int i;
-
   // Don't check unless the variable is in this group.
 
   if (!VarInGroup(variable, group)) {
@@ -233,7 +229,7 @@ static void CheckKeyGroup(int * variable, int ** group) {
 
   // If another variable has the same value as the new value, reset it.
 
-  for (i = 0; group[i] != nullptr; ++i) {
+  for (unsigned int i = 0; group[i] != nullptr; ++i) {
     if (*variable == *group[i] && group[i] != variable) {
       // A different key has the same value.  Clear the existing
       // value. This ensures that no two keys can have the same

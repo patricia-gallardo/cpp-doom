@@ -656,12 +656,9 @@ static void LoadConfigurationSet(const joystick_config_t *configs)
 {
     const joystick_config_t *config;
     char buf[10];
-    int button;
-    int i;
+    int button = 0;
 
-    button = 0;
-
-    for (i = 0; configs[i].name != nullptr; ++i)
+    for (int i = 0; configs[i].name != nullptr; ++i)
     {
         config = &configs[i];
 
@@ -726,7 +723,6 @@ static void UnInitJoystick()
 static void UpdateJoystickIndex()
 {
     SDL_JoystickGUID guid, dev_guid;
-    int i;
 
     guid = SDL_JoystickGetGUIDFromString(joystick_guid);
 
@@ -742,7 +738,7 @@ static void UpdateJoystickIndex()
 
     // If index is not correct, look for the first device with the
     // expected GUID. It may have moved to a different index.
-    for (i = 0; i < SDL_NumJoysticks(); ++i)
+    for (int i = 0; i < SDL_NumJoysticks(); ++i)
     {
         dev_guid = SDL_JoystickGetDeviceGUID(i);
         if (!memcmp(&guid, &dev_guid, sizeof(SDL_JoystickGUID)))
@@ -790,7 +786,6 @@ static void SetJoystickButtonLabel()
 
 static int OpenAllJoysticks()
 {
-    int i;
     int result;
 
     InitJoystick();
@@ -802,7 +797,7 @@ static int OpenAllJoysticks()
 
     result = 0;
 
-    for (i = 0; i < all_joysticks_len; ++i)
+    for (int i = 0; i < all_joysticks_len; ++i)
     {
         all_joysticks[i] = SDL_JoystickOpen(i);
 
@@ -833,9 +828,7 @@ static int OpenAllJoysticks()
 
 static void CloseAllJoysticks()
 {
-    int i;
-
-    for (i = 0; i < all_joysticks_len; ++i)
+    for (int i = 0; i < all_joysticks_len; ++i)
     {
         if (all_joysticks[i] != nullptr)
         {
@@ -1085,8 +1078,6 @@ void ConfigJoystick(void *, void *)
 
 void BindJoystickVariables()
 {
-    int i;
-
     M_BindIntVariable("use_joystick",           &usejoystick);
     M_BindStringVariable("joystick_guid",       &joystick_guid);
     M_BindIntVariable("joystick_index",         &joystick_index);
@@ -1099,7 +1090,7 @@ void BindJoystickVariables()
     M_BindIntVariable("joystick_look_axis",   &joystick_look_axis);
     M_BindIntVariable("joystick_look_invert", &joystick_look_invert);
 
-    for (i = 0; i < NUM_VIRTUAL_BUTTONS; ++i)
+    for (int i = 0; i < NUM_VIRTUAL_BUTTONS; ++i)
     {
         char name[32];
         M_snprintf(name, sizeof(name), "joystick_physical_button%i", i);

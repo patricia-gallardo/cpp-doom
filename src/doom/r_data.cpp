@@ -859,8 +859,6 @@ void R_InitTextures() {
 // R_InitFlats
 //
 void R_InitFlats() {
-  int i;
-
   g_r_state_globals->firstflat = W_GetNumForName(DEH_String("F_START")) + 1;
   lastflat                     = W_GetNumForName(DEH_String("F_END")) - 1;
   numflats                     = lastflat - g_r_state_globals->firstflat + 1;
@@ -868,7 +866,7 @@ void R_InitFlats() {
   // Create translation table for global animation.
   g_r_state_globals->flattranslation = zmalloc<decltype(g_r_state_globals->flattranslation)>((static_cast<unsigned long>(numflats + 1)) * sizeof(*g_r_state_globals->flattranslation), PU_STATIC, 0);
 
-  for (i = 0; i < numflats; i++)
+  for (int i = 0; i < numflats; i++)
     g_r_state_globals->flattranslation[i] = i;
 }
 

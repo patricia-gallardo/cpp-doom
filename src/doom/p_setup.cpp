@@ -746,7 +746,6 @@ static void P_RemoveSlimeTrails() {
 // to simulate a REJECT buffer overflow in Vanilla Doom.
 
 static void PadRejectArray(uint8_t * array, unsigned int len) {
-  unsigned int i;
   unsigned int byte_num;
   uint8_t *    dest;
   unsigned int padvalue;
@@ -766,7 +765,7 @@ static void PadRejectArray(uint8_t * array, unsigned int len) {
 
   dest = array;
 
-  for (i = 0; i < len && i < sizeof(rejectpad); ++i) {
+  for (unsigned int i = 0; i < len && i < sizeof(rejectpad); ++i) {
     byte_num = i % 4;
     *dest    = (rejectpad[i / 4] >> (byte_num * 8)) & 0xff;
     ++dest;
