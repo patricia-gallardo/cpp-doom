@@ -45,15 +45,15 @@ typedef struct
 // When the callback mutex is locked using OPL_Lock, callback functions
 // are not invoked.
 
-static SDL_mutex *callback_mutex = nullptr;
+static SDL_mutex * callback_mutex = nullptr;
 
 // Queue of callbacks waiting to be invoked.
 
-static opl_callback_queue_t *callback_queue;
+static opl_callback_queue_t * callback_queue;
 
 // Mutex used to control access to the callback queue.
 
-static SDL_mutex *callback_queue_mutex = nullptr;
+static SDL_mutex * callback_queue_mutex = nullptr;
 
 // Current time, in us since startup:
 
@@ -75,7 +75,7 @@ static opl3_chip            opl_chip;
 
 // Temporary mixing buffer used by the mixing callback.
 
-static uint8_t *mix_buffer = nullptr;
+static uint8_t * mix_buffer = nullptr;
 
 // Register number that was written.
 
@@ -104,7 +104,7 @@ static int SDLIsInitialized() {
 
 static void AdvanceTime(unsigned int nsamples) {
   opl_callback_t callback {};
-  void          *callback_data = nullptr;
+  void *         callback_data = nullptr;
 
   SDL_LockMutex(callback_queue_mutex);
 
@@ -149,7 +149,7 @@ static void AdvanceTime(unsigned int nsamples) {
 
 // Call the OPL emulator code to fill the specified buffer.
 
-static void FillBuffer(uint8_t *buffer, unsigned int nsamples) {
+static void FillBuffer(uint8_t * buffer, unsigned int nsamples) {
   // This seems like a reasonable assumption.  mix_buffer is
   // 1 second long, which should always be much longer than the
   // SDL mix buffer.
@@ -163,7 +163,7 @@ static void FillBuffer(uint8_t *buffer, unsigned int nsamples) {
 
 // Callback function to fill a new sound buffer:
 
-static void OPL_Mix_Callback(void *, Uint8 *buffer, int len) {
+static void OPL_Mix_Callback(void *, Uint8 * buffer, int len) {
   // Repeatedly call the OPL emulator update function until the buffer is
   // full.
   unsigned int filled         = 0;
@@ -338,7 +338,7 @@ static unsigned int OPL_SDL_PortRead(opl_port_t port) {
   return result;
 }
 
-static void OPLTimer_CalculateEndTime(opl_timer_t *timer) {
+static void OPLTimer_CalculateEndTime(opl_timer_t * timer) {
   // If the timer is enabled, calculate the time when the timer
   // will expire.
 
@@ -398,7 +398,7 @@ static void OPL_SDL_PortWrite(opl_port_t port, unsigned int value) {
   }
 }
 
-static void OPL_SDL_SetCallback(uint64_t us, opl_callback_t callback, void *data) {
+static void OPL_SDL_SetCallback(uint64_t us, opl_callback_t callback, void * data) {
   SDL_LockMutex(callback_queue_mutex);
   OPL_Queue_Push(callback_queue, callback, data, current_time - pause_offset + us);
   SDL_UnlockMutex(callback_queue_mutex);

@@ -34,7 +34,7 @@ DEH_MAPPING("Unknown 2", misc2)
 DEH_UNSUPPORTED_MAPPING("Codep frame")
 DEH_END_MAPPING
 
-static void *DEH_FrameStart(deh_context_t *context, char *line) {
+static void * DEH_FrameStart(deh_context_t * context, char * line) {
   int frame_number = 0;
 
   if (sscanf(line, "Frame %i", &frame_number) != 1) {
@@ -53,7 +53,7 @@ static void *DEH_FrameStart(deh_context_t *context, char *line) {
                 frame_number);
   }
 
-  state_t *state = &states[frame_number];
+  state_t * state = &states[frame_number];
 
   return state;
 }
@@ -66,13 +66,13 @@ static void *DEH_FrameStart(deh_context_t *context, char *line) {
 // This is noticable in Batman Doom where it is impossible to switch weapons
 // away from the fist once selected.
 
-static void DEH_FrameParseLine(deh_context_t *context, char *line, void *tag) {
+static void DEH_FrameParseLine(deh_context_t * context, char * line, void * tag) {
   char *variable_name = nullptr, *value = nullptr;
 
   if (tag == nullptr)
     return;
 
-  auto *state = reinterpret_cast<state_t *>(tag);
+  auto * state = reinterpret_cast<state_t *>(tag);
 
   // Parse the assignment
 
@@ -90,8 +90,8 @@ static void DEH_FrameParseLine(deh_context_t *context, char *line, void *tag) {
   DEH_SetMapping(context, &state_mapping, state, variable_name, ivalue);
 }
 
-static void DEH_FrameSHA1Sum(sha1_context_t *context) {
-  for (auto &state : states) {
+static void DEH_FrameSHA1Sum(sha1_context_t * context) {
+  for (auto & state : states) {
     DEH_StructSHA1Sum(context, &state_mapping, &state);
   }
 }

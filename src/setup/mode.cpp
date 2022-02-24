@@ -39,18 +39,18 @@
 
 #include "mode.hpp"
 
-GameMission_t         gamemission;
-static const iwad_t **iwads;
+GameMission_t          gamemission;
+static const iwad_t ** iwads;
 
 typedef struct
 {
-  const char   *label;
+  const char *  label;
   GameMission_t mission;
   int           mask;
-  const char   *name;
-  const char   *config_file;
-  const char   *extra_config_file;
-  const char   *executable;
+  const char *  name;
+  const char *  config_file;
+  const char *  extra_config_file;
+  const char *  executable;
 } mission_config_t;
 
 // Default mission to fall back on, if no IWADs are found at all:
@@ -92,15 +92,15 @@ static GameSelectCallback game_selected_callback;
 
 // Miscellaneous variables that aren't used in setup.
 
-static int         showMessages = 1;
-static int         screenblocks = 10;
-static int         detailLevel  = 0;
-static char       *savedir      = nullptr;
-static char       *executable   = nullptr;
-static const char *game_title   = "Doom";
-static char       *back_flat    = const_cast<char *>("F_PAVE01");
-static int         comport      = 0;
-static char       *nickname     = nullptr;
+static int          showMessages = 1;
+static int          screenblocks = 10;
+static int          detailLevel  = 0;
+static char *       savedir      = nullptr;
+static char *       executable   = nullptr;
+static const char * game_title   = "Doom";
+static char *       back_flat    = const_cast<char *>("F_PAVE01");
+static int          comport      = 0;
+static char *       nickname     = nullptr;
 
 static void BindMiscVariables() {
   if (gamemission == doom) {
@@ -179,8 +179,8 @@ void InitBindings() {
 
 // Set the name of the executable program to run the game:
 
-static void SetExecutable(mission_config_t *config) {
-  char *extension;
+static void SetExecutable(mission_config_t * config) {
+  char * extension;
 
   free(executable);
 
@@ -193,7 +193,7 @@ static void SetExecutable(mission_config_t *config) {
   executable = M_StringJoin(config->executable, extension, nullptr);
 }
 
-static void SetMission(mission_config_t *config) {
+static void SetMission(mission_config_t * config) {
   iwads       = D_FindAllIWADs(config->mask);
   gamemission = config->mission;
   SetExecutable(config);
@@ -201,8 +201,8 @@ static void SetMission(mission_config_t *config) {
   M_SetConfigFilenames(config->config_file, config->extra_config_file);
 }
 
-static mission_config_t *GetMissionForName(char *name) {
-  for (auto &mission_config : mission_configs) {
+static mission_config_t * GetMissionForName(char * name) {
+  for (auto & mission_config : mission_configs) {
     if (!strcmp(mission_config.name, name)) {
       return &mission_config;
     }
@@ -215,10 +215,10 @@ static mission_config_t *GetMissionForName(char *name) {
 // names (eg. chocolate-hexen-setup.exe) then use that game.
 
 static bool CheckExecutableName(GameSelectCallback callback) {
-  const char *exe_name = M_GetExecutableName();
+  const char * exe_name = M_GetExecutableName();
 
-  for (auto &mission_config : mission_configs) {
-    mission_config_t *config = &mission_config;
+  for (auto & mission_config : mission_configs) {
+    mission_config_t * config = &mission_config;
 
     if (strstr(exe_name, config->name) != nullptr) {
       SetMission(config);
@@ -230,27 +230,27 @@ static bool CheckExecutableName(GameSelectCallback callback) {
   return false;
 }
 
-static void GameSelected(void *, void *uncast_config) {
-  auto *config = reinterpret_cast<mission_config_t *>(uncast_config);
+static void GameSelected(void *, void * uncast_config) {
+  auto * config = reinterpret_cast<mission_config_t *>(uncast_config);
 
   SetMission(config);
   game_selected_callback();
 }
 
 static void OpenGameSelectDialog(GameSelectCallback callback) {
-  mission_config_t *mission = nullptr;
-  txt_window_t     *window  = TXT_NewWindow("Select game");
+  mission_config_t * mission = nullptr;
+  txt_window_t *     window  = TXT_NewWindow("Select game");
 
   TXT_AddWidget(window, TXT_NewLabel("Select a game to configure:\n"));
   int num_games = 0;
 
   // Add a button for each game.
 
-  for (auto &mission_config : mission_configs) {
+  for (auto & mission_config : mission_configs) {
     // Do we have any IWADs for this game installed?
     // If so, add a button.
 
-    const iwad_t **iwads_local = D_FindAllIWADs(mission_config.mask);
+    const iwad_t ** iwads_local = D_FindAllIWADs(mission_config.mask);
 
     if (iwads_local[0] != nullptr) {
       mission = &mission_config;
@@ -285,9 +285,9 @@ static void OpenGameSelectDialog(GameSelectCallback callback) {
 }
 
 void SetupMission(GameSelectCallback callback) {
-  mission_config_t *config;
-  char             *mission_name;
-  int               p;
+  mission_config_t * config;
+  char *             mission_name;
+  int                p;
 
   //!
   // @arg <game>
@@ -314,14 +314,14 @@ void SetupMission(GameSelectCallback callback) {
   }
 }
 
-const char *GetExecutableName() {
+const char * GetExecutableName() {
   return executable;
 }
 
-const char *GetGameTitle() {
+const char * GetGameTitle() {
   return game_title;
 }
 
-const iwad_t **GetIwads() {
+const iwad_t ** GetIwads() {
   return iwads;
 }

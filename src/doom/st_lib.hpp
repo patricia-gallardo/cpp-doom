@@ -42,14 +42,14 @@ typedef struct
   int oldnum;
 
   // pointer to current value
-  int *num;
+  int * num;
 
   // pointer to bool stating
   //  whether to update number
-  bool *on;
+  bool * on;
 
   // list of patches for 0-9
-  patch_t **p;
+  patch_t ** p;
 
   // user data
   int data;
@@ -64,10 +64,10 @@ typedef struct
   st_number_t n;
 
   // percent sign graphic
-  patch_t *p;
+  patch_t * p;
 
   // [crispy] remember previous colorization
-  uint8_t *oldtranslation;
+  uint8_t * oldtranslation;
 } st_percent_t;
 
 // Multiple Icon widget
@@ -81,14 +81,14 @@ typedef struct
   int oldinum;
 
   // pointer to current icon
-  int *inum;
+  int * inum;
 
   // pointer to bool stating
   //  whether to update icon
-  bool *on;
+  bool * on;
 
   // list of icons
-  patch_t **p;
+  patch_t ** p;
 
   // user data
   int data;
@@ -107,14 +107,14 @@ typedef struct
   bool oldval;
 
   // pointer to current icon status
-  bool *val;
+  bool * val;
 
   // pointer to bool
   //  stating whether to update icon
-  bool *on;
+  bool * on;
 
-  patch_t *p;    // icon
-  int      data; // user data
+  patch_t * p;    // icon
+  int       data; // user data
 
 } st_binicon_t;
 
@@ -129,50 +129,50 @@ typedef struct
 void STlib_init();
 
 // Number widget routines
-void STlib_initNum(st_number_t *n,
-                   int          x,
-                   int          y,
-                   patch_t    **pl,
-                   int         *num,
-                   bool        *on,
-                   int          width);
+void STlib_initNum(st_number_t * n,
+                   int           x,
+                   int           y,
+                   patch_t **    pl,
+                   int *         num,
+                   bool *        on,
+                   int           width);
 
-void STlib_updateNum(st_number_t *n,
-                     bool         refresh);
+void STlib_updateNum(st_number_t * n,
+                     bool          refresh);
 
 // Percent widget routines
-void STlib_initPercent(st_percent_t *p,
-                       int           x,
-                       int           y,
-                       patch_t     **pl,
-                       int          *num,
-                       bool         *on,
-                       patch_t      *percent);
+void STlib_initPercent(st_percent_t * p,
+                       int            x,
+                       int            y,
+                       patch_t **     pl,
+                       int *          num,
+                       bool *         on,
+                       patch_t *      percent);
 
-void STlib_updatePercent(st_percent_t *per,
-                         int           refresh);
+void STlib_updatePercent(st_percent_t * per,
+                         int            refresh);
 
 // Multiple Icon widget routines
-void STlib_initMultIcon(st_multicon_t *mi,
-                        int            x,
-                        int            y,
-                        patch_t      **il,
-                        int           *inum,
-                        bool          *on);
+void STlib_initMultIcon(st_multicon_t * mi,
+                        int             x,
+                        int             y,
+                        patch_t **      il,
+                        int *           inum,
+                        bool *          on);
 
-void STlib_updateMultIcon(st_multicon_t *mi,
-                          bool           refresh);
+void STlib_updateMultIcon(st_multicon_t * mi,
+                          bool            refresh);
 
 // Binary Icon widget routines
 
-void STlib_initBinIcon(st_binicon_t *b,
-                       int           x,
-                       int           y,
-                       patch_t      *i,
-                       bool         *val,
-                       bool         *on);
+void STlib_initBinIcon(st_binicon_t * b,
+                       int            x,
+                       int            y,
+                       patch_t *      i,
+                       bool *         val,
+                       bool *         on);
 
-void STlib_updateBinIcon(st_binicon_t *bi,
-                         bool          refresh);
+void STlib_updateBinIcon(st_binicon_t * bi,
+                         bool           refresh);
 
 #endif

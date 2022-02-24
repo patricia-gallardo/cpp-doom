@@ -60,12 +60,12 @@ extern int LIGHTSCALESHIFT;
 extern int MAXLIGHTZ;
 extern int LIGHTZSHIFT;
 
-extern lighttable_t ***scalelight;
-extern lighttable_t  **scalelightfixed;
-extern lighttable_t ***zlight;
+extern lighttable_t *** scalelight;
+extern lighttable_t **  scalelightfixed;
+extern lighttable_t *** zlight;
 
-extern int           extralight;
-extern lighttable_t *fixedcolormap;
+extern int            extralight;
+extern lighttable_t * fixedcolormap;
 
 // Number of diminishing brightness levels.
 // There a 0-31, i.e. 32 LUT in the COLORMAP lump.
@@ -94,13 +94,13 @@ extern void (*spanfunc)();
 
 //
 // Utility functions.
-int R_PointOnSide(fixed_t x,
-                  fixed_t y,
-                  node_t *node);
+int R_PointOnSide(fixed_t  x,
+                  fixed_t  y,
+                  node_t * node);
 
 int R_PointOnSegSide(fixed_t x,
                      fixed_t y,
-                     seg_t  *line);
+                     seg_t * line);
 
 angle_t
     R_PointToAngle(fixed_t x,
@@ -126,9 +126,9 @@ subsector_t *
     R_PointInSubsector(fixed_t x,
                        fixed_t y);
 
-void R_AddPointToBox(int      x,
-                     int      y,
-                     fixed_t *box);
+void R_AddPointToBox(int       x,
+                     int       y,
+                     fixed_t * box);
 
 // [AM] Interpolate between two angles.
 angle_t R_InterpolateAngle(angle_t oangle, angle_t nangle, fixed_t scale);
@@ -138,7 +138,7 @@ angle_t R_InterpolateAngle(angle_t oangle, angle_t nangle, fixed_t scale);
 //
 
 // Called by G_Drawer.
-void R_RenderPlayerView(player_t *player);
+void R_RenderPlayerView(player_t * player);
 
 // Called by startup code.
 void R_Init();

@@ -1334,8 +1334,8 @@ typedef struct
   int        misc2;
 } state_t;
 
-extern state_t     states[NUMSTATES];
-extern const char *sprnames[];
+extern state_t      states[NUMSTATES];
+extern const char * sprnames[];
 
 enum mobjtype_t
 {

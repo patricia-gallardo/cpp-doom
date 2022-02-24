@@ -74,8 +74,8 @@
 
 typedef struct
 {
-  const char *hash_prefix;
-  const char *filename;
+  const char * hash_prefix;
+  const char * filename;
 } subst_music_t;
 
 // Structure containing parsed metadata read from a digital music track:
@@ -86,8 +86,8 @@ typedef struct
   int          start_time, end_time;
 } file_metadata_t;
 
-static subst_music_t *subst_music     = nullptr;
-static unsigned int   subst_music_len = 0;
+static subst_music_t * subst_music     = nullptr;
+static unsigned int    subst_music_len = 0;
 
 static bool music_initialized = false;
 
@@ -96,7 +96,7 @@ static bool music_initialized = false;
 
 static bool sdl_was_initialized = false;
 
-char *music_pack_path = const_cast<char *>("");
+char * music_pack_path = const_cast<char *>("");
 
 // If true, we are playing a substitute digital track rather than in-WAD
 // MIDI/MUS track, and file_metadata contains loop metadata.
@@ -107,7 +107,7 @@ static file_metadata_t file_metadata;
 static unsigned int current_track_pos;
 
 // Currently playing music track.
-static Mix_Music *current_track_music = nullptr;
+static Mix_Music * current_track_music = nullptr;
 
 // If true, the currently playing track is being played on loop.
 static bool current_track_loop;
@@ -331,8 +331,8 @@ static const subst_music_t known_filenames[] = {
 
 // Given a time string (for LOOP_START/LOOP_END), parse it and return
 // the time (in # samples since start of track) it represents.
-static unsigned int ParseVorbisTime(unsigned int samplerate_hz, char *value) {
-  char        *num_start, *p;
+static unsigned int ParseVorbisTime(unsigned int samplerate_hz, char * value) {
+  char *       num_start, *p;
   unsigned int result = 0;
   char         c;
 
@@ -363,7 +363,7 @@ static unsigned int ParseVorbisTime(unsigned int samplerate_hz, char *value) {
 
 // Given a vorbis comment string (eg. "LOOP_START=12345"), set fields
 // in the metadata structure as appropriate.
-static void ParseVorbisComment(file_metadata_t *metadata, char *comment) {
+static void ParseVorbisComment(file_metadata_t * metadata, char * comment) {
   char *eq, *key, *value;
 
   eq = strchr(comment, '=');
@@ -384,7 +384,7 @@ static void ParseVorbisComment(file_metadata_t *metadata, char *comment) {
 }
 
 // Parse a vorbis comments structure, reading from the given file.
-static void ParseVorbisComments(file_metadata_t *metadata, FILE *fs) {
+static void ParseVorbisComments(file_metadata_t * metadata, FILE * fs) {
   uint32_t     buf;
   unsigned int num_comments, i, comment_len;
 
@@ -427,7 +427,7 @@ static void ParseVorbisComments(file_metadata_t *metadata, FILE *fs) {
   }
 }
 
-static void ParseFlacStreaminfo(file_metadata_t *metadata, FILE *fs) {
+static void ParseFlacStreaminfo(file_metadata_t * metadata, FILE * fs) {
   uint8_t buf[34];
 
   // Read block data.
@@ -443,7 +443,7 @@ static void ParseFlacStreaminfo(file_metadata_t *metadata, FILE *fs) {
   //                      | (buf[16] << 8) | buf[17];
 }
 
-static void ParseFlacFile(file_metadata_t *metadata, FILE *fs) {
+static void ParseFlacFile(file_metadata_t * metadata, FILE * fs) {
   uint8_t      header[4];
   unsigned int block_type;
   size_t       block_len;
@@ -483,7 +483,7 @@ static void ParseFlacFile(file_metadata_t *metadata, FILE *fs) {
   }
 }
 
-static void ParseOggIdHeader(file_metadata_t *metadata, FILE *fs) {
+static void ParseOggIdHeader(file_metadata_t * metadata, FILE * fs) {
   uint8_t buf[21];
 
   if (fread(buf, sizeof(buf), 1, fs) < 1) {
@@ -493,7 +493,7 @@ static void ParseOggIdHeader(file_metadata_t *metadata, FILE *fs) {
   metadata->samplerate_hz = static_cast<unsigned int>((buf[8] << 24) | (buf[7] << 16) | (buf[6] << 8) | buf[5]);
 }
 
-static void ParseOggFile(file_metadata_t *metadata, FILE *fs) {
+static void ParseOggFile(file_metadata_t * metadata, FILE * fs) {
   uint8_t      buf[7];
   unsigned int offset;
 
@@ -526,9 +526,9 @@ static void ParseOggFile(file_metadata_t *metadata, FILE *fs) {
   }
 }
 
-static void ReadLoopPoints(const char *filename, file_metadata_t *metadata) {
-  FILE *fs;
-  char  header[4];
+static void ReadLoopPoints(const char * filename, file_metadata_t * metadata) {
+  FILE * fs;
+  char   header[4];
 
   metadata->valid         = false;
   metadata->samplerate_hz = 0;
@@ -570,10 +570,10 @@ static void ReadLoopPoints(const char *filename, file_metadata_t *metadata) {
 // Given a MUS lump, look up a substitute MUS file to play instead
 // (or nullptr to just use normal MIDI playback).
 
-static const char *GetSubstituteMusicFile(void *data, size_t data_len) {
+static const char * GetSubstituteMusicFile(void * data, size_t data_len) {
   sha1_context_t context;
   sha1_digest_t  hash;
-  const char    *filename;
+  const char *   filename;
   char           hash_str[sizeof(sha1_digest_t) * 2 + 1];
   unsigned int   i;
 
@@ -615,9 +615,9 @@ static const char *GetSubstituteMusicFile(void *data, size_t data_len) {
   return filename;
 }
 
-static char *GetFullPath(const char *musicdir, const char *path) {
-  char *result;
-  char *systemized_path;
+static char * GetFullPath(const char * musicdir, const char * path) {
+  char * result;
+  char * systemized_path;
 
   // Starting with directory separator means we have an absolute path,
   // so just return it.
@@ -649,15 +649,15 @@ static char *GetFullPath(const char *musicdir, const char *path) {
 // that name, returning it if found. If none exist, nullptr is returned. If the
 // filename doesn't end with .{ext} then it just acts as a wrapper around
 // GetFullPath().
-static char *ExpandFileExtension(const char *musicdir, const char *filename) {
-  static const char *extns[] = { ".flac", ".ogg", ".mp3" };
-  char              *replaced, *result;
+static char * ExpandFileExtension(const char * musicdir, const char * filename) {
+  static const char * extns[] = { ".flac", ".ogg", ".mp3" };
+  char *              replaced, *result;
 
   if (!M_StringEndsWith(filename, ".{ext}")) {
     return GetFullPath(musicdir, filename);
   }
 
-  for (auto &extn : extns) {
+  for (auto & extn : extns) {
     replaced = M_StringReplace(filename, ".{ext}", extn);
     result   = GetFullPath(musicdir, replaced);
     free(replaced);
@@ -671,9 +671,9 @@ static char *ExpandFileExtension(const char *musicdir, const char *filename) {
 }
 
 // Add a substitute music file to the lookup list.
-static void AddSubstituteMusic(const char *musicdir, const char *hash_prefix, const char *filename) {
-  subst_music_t *s;
-  char          *path;
+static void AddSubstituteMusic(const char * musicdir, const char * hash_prefix, const char * filename) {
+  subst_music_t * s;
+  char *          path;
 
   path = ExpandFileExtension(musicdir, filename);
   if (path == nullptr) {
@@ -687,8 +687,8 @@ static void AddSubstituteMusic(const char *musicdir, const char *hash_prefix, co
   s->filename    = path;
 }
 
-static const char *ReadHashPrefix(char *line) {
-  char *p;
+static const char * ReadHashPrefix(char * line) {
+  char * p;
   for (p = line; *p != '\0' && !isspace(*p) && *p != '='; ++p) {
     if (!isxdigit(*p)) {
       return nullptr;
@@ -700,7 +700,7 @@ static const char *ReadHashPrefix(char *line) {
     return nullptr;
   }
 
-  char *result = static_cast<char *>(malloc(len + 1));
+  char * result = static_cast<char *>(malloc(len + 1));
   if (result == nullptr) {
     return nullptr;
   }
@@ -716,10 +716,10 @@ static const char *ReadHashPrefix(char *line) {
 // Parse a line from substitute music configuration file; returns error
 // message or nullptr for no error.
 
-static const char *ParseSubstituteLine(char *musicdir, char *line) {
-  const char *hash_prefix;
-  char       *filename;
-  char       *p;
+static const char * ParseSubstituteLine(char * musicdir, char * line) {
+  const char * hash_prefix;
+  char *       filename;
+  char *       p;
 
   // Strip out comments if present.
   p = strchr(line, '#');
@@ -780,10 +780,10 @@ static const char *ParseSubstituteLine(char *musicdir, char *line) {
 
 // Read a substitute music configuration file.
 
-static bool ReadSubstituteConfig(char *musicdir, const char *filename) {
-  char *buffer;
-  char *line;
-  int   linenum = 1;
+static bool ReadSubstituteConfig(char * musicdir, const char * filename) {
+  char * buffer;
+  char * line;
+  int    linenum = 1;
 
   // This unnecessarily opens the file twice...
   if (!M_FileExists(filename)) {
@@ -795,11 +795,11 @@ static bool ReadSubstituteConfig(char *musicdir, const char *filename) {
   line = buffer;
 
   while (line != nullptr) {
-    const char *error;
-    char       *next;
+    const char * error;
+    char *       next;
 
     // find end of line
-    char *eol = strchr(line, '\n');
+    char * eol = strchr(line, '\n');
     if (eol != nullptr) {
       // change the newline into NUL
       *eol = '\0';
@@ -827,9 +827,9 @@ static bool ReadSubstituteConfig(char *musicdir, const char *filename) {
 // Find substitute configs and try to load them.
 
 static void LoadSubstituteConfigs() {
-  glob_t      *glob;
-  char        *musicdir;
-  const char  *path;
+  glob_t *     glob;
+  char *       musicdir;
+  const char * path;
   unsigned int old_music_len;
 
   // We can configure the path to music packs using the music_pack_path
@@ -881,8 +881,8 @@ static void LoadSubstituteConfigs() {
 // Heretic, Hexen) don't have a common naming pattern for music lumps.
 
 static bool IsMusicLump(int lumpnum) {
-  uint8_t *data;
-  bool     result;
+  uint8_t * data;
+  bool      result;
 
   if (W_LumpLength(lumpnum) < 4) {
     return false;
@@ -901,12 +901,12 @@ static bool IsMusicLump(int lumpnum) {
 // Dump an example config file containing checksums for all MIDI music
 // found in the WAD directory.
 
-static void DumpSubstituteConfig(char *filename) {
+static void DumpSubstituteConfig(char * filename) {
   sha1_context_t context;
   sha1_digest_t  digest;
   char           name[9];
-  uint8_t       *data;
-  FILE          *fs;
+  uint8_t *      data;
+  FILE *         fs;
   size_t         h;
 
   fs = fopen(filename, "w");
@@ -1036,7 +1036,7 @@ static void I_MP_SetMusicVolume(int volume) {
 
 // Start playing a mid
 
-static void I_MP_PlaySong(void *handle, bool looping) {
+static void I_MP_PlaySong(void * handle, bool looping) {
   int loops;
 
   if (!music_initialized) {
@@ -1095,8 +1095,8 @@ static void I_MP_StopSong() {
   current_track_music = nullptr;
 }
 
-static void I_MP_UnRegisterSong(void *handle) {
-  Mix_Music *music = reinterpret_cast<Mix_Music *>(handle);
+static void I_MP_UnRegisterSong(void * handle) {
+  Mix_Music * music = reinterpret_cast<Mix_Music *>(handle);
 
   if (!music_initialized) {
     return;
@@ -1109,9 +1109,9 @@ static void I_MP_UnRegisterSong(void *handle) {
   Mix_FreeMusic(music);
 }
 
-static void *I_MP_RegisterSong(void *data, int len) {
-  const char *filename;
-  Mix_Music  *music;
+static void * I_MP_RegisterSong(void * data, int len) {
+  const char * filename;
+  Mix_Music *  music;
 
   if (!music_initialized) {
     return nullptr;

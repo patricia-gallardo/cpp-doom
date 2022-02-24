@@ -102,7 +102,7 @@ struct sector_t {
   int soundtraversed {};
 
   // thing that made a sound (or nullptr)
-  mobj_t *soundtarget {};
+  mobj_t * soundtarget {};
 
   // mapblock bounding box for height changes
   int blockbox[4] {};
@@ -114,13 +114,13 @@ struct sector_t {
   int validcount {};
 
   // list of mobjs in sector
-  mobj_t *thinglist {};
+  mobj_t * thinglist {};
 
   // thinker_t for reversable actions
-  void *specialdata {};
+  void * specialdata {};
 
-  int             linecount {};
-  struct line_s **lines {}; // [linecount] size
+  int              linecount {};
+  struct line_s ** lines {}; // [linecount] size
 
   // [crispy] WiggleFix: [kb] for R_FixWiggle()
   int cachedheight {};
@@ -170,7 +170,7 @@ typedef struct
   short midtexture;
 
   // Sector the SideDef is facing.
-  sector_t *sector;
+  sector_t * sector;
 
   // [crispy] smooth texture scrolling
   fixed_t basetextureoffset;
@@ -190,8 +190,8 @@ enum slopetype_t
 
 typedef struct line_s {
   // Vertices, from v1 to v2.
-  vertex_t *v1 {};
-  vertex_t *v2 {};
+  vertex_t * v1 {};
+  vertex_t * v2 {};
 
   // Precalculated v2 - v1 for side checking.
   fixed_t dx {};
@@ -215,14 +215,14 @@ typedef struct line_s {
 
   // Front and back sector.
   // Note: redundant? Can be retrieved from SideDefs.
-  sector_t *frontsector {};
-  sector_t *backsector {};
+  sector_t * frontsector {};
+  sector_t * backsector {};
 
   // if == validcount, already checked
   int validcount {};
 
   // thinker_t for reversable actions
-  void *specialdata {};
+  void * specialdata {};
 
   // [crispy] calculate sound origin of line to be its midpoint
   degenmobj_t soundorg;
@@ -236,9 +236,9 @@ typedef struct line_s {
 //  (all or some) sides of a convex BSP leaf.
 //
 typedef struct subsector_s {
-  sector_t *sector;
-  int       numlines;  // [crispy] extended nodes
-  int       firstline; // [crispy] extended nodes
+  sector_t * sector;
+  int        numlines;  // [crispy] extended nodes
+  int        firstline; // [crispy] extended nodes
 
 } subsector_t;
 
@@ -247,21 +247,21 @@ typedef struct subsector_s {
 //
 typedef struct
 {
-  vertex_t *v1;
-  vertex_t *v2;
+  vertex_t * v1;
+  vertex_t * v2;
 
   fixed_t offset;
 
   angle_t angle;
 
-  side_t *sidedef;
-  line_t *linedef;
+  side_t * sidedef;
+  line_t * linedef;
 
   // Sector references.
   // Could be retrieved from linedef, too.
   // backsector is nullptr for one sided lines
-  sector_t *frontsector;
-  sector_t *backsector;
+  sector_t * frontsector;
+  sector_t * backsector;
 
   uint32_t length;  // [crispy] fix long wall wobble
   angle_t  r_angle; // [crispy] re-calculated angle used for rendering
@@ -307,9 +307,9 @@ typedef pixel_t lighttable_t;
 // ?
 //
 typedef struct drawseg_s {
-  seg_t *curline;
-  int    x1;
-  int    x2;
+  seg_t * curline;
+  int     x1;
+  int     x2;
 
   fixed_t scale1;
   fixed_t scale2;
@@ -326,9 +326,9 @@ typedef struct drawseg_s {
 
   // Pointers to lists for sprite clipping,
   //  all three adjusted so [x1] is first value.
-  int *sprtopclip;       // [crispy] 32-bit integer math
-  int *sprbottomclip;    // [crispy] 32-bit integer math
-  int *maskedtexturecol; // [crispy] 32-bit integer math
+  int * sprtopclip;       // [crispy] 32-bit integer math
+  int * sprbottomclip;    // [crispy] 32-bit integer math
+  int * maskedtexturecol; // [crispy] 32-bit integer math
 
 } drawseg_t;
 
@@ -337,8 +337,8 @@ typedef struct drawseg_s {
 // I.e. a sprite object that is partly visible.
 typedef struct vissprite_s {
   // Doubly linked list.
-  struct vissprite_s *prev;
-  struct vissprite_s *next;
+  struct vissprite_s * prev;
+  struct vissprite_s * next;
 
   int x1;
   int x2;
@@ -365,12 +365,12 @@ typedef struct vissprite_s {
   // for color translation and shadow draw,
   //  maxbright frames as well
   // [crispy] brightmaps for select sprites
-  lighttable_t *colormap[2];
-  uint8_t      *brightmap;
+  lighttable_t * colormap[2];
+  uint8_t *      brightmap;
 
   size_t mobjflags;
   // [crispy] color translation table for blood colored by monster class
-  uint8_t *translation;
+  uint8_t * translation;
 #ifdef CRISPY_TRUECOLOR
   const pixel_t (*blendfunc)(const pixel_t fg, const pixel_t bg);
 #endif
@@ -413,8 +413,8 @@ typedef struct
 //
 typedef struct
 {
-  int            numframes;
-  spriteframe_t *spriteframes;
+  int             numframes;
+  spriteframe_t * spriteframes;
 
 } spritedef_t;
 
@@ -449,6 +449,6 @@ typedef struct
   char a[9];
   int  l, w, h;
 } laserpatch_t;
-extern laserpatch_t *laserpatch;
+extern laserpatch_t * laserpatch;
 
 #endif

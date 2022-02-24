@@ -81,7 +81,7 @@ static pcsound_callback_func callback;
 static int                   sound_server_pid;
 static int                   sleep_adjust = 0;
 static int                   sound_thread_running;
-static SDL_Thread           *sound_thread_handle;
+static SDL_Thread *          sound_thread_handle;
 static int                   sound_server_pipe[2];
 
 // Play a sound, checking how long the system call takes to complete
@@ -220,7 +220,7 @@ static void StopSoundServer() {
   waitpid(sound_server_pid, &status, 0);
 }
 
-static int SoundThread(void *unused) {
+static int SoundThread(void * unused) {
   tone_t tone;
   int    duration;
   int    frequency;

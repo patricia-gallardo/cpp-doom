@@ -36,11 +36,11 @@ using txt_inputbox_t = struct txt_inputbox_s;
 
 struct [[maybe_unused]] txt_inputbox_s {
   txt_widget_t widget;
-  char        *buffer {};
+  char *       buffer {};
   size_t       buffer_len {};
   unsigned int size {};
   int          editing {};
-  void        *value {};
+  void *       value {};
 };
 
 /**
@@ -57,7 +57,7 @@ struct [[maybe_unused]] txt_inputbox_s {
  * @return              Pointer to the new input box widget.
  */
 
-txt_inputbox_t *TXT_NewInputBox(char **value, int size);
+txt_inputbox_t * TXT_NewInputBox(char ** value, int size);
 
 /**
  * Create a new input box widget for controlling an integer value.
@@ -68,6 +68,6 @@ txt_inputbox_t *TXT_NewInputBox(char **value, int size);
  * @return              Pointer to the new input box widget.
  */
 
-txt_inputbox_t *TXT_NewIntInputBox(int *value, int size);
+txt_inputbox_t * TXT_NewIntInputBox(int * value, int size);
 
 #endif /* #ifndef TXT_INPUTBOX_H */

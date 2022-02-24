@@ -44,7 +44,7 @@ void P_InitThinkers() {
 // P_AddThinker
 // Adds a new thinker at the end of the list.
 //
-void P_AddThinker(thinker_t *thinker) {
+void P_AddThinker(thinker_t * thinker) {
   g_p_local_globals->thinkercap.prev->next = thinker;
   thinker->next                            = &g_p_local_globals->thinkercap;
   thinker->prev                            = g_p_local_globals->thinkercap.prev;
@@ -56,7 +56,7 @@ void P_AddThinker(thinker_t *thinker) {
 // Deallocation is lazy -- it will not actually be freed
 // until its thinking turn comes up.
 //
-void P_RemoveThinker(thinker_t *thinker) {
+void P_RemoveThinker(thinker_t * thinker) {
   thinker->function = valid_hook(false);
 }
 

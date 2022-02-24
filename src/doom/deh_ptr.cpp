@@ -28,7 +28,7 @@
 
 actionf_t codeptrs[NUMSTATES]; // [crispy] share with deh_bexptr.c
 
-static int CodePointerIndex(actionf_t *ptr) {
+static int CodePointerIndex(actionf_t * ptr) {
   for (int i = 0; i < NUMSTATES; ++i) {
     if (!memcmp(&codeptrs[i], ptr, sizeof(actionf_t))) {
       return i;
@@ -60,7 +60,7 @@ static void DEH_PointerInit() {
   }
 }
 
-static void *DEH_PointerStart(deh_context_t *context, char *line) {
+static void * DEH_PointerStart(deh_context_t * context, char * line) {
   int frame_number = 0;
 
   // FIXME: can the third argument here be something other than "Frame"
@@ -79,12 +79,12 @@ static void *DEH_PointerStart(deh_context_t *context, char *line) {
   return &states[frame_number];
 }
 
-static void DEH_PointerParseLine(deh_context_t *context, char *line, void *tag) {
+static void DEH_PointerParseLine(deh_context_t * context, char * line, void * tag) {
   char *variable_name = nullptr, *value = nullptr;
 
   if (tag == nullptr) return;
 
-  auto *state = reinterpret_cast<state_t *>(tag);
+  auto * state = reinterpret_cast<state_t *>(tag);
 
   // Parse the assignment
 
@@ -113,8 +113,8 @@ static void DEH_PointerParseLine(deh_context_t *context, char *line, void *tag) 
   }
 }
 
-static void DEH_PointerSHA1Sum(sha1_context_t *context) {
-  for (auto &state : states) {
+static void DEH_PointerSHA1Sum(sha1_context_t * context) {
+  for (auto & state : states) {
     SHA1_UpdateInt32(context, CodePointerIndex(&state.action));
   }
 }

@@ -40,7 +40,7 @@ extern opl_driver_t opl_win32_driver;
 #endif
 extern opl_driver_t opl_sdl_driver;
 
-static opl_driver_t *drivers[] = {
+static opl_driver_t * drivers[] = {
 #if (defined(__i386__) || defined(__x86_64__)) && defined(HAVE_IOPERM)
   &opl_linux_driver,
 #endif
@@ -54,8 +54,8 @@ static opl_driver_t *drivers[] = {
   nullptr
 };
 
-static opl_driver_t *driver                = nullptr;
-static int           init_stage_reg_writes = 1;
+static opl_driver_t * driver                = nullptr;
+static int            init_stage_reg_writes = 1;
 
 unsigned int opl_sample_rate = 22050;
 
@@ -66,8 +66,8 @@ unsigned int opl_sample_rate = 22050;
 // Initialize the specified driver and detect an OPL chip.  Returns
 // true if an OPL is detected.
 
-static opl_init_result_t InitDriver(opl_driver_t *_driver,
-                                    unsigned int  port_base) {
+static opl_init_result_t InitDriver(opl_driver_t * _driver,
+                                    unsigned int   port_base) {
   // Initialize the driver.
 
   if (!_driver->init_func(port_base)) {
@@ -117,7 +117,7 @@ static opl_init_result_t AutoSelectDriver(unsigned int port_base) {
 // detected, if any.
 
 opl_init_result_t OPL_Init(unsigned int port_base) {
-  char *driver_name = getenv("OPL_DRIVER");
+  char * driver_name = getenv("OPL_DRIVER");
 
   if (driver_name != nullptr) {
     // Search the list until we find the driver with this name.
@@ -351,7 +351,7 @@ void OPL_InitRegisters(int opl3) {
 // Timer functions.
 //
 
-void OPL_SetCallback(uint64_t us, opl_callback_t callback, void *data) {
+void OPL_SetCallback(uint64_t us, opl_callback_t callback, void * data) {
   if (driver != nullptr) {
     driver->set_callback_func(us, callback, data);
   }
@@ -378,12 +378,12 @@ void OPL_Unlock() {
 struct delay_data_t {
   int finished = 0;
 
-  SDL_mutex *mutex {};
-  SDL_cond  *cond {};
+  SDL_mutex * mutex {};
+  SDL_cond *  cond {};
 };
 
-static void DelayCallback(void *delay_data_) {
-  auto *delay_data = static_cast<delay_data_t *>(delay_data_);
+static void DelayCallback(void * delay_data_) {
+  auto * delay_data = static_cast<delay_data_t *>(delay_data_);
   SDL_LockMutex(delay_data->mutex);
   delay_data->finished = 1;
 

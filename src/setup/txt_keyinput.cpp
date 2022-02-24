@@ -26,8 +26,8 @@
 
 #define KEY_INPUT_WIDTH 8
 
-static int KeyPressCallback(txt_window_t *window, int key, void *uncast_key_input) {
-  auto *key_input = reinterpret_cast<txt_key_input_t *>(uncast_key_input);
+static int KeyPressCallback(txt_window_t * window, int key, void * uncast_key_input) {
+  auto * key_input = reinterpret_cast<txt_key_input_t *>(uncast_key_input);
 
   if (key != KEY_ESCAPE) {
     // Got the key press. Save to the variable and close the window.
@@ -54,8 +54,8 @@ static void ReleaseGrab(void *, void *) {
   // SDL_WM_GrabInput(SDL_GRAB_OFF);
 }
 
-static void OpenPromptWindow(txt_key_input_t *key_input) {
-  txt_window_t *window;
+static void OpenPromptWindow(txt_key_input_t * key_input) {
+  txt_window_t * window;
 
   // Silently update when the shift button is held down.
 
@@ -77,8 +77,8 @@ static void OpenPromptWindow(txt_key_input_t *key_input) {
   TXT_SignalConnect(window, "closed", ReleaseGrab, nullptr);
 }
 
-static void TXT_KeyInputSizeCalc(void *uncast_key_input) {
-  auto *key_input = reinterpret_cast<txt_key_input_t *>(uncast_key_input);
+static void TXT_KeyInputSizeCalc(void * uncast_key_input) {
+  auto * key_input = reinterpret_cast<txt_key_input_t *>(uncast_key_input);
 
   // All keyinputs are the same size.
 
@@ -86,9 +86,9 @@ static void TXT_KeyInputSizeCalc(void *uncast_key_input) {
   key_input->widget.h = 1;
 }
 
-static void TXT_KeyInputDrawer(void *uncast_key_input) {
-  auto *key_input = reinterpret_cast<txt_key_input_t *>(uncast_key_input);
-  char  buf[20];
+static void TXT_KeyInputDrawer(void * uncast_key_input) {
+  auto * key_input = reinterpret_cast<txt_key_input_t *>(uncast_key_input);
+  char   buf[20];
 
   if (*key_input->variable == 0) {
     M_StringCopy(buf, "(none)", sizeof(buf));
@@ -109,8 +109,8 @@ static void TXT_KeyInputDrawer(void *uncast_key_input) {
 static void TXT_KeyInputDestructor(void *) {
 }
 
-static int TXT_KeyInputKeyPress(void *uncast_key_input, int key) {
-  auto *key_input = reinterpret_cast<txt_key_input_t *>(uncast_key_input);
+static int TXT_KeyInputKeyPress(void * uncast_key_input, int key) {
+  auto * key_input = reinterpret_cast<txt_key_input_t *>(uncast_key_input);
 
   if (key == KEY_ENTER) {
     // Open a window to prompt for the new key press
@@ -127,8 +127,8 @@ static int TXT_KeyInputKeyPress(void *uncast_key_input, int key) {
   return 0;
 }
 
-static void TXT_KeyInputMousePress(void *uncast_widget, int, int, int b) {
-  auto *widget = reinterpret_cast<txt_key_input_t *>(uncast_widget);
+static void TXT_KeyInputMousePress(void * uncast_widget, int, int, int b) {
+  auto * widget = reinterpret_cast<txt_key_input_t *>(uncast_widget);
 
   // Clicking is like pressing enter
 
@@ -147,8 +147,8 @@ txt_widget_class_t txt_key_input_class = {
   nullptr,
 };
 
-txt_key_input_t *TXT_NewKeyInput(int *variable) {
-  txt_key_input_t *key_input;
+txt_key_input_t * TXT_NewKeyInput(int * variable) {
+  txt_key_input_t * key_input;
 
   key_input = static_cast<txt_key_input_t *>(malloc(sizeof(txt_key_input_t)));
 

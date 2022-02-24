@@ -56,7 +56,7 @@ void I_ShutdownGraphics();
 
 // Takes full 8 bit values.
 #ifndef CRISPY_TRUECOLOR
-void I_SetPalette(uint8_t *palette);
+void I_SetPalette(uint8_t * palette);
 int  I_GetPaletteIndex(int r, int g, int b);
 #else
 void                 I_SetPalette(int palette);
@@ -65,11 +65,11 @@ extern const pixel_t I_MapRGB(const uint8_t r, const uint8_t g, const uint8_t b)
 
 void I_FinishUpdate();
 
-void I_ReadScreen(pixel_t *scr);
+void I_ReadScreen(pixel_t * scr);
 
 [[maybe_unused]] void I_BeginRead();
 
-void I_SetWindowTitle(const char *title);
+void I_SetWindowTitle(const char * title);
 
 void I_CheckIsScreensaver();
 void I_SetGrabMouseCallback(grabmouse_callback_t func);
@@ -96,7 +96,7 @@ void I_StartTic();
 
 struct i_video_t {
   // SDL video driver name
-  char *video_driver;
+  char * video_driver;
   // Flag indicating whether the screen is currently visible:
   // when the screen isnt visible, don't render the screen
   bool screenvisible;
@@ -107,7 +107,7 @@ struct i_video_t {
   // Gamma correction level to use
   int usegamma;
   // The screen buffer; this is modified to draw things to the screen
-  pixel_t *I_VideoBuffer;
+  pixel_t * I_VideoBuffer;
 
   int screen_width;
   int screen_height;
@@ -124,14 +124,14 @@ struct i_video_t {
   int force_software_renderer;
 
   // Window position:
-  char *window_position;
+  char * window_position;
 
   // Joystic/gamepad hysteresis
   unsigned int joywait;
 };
 
-extern i_video_t *const g_i_video_globals;
+extern i_video_t * const g_i_video_globals;
 
-void I_GetWindowPosition(int *x, int *y, int w, int h);
+void I_GetWindowPosition(int * x, int * y, int w, int h);
 
 #endif

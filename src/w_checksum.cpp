@@ -22,10 +22,10 @@
 #include "w_checksum.hpp"
 #include "w_wad.hpp"
 
-static wad_file_t **open_wadfiles     = nullptr;
-static int          num_open_wadfiles = 0;
+static wad_file_t ** open_wadfiles     = nullptr;
+static int           num_open_wadfiles = 0;
 
-static int GetFileNumber(wad_file_t *handle) {
+static int GetFileNumber(wad_file_t * handle) {
   for (int i = 0; i < num_open_wadfiles; ++i) {
     if (open_wadfiles[i] == handle) {
       return i;
@@ -45,7 +45,7 @@ static int GetFileNumber(wad_file_t *handle) {
   return result;
 }
 
-static void ChecksumAddLump(sha1_context_t *sha1_context, lumpinfo_t *lump) {
+static void ChecksumAddLump(sha1_context_t * sha1_context, lumpinfo_t * lump) {
   char buf[9];
 
   M_StringCopy(buf, lump->name, sizeof(buf));

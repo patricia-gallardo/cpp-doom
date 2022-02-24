@@ -31,7 +31,7 @@ using sfxinfo_t = struct sfxinfo_struct;
 
 struct sfxinfo_struct {
   // tag name, used for hexen.
-  const char *tagname;
+  const char * tagname;
 
   // lump name.  If we are running with use_sfx_prefix=true, a
   // 'DS' (or 'DP' for PC speaker sounds) is prepended to this.
@@ -42,7 +42,7 @@ struct sfxinfo_struct {
   int priority;
 
   // referenced sound if a link
-  sfxinfo_t *link;
+  sfxinfo_t * link;
 
   // pitch if a link (Doom), whether to pitch-shift (Hexen)
   int pitch;
@@ -63,7 +63,7 @@ struct sfxinfo_struct {
   int numchannels;
 
   // data used by the low level code
-  void *driver_data;
+  void * driver_data;
 };
 
 //
@@ -72,16 +72,16 @@ struct sfxinfo_struct {
 typedef struct
 {
   // up to 6-character name
-  const char *name;
+  const char * name;
 
   // lump number of music
   int lumpnum;
 
   // music data
-  void *data;
+  void * data;
 
   // music handle once registered
-  void *handle;
+  void * handle;
 
 } musicinfo_t;
 
@@ -105,8 +105,8 @@ enum snddevice_t : int
 struct sound_module_t {
   // List of sound devices that this sound module is used for.
 
-  snddevice_t *sound_devices {};
-  int          num_sound_devices {};
+  snddevice_t * sound_devices {};
+  int           num_sound_devices {};
 
   // Initialise sound module
   // Returns true if successfully initialised
@@ -119,7 +119,7 @@ struct sound_module_t {
 
   // Returns the lump index of the given sound.
 
-  int (*GetSfxLumpNum)(sfxinfo_t *sfxinfo) {};
+  int (*GetSfxLumpNum)(sfxinfo_t * sfxinfo) {};
 
   // Called periodically to update the subsystem.
 
@@ -132,7 +132,7 @@ struct sound_module_t {
   // Start a sound on a given channel.  Returns the channel id
   // or -1 on failure.
 
-  int (*StartSound)(sfxinfo_t *sfxinfo, int channel, int vol, int sep, int pitch) {};
+  int (*StartSound)(sfxinfo_t * sfxinfo, int channel, int vol, int sep, int pitch) {};
 
   // Stop the sound playing on the given channel.
 
@@ -144,18 +144,18 @@ struct sound_module_t {
 
   // Called on startup to precache sound effects (if necessary)
 
-  void (*CacheSounds)(sfxinfo_t *sounds, int num_sounds) {};
+  void (*CacheSounds)(sfxinfo_t * sounds, int num_sounds) {};
 };
 
 void I_InitSound(bool use_sfx_prefix);
 void I_ShutdownSound();
-int  I_GetSfxLumpNum(sfxinfo_t *sfxinfo);
+int  I_GetSfxLumpNum(sfxinfo_t * sfxinfo);
 void I_UpdateSound();
 void I_UpdateSoundParams(int channel, int vol, int sep);
-int  I_StartSound(sfxinfo_t *sfxinfo, int channel, int vol, int sep, int pitch);
+int  I_StartSound(sfxinfo_t * sfxinfo, int channel, int vol, int sep, int pitch);
 void I_StopSound(int channel);
 bool I_SoundIsPlaying(int channel);
-void I_PrecacheSounds(sfxinfo_t *sounds, int num_sounds);
+void I_PrecacheSounds(sfxinfo_t * sounds, int num_sounds);
 
 // Interface for music modules
 
@@ -163,8 +163,8 @@ typedef struct
 {
   // List of sound devices that this music module is used for.
 
-  snddevice_t *sound_devices;
-  int          num_sound_devices;
+  snddevice_t * sound_devices;
+  int           num_sound_devices;
 
   // Initialise the music subsystem
 
@@ -189,15 +189,15 @@ typedef struct
   // Register a song handle from data
   // Returns a handle that can be used to play the song
 
-  void *(*RegisterSong)(void *data, int len);
+  void * (*RegisterSong)(void * data, int len);
 
   // Un-register (free) song data
 
-  void (*UnRegisterSong)(void *handle);
+  void (*UnRegisterSong)(void * handle);
 
   // Play the song
 
-  void (*PlaySong)(void *handle, bool looping);
+  void (*PlaySong)(void * handle, bool looping);
 
   // Stop playing the current song.
 
@@ -212,16 +212,16 @@ typedef struct
   void (*Poll)();
 } music_module_t;
 
-void  I_InitMusic();
-void  I_ShutdownMusic();
-void  I_SetMusicVolume(int volume);
-void  I_PauseSong();
-void  I_ResumeSong();
-void *I_RegisterSong(void *data, int len);
-void  I_UnRegisterSong(void *handle);
-void  I_PlaySong(void *handle, bool looping);
-void  I_StopSong();
-bool  I_MusicIsPlaying();
+void   I_InitMusic();
+void   I_ShutdownMusic();
+void   I_SetMusicVolume(int volume);
+void   I_PauseSong();
+void   I_ResumeSong();
+void * I_RegisterSong(void * data, int len);
+void   I_UnRegisterSong(void * handle);
+void   I_PlaySong(void * handle, bool looping);
+void   I_StopSong();
+bool   I_MusicIsPlaying();
 
 struct i_sound_t {
   int snd_sfxdevice {};
@@ -233,12 +233,12 @@ struct i_sound_t {
   // Config variable that controls the sound buffer size. We default to 28ms (1000 / 35fps = 1 buffer per tic).
   int snd_maxslicetime_ms {};
   // External command to invoke to play back music.
-  char *snd_musiccmd {};
+  char * snd_musiccmd {};
   // Whether to vary the pitch of sound effects. Each game will set the default differently
   int snd_pitchshift {};
 };
 
-extern i_sound_t *const g_i_sound_globals;
+extern i_sound_t * const g_i_sound_globals;
 
 void I_BindSoundVariables();
 

@@ -32,17 +32,17 @@ enum memfile_mode_t
 };
 
 struct _MEMFILE {
-  unsigned char *buf;
-  size_t         buflen;
-  size_t         alloced;
-  unsigned int   position;
-  memfile_mode_t mode;
+  unsigned char * buf;
+  size_t          buflen;
+  size_t          alloced;
+  unsigned int    position;
+  memfile_mode_t  mode;
 };
 
 // Open a memory area for reading
 
-MEMFILE *mem_fopen_read(void *buf, size_t buflen) {
-  auto *file = zmalloc<MEMFILE *>(sizeof(MEMFILE), PU_STATIC, 0);
+MEMFILE * mem_fopen_read(void * buf, size_t buflen) {
+  auto * file = zmalloc<MEMFILE *>(sizeof(MEMFILE), PU_STATIC, 0);
 
   file->buf      = static_cast<unsigned char *>(buf);
   file->buflen   = buflen;
@@ -54,7 +54,7 @@ MEMFILE *mem_fopen_read(void *buf, size_t buflen) {
 
 // Read bytes
 
-size_t mem_fread(void *buf, size_t size, size_t nmemb, MEMFILE *stream) {
+size_t mem_fread(void * buf, size_t size, size_t nmemb, MEMFILE * stream) {
   if (stream->mode != MODE_READ) {
     fmt::printf("not a read stream\n");
     return static_cast<size_t>(-1);
@@ -81,8 +81,8 @@ size_t mem_fread(void *buf, size_t size, size_t nmemb, MEMFILE *stream) {
 
 // Open a memory area for writing
 
-MEMFILE *mem_fopen_write() {
-  auto *file = zmalloc<MEMFILE *>(sizeof(MEMFILE), PU_STATIC, 0);
+MEMFILE * mem_fopen_write() {
+  auto * file = zmalloc<MEMFILE *>(sizeof(MEMFILE), PU_STATIC, 0);
 
   file->alloced  = 1024;
   file->buf      = zmalloc<unsigned char *>(file->alloced, PU_STATIC, 0);
@@ -95,7 +95,7 @@ MEMFILE *mem_fopen_write() {
 
 // Write bytes to stream
 
-size_t mem_fwrite(const void *ptr, size_t size, size_t nmemb, MEMFILE *stream) {
+size_t mem_fwrite(const void * ptr, size_t size, size_t nmemb, MEMFILE * stream) {
   if (stream->mode != MODE_WRITE) {
     return static_cast<size_t>(-1);
   }
@@ -106,7 +106,7 @@ size_t mem_fwrite(const void *ptr, size_t size, size_t nmemb, MEMFILE *stream) {
   size_t bytes = size * nmemb;
 
   while (bytes > stream->alloced - stream->position) {
-    auto *newbuf = zmalloc<unsigned char *>(stream->alloced * 2, PU_STATIC, 0);
+    auto * newbuf = zmalloc<unsigned char *>(stream->alloced * 2, PU_STATIC, 0);
     std::memcpy(newbuf, stream->buf, stream->alloced);
     Z_Free(stream->buf);
     stream->buf = newbuf;
@@ -124,12 +124,12 @@ size_t mem_fwrite(const void *ptr, size_t size, size_t nmemb, MEMFILE *stream) {
   return nmemb;
 }
 
-void mem_get_buf(MEMFILE *stream, void **buf, size_t *buflen) {
+void mem_get_buf(MEMFILE * stream, void ** buf, size_t * buflen) {
   *buf    = stream->buf;
   *buflen = stream->buflen;
 }
 
-void mem_fclose(MEMFILE *stream) {
+void mem_fclose(MEMFILE * stream) {
   if (stream->mode == MODE_WRITE) {
     Z_Free(stream->buf);
   }
@@ -137,11 +137,11 @@ void mem_fclose(MEMFILE *stream) {
   Z_Free(stream);
 }
 
-long mem_ftell(MEMFILE *stream) {
+long mem_ftell(MEMFILE * stream) {
   return stream->position;
 }
 
-int mem_fseek(MEMFILE *stream, signed long position, mem_rel_t whence) {
+int mem_fseek(MEMFILE * stream, signed long position, mem_rel_t whence) {
   unsigned int newpos = 0;
 
   switch (whence) {

@@ -46,13 +46,13 @@
 #include "memory.hpp"
 #include "p_extnodes.hpp" // [crispy] support extended node formats
 
-void P_SpawnMapThing(mapthing_t *mthing);
+void P_SpawnMapThing(mapthing_t * mthing);
 
 static int totallines;
 
 // [crispy] recalculate seg offsets
 // adapted from prboom-plus/src/p_setup.c:474-482
-fixed_t GetOffset(vertex_t *v1, vertex_t *v2) {
+fixed_t GetOffset(vertex_t * v1, vertex_t * v2) {
   fixed_t dx = (v1->x - v2->x) >> FRACBITS;
   fixed_t dy = (v1->y - v2->y) >> FRACBITS;
   fixed_t r  = static_cast<fixed_t>(sqrt(dx * dx + dy * dy)) << FRACBITS;
@@ -72,10 +72,10 @@ void P_LoadVertexes(int lump) {
   g_r_state_globals->vertexes = zmalloc<decltype(g_r_state_globals->vertexes)>(static_cast<unsigned long>(g_r_state_globals->numvertexes) * sizeof(vertex_t), PU_LEVEL, 0);
 
   // Load data into cache.
-  uint8_t *data = cache_lump_num<uint8_t *>(lump, PU_STATIC);
+  uint8_t * data = cache_lump_num<uint8_t *>(lump, PU_STATIC);
 
-  mapvertex_t *ml = reinterpret_cast<mapvertex_t *>(data);
-  vertex_t    *li = g_r_state_globals->vertexes;
+  mapvertex_t * ml = reinterpret_cast<mapvertex_t *>(data);
+  vertex_t *    li = g_r_state_globals->vertexes;
 
   // Copy and convert vertex coordinates,
   // internal representation as fixed.
@@ -96,7 +96,7 @@ void P_LoadVertexes(int lump) {
 //
 // GetSectorAtNullAddress
 //
-sector_t *GetSectorAtNullAddress() {
+sector_t * GetSectorAtNullAddress() {
   static bool     null_sector_is_initialized = false;
   static sector_t null_sector;
 
@@ -114,14 +114,14 @@ sector_t *GetSectorAtNullAddress() {
 // P_LoadSegs
 //
 void P_LoadSegs(int lump) {
-  uint8_t  *data          = nullptr;
-  int       i             = 0;
-  mapseg_t *ml            = nullptr;
-  seg_t    *li            = nullptr;
-  line_t   *ldef          = nullptr;
-  int       linedef_local = 0;
-  int       side          = 0;
-  int       sidenum       = 0;
+  uint8_t *  data          = nullptr;
+  int        i             = 0;
+  mapseg_t * ml            = nullptr;
+  seg_t *    li            = nullptr;
+  line_t *   ldef          = nullptr;
+  int        linedef_local = 0;
+  int        side          = 0;
+  int        sidenum       = 0;
 
   g_r_state_globals->numsegs = static_cast<int>(W_LumpLength(lump) / sizeof(mapseg_t));
   g_r_state_globals->segs    = zmalloc<decltype(g_r_state_globals->segs)>(static_cast<unsigned long>(g_r_state_globals->numsegs) * sizeof(seg_t), PU_LEVEL, 0);
@@ -185,7 +185,7 @@ void P_SegLengths(bool contrast_only) {
   const int rightangle = std::abs(finesine[(ANG60 / 2) >> ANGLETOFINESHIFT]);
 
   for (int i = 0; i < g_r_state_globals->numsegs; i++) {
-    seg_t *const li = &g_r_state_globals->segs[i];
+    seg_t * const li = &g_r_state_globals->segs[i];
 
     int64_t dx = li->v2->r_x - li->v1->r_x;
     int64_t dy = li->v2->r_y - li->v1->r_y;
@@ -219,15 +219,15 @@ void P_SegLengths(bool contrast_only) {
 void P_LoadSubsectors(int lump) {
   g_r_state_globals->numsubsectors = static_cast<int>(W_LumpLength(lump) / sizeof(mapsubsector_t));
   g_r_state_globals->subsectors    = zmalloc<decltype(g_r_state_globals->subsectors)>(static_cast<unsigned long>(g_r_state_globals->numsubsectors) * sizeof(subsector_t), PU_LEVEL, 0);
-  uint8_t *data                    = cache_lump_num<uint8_t *>(lump, PU_STATIC);
+  uint8_t * data                   = cache_lump_num<uint8_t *>(lump, PU_STATIC);
 
   // [crispy] fail on missing subsectors
   if (!data || !g_r_state_globals->numsubsectors)
     I_Error("P_LoadSubsectors: No subsectors in map!");
 
-  auto *ms = reinterpret_cast<mapsubsector_t *>(data);
+  auto * ms = reinterpret_cast<mapsubsector_t *>(data);
   std::memset(g_r_state_globals->subsectors, 0, static_cast<unsigned long>(g_r_state_globals->numsubsectors) * sizeof(subsector_t));
-  subsector_t *ss = g_r_state_globals->subsectors;
+  subsector_t * ss = g_r_state_globals->subsectors;
 
   for (int i = 0; i < g_r_state_globals->numsubsectors; i++, ss++, ms++) {
     ss->numlines  = static_cast<unsigned short>(SHORT(ms->numsegs));  // [crispy] extended nodes
@@ -248,14 +248,14 @@ void P_LoadSectors(int lump) {
   g_r_state_globals->numsectors = static_cast<int>(W_LumpLength(lump) / sizeof(mapsector_t));
   g_r_state_globals->sectors    = zmalloc<decltype(g_r_state_globals->sectors)>(static_cast<unsigned long>(g_r_state_globals->numsectors) * sizeof(sector_t), PU_LEVEL, 0);
   std::memset(g_r_state_globals->sectors, 0, static_cast<unsigned long>(g_r_state_globals->numsectors) * sizeof(sector_t));
-  uint8_t *data = cache_lump_num<uint8_t *>(lump, PU_STATIC);
+  uint8_t * data = cache_lump_num<uint8_t *>(lump, PU_STATIC);
 
   // [crispy] fail on missing sectors
   if (!data || !g_r_state_globals->numsectors)
     I_Error("P_LoadSectors: No sectors in map!");
 
-  auto     *ms = reinterpret_cast<mapsector_t *>(data);
-  sector_t *ss = g_r_state_globals->sectors;
+  auto *     ms = reinterpret_cast<mapsector_t *>(data);
+  sector_t * ss = g_r_state_globals->sectors;
   for (int i = 0; i < g_r_state_globals->numsectors; i++, ss++, ms++) {
     ss->floorheight   = SHORT(ms->floorheight) << FRACBITS;
     ss->ceilingheight = SHORT(ms->ceilingheight) << FRACBITS;
@@ -287,7 +287,7 @@ void P_LoadSectors(int lump) {
 void P_LoadNodes(int lump) {
   g_r_state_globals->numnodes = static_cast<int>(W_LumpLength(lump) / sizeof(mapnode_t));
   g_r_state_globals->nodes    = zmalloc<decltype(g_r_state_globals->nodes)>(static_cast<unsigned long>(g_r_state_globals->numnodes) * sizeof(node_t), PU_LEVEL, 0);
-  uint8_t *data               = cache_lump_num<uint8_t *>(lump, PU_STATIC);
+  uint8_t * data              = cache_lump_num<uint8_t *>(lump, PU_STATIC);
 
   // [crispy] warn about missing nodes
   if (!data || !g_r_state_globals->numnodes) {
@@ -297,8 +297,8 @@ void P_LoadNodes(int lump) {
       I_Error("P_LoadNodes: No nodes in map!");
   }
 
-  auto   *mn = reinterpret_cast<mapnode_t *>(data);
-  node_t *no = g_r_state_globals->nodes;
+  auto *   mn = reinterpret_cast<mapnode_t *>(data);
+  node_t * no = g_r_state_globals->nodes;
 
   for (int i = 0; i < g_r_state_globals->numnodes; i++, no++, mn++) {
     no->x  = SHORT(mn->x) << FRACBITS;
@@ -333,10 +333,10 @@ void P_LoadNodes(int lump) {
 // P_LoadThings
 //
 void P_LoadThings(int lump) {
-  uint8_t *data      = cache_lump_num<uint8_t *>(lump, PU_STATIC);
-  int      numthings = static_cast<int>(W_LumpLength(lump) / sizeof(mapthing_t));
+  uint8_t * data      = cache_lump_num<uint8_t *>(lump, PU_STATIC);
+  int       numthings = static_cast<int>(W_LumpLength(lump) / sizeof(mapthing_t));
 
-  mapthing_t *mt = reinterpret_cast<mapthing_t *>(data);
+  mapthing_t * mt = reinterpret_cast<mapthing_t *>(data);
   for (int i = 0; i < numthings; i++, mt++) {
     bool spawn = true;
 
@@ -388,13 +388,13 @@ void P_LoadThings(int lump) {
 // Also counts secret lines for intermissions.
 //
 void P_LoadLineDefs(int lump) {
-  uint8_t      *data;
-  int           i;
-  maplinedef_t *mld;
-  line_t       *ld;
-  vertex_t     *v1;
-  vertex_t     *v2;
-  int           warn, warn2; // [crispy] warn about invalid linedefs
+  uint8_t *      data;
+  int            i;
+  maplinedef_t * mld;
+  line_t *       ld;
+  vertex_t *     v1;
+  vertex_t *     v2;
+  int            warn, warn2; // [crispy] warn about invalid linedefs
 
   g_r_state_globals->numlines = static_cast<int>(W_LumpLength(lump) / sizeof(maplinedef_t));
   g_r_state_globals->lines    = zmalloc<decltype(g_r_state_globals->lines)>(static_cast<unsigned long>(g_r_state_globals->numlines) * sizeof(line_t), PU_LEVEL, 0);
@@ -516,10 +516,10 @@ void P_LoadLineDefs(int lump) {
 // P_LoadSideDefs
 //
 void P_LoadSideDefs(int lump) {
-  uint8_t      *data;
-  int           i;
-  mapsidedef_t *msd;
-  side_t       *sd;
+  uint8_t *      data;
+  int            i;
+  mapsidedef_t * msd;
+  side_t *       sd;
 
   g_r_state_globals->numsides = static_cast<int>(W_LumpLength(lump) / sizeof(mapsidedef_t));
   g_r_state_globals->sides    = zmalloc<decltype(g_r_state_globals->sides)>(static_cast<unsigned long>(g_r_state_globals->numsides) * sizeof(side_t), PU_LEVEL, 0);
@@ -546,10 +546,10 @@ void P_LoadSideDefs(int lump) {
 // P_LoadBlockMap
 //
 bool P_LoadBlockMap(int lump) {
-  int    i;
-  int    count;
-  size_t lumplen;
-  short *wadblockmaplump;
+  int     i;
+  int     count;
+  size_t  lumplen;
+  short * wadblockmaplump;
 
   // [crispy] (re-)create BLOCKMAP if necessary
   if (M_CheckParm("-blockmap") || lump >= static_cast<int>(numlumps) || (lumplen = W_LumpLength(lump)) < 8 || (count = static_cast<int>(lumplen / 2)) >= 0x10000) {
@@ -601,15 +601,15 @@ bool P_LoadBlockMap(int lump) {
 // Finds block bounding boxes for sectors.
 //
 void P_GroupLines() {
-  line_t     **linebuffer;
-  int          i;
-  int          j;
-  line_t      *li;
-  sector_t    *sector;
-  subsector_t *ss;
-  seg_t       *seg;
-  fixed_t      bbox[4];
-  int          block;
+  line_t **     linebuffer;
+  int           i;
+  int           j;
+  line_t *      li;
+  sector_t *    sector;
+  subsector_t * ss;
+  seg_t *       seg;
+  fixed_t       bbox[4];
+  int           block;
 
   // look up sector number for each subsector
   ss = g_r_state_globals->subsectors;
@@ -712,8 +712,8 @@ static void P_RemoveSlimeTrails() {
   int i;
 
   for (i = 0; i < g_r_state_globals->numsegs; i++) {
-    const line_t *l = g_r_state_globals->segs[i].linedef;
-    vertex_t     *v = g_r_state_globals->segs[i].v1;
+    const line_t * l = g_r_state_globals->segs[i].linedef;
+    vertex_t *     v = g_r_state_globals->segs[i].v1;
 
     // [crispy] ignore exactly vertical or horizontal linedefs
     if (l->dx && l->dy) {
@@ -751,10 +751,10 @@ static void P_RemoveSlimeTrails() {
 // Pad the REJECT lump with extra data when the lump is too small,
 // to simulate a REJECT buffer overflow in Vanilla Doom.
 
-static void PadRejectArray(uint8_t *array, unsigned int len) {
+static void PadRejectArray(uint8_t * array, unsigned int len) {
   unsigned int i;
   unsigned int byte_num;
-  uint8_t     *dest;
+  uint8_t *    dest;
   unsigned int padvalue;
 
   // Values to pad the REJECT array with:
@@ -818,7 +818,7 @@ static void P_LoadReject(int lumpnum) {
 }
 
 // [crispy] log game skill in plain text
-const char *skilltable[] = {
+const char * skilltable[] = {
   "Nothing",
   "Baby",
   "Easy",
@@ -860,7 +860,7 @@ int P_GetNumForMap(int episode, int map, bool critical_param) {
 }
 
 // pointer to the current map lump info struct
-lumpinfo_t *maplumpinfo;
+lumpinfo_t * maplumpinfo;
 
 //
 // P_SetupLevel
@@ -953,7 +953,7 @@ void P_SetupLevel(int episode, int map, int, skill_t skill) {
     extern int savedleveltime;
     const int  ltime = savedleveltime / TICRATE,
               ttime  = (g_doomstat_globals->totalleveltimes + savedleveltime) / TICRATE;
-    char *rfn_str;
+    char * rfn_str;
 
     rfn_str = M_StringJoin(
         g_doomstat_globals->respawnparm ? " -respawn" : "",
@@ -1046,11 +1046,11 @@ static void P_InitActualHeights() {
   int i;
 
   for (i = 0; i < NUMMOBJTYPES; i++) {
-    state_t       *state;
-    spritedef_t   *sprdef;
-    spriteframe_t *sprframe;
-    int            lump;
-    patch_t       *patch;
+    state_t *       state;
+    spritedef_t *   sprdef;
+    spriteframe_t * sprframe;
+    int             lump;
+    patch_t *       patch;
 
     state  = &states[mobjinfo[i].spawnstate];
     sprdef = &g_r_state_globals->sprites[state->sprite];

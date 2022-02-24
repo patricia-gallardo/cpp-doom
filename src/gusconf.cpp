@@ -37,7 +37,7 @@ constexpr auto MAX_INSTRUMENTS = 256;
 
 typedef struct
 {
-  char        *patch_names[MAX_INSTRUMENTS];
+  char *       patch_names[MAX_INSTRUMENTS];
   int          used[MAX_INSTRUMENTS];
   int          mapping[MAX_INSTRUMENTS];
   unsigned int count;
@@ -47,7 +47,7 @@ static gusconf_t gusconf_s = {
   .gus_patch_path = const_cast<char *>(""),
   .gus_ram_kb     = 1024
 };
-gusconf_t *const g_gusconf_globals = &gusconf_s;
+gusconf_t * const g_gusconf_globals = &gusconf_s;
 
 static unsigned int MappingIndex() {
   auto result = static_cast<unsigned int>(g_gusconf_globals->gus_ram_kb / 256);
@@ -61,8 +61,8 @@ static unsigned int MappingIndex() {
   }
 }
 
-static int SplitLine(char *line, char **fields, unsigned int max_fields) {
-  char *p = nullptr;
+static int SplitLine(char * line, char ** fields, unsigned int max_fields) {
+  char * p = nullptr;
 
   fields[0]               = line;
   unsigned int num_fields = 1;
@@ -99,8 +99,8 @@ static int SplitLine(char *line, char **fields, unsigned int max_fields) {
   return static_cast<int>(num_fields);
 }
 
-static void ParseLine(gus_config_t *config, char *line) {
-  char *fields[6];
+static void ParseLine(gus_config_t * config, char * line) {
+  char * fields[6];
 
   auto num_fields = static_cast<unsigned int>(SplitLine(line, fields, 6));
 
@@ -135,7 +135,7 @@ static void ParseLine(gus_config_t *config, char *line) {
   config->mapping[instr_id] = static_cast<int>(i);
 }
 
-static void ParseDMXConfig(char *dmxconf, gus_config_t *config) {
+static void ParseDMXConfig(char * dmxconf, gus_config_t * config) {
   std::memset(config, 0, sizeof(gus_config_t));
 
   for (unsigned int i = 0; i < MAX_INSTRUMENTS; ++i) {
@@ -145,10 +145,10 @@ static void ParseDMXConfig(char *dmxconf, gus_config_t *config) {
 
   config->count = 0;
 
-  char *p = dmxconf;
+  char * p = dmxconf;
 
   for (;;) {
-    char *newline = strchr(p, '\n');
+    char * newline = strchr(p, '\n');
 
     if (newline != nullptr) {
       *newline = '\0';
@@ -164,13 +164,13 @@ static void ParseDMXConfig(char *dmxconf, gus_config_t *config) {
   }
 }
 
-static void FreeDMXConfig(gus_config_t *config) {
-  for (auto &patch_name : config->patch_names) {
+static void FreeDMXConfig(gus_config_t * config) {
+  for (auto & patch_name : config->patch_names) {
     free(patch_name);
   }
 }
 
-static char *ReadDMXConfig() {
+static char * ReadDMXConfig() {
   // TODO: This should be chosen based on gamemode == commercial:
 
   int lumpnum = W_CheckNumForName("DMXGUS");
@@ -180,15 +180,15 @@ static char *ReadDMXConfig() {
   }
 
   size_t len  = W_LumpLength(lumpnum);
-  char  *data = zmalloc<char *>(len + 1, PU_STATIC, nullptr);
+  char * data = zmalloc<char *>(len + 1, PU_STATIC, nullptr);
   W_ReadLump(lumpnum, data);
 
   data[len] = '\0';
   return data;
 }
 
-static bool WriteTimidityConfig(char *path, gus_config_t *config) {
-  FILE *fstream = fopen(path, "w");
+static bool WriteTimidityConfig(char * path, gus_config_t * config) {
+  FILE * fstream = fopen(path, "w");
 
   if (fstream == nullptr) {
     return false;
@@ -223,7 +223,7 @@ static bool WriteTimidityConfig(char *path, gus_config_t *config) {
   return true;
 }
 
-bool GUS_WriteConfig(char *path) {
+bool GUS_WriteConfig(char * path) {
   if (!strcmp(g_gusconf_globals->gus_patch_path, "")) {
     fmt::printf("You haven't configured gus_patch_path.\n");
     fmt::printf("gus_patch_path needs to point to the location of "
@@ -235,7 +235,7 @@ bool GUS_WriteConfig(char *path) {
   }
 
   gus_config_t config;
-  char        *dmxconf = ReadDMXConfig();
+  char *       dmxconf = ReadDMXConfig();
   ParseDMXConfig(dmxconf, &config);
 
   bool result = WriteTimidityConfig(path, &config);

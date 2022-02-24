@@ -43,7 +43,7 @@ extern int joystick_physical_buttons[NUM_VIRTUAL_BUTTONS];
 // button that the user wants to use for firing. We do this so that
 // the menus work (the game code is hard coded to interpret
 // button #0 = select menu item, button #1 = go back to previous menu).
-static int *all_joystick_buttons[NUM_VIRTUAL_BUTTONS] = {
+static int * all_joystick_buttons[NUM_VIRTUAL_BUTTONS] = {
   &g_m_controls_globals->joybfire,
   &g_m_controls_globals->joybuse,
   &g_m_controls_globals->joybstrafe,
@@ -67,7 +67,7 @@ static int PhysicalForVirtualButton(int vbutton) {
 
 // Get the virtual button number for the given variable, ie. the
 // variable's index in all_joystick_buttons[NUM_VIRTUAL_BUTTONS].
-static int VirtualButtonForVariable(int *variable) {
+static int VirtualButtonForVariable(int * variable) {
   for (size_t i = 0; i < std::size(all_joystick_buttons); ++i) {
     if (variable == all_joystick_buttons[i]) {
       return static_cast<int>(i);
@@ -106,7 +106,7 @@ static void CanonicalizeButtons() {
 // Check all existing buttons and clear any using the specified physical
 // button.
 static void ClearVariablesUsingButton(int physbutton) {
-  for (auto &all_joystick_button : all_joystick_buttons) {
+  for (auto & all_joystick_button : all_joystick_buttons) {
     int vbutton = *all_joystick_button;
 
     if (vbutton >= 0 && physbutton == PhysicalForVirtualButton(vbutton)) {
@@ -117,8 +117,8 @@ static void ClearVariablesUsingButton(int physbutton) {
 
 // Called in response to SDL events when the prompt window is open:
 
-static int EventCallback(SDL_Event *event, void *uncast_joystick_input) {
-  txt_joystick_input_t *joystick_input = reinterpret_cast<txt_joystick_input_t *>(uncast_joystick_input);
+static int EventCallback(SDL_Event * event, void * uncast_joystick_input) {
+  txt_joystick_input_t * joystick_input = reinterpret_cast<txt_joystick_input_t *>(uncast_joystick_input);
 
   // Got the joystick button press?
 
@@ -150,8 +150,8 @@ static int EventCallback(SDL_Event *event, void *uncast_joystick_input) {
 // When the prompt window is closed, disable the event callback function;
 // we are no longer interested in receiving notification of events.
 
-static void PromptWindowClosed(void *, void *uncast_joystick) {
-  auto *joystick = reinterpret_cast<SDL_Joystick *>(uncast_joystick);
+static void PromptWindowClosed(void *, void * uncast_joystick) {
+  auto * joystick = reinterpret_cast<SDL_Joystick *>(uncast_joystick);
 
   SDL_JoystickClose(joystick);
   TXT_SDL_SetEventCallback(nullptr, nullptr);
@@ -163,9 +163,9 @@ static void OpenErrorWindow() {
   TXT_MessageBox(nullptr, "Please configure a controller first!");
 }
 
-static void OpenPromptWindow(txt_joystick_input_t *joystick_input) {
-  txt_window_t *window;
-  SDL_Joystick *joystick;
+static void OpenPromptWindow(txt_joystick_input_t * joystick_input) {
+  txt_window_t * window;
+  SDL_Joystick * joystick;
 
   // Silently update when the shift button is held down.
 
@@ -195,8 +195,8 @@ static void OpenPromptWindow(txt_joystick_input_t *joystick_input) {
   SDL_JoystickEventState(SDL_ENABLE);
 }
 
-static void TXT_JoystickInputSizeCalc(void *uncast_joystick_input) {
-  auto *joystick_input = reinterpret_cast<txt_joystick_input_t *>(uncast_joystick_input);
+static void TXT_JoystickInputSizeCalc(void * uncast_joystick_input) {
+  auto * joystick_input = reinterpret_cast<txt_joystick_input_t *>(uncast_joystick_input);
 
   // All joystickinputs are the same size.
 
@@ -204,13 +204,13 @@ static void TXT_JoystickInputSizeCalc(void *uncast_joystick_input) {
   joystick_input->widget.h = 1;
 }
 
-static void GetJoystickButtonDescription(int vbutton, char *buf, size_t buf_len) {
+static void GetJoystickButtonDescription(int vbutton, char * buf, size_t buf_len) {
   M_snprintf(buf, buf_len, "BUTTON #%i", PhysicalForVirtualButton(vbutton) + 1);
 }
 
-static void TXT_JoystickInputDrawer(void *uncast_joystick_input) {
-  auto *joystick_input = reinterpret_cast<txt_joystick_input_t *>(uncast_joystick_input);
-  char  buf[20];
+static void TXT_JoystickInputDrawer(void * uncast_joystick_input) {
+  auto * joystick_input = reinterpret_cast<txt_joystick_input_t *>(uncast_joystick_input);
+  char   buf[20];
 
   if (*joystick_input->variable < 0) {
     M_StringCopy(buf, "(none)", sizeof(buf));
@@ -233,8 +233,8 @@ static void TXT_JoystickInputDrawer(void *uncast_joystick_input) {
 static void TXT_JoystickInputDestructor(void *) {
 }
 
-static int TXT_JoystickInputKeyPress(void *uncast_joystick_input, int key) {
-  auto *joystick_input = reinterpret_cast<txt_joystick_input_t *>(uncast_joystick_input);
+static int TXT_JoystickInputKeyPress(void * uncast_joystick_input, int key) {
+  auto * joystick_input = reinterpret_cast<txt_joystick_input_t *>(uncast_joystick_input);
 
   if (key == KEY_ENTER) {
     // Open a window to prompt for the new joystick press
@@ -251,11 +251,11 @@ static int TXT_JoystickInputKeyPress(void *uncast_joystick_input, int key) {
   return 0;
 }
 
-static void TXT_JoystickInputMousePress(void *uncast_widget,
+static void TXT_JoystickInputMousePress(void * uncast_widget,
                                         int,
                                         int,
                                         int b) {
-  auto *widget = reinterpret_cast<txt_joystick_input_t *>(uncast_widget);
+  auto * widget = reinterpret_cast<txt_joystick_input_t *>(uncast_widget);
 
   // Clicking is like pressing enter
 
@@ -274,8 +274,8 @@ txt_widget_class_t txt_joystick_input_class = {
   nullptr,
 };
 
-txt_joystick_input_t *TXT_NewJoystickInput(int *variable) {
-  txt_joystick_input_t *joystick_input;
+txt_joystick_input_t * TXT_NewJoystickInput(int * variable) {
+  txt_joystick_input_t * joystick_input;
 
   joystick_input = static_cast<txt_joystick_input_t *>(malloc(sizeof(txt_joystick_input_t)));
 

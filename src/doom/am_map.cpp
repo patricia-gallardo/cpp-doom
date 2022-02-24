@@ -274,11 +274,11 @@ static fixed_t scale_mtof = static_cast<fixed_t>(INITSCALEMTOF);
 // used by FTOM to scale from frame-buffer-to-map coords (=1/scale_mtof)
 static fixed_t scale_ftom;
 
-static player_t *plr; // the player represented by an arrow
+static player_t * plr; // the player represented by an arrow
 
-static patch_t *marknums[10];                 // numbers used for marking by the automap
-static mpoint_t markpoints[AM_NUMMARKPOINTS]; // where the points are
-static int      markpointnum = 0;             // next point to be assigned
+static patch_t * marknums[10];                 // numbers used for marking by the automap
+static mpoint_t  markpoints[AM_NUMMARKPOINTS]; // where the points are
+static int       markpointnum = 0;             // next point to be assigned
 
 static int followplayer = 1; // specifies whether to follow the player around
 
@@ -287,8 +287,8 @@ cheatseq_t cheat_amap = CHEAT("iddt", 0);
 static bool stopped = true;
 
 // [crispy] automap rotate mode needs these early on
-void            AM_rotate(int64_t *x, int64_t *y, angle_t a);
-static void     AM_rotatePoint(mpoint_t *pt);
+void            AM_rotate(int64_t * x, int64_t * y, angle_t a);
+static void     AM_rotatePoint(mpoint_t * pt);
 static mpoint_t mapcenter;
 static angle_t  mapangle;
 
@@ -296,8 +296,8 @@ static angle_t  mapangle;
 // segment in map coordinates (with the upright y-axis n' all) so
 // that it can be used with the brain-dead drawing stuff.
 
-[[maybe_unused]] void AM_getIslope(mline_t  *ml,
-                                   islope_t *is) {
+[[maybe_unused]] void AM_getIslope(mline_t *  ml,
+                                   islope_t * is) {
   int dy = static_cast<int>(ml->a.y - ml->b.y);
   int dx = static_cast<int>(ml->b.x - ml->a.x);
   if (!dy)
@@ -514,7 +514,7 @@ void AM_unloadPics() {
 }
 
 void AM_clearMarks() {
-  for (auto &markpoint : markpoints)
+  for (auto & markpoint : markpoints)
     markpoint.x = -1; // means empty
   markpointnum = 0;
 }
@@ -617,7 +617,7 @@ void AM_maxOutWindowScale() {
 //
 // Handle events (user inputs) in automap mode
 //
-bool AM_Responder(event_t *ev) {
+bool AM_Responder(event_t * ev) {
 
   static int  bigstate = 0;
   static char buffer[20];
@@ -887,8 +887,8 @@ void AM_clearFB(int color) {
 // faster reject and precalculated slopes.  If the speed is needed,
 // use a hash algorithm to handle  the common cases.
 //
-bool AM_clipMline(mline_t *ml,
-                  fline_t *fl) {
+bool AM_clipMline(mline_t * ml,
+                  fline_t * fl) {
   enum
   {
     LEFT   = 1,
@@ -1008,8 +1008,8 @@ bool AM_clipMline(mline_t *ml,
 //
 // Classic Bresenham w/ whatever optimizations needed for speed
 //
-void AM_drawFline(fline_t *fl,
-                  int      color) {
+void AM_drawFline(fline_t * fl,
+                  int       color) {
   int x  = 0;
   int y  = 0;
   int dx = 0;
@@ -1078,8 +1078,8 @@ void AM_drawFline(fline_t *fl,
 //
 // Clip lines, draw visible part sof lines.
 //
-void AM_drawMline(mline_t *ml,
-                  int      color) {
+void AM_drawMline(mline_t * ml,
+                  int       color) {
   static fline_t fl;
 
   if (AM_clipMline(ml, &fl))
@@ -1274,9 +1274,9 @@ void AM_drawWalls() {
 // Rotation in 2D.
 // Used to rotate player arrow line character.
 //
-void AM_rotate(int64_t *x,
-               int64_t *y,
-               angle_t  a) {
+void AM_rotate(int64_t * x,
+               int64_t * y,
+               angle_t   a) {
   int64_t tmpx =
       FixedMul(static_cast<fixed_t>(*x), finecosine[a >> ANGLETOFINESHIFT])
       - FixedMul(static_cast<fixed_t>(*y), finesine[a >> ANGLETOFINESHIFT]);
@@ -1290,7 +1290,7 @@ void AM_rotate(int64_t *x,
 
 // [crispy] rotate point around map center
 // adapted from prboom-plus/src/am_map.c:898-920
-static void AM_rotatePoint(mpoint_t *pt) {
+static void AM_rotatePoint(mpoint_t * pt) {
   pt->x -= mapcenter.x;
   pt->y -= mapcenter.y;
 
@@ -1305,13 +1305,13 @@ static void AM_rotatePoint(mpoint_t *pt) {
   pt->x = tmpx;
 }
 
-void AM_drawLineCharacter(mline_t *lineguy,
-                          int      lineguylines,
-                          fixed_t  scale,
-                          angle_t  angle,
-                          int      color,
-                          fixed_t  x,
-                          fixed_t  y) {
+void AM_drawLineCharacter(mline_t * lineguy,
+                          int       lineguylines,
+                          fixed_t   scale,
+                          angle_t   angle,
+                          int       color,
+                          fixed_t   x,
+                          fixed_t   y) {
   mline_t l;
 
   if (crispy->automaprotate) {
@@ -1372,7 +1372,7 @@ void AM_drawPlayers() {
 
   for (int i = 0; i < MAXPLAYERS; i++) {
     their_color++;
-    player_t *p = &g_doomstat_globals->players[i];
+    player_t * p = &g_doomstat_globals->players[i];
 
     if ((g_doomstat_globals->deathmatch && !g_doomstat_globals->singledemo) && p != plr)
       continue;
@@ -1398,7 +1398,7 @@ void AM_drawPlayers() {
 
 void AM_drawThings(int colors, int) {
   for (int i = 0; i < g_r_state_globals->numsectors; i++) {
-    mobj_t *t = g_r_state_globals->sectors[i].thinglist;
+    mobj_t * t = g_r_state_globals->sectors[i].thinglist;
     while (t) {
       // [crispy] do not draw an extra triangle for the player
       if (t == plr->mo) {
@@ -1541,27 +1541,27 @@ void AM_Drawer() {
 }
 
 // [crispy] extended savegames
-void AM_GetMarkPoints(int *n, long *p) {
+void AM_GetMarkPoints(int * n, long * p) {
   *n = markpointnum;
   *p = -1L;
 
   // [crispy] prevent saving markpoints from previous map
   if (lastlevel == g_doomstat_globals->gamemap && lastepisode == g_doomstat_globals->gameepisode) {
-    for (auto &markpoint : markpoints) {
+    for (auto & markpoint : markpoints) {
       *p++ = static_cast<long>(markpoint.x);
       *p++ = (markpoint.x == -1) ? 0L : static_cast<long>(markpoint.y);
     }
   }
 }
 
-void AM_SetMarkPoints(int n, long *p) {
+void AM_SetMarkPoints(int n, long * p) {
   AM_LevelInit();
   lastlevel   = g_doomstat_globals->gamemap;
   lastepisode = g_doomstat_globals->gameepisode;
 
   markpointnum = n;
 
-  for (auto &markpoint : markpoints) {
+  for (auto & markpoint : markpoints) {
     markpoint.x = static_cast<int64_t>(*p++);
     markpoint.y = static_cast<int64_t>(*p++);
   }

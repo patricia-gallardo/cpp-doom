@@ -57,7 +57,7 @@ static const int doom2_par_times[] = {
 };
 
 /* Player colors. */
-static const char *player_colors[] = {
+static const char * player_colors[] = {
   "Green",
   "Indigo",
   "Brown",
@@ -77,7 +77,7 @@ static GameMission_t discovered_gamemission = none;
  * how to format the level name.  Unfortunately, in some cases it is
  * impossible to determine whether this is Doom 1 or Doom 2. */
 
-static void DiscoverGamemode(const wbstartstruct_t *stats, int num_stats) {
+static void DiscoverGamemode(const wbstartstruct_t * stats, int num_stats) {
   if (discovered_gamemission != none) {
     return;
   }
@@ -121,7 +121,7 @@ static void DiscoverGamemode(const wbstartstruct_t *stats, int num_stats) {
 
 /* Returns the number of players active in the given stats buffer. */
 
-static int GetNumPlayers(const wbstartstruct_t *stats) {
+static int GetNumPlayers(const wbstartstruct_t * stats) {
   int num_players = 0;
 
   for (int i = 0; i < MAXPLAYERS; ++i) {
@@ -133,11 +133,11 @@ static int GetNumPlayers(const wbstartstruct_t *stats) {
   return num_players;
 }
 
-static void PrintBanner(FILE *stream) {
+static void PrintBanner(FILE * stream) {
   fmt::fprintf(stream, "===========================================\n");
 }
 
-static void PrintPercentage(FILE *stream, int amount, int total) {
+static void PrintPercentage(FILE * stream, int amount, int total) {
   if (total == 0) {
     fmt::fprintf(stream, "0");
   } else {
@@ -154,8 +154,8 @@ static void PrintPercentage(FILE *stream, int amount, int total) {
 
 /* Display statistics for a single player. */
 
-static void PrintPlayerStats(FILE *stream, const wbstartstruct_t *stats, int player_num) {
-  const wbplayerstruct_t *player = &stats->plyr[player_num];
+static void PrintPlayerStats(FILE * stream, const wbstartstruct_t * stats, int player_num) {
+  const wbplayerstruct_t * player = &stats->plyr[player_num];
 
   fmt::fprintf(stream, "Player %i (%s):\n", player_num + 1, player_colors[player_num]);
 
@@ -180,7 +180,7 @@ static void PrintPlayerStats(FILE *stream, const wbstartstruct_t *stats, int pla
 
 /* Frags table for multiplayer games. */
 
-static void PrintFragsTable(FILE *stream, const wbstartstruct_t *stats) {
+static void PrintFragsTable(FILE * stream, const wbstartstruct_t * stats) {
   fmt::fprintf(stream, "Frags:\n");
 
   /* Print header */
@@ -226,7 +226,7 @@ static void PrintFragsTable(FILE *stream, const wbstartstruct_t *stats) {
 
 /* Displays the level name: MAPxy or ExMy, depending on game mode. */
 
-static void PrintLevelName(FILE *stream, int episode, int level) {
+static void PrintLevelName(FILE * stream, int episode, int level) {
   PrintBanner(stream);
 
   switch (discovered_gamemission) {
@@ -248,7 +248,7 @@ static void PrintLevelName(FILE *stream, int episode, int level) {
 
 /* Print details of a statistics buffer to the given file. */
 
-static void PrintStats(FILE *stream, const wbstartstruct_t *stats) {
+static void PrintStats(FILE * stream, const wbstartstruct_t * stats) {
   PrintLevelName(stream, stats->epsd, stats->last);
   fmt::fprintf(stream, "\n");
 
@@ -271,7 +271,7 @@ static void PrintStats(FILE *stream, const wbstartstruct_t *stats) {
   fmt::fprintf(stream, "\n");
 }
 
-void StatCopy(const wbstartstruct_t *stats) {
+void StatCopy(const wbstartstruct_t * stats) {
   if (M_ParmExists("-statdump") && num_captured_stats < MAX_CAPTURES) {
     std::memcpy(&captured_stats[num_captured_stats], stats, sizeof(wbstartstruct_t));
     ++num_captured_stats;
@@ -300,9 +300,9 @@ void StatDump() {
 
     // Allow "-" as output file, for stdout.
 
-    FILE *dumpfile = nullptr;
+    FILE * dumpfile = nullptr;
 
-    char *filename = myargv[index_of_arg + 1];
+    char * filename = myargv[index_of_arg + 1];
 
     if (strcmp(filename, "-") != 0) {
       dumpfile = fopen(filename, "w");

@@ -65,11 +65,11 @@ private:
   bool valid = false;
 };
 
-constexpr bool operator==(const valid_hook &a, const valid_hook &b) {
+constexpr bool operator==(const valid_hook & a, const valid_hook & b) {
   return a.is_valid() == b.is_valid();
 }
 
-constexpr bool operator!=(const valid_hook &a, const valid_hook &b) {
+constexpr bool operator!=(const valid_hook & a, const valid_hook & b) {
   return !(a == b);
 }
 
@@ -147,51 +147,51 @@ typedef actionf_t think_t;
 
 // Doubly linked list of actors.
 typedef struct thinker_s {
-  struct thinker_s *prev {};
-  struct thinker_s *next {};
-  think_t           function {};
+  struct thinker_s * prev {};
+  struct thinker_s * next {};
+  think_t            function {};
 } thinker_t;
 
-constexpr void call_thinker(thinker_t *thinker) {
+constexpr void call_thinker(thinker_t * thinker) {
   std::visit(
       overloaded {
-          [&](const zero_param_action &callback) { callback(); },
-          [&](const mobj_param_action &callback) { callback(reinterpret_cast<mobj_t *>(thinker)); },
-          [&](const player_psp_param_action &callback) { callback(reinterpret_cast<player_t *>(thinker), reinterpret_cast<pspdef_t *>(thinker)); },
-          [&](const thinker_param_action &callback) { callback(thinker); },
-          [&](const floormove_param_action &callback) { callback(reinterpret_cast<floormove_t *>(thinker)); },
-          [&](const polyevent_param_action &callback) { callback(reinterpret_cast<polyevent_t *>(thinker)); },
-          [&](const plat_param_action &callback) { callback(reinterpret_cast<plat_t *>(thinker)); },
-          [&](const ceiling_param_action &callback) { callback(reinterpret_cast<ceiling_t *>(thinker)); },
-          [&](const light_param_action &callback) { callback(reinterpret_cast<light_t *>(thinker)); },
-          [&](const ssthinker_param_action &callback) { callback(reinterpret_cast<ssthinker_t *>(thinker)); },
-          [&](const vldoor_param_action &callback) { callback(reinterpret_cast<vldoor_t *>(thinker)); },
-          [&](const phase_param_action &callback) { callback(reinterpret_cast<phase_t *>(thinker)); },
-          [&](const acs_param_action &callback) { callback(reinterpret_cast<acs_t *>(thinker)); },
-          [&](const pillar_param_action &callback) { callback(reinterpret_cast<pillar_t *>(thinker)); },
-          [&](const polydoor_param_action &callback) { callback(reinterpret_cast<polydoor_t *>(thinker)); },
-          [&](const floorWaggle_param_action &callback) { callback(reinterpret_cast<floorWaggle_t *>(thinker)); },
-          [&](const lightflash_param_action &callback) { callback(reinterpret_cast<lightflash_t *>(thinker)); },
-          [&](const strobe_param_action &callback) { callback(reinterpret_cast<strobe_t *>(thinker)); },
-          [&](const glow_param_action &callback) { callback(reinterpret_cast<glow_t *>(thinker)); },
-          [&](const fireflicker_param_action &callback) { callback(reinterpret_cast<fireflicker_t *>(thinker)); },
-          [&](const slidedoor_param_action &callback) { callback(reinterpret_cast<slidedoor_t *>(thinker)); },
-          [&](const mobj_player_psp_param_action &callback) { callback(reinterpret_cast<mobj_t *>(thinker), reinterpret_cast<player_t *>(thinker), reinterpret_cast<pspdef_t *>(thinker)); },
+          [&](const zero_param_action & callback) { callback(); },
+          [&](const mobj_param_action & callback) { callback(reinterpret_cast<mobj_t *>(thinker)); },
+          [&](const player_psp_param_action & callback) { callback(reinterpret_cast<player_t *>(thinker), reinterpret_cast<pspdef_t *>(thinker)); },
+          [&](const thinker_param_action & callback) { callback(thinker); },
+          [&](const floormove_param_action & callback) { callback(reinterpret_cast<floormove_t *>(thinker)); },
+          [&](const polyevent_param_action & callback) { callback(reinterpret_cast<polyevent_t *>(thinker)); },
+          [&](const plat_param_action & callback) { callback(reinterpret_cast<plat_t *>(thinker)); },
+          [&](const ceiling_param_action & callback) { callback(reinterpret_cast<ceiling_t *>(thinker)); },
+          [&](const light_param_action & callback) { callback(reinterpret_cast<light_t *>(thinker)); },
+          [&](const ssthinker_param_action & callback) { callback(reinterpret_cast<ssthinker_t *>(thinker)); },
+          [&](const vldoor_param_action & callback) { callback(reinterpret_cast<vldoor_t *>(thinker)); },
+          [&](const phase_param_action & callback) { callback(reinterpret_cast<phase_t *>(thinker)); },
+          [&](const acs_param_action & callback) { callback(reinterpret_cast<acs_t *>(thinker)); },
+          [&](const pillar_param_action & callback) { callback(reinterpret_cast<pillar_t *>(thinker)); },
+          [&](const polydoor_param_action & callback) { callback(reinterpret_cast<polydoor_t *>(thinker)); },
+          [&](const floorWaggle_param_action & callback) { callback(reinterpret_cast<floorWaggle_t *>(thinker)); },
+          [&](const lightflash_param_action & callback) { callback(reinterpret_cast<lightflash_t *>(thinker)); },
+          [&](const strobe_param_action & callback) { callback(reinterpret_cast<strobe_t *>(thinker)); },
+          [&](const glow_param_action & callback) { callback(reinterpret_cast<glow_t *>(thinker)); },
+          [&](const fireflicker_param_action & callback) { callback(reinterpret_cast<fireflicker_t *>(thinker)); },
+          [&](const slidedoor_param_action & callback) { callback(reinterpret_cast<slidedoor_t *>(thinker)); },
+          [&](const mobj_player_psp_param_action & callback) { callback(reinterpret_cast<mobj_t *>(thinker), reinterpret_cast<player_t *>(thinker), reinterpret_cast<pspdef_t *>(thinker)); },
           [&](const auto &) { return; } },
       thinker->function);
 }
 
-constexpr bool is_valid(const action_hook &hook) {
+constexpr bool is_valid(const action_hook & hook) {
   return std::visit(overloaded {
-                        [](const valid_hook &ref) { return ref.is_valid(); },
+                        [](const valid_hook & ref) { return ref.is_valid(); },
                         [](const auto &) { return false; } },
                     hook);
 }
 
-constexpr bool action_hook_has_value(const action_hook &hook) {
+constexpr bool action_hook_has_value(const action_hook & hook) {
   return hook.index() != 0;
 }
 
-constexpr bool action_hook_is_empty(const action_hook &hook) {
+constexpr bool action_hook_is_empty(const action_hook & hook) {
   return !action_hook_has_value(hook);
 }

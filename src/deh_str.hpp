@@ -24,11 +24,11 @@
 
 // Used to do dehacked text substitutions throughout the program
 
-const char *DEH_String(const char *s) PRINTF_ARG_ATTR(1);
+const char * DEH_String(const char * s) PRINTF_ARG_ATTR(1);
 
 // snprintf(), performing a replacement on the format string.
 template <typename... Args>
-void DEH_snprintf(char *buffer, size_t len, const char *fmt, Args &&...args) {
+void DEH_snprintf(char * buffer, size_t len, const char * fmt, Args &&... args) {
   if (len < 1) {
     return;
   }
@@ -45,7 +45,7 @@ void DEH_snprintf(char *buffer, size_t len, const char *fmt, Args &&...args) {
   }
 }
 
-void DEH_AddStringReplacement(const char *from_text, const char *to_text);
-bool DEH_HasStringReplacement(const char *s);
+void DEH_AddStringReplacement(const char * from_text, const char * to_text);
+bool DEH_HasStringReplacement(const char * s);
 
 #endif /* #ifndef DEH_STR_H */

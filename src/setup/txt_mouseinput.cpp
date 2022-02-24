@@ -27,12 +27,12 @@
 // eg. "BUTTON #10"
 #define MOUSE_INPUT_WIDTH 10
 
-static int MousePressCallback(txt_window_t *window,
+static int MousePressCallback(txt_window_t * window,
                               int,
                               int,
-                              int   b,
-                              void *uncast_mouse_input) {
-  auto *mouse_input = reinterpret_cast<txt_mouse_input_t *>(uncast_mouse_input);
+                              int    b,
+                              void * uncast_mouse_input) {
+  auto * mouse_input = reinterpret_cast<txt_mouse_input_t *>(uncast_mouse_input);
 
   // Got the mouse press.  Save to the variable and close the window.
 
@@ -47,8 +47,8 @@ static int MousePressCallback(txt_window_t *window,
   return 1;
 }
 
-static void OpenPromptWindow(txt_mouse_input_t *mouse_input) {
-  txt_window_t *window;
+static void OpenPromptWindow(txt_mouse_input_t * mouse_input) {
+  txt_window_t * window;
 
   // Silently update when the shift key is held down.
   mouse_input->check_conflicts = !TXT_GetModifierState(TXT_MOD_SHIFT);
@@ -58,8 +58,8 @@ static void OpenPromptWindow(txt_mouse_input_t *mouse_input) {
   TXT_SetMouseListener(window, MousePressCallback, mouse_input);
 }
 
-static void TXT_MouseInputSizeCalc(void *uncast_mouse_input) {
-  auto *mouse_input = reinterpret_cast<txt_mouse_input_t *>(uncast_mouse_input);
+static void TXT_MouseInputSizeCalc(void * uncast_mouse_input) {
+  auto * mouse_input = reinterpret_cast<txt_mouse_input_t *>(uncast_mouse_input);
 
   // All mouseinputs are the same size.
 
@@ -67,7 +67,7 @@ static void TXT_MouseInputSizeCalc(void *uncast_mouse_input) {
   mouse_input->widget.h = 1;
 }
 
-static void GetMouseButtonDescription(int button, char *buf, size_t buf_len) {
+static void GetMouseButtonDescription(int button, char * buf, size_t buf_len) {
   switch (button) {
   case 0:
     M_StringCopy(buf, "LEFT", buf_len);
@@ -84,9 +84,9 @@ static void GetMouseButtonDescription(int button, char *buf, size_t buf_len) {
   }
 }
 
-static void TXT_MouseInputDrawer(void *uncast_mouse_input) {
-  auto *mouse_input = reinterpret_cast<txt_mouse_input_t *>(uncast_mouse_input);
-  char  buf[20];
+static void TXT_MouseInputDrawer(void * uncast_mouse_input) {
+  auto * mouse_input = reinterpret_cast<txt_mouse_input_t *>(uncast_mouse_input);
+  char   buf[20];
 
   if (*mouse_input->variable < 0) {
     M_StringCopy(buf, "(none)", sizeof(buf));
@@ -107,8 +107,8 @@ static void TXT_MouseInputDrawer(void *uncast_mouse_input) {
 static void TXT_MouseInputDestructor(void *) {
 }
 
-static int TXT_MouseInputKeyPress(void *uncast_mouse_input, int key) {
-  auto *mouse_input = reinterpret_cast<txt_mouse_input_t *>(uncast_mouse_input);
+static int TXT_MouseInputKeyPress(void * uncast_mouse_input, int key) {
+  auto * mouse_input = reinterpret_cast<txt_mouse_input_t *>(uncast_mouse_input);
 
   if (key == KEY_ENTER) {
     // Open a window to prompt for the new mouse press
@@ -125,8 +125,8 @@ static int TXT_MouseInputKeyPress(void *uncast_mouse_input, int key) {
   return 0;
 }
 
-static void TXT_MouseInputMousePress(void *uncast_widget, int, int, int b) {
-  auto *widget = reinterpret_cast<txt_mouse_input_t *>(uncast_widget);
+static void TXT_MouseInputMousePress(void * uncast_widget, int, int, int b) {
+  auto * widget = reinterpret_cast<txt_mouse_input_t *>(uncast_widget);
 
   // Clicking is like pressing enter
 
@@ -145,8 +145,8 @@ txt_widget_class_t txt_mouse_input_class = {
   nullptr,
 };
 
-txt_mouse_input_t *TXT_NewMouseInput(int *variable) {
-  txt_mouse_input_t *mouse_input;
+txt_mouse_input_t * TXT_NewMouseInput(int * variable) {
+  txt_mouse_input_t * mouse_input;
 
   mouse_input = static_cast<txt_mouse_input_t *>(malloc(sizeof(txt_mouse_input_t)));
 

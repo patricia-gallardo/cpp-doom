@@ -25,7 +25,7 @@
 #include "event_function_decls.hpp"
 
 typedef struct {
-  const char     *mnemonic;
+  const char *    mnemonic;
   const actionf_t pointer;
 } bex_codeptr_t;
 
@@ -124,7 +124,7 @@ static const bex_codeptr_t bex_codeptrtable[] = {
 
 extern actionf_t codeptrs[NUMSTATES];
 
-static void *DEH_BEXPtrStart(deh_context_t *context, char *line) {
+static void * DEH_BEXPtrStart(deh_context_t * context, char * line) {
   char s[10];
 
   if (sscanf(line, "%9s", s) == 0 || strcmp("[CODEPTR]", s) != 0) {
@@ -134,7 +134,7 @@ static void *DEH_BEXPtrStart(deh_context_t *context, char *line) {
   return nullptr;
 }
 
-static void DEH_BEXPtrParseLine(deh_context_t *context, char *line, void *) {
+static void DEH_BEXPtrParseLine(deh_context_t * context, char * line, void *) {
   char *variable_name = nullptr, *value = nullptr, frame_str[6];
   int   frame_number = 0;
 
@@ -156,9 +156,9 @@ static void DEH_BEXPtrParseLine(deh_context_t *context, char *line, void *) {
     return;
   }
 
-  state_t *state = &states[frame_number];
+  state_t * state = &states[frame_number];
 
-  for (const auto &bex : bex_codeptrtable) {
+  for (const auto & bex : bex_codeptrtable) {
     if (!strcasecmp(bex.mnemonic, value)) {
       state->action = bex.pointer;
       return;

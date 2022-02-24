@@ -69,7 +69,7 @@ typedef struct
 {
   query_target_type_t  type;
   query_target_state_t state;
-  net_addr_t          *addr;
+  net_addr_t *         addr;
   net_querydata_t      data;
   unsigned int         ping_time;
   unsigned int         query_time;
@@ -80,20 +80,20 @@ typedef struct
 static bool registered_with_master = false;
 static bool got_master_response    = false;
 
-static net_context_t  *query_context;
-static query_target_t *targets;
-static int             num_targets;
+static net_context_t *  query_context;
+static query_target_t * targets;
+static int              num_targets;
 
 static bool query_loop_running = false;
 static bool printed_header     = false;
 static int  last_query_time    = 0;
 
-static char *securedemo_start_message = nullptr;
+static char * securedemo_start_message = nullptr;
 
 // Resolve the master server address.
 
-net_addr_t *NET_Query_ResolveMaster(net_context_t *context) {
-  net_addr_t *addr = NET_ResolveAddress(context, MASTER_SERVER_ADDRESS);
+net_addr_t * NET_Query_ResolveMaster(net_context_t * context) {
+  net_addr_t * addr = NET_ResolveAddress(context, MASTER_SERVER_ADDRESS);
 
   if (addr == nullptr) {
     fmt::fprintf(stderr, "Warning: Failed to resolve address "
@@ -107,8 +107,8 @@ net_addr_t *NET_Query_ResolveMaster(net_context_t *context) {
 // Send a registration packet to the master server to register
 // ourselves with the global list.
 
-void NET_Query_AddToMaster(net_addr_t *master_addr) {
-  net_packet_t *packet = NET_NewPacket(10);
+void NET_Query_AddToMaster(net_addr_t * master_addr) {
+  net_packet_t * packet = NET_NewPacket(10);
   NET_WriteInt16(packet, NET_MASTER_PACKET_TYPE_ADD);
   NET_SendPacket(master_addr, packet);
   NET_FreePacket(packet);
@@ -116,7 +116,7 @@ void NET_Query_AddToMaster(net_addr_t *master_addr) {
 
 // Process a packet received from the master server.
 
-void NET_Query_AddResponse(net_packet_t *packet) {
+void NET_Query_AddResponse(net_packet_t * packet) {
   unsigned int result = 0;
 
   if (!NET_ReadInt16(packet, &result)) {
@@ -141,7 +141,7 @@ void NET_Query_AddResponse(net_packet_t *packet) {
   got_master_response = true;
 }
 
-bool NET_Query_CheckAddedToMaster(bool *result) {
+bool NET_Query_CheckAddedToMaster(bool * result) {
   // Got response from master yet?
 
   if (!got_master_response) {
@@ -154,8 +154,8 @@ bool NET_Query_CheckAddedToMaster(bool *result) {
 
 // Send a query to the master server.
 
-static void NET_Query_SendMasterQuery(net_addr_t *addr) {
-  net_packet_t *packet = NET_NewPacket(4);
+static void NET_Query_SendMasterQuery(net_addr_t * addr) {
+  net_packet_t * packet = NET_NewPacket(4);
   NET_WriteInt16(packet, NET_MASTER_PACKET_TYPE_QUERY);
   NET_SendPacket(addr, packet);
   NET_FreePacket(packet);
@@ -170,13 +170,13 @@ static void NET_Query_SendMasterQuery(net_addr_t *addr) {
 
 // Send a hole punch request to the master server for the server at the
 // given address.
-void NET_RequestHolePunch(net_context_t *context, net_addr_t *addr) {
-  net_addr_t *master_addr = NET_Query_ResolveMaster(context);
+void NET_RequestHolePunch(net_context_t * context, net_addr_t * addr) {
+  net_addr_t * master_addr = NET_Query_ResolveMaster(context);
   if (master_addr == nullptr) {
     return;
   }
 
-  net_packet_t *packet = NET_NewPacket(32);
+  net_packet_t * packet = NET_NewPacket(32);
   NET_WriteInt16(packet, NET_MASTER_PACKET_TYPE_NAT_HOLE_PUNCH);
   NET_WriteString(packet, NET_AddrToString(addr));
   NET_SendPacket(master_addr, packet);
@@ -188,7 +188,7 @@ void NET_RequestHolePunch(net_context_t *context, net_addr_t *addr) {
 // Given the specified address, find the target associated.  If no
 // target is found, and 'create' is true, a new target is created.
 
-static query_target_t *GetTargetForAddr(net_addr_t *addr, bool create) {
+static query_target_t * GetTargetForAddr(net_addr_t * addr, bool create) {
   for (int i = 0; i < num_targets; ++i) {
     if (targets[i].addr == addr) {
       return &targets[i];
@@ -199,13 +199,13 @@ static query_target_t *GetTargetForAddr(net_addr_t *addr, bool create) {
     return nullptr;
   }
 
-  targets                = static_cast<query_target_t *>(I_Realloc(targets, sizeof(query_target_t) * (static_cast<unsigned long>(num_targets + 1))));
-  query_target_t *target = &targets[num_targets];
-  target->type           = QUERY_TARGET_SERVER;
-  target->state          = QUERY_TARGET_QUEUED;
-  target->printed        = false;
-  target->query_attempts = 0;
-  target->addr           = addr;
+  targets                 = static_cast<query_target_t *>(I_Realloc(targets, sizeof(query_target_t) * (static_cast<unsigned long>(num_targets + 1))));
+  query_target_t * target = &targets[num_targets];
+  target->type            = QUERY_TARGET_SERVER;
+  target->state           = QUERY_TARGET_QUEUED;
+  target->printed         = false;
+  target->query_attempts  = 0;
+  target->addr            = addr;
   NET_ReferenceAddress(addr);
   ++num_targets;
 
@@ -223,8 +223,8 @@ static void FreeTargets() {
 
 // Transmit a query packet
 
-static void NET_Query_SendQuery(net_addr_t *addr) {
-  net_packet_t *request = NET_NewPacket(10);
+static void NET_Query_SendQuery(net_addr_t * addr) {
+  net_packet_t * request = NET_NewPacket(10);
   NET_WriteInt16(request, NET_PACKET_TYPE_QUERY);
 
   if (addr == nullptr) {
@@ -236,7 +236,7 @@ static void NET_Query_SendQuery(net_addr_t *addr) {
   NET_FreePacket(request);
 }
 
-static void NET_Query_ParseResponse(net_addr_t *addr, net_packet_t *packet, net_query_callback_t callback, void *user_data) {
+static void NET_Query_ParseResponse(net_addr_t * addr, net_packet_t * packet, net_query_callback_t callback, void * user_data) {
   // Read the header
 
   unsigned int packet_type = 0;
@@ -254,14 +254,14 @@ static void NET_Query_ParseResponse(net_addr_t *addr, net_packet_t *packet, net_
 
   // Find the target that responded.
 
-  query_target_t *target = GetTargetForAddr(addr, false);
+  query_target_t * target = GetTargetForAddr(addr, false);
 
   // If the target is not found, it may be because we are doing
   // a LAN broadcast search, in which case we need to create a
   // target for the new responder.
 
   if (target == nullptr) {
-    query_target_t *broadcast_target = GetTargetForAddr(nullptr, false);
+    query_target_t * broadcast_target = GetTargetForAddr(nullptr, false);
 
     // Not in broadcast mode, unexpected response that came out
     // of nowhere. Ignore.
@@ -294,7 +294,7 @@ static void NET_Query_ParseResponse(net_addr_t *addr, net_packet_t *packet, net_
 
 // Parse a response packet from the master server.
 
-static void NET_Query_ParseMasterResponse(net_addr_t *master_addr, net_packet_t *packet) {
+static void NET_Query_ParseMasterResponse(net_addr_t * master_addr, net_packet_t * packet) {
   // Read the header.  We are only interested in query responses.
 
   unsigned int packet_type = 0;
@@ -307,7 +307,7 @@ static void NET_Query_ParseMasterResponse(net_addr_t *master_addr, net_packet_t 
   // that the master knows about.
 
   for (;;) {
-    char *addr_str = NET_ReadString(packet);
+    char * addr_str = NET_ReadString(packet);
 
     if (addr_str == nullptr) {
       break;
@@ -316,7 +316,7 @@ static void NET_Query_ParseMasterResponse(net_addr_t *master_addr, net_packet_t 
     // Resolve address and add to targets list if it is not already
     // there.
 
-    net_addr_t *addr = NET_ResolveAddress(query_context, addr_str);
+    net_addr_t * addr = NET_ResolveAddress(query_context, addr_str);
     if (addr != nullptr) {
       GetTargetForAddr(addr, true);
       NET_ReleaseAddress(addr);
@@ -325,14 +325,14 @@ static void NET_Query_ParseMasterResponse(net_addr_t *master_addr, net_packet_t 
 
   // Mark the master as having responded.
 
-  query_target_t *target = GetTargetForAddr(master_addr, true);
-  target->state          = QUERY_TARGET_RESPONDED;
+  query_target_t * target = GetTargetForAddr(master_addr, true);
+  target->state           = QUERY_TARGET_RESPONDED;
 }
 
-static void NET_Query_ParsePacket(net_addr_t *addr, net_packet_t *packet, net_query_callback_t callback, void *user_data) {
+static void NET_Query_ParsePacket(net_addr_t * addr, net_packet_t * packet, net_query_callback_t callback, void * user_data) {
   // This might be the master server responding.
 
-  query_target_t *target = GetTargetForAddr(addr, false);
+  query_target_t * target = GetTargetForAddr(addr, false);
 
   if (target != nullptr && target->type == QUERY_TARGET_MASTER) {
     NET_Query_ParseMasterResponse(addr, packet);
@@ -342,9 +342,9 @@ static void NET_Query_ParsePacket(net_addr_t *addr, net_packet_t *packet, net_qu
 }
 
 static void NET_Query_GetResponse(net_query_callback_t callback,
-                                  void                *user_data) {
-  net_addr_t   *addr   = nullptr;
-  net_packet_t *packet = nullptr;
+                                  void *               user_data) {
+  net_addr_t *   addr   = nullptr;
+  net_packet_t * packet = nullptr;
 
   if (NET_RecvPacket(query_context, &addr, &packet)) {
     NET_Query_ParsePacket(addr, packet, callback, user_data);
@@ -452,7 +452,7 @@ static bool AllTargetsDone() {
 // Returns zero when the query sequence has completed and all targets
 // have returned responses or timed out.
 
-int NET_Query_Poll(net_query_callback_t callback, void *user_data) {
+int NET_Query_Poll(net_query_callback_t callback, void * user_data) {
   CheckTargetTimeouts();
 
   // Send a query.  This will only send a single query at once.
@@ -475,7 +475,7 @@ static void NET_Query_ExitLoop() {
 // Loop waiting for responses.
 // The specified callback is invoked when a new server responds.
 
-static void NET_Query_QueryLoop(net_query_callback_t callback, void *user_data) {
+static void NET_Query_QueryLoop(net_query_callback_t callback, void * user_data) {
   query_loop_running = true;
 
   while (query_loop_running && NET_Query_Poll(callback, user_data)) {
@@ -508,7 +508,7 @@ static void NET_Query_ExitCallback(net_addr_t *, net_querydata_t *, unsigned int
 // Search the targets list and find a target that has responded.
 // If none have responded, returns NULL.
 
-static query_target_t *FindFirstResponder() {
+static query_target_t * FindFirstResponder() {
   for (int i = 0; i < num_targets; ++i) {
     if (targets[i].type == QUERY_TARGET_SERVER
         && targets[i].state == QUERY_TARGET_RESPONDED) {
@@ -539,8 +539,8 @@ int NET_StartLANQuery() {
 
   // Add a broadcast target to the list.
 
-  query_target_t *target = GetTargetForAddr(nullptr, true);
-  target->type           = QUERY_TARGET_BROADCAST;
+  query_target_t * target = GetTargetForAddr(nullptr, true);
+  target->type            = QUERY_TARGET_BROADCAST;
 
   return 1;
 }
@@ -550,14 +550,14 @@ int NET_StartMasterQuery() {
 
   // Resolve master address and add to targets list.
 
-  net_addr_t *master = NET_Query_ResolveMaster(query_context);
+  net_addr_t * master = NET_Query_ResolveMaster(query_context);
 
   if (master == nullptr) {
     return 0;
   }
 
-  query_target_t *target = GetTargetForAddr(master, true);
-  target->type           = QUERY_TARGET_MASTER;
+  query_target_t * target = GetTargetForAddr(master, true);
+  target->type            = QUERY_TARGET_MASTER;
   NET_ReleaseAddress(master);
 
   return 1;
@@ -565,8 +565,8 @@ int NET_StartMasterQuery() {
 
 // -----------------------------------------------------------------------
 
-static void formatted_printf(int wide, const char *s, ...) PRINTF_ATTR(2, 3);
-static void formatted_printf(int wide, const char *s, ...) {
+static void formatted_printf(int wide, const char * s, ...) PRINTF_ATTR(2, 3);
+static void formatted_printf(int wide, const char * s, ...) {
   va_list args;
 
   va_start(args, s);
@@ -579,7 +579,7 @@ static void formatted_printf(int wide, const char *s, ...) {
   }
 }
 
-static constexpr const char *GameDescription(int mode, int mission) {
+static constexpr const char * GameDescription(int mode, int mission) {
   switch (mission) {
   case doom:
     if (mode == shareware)
@@ -625,7 +625,7 @@ static void PrintHeader() {
 
 // Callback function that just prints information in a table.
 
-static void NET_QueryPrintCallback(net_addr_t *addr, net_querydata_t *data, unsigned int ping_time, void *) {
+static void NET_QueryPrintCallback(net_addr_t * addr, net_querydata_t * data, unsigned int ping_time, void *) {
   // If this is the first server, print the header.
 
   if (!printed_header) {
@@ -670,10 +670,10 @@ void NET_MasterQuery() {
   }
 }
 
-void NET_QueryAddress(char *addr_str) {
+void NET_QueryAddress(char * addr_str) {
   NET_Query_Init();
 
-  net_addr_t *addr = NET_ResolveAddress(query_context, addr_str);
+  net_addr_t * addr = NET_ResolveAddress(query_context, addr_str);
 
   if (addr == nullptr) {
     I_Error("NET_QueryAddress: Host '%s' not found!", addr_str);
@@ -681,7 +681,7 @@ void NET_QueryAddress(char *addr_str) {
 
   // Add the address to the list of targets.
 
-  query_target_t *target = GetTargetForAddr(addr, true);
+  query_target_t * target = GetTargetForAddr(addr, true);
 
   fmt::printf("\nQuerying '%s'...\n", addr_str);
 
@@ -700,21 +700,21 @@ void NET_QueryAddress(char *addr_str) {
   }
 }
 
-net_addr_t *NET_FindLANServer() {
+net_addr_t * NET_FindLANServer() {
   NET_Query_Init();
 
   // Add a broadcast target to the list.
 
-  query_target_t *target = GetTargetForAddr(nullptr, true);
-  target->type           = QUERY_TARGET_BROADCAST;
+  query_target_t * target = GetTargetForAddr(nullptr, true);
+  target->type            = QUERY_TARGET_BROADCAST;
 
   // Run the query loop, and stop at the first target found.
 
   NET_Query_QueryLoop(NET_Query_ExitCallback, nullptr);
 
-  query_target_t *responder = FindFirstResponder();
+  query_target_t * responder = FindFirstResponder();
 
-  net_addr_t *result = nullptr;
+  net_addr_t * result = nullptr;
   if (responder != nullptr) {
     result = responder->addr;
     NET_ReferenceAddress(result);
@@ -729,12 +729,12 @@ net_addr_t *NET_FindLANServer() {
 // Block until a packet of the given type is received from the given
 // address.
 
-static net_packet_t *BlockForPacket(net_addr_t *addr, unsigned int packet_type, unsigned int timeout_ms) {
+static net_packet_t * BlockForPacket(net_addr_t * addr, unsigned int packet_type, unsigned int timeout_ms) {
   auto start_time = static_cast<unsigned int>(I_GetTimeMS());
 
   while (I_GetTimeMS() < static_cast<int>(start_time + timeout_ms)) {
-    net_addr_t   *packet_src = nullptr;
-    net_packet_t *packet     = nullptr;
+    net_addr_t *   packet_src = nullptr;
+    net_packet_t * packet     = nullptr;
     if (!NET_RecvPacket(query_context, &packet_src, &packet)) {
       I_Sleep(20);
       continue;
@@ -762,11 +762,11 @@ static net_packet_t *BlockForPacket(net_addr_t *addr, unsigned int packet_type, 
 
 [[maybe_unused]] bool NET_StartSecureDemo(prng_seed_t seed) {
   NET_Query_Init();
-  net_addr_t *master_addr = NET_Query_ResolveMaster(query_context);
+  net_addr_t * master_addr = NET_Query_ResolveMaster(query_context);
 
   // Send request packet to master server.
 
-  net_packet_t *request = NET_NewPacket(10);
+  net_packet_t * request = NET_NewPacket(10);
   NET_WriteInt16(request, NET_MASTER_PACKET_TYPE_SIGN_START);
   NET_SendPacket(master_addr, request);
   NET_FreePacket(request);
@@ -774,15 +774,15 @@ static net_packet_t *BlockForPacket(net_addr_t *addr, unsigned int packet_type, 
   // Block for response and read contents.
   // The signed start message will be saved for later.
 
-  net_packet_t *response = BlockForPacket(master_addr,
-                                          NET_MASTER_PACKET_TYPE_SIGN_START_RESPONSE,
-                                          SIGNATURE_TIMEOUT_SECS * 1000);
+  net_packet_t * response = BlockForPacket(master_addr,
+                                           NET_MASTER_PACKET_TYPE_SIGN_START_RESPONSE,
+                                           SIGNATURE_TIMEOUT_SECS * 1000);
 
   bool result = false;
 
   if (response != nullptr) {
     if (NET_ReadPRNGSeed(response, seed)) {
-      char *signature = NET_ReadString(response);
+      char * signature = NET_ReadString(response);
 
       if (signature != nullptr) {
         securedemo_start_message = M_StringDuplicate(signature);
@@ -798,12 +798,12 @@ static net_packet_t *BlockForPacket(net_addr_t *addr, unsigned int packet_type, 
 
 // Query master server for secure demo end signature.
 
-[[maybe_unused]] char *NET_EndSecureDemo(sha1_digest_t demo_hash) {
-  net_addr_t *master_addr = NET_Query_ResolveMaster(query_context);
+[[maybe_unused]] char * NET_EndSecureDemo(sha1_digest_t demo_hash) {
+  net_addr_t * master_addr = NET_Query_ResolveMaster(query_context);
 
   // Construct end request and send to master server.
 
-  net_packet_t *request = NET_NewPacket(10);
+  net_packet_t * request = NET_NewPacket(10);
   NET_WriteInt16(request, NET_MASTER_PACKET_TYPE_SIGN_END);
   NET_WriteSHA1Sum(request, demo_hash);
   NET_WriteString(request, securedemo_start_message);
@@ -813,15 +813,15 @@ static net_packet_t *BlockForPacket(net_addr_t *addr, unsigned int packet_type, 
   // Block for response. The response packet simply contains a string
   // with the ASCII signature.
 
-  net_packet_t *response = BlockForPacket(master_addr,
-                                          NET_MASTER_PACKET_TYPE_SIGN_END_RESPONSE,
-                                          SIGNATURE_TIMEOUT_SECS * 1000);
+  net_packet_t * response = BlockForPacket(master_addr,
+                                           NET_MASTER_PACKET_TYPE_SIGN_END_RESPONSE,
+                                           SIGNATURE_TIMEOUT_SECS * 1000);
 
   if (response == nullptr) {
     return nullptr;
   }
 
-  char *signature = NET_ReadString(response);
+  char * signature = NET_ReadString(response);
 
   NET_FreePacket(response);
 

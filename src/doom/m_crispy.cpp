@@ -153,7 +153,7 @@ void M_CrispyToggleCenterweapon(int) {
 }
 
 void M_CrispyToggleColoredblood(int) {
-  thinker_t *th = nullptr;
+  thinker_t * th = nullptr;
 
   if (g_doomstat_globals->gameversion == exe_chex) {
     return;
@@ -165,7 +165,7 @@ void M_CrispyToggleColoredblood(int) {
   for (th = g_p_local_globals->thinkercap.next; th && th != &g_p_local_globals->thinkercap; th = th->next) {
     action_hook hook = P_MobjThinker;
     if (th->function == hook) {
-      auto *mobj = reinterpret_cast<mobj_t *>(th);
+      auto * mobj = reinterpret_cast<mobj_t *>(th);
 
       if (mobj->type == MT_SKULL) {
         if (crispy->coloredblood) {

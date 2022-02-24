@@ -26,16 +26,16 @@
 #define HELP_KEY KEY_F1
 constexpr auto MAXWINDOWS = 128;
 
-static char         *desktop_title;
-static txt_window_t *all_windows[MAXWINDOWS];
-static int           num_windows       = 0;
-static int           main_loop_running = 0;
+static char *         desktop_title;
+static txt_window_t * all_windows[MAXWINDOWS];
+static int            num_windows       = 0;
+static int            main_loop_running = 0;
 
 static TxtIdleCallback periodic_callback = nullptr;
-static void           *periodic_callback_data;
+static void *          periodic_callback_data;
 static unsigned int    periodic_callback_period;
 
-void TXT_AddDesktopWindow(txt_window_t *win) {
+void TXT_AddDesktopWindow(txt_window_t * win) {
   // Previously-top window loses focus:
 
   if (num_windows > 0) {
@@ -50,7 +50,7 @@ void TXT_AddDesktopWindow(txt_window_t *win) {
   TXT_SetWindowFocus(win, 1);
 }
 
-void TXT_RemoveDesktopWindow(txt_window_t *win) {
+void TXT_RemoveDesktopWindow(txt_window_t * win) {
 
   // Window must lose focus if it's being removed:
 
@@ -73,7 +73,7 @@ void TXT_RemoveDesktopWindow(txt_window_t *win) {
   }
 }
 
-txt_window_t *TXT_GetActiveWindow() {
+txt_window_t * TXT_GetActiveWindow() {
   if (num_windows == 0) {
     return nullptr;
   }
@@ -81,7 +81,7 @@ txt_window_t *TXT_GetActiveWindow() {
   return all_windows[num_windows - 1];
 }
 
-[[maybe_unused]] int TXT_RaiseWindow(txt_window_t *window) {
+[[maybe_unused]] int TXT_RaiseWindow(txt_window_t * window) {
   for (int i = 0; i < num_windows - 1; ++i) {
     if (all_windows[i] == window) {
       all_windows[i]     = all_windows[i + 1];
@@ -101,7 +101,7 @@ txt_window_t *TXT_GetActiveWindow() {
   return 0;
 }
 
-int TXT_LowerWindow(txt_window_t *window) {
+int TXT_LowerWindow(txt_window_t * window) {
   for (int i = 0; i < num_windows - 1; ++i) {
     if (all_windows[i + 1] == window) {
       all_windows[i + 1] = all_windows[i];
@@ -121,12 +121,12 @@ int TXT_LowerWindow(txt_window_t *window) {
   return 0;
 }
 
-static void DrawDesktopBackground(const char *title) {
-  unsigned char *screendata = TXT_GetScreenData();
+static void DrawDesktopBackground(const char * title) {
+  unsigned char * screendata = TXT_GetScreenData();
 
   // Fill the screen with gradient characters
 
-  unsigned char *p = screendata;
+  unsigned char * p = screendata;
 
   for (int i = 0; i < TXT_SCREEN_W * TXT_SCREEN_H; ++i) {
     *p++ = 0xb1;
@@ -186,14 +186,14 @@ static void DrawHelpIndicator() {
   TXT_DrawString("=Help ");
 }
 
-void TXT_SetDesktopTitle(const char *title) {
+void TXT_SetDesktopTitle(const char * title) {
   free(desktop_title);
   desktop_title = strdup(title);
   TXT_SetWindowTitle(title);
 }
 
 void TXT_DrawDesktop() {
-  const char *title = nullptr;
+  const char * title = nullptr;
 
   TXT_InitClipArea();
 
@@ -204,7 +204,7 @@ void TXT_DrawDesktop() {
 
   DrawDesktopBackground(title);
 
-  txt_window_t *active_window = TXT_GetActiveWindow();
+  txt_window_t * active_window = TXT_GetActiveWindow();
   if (active_window != nullptr && active_window->help_url != nullptr) {
     DrawHelpIndicator();
   }
@@ -219,8 +219,8 @@ void TXT_DrawDesktop() {
 // Fallback function to handle key/mouse events that are not handled by
 // the active window.
 static void DesktopInputEvent(int c) {
-  txt_window_t *active_window = nullptr;
-  int           x = 0, y = 0;
+  txt_window_t * active_window = nullptr;
+  int            x = 0, y = 0;
 
   switch (c) {
   case TXT_MOUSE_LEFT:
@@ -246,8 +246,8 @@ static void DesktopInputEvent(int c) {
 }
 
 void TXT_DispatchEvents() {
-  txt_window_t *active_window = nullptr;
-  int           c             = 0;
+  txt_window_t * active_window = nullptr;
+  int            c             = 0;
 
   while ((c = TXT_GetChar()) > 0) {
     active_window = TXT_GetActiveWindow();
@@ -265,7 +265,7 @@ void TXT_ExitMainLoop() {
 [[maybe_unused]] void TXT_DrawASCIITable() {
   char buf[10];
 
-  unsigned char *screendata = TXT_GetScreenData();
+  unsigned char * screendata = TXT_GetScreenData();
 
   TXT_FGColor(TXT_COLOR_BRIGHT_WHITE);
   TXT_BGColor(TXT_COLOR_BLACK, 0);
@@ -288,7 +288,7 @@ void TXT_ExitMainLoop() {
 }
 
 void TXT_SetPeriodicCallback(TxtIdleCallback callback,
-                             void           *user_data,
+                             void *          user_data,
                              unsigned int    period) {
   periodic_callback        = callback;
   periodic_callback_data   = user_data;

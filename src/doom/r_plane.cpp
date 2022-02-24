@@ -45,14 +45,14 @@ planefunction_t                  ceilingfunc;
 
 // Here comes the obnoxious "visplane".
 #define MAXVISPLANES 128
-visplane_t *visplanes = nullptr;
-visplane_t *lastvisplane;
-static int  numvisplanes;
+visplane_t * visplanes = nullptr;
+visplane_t * lastvisplane;
+static int   numvisplanes;
 
 // ?
 #define MAXOPENINGS MAXWIDTH * 64 * 4
-int  openings[MAXOPENINGS]; // [crispy] 32-bit integer math
-int *lastopening;           // [crispy] 32-bit integer math
+int   openings[MAXOPENINGS]; // [crispy] 32-bit integer math
+int * lastopening;           // [crispy] 32-bit integer math
 
 //
 // Clip values are the solid pixel bounding the range.
@@ -72,10 +72,10 @@ int spanstop[MAXHEIGHT];
 //
 // texture mapping
 //
-lighttable_t **planezlight;
-fixed_t        planeheight;
+lighttable_t ** planezlight;
+fixed_t         planeheight;
 
-fixed_t                 *yslope;
+fixed_t *                yslope;
 fixed_t                  yslopes[LOOKDIRS][MAXHEIGHT];
 [[maybe_unused]] fixed_t distscale[MAXWIDTH];
 fixed_t                  basexscale;
@@ -193,10 +193,10 @@ void R_ClearPlanes() {
 }
 
 // [crispy] remove MAXVISPLANES Vanilla limit
-static void R_RaiseVisplanes(visplane_t **vp) {
+static void R_RaiseVisplanes(visplane_t ** vp) {
   if (lastvisplane - visplanes == numvisplanes) {
-    int         numvisplanes_old = numvisplanes;
-    visplane_t *visplanes_old    = visplanes;
+    int          numvisplanes_old = numvisplanes;
+    visplane_t * visplanes_old    = visplanes;
 
     numvisplanes = numvisplanes ? 2 * numvisplanes : MAXVISPLANES;
     visplanes    = static_cast<decltype(visplanes)>(I_Realloc(visplanes, static_cast<unsigned long>(numvisplanes) * sizeof(*visplanes)));
@@ -222,7 +222,7 @@ visplane_t *
     R_FindPlane(fixed_t height,
                 int     picnum,
                 int     lightlevel) {
-  visplane_t *check;
+  visplane_t * check;
 
   // [crispy] add support for MBF sky tranfers
   if (picnum == g_doomstat_globals->skyflatnum || static_cast<unsigned int>(picnum) & PL_SKYFLAT) {
@@ -262,9 +262,9 @@ visplane_t *
 // R_CheckPlane
 //
 visplane_t *
-    R_CheckPlane(visplane_t *pl,
-                 int         start,
-                 int         stop) {
+    R_CheckPlane(visplane_t * pl,
+                 int          start,
+                 int          stop) {
   int intrl;
   int intrh;
   int unionl;
@@ -354,12 +354,12 @@ void R_MakeSpans(int          x,
 // At the end of each frame.
 //
 void R_DrawPlanes() {
-  visplane_t *pl;
-  int         light;
-  int         x;
-  int         stop;
-  int         angle;
-  int         lumpnum;
+  visplane_t * pl;
+  int          light;
+  int          x;
+  int          stop;
+  int          angle;
+  int          lumpnum;
 
 #ifdef RANGECHECK
   if (ds_p - drawsegs > numdrawsegs)
@@ -387,8 +387,8 @@ void R_DrawPlanes() {
       int     texture;
       angle_t an = g_r_state_globals->viewangle, flip;
       if (static_cast<unsigned int>(pl->picnum) & PL_SKYFLAT) {
-        const line_t *l                 = &g_r_state_globals->lines[static_cast<unsigned int>(pl->picnum) & ~PL_SKYFLAT];
-        const side_t *s                 = *l->sidenum + g_r_state_globals->sides;
+        const line_t * l                = &g_r_state_globals->lines[static_cast<unsigned int>(pl->picnum) & ~PL_SKYFLAT];
+        const side_t * s                = *l->sidenum + g_r_state_globals->sides;
         texture                         = g_r_state_globals->texturetranslation[s->toptexture];
         g_r_draw_globals->dc_texturemid = s->rowoffset - 28 * FRACUNIT;
         // [crispy] stretch sky

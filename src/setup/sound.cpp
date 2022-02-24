@@ -35,17 +35,17 @@ enum oplmode_t
   NUM_OPLMODES,
 };
 
-static const char *opltype_strings[] = {
+static const char * opltype_strings[] = {
   "OPL2",
   "OPL3"
 };
 
-static const char *cfg_extension[] = { "cfg", nullptr };
+static const char * cfg_extension[] = { "cfg", nullptr };
 
 // Config file variables:
 
-int   opl_io_port   = 0x388;
-char *snd_dmxoption = const_cast<char *>("-opl3"); // [crispy] default to OPL3 emulation
+int    opl_io_port   = 0x388;
+char * snd_dmxoption = const_cast<char *>("-opl3"); // [crispy] default to OPL3 emulation
 
 static i_sound_t i_sound_s = {
   .snd_sfxdevice       = SNDDEVICE_SB,
@@ -56,7 +56,7 @@ static i_sound_t i_sound_s = {
   .snd_musiccmd        = const_cast<char *>(""),
   .snd_pitchshift      = 0
 };
-i_sound_t *const g_i_sound_globals = &i_sound_s;
+i_sound_t * const g_i_sound_globals = &i_sound_s;
 
 static int numChannels = 8;
 static int sfxVolume   = 8;
@@ -69,10 +69,10 @@ static int show_talk   = 0;
 static int   use_libsamplerate   = 1;
 static float libsamplerate_scale = static_cast<float>(0.65);
 
-static char *music_pack_path   = nullptr;
-static char *timidity_cfg_path = nullptr;
-static char *gus_patch_path    = nullptr;
-static int   gus_ram_kb        = 1024;
+static char * music_pack_path   = nullptr;
+static char * timidity_cfg_path = nullptr;
+static char * gus_patch_path    = nullptr;
+static int    gus_ram_kb        = 1024;
 
 // DOS specific variables: these are unused but should be maintained
 // so that the config file can be shared between chocolate
@@ -98,8 +98,8 @@ static void UpdateSndDevices(void *, void *) {
   }
 }
 
-static txt_dropdown_list_t *OPLTypeSelector() {
-  txt_dropdown_list_t *result;
+static txt_dropdown_list_t * OPLTypeSelector() {
+  txt_dropdown_list_t * result;
 
   if (snd_dmxoption != nullptr && strstr(snd_dmxoption, "-opl3") != nullptr) {
     snd_oplmode = OPLMODE_OPL3;
@@ -121,8 +121,8 @@ static void OpenMusicPackDir(void *, void *) {
 }
 
 void ConfigSound(void *, void *) {
-  txt_window_t        *window;
-  txt_window_action_t *music_action;
+  txt_window_t *        window;
+  txt_window_action_t * music_action;
 
   // Build the window
 

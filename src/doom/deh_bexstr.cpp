@@ -25,8 +25,8 @@
 #include "dstrings.hpp"
 
 typedef struct {
-  const char *macro;
-  const char *string;
+  const char * macro;
+  const char * string;
 } bex_string_t;
 
 // mnemonic keys table
@@ -332,7 +332,7 @@ static const bex_string_t bex_stringtable[] = {
   { "BGCASTCALL",         "BOSSBACK"        },
 };
 
-static void *DEH_BEXStrStart(deh_context_t *context, char *line) {
+static void * DEH_BEXStrStart(deh_context_t * context, char * line) {
   char s[10];
 
   if (sscanf(line, "%9s", s) == 0 || strcmp("[STRINGS]", s) != 0) {
@@ -342,7 +342,7 @@ static void *DEH_BEXStrStart(deh_context_t *context, char *line) {
   return nullptr;
 }
 
-static void DEH_BEXStrParseLine(deh_context_t *context, char *line, void *) {
+static void DEH_BEXStrParseLine(deh_context_t * context, char * line, void *) {
   char *variable_name = nullptr, *value = nullptr;
 
   if (!DEH_ParseAssignment(line, &variable_name, &value)) {

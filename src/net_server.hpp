@@ -32,7 +32,7 @@ void NET_SV_Shutdown();
 
 // Add a network module to the context used by the server
 
-void NET_SV_AddModule(net_module_t *module);
+void NET_SV_AddModule(net_module_t * module);
 
 // Register server with master server.
 

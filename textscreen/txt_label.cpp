@@ -23,15 +23,15 @@
 #include "txt_utf8.hpp"
 #include "txt_window.hpp"
 
-static void TXT_LabelSizeCalc(void *uncast_label) {
-  txt_label_t *label = reinterpret_cast<txt_label_t *>(uncast_label);
+static void TXT_LabelSizeCalc(void * uncast_label) {
+  txt_label_t * label = reinterpret_cast<txt_label_t *>(uncast_label);
 
   label->widget.w = label->w;
   label->widget.h = label->h;
 }
 
-static void TXT_LabelDrawer(void *uncast_label) {
-  auto        *label = reinterpret_cast<txt_label_t *>(uncast_label);
+static void TXT_LabelDrawer(void * uncast_label) {
+  auto *       label = reinterpret_cast<txt_label_t *>(uncast_label);
   unsigned int x, y;
   int          origin_x, origin_y;
   unsigned int align_indent = 0;
@@ -87,8 +87,8 @@ static void TXT_LabelDrawer(void *uncast_label) {
   }
 }
 
-static void TXT_LabelDestructor(void *uncast_label) {
-  auto *label = reinterpret_cast<txt_label_t *>(uncast_label);
+static void TXT_LabelDestructor(void * uncast_label) {
+  auto * label = reinterpret_cast<txt_label_t *>(uncast_label);
 
   free(label->label);
   free(label->lines);
@@ -104,8 +104,8 @@ txt_widget_class_t txt_label_class = {
   nullptr,
 };
 
-void TXT_SetLabel(txt_label_t *label, const char *value) {
-  char *p;
+void TXT_SetLabel(txt_label_t * label, const char * value) {
+  char * p;
 
   // Free back the old label
 
@@ -152,8 +152,8 @@ void TXT_SetLabel(txt_label_t *label, const char *value) {
   }
 }
 
-txt_label_t *TXT_NewLabel(const char *text) {
-  auto *label = create_struct<txt_label_t>();
+txt_label_t * TXT_NewLabel(const char * text) {
+  auto * label = create_struct<txt_label_t>();
 
   TXT_InitWidget(label, &txt_label_class);
   label->label = nullptr;
@@ -169,10 +169,10 @@ txt_label_t *TXT_NewLabel(const char *text) {
   return label;
 }
 
-void TXT_SetFGColor(txt_label_t *label, txt_color_t color) {
+void TXT_SetFGColor(txt_label_t * label, txt_color_t color) {
   label->fgcolor = color;
 }
 
-[[maybe_unused]] void TXT_SetBGColor(txt_label_t *label, txt_color_t color) {
+[[maybe_unused]] void TXT_SetBGColor(txt_label_t * label, txt_color_t color) {
   label->bgcolor = color;
 }

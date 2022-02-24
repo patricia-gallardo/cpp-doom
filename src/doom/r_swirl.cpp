@@ -39,8 +39,8 @@
 #define SEQUENCE 1024
 #define FLATSIZE (64 * 64)
 
-static int *offsets;
-static int *offset;
+static int * offsets;
+static int * offset;
 
 #define AMP   2
 #define AMP2  2
@@ -85,7 +85,7 @@ void R_InitDistortedFlats() {
   }
 }
 
-char *R_DistortedFlat(int flatnum) {
+char * R_DistortedFlat(int flatnum) {
   static int  swirltic  = -1;
   static int  swirlflat = -1;
   static char distortedflat[FLATSIZE];
@@ -100,7 +100,7 @@ char *R_DistortedFlat(int flatnum) {
   if (swirlflat != flatnum) {
     int i;
 
-    auto *normalflat = cache_lump_num<char *>(flatnum, PU_STATIC);
+    auto * normalflat = cache_lump_num<char *>(flatnum, PU_STATIC);
 
     for (i = 0; i < FLATSIZE; i++) {
       distortedflat[i] = normalflat[offset[i]];

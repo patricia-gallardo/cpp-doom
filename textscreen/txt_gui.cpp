@@ -28,9 +28,9 @@
 using txt_cliparea_t = struct txt_cliparea_s;
 
 struct txt_cliparea_s {
-  int             x1, x2;
-  int             y1, y2;
-  txt_cliparea_t *next;
+  int              x1, x2;
+  int              y1, y2;
+  txt_cliparea_t * next;
 };
 
 // Array of border characters for drawing windows. The array looks like this:
@@ -47,17 +47,17 @@ static const int borders[4][4] = {
   { 0xc0, 0xc4, 0xc1, 0xd9},
 };
 
-static txt_cliparea_t *cliparea = nullptr;
+static txt_cliparea_t * cliparea = nullptr;
 
 #define VALID_X(x) ((x) >= cliparea->x1 && (x) < cliparea->x2)
 #define VALID_Y(y) ((y) >= cliparea->y1 && (y) < cliparea->y2)
 
-[[maybe_unused]] void TXT_DrawDesktopBackground(const char *title) {
-  unsigned char *screendata = TXT_GetScreenData();
+[[maybe_unused]] void TXT_DrawDesktopBackground(const char * title) {
+  unsigned char * screendata = TXT_GetScreenData();
 
   // Fill the screen with gradient characters
 
-  unsigned char *p = screendata;
+  unsigned char * p = screendata;
 
   for (int i = 0; i < TXT_SCREEN_W * TXT_SCREEN_H; ++i) {
     *p++ = 0xb1;
@@ -91,10 +91,10 @@ static txt_cliparea_t *cliparea = nullptr;
 }
 
 void TXT_DrawShadow(int x, int y, int w, int h) {
-  unsigned char *screendata = TXT_GetScreenData();
+  unsigned char * screendata = TXT_GetScreenData();
 
   for (int y1 = y; y1 < y + h; ++y1) {
-    unsigned char *p = screendata + (y1 * TXT_SCREEN_W + x) * 2;
+    unsigned char * p = screendata + (y1 * TXT_SCREEN_W + x) * 2;
 
     for (int x1 = x; x1 < x + w; ++x1) {
       if (VALID_X(x1) && VALID_Y(y1)) {
@@ -106,7 +106,7 @@ void TXT_DrawShadow(int x, int y, int w, int h) {
   }
 }
 
-void TXT_DrawWindowFrame(const char *title, int x, int y, int w, int h) {
+void TXT_DrawWindowFrame(const char * title, int x, int y, int w, int h) {
   txt_saved_colors_t colors {};
   TXT_SaveColors(&colors);
   TXT_FGColor(TXT_COLOR_BRIGHT_CYAN);
@@ -159,7 +159,7 @@ void TXT_DrawWindowFrame(const char *title, int x, int y, int w, int h) {
 }
 
 void TXT_DrawSeparator(int x, int y, int w) {
-  unsigned char *data = TXT_GetScreenData();
+  unsigned char * data = TXT_GetScreenData();
 
   txt_saved_colors_t colors {};
   TXT_SaveColors(&colors);
@@ -195,13 +195,13 @@ void TXT_DrawSeparator(int x, int y, int w) {
 
 // Alternative to TXT_DrawString() where the argument is a "code page
 // string" - characters are in native code page format and not UTF-8.
-void TXT_DrawCodePageString(const char *s) {
+void TXT_DrawCodePageString(const char * s) {
   int x, y = 0;
   TXT_GetXY(&x, &y);
 
   if (VALID_Y(y)) {
-    int         x1 = x;
-    const char *p;
+    int          x1 = x;
+    const char * p;
     for (p = s; *p != '\0'; ++p) {
       if (VALID_X(x1)) {
         TXT_GotoXY(x1, y);
@@ -236,10 +236,10 @@ static void PutUnicodeChar(unsigned int c) {
   }
 }
 
-void TXT_DrawString(const char *s) {
+void TXT_DrawString(const char * s) {
   int          x, y;
   int          x1;
-  const char  *p;
+  const char * p;
   unsigned int c;
 
   TXT_GetXY(&x, &y);
@@ -345,7 +345,7 @@ void TXT_DrawVertScrollbar(int x, int y, int h, int cursor, int range) {
 
 void TXT_InitClipArea() {
   if (cliparea == nullptr) {
-    auto *mem      = malloc(sizeof(txt_cliparea_t));
+    auto * mem     = malloc(sizeof(txt_cliparea_t));
     cliparea       = new (mem) txt_cliparea_t {};
     cliparea->x1   = 0;
     cliparea->x2   = TXT_SCREEN_W;
@@ -356,7 +356,7 @@ void TXT_InitClipArea() {
 }
 
 void TXT_PushClipArea(int x1, int x2, int y1, int y2) {
-  auto *newarea = create_struct<txt_cliparea_t>();
+  auto * newarea = create_struct<txt_cliparea_t>();
 
   // Set the new clip area to the intersection of the old
   // area and the new one.
@@ -393,7 +393,7 @@ void TXT_PopClipArea() {
 
   // Unlink the last entry and delete
 
-  txt_cliparea_t *next_cliparea = cliparea->next;
+  txt_cliparea_t * next_cliparea = cliparea->next;
   free(cliparea);
   cliparea = next_cliparea;
 }

@@ -90,4 +90,4 @@ static doomstat_t doomstat_s = {
   .netcmds                 = nullptr
 };
 
-doomstat_t *const g_doomstat_globals = &doomstat_s;
+doomstat_t * const g_doomstat_globals = &doomstat_s;

@@ -15,8 +15,8 @@
 #include "txt_strut.hpp"
 #include "memory.hpp"
 
-static void TXT_StrutSizeCalc(void *uncast_strut) {
-  auto *strut = reinterpret_cast<txt_strut_t *>(uncast_strut);
+static void TXT_StrutSizeCalc(void * uncast_strut) {
+  auto * strut = reinterpret_cast<txt_strut_t *>(uncast_strut);
 
   // Minimum width is the string length + two spaces for padding
 
@@ -45,8 +45,8 @@ txt_widget_class_t txt_strut_class = {
   nullptr,
 };
 
-txt_strut_t *TXT_NewStrut(int width, int height) {
-  auto *strut = create_struct<txt_strut_t>();
+txt_strut_t * TXT_NewStrut(int width, int height) {
+  auto * strut = create_struct<txt_strut_t>();
 
   TXT_InitWidget(strut, &txt_strut_class);
   strut->width  = width;

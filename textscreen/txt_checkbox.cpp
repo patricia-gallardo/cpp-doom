@@ -24,8 +24,8 @@
 #include "txt_utf8.hpp"
 #include "memory.hpp"
 
-static void TXT_CheckBoxSizeCalc(void *uncast_checkbox) {
-  auto *checkbox = reinterpret_cast<txt_checkbox_t *>(uncast_checkbox);
+static void TXT_CheckBoxSizeCalc(void * uncast_checkbox) {
+  auto * checkbox = reinterpret_cast<txt_checkbox_t *>(uncast_checkbox);
   ;
 
   // Minimum width is the string length + right-side space for padding
@@ -34,8 +34,8 @@ static void TXT_CheckBoxSizeCalc(void *uncast_checkbox) {
   checkbox->widget.h = 1;
 }
 
-static void TXT_CheckBoxDrawer(void *uncast_checkbox) {
-  auto *checkbox = reinterpret_cast<txt_checkbox_t *>(uncast_checkbox);
+static void TXT_CheckBoxDrawer(void * uncast_checkbox) {
+  auto * checkbox = reinterpret_cast<txt_checkbox_t *>(uncast_checkbox);
   ;
   unsigned int w = checkbox->widget.w;
 
@@ -65,15 +65,15 @@ static void TXT_CheckBoxDrawer(void *uncast_checkbox) {
   }
 }
 
-static void TXT_CheckBoxDestructor(void *uncast_checkbox) {
-  auto *checkbox = reinterpret_cast<txt_checkbox_t *>(uncast_checkbox);
+static void TXT_CheckBoxDestructor(void * uncast_checkbox) {
+  auto * checkbox = reinterpret_cast<txt_checkbox_t *>(uncast_checkbox);
   ;
 
   free(checkbox->label);
 }
 
-static int TXT_CheckBoxKeyPress(void *uncast_checkbox, int key) {
-  auto *checkbox = reinterpret_cast<txt_checkbox_t *>(uncast_checkbox);
+static int TXT_CheckBoxKeyPress(void * uncast_checkbox, int key) {
+  auto * checkbox = reinterpret_cast<txt_checkbox_t *>(uncast_checkbox);
   ;
 
   if (key == KEY_ENTER || key == ' ') {
@@ -85,8 +85,8 @@ static int TXT_CheckBoxKeyPress(void *uncast_checkbox, int key) {
   return 0;
 }
 
-static void TXT_CheckBoxMousePress(void *uncast_checkbox, int, int, int b) {
-  auto *checkbox = reinterpret_cast<txt_checkbox_t *>(uncast_checkbox);
+static void TXT_CheckBoxMousePress(void * uncast_checkbox, int, int, int b) {
+  auto * checkbox = reinterpret_cast<txt_checkbox_t *>(uncast_checkbox);
   ;
 
   if (b == TXT_MOUSE_LEFT) {
@@ -106,8 +106,8 @@ txt_widget_class_t txt_checkbox_class = {
   nullptr,
 };
 
-txt_checkbox_t *TXT_NewCheckBox(const char *label, int *variable) {
-  auto *checkbox = create_struct<txt_checkbox_t>();
+txt_checkbox_t * TXT_NewCheckBox(const char * label, int * variable) {
+  auto * checkbox = create_struct<txt_checkbox_t>();
 
   TXT_InitWidget(checkbox, &txt_checkbox_class);
   checkbox->label    = strdup(label);
@@ -117,9 +117,9 @@ txt_checkbox_t *TXT_NewCheckBox(const char *label, int *variable) {
   return checkbox;
 }
 
-txt_checkbox_t *TXT_NewInvertedCheckBox(const char *label, int *variable) {
-  txt_checkbox_t *result = TXT_NewCheckBox(label, variable);
-  result->inverted       = 1;
+txt_checkbox_t * TXT_NewInvertedCheckBox(const char * label, int * variable) {
+  txt_checkbox_t * result = TXT_NewCheckBox(label, variable);
+  result->inverted        = 1;
 
   return result;
 }

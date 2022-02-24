@@ -50,7 +50,7 @@ using net_addr_t    = struct _net_addr_s;
 using net_context_t = struct _net_context_s;
 
 struct _net_packet_s {
-  uint8_t     *data;
+  uint8_t *    data;
   size_t       len;
   size_t       alloced;
   unsigned int pos;
@@ -67,33 +67,33 @@ struct _net_module_s {
 
   // Send a packet
 
-  void (*SendPacket)(net_addr_t *addr, net_packet_t *packet);
+  void (*SendPacket)(net_addr_t * addr, net_packet_t * packet);
 
   // Check for new packets to receive
   //
   // Returns true if packet received
 
-  bool (*RecvPacket)(net_addr_t **addr, net_packet_t **packet);
+  bool (*RecvPacket)(net_addr_t ** addr, net_packet_t ** packet);
 
   // Converts an address to a string
 
-  void (*AddrToString)(net_addr_t *addr, char *buffer, int buffer_len);
+  void (*AddrToString)(net_addr_t * addr, char * buffer, int buffer_len);
 
   // Free back an address when no longer in use
 
-  void (*FreeAddress)(net_addr_t *addr);
+  void (*FreeAddress)(net_addr_t * addr);
 
   // Try to resolve a name to an address
 
-  net_addr_t *(*ResolveAddress)(const char *addr);
+  net_addr_t * (*ResolveAddress)(const char * addr);
 };
 
 // net_addr_t
 
 struct _net_addr_s {
-  net_module_t *module;
-  int           refcount;
-  void         *handle;
+  net_module_t * module;
+  int            refcount;
+  void *         handle;
 };
 
 // Magic number sent when connecting to check this is a valid client
@@ -243,13 +243,13 @@ typedef struct
 
 typedef struct
 {
-  const char    *version;
+  const char *   version;
   int            server_state;
   int            num_players;
   int            max_players;
   int            gamemode;
   int            gamemission;
-  const char    *description;
+  const char *   description;
   net_protocol_t protocol;
 } net_querydata_t;
 

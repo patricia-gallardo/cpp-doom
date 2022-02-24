@@ -47,38 +47,38 @@ struct ioperm_data {
 
 // haleyjd 09/09/10: Moved calling conventions into ()'s
 
-static SC_HANDLE(WINAPI *MyOpenSCManagerW)(wchar_t *lpMachineName,
-                                           wchar_t *lpDatabaseName,
-                                           DWORD    dwDesiredAccess) = nullptr;
-static SC_HANDLE(WINAPI *MyCreateServiceW)(SC_HANDLE hSCManager,
-                                           wchar_t  *lpServiceName,
-                                           wchar_t  *lpDisplayName,
-                                           DWORD     dwDesiredAccess,
-                                           DWORD     dwServiceType,
-                                           DWORD     dwStartType,
-                                           DWORD     dwErrorControl,
-                                           wchar_t  *lpBinaryPathName,
-                                           wchar_t  *lpLoadOrderGroup,
-                                           LPDWORD   lpdwTagId,
-                                           wchar_t  *lpDependencies,
-                                           wchar_t  *lpServiceStartName,
-                                           wchar_t  *lpPassword);
-static SC_HANDLE(WINAPI *MyOpenServiceW)(SC_HANDLE hSCManager,
-                                         wchar_t  *lpServiceName,
-                                         DWORD     dwDesiredAccess);
-static BOOL(WINAPI *MyStartServiceW)(SC_HANDLE hService,
-                                     DWORD     dwNumServiceArgs,
-                                     wchar_t **lpServiceArgVectors);
-static BOOL(WINAPI *MyControlService)(SC_HANDLE        hService,
-                                      DWORD            dwControl,
-                                      LPSERVICE_STATUS lpServiceStatus);
-static BOOL(WINAPI *MyCloseServiceHandle)(SC_HANDLE hSCObject);
-static BOOL(WINAPI *MyDeleteService)(SC_HANDLE hService);
+static SC_HANDLE(WINAPI * MyOpenSCManagerW)(wchar_t * lpMachineName,
+                                            wchar_t * lpDatabaseName,
+                                            DWORD     dwDesiredAccess) = nullptr;
+static SC_HANDLE(WINAPI * MyCreateServiceW)(SC_HANDLE hSCManager,
+                                            wchar_t * lpServiceName,
+                                            wchar_t * lpDisplayName,
+                                            DWORD     dwDesiredAccess,
+                                            DWORD     dwServiceType,
+                                            DWORD     dwStartType,
+                                            DWORD     dwErrorControl,
+                                            wchar_t * lpBinaryPathName,
+                                            wchar_t * lpLoadOrderGroup,
+                                            LPDWORD   lpdwTagId,
+                                            wchar_t * lpDependencies,
+                                            wchar_t * lpServiceStartName,
+                                            wchar_t * lpPassword);
+static SC_HANDLE(WINAPI * MyOpenServiceW)(SC_HANDLE hSCManager,
+                                          wchar_t * lpServiceName,
+                                          DWORD     dwDesiredAccess);
+static BOOL(WINAPI * MyStartServiceW)(SC_HANDLE  hService,
+                                      DWORD      dwNumServiceArgs,
+                                      wchar_t ** lpServiceArgVectors);
+static BOOL(WINAPI * MyControlService)(SC_HANDLE        hService,
+                                       DWORD            dwControl,
+                                       LPSERVICE_STATUS lpServiceStatus);
+static BOOL(WINAPI * MyCloseServiceHandle)(SC_HANDLE hSCObject);
+static BOOL(WINAPI * MyDeleteService)(SC_HANDLE hService);
 
 static struct
 {
-  const char *name;
-  void      **fn;
+  const char * name;
+  void **      fn;
 } dll_functions[] = {
   {"OpenSCManagerW",      (void **)&MyOpenSCManagerW    },
   { "CreateServiceW",     (void **)&MyCreateServiceW    },

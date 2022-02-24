@@ -143,7 +143,7 @@ int TXT_Init();
 void TXT_Shutdown();
 
 // Get a pointer to the buffer containing the raw screen data.
-unsigned char *TXT_GetScreenData();
+unsigned char * TXT_GetScreenData();
 
 // Update an area of the screen
 void TXT_UpdateScreenArea(int x, int y, int w, int h);
@@ -172,10 +172,10 @@ int TXT_GetModifierState(txt_modifier_t mod);
 // TXT_GetKeyDescription('q') on a French keyboard returns "A".
 // The contents of the filled buffer will be in UTF-8 format, but will never
 // contain characters which can't be shown on the screen.
-void TXT_GetKeyDescription(int key, char *buf, size_t buf_len);
+void TXT_GetKeyDescription(int key, char * buf, size_t buf_len);
 
 // Retrieve the current position of the mouse
-void TXT_GetMousePosition(int *x, int *y);
+void TXT_GetMousePosition(int * x, int * y);
 
 // Sleep until an event is received or the screen needs updating
 // Optional timeout in ms (timeout == 0 : sleep forever)
@@ -185,18 +185,18 @@ void TXT_Sleep(int timeout);
 void TXT_SetInputMode(txt_input_mode_t mode);
 
 // Set the window title of the window containing the text mode screen
-void TXT_SetWindowTitle(const char *title);
+void TXT_SetWindowTitle(const char * title);
 
 // Safe string copy.
-void TXT_StringCopy(char *dest, const char *src, size_t dest_len);
+void TXT_StringCopy(char * dest, const char * src, size_t dest_len);
 
 // Safe string concatenate.
-void TXT_StringConcat(char *dest, const char *src, size_t dest_len);
+void TXT_StringConcat(char * dest, const char * src, size_t dest_len);
 
 // Safe version of vsnprintf().
-int TXT_vsnprintf(char *buf, size_t buf_len, const char *s, va_list args);
+int TXT_vsnprintf(char * buf, size_t buf_len, const char * s, va_list args);
 
 // Safe version of snprintf().
-int TXT_snprintf(char *buf, size_t buf_len, const char *s, ...) PRINTF_ATTR(3, 4);
+int TXT_snprintf(char * buf, size_t buf_len, const char * s, ...) PRINTF_ATTR(3, 4);
 
 #endif /* #ifndef TXT_MAIN_H */

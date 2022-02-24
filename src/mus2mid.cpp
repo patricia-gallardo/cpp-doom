@@ -100,7 +100,7 @@ static int channel_map[NUM_CHANNELS];
 
 // Write timestamp to a MIDI file.
 
-static bool WriteTime(unsigned int time, MEMFILE *midioutput) {
+static bool WriteTime(unsigned int time, MEMFILE * midioutput) {
   unsigned int buffer = time & 0x7F;
   uint8_t      writeval;
 
@@ -128,7 +128,7 @@ static bool WriteTime(unsigned int time, MEMFILE *midioutput) {
 }
 
 // Write the end of track marker
-static bool WriteEndTrack(MEMFILE *midioutput) {
+static bool WriteEndTrack(MEMFILE * midioutput) {
   uint8_t endtrack[] = { 0xFF, 0x2F, 0x00 };
 
   if (WriteTime(queuedtime, midioutput)) {
@@ -144,7 +144,7 @@ static bool WriteEndTrack(MEMFILE *midioutput) {
 }
 
 // Write a key press event
-static bool WritePressKey(uint8_t channel, uint8_t key, uint8_t velocity, MEMFILE *midioutput) {
+static bool WritePressKey(uint8_t channel, uint8_t key, uint8_t velocity, MEMFILE * midioutput) {
   uint8_t working = midi_presskey | channel;
 
   if (WriteTime(queuedtime, midioutput)) {
@@ -173,7 +173,7 @@ static bool WritePressKey(uint8_t channel, uint8_t key, uint8_t velocity, MEMFIL
 }
 
 // Write a key release event
-static bool WriteReleaseKey(uint8_t channel, uint8_t key, MEMFILE *midioutput) {
+static bool WriteReleaseKey(uint8_t channel, uint8_t key, MEMFILE * midioutput) {
   uint8_t working = midi_releasekey | channel;
 
   if (WriteTime(queuedtime, midioutput)) {
@@ -202,7 +202,7 @@ static bool WriteReleaseKey(uint8_t channel, uint8_t key, MEMFILE *midioutput) {
 }
 
 // Write a pitch wheel/bend event
-static bool WritePitchWheel(uint8_t channel, short wheel, MEMFILE *midioutput) {
+static bool WritePitchWheel(uint8_t channel, short wheel, MEMFILE * midioutput) {
   uint8_t working = midi_pitchwheel | channel;
 
   if (WriteTime(queuedtime, midioutput)) {
@@ -230,7 +230,7 @@ static bool WritePitchWheel(uint8_t channel, short wheel, MEMFILE *midioutput) {
 }
 
 // Write a patch change event
-static bool WriteChangePatch(uint8_t channel, uint8_t patch, MEMFILE *midioutput) {
+static bool WriteChangePatch(uint8_t channel, uint8_t patch, MEMFILE * midioutput) {
   uint8_t working = midi_changepatch | channel;
 
   if (WriteTime(queuedtime, midioutput)) {
@@ -254,7 +254,7 @@ static bool WriteChangePatch(uint8_t channel, uint8_t patch, MEMFILE *midioutput
 
 // Write a valued controller change event
 
-static bool WriteChangeController_Valued(uint8_t channel, uint8_t control, uint8_t value, MEMFILE *midioutput) {
+static bool WriteChangeController_Valued(uint8_t channel, uint8_t control, uint8_t value, MEMFILE * midioutput) {
   uint8_t working = midi_changecontroller | channel;
 
   if (WriteTime(queuedtime, midioutput)) {
@@ -293,7 +293,7 @@ static bool WriteChangeController_Valued(uint8_t channel, uint8_t control, uint8
 }
 
 // Write a valueless controller change event
-static bool WriteChangeController_Valueless(uint8_t channel, uint8_t control, MEMFILE *midioutput) {
+static bool WriteChangeController_Valueless(uint8_t channel, uint8_t control, MEMFILE * midioutput) {
   return WriteChangeController_Valued(channel, control, 0, midioutput);
 }
 
@@ -332,7 +332,7 @@ static int AllocateMIDIChannel() {
 // Given a MUS channel number, get the MIDI channel number to use
 // in the outputted file.
 
-static int GetMIDIChannel(int mus_channel, MEMFILE *midioutput) {
+static int GetMIDIChannel(int mus_channel, MEMFILE * midioutput) {
   // Find the MIDI channel to use for this MUS channel.
   // MUS channel 15 is the percusssion channel.
 
@@ -355,7 +355,7 @@ static int GetMIDIChannel(int mus_channel, MEMFILE *midioutput) {
   }
 }
 
-static bool ReadMusHeader(MEMFILE *file, musheader *header) {
+static bool ReadMusHeader(MEMFILE * file, musheader * header) {
   bool result;
 
   result = mem_fread(&header->id, sizeof(uint8_t), 4, file) == 4
@@ -381,7 +381,7 @@ static bool ReadMusHeader(MEMFILE *file, musheader *header) {
 //
 // Returns 0 on success or 1 on failure.
 
-bool mus2mid(MEMFILE *musinput, MEMFILE *midioutput) {
+bool mus2mid(MEMFILE * musinput, MEMFILE * midioutput) {
   // Header for the MUS file
   musheader musfileheader;
 
@@ -599,12 +599,12 @@ bool mus2mid(MEMFILE *musinput, MEMFILE *midioutput) {
 #include "m_misc.hpp"
 #include "z_zone.hpp"
 
-int main(int argc, char *argv[]) {
-  MEMFILE *src, *dst;
-  uint8_t *infile;
-  long     infile_len;
-  void    *outfile;
-  size_t   outfile_len;
+int main(int argc, char * argv[]) {
+  MEMFILE * src, *dst;
+  uint8_t * infile;
+  long      infile_len;
+  void *    outfile;
+  size_t    outfile_len;
 
   if (argc != 3) {
     fmt::printf("Usage: %s <musfile> <midfile>\n", argv[0]);

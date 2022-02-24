@@ -24,8 +24,8 @@
 //
 // Create a new buffer.
 //
-buffer_t *NewBuffer() {
-  buffer_t *buf = static_cast<buffer_t *>(malloc(sizeof(buffer_t)));
+buffer_t * NewBuffer() {
+  buffer_t * buf = static_cast<buffer_t *>(malloc(sizeof(buffer_t)));
 
   buf->buffer_end = buf->buffer + BUFFER_SIZE;
   Buffer_Clear(buf);
@@ -36,14 +36,14 @@ buffer_t *NewBuffer() {
 //
 // Free a buffer.
 //
-void DeleteBuffer(buffer_t *buf) {
+void DeleteBuffer(buffer_t * buf) {
   free(buf);
 }
 
 //
 // Return the data in the buffer.
 //
-int Buffer_Data(buffer_t *buf, uint8_t **data) {
+int Buffer_Data(buffer_t * buf, uint8_t ** data) {
   *data = buf->data;
   return buf->data_len;
 }
@@ -51,7 +51,7 @@ int Buffer_Data(buffer_t *buf, uint8_t **data) {
 //
 // Push data onto the end of the buffer.
 //
-bool Buffer_Push(buffer_t *buf, const void *data, int len) {
+bool Buffer_Push(buffer_t * buf, const void * data, int len) {
   ptrdiff_t space_begin, space_end;
 
   if (len <= 0) {
@@ -85,7 +85,7 @@ bool Buffer_Push(buffer_t *buf, const void *data, int len) {
 //
 // Shift len bytes off of the front of the buffer.
 //
-void Buffer_Shift(buffer_t *buf, int len) {
+void Buffer_Shift(buffer_t * buf, int len) {
   ptrdiff_t max_shift;
 
   if (len <= 0) {
@@ -106,7 +106,7 @@ void Buffer_Shift(buffer_t *buf, int len) {
 //
 // Clear the buffer.
 //
-void Buffer_Clear(buffer_t *buf) {
+void Buffer_Clear(buffer_t * buf) {
   buf->data     = buf->buffer;
   buf->data_end = buf->buffer;
   buf->data_len = 0;
@@ -118,8 +118,8 @@ void Buffer_Clear(buffer_t *buf) {
 // WARNING: This reader will invalidate if the underlying buffer changes.
 //          Use it, then delete it before you touch the underlying buffer again.
 //
-buffer_reader_t *NewReader(buffer_t *buffer) {
-  buffer_reader_t *reader = static_cast<buffer_reader_t *>(malloc(sizeof(buffer_reader_t)));
+buffer_reader_t * NewReader(buffer_t * buffer) {
+  buffer_reader_t * reader = static_cast<buffer_reader_t *>(malloc(sizeof(buffer_reader_t)));
 
   reader->buffer = buffer;
   reader->pos    = buffer->data;
@@ -130,21 +130,21 @@ buffer_reader_t *NewReader(buffer_t *buffer) {
 //
 // Delete a buffer reader.
 //
-void DeleteReader(buffer_reader_t *reader) {
+void DeleteReader(buffer_reader_t * reader) {
   free(reader);
 }
 
 //
 // Count the number of bytes read thus far.
 //
-int Reader_BytesRead(buffer_reader_t *reader) {
+int Reader_BytesRead(buffer_reader_t * reader) {
   return static_cast<int>(reader->pos - reader->buffer->data);
 }
 
 //
 // Read an unsigned byte from a buffer.
 //
-bool Reader_ReadInt8(buffer_reader_t *reader, uint8_t *out) {
+bool Reader_ReadInt8(buffer_reader_t * reader, uint8_t * out) {
   uint8_t *data, *data_end;
   int      len = Buffer_Data(reader->buffer, &data);
 
@@ -163,7 +163,7 @@ bool Reader_ReadInt8(buffer_reader_t *reader, uint8_t *out) {
 //
 // Read an unsigned short from a buffer.
 //
-bool Reader_ReadInt16(buffer_reader_t *reader, uint16_t *out) {
+bool Reader_ReadInt16(buffer_reader_t * reader, uint16_t * out) {
   uint8_t *data, *data_end, *dp;
   int      len = Buffer_Data(reader->buffer, &data);
 
@@ -183,7 +183,7 @@ bool Reader_ReadInt16(buffer_reader_t *reader, uint16_t *out) {
 //
 // Read an unsigned int from a buffer.
 //
-bool Reader_ReadInt32(buffer_reader_t *reader, uint32_t *out) {
+bool Reader_ReadInt32(buffer_reader_t * reader, uint32_t * out) {
   uint8_t *data, *data_end, *dp;
   int      len = Buffer_Data(reader->buffer, &data);
 
@@ -203,7 +203,7 @@ bool Reader_ReadInt32(buffer_reader_t *reader, uint32_t *out) {
 //
 // Read a string from a buffer.
 //
-char *Reader_ReadString(buffer_reader_t *reader) {
+char * Reader_ReadString(buffer_reader_t * reader) {
   uint8_t *data, *data_start, *data_end, *dp;
   int      len = Buffer_Data(reader->buffer, &data);
 

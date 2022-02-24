@@ -81,8 +81,8 @@ typedef PACKED_STRUCT(
 #define MAXANIMS 32
 
 // [crispy] remove MAXANIMS limit
-extern anim_t *anims;
-extern anim_t *lastanim;
+extern anim_t * anims;
+extern anim_t * lastanim;
 
 //
 // P_InitPicAnims
@@ -131,8 +131,8 @@ animdef_t animdefs_vanilla[] = {
 };
 
 // [crispy] remove MAXANIMS limit
-anim_t       *anims;
-anim_t       *lastanim;
+anim_t *      anims;
+anim_t *      lastanim;
 static size_t maxanims;
 
 //
@@ -140,16 +140,16 @@ static size_t maxanims;
 //
 #define MAXLINEANIMS 64 * 256
 
-extern short   numlinespecials;
-extern line_t *linespeciallist[MAXLINEANIMS];
+extern short    numlinespecials;
+extern line_t * linespeciallist[MAXLINEANIMS];
 
 void P_InitPicAnims() {
   int  i;
   bool init_swirl = false;
 
   // [crispy] add support for ANIMATED lumps
-  animdef_t *animdefs;
-  const bool from_lump = (W_CheckNumForName("ANIMATED") != -1);
+  animdef_t * animdefs;
+  const bool  from_lump = (W_CheckNumForName("ANIMATED") != -1);
 
   if (from_lump) {
     animdefs = cache_lump_name<animdef_t *>("ANIMATED", PU_STATIC);
@@ -258,8 +258,8 @@ int twoSided(int sector,
 // nullptr if not two-sided line
 //
 sector_t *
-    getNextSector(line_t   *line,
-                  sector_t *sec) {
+    getNextSector(line_t *   line,
+                  sector_t * sec) {
   if (!(line->flags & ML_TWOSIDED))
     return nullptr;
 
@@ -273,11 +273,11 @@ sector_t *
 // P_FindLowestFloorSurrounding()
 // FIND LOWEST FLOOR HEIGHT IN SURROUNDING SECTORS
 //
-fixed_t P_FindLowestFloorSurrounding(sector_t *sec) {
-  int       i;
-  line_t   *check;
-  sector_t *other;
-  fixed_t   floor = sec->floorheight;
+fixed_t P_FindLowestFloorSurrounding(sector_t * sec) {
+  int        i;
+  line_t *   check;
+  sector_t * other;
+  fixed_t    floor = sec->floorheight;
 
   for (i = 0; i < sec->linecount; i++) {
     check = sec->lines[i];
@@ -296,11 +296,11 @@ fixed_t P_FindLowestFloorSurrounding(sector_t *sec) {
 // P_FindHighestFloorSurrounding()
 // FIND HIGHEST FLOOR HEIGHT IN SURROUNDING SECTORS
 //
-fixed_t P_FindHighestFloorSurrounding(sector_t *sec) {
-  int       i;
-  line_t   *check;
-  sector_t *other;
-  fixed_t   floor = -500 * FRACUNIT;
+fixed_t P_FindHighestFloorSurrounding(sector_t * sec) {
+  int        i;
+  line_t *   check;
+  sector_t * other;
+  fixed_t    floor = -500 * FRACUNIT;
 
   for (i = 0; i < sec->linecount; i++) {
     check = sec->lines[i];
@@ -326,16 +326,16 @@ fixed_t P_FindHighestFloorSurrounding(sector_t *sec) {
 #define MAX_ADJOINING_SECTORS 20
 
 fixed_t
-    P_FindNextHighestFloor(sector_t *sec,
-                           int       currentheight) {
-  int             i;
-  int             h;
-  int             min;
-  line_t         *check;
-  sector_t       *other;
-  fixed_t         height          = currentheight;
-  static fixed_t *heightlist      = nullptr;
-  static int      heightlist_size = 0;
+    P_FindNextHighestFloor(sector_t * sec,
+                           int        currentheight) {
+  int              i;
+  int              h;
+  int              min;
+  line_t *         check;
+  sector_t *       other;
+  fixed_t          height          = currentheight;
+  static fixed_t * heightlist      = nullptr;
+  static int       heightlist_size = 0;
 
   // [crispy] remove MAX_ADJOINING_SECTORS Vanilla limit
   // from prboom-plus/src/p_spec.c:404-411
@@ -388,11 +388,11 @@ fixed_t
 // FIND LOWEST CEILING IN THE SURROUNDING SECTORS
 //
 fixed_t
-    P_FindLowestCeilingSurrounding(sector_t *sec) {
-  int       i;
-  line_t   *check;
-  sector_t *other;
-  fixed_t   height = INT_MAX;
+    P_FindLowestCeilingSurrounding(sector_t * sec) {
+  int        i;
+  line_t *   check;
+  sector_t * other;
+  fixed_t    height = INT_MAX;
 
   for (i = 0; i < sec->linecount; i++) {
     check = sec->lines[i];
@@ -410,11 +410,11 @@ fixed_t
 //
 // FIND HIGHEST CEILING IN THE SURROUNDING SECTORS
 //
-fixed_t P_FindHighestCeilingSurrounding(sector_t *sec) {
-  int       i;
-  line_t   *check;
-  sector_t *other;
-  fixed_t   height = 0;
+fixed_t P_FindHighestCeilingSurrounding(sector_t * sec) {
+  int        i;
+  line_t *   check;
+  sector_t * other;
+  fixed_t    height = 0;
 
   for (i = 0; i < sec->linecount; i++) {
     check = sec->lines[i];
@@ -432,8 +432,8 @@ fixed_t P_FindHighestCeilingSurrounding(sector_t *sec) {
 //
 // RETURN NEXT SECTOR # THAT LINE TAG REFERS TO
 //
-int P_FindSectorFromLineTag(line_t *line,
-                            int     start) {
+int P_FindSectorFromLineTag(line_t * line,
+                            int      start) {
   int i;
 
 #if 0
@@ -467,12 +467,12 @@ int P_FindSectorFromLineTag(line_t *line,
 //
 // Find minimum light from an adjacent sector
 //
-int P_FindMinSurroundingLight(sector_t *sector,
-                              int       max) {
-  int       i;
-  int       min;
-  line_t   *line;
-  sector_t *check;
+int P_FindMinSurroundingLight(sector_t * sector,
+                              int        max) {
+  int        i;
+  int        min;
+  line_t *   line;
+  sector_t * check;
 
   min = max;
   for (i = 0; i < sector->linecount; i++) {
@@ -499,16 +499,16 @@ int P_FindMinSurroundingLight(sector_t *sector,
 // Called every time a thing origin is about
 //  to cross a line with a non 0 special.
 //
-void P_CrossSpecialLine(int     linenum,
-                        int     side,
-                        mobj_t *thing) {
+void P_CrossSpecialLine(int      linenum,
+                        int      side,
+                        mobj_t * thing) {
   return P_CrossSpecialLinePtr(&g_r_state_globals->lines[linenum], side, thing);
 }
 
 // [crispy] more MBF code pointers
-void P_CrossSpecialLinePtr(line_t *line,
-                           int     side,
-                           mobj_t *thing) {
+void P_CrossSpecialLinePtr(line_t * line,
+                           int      side,
+                           mobj_t * thing) {
   //  line_t*	line;
   int ok;
 
@@ -969,8 +969,8 @@ void P_CrossSpecialLinePtr(line_t *line,
 // P_ShootSpecialLine - IMPACT SPECIALS
 // Called when a thing shoots a special line.
 //
-void P_ShootSpecialLine(mobj_t *thing,
-                        line_t *line) {
+void P_ShootSpecialLine(mobj_t * thing,
+                        line_t * line) {
   int ok;
 
   //	Impacts that other things can activate.
@@ -1012,10 +1012,10 @@ void P_ShootSpecialLine(mobj_t *thing,
 // Called every tic frame
 //  that the player origin is in a special sector
 //
-void P_PlayerInSpecialSector(player_t *player) {
-  sector_t        *sector;
-  extern int       showMessages;
-  static sector_t *error;
+void P_PlayerInSpecialSector(player_t * player) {
+  sector_t *        sector;
+  extern int        showMessages;
+  static sector_t * error;
 
   sector = player->mo->subsector->sector;
 
@@ -1106,10 +1106,10 @@ bool levelTimer;
 int  levelTimeCount;
 
 void P_UpdateSpecials() {
-  anim_t *anim;
-  int     pic;
-  int     i;
-  line_t *line;
+  anim_t * anim;
+  int      pic;
+  int      i;
+  line_t * line;
 
   //	LEVEL TIMER
   if (levelTimer == true) {
@@ -1197,8 +1197,8 @@ void R_InterpolateTextureOffsets() {
     int i;
 
     for (i = 0; i < numlinespecials; i++) {
-      const line_t *const line = linespeciallist[i];
-      side_t *const       side = &g_r_state_globals->sides[line->sidenum[0]];
+      const line_t * const line = linespeciallist[i];
+      side_t * const       side = &g_r_state_globals->sides[line->sidenum[0]];
 
       if (line->special == 48) {
         side->textureoffset = side->basetextureoffset + fractionaltic;
@@ -1219,7 +1219,7 @@ void R_InterpolateTextureOffsets() {
 #define DONUT_FLOORHEIGHT_DEFAULT 0x00000000
 #define DONUT_FLOORPIC_DEFAULT    0x16
 
-static void DonutOverrun(fixed_t *s3_floorheight, short *s3_floorpic, line_t *, sector_t *) {
+static void DonutOverrun(fixed_t * s3_floorheight, short * s3_floorpic, line_t *, sector_t *) {
   static int first = 1;
   static int tmp_s3_floorheight;
   static int tmp_s3_floorpic;
@@ -1293,16 +1293,16 @@ static void DonutOverrun(fixed_t *s3_floorheight, short *s3_floorpic, line_t *, 
 //
 // Special Stuff that can not be categorized
 //
-int EV_DoDonut(line_t *line) {
-  sector_t    *s1;
-  sector_t    *s2;
-  sector_t    *s3;
-  int          secnum;
-  int          rtn;
-  int          i;
-  floormove_t *floor;
-  fixed_t      s3_floorheight;
-  short        s3_floorpic;
+int EV_DoDonut(line_t * line) {
+  sector_t *    s1;
+  sector_t *    s2;
+  sector_t *    s3;
+  int           secnum;
+  int           rtn;
+  int           i;
+  floormove_t * floor;
+  fixed_t       s3_floorheight;
+  short         s3_floorpic;
 
   secnum = -1;
   rtn    = 0;
@@ -1396,8 +1396,8 @@ int EV_DoDonut(line_t *line) {
 // After the map has been loaded, scan for specials
 //  that spawn thinkers
 //
-short   numlinespecials;
-line_t *linespeciallist[MAXLINEANIMS];
+short    numlinespecials;
+line_t * linespeciallist[MAXLINEANIMS];
 
 static unsigned int NumScrollers() {
   unsigned int scrollers = 0;
@@ -1412,8 +1412,8 @@ static unsigned int NumScrollers() {
 
 // Parses command line parameters.
 void P_SpawnSpecials() {
-  sector_t *sector;
-  int       i;
+  sector_t * sector;
+  int        i;
 
   // See if -TIMER was specified.
 

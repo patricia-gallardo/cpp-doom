@@ -36,7 +36,7 @@
 
 // Called when a player leaves the game
 
-static void PlayerQuitGame(player_t *player) {
+static void PlayerQuitGame(player_t * player) {
   static char exitmsg[80];
   auto        player_num = static_cast<unsigned int>(player - g_doomstat_globals->players);
 
@@ -59,7 +59,7 @@ static void PlayerQuitGame(player_t *player) {
   }
 }
 
-static void RunTic(ticcmd_t *cmds, bool *ingame) {
+static void RunTic(ticcmd_t * cmds, bool * ingame) {
   extern bool advancedemo;
 
   // Check for player quits.
@@ -91,7 +91,7 @@ static loop_interface_t doom_loop_interface = {
 // Load game settings from the specified structure and
 // set global variables.
 
-static void LoadGameSettings(net_gamesettings_t *settings) {
+static void LoadGameSettings(net_gamesettings_t * settings) {
   g_doomstat_globals->deathmatch    = settings->deathmatch;
   g_doomstat_globals->startepisode  = settings->episode;
   g_doomstat_globals->startmap      = settings->map;
@@ -117,7 +117,7 @@ static void LoadGameSettings(net_gamesettings_t *settings) {
 // Save the game settings from global variables to the specified
 // game settings structure.
 
-static void SaveGameSettings(net_gamesettings_t *settings) {
+static void SaveGameSettings(net_gamesettings_t * settings) {
   // Fill in game settings structure with appropriate parameters
   // for the new game
 
@@ -137,7 +137,7 @@ static void SaveGameSettings(net_gamesettings_t *settings) {
                           || M_ParmExists("-shorttics");
 }
 
-static void InitConnectData(net_connect_data_t *connect_data) {
+static void InitConnectData(net_connect_data_t * connect_data) {
   connect_data->max_players = MAXPLAYERS;
   connect_data->drone       = false;
 

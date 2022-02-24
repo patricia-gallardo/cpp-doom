@@ -24,11 +24,11 @@
 
 extern void R_InitBrightmaps();
 
-extern uint8_t *(*R_BrightmapForTexName)(const char *texname);
-extern uint8_t *(*R_BrightmapForSprite)(const int type);
-extern uint8_t *(*R_BrightmapForFlatNum)(const int num);
-extern uint8_t *(*R_BrightmapForState)(const int state);
+extern uint8_t * (*R_BrightmapForTexName)(const char * texname);
+extern uint8_t * (*R_BrightmapForSprite)(const int type);
+extern uint8_t * (*R_BrightmapForFlatNum)(const int num);
+extern uint8_t * (*R_BrightmapForState)(const int state);
 
-extern uint8_t **texturebrightmap;
+extern uint8_t ** texturebrightmap;
 
 #endif

@@ -30,16 +30,16 @@
 
 // temporary filename to use while saving.
 
-char *P_TempSaveGameFile();
+char * P_TempSaveGameFile();
 
 // filename to use for a savegame slot
 
-char *P_SaveGameFile(int slot);
+char * P_SaveGameFile(int slot);
 
 // Savegame file header read/write functions
 
 bool P_ReadSaveGameHeader();
-void P_WriteSaveGameHeader(char *description);
+void P_WriteSaveGameHeader(char * description);
 
 // Savegame end-of-file read/write functions
 
@@ -58,7 +58,7 @@ void P_ArchiveSpecials();
 void P_UnArchiveSpecials();
 void P_RestoreTargets();
 
-extern FILE *save_stream;
-extern bool  savegame_error;
+extern FILE * save_stream;
+extern bool   savegame_error;
 
 #endif

@@ -68,8 +68,8 @@ struct doomstat_t {
   GameMission_t gamemission;
   GameVersion_t gameversion;
   GameVariant_t gamevariant;
-  const char   *gamedescription;
-  char         *nervewadfile;
+  const char *  gamedescription;
+  char *        nervewadfile;
 
   // Convenience macro.
   // 'gamemission' can be equal to pack_chex or pack_hacx, but these are
@@ -216,8 +216,8 @@ struct doomstat_t {
   bool playeringame[MAXPLAYERS];
 
   // Player spawn spots for deathmatch.
-  mapthing_t  deathmatchstarts[MAX_DEATHMATCH_STARTS];
-  mapthing_t *deathmatch_p;
+  mapthing_t   deathmatchstarts[MAX_DEATHMATCH_STARTS];
+  mapthing_t * deathmatch_p;
 
   // Player spawn spots.
   mapthing_t playerstarts[MAXPLAYERS];
@@ -232,7 +232,7 @@ struct doomstat_t {
 
   // File handling stuff.
   // Location where savegames are stored
-  char *savegamedir;
+  char * savegamedir;
 
   // if true, load all graphics at level load
   bool precache; // if true, load all graphics at start
@@ -255,9 +255,9 @@ struct doomstat_t {
 
   int rndindex;
 
-  ticcmd_t *netcmds;
+  ticcmd_t * netcmds;
 };
 
-extern doomstat_t *const g_doomstat_globals;
+extern doomstat_t * const g_doomstat_globals;
 
 #endif

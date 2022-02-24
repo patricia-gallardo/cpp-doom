@@ -22,14 +22,14 @@
 #include "m_random.hpp"
 #include "s_sound.hpp"
 
-extern void A_Explode(mobj_t *thingy);
-extern void A_FaceTarget(mobj_t *thingy);
+extern void A_Explode(mobj_t * thingy);
+extern void A_FaceTarget(mobj_t * thingy);
 
-extern bool P_CheckMeleeRange(mobj_t *actor);
-extern void P_Thrust(player_t *player, angle_t angle, fixed_t move);
+extern bool P_CheckMeleeRange(mobj_t * actor);
+extern void P_Thrust(player_t * player, angle_t angle, fixed_t move);
 
 // killough 11/98: kill an object
-void A_Die(mobj_t *actor) {
+void A_Die(mobj_t * actor) {
   P_DamageMobj(actor, nullptr, nullptr, actor->health);
 }
 
@@ -38,7 +38,7 @@ void A_Die(mobj_t *actor) {
 // killough 8/9/98: same as A_Explode, except that the damage is variable
 //
 
-void A_Detonate(mobj_t *mo) {
+void A_Detonate(mobj_t * mo) {
   P_RadiusAttack(mo, mo->target, mo->info->damage);
 }
 
@@ -47,7 +47,7 @@ void A_Detonate(mobj_t *mo) {
 // Original idea: Linguica
 //
 
-void A_Mushroom(mobj_t *actor) {
+void A_Mushroom(mobj_t * actor) {
   int n = actor->info->damage;
 
   // Mushroom parameters are part of code pointer's state
@@ -75,7 +75,7 @@ void A_Mushroom(mobj_t *actor) {
 // killough 10/98: this emulates the beta version's lost soul attacks
 //
 
-void A_BetaSkullAttack(mobj_t *actor) {
+void A_BetaSkullAttack(mobj_t * actor) {
   int damage = 0;
   if (!actor->target || actor->target->type == MT_SKULL)
     return;
@@ -85,7 +85,7 @@ void A_BetaSkullAttack(mobj_t *actor) {
   P_DamageMobj(actor->target, actor, actor, damage);
 }
 
-void A_Stop(mobj_t *actor) {
+void A_Stop(mobj_t * actor) {
   actor->momx = actor->momy = actor->momz = 0;
 }
 
@@ -97,33 +97,33 @@ void A_Stop(mobj_t *actor) {
 // A small set of highly-sought-after code pointers
 //
 
-void A_Spawn(mobj_t *mo) {
+void A_Spawn(mobj_t * mo) {
   if (mo->state->misc1) {
     /*    mobj_t *newmobj = */ P_SpawnMobj(mo->x, mo->y, (mo->state->misc2 << FRACBITS) + mo->z, static_cast<mobjtype_t>(mo->state->misc1 - 1));
     //    newmobj->flags = (newmobj->flags & ~MF_FRIEND) | (mo->flags & MF_FRIEND);
   }
 }
 
-void A_Turn(mobj_t *mo) {
+void A_Turn(mobj_t * mo) {
   mo->angle += static_cast<angle_t>((static_cast<uint64_t>(mo->state->misc1) << 32) / 360);
 }
 
-void A_Face(mobj_t *mo) {
+void A_Face(mobj_t * mo) {
   mo->angle = static_cast<angle_t>((static_cast<uint64_t>(mo->state->misc1) << 32) / 360);
 }
 
-void A_Scratch(mobj_t *mo) {
+void A_Scratch(mobj_t * mo) {
   mo->target && (A_FaceTarget(mo), P_CheckMeleeRange(mo)) ?
       mo->state->misc2 ? S_StartSound(mo, mo->state->misc2) : (void)0,
       P_DamageMobj(mo->target, mo, mo, mo->state->misc1) : (void)0;
 }
 
-void A_PlaySound(mobj_t *mo) {
+void A_PlaySound(mobj_t * mo) {
   S_StartSound(mo->state->misc2 ? nullptr : mo, mo->state->misc1);
 }
 
 // [crispy] this is pretty much the only action pointer that makes sense for both mobj and pspr states
-void A_RandomJump(mobj_t *mo, player_t *player, pspdef_t *psp) {
+void A_RandomJump(mobj_t * mo, player_t * player, pspdef_t * psp) {
   // [crispy] first, try to apply to pspr states
   if (player && psp) {
     if (Crispy_Random() < psp->state->misc2) {
@@ -144,7 +144,7 @@ void A_RandomJump(mobj_t *mo, player_t *player, pspdef_t *psp) {
 // This allows linedef effects to be activated inside deh frames.
 //
 
-void A_LineEffect(mobj_t *mo) {
+void A_LineEffect(mobj_t * mo) {
   // if (!(mo->intflags & MIF_LINEDONE))                // Unless already used up
   {
     line_t junk   = *g_r_state_globals->lines; // Fake linedef set to 1st
@@ -173,7 +173,7 @@ void A_LineEffect(mobj_t *mo) {
 // This code may not be used in other mods without appropriate credit given.
 // Code leeches will be telefragged.
 
-void A_FireOldBFG(mobj_t *, player_t *player, pspdef_t *) {
+void A_FireOldBFG(mobj_t *, player_t * player, pspdef_t *) {
   mobjtype_t  type = MT_PLASMA1;
   extern void P_CheckMissileSpawn(mobj_t * th);
 

@@ -77,13 +77,13 @@ void Shutdown() {
 }
 
 struct timer_data {
-  int   running;
-  FILE *fstream;
+  int    running;
+  FILE * fstream;
 };
 
-void TimerCallback(void *data) {
-  struct timer_data *timer_data = data;
-  int                delay;
+void TimerCallback(void * data) {
+  struct timer_data * timer_data = data;
+  int                 delay;
 
   if (!timer_data->running) {
     return;
@@ -123,7 +123,7 @@ void TimerCallback(void *data) {
   OPL_SetCallback(delay * OPL_MS, TimerCallback, timer_data);
 }
 
-void PlayFile(char *filename) {
+void PlayFile(char * filename) {
   struct timer_data timer_data;
   int               running;
   char              buf[8];
@@ -165,7 +165,7 @@ void PlayFile(char *filename) {
   fclose(timer_data.fstream);
 }
 
-int main(int argc, char *argv[]) {
+int main(int argc, char * argv[]) {
   if (argc < 2) {
     fmt::printf("Usage: %s <filename>\n", argv[0]);
     exit(-1);

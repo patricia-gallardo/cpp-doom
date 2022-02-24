@@ -25,17 +25,17 @@ using net_query_callback_t = void (*)(net_addr_t *, net_querydata_t *, unsigned 
 extern int NET_StartLANQuery();
 extern int NET_StartMasterQuery();
 
-extern void        NET_LANQuery();
-extern void        NET_MasterQuery();
-extern void        NET_QueryAddress(char *addr);
-extern net_addr_t *NET_FindLANServer();
+extern void         NET_LANQuery();
+extern void         NET_MasterQuery();
+extern void         NET_QueryAddress(char * addr);
+extern net_addr_t * NET_FindLANServer();
 
-extern int NET_Query_Poll(net_query_callback_t callback, void *user_data);
+extern int NET_Query_Poll(net_query_callback_t callback, void * user_data);
 
-extern net_addr_t *NET_Query_ResolveMaster(net_context_t *context);
-extern void        NET_Query_AddToMaster(net_addr_t *master_addr);
-extern bool        NET_Query_CheckAddedToMaster(bool *result);
-extern void        NET_Query_AddResponse(net_packet_t *packet);
-extern void        NET_RequestHolePunch(net_context_t *context, net_addr_t *addr);
+extern net_addr_t * NET_Query_ResolveMaster(net_context_t * context);
+extern void         NET_Query_AddToMaster(net_addr_t * master_addr);
+extern bool         NET_Query_CheckAddedToMaster(bool * result);
+extern void         NET_Query_AddResponse(net_packet_t * packet);
+extern void         NET_RequestHolePunch(net_context_t * context, net_addr_t * addr);
 
 #endif /* #ifndef NET_QUERY_H */

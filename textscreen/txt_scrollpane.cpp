@@ -23,7 +23,7 @@
 #define SCROLLBAR_VERTICAL   (1 << 0)
 #define SCROLLBAR_HORIZONTAL (1 << 1)
 
-static int FullWidth(txt_scrollpane_t *scrollpane) {
+static int FullWidth(txt_scrollpane_t * scrollpane) {
   if (scrollpane->child != nullptr) {
     return static_cast<int>(scrollpane->child->w);
   } else {
@@ -31,7 +31,7 @@ static int FullWidth(txt_scrollpane_t *scrollpane) {
   }
 }
 
-static int FullHeight(txt_scrollpane_t *scrollpane) {
+static int FullHeight(txt_scrollpane_t * scrollpane) {
   if (scrollpane->child != nullptr) {
     return static_cast<int>(scrollpane->child->h);
   } else {
@@ -41,7 +41,7 @@ static int FullHeight(txt_scrollpane_t *scrollpane) {
 
 // Calculate which scroll bars the pane needs.
 
-static int NeedsScrollbars(txt_scrollpane_t *scrollpane) {
+static int NeedsScrollbars(txt_scrollpane_t * scrollpane) {
   int result = 0;
 
   if (FullWidth(scrollpane) > scrollpane->w) {
@@ -56,7 +56,7 @@ static int NeedsScrollbars(txt_scrollpane_t *scrollpane) {
 
 // If a scrollbar isn't needed, the scroll position is reset.
 
-static void SanityCheckScrollbars(txt_scrollpane_t *scrollpane) {
+static void SanityCheckScrollbars(txt_scrollpane_t * scrollpane) {
   int scrollbars = NeedsScrollbars(scrollpane);
 
   if ((scrollbars & SCROLLBAR_HORIZONTAL) == 0) {
@@ -82,8 +82,8 @@ static void SanityCheckScrollbars(txt_scrollpane_t *scrollpane) {
   }
 }
 
-static void TXT_ScrollPaneSizeCalc(void *uncast_scrollpane) {
-  auto *scrollpane = reinterpret_cast<txt_scrollpane_t *>(uncast_scrollpane);
+static void TXT_ScrollPaneSizeCalc(void * uncast_scrollpane) {
+  auto * scrollpane = reinterpret_cast<txt_scrollpane_t *>(uncast_scrollpane);
 
   if (scrollpane->child != nullptr) {
     TXT_CalcWidgetSize(scrollpane->child);
@@ -124,8 +124,8 @@ static void TXT_ScrollPaneSizeCalc(void *uncast_scrollpane) {
   }
 }
 
-static void TXT_ScrollPaneDrawer(void *uncast_scrollpane) {
-  auto *scrollpane = reinterpret_cast<txt_scrollpane_t *>(uncast_scrollpane);
+static void TXT_ScrollPaneDrawer(void * uncast_scrollpane) {
+  auto * scrollpane = reinterpret_cast<txt_scrollpane_t *>(uncast_scrollpane);
 
   // We set a clipping area of the scroll pane.
 
@@ -165,16 +165,16 @@ static void TXT_ScrollPaneDrawer(void *uncast_scrollpane) {
   TXT_PopClipArea();
 }
 
-static void TXT_ScrollPaneDestructor(void *uncast_scrollpane) {
-  auto *scrollpane = reinterpret_cast<txt_scrollpane_t *>(uncast_scrollpane);
+static void TXT_ScrollPaneDestructor(void * uncast_scrollpane) {
+  auto * scrollpane = reinterpret_cast<txt_scrollpane_t *>(uncast_scrollpane);
 
   if (scrollpane->child != nullptr) {
     TXT_DestroyWidget(scrollpane->child);
   }
 }
 
-static void TXT_ScrollPaneFocused(void *uncast_scrollpane, int focused) {
-  auto *scrollpane = reinterpret_cast<txt_scrollpane_t *>(uncast_scrollpane);
+static void TXT_ScrollPaneFocused(void * uncast_scrollpane, int focused) {
+  auto * scrollpane = reinterpret_cast<txt_scrollpane_t *>(uncast_scrollpane);
 
   // Whether the child is focused depends only on whether the scroll pane
   // itself is focused. Pass through focus to the child.
@@ -188,8 +188,8 @@ static void TXT_ScrollPaneFocused(void *uncast_scrollpane, int focused) {
 // automatically scroll the window to show the newly-selected
 // item.
 
-static void ShowSelectedWidget(txt_scrollpane_t *scrollpane) {
-  txt_widget_t *selected = TXT_GetSelectedWidget(scrollpane->child);
+static void ShowSelectedWidget(txt_scrollpane_t * scrollpane) {
+  txt_widget_t * selected = TXT_GetSelectedWidget(scrollpane->child);
 
   // Scroll up or down?
 
@@ -220,7 +220,7 @@ static void ShowSelectedWidget(txt_scrollpane_t *scrollpane) {
 // The other unfortunate effect of doing things this way is that page keys
 // have no effect on tables _not_ in scrollpanes: not even home/end.
 
-static int PageSelectedWidget(txt_scrollpane_t *scrollpane, int key) {
+static int PageSelectedWidget(txt_scrollpane_t * scrollpane, int key) {
   int pagex = 0; // No page left/right yet, but some keyboards have them
   int pagey = 0;
 
@@ -250,7 +250,7 @@ static int PageSelectedWidget(txt_scrollpane_t *scrollpane, int key) {
 
 // Interpret arrow key presses as scroll commands
 
-static int InterpretScrollKey(txt_scrollpane_t *scrollpane, int key) {
+static int InterpretScrollKey(txt_scrollpane_t * scrollpane, int key) {
   int maxy = 0;
 
   switch (key) {
@@ -310,9 +310,9 @@ static int InterpretScrollKey(txt_scrollpane_t *scrollpane, int key) {
   return 0;
 }
 
-static int TXT_ScrollPaneKeyPress(void *uncast_scrollpane, int key) {
-  auto *scrollpane = reinterpret_cast<txt_scrollpane_t *>(uncast_scrollpane);
-  int   result     = 0;
+static int TXT_ScrollPaneKeyPress(void * uncast_scrollpane, int key) {
+  auto * scrollpane = reinterpret_cast<txt_scrollpane_t *>(uncast_scrollpane);
+  int    result     = 0;
 
   if (scrollpane->child != nullptr) {
     result = TXT_WidgetKeyPress(scrollpane->child, key);
@@ -344,11 +344,11 @@ static int TXT_ScrollPaneKeyPress(void *uncast_scrollpane, int key) {
   return result;
 }
 
-static void TXT_ScrollPaneMousePress(void *uncast_scrollpane,
-                                     int   x,
-                                     int   y,
-                                     int   b) {
-  auto *scrollpane = reinterpret_cast<txt_scrollpane_t *>(uncast_scrollpane);
+static void TXT_ScrollPaneMousePress(void * uncast_scrollpane,
+                                     int    x,
+                                     int    y,
+                                     int    b) {
+  auto * scrollpane = reinterpret_cast<txt_scrollpane_t *>(uncast_scrollpane);
 
   int scrollbars = NeedsScrollbars(scrollpane);
 
@@ -410,8 +410,8 @@ static void TXT_ScrollPaneMousePress(void *uncast_scrollpane,
   }
 }
 
-static void TXT_ScrollPaneLayout(void *uncast_scrollpane) {
-  auto *scrollpane = reinterpret_cast<txt_scrollpane_t *>(uncast_scrollpane);
+static void TXT_ScrollPaneLayout(void * uncast_scrollpane) {
+  auto * scrollpane = reinterpret_cast<txt_scrollpane_t *>(uncast_scrollpane);
 
   SanityCheckScrollbars(scrollpane);
 
@@ -426,8 +426,8 @@ static void TXT_ScrollPaneLayout(void *uncast_scrollpane) {
   }
 }
 
-static int TXT_ScrollPaneSelectable(void *uncast_scrollpane) {
-  auto *scrollpane = reinterpret_cast<txt_scrollpane_t *>(uncast_scrollpane);
+static int TXT_ScrollPaneSelectable(void * uncast_scrollpane) {
+  auto * scrollpane = reinterpret_cast<txt_scrollpane_t *>(uncast_scrollpane);
 
   // If scroll bars are displayed, the scroll pane must be selectable
   // so that we can use the arrow keys to scroll around.
@@ -452,9 +452,9 @@ txt_widget_class_t txt_scrollpane_class = {
   TXT_ScrollPaneFocused,
 };
 
-txt_scrollpane_t *TXT_NewScrollPane(int w, int h, void *uncast_target) {
-  auto *target     = reinterpret_cast<txt_widget_t *>(uncast_target);
-  auto *scrollpane = create_struct<txt_scrollpane_t>();
+txt_scrollpane_t * TXT_NewScrollPane(int w, int h, void * uncast_target) {
+  auto * target     = reinterpret_cast<txt_widget_t *>(uncast_target);
+  auto * scrollpane = create_struct<txt_scrollpane_t>();
 
   TXT_InitWidget(scrollpane, &txt_scrollpane_class);
   scrollpane->w        = w;

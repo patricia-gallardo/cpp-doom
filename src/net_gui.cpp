@@ -37,13 +37,13 @@
 
 #include "textscreen.hpp"
 
-static txt_window_t *window;
-static int           old_max_players;
-static txt_label_t  *player_labels[NET_MAXPLAYERS];
-static txt_label_t  *ip_labels[NET_MAXPLAYERS];
-static txt_label_t  *drone_label;
-static txt_label_t  *master_msg_label;
-static bool          had_warning;
+static txt_window_t * window;
+static int            old_max_players;
+static txt_label_t *  player_labels[NET_MAXPLAYERS];
+static txt_label_t *  ip_labels[NET_MAXPLAYERS];
+static txt_label_t *  drone_label;
+static txt_label_t *  master_msg_label;
+static bool           had_warning;
 
 // Number of players we expect to be in the game. When the number is
 // reached, we auto-start the game (if we're the controller). If
@@ -66,7 +66,7 @@ static void OpenWaitDialog() {
 
   TXT_AddWidget(window, TXT_NewLabel("\nPlease wait...\n\n"));
 
-  txt_window_action_t *cancel = TXT_NewWindowAction(KEY_ESCAPE, "Cancel");
+  txt_window_action_t * cancel = TXT_NewWindowAction(KEY_ESCAPE, "Cancel");
   TXT_SignalConnect(cancel, "pressed", EscapePressed, nullptr);
 
   TXT_SetWindowAction(window, TXT_HORIZ_LEFT, cancel);
@@ -79,7 +79,7 @@ static void BuildWindow() {
   char buf[50];
 
   TXT_ClearTable(window);
-  txt_table_t *table = TXT_NewTable(3);
+  txt_table_t * table = TXT_NewTable(3);
   TXT_AddWidget(window, table);
 
   // Add spacers
@@ -147,7 +147,7 @@ static void UpdateGUI() {
     TXT_SetLabel(drone_label, "");
   }
 
-  txt_window_action_t *startgame = nullptr;
+  txt_window_action_t * startgame = nullptr;
   if (g_net_client_globals->net_client_wait_data.is_controller) {
     startgame = TXT_NewWindowAction(' ', "Start game");
     TXT_SignalConnect(startgame, "pressed", StartGame, nullptr);
@@ -157,8 +157,8 @@ static void UpdateGUI() {
 }
 
 static void BuildMasterStatusWindow() {
-  txt_window_t *master_window = TXT_NewWindow(nullptr);
-  master_msg_label            = TXT_NewLabel("");
+  txt_window_t * master_window = TXT_NewWindow(nullptr);
+  master_msg_label             = TXT_NewLabel("");
   TXT_AddWidget(master_window, master_msg_label);
 
   // This window is here purely for information, so it should be
@@ -194,7 +194,7 @@ static void CheckMasterStatus() {
   }
 }
 
-static void PrintSHA1Digest(const char *s, const uint8_t *digest) {
+static void PrintSHA1Digest(const char * s, const uint8_t * digest) {
   fmt::printf("%s: ", s);
 
   for (unsigned int i = 0; i < sizeof(sha1_digest_t); ++i) {
@@ -204,8 +204,8 @@ static void PrintSHA1Digest(const char *s, const uint8_t *digest) {
   fmt::printf("\n");
 }
 
-static void CloseWindow(void *, void *uncast_window) {
-  auto *window_local = reinterpret_cast<txt_window_t *>(uncast_window);
+static void CloseWindow(void *, void * uncast_window) {
+  auto * window_local = reinterpret_cast<txt_window_t *>(uncast_window);
 
   TXT_CloseWindow(window_local);
 }
@@ -243,9 +243,9 @@ static void CheckSHA1Sums() {
     PrintSHA1Digest("Server", g_net_client_globals->net_client_wait_data.deh_sha1sum);
   }
 
-  txt_window_t *window_local = TXT_NewWindow("WARNING!");
+  txt_window_t * window_local = TXT_NewWindow("WARNING!");
 
-  txt_window_action_t *cont_button = TXT_NewWindowAction(KEY_ENTER, "Continue");
+  txt_window_action_t * cont_button = TXT_NewWindowAction(KEY_ENTER, "Continue");
   TXT_SignalConnect(cont_button, "pressed", CloseWindow, window_local);
 
   TXT_SetWindowAction(window_local, TXT_HORIZ_LEFT, nullptr);

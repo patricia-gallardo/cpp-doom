@@ -59,8 +59,8 @@ typedef struct
   char dd_name[1];
 } DIR;
 
-DIR                  *opendir(const char *);
-struct dirent        *readdir(DIR *);
+DIR *                 opendir(const char *);
+struct dirent *       readdir(DIR *);
 int                   closedir(DIR *);
 void                  rewinddir(DIR *);
 [[maybe_unused]] long telldir(DIR *);

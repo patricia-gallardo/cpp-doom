@@ -125,7 +125,7 @@ constexpr char PATH_SEPARATOR = ':';
 #include <stdlib.h>
 
 // Windows doesn't have setenv
-inline void setenv(const char *key, const char *value, int) {
+inline void setenv(const char * key, const char * value, int) {
   _putenv_s(key, value);
 }
 

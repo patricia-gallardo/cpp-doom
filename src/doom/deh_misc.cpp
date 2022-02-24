@@ -131,8 +131,8 @@ int deh_species_infighting = DEH_DEFAULT_SPECIES_INFIGHTING;
 
 static struct
 {
-  const char *deh_name;
-  int        *value;
+  const char * deh_name;
+  int *        value;
 } misc_settings[] = {
   {"Initial Health",     &deh_initial_health    },
   { "Initial Bullets",   &deh_initial_bullets   },
@@ -151,11 +151,11 @@ static struct
   { "BFG Cells/Shot",    &deh_bfg_cells_per_shot},
 };
 
-static void *DEH_MiscStart(deh_context_t *, char *) {
+static void * DEH_MiscStart(deh_context_t *, char *) {
   return nullptr;
 }
 
-static void DEH_MiscParseLine(deh_context_t *context, char *line, void *) {
+static void DEH_MiscParseLine(deh_context_t * context, char * line, void *) {
   char *variable_name = nullptr, *value = nullptr;
 
   if (!DEH_ParseAssignment(line, &variable_name, &value)) {
@@ -183,7 +183,7 @@ static void DEH_MiscParseLine(deh_context_t *context, char *line, void *) {
     return;
   }
 
-  for (auto &misc_setting : misc_settings) {
+  for (auto & misc_setting : misc_settings) {
     if (!strcasecmp(variable_name, misc_setting.deh_name)) {
       *misc_setting.value = ivalue;
       return;
@@ -193,8 +193,8 @@ static void DEH_MiscParseLine(deh_context_t *context, char *line, void *) {
   DEH_Warning(context, "Unknown Misc variable '%s'", variable_name);
 }
 
-static void DEH_MiscSHA1Sum(sha1_context_t *context) {
-  for (auto &misc_setting : misc_settings) {
+static void DEH_MiscSHA1Sum(sha1_context_t * context) {
+  for (auto & misc_setting : misc_settings) {
     SHA1_UpdateInt32(context, static_cast<unsigned int>(*misc_setting.value));
   }
 }

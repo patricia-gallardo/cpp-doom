@@ -49,7 +49,7 @@ constexpr auto BONUSADD = 6;
 // Returns false if the ammo can't be picked up at all
 //
 
-bool P_GiveAmmo(player_t  *player,
+bool P_GiveAmmo(player_t * player,
                 ammotype_t ammo,
                 int        num,
                 bool       dropped) // [NS] Dropped ammo/weapons give half as much.
@@ -142,7 +142,7 @@ bool P_GiveAmmo(player_t  *player,
 // P_GiveWeapon
 // The weapon name may have a MF_DROPPED flag ored in.
 //
-bool P_GiveWeapon(player_t    *player,
+bool P_GiveWeapon(player_t *   player,
                   weapontype_t weapon,
                   bool         dropped) {
   bool gaveammo   = false;
@@ -200,8 +200,8 @@ bool P_GiveWeapon(player_t    *player,
 // P_GiveBody
 // Returns false if the body isn't needed at all
 //
-bool P_GiveBody(player_t *player,
-                int       num) {
+bool P_GiveBody(player_t * player,
+                int        num) {
   if (player->health >= MAXHEALTH)
     return false;
 
@@ -218,8 +218,8 @@ bool P_GiveBody(player_t *player,
 // Returns false if the armor is worse
 // than the current armor.
 //
-bool P_GiveArmor(player_t *player,
-                 int       armortype) {
+bool P_GiveArmor(player_t * player,
+                 int        armortype) {
   int hits = armortype * 100;
   if (player->armorpoints >= hits)
     return false; // don't pick up
@@ -233,8 +233,8 @@ bool P_GiveArmor(player_t *player,
 //
 // P_GiveCard
 //
-void P_GiveCard(player_t *player,
-                card_t    card) {
+void P_GiveCard(player_t * player,
+                card_t     card) {
   if (player->cards[card])
     return;
 
@@ -245,7 +245,7 @@ void P_GiveCard(player_t *player,
 //
 // P_GivePower
 //
-bool P_GivePower(player_t           *player,
+bool P_GivePower(player_t *          player,
                  int /*powertype_t*/ power) {
   if (power == pw_invulnerability) {
     player->powers[power] = INVULNTICS;
@@ -284,9 +284,9 @@ bool P_GivePower(player_t           *player,
 //
 // P_TouchSpecialThing
 //
-void P_TouchSpecialThing(mobj_t *special,
-                         mobj_t *toucher) {
-  player_t  *player = nullptr;
+void P_TouchSpecialThing(mobj_t * special,
+                         mobj_t * toucher) {
+  player_t * player = nullptr;
   int        i      = 0;
   int        sound;
   const bool dropped = ((special->flags & MF_DROPPED) != 0);
@@ -623,10 +623,10 @@ void P_TouchSpecialThing(mobj_t *special,
 //
 // KillMobj
 //
-void P_KillMobj(mobj_t *source,
-                mobj_t *target) {
+void P_KillMobj(mobj_t * source,
+                mobj_t * target) {
   mobjtype_t item;
-  mobj_t    *mo = nullptr;
+  mobj_t *   mo = nullptr;
 
   target->flags &= ~(MF_SHOOTABLE | MF_FLOAT | MF_SKULLFLY);
 
@@ -736,15 +736,15 @@ void P_KillMobj(mobj_t *source,
 // Source can be nullptr for slime, barrel explosions
 // and other environmental stuff.
 //
-void P_DamageMobj(mobj_t *target,
-                  mobj_t *inflictor,
-                  mobj_t *source,
-                  int     damage) {
-  unsigned  ang    = 0;
-  int       saved  = 0;
-  player_t *player = nullptr;
-  fixed_t   thrust = 0;
-  int       temp   = 0;
+void P_DamageMobj(mobj_t * target,
+                  mobj_t * inflictor,
+                  mobj_t * source,
+                  int      damage) {
+  unsigned   ang    = 0;
+  int        saved  = 0;
+  player_t * player = nullptr;
+  fixed_t    thrust = 0;
+  int        temp   = 0;
 
   if (!(target->flags & MF_SHOOTABLE))
     return; // shouldn't happen...

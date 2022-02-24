@@ -48,18 +48,18 @@ static bool sdl_was_initialized = false;
 static bool musicpaused = false;
 static int  current_music_volume;
 
-char *timidity_cfg_path = const_cast<char *>("");
+char * timidity_cfg_path = const_cast<char *>("");
 
-static char *temp_timidity_cfg = nullptr;
+static char * temp_timidity_cfg = nullptr;
 
 // If the temp_timidity_cfg config variable is set, generate a "wrapper"
 // config file for Timidity to point to the actual config file. This
 // is needed to inject a "dir" command so that the patches are read
 // relative to the actual config file.
 
-static bool WriteWrapperTimidityConfig(char *write_path) {
-  char *path;
-  FILE *fstream;
+static bool WriteWrapperTimidityConfig(char * write_path) {
+  char * path;
+  FILE * fstream;
 
   if (!strcmp(timidity_cfg_path, "")) {
     return false;
@@ -219,7 +219,7 @@ static void I_SDL_SetMusicVolume(int volume) {
 
 // Start playing a mid
 
-static void I_SDL_PlaySong(void *handle, bool looping) {
+static void I_SDL_PlaySong(void * handle, bool looping) {
   int loops;
 
   if (!music_initialized) {
@@ -281,8 +281,8 @@ static void I_SDL_StopSong() {
   }
 }
 
-static void I_SDL_UnRegisterSong(void *handle) {
-  Mix_Music *music = reinterpret_cast<Mix_Music *>(handle);
+static void I_SDL_UnRegisterSong(void * handle) {
+  Mix_Music * music = reinterpret_cast<Mix_Music *>(handle);
 
   if (!music_initialized) {
     return;
@@ -310,12 +310,12 @@ static bool IsMid(byte *mem, int len)
 }
 */
 
-static bool ConvertMus(uint8_t *musdata, int len, const char *filename) {
-  MEMFILE *instream;
-  MEMFILE *outstream;
-  void    *outbuf;
-  size_t   outbuf_len;
-  int      result;
+static bool ConvertMus(uint8_t * musdata, int len, const char * filename) {
+  MEMFILE * instream;
+  MEMFILE * outstream;
+  void *    outbuf;
+  size_t    outbuf_len;
+  int       result;
 
   instream  = mem_fopen_read(musdata, static_cast<size_t>(len));
   outstream = mem_fopen_write();
@@ -334,9 +334,9 @@ static bool ConvertMus(uint8_t *musdata, int len, const char *filename) {
   return result;
 }
 
-static void *I_SDL_RegisterSong(void *data, int len) {
-  char      *filename;
-  Mix_Music *music;
+static void * I_SDL_RegisterSong(void * data, int len) {
+  char *      filename;
+  Mix_Music * music;
 
   if (!music_initialized) {
     return nullptr;

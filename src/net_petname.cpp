@@ -20,7 +20,7 @@
 #include <ctime>
 #include "m_misc.hpp"
 
-static const char *const adjectives[] = {
+static const char * const adjectives[] = {
   "Grumpy",
   "Ecstatic",
   "Surly",
@@ -64,7 +64,7 @@ static const char *const adjectives[] = {
   "Baby",
 };
 
-static const char *const nouns[] = {
+static const char * const nouns[] = {
   "Frad",
   // Doom
   "Cacodemon",
@@ -105,10 +105,10 @@ static void InitPetName() {
   srand(static_cast<unsigned int>(time(nullptr)));
 }
 
-char *NET_GetRandomPetName() {
+char * NET_GetRandomPetName() {
   InitPetName();
-  const char *a = adjectives[static_cast<unsigned long>(rand()) % std::size(adjectives)];
-  const char *n = nouns[static_cast<unsigned long>(rand()) % std::size(nouns)];
+  const char * a = adjectives[static_cast<unsigned long>(rand()) % std::size(adjectives)];
+  const char * n = nouns[static_cast<unsigned long>(rand()) % std::size(nouns)];
 
   return M_StringJoin(a, " ", n, nullptr);
 }

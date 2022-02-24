@@ -54,13 +54,13 @@ static int phase_offset = 0;
 
 // Mixer function that does the PC speaker emulation
 
-static void PCSound_Mix_Callback(void *, Uint8 *stream, int len) {
+static void PCSound_Mix_Callback(void *, Uint8 * stream, int len) {
   // Number of samples is quadrupled, because of 16-bit and stereo
 
   int nsamples = len / 4;
 
-  auto   *leftptr  = reinterpret_cast<Sint16 *>(stream);
-  Sint16 *rightptr = leftptr + 1;
+  auto *   leftptr  = reinterpret_cast<Sint16 *>(stream);
+  Sint16 * rightptr = leftptr + 1;
 
   // Fill the output buffer
   Sint16 this_value = 0;

@@ -24,9 +24,9 @@ static int         cur_x = 0, cur_y = 0;
 static txt_color_t fgcolor = TXT_COLOR_GREY;
 static txt_color_t bgcolor = TXT_COLOR_BLACK;
 
-static void NewLine(unsigned char *screendata) {
-  int            i;
-  unsigned char *p;
+static void NewLine(unsigned char * screendata) {
+  int             i;
+  unsigned char * p;
 
   cur_x = 0;
   ++cur_y;
@@ -49,8 +49,8 @@ static void NewLine(unsigned char *screendata) {
   }
 }
 
-static void PutSymbol(unsigned char *screendata, int c) {
-  unsigned char *p;
+static void PutSymbol(unsigned char * screendata, int c) {
+  unsigned char * p;
 
   p = screendata + cur_y * TXT_SCREEN_W * 2 + cur_x * 2;
 
@@ -72,7 +72,7 @@ void TXT_PutSymbol(int c) {
   PutSymbol(TXT_GetScreenData(), c);
 }
 
-static void PutChar(unsigned char *screendata, int c) {
+static void PutChar(unsigned char * screendata, int c) {
   switch (c) {
   case '\n':
     NewLine(screendata);
@@ -95,9 +95,9 @@ void TXT_PutChar(int c) {
   PutChar(TXT_GetScreenData(), c);
 }
 
-void TXT_Puts(const char *s) {
-  unsigned char *screen;
-  const char    *p;
+void TXT_Puts(const char * s) {
+  unsigned char * screen;
+  const char *    p;
 
   screen = TXT_GetScreenData();
 
@@ -113,7 +113,7 @@ void TXT_GotoXY(int x, int y) {
   cur_y = y;
 }
 
-void TXT_GetXY(int *x, int *y) {
+void TXT_GetXY(int * x, int * y) {
   *x = cur_x;
   *y = cur_y;
 }
@@ -128,19 +128,19 @@ void TXT_BGColor(txt_color_t color, int blinking) {
     bgcolor = static_cast<txt_color_t>(bgcolor | TXT_COLOR_BLINKING);
 }
 
-void TXT_SaveColors(txt_saved_colors_t *save) {
+void TXT_SaveColors(txt_saved_colors_t * save) {
   save->bgcolor = bgcolor;
   save->fgcolor = fgcolor;
 }
 
-void TXT_RestoreColors(txt_saved_colors_t *save) {
+void TXT_RestoreColors(txt_saved_colors_t * save) {
   bgcolor = save->bgcolor;
   fgcolor = save->fgcolor;
 }
 
 [[maybe_unused]] void TXT_ClearScreen() {
-  unsigned char *screen;
-  int            i;
+  unsigned char * screen;
+  int             i;
 
   screen = TXT_GetScreenData();
 

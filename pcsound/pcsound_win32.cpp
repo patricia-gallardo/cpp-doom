@@ -24,7 +24,7 @@
 #include "pcsound.hpp"
 #include "pcsound_internal.hpp"
 
-static SDL_Thread           *sound_thread_handle;
+static SDL_Thread *          sound_thread_handle;
 static int                   sound_thread_running;
 static pcsound_callback_func callback;
 

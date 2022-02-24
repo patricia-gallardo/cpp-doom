@@ -180,7 +180,7 @@ static m_controls_t m_controls_s = {
 
   .dclick_use = 1
 };
-m_controls_t *const g_m_controls_globals = &m_controls_s;
+m_controls_t * const g_m_controls_globals = &m_controls_s;
 
 //
 // Bind all of the common controls used by Doom and all other games.

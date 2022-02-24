@@ -30,8 +30,8 @@
 #include "deh_defs.hpp"
 #include "deh_io.hpp"
 
-static deh_context_t *DEH_NewContext() {
-  deh_context_t *context = zmalloc<decltype(context)>(sizeof(*context), PU_STATIC, nullptr);
+static deh_context_t * DEH_NewContext() {
+  deh_context_t * context = zmalloc<decltype(context)>(sizeof(*context), PU_STATIC, nullptr);
 
   // Initial read buffer size of 128 bytes
 
@@ -49,13 +49,13 @@ static deh_context_t *DEH_NewContext() {
 // Open a dehacked file for reading
 // Returns nullptr if open failed
 
-deh_context_t *DEH_OpenFile(const char *filename) {
-  FILE *fstream = fopen(filename, "r");
+deh_context_t * DEH_OpenFile(const char * filename) {
+  FILE * fstream = fopen(filename, "r");
 
   if (fstream == nullptr)
     return nullptr;
 
-  deh_context_t *context = DEH_NewContext();
+  deh_context_t * context = DEH_NewContext();
 
   context->type     = DEH_INPUT_FILE;
   context->stream   = fstream;
@@ -66,8 +66,8 @@ deh_context_t *DEH_OpenFile(const char *filename) {
 
 // Open a WAD lump for reading.
 
-deh_context_t *DEH_OpenLump(int lumpnum) {
-  deh_context_t *context = DEH_NewContext();
+deh_context_t * DEH_OpenLump(int lumpnum) {
+  deh_context_t * context = DEH_NewContext();
 
   context->type             = DEH_INPUT_LUMP;
   context->lumpnum          = lumpnum;
@@ -83,7 +83,7 @@ deh_context_t *DEH_OpenLump(int lumpnum) {
 
 // Close dehacked file
 
-void DEH_CloseFile(deh_context_t *context) {
+void DEH_CloseFile(deh_context_t * context) {
   if (context->type == DEH_INPUT_FILE) {
     fclose(context->stream);
   } else if (context->type == DEH_INPUT_LUMP) {
@@ -95,7 +95,7 @@ void DEH_CloseFile(deh_context_t *context) {
   Z_Free(context);
 }
 
-int DEH_GetCharFile(deh_context_t *context) {
+int DEH_GetCharFile(deh_context_t * context) {
   if (feof(context->stream)) {
     // end of file
 
@@ -105,7 +105,7 @@ int DEH_GetCharFile(deh_context_t *context) {
   return fgetc(context->stream);
 }
 
-int DEH_GetCharLump(deh_context_t *context) {
+int DEH_GetCharLump(deh_context_t * context) {
   if (context->input_buffer_pos >= context->input_buffer_len) {
     return -1;
   }
@@ -118,7 +118,7 @@ int DEH_GetCharLump(deh_context_t *context) {
 
 // Reads a single character from a dehacked file
 
-int DEH_GetChar(deh_context_t *context) {
+int DEH_GetChar(deh_context_t * context) {
   int result = 0;
 
   // Read characters, but ignore carriage returns
@@ -149,9 +149,9 @@ int DEH_GetChar(deh_context_t *context) {
 
 // Increase the read buffer size
 
-static void IncreaseReadBuffer(deh_context_t *context) {
-  int   newbuffer_size = context->readbuffer_size * 2;
-  char *newbuffer      = zmalloc<decltype(newbuffer)>(static_cast<size_t>(newbuffer_size), PU_STATIC, nullptr);
+static void IncreaseReadBuffer(deh_context_t * context) {
+  int    newbuffer_size = context->readbuffer_size * 2;
+  char * newbuffer      = zmalloc<decltype(newbuffer)>(static_cast<size_t>(newbuffer_size), PU_STATIC, nullptr);
 
   std::memcpy(newbuffer, context->readbuffer, static_cast<size_t>(context->readbuffer_size));
 
@@ -162,7 +162,7 @@ static void IncreaseReadBuffer(deh_context_t *context) {
 }
 
 // [crispy] Save pointer to start of current line ...
-void DEH_SaveLineStart(deh_context_t *context) {
+void DEH_SaveLineStart(deh_context_t * context) {
   if (context->type == DEH_INPUT_FILE) {
     context->linestart = ftell(context->stream);
   } else if (context->type == DEH_INPUT_LUMP) {
@@ -172,7 +172,7 @@ void DEH_SaveLineStart(deh_context_t *context) {
 
 // [crispy] ... and reset context to start of current line
 // to retry with previous line parser in case of a parsing error
-void DEH_RestoreLineStart(deh_context_t *context) {
+void DEH_RestoreLineStart(deh_context_t * context) {
   // [crispy] never point past the start
   if (context->linestart < 0)
     return;
@@ -189,7 +189,7 @@ void DEH_RestoreLineStart(deh_context_t *context) {
 
 // Read a whole line
 
-char *DEH_ReadLine(deh_context_t *context, bool extended) {
+char * DEH_ReadLine(deh_context_t * context, bool extended) {
   bool escaped = false;
   for (int pos = 0;;) {
     int c = DEH_GetChar(context);
@@ -250,13 +250,13 @@ char *DEH_ReadLine(deh_context_t *context, bool extended) {
   return context->readbuffer;
 }
 
-bool DEH_HadError(deh_context_t *context) {
+bool DEH_HadError(deh_context_t * context) {
   return context->had_error;
 }
 
 // [crispy] return the filename of the DEHACKED file
 // or nullptr if it is a DEHACKED lump loaded from a PWAD
-char *DEH_FileName(deh_context_t *context) {
+char * DEH_FileName(deh_context_t * context) {
   if (context->type == DEH_INPUT_FILE) {
     return context->filename;
   }

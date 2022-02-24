@@ -52,11 +52,11 @@
 //  and the total size == width*height*depth/8.,
 //
 
-uint8_t *viewimage;
-int      viewwindowx;
-int      viewwindowy;
-pixel_t *ylookup[MAXHEIGHT];
-int      columnofs[MAXWIDTH];
+uint8_t * viewimage;
+int       viewwindowx;
+int       viewwindowy;
+pixel_t * ylookup[MAXHEIGHT];
+int       columnofs[MAXWIDTH];
 
 // Color tables for different players,
 //  translate a limited part to another
@@ -67,7 +67,7 @@ uint8_t translations[3][256];
 // Backing buffer containing the bezel drawn around the screen and
 // surrounding background.
 
-static pixel_t *background_buffer = nullptr;
+static pixel_t * background_buffer = nullptr;
 
 // just for profiling
 int dccount;
@@ -103,7 +103,7 @@ static r_draw_t r_draw_s = {
   .translationtables = nullptr,
   .dc_translation    = nullptr
 };
-r_draw_t *const g_r_draw_globals = &r_draw_s;
+r_draw_t * const g_r_draw_globals = &r_draw_s;
 
 //
 // A column is a vertical slice/span from a wall texture that,
@@ -116,11 +116,11 @@ r_draw_t *const g_r_draw_globals = &r_draw_s;
 // found in MBF to fix Tutti-Frutti, taken from mbfsrc/R_DRAW.C:99-1979
 
 void R_DrawColumn() {
-  int      count;
-  pixel_t *dest;
-  fixed_t  frac;
-  fixed_t  fracstep;
-  int      heightmask = g_r_draw_globals->dc_texheight - 1;
+  int       count;
+  pixel_t * dest;
+  fixed_t   frac;
+  fixed_t   fracstep;
+  int       heightmask = g_r_draw_globals->dc_texheight - 1;
 
   count = g_r_draw_globals->dc_yh - g_r_draw_globals->dc_yl;
 
@@ -250,13 +250,13 @@ void R_DrawColumn ()
 #endif
 
 void R_DrawColumnLow() {
-  int      count;
-  pixel_t *dest;
-  pixel_t *dest2;
-  fixed_t  frac;
-  fixed_t  fracstep;
-  int      x;
-  int      heightmask = g_r_draw_globals->dc_texheight - 1;
+  int       count;
+  pixel_t * dest;
+  pixel_t * dest2;
+  fixed_t   frac;
+  fixed_t   fracstep;
+  int       x;
+  int       heightmask = g_r_draw_globals->dc_texheight - 1;
 
   count = g_r_draw_globals->dc_yh - g_r_draw_globals->dc_yl;
 
@@ -364,11 +364,11 @@ void R_SetFuzzPosDraw() {
 //  i.e. spectres and invisible players.
 //
 void R_DrawFuzzColumn() {
-  int      count;
-  pixel_t *dest;
-  fixed_t  frac;
-  fixed_t  fracstep;
-  bool     cutoff = false;
+  int       count;
+  pixel_t * dest;
+  fixed_t   frac;
+  fixed_t   fracstep;
+  bool      cutoff = false;
 
   // Adjust borders. Low...
   if (!g_r_draw_globals->dc_yl)
@@ -439,13 +439,13 @@ void R_DrawFuzzColumn() {
 // low detail mode version
 
 void R_DrawFuzzColumnLow() {
-  int      count;
-  pixel_t *dest;
-  pixel_t *dest2;
-  fixed_t  frac;
-  fixed_t  fracstep;
-  int      x;
-  bool     cutoff = false;
+  int       count;
+  pixel_t * dest;
+  pixel_t * dest2;
+  fixed_t   frac;
+  fixed_t   fracstep;
+  int       x;
+  bool      cutoff = false;
 
   // Adjust borders. Low...
   if (!g_r_draw_globals->dc_yl)
@@ -524,10 +524,10 @@ void R_DrawFuzzColumnLow() {
 }
 
 void R_DrawTranslatedColumn() {
-  int      count;
-  pixel_t *dest;
-  fixed_t  frac;
-  fixed_t  fracstep;
+  int       count;
+  pixel_t * dest;
+  fixed_t   frac;
+  fixed_t   fracstep;
 
   count = g_r_draw_globals->dc_yh - g_r_draw_globals->dc_yl;
   if (count < 0)
@@ -566,12 +566,12 @@ void R_DrawTranslatedColumn() {
 }
 
 void R_DrawTranslatedColumnLow() {
-  int      count;
-  pixel_t *dest;
-  pixel_t *dest2;
-  fixed_t  frac;
-  fixed_t  fracstep;
-  int      x;
+  int       count;
+  pixel_t * dest;
+  pixel_t * dest2;
+  fixed_t   frac;
+  fixed_t   fracstep;
+  int       x;
 
   count = g_r_draw_globals->dc_yh - g_r_draw_globals->dc_yl;
   if (count < 0)
@@ -616,10 +616,10 @@ void R_DrawTranslatedColumnLow() {
 }
 
 void R_DrawTLColumn() {
-  int      count;
-  pixel_t *dest;
-  fixed_t  frac;
-  fixed_t  fracstep;
+  int       count;
+  pixel_t * dest;
+  fixed_t   frac;
+  fixed_t   fracstep;
 
   count = g_r_draw_globals->dc_yh - g_r_draw_globals->dc_yl;
   if (count < 0)
@@ -657,12 +657,12 @@ void R_DrawTLColumn() {
 
 // [crispy] draw translucent column, low-resolution version
 void R_DrawTLColumnLow() {
-  int      count;
-  pixel_t *dest;
-  pixel_t *dest2;
-  fixed_t  frac;
-  fixed_t  fracstep;
-  int      x;
+  int       count;
+  pixel_t * dest;
+  pixel_t * dest2;
+  fixed_t   frac;
+  fixed_t   fracstep;
+  int       x;
 
   count = g_r_draw_globals->dc_yh - g_r_draw_globals->dc_yl;
   if (count < 0)
@@ -736,7 +736,7 @@ int dscount;
 // Draws the actual span.
 void R_DrawSpan() {
   //  unsigned int position, step;
-  pixel_t     *dest;
+  pixel_t *    dest;
   int          count;
   int          spot;
   unsigned int xtemp, ytemp;
@@ -870,7 +870,7 @@ void R_DrawSpan ()
 void R_DrawSpanLow() {
   //  unsigned int position, step;
   unsigned int xtemp, ytemp;
-  pixel_t     *dest;
+  pixel_t *    dest;
   int          count;
   int          spot;
 
@@ -962,19 +962,19 @@ void R_InitBuffer(int width,
 // Also draws a beveled edge.
 //
 void R_FillBackScreen() {
-  uint8_t *src;
-  pixel_t *dest;
-  int      x;
-  int      y;
-  patch_t *patch;
+  uint8_t * src;
+  pixel_t * dest;
+  int       x;
+  int       y;
+  patch_t * patch;
 
   // DOOM border patch.
-  const char *name1 = DEH_String("FLOOR7_2");
+  const char * name1 = DEH_String("FLOOR7_2");
 
   // DOOM II border patch.
-  const char *name2 = DEH_String("GRNROCK");
+  const char * name2 = DEH_String("GRNROCK");
 
-  const char *name;
+  const char * name;
 
   // If we are running full screen, there is no need to do any of this,
   // and the background buffer can be freed if it was previously in use.

@@ -34,11 +34,11 @@
 
 static bool pcs_initialized = false;
 
-static SDL_mutex *sound_lock;
-static bool       use_sfx_prefix;
+static SDL_mutex * sound_lock;
+static bool        use_sfx_prefix;
 
-static uint8_t     *current_sound_lump      = nullptr;
-static uint8_t     *current_sound_pos       = nullptr;
+static uint8_t *    current_sound_lump      = nullptr;
+static uint8_t *    current_sound_pos       = nullptr;
 static unsigned int current_sound_remaining = 0;
 static int          current_sound_handle    = 0;
 static int          current_sound_lump_num  = -1;
@@ -174,7 +174,7 @@ static const uint16_t divisors[] = {
   179,
 };
 
-static void PCSCallbackFunc(int *duration, int *freq) {
+static void PCSCallbackFunc(int * duration, int * freq) {
   unsigned int tone;
 
   *duration = 1000 / 140;
@@ -208,7 +208,7 @@ static void PCSCallbackFunc(int *duration, int *freq) {
   SDL_UnlockMutex(sound_lock);
 }
 
-static bool CachePCSLump(sfxinfo_t *sfxinfo) {
+static bool CachePCSLump(sfxinfo_t * sfxinfo) {
   // Free the current sound lump back to the cache
 
   if (current_sound_lump != nullptr) {
@@ -246,8 +246,8 @@ static bool CachePCSLump(sfxinfo_t *sfxinfo) {
 // Heretic source code, where there are remnants of this left over
 // from Doom.
 
-static bool IsDisabledSound(sfxinfo_t *sfxinfo) {
-  const char *disabled_sounds[] = {
+static bool IsDisabledSound(sfxinfo_t * sfxinfo) {
+  const char * disabled_sounds[] = {
     "posact",
     "bgact",
     "dmact",
@@ -256,7 +256,7 @@ static bool IsDisabledSound(sfxinfo_t *sfxinfo) {
     "sawidl",
   };
 
-  for (auto &disabled_sound : disabled_sounds) {
+  for (auto & disabled_sound : disabled_sounds) {
     if (!strcmp(sfxinfo->name, disabled_sound)) {
       return true;
     }
@@ -265,8 +265,8 @@ static bool IsDisabledSound(sfxinfo_t *sfxinfo) {
   return false;
 }
 
-static int I_PCS_StartSound(sfxinfo_t *sfxinfo,
-                            int        channel,
+static int I_PCS_StartSound(sfxinfo_t * sfxinfo,
+                            int         channel,
                             int,
                             int,
                             int) {
@@ -320,7 +320,7 @@ static void I_PCS_StopSound(int handle) {
 //  for a given SFX name.
 //
 
-static int I_PCS_GetSfxLumpNum(sfxinfo_t *sfx) {
+static int I_PCS_GetSfxLumpNum(sfxinfo_t * sfx) {
   char namebuf[9];
 
   if (use_sfx_prefix) {

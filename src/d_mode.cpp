@@ -49,7 +49,7 @@ static struct
 // Check that a gamemode+gamemission received over the network is valid.
 
 bool D_ValidGameMode(int mission, int mode) {
-  for (auto &valid_mode : valid_modes) {
+  for (auto & valid_mode : valid_modes) {
     if (valid_mode.mode == mode && valid_mode.mission == mission) {
       return true;
     }
@@ -71,7 +71,7 @@ bool D_ValidEpisodeMap(GameMission_t mission, GameMode_t mode, int episode, int 
 
   // Find the table entry for this mission/mode combination.
 
-  for (auto &valid_mode : valid_modes) {
+  for (auto & valid_mode : valid_modes) {
     if (mission == valid_mode.mission
         && mode == valid_mode.mode) {
       return episode >= 1 && episode <= valid_mode.episode
@@ -127,7 +127,7 @@ bool D_ValidGameVersion(GameMission_t mission, GameVersion_t version) {
     mission = doom;
   }
 
-  for (auto &valid_version : valid_versions) {
+  for (auto & valid_version : valid_versions) {
     if (valid_version.mission == mission
         && valid_version.version == version) {
       return true;
@@ -160,7 +160,7 @@ bool D_IsEpisodeMap(GameMission_t mission) {
   }
 }
 
-const char *D_GameMissionString(GameMission_t mission) {
+const char * D_GameMissionString(GameMission_t mission) {
   switch (mission) {
   case none:
   default:
@@ -186,7 +186,7 @@ const char *D_GameMissionString(GameMission_t mission) {
   }
 }
 
-const char *D_GameModeString(GameMode_t mode) {
+const char * D_GameModeString(GameMode_t mode) {
   switch (mode) {
   case shareware:
     return "shareware";

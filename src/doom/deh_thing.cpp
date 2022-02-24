@@ -28,7 +28,7 @@
 #include "p_mobj.hpp" // [crispy] MF_*
 
 typedef struct {
-  const char  *flag;
+  const char * flag;
   unsigned int bits;
 } bex_thingbits_t;
 
@@ -97,7 +97,7 @@ DEH_MAPPING("Bits", flags)
 DEH_MAPPING("Respawn frame", raisestate)
 DEH_END_MAPPING
 
-static void *DEH_ThingStart(deh_context_t *context, char *line) {
+static void * DEH_ThingStart(deh_context_t * context, char * line) {
   int thing_number = 0;
 
   if (sscanf(line, "Thing %i", &thing_number) != 1) {
@@ -113,18 +113,18 @@ static void *DEH_ThingStart(deh_context_t *context, char *line) {
     return nullptr;
   }
 
-  mobjinfo_t *mobj = &mobjinfo[thing_number];
+  mobjinfo_t * mobj = &mobjinfo[thing_number];
 
   return mobj;
 }
 
-static void DEH_ThingParseLine(deh_context_t *context, char *line, void *tag) {
+static void DEH_ThingParseLine(deh_context_t * context, char * line, void * tag) {
   char *variable_name = nullptr, *value = nullptr;
 
   if (tag == nullptr)
     return;
 
-  auto *mobj = reinterpret_cast<mobjinfo_t *>(tag);
+  auto * mobj = reinterpret_cast<mobjinfo_t *>(tag);
 
   // Parse the assignment
 
@@ -157,8 +157,8 @@ static void DEH_ThingParseLine(deh_context_t *context, char *line, void *tag) {
   DEH_SetMapping(context, &thing_mapping, mobj, variable_name, ivalue);
 }
 
-static void DEH_ThingSHA1Sum(sha1_context_t *context) {
-  for (auto &i : mobjinfo) {
+static void DEH_ThingSHA1Sum(sha1_context_t * context) {
+  for (auto & i : mobjinfo) {
     DEH_StructSHA1Sum(context, &thing_mapping, &i);
   }
 }

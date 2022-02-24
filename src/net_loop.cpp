@@ -25,8 +25,8 @@
 
 typedef struct
 {
-  net_packet_t *packets[MAX_QUEUE_SIZE];
-  int           head, tail;
+  net_packet_t * packets[MAX_QUEUE_SIZE];
+  int            head, tail;
 } packet_queue_t;
 
 static packet_queue_t client_queue;
@@ -34,11 +34,11 @@ static packet_queue_t server_queue;
 static net_addr_t     client_addr;
 static net_addr_t     server_addr;
 
-static void QueueInit(packet_queue_t *queue) {
+static void QueueInit(packet_queue_t * queue) {
   queue->head = queue->tail = 0;
 }
 
-static void QueuePush(packet_queue_t *queue, net_packet_t *packet) {
+static void QueuePush(packet_queue_t * queue, net_packet_t * packet) {
   int new_tail = (queue->tail + 1) % MAX_QUEUE_SIZE;
 
   if (new_tail == queue->head) {
@@ -51,14 +51,14 @@ static void QueuePush(packet_queue_t *queue, net_packet_t *packet) {
   queue->tail                 = new_tail;
 }
 
-static net_packet_t *QueuePop(packet_queue_t *queue) {
+static net_packet_t * QueuePop(packet_queue_t * queue) {
   if (queue->tail == queue->head) {
     // queue empty
 
     return nullptr;
   }
-  net_packet_t *packet = queue->packets[queue->head];
-  queue->head          = (queue->head + 1) % MAX_QUEUE_SIZE;
+  net_packet_t * packet = queue->packets[queue->head];
+  queue->head           = (queue->head + 1) % MAX_QUEUE_SIZE;
 
   return packet;
 }
@@ -80,12 +80,12 @@ static bool NET_CL_InitServer() {
   return false;
 }
 
-static void NET_CL_SendPacket(net_addr_t *, net_packet_t *packet) {
+static void NET_CL_SendPacket(net_addr_t *, net_packet_t * packet) {
   QueuePush(&server_queue, NET_PacketDup(packet));
 }
 
-static bool NET_CL_RecvPacket(net_addr_t **addr, net_packet_t **packet) {
-  net_packet_t *popped = QueuePop(&client_queue);
+static bool NET_CL_RecvPacket(net_addr_t ** addr, net_packet_t ** packet) {
+  net_packet_t * popped = QueuePop(&client_queue);
 
   if (popped != nullptr) {
     *packet            = popped;
@@ -98,14 +98,14 @@ static bool NET_CL_RecvPacket(net_addr_t **addr, net_packet_t **packet) {
   return false;
 }
 
-static void NET_CL_AddrToString(net_addr_t *, char *buffer, int buffer_len) {
+static void NET_CL_AddrToString(net_addr_t *, char * buffer, int buffer_len) {
   M_snprintf(buffer, buffer_len, "local server");
 }
 
 static void NET_CL_FreeAddress(net_addr_t *) {
 }
 
-static net_addr_t *NET_CL_ResolveAddress(const char *address) {
+static net_addr_t * NET_CL_ResolveAddress(const char * address) {
   if (address == nullptr) {
     client_addr.module = &net_loop_client_module;
 
@@ -142,12 +142,12 @@ static bool NET_SV_InitServer() {
   return true;
 }
 
-static void NET_SV_SendPacket(net_addr_t *, net_packet_t *packet) {
+static void NET_SV_SendPacket(net_addr_t *, net_packet_t * packet) {
   QueuePush(&client_queue, NET_PacketDup(packet));
 }
 
-static bool NET_SV_RecvPacket(net_addr_t **addr, net_packet_t **packet) {
-  net_packet_t *popped = QueuePop(&server_queue);
+static bool NET_SV_RecvPacket(net_addr_t ** addr, net_packet_t ** packet) {
+  net_packet_t * popped = QueuePop(&server_queue);
 
   if (popped != nullptr) {
     *packet            = popped;
@@ -160,14 +160,14 @@ static bool NET_SV_RecvPacket(net_addr_t **addr, net_packet_t **packet) {
   return false;
 }
 
-static void NET_SV_AddrToString(net_addr_t *, char *buffer, int buffer_len) {
+static void NET_SV_AddrToString(net_addr_t *, char * buffer, int buffer_len) {
   M_snprintf(buffer, buffer_len, "local client");
 }
 
 static void NET_SV_FreeAddress(net_addr_t *) {
 }
 
-static net_addr_t *NET_SV_ResolveAddress(const char *address) {
+static net_addr_t * NET_SV_ResolveAddress(const char * address) {
   if (address == nullptr) {
     server_addr.module = &net_loop_server_module;
     return &server_addr;

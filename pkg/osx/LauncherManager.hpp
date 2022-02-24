@@ -20,7 +20,7 @@
 #include "IWADController.hpp"
 
 @interface LauncherManager : NSObject {
-  IWADController *iwadController;
+  IWADController * iwadController;
 
   id launcherWindow;
   id launchButton;

@@ -28,7 +28,7 @@
 
 static bool bex_nested = false;
 
-static void *DEH_BEXInclStart(deh_context_t *context, char *line) {
+static void * DEH_BEXInclStart(deh_context_t * context, char * line) {
   extern bool bex_notext;
 
   if (!DEH_FileName(context)) {
@@ -36,7 +36,7 @@ static void *DEH_BEXInclStart(deh_context_t *context, char *line) {
     return nullptr;
   }
 
-  char *deh_file = DEH_FileName(context);
+  char * deh_file = DEH_FileName(context);
 
   if (bex_nested) {
     DEH_Warning(context, "Included files may not include other files");
@@ -59,8 +59,8 @@ static void *DEH_BEXInclStart(deh_context_t *context, char *line) {
 
   if (!M_FileExists(try_path.c_str())) {
     // second, try loading the file in the directory of the current file
-    char *dir = M_DirName(deh_file);
-    try_path  = std::string(dir) + DIR_SEPARATOR_S + inc_file;
+    char * dir = M_DirName(deh_file);
+    try_path   = std::string(dir) + DIR_SEPARATOR_S + inc_file;
     free(dir);
   }
 

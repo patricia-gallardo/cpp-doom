@@ -46,7 +46,7 @@ extern pcsound_driver_t pcsound_linux_driver;
 
 extern pcsound_driver_t pcsound_sdl_driver;
 
-static pcsound_driver_t *drivers[] = {
+static pcsound_driver_t * drivers[] = {
 #ifdef HAVE_LINUX_KD_H
   &pcsound_linux_driver,
 #endif
@@ -60,7 +60,7 @@ static pcsound_driver_t *drivers[] = {
   nullptr,
 };
 
-static pcsound_driver_t *pcsound_driver = nullptr;
+static pcsound_driver_t * pcsound_driver = nullptr;
 
 int pcsound_sample_rate;
 
@@ -75,7 +75,7 @@ int PCSound_Init(pcsound_callback_func callback_func) {
 
   // Check if the environment variable is set
 
-  char *driver_name = getenv("PCSOUND_DRIVER");
+  char * driver_name = getenv("PCSOUND_DRIVER");
 
   if (driver_name != nullptr) {
     for (int i = 0; drivers[i] != nullptr; ++i) {

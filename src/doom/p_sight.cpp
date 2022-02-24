@@ -40,9 +40,9 @@ int sightcounts[2];
 
 // PTR_SightTraverse() for Doom 1.2 sight calculations
 // taken from prboom-plus/src/p_sight.c:69-102
-bool PTR_SightTraverse(intercept_t *in) {
-  line_t *li;
-  fixed_t slope;
+bool PTR_SightTraverse(intercept_t * in) {
+  line_t * li;
+  fixed_t  slope;
 
   li = in->d.line;
 
@@ -76,9 +76,9 @@ bool PTR_SightTraverse(intercept_t *in) {
 // P_DivlineSide
 // Returns side 0 (front), 1 (back), or 2 (on).
 //
-int P_DivlineSide(fixed_t    x,
-                  fixed_t    y,
-                  divline_t *node) {
+int P_DivlineSide(fixed_t     x,
+                  fixed_t     y,
+                  divline_t * node) {
   fixed_t dx;
   fixed_t dy;
   fixed_t left;
@@ -125,8 +125,8 @@ int P_DivlineSide(fixed_t    x,
 // This is only called by the addthings and addlines traversers.
 //
 fixed_t
-    P_InterceptVector2(divline_t *v2,
-                       divline_t *v1) {
+    P_InterceptVector2(divline_t * v2,
+                       divline_t * v1) {
   fixed_t frac;
   fixed_t num;
   fixed_t den;
@@ -149,21 +149,21 @@ fixed_t
 //  if strace crosses the given subsector successfully.
 //
 bool P_CrossSubsector(int num) {
-  seg_t       *seg;
-  line_t      *line;
-  int          s1;
-  int          s2;
-  int          count;
-  subsector_t *sub;
-  sector_t    *front;
-  sector_t    *back;
-  fixed_t      opentop_local;
-  fixed_t      openbottom_local;
-  divline_t    divl;
-  vertex_t    *v1;
-  vertex_t    *v2;
-  fixed_t      frac;
-  fixed_t      slope;
+  seg_t *       seg;
+  line_t *      line;
+  int           s1;
+  int           s2;
+  int           count;
+  subsector_t * sub;
+  sector_t *    front;
+  sector_t *    back;
+  fixed_t       opentop_local;
+  fixed_t       openbottom_local;
+  divline_t     divl;
+  vertex_t *    v1;
+  vertex_t *    v2;
+  fixed_t       frac;
+  fixed_t       slope;
 
 #ifdef RANGECHECK
   if (num >= g_r_state_globals->numsubsectors)
@@ -272,8 +272,8 @@ bool P_CrossSubsector(int num) {
 //  if strace crosses the given node successfully.
 //
 bool P_CrossBSPNode(int bspnum) {
-  node_t *bsp;
-  int     side;
+  node_t * bsp;
+  int      side;
 
   if (static_cast<unsigned int>(bspnum) & NF_SUBSECTOR) {
     if (bspnum == -1)
@@ -309,8 +309,8 @@ bool P_CrossBSPNode(int bspnum) {
 //  if a straight line between t1 and t2 is unobstructed.
 // Uses REJECT.
 //
-bool P_CheckSight(mobj_t *t1,
-                  mobj_t *t2) {
+bool P_CheckSight(mobj_t * t1,
+                  mobj_t * t2) {
   // First check for trivial rejection.
   // Determine subsector entries in REJECT table.
   int s1      = static_cast<int>(t1->subsector->sector - g_r_state_globals->sectors);

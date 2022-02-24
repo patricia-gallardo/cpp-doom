@@ -71,7 +71,7 @@ static const uint8_t cr_red2green[256] = { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11,
     240, 241, 242, 243, 244, 245, 246, 247, 248, 249, 250, 251, 252, 253, 254, 255 };
 // clang-format on
 
-uint8_t *cr_colors[9] = {
+uint8_t * cr_colors[9] = {
   reinterpret_cast<uint8_t *>(&cr_none),
   reinterpret_cast<uint8_t *>(&cr_dark),
   reinterpret_cast<uint8_t *>(&cr_gray),
@@ -83,7 +83,7 @@ uint8_t *cr_colors[9] = {
   const_cast<uint8_t *>(reinterpret_cast<const uint8_t *>(&cr_red2green))
 };
 
-char **crstr = 0;
+char ** crstr = 0;
 
 /*
 Date: Sun, 26 Oct 2014 10:36:12 -0700
@@ -119,7 +119,7 @@ typedef struct vect {
   float z;
 } vect;
 
-static void hsv_to_rgb(vect *hsv, vect *rgb) {
+static void hsv_to_rgb(vect * hsv, vect * rgb) {
   float h = hsv->x;
   float s = hsv->y;
   float v = hsv->z;
@@ -172,7 +172,7 @@ static void hsv_to_rgb(vect *hsv, vect *rgb) {
   }
 }
 
-static void rgb_to_hsv(vect *rgb, vect *hsv) {
+static void rgb_to_hsv(vect * rgb, vect * hsv) {
   float h = 0.0;
   float s = 0.0;
 
@@ -216,7 +216,7 @@ static void rgb_to_hsv(vect *rgb, vect *hsv) {
 }
 
 // [crispy] copied over from i_video.c
-static int I_GetPaletteIndex2(uint8_t *palette, int r, int g, int b) {
+static int I_GetPaletteIndex2(uint8_t * palette, int r, int g, int b) {
   int best      = 0;
   int best_diff = INT_MAX;
 
@@ -238,7 +238,7 @@ static int I_GetPaletteIndex2(uint8_t *palette, int r, int g, int b) {
   return best;
 }
 
-[[maybe_unused]] uint8_t V_Colorize(uint8_t *playpal, int cr, uint8_t source, bool keepgray109) {
+[[maybe_unused]] uint8_t V_Colorize(uint8_t * playpal, int cr, uint8_t source, bool keepgray109) {
   vect rgb, hsv;
 
   // [crispy] preserve gray drop shadow in IWAD status bar numbers

@@ -48,8 +48,8 @@ static const iwad_t iwads[] = {
   { "strife1.wad",   strife,    commercial, "Strife"                         },
 };
 
-bool D_IsIWADName(const char *name) {
-  for (const auto &iwad : iwads) {
+bool D_IsIWADName(const char * name) {
+  for (const auto & iwad : iwads) {
     if (!strcasecmp(name, iwad.name)) {
       return true;
     }
@@ -64,11 +64,11 @@ bool D_IsIWADName(const char *name) {
 
 constexpr auto MAX_IWAD_DIRS = 128;
 
-static bool  iwad_dirs_built = false;
-static char *iwad_dirs[MAX_IWAD_DIRS];
-static int   num_iwad_dirs = 0;
+static bool   iwad_dirs_built = false;
+static char * iwad_dirs[MAX_IWAD_DIRS];
+static int    num_iwad_dirs = 0;
 
-static void AddIWADDir(char *dir) {
+static void AddIWADDir(char * dir) {
   if (num_iwad_dirs < MAX_IWAD_DIRS) {
     iwad_dirs[num_iwad_dirs] = dir;
     ++num_iwad_dirs;
@@ -87,9 +87,9 @@ static void AddIWADDir(char *dir) {
 
 typedef struct
 {
-  HKEY  root;
-  char *path;
-  char *value;
+  HKEY   root;
+  char * path;
+  char * value;
 } registry_value_t;
 
 #define UNINSTALLER_STRING "\\uninstl.exe /S "
@@ -201,7 +201,7 @@ static registry_value_t root_path_keys[] = {
 
 // Subdirectories of the above install path, where IWADs are installed.
 
-static char *root_path_subdirs[] = {
+static char * root_path_subdirs[] = {
   const_cast<char *>("."),
   const_cast<char *>("Doom2"),
   const_cast<char *>("Final Doom"),
@@ -221,7 +221,7 @@ static registry_value_t steam_install_location = {
 
 // Subdirs of the steam install directory where IWADs are found
 
-static char *steam_install_subdirs[] = {
+static char * steam_install_subdirs[] = {
   const_cast<char *>(R"(steamapps\common\doom 2\base)"),
   const_cast<char *>(R"(steamapps\common\final doom\base)"),
   const_cast<char *>(R"(steamapps\common\ultimate doom\base)"),
@@ -241,7 +241,7 @@ static char *steam_install_subdirs[] = {
 #define STEAM_BFG_GUS_PATCHES \
   "steamapps\\common\\DOOM 3 BFG Edition\\base\\classicmusic\\instruments"
 
-static char *GetRegistryString(registry_value_t *reg_val) {
+static char * GetRegistryString(registry_value_t * reg_val) {
   HKEY  key     = nullptr;
   DWORD len     = 0;
   DWORD valtype = 0;
@@ -253,7 +253,7 @@ static char *GetRegistryString(registry_value_t *reg_val) {
     return nullptr;
   }
 
-  char *result = nullptr;
+  char * result = nullptr;
 
   // Find the type and length of the string, and only accept strings.
 
@@ -284,19 +284,19 @@ static char *GetRegistryString(registry_value_t *reg_val) {
 // Check for the uninstall strings from the CD versions
 
 static void CheckUninstallStrings() {
-  for (auto &uninstall_value : uninstall_values) {
-    char *val = GetRegistryString(&uninstall_value);
+  for (auto & uninstall_value : uninstall_values) {
+    char * val = GetRegistryString(&uninstall_value);
 
     if (val == nullptr) {
       continue;
     }
 
-    char *unstr = strstr(val, UNINSTALLER_STRING);
+    char * unstr = strstr(val, UNINSTALLER_STRING);
 
     if (unstr == nullptr) {
       free(val);
     } else {
-      char *path = unstr + strlen(UNINSTALLER_STRING);
+      char * path = unstr + strlen(UNINSTALLER_STRING);
 
       AddIWADDir(path);
     }
@@ -306,15 +306,15 @@ static void CheckUninstallStrings() {
 // Check for GOG.com and Doom: Collector's Edition
 
 static void CheckInstallRootPaths() {
-  for (auto &root_path_key : root_path_keys) {
-    char *install_path = GetRegistryString(&root_path_key);
+  for (auto & root_path_key : root_path_keys) {
+    char * install_path = GetRegistryString(&root_path_key);
 
     if (install_path == nullptr) {
       continue;
     }
 
-    for (auto &root_path_subdir : root_path_subdirs) {
-      char *subpath = M_StringJoin(install_path, DIR_SEPARATOR_S, root_path_subdir, nullptr);
+    for (auto & root_path_subdir : root_path_subdirs) {
+      char * subpath = M_StringJoin(install_path, DIR_SEPARATOR_S, root_path_subdir, nullptr);
       AddIWADDir(subpath);
     }
 
@@ -325,14 +325,14 @@ static void CheckInstallRootPaths() {
 // Check for Doom downloaded via Steam
 
 static void CheckSteamEdition() {
-  char *install_path = GetRegistryString(&steam_install_location);
+  char * install_path = GetRegistryString(&steam_install_location);
 
   if (install_path == nullptr) {
     return;
   }
 
-  for (auto &steam_install_subdir : steam_install_subdirs) {
-    char *subpath = M_StringJoin(install_path, DIR_SEPARATOR_S, steam_install_subdir, nullptr);
+  for (auto & steam_install_subdir : steam_install_subdirs) {
+    char * subpath = M_StringJoin(install_path, DIR_SEPARATOR_S, steam_install_subdir, nullptr);
     AddIWADDir(subpath);
   }
 
@@ -344,19 +344,19 @@ static void CheckSteamEdition() {
 
 static void CheckSteamGUSPatches() {
   // Already configured? Don't stomp on the user's choices.
-  const char *current_path = M_GetStringVariable("gus_patch_path");
+  const char * current_path = M_GetStringVariable("gus_patch_path");
   if (current_path != nullptr && strlen(current_path) > 0) {
     return;
   }
 
-  char *install_path = GetRegistryString(&steam_install_location);
+  char * install_path = GetRegistryString(&steam_install_location);
 
   if (install_path == nullptr) {
     return;
   }
 
-  char *patch_path      = M_StringJoin(install_path, "\\", STEAM_BFG_GUS_PATCHES, nullptr);
-  char *test_patch_path = M_StringJoin(patch_path, "\\ACBASS.PAT", nullptr);
+  char * patch_path      = M_StringJoin(install_path, "\\", STEAM_BFG_GUS_PATCHES, nullptr);
+  char * test_patch_path = M_StringJoin(patch_path, "\\ACBASS.PAT", nullptr);
 
   // Does acbass.pat exist? If so, then set gus_patch_path.
   if (M_FileExists(test_patch_path)) {
@@ -396,7 +396,7 @@ static void CheckDOSDefaults() {
 // Returns true if the specified path is a path to a file
 // of the specified name.
 
-static bool DirIsFile(const char *path, const char *filename) {
+static bool DirIsFile(const char * path, const char * filename) {
   return strchr(path, DIR_SEPARATOR) != nullptr
          && !strcasecmp(M_BaseName(path), filename);
 }
@@ -405,18 +405,18 @@ static bool DirIsFile(const char *path, const char *filename) {
 // file, returning the full path to the IWAD if found, or NULL
 // if not found.
 
-static char *CheckDirectoryHasIWAD(const char *dir, const char *iwadname) {
+static char * CheckDirectoryHasIWAD(const char * dir, const char * iwadname) {
   // As a special case, the "directory" may refer directly to an
   // IWAD file if the path comes from DOOMWADDIR or DOOMWADPATH.
 
-  char *probe = M_FileCaseExists(dir);
+  char * probe = M_FileCaseExists(dir);
   if (DirIsFile(dir, iwadname) && probe != nullptr) {
     return probe;
   }
 
   // Construct the full path to the IWAD if it is located in
   // this directory, and check if it exists.
-  char *filename = nullptr;
+  char * filename = nullptr;
 
   if (!strcmp(dir, ".")) {
     filename = M_StringDuplicate(iwadname);
@@ -437,13 +437,13 @@ static char *CheckDirectoryHasIWAD(const char *dir, const char *iwadname) {
 // Search a directory to try to find an IWAD
 // Returns the location of the IWAD if found, otherwise NULL.
 
-static char *SearchDirectoryForIWAD(const char *dir, int mask, GameMission_t *mission) {
-  for (const auto &iwad : iwads) {
+static char * SearchDirectoryForIWAD(const char * dir, int mask, GameMission_t * mission) {
+  for (const auto & iwad : iwads) {
     if (((1 << iwad.mission) & mask) == 0) {
       continue;
     }
 
-    char *filename = CheckDirectoryHasIWAD(dir, DEH_String(iwad.name));
+    char * filename = CheckDirectoryHasIWAD(dir, DEH_String(iwad.name));
 
     if (filename != nullptr) {
       *mission = iwad.mission;
@@ -458,11 +458,11 @@ static char *SearchDirectoryForIWAD(const char *dir, int mask, GameMission_t *mi
 // When given an IWAD with the '-iwad' parameter,
 // attempt to identify it by its name.
 
-static GameMission_t IdentifyIWADByName(const char *name, int mask) {
+static GameMission_t IdentifyIWADByName(const char * name, int mask) {
   name                  = M_BaseName(name);
   GameMission_t mission = none;
 
-  for (const auto &iwad : iwads) {
+  for (const auto & iwad : iwads) {
     // Check if the filename is this IWAD name.
 
     // Only use supported missions:
@@ -484,14 +484,14 @@ static GameMission_t IdentifyIWADByName(const char *name, int mask) {
 // Add IWAD directories parsed from splitting a path string containing
 // paths separated by PATH_SEPARATOR. 'suffix' is a string to concatenate
 // to the end of the paths before adding them.
-static void AddIWADPath(const char *path, const char *suffix) {
-  char *dup_path = M_StringDuplicate(path);
+static void AddIWADPath(const char * path, const char * suffix) {
+  char * dup_path = M_StringDuplicate(path);
 
   // Split into individual dirs within the list.
-  char *left = dup_path;
+  char * left = dup_path;
 
   for (;;) {
-    char *p = strchr(left, PATH_SEPARATOR);
+    char * p = strchr(left, PATH_SEPARATOR);
     if (p != nullptr) {
       // Break at the separator and use the left hand side
       // as another iwad dir
@@ -521,11 +521,11 @@ static void AddXdgDirs() {
   // > user specific data files should be stored. If $XDG_DATA_HOME
   // > is either not set or empty, a default equal to
   // > $HOME/.local/share should be used.
-  char *env     = getenv("XDG_DATA_HOME");
-  char *tmp_env = nullptr;
+  char * env     = getenv("XDG_DATA_HOME");
+  char * tmp_env = nullptr;
 
   if (env == nullptr) {
-    char *homedir = getenv("HOME");
+    char * homedir = getenv("HOME");
     if (homedir == nullptr) {
       homedir = const_cast<char *>("/");
     }
@@ -572,11 +572,11 @@ static void AddXdgDirs() {
 // locations, but the defaults are likely to be good enough for just
 // about everyone.
 static void AddSteamDirs() {
-  char *homedir = getenv("HOME");
+  char * homedir = getenv("HOME");
   if (homedir == nullptr) {
     homedir = const_cast<char *>("/");
   }
-  char *steampath = M_StringJoin(homedir, "/.steam/root/steamapps/common", nullptr);
+  char * steampath = M_StringJoin(homedir, "/.steam/root/steamapps/common", nullptr);
 
   AddIWADPath(steampath, "/Doom 2/base");
   AddIWADPath(steampath, "/Master Levels of Doom/doom2");
@@ -609,7 +609,7 @@ static void BuildIWADDirList() {
   AddIWADDir(M_DirName(myargv[0]));
 
   // Add DOOMWADDIR if it is in the environment
-  char *env = getenv("DOOMWADDIR");
+  char * env = getenv("DOOMWADDIR");
   if (env != nullptr) {
     AddIWADDir(env);
   }
@@ -649,10 +649,10 @@ static void BuildIWADDirList() {
 // Searches WAD search paths for an WAD with a specific filename.
 //
 
-char *D_FindWADByName(const char *name) {
+char * D_FindWADByName(const char * name) {
   // Absolute path?
 
-  char *probe = M_FileCaseExists(name);
+  char * probe = M_FileCaseExists(name);
   if (probe != nullptr) {
     return probe;
   }
@@ -674,7 +674,7 @@ char *D_FindWADByName(const char *name) {
 
     // Construct a string for the full path
 
-    char *path = M_StringJoin(iwad_dirs[i], DIR_SEPARATOR_S, name, nullptr);
+    char * path = M_StringJoin(iwad_dirs[i], DIR_SEPARATOR_S, name, nullptr);
 
     probe = M_FileCaseExists(path);
     if (probe != nullptr) {
@@ -696,8 +696,8 @@ char *D_FindWADByName(const char *name) {
 // if not found.
 //
 
-char *D_TryFindWADByName(const char *filename) {
-  char *result = D_FindWADByName(filename);
+char * D_TryFindWADByName(const char * filename) {
+  char * result = D_FindWADByName(filename);
 
   if (result != nullptr) {
     return result;
@@ -713,7 +713,7 @@ char *D_TryFindWADByName(const char *filename) {
 // should be executed (notably loading PWADs).
 //
 
-char *D_FindIWAD(int mask, GameMission_t *mission) {
+char * D_FindIWAD(int mask, GameMission_t * mission) {
   // Check for the -iwad parameter
 
   //!
@@ -722,12 +722,12 @@ char *D_FindIWAD(int mask, GameMission_t *mission) {
   // @arg <file>
   //
 
-  int   iwadparm = M_CheckParmWithArgs("-iwad", 1);
-  char *result   = nullptr;
+  int    iwadparm = M_CheckParmWithArgs("-iwad", 1);
+  char * result   = nullptr;
   if (iwadparm) {
     // Search through IWAD dirs for an IWAD with the given name.
 
-    char *iwadfile = myargv[iwadparm + 1];
+    char * iwadfile = myargv[iwadparm + 1];
 
     result = D_FindWADByName(iwadfile);
 
@@ -753,19 +753,19 @@ char *D_FindIWAD(int mask, GameMission_t *mission) {
 
 // Find all IWADs in the IWAD search path matching the given mask.
 
-const iwad_t **D_FindAllIWADs(int mask) {
+const iwad_t ** D_FindAllIWADs(int mask) {
   auto result = create_struct<iwad_t const * [std::size(iwads) + 1]>();
   //    result = malloc(sizeof(iwad_t *) * (std::size(iwads) + 1));
   int result_len = 0;
 
   // Try to find all IWADs
 
-  for (const auto &iwad : iwads) {
+  for (const auto & iwad : iwads) {
     if (((1 << iwad.mission) & mask) == 0) {
       continue;
     }
 
-    char *filename = D_FindWADByName(iwad.name);
+    char * filename = D_FindWADByName(iwad.name);
 
     if (filename != nullptr) {
       result[result_len] = &iwad;
@@ -784,7 +784,7 @@ const iwad_t **D_FindAllIWADs(int mask) {
 // Get the IWAD name used for savegames.
 //
 
-const char *D_SaveGameIWADName(GameMission_t gamemission) {
+const char * D_SaveGameIWADName(GameMission_t gamemission) {
   // Determine the IWAD name to use for savegames.
   // This determines the directory the savegame files get put into.
   //
@@ -792,7 +792,7 @@ const char *D_SaveGameIWADName(GameMission_t gamemission) {
   // This ensures that doom1.wad and doom.wad saves are stored
   // in the same place.
 
-  for (const auto &iwad : iwads) {
+  for (const auto & iwad : iwads) {
     if (gamemission == iwad.mission) {
       return iwad.name;
     }
@@ -803,8 +803,8 @@ const char *D_SaveGameIWADName(GameMission_t gamemission) {
   return "unknown.wad";
 }
 
-const char *D_SuggestIWADName(GameMission_t mission, GameMode_t mode) {
-  for (const auto &iwad : iwads) {
+const char * D_SuggestIWADName(GameMission_t mission, GameMode_t mode) {
+  for (const auto & iwad : iwads) {
     if (iwad.mission == mission && iwad.mode == mode) {
       return iwad.name;
     }
@@ -813,8 +813,8 @@ const char *D_SuggestIWADName(GameMission_t mission, GameMode_t mode) {
   return "unknown.wad";
 }
 
-const char *D_SuggestGameName(GameMission_t mission, GameMode_t mode) {
-  for (const auto &iwad : iwads) {
+const char * D_SuggestGameName(GameMission_t mission, GameMode_t mode) {
+  for (const auto & iwad : iwads) {
     if (iwad.mission == mission
         && (mode == indetermined || iwad.mode == mode)) {
       return iwad.description;

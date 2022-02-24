@@ -26,10 +26,10 @@ typedef struct txt_mouse_input_s txt_mouse_input_t;
 
 struct txt_mouse_input_s {
   txt_widget_t widget;
-  int         *variable;
+  int *        variable;
   int          check_conflicts;
 };
 
-txt_mouse_input_t *TXT_NewMouseInput(int *variable);
+txt_mouse_input_t * TXT_NewMouseInput(int * variable);
 
 #endif /* #ifndef TXT_MOUSE_INPUT_H */

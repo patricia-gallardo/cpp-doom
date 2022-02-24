@@ -70,17 +70,17 @@ struct r_draw_t {
   // R_DrawColumn
   // Source is the top of the column to scale.
   //
-  lighttable_t *dc_colormap[2]; // [crispy] brightmaps
-  int           dc_x;
-  int           dc_yl;
-  int           dc_yh;
-  fixed_t       dc_iscale;
-  fixed_t       dc_texturemid;
-  int           dc_texheight; // [crispy] Tutti-Frutti fix
-  uint8_t      *dc_brightmap;
+  lighttable_t * dc_colormap[2]; // [crispy] brightmaps
+  int            dc_x;
+  int            dc_yl;
+  int            dc_yh;
+  fixed_t        dc_iscale;
+  fixed_t        dc_texturemid;
+  int            dc_texheight; // [crispy] Tutti-Frutti fix
+  uint8_t *      dc_brightmap;
 
   // first pixel in a column (possibly virtual)
-  uint8_t *dc_source;
+  uint8_t * dc_source;
 
   //
   // R_DrawSpan
@@ -98,8 +98,8 @@ struct r_draw_t {
   int ds_x1;
   int ds_x2;
 
-  lighttable_t *ds_colormap[2];
-  uint8_t      *ds_brightmap;
+  lighttable_t * ds_colormap[2];
+  uint8_t *      ds_brightmap;
 
   fixed_t ds_xfrac;
   fixed_t ds_yfrac;
@@ -107,7 +107,7 @@ struct r_draw_t {
   fixed_t ds_ystep;
 
   // start of a 64*64 tile image
-  uint8_t *ds_source;
+  uint8_t * ds_source;
 
   //
   // R_DrawTranslatedColumn
@@ -118,10 +118,10 @@ struct r_draw_t {
   //  of the BaronOfHell, the HellKnight, uses
   //  identical sprites, kinda brightened up.
   //
-  uint8_t *translationtables;
-  uint8_t *dc_translation;
+  uint8_t * translationtables;
+  uint8_t * dc_translation;
 };
 
-extern r_draw_t *const g_r_draw_globals;
+extern r_draw_t * const g_r_draw_globals;
 
 #endif

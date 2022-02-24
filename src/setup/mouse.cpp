@@ -41,7 +41,7 @@ static int   grabmouse            = 1;
 
 int novert = 1;
 
-static int *all_mouse_buttons[] = {
+static int * all_mouse_buttons[] = {
   &g_m_controls_globals->mousebfire,
   &g_m_controls_globals->mousebstrafe,
   &g_m_controls_globals->mousebforward,
@@ -56,13 +56,13 @@ static int *all_mouse_buttons[] = {
   &g_m_controls_globals->mousebreverse    // [crispy]
 };
 
-static void MouseSetCallback(void *, void *uncast_variable) {
-  int *variable = reinterpret_cast<int *>(uncast_variable);
+static void MouseSetCallback(void *, void * uncast_variable) {
+  int * variable = reinterpret_cast<int *>(uncast_variable);
 
   // Check if the same mouse button is used for a different action
   // If so, set the other action(s) to -1 (unset)
 
-  for (auto &all_mouse_button : all_mouse_buttons) {
+  for (auto & all_mouse_button : all_mouse_buttons) {
     if (*all_mouse_button == *variable
         && all_mouse_button != variable) {
       *all_mouse_button = -1;
@@ -70,9 +70,9 @@ static void MouseSetCallback(void *, void *uncast_variable) {
   }
 }
 
-static void AddMouseControl(void *uncast_table, const char *label, int *var) {
-  auto              *table = reinterpret_cast<txt_table_t *>(uncast_table);
-  txt_mouse_input_t *mouse_input;
+static void AddMouseControl(void * uncast_table, const char * label, int * var) {
+  auto *              table = reinterpret_cast<txt_table_t *>(uncast_table);
+  txt_mouse_input_t * mouse_input;
 
   TXT_AddWidget(table, TXT_NewLabel(label));
 
@@ -83,8 +83,8 @@ static void AddMouseControl(void *uncast_table, const char *label, int *var) {
 }
 
 static void ConfigExtraButtons(void *, void *) {
-  txt_window_t *window;
-  txt_table_t  *buttons_table;
+  txt_window_t * window;
+  txt_table_t *  buttons_table;
 
   window = TXT_NewWindow("Additional mouse buttons");
 
@@ -117,7 +117,7 @@ static void ConfigExtraButtons(void *, void *) {
 }
 
 void ConfigMouse(void *, void *) {
-  txt_window_t *window;
+  txt_window_t * window;
 
   window = TXT_NewWindow("Mouse configuration");
 

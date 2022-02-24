@@ -52,7 +52,7 @@ slidename_t	slideFrameNames[MAXSLIDEDOORS] =
 //
 // T_VerticalDoor
 //
-void T_VerticalDoor(vldoor_t *door) {
+void T_VerticalDoor(vldoor_t * door) {
   result_e res;
 
   switch (door->direction) {
@@ -190,10 +190,10 @@ void T_VerticalDoor(vldoor_t *door) {
 // Move a locked door up/down
 //
 
-int EV_DoLockedDoor(line_t  *line,
+int EV_DoLockedDoor(line_t * line,
                     vldoor_e type,
-                    mobj_t  *thing) {
-  player_t *p;
+                    mobj_t * thing) {
+  player_t * p;
 
   p = thing->player;
 
@@ -238,11 +238,11 @@ int EV_DoLockedDoor(line_t  *line,
   return EV_DoDoor(line, type);
 }
 
-int EV_DoDoor(line_t  *line,
+int EV_DoDoor(line_t * line,
               vldoor_e type) {
-  int       secnum, rtn;
-  sector_t *sec;
-  vldoor_t *door;
+  int        secnum, rtn;
+  sector_t * sec;
+  vldoor_t * door;
 
   secnum = -1;
   rtn    = 0;
@@ -321,12 +321,12 @@ int EV_DoDoor(line_t  *line,
 //
 // EV_VerticalDoor : open a door manually, no tag value
 //
-void EV_VerticalDoor(line_t *line,
-                     mobj_t *thing) {
-  player_t *player;
-  sector_t *sec;
-  vldoor_t *door;
-  int       side;
+void EV_VerticalDoor(line_t * line,
+                     mobj_t * thing) {
+  player_t * player;
+  sector_t * sec;
+  vldoor_t * door;
+  int        side;
 
   side = 0; // only front sides can be used
 
@@ -423,7 +423,7 @@ void EV_VerticalDoor(line_t *line,
           // The direction field in vldoor_t corresponds to the wait
           // field in plat_t.  Let's set that to -1 instead.
 
-          plat_t *plat;
+          plat_t * plat;
 
           plat       = reinterpret_cast<plat_t *>(door);
           plat->wait = -1;
@@ -505,8 +505,8 @@ void EV_VerticalDoor(line_t *line,
 //
 // Spawn a door that closes after 30 seconds
 //
-void P_SpawnDoorCloseIn30(sector_t *sec) {
-  vldoor_t *door;
+void P_SpawnDoorCloseIn30(sector_t * sec) {
+  vldoor_t * door;
 
   door = zmalloc<decltype(door)>(sizeof(*door), PU_LEVSPEC, 0);
 
@@ -526,8 +526,8 @@ void P_SpawnDoorCloseIn30(sector_t *sec) {
 //
 // Spawn a door that opens after 5 minutes
 //
-void P_SpawnDoorRaiseIn5Mins(sector_t *sec, int) {
-  vldoor_t *door;
+void P_SpawnDoorRaiseIn5Mins(sector_t * sec, int) {
+  vldoor_t * door;
 
   door = zmalloc<decltype(door)>(sizeof(*door), PU_LEVSPEC, 0);
 

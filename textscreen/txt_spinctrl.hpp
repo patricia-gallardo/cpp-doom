@@ -47,11 +47,11 @@ struct [[maybe_unused]] txt_spincontrol_s {
     int   i;
   } min {}, max {}, step {};
   union {
-    float *f;
-    int   *i;
+    float * f;
+    int *   i;
   } value {};
   int    editing {};
-  char  *buffer {};
+  char * buffer {};
   size_t buffer_len {};
 };
 
@@ -65,7 +65,7 @@ struct [[maybe_unused]] txt_spincontrol_s {
  * @return             Pointer to the new spin control widget.
  */
 
-txt_spincontrol_t *TXT_NewSpinControl(int *value, int min, int max);
+txt_spincontrol_t * TXT_NewSpinControl(int * value, int min, int max);
 
 /**
  * Create a new spin control widget tracking a float value.
@@ -77,6 +77,6 @@ txt_spincontrol_t *TXT_NewSpinControl(int *value, int min, int max);
  * @return             Pointer to the new spin control widget.
  */
 
-txt_spincontrol_t *TXT_NewFloatSpinControl(float *value, float min, float max);
+txt_spincontrol_t * TXT_NewFloatSpinControl(float * value, float min, float max);
 
 #endif /* #ifndef TXT_SPINCONTROL_H */

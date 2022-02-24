@@ -31,8 +31,8 @@
 #include "SDL_stdinc.h"
 #endif
 
-int    myargc;
-char **myargv;
+int     myargc;
+char ** myargv;
 
 //
 // M_CheckParm
@@ -42,7 +42,7 @@ char **myargv;
 // or 0 if not present
 //
 
-int M_CheckParmWithArgs(const char *check, int num_args) {
+int M_CheckParmWithArgs(const char * check, int num_args) {
   for (int i = 1; i < myargc - num_args; i++) {
     if (!strcasecmp(check, myargv[i]))
       return i;
@@ -58,19 +58,19 @@ int M_CheckParmWithArgs(const char *check, int num_args) {
 // line arguments, false if not.
 //
 
-bool M_ParmExists(const char *check) {
+bool M_ParmExists(const char * check) {
   return M_CheckParm(check) != 0;
 }
 
-int M_CheckParm(const char *check) {
+int M_CheckParm(const char * check) {
   return M_CheckParmWithArgs(check, 0);
 }
 
 constexpr auto MAXARGVS = 100;
 
-static void LoadResponseFile(int argv_index, const char *filename) {
+static void LoadResponseFile(int argv_index, const char * filename) {
   // Read the response file into memory
-  FILE *handle = fopen(filename, "rb");
+  FILE * handle = fopen(filename, "rb");
 
   if (handle == nullptr) {
     fmt::printf("\nNo such response file!");
@@ -86,7 +86,7 @@ static void LoadResponseFile(int argv_index, const char *filename) {
   // at the end of the response file, in which case a '\0' will be
   // needed.
 
-  char *file = static_cast<char *>(malloc(static_cast<size_t>(size + 1)));
+  char * file = static_cast<char *>(malloc(static_cast<size_t>(size + 1)));
   {
     size_t i = 0;
     while (i < size) {
@@ -102,8 +102,8 @@ static void LoadResponseFile(int argv_index, const char *filename) {
 
   // Create new arguments list array
 
-  char **newargv = static_cast<char **>(malloc(sizeof(char *) * MAXARGVS));
-  int    newargc = 0;
+  char ** newargv = static_cast<char **>(malloc(sizeof(char *) * MAXARGVS));
+  int     newargc = 0;
   std::memset(newargv, 0, sizeof(char *) * MAXARGVS);
 
   // Copy all the arguments in the list up to the response file
@@ -113,7 +113,7 @@ static void LoadResponseFile(int argv_index, const char *filename) {
     ++newargc;
   }
 
-  char  *infile = file;
+  char * infile = file;
   size_t k      = 0;
 
   while (k < size) {
@@ -234,11 +234,11 @@ enum
   FILETYPE_DEH     = 0x8,
 };
 
-static int GuessFileType(const char *name) {
-  int         ret = FILETYPE_UNKNOWN;
-  const char *base;
-  char       *lower;
-  static bool iwad_found = false;
+static int GuessFileType(const char * name) {
+  int          ret = FILETYPE_UNKNOWN;
+  const char * base;
+  char *       lower;
+  static bool  iwad_found = false;
 
   base  = M_BaseName(name);
   lower = M_StringDuplicate(base);
@@ -263,13 +263,13 @@ static int GuessFileType(const char *name) {
 
 typedef struct
 {
-  char *str;
-  int   type, stable;
+  char * str;
+  int    type, stable;
 } argument_t;
 
-static int CompareByFileType(const void *a, const void *b) {
-  const argument_t *arg_a = (const argument_t *)a;
-  const argument_t *arg_b = (const argument_t *)b;
+static int CompareByFileType(const void * a, const void * b) {
+  const argument_t * arg_a = (const argument_t *)a;
+  const argument_t * arg_b = (const argument_t *)b;
 
   const int ret = arg_a->type - arg_b->type;
 
@@ -277,9 +277,9 @@ static int CompareByFileType(const void *a, const void *b) {
 }
 
 void M_AddLooseFiles() {
-  int         i, types = 0;
-  char      **newargv;
-  argument_t *arguments;
+  int          i, types = 0;
+  char **      newargv;
+  argument_t * arguments;
 
   if (myargc < 2) {
     return;
@@ -295,8 +295,8 @@ void M_AddLooseFiles() {
   // but only fully-qualified LFS or UNC file paths
 
   for (i = 1; i < myargc; i++) {
-    char *arg = myargv[i];
-    int   type;
+    char * arg = myargv[i];
+    int    type;
 
     if (strlen(arg) < 3 || arg[0] == '-' || arg[0] == '@' || ((!isalpha(arg[0]) || arg[1] != ':' || arg[2] != '\\') && (arg[0] != '\\' || arg[1] != '\\'))) {
       free(arguments);
@@ -351,6 +351,6 @@ void M_AddLooseFiles() {
 
 // Return the name of the executable used to start the program:
 
-const char *M_GetExecutableName() {
+const char * M_GetExecutableName() {
   return M_BaseName(myargv[0]);
 }

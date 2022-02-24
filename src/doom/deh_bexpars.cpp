@@ -24,7 +24,7 @@
 int bex_pars[6][10] = { { 0 } };
 int bex_cpars[32]   = { 0 };
 
-static void *DEH_BEXParsStart(deh_context_t *context, char *line) {
+static void * DEH_BEXParsStart(deh_context_t * context, char * line) {
   char s[7];
 
   if (sscanf(line, "%6s", s) == 0 || strcmp("[PARS]", s) != 0) {
@@ -34,7 +34,7 @@ static void *DEH_BEXParsStart(deh_context_t *context, char *line) {
   return nullptr;
 }
 
-static void DEH_BEXParsParseLine(deh_context_t *context, char *line, void *) {
+static void DEH_BEXParsParseLine(deh_context_t * context, char * line, void *) {
   int episode = 0, map = 0, partime = 0;
 
   if (sscanf(line, "par %32d %32d %32d", &episode, &map, &partime) == 3) {

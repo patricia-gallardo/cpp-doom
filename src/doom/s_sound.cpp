@@ -68,10 +68,10 @@ constexpr auto                  NORM_SEP      = 128;
 typedef struct
 {
   // sound information (if null, channel avail.)
-  sfxinfo_t *sfxinfo;
+  sfxinfo_t * sfxinfo;
 
   // origin of sound
-  mobj_t *origin;
+  mobj_t * origin;
 
   // handle of the sound being played
   int handle;
@@ -82,8 +82,8 @@ typedef struct
 
 // The set of channels available
 
-static channel_t   *channels;
-static degenmobj_t *sobjs;
+static channel_t *   channels;
+static degenmobj_t * sobjs;
 
 // Maximum volume of a sound effect.
 // Internal volume level, ranging from 0-127
@@ -96,7 +96,7 @@ static bool mus_paused;
 
 // Music currently being played
 
-static musicinfo_t *mus_playing = nullptr;
+static musicinfo_t * mus_playing = nullptr;
 
 // Number of channels to use
 
@@ -106,8 +106,8 @@ int snd_channels = 8;
 // TNT and Plutonia as introduced in DoomMetalVol5.wad
 
 typedef struct {
-  const char *const from;
-  const char *const to;
+  const char * const from;
+  const char * const to;
 } altmusic_t;
 
 static const altmusic_t altmusic_tnt[] = {
@@ -266,8 +266,8 @@ void S_Init(int sfxVolume_param, int musicVolume_param) {
 
   // [crispy] initialize dedicated music tracks for the 4th episode
   for (i = mus_e4m1; i <= mus_e5m9; i++) {
-    musicinfo_t *const music = &S_music[i];
-    char               namebuf[9];
+    musicinfo_t * const music = &S_music[i];
+    char                namebuf[9];
 
     M_snprintf(namebuf, sizeof(namebuf), "d_%s", DEH_String(music->name));
     music->lumpnum = W_CheckNumForName(namebuf);
@@ -287,8 +287,8 @@ void S_Shutdown() {
 }
 
 static void S_StopChannel(int cnum) {
-  int        i;
-  channel_t *c;
+  int         i;
+  channel_t * c;
 
   c = &channels[cnum];
 
@@ -403,7 +403,7 @@ void S_Start() {
   S_ChangeMusic(mnum, true);
 }
 
-void S_StopSound(mobj_t *origin) {
+void S_StopSound(mobj_t * origin) {
   for (int cnum = 0; cnum < snd_channels; cnum++) {
     if (channels[cnum].sfxinfo && channels[cnum].origin == origin) {
       S_StopChannel(cnum);
@@ -419,17 +419,17 @@ void S_StopSound(mobj_t *origin) {
 // the corresponding map object has already disappeared.
 // Thanks to jeff-d and kb1 for discussing this feature and the former for the
 // original implementation idea: https://www.doomworld.com/vb/post/1585325
-void S_UnlinkSound(mobj_t *origin) {
+void S_UnlinkSound(mobj_t * origin) {
   int cnum;
 
   if (origin) {
     for (cnum = 0; cnum < snd_channels; cnum++) {
       if (channels[cnum].sfxinfo && channels[cnum].origin == origin) {
-        degenmobj_t *const sobj = &sobjs[cnum];
-        sobj->x                 = origin->x;
-        sobj->y                 = origin->y;
-        sobj->z                 = origin->z;
-        channels[cnum].origin   = reinterpret_cast<mobj_t *>(sobj);
+        degenmobj_t * const sobj = &sobjs[cnum];
+        sobj->x                  = origin->x;
+        sobj->y                  = origin->y;
+        sobj->z                  = origin->z;
+        channels[cnum].origin    = reinterpret_cast<mobj_t *>(sobj);
         break;
       }
     }
@@ -441,11 +441,11 @@ void S_UnlinkSound(mobj_t *origin) {
 //   If none available, return -1.  Otherwise channel #.
 //
 
-static int S_GetChannel(mobj_t *origin, sfxinfo_t *sfxinfo) {
+static int S_GetChannel(mobj_t * origin, sfxinfo_t * sfxinfo) {
   // channel number to use
   int cnum;
 
-  channel_t *c;
+  channel_t * c;
 
   // Find an open channel
   for (cnum = 0; cnum < snd_channels; cnum++) {
@@ -491,7 +491,7 @@ static int S_GetChannel(mobj_t *origin, sfxinfo_t *sfxinfo) {
 // Otherwise, modifies parameters and returns 1.
 //
 
-static int S_AdjustSoundParams(mobj_t *listener, mobj_t *source, int *vol, int *sep) {
+static int S_AdjustSoundParams(mobj_t * listener, mobj_t * source, int * vol, int * sep) {
   fixed_t approx_dist;
   fixed_t adx;
   fixed_t ady;
@@ -559,14 +559,14 @@ static int Clamp(int x) {
   return x;
 }
 
-void S_StartSound(void *origin_p, int sfx_id) {
-  sfxinfo_t *sfx;
-  mobj_t    *origin;
-  int        rc;
-  int        sep;
-  int        pitch;
-  int        cnum;
-  int        volume;
+void S_StartSound(void * origin_p, int sfx_id) {
+  sfxinfo_t * sfx;
+  mobj_t *    origin;
+  int         rc;
+  int         sep;
+  int         pitch;
+  int         cnum;
+  int         volume;
 
   origin = reinterpret_cast<mobj_t *>(origin_p);
   volume = snd_SfxVolume;
@@ -651,9 +651,9 @@ void S_StartSound(void *origin_p, int sfx_id) {
   channels[cnum].handle = I_StartSound(sfx, cnum, volume, sep, channels[cnum].pitch);
 }
 
-void S_StartSoundOnce(void *origin_p, int sfx_id) {
-  int                    cnum;
-  const sfxinfo_t *const sfx = &S_sfx[sfx_id];
+void S_StartSoundOnce(void * origin_p, int sfx_id) {
+  int                     cnum;
+  const sfxinfo_t * const sfx = &S_sfx[sfx_id];
 
   for (cnum = 0; cnum < snd_channels; cnum++) {
     if (channels[cnum].sfxinfo == sfx && channels[cnum].origin == origin_p) {
@@ -686,13 +686,13 @@ void S_ResumeSound() {
 // Updates music & sounds
 //
 
-void S_UpdateSounds(mobj_t *listener) {
-  int        audible;
-  int        cnum;
-  int        volume;
-  int        sep;
-  sfxinfo_t *sfx;
-  channel_t *c;
+void S_UpdateSounds(mobj_t * listener) {
+  int         audible;
+  int         cnum;
+  int         volume;
+  int         sep;
+  sfxinfo_t * sfx;
+  channel_t * c;
 
   I_UpdateSound();
 
@@ -773,9 +773,9 @@ void S_StartMusic(int m_id) {
 }
 
 void S_ChangeMusic(int musicnum, int looping) {
-  musicinfo_t *music = nullptr;
-  char         namebuf[9];
-  void        *handle;
+  musicinfo_t * music = nullptr;
+  char          namebuf[9];
+  void *        handle;
 
   if (g_doomstat_globals->gamestate != GS_LEVEL) {
     prevmap = -1;
@@ -860,7 +860,7 @@ void S_ChangeMusic(int musicnum, int looping) {
 // [crispy] adapted from prboom-plus/src/s_sound.c:552-590
 
 void S_ChangeMusInfoMusic(int lumpnum, int looping) {
-  musicinfo_t *music;
+  musicinfo_t * music;
 
   // [crispy] restarting the map plays the original music
   prevmap = -1;

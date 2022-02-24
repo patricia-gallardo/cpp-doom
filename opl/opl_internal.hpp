@@ -33,7 +33,7 @@ using opl_adjust_callbacks_func = void (*)(float);
 
 typedef struct
 {
-  const char *name;
+  const char * name;
 
   opl_init_func             init_func;
   opl_shutdown_func         shutdown_func;

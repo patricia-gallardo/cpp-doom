@@ -17,9 +17,9 @@
 
 #include "i_sound.hpp"
 
-void ConfigSound(void *widget, void *user_data);
+void ConfigSound(void * widget, void * user_data);
 void BindSoundVariables();
 
-extern char *snd_dmxoption;
+extern char * snd_dmxoption;
 
 #endif /* #ifndef SETUP_SOUND_H */

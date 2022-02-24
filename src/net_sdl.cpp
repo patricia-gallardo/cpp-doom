@@ -38,10 +38,10 @@
 
 #define DEFAULT_PORT 2342
 
-static bool       initted = false;
-static int        port    = DEFAULT_PORT;
-static UDPsocket  udpsocket;
-static UDPpacket *recvpacket;
+static bool        initted = false;
+static int         port    = DEFAULT_PORT;
+static UDPsocket   udpsocket;
+static UDPpacket * recvpacket;
 
 typedef struct
 {
@@ -49,8 +49,8 @@ typedef struct
   IPaddress  sdl_addr;
 } addrpair_t;
 
-static addrpair_t **addr_table;
-static int          addr_table_size = -1;
+static addrpair_t ** addr_table;
+static int           addr_table_size = -1;
 
 // Initializes the address table
 
@@ -63,7 +63,7 @@ static void NET_SDL_InitAddrTable() {
   std::memset(addr_table, 0, sizeof(addrpair_t *) * static_cast<unsigned long>(addr_table_size));
 }
 
-static bool AddressesEqual(IPaddress *a, IPaddress *b) {
+static bool AddressesEqual(IPaddress * a, IPaddress * b) {
   return a->host == b->host
          && a->port == b->port;
 }
@@ -71,7 +71,7 @@ static bool AddressesEqual(IPaddress *a, IPaddress *b) {
 // Finds an address by searching the table.  If the address is not found,
 // it is added to the table.
 
-static net_addr_t *NET_SDL_FindAddress(IPaddress *addr) {
+static net_addr_t * NET_SDL_FindAddress(IPaddress * addr) {
   int empty_entry = -1;
 
   if (addr_table_size < 0) {
@@ -101,10 +101,10 @@ static net_addr_t *NET_SDL_FindAddress(IPaddress *addr) {
     // allocate a new array twice the size, init to 0 and copy
     // the existing table in.  replace the old table.
 
-    int          new_addr_table_size = addr_table_size * 2;
-    addrpair_t **new_addr_table      = zmalloc<decltype(new_addr_table)>(sizeof(addrpair_t *) * static_cast<unsigned long>(new_addr_table_size),
-                                                                    PU_STATIC,
-                                                                    0);
+    int           new_addr_table_size = addr_table_size * 2;
+    addrpair_t ** new_addr_table      = zmalloc<decltype(new_addr_table)>(sizeof(addrpair_t *) * static_cast<unsigned long>(new_addr_table_size),
+                                                                     PU_STATIC,
+                                                                     0);
     std::memset(new_addr_table, 0, sizeof(addrpair_t *) * static_cast<unsigned long>(new_addr_table_size));
     std::memcpy(new_addr_table, addr_table, sizeof(addrpair_t *) * static_cast<unsigned long>(addr_table_size));
     Z_Free(addr_table);
@@ -114,7 +114,7 @@ static net_addr_t *NET_SDL_FindAddress(IPaddress *addr) {
 
   // Add a new entry
 
-  addrpair_t *new_entry        = zmalloc<decltype(new_entry)>(sizeof(addrpair_t), PU_STATIC, 0);
+  addrpair_t * new_entry       = zmalloc<decltype(new_entry)>(sizeof(addrpair_t), PU_STATIC, 0);
   new_entry->sdl_addr          = *addr;
   new_entry->net_addr.refcount = 0;
   new_entry->net_addr.handle   = &new_entry->sdl_addr;
@@ -125,7 +125,7 @@ static net_addr_t *NET_SDL_FindAddress(IPaddress *addr) {
   return &new_entry->net_addr;
 }
 
-static void NET_SDL_FreeAddress(net_addr_t *addr) {
+static void NET_SDL_FreeAddress(net_addr_t * addr) {
   for (int i = 0; i < addr_table_size; ++i) {
     if (addr == &addr_table[i]->net_addr) {
       Z_Free(addr_table[i]);
@@ -198,7 +198,7 @@ static bool NET_SDL_InitServer() {
   return true;
 }
 
-static void NET_SDL_SendPacket(net_addr_t *addr, net_packet_t *packet) {
+static void NET_SDL_SendPacket(net_addr_t * addr, net_packet_t * packet) {
   UDPpacket sdl_packet;
   IPaddress ip;
 
@@ -241,7 +241,7 @@ static void NET_SDL_SendPacket(net_addr_t *addr, net_packet_t *packet) {
   }
 }
 
-static bool NET_SDL_RecvPacket(net_addr_t **addr, net_packet_t **packet) {
+static bool NET_SDL_RecvPacket(net_addr_t ** addr, net_packet_t ** packet) {
   int result = SDLNet_UDP_Recv(udpsocket, recvpacket);
 
   if (result < 0) {
@@ -267,8 +267,8 @@ static bool NET_SDL_RecvPacket(net_addr_t **addr, net_packet_t **packet) {
   return true;
 }
 
-void NET_SDL_AddrToString(net_addr_t *addr, char *buffer, int buffer_len) {
-  auto    *ip         = reinterpret_cast<IPaddress *>(addr->handle);
+void NET_SDL_AddrToString(net_addr_t * addr, char * buffer, int buffer_len) {
+  auto *   ip         = reinterpret_cast<IPaddress *>(addr->handle);
   uint32_t host       = SDLNet_Read32(&ip->host);
   uint16_t port_local = SDLNet_Read16(&ip->port);
 
@@ -285,11 +285,11 @@ void NET_SDL_AddrToString(net_addr_t *addr, char *buffer, int buffer_len) {
   }
 }
 
-net_addr_t *NET_SDL_ResolveAddress(const char *address) {
-  const auto *colon = std::strchr(address, ':');
+net_addr_t * NET_SDL_ResolveAddress(const char * address) {
+  const auto * colon = std::strchr(address, ':');
 
-  char *addr_hostname = M_StringDuplicate(address);
-  int   addr_port     = 0;
+  char * addr_hostname = M_StringDuplicate(address);
+  int    addr_port     = 0;
   if (colon != nullptr) {
     addr_hostname[colon - address] = '\0';
     addr_port                      = std::atoi(colon + 1);

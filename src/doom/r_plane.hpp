@@ -24,7 +24,7 @@
 #define PL_SKYFLAT (0x80000000)
 
 // Visplane related.
-extern int *lastopening; // [crispy] 32-bit integer math
+extern int * lastopening; // [crispy] 32-bit integer math
 
 using planefunction_t = void (*)(int, int);
 
@@ -34,7 +34,7 @@ using planefunction_t = void (*)(int, int);
 extern int floorclip[MAXWIDTH];   // [crispy] 32-bit integer math
 extern int ceilingclip[MAXWIDTH]; // [crispy] 32-bit integer math
 
-extern fixed_t                 *yslope;
+extern fixed_t *                yslope;
 extern fixed_t                  yslopes[LOOKDIRS][MAXHEIGHT];
 [[maybe_unused]] extern fixed_t distscale[MAXWIDTH];
 
@@ -59,8 +59,8 @@ visplane_t *
                 int     lightlevel);
 
 visplane_t *
-    R_CheckPlane(visplane_t *pl,
-                 int         start,
-                 int         stop);
+    R_CheckPlane(visplane_t * pl,
+                 int          start,
+                 int          stop);
 
 #endif

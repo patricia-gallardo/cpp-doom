@@ -34,7 +34,7 @@ extern int screenblocks;
 // Hack display negative frags.
 //  Loads and store the stminus lump.
 //
-patch_t *sttminus;
+patch_t * sttminus;
 
 void STlib_init() {
   if (W_CheckNumForName(DEH_String("STTMINUS")) >= 0)
@@ -44,13 +44,13 @@ void STlib_init() {
 }
 
 // ?
-void STlib_initNum(st_number_t *n,
-                   int          x,
-                   int          y,
-                   patch_t    **pl,
-                   int         *num,
-                   bool        *on,
-                   int          width) {
+void STlib_initNum(st_number_t * n,
+                   int           x,
+                   int           y,
+                   patch_t **    pl,
+                   int *         num,
+                   bool *        on,
+                   int           width) {
   n->x      = x;
   n->y      = y;
   n->oldnum = 0;
@@ -65,8 +65,8 @@ void STlib_initNum(st_number_t *n,
 //  based on differences from the old number.
 // Note: worth the trouble?
 //
-void STlib_drawNum(st_number_t *n,
-                   bool         refresh) {
+void STlib_drawNum(st_number_t * n,
+                   bool          refresh) {
 
   int numdigits = n->width;
   int num       = *n->num;
@@ -127,19 +127,19 @@ void STlib_drawNum(st_number_t *n,
 }
 
 //
-void STlib_updateNum(st_number_t *n,
-                     bool         refresh) {
+void STlib_updateNum(st_number_t * n,
+                     bool          refresh) {
   if (*n->on) STlib_drawNum(n, refresh);
 }
 
 //
-void STlib_initPercent(st_percent_t *p,
-                       int           x,
-                       int           y,
-                       patch_t     **pl,
-                       int          *num,
-                       bool         *on,
-                       patch_t      *percent) {
+void STlib_initPercent(st_percent_t * p,
+                       int            x,
+                       int            y,
+                       patch_t **     pl,
+                       int *          num,
+                       bool *         on,
+                       patch_t *      percent) {
   STlib_initNum(&p->n, x, y, pl, num, on, 3);
   p->p = percent;
 
@@ -147,8 +147,8 @@ void STlib_initPercent(st_percent_t *p,
   p->oldtranslation = nullptr;
 }
 
-void STlib_updatePercent(st_percent_t *per,
-                         int           refresh) {
+void STlib_updatePercent(st_percent_t * per,
+                         int            refresh) {
   // [crispy] remember previous colorization
   if (per->oldtranslation != dp_translation) {
     refresh             = true;
@@ -166,12 +166,12 @@ void STlib_updatePercent(st_percent_t *per,
   dp_translation = nullptr;
 }
 
-void STlib_initMultIcon(st_multicon_t *i,
-                        int            x,
-                        int            y,
-                        patch_t      **il,
-                        int           *inum,
-                        bool          *on) {
+void STlib_initMultIcon(st_multicon_t * i,
+                        int             x,
+                        int             y,
+                        patch_t **      il,
+                        int *           inum,
+                        bool *          on) {
   i->x       = x;
   i->y       = y;
   i->oldinum = -1;
@@ -180,8 +180,8 @@ void STlib_initMultIcon(st_multicon_t *i,
   i->p       = il;
 }
 
-void STlib_updateMultIcon(st_multicon_t *mi,
-                          bool           refresh) {
+void STlib_updateMultIcon(st_multicon_t * mi,
+                          bool            refresh) {
   int w;
   int h;
   int x;
@@ -207,12 +207,12 @@ void STlib_updateMultIcon(st_multicon_t *mi,
   }
 }
 
-void STlib_initBinIcon(st_binicon_t *b,
-                       int           x,
-                       int           y,
-                       patch_t      *i,
-                       bool         *val,
-                       bool         *on) {
+void STlib_initBinIcon(st_binicon_t * b,
+                       int            x,
+                       int            y,
+                       patch_t *      i,
+                       bool *         val,
+                       bool *         on) {
   b->x      = x;
   b->y      = y;
   b->oldval = false;
@@ -221,8 +221,8 @@ void STlib_initBinIcon(st_binicon_t *b,
   b->p      = i;
 }
 
-void STlib_updateBinIcon(st_binicon_t *bi,
-                         bool          refresh) {
+void STlib_updateBinIcon(st_binicon_t * bi,
+                         bool           refresh) {
   int x;
   int y;
   int w;
