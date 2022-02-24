@@ -345,7 +345,9 @@ static int TXT_ScrollPaneKeyPress(void *uncast_scrollpane, int key) {
 }
 
 static void TXT_ScrollPaneMousePress(void *uncast_scrollpane,
-                                     int x, int y, int b) {
+                                     int   x,
+                                     int   y,
+                                     int   b) {
   auto *scrollpane = reinterpret_cast<txt_scrollpane_t *>(uncast_scrollpane);
 
   int scrollbars = NeedsScrollbars(scrollpane);

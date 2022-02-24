@@ -31,8 +31,7 @@ enum
 };
 
 // also put some crazy extensions to test the escape function. a"b"c"""dd
-const char   *extensions[]   = { "wad", "lmp", "txt", "a\"b\"c\"\"\"dd", "",
-                             "\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"", nullptr };
+const char   *extensions[]   = { "wad", "lmp", "txt", "a\"b\"c\"\"\"dd", "", "\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"", nullptr };
 const char   *radio_values[] = { "Badger", "Mushroom", "Snake" };
 char         *textbox_value  = nullptr;
 int           numbox_value   = 0;
@@ -103,10 +102,10 @@ void UnicodeWindow(TXT_UNCAST_ARG(widget), void *user_data) {
                  TXT_NewLabel("Leggi questo, è pieno di\n"
                               "informazioni interessanti"),
                  TXT_NewRadioButton("Ma questo non è un radio??",
-                                    &var1, 0),
+                                    &var1,
+                                    0),
                  nullptr);
-  TXT_SetWindowAction(window, TXT_HORIZ_RIGHT,
-                      TXT_NewWindowAction(KEY_ENTER, "Nullità"));
+  TXT_SetWindowAction(window, TXT_HORIZ_RIGHT, TXT_NewWindowAction(KEY_ENTER, "Nullità"));
 }
 
 void SetupWindow() {
@@ -199,19 +198,18 @@ void Window2() {
   TXT_SetWindowPosition(window,
                         TXT_HORIZ_RIGHT,
                         TXT_VERT_TOP,
-                        TXT_SCREEN_W - 1, 1);
+                        TXT_SCREEN_W - 1,
+                        1);
 
   TXT_AddWidgets(window,
-                 TXT_NewScrollPane(40, 1,
-                                   TXT_NewLabel("* Unselectable scroll pane *")),
+                 TXT_NewScrollPane(40, 1, TXT_NewLabel("* Unselectable scroll pane *")),
                  unselectable_table = TXT_NewTable(1),
                  nullptr);
 
   TXT_AddWidget(unselectable_table, TXT_NewLabel("* Unselectable table *"));
-  TXT_AddWidget(unselectable_table, TXT_NewLabel(
-                                        "This is a UTF-8 string:\n"
-                                        "\xc3\x80 bient\xc3\xb4t na\xc3\xaet "
-                                        "\xc3\xa9v\xc3\xaaque \xc3\xa0 l'\xc5\x93uvre p\xc3\xa8re."));
+  TXT_AddWidget(unselectable_table, TXT_NewLabel("This is a UTF-8 string:\n"
+                                                 "\xc3\x80 bient\xc3\xb4t na\xc3\xaet "
+                                                 "\xc3\xa9v\xc3\xaaque \xc3\xa0 l'\xc5\x93uvre p\xc3\xa8re."));
 
   TXT_AddWidget(window, TXT_NewSeparator("Input boxes"));
   table = TXT_NewTable(2);
@@ -224,11 +222,9 @@ void Window2() {
                  TXT_NewLabel("Spin control:"),
                  TXT_NewSpinControl(&numbox_value, 0, 15),
                  TXT_NewLabel("File:"),
-                 TXT_NewFileSelector(&file_path, 28, "Select file:",
-                                     extensions),
+                 TXT_NewFileSelector(&file_path, 28, "Select file:", extensions),
                  TXT_NewLabel("Directory:"),
-                 TXT_NewFileSelector(&dir_path, 28, "Select directory:",
-                                     TXT_DIRECTORY),
+                 TXT_NewFileSelector(&dir_path, 28, "Select directory:", TXT_DIRECTORY),
                  nullptr);
 
   TXT_AddWidget(window, TXT_NewSeparator("Scroll pane test"));

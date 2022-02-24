@@ -35,7 +35,8 @@
 #endif
 
 void TXT_SetWindowAction(txt_window_t     *window,
-                         txt_horiz_align_t position, void *uncast_action) {
+                         txt_horiz_align_t position,
+                         void             *uncast_action) {
   auto *action = reinterpret_cast<txt_widget_t *>(uncast_action);
 
   if (window->actions[position] != nullptr) {
@@ -199,7 +200,8 @@ static void DrawActionArea(txt_window_t *window) {
 }
 
 static void CalcActionAreaSize(txt_window_t *window,
-                               unsigned int *w, unsigned int *h) {
+                               unsigned int *w,
+                               unsigned int *h) {
   *w = 0;
   *h = 0;
 
@@ -293,7 +295,10 @@ void TXT_DrawWindow(txt_window_t *window) {
   // Draw the window
 
   TXT_DrawWindowFrame(window->title,
-                      window->window_x, window->window_y, static_cast<int>(window->window_w), static_cast<int>(window->window_h));
+                      window->window_x,
+                      window->window_y,
+                      static_cast<int>(window->window_w),
+                      static_cast<int>(window->window_h));
 
   // Draw all widgets
 
@@ -317,7 +322,8 @@ void TXT_DrawWindow(txt_window_t *window) {
 void TXT_SetWindowPosition(txt_window_t     *window,
                            txt_horiz_align_t horiz_align,
                            txt_vert_align_t  vert_align,
-                           int x, int y) {
+                           int               x,
+                           int               y) {
   window->vert_align  = vert_align;
   window->horiz_align = horiz_align;
   window->x           = x;
@@ -340,8 +346,7 @@ static int MouseButtonPress(txt_window_t *window, int b) {
   if (window->mouse_listener != nullptr) {
     // Mouse listener can eat button presses
 
-    if (window->mouse_listener(window, x, y, b,
-                               window->mouse_listener_data)) {
+    if (window->mouse_listener(window, x, y, b, window->mouse_listener_data)) {
       return 1;
     }
   }
@@ -416,8 +421,7 @@ int TXT_WindowKeyPress(txt_window_t *window, int c) {
   return 0;
 }
 
-void TXT_SetKeyListener(txt_window_t *window, TxtWindowKeyPress key_listener,
-                        void *user_data) {
+void TXT_SetKeyListener(txt_window_t *window, TxtWindowKeyPress key_listener, void *user_data) {
   window->key_listener      = key_listener;
   window->key_listener_data = user_data;
 }
@@ -456,7 +460,8 @@ void TXT_OpenURL(const char *url) {
   // standard that exists is the xdg-utils package.
   if (system("xdg-open --version 2>/dev/null") != 0) {
     fmt::fprintf(stderr,
-                 "xdg-utils is not installed. Can't open this URL:\n%s\n", url);
+                 "xdg-utils is not installed. Can't open this URL:\n%s\n",
+                 url);
     free(cmd);
     return;
   }
@@ -467,8 +472,7 @@ void TXT_OpenURL(const char *url) {
   int retval = system(cmd);
   free(cmd);
   if (retval != 0) {
-    fmt::fprintf(stderr, "TXT_OpenURL: error executing '%s'; return code %d\n",
-                 cmd, retval);
+    fmt::fprintf(stderr, "TXT_OpenURL: error executing '%s'; return code %d\n", cmd, retval);
   }
 }
 
@@ -492,8 +496,7 @@ txt_window_t *TXT_MessageBox(const char *title, const char *message, ...) {
   TXT_AddWidget(window, TXT_NewLabel(buf));
 
   TXT_SetWindowAction(window, TXT_HORIZ_LEFT, nullptr);
-  TXT_SetWindowAction(window, TXT_HORIZ_CENTER,
-                      TXT_NewWindowEscapeAction(window));
+  TXT_SetWindowAction(window, TXT_HORIZ_CENTER, TXT_NewWindowEscapeAction(window));
   TXT_SetWindowAction(window, TXT_HORIZ_RIGHT, nullptr);
 
   return window;

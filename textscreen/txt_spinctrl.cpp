@@ -102,14 +102,12 @@ static void SetBuffer(txt_spincontrol_t *spincontrol) {
 
   switch (spincontrol->type) {
   case TXT_SPINCONTROL_INT:
-    TXT_snprintf(spincontrol->buffer, spincontrol->buffer_len,
-                 "%i", *spincontrol->value.i);
+    TXT_snprintf(spincontrol->buffer, spincontrol->buffer_len, "%i", *spincontrol->value.i);
     break;
 
   case TXT_SPINCONTROL_FLOAT:
     FloatFormatString(spincontrol->step.f, format, sizeof(format));
-    TXT_snprintf(spincontrol->buffer, spincontrol->buffer_len,
-                 format, *spincontrol->value.f);
+    TXT_snprintf(spincontrol->buffer, spincontrol->buffer_len, format, *spincontrol->value.f);
     break;
   }
 }
@@ -288,7 +286,9 @@ static int TXT_SpinControlKeyPress(void *uncast_spincontrol, int key) {
 }
 
 static void TXT_SpinControlMousePress(void *uncast_spincontrol,
-                                      int   x, int, int) {
+                                      int   x,
+                                      int,
+                                      int) {
   auto *spincontrol = reinterpret_cast<txt_spincontrol_t *>(uncast_spincontrol);
   auto  rel_x       = static_cast<unsigned int>(x - spincontrol->widget.x);
 

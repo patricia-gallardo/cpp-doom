@@ -214,8 +214,7 @@ static char *GenerateFilterString(const char **extensions) {
 
   for (i = 0; extensions[i] != nullptr; ++i) {
     // .wad files (*.wad)\0
-    offset = TXT_snprintf(out, out_len, "%s files (*.%s)",
-                          extensions[i], extensions[i]);
+    offset = TXT_snprintf(out, out_len, "%s files (*.%s)", extensions[i], extensions[i]);
     out += offset + 1;
     out_len -= offset + 1;
 
@@ -564,8 +563,7 @@ char *TXT_SelectFile(const char *window_title, const char **extensions) {
       if (newext) {
         size_t len = 30 + strlen(extensions[i]) + strlen(newext);
         argv[argc] = static_cast<char *>(malloc(len));
-        TXT_snprintf(argv[argc], len, "--file-filter=.%s | *.%s",
-                     extensions[i], newext);
+        TXT_snprintf(argv[argc], len, "--file-filter=.%s | *.%s", extensions[i], newext);
         ++argc;
         free(newext);
       }
@@ -667,7 +665,9 @@ static int TXT_FileSelectKeyPress(void *uncast_fileselect, int key) {
 }
 
 static void TXT_FileSelectMousePress(void *uncast_fileselect,
-                                     int x, int y, int b) {
+                                     int   x,
+                                     int   y,
+                                     int   b) {
   auto *fileselect = reinterpret_cast<txt_fileselect_t *>(uncast_fileselect);
 
   if (!fileselect->inputbox->editing
@@ -707,8 +707,7 @@ static void InputBoxChanged(void *, void *uncast_fileselect) {
   TXT_EmitSignal(&fileselect->widget, "changed");
 }
 
-txt_fileselect_t *TXT_NewFileSelector(char **variable, int size,
-                                      const char *prompt, const char **extensions) {
+txt_fileselect_t *TXT_NewFileSelector(char **variable, int size, const char *prompt, const char **extensions) {
   auto *fileselect = create_struct<txt_fileselect_t>();
 
   TXT_InitWidget(fileselect, &txt_fileselect_class);
@@ -718,8 +717,7 @@ txt_fileselect_t *TXT_NewFileSelector(char **variable, int size,
   fileselect->prompt                  = prompt;
   fileselect->extensions              = extensions;
 
-  TXT_SignalConnect(fileselect->inputbox, "changed",
-                    InputBoxChanged, fileselect);
+  TXT_SignalConnect(fileselect->inputbox, "changed", InputBoxChanged, fileselect);
 
   return fileselect;
 }

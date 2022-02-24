@@ -93,8 +93,7 @@ static int SelectorWindowListener(txt_window_t *window, int key, void *) {
   return 0;
 }
 
-static int SelectorMouseListener(txt_window_t *window, int x, int y, int,
-                                 void *) {
+static int SelectorMouseListener(txt_window_t *window, int x, int y, int, void *) {
   auto *win    = reinterpret_cast<txt_widget_t *>(window);
   int   width  = static_cast<int>(win->w);
   int   height = static_cast<int>(win->h);
@@ -120,8 +119,7 @@ static void OpenSelectorWindow(txt_dropdown_list_t *list) {
   // Position the window so that the currently selected item appears
   // over the top of the list widget.
 
-  TXT_SetWindowPosition(window, TXT_HORIZ_LEFT, TXT_VERT_TOP,
-                        list->widget.x - 2, SelectorWindowY(list));
+  TXT_SetWindowPosition(window, TXT_HORIZ_LEFT, TXT_VERT_TOP, list->widget.x - 2, SelectorWindowY(list));
 
   // Add a button to the window for each option in the list.
 
@@ -223,7 +221,9 @@ static int TXT_DropdownListKeyPress(void *uncast_list, int key) {
 }
 
 static void TXT_DropdownListMousePress(void *uncast_list,
-                                       int, int, int b) {
+                                       int,
+                                       int,
+                                       int b) {
   auto *list = reinterpret_cast<txt_dropdown_list_t *>(uncast_list);
 
   // Left mouse click does the same as selecting and pressing enter
@@ -243,8 +243,7 @@ txt_widget_class_t txt_dropdown_list_class = {
   nullptr,
 };
 
-txt_dropdown_list_t *TXT_NewDropdownList(int *variable, const char **values,
-                                         int num_values) {
+txt_dropdown_list_t *TXT_NewDropdownList(int *variable, const char **values, int num_values) {
   auto *list = create_struct<txt_dropdown_list_t>();
 
   TXT_InitWidget(list, &txt_dropdown_list_class);

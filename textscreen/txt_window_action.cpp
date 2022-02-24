@@ -78,7 +78,9 @@ static int TXT_WindowActionKeyPress(void *uncast_action, int key) {
 }
 
 static void TXT_WindowActionMousePress(void *uncast_action,
-                                       int, int, int b) {
+                                       int,
+                                       int,
+                                       int b) {
   auto *action = reinterpret_cast<txt_window_action_t *>(uncast_action);
 
   // Simulate a press of the key
