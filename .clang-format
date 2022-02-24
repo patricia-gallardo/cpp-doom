@@ -30,7 +30,7 @@ BinPackParameters: true
 BraceWrapping:
   AfterCaseLabel:  false
   AfterClass:      false
-  AfterControlStatement: Always
+  AfterControlStatement: Never
   AfterEnum:       true
   AfterFunction:   false
   AfterNamespace:  false
@@ -39,7 +39,7 @@ BraceWrapping:
   AfterUnion:      false
   AfterExternBlock: false
   BeforeCatch:     false
-  BeforeElse:      true
+  BeforeElse:      false
   BeforeLambdaBody: false
   BeforeWhile:     false
   IndentBraces:    false
