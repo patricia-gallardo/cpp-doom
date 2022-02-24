@@ -45,16 +45,14 @@
 // void R_DrawColumn ();
 // void R_DrawFuzzColumn ();
 
-typedef struct
-{
+struct maskdraw_t {
   int x1;
   int x2;
 
   int column;
   int topclip;
   int bottomclip;
-
-} maskdraw_t;
+};
 
 static degenmobj_t laserspot_m = { {} };
 degenmobj_t *      laserspot   = &laserspot_m;

@@ -87,23 +87,20 @@ typedef PACKED_STRUCT(
 // A single patch from a texture definition,
 //  basically a rectangular area within
 //  the texture rectangle.
-typedef struct
-{
+struct texpatch_t {
   // Block origin (allways UL),
   // which has allready accounted
   // for the internal origin of the patch.
   short originx;
   short originy;
   int   patch;
-} texpatch_t;
+};
 
 // A maptexturedef_t describes a rectangular texture,
 //  which is composed of one or more mappatch_t structures
 //  that arrange graphic patches.
 
-using texture_t = struct texture_s;
-
-struct texture_s {
+struct texture_t {
   // Keep name for switch changing, etc.
   char  name[8];
   short width;
@@ -596,24 +593,22 @@ void R_InitTextures() {
   int temp2;
   int temp3;
 
-  typedef struct
-  {
+  struct pnameslump_t {
     int    lumpnum;
     void * names;
     short  nummappatches;
     short  summappatches;
     char * name_p;
-  } pnameslump_t;
+  };
 
-  typedef struct
-  {
+  struct texturelump_t {
     int   lumpnum;
     int * maptex;
     int   maxoff;
     short numtextures;
     short sumtextures;
     short pnamesoffset;
-  } texturelump_t;
+  };
 
   pnameslump_t * pnameslumps  = nullptr;
   texturelump_t *texturelumps = nullptr, *texturelump;

@@ -112,19 +112,16 @@ enum animenum_t
 
 };
 
-typedef struct
-{
+struct point_t {
   int x;
   int y;
-
-} point_t;
+};
 
 //
 // Animation.
 // There is another anim_t used in p_spec.
 //
-typedef struct
-{
+struct anim_t {
   animenum_t type;
 
   // period in tics between animations
@@ -162,8 +159,7 @@ typedef struct
 
   // used by RANDOM and LEVEL when animating
   int state;
-
-} anim_t;
+};
 
 static point_t lnodes[NUMEPISODES][NUMMAPS] = {
   // Episode 0 World Map

@@ -112,24 +112,21 @@ void P_NoiseAlert(mobj_t * target, mobj_t * emmiter);
 //
 // P_MAPUTL
 //
-typedef struct
-{
+struct divline_t {
   fixed_t x;
   fixed_t y;
   fixed_t dx;
   fixed_t dy;
+};
 
-} divline_t;
-
-typedef struct
-{
+struct intercept_t {
   fixed_t frac; // along trace line
   bool    isaline;
   union {
     mobj_t * thing;
     line_t * line;
   } d;
-} intercept_t;
+};
 
 // Extended MAXINTERCEPTS, to allow for intercepts overrun emulation.
 

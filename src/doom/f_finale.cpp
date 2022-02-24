@@ -60,13 +60,12 @@ unsigned int finalecount;
 constexpr auto TEXTSPEED = 3;
 constexpr auto TEXTWAIT  = 250;
 
-typedef struct
-{
+struct textscreen_t {
   GameMission_t mission;
   int           episode, level;
   const char *  background;
   const char *  text;
-} textscreen_t;
+};
 
 static textscreen_t textscreens[] = {
   {doom,         1, 8,  "FLOOR4_8", E1TEXT},
@@ -323,11 +322,10 @@ void F_TextWrite() {
 // Casting by id Software.
 //   in order of appearance
 //
-typedef struct
-{
+struct castinfo_t {
   const char * name;
   mobjtype_t   type;
-} castinfo_t;
+};
 
 castinfo_t castorder[] = {
   {CC_ZOMBIE,   MT_POSSESSED},
@@ -398,12 +396,11 @@ static int F_RandomizeSound(int sound) {
   }
 }
 
-typedef struct
-{
+struct actionsound_t {
   actionf_t  action;
   const int  sound;
   const bool early;
-} actionsound_t;
+};
 
 static const actionsound_t actionsounds[] = {
   {A_PosAttack,    sfx_pistol, false},

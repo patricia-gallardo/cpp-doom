@@ -24,10 +24,10 @@
 #include "deh_main.hpp"
 #include "event_function_decls.hpp"
 
-typedef struct {
+struct bex_codeptr_t {
   const char *    mnemonic;
   const actionf_t pointer;
-} bex_codeptr_t;
+};
 
 static const bex_codeptr_t bex_codeptrtable[] = {
   {"Light0",           { A_Light0 }         },

@@ -3669,12 +3669,11 @@ enum
   DOOM2ONLY,
 };
 
-typedef struct
-{
+struct fullbright_t {
   const char * const texture;
   const int          game;
   uint8_t *          colormask;
-} fullbright_t;
+};
 
 static const fullbright_t fullbright_doom[] = {
   // [crispy] common textures

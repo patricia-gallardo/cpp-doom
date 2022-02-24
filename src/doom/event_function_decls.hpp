@@ -5,9 +5,9 @@
 #ifndef CRISPY_DOOM_EVENT_FUNCTION_DECLS_HPP
 #define CRISPY_DOOM_EVENT_FUNCTION_DECLS_HPP
 
-using mobj_t   = struct mobj_s;
-using player_t = struct player_s;
-using pspdef_t = struct pspdef_s;
+struct mobj_t;
+struct player_t;
+struct pspdef_t;
 
 extern void A_Light0(mobj_t * mo, player_t * player, pspdef_t * psp);
 extern void A_WeaponReady(mobj_t * mo, player_t * player, pspdef_t * psp);

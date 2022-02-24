@@ -26,14 +26,14 @@
 
 constexpr auto MAX_MUS_ENTRIES = 65; // [crispy] 0 to 64 inclusive
 
-typedef struct musinfo_s {
+struct musinfo_t {
   mobj_t * mapthing;
   mobj_t * lastmapthing;
   int      tics;
   int      current_item;
   int      items[MAX_MUS_ENTRIES];
   bool     from_savegame;
-} musinfo_t;
+};
 
 extern musinfo_t musinfo;
 

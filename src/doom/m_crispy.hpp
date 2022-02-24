@@ -20,11 +20,10 @@
 #ifndef __M_CRISPY__
 #define __M_CRISPY__
 
-typedef struct
-{
+struct multiitem_t {
   int    value;
   char * name;
-} multiitem_t;
+};
 
 extern multiitem_t multiitem_bobfactor[NUM_BOBFACTORS];
 extern multiitem_t multiitem_brightmaps[NUM_BRIGHTMAPS];

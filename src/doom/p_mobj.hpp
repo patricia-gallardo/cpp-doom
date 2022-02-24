@@ -197,7 +197,7 @@ enum mobjflag_t
 };
 
 // Map Object definition.
-typedef struct mobj_s {
+struct mobj_t {
   // List: thinker links.
   thinker_t thinker;
 
@@ -220,7 +220,7 @@ typedef struct mobj_s {
   mobj_t * bnext {};
   mobj_t * bprev {};
 
-  struct subsector_s * subsector {};
+  struct subsector_t * subsector {};
 
   // The closest interval over all contacted Sectors.
   fixed_t floorz {};
@@ -284,6 +284,6 @@ typedef struct mobj_s {
   fixed_t oldy {};
   fixed_t oldz {};
   angle_t oldangle {};
-} mobj_t;
+};
 
 #endif

@@ -70,7 +70,7 @@ enum cheat_t
 //
 // Extended player object info: player_t
 //
-typedef struct player_s {
+struct player_t {
   mobj_t *      mo;
   playerstate_t playerstate;
   ticcmd_t      cmd;
@@ -185,14 +185,13 @@ typedef struct player_s {
 
   // [crispy] negative player health
   int neghealth;
-} player_t;
+};
 
 //
 // INTERMISSION
 // Structure passed e.g. to WI_Start(wb)
 //
-typedef struct
-{
+struct wbplayerstruct_t {
   bool in; // whether the player is in game
 
   // Player stats, kills, collected items etc.
@@ -202,11 +201,9 @@ typedef struct
   int stime;
   int frags[4];
   int score; // current score on entry, modified on return
+};
 
-} wbplayerstruct_t;
-
-typedef struct
-{
+struct wbstartstruct_t {
   int epsd; // episode # (0-2)
 
   // if true, splash the secret level
@@ -231,6 +228,6 @@ typedef struct
 
   // [crispy] CPhipps - total game time for completed levels so far
   int totaltimes;
-} wbstartstruct_t;
+};
 
 #endif
