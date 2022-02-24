@@ -50,40 +50,34 @@ int prndindex = 0;
 int crndindex = 0;
 
 // Which one is deterministic?
-int P_Random()
-{
-    prndindex = (prndindex + 1) & 0xff;
-    return rndtable[prndindex];
+int P_Random() {
+  prndindex = (prndindex + 1) & 0xff;
+  return rndtable[prndindex];
 }
 
-int M_Random()
-{
-    g_doomstat_globals->rndindex = (g_doomstat_globals->rndindex + 1) & 0xff;
-    return rndtable[g_doomstat_globals->rndindex];
+int M_Random() {
+  g_doomstat_globals->rndindex = (g_doomstat_globals->rndindex + 1) & 0xff;
+  return rndtable[g_doomstat_globals->rndindex];
 }
 
 // [crispy] our own private random function
-int Crispy_Random()
-{
-    crndindex = (crndindex + 1) & 0xff;
-    return rndtable[crndindex];
+int Crispy_Random() {
+  crndindex = (crndindex + 1) & 0xff;
+  return rndtable[crndindex];
 }
 
-void M_ClearRandom()
-{
-    g_doomstat_globals->rndindex = prndindex = 0;
-    crndindex            = 0;
+void M_ClearRandom() {
+  g_doomstat_globals->rndindex = prndindex = 0;
+  crndindex                                = 0;
 }
 
 // inspired by the same routine in Eternity, thanks haleyjd
-int P_SubRandom()
-{
-    int r = P_Random();
-    return r - P_Random();
+int P_SubRandom() {
+  int r = P_Random();
+  return r - P_Random();
 }
 
-int Crispy_SubRandom()
-{
-    int r = Crispy_Random();
-    return r - Crispy_Random();
+int Crispy_SubRandom() {
+  int r = Crispy_Random();
+  return r - Crispy_Random();
 }

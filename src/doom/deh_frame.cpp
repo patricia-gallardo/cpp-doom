@@ -34,32 +34,28 @@ DEH_MAPPING("Unknown 2", misc2)
 DEH_UNSUPPORTED_MAPPING("Codep frame")
 DEH_END_MAPPING
 
-static void *DEH_FrameStart(deh_context_t *context, char *line)
-{
-    int      frame_number = 0;
+static void *DEH_FrameStart(deh_context_t *context, char *line) {
+  int frame_number = 0;
 
-    if (sscanf(line, "Frame %i", &frame_number) != 1)
-    {
-        DEH_Warning(context, "Parse error on section start");
-        return nullptr;
-    }
+  if (sscanf(line, "Frame %i", &frame_number) != 1) {
+    DEH_Warning(context, "Parse error on section start");
+    return nullptr;
+  }
 
-    if (frame_number < 0 || frame_number >= NUMSTATES)
-    {
-        DEH_Warning(context, "Invalid frame number: %i", frame_number);
-        return nullptr;
-    }
+  if (frame_number < 0 || frame_number >= NUMSTATES) {
+    DEH_Warning(context, "Invalid frame number: %i", frame_number);
+    return nullptr;
+  }
 
-    if (frame_number >= DEH_VANILLA_NUMSTATES)
-    {
-        DEH_Warning(context, "Attempt to modify frame %i: this will cause "
-                             "problems in Vanilla dehacked.",
-            frame_number);
-    }
+  if (frame_number >= DEH_VANILLA_NUMSTATES) {
+    DEH_Warning(context, "Attempt to modify frame %i: this will cause "
+                         "problems in Vanilla dehacked.",
+                frame_number);
+  }
 
-    state_t *state = &states[frame_number];
+  state_t *state = &states[frame_number];
 
-    return state;
+  return state;
 }
 
 // Simulate a frame overflow: Doom has 967 frames in the states[] array, but
@@ -70,46 +66,41 @@ static void *DEH_FrameStart(deh_context_t *context, char *line)
 // This is noticable in Batman Doom where it is impossible to switch weapons
 // away from the fist once selected.
 
-static void DEH_FrameParseLine(deh_context_t *context, char *line, void *tag)
-{
-    char *   variable_name = nullptr, *value = nullptr;
+static void DEH_FrameParseLine(deh_context_t *context, char *line, void *tag) {
+  char *variable_name = nullptr, *value = nullptr;
 
-    if (tag == nullptr)
-        return;
+  if (tag == nullptr)
+    return;
 
-    auto *state = reinterpret_cast<state_t *>(tag);
+  auto *state = reinterpret_cast<state_t *>(tag);
 
-    // Parse the assignment
+  // Parse the assignment
 
-    if (!DEH_ParseAssignment(line, &variable_name, &value))
-    {
-        // Failed to parse
+  if (!DEH_ParseAssignment(line, &variable_name, &value)) {
+    // Failed to parse
 
-        DEH_Warning(context, "Failed to parse assignment");
-        return;
-    }
+    DEH_Warning(context, "Failed to parse assignment");
+    return;
+  }
 
-    // all values are integers
+  // all values are integers
 
-    int ivalue = std::atoi(value);
+  int ivalue = std::atoi(value);
 
-
-    DEH_SetMapping(context, &state_mapping, state, variable_name, ivalue);
+  DEH_SetMapping(context, &state_mapping, state, variable_name, ivalue);
 }
 
-static void DEH_FrameSHA1Sum(sha1_context_t *context)
-{
-    for (auto & state : states)
-    {
-        DEH_StructSHA1Sum(context, &state_mapping, &state);
-    }
+static void DEH_FrameSHA1Sum(sha1_context_t *context) {
+  for (auto &state : states) {
+    DEH_StructSHA1Sum(context, &state_mapping, &state);
+  }
 }
 
 deh_section_t deh_section_frame = {
-    "Frame",
-    nullptr,
-    DEH_FrameStart,
-    DEH_FrameParseLine,
-    nullptr,
-    DEH_FrameSHA1Sum,
+  "Frame",
+  nullptr,
+  DEH_FrameStart,
+  DEH_FrameParseLine,
+  nullptr,
+  DEH_FrameSHA1Sum,
 };
