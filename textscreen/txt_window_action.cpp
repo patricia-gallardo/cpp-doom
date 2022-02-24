@@ -26,136 +26,121 @@
 #include "txt_window.hpp"
 #include "txt_window_action.hpp"
 
-static void TXT_WindowActionSizeCalc(void *uncast_action)
-{
-    auto *action = reinterpret_cast<txt_window_action_t *>(uncast_action);
-    char buf[10];
+static void TXT_WindowActionSizeCalc(void *uncast_action) {
+  auto *action = reinterpret_cast<txt_window_action_t *>(uncast_action);
+  char  buf[10];
 
-    TXT_GetKeyDescription(action->key, buf, sizeof(buf));
+  TXT_GetKeyDescription(action->key, buf, sizeof(buf));
 
-    // Width is label length, plus key description length, plus '='
-    // and two surrounding spaces.
+  // Width is label length, plus key description length, plus '='
+  // and two surrounding spaces.
 
-    action->widget.w = TXT_UTF8_Strlen(action->label)
+  action->widget.w = TXT_UTF8_Strlen(action->label)
                      + TXT_UTF8_Strlen(buf) + 3;
-    action->widget.h = 1;
+  action->widget.h = 1;
 }
 
-static void TXT_WindowActionDrawer(void *uncast_action)
-{
-    auto *action = reinterpret_cast<txt_window_action_t *>(uncast_action);
-    char buf[10];
+static void TXT_WindowActionDrawer(void *uncast_action) {
+  auto *action = reinterpret_cast<txt_window_action_t *>(uncast_action);
+  char  buf[10];
 
-    TXT_GetKeyDescription(action->key, buf, sizeof(buf));
+  TXT_GetKeyDescription(action->key, buf, sizeof(buf));
 
-    int hovering = TXT_HoveringOverWidget(action);
-    TXT_SetWidgetBG(action);
+  int hovering = TXT_HoveringOverWidget(action);
+  TXT_SetWidgetBG(action);
 
-    TXT_DrawString(" ");
-    TXT_FGColor(hovering ? TXT_COLOR_BRIGHT_WHITE : TXT_COLOR_BRIGHT_GREEN);
-    TXT_DrawString(buf);
-    TXT_FGColor(TXT_COLOR_BRIGHT_CYAN);
-    TXT_DrawString("=");
+  TXT_DrawString(" ");
+  TXT_FGColor(hovering ? TXT_COLOR_BRIGHT_WHITE : TXT_COLOR_BRIGHT_GREEN);
+  TXT_DrawString(buf);
+  TXT_FGColor(TXT_COLOR_BRIGHT_CYAN);
+  TXT_DrawString("=");
 
-    TXT_FGColor(TXT_COLOR_BRIGHT_WHITE);
-    TXT_DrawString(action->label);
-    TXT_DrawString(" ");
+  TXT_FGColor(TXT_COLOR_BRIGHT_WHITE);
+  TXT_DrawString(action->label);
+  TXT_DrawString(" ");
 }
 
-static void TXT_WindowActionDestructor(void *uncast_action)
-{
-    auto *action = reinterpret_cast<txt_window_action_t *>(uncast_action);
+static void TXT_WindowActionDestructor(void *uncast_action) {
+  auto *action = reinterpret_cast<txt_window_action_t *>(uncast_action);
 
-    free(action->label);
+  free(action->label);
 }
 
-static int TXT_WindowActionKeyPress(void *uncast_action, int key)
-{
-    auto *action = reinterpret_cast<txt_window_action_t *>(uncast_action);
+static int TXT_WindowActionKeyPress(void *uncast_action, int key) {
+  auto *action = reinterpret_cast<txt_window_action_t *>(uncast_action);
 
-    if (tolower(key) == tolower(action->key))
-    {
-        TXT_EmitSignal(action, "pressed");
-        return 1;
-    }
-    
-    return 0;
+  if (tolower(key) == tolower(action->key)) {
+    TXT_EmitSignal(action, "pressed");
+    return 1;
+  }
+
+  return 0;
 }
 
 static void TXT_WindowActionMousePress(void *uncast_action,
-                                       int, int, int b)
-{
-    auto *action = reinterpret_cast<txt_window_action_t *>(uncast_action);
+                                       int, int, int b) {
+  auto *action = reinterpret_cast<txt_window_action_t *>(uncast_action);
 
-    // Simulate a press of the key
+  // Simulate a press of the key
 
-    if (b == TXT_MOUSE_LEFT)
-    {
-        TXT_WindowActionKeyPress(action, action->key);
-    }
+  if (b == TXT_MOUSE_LEFT) {
+    TXT_WindowActionKeyPress(action, action->key);
+  }
 }
 
-txt_widget_class_t txt_window_action_class =
-{
-    TXT_AlwaysSelectable,
-    TXT_WindowActionSizeCalc,
-    TXT_WindowActionDrawer,
-    TXT_WindowActionKeyPress,
-    TXT_WindowActionDestructor,
-    TXT_WindowActionMousePress,
-    nullptr,
+txt_widget_class_t txt_window_action_class = {
+  TXT_AlwaysSelectable,
+  TXT_WindowActionSizeCalc,
+  TXT_WindowActionDrawer,
+  TXT_WindowActionKeyPress,
+  TXT_WindowActionDestructor,
+  TXT_WindowActionMousePress,
+  nullptr,
 };
 
-txt_window_action_t *TXT_NewWindowAction(int key, const char *label)
-{
-    auto *action = create_struct<txt_window_action_t>();
+txt_window_action_t *TXT_NewWindowAction(int key, const char *label) {
+  auto *action = create_struct<txt_window_action_t>();
 
-    TXT_InitWidget(action, &txt_window_action_class);
-    action->key = key;
-    action->label = strdup(label);
+  TXT_InitWidget(action, &txt_window_action_class);
+  action->key   = key;
+  action->label = strdup(label);
 
-    return action;
+  return action;
 }
 
-static void WindowCloseCallback(void *, void *uncast_window)
-{
-    auto *window = reinterpret_cast<txt_window_t *>(uncast_window);
+static void WindowCloseCallback(void *, void *uncast_window) {
+  auto *window = reinterpret_cast<txt_window_t *>(uncast_window);
 
-    TXT_CloseWindow(window);
+  TXT_CloseWindow(window);
 }
 
-static void WindowSelectCallback(void *, void *uncast_window)
-{
-    auto *window = reinterpret_cast<txt_window_t *>(uncast_window);
+static void WindowSelectCallback(void *, void *uncast_window) {
+  auto *window = reinterpret_cast<txt_window_t *>(uncast_window);
 
-    TXT_WidgetKeyPress(window, KEY_ENTER);
+  TXT_WidgetKeyPress(window, KEY_ENTER);
 }
 
 // An action with the name "close" the closes the window
 
-txt_window_action_t *TXT_NewWindowEscapeAction(txt_window_t *window)
-{
-    txt_window_action_t *action = TXT_NewWindowAction(KEY_ESCAPE, "Close");
-    TXT_SignalConnect(action, "pressed", WindowCloseCallback, window);
+txt_window_action_t *TXT_NewWindowEscapeAction(txt_window_t *window) {
+  txt_window_action_t *action = TXT_NewWindowAction(KEY_ESCAPE, "Close");
+  TXT_SignalConnect(action, "pressed", WindowCloseCallback, window);
 
-    return action;
+  return action;
 }
 
 // Exactly the same as the above, but the button is named "abort"
 
-txt_window_action_t *TXT_NewWindowAbortAction(txt_window_t *window)
-{
-    txt_window_action_t *action = TXT_NewWindowAction(KEY_ESCAPE, "Abort");
-    TXT_SignalConnect(action, "pressed", WindowCloseCallback, window);
+txt_window_action_t *TXT_NewWindowAbortAction(txt_window_t *window) {
+  txt_window_action_t *action = TXT_NewWindowAction(KEY_ESCAPE, "Abort");
+  TXT_SignalConnect(action, "pressed", WindowCloseCallback, window);
 
-    return action;
+  return action;
 }
 
-txt_window_action_t *TXT_NewWindowSelectAction(txt_window_t *window)
-{
-    txt_window_action_t *action = TXT_NewWindowAction(KEY_ENTER, "Select");
-    TXT_SignalConnect(action, "pressed", WindowSelectCallback, window);
+txt_window_action_t *TXT_NewWindowSelectAction(txt_window_t *window) {
+  txt_window_action_t *action = TXT_NewWindowAction(KEY_ENTER, "Select");
+  TXT_SignalConnect(action, "pressed", WindowSelectCallback, window);
 
-    return action;
+  return action;
 }
-
