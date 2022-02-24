@@ -23,11 +23,10 @@
 
 #define MAX_QUEUE_SIZE 16
 
-typedef struct
-{
+struct packet_queue_t {
   net_packet_t * packets[MAX_QUEUE_SIZE];
   int            head, tail;
-} packet_queue_t;
+};
 
 static packet_queue_t client_queue;
 static packet_queue_t server_queue;

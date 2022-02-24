@@ -34,8 +34,7 @@ struct dirent {
  * except as an argument to one of the functions below.
  * dd_stat field is now int (was short in older versions).
  */
-typedef struct
-{
+struct DIR {
   /* disk transfer area for this dir */
   struct _finddata_t dd_dta;
 
@@ -57,7 +56,7 @@ typedef struct
 
   /* given path for dir with search pattern (struct is extended) */
   char dd_name[1];
-} DIR;
+};
 
 DIR *                 opendir(const char *);
 struct dirent *       readdir(DIR *);

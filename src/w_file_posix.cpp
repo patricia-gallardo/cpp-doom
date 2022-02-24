@@ -32,11 +32,10 @@
 #include "w_file.hpp"
 #include "z_zone.hpp"
 
-typedef struct
-{
+struct posix_wad_file_t {
   wad_file_t wad;
   int        handle;
-} posix_wad_file_t;
+};
 
 extern wad_file_class_t posix_wad_file;
 

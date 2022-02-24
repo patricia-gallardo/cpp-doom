@@ -25,11 +25,10 @@
 // Flats?
 //
 // a pic is an unmasked block of pixels
-[[maybe_unused]] typedef struct
-{
+[[maybe_unused]] struct pic_t {
   uint8_t width {};
   uint8_t height {};
   uint8_t data {};
-} pic_t;
+};
 
 #endif

@@ -24,8 +24,7 @@
 
 using wad_file_t = struct _wad_file_s;
 
-typedef struct
-{
+struct wad_file_class_t {
   // Open a file for reading.
   wad_file_t * (*OpenFile)(const char * path);
 
@@ -35,7 +34,7 @@ typedef struct
   // Read data from the specified position in the file into the
   // provided buffer.  Returns the number of bytes read.
   size_t (*Read)(wad_file_t * file, unsigned int offset, void * buffer, size_t buffer_len);
-} wad_file_class_t;
+};
 
 struct _wad_file_s {
   // Class of this file.

@@ -27,8 +27,7 @@
 
 using netgame_startup_callback_t = bool (*)(int, int);
 
-typedef struct
-{
+struct loop_interface_t {
   // Read events from the event queue, and process them.
 
   void (*ProcessEvents)();
@@ -45,7 +44,7 @@ typedef struct
   // Run the menu (runs independently of the game).
 
   void (*RunMenu)();
-} loop_interface_t;
+};
 
 // Register callback functions for the main loop code to use.
 void D_RegisterLoopCallbacks(loop_interface_t * i);

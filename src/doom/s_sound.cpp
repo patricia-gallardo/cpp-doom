@@ -65,8 +65,7 @@ static int stereo_swing;
 [[maybe_unused]] constexpr auto NORM_PRIORITY = 64;
 constexpr auto                  NORM_SEP      = 128;
 
-typedef struct
-{
+struct channel_t {
   // sound information (if null, channel avail.)
   sfxinfo_t * sfxinfo;
 
@@ -77,8 +76,7 @@ typedef struct
   int handle;
 
   int pitch;
-
-} channel_t;
+};
 
 // The set of channels available
 
@@ -105,10 +103,10 @@ int snd_channels = 8;
 // [crispy] add support for alternative music tracks for Final Doom's
 // TNT and Plutonia as introduced in DoomMetalVol5.wad
 
-typedef struct {
+struct altmusic_t {
   const char * const from;
   const char * const to;
-} altmusic_t;
+};
 
 static const altmusic_t altmusic_tnt[] = {
   {"runnin",  "sadist"}, // MAP01

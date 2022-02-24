@@ -35,13 +35,12 @@
 
 constexpr auto MAX_INSTRUMENTS = 256;
 
-typedef struct
-{
+struct gus_config_t {
   char *       patch_names[MAX_INSTRUMENTS];
   int          used[MAX_INSTRUMENTS];
   int          mapping[MAX_INSTRUMENTS];
   unsigned int count;
-} gus_config_t;
+};
 
 static gusconf_t gusconf_s = {
   .gus_patch_path = const_cast<char *>(""),

@@ -85,12 +85,11 @@ static void AddIWADDir(char * dir) {
 #define WIN32_LEAN_AND_MEAN
 #include <windows.h>
 
-typedef struct
-{
+struct registry_value_t {
   HKEY   root;
   char * path;
   char * value;
-} registry_value_t;
+};
 
 #define UNINSTALLER_STRING "\\uninstl.exe /S "
 

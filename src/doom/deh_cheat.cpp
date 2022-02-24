@@ -24,11 +24,10 @@
 #include "am_map.hpp"
 #include "st_stuff.hpp"
 
-typedef struct
-{
+struct deh_cheat_t {
   const char * name;
   cheatseq_t * seq;
-} deh_cheat_t;
+};
 
 static deh_cheat_t allcheats[] = {
   {"Change music",      &g_st_stuff_globals->cheat_mus              },

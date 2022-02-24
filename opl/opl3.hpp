@@ -93,11 +93,11 @@ struct _opl3_channel {
   Bit8u          ch_num;
 };
 
-typedef struct _opl3_writebuf {
+struct opl3_writebuf {
   Bit64u time;
   Bit16u reg;
   Bit8u  data;
-} opl3_writebuf;
+};
 
 struct _opl3_chip {
   opl3_channel channel[18];

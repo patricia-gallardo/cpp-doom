@@ -142,15 +142,15 @@ struct menuitem_t {
   char * alttext {}; // [crispy] alternative text for the Options menu
 };
 
-typedef struct menu_s {
+struct menu_t {
   short           numitems;  // # of menu items
-  struct menu_s * prevMenu;  // previous menu
+  struct menu_t * prevMenu;  // previous menu
   menuitem_t *    menuitems; // menu items
   void (*routine)();         // draw routine
   short x;
   short y;      // x,y of menu
   short lastOn; // last item user was on in menu
-} menu_t;
+};
 
 short itemOn;           // menu item skull is on
 short skullAnimCounter; // skull animation counter

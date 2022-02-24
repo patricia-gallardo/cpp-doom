@@ -15,7 +15,7 @@
 #ifndef TXT_KEY_INPUT_H
 #define TXT_KEY_INPUT_H
 
-typedef struct txt_key_input_s txt_key_input_t;
+struct txt_key_input_t;
 
 #include "txt_widget.hpp"
 
@@ -24,7 +24,7 @@ typedef struct txt_key_input_s txt_key_input_t;
 // allowing a key to be selected.
 //
 
-struct txt_key_input_s {
+struct txt_key_input_t {
   txt_widget_t widget;
   int *        variable;
   int          check_conflicts;

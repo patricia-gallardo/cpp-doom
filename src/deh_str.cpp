@@ -26,11 +26,10 @@
 #include "z_zone.hpp"
 #include "memory.hpp"
 
-typedef struct
-{
+struct deh_substitution_t {
   char * from_text;
   char * to_text;
-} deh_substitution_t;
+};
 
 static deh_substitution_t ** hash_table = nullptr;
 static int                   hash_table_entries;

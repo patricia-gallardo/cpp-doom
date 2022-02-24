@@ -34,27 +34,27 @@ struct overloaded : Ts... {
 template <class... Ts>
 overloaded(Ts...) -> overloaded<Ts...>;
 
-using mobj_t        = struct mobj_s;
-using player_t      = struct player_s;
-using pspdef_t      = struct pspdef_s;
-using thinker_t     = struct thinker_s;
-using floormove_t   = struct floormove_s;
-using polyevent_t   = struct polyevent_s;
-using plat_t        = struct plat_s;
-using ceiling_t     = struct ceiling_s;
-using light_t       = struct light_s;
-using ssthinker_t   = struct ssthinker_s;
-using vldoor_t      = struct vldoor_s;
-using phase_t       = struct phase_s;
-using acs_t         = struct acs_s;
-using pillar_t      = struct pillar_s;
-using polydoor_t    = struct polydoor_s;
-using floorWaggle_t = struct floorWaggle_s;
-using lightflash_t  = struct lightflash_s;
-using strobe_t      = struct strobe_s;
-using glow_t        = struct glow_s;
-using fireflicker_t = struct fireflicker_s;
-using slidedoor_t   = struct slidedoor_s;
+struct mobj_t;
+struct player_t;
+struct pspdef_t;
+struct thinker_t;
+struct floormove_t;
+struct polyevent_t;
+struct plat_t;
+struct ceiling_t;
+struct light_t;
+struct ssthinker_t;
+struct vldoor_t;
+struct phase_t;
+struct acs_t;
+struct pillar_t;
+struct polydoor_t;
+struct floorWaggle_t;
+struct lightflash_t;
+struct strobe_t;
+struct glow_t;
+struct fireflicker_t;
+struct slidedoor_t;
 
 struct valid_hook {
   explicit valid_hook(bool is_valid)
@@ -143,14 +143,14 @@ constexpr int mobj_player_psp_param_action_hook = alternative_index_v<mobj_playe
 //  function pointer to a routine to handle
 //  an actor.
 using actionf_t = action_hook;
-typedef actionf_t think_t;
+using think_t = actionf_t;
 
 // Doubly linked list of actors.
-typedef struct thinker_s {
-  struct thinker_s * prev {};
-  struct thinker_s * next {};
+struct thinker_t {
+  struct thinker_t * prev {};
+  struct thinker_t * next {};
   think_t            function {};
-} thinker_t;
+};
 
 constexpr void call_thinker(thinker_t * thinker) {
   std::visit(

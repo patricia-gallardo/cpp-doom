@@ -80,8 +80,7 @@ typedef PACKED_STRUCT(
 
 // Data associated with a channel of a track that is currently playing.
 
-typedef struct
-{
+struct opl_channel_data_t {
   // The instrument currently used for this track.
 
   genmidi_instr_t * instrument;
@@ -98,17 +97,15 @@ typedef struct
   // Pitch bend value:
 
   int bend;
-
-} opl_channel_data_t;
+};
 
 // Data associated with a track that is currently playing.
 
-typedef struct
-{
+struct opl_track_data_t {
   // Track iterator used to read new events.
 
   midi_track_iter_t * iter;
-} opl_track_data_t;
+};
 
 using opl_voice_t = struct opl_voice_s;
 

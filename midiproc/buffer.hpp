@@ -22,18 +22,18 @@
 
 #define BUFFER_SIZE 1024
 
-typedef struct {
+struct buffer_t {
   uint8_t   buffer[BUFFER_SIZE]; // Buffer.
   uint8_t * buffer_end;          // End of Buffer.
   uint8_t * data;                // Start of actual data.
   uint8_t * data_end;            // End of actual data.
   int       data_len;            // Length of actual data.
-} buffer_t;
+};
 
-typedef struct {
+struct buffer_reader_t {
   buffer_t * buffer;
   uint8_t *  pos;
-} buffer_reader_t;
+};
 
 buffer_t * NewBuffer();
 void       DeleteBuffer(buffer_t * buf);

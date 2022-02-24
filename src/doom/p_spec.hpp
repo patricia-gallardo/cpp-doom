@@ -100,16 +100,15 @@ int EV_DoDonut(line_t * line);
 //
 // P_LIGHTS
 //
-typedef struct fireflicker_s {
+struct fireflicker_t {
   thinker_t  thinker;
   sector_t * sector;
   int        count;
   int        maxlight;
   int        minlight;
+};
 
-} fireflicker_t;
-
-typedef struct lightflash_s {
+struct lightflash_t {
   thinker_t  thinker;
   sector_t * sector;
   int        count;
@@ -117,10 +116,9 @@ typedef struct lightflash_s {
   int        minlight;
   int        maxtime;
   int        mintime;
+};
 
-} lightflash_t;
-
-typedef struct strobe_s {
+struct strobe_t {
   thinker_t  thinker;
   sector_t * sector;
   int        count;
@@ -128,17 +126,15 @@ typedef struct strobe_s {
   int        maxlight;
   int        darktime;
   int        brighttime;
+};
 
-} strobe_t;
-
-typedef struct glow_s {
+struct glow_t {
   thinker_t  thinker;
   sector_t * sector;
   int        minlight;
   int        maxlight;
   int        direction;
-
-} glow_t;
+};
 
 #define GLOWSPEED    8
 #define STROBEBRIGHT 5
@@ -182,15 +178,13 @@ enum bwhere_e
 
 };
 
-typedef struct
-{
+struct button_t {
   line_t *      line;
   bwhere_e      where;
   int           btexture;
   int           btimer;
   degenmobj_t * soundorg;
-
-} button_t;
+};
 
 // max # of wall switches in a level
 #define MAXSWITCHES 50
@@ -231,7 +225,7 @@ enum plattype_e
 
 };
 
-typedef struct plat_s {
+struct plat_t {
   thinker_t  thinker;
   sector_t * sector;
   fixed_t    speed;
@@ -244,8 +238,7 @@ typedef struct plat_s {
   bool       crush;
   int        tag;
   plattype_e type;
-
-} plat_t;
+};
 
 #define PLATWAIT  3
 #define PLATSPEED FRACUNIT
@@ -280,7 +273,7 @@ enum vldoor_e
 
 };
 
-typedef struct vldoor_s {
+struct vldoor_t {
   thinker_t  thinker;
   vldoor_e   type;
   sector_t * sector;
@@ -295,8 +288,7 @@ typedef struct vldoor_s {
   // (keep in case a door going down is reset)
   // when it reaches 0, start going down
   int topcountdown;
-
-} vldoor_t;
+};
 
 #define VDOORSPEED FRACUNIT * 2
 #define VDOORWAIT  150
@@ -342,7 +334,7 @@ enum sdt_e
 
 
 
-typedef struct
+struct slidedoor_t
 {
     thinker_t	thinker;
     sdt_e	type;
@@ -354,11 +346,11 @@ typedef struct
     sector_t*	backsector;
     sd_e	 status;
 
-} slidedoor_t;
+} ;
 
 
 
-typedef struct
+struct slidename_t
 {
     char	frontFrame1[9];
     char	frontFrame2[9];
@@ -369,16 +361,16 @@ typedef struct
     char	backFrame3[9];
     char	backFrame4[9];
     
-} slidename_t;
+} ;
 
 
 
-typedef struct
+struct slideframe_t
 {
     int             frontFrames[4];
     int             backFrames[4];
 
-} slideframe_t;
+} ;
 
 
 
@@ -413,7 +405,7 @@ enum ceiling_e
 
 };
 
-typedef struct ceiling_s {
+struct ceiling_t {
   thinker_t  thinker;
   ceiling_e  type;
   sector_t * sector;
@@ -428,8 +420,7 @@ typedef struct ceiling_s {
   // ID
   int tag;
   int olddirection;
-
-} ceiling_t;
+};
 
 #define CEILSPEED   FRACUNIT
 #define CEILWAIT    150
@@ -491,7 +482,7 @@ enum stair_e
 
 };
 
-typedef struct floormove_s {
+struct floormove_t {
   thinker_t  thinker;
   floor_e    type;
   int        crush;
@@ -501,8 +492,7 @@ typedef struct floormove_s {
   short      texture;
   fixed_t    floordestheight;
   fixed_t    speed;
-
-} floormove_t;
+};
 
 #define FLOORSPEED FRACUNIT
 

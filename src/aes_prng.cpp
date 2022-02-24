@@ -90,12 +90,11 @@ constexpr auto                  AES_MAX_KEYLENGTH_U32 = (AES_MAX_KEYLENGTH / siz
  * Please ensure that the first two fields are 16-byte aligned
  * relative to the start of the structure, i.e., don't move them!
  */
-typedef struct
-{
+struct aes_context_t {
   uint32_t key_enc[AES_MAX_KEYLENGTH_U32];
   uint32_t key_dec[AES_MAX_KEYLENGTH_U32];
   uint32_t key_length;
-} aes_context_t;
+};
 
 static inline uint8_t get_byte(const uint32_t x, const unsigned n) {
   return static_cast<uint8_t>(x >> (n << 3));

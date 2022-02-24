@@ -21,11 +21,10 @@
 #include "w_file.hpp"
 #include "z_zone.hpp"
 
-typedef struct
-{
+struct stdc_wad_file_t {
   wad_file_t wad;
   FILE *     fstream;
-} stdc_wad_file_t;
+};
 
 extern wad_file_class_t stdc_wad_file;
 

@@ -246,21 +246,21 @@ static void saveg_write_actionf_t(actionf_t & actionf) {
 //
 
 static void saveg_read_thinker_t(thinker_t * str) {
-  // struct thinker_s* prev;
-  str->prev = static_cast<thinker_s *>(saveg_readp());
+  // struct thinker_t* prev;
+  str->prev = static_cast<thinker_t *>(saveg_readp());
 
-  // struct thinker_s* next;
-  str->next = static_cast<thinker_s *>(saveg_readp());
+  // struct thinker_t* next;
+  str->next = static_cast<thinker_t *>(saveg_readp());
 
   // think_t function;
   saveg_read_think_t(str->function);
 }
 
 static void saveg_write_thinker_t(thinker_t * str) {
-  // struct thinker_s* prev;
+  // struct thinker_t* prev;
   saveg_writep(str->prev);
 
-  // struct thinker_s* next;
+  // struct thinker_t* next;
   saveg_writep(str->next);
 
   // think_t function;
@@ -307,8 +307,8 @@ static void saveg_read_mobj_t(mobj_t * str) {
   // struct mobj_s* bprev;
   str->bprev = static_cast<mobj_t *>(saveg_readp());
 
-  // struct subsector_s* subsector;
-  str->subsector = static_cast<subsector_s *>(saveg_readp());
+  // struct subsector_t* subsector;
+  str->subsector = static_cast<subsector_t *>(saveg_readp());
 
   // fixed_t floorz;
   str->floorz = saveg_read32();
@@ -464,7 +464,7 @@ static void saveg_write_mobj_t(mobj_t * str) {
   // struct mobj_s* bprev;
   saveg_writep(str->bprev);
 
-  // struct subsector_s* subsector;
+  // struct subsector_t* subsector;
   saveg_writep(str->subsector);
 
   // fixed_t floorz;

@@ -66,8 +66,7 @@ constexpr auto MAX_RETRIES = 5;
 
 using net_reliable_packet_t = struct net_reliable_packet_s;
 
-typedef struct
-{
+struct net_connection_t {
   net_connstate_t         state;
   net_disconnect_reason_t disconnect_reason;
   net_addr_t *            addr;
@@ -79,7 +78,7 @@ typedef struct
   net_reliable_packet_t * reliable_packets;
   int                     reliable_send_seq;
   int                     reliable_recv_seq;
-} net_connection_t;
+};
 
 void           NET_Conn_SendPacket(net_connection_t * conn, net_packet_t * packet);
 void           NET_Conn_InitClient(net_connection_t * conn, net_addr_t * addr, net_protocol_t protocol);

@@ -76,9 +76,9 @@ void P_CreateBlockMap() {
   //     either the x or y direction, to the block which contains the linedef.
 
   {
-    typedef struct {
+    struct bmap_t {
       int n, nalloc, *list;
-    } bmap_t;                                                                                                // blocklist structure
+    };                                                                                                       // blocklist structure
     auto     tot  = static_cast<unsigned int>(g_p_local_globals->bmapwidth * g_p_local_globals->bmapheight); // size of blockmap
     bmap_t * bmap = static_cast<bmap_t *>(calloc(sizeof *bmap, tot));                                        // array of blocklists
     int      x, y, adx, ady, bend;
