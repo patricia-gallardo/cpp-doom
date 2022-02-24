@@ -1446,7 +1446,6 @@ void P_UnArchivePlayers() {
 //
 void P_ArchiveWorld() {
   int        i;
-  int        j;
   sector_t * sec;
   line_t *   li;
   side_t *   si;
@@ -1467,7 +1466,7 @@ void P_ArchiveWorld() {
     saveg_write16(static_cast<short>(li->flags));
     saveg_write16(li->special);
     saveg_write16(li->tag);
-    for (j = 0; j < 2; j++) {
+    for (int j = 0; j < 2; j++) {
       if (li->sidenum[j] == NO_INDEX) // [crispy] extended nodes
         continue;
 
@@ -1487,7 +1486,6 @@ void P_ArchiveWorld() {
 //
 void P_UnArchiveWorld() {
   int        i;
-  int        j;
   sector_t * sec;
   line_t *   li;
   side_t *   si;
@@ -1520,7 +1518,7 @@ void P_UnArchiveWorld() {
     li->flags   = static_cast<unsigned short>(saveg_read16());
     li->special = saveg_read16();
     li->tag     = saveg_read16();
-    for (j = 0; j < 2; j++) {
+    for (int j = 0; j < 2; j++) {
       if (li->sidenum[j] == NO_INDEX) // [crispy] extended nodes
         continue;
       si                = &g_r_state_globals->sides[li->sidenum[j]];

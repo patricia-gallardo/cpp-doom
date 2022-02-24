@@ -795,11 +795,8 @@ void       I_SetGammaTable() {
 
   // [crispy] 4 intermediate gamma levels
   for (int i = 0; i < 4; i++) {
-    int j;
-
     gamma2table[2 * i + 1] = static_cast<uint8_t *>(malloc(256 * sizeof(**gamma2table)));
-
-    for (j = 0; j < 256; j++) {
+    for (int j = 0; j < 256; j++) {
       gamma2table[2 * i + 1][j] = static_cast<uint8_t>((gamma2table[2 * i][j] + gamma2table[2 * i + 2][j]) / 2);
     }
   }

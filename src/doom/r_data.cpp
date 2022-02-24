@@ -571,8 +571,6 @@ void R_InitTextures() {
   mappatch_t *   mpatch;
   texpatch_t *   patch;
 
-  int j;
-
   int * maptex = nullptr;
 
   char name[9];
@@ -679,7 +677,7 @@ void R_InitTextures() {
   name[8]     = 0;
   patchlookup = zmalloc<decltype(patchlookup)>(static_cast<unsigned long>(nummappatches) * sizeof(*patchlookup), PU_STATIC, nullptr);
   for (int i = 0, k = 0; i < numpnameslumps; i++) {
-    for (j = 0; j < pnameslumps[i].nummappatches; j++) {
+    for (int j = 0; j < pnameslumps[i].nummappatches; j++) {
       int p, po;
 
       M_StringCopy(name, pnameslumps[i].name_p + j * 8, sizeof(name));
@@ -707,7 +705,7 @@ void R_InitTextures() {
 
     // [crispy] link textures to their own WAD's patch lookup table (if any)
     texturelumps[i].pnamesoffset = 0;
-    for (j = 0; j < numpnameslumps; j++) {
+    for (int j = 0; j < numpnameslumps; j++) {
       // [crispy] both are from the same WAD?
       if (lumpinfo[texturelumps[i].lumpnum]->wad_file == lumpinfo[pnameslumps[j].lumpnum]->wad_file) {
         texturelumps[i].pnamesoffset = pnameslumps[j].summappatches;
@@ -801,7 +799,7 @@ void R_InitTextures() {
     // [crispy] initialize brightmaps
     texturebrightmap[i] = R_BrightmapForTexName(texture->name);
 
-    for (j = 0; j < texture->patchcount; j++, mpatch++, patch++) {
+    for (int j = 0; j < texture->patchcount; j++, mpatch++, patch++) {
       patch->originx = SHORT(mpatch->originx);
       patch->originy = SHORT(mpatch->originy);
       // [crispy] apply offset for patches not in the
@@ -823,11 +821,11 @@ void R_InitTextures() {
     texturecolumnofs[i]  = zmalloc<unsigned *>(static_cast<unsigned long>(texture->width) * sizeof(**texturecolumnofs), PU_STATIC, 0);
     texturecolumnofs2[i] = zmalloc<unsigned *>(static_cast<unsigned long>(texture->width) * sizeof(**texturecolumnofs2), PU_STATIC, 0);
 
-    j = 1;
-    while (j * 2 <= texture->width)
-      j <<= 1;
+    int mask = 1;
+    while (mask * 2 <= texture->width)
+      mask <<= 1;
 
-    texturewidthmask[i]                 = j - 1;
+    texturewidthmask[i]                 = mask - 1;
     g_r_state_globals->textureheight[i] = texture->height << FRACBITS;
 
     totalwidth += texture->width;
@@ -954,13 +952,13 @@ static void R_InitTranMap() {
       uint8_t * bg;
       uint8_t   blend[3];
       uint8_t * tp = tranmap;
-      int       j, btmp;
+      int       btmp;
 
       I_SetPalette(playpal);
       // [crispy] background color
       for (int i = 0; i < 256; i++) {
         // [crispy] foreground color
-        for (j = 0; j < 256; j++) {
+        for (int j = 0; j < 256; j++) {
           // [crispy] shortcut: identical foreground and background
           if (i == j) {
             *tp++ = static_cast<uint8_t>(i);
@@ -1087,7 +1085,6 @@ void R_InitColormaps() {
   {
     uint8_t *      playpal = cache_lump_name<uint8_t *>("PLAYPAL", PU_STATIC);
     char           c[3];
-    int            j;
     bool           keepgray = false;
     extern uint8_t V_Colorize(uint8_t * playpal, int cr, uint8_t source, bool keepgray109);
 
@@ -1100,7 +1097,7 @@ void R_InitColormaps() {
 
     // [crispy] CRMAX - 2: don't override the original GREN and BLUE2 Boom tables
     for (int i = 0; i < static_cast<int>(cr_t::CRMAX) - 2; i++) {
-      for (j = 0; j < 256; j++) {
+      for (int j = 0; j < 256; j++) {
         cr_colors[i][j] = V_Colorize(playpal, i, static_cast<uint8_t>(j), keepgray);
       }
 
@@ -1222,7 +1219,6 @@ void R_PrecacheLevel() {
   char * texturepresent;
   char * spritepresent;
 
-  int j;
   int k;
   int lump;
 
@@ -1282,7 +1278,7 @@ void R_PrecacheLevel() {
 
     texture = textures[i];
 
-    for (j = 0; j < texture->patchcount; j++) {
+    for (int j = 0; j < texture->patchcount; j++) {
       lump = texture->patches[j].patch;
       texturememory += static_cast<int>(lumpinfo[lump]->size);
       W_CacheLumpNum(lump, PU_CACHE);
@@ -1308,7 +1304,7 @@ void R_PrecacheLevel() {
     if (!spritepresent[i])
       continue;
 
-    for (j = 0; j < g_r_state_globals->sprites[i].numframes; j++) {
+    for (int j = 0; j < g_r_state_globals->sprites[i].numframes; j++) {
       sf = &g_r_state_globals->sprites[i].spriteframes[j];
       for (k = 0; k < 8; k++) {
         lump = g_r_state_globals->firstspritelump + sf->lump[k];

@@ -811,9 +811,6 @@ static int dm_frags[MAXPLAYERS][MAXPLAYERS];
 static int dm_totals[MAXPLAYERS];
 
 void WI_initDeathmatchStats() {
-
-  int j;
-
   state           = StatCount;
   acceleratestage = 0;
   dm_state        = 1;
@@ -822,7 +819,7 @@ void WI_initDeathmatchStats() {
 
   for (int i = 0; i < MAXPLAYERS; i++) {
     if (g_doomstat_globals->playeringame[i]) {
-      for (j = 0; j < MAXPLAYERS; j++)
+      for (int j = 0; j < MAXPLAYERS; j++)
         if (g_doomstat_globals->playeringame[j])
           dm_frags[i][j] = 0;
 
@@ -834,9 +831,6 @@ void WI_initDeathmatchStats() {
 }
 
 void WI_updateDeathmatchStats() {
-
-  int j;
-
   bool stillticking;
 
   WI_updateAnimatedBack();
@@ -846,7 +840,7 @@ void WI_updateDeathmatchStats() {
 
     for (int i = 0; i < MAXPLAYERS; i++) {
       if (g_doomstat_globals->playeringame[i]) {
-        for (j = 0; j < MAXPLAYERS; j++)
+        for (int j = 0; j < MAXPLAYERS; j++)
           if (g_doomstat_globals->playeringame[j])
             dm_frags[i][j] = plrs[i].frags[j];
 
@@ -866,7 +860,7 @@ void WI_updateDeathmatchStats() {
 
     for (int i = 0; i < MAXPLAYERS; i++) {
       if (g_doomstat_globals->playeringame[i]) {
-        for (j = 0; j < MAXPLAYERS; j++) {
+        for (int j = 0; j < MAXPLAYERS; j++) {
           if (g_doomstat_globals->playeringame[j]
               && dm_frags[i][j] != plrs[i].frags[j]) {
             if (plrs[i].frags[j] < 0)
@@ -914,8 +908,6 @@ void WI_updateDeathmatchStats() {
 }
 
 void WI_drawDeathmatchStats() {
-
-  int j;
   int x;
   int y;
   int w;
@@ -975,7 +967,7 @@ void WI_drawDeathmatchStats() {
     x = DM_MATRIXX + DM_SPACINGX;
 
     if (g_doomstat_globals->playeringame[i]) {
-      for (j = 0; j < MAXPLAYERS; j++) {
+      for (int j = 0; j < MAXPLAYERS; j++) {
         if (g_doomstat_globals->playeringame[j])
           WI_drawNum(x + w, y, dm_frags[i][j], 2);
 
@@ -1476,7 +1468,6 @@ using load_callback_t = void (*)(const char *, patch_t **);
 // lumps to be loaded/unloaded into memory.
 
 static void WI_loadUnloadData(load_callback_t callback) {
-  int      j;
   char     name[9];
   anim_t * a;
 
@@ -1517,7 +1508,7 @@ static void WI_loadUnloadData(load_callback_t callback) {
     callback(DEH_String("WISPLAT"), &splat[0]);
 
     if (wbs->epsd < 3) {
-      for (j = 0; j < NUMANIMS[wbs->epsd]; j++) {
+      for (int j = 0; j < NUMANIMS[wbs->epsd]; j++) {
         a = &anims[wbs->epsd][j];
         for (index = 0; index < a->nanims; index++) {
           // MONDO HACK!

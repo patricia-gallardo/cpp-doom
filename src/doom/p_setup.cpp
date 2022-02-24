@@ -599,7 +599,6 @@ bool P_LoadBlockMap(int lump) {
 //
 void P_GroupLines() {
   line_t **     linebuffer;
-  int           j;
   line_t *      li;
   sector_t *    sector;
   subsector_t * ss;
@@ -668,7 +667,7 @@ void P_GroupLines() {
   for (int i = 0; i < g_r_state_globals->numsectors; i++, sector++) {
     M_ClearBox(bbox);
 
-    for (j = 0; j < sector->linecount; j++) {
+    for (int j = 0; j < sector->linecount; j++) {
       li = sector->lines[j];
 
       M_AddToBox(bbox, li->v1->x, li->v1->y);

@@ -722,7 +722,6 @@ void A_Light2(mobj_t *, player_t * player, pspdef_t *) {
 // Spawn a BFG explosion on every monster in view
 //
 void A_BFGSpray(mobj_t * mo) {
-  int     j;
   int     damage;
   angle_t an;
 
@@ -743,7 +742,7 @@ void A_BFGSpray(mobj_t * mo) {
                 MT_EXTRABFG);
 
     damage = 0;
-    for (j = 0; j < 15; j++)
+    for (int j = 0; j < 15; j++)
       damage += (P_Random() & 7) + 1;
 
     P_DamageMobj(g_p_local_globals->linetarget, mo->target, mo->target, damage);

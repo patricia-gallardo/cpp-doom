@@ -231,9 +231,7 @@ void P_ActivateInStasis(int tag) {
 }
 
 void EV_StopPlat(line_t * line) {
-  int j;
-
-  for (j = 0; j < MAXPLATS; j++)
+  for (int j = 0; j < MAXPLATS; j++)
     if (activeplats[j]
         && ((activeplats[j])->status != in_stasis)
         && ((activeplats[j])->tag == line->tag)) {

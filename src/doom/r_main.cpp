@@ -611,7 +611,6 @@ void R_InitTextureMapping() {
 #define DISTMAP 2
 
 void R_InitLightTables() {
-  int j;
   int level;
   int startmap_local;
   int scale;
@@ -664,7 +663,7 @@ void R_InitLightTables() {
         static_cast<lighttable_t **>(malloc(static_cast<unsigned long>(MAXLIGHTZ) * sizeof(**zlight)));
 
     startmap_local = ((LIGHTLEVELS - LIGHTBRIGHT - i) * 2) * NUMCOLORMAPS / LIGHTLEVELS;
-    for (j = 0; j < MAXLIGHTZ; j++) {
+    for (int j = 0; j < MAXLIGHTZ; j++) {
       scale = FixedDiv((ORIGWIDTH / 2 * FRACUNIT), (j + 1) << LIGHTZSHIFT);
       scale >>= LIGHTSCALESHIFT;
       level = startmap_local - scale / DISTMAP;
