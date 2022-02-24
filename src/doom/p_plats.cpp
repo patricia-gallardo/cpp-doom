@@ -221,9 +221,7 @@ int EV_DoPlat(line_t *   line,
 }
 
 void P_ActivateInStasis(int tag) {
-  int i;
-
-  for (i = 0; i < MAXPLATS; i++)
+  for (int i = 0; i < MAXPLATS; i++)
     if (activeplats[i]
         && (activeplats[i])->tag == tag
         && (activeplats[i])->status == in_stasis) {
@@ -246,9 +244,7 @@ void EV_StopPlat(line_t * line) {
 }
 
 void P_AddActivePlat(plat_t * plat) {
-  int i;
-
-  for (i = 0; i < MAXPLATS; i++)
+  for (int i = 0; i < MAXPLATS; i++)
     if (activeplats[i] == nullptr) {
       activeplats[i] = plat;
       return;
@@ -257,8 +253,7 @@ void P_AddActivePlat(plat_t * plat) {
 }
 
 void P_RemoveActivePlat(plat_t * plat) {
-  int i;
-  for (i = 0; i < MAXPLATS; i++)
+  for (int i = 0; i < MAXPLATS; i++)
     if (plat == activeplats[i]) {
       (activeplats[i])->sector->specialdata = nullptr;
       P_RemoveThinker(&(activeplats[i])->thinker);

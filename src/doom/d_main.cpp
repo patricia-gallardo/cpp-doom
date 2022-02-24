@@ -938,19 +938,19 @@ static void InitGameVersion() {
   int p = M_CheckParmWithArgs("-gameversion", 1);
 
   if (p) {
-    int i = 0;
-    for (i = 0; gameversions[i].description != nullptr; ++i) {
-      if (!strcmp(myargv[p + 1], gameversions[i].cmdline)) {
-        g_doomstat_globals->gameversion = gameversions[i].version;
+    int index = 0;
+    for (index = 0; gameversions[index].description != nullptr; ++index) {
+      if (!strcmp(myargv[p + 1], gameversions[index].cmdline)) {
+        g_doomstat_globals->gameversion = gameversions[index].version;
         break;
       }
     }
 
-    if (gameversions[i].description == nullptr) {
+    if (gameversions[index].description == nullptr) {
       fmt::printf("Supported game versions:\n");
 
-      for (i = 0; gameversions[i].description != nullptr; ++i) {
-        fmt::printf("\t%s (%s)\n", gameversions[i].cmdline, gameversions[i].description);
+      for (index = 0; gameversions[index].description != nullptr; ++index) {
+        fmt::printf("\t%s (%s)\n", gameversions[index].cmdline, gameversions[index].description);
       }
 
       I_Error("Unknown game version '%s'", myargv[p + 1]);

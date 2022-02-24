@@ -98,7 +98,6 @@ static int       service_was_started = 0;
 
 static int LoadLibraryPointers() {
   HMODULE dll;
-  int     i;
 
   // Already loaded?
 
@@ -113,7 +112,7 @@ static int LoadLibraryPointers() {
     return 0;
   }
 
-  for (i = 0; i < sizeof(dll_functions) / sizeof(*dll_functions); ++i) {
+  for (int i = 0; i < sizeof(dll_functions) / sizeof(*dll_functions); ++i) {
     *dll_functions[i].fn = GetProcAddress(dll, dll_functions[i].name);
 
     if (*dll_functions[i].fn == nullptr) {

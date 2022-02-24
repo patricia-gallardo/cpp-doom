@@ -197,8 +197,6 @@ static bool SetButtonAxisPositive(txt_joystick_axis_t * joystick_axis) {
 }
 
 static void IdentifyBadAxes(txt_joystick_axis_t * joystick_axis) {
-  int i, val;
-
   free(joystick_axis->bad_axis);
 
   joystick_axis->bad_axis = static_cast<bool *>(calloc(static_cast<size_t>(SDL_JoystickNumAxes(joystick_axis->joystick)),
@@ -206,8 +204,8 @@ static void IdentifyBadAxes(txt_joystick_axis_t * joystick_axis) {
 
   // Look for uncentered axes.
 
-  for (i = 0; i < SDL_JoystickNumAxes(joystick_axis->joystick); ++i) {
-    val = SDL_JoystickGetAxis(joystick_axis->joystick, i);
+  for (int i = 0; i < SDL_JoystickNumAxes(joystick_axis->joystick); ++i) {
+    int val = SDL_JoystickGetAxis(joystick_axis->joystick, i);
 
     joystick_axis->bad_axis[i] = std::abs(val) > (32768 / 5);
 

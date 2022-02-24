@@ -303,9 +303,7 @@ static int    numvissprites;
 // Called at program start.
 //
 void R_InitSprites(const char ** namelist) {
-  int i;
-
-  for (i = 0; i < SCREENWIDTH; i++) {
+  for (int i = 0; i < SCREENWIDTH; i++) {
     negonearray[i] = -1;
   }
 

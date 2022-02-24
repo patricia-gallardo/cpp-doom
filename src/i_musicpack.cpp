@@ -384,7 +384,7 @@ static void ParseVorbisComment(file_metadata_t * metadata, char * comment) {
 // Parse a vorbis comments structure, reading from the given file.
 static void ParseVorbisComments(file_metadata_t * metadata, FILE * fs) {
   uint32_t     buf;
-  unsigned int num_comments, i, comment_len;
+  unsigned int num_comments, comment_len;
 
   // We must have read the sample rate already from an earlier header.
   if (metadata->samplerate_hz == 0) {
@@ -406,7 +406,7 @@ static void ParseVorbisComments(file_metadata_t * metadata, FILE * fs) {
   num_comments = LONG(buf);
 
   // Read each individual comment.
-  for (i = 0; i < num_comments; ++i) {
+  for (unsigned int i = 0; i < num_comments; ++i) {
     // Read length of comment.
     if (fread(&buf, 4, 1, fs) < 1) {
       return;

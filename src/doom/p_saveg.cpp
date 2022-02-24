@@ -133,13 +133,12 @@ static void saveg_write32(int value) {
 static void saveg_read_pad() {
   unsigned long pos;
   int           padding;
-  int           i;
 
   pos = static_cast<unsigned long>(ftell(save_stream));
 
   padding = (4 - (pos & 3)) & 3;
 
-  for (i = 0; i < padding; ++i) {
+  for (int i = 0; i < padding; ++i) {
     saveg_read8();
   }
 }
@@ -147,13 +146,12 @@ static void saveg_read_pad() {
 static void saveg_write_pad() {
   unsigned long pos;
   int           padding;
-  int           i;
 
   pos = static_cast<unsigned long>(ftell(save_stream));
 
   padding = (4 - (pos & 3)) & 3;
 
-  for (i = 0; i < padding; ++i) {
+  for (int i = 0; i < padding; ++i) {
     saveg_write8(0);
   }
 }
@@ -650,8 +648,6 @@ static void saveg_write_pspdef_t(pspdef_t * str) {
 //
 
 static void saveg_read_player_t(player_t * str) {
-  int i;
-
   // mobj_t* mo;
   str->mo = static_cast<mobj_t *>(saveg_readp());
 
@@ -687,12 +683,12 @@ static void saveg_read_player_t(player_t * str) {
   str->armortype = saveg_read32();
 
   // int powers[NUMPOWERS];
-  for (i = 0; i < NUMPOWERS; ++i) {
+  for (int i = 0; i < NUMPOWERS; ++i) {
     str->powers[i] = saveg_read32();
   }
 
   // bool cards[NUMCARDS];
-  for (i = 0; i < NUMCARDS; ++i) {
+  for (int i = 0; i < NUMCARDS; ++i) {
     str->cards[i] = saveg_read32();
   }
 
@@ -700,7 +696,7 @@ static void saveg_read_player_t(player_t * str) {
   str->backpack = saveg_read32();
 
   // int frags[MAXPLAYERS];
-  for (i = 0; i < MAXPLAYERS; ++i) {
+  for (int i = 0; i < MAXPLAYERS; ++i) {
     str->frags[i] = saveg_read32();
   }
 
@@ -711,17 +707,17 @@ static void saveg_read_player_t(player_t * str) {
   str->pendingweapon = static_cast<weapontype_t>(saveg_read_enum());
 
   // bool weaponowned[NUMWEAPONS];
-  for (i = 0; i < NUMWEAPONS; ++i) {
+  for (int i = 0; i < NUMWEAPONS; ++i) {
     str->weaponowned[i] = saveg_read32();
   }
 
   // int ammo[NUMAMMO];
-  for (i = 0; i < NUMAMMO; ++i) {
+  for (int i = 0; i < NUMAMMO; ++i) {
     str->ammo[i] = saveg_read32();
   }
 
   // int maxammo[NUMAMMO];
-  for (i = 0; i < NUMAMMO; ++i) {
+  for (int i = 0; i < NUMAMMO; ++i) {
     str->maxammo[i] = saveg_read32();
   }
 
@@ -768,7 +764,7 @@ static void saveg_read_player_t(player_t * str) {
   str->colormap = saveg_read32();
 
   // pspdef_t psprites[NUMPSPRITES];
-  for (i = 0; i < NUMPSPRITES; ++i) {
+  for (int i = 0; i < NUMPSPRITES; ++i) {
     saveg_read_pspdef_t(&str->psprites[i]);
   }
 

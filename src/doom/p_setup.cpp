@@ -115,7 +115,6 @@ sector_t * GetSectorAtNullAddress() {
 //
 void P_LoadSegs(int lump) {
   uint8_t *  data          = nullptr;
-  int        i             = 0;
   mapseg_t * ml            = nullptr;
   seg_t *    li            = nullptr;
   line_t *   ldef          = nullptr;
@@ -130,7 +129,7 @@ void P_LoadSegs(int lump) {
 
   ml = reinterpret_cast<mapseg_t *>(data);
   li = g_r_state_globals->segs;
-  for (i = 0; i < g_r_state_globals->numsegs; i++, li++, ml++) {
+  for (int i = 0; i < g_r_state_globals->numsegs; i++, li++, ml++) {
     li->v1 = &g_r_state_globals->vertexes[static_cast<unsigned short>(SHORT(ml->v1))]; // [crispy] extended nodes
     li->v2 = &g_r_state_globals->vertexes[static_cast<unsigned short>(SHORT(ml->v2))]; // [crispy] extended nodes
 
@@ -389,7 +388,6 @@ void P_LoadThings(int lump) {
 //
 void P_LoadLineDefs(int lump) {
   uint8_t *      data;
-  int            i;
   maplinedef_t * mld;
   line_t *       ld;
   vertex_t *     v1;
@@ -404,7 +402,7 @@ void P_LoadLineDefs(int lump) {
   mld  = reinterpret_cast<maplinedef_t *>(data);
   ld   = g_r_state_globals->lines;
   warn = warn2 = 0; // [crispy] warn about invalid linedefs
-  for (i = 0; i < g_r_state_globals->numlines; i++, mld++, ld++) {
+  for (int i = 0; i < g_r_state_globals->numlines; i++, mld++, ld++) {
     ld->flags   = static_cast<unsigned short>(SHORT(mld->flags)); // [crispy] extended nodes
     ld->special = SHORT(mld->special);
     // [crispy] warn about unknown linedef types
@@ -517,7 +515,6 @@ void P_LoadLineDefs(int lump) {
 //
 void P_LoadSideDefs(int lump) {
   uint8_t *      data;
-  int            i;
   mapsidedef_t * msd;
   side_t *       sd;
 
@@ -528,7 +525,7 @@ void P_LoadSideDefs(int lump) {
 
   msd = reinterpret_cast<mapsidedef_t *>(data);
   sd  = g_r_state_globals->sides;
-  for (i = 0; i < g_r_state_globals->numsides; i++, msd++, sd++) {
+  for (int i = 0; i < g_r_state_globals->numsides; i++, msd++, sd++) {
     sd->textureoffset = SHORT(msd->textureoffset) << FRACBITS;
     sd->rowoffset     = SHORT(msd->rowoffset) << FRACBITS;
     sd->toptexture    = static_cast<short>(R_TextureNumForName(msd->toptexture));
@@ -602,7 +599,6 @@ bool P_LoadBlockMap(int lump) {
 //
 void P_GroupLines() {
   line_t **     linebuffer;
-  int           i;
   int           j;
   line_t *      li;
   sector_t *    sector;
@@ -613,7 +609,7 @@ void P_GroupLines() {
 
   // look up sector number for each subsector
   ss = g_r_state_globals->subsectors;
-  for (i = 0; i < g_r_state_globals->numsubsectors; i++, ss++) {
+  for (int i = 0; i < g_r_state_globals->numsubsectors; i++, ss++) {
     seg        = &g_r_state_globals->segs[ss->firstline];
     ss->sector = seg->sidedef->sector;
   }
@@ -621,7 +617,7 @@ void P_GroupLines() {
   // count number of lines in each sector
   li         = g_r_state_globals->lines;
   totallines = 0;
-  for (i = 0; i < g_r_state_globals->numlines; i++, li++) {
+  for (int i = 0; i < g_r_state_globals->numlines; i++, li++) {
     totallines++;
     li->frontsector->linecount++;
 
@@ -634,7 +630,7 @@ void P_GroupLines() {
   // build line tables for each sector
   linebuffer = zmalloc<decltype(linebuffer)>(static_cast<unsigned long>(totallines) * sizeof(line_t *), PU_LEVEL, 0);
 
-  for (i = 0; i < g_r_state_globals->numsectors; ++i) {
+  for (int i = 0; i < g_r_state_globals->numsectors; ++i) {
     // Assign the line buffer for this sector
 
     g_r_state_globals->sectors[i].lines = linebuffer;
@@ -648,7 +644,7 @@ void P_GroupLines() {
 
   // Assign lines to sectors
 
-  for (i = 0; i < g_r_state_globals->numlines; ++i) {
+  for (int i = 0; i < g_r_state_globals->numlines; ++i) {
     li = &g_r_state_globals->lines[i];
 
     if (li->frontsector != nullptr) {
@@ -669,7 +665,7 @@ void P_GroupLines() {
   // Generate bounding boxes for sectors
 
   sector = g_r_state_globals->sectors;
-  for (i = 0; i < g_r_state_globals->numsectors; i++, sector++) {
+  for (int i = 0; i < g_r_state_globals->numsectors; i++, sector++) {
     M_ClearBox(bbox);
 
     for (j = 0; j < sector->linecount; j++) {
@@ -709,9 +705,7 @@ void P_GroupLines() {
 // i.e. r_bsp.c:R_AddLine()
 
 static void P_RemoveSlimeTrails() {
-  int i;
-
-  for (i = 0; i < g_r_state_globals->numsegs; i++) {
+  for (int i = 0; i < g_r_state_globals->numsegs; i++) {
     const line_t * l = g_r_state_globals->segs[i].linedef;
     vertex_t *     v = g_r_state_globals->segs[i].v1;
 

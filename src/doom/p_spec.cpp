@@ -142,7 +142,6 @@ extern short    numlinespecials;
 extern line_t * linespeciallist[MAXLINEANIMS];
 
 void P_InitPicAnims() {
-  int  i;
   bool init_swirl = false;
 
   // [crispy] add support for ANIMATED lumps
@@ -157,7 +156,7 @@ void P_InitPicAnims() {
 
   //	Init animation
   lastanim = anims;
-  for (i = 0; animdefs[i].istexture != -1; i++) {
+  for (int i = 0; animdefs[i].istexture != -1; i++) {
     const char *startname, *endname;
 
     // [crispy] remove MAXANIMS limit
@@ -272,12 +271,11 @@ sector_t *
 // FIND LOWEST FLOOR HEIGHT IN SURROUNDING SECTORS
 //
 fixed_t P_FindLowestFloorSurrounding(sector_t * sec) {
-  int        i;
   line_t *   check;
   sector_t * other;
   fixed_t    floor = sec->floorheight;
 
-  for (i = 0; i < sec->linecount; i++) {
+  for (int i = 0; i < sec->linecount; i++) {
     check = sec->lines[i];
     other = getNextSector(check, sec);
 
@@ -295,12 +293,11 @@ fixed_t P_FindLowestFloorSurrounding(sector_t * sec) {
 // FIND HIGHEST FLOOR HEIGHT IN SURROUNDING SECTORS
 //
 fixed_t P_FindHighestFloorSurrounding(sector_t * sec) {
-  int        i;
   line_t *   check;
   sector_t * other;
   fixed_t    floor = -500 * FRACUNIT;
 
-  for (i = 0; i < sec->linecount; i++) {
+  for (int i = 0; i < sec->linecount; i++) {
     check = sec->lines[i];
     other = getNextSector(check, sec);
 

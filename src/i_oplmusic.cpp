@@ -964,7 +964,6 @@ static bool LoadInstrumentTable() {
 
 static opl_voice_t * GetFreeVoice() {
   opl_voice_t * result;
-  int           i;
 
   // None available?
 
@@ -978,7 +977,7 @@ static opl_voice_t * GetFreeVoice() {
 
   voice_free_num--;
 
-  for (i = 0; i < voice_free_num; i++) {
+  for (int i = 0; i < voice_free_num; i++) {
     voice_free_list[i] = voice_free_list[i + 1];
   }
 
@@ -1189,7 +1188,6 @@ static void SetChannelVolume(opl_channel_data_t * channel, unsigned int volume, 
 // Set music volume (0 - 127)
 
 static void I_OPL_SetMusicVolume(int volume) {
-  unsigned int i;
 
   if (current_music_volume == volume) {
     return;
@@ -1201,7 +1199,7 @@ static void I_OPL_SetMusicVolume(int volume) {
 
   // Update the volume of all voices.
 
-  for (i = 0; i < MIDI_CHANNELS_PER_TRACK; ++i) {
+  for (unsigned int i = 0; i < MIDI_CHANNELS_PER_TRACK; ++i) {
     if (i == 15) {
       SetChannelVolume(&channels[i], static_cast<unsigned int>(volume), false);
     } else {

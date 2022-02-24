@@ -98,8 +98,6 @@ void P_RunThinkers() {
 //
 
 void P_Ticker() {
-  int i;
-
   // run the tic
   if (g_doomstat_globals->paused)
     return;
@@ -112,7 +110,7 @@ void P_Ticker() {
     return;
   }
 
-  for (i = 0; i < MAXPLAYERS; i++)
+  for (int i = 0; i < MAXPLAYERS; i++)
     if (g_doomstat_globals->playeringame[i])
       P_PlayerThink(&g_doomstat_globals->players[i]);
 

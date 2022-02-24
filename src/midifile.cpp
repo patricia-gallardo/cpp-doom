@@ -124,12 +124,11 @@ static bool ReadByte(uint8_t * result, FILE * stream) {
 // Read a variable-length value.
 
 static bool ReadVariableLength(unsigned int * result, FILE * stream) {
-  int     i;
   uint8_t b = 0;
 
   *result = 0;
 
-  for (i = 0; i < 4; ++i) {
+  for (int i = 0; i < 4; ++i) {
     if (!ReadByte(&b, stream)) {
       fmt::fprintf(stderr, "ReadVariableLength: Error while reading "
                            "variable-length value\n");
@@ -156,7 +155,6 @@ static bool ReadVariableLength(unsigned int * result, FILE * stream) {
 // Read a byte sequence into the data buffer.
 
 static uint8_t * ReadByteSequence(unsigned int num_bytes, FILE * stream) {
-  unsigned int i;
   uint8_t *    result;
 
   // Allocate a buffer. Allocate one extra byte, as malloc(0) is
@@ -171,7 +169,7 @@ static uint8_t * ReadByteSequence(unsigned int num_bytes, FILE * stream) {
 
   // Read the data:
 
-  for (i = 0; i < num_bytes; ++i) {
+  for (unsigned int i = 0; i < num_bytes; ++i) {
     if (!ReadByte(&result[i], stream)) {
       fmt::fprintf(stderr, "ReadByteSequence: Error while reading byte %u\n", i);
       free(result);

@@ -861,9 +861,7 @@ static void CalibrateXAxis()
 static bool SetJoystickGUID(SDL_JoystickID joy_id)
 {
     SDL_JoystickGUID guid;
-    int i;
-
-    for (i = 0; i < all_joysticks_len; ++i)
+    for (int i = 0; i < all_joysticks_len; ++i)
     {
         if (SDL_JoystickInstanceID(all_joysticks[i]) == joy_id)
         {

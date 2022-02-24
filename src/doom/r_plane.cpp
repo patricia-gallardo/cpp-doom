@@ -169,11 +169,10 @@ void R_MapPlane(int y,
 // At begining of frame.
 //
 void R_ClearPlanes() {
-  int     i;
   angle_t angle;
 
   // opening / clipping determination
-  for (i = 0; i < g_r_state_globals->viewwidth; i++) {
+  for (int i = 0; i < g_r_state_globals->viewwidth; i++) {
     floorclip[i]   = g_r_state_globals->viewheight;
     ceilingclip[i] = -1;
   }

@@ -204,10 +204,9 @@ int vanilla_savegame_limit = 1;
 int vanilla_demo_limit     = 1;
 
 int G_CmdChecksum(ticcmd_t * cmd) {
-  size_t i;
-  int    sum = 0;
+  int sum = 0;
 
-  for (i = 0; i < sizeof(*cmd) / 4 - 1; i++)
+  for (size_t i = 0; i < sizeof(*cmd) / 4 - 1; i++)
     sum += (reinterpret_cast<int *>(cmd))[i];
 
   return sum;
@@ -256,21 +255,21 @@ static int G_NextWeapon(int direction) {
     weapon = g_doomstat_globals->players[g_doomstat_globals->consoleplayer].pendingweapon;
   }
 
-  size_t i = 0;
-  for (i = 0; i < std::size(weapon_order_table); ++i) {
-    if (weapon_order_table[i].weapon == weapon) {
+  size_t index = 0;
+  for (index = 0; index < std::size(weapon_order_table); ++index) {
+    if (weapon_order_table[index].weapon == weapon) {
       break;
     }
   }
 
   // Switch weapon. Don't loop forever.
-  size_t start_i = i;
+  size_t start_i = index;
   do {
-    i += static_cast<unsigned long>(direction);
-    i = (i + std::size(weapon_order_table)) % std::size(weapon_order_table);
-  } while (i != start_i && !WeaponSelectable(weapon_order_table[i].weapon));
+    index += static_cast<unsigned long>(direction);
+    index = (index + std::size(weapon_order_table)) % std::size(weapon_order_table);
+  } while (index != start_i && !WeaponSelectable(weapon_order_table[index].weapon));
 
-  return weapon_order_table[i].weapon_num;
+  return weapon_order_table[index].weapon_num;
 }
 
 // [crispy] holding down the "Run" key may trigger special behavior,
@@ -662,8 +661,6 @@ void G_BuildTiccmd(ticcmd_t * cmd, int maketic) {
 // G_DoLoadLevel
 //
 void G_DoLoadLevel() {
-  int i;
-
   // Set the sky map.
   // First thing, we have a dummy sky texture name,
   //  a flat. The data is in the WAD only because
@@ -701,7 +698,7 @@ void G_DoLoadLevel() {
 
   g_doomstat_globals->gamestate = GS_LEVEL;
 
-  for (i = 0; i < MAXPLAYERS; i++) {
+  for (int i = 0; i < MAXPLAYERS; i++) {
     turbodetected[i] = false;
     if (g_doomstat_globals->playeringame[i] && g_doomstat_globals->players[i].playerstate == PST_DEAD)
       g_doomstat_globals->players[i].playerstate = PST_REBORN;
@@ -730,9 +727,7 @@ void G_DoLoadLevel() {
 }
 
 static void SetJoyButtons(unsigned int buttons_mask) {
-  int i;
-
-  for (i = 0; i < MAX_JOY_BUTTONS; ++i) {
+  for (int i = 0; i < MAX_JOY_BUTTONS; ++i) {
     int button_on = (buttons_mask & (1 << i)) != 0;
 
     // Detect button press:
@@ -752,9 +747,7 @@ static void SetJoyButtons(unsigned int buttons_mask) {
 }
 
 static void SetMouseButtons(unsigned int buttons_mask) {
-  int i;
-
-  for (i = 0; i < MAX_MOUSE_BUTTONS; ++i) {
+  for (int i = 0; i < MAX_MOUSE_BUTTONS; ++i) {
     unsigned int button_on = (buttons_mask & (1 << i)) != 0;
 
     // Detect button press:
@@ -906,12 +899,11 @@ static void G_CrispyScreenShot() {
 // Make ticcmd_ts for the players.
 //
 void G_Ticker() {
-  int        i;
   int        buf;
   ticcmd_t * cmd;
 
   // do player reborns if needed
-  for (i = 0; i < MAXPLAYERS; i++)
+  for (int i = 0; i < MAXPLAYERS; i++)
     if (g_doomstat_globals->playeringame[i] && g_doomstat_globals->players[i].playerstate == PST_REBORN)
       G_DoReborn(i);
 
@@ -965,7 +957,7 @@ void G_Ticker() {
   // and build new consistancy check
   buf = (gametic / ticdup) % BACKUPTICS;
 
-  for (i = 0; i < MAXPLAYERS; i++) {
+  for (int i = 0; i < MAXPLAYERS; i++) {
     if (g_doomstat_globals->playeringame[i]) {
       cmd = &g_doomstat_globals->players[i].cmd;
 
@@ -1015,7 +1007,7 @@ void G_Ticker() {
   }
 
   // check for special buttons
-  for (i = 0; i < MAXPLAYERS; i++) {
+  for (int i = 0; i < MAXPLAYERS; i++) {
     if (g_doomstat_globals->playeringame[i]) {
       if (g_doomstat_globals->players[i].cmd.buttons & BT_SPECIAL) {
         switch (g_doomstat_globals->players[i].cmd.buttons & BT_SPECIALMASK) {
@@ -1134,7 +1126,6 @@ void G_PlayerFinishLevel(int player) {
 //
 void G_PlayerReborn(int player) {
   player_t * p;
-  int        i;
   int        frags[MAXPLAYERS];
   int        killcount;
   int        itemcount;
@@ -1163,7 +1154,7 @@ void G_PlayerReborn(int player) {
   p->weaponowned[wp_pistol]         = true;
   p->ammo[am_clip]                  = deh_initial_bullets;
 
-  for (i = 0; i < NUMAMMO; i++)
+  for (int i = 0; i < NUMAMMO; i++)
     p->maxammo[i] = g_p_local_globals->maxammo[i];
 }
 
@@ -1181,11 +1172,10 @@ bool G_CheckSpot(int          playernum,
   fixed_t       y;
   subsector_t * ss;
   mobj_t *      mo;
-  int           i;
 
   if (!g_doomstat_globals->players[playernum].mo) {
     // first spawn of level, before corpses
-    for (i = 0; i < playernum; i++)
+    for (int i = 0; i < playernum; i++)
       if (g_doomstat_globals->players[i].mo->x == mthing->x << FRACBITS
           && g_doomstat_globals->players[i].mo->y == mthing->y << FRACBITS)
         return false;
@@ -1908,7 +1898,6 @@ void G_InitNew(skill_t skill,
                int     episode,
                int     map) {
   const char * skytexturename;
-  int          i;
   // [crispy] make sure "fast" parameters are really only applied once
   static bool fast_applied;
 
@@ -1991,7 +1980,7 @@ void G_InitNew(skill_t skill,
 
   // [crispy] make sure "fast" parameters are really only applied once
   if ((g_doomstat_globals->fastparm || skill == sk_nightmare) && !fast_applied) {
-    for (i = S_SARG_RUN1; i <= S_SARG_PAIN2; i++)
+    for (int i = S_SARG_RUN1; i <= S_SARG_PAIN2; i++)
       // [crispy] Fix infinite loop caused by Demon speed bug
       if (states[i].tics > 1) {
         states[i].tics >>= 1;
@@ -2001,7 +1990,7 @@ void G_InitNew(skill_t skill,
     mobjinfo[MT_TROOPSHOT].speed   = 20 * FRACUNIT;
     fast_applied                   = true;
   } else if (!g_doomstat_globals->fastparm && skill != sk_nightmare && fast_applied) {
-    for (i = S_SARG_RUN1; i <= S_SARG_PAIN2; i++)
+    for (int i = S_SARG_RUN1; i <= S_SARG_PAIN2; i++)
       states[i].tics <<= 1;
     mobjinfo[MT_BRUISERSHOT].speed = 15 * FRACUNIT;
     mobjinfo[MT_HEADSHOT].speed    = 10 * FRACUNIT;
@@ -2010,7 +1999,7 @@ void G_InitNew(skill_t skill,
   }
 
   // force players to be initialized upon first level load
-  for (i = 0; i < MAXPLAYERS; i++)
+  for (int i = 0; i < MAXPLAYERS; i++)
     g_doomstat_globals->players[i].playerstate = PST_REBORN;
 
   g_doomstat_globals->usergame      = true; // will be set false if a demo
