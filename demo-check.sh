@@ -1,2 +1,2 @@
-$GITHUB_WORKSPACE/build/src/crispy-doom -nographics -nosound -nograbmouse -iwad data/demos/DOOM.WAD -statdump $GITHUB_WORKSPACE/compare.txt -playdemo data/demos/m1-simple;
-diff --strip-trailing-cr $GITHUB_WORKSPACE/compare.txt data/demos/m1-simple.txt;
+$1/build/src/crispy-doom -nographics -nosound -nograbmouse -iwad data/demos/DOOM.WAD -statdump $1/compare.txt -playdemo data/demos/m1-simple;
+diff --strip-trailing-cr $1/compare.txt data/demos/m1-simple.txt;
