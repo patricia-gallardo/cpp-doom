@@ -102,3 +102,8 @@ jobs:
       # Execute tests defined by the CMake configuration.
       # See https://cmake.org/cmake/help/latest/manual/ctest.1.html for more detail
       run: ctest -C ${{ matrix.cmake-build-type }}
+
+    - name: Demo Check
+      if: matrix.configurations.os == 'ubuntu-20.04'
+      shell: bash
+      run: ./demo-check.sh
