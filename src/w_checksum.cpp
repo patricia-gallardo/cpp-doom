@@ -25,55 +25,49 @@
 static wad_file_t **open_wadfiles     = nullptr;
 static int          num_open_wadfiles = 0;
 
-static int GetFileNumber(wad_file_t *handle)
-{
-    for (int i = 0; i < num_open_wadfiles; ++i)
-    {
-        if (open_wadfiles[i] == handle)
-        {
-            return i;
-        }
+static int GetFileNumber(wad_file_t *handle) {
+  for (int i = 0; i < num_open_wadfiles; ++i) {
+    if (open_wadfiles[i] == handle) {
+      return i;
     }
+  }
 
-    // Not found in list.  This is a new file we haven't seen yet.
-    // Allocate another slot for this file.
+  // Not found in list.  This is a new file we haven't seen yet.
+  // Allocate another slot for this file.
 
-    open_wadfiles                    = static_cast<wad_file_t **>(I_Realloc(open_wadfiles,
-        sizeof(wad_file_t *) * (static_cast<unsigned long>(num_open_wadfiles + 1))));
-    open_wadfiles[num_open_wadfiles] = handle;
+  open_wadfiles                    = static_cast<wad_file_t **>(I_Realloc(open_wadfiles,
+                                                       sizeof(wad_file_t *) * (static_cast<unsigned long>(num_open_wadfiles + 1))));
+  open_wadfiles[num_open_wadfiles] = handle;
 
-    int result = num_open_wadfiles;
-    ++num_open_wadfiles;
+  int result = num_open_wadfiles;
+  ++num_open_wadfiles;
 
-    return result;
+  return result;
 }
 
-static void ChecksumAddLump(sha1_context_t *sha1_context, lumpinfo_t *lump)
-{
-    char buf[9];
+static void ChecksumAddLump(sha1_context_t *sha1_context, lumpinfo_t *lump) {
+  char buf[9];
 
-    M_StringCopy(buf, lump->name, sizeof(buf));
-    SHA1_UpdateString(sha1_context, buf);
-    SHA1_UpdateInt32(sha1_context, static_cast<unsigned int>(GetFileNumber(lump->wad_file)));
-    SHA1_UpdateInt32(sha1_context, static_cast<unsigned int>(lump->position));
-    SHA1_UpdateInt32(sha1_context, static_cast<unsigned int>(lump->size));
+  M_StringCopy(buf, lump->name, sizeof(buf));
+  SHA1_UpdateString(sha1_context, buf);
+  SHA1_UpdateInt32(sha1_context, static_cast<unsigned int>(GetFileNumber(lump->wad_file)));
+  SHA1_UpdateInt32(sha1_context, static_cast<unsigned int>(lump->position));
+  SHA1_UpdateInt32(sha1_context, static_cast<unsigned int>(lump->size));
 }
 
-void W_Checksum(sha1_digest_t digest)
-{
-    sha1_context_t sha1_context;
+void W_Checksum(sha1_digest_t digest) {
+  sha1_context_t sha1_context;
 
-    SHA1_Init(&sha1_context);
+  SHA1_Init(&sha1_context);
 
-    num_open_wadfiles = 0;
+  num_open_wadfiles = 0;
 
-    // Go through each entry in the WAD directory, adding information
-    // about each entry to the SHA1 hash.
+  // Go through each entry in the WAD directory, adding information
+  // about each entry to the SHA1 hash.
 
-    for (size_t i = 0; i < numlumps; ++i)
-    {
-        ChecksumAddLump(&sha1_context, lumpinfo[i]);
-    }
+  for (size_t i = 0; i < numlumps; ++i) {
+    ChecksumAddLump(&sha1_context, lumpinfo[i]);
+  }
 
-    SHA1_Final(digest, &sha1_context);
+  SHA1_Final(digest, &sha1_context);
 }

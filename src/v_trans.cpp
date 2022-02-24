@@ -35,6 +35,7 @@ static uint8_t cr_gold[256];
 static uint8_t cr_red[256];
 static uint8_t cr_blue[256];
 
+// clang-format off
 static const uint8_t cr_red2blue[256] = { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15,
     16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31,
     32, 33, 34, 35, 36, 37, 38, 39, 40, 41, 42, 43, 207, 207, 46, 207,
@@ -68,17 +69,19 @@ static const uint8_t cr_red2green[256] = { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11,
     208, 209, 210, 211, 212, 213, 214, 215, 216, 217, 218, 219, 220, 221, 222, 223,
     224, 225, 226, 227, 228, 229, 230, 231, 232, 233, 234, 235, 236, 237, 238, 239,
     240, 241, 242, 243, 244, 245, 246, 247, 248, 249, 250, 251, 252, 253, 254, 255 };
+// clang-format on
 
 uint8_t *cr_colors[9] = {
-    reinterpret_cast<uint8_t *>(&cr_none),
-    reinterpret_cast<uint8_t *>(&cr_dark),
-    reinterpret_cast<uint8_t *>(&cr_gray),
-    reinterpret_cast<uint8_t *>(&cr_green),
-    reinterpret_cast<uint8_t *>(&cr_gold),
-    reinterpret_cast<uint8_t *>(&cr_red),
-    reinterpret_cast<uint8_t *>(&cr_blue),
-    const_cast<uint8_t *>(reinterpret_cast<const uint8_t *>(&cr_red2blue)),
-    const_cast<uint8_t *>(reinterpret_cast<const uint8_t *>(&cr_red2green)) };
+  reinterpret_cast<uint8_t *>(&cr_none),
+  reinterpret_cast<uint8_t *>(&cr_dark),
+  reinterpret_cast<uint8_t *>(&cr_gray),
+  reinterpret_cast<uint8_t *>(&cr_green),
+  reinterpret_cast<uint8_t *>(&cr_gold),
+  reinterpret_cast<uint8_t *>(&cr_red),
+  reinterpret_cast<uint8_t *>(&cr_blue),
+  const_cast<uint8_t *>(reinterpret_cast<const uint8_t *>(&cr_red2blue)),
+  const_cast<uint8_t *>(reinterpret_cast<const uint8_t *>(&cr_red2green))
+};
 
 char **crstr = 0;
 
@@ -111,194 +114,173 @@ then, to also use this routine to convert colors *to* gray?
 constexpr auto CTOLERANCE = (0.0001);
 
 typedef struct vect {
-    float x;
-    float y;
-    float z;
+  float x;
+  float y;
+  float z;
 } vect;
 
-static void hsv_to_rgb(vect *hsv, vect *rgb)
-{
-    float h = hsv->x;
-    float s = hsv->y;
-    float v = hsv->z;
-    h *= static_cast<float>(360.0);
-    if (s < CTOLERANCE)
-    {
-        rgb->x = v;
-        rgb->y = v;
-        rgb->z = v;
+static void hsv_to_rgb(vect *hsv, vect *rgb) {
+  float h = hsv->x;
+  float s = hsv->y;
+  float v = hsv->z;
+  h *= static_cast<float>(360.0);
+  if (s < CTOLERANCE) {
+    rgb->x = v;
+    rgb->y = v;
+    rgb->z = v;
+  } else {
+    if (h >= 360.0)
+      h -= static_cast<float>(360.0);
+    h /= static_cast<float>(60.0);
+    int   i = static_cast<int>(floor(h));
+    float f = h - static_cast<float>(i);
+    auto  p = static_cast<float>(v * (1.0 - s));
+    auto  q = static_cast<float>(v * (1.0 - (s * f)));
+    auto  t = static_cast<float>(v * (1.0 - (s * (1.0 - f))));
+    switch (i) {
+    case 0:
+      rgb->x = v;
+      rgb->y = t;
+      rgb->z = p;
+      break;
+    case 1:
+      rgb->x = q;
+      rgb->y = v;
+      rgb->z = p;
+      break;
+    case 2:
+      rgb->x = p;
+      rgb->y = v;
+      rgb->z = t;
+      break;
+    case 3:
+      rgb->x = p;
+      rgb->y = q;
+      rgb->z = v;
+      break;
+    case 4:
+      rgb->x = t;
+      rgb->y = p;
+      rgb->z = v;
+      break;
+    case 5:
+      rgb->x = v;
+      rgb->y = p;
+      rgb->z = q;
+      break;
     }
-    else
-    {
-        if (h >= 360.0)
-            h -= static_cast<float>(360.0);
-        h /= static_cast<float>(60.0);
-        int i = static_cast<int>(floor(h));
-        float f = h - static_cast<float>(i);
-        auto p = static_cast<float>(v * (1.0 - s));
-        auto q = static_cast<float>(v * (1.0 - (s * f)));
-        auto t = static_cast<float>(v * (1.0 - (s * (1.0 - f))));
-        switch (i)
-        {
-        case 0:
-            rgb->x = v;
-            rgb->y = t;
-            rgb->z = p;
-            break;
-        case 1:
-            rgb->x = q;
-            rgb->y = v;
-            rgb->z = p;
-            break;
-        case 2:
-            rgb->x = p;
-            rgb->y = v;
-            rgb->z = t;
-            break;
-        case 3:
-            rgb->x = p;
-            rgb->y = q;
-            rgb->z = v;
-            break;
-        case 4:
-            rgb->x = t;
-            rgb->y = p;
-            rgb->z = v;
-            break;
-        case 5:
-            rgb->x = v;
-            rgb->y = p;
-            rgb->z = q;
-            break;
-        }
-    }
+  }
 }
 
-static void rgb_to_hsv(vect *rgb, vect *hsv)
-{
-    float h = 0.0;
-    float s = 0.0;
+static void rgb_to_hsv(vect *rgb, vect *hsv) {
+  float h = 0.0;
+  float s = 0.0;
 
-    float r = rgb->x;
-    float g = rgb->y;
-    float b = rgb->z;
-    /* find the cmax and cmin of r g b */
-    float cmax = r;
-    float cmin = r;
-    cmax = (g > cmax ? g : cmax);
-    cmin = (g < cmin ? g : cmin);
-    cmax = (b > cmax ? b : cmax);
-    cmin = (b < cmin ? b : cmin);
-    float v    = cmax; /* value */
-    if (cmax > CTOLERANCE)
-        s = (cmax - cmin) / cmax;
+  float r = rgb->x;
+  float g = rgb->y;
+  float b = rgb->z;
+  /* find the cmax and cmin of r g b */
+  float cmax = r;
+  float cmin = r;
+  cmax       = (g > cmax ? g : cmax);
+  cmin       = (g < cmin ? g : cmin);
+  cmax       = (b > cmax ? b : cmax);
+  cmin       = (b < cmin ? b : cmin);
+  float v    = cmax; /* value */
+  if (cmax > CTOLERANCE)
+    s = (cmax - cmin) / cmax;
+  else {
+    s = 0.0;
+    h = 0.0;
+  }
+  if (s < CTOLERANCE)
+    h = 0.0;
+  else {
+    float cdelta = cmax - cmin;
+    float rc     = (cmax - r) / cdelta;
+    float gc     = (cmax - g) / cdelta;
+    float bc     = (cmax - b) / cdelta;
+    if (r == cmax)
+      h = bc - gc;
+    else if (g == cmax)
+      h = static_cast<float>(2.0 + rc - bc);
     else
-    {
-        s = 0.0;
-        h = 0.0;
-    }
-    if (s < CTOLERANCE)
-        h = 0.0;
-    else
-    {
-        float cdelta = cmax - cmin;
-        float rc     = (cmax - r) / cdelta;
-        float gc     = (cmax - g) / cdelta;
-        float bc     = (cmax - b) / cdelta;
-        if (r == cmax)
-            h = bc - gc;
-        else if (g == cmax)
-            h = static_cast<float>(2.0 + rc - bc);
-        else
-            h = static_cast<float>(4.0 + gc - rc);
-        h = static_cast<float>(h * 60.0);
-        if (h < 0.0)
-            h += static_cast<float>(360.0);
-    }
-    hsv->x = static_cast<float>(h / 360.0);
-    hsv->y = s;
-    hsv->z = v;
+      h = static_cast<float>(4.0 + gc - rc);
+    h = static_cast<float>(h * 60.0);
+    if (h < 0.0)
+      h += static_cast<float>(360.0);
+  }
+  hsv->x = static_cast<float>(h / 360.0);
+  hsv->y = s;
+  hsv->z = v;
 }
 
 // [crispy] copied over from i_video.c
-static int I_GetPaletteIndex2(uint8_t *palette, int r, int g, int b)
-{
-    int best      = 0;
-    int best_diff = INT_MAX;
+static int I_GetPaletteIndex2(uint8_t *palette, int r, int g, int b) {
+  int best      = 0;
+  int best_diff = INT_MAX;
 
-    for (int i = 0; i < 256; ++i)
-    {
-        int diff =   (r - palette[3 * i + 0]) * (r - palette[3 * i + 0])
-                   + (g - palette[3 * i + 1]) * (g - palette[3 * i + 1])
-                   + (b - palette[3 * i + 2]) * (b - palette[3 * i + 2]);
+  for (int i = 0; i < 256; ++i) {
+    int diff = (r - palette[3 * i + 0]) * (r - palette[3 * i + 0])
+               + (g - palette[3 * i + 1]) * (g - palette[3 * i + 1])
+               + (b - palette[3 * i + 2]) * (b - palette[3 * i + 2]);
 
-        if (diff < best_diff)
-        {
-            best      = i;
-            best_diff = diff;
-        }
-
-        if (diff == 0)
-        {
-            break;
-        }
+    if (diff < best_diff) {
+      best      = i;
+      best_diff = diff;
     }
 
-    return best;
+    if (diff == 0) {
+      break;
+    }
+  }
+
+  return best;
 }
 
-[[maybe_unused]] uint8_t V_Colorize(uint8_t *playpal, int cr, uint8_t source, bool keepgray109)
-{
-    vect rgb, hsv;
+[[maybe_unused]] uint8_t V_Colorize(uint8_t *playpal, int cr, uint8_t source, bool keepgray109) {
+  vect rgb, hsv;
 
-    // [crispy] preserve gray drop shadow in IWAD status bar numbers
-    if (cr == static_cast<int>(cr_t::CR_NONE) || (keepgray109 && source == 109))
-        return source;
+  // [crispy] preserve gray drop shadow in IWAD status bar numbers
+  if (cr == static_cast<int>(cr_t::CR_NONE) || (keepgray109 && source == 109))
+    return source;
 
-    rgb.x = static_cast<float>(playpal[3 * source + 0] / 255.);
-    rgb.y = static_cast<float>(playpal[3 * source + 1] / 255.);
-    rgb.z = static_cast<float>(playpal[3 * source + 2] / 255.);
+  rgb.x = static_cast<float>(playpal[3 * source + 0] / 255.);
+  rgb.y = static_cast<float>(playpal[3 * source + 1] / 255.);
+  rgb.z = static_cast<float>(playpal[3 * source + 2] / 255.);
 
-    rgb_to_hsv(&rgb, &hsv);
+  rgb_to_hsv(&rgb, &hsv);
 
-    if (cr == static_cast<int>(cr_t::CR_DARK))
-        hsv.z *= static_cast<float>(0.5);
-    else if (cr == static_cast<int>(cr_t::CR_GRAY))
-        hsv.y = 0;
-    else
-    {
-        // [crispy] hack colors to full saturation
-        hsv.y = 1.0;
+  if (cr == static_cast<int>(cr_t::CR_DARK))
+    hsv.z *= static_cast<float>(0.5);
+  else if (cr == static_cast<int>(cr_t::CR_GRAY))
+    hsv.y = 0;
+  else {
+    // [crispy] hack colors to full saturation
+    hsv.y = 1.0;
 
-        if (cr == static_cast<int>(cr_t::CR_GREEN))
-        {
-            //	    hsv.x = 135./360.;
-            hsv.x = static_cast<float>((150. * hsv.z + 120. * (1. - hsv.z)) / 360.);
-        }
-        else if (cr == static_cast<int>(cr_t::CR_GOLD))
-        {
-            //	    hsv.x = 45./360.;
-            //	    hsv.x = (50. * hsv.z + 30. * (1. - hsv.z))/360.;
-            hsv.x = static_cast<float>((7.0 + 53. * hsv.z) / 360.);
-            hsv.y = static_cast<float>(1.0 - 0.4 * hsv.z);
-            hsv.z = static_cast<float>(0.2 + 0.8 * hsv.z);
-        }
-        else if (cr == static_cast<int>(cr_t::CR_RED))
-        {
-            hsv.x = 0.;
-        }
-        else if (cr == static_cast<int>(cr_t::CR_BLUE))
-        {
-            hsv.x = static_cast<float>(240. / 360.);
-        }
+    if (cr == static_cast<int>(cr_t::CR_GREEN)) {
+      //	    hsv.x = 135./360.;
+      hsv.x = static_cast<float>((150. * hsv.z + 120. * (1. - hsv.z)) / 360.);
+    } else if (cr == static_cast<int>(cr_t::CR_GOLD)) {
+      //	    hsv.x = 45./360.;
+      //	    hsv.x = (50. * hsv.z + 30. * (1. - hsv.z))/360.;
+      hsv.x = static_cast<float>((7.0 + 53. * hsv.z) / 360.);
+      hsv.y = static_cast<float>(1.0 - 0.4 * hsv.z);
+      hsv.z = static_cast<float>(0.2 + 0.8 * hsv.z);
+    } else if (cr == static_cast<int>(cr_t::CR_RED)) {
+      hsv.x = 0.;
+    } else if (cr == static_cast<int>(cr_t::CR_BLUE)) {
+      hsv.x = static_cast<float>(240. / 360.);
     }
+  }
 
-    hsv_to_rgb(&hsv, &rgb);
+  hsv_to_rgb(&hsv, &rgb);
 
-    rgb.x *= static_cast<float>(255.);
-    rgb.y *= static_cast<float>(255.);
-    rgb.z *= static_cast<float>(255.);
+  rgb.x *= static_cast<float>(255.);
+  rgb.y *= static_cast<float>(255.);
+  rgb.z *= static_cast<float>(255.);
 
-    int retval = I_GetPaletteIndex2(playpal, static_cast<int>(rgb.x), static_cast<int>(rgb.y), static_cast<int>(rgb.z));
-    return static_cast<uint8_t>(retval);
+  int retval = I_GetPaletteIndex2(playpal, static_cast<int>(rgb.x), static_cast<int>(rgb.y), static_cast<int>(rgb.z));
+  return static_cast<uint8_t>(retval);
 }

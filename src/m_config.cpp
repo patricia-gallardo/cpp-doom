@@ -56,2164 +56,2161 @@ static const char *default_extra_config;
 
 enum default_type_t
 {
-    DEFAULT_INT,
-    DEFAULT_INT_HEX,
-    DEFAULT_STRING,
-    DEFAULT_FLOAT,
-    DEFAULT_KEY,
+  DEFAULT_INT,
+  DEFAULT_INT_HEX,
+  DEFAULT_STRING,
+  DEFAULT_FLOAT,
+  DEFAULT_KEY,
 };
 
 typedef struct
 {
-    // Name of the variable
-    const char *name;
+  // Name of the variable
+  const char *name;
 
-    // Pointer to the location in memory of the variable
-    union {
-        int *  i;
-        char **s;
-        float *f;
-    } location;
+  // Pointer to the location in memory of the variable
+  union {
+    int   *i;
+    char **s;
+    float *f;
+  } location;
 
-    // Type of the variable
-    default_type_t type;
+  // Type of the variable
+  default_type_t type;
 
-    // If this is a key value, the original integer scancode we read from
-    // the config file before translating it to the internal key value.
-    // If zero, we didn't read this value from a config file.
-    int untranslated;
+  // If this is a key value, the original integer scancode we read from
+  // the config file before translating it to the internal key value.
+  // If zero, we didn't read this value from a config file.
+  int untranslated;
 
-    // The value we translated the scancode into when we read the
-    // config file on startup.  If the variable value is different from
-    // this, it has been changed and needs to be converted; otherwise,
-    // use the 'untranslated' value.
-    int original_translated;
+  // The value we translated the scancode into when we read the
+  // config file on startup.  If the variable value is different from
+  // this, it has been changed and needs to be converted; otherwise,
+  // use the 'untranslated' value.
+  int original_translated;
 
-    // If true, this config variable has been bound to a variable
-    // and is being used.
-    bool bound;
+  // If true, this config variable has been bound to a variable
+  // and is being used.
+  bool bound;
 } default_t;
 
 typedef struct
 {
-    default_t * defaults;
-    int         numdefaults;
-    const char *filename;
+  default_t  *defaults;
+  int         numdefaults;
+  const char *filename;
 } default_collection_t;
 
 #define CONFIG_VARIABLE_GENERIC(name, type) \
-    {                                       \
-#name, { nullptr }, type, 0, 0, false  \
-    }
+  {                                         \
+#name, { nullptr }, type, 0, 0, false   \
+  }
 
 #define CONFIG_VARIABLE_KEY(name) \
-    CONFIG_VARIABLE_GENERIC(name, DEFAULT_KEY)
+  CONFIG_VARIABLE_GENERIC(name, DEFAULT_KEY)
 #define CONFIG_VARIABLE_INT(name) \
-    CONFIG_VARIABLE_GENERIC(name, DEFAULT_INT)
+  CONFIG_VARIABLE_GENERIC(name, DEFAULT_INT)
 #define CONFIG_VARIABLE_INT_HEX(name) \
-    CONFIG_VARIABLE_GENERIC(name, DEFAULT_INT_HEX)
+  CONFIG_VARIABLE_GENERIC(name, DEFAULT_INT_HEX)
 #define CONFIG_VARIABLE_FLOAT(name) \
-    CONFIG_VARIABLE_GENERIC(name, DEFAULT_FLOAT)
+  CONFIG_VARIABLE_GENERIC(name, DEFAULT_FLOAT)
 #define CONFIG_VARIABLE_STRING(name) \
-    CONFIG_VARIABLE_GENERIC(name, DEFAULT_STRING)
+  CONFIG_VARIABLE_GENERIC(name, DEFAULT_STRING)
 
 //! @begin_config_file default
 
 static default_t doom_defaults_list[] = {
-    //!
-    // Mouse sensitivity.  This value is used to multiply input mouse
-    // movement to control the effect of moving the mouse.
-    //
-    // The "normal" maximum value available for this through the
-    // in-game options menu is 9. A value of 31 or greater will cause
-    // the game to crash when entering the options menu.
-    //
+  //!
+  // Mouse sensitivity.  This value is used to multiply input mouse
+  // movement to control the effect of moving the mouse.
+  //
+  // The "normal" maximum value available for this through the
+  // in-game options menu is 9. A value of 31 or greater will cause
+  // the game to crash when entering the options menu.
+  //
 
-    CONFIG_VARIABLE_INT(mouse_sensitivity),
+  CONFIG_VARIABLE_INT(mouse_sensitivity),
 
-    //!
-    // Horizontal mouse sensitivity (strafe)
-    //
+  //!
+  // Horizontal mouse sensitivity (strafe)
+  //
 
-    CONFIG_VARIABLE_INT(mouse_sensitivity_x2),
+  CONFIG_VARIABLE_INT(mouse_sensitivity_x2),
 
-    //!
-    // Vertical mouse sensitivity
-    //
+  //!
+  // Vertical mouse sensitivity
+  //
 
-    CONFIG_VARIABLE_INT(mouse_sensitivity_y),
+  CONFIG_VARIABLE_INT(mouse_sensitivity_y),
 
-    //!
-    // Volume of sound effects, range 0-15.
-    //
+  //!
+  // Volume of sound effects, range 0-15.
+  //
 
-    CONFIG_VARIABLE_INT(sfx_volume),
+  CONFIG_VARIABLE_INT(sfx_volume),
 
-    //!
-    // Volume of in-game music, range 0-15.
-    //
+  //!
+  // Volume of in-game music, range 0-15.
+  //
 
-    CONFIG_VARIABLE_INT(music_volume),
+  CONFIG_VARIABLE_INT(music_volume),
 
-    //!
-    // @game strife
-    //
-    // If non-zero, dialogue text is displayed over characters' pictures
-    // when engaging actors who have voices.
-    //
+  //!
+  // @game strife
+  //
+  // If non-zero, dialogue text is displayed over characters' pictures
+  // when engaging actors who have voices.
+  //
 
-    CONFIG_VARIABLE_INT(show_talk),
+  CONFIG_VARIABLE_INT(show_talk),
 
-    //!
-    // @game strife
-    //
-    // Volume of voice sound effects, range 0-15.
-    //
+  //!
+  // @game strife
+  //
+  // Volume of voice sound effects, range 0-15.
+  //
 
-    CONFIG_VARIABLE_INT(voice_volume),
+  CONFIG_VARIABLE_INT(voice_volume),
 
-    //!
-    // @game doom
-    //
-    // If non-zero, messages are displayed on the heads-up display
-    // in the game ("picked up a clip", etc).  If zero, these messages
-    // are not displayed.
-    //
+  //!
+  // @game doom
+  //
+  // If non-zero, messages are displayed on the heads-up display
+  // in the game ("picked up a clip", etc).  If zero, these messages
+  // are not displayed.
+  //
 
-    CONFIG_VARIABLE_INT(show_messages),
+  CONFIG_VARIABLE_INT(show_messages),
 
-    //!
-    // Keyboard key to turn right.
-    //
+  //!
+  // Keyboard key to turn right.
+  //
 
-    CONFIG_VARIABLE_KEY(key_right),
+  CONFIG_VARIABLE_KEY(key_right),
 
-    //!
-    // Keyboard key to turn left.
-    //
+  //!
+  // Keyboard key to turn left.
+  //
 
-    CONFIG_VARIABLE_KEY(key_left),
+  CONFIG_VARIABLE_KEY(key_left),
 
-    //!
-    // Keyboard key to move forward.
-    //
+  //!
+  // Keyboard key to move forward.
+  //
 
-    CONFIG_VARIABLE_KEY(key_up),
+  CONFIG_VARIABLE_KEY(key_up),
 
-    //!
-    // Keyboard key to move backward.
-    //
+  //!
+  // Keyboard key to move backward.
+  //
 
-    CONFIG_VARIABLE_KEY(key_down),
+  CONFIG_VARIABLE_KEY(key_down),
 
-    //!
-    // Keyboard key to move forward (alternative).
-    //
+  //!
+  // Keyboard key to move forward (alternative).
+  //
 
-    CONFIG_VARIABLE_KEY(key_alt_up),
+  CONFIG_VARIABLE_KEY(key_alt_up),
 
-    //!
-    // Keyboard key to move backward (alternative).
-    //
+  //!
+  // Keyboard key to move backward (alternative).
+  //
 
-    CONFIG_VARIABLE_KEY(key_alt_down),
+  CONFIG_VARIABLE_KEY(key_alt_down),
 
-    //!
-    // Keyboard key to strafe left.
-    //
+  //!
+  // Keyboard key to strafe left.
+  //
 
-    CONFIG_VARIABLE_KEY(key_strafeleft),
+  CONFIG_VARIABLE_KEY(key_strafeleft),
 
-    //!
-    // Keyboard key to strafe left (alternative).
-    //
+  //!
+  // Keyboard key to strafe left (alternative).
+  //
 
-    CONFIG_VARIABLE_KEY(key_alt_strafeleft),
+  CONFIG_VARIABLE_KEY(key_alt_strafeleft),
 
-    //!
-    // Keyboard key to strafe right.
-    //
+  //!
+  // Keyboard key to strafe right.
+  //
 
-    CONFIG_VARIABLE_KEY(key_straferight),
+  CONFIG_VARIABLE_KEY(key_straferight),
 
-    //!
-    // Keyboard key to strafe right (alternative).
-    //
+  //!
+  // Keyboard key to strafe right (alternative).
+  //
 
-    CONFIG_VARIABLE_KEY(key_alt_straferight),
+  CONFIG_VARIABLE_KEY(key_alt_straferight),
 
-    //!
-    // @game strife
-    //
-    // Keyboard key to use health.
-    //
+  //!
+  // @game strife
+  //
+  // Keyboard key to use health.
+  //
 
-    CONFIG_VARIABLE_KEY(key_useHealth),
+  CONFIG_VARIABLE_KEY(key_useHealth),
 
-    //!
-    // @game hexen
-    //
-    // Keyboard key to jump.
-    //
+  //!
+  // @game hexen
+  //
+  // Keyboard key to jump.
+  //
 
-    CONFIG_VARIABLE_KEY(key_jump),
+  CONFIG_VARIABLE_KEY(key_jump),
 
-    //!
-    // @game heretic hexen
-    //
-    // Keyboard key to fly upward.
-    //
+  //!
+  // @game heretic hexen
+  //
+  // Keyboard key to fly upward.
+  //
 
-    CONFIG_VARIABLE_KEY(key_flyup),
+  CONFIG_VARIABLE_KEY(key_flyup),
 
-    //!
-    // @game heretic hexen
-    //
-    // Keyboard key to fly downwards.
-    //
+  //!
+  // @game heretic hexen
+  //
+  // Keyboard key to fly downwards.
+  //
 
-    CONFIG_VARIABLE_KEY(key_flydown),
+  CONFIG_VARIABLE_KEY(key_flydown),
 
-    //!
-    // @game heretic hexen
-    //
-    // Keyboard key to center flying.
-    //
+  //!
+  // @game heretic hexen
+  //
+  // Keyboard key to center flying.
+  //
 
-    CONFIG_VARIABLE_KEY(key_flycenter),
+  CONFIG_VARIABLE_KEY(key_flycenter),
 
-    //!
-    // @game heretic hexen
-    //
-    // Keyboard key to look up.
-    //
+  //!
+  // @game heretic hexen
+  //
+  // Keyboard key to look up.
+  //
 
-    CONFIG_VARIABLE_KEY(key_lookup),
+  CONFIG_VARIABLE_KEY(key_lookup),
 
-    //!
-    // @game heretic hexen
-    //
-    // Keyboard key to look down.
-    //
+  //!
+  // @game heretic hexen
+  //
+  // Keyboard key to look down.
+  //
 
-    CONFIG_VARIABLE_KEY(key_lookdown),
+  CONFIG_VARIABLE_KEY(key_lookdown),
 
-    //!
-    // @game heretic hexen
-    //
-    // Keyboard key to center the view.
-    //
+  //!
+  // @game heretic hexen
+  //
+  // Keyboard key to center the view.
+  //
 
-    CONFIG_VARIABLE_KEY(key_lookcenter),
+  CONFIG_VARIABLE_KEY(key_lookcenter),
 
-    //!
-    // @game strife
-    //
-    // Keyboard key to query inventory.
-    //
+  //!
+  // @game strife
+  //
+  // Keyboard key to query inventory.
+  //
 
-    CONFIG_VARIABLE_KEY(key_invquery),
+  CONFIG_VARIABLE_KEY(key_invquery),
 
-    //!
-    // @game strife
-    //
-    // Keyboard key to display mission objective.
-    //
+  //!
+  // @game strife
+  //
+  // Keyboard key to display mission objective.
+  //
 
-    CONFIG_VARIABLE_KEY(key_mission),
+  CONFIG_VARIABLE_KEY(key_mission),
 
-    //!
-    // @game strife
-    //
-    // Keyboard key to display inventory popup.
-    //
+  //!
+  // @game strife
+  //
+  // Keyboard key to display inventory popup.
+  //
 
-    CONFIG_VARIABLE_KEY(key_invPop),
+  CONFIG_VARIABLE_KEY(key_invPop),
 
-    //!
-    // @game strife
-    //
-    // Keyboard key to display keys popup.
-    //
+  //!
+  // @game strife
+  //
+  // Keyboard key to display keys popup.
+  //
 
-    CONFIG_VARIABLE_KEY(key_invKey),
+  CONFIG_VARIABLE_KEY(key_invKey),
 
-    //!
-    // @game strife
-    //
-    // Keyboard key to jump to start of inventory.
-    //
+  //!
+  // @game strife
+  //
+  // Keyboard key to jump to start of inventory.
+  //
 
-    CONFIG_VARIABLE_KEY(key_invHome),
+  CONFIG_VARIABLE_KEY(key_invHome),
 
-    //!
-    // @game strife
-    //
-    // Keyboard key to jump to end of inventory.
-    //
+  //!
+  // @game strife
+  //
+  // Keyboard key to jump to end of inventory.
+  //
 
-    CONFIG_VARIABLE_KEY(key_invEnd),
+  CONFIG_VARIABLE_KEY(key_invEnd),
 
-    //!
-    // @game heretic hexen
-    //
-    // Keyboard key to scroll left in the inventory.
-    //
+  //!
+  // @game heretic hexen
+  //
+  // Keyboard key to scroll left in the inventory.
+  //
 
-    CONFIG_VARIABLE_KEY(key_invleft),
+  CONFIG_VARIABLE_KEY(key_invleft),
 
-    //!
-    // @game heretic hexen
-    //
-    // Keyboard key to scroll right in the inventory.
-    //
+  //!
+  // @game heretic hexen
+  //
+  // Keyboard key to scroll right in the inventory.
+  //
 
-    CONFIG_VARIABLE_KEY(key_invright),
+  CONFIG_VARIABLE_KEY(key_invright),
 
-    //!
-    // @game strife
-    //
-    // Keyboard key to scroll left in the inventory.
-    //
+  //!
+  // @game strife
+  //
+  // Keyboard key to scroll left in the inventory.
+  //
 
-    CONFIG_VARIABLE_KEY(key_invLeft),
+  CONFIG_VARIABLE_KEY(key_invLeft),
 
-    //!
-    // @game strife
-    //
-    // Keyboard key to scroll right in the inventory.
-    //
+  //!
+  // @game strife
+  //
+  // Keyboard key to scroll right in the inventory.
+  //
 
-    CONFIG_VARIABLE_KEY(key_invRight),
+  CONFIG_VARIABLE_KEY(key_invRight),
 
-    //!
-    // @game heretic hexen
-    //
-    // Keyboard key to use the current item in the inventory.
-    //
+  //!
+  // @game heretic hexen
+  //
+  // Keyboard key to use the current item in the inventory.
+  //
 
-    CONFIG_VARIABLE_KEY(key_useartifact),
+  CONFIG_VARIABLE_KEY(key_useartifact),
 
-    //!
-    // @game strife
-    //
-    // Keyboard key to use inventory item.
-    //
+  //!
+  // @game strife
+  //
+  // Keyboard key to use inventory item.
+  //
 
-    CONFIG_VARIABLE_KEY(key_invUse),
+  CONFIG_VARIABLE_KEY(key_invUse),
 
-    //!
-    // @game strife
-    //
-    // Keyboard key to drop an inventory item.
-    //
+  //!
+  // @game strife
+  //
+  // Keyboard key to drop an inventory item.
+  //
 
-    CONFIG_VARIABLE_KEY(key_invDrop),
+  CONFIG_VARIABLE_KEY(key_invDrop),
 
-    //!
-    // @game strife
-    //
-    // Keyboard key to look up.
-    //
+  //!
+  // @game strife
+  //
+  // Keyboard key to look up.
+  //
 
-    CONFIG_VARIABLE_KEY(key_lookUp),
+  CONFIG_VARIABLE_KEY(key_lookUp),
 
-    //!
-    // @game strife
-    //
-    // Keyboard key to look down.
-    //
+  //!
+  // @game strife
+  //
+  // Keyboard key to look down.
+  //
 
-    CONFIG_VARIABLE_KEY(key_lookDown),
+  CONFIG_VARIABLE_KEY(key_lookDown),
 
-    //!
-    // Keyboard key to fire the currently selected weapon.
-    //
+  //!
+  // Keyboard key to fire the currently selected weapon.
+  //
 
-    CONFIG_VARIABLE_KEY(key_fire),
+  CONFIG_VARIABLE_KEY(key_fire),
 
-    //!
-    // Keyboard key to "use" an object, eg. a door or switch.
-    //
+  //!
+  // Keyboard key to "use" an object, eg. a door or switch.
+  //
 
-    CONFIG_VARIABLE_KEY(key_use),
+  CONFIG_VARIABLE_KEY(key_use),
 
-    //!
-    // Keyboard key to turn on strafing.  When held down, pressing the
-    // key to turn left or right causes the player to strafe left or
-    // right instead.
-    //
+  //!
+  // Keyboard key to turn on strafing.  When held down, pressing the
+  // key to turn left or right causes the player to strafe left or
+  // right instead.
+  //
 
-    CONFIG_VARIABLE_KEY(key_strafe),
+  CONFIG_VARIABLE_KEY(key_strafe),
 
-    //!
-    // Keyboard key to make the player run.
-    //
+  //!
+  // Keyboard key to make the player run.
+  //
 
-    CONFIG_VARIABLE_KEY(key_speed),
+  CONFIG_VARIABLE_KEY(key_speed),
 
-    //!
-    // If non-zero, mouse input is enabled.  If zero, mouse input is
-    // disabled.
-    //
+  //!
+  // If non-zero, mouse input is enabled.  If zero, mouse input is
+  // disabled.
+  //
 
-    CONFIG_VARIABLE_INT(use_mouse),
+  CONFIG_VARIABLE_INT(use_mouse),
 
-    //!
-    // Mouse button to fire the currently selected weapon.
-    //
+  //!
+  // Mouse button to fire the currently selected weapon.
+  //
 
-    CONFIG_VARIABLE_INT(mouseb_fire),
+  CONFIG_VARIABLE_INT(mouseb_fire),
 
-    //!
-    // Mouse button to turn on strafing.  When held down, the player
-    // will strafe left and right instead of turning left and right.
-    //
+  //!
+  // Mouse button to turn on strafing.  When held down, the player
+  // will strafe left and right instead of turning left and right.
+  //
 
-    CONFIG_VARIABLE_INT(mouseb_strafe),
+  CONFIG_VARIABLE_INT(mouseb_strafe),
 
-    //!
-    // Mouse button to move forward.
-    //
+  //!
+  // Mouse button to move forward.
+  //
 
-    CONFIG_VARIABLE_INT(mouseb_forward),
+  CONFIG_VARIABLE_INT(mouseb_forward),
 
-    //!
-    // @game hexen strife
-    //
-    // Mouse button to jump.
-    //
+  //!
+  // @game hexen strife
+  //
+  // Mouse button to jump.
+  //
 
-    CONFIG_VARIABLE_INT(mouseb_jump),
+  CONFIG_VARIABLE_INT(mouseb_jump),
 
-    //!
-    // @game doom
-    //
-    // Mouse button to enable free looking.
-    //
+  //!
+  // @game doom
+  //
+  // Mouse button to enable free looking.
+  //
 
-    CONFIG_VARIABLE_INT(mouseb_mouselook),
+  CONFIG_VARIABLE_INT(mouseb_mouselook),
 
-    //!
-    // @game doom
-    //
-    // Quick 180° reverse.
-    //
+  //!
+  // @game doom
+  //
+  // Quick 180° reverse.
+  //
 
-    CONFIG_VARIABLE_INT(mouseb_reverse),
+  CONFIG_VARIABLE_INT(mouseb_reverse),
 
-    //!
-    // If non-zero, joystick input is enabled.
-    //
+  //!
+  // If non-zero, joystick input is enabled.
+  //
 
-    CONFIG_VARIABLE_INT(use_joystick),
+  CONFIG_VARIABLE_INT(use_joystick),
 
-    //!
-    // Joystick virtual button that fires the current weapon.
-    //
+  //!
+  // Joystick virtual button that fires the current weapon.
+  //
 
-    CONFIG_VARIABLE_INT(joyb_fire),
+  CONFIG_VARIABLE_INT(joyb_fire),
 
-    //!
-    // Joystick virtual button that makes the player strafe while
-    // held down.
-    //
+  //!
+  // Joystick virtual button that makes the player strafe while
+  // held down.
+  //
 
-    CONFIG_VARIABLE_INT(joyb_strafe),
+  CONFIG_VARIABLE_INT(joyb_strafe),
 
-    //!
-    // Joystick virtual button to "use" an object, eg. a door or switch.
-    //
+  //!
+  // Joystick virtual button to "use" an object, eg. a door or switch.
+  //
 
-    CONFIG_VARIABLE_INT(joyb_use),
+  CONFIG_VARIABLE_INT(joyb_use),
 
-    //!
-    // Joystick virtual button that makes the player run while held
-    // down.
-    //
-    // If this has a value of 20 or greater, the player will always run,
-    // even if use_joystick is 0.
-    //
+  //!
+  // Joystick virtual button that makes the player run while held
+  // down.
+  //
+  // If this has a value of 20 or greater, the player will always run,
+  // even if use_joystick is 0.
+  //
 
-    CONFIG_VARIABLE_INT(joyb_speed),
+  CONFIG_VARIABLE_INT(joyb_speed),
 
-    //!
-    // @game hexen strife
-    //
-    // Joystick virtual button that makes the player jump.
-    //
+  //!
+  // @game hexen strife
+  //
+  // Joystick virtual button that makes the player jump.
+  //
 
-    CONFIG_VARIABLE_INT(joyb_jump),
+  CONFIG_VARIABLE_INT(joyb_jump),
 
-    //!
-    // @game doom heretic hexen
-    //
-    // Screen size, range 3-11.
-    //
-    // A value of 11 gives a full-screen view with the status bar not
-    // displayed.  A value of 10 gives a full-screen view with the
-    // status bar displayed.
-    //
+  //!
+  // @game doom heretic hexen
+  //
+  // Screen size, range 3-11.
+  //
+  // A value of 11 gives a full-screen view with the status bar not
+  // displayed.  A value of 10 gives a full-screen view with the
+  // status bar displayed.
+  //
 
-    CONFIG_VARIABLE_INT(screenblocks),
+  CONFIG_VARIABLE_INT(screenblocks),
 
-    //!
-    // @game strife
-    //
-    // Screen size, range 3-11.
-    //
-    // A value of 11 gives a full-screen view with the status bar not
-    // displayed.  A value of 10 gives a full-screen view with the
-    // status bar displayed.
-    //
+  //!
+  // @game strife
+  //
+  // Screen size, range 3-11.
+  //
+  // A value of 11 gives a full-screen view with the status bar not
+  // displayed.  A value of 10 gives a full-screen view with the
+  // status bar displayed.
+  //
 
-    CONFIG_VARIABLE_INT(screensize),
+  CONFIG_VARIABLE_INT(screensize),
 
-    //!
-    // @game doom
-    //
-    // Screen detail.  Zero gives normal "high detail" mode, while
-    // a non-zero value gives "low detail" mode.
-    //
+  //!
+  // @game doom
+  //
+  // Screen detail.  Zero gives normal "high detail" mode, while
+  // a non-zero value gives "low detail" mode.
+  //
 
-    CONFIG_VARIABLE_INT(detaillevel),
+  CONFIG_VARIABLE_INT(detaillevel),
 
-    //!
-    // Number of sounds that will be played simultaneously.
-    //
+  //!
+  // Number of sounds that will be played simultaneously.
+  //
 
-    CONFIG_VARIABLE_INT(snd_channels),
+  CONFIG_VARIABLE_INT(snd_channels),
 
-    //!
-    // Music output device.  A non-zero value gives MIDI sound output,
-    // while a value of zero disables music.
-    //
+  //!
+  // Music output device.  A non-zero value gives MIDI sound output,
+  // while a value of zero disables music.
+  //
 
-    CONFIG_VARIABLE_INT(snd_musicdevice),
+  CONFIG_VARIABLE_INT(snd_musicdevice),
 
-    //!
-    // Sound effects device.  A value of zero disables in-game sound
-    // effects, a value of 1 enables PC speaker sound effects, while
-    // a value in the range 2-9 enables the "normal" digital sound
-    // effects.
-    //
+  //!
+  // Sound effects device.  A value of zero disables in-game sound
+  // effects, a value of 1 enables PC speaker sound effects, while
+  // a value in the range 2-9 enables the "normal" digital sound
+  // effects.
+  //
 
-    CONFIG_VARIABLE_INT(snd_sfxdevice),
+  CONFIG_VARIABLE_INT(snd_sfxdevice),
 
-    //!
-    // SoundBlaster I/O port. Unused.
-    //
+  //!
+  // SoundBlaster I/O port. Unused.
+  //
 
-    CONFIG_VARIABLE_INT(snd_sbport),
+  CONFIG_VARIABLE_INT(snd_sbport),
 
-    //!
-    // SoundBlaster IRQ.  Unused.
-    //
+  //!
+  // SoundBlaster IRQ.  Unused.
+  //
 
-    CONFIG_VARIABLE_INT(snd_sbirq),
+  CONFIG_VARIABLE_INT(snd_sbirq),
 
-    //!
-    // SoundBlaster DMA channel.  Unused.
-    //
+  //!
+  // SoundBlaster DMA channel.  Unused.
+  //
 
-    CONFIG_VARIABLE_INT(snd_sbdma),
+  CONFIG_VARIABLE_INT(snd_sbdma),
 
-    //!
-    // Output port to use for OPL MIDI playback.  Unused.
-    //
+  //!
+  // Output port to use for OPL MIDI playback.  Unused.
+  //
 
-    CONFIG_VARIABLE_INT(snd_mport),
+  CONFIG_VARIABLE_INT(snd_mport),
 
-    //!
-    // Gamma correction level.  A value of zero disables gamma
-    // correction, while a value in the range 1-4 gives increasing
-    // levels of gamma correction.
-    //
+  //!
+  // Gamma correction level.  A value of zero disables gamma
+  // correction, while a value in the range 1-4 gives increasing
+  // levels of gamma correction.
+  //
 
-    CONFIG_VARIABLE_INT(usegamma),
+  CONFIG_VARIABLE_INT(usegamma),
 
-    //!
-    // @game hexen
-    //
-    // Directory in which to store savegames.
-    //
+  //!
+  // @game hexen
+  //
+  // Directory in which to store savegames.
+  //
 
-    CONFIG_VARIABLE_STRING(savedir),
+  CONFIG_VARIABLE_STRING(savedir),
 
-    //!
-    // @game hexen
-    //
-    // Controls whether messages are displayed in the heads-up display.
-    // If this has a non-zero value, messages are displayed.
-    //
+  //!
+  // @game hexen
+  //
+  // Controls whether messages are displayed in the heads-up display.
+  // If this has a non-zero value, messages are displayed.
+  //
 
-    CONFIG_VARIABLE_INT(messageson),
+  CONFIG_VARIABLE_INT(messageson),
 
-    //!
-    // @game strife
-    //
-    // Name of background flat used by view border.
-    //
+  //!
+  // @game strife
+  //
+  // Name of background flat used by view border.
+  //
 
-    CONFIG_VARIABLE_STRING(back_flat),
+  CONFIG_VARIABLE_STRING(back_flat),
 
-    //!
-    // @game strife
-    //
-    // Multiplayer nickname (?).
-    //
+  //!
+  // @game strife
+  //
+  // Multiplayer nickname (?).
+  //
 
-    CONFIG_VARIABLE_STRING(nickname),
+  CONFIG_VARIABLE_STRING(nickname),
 
-    //!
-    // Multiplayer chat macro: message to send when alt+0 is pressed.
-    //
+  //!
+  // Multiplayer chat macro: message to send when alt+0 is pressed.
+  //
 
-    CONFIG_VARIABLE_STRING(chatmacro0),
+  CONFIG_VARIABLE_STRING(chatmacro0),
 
-    //!
-    // Multiplayer chat macro: message to send when alt+1 is pressed.
-    //
+  //!
+  // Multiplayer chat macro: message to send when alt+1 is pressed.
+  //
 
-    CONFIG_VARIABLE_STRING(chatmacro1),
+  CONFIG_VARIABLE_STRING(chatmacro1),
 
-    //!
-    // Multiplayer chat macro: message to send when alt+2 is pressed.
-    //
+  //!
+  // Multiplayer chat macro: message to send when alt+2 is pressed.
+  //
 
-    CONFIG_VARIABLE_STRING(chatmacro2),
+  CONFIG_VARIABLE_STRING(chatmacro2),
 
-    //!
-    // Multiplayer chat macro: message to send when alt+3 is pressed.
-    //
+  //!
+  // Multiplayer chat macro: message to send when alt+3 is pressed.
+  //
 
-    CONFIG_VARIABLE_STRING(chatmacro3),
+  CONFIG_VARIABLE_STRING(chatmacro3),
 
-    //!
-    // Multiplayer chat macro: message to send when alt+4 is pressed.
-    //
+  //!
+  // Multiplayer chat macro: message to send when alt+4 is pressed.
+  //
 
-    CONFIG_VARIABLE_STRING(chatmacro4),
+  CONFIG_VARIABLE_STRING(chatmacro4),
 
-    //!
-    // Multiplayer chat macro: message to send when alt+5 is pressed.
-    //
+  //!
+  // Multiplayer chat macro: message to send when alt+5 is pressed.
+  //
 
-    CONFIG_VARIABLE_STRING(chatmacro5),
+  CONFIG_VARIABLE_STRING(chatmacro5),
 
-    //!
-    // Multiplayer chat macro: message to send when alt+6 is pressed.
-    //
+  //!
+  // Multiplayer chat macro: message to send when alt+6 is pressed.
+  //
 
-    CONFIG_VARIABLE_STRING(chatmacro6),
+  CONFIG_VARIABLE_STRING(chatmacro6),
 
-    //!
-    // Multiplayer chat macro: message to send when alt+7 is pressed.
-    //
+  //!
+  // Multiplayer chat macro: message to send when alt+7 is pressed.
+  //
 
-    CONFIG_VARIABLE_STRING(chatmacro7),
+  CONFIG_VARIABLE_STRING(chatmacro7),
 
-    //!
-    // Multiplayer chat macro: message to send when alt+8 is pressed.
-    //
+  //!
+  // Multiplayer chat macro: message to send when alt+8 is pressed.
+  //
 
-    CONFIG_VARIABLE_STRING(chatmacro8),
+  CONFIG_VARIABLE_STRING(chatmacro8),
 
-    //!
-    // Multiplayer chat macro: message to send when alt+9 is pressed.
-    //
+  //!
+  // Multiplayer chat macro: message to send when alt+9 is pressed.
+  //
 
-    CONFIG_VARIABLE_STRING(chatmacro9),
+  CONFIG_VARIABLE_STRING(chatmacro9),
 
-    //!
-    // @game strife
-    //
-    // Serial port number to use for SERSETUP.EXE (unused).
-    //
+  //!
+  // @game strife
+  //
+  // Serial port number to use for SERSETUP.EXE (unused).
+  //
 
-    CONFIG_VARIABLE_INT(comport),
+  CONFIG_VARIABLE_INT(comport),
 };
 
 static default_collection_t doom_defaults = {
-    doom_defaults_list,
-    static_cast<int>(std::size(doom_defaults_list)),
-    nullptr,
+  doom_defaults_list,
+  static_cast<int>(std::size(doom_defaults_list)),
+  nullptr,
 };
 
 //! @begin_config_file extended
 
 static default_t extra_defaults_list[] = {
-    //!
-    // Name of the SDL video driver to use.  If this is an empty string,
-    // the default video driver is used.
-    //
+  //!
+  // Name of the SDL video driver to use.  If this is an empty string,
+  // the default video driver is used.
+  //
 
-    CONFIG_VARIABLE_STRING(video_driver),
+  CONFIG_VARIABLE_STRING(video_driver),
 
-    //!
-    // Position of the window on the screen when running in windowed
-    // mode. Accepted values are: "" (empty string) - don't care,
-    // "center" - place window at center of screen, "x,y" - place
-    // window at the specified coordinates.
-    //
+  //!
+  // Position of the window on the screen when running in windowed
+  // mode. Accepted values are: "" (empty string) - don't care,
+  // "center" - place window at center of screen, "x,y" - place
+  // window at the specified coordinates.
+  //
 
-    CONFIG_VARIABLE_STRING(window_position),
+  CONFIG_VARIABLE_STRING(window_position),
 
-    //!
-    // If non-zero, the game will run in full screen mode.  If zero,
-    // the game will run in a window.
-    //
+  //!
+  // If non-zero, the game will run in full screen mode.  If zero,
+  // the game will run in a window.
+  //
 
-    CONFIG_VARIABLE_INT(fullscreen),
+  CONFIG_VARIABLE_INT(fullscreen),
 
-    //!
-    // Index of the display on which the game should run. This has no
-    // effect if running in windowed mode (fullscreen=0) and
-    // window_position is not set to "center".
-    //
+  //!
+  // Index of the display on which the game should run. This has no
+  // effect if running in windowed mode (fullscreen=0) and
+  // window_position is not set to "center".
+  //
 
-    CONFIG_VARIABLE_INT(video_display),
+  CONFIG_VARIABLE_INT(video_display),
 
-    //!
-    // If non-zero, the screen will be stretched vertically to display
-    // correctly on a square pixel video mode.
-    //
+  //!
+  // If non-zero, the screen will be stretched vertically to display
+  // correctly on a square pixel video mode.
+  //
 
-    CONFIG_VARIABLE_INT(aspect_ratio_correct),
+  CONFIG_VARIABLE_INT(aspect_ratio_correct),
 
-    //!
-    // If non-zero, forces integer scales for resolution-independent rendering.
-    //
+  //!
+  // If non-zero, forces integer scales for resolution-independent rendering.
+  //
 
-    CONFIG_VARIABLE_INT(integer_scaling),
+  CONFIG_VARIABLE_INT(integer_scaling),
 
-    // If non-zero, any pillar/letter boxes drawn around the game area
-    // will "flash" when the game palette changes, simulating the VGA
-    // "porch"
+  // If non-zero, any pillar/letter boxes drawn around the game area
+  // will "flash" when the game palette changes, simulating the VGA
+  // "porch"
 
-    CONFIG_VARIABLE_INT(vga_porch_flash),
+  CONFIG_VARIABLE_INT(vga_porch_flash),
 
-    //!
-    // Window width when running in windowed mode.
-    //
+  //!
+  // Window width when running in windowed mode.
+  //
 
-    CONFIG_VARIABLE_INT(window_width),
+  CONFIG_VARIABLE_INT(window_width),
 
-    //!
-    // Window height when running in windowed mode.
-    //
+  //!
+  // Window height when running in windowed mode.
+  //
 
-    CONFIG_VARIABLE_INT(window_height),
+  CONFIG_VARIABLE_INT(window_height),
 
-    //!
-    // Width for screen mode when running fullscreen.
-    // If this and fullscreen_height are both set to zero, we run
-    // fullscreen as a desktop window that covers the entire screen,
-    // rather than ever switching screen modes. It should usually
-    // be unnecessary to set this value.
-    //
+  //!
+  // Width for screen mode when running fullscreen.
+  // If this and fullscreen_height are both set to zero, we run
+  // fullscreen as a desktop window that covers the entire screen,
+  // rather than ever switching screen modes. It should usually
+  // be unnecessary to set this value.
+  //
 
-    CONFIG_VARIABLE_INT(fullscreen_width),
+  CONFIG_VARIABLE_INT(fullscreen_width),
 
-    //!
-    // Height for screen mode when running fullscreen.
-    // See documentation for fullscreen_width.
-    //
+  //!
+  // Height for screen mode when running fullscreen.
+  // See documentation for fullscreen_width.
+  //
 
-    CONFIG_VARIABLE_INT(fullscreen_height),
+  CONFIG_VARIABLE_INT(fullscreen_height),
 
-    //!
-    // If non-zero, force the use of a software renderer. For use on
-    // systems lacking hardware acceleration.
-    //
+  //!
+  // If non-zero, force the use of a software renderer. For use on
+  // systems lacking hardware acceleration.
+  //
 
-    CONFIG_VARIABLE_INT(force_software_renderer),
+  CONFIG_VARIABLE_INT(force_software_renderer),
 
-    //!
-    // Maximum number of pixels to use for intermediate scaling buffer.
-    // More pixels mean that the screen can be rendered more precisely,
-    // but there are diminishing returns on quality. The default limits to
-    // 16,000,000 pixels, which is enough to cover 4K monitor standards.
+  //!
+  // Maximum number of pixels to use for intermediate scaling buffer.
+  // More pixels mean that the screen can be rendered more precisely,
+  // but there are diminishing returns on quality. The default limits to
+  // 16,000,000 pixels, which is enough to cover 4K monitor standards.
 
-    CONFIG_VARIABLE_INT(max_scaling_buffer_pixels),
+  CONFIG_VARIABLE_INT(max_scaling_buffer_pixels),
 
-    //!
-    // Number of milliseconds to wait on startup after the video mode
-    // has been set, before the game will start.  This allows the
-    // screen to settle on some monitors that do not display an image
-    // for a brief interval after changing video modes.
-    //
+  //!
+  // Number of milliseconds to wait on startup after the video mode
+  // has been set, before the game will start.  This allows the
+  // screen to settle on some monitors that do not display an image
+  // for a brief interval after changing video modes.
+  //
 
-    CONFIG_VARIABLE_INT(startup_delay),
+  CONFIG_VARIABLE_INT(startup_delay),
 
-    //!
-    // @game heretic hexen strife
-    //
-    // If non-zero, display the graphical startup screen.
-    //
+  //!
+  // @game heretic hexen strife
+  //
+  // If non-zero, display the graphical startup screen.
+  //
 
-    CONFIG_VARIABLE_INT(graphical_startup),
+  CONFIG_VARIABLE_INT(graphical_startup),
 
-    //!
-    // @game doom heretic strife
-    //
-    // If non-zero, the ENDOOM text screen is displayed when exiting the
-    // game. If zero, the ENDOOM screen is not displayed.
-    //
-
-    CONFIG_VARIABLE_INT(show_endoom),
-
-    //!
-    // @game doom strife
-    //
-    // If non-zero, a disk activity indicator is displayed when data is read
-    // from disk. If zero, the disk activity indicator is not displayed.
-    //
-
-    CONFIG_VARIABLE_INT(show_diskicon),
-
-    //!
-    // If non-zero, save screenshots in PNG format. If zero, screenshots are
-    // saved in PCX format, as Vanilla Doom does.
-    //
-
-    CONFIG_VARIABLE_INT(png_screenshots),
-
-    //!
-    // Vertical mouse acceleration factor.  When the speed of mouse movement
-    // exceeds the threshold value (mouse_threshold), the speed is
-    // multiplied by this value.
-    //
-
-    CONFIG_VARIABLE_FLOAT(mouse_acceleration_y),
-
-    //!
-    // Vertical mouse acceleration threshold.  When the speed of mouse movement
-    // exceeds this threshold value, the speed is multiplied by an
-    // acceleration factor (mouse_acceleration).
-    //
-
-    CONFIG_VARIABLE_INT(mouse_threshold_y),
-
-    //!
-    // Sound output sample rate, in Hz.  Typical values to use are
-    // 11025, 22050, 44100 and 48000.
-    //
-
-    CONFIG_VARIABLE_INT(snd_samplerate),
-
-    //!
-    // Maximum number of bytes to allocate for caching converted sound
-    // effects in memory. If set to zero, there is no limit applied.
-    //
-
-    CONFIG_VARIABLE_INT(snd_cachesize),
-
-    //!
-    // Maximum size of the output sound buffer size in milliseconds.
-    // Sound output is generated periodically in slices. Higher values
-    // might be more efficient but will introduce latency to the
-    // sound output. The default is 28ms (one slice per tic with the
-    // 35fps timer).
-    //
-
-    CONFIG_VARIABLE_INT(snd_maxslicetime_ms),
-
-    //!
-    // If non-zero, sound effects will have their pitch varied up or
-    // down by a random amount during play. If zero, sound effects
-    // play back at their default pitch.
-    //
-
-    CONFIG_VARIABLE_INT(snd_pitchshift),
-
-    //!
-    // External command to invoke to perform MIDI playback. If set to
-    // the empty string, SDL_mixer's internal MIDI playback is used.
-    // This only has any effect when snd_musicdevice is set to General
-    // MIDI output.
-    //
-
-    CONFIG_VARIABLE_STRING(snd_musiccmd),
-
-    //!
-    // Value to set for the DMXOPTION environment variable. If this contains
-    // "-opl3", output for an OPL3 chip is generated when in OPL MIDI
-    // playback mode.
-    //
-
-    CONFIG_VARIABLE_STRING(snd_dmxoption),
-
-    //!
-    // The I/O port to use to access the OPL chip.  Only relevant when
-    // using native OPL music playback.
-    //
-
-    CONFIG_VARIABLE_INT_HEX(opl_io_port),
-
-    //!
-    // Controls whether libsamplerate support is used for performing
-    // sample rate conversions of sound effects.  Support for this
-    // must be compiled into the program.
-    //
-    // If zero, libsamplerate support is disabled.  If non-zero,
-    // libsamplerate is enabled. Increasing values roughly correspond
-    // to higher quality conversion; the higher the quality, the
-    // slower the conversion process.  Linear conversion = 1;
-    // Zero order hold = 2; Fast Sinc filter = 3; Medium quality
-    // Sinc filter = 4; High quality Sinc filter = 5.
-    //
-
-    CONFIG_VARIABLE_INT(use_libsamplerate),
-
-    //!
-    // Scaling factor used by libsamplerate. This is used when converting
-    // sounds internally back into integer form; normally it should not
-    // be necessary to change it from the default value. The only time
-    // it might be needed is if a PWAD file is loaded that contains very
-    // loud sounds, in which case the conversion may cause sound clipping
-    // and the scale factor should be reduced. The lower the value, the
-    // quieter the sound effects become, so it should be set as high as is
-    // possible without clipping occurring.
-
-    CONFIG_VARIABLE_FLOAT(libsamplerate_scale),
-
-    //!
-    // Full path to a directory in which WAD files and dehacked patches
-    // can be placed to be automatically loaded on startup. A subdirectory
-    // of this directory matching the IWAD name is checked to find the
-    // files to load.
-
-    CONFIG_VARIABLE_STRING(autoload_path),
-
-    //!
-    // Full path to a directory containing configuration files for
-    // substitute music packs. These packs contain high quality renderings
-    // of game music to be played instead of using the system's built-in
-    // MIDI playback.
-    //
-
-    CONFIG_VARIABLE_STRING(music_pack_path),
-
-    //!
-    // Full path to a Timidity configuration file to use for MIDI
-    // playback. The file will be evaluated from the directory where
-    // it is evaluated, so there is no need to add "dir" commands
-    // into it.
-    //
-
-    CONFIG_VARIABLE_STRING(timidity_cfg_path),
-
-    //!
-    // Path to GUS patch files to use when operating in GUS emulation
-    // mode.
-    //
-
-    CONFIG_VARIABLE_STRING(gus_patch_path),
-
-    //!
-    // Number of kilobytes of RAM to use in GUS emulation mode. Valid
-    // values are 256, 512, 768 or 1024.
-    //
-
-    CONFIG_VARIABLE_INT(gus_ram_kb),
-
-    //!
-    // @game doom strife
-    //
-    // If non-zero, the Vanilla savegame limit is enforced; if the
-    // savegame exceeds 180224 bytes in size, the game will exit with
-    // an error.  If this has a value of zero, there is no limit to
-    // the size of savegames.
-    //
-
-    CONFIG_VARIABLE_INT(vanilla_savegame_limit),
-
-    //!
-    // @game doom strife
-    //
-    // If non-zero, the Vanilla demo size limit is enforced; the game
-    // exits with an error when a demo exceeds the demo size limit
-    // (128KiB by default).  If this has a value of zero, there is no
-    // limit to the size of demos.
-    //
+  //!
+  // @game doom heretic strife
+  //
+  // If non-zero, the ENDOOM text screen is displayed when exiting the
+  // game. If zero, the ENDOOM screen is not displayed.
+  //
+
+  CONFIG_VARIABLE_INT(show_endoom),
+
+  //!
+  // @game doom strife
+  //
+  // If non-zero, a disk activity indicator is displayed when data is read
+  // from disk. If zero, the disk activity indicator is not displayed.
+  //
+
+  CONFIG_VARIABLE_INT(show_diskicon),
+
+  //!
+  // If non-zero, save screenshots in PNG format. If zero, screenshots are
+  // saved in PCX format, as Vanilla Doom does.
+  //
+
+  CONFIG_VARIABLE_INT(png_screenshots),
+
+  //!
+  // Vertical mouse acceleration factor.  When the speed of mouse movement
+  // exceeds the threshold value (mouse_threshold), the speed is
+  // multiplied by this value.
+  //
+
+  CONFIG_VARIABLE_FLOAT(mouse_acceleration_y),
+
+  //!
+  // Vertical mouse acceleration threshold.  When the speed of mouse movement
+  // exceeds this threshold value, the speed is multiplied by an
+  // acceleration factor (mouse_acceleration).
+  //
+
+  CONFIG_VARIABLE_INT(mouse_threshold_y),
+
+  //!
+  // Sound output sample rate, in Hz.  Typical values to use are
+  // 11025, 22050, 44100 and 48000.
+  //
+
+  CONFIG_VARIABLE_INT(snd_samplerate),
+
+  //!
+  // Maximum number of bytes to allocate for caching converted sound
+  // effects in memory. If set to zero, there is no limit applied.
+  //
+
+  CONFIG_VARIABLE_INT(snd_cachesize),
+
+  //!
+  // Maximum size of the output sound buffer size in milliseconds.
+  // Sound output is generated periodically in slices. Higher values
+  // might be more efficient but will introduce latency to the
+  // sound output. The default is 28ms (one slice per tic with the
+  // 35fps timer).
+  //
+
+  CONFIG_VARIABLE_INT(snd_maxslicetime_ms),
+
+  //!
+  // If non-zero, sound effects will have their pitch varied up or
+  // down by a random amount during play. If zero, sound effects
+  // play back at their default pitch.
+  //
+
+  CONFIG_VARIABLE_INT(snd_pitchshift),
+
+  //!
+  // External command to invoke to perform MIDI playback. If set to
+  // the empty string, SDL_mixer's internal MIDI playback is used.
+  // This only has any effect when snd_musicdevice is set to General
+  // MIDI output.
+  //
+
+  CONFIG_VARIABLE_STRING(snd_musiccmd),
+
+  //!
+  // Value to set for the DMXOPTION environment variable. If this contains
+  // "-opl3", output for an OPL3 chip is generated when in OPL MIDI
+  // playback mode.
+  //
+
+  CONFIG_VARIABLE_STRING(snd_dmxoption),
+
+  //!
+  // The I/O port to use to access the OPL chip.  Only relevant when
+  // using native OPL music playback.
+  //
+
+  CONFIG_VARIABLE_INT_HEX(opl_io_port),
+
+  //!
+  // Controls whether libsamplerate support is used for performing
+  // sample rate conversions of sound effects.  Support for this
+  // must be compiled into the program.
+  //
+  // If zero, libsamplerate support is disabled.  If non-zero,
+  // libsamplerate is enabled. Increasing values roughly correspond
+  // to higher quality conversion; the higher the quality, the
+  // slower the conversion process.  Linear conversion = 1;
+  // Zero order hold = 2; Fast Sinc filter = 3; Medium quality
+  // Sinc filter = 4; High quality Sinc filter = 5.
+  //
+
+  CONFIG_VARIABLE_INT(use_libsamplerate),
+
+  //!
+  // Scaling factor used by libsamplerate. This is used when converting
+  // sounds internally back into integer form; normally it should not
+  // be necessary to change it from the default value. The only time
+  // it might be needed is if a PWAD file is loaded that contains very
+  // loud sounds, in which case the conversion may cause sound clipping
+  // and the scale factor should be reduced. The lower the value, the
+  // quieter the sound effects become, so it should be set as high as is
+  // possible without clipping occurring.
+
+  CONFIG_VARIABLE_FLOAT(libsamplerate_scale),
+
+  //!
+  // Full path to a directory in which WAD files and dehacked patches
+  // can be placed to be automatically loaded on startup. A subdirectory
+  // of this directory matching the IWAD name is checked to find the
+  // files to load.
+
+  CONFIG_VARIABLE_STRING(autoload_path),
+
+  //!
+  // Full path to a directory containing configuration files for
+  // substitute music packs. These packs contain high quality renderings
+  // of game music to be played instead of using the system's built-in
+  // MIDI playback.
+  //
+
+  CONFIG_VARIABLE_STRING(music_pack_path),
+
+  //!
+  // Full path to a Timidity configuration file to use for MIDI
+  // playback. The file will be evaluated from the directory where
+  // it is evaluated, so there is no need to add "dir" commands
+  // into it.
+  //
+
+  CONFIG_VARIABLE_STRING(timidity_cfg_path),
+
+  //!
+  // Path to GUS patch files to use when operating in GUS emulation
+  // mode.
+  //
+
+  CONFIG_VARIABLE_STRING(gus_patch_path),
+
+  //!
+  // Number of kilobytes of RAM to use in GUS emulation mode. Valid
+  // values are 256, 512, 768 or 1024.
+  //
+
+  CONFIG_VARIABLE_INT(gus_ram_kb),
+
+  //!
+  // @game doom strife
+  //
+  // If non-zero, the Vanilla savegame limit is enforced; if the
+  // savegame exceeds 180224 bytes in size, the game will exit with
+  // an error.  If this has a value of zero, there is no limit to
+  // the size of savegames.
+  //
+
+  CONFIG_VARIABLE_INT(vanilla_savegame_limit),
+
+  //!
+  // @game doom strife
+  //
+  // If non-zero, the Vanilla demo size limit is enforced; the game
+  // exits with an error when a demo exceeds the demo size limit
+  // (128KiB by default).  If this has a value of zero, there is no
+  // limit to the size of demos.
+  //
 
-    CONFIG_VARIABLE_INT(vanilla_demo_limit),
+  CONFIG_VARIABLE_INT(vanilla_demo_limit),
 
-    //!
-    // If non-zero, the game behaves like Vanilla Doom, always assuming
-    // an American keyboard mapping.  If this has a value of zero, the
-    // native keyboard mapping of the keyboard is used.
-    //
+  //!
+  // If non-zero, the game behaves like Vanilla Doom, always assuming
+  // an American keyboard mapping.  If this has a value of zero, the
+  // native keyboard mapping of the keyboard is used.
+  //
 
-    CONFIG_VARIABLE_INT(vanilla_keyboard_mapping),
+  CONFIG_VARIABLE_INT(vanilla_keyboard_mapping),
 
-    //!
-    // Name to use in network games for identification.  This is only
-    // used on the "waiting" screen while waiting for the game to start.
-    //
+  //!
+  // Name to use in network games for identification.  This is only
+  // used on the "waiting" screen while waiting for the game to start.
+  //
 
-    CONFIG_VARIABLE_STRING(player_name),
+  CONFIG_VARIABLE_STRING(player_name),
 
-    //!
-    // If this is non-zero, the mouse will be "grabbed" when running
-    // in windowed mode so that it can be used as an input device.
-    // When running full screen, this has no effect.
-    //
+  //!
+  // If this is non-zero, the mouse will be "grabbed" when running
+  // in windowed mode so that it can be used as an input device.
+  // When running full screen, this has no effect.
+  //
 
-    CONFIG_VARIABLE_INT(grabmouse),
+  CONFIG_VARIABLE_INT(grabmouse),
 
-    //!
-    // If non-zero, all vertical mouse movement is ignored.  This
-    // emulates the behavior of the "novert" tool available under DOS
-    // that performs the same function.
-    //
+  //!
+  // If non-zero, all vertical mouse movement is ignored.  This
+  // emulates the behavior of the "novert" tool available under DOS
+  // that performs the same function.
+  //
 
-    CONFIG_VARIABLE_INT(novert),
+  CONFIG_VARIABLE_INT(novert),
 
-    //!
-    // Mouse acceleration factor.  When the speed of mouse movement
-    // exceeds the threshold value (mouse_threshold), the speed is
-    // multiplied by this value.
-    //
+  //!
+  // Mouse acceleration factor.  When the speed of mouse movement
+  // exceeds the threshold value (mouse_threshold), the speed is
+  // multiplied by this value.
+  //
 
-    CONFIG_VARIABLE_FLOAT(mouse_acceleration),
+  CONFIG_VARIABLE_FLOAT(mouse_acceleration),
 
-    //!
-    // Mouse acceleration threshold.  When the speed of mouse movement
-    // exceeds this threshold value, the speed is multiplied by an
-    // acceleration factor (mouse_acceleration).
-    //
+  //!
+  // Mouse acceleration threshold.  When the speed of mouse movement
+  // exceeds this threshold value, the speed is multiplied by an
+  // acceleration factor (mouse_acceleration).
+  //
 
-    CONFIG_VARIABLE_INT(mouse_threshold),
+  CONFIG_VARIABLE_INT(mouse_threshold),
 
-    //!
-    // Mouse button to strafe left.
-    //
+  //!
+  // Mouse button to strafe left.
+  //
 
-    CONFIG_VARIABLE_INT(mouseb_strafeleft),
+  CONFIG_VARIABLE_INT(mouseb_strafeleft),
 
-    //!
-    // Mouse button to strafe right.
-    //
+  //!
+  // Mouse button to strafe right.
+  //
 
-    CONFIG_VARIABLE_INT(mouseb_straferight),
+  CONFIG_VARIABLE_INT(mouseb_straferight),
 
-    //!
-    // Mouse button to "use" an object, eg. a door or switch.
-    //
+  //!
+  // Mouse button to "use" an object, eg. a door or switch.
+  //
 
-    CONFIG_VARIABLE_INT(mouseb_use),
+  CONFIG_VARIABLE_INT(mouseb_use),
 
-    //!
-    // Mouse button to move backwards.
-    //
+  //!
+  // Mouse button to move backwards.
+  //
 
-    CONFIG_VARIABLE_INT(mouseb_backward),
+  CONFIG_VARIABLE_INT(mouseb_backward),
 
-    //!
-    // Mouse button to cycle to the previous weapon.
-    //
+  //!
+  // Mouse button to cycle to the previous weapon.
+  //
 
-    CONFIG_VARIABLE_INT(mouseb_prevweapon),
+  CONFIG_VARIABLE_INT(mouseb_prevweapon),
 
-    //!
-    // Mouse button to cycle to the next weapon.
-    //
+  //!
+  // Mouse button to cycle to the next weapon.
+  //
 
-    CONFIG_VARIABLE_INT(mouseb_nextweapon),
+  CONFIG_VARIABLE_INT(mouseb_nextweapon),
 
-    //!
-    // If non-zero, double-clicking a mouse button acts like pressing
-    // the "use" key to use an object in-game, eg. a door or switch.
-    //
+  //!
+  // If non-zero, double-clicking a mouse button acts like pressing
+  // the "use" key to use an object in-game, eg. a door or switch.
+  //
 
-    CONFIG_VARIABLE_INT(dclick_use),
+  CONFIG_VARIABLE_INT(dclick_use),
 
-    //!
-    // SDL GUID string indicating the joystick to use. An empty string
-    // indicates that no joystick is configured.
-    //
+  //!
+  // SDL GUID string indicating the joystick to use. An empty string
+  // indicates that no joystick is configured.
+  //
 
-    CONFIG_VARIABLE_STRING(joystick_guid),
+  CONFIG_VARIABLE_STRING(joystick_guid),
 
-    //!
-    // Index of SDL joystick to use; this is only used in the case where
-    // multiple identical joystick devices are connected which have the
-    // same GUID, to distinguish between devices.
-    //
+  //!
+  // Index of SDL joystick to use; this is only used in the case where
+  // multiple identical joystick devices are connected which have the
+  // same GUID, to distinguish between devices.
+  //
 
-    CONFIG_VARIABLE_INT(joystick_index),
+  CONFIG_VARIABLE_INT(joystick_index),
 
-    //!
-    // Joystick axis to use to for horizontal (X) movement.
-    //
+  //!
+  // Joystick axis to use to for horizontal (X) movement.
+  //
 
-    CONFIG_VARIABLE_INT(joystick_x_axis),
+  CONFIG_VARIABLE_INT(joystick_x_axis),
 
-    //!
-    // If non-zero, movement on the horizontal joystick axis is inverted.
-    //
+  //!
+  // If non-zero, movement on the horizontal joystick axis is inverted.
+  //
 
-    CONFIG_VARIABLE_INT(joystick_x_invert),
+  CONFIG_VARIABLE_INT(joystick_x_invert),
 
-    //!
-    // Joystick axis to use to for vertical (Y) movement.
-    //
+  //!
+  // Joystick axis to use to for vertical (Y) movement.
+  //
 
-    CONFIG_VARIABLE_INT(joystick_y_axis),
+  CONFIG_VARIABLE_INT(joystick_y_axis),
 
-    //!
-    // If non-zero, movement on the vertical joystick axis is inverted.
-    //
+  //!
+  // If non-zero, movement on the vertical joystick axis is inverted.
+  //
 
-    CONFIG_VARIABLE_INT(joystick_y_invert),
+  CONFIG_VARIABLE_INT(joystick_y_invert),
 
-    //!
-    // Joystick axis to use to for strafing movement.
-    //
+  //!
+  // Joystick axis to use to for strafing movement.
+  //
 
-    CONFIG_VARIABLE_INT(joystick_strafe_axis),
+  CONFIG_VARIABLE_INT(joystick_strafe_axis),
 
-    //!
-    // If non-zero, movement on the joystick axis used for strafing
-    // is inverted.
-    //
+  //!
+  // If non-zero, movement on the joystick axis used for strafing
+  // is inverted.
+  //
 
-    CONFIG_VARIABLE_INT(joystick_strafe_invert),
+  CONFIG_VARIABLE_INT(joystick_strafe_invert),
 
-    //!
-    // Joystick axis to use to for looking up and down.
-    //
+  //!
+  // Joystick axis to use to for looking up and down.
+  //
 
-    CONFIG_VARIABLE_INT(joystick_look_axis),
+  CONFIG_VARIABLE_INT(joystick_look_axis),
 
-    //!
-    // If non-zero, movement on the joystick axis used for looking
-    // is inverted.
-    //
+  //!
+  // If non-zero, movement on the joystick axis used for looking
+  // is inverted.
+  //
 
-    CONFIG_VARIABLE_INT(joystick_look_invert),
+  CONFIG_VARIABLE_INT(joystick_look_invert),
 
-    //!
-    // The physical joystick button that corresponds to joystick
-    // virtual button #0.
-    //
+  //!
+  // The physical joystick button that corresponds to joystick
+  // virtual button #0.
+  //
 
-    CONFIG_VARIABLE_INT(joystick_physical_button0),
+  CONFIG_VARIABLE_INT(joystick_physical_button0),
 
-    //!
-    // The physical joystick button that corresponds to joystick
-    // virtual button #1.
-    //
+  //!
+  // The physical joystick button that corresponds to joystick
+  // virtual button #1.
+  //
 
-    CONFIG_VARIABLE_INT(joystick_physical_button1),
+  CONFIG_VARIABLE_INT(joystick_physical_button1),
 
-    //!
-    // The physical joystick button that corresponds to joystick
-    // virtual button #2.
-    //
+  //!
+  // The physical joystick button that corresponds to joystick
+  // virtual button #2.
+  //
 
-    CONFIG_VARIABLE_INT(joystick_physical_button2),
+  CONFIG_VARIABLE_INT(joystick_physical_button2),
 
-    //!
-    // The physical joystick button that corresponds to joystick
-    // virtual button #3.
-    //
+  //!
+  // The physical joystick button that corresponds to joystick
+  // virtual button #3.
+  //
 
-    CONFIG_VARIABLE_INT(joystick_physical_button3),
+  CONFIG_VARIABLE_INT(joystick_physical_button3),
 
-    //!
-    // The physical joystick button that corresponds to joystick
-    // virtual button #4.
-    //
+  //!
+  // The physical joystick button that corresponds to joystick
+  // virtual button #4.
+  //
 
-    CONFIG_VARIABLE_INT(joystick_physical_button4),
+  CONFIG_VARIABLE_INT(joystick_physical_button4),
 
-    //!
-    // The physical joystick button that corresponds to joystick
-    // virtual button #5.
-    //
+  //!
+  // The physical joystick button that corresponds to joystick
+  // virtual button #5.
+  //
 
-    CONFIG_VARIABLE_INT(joystick_physical_button5),
+  CONFIG_VARIABLE_INT(joystick_physical_button5),
 
-    //!
-    // The physical joystick button that corresponds to joystick
-    // virtual button #6.
-    //
+  //!
+  // The physical joystick button that corresponds to joystick
+  // virtual button #6.
+  //
 
-    CONFIG_VARIABLE_INT(joystick_physical_button6),
+  CONFIG_VARIABLE_INT(joystick_physical_button6),
 
-    //!
-    // The physical joystick button that corresponds to joystick
-    // virtual button #7.
-    //
+  //!
+  // The physical joystick button that corresponds to joystick
+  // virtual button #7.
+  //
 
-    CONFIG_VARIABLE_INT(joystick_physical_button7),
+  CONFIG_VARIABLE_INT(joystick_physical_button7),
 
-    //!
-    // The physical joystick button that corresponds to joystick
-    // virtual button #8.
-    //
+  //!
+  // The physical joystick button that corresponds to joystick
+  // virtual button #8.
+  //
 
-    CONFIG_VARIABLE_INT(joystick_physical_button8),
+  CONFIG_VARIABLE_INT(joystick_physical_button8),
 
-    //!
-    // The physical joystick button that corresponds to joystick
-    // virtual button #9.
-    //
+  //!
+  // The physical joystick button that corresponds to joystick
+  // virtual button #9.
+  //
 
-    CONFIG_VARIABLE_INT(joystick_physical_button9),
+  CONFIG_VARIABLE_INT(joystick_physical_button9),
 
-    //!
-    // The physical joystick button that corresponds to joystick
-    // virtual button #10.
-    //
+  //!
+  // The physical joystick button that corresponds to joystick
+  // virtual button #10.
+  //
 
-    CONFIG_VARIABLE_INT(joystick_physical_button10),
+  CONFIG_VARIABLE_INT(joystick_physical_button10),
 
-    //!
-    // Joystick virtual button to make the player strafe left.
-    //
+  //!
+  // Joystick virtual button to make the player strafe left.
+  //
 
-    CONFIG_VARIABLE_INT(joyb_strafeleft),
+  CONFIG_VARIABLE_INT(joyb_strafeleft),
 
-    //!
-    // Joystick virtual button to make the player strafe right.
-    //
+  //!
+  // Joystick virtual button to make the player strafe right.
+  //
 
-    CONFIG_VARIABLE_INT(joyb_straferight),
+  CONFIG_VARIABLE_INT(joyb_straferight),
 
-    //!
-    // Joystick virtual button to activate the menu.
-    //
+  //!
+  // Joystick virtual button to activate the menu.
+  //
 
-    CONFIG_VARIABLE_INT(joyb_menu_activate),
+  CONFIG_VARIABLE_INT(joyb_menu_activate),
 
-    //!
-    // Joystick virtual button to toggle the automap.
-    //
+  //!
+  // Joystick virtual button to toggle the automap.
+  //
 
-    CONFIG_VARIABLE_INT(joyb_toggle_automap),
+  CONFIG_VARIABLE_INT(joyb_toggle_automap),
 
-    //!
-    // Joystick virtual button that cycles to the previous weapon.
-    //
+  //!
+  // Joystick virtual button that cycles to the previous weapon.
+  //
 
-    CONFIG_VARIABLE_INT(joyb_prevweapon),
+  CONFIG_VARIABLE_INT(joyb_prevweapon),
 
-    //!
-    // Joystick virtual button that cycles to the next weapon.
-    //
+  //!
+  // Joystick virtual button that cycles to the next weapon.
+  //
 
-    CONFIG_VARIABLE_INT(joyb_nextweapon),
+  CONFIG_VARIABLE_INT(joyb_nextweapon),
 
-    //!
-    // Key to pause or unpause the game.
-    //
+  //!
+  // Key to pause or unpause the game.
+  //
 
-    CONFIG_VARIABLE_KEY(key_pause),
+  CONFIG_VARIABLE_KEY(key_pause),
 
-    //!
-    // Key that activates the menu when pressed.
-    //
+  //!
+  // Key that activates the menu when pressed.
+  //
 
-    CONFIG_VARIABLE_KEY(key_menu_activate),
+  CONFIG_VARIABLE_KEY(key_menu_activate),
 
-    //!
-    // Key that moves the cursor up on the menu.
-    //
+  //!
+  // Key that moves the cursor up on the menu.
+  //
 
-    CONFIG_VARIABLE_KEY(key_menu_up),
+  CONFIG_VARIABLE_KEY(key_menu_up),
 
-    //!
-    // Key that moves the cursor down on the menu.
-    //
+  //!
+  // Key that moves the cursor down on the menu.
+  //
 
-    CONFIG_VARIABLE_KEY(key_menu_down),
+  CONFIG_VARIABLE_KEY(key_menu_down),
 
-    //!
-    // Key that moves the currently selected slider on the menu left.
-    //
+  //!
+  // Key that moves the currently selected slider on the menu left.
+  //
 
-    CONFIG_VARIABLE_KEY(key_menu_left),
+  CONFIG_VARIABLE_KEY(key_menu_left),
 
-    //!
-    // Key that moves the currently selected slider on the menu right.
-    //
+  //!
+  // Key that moves the currently selected slider on the menu right.
+  //
 
-    CONFIG_VARIABLE_KEY(key_menu_right),
+  CONFIG_VARIABLE_KEY(key_menu_right),
 
-    //!
-    // Key to go back to the previous menu.
-    //
+  //!
+  // Key to go back to the previous menu.
+  //
 
-    CONFIG_VARIABLE_KEY(key_menu_back),
+  CONFIG_VARIABLE_KEY(key_menu_back),
 
-    //!
-    // Key to activate the currently selected menu item.
-    //
+  //!
+  // Key to activate the currently selected menu item.
+  //
 
-    CONFIG_VARIABLE_KEY(key_menu_forward),
+  CONFIG_VARIABLE_KEY(key_menu_forward),
 
-    //!
-    // Key to answer 'yes' to a question in the menu.
-    //
+  //!
+  // Key to answer 'yes' to a question in the menu.
+  //
 
-    CONFIG_VARIABLE_KEY(key_menu_confirm),
+  CONFIG_VARIABLE_KEY(key_menu_confirm),
 
-    //!
-    // Key to answer 'no' to a question in the menu.
-    //
+  //!
+  // Key to answer 'no' to a question in the menu.
+  //
 
-    CONFIG_VARIABLE_KEY(key_menu_abort),
+  CONFIG_VARIABLE_KEY(key_menu_abort),
 
-    //!
-    // Keyboard shortcut to bring up the help screen.
-    //
+  //!
+  // Keyboard shortcut to bring up the help screen.
+  //
 
-    CONFIG_VARIABLE_KEY(key_menu_help),
+  CONFIG_VARIABLE_KEY(key_menu_help),
 
-    //!
-    // Keyboard shortcut to bring up the save game menu.
-    //
+  //!
+  // Keyboard shortcut to bring up the save game menu.
+  //
 
-    CONFIG_VARIABLE_KEY(key_menu_save),
+  CONFIG_VARIABLE_KEY(key_menu_save),
 
-    //!
-    // Keyboard shortcut to bring up the load game menu.
-    //
+  //!
+  // Keyboard shortcut to bring up the load game menu.
+  //
 
-    CONFIG_VARIABLE_KEY(key_menu_load),
+  CONFIG_VARIABLE_KEY(key_menu_load),
 
-    //!
-    // Keyboard shortcut to bring up the sound volume menu.
-    //
+  //!
+  // Keyboard shortcut to bring up the sound volume menu.
+  //
 
-    CONFIG_VARIABLE_KEY(key_menu_volume),
+  CONFIG_VARIABLE_KEY(key_menu_volume),
 
-    //!
-    // Keyboard shortcut to toggle the detail level.
-    //
+  //!
+  // Keyboard shortcut to toggle the detail level.
+  //
 
-    CONFIG_VARIABLE_KEY(key_menu_detail),
+  CONFIG_VARIABLE_KEY(key_menu_detail),
 
-    //!
-    // Keyboard shortcut to quicksave the current game.
-    //
+  //!
+  // Keyboard shortcut to quicksave the current game.
+  //
 
-    CONFIG_VARIABLE_KEY(key_menu_qsave),
+  CONFIG_VARIABLE_KEY(key_menu_qsave),
 
-    //!
-    // Keyboard shortcut to end the game.
-    //
+  //!
+  // Keyboard shortcut to end the game.
+  //
 
-    CONFIG_VARIABLE_KEY(key_menu_endgame),
+  CONFIG_VARIABLE_KEY(key_menu_endgame),
 
-    //!
-    // Keyboard shortcut to toggle heads-up messages.
-    //
+  //!
+  // Keyboard shortcut to toggle heads-up messages.
+  //
 
-    CONFIG_VARIABLE_KEY(key_menu_messages),
+  CONFIG_VARIABLE_KEY(key_menu_messages),
 
-    //!
-    // Keyboard shortcut to load the last quicksave.
-    //
+  //!
+  // Keyboard shortcut to load the last quicksave.
+  //
 
-    CONFIG_VARIABLE_KEY(key_menu_qload),
+  CONFIG_VARIABLE_KEY(key_menu_qload),
 
-    //!
-    // Keyboard shortcut to quit the game.
-    //
+  //!
+  // Keyboard shortcut to quit the game.
+  //
 
-    CONFIG_VARIABLE_KEY(key_menu_quit),
+  CONFIG_VARIABLE_KEY(key_menu_quit),
 
-    //!
-    // Keyboard shortcut to toggle the gamma correction level.
-    //
+  //!
+  // Keyboard shortcut to toggle the gamma correction level.
+  //
 
-    CONFIG_VARIABLE_KEY(key_menu_gamma),
+  CONFIG_VARIABLE_KEY(key_menu_gamma),
 
-    //!
-    // Keyboard shortcut to switch view in multiplayer.
-    //
+  //!
+  // Keyboard shortcut to switch view in multiplayer.
+  //
 
-    CONFIG_VARIABLE_KEY(key_spy),
+  CONFIG_VARIABLE_KEY(key_spy),
 
-    //!
-    // Keyboard shortcut to go to next level.
-    //
+  //!
+  // Keyboard shortcut to go to next level.
+  //
 
-    CONFIG_VARIABLE_KEY(key_menu_nextlevel),
+  CONFIG_VARIABLE_KEY(key_menu_nextlevel),
 
-    //!
-    // Keyboard shortcut to restart current level or demo.
-    //
+  //!
+  // Keyboard shortcut to restart current level or demo.
+  //
 
-    CONFIG_VARIABLE_KEY(key_menu_reloadlevel),
+  CONFIG_VARIABLE_KEY(key_menu_reloadlevel),
 
-    //!
-    // Keyboard shortcut to increase the screen size.
-    //
+  //!
+  // Keyboard shortcut to increase the screen size.
+  //
 
-    CONFIG_VARIABLE_KEY(key_menu_incscreen),
+  CONFIG_VARIABLE_KEY(key_menu_incscreen),
 
-    //!
-    // Keyboard shortcut to decrease the screen size.
-    //
+  //!
+  // Keyboard shortcut to decrease the screen size.
+  //
 
-    CONFIG_VARIABLE_KEY(key_menu_decscreen),
+  CONFIG_VARIABLE_KEY(key_menu_decscreen),
 
-    //!
-    // Keyboard shortcut to save a screenshot.
-    //
+  //!
+  // Keyboard shortcut to save a screenshot.
+  //
 
-    CONFIG_VARIABLE_KEY(key_menu_screenshot),
+  CONFIG_VARIABLE_KEY(key_menu_screenshot),
 
-    //!
-    // Keyboard shortcut to save a clean screenshot.
-    //
+  //!
+  // Keyboard shortcut to save a clean screenshot.
+  //
 
-    CONFIG_VARIABLE_KEY(key_menu_cleanscreenshot),
+  CONFIG_VARIABLE_KEY(key_menu_cleanscreenshot),
 
-    //!
-    // Key to delete a savegame.
-    //
+  //!
+  // Key to delete a savegame.
+  //
 
-    CONFIG_VARIABLE_KEY(key_menu_del),
+  CONFIG_VARIABLE_KEY(key_menu_del),
 
-    //!
-    // Key to toggle the map view.
-    //
+  //!
+  // Key to toggle the map view.
+  //
 
-    CONFIG_VARIABLE_KEY(key_map_toggle),
+  CONFIG_VARIABLE_KEY(key_map_toggle),
 
-    //!
-    // Key to pan north when in the map view.
-    //
+  //!
+  // Key to pan north when in the map view.
+  //
 
-    CONFIG_VARIABLE_KEY(key_map_north),
+  CONFIG_VARIABLE_KEY(key_map_north),
 
-    //!
-    // Key to pan south when in the map view.
-    //
+  //!
+  // Key to pan south when in the map view.
+  //
 
-    CONFIG_VARIABLE_KEY(key_map_south),
+  CONFIG_VARIABLE_KEY(key_map_south),
 
-    //!
-    // Key to pan east when in the map view.
-    //
+  //!
+  // Key to pan east when in the map view.
+  //
 
-    CONFIG_VARIABLE_KEY(key_map_east),
+  CONFIG_VARIABLE_KEY(key_map_east),
 
-    //!
-    // Key to pan west when in the map view.
-    //
+  //!
+  // Key to pan west when in the map view.
+  //
 
-    CONFIG_VARIABLE_KEY(key_map_west),
+  CONFIG_VARIABLE_KEY(key_map_west),
 
-    //!
-    // Key to zoom in when in the map view.
-    //
+  //!
+  // Key to zoom in when in the map view.
+  //
 
-    CONFIG_VARIABLE_KEY(key_map_zoomin),
+  CONFIG_VARIABLE_KEY(key_map_zoomin),
 
-    //!
-    // Key to zoom out when in the map view.
-    //
+  //!
+  // Key to zoom out when in the map view.
+  //
 
-    CONFIG_VARIABLE_KEY(key_map_zoomout),
+  CONFIG_VARIABLE_KEY(key_map_zoomout),
 
-    //!
-    // Key to zoom out the maximum amount when in the map view.
-    //
+  //!
+  // Key to zoom out the maximum amount when in the map view.
+  //
 
-    CONFIG_VARIABLE_KEY(key_map_maxzoom),
+  CONFIG_VARIABLE_KEY(key_map_maxzoom),
 
-    //!
-    // Key to toggle follow mode when in the map view.
-    //
+  //!
+  // Key to toggle follow mode when in the map view.
+  //
 
-    CONFIG_VARIABLE_KEY(key_map_follow),
+  CONFIG_VARIABLE_KEY(key_map_follow),
 
-    //!
-    // Key to toggle the grid display when in the map view.
-    //
+  //!
+  // Key to toggle the grid display when in the map view.
+  //
 
-    CONFIG_VARIABLE_KEY(key_map_grid),
+  CONFIG_VARIABLE_KEY(key_map_grid),
 
-    //!
-    // Key to set a mark when in the map view.
-    //
+  //!
+  // Key to set a mark when in the map view.
+  //
 
-    CONFIG_VARIABLE_KEY(key_map_mark),
+  CONFIG_VARIABLE_KEY(key_map_mark),
 
-    //!
-    // Key to clear all marks when in the map view.
-    //
+  //!
+  // Key to clear all marks when in the map view.
+  //
 
-    CONFIG_VARIABLE_KEY(key_map_clearmark),
+  CONFIG_VARIABLE_KEY(key_map_clearmark),
 
-    //!
-    // Key to toggle the overlay mode when in the map view.
-    //
+  //!
+  // Key to toggle the overlay mode when in the map view.
+  //
 
-    CONFIG_VARIABLE_KEY(key_map_overlay),
+  CONFIG_VARIABLE_KEY(key_map_overlay),
 
-    //!
-    // Key to toggle the rotate mode when in the map view.
-    //
+  //!
+  // Key to toggle the rotate mode when in the map view.
+  //
 
-    CONFIG_VARIABLE_KEY(key_map_rotate),
+  CONFIG_VARIABLE_KEY(key_map_rotate),
 
-    //!
-    // Key to select weapon 1.
-    //
+  //!
+  // Key to select weapon 1.
+  //
 
-    CONFIG_VARIABLE_KEY(key_weapon1),
+  CONFIG_VARIABLE_KEY(key_weapon1),
 
-    //!
-    // Key to select weapon 2.
-    //
+  //!
+  // Key to select weapon 2.
+  //
 
-    CONFIG_VARIABLE_KEY(key_weapon2),
+  CONFIG_VARIABLE_KEY(key_weapon2),
 
-    //!
-    // Key to select weapon 3.
-    //
+  //!
+  // Key to select weapon 3.
+  //
 
-    CONFIG_VARIABLE_KEY(key_weapon3),
+  CONFIG_VARIABLE_KEY(key_weapon3),
 
-    //!
-    // Key to select weapon 4.
-    //
+  //!
+  // Key to select weapon 4.
+  //
 
-    CONFIG_VARIABLE_KEY(key_weapon4),
+  CONFIG_VARIABLE_KEY(key_weapon4),
 
-    //!
-    // Key to select weapon 5.
-    //
+  //!
+  // Key to select weapon 5.
+  //
 
-    CONFIG_VARIABLE_KEY(key_weapon5),
+  CONFIG_VARIABLE_KEY(key_weapon5),
 
-    //!
-    // Key to select weapon 6.
-    //
+  //!
+  // Key to select weapon 6.
+  //
 
-    CONFIG_VARIABLE_KEY(key_weapon6),
+  CONFIG_VARIABLE_KEY(key_weapon6),
 
-    //!
-    // Key to select weapon 7.
-    //
+  //!
+  // Key to select weapon 7.
+  //
 
-    CONFIG_VARIABLE_KEY(key_weapon7),
+  CONFIG_VARIABLE_KEY(key_weapon7),
 
-    //!
-    // Key to select weapon 8.
-    //
+  //!
+  // Key to select weapon 8.
+  //
 
-    CONFIG_VARIABLE_KEY(key_weapon8),
+  CONFIG_VARIABLE_KEY(key_weapon8),
 
-    //!
-    // Key to cycle to the previous weapon.
-    //
+  //!
+  // Key to cycle to the previous weapon.
+  //
 
-    CONFIG_VARIABLE_KEY(key_prevweapon),
+  CONFIG_VARIABLE_KEY(key_prevweapon),
 
-    //!
-    // Key to cycle to the next weapon.
-    //
+  //!
+  // Key to cycle to the next weapon.
+  //
 
-    CONFIG_VARIABLE_KEY(key_nextweapon),
+  CONFIG_VARIABLE_KEY(key_nextweapon),
 
-    //!
-    // @game heretic
-    //
-    // Key to use "quartz flask" artifact.
-    //
+  //!
+  // @game heretic
+  //
+  // Key to use "quartz flask" artifact.
+  //
 
-    CONFIG_VARIABLE_KEY(key_arti_quartz),
+  CONFIG_VARIABLE_KEY(key_arti_quartz),
 
-    //!
-    // @game heretic
-    //
-    // Key to use "mystic urn" artifact.
-    //
+  //!
+  // @game heretic
+  //
+  // Key to use "mystic urn" artifact.
+  //
 
-    CONFIG_VARIABLE_KEY(key_arti_urn),
+  CONFIG_VARIABLE_KEY(key_arti_urn),
 
-    //!
-    // @game heretic
-    //
-    // Key to use "timebomb of the ancients" artifact.
-    //
+  //!
+  // @game heretic
+  //
+  // Key to use "timebomb of the ancients" artifact.
+  //
 
-    CONFIG_VARIABLE_KEY(key_arti_bomb),
+  CONFIG_VARIABLE_KEY(key_arti_bomb),
 
-    //!
-    // @game heretic
-    //
-    // Key to use "tome of power" artifact.
-    //
+  //!
+  // @game heretic
+  //
+  // Key to use "tome of power" artifact.
+  //
 
-    CONFIG_VARIABLE_KEY(key_arti_tome),
+  CONFIG_VARIABLE_KEY(key_arti_tome),
 
-    //!
-    // @game heretic
-    //
-    // Key to use "ring of invincibility" artifact.
-    //
+  //!
+  // @game heretic
+  //
+  // Key to use "ring of invincibility" artifact.
+  //
 
-    CONFIG_VARIABLE_KEY(key_arti_ring),
+  CONFIG_VARIABLE_KEY(key_arti_ring),
 
-    //!
-    // @game heretic
-    //
-    // Key to use "chaos device" artifact.
-    //
+  //!
+  // @game heretic
+  //
+  // Key to use "chaos device" artifact.
+  //
 
-    CONFIG_VARIABLE_KEY(key_arti_chaosdevice),
+  CONFIG_VARIABLE_KEY(key_arti_chaosdevice),
 
-    //!
-    // @game heretic
-    //
-    // Key to use "shadowsphere" artifact.
-    //
+  //!
+  // @game heretic
+  //
+  // Key to use "shadowsphere" artifact.
+  //
 
-    CONFIG_VARIABLE_KEY(key_arti_shadowsphere),
+  CONFIG_VARIABLE_KEY(key_arti_shadowsphere),
 
-    //!
-    // @game heretic
-    //
-    // Key to use "wings of wrath" artifact.
-    //
+  //!
+  // @game heretic
+  //
+  // Key to use "wings of wrath" artifact.
+  //
 
-    CONFIG_VARIABLE_KEY(key_arti_wings),
+  CONFIG_VARIABLE_KEY(key_arti_wings),
 
-    //!
-    // @game heretic
-    //
-    // Key to use "torch" artifact.
-    //
+  //!
+  // @game heretic
+  //
+  // Key to use "torch" artifact.
+  //
 
-    CONFIG_VARIABLE_KEY(key_arti_torch),
+  CONFIG_VARIABLE_KEY(key_arti_torch),
 
-    //!
-    // @game hexen
-    //
-    // Key to use one of each artifact.
-    //
+  //!
+  // @game hexen
+  //
+  // Key to use one of each artifact.
+  //
 
-    CONFIG_VARIABLE_KEY(key_arti_all),
+  CONFIG_VARIABLE_KEY(key_arti_all),
 
-    //!
-    // @game hexen
-    //
-    // Key to use "quartz flask" artifact.
-    //
+  //!
+  // @game hexen
+  //
+  // Key to use "quartz flask" artifact.
+  //
 
-    CONFIG_VARIABLE_KEY(key_arti_health),
+  CONFIG_VARIABLE_KEY(key_arti_health),
 
-    //!
-    // @game hexen
-    //
-    // Key to use "flechette" artifact.
-    //
+  //!
+  // @game hexen
+  //
+  // Key to use "flechette" artifact.
+  //
 
-    CONFIG_VARIABLE_KEY(key_arti_poisonbag),
+  CONFIG_VARIABLE_KEY(key_arti_poisonbag),
 
-    //!
-    // @game hexen
-    //
-    // Key to use "disc of repulsion" artifact.
-    //
+  //!
+  // @game hexen
+  //
+  // Key to use "disc of repulsion" artifact.
+  //
 
-    CONFIG_VARIABLE_KEY(key_arti_blastradius),
+  CONFIG_VARIABLE_KEY(key_arti_blastradius),
 
-    //!
-    // @game hexen
-    //
-    // Key to use "chaos device" artifact.
-    //
+  //!
+  // @game hexen
+  //
+  // Key to use "chaos device" artifact.
+  //
 
-    CONFIG_VARIABLE_KEY(key_arti_teleport),
+  CONFIG_VARIABLE_KEY(key_arti_teleport),
 
-    //!
-    // @game hexen
-    //
-    // Key to use "banishment device" artifact.
-    //
+  //!
+  // @game hexen
+  //
+  // Key to use "banishment device" artifact.
+  //
 
-    CONFIG_VARIABLE_KEY(key_arti_teleportother),
+  CONFIG_VARIABLE_KEY(key_arti_teleportother),
 
-    //!
-    // @game hexen
-    //
-    // Key to use "porkalator" artifact.
-    //
+  //!
+  // @game hexen
+  //
+  // Key to use "porkalator" artifact.
+  //
 
-    CONFIG_VARIABLE_KEY(key_arti_egg),
+  CONFIG_VARIABLE_KEY(key_arti_egg),
 
-    //!
-    // @game hexen
-    //
-    // Key to use "icon of the defender" artifact.
-    //
+  //!
+  // @game hexen
+  //
+  // Key to use "icon of the defender" artifact.
+  //
 
-    CONFIG_VARIABLE_KEY(key_arti_invulnerability),
+  CONFIG_VARIABLE_KEY(key_arti_invulnerability),
 
-    //!
-    // Key to re-display last message.
-    //
+  //!
+  // Key to re-display last message.
+  //
 
-    CONFIG_VARIABLE_KEY(key_message_refresh),
+  CONFIG_VARIABLE_KEY(key_message_refresh),
 
-    //!
-    // Key to quit the game when recording a demo.
-    //
+  //!
+  // Key to quit the game when recording a demo.
+  //
 
-    CONFIG_VARIABLE_KEY(key_demo_quit),
+  CONFIG_VARIABLE_KEY(key_demo_quit),
 
-    //!
-    // Key to send a message during multiplayer games.
-    //
+  //!
+  // Key to send a message during multiplayer games.
+  //
 
-    CONFIG_VARIABLE_KEY(key_multi_msg),
+  CONFIG_VARIABLE_KEY(key_multi_msg),
 
-    //!
-    // Key to send a message to player 1 during multiplayer games.
-    //
+  //!
+  // Key to send a message to player 1 during multiplayer games.
+  //
 
-    CONFIG_VARIABLE_KEY(key_multi_msgplayer1),
+  CONFIG_VARIABLE_KEY(key_multi_msgplayer1),
 
-    //!
-    // Key to send a message to player 2 during multiplayer games.
-    //
+  //!
+  // Key to send a message to player 2 during multiplayer games.
+  //
 
-    CONFIG_VARIABLE_KEY(key_multi_msgplayer2),
+  CONFIG_VARIABLE_KEY(key_multi_msgplayer2),
 
-    //!
-    // Key to send a message to player 3 during multiplayer games.
-    //
+  //!
+  // Key to send a message to player 3 during multiplayer games.
+  //
 
-    CONFIG_VARIABLE_KEY(key_multi_msgplayer3),
+  CONFIG_VARIABLE_KEY(key_multi_msgplayer3),
 
-    //!
-    // Key to send a message to player 4 during multiplayer games.
-    //
+  //!
+  // Key to send a message to player 4 during multiplayer games.
+  //
 
-    CONFIG_VARIABLE_KEY(key_multi_msgplayer4),
+  CONFIG_VARIABLE_KEY(key_multi_msgplayer4),
 
-    //!
-    // @game hexen strife
-    //
-    // Key to send a message to player 5 during multiplayer games.
-    //
+  //!
+  // @game hexen strife
+  //
+  // Key to send a message to player 5 during multiplayer games.
+  //
 
-    CONFIG_VARIABLE_KEY(key_multi_msgplayer5),
+  CONFIG_VARIABLE_KEY(key_multi_msgplayer5),
 
-    //!
-    // @game hexen strife
-    //
-    // Key to send a message to player 6 during multiplayer games.
-    //
+  //!
+  // @game hexen strife
+  //
+  // Key to send a message to player 6 during multiplayer games.
+  //
 
-    CONFIG_VARIABLE_KEY(key_multi_msgplayer6),
+  CONFIG_VARIABLE_KEY(key_multi_msgplayer6),
 
-    //!
-    // @game hexen strife
-    //
-    // Key to send a message to player 7 during multiplayer games.
-    //
+  //!
+  // @game hexen strife
+  //
+  // Key to send a message to player 7 during multiplayer games.
+  //
 
-    CONFIG_VARIABLE_KEY(key_multi_msgplayer7),
+  CONFIG_VARIABLE_KEY(key_multi_msgplayer7),
 
-    //!
-    // @game hexen strife
-    //
-    // Key to send a message to player 8 during multiplayer games.
-    //
+  //!
+  // @game hexen strife
+  //
+  // Key to send a message to player 8 during multiplayer games.
+  //
 
-    CONFIG_VARIABLE_KEY(key_multi_msgplayer8),
+  CONFIG_VARIABLE_KEY(key_multi_msgplayer8),
 
-    //!
-    // @game doom
-    // Quick 180° reverse.
-    //
+  //!
+  // @game doom
+  // Quick 180° reverse.
+  //
 
-    CONFIG_VARIABLE_KEY(key_reverse),
+  CONFIG_VARIABLE_KEY(key_reverse),
 
-    //!
-    // @game doom
-    // Toggle always run.
-    //
+  //!
+  // @game doom
+  // Toggle always run.
+  //
 
-    CONFIG_VARIABLE_KEY(key_toggleautorun),
+  CONFIG_VARIABLE_KEY(key_toggleautorun),
 
-    //!
-    // @game doom
-    // Toggle vertical mouse movement.
-    //
+  //!
+  // @game doom
+  // Toggle vertical mouse movement.
+  //
 
-    CONFIG_VARIABLE_KEY(key_togglenovert),
+  CONFIG_VARIABLE_KEY(key_togglenovert),
 
-    //!
-    // @game doom
-    // Invert vertical mouse movement.
-    //
+  //!
+  // @game doom
+  // Invert vertical mouse movement.
+  //
 
-    CONFIG_VARIABLE_KEY(mouse_y_invert),
+  CONFIG_VARIABLE_KEY(mouse_y_invert),
 
-    //!
-    // @game doom
-    //
-    // Automap overlay mode.
-    //
+  //!
+  // @game doom
+  //
+  // Automap overlay mode.
+  //
 
-    CONFIG_VARIABLE_INT(crispy_automapoverlay),
+  CONFIG_VARIABLE_INT(crispy_automapoverlay),
 
-    //!
-    // @game doom
-    //
-    // Automap rotate mode.
-    //
+  //!
+  // @game doom
+  //
+  // Automap rotate mode.
+  //
 
-    CONFIG_VARIABLE_INT(crispy_automaprotate),
+  CONFIG_VARIABLE_INT(crispy_automaprotate),
 
-    //!
-    // @game doom
-    //
-    // Show additional level statistics.
-    //
+  //!
+  // @game doom
+  //
+  // Show additional level statistics.
+  //
 
-    CONFIG_VARIABLE_INT(crispy_automapstats),
+  CONFIG_VARIABLE_INT(crispy_automapstats),
 
-    //!
-    // @game doom
-    //
-    // Variable player view bob.
-    //
+  //!
+  // @game doom
+  //
+  // Variable player view bob.
+  //
 
-    CONFIG_VARIABLE_INT(crispy_bobfactor),
+  CONFIG_VARIABLE_INT(crispy_bobfactor),
 
-    //!
-    // @game doom
-    //
-    // Apply brightmaps to select textures and sprites.
-    //
+  //!
+  // @game doom
+  //
+  // Apply brightmaps to select textures and sprites.
+  //
 
-    CONFIG_VARIABLE_INT(crispy_brightmaps),
+  CONFIG_VARIABLE_INT(crispy_brightmaps),
 
-    //!
-    // @game doom
-    //
-    // Center Weapon when Firing.
-    //
+  //!
+  // @game doom
+  //
+  // Center Weapon when Firing.
+  //
 
-    CONFIG_VARIABLE_INT(crispy_centerweapon),
+  CONFIG_VARIABLE_INT(crispy_centerweapon),
 
-    //!
-    // @game doom
-    //
-    // Enable Colored Blood.
-    //
+  //!
+  // @game doom
+  //
+  // Enable Colored Blood.
+  //
 
-    CONFIG_VARIABLE_INT(crispy_coloredblood),
+  CONFIG_VARIABLE_INT(crispy_coloredblood),
 
-    //!
-    // @game doom
-    //
-    // Show colored numbers in the status bar.
-    //
+  //!
+  // @game doom
+  //
+  // Show colored numbers in the status bar.
+  //
 
-    CONFIG_VARIABLE_INT(crispy_coloredhud),
+  CONFIG_VARIABLE_INT(crispy_coloredhud),
 
-    //!
-    // @game doom
-    //
-    // Draw a crosshair.
-    //
+  //!
+  // @game doom
+  //
+  // Draw a crosshair.
+  //
 
-    CONFIG_VARIABLE_INT(crispy_crosshair),
+  CONFIG_VARIABLE_INT(crispy_crosshair),
 
-    //!
-    // @game doom
-    //
-    // Crosshair Color indicates Health.
-    //
+  //!
+  // @game doom
+  //
+  // Crosshair Color indicates Health.
+  //
 
-    CONFIG_VARIABLE_INT(crispy_crosshairhealth),
+  CONFIG_VARIABLE_INT(crispy_crosshairhealth),
 
-    //!
-    // @game doom
-    //
-    // Highlight Crosshair on target.
-    //
+  //!
+  // @game doom
+  //
+  // Highlight Crosshair on target.
+  //
 
-    CONFIG_VARIABLE_INT(crispy_crosshairtarget),
+  CONFIG_VARIABLE_INT(crispy_crosshairtarget),
 
-    //!
-    // @game doom
-    //
-    // Crosshair type.
-    //
+  //!
+  // @game doom
+  //
+  // Crosshair type.
+  //
 
-    CONFIG_VARIABLE_INT(crispy_crosshairtype),
+  CONFIG_VARIABLE_INT(crispy_crosshairtype),
 
-    //!
-    // @game doom
-    //
-    // Show a progress bar when playing back a demo.
-    //
+  //!
+  // @game doom
+  //
+  // Show a progress bar when playing back a demo.
+  //
 
-    CONFIG_VARIABLE_INT(crispy_demobar),
+  CONFIG_VARIABLE_INT(crispy_demobar),
 
-    //!
-    // @game doom
-    //
-    // Show a timer when recording or playing pack demos.
-    //
+  //!
+  // @game doom
+  //
+  // Show a timer when recording or playing pack demos.
+  //
 
-    CONFIG_VARIABLE_INT(crispy_demotimer),
+  CONFIG_VARIABLE_INT(crispy_demotimer),
 
-    //!
-    // @game doom
-    //
-    // Timer direction whan playing back a demo.
-    //
+  //!
+  // @game doom
+  //
+  // Timer direction whan playing back a demo.
+  //
 
-    CONFIG_VARIABLE_INT(crispy_demotimerdir),
+  CONFIG_VARIABLE_INT(crispy_demotimerdir),
 
-    //!
-    // @game doom
-    //
-    // Extended Automap.
-    //
+  //!
+  // @game doom
+  //
+  // Extended Automap.
+  //
 
-    CONFIG_VARIABLE_INT(crispy_extautomap),
+  CONFIG_VARIABLE_INT(crispy_extautomap),
 
-    //!
-    // @game doom
-    //
-    // Extended Savegames.
-    //
+  //!
+  // @game doom
+  //
+  // Extended Savegames.
+  //
 
-    CONFIG_VARIABLE_INT(crispy_extsaveg),
+  CONFIG_VARIABLE_INT(crispy_extsaveg),
 
-    //!
-    // @game doom
-    //
-    // Enable Mirrored Corpses.
-    //
+  //!
+  // @game doom
+  //
+  // Enable Mirrored Corpses.
+  //
 
-    CONFIG_VARIABLE_INT(crispy_flipcorpses),
+  CONFIG_VARIABLE_INT(crispy_flipcorpses),
 
-    //!
-    // @game doom
-    //
-    // Enable vertical aiming.
-    //
+  //!
+  // @game doom
+  //
+  // Enable vertical aiming.
+  //
 
-    CONFIG_VARIABLE_INT(crispy_freeaim),
+  CONFIG_VARIABLE_INT(crispy_freeaim),
 
-    //!
-    // @game doom
-    //
-    // Enable looking up and down.
-    //
+  //!
+  // @game doom
+  //
+  // Enable looking up and down.
+  //
 
-    CONFIG_VARIABLE_INT(crispy_freelook),
+  CONFIG_VARIABLE_INT(crispy_freelook),
 
-    //!
-    // @game doom
-    //
-    // High Resolution Rendering.
-    //
+  //!
+  // @game doom
+  //
+  // High Resolution Rendering.
+  //
 
-    CONFIG_VARIABLE_INT(crispy_hires),
+  CONFIG_VARIABLE_INT(crispy_hires),
 
-    //!
-    // @game doom
-    //
-    // Enable jumping.
-    //
+  //!
+  // @game doom
+  //
+  // Enable jumping.
+  //
 
-    CONFIG_VARIABLE_INT(crispy_jump),
+  CONFIG_VARIABLE_INT(crispy_jump),
 
-    //!
-    // @game doom
-    //
-    // Show level time.
-    //
+  //!
+  // @game doom
+  //
+  // Show level time.
+  //
 
-    CONFIG_VARIABLE_INT(crispy_leveltime),
+  CONFIG_VARIABLE_INT(crispy_leveltime),
 
-    //!
-    // @game doom
-    //
-    // Use the mouse to look up and down.
-    //
+  //!
+  // @game doom
+  //
+  // Use the mouse to look up and down.
+  //
 
-    CONFIG_VARIABLE_INT(crispy_mouselook),
+  CONFIG_VARIABLE_INT(crispy_mouselook),
 
-    //!
-    // @game doom
-    //
-    // Negative player health.
-    //
+  //!
+  // @game doom
+  //
+  // Negative player health.
+  //
 
-    CONFIG_VARIABLE_INT(crispy_neghealth),
+  CONFIG_VARIABLE_INT(crispy_neghealth),
 
-    //!
-    // @game doom
-    //
-    // Players may walk over and under shootable things.
-    //
+  //!
+  // @game doom
+  //
+  // Players may walk over and under shootable things.
+  //
 
-    CONFIG_VARIABLE_INT(crispy_overunder),
+  CONFIG_VARIABLE_INT(crispy_overunder),
 
-    //!
-    // @game doom
-    //
-    // Enable weapon recoil pitch.
-    //
+  //!
+  // @game doom
+  //
+  // Enable weapon recoil pitch.
+  //
 
-    CONFIG_VARIABLE_INT(crispy_pitch),
+  CONFIG_VARIABLE_INT(crispy_pitch),
 
-    //!
-    // @game doom
-    //
-    // Show player coordinates.
-    //
+  //!
+  // @game doom
+  //
+  // Show player coordinates.
+  //
 
-    CONFIG_VARIABLE_INT(crispy_playercoords),
+  CONFIG_VARIABLE_INT(crispy_playercoords),
 
-    //!
-    // @game doom
-    //
-    // Enable weapon recoil thrust.
-    //
+  //!
+  // @game doom
+  //
+  // Enable weapon recoil thrust.
+  //
 
-    CONFIG_VARIABLE_INT(crispy_recoil),
+  CONFIG_VARIABLE_INT(crispy_recoil),
 
-    //!
-    // @game doom
-    //
-    // Show a centered message and play a sound when a secret is found.
-    //
+  //!
+  // @game doom
+  //
+  // Show a centered message and play a sound when a secret is found.
+  //
 
-    CONFIG_VARIABLE_INT(crispy_secretmessage),
+  CONFIG_VARIABLE_INT(crispy_secretmessage),
 
-    //!
-    // @game doom
-    //
-    // Smooth Diminishing Lighting.
-    //
+  //!
+  // @game doom
+  //
+  // Smooth Diminishing Lighting.
+  //
 
-    CONFIG_VARIABLE_INT(crispy_smoothlight),
+  CONFIG_VARIABLE_INT(crispy_smoothlight),
 
-    //!
-    // @game doom
-    //
-    // Smooth Scaling.
-    //
+  //!
+  // @game doom
+  //
+  // Smooth Scaling.
+  //
 
-    CONFIG_VARIABLE_INT(crispy_smoothscaling),
+  CONFIG_VARIABLE_INT(crispy_smoothscaling),
 
-    //!
-    // @game doom
-    //
-    // Misc. sound fixes.
-    //
+  //!
+  // @game doom
+  //
+  // Misc. sound fixes.
+  //
 
-    CONFIG_VARIABLE_INT(crispy_soundfix),
+  CONFIG_VARIABLE_INT(crispy_soundfix),
 
-    //!
-    // @game doom
-    //
-    // Play sounds in full length.
-    //
+  //!
+  // @game doom
+  //
+  // Play sounds in full length.
+  //
 
-    CONFIG_VARIABLE_INT(crispy_soundfull),
+  CONFIG_VARIABLE_INT(crispy_soundfull),
 
-    //!
-    // @game doom
-    //
-    // Mono sound effects.
-    //
+  //!
+  // @game doom
+  //
+  // Mono sound effects.
+  //
 
-    CONFIG_VARIABLE_INT(crispy_soundmono),
+  CONFIG_VARIABLE_INT(crispy_soundmono),
 
-    //!
-    // @game doom
-    //
-    // Enable translucency.
-    //
+  //!
+  // @game doom
+  //
+  // Enable translucency.
+  //
 
-    CONFIG_VARIABLE_INT(crispy_translucency),
+  CONFIG_VARIABLE_INT(crispy_translucency),
 
 #ifdef CRISPY_TRUECOLOR
-    //!
-    // @game doom
-    //
-    // Enable true-color rendering (experimental).
-    //
+  //!
+  // @game doom
+  //
+  // Enable true-color rendering (experimental).
+  //
 
-    CONFIG_VARIABLE_INT(crispy_truecolor),
+  CONFIG_VARIABLE_INT(crispy_truecolor),
 #endif
 
-    //!
-    // @game doom
-    //
-    // Uncapped Framerate.
-    //
+  //!
+  // @game doom
+  //
+  // Uncapped Framerate.
+  //
 
-    CONFIG_VARIABLE_INT(crispy_uncapped),
+  CONFIG_VARIABLE_INT(crispy_uncapped),
 
-    //!
-    // @game doom
-    //
-    // Enable VSync.
-    //
+  //!
+  // @game doom
+  //
+  // Enable VSync.
+  //
 
-    CONFIG_VARIABLE_INT(crispy_vsync),
+  CONFIG_VARIABLE_INT(crispy_vsync),
 
-    //!
-    // @game doom
-    //
-    // Squat down weapon on impact.
-    //
+  //!
+  // @game doom
+  //
+  // Squat down weapon on impact.
+  //
 
-    CONFIG_VARIABLE_INT(crispy_weaponsquat),
+  CONFIG_VARIABLE_INT(crispy_weaponsquat),
 
-    //!
-    // @game doom
-    //
-    // Widescreen rendering.
-    //
+  //!
+  // @game doom
+  //
+  // Widescreen rendering.
+  //
 
-    CONFIG_VARIABLE_INT(crispy_widescreen),
+  CONFIG_VARIABLE_INT(crispy_widescreen),
 };
 
 static default_collection_t extra_defaults = {
-    extra_defaults_list,
-    static_cast<int>(std::size(extra_defaults_list)),
-    nullptr,
+  extra_defaults_list,
+  static_cast<int>(std::size(extra_defaults_list)),
+  nullptr,
 };
 
 // Search a collection for a variable
 
-static default_t *SearchCollection(default_collection_t *collection, const char *name)
-{
-    for (int i = 0; i < collection->numdefaults; ++i)
-    {
-        if (!strcmp(name, collection->defaults[i].name))
-        {
-            return &collection->defaults[i];
-        }
+static default_t *SearchCollection(default_collection_t *collection, const char *name) {
+  for (int i = 0; i < collection->numdefaults; ++i) {
+    if (!strcmp(name, collection->defaults[i].name)) {
+      return &collection->defaults[i];
     }
+  }
 
-    return nullptr;
+  return nullptr;
 }
 
 // Mapping from DOS keyboard scan code to internal key code (as defined
@@ -2226,6 +2223,7 @@ static default_t *SearchCollection(default_collection_t *collection, const char 
 //    sends an interrupt). So I added a fake scan code of 126 for it.
 //    The presence of this is important so we can bind PrintScreen as
 //    a screenshot key.
+// clang-format off
 static const int scantokey[128] = {
     0, 27, '1', '2', '3', '4', '5', '6',
     '7', '8', '9', '0', '-', '=', KEY_BACKSPACE, 9,
@@ -2244,452 +2242,402 @@ static const int scantokey[128] = {
     0, 0, 0, 0, 0, 0, 0, 0,
     0, 0, 0, 0, 0, 0, KEY_PRTSCR, 0
 };
+// clang-format on
 
+static void SaveDefaultCollection(default_collection_t *collection) {
+  int   v = 0;
+  FILE *f = fopen(collection->filename, "w");
+  if (!f)
+    return; // can't write the file, but don't complain
 
-static void SaveDefaultCollection(default_collection_t *collection)
-{
-    int v = 0;
-    FILE *f = fopen(collection->filename, "w");
-    if (!f)
-        return; // can't write the file, but don't complain
+  default_t *defaults = collection->defaults;
 
-    default_t *defaults = collection->defaults;
+  for (int i = 0; i < collection->numdefaults; i++) {
+    // Ignore unbound variables
 
-    for (int i = 0; i < collection->numdefaults; i++)
-    {
-        // Ignore unbound variables
-
-        if (!defaults[i].bound)
-        {
-            continue;
-        }
-
-        // Print the name and line up all values at 30 characters
-
-        int chars_written = fmt::fprintf(f, "%s ", defaults[i].name);
-
-        for (; chars_written < 30; ++chars_written)
-            fmt::fprintf(f, " ");
-
-        // Print the value
-
-        switch (defaults[i].type)
-        {
-        case DEFAULT_KEY:
-
-            // use the untranslated version if we can, to reduce
-            // the possibility of screwing up the user's config
-            // file
-
-            v = *defaults[i].location.i;
-
-            if (v == KEY_RSHIFT)
-            {
-                // Special case: for shift, force scan code for
-                // right shift, as this is what Vanilla uses.
-                // This overrides the change check below, to fix
-                // configuration files made by old versions that
-                // mistakenly used the scan code for left shift.
-
-                v = 54;
-            }
-            else if (defaults[i].untranslated
-                     && v == defaults[i].original_translated)
-            {
-                // Has not been changed since the last time we
-                // read the config file.
-
-                v = defaults[i].untranslated;
-            }
-            else
-            {
-                // search for a reverse mapping back to a scancode
-                // in the scantokey table
-
-                for (int s = 0; s < 128; ++s)
-                {
-                    if (scantokey[s] == v)
-                    {
-                        v = s;
-                        break;
-                    }
-                }
-            }
-
-            fmt::fprintf(f, "%i", v);
-            break;
-
-        case DEFAULT_INT:
-            fmt::fprintf(f, "%i", *defaults[i].location.i);
-            break;
-
-        case DEFAULT_INT_HEX:
-            fmt::fprintf(f, "0x%x", *defaults[i].location.i);
-            break;
-
-        case DEFAULT_FLOAT:
-            fmt::fprintf(f, "%f", *defaults[i].location.f);
-            break;
-
-        case DEFAULT_STRING:
-            fmt::fprintf(f, "\"%s\"", *defaults[i].location.s);
-            break;
-        }
-
-        fmt::fprintf(f, "\n");
+    if (!defaults[i].bound) {
+      continue;
     }
 
-    fclose(f);
+    // Print the name and line up all values at 30 characters
+
+    int chars_written = fmt::fprintf(f, "%s ", defaults[i].name);
+
+    for (; chars_written < 30; ++chars_written)
+      fmt::fprintf(f, " ");
+
+    // Print the value
+
+    switch (defaults[i].type) {
+    case DEFAULT_KEY:
+
+      // use the untranslated version if we can, to reduce
+      // the possibility of screwing up the user's config
+      // file
+
+      v = *defaults[i].location.i;
+
+      if (v == KEY_RSHIFT) {
+        // Special case: for shift, force scan code for
+        // right shift, as this is what Vanilla uses.
+        // This overrides the change check below, to fix
+        // configuration files made by old versions that
+        // mistakenly used the scan code for left shift.
+
+        v = 54;
+      } else if (defaults[i].untranslated
+                 && v == defaults[i].original_translated) {
+        // Has not been changed since the last time we
+        // read the config file.
+
+        v = defaults[i].untranslated;
+      } else {
+        // search for a reverse mapping back to a scancode
+        // in the scantokey table
+
+        for (int s = 0; s < 128; ++s) {
+          if (scantokey[s] == v) {
+            v = s;
+            break;
+          }
+        }
+      }
+
+      fmt::fprintf(f, "%i", v);
+      break;
+
+    case DEFAULT_INT:
+      fmt::fprintf(f, "%i", *defaults[i].location.i);
+      break;
+
+    case DEFAULT_INT_HEX:
+      fmt::fprintf(f, "0x%x", *defaults[i].location.i);
+      break;
+
+    case DEFAULT_FLOAT:
+      fmt::fprintf(f, "%f", *defaults[i].location.f);
+      break;
+
+    case DEFAULT_STRING:
+      fmt::fprintf(f, "\"%s\"", *defaults[i].location.s);
+      break;
+    }
+
+    fmt::fprintf(f, "\n");
+  }
+
+  fclose(f);
 }
 
 // Parses integer values in the configuration file
 
-static int ParseIntParameter(const char *strparm)
-{
-    int parm = 0;
+static int ParseIntParameter(const char *strparm) {
+  int parm = 0;
 
-    if (strparm[0] == '0' && strparm[1] == 'x')
-        sscanf(strparm + 2, "%x", &parm);
-    else
-        sscanf(strparm, "%i", &parm);
+  if (strparm[0] == '0' && strparm[1] == 'x')
+    sscanf(strparm + 2, "%x", &parm);
+  else
+    sscanf(strparm, "%i", &parm);
 
-    return parm;
+  return parm;
 }
 
-static void SetVariable(default_t *def, const char *value)
-{
-    int intparm = 0;
+static void SetVariable(default_t *def, const char *value) {
+  int intparm = 0;
 
-    // parameter found
+  // parameter found
 
-    switch (def->type)
-    {
-    case DEFAULT_STRING:
-        *def->location.s = M_StringDuplicate(value);
-        break;
+  switch (def->type) {
+  case DEFAULT_STRING:
+    *def->location.s = M_StringDuplicate(value);
+    break;
 
-    case DEFAULT_INT:
-    case DEFAULT_INT_HEX:
-        *def->location.i = ParseIntParameter(value);
-        break;
+  case DEFAULT_INT:
+  case DEFAULT_INT_HEX:
+    *def->location.i = ParseIntParameter(value);
+    break;
 
-    case DEFAULT_KEY:
+  case DEFAULT_KEY:
 
-        // translate scancodes read from config
-        // file (save the old value in untranslated)
+    // translate scancodes read from config
+    // file (save the old value in untranslated)
 
-        intparm           = ParseIntParameter(value);
-        def->untranslated = intparm;
-        if (intparm >= 0 && intparm < 128)
-        {
-            intparm = scantokey[intparm];
-        }
-        else
-        {
-            intparm = 0;
-        }
-
-        def->original_translated = intparm;
-        *def->location.i         = intparm;
-        break;
-
-    case DEFAULT_FLOAT:
-        *def->location.f = static_cast<float>(std::atof(value));
-        break;
+    intparm           = ParseIntParameter(value);
+    def->untranslated = intparm;
+    if (intparm >= 0 && intparm < 128) {
+      intparm = scantokey[intparm];
+    } else {
+      intparm = 0;
     }
+
+    def->original_translated = intparm;
+    *def->location.i         = intparm;
+    break;
+
+  case DEFAULT_FLOAT:
+    *def->location.f = static_cast<float>(std::atof(value));
+    break;
+  }
 }
 
-static void LoadDefaultCollection(default_collection_t *collection)
-{
-    char       defname[80];
-    char       strparm[100];
+static void LoadDefaultCollection(default_collection_t *collection) {
+  char defname[80];
+  char strparm[100];
 
-    // read the file in, overriding any set defaults
-    FILE *f = fopen(collection->filename, "r");
+  // read the file in, overriding any set defaults
+  FILE *f = fopen(collection->filename, "r");
 
-    if (f == nullptr)
-    {
-        // File not opened, but don't complain.
-        // It's probably just the first time they ran the game.
+  if (f == nullptr) {
+    // File not opened, but don't complain.
+    // It's probably just the first time they ran the game.
 
-        return;
+    return;
+  }
+
+  while (!feof(f)) {
+    if (fscanf(f, "%79s %99[^\n]\n", defname, strparm) != 2) {
+      // This line doesn't match
+
+      continue;
     }
 
-    while (!feof(f))
-    {
-        if (fscanf(f, "%79s %99[^\n]\n", defname, strparm) != 2)
-        {
-            // This line doesn't match
+    // Find the setting in the list
 
-            continue;
-        }
+    default_t *def = SearchCollection(collection, defname);
 
-        // Find the setting in the list
+    if (def == nullptr || !def->bound) {
+      // Unknown variable?  Unbound variables are also treated
+      // as unknown.
 
-        default_t *def = SearchCollection(collection, defname);
-
-        if (def == nullptr || !def->bound)
-        {
-            // Unknown variable?  Unbound variables are also treated
-            // as unknown.
-
-            continue;
-        }
-
-        // Strip off trailing non-printable characters (\r characters
-        // from DOS text files)
-
-        while (strlen(strparm) > 0 && !isprint(strparm[strlen(strparm) - 1]))
-        {
-            strparm[strlen(strparm) - 1] = '\0';
-        }
-
-        // Surrounded by quotes? If so, remove them.
-        if (strlen(strparm) >= 2
-            && strparm[0] == '"' && strparm[strlen(strparm) - 1] == '"')
-        {
-            strparm[strlen(strparm) - 1] = '\0';
-            std::memmove(strparm, strparm + 1, sizeof(strparm) - 1);
-        }
-
-        SetVariable(def, strparm);
+      continue;
     }
 
-    fclose(f);
+    // Strip off trailing non-printable characters (\r characters
+    // from DOS text files)
+
+    while (strlen(strparm) > 0 && !isprint(strparm[strlen(strparm) - 1])) {
+      strparm[strlen(strparm) - 1] = '\0';
+    }
+
+    // Surrounded by quotes? If so, remove them.
+    if (strlen(strparm) >= 2
+        && strparm[0] == '"' && strparm[strlen(strparm) - 1] == '"') {
+      strparm[strlen(strparm) - 1] = '\0';
+      std::memmove(strparm, strparm + 1, sizeof(strparm) - 1);
+    }
+
+    SetVariable(def, strparm);
+  }
+
+  fclose(f);
 }
 
 // Set the default filenames to use for configuration files.
 
-void M_SetConfigFilenames(const char *main_config, const char *extra_config)
-{
-    default_main_config  = main_config;
-    default_extra_config = extra_config;
+void M_SetConfigFilenames(const char *main_config, const char *extra_config) {
+  default_main_config  = main_config;
+  default_extra_config = extra_config;
 }
 
 //
 // M_SaveDefaults
 //
 
-void M_SaveDefaults()
-{
-    SaveDefaultCollection(&doom_defaults);
-    SaveDefaultCollection(&extra_defaults);
+void M_SaveDefaults() {
+  SaveDefaultCollection(&doom_defaults);
+  SaveDefaultCollection(&extra_defaults);
 }
 
 //
 // Save defaults to alternate filenames
 //
 
-void M_SaveDefaultsAlternate(const char *main, const char *extra)
-{
-    // Temporarily change the filenames
+void M_SaveDefaultsAlternate(const char *main, const char *extra) {
+  // Temporarily change the filenames
 
-    const char *orig_main  = doom_defaults.filename;
-    const char *orig_extra = extra_defaults.filename;
+  const char *orig_main  = doom_defaults.filename;
+  const char *orig_extra = extra_defaults.filename;
 
-    doom_defaults.filename  = main;
-    extra_defaults.filename = extra;
+  doom_defaults.filename  = main;
+  extra_defaults.filename = extra;
 
-    M_SaveDefaults();
+  M_SaveDefaults();
 
-    // Restore normal filenames
+  // Restore normal filenames
 
-    doom_defaults.filename  = orig_main;
-    extra_defaults.filename = orig_extra;
+  doom_defaults.filename  = orig_main;
+  extra_defaults.filename = orig_extra;
 }
 
 //
 // M_LoadDefaults
 //
 
-void M_LoadDefaults()
-{
-    // This variable is a special snowflake for no good reason.
-    M_BindStringVariable("autoload_path", &autoload_path);
+void M_LoadDefaults() {
+  // This variable is a special snowflake for no good reason.
+  M_BindStringVariable("autoload_path", &autoload_path);
 
-    // check for a custom default file
+  // check for a custom default file
 
-    //!
-    // @arg <file>
-    // @vanilla
-    //
-    // Load main configuration from the specified file, instead of the
-    // default.
-    //
-    {
-        int i = M_CheckParmWithArgs("-config", 1);
+  //!
+  // @arg <file>
+  // @vanilla
+  //
+  // Load main configuration from the specified file, instead of the
+  // default.
+  //
+  {
+    int i = M_CheckParmWithArgs("-config", 1);
 
-        if (i)
-        {
-            doom_defaults.filename = myargv[i + 1];
-            fmt::printf("	default file: %s\n", doom_defaults.filename);
-        }
-        else
-        {
-            doom_defaults.filename = M_StringJoin(configdir, default_main_config, nullptr);
-        }
-
-        fmt::printf("saving config in %s\n", doom_defaults.filename);
-    }
-    //!
-    // @arg <file>
-    //
-    // Load additional configuration from the specified file, instead of
-    // the default.
-    //
-
-    int i = M_CheckParmWithArgs("-extraconfig", 1);
-
-    if (i)
-    {
-        extra_defaults.filename = myargv[i + 1];
-        fmt::printf("        extra configuration file: %s\n",
-            extra_defaults.filename);
-    }
-    else
-    {
-        extra_defaults.filename = M_StringJoin(configdir, default_extra_config, nullptr);
+    if (i) {
+      doom_defaults.filename = myargv[i + 1];
+      fmt::printf("	default file: %s\n", doom_defaults.filename);
+    } else {
+      doom_defaults.filename = M_StringJoin(configdir, default_main_config, nullptr);
     }
 
-    LoadDefaultCollection(&doom_defaults);
-    LoadDefaultCollection(&extra_defaults);
+    fmt::printf("saving config in %s\n", doom_defaults.filename);
+  }
+  //!
+  // @arg <file>
+  //
+  // Load additional configuration from the specified file, instead of
+  // the default.
+  //
+
+  int i = M_CheckParmWithArgs("-extraconfig", 1);
+
+  if (i) {
+    extra_defaults.filename = myargv[i + 1];
+    fmt::printf("        extra configuration file: %s\n",
+                extra_defaults.filename);
+  } else {
+    extra_defaults.filename = M_StringJoin(configdir, default_extra_config, nullptr);
+  }
+
+  LoadDefaultCollection(&doom_defaults);
+  LoadDefaultCollection(&extra_defaults);
 }
 
 // Get a configuration file variable by its name
 
-static default_t *GetDefaultForName(const char *name)
-{
-    // Try the main list and the extras
+static default_t *GetDefaultForName(const char *name) {
+  // Try the main list and the extras
 
-    default_t *result = SearchCollection(&doom_defaults, name);
+  default_t *result = SearchCollection(&doom_defaults, name);
 
-    if (result == nullptr)
-    {
-        result = SearchCollection(&extra_defaults, name);
-    }
+  if (result == nullptr) {
+    result = SearchCollection(&extra_defaults, name);
+  }
 
-    // Not found? Internal error.
+  // Not found? Internal error.
 
-    if (result == nullptr)
-    {
-        I_Error("Unknown configuration variable: '%s'", name);
-    }
+  if (result == nullptr) {
+    I_Error("Unknown configuration variable: '%s'", name);
+  }
 
-    return result;
+  return result;
 }
 
 //
 // Bind a variable to a given configuration file variable, by name.
 //
 
-void M_BindIntVariable(const char *name, int *location)
-{
-    default_t *variable = GetDefaultForName(name);
-    assert(variable->type == DEFAULT_INT
-           || variable->type == DEFAULT_INT_HEX
-           || variable->type == DEFAULT_KEY);
+void M_BindIntVariable(const char *name, int *location) {
+  default_t *variable = GetDefaultForName(name);
+  assert(variable->type == DEFAULT_INT
+         || variable->type == DEFAULT_INT_HEX
+         || variable->type == DEFAULT_KEY);
 
-    variable->location.i = location;
-    variable->bound      = true;
+  variable->location.i = location;
+  variable->bound      = true;
 }
 
-void M_BindFloatVariable(const char *name, float *location)
-{
-    default_t *variable = GetDefaultForName(name);
-    assert(variable->type == DEFAULT_FLOAT);
+void M_BindFloatVariable(const char *name, float *location) {
+  default_t *variable = GetDefaultForName(name);
+  assert(variable->type == DEFAULT_FLOAT);
 
-    variable->location.f = location;
-    variable->bound      = true;
+  variable->location.f = location;
+  variable->bound      = true;
 }
 
-void M_BindStringVariable(const char *name, char **location)
-{
-    default_t *variable = GetDefaultForName(name);
-    assert(variable->type == DEFAULT_STRING);
+void M_BindStringVariable(const char *name, char **location) {
+  default_t *variable = GetDefaultForName(name);
+  assert(variable->type == DEFAULT_STRING);
 
-    variable->location.s = location;
-    variable->bound      = true;
+  variable->location.s = location;
+  variable->bound      = true;
 }
 
 // Set the value of a particular variable; an API function for other
 // parts of the program to assign values to config variables by name.
 
-bool M_SetVariable(const char *name, const char *value)
-{
-    default_t *variable = GetDefaultForName(name);
+bool M_SetVariable(const char *name, const char *value) {
+  default_t *variable = GetDefaultForName(name);
 
-    if (variable == nullptr || !variable->bound)
-    {
-        return false;
-    }
+  if (variable == nullptr || !variable->bound) {
+    return false;
+  }
 
-    SetVariable(variable, value);
+  SetVariable(variable, value);
 
-    return true;
+  return true;
 }
 
 // Get the value of a variable.
 
-[[maybe_unused]] int M_GetIntVariable(const char *name)
-{
-    default_t *variable = GetDefaultForName(name);
+[[maybe_unused]] int M_GetIntVariable(const char *name) {
+  default_t *variable = GetDefaultForName(name);
 
-    if (variable == nullptr || !variable->bound
-        || (variable->type != DEFAULT_INT && variable->type != DEFAULT_INT_HEX))
-    {
-        return 0;
-    }
+  if (variable == nullptr || !variable->bound
+      || (variable->type != DEFAULT_INT && variable->type != DEFAULT_INT_HEX)) {
+    return 0;
+  }
 
-    return *variable->location.i;
+  return *variable->location.i;
 }
 
-const char *M_GetStringVariable(const char *name)
-{
-    default_t *variable = GetDefaultForName(name);
+const char *M_GetStringVariable(const char *name) {
+  default_t *variable = GetDefaultForName(name);
 
-    if (variable == nullptr || !variable->bound
-        || variable->type != DEFAULT_STRING)
-    {
-        return nullptr;
-    }
+  if (variable == nullptr || !variable->bound
+      || variable->type != DEFAULT_STRING) {
+    return nullptr;
+  }
 
-    return *variable->location.s;
+  return *variable->location.s;
 }
 
-[[maybe_unused]] float M_GetFloatVariable(const char *name)
-{
-    default_t *variable = GetDefaultForName(name);
+[[maybe_unused]] float M_GetFloatVariable(const char *name) {
+  default_t *variable = GetDefaultForName(name);
 
-    if (variable == nullptr || !variable->bound
-        || variable->type != DEFAULT_FLOAT)
-    {
-        return 0;
-    }
+  if (variable == nullptr || !variable->bound
+      || variable->type != DEFAULT_FLOAT) {
+    return 0;
+  }
 
-    return *variable->location.f;
+  return *variable->location.f;
 }
 
 // Get the path to the default configuration dir to use, if NULL
 // is passed to M_SetConfigDir.
 
-static char *GetDefaultConfigDir()
-{
+static char *GetDefaultConfigDir() {
 #if !defined(_WIN32) || defined(_WIN32_WCE)
 
-    // Configuration settings are stored in an OS-appropriate path
-    // determined by SDL.  On typical Unix systems, this might be
-    // ~/.local/share/chocolate-doom.  On Windows, we behave like
-    // Vanilla Doom and save in the current directory.
+  // Configuration settings are stored in an OS-appropriate path
+  // determined by SDL.  On typical Unix systems, this might be
+  // ~/.local/share/chocolate-doom.  On Windows, we behave like
+  // Vanilla Doom and save in the current directory.
 
-    char *result = SDL_GetPrefPath("", PACKAGE_TARNAME);
-    if (result != nullptr)
-    {
-        char *copy = M_StringDuplicate(result);
-        SDL_free(result);
-        return copy;
-    }
+  char *result = SDL_GetPrefPath("", PACKAGE_TARNAME);
+  if (result != nullptr) {
+    char *copy = M_StringDuplicate(result);
+    SDL_free(result);
+    return copy;
+  }
 #endif /* #ifndef _WIN32 */
-    return M_StringDuplicate("");
+  return M_StringDuplicate("");
 }
 
 //
@@ -2699,63 +2647,55 @@ static char *GetDefaultConfigDir()
 // files are stored - default.cfg, chocolate-doom.cfg, savegames, etc.
 //
 
-void M_SetConfigDir(const char *dir)
-{
-    // Use the directory that was passed, or find the default.
+void M_SetConfigDir(const char *dir) {
+  // Use the directory that was passed, or find the default.
 
-    if (dir != nullptr)
-    {
-        configdir = const_cast<char *>(dir);
-    }
-    else
-    {
-        configdir = GetDefaultConfigDir();
-    }
+  if (dir != nullptr) {
+    configdir = const_cast<char *>(dir);
+  } else {
+    configdir = GetDefaultConfigDir();
+  }
 
-    if (strcmp(configdir, "") != 0)
-    {
-        fmt::printf("Using %s for configuration and saves\n", configdir);
-    }
+  if (strcmp(configdir, "") != 0) {
+    fmt::printf("Using %s for configuration and saves\n", configdir);
+  }
 
-    // Make the directory if it doesn't already exist:
+  // Make the directory if it doesn't already exist:
 
-    M_MakeDirectory(configdir);
+  M_MakeDirectory(configdir);
 }
 
-#define MUSIC_PACK_README                                                  \
-    "Extract music packs into this directory in .flac or .ogg format;\n"   \
-    "they will be automatically loaded based on filename to replace the\n" \
-    "in-game music with high quality versions.\n\n"                        \
-    "For more information check here:\n\n"                                 \
-    "  <https://www.chocolate-doom.org/wiki/index.php/Digital_music_packs>\n\n"
+#define MUSIC_PACK_README                                                \
+  "Extract music packs into this directory in .flac or .ogg format;\n"   \
+  "they will be automatically loaded based on filename to replace the\n" \
+  "in-game music with high quality versions.\n\n"                        \
+  "For more information check here:\n\n"                                 \
+  "  <https://www.chocolate-doom.org/wiki/index.php/Digital_music_packs>\n\n"
 
 // Set the value of music_pack_path if it is currently empty, and create
 // the directory if necessary.
-void M_SetMusicPackDir()
-{
-    const char *current_path = M_GetStringVariable("music_pack_path");
+void M_SetMusicPackDir() {
+  const char *current_path = M_GetStringVariable("music_pack_path");
 
-    if (current_path != nullptr && strlen(current_path) > 0)
-    {
-        return;
-    }
+  if (current_path != nullptr && strlen(current_path) > 0) {
+    return;
+  }
 
-    char *prefdir         = SDL_GetPrefPath("", PACKAGE_TARNAME);
-    char *music_pack_path = M_StringJoin(prefdir, "music-packs", nullptr);
+  char *prefdir         = SDL_GetPrefPath("", PACKAGE_TARNAME);
+  char *music_pack_path = M_StringJoin(prefdir, "music-packs", nullptr);
 
-    M_MakeDirectory(prefdir);
-    M_MakeDirectory(music_pack_path);
-    M_SetVariable("music_pack_path", music_pack_path);
+  M_MakeDirectory(prefdir);
+  M_MakeDirectory(music_pack_path);
+  M_SetVariable("music_pack_path", music_pack_path);
 
-    // We write a README file with some basic instructions on how to use
-    // the directory.
-    char *readme_path = M_StringJoin(music_pack_path, DIR_SEPARATOR_S,
-        "README.txt", nullptr);
-    M_WriteFile(readme_path, MUSIC_PACK_README, static_cast<int>(strlen(MUSIC_PACK_README)));
+  // We write a README file with some basic instructions on how to use
+  // the directory.
+  char *readme_path = M_StringJoin(music_pack_path, DIR_SEPARATOR_S, "README.txt", nullptr);
+  M_WriteFile(readme_path, MUSIC_PACK_README, static_cast<int>(strlen(MUSIC_PACK_README)));
 
-    free(readme_path);
-    free(music_pack_path);
-    SDL_free(prefdir);
+  free(readme_path);
+  free(music_pack_path);
+  SDL_free(prefdir);
 }
 
 //
@@ -2763,85 +2703,75 @@ void M_SetMusicPackDir()
 // Creates the directory as necessary.
 //
 
-char *M_GetSaveGameDir(const char *iwadname)
-{
-    char *savegamedir = nullptr;
+char *M_GetSaveGameDir(const char *iwadname) {
+  char *savegamedir = nullptr;
 
-    //!
-    // @arg <directory>
-    //
-    // Specify a path from which to load and save games. If the directory
-    // does not exist then it will automatically be created.
-    //
+  //!
+  // @arg <directory>
+  //
+  // Specify a path from which to load and save games. If the directory
+  // does not exist then it will automatically be created.
+  //
 
-    int p = M_CheckParmWithArgs("-savedir", 1);
-    if (p)
-    {
-        savegamedir = myargv[p + 1];
-        if (!M_FileExists(savegamedir))
-        {
-            M_MakeDirectory(savegamedir);
-        }
-
-        // add separator at end just in case
-        savegamedir = M_StringJoin(savegamedir, DIR_SEPARATOR_S, nullptr);
-
-        fmt::printf("Save directory changed to %s.\n", savegamedir);
+  int p = M_CheckParmWithArgs("-savedir", 1);
+  if (p) {
+    savegamedir = myargv[p + 1];
+    if (!M_FileExists(savegamedir)) {
+      M_MakeDirectory(savegamedir);
     }
+
+    // add separator at end just in case
+    savegamedir = M_StringJoin(savegamedir, DIR_SEPARATOR_S, nullptr);
+
+    fmt::printf("Save directory changed to %s.\n", savegamedir);
+  }
 #ifdef _WIN32
-    // In -cdrom mode, we write savegames to a specific directory
-    // in addition to configs.
+  // In -cdrom mode, we write savegames to a specific directory
+  // in addition to configs.
 
-    else if (M_ParmExists("-cdrom"))
-    {
-        savegamedir = M_StringDuplicate(configdir);
-    }
+  else if (M_ParmExists("-cdrom")) {
+    savegamedir = M_StringDuplicate(configdir);
+  }
 #endif
-    // If not "doing" a configuration directory (Windows), don't "do"
-    // a savegame directory, either.
-    else if (!strcmp(configdir, ""))
-    {
-        savegamedir = M_StringDuplicate("");
-    }
-    else
-    {
-        // ~/.local/share/chocolate-doom/savegames
+  // If not "doing" a configuration directory (Windows), don't "do"
+  // a savegame directory, either.
+  else if (!strcmp(configdir, "")) {
+    savegamedir = M_StringDuplicate("");
+  } else {
+    // ~/.local/share/chocolate-doom/savegames
 
-        char *topdir = M_StringJoin(configdir, "savegames", nullptr);
-        M_MakeDirectory(topdir);
+    char *topdir = M_StringJoin(configdir, "savegames", nullptr);
+    M_MakeDirectory(topdir);
 
-        // eg. ~/.local/share/chocolate-doom/savegames/doom2.wad/
+    // eg. ~/.local/share/chocolate-doom/savegames/doom2.wad/
 
-        savegamedir = M_StringJoin(topdir, DIR_SEPARATOR_S, iwadname,
-            DIR_SEPARATOR_S, nullptr);
+    savegamedir = M_StringJoin(topdir, DIR_SEPARATOR_S, iwadname, DIR_SEPARATOR_S, nullptr);
 
-        M_MakeDirectory(savegamedir);
+    M_MakeDirectory(savegamedir);
 
-        free(topdir);
-    }
+    free(topdir);
+  }
 
-    return savegamedir;
+  return savegamedir;
 }
 
 //
 // Calculate the path to the directory for autoloaded WADs/DEHs.
 // Creates the directory as necessary.
 //
-char *M_GetAutoloadDir(const char *iwadname)
-{
-    if (autoload_path == nullptr || strlen(autoload_path) == 0)
-    {
-        char *prefdir = SDL_GetPrefPath("", PACKAGE_TARNAME);
-        autoload_path = M_StringJoin(prefdir, "autoload", nullptr);
-        SDL_free(prefdir);
-    }
+char *M_GetAutoloadDir(const char *iwadname) {
+  if (autoload_path == nullptr || strlen(autoload_path) == 0) {
+    char *prefdir = SDL_GetPrefPath("", PACKAGE_TARNAME);
+    autoload_path = M_StringJoin(prefdir, "autoload", nullptr);
+    SDL_free(prefdir);
+  }
 
-    M_MakeDirectory(autoload_path);
+  M_MakeDirectory(autoload_path);
 
-    char *result = M_StringJoin(autoload_path, DIR_SEPARATOR_S, iwadname, nullptr);
-    M_MakeDirectory(result);
+  char *result = M_StringJoin(autoload_path, DIR_SEPARATOR_S, iwadname, nullptr);
+  M_MakeDirectory(result);
 
-    // TODO: Add README file
+  // TODO: Add README file
 
-    return result;
+  return result;
 }
