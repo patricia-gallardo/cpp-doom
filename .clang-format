@@ -1,7 +1,6 @@
 # ClangFormatConfigureSource: 'clang-format-file://C:/Users/patricia/Code/cpp-doom/.clang-format'
 ---
 Language:        Cpp
-AccessModifierOffset: -4
 AlignAfterOpenBracket: Align
 AlignArrayOfStructures: None
 AlignConsecutiveMacros: Consecutive
