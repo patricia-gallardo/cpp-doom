@@ -32,14 +32,13 @@ using txt_label_t = struct txt_label_s;
 #include "txt_main.hpp"
 #include "txt_widget.hpp"
 
-struct txt_label_s
-{
-    txt_widget_t widget;
-    char *label{};
-    char **lines{};
-    unsigned int w{}, h{};
-    txt_color_t fgcolor;
-    txt_color_t bgcolor;
+struct txt_label_s {
+  txt_widget_t widget;
+  char        *label {};
+  char       **lines {};
+  unsigned int w {}, h {};
+  txt_color_t  fgcolor;
+  txt_color_t  bgcolor;
 };
 
 /**
@@ -79,5 +78,3 @@ void TXT_SetLabel(txt_label_t *label, const char *value);
 void TXT_SetFGColor(txt_label_t *label, txt_color_t color);
 
 #endif /* #ifndef TXT_LABEL_H */
-
-

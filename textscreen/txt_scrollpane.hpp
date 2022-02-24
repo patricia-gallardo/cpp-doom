@@ -33,13 +33,12 @@ using txt_scrollpane_t = struct txt_scrollpane_s;
 
 #include "txt_widget.hpp"
 
-struct [[maybe_unused]] txt_scrollpane_s
-{
-    txt_widget_t widget;
-    int w{}, h{};
-    int x{}, y{};
-    int expand_w{}, expand_h{};
-    txt_widget_t *child{};
+struct [[maybe_unused]] txt_scrollpane_s {
+  txt_widget_t  widget;
+  int           w {}, h {};
+  int           x {}, y {};
+  int           expand_w {}, expand_h {};
+  txt_widget_t *child {};
 };
 
 /**
@@ -55,5 +54,3 @@ struct [[maybe_unused]] txt_scrollpane_s
 txt_scrollpane_t *TXT_NewScrollPane(int w, int h, void *uncast_target);
 
 #endif /* #ifndef TXT_SCROLLPANE_H */
-
-
