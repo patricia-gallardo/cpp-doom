@@ -58,5 +58,3 @@ txt_conditional_t *TXT_NewConditional(int *var, int expected_value, void *uncast
 txt_widget_t *TXT_If(int condition, void *uncast_child);
 
 #endif /* #ifndef TXT_CONDITIONAL_H */
-
-

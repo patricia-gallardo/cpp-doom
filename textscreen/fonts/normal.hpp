@@ -520,7 +520,9 @@ static const uint8_t normal_font_data[] =
 };
 // clang-format on
 
-static const txt_font_t normal_font =
-{
-    "normal", normal_font_data, 8, 16,
+static const txt_font_t normal_font = {
+  "normal",
+  normal_font_data,
+  8,
+  16,
 };

@@ -18,7 +18,7 @@
 #ifndef TXT_MAIN_H
 #define TXT_MAIN_H
 
-// For the moment, txt_sdl.c is the only implementation of the base 
+// For the moment, txt_sdl.c is the only implementation of the base
 // text mode screen API:
 
 #include "txt_sdl.hpp"
@@ -38,101 +38,102 @@
 
 // Special keypress values that correspond to mouse button clicks
 
-constexpr auto TXT_MOUSE_BASE         =256;
-#define TXT_MOUSE_LEFT         (TXT_MOUSE_BASE + 0)
-#define TXT_MOUSE_RIGHT        (TXT_MOUSE_BASE + 1)
-#define TXT_MOUSE_MIDDLE       (TXT_MOUSE_BASE + 2)
-#define TXT_MOUSE_SCROLLUP     (TXT_MOUSE_BASE + 3)
-#define TXT_MOUSE_SCROLLDOWN   (TXT_MOUSE_BASE + 4)
-constexpr auto TXT_MAX_MOUSE_BUTTONS  =16;
+constexpr auto TXT_MOUSE_BASE = 256;
+#define TXT_MOUSE_LEFT       (TXT_MOUSE_BASE + 0)
+#define TXT_MOUSE_RIGHT      (TXT_MOUSE_BASE + 1)
+#define TXT_MOUSE_MIDDLE     (TXT_MOUSE_BASE + 2)
+#define TXT_MOUSE_SCROLLUP   (TXT_MOUSE_BASE + 3)
+#define TXT_MOUSE_SCROLLDOWN (TXT_MOUSE_BASE + 4)
+constexpr auto TXT_MAX_MOUSE_BUTTONS = 16;
 
-#define TXT_KEY_TO_MOUSE_BUTTON(x)                                        \
-        ( (x) >= TXT_MOUSE_BASE                                           \
-       && (x) < TXT_MOUSE_BASE + TXT_MAX_MOUSE_BUTTONS ?                  \
-          (x) - TXT_MOUSE_BASE : -1 )
+#define TXT_KEY_TO_MOUSE_BUTTON(x)                           \
+  ((x) >= TXT_MOUSE_BASE                                     \
+           && (x) < TXT_MOUSE_BASE + TXT_MAX_MOUSE_BUTTONS ? \
+       (x)-TXT_MOUSE_BASE :                                  \
+       -1)
 
 // Unicode offset. Unicode values from 128 onwards are offset up into
 // this range, so TXT_UNICODE_BASE = Unicode character #128, and so on.
 
-constexpr auto TXT_UNICODE_BASE       =512;
+constexpr auto TXT_UNICODE_BASE = 512;
 
 // Convert a key value to a Unicode character:
 
-#define TXT_KEY_TO_UNICODE(x)                                             \
-        ( (x) < 128 ? (x) :                                               \
-          (x) >= TXT_UNICODE_BASE ? ((x) - TXT_UNICODE_BASE + 128) : 0 )
+#define TXT_KEY_TO_UNICODE(x)                               \
+  ((x) < 128               ? (x) :                          \
+   (x) >= TXT_UNICODE_BASE ? ((x)-TXT_UNICODE_BASE + 128) : \
+                             0)
 
 // Convert a Unicode character to a key value:
 
-#define TXT_UNICODE_TO_KEY(u)                                            \
-        ( (u) < 128 ? (u) : ((u) - 128 + TXT_UNICODE_BASE) )
+#define TXT_UNICODE_TO_KEY(u) \
+  ((u) < 128 ? (u) : ((u)-128 + TXT_UNICODE_BASE))
 
 // Screen size
 
-constexpr auto TXT_SCREEN_W =80;
-constexpr auto TXT_SCREEN_H =25;
+constexpr auto TXT_SCREEN_W = 80;
+constexpr auto TXT_SCREEN_H = 25;
 
 #define TXT_COLOR_BLINKING (1 << 3)
 
 enum txt_color_t
 {
-    TXT_COLOR_BLACK,
-    TXT_COLOR_BLUE,
-    TXT_COLOR_GREEN [[maybe_unused]],
-    TXT_COLOR_CYAN,
-    TXT_COLOR_RED [[maybe_unused]],
-    TXT_COLOR_MAGENTA [[maybe_unused]],
-    TXT_COLOR_BROWN [[maybe_unused]],
-    TXT_COLOR_GREY,
-    TXT_COLOR_DARK_GREY,
-    TXT_COLOR_BRIGHT_BLUE [[maybe_unused]],
-    TXT_COLOR_BRIGHT_GREEN,
-    TXT_COLOR_BRIGHT_CYAN,
-    TXT_COLOR_BRIGHT_RED [[maybe_unused]],
-    TXT_COLOR_BRIGHT_MAGENTA [[maybe_unused]],
-    TXT_COLOR_YELLOW,
-    TXT_COLOR_BRIGHT_WHITE,
+  TXT_COLOR_BLACK,
+  TXT_COLOR_BLUE,
+  TXT_COLOR_GREEN [[maybe_unused]],
+  TXT_COLOR_CYAN,
+  TXT_COLOR_RED [[maybe_unused]],
+  TXT_COLOR_MAGENTA [[maybe_unused]],
+  TXT_COLOR_BROWN [[maybe_unused]],
+  TXT_COLOR_GREY,
+  TXT_COLOR_DARK_GREY,
+  TXT_COLOR_BRIGHT_BLUE [[maybe_unused]],
+  TXT_COLOR_BRIGHT_GREEN,
+  TXT_COLOR_BRIGHT_CYAN,
+  TXT_COLOR_BRIGHT_RED [[maybe_unused]],
+  TXT_COLOR_BRIGHT_MAGENTA [[maybe_unused]],
+  TXT_COLOR_YELLOW,
+  TXT_COLOR_BRIGHT_WHITE,
 };
 
 // Modifier keys.
 
 enum txt_modifier_t
 {
-    TXT_MOD_SHIFT,
-    TXT_MOD_CTRL,
-    TXT_MOD_ALT,
-    TXT_NUM_MODIFIERS [[maybe_unused]]
+  TXT_MOD_SHIFT,
+  TXT_MOD_CTRL,
+  TXT_MOD_ALT,
+  TXT_NUM_MODIFIERS [[maybe_unused]]
 };
 
 // Due to the way the SDL API works, we provide different ways of configuring
 // how we read input events, each of which is useful in different scenarios.
 enum txt_input_mode_t
 {
-    // "Localized" output that takes software keyboard layout into account,
-    // but key shifting has no effect.
-    TXT_INPUT_NORMAL,
+  // "Localized" output that takes software keyboard layout into account,
+  // but key shifting has no effect.
+  TXT_INPUT_NORMAL,
 
-    // "Raw" input; the keys correspond to physical keyboard layout and
-    // software keyboard layout has no effect.
-    TXT_INPUT_RAW,
+  // "Raw" input; the keys correspond to physical keyboard layout and
+  // software keyboard layout has no effect.
+  TXT_INPUT_RAW,
 
-    // Used for full text input. Events are fully shifted and localized.
-    // However, not all keyboard keys will generate input.
-    // Setting this mode may activate the on-screen keyboard, depending on
-    // device and OS.
-    TXT_INPUT_TEXT,
+  // Used for full text input. Events are fully shifted and localized.
+  // However, not all keyboard keys will generate input.
+  // Setting this mode may activate the on-screen keyboard, depending on
+  // device and OS.
+  TXT_INPUT_TEXT,
 };
-
 
 #ifdef __GNUC__
 
 #define PRINTF_ATTR(fmt, first) __attribute__((format(printf, fmt, first)))
 
-#else  // __GNUC__
+#else // __GNUC__
 
 #define PRINTF_ATTR(fmt, first)
 
-#endif  // __GNUC__
+#endif // __GNUC__
 
 // Initialize the screen
 // Returns 1 if successful, 0 if failed.
@@ -151,8 +152,7 @@ void TXT_UpdateScreenArea(int x, int y, int w, int h);
 void TXT_UpdateScreen();
 
 // Set the RGB value for a particular entry in the color palette:
-void TXT_SetColor(txt_color_t color, std::uint8_t r, std::uint8_t g,
-                  std::uint8_t b);
+void TXT_SetColor(txt_color_t color, std::uint8_t r, std::uint8_t g, std::uint8_t b);
 
 // Read a character from the keyboard
 int TXT_GetChar();
@@ -200,4 +200,3 @@ int TXT_vsnprintf(char *buf, size_t buf_len, const char *s, va_list args);
 int TXT_snprintf(char *buf, size_t buf_len, const char *s, ...) PRINTF_ATTR(3, 4);
 
 #endif /* #ifndef TXT_MAIN_H */
-

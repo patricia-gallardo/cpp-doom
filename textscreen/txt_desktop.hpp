@@ -31,7 +31,7 @@ void TXT_DrawDesktop();
 void TXT_DispatchEvents();
 void TXT_DrawWindow(txt_window_t *window);
 void TXT_SetWindowFocus(txt_window_t *window, int focused);
-int TXT_WindowKeyPress(txt_window_t *window, int c);
+int  TXT_WindowKeyPress(txt_window_t *window, int c);
 
 /**
  * Set the title displayed at the top of the screen.
@@ -81,8 +81,8 @@ txt_window_t *TXT_GetActiveWindow();
  */
 
 void TXT_SetPeriodicCallback(TxtIdleCallback callback,
-                             void *user_data,
-                             unsigned int period);
+                             void           *user_data,
+                             unsigned int    period);
 
 /**
  * Raise the z-position of the given window relative to other windows.
@@ -105,4 +105,3 @@ void TXT_SetPeriodicCallback(TxtIdleCallback callback,
 int TXT_LowerWindow(txt_window_t *window);
 
 #endif /* #ifndef TXT_DESKTOP_H */
-

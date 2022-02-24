@@ -136,7 +136,9 @@ static const uint8_t small_font_data[] =
 };
 // clang-format on
 
-static const txt_font_t small_font =
-{
-    "small", small_font_data, 4, 8,
+static const txt_font_t small_font = {
+  "small",
+  small_font_data,
+  4,
+  8,
 };

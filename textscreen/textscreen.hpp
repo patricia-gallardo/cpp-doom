@@ -15,7 +15,6 @@
 #ifndef TEXTSCREEN_H
 #define TEXTSCREEN_H
 
-
 #include "../src/doomkeys.hpp"
 #include "txt_main.hpp"
 
@@ -37,6 +36,4 @@
 #include "txt_window_action.hpp"
 #include "txt_window.hpp"
 
-
 #endif /* #ifndef TEXTSCREEN_H */
-
