@@ -84,7 +84,9 @@ static int TXT_RadioButtonKeyPress(void *uncast_radiobutton, int key) {
 }
 
 static void TXT_RadioButtonMousePress(void *uncast_radiobutton,
-                                      int, int, int b) {
+                                      int,
+                                      int,
+                                      int b) {
   auto *radiobutton = reinterpret_cast<txt_radiobutton_t *>(uncast_radiobutton);
 
   if (b == TXT_MOUSE_LEFT) {

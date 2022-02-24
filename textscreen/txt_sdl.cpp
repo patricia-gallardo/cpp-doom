@@ -230,8 +230,7 @@ int TXT_Init() {
   }
 
   TXT_SDLWindow =
-      SDL_CreateWindow("", SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED,
-                       screen_image_w, screen_image_h, static_cast<Uint32>(flags));
+      SDL_CreateWindow("", SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, screen_image_w, screen_image_h, static_cast<Uint32>(flags));
 
   if (TXT_SDLWindow == nullptr)
     return 0;
@@ -265,8 +264,7 @@ int TXT_Init() {
   // Instead, we draw everything into an intermediate 8-bit surface
   // the same dimensions as the screen. SDL then takes care of all the
   // 8->32 bit (or whatever depth) color conversions for us.
-  screenbuffer = SDL_CreateRGBSurface(0, static_cast<int>(TXT_SCREEN_W * font->w), static_cast<int>(TXT_SCREEN_H * font->h),
-                                      8, 0, 0, 0, 0);
+  screenbuffer = SDL_CreateRGBSurface(0, static_cast<int>(TXT_SCREEN_W * font->w), static_cast<int>(TXT_SCREEN_H * font->h), 8, 0, 0, 0, 0);
 
   SDL_LockSurface(screenbuffer);
   SDL_SetPaletteColors(screenbuffer->format->palette, ega_colors, 0, 16);
@@ -286,8 +284,7 @@ void TXT_Shutdown() {
   SDL_QuitSubSystem(SDL_INIT_VIDEO);
 }
 
-void TXT_SetColor(txt_color_t color, std::uint8_t r, std::uint8_t g,
-                  std::uint8_t b) {
+void TXT_SetColor(txt_color_t color, std::uint8_t r, std::uint8_t g, std::uint8_t b) {
   SDL_Color c = { r, g, b, 0xff };
 
   SDL_LockSurface(screenbuffer);

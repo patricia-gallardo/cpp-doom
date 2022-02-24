@@ -90,7 +90,9 @@ static int TXT_CondKeyPress(void *uncast_conditional, int key) {
 }
 
 static void TXT_CondMousePress(void *uncast_conditional,
-                               int x, int y, int b) {
+                               int   x,
+                               int   y,
+                               int   b) {
   auto *conditional = reinterpret_cast<txt_conditional_t *>(uncast_conditional);
 
   if (ConditionTrue(conditional)) {

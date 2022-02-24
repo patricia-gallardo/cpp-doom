@@ -223,7 +223,9 @@ static int TXT_InputBoxKeyPress(void *uncast_inputbox, int key) {
 }
 
 static void TXT_InputBoxMousePress(void *uncast_inputbox,
-                                   int, int, int b) {
+                                   int,
+                                   int,
+                                   int b) {
   auto *inputbox = reinterpret_cast<txt_inputbox_t *>(uncast_inputbox);
   ;
 
@@ -272,7 +274,8 @@ txt_widget_class_t txt_int_inputbox_class = {
 };
 
 static txt_inputbox_t *NewInputBox(txt_widget_class_t *widget_class,
-                                   void *value, int size) {
+                                   void               *value,
+                                   int                 size) {
   auto *inputbox = create_struct<txt_inputbox_t>();
 
   TXT_InitWidget(inputbox, widget_class);

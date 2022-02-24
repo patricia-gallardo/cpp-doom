@@ -95,8 +95,7 @@ txt_button_t *TXT_NewButton(const char *label) {
 
 // Button with a callback set automatically
 
-txt_button_t *TXT_NewButton2(const char *label, TxtWidgetSignalFunc func,
-                             void *user_data) {
+txt_button_t *TXT_NewButton2(const char *label, TxtWidgetSignalFunc func, void *user_data) {
   txt_button_t *button = TXT_NewButton(label);
 
   TXT_SignalConnect(button, "pressed", func, user_data);

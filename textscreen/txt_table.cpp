@@ -72,8 +72,7 @@ static int TableRows(txt_table_t *table) {
 // overflow constants are used, they can occupy multiple cells.
 // This function figures out for a widget in a given cell, which
 // cells it should actually occupy (always a rectangle).
-static void CellOverflowedSize(txt_table_t *table, int x, int y,
-                               int *w, int *h) {
+static void CellOverflowedSize(txt_table_t *table, int x, int y, int *w, int *h) {
 
   if (!IsActualWidget(table->widgets[y * table->columns + x])) {
     *w = 0;
@@ -125,11 +124,13 @@ static int IsOverflowingCell(txt_table_t *table, int x, int y) {
 
 // Using the given column/row size tables, calculate the size of the given
 // widget, storing the result in (w, h).
-static void CalculateWidgetDimensions(txt_table_t *table,
-                                      int x, int y,
+static void CalculateWidgetDimensions(txt_table_t  *table,
+                                      int           x,
+                                      int           y,
                                       unsigned int *column_widths,
                                       unsigned int *row_heights,
-                                      unsigned int *w, unsigned int *h) {
+                                      unsigned int *w,
+                                      unsigned int *h) {
   int cell_w = 0, cell_h = 0;
 
   // Find which cells this widget occupies.
@@ -199,8 +200,7 @@ static void CalcRowColSizes(txt_table_t  *table,
 
       // Expand column width and row heights as needed.
       unsigned int w = 0, h = 0;
-      CalculateWidgetDimensions(table, x, y, col_widths, row_heights,
-                                &w, &h);
+      CalculateWidgetDimensions(table, x, y, col_widths, row_heights, &w, &h);
       if (w < widget->w) {
         col_widths[x] += widget->w - w;
       }
@@ -284,7 +284,7 @@ void TXT_AddWidget(void *uncast_table, void *uncast_widget) {
 
   // todo make this a vector or something
   table->widgets                     = static_cast<txt_widget_t **>(realloc(table->widgets,
-                                                                            sizeof(txt_widget_t *) * (static_cast<unsigned long>(table->num_widgets + 1))));
+                                                        sizeof(txt_widget_t *) * (static_cast<unsigned long>(table->num_widgets + 1))));
   table->widgets[table->num_widgets] = widget;
   ++table->num_widgets;
 
@@ -512,8 +512,7 @@ static void CheckValidSelection(txt_table_t *table) {
   }
 }
 
-static void LayoutCell(txt_table_t *table, int x, int y,
-                       int draw_x, int draw_y) {
+static void LayoutCell(txt_table_t *table, int x, int y, int draw_x, int draw_y) {
   txt_widget_t *widget    = table->widgets[y * table->columns + x];
   int           col_width = static_cast<int>(widget->w);
 
@@ -590,9 +589,7 @@ static void TXT_TableLayout(void *uncast_table) {
       const auto widget = table->widgets[i];
 
       if (IsActualWidget(widget)) {
-        CalculateWidgetDimensions(table, x, y,
-                                  column_widths.data(), row_heights.data(),
-                                  &widget->w, &widget->h);
+        CalculateWidgetDimensions(table, x, y, column_widths.data(), row_heights.data(), &widget->w, &widget->h);
         LayoutCell(table, x, y, draw_x, draw_y);
       }
 
@@ -641,8 +638,7 @@ static void TXT_TableMousePress(void *uncast_table, int x, int y, int b) {
         // Select the cell if the widget is selectable
 
         if (TXT_SelectableWidget(widget)) {
-          ChangeSelection(table, i % table->columns,
-                          i / table->columns);
+          ChangeSelection(table, i % table->columns, i / table->columns);
         }
 
         // Propagate click
