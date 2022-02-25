@@ -133,7 +133,7 @@ PPIndentWidth:   -1
 ReferenceAlignment: Pointer
 ReflowComments:  true
 ShortNamespaceLines: 1
-SortIncludes:    Never
+SortIncludes:    CaseInsensitive
 SortJavaStaticImport: Before
 SortUsingDeclarations: true
 SpaceAfterCStyleCast: false
