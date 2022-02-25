@@ -23,8 +23,8 @@
 
 #include <fmt/printf.h>
 
-#include "m_random.hpp"
 #include "i_system.hpp"
+#include "m_random.hpp"
 
 #include "doomdef.hpp"
 #include "p_local.hpp"

@@ -15,21 +15,21 @@
 // Main dehacked code
 //
 
+#include <cctype>
 #include <cstdio>
 #include <cstdlib>
 #include <cstring>
-#include <cctype>
 
 #include <fmt/printf.h>
 
-#include "i_glob.hpp"
-#include "i_system.hpp"
 #include "d_iwad.hpp"
-#include "m_argv.hpp"
-#include "w_wad.hpp"
 #include "deh_defs.hpp"
 #include "deh_io.hpp"
 #include "deh_main.hpp"
+#include "i_glob.hpp"
+#include "i_system.hpp"
+#include "m_argv.hpp"
+#include "w_wad.hpp"
 
 extern deh_section_t * deh_section_types[];
 extern const char *    deh_signatures[];

@@ -22,8 +22,8 @@
 
 #include <fmt/printf.h>
 
-#include "memory.hpp"
 #include "i_system.hpp"
+#include "memory.hpp"
 #include "p_local.hpp"
 #include "z_zone.hpp"
 

@@ -20,10 +20,10 @@
 
 #include <fmt/printf.h>
 
-#include "m_bbox.hpp"
-#include "p_local.hpp"
 #include "i_swap.hpp"
 #include "i_system.hpp"
+#include "m_bbox.hpp"
+#include "p_local.hpp"
 #include "w_wad.hpp"
 #include "z_zone.hpp"
 

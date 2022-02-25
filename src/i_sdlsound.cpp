@@ -19,15 +19,15 @@
 
 #include "config.h"
 
+#include <cassert>
 #include <cstdio>
 #include <cstdlib>
 #include <cstring>
-#include <cassert>
 
 #include <fmt/printf.h>
 
-#include "SDL.h"
-#include "SDL_mixer.h"
+#include <SDL.h>
+#include <SDL_mixer.h>
 #include <vector>
 
 #ifdef HAVE_LIBSAMPLERATE
@@ -36,14 +36,14 @@
 
 #include "deh_str.hpp"
 #include "i_sound.hpp"
-#include "i_system.hpp"
 #include "i_swap.hpp"
+#include "i_system.hpp"
 #include "m_misc.hpp"
 #include "w_wad.hpp"
 #include "z_zone.hpp"
 
-#include "lump.hpp"
 #include "doomtype.hpp"
+#include "lump.hpp"
 
 #define LOW_PASS_FILTER
 //#define DEBUG_DUMP_WAVS

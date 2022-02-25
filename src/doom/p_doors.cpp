@@ -17,19 +17,19 @@
 
 #include <fmt/printf.h>
 
-#include "z_zone.hpp"
-#include "doomdef.hpp"
 #include "deh_main.hpp"
+#include "doomdef.hpp"
 #include "p_local.hpp"
 #include "s_sound.hpp"
+#include "z_zone.hpp"
 
 // State.
 #include "doomstat.hpp"
 #include "r_state.hpp"
 
 // Data.
-#include "memory.hpp"
 #include "dstrings.hpp"
+#include "memory.hpp"
 #include "sounds.hpp"
 
 #if 0

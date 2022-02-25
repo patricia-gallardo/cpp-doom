@@ -34,21 +34,21 @@
 
 #ifdef HAVE_BSD_SPEAKER
 
+#include <errno.h>
+#include <fcntl.h>
+#include <signal.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
-#include <errno.h>
-#include <signal.h>
 #include <sys/ioctl.h>
 #include <sys/signal.h>
 #include <sys/socket.h>
 #include <sys/types.h>
 #include <sys/wait.h>
 #include <unistd.h>
-#include <fcntl.h>
 
-#include "SDL.h"
-#include "SDL_thread.hpp"
+#include <SDL.h>
+#include <SDL_thread.h>
 
 #include "pcsound.hpp"
 #include "pcsound_internal.hpp"

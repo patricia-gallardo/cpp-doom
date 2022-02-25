@@ -25,8 +25,8 @@
 #include "deh_misc.hpp"
 #include "doomstat.hpp"
 
-#include "m_random.hpp"
 #include "i_system.hpp"
+#include "m_random.hpp"
 
 #include "am_map.hpp"
 

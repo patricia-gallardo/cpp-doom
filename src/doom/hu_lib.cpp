@@ -18,13 +18,13 @@
 #include <cctype>
 
 #include "doomkeys.hpp"
-#include "v_video.hpp"
-#include "i_swap.hpp"
-#include "hu_lib.hpp"
-#include "r_local.hpp"
-#include "r_draw.hpp"
-#include "v_trans.hpp" // [crispy] colored HUlib_drawTextLine()
 #include "doomstat.hpp"
+#include "hu_lib.hpp"
+#include "i_swap.hpp"
+#include "r_draw.hpp"
+#include "r_local.hpp"
+#include "v_trans.hpp" // [crispy] colored HUlib_drawTextLine()
+#include "v_video.hpp"
 
 extern bool automapactive; // in AM_map.c
 

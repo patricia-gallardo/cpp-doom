@@ -14,8 +14,8 @@
 // Network server code
 //
 
-#include <cstdio>
 #include <cstdarg>
+#include <cstdio>
 #include <cstdlib>
 #include <cstring>
 
@@ -23,8 +23,8 @@
 
 #include "config.h"
 
-#include "doomtype.hpp"
 #include "d_mode.hpp"
+#include "doomtype.hpp"
 #include "i_system.hpp"
 #include "i_timer.hpp"
 #include "m_argv.hpp"

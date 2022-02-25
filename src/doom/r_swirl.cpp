@@ -25,8 +25,8 @@
 #include <w_wad.hpp>
 #include <z_zone.hpp>
 
-#include "lump.hpp"
 #include "doomstat.hpp"
+#include "lump.hpp"
 
 // swirl factors determine the number of waves per flat width
 

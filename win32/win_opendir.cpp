@@ -33,12 +33,13 @@
 #error i_opndir.c is for Microsoft Visual C++ only
 #endif
 
-#include <cstdlib>
 #include <cerrno>
+#include <cstdlib>
 #include <cstring>
 
 #define WIN32_LEAN_AND_MEAN
 #include <windows.h> /* for GetFileAttributes */
+// intentional newline to avoid reordering by Clang Format
 
 #include <tchar.h>
 #define SUFFIX _T("*")

@@ -26,8 +26,8 @@
 // version: 1.8
 //
 
-#include <cstring>
 #include "opl3.hpp"
+#include <cstring>
 
 constexpr auto RSM_FRAC = 10;
 

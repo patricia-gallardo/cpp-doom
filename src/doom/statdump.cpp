@@ -24,8 +24,8 @@
 
 #include <fmt/printf.h>
 
-#include "d_player.hpp"
 #include "d_mode.hpp"
+#include "d_player.hpp"
 #include "m_argv.hpp"
 
 #include "statdump.hpp"

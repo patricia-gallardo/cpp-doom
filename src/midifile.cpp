@@ -15,17 +15,17 @@
 //    Reading of MIDI files.
 //
 
+#include <cassert>
 #include <cstdio>
 #include <cstdlib>
 #include <cstring>
-#include <cassert>
 
 #include <fmt/printf.h>
 
-#include "memory.hpp"
 #include "doomtype.hpp"
 #include "i_swap.hpp"
 #include "i_system.hpp"
+#include "memory.hpp"
 #include "midifile.hpp"
 
 #define HEADER_CHUNK_ID "MThd"

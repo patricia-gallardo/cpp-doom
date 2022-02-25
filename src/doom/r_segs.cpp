@@ -20,11 +20,11 @@
 
 #include <fmt/printf.h>
 
-#include "i_system.hpp"
 #include "doomdef.hpp"
 #include "doomstat.hpp"
-#include "r_local.hpp"
+#include "i_system.hpp"
 #include "r_bmaps.hpp" // [crispy] brightmaps
+#include "r_local.hpp"
 
 // OPTIMIZE: closed two sided lines as single sided
 

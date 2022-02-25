@@ -18,23 +18,23 @@
 //	 e.g. inline assembly, different algorithms.
 //
 
-#include "doomdef.hpp"
 #include "deh_main.hpp"
+#include "doomdef.hpp"
 
 #include "i_system.hpp"
-#include "z_zone.hpp"
 #include "w_wad.hpp"
+#include "z_zone.hpp"
 
 #include "r_local.hpp"
 
 // Needs access to LFB (guess what).
-#include "v_video.hpp"
 #include "v_trans.hpp"
+#include "v_video.hpp"
 
 // State.
+#include "doomstat.hpp"
 #include "lump.hpp"
 #include "memory.hpp"
-#include "doomstat.hpp"
 
 // ?
 //#define MAXWIDTH			1120

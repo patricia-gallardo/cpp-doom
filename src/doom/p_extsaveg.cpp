@@ -21,11 +21,11 @@
 #include <cstdio>
 #include <cstdlib>
 
-#include "memory.hpp"
 #include "config.h"
 #include "doomstat.hpp"
 #include "doomtype.hpp"
 #include "m_misc.hpp"
+#include "memory.hpp"
 #include "p_extsaveg.hpp"
 #include "p_local.hpp"
 #include "p_saveg.hpp"

@@ -19,10 +19,10 @@
 #include <cstdlib>
 #include <cstring>
 
-#include "info.hpp"
 #include "deh_defs.hpp"
 #include "deh_io.hpp"
 #include "deh_main.hpp"
+#include "info.hpp"
 
 actionf_t codeptrs[NUMSTATES]; // [crispy] share with deh_bexptr.c
 

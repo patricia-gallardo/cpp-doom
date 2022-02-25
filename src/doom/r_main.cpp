@@ -22,9 +22,9 @@
 
 #include <fmt/printf.h>
 
+#include "d_loop.hpp"
 #include "doomdef.hpp"
 #include "doomstat.hpp" // [AM] leveltime, paused, menuactive
-#include "d_loop.hpp"
 
 #include "m_bbox.hpp"
 #include "m_menu.hpp"

@@ -21,18 +21,18 @@
 
 #include <fmt/printf.h>
 
+#include "d_loop.hpp"
 #include "d_main.hpp"
+#include "deh_main.hpp"
+#include "doomdef.hpp"
+#include "doomstat.hpp"
+#include "g_game.hpp"
+#include "i_system.hpp"
 #include "m_argv.hpp"
 #include "m_menu.hpp"
 #include "m_misc.hpp"
-#include "i_system.hpp"
-#include "g_game.hpp"
-#include "doomdef.hpp"
-#include "doomstat.hpp"
 #include "w_checksum.hpp"
 #include "w_wad.hpp"
-#include "deh_main.hpp"
-#include "d_loop.hpp"
 
 // Called when a player leaves the game
 

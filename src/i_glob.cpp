@@ -16,13 +16,13 @@
 // to be interrogated.
 //
 
+#include <cctype>
 #include <cstdlib>
 #include <cstring>
-#include <cctype>
 
+#include "config.h"
 #include "i_glob.hpp"
 #include "m_misc.hpp"
-#include "config.h"
 
 #if defined(_MSC_VER)
 // For Visual C++, we need to include the win_opendir module.

@@ -20,18 +20,18 @@
 
 #include <fmt/printf.h>
 
-#include "dstrings.hpp"
 #include "deh_main.hpp"
+#include "dstrings.hpp"
 #include "i_system.hpp"
-#include "z_zone.hpp"
 #include "p_local.hpp"
 #include "p_saveg.hpp"
+#include "z_zone.hpp"
 
 // State.
-#include "memory.hpp"
 #include "doomstat.hpp"
 #include "g_game.hpp"
 #include "m_misc.hpp"
+#include "memory.hpp"
 #include "r_state.hpp"
 
 FILE *     save_stream;

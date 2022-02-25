@@ -20,13 +20,13 @@
 
 #include "doomkeys.hpp"
 
+#include "memory.hpp"
 #include "txt_fileselect.hpp"
-#include "txt_inputbox.hpp"
 #include "txt_gui.hpp"
+#include "txt_inputbox.hpp"
 #include "txt_io.hpp"
 #include "txt_main.hpp"
 #include "txt_widget.hpp"
-#include "memory.hpp"
 
 struct [[maybe_unused]] txt_fileselect_s {
   txt_widget_t     widget;
@@ -42,10 +42,10 @@ const char * TXT_DIRECTORY[] = { "__directory__", nullptr };
 
 #ifndef _WIN32
 
-#include <fcntl.h>
-#include <unistd.h>
 #include <cerrno>
+#include <fcntl.h>
 #include <sys/wait.h>
+#include <unistd.h>
 
 static char * ExecReadOutput(char ** argv) {
   int status;
@@ -146,8 +146,8 @@ char * TXT_SelectFile(const char *, const char **) {
 
 // Windows code. Use comdlg32 to pop up a dialog box.
 
-#include <windows.h>
 #include <shlobj.h>
+#include <windows.h>
 
 static BOOL (*MyGetOpenFileName)(LPOPENFILENAME)           = nullptr;
 static LPITEMIDLIST (*MySHBrowseForFolder)(LPBROWSEINFO)   = nullptr;

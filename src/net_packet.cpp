@@ -16,8 +16,8 @@
 //
 
 #include "net_packet.hpp"
-#include "memory.hpp"
 #include "m_misc.hpp"
+#include "memory.hpp"
 #include "z_zone.hpp"
 #include <cctype>
 #include <cstring>

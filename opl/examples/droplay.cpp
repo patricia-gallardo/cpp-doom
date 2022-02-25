@@ -16,12 +16,12 @@
 //     format files.
 //
 
+#include <fmt/printf.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
-#include <fmt/printf.h>
 
-#include "SDL.h"
+#include <SDL.h>
 
 #include "opl.hpp"
 

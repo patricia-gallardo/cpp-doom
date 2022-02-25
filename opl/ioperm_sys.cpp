@@ -25,6 +25,8 @@
 
 #define WIN32_LEAN_AND_MEAN
 #include <windows.h>
+// intentional newline to avoid reordering by Clang Format
+
 #include <winioctl.h>
 
 #include <cerrno>

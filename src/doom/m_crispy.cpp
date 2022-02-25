@@ -19,9 +19,9 @@
 
 #include "doomstat.hpp"
 #include "p_local.hpp" // [crispy] thinkercap
+#include "r_defs.hpp"  // [crispy] laserpatch
+#include "r_sky.hpp"   // [crispy] R_InitSkyMap()
 #include "s_sound.hpp"
-#include "r_defs.hpp" // [crispy] laserpatch
-#include "r_sky.hpp"  // [crispy] R_InitSkyMap()
 
 #include "m_crispy.hpp"
 

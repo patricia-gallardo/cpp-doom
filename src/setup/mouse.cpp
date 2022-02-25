@@ -15,10 +15,10 @@
 #include <cstdlib>
 
 #include "crispy.hpp"
-#include "textscreen.hpp"
 #include "doomtype.hpp"
 #include "m_config.hpp"
 #include "m_controls.hpp"
+#include "textscreen.hpp"
 
 #include "execute.hpp"
 #include "txt_mouseinput.hpp"

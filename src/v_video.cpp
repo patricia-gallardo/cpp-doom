@@ -19,11 +19,11 @@
 //	Functions to blit a block to the screen.
 //
 
-#include "SDL_version.h" // [crispy]
+#include <SDL_version.h> // [crispy]
 
+#include <cmath>
 #include <cstdlib>
 #include <cstring>
-#include <cmath>
 
 #include <fmt/printf.h>
 
@@ -40,14 +40,14 @@
 #ifdef CRISPY_TRUECOLOR
 #include "v_trans.hpp"
 #endif
+#include "crispy.hpp"
 #include "v_video.hpp"
 #include "w_wad.hpp"
 #include "z_zone.hpp"
-#include "crispy.hpp"
 
+#include "config.h"
 #include "lump.hpp"
 #include "memory.hpp"
-#include "config.h"
 #ifdef HAVE_LIBPNG
 #include <png.h>
 #endif

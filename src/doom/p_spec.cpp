@@ -22,20 +22,20 @@
 
 #include <fmt/printf.h>
 
+#include "deh_main.hpp"
 #include "doomdef.hpp"
 #include "doomstat.hpp"
-#include "deh_main.hpp"
-#include "i_system.hpp"
 #include "i_swap.hpp" // [crispy] LONG()
-#include "z_zone.hpp"
+#include "i_system.hpp"
 #include "m_argv.hpp"
 #include "m_misc.hpp"
 #include "m_random.hpp"
-#include "w_wad.hpp"
 #include "r_swirl.hpp" // [crispy] R_InitDistortedFlats()
+#include "w_wad.hpp"
+#include "z_zone.hpp"
 
-#include "r_local.hpp"
 #include "p_local.hpp"
+#include "r_local.hpp"
 
 #include "g_game.hpp"
 

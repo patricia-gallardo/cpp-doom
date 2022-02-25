@@ -29,16 +29,16 @@
 #include "doomstat.hpp"
 #include "doomtype.hpp"
 
-#include "sounds.hpp"
-#include "s_sound.hpp"
 #include "s_musinfo.hpp" // [crispy] struct musinfo
+#include "s_sound.hpp"
+#include "sounds.hpp"
 
+#include "lump.hpp"
 #include "m_misc.hpp"
 #include "m_random.hpp"
 #include "p_local.hpp"
 #include "w_wad.hpp"
 #include "z_zone.hpp"
-#include "lump.hpp"
 
 // when to clip out sounds
 // Does not fit the large outdoor areas.

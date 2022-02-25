@@ -21,7 +21,7 @@
 
 #include <cstdio>
 
-#include "SDL.h"
+#include <SDL.h>
 
 #include "m_argv.hpp"
 #include "m_misc.hpp" // [crispy] M_snprintf()

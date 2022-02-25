@@ -26,8 +26,8 @@
 
 #include "i_swap.hpp"
 #include "i_system.hpp"
-#include "z_zone.hpp"
 #include "w_wad.hpp"
+#include "z_zone.hpp"
 
 #include "r_local.hpp"
 

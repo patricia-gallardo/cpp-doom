@@ -18,15 +18,15 @@
 
 #include <cstring>
 
-#include "z_zone.hpp"
 #include "i_video.hpp"
-#include "v_video.hpp"
 #include "m_random.hpp"
+#include "v_video.hpp"
+#include "z_zone.hpp"
 
 #include "doomtype.hpp"
 
-#include "memory.hpp"
 #include "f_wipe.hpp"
+#include "memory.hpp"
 
 //
 //                       SCREEN WIPE PACKAGE

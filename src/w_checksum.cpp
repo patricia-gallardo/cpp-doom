@@ -16,10 +16,10 @@
 //       Generate a checksum of the WAD directory.
 //
 
+#include "w_checksum.hpp"
 #include "i_system.hpp"
 #include "m_misc.hpp"
 #include "sha1.hpp"
-#include "w_checksum.hpp"
 #include "w_wad.hpp"
 
 static wad_file_t ** open_wadfiles     = nullptr;

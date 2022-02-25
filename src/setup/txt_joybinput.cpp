@@ -14,18 +14,18 @@
 
 #include <cstdlib>
 
-#include "SDL_joystick.h"
+#include <SDL_joystick.h>
 
 #include "doomkeys.hpp"
-#include "joystick.hpp"
 #include "i_joystick.hpp"
 #include "i_system.hpp"
+#include "joystick.hpp"
 #include "m_controls.hpp"
 #include "m_misc.hpp"
 
-#include "txt_joybinput.hpp"
 #include "txt_gui.hpp"
 #include "txt_io.hpp"
+#include "txt_joybinput.hpp"
 #include "txt_label.hpp"
 #include "txt_sdl.hpp"
 #include "txt_utf8.hpp"

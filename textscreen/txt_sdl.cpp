@@ -15,14 +15,14 @@
 // Text mode emulation in SDL
 //
 
-#include "SDL.h"
+#include <SDL.h>
 
-#include <cstdint>
+#include <array>
 #include <cctype>
+#include <cstdint>
 #include <cstdio>
 #include <cstdlib>
 #include <cstring>
-#include <array>
 
 #include "doomkeys.hpp"
 
@@ -43,10 +43,10 @@ struct txt_font_t {
 
 // Fonts:
 
-#include "fonts/small.hpp"
-#include "fonts/normal.hpp"
-#include "fonts/large.hpp"
 #include "fonts/codepage.hpp"
+#include "fonts/large.hpp"
+#include "fonts/normal.hpp"
+#include "fonts/small.hpp"
 
 // Time between character blinks in ms
 
@@ -109,6 +109,7 @@ static const SDL_Color ega_colors[] = {
 
 #define WIN32_LEAN_AND_MEAN
 #include <windows.h>
+// intentional newline to avoid reordering by Clang Format
 
 // Examine system DPI settings to determine whether to use the large font.
 

@@ -21,11 +21,11 @@
 
 #include <fmt/printf.h>
 
-#include "i_system.hpp"
 #include "deh_main.hpp"
 #include "doomdef.hpp"
-#include "p_local.hpp"
 #include "i_swap.hpp" // [crispy] SHORT()
+#include "i_system.hpp"
+#include "p_local.hpp"
 #include "w_wad.hpp"  // [crispy] W_CheckNumForName()
 #include "z_zone.hpp" // [crispy] PU_STATIC
 
@@ -37,8 +37,8 @@
 #include "sounds.hpp"
 
 // State.
-#include "lump.hpp"
 #include "doomstat.hpp"
+#include "lump.hpp"
 #include "r_state.hpp"
 
 //

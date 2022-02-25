@@ -17,10 +17,10 @@
 
 #include <cstring>
 
+#include "am_map.hpp"
 #include "deh_defs.hpp"
 #include "deh_io.hpp"
 #include "deh_main.hpp"
-#include "am_map.hpp"
 #include "st_stuff.hpp"
 
 struct deh_cheat_t {

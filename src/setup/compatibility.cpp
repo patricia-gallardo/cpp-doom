@@ -16,8 +16,8 @@
 
 #include "crispy.hpp"
 #include "m_config.hpp"
-#include "textscreen.hpp"
 #include "mode.hpp"
+#include "textscreen.hpp"
 
 #include "compatibility.hpp"
 

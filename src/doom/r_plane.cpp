@@ -24,17 +24,17 @@
 #include <fmt/printf.h>
 
 #include "i_system.hpp"
-#include "z_zone.hpp"
 #include "w_wad.hpp"
+#include "z_zone.hpp"
 
 #include "doomdef.hpp"
 #include "doomstat.hpp"
 
+#include "lump.hpp"
+#include "r_bmaps.hpp" // [crispy] R_BrightmapForTexName()
 #include "r_local.hpp"
 #include "r_sky.hpp"
-#include "r_bmaps.hpp" // [crispy] R_BrightmapForTexName()
 #include "r_swirl.hpp" // [crispy] R_DistortedFlat()
-#include "lump.hpp"
 
 [[maybe_unused]] planefunction_t floorfunc;
 planefunction_t                  ceilingfunc;

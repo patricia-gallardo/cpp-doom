@@ -25,8 +25,8 @@
 #include "m_misc.hpp"
 #include "m_random.hpp"
 
-#include "deh_main.hpp"
 #include "deh_bexpars.hpp" // [crispy] bex_pars[]
+#include "deh_main.hpp"
 #include "i_swap.hpp"
 #include "i_system.hpp"
 
@@ -46,9 +46,9 @@
 #include "v_video.hpp"
 
 #include "lump.hpp"
+#include "memory.hpp"
 #include "st_stuff.hpp" // [crispy] ST_DrawDemoTimer()
 #include "wi_stuff.hpp"
-#include "memory.hpp"
 
 //
 // Data needed to add patches to full screen intermission pics.

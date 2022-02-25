@@ -35,12 +35,12 @@
 
 #include "d_iwad.hpp"
 
-#include "z_zone.hpp"
-#include "w_main.hpp"
-#include "w_wad.hpp"
 #include "s_sound.hpp"
 #include "v_diskicon.hpp"
 #include "v_video.hpp"
+#include "w_main.hpp"
+#include "w_wad.hpp"
+#include "z_zone.hpp"
 
 #include "f_finale.hpp"
 #include "f_wipe.hpp"
@@ -48,8 +48,8 @@
 #include "m_argv.hpp"
 #include "m_config.hpp"
 #include "m_controls.hpp"
-#include "m_misc.hpp"
 #include "m_menu.hpp"
+#include "m_misc.hpp"
 #include "p_saveg.hpp"
 
 #include "i_endoom.hpp"
@@ -61,21 +61,21 @@
 
 #include "g_game.hpp"
 
-#include "hu_stuff.hpp"
-#include "wi_stuff.hpp"
-#include "st_stuff.hpp"
 #include "am_map.hpp"
+#include "hu_stuff.hpp"
 #include "net_client.hpp"
 #include "net_dedicated.hpp"
 #include "net_query.hpp"
+#include "st_stuff.hpp"
+#include "wi_stuff.hpp"
 
 #include "p_setup.hpp"
 #include "r_local.hpp"
 #include "statdump.hpp"
 
+#include "d_main.hpp"
 #include "lump.hpp"
 #include "memory.hpp"
-#include "d_main.hpp"
 
 //
 // D-DoomLoop()

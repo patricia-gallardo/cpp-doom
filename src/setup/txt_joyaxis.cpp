@@ -17,11 +17,11 @@
 
 #include <fmt/printf.h>
 
-#include "SDL.h"
+#include <SDL.h>
 
-#include "joystick.hpp"
 #include "i_joystick.hpp"
 #include "i_system.hpp"
+#include "joystick.hpp"
 #include "m_controls.hpp"
 #include "m_misc.hpp"
 

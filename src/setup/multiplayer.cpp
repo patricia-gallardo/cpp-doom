@@ -21,14 +21,14 @@
 #include "textscreen.hpp"
 
 #include "d_iwad.hpp"
-#include "m_config.hpp"
-#include "m_misc.hpp"
 #include "doom/d_englsh.hpp"
+#include "m_config.hpp"
 #include "m_controls.hpp"
+#include "m_misc.hpp"
 
-#include "multiplayer.hpp"
-#include "mode.hpp"
 #include "execute.hpp"
+#include "mode.hpp"
+#include "multiplayer.hpp"
 
 #include "net_io.hpp"
 #include "net_query.hpp"

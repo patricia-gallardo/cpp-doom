@@ -15,12 +15,12 @@
 #include <cstdlib>
 #include <cstring>
 
-#include "txt_separator.hpp"
+#include "memory.hpp"
 #include "txt_gui.hpp"
 #include "txt_io.hpp"
 #include "txt_main.hpp"
+#include "txt_separator.hpp"
 #include "txt_utf8.hpp"
-#include "memory.hpp"
 
 static void TXT_SeparatorSizeCalc(void * uncast_separator) {
   auto * separator = reinterpret_cast<txt_separator_t *>(uncast_separator);

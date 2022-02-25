@@ -17,23 +17,23 @@
 
 #include <cctype>
 
+#include "deh_main.hpp"
 #include "doomdef.hpp"
 #include "doomkeys.hpp"
-#include "z_zone.hpp"
-#include "deh_main.hpp"
+#include "doomstat.hpp"
+#include "hu_lib.hpp"
+#include "hu_stuff.hpp"
 #include "i_input.hpp"
 #include "i_swap.hpp"
 #include "i_video.hpp"
-#include "hu_stuff.hpp"
-#include "hu_lib.hpp"
+#include "m_argv.hpp" // [crispy] M_ParmExists()
 #include "m_controls.hpp"
 #include "m_misc.hpp"
-#include "w_wad.hpp"
-#include "m_argv.hpp"   // [crispy] M_ParmExists()
-#include "st_stuff.hpp" // [crispy] ST_HEIGHT
-#include "p_setup.hpp"  // maplumpinfo
+#include "p_setup.hpp" // maplumpinfo
 #include "s_sound.hpp"
-#include "doomstat.hpp"
+#include "st_stuff.hpp" // [crispy] ST_HEIGHT
+#include "w_wad.hpp"
+#include "z_zone.hpp"
 
 // Data.
 #include "dstrings.hpp"

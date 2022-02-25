@@ -16,8 +16,8 @@
 //     for Hexen startup loading screen.
 //
 
-#include "SDL.h"
 #include <cstring>
+#include <SDL.h>
 
 #include "doomtype.hpp"
 #include "i_timer.hpp"

@@ -18,15 +18,16 @@
 #ifdef _WIN32
 #define WIN32_LEAN_AND_MEAN
 #include <windows.h>
+// intentional newline to avoid reordering by Clang Format
 #endif
 
-#include "textscreen.hpp"
 #include "m_config.hpp"
 #include "m_misc.hpp"
 #include "mode.hpp"
+#include "textscreen.hpp"
 
-#include "display.hpp"
 #include "config.h"
+#include "display.hpp"
 
 #define WINDOW_HELP_URL "https://www.chocolate-doom.org/setup-display"
 

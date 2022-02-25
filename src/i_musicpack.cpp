@@ -17,29 +17,29 @@
 //
 
 #include <cctype>
-#include <memory>
 #include <cstdlib>
 #include <cstring>
+#include <memory>
 #include <string>
 
 #include <fmt/printf.h>
 
-#include "SDL.h"
-#include "SDL_mixer.h"
+#include <SDL.h>
+#include <SDL_mixer.h>
 
-#include "i_glob.hpp"
 #include "config.h"
 #include "doomtype.hpp"
+#include "i_glob.hpp"
 #include "i_sound.hpp"
-#include "i_system.hpp"
 #include "i_swap.hpp"
+#include "i_system.hpp"
+#include "lump.hpp"
 #include "m_argv.hpp"
 #include "m_config.hpp"
 #include "m_misc.hpp"
 #include "sha1.hpp"
 #include "w_wad.hpp"
 #include "z_zone.hpp"
-#include "lump.hpp"
 
 #define MID_HEADER_MAGIC "MThd"
 #define MUS_HEADER_MAGIC "MUS\x1a"

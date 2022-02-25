@@ -19,11 +19,11 @@
 
 #if (defined(__i386__) || defined(__x86_64__)) && defined(HAVE_IOPERM)
 
+#include <errno.h>
 #include <stdio.h>
 #include <string.h>
-#include <errno.h>
-#include <unistd.h>
 #include <sys/io.h>
+#include <unistd.h>
 
 #include <fmt/printf.h>
 

@@ -16,11 +16,11 @@
 
 #include <cstdlib>
 
-#include "SDL_mixer.h"
+#include <SDL_mixer.h>
 
-#include "textscreen.hpp"
 #include "m_config.hpp"
 #include "m_misc.hpp"
+#include "textscreen.hpp"
 
 #include "execute.hpp"
 #include "mode.hpp"

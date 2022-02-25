@@ -24,9 +24,9 @@
 
 #include <fmt/printf.h>
 
-#include "z_zone.hpp"
-#include "i_system.hpp"
 #include "doomtype.hpp"
+#include "i_system.hpp"
+#include "z_zone.hpp"
 
 #define ZONEID 0x1d4a11
 

@@ -17,10 +17,10 @@
 
 #include <string>
 
-#include "z_zone.hpp"
 #include "deh_defs.hpp"
 #include "deh_io.hpp"
 #include "deh_main.hpp"
+#include "z_zone.hpp"
 
 // [crispy] support INCLUDE NOTEXT directive in BEX files
 bool bex_notext = false;

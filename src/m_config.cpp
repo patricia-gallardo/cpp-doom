@@ -18,19 +18,19 @@
 //
 
 #include <array>
+#include <cassert>
+#include <cctype>
 #include <cstdlib>
 #include <cstring>
-#include <cctype>
-#include <cassert>
 
 #include <fmt/printf.h>
 
-#include "SDL_filesystem.h"
+#include <SDL_filesystem.h>
 
 #include "config.h"
 
-#include "doomtype.hpp"
 #include "doomkeys.hpp"
+#include "doomtype.hpp"
 #include "i_system.hpp"
 #include "m_argv.hpp"
 #include "m_config.hpp"

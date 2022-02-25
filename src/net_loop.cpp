@@ -15,10 +15,10 @@
 //      Loopback network module for server compiled into the client
 //
 
+#include "net_loop.hpp"
 #include "i_system.hpp"
 #include "m_misc.hpp"
 #include "net_defs.hpp"
-#include "net_loop.hpp"
 #include "net_packet.hpp"
 
 #define MAX_QUEUE_SIZE 16

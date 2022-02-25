@@ -18,8 +18,8 @@
 //
 
 #include <array>
-#include <cstdlib>
 #include <cctype>
+#include <cstdlib>
 
 #include "doomdef.hpp"
 #include "doomkeys.hpp"
@@ -46,9 +46,9 @@
 
 #include "m_argv.hpp"
 #include "m_controls.hpp"
+#include "p_extsaveg.hpp" // [crispy] savewadfilename
 #include "p_saveg.hpp"
 #include "p_setup.hpp"
-#include "p_extsaveg.hpp" // [crispy] savewadfilename
 
 #include "s_sound.hpp"
 
@@ -57,8 +57,8 @@
 // Data.
 #include "sounds.hpp"
 
-#include "m_menu.hpp"
 #include "m_crispy.hpp" // [crispy] Crispness menu
+#include "m_menu.hpp"
 
 #include "lump.hpp"
 #include "v_trans.hpp" // [crispy] colored "invert mouse" message
@@ -1138,8 +1138,8 @@ static void M_DrawMouse() {
 }
 
 // [crispy] Crispness menu
-#include "memory.hpp"
 #include "m_background.hpp"
+#include "memory.hpp"
 static void M_DrawCrispnessBackground() {
   const uint8_t * const src  = crispness_background;
   pixel_t *             dest = g_i_video_globals->I_VideoBuffer;

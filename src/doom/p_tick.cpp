@@ -17,9 +17,9 @@
 //	Thinker, Ticker.
 //
 
-#include "z_zone.hpp"
 #include "p_local.hpp"
 #include "s_musinfo.hpp" // [crispy] T_MAPMusic()
+#include "z_zone.hpp"
 
 #include "doomstat.hpp"
 

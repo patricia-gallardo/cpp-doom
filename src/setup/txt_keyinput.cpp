@@ -17,9 +17,9 @@
 #include "doomkeys.hpp"
 #include "m_misc.hpp"
 
-#include "txt_keyinput.hpp"
 #include "txt_gui.hpp"
 #include "txt_io.hpp"
+#include "txt_keyinput.hpp"
 #include "txt_label.hpp"
 #include "txt_utf8.hpp"
 #include "txt_window.hpp"

@@ -23,12 +23,12 @@
 #include <fmt/printf.h>
 
 #include "i_system.hpp"
-#include "m_misc.hpp"
 #include "m_argv.hpp" // haleyjd 20110212: warning fix
+#include "m_misc.hpp"
 
 #ifdef WIN32
 #include "d_iwad.hpp"
-#include "SDL_stdinc.h"
+#include <SDL_stdinc.h>
 #endif
 
 int     myargc;

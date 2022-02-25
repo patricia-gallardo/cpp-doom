@@ -17,9 +17,9 @@
 //	Muzzle flash?
 //
 
-#include "z_zone.hpp"
 #include "m_random.hpp"
 #include "p_local.hpp"
+#include "z_zone.hpp"
 
 // State.
 #include "memory.hpp"

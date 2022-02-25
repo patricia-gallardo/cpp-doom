@@ -15,8 +15,8 @@
 // DESCRIPTION:  Ceiling aninmation (lowering, crushing, raising)
 //
 
-#include "z_zone.hpp"
 #include "p_local.hpp"
+#include "z_zone.hpp"
 
 #include "s_sound.hpp"
 
