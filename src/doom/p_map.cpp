@@ -49,7 +49,7 @@
 // PrBoom-plus, at least so that the big spechits emulation list
 // on Doomworld can also be used with Chocolate Doom.
 
-#define DEFAULT_SPECHIT_MAGIC 0x01C09C98
+constexpr auto DEFAULT_SPECHIT_MAGIC = 0x01C09C98;
 
 // This is from a post by myk on the Doomworld forums,
 // outputted from entryway's spechit_magic generator for

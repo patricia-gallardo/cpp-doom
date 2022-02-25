@@ -40,9 +40,9 @@
 
 // MACROS ------------------------------------------------------------------
 
-constexpr auto MAX_STRING_SIZE = 64;
-#define ASCII_COMMENT (';')
-#define ASCII_QUOTE   (34)
+constexpr auto MAX_STRING_SIZE  = 64;
+constexpr char ASCII_COMMENT    = ';';
+constexpr char ASCII_QUOTE      = 34;
 constexpr auto LUMP_SCRIPT      = 1;
 constexpr auto FILE_ZONE_SCRIPT = 2;
 

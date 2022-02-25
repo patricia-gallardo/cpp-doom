@@ -38,17 +38,14 @@
 #include "midifile.hpp"
 #include "opl.hpp"
 
-// #define OPL_MIDI_DEBUG
+constexpr auto GENMIDI_NUM_INSTRS     = 128;
+constexpr auto GENMIDI_NUM_PERCUSSION = 47;
 
-#define MAXMIDLENGTH           (96 * 1024)
-#define GENMIDI_NUM_INSTRS     128
-#define GENMIDI_NUM_PERCUSSION 47
+constexpr auto GENMIDI_HEADER      = "#OPL_II#";
+constexpr auto GENMIDI_FLAG_FIXED  = 0x0001; /* fixed pitch */
+constexpr auto GENMIDI_FLAG_2VOICE = 0x0004; /* double voice (OPL3) */
 
-#define GENMIDI_HEADER      "#OPL_II#"
-#define GENMIDI_FLAG_FIXED  0x0001 /* fixed pitch */
-#define GENMIDI_FLAG_2VOICE 0x0004 /* double voice (OPL3) */
-
-#define PERCUSSION_LOG_LEN 16
+constexpr auto PERCUSSION_LOG_LEN = 16;
 
 typedef PACKED_STRUCT(
     {
@@ -2032,7 +2029,7 @@ static void * I_OPL_RegisterSong(void * data, int len) {
   char * filename = M_TempFile("doom.mid");
 
   // [crispy] remove MID file size limit
-  if (IsMid(static_cast<uint8_t *>(data), len) /* && len < MAXMIDLENGTH */) {
+  if (IsMid(static_cast<uint8_t *>(data), len)) {
     M_WriteFile(filename, data, len);
   } else {
     // Assume a MUS file and try to convert

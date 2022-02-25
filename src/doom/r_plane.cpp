@@ -44,15 +44,15 @@ planefunction_t                  ceilingfunc;
 //
 
 // Here comes the obnoxious "visplane".
-#define MAXVISPLANES 128
-visplane_t * visplanes = nullptr;
-visplane_t * lastvisplane;
-static int   numvisplanes;
+constexpr auto MAXVISPLANES = 128;
+visplane_t *   visplanes    = nullptr;
+visplane_t *   lastvisplane;
+static int     numvisplanes;
 
 // ?
-#define MAXOPENINGS MAXWIDTH * 64 * 4
-int   openings[MAXOPENINGS]; // [crispy] 32-bit integer math
-int * lastopening;           // [crispy] 32-bit integer math
+constexpr auto MAXOPENINGS = MAXWIDTH * 64 * 4;
+int            openings[MAXOPENINGS]; // [crispy] 32-bit integer math
+int *          lastopening;           // [crispy] 32-bit integer math
 
 //
 // Clip values are the solid pixel bounding the range.

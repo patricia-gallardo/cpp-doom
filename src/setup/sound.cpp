@@ -26,7 +26,7 @@
 #include "mode.hpp"
 #include "sound.hpp"
 
-#define WINDOW_HELP_URL "https://www.chocolate-doom.org/setup-sound"
+constexpr auto WINDOW_HELP_URL = "https://www.chocolate-doom.org/setup-sound";
 
 enum oplmode_t
 {

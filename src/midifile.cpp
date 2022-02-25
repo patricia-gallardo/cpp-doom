@@ -28,9 +28,8 @@
 #include "memory.hpp"
 #include "midifile.hpp"
 
-#define HEADER_CHUNK_ID "MThd"
-#define TRACK_CHUNK_ID  "MTrk"
-#define MAX_BUFFER_SIZE 0x10000
+constexpr auto HEADER_CHUNK_ID = "MThd";
+constexpr auto TRACK_CHUNK_ID  = "MTrk";
 
 // haleyjd 09/09/10: packing required
 #ifdef _MSC_VER

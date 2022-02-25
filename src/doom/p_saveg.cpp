@@ -65,7 +65,9 @@ char * P_SaveGameFile(int slot) {
     filename      = static_cast<char *>(malloc(filename_size));
   }
 
-  DEH_snprintf(basename, 32, SAVEGAMENAME "%d.dsg", slot);
+  std::string save_game_name = SAVEGAMENAME;
+  save_game_name.append("%d.dsg");
+  DEH_snprintf(basename, 32, save_game_name.c_str(), slot);
   M_snprintf(filename, filename_size, "%s%s", g_doomstat_globals->savegamedir, basename);
 
   return filename;

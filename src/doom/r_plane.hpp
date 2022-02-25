@@ -21,7 +21,7 @@
 
 #include "r_data.hpp"
 
-#define PL_SKYFLAT (0x80000000)
+constexpr auto PL_SKYFLAT = (0x80000000);
 
 // Visplane related.
 extern int * lastopening; // [crispy] 32-bit integer math

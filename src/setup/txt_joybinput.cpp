@@ -31,7 +31,7 @@
 #include "txt_utf8.hpp"
 #include "txt_window.hpp"
 
-#define JOYSTICK_INPUT_WIDTH 10
+constexpr auto JOYSTICK_INPUT_WIDTH = 10;
 
 extern int joystick_physical_buttons[NUM_VIRTUAL_BUTTONS];
 

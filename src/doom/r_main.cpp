@@ -608,7 +608,7 @@ void R_InitTextureMapping() {
 // Only inits the zlight table,
 //  because the scalelight table changes with view size.
 //
-#define DISTMAP 2
+constexpr auto DISTMAP = 2;
 
 void R_InitLightTables() {
   int level;

@@ -41,26 +41,26 @@
 #include "w_wad.hpp"
 #include "z_zone.hpp"
 
-#define MID_HEADER_MAGIC "MThd"
-#define MUS_HEADER_MAGIC "MUS\x1a"
+constexpr auto MID_HEADER_MAGIC = "MThd";
+constexpr auto MUS_HEADER_MAGIC = "MUS\x1a";
 
-#define FLAC_HEADER "fLaC"
-#define OGG_HEADER  "OggS"
+constexpr auto FLAC_HEADER = "fLaC";
+constexpr auto OGG_HEADER  = "OggS";
 
 // Looping Vorbis metadata tag names. These have been defined by ZDoom
 // for specifying the start and end positions for looping music tracks
 // in .ogg and .flac files.
 // More information is here: http://zdoom.org/wiki/Audio_loop
-#define LOOP_START_TAG "LOOP_START"
-#define LOOP_END_TAG   "LOOP_END"
+constexpr auto LOOP_START_TAG = "LOOP_START";
+constexpr auto LOOP_END_TAG   = "LOOP_END";
 
 // FLAC metadata headers that we care about.
-#define FLAC_STREAMINFO     0
-#define FLAC_VORBIS_COMMENT 4
+constexpr auto FLAC_STREAMINFO     = 0;
+constexpr auto FLAC_VORBIS_COMMENT = 4;
 
 // Ogg metadata headers that we care about.
-#define OGG_ID_HEADER      1
-#define OGG_COMMENT_HEADER 3
+constexpr auto OGG_ID_HEADER      = 1;
+constexpr auto OGG_COMMENT_HEADER = 3;
 
 // Structure for music substitution.
 // We store a mapping based on SHA1 checksum -> filename of substitute music

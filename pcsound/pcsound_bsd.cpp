@@ -53,7 +53,7 @@
 #include "pcsound.hpp"
 #include "pcsound_internal.hpp"
 
-#define SPEAKER_DEVICE "/dev/speaker"
+constexpr auto SPEAKER_DEVICE = "/dev/speaker";
 
 //
 // This driver is far more complicated than it should be, because

@@ -28,14 +28,14 @@
 #include "doomstat.hpp"
 
 // Index of the special effects (INVUL inverse) map.
-#define INVERSECOLORMAP 32
+constexpr auto INVERSECOLORMAP = 32;
 
 //
 // Movement.
 //
 
 // 16 pixels of bob
-#define MAXBOB 0x100000
+constexpr auto MAXBOB = 0x100000;
 
 // [crispy] variable player view bob
 static const fixed_t crispy_bobfactor[3] = { 4, 3, 0 };

@@ -32,7 +32,7 @@
 // When an axis is within the dead zone, it is set to zero.
 // This is 5% of the full range:
 
-#define DEAD_ZONE (32768 / 3)
+constexpr auto DEAD_ZONE = (32768 / 3);
 
 static SDL_Joystick * joystick = nullptr;
 

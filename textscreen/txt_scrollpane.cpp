@@ -20,8 +20,8 @@
 #include "doomkeys.hpp"
 #include "memory.hpp"
 
-#define SCROLLBAR_VERTICAL   (1 << 0)
-#define SCROLLBAR_HORIZONTAL (1 << 1)
+constexpr auto SCROLLBAR_VERTICAL   = (1 << 0);
+constexpr auto SCROLLBAR_HORIZONTAL = (1 << 1);
 
 static int FullWidth(txt_scrollpane_t * scrollpane) {
   if (scrollpane->child != nullptr) {

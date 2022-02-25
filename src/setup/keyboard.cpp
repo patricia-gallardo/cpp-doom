@@ -25,7 +25,7 @@
 #include "keyboard.hpp"
 #include "mode.hpp"
 
-#define WINDOW_HELP_URL "https://www.chocolate-doom.org/setup-keyboard"
+constexpr auto WINDOW_HELP_URL = "https://www.chocolate-doom.org/setup-keyboard";
 
 int vanilla_keyboard_mapping = 1;
 

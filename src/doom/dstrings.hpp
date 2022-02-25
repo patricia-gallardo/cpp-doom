@@ -25,7 +25,7 @@
 #include "d_englsh.hpp"
 
 // Misc. other strings.
-#define SAVEGAMENAME "doomsav"
+constexpr auto SAVEGAMENAME = "doomsav";
 
 // QuitDOOM messages
 // 8 per each game type

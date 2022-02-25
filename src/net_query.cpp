@@ -36,19 +36,19 @@
 
 // DNS address of the Internet master server.
 
-#define MASTER_SERVER_ADDRESS "master.chocolate-doom.org:2342"
+constexpr auto MASTER_SERVER_ADDRESS = "master.chocolate-doom.org:2342";
 
 // Time to wait for a response before declaring a timeout.
 
-#define QUERY_TIMEOUT_SECS 2
+constexpr auto QUERY_TIMEOUT_SECS = 2;
 
 // Time to wait for secure demo signatures before declaring a timeout.
 
-#define SIGNATURE_TIMEOUT_SECS 5
+constexpr auto SIGNATURE_TIMEOUT_SECS = 5;
 
 // Number of query attempts to make before giving up on a server.
 
-#define QUERY_MAX_ATTEMPTS 3
+constexpr auto QUERY_MAX_ATTEMPTS = 3;
 
 enum query_target_type_t
 {

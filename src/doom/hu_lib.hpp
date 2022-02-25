@@ -23,8 +23,8 @@
 
 // font stuff
 
-#define HU_MAXLINES      4
-#define HU_MAXLINELENGTH 80
+constexpr auto HU_MAXLINES      = 4;
+constexpr auto HU_MAXLINELENGTH = 80;
 
 //
 // Typedefs of widgets

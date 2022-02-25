@@ -25,8 +25,8 @@
 
 #include "opl.hpp"
 
-#define HEADER_STRING "DBRAWOPL"
-#define ADLIB_PORT    0x388
+constexpr auto HEADER_STRING = "DBRAWOPL";
+constexpr auto ADLIB_PORT    = 0x388;
 
 void WriteReg(unsigned int reg, unsigned int val) {
   // This was recorded from an OPL2, but we are probably playing
