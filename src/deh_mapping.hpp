@@ -20,8 +20,8 @@
 #ifndef DEH_MAPPING_H
 #define DEH_MAPPING_H
 
-#include "doomtype.hpp"
 #include "deh_io.hpp"
+#include "doomtype.hpp"
 #include "sha1.hpp"
 
 #define DEH_BEGIN_MAPPING(mapping_name, structname) \

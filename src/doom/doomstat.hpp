@@ -26,8 +26,8 @@
 
 // We need globally shared data structures,
 //  for defining the global state variables.
-#include "doomdata.hpp"
 #include "d_loop.hpp"
+#include "doomdata.hpp"
 
 // We need the playr data structure as well.
 #include "d_player.hpp"

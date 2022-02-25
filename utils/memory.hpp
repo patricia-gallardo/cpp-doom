@@ -1,9 +1,9 @@
 #ifndef CRISPY_DOOM_MEMORY_HPP
 #define CRISPY_DOOM_MEMORY_HPP
 
-#include <new>
-#include <cstdlib>
 #include "../src/z_zone.hpp"
+#include <cstdlib>
+#include <new>
 
 // todo fix me
 template <typename DataType>

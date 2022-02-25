@@ -19,8 +19,8 @@
 #ifndef __W_FILE__
 #define __W_FILE__
 
-#include <cstdio>
 #include "doomtype.hpp"
+#include <cstdio>
 
 using wad_file_t = struct _wad_file_s;
 

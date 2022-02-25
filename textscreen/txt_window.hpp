@@ -42,8 +42,8 @@
 
 using txt_window_t = struct txt_window_s;
 
-#include "txt_widget.hpp"
 #include "txt_table.hpp"
+#include "txt_widget.hpp"
 #include "txt_window_action.hpp"
 
 // Callback function for window key presses

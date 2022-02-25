@@ -19,8 +19,8 @@
 #ifndef __F_FINALE__
 #define __F_FINALE__
 
-#include "doomtype.hpp"
 #include "d_event.hpp"
+#include "doomtype.hpp"
 //
 // FINALE
 //

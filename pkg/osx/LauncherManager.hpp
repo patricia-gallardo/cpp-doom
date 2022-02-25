@@ -15,9 +15,9 @@
 #ifndef LAUNCHER_LAUNCHERMANAGER_H
 #define LAUNCHER_LAUNCHERMANAGER_H
 
+#include "IWADController.hpp"
 #include <AppKit/AppKit.h>
 #include <AppKit/NSNibLoading.h>
-#include "IWADController.hpp"
 
 @interface LauncherManager : NSObject {
   IWADController * iwadController;

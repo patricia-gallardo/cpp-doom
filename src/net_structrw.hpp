@@ -16,9 +16,9 @@
 #define NET_STRUCTRW_H
 
 #include "aes_prng.hpp"
-#include "sha1.hpp"
 #include "net_defs.hpp"
 #include "net_packet.hpp"
+#include "sha1.hpp"
 
 void NET_WriteConnectData(net_packet_t * packet, net_connect_data_t * data);
 bool NET_ReadConnectData(net_packet_t * packet, net_connect_data_t * data);
