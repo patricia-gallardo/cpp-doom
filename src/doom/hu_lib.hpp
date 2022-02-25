@@ -22,7 +22,6 @@
 #include "r_defs.hpp"
 
 // font stuff
-#define HU_CHARERASE KEY_BACKSPACE
 
 #define HU_MAXLINES      4
 #define HU_MAXLINELENGTH 80
@@ -77,7 +76,7 @@ struct hu_itext_t {
 //
 
 // initializes heads-up widget library
-void HUlib_init();
+[[maybe_unused]] void HUlib_init();
 
 //
 // textline code
@@ -139,14 +138,14 @@ void HUlib_initIText(hu_itext_t * it,
 void HUlib_delCharFromIText(hu_itext_t * it);
 
 // enforces left margin
-void HUlib_eraseLineFromIText(hu_itext_t * it);
+[[maybe_unused]] void HUlib_eraseLineFromIText(hu_itext_t * it);
 
 // resets line and left margin
 void HUlib_resetIText(hu_itext_t * it);
 
 // left of left-margin
-void HUlib_addPrefixToIText(hu_itext_t * it,
-                            char *       str);
+[[maybe_unused]] void HUlib_addPrefixToIText(hu_itext_t * it,
+                                             char *       str);
 
 // whether eaten
 bool HUlib_keyInIText(hu_itext_t *  it,

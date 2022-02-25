@@ -155,7 +155,7 @@ static bool ReadVariableLength(unsigned int * result, FILE * stream) {
 // Read a byte sequence into the data buffer.
 
 static uint8_t * ReadByteSequence(unsigned int num_bytes, FILE * stream) {
-  uint8_t *    result;
+  uint8_t * result;
 
   // Allocate a buffer. Allocate one extra byte, as malloc(0) is
   // non-portable.

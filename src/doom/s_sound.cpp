@@ -62,8 +62,7 @@
 #define S_STEREO_SWING (96 * FRACUNIT)
 static int stereo_swing;
 
-[[maybe_unused]] constexpr auto NORM_PRIORITY = 64;
-constexpr auto                  NORM_SEP      = 128;
+constexpr auto NORM_SEP = 128;
 
 struct channel_t {
   // sound information (if null, channel avail.)

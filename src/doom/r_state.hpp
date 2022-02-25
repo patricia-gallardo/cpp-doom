@@ -124,7 +124,7 @@ struct r_state_t {
   angle_t rw_normalangle;
 
   // angle to line origin
-  int rw_angle1;
+  [[maybe_unused]] int rw_angle1;
 
   // Segs count?
   int sscount;

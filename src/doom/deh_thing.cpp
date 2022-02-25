@@ -18,8 +18,6 @@
 #include <cstdio>
 #include <cstdlib>
 
-#include <fmt/printf.h>
-
 #include "doomtype.hpp"
 #include "deh_defs.hpp"
 #include "deh_main.hpp"

@@ -17,7 +17,6 @@
 //
 
 #include <array>
-#include <cstdio>
 
 #include <fmt/printf.h>
 
@@ -152,7 +151,7 @@ struct anim_t {
   int nexttic;
 
   // last drawn animation frame
-  int lastdrawn;
+  [[maybe_unused]] int lastdrawn;
 
   // next frame number to animate
   int ctr;
@@ -274,7 +273,6 @@ static anim_t * anims[NUMEPISODES] = {
 [[maybe_unused]] constexpr auto SP_SECRET = 4;
 [[maybe_unused]] constexpr auto SP_FRAGS  = 6;
 [[maybe_unused]] constexpr auto SP_TIME   = 8;
-#define SP_PAR ST_TIME
 
 [[maybe_unused]] constexpr auto SP_PAUSE = 1;
 
@@ -458,20 +456,14 @@ void WI_drawEL() {
 
 void WI_drawOnLnode(int       n,
                     patch_t * c[]) {
-
-  int  i;
-  int  left;
-  int  top;
-  int  right;
-  int  bottom;
   bool fits = false;
 
-  i = 0;
+  int i = 0;
   do {
-    left   = lnodes[wbs->epsd][n].x - SHORT(c[i]->leftoffset);
-    top    = lnodes[wbs->epsd][n].y - SHORT(c[i]->topoffset);
-    right  = left + SHORT(c[i]->width);
-    bottom = top + SHORT(c[i]->height);
+    int left   = lnodes[wbs->epsd][n].x - SHORT(c[i]->leftoffset);
+    int top    = lnodes[wbs->epsd][n].y - SHORT(c[i]->topoffset);
+    int right  = left + SHORT(c[i]->width);
+    int bottom = top + SHORT(c[i]->height);
 
     if (left >= 0
         && right < ORIGWIDTH
@@ -494,8 +486,6 @@ void WI_drawOnLnode(int       n,
 }
 
 void WI_initAnimatedBack() {
-  anim_t * a;
-
   if (g_doomstat_globals->gamemode == commercial)
     return;
 
@@ -503,7 +493,7 @@ void WI_initAnimatedBack() {
     return;
 
   for (int i = 0; i < NUMANIMS[wbs->epsd]; i++) {
-    a = &anims[wbs->epsd][i];
+    anim_t * a = &anims[wbs->epsd][i];
 
     // init variables
     a->ctr = -1;
@@ -519,8 +509,6 @@ void WI_initAnimatedBack() {
 }
 
 void WI_updateAnimatedBack() {
-  anim_t * a;
-
   if (g_doomstat_globals->gamemode == commercial)
     return;
 
@@ -528,7 +516,7 @@ void WI_updateAnimatedBack() {
     return;
 
   for (int i = 0; i < NUMANIMS[wbs->epsd]; i++) {
-    a = &anims[wbs->epsd][i];
+    anim_t * a = &anims[wbs->epsd][i];
 
     if (bcnt == a->nexttic) {
       switch (a->type) {
@@ -561,8 +549,6 @@ void WI_updateAnimatedBack() {
 }
 
 void WI_drawAnimatedBack() {
-  anim_t * a;
-
   if (g_doomstat_globals->gamemode == commercial)
     return;
 
@@ -570,7 +556,7 @@ void WI_drawAnimatedBack() {
     return;
 
   for (int i = 0; i < NUMANIMS[wbs->epsd]; i++) {
-    a = &anims[wbs->epsd][i];
+    anim_t * a = &anims[wbs->epsd][i];
 
     if (a->ctr >= 0)
       V_DrawPatch(a->loc.x, a->loc.y, a->p[a->ctr]);
@@ -578,7 +564,7 @@ void WI_drawAnimatedBack() {
 
   // [crispy] show Fortress of Mystery if it has been completed
   if (wbs->epsd == 1 && wbs->didsecret) {
-    a = &anims[wbs->epsd][7];
+    anim_t * a = &anims[wbs->epsd][7];
 
     V_DrawPatch(a->loc.x, a->loc.y, a->p[a->nanims - 1]);
   }
@@ -597,8 +583,6 @@ int WI_drawNum(int x,
                int digits) {
 
   int fontwidth = SHORT(num[0]->width);
-  int neg;
-  int temp;
 
   if (digits < 0) {
     if (!n) {
@@ -606,8 +590,8 @@ int WI_drawNum(int x,
       digits = 1;
     } else {
       // figure out # of digits in #
-      digits = 0;
-      temp   = n;
+      digits   = 0;
+      int temp = n;
 
       while (temp) {
         temp /= 10;
@@ -616,7 +600,7 @@ int WI_drawNum(int x,
     }
   }
 
-  neg = n < 0;
+  int neg = n < 0;
   if (neg)
     n = -n;
 
@@ -656,15 +640,12 @@ void WI_drawTime(int  x,
                  int  y,
                  int  t,
                  bool suck) {
-
-  int div;
-  int n;
-
   if (t < 0)
     return;
 
   if (t <= 61 * 59 || !suck) {
-    div = 1;
+    int div = 1;
+    int n   = 0;
 
     do {
       n = (t / div) % 60;
@@ -686,11 +667,6 @@ void WI_drawTime(int  x,
     // "sucks"
     V_DrawPatch(x - SHORT(sucks->width), y, sucks);
   }
-}
-
-void WI_End() {
-  void WI_unloadData();
-  WI_unloadData();
 }
 
 void WI_initNoState() {
@@ -739,7 +715,6 @@ void WI_updateShowNextLoc() {
 }
 
 void WI_drawShowNextLoc() {
-  int         last;
   extern bool secretexit; // [crispy] Master Level support
 
   WI_slamBackground();
@@ -753,7 +728,7 @@ void WI_drawShowNextLoc() {
       return;
     }
 
-    last = (wbs->last == 8 || wbs->last == 9) ? wbs->next - 1 : wbs->last; // [crispy] support E1M10 "Sewers"
+    int last = (wbs->last == 8 || wbs->last == 9) ? wbs->next - 1 : wbs->last; // [crispy] support E1M10 "Sewers"
 
     // draw a splat on taken cities.
     for (int i = 0; i <= last; i++)
@@ -831,8 +806,6 @@ void WI_initDeathmatchStats() {
 }
 
 void WI_updateDeathmatchStats() {
-  bool stillticking;
-
   WI_updateAnimatedBack();
 
   if (acceleratestage && dm_state != 4) {
@@ -856,7 +829,7 @@ void WI_updateDeathmatchStats() {
     if (!(bcnt & 3))
       S_StartSound(0, sfx_pistol);
 
-    stillticking = false;
+    bool stillticking = false;
 
     for (int i = 0; i < MAXPLAYERS; i++) {
       if (g_doomstat_globals->playeringame[i]) {
@@ -908,10 +881,6 @@ void WI_updateDeathmatchStats() {
 }
 
 void WI_drawDeathmatchStats() {
-  int x;
-  int y;
-  int w;
-
   WI_slamBackground();
 
   // draw animated background
@@ -927,8 +896,8 @@ void WI_drawDeathmatchStats() {
   V_DrawPatch(DM_VICTIMSX, DM_VICTIMSY, victims);
 
   // draw P?
-  x = DM_MATRIXX + DM_SPACINGX;
-  y = DM_MATRIXY;
+  int x = DM_MATRIXX + DM_SPACINGX;
+  int y = DM_MATRIXY;
 
   for (int i = 0; i < MAXPLAYERS; i++) {
     if (g_doomstat_globals->playeringame[i]) {
@@ -960,8 +929,8 @@ void WI_drawDeathmatchStats() {
   }
 
   // draw stats
-  y = DM_MATRIXY + 10;
-  w = SHORT(num[0]->width);
+  y     = DM_MATRIXY + 10;
+  int w = SHORT(num[0]->width);
 
   for (int i = 0; i < MAXPLAYERS; i++) {
     x = DM_MATRIXX + DM_SPACINGX;
@@ -1005,9 +974,6 @@ void WI_initNetgameStats() {
 }
 
 void WI_updateNetgameStats() {
-
-  int fsum;
-
   bool stillticking;
 
   WI_updateAnimatedBack();
@@ -1106,6 +1072,7 @@ void WI_updateNetgameStats() {
 
       cnt_frags[i] += 1;
 
+      int fsum;
       if (cnt_frags[i] >= (fsum = WI_fragSum(i)))
         cnt_frags[i] = fsum;
       else
@@ -1133,7 +1100,6 @@ void WI_updateNetgameStats() {
 }
 
 void WI_drawNetgameStats() {
-  int x;
   int y;
   int pwidth = SHORT(percent->width);
 
@@ -1169,7 +1135,7 @@ void WI_drawNetgameStats() {
     if (!g_doomstat_globals->playeringame[i])
       continue;
 
-    x = NG_STATSX;
+    int x = NG_STATSX;
     V_DrawPatch(x - SHORT(patches[i]->width), y, patches[i]);
 
     if (i == me)
@@ -1344,9 +1310,7 @@ static bool WI_drawParTime() {
 
 void WI_drawStats() {
   // line height
-  int lh;
-
-  lh = (3 * SHORT(num[0]->height)) / 2;
+  int lh = (3 * SHORT(num[0]->height)) / 2;
 
   WI_slamBackground();
 
@@ -1402,8 +1366,8 @@ void WI_drawStats() {
 }
 
 void WI_checkForAccelerate() {
-  int        i;
-  player_t * player;
+  int        i      = 0;
+  player_t * player = nullptr;
 
   // check for button presses to skip delays
   for (i = 0, player = g_doomstat_globals->players; i < MAXPLAYERS; i++, player++) {
@@ -1468,8 +1432,7 @@ using load_callback_t = void (*)(const char *, patch_t **);
 // lumps to be loaded/unloaded into memory.
 
 static void WI_loadUnloadData(load_callback_t callback) {
-  char     name[9];
-  anim_t * a;
+  char name[9];
 
   if (g_doomstat_globals->nervewadfile && g_doomstat_globals->gamemission == pack_nerve) {
     int index = 0;
@@ -1509,7 +1472,7 @@ static void WI_loadUnloadData(load_callback_t callback) {
 
     if (wbs->epsd < 3) {
       for (int j = 0; j < NUMANIMS[wbs->epsd]; j++) {
-        a = &anims[wbs->epsd][j];
+        anim_t * a = &anims[wbs->epsd][j];
         for (index = 0; index < a->nanims; index++) {
           // MONDO HACK!
           if (wbs->epsd != 1 || j != 8) {
@@ -1672,6 +1635,10 @@ void WI_unloadData() {
 
   // W_ReleaseLumpName("STFST01");
   // W_ReleaseLumpName("STFDEAD0");
+}
+
+void WI_End() {
+  WI_unloadData();
 }
 
 void WI_Drawer() {

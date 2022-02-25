@@ -51,9 +51,9 @@ void G_RecordDemo(char * name);
 
 void G_BeginRecording();
 
-void G_PlayDemo(char * name);
-void G_TimeDemo(char * name);
-bool G_CheckDemoStatus();
+[[maybe_unused]] void G_PlayDemo(char * name);
+void                  G_TimeDemo(char * name);
+bool                  G_CheckDemoStatus();
 
 void G_ExitLevel();
 void G_SecretExitLevel();
@@ -69,8 +69,8 @@ bool G_Responder(event_t * ev);
 
 void G_ScreenShot();
 
-void G_DrawMouseSpeedBox();
-int  G_VanillaVersionCode();
+[[maybe_unused]] void G_DrawMouseSpeedBox();
+int                   G_VanillaVersionCode();
 
 extern int vanilla_savegame_limit;
 extern int vanilla_demo_limit;

@@ -124,8 +124,8 @@ static void DiscoverGamemode(const wbstartstruct_t * stats, int num_stats) {
 static int GetNumPlayers(const wbstartstruct_t * stats) {
   int num_players = 0;
 
-  for (int i = 0; i < MAXPLAYERS; ++i) {
-    if (stats->plyr[i].in) {
+  for (const auto & plyr : stats->plyr) {
+    if (plyr.in) {
       ++num_players;
     }
   }

@@ -397,8 +397,8 @@ static int F_RandomizeSound(int sound) {
 
 struct actionsound_t {
   actionf_t  action;
-  const int  sound;
-  const bool early;
+  const int  sound {};
+  const bool early {};
 };
 
 static const actionsound_t actionsounds[] = {
@@ -473,9 +473,6 @@ void F_StartCast() {
 // F_CastTicker
 //
 void F_CastTicker() {
-  int st;
-  int sfx;
-
   if (--casttics > 0)
     return; // not time to change state yet
 
@@ -505,6 +502,7 @@ void F_CastTicker() {
     */
     // [crispy] Allow A_RandomJump() in deaths in cast sequence
     action_hook needle = A_RandomJump;
+    int         st     = 0;
     if (caststate->action == needle && Crispy_Random() < caststate->misc2) {
       st = caststate->misc1;
     } else {
@@ -519,7 +517,7 @@ void F_CastTicker() {
     caststate = &states[st];
     castframes++;
 
-    sfx = F_SoundForState(st);
+    int sfx = F_SoundForState(st);
     /*
     // sound hacks....
     switch (st)
@@ -672,18 +670,12 @@ bool F_CastResponder(event_t * ev) {
 }
 
 void F_CastPrint(const char * text) {
-  const char * ch;
-  int          c;
-  int          cx;
-  int          w;
-  int          width;
-
   // find width
-  ch    = text;
-  width = 0;
+  const char * ch    = text;
+  int          width = 0;
 
   while (ch) {
-    c = *ch++;
+    int c = *ch++;
     if (!c)
       break;
     c = toupper(c) - HU_FONTSTART;
@@ -692,15 +684,15 @@ void F_CastPrint(const char * text) {
       continue;
     }
 
-    w = SHORT(hu_font[c]->width);
+    int w = SHORT(hu_font[c]->width);
     width += w;
   }
 
   // draw it
-  cx = ORIGWIDTH / 2 - width / 2;
-  ch = text;
+  int cx = ORIGWIDTH / 2 - width / 2;
+  ch     = text;
   while (ch) {
-    c = *ch++;
+    int c = *ch++;
     if (!c)
       break;
     c = toupper(c) - HU_FONTSTART;
@@ -709,7 +701,7 @@ void F_CastPrint(const char * text) {
       continue;
     }
 
-    w = SHORT(hu_font[c]->width);
+    int w = SHORT(hu_font[c]->width);
     V_DrawPatch(cx, 180, hu_font[c]);
     cx += w;
   }
@@ -720,28 +712,22 @@ void F_CastPrint(const char * text) {
 //
 
 void F_CastDrawer() {
-  spritedef_t *   sprdef;
-  spriteframe_t * sprframe;
-  int             lump;
-  bool            flip;
-  patch_t *       patch;
-
   // erase the entire screen to a background
   V_DrawPatchFullScreen(cache_lump_name<patch_t *>(DEH_String("BOSSBACK"), PU_CACHE), false);
 
   F_CastPrint(DEH_String(castorder[castnum].name));
 
   // draw the current frame in the middle of the screen
-  sprdef = &g_r_state_globals->sprites[caststate->sprite];
+  spritedef_t * sprdef = &g_r_state_globals->sprites[caststate->sprite];
   // [crispy] the TNT1 sprite is not supposed to be rendered anyway
   if (!sprdef->numframes && caststate->sprite == SPR_TNT1) {
     return;
   }
-  sprframe = &sprdef->spriteframes[caststate->frame & FF_FRAMEMASK];
-  lump     = sprframe->lump[castangle];                                                     // [crispy] turnable cast
-  flip     = static_cast<bool>(sprframe->flip[castangle] ^ static_cast<uint8_t>(castflip)); // [crispy] turnable cast, flippable death sequence
+  spriteframe_t * sprframe = &sprdef->spriteframes[caststate->frame & FF_FRAMEMASK];
+  int             lump     = sprframe->lump[castangle];                                                     // [crispy] turnable cast
+  bool            flip     = static_cast<bool>(sprframe->flip[castangle] ^ static_cast<uint8_t>(castflip)); // [crispy] turnable cast, flippable death sequence
 
-  patch = cache_lump_num<patch_t *>(lump + g_r_state_globals->firstspritelump, PU_CACHE);
+  patch_t * patch = cache_lump_num<patch_t *>(lump + g_r_state_globals->firstspritelump, PU_CACHE);
   if (flip)
     V_DrawPatchFlipped(ORIGWIDTH / 2, 170, patch);
   else
@@ -756,21 +742,15 @@ static fixed_t dxi, dy, dyi;
 void F_DrawPatchCol(int       x,
                     patch_t * patch,
                     int       col) {
-  column_t * column;
-  uint8_t *  source;
-  pixel_t *  dest;
-  pixel_t *  desttop;
-  int        count;
-
-  column  = reinterpret_cast<column_t *>(reinterpret_cast<uint8_t *>(patch) + LONG(patch->columnofs[col >> FRACBITS]));
-  desttop = g_i_video_globals->I_VideoBuffer + x + (DELTAWIDTH << crispy->hires);
+  auto *    column  = reinterpret_cast<column_t *>(reinterpret_cast<uint8_t *>(patch) + LONG(patch->columnofs[col >> FRACBITS]));
+  pixel_t * desttop = g_i_video_globals->I_VideoBuffer + x + (DELTAWIDTH << crispy->hires);
 
   // step through the posts in a column
   while (column->topdelta != 0xff) {
-    int srccol = 0;
-    source     = reinterpret_cast<uint8_t *>(column) + 3;
-    dest       = desttop + ((column->topdelta * dy) >> FRACBITS) * SCREENWIDTH;
-    count      = (column->length * dy) >> FRACBITS;
+    int       srccol = 0;
+    uint8_t * source = reinterpret_cast<uint8_t *>(column) + 3;
+    pixel_t * dest   = desttop + ((column->topdelta * dy) >> FRACBITS) * SCREENWIDTH;
+    int       count  = (column->length * dy) >> FRACBITS;
 
     while (count--) {
       *dest = source[srccol >> FRACBITS];
@@ -785,10 +765,7 @@ void F_DrawPatchCol(int       x,
 // F_BunnyScroll
 //
 void F_BunnyScroll() {
-  signed int scrolled;
-  int        x;
   char       name[10];
-  int        stage;
   static int laststage;
 
   dxi = (ORIGWIDTH << FRACBITS) / HIRESWIDTH;
@@ -805,14 +782,14 @@ void F_BunnyScroll() {
 
   V_MarkRect(0, 0, SCREENWIDTH, SCREENHEIGHT);
 
-  scrolled = (ORIGWIDTH - (static_cast<signed int>(finalecount) - 230) / 2);
+  signed int scrolled = (ORIGWIDTH - (static_cast<signed int>(finalecount) - 230) / 2);
   if (scrolled > ORIGWIDTH)
     scrolled = ORIGWIDTH;
   if (scrolled < 0)
     scrolled = 0;
   scrolled <<= FRACBITS;
 
-  for (x = 0; x < ORIGWIDTH << FRACBITS; x += dxi) {
+  for (int x = 0; x < ORIGWIDTH << FRACBITS; x += dxi) {
     if (x + scrolled < ORIGWIDTH << FRACBITS)
       F_DrawPatchCol(x / dxi, p1, x + scrolled);
     else
@@ -829,7 +806,7 @@ void F_BunnyScroll() {
     return;
   }
 
-  stage = (finalecount - 1180) / 5;
+  int stage = (finalecount - 1180) / 5;
   if (stage > 6)
     stage = 6;
   if (stage > laststage) {
@@ -844,7 +821,7 @@ void F_BunnyScroll() {
 }
 
 static void F_ArtScreenDrawer() {
-  const char * lumpname;
+  const char * lumpname = nullptr;
 
   if (g_doomstat_globals->gameepisode == 3) {
     F_BunnyScroll();

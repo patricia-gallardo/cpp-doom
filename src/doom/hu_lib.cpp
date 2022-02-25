@@ -26,12 +26,9 @@
 #include "v_trans.hpp" // [crispy] colored HUlib_drawTextLine()
 #include "doomstat.hpp"
 
-// bool : whether the screen is always erased
-#define noterased viewwindowx
-
 extern bool automapactive; // in AM_map.c
 
-void HUlib_init() {
+[[maybe_unused]] void HUlib_init() {
 }
 
 void HUlib_clearTextLine(hu_textline_t * t) {
@@ -78,17 +75,11 @@ bool HUlib_delCharFromTextLine(hu_textline_t * t) {
 
 void HUlib_drawTextLine(hu_textline_t * l,
                         bool            drawcursor) {
-
-  int           w;
-  int           x;
-  int           y;
-  unsigned char c;
-
   // draw the new stuff
-  x = l->x;
-  y = l->y; // [crispy] support line breaks
+  int x = l->x;
+  int y = l->y; // [crispy] support line breaks
   for (int i = 0; i < l->len; i++) {
-    c = static_cast<unsigned char>(toupper(l->l[i]));
+    unsigned char c = static_cast<unsigned char>(toupper(l->l[i]));
     // [crispy] support multi-colored text lines
     if (c == cr_esc) {
       if (l->l[i + 1] >= '0' && l->l[i + 1] <= '0' + static_cast<int>(cr_t::CRMAX) - 1) {
@@ -103,7 +94,7 @@ void HUlib_drawTextLine(hu_textline_t * l,
       } else if (c != ' '
                  && c >= l->sc
                  && c <= '_') {
-        w = SHORT(l->f[c - l->sc]->width);
+        int w = SHORT(l->f[c - l->sc]->width);
         if (x + w > ORIGWIDTH + DELTAWIDTH)
           break;
         V_DrawPatchDirect(x, y, l->f[c - l->sc]);
@@ -124,24 +115,21 @@ void HUlib_drawTextLine(hu_textline_t * l,
 
 // sorta called by HU_Erase and just better darn get things straight
 void HUlib_eraseTextLine(hu_textline_t * l) {
-  int lh;
-  int y;
-  int yoffset;
-
   // Only erases when NOT in automap and the screen is reduced,
   // and the text must either need updating or refreshing
   // (because of a recent change back from the automap)
 
   if (!g_doomstat_globals->automapactive && viewwindowx && (l->needsupdate || crispy->cleanscreenshot || crispy->screenshotmsg == 4)) {
-    lh = (SHORT(l->f[0]->height) + 1) << crispy->hires;
+    int lh = (SHORT(l->f[0]->height) + 1) << crispy->hires;
     // [crispy] support line breaks
-    yoffset = 1;
-    for (y = 0; y < l->len; y++) {
+    int yoffset = 1;
+    for (int y = 0; y < l->len; y++) {
       if (l->l[y] == '\n') {
         yoffset++;
       }
     }
     lh *= yoffset;
+    int y;
     for (y = (l->y << crispy->hires), yoffset = y * SCREENWIDTH; y < (l->y << crispy->hires) + lh; y++, yoffset += SCREENWIDTH) {
       if (y < viewwindowy || y >= viewwindowy + g_r_state_globals->viewheight)
         R_VideoErase(static_cast<unsigned int>(yoffset), SCREENWIDTH); // erase entire line
@@ -199,19 +187,16 @@ void HUlib_addMessageToSText(hu_stext_t * s,
 }
 
 void HUlib_drawSText(hu_stext_t * s) {
-  int             idx;
-  hu_textline_t * l;
-
   if (!*s->on)
     return; // if not on, don't draw
 
   // draw everything
   for (int i = 0; i < s->h; i++) {
-    idx = s->cl - i;
+    int idx = s->cl - i;
     if (idx < 0)
       idx += s->h; // handle queue of lines
 
-    l = &s->l[idx];
+    hu_textline_t * l = &s->l[idx];
 
     // need a decision made here on whether to skip the draw
     HUlib_drawTextLine(l, false); // no cursor, please
@@ -245,7 +230,7 @@ void HUlib_delCharFromIText(hu_itext_t * it) {
     HUlib_delCharFromTextLine(&it->l);
 }
 
-void HUlib_eraseLineFromIText(hu_itext_t * it) {
+[[maybe_unused]] void HUlib_eraseLineFromIText(hu_itext_t * it) {
   while (it->lm != it->l.len)
     HUlib_delCharFromTextLine(&it->l);
 }
@@ -256,8 +241,8 @@ void HUlib_resetIText(hu_itext_t * it) {
   HUlib_clearTextLine(&it->l);
 }
 
-void HUlib_addPrefixToIText(hu_itext_t * it,
-                            char *       str) {
+[[maybe_unused]] void HUlib_addPrefixToIText(hu_itext_t * it,
+                                             char *       str) {
   while (*str)
     HUlib_addCharToTextLine(&it->l, *(str++));
   it->lm = it->l.len;

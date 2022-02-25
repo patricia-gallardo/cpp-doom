@@ -19,8 +19,6 @@
 #include <cstdlib>
 #include <cstring>
 
-#include <fmt/printf.h>
-
 #include "info.hpp"
 #include "deh_defs.hpp"
 #include "deh_io.hpp"
