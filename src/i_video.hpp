@@ -19,8 +19,8 @@
 #ifndef __I_VIDEO__
 #define __I_VIDEO__
 
-#include "doomtype.hpp"
 #include "crispy.hpp"
+#include "doomtype.hpp"
 
 // Screen width and height.
 

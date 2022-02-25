@@ -17,10 +17,10 @@
 #ifndef NET_CLIENT_H
 #define NET_CLIENT_H
 
-#include "doomtype.hpp"
 #include "d_ticcmd.hpp"
-#include "sha1.hpp"
+#include "doomtype.hpp"
 #include "net_defs.hpp"
+#include "sha1.hpp"
 
 bool NET_CL_Connect(net_addr_t * addr, net_connect_data_t * data);
 void NET_CL_Disconnect();

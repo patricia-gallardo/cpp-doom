@@ -19,8 +19,8 @@
 #ifndef __I_SYSTEM__
 #define __I_SYSTEM__
 
-#include "d_ticcmd.hpp"
 #include "d_event.hpp"
+#include "d_ticcmd.hpp"
 
 using atexit_func_t = void (*)();
 

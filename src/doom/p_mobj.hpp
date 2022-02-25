@@ -20,8 +20,8 @@
 #define __P_MOBJ__
 
 // Basics.
-#include "tables.hpp"
 #include "m_fixed.hpp"
+#include "tables.hpp"
 
 // We need the thinker_t stuff.
 #include "d_think.hpp"

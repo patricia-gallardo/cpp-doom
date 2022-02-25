@@ -21,10 +21,10 @@
 #ifndef __STSTUFF_H__
 #define __STSTUFF_H__
 
-#include "doomtype.hpp"
 #include "d_event.hpp"
-#include "m_cheat.hpp"
+#include "doomtype.hpp"
 #include "i_video.hpp"
+#include "m_cheat.hpp"
 
 // Size of statusbar.
 // Now sensitive for scaling.

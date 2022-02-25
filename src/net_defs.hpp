@@ -20,8 +20,8 @@
 
 #include <cstdio>
 
-#include "doomtype.hpp"
 #include "d_ticcmd.hpp"
+#include "doomtype.hpp"
 #include "sha1.hpp"
 
 // Absolute maximum number of "nodes" in the game.  This is different to

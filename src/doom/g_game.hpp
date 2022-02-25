@@ -19,9 +19,9 @@
 #ifndef __G_GAME__
 #define __G_GAME__
 
-#include "doomdef.hpp"
 #include "d_event.hpp"
 #include "d_ticcmd.hpp"
+#include "doomdef.hpp"
 
 //
 // GAME

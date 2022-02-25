@@ -19,8 +19,8 @@
 #ifndef __M_MISC__
 #define __M_MISC__
 
-#include <cstdio>
 #include <cstdarg>
+#include <cstdio>
 
 #include "doomtype.hpp"
 
