@@ -296,11 +296,11 @@ static angle_t  mapangle;
   int dy = static_cast<int>(ml->a.y - ml->b.y);
   int dx = static_cast<int>(ml->b.x - ml->a.x);
   if (!dy)
-    is->islp = (dx < 0 ? -INT_MAX : INT_MAX);
+    is->islp = (dx < 0 ? -std::numeric_limits<int32_t>::max() : std::numeric_limits<int32_t>::max());
   else
     is->islp = FixedDiv(dx, dy);
   if (!dx)
-    is->slp = (dy < 0 ? -INT_MAX : INT_MAX);
+    is->slp = (dy < 0 ? -std::numeric_limits<int32_t>::max() : std::numeric_limits<int32_t>::max());
   else
     is->slp = FixedDiv(dy, dx);
 }
@@ -372,8 +372,8 @@ void AM_addMark() {
 // sets global variables controlling zoom range.
 //
 void AM_findMinMaxBoundaries() {
-  min_x = min_y = INT_MAX;
-  max_x = max_y = -INT_MAX;
+  min_x = min_y = std::numeric_limits<int32_t>::max();
+  max_x = max_y = -std::numeric_limits<int32_t>::max();
 
   for (int i = 0; i < g_r_state_globals->numvertexes; i++) {
     if (g_r_state_globals->vertexes[i].x < min_x)
@@ -407,7 +407,7 @@ void AM_findMinMaxBoundaries() {
 void AM_changeWindowLoc() {
   if (m_paninc.x || m_paninc.y) {
     followplayer = 0;
-    f_oldloc.x   = INT_MAX;
+    f_oldloc.x   = std::numeric_limits<int32_t>::max();
   }
 
   int64_t incx = m_paninc.x;
@@ -433,7 +433,7 @@ void AM_changeWindowLoc() {
   m_y2 = m_y + m_h;
 
   // [crispy] reset after moving with the mouse
-  if (f_oldloc.y == INT_MAX) {
+  if (f_oldloc.y == std::numeric_limits<int32_t>::max()) {
     m_paninc.x = 0;
     m_paninc.y = 0;
   }
@@ -448,7 +448,7 @@ void AM_initVariables() {
   g_doomstat_globals->automapactive = true;
   //  fb = I_VideoBuffer; // [crispy] simplify
 
-  f_oldloc.x = INT_MAX;
+  f_oldloc.x = std::numeric_limits<int32_t>::max();
   amclock    = 0;
   lightlev   = 0;
 
@@ -656,7 +656,7 @@ bool AM_Responder(event_t * ev) {
       // [crispy] mouse sensitivity for strafe
       m_paninc.x = FTOM(ev->data2 * (g_doomstat_globals->mouseSensitivity_x2 + 5) / 80);
       m_paninc.y = FTOM(ev->data3 * (g_doomstat_globals->mouseSensitivity_x2 + 5) / 80);
-      f_oldloc.y = INT_MAX;
+      f_oldloc.y = std::numeric_limits<int32_t>::max();
       rc         = true;
     }
   } else if (ev->type == ev_keydown) {
@@ -710,7 +710,7 @@ bool AM_Responder(event_t * ev) {
         AM_restoreScaleAndLoc();
     } else if (key == g_m_controls_globals->key_map_follow) {
       followplayer = !followplayer;
-      f_oldloc.x   = INT_MAX;
+      f_oldloc.x   = std::numeric_limits<int32_t>::max();
       if (followplayer)
         plr->message = DEH_String(AMSTR_FOLLOWON);
       else

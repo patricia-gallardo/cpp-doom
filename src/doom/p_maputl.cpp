@@ -615,7 +615,7 @@ bool P_TraverseIntercepts(traverser_t func, fixed_t maxfrac) {
   intercept_t * in = 0; // shut up compiler warning
 
   while (count--) {
-    fixed_t dist = INT_MAX;
+    fixed_t dist = std::numeric_limits<int32_t>::max();
     for (intercept_t * scan = intercepts; scan < g_p_local_globals->intercept_p; scan++) {
       if (scan->frac < dist) {
         dist = scan->frac;
@@ -641,7 +641,7 @@ bool P_TraverseIntercepts(traverser_t func, fixed_t maxfrac) {
     if (!func(in))
       return false; // don't bother going farther
 
-    in->frac = INT_MAX;
+    in->frac = std::numeric_limits<int32_t>::max();
   }
 
   return true; // everything was traversed

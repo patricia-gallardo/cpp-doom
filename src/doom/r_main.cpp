@@ -352,8 +352,11 @@ angle_t
   int64_t y_viewy = static_cast<int64_t>(y) - g_r_state_globals->viewy;
   int64_t x_viewx = static_cast<int64_t>(x) - g_r_state_globals->viewx;
 
-  // [crispy] the worst that could happen is e.g. INT_MIN-INT_MAX = 2*INT_MIN
-  if (x_viewx < INT_MIN || x_viewx > INT_MAX || y_viewy < INT_MIN || y_viewy > INT_MAX) {
+  // [crispy] the worst that could happen is e.g. std::numeric_limits<int32_t>::min()-std::numeric_limits<int32_t>::max() = 2*std::numeric_limits<int32_t>::min()
+  if (x_viewx < std::numeric_limits<int32_t>::min() ||
+      x_viewx > std::numeric_limits<int32_t>::max() ||
+      y_viewy < std::numeric_limits<int32_t>::min() ||
+      y_viewy > std::numeric_limits<int32_t>::max()) {
     // [crispy] preserving the angle by halfing the distance in both directions
     x = static_cast<fixed_t>(x_viewx / 2 + g_r_state_globals->viewx);
     y = static_cast<fixed_t>(y_viewy / 2 + g_r_state_globals->viewy);

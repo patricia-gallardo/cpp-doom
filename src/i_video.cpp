@@ -824,7 +824,7 @@ int I_GetPaletteIndex(int r, int g, int b) {
   int best, best_diff, diff;
 
   best      = 0;
-  best_diff = INT_MAX;
+  best_diff = std::numeric_limits<int32_t>::max();
 
   for (int i = 0; i < 256; ++i) {
     diff = (r - palette[i].r) * (r - palette[i].r)

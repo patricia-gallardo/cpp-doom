@@ -1038,7 +1038,7 @@ void R_SortVisSprites() {
 
   vsprsortedhead.next = vsprsortedhead.prev = &vsprsortedhead;
   for (int i = 0; i < count; i++) {
-    bestscale = INT_MAX;
+    bestscale = std::numeric_limits<int32_t>::max();
     best      = unsorted.next;
     for (ds = unsorted.next; ds != &unsorted; ds = ds->next) {
       if (ds->scale < bestscale) {

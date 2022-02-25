@@ -376,7 +376,7 @@ static void NET_SV_SendWaitingData(net_client_t * client) {
 // all clients.
 
 static unsigned int NET_SV_LatestAcknowledged() {
-  unsigned int lowtic = UINT_MAX;
+  unsigned int lowtic = std::numeric_limits<uint32_t>::max();
 
   for (auto & client : clients) {
     if (ClientConnected(&client)) {

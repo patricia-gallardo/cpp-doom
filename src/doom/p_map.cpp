@@ -925,7 +925,7 @@ bool PTR_ShootTraverse(intercept_t * in) {
     li        = in->d.line;
 
     // [crispy] laser spot does not shoot any line
-    if (li->special && la_damage > INT_MIN)
+    if (li->special && la_damage > std::numeric_limits<int32_t>::min())
       P_ShootSpecialLine(shootthing, li);
 
     if (!(li->flags & ML_TWOSIDED))
@@ -1007,7 +1007,7 @@ bool PTR_ShootTraverse(intercept_t * in) {
     }
 
     // [crispy] update laser spot position and return
-    if (la_damage == INT_MIN) {
+    if (la_damage == std::numeric_limits<int32_t>::min()) {
       laserspot->thinker.function = valid_hook(true);
       laserspot->x                = x;
       laserspot->y                = y;
@@ -1055,7 +1055,7 @@ bool PTR_ShootTraverse(intercept_t * in) {
   z = shootz + FixedMul(aimslope, FixedMul(frac, attackrange));
 
   // [crispy] update laser spot position and return
-  if (la_damage == INT_MIN) {
+  if (la_damage == std::numeric_limits<int32_t>::min()) {
     // [crispy] pass through Spectres
     if (th->flags & MF_SHADOW)
       return true;
@@ -1119,7 +1119,7 @@ fixed_t
 // P_LineAttack
 // If damage == 0, it is just a test trace
 // that will leave linetarget set.
-// [crispy] if damage == INT_MIN, it is a trace
+// [crispy] if damage == std::numeric_limits<int32_t>::min(), it is a trace
 // to update the laser spot position
 //
 void P_LineAttack(mobj_t * t1,
@@ -1128,8 +1128,8 @@ void P_LineAttack(mobj_t * t1,
                   fixed_t  slope,
                   int      damage) {
   // [crispy] smooth laser spot movement with uncapped framerate
-  const fixed_t t1x = (damage == INT_MIN) ? g_r_state_globals->viewx : t1->x;
-  const fixed_t t1y = (damage == INT_MIN) ? g_r_state_globals->viewy : t1->y;
+  const fixed_t t1x = (damage == std::numeric_limits<int32_t>::min()) ? g_r_state_globals->viewx : t1->x;
+  const fixed_t t1y = (damage == std::numeric_limits<int32_t>::min()) ? g_r_state_globals->viewy : t1->y;
   fixed_t       x2;
   fixed_t       y2;
 
@@ -1138,7 +1138,7 @@ void P_LineAttack(mobj_t * t1,
   la_damage   = damage;
   x2          = t1x + (distance >> FRACBITS) * finecosine[angle];
   y2          = t1y + (distance >> FRACBITS) * finesine[angle];
-  shootz      = (damage == INT_MIN) ? g_r_state_globals->viewz : t1->z + (t1->height >> 1) + 8 * FRACUNIT;
+  shootz      = (damage == std::numeric_limits<int32_t>::min()) ? g_r_state_globals->viewz : t1->z + (t1->height >> 1) + 8 * FRACUNIT;
   attackrange = distance;
   aimslope    = slope;
 
@@ -1186,10 +1186,10 @@ void P_LineLaser(mobj_t * t1,
   if ((crispy->crosshair & ~CROSSHAIR_INTERCEPT) == CROSSHAIR_PROJECTED) {
     // [crispy] don't aim at Spectres
     if (g_p_local_globals->linetarget && !(g_p_local_globals->linetarget->flags & MF_SHADOW) && (crispy->freeaim != FREEAIM_DIRECT))
-      P_LineAttack(t1, angle, distance, aimslope, INT_MIN);
+      P_LineAttack(t1, angle, distance, aimslope, std::numeric_limits<int32_t>::min());
     else
       // [crispy] double the auto aim distance
-      P_LineAttack(t1, angle, 2 * distance, lslope, INT_MIN);
+      P_LineAttack(t1, angle, 2 * distance, lslope, std::numeric_limits<int32_t>::min());
   }
 
   // [crispy] intercepts overflow guard

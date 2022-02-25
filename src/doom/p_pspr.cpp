@@ -200,7 +200,7 @@ bool P_CheckAmmo(player_t * player) {
   // only relevant when removing current weapon with TNTWEAPx cheat
   if (!player->weaponowned[player->readyweapon]) {
     ammo  = am_clip; // [crispy] at least not am_noammo, see below
-    count = INT_MAX;
+    count = std::numeric_limits<int32_t>::max();
   }
 
   // Some do not need ammunition anyway.

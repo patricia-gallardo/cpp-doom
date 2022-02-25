@@ -17,6 +17,7 @@
 //
 
 #include <cstdlib>
+#include <limits>
 
 #include "doomtype.hpp"
 #include "m_fixed.hpp"
@@ -33,7 +34,7 @@ fixed_t FixedMul(fixed_t a, fixed_t b) {
 
 fixed_t FixedDiv(fixed_t a, fixed_t b) {
   if ((std::abs(a) >> 14) >= std::abs(b)) {
-    return (a ^ b) < 0 ? INT_MIN : INT_MAX;
+    return (a ^ b) < 0 ? std::numeric_limits<int32_t>::min() : std::numeric_limits<int32_t>::max();
   } else {
     int64_t result;
 

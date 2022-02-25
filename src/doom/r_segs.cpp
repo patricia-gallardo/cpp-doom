@@ -221,7 +221,7 @@ void R_RenderMaskedSegRange(drawseg_t * ds,
   // draw the columns
   for (g_r_draw_globals->dc_x = x1; g_r_draw_globals->dc_x <= x2; g_r_draw_globals->dc_x++) {
     // calculate lighting
-    if (maskedtexturecol[g_r_draw_globals->dc_x] != INT_MAX) // [crispy] 32-bit integer math
+    if (maskedtexturecol[g_r_draw_globals->dc_x] != std::numeric_limits<int32_t>::max()) // [crispy] 32-bit integer math
     {
       if (!fixedcolormap) {
         int index = spryscale >> (LIGHTSCALESHIFT + crispy->hires);
@@ -263,7 +263,7 @@ void R_RenderMaskedSegRange(drawseg_t * ds,
       auto * col     = reinterpret_cast<column_t *>(col_ptr);
 
       R_DrawMaskedColumn(col);
-      maskedtexturecol[g_r_draw_globals->dc_x] = INT_MAX; // [crispy] 32-bit integer math
+      maskedtexturecol[g_r_draw_globals->dc_x] = std::numeric_limits<int32_t>::max(); // [crispy] 32-bit integer math
     }
     spryscale += rw_scalestep;
   }
@@ -571,8 +571,8 @@ void R_StoreWallRange(int start,
     ds_p->silhouette    = SIL_BOTH;
     ds_p->sprtopclip    = screenheightarray;
     ds_p->sprbottomclip = negonearray;
-    ds_p->bsilheight    = INT_MAX;
-    ds_p->tsilheight    = INT_MIN;
+    ds_p->bsilheight    = std::numeric_limits<int32_t>::max();
+    ds_p->tsilheight    = std::numeric_limits<int32_t>::min();
   } else {
     // [crispy] fix sprites being visible behind closed doors
     // adapted from mbfsrc/R_BSP.C:234-257
@@ -594,7 +594,7 @@ void R_StoreWallRange(int start,
       ds_p->bsilheight = frontsector->interpfloorheight;
     } else if (backsector->interpfloorheight > g_r_state_globals->viewz) {
       ds_p->silhouette = SIL_BOTTOM;
-      ds_p->bsilheight = INT_MAX;
+      ds_p->bsilheight = std::numeric_limits<int32_t>::max();
       // ds_p->sprbottomclip = negonearray;
     }
 
@@ -603,19 +603,19 @@ void R_StoreWallRange(int start,
       ds_p->tsilheight = frontsector->interpceilingheight;
     } else if (backsector->interpceilingheight < g_r_state_globals->viewz) {
       ds_p->silhouette |= SIL_TOP;
-      ds_p->tsilheight = INT_MIN;
+      ds_p->tsilheight = std::numeric_limits<int32_t>::min();
       // ds_p->sprtopclip = screenheightarray;
     }
 
     if (backsector->interpceilingheight <= frontsector->interpfloorheight || doorclosed) {
       ds_p->sprbottomclip = negonearray;
-      ds_p->bsilheight    = INT_MAX;
+      ds_p->bsilheight    = std::numeric_limits<int32_t>::max();
       ds_p->silhouette |= SIL_BOTTOM;
     }
 
     if (backsector->interpfloorheight >= frontsector->interpceilingheight || doorclosed) {
       ds_p->sprtopclip = screenheightarray;
-      ds_p->tsilheight = INT_MIN;
+      ds_p->tsilheight = std::numeric_limits<int32_t>::min();
       ds_p->silhouette |= SIL_TOP;
     }
 
@@ -799,11 +799,11 @@ void R_StoreWallRange(int start,
 
   if (maskedtexture && !(ds_p->silhouette & SIL_TOP)) {
     ds_p->silhouette |= SIL_TOP;
-    ds_p->tsilheight = INT_MIN;
+    ds_p->tsilheight = std::numeric_limits<int32_t>::min();
   }
   if (maskedtexture && !(ds_p->silhouette & SIL_BOTTOM)) {
     ds_p->silhouette |= SIL_BOTTOM;
-    ds_p->bsilheight = INT_MAX;
+    ds_p->bsilheight = std::numeric_limits<int32_t>::max();
   }
   ds_p++;
 }

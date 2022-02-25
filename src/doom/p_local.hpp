@@ -77,8 +77,8 @@ void P_PlayerThink(player_t * player);
 //
 // P_MOBJ
 //
-#define ONFLOORZ   INT_MIN
-#define ONCEILINGZ INT_MAX
+constexpr auto ONFLOORZ   = std::numeric_limits<int32_t>::min();
+constexpr auto ONCEILINGZ = std::numeric_limits<int32_t>::max();
 
 // Time interval for item respawning.
 constexpr auto ITEMQUESIZE = 128;

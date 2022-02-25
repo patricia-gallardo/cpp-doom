@@ -218,7 +218,7 @@ static void rgb_to_hsv(vect * rgb, vect * hsv) {
 // [crispy] copied over from i_video.c
 static int I_GetPaletteIndex2(uint8_t * palette, int r, int g, int b) {
   int best      = 0;
-  int best_diff = INT_MAX;
+  int best_diff = std::numeric_limits<int32_t>::max();
 
   for (int i = 0; i < 256; ++i) {
     int diff = (r - palette[3 * i + 0]) * (r - palette[3 * i + 0])
