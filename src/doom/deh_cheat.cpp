@@ -71,7 +71,7 @@ static void DEH_CheatParseLine(deh_context_t * context, char * line, void *) {
     return;
   }
 
-  unsigned char * unsvalue = reinterpret_cast<unsigned char *>(value);
+  auto * unsvalue = reinterpret_cast<unsigned char *>(value);
 
   deh_cheat_t * cheat = FindCheatByName(variable_name);
 

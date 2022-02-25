@@ -397,14 +397,14 @@ const char * mapnames_commercial[] = {
 };
 
 static void CrispyReplaceColor(char * str, const int cr, const char * col) {
-  char *str_replace, col_replace[16];
+  char col_replace[16];
 
   if (DEH_HasStringReplacement(str)) {
     return;
   }
 
   M_snprintf(col_replace, sizeof(col_replace), "%s%s%s", crstr[cr], col, crstr[static_cast<int>(cr_t::CR_NONE)]);
-  str_replace = M_StringReplace(str, col, col_replace);
+  char * str_replace = M_StringReplace(str, col, col_replace);
   DEH_AddStringReplacement(str, str_replace);
   free(str_replace);
 }
@@ -412,15 +412,13 @@ static void CrispyReplaceColor(char * str, const int cr, const char * col) {
 static const char *cr_stat, *cr_stat2, *kills;
 
 void HU_Init() {
-
-  int  j;
   char buffer[9];
 
   // load the heads-up font
-  j = HU_FONTSTART;
-  for (int i = 0; i < HU_FONTSIZE; i++) {
+  int j = HU_FONTSTART;
+  for (auto & patch : hu_font) {
     DEH_snprintf(buffer, 9, "STCFN%.3d", j++);
-    hu_font[i] = cache_lump_name<patch_t *>(buffer, PU_STATIC);
+    patch = cache_lump_name<patch_t *>(buffer, PU_STATIC);
   }
 
   if (g_doomstat_globals->gameversion == exe_chex) {
@@ -550,9 +548,8 @@ static void HU_SetSpecialLevelName(const char * wad, const char ** name) {
 }
 
 void HU_Start() {
-  const char * s;
   // [crispy] string buffers for map title and WAD file name
-  char buf[8], *ptr;
+  char buf[8];
 
   if (headsupactive)
     HU_Stop();
@@ -647,6 +644,7 @@ void HU_Start() {
                      hu_font,
                      HU_FONTSTART);
 
+  const char * s = nullptr;
   switch (logical_gamemission) {
   case doom:
     s = HU_TITLE;
@@ -692,10 +690,9 @@ void HU_Start() {
   // [crispy] explicitely display (episode and) map if the
   // map is from a PWAD or if the map title string has been dehacked
   if (DEH_HasStringReplacement(s) || (!W_IsIWADLump(maplumpinfo) && (!g_doomstat_globals->nervewadfile || g_doomstat_globals->gamemission != pack_nerve))) {
-    char * m;
 
-    ptr = M_StringJoin(crstr[static_cast<int>(cr_t::CR_GOLD)], W_WadNameForLump(maplumpinfo), ": ", crstr[static_cast<int>(cr_t::CR_GRAY)], maplumpinfo->name, nullptr);
-    m   = ptr;
+    char * ptr = M_StringJoin(crstr[static_cast<int>(cr_t::CR_GOLD)], W_WadNameForLump(maplumpinfo), ": ", crstr[static_cast<int>(cr_t::CR_GRAY)], maplumpinfo->name, nullptr);
+    char * m   = ptr;
 
     while (*m)
       HUlib_addCharToTextLine(&w_map, *(m++));
@@ -709,8 +706,8 @@ void HU_Start() {
 
   // [crispy] print the map title in white from the first colon onward
   M_snprintf(buf, sizeof(buf), "%s%s", ":", crstr[static_cast<int>(cr_t::CR_GRAY)]);
-  ptr = M_StringReplace(s, ":", buf);
-  s   = ptr;
+  char * ptr = M_StringReplace(s, ":", buf);
+  s          = ptr;
 
   while (*s)
     HUlib_addCharToTextLine(&w_title, *(s++));
@@ -726,8 +723,8 @@ void HU_Start() {
                   &chat_on);
 
   // create the inputbuffer widgets
-  for (int i = 0; i < MAXPLAYERS; i++)
-    HUlib_initIText(&w_inputbuffer[i], 0, 0, 0, 0, &always_off);
+  for (auto & itext : w_inputbuffer)
+    HUlib_initIText(&itext, 0, 0, 0, 0, &always_off);
 
   headsupactive = true;
 }
@@ -870,9 +867,9 @@ void HU_Erase() {
 
 void HU_Ticker() {
 
-  int  rc;
-  char c;
-  char str[32], *s;
+  char   c = 0;
+  char   str[32];
+  char * s = nullptr;
 
   // tick down message counter if message is up
   if (message_counter && !--message_counter) {
@@ -906,7 +903,7 @@ void HU_Ticker() {
       message_on                = true;
       message_counter           = HU_MSGTIMEOUT;
       message_nottobefuckedwith = message_dontfuckwithme;
-      message_dontfuckwithme    = 0;
+      message_dontfuckwithme    = false;
       crispy->screenshotmsg >>= 1;
     }
 
@@ -922,7 +919,7 @@ void HU_Ticker() {
         if (c <= HU_BROADCAST)
           chat_dest[i] = c;
         else {
-          rc = HUlib_keyInIText(&w_inputbuffer[i], static_cast<unsigned char>(c));
+          int rc = HUlib_keyInIText(&w_inputbuffer[i], static_cast<unsigned char>(c));
           if (rc && c == KEY_ENTER) {
             if (w_inputbuffer[i].l.len
                 && (chat_dest[i] == g_doomstat_globals->consoleplayer + 1
@@ -1021,7 +1018,7 @@ void HU_Ticker() {
   }
 }
 
-#define QUEUESIZE 128
+constexpr auto QUEUESIZE = 128;
 
 static char chatchars[QUEUESIZE];
 static int  head = 0;
@@ -1037,7 +1034,7 @@ void HU_queueChatChar(char c) {
 }
 
 char HU_dequeueChatChar() {
-  char c;
+  char c = 0;
 
   if (head != tail) {
     c    = chatchars[tail];
@@ -1063,19 +1060,14 @@ static void StopChatInput() {
 }
 
 bool HU_Responder(event_t * ev) {
+  static char lastmessage[HU_MAXLINELENGTH + 1];
+  static bool altdown        = false;
+  static int  num_nobrainers = 0;
+  bool        eatkey         = false;
+  int         numplayers     = 0;
 
-  static char   lastmessage[HU_MAXLINELENGTH + 1];
-  const char *  macromessage;
-  bool          eatkey  = false;
-  static bool   altdown = false;
-  unsigned char c;
-  int           numplayers;
-
-  static int num_nobrainers = 0;
-
-  numplayers = 0;
-  for (int i = 0; i < MAXPLAYERS; i++)
-    numplayers += g_doomstat_globals->playeringame[i];
+  for (bool in_game : g_doomstat_globals->playeringame)
+    numplayers += in_game;
 
   if (ev->data1 == KEY_RSHIFT) {
     return false;
@@ -1121,11 +1113,11 @@ bool HU_Responder(event_t * ev) {
   } else {
     // send a macro
     if (altdown) {
-      c = static_cast<unsigned char>(ev->data1 - '0');
+      auto c = static_cast<unsigned char>(ev->data1 - '0');
       if (c > 9)
         return false;
       // fmt::fprintf(stderr, "got here\n");
-      macromessage = chat_macros[c];
+      const char * macromessage = chat_macros[c];
 
       // kill last message with a '\n'
       HU_queueChatChar(KEY_ENTER); // DEBUG!!!
@@ -1141,7 +1133,7 @@ bool HU_Responder(event_t * ev) {
       plr->message = lastmessage;
       eatkey       = true;
     } else {
-      c = static_cast<unsigned char>(ev->data3);
+      auto c = static_cast<unsigned char>(ev->data3);
 
       eatkey = HUlib_keyInIText(&w_chat, c);
       if (eatkey) {

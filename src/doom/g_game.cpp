@@ -285,14 +285,8 @@ bool speedkeydown() {
 // If recording a demo, write it out
 //
 void G_BuildTiccmd(ticcmd_t * cmd, int maketic) {
-  bool             strafe;
-  bool             bstrafe;
-  int              speed;
-  int              tspeed;
   int              lspeed;
-  int              forward;
   int              side;
-  int              look;
   player_t * const player = &g_doomstat_globals->players[g_doomstat_globals->consoleplayer];
   static char      playermessage[48];
 
@@ -301,19 +295,18 @@ void G_BuildTiccmd(ticcmd_t * cmd, int maketic) {
   cmd->consistancy =
       consistancy[g_doomstat_globals->consoleplayer][maketic % BACKUPTICS];
 
-  strafe = gamekeydown[g_m_controls_globals->key_strafe] || mousebuttons[g_m_controls_globals->mousebstrafe]
-           || joybuttons[g_m_controls_globals->joybstrafe];
+  bool strafe = gamekeydown[g_m_controls_globals->key_strafe] || mousebuttons[g_m_controls_globals->mousebstrafe] || joybuttons[g_m_controls_globals->joybstrafe];
 
   // fraggle: support the old "joyb_speed = 31" hack which
   // allowed an autorun effect
 
   // [crispy] when "always run" is active,
   // pressing the "run" key will result in walking
-  speed = g_m_controls_globals->key_speed >= NUMKEYS
-          || g_m_controls_globals->joybspeed >= MAX_JOY_BUTTONS;
+  int speed = g_m_controls_globals->key_speed >= NUMKEYS || g_m_controls_globals->joybspeed >= MAX_JOY_BUTTONS;
   speed ^= static_cast<int>(speedkeydown());
 
-  forward = side = look = 0;
+  int look    = 0;
+  int forward = side = 0;
 
   // use two stage accelerative turning
   // on the keyboard and joystick
@@ -325,6 +318,7 @@ void G_BuildTiccmd(ticcmd_t * cmd, int maketic) {
   else
     turnheld = 0;
 
+  int tspeed;
   if (turnheld < SLOWTURNTICS)
     tspeed = 2; // slow turn
   else
@@ -492,7 +486,7 @@ void G_BuildTiccmd(ticcmd_t * cmd, int maketic) {
   // we generate a ticcmd.  Choose a new weapon.
 
   if (g_doomstat_globals->gamestate == GS_LEVEL && next_weapon != 0) {
-    size_t i = static_cast<size_t>(G_NextWeapon(next_weapon));
+    auto i = static_cast<size_t>(G_NextWeapon(next_weapon));
     cmd->buttons |= BT_CHANGE;
     cmd->buttons |= static_cast<uint8_t>(i << BT_WEAPONSHIFT);
   } else {
@@ -533,12 +527,12 @@ void G_BuildTiccmd(ticcmd_t * cmd, int maketic) {
       dclicktime += ticdup;
       if (dclicktime > 20) {
         dclicks     = 0;
-        dclickstate = 0;
+        dclickstate = false;
       }
     }
 
     // strafe double click
-    bstrafe =
+    bool bstrafe =
         mousebuttons[g_m_controls_globals->mousebstrafe]
         || joybuttons[g_m_controls_globals->joybstrafe];
     if (bstrafe != dclickstate2 && dclicktime2 > 1) {
@@ -554,7 +548,7 @@ void G_BuildTiccmd(ticcmd_t * cmd, int maketic) {
       dclicktime2 += ticdup;
       if (dclicktime2 > 20) {
         dclicks2     = 0;
-        dclickstate2 = 0;
+        dclickstate2 = false;
       }
     }
   }
@@ -640,10 +634,8 @@ void G_BuildTiccmd(ticcmd_t * cmd, int maketic) {
   // low-res turning
 
   if (g_doomstat_globals->lowres_turn) {
-    static signed short carry = 0;
-    signed short        desired_angleturn;
-
-    desired_angleturn = static_cast<short>(cmd->angleturn + carry);
+    static signed short carry             = 0;
+    signed short        desired_angleturn = static_cast<short>(cmd->angleturn + carry);
 
     // round angleturn to the nearest 256 unit boundary
     // for recording demos with single byte values for turn
@@ -674,7 +666,7 @@ void G_DoLoadLevel() {
   // [crispy] correct "Sky never changes in Doom II" bug
   if ((g_doomstat_globals->gamemode == commercial)
       && (g_doomstat_globals->gameversion == exe_final2 || g_doomstat_globals->gameversion == exe_chex || true)) {
-    const char * skytexturename;
+    const char * skytexturename = nullptr;
 
     if (g_doomstat_globals->gamemap < 12) {
       skytexturename = "SKY1";
@@ -899,7 +891,6 @@ static void G_CrispyScreenShot() {
 // Make ticcmd_ts for the players.
 //
 void G_Ticker() {
-  int        buf;
   ticcmd_t * cmd;
 
   // do player reborns if needed
@@ -955,7 +946,7 @@ void G_Ticker() {
 
   // get commands, check consistancy,
   // and build new consistancy check
-  buf = (gametic / ticdup) % BACKUPTICS;
+  int buf = (gametic / ticdup) % BACKUPTICS;
 
   for (int i = 0; i < MAXPLAYERS; i++) {
     if (g_doomstat_globals->playeringame[i]) {
@@ -1097,9 +1088,7 @@ void G_InitPlayer(int player) {
 // Can when a player completes a level.
 //
 void G_PlayerFinishLevel(int player) {
-  player_t * p;
-
-  p = &g_doomstat_globals->players[player];
+  player_t * p = &g_doomstat_globals->players[player];
 
   std::memset(p->powers, 0, sizeof(p->powers));
   std::memset(p->cards, 0, sizeof(p->cards));
@@ -1125,18 +1114,14 @@ void G_PlayerFinishLevel(int player) {
 // almost everything is cleared and initialized
 //
 void G_PlayerReborn(int player) {
-  player_t * p;
-  int        frags[MAXPLAYERS];
-  int        killcount;
-  int        itemcount;
-  int        secretcount;
+  int frags[MAXPLAYERS];
 
   std::memcpy(frags, g_doomstat_globals->players[player].frags, sizeof(frags));
-  killcount   = g_doomstat_globals->players[player].killcount;
-  itemcount   = g_doomstat_globals->players[player].itemcount;
-  secretcount = g_doomstat_globals->players[player].secretcount;
+  int killcount   = g_doomstat_globals->players[player].killcount;
+  int itemcount   = g_doomstat_globals->players[player].itemcount;
+  int secretcount = g_doomstat_globals->players[player].secretcount;
 
-  p = &g_doomstat_globals->players[player];
+  player_t * p = &g_doomstat_globals->players[player];
   std::memset(p, 0, sizeof(*p));
 
   std::memcpy(g_doomstat_globals->players[player].frags, frags, sizeof(g_doomstat_globals->players[player].frags));
@@ -1168,11 +1153,6 @@ void P_SpawnPlayer(mapthing_t * mthing);
 
 bool G_CheckSpot(int          playernum,
                  mapthing_t * mthing) {
-  fixed_t       x;
-  fixed_t       y;
-  subsector_t * ss;
-  mobj_t *      mo;
-
   if (!g_doomstat_globals->players[playernum].mo) {
     // first spawn of level, before corpses
     for (int i = 0; i < playernum; i++)
@@ -1182,8 +1162,8 @@ bool G_CheckSpot(int          playernum,
     return true;
   }
 
-  x = mthing->x << FRACBITS;
-  y = mthing->y << FRACBITS;
+  fixed_t x = mthing->x << FRACBITS;
+  fixed_t y = mthing->y << FRACBITS;
 
   if (!P_CheckPosition(g_doomstat_globals->players[playernum].mo, x, y))
     return false;
@@ -1195,7 +1175,7 @@ bool G_CheckSpot(int          playernum,
   g_doomstat_globals->bodyqueslot++;
 
   // spawn a teleport fog
-  ss = R_PointInSubsector(x, y);
+  subsector_t * ss = R_PointInSubsector(x, y);
 
   // The code in the released source looks like this:
   //
@@ -1212,15 +1192,15 @@ bool G_CheckSpot(int          playernum,
   // "silently" with no spawn fog. Emulate this.
   //
   // This code is imported from PrBoom+.
-
+  mobj_t * mo;
   {
-    fixed_t    xa, ya;
-    signed int an;
+    fixed_t xa;
+    fixed_t ya;
 
     // This calculation overflows in Vanilla Doom, but here we deliberately
     // avoid integer overflow as it is undefined behavior, so the value of
     // 'an' will always be positive.
-    an = (ANG45 >> ANGLETOFINESHIFT) * (static_cast<signed int>(mthing->angle) / 45);
+    signed int an = (ANG45 >> ANGLETOFINESHIFT) * (static_cast<signed int>(mthing->angle) / 45);
 
     switch (an) {
     case 4096:                // -4096:
@@ -1419,8 +1399,8 @@ void G_DoCompleted() {
         return;
     */
       case 9:
-        for (int i = 0; i < MAXPLAYERS; i++)
-          g_doomstat_globals->players[i].didsecret = true;
+        for (auto & player : g_doomstat_globals->players)
+          player.didsecret = true;
         break;
       }
     }
@@ -1520,7 +1500,7 @@ void G_DoCompleted() {
   if (g_doomstat_globals->gamemode == commercial) {
     // map33 reads its par time from beyond the cpars[] array
     if (g_doomstat_globals->gamemap == 33) {
-      int cpars32;
+      int cpars32 = 0;
 
       std::memcpy(&cpars32, DEH_String(GAMMALVL0), sizeof(int));
       cpars32 = LONG(cpars32);
@@ -1758,13 +1738,9 @@ void G_SaveGame(int    slot,
 }
 
 void G_DoSaveGame() {
-  char * savegame_file;
-  char * temp_savegame_file;
-  char * recovery_savegame_file;
-
-  recovery_savegame_file = nullptr;
-  temp_savegame_file     = P_TempSaveGameFile();
-  savegame_file          = P_SaveGameFile(savegameslot);
+  char * recovery_savegame_file = nullptr;
+  char * temp_savegame_file     = P_TempSaveGameFile();
+  char * savegame_file          = P_SaveGameFile(savegameslot);
 
   // Open the savegame file for writing.  We write to a temporary file
   // and then rename it at the end if it was successfully written.
@@ -1882,7 +1858,7 @@ void G_DoNewGame() {
   netdemo                             = false;
   g_doomstat_globals->netgame         = false;
   g_doomstat_globals->deathmatch      = false;
-  g_doomstat_globals->playeringame[1] = g_doomstat_globals->playeringame[2] = g_doomstat_globals->playeringame[3] = 0;
+  g_doomstat_globals->playeringame[1] = g_doomstat_globals->playeringame[2] = g_doomstat_globals->playeringame[3] = false;
   // [crispy] do not reset -respawn, -fast and -nomonsters parameters
   /*
   respawnparm = false;
@@ -1897,7 +1873,6 @@ void G_DoNewGame() {
 void G_InitNew(skill_t skill,
                int     episode,
                int     map) {
-  const char * skytexturename;
   // [crispy] make sure "fast" parameters are really only applied once
   static bool fast_applied;
 
@@ -1999,8 +1974,8 @@ void G_InitNew(skill_t skill,
   }
 
   // force players to be initialized upon first level load
-  for (int i = 0; i < MAXPLAYERS; i++)
-    g_doomstat_globals->players[i].playerstate = PST_REBORN;
+  for (auto & player : g_doomstat_globals->players)
+    player.playerstate = PST_REBORN;
 
   g_doomstat_globals->usergame      = true; // will be set false if a demo
   g_doomstat_globals->paused        = false;
@@ -2028,6 +2003,7 @@ void G_InitNew(skill_t skill,
   // restore from a saved game.  This was fixed before the Doom
   // source release, but this IS the way Vanilla DOS Doom behaves.
 
+  const char * skytexturename;
   if (g_doomstat_globals->gamemode == commercial) {
     skytexturename = DEH_String("SKY3");
     skytexture     = R_TextureNumForName(skytexturename);
@@ -2150,12 +2126,10 @@ static void IncreaseDemoBuffer() {
 }
 
 void G_WriteDemoTiccmd(ticcmd_t * cmd) {
-  uint8_t * demo_start;
-
   if (gamekeydown[g_m_controls_globals->key_demo_quit]) // press q to end demo recording
     G_CheckDemoStatus();
 
-  demo_start = demo_p;
+  uint8_t * demo_start = demo_p;
 
   *demo_p++ = static_cast<uint8_t>(cmd->forwardmove);
   *demo_p++ = static_cast<uint8_t>(cmd->sidemove);
@@ -2200,10 +2174,6 @@ void G_WriteDemoTiccmd(ticcmd_t * cmd) {
 // G_RecordDemo
 //
 void G_RecordDemo(char * name) {
-  size_t demoname_size;
-  int    i;
-  int    maxsize;
-
   // [crispy] demo file name suffix counter
   static unsigned int j  = 0;
   FILE *              fp = nullptr;
@@ -2214,7 +2184,7 @@ void G_RecordDemo(char * name) {
   }
 
   g_doomstat_globals->usergame = false;
-  demoname_size                = strlen(name) + 5 + 6; // [crispy] + 6 for "-00000"
+  size_t demoname_size         = strlen(name) + 5 + 6; // [crispy] + 6 for "-00000"
   demoname                     = zmalloc<decltype(demoname)>(demoname_size, PU_STATIC, nullptr);
   M_snprintf(demoname, demoname_size, "%s.lmp", name);
 
@@ -2224,7 +2194,7 @@ void G_RecordDemo(char * name) {
     fclose(fp);
   }
 
-  maxsize = 0x20000;
+  int maxsize = 0x20000;
 
   //!
   // @arg <size>
@@ -2234,7 +2204,7 @@ void G_RecordDemo(char * name) {
   // Specify the demo buffer size (KiB)
   //
 
-  i = M_CheckParmWithArgs("-maxdemo", 1);
+  int i = M_CheckParmWithArgs("-maxdemo", 1);
   if (i)
     maxsize = std::atoi(myargv[i + 1]) * 1024;
   demobuffer = zmalloc<decltype(demobuffer)>(static_cast<size_t>(maxsize), PU_STATIC, nullptr);
@@ -2290,8 +2260,8 @@ void G_BeginRecording() {
     *demo_p++ = static_cast<uint8_t>(g_doomstat_globals->consoleplayer);
   }
 
-  for (int i = 0; i < MAXPLAYERS; i++)
-    *demo_p++ = g_doomstat_globals->playeringame[i];
+  for (bool in_game : g_doomstat_globals->playeringame)
+    *demo_p++ = in_game;
 }
 
 //
@@ -2346,10 +2316,8 @@ static const char * DemoVersionDescription(int version) {
 }
 
 void G_DoPlayDemo() {
-  skill_t skill;
-  int     lumpnum, episode, map;
-  int     demoversion;
-  bool    olddemo = false;
+  int  lumpnum, episode, map;
+  bool olddemo = false;
 
   // [crispy] in demo continue mode free the obsolete demo buffer
   // of size 'maxsize' previously allocated in G_RecordDemo()
@@ -2370,7 +2338,7 @@ void G_DoPlayDemo() {
     return;
   }
 
-  demoversion = *demo_p++;
+  int demoversion = *demo_p++;
 
   if (demoversion >= 0 && demoversion <= 4) {
     olddemo = true;
@@ -2405,9 +2373,9 @@ void G_DoPlayDemo() {
     }
   }
 
-  skill   = static_cast<skill_t>(*demo_p++);
-  episode = *demo_p++;
-  map     = *demo_p++;
+  skill_t skill = static_cast<skill_t>(*demo_p++);
+  episode       = *demo_p++;
+  map           = *demo_p++;
   if (!olddemo) {
     g_doomstat_globals->deathmatch    = *demo_p++;
     g_doomstat_globals->respawnparm   = *demo_p++;
@@ -2416,14 +2384,14 @@ void G_DoPlayDemo() {
     g_doomstat_globals->consoleplayer = *demo_p++;
   } else {
     g_doomstat_globals->deathmatch    = 0;
-    g_doomstat_globals->respawnparm   = 0;
-    g_doomstat_globals->fastparm      = 0;
-    g_doomstat_globals->nomonsters    = 0;
+    g_doomstat_globals->respawnparm   = false;
+    g_doomstat_globals->fastparm      = false;
+    g_doomstat_globals->nomonsters    = false;
     g_doomstat_globals->consoleplayer = 0;
   }
 
-  for (int i = 0; i < MAXPLAYERS; i++)
-    g_doomstat_globals->playeringame[i] = *demo_p++;
+  for (bool & in_game : g_doomstat_globals->playeringame)
+    in_game = *demo_p++;
 
   if (g_doomstat_globals->playeringame[1] || M_CheckParm("-solo-net") > 0
       || M_CheckParm("-netdemo") > 0) {
@@ -2456,8 +2424,8 @@ void G_DoPlayDemo() {
     int       numplayersingame = 0;
     uint8_t * demo_ptr         = demo_p;
 
-    for (int i = 0; i < MAXPLAYERS; i++) {
-      if (g_doomstat_globals->playeringame[i]) {
+    for (bool in_game : g_doomstat_globals->playeringame) {
+      if (in_game) {
         numplayersingame++;
       }
     }
@@ -2502,15 +2470,12 @@ void G_TimeDemo(char * name) {
 */
 
 bool G_CheckDemoStatus() {
-  int endtime;
-
   if (timingdemo) {
-    float fps;
-    int   realtics;
+    int realtics;
 
-    endtime  = I_GetTime();
-    realtics = endtime - starttime;
-    fps      = (static_cast<float>(gametic) * TICRATE) / static_cast<float>(realtics);
+    int endtime = I_GetTime();
+    realtics    = endtime - starttime;
+    float fps   = (static_cast<float>(gametic) * TICRATE) / static_cast<float>(realtics);
 
     // Prevent recursive calls
     timingdemo                       = false;
@@ -2528,7 +2493,7 @@ bool G_CheckDemoStatus() {
     netdemo                             = false;
     g_doomstat_globals->netgame         = false;
     g_doomstat_globals->deathmatch      = false;
-    g_doomstat_globals->playeringame[1] = g_doomstat_globals->playeringame[2] = g_doomstat_globals->playeringame[3] = 0;
+    g_doomstat_globals->playeringame[1] = g_doomstat_globals->playeringame[2] = g_doomstat_globals->playeringame[3] = false;
     // [crispy] leave game parameters intact when continuing a demo
     if (!g_doomstat_globals->demorecording) {
       g_doomstat_globals->respawnparm = false;
