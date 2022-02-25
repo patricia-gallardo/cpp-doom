@@ -24,15 +24,12 @@
 
 #include <algorithm>
 
-#ifndef MIN
-#define MIN(a, b) std::min(a, b) //(((a) < (b)) ? (a) : (b))
-#endif
 #ifndef MAX
 #define MAX(a, b) std::max(a, b) //(((a) > (b)) ? (a) : (b))
 #endif
 #ifndef BETWEEN
-#define BETWEEN(l, u, x) (((l) > (x)) ? (l) : ((x) > (u)) ? (u) : \
-                                                            (x))
+#define BETWEEN(l, u, x) std::clamp(x, l, u) // (((l) > (x)) ? (l) : ((x) > (u)) ? (u) : \
+                            //                                (x))
 #endif
 
 struct crispy_t {

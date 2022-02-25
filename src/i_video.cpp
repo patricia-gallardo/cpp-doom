@@ -1371,7 +1371,7 @@ void I_GetScreenDimensions() {
     // [crispy] make sure SCREENWIDTH is an integer multiple of 4 ...
     SCREENWIDTH = (SCREENWIDTH + 3) & static_cast<int>(~3);
     // [crispy] ... but never exceeds MAXWIDTH (array size!)
-    SCREENWIDTH = MIN(SCREENWIDTH, MAXWIDTH);
+    SCREENWIDTH = std::min(SCREENWIDTH, MAXWIDTH);
   }
 
   DELTAWIDTH = ((SCREENWIDTH - HIRESWIDTH) >> crispy->hires) / 2;
@@ -1610,7 +1610,7 @@ void I_RenderReadPixels(uint8_t ** data, int * w, int * h, int * p) {
       int temp1, temp2, scale;
       temp1 = rect.w;
       temp2 = rect.h;
-      scale = MIN(rect.w / SCREENWIDTH, rect.h / actualheight);
+      scale = std::min(rect.w / SCREENWIDTH, rect.h / actualheight);
 
       rect.w = SCREENWIDTH * scale;
       rect.h = actualheight * scale;
