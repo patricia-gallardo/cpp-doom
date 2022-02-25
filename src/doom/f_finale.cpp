@@ -20,13 +20,13 @@
 #include <cctype>
 
 // Functions.
-#include "deh_main.hpp"
 #include "d_event.hpp"
+#include "deh_main.hpp"
 #include "i_swap.hpp"
-#include "z_zone.hpp"
+#include "s_sound.hpp"
 #include "v_video.hpp"
 #include "w_wad.hpp"
-#include "s_sound.hpp"
+#include "z_zone.hpp"
 
 // Data.
 #include "d_main.hpp"
@@ -34,11 +34,11 @@
 #include "sounds.hpp"
 
 #include "doomstat.hpp"
-#include "r_state.hpp"
+#include "event_function_decls.hpp"
 #include "m_controls.hpp" // [crispy] key_*
 #include "m_misc.hpp"     // [crispy] M_StringDuplicate()
 #include "m_random.hpp"   // [crispy] Crispy_Random()
-#include "event_function_decls.hpp"
+#include "r_state.hpp"
 
 enum finalestage_t
 {
@@ -226,8 +226,8 @@ void F_Ticker() {
 // F_TextWrite
 //
 
-#include "lump.hpp"
 #include "hu_stuff.hpp"
+#include "lump.hpp"
 extern patch_t * hu_font[HU_FONTSIZE];
 
 // [crispy] add line breaks for lines exceeding screenwidth

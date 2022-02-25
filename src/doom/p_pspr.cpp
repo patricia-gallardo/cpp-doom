@@ -17,8 +17,8 @@
 //	Action functions for weapons.
 //
 
-#include "doomdef.hpp"
 #include "d_event.hpp"
+#include "doomdef.hpp"
 
 #include "deh_misc.hpp"
 

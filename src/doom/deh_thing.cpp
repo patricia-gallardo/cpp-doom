@@ -18,10 +18,10 @@
 #include <cstdio>
 #include <cstdlib>
 
-#include "doomtype.hpp"
 #include "deh_defs.hpp"
 #include "deh_main.hpp"
 #include "deh_mapping.hpp"
+#include "doomtype.hpp"
 #include "info.hpp"
 #include "p_mobj.hpp" // [crispy] MF_*
 

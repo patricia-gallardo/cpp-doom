@@ -19,11 +19,12 @@
 
 #ifdef _WIN32
 
+#include <cassert>
 #include <cstdio>
 
 #define WIN32_LEAN_AND_MEAN
 #include <windows.h>
-#include <cassert>
+// intentional newline to avoid reordering by Clang Format
 
 #include "opl.hpp"
 #include "opl_internal.hpp"

@@ -19,9 +19,9 @@
 //
 
 // [crispy] std::abs()
-#include <cstdlib>
-#include "doomdef.hpp"
 #include "d_event.hpp"
+#include "doomdef.hpp"
+#include <cstdlib>
 
 #include "p_local.hpp"
 

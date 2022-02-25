@@ -37,8 +37,8 @@
 #include "doomdef.hpp"
 #include "p_local.hpp"
 
-#include "s_sound.hpp"
 #include "s_musinfo.hpp" // [crispy] S_ParseMusInfo()
+#include "s_sound.hpp"
 
 #include "doomstat.hpp"
 

@@ -19,10 +19,10 @@
 #include <cstdlib>
 #include <cstring>
 
-#include "doomdef.hpp"
 #include "deh_defs.hpp"
 #include "deh_io.hpp"
 #include "deh_main.hpp"
+#include "doomdef.hpp"
 #include "p_local.hpp"
 
 static void * DEH_AmmoStart(deh_context_t * context, char * line) {

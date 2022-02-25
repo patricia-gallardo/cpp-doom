@@ -22,7 +22,7 @@
 
 #include <fmt/printf.h>
 
-#include "SDL.h"
+#include <SDL.h>
 
 #include "opl.hpp"
 #include "opl_internal.hpp"

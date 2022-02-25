@@ -35,8 +35,8 @@
 #include "w_wad.hpp"
 #include "z_zone.hpp"
 
-#include "s_musinfo.hpp"
 #include "lump.hpp"
+#include "s_musinfo.hpp"
 
 // MACROS ------------------------------------------------------------------
 

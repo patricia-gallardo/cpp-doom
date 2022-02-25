@@ -19,8 +19,8 @@
 #include "txt_gui.hpp"
 #include "txt_io.hpp"
 #include "txt_widget.hpp"
-#include <vector>
 #include <memory>
+#include <vector>
 
 struct txt_callback_t {
   char *              signal_name;

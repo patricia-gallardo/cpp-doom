@@ -19,7 +19,7 @@
 #ifndef __I_SWAP__
 #define __I_SWAP__
 
-#include "SDL_endian.h"
+#include <SDL_endian.h>
 
 // Endianess handling.
 // WAD files are stored little endian.

@@ -18,12 +18,12 @@
 
 #include <array>
 
-#include "SDL.h"
-#include "SDL_keycode.h"
+#include <SDL.h>
+#include <SDL_keycode.h>
 
+#include "d_event.hpp"
 #include "doomkeys.hpp"
 #include "doomtype.hpp"
-#include "d_event.hpp"
 #include "i_input.hpp"
 #include "m_config.hpp"
 

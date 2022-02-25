@@ -18,15 +18,15 @@
 // read the deutex source code made my brain hurt.
 //
 
+#include <cctype>
 #include <cstdlib>
 #include <cstring>
-#include <cctype>
 
-#include "memory.hpp"
 #include "doomtype.hpp"
 #include "i_swap.hpp" // [crispy] LONG()
 #include "i_system.hpp"
 #include "m_misc.hpp"
+#include "memory.hpp"
 #include "w_merge.hpp"
 #include "w_wad.hpp"
 #include "z_zone.hpp"

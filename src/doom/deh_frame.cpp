@@ -18,11 +18,11 @@
 #include <cstdio>
 #include <cstdlib>
 
-#include "info.hpp"
 #include "deh_defs.hpp"
 #include "deh_io.hpp"
 #include "deh_main.hpp"
 #include "deh_mapping.hpp"
+#include "info.hpp"
 
 DEH_BEGIN_MAPPING(state_mapping, state_t)
 DEH_MAPPING("Sprite number", sprite)

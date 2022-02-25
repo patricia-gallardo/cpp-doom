@@ -16,8 +16,8 @@
 //	WAD I/O functions.
 //
 
-#include "memory.hpp"
 #include "m_misc.hpp"
+#include "memory.hpp"
 #include "w_file.hpp"
 #include "z_zone.hpp"
 

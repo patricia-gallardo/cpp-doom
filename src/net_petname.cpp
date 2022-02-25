@@ -15,10 +15,10 @@
 //     Generate a randomized, private, memorable name for a Player
 //
 
+#include "m_misc.hpp"
 #include <array>
 #include <cstdlib>
 #include <ctime>
-#include "m_misc.hpp"
 
 static const char * const adjectives[] = {
   "Grumpy",

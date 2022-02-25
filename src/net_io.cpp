@@ -16,10 +16,10 @@
 //     through the network module system
 //
 
-#include "memory.hpp"
-#include "i_system.hpp"
-#include "net_defs.hpp"
 #include "net_io.hpp"
+#include "i_system.hpp"
+#include "memory.hpp"
+#include "net_defs.hpp"
 #include "z_zone.hpp"
 
 #define MAX_MODULES 16

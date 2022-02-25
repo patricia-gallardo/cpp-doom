@@ -20,18 +20,18 @@
 //     DMXGUS lump into an equivalent Timidity configuration file.
 //
 
+#include <cctype>
 #include <cstdio>
 #include <cstdlib>
 #include <cstring>
-#include <cctype>
 
 #include <fmt/printf.h>
 
-#include "memory.hpp"
+#include "gusconf.hpp"
 #include "m_misc.hpp"
+#include "memory.hpp"
 #include "w_wad.hpp"
 #include "z_zone.hpp"
-#include "gusconf.hpp"
 
 constexpr auto MAX_INSTRUMENTS = 256;
 

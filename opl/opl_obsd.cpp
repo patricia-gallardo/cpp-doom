@@ -23,16 +23,16 @@
 
 #if defined(HAVE_LIBI386)
 
-#include <sys/types.h>
-#include <machine/sysarch.h>
 #include <i386/pio.h>
+#include <machine/sysarch.h>
+#include <sys/types.h>
 #define set_iopl i386_iopl
 
 #elif defined(HAVE_LIBAMD64)
 
-#include <sys/types.h>
-#include <machine/sysarch.h>
 #include <amd64/pio.h>
+#include <machine/sysarch.h>
+#include <sys/types.h>
 #define set_iopl amd64_iopl
 
 #else
@@ -43,9 +43,9 @@
 
 #ifndef NO_OBSD_DRIVER
 
+#include <errno.h>
 #include <stdio.h>
 #include <string.h>
-#include <errno.h>
 #include <unistd.h>
 
 #include <fmt/printf.h>

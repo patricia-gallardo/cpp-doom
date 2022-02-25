@@ -15,16 +15,16 @@
 // Parses Text substitution sections in dehacked files
 //
 
-#include <cstring>
 #include <cstdarg>
+#include <cstring>
 
 #include <fmt/printf.h>
 
 #include "deh_str.hpp"
 #include "m_misc.hpp"
 
-#include "z_zone.hpp"
 #include "memory.hpp"
+#include "z_zone.hpp"
 
 struct deh_substitution_t {
   char * from_text;

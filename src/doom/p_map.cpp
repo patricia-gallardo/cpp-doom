@@ -24,9 +24,9 @@
 
 #include "deh_misc.hpp"
 
+#include "i_system.hpp"
 #include "m_bbox.hpp"
 #include "m_random.hpp"
-#include "i_system.hpp"
 
 #include "doomdef.hpp"
 #include "m_argv.hpp"

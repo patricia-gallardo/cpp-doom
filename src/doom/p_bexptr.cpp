@@ -18,8 +18,8 @@
 //	[crispy] additional BOOM and MBF code pointers
 //
 
-#include "p_local.hpp"
 #include "m_random.hpp"
+#include "p_local.hpp"
 #include "s_sound.hpp"
 
 extern void A_Explode(mobj_t * thingy);

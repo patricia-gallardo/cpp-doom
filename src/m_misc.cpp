@@ -17,16 +17,17 @@
 //      Miscellaneous.
 //
 
-#include <cstdlib>
-#include <cstring>
 #include <cctype>
 #include <cerrno>
+#include <cstdlib>
+#include <cstring>
 
 #include <fmt/printf.h>
 
 #ifdef _WIN32
 #define WIN32_LEAN_AND_MEAN
 #include <windows.h>
+// intentional newline to avoid reordering by Clang Format
 #include <io.h>
 #ifdef _MSC_VER
 #include <direct.h>
@@ -36,9 +37,9 @@
 #endif
 
 #include "doomtype.hpp"
-#include "memory.hpp"
 #include "i_system.hpp"
 #include "m_misc.hpp"
+#include "memory.hpp"
 #include "z_zone.hpp"
 
 //

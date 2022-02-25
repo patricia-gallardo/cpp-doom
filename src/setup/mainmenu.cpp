@@ -28,8 +28,8 @@
 #include "m_misc.hpp"
 #include "z_zone.hpp"
 
-#include "setup_icon.cpp"
 #include "mode.hpp"
+#include "setup_icon.cpp"
 
 #include "compatibility.hpp"
 #include "display.hpp"

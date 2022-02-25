@@ -17,8 +17,8 @@
 #include "doomkeys.hpp"
 
 #include "m_config.hpp"
-#include "m_misc.hpp"
 #include "m_controls.hpp"
+#include "m_misc.hpp"
 
 static m_controls_t m_controls_s = {
   .key_right   = KEY_RIGHTARROW,

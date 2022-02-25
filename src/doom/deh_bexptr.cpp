@@ -19,10 +19,10 @@
 #include <cstdio>
 #include <cstring>
 
-#include "info.hpp"
 #include "deh_io.hpp"
 #include "deh_main.hpp"
 #include "event_function_decls.hpp"
+#include "info.hpp"
 
 struct bex_codeptr_t {
   const char *    mnemonic;

@@ -20,12 +20,12 @@
 #include <cstdlib>
 #include <cstring>
 
-#include "memory.hpp"
 #include "d_iwad.hpp"
 #include "deh_str.hpp"
 #include "i_system.hpp"
 #include "m_argv.hpp"
 #include "m_misc.hpp"
+#include "memory.hpp"
 #ifdef WIN32
 #include "m_config.hpp"
 #endif
@@ -84,6 +84,7 @@ static void AddIWADDir(char * dir) {
 
 #define WIN32_LEAN_AND_MEAN
 #include <windows.h>
+// intentional newline to avoid reordering by Clang Format
 
 struct registry_value_t {
   HKEY   root;

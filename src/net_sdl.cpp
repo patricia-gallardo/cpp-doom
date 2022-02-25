@@ -20,10 +20,10 @@
 
 #include <fmt/printf.h>
 
-#include "memory.hpp"
 #include "i_system.hpp"
 #include "m_argv.hpp"
 #include "m_misc.hpp"
+#include "memory.hpp"
 #include "net_defs.hpp"
 #include "net_io.hpp"
 #include "net_packet.hpp"

@@ -22,18 +22,18 @@
 
 #include <fmt/printf.h>
 
-#include "SDL.h"
-#include "SDL_mixer.h"
+#include <SDL.h>
+#include <SDL_mixer.h>
 
-#include "i_midipipe.hpp"
 #include "config.h"
 #include "doomtype.hpp"
-#include "memio.hpp"
-#include "mus2mid.hpp"
 #include "gusconf.hpp"
+#include "i_midipipe.hpp"
 #include "i_sound.hpp"
 #include "i_swap.hpp"
 #include "m_misc.hpp"
+#include "memio.hpp"
+#include "mus2mid.hpp"
 #include "z_zone.hpp"
 
 #define MAXMIDLENGTH (96 * 1024)

@@ -21,12 +21,13 @@
 #ifdef _WIN32
 
 #include <cstdio>
+#include <memory.hpp>
 
 #include <fmt/printf.h>
 
 #define WIN32_LEAN_AND_MEAN
 #include <windows.h>
-#include <memory.hpp>
+// intentional newline to avoid reordering by Clang Format
 
 #include "i_system.hpp"
 #include "m_misc.hpp"

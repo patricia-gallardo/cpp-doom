@@ -28,11 +28,13 @@
 
 #define WIN32_LEAN_AND_MEAN
 #include <windows.h>
+// intentional newline to avoid reordering by Clang Format
+
 #include <cstdio>
 #include <cstdlib>
 
-#include "SDL.h"
-#include "SDL_mixer.h"
+#include <SDL.h>
+#include <SDL_mixer.h>
 
 #include "buffer.hpp"
 #include "proto.hpp"

@@ -12,9 +12,9 @@
 // GNU General Public License for more details.
 //
 
+#include <cstdarg>
 #include <cstdio>
 #include <cstdlib>
-#include <cstdarg>
 #include <cstring>
 
 #include <fmt/printf.h>
@@ -31,6 +31,7 @@
 #ifdef _WIN32
 #define WIN32_LEAN_AND_MEAN
 #include <windows.h>
+// intentional newline to avoid reordering by Clang Format
 #include <shellapi.h>
 #endif
 

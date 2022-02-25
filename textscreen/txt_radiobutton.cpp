@@ -17,12 +17,12 @@
 
 #include "doomkeys.hpp"
 
-#include "txt_radiobutton.hpp"
+#include "memory.hpp"
 #include "txt_gui.hpp"
 #include "txt_io.hpp"
 #include "txt_main.hpp"
+#include "txt_radiobutton.hpp"
 #include "txt_utf8.hpp"
-#include "memory.hpp"
 
 static void TXT_RadioButtonSizeCalc(void * uncast_radiobutton) {
   auto * radiobutton = reinterpret_cast<txt_radiobutton_t *>(uncast_radiobutton);

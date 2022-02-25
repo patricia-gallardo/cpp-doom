@@ -15,8 +15,8 @@
 //       SDL Joystick code.
 //
 
-#include "SDL.h"
-#include "SDL_joystick.h"
+#include <SDL.h>
+#include <SDL_joystick.h>
 
 #include <cstdio>
 #include <cstring>

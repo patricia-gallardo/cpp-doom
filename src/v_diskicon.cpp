@@ -20,12 +20,12 @@
 
 #include "doomtype.hpp"
 #include "i_video.hpp"
-#include "v_video.hpp"
-#include "w_wad.hpp"
-#include "z_zone.hpp"
 #include "lump.hpp"
 #include "memory.hpp"
 #include "v_diskicon.hpp"
+#include "v_video.hpp"
+#include "w_wad.hpp"
+#include "z_zone.hpp"
 
 // Only display the disk icon if more then this much bytes have been read
 // during the previous tic.

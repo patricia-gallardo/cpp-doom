@@ -14,9 +14,9 @@
 // Common code shared between the client and server
 //
 
+#include <cstdarg>
 #include <cstdio>
 #include <cstdlib>
-#include <cstdarg>
 
 #include <fmt/printf.h>
 

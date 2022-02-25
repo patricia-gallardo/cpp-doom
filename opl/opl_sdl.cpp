@@ -17,13 +17,13 @@
 
 #include "config.h"
 
-#include <cstdio>
 #include <cassert>
+#include <cstdio>
 
 #include <fmt/printf.h>
 
-#include "SDL.h"
-#include "SDL_mixer.h"
+#include <SDL.h>
+#include <SDL_mixer.h>
 
 #include "opl3.hpp"
 

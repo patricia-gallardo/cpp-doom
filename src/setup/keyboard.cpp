@@ -12,18 +12,18 @@
 // GNU General Public License for more details.
 //
 
-#include "textscreen.hpp"
 #include "doomtype.hpp"
 #include "m_config.hpp"
 #include "m_controls.hpp"
 #include "m_misc.hpp"
+#include "textscreen.hpp"
 
 #include "execute.hpp"
 #include "txt_keyinput.hpp"
 
-#include "mode.hpp"
 #include "joystick.hpp"
 #include "keyboard.hpp"
+#include "mode.hpp"
 
 #define WINDOW_HELP_URL "https://www.chocolate-doom.org/setup-keyboard"
 

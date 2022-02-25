@@ -20,21 +20,13 @@
 
 #include <fmt/printf.h>
 
-#include "SDL.h"
-#include "SDL_opengl.h"
-
-#ifdef _WIN32
-#ifndef WIN32_LEAN_AND_MEAN
-#define WIN32_LEAN_AND_MEAN
-#endif
-#include <windows.h>
-#endif
+#include <SDL.h>
+#include <SDL_opengl.h>
 
 #include "icon.cpp"
 
 #include "crispy.hpp"
 
-#include "lump.hpp"
 #include "config.h"
 #include "d_loop.hpp"
 #include "deh_str.hpp"
@@ -44,6 +36,7 @@
 #include "i_system.hpp"
 #include "i_timer.hpp"
 #include "i_video.hpp"
+#include "lump.hpp"
 #include "m_argv.hpp"
 #include "m_config.hpp"
 #include "m_misc.hpp"

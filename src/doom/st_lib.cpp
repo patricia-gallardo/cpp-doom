@@ -16,17 +16,17 @@
 //	The status bar widget code.
 //
 
+#include "st_lib.hpp"
 #include "deh_main.hpp"
-#include "z_zone.hpp"
-#include "v_video.hpp"
+#include "doomstat.hpp"
 #include "i_swap.hpp"
 #include "i_system.hpp"
-#include "w_wad.hpp"
-#include "st_stuff.hpp"
-#include "st_lib.hpp"
 #include "lump.hpp"
+#include "st_stuff.hpp"
 #include "v_trans.hpp" // [crispy] colored status bar widgets
-#include "doomstat.hpp"
+#include "v_video.hpp"
+#include "w_wad.hpp"
+#include "z_zone.hpp"
 
 extern int screenblocks;
 

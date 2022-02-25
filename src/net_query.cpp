@@ -15,8 +15,8 @@
 //     Querying servers to find their current status.
 //
 
-#include <cstdio>
 #include <cstdarg>
+#include <cstdio>
 #include <cstdlib>
 #include <cstring>
 
@@ -31,8 +31,8 @@
 #include "net_io.hpp"
 #include "net_packet.hpp"
 #include "net_query.hpp"
-#include "net_structrw.hpp"
 #include "net_sdl.hpp"
+#include "net_structrw.hpp"
 
 // DNS address of the Internet master server.
 

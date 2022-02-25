@@ -16,8 +16,8 @@
 //
 
 #include <array>
-#include "SDL.h"
 #include <cstring>
+#include <SDL.h>
 
 #include "doomtype.hpp"
 

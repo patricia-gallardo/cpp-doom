@@ -15,20 +15,20 @@
 // Dehacked I/O code (does all reads from dehacked files)
 //
 
+#include <cctype>
 #include <cstdarg>
 #include <cstdio>
 #include <cstdlib>
 #include <cstring>
-#include <cctype>
 
 #include "m_misc.hpp"
 #include "w_wad.hpp"
 #include "z_zone.hpp"
 
-#include "lump.hpp"
-#include "memory.hpp"
 #include "deh_defs.hpp"
 #include "deh_io.hpp"
+#include "lump.hpp"
+#include "memory.hpp"
 
 static deh_context_t * DEH_NewContext() {
   deh_context_t * context = zmalloc<decltype(context)>(sizeof(*context), PU_STATIC, nullptr);

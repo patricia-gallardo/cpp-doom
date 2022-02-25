@@ -16,43 +16,43 @@
 //
 
 #include <array>
-#include <cstring>
 #include <cstdlib>
+#include <cstring>
 
 #include <fmt/printf.h>
 
 #include "doomdef.hpp"
 #include "doomstat.hpp"
 
+#include "deh_bexpars.hpp" // [crispy] bex_pars[]
 #include "deh_main.hpp"
 #include "deh_misc.hpp"
-#include "deh_bexpars.hpp" // [crispy] bex_pars[]
 
-#include "z_zone.hpp"
 #include "f_finale.hpp"
-#include "m_argv.hpp"
-#include "m_controls.hpp"
-#include "m_misc.hpp"
-#include "m_menu.hpp"
-#include "m_random.hpp"
-#include "i_system.hpp"
-#include "i_timer.hpp"
 #include "i_input.hpp"
 #include "i_swap.hpp"
+#include "i_system.hpp"
+#include "i_timer.hpp"
 #include "i_video.hpp"
+#include "m_argv.hpp"
+#include "m_controls.hpp"
+#include "m_menu.hpp"
+#include "m_misc.hpp"
+#include "m_random.hpp"
+#include "z_zone.hpp"
 
-#include "p_setup.hpp"
-#include "p_saveg.hpp"
 #include "p_extsaveg.hpp"
+#include "p_saveg.hpp"
+#include "p_setup.hpp"
 #include "p_tick.hpp"
 
 #include "d_main.hpp"
 
-#include "wi_stuff.hpp"
+#include "am_map.hpp"
 #include "hu_stuff.hpp"
 #include "st_stuff.hpp"
-#include "am_map.hpp"
 #include "statdump.hpp"
+#include "wi_stuff.hpp"
 
 // Needs access to LFB.
 #include "v_video.hpp"
@@ -71,9 +71,9 @@
 #include "r_data.hpp"
 #include "r_sky.hpp"
 
+#include "g_game.hpp"
 #include "lump.hpp"
 #include "memory.hpp"
-#include "g_game.hpp"
 #include "v_trans.hpp" // [crispy] colored "always run" message
 
 [[maybe_unused]] constexpr auto SAVEGAMESIZE = 0x2c000;

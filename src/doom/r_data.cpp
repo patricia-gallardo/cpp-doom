@@ -31,8 +31,8 @@
 
 #include "doomdef.hpp"
 #include "m_misc.hpp"
-#include "r_local.hpp"
 #include "p_local.hpp"
+#include "r_local.hpp"
 
 #include "doomstat.hpp"
 #include "r_sky.hpp"

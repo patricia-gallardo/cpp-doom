@@ -17,10 +17,10 @@
 //     waking up to invoke callbacks set using OPL_Timer_SetCallback.
 //
 
-#include "SDL.h"
+#include <SDL.h>
 
-#include "opl_timer.hpp"
 #include "opl_queue.hpp"
+#include "opl_timer.hpp"
 
 enum thread_state_t
 {

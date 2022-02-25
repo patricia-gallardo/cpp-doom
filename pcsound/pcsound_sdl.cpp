@@ -19,8 +19,8 @@
 
 #include <fmt/printf.h>
 
-#include "SDL.h"
-#include "SDL_mixer.h"
+#include <SDL.h>
+#include <SDL_mixer.h>
 
 #include "pcsound.hpp"
 #include "pcsound_internal.hpp"

@@ -25,11 +25,12 @@
 #ifdef _WIN32
 #define WIN32_LEAN_AND_MEAN
 #include <windows.h>
+// intentional newline to avoid reordering by Clang Format
 #else
 #include <unistd.h>
 #endif
 
-#include "SDL.h"
+#include <SDL.h>
 
 #include "config.h"
 

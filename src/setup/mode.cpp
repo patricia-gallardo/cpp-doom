@@ -20,9 +20,9 @@
 #include "config.h"
 #include "textscreen.hpp"
 
-#include "doomtype.hpp"
-#include "d_mode.hpp"
 #include "d_iwad.hpp"
+#include "d_mode.hpp"
+#include "doomtype.hpp"
 #include "i_system.hpp"
 #include "m_argv.hpp"
 #include "m_config.hpp"

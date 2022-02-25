@@ -19,7 +19,7 @@
 
 #include <fmt/printf.h>
 
-#include "SDL_mixer.h"
+#include <SDL_mixer.h>
 
 #include "config.h"
 

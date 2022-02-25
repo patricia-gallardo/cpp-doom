@@ -14,11 +14,11 @@
 
 // Code for invoking Doom
 
+#include <cctype>
 #include <cstdarg>
 #include <cstdio>
 #include <cstdlib>
 #include <cstring>
-#include <cctype>
 
 #include <fmt/printf.h>
 
@@ -26,6 +26,7 @@
 
 #define WIN32_LEAN_AND_MEAN
 #include <windows.h>
+// intentional newline to avoid reordering by Clang Format
 #include <process.h>
 #include <shellapi.h>
 
@@ -40,10 +41,10 @@
 
 #include "config.h"
 #include "execute.hpp"
-#include "mode.hpp"
 #include "m_argv.hpp"
 #include "m_config.hpp"
 #include "m_misc.hpp"
+#include "mode.hpp"
 
 struct execute_context_t {
   char * response_file;

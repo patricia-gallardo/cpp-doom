@@ -13,9 +13,9 @@
 //
 
 #include <cctype>
+#include <cmath>
 #include <cstdlib>
 #include <cstring>
-#include <cmath>
 
 #include "doomkeys.hpp"
 

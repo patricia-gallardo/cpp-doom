@@ -17,12 +17,12 @@
 
 #include "doomkeys.hpp"
 
+#include "memory.hpp"
 #include "txt_checkbox.hpp"
 #include "txt_gui.hpp"
 #include "txt_io.hpp"
 #include "txt_main.hpp"
 #include "txt_utf8.hpp"
-#include "memory.hpp"
 
 static void TXT_CheckBoxSizeCalc(void * uncast_checkbox) {
   auto * checkbox = reinterpret_cast<txt_checkbox_t *>(uncast_checkbox);
