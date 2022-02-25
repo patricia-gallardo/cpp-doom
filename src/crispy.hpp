@@ -24,9 +24,6 @@
 
 #include <algorithm>
 
-#ifndef MAX
-#define MAX(a, b) std::max(a, b) //(((a) > (b)) ? (a) : (b))
-#endif
 #ifndef BETWEEN
 #define BETWEEN(l, u, x) std::clamp(x, l, u) // (((l) > (x)) ? (l) : ((x) > (u)) ? (u) : \
                             //                                (x))

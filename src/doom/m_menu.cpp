@@ -2468,7 +2468,7 @@ void M_Init() {
     SaveDef_x = (ORIGWIDTH - SHORT(patchs->width)) / 2 + SHORT(patchs->leftoffset);
     LoadDef.x = SaveDef.x = static_cast<short>((ORIGWIDTH - 24 * 8) / 2 + SHORT(patchm->leftoffset)); // [crispy] see M_DrawSaveLoadBorder()
 
-    short captionheight = MAX(SHORT(patchl->height), SHORT(patchs->height));
+    short captionheight = std::max((static_cast<signed short>((patchl->height))), (static_cast<signed short>((patchs->height))));
 
     short vstep = ORIGHEIGHT - 32; // [crispy] ST_HEIGHT
     vstep       = static_cast<short>(vstep - captionheight);
