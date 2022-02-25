@@ -952,7 +952,7 @@ void P_SetupLevel(int episode, int map, int, skill_t skill) {
         g_doomstat_globals->nomonsters ? " -nomonsters" : "",
         nullptr);
 
-    fmt::fprintf(stderr, "P_SetupLevel: %s (%s) %s%s %d:%02d:%02d/%d:%02d:%02d ", maplumpinfo->name, W_WadNameForLump(maplumpinfo), skilltable[BETWEEN(0, 5, static_cast<int>(skill) + 1)], rfn_str, ltime / 3600, (ltime % 3600) / 60, ltime % 60, ttime / 3600, (ttime % 3600) / 60, ttime % 60);
+    fmt::fprintf(stderr, "P_SetupLevel: %s (%s) %s%s %d:%02d:%02d/%d:%02d:%02d ", maplumpinfo->name, W_WadNameForLump(maplumpinfo), skilltable[std::clamp(static_cast<int>(skill) + 1, 0, 5)], rfn_str, ltime / 3600, (ltime % 3600) / 60, ltime % 60, ttime / 3600, (ttime % 3600) / 60, ttime % 60);
 
     free(rfn_str);
   }

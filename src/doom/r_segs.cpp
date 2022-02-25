@@ -506,7 +506,7 @@ void R_StoreWallRange(int start,
   dx1                            = (static_cast<int64_t>(g_r_state_globals->viewx) - curline->v1->r_x) >> 1;
   dy1                            = (static_cast<int64_t>(g_r_state_globals->viewy) - curline->v1->r_y) >> 1;
   dist                           = ((dy * dx1 - dx * dy1) / len) << 1;
-  g_r_state_globals->rw_distance = static_cast<fixed_t>(BETWEEN(INT_MIN, INT_MAX, dist));
+  g_r_state_globals->rw_distance = static_cast<fixed_t>(std::clamp<int64_t>(dist, std::numeric_limits<int32_t>::min(), std::numeric_limits<int32_t>::max()));
 
   ds_p->x1 = rw_x = start;
   ds_p->x2        = stop;

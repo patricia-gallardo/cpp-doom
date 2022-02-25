@@ -1042,7 +1042,7 @@ bool
             extern const char *skilltable[];
 
             M_snprintf(msg, sizeof(msg), "Skill: %s",
-                skilltable[BETWEEN(0, 5, static_cast<int>(g_doomstat_globals->gameskill) + 1)]);
+                skilltable[std::clamp(static_cast<int>(g_doomstat_globals->gameskill)+1,0,5)]);
             plyr->message = msg;
         }
 

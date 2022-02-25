@@ -171,9 +171,7 @@ void P_MovePlayer(player_t * player) {
     }
   }
   if (!g_doomstat_globals->menuactive && !g_doomstat_globals->demoplayback) {
-    player->lookdir = BETWEEN(-LOOKDIRMIN * MLOOKUNIT,
-                              LOOKDIRMAX * MLOOKUNIT,
-                              player->lookdir + cmd->lookdir);
+    player->lookdir = std::clamp(player->lookdir + cmd->lookdir, -110 * MLOOKUNIT, 90 * MLOOKUNIT);
   }
 }
 

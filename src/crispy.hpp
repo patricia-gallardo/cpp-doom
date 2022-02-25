@@ -24,11 +24,6 @@
 
 #include <algorithm>
 
-#ifndef BETWEEN
-#define BETWEEN(l, u, x) std::clamp(x, l, u) // (((l) > (x)) ? (l) : ((x) > (u)) ? (u) : \
-                            //                                (x))
-#endif
-
 struct crispy_t {
   // [crispy] "crispness" config variables
   int automapoverlay {};

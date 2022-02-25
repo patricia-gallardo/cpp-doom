@@ -1770,7 +1770,7 @@ void G_DoSaveGame() {
               ttime = (g_doomstat_globals->totalleveltimes + leveltime) / TICRATE;
     extern const char * skilltable[];
 
-    fmt::fprintf(stderr, "G_DoSaveGame: Episode %d, Map %d, %s, Time %d:%02d:%02d, Total %d:%02d:%02d.\n", g_doomstat_globals->gameepisode, g_doomstat_globals->gamemap, skilltable[BETWEEN(0, 5, static_cast<int>(g_doomstat_globals->gameskill) + 1)], ltime / 3600, (ltime % 3600) / 60, ltime % 60, ttime / 3600, (ttime % 3600) / 60, ttime % 60);
+    fmt::fprintf(stderr, "G_DoSaveGame: Episode %d, Map %d, %s, Time %d:%02d:%02d, Total %d:%02d:%02d.\n", g_doomstat_globals->gameepisode, g_doomstat_globals->gamemap, skilltable[std::clamp(static_cast<int>(g_doomstat_globals->gameskill) + 1, 0, 5)], ltime / 3600, (ltime % 3600) / 60, ltime % 60, ttime / 3600, (ttime % 3600) / 60, ttime % 60);
   }
 
   P_ArchivePlayers();

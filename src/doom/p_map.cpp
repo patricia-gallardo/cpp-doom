@@ -998,7 +998,7 @@ bool PTR_ShootTraverse(intercept_t * in) {
         const sector_t * const sector = g_r_state_globals->sides[side].sector;
 
         if (z < sector->floorheight || (z > sector->ceilingheight && sector->ceilingpic != g_doomstat_globals->skyflatnum)) {
-          z    = BETWEEN(sector->floorheight, sector->ceilingheight, z);
+          z    = std::clamp(z, sector->floorheight, sector->ceilingheight);
           frac = FixedDiv(z - shootz, FixedMul(aimslope, attackrange));
           x    = g_p_local_globals->trace.x + FixedMul(g_p_local_globals->trace.dx, frac);
           y    = g_p_local_globals->trace.y + FixedMul(g_p_local_globals->trace.dy, frac);
