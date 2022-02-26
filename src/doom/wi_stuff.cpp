@@ -784,7 +784,7 @@ int WI_fragSum(int playernum) {
 
 static int dm_state;
 static int dm_frags[MAXPLAYERS][MAXPLAYERS];
-static int dm_totals[MAXPLAYERS];
+static std::array<int, MAXPLAYERS> dm_totals;
 
 void WI_initDeathmatchStats() {
   state           = StatCount;
