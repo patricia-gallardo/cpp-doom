@@ -187,7 +187,7 @@ static std::array<patch_t *, 10> shortnum;
 static std::array<patch_t *, NUMCARDS + 3> keys; // [crispy] support combined card and skull keys
 
 // face status patches
-static patch_t * faces[ST_NUMFACES];
+static std::array<patch_t *, ST_NUMFACES> faces;
 
 // face background
 static patch_t * faceback;
@@ -1836,7 +1836,7 @@ void ST_createWidgets() {
   STlib_initMultIcon(&w_faces,
                      ST_FACESX,
                      ST_FACESY,
-                     faces,
+                     faces.data(),
                      &st_faceindex,
                      &st_statusbarface);
 
