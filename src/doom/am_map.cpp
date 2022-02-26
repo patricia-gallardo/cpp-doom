@@ -159,7 +159,8 @@ struct mpoint_t {
 };
 
 struct mline_t {
-  mpoint_t a, b;
+  mpoint_t a{};
+  mpoint_t b{};
 };
 
 struct islope_t {
@@ -181,14 +182,14 @@ enum keycolor_t
 //   starting from the middle.
 //
 #define R ((8 * PLAYERRADIUS) / 7)
-mline_t player_arrow[] = {
-  {{ -R + R / 8, 0 },      { R, 0 }              }, // -----
-  { { R, 0 },              { R - R / 2, R / 4 }  }, // ----->
-  { { R, 0 },              { R - R / 2, -R / 4 } },
-  { { -R + R / 8, 0 },     { -R - R / 8, R / 4 } }, // >---->
-  { { -R + R / 8, 0 },     { -R - R / 8, -R / 4 }},
-  { { -R + 3 * R / 8, 0 }, { -R + R / 8, R / 4 } }, // >>--->
-  { { -R + 3 * R / 8, 0 }, { -R + R / 8, -R / 4 }}
+std::array<mline_t, 7> player_arrow = {
+  mline_t { mpoint_t { -R + R / 8, 0 },     mpoint_t { R, 0 }               }, // -----
+  mline_t { mpoint_t { R, 0 },              mpoint_t { R - R / 2, R / 4 }   }, // ----->
+  mline_t { mpoint_t { R, 0 },              mpoint_t { R - R / 2, -R / 4 }  },
+  mline_t { mpoint_t { -R + R / 8, 0 },     mpoint_t { -R - R / 8, R / 4 }  }, // >---->
+  mline_t { mpoint_t { -R + R / 8, 0 },     mpoint_t { -R - R / 8, -R / 4 } },
+  mline_t { mpoint_t { -R + 3 * R / 8, 0 }, mpoint_t { -R + R / 8, R / 4 }  }, // >>--->
+  mline_t { mpoint_t { -R + 3 * R / 8, 0 }, mpoint_t { -R + R / 8, -R / 4 } }
 };
 #undef R
 
@@ -1381,7 +1382,7 @@ void AM_drawPlayers() {
     if (cheating)
       AM_drawLineCharacter(cheat_player_arrow, static_cast<int>(std::size(cheat_player_arrow)), 0, plr->mo->angle, WHITE, static_cast<fixed_t>(pt.x), static_cast<fixed_t>(pt.y));
     else
-      AM_drawLineCharacter(player_arrow, static_cast<int>(std::size(player_arrow)), 0, plr->mo->angle, WHITE, static_cast<fixed_t>(pt.x), static_cast<fixed_t>(pt.y));
+      AM_drawLineCharacter(player_arrow.data(), static_cast<int>(std::size(player_arrow)), 0, plr->mo->angle, WHITE, static_cast<fixed_t>(pt.x), static_cast<fixed_t>(pt.y));
     return;
   }
 
@@ -1407,7 +1408,7 @@ void AM_drawPlayers() {
       AM_rotatePoint(&pt);
     }
 
-    AM_drawLineCharacter(player_arrow, static_cast<int>(std::size(player_arrow)), 0, p->mo->angle, color, static_cast<fixed_t>(pt.x), static_cast<fixed_t>(pt.y));
+    AM_drawLineCharacter(player_arrow.data(), static_cast<int>(std::size(player_arrow)), 0, p->mo->angle, color, static_cast<fixed_t>(pt.x), static_cast<fixed_t>(pt.y));
   }
 }
 
