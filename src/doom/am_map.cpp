@@ -916,16 +916,17 @@ bool AM_clipMline(mline_t * ml,
   int      dx = 0;
   int      dy = 0;
 
-#define DOOUTCODE(oc, mx, my) \
-  (oc) = 0;                   \
-  if ((my) < 0)               \
-    (oc) |= TOP;              \
-  else if ((my) >= f_h)       \
-    (oc) |= BOTTOM;           \
-  if ((mx) < 0)               \
-    (oc) |= LEFT;             \
-  else if ((mx) >= f_w)       \
-    (oc) |= RIGHT;
+auto DOOUTCODE = [](auto & oc, const auto & mx, const auto & my) {
+    (oc) = 0;
+    if ((my) < 0)
+      (oc) |= TOP;
+    else if ((my) >= f_h)
+      (oc) |= BOTTOM;
+    if ((mx) < 0)
+      (oc) |= LEFT;
+    else if ((mx) >= f_w)
+      (oc) |= RIGHT;
+  };
 
   // do trivial rejects and outcodes
   if (ml->a.y > m_y2)
@@ -1014,7 +1015,6 @@ bool AM_clipMline(mline_t * ml,
 
   return true;
 }
-#undef DOOUTCODE
 
 //
 // Classic Bresenham w/ whatever optimizations needed for speed
