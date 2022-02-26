@@ -184,7 +184,7 @@ static patch_t * tallpercent;
 static std::array<patch_t *, 10> shortnum;
 
 // 3 key-cards, 3 skulls
-static patch_t * keys[NUMCARDS + 3]; // [crispy] support combined card and skull keys
+static std::array<patch_t *, NUMCARDS + 3> keys; // [crispy] support combined card and skull keys
 
 // face status patches
 static patch_t * faces[ST_NUMFACES];
@@ -1853,21 +1853,21 @@ void ST_createWidgets() {
   STlib_initMultIcon(&w_keyboxes[0],
                      ST_KEY0X,
                      ST_KEY0Y,
-                     keys,
+                     keys.data(),
                      &keyboxes[0],
                      &st_statusbaron);
 
   STlib_initMultIcon(&w_keyboxes[1],
                      ST_KEY1X,
                      ST_KEY1Y,
-                     keys,
+                     keys.data(),
                      &keyboxes[1],
                      &st_statusbaron);
 
   STlib_initMultIcon(&w_keyboxes[2],
                      ST_KEY2X,
                      ST_KEY2Y,
-                     keys,
+                     keys.data(),
                      &keyboxes[2],
                      &st_statusbaron);
 
