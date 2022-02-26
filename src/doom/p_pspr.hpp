@@ -16,8 +16,7 @@
 //  Sprite animation.
 //
 
-#ifndef __P_PSPR__
-#define __P_PSPR__
+#pragma once
 
 // Basic data types.
 // Needs fixed point, and BAM angles.
@@ -65,5 +64,3 @@ struct pspdef_t {
   fixed_t sx2;
   fixed_t sy2;
 };
-
-#endif

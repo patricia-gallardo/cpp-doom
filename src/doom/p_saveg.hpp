@@ -16,8 +16,7 @@
 //	Savegame I/O, archiving, persistence.
 //
 
-#ifndef __P_SAVEG__
-#define __P_SAVEG__
+#pragma once
 
 #include <cstdio>
 
@@ -60,5 +59,3 @@ void P_RestoreTargets();
 
 extern FILE * save_stream;
 extern bool   savegame_error;
-
-#endif

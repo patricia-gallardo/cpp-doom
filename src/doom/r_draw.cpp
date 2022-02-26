@@ -36,10 +36,6 @@
 #include "lump.hpp"
 #include "memory.hpp"
 
-// ?
-//#define MAXWIDTH			1120
-//#define MAXHEIGHT			832
-
 // status bar height at bottom of screen
 #define SBARHEIGHT (32 << crispy->hires)
 

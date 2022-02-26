@@ -16,8 +16,7 @@
 //      Refresh/rendering module, shared data struct definitions.
 //
 
-#ifndef __R_DEFS__
-#define __R_DEFS__
+#pragma once
 
 // Screenwidth.
 #include "doomdef.hpp"
@@ -435,5 +434,3 @@ struct laserpatch_t {
   int  l, w, h;
 };
 extern laserpatch_t * laserpatch;
-
-#endif

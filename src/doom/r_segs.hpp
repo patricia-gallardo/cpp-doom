@@ -16,11 +16,8 @@
 //	Refresh module, drawing LineSegs from BSP.
 //
 
-#ifndef __R_SEGS__
-#define __R_SEGS__
+#pragma once
 
 void R_RenderMaskedSegRange(drawseg_t * ds,
                             int         x1,
                             int         x2);
-
-#endif

@@ -16,8 +16,7 @@
 //
 //
 
-#ifndef __P_INTER__
-#define __P_INTER__
+#pragma once
 
 #include "dstrings.hpp"
 
@@ -35,5 +34,3 @@ static constexpr const char * const WeaponPickupMessages[NUMWEAPONS] = {
   GOTCHAINSAW,
   GOTSHOTGUN2,
 };
-
-#endif

@@ -16,8 +16,7 @@
 //	System specific interface stuff.
 //
 
-#ifndef __D_MAIN__
-#define __D_MAIN__
+#pragma once
 
 #include "doomdef.hpp"
 
@@ -39,5 +38,3 @@ void D_StartTitle();
 //
 
 extern gameaction_t gameaction;
-
-#endif

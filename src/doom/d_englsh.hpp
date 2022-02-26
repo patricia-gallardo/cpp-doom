@@ -17,8 +17,7 @@
 //	English language support (default).
 //
 
-#ifndef __D_ENGLSH__
-#define __D_ENGLSH__
+#pragma once
 
 //
 //	Printed strings for translation
@@ -764,5 +763,3 @@ constexpr auto CC_ARCH    = "ARCH-VILE";
 constexpr auto CC_SPIDER  = "THE SPIDER MASTERMIND";
 constexpr auto CC_CYBER   = "THE CYBERDEMON";
 constexpr auto CC_HERO    = "OUR HERO";
-
-#endif

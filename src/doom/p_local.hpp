@@ -16,8 +16,7 @@
 //	Play functions, animation, global header.
 //
 
-#ifndef __P_LOCAL__
-#define __P_LOCAL__
+#pragma once
 
 #ifndef __R_LOCAL__
 #include "r_local.hpp"
@@ -311,5 +310,3 @@ extern p_local_t * const g_p_local_globals;
 // P_SPEC
 //
 #include "p_spec.hpp"
-
-#endif // __P_LOCAL__

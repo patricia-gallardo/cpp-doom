@@ -17,8 +17,7 @@
 //	Kept as a sample, DOOM2  sounds. Frozen.
 //
 
-#ifndef __SOUNDS__
-#define __SOUNDS__
+#pragma once
 
 #include "i_sound.hpp"
 
@@ -252,5 +251,3 @@ enum sfxenum_t
   sfx_secret,
   NUMSFX
 };
-
-#endif

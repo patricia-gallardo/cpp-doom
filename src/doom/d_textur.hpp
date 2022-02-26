@@ -17,8 +17,7 @@
 //	 isolated here to make it easier separating modules.
 //
 
-#ifndef __D_TEXTUR__
-#define __D_TEXTUR__
+#pragma once
 
 #include <cstdint>
 //
@@ -30,5 +29,3 @@
   uint8_t height {};
   uint8_t data {};
 };
-
-#endif

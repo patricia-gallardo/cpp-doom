@@ -16,8 +16,7 @@
 //
 //
 
-#ifndef __M_RANDOM__
-#define __M_RANDOM__
+#pragma once
 
 #include "doomtype.hpp"
 
@@ -37,5 +36,3 @@ void M_ClearRandom();
 // Defined version of P_Random() - P_Random()
 int P_SubRandom();
 int Crispy_SubRandom();
-
-#endif

@@ -16,8 +16,7 @@
 //	Sky rendering.
 //
 
-#ifndef __R_SKY__
-#define __R_SKY__
+#pragma once
 
 // SKY, store the number for name.
 constexpr auto SKYFLATNAME = "F_SKY1";
@@ -33,5 +32,3 @@ extern int skytexturemid;
 
 // Called whenever the view size changes.
 void R_InitSkyMap();
-
-#endif

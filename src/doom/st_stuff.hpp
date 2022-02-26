@@ -18,8 +18,7 @@
 //	Does palette indicators as well (red pain/berserk, bright pickup)
 //
 
-#ifndef __STSTUFF_H__
-#define __STSTUFF_H__
+#pragma once
 
 #include "d_event.hpp"
 #include "doomtype.hpp"
@@ -90,5 +89,3 @@ struct st_stuff_t {
 };
 
 extern st_stuff_t * const g_st_stuff_globals;
-
-#endif

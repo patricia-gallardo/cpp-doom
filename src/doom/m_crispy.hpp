@@ -17,8 +17,7 @@
 //	[crispy] Crispness menu
 //
 
-#ifndef __M_CRISPY__
-#define __M_CRISPY__
+#pragma once
 
 struct multiitem_t {
   int    value;
@@ -81,5 +80,3 @@ extern void                  M_CrispyToggleUncapped(int choice);
 extern void                  M_CrispyToggleVsync(int choice);
 extern void                  M_CrispyToggleWeaponSquat(int choice);
 extern void                  M_CrispyToggleWidescreen(int choice);
-
-#endif

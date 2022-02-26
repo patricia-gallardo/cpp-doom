@@ -18,9 +18,6 @@
 //  suffers state changes of more or less violent nature.
 //
 
-#ifndef __D_THINK__
-#define __D_THINK__
+#pragma once
 
 #include "action_hook.hpp"
-
-#endif

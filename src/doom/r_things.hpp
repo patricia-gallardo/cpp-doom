@@ -16,8 +16,7 @@
 //	Rendering of moving objects, sprites.
 //
 
-#ifndef __R_THINGS__
-#define __R_THINGS__
+#pragma once
 
 constexpr auto MAXVISSPRITES = 128;
 
@@ -53,5 +52,3 @@ void R_DrawMasked();
 void R_ClipVisSprite(vissprite_t * vis,
                      int           xl,
                      int           xh);
-
-#endif

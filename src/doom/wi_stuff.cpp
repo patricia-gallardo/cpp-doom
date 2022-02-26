@@ -65,14 +65,6 @@
 constexpr auto NUMEPISODES = 4;
 constexpr auto NUMMAPS     = 9;
 
-// in tics
-// U #define PAUSELEN		(TICRATE*2)
-// U #define SCORESTEP		100
-// U #define ANIMPERIOD		32
-// pixel distance from "(YOU)" to "PLAYER N"
-// U #define STARDIST		10
-// U #define WK 1
-
 // GLOBAL LOCATIONS
 constexpr auto WI_TITLEY   = 2;
 constexpr auto WI_SPACINGY = 33;
@@ -278,7 +270,6 @@ static anim_t * anims[NUMEPISODES] = {
 
 // in seconds
 constexpr auto SHOWNEXTLOCDELAY = 4;
-//#define SHOWLASTLOCDELAY	SHOWNEXTLOCDELAY
 
 // used to accelerate or skip a stage
 static int acceleratestage;

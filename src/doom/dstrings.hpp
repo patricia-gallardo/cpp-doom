@@ -17,8 +17,7 @@
 //	DOOM strings, by language.
 //
 
-#ifndef __DSTRINGS__
-#define __DSTRINGS__
+#pragma once
 
 // All important printed strings.
 
@@ -33,5 +32,3 @@ constexpr auto NUM_QUITMESSAGES = 8;
 
 extern const char * doom1_endmsg[];
 extern const char * doom2_endmsg[];
-
-#endif

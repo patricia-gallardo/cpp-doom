@@ -16,8 +16,7 @@
 //   Setup a game, startup stuff.
 //
 
-#ifndef __P_SETUP__
-#define __P_SETUP__
+#pragma once
 
 #include "w_wad.hpp"
 
@@ -33,5 +32,3 @@ void P_SetupLevel(int     episode,
 
 // Called by startup code.
 void P_Init();
-
-#endif

@@ -16,8 +16,7 @@
 //	Refresh module, BSP traversal and handling.
 //
 
-#ifndef __R_BSP__
-#define __R_BSP__
+#pragma once
 
 extern seg_t *    curline;
 extern side_t *   sidedef;
@@ -51,5 +50,3 @@ void R_ClearClipSegs();
 void R_ClearDrawSegs();
 
 void R_RenderBSPNode(int bspnum);
-
-#endif

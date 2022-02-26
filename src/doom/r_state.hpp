@@ -16,8 +16,7 @@
 //	Refresh/render internal state variables (global).
 //
 
-#ifndef __R_STATE__
-#define __R_STATE__
+#pragma once
 
 // Need data structure definitions.
 #include "d_player.hpp"
@@ -134,5 +133,3 @@ struct r_state_t {
 };
 
 extern r_state_t * const g_r_state_globals;
-
-#endif

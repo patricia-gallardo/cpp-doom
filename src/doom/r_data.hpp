@@ -17,8 +17,7 @@
 //  by name.
 //
 
-#ifndef __R_DATA__
-#define __R_DATA__
+#pragma once
 
 #include "r_defs.hpp"
 #include "r_state.hpp"
@@ -45,5 +44,3 @@ int R_FlatNumForName(const char * name);
 // returns the texture number for the texture name.
 int R_TextureNumForName(const char * name);
 int R_CheckTextureNumForName(const char * name);
-
-#endif

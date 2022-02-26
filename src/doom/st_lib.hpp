@@ -16,8 +16,7 @@
 // 	The status bar widget code.
 //
 
-#ifndef __STLIB__
-#define __STLIB__
+#pragma once
 
 // We are referring to patches.
 #include "r_defs.hpp"
@@ -167,5 +166,3 @@ void STlib_initBinIcon(st_binicon_t * b,
 
 void STlib_updateBinIcon(st_binicon_t * bi,
                          bool           refresh);
-
-#endif
