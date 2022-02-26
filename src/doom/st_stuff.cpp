@@ -219,7 +219,7 @@ static int st_shotguns;
 static st_multicon_t w_faces;
 
 // keycard widgets
-static st_multicon_t w_keyboxes[3];
+static std::array<st_multicon_t, 3> w_keyboxes;
 
 // armor widget
 static st_percent_t w_armor;
