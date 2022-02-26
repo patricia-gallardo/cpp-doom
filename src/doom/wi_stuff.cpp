@@ -319,10 +319,10 @@ static int NUMCMAPS = 32;
 //
 
 // You Are Here graphic
-static patch_t * yah[3] = { nullptr, nullptr, nullptr };
+static std::array<patch_t *, 3> yah = { nullptr, nullptr, nullptr };
 
 // splat
-static patch_t * splat[2] = { nullptr, nullptr };
+static std::array<patch_t *, 2> splat = { nullptr, nullptr };
 
 // %, : graphics
 static patch_t * percent;
@@ -733,21 +733,21 @@ void WI_drawShowNextLoc() {
 
     // draw a splat on taken cities.
     for (int i = 0; i <= last; i++)
-      WI_drawOnLnode(i, splat);
+      WI_drawOnLnode(i, splat.data());
 
     // splat the secret level?
     if (wbs->didsecret)
-      WI_drawOnLnode(8, splat);
+      WI_drawOnLnode(8, splat.data());
 
     // [crispy] the splat for E1M10 "Sewers" is drawn only once,
     // i.e. now, when returning from the level
     // (and this is not going to change)
     if (crispy->havee1m10 && wbs->epsd == 0 && wbs->last == 9)
-      WI_drawOnLnode(9, splat);
+      WI_drawOnLnode(9, splat.data());
 
     // draw flashing ptr
     if (snl_pointeron)
-      WI_drawOnLnode(wbs->next, yah);
+      WI_drawOnLnode(wbs->next, yah.data());
   }
 
   if (crispy->singleplayer && ((g_doomstat_globals->gamemission == pack_nerve && wbs->last == 7) || (g_doomstat_globals->gamemission == pack_master && wbs->last == 19 && !secretexit) || (g_doomstat_globals->gamemission == pack_master && wbs->last == 20)))
