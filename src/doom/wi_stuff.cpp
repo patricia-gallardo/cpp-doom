@@ -215,7 +215,7 @@ anim_t ANIM(T type, P period, N nanims, X x, Y y, NX nexttic) {
   };
 }
 
-static anim_t epsd0animinfo[] = {
+static std::array<anim_t, 10> epsd0animinfo = {
   ANIM(ANIM_ALWAYS, TICRATE / 3, 3, 224, 104, 0),
   ANIM(ANIM_ALWAYS, TICRATE / 3, 3, 184, 160, 0),
   ANIM(ANIM_ALWAYS, TICRATE / 3, 3, 112, 136, 0),
@@ -228,7 +228,7 @@ static anim_t epsd0animinfo[] = {
   ANIM(ANIM_ALWAYS, TICRATE / 3, 3, 64, 24, 0),
 };
 
-static anim_t epsd1animinfo[] = {
+static std::array<anim_t, 9> epsd1animinfo = {
   ANIM(ANIM_LEVEL, TICRATE / 3, 1, 128, 136, 1),
   ANIM(ANIM_LEVEL, TICRATE / 3, 1, 128, 136, 2),
   ANIM(ANIM_LEVEL, TICRATE / 3, 1, 128, 136, 3),
@@ -249,15 +249,15 @@ static anim_t epsd2animinfo[] = {
   ANIM(ANIM_ALWAYS, TICRATE / 4, 3, 40, 0, 0),
 };
 
-static int NUMANIMS[NUMEPISODES] = {
-  static_cast<int>(std::size(epsd0animinfo)),
-  static_cast<int>(std::size(epsd1animinfo)),
-  static_cast<int>(std::size(epsd2animinfo)),
+static size_t NUMANIMS[NUMEPISODES] = {
+  std::size(epsd0animinfo),
+  std::size(epsd1animinfo),
+  std::size(epsd2animinfo),
 };
 
 static anim_t * anims[NUMEPISODES] = {
-  epsd0animinfo,
-  epsd1animinfo,
+  epsd0animinfo.data(),
+  epsd1animinfo.data(),
   epsd2animinfo
 };
 
@@ -493,7 +493,7 @@ void WI_initAnimatedBack() {
   if (wbs->epsd > 2)
     return;
 
-  for (int i = 0; i < NUMANIMS[wbs->epsd]; i++) {
+  for (size_t i = 0; i < NUMANIMS[wbs->epsd]; i++) {
     anim_t * a = &anims[wbs->epsd][i];
 
     // init variables
@@ -516,7 +516,7 @@ void WI_updateAnimatedBack() {
   if (wbs->epsd > 2)
     return;
 
-  for (int i = 0; i < NUMANIMS[wbs->epsd]; i++) {
+  for (size_t i = 0; i < NUMANIMS[wbs->epsd]; i++) {
     anim_t * a = &anims[wbs->epsd][i];
 
     if (bcnt == a->nexttic) {
@@ -556,7 +556,7 @@ void WI_drawAnimatedBack() {
   if (wbs->epsd > 2)
     return;
 
-  for (int i = 0; i < NUMANIMS[wbs->epsd]; i++) {
+  for (size_t i = 0; i < NUMANIMS[wbs->epsd]; i++) {
     anim_t * a = &anims[wbs->epsd][i];
 
     if (a->ctr >= 0)
@@ -1473,7 +1473,7 @@ static void WI_loadUnloadData(load_callback_t callback) {
     callback(DEH_String("WISPLAT"), &splat[0]);
 
     if (wbs->epsd < 3) {
-      for (int j = 0; j < NUMANIMS[wbs->epsd]; j++) {
+      for (size_t j = 0; j < NUMANIMS[wbs->epsd]; j++) {
         anim_t * a = &anims[wbs->epsd][j];
         for (index = 0; index < a->nanims; index++) {
           // MONDO HACK!
