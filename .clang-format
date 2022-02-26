@@ -2,7 +2,7 @@
 ---
 Language:        Cpp
 AlignAfterOpenBracket: Align
-AlignArrayOfStructures: Left
+#AlignArrayOfStructures: Left # Left has a crash bug in clang-format 13 https://github.com/llvm/llvm-project/issues/53748
 AlignConsecutiveMacros: Consecutive
 AlignConsecutiveAssignments: Consecutive
 AlignConsecutiveBitFields: None
