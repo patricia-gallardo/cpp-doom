@@ -329,7 +329,7 @@ static patch_t * percent;
 static patch_t * colon;
 
 // 0-9 graphic
-static patch_t * num[10];
+static std::array<patch_t *, 10> num;
 
 // minus sign
 static patch_t * wiminus;
