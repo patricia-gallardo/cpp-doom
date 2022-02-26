@@ -18,6 +18,7 @@
 //	Does palette indicators as well (red pain/berserk, bright pickup)
 //
 
+#include <array>
 #include <cstdio>
 
 #include <fmt/printf.h>
@@ -371,7 +372,7 @@ static int ST_cheat_massacre() {
 // [crispy] trigger all special lines available on the map
 static int ST_cheat_spechits() {
   int    speciallines = 0;
-  std::array<bool, NUMCARDS> origcards;
+  std::array<bool, NUMCARDS> origcards = {};
   line_t dummy;
 
   // [crispy] temporarily give all keys
