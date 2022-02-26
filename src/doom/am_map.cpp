@@ -154,7 +154,8 @@ struct fline_t {
 };
 
 struct mpoint_t {
-  int64_t x, y;
+  int64_t x{};
+  int64_t y{};
 };
 
 struct mline_t {
@@ -910,7 +911,7 @@ bool AM_clipMline(mline_t * ml,
   int outcode2 = 0;
   int outside  = 0;
 
-  fpoint_t tmp;
+  fpoint_t tmp{};
   int      dx = 0;
   int      dy = 0;
 
@@ -1115,7 +1116,7 @@ void AM_drawGrid(int color) {
 
   // draw vertical gridlines
   for (int64_t x = start; x < end; x += (MAPBLOCKUNITS << FRACBITS)) {
-    mline_t ml;
+    mline_t ml{};
     ml.a.x = x;
     ml.b.x = x;
     // [crispy] moved here
@@ -1146,7 +1147,7 @@ void AM_drawGrid(int color) {
 
   // draw horizontal gridlines
   for (int64_t y = start; y < end; y += (MAPBLOCKUNITS << FRACBITS)) {
-    mline_t ml;
+    mline_t ml{};
     ml.a.y = y;
     ml.b.y = y;
     // [crispy] moved here
@@ -1326,7 +1327,7 @@ void AM_drawLineCharacter(mline_t * lineguy,
                           int       color,
                           fixed_t   x,
                           fixed_t   y) {
-  mline_t l;
+  mline_t l{};
 
   if (crispy->automaprotate) {
     angle += mapangle;
@@ -1368,7 +1369,7 @@ void AM_drawLineCharacter(mline_t * lineguy,
 void AM_drawPlayers() {
   static int their_colors[] = { GREENS, GRAYS, BROWNS, REDS };
   int        their_color    = -1;
-  mpoint_t   pt;
+  mpoint_t   pt{};
 
   if (!g_doomstat_globals->netgame) {
     pt.x = plr->mo->x;
@@ -1420,7 +1421,7 @@ void AM_drawThings(int colors, int) {
         continue;
       }
 
-      mpoint_t pt;
+      mpoint_t pt{};
       pt.x = t->x;
       pt.y = t->y;
       if (crispy->automaprotate) {
@@ -1494,7 +1495,7 @@ void AM_drawMarks() {
       int w = 5; // because something's wrong with the wad, i guess
       int h = 6; // because something's wrong with the wad, i guess
       // [crispy] center marks around player
-      mpoint_t pt;
+      mpoint_t pt{};
       pt.x = markpoints[i].x;
       pt.y = markpoints[i].y;
       if (crispy->automaprotate) {
