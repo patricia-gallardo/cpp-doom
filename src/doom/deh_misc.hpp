@@ -15,8 +15,7 @@
 // Parses "Misc" sections in dehacked files
 //
 
-#ifndef DEH_MISC_H
-#define DEH_MISC_H
+#pragma once
 
 constexpr auto DEH_DEFAULT_INITIAL_HEALTH     = 100;
 constexpr auto DEH_DEFAULT_INITIAL_BULLETS    = 50;
@@ -51,5 +50,3 @@ extern int deh_idkfa_armor;
 extern int deh_idkfa_armor_class;
 extern int deh_bfg_cells_per_shot;
 extern int deh_species_infighting;
-
-#endif /* #ifndef DEH_MISC_H */
