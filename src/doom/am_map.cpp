@@ -1041,7 +1041,7 @@ void AM_drawFline(fline_t * fl,
   }
 
 #ifndef CRISPY_TRUECOLOR
-#define PUTDOT(xx, yy, cc) fb[(yy)*f_w + (g_r_state_globals->flipscreenwidth[xx])] = (cc)
+  auto PUTDOT = [](auto xx, auto yy, auto cc) { fb[(yy)*f_w + (g_r_state_globals->flipscreenwidth[xx])] = (cc); };
 #else
 #define PUTDOT(xx, yy, cc) fb[(yy)*f_w + (flipscreenwidth[xx])] = (colormaps[(cc)])
 #endif
