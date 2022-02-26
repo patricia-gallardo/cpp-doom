@@ -67,7 +67,7 @@ std::array<int, MAXWIDTH> ceilingclip; // [crispy] 32-bit integer math
 // initialized to 0 at start
 //
 std::array<int, MAXHEIGHT> spanstart;
-[[maybe_unused]] int spanstop[MAXHEIGHT];
+[[maybe_unused]] std::array<int, MAXHEIGHT> spanstop;
 
 //
 // texture mapping
