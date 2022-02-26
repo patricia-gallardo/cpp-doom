@@ -134,7 +134,7 @@ struct anim_t {
   int data2;
 
   // actual graphics for frames of animations
-  patch_t * p[3];
+  std::array<patch_t *, 3> p;
 
   // following must be initialized to zero before use!
 
