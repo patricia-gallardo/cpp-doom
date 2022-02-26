@@ -51,7 +51,7 @@ static int     numvisplanes;
 
 // ?
 constexpr auto MAXOPENINGS = MAXWIDTH * 64 * 4;
-int            openings[MAXOPENINGS]; // [crispy] 32-bit integer math
+std::array<int, MAXOPENINGS> openings; // [crispy] 32-bit integer math
 int *          lastopening;           // [crispy] 32-bit integer math
 
 //
@@ -178,7 +178,7 @@ void R_ClearPlanes() {
   }
 
   lastvisplane = visplanes;
-  lastopening  = openings;
+  lastopening  = openings.data();
 
   // texture calculation
   std::memset(cachedheight, 0, sizeof(cachedheight));
@@ -369,9 +369,9 @@ void R_DrawPlanes() {
     I_Error("R_DrawPlanes: visplane overflow (%" PRIiPTR ")",
             lastvisplane - visplanes);
 
-  if (lastopening - openings > MAXOPENINGS)
+  if (lastopening - openings.data() > MAXOPENINGS)
     I_Error("R_DrawPlanes: opening overflow (%" PRIiPTR ")",
-            lastopening - openings);
+            lastopening - openings.data());
 #endif
 
   for (pl = visplanes; pl < lastvisplane; pl++) {
