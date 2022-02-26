@@ -255,7 +255,7 @@ static std::array<size_t, NUMEPISODES> NUMANIMS = {
   std::size(epsd2animinfo),
 };
 
-static anim_t * anims[NUMEPISODES] = {
+static std::array<anim_t *, NUMEPISODES> anims = {
   epsd0animinfo.data(),
   epsd1animinfo.data(),
   epsd2animinfo.data()
