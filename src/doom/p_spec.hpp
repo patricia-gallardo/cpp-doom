@@ -421,9 +421,9 @@ struct ceiling_t {
   int olddirection;
 };
 
-#define CEILSPEED   FRACUNIT
-#define CEILWAIT    150
-#define MAXCEILINGS 30
+constexpr auto                  CEILSPEED   = FRACUNIT;
+[[maybe_unused]] constexpr auto CEILWAIT    = 150;
+constexpr auto                  MAXCEILINGS = 30;
 
 extern ceiling_t * activeceilings[MAXCEILINGS];
 
@@ -493,7 +493,7 @@ struct floormove_t {
   fixed_t    speed;
 };
 
-#define FLOORSPEED FRACUNIT
+constexpr auto FLOORSPEED = FRACUNIT;
 
 enum result_e
 {
