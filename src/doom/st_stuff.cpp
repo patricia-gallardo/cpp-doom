@@ -225,7 +225,7 @@ static std::array<st_multicon_t, 3> w_keyboxes;
 static st_percent_t w_armor;
 
 // ammo widgets
-static st_number_t w_ammo[4];
+static std::array<st_number_t, 4> w_ammo;
 
 // max ammo widgets
 static st_number_t w_maxammo[4];
