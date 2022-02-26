@@ -59,7 +59,7 @@ int *          lastopening;           // [crispy] 32-bit integer math
 //  floorclip starts out SCREENHEIGHT
 //  ceilingclip starts out -1
 //
-int floorclip[MAXWIDTH];   // [crispy] 32-bit integer math
+std::array<int, MAXWIDTH> floorclip;   // [crispy] 32-bit integer math
 int ceilingclip[MAXWIDTH]; // [crispy] 32-bit integer math
 
 //

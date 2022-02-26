@@ -792,7 +792,7 @@ void R_StoreWallRange(int start,
 
   if (((ds_p->silhouette & SIL_BOTTOM) || maskedtexture)
       && !ds_p->sprbottomclip) {
-    std::memcpy(lastopening, floorclip + start, sizeof(*lastopening) * (static_cast<unsigned long>(rw_stopx - start)));
+    std::memcpy(lastopening, floorclip.data() + start, sizeof(*lastopening) * (static_cast<unsigned long>(rw_stopx - start)));
     ds_p->sprbottomclip = lastopening - start;
     lastopening += rw_stopx - start;
   }
