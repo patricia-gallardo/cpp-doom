@@ -367,7 +367,7 @@ static patch_t * bstar;
 static std::array<patch_t *, MAXPLAYERS> patches;
 
 // "gray P[1..MAXPLAYERS]"
-static patch_t * bp[MAXPLAYERS];
+static std::array<patch_t *, MAXPLAYERS> bp;
 
 // Name graphics of each level (centered)
 static patch_t ** lnames;
