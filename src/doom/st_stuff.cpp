@@ -228,7 +228,7 @@ static st_percent_t w_armor;
 static std::array<st_number_t, 4> w_ammo;
 
 // max ammo widgets
-static st_number_t w_maxammo[4];
+static std::array<st_number_t, 4> w_maxammo;
 
 // number of frags so far in deathmatch
 static int st_fragscount;
