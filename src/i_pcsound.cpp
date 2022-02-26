@@ -257,7 +257,7 @@ static bool IsDisabledSound(sfxinfo_t * sfxinfo) {
   };
 
   for (auto & disabled_sound : disabled_sounds) {
-    if (!strcmp(sfxinfo->name, disabled_sound)) {
+    if (sfxinfo->name == disabled_sound) {
       return true;
     }
   }
@@ -321,16 +321,14 @@ static void I_PCS_StopSound(int handle) {
 //
 
 static int I_PCS_GetSfxLumpNum(sfxinfo_t * sfx) {
-  char namebuf[9];
+  std::string namebuf;
 
   if (use_sfx_prefix) {
-    M_snprintf(namebuf, sizeof(namebuf), "dp%s", DEH_String(sfx->name));
-  } else {
-    M_StringCopy(namebuf, DEH_String(sfx->name), sizeof(namebuf));
+    namebuf = "dp";
   }
-
+  namebuf.append(DEH_String(sfx->name.c_str()));
   // [crispy] make missing sounds non-fatal
-  return W_CheckNumForName(namebuf);
+  return W_CheckNumForName(namebuf.c_str());
 }
 
 static bool I_PCS_SoundIsPlaying(int handle) {

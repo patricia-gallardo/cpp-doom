@@ -750,7 +750,7 @@ static bool CacheSFX(sfxinfo_t * sfxinfo) {
   return true;
 }
 
-static void GetSfxLumpName(sfxinfo_t * sfx, char * buf, size_t buf_len) {
+static std::string GetSfxLumpName(sfxinfo_t * sfx) {
   // Linked sfx lumps? Get the lump number for the sound linked to.
 
   if (sfx->link != nullptr) {
@@ -760,11 +760,15 @@ static void GetSfxLumpName(sfxinfo_t * sfx, char * buf, size_t buf_len) {
   // Doom adds a DS* prefix to sound lumps; Heretic and Hexen don't
   // do this.
 
+  std::string namebuf;
+
   if (use_sfx_prefix) {
-    M_snprintf(buf, buf_len, "ds%s", DEH_String(sfx->name));
-  } else {
-    M_StringCopy(buf, DEH_String(sfx->name), buf_len);
+    namebuf = "ds";
   }
+
+  namebuf.append(DEH_String(sfx->name.c_str()));
+
+  return namebuf;
 }
 
 #ifdef HAVE_LIBSAMPLERATE
@@ -772,9 +776,6 @@ static void GetSfxLumpName(sfxinfo_t * sfx, char * buf, size_t buf_len) {
 // Preload all the sound effects - stops nasty ingame freezes
 
 static void I_SDL_PrecacheSounds(sfxinfo_t * sounds, int num_sounds) {
-  char namebuf[9];
-  int  i;
-
   // Don't need to precache the sounds unless we are using libsamplerate.
 
   if (use_libsamplerate == 0) {
@@ -783,15 +784,15 @@ static void I_SDL_PrecacheSounds(sfxinfo_t * sounds, int num_sounds) {
 
   fmt::printf("I_SDL_PrecacheSounds: Precaching all sound effects..");
 
-  for (i = 0; i < num_sounds; ++i) {
+  for (int i = 0; i < num_sounds; ++i) {
     if ((i % 6) == 0) {
       fmt::printf(".");
       fflush(stdout);
     }
 
-    GetSfxLumpName(&sounds[i], namebuf, sizeof(namebuf));
+    std::string namebuf = GetSfxLumpName(&sounds[i]);
 
-    sounds[i].lumpnum = W_CheckNumForName(namebuf);
+    sounds[i].lumpnum = W_CheckNumForName(namebuf.c_str());
 
     if (sounds[i].lumpnum != -1) {
       CacheSFX(&sounds[i]);
@@ -830,12 +831,10 @@ static bool LockSound(sfxinfo_t * sfxinfo) {
 //
 
 static int I_SDL_GetSfxLumpNum(sfxinfo_t * sfx) {
-  char namebuf[9];
-
-  GetSfxLumpName(sfx, namebuf, sizeof(namebuf));
+  std::string namebuf = GetSfxLumpName(sfx);
 
   // [crispy] make missing sounds non-fatal
-  return W_CheckNumForName(namebuf);
+  return W_CheckNumForName(namebuf.c_str());
 }
 
 static void I_SDL_UpdateSoundParams(int handle, int vol, int sep) {
