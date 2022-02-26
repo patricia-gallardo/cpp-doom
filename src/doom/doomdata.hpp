@@ -18,8 +18,7 @@
 //  some internal structures shared by many modules are here
 //
 
-#ifndef __DOOMDATA__
-#define __DOOMDATA__
+#pragma once
 
 // The most basic types we use, portability.
 #include "doomtype.hpp"
@@ -284,5 +283,3 @@ typedef PACKED_STRUCT(
       uint8_t arg4;
       uint8_t arg5;
     }) mapthing_hexen_t;
-
-#endif // __DOOMDATA__

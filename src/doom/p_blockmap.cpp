@@ -30,7 +30,10 @@
 // [crispy] taken from mbfsrc/P_SETUP.C:547-707, slightly adapted
 
 void P_CreateBlockMap() {
-  fixed_t minx = INT_MAX, miny = INT_MAX, maxx = INT_MIN, maxy = INT_MIN;
+  fixed_t minx = std::numeric_limits<int32_t>::max();
+  fixed_t miny = std::numeric_limits<int32_t>::max();
+  fixed_t maxx = std::numeric_limits<int32_t>::min();
+  fixed_t maxy = std::numeric_limits<int32_t>::min();
 
   // First find limits of map
 

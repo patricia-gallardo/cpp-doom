@@ -16,8 +16,7 @@
 //	Play functions, animation, global header.
 //
 
-#ifndef __P_LOCAL__
-#define __P_LOCAL__
+#pragma once
 
 #ifndef __R_LOCAL__
 #include "r_local.hpp"
@@ -25,33 +24,33 @@
 
 constexpr auto TOCENTER   = -8;
 constexpr auto AFLAG_JUMP = 0x80;
-#define FLOATSPEED (FRACUNIT * 4)
+constexpr auto FLOATSPEED = (FRACUNIT * 4);
 
-constexpr auto MAXHEALTH = 100;
-#define VIEWHEIGHT (41 * FRACUNIT)
+constexpr auto MAXHEALTH  = 100;
+constexpr auto VIEWHEIGHT = (41 * FRACUNIT);
 
 // mapblocks are used to check movement
 // against lines and things
-constexpr auto MAPBLOCKUNITS = 128;
-#define MAPBLOCKSIZE  (MAPBLOCKUNITS * FRACUNIT)
-#define MAPBLOCKSHIFT (FRACBITS + 7)
-[[maybe_unused]] constexpr auto MAPBMASK = (MAPBLOCKSIZE - 1);
-#define MAPBTOFRAC (MAPBLOCKSHIFT - FRACBITS)
+constexpr auto                  MAPBLOCKUNITS = 128;
+constexpr auto                  MAPBLOCKSIZE  = (MAPBLOCKUNITS * FRACUNIT);
+constexpr auto                  MAPBLOCKSHIFT = (FRACBITS + 7);
+[[maybe_unused]] constexpr auto MAPBMASK      = (MAPBLOCKSIZE - 1);
+constexpr auto                  MAPBTOFRAC    = (MAPBLOCKSHIFT - FRACBITS);
 
 // player radius for movement checking
-#define PLAYERRADIUS 16 * FRACUNIT
+constexpr auto PLAYERRADIUS = 16 * FRACUNIT;
 
 // MAXRADIUS is for precalculated sector block boxes
 // the spider demon is larger,
 // but we do not have any moving sectors nearby
-#define MAXRADIUS 32 * FRACUNIT
+constexpr auto MAXRADIUS = 32 * FRACUNIT;
 
-#define GRAVITY FRACUNIT
-#define MAXMOVE (30 * FRACUNIT)
+constexpr auto GRAVITY = FRACUNIT;
+constexpr auto MAXMOVE = (30 * FRACUNIT);
 
-#define USERANGE     (64 * FRACUNIT)
-#define MELEERANGE   (64 * FRACUNIT)
-#define MISSILERANGE (32 * 64 * FRACUNIT)
+constexpr auto USERANGE     = (64 * FRACUNIT);
+constexpr auto MELEERANGE   = (64 * FRACUNIT);
+constexpr auto MISSILERANGE = (32 * 64 * FRACUNIT);
 
 // follow a player exlusively for 3 seconds
 constexpr auto BASETHRESHOLD = 100;
@@ -71,14 +70,17 @@ void P_DropWeapon(player_t * player);
 // P_USER
 //
 constexpr auto MLOOKUNIT = 8;
-#define PLAYER_SLOPE(a) ((((a)->lookdir / MLOOKUNIT) << FRACBITS) / 173)
+template <typename T>
+constexpr auto PLAYER_SLOPE(T a) {
+  return ((((a)->lookdir / MLOOKUNIT) << FRACBITS) / 173);
+}
 void P_PlayerThink(player_t * player);
 
 //
 // P_MOBJ
 //
-#define ONFLOORZ   INT_MIN
-#define ONCEILINGZ INT_MAX
+constexpr auto ONFLOORZ   = std::numeric_limits<int32_t>::min();
+constexpr auto ONCEILINGZ = std::numeric_limits<int32_t>::max();
 
 // Time interval for item respawning.
 constexpr auto ITEMQUESIZE = 128;
@@ -310,5 +312,3 @@ extern p_local_t * const g_p_local_globals;
 // P_SPEC
 //
 #include "p_spec.hpp"
-
-#endif // __P_LOCAL__

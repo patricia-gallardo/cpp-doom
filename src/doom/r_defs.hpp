@@ -16,8 +16,7 @@
 //      Refresh/rendering module, shared data struct definitions.
 //
 
-#ifndef __R_DEFS__
-#define __R_DEFS__
+#pragma once
 
 // Screenwidth.
 #include "doomdef.hpp"
@@ -38,12 +37,12 @@
 
 // Silhouette, needed for clipping Segs (mainly)
 // and sprites representing things.
-#define SIL_NONE   0
-#define SIL_BOTTOM 1
-#define SIL_TOP    2
-#define SIL_BOTH   3
+constexpr auto SIL_NONE   = 0;
+constexpr auto SIL_BOTTOM = 1;
+constexpr auto SIL_TOP    = 2;
+constexpr auto SIL_BOTH   = 3;
 
-#define MAXDRAWSEGS 256
+constexpr auto MAXDRAWSEGS = 256;
 
 //
 // INTERNAL MAP TYPES
@@ -435,5 +434,3 @@ struct laserpatch_t {
   int  l, w, h;
 };
 extern laserpatch_t * laserpatch;
-
-#endif

@@ -25,7 +25,7 @@
 #include "txt_window.hpp"
 
 // eg. "BUTTON #10"
-#define MOUSE_INPUT_WIDTH 10
+constexpr auto MOUSE_INPUT_WIDTH = 10;
 
 static int MousePressCallback(txt_window_t * window,
                               int,

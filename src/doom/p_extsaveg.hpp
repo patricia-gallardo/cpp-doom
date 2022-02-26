@@ -17,8 +17,7 @@
 //	[crispy] Archiving: Extended SaveGame I/O.
 //
 
-#ifndef __P_EXTSAVEG__
-#define __P_EXTSAVEG__
+#pragma once
 
 /* p_extsaveg.c */
 extern char * savewadfilename;
@@ -33,5 +32,3 @@ extern thinker_t * P_IndexToThinker(uint32_t index);
 /* m_menu.c */
 extern void M_ForceLoadGame();
 extern void M_ConfirmDeleteGame();
-
-#endif

@@ -39,7 +39,7 @@
 #include "multiplayer.hpp"
 #include "sound.hpp"
 
-#define WINDOW_HELP_URL "https://www.chocolate-doom.org/setup"
+constexpr auto WINDOW_HELP_URL = "https://www.chocolate-doom.org/setup";
 
 static const int cheat_sequence[] = {
   KEY_UPARROW,

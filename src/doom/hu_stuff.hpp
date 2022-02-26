@@ -15,8 +15,7 @@
 // DESCRIPTION:  Head up display
 //
 
-#ifndef __HU_STUFF_H__
-#define __HU_STUFF_H__
+#pragma once
 
 #include "d_event.hpp"
 
@@ -52,5 +51,3 @@ char HU_dequeueChatChar();
 void HU_Erase();
 
 extern char * chat_macros[10];
-
-#endif

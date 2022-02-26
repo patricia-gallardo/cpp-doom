@@ -16,8 +16,7 @@
 //	Mission start screen wipe/melt, special effects.
 //
 
-#ifndef __F_WIPE_H__
-#define __F_WIPE_H__
+#pragma once
 
 //
 //                       SCREEN WIPE PACKAGE
@@ -50,5 +49,3 @@ int wipe_ScreenWipe(int wipeno,
                     int width,
                     int height,
                     int ticks);
-
-#endif

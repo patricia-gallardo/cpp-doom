@@ -37,37 +37,37 @@
 #include "r_swirl.hpp" // [crispy] R_DistortedFlat()
 
 [[maybe_unused]] planefunction_t floorfunc;
-planefunction_t                  ceilingfunc;
+[[maybe_unused]] planefunction_t ceilingfunc;
 
 //
 // opening
 //
 
 // Here comes the obnoxious "visplane".
-#define MAXVISPLANES 128
-visplane_t * visplanes = nullptr;
-visplane_t * lastvisplane;
-static int   numvisplanes;
+constexpr auto MAXVISPLANES = 128;
+visplane_t *   visplanes    = nullptr;
+visplane_t *   lastvisplane;
+static int     numvisplanes;
 
 // ?
-#define MAXOPENINGS MAXWIDTH * 64 * 4
-int   openings[MAXOPENINGS]; // [crispy] 32-bit integer math
-int * lastopening;           // [crispy] 32-bit integer math
+constexpr auto MAXOPENINGS = MAXWIDTH * 64 * 4;
+std::array<int, MAXOPENINGS> openings; // [crispy] 32-bit integer math
+int *          lastopening;           // [crispy] 32-bit integer math
 
 //
 // Clip values are the solid pixel bounding the range.
 //  floorclip starts out SCREENHEIGHT
 //  ceilingclip starts out -1
 //
-int floorclip[MAXWIDTH];   // [crispy] 32-bit integer math
-int ceilingclip[MAXWIDTH]; // [crispy] 32-bit integer math
+std::array<int, MAXWIDTH> floorclip;   // [crispy] 32-bit integer math
+std::array<int, MAXWIDTH> ceilingclip; // [crispy] 32-bit integer math
 
 //
 // spanstart holds the start of a plane span
 // initialized to 0 at start
 //
-int spanstart[MAXHEIGHT];
-int spanstop[MAXHEIGHT];
+std::array<int, MAXHEIGHT> spanstart;
+[[maybe_unused]] std::array<int, MAXHEIGHT> spanstop;
 
 //
 // texture mapping
@@ -77,9 +77,9 @@ fixed_t         planeheight;
 
 fixed_t *                yslope;
 fixed_t                  yslopes[LOOKDIRS][MAXHEIGHT];
-[[maybe_unused]] fixed_t distscale[MAXWIDTH];
-fixed_t                  basexscale;
-fixed_t                  baseyscale;
+[[maybe_unused]] std::array<fixed_t, MAXWIDTH> distscale;
+[[maybe_unused]] fixed_t basexscale;
+[[maybe_unused]] fixed_t baseyscale;
 
 fixed_t cachedheight[MAXHEIGHT];
 fixed_t cacheddistance[MAXHEIGHT];
@@ -178,7 +178,7 @@ void R_ClearPlanes() {
   }
 
   lastvisplane = visplanes;
-  lastopening  = openings;
+  lastopening  = openings.data();
 
   // texture calculation
   std::memset(cachedheight, 0, sizeof(cachedheight));
@@ -369,9 +369,9 @@ void R_DrawPlanes() {
     I_Error("R_DrawPlanes: visplane overflow (%" PRIiPTR ")",
             lastvisplane - visplanes);
 
-  if (lastopening - openings > MAXOPENINGS)
+  if (lastopening - openings.data() > MAXOPENINGS)
     I_Error("R_DrawPlanes: opening overflow (%" PRIiPTR ")",
-            lastopening - openings);
+            lastopening - openings.data());
 #endif
 
   for (pl = visplanes; pl < lastvisplane; pl++) {

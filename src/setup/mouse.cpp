@@ -26,7 +26,7 @@
 #include "mode.hpp"
 #include "mouse.hpp"
 
-#define WINDOW_HELP_URL "https://www.chocolate-doom.org/setup-mouse"
+constexpr auto WINDOW_HELP_URL = "https://www.chocolate-doom.org/setup-mouse";
 
 static int usemouse = 1;
 

@@ -34,7 +34,7 @@
 #include "pcsound.hpp"
 #include "pcsound_internal.hpp"
 
-#define CONSOLE_DEVICE "/dev/console"
+constexpr auto CONSOLE_DEVICE = "/dev/console";
 
 static int                   console_handle;
 static pcsound_callback_func callback;

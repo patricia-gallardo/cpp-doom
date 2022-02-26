@@ -14,10 +14,7 @@
 
  */
 
-#ifndef DOOM_STATDUMP_H
-#define DOOM_STATDUMP_H
+#pragma once
 
 void StatCopy(const wbstartstruct_t * stats);
 void StatDump();
-
-#endif /* #ifndef DOOM_STATDUMP_H */

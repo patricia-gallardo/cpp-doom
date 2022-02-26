@@ -34,11 +34,11 @@
 
 #include "p_pspr.hpp"
 
-#define LOWERSPEED FRACUNIT * 6
-#define RAISESPEED FRACUNIT * 6
+constexpr auto LOWERSPEED = FRACUNIT * 6;
+constexpr auto RAISESPEED = FRACUNIT * 6;
 
-#define WEAPONBOTTOM 128 * FRACUNIT
-#define WEAPONTOP    32 * FRACUNIT
+constexpr auto WEAPONBOTTOM = 128 * FRACUNIT;
+constexpr auto WEAPONTOP    = 32 * FRACUNIT;
 
 // [crispy] weapon recoil {thrust, pitch} values
 // thrust values from prboom-plus/src/p_pspr.c:73-83
@@ -200,7 +200,7 @@ bool P_CheckAmmo(player_t * player) {
   // only relevant when removing current weapon with TNTWEAPx cheat
   if (!player->weaponowned[player->readyweapon]) {
     ammo  = am_clip; // [crispy] at least not am_noammo, see below
-    count = INT_MAX;
+    count = std::numeric_limits<int32_t>::max();
   }
 
   // Some do not need ammunition anyway.

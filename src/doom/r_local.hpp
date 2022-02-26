@@ -17,8 +17,7 @@
 //	All the rendering/drawing stuff is here.
 //
 
-#ifndef __R_LOCAL__
-#define __R_LOCAL__
+#pragma once
 
 // Binary Angles, sine/cosine/atan lookups.
 #include "tables.hpp"
@@ -39,5 +38,3 @@
 #include "r_plane.hpp"
 #include "r_segs.hpp"
 #include "r_things.hpp"
-
-#endif // __R_LOCAL__

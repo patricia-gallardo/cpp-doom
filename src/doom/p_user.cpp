@@ -28,14 +28,14 @@
 #include "doomstat.hpp"
 
 // Index of the special effects (INVUL inverse) map.
-#define INVERSECOLORMAP 32
+constexpr auto INVERSECOLORMAP = 32;
 
 //
 // Movement.
 //
 
 // 16 pixels of bob
-#define MAXBOB 0x100000
+constexpr auto MAXBOB = 0x100000;
 
 // [crispy] variable player view bob
 static const fixed_t crispy_bobfactor[3] = { 4, 3, 0 };
@@ -171,9 +171,7 @@ void P_MovePlayer(player_t * player) {
     }
   }
   if (!g_doomstat_globals->menuactive && !g_doomstat_globals->demoplayback) {
-    player->lookdir = BETWEEN(-LOOKDIRMIN * MLOOKUNIT,
-                              LOOKDIRMAX * MLOOKUNIT,
-                              player->lookdir + cmd->lookdir);
+    player->lookdir = std::clamp(player->lookdir + cmd->lookdir, -110 * MLOOKUNIT, 90 * MLOOKUNIT);
   }
 }
 
@@ -182,7 +180,7 @@ void P_MovePlayer(player_t * player) {
 // Fall on your face when dying.
 // Decrease POV height to floor height.
 //
-#define ANG5 (ANG90 / 18)
+constexpr auto ANG5 = (ANG90 / 18);
 
 void P_DeathThink(player_t * player) {
   angle_t angle;

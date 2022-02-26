@@ -17,8 +17,7 @@
 //	Brightmaps for wall textures
 //
 
-#ifndef __R_BMAPS__
-#define __R_BMAPS__
+#pragma once
 
 #include "doomtype.hpp"
 
@@ -30,5 +29,3 @@ extern uint8_t * (*R_BrightmapForFlatNum)(const int num);
 extern uint8_t * (*R_BrightmapForState)(const int state);
 
 extern uint8_t ** texturebrightmap;
-
-#endif

@@ -24,7 +24,7 @@
 #include "txt_utf8.hpp"
 #include "txt_window.hpp"
 
-#define KEY_INPUT_WIDTH 8
+constexpr auto KEY_INPUT_WIDTH = 8;
 
 static int KeyPressCallback(txt_window_t * window, int key, void * uncast_key_input) {
   auto * key_input = reinterpret_cast<txt_key_input_t *>(uncast_key_input);

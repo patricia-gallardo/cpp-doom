@@ -16,8 +16,7 @@
 //   Menu widget stuff, episode selection and such.
 //
 
-#ifndef __M_MENU__
-#define __M_MENU__
+#pragma once
 
 #include "d_event.hpp"
 
@@ -49,5 +48,3 @@ void M_StartControlPanel();
 
 extern int detailLevel;
 extern int screenblocks;
-
-#endif

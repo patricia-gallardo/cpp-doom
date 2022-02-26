@@ -16,8 +16,7 @@
 //
 //
 
-#ifndef __F_FINALE__
-#define __F_FINALE__
+#pragma once
 
 #include "d_event.hpp"
 #include "doomtype.hpp"
@@ -35,5 +34,3 @@ void F_Ticker();
 void F_Drawer();
 
 void F_StartFinale();
-
-#endif

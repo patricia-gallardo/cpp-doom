@@ -21,8 +21,7 @@
 //   In practice, things are a bit messy.
 //
 
-#ifndef __D_STATE__
-#define __D_STATE__
+#pragma once
 
 // We need globally shared data structures,
 //  for defining the global state variables.
@@ -38,11 +37,6 @@
 #include "net_defs.hpp"
 
 #include "crispy.hpp"
-
-#define logical_gamemission                               \
-  (g_doomstat_globals->gamemission == pack_chex ? doom :  \
-   g_doomstat_globals->gamemission == pack_hacx ? doom2 : \
-                                                  g_doomstat_globals->gamemission)
 
 // Maintain single and multi player starting spots.
 constexpr auto MAX_DEATHMATCH_STARTS = 10;
@@ -260,4 +254,11 @@ struct doomstat_t {
 
 extern doomstat_t * const g_doomstat_globals;
 
-#endif
+constexpr GameMission_t logical_gamemission() {
+  GameMission_t mission = g_doomstat_globals->gamemission;
+  if (mission == pack_chex)
+    return doom;
+  if (mission == pack_hacx)
+    return doom2;
+  return mission;
+}

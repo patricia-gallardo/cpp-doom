@@ -15,16 +15,15 @@
 // DESCRIPTION:  none
 //
 
-#ifndef __HULIB__
-#define __HULIB__
+#pragma once
 
 // We are referring to patches.
 #include "r_defs.hpp"
 
 // font stuff
 
-#define HU_MAXLINES      4
-#define HU_MAXLINELENGTH 80
+constexpr auto HU_MAXLINES      = 4;
+constexpr auto HU_MAXLINELENGTH = 80;
 
 //
 // Typedefs of widgets
@@ -155,5 +154,3 @@ void HUlib_drawIText(hu_itext_t * it);
 
 // erases all itext lines
 void HUlib_eraseIText(hu_itext_t * it);
-
-#endif

@@ -68,8 +68,7 @@ struct cliprange_t {
 // The simplest thing we can do, other than fix this bug, is to let the game
 // render overage and then bomb out by detecting the overflow after the
 // fact. -haleyjd
-//#define MAXSEGS 32
-#define MAXSEGS (MAXWIDTH / 2 + 1)
+constexpr auto MAXSEGS = (MAXWIDTH / 2 + 1);
 
 // newend is one past the last valid seg
 cliprange_t * newend;

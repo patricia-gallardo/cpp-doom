@@ -36,8 +36,6 @@
 #include "mus2mid.hpp"
 #include "z_zone.hpp"
 
-#define MAXMIDLENGTH (96 * 1024)
-
 static bool music_initialized = false;
 
 // If this is true, this module initialized SDL sound and has the
@@ -350,9 +348,6 @@ static void * I_SDL_RegisterSong(void * data, int len) {
   // [crispy] Reverse Choco's logic from "if (MIDI)" to "if (not MUS)"
   // MUS is the only format that requires conversion,
   // let SDL_Mixer figure out the others
-  /*
-  if (IsMid(data, len) && len < MAXMIDLENGTH)
-*/
   if (len < 4 || memcmp(data, "MUS\x1a", 4)) // [crispy] MUS_HEADER_MAGIC
   {
     M_WriteFile(filename, data, len);

@@ -16,8 +16,7 @@
 //  Intermission.
 //
 
-#ifndef __WI_STUFF__
-#define __WI_STUFF__
+#pragma once
 
 //#include "v_video.hpp"
 
@@ -44,5 +43,3 @@ void WI_Start(wbstartstruct_t * wbstartstruct);
 
 // Shut down the intermission screen
 void WI_End();
-
-#endif

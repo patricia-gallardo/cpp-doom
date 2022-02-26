@@ -43,7 +43,7 @@
 // when to clip out sounds
 // Does not fit the large outdoor areas.
 
-#define S_CLIPPING_DIST (1200 * FRACUNIT)
+constexpr auto S_CLIPPING_DIST = (1200 * FRACUNIT);
 
 // Distance tp origin when sounds should be maxed out.
 // This should relate to movement clipping resolution
@@ -51,16 +51,16 @@
 // In the source code release: (160*FRACUNIT).  Changed back to the
 // Vanilla value of 200 (why was this changed?)
 
-#define S_CLOSE_DIST (200 * FRACUNIT)
+constexpr auto S_CLOSE_DIST = (200 * FRACUNIT);
 
 // The range over which sound attenuates
 
-#define S_ATTENUATOR ((S_CLIPPING_DIST - S_CLOSE_DIST) >> FRACBITS)
+constexpr auto S_ATTENUATOR = ((S_CLIPPING_DIST - S_CLOSE_DIST) >> FRACBITS);
 
 // Stereo separation
 
-#define S_STEREO_SWING (96 * FRACUNIT)
-static int stereo_swing;
+constexpr auto S_STEREO_SWING = (96 * FRACUNIT);
+static int     stereo_swing;
 
 constexpr auto NORM_SEP = 128;
 
@@ -218,7 +218,7 @@ static void S_RegisterAltMusic() {
 
 void S_Init(int sfxVolume_param, int musicVolume_param) {
   if (g_doomstat_globals->gameversion == exe_doom_1_666) {
-    if (logical_gamemission == doom) {
+    if (logical_gamemission() == doom) {
       I_SetOPLDriverVer(opl_doom1_1_666);
     } else {
       I_SetOPLDriverVer(opl_doom2_1_666);

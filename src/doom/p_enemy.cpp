@@ -1203,7 +1203,7 @@ void A_VileAttack(mobj_t * actor) {
 // in three different directions?
 // Doesn't look like it.
 //
-#define FATSPREAD (ANG90 / 8)
+constexpr auto FATSPREAD = (ANG90 / 8);
 
 void A_FatRaise(mobj_t * actor) {
   A_FaceTarget(actor);
@@ -1273,7 +1273,7 @@ void A_FatAttack3(mobj_t * actor) {
 // SkullAttack
 // Fly at the player like a missile.
 //
-#define SKULLSPEED (20 * FRACUNIT)
+constexpr auto SKULLSPEED = (20 * FRACUNIT);
 
 void A_SkullAttack(mobj_t * actor) {
   mobj_t * dest;

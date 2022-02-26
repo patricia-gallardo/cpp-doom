@@ -117,7 +117,7 @@ void F_StartFinale() {
   g_doomstat_globals->viewactive    = false;
   g_doomstat_globals->automapactive = false;
 
-  if (logical_gamemission == doom) {
+  if (logical_gamemission() == doom) {
     S_ChangeMusic(mus_victor, true);
   } else {
     S_ChangeMusic(mus_read_m, true);
@@ -146,8 +146,8 @@ void F_StartFinale() {
       screen->mission = g_doomstat_globals->gamemission;
     }
 
-    if (logical_gamemission == screen->mission
-        && (logical_gamemission != doom || g_doomstat_globals->gameepisode == screen->episode)
+    if (logical_gamemission() == screen->mission
+        && (logical_gamemission() != doom || g_doomstat_globals->gameepisode == screen->episode)
         && g_doomstat_globals->gamemap == screen->level) {
       finaletext = screen->text;
       finaleflat = screen->background;

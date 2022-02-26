@@ -29,7 +29,7 @@
 #include "config.h"
 #include "display.hpp"
 
-#define WINDOW_HELP_URL "https://www.chocolate-doom.org/setup-display"
+constexpr auto WINDOW_HELP_URL = "https://www.chocolate-doom.org/setup-display";
 
 [[maybe_unused]] extern void RestartTextscreen();
 

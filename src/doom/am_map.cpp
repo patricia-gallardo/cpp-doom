@@ -82,10 +82,6 @@ constexpr auto                  GRIDCOLORS               = (GRAYS + GRAYSRANGE /
 [[maybe_unused]] constexpr auto GRIDRANGE                = 0;
 constexpr auto                  XHAIRCOLORS              = GRAYS;
 
-#define WALLCOLORS   (crispy->extautomap ? 23 : REDS)     // [crispy] red-brown
-#define FDWALLCOLORS (crispy->extautomap ? 55 : BROWNS)   // [crispy] lt brown
-#define CDWALLCOLORS (crispy->extautomap ? 215 : YELLOWS) // [crispy] orange
-
 #define CRISPY_HIGHLIGHT_REVEALED_SECRETS
 
 // drawing stuff
@@ -107,13 +103,44 @@ constexpr auto M_ZOOMOUT = (static_cast<int>(FRACUNIT / 1.02));
 constexpr auto M2_ZOOMIN  = (static_cast<int>(1.08 * FRACUNIT));
 constexpr auto M2_ZOOMOUT = (static_cast<int>(FRACUNIT / 1.08));
 
+// used by FTOM to scale from frame-buffer-to-map coords (=1/scale_mtof)
+static fixed_t scale_ftom;
+
+// used by MTOF to scale from map-to-frame-buffer coords
+static fixed_t scale_mtof = static_cast<fixed_t>(INITSCALEMTOF);
+
 // translates between frame-buffer and map distances
 // [crispy] fix int overflow that causes map and grid lines to disappear
-#define FTOM(x) ((static_cast<int64_t>((x) << FRACBITS) * scale_ftom) >> FRACBITS)
-#define MTOF(x) (((static_cast<int64_t>(x) * scale_mtof) >> FRACBITS) >> FRACBITS)
+template <typename T>
+constexpr auto FTOM(T x) {
+  return ((static_cast<int64_t>((x) << FRACBITS) * scale_ftom) >> FRACBITS);
+}
+
+template <typename T>
+constexpr auto MTOF(T x) {
+  return (((static_cast<int64_t>(x) * scale_mtof) >> FRACBITS) >> FRACBITS);
+}
+
+// location of window on screen
+static int f_x;
+static int f_y;
+
+// size of window on screen
+static int f_w;
+static int f_h;
+
+static int64_t m_x, m_y; // LL x,y where the window is on the map (map coords)
+
 // translates between frame-buffer and map coordinates
-#define CXMTOF(x) (f_x + MTOF((x)-m_x))
-#define CYMTOF(y) (f_y + (f_h - MTOF((y)-m_y)))
+template <typename T>
+constexpr auto CXMTOF(T x) {
+  return (f_x + MTOF((x)-m_x));
+}
+
+template <typename T>
+constexpr auto CYMTOF(T y) {
+  return (f_y + (f_h - MTOF((y)-m_y)));
+}
 
 // the following is crap
 constexpr auto LINE_NEVERSEE = ML_DONTDRAW;
@@ -127,15 +154,18 @@ struct fline_t {
 };
 
 struct mpoint_t {
-  int64_t x, y;
+  int64_t x{};
+  int64_t y{};
 };
 
 struct mline_t {
-  mpoint_t a, b;
+  mpoint_t a{};
+  mpoint_t b{};
 };
 
 struct islope_t {
-  fixed_t slp, islp;
+  [[maybe_unused]] fixed_t slp;
+  [[maybe_unused]] fixed_t islp;
 };
 
 enum keycolor_t
@@ -151,78 +181,66 @@ enum keycolor_t
 //  A line drawing of the player pointing right,
 //   starting from the middle.
 //
-#define R ((8 * PLAYERRADIUS) / 7)
-mline_t player_arrow[] = {
-  {{ -R + R / 8, 0 },      { R, 0 }              }, // -----
-  { { R, 0 },              { R - R / 2, R / 4 }  }, // ----->
-  { { R, 0 },              { R - R / 2, -R / 4 } },
-  { { -R + R / 8, 0 },     { -R - R / 8, R / 4 } }, // >---->
-  { { -R + R / 8, 0 },     { -R - R / 8, -R / 4 }},
-  { { -R + 3 * R / 8, 0 }, { -R + R / 8, R / 4 } }, // >>--->
-  { { -R + 3 * R / 8, 0 }, { -R + R / 8, -R / 4 }}
+constexpr auto R1 = ((8 * PLAYERRADIUS) / 7);
+std::array<mline_t, 7> player_arrow = {
+  mline_t { mpoint_t { -R1 + R1 / 8, 0 },     mpoint_t { R1, 0 }               }, // -----
+  mline_t { mpoint_t { R1, 0 },              mpoint_t { R1 - R1 / 2, R1 / 4 }   }, // ----->
+  mline_t { mpoint_t { R1, 0 },              mpoint_t { R1 - R1 / 2, -R1 / 4 }  },
+  mline_t { mpoint_t { -R1 + R1 / 8, 0 },     mpoint_t { -R1 - R1 / 8, R1 / 4 }  }, // >---->
+  mline_t { mpoint_t { -R1 + R1 / 8, 0 },     mpoint_t { -R1 - R1 / 8, -R1 / 4 } },
+  mline_t { mpoint_t { -R1 + 3 * R1 / 8, 0 }, mpoint_t { -R1 + R1 / 8, R1 / 4 }  }, // >>--->
+  mline_t { mpoint_t { -R1 + 3 * R1 / 8, 0 }, mpoint_t { -R1 + R1 / 8, -R1 / 4 } }
 };
-#undef R
 
-#define R ((8 * PLAYERRADIUS) / 7)
+constexpr auto R2 = ((8 * PLAYERRADIUS) / 7);
 mline_t cheat_player_arrow[] = {
-  {{ -R + R / 8, 0 },                    { R, 0 }                           }, // -----
-  { { R, 0 },                            { R - R / 2, R / 6 }               }, // ----->
-  { { R, 0 },                            { R - R / 2, -R / 6 }              },
-  { { -R + R / 8, 0 },                   { -R - R / 8, R / 6 }              }, // >----->
-  { { -R + R / 8, 0 },                   { -R - R / 8, -R / 6 }             },
-  { { -R + 3 * R / 8, 0 },               { -R + R / 8, R / 6 }              }, // >>----->
-  { { -R + 3 * R / 8, 0 },               { -R + R / 8, -R / 6 }             },
-  { { -R / 2, 0 },                       { -R / 2, -R / 6 }                 }, // >>-d--->
-  { { -R / 2, -R / 6 },                  { -R / 2 + R / 6, -R / 6 }         },
-  { { -R / 2 + R / 6, -R / 6 },          { -R / 2 + R / 6, R / 4 }          },
-  { { -R / 6, 0 },                       { -R / 6, -R / 6 }                 }, // >>-dd-->
-  { { -R / 6, -R / 6 },                  { 0, -R / 6 }                      },
-  { { 0, -R / 6 },                       { 0, R / 4 }                       },
-  { { R / 6, R / 4 },                    { R / 6, -R / 7 }                  }, // >>-ddt->
-  { { R / 6, -R / 7 },                   { R / 6 + R / 32, -R / 7 - R / 32 }},
-  { { R / 6 + R / 32, -R / 7 - R / 32 }, { R / 6 + R / 10, -R / 7 }         }
+  {{ -R2 + R2 / 8, 0 },                    { R2, 0 }                           }, // -----
+  { { R2, 0 },                            { R2 - R2 / 2, R2 / 6 }               }, // ----->
+  { { R2, 0 },                            { R2 - R2 / 2, -R2 / 6 }              },
+  { { -R2 + R2 / 8, 0 },                   { -R2 - R2 / 8, R2 / 6 }              }, // >----->
+  { { -R2 + R2 / 8, 0 },                   { -R2 - R2 / 8, -R2 / 6 }             },
+  { { -R2 + 3 * R2 / 8, 0 },               { -R2 + R2 / 8, R2 / 6 }              }, // >>----->
+  { { -R2 + 3 * R2 / 8, 0 },               { -R2 + R2 / 8, -R2 / 6 }             },
+  { { -R2 / 2, 0 },                       { -R2 / 2, -R2 / 6 }                 }, // >>-d--->
+  { { -R2 / 2, -R2 / 6 },                  { -R2 / 2 + R2 / 6, -R2 / 6 }         },
+  { { -R2 / 2 + R2 / 6, -R2 / 6 },          { -R2 / 2 + R2 / 6, R2 / 4 }          },
+  { { -R2 / 6, 0 },                       { -R2 / 6, -R2 / 6 }                 }, // >>-dd-->
+  { { -R2 / 6, -R2 / 6 },                  { 0, -R2 / 6 }                      },
+  { { 0, -R2 / 6 },                       { 0, R2 / 4 }                       },
+  { { R2 / 6, R2 / 4 },                    { R2 / 6, -R2 / 7 }                  }, // >>-ddt->
+  { { R2 / 6, -R2 / 7 },                   { R2 / 6 + R2 / 32, -R2 / 7 - R2 / 32 }},
+  { { R2 / 6 + R2 / 32, -R2 / 7 - R2 / 32 }, { R2 / 6 + R2 / 10, -R2 / 7 }         }
 };
-#undef R
 
-#define R (FRACUNIT)
+constexpr auto R3 = (FRACUNIT);
 [[maybe_unused]] mline_t triangle_guy[] = {
-  {{ static_cast<fixed_t>(-.867 * R), static_cast<fixed_t>(-.5 * R) }, { static_cast<fixed_t>(.867 * R), static_cast<fixed_t>(-.5 * R) } },
-  { { static_cast<fixed_t>(.867 * R), static_cast<fixed_t>(-.5 * R) }, { static_cast<fixed_t>(0), static_cast<fixed_t>(R) }              },
-  { { static_cast<fixed_t>(0), static_cast<fixed_t>(R) },              { static_cast<fixed_t>(-.867 * R), static_cast<fixed_t>(-.5 * R) }}
+  {{ static_cast<fixed_t>(-.867 * R3), static_cast<fixed_t>(-.5 * R3) }, { static_cast<fixed_t>(.867 * R3), static_cast<fixed_t>(-.5 * R3) } },
+  { { static_cast<fixed_t>(.867 * R3), static_cast<fixed_t>(-.5 * R3) }, { static_cast<fixed_t>(0), static_cast<fixed_t>(R3) }              },
+  { { static_cast<fixed_t>(0), static_cast<fixed_t>(R3) },              { static_cast<fixed_t>(-.867 * R3), static_cast<fixed_t>(-.5 * R3) }}
 };
-#undef R
 
-#define R (FRACUNIT)
+constexpr auto R4 = (FRACUNIT);
 mline_t thintriangle_guy[] = {
-  {{ static_cast<fixed_t>(-.5 * R), static_cast<fixed_t>(-.7 * R) }, { static_cast<fixed_t>(R), static_cast<fixed_t>(0) }            },
-  { { static_cast<fixed_t>(R), static_cast<fixed_t>(0) },            { static_cast<fixed_t>(-.5 * R), static_cast<fixed_t>(.7 * R) } },
-  { { static_cast<fixed_t>(-.5 * R), static_cast<fixed_t>(.7 * R) }, { static_cast<fixed_t>(-.5 * R), static_cast<fixed_t>(-.7 * R) }}
+  {{ static_cast<fixed_t>(-.5 * R4), static_cast<fixed_t>(-.7 * R4) }, { static_cast<fixed_t>(R4), static_cast<fixed_t>(0) }            },
+  { { static_cast<fixed_t>(R4), static_cast<fixed_t>(0) },            { static_cast<fixed_t>(-.5 * R4), static_cast<fixed_t>(.7 * R4) } },
+  { { static_cast<fixed_t>(-.5 * R4), static_cast<fixed_t>(.7 * R4) }, { static_cast<fixed_t>(-.5 * R4), static_cast<fixed_t>(-.7 * R4) }}
 };
 // [crispy] print keys as crosses
 static mline_t cross_mark[] = {
-  {{ -R, 0 },  { R, 0 }},
-  { { 0, -R }, { 0, R }},
+  {{ -R4, 0 },  { R4, 0 }},
+  { { 0, -R4 }, { 0, R4 }},
 };
 static mline_t square_mark[] = {
-  {{ -R, 0 },  { 0, R } },
-  { { 0, R },  { R, 0 } },
-  { { R, 0 },  { 0, -R }},
-  { { 0, -R }, { -R, 0 }},
+  {{ -R4, 0 },  { 0, R4 } },
+  { { 0, R4 },  { R4, 0 } },
+  { { R4, 0 },  { 0, -R4 }},
+  { { 0, -R4 }, { -R4, 0 }},
 };
-#undef R
 
 static int cheating = 0;
 static int grid     = 0;
 
 [[maybe_unused]] static int leveljuststarted = 1; // kluge until AM_LevelInit() is called
-
-// location of window on screen
-static int f_x;
-static int f_y;
-
-// size of window on screen
-static int f_w;
-static int f_h;
 
 static int lightlev;                        // used for funky strobing effect
 #define fb g_i_video_globals->I_VideoBuffer // [crispy] simplify
@@ -232,7 +250,6 @@ static mpoint_t m_paninc;     // how far the window pans each tic (map coords)
 static fixed_t  mtof_zoommul; // how far the window zooms in each tic (map coords)
 static fixed_t  ftom_zoommul; // how far the window zooms in each tic (fb coords)
 
-static int64_t m_x, m_y;   // LL x,y where the window is on the map (map coords)
 static int64_t m_x2, m_y2; // UR x,y where the window is on the map (map coords)
 
 //
@@ -264,11 +281,6 @@ static int64_t old_m_x, old_m_y;
 // old location used by the Follower routine
 static mpoint_t f_oldloc;
 
-// used by MTOF to scale from map-to-frame-buffer coords
-static fixed_t scale_mtof = static_cast<fixed_t>(INITSCALEMTOF);
-// used by FTOM to scale from frame-buffer-to-map coords (=1/scale_mtof)
-static fixed_t scale_ftom;
-
 static player_t * plr; // the player represented by an arrow
 
 static patch_t * marknums[10];                 // numbers used for marking by the automap
@@ -296,11 +308,11 @@ static angle_t  mapangle;
   int dy = static_cast<int>(ml->a.y - ml->b.y);
   int dx = static_cast<int>(ml->b.x - ml->a.x);
   if (!dy)
-    is->islp = (dx < 0 ? -INT_MAX : INT_MAX);
+    is->islp = (dx < 0 ? -std::numeric_limits<int32_t>::max() : std::numeric_limits<int32_t>::max());
   else
     is->islp = FixedDiv(dx, dy);
   if (!dx)
-    is->slp = (dy < 0 ? -INT_MAX : INT_MAX);
+    is->slp = (dy < 0 ? -std::numeric_limits<int32_t>::max() : std::numeric_limits<int32_t>::max());
   else
     is->slp = FixedDiv(dy, dx);
 }
@@ -372,8 +384,8 @@ void AM_addMark() {
 // sets global variables controlling zoom range.
 //
 void AM_findMinMaxBoundaries() {
-  min_x = min_y = INT_MAX;
-  max_x = max_y = -INT_MAX;
+  min_x = min_y = std::numeric_limits<int32_t>::max();
+  max_x = max_y = -std::numeric_limits<int32_t>::max();
 
   for (int i = 0; i < g_r_state_globals->numvertexes; i++) {
     if (g_r_state_globals->vertexes[i].x < min_x)
@@ -407,7 +419,7 @@ void AM_findMinMaxBoundaries() {
 void AM_changeWindowLoc() {
   if (m_paninc.x || m_paninc.y) {
     followplayer = 0;
-    f_oldloc.x   = INT_MAX;
+    f_oldloc.x   = std::numeric_limits<int32_t>::max();
   }
 
   int64_t incx = m_paninc.x;
@@ -433,7 +445,7 @@ void AM_changeWindowLoc() {
   m_y2 = m_y + m_h;
 
   // [crispy] reset after moving with the mouse
-  if (f_oldloc.y == INT_MAX) {
+  if (f_oldloc.y == std::numeric_limits<int32_t>::max()) {
     m_paninc.x = 0;
     m_paninc.y = 0;
   }
@@ -448,7 +460,7 @@ void AM_initVariables() {
   g_doomstat_globals->automapactive = true;
   //  fb = I_VideoBuffer; // [crispy] simplify
 
-  f_oldloc.x = INT_MAX;
+  f_oldloc.x = std::numeric_limits<int32_t>::max();
   amclock    = 0;
   lightlev   = 0;
 
@@ -656,7 +668,7 @@ bool AM_Responder(event_t * ev) {
       // [crispy] mouse sensitivity for strafe
       m_paninc.x = FTOM(ev->data2 * (g_doomstat_globals->mouseSensitivity_x2 + 5) / 80);
       m_paninc.y = FTOM(ev->data3 * (g_doomstat_globals->mouseSensitivity_x2 + 5) / 80);
-      f_oldloc.y = INT_MAX;
+      f_oldloc.y = std::numeric_limits<int32_t>::max();
       rc         = true;
     }
   } else if (ev->type == ev_keydown) {
@@ -710,7 +722,7 @@ bool AM_Responder(event_t * ev) {
         AM_restoreScaleAndLoc();
     } else if (key == g_m_controls_globals->key_map_follow) {
       followplayer = !followplayer;
-      f_oldloc.x   = INT_MAX;
+      f_oldloc.x   = std::numeric_limits<int32_t>::max();
       if (followplayer)
         plr->message = DEH_String(AMSTR_FOLLOWON);
       else
@@ -896,20 +908,21 @@ bool AM_clipMline(mline_t * ml,
   int outcode2 = 0;
   int outside  = 0;
 
-  fpoint_t tmp;
+  fpoint_t tmp{};
   int      dx = 0;
   int      dy = 0;
 
-#define DOOUTCODE(oc, mx, my) \
-  (oc) = 0;                   \
-  if ((my) < 0)               \
-    (oc) |= TOP;              \
-  else if ((my) >= f_h)       \
-    (oc) |= BOTTOM;           \
-  if ((mx) < 0)               \
-    (oc) |= LEFT;             \
-  else if ((mx) >= f_w)       \
-    (oc) |= RIGHT;
+auto DOOUTCODE = [](auto & oc, const auto & mx, const auto & my) {
+    (oc) = 0;
+    if ((my) < 0)
+      (oc) |= TOP;
+    else if ((my) >= f_h)
+      (oc) |= BOTTOM;
+    if ((mx) < 0)
+      (oc) |= LEFT;
+    else if ((mx) >= f_w)
+      (oc) |= RIGHT;
+  };
 
   // do trivial rejects and outcodes
   if (ml->a.y > m_y2)
@@ -998,7 +1011,6 @@ bool AM_clipMline(mline_t * ml,
 
   return true;
 }
-#undef DOOUTCODE
 
 //
 // Classic Bresenham w/ whatever optimizations needed for speed
@@ -1027,7 +1039,7 @@ void AM_drawFline(fline_t * fl,
   }
 
 #ifndef CRISPY_TRUECOLOR
-#define PUTDOT(xx, yy, cc) fb[(yy)*f_w + (g_r_state_globals->flipscreenwidth[xx])] = (cc)
+  auto PUTDOT = [](auto xx, auto yy, auto cc) { fb[(yy)*f_w + (g_r_state_globals->flipscreenwidth[xx])] = (cc); };
 #else
 #define PUTDOT(xx, yy, cc) fb[(yy)*f_w + (flipscreenwidth[xx])] = (colormaps[(cc)])
 #endif
@@ -1101,7 +1113,7 @@ void AM_drawGrid(int color) {
 
   // draw vertical gridlines
   for (int64_t x = start; x < end; x += (MAPBLOCKUNITS << FRACBITS)) {
-    mline_t ml;
+    mline_t ml{};
     ml.a.x = x;
     ml.b.x = x;
     // [crispy] moved here
@@ -1132,7 +1144,7 @@ void AM_drawGrid(int color) {
 
   // draw horizontal gridlines
   for (int64_t y = start; y < end; y += (MAPBLOCKUNITS << FRACBITS)) {
-    mline_t ml;
+    mline_t ml{};
     ml.a.y = y;
     ml.b.y = y;
     // [crispy] moved here
@@ -1219,6 +1231,11 @@ void AM_drawWalls() {
         AM_drawMline(&l, WHITE);
         continue;
       }
+
+      auto WALLCOLORS   = []() { return (crispy->extautomap ? 23 : REDS); };     // [crispy] red-brown
+      auto FDWALLCOLORS = []() { return (crispy->extautomap ? 55 : BROWNS); };   // [crispy] lt brown
+      auto CDWALLCOLORS = []() { return (crispy->extautomap ? 215 : YELLOWS); }; // [crispy] orange
+
       if (!g_r_state_globals->lines[i].backsector) {
         // [crispy] draw 1S secret sector boundaries in purple
         if (crispy->extautomap && cheating && (g_r_state_globals->lines[i].frontsector->special == 9))
@@ -1229,16 +1246,16 @@ void AM_drawWalls() {
           AM_drawMline(&l, REVEALEDSECRETWALLCOLORS);
 #endif
         else
-          AM_drawMline(&l, WALLCOLORS + lightlev);
+          AM_drawMline(&l, WALLCOLORS() + lightlev);
       } else {
         // [crispy] draw teleporters in green
         // and also WR teleporters 97 if they are not secret
         // (no monsters-only teleporters 125, 126; no Boom teleporters)
         if (g_r_state_globals->lines[i].special == 39 || (crispy->extautomap && !(g_r_state_globals->lines[i].flags & ML_SECRET) && g_r_state_globals->lines[i].special == 97)) { // teleporters
-          AM_drawMline(&l, crispy->extautomap ? (GREENS + GREENRANGE / 2) : (WALLCOLORS + WALLRANGE / 2));
+          AM_drawMline(&l, crispy->extautomap ? (GREENS + GREENRANGE / 2) : (WALLCOLORS() + WALLRANGE / 2));
         } else if (g_r_state_globals->lines[i].flags & ML_SECRET) // secret door
         {
-          AM_drawMline(&l, WALLCOLORS + lightlev);
+          AM_drawMline(&l, WALLCOLORS() + lightlev);
         }
 #if defined CRISPY_HIGHLIGHT_REVEALED_SECRETS
         // [crispy] draw revealed secret sector boundaries in green
@@ -1251,10 +1268,10 @@ void AM_drawWalls() {
           AM_drawMline(&l, SECRETWALLCOLORS);
         } else if (g_r_state_globals->lines[i].backsector->floorheight
                    != g_r_state_globals->lines[i].frontsector->floorheight) {
-          AM_drawMline(&l, FDWALLCOLORS + lightlev); // floor level change
+          AM_drawMline(&l, FDWALLCOLORS() + lightlev); // floor level change
         } else if (g_r_state_globals->lines[i].backsector->ceilingheight
                    != g_r_state_globals->lines[i].frontsector->ceilingheight) {
-          AM_drawMline(&l, CDWALLCOLORS + lightlev); // ceiling level change
+          AM_drawMline(&l, CDWALLCOLORS() + lightlev); // ceiling level change
         } else if (cheating) {
           AM_drawMline(&l, TSWALLCOLORS + lightlev);
         }
@@ -1307,7 +1324,7 @@ void AM_drawLineCharacter(mline_t * lineguy,
                           int       color,
                           fixed_t   x,
                           fixed_t   y) {
-  mline_t l;
+  mline_t l{};
 
   if (crispy->automaprotate) {
     angle += mapangle;
@@ -1349,7 +1366,7 @@ void AM_drawLineCharacter(mline_t * lineguy,
 void AM_drawPlayers() {
   static int their_colors[] = { GREENS, GRAYS, BROWNS, REDS };
   int        their_color    = -1;
-  mpoint_t   pt;
+  mpoint_t   pt{};
 
   if (!g_doomstat_globals->netgame) {
     pt.x = plr->mo->x;
@@ -1361,7 +1378,7 @@ void AM_drawPlayers() {
     if (cheating)
       AM_drawLineCharacter(cheat_player_arrow, static_cast<int>(std::size(cheat_player_arrow)), 0, plr->mo->angle, WHITE, static_cast<fixed_t>(pt.x), static_cast<fixed_t>(pt.y));
     else
-      AM_drawLineCharacter(player_arrow, static_cast<int>(std::size(player_arrow)), 0, plr->mo->angle, WHITE, static_cast<fixed_t>(pt.x), static_cast<fixed_t>(pt.y));
+      AM_drawLineCharacter(player_arrow.data(), static_cast<int>(std::size(player_arrow)), 0, plr->mo->angle, WHITE, static_cast<fixed_t>(pt.x), static_cast<fixed_t>(pt.y));
     return;
   }
 
@@ -1387,7 +1404,7 @@ void AM_drawPlayers() {
       AM_rotatePoint(&pt);
     }
 
-    AM_drawLineCharacter(player_arrow, static_cast<int>(std::size(player_arrow)), 0, p->mo->angle, color, static_cast<fixed_t>(pt.x), static_cast<fixed_t>(pt.y));
+    AM_drawLineCharacter(player_arrow.data(), static_cast<int>(std::size(player_arrow)), 0, p->mo->angle, color, static_cast<fixed_t>(pt.x), static_cast<fixed_t>(pt.y));
   }
 }
 
@@ -1401,7 +1418,7 @@ void AM_drawThings(int colors, int) {
         continue;
       }
 
-      mpoint_t pt;
+      mpoint_t pt{};
       pt.x = t->x;
       pt.y = t->y;
       if (crispy->automaprotate) {
@@ -1475,7 +1492,7 @@ void AM_drawMarks() {
       int w = 5; // because something's wrong with the wad, i guess
       int h = 6; // because something's wrong with the wad, i guess
       // [crispy] center marks around player
-      mpoint_t pt;
+      mpoint_t pt{};
       pt.x = markpoints[i].x;
       pt.y = markpoints[i].y;
       if (crispy->automaprotate) {

@@ -31,7 +31,7 @@
 #include "txt_joyaxis.hpp"
 #include "txt_joybinput.hpp"
 
-#define WINDOW_HELP_URL "https://www.chocolate-doom.org/setup-gamepad"
+constexpr auto WINDOW_HELP_URL = "https://www.chocolate-doom.org/setup-gamepad";
 
 struct joystick_config_t
 {

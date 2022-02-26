@@ -18,29 +18,26 @@
 
 #include <cstdio>
 #include <cstdlib>
-
 #include <fmt/printf.h>
 
 #include "deh_main.hpp"
 #include "doomdef.hpp"
-
+#include "doomstat.hpp"
 #include "i_swap.hpp"
 #include "i_system.hpp"
-#include "w_wad.hpp"
-#include "z_zone.hpp"
-
-#include "r_local.hpp"
-
-#include "doomstat.hpp"
-
+#include "i_video.hpp"
 #include "lump.hpp"
+#include "m_fixed.hpp"
 #include "memory.hpp"
 #include "p_local.hpp" // [crispy] MLOOKUNIT
 #include "r_bmaps.hpp" // [crispy] R_BrightmapForTexName()
+#include "r_local.hpp"
 #include "v_trans.hpp" // [crispy] colored blood sprites
+#include "w_wad.hpp"
+#include "z_zone.hpp"
 
-#define MINZ        (FRACUNIT * 4)
-#define BASEYCENTER (ORIGHEIGHT / 2)
+constexpr auto MINZ        = (FRACUNIT * 4);
+constexpr auto BASEYCENTER = (ORIGHEIGHT / 2);
 
 // void R_DrawColumn ();
 // void R_DrawFuzzColumn ();
@@ -1041,7 +1038,7 @@ void R_SortVisSprites() {
 
   vsprsortedhead.next = vsprsortedhead.prev = &vsprsortedhead;
   for (int i = 0; i < count; i++) {
-    bestscale = INT_MAX;
+    bestscale = std::numeric_limits<int32_t>::max();
     best      = unsorted.next;
     for (ds = unsorted.next; ds != &unsorted; ds = ds->next) {
       if (ds->scale < bestscale) {

@@ -16,8 +16,7 @@
 //	System specific interface stuff.
 //
 
-#ifndef __R_DRAW__
-#define __R_DRAW__
+#pragma once
 
 // The span blitting interface.
 // Hook in assembler or system specific BLT
@@ -123,5 +122,3 @@ struct r_draw_t {
 };
 
 extern r_draw_t * const g_r_draw_globals;
-
-#endif

@@ -23,7 +23,6 @@
 #include <fmt/printf.h>
 
 #include "d_loop.hpp"
-#include "doomdef.hpp"
 #include "doomstat.hpp" // [AM] leveltime, paused, menuactive
 
 #include "m_bbox.hpp"
@@ -53,8 +52,8 @@ fixed_t projection;
 // just for profiling purposes
 int framecount;
 
-int linecount;
-int loopcount;
+int                  linecount;
+[[maybe_unused]] int loopcount;
 
 fixed_t viewcos;
 fixed_t viewsin;
@@ -142,9 +141,9 @@ r_state_t * const g_r_state_globals = &r_state_s;
 // Expand a given bbox
 // so that it encloses a given point.
 //
-void R_AddPointToBox(int       x,
-                     int       y,
-                     fixed_t * box) {
+[[maybe_unused]] void R_AddPointToBox(int       x,
+                                      int       y,
+                                      fixed_t * box) {
   if (x < box[BOXLEFT])
     box[BOXLEFT] = x;
   if (x > box[BOXRIGHT])
@@ -352,8 +351,8 @@ angle_t
   int64_t y_viewy = static_cast<int64_t>(y) - g_r_state_globals->viewy;
   int64_t x_viewx = static_cast<int64_t>(x) - g_r_state_globals->viewx;
 
-  // [crispy] the worst that could happen is e.g. INT_MIN-INT_MAX = 2*INT_MIN
-  if (x_viewx < INT_MIN || x_viewx > INT_MAX || y_viewy < INT_MIN || y_viewy > INT_MAX) {
+  // [crispy] the worst that could happen is e.g. std::numeric_limits<int32_t>::min()-std::numeric_limits<int32_t>::max() = 2*std::numeric_limits<int32_t>::min()
+  if (x_viewx < std::numeric_limits<int32_t>::min() || x_viewx > std::numeric_limits<int32_t>::max() || y_viewy < std::numeric_limits<int32_t>::min() || y_viewy > std::numeric_limits<int32_t>::max()) {
     // [crispy] preserving the angle by halfing the distance in both directions
     x = static_cast<fixed_t>(x_viewx / 2 + g_r_state_globals->viewx);
     y = static_cast<fixed_t>(y_viewy / 2 + g_r_state_globals->viewy);
@@ -374,9 +373,7 @@ angle_t
   return R_PointToAngleSlope(x2, y2, SlopeDiv);
 }
 
-fixed_t
-    R_PointToDist(fixed_t x,
-                  fixed_t y) {
+[[maybe_unused]] fixed_t R_PointToDist(fixed_t x, fixed_t y) {
   int     angle;
   fixed_t dx;
   fixed_t dy;
@@ -608,7 +605,7 @@ void R_InitTextureMapping() {
 // Only inits the zlight table,
 //  because the scalelight table changes with view size.
 //
-#define DISTMAP 2
+constexpr auto DISTMAP = 2;
 
 void R_InitLightTables() {
   int level;
@@ -734,7 +731,7 @@ void R_ExecuteSetViewSize() {
   centerx     = g_r_state_globals->viewwidth / 2;
   centerxfrac = centerx << FRACBITS;
   centeryfrac = centery << FRACBITS;
-  projection  = MIN(centerxfrac, ((HIRESWIDTH >> detailshift) / 2) << FRACBITS);
+  projection  = std::min(centerxfrac, ((HIRESWIDTH >> detailshift) / 2) << FRACBITS);
 
   if (!detailshift) {
     colfunc = basecolfunc = R_DrawColumn;
@@ -755,8 +752,8 @@ void R_ExecuteSetViewSize() {
   R_InitTextureMapping();
 
   // psprite scales
-  pspritescale  = FRACUNIT * MIN(g_r_state_globals->viewwidth, HIRESWIDTH >> detailshift) / ORIGWIDTH;
-  pspriteiscale = FRACUNIT * ORIGWIDTH / MIN(g_r_state_globals->viewwidth, HIRESWIDTH >> detailshift);
+  pspritescale  = FRACUNIT * std::min(g_r_state_globals->viewwidth, HIRESWIDTH >> detailshift) / ORIGWIDTH;
+  pspriteiscale = FRACUNIT * ORIGWIDTH / std::min(g_r_state_globals->viewwidth, HIRESWIDTH >> detailshift);
 
   // thing clipping
   for (int i = 0; i < g_r_state_globals->viewwidth; i++)
@@ -766,7 +763,7 @@ void R_ExecuteSetViewSize() {
   for (int i = 0; i < g_r_state_globals->viewheight; i++) {
     // [crispy] re-generate lookup-table for yslope[] (free look)
     // whenever "detailshift" or "screenblocks" change
-    const fixed_t num = MIN(g_r_state_globals->viewwidth << detailshift, HIRESWIDTH) / 2 * FRACUNIT;
+    const fixed_t num = std::min(g_r_state_globals->viewwidth << detailshift, HIRESWIDTH) / 2 * FRACUNIT;
     for (int j = 0; j < LOOKDIRS; j++) {
       dy            = ((i - (g_r_state_globals->viewheight / 2 + ((j - LOOKDIRMIN) * (1 << crispy->hires)) * (screenblocks < 11 ? screenblocks : 11) / 10)) << FRACBITS) + FRACUNIT / 2;
       dy            = std::abs(dy);
@@ -787,7 +784,7 @@ void R_ExecuteSetViewSize() {
 
     startmap_local = ((LIGHTLEVELS - LIGHTBRIGHT - i) * 2) * NUMCOLORMAPS / LIGHTLEVELS;
     for (int j = 0; j < MAXLIGHTSCALE; j++) {
-      level = startmap_local - j * HIRESWIDTH / MIN(g_r_state_globals->viewwidth << detailshift, HIRESWIDTH) / DISTMAP;
+      level = startmap_local - j * HIRESWIDTH / std::min(g_r_state_globals->viewwidth << detailshift, HIRESWIDTH) / DISTMAP;
 
       if (level < 0)
         level = 0;

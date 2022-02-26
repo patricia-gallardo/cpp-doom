@@ -15,8 +15,7 @@
 // Parses "Misc" sections in dehacked files
 //
 
-#ifndef DEH_MISC_H
-#define DEH_MISC_H
+#pragma once
 
 constexpr auto DEH_DEFAULT_INITIAL_HEALTH     = 100;
 constexpr auto DEH_DEFAULT_INITIAL_BULLETS    = 50;
@@ -51,28 +50,3 @@ extern int deh_idkfa_armor;
 extern int deh_idkfa_armor_class;
 extern int deh_bfg_cells_per_shot;
 extern int deh_species_infighting;
-
-#if 0
-
-// To compile without dehacked, it's possible to use these:
-
-#define deh_initial_health     DEH_DEFAULT_INITIAL_HEALTH
-#define deh_initial_bullets    DEH_DEFAULT_INITIAL_BULLETS
-#define deh_max_health         DEH_DEFAULT_MAX_HEALTH
-#define deh_max_armor          DEH_DEFAULT_MAX_ARMOR
-#define deh_green_armor_class  DEH_DEFAULT_GREEN_ARMOR_CLASS
-#define deh_blue_armor_class   DEH_DEFAULT_BLUE_ARMOR_CLASS
-#define deh_max_soulsphere     DEH_DEFAULT_MAX_SOULSPHERE
-#define deh_soulsphere_health  DEH_DEFAULT_SOULSPHERE_HEALTH
-#define deh_megasphere_health  DEH_DEFAULT_MEGASPHERE_HEALTH
-#define deh_god_mode_health    DEH_DEFAULT_GOD_MODE_HEALTH
-#define deh_idfa_armor         DEH_DEFAULT_IDFA_ARMOR
-#define deh_idfa_armor_class   DEH_DEFAULT_IDFA_ARMOR_CLASS
-#define deh_idkfa_armor        DEH_DEFAULT_IDKFA_ARMOR
-#define deh_idkfa_armor_class  DEH_DEFAULT_IDKFA_ARMOR_CLASS
-#define deh_bfg_cells_per_shot DEH_DEFAULT_BFG_CELLS_PER_SHOT
-#define deh_species_infighting DEH_DEFAULT_SPECIES_INFIGHTING
-
-#endif
-
-#endif /* #ifndef DEH_MISC_H */

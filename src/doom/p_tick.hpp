@@ -16,12 +16,9 @@
 //	?
 //
 
-#ifndef __P_TICK__
-#define __P_TICK__
+#pragma once
 
 // Called by C_Ticker,
 // can call G_PlayerExited.
 // Carries out all thinking of monsters and players.
 void P_Ticker();
-
-#endif

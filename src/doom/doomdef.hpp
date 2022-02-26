@@ -17,8 +17,7 @@
 //   lots of other stuff.
 //
 
-#ifndef __DOOMDEF__
-#define __DOOMDEF__
+#pragma once
 
 #include <cstdio>
 #include <cstring>
@@ -160,5 +159,3 @@ enum powerduration_t
   IRONTICS   = (60 * TICRATE)
 
 };
-
-#endif // __DOOMDEF__

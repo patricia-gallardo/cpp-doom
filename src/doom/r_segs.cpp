@@ -221,7 +221,7 @@ void R_RenderMaskedSegRange(drawseg_t * ds,
   // draw the columns
   for (g_r_draw_globals->dc_x = x1; g_r_draw_globals->dc_x <= x2; g_r_draw_globals->dc_x++) {
     // calculate lighting
-    if (maskedtexturecol[g_r_draw_globals->dc_x] != INT_MAX) // [crispy] 32-bit integer math
+    if (maskedtexturecol[g_r_draw_globals->dc_x] != std::numeric_limits<int32_t>::max()) // [crispy] 32-bit integer math
     {
       if (!fixedcolormap) {
         int index = spryscale >> (LIGHTSCALESHIFT + crispy->hires);
@@ -263,7 +263,7 @@ void R_RenderMaskedSegRange(drawseg_t * ds,
       auto * col     = reinterpret_cast<column_t *>(col_ptr);
 
       R_DrawMaskedColumn(col);
-      maskedtexturecol[g_r_draw_globals->dc_x] = INT_MAX; // [crispy] 32-bit integer math
+      maskedtexturecol[g_r_draw_globals->dc_x] = std::numeric_limits<int32_t>::max(); // [crispy] 32-bit integer math
     }
     spryscale += rw_scalestep;
   }
@@ -506,7 +506,7 @@ void R_StoreWallRange(int start,
   dx1                            = (static_cast<int64_t>(g_r_state_globals->viewx) - curline->v1->r_x) >> 1;
   dy1                            = (static_cast<int64_t>(g_r_state_globals->viewy) - curline->v1->r_y) >> 1;
   dist                           = ((dy * dx1 - dx * dy1) / len) << 1;
-  g_r_state_globals->rw_distance = static_cast<fixed_t>(BETWEEN(INT_MIN, INT_MAX, dist));
+  g_r_state_globals->rw_distance = static_cast<fixed_t>(std::clamp<int64_t>(dist, std::numeric_limits<int32_t>::min(), std::numeric_limits<int32_t>::max()));
 
   ds_p->x1 = rw_x = start;
   ds_p->x2        = stop;
@@ -571,8 +571,8 @@ void R_StoreWallRange(int start,
     ds_p->silhouette    = SIL_BOTH;
     ds_p->sprtopclip    = screenheightarray;
     ds_p->sprbottomclip = negonearray;
-    ds_p->bsilheight    = INT_MAX;
-    ds_p->tsilheight    = INT_MIN;
+    ds_p->bsilheight    = std::numeric_limits<int32_t>::max();
+    ds_p->tsilheight    = std::numeric_limits<int32_t>::min();
   } else {
     // [crispy] fix sprites being visible behind closed doors
     // adapted from mbfsrc/R_BSP.C:234-257
@@ -594,7 +594,7 @@ void R_StoreWallRange(int start,
       ds_p->bsilheight = frontsector->interpfloorheight;
     } else if (backsector->interpfloorheight > g_r_state_globals->viewz) {
       ds_p->silhouette = SIL_BOTTOM;
-      ds_p->bsilheight = INT_MAX;
+      ds_p->bsilheight = std::numeric_limits<int32_t>::max();
       // ds_p->sprbottomclip = negonearray;
     }
 
@@ -603,19 +603,19 @@ void R_StoreWallRange(int start,
       ds_p->tsilheight = frontsector->interpceilingheight;
     } else if (backsector->interpceilingheight < g_r_state_globals->viewz) {
       ds_p->silhouette |= SIL_TOP;
-      ds_p->tsilheight = INT_MIN;
+      ds_p->tsilheight = std::numeric_limits<int32_t>::min();
       // ds_p->sprtopclip = screenheightarray;
     }
 
     if (backsector->interpceilingheight <= frontsector->interpfloorheight || doorclosed) {
       ds_p->sprbottomclip = negonearray;
-      ds_p->bsilheight    = INT_MAX;
+      ds_p->bsilheight    = std::numeric_limits<int32_t>::max();
       ds_p->silhouette |= SIL_BOTTOM;
     }
 
     if (backsector->interpfloorheight >= frontsector->interpceilingheight || doorclosed) {
       ds_p->sprtopclip = screenheightarray;
-      ds_p->tsilheight = INT_MIN;
+      ds_p->tsilheight = std::numeric_limits<int32_t>::min();
       ds_p->silhouette |= SIL_TOP;
     }
 
@@ -785,25 +785,25 @@ void R_StoreWallRange(int start,
   // save sprite clipping info
   if (((ds_p->silhouette & SIL_TOP) || maskedtexture)
       && !ds_p->sprtopclip) {
-    std::memcpy(lastopening, ceilingclip + start, sizeof(*lastopening) * (static_cast<unsigned long>(rw_stopx - start)));
+    std::memcpy(lastopening, ceilingclip.data() + start, sizeof(*lastopening) * (static_cast<unsigned long>(rw_stopx - start)));
     ds_p->sprtopclip = lastopening - start;
     lastopening += rw_stopx - start;
   }
 
   if (((ds_p->silhouette & SIL_BOTTOM) || maskedtexture)
       && !ds_p->sprbottomclip) {
-    std::memcpy(lastopening, floorclip + start, sizeof(*lastopening) * (static_cast<unsigned long>(rw_stopx - start)));
+    std::memcpy(lastopening, floorclip.data() + start, sizeof(*lastopening) * (static_cast<unsigned long>(rw_stopx - start)));
     ds_p->sprbottomclip = lastopening - start;
     lastopening += rw_stopx - start;
   }
 
   if (maskedtexture && !(ds_p->silhouette & SIL_TOP)) {
     ds_p->silhouette |= SIL_TOP;
-    ds_p->tsilheight = INT_MIN;
+    ds_p->tsilheight = std::numeric_limits<int32_t>::min();
   }
   if (maskedtexture && !(ds_p->silhouette & SIL_BOTTOM)) {
     ds_p->silhouette |= SIL_BOTTOM;
-    ds_p->bsilheight = INT_MAX;
+    ds_p->bsilheight = std::numeric_limits<int32_t>::max();
   }
   ds_p++;
 }

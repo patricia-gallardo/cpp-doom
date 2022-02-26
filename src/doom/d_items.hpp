@@ -16,8 +16,7 @@
 //	Items: key cards, artifacts, weapon, ammunition.
 //
 
-#ifndef __D_ITEMS__
-#define __D_ITEMS__
+#pragma once
 
 #include "doomdef.hpp"
 #include "info.hpp"
@@ -33,5 +32,3 @@ struct weaponinfo_t {
 };
 
 extern weaponinfo_t weaponinfo[NUMWEAPONS];
-
-#endif

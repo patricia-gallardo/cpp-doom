@@ -23,10 +23,10 @@
 // Information about all the music
 //
 
-#define MUSIC(name)           \
-  {                           \
-    name, 0, nullptr, nullptr \
-  }
+template <typename T>
+musicinfo_t MUSIC(T name) {
+  return { name, 0, nullptr, nullptr };
+}
 
 musicinfo_t S_music[] = {
   MUSIC(nullptr),
@@ -126,14 +126,15 @@ musicinfo_t S_music[] = {
 // Information about all the sfx
 //
 
-#define SOUND(name, priority)                                   \
-  {                                                             \
-    nullptr, name, priority, nullptr, -1, -1, 0, 0, -1, nullptr \
-  }
-#define SOUND_LINK(name, priority, link_id, pitch, volume)                     \
-  {                                                                            \
-    nullptr, name, priority, &S_sfx[link_id], pitch, volume, 0, 0, -1, nullptr \
-  }
+template <typename N, typename P>
+sfxinfo_t SOUND(N name, P priority) {
+  return { nullptr, name, priority, nullptr, -1, -1, 0, 0, -1, nullptr };
+}
+
+template <typename N, typename P, typename LID, typename PT, typename V>
+sfxinfo_t SOUND_LINK(N name, P priority, LID link_id, PT pitch, V volume) {
+  return { nullptr, name, priority, &S_sfx[link_id], pitch, volume, 0, 0, -1, nullptr };
+}
 
 sfxinfo_t S_sfx[] = {
   // S_sfx[0] needs to be a dummy for odd reasons.

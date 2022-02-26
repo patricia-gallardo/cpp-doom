@@ -16,8 +16,7 @@
 //	Map Objects, MObj, definition and handling.
 //
 
-#ifndef __P_MOBJ__
-#define __P_MOBJ__
+#pragma once
 
 // Basics.
 #include "m_fixed.hpp"
@@ -285,5 +284,3 @@ struct mobj_t {
   fixed_t oldz {};
   angle_t oldangle {};
 };
-
-#endif

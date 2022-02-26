@@ -24,7 +24,10 @@
 //
 constexpr auto FRACBITS = 16;
 constexpr auto FRACUNIT = (1 << FRACBITS);
-#define FIXED2DOUBLE(x) (x / static_cast<double>(FRACUNIT))
+template <typename T>
+constexpr auto FIXED2DOUBLE(T x) {
+  return (x / static_cast<double>(FRACUNIT));
+}
 
 using fixed_t = int;
 

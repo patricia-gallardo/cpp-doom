@@ -16,8 +16,7 @@
 //	The not so system specific sound interface.
 //
 
-#ifndef __S_SOUND__
-#define __S_SOUND__
+#pragma once
 
 #include "p_mobj.hpp"
 #include "sounds.hpp"
@@ -84,5 +83,3 @@ extern int snd_channels;
 
 void S_UpdateSndChannels();
 void S_UpdateStereoSeparation();
-
-#endif

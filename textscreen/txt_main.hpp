@@ -38,12 +38,12 @@
 
 // Special keypress values that correspond to mouse button clicks
 
-constexpr auto TXT_MOUSE_BASE = 256;
-#define TXT_MOUSE_LEFT       (TXT_MOUSE_BASE + 0)
-#define TXT_MOUSE_RIGHT      (TXT_MOUSE_BASE + 1)
-#define TXT_MOUSE_MIDDLE     (TXT_MOUSE_BASE + 2)
-#define TXT_MOUSE_SCROLLUP   (TXT_MOUSE_BASE + 3)
-#define TXT_MOUSE_SCROLLDOWN (TXT_MOUSE_BASE + 4)
+constexpr auto TXT_MOUSE_BASE        = 256;
+constexpr auto TXT_MOUSE_LEFT        = (TXT_MOUSE_BASE + 0);
+constexpr auto TXT_MOUSE_RIGHT       = (TXT_MOUSE_BASE + 1);
+constexpr auto TXT_MOUSE_MIDDLE      = (TXT_MOUSE_BASE + 2);
+constexpr auto TXT_MOUSE_SCROLLUP    = (TXT_MOUSE_BASE + 3);
+constexpr auto TXT_MOUSE_SCROLLDOWN  = (TXT_MOUSE_BASE + 4);
 constexpr auto TXT_MAX_MOUSE_BUTTONS = 16;
 
 #define TXT_KEY_TO_MOUSE_BUTTON(x)                           \
@@ -74,7 +74,7 @@ constexpr auto TXT_UNICODE_BASE = 512;
 constexpr auto TXT_SCREEN_W = 80;
 constexpr auto TXT_SCREEN_H = 25;
 
-#define TXT_COLOR_BLINKING (1 << 3)
+constexpr auto TXT_COLOR_BLINKING = (1 << 3);
 
 enum txt_color_t
 {

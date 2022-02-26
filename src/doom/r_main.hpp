@@ -16,8 +16,7 @@
 //	System specific interface stuff.
 //
 
-#ifndef __R_MAIN__
-#define __R_MAIN__
+#pragma once
 
 #include "d_player.hpp"
 #include "r_data.hpp"
@@ -40,8 +39,8 @@ extern fixed_t projection;
 
 extern int validcount;
 
-extern int linecount;
-extern int loopcount;
+extern int                  linecount;
+[[maybe_unused]] extern int loopcount;
 
 //
 // Lighting LUT.
@@ -69,7 +68,7 @@ extern lighttable_t * fixedcolormap;
 
 // Number of diminishing brightness levels.
 // There a 0-31, i.e. 32 LUT in the COLORMAP lump.
-#define NUMCOLORMAPS 32
+constexpr auto NUMCOLORMAPS = 32;
 
 // [AM] Fractional part of the current tic, in the half-open
 //      range of [0.0, 1.0).  Used for interpolation.
@@ -116,7 +115,7 @@ angle_t
                     fixed_t x2,
                     fixed_t y2);
 
-fixed_t
+[[maybe_unused]] fixed_t
     R_PointToDist(fixed_t x,
                   fixed_t y);
 
@@ -126,9 +125,9 @@ subsector_t *
     R_PointInSubsector(fixed_t x,
                        fixed_t y);
 
-void R_AddPointToBox(int       x,
-                     int       y,
-                     fixed_t * box);
+[[maybe_unused]] void R_AddPointToBox(int       x,
+                                      int       y,
+                                      fixed_t * box);
 
 // [AM] Interpolate between two angles.
 angle_t R_InterpolateAngle(angle_t oangle, angle_t nangle, fixed_t scale);
@@ -145,5 +144,3 @@ void R_Init();
 
 // Called by M_Responder.
 void R_SetViewSize(int blocks, int detail);
-
-#endif

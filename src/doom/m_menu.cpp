@@ -20,6 +20,7 @@
 #include <array>
 #include <cctype>
 #include <cstdlib>
+#include <string>
 
 #include "doomdef.hpp"
 #include "doomkeys.hpp"
@@ -98,7 +99,7 @@ bool messageNeedsInput;
 void (*messageRoutine)(int response);
 
 // [crispy] intermediate gamma levels
-char gammamsg[5 + 4][26 + 2] = { GAMMALVL0, GAMMALVL05, GAMMALVL1, GAMMALVL15, GAMMALVL2, GAMMALVL25, GAMMALVL3, GAMMALVL35, GAMMALVL4 };
+std::array<std::string, 9> gammamsg = { GAMMALVL0, GAMMALVL05, GAMMALVL1, GAMMALVL15, GAMMALVL2, GAMMALVL25, GAMMALVL3, GAMMALVL35, GAMMALVL4 };
 
 // we are going to be entering a savegame string
 int         saveStringEnter;
@@ -1451,7 +1452,7 @@ void M_QuitResponse(int key) {
 static const char * M_SelectEndMessage() {
   const char ** endmsg = nullptr;
 
-  if (logical_gamemission == doom) {
+  if (logical_gamemission() == doom) {
     // Doom 1
 
     endmsg = doom1_endmsg;
@@ -1468,7 +1469,11 @@ void M_QuitDOOM(int) {
   // [crispy] fast exit if "run" key is held down
   if (speedkeydown()) I_Quit();
 
-  DEH_snprintf(endstring, sizeof(endstring), "%s\n\n" DOSY, DEH_String(M_SelectEndMessage()));
+  DEH_snprintf(endstring,
+               sizeof(endstring),
+               "%s\n\n"
+               "(press y to quit.)",
+               DEH_String(M_SelectEndMessage()));
 
   M_StartMessage(endstring, M_QuitResponse, true);
 }
@@ -1814,6 +1819,8 @@ bool M_Responder(event_t * ev) {
   if (ev->type == ev_joystick) {
     // Simulate key presses from joystick events to interact with the menu.
 
+    auto JOY_BUTTON_PRESSED = [&ev](auto x) { return (x >= 0) && (ev->data1 & (1 << x)) != 0; };
+
     if (g_doomstat_globals->menuactive) {
       if (ev->data3 < 0) {
         key                        = g_m_controls_globals->key_menu_up;
@@ -1829,9 +1836,6 @@ bool M_Responder(event_t * ev) {
         key                        = g_m_controls_globals->key_menu_right;
         g_i_video_globals->joywait = static_cast<unsigned int>(I_GetTime() + 2);
       }
-
-#define JOY_BUTTON_MAPPED(x)  ((x) >= 0)
-#define JOY_BUTTON_PRESSED(x) (JOY_BUTTON_MAPPED(x) && (ev->data1 & (1 << (x))) != 0)
 
       if (JOY_BUTTON_PRESSED(g_m_controls_globals->joybfire)) {
         // Simulate a 'Y' keypress when Doom show a Y/N dialog with Fire button.
@@ -2071,7 +2075,7 @@ bool M_Responder(event_t * ev) {
       g_i_video_globals->usegamma++;
       if (g_i_video_globals->usegamma > 4 + 4) // [crispy] intermediate gamma levels
         g_i_video_globals->usegamma = 0;
-      g_doomstat_globals->players[g_doomstat_globals->consoleplayer].message = DEH_String(gammamsg[g_i_video_globals->usegamma]);
+      g_doomstat_globals->players[g_doomstat_globals->consoleplayer].message = DEH_String(gammamsg[g_i_video_globals->usegamma].c_str());
 #ifndef CRISPY_TRUECOLOR
       I_SetPalette(cache_lump_name<uint8_t *>(DEH_String("PLAYPAL"), PU_CACHE));
 #else
@@ -2468,7 +2472,7 @@ void M_Init() {
     SaveDef_x = (ORIGWIDTH - SHORT(patchs->width)) / 2 + SHORT(patchs->leftoffset);
     LoadDef.x = SaveDef.x = static_cast<short>((ORIGWIDTH - 24 * 8) / 2 + SHORT(patchm->leftoffset)); // [crispy] see M_DrawSaveLoadBorder()
 
-    short captionheight = MAX(SHORT(patchl->height), SHORT(patchs->height));
+    short captionheight = std::max((static_cast<signed short>((patchl->height))), (static_cast<signed short>((patchs->height))));
 
     short vstep = ORIGHEIGHT - 32; // [crispy] ST_HEIGHT
     vstep       = static_cast<short>(vstep - captionheight);
@@ -2555,7 +2559,7 @@ void M_ForceLoadGame() {
                        W_WadNameForLump(savemaplumpinfo),
                        crstr[static_cast<int>(cr_t::CR_NONE)],
                        " ?\n\n",
-                       PRESSYN,
+                       "press y or n.",
                        nullptr) :
           M_StringJoin("This savegame requires the file\n",
                        crstr[static_cast<int>(cr_t::CR_GOLD)],
@@ -2564,7 +2568,7 @@ void M_ForceLoadGame() {
                        "\n",
                        "to restore a map that is\n",
                        "currently not available!\n\n",
-                       PRESSKEY,
+                       "press a key.",
                        nullptr);
 
   M_StartMessage(savegwarning, M_ForceLoadGameResponse, savemaplumpinfo != nullptr);
@@ -2592,7 +2596,7 @@ void M_ConfirmDeleteGame() {
                    savegamestrings[itemOn],
                    crstr[static_cast<int>(cr_t::CR_NONE)],
                    " ?\n\n",
-                   PRESSYN,
+                   "press y or n.",
                    nullptr);
 
   M_StartMessage(savegwarning, M_ConfirmDeleteGameResponse, true);
@@ -2602,7 +2606,10 @@ void M_ConfirmDeleteGame() {
 
 // [crispy] indicate game version mismatch
 [[maybe_unused]] void M_LoadGameVerMismatch() {
-  M_StartMessage("Game Version Mismatch\n\n" PRESSKEY, nullptr, false);
+  M_StartMessage("Game Version Mismatch\n\n"
+                 "press a key.",
+                 nullptr,
+                 false);
   messageToPrint = 2;
   S_StartSound(nullptr, sfx_swtchn);
 }

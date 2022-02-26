@@ -16,10 +16,9 @@
 //	Rendering of moving objects, sprites.
 //
 
-#ifndef __R_THINGS__
-#define __R_THINGS__
+#pragma once
 
-#define MAXVISSPRITES 128
+constexpr auto MAXVISSPRITES = 128;
 
 extern vissprite_t * vissprites;
 extern vissprite_t * vissprite_p;
@@ -43,15 +42,13 @@ void R_DrawMaskedColumn(column_t * column);
 
 void R_SortVisSprites();
 
-void R_AddSprites(sector_t * sec);
-void R_AddPSprites();
-void R_DrawSprites();
-void R_InitSprites(const char ** namelist);
-void R_ClearSprites();
-void R_DrawMasked();
+void                  R_AddSprites(sector_t * sec);
+[[maybe_unused]] void R_AddPSprites();
+[[maybe_unused]] void R_DrawSprites();
+void                  R_InitSprites(const char ** namelist);
+void                  R_ClearSprites();
+void                  R_DrawMasked();
 
-void R_ClipVisSprite(vissprite_t * vis,
-                     int           xl,
-                     int           xh);
-
-#endif
+[[maybe_unused]] void R_ClipVisSprite(vissprite_t * vis,
+                                      int           xl,
+                                      int           xh);

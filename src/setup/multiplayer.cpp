@@ -35,13 +35,13 @@
 
 #include "net_petname.hpp"
 
-#define MULTI_START_HELP_URL  "https://www.chocolate-doom.org/setup-multi-start"
-#define MULTI_JOIN_HELP_URL   "https://www.chocolate-doom.org/setup-multi-join"
-#define MULTI_CONFIG_HELP_URL "https://www.chocolate-doom.org/setup-multi-config"
-#define LEVEL_WARP_HELP_URL   "https://www.chocolate-doom.org/setup-level-warp"
+constexpr auto MULTI_START_HELP_URL  = "https://www.chocolate-doom.org/setup-multi-start";
+constexpr auto MULTI_JOIN_HELP_URL   = "https://www.chocolate-doom.org/setup-multi-join";
+constexpr auto MULTI_CONFIG_HELP_URL = "https://www.chocolate-doom.org/setup-multi-config";
+constexpr auto LEVEL_WARP_HELP_URL   = "https://www.chocolate-doom.org/setup-level-warp";
 
-#define NUM_WADS         10
-#define NUM_EXTRA_PARAMS 10
+constexpr auto NUM_WADS         = 10;
+constexpr auto NUM_EXTRA_PARAMS = 10;
 
 enum warptype_t
 {

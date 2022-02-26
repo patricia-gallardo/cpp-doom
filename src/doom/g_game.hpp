@@ -16,8 +16,7 @@
 //   Duh.
 //
 
-#ifndef __G_GAME__
-#define __G_GAME__
+#pragma once
 
 #include "d_event.hpp"
 #include "d_ticcmd.hpp"
@@ -74,4 +73,3 @@ int                   G_VanillaVersionCode();
 
 extern int vanilla_savegame_limit;
 extern int vanilla_demo_limit;
-#endif

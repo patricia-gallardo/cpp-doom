@@ -19,8 +19,7 @@
 //	 utility functions, etc.
 //
 
-#ifndef __P_SPEC__
-#define __P_SPEC__
+#pragma once
 
 //
 // End-level timer (-TIMER option)
@@ -29,7 +28,7 @@ extern bool levelTimer;
 extern int  levelTimeCount;
 
 //      Define values for map objects
-#define MO_TELEPORTMAN 14
+constexpr auto MO_TELEPORTMAN = 14;
 
 // at game start
 void P_InitPicAnims();
@@ -136,10 +135,10 @@ struct glow_t {
   int        direction;
 };
 
-#define GLOWSPEED    8
-#define STROBEBRIGHT 5
-#define FASTDARK     15
-#define SLOWDARK     35
+constexpr auto GLOWSPEED    = 8;
+constexpr auto STROBEBRIGHT = 5;
+constexpr auto FASTDARK     = 15;
+constexpr auto SLOWDARK     = 35;
 
 void P_SpawnFireFlicker(sector_t * sector);
 void T_LightFlash(lightflash_t * flash);
@@ -187,13 +186,13 @@ struct button_t {
 };
 
 // max # of wall switches in a level
-#define MAXSWITCHES 50
+constexpr auto MAXSWITCHES = 50;
 
 // 4 players, 4 buttons each at once, max.
-#define MAXBUTTONS 16
+constexpr auto MAXBUTTONS = 16;
 
 // 1 second, in ticks.
-#define BUTTONTIME 35
+constexpr auto BUTTONTIME = 35;
 
 extern button_t * buttonlist;
 extern int        maxbuttons;
@@ -240,9 +239,9 @@ struct plat_t {
   plattype_e type;
 };
 
-#define PLATWAIT  3
-#define PLATSPEED FRACUNIT
-#define MAXPLATS  30 * 256
+constexpr auto PLATWAIT  = 3;
+constexpr auto PLATSPEED = FRACUNIT;
+constexpr auto MAXPLATS  = 30 * 256;
 
 extern plat_t * activeplats[MAXPLATS];
 
@@ -290,8 +289,8 @@ struct vldoor_t {
   int topcountdown;
 };
 
-#define VDOORSPEED FRACUNIT * 2
-#define VDOORWAIT  150
+constexpr auto VDOORSPEED = FRACUNIT * 2;
+constexpr auto VDOORWAIT  = 150;
 
 void EV_VerticalDoor(line_t * line,
                      mobj_t * thing);
@@ -422,9 +421,9 @@ struct ceiling_t {
   int olddirection;
 };
 
-#define CEILSPEED   FRACUNIT
-#define CEILWAIT    150
-#define MAXCEILINGS 30
+constexpr auto                  CEILSPEED   = FRACUNIT;
+[[maybe_unused]] constexpr auto CEILWAIT    = 150;
+constexpr auto                  MAXCEILINGS = 30;
 
 extern ceiling_t * activeceilings[MAXCEILINGS];
 
@@ -494,7 +493,7 @@ struct floormove_t {
   fixed_t    speed;
 };
 
-#define FLOORSPEED FRACUNIT
+constexpr auto FLOORSPEED = FRACUNIT;
 
 enum result_e
 {
@@ -526,5 +525,3 @@ void T_MoveFloor(floormove_t * floor);
 int EV_Teleport(line_t * line,
                 int      side,
                 mobj_t * thing);
-
-#endif

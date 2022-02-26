@@ -17,15 +17,14 @@
 //  by name.
 //
 
-#ifndef __R_DATA__
-#define __R_DATA__
+#pragma once
 
 #include "r_defs.hpp"
 #include "r_state.hpp"
 
-#define LOOKDIRMIN 110 // [crispy] -110, actually
-#define LOOKDIRMAX 90
-#define LOOKDIRS   (LOOKDIRMIN + 1 + LOOKDIRMAX) // [crispy] lookdir range: -110..0..90
+constexpr auto LOOKDIRMIN = 110; // [crispy] -110, actually
+constexpr auto LOOKDIRMAX = 90;
+constexpr auto LOOKDIRS   = (LOOKDIRMIN + 1 + LOOKDIRMAX); // [crispy] lookdir range: -110..0..90
 
 // Retrieve column data for span blitting.
 uint8_t * R_GetColumn(int  tex,
@@ -45,5 +44,3 @@ int R_FlatNumForName(const char * name);
 // returns the texture number for the texture name.
 int R_TextureNumForName(const char * name);
 int R_CheckTextureNumForName(const char * name);
-
-#endif

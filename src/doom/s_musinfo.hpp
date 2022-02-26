@@ -19,8 +19,7 @@
 //	[crispy] Support MUSINFO lump (dynamic music changing)
 //
 
-#ifndef __S_MUSINFO__
-#define __S_MUSINFO__
+#pragma once
 
 #include "p_mobj.hpp"
 
@@ -39,5 +38,3 @@ extern musinfo_t musinfo;
 
 extern void S_ParseMusInfo(const char * mapid);
 extern void T_MusInfo();
-
-#endif

@@ -18,8 +18,7 @@
 //	Does palette indicators as well (red pain/berserk, bright pickup)
 //
 
-#ifndef __STSTUFF_H__
-#define __STSTUFF_H__
+#pragma once
 
 #include "d_event.hpp"
 #include "doomtype.hpp"
@@ -76,7 +75,7 @@ enum st_chatstateenum_t
 
 struct st_stuff_t {
   // graphics are drawn to a backing screen and blitted to the real screen
-  pixel_t *  st_backing_screen;
+  pixel_t *  st_backing_screen {};
   cheatseq_t cheat_mus;
   cheatseq_t cheat_god;
   cheatseq_t cheat_ammo;
@@ -90,5 +89,3 @@ struct st_stuff_t {
 };
 
 extern st_stuff_t * const g_st_stuff_globals;
-
-#endif

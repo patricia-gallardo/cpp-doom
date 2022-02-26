@@ -300,14 +300,12 @@ void StatDump() {
 
     // Allow "-" as output file, for stdout.
 
-    FILE * dumpfile = nullptr;
+    FILE * dumpfile = stdout;
 
     char * filename = myargv[index_of_arg + 1];
 
     if (strcmp(filename, "-") != 0) {
       dumpfile = fopen(filename, "w");
-    } else {
-      dumpfile = stdout;
     }
 
     for (int i = 0; i < num_captured_stats; ++i) {

@@ -21,7 +21,7 @@
 
 #include "compatibility.hpp"
 
-#define WINDOW_HELP_URL "https://www.chocolate-doom.org/setup-compat"
+constexpr auto WINDOW_HELP_URL = "https://www.chocolate-doom.org/setup-compat";
 
 int vanilla_savegame_limit = 0;
 int vanilla_demo_limit     = 0;

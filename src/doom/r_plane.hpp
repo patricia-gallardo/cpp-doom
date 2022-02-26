@@ -16,12 +16,13 @@
 //	Refresh, visplane stuff (floor, ceilings).
 //
 
-#ifndef __R_PLANE__
-#define __R_PLANE__
+#pragma once
+
+#include <array>
 
 #include "r_data.hpp"
 
-#define PL_SKYFLAT (0x80000000)
+constexpr auto PL_SKYFLAT = (0x80000000);
 
 // Visplane related.
 extern int * lastopening; // [crispy] 32-bit integer math
@@ -31,12 +32,12 @@ using planefunction_t = void (*)(int, int);
 [[maybe_unused]] extern planefunction_t floorfunc;
 [[maybe_unused]] extern planefunction_t ceilingfunc_t;
 
-extern int floorclip[MAXWIDTH];   // [crispy] 32-bit integer math
-extern int ceilingclip[MAXWIDTH]; // [crispy] 32-bit integer math
+extern std::array<int, MAXWIDTH> floorclip;   // [crispy] 32-bit integer math
+extern std::array<int, MAXWIDTH> ceilingclip; // [crispy] 32-bit integer math
 
 extern fixed_t *                yslope;
 extern fixed_t                  yslopes[LOOKDIRS][MAXHEIGHT];
-[[maybe_unused]] extern fixed_t distscale[MAXWIDTH];
+[[maybe_unused]] extern std::array<fixed_t, MAXWIDTH> distscale;
 
 void R_InitPlanes();
 void R_ClearPlanes();
@@ -62,5 +63,3 @@ visplane_t *
     R_CheckPlane(visplane_t * pl,
                  int          start,
                  int          stop);
-
-#endif

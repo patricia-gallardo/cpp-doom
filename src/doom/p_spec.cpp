@@ -49,7 +49,7 @@
 #include "memory.hpp"
 #include "sounds.hpp"
 
-#define HUSTR_SECRETFOUND "A secret is revealed!"
+constexpr auto HUSTR_SECRETFOUND = "A secret is revealed!";
 
 //
 // Animating textures and planes
@@ -76,7 +76,7 @@ typedef PACKED_STRUCT(
       int         speed;
     }) animdef_t;
 
-#define MAXANIMS 32
+constexpr auto MAXANIMS = 32;
 
 // [crispy] remove MAXANIMS limit
 extern anim_t * anims;
@@ -136,7 +136,7 @@ static size_t maxanims;
 //
 //      Animating line specials
 //
-#define MAXLINEANIMS 64 * 256
+constexpr auto MAXLINEANIMS = 64 * 256;
 
 extern short    numlinespecials;
 extern line_t * linespeciallist[MAXLINEANIMS];
@@ -318,7 +318,7 @@ fixed_t P_FindHighestFloorSurrounding(sector_t * sec) {
 // Thanks to entryway for the Vanilla overflow emulation.
 
 // 20 adjoining sectors max!
-#define MAX_ADJOINING_SECTORS 20
+constexpr auto MAX_ADJOINING_SECTORS = 20;
 
 fixed_t
     P_FindNextHighestFloor(sector_t * sec,
@@ -386,7 +386,7 @@ fixed_t
     P_FindLowestCeilingSurrounding(sector_t * sec) {
   line_t *   check;
   sector_t * other;
-  fixed_t    height = INT_MAX;
+  fixed_t    height = std::numeric_limits<int32_t>::max();
 
   for (int i = 0; i < sec->linecount; i++) {
     check = sec->lines[i];
@@ -1205,8 +1205,8 @@ void R_InterpolateTextureOffsets() {
 // as usual :-)
 //
 
-#define DONUT_FLOORHEIGHT_DEFAULT 0x00000000
-#define DONUT_FLOORPIC_DEFAULT    0x16
+constexpr auto DONUT_FLOORHEIGHT_DEFAULT = 0x00000000;
+constexpr auto DONUT_FLOORPIC_DEFAULT    = 0x16;
 
 static void DonutOverrun(fixed_t * s3_floorheight, short * s3_floorpic, line_t *, sector_t *) {
   static int first = 1;

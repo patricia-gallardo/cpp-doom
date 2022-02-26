@@ -65,14 +65,6 @@
 constexpr auto NUMEPISODES = 4;
 constexpr auto NUMMAPS     = 9;
 
-// in tics
-// U #define PAUSELEN		(TICRATE*2)
-// U #define SCORESTEP		100
-// U #define ANIMPERIOD		32
-// pixel distance from "(YOU)" to "PLAYER N"
-// U #define STARDIST		10
-// U #define WK 1
-
 // GLOBAL LOCATIONS
 constexpr auto WI_TITLEY   = 2;
 constexpr auto WI_SPACINGY = 33;
@@ -86,7 +78,6 @@ constexpr auto SP_TIMEY = (ORIGHEIGHT - 32);
 
 // NET GAME STUFF
 constexpr auto NG_STATSY = 50;
-#define NG_STATSX (32 + SHORT(star->width) / 2 + 32 * !dofrags)
 
 constexpr auto NG_SPACINGX = 64;
 
@@ -143,7 +134,7 @@ struct anim_t {
   int data2;
 
   // actual graphics for frames of animations
-  patch_t * p[3];
+  std::array<patch_t *, 3> p;
 
   // following must be initialized to zero before use!
 
@@ -207,13 +198,24 @@ static point_t lnodes[NUMEPISODES][NUMMAPS] = {
 //  as they replace 320x200 full screen frames.
 //
 
-#define ANIM(type, period, nanims, x, y, nexttic)        \
-  {                                                      \
-    (type), (period), (nanims), { (x), (y) }, (nexttic), \
-        0, { nullptr, nullptr, nullptr }, 0, 0, 0, 0     \
-  }
+template <typename T, typename P, typename N, typename X, typename Y, typename NX>
+anim_t ANIM(T type, P period, N nanims, X x, Y y, NX nexttic) {
+  return {
+    type,
+    period,
+    nanims,
+    {x,        y      },
+    nexttic,
+    0,
+    { nullptr, nullptr, nullptr },
+    0,
+    0,
+    0,
+    0
+  };
+}
 
-static anim_t epsd0animinfo[] = {
+static std::array<anim_t, 10> epsd0animinfo = {
   ANIM(ANIM_ALWAYS, TICRATE / 3, 3, 224, 104, 0),
   ANIM(ANIM_ALWAYS, TICRATE / 3, 3, 184, 160, 0),
   ANIM(ANIM_ALWAYS, TICRATE / 3, 3, 112, 136, 0),
@@ -226,7 +228,7 @@ static anim_t epsd0animinfo[] = {
   ANIM(ANIM_ALWAYS, TICRATE / 3, 3, 64, 24, 0),
 };
 
-static anim_t epsd1animinfo[] = {
+static std::array<anim_t, 9> epsd1animinfo = {
   ANIM(ANIM_LEVEL, TICRATE / 3, 1, 128, 136, 1),
   ANIM(ANIM_LEVEL, TICRATE / 3, 1, 128, 136, 2),
   ANIM(ANIM_LEVEL, TICRATE / 3, 1, 128, 136, 3),
@@ -238,7 +240,7 @@ static anim_t epsd1animinfo[] = {
   ANIM(ANIM_LEVEL, TICRATE / 3, 1, 128, 136, 8),
 };
 
-static anim_t epsd2animinfo[] = {
+static std::array<anim_t, 6> epsd2animinfo = {
   ANIM(ANIM_ALWAYS, TICRATE / 3, 3, 104, 168, 0),
   ANIM(ANIM_ALWAYS, TICRATE / 3, 3, 40, 136, 0),
   ANIM(ANIM_ALWAYS, TICRATE / 3, 3, 160, 96, 0),
@@ -247,16 +249,16 @@ static anim_t epsd2animinfo[] = {
   ANIM(ANIM_ALWAYS, TICRATE / 4, 3, 40, 0, 0),
 };
 
-static int NUMANIMS[NUMEPISODES] = {
-  static_cast<int>(std::size(epsd0animinfo)),
-  static_cast<int>(std::size(epsd1animinfo)),
-  static_cast<int>(std::size(epsd2animinfo)),
+static std::array<size_t, NUMEPISODES> NUMANIMS = {
+  std::size(epsd0animinfo),
+  std::size(epsd1animinfo),
+  std::size(epsd2animinfo),
 };
 
-static anim_t * anims[NUMEPISODES] = {
-  epsd0animinfo,
-  epsd1animinfo,
-  epsd2animinfo
+static std::array<anim_t *, NUMEPISODES> anims = {
+  epsd0animinfo.data(),
+  epsd1animinfo.data(),
+  epsd2animinfo.data()
 };
 
 //
@@ -278,7 +280,6 @@ static anim_t * anims[NUMEPISODES] = {
 
 // in seconds
 constexpr auto SHOWNEXTLOCDELAY = 4;
-//#define SHOWLASTLOCDELAY	SHOWNEXTLOCDELAY
 
 // used to accelerate or skip a stage
 static int acceleratestage;
@@ -303,9 +304,9 @@ static int bcnt;
 // signals to refresh everything for one frame
 [[maybe_unused]] static int firstrefresh;
 
-static int cnt_kills[MAXPLAYERS];
-static int cnt_items[MAXPLAYERS];
-static int cnt_secret[MAXPLAYERS];
+static std::array<int, MAXPLAYERS> cnt_kills;
+static std::array<int, MAXPLAYERS> cnt_items;
+static std::array<int, MAXPLAYERS> cnt_secret;
 static int cnt_time;
 static int cnt_par;
 static int cnt_pause;
@@ -318,17 +319,17 @@ static int NUMCMAPS = 32;
 //
 
 // You Are Here graphic
-static patch_t * yah[3] = { nullptr, nullptr, nullptr };
+static std::array<patch_t *, 3> yah = { nullptr, nullptr, nullptr };
 
 // splat
-static patch_t * splat[2] = { nullptr, nullptr };
+static std::array<patch_t *, 2> splat = { nullptr, nullptr };
 
 // %, : graphics
 static patch_t * percent;
 static patch_t * colon;
 
 // 0-9 graphic
-static patch_t * num[10];
+static std::array<patch_t *, 10> num;
 
 // minus sign
 static patch_t * wiminus;
@@ -363,10 +364,10 @@ static patch_t * star;
 static patch_t * bstar;
 
 // "red P[1..MAXPLAYERS]"
-static patch_t * patches[MAXPLAYERS];
+static std::array<patch_t *, MAXPLAYERS> patches;
 
 // "gray P[1..MAXPLAYERS]"
-static patch_t * bp[MAXPLAYERS];
+static std::array<patch_t *, MAXPLAYERS> bp;
 
 // Name graphics of each level (centered)
 static patch_t ** lnames;
@@ -492,7 +493,7 @@ void WI_initAnimatedBack() {
   if (wbs->epsd > 2)
     return;
 
-  for (int i = 0; i < NUMANIMS[wbs->epsd]; i++) {
+  for (size_t i = 0; i < NUMANIMS[wbs->epsd]; i++) {
     anim_t * a = &anims[wbs->epsd][i];
 
     // init variables
@@ -515,7 +516,7 @@ void WI_updateAnimatedBack() {
   if (wbs->epsd > 2)
     return;
 
-  for (int i = 0; i < NUMANIMS[wbs->epsd]; i++) {
+  for (size_t i = 0; i < NUMANIMS[wbs->epsd]; i++) {
     anim_t * a = &anims[wbs->epsd][i];
 
     if (bcnt == a->nexttic) {
@@ -555,7 +556,7 @@ void WI_drawAnimatedBack() {
   if (wbs->epsd > 2)
     return;
 
-  for (int i = 0; i < NUMANIMS[wbs->epsd]; i++) {
+  for (size_t i = 0; i < NUMANIMS[wbs->epsd]; i++) {
     anim_t * a = &anims[wbs->epsd][i];
 
     if (a->ctr >= 0)
@@ -732,21 +733,21 @@ void WI_drawShowNextLoc() {
 
     // draw a splat on taken cities.
     for (int i = 0; i <= last; i++)
-      WI_drawOnLnode(i, splat);
+      WI_drawOnLnode(i, splat.data());
 
     // splat the secret level?
     if (wbs->didsecret)
-      WI_drawOnLnode(8, splat);
+      WI_drawOnLnode(8, splat.data());
 
     // [crispy] the splat for E1M10 "Sewers" is drawn only once,
     // i.e. now, when returning from the level
     // (and this is not going to change)
     if (crispy->havee1m10 && wbs->epsd == 0 && wbs->last == 9)
-      WI_drawOnLnode(9, splat);
+      WI_drawOnLnode(9, splat.data());
 
     // draw flashing ptr
     if (snl_pointeron)
-      WI_drawOnLnode(wbs->next, yah);
+      WI_drawOnLnode(wbs->next, yah.data());
   }
 
   if (crispy->singleplayer && ((g_doomstat_globals->gamemission == pack_nerve && wbs->last == 7) || (g_doomstat_globals->gamemission == pack_master && wbs->last == 19 && !secretexit) || (g_doomstat_globals->gamemission == pack_master && wbs->last == 20)))
@@ -783,7 +784,7 @@ int WI_fragSum(int playernum) {
 
 static int dm_state;
 static int dm_frags[MAXPLAYERS][MAXPLAYERS];
-static int dm_totals[MAXPLAYERS];
+static std::array<int, MAXPLAYERS> dm_totals;
 
 void WI_initDeathmatchStats() {
   state           = StatCount;
@@ -948,7 +949,7 @@ void WI_drawDeathmatchStats() {
   }
 }
 
-static int cnt_frags[MAXPLAYERS];
+static std::array<int, MAXPLAYERS> cnt_frags;
 static int dofrags;
 static int ng_state;
 
@@ -974,7 +975,7 @@ void WI_initNetgameStats() {
 }
 
 void WI_updateNetgameStats() {
-  bool stillticking;
+  bool stillticking = false;
 
   WI_updateAnimatedBack();
 
@@ -1072,7 +1073,7 @@ void WI_updateNetgameStats() {
 
       cnt_frags[i] += 1;
 
-      int fsum;
+      int fsum = 0;
       if (cnt_frags[i] >= (fsum = WI_fragSum(i)))
         cnt_frags[i] = fsum;
       else
@@ -1100,7 +1101,6 @@ void WI_updateNetgameStats() {
 }
 
 void WI_drawNetgameStats() {
-  int y;
   int pwidth = SHORT(percent->width);
 
   WI_slamBackground();
@@ -1110,32 +1110,34 @@ void WI_drawNetgameStats() {
 
   WI_drawLF();
 
+  auto NG_STATSX = []() { return (32 + SHORT(star->width) / 2 + 32 * !dofrags); };
+
   // draw stat titles (top line)
-  V_DrawPatch(NG_STATSX + NG_SPACINGX - SHORT(kills->width),
+  V_DrawPatch(NG_STATSX() + NG_SPACINGX - SHORT(kills->width),
               NG_STATSY,
               kills);
 
-  V_DrawPatch(NG_STATSX + 2 * NG_SPACINGX - SHORT(items->width),
+  V_DrawPatch(NG_STATSX() + 2 * NG_SPACINGX - SHORT(items->width),
               NG_STATSY,
               items);
 
-  V_DrawPatch(NG_STATSX + 3 * NG_SPACINGX - SHORT(secret->width),
+  V_DrawPatch(NG_STATSX() + 3 * NG_SPACINGX - SHORT(secret->width),
               NG_STATSY,
               secret);
 
   if (dofrags)
-    V_DrawPatch(NG_STATSX + 4 * NG_SPACINGX - SHORT(frags->width),
+    V_DrawPatch(NG_STATSX() + 4 * NG_SPACINGX - SHORT(frags->width),
                 NG_STATSY,
                 frags);
 
   // draw stats
-  y = NG_STATSY + SHORT(kills->height);
+  int y = NG_STATSY + SHORT(kills->height);
 
   for (int i = 0; i < MAXPLAYERS; i++) {
     if (!g_doomstat_globals->playeringame[i])
       continue;
 
-    int x = NG_STATSX;
+    int x = NG_STATSX();
     V_DrawPatch(x - SHORT(patches[i]->width), y, patches[i]);
 
     if (i == me)
@@ -1471,7 +1473,7 @@ static void WI_loadUnloadData(load_callback_t callback) {
     callback(DEH_String("WISPLAT"), &splat[0]);
 
     if (wbs->epsd < 3) {
-      for (int j = 0; j < NUMANIMS[wbs->epsd]; j++) {
+      for (size_t j = 0; j < NUMANIMS[wbs->epsd]; j++) {
         anim_t * a = &anims[wbs->epsd][j];
         for (index = 0; index < a->nanims; index++) {
           // MONDO HACK!

@@ -19,11 +19,14 @@
 //	PCX Screenshots.
 //
 
+#include <cstdint>
+#include <limits>
+
 #include "m_bbox.hpp"
 
 void M_ClearBox(fixed_t * box) {
-  box[BOXTOP] = box[BOXRIGHT] = INT_MIN;
-  box[BOXBOTTOM] = box[BOXLEFT] = INT_MAX;
+  box[BOXTOP] = box[BOXRIGHT] = std::numeric_limits<int32_t>::min();
+  box[BOXBOTTOM] = box[BOXLEFT] = std::numeric_limits<int32_t>::max();
 }
 
 void M_AddToBox(fixed_t * box,

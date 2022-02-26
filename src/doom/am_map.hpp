@@ -16,8 +16,7 @@
 //  AutoMap module.
 //
 
-#ifndef __AMMAP_H__
-#define __AMMAP_H__
+#pragma once
 
 #include "d_event.hpp"
 #include "m_cheat.hpp"
@@ -42,5 +41,3 @@ void AM_Drawer();
 void AM_Stop();
 
 extern cheatseq_t cheat_amap;
-
-#endif

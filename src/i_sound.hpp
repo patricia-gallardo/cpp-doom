@@ -19,10 +19,12 @@
 #ifndef __I_SOUND__
 #define __I_SOUND__
 
+#include <string>
+
 #include "doomtype.hpp"
 
 // so that the individual game logic and sound driver code agree
-#define NORM_PITCH 127
+constexpr auto NORM_PITCH = 127;
 
 //
 // SoundFX struct.
@@ -31,12 +33,12 @@ using sfxinfo_t = struct sfxinfo_struct;
 
 struct sfxinfo_struct {
   // tag name, used for hexen.
-  const char * tagname;
+  [[maybe_unused]] const char * tagname;
 
   // lump name.  If we are running with use_sfx_prefix=true, a
   // 'DS' (or 'DP' for PC speaker sounds) is prepended to this.
 
-  char name[9];
+  std::string name;
 
   // Sfx priority
   int priority;
@@ -60,10 +62,10 @@ struct sfxinfo_struct {
 
   // Maximum number of channels that the sound can be played on
   // (Heretic)
-  int numchannels;
+  [[maybe_unused]] int numchannels;
 
   // data used by the low level code
-  void * driver_data;
+  [[maybe_unused]] void * driver_data;
 };
 
 //
@@ -85,17 +87,17 @@ struct musicinfo_t {
 
 enum snddevice_t : int
 {
-  SNDDEVICE_NONE        = 0,
-  SNDDEVICE_PCSPEAKER   = 1,
-  SNDDEVICE_ADLIB       = 2,
-  SNDDEVICE_SB          = 3,
-  SNDDEVICE_PAS         = 4,
-  SNDDEVICE_GUS         = 5,
-  SNDDEVICE_WAVEBLASTER = 6,
-  SNDDEVICE_SOUNDCANVAS = 7,
-  SNDDEVICE_GENMIDI     = 8,
-  SNDDEVICE_AWE32       = 9,
-  SNDDEVICE_CD          = 10,
+  SNDDEVICE_NONE                = 0,
+  SNDDEVICE_PCSPEAKER           = 1,
+  SNDDEVICE_ADLIB               = 2,
+  SNDDEVICE_SB                  = 3,
+  SNDDEVICE_PAS                 = 4,
+  SNDDEVICE_GUS                 = 5,
+  SNDDEVICE_WAVEBLASTER         = 6,
+  SNDDEVICE_SOUNDCANVAS         = 7,
+  SNDDEVICE_GENMIDI             = 8,
+  SNDDEVICE_AWE32               = 9,
+  SNDDEVICE_CD [[maybe_unused]] = 10,
 };
 
 // Interface for sound modules

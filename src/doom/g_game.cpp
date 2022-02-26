@@ -108,7 +108,7 @@ int  starttime;  // for comparative timing purposes
 
 bool turbodetected[MAXPLAYERS];
 
-int demostarttic; // [crispy] fix revenant internal demo bug
+[[maybe_unused]] int demostarttic; // [crispy] fix revenant internal demo bug
 
 char *    demoname;
 char *    orig_demoname; // [crispy] the name originally chosen for the demo, i.e. without "-00000"
@@ -119,8 +119,6 @@ uint8_t * demo_p;
 uint8_t * demoend;
 
 uint8_t consistancy[MAXPLAYERS][BACKUPTICS];
-
-#define MAXPLMOVE (forwardmove[1])
 
 constexpr auto TURBOTHRESHOLD = 0x32;
 
@@ -592,14 +590,16 @@ void G_BuildTiccmd(ticcmd_t * cmd, int maketic) {
 
   mousex = mousex2 = mousey = 0;
 
-  if (forward > MAXPLMOVE)
-    forward = MAXPLMOVE;
-  else if (forward < -MAXPLMOVE)
-    forward = -MAXPLMOVE;
-  if (side > MAXPLMOVE)
-    side = MAXPLMOVE;
-  else if (side < -MAXPLMOVE)
-    side = -MAXPLMOVE;
+  auto MAXPLMOVE = []() { return (forwardmove[1]); };
+
+  if (forward > MAXPLMOVE())
+    forward = MAXPLMOVE();
+  else if (forward < -MAXPLMOVE())
+    forward = -MAXPLMOVE();
+  if (side > MAXPLMOVE())
+    side = MAXPLMOVE();
+  else if (side < -MAXPLMOVE())
+    side = -MAXPLMOVE();
 
   cmd->forwardmove = static_cast<signed char>(cmd->forwardmove + forward);
   cmd->sidemove    = static_cast<signed char>(cmd->sidemove + side);
@@ -1770,7 +1770,7 @@ void G_DoSaveGame() {
               ttime = (g_doomstat_globals->totalleveltimes + leveltime) / TICRATE;
     extern const char * skilltable[];
 
-    fmt::fprintf(stderr, "G_DoSaveGame: Episode %d, Map %d, %s, Time %d:%02d:%02d, Total %d:%02d:%02d.\n", g_doomstat_globals->gameepisode, g_doomstat_globals->gamemap, skilltable[BETWEEN(0, 5, static_cast<int>(g_doomstat_globals->gameskill) + 1)], ltime / 3600, (ltime % 3600) / 60, ltime % 60, ttime / 3600, (ttime % 3600) / 60, ttime % 60);
+    fmt::fprintf(stderr, "G_DoSaveGame: Episode %d, Map %d, %s, Time %d:%02d:%02d, Total %d:%02d:%02d.\n", g_doomstat_globals->gameepisode, g_doomstat_globals->gamemap, skilltable[std::clamp(static_cast<int>(g_doomstat_globals->gameskill) + 1, 0, 5)], ltime / 3600, (ltime % 3600) / 60, ltime % 60, ttime / 3600, (ttime % 3600) / 60, ttime % 60);
   }
 
   P_ArchivePlayers();

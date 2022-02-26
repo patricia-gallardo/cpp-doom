@@ -31,7 +31,7 @@
 #include "txt_joyaxis.hpp"
 #include "txt_utf8.hpp"
 
-#define JOYSTICK_AXIS_WIDTH 20
+constexpr auto JOYSTICK_AXIS_WIDTH = 20;
 
 static const char * CalibrationLabel(txt_joystick_axis_t * joystick_axis) {
   switch (joystick_axis->config_stage) {

@@ -16,17 +16,16 @@
 //	Savegame I/O, archiving, persistence.
 //
 
-#ifndef __P_SAVEG__
-#define __P_SAVEG__
+#pragma once
 
 #include <cstdio>
 
-#define SAVEGAME_EOF 0x1d
-#define VERSIONSIZE  16
+constexpr auto SAVEGAME_EOF = 0x1d;
+constexpr auto VERSIONSIZE  = 16;
 
 // maximum size of a savegame description
 
-#define SAVESTRINGSIZE 24
+constexpr auto SAVESTRINGSIZE = 24;
 
 // temporary filename to use while saving.
 
@@ -60,5 +59,3 @@ void P_RestoreTargets();
 
 extern FILE * save_stream;
 extern bool   savegame_error;
-
-#endif

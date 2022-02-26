@@ -2,8 +2,7 @@
 // Created by jason on 4/3/20.
 //
 
-#ifndef CRISPY_DOOM_EVENT_FUNCTION_DECLS_HPP
-#define CRISPY_DOOM_EVENT_FUNCTION_DECLS_HPP
+#pragma once
 
 struct mobj_t;
 struct player_t;
@@ -98,5 +97,3 @@ extern void A_Scratch(mobj_t * mo);
 extern void A_PlaySound(mobj_t * mo);
 extern void A_RandomJump(mobj_t * mo, player_t * player, pspdef_t * psp);
 extern void A_LineEffect(mobj_t * mo);
-
-#endif // CRISPY_DOOM_EVENT_FUNCTION_DECLS_HPP
