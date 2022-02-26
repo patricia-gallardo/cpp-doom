@@ -779,7 +779,7 @@ void D_IdentifyVersion() {
 
   // Make sure gamemode is set up correctly
 
-  if (logical_gamemission == doom) {
+  if (logical_gamemission() == doom) {
     // Doom 1.  But which version?
 
     if (W_CheckNumForName("E4M1") > 0) {
@@ -819,7 +819,7 @@ void D_IdentifyVersion() {
 void D_SetGameDescription() {
   g_doomstat_globals->gamedescription = "Unknown";
 
-  if (logical_gamemission == doom) {
+  if (logical_gamemission() == doom) {
     // Doom 1.  But which version?
 
     if (g_doomstat_globals->gamevariant == freedoom) {
@@ -840,15 +840,15 @@ void D_SetGameDescription() {
       g_doomstat_globals->gamedescription = GetGameName("FreeDM");
     } else if (g_doomstat_globals->gamevariant == freedoom) {
       g_doomstat_globals->gamedescription = GetGameName("Freedoom: Phase 2");
-    } else if (logical_gamemission == doom2) {
+    } else if (logical_gamemission() == doom2) {
       g_doomstat_globals->gamedescription = GetGameName("DOOM 2: Hell on Earth");
-    } else if (logical_gamemission == pack_plut) {
+    } else if (logical_gamemission() == pack_plut) {
       g_doomstat_globals->gamedescription = GetGameName("DOOM 2: Plutonia Experiment");
-    } else if (logical_gamemission == pack_tnt) {
+    } else if (logical_gamemission() == pack_tnt) {
       g_doomstat_globals->gamedescription = GetGameName("DOOM 2: TNT - Evilution");
-    } else if (logical_gamemission == pack_nerve) {
+    } else if (logical_gamemission() == pack_nerve) {
       g_doomstat_globals->gamedescription = GetGameName("DOOM 2: No Rest For The Living");
-    } else if (logical_gamemission == pack_master) {
+    } else if (logical_gamemission() == pack_master) {
       g_doomstat_globals->gamedescription = GetGameName("Master Levels for DOOM 2");
     }
   }

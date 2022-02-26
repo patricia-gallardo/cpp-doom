@@ -218,7 +218,7 @@ static void S_RegisterAltMusic() {
 
 void S_Init(int sfxVolume_param, int musicVolume_param) {
   if (g_doomstat_globals->gameversion == exe_doom_1_666) {
-    if (logical_gamemission == doom) {
+    if (logical_gamemission() == doom) {
       I_SetOPLDriverVer(opl_doom1_1_666);
     } else {
       I_SetOPLDriverVer(opl_doom2_1_666);

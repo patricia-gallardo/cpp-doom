@@ -1452,7 +1452,7 @@ void M_QuitResponse(int key) {
 static const char * M_SelectEndMessage() {
   const char ** endmsg = nullptr;
 
-  if (logical_gamemission == doom) {
+  if (logical_gamemission() == doom) {
     // Doom 1
 
     endmsg = doom1_endmsg;

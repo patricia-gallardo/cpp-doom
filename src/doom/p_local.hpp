@@ -71,7 +71,8 @@ void P_DropWeapon(player_t * player);
 // P_USER
 //
 constexpr auto MLOOKUNIT = 8;
-#define PLAYER_SLOPE(a) ((((a)->lookdir / MLOOKUNIT) << FRACBITS) / 173)
+template<typename T>
+constexpr auto PLAYER_SLOPE(T a) { return ((((a)->lookdir / MLOOKUNIT) << FRACBITS) / 173); }
 void P_PlayerThink(player_t * player);
 
 //

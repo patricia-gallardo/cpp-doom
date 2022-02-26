@@ -51,16 +51,6 @@
 
 constexpr auto DEFAULT_SPECHIT_MAGIC = 0x01C09C98;
 
-// This is from a post by myk on the Doomworld forums,
-// outputted from entryway's spechit_magic generator for
-// s205n546.lmp.  The _exact_ value of this isn't too
-// important; as long as it is in the right general
-// range, it will usually work.  Otherwise, we can use
-// the generator (hacked doom2.exe) and provide it
-// with -spechit.
-
-//#define DEFAULT_SPECHIT_MAGIC 0x84f968e8
-
 fixed_t  tmbbox[4];
 mobj_t * tmthing;
 int      tmflags;

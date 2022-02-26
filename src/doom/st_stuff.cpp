@@ -748,10 +748,10 @@ bool
                 return isdigit(buf[0]);
             }
             // [crispy] allow both idspispopd and idclip cheats in all gamemissions
-            else if ((/* logical_gamemission == doom
+            else if ((/* logical_gamemission() == doom
                  && */
                          cht_CheckCheatSP(&g_st_stuff_globals->cheat_noclip, static_cast<char>(ev->data2)))
-                     || (/* logical_gamemission != doom
+                     || (/* logical_gamemission() != doom
                  && */
                          cht_CheckCheatSP(&g_st_stuff_globals->cheat_commercial_noclip, static_cast<char>(ev->data2))))
             {
