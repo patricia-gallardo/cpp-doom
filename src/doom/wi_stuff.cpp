@@ -78,7 +78,6 @@ constexpr auto SP_TIMEY = (ORIGHEIGHT - 32);
 
 // NET GAME STUFF
 constexpr auto NG_STATSY = 50;
-#define NG_STATSX (32 + SHORT(star->width) / 2 + 32 * !dofrags)
 
 constexpr auto NG_SPACINGX = 64;
 
@@ -199,11 +198,22 @@ static point_t lnodes[NUMEPISODES][NUMMAPS] = {
 //  as they replace 320x200 full screen frames.
 //
 
-#define ANIM(type, period, nanims, x, y, nexttic)        \
-  {                                                      \
-    (type), (period), (nanims), { (x), (y) }, (nexttic), \
-        0, { nullptr, nullptr, nullptr }, 0, 0, 0, 0     \
-  }
+template <typename T, typename P, typename N, typename X, typename Y, typename NX>
+anim_t ANIM(T type, P period, N nanims, X x, Y y, NX nexttic) {
+  return {
+    type,
+    period,
+    nanims,
+    {x,        y      },
+    nexttic,
+    0,
+    { nullptr, nullptr, nullptr },
+    0,
+    0,
+    0,
+    0
+  };
+}
 
 static anim_t epsd0animinfo[] = {
   ANIM(ANIM_ALWAYS, TICRATE / 3, 3, 224, 104, 0),
@@ -1101,21 +1111,23 @@ void WI_drawNetgameStats() {
 
   WI_drawLF();
 
+  auto NG_STATSX = [](){ return (32 + SHORT(star->width) / 2 + 32 * !dofrags); };
+
   // draw stat titles (top line)
-  V_DrawPatch(NG_STATSX + NG_SPACINGX - SHORT(kills->width),
+  V_DrawPatch(NG_STATSX() + NG_SPACINGX - SHORT(kills->width),
               NG_STATSY,
               kills);
 
-  V_DrawPatch(NG_STATSX + 2 * NG_SPACINGX - SHORT(items->width),
+  V_DrawPatch(NG_STATSX() + 2 * NG_SPACINGX - SHORT(items->width),
               NG_STATSY,
               items);
 
-  V_DrawPatch(NG_STATSX + 3 * NG_SPACINGX - SHORT(secret->width),
+  V_DrawPatch(NG_STATSX() + 3 * NG_SPACINGX - SHORT(secret->width),
               NG_STATSY,
               secret);
 
   if (dofrags)
-    V_DrawPatch(NG_STATSX + 4 * NG_SPACINGX - SHORT(frags->width),
+    V_DrawPatch(NG_STATSX() + 4 * NG_SPACINGX - SHORT(frags->width),
                 NG_STATSY,
                 frags);
 
@@ -1126,7 +1138,7 @@ void WI_drawNetgameStats() {
     if (!g_doomstat_globals->playeringame[i])
       continue;
 
-    int x = NG_STATSX;
+    int x = NG_STATSX();
     V_DrawPatch(x - SHORT(patches[i]->width), y, patches[i]);
 
     if (i == me)
