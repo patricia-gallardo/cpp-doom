@@ -975,7 +975,7 @@ void WI_initNetgameStats() {
 }
 
 void WI_updateNetgameStats() {
-  bool stillticking = 0;
+  bool stillticking = false;
 
   WI_updateAnimatedBack();
 
