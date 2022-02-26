@@ -371,7 +371,7 @@ static int ST_cheat_massacre() {
 // [crispy] trigger all special lines available on the map
 static int ST_cheat_spechits() {
   int    speciallines = 0;
-  bool   origcards[NUMCARDS];
+  std::array<bool, NUMCARDS> origcards;
   line_t dummy;
 
   // [crispy] temporarily give all keys
