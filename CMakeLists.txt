@@ -7,6 +7,8 @@ include(cmake/vcpkg.cmake)
 project("Crispy Doom" VERSION 5.7.2 LANGUAGES CXX)
 set(CMAKE_CXX_STANDARD 20)
 
+set(CMAKE_CXX_VISIBILITY_PRESET hidden)
+
 # Autotools variables
 set(top_srcdir ${CMAKE_CURRENT_SOURCE_DIR})
 set(top_builddir ${CMAKE_CURRENT_BINARY_DIR})
