@@ -237,7 +237,7 @@ static int st_fragscount;
 static int st_oldhealth = -1;
 
 // used for evil grin
-static bool oldweaponsowned[NUMWEAPONS];
+static std::array<bool, NUMWEAPONS> oldweaponsowned;
 
 // count until face changes
 static int st_facecount = 0;
