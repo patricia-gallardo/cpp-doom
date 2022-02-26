@@ -181,7 +181,7 @@ static std::array<patch_t *, 10> tallnum;
 static patch_t * tallpercent;
 
 // 0-9, short, yellow (,different!) numbers
-static patch_t * shortnum[10];
+static std::array<patch_t *, 10> shortnum;
 
 // 3 key-cards, 3 skulls
 static patch_t * keys[NUMCARDS + 3]; // [crispy] support combined card and skull keys
@@ -1875,7 +1875,7 @@ void ST_createWidgets() {
   STlib_initNum(&w_ammo[0],
                 ST_AMMO0X,
                 ST_AMMO0Y,
-                shortnum,
+                shortnum.data(),
                 &plyr->ammo[0],
                 &st_statusbaron,
                 ST_AMMO0WIDTH);
@@ -1883,7 +1883,7 @@ void ST_createWidgets() {
   STlib_initNum(&w_ammo[1],
                 ST_AMMO1X,
                 ST_AMMO1Y,
-                shortnum,
+                shortnum.data(),
                 &plyr->ammo[1],
                 &st_statusbaron,
                 ST_AMMO1WIDTH);
@@ -1891,7 +1891,7 @@ void ST_createWidgets() {
   STlib_initNum(&w_ammo[2],
                 ST_AMMO2X,
                 ST_AMMO2Y,
-                shortnum,
+                shortnum.data(),
                 &plyr->ammo[2],
                 &st_statusbaron,
                 ST_AMMO2WIDTH);
@@ -1899,7 +1899,7 @@ void ST_createWidgets() {
   STlib_initNum(&w_ammo[3],
                 ST_AMMO3X,
                 ST_AMMO3Y,
-                shortnum,
+                shortnum.data(),
                 &plyr->ammo[3],
                 &st_statusbaron,
                 ST_AMMO3WIDTH);
@@ -1908,7 +1908,7 @@ void ST_createWidgets() {
   STlib_initNum(&w_maxammo[0],
                 ST_MAXAMMO0X,
                 ST_MAXAMMO0Y,
-                shortnum,
+                shortnum.data(),
                 &plyr->maxammo[0],
                 &st_statusbaron,
                 ST_MAXAMMO0WIDTH);
@@ -1916,7 +1916,7 @@ void ST_createWidgets() {
   STlib_initNum(&w_maxammo[1],
                 ST_MAXAMMO1X,
                 ST_MAXAMMO1Y,
-                shortnum,
+                shortnum.data(),
                 &plyr->maxammo[1],
                 &st_statusbaron,
                 ST_MAXAMMO1WIDTH);
@@ -1924,7 +1924,7 @@ void ST_createWidgets() {
   STlib_initNum(&w_maxammo[2],
                 ST_MAXAMMO2X,
                 ST_MAXAMMO2Y,
-                shortnum,
+                shortnum.data(),
                 &plyr->maxammo[2],
                 &st_statusbaron,
                 ST_MAXAMMO2WIDTH);
@@ -1932,7 +1932,7 @@ void ST_createWidgets() {
   STlib_initNum(&w_maxammo[3],
                 ST_MAXAMMO3X,
                 ST_MAXAMMO3Y,
-                shortnum,
+                shortnum.data(),
                 &plyr->maxammo[3],
                 &st_statusbaron,
                 ST_MAXAMMO3WIDTH);
