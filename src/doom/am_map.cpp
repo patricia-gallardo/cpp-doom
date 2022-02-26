@@ -82,10 +82,6 @@ constexpr auto                  GRIDCOLORS               = (GRAYS + GRAYSRANGE /
 [[maybe_unused]] constexpr auto GRIDRANGE                = 0;
 constexpr auto                  XHAIRCOLORS              = GRAYS;
 
-#define WALLCOLORS   (crispy->extautomap ? 23 : REDS)     // [crispy] red-brown
-#define FDWALLCOLORS (crispy->extautomap ? 55 : BROWNS)   // [crispy] lt brown
-#define CDWALLCOLORS (crispy->extautomap ? 215 : YELLOWS) // [crispy] orange
-
 #define CRISPY_HIGHLIGHT_REVEALED_SECRETS
 
 // drawing stuff
@@ -107,13 +103,36 @@ constexpr auto M_ZOOMOUT = (static_cast<int>(FRACUNIT / 1.02));
 constexpr auto M2_ZOOMIN  = (static_cast<int>(1.08 * FRACUNIT));
 constexpr auto M2_ZOOMOUT = (static_cast<int>(FRACUNIT / 1.08));
 
+// used by FTOM to scale from frame-buffer-to-map coords (=1/scale_mtof)
+static fixed_t scale_ftom;
+
+// used by MTOF to scale from map-to-frame-buffer coords
+static fixed_t scale_mtof = static_cast<fixed_t>(INITSCALEMTOF);
+
 // translates between frame-buffer and map distances
 // [crispy] fix int overflow that causes map and grid lines to disappear
-#define FTOM(x) ((static_cast<int64_t>((x) << FRACBITS) * scale_ftom) >> FRACBITS)
-#define MTOF(x) (((static_cast<int64_t>(x) * scale_mtof) >> FRACBITS) >> FRACBITS)
+template<typename T>
+constexpr auto FTOM(T x) { return ((static_cast<int64_t>((x) << FRACBITS) * scale_ftom) >> FRACBITS); }
+
+template<typename T>
+constexpr auto MTOF(T x) { return  (((static_cast<int64_t>(x) * scale_mtof) >> FRACBITS) >> FRACBITS); }
+
+// location of window on screen
+static int f_x;
+static int f_y;
+
+// size of window on screen
+static int f_w;
+static int f_h;
+
+static int64_t m_x, m_y;   // LL x,y where the window is on the map (map coords)
+
 // translates between frame-buffer and map coordinates
-#define CXMTOF(x) (f_x + MTOF((x)-m_x))
-#define CYMTOF(y) (f_y + (f_h - MTOF((y)-m_y)))
+template<typename T>
+constexpr auto CXMTOF(T x) { return (f_x + MTOF((x)-m_x)); }
+
+template<typename T>
+constexpr auto CYMTOF(T y) { return (f_y + (f_h - MTOF((y)-m_y))); }
 
 // the following is crap
 constexpr auto LINE_NEVERSEE = ML_DONTDRAW;
@@ -216,14 +235,6 @@ static int grid     = 0;
 
 [[maybe_unused]] static int leveljuststarted = 1; // kluge until AM_LevelInit() is called
 
-// location of window on screen
-static int f_x;
-static int f_y;
-
-// size of window on screen
-static int f_w;
-static int f_h;
-
 static int lightlev;                        // used for funky strobing effect
 #define fb g_i_video_globals->I_VideoBuffer // [crispy] simplify
 static int amclock;
@@ -232,7 +243,6 @@ static mpoint_t m_paninc;     // how far the window pans each tic (map coords)
 static fixed_t  mtof_zoommul; // how far the window zooms in each tic (map coords)
 static fixed_t  ftom_zoommul; // how far the window zooms in each tic (fb coords)
 
-static int64_t m_x, m_y;   // LL x,y where the window is on the map (map coords)
 static int64_t m_x2, m_y2; // UR x,y where the window is on the map (map coords)
 
 //
@@ -263,11 +273,6 @@ static int64_t old_m_x, old_m_y;
 
 // old location used by the Follower routine
 static mpoint_t f_oldloc;
-
-// used by MTOF to scale from map-to-frame-buffer coords
-static fixed_t scale_mtof = static_cast<fixed_t>(INITSCALEMTOF);
-// used by FTOM to scale from frame-buffer-to-map coords (=1/scale_mtof)
-static fixed_t scale_ftom;
 
 static player_t * plr; // the player represented by an arrow
 
@@ -1219,6 +1224,11 @@ void AM_drawWalls() {
         AM_drawMline(&l, WHITE);
         continue;
       }
+
+      auto WALLCOLORS   = []() { return (crispy->extautomap ? 23 : REDS); };     // [crispy] red-brown
+      auto FDWALLCOLORS = []() { return (crispy->extautomap ? 55 : BROWNS); };   // [crispy] lt brown
+      auto CDWALLCOLORS = []() { return (crispy->extautomap ? 215 : YELLOWS); }; // [crispy] orange
+
       if (!g_r_state_globals->lines[i].backsector) {
         // [crispy] draw 1S secret sector boundaries in purple
         if (crispy->extautomap && cheating && (g_r_state_globals->lines[i].frontsector->special == 9))
@@ -1229,16 +1239,16 @@ void AM_drawWalls() {
           AM_drawMline(&l, REVEALEDSECRETWALLCOLORS);
 #endif
         else
-          AM_drawMline(&l, WALLCOLORS + lightlev);
+          AM_drawMline(&l, WALLCOLORS() + lightlev);
       } else {
         // [crispy] draw teleporters in green
         // and also WR teleporters 97 if they are not secret
         // (no monsters-only teleporters 125, 126; no Boom teleporters)
         if (g_r_state_globals->lines[i].special == 39 || (crispy->extautomap && !(g_r_state_globals->lines[i].flags & ML_SECRET) && g_r_state_globals->lines[i].special == 97)) { // teleporters
-          AM_drawMline(&l, crispy->extautomap ? (GREENS + GREENRANGE / 2) : (WALLCOLORS + WALLRANGE / 2));
+          AM_drawMline(&l, crispy->extautomap ? (GREENS + GREENRANGE / 2) : (WALLCOLORS() + WALLRANGE / 2));
         } else if (g_r_state_globals->lines[i].flags & ML_SECRET) // secret door
         {
-          AM_drawMline(&l, WALLCOLORS + lightlev);
+          AM_drawMline(&l, WALLCOLORS() + lightlev);
         }
 #if defined CRISPY_HIGHLIGHT_REVEALED_SECRETS
         // [crispy] draw revealed secret sector boundaries in green
@@ -1251,10 +1261,10 @@ void AM_drawWalls() {
           AM_drawMline(&l, SECRETWALLCOLORS);
         } else if (g_r_state_globals->lines[i].backsector->floorheight
                    != g_r_state_globals->lines[i].frontsector->floorheight) {
-          AM_drawMline(&l, FDWALLCOLORS + lightlev); // floor level change
+          AM_drawMline(&l, FDWALLCOLORS() + lightlev); // floor level change
         } else if (g_r_state_globals->lines[i].backsector->ceilingheight
                    != g_r_state_globals->lines[i].frontsector->ceilingheight) {
-          AM_drawMline(&l, CDWALLCOLORS + lightlev); // ceiling level change
+          AM_drawMline(&l, CDWALLCOLORS() + lightlev); // ceiling level change
         } else if (cheating) {
           AM_drawMline(&l, TSWALLCOLORS + lightlev);
         }
