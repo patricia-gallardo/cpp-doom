@@ -34,10 +34,10 @@
 #include "memory.hpp"
 #include "r_state.hpp"
 
-FILE *     save_stream;
-int        savegamelength;
-bool       savegame_error;
-static int restoretargets_fail;
+FILE *               save_stream;
+[[maybe_unused]] int savegamelength;
+bool                 savegame_error;
+static int           restoretargets_fail;
 
 // Get the filename of a temporary file to write the savegame to.  After
 // the file has been successfully saved, it will be renamed to the
