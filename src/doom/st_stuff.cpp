@@ -175,7 +175,7 @@ static patch_t * sbar;
 static patch_t * sbarr;
 
 // 0-9, tall numbers
-static patch_t * tallnum[10];
+static std::array<patch_t *, 10> tallnum;
 
 // tall % sign
 static patch_t * tallpercent;
@@ -1786,7 +1786,7 @@ void ST_createWidgets() {
   STlib_initNum(&w_ready,
                 ST_AMMOX(),
                 ST_AMMOY,
-                tallnum,
+                tallnum.data(),
                 &plyr->ammo[weaponinfo[plyr->readyweapon].ammo],
                 &st_statusbaron,
                 ST_AMMOWIDTH);
@@ -1798,7 +1798,7 @@ void ST_createWidgets() {
   STlib_initPercent(&w_health,
                     ST_HEALTHX(),
                     ST_HEALTHY,
-                    tallnum,
+                    tallnum.data(),
                     &plyr->health,
                     &st_statusbaron,
                     tallpercent);
@@ -1827,7 +1827,7 @@ void ST_createWidgets() {
   STlib_initNum(&w_frags,
                 ST_FRAGSX,
                 ST_FRAGSY,
-                tallnum,
+                tallnum.data(),
                 &st_fragscount,
                 &st_fragson,
                 ST_FRAGSWIDTH);
@@ -1844,7 +1844,7 @@ void ST_createWidgets() {
   STlib_initPercent(&w_armor,
                     ST_ARMORX,
                     ST_ARMORY,
-                    tallnum,
+                    tallnum.data(),
                     &plyr->armorpoints,
                     &st_statusbaron,
                     tallpercent);
