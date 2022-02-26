@@ -949,7 +949,7 @@ void WI_drawDeathmatchStats() {
   }
 }
 
-static int cnt_frags[MAXPLAYERS];
+static std::array<int, MAXPLAYERS> cnt_frags;
 static int dofrags;
 static int ng_state;
 
