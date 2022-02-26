@@ -60,7 +60,7 @@ int *          lastopening;           // [crispy] 32-bit integer math
 //  ceilingclip starts out -1
 //
 std::array<int, MAXWIDTH> floorclip;   // [crispy] 32-bit integer math
-int ceilingclip[MAXWIDTH]; // [crispy] 32-bit integer math
+std::array<int, MAXWIDTH> ceilingclip; // [crispy] 32-bit integer math
 
 //
 // spanstart holds the start of a plane span

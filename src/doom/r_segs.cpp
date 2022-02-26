@@ -785,7 +785,7 @@ void R_StoreWallRange(int start,
   // save sprite clipping info
   if (((ds_p->silhouette & SIL_TOP) || maskedtexture)
       && !ds_p->sprtopclip) {
-    std::memcpy(lastopening, ceilingclip + start, sizeof(*lastopening) * (static_cast<unsigned long>(rw_stopx - start)));
+    std::memcpy(lastopening, ceilingclip.data() + start, sizeof(*lastopening) * (static_cast<unsigned long>(rw_stopx - start)));
     ds_p->sprtopclip = lastopening - start;
     lastopening += rw_stopx - start;
   }
