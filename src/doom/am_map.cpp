@@ -181,65 +181,61 @@ enum keycolor_t
 //  A line drawing of the player pointing right,
 //   starting from the middle.
 //
-#define R ((8 * PLAYERRADIUS) / 7)
+constexpr auto R1 = ((8 * PLAYERRADIUS) / 7);
 std::array<mline_t, 7> player_arrow = {
-  mline_t { mpoint_t { -R + R / 8, 0 },     mpoint_t { R, 0 }               }, // -----
-  mline_t { mpoint_t { R, 0 },              mpoint_t { R - R / 2, R / 4 }   }, // ----->
-  mline_t { mpoint_t { R, 0 },              mpoint_t { R - R / 2, -R / 4 }  },
-  mline_t { mpoint_t { -R + R / 8, 0 },     mpoint_t { -R - R / 8, R / 4 }  }, // >---->
-  mline_t { mpoint_t { -R + R / 8, 0 },     mpoint_t { -R - R / 8, -R / 4 } },
-  mline_t { mpoint_t { -R + 3 * R / 8, 0 }, mpoint_t { -R + R / 8, R / 4 }  }, // >>--->
-  mline_t { mpoint_t { -R + 3 * R / 8, 0 }, mpoint_t { -R + R / 8, -R / 4 } }
+  mline_t { mpoint_t { -R1 + R1 / 8, 0 },     mpoint_t { R1, 0 }               }, // -----
+  mline_t { mpoint_t { R1, 0 },              mpoint_t { R1 - R1 / 2, R1 / 4 }   }, // ----->
+  mline_t { mpoint_t { R1, 0 },              mpoint_t { R1 - R1 / 2, -R1 / 4 }  },
+  mline_t { mpoint_t { -R1 + R1 / 8, 0 },     mpoint_t { -R1 - R1 / 8, R1 / 4 }  }, // >---->
+  mline_t { mpoint_t { -R1 + R1 / 8, 0 },     mpoint_t { -R1 - R1 / 8, -R1 / 4 } },
+  mline_t { mpoint_t { -R1 + 3 * R1 / 8, 0 }, mpoint_t { -R1 + R1 / 8, R1 / 4 }  }, // >>--->
+  mline_t { mpoint_t { -R1 + 3 * R1 / 8, 0 }, mpoint_t { -R1 + R1 / 8, -R1 / 4 } }
 };
-#undef R
 
-#define R ((8 * PLAYERRADIUS) / 7)
+constexpr auto R2 = ((8 * PLAYERRADIUS) / 7);
 mline_t cheat_player_arrow[] = {
-  {{ -R + R / 8, 0 },                    { R, 0 }                           }, // -----
-  { { R, 0 },                            { R - R / 2, R / 6 }               }, // ----->
-  { { R, 0 },                            { R - R / 2, -R / 6 }              },
-  { { -R + R / 8, 0 },                   { -R - R / 8, R / 6 }              }, // >----->
-  { { -R + R / 8, 0 },                   { -R - R / 8, -R / 6 }             },
-  { { -R + 3 * R / 8, 0 },               { -R + R / 8, R / 6 }              }, // >>----->
-  { { -R + 3 * R / 8, 0 },               { -R + R / 8, -R / 6 }             },
-  { { -R / 2, 0 },                       { -R / 2, -R / 6 }                 }, // >>-d--->
-  { { -R / 2, -R / 6 },                  { -R / 2 + R / 6, -R / 6 }         },
-  { { -R / 2 + R / 6, -R / 6 },          { -R / 2 + R / 6, R / 4 }          },
-  { { -R / 6, 0 },                       { -R / 6, -R / 6 }                 }, // >>-dd-->
-  { { -R / 6, -R / 6 },                  { 0, -R / 6 }                      },
-  { { 0, -R / 6 },                       { 0, R / 4 }                       },
-  { { R / 6, R / 4 },                    { R / 6, -R / 7 }                  }, // >>-ddt->
-  { { R / 6, -R / 7 },                   { R / 6 + R / 32, -R / 7 - R / 32 }},
-  { { R / 6 + R / 32, -R / 7 - R / 32 }, { R / 6 + R / 10, -R / 7 }         }
+  {{ -R2 + R2 / 8, 0 },                    { R2, 0 }                           }, // -----
+  { { R2, 0 },                            { R2 - R2 / 2, R2 / 6 }               }, // ----->
+  { { R2, 0 },                            { R2 - R2 / 2, -R2 / 6 }              },
+  { { -R2 + R2 / 8, 0 },                   { -R2 - R2 / 8, R2 / 6 }              }, // >----->
+  { { -R2 + R2 / 8, 0 },                   { -R2 - R2 / 8, -R2 / 6 }             },
+  { { -R2 + 3 * R2 / 8, 0 },               { -R2 + R2 / 8, R2 / 6 }              }, // >>----->
+  { { -R2 + 3 * R2 / 8, 0 },               { -R2 + R2 / 8, -R2 / 6 }             },
+  { { -R2 / 2, 0 },                       { -R2 / 2, -R2 / 6 }                 }, // >>-d--->
+  { { -R2 / 2, -R2 / 6 },                  { -R2 / 2 + R2 / 6, -R2 / 6 }         },
+  { { -R2 / 2 + R2 / 6, -R2 / 6 },          { -R2 / 2 + R2 / 6, R2 / 4 }          },
+  { { -R2 / 6, 0 },                       { -R2 / 6, -R2 / 6 }                 }, // >>-dd-->
+  { { -R2 / 6, -R2 / 6 },                  { 0, -R2 / 6 }                      },
+  { { 0, -R2 / 6 },                       { 0, R2 / 4 }                       },
+  { { R2 / 6, R2 / 4 },                    { R2 / 6, -R2 / 7 }                  }, // >>-ddt->
+  { { R2 / 6, -R2 / 7 },                   { R2 / 6 + R2 / 32, -R2 / 7 - R2 / 32 }},
+  { { R2 / 6 + R2 / 32, -R2 / 7 - R2 / 32 }, { R2 / 6 + R2 / 10, -R2 / 7 }         }
 };
-#undef R
 
-#define R (FRACUNIT)
+constexpr auto R3 = (FRACUNIT);
 [[maybe_unused]] mline_t triangle_guy[] = {
-  {{ static_cast<fixed_t>(-.867 * R), static_cast<fixed_t>(-.5 * R) }, { static_cast<fixed_t>(.867 * R), static_cast<fixed_t>(-.5 * R) } },
-  { { static_cast<fixed_t>(.867 * R), static_cast<fixed_t>(-.5 * R) }, { static_cast<fixed_t>(0), static_cast<fixed_t>(R) }              },
-  { { static_cast<fixed_t>(0), static_cast<fixed_t>(R) },              { static_cast<fixed_t>(-.867 * R), static_cast<fixed_t>(-.5 * R) }}
+  {{ static_cast<fixed_t>(-.867 * R3), static_cast<fixed_t>(-.5 * R3) }, { static_cast<fixed_t>(.867 * R3), static_cast<fixed_t>(-.5 * R3) } },
+  { { static_cast<fixed_t>(.867 * R3), static_cast<fixed_t>(-.5 * R3) }, { static_cast<fixed_t>(0), static_cast<fixed_t>(R3) }              },
+  { { static_cast<fixed_t>(0), static_cast<fixed_t>(R3) },              { static_cast<fixed_t>(-.867 * R3), static_cast<fixed_t>(-.5 * R3) }}
 };
-#undef R
 
-#define R (FRACUNIT)
+constexpr auto R4 = (FRACUNIT);
 mline_t thintriangle_guy[] = {
-  {{ static_cast<fixed_t>(-.5 * R), static_cast<fixed_t>(-.7 * R) }, { static_cast<fixed_t>(R), static_cast<fixed_t>(0) }            },
-  { { static_cast<fixed_t>(R), static_cast<fixed_t>(0) },            { static_cast<fixed_t>(-.5 * R), static_cast<fixed_t>(.7 * R) } },
-  { { static_cast<fixed_t>(-.5 * R), static_cast<fixed_t>(.7 * R) }, { static_cast<fixed_t>(-.5 * R), static_cast<fixed_t>(-.7 * R) }}
+  {{ static_cast<fixed_t>(-.5 * R4), static_cast<fixed_t>(-.7 * R4) }, { static_cast<fixed_t>(R4), static_cast<fixed_t>(0) }            },
+  { { static_cast<fixed_t>(R4), static_cast<fixed_t>(0) },            { static_cast<fixed_t>(-.5 * R4), static_cast<fixed_t>(.7 * R4) } },
+  { { static_cast<fixed_t>(-.5 * R4), static_cast<fixed_t>(.7 * R4) }, { static_cast<fixed_t>(-.5 * R4), static_cast<fixed_t>(-.7 * R4) }}
 };
 // [crispy] print keys as crosses
 static mline_t cross_mark[] = {
-  {{ -R, 0 },  { R, 0 }},
-  { { 0, -R }, { 0, R }},
+  {{ -R4, 0 },  { R4, 0 }},
+  { { 0, -R4 }, { 0, R4 }},
 };
 static mline_t square_mark[] = {
-  {{ -R, 0 },  { 0, R } },
-  { { 0, R },  { R, 0 } },
-  { { R, 0 },  { 0, -R }},
-  { { 0, -R }, { -R, 0 }},
+  {{ -R4, 0 },  { 0, R4 } },
+  { { 0, R4 },  { R4, 0 } },
+  { { R4, 0 },  { 0, -R4 }},
+  { { 0, -R4 }, { -R4, 0 }},
 };
-#undef R
 
 static int cheating = 0;
 static int grid     = 0;
