@@ -304,9 +304,9 @@ static int bcnt;
 // signals to refresh everything for one frame
 [[maybe_unused]] static int firstrefresh;
 
-static int cnt_kills[MAXPLAYERS];
-static int cnt_items[MAXPLAYERS];
-static int cnt_secret[MAXPLAYERS];
+static std::array<int, MAXPLAYERS> cnt_kills;
+static std::array<int, MAXPLAYERS> cnt_items;
+static std::array<int, MAXPLAYERS> cnt_secret;
 static int cnt_time;
 static int cnt_par;
 static int cnt_pause;
