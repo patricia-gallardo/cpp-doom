@@ -35,7 +35,7 @@ extern std::array<int, MAXWIDTH> ceilingclip; // [crispy] 32-bit integer math
 
 extern fixed_t *                yslope;
 extern fixed_t                  yslopes[LOOKDIRS][MAXHEIGHT];
-[[maybe_unused]] extern fixed_t distscale[MAXWIDTH];
+[[maybe_unused]] extern std::array<fixed_t, MAXWIDTH> distscale;
 
 void R_InitPlanes();
 void R_ClearPlanes();

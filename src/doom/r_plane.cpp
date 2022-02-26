@@ -77,7 +77,7 @@ fixed_t         planeheight;
 
 fixed_t *                yslope;
 fixed_t                  yslopes[LOOKDIRS][MAXHEIGHT];
-[[maybe_unused]] fixed_t distscale[MAXWIDTH];
+[[maybe_unused]] std::array<fixed_t, MAXWIDTH> distscale;
 [[maybe_unused]] fixed_t basexscale;
 [[maybe_unused]] fixed_t baseyscale;
 
