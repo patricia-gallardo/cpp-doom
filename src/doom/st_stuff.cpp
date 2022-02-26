@@ -246,7 +246,7 @@ static int st_facecount = 0;
 static int st_faceindex = 0;
 
 // holds key-type for each key box on bar
-static int keyboxes[3];
+static std::array<int, 3> keyboxes;
 
 // a random number per tick
 static int st_randomnumber;
