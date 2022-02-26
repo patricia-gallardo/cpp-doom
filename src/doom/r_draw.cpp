@@ -321,8 +321,8 @@ void R_DrawColumnLow() {
 //
 // Spectre/Invisibility.
 //
-#define FUZZTABLE 50
-#define FUZZOFF   (1)
+constexpr auto FUZZTABLE = 50;
+constexpr auto FUZZOFF   = (1);
 
 // clang-format off
 int fuzzoffset[FUZZTABLE] = {
