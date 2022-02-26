@@ -66,7 +66,7 @@ std::array<int, MAXWIDTH> ceilingclip; // [crispy] 32-bit integer math
 // spanstart holds the start of a plane span
 // initialized to 0 at start
 //
-int                  spanstart[MAXHEIGHT];
+std::array<int, MAXHEIGHT> spanstart;
 [[maybe_unused]] int spanstop[MAXHEIGHT];
 
 //
