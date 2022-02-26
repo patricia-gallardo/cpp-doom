@@ -211,7 +211,7 @@ static st_percent_t w_health;
 static st_binicon_t w_armsbg;
 
 // weapon ownership widgets
-static st_multicon_t w_arms[6];
+static std::array<st_multicon_t, 6> w_arms;
 // [crispy] show SSG availability in the Shotgun slot of the arms widget
 static int st_shotguns;
 
