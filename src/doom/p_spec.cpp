@@ -49,7 +49,7 @@
 #include "memory.hpp"
 #include "sounds.hpp"
 
-#define HUSTR_SECRETFOUND "A secret is revealed!"
+constexpr auto HUSTR_SECRETFOUND = "A secret is revealed!";
 
 //
 // Animating textures and planes
