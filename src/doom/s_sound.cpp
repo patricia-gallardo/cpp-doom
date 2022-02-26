@@ -60,7 +60,7 @@ constexpr auto S_ATTENUATOR = ((S_CLIPPING_DIST - S_CLOSE_DIST) >> FRACBITS);
 // Stereo separation
 
 constexpr auto S_STEREO_SWING = (96 * FRACUNIT);
-static int stereo_swing;
+static int     stereo_swing;
 
 constexpr auto NORM_SEP = 128;
 

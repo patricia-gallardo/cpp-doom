@@ -111,11 +111,15 @@ static fixed_t scale_mtof = static_cast<fixed_t>(INITSCALEMTOF);
 
 // translates between frame-buffer and map distances
 // [crispy] fix int overflow that causes map and grid lines to disappear
-template<typename T>
-constexpr auto FTOM(T x) { return ((static_cast<int64_t>((x) << FRACBITS) * scale_ftom) >> FRACBITS); }
+template <typename T>
+constexpr auto FTOM(T x) {
+  return ((static_cast<int64_t>((x) << FRACBITS) * scale_ftom) >> FRACBITS);
+}
 
-template<typename T>
-constexpr auto MTOF(T x) { return  (((static_cast<int64_t>(x) * scale_mtof) >> FRACBITS) >> FRACBITS); }
+template <typename T>
+constexpr auto MTOF(T x) {
+  return (((static_cast<int64_t>(x) * scale_mtof) >> FRACBITS) >> FRACBITS);
+}
 
 // location of window on screen
 static int f_x;
@@ -125,14 +129,18 @@ static int f_y;
 static int f_w;
 static int f_h;
 
-static int64_t m_x, m_y;   // LL x,y where the window is on the map (map coords)
+static int64_t m_x, m_y; // LL x,y where the window is on the map (map coords)
 
 // translates between frame-buffer and map coordinates
-template<typename T>
-constexpr auto CXMTOF(T x) { return (f_x + MTOF((x)-m_x)); }
+template <typename T>
+constexpr auto CXMTOF(T x) {
+  return (f_x + MTOF((x)-m_x));
+}
 
-template<typename T>
-constexpr auto CYMTOF(T y) { return (f_y + (f_h - MTOF((y)-m_y))); }
+template <typename T>
+constexpr auto CYMTOF(T y) {
+  return (f_y + (f_h - MTOF((y)-m_y)));
+}
 
 // the following is crap
 constexpr auto LINE_NEVERSEE = ML_DONTDRAW;
@@ -154,7 +162,8 @@ struct mline_t {
 };
 
 struct islope_t {
-  fixed_t slp, islp;
+  [[maybe_unused]] fixed_t slp;
+  [[maybe_unused]] fixed_t islp;
 };
 
 enum keycolor_t

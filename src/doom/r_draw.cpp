@@ -48,17 +48,17 @@
 //  and the total size == width*height*depth/8.,
 //
 
-uint8_t * viewimage;
-int       viewwindowx;
-int       viewwindowy;
-pixel_t * ylookup[MAXHEIGHT];
-int       columnofs[MAXWIDTH];
+[[maybe_unused]] uint8_t * viewimage;
+int                        viewwindowx;
+int                        viewwindowy;
+pixel_t *                  ylookup[MAXHEIGHT];
+int                        columnofs[MAXWIDTH];
 
 // Color tables for different players,
 //  translate a limited part to another
 //  (color ramps used for  suit colors).
 //
-uint8_t translations[3][256];
+[[maybe_unused]] uint8_t translations[3][256];
 
 // Backing buffer containing the bezel drawn around the screen and
 // surrounding background.
@@ -66,7 +66,7 @@ uint8_t translations[3][256];
 static pixel_t * background_buffer = nullptr;
 
 // just for profiling
-int dccount;
+[[maybe_unused]] int dccount;
 
 static uint8_t nobrightmap[256] = { 0 };
 
@@ -724,7 +724,7 @@ void R_InitTranslationTables() {
 }
 
 // just for profiling
-int dscount;
+[[maybe_unused]] int dscount;
 
 //
 // Draws the actual span.

@@ -26,16 +26,16 @@ constexpr auto TOCENTER   = -8;
 constexpr auto AFLAG_JUMP = 0x80;
 constexpr auto FLOATSPEED = (FRACUNIT * 4);
 
-constexpr auto MAXHEALTH = 100;
+constexpr auto MAXHEALTH  = 100;
 constexpr auto VIEWHEIGHT = (41 * FRACUNIT);
 
 // mapblocks are used to check movement
 // against lines and things
-constexpr auto MAPBLOCKUNITS = 128;
-constexpr auto MAPBLOCKSIZE  = (MAPBLOCKUNITS * FRACUNIT);
-constexpr auto MAPBLOCKSHIFT = (FRACBITS + 7);
-[[maybe_unused]] constexpr auto MAPBMASK = (MAPBLOCKSIZE - 1);
-constexpr auto MAPBTOFRAC = (MAPBLOCKSHIFT - FRACBITS);
+constexpr auto                  MAPBLOCKUNITS = 128;
+constexpr auto                  MAPBLOCKSIZE  = (MAPBLOCKUNITS * FRACUNIT);
+constexpr auto                  MAPBLOCKSHIFT = (FRACBITS + 7);
+[[maybe_unused]] constexpr auto MAPBMASK      = (MAPBLOCKSIZE - 1);
+constexpr auto                  MAPBTOFRAC    = (MAPBLOCKSHIFT - FRACBITS);
 
 // player radius for movement checking
 constexpr auto PLAYERRADIUS = 16 * FRACUNIT;
@@ -70,8 +70,10 @@ void P_DropWeapon(player_t * player);
 // P_USER
 //
 constexpr auto MLOOKUNIT = 8;
-template<typename T>
-constexpr auto PLAYER_SLOPE(T a) { return ((((a)->lookdir / MLOOKUNIT) << FRACBITS) / 173); }
+template <typename T>
+constexpr auto PLAYER_SLOPE(T a) {
+  return ((((a)->lookdir / MLOOKUNIT) << FRACBITS) / 173);
+}
 void P_PlayerThink(player_t * player);
 
 //

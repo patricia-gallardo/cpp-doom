@@ -975,7 +975,7 @@ void WI_initNetgameStats() {
 }
 
 void WI_updateNetgameStats() {
-  bool stillticking;
+  bool stillticking = 0;
 
   WI_updateAnimatedBack();
 
@@ -1073,7 +1073,7 @@ void WI_updateNetgameStats() {
 
       cnt_frags[i] += 1;
 
-      int fsum;
+      int fsum = 0;
       if (cnt_frags[i] >= (fsum = WI_fragSum(i)))
         cnt_frags[i] = fsum;
       else
@@ -1101,7 +1101,6 @@ void WI_updateNetgameStats() {
 }
 
 void WI_drawNetgameStats() {
-  int y;
   int pwidth = SHORT(percent->width);
 
   WI_slamBackground();
@@ -1111,7 +1110,7 @@ void WI_drawNetgameStats() {
 
   WI_drawLF();
 
-  auto NG_STATSX = [](){ return (32 + SHORT(star->width) / 2 + 32 * !dofrags); };
+  auto NG_STATSX = []() { return (32 + SHORT(star->width) / 2 + 32 * !dofrags); };
 
   // draw stat titles (top line)
   V_DrawPatch(NG_STATSX() + NG_SPACINGX - SHORT(kills->width),
@@ -1132,7 +1131,7 @@ void WI_drawNetgameStats() {
                 frags);
 
   // draw stats
-  y = NG_STATSY + SHORT(kills->height);
+  int y = NG_STATSY + SHORT(kills->height);
 
   for (int i = 0; i < MAXPLAYERS; i++) {
     if (!g_doomstat_globals->playeringame[i])

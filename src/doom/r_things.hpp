@@ -42,13 +42,13 @@ void R_DrawMaskedColumn(column_t * column);
 
 void R_SortVisSprites();
 
-void R_AddSprites(sector_t * sec);
-void R_AddPSprites();
-void R_DrawSprites();
-void R_InitSprites(const char ** namelist);
-void R_ClearSprites();
-void R_DrawMasked();
+void                  R_AddSprites(sector_t * sec);
+[[maybe_unused]] void R_AddPSprites();
+[[maybe_unused]] void R_DrawSprites();
+void                  R_InitSprites(const char ** namelist);
+void                  R_ClearSprites();
+void                  R_DrawMasked();
 
-void R_ClipVisSprite(vissprite_t * vis,
-                     int           xl,
-                     int           xh);
+[[maybe_unused]] void R_ClipVisSprite(vissprite_t * vis,
+                                      int           xl,
+                                      int           xh);

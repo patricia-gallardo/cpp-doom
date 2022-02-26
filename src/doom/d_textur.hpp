@@ -24,7 +24,7 @@
 // Flats?
 //
 // a pic is an unmasked block of pixels
-[[maybe_unused]] struct pic_t {
+struct [[maybe_unused]] pic_t {
   uint8_t width {};
   uint8_t height {};
   uint8_t data {};

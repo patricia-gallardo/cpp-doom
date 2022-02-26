@@ -34,7 +34,6 @@
 #include "deh_main.hpp"
 #include "deh_misc.hpp"
 #include "doomdef.hpp"
-#include "doomkeys.hpp"
 
 #include "g_game.hpp"
 

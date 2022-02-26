@@ -590,7 +590,7 @@ void G_BuildTiccmd(ticcmd_t * cmd, int maketic) {
 
   mousex = mousex2 = mousey = 0;
 
-  auto MAXPLMOVE = [](){ return (forwardmove[1]); };
+  auto MAXPLMOVE = []() { return (forwardmove[1]); };
 
   if (forward > MAXPLMOVE())
     forward = MAXPLMOVE();

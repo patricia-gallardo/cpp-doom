@@ -23,7 +23,6 @@
 #include <fmt/printf.h>
 
 #include "d_loop.hpp"
-#include "doomdef.hpp"
 #include "doomstat.hpp" // [AM] leveltime, paused, menuactive
 
 #include "m_bbox.hpp"
@@ -53,8 +52,8 @@ fixed_t projection;
 // just for profiling purposes
 int framecount;
 
-int linecount;
-int loopcount;
+int                  linecount;
+[[maybe_unused]] int loopcount;
 
 fixed_t viewcos;
 fixed_t viewsin;
@@ -142,9 +141,9 @@ r_state_t * const g_r_state_globals = &r_state_s;
 // Expand a given bbox
 // so that it encloses a given point.
 //
-void R_AddPointToBox(int       x,
-                     int       y,
-                     fixed_t * box) {
+[[maybe_unused]] void R_AddPointToBox(int       x,
+                                      int       y,
+                                      fixed_t * box) {
   if (x < box[BOXLEFT])
     box[BOXLEFT] = x;
   if (x > box[BOXRIGHT])
@@ -353,10 +352,7 @@ angle_t
   int64_t x_viewx = static_cast<int64_t>(x) - g_r_state_globals->viewx;
 
   // [crispy] the worst that could happen is e.g. std::numeric_limits<int32_t>::min()-std::numeric_limits<int32_t>::max() = 2*std::numeric_limits<int32_t>::min()
-  if (x_viewx < std::numeric_limits<int32_t>::min() ||
-      x_viewx > std::numeric_limits<int32_t>::max() ||
-      y_viewy < std::numeric_limits<int32_t>::min() ||
-      y_viewy > std::numeric_limits<int32_t>::max()) {
+  if (x_viewx < std::numeric_limits<int32_t>::min() || x_viewx > std::numeric_limits<int32_t>::max() || y_viewy < std::numeric_limits<int32_t>::min() || y_viewy > std::numeric_limits<int32_t>::max()) {
     // [crispy] preserving the angle by halfing the distance in both directions
     x = static_cast<fixed_t>(x_viewx / 2 + g_r_state_globals->viewx);
     y = static_cast<fixed_t>(y_viewy / 2 + g_r_state_globals->viewy);
@@ -377,9 +373,7 @@ angle_t
   return R_PointToAngleSlope(x2, y2, SlopeDiv);
 }
 
-fixed_t
-    R_PointToDist(fixed_t x,
-                  fixed_t y) {
+[[maybe_unused]] fixed_t R_PointToDist(fixed_t x, fixed_t y) {
   int     angle;
   fixed_t dx;
   fixed_t dy;

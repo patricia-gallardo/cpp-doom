@@ -212,10 +212,10 @@ struct wbstartstruct_t {
   int last;
   int next;
 
-  int maxkills;
-  int maxitems;
-  int maxsecret;
-  int maxfrags;
+  int                  maxkills;
+  int                  maxitems;
+  int                  maxsecret;
+  [[maybe_unused]] int maxfrags;
 
   // the par time
   int partime;

@@ -19,8 +19,8 @@
 //	PCX Screenshots.
 //
 
-#include <limits>
 #include <cstdint>
+#include <limits>
 
 #include "m_bbox.hpp"
 

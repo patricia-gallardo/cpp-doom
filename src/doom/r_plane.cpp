@@ -37,7 +37,7 @@
 #include "r_swirl.hpp" // [crispy] R_DistortedFlat()
 
 [[maybe_unused]] planefunction_t floorfunc;
-planefunction_t                  ceilingfunc;
+[[maybe_unused]] planefunction_t ceilingfunc;
 
 //
 // opening
@@ -66,8 +66,8 @@ int ceilingclip[MAXWIDTH]; // [crispy] 32-bit integer math
 // spanstart holds the start of a plane span
 // initialized to 0 at start
 //
-int spanstart[MAXHEIGHT];
-int spanstop[MAXHEIGHT];
+int                  spanstart[MAXHEIGHT];
+[[maybe_unused]] int spanstop[MAXHEIGHT];
 
 //
 // texture mapping
@@ -78,8 +78,8 @@ fixed_t         planeheight;
 fixed_t *                yslope;
 fixed_t                  yslopes[LOOKDIRS][MAXHEIGHT];
 [[maybe_unused]] fixed_t distscale[MAXWIDTH];
-fixed_t                  basexscale;
-fixed_t                  baseyscale;
+[[maybe_unused]] fixed_t basexscale;
+[[maybe_unused]] fixed_t baseyscale;
 
 fixed_t cachedheight[MAXHEIGHT];
 fixed_t cacheddistance[MAXHEIGHT];
