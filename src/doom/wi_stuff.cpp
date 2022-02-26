@@ -240,7 +240,7 @@ static std::array<anim_t, 9> epsd1animinfo = {
   ANIM(ANIM_LEVEL, TICRATE / 3, 1, 128, 136, 8),
 };
 
-static anim_t epsd2animinfo[] = {
+static std::array<anim_t, 6> epsd2animinfo = {
   ANIM(ANIM_ALWAYS, TICRATE / 3, 3, 104, 168, 0),
   ANIM(ANIM_ALWAYS, TICRATE / 3, 3, 40, 136, 0),
   ANIM(ANIM_ALWAYS, TICRATE / 3, 3, 160, 96, 0),
@@ -258,7 +258,7 @@ static size_t NUMANIMS[NUMEPISODES] = {
 static anim_t * anims[NUMEPISODES] = {
   epsd0animinfo.data(),
   epsd1animinfo.data(),
-  epsd2animinfo
+  epsd2animinfo.data()
 };
 
 //
