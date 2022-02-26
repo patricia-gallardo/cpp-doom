@@ -1937,77 +1937,72 @@ void ST_initData()
 void ST_createWidgets()
 {
   // Location and size of statistics,
-//  justified according to widget type.
-// Problem is, within which space? STbar? Screen?
-// Note: this could be read in by a lump.
-//       Problem is, is the stuff rendered
-//       into a buffer,
-//       or into the frame buffer?
+  //  justified according to widget type.
+  // Problem is, within which space? STbar? Screen?
+  // Note: this could be read in by a lump.
+  //       Problem is, is the stuff rendered
+  //       into a buffer,
+  //       or into the frame buffer?
 
-//auto HORIZDELTA = (crispy->widescreen == 1 ? DELTAWIDTH : 0);
+  // AMMO number pos.
+  constexpr auto ST_AMMOWIDTH = 3;
+  constexpr auto ST_AMMOY = 171;
 
-// AMMO number pos.
-constexpr auto ST_AMMOWIDTH = 3;
-//auto ST_AMMOX = (44 - HORIZDELTA());
-constexpr auto ST_AMMOY = 171;
+  // HEALTH number pos.
+  constexpr auto ST_HEALTHY = 171;
 
-// HEALTH number pos.
-//auto ST_HEALTHX = (90 - HORIZDELTA());
-constexpr auto ST_HEALTHY = 171;
+  // Weapon pos.
+  auto ST_ARMSX = (111 - HORIZDELTA());
+  constexpr auto ST_ARMSY = 172;
+  constexpr auto ST_ARMSBGY    = 168;
+  constexpr auto ST_ARMSXSPACE = 12;
+  constexpr auto ST_ARMSYSPACE = 10;
 
-// Weapon pos.
-auto ST_ARMSX = (111 - HORIZDELTA());
-constexpr auto ST_ARMSY = 172;
-//auto ST_ARMSBGX = (104 - HORIZDELTA());
-constexpr auto ST_ARMSBGY    = 168;
-constexpr auto ST_ARMSXSPACE = 12;
-constexpr auto ST_ARMSYSPACE = 10;
+  // Frags pos.
+  auto ST_FRAGSX     = (138 - HORIZDELTA());
+  constexpr auto ST_FRAGSY     = 171;
+  constexpr auto ST_FRAGSWIDTH = 2;
 
-// Frags pos.
-auto ST_FRAGSX     = (138 - HORIZDELTA());
-constexpr auto ST_FRAGSY     = 171;
-constexpr auto ST_FRAGSWIDTH = 2;
+  // ARMOR number pos.
+  auto ST_ARMORX     = (221 + HORIZDELTA());
+  constexpr auto ST_ARMORY     = 171;
 
-// ARMOR number pos.
-auto ST_ARMORX     = (221 + HORIZDELTA());
-constexpr auto ST_ARMORY     = 171;
+  // Key icon positions.
+  auto ST_KEY0X      = (239 + HORIZDELTA());
+  constexpr auto ST_KEY0Y      = 171;
+  auto ST_KEY1X      = (239 + HORIZDELTA());
+  constexpr auto ST_KEY1Y      = 181;
+  auto ST_KEY2X      = (239 + HORIZDELTA());
+  constexpr auto ST_KEY2Y      = 191;
 
-// Key icon positions.
-auto ST_KEY0X      = (239 + HORIZDELTA());
-constexpr auto ST_KEY0Y      = 171;
-auto ST_KEY1X      = (239 + HORIZDELTA());
-constexpr auto ST_KEY1Y      = 181;
-auto ST_KEY2X      = (239 + HORIZDELTA());
-constexpr auto ST_KEY2Y      = 191;
+  // Ammunition counter.
+  constexpr auto ST_AMMO0WIDTH  = 3;
+  auto ST_AMMO0X      = (288 + HORIZDELTA());
+  constexpr auto ST_AMMO0Y      = 173;
+  constexpr auto ST_AMMO1WIDTH  = ST_AMMO0WIDTH;
+  auto ST_AMMO1X      = (288 + HORIZDELTA());
+  constexpr auto ST_AMMO1Y      = 179;
+  constexpr auto ST_AMMO2WIDTH  = ST_AMMO0WIDTH;
+  auto ST_AMMO2X      = (288 + HORIZDELTA());
+  constexpr auto ST_AMMO2Y      = 191;
+  constexpr auto ST_AMMO3WIDTH  = ST_AMMO0WIDTH;
+  auto ST_AMMO3X      = (288 + HORIZDELTA());
+  constexpr auto ST_AMMO3Y      = 185;
 
-// Ammunition counter.
-constexpr auto ST_AMMO0WIDTH  = 3;
-auto ST_AMMO0X      = (288 + HORIZDELTA());
-constexpr auto ST_AMMO0Y      = 173;
-constexpr auto ST_AMMO1WIDTH  = ST_AMMO0WIDTH;
-auto ST_AMMO1X      = (288 + HORIZDELTA());
-constexpr auto ST_AMMO1Y      = 179;
-constexpr auto ST_AMMO2WIDTH  = ST_AMMO0WIDTH;
-auto ST_AMMO2X      = (288 + HORIZDELTA());
-constexpr auto ST_AMMO2Y      = 191;
-constexpr auto ST_AMMO3WIDTH  = ST_AMMO0WIDTH;
-auto ST_AMMO3X      = (288 + HORIZDELTA());
-constexpr auto ST_AMMO3Y      = 185;
-
-// Indicate maximum ammunition.
-// Only needed because backpack exists.
-constexpr auto ST_MAXAMMO0WIDTH  = 3;
-auto ST_MAXAMMO0X      = (314 + HORIZDELTA());
-constexpr auto ST_MAXAMMO0Y      = 173;
-constexpr auto ST_MAXAMMO1WIDTH  = ST_MAXAMMO0WIDTH;
-auto ST_MAXAMMO1X      = (314 + HORIZDELTA());
-constexpr auto ST_MAXAMMO1Y      = 179;
-constexpr auto ST_MAXAMMO2WIDTH  = ST_MAXAMMO0WIDTH;
-auto ST_MAXAMMO2X      = (314 + HORIZDELTA());
-constexpr auto ST_MAXAMMO2Y      = 191;
-constexpr auto ST_MAXAMMO3WIDTH  = ST_MAXAMMO0WIDTH;
-auto ST_MAXAMMO3X      = (314 + HORIZDELTA());
-constexpr auto ST_MAXAMMO3Y      = 185;
+  // Indicate maximum ammunition.
+  // Only needed because backpack exists.
+  constexpr auto ST_MAXAMMO0WIDTH  = 3;
+  auto ST_MAXAMMO0X      = (314 + HORIZDELTA());
+  constexpr auto ST_MAXAMMO0Y      = 173;
+  constexpr auto ST_MAXAMMO1WIDTH  = ST_MAXAMMO0WIDTH;
+  auto ST_MAXAMMO1X      = (314 + HORIZDELTA());
+  constexpr auto ST_MAXAMMO1Y      = 179;
+  constexpr auto ST_MAXAMMO2WIDTH  = ST_MAXAMMO0WIDTH;
+  auto ST_MAXAMMO2X      = (314 + HORIZDELTA());
+  constexpr auto ST_MAXAMMO2Y      = 191;
+  constexpr auto ST_MAXAMMO3WIDTH  = ST_MAXAMMO0WIDTH;
+  auto ST_MAXAMMO3X      = (314 + HORIZDELTA());
+  constexpr auto ST_MAXAMMO3Y      = 185;
 
     // [crispy] re-calculate DELTAWIDTH
     I_GetScreenDimensions();
