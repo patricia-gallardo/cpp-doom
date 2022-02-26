@@ -75,7 +75,7 @@ enum st_chatstateenum_t
 
 struct st_stuff_t {
   // graphics are drawn to a backing screen and blitted to the real screen
-  pixel_t *  st_backing_screen;
+  pixel_t *  st_backing_screen {};
   cheatseq_t cheat_mus;
   cheatseq_t cheat_god;
   cheatseq_t cheat_ammo;
