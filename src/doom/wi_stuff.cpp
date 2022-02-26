@@ -249,7 +249,7 @@ static std::array<anim_t, 6> epsd2animinfo = {
   ANIM(ANIM_ALWAYS, TICRATE / 4, 3, 40, 0, 0),
 };
 
-static size_t NUMANIMS[NUMEPISODES] = {
+static std::array<size_t, NUMEPISODES> NUMANIMS = {
   std::size(epsd0animinfo),
   std::size(epsd1animinfo),
   std::size(epsd2animinfo),
