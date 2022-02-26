@@ -18,6 +18,8 @@
 
 #pragma once
 
+#include <array>
+
 #include "r_data.hpp"
 
 constexpr auto PL_SKYFLAT = (0x80000000);
