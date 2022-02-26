@@ -364,7 +364,7 @@ static patch_t * star;
 static patch_t * bstar;
 
 // "red P[1..MAXPLAYERS]"
-static patch_t * patches[MAXPLAYERS];
+static std::array<patch_t *, MAXPLAYERS> patches;
 
 // "gray P[1..MAXPLAYERS]"
 static patch_t * bp[MAXPLAYERS];
