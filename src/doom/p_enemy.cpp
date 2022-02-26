@@ -1203,7 +1203,7 @@ void A_VileAttack(mobj_t * actor) {
 // in three different directions?
 // Doesn't look like it.
 //
-#define FATSPREAD (ANG90 / 8)
+constexpr auto FATSPREAD = (ANG90 / 8);
 
 void A_FatRaise(mobj_t * actor) {
   A_FaceTarget(actor);

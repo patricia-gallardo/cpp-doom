@@ -1819,6 +1819,8 @@ bool M_Responder(event_t * ev) {
   if (ev->type == ev_joystick) {
     // Simulate key presses from joystick events to interact with the menu.
 
+    auto JOY_BUTTON_PRESSED = [&ev](auto x) { return (x >= 0) && (ev->data1 & (1 << x)) != 0; };
+
     if (g_doomstat_globals->menuactive) {
       if (ev->data3 < 0) {
         key                        = g_m_controls_globals->key_menu_up;
@@ -1834,9 +1836,6 @@ bool M_Responder(event_t * ev) {
         key                        = g_m_controls_globals->key_menu_right;
         g_i_video_globals->joywait = static_cast<unsigned int>(I_GetTime() + 2);
       }
-
-#define JOY_BUTTON_MAPPED(x)  ((x) >= 0)
-#define JOY_BUTTON_PRESSED(x) (JOY_BUTTON_MAPPED(x) && (ev->data1 & (1 << (x))) != 0)
 
       if (JOY_BUTTON_PRESSED(g_m_controls_globals->joybfire)) {
         // Simulate a 'Y' keypress when Doom show a Y/N dialog with Fire button.
