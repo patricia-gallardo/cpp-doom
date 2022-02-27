@@ -18,7 +18,6 @@
 #include <SDL.h>
 #include <SDL_joystick.h>
 
-#include <cstdio>
 #include <cstring>
 
 #include <fmt/printf.h>

@@ -20,7 +20,6 @@
 #include <cstdlib>
 #include <cstring>
 #include <memory>
-#include <string>
 
 #include <fmt/printf.h>
 
@@ -330,20 +329,16 @@ static const subst_music_t known_filenames[] = {
 // Given a time string (for LOOP_START/LOOP_END), parse it and return
 // the time (in # samples since start of track) it represents.
 static unsigned int ParseVorbisTime(unsigned int samplerate_hz, char * value) {
-  char *       num_start, *p;
-  unsigned int result = 0;
-  char         c;
-
   if (strchr(value, ':') == nullptr) {
     return static_cast<unsigned int>(std::atoi(value));
   }
 
-  result    = 0;
-  num_start = value;
+  unsigned int result = 0;
+  char * num_start = value;
 
-  for (p = value; *p != '\0'; ++p) {
+  for (char *p = value; *p != '\0'; ++p) {
     if (*p == '.' || *p == ':') {
-      c         = *p;
+      char c    = *p;
       *p        = '\0';
       result    = result * 60 + static_cast<unsigned int>(std::atoi(num_start));
       num_start = p + 1;
