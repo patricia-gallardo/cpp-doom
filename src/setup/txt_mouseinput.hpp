@@ -12,8 +12,7 @@
 // GNU General Public License for more details.
 //
 
-#ifndef TXT_MOUSE_INPUT_H
-#define TXT_MOUSE_INPUT_H
+#pragma once
 
 struct txt_mouse_input_t;
 
@@ -31,5 +30,3 @@ struct txt_mouse_input_t {
 };
 
 txt_mouse_input_t * TXT_NewMouseInput(int * variable);
-
-#endif /* #ifndef TXT_MOUSE_INPUT_H */

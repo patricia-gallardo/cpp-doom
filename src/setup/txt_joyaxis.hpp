@@ -12,8 +12,7 @@
 // GNU General Public License for more details.
 //
 
-#ifndef TXT_JOY_AXIS_H
-#define TXT_JOY_AXIS_H
+#pragma once
 
 struct txt_joystick_axis_t;
 
@@ -81,5 +80,3 @@ txt_joystick_axis_t * TXT_NewJoystickAxis(int * axis, int * invert, txt_joystick
 //   using_button: If non-negative, use this joystick button as the button
 //       to expect from the user. Otherwise, ask.
 void TXT_ConfigureJoystickAxis(txt_joystick_axis_t * axis, int using_button, txt_joystick_axis_callback_t callback);
-
-#endif /* #ifndef TXT_JOY_AXIS_H */

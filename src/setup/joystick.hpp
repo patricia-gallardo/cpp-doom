@@ -12,12 +12,9 @@
 // GNU General Public License for more details.
 //
 
-#ifndef SETUP_JOYSTICK_H
-#define SETUP_JOYSTICK_H
+#pragma once
 
 extern int joystick_index;
 
 void ConfigJoystick(void * widget, void * user_data);
 void BindJoystickVariables();
-
-#endif /* #ifndef SETUP_JOYSTICK_H */
