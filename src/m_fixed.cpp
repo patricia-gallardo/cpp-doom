@@ -36,10 +36,7 @@ fixed_t FixedDiv(fixed_t a, fixed_t b) {
   if ((std::abs(a) >> 14) >= std::abs(b)) {
     return (a ^ b) < 0 ? std::numeric_limits<int32_t>::min() : std::numeric_limits<int32_t>::max();
   } else {
-    int64_t result;
-
-    result = (static_cast<int64_t>(a) << FRACBITS) / b;
-
+    int64_t result = (static_cast<int64_t>(a) << FRACBITS) / b;
     return static_cast<fixed_t>(result);
   }
 }
