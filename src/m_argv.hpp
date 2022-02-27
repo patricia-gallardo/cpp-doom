@@ -16,8 +16,7 @@
 //  Nil.
 //
 
-#ifndef __M_ARGV__
-#define __M_ARGV__
+#pragma once
 
 #include "doomtype.hpp"
 
@@ -45,5 +44,3 @@ bool M_ParmExists(const char * check);
 // Get name of executable used to run this program:
 
 const char * M_GetExecutableName();
-
-#endif

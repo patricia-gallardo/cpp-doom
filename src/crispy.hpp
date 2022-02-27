@@ -17,8 +17,7 @@
 //	Crispy Doom specific variables.
 //
 
-#ifndef __CRISPY_H__
-#define __CRISPY_H__
+#pragma once
 
 #include "doomtype.hpp"
 
@@ -213,5 +212,3 @@ enum
   WIDGETS_ALWAYS,
   NUM_WIDGETS
 };
-
-#endif

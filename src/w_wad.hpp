@@ -16,8 +16,7 @@
 //	WAD I/O functions.
 //
 
-#ifndef __W_WAD__
-#define __W_WAD__
+#pragma once
 
 #include <cstdio>
 
@@ -71,5 +70,3 @@ void W_ReleaseLumpName(const char * name);
 
 const char * W_WadNameForLump(const lumpinfo_t * lump);
 bool         W_IsIWADLump(const lumpinfo_t * lump);
-
-#endif

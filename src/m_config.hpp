@@ -16,8 +16,7 @@
 //      Configuration file interface.
 //
 
-#ifndef __M_CONFIG__
-#define __M_CONFIG__
+#pragma once
 
 #include "doomtype.hpp"
 
@@ -38,5 +37,3 @@ char *                 M_GetSaveGameDir(const char * iwadname);
 char *                 M_GetAutoloadDir(const char * iwadname);
 
 extern char * configdir;
-
-#endif

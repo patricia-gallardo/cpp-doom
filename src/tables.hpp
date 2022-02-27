@@ -30,8 +30,7 @@
 //	  maps tan(angle) to angle fast. Gotta search.
 //
 
-#ifndef __TABLES__
-#define __TABLES__
+#pragma once
 
 #include "doomtype.hpp"
 
@@ -86,5 +85,3 @@ extern const angle_t tantoangle[SLOPERANGE + 1];
 //  called by R_PointToAngle.
 int SlopeDiv(unsigned int num, unsigned int den);
 int SlopeDivCrispy(unsigned int num, unsigned int den);
-
-#endif

@@ -17,8 +17,7 @@
 //	 separating modules.
 //
 
-#ifndef __DOOMTYPE__
-#define __DOOMTYPE__
+#pragma once
 
 #include "config.h"
 
@@ -128,7 +127,5 @@ constexpr char PATH_SEPARATOR = ':';
 inline void setenv(const char * key, const char * value, int) {
   _putenv_s(key, value);
 }
-
-#endif
 
 #endif

@@ -16,8 +16,7 @@
 //	The not so system specific sound interface.
 //
 
-#ifndef __I_SOUND__
-#define __I_SOUND__
+#pragma once
 
 #include <string>
 
@@ -250,5 +249,3 @@ enum opl_driver_ver_t
 };
 
 void I_SetOPLDriverVer(opl_driver_ver_t ver);
-
-#endif

@@ -16,8 +16,7 @@
 //
 //
 
-#ifndef __D_EVENT__
-#define __D_EVENT__
+#pragma once
 
 #include "doomtype.hpp"
 
@@ -132,5 +131,3 @@ void D_PostEvent(event_t * ev);
 // Read an event from the event queue
 
 event_t * D_PopEvent();
-
-#endif

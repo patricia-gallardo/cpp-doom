@@ -15,8 +15,7 @@
 //     GUS emulation code.
 //
 
-#ifndef __GUSCONF_H__
-#define __GUSCONF_H__
+#pragma once
 
 #include "doomtype.hpp"
 
@@ -28,5 +27,3 @@ struct gusconf_t {
 extern gusconf_t * const g_gusconf_globals;
 
 bool GUS_WriteConfig(char * path);
-
-#endif /* #ifndef __GUSCONF_H__ */

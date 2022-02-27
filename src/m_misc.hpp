@@ -16,8 +16,7 @@
 //      Miscellaneous.
 //
 
-#ifndef __M_MISC__
-#define __M_MISC__
+#pragma once
 
 #include <cstdarg>
 #include <cstdio>
@@ -48,5 +47,3 @@ bool         M_StringEndsWith(const char * s, const char * suffix);
 int          M_vsnprintf(char * buf, size_t buf_len, const char * s, va_list args);
 int          M_snprintf(char * buf, size_t buf_len, const char * s, ...) PRINTF_ATTR(3, 4);
 char *       M_OEMToUTF8(const char * ansi);
-
-#endif

@@ -15,8 +15,7 @@
 //      System-specific joystick interface.
 //
 
-#ifndef __I_JOYSTICK__
-#define __I_JOYSTICK__
+#pragma once
 
 // Number of "virtual" joystick buttons defined in configuration files.
 // This needs to be at least as large as the number of different key
@@ -64,5 +63,3 @@ void I_ShutdownJoystick();
 void I_UpdateJoystick();
 
 void I_BindJoystickVariables();
-
-#endif /* #ifndef __I_JOYSTICK__ */

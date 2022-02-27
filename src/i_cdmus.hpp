@@ -15,8 +15,7 @@
 
 // i_cdmus.h
 
-#ifndef __ICDMUS__
-#define __ICDMUS__
+#pragma once
 
 [[maybe_unused]] constexpr auto CDERR_NOTINSTALLED   = 10;  // MSCDEX not installed
 [[maybe_unused]] constexpr auto CDERR_NOAUDIOSUPPORT = 11;  // CD-ROM Doesn't support audio
@@ -37,5 +36,3 @@
 [[maybe_unused]] int  I_CDMusFirstTrack();
 [[maybe_unused]] int  I_CDMusLastTrack();
 [[maybe_unused]] int  I_CDMusTrackLength(int track);
-
-#endif

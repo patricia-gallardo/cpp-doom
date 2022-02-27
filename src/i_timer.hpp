@@ -16,8 +16,7 @@
 //      System-specific timer interface
 //
 
-#ifndef __I_TIMER__
-#define __I_TIMER__
+#pragma once
 
 constexpr auto TICRATE = 35;
 
@@ -36,5 +35,3 @@ void I_InitTimer();
 
 // Wait for vertical retrace or pause a bit.
 void I_WaitVBL(int count);
-
-#endif

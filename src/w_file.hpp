@@ -16,8 +16,7 @@
 //	WAD I/O functions.
 //
 
-#ifndef __W_FILE__
-#define __W_FILE__
+#pragma once
 
 #include "doomtype.hpp"
 #include <cstdio>
@@ -65,5 +64,3 @@ void W_CloseFile(wad_file_t * wad);
 // Returns the number of bytes read.
 
 size_t W_Read(wad_file_t * wad, unsigned int offset, void * buffer, size_t buffer_len);
-
-#endif /* #ifndef __W_FILE__ */

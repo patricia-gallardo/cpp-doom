@@ -16,8 +16,7 @@
 //       Key definitions
 //
 
-#ifndef __DOOMKEYS__
-#define __DOOMKEYS__
+#pragma once
 
 //
 // DOOM keyboard definition.
@@ -151,5 +150,3 @@ constexpr auto KEYP_PERIOD   = 0;
         { ',', "," }, { '.', "." }, { '/', "/" }, { '\\', "\\" }, \
         { '\'', "\'" },                                           \
   }
-
-#endif // __DOOMKEYS__

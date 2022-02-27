@@ -16,8 +16,7 @@
 //	System specific interface stuff.
 //
 
-#ifndef __I_SYSTEM__
-#define __I_SYSTEM__
+#pragma once
 
 #include "d_event.hpp"
 #include "d_ticcmd.hpp"
@@ -77,5 +76,3 @@ void I_PrintBanner(const char * text);
 // Print a dividing line for startup banners.
 
 void I_PrintDivider();
-
-#endif

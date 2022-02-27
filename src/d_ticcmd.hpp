@@ -17,8 +17,7 @@
 //	System specific interface stuff.
 //
 
-#ifndef __D_TICCMD__
-#define __D_TICCMD__
+#pragma once
 
 #include "doomtype.hpp"
 
@@ -49,5 +48,3 @@ struct ticcmd_t {
 
   int lookdir;
 };
-
-#endif
