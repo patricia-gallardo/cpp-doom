@@ -17,9 +17,11 @@
 
 #pragma once
 
-#define TXT_INACTIVE_WINDOW_BACKGROUND TXT_COLOR_BLACK
-#define TXT_ACTIVE_WINDOW_BACKGROUND   TXT_COLOR_BLUE
-#define TXT_HOVER_BACKGROUND           TXT_COLOR_CYAN
+#include "txt_main.hpp"
+
+constexpr auto TXT_INACTIVE_WINDOW_BACKGROUND = TXT_COLOR_BLACK;
+constexpr auto TXT_ACTIVE_WINDOW_BACKGROUND   = TXT_COLOR_BLUE;
+constexpr auto TXT_HOVER_BACKGROUND           = TXT_COLOR_CYAN;
 
 [[maybe_unused]] void TXT_DrawDesktopBackground(const char * title);
 void                  TXT_DrawWindowFrame(const char * title, int x, int y, int w, int h);

@@ -271,7 +271,7 @@ static void AddSectionLabel(void * uncast_table, const char * title, bool add_sp
   if (add_space) {
     TXT_AddWidgets(table,
                    TXT_NewStrut(0, 1),
-                   TXT_TABLE_EOL,
+                   TXT_TABLE_EOL(),
                    nullptr);
   }
 
@@ -279,7 +279,7 @@ static void AddSectionLabel(void * uncast_table, const char * title, bool add_sp
 
   TXT_AddWidgets(table,
                  TXT_NewLabel(buf),
-                 TXT_TABLE_EOL,
+                 TXT_TABLE_EOL(),
                  nullptr);
 }
 
@@ -509,19 +509,19 @@ void ConfigKeyboard(void *, void *) {
 
   TXT_AddWidget(window, TXT_NewSeparator("Movement"));
   AddKeyControl(window, "Move Forward", &g_m_controls_globals->key_up);
-  TXT_AddWidget(window, TXT_TABLE_EMPTY);
+  TXT_AddWidget(window, TXT_TABLE_EMPTY());
   AddKeyControl(window, "Strafe Left", &g_m_controls_globals->key_strafeleft);
 
   AddKeyControl(window, "Move Backward", &g_m_controls_globals->key_down);
-  TXT_AddWidget(window, TXT_TABLE_EMPTY);
+  TXT_AddWidget(window, TXT_TABLE_EMPTY());
   AddKeyControl(window, "Strafe Right", &g_m_controls_globals->key_straferight);
 
   AddKeyControl(window, "Turn Left", &g_m_controls_globals->key_left);
-  TXT_AddWidget(window, TXT_TABLE_EMPTY);
+  TXT_AddWidget(window, TXT_TABLE_EMPTY());
   AddKeyControl(window, "Speed On", &g_m_controls_globals->key_speed);
 
   AddKeyControl(window, "Turn Right", &g_m_controls_globals->key_right);
-  TXT_AddWidget(window, TXT_TABLE_EMPTY);
+  TXT_AddWidget(window, TXT_TABLE_EMPTY());
   AddKeyControl(window, "Strafe On", &g_m_controls_globals->key_strafe);
 
   if (gamemission == hexen || gamemission == strife) {
@@ -533,22 +533,22 @@ void ConfigKeyboard(void *, void *) {
 
   TXT_AddWidget(window, TXT_NewSeparator("Action"));
   AddKeyControl(window, "Fire/Attack", &g_m_controls_globals->key_fire);
-  TXT_AddWidget(window, TXT_TABLE_EMPTY);
+  TXT_AddWidget(window, TXT_TABLE_EMPTY());
   AddKeyControl(window, "Use", &g_m_controls_globals->key_use);
 
   TXT_AddWidgets(window,
                  TXT_NewButton2("More controls...", ConfigExtraKeys, nullptr),
-                 TXT_TABLE_OVERFLOW_RIGHT,
-                 TXT_TABLE_EMPTY,
+                 TXT_TABLE_OVERFLOW_RIGHT(),
+                 TXT_TABLE_EMPTY(),
                  TXT_NewButton2("Other keys...", OtherKeysDialog, nullptr),
-                 TXT_TABLE_OVERFLOW_RIGHT,
+                 TXT_TABLE_OVERFLOW_RIGHT(),
 
                  TXT_NewSeparator("Misc."),
                  run_control = TXT_NewCheckBox("Always run", &always_run),
-                 TXT_TABLE_EOL,
+                 TXT_TABLE_EOL(),
                  TXT_NewInvertedCheckBox("Use native keyboard mapping",
                                          &vanilla_keyboard_mapping),
-                 TXT_TABLE_EOL,
+                 TXT_TABLE_EOL(),
                  nullptr);
 
   TXT_SignalConnect(run_control, "changed", UpdateJoybSpeed, nullptr);

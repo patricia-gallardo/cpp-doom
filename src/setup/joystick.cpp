@@ -974,7 +974,7 @@ static void AddJoystickControl(void *uncast_table, const char *label, int *var)
     TXT_AddWidgets(table,
                    TXT_NewLabel(label),
                    joy_input,
-                   TXT_TABLE_EMPTY,
+                   TXT_TABLE_EMPTY(),
                    nullptr);
 }
 
@@ -990,36 +990,36 @@ void ConfigJoystick(void *, void *)
     TXT_AddWidgets(window,
                    TXT_NewLabel("Controller"),
                    joystick_button = TXT_NewButton("zzzz"),
-                   TXT_TABLE_EOL,
+                   TXT_TABLE_EOL(),
 
                    TXT_NewSeparator("Axes"),
                    TXT_NewLabel("Forward/backward"),
                    y_axis_widget = TXT_NewJoystickAxis(&joystick_y_axis,
                                                        &joystick_y_invert,
                                                        JOYSTICK_AXIS_VERTICAL),
-                   TXT_TABLE_OVERFLOW_RIGHT,
-                   TXT_TABLE_OVERFLOW_RIGHT,
-                   TXT_TABLE_EMPTY,
-                   TXT_TABLE_EMPTY,
+                   TXT_TABLE_OVERFLOW_RIGHT(),
+                   TXT_TABLE_OVERFLOW_RIGHT(),
+                   TXT_TABLE_EMPTY(),
+                   TXT_TABLE_EMPTY(),
 
                    TXT_NewLabel("Turn left/right"),
                    x_axis_widget =
                         TXT_NewJoystickAxis(&joystick_x_axis,
                                             &joystick_x_invert,
                                             JOYSTICK_AXIS_HORIZONTAL),
-                   TXT_TABLE_OVERFLOW_RIGHT,
-                   TXT_TABLE_OVERFLOW_RIGHT,
-                   TXT_TABLE_EMPTY,
-                   TXT_TABLE_EMPTY,
+                   TXT_TABLE_OVERFLOW_RIGHT(),
+                   TXT_TABLE_OVERFLOW_RIGHT(),
+                   TXT_TABLE_EMPTY(),
+                   TXT_TABLE_EMPTY(),
 
                    TXT_NewLabel("Strafe left/right"),
                    TXT_NewJoystickAxis(&joystick_strafe_axis,
                                        &joystick_strafe_invert,
                                         JOYSTICK_AXIS_HORIZONTAL),
-                   TXT_TABLE_OVERFLOW_RIGHT,
-                   TXT_TABLE_OVERFLOW_RIGHT,
-                   TXT_TABLE_EMPTY,
-                   TXT_TABLE_EMPTY,
+                   TXT_TABLE_OVERFLOW_RIGHT(),
+                   TXT_TABLE_OVERFLOW_RIGHT(),
+                   TXT_TABLE_EMPTY(),
+                   TXT_TABLE_EMPTY(),
                    nullptr);
 
     if (gamemission == doom || gamemission == heretic || gamemission == hexen || gamemission == strife) // [crispy]
@@ -1029,10 +1029,10 @@ void ConfigJoystick(void *, void *)
                    TXT_NewJoystickAxis(&joystick_look_axis,
                                        &joystick_look_invert,
                                         JOYSTICK_AXIS_VERTICAL),
-                   TXT_TABLE_OVERFLOW_RIGHT,
-                   TXT_TABLE_OVERFLOW_RIGHT,
-                   TXT_TABLE_EMPTY,
-                   TXT_TABLE_EMPTY,
+                   TXT_TABLE_OVERFLOW_RIGHT(),
+                   TXT_TABLE_OVERFLOW_RIGHT(),
+                   TXT_TABLE_EMPTY(),
+                   TXT_TABLE_EMPTY(),
                    nullptr);
     }
 
