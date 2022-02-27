@@ -18,8 +18,9 @@
 // a simple textscreen program can be written.
 //
 
-#include <stdio.h>
-#include <stdlib.h>
+#include <cstdio>
+#include <cstdlib>
+#include <fmt/printf.h>
 
 #include "textscreen.hpp"
 
@@ -42,13 +43,13 @@ txt_label_t *  value_label;
 txt_window_t * firstwin;
 int            cheesy;
 
-void ClosePwnBox(TXT_UNCAST_ARG(widget), TXT_UNCAST_ARG(window)) {
-  TXT_CAST_ARG(txt_window_t, window);
+void ClosePwnBox(void * /*uncast_widget*/, void * uncast_window) {
+  txt_window_t * window = reinterpret_cast<txt_window_t *>(uncast_window);
 
   TXT_CloseWindow(window);
 }
 
-void PwnBox(TXT_UNCAST_ARG(widget), void * user_data) {
+void PwnBox(void * /*uncast_widget*/, void * /*user_data*/) {
   txt_window_t *        window;
   txt_window_action_t * close_button;
 
@@ -62,7 +63,7 @@ void PwnBox(TXT_UNCAST_ARG(widget), void * user_data) {
   TXT_SetWindowAction(window, TXT_HORIZ_RIGHT, close_button);
 }
 
-void UpdateLabel(TXT_UNCAST_ARG(widget), void * user_data) {
+void UpdateLabel(void * /*uncast_widget*/, void * /*user_data*/) {
   char buf[40];
 
   TXT_StringCopy(buf, " Current value: ", sizeof(buf));
@@ -75,11 +76,11 @@ void UpdateLabel(TXT_UNCAST_ARG(widget), void * user_data) {
   TXT_SetLabel(value_label, buf);
 }
 
-void CloseWindow(TXT_UNCAST_ARG(button), void * user_data) {
+void CloseWindow(void * /*uncast_button*/, void * /*user_data*/) {
   TXT_CloseWindow(firstwin);
 }
 
-void UnicodeWindow(TXT_UNCAST_ARG(widget), void * user_data) {
+void UnicodeWindow(void * /*uncast_widget*/, void * /*user_data*/) {
   static const char * strings[] = {
     "lunedì",
     "martedì",
@@ -146,10 +147,10 @@ void SetupWindow() {
                  TXT_NewLabel("Still the same table, but:\n"
                               "This label magically overflows\n"
                               "across multiple cells! Cool, huh? "),
-                 TXT_TABLE_OVERFLOW_RIGHT,
+                 TXT_TABLE_OVERFLOW_RIGHT(),
                  TXT_NewButton("Do nothing"),
-                 TXT_TABLE_OVERFLOW_DOWN,
-                 TXT_TABLE_OVERFLOW_DOWN,
+                 TXT_TABLE_OVERFLOW_DOWN(),
+                 TXT_TABLE_OVERFLOW_DOWN(),
                  TXT_NewButton2("Qualcosa?", UnicodeWindow, nullptr),
                  nullptr);
 
@@ -269,7 +270,7 @@ void ScrollingMenu() {
   TXT_AddWidget(window, TXT_NewScrollPane(0, 6, table));
 }
 
-int main(int argc, char * argv[]) {
+int main() {
   if (!TXT_Init()) {
     fmt::fprintf(stderr, "Failed to initialise GUI\n");
     exit(-1);

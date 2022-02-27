@@ -15,9 +15,9 @@
 // Example program: desktop calculator
 //
 
-#include <stdio.h>
-#include <stdlib.h>
-#include <string.h>
+#include <cstdio>
+#include <cstdlib>
+#include <fmt/printf.h>
 
 #include "textscreen.hpp"
 
@@ -34,7 +34,7 @@ int           starting_input = 0;
 int           input_value    = 0;
 txt_label_t * input_box;
 int           first_operand;
-operator_t    operator= OP_NONE;
+operator_t    g_op = OP_NONE;
 
 void UpdateInputBox() {
   char buf[20];
@@ -43,8 +43,8 @@ void UpdateInputBox() {
   TXT_SetLabel(input_box, buf);
 }
 
-void InsertNumber(TXT_UNCAST_ARG(button), TXT_UNCAST_ARG(value)) {
-  TXT_CAST_ARG(int, value);
+void InsertNumber(void * /*uncast_button*/, void * uncast_value) {
+  int * value = reinterpret_cast<int *>(uncast_value);
 
   if (starting_input) {
     input_value    = 0;
@@ -60,7 +60,7 @@ void AddNumberButton(txt_table_t * table, int value) {
   char  buf[10];
   int * val_copy;
 
-  val_copy  = malloc(sizeof(int));
+  val_copy  = reinterpret_cast<int *>(malloc(sizeof(int)));
   *val_copy = value;
 
   TXT_snprintf(buf, sizeof(buf), "  %i  ", value);
@@ -68,11 +68,11 @@ void AddNumberButton(txt_table_t * table, int value) {
   TXT_AddWidget(table, TXT_NewButton2(buf, InsertNumber, val_copy));
 }
 
-void Operator(TXT_UNCAST_ARG(button), TXT_UNCAST_ARG(op)) {
-  TXT_CAST_ARG(operator_t, op);
+void Operator(void * /*uncast_button*/, void * uncast_op) {
+  operator_t * op = reinterpret_cast<operator_t *>(uncast_op);
 
   first_operand  = input_value;
-  operator       = * op;
+  g_op           = *op;
   starting_input = 1;
 }
 
@@ -80,7 +80,7 @@ void AddOperatorButton(txt_table_t * table, const char * label, operator_t op) {
   char         buf[10];
   operator_t * op_copy;
 
-  op_copy  = malloc(sizeof(operator_t));
+  op_copy  = reinterpret_cast<operator_t *>(malloc(sizeof(operator_t)));
   *op_copy = op;
 
   TXT_snprintf(buf, sizeof(buf), "  %s  ", label);
@@ -88,8 +88,8 @@ void AddOperatorButton(txt_table_t * table, const char * label, operator_t op) {
   TXT_AddWidget(table, TXT_NewButton2(buf, Operator, op_copy));
 }
 
-void Calculate(TXT_UNCAST_ARG(button), void * unused) {
-  switch (operator) {
+void Calculate(void * /*uncast_button*/, void * /*unused*/) {
+  switch (g_op) {
   case OP_PLUS:
     input_value = first_operand + input_value;
     break;
@@ -108,7 +108,7 @@ void Calculate(TXT_UNCAST_ARG(button), void * unused) {
 
   UpdateInputBox();
 
-  operator       = OP_NONE;
+  g_op           = OP_NONE;
   starting_input = 1;
 }
 
@@ -150,7 +150,7 @@ void BuildGUI() {
   UpdateInputBox();
 }
 
-int main(int argc, char * argv[]) {
+int main() {
   if (!TXT_Init()) {
     fmt::fprintf(stderr, "Failed to initialise GUI\n");
     exit(-1);
