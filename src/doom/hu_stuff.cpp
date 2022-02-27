@@ -43,24 +43,6 @@
 #include "v_trans.hpp" // [crispy] colored kills/items/secret/etc. messages
 #include "v_video.hpp" // [crispy] V_DrawPatch() et al.
 
-//
-// Locally used constants, shortcuts.
-//
-#define HU_TITLE      (mapnames[(g_doomstat_globals->gameepisode - 1) * 9 + g_doomstat_globals->gamemap - 1])
-#define HU_TITLE2     (mapnames_commercial[g_doomstat_globals->gamemap - 1])
-#define HU_TITLEP     (mapnames_commercial[g_doomstat_globals->gamemap - 1 + 32])
-#define HU_TITLET     (mapnames_commercial[g_doomstat_globals->gamemap - 1 + 64])
-#define HU_TITLEN     (mapnames_commercial[g_doomstat_globals->gamemap - 1 + 96 + 3])
-#define HU_TITLEM     (mapnames_commercial[g_doomstat_globals->gamemap - 1 + 105 + 3])
-#define HU_TITLE_CHEX (mapnames_chex[(g_doomstat_globals->gameepisode - 1) * 9 + g_doomstat_globals->gamemap - 1])
-#define HU_TITLEX     (0 - DELTAWIDTH)
-#define HU_TITLEY     (167 - SHORT(hu_font[0]->height))
-static auto HU_INPUTX() { return (0 - DELTAWIDTH); }
-
-#define HU_INPUTY (HU_MSGY + HU_MSGHEIGHT * (SHORT(hu_font[0]->height) + 1))
-
-#define HU_COORDX ((ORIGWIDTH - 7 * hu_font['A' - HU_FONTSTART]->width) + DELTAWIDTH)
-
 char * chat_macros[10] = {
   const_cast<char *>(HUSTR_CHATMACRO0),
   const_cast<char *>(HUSTR_CHATMACRO1),
@@ -396,6 +378,46 @@ const char * mapnames_commercial[] = {
   MHUSTR_21
 };
 
+//
+// Locally used constants, shortcuts.
+//
+static auto HU_TITLE() {
+  return (mapnames[(g_doomstat_globals->gameepisode - 1) * 9 + g_doomstat_globals->gamemap - 1]);
+}
+static auto HU_TITLE2() {
+  return (mapnames_commercial[g_doomstat_globals->gamemap - 1]);
+}
+static auto HU_TITLEP() {
+  return (mapnames_commercial[g_doomstat_globals->gamemap - 1 + 32]);
+}
+static auto HU_TITLET() {
+  return (mapnames_commercial[g_doomstat_globals->gamemap - 1 + 64]);
+}
+static auto HU_TITLEN() {
+  return (mapnames_commercial[g_doomstat_globals->gamemap - 1 + 96 + 3]);
+}
+static auto HU_TITLEM() {
+  return (mapnames_commercial[g_doomstat_globals->gamemap - 1 + 105 + 3]);
+}
+static auto HU_TITLE_CHEX() {
+  return (mapnames_chex[(g_doomstat_globals->gameepisode - 1) * 9 + g_doomstat_globals->gamemap - 1]);
+}
+static auto HU_TITLEX() {
+  return (0 - DELTAWIDTH);
+}
+static auto HU_TITLEY() {
+  return (167 - SHORT(hu_font[0]->height));
+}
+static auto HU_INPUTX() {
+  return (0 - DELTAWIDTH);
+}
+static auto HU_INPUTY() {
+  return (HU_MSGY + HU_MSGHEIGHT * (SHORT(hu_font[0]->height) + 1));
+}
+static auto HU_COORDX() {
+  return ((ORIGWIDTH - 7 * hu_font['A' - HU_FONTSTART]->width) + DELTAWIDTH);
+}
+
 static void CrispyReplaceColor(char * str, const int cr, const char * col) {
   char col_replace[16];
 
@@ -584,62 +606,62 @@ void HU_Start() {
 
   // create the map title widget
   HUlib_initTextLine(&w_title,
-                     HU_TITLEX,
-                     HU_TITLEY,
+                     HU_TITLEX(),
+                     HU_TITLEY(),
                      hu_font,
                      HU_FONTSTART);
 
   // [crispy] create the generic map title, kills, items, secrets and level time widgets
   HUlib_initTextLine(&w_map,
-                     HU_TITLEX,
-                     HU_TITLEY - SHORT(hu_font[0]->height + 1),
+                     HU_TITLEX(),
+                     HU_TITLEY() - SHORT(hu_font[0]->height + 1),
                      hu_font,
                      HU_FONTSTART);
 
   HUlib_initTextLine(&w_kills,
-                     HU_TITLEX,
+                     HU_TITLEX(),
                      HU_MSGY + 1 * 8,
                      hu_font,
                      HU_FONTSTART);
 
   HUlib_initTextLine(&w_items,
-                     HU_TITLEX,
+                     HU_TITLEX(),
                      HU_MSGY + 2 * 8,
                      hu_font,
                      HU_FONTSTART);
 
   HUlib_initTextLine(&w_scrts,
-                     HU_TITLEX,
+                     HU_TITLEX(),
                      HU_MSGY + 3 * 8,
                      hu_font,
                      HU_FONTSTART);
 
   HUlib_initTextLine(&w_ltime,
-                     HU_TITLEX,
+                     HU_TITLEX(),
                      HU_MSGY + 4 * 8,
                      hu_font,
                      HU_FONTSTART);
 
   HUlib_initTextLine(&w_coordx,
-                     HU_COORDX,
+                     HU_COORDX(),
                      HU_MSGY + 1 * 8,
                      hu_font,
                      HU_FONTSTART);
 
   HUlib_initTextLine(&w_coordy,
-                     HU_COORDX,
+                     HU_COORDX(),
                      HU_MSGY + 2 * 8,
                      hu_font,
                      HU_FONTSTART);
 
   HUlib_initTextLine(&w_coorda,
-                     HU_COORDX,
+                     HU_COORDX(),
                      HU_MSGY + 3 * 8,
                      hu_font,
                      HU_FONTSTART);
 
   HUlib_initTextLine(&w_fps,
-                     HU_COORDX,
+                     HU_COORDX(),
                      HU_MSGY,
                      hu_font,
                      HU_FONTSTART);
@@ -647,10 +669,10 @@ void HU_Start() {
   const char * s = nullptr;
   switch (logical_gamemission()) {
   case doom:
-    s = HU_TITLE;
+    s = HU_TITLE();
     break;
   case doom2:
-    s = HU_TITLE2;
+    s = HU_TITLE2();
     // Pre-Final Doom compatibility: map33-map35 names don't spill over
     if (g_doomstat_globals->gameversion <= exe_doom_1_9 && g_doomstat_globals->gamemap >= 33 && false) // [crispy] disable
     {
@@ -658,22 +680,22 @@ void HU_Start() {
     }
     break;
   case pack_plut:
-    s = HU_TITLEP;
+    s = HU_TITLEP();
     break;
   case pack_tnt:
-    s = HU_TITLET;
+    s = HU_TITLET();
     break;
   case pack_nerve:
     if (g_doomstat_globals->gamemap <= 9)
-      s = HU_TITLEN;
+      s = HU_TITLEN();
     else
-      s = HU_TITLE2;
+      s = HU_TITLE2();
     break;
   case pack_master:
     if (g_doomstat_globals->gamemap <= 21)
-      s = HU_TITLEM;
+      s = HU_TITLEM();
     else
-      s = HU_TITLE2;
+      s = HU_TITLE2();
     break;
   default:
     s = "Unknown level";
@@ -681,7 +703,7 @@ void HU_Start() {
   }
 
   if (logical_gamemission() == doom && g_doomstat_globals->gameversion == exe_chex) {
-    s = HU_TITLE_CHEX;
+    s = HU_TITLE_CHEX();
   }
 
   // [crispy] display names of single special levels in Automap
@@ -717,7 +739,7 @@ void HU_Start() {
   // create the chat widget
   HUlib_initIText(&w_chat,
                   HU_INPUTX(),
-                  HU_INPUTY,
+                  HU_INPUTY(),
                   hu_font,
                   HU_FONTSTART,
                   &chat_on);
@@ -947,9 +969,9 @@ void HU_Ticker() {
   if (g_doomstat_globals->automapactive) {
     // [crispy] move map title to the bottom
     if ((crispy->automapoverlay && screenblocks >= CRISPY_HUD - 1) || crispy->widescreen)
-      w_title.y = HU_TITLEY + ST_HEIGHT;
+      w_title.y = HU_TITLEY() + ST_HEIGHT;
     else
-      w_title.y = HU_TITLEY;
+      w_title.y = HU_TITLEY();
   }
 
   if (crispy->automapstats == WIDGETS_ALWAYS || (g_doomstat_globals->automapactive && crispy->automapstats == WIDGETS_AUTOMAP)) {
