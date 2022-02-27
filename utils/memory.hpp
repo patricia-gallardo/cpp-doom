@@ -1,5 +1,4 @@
-#ifndef CRISPY_DOOM_MEMORY_HPP
-#define CRISPY_DOOM_MEMORY_HPP
+#pragma once
 
 #include "../src/z_zone.hpp"
 #include <cstdlib>
@@ -22,5 +21,3 @@ template <typename DataType>
 auto zmalloc(size_t size, int tag, void * ptr) {
   return static_cast<DataType>(Z_Malloc(static_cast<int>(size), tag, ptr));
 }
-
-#endif // CRISPY_DOOM_MEMORY_HPP
