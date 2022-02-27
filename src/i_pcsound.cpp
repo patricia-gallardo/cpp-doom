@@ -16,14 +16,12 @@
 //
 
 #include <array>
-#include <cstring>
 #include <SDL.h>
 
 #include "doomtype.hpp"
 
 #include "deh_str.hpp"
 #include "i_sound.hpp"
-#include "m_misc.hpp"
 #include "w_wad.hpp"
 #include "z_zone.hpp"
 
