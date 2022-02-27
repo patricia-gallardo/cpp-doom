@@ -108,8 +108,8 @@ struct i_video_t {
   // The screen buffer; this is modified to draw things to the screen
   pixel_t * I_VideoBuffer;
 
-  int screen_width;
-  int screen_height;
+  [[maybe_unused]] int screen_width;
+  [[maybe_unused]] int screen_height;
   // Run in full screen mode?  (int type for config code)
   int fullscreen;
   // Aspect ratio correction mode
