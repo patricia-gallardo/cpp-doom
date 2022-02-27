@@ -14,8 +14,7 @@
 // Common code shared between the client and server
 //
 
-#ifndef NET_COMMON_H
-#define NET_COMMON_H
+#pragma once
 
 #include "d_mode.hpp"
 #include "net_defs.hpp"
@@ -95,5 +94,3 @@ bool         NET_ValidGameSettings(GameMode_t mode, GameMission_t mission, net_g
 void NET_OpenLog();
 void NET_Log(const char * fmt, ...);
 void NET_LogPacket(net_packet_t * packet);
-
-#endif /* #ifndef NET_COMMON_H */

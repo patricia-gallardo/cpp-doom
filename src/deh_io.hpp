@@ -15,8 +15,7 @@
 // Dehacked I/O code (does all reads from dehacked files)
 //
 
-#ifndef DEH_IO_H
-#define DEH_IO_H
+#pragma once
 
 #include <cstdio>
 
@@ -84,5 +83,3 @@ inline void DEH_Warning(const deh_context_t * context, const char * msg, Args &&
 
 bool   DEH_HadError(deh_context_t * context);
 char * DEH_FileName(deh_context_t * context); // [crispy] returns filename
-
-#endif /* #ifndef DEH_IO_H */

@@ -14,8 +14,7 @@
 // Network client code
 //
 
-#ifndef NET_CLIENT_H
-#define NET_CLIENT_H
+#pragma once
 
 #include "d_ticcmd.hpp"
 #include "doomtype.hpp"
@@ -62,5 +61,3 @@ struct net_client_globals_t {
 };
 
 extern net_client_globals_t * const g_net_client_globals;
-
-#endif /* #ifndef NET_CLIENT_H */

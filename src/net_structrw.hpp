@@ -12,8 +12,7 @@
 // GNU General Public License for more details.
 //
 
-#ifndef NET_STRUCTRW_H
-#define NET_STRUCTRW_H
+#pragma once
 
 #include "aes_prng.hpp"
 #include "net_defs.hpp"
@@ -51,5 +50,3 @@ net_protocol_t NET_ReadProtocol(net_packet_t * packet);
 void           NET_WriteProtocol(net_packet_t * packet, net_protocol_t protocol);
 net_protocol_t NET_ReadProtocolList(net_packet_t * packet);
 void           NET_WriteProtocolList(net_packet_t * packet);
-
-#endif /* #ifndef NET_STRUCTRW_H */

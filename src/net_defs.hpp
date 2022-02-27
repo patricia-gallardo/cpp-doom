@@ -15,8 +15,7 @@
 //     Definitions for use in networking code.
 //
 
-#ifndef NET_DEFS_H
-#define NET_DEFS_H
+#pragma once
 
 #include <cstdio>
 
@@ -262,5 +261,3 @@ struct net_waitdata_t {
   sha1_digest_t deh_sha1sum;
   int           is_freedoom;
 };
-
-#endif /* #ifndef NET_DEFS_H */

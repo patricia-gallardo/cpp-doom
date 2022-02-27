@@ -17,8 +17,7 @@
 // name
 //
 
-#ifndef DEH_MAPPING_H
-#define DEH_MAPPING_H
+#pragma once
 
 #include "deh_io.hpp"
 #include "doomtype.hpp"
@@ -79,5 +78,3 @@ struct deh_mapping_s {
 bool                  DEH_SetMapping(deh_context_t * context, deh_mapping_t * mapping, void * structptr, char * name, int value);
 [[maybe_unused]] bool DEH_SetStringMapping(deh_context_t * context, deh_mapping_t * mapping, void * structptr, char * name, char * value);
 void                  DEH_StructSHA1Sum(sha1_context_t * context, deh_mapping_t * mapping, void * structptr);
-
-#endif /* #ifndef DEH_MAPPING_H */

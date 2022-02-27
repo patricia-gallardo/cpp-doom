@@ -15,8 +15,7 @@
 //     MIDI file parsing.
 //
 
-#ifndef MIDIFILE_H
-#define MIDIFILE_H
+#pragma once
 
 using midi_file_t       = struct midi_file_s;
 using midi_track_iter_t = struct midi_track_iter_s;
@@ -159,5 +158,3 @@ int MIDI_GetNextEvent(midi_track_iter_t * iter, midi_event_t ** event);
 // Reset an iterator to the beginning of a track.
 
 void MIDI_RestartIterator(midi_track_iter_t * iter);
-
-#endif /* #ifndef MIDIFILE_H */

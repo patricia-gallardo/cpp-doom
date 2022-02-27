@@ -18,8 +18,7 @@
 // read the deutex source code made my brain hurt.
 //
 
-#ifndef W_MERGE_H
-#define W_MERGE_H
+#pragma once
 
 #define W_NWT_MERGE_SPRITES 0x1
 #define W_NWT_MERGE_FLATS   0x2
@@ -39,5 +38,3 @@ void W_NWTDashMerge(const char * filename);
 // Debug function that prints the WAD directory.
 
 [[maybe_unused]] void W_PrintDirectory();
-
-#endif /* #ifndef W_MERGE_H */

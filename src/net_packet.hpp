@@ -15,8 +15,7 @@
 //     Definitions for use in networking code.
 //
 
-#ifndef NET_PACKET_H
-#define NET_PACKET_H
+#pragma once
 
 #include "net_defs.hpp"
 
@@ -40,5 +39,3 @@ void NET_WriteInt16(net_packet_t * packet, unsigned int i);
 void NET_WriteInt32(net_packet_t * packet, unsigned int i);
 
 void NET_WriteString(net_packet_t * packet, const char * string);
-
-#endif /* #ifndef NET_PACKET_H */
