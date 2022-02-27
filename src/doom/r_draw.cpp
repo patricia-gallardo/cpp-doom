@@ -37,7 +37,7 @@
 #include "memory.hpp"
 
 // status bar height at bottom of screen
-#define SBARHEIGHT (32 << crispy->hires)
+static constexpr auto SBARHEIGHT() { return (32 << crispy->hires); }
 
 //
 // All drawing to the view buffer is accomplished in this file.
@@ -940,7 +940,7 @@ void R_InitBuffer(int width,
   if (width == SCREENWIDTH)
     viewwindowy = 0;
   else
-    viewwindowy = (SCREENHEIGHT - SBARHEIGHT - height) >> 1;
+    viewwindowy = (SCREENHEIGHT - SBARHEIGHT() - height) >> 1;
 
   // Preclaculate all row offsets.
   for (int i = 0; i < height; i++)
@@ -983,7 +983,7 @@ void R_FillBackScreen() {
   // Allocate the background buffer if necessary
 
   if (background_buffer == nullptr) {
-    background_buffer = zmalloc<decltype(background_buffer)>(static_cast<size_t>(MAXWIDTH * (MAXHEIGHT - SBARHEIGHT)) * sizeof(*background_buffer),
+    background_buffer = zmalloc<decltype(background_buffer)>(static_cast<size_t>(MAXWIDTH * (MAXHEIGHT - SBARHEIGHT())) * sizeof(*background_buffer),
                                                              PU_STATIC,
                                                              nullptr);
   }
@@ -996,7 +996,7 @@ void R_FillBackScreen() {
   src  = cache_lump_name<uint8_t *>(name, PU_CACHE);
   dest = background_buffer;
 
-  for (y = 0; y < SCREENHEIGHT - SBARHEIGHT; y++) {
+  for (y = 0; y < SCREENHEIGHT - SBARHEIGHT(); y++) {
 #ifndef CRISPY_TRUECOLOR
     for (x = 0; x < SCREENWIDTH / 64; x++) {
       std::memcpy(dest, src + ((y & 63) << 6), 64);
@@ -1085,7 +1085,7 @@ void R_DrawViewBorder() {
   if (g_r_state_globals->scaledviewwidth == SCREENWIDTH)
     return;
 
-  top  = ((SCREENHEIGHT - SBARHEIGHT) - g_r_state_globals->viewheight) / 2;
+  top  = ((SCREENHEIGHT - SBARHEIGHT()) - g_r_state_globals->viewheight) / 2;
   side = (SCREENWIDTH - g_r_state_globals->scaledviewwidth) / 2;
 
   // copy top and one line of left side
@@ -1105,5 +1105,5 @@ void R_DrawViewBorder() {
   }
 
   // ?
-  V_MarkRect(0, 0, SCREENWIDTH, SCREENHEIGHT - SBARHEIGHT);
+  V_MarkRect(0, 0, SCREENWIDTH, SCREENHEIGHT - SBARHEIGHT());
 }
