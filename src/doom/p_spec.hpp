@@ -374,13 +374,13 @@ struct slideframe_t
 
 
 // how many frames of animation
-#define SNUMFRAMES 4
+constexpr auto SNUMFRAMES = 4;
 
-#define SDOORWAIT     35 * 3
-#define SWAITTICS     4
+constexpr auto SDOORWAIT     = 35 * 3;
+constexpr auto SWAITTICS     = 4;
 
 // how many diff. types of anims
-#define MAXSLIDEDOORS 5                            
+constexpr auto MAXSLIDEDOORS = 5;
 
 void P_InitSlidingDoorFrames();
 
