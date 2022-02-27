@@ -24,7 +24,7 @@
 using atexit_func_t = void (*)();
 
 // Called by DoomMain.
-void I_Init();
+[[maybe_unused]] void I_Init();
 
 // Called by startup code
 // to get the ammount of memory to malloc
@@ -41,7 +41,7 @@ bool I_ConsoleStdout();
 // or calls a loadable driver to build it.
 // This ticcmd will then be modified by the gameloop
 // for normal input.
-ticcmd_t * I_BaseTiccmd();
+[[maybe_unused]] ticcmd_t * I_BaseTiccmd();
 
 // Called by M_Responder when quit is selected.
 // Clean exit, displays sell blurb.
@@ -63,7 +63,7 @@ void I_AtExit(atexit_func_t func, bool run_if_error);
 
 // Add all system-specific config file variable bindings.
 
-void I_BindVariables();
+[[maybe_unused]] void I_BindVariables();
 
 // Print startup banner copyright message.
 
