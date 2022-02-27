@@ -28,7 +28,7 @@
 #include "i_system.hpp"
 #include "z_zone.hpp"
 
-#define ZONEID 0x1d4a11
+constexpr auto ZONEID = 0x1d4a11;
 
 using memblock_t = struct memblock_s;
 

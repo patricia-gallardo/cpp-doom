@@ -20,7 +20,7 @@
 using midi_file_t       = struct midi_file_s;
 using midi_track_iter_t = struct midi_track_iter_s;
 
-#define MIDI_CHANNELS_PER_TRACK 16
+constexpr auto MIDI_CHANNELS_PER_TRACK = 16;
 
 enum midi_event_type_t
 {

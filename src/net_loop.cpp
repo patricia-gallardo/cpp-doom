@@ -21,7 +21,7 @@
 #include "net_defs.hpp"
 #include "net_packet.hpp"
 
-#define MAX_QUEUE_SIZE 16
+constexpr auto MAX_QUEUE_SIZE = 16;
 
 struct packet_queue_t {
   net_packet_t * packets[MAX_QUEUE_SIZE];

@@ -20,8 +20,8 @@
 
 #pragma once
 
-#define W_NWT_MERGE_SPRITES 0x1
-#define W_NWT_MERGE_FLATS   0x2
+constexpr auto W_NWT_MERGE_SPRITES = 0x1;
+constexpr auto W_NWT_MERGE_FLATS   = 0x2;
 
 // Add a new WAD and merge it into the main directory
 

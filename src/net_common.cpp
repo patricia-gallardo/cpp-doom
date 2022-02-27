@@ -32,11 +32,11 @@
 
 // connections time out after 30 seconds
 
-#define CONNECTION_TIMEOUT_LEN 30
+constexpr auto CONNECTION_TIMEOUT_LEN = 30;
 
 // maximum time between sending packets
 
-#define KEEPALIVE_PERIOD 1
+constexpr auto KEEPALIVE_PERIOD = 1;
 
 // reliable packet that is guaranteed to reach its destination
 

@@ -24,10 +24,10 @@
 #include "memio.hpp"
 #include "mus2mid.hpp"
 
-#define NUM_CHANNELS 16
+constexpr auto NUM_CHANNELS = 16;
 
-#define MIDI_PERCUSSION_CHAN 9
-#define MUS_PERCUSSION_CHAN  15
+constexpr auto MIDI_PERCUSSION_CHAN = 9;
+constexpr auto MUS_PERCUSSION_CHAN  = 15;
 
 // MUS event codes
 enum musevent
