@@ -58,9 +58,7 @@ void InsertNumber(void * /*uncast_button*/, void * uncast_value) {
 
 void AddNumberButton(txt_table_t * table, int value) {
   char  buf[10];
-  int * val_copy;
-
-  val_copy  = reinterpret_cast<int *>(malloc(sizeof(int)));
+  int * val_copy = reinterpret_cast<int *>(malloc(sizeof(int)));
   *val_copy = value;
 
   TXT_snprintf(buf, sizeof(buf), "  %i  ", value);
@@ -69,7 +67,7 @@ void AddNumberButton(txt_table_t * table, int value) {
 }
 
 void Operator(void * /*uncast_button*/, void * uncast_op) {
-  operator_t * op = reinterpret_cast<operator_t *>(uncast_op);
+  auto * op = reinterpret_cast<operator_t *>(uncast_op);
 
   first_operand  = input_value;
   g_op           = *op;
@@ -78,9 +76,7 @@ void Operator(void * /*uncast_button*/, void * uncast_op) {
 
 void AddOperatorButton(txt_table_t * table, const char * label, operator_t op) {
   char         buf[10];
-  operator_t * op_copy;
-
-  op_copy  = reinterpret_cast<operator_t *>(malloc(sizeof(operator_t)));
+  auto * op_copy = reinterpret_cast<operator_t *>(malloc(sizeof(operator_t)));
   *op_copy = op;
 
   TXT_snprintf(buf, sizeof(buf), "  %s  ", label);
@@ -113,10 +109,7 @@ void Calculate(void * /*uncast_button*/, void * /*unused*/) {
 }
 
 void BuildGUI() {
-  txt_window_t * window;
-  txt_table_t *  table;
-
-  window = TXT_NewWindow("Calculator");
+  txt_window_t * window = TXT_NewWindow("Calculator");
 
   input_box = TXT_NewLabel("asdf");
   TXT_SetBGColor(input_box, TXT_COLOR_BLACK);
@@ -124,7 +117,7 @@ void BuildGUI() {
   TXT_AddWidget(window, TXT_NewSeparator(nullptr));
   TXT_AddWidget(window, TXT_NewStrut(0, 1));
 
-  table = TXT_NewTable(4);
+  txt_table_t * table = TXT_NewTable(4);
   TXT_AddWidget(window, table);
   TXT_SetWidgetAlign(table, TXT_HORIZ_CENTER);
 

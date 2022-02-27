@@ -18,45 +18,36 @@
 // a simple textscreen program can be written.
 //
 
+#include <array>
 #include <cstdio>
 #include <cstdlib>
 #include <fmt/printf.h>
 
 #include "textscreen.hpp"
 
-enum
-{
-  RADIO_VALUE_BADGER,
-  RADIO_VALUE_MUSHROOM,
-  RADIO_VALUE_SNAKE,
-};
-
 // also put some crazy extensions to test the escape function. a"b"c"""dd
-const char *   extensions[]   = { "wad", "lmp", "txt", "a\"b\"c\"\"\"dd", "", "\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"", nullptr };
-const char *   radio_values[] = { "Badger", "Mushroom", "Snake" };
-char *         textbox_value  = nullptr;
-int            numbox_value   = 0;
-int            radiobutton_value;
-char *         file_path = nullptr;
-char *         dir_path  = nullptr;
-txt_label_t *  value_label;
-txt_window_t * firstwin;
-int            cheesy;
+const char *               extensions[]  = { "wad", "lmp", "txt", R"(a"b"c"""dd)", "", R"(""""""""""""""""""""""""")", nullptr };
+std::array<std::string, 3> radio_values  = { "Badger", "Mushroom", "Snake" };
+char *                     textbox_value = nullptr;
+int                        numbox_value  = 0;
+int                        radiobutton_value;
+char *                     file_path = nullptr;
+char *                     dir_path  = nullptr;
+txt_label_t *              value_label;
+txt_window_t *             firstwin;
+int                        cheesy;
 
 void ClosePwnBox(void * /*uncast_widget*/, void * uncast_window) {
-  txt_window_t * window = reinterpret_cast<txt_window_t *>(uncast_window);
+  auto * window = reinterpret_cast<txt_window_t *>(uncast_window);
 
   TXT_CloseWindow(window);
 }
 
 void PwnBox(void * /*uncast_widget*/, void * /*user_data*/) {
-  txt_window_t *        window;
-  txt_window_action_t * close_button;
-
-  window = TXT_NewWindow("Pwned!");
+  txt_window_t * window = TXT_NewWindow("Pwned!");
   TXT_AddWidget(window, TXT_NewLabel(" BOOM! HEADSHOT! "));
 
-  close_button = TXT_NewWindowAction(KEY_ENTER, "Close");
+  txt_window_action_t * close_button = TXT_NewWindowAction(KEY_ENTER, "Close");
   TXT_SignalConnect(close_button, "pressed", ClosePwnBox, window);
 
   TXT_SetWindowAction(window, TXT_HORIZ_LEFT, nullptr);
@@ -64,16 +55,15 @@ void PwnBox(void * /*uncast_widget*/, void * /*user_data*/) {
 }
 
 void UpdateLabel(void * /*uncast_widget*/, void * /*user_data*/) {
-  char buf[40];
+  std::string buf = " Current value: ";
 
-  TXT_StringCopy(buf, " Current value: ", sizeof(buf));
   if (cheesy) {
-    TXT_StringConcat(buf, "Cheesy ", sizeof(buf));
+    buf.append("Cheesy ");
   }
-  TXT_StringConcat(buf, radio_values[radiobutton_value], sizeof(buf));
-  TXT_StringConcat(buf, "\n", sizeof(buf));
+  buf.append(radio_values[radiobutton_value]);
+  buf.append("\n");
 
-  TXT_SetLabel(value_label, buf);
+  TXT_SetLabel(value_label, buf.c_str());
 }
 
 void CloseWindow(void * /*uncast_button*/, void * /*user_data*/) {
@@ -91,9 +81,7 @@ void UnicodeWindow(void * /*uncast_widget*/, void * /*user_data*/) {
     "domenica",
   };
   static int     var1, var2;
-  txt_window_t * window;
-
-  window = TXT_NewWindow("Questo è in Italiano");
+  txt_window_t * window = TXT_NewWindow("Questo è in Italiano");
 
   TXT_AddWidgets(window,
                  TXT_NewButton("Questo è un tasto"),
@@ -110,24 +98,18 @@ void UnicodeWindow(void * /*uncast_widget*/, void * /*user_data*/) {
 }
 
 void SetupWindow() {
-  txt_window_t *        window;
-  txt_table_t *         table;
-  txt_table_t *         rightpane;
-  txt_checkbox_t *      cheesy_checkbox;
-  txt_window_action_t * pwn;
-  txt_label_t *         toplabel;
-  char                  buf[100];
+  char buf[100];
 
-  window = TXT_NewWindow("Window test");
+  txt_window_t * window = TXT_NewWindow("Window test");
 
   TXT_SetWindowHelpURL(window, "https://www.youtube.com/watch?v=dQw4w9WgXcQ");
 
   TXT_AddWidget(window, TXT_NewSeparator("Main section"));
-  table = TXT_NewTable(3);
+  txt_table_t * table = TXT_NewTable(3);
 
-  toplabel = TXT_NewLabel("This is a multiline label.\n"
-                          "A single label object contains \n"
-                          "all three of these lines.");
+  txt_label_t * toplabel = TXT_NewLabel("This is a multiline label.\n"
+                                        "A single label object contains \n"
+                                        "all three of these lines.");
   TXT_AddWidget(window, toplabel);
   TXT_SetWidgetAlign(toplabel, TXT_HORIZ_CENTER);
 
@@ -162,17 +144,15 @@ void SetupWindow() {
   TXT_AddWidget(window, table);
   TXT_SetWidgetAlign(table, TXT_HORIZ_CENTER);
 
-  cheesy_checkbox = TXT_NewCheckBox("Cheesy", &cheesy);
+  txt_checkbox_t * cheesy_checkbox = TXT_NewCheckBox("Cheesy", &cheesy);
   TXT_AddWidget(table, cheesy_checkbox);
   TXT_SignalConnect(cheesy_checkbox, "changed", UpdateLabel, nullptr);
 
-  rightpane = TXT_NewTable(1);
+  txt_table_t * rightpane = TXT_NewTable(1);
   TXT_AddWidget(table, rightpane);
 
-  for (int i = 0; i < 3; ++i) {
-    txt_radiobutton_t * rbut;
-
-    rbut = TXT_NewRadioButton(radio_values[i], &radiobutton_value, i);
+  for (size_t i = 0; i < std::size(radio_values); ++i) {
+    txt_radiobutton_t * rbut = TXT_NewRadioButton(radio_values[i].c_str(), &radiobutton_value, static_cast<int>(i));
     TXT_AddWidget(rightpane, rbut);
     TXT_SignalConnect(rbut, "selected", UpdateLabel, nullptr);
   }
@@ -181,7 +161,7 @@ void SetupWindow() {
 
   TXT_AddWidget(window, TXT_NewButton2("Close Window", CloseWindow, nullptr));
 
-  pwn = TXT_NewWindowAction(KEY_F1, "PWN!");
+  txt_window_action_t * pwn = TXT_NewWindowAction(KEY_F1, "PWN!");
   TXT_SetWindowAction(window, TXT_HORIZ_CENTER, pwn);
   TXT_SignalConnect(pwn, "pressed", PwnBox, nullptr);
 
@@ -189,21 +169,17 @@ void SetupWindow() {
 }
 
 void Window2() {
-  txt_window_t *     window;
-  txt_table_t *      table;
-  txt_table_t *      unselectable_table;
-  txt_scrollpane_t * scrollpane;
-
-  window = TXT_NewWindow("Another test");
+  txt_window_t * window = TXT_NewWindow("Another test");
   TXT_SetWindowPosition(window,
                         TXT_HORIZ_RIGHT,
                         TXT_VERT_TOP,
                         TXT_SCREEN_W - 1,
                         1);
 
+  txt_table_t * unselectable_table = TXT_NewTable(1);
   TXT_AddWidgets(window,
                  TXT_NewScrollPane(40, 1, TXT_NewLabel("* Unselectable scroll pane *")),
-                 unselectable_table = TXT_NewTable(1),
+                 unselectable_table,
                  nullptr);
 
   TXT_AddWidget(unselectable_table, TXT_NewLabel("* Unselectable table *"));
@@ -212,7 +188,7 @@ void Window2() {
                                                  "\xc3\xa9v\xc3\xaaque \xc3\xa0 l'\xc5\x93uvre p\xc3\xa8re."));
 
   TXT_AddWidget(window, TXT_NewSeparator("Input boxes"));
-  table = TXT_NewTable(2);
+  txt_table_t * table = TXT_NewTable(2);
   TXT_AddWidget(window, table);
   TXT_AddWidgets(table,
                  TXT_NewLabel("String: "),
@@ -228,28 +204,24 @@ void Window2() {
                  nullptr);
 
   TXT_AddWidget(window, TXT_NewSeparator("Scroll pane test"));
-  scrollpane = TXT_NewScrollPane(40, 5, TXT_NewLabel("This is a scrollable pane. The contents\n"
-                                                     "of this box are larger than the box\n"
-                                                     "itself, but it can be scrolled around\n"
-                                                     "to explore the full contents.\n"
-                                                     "\n"
-                                                     "Scrollable panes can be scrolled both\n"
-                                                     "vertically and horizontally. They\n"
-                                                     "can contain any widget. The scroll bars\n"
-                                                     "appear automatically as needed.\n"
-                                                     "\n"
-                                                     "This is a very long line of text that forces a horizontal scrollbar"));
+  txt_scrollpane_t * scrollpane = TXT_NewScrollPane(40, 5, TXT_NewLabel("This is a scrollable pane. The contents\n"
+                                                                        "of this box are larger than the box\n"
+                                                                        "itself, but it can be scrolled around\n"
+                                                                        "to explore the full contents.\n"
+                                                                        "\n"
+                                                                        "Scrollable panes can be scrolled both\n"
+                                                                        "vertically and horizontally. They\n"
+                                                                        "can contain any widget. The scroll bars\n"
+                                                                        "appear automatically as needed.\n"
+                                                                        "\n"
+                                                                        "This is a very long line of text that forces a horizontal scrollbar"));
   TXT_AddWidget(window, scrollpane);
 }
 
 void ScrollingMenu() {
-  txt_window_t * window;
-  txt_button_t * button;
-  txt_table_t *  table;
-
-  window = TXT_NewWindow("Scrollable menu");
-
-  table = TXT_NewTable(1);
+  txt_button_t * button = TXT_NewButton("Save Parameters and launch DOOM");
+  txt_window_t * window = TXT_NewWindow("Scrollable menu");
+  txt_table_t *  table  = TXT_NewTable(1);
 
   TXT_AddWidgets(table,
                  TXT_NewButton("Configure display"),
@@ -258,7 +230,7 @@ void ScrollingMenu() {
                  TXT_NewButton("Configure mouse"),
                  TXT_NewButton("Configure sound"),
                  TXT_NewStrut(0, 1),
-                 button = TXT_NewButton("Save Parameters and launch DOOM"),
+                 button,
                  TXT_NewStrut(0, 1),
                  TXT_NewButton("Start a network game"),
                  TXT_NewButton("Join a network game"),
