@@ -43,8 +43,8 @@
 #include "memory.hpp"
 #include "z_zone.hpp"
 
-#define DEFAULT_RAM 16 * 2 /* MiB [crispy] */
-#define MIN_RAM     4 * 4  /* MiB [crispy] */
+constexpr auto DEFAULT_RAM = 16 * 2; /* MiB [crispy] */
+constexpr auto MIN_RAM     = 4 * 4;  /* MiB [crispy] */
 
 using atexit_listentry_t = struct atexit_listentry_s;
 
@@ -75,14 +75,12 @@ void I_Tactile(int, int, int) {
 // works.
 
 static uint8_t * AutoAllocMemory(int * size, int default_ram, int min_ram) {
-  uint8_t * zonemem;
-
   // Allocate the zone memory.  This loop tries progressively smaller
   // zone sizes until a size is found that can be allocated.
   // If we used the -mb command line parameter, only the parameter
   // provided is accepted.
 
-  zonemem = nullptr;
+  uint8_t * zonemem = nullptr;
 
   while (zonemem == nullptr) {
     // We need a reasonable minimum amount of RAM to start.
@@ -109,9 +107,6 @@ static uint8_t * AutoAllocMemory(int * size, int default_ram, int min_ram) {
 }
 
 uint8_t * I_ZoneBase(int * size) {
-  uint8_t *  zonemem;
-  int        min_ram, default_ram;
-  int        p;
   static int i = 1;
 
   //!
@@ -121,14 +116,13 @@ uint8_t * I_ZoneBase(int * size) {
   // Specify the heap size, in MiB (default 16).
   //
 
-  p = M_CheckParmWithArgs("-mb", 1);
+  int p           = M_CheckParmWithArgs("-mb", 1);
+  int min_ram     = MIN_RAM;
+  int default_ram = DEFAULT_RAM;
 
   if (p > 0) {
     default_ram = std::atoi(myargv[p + 1]);
     min_ram     = default_ram;
-  } else {
-    default_ram = DEFAULT_RAM;
-    min_ram     = MIN_RAM;
   }
 
   // [crispy] do not allocate new zones ad infinitum
@@ -136,7 +130,7 @@ uint8_t * I_ZoneBase(int * size) {
     min_ram = default_ram + 1;
   }
 
-  zonemem = AutoAllocMemory(size, default_ram * i, min_ram * i);
+  uint8_t * zonemem = AutoAllocMemory(size, default_ram * i, min_ram * i);
 
   // [crispy] if called again, allocate another zone twice as big
   i *= 2;
@@ -217,11 +211,9 @@ void I_BindVariables()
 //
 
 void I_Quit() {
-  atexit_listentry_t * entry;
-
   // Run through all exit functions
 
-  entry = exit_funcs;
+  atexit_listentry_t * entry = exit_funcs;
 
   while (entry != nullptr) {
     entry->func();
@@ -242,8 +234,6 @@ static bool already_quitting = false;
 void I_Error(const char * error, ...) {
   char                 msgbuf[512];
   va_list              argptr;
-  atexit_listentry_t * entry;
-  bool                 exit_gui_popup;
 
   if (already_quitting) {
     fmt::fprintf(stderr, "Warning: recursive call to I_Error detected.\n");
@@ -268,7 +258,7 @@ void I_Error(const char * error, ...) {
 
   // Shutdown. Here might be other errors.
 
-  entry = exit_funcs;
+  atexit_listentry_t * entry = exit_funcs;
 
   while (entry != nullptr) {
     if (entry->run_on_error) {
@@ -284,7 +274,7 @@ void I_Error(const char * error, ...) {
   // If specified, don't show a GUI window for error messages when the
   // game exits with an error.
   //
-  exit_gui_popup = !M_ParmExists("-nogui");
+  bool exit_gui_popup = !M_ParmExists("-nogui");
 
   // Pop up a GUI dialog box to show the error message, if the
   // game was not run from the console (and the user will
@@ -308,9 +298,7 @@ void I_Error(const char * error, ...) {
 //
 
 void * I_Realloc(void * ptr, size_t size) {
-  void * new_ptr;
-
-  new_ptr = realloc(ptr, size);
+  void * new_ptr = realloc(ptr, size);
 
   if (size != 0 && new_ptr == nullptr) {
     I_Error("I_Realloc: failed on reallocation of %" PRIuPTR " bytes", size);
@@ -337,7 +325,7 @@ void * I_Realloc(void * ptr, size_t size) {
 // DOSBox under XP:
 // 0000:0000  (00 00 00 F1) ?? ?? ?? 00-(07 00)
 
-#define DOS_MEM_DUMP_SIZE 10
+constexpr auto DOS_MEM_DUMP_SIZE = 10;
 
 static const unsigned char mem_dump_dos622[DOS_MEM_DUMP_SIZE] = {
   0x57,
@@ -383,8 +371,6 @@ bool I_GetMemoryValue(unsigned int offset, void * value, int size) {
   static bool firsttime = true;
 
   if (firsttime) {
-    int p, val;
-
     firsttime = false;
 
     //!
@@ -396,7 +382,7 @@ bool I_GetMemoryValue(unsigned int offset, void * value, int size) {
     // The default is to emulate DOS 7.1 (Windows 98).
     //
 
-    p = M_CheckParmWithArgs("-setmem", 1);
+    int p = M_CheckParmWithArgs("-setmem", 1);
 
     if (p > 0) {
       if (!strcasecmp(myargv[p + 1], "dos622")) {
@@ -414,6 +400,7 @@ bool I_GetMemoryValue(unsigned int offset, void * value, int size) {
             break;
           }
 
+          int val = 0;
           M_StrToInt(myargv[p], &val);
           mem_dump_custom[i++] = static_cast<unsigned char>(val);
         }
