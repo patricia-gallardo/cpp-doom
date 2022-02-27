@@ -54,8 +54,6 @@ struct mission_config_t {
 
 // Default mission to fall back on, if no IWADs are found at all:
 
-#define DEFAULT_MISSION (&mission_configs[0])
-
 static mission_config_t mission_configs[] = {
   {"Doom",
    doom,
@@ -86,6 +84,8 @@ static mission_config_t mission_configs[] = {
    PROGRAM_PREFIX "strife.cfg",
    PROGRAM_PREFIX "strife" }
 };
+
+static constexpr auto DEFAULT_MISSION() { return &mission_configs[0]; }
 
 static GameSelectCallback game_selected_callback;
 
@@ -266,7 +266,7 @@ static void OpenGameSelectDialog(GameSelectCallback callback) {
 
   if (num_games == 0) {
     TXT_CloseWindow(window);
-    SetMission(DEFAULT_MISSION);
+    SetMission(DEFAULT_MISSION());
     callback();
     return;
   }
