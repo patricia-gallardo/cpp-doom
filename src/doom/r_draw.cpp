@@ -37,7 +37,7 @@
 #include "memory.hpp"
 
 // status bar height at bottom of screen
-static constexpr auto SBARHEIGHT() { return (32 << crispy->hires); }
+static auto SBARHEIGHT() { return (32 << crispy->hires); }
 
 //
 // All drawing to the view buffer is accomplished in this file.
