@@ -12,6 +12,7 @@
 // GNU General Public License for more details.
 //
 
+#include <array>
 #include <cstdlib>
 #include <cstring>
 
@@ -22,7 +23,6 @@
 
 #include "d_iwad.hpp"
 #include "d_mode.hpp"
-#include "doomtype.hpp"
 #include "i_system.hpp"
 #include "m_argv.hpp"
 #include "m_config.hpp"
@@ -54,29 +54,29 @@ struct mission_config_t {
 
 // Default mission to fall back on, if no IWADs are found at all:
 
-static mission_config_t mission_configs[] = {
-  {"Doom",
+static std::array mission_configs = {
+  mission_config_t{"Doom",
    doom,
    IWAD_MASK_DOOM,
    "doom",
    "default.cfg",
    PROGRAM_PREFIX "doom.cfg",
    PROGRAM_PREFIX "doom"   },
-  { "Heretic",
+  mission_config_t{ "Heretic",
    heretic,
    IWAD_MASK_HERETIC,
    "heretic",
    "heretic.cfg",
    PROGRAM_PREFIX "heretic.cfg",
    PROGRAM_PREFIX "heretic"},
-  { "Hexen",
+  mission_config_t{ "Hexen",
    hexen,
    IWAD_MASK_HEXEN,
    "hexen",
    "hexen.cfg",
    PROGRAM_PREFIX "hexen.cfg",
    PROGRAM_PREFIX "hexen"  },
-  { "Strife",
+  mission_config_t{ "Strife",
    strife,
    IWAD_MASK_STRIFE,
    "strife",
