@@ -16,16 +16,16 @@
 // mus2mid.c - Ben Ryves 2006 - http://benryves.com - benryves@benryves.com
 // Use to convert a MUS file into a single track, type 0 MIDI file.
 
+#ifdef STANDALONE
 #include <fmt/printf.h>
+#endif
 
 #include "doomtype.hpp"
 #include "i_swap.hpp"
-
 #include "memio.hpp"
 #include "mus2mid.hpp"
 
-constexpr auto NUM_CHANNELS = 16;
-
+constexpr auto NUM_CHANNELS         = 16;
 constexpr auto MIDI_PERCUSSION_CHAN = 9;
 constexpr auto MUS_PERCUSSION_CHAN  = 15;
 
@@ -43,13 +43,13 @@ enum musevent
 // MIDI event codes
 enum midievent
 {
-  midi_releasekey        = 0x80,
-  midi_presskey          = 0x90,
-  midi_aftertouchkey     = 0xA0,
-  midi_changecontroller  = 0xB0,
-  midi_changepatch       = 0xC0,
-  midi_aftertouchchannel = 0xD0,
-  midi_pitchwheel        = 0xE0
+  midi_releasekey                         = 0x80,
+  midi_presskey                           = 0x90,
+  midi_aftertouchkey [[maybe_unused]]     = 0xA0,
+  midi_changecontroller                   = 0xB0,
+  midi_changepatch                        = 0xC0,
+  midi_aftertouchchannel [[maybe_unused]] = 0xD0,
+  midi_pitchwheel                         = 0xE0
 };
 
 // clang-format off
@@ -102,7 +102,6 @@ static int channel_map[NUM_CHANNELS];
 
 static bool WriteTime(unsigned int time, MEMFILE * midioutput) {
   unsigned int buffer = time & 0x7F;
-  uint8_t      writeval;
 
   while ((time >>= 7) != 0) {
     buffer <<= 8;
@@ -110,7 +109,7 @@ static bool WriteTime(unsigned int time, MEMFILE * midioutput) {
   }
 
   for (;;) {
-    writeval = static_cast<uint8_t>(buffer & 0xFF);
+    auto writeval = static_cast<uint8_t>(buffer & 0xFF);
 
     if (mem_fwrite(&writeval, 1, 1, midioutput) != 1) {
       return true;
@@ -300,16 +299,13 @@ static bool WriteChangeController_Valueless(uint8_t channel, uint8_t control, ME
 // Allocate a free MIDI channel.
 
 static int AllocateMIDIChannel() {
-  int result;
-  int max;
-
   // Find the current highest-allocated channel.
 
-  max = -1;
+  int max = -1;
 
-  for (int i = 0; i < NUM_CHANNELS; ++i) {
-    if (channel_map[i] > max) {
-      max = channel_map[i];
+  for (int channel : channel_map) {
+    if (channel > max) {
+      max = channel;
     }
   }
 
@@ -317,7 +313,7 @@ static int AllocateMIDIChannel() {
   // now allocate the next available channel.  This also works if
   // no channels are currently allocated (max=-1)
 
-  result = max + 1;
+  int result = max + 1;
 
   // Don't allocate the MIDI percussion channel!
 
@@ -355,14 +351,12 @@ static int GetMIDIChannel(int mus_channel, MEMFILE * midioutput) {
 }
 
 static bool ReadMusHeader(MEMFILE * file, musheader * header) {
-  bool result;
-
-  result = mem_fread(&header->id, sizeof(uint8_t), 4, file) == 4
-           && mem_fread(&header->scorelength, sizeof(short), 1, file) == 1
-           && mem_fread(&header->scorestart, sizeof(short), 1, file) == 1
-           && mem_fread(&header->primarychannels, sizeof(short), 1, file) == 1
-           && mem_fread(&header->secondarychannels, sizeof(short), 1, file) == 1
-           && mem_fread(&header->instrumentcount, sizeof(short), 1, file) == 1;
+  bool result = mem_fread(&header->id, sizeof(uint8_t), 4, file) == 4
+                && mem_fread(&header->scorelength, sizeof(short), 1, file) == 1
+                && mem_fread(&header->scorestart, sizeof(short), 1, file) == 1
+                && mem_fread(&header->primarychannels, sizeof(short), 1, file) == 1
+                && mem_fread(&header->secondarychannels, sizeof(short), 1, file) == 1
+                && mem_fread(&header->instrumentcount, sizeof(short), 1, file) == 1;
 
   if (result) {
     header->scorelength       = SHORT(header->scorelength);
@@ -384,31 +378,16 @@ bool mus2mid(MEMFILE * musinput, MEMFILE * midioutput) {
   // Header for the MUS file
   musheader musfileheader;
 
-  // Descriptor for the current MUS event
-  uint8_t  eventdescriptor;
-  int      channel; // Channel number
-  musevent event;
-
-  // Bunch of vars read from MUS lump
-  uint8_t key;
-  uint8_t controllernumber;
-  uint8_t controllervalue;
-
   // Buffer used for MIDI track size record
   uint8_t tracksizebuffer[4];
 
   // Flag for when the score end marker is hit.
   int hitscoreend = 0;
 
-  // Temp working byte
-  uint8_t working;
-  // Used in building up time delays
-  unsigned int timedelay;
-
   // Initialise channel map to mark all channels as unused.
 
-  for (channel = 0; channel < NUM_CHANNELS; ++channel) {
-    channel_map[channel] = -1;
+  for (int & channel : channel_map) {
+    channel = -1;
   }
 
   // Grab the header
@@ -448,12 +427,19 @@ bool mus2mid(MEMFILE * musinput, MEMFILE * midioutput) {
     while (!hitscoreend) {
       // Fetch channel number and event code:
 
+      // Descriptor for the current MUS event
+      uint8_t  eventdescriptor = 0;
       if (mem_fread(&eventdescriptor, 1, 1, musinput) != 1) {
         return true;
       }
 
-      channel = GetMIDIChannel(eventdescriptor & 0x0Fu, midioutput);
-      event   = static_cast<musevent>(eventdescriptor & 0x70u);
+      // Channel number
+      int channel = GetMIDIChannel(eventdescriptor & 0x0Fu, midioutput);
+      auto event = static_cast<musevent>(eventdescriptor & 0x70u);
+      // Bunch of vars read from MUS lump
+      uint8_t controllervalue = 0;
+      uint8_t key = 0;
+      uint8_t controllernumber = 0;
 
       switch (event) {
       case mus_releasekey:
@@ -547,7 +533,6 @@ bool mus2mid(MEMFILE * musinput, MEMFILE * midioutput) {
 
       default:
         return true;
-        break;
       }
 
       if (eventdescriptor & 0x80) {
@@ -556,8 +541,11 @@ bool mus2mid(MEMFILE * musinput, MEMFILE * midioutput) {
     }
     // Now we need to read the time code:
     if (!hitscoreend) {
-      timedelay = 0;
+      // Used in building up time delays
+      unsigned int timedelay = 0;
       for (;;) {
+        // Temp working byte
+        uint8_t working = 0;
         if (mem_fread(&working, 1, 1, musinput) != 1) {
           return true;
         }
