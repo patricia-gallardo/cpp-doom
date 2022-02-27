@@ -55,8 +55,8 @@
 #define HU_TITLE_CHEX (mapnames_chex[(g_doomstat_globals->gameepisode - 1) * 9 + g_doomstat_globals->gamemap - 1])
 #define HU_TITLEX     (0 - DELTAWIDTH)
 #define HU_TITLEY     (167 - SHORT(hu_font[0]->height))
+static auto HU_INPUTX() { return (0 - DELTAWIDTH); }
 
-#define HU_INPUTX HU_MSGX
 #define HU_INPUTY (HU_MSGY + HU_MSGHEIGHT * (SHORT(hu_font[0]->height) + 1))
 
 #define HU_COORDX ((ORIGWIDTH - 7 * hu_font['A' - HU_FONTSTART]->width) + DELTAWIDTH)
@@ -566,7 +566,7 @@ void HU_Start() {
 
   // create the message widget
   HUlib_initSText(&w_message,
-                  HU_MSGX,
+                  HU_INPUTX(),
                   HU_MSGY,
                   HU_MSGHEIGHT,
                   hu_font,
@@ -716,7 +716,7 @@ void HU_Start() {
 
   // create the chat widget
   HUlib_initIText(&w_chat,
-                  HU_INPUTX,
+                  HU_INPUTX(),
                   HU_INPUTY,
                   hu_font,
                   HU_FONTSTART,
