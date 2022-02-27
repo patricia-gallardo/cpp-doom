@@ -12,8 +12,7 @@
 // GNU General Public License for more details.
 //
 
-#ifndef TXT_WINDOW_H
-#define TXT_WINDOW_H
+#pragma once
 
 /**
  * @file txt_window.h
@@ -212,5 +211,3 @@ void TXT_SetWindowHelpURL(txt_window_t * window, const char * help_url);
  */
 
 void TXT_OpenWindowHelpURL(txt_window_t * window);
-
-#endif /* #ifndef TXT_WINDOW_H */

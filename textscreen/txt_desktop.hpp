@@ -12,8 +12,7 @@
 // GNU General Public License for more details.
 //
 
-#ifndef TXT_DESKTOP_H
-#define TXT_DESKTOP_H
+#pragma once
 
 /**
  * @file txt_desktop.h
@@ -103,5 +102,3 @@ void TXT_SetPeriodicCallback(TxtIdleCallback callback,
  */
 
 int TXT_LowerWindow(txt_window_t * window);
-
-#endif /* #ifndef TXT_DESKTOP_H */

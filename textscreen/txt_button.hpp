@@ -12,8 +12,7 @@
 // GNU General Public License for more details.
 //
 
-#ifndef TXT_BUTTON_H
-#define TXT_BUTTON_H
+#pragma once
 
 /**
  * @file txt_button.h
@@ -66,5 +65,3 @@ txt_button_t * TXT_NewButton2(const char * label, TxtWidgetSignalFunc func, void
  */
 
 void TXT_SetButtonLabel(txt_button_t * button, const char * label);
-
-#endif /* #ifndef TXT_BUTTON_H */

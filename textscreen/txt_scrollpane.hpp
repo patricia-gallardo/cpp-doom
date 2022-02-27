@@ -12,8 +12,7 @@
 // GNU General Public License for more details.
 //
 
-#ifndef TXT_SCROLLPANE_H
-#define TXT_SCROLLPANE_H
+#pragma once
 
 /**
  * @file txt_scrollpane.h
@@ -52,5 +51,3 @@ struct [[maybe_unused]] txt_scrollpane_s {
  */
 
 txt_scrollpane_t * TXT_NewScrollPane(int w, int h, void * uncast_target);
-
-#endif /* #ifndef TXT_SCROLLPANE_H */

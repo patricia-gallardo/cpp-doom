@@ -15,8 +15,7 @@
 // Text mode emulation in SDL
 //
 
-#ifndef TXT_SDL_H
-#define TXT_SDL_H
+#pragma once
 
 // The textscreen API itself doesn't need SDL; however, SDL needs its
 // headers included where main() is defined.
@@ -36,5 +35,3 @@ using TxtSDLEventCallbackFunc = int (*)(SDL_Event *, void *);
 // user_data is a void pointer to be passed to the callback function.
 
 void TXT_SDL_SetEventCallback(TxtSDLEventCallbackFunc callback, void * user_data);
-
-#endif /* #ifndef TXT_SDL_H */
