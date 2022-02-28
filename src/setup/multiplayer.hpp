@@ -12,8 +12,7 @@
 // GNU General Public License for more details.
 //
 
-#ifndef SETUP_MULTIPLAYER_H
-#define SETUP_MULTIPLAYER_H
+#pragma once
 
 void StartMultiGame(void * widget, void * user_data);
 void WarpMenu(void * widget, void * user_data);
@@ -24,5 +23,3 @@ void SetChatMacroDefaults();
 void SetPlayerNameDefault();
 
 void BindMultiplayerVariables();
-
-#endif /* #ifndef SETUP_MULTIPLAYER_H */

@@ -40,10 +40,10 @@
 #include "net_structrw.hpp"
 
 // How often to refresh our registration with the master server.
-#define MASTER_REFRESH_PERIOD 30 /* twice per minute */
+constexpr auto MASTER_REFRESH_PERIOD = 30; /* twice per minute */
 
 // How often to re-resolve the address of the master server?
-#define MASTER_RESOLVE_PERIOD 8 * 60 * 60 /* 8 hours */
+constexpr auto MASTER_RESOLVE_PERIOD = 8 * 60 * 60; /* 8 hours */
 
 enum net_server_state_t
 {

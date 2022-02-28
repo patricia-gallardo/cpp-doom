@@ -17,8 +17,7 @@
 //   mode.
 //
 
-#ifndef __D_MODE__
-#define __D_MODE__
+#pragma once
 
 #include "doomtype.hpp"
 
@@ -105,5 +104,3 @@ int          D_GetNumEpisodes(GameMission_t mission, GameMode_t mode);
 bool         D_IsEpisodeMap(GameMission_t mission);
 const char * D_GameMissionString(GameMission_t mission);
 const char * D_GameModeString(GameMode_t mode);
-
-#endif /* #ifndef __D_MODE__ */

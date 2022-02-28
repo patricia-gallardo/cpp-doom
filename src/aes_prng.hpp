@@ -15,8 +15,7 @@
 //     Pseudo-random number generator for secure demos.
 //
 
-#ifndef __AES_PRNG_H__
-#define __AES_PRNG_H__
+#pragma once
 
 #include "doomtype.hpp"
 
@@ -27,5 +26,3 @@ typedef uint8_t prng_seed_t[16];
 [[maybe_unused]] void         PRNG_Start(prng_seed_t seed);
 [[maybe_unused]] void         PRNG_Stop();
 [[maybe_unused]] unsigned int PRNG_Random();
-
-#endif /* #ifndef __AES_PRNG_H__ */

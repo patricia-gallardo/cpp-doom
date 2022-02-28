@@ -15,9 +15,6 @@
 // Dedicated server code.
 //
 
-#ifndef NET_DEDICATED_H
-#define NET_DEDICATED_H
+#pragma once
 
 [[noreturn]] void NET_DedicatedServer();
-
-#endif /* #ifndef NET_DEDICATED_H */

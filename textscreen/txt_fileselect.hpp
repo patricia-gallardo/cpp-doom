@@ -15,8 +15,7 @@
 // Routines for selecting files, and the txt_fileselect_t widget.
 //
 
-#ifndef TXT_FILESELECT_H
-#define TXT_FILESELECT_H
+#pragma once
 
 /**
  * @file txt_fileselect.h
@@ -73,5 +72,3 @@ txt_fileselect_t * TXT_NewFileSelector(char ** variable, int size, const char * 
  */
 
 extern const char * TXT_DIRECTORY[];
-
-#endif /* #ifndef TXT_FILESELECT_H */

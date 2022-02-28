@@ -30,7 +30,6 @@ constexpr auto HU_FONTSIZE = (HU_FONTEND - HU_FONTSTART + 1);
 
 constexpr auto HU_BROADCAST = 5;
 
-#define HU_MSGX (0 - DELTAWIDTH)
 constexpr auto HU_MSGY      = 0;
 constexpr auto HU_MSGHEIGHT = 1; // in lines
 

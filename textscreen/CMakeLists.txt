@@ -1,3 +1,5 @@
+add_subdirectory(examples)
+
 add_library(textscreen STATIC
             textscreen.hpp
             txt_conditional.cpp   txt_conditional.hpp

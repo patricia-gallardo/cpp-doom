@@ -56,20 +56,17 @@ static char * temp_timidity_cfg = nullptr;
 // relative to the actual config file.
 
 static bool WriteWrapperTimidityConfig(char * write_path) {
-  char * path;
-  FILE * fstream;
-
   if (!strcmp(timidity_cfg_path, "")) {
     return false;
   }
 
-  fstream = fopen(write_path, "w");
+  FILE * fstream = fopen(write_path, "w");
 
   if (fstream == nullptr) {
     return false;
   }
 
-  path = M_DirName(timidity_cfg_path);
+  char * path = M_DirName(timidity_cfg_path);
   fmt::fprintf(fstream, "dir %s\n", path);
   free(path);
 
@@ -80,10 +77,10 @@ static bool WriteWrapperTimidityConfig(char * write_path) {
 }
 
 void I_InitTimidityConfig() {
-  bool success;
 
   temp_timidity_cfg = M_TempFile("timidity.cfg");
 
+  bool success = false;
   if (g_i_sound_globals->snd_musicdevice == SNDDEVICE_GUS) {
     success = GUS_WriteConfig(temp_timidity_cfg);
   } else {
@@ -129,9 +126,9 @@ static void I_SDL_ShutdownMusic() {
 }
 
 static bool SDLIsInitialized() {
-  int    freq, channels;
-  Uint16 format;
-
+  int    freq     = 0;
+  int    channels = 0;
+  Uint16 format   = 0;
   return Mix_QuerySpec(&freq, &format, &channels) != 0;
 }
 
@@ -192,8 +189,7 @@ static bool I_SDL_InitMusic() {
 //
 
 static void UpdateMusicVolume() {
-  int vol;
-
+  int vol = 0;
   if (musicpaused) {
     vol = 0;
   } else {
@@ -218,8 +214,6 @@ static void I_SDL_SetMusicVolume(int volume) {
 // Start playing a mid
 
 static void I_SDL_PlaySong(void * handle, bool looping) {
-  int loops;
-
   if (!music_initialized) {
     return;
   }
@@ -228,6 +222,7 @@ static void I_SDL_PlaySong(void * handle, bool looping) {
     return;
   }
 
+  int loops = 0;
   if (looping) {
     loops = -1;
   } else {
@@ -280,7 +275,7 @@ static void I_SDL_StopSong() {
 }
 
 static void I_SDL_UnRegisterSong(void * handle) {
-  Mix_Music * music = reinterpret_cast<Mix_Music *>(handle);
+  auto * music = reinterpret_cast<Mix_Music *>(handle);
 
   if (!music_initialized) {
     return;
@@ -309,20 +304,15 @@ static bool IsMid(byte *mem, int len)
 */
 
 static bool ConvertMus(uint8_t * musdata, int len, const char * filename) {
-  MEMFILE * instream;
-  MEMFILE * outstream;
-  void *    outbuf;
-  size_t    outbuf_len;
-  int       result;
+  MEMFILE * instream  = mem_fopen_read(musdata, static_cast<size_t>(len));
+  MEMFILE * outstream = mem_fopen_write();
 
-  instream  = mem_fopen_read(musdata, static_cast<size_t>(len));
-  outstream = mem_fopen_write();
-
-  result = mus2mid(instream, outstream);
+  int result = mus2mid(instream, outstream);
 
   if (result == 0) {
+    void *    outbuf = nullptr;
+    size_t    outbuf_len = 0;
     mem_get_buf(outstream, &outbuf, &outbuf_len);
-
     M_WriteFile(filename, outbuf, static_cast<int>(outbuf_len));
   }
 
@@ -333,9 +323,6 @@ static bool ConvertMus(uint8_t * musdata, int len, const char * filename) {
 }
 
 static void * I_SDL_RegisterSong(void * data, int len) {
-  char *      filename;
-  Mix_Music * music;
-
   if (!music_initialized) {
     return nullptr;
   }
@@ -343,12 +330,12 @@ static void * I_SDL_RegisterSong(void * data, int len) {
   // MUS files begin with "MUS"
   // Reject anything which doesnt have this signature
 
-  filename = M_TempFile("doom"); // [crispy] generic filename
+  char * filename = M_TempFile("doom"); // [crispy] generic filename
 
   // [crispy] Reverse Choco's logic from "if (MIDI)" to "if (not MUS)"
   // MUS is the only format that requires conversion,
   // let SDL_Mixer figure out the others
-  if (len < 4 || memcmp(data, "MUS\x1a", 4)) // [crispy] MUS_HEADER_MAGIC
+  if (len < 4 || memcmp(data, "MUS\x1a", 4) != 0) // [crispy] MUS_HEADER_MAGIC
   {
     M_WriteFile(filename, data, len);
   } else {
@@ -360,7 +347,7 @@ static void * I_SDL_RegisterSong(void * data, int len) {
   // Load the MIDI. In an ideal world we'd be using Mix_LoadMUS_RW()
   // by now, but Mix_SetMusicCMD() only works with Mix_LoadMUS(), so
   // we have to generate a temporary file.
-
+  Mix_Music * music = nullptr;
 #if defined(_WIN32)
   // [AM] If we do not have an external music command defined, play
   //      music with the MIDI server.
@@ -402,7 +389,7 @@ static bool I_SDL_MusicIsPlaying() {
   return Mix_PlayingMusic();
 }
 
-static snddevice_t music_sdl_devices[] = {
+static std::array music_sdl_devices = {
   SNDDEVICE_PAS,
   SNDDEVICE_GUS,
   SNDDEVICE_WAVEBLASTER,
@@ -412,7 +399,7 @@ static snddevice_t music_sdl_devices[] = {
 };
 
 music_module_t music_sdl_module = {
-  music_sdl_devices,
+  music_sdl_devices.data(),
   static_cast<int>(std::size(music_sdl_devices)),
   I_SDL_InitMusic,
   I_SDL_ShutdownMusic,

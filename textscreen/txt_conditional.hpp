@@ -12,8 +12,7 @@
 // GNU General Public License for more details.
 //
 
-#ifndef TXT_CONDITIONAL_H
-#define TXT_CONDITIONAL_H
+#pragma once
 
 /**
  * @file txt_conditional.h
@@ -56,5 +55,3 @@ txt_conditional_t * TXT_NewConditional(int * var, int expected_value, void * unc
  */
 
 txt_widget_t * TXT_If(int condition, void * uncast_child);
-
-#endif /* #ifndef TXT_CONDITIONAL_H */

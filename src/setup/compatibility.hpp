@@ -12,13 +12,10 @@
 // GNU General Public License for more details.
 //
 
-#ifndef SETUP_COMPATIBILITY_H
-#define SETUP_COMPATIBILITY_H
+#pragma once
 
 void CompatibilitySettings(void * widget, void * user_data);
 void BindCompatibilityVariables();
 
 extern int vanilla_savegame_limit;
 extern int vanilla_demo_limit;
-
-#endif /* #ifndef SETUP_COMPATIBILITY_H */

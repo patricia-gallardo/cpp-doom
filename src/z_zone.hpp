@@ -19,8 +19,7 @@
 //	 Quake.
 //
 
-#ifndef __Z_ZONE__
-#define __Z_ZONE__
+#pragma once
 
 #include <cstdio>
 
@@ -65,5 +64,3 @@ void                          Z_ChangeTag2(void * ptr, int tag, const char * fil
 //
 #define Z_ChangeTag(p, t) \
   Z_ChangeTag2((p), (t), __FILE__, __LINE__)
-
-#endif

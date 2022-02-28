@@ -681,11 +681,11 @@ static void StartGameMenu(const char * window_title, int multiplayer) {
   TXT_AddWidgets(window,
                  TXT_NewSeparator("Monster options"),
                  TXT_NewInvertedCheckBox("Monsters enabled", &nomonsters),
-                 TXT_TABLE_OVERFLOW_RIGHT,
+                 TXT_TABLE_OVERFLOW_RIGHT(),
                  TXT_NewCheckBox("Fast monsters", &fast),
-                 TXT_TABLE_OVERFLOW_RIGHT,
+                 TXT_TABLE_OVERFLOW_RIGHT(),
                  TXT_NewCheckBox("Respawning monsters", &respawn),
-                 TXT_TABLE_OVERFLOW_RIGHT,
+                 TXT_TABLE_OVERFLOW_RIGHT(),
                  nullptr);
 
   if (multiplayer) {
@@ -695,7 +695,7 @@ static void StartGameMenu(const char * window_title, int multiplayer) {
                    TXT_NewIntInputBox(&udpport, 5),
                    TXT_NewInvertedCheckBox("Register with master server",
                                            &privateserver),
-                   TXT_TABLE_OVERFLOW_RIGHT,
+                   TXT_TABLE_OVERFLOW_RIGHT(),
                    nullptr);
   }
 
@@ -703,7 +703,7 @@ static void StartGameMenu(const char * window_title, int multiplayer) {
                  TXT_NewButton2("Add extra parameters...",
                                 OpenExtraParamsWindow,
                                 nullptr),
-                 TXT_TABLE_OVERFLOW_RIGHT,
+                 TXT_TABLE_OVERFLOW_RIGHT(),
                  nullptr);
 
   TXT_SignalConnect(iwad_selector, "changed", UpdateWarpType, nullptr);
@@ -859,7 +859,7 @@ static void QueryPeriodicCallback(void * uncast_results_table) {
 
     if (query_servers_found == 0) {
       TXT_AddWidgets(results_table,
-                     TXT_TABLE_EMPTY,
+                     TXT_TABLE_EMPTY(),
                      TXT_NewLabel("No compatible servers found."),
                      nullptr);
     }
@@ -928,13 +928,13 @@ void JoinMultiGame(void *, void *) {
                  TXT_NewButton2("Find server on Internet...",
                                 FindInternetServer,
                                 nullptr),
-                 TXT_TABLE_OVERFLOW_RIGHT,
+                 TXT_TABLE_OVERFLOW_RIGHT(),
                  TXT_NewButton2("Find server on local network...",
                                 FindLANServer,
                                 nullptr),
-                 TXT_TABLE_OVERFLOW_RIGHT,
+                 TXT_TABLE_OVERFLOW_RIGHT(),
                  TXT_NewStrut(0, 1),
-                 TXT_TABLE_OVERFLOW_RIGHT,
+                 TXT_TABLE_OVERFLOW_RIGHT(),
                  TXT_NewButton2("Add extra parameters...",
                                 OpenExtraParamsWindow,
                                 nullptr),

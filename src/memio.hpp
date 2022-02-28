@@ -13,8 +13,7 @@
 // GNU General Public License for more details.
 //
 
-#ifndef MEMIO_H
-#define MEMIO_H
+#pragma once
 
 using MEMFILE = struct _MEMFILE;
 
@@ -31,7 +30,5 @@ MEMFILE * mem_fopen_write();
 size_t    mem_fwrite(const void * ptr, size_t size, size_t nmemb, MEMFILE * stream);
 void      mem_get_buf(MEMFILE * stream, void ** buf, size_t * buflen);
 void      mem_fclose(MEMFILE * stream);
-long      mem_ftell(MEMFILE * stream);
+[[maybe_unused]] long      mem_ftell(MEMFILE * stream);
 int       mem_fseek(MEMFILE * stream, signed long offset, mem_rel_t whence);
-
-#endif /* #ifndef MEMIO_H */

@@ -16,11 +16,8 @@
 //       Generate a checksum of the WAD directory.
 //
 
-#ifndef W_CHECKSUM_H
-#define W_CHECKSUM_H
+#pragma once
 
 #include "sha1.hpp"
 
 extern void W_Checksum(sha1_digest_t digest);
-
-#endif /* #ifndef W_CHECKSUM_H */

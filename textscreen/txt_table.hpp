@@ -12,41 +12,7 @@
 // GNU General Public License for more details.
 //
 
-#ifndef TXT_TABLE_H
-#define TXT_TABLE_H
-
-/**
- * @file txt_table.h
- *
- * Table widget.
- */
-
-/**
- * Magic value that if used in a table, will indicate that the cell is
- * empty and the widget in the cell to the left can overflow into it.
- */
-
-#define TXT_TABLE_OVERFLOW_RIGHT (&txt_table_overflow_right)
-
-/**
- * Magic value that if used in a table, will indicate that the cell is
- * empty and the widget in the cell above it can overflow down into it.
- */
-
-#define TXT_TABLE_OVERFLOW_DOWN (&txt_table_overflow_down)
-
-/**
- * Magic value that if given to @ref TXT_AddWidget(), will pad out all
- * columns until the end of line.
- */
-#define TXT_TABLE_EOL (&txt_table_eol)
-
-/**
- * Indicates an empty space to @ref TXT_AddWidgets(). Equivalent to
- * TXT_AddWidget(table, nullptr), except that nullptr is used by TXT_AddWidgets()
- * to indicate the end of input.
- */
-#define TXT_TABLE_EMPTY (&txt_table_empty)
+#pragma once
 
 /**
  * Table widget.
@@ -239,4 +205,35 @@ void TXT_ClearTable(void * uncast_table);
 
 int TXT_PageTable(void * uncast_table, int pagex, int pagey);
 
-#endif /* #ifndef TXT_TABLE_T */
+/**
+ * @file txt_table.h
+ *
+ * Table widget.
+ */
+
+/**
+ * Magic value that if used in a table, will indicate that the cell is
+ * empty and the widget in the cell to the left can overflow into it.
+ */
+
+constexpr auto TXT_TABLE_OVERFLOW_RIGHT() { return (&txt_table_overflow_right); }
+
+/**
+ * Magic value that if used in a table, will indicate that the cell is
+ * empty and the widget in the cell above it can overflow down into it.
+ */
+
+constexpr auto TXT_TABLE_OVERFLOW_DOWN() { return (&txt_table_overflow_down); }
+
+/**
+ * Magic value that if given to @ref TXT_AddWidget(), will pad out all
+ * columns until the end of line.
+ */
+constexpr auto TXT_TABLE_EOL() { return (&txt_table_eol); }
+
+/**
+ * Indicates an empty space to @ref TXT_AddWidgets(). Equivalent to
+ * TXT_AddWidget(table, nullptr), except that nullptr is used by TXT_AddWidgets()
+ * to indicate the end of input.
+ */
+constexpr auto TXT_TABLE_EMPTY() { return (&txt_table_empty); }

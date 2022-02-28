@@ -12,8 +12,7 @@
 // GNU General Public License for more details.
 //
 
-#ifndef TEXTSCREEN_H
-#define TEXTSCREEN_H
+#pragma once
 
 #include "../src/doomkeys.hpp"
 #include "txt_main.hpp"
@@ -35,5 +34,3 @@
 #include "txt_widget.hpp"
 #include "txt_window.hpp"
 #include "txt_window_action.hpp"
-
-#endif /* #ifndef TEXTSCREEN_H */

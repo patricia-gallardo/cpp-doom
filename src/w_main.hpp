@@ -15,8 +15,7 @@
 //     Common code to parse command line, identifying WAD files to load.
 //
 
-#ifndef W_MAIN_H
-#define W_MAIN_H
+#pragma once
 
 #include "d_mode.hpp"
 
@@ -28,5 +27,3 @@ int W_LumpDump(const char * lumpname);
 
 // Autoload all .wad files from the given directory:
 void W_AutoLoadWADs(const char * path);
-
-#endif /* #ifndef W_MAIN_H */

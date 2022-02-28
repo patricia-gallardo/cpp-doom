@@ -15,8 +15,7 @@
 // Dehacked string replacements
 //
 
-#ifndef DEH_STR_H
-#define DEH_STR_H
+#pragma once
 
 #include <cstdio>
 
@@ -47,5 +46,3 @@ void DEH_snprintf(char * buffer, size_t len, const char * fmt, Args &&... args) 
 
 void DEH_AddStringReplacement(const char * from_text, const char * to_text);
 bool DEH_HasStringReplacement(const char * s);
-
-#endif /* #ifndef DEH_STR_H */

@@ -16,8 +16,7 @@
 //      Miscellaneous.
 //
 
-#ifndef __M_MISC__
-#define __M_MISC__
+#pragma once
 
 #include <cstdarg>
 #include <cstdio>
@@ -37,7 +36,7 @@ const char * M_BaseName(const char * path);
 void         M_ExtractFileBase(const char * path, char * dest);
 void         M_ForceUppercase(char * text);
 void         M_ForceLowercase(char * text);
-const char * M_StrCaseStr(const char * haystack, const char * needle);
+[[maybe_unused]] const char * M_StrCaseStr(const char * haystack, const char * needle);
 char *       M_StringDuplicate(const char * orig);
 bool         M_StringCopy(char * dest, const char * src, size_t dest_size);
 bool         M_StringConcat(char * dest, const char * src, size_t dest_size);
@@ -48,5 +47,3 @@ bool         M_StringEndsWith(const char * s, const char * suffix);
 int          M_vsnprintf(char * buf, size_t buf_len, const char * s, va_list args);
 int          M_snprintf(char * buf, size_t buf_len, const char * s, ...) PRINTF_ATTR(3, 4);
 char *       M_OEMToUTF8(const char * ansi);
-
-#endif

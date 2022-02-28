@@ -12,8 +12,7 @@
 // GNU General Public License for more details.
 //
 
-#ifndef TXT_KEY_INPUT_H
-#define TXT_KEY_INPUT_H
+#pragma once
 
 struct txt_key_input_t;
 
@@ -31,5 +30,3 @@ struct txt_key_input_t {
 };
 
 txt_key_input_t * TXT_NewKeyInput(int * variable);
-
-#endif /* #ifndef TXT_KEY_INPUT_H */

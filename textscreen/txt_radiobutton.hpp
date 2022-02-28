@@ -12,8 +12,7 @@
 // GNU General Public License for more details.
 //
 
-#ifndef TXT_RADIOBUTTON_H
-#define TXT_RADIOBUTTON_H
+#pragma once
 
 /**
  * @file txt_radiobutton.h
@@ -72,5 +71,3 @@ txt_radiobutton_t * TXT_NewRadioButton(const char * label, int * variable, int v
  */
 
 [[maybe_unused]] void TXT_SetRadioButtonLabel(txt_radiobutton_t * radiobutton, const char * value);
-
-#endif /* #ifndef TXT_RADIOBUTTON_H */

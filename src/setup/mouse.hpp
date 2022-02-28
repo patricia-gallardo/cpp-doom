@@ -12,12 +12,9 @@
 // GNU General Public License for more details.
 //
 
-#ifndef SETUP_MOUSE_H
-#define SETUP_MOUSE_H
+#pragma once
 
 void ConfigMouse(void * widget, void * user_data);
 void BindMouseVariables();
 
 extern int novert;
-
-#endif /* #ifndef SETUP_MOUSE_H */

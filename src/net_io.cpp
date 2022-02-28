@@ -22,7 +22,7 @@
 #include "net_defs.hpp"
 #include "z_zone.hpp"
 
-#define MAX_MODULES 16
+constexpr auto MAX_MODULES = 16;
 
 struct [[maybe_unused]] _net_context_s {
   net_module_t * modules[MAX_MODULES];

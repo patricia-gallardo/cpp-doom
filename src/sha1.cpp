@@ -46,6 +46,22 @@ void SHA1_Init(sha1_context_t * hd) {
 
 #pragma GCC diagnostic push
 #pragma GCC diagnostic ignored "-Wconversion"
+static void            endian_copy(uint8_t * data, uint32_t * x) {
+#ifdef SYS_BIG_ENDIAN
+  std::memcpy(x, data, 64);
+#else
+  {
+    int       i = 0;
+    uint8_t * p2 = nullptr;
+    for (i = 0, p2 = reinterpret_cast<uint8_t *>(x); i < 16; i++, p2 += 4) {
+      p2[3] = *data++;
+      p2[2] = *data++;
+      p2[1] = *data++;
+      p2[0] = *data++;
+    }
+  }
+#endif
+}
 /****************
  * Transform the message X which consists of 16 32-bit-words
  */
@@ -60,44 +76,24 @@ static void Transform(sha1_context_t * hd, uint8_t * data) {
   d = hd->h3;
   e = hd->h4;
 
-#ifdef SYS_BIG_ENDIAN
-  std::memcpy(x, data, 64);
-#else
-  {
-    int       i;
-    uint8_t * p2;
-    for (i = 0, p2 = reinterpret_cast<uint8_t *>(x); i < 16; i++, p2 += 4) {
-      p2[3] = *data++;
-      p2[2] = *data++;
-      p2[1] = *data++;
-      p2[0] = *data++;
-    }
-  }
-#endif
+  endian_copy(data, x);
 
-#define K1          0x5A827999L
-#define K2          0x6ED9EBA1L
-#define K3          0x8F1BBCDCL
-#define K4          0xCA62C1D6L
-#define F1(x, y, z) (z ^ (x & (y ^ z)))
-#define F2(x, y, z) (x ^ y ^ z)
-#define F3(x, y, z) ((x & y) | (z & (x | y)))
-#define F4(x, y, z) (x ^ y ^ z)
+  constexpr auto K1 = 0x5A827999L;
+  constexpr auto K2 = 0x6ED9EBA1L;
+  constexpr auto K3 = 0x8F1BBCDCL;
+  constexpr auto K4 = 0xCA62C1D6L;
 
-#define rol(x, n) (((x) << (n)) | ((x) >> (32 - (n))))
+  auto F1  = [](auto x, auto y, auto z) { return (z ^ (x & (y ^ z))); };
+  auto F2  = [](auto x, auto y, auto z) { return (x ^ y ^ z); };
+  auto F3  = [](auto x, auto y, auto z) { return ((x & y) | (z & (x | y))); };
+  auto F4  = [](auto x, auto y, auto z) { return (x ^ y ^ z); };
+  auto rol = [](auto x, auto n) { return (((x) << (n)) | ((x) >> (32 - (n)))); };
+  auto M   = [&tm, &x, &rol](auto i) { return (tm = x[i & 0x0f] ^ x[(i - 14) & 0x0f] ^ x[(i - 8) & 0x0f] ^ x[(i - 3) & 0x0f], (x[i & 0x0f] = rol(tm, 1))); };
+  auto R   = [&rol](auto a, auto & b, auto c, auto d, auto & e, auto f, auto k, auto m) {
+    e += rol(a, 5) + f(b, c, d) + k + m;
+    b = rol(b, 30);
+  };
 
-#define M(i) (tm = x[i & 0x0f] ^ x[(i - 14) & 0x0f]         \
-                   ^ x[(i - 8) & 0x0f] ^ x[(i - 3) & 0x0f], \
-              (x[i & 0x0f] = rol(tm, 1)))
-
-#define R(a, b, c, d, e, f, k, m) \
-  do {                            \
-    e += rol(a, 5)                \
-         + f(b, c, d)             \
-         + k                      \
-         + m;                     \
-    b = rol(b, 30);               \
-  } while (0)
   R(a, b, c, d, e, F1, K1, x[0]);
   R(e, a, b, c, d, F1, K1, x[1]);
   R(d, e, a, b, c, F1, K1, x[2]);

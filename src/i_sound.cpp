@@ -15,14 +15,12 @@
 // DESCRIPTION:  none
 //
 
+#include <array>
 #include <cstdio>
-
 #include <fmt/printf.h>
-
 #include <SDL_mixer.h>
 
 #include "config.h"
-
 #include "gusconf.hpp"
 #include "i_sound.hpp"
 #include "i_video.hpp"
@@ -70,7 +68,7 @@ static int snd_mport  = 0;
 
 // Compiled-in sound modules:
 
-static sound_module_t * sound_modules[] = {
+static std::array<sound_module_t *, 3> sound_modules = {
   &sound_sdl_module,
   &sound_pcsound_module,
   nullptr,
@@ -78,7 +76,7 @@ static sound_module_t * sound_modules[] = {
 
 // Compiled-in music modules:
 
-static music_module_t * music_modules[] = {
+static std::array<music_module_t *, 3> music_modules = {
   &music_sdl_module,
   &music_opl_module,
   nullptr,
@@ -159,15 +157,13 @@ static void InitMusicModule() {
 //
 
 void I_InitSound(bool use_sfx_prefix) {
-  bool nosound, nosfx, nomusic, nomusicpacks;
-
   //!
   // @vanilla
   //
   // Disable all sound output.
   //
 
-  nosound = M_CheckParm("-nosound") > 0;
+  bool nosound = M_CheckParm("-nosound") > 0;
 
   //!
   // @vanilla
@@ -175,7 +171,7 @@ void I_InitSound(bool use_sfx_prefix) {
   // Disable sound effects.
   //
 
-  nosfx = M_CheckParm("-nosfx") > 0;
+  bool nosfx = M_CheckParm("-nosfx") > 0;
 
   //!
   // @vanilla
@@ -183,14 +179,14 @@ void I_InitSound(bool use_sfx_prefix) {
   // Disable music.
   //
 
-  nomusic = M_CheckParm("-nomusic") > 0;
+  bool nomusic = M_CheckParm("-nomusic") > 0;
 
   //!
   //
   // Disable substitution music packs.
   //
 
-  nomusicpacks = M_ParmExists("-nomusicpacks");
+  bool nomusicpacks = M_ParmExists("-nomusicpacks");
 
   // Auto configure the music pack directory.
   M_SetMusicPackDir();
@@ -342,9 +338,7 @@ void * I_RegisterSong(void * data, int len) {
   // active_music_module pointer to the music pack module for the
   // duration of this particular track.
   if (music_packs_active) {
-    void * handle;
-
-    handle = music_pack_module.RegisterSong(data, len);
+    void * handle = music_pack_module.RegisterSong(data, len);
     if (handle != nullptr) {
       active_music_module = &music_pack_module;
       return handle;

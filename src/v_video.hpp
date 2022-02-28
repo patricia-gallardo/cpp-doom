@@ -18,8 +18,7 @@
 //	Functions to blit a block to the screen.
 //
 
-#ifndef __V_VIDEO__
-#define __V_VIDEO__
+#pragma once
 
 #include "doomtype.hpp"
 
@@ -103,5 +102,3 @@ void V_ScreenShot(const char * format);
 [[maybe_unused]] void V_LoadXlaTable();
 
 void V_DrawMouseSpeedBox(int speed);
-
-#endif

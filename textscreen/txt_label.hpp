@@ -12,8 +12,7 @@
 // GNU General Public License for more details.
 //
 
-#ifndef TXT_LABEL_H
-#define TXT_LABEL_H
+#pragma once
 
 /**
  * @file txt_label.h
@@ -76,5 +75,3 @@ void TXT_SetLabel(txt_label_t * label, const char * value);
  */
 
 void TXT_SetFGColor(txt_label_t * label, txt_color_t color);
-
-#endif /* #ifndef TXT_LABEL_H */

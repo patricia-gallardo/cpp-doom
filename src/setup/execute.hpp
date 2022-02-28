@@ -12,8 +12,7 @@
 // GNU General Public License for more details.
 //
 
-#ifndef TESTCONFIG_H
-#define TESTCONFIG_H
+#pragma once
 
 #include "doomtype.hpp"
 #include "textscreen.hpp"
@@ -35,5 +34,3 @@ int                 FindInstalledIWADs();
 bool                OpenFolder(const char * path);
 
 txt_window_action_t * TestConfigAction();
-
-#endif /* #ifndef TESTCONFIG_H */

@@ -15,8 +15,7 @@
 // Base interface that abstracts the text mode screen.
 //
 
-#ifndef TXT_MAIN_H
-#define TXT_MAIN_H
+#pragma once
 
 // For the moment, txt_sdl.c is the only implementation of the base
 // text mode screen API:
@@ -198,5 +197,3 @@ int TXT_vsnprintf(char * buf, size_t buf_len, const char * s, va_list args);
 
 // Safe version of snprintf().
 int TXT_snprintf(char * buf, size_t buf_len, const char * s, ...) PRINTF_ATTR(3, 4);
-
-#endif /* #ifndef TXT_MAIN_H */

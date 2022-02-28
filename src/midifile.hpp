@@ -15,13 +15,12 @@
 //     MIDI file parsing.
 //
 
-#ifndef MIDIFILE_H
-#define MIDIFILE_H
+#pragma once
 
 using midi_file_t       = struct midi_file_s;
 using midi_track_iter_t = struct midi_track_iter_s;
 
-#define MIDI_CHANNELS_PER_TRACK 16
+constexpr auto MIDI_CHANNELS_PER_TRACK = 16;
 
 enum midi_event_type_t
 {
@@ -40,12 +39,12 @@ enum midi_event_type_t
 
 enum midi_controller_t
 {
-  MIDI_CONTROLLER_BANK_SELECT    = 0x0,
-  MIDI_CONTROLLER_MODULATION     = 0x1,
-  MIDI_CONTROLLER_BREATH_CONTROL = 0x2,
-  MIDI_CONTROLLER_FOOT_CONTROL   = 0x3,
-  MIDI_CONTROLLER_PORTAMENTO     = 0x4,
-  MIDI_CONTROLLER_DATA_ENTRY     = 0x5,
+  MIDI_CONTROLLER_BANK_SELECT [[maybe_unused]] = 0x0,
+  MIDI_CONTROLLER_MODULATION [[maybe_unused]]  = 0x1,
+  MIDI_CONTROLLER_BREATH_CONTROL [[maybe_unused]] = 0x2,
+  MIDI_CONTROLLER_FOOT_CONTROL [[maybe_unused]]   = 0x3,
+  MIDI_CONTROLLER_PORTAMENTO [[maybe_unused]]     = 0x4,
+  MIDI_CONTROLLER_DATA_ENTRY [[maybe_unused]]     = 0x5,
 
   MIDI_CONTROLLER_MAIN_VOLUME = 0x7,
   MIDI_CONTROLLER_PAN         = 0xa,
@@ -65,38 +64,38 @@ enum midi_meta_event_type_t
   MIDI_META_MARKER     = 0x6,
   MIDI_META_CUE_POINT  = 0x7,
 
-  MIDI_META_CHANNEL_PREFIX = 0x20,
+  MIDI_META_CHANNEL_PREFIX [[maybe_unused]] = 0x20,
   MIDI_META_END_OF_TRACK   = 0x2f,
 
   MIDI_META_SET_TEMPO          = 0x51,
-  MIDI_META_SMPTE_OFFSET       = 0x54,
-  MIDI_META_TIME_SIGNATURE     = 0x58,
-  MIDI_META_KEY_SIGNATURE      = 0x59,
+  MIDI_META_SMPTE_OFFSET [[maybe_unused]] = 0x54,
+  MIDI_META_TIME_SIGNATURE [[maybe_unused]] = 0x58,
+  MIDI_META_KEY_SIGNATURE [[maybe_unused]]  = 0x59,
   MIDI_META_SEQUENCER_SPECIFIC = 0x7f,
 };
 
 struct midi_meta_event_data_t {
   // Meta event type:
 
-  unsigned int type;
+  unsigned int type{};
 
   // Length:
 
-  unsigned int length;
+  unsigned int length{};
 
   // Meta event data:
 
-  uint8_t * data;
+  uint8_t * data{};
 };
 
 struct midi_sysex_event_data_t {
   // Length:
 
-  unsigned int length;
+  unsigned int length{};
 
   // Event data:
 
-  uint8_t * data;
+  uint8_t * data{};
 };
 
 struct midi_channel_event_data_t {
@@ -112,13 +111,13 @@ struct midi_channel_event_data_t {
 
 struct midi_event_t {
   // Time between the previous event and this event.
-  unsigned int delta_time;
+  unsigned int delta_time{};
 
   // Type of event:
   midi_event_type_t event_type;
 
   union {
-    midi_channel_event_data_t channel;
+    midi_channel_event_data_t channel{};
     midi_meta_event_data_t    meta;
     midi_sysex_event_data_t   sysex;
   } data;
@@ -159,5 +158,3 @@ int MIDI_GetNextEvent(midi_track_iter_t * iter, midi_event_t ** event);
 // Reset an iterator to the beginning of a track.
 
 void MIDI_RestartIterator(midi_track_iter_t * iter);
-
-#endif /* #ifndef MIDIFILE_H */

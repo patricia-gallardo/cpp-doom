@@ -37,8 +37,8 @@
 //  because it will get overwritten automatically if needed.
 //
 
-#define MEM_ALIGN sizeof(void *)
-#define ZONEID    0x1d4a11
+constexpr auto MEM_ALIGN = sizeof(void *);
+constexpr auto ZONEID    = 0x1d4a11;
 
 struct memblock_t {
   int                 size; // including the header and possibly tiny fragments

@@ -14,11 +14,9 @@
 // Network client code
 //
 
-#include <cctype>
 #include <cstdio>
 #include <cstdlib>
 #include <cstring>
-
 #include <fmt/printf.h>
 
 #include "config.h"

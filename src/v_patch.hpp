@@ -16,8 +16,7 @@
 //      Refresh/rendering module, shared data struct definitions.
 //
 
-#ifndef V_PATCH_H
-#define V_PATCH_H
+#pragma once
 
 // Patches.
 // A patch holds one or more columns.
@@ -44,5 +43,3 @@ typedef PACKED_STRUCT(
 
 // column_t is a list of 0 or more post_t, (byte)-1 terminated
 using column_t = post_t;
-
-#endif

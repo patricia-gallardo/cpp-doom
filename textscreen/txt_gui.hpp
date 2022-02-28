@@ -15,12 +15,13 @@
 // Text mode emulation in SDL
 //
 
-#ifndef TXT_GUI_H
-#define TXT_GUI_H
+#pragma once
 
-#define TXT_INACTIVE_WINDOW_BACKGROUND TXT_COLOR_BLACK
-#define TXT_ACTIVE_WINDOW_BACKGROUND   TXT_COLOR_BLUE
-#define TXT_HOVER_BACKGROUND           TXT_COLOR_CYAN
+#include "txt_main.hpp"
+
+constexpr auto TXT_INACTIVE_WINDOW_BACKGROUND = TXT_COLOR_BLACK;
+constexpr auto TXT_ACTIVE_WINDOW_BACKGROUND   = TXT_COLOR_BLUE;
+constexpr auto TXT_HOVER_BACKGROUND           = TXT_COLOR_CYAN;
 
 [[maybe_unused]] void TXT_DrawDesktopBackground(const char * title);
 void                  TXT_DrawWindowFrame(const char * title, int x, int y, int w, int h);
@@ -35,5 +36,3 @@ void TXT_DrawVertScrollbar(int x, int y, int h, int cursor, int range);
 void TXT_InitClipArea();
 void TXT_PushClipArea(int x1, int x2, int y1, int y2);
 void TXT_PopClipArea();
-
-#endif /* #ifndef TXT_GUI_H */

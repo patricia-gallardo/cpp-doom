@@ -12,8 +12,7 @@
 // GNU General Public License for more details.
 //
 
-#ifndef TXT_WIDGET_H
-#define TXT_WIDGET_H
+#pragma once
 
 /**
  * @file txt_widget.h
@@ -173,5 +172,3 @@ void TXT_SetWidgetBG(void * uncast_widget);
  */
 
 int TXT_ContainsWidget(void * uncast_haystack, void * uncast_needle);
-
-#endif /* #ifndef TXT_WIDGET_H */

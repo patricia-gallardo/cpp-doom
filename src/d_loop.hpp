@@ -16,8 +16,7 @@
 //	Main loop stuff.
 //
 
-#ifndef __D_LOOP__
-#define __D_LOOP__
+#pragma once
 
 #include "net_defs.hpp"
 
@@ -81,5 +80,3 @@ bool D_NonVanillaRecord(bool conditional, const char * feature);
 
 // Check if it is permitted to play back a demo with a non-vanilla feature.
 bool D_NonVanillaPlayback(bool conditional, int lumpnum, const char * feature);
-
-#endif

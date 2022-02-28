@@ -15,8 +15,7 @@
 // Text mode emulation in SDL
 //
 
-#ifndef TXT_IO_H
-#define TXT_IO_H
+#pragma once
 
 #include "txt_main.hpp"
 
@@ -35,5 +34,3 @@ void                  TXT_BGColor(txt_color_t color, int blinking);
 void                  TXT_SaveColors(txt_saved_colors_t * save);
 void                  TXT_RestoreColors(txt_saved_colors_t * save);
 [[maybe_unused]] void TXT_ClearScreen();
-
-#endif /* #ifndef TXT_IO_H */

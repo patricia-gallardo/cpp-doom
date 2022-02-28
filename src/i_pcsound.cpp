@@ -16,21 +16,19 @@
 //
 
 #include <array>
-#include <cstring>
 #include <SDL.h>
 
 #include "doomtype.hpp"
 
 #include "deh_str.hpp"
 #include "i_sound.hpp"
-#include "m_misc.hpp"
 #include "w_wad.hpp"
 #include "z_zone.hpp"
 
 #include "lump.hpp"
 #include "pcsound.hpp"
 
-#define TIMER_FREQ 1193181 /* hz */
+constexpr auto TIMER_FREQ = 1193181; /* hz */
 
 static bool pcs_initialized = false;
 
@@ -43,7 +41,7 @@ static unsigned int current_sound_remaining = 0;
 static int          current_sound_handle    = 0;
 static int          current_sound_lump_num  = -1;
 
-static const uint16_t divisors[] = {
+static const std::array<uint16_t, 128> divisors = {
   0,
   6818,
   6628,
@@ -175,8 +173,6 @@ static const uint16_t divisors[] = {
 };
 
 static void PCSCallbackFunc(int * duration, int * freq) {
-  unsigned int tone;
-
   *duration = 1000 / 140;
 
   if (SDL_LockMutex(sound_lock) < 0) {
@@ -187,7 +183,7 @@ static void PCSCallbackFunc(int * duration, int * freq) {
   if (current_sound_lump != nullptr && current_sound_remaining > 0) {
     // Read the next tone
 
-    tone = *current_sound_pos;
+    unsigned int tone = *current_sound_pos;
 
     // Use the tone -> frequency lookup table.  See pcspkr10.zip
     // for a full discussion of this.
@@ -247,7 +243,7 @@ static bool CachePCSLump(sfxinfo_t * sfxinfo) {
 // from Doom.
 
 static bool IsDisabledSound(sfxinfo_t * sfxinfo) {
-  const char * disabled_sounds[] = {
+  const std::array disabled_sounds = {
     "posact",
     "bgact",
     "dmact",
@@ -375,12 +371,12 @@ void I_PCS_UpdateSoundParams(int, int, int) {
   // no-op.
 }
 
-static snddevice_t sound_pcsound_devices[] = {
+static std::array sound_pcsound_devices = {
   SNDDEVICE_PCSPEAKER,
 };
 
 sound_module_t sound_pcsound_module = {
-  sound_pcsound_devices,
+  sound_pcsound_devices.data(),
   static_cast<int>(std::size(sound_pcsound_devices)),
   I_PCS_InitSound,
   I_PCS_ShutdownSound,

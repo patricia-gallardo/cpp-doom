@@ -12,8 +12,7 @@
 // GNU General Public License for more details.
 //
 
-#ifndef SETUP_DISPLAY_H
-#define SETUP_DISPLAY_H
+#pragma once
 
 void ConfigDisplay(void * widget, void * user_data);
 void SetDisplayDriver();
@@ -22,5 +21,3 @@ void BindDisplayVariables();
 extern int show_endoom;
 extern int graphical_startup;
 extern int png_screenshots;
-
-#endif /* #ifndef SETUP_DISPLAY_H */

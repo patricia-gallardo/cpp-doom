@@ -15,11 +15,8 @@
 //     Networking module which uses SDL_net
 //
 
-#ifndef NET_SDL_H
-#define NET_SDL_H
+#pragma once
 
 #include "net_defs.hpp"
 
 extern net_module_t net_sdl_module;
-
-#endif /* #ifndef NET_SDL_H */

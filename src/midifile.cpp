@@ -58,7 +58,7 @@ typedef PACKED_STRUCT(
 struct midi_track_t {
   // Length in bytes:
 
-  unsigned int data_len;
+  [[maybe_unused]] unsigned int data_len;
 
   // Events in this track:
 
@@ -66,12 +66,12 @@ struct midi_track_t {
   size_t         num_events;
 };
 
-struct midi_track_iter_s {
+struct [[maybe_unused]] midi_track_iter_s {
   midi_track_t * track;
   unsigned int   position;
 };
 
-struct midi_file_s {
+struct [[maybe_unused]] midi_file_s {
   midi_header_t header;
 
   // All tracks in this file:
@@ -80,7 +80,7 @@ struct midi_file_s {
 
   // Data buffer used to store data read for SysEx or meta events:
   uint8_t *    buffer;
-  unsigned int buffer_size;
+  [[maybe_unused]] unsigned int buffer_size;
 };
 
 // Check the header of a chunk:

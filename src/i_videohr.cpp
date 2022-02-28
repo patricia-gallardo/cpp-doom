@@ -81,7 +81,6 @@ void I_SlamBlockHR(int x, int y, int w, int h, const uint8_t * src) {
   SDL_Rect        blit_rect;
   const uint8_t * srcptrs[4];
   uint8_t         srcbits[4];
-  int             bit;
 
   // Set up source pointers to read from source buffer - each 4-bit
   // pixel has its bits split into four sub-buffers
@@ -96,7 +95,7 @@ void I_SlamBlockHR(int x, int y, int w, int h, const uint8_t * src) {
 
   // Draw each pixel
 
-  bit = 0;
+  int bit = 0;
 
   for (int y1 = y; y1 < y + h; ++y1) {
     uint8_t * dest = (reinterpret_cast<uint8_t *>(hr_surface->pixels)) + y1 * hr_surface->pitch + x;

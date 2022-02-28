@@ -15,8 +15,7 @@
 //     Querying servers to find their current status.
 //
 
-#ifndef NET_QUERY_H
-#define NET_QUERY_H
+#pragma once
 
 #include "net_defs.hpp"
 
@@ -37,5 +36,3 @@ extern void         NET_Query_AddToMaster(net_addr_t * master_addr);
 extern bool         NET_Query_CheckAddedToMaster(bool * result);
 extern void         NET_Query_AddResponse(net_packet_t * packet);
 extern void         NET_RequestHolePunch(net_context_t * context, net_addr_t * addr);
-
-#endif /* #ifndef NET_QUERY_H */

@@ -16,8 +16,7 @@
 //	Disk load indicator.
 //
 
-#ifndef __V_DISKICON__
-#define __V_DISKICON__
+#pragma once
 
 #include "crispy.hpp"
 
@@ -30,5 +29,3 @@ extern void V_EnableLoadingDisk(const char * lump_name, int xoffs, int yoffs);
 extern void V_BeginRead(size_t nbytes);
 extern void V_DrawDiskIcon();
 extern void V_RestoreDiskBackground();
-
-#endif

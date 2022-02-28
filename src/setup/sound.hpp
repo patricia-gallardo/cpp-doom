@@ -12,8 +12,7 @@
 // GNU General Public License for more details.
 //
 
-#ifndef SETUP_SOUND_H
-#define SETUP_SOUND_H
+#pragma once
 
 #include "i_sound.hpp"
 
@@ -21,5 +20,3 @@ void ConfigSound(void * widget, void * user_data);
 void BindSoundVariables();
 
 extern char * snd_dmxoption;
-
-#endif /* #ifndef SETUP_SOUND_H */

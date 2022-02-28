@@ -16,12 +16,9 @@
 //    Exit text-mode ENDOOM screen.
 //
 
-#ifndef __I_ENDOOM__
-#define __I_ENDOOM__
+#pragma once
 
 // Display the Endoom screen on shutdown.  Pass a pointer to the
 // ENDOOM lump.
 
 void I_Endoom(uint8_t * data);
-
-#endif

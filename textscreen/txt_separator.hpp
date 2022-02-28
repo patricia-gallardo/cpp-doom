@@ -12,8 +12,7 @@
 // GNU General Public License for more details.
 //
 
-#ifndef TXT_SEPARATOR_H
-#define TXT_SEPARATOR_H
+#pragma once
 
 /**
  * @file txt_separator.h
@@ -59,5 +58,3 @@ txt_separator_t * TXT_NewSeparator(const char * label);
  */
 
 void TXT_SetSeparatorLabel(txt_separator_t * separator, const char * label);
-
-#endif /* #ifndef TXT_SEPARATOR_H */

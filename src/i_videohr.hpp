@@ -16,8 +16,7 @@
 //     for Hexen startup loading screen.
 //
 
-#ifndef I_VIDEOHR_H
-#define I_VIDEOHR_H
+#pragma once
 
 #include <cstdint>
 
@@ -32,5 +31,3 @@ void                  I_SetPaletteHR(const uint8_t * palette);
 [[maybe_unused]] void I_FadeToPaletteHR(const uint8_t * palette);
 [[maybe_unused]] void I_BlackPaletteHR();
 [[maybe_unused]] bool I_CheckAbortHR();
-
-#endif /* #ifndef I_VIDEOHR_H */

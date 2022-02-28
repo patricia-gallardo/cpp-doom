@@ -17,11 +17,8 @@
 //    start the game.
 //
 
-#ifndef NET_GUI_H
-#define NET_GUI_H
+#pragma once
 
 #include "doomtype.hpp"
 
 extern void NET_WaitForLaunch();
-
-#endif /* #ifndef NET_GUI_H */

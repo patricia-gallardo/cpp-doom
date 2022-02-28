@@ -12,8 +12,7 @@
 // GNU General Public License for more details.
 //
 
-#ifndef TXT_JOYB_INPUT_H
-#define TXT_JOYB_INPUT_H
+#pragma once
 
 struct txt_joystick_input_t;
 
@@ -33,5 +32,3 @@ struct txt_joystick_input_t {
 };
 
 txt_joystick_input_t * TXT_NewJoystickInput(int * variable);
-
-#endif /* #ifndef TXT_JOYB_INPUT_H */

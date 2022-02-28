@@ -14,8 +14,7 @@
 // GNU General Public License for more details.
 //
 
-#ifndef __M_CONTROLS_H__
-#define __M_CONTROLS_H__
+#pragma once
 
 struct m_controls_t {
   int key_right;
@@ -207,5 +206,3 @@ void M_BindMenuControls();
 void M_BindChatControls(unsigned int num_players);
 
 void M_ApplyPlatformDefaults();
-
-#endif /* #ifndef __M_CONTROLS_H__ */

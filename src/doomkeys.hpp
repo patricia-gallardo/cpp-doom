@@ -16,8 +16,7 @@
 //       Key definitions
 //
 
-#ifndef __DOOMKEYS__
-#define __DOOMKEYS__
+#pragma once
 
 //
 // DOOM keyboard definition.
@@ -50,18 +49,18 @@ constexpr auto KEY_PAUSE     = 0xff;
 constexpr auto KEY_EQUALS = 0x3d;
 constexpr auto KEY_MINUS  = 0x2d;
 
-#define KEY_RSHIFT (0x80 + 0x36)
-#define KEY_RCTRL  (0x80 + 0x1d)
-#define KEY_RALT   (0x80 + 0x38)
+constexpr auto KEY_RSHIFT = (0x80 + 0x36);
+constexpr auto KEY_RCTRL  = (0x80 + 0x1d);
+constexpr auto KEY_RALT   = (0x80 + 0x38);
 
-#define KEY_LALT KEY_RALT
+constexpr auto KEY_LALT = KEY_RALT;
 
 // new keys:
 
-#define KEY_CAPSLOCK (0x80 + 0x3a)
-#define KEY_NUMLOCK  (0x80 + 0x45)
-#define KEY_SCRLCK   (0x80 + 0x46)
-#define KEY_PRTSCR   (0x80 + 0x59)
+constexpr auto KEY_CAPSLOCK = (0x80 + 0x3a);
+constexpr auto KEY_NUMLOCK  = (0x80 + 0x45);
+constexpr auto KEY_SCRLCK   = (0x80 + 0x46);
+constexpr auto KEY_PRTSCR   = (0x80 + 0x59);
 
 constexpr auto KEY_HOME = (0x80 + 0x47);
 constexpr auto KEY_END  = (0x80 + 0x4f);
@@ -70,24 +69,24 @@ constexpr auto KEY_PGDN = (0x80 + 0x51);
 constexpr auto KEY_INS  = (0x80 + 0x52);
 constexpr auto KEY_DEL  = (0x80 + 0x53);
 
-#define KEYP_0 KEY_INS
-#define KEYP_1 KEY_END
-#define KEYP_2 KEY_DOWNARROW
-#define KEYP_3 KEY_PGDN
-#define KEYP_4 KEY_LEFTARROW
-#define KEYP_5 (0x80 + 0x4c)
-#define KEYP_6 KEY_RIGHTARROW
-#define KEYP_7 KEY_HOME
-#define KEYP_8 KEY_UPARROW
-#define KEYP_9 KEY_PGUP
+constexpr auto KEYP_0 = KEY_INS;
+constexpr auto KEYP_1 = KEY_END;
+constexpr auto KEYP_2 = KEY_DOWNARROW;
+constexpr auto KEYP_3 = KEY_PGDN;
+constexpr auto KEYP_4 = KEY_LEFTARROW;
+constexpr auto KEYP_5 = (0x80 + 0x4c);
+constexpr auto KEYP_6 = KEY_RIGHTARROW;
+constexpr auto KEYP_7 = KEY_HOME;
+constexpr auto KEYP_8 = KEY_UPARROW;
+constexpr auto KEYP_9 = KEY_PGUP;
 
 constexpr char KEYP_DIVIDE   = '/';
 constexpr char KEYP_PLUS     = '+';
 constexpr char KEYP_MINUS    = '-';
 constexpr char KEYP_MULTIPLY = '*';
 constexpr auto KEYP_PERIOD   = 0;
-#define KEYP_EQUALS KEY_EQUALS
-#define KEYP_ENTER  KEY_ENTER
+constexpr auto KEYP_EQUALS   = KEY_EQUALS;
+constexpr auto KEYP_ENTER    = KEY_ENTER;
 
 #define SCANCODE_TO_KEYS_ARRAY                                            \
   {                                                                       \
@@ -151,5 +150,3 @@ constexpr auto KEYP_PERIOD   = 0;
         { ',', "," }, { '.', "." }, { '/', "/" }, { '\\', "\\" }, \
         { '\'', "\'" },                                           \
   }
-
-#endif // __DOOMKEYS__

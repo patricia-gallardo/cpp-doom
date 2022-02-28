@@ -16,8 +16,7 @@
 //     Client Interface to Midi Server
 //
 
-#ifndef __I_MIDIPIPE__
-#define __I_MIDIPIPE__
+#pragma once
 
 #if _WIN32
 
@@ -42,7 +41,5 @@ bool I_MidiPipe_InitServer();
 #include "doomtype.hpp"
 
 static const bool midi_server_registered = false;
-
-#endif
 
 #endif

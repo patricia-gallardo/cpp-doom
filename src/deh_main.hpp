@@ -15,8 +15,7 @@
 // Dehacked entrypoint and common code
 //
 
-#ifndef DEH_MAIN_H
-#define DEH_MAIN_H
+#pragma once
 
 #include "deh_str.hpp"
 #include "doomtype.hpp"
@@ -43,5 +42,3 @@ extern bool deh_allow_extended_strings;
 extern bool deh_allow_long_strings;
 extern bool deh_allow_long_cheats;
 extern bool deh_apply_cheats;
-
-#endif /* #ifndef DEH_MAIN_H */

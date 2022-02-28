@@ -19,6 +19,7 @@
 
 #include "config.h"
 
+#include <array>
 #include <cassert>
 #include <cstdio>
 #include <cstdlib>
@@ -28,7 +29,6 @@
 
 #include <SDL.h>
 #include <SDL_mixer.h>
-#include <vector>
 
 #ifdef HAVE_LIBSAMPLERATE
 #include <samplerate.h>
@@ -38,7 +38,6 @@
 #include "i_sound.hpp"
 #include "i_swap.hpp"
 #include "i_system.hpp"
-#include "m_misc.hpp"
 #include "w_wad.hpp"
 #include "z_zone.hpp"
 
@@ -47,7 +46,7 @@
 
 #define LOW_PASS_FILTER
 //#define DEBUG_DUMP_WAVS
-#define NUM_CHANNELS 16 * 2 // [crispy] support up to 32 sound channels
+constexpr auto NUM_CHANNELS = 16 * 2; // [crispy] support up to 32 sound channels
 
 using allocated_sound_t = struct allocated_sound_s;
 
@@ -61,7 +60,7 @@ struct allocated_sound_s {
 
 static bool sound_initialized = false;
 
-static allocated_sound_t * channels_playing[NUM_CHANNELS];
+static std::array<allocated_sound_t *, NUM_CHANNELS> channels_playing;
 
 static int    mixer_freq;
 static Uint16 mixer_format;
@@ -1046,7 +1045,7 @@ static bool I_SDL_InitSound(bool _use_sfx_prefix) {
   return true;
 }
 
-static snddevice_t sound_sdl_devices[] = {
+static std::array sound_sdl_devices = {
   SNDDEVICE_SB,
   SNDDEVICE_PAS,
   SNDDEVICE_GUS,
@@ -1056,7 +1055,7 @@ static snddevice_t sound_sdl_devices[] = {
 };
 
 sound_module_t sound_sdl_module = {
-  sound_sdl_devices,
+  sound_sdl_devices.data(),
   static_cast<int>(std::size(sound_sdl_devices)),
   I_SDL_InitSound,
   I_SDL_ShutdownSound,

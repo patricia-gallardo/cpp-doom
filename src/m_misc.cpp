@@ -327,7 +327,7 @@ void M_ForceLowercase(char * text) {
 // Case-insensitive version of strstr()
 //
 
-const char * M_StrCaseStr(const char * haystack, const char * needle) {
+[[maybe_unused]] const char * M_StrCaseStr(const char * haystack, const char * needle) {
   size_t haystack_len = strlen(haystack);
   size_t needle_len   = strlen(needle);
 

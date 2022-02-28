@@ -36,7 +36,7 @@
 
 #include <SDL_net.h>
 
-#define DEFAULT_PORT 2342
+constexpr auto DEFAULT_PORT = 2342;
 
 static bool        initted = false;
 static int         port    = DEFAULT_PORT;

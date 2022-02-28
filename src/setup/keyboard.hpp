@@ -12,12 +12,9 @@
 // GNU General Public License for more details.
 //
 
-#ifndef SETUP_KEYBOARD_H
-#define SETUP_KEYBOARD_H
+#pragma once
 
 void ConfigKeyboard(void * widget, void * user_data);
 void BindKeyboardVariables();
 
 extern int vanilla_keyboard_mapping;
-
-#endif /* #ifndef SETUP_KEYBOARD_H */

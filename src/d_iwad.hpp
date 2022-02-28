@@ -15,8 +15,7 @@
 //     Find IWAD and initialize according to IWAD type.
 //
 
-#ifndef __D_IWAD__
-#define __D_IWAD__
+#pragma once
 
 #include "d_mode.hpp"
 
@@ -46,5 +45,3 @@ const char *          D_SaveGameIWADName(GameMission_t gamemission);
 const char *          D_SuggestIWADName(GameMission_t mission, GameMode_t mode);
 const char *          D_SuggestGameName(GameMission_t mission, GameMode_t mode);
 [[maybe_unused]] void D_CheckCorrectIWAD(GameMission_t mission);
-
-#endif

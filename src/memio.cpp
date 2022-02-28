@@ -31,7 +31,7 @@ enum memfile_mode_t
   MODE_WRITE,
 };
 
-struct _MEMFILE {
+struct [[maybe_unused]] _MEMFILE {
   unsigned char * buf;
   size_t          buflen;
   size_t          alloced;
@@ -137,7 +137,7 @@ void mem_fclose(MEMFILE * stream) {
   Z_Free(stream);
 }
 
-long mem_ftell(MEMFILE * stream) {
+[[maybe_unused]] long mem_ftell(MEMFILE * stream) {
   return stream->position;
 }
 

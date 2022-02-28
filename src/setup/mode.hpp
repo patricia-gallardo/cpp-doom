@@ -12,8 +12,7 @@
 // GNU General Public License for more details.
 //
 
-#ifndef SETUP_MODE_H
-#define SETUP_MODE_H
+#pragma once
 
 #include "d_iwad.hpp"
 #include "d_mode.hpp"
@@ -26,5 +25,3 @@ void            InitBindings();
 const char *    GetExecutableName();
 const char *    GetGameTitle();
 const iwad_t ** GetIwads();
-
-#endif /* #ifndef SETUP_MODE_H */

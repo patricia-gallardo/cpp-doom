@@ -15,8 +15,7 @@
 // Definitions for use in the dehacked code
 //
 
-#ifndef DEH_DEFS_H
-#define DEH_DEFS_H
+#pragma once
 
 #include "sha1.hpp"
 
@@ -52,5 +51,3 @@ struct [[maybe_unused]] deh_section_s {
 
   deh_sha1_hash_t sha1_hash;
 };
-
-#endif /* #ifndef DEH_DEFS_H */

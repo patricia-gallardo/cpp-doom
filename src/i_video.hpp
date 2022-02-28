@@ -16,8 +16,7 @@
 //	System specific interface stuff.
 //
 
-#ifndef __I_VIDEO__
-#define __I_VIDEO__
+#pragma once
 
 #include "crispy.hpp"
 #include "doomtype.hpp"
@@ -109,8 +108,8 @@ struct i_video_t {
   // The screen buffer; this is modified to draw things to the screen
   pixel_t * I_VideoBuffer;
 
-  int screen_width;
-  int screen_height;
+  [[maybe_unused]] int screen_width;
+  [[maybe_unused]] int screen_height;
   // Run in full screen mode?  (int type for config code)
   int fullscreen;
   // Aspect ratio correction mode
@@ -133,5 +132,3 @@ struct i_video_t {
 extern i_video_t * const g_i_video_globals;
 
 void I_GetWindowPosition(int * x, int * y, int w, int h);
-
-#endif
