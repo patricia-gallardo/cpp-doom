@@ -54,7 +54,7 @@ struct execute_context_t {
 // Returns the path to a temporary file of the given name, stored
 // inside the system temporary directory.
 
-static char * TempFile(const char * s) {
+static char * TempFile(cstring_view s) {
   const char * tempdir = nullptr;
 
 #ifdef _WIN32
@@ -125,9 +125,9 @@ void AddCmdLineParameter(execute_context_t * context, const char * s, ...) {
 
 #if defined(_WIN32)
 
-bool OpenFolder(const char * path) {
+bool OpenFolder(cstring_view path) {
   // "If the function succeeds, it returns a value greater than 32."
-  HINSTANCE pHinstance = ShellExecute(nullptr, "open", path, nullptr, nullptr, SW_SHOWDEFAULT);
+  HINSTANCE pHinstance = ShellExecute(nullptr, "open", path.c_str(), nullptr, nullptr, SW_SHOWDEFAULT);
   // https://docs.microsoft.com/en-us/windows/win32/api/shellapi/nf-shellapi-shellexecutea?redirectedfrom=MSDN#return-value
   return reinterpret_cast<intptr_t>(pHinstance) > 32;
 }
@@ -157,7 +157,7 @@ static void ConcatWCString(wchar_t * buf, const char * value) {
 //
 // "program" "arg"
 
-static wchar_t * BuildCommandLine(const char * program, const char * arg) {
+static wchar_t * BuildCommandLine(cstring_view program, const char * arg) {
   wchar_t   exe_path[MAX_PATH];
   wchar_t * result;
   wchar_t * sep;
@@ -168,7 +168,7 @@ static wchar_t * BuildCommandLine(const char * program, const char * arg) {
 
   // Allocate buffer to contain result string.
 
-  result = static_cast<wchar_t *>(calloc(wcslen(exe_path) + strlen(program) + strlen(arg) + 6,
+  result = static_cast<wchar_t *>(calloc(wcslen(exe_path) + strlen(program.c_str()) + strlen(arg) + 6,
                                          sizeof(wchar_t)));
 
   wcscpy(result, L"\"");
@@ -185,7 +185,7 @@ static wchar_t * BuildCommandLine(const char * program, const char * arg) {
 
   // Concatenate the name of the program:
 
-  ConcatWCString(result, program);
+  ConcatWCString(result, program.c_str());
 
   // End of program name, start of argument:
 
@@ -198,7 +198,7 @@ static wchar_t * BuildCommandLine(const char * program, const char * arg) {
   return result;
 }
 
-static int ExecuteCommand(const char * program, const char * arg) {
+static int ExecuteCommand(cstring_view program, const char * arg) {
   STARTUPINFOW        startup_info;
   PROCESS_INFORMATION proc_info;
   wchar_t *           command;
@@ -230,13 +230,13 @@ static int ExecuteCommand(const char * program, const char * arg) {
 
 #else
 
-bool OpenFolder(const char * path) {
+bool OpenFolder(cstring_view path) {
   char * cmd = nullptr;
 
 #if defined(__MACOSX__)
-  cmd = M_StringJoin("open \"", path, "\"", nullptr);
+  cmd = M_StringJoin("open \"", path.c_str(), "\"", nullptr);
 #else
-  cmd = M_StringJoin("xdg-open \"", path, "\"", nullptr);
+  cmd = M_StringJoin("xdg-open \"", path.c_str(), "\"", nullptr);
 #endif
   int result = system(cmd);
   free(cmd);
@@ -247,7 +247,7 @@ bool OpenFolder(const char * path) {
 // Given the specified program name, get the full path to the program,
 // assuming that it is in the same directory as this program is.
 
-static char * GetFullExePath(const char * program) {
+static char * GetFullExePath(cstring_view program) {
   char * result = nullptr;
   size_t result_len = 0;
   unsigned int path_len = 0;
@@ -258,19 +258,19 @@ static char * GetFullExePath(const char * program) {
     result = M_StringDuplicate(program);
   } else {
     path_len = static_cast<unsigned int>(sep - myargv[0] + 1);
-    result_len = strlen(program) + path_len + 1;
+    result_len = strlen(program.c_str()) + path_len + 1;
     result = static_cast<char *>(malloc(result_len));
 
     M_StringCopy(result, myargv[0], result_len);
     result[path_len] = '\0';
 
-    M_StringConcat(result, program, result_len);
+    M_StringConcat(result, program.c_str(), result_len);
   }
 
   return result;
 }
 
-static int ExecuteCommand(const char * program, const char * arg) {
+static int ExecuteCommand(cstring_view program, const char * arg) {
   int result;
   const char * argv[3];
 

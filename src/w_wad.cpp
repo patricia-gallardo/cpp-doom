@@ -70,14 +70,15 @@ static char *       reloadname   = nullptr;
 static int          reloadlump   = -1;
 
 // Hash function used for lump names.
-unsigned int W_LumpNameHash(const char * s) {
+unsigned int W_LumpNameHash(cstring_view name) {
   // This is the djb2 string hash function, modded to work on strings
   // that have a maximum length of 8.
 
   unsigned int result = 5381;
+  const char * str = name.c_str();
 
-  for (unsigned int i = 0; i < 8 && s[i] != '\0'; ++i) {
-    result = ((result << 5) ^ result) ^ static_cast<unsigned int>(toupper(s[i]));
+  for (unsigned int i = 0; i < 8 && str[i] != '\0'; ++i) {
+    result = ((result << 5) ^ result) ^ static_cast<unsigned int>(toupper(str[i]));
   }
 
   return result;
@@ -96,9 +97,10 @@ unsigned int W_LumpNameHash(const char * s) {
 // Other files are single lumps with the base filename
 //  for the lump name.
 
-wad_file_t * W_AddFile(const char * filename) {
+wad_file_t * W_AddFile(cstring_view name) {
   // If the filename begins with a ~, it indicates that we should use the
   // reload hack.
+  const char * filename = name.c_str();
   if (filename[0] == '~') {
     if (reloadname != nullptr) {
       I_Error("Prefixing a WAD filename with '~' indicates that the "
@@ -233,7 +235,7 @@ wad_file_t * W_AddFile(const char * filename) {
 // Returns -1 if name not found.
 //
 
-lumpindex_t W_CheckNumForName(const char * name) {
+lumpindex_t W_CheckNumForName(cstring_view name) {
   // Do we have a hash table yet?
 
   if (lumphash != nullptr) {
@@ -242,7 +244,7 @@ lumpindex_t W_CheckNumForName(const char * name) {
     int hash = static_cast<int>(W_LumpNameHash(name) % numlumps);
 
     for (lumpindex_t i = lumphash[hash]; i != -1; i = lumpinfo[i]->next) {
-      if (!strncasecmp(lumpinfo[i]->name, name, 8)) {
+      if (!strncasecmp(lumpinfo[i]->name, name.c_str(), 8)) {
         return i;
       }
     }
@@ -252,7 +254,7 @@ lumpindex_t W_CheckNumForName(const char * name) {
     // scan backwards so patch lump files take precedence
 
     for (auto i = static_cast<lumpindex_t>(numlumps - 1); i >= 0; --i) {
-      if (!strncasecmp(lumpinfo[i]->name, name, 8)) {
+      if (!strncasecmp(lumpinfo[i]->name, name.c_str(), 8)) {
         return i;
       }
     }
@@ -267,7 +269,7 @@ lumpindex_t W_CheckNumForName(const char * name) {
 // W_GetNumForName
 // Calls W_CheckNumForName, but bombs out if not found.
 //
-lumpindex_t W_GetNumForName(const char * name) {
+lumpindex_t W_GetNumForName(cstring_view name) {
   lumpindex_t i = W_CheckNumForName(name);
 
   if (i < 0) {
@@ -277,9 +279,9 @@ lumpindex_t W_GetNumForName(const char * name) {
   return i;
 }
 
-lumpindex_t W_CheckNumForNameFromTo(const char * name, int from, int to) {
+lumpindex_t W_CheckNumForNameFromTo(cstring_view name, int from, int to) {
   for (lumpindex_t i = from; i >= to; i--) {
-    if (!strncasecmp(lumpinfo[i]->name, name, 8)) {
+    if (!strncasecmp(lumpinfo[i]->name, name.c_str(), 8)) {
       return i;
     }
   }
@@ -372,7 +374,7 @@ void W_ReadLump(lumpindex_t lump, void * dest) {
 //
 // W_CacheLumpName
 //
-[[nodiscard]] void * W_CacheLumpName(const char * name, int tag) {
+[[nodiscard]] void * W_CacheLumpName(cstring_view name, int tag) {
   return W_CacheLumpNum(W_GetNumForName(name), tag);
 }
 
@@ -400,7 +402,7 @@ void W_ReleaseLumpNum(lumpindex_t lumpnum) {
   }
 }
 
-void W_ReleaseLumpName(const char * name) {
+void W_ReleaseLumpName(cstring_view name) {
   W_ReleaseLumpNum(W_GetNumForName(name));
 }
 
@@ -545,7 +547,7 @@ bool W_IsIWADLump(const lumpinfo_t * lump) {
 }
 
 // [crispy] dump lump data into a new LMP file
-int W_LumpDump(const char * lumpname) {
+int W_LumpDump(cstring_view lumpname) {
   const auto i = W_CheckNumForName(lumpname);
 
   if (i < 0 || !lumpinfo[i]->size) {
@@ -553,7 +555,7 @@ int W_LumpDump(const char * lumpname) {
   }
 
   // [crispy] open file for writing
-  std::string filename = std::string(lumpname) + ".lmp";
+  std::string filename = std::string(lumpname.c_str()) + ".lmp";
   M_ForceLowercase(filename.data());
   FILE * fp = fopen(filename.c_str(), "wb");
   if (!fp) {

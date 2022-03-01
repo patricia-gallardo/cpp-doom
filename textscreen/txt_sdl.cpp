@@ -132,7 +132,7 @@ static int Win32_UseLargeFont() {
 
 #endif
 
-static const txt_font_t * FontForName(const char * name) {
+static const txt_font_t * FontForName(cstring_view name) {
   const txt_font_t * fonts[] = {
     &small_font,
     &normal_font,
@@ -142,7 +142,7 @@ static const txt_font_t * FontForName(const char * name) {
   };
 
   for (int i = 0; fonts[i]->name != nullptr; ++i) {
-    if (!strcmp(fonts[i]->name, name)) {
+    if (!strcmp(fonts[i]->name, name.c_str())) {
       return fonts[i];
     }
   }
@@ -610,8 +610,8 @@ int TXT_UnicodeCharacter(unsigned int c) {
 }
 
 // Returns true if the given UTF8 key name is printable to the screen.
-static int PrintableName(const char * s) {
-  const char * p = s;
+static int PrintableName(cstring_view s) {
+  const char * p = s.c_str();
   while (*p != '\0') {
     unsigned int c = TXT_DecodeUTF8(&p);
     if (TXT_UnicodeCharacter(c) < 0) {
@@ -746,8 +746,8 @@ void TXT_SetInputMode(txt_input_mode_t mode) {
   input_mode = mode;
 }
 
-void TXT_SetWindowTitle(const char * title) {
-  SDL_SetWindowTitle(TXT_SDLWindow, title);
+void TXT_SetWindowTitle(cstring_view title) {
+  SDL_SetWindowTitle(TXT_SDLWindow, title.c_str());
 }
 
 void TXT_SDL_SetEventCallback(TxtSDLEventCallbackFunc callback, void * user_data) {

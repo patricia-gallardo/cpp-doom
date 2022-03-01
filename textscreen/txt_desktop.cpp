@@ -121,7 +121,7 @@ int TXT_LowerWindow(txt_window_t * window) {
   return 0;
 }
 
-static void DrawDesktopBackground(const char * title) {
+static void DrawDesktopBackground(cstring_view title) {
   unsigned char * screendata = TXT_GetScreenData();
 
   // Fill the screen with gradient characters
@@ -186,9 +186,9 @@ static void DrawHelpIndicator() {
   TXT_DrawString("=Help ");
 }
 
-void TXT_SetDesktopTitle(const char * title) {
+void TXT_SetDesktopTitle(cstring_view title) {
   free(desktop_title);
-  desktop_title = strdup(title);
+  desktop_title = strdup(title.c_str());
   TXT_SetWindowTitle(title);
 }
 

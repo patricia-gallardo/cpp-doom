@@ -17,6 +17,7 @@
 
 #pragma once
 
+#include "cstring_view.hpp"
 #include "d_mode.hpp"
 
 #define IWAD_MASK_DOOM ((1 << doom)        \
@@ -36,9 +37,9 @@ struct iwad_t {
   const char *  description;
 };
 
-bool                  D_IsIWADName(const char * name);
-char *                D_FindWADByName(const char * filename);
-char *                D_TryFindWADByName(const char * filename);
+bool                  D_IsIWADName(cstring_view name);
+char *                D_FindWADByName(cstring_view filename);
+char *                D_TryFindWADByName(cstring_view filename);
 char *                D_FindIWAD(int mask, GameMission_t * mission);
 const iwad_t **       D_FindAllIWADs(int mask);
 const char *          D_SaveGameIWADName(GameMission_t gamemission);

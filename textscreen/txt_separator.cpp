@@ -84,13 +84,13 @@ txt_widget_class_t txt_separator_class = {
   nullptr,
 };
 
-txt_separator_t * TXT_NewSeparator(const char * label) {
+txt_separator_t * TXT_NewSeparator(cstring_view label) {
   auto * separator = create_struct<txt_separator_t>();
 
   TXT_InitWidget(separator, &txt_separator_class);
 
   separator->label = nullptr;
-  TXT_SetSeparatorLabel(separator, label);
+  TXT_SetSeparatorLabel(separator, label.c_str());
 
   return separator;
 }

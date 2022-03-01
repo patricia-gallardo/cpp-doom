@@ -25,15 +25,15 @@ constexpr auto W_NWT_MERGE_FLATS   = 0x2;
 
 // Add a new WAD and merge it into the main directory
 
-void W_MergeFile(const char * filename);
+void W_MergeFile(cstring_view filename);
 
 // NWT-style merging
 
-void W_NWTMergeFile(const char * filename, int flags);
+void W_NWTMergeFile(cstring_view filename, int flags);
 
 // Acts the same as NWT's "-merge" option.
 
-void W_NWTDashMerge(const char * filename);
+void W_NWTDashMerge(cstring_view filename);
 
 // Debug function that prints the WAD directory.
 

@@ -18,6 +18,7 @@
 
 #pragma once
 
+#include "cstring_view.hpp"
 #include "d_event.hpp"
 #include "d_ticcmd.hpp"
 
@@ -67,11 +68,11 @@ void I_AtExit(atexit_func_t func, bool run_if_error);
 
 // Print startup banner copyright message.
 
-void I_PrintStartupBanner(const char * gamedescription);
+void I_PrintStartupBanner(cstring_view gamedescription);
 
 // Print a centered text banner displaying the given string.
 
-void I_PrintBanner(const char * text);
+void I_PrintBanner(cstring_view text);
 
 // Print a dividing line for startup banners.
 

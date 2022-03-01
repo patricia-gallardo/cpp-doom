@@ -476,9 +476,9 @@ bool NET_ReadPRNGSeed(net_packet_t * packet, prng_seed_t seed) {
   NET_WriteBlob(packet, seed, sizeof(prng_seed_t));
 }
 
-static net_protocol_t ParseProtocolName(const char * name) {
+static net_protocol_t ParseProtocolName(cstring_view name) {
   for (auto & protocol_name : protocol_names) {
-    if (!strcmp(protocol_name.name, name)) {
+    if (!strcmp(protocol_name.name, name.c_str())) {
       return protocol_name.protocol;
     }
   }

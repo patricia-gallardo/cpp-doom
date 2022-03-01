@@ -106,11 +106,11 @@ txt_widget_class_t txt_radiobutton_class = {
   nullptr,
 };
 
-txt_radiobutton_t * TXT_NewRadioButton(const char * label, int * variable, int value) {
+txt_radiobutton_t * TXT_NewRadioButton(cstring_view label, int * variable, int value) {
   auto * radiobutton = create_struct<txt_radiobutton_t>();
 
   TXT_InitWidget(radiobutton, &txt_radiobutton_class);
-  radiobutton->label    = strdup(label);
+  radiobutton->label    = strdup(label.c_str());
   radiobutton->variable = variable;
   radiobutton->value    = value;
 

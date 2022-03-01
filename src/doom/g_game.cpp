@@ -2268,8 +2268,8 @@ void G_BeginRecording() {
 // G_PlayDemo
 //
 
-void G_DeferedPlayDemo(const char * name) {
-  defdemoname = name;
+void G_DeferedPlayDemo(cstring_view name) {
+  defdemoname = name.c_str();
   gameaction  = ga_playdemo;
 
   // [crispy] fast-forward demo up to the desired map

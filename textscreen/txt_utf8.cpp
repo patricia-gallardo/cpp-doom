@@ -86,12 +86,12 @@ unsigned int TXT_DecodeUTF8(const char ** ptr) {
 
 // Count the number of characters in a UTF-8 string.
 
-unsigned int TXT_UTF8_Strlen(const char * s) {
+unsigned int TXT_UTF8_Strlen(cstring_view s) {
   const char * p;
   unsigned int result = 0;
   unsigned int c;
 
-  for (p = s; *p != '\0';) {
+  for (p = s.c_str(); *p != '\0';) {
     c = TXT_DecodeUTF8(&p);
 
     if (c == 0) {
@@ -106,8 +106,8 @@ unsigned int TXT_UTF8_Strlen(const char * s) {
 
 // Skip past the first n characters in a UTF-8 string.
 
-char * TXT_UTF8_SkipChars(const char * s, unsigned int n) {
-  const char * p = s;
+char * TXT_UTF8_SkipChars(cstring_view s, unsigned int n) {
+  const char * p = s.c_str();
 
   for (unsigned int i = 0; i < n; ++i) {
     if (TXT_DecodeUTF8(&p) == 0) {

@@ -106,18 +106,18 @@ txt_widget_class_t txt_checkbox_class = {
   nullptr,
 };
 
-txt_checkbox_t * TXT_NewCheckBox(const char * label, int * variable) {
+txt_checkbox_t * TXT_NewCheckBox(cstring_view label, int * variable) {
   auto * checkbox = create_struct<txt_checkbox_t>();
 
   TXT_InitWidget(checkbox, &txt_checkbox_class);
-  checkbox->label    = strdup(label);
+  checkbox->label    = strdup(label.c_str());
   checkbox->variable = variable;
   checkbox->inverted = 0;
 
   return checkbox;
 }
 
-txt_checkbox_t * TXT_NewInvertedCheckBox(const char * label, int * variable) {
+txt_checkbox_t * TXT_NewInvertedCheckBox(cstring_view label, int * variable) {
   txt_checkbox_t * result = TXT_NewCheckBox(label, variable);
   result->inverted        = 1;
 

@@ -152,7 +152,7 @@ void TXT_SetLabel(txt_label_t * label, const char * value) {
   }
 }
 
-txt_label_t * TXT_NewLabel(const char * text) {
+txt_label_t * TXT_NewLabel(cstring_view text) {
   auto * label = create_struct<txt_label_t>();
 
   TXT_InitWidget(label, &txt_label_class);
@@ -164,7 +164,7 @@ txt_label_t * TXT_NewLabel(const char * text) {
   label->bgcolor = TXT_COLOR_BLACK;
   label->fgcolor = TXT_COLOR_BLACK;
 
-  TXT_SetLabel(label, text);
+  TXT_SetLabel(label, text.c_str());
 
   return label;
 }

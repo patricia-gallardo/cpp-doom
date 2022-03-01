@@ -36,5 +36,5 @@ struct musinfo_t {
 
 extern musinfo_t musinfo;
 
-extern void S_ParseMusInfo(const char * mapid);
+extern void S_ParseMusInfo(cstring_view mapid);
 extern void T_MusInfo();

@@ -49,8 +49,8 @@ static deh_context_t * DEH_NewContext() {
 // Open a dehacked file for reading
 // Returns nullptr if open failed
 
-deh_context_t * DEH_OpenFile(const char * filename) {
-  FILE * fstream = fopen(filename, "r");
+deh_context_t * DEH_OpenFile(cstring_view filename) {
+  FILE * fstream = fopen(filename.c_str(), "r");
 
   if (fstream == nullptr)
     return nullptr;

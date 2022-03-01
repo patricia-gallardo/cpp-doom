@@ -17,6 +17,8 @@
 
 #pragma once
 
+#include "cstring_view.hpp"
+
 /**
  * @file txt_fileselect.h
  *
@@ -49,7 +51,7 @@ int TXT_CanSelectFiles();
  *                    to select directories.
  */
 
-char * TXT_SelectFile(const char * prompt, const char ** extensions);
+char * TXT_SelectFile(cstring_view prompt, const char ** extensions);
 
 /**
  * Create a new txt_fileselect_t widget.

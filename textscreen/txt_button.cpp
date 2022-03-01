@@ -84,18 +84,18 @@ void TXT_SetButtonLabel(txt_button_t * button, const char * label) {
   button->label = strdup(label);
 }
 
-txt_button_t * TXT_NewButton(const char * label) {
+txt_button_t * TXT_NewButton(cstring_view label) {
   auto * button = create_struct<txt_button_t>();
 
   TXT_InitWidget(button, &txt_button_class);
-  button->label = strdup(label);
+  button->label = strdup(label.c_str());
 
   return button;
 }
 
 // Button with a callback set automatically
 
-txt_button_t * TXT_NewButton2(const char * label, TxtWidgetSignalFunc func, void * user_data) {
+txt_button_t * TXT_NewButton2(cstring_view label, TxtWidgetSignalFunc func, void * user_data) {
   txt_button_t * button = TXT_NewButton(label);
 
   TXT_SignalConnect(button, "pressed", func, user_data);

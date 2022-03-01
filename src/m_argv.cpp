@@ -59,7 +59,7 @@ int M_CheckParmWithArgs(cstring_view check, int num_args) {
 // line arguments, false if not.
 //
 
-bool M_ParmExists(const char * check) {
+bool M_ParmExists(cstring_view check) {
   return M_CheckParm(check) != 0;
 }
 
@@ -235,7 +235,7 @@ enum
   FILETYPE_DEH     = 0x8,
 };
 
-static int GuessFileType(const char * name) {
+static int GuessFileType(cstring_view name) {
   int          ret = FILETYPE_UNKNOWN;
   const char * base;
   char *       lower;

@@ -48,25 +48,25 @@ struct lumpinfo_s {
 extern lumpinfo_t ** lumpinfo;
 extern size_t        numlumps;
 
-wad_file_t * W_AddFile(const char * filename);
+wad_file_t * W_AddFile(cstring_view filename);
 void         W_Reload();
 
-lumpindex_t W_CheckNumForName(const char * name);
-lumpindex_t W_GetNumForName(const char * name);
-lumpindex_t W_CheckNumForNameFromTo(const char * name, int from, int to);
+lumpindex_t W_CheckNumForName(cstring_view name);
+lumpindex_t W_GetNumForName(cstring_view name);
+lumpindex_t W_CheckNumForNameFromTo(cstring_view name, int from, int to);
 
 size_t W_LumpLength(lumpindex_t lump);
 void   W_ReadLump(lumpindex_t lump, void * dest);
 
 void * W_CacheLumpNum(lumpindex_t lump, int tag);
-void * W_CacheLumpName(const char * name, int tag);
+void * W_CacheLumpName(cstring_view name, int tag);
 
 void W_GenerateHashTable();
 
-extern unsigned int W_LumpNameHash(const char * s);
+extern unsigned int W_LumpNameHash(cstring_view s);
 
 void W_ReleaseLumpNum(lumpindex_t lump);
-void W_ReleaseLumpName(const char * name);
+void W_ReleaseLumpName(cstring_view name);
 
 const char * W_WadNameForLump(const lumpinfo_t * lump);
 bool         W_IsIWADLump(const lumpinfo_t * lump);

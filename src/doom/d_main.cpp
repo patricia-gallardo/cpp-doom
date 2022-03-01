@@ -722,7 +722,7 @@ static const char * GetGameName(cstring_view gamename) {
   return gamename.c_str();
 }
 
-static void SetMissionForPackName(const char * pack_name) {
+static void SetMissionForPackName(cstring_view pack_name) {
   static constexpr struct
   {
     const char *  name;
@@ -1777,7 +1777,9 @@ void D_DoomMain() {
   // we've finished loading Dehacked patches.
   D_SetGameDescription();
 
-  g_doomstat_globals->savegamedir = M_GetSaveGameDir(D_SaveGameIWADName(g_doomstat_globals->gamemission));
+  GameMission_t gamemission       = g_doomstat_globals->gamemission;
+  const char *  iwadname          = D_SaveGameIWADName(gamemission);
+  g_doomstat_globals->savegamedir = M_GetSaveGameDir(iwadname);
 
   // Check for -file in shareware
   if (g_doomstat_globals->modifiedgame && (g_doomstat_globals->gamevariant != freedoom)) {

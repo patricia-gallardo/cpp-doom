@@ -19,6 +19,7 @@
 
 #include <cstdio>
 
+#include "cstring_view.hpp"
 #include "d_ticcmd.hpp"
 #include "doomtype.hpp"
 #include "sha1.hpp"
@@ -84,7 +85,7 @@ struct _net_module_s {
 
   // Try to resolve a name to an address
 
-  net_addr_t * (*ResolveAddress)(const char * addr);
+  net_addr_t * (*ResolveAddress)(cstring_view addr);
 };
 
 // net_addr_t

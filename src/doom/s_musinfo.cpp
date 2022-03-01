@@ -59,7 +59,7 @@ static void CheckOpen();
 static void OpenScript(char * name, int type);
 static void SC_OpenLump(char * name);
 static void SC_Close();
-static bool SC_Compare(const char * text);
+static bool SC_Compare(cstring_view text);
 
 // EXTERNAL DATA DECLARATIONS ----------------------------------------------
 
@@ -212,7 +212,7 @@ static bool SC_GetString() {
 //
 //==========================================================================
 
-static bool SC_Compare(const char * text) {
+static bool SC_Compare(cstring_view text) {
   return iequals(text, sc_String);
 }
 
@@ -237,7 +237,7 @@ musinfo_t musinfo = {};
 // Parses MUSINFO lump.
 //
 
-void S_ParseMusInfo(const char * mapid) {
+void S_ParseMusInfo(cstring_view mapid) {
   if (W_CheckNumForName("MUSINFO") != -1) {
     int inMap = false;
 

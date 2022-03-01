@@ -284,13 +284,13 @@ void NET_SDL_AddrToString(net_addr_t * addr, char * buffer, int buffer_len) {
   }
 }
 
-net_addr_t * NET_SDL_ResolveAddress(const char * address) {
-  const auto * colon = std::strchr(address, ':');
+net_addr_t * NET_SDL_ResolveAddress(cstring_view address) {
+  const auto * colon = std::strchr(address.c_str(), ':');
 
   char * addr_hostname = M_StringDuplicate(address);
   int    addr_port     = 0;
   if (colon != nullptr) {
-    addr_hostname[colon - address] = '\0';
+    addr_hostname[colon - address.c_str()] = '\0';
     addr_port                      = std::atoi(colon + 1);
   } else {
     addr_port = port;

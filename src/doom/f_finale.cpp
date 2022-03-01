@@ -669,9 +669,9 @@ bool F_CastResponder(event_t * ev) {
   return true;
 }
 
-void F_CastPrint(const char * text) {
+void F_CastPrint(cstring_view text) {
   // find width
-  const char * ch    = text;
+  const char * ch    = text.c_str();
   int          width = 0;
 
   while (ch) {
@@ -690,7 +690,7 @@ void F_CastPrint(const char * text) {
 
   // draw it
   int cx = ORIGWIDTH / 2 - width / 2;
-  ch     = text;
+  ch     = text.c_str();
   while (ch) {
     int c = *ch++;
     if (!c)

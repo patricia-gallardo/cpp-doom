@@ -40,7 +40,7 @@ static wad_file_class_t * wad_file_classes[] = {
   &stdc_wad_file,
 };
 
-wad_file_t * W_OpenFile(const char * path) {
+wad_file_t * W_OpenFile(cstring_view path) {
   //!
   // @category obscure
   //

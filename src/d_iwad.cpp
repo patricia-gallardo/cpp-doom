@@ -48,7 +48,7 @@ static const iwad_t iwads[] = {
   { "strife1.wad",   strife,    commercial, "Strife"                         },
 };
 
-bool D_IsIWADName(const char * name) {
+bool D_IsIWADName(cstring_view name) {
   for (const auto & iwad : iwads) {
     if (iequals(name, iwad.name)) {
       return true;
@@ -396,8 +396,8 @@ static void CheckDOSDefaults() {
 // Returns true if the specified path is a path to a file
 // of the specified name.
 
-static bool DirIsFile(const char * path, const char * filename) {
-  return strchr(path, DIR_SEPARATOR) != nullptr
+static bool DirIsFile(cstring_view path, const char * filename) {
+  return strchr(path.c_str(), DIR_SEPARATOR) != nullptr
          && iequals(M_BaseName(path), filename);
 }
 
@@ -405,7 +405,7 @@ static bool DirIsFile(const char * path, const char * filename) {
 // file, returning the full path to the IWAD if found, or NULL
 // if not found.
 
-static char * CheckDirectoryHasIWAD(const char * dir, const char * iwadname) {
+static char * CheckDirectoryHasIWAD(cstring_view dir, const char * iwadname) {
   // As a special case, the "directory" may refer directly to an
   // IWAD file if the path comes from DOOMWADDIR or DOOMWADPATH.
 
@@ -418,10 +418,10 @@ static char * CheckDirectoryHasIWAD(const char * dir, const char * iwadname) {
   // this directory, and check if it exists.
   char * filename = nullptr;
 
-  if (!strcmp(dir, ".")) {
+  if (!strcmp(dir.c_str(), ".")) {
     filename = M_StringDuplicate(iwadname);
   } else {
-    filename = M_StringJoin(dir, DIR_SEPARATOR_S, iwadname, nullptr);
+    filename = M_StringJoin(dir.c_str(), DIR_SEPARATOR_S, iwadname, nullptr);
   }
 
   free(probe);
@@ -437,7 +437,7 @@ static char * CheckDirectoryHasIWAD(const char * dir, const char * iwadname) {
 // Search a directory to try to find an IWAD
 // Returns the location of the IWAD if found, otherwise NULL.
 
-static char * SearchDirectoryForIWAD(const char * dir, int mask, GameMission_t * mission) {
+static char * SearchDirectoryForIWAD(cstring_view dir, int mask, GameMission_t * mission) {
   for (const auto & iwad : iwads) {
     if (((1 << iwad.mission) & mask) == 0) {
       continue;
@@ -458,7 +458,7 @@ static char * SearchDirectoryForIWAD(const char * dir, int mask, GameMission_t *
 // When given an IWAD with the '-iwad' parameter,
 // attempt to identify it by its name.
 
-static GameMission_t IdentifyIWADByName(const char * name, int mask) {
+static GameMission_t IdentifyIWADByName(cstring_view name, int mask) {
   name                  = M_BaseName(name);
   GameMission_t mission = none;
 
@@ -484,7 +484,7 @@ static GameMission_t IdentifyIWADByName(const char * name, int mask) {
 // Add IWAD directories parsed from splitting a path string containing
 // paths separated by PATH_SEPARATOR. 'suffix' is a string to concatenate
 // to the end of the paths before adding them.
-static void AddIWADPath(const char * path, const char * suffix) {
+static void AddIWADPath(cstring_view path, const char * suffix) {
   char * dup_path = M_StringDuplicate(path);
 
   // Split into individual dirs within the list.
@@ -649,7 +649,7 @@ static void BuildIWADDirList() {
 // Searches WAD search paths for an WAD with a specific filename.
 //
 
-char * D_FindWADByName(const char * name) {
+char * D_FindWADByName(cstring_view name) {
   // Absolute path?
 
   char * probe = M_FileCaseExists(name);
@@ -667,7 +667,7 @@ char * D_FindWADByName(const char * name) {
     // file.
 
     probe = M_FileCaseExists(iwad_dirs[i]);
-    if (DirIsFile(iwad_dirs[i], name) && probe != nullptr) {
+    if (DirIsFile(iwad_dirs[i], name.c_str()) && probe != nullptr) {
       return probe;
     }
     free(probe);
@@ -696,7 +696,7 @@ char * D_FindWADByName(const char * name) {
 // if not found.
 //
 
-char * D_TryFindWADByName(const char * filename) {
+char * D_TryFindWADByName(cstring_view filename) {
   char * result = D_FindWADByName(filename);
 
   if (result != nullptr) {

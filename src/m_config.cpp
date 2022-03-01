@@ -2329,13 +2329,14 @@ static void SaveDefaultCollection(default_collection_t * collection) {
 
 // Parses integer values in the configuration file
 
-static int ParseIntParameter(const char * strparm) {
+static int ParseIntParameter(cstring_view strparm) {
   int parm = 0;
+  const char * string_param = strparm.c_str();
 
-  if (strparm[0] == '0' && strparm[1] == 'x')
-    sscanf(strparm + 2, "%x", &parm);
+  if (string_param[0] == '0' && string_param[1] == 'x')
+    sscanf(string_param + 2, "%x", &parm);
   else
-    sscanf(strparm, "%i", &parm);
+    sscanf(string_param, "%i", &parm);
 
   return parm;
 }
@@ -2432,8 +2433,8 @@ static void LoadDefaultCollection(default_collection_t * collection) {
 
 // Set the default filenames to use for configuration files.
 
-void M_SetConfigFilenames(const char * main_config, const char * extra_config) {
-  default_main_config  = main_config;
+void M_SetConfigFilenames(cstring_view main_config, const char * extra_config) {
+  default_main_config  = main_config.c_str();
   default_extra_config = extra_config;
 }
 
@@ -2450,13 +2451,13 @@ void M_SaveDefaults() {
 // Save defaults to alternate filenames
 //
 
-void M_SaveDefaultsAlternate(const char * main, const char * extra) {
+void M_SaveDefaultsAlternate(cstring_view main, const char * extra) {
   // Temporarily change the filenames
 
   const char * orig_main  = doom_defaults.filename;
   const char * orig_extra = extra_defaults.filename;
 
-  doom_defaults.filename  = main;
+  doom_defaults.filename  = main.c_str();
   extra_defaults.filename = extra;
 
   M_SaveDefaults();
@@ -2519,13 +2520,13 @@ void M_LoadDefaults() {
 
 // Get a configuration file variable by its name
 
-static default_t * GetDefaultForName(const char * name) {
+static default_t * GetDefaultForName(cstring_view name) {
   // Try the main list and the extras
 
-  default_t * result = SearchCollection(&doom_defaults, name);
+  default_t * result = SearchCollection(&doom_defaults, name.c_str());
 
   if (result == nullptr) {
-    result = SearchCollection(&extra_defaults, name);
+    result = SearchCollection(&extra_defaults, name.c_str());
   }
 
   // Not found? Internal error.
@@ -2541,7 +2542,7 @@ static default_t * GetDefaultForName(const char * name) {
 // Bind a variable to a given configuration file variable, by name.
 //
 
-void M_BindIntVariable(const char * name, int * location) {
+void M_BindIntVariable(cstring_view name, int * location) {
   default_t * variable = GetDefaultForName(name);
   assert(variable->type == DEFAULT_INT
          || variable->type == DEFAULT_INT_HEX
@@ -2551,7 +2552,7 @@ void M_BindIntVariable(const char * name, int * location) {
   variable->bound      = true;
 }
 
-void M_BindFloatVariable(const char * name, float * location) {
+void M_BindFloatVariable(cstring_view name, float * location) {
   default_t * variable = GetDefaultForName(name);
   assert(variable->type == DEFAULT_FLOAT);
 
@@ -2559,7 +2560,7 @@ void M_BindFloatVariable(const char * name, float * location) {
   variable->bound      = true;
 }
 
-void M_BindStringVariable(const char * name, char ** location) {
+void M_BindStringVariable(cstring_view name, char ** location) {
   default_t * variable = GetDefaultForName(name);
   assert(variable->type == DEFAULT_STRING);
 
@@ -2570,7 +2571,7 @@ void M_BindStringVariable(const char * name, char ** location) {
 // Set the value of a particular variable; an API function for other
 // parts of the program to assign values to config variables by name.
 
-bool M_SetVariable(const char * name, const char * value) {
+bool M_SetVariable(cstring_view name, const char * value) {
   default_t * variable = GetDefaultForName(name);
 
   if (variable == nullptr || !variable->bound) {
@@ -2584,7 +2585,7 @@ bool M_SetVariable(const char * name, const char * value) {
 
 // Get the value of a variable.
 
-[[maybe_unused]] int M_GetIntVariable(const char * name) {
+[[maybe_unused]] int M_GetIntVariable(cstring_view name) {
   default_t * variable = GetDefaultForName(name);
 
   if (variable == nullptr || !variable->bound
@@ -2595,7 +2596,7 @@ bool M_SetVariable(const char * name, const char * value) {
   return *variable->location.i;
 }
 
-const char * M_GetStringVariable(const char * name) {
+const char * M_GetStringVariable(cstring_view name) {
   default_t * variable = GetDefaultForName(name);
 
   if (variable == nullptr || !variable->bound
@@ -2606,7 +2607,7 @@ const char * M_GetStringVariable(const char * name) {
   return *variable->location.s;
 }
 
-[[maybe_unused]] float M_GetFloatVariable(const char * name) {
+[[maybe_unused]] float M_GetFloatVariable(cstring_view name) {
   default_t * variable = GetDefaultForName(name);
 
   if (variable == nullptr || !variable->bound
@@ -2701,7 +2702,7 @@ void M_SetMusicPackDir() {
 // Creates the directory as necessary.
 //
 
-char * M_GetSaveGameDir(const char * iwadname) {
+char * M_GetSaveGameDir(cstring_view iwadname) {
   char * savegamedir = nullptr;
 
   //!
@@ -2743,7 +2744,7 @@ char * M_GetSaveGameDir(const char * iwadname) {
 
     // eg. ~/.local/share/chocolate-doom/savegames/doom2.wad/
 
-    savegamedir = M_StringJoin(topdir, DIR_SEPARATOR_S, iwadname, DIR_SEPARATOR_S, nullptr);
+    savegamedir = M_StringJoin(topdir, DIR_SEPARATOR_S, iwadname.c_str(), DIR_SEPARATOR_S, nullptr);
 
     M_MakeDirectory(savegamedir);
 
@@ -2757,7 +2758,7 @@ char * M_GetSaveGameDir(const char * iwadname) {
 // Calculate the path to the directory for autoloaded WADs/DEHs.
 // Creates the directory as necessary.
 //
-char * M_GetAutoloadDir(const char * iwadname) {
+char * M_GetAutoloadDir(cstring_view iwadname) {
   if (autoload_path == nullptr || strlen(autoload_path) == 0) {
     char * prefdir = SDL_GetPrefPath("", PACKAGE_TARNAME);
     autoload_path  = M_StringJoin(prefdir, "autoload", nullptr);
