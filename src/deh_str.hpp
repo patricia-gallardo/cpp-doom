@@ -19,11 +19,12 @@
 
 #include <cstdio>
 
+#include "cstring_view.hpp"
 #include "doomtype.hpp"
 
 // Used to do dehacked text substitutions throughout the program
 
-const char * DEH_String(const char * s) PRINTF_ARG_ATTR(1);
+const char * DEH_String(cstring_view s);
 
 // snprintf(), performing a replacement on the format string.
 template <typename... Args>
