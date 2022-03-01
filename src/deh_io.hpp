@@ -21,6 +21,7 @@
 
 #include <fmt/printf.h>
 
+#include "cstring_view.hpp"
 #include "deh_defs.hpp"
 
 enum deh_input_type_t
@@ -59,7 +60,7 @@ struct deh_context_t {
   long linestart;
 };
 
-deh_context_t * DEH_OpenFile(const char * filename);
+deh_context_t * DEH_OpenFile(cstring_view filename);
 deh_context_t * DEH_OpenLump(int lumpnum);
 void            DEH_CloseFile(deh_context_t * context);
 int             DEH_GetChar(deh_context_t * context);

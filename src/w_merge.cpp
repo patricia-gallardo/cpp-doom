@@ -470,7 +470,7 @@ static void DoMerge() {
 
 // Merge in a file by name
 
-void W_MergeFile(const char * filename) {
+void W_MergeFile(cstring_view filename) {
   int old_numlumps = static_cast<int>(numlumps);
 
   // Load PWAD
@@ -516,7 +516,7 @@ static void W_NWTAddLumps(searchlist_t * list) {
 // Merge sprites and flats in the way NWT does with its -af and -as
 // command-line options.
 
-void W_NWTMergeFile(const char * filename, int flags) {
+void W_NWTMergeFile(cstring_view filename, int flags) {
   int old_numlumps = static_cast<int>(numlumps);
 
   // Load PWAD
@@ -557,7 +557,7 @@ void W_NWTMergeFile(const char * filename, int flags) {
 // a PWAD, then search the IWAD sprites, removing any sprite lumps that also
 // exist in the PWAD.
 
-void W_NWTDashMerge(const char * filename) {
+void W_NWTDashMerge(cstring_view filename) {
   int old_numlumps = static_cast<int>(numlumps);
 
   // Load PWAD
@@ -600,7 +600,7 @@ void W_NWTDashMerge(const char * filename) {
 }
 
 // [crispy] dump merged WAD data into a new IWAD file
-int W_MergeDump(const char * file) {
+int W_MergeDump(cstring_view file) {
   // [crispy] WAD directory structure
   struct directory_t {
     uint32_t pos;
@@ -610,7 +610,7 @@ int W_MergeDump(const char * file) {
   directory_t * dir = nullptr;
 
   // [crispy] open file for writing
-  FILE * fp = fopen(file, "wb");
+  FILE * fp = fopen(file.c_str(), "wb");
   if (!fp) {
     I_Error("W_MergeDump: Failed writing to file '%s'!", file);
   }

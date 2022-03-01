@@ -215,8 +215,8 @@ static void M_SetupNextMenu(menu_t * menudef);
 static void M_DrawThermo(int x, int y, int thermWidth, int thermDot);
 static void M_WriteText(int x, int y, const char * string);
 int         M_StringWidth(cstring_view string); // [crispy] un-static
-static int  M_StringHeight(const char * string);
-static void M_StartMessage(const char * string, void (*routine)(int), bool input);
+static int  M_StringHeight(cstring_view string);
+static void M_StartMessage(cstring_view string, void (*routine)(int), bool input);
 static void M_ClearMenus();
 
 // [crispy] Crispness menu
@@ -1585,10 +1585,10 @@ void M_DrawThermo(int x, int y, int thermWidth, int thermDot) {
   dp_translation = nullptr;
 }
 
-void M_StartMessage(const char * string, void (*routine)(int), bool input) {
+void M_StartMessage(cstring_view string, void (*routine)(int), bool input) {
   messageLastMenuActive          = g_doomstat_globals->menuactive;
   messageToPrint                 = 1;
-  messageString                  = string;
+  messageString                  = string.c_str();
   messageRoutine                 = routine;
   messageNeedsInput              = input;
   g_doomstat_globals->menuactive = true;
@@ -1626,11 +1626,12 @@ int M_StringWidth(cstring_view s) {
 //
 //      Find string height from hu_font chars
 //
-int M_StringHeight(const char * string) {
+int M_StringHeight(cstring_view string) {
   int height = SHORT(hu_font[0]->height);
   int h      = height;
-  for (size_t i = 0; i < strlen(string); i++)
-    if (string[i] == '\n') h += height;
+  const char * str = string.c_str();
+  for (size_t i = 0; i < strlen(string.c_str()); i++)
+    if (str[i] == '\n') h += height;
 
   return h;
 }

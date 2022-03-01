@@ -137,8 +137,8 @@ glob_t * I_StartMultiGlob(const char * directory, int flags, const char * glob, 
   return result;
 }
 
-glob_t * I_StartGlob(const char * directory, const char * glob, int flags) {
-  return I_StartMultiGlob(directory, flags, glob, nullptr);
+glob_t * I_StartGlob(cstring_view directory, const char * glob, int flags) {
+  return I_StartMultiGlob(directory.c_str(), flags, glob, nullptr);
 }
 
 void I_EndGlob(glob_t * glob) {
@@ -155,9 +155,10 @@ void I_EndGlob(glob_t * glob) {
   free(glob);
 }
 
-static bool MatchesGlob(const char * name, const char * glob, int flags) {
+static bool MatchesGlob(cstring_view name_orig, const char * glob, int flags) {
+  const char * n_ptr = name_orig.c_str();
   while (*glob != '\0') {
-    int n = *name;
+    int n = *n_ptr;
     int g = *glob;
 
     if ((flags & GLOB_FLAG_NOCASE) != 0) {
@@ -169,11 +170,11 @@ static bool MatchesGlob(const char * name, const char * glob, int flags) {
       // To handle *-matching we skip past the * and recurse
       // to check each subsequent character in turn. If none
       // match then the whole match is a failure.
-      while (*name != '\0') {
-        if (MatchesGlob(name, glob + 1, flags)) {
+      while (*n_ptr != '\0') {
+        if (MatchesGlob(n_ptr, glob + 1, flags)) {
           return true;
         }
-        ++name;
+        ++n_ptr;
       }
       return glob[1] == '\0';
     } else if (g != '?' && n != g) {
@@ -182,15 +183,15 @@ static bool MatchesGlob(const char * name, const char * glob, int flags) {
       return false;
     }
 
-    ++name;
+    ++n_ptr;
     ++glob;
   }
 
   // Match successful when glob and name end at the same time.
-  return *name == '\0';
+  return *n_ptr == '\0';
 }
 
-static bool MatchesAnyGlob(const char * name, glob_t * glob) {
+static bool MatchesAnyGlob(cstring_view name, glob_t * glob) {
   for (int i = 0; i < glob->num_globs; ++i) {
     if (MatchesGlob(name, glob->globs[i], glob->flags)) {
       return true;
@@ -291,7 +292,7 @@ const char * I_NextGlob(glob_t * glob) {
 
 #warning No native implementation of file globbing.
 
-glob_t * I_StartGlob(const char * directory, const char * glob, int flags) {
+glob_t * I_StartGlob(cstring_view directory, const char * glob, int flags) {
   return nullptr;
 }
 

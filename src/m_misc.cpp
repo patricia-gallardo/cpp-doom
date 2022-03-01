@@ -46,20 +46,20 @@
 // Create a directory
 //
 
-void M_MakeDirectory(const char * path) {
+void M_MakeDirectory(cstring_view path) {
 #ifdef _WIN32
-  mkdir(path);
+  mkdir(path.c_str());
 #else
-  mkdir(path, 0755);
+  mkdir(path.c_str(), 0755);
 #endif
 }
 
 // Check if a file exists
 
-bool M_FileExists(const char * filename) {
+bool M_FileExists(cstring_view filename) {
   FILE * fstream;
 
-  fstream = fopen(filename, "r");
+  fstream = fopen(filename.c_str(), "r");
 
   if (fstream != nullptr) {
     fclose(fstream);
@@ -75,7 +75,7 @@ bool M_FileExists(const char * filename) {
 // Check if a file exists by probing for common case variation of its filename.
 // Returns a newly allocated string that the caller is responsible for freeing.
 
-char * M_FileCaseExists(const char * path) {
+char * M_FileCaseExists(cstring_view path) {
   char *path_dup, *filename, *ext;
 
   path_dup = M_StringDuplicate(path);
@@ -155,8 +155,8 @@ long M_FileLength(FILE * handle) {
 // M_WriteFile
 //
 
-bool M_WriteFile(const char * name, const void * source, int length) {
-  FILE * handle = fopen(name, "wb");
+bool M_WriteFile(cstring_view name, const void * source, int length) {
+  FILE * handle = fopen(name.c_str(), "wb");
   if (handle == nullptr)
     return false;
 
@@ -173,8 +173,8 @@ bool M_WriteFile(const char * name, const void * source, int length) {
 // M_ReadFile
 //
 
-int M_ReadFile(const char * name, uint8_t ** buffer) {
-  FILE * handle = fopen(name, "rb");
+int M_ReadFile(cstring_view name, uint8_t ** buffer) {
+  FILE * handle = fopen(name.c_str(), "rb");
   if (handle == nullptr)
     I_Error("Couldn't read file %s", name);
 
@@ -200,7 +200,7 @@ int M_ReadFile(const char * name, uint8_t ** buffer) {
 //
 // The returned value must be freed with Z_Free after use.
 
-char * M_TempFile(const char * s) {
+char * M_TempFile(cstring_view s) {
   const char * tempdir;
 
 #ifdef _WIN32
@@ -218,27 +218,27 @@ char * M_TempFile(const char * s) {
   tempdir = "/tmp";
 #endif
 
-  return M_StringJoin(tempdir, DIR_SEPARATOR_S, s, nullptr);
+  return M_StringJoin(tempdir, DIR_SEPARATOR_S, s.c_str(), nullptr);
 }
 
-bool M_StrToInt(const char * str, int * result) {
-  return sscanf(str, " 0x%x", result) == 1
-         || sscanf(str, " 0X%x", result) == 1
-         || sscanf(str, " 0%o", result) == 1
-         || sscanf(str, " %d", result) == 1;
+bool M_StrToInt(cstring_view str, int * result) {
+  return sscanf(str.c_str(), " 0x%x", result) == 1
+         || sscanf(str.c_str(), " 0X%x", result) == 1
+         || sscanf(str.c_str(), " 0%o", result) == 1
+         || sscanf(str.c_str(), " %d", result) == 1;
 }
 
 // Returns the directory portion of the given path, without the trailing
 // slash separator character. If no directory is described in the path,
 // the string "." is returned. In either case, the result is newly allocated
 // and must be freed by the caller after use.
-char * M_DirName(const char * path) {
-  const auto * p = strrchr(path, DIR_SEPARATOR);
+char * M_DirName(cstring_view path) {
+  const auto * p = strrchr(path.c_str(), DIR_SEPARATOR);
   if (p == nullptr) {
     return M_StringDuplicate(".");
   } else {
     auto * result    = M_StringDuplicate(path);
-    result[p - path] = '\0';
+    result[p - path.c_str()] = '\0';
     return result;
   }
 }
@@ -246,26 +246,26 @@ char * M_DirName(const char * path) {
 // Returns the base filename described by the given path (without the
 // directory name). The result points inside path and nothing new is
 // allocated.
-const char * M_BaseName(const char * path) {
+const char * M_BaseName(cstring_view path) {
   const char * p;
 
-  p = strrchr(path, DIR_SEPARATOR);
+  p = strrchr(path.c_str(), DIR_SEPARATOR);
   if (p == nullptr) {
-    return path;
+    return path.c_str();
   } else {
     return p + 1;
   }
 }
 
-void M_ExtractFileBase(const char * path, char * dest) {
+void M_ExtractFileBase(cstring_view path, char * dest) {
   const char * src;
   const char * filename;
   int          length;
 
-  src = path + strlen(path) - 1;
+  src = path.c_str() + strlen(path.c_str()) - 1;
 
   // back up until a \ or the start
-  while (src != path && *(src - 1) != DIR_SEPARATOR) {
+  while (src != path.c_str() && *(src - 1) != DIR_SEPARATOR) {
     src--;
   }
 
@@ -327,8 +327,8 @@ void M_ForceLowercase(char * text) {
 // Case-insensitive version of strstr()
 //
 
-[[maybe_unused]] const char * M_StrCaseStr(const char * haystack, const char * needle) {
-  size_t haystack_len = strlen(haystack);
+[[maybe_unused]] const char * M_StrCaseStr(cstring_view haystack, const char * needle) {
+  size_t haystack_len = strlen(haystack.c_str());
   size_t needle_len   = strlen(needle);
 
   if (haystack_len < needle_len) {
@@ -338,8 +338,8 @@ void M_ForceLowercase(char * text) {
   size_t len = haystack_len - needle_len;
 
   for (size_t i = 0; i <= len; ++i) {
-    if (!strncasecmp(haystack + i, needle, needle_len)) {
-      return haystack + i;
+    if (!strncasecmp(haystack.c_str() + i, needle, needle_len)) {
+      return haystack.c_str() + i;
     }
   }
 
@@ -351,14 +351,14 @@ void M_ForceLowercase(char * text) {
 // allocated.
 //
 
-char * M_StringDuplicate(const char * orig) {
+char * M_StringDuplicate(cstring_view orig) {
   char * result;
 
-  result = strdup(orig);
+  result = strdup(orig.c_str());
 
   if (result == nullptr) {
     I_Error("Failed to duplicate string (length %" PRIuPTR ")\n",
-            strlen(orig));
+            strlen(orig.c_str()));
   }
 
   return result;
@@ -368,7 +368,7 @@ char * M_StringDuplicate(const char * orig) {
 // String replace function.
 //
 
-char * M_StringReplace(const char * haystack, const char * needle, const char * replacement) {
+char * M_StringReplace(cstring_view haystack, const char * needle, const char * replacement) {
   char *       result, *dst;
   const char * p;
   size_t       needle_len = strlen(needle);
@@ -376,8 +376,8 @@ char * M_StringReplace(const char * haystack, const char * needle, const char * 
 
   // Iterate through occurrences of 'needle' and calculate the size of
   // the new string.
-  result_len = strlen(haystack) + 1;
-  p          = haystack;
+  result_len = strlen(haystack.c_str()) + 1;
+  p          = haystack.c_str();
 
   for (;;) {
     p = strstr(p, needle);
@@ -399,7 +399,7 @@ char * M_StringReplace(const char * haystack, const char * needle, const char * 
 
   dst     = result;
   dst_len = result_len;
-  p       = haystack;
+  p       = haystack.c_str();
 
   while (*p != '\0') {
     if (!strncmp(p, needle, needle_len)) {
@@ -453,16 +453,16 @@ bool M_StringConcat(char * dest, const char * src, size_t dest_size) {
 
 // Returns true if 's' begins with the specified prefix.
 
-bool M_StringStartsWith(const char * s, const char * prefix) {
-  return strlen(s) >= strlen(prefix)
-         && strncmp(s, prefix, strlen(prefix)) == 0;
+bool M_StringStartsWith(cstring_view s, const char * prefix) {
+  return strlen(s.c_str()) >= strlen(prefix)
+         && strncmp(s.c_str(), prefix, strlen(prefix)) == 0;
 }
 
 // Returns true if 's' ends with the specified suffix.
 
-bool M_StringEndsWith(const char * s, const char * suffix) {
-  return strlen(s) >= strlen(suffix)
-         && strcmp(s + strlen(s) - strlen(suffix), suffix) == 0;
+bool M_StringEndsWith(cstring_view s, const char * suffix) {
+  return strlen(s.c_str()) >= strlen(suffix)
+         && strcmp(s.c_str() + strlen(s.c_str()) - strlen(suffix), suffix) == 0;
 }
 
 // Return a newly-malloced string with all the strings given as arguments
@@ -549,13 +549,13 @@ int M_snprintf(char * buf, size_t buf_len, const char * s, ...) {
 
 #ifdef _WIN32
 
-char * M_OEMToUTF8(const char * oem) {
-  size_t    len = strlen(oem) + 1;
+char * M_OEMToUTF8(cstring_view oem) {
+  size_t    len = strlen(oem.c_str()) + 1;
   wchar_t * tmp;
   char *    result;
 
   tmp = static_cast<wchar_t *>(malloc(len * sizeof(wchar_t)));
-  MultiByteToWideChar(CP_OEMCP, 0, oem, static_cast<int>(len), tmp, static_cast<int>(len));
+  MultiByteToWideChar(CP_OEMCP, 0, oem.c_str(), static_cast<int>(len), tmp, static_cast<int>(len));
   result = static_cast<char *>(malloc(len * 4));
   WideCharToMultiByte(CP_UTF8, 0, tmp, static_cast<int>(len), result, static_cast<int>(len) * 4, nullptr, nullptr);
   free(tmp);

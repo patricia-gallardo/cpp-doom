@@ -35,6 +35,7 @@
 
 using txt_checkbox_t = struct txt_checkbox_s;
 
+#include "cstring_view.hpp"
 #include "txt_widget.hpp"
 
 struct txt_checkbox_s {
@@ -53,7 +54,7 @@ struct txt_checkbox_s {
  * @return              Pointer to the new checkbox.
  */
 
-txt_checkbox_t * TXT_NewCheckBox(const char * label, int * variable);
+txt_checkbox_t * TXT_NewCheckBox(cstring_view label, int * variable);
 
 /**
  * Create a new inverted checkbox.
@@ -67,4 +68,4 @@ txt_checkbox_t * TXT_NewCheckBox(const char * label, int * variable);
  * @return              Pointer to the new checkbox.
  */
 
-txt_checkbox_t * TXT_NewInvertedCheckBox(const char * label, int * variable);
+txt_checkbox_t * TXT_NewInvertedCheckBox(cstring_view label, int * variable);

@@ -17,6 +17,8 @@
 
 #pragma once
 
+#include "cstring_view.hpp"
+
 constexpr auto GLOB_FLAG_NOCASE = 0x01;
 constexpr auto GLOB_FLAG_SORTED = 0x02;
 
@@ -24,7 +26,7 @@ using glob_t = struct glob_s;
 
 // Start reading a list of file paths from the given directory which match
 // the given glob pattern. I_EndGlob() must be called on completion.
-glob_t * I_StartGlob(const char * directory, const char * glob, int flags);
+glob_t * I_StartGlob(cstring_view directory, const char * glob, int flags);
 
 // Same as I_StartGlob but multiple glob patterns can be provided. The list
 // of patterns must be terminated with NULL.

@@ -28,8 +28,8 @@ struct stdc_wad_file_t {
 
 extern wad_file_class_t stdc_wad_file;
 
-static wad_file_t * W_StdC_OpenFile(const char * path) {
-  FILE * fstream = fopen(path, "rb");
+static wad_file_t * W_StdC_OpenFile(cstring_view path) {
+  FILE * fstream = fopen(path.c_str(), "rb");
 
   if (fstream == nullptr) {
     return nullptr;

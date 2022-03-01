@@ -142,13 +142,13 @@ uint8_t * I_ZoneBase(int * size) {
   return zonemem;
 }
 
-void I_PrintBanner(const char * msg) {
-  size_t spaces = 35 - (strlen(msg) / 2);
+void I_PrintBanner(cstring_view msg) {
+  size_t spaces = 35 - (strlen(msg.c_str()) / 2);
 
   for (size_t i = 0; i < spaces; ++i)
     putchar(' ');
 
-  puts(msg);
+  puts(msg.c_str());
 }
 
 void I_PrintDivider() {
@@ -159,7 +159,7 @@ void I_PrintDivider() {
   putchar('\n');
 }
 
-void I_PrintStartupBanner(const char * gamedescription) {
+void I_PrintStartupBanner(cstring_view gamedescription) {
   I_PrintDivider();
   I_PrintBanner(gamedescription);
   I_PrintDivider();

@@ -869,8 +869,8 @@ void I_SetPalette(int palette) {
 // Set the window title
 //
 
-void I_SetWindowTitle(const char * title) {
-  window_title = title;
+void I_SetWindowTitle(cstring_view title) {
+  window_title = title.c_str();
 }
 
 //

@@ -29,10 +29,10 @@ constexpr auto DEH_VANILLA_NUMSTATES = 966;
 constexpr auto DEH_VANILLA_NUMSFX    = 107;
 
 void DEH_ParseCommandLine();
-int  DEH_LoadFile(const char * filename);
-void DEH_AutoLoadPatches(const char * path);
+int  DEH_LoadFile(cstring_view filename);
+void DEH_AutoLoadPatches(cstring_view path);
 int  DEH_LoadLump(int lumpnum, bool allow_long, bool allow_error);
-int  DEH_LoadLumpByName(const char * name, bool allow_long, bool allow_error);
+int  DEH_LoadLumpByName(cstring_view name, bool allow_long, bool allow_error);
 
 bool DEH_ParseAssignment(char * line, char ** variable_name, char ** value);
 

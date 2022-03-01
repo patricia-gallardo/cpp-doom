@@ -69,7 +69,7 @@ unsigned int GetFileLength(int handle) {
   return lseek(handle, 0, SEEK_END);
 }
 
-static wad_file_t * W_POSIX_OpenFile(const char * path) {
+static wad_file_t * W_POSIX_OpenFile(cstring_view path) {
   posix_wad_file_t * result;
   int                handle;
 

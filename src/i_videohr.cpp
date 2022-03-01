@@ -58,8 +58,8 @@ static const char *  window_title = "";
   return true;
 }
 
-[[maybe_unused]] void I_SetWindowTitleHR(const char * title) {
-  window_title = title;
+[[maybe_unused]] void I_SetWindowTitleHR(cstring_view title) {
+  window_title = title.c_str();
 }
 
 [[maybe_unused]] void I_UnsetVideoModeHR() {

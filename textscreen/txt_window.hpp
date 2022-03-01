@@ -41,6 +41,7 @@
 
 using txt_window_t = struct txt_window_s;
 
+#include "cstring_view.hpp"
 #include "txt_table.hpp"
 #include "txt_widget.hpp"
 #include "txt_window_action.hpp"
@@ -95,7 +96,7 @@ struct [[maybe_unused]] txt_window_s {
  *                     representing the new window.
  */
 
-txt_window_t * TXT_NewWindow(const char * title);
+txt_window_t * TXT_NewWindow(cstring_view title);
 
 /**
  * Close a window.

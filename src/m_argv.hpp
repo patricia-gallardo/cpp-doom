@@ -40,7 +40,7 @@ void M_AddLooseFiles();
 
 // Parameter has been specified?
 
-bool M_ParmExists(const char * check);
+bool M_ParmExists(cstring_view check);
 
 // Get name of executable used to run this program:
 

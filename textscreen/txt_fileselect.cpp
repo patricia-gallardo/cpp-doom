@@ -138,7 +138,7 @@ int TXT_CanSelectFiles() {
   return 0;
 }
 
-char * TXT_SelectFile(const char *, const char **) {
+char * TXT_SelectFile(cstring_view, const char **) {
   return nullptr;
 }
 
@@ -259,7 +259,7 @@ static char * SelectDirectory(char * window_title) {
   return result;
 }
 
-char * TXT_SelectFile(const char * window_title, const char ** extensions) {
+char * TXT_SelectFile(cstring_view window_title, const char ** extensions) {
   OPENFILENAME fm;
   char         selected[MAX_PATH] = "";
   char *       filter_string, *result;
@@ -304,7 +304,7 @@ char * TXT_SelectFile(const char * window_title, const char ** extensions) {
 // Printf format string for the "wrapper" portion of the AppleScript:
 #define APPLESCRIPT_WRAPPER "copy POSIX path of (%s) to stdout"
 
-static char * CreateEscapedString(const char * original) {
+static char * CreateEscapedString(cstring_view original) {
   char *       result;
   const char * in;
   char *       out;
@@ -312,19 +312,19 @@ static char * CreateEscapedString(const char * original) {
   // We need to take care not to overflow the buffer, so count exactly.
 #define ESCAPED_CHARS       "\"\\"
   size_t count_extras = 2; // start counting the two quotes
-  for (in = original; *in; ++in) {
+  for (in = original.c_str(); *in; ++in) {
     if (strchr(ESCAPED_CHARS, *in)) {
       ++count_extras;
     }
   }
 
-  result = static_cast<char *>(malloc(strlen(original) + count_extras + 1));
+  result = static_cast<char *>(malloc(strlen(original.c_str()) + count_extras + 1));
   if (!result) {
     return nullptr;
   }
   out    = result;
   *out++ = '"';
-  for (in = original; *in; ++in) {
+  for (in = original.c_str(); *in; ++in) {
     if (strchr(ESCAPED_CHARS, *in)) {
       *out++ = '\\';
     }
@@ -377,7 +377,7 @@ static char * CreateExtensionsList(const char ** extensions) {
   return result;
 }
 
-static char * GenerateSelector(const char * const window_title, const char ** extensions) {
+static char * GenerateSelector(cstring_view const window_title, const char ** extensions) {
   const char * chooser;
   char *       ext_list             = nullptr;
   char *       window_title_escaped = nullptr;
@@ -396,7 +396,7 @@ static char * GenerateSelector(const char * const window_title, const char ** ex
 
   // Calculate size.
 
-  if (window_title != nullptr) {
+  if (window_title.c_str() != nullptr) {
     window_title_escaped = CreateEscapedString(window_title);
     if (!window_title_escaped) {
       free(ext_list);
@@ -432,7 +432,7 @@ static char * GenerateSelector(const char * const window_title, const char ** ex
   return result;
 }
 
-static char * GenerateAppleScript(const char * window_title, const char ** extensions) {
+static char * GenerateAppleScript(cstring_view window_title, const char ** extensions) {
   char * selector, *result;
   size_t result_len;
 
@@ -458,7 +458,7 @@ int TXT_CanSelectFiles() {
   return 1;
 }
 
-char * TXT_SelectFile(const char * window_title, const char ** extensions) {
+char * TXT_SelectFile(cstring_view window_title, const char ** extensions) {
   char * argv[4];
   char * result, *applescript;
 
@@ -511,8 +511,8 @@ int TXT_CanSelectFiles() {
 // return a pointer to a string that is a case-insensitive
 // pattern representation (like [Ww][Aa][Dd])
 //
-static char * ExpandExtension(const char * orig) {
-  size_t oldlen = strlen(orig);
+static char * ExpandExtension(cstring_view orig) {
+  size_t oldlen = strlen(orig.c_str());
   size_t newlen = oldlen * 4; // pathological case: 'w' => '[Ww]'
   char * newext = static_cast<char *>(malloc(static_cast<size_t>(newlen + 1)));
 
@@ -521,21 +521,22 @@ static char * ExpandExtension(const char * orig) {
   }
 
   char * c = newext;
+  const char* str = orig.c_str();
   for (size_t i = 0; i < oldlen; ++i) {
-    if (isalpha(orig[i])) {
+    if (isalpha(str[i])) {
       *c++ = '[';
-      *c++ = static_cast<char>(tolower(orig[i]));
-      *c++ = static_cast<char>(toupper(orig[i]));
+      *c++ = static_cast<char>(tolower(str[i]));
+      *c++ = static_cast<char>(toupper(str[i]));
       *c++ = ']';
     } else {
-      *c++ = orig[i];
+      *c++ = str[i];
     }
   }
   *c = '\0';
   return newext;
 }
 
-char * TXT_SelectFile(const char * window_title, const char ** extensions) {
+char * TXT_SelectFile(cstring_view window_title, const char ** extensions) {
   if (!ZenityAvailable()) {
     return nullptr;
   }
@@ -545,8 +546,8 @@ char * TXT_SelectFile(const char * window_title, const char ** extensions) {
   argv[1]      = strdup("--file-selection");
   int argc     = 2;
 
-  if (window_title != nullptr) {
-    size_t len = 10 + strlen(window_title);
+  if (window_title.c_str() != nullptr) {
+    size_t len = 10 + strlen(window_title.c_str());
     argv[argc] = static_cast<char *>(malloc(len));
     TXT_snprintf(argv[argc], len, "--title=%s", window_title);
     ++argc;

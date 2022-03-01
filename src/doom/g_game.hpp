@@ -34,7 +34,7 @@ void G_InitNew(skill_t skill, int episode, int map);
 // but a warp test can start elsewhere
 void G_DeferedInitNew(skill_t skill, int episode, int map);
 
-void G_DeferedPlayDemo(const char * demo);
+void G_DeferedPlayDemo(cstring_view demo);
 
 // Can be called by the startup code or M_Responder,
 // calls P_SetupLevel or W_EnterWorld.

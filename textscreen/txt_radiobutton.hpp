@@ -61,7 +61,7 @@ struct txt_radiobutton_s {
  * @return               Pointer to the new radio button widget.
  */
 
-txt_radiobutton_t * TXT_NewRadioButton(const char * label, int * variable, int value);
+txt_radiobutton_t * TXT_NewRadioButton(cstring_view label, int * variable, int value);
 
 /**
  * Set the label on a radio button.

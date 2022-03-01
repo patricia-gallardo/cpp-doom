@@ -508,7 +508,7 @@ static void ParseOggFile(file_metadata_t * metadata, FILE * fs) {
   }
 }
 
-static void ReadLoopPoints(const char * filename, file_metadata_t * metadata) {
+static void ReadLoopPoints(cstring_view filename, file_metadata_t * metadata) {
   char   header[4];
 
   metadata->valid         = false;
@@ -516,7 +516,7 @@ static void ReadLoopPoints(const char * filename, file_metadata_t * metadata) {
   metadata->start_time    = 0;
   metadata->end_time      = -1;
 
-  FILE * fs = fopen(filename, "rb");
+  FILE * fs = fopen(filename.c_str(), "rb");
 
   if (fs == nullptr) {
     return;
@@ -593,7 +593,7 @@ static const char * GetSubstituteMusicFile(void * data, size_t data_len) {
   return filename;
 }
 
-static char * GetFullPath(const char * musicdir, const char * path) {
+static char * GetFullPath(cstring_view musicdir, const char * path) {
   // Starting with directory separator means we have an absolute path,
   // so just return it.
   if (path[0] == DIR_SEPARATOR) {
@@ -614,7 +614,7 @@ static char * GetFullPath(const char * musicdir, const char * path) {
 
   // Copy config filename and cut off the filename to just get the
   // parent dir.
-  char * result = M_StringJoin(musicdir, systemized_path, nullptr);
+  char * result = M_StringJoin(musicdir.c_str(), systemized_path, nullptr);
   free(systemized_path);
 
   return result;
@@ -624,7 +624,7 @@ static char * GetFullPath(const char * musicdir, const char * path) {
 // that name, returning it if found. If none exist, nullptr is returned. If the
 // filename doesn't end with .{ext} then it just acts as a wrapper around
 // GetFullPath().
-static char * ExpandFileExtension(const char * musicdir, const char * filename) {
+static char * ExpandFileExtension(cstring_view musicdir, const char * filename) {
   static const char * extns[] = { ".flac", ".ogg", ".mp3" };
 
   if (!M_StringEndsWith(filename, ".{ext}")) {
@@ -645,7 +645,7 @@ static char * ExpandFileExtension(const char * musicdir, const char * filename) 
 }
 
 // Add a substitute music file to the lookup list.
-static void AddSubstituteMusic(const char * musicdir, const char * hash_prefix, const char * filename) {
+static void AddSubstituteMusic(cstring_view musicdir, const char * hash_prefix, const char * filename) {
   char * path = ExpandFileExtension(musicdir, filename);
   if (path == nullptr) {
     return;

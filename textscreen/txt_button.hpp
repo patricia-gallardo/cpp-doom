@@ -29,6 +29,7 @@
 
 using txt_button_t = struct txt_button_s;
 
+#include "cstring_view.hpp"
 #include "txt_widget.hpp"
 
 struct [[maybe_unused]] txt_button_s {
@@ -43,7 +44,7 @@ struct [[maybe_unused]] txt_button_s {
  * @return             Pointer to the new button widget.
  */
 
-txt_button_t * TXT_NewButton(const char * label);
+txt_button_t * TXT_NewButton(cstring_view label);
 
 /**
  * Create a new button widget, binding the "pressed" signal to a
@@ -55,7 +56,7 @@ txt_button_t * TXT_NewButton(const char * label);
  * @return             Pointer to the new button widget.
  */
 
-txt_button_t * TXT_NewButton2(const char * label, TxtWidgetSignalFunc func, void * user_data);
+txt_button_t * TXT_NewButton2(cstring_view label, TxtWidgetSignalFunc func, void * user_data);
 
 /**
  * Change the label used on a button.

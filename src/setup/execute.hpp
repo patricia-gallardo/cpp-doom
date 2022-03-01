@@ -31,6 +31,6 @@ void                AddCmdLineParameter(execute_context_t * context, const char 
 void                PassThroughArguments(execute_context_t * context);
 int                 ExecuteDoom(execute_context_t * context);
 int                 FindInstalledIWADs();
-bool                OpenFolder(const char * path);
+bool                OpenFolder(cstring_view path);
 
 txt_window_action_t * TestConfigAction();

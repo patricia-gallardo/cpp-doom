@@ -16,7 +16,9 @@
 
 #include <cstdarg>
 
+#include "cstring_view.hpp"
+
 char *       TXT_EncodeUTF8(char * p, unsigned int c);
 unsigned int TXT_DecodeUTF8(const char ** ptr);
-unsigned int TXT_UTF8_Strlen(const char * s);
-char *       TXT_UTF8_SkipChars(const char * s, unsigned int n);
+unsigned int TXT_UTF8_Strlen(cstring_view s);
+char *       TXT_UTF8_SkipChars(cstring_view s, unsigned int n);

@@ -121,11 +121,13 @@ constexpr char PATH_SEPARATOR = ':';
 #endif
 
 #if defined(_WIN32)
-#include <stdlib.h>
+#include <cstdlib>
+
+#include "cstring_view.hpp"
 
 // Windows doesn't have setenv
-inline void setenv(const char * key, const char * value, int) {
-  _putenv_s(key, value);
+inline void setenv(cstring_view key, const char * value, int) {
+  _putenv_s(key.c_str(), value);
 }
 
 #endif

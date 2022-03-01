@@ -39,7 +39,7 @@ constexpr auto MAX_STRING_LEN = 80;
 
 static char *line, *string;
 
-static void P_WritePackageTarname(const char * key) {
+static void P_WritePackageTarname(cstring_view key) {
   M_snprintf(line, MAX_LINE_LEN, "%s %s\n", key, PACKAGE_VERSION);
   fputs(line, save_stream);
 }
@@ -48,17 +48,17 @@ static void P_WritePackageTarname(const char * key) {
 
 char * savewadfilename = nullptr;
 
-static void P_WriteWadFileName(const char * key) {
+static void P_WriteWadFileName(cstring_view key) {
   M_snprintf(line, MAX_LINE_LEN, "%s %s\n", key, W_WadNameForLump(maplumpinfo));
   fputs(line, save_stream);
 }
 
-static void P_ReadWadFileName(const char * key) {
+static void P_ReadWadFileName(cstring_view key) {
   if (!savewadfilename &&
       // [crispy] only check if loaded from the menu,
       // we have no chance to show a dialog otherwise
       g_doomstat_globals->startloadgame == -1) {
-    if (sscanf(line, "%s", string) == 1 && !strncmp(string, key, MAX_STRING_LEN)) {
+    if (sscanf(line, "%s", string) == 1 && !strncmp(string, key.c_str(), MAX_STRING_LEN)) {
       if (sscanf(line, "%*s %s", string) == 1) {
         savewadfilename = strdup(string);
       }
@@ -68,34 +68,34 @@ static void P_ReadWadFileName(const char * key) {
 
 // extrakills
 
-static void P_WriteExtraKills(const char * key) {
+static void P_WriteExtraKills(cstring_view key) {
   if (g_doomstat_globals->extrakills) {
     M_snprintf(line, MAX_LINE_LEN, "%s %d\n", key, g_doomstat_globals->extrakills);
     fputs(line, save_stream);
   }
 }
 
-static void P_ReadExtraKills(const char * key) {
+static void P_ReadExtraKills(cstring_view key) {
   int value = 0;
 
-  if (sscanf(line, "%s %d", string, &value) == 2 && !strncmp(string, key, MAX_STRING_LEN)) {
+  if (sscanf(line, "%s %d", string, &value) == 2 && !strncmp(string, key.c_str(), MAX_STRING_LEN)) {
     g_doomstat_globals->extrakills = value;
   }
 }
 
 // totalleveltimes
 
-static void P_WriteTotalLevelTimes(const char * key) {
+static void P_WriteTotalLevelTimes(cstring_view key) {
   if (g_doomstat_globals->totalleveltimes) {
     M_snprintf(line, MAX_LINE_LEN, "%s %d\n", key, g_doomstat_globals->totalleveltimes);
     fputs(line, save_stream);
   }
 }
 
-static void P_ReadTotalLevelTimes(const char * key) {
+static void P_ReadTotalLevelTimes(cstring_view key) {
   int value = 0;
 
-  if (sscanf(line, "%s %d", string, &value) == 2 && !strncmp(string, key, MAX_STRING_LEN)) {
+  if (sscanf(line, "%s %d", string, &value) == 2 && !strncmp(string, key.c_str(), MAX_STRING_LEN)) {
     g_doomstat_globals->totalleveltimes = value;
   }
 }
@@ -104,7 +104,7 @@ static void P_ReadTotalLevelTimes(const char * key) {
 
 extern void T_FireFlicker(fireflicker_t * flick);
 
-static void P_WriteFireFlicker(const char * key) {
+static void P_WriteFireFlicker(cstring_view key) {
   action_hook needle = T_FireFlicker;
   for (thinker_t * th = g_p_local_globals->thinkercap.next; th != &g_p_local_globals->thinkercap; th = th->next) {
     if (th->function == needle) {
@@ -116,12 +116,12 @@ static void P_WriteFireFlicker(const char * key) {
   }
 }
 
-static void P_ReadFireFlicker(const char * key) {
+static void P_ReadFireFlicker(cstring_view key) {
   int sector = 0, count = 0, maxlight = 0, minlight = 0;
 
   if (sscanf(line, "%s %d %d %d %d\n", string, &sector, &count, &maxlight, &minlight)
           == 5
-      && !strncmp(string, key, MAX_STRING_LEN)) {
+      && !strncmp(string, key.c_str(), MAX_STRING_LEN)) {
     fireflicker_t * flick = zmalloc<decltype(flick)>(sizeof(*flick), PU_LEVEL, nullptr);
 
     flick->sector   = &g_r_state_globals->sectors[sector];
@@ -137,7 +137,7 @@ static void P_ReadFireFlicker(const char * key) {
 
 // sector->soundtarget
 
-static void P_WriteSoundTarget(const char * key) {
+static void P_WriteSoundTarget(cstring_view key) {
   int        i      = 0;
   sector_t * sector = nullptr;
 
@@ -149,19 +149,19 @@ static void P_WriteSoundTarget(const char * key) {
   }
 }
 
-static void P_ReadSoundTarget(const char * key) {
+static void P_ReadSoundTarget(cstring_view key) {
   int sector = 0, target = 0;
 
   if (sscanf(line, "%s %d %d\n", string, &sector, &target)
           == 3
-      && !strncmp(string, key, MAX_STRING_LEN)) {
+      && !strncmp(string, key.c_str(), MAX_STRING_LEN)) {
     g_r_state_globals->sectors[sector].soundtarget = reinterpret_cast<mobj_t *>(P_IndexToThinker(static_cast<uint32_t>(target)));
   }
 }
 
 // sector->oldspecial
 
-static void P_WriteOldSpecial(const char * key) {
+static void P_WriteOldSpecial(cstring_view key) {
   int        i      = 0;
   sector_t * sector = nullptr;
 
@@ -173,13 +173,13 @@ static void P_WriteOldSpecial(const char * key) {
   }
 }
 
-static void P_ReadOldSpecial(const char * key) {
+static void P_ReadOldSpecial(cstring_view key) {
   int sector     = 0;
   int oldspecial = 0;
 
   if (sscanf(line, "%s %d %d\n", string, &sector, &oldspecial)
           == 3
-      && !strncmp(string, key, MAX_STRING_LEN)) {
+      && !strncmp(string, key.c_str(), MAX_STRING_LEN)) {
     g_r_state_globals->sectors[sector].oldspecial = static_cast<short>(oldspecial);
   }
 }
@@ -188,7 +188,7 @@ static void P_ReadOldSpecial(const char * key) {
 
 extern void P_StartButton(line_t * line, bwhere_e w, int texture, int time);
 
-static void P_WriteButton(const char * key) {
+static void P_WriteButton(cstring_view key) {
   for (int i = 0; i < maxbuttons; i++) {
     button_t * button = &buttonlist[i];
 
@@ -199,12 +199,12 @@ static void P_WriteButton(const char * key) {
   }
 }
 
-static void P_ReadButton(const char * key) {
+static void P_ReadButton(cstring_view key) {
   int linedef_local = 0, where, btexture, btimer = 0;
 
   if (sscanf(line, "%s %d %d %d %d\n", string, &linedef_local, &where, &btexture, &btimer)
           == 5
-      && !strncmp(string, key, MAX_STRING_LEN)) {
+      && !strncmp(string, key.c_str(), MAX_STRING_LEN)) {
     P_StartButton(&g_r_state_globals->lines[linedef_local], static_cast<bwhere_e>(where), btexture, btimer);
   }
 }
@@ -213,7 +213,7 @@ static void P_ReadButton(const char * key) {
 
 extern int numbraintargets, braintargeton;
 
-static void P_WriteBrainTarget(const char * key) {
+static void P_WriteBrainTarget(cstring_view key) {
   action_hook needle = P_MobjThinker;
   for (thinker_t * th = g_p_local_globals->thinkercap.next; th != &g_p_local_globals->thinkercap; th = th->next) {
     if (th->function == needle) {
@@ -230,10 +230,10 @@ static void P_WriteBrainTarget(const char * key) {
   }
 }
 
-static void P_ReadBrainTarget(const char * key) {
+static void P_ReadBrainTarget(cstring_view key) {
   int numtargets = 0, targeton = 0;
 
-  if (sscanf(line, "%s %d %d", string, &numtargets, &targeton) == 3 && !strncmp(string, key, MAX_STRING_LEN)) {
+  if (sscanf(line, "%s %d %d", string, &numtargets, &targeton) == 3 && !strncmp(string, key.c_str(), MAX_STRING_LEN)) {
     numbraintargets = 0; // [crispy] force A_BrainAwake()
     braintargeton   = targeton;
   }
@@ -244,7 +244,7 @@ static void P_ReadBrainTarget(const char * key) {
 extern void AM_GetMarkPoints(int * n, long * p);
 extern void AM_SetMarkPoints(int n, long * p);
 
-static void P_WriteMarkPoints(const char * key) {
+static void P_WriteMarkPoints(cstring_view key) {
   int  n = 0;
   long p[20];
 
@@ -256,20 +256,20 @@ static void P_WriteMarkPoints(const char * key) {
   }
 }
 
-static void P_ReadMarkPoints(const char * key) {
+static void P_ReadMarkPoints(cstring_view key) {
   int  n = 0;
   long p[20];
 
   if (sscanf(line, "%s %d %ld %ld %ld %ld %ld %ld %ld %ld %ld %ld %ld %ld %ld %ld %ld %ld %ld %ld %ld %ld\n", string, &n, &p[0], &p[1], &p[2], &p[3], &p[4], &p[5], &p[6], &p[7], &p[8], &p[9], &p[10], &p[11], &p[12], &p[13], &p[14], &p[15], &p[16], &p[17], &p[18], &p[19])
           == 22
-      && !strncmp(string, key, MAX_STRING_LEN)) {
+      && !strncmp(string, key.c_str(), MAX_STRING_LEN)) {
     AM_SetMarkPoints(n, p);
   }
 }
 
 // players[]->lookdir
 
-static void P_WritePlayersLookdir(const char * key) {
+static void P_WritePlayersLookdir(cstring_view key) {
   for (int i = 0; i < MAXPLAYERS; i++) {
     if (g_doomstat_globals->playeringame[i] && g_doomstat_globals->players[i].lookdir) {
       M_snprintf(line, MAX_LINE_LEN, "%s %d %d\n", key, i, g_doomstat_globals->players[i].lookdir);
@@ -278,17 +278,17 @@ static void P_WritePlayersLookdir(const char * key) {
   }
 }
 
-static void P_ReadPlayersLookdir(const char * key) {
+static void P_ReadPlayersLookdir(cstring_view key) {
   int i = 0, value = 0;
 
-  if (sscanf(line, "%s %d %d", string, &i, &value) == 3 && !strncmp(string, key, MAX_STRING_LEN) && i < MAXPLAYERS && (crispy->freelook || crispy->mouselook)) {
+  if (sscanf(line, "%s %d %d", string, &i, &value) == 3 && !strncmp(string, key.c_str(), MAX_STRING_LEN) && i < MAXPLAYERS && (crispy->freelook || crispy->mouselook)) {
     g_doomstat_globals->players[i].lookdir = value;
   }
 }
 
 // musinfo.current_item
 
-static void P_WriteMusInfo(const char * key) {
+static void P_WriteMusInfo(cstring_view key) {
   if (musinfo.current_item > 0 && musinfo.items[0] > 0) {
     char lump[9], orig[9];
 
@@ -300,12 +300,12 @@ static void P_WriteMusInfo(const char * key) {
   }
 }
 
-static void P_ReadMusInfo(const char * key) {
+static void P_ReadMusInfo(cstring_view key) {
   char lump[9] = { 0 }, orig[9] = { 0 };
 
   int items = sscanf(line, "%s %s %s", string, lump, orig);
 
-  if (items >= 2 && !strncmp(string, key, MAX_STRING_LEN)) {
+  if (items >= 2 && !strncmp(string, key.c_str(), MAX_STRING_LEN)) {
     int i = 0;
 
     if ((i = W_CheckNumForName(lump)) > 0) {
@@ -323,8 +323,8 @@ static void P_ReadMusInfo(const char * key) {
 
 struct extsavegdata_t {
   const char * key;
-  void (*extsavegwritefn)(const char * key);
-  void (*extsavegreadfn)(const char * key);
+  void (*extsavegwritefn)(cstring_view key);
+  void (*extsavegreadfn)(cstring_view key);
   const int pass;
 };
 

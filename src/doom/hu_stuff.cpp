@@ -561,7 +561,7 @@ static const speciallevel_t speciallevels[] = {
   { doom2, 0, 32, "teeth.wad",    MHUSTR_21  },
 };
 
-static void HU_SetSpecialLevelName(const char * wad, const char ** name) {
+static void HU_SetSpecialLevelName(cstring_view wad, const char ** name) {
   for (auto speciallevel : speciallevels) {
     if (logical_gamemission() == speciallevel.mission && (!speciallevel.episode || g_doomstat_globals->gameepisode == speciallevel.episode) && g_doomstat_globals->gamemap == speciallevel.map && (!speciallevel.wad || iequals(wad, speciallevel.wad))) {
       *name = speciallevel.name ? speciallevel.name : maplumpinfo->name;

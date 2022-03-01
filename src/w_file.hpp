@@ -18,14 +18,16 @@
 
 #pragma once
 
+#include "cstring_view.hpp"
 #include "doomtype.hpp"
+
 #include <cstdio>
 
 using wad_file_t = struct _wad_file_s;
 
 struct wad_file_class_t {
   // Open a file for reading.
-  wad_file_t * (*OpenFile)(const char * path);
+  wad_file_t * (*OpenFile)(cstring_view path);
 
   // Close the specified file.
   void (*CloseFile)(wad_file_t * file);
@@ -53,7 +55,7 @@ struct _wad_file_s {
 // Open the specified file. Returns a pointer to a new wad_file_t
 // handle for the WAD file, or nullptr if it could not be opened.
 
-wad_file_t * W_OpenFile(const char * path);
+wad_file_t * W_OpenFile(cstring_view path);
 
 // Close the specified WAD file.
 

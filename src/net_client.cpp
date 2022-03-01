@@ -416,10 +416,10 @@ static void NET_CL_ParseSYN(net_packet_t * packet) {
   }
 }
 
-static void SetRejectReason(const char * s) {
+static void SetRejectReason(cstring_view s) {
   free(g_net_client_globals->net_client_reject_reason);
-  if (s != nullptr) {
-    g_net_client_globals->net_client_reject_reason = strdup(s);
+  if (s.c_str() != nullptr) {
+    g_net_client_globals->net_client_reject_reason = strdup(s.c_str());
   } else {
     g_net_client_globals->net_client_reject_reason = nullptr;
   }

@@ -88,7 +88,7 @@ void V_RestoreBuffer();
 // format described in the string passed to the function, eg.
 // "DOOM%02i.pcx"
 
-void V_ScreenShot(const char * format);
+void V_ScreenShot(cstring_view format);
 
 // Load the lookup table for translucency calculations from the TINTTAB
 // lump.

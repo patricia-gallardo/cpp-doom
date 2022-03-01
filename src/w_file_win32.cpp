@@ -84,12 +84,12 @@ unsigned int GetFileLength(HANDLE handle) {
   return result;
 }
 
-static wad_file_t * W_Win32_OpenFile(const char * path) {
+static wad_file_t * W_Win32_OpenFile(cstring_view path) {
   wchar_t wpath[MAX_PATH + 1];
 
   // Open the file:
 
-  MultiByteToWideChar(CP_OEMCP, 0, path, static_cast<int>(strlen(path) + 1), wpath, static_cast<int>(sizeof(wpath)));
+  MultiByteToWideChar(CP_OEMCP, 0, path.c_str(), static_cast<int>(strlen(path.c_str()) + 1), wpath, static_cast<int>(sizeof(wpath)));
 
   HANDLE handle = CreateFileW(wpath,
                               GENERIC_READ,
@@ -113,7 +113,7 @@ static wad_file_t * W_Win32_OpenFile(const char * path) {
 
   // Try to map the file into memory with mmap:
 
-  MapFile(result, path);
+  MapFile(result, path.c_str());
 
   return &result->wad;
 }

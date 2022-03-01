@@ -624,7 +624,7 @@ static txt_dropdown_list_t * GameTypeDropdown() {
 // and the single player warp menu.  The parameters specify
 // the window title and whether to display multiplayer options.
 
-static void StartGameMenu(const char * window_title, int multiplayer) {
+static void StartGameMenu(cstring_view window_title, int multiplayer) {
   txt_window_t * window;
   txt_widget_t * iwad_selector;
 
@@ -870,7 +870,7 @@ static void QueryWindowClosed(void *, void *) {
   TXT_SetPeriodicCallback(nullptr, nullptr, 0);
 }
 
-static void ServerQueryWindow(const char * title) {
+static void ServerQueryWindow(cstring_view title) {
   txt_table_t * results_table;
 
   query_servers_found = 0;

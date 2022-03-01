@@ -1139,7 +1139,7 @@ void R_InitData() {
 // R_FlatNumForName
 // Retrieval, get a flat number for a flat name.
 //
-int R_FlatNumForName(const char * name) {
+int R_FlatNumForName(cstring_view name) {
   int  i;
   char namet[9];
 
@@ -1147,7 +1147,7 @@ int R_FlatNumForName(const char * name) {
 
   if (i == -1) {
     namet[8] = 0;
-    std::memcpy(namet, name, 8);
+    std::memcpy(namet, name.c_str(), 8);
     // [crispy] make non-fatal
     fmt::fprintf(stderr, "R_FlatNumForName: %s not found\n", namet);
     // [crispy] since there is no "No Flat" marker,
@@ -1162,12 +1162,12 @@ int R_FlatNumForName(const char * name) {
 // Check whether texture is available.
 // Filter out NoTexture indicator.
 //
-int R_CheckTextureNumForName(const char * name) {
+int R_CheckTextureNumForName(cstring_view name) {
   texture_t * texture;
   int         key;
-
+  const char * str = name.c_str();
   // "NoTexture" marker.
-  if (name[0] == '-')
+  if (str[0] == '-')
     return 0;
 
   key = static_cast<int>(W_LumpNameHash(name) % static_cast<unsigned int>(numtextures));
@@ -1175,7 +1175,7 @@ int R_CheckTextureNumForName(const char * name) {
   texture = textures_hashtable[key];
 
   while (texture != nullptr) {
-    if (!strncasecmp(texture->name, name, 8))
+    if (!strncasecmp(texture->name, name.c_str(), 8))
       return texture->index;
 
     texture = texture->next;
@@ -1189,7 +1189,7 @@ int R_CheckTextureNumForName(const char * name) {
 // Calls R_CheckTextureNumForName,
 //  aborts with error message.
 //
-int R_TextureNumForName(const char * name) {
+int R_TextureNumForName(cstring_view name) {
   int i;
 
   i = R_CheckTextureNumForName(name);
@@ -1198,7 +1198,7 @@ int R_TextureNumForName(const char * name) {
     // [crispy] fix absurd texture name in error message
     char namet[9];
     namet[8] = '\0';
-    std::memcpy(namet, name, 8);
+    std::memcpy(namet, name.c_str(), 8);
     // [crispy] make non-fatal
     fmt::fprintf(stderr, "R_TextureNumForName: %s not found\n", namet);
     return 0;

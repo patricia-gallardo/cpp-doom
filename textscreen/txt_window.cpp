@@ -53,15 +53,15 @@ void TXT_SetWindowAction(txt_window_t *    window,
   }
 }
 
-txt_window_t * TXT_NewWindow(const char * title) {
+txt_window_t * TXT_NewWindow(cstring_view title) {
   auto * win = create_struct<txt_window_t>();
 
   TXT_InitTable(&win->table, 1);
 
-  if (title == nullptr) {
+  if (title.c_str() == nullptr) {
     win->title = nullptr;
   } else {
-    win->title = strdup(title);
+    win->title = strdup(title.c_str());
   }
 
   win->x              = TXT_SCREEN_W / 2;
@@ -444,14 +444,14 @@ void TXT_SetWindowHelpURL(txt_window_t * window, const char * help_url) {
 
 #ifdef _WIN32
 
-void TXT_OpenURL(const char * url) {
-  ShellExecute(nullptr, "open", url, nullptr, nullptr, SW_SHOWNORMAL);
+void TXT_OpenURL(cstring_view url) {
+  ShellExecute(nullptr, "open", url.c_str(), nullptr, nullptr, SW_SHOWNORMAL);
 }
 
 #else
 
-void TXT_OpenURL(const char * url) {
-  size_t cmd_len = strlen(url) + 30;
+void TXT_OpenURL(cstring_view url) {
+  size_t cmd_len = strlen(url.c_str()) + 30;
   char * cmd     = static_cast<char *>(malloc(cmd_len));
 
 #if defined(__MACOSX__)
@@ -462,7 +462,7 @@ void TXT_OpenURL(const char * url) {
   if (system("xdg-open --version 2>/dev/null") != 0) {
     fmt::fprintf(stderr,
                  "xdg-utils is not installed. Can't open this URL:\n%s\n",
-                 url);
+                 url.c_str());
     free(cmd);
     return;
   }

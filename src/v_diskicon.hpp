@@ -25,7 +25,7 @@
 #define LOADING_DISK_W (16 << crispy->hires)
 #define LOADING_DISK_H (16 << crispy->hires)
 
-extern void V_EnableLoadingDisk(const char * lump_name, int xoffs, int yoffs);
+extern void V_EnableLoadingDisk(cstring_view lump_name, int xoffs, int yoffs);
 extern void V_BeginRead(size_t nbytes);
 extern void V_DrawDiskIcon();
 extern void V_RestoreDiskBackground();

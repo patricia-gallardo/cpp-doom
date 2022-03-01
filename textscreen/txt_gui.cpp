@@ -52,7 +52,7 @@ static txt_cliparea_t * cliparea = nullptr;
 #define VALID_X(x) ((x) >= cliparea->x1 && (x) < cliparea->x2)
 #define VALID_Y(y) ((y) >= cliparea->y1 && (y) < cliparea->y2)
 
-[[maybe_unused]] void TXT_DrawDesktopBackground(const char * title) {
+[[maybe_unused]] void TXT_DrawDesktopBackground(cstring_view title) {
   unsigned char * screendata = TXT_GetScreenData();
 
   // Fill the screen with gradient characters
@@ -106,7 +106,7 @@ void TXT_DrawShadow(int x, int y, int w, int h) {
   }
 }
 
-void TXT_DrawWindowFrame(const char * title, int x, int y, int w, int h) {
+void TXT_DrawWindowFrame(cstring_view title, int x, int y, int w, int h) {
   txt_saved_colors_t colors {};
   TXT_SaveColors(&colors);
   TXT_FGColor(TXT_COLOR_BRIGHT_CYAN);
@@ -119,7 +119,7 @@ void TXT_DrawWindowFrame(const char * title, int x, int y, int w, int h) {
     // Draw a horizontal line on the third line down, so we
     // draw a box around the title.
     int by = y1 == y                         ? 0 :
-             y1 == y + 2 && title != nullptr ? 2 :
+             y1 == y + 2 && title.c_str() != nullptr ? 2 :
              y1 == y + h - 1                 ? 3 :
                                                1;
 
@@ -137,7 +137,7 @@ void TXT_DrawWindowFrame(const char * title, int x, int y, int w, int h) {
 
   // Draw the title
 
-  if (title != nullptr) {
+  if (title.c_str() != nullptr) {
     TXT_GotoXY(x + 1, y + 1);
     TXT_BGColor(TXT_COLOR_GREY, 0);
     TXT_FGColor(TXT_COLOR_BLUE);
@@ -195,14 +195,14 @@ void TXT_DrawSeparator(int x, int y, int w) {
 
 // Alternative to TXT_DrawString() where the argument is a "code page
 // string" - characters are in native code page format and not UTF-8.
-void TXT_DrawCodePageString(const char * s) {
+void TXT_DrawCodePageString(cstring_view s) {
   int x, y = 0;
   TXT_GetXY(&x, &y);
 
   if (VALID_Y(y)) {
     int          x1 = x;
     const char * p;
-    for (p = s; *p != '\0'; ++p) {
+    for (p = s.c_str(); *p != '\0'; ++p) {
       if (VALID_X(x1)) {
         TXT_GotoXY(x1, y);
         TXT_PutChar(*p);
@@ -212,7 +212,7 @@ void TXT_DrawCodePageString(const char * s) {
     }
   }
 
-  int end_x = static_cast<int>(static_cast<unsigned long>(x) + strlen(s));
+  int end_x = static_cast<int>(static_cast<unsigned long>(x) + strlen(s.c_str()));
   TXT_GotoXY(end_x, y);
 }
 
@@ -236,7 +236,7 @@ static void PutUnicodeChar(unsigned int c) {
   }
 }
 
-void TXT_DrawString(const char * s) {
+void TXT_DrawString(cstring_view s) {
   int          x, y;
   int          x1;
   const char * p;
@@ -247,7 +247,7 @@ void TXT_DrawString(const char * s) {
   if (VALID_Y(y)) {
     x1 = x;
 
-    for (p = s; *p != '\0';) {
+    for (p = s.c_str(); *p != '\0';) {
       c = TXT_DecodeUTF8(&p);
 
       if (c == 0) {

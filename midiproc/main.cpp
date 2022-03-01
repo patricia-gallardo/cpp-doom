@@ -111,11 +111,11 @@ static void ShutdownSDL() {
 // SDL_mixer Interface
 //
 
-static bool RegisterSong(const char * filename) {
-  music = Mix_LoadMUS(filename);
+static bool RegisterSong(cstring_view filename) {
+  music = Mix_LoadMUS(filename.c_str());
 
   // Remove the temporary MIDI file
-  remove(filename);
+  remove(filename.c_str());
 
   if (music == nullptr) {
     return false;

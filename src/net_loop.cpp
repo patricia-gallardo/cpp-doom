@@ -104,8 +104,8 @@ static void NET_CL_AddrToString(net_addr_t *, char * buffer, int buffer_len) {
 static void NET_CL_FreeAddress(net_addr_t *) {
 }
 
-static net_addr_t * NET_CL_ResolveAddress(const char * address) {
-  if (address == nullptr) {
+static net_addr_t * NET_CL_ResolveAddress(cstring_view address) {
+  if (address.c_str() == nullptr) {
     client_addr.module = &net_loop_client_module;
 
     return &client_addr;
@@ -166,8 +166,8 @@ static void NET_SV_AddrToString(net_addr_t *, char * buffer, int buffer_len) {
 static void NET_SV_FreeAddress(net_addr_t *) {
 }
 
-static net_addr_t * NET_SV_ResolveAddress(const char * address) {
-  if (address == nullptr) {
+static net_addr_t * NET_SV_ResolveAddress(cstring_view address) {
+  if (address.c_str() == nullptr) {
     server_addr.module = &net_loop_server_module;
     return &server_addr;
   } else {

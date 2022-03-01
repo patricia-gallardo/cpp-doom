@@ -341,7 +341,7 @@ static void DEH_ParseContext(deh_context_t * context) {
 
 // Parses a dehacked file
 
-int DEH_LoadFile(const char * filename) {
+int DEH_LoadFile(cstring_view filename) {
   if (!deh_initialized) {
     DEH_Init();
   }
@@ -356,12 +356,12 @@ int DEH_LoadFile(const char * filename) {
   deh_allow_extended_strings = false;
 */
 
-  fmt::printf(" loading %s\n", filename);
+  fmt::printf(" loading %s\n", filename.c_str());
 
   deh_context_t * context = DEH_OpenFile(filename);
 
   if (context == nullptr) {
-    fmt::fprintf(stderr, "DEH_LoadFile: Unable to open %s\n", filename);
+    fmt::fprintf(stderr, "DEH_LoadFile: Unable to open %s\n", filename.c_str());
     return 0;
   }
 
@@ -377,8 +377,8 @@ int DEH_LoadFile(const char * filename) {
 }
 
 // Load all dehacked patches from the given directory.
-void DEH_AutoLoadPatches(const char * path) {
-  glob_t * glob = I_StartMultiGlob(path, GLOB_FLAG_NOCASE | GLOB_FLAG_SORTED, "*.deh", "*.bex", "*.hhe", "*.seh", nullptr); // [crispy] *.bex
+void DEH_AutoLoadPatches(cstring_view path) {
+  glob_t * glob = I_StartMultiGlob(path.c_str(), GLOB_FLAG_NOCASE | GLOB_FLAG_SORTED, "*.deh", "*.bex", "*.hhe", "*.seh", nullptr); // [crispy] *.bex
   for (;;) {
     const char * filename = I_NextGlob(glob);
     if (filename == nullptr) {
@@ -427,11 +427,11 @@ int DEH_LoadLump(int lumpnum, bool, bool allow_error) {
   return 1;
 }
 
-int DEH_LoadLumpByName(const char * name, bool allow_long, bool allow_error) {
+int DEH_LoadLumpByName(cstring_view name, bool allow_long, bool allow_error) {
   int lumpnum = W_CheckNumForName(name);
 
   if (lumpnum == -1) {
-    fmt::fprintf(stderr, "DEH_LoadLumpByName: '%s' lump not found\n", name);
+    fmt::fprintf(stderr, "DEH_LoadLumpByName: '%s' lump not found\n", name.c_str());
     return 0;
   }
 

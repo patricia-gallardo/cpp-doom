@@ -194,8 +194,8 @@ static void CheckMasterStatus() {
   }
 }
 
-static void PrintSHA1Digest(const char * s, const uint8_t * digest) {
-  fmt::printf("%s: ", s);
+static void PrintSHA1Digest(cstring_view s, const uint8_t * digest) {
+  fmt::printf("%s: ", s.c_str());
 
   for (unsigned int i = 0; i < sizeof(sha1_digest_t); ++i) {
     fmt::printf("%02x", digest[i]);

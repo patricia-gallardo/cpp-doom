@@ -3871,7 +3871,7 @@ static const fullbright_t fullbright_hacx[] = {
   { "HW512",    DOOM2ONLY, notgrayorbrown},
 };
 
-static uint8_t * R_BrightmapForTexName_Doom(const char * texname) {
+static uint8_t * R_BrightmapForTexName_Doom(cstring_view texname) {
   for (const auto & i : fullbright_doom) {
     const fullbright_t * fullbright = &i;
 
@@ -3879,7 +3879,7 @@ static uint8_t * R_BrightmapForTexName_Doom(const char * texname) {
       continue;
     }
 
-    if (!strncasecmp(fullbright->texture, texname, 8)) {
+    if (!strncasecmp(fullbright->texture, texname.c_str(), 8)) {
       return fullbright->colormask;
     }
   }
@@ -3889,7 +3889,7 @@ static uint8_t * R_BrightmapForTexName_Doom(const char * texname) {
 
 static bool chex2 = false;
 
-static uint8_t * R_BrightmapForTexName_Chex(const char * texname) {
+static uint8_t * R_BrightmapForTexName_Chex(cstring_view texname) {
   for (const auto & i : fullbright_chex) {
     const fullbright_t * fullbright = &i;
 
@@ -3897,7 +3897,7 @@ static uint8_t * R_BrightmapForTexName_Chex(const char * texname) {
       continue;
     }
 
-    if (!strncasecmp(fullbright->texture, texname, 8)) {
+    if (!strncasecmp(fullbright->texture, texname.c_str(), 8)) {
       return fullbright->colormask;
     }
   }
@@ -3905,11 +3905,11 @@ static uint8_t * R_BrightmapForTexName_Chex(const char * texname) {
   return nobrightmap;
 }
 
-static uint8_t * R_BrightmapForTexName_Hacx(const char * texname) {
+static uint8_t * R_BrightmapForTexName_Hacx(cstring_view texname) {
   for (const auto & i : fullbright_hacx) {
     const fullbright_t * fullbright = &i;
 
-    if (!strncasecmp(fullbright->texture, texname, 8)) {
+    if (!strncasecmp(fullbright->texture, texname.c_str(), 8)) {
       return fullbright->colormask;
     }
   }
@@ -4104,7 +4104,7 @@ static uint8_t * R_BrightmapForState_None(const int) {
 
 // [crispy] initialize brightmaps
 
-uint8_t * (*R_BrightmapForTexName)(const char * texname);
+uint8_t * (*R_BrightmapForTexName)(cstring_view texname);
 uint8_t * (*R_BrightmapForSprite)(const int type);
 uint8_t * (*R_BrightmapForFlatNum)(const int num);
 uint8_t * (*R_BrightmapForState)(const int state);

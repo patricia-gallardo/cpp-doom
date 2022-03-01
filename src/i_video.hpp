@@ -19,6 +19,7 @@
 #pragma once
 
 #include "crispy.hpp"
+#include "cstring_view.hpp"
 #include "doomtype.hpp"
 
 // Screen width and height.
@@ -68,7 +69,7 @@ void I_ReadScreen(pixel_t * scr);
 
 [[maybe_unused]] void I_BeginRead();
 
-void I_SetWindowTitle(const char * title);
+void I_SetWindowTitle(cstring_view title);
 
 void I_CheckIsScreensaver();
 void I_SetGrabMouseCallback(grabmouse_callback_t func);
