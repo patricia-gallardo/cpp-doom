@@ -147,7 +147,7 @@ static void DEH_AddToHashtable(deh_substitution_t * sub) {
   ++hash_table_entries;
 }
 
-void DEH_AddStringReplacement(const char * from_text, const char * to_text) {
+void DEH_AddStringReplacement(cstring_view from_text, cstring_view to_text) {
   size_t len = 0;
 
   // Initialize the hash table if this is the first time
@@ -161,21 +161,21 @@ void DEH_AddStringReplacement(const char * from_text, const char * to_text) {
   if (sub != nullptr) {
     Z_Free(sub->to_text);
 
-    len          = strlen(to_text) + 1;
+    len          = strlen(to_text.c_str()) + 1;
     sub->to_text = zmalloc<char *>(len, PU_STATIC, nullptr);
-    std::memcpy(sub->to_text, to_text, len);
+    std::memcpy(sub->to_text, to_text.c_str(), len);
   } else {
     // We need to allocate a new substitution.
     sub = zmalloc<decltype(sub)>(sizeof(*sub), PU_STATIC, 0);
 
     // We need to create our own duplicates of the provided strings.
-    len            = strlen(from_text) + 1;
+    len            = strlen(from_text.c_str()) + 1;
     sub->from_text = zmalloc<char *>(len, PU_STATIC, nullptr);
-    std::memcpy(sub->from_text, from_text, len);
+    std::memcpy(sub->from_text, from_text.c_str(), len);
 
-    len          = strlen(to_text) + 1;
+    len          = strlen(to_text.c_str()) + 1;
     sub->to_text = zmalloc<char *>(len, PU_STATIC, nullptr);
-    std::memcpy(sub->to_text, to_text, len);
+    std::memcpy(sub->to_text, to_text.c_str(), len);
 
     DEH_AddToHashtable(sub);
   }
