@@ -37,8 +37,8 @@ static int                   hash_table_length = -1;
 
 // This is the algorithm used by glib
 
-static unsigned int strhash(const char * s) {
-  const char * p = s;
+static unsigned int strhash(cstring_view s) {
+  const char * p = s.c_str();
   auto         h = static_cast<unsigned int>(*p);
 
   if (h) {
@@ -49,7 +49,7 @@ static unsigned int strhash(const char * s) {
   return h;
 }
 
-static deh_substitution_t * SubstitutionForString(const char * s) {
+static deh_substitution_t * SubstitutionForString(cstring_view s) {
   // Fallback if we have not initialized the hash table yet
   if (hash_table_length < 0)
     return nullptr;
@@ -57,7 +57,7 @@ static deh_substitution_t * SubstitutionForString(const char * s) {
   int entry = static_cast<int>(strhash(s) % static_cast<unsigned int>(hash_table_length));
 
   while (hash_table[entry] != nullptr) {
-    if (!strcmp(hash_table[entry]->from_text, s)) {
+    if (!strcmp(hash_table[entry]->from_text, s.c_str())) {
       // substitution found!
       return hash_table[entry];
     }
@@ -72,13 +72,13 @@ static deh_substitution_t * SubstitutionForString(const char * s) {
 // Look up a string to see if it has been replaced with something else
 // This will be used throughout the program to substitute text
 
-const char * DEH_String(const char * s) {
+const char * DEH_String(cstring_view s) {
   deh_substitution_t * subst = SubstitutionForString(s);
 
   if (subst != nullptr) {
     return subst->to_text;
   } else {
-    return s;
+    return s.c_str();
   }
 }
 
