@@ -65,4 +65,4 @@ txt_button_t * TXT_NewButton2(cstring_view label, TxtWidgetSignalFunc func, void
  * @param label        The new label (UTF-8 format).
  */
 
-void TXT_SetButtonLabel(txt_button_t * button, const char * label);
+void TXT_SetButtonLabel(txt_button_t * button, cstring_view label);

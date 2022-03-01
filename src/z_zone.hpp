@@ -23,6 +23,8 @@
 
 #include <cstdio>
 
+#include "cstring_view.hpp"
+
 //
 // ZONE MEMORY
 // PU - purge tags.
@@ -53,7 +55,7 @@ void                          Z_FreeTags(int lowtag, int hightag);
 [[maybe_unused]] void         Z_DumpHeap(int lowtag, int hightag);
 [[maybe_unused]] void         Z_FileDumpHeap(FILE * f);
 void                          Z_CheckHeap();
-void                          Z_ChangeTag2(void * ptr, int tag, const char * file, int line);
+void                          Z_ChangeTag2(void * ptr, int tag, cstring_view file, int line);
 [[maybe_unused]] void         Z_ChangeUser(void * ptr, void ** user);
 [[maybe_unused]] int          Z_FreeMemory();
 [[maybe_unused]] unsigned int Z_ZoneSize();

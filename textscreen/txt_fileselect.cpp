@@ -706,14 +706,14 @@ static void InputBoxChanged(void *, void * uncast_fileselect) {
   TXT_EmitSignal(&fileselect->widget, "changed");
 }
 
-txt_fileselect_t * TXT_NewFileSelector(char ** variable, int size, const char * prompt, const char ** extensions) {
+txt_fileselect_t * TXT_NewFileSelector(char ** variable, int size, cstring_view prompt, const char ** extensions) {
   auto * fileselect = create_struct<txt_fileselect_t>();
 
   TXT_InitWidget(fileselect, &txt_fileselect_class);
   fileselect->inputbox                = TXT_NewInputBox(variable, 1024);
   fileselect->inputbox->widget.parent = &fileselect->widget;
   fileselect->size                    = size;
-  fileselect->prompt                  = prompt;
+  fileselect->prompt                  = prompt.c_str();
   fileselect->extensions              = extensions;
 
   TXT_SignalConnect(fileselect->inputbox, "changed", InputBoxChanged, fileselect);

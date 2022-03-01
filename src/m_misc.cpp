@@ -327,9 +327,9 @@ void M_ForceLowercase(char * text) {
 // Case-insensitive version of strstr()
 //
 
-[[maybe_unused]] const char * M_StrCaseStr(cstring_view haystack, const char * needle) {
+[[maybe_unused]] const char * M_StrCaseStr(cstring_view haystack, cstring_view needle) {
   size_t haystack_len = strlen(haystack.c_str());
-  size_t needle_len   = strlen(needle);
+  size_t needle_len   = strlen(needle.c_str());
 
   if (haystack_len < needle_len) {
     return nullptr;
@@ -338,7 +338,7 @@ void M_ForceLowercase(char * text) {
   size_t len = haystack_len - needle_len;
 
   for (size_t i = 0; i <= len; ++i) {
-    if (!strncasecmp(haystack.c_str() + i, needle, needle_len)) {
+    if (!strncasecmp(haystack.c_str() + i, needle.c_str(), needle_len)) {
       return haystack.c_str() + i;
     }
   }
@@ -368,10 +368,10 @@ char * M_StringDuplicate(cstring_view orig) {
 // String replace function.
 //
 
-char * M_StringReplace(cstring_view haystack, const char * needle, const char * replacement) {
+char * M_StringReplace(cstring_view haystack, cstring_view needle, cstring_view replacement) {
   char *       result, *dst;
   const char * p;
-  size_t       needle_len = strlen(needle);
+  size_t       needle_len = strlen(needle.c_str());
   size_t       result_len, dst_len;
 
   // Iterate through occurrences of 'needle' and calculate the size of
@@ -380,13 +380,13 @@ char * M_StringReplace(cstring_view haystack, const char * needle, const char * 
   p          = haystack.c_str();
 
   for (;;) {
-    p = strstr(p, needle);
+    p = strstr(p, needle.c_str());
     if (p == nullptr) {
       break;
     }
 
     p += needle_len;
-    result_len += strlen(replacement) - needle_len;
+    result_len += strlen(replacement.c_str()) - needle_len;
   }
 
   // Construct new string.
@@ -402,11 +402,11 @@ char * M_StringReplace(cstring_view haystack, const char * needle, const char * 
   p       = haystack.c_str();
 
   while (*p != '\0') {
-    if (!strncmp(p, needle, needle_len)) {
+    if (!strncmp(p, needle.c_str(), needle_len)) {
       M_StringCopy(dst, replacement, dst_len);
       p += needle_len;
-      dst += strlen(replacement);
-      dst_len -= strlen(replacement);
+      dst += strlen(replacement.c_str());
+      dst_len -= strlen(replacement.c_str());
     } else {
       *dst = *p;
       ++dst;
@@ -423,24 +423,25 @@ char * M_StringReplace(cstring_view haystack, const char * needle, const char * 
 // Safe string copy function that works like OpenBSD's strlcpy().
 // Returns true if the string was not truncated.
 
-bool M_StringCopy(char * dest, const char * src, size_t dest_size) {
+bool M_StringCopy(char * dest, cstring_view src, size_t dest_size) {
   size_t len;
 
   if (dest_size >= 1) {
     dest[dest_size - 1] = '\0';
-    strncpy(dest, src, dest_size - 1);
+    strncpy(dest, src.c_str(), dest_size - 1);
   } else {
     return false;
   }
 
   len = strlen(dest);
-  return src[len] == '\0';
+  const char * ptr = src.c_str();
+  return ptr[len] == '\0';
 }
 
 // Safe string concat function that works like OpenBSD's strlcat().
 // Returns true if string not truncated.
 
-bool M_StringConcat(char * dest, const char * src, size_t dest_size) {
+bool M_StringConcat(char * dest, cstring_view src, size_t dest_size) {
   size_t offset;
 
   offset = strlen(dest);
@@ -453,16 +454,16 @@ bool M_StringConcat(char * dest, const char * src, size_t dest_size) {
 
 // Returns true if 's' begins with the specified prefix.
 
-bool M_StringStartsWith(cstring_view s, const char * prefix) {
-  return strlen(s.c_str()) >= strlen(prefix)
-         && strncmp(s.c_str(), prefix, strlen(prefix)) == 0;
+bool M_StringStartsWith(cstring_view s, cstring_view prefix) {
+  return strlen(s.c_str()) >= strlen(prefix.c_str())
+         && strncmp(s.c_str(), prefix.c_str(), strlen(prefix.c_str())) == 0;
 }
 
 // Returns true if 's' ends with the specified suffix.
 
-bool M_StringEndsWith(cstring_view s, const char * suffix) {
-  return strlen(s.c_str()) >= strlen(suffix)
-         && strcmp(s.c_str() + strlen(s.c_str()) - strlen(suffix), suffix) == 0;
+bool M_StringEndsWith(cstring_view s, cstring_view suffix) {
+  return strlen(s.c_str()) >= strlen(suffix.c_str())
+         && strcmp(s.c_str() + strlen(s.c_str()) - strlen(suffix.c_str()), suffix.c_str()) == 0;
 }
 
 // Return a newly-malloced string with all the strings given as arguments
@@ -518,7 +519,7 @@ char * M_StringJoin(const char * s, ...) {
 #endif
 
 // Safe, portable vsnprintf().
-int M_vsnprintf(char * buf, size_t buf_len, const char * s, va_list args) {
+int M_vsnprintf(char * buf, size_t buf_len, cstring_view s, va_list args) {
   if (buf_len < 1) {
     return 0;
   }
@@ -526,7 +527,7 @@ int M_vsnprintf(char * buf, size_t buf_len, const char * s, va_list args) {
   // Windows (and other OSes?) has a vsnprintf() that doesn't always
   // append a trailing \0. So we must do it, and write into a buffer
   // that is one byte shorter; otherwise this function is unsafe.
-  int result = vsnprintf(buf, buf_len, s, args);
+  int result = vsnprintf(buf, buf_len, s.c_str(), args);
 
   // If truncated, change the final char in the buffer to a \0.
   // A negative result indicates a truncated buffer on Windows.

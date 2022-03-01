@@ -149,15 +149,15 @@ static unsigned int WaitForProcessExit(HANDLE subprocess) {
   }
 }
 
-static void ConcatWCString(wchar_t * buf, const char * value) {
-  MultiByteToWideChar(CP_OEMCP, 0, value, static_cast<int>(strlen(value) + 1), buf + wcslen(buf), static_cast<int>(strlen(value) + 1));
+static void ConcatWCString(wchar_t * buf, cstring_view value) {
+  MultiByteToWideChar(CP_OEMCP, 0, value.c_str(), static_cast<int>(strlen(value.c_str()) + 1), buf + wcslen(buf), static_cast<int>(strlen(value.c_str()) + 1));
 }
 
 // Build the command line string, a wide character string of the form:
 //
 // "program" "arg"
 
-static wchar_t * BuildCommandLine(cstring_view program, const char * arg) {
+static wchar_t * BuildCommandLine(cstring_view program, cstring_view arg) {
   wchar_t   exe_path[MAX_PATH];
   wchar_t * result;
   wchar_t * sep;
@@ -168,7 +168,7 @@ static wchar_t * BuildCommandLine(cstring_view program, const char * arg) {
 
   // Allocate buffer to contain result string.
 
-  result = static_cast<wchar_t *>(calloc(wcslen(exe_path) + strlen(program.c_str()) + strlen(arg) + 6,
+  result = static_cast<wchar_t *>(calloc(wcslen(exe_path) + strlen(program.c_str()) + strlen(arg.c_str()) + 6,
                                          sizeof(wchar_t)));
 
   wcscpy(result, L"\"");
@@ -185,7 +185,7 @@ static wchar_t * BuildCommandLine(cstring_view program, const char * arg) {
 
   // Concatenate the name of the program:
 
-  ConcatWCString(result, program.c_str());
+  ConcatWCString(result, program);
 
   // End of program name, start of argument:
 
@@ -198,7 +198,7 @@ static wchar_t * BuildCommandLine(cstring_view program, const char * arg) {
   return result;
 }
 
-static int ExecuteCommand(cstring_view program, const char * arg) {
+static int ExecuteCommand(cstring_view program, cstring_view arg) {
   STARTUPINFOW        startup_info;
   PROCESS_INFORMATION proc_info;
   wchar_t *           command;
@@ -270,7 +270,7 @@ static char * GetFullExePath(cstring_view program) {
   return result;
 }
 
-static int ExecuteCommand(cstring_view program, const char * arg) {
+static int ExecuteCommand(cstring_view program, cstring_view arg) {
   int result;
   const char * argv[3];
 
@@ -280,7 +280,7 @@ static int ExecuteCommand(cstring_view program, const char * arg) {
     // This is the child.  Execute the command.
 
     argv[0] = GetFullExePath(program);
-    argv[1] = arg;
+    argv[1] = arg.c_str();
     argv[2] = nullptr;
 
     execvp(argv[0], const_cast<char **>(argv));

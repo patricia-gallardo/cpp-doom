@@ -213,7 +213,7 @@ static void M_DrawSave();
 static void M_DrawSaveLoadBorder(int x, int y);
 static void M_SetupNextMenu(menu_t * menudef);
 static void M_DrawThermo(int x, int y, int thermWidth, int thermDot);
-static void M_WriteText(int x, int y, const char * string);
+static void M_WriteText(int x, int y, cstring_view string);
 int         M_StringWidth(cstring_view string); // [crispy] un-static
 static int  M_StringHeight(cstring_view string);
 static void M_StartMessage(cstring_view string, void (*routine)(int), bool input);
@@ -1639,8 +1639,8 @@ int M_StringHeight(cstring_view string) {
 //
 //      Write a string using the hu_font
 //
-void M_WriteText(int x, int y, const char * string) {
-  const char * ch = string;
+void M_WriteText(int x, int y, cstring_view string) {
+  const char * ch = string.c_str();
   int          cx = x;
   int          cy = y;
 

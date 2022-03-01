@@ -419,14 +419,14 @@ static auto HU_COORDX() {
   return ((ORIGWIDTH - 7 * hu_font['A' - HU_FONTSTART]->width) + DELTAWIDTH);
 }
 
-static void CrispyReplaceColor(char * str, const int cr, const char * col) {
+static void CrispyReplaceColor(char * str, const int cr, cstring_view col) {
   char col_replace[16];
 
   if (DEH_HasStringReplacement(str)) {
     return;
   }
 
-  M_snprintf(col_replace, sizeof(col_replace), "%s%s%s", crstr[cr], col, crstr[static_cast<int>(cr_t::CR_NONE)]);
+  M_snprintf(col_replace, sizeof(col_replace), "%s%s%s", crstr[cr], col.c_str(), crstr[static_cast<int>(cr_t::CR_NONE)]);
   char * str_replace = M_StringReplace(str, col, col_replace);
   DEH_AddStringReplacement(str, str_replace);
   free(str_replace);

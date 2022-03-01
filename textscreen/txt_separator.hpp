@@ -57,4 +57,4 @@ txt_separator_t * TXT_NewSeparator(cstring_view label);
  * @param label         The new label (UTF-8 format).
  */
 
-void TXT_SetSeparatorLabel(txt_separator_t * separator, const char * label);
+void TXT_SetSeparatorLabel(txt_separator_t * separator, cstring_view label);

@@ -70,4 +70,4 @@ txt_radiobutton_t * TXT_NewRadioButton(cstring_view label, int * variable, int v
  * @param value          The new label (UTF-8 format).
  */
 
-[[maybe_unused]] void TXT_SetRadioButtonLabel(txt_radiobutton_t * radiobutton, const char * value);
+[[maybe_unused]] void TXT_SetRadioButtonLabel(txt_radiobutton_t * radiobutton, cstring_view value);

@@ -450,7 +450,7 @@ static net_client_t * NET_SV_FindClient(net_addr_t * addr) {
 
 // send a rejection packet to a client
 
-static void NET_SV_SendReject(net_addr_t * addr, const char * msg) {
+static void NET_SV_SendReject(net_addr_t * addr, cstring_view msg) {
   NET_Log("server: sending reject to %s", NET_AddrToString(addr));
 
   net_packet_t * packet = NET_NewPacket(10);

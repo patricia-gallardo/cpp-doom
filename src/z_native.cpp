@@ -378,7 +378,7 @@ void Z_CheckHeap() {
 // Z_ChangeTag
 //
 
-void Z_ChangeTag2(void * ptr, int tag, const char * file, int line) {
+void Z_ChangeTag2(void * ptr, int tag, cstring_view file, int line) {
   auto * byte_ptr = static_cast<uint8_t *>(ptr);
   auto * block    = reinterpret_cast<memblock_t *>(byte_ptr - sizeof(memblock_t));
 

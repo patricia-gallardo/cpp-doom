@@ -66,7 +66,7 @@ char * TXT_SelectFile(cstring_view prompt, const char ** extensions);
  *                    to select directories.
  */
 
-txt_fileselect_t * TXT_NewFileSelector(char ** variable, int size, const char * prompt, const char ** extensions);
+txt_fileselect_t * TXT_NewFileSelector(char ** variable, int size, cstring_view prompt, const char ** extensions);
 
 /**
  * Special value to use for 'extensions' that selects a directory

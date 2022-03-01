@@ -67,27 +67,27 @@ static int              sprite_frames_alloced;
 //
 // Returns -1 if not found
 
-static int FindInList(searchlist_t * list, const char * name) {
+static int FindInList(searchlist_t * list, cstring_view name) {
   for (int i = 0; i < list->numlumps; ++i) {
-    if (!strncasecmp(list->lumps[i]->name, name, 8))
+    if (!strncasecmp(list->lumps[i]->name, name.c_str(), 8))
       return i;
   }
 
   return -1;
 }
 
-static bool SetupList(searchlist_t * list, searchlist_t * src_list, const char * startname, const char * endname, const char * startname2, const char * endname2) {
+static bool SetupList(searchlist_t * list, searchlist_t * src_list, cstring_view startname, cstring_view endname, cstring_view startname2, cstring_view endname2) {
   list->numlumps = 0;
   int startlump  = FindInList(src_list, startname);
 
-  if (startname2 != nullptr && startlump < 0) {
+  if (startname2.c_str() != nullptr && startlump < 0) {
     startlump = FindInList(src_list, startname2);
   }
 
   if (startlump >= 0) {
     int endlump = FindInList(src_list, endname);
 
-    if (endname2 != nullptr && endlump < 0) {
+    if (endname2.c_str() != nullptr && endlump < 0) {
       endlump = FindInList(src_list, endname2);
     }
 

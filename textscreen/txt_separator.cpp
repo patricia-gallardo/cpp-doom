@@ -64,11 +64,11 @@ static void TXT_SeparatorDestructor(void * uncast_separator) {
   free(separator->label);
 }
 
-void TXT_SetSeparatorLabel(txt_separator_t * separator, const char * label) {
+void TXT_SetSeparatorLabel(txt_separator_t * separator, cstring_view label) {
   free(separator->label);
 
-  if (label != nullptr) {
-    separator->label = strdup(label);
+  if (label.c_str() != nullptr) {
+    separator->label = strdup(label.c_str());
   } else {
     separator->label = nullptr;
   }
@@ -90,7 +90,7 @@ txt_separator_t * TXT_NewSeparator(cstring_view label) {
   TXT_InitWidget(separator, &txt_separator_class);
 
   separator->label = nullptr;
-  TXT_SetSeparatorLabel(separator, label.c_str());
+  TXT_SetSeparatorLabel(separator, label);
 
   return separator;
 }

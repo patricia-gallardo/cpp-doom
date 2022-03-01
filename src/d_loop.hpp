@@ -76,7 +76,7 @@ extern int  gametic, ticdup;
 extern int  oldleveltime; // [crispy] check if leveltime keeps tickin'
 
 // Check if it is permitted to record a demo with a non-vanilla feature.
-bool D_NonVanillaRecord(bool conditional, const char * feature);
+bool D_NonVanillaRecord(bool conditional, cstring_view feature);
 
 // Check if it is permitted to play back a demo with a non-vanilla feature.
-bool D_NonVanillaPlayback(bool conditional, int lumpnum, const char * feature);
+bool D_NonVanillaPlayback(bool conditional, int lumpnum, cstring_view feature);
