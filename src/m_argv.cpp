@@ -22,6 +22,7 @@
 
 #include <fmt/printf.h>
 
+#include "cstring_view.hpp"
 #include "i_system.hpp"
 #include "m_argv.hpp" // haleyjd 20110212: warning fix
 #include "m_misc.hpp"
@@ -42,9 +43,9 @@ char ** myargv;
 // or 0 if not present
 //
 
-int M_CheckParmWithArgs(const char * check, int num_args) {
+int M_CheckParmWithArgs(cstring_view check, int num_args) {
   for (int i = 1; i < myargc - num_args; i++) {
-    if (!strcasecmp(check, myargv[i]))
+    if (iequals(check, myargv[i]))
       return i;
   }
 
@@ -62,7 +63,7 @@ bool M_ParmExists(const char * check) {
   return M_CheckParm(check) != 0;
 }
 
-int M_CheckParm(const char * check) {
+int M_CheckParm(cstring_view check) {
   return M_CheckParmWithArgs(check, 0);
 }
 
