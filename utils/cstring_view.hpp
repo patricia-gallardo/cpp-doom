@@ -36,3 +36,11 @@ private:
   const char * d;
   std::size_t  s;
 };
+
+inline bool iequals(cstring_view first, cstring_view second)
+{
+  return std::equal(first.begin(), first.end(), second.begin(), second.end(),
+                    [](char a, char b) {
+                      return tolower(a) == tolower(b);
+                    });
+}
