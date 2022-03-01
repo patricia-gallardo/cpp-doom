@@ -17,6 +17,7 @@
 
 #pragma once
 
+#include "cstring_view.hpp"
 #include "txt_main.hpp"
 
 struct txt_saved_colors_t {
@@ -26,7 +27,7 @@ struct txt_saved_colors_t {
 
 void                  TXT_PutSymbol(int c);
 void                  TXT_PutChar(int c);
-void                  TXT_Puts(const char * s);
+void                  TXT_Puts(cstring_view s);
 void                  TXT_GotoXY(int x, int y);
 void                  TXT_GetXY(int * x, int * y);
 void                  TXT_FGColor(txt_color_t color);

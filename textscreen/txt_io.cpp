@@ -17,6 +17,7 @@
 
 #include <cstring>
 
+#include "cstring_view.hpp"
 #include "txt_io.hpp"
 #include "txt_main.hpp"
 
@@ -94,14 +95,11 @@ void TXT_PutChar(int c) {
   PutChar(TXT_GetScreenData(), c);
 }
 
-void TXT_Puts(const char * s) {
-  unsigned char * screen;
-  const char *    p;
+void TXT_Puts(cstring_view s) {
+  unsigned char * screen = TXT_GetScreenData();
 
-  screen = TXT_GetScreenData();
-
-  for (p = s; *p != '\0'; ++p) {
-    PutChar(screen, *p);
+  for (const auto & c : s ) {
+    PutChar(screen, c);
   }
 
   PutChar(screen, '\n');
