@@ -84,8 +84,8 @@ const char * DEH_String(cstring_view s) {
 
 // [crispy] returns true if a string has been substituted
 
-bool DEH_HasStringReplacement(const char * s) {
-  return DEH_String(s) != s;
+bool DEH_HasStringReplacement(cstring_view s) {
+  return DEH_String(s) != s.c_str();
 }
 
 static void InitHashTable() {

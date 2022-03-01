@@ -46,4 +46,4 @@ void DEH_snprintf(char * buffer, size_t len, const char * fmt, Args &&... args) 
 }
 
 void DEH_AddStringReplacement(const char * from_text, const char * to_text);
-bool DEH_HasStringReplacement(const char * s);
+bool DEH_HasStringReplacement(cstring_view s);
