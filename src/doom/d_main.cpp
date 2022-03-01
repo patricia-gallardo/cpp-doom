@@ -26,6 +26,7 @@
 #include <fmt/printf.h>
 
 #include "config.h"
+#include "cstring_view.hpp"
 #include "deh_main.hpp"
 #include "doomdef.hpp"
 #include "doomstat.hpp"
@@ -690,7 +691,7 @@ static const char * banners[] = {
 // Otherwise, use the name given
 //
 
-static const char * GetGameName(const char * gamename) {
+static const char * GetGameName(cstring_view gamename) {
   for (auto & banner : banners) {
     // Has the banner been replaced?
 
@@ -718,7 +719,7 @@ static const char * GetGameName(const char * gamename) {
     }
   }
 
-  return gamename;
+  return gamename.c_str();
 }
 
 static void SetMissionForPackName(const char * pack_name) {
