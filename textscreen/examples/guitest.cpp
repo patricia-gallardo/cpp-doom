@@ -18,6 +18,7 @@
 // a simple textscreen program can be written.
 //
 
+#define SDL_MAIN_HANDLED
 #include <array>
 #include <cstdio>
 #include <cstdlib>

@@ -15,6 +15,7 @@
 // Example program: desktop calculator
 //
 
+#define SDL_MAIN_HANDLED
 #include <cstdio>
 #include <cstdlib>
 #include <fmt/printf.h>
