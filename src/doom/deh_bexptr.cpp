@@ -146,7 +146,7 @@ static void DEH_BEXPtrParseLine(deh_context_t * context, char * line, void *) {
   }
 
   // parse "FRAME nn", where frame_number = "nn"
-  if (sscanf(variable_name, "%5s %32d", frame_str, &frame_number) != 2 || strcasecmp(frame_str, "FRAME") != 0) {
+  if (sscanf(variable_name, "%5s %32d", frame_str, &frame_number) != 2 || !iequals(frame_str, "FRAME")) {
     DEH_Warning(context, "Failed to parse assignment: %s", variable_name);
     return;
   }
@@ -159,7 +159,7 @@ static void DEH_BEXPtrParseLine(deh_context_t * context, char * line, void *) {
   state_t * state = &states[frame_number];
 
   for (const auto & bex : bex_codeptrtable) {
-    if (!strcasecmp(bex.mnemonic, value)) {
+    if (iequals(bex.mnemonic, value)) {
       state->action = bex.pointer;
       return;
     }

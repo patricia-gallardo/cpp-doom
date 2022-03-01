@@ -140,10 +140,10 @@ static void DEH_ThingParseLine(deh_context_t * context, char * line, void * tag)
   int ivalue = std::atoi(value);
 
   // [crispy] support BEX bits mnemonics in Things fields
-  if (!ivalue && !strcasecmp(variable_name, "bits")) {
+  if (!ivalue && iequals(variable_name, "bits")) {
     for (; (value = strtok(value, ",+| \t\f\r")); value = nullptr) {
       for (auto i : bex_thingbitstable)
-        if (!strcasecmp(value, i.flag)) {
+        if (iequals(value, i.flag)) {
           ivalue |= i.bits;
           break;
         }

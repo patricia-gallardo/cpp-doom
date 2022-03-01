@@ -27,6 +27,7 @@
 
 #include <fmt/printf.h>
 
+#include "cstring_view.hpp"
 #include "doomstat.hpp"
 #include "i_system.hpp"
 #include "m_misc.hpp"
@@ -212,10 +213,7 @@ static bool SC_GetString() {
 //==========================================================================
 
 static bool SC_Compare(const char * text) {
-  if (strcasecmp(text, sc_String) == 0) {
-    return true;
-  }
-  return false;
+  return iequals(text, sc_String);
 }
 
 //==========================================================================

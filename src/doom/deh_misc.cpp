@@ -167,7 +167,7 @@ static void DEH_MiscParseLine(deh_context_t * context, char * line, void *) {
 
   int ivalue = std::atoi(value);
 
-  if (!strcasecmp(variable_name, "Monsters Infight")) {
+  if (iequals(variable_name, "Monsters Infight")) {
     // See notes above.
 
     if (ivalue == 202) {
@@ -184,7 +184,7 @@ static void DEH_MiscParseLine(deh_context_t * context, char * line, void *) {
   }
 
   for (auto & misc_setting : misc_settings) {
-    if (!strcasecmp(variable_name, misc_setting.deh_name)) {
+    if (iequals(variable_name, misc_setting.deh_name)) {
       *misc_setting.value = ivalue;
       return;
     }

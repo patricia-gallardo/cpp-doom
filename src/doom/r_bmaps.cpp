@@ -19,6 +19,7 @@
 //	Adapted from doomretro/src/r_data.c:97-209
 //
 
+#include "cstring_view.hpp"
 #include "doomstat.hpp"
 #include "doomtype.hpp"
 #include "r_data.hpp"
@@ -4130,7 +4131,7 @@ void R_InitBrightmaps() {
   } else if (g_doomstat_globals->gameversion == exe_chex) {
     // [crispy] detect Chex Quest 2
     int lump = W_CheckNumForName("INTERPIC");
-    if (!strcasecmp(W_WadNameForLump(lumpinfo[lump]), "chex2.wad")) {
+    if (iequals(W_WadNameForLump(lumpinfo[lump]), "chex2.wad")) {
       chex2 = true;
     }
 

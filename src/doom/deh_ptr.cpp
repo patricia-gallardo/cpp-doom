@@ -99,7 +99,7 @@ static void DEH_PointerParseLine(deh_context_t * context, char * line, void * ta
 
   // set the appropriate field
 
-  if (!strcasecmp(variable_name, "Codep frame")) {
+  if (iequals(variable_name, "Codep frame")) {
     if (ivalue < 0 || ivalue >= NUMSTATES) {
       DEH_Warning(context, "Invalid state '%i'", ivalue);
     } else {

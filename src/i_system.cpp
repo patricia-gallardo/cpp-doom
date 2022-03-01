@@ -385,12 +385,12 @@ bool I_GetMemoryValue(unsigned int offset, void * value, int size) {
     int p = M_CheckParmWithArgs("-setmem", 1);
 
     if (p > 0) {
-      if (!strcasecmp(myargv[p + 1], "dos622")) {
+      if (iequals(myargv[p + 1], "dos622")) {
         dos_mem_dump = mem_dump_dos622;
       }
-      if (!strcasecmp(myargv[p + 1], "dos71")) {
+      if (iequals(myargv[p + 1], "dos71")) {
         dos_mem_dump = mem_dump_win98;
-      } else if (!strcasecmp(myargv[p + 1], "dosbox")) {
+      } else if (iequals(myargv[p + 1], "dosbox")) {
         dos_mem_dump = mem_dump_dosbox;
       } else {
         for (int i = 0; i < DOS_MEM_DUMP_SIZE; ++i) {
