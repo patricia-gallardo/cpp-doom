@@ -38,4 +38,4 @@ void NET_WriteInt8(net_packet_t * packet, unsigned int i);
 void NET_WriteInt16(net_packet_t * packet, unsigned int i);
 void NET_WriteInt32(net_packet_t * packet, unsigned int i);
 
-void NET_WriteString(net_packet_t * packet, const char * string);
+void NET_WriteString(net_packet_t * packet, cstring_view string);

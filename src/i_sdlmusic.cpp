@@ -303,7 +303,7 @@ static bool IsMid(byte *mem, int len)
 }
 */
 
-static bool ConvertMus(uint8_t * musdata, int len, const char * filename) {
+static bool ConvertMus(uint8_t * musdata, int len, cstring_view filename) {
   MEMFILE * instream  = mem_fopen_read(musdata, static_cast<size_t>(len));
   MEMFILE * outstream = mem_fopen_write();
 

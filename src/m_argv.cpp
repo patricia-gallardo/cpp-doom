@@ -69,16 +69,16 @@ int M_CheckParm(cstring_view check) {
 
 constexpr auto MAXARGVS = 100;
 
-static void LoadResponseFile(int argv_index, const char * filename) {
+static void LoadResponseFile(int argv_index, cstring_view filename) {
   // Read the response file into memory
-  FILE * handle = fopen(filename, "rb");
+  FILE * handle = fopen(filename.c_str(), "rb");
 
   if (handle == nullptr) {
     fmt::printf("\nNo such response file!");
     exit(1);
   }
 
-  fmt::printf("Found response file %s!\n", filename);
+  fmt::printf("Found response file %s!\n", filename.c_str());
 
   auto size = static_cast<size_t>(M_FileLength(handle));
 

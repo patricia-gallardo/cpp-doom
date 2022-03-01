@@ -719,14 +719,14 @@ static bool StrictDemos() {
 // this extension (no extensions are allowed if -strictdemos is given
 // on the command line). A warning is shown on the console using the
 // provided string describing the non-vanilla expansion.
-bool D_NonVanillaRecord(bool conditional, const char * feature) {
+bool D_NonVanillaRecord(bool conditional, cstring_view feature) {
   if (!conditional || StrictDemos()) {
     return false;
   }
 
   fmt::printf("Warning: Recording a demo file with a non-vanilla extension "
               "(%s). Use -strictdemos to disable this extension.\n",
-              feature);
+              feature.c_str());
 
   return true;
 }
@@ -750,7 +750,7 @@ static bool IsDemoFile(int lumpnum) {
 //  - The given lumpnum identifying the demo to play back identifies a
 //    demo that comes from a .lmp file, not a .wad file.
 //  - Before proceeding, a warning is shown to the user on the console.
-bool D_NonVanillaPlayback(bool conditional, int lumpnum, const char * feature) {
+bool D_NonVanillaPlayback(bool conditional, int lumpnum, cstring_view feature) {
   if (!conditional || StrictDemos()) {
     return false;
   }
@@ -758,13 +758,13 @@ bool D_NonVanillaPlayback(bool conditional, int lumpnum, const char * feature) {
   if (!IsDemoFile(lumpnum)) {
     fmt::printf("Warning: WAD contains demo with a non-vanilla extension "
                 "(%s)\n",
-                feature);
+                feature.c_str());
     return false;
   }
 
   fmt::printf("Warning: Playing back a demo file with a non-vanilla extension "
               "(%s). Use -strictdemos to disable this extension.\n",
-              feature);
+              feature.c_str());
 
   return true;
 }

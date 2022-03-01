@@ -63,7 +63,7 @@ void TXT_InitWidget(void * uncast_widget, txt_widget_class_t * widget_class) {
 }
 
 void TXT_SignalConnect(void *              uncast_widget,
-                       const char *        signal_name,
+                       cstring_view        signal_name,
                        TxtWidgetSignalFunc func,
                        void *              user_data) {
   auto * widget = reinterpret_cast<txt_widget_t *>(uncast_widget);
@@ -73,12 +73,12 @@ void TXT_SignalConnect(void *              uncast_widget,
   // Add a new callback to the table
 
   auto & callback      = table->callbacks.emplace_back();
-  callback.signal_name = strdup(signal_name);
+  callback.signal_name = strdup(signal_name.c_str());
   callback.func        = func;
   callback.user_data   = user_data;
 }
 
-void TXT_EmitSignal(void * uncast_widget, const char * signal_name) {
+void TXT_EmitSignal(void * uncast_widget, cstring_view signal_name) {
   auto * widget = reinterpret_cast<txt_widget_t *>(uncast_widget);
 
   auto table = widget->callback_table;
@@ -90,7 +90,7 @@ void TXT_EmitSignal(void * uncast_widget, const char * signal_name) {
   // the functions.
 
   for (auto & callback : table->callbacks) {
-    if (!strcmp(callback.signal_name, signal_name)) {
+    if (!strcmp(callback.signal_name, signal_name.c_str())) {
       callback.func(widget, callback.user_data);
     }
   }

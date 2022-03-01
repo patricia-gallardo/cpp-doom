@@ -100,12 +100,12 @@ txt_widget_class_t txt_window_action_class = {
   nullptr,
 };
 
-txt_window_action_t * TXT_NewWindowAction(int key, const char * label) {
+txt_window_action_t * TXT_NewWindowAction(int key, cstring_view label) {
   auto * action = create_struct<txt_window_action_t>();
 
   TXT_InitWidget(action, &txt_window_action_class);
   action->key   = key;
-  action->label = strdup(label);
+  action->label = strdup(label.c_str());
 
   return action;
 }

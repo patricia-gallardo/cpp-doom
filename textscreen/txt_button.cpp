@@ -79,9 +79,9 @@ txt_widget_class_t txt_button_class = {
   nullptr,
 };
 
-void TXT_SetButtonLabel(txt_button_t * button, const char * label) {
+void TXT_SetButtonLabel(txt_button_t * button, cstring_view label) {
   free(button->label);
-  button->label = strdup(label);
+  button->label = strdup(label.c_str());
 }
 
 txt_button_t * TXT_NewButton(cstring_view label) {

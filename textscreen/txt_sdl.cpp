@@ -757,16 +757,16 @@ void TXT_SDL_SetEventCallback(TxtSDLEventCallbackFunc callback, void * user_data
 
 // Safe string functions.
 
-void TXT_StringCopy(char * dest, const char * src, size_t dest_len) {
+void TXT_StringCopy(char * dest, cstring_view src, size_t dest_len) {
   if (dest_len < 1) {
     return;
   }
 
   dest[dest_len - 1] = '\0';
-  strncpy(dest, src, dest_len - 1);
+  strncpy(dest, src.c_str(), dest_len - 1);
 }
 
-void TXT_StringConcat(char * dest, const char * src, size_t dest_len) {
+void TXT_StringConcat(char * dest, cstring_view src, size_t dest_len) {
   size_t offset = strlen(dest);
   if (offset > dest_len) {
     offset = dest_len;
@@ -783,7 +783,7 @@ void TXT_StringConcat(char * dest, const char * src, size_t dest_len) {
 #endif
 
 // Safe, portable vsnprintf().
-int TXT_vsnprintf(char * buf, size_t buf_len, const char * s, va_list args) {
+int TXT_vsnprintf(char * buf, size_t buf_len, cstring_view s, va_list args) {
   if (buf_len < 1) {
     return 0;
   }
@@ -791,7 +791,7 @@ int TXT_vsnprintf(char * buf, size_t buf_len, const char * s, va_list args) {
   // Windows (and other OSes?) has a vsnprintf() that doesn't always
   // append a trailing \0. So we must do it, and write into a buffer
   // that is one byte shorter; otherwise this function is unsafe.
-  int result = vsnprintf(buf, buf_len, s, args);
+  int result = vsnprintf(buf, buf_len, s.c_str(), args);
 
   // If truncated, change the final char in the buffer to a \0.
   // A negative result indicates a truncated buffer on Windows.

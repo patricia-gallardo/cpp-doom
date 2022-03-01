@@ -438,8 +438,8 @@ void TXT_SetWindowFocus(txt_window_t * window, int focused) {
   TXT_SetWidgetFocus(window, focused);
 }
 
-void TXT_SetWindowHelpURL(txt_window_t * window, const char * help_url) {
-  window->help_url = help_url;
+void TXT_SetWindowHelpURL(txt_window_t * window, cstring_view help_url) {
+  window->help_url = help_url.c_str();
 }
 
 #ifdef _WIN32
@@ -485,7 +485,7 @@ void TXT_OpenWindowHelpURL(txt_window_t * window) {
   }
 }
 
-txt_window_t * TXT_MessageBox(const char * title, const char * message, ...) {
+txt_window_t * TXT_MessageBox(const char * title, cstring_view message, ...) {
   char    buf[256];
   va_list args;
 

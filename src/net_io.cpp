@@ -47,7 +47,7 @@ void NET_AddModule(net_context_t * context, net_module_t * module) {
   ++context->num_modules;
 }
 
-net_addr_t * NET_ResolveAddress(net_context_t * context, const char * addr) {
+net_addr_t * NET_ResolveAddress(net_context_t * context, cstring_view addr) {
   for (int i = 0; i < context->num_modules; ++i) {
     net_addr_t * result = context->modules[i]->ResolveAddress(addr);
 

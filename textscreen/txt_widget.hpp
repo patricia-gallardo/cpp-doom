@@ -14,6 +14,8 @@
 
 #pragma once
 
+#include "cstring_view.hpp"
+
 /**
  * @file txt_widget.h
  *
@@ -106,7 +108,7 @@ struct txt_widget_s {
 void TXT_InitWidget(void * uncast_widget, txt_widget_class_t * widget_class);
 void TXT_CalcWidgetSize(void * uncast_widget);
 void TXT_DrawWidget(void * uncast_widget);
-void TXT_EmitSignal(void * uncast_widget, const char * signal_name);
+void TXT_EmitSignal(void * uncast_widget, cstring_view signal_name);
 int  TXT_WidgetKeyPress(void * uncast_widget, int key);
 void TXT_WidgetMousePress(void * uncast_widget, int x, int y, int b);
 void TXT_DestroyWidget(void * uncast_widget);
@@ -124,7 +126,7 @@ void TXT_SetWidgetFocus(void * uncast_widget, int focused);
  * @param user_data    User-specified pointer to pass to the callback function.
  */
 
-void TXT_SignalConnect(void * uncast_widget, const char * signal_name, TxtWidgetSignalFunc func, void * user_data);
+void TXT_SignalConnect(void * uncast_widget, cstring_view signal_name, TxtWidgetSignalFunc func, void * user_data);
 
 /**
  * Set the policy for how a widget should be aligned within a table.

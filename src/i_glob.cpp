@@ -85,7 +85,7 @@ static void FreeStringList(char ** globs, int num_globs) {
   free(globs);
 }
 
-glob_t * I_StartMultiGlob(const char * directory, int flags, const char * glob, ...) {
+glob_t * I_StartMultiGlob(const char * directory, int flags, cstring_view glob, ...) {
   va_list args;
 
   char ** globs = static_cast<char **>(malloc(sizeof(char *)));
@@ -137,7 +137,7 @@ glob_t * I_StartMultiGlob(const char * directory, int flags, const char * glob, 
   return result;
 }
 
-glob_t * I_StartGlob(cstring_view directory, const char * glob, int flags) {
+glob_t * I_StartGlob(cstring_view directory, cstring_view glob, int flags) {
   return I_StartMultiGlob(directory.c_str(), flags, glob, nullptr);
 }
 
@@ -155,11 +155,12 @@ void I_EndGlob(glob_t * glob) {
   free(glob);
 }
 
-static bool MatchesGlob(cstring_view name_orig, const char * glob, int flags) {
+static bool MatchesGlob(cstring_view name_orig, cstring_view glob_orig, int flags) {
   const char * n_ptr = name_orig.c_str();
-  while (*glob != '\0') {
+  const char * g_ptr = glob_orig.c_str();
+  while (*g_ptr != '\0') {
     int n = *n_ptr;
-    int g = *glob;
+    int g = *g_ptr;
 
     if ((flags & GLOB_FLAG_NOCASE) != 0) {
       n = tolower(n);
@@ -171,12 +172,12 @@ static bool MatchesGlob(cstring_view name_orig, const char * glob, int flags) {
       // to check each subsequent character in turn. If none
       // match then the whole match is a failure.
       while (*n_ptr != '\0') {
-        if (MatchesGlob(n_ptr, glob + 1, flags)) {
+        if (MatchesGlob(n_ptr, g_ptr + 1, flags)) {
           return true;
         }
         ++n_ptr;
       }
-      return glob[1] == '\0';
+      return g_ptr[1] == '\0';
     } else if (g != '?' && n != g) {
       // For normal characters the name must match the glob,
       // but for ? we don't care what the character is.
@@ -184,7 +185,7 @@ static bool MatchesGlob(cstring_view name_orig, const char * glob, int flags) {
     }
 
     ++n_ptr;
-    ++glob;
+    ++g_ptr;
   }
 
   // Match successful when glob and name end at the same time.
@@ -292,7 +293,7 @@ const char * I_NextGlob(glob_t * glob) {
 
 #warning No native implementation of file globbing.
 
-glob_t * I_StartGlob(cstring_view directory, const char * glob, int flags) {
+glob_t * I_StartGlob(cstring_view directory, cstring_view glob, int flags) {
   return nullptr;
 }
 

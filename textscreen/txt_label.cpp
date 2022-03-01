@@ -104,7 +104,7 @@ txt_widget_class_t txt_label_class = {
   nullptr,
 };
 
-void TXT_SetLabel(txt_label_t * label, const char * value) {
+void TXT_SetLabel(txt_label_t * label, cstring_view value) {
   char * p;
 
   // Free back the old label
@@ -114,7 +114,7 @@ void TXT_SetLabel(txt_label_t * label, const char * value) {
 
   // Set the new value
 
-  label->label = strdup(value);
+  label->label = strdup(value.c_str());
 
   // Work out how many lines in this label
 
@@ -164,7 +164,7 @@ txt_label_t * TXT_NewLabel(cstring_view text) {
   label->bgcolor = TXT_COLOR_BLACK;
   label->fgcolor = TXT_COLOR_BLACK;
 
-  TXT_SetLabel(label, text.c_str());
+  TXT_SetLabel(label, text);
 
   return label;
 }

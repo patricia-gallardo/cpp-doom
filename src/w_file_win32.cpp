@@ -48,7 +48,7 @@ struct win32_wad_file_t {
 
 extern wad_file_class_t win32_wad_file;
 
-static void MapFile(win32_wad_file_t * wad, const char * filename) {
+static void MapFile(win32_wad_file_t * wad, cstring_view filename) {
   wad->handle_map = CreateFileMapping(wad->handle,
                                       nullptr,
                                       PAGE_WRITECOPY,
@@ -59,7 +59,7 @@ static void MapFile(win32_wad_file_t * wad, const char * filename) {
   if (wad->handle_map == nullptr) {
     fmt::fprintf(stderr, "W_Win32_OpenFile: Unable to CreateFileMapping() "
                          "for %s\n",
-                 filename);
+                 filename.c_str());
     return;
   }
 
@@ -70,7 +70,7 @@ static void MapFile(win32_wad_file_t * wad, const char * filename) {
                                                          0));
 
   if (wad->wad.mapped == nullptr) {
-    fmt::fprintf(stderr, "W_Win32_OpenFile: Unable to MapViewOfFile() for %s\n", filename);
+    fmt::fprintf(stderr, "W_Win32_OpenFile: Unable to MapViewOfFile() for %s\n", filename.c_str());
   }
 }
 
@@ -113,7 +113,7 @@ static wad_file_t * W_Win32_OpenFile(cstring_view path) {
 
   // Try to map the file into memory with mmap:
 
-  MapFile(result, path.c_str());
+  MapFile(result, path);
 
   return &result->wad;
 }

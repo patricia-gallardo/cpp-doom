@@ -39,7 +39,7 @@ struct posix_wad_file_t {
 
 extern wad_file_class_t posix_wad_file;
 
-static void MapFile(posix_wad_file_t * wad, const char * filename) {
+static void MapFile(posix_wad_file_t * wad, cstring_view filename) {
   void * result;
   int    protection;
   int    flags;

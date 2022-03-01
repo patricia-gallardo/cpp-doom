@@ -2201,9 +2201,9 @@ static default_collection_t extra_defaults = {
 
 // Search a collection for a variable
 
-static default_t * SearchCollection(default_collection_t * collection, const char * name) {
+static default_t * SearchCollection(default_collection_t * collection, cstring_view name) {
   for (int i = 0; i < collection->numdefaults; ++i) {
-    if (!strcmp(name, collection->defaults[i].name)) {
+    if (!strcmp(name.c_str(), collection->defaults[i].name)) {
       return &collection->defaults[i];
     }
   }
@@ -2341,7 +2341,7 @@ static int ParseIntParameter(cstring_view strparm) {
   return parm;
 }
 
-static void SetVariable(default_t * def, const char * value) {
+static void SetVariable(default_t * def, cstring_view value) {
   int intparm = 0;
 
   // parameter found
@@ -2374,7 +2374,7 @@ static void SetVariable(default_t * def, const char * value) {
     break;
 
   case DEFAULT_FLOAT:
-    *def->location.f = static_cast<float>(std::atof(value));
+    *def->location.f = static_cast<float>(std::atof(value.c_str()));
     break;
   }
 }
@@ -2433,9 +2433,9 @@ static void LoadDefaultCollection(default_collection_t * collection) {
 
 // Set the default filenames to use for configuration files.
 
-void M_SetConfigFilenames(cstring_view main_config, const char * extra_config) {
+void M_SetConfigFilenames(cstring_view main_config, cstring_view extra_config) {
   default_main_config  = main_config.c_str();
-  default_extra_config = extra_config;
+  default_extra_config = extra_config.c_str();
 }
 
 //
@@ -2451,14 +2451,14 @@ void M_SaveDefaults() {
 // Save defaults to alternate filenames
 //
 
-void M_SaveDefaultsAlternate(cstring_view main, const char * extra) {
+void M_SaveDefaultsAlternate(cstring_view main, cstring_view extra) {
   // Temporarily change the filenames
 
   const char * orig_main  = doom_defaults.filename;
   const char * orig_extra = extra_defaults.filename;
 
   doom_defaults.filename  = main.c_str();
-  extra_defaults.filename = extra;
+  extra_defaults.filename = extra.c_str();
 
   M_SaveDefaults();
 
@@ -2523,10 +2523,10 @@ void M_LoadDefaults() {
 static default_t * GetDefaultForName(cstring_view name) {
   // Try the main list and the extras
 
-  default_t * result = SearchCollection(&doom_defaults, name.c_str());
+  default_t * result = SearchCollection(&doom_defaults, name);
 
   if (result == nullptr) {
-    result = SearchCollection(&extra_defaults, name.c_str());
+    result = SearchCollection(&extra_defaults, name);
   }
 
   // Not found? Internal error.
@@ -2571,7 +2571,7 @@ void M_BindStringVariable(cstring_view name, char ** location) {
 // Set the value of a particular variable; an API function for other
 // parts of the program to assign values to config variables by name.
 
-bool M_SetVariable(cstring_view name, const char * value) {
+bool M_SetVariable(cstring_view name, cstring_view value) {
   default_t * variable = GetDefaultForName(name);
 
   if (variable == nullptr || !variable->bound) {

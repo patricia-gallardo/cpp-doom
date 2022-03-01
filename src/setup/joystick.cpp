@@ -964,7 +964,7 @@ static void CalibrateJoystick(void *, void *)
 // GUI
 //
 
-static void AddJoystickControl(void *uncast_table, const char *label, int *var)
+static void AddJoystickControl(void *uncast_table, cstring_view label, int *var)
 {
     auto          *table = reinterpret_cast<txt_table_t *>(uncast_table);
     txt_joystick_input_t *joy_input;

@@ -593,9 +593,10 @@ static const char * GetSubstituteMusicFile(void * data, size_t data_len) {
   return filename;
 }
 
-static char * GetFullPath(cstring_view musicdir, const char * path) {
+static char * GetFullPath(cstring_view musicdir, cstring_view orig_path) {
   // Starting with directory separator means we have an absolute path,
   // so just return it.
+  const char * path = orig_path.c_str();
   if (path[0] == DIR_SEPARATOR) {
     return M_StringDuplicate(path);
   }
@@ -624,7 +625,7 @@ static char * GetFullPath(cstring_view musicdir, const char * path) {
 // that name, returning it if found. If none exist, nullptr is returned. If the
 // filename doesn't end with .{ext} then it just acts as a wrapper around
 // GetFullPath().
-static char * ExpandFileExtension(cstring_view musicdir, const char * filename) {
+static char * ExpandFileExtension(cstring_view musicdir, cstring_view filename) {
   static const char * extns[] = { ".flac", ".ogg", ".mp3" };
 
   if (!M_StringEndsWith(filename, ".{ext}")) {
@@ -645,7 +646,7 @@ static char * ExpandFileExtension(cstring_view musicdir, const char * filename) 
 }
 
 // Add a substitute music file to the lookup list.
-static void AddSubstituteMusic(cstring_view musicdir, const char * hash_prefix, const char * filename) {
+static void AddSubstituteMusic(cstring_view musicdir, cstring_view hash_prefix, cstring_view filename) {
   char * path = ExpandFileExtension(musicdir, filename);
   if (path == nullptr) {
     return;
@@ -654,7 +655,7 @@ static void AddSubstituteMusic(cstring_view musicdir, const char * hash_prefix, 
   ++subst_music_len;
   subst_music       = static_cast<decltype(subst_music)>(I_Realloc(subst_music, sizeof(subst_music_t) * subst_music_len));
   subst_music_t * s = &subst_music[subst_music_len - 1];
-  s->hash_prefix    = hash_prefix;
+  s->hash_prefix    = hash_prefix.c_str();
   s->filename       = path;
 }
 
@@ -747,7 +748,7 @@ static const char * ParseSubstituteLine(char * musicdir, char * line) {
 
 // Read a substitute music configuration file.
 
-static bool ReadSubstituteConfig(char * musicdir, const char * filename) {
+static bool ReadSubstituteConfig(char * musicdir, cstring_view filename) {
   int    linenum = 1;
 
   // This unnecessarily opens the file twice...
@@ -777,7 +778,7 @@ static bool ReadSubstituteConfig(char * musicdir, const char * filename) {
     const char * error = ParseSubstituteLine(musicdir, line);
 
     if (error != nullptr) {
-      fmt::fprintf(stderr, "%s:%i: Error: %s\n", filename, linenum, error);
+      fmt::fprintf(stderr, "%s:%i: Error: %s\n", filename.c_str(), linenum, error);
     }
 
     ++linenum;

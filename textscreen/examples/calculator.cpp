@@ -75,7 +75,7 @@ void Operator(void * /*uncast_button*/, void * uncast_op) {
   starting_input = 1;
 }
 
-void AddOperatorButton(txt_table_t * table, const char * label, operator_t op) {
+void AddOperatorButton(txt_table_t * table, cstring_view label, operator_t op) {
   char         buf[10];
   auto * op_copy = reinterpret_cast<operator_t *>(malloc(sizeof(operator_t)));
   *op_copy = op;

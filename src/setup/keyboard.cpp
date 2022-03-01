@@ -253,7 +253,7 @@ static void KeySetCallback(void *, void * uncast_variable) {
 
 // Add a label and keyboard input to the specified table.
 
-static void AddKeyControl(void * uncast_table, const char * name, int * var) {
+static void AddKeyControl(void * uncast_table, cstring_view name, int * var) {
   auto *            table = reinterpret_cast<txt_table_t *>(uncast_table);
   txt_key_input_t * key_input;
 
@@ -264,7 +264,7 @@ static void AddKeyControl(void * uncast_table, const char * name, int * var) {
   TXT_SignalConnect(key_input, "set", KeySetCallback, var);
 }
 
-static void AddSectionLabel(void * uncast_table, const char * title, bool add_space) {
+static void AddSectionLabel(void * uncast_table, cstring_view title, bool add_space) {
   auto * table = reinterpret_cast<txt_table_t *>(uncast_table);
   char   buf[64];
 

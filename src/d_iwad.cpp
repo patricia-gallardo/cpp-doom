@@ -396,7 +396,7 @@ static void CheckDOSDefaults() {
 // Returns true if the specified path is a path to a file
 // of the specified name.
 
-static bool DirIsFile(cstring_view path, const char * filename) {
+static bool DirIsFile(cstring_view path, cstring_view filename) {
   return strchr(path.c_str(), DIR_SEPARATOR) != nullptr
          && iequals(M_BaseName(path), filename);
 }
@@ -405,7 +405,7 @@ static bool DirIsFile(cstring_view path, const char * filename) {
 // file, returning the full path to the IWAD if found, or NULL
 // if not found.
 
-static char * CheckDirectoryHasIWAD(cstring_view dir, const char * iwadname) {
+static char * CheckDirectoryHasIWAD(cstring_view dir, cstring_view iwadname) {
   // As a special case, the "directory" may refer directly to an
   // IWAD file if the path comes from DOOMWADDIR or DOOMWADPATH.
 
@@ -484,7 +484,7 @@ static GameMission_t IdentifyIWADByName(cstring_view name, int mask) {
 // Add IWAD directories parsed from splitting a path string containing
 // paths separated by PATH_SEPARATOR. 'suffix' is a string to concatenate
 // to the end of the paths before adding them.
-static void AddIWADPath(cstring_view path, const char * suffix) {
+static void AddIWADPath(cstring_view path, cstring_view suffix) {
   char * dup_path = M_StringDuplicate(path);
 
   // Split into individual dirs within the list.
@@ -497,14 +497,14 @@ static void AddIWADPath(cstring_view path, const char * suffix) {
       // as another iwad dir
       *p = '\0';
 
-      AddIWADDir(M_StringJoin(left, suffix, nullptr));
+      AddIWADDir(M_StringJoin(left, suffix.c_str(), nullptr));
       left = p + 1;
     } else {
       break;
     }
   }
 
-  AddIWADDir(M_StringJoin(left, suffix, nullptr));
+  AddIWADDir(M_StringJoin(left, suffix.c_str(), nullptr));
 
   free(dup_path);
 }
@@ -667,7 +667,7 @@ char * D_FindWADByName(cstring_view name) {
     // file.
 
     probe = M_FileCaseExists(iwad_dirs[i]);
-    if (DirIsFile(iwad_dirs[i], name.c_str()) && probe != nullptr) {
+    if (DirIsFile(iwad_dirs[i], name) && probe != nullptr) {
       return probe;
     }
     free(probe);

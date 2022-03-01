@@ -421,7 +421,7 @@ void Z_CheckHeap() {
 //
 // Z_ChangeTag
 //
-void Z_ChangeTag2(void * ptr, int tag, const char * file, int line) {
+void Z_ChangeTag2(void * ptr, int tag, cstring_view file, int line) {
   auto * block = reinterpret_cast<memblock_t *>(reinterpret_cast<uint8_t *>(ptr) - sizeof(memblock_t));
 
   if (block->id != ZONEID)

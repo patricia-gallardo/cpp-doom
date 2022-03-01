@@ -67,18 +67,18 @@ int             DEH_GetChar(deh_context_t * context);
 char *          DEH_ReadLine(deh_context_t * context, bool extended);
 
 template <typename... Args>
-inline void DEH_Error(deh_context_t * context, const char * msg, Args &&... args) {
+inline void DEH_Error(deh_context_t * context, cstring_view msg, Args &&... args) {
   fmt::fprintf(stderr, "%s:%i: ", context->filename, context->linenum);
-  fmt::fprintf(stderr, msg, args...);
+  fmt::fprintf(stderr, msg.c_str(), args...);
   fmt::fprintf(stderr, "\n");
 
   context->had_error = true;
 }
 
 template <typename... Args>
-inline void DEH_Warning(const deh_context_t * context, const char * msg, Args &&... args) {
+inline void DEH_Warning(const deh_context_t * context, cstring_view msg, Args &&... args) {
   fmt::fprintf(stderr, "%s:%i: warning: ", context->filename, context->linenum);
-  fmt::fprintf(stderr, msg, args...);
+  fmt::fprintf(stderr, msg.c_str(), args...);
   fmt::fprintf(stderr, "\n");
 }
 

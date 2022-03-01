@@ -117,7 +117,7 @@ txt_radiobutton_t * TXT_NewRadioButton(cstring_view label, int * variable, int v
   return radiobutton;
 }
 
-[[maybe_unused]] void TXT_SetRadioButtonLabel(txt_radiobutton_t * radiobutton, const char * value) {
+[[maybe_unused]] void TXT_SetRadioButtonLabel(txt_radiobutton_t * radiobutton, cstring_view value) {
   free(radiobutton->label);
-  radiobutton->label = strdup(value);
+  radiobutton->label = strdup(value.c_str());
 }

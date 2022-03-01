@@ -70,7 +70,7 @@ static void MouseSetCallback(void *, void * uncast_variable) {
   }
 }
 
-static void AddMouseControl(void * uncast_table, const char * label, int * var) {
+static void AddMouseControl(void * uncast_table, cstring_view label, int * var) {
   auto *              table = reinterpret_cast<txt_table_t *>(uncast_table);
   txt_mouse_input_t * mouse_input;
 
