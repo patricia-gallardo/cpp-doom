@@ -28,7 +28,7 @@ const char * DEH_String(cstring_view s);
 
 // snprintf(), performing a replacement on the format string.
 template <typename... Args>
-void DEH_snprintf(char * buffer, size_t len, const char * fmt, Args &&... args) {
+void DEH_snprintf(char * buffer, size_t len, cstring_view fmt, Args &&... args) {
   if (len < 1) {
     return;
   }
@@ -36,7 +36,7 @@ void DEH_snprintf(char * buffer, size_t len, const char * fmt, Args &&... args) 
   // Windows (and other OSes?) has a vsnprintf() that doesn't always
   // append a trailing \0. So we must do it, and write into a buffer
   // that is one byte shorter; otherwise this function is unsafe.
-  int result = snprintf(buffer, len, fmt, args...);
+  int result = snprintf(buffer, len, fmt.c_str(), args...);
 
   // If truncated, change the final char in the buffer to a \0.
   // A negative result indicates a truncated buffer on Windows.
