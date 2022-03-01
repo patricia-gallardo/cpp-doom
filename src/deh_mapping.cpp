@@ -21,6 +21,7 @@
 
 #include <fmt/printf.h>
 
+#include "cstring_view.hpp"
 #include "doomtype.hpp"
 #include "i_system.hpp"
 #include "m_misc.hpp"
@@ -33,7 +34,7 @@ static deh_mapping_entry_t * GetMappingEntryByName(deh_context_t * context,
   for (int i = 0; mapping->entries[i].name != nullptr; ++i) {
     deh_mapping_entry_t * entry = &mapping->entries[i];
 
-    if (!strcasecmp(entry->name, name)) {
+    if (iequals(entry->name, name)) {
       if (entry->location == nullptr) {
         DEH_Warning(context, "Field '%s' is unsupported", name);
         return nullptr;

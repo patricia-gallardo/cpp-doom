@@ -351,7 +351,7 @@ static void DEH_BEXStrParseLine(deh_context_t * context, char * line, void *) {
   }
 
   for (auto bex : bex_stringtable) {
-    if (!strcasecmp(bex.macro, variable_name)) {
+    if (iequals(bex.macro, variable_name)) {
       DEH_AddStringReplacement(bex.string, value);
     }
   }

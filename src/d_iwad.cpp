@@ -50,7 +50,7 @@ static const iwad_t iwads[] = {
 
 bool D_IsIWADName(const char * name) {
   for (const auto & iwad : iwads) {
-    if (!strcasecmp(name, iwad.name)) {
+    if (iequals(name, iwad.name)) {
       return true;
     }
   }
@@ -398,7 +398,7 @@ static void CheckDOSDefaults() {
 
 static bool DirIsFile(const char * path, const char * filename) {
   return strchr(path, DIR_SEPARATOR) != nullptr
-         && !strcasecmp(M_BaseName(path), filename);
+         && iequals(M_BaseName(path), filename);
 }
 
 // Check if the specified directory contains the specified IWAD
@@ -472,7 +472,7 @@ static GameMission_t IdentifyIWADByName(const char * name, int mask) {
 
     // Check if it ends in this IWAD name.
 
-    if (!strcasecmp(name, iwad.name)) {
+    if (iequals(name, iwad.name)) {
       mission = iwad.mission;
       break;
     }

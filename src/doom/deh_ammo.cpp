@@ -61,9 +61,9 @@ static void DEH_AmmoParseLine(deh_context_t * context, char * line, void * tag) 
 
   // maxammo
 
-  if (!strcasecmp(variable_name, "Per ammo"))
+  if (iequals(variable_name, "Per ammo"))
     g_p_local_globals->clipammo[ammo_number] = ivalue;
-  else if (!strcasecmp(variable_name, "Max ammo"))
+  else if (iequals(variable_name, "Max ammo"))
     g_p_local_globals->maxammo[ammo_number] = ivalue;
   else {
     DEH_Warning(context, "Field named '%s' not found", variable_name);

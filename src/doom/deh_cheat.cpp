@@ -50,7 +50,7 @@ static deh_cheat_t allcheats[] = {
 
 static deh_cheat_t * FindCheatByName(char * name) {
   for (auto & allcheat : allcheats) {
-    if (!strcasecmp(allcheat.name, name))
+    if (iequals(allcheat.name, name))
       return &allcheat;
   }
 

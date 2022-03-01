@@ -563,7 +563,7 @@ static const speciallevel_t speciallevels[] = {
 
 static void HU_SetSpecialLevelName(const char * wad, const char ** name) {
   for (auto speciallevel : speciallevels) {
-    if (logical_gamemission() == speciallevel.mission && (!speciallevel.episode || g_doomstat_globals->gameepisode == speciallevel.episode) && g_doomstat_globals->gamemap == speciallevel.map && (!speciallevel.wad || !strcasecmp(wad, speciallevel.wad))) {
+    if (logical_gamemission() == speciallevel.mission && (!speciallevel.episode || g_doomstat_globals->gameepisode == speciallevel.episode) && g_doomstat_globals->gamemap == speciallevel.map && (!speciallevel.wad || iequals(wad, speciallevel.wad))) {
       *name = speciallevel.name ? speciallevel.name : maplumpinfo->name;
       break;
     }

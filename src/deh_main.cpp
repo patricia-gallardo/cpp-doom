@@ -104,7 +104,7 @@ static deh_section_t * GetSectionByName(char * name) {
   }
 
   for (unsigned int i = 0; deh_section_types[i] != nullptr; ++i) {
-    if (!strcasecmp(deh_section_types[i]->name, name)) {
+    if (iequals(deh_section_types[i]->name, name)) {
       return deh_section_types[i];
     }
   }
@@ -271,7 +271,7 @@ static void DEH_ParseContext(deh_context_t * context) {
     // Read the next line. We only allow the special extended parsing
     // for the BEX [STRINGS] section.
     bool extended = current_section != nullptr
-                    && !strcasecmp(current_section->name, "[STRINGS]");
+                    && iequals(current_section->name, "[STRINGS]");
     // [crispy] save pointer to start of line, just in case
     DEH_SaveLineStart(context);
     char * line = DEH_ReadLine(context, extended);

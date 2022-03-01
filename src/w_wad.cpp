@@ -23,6 +23,7 @@
 
 #include <fmt/printf.h>
 
+#include "cstring_view.hpp"
 #include "doomtype.hpp"
 
 #include "i_swap.hpp"
@@ -124,7 +125,7 @@ wad_file_t * W_AddFile(const char * filename) {
   filelump_t * fileinfo     = nullptr;
   int          numfilelumps = 0;
 
-  if (strcasecmp(filename + strlen(filename) - 3, "wad") != 0) {
+  if (!iequals(filename + strlen(filename) - 3, "wad")) {
     // single lump file
 
     // fraggle: Swap the filepos and size here.  The WAD directory

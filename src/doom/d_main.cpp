@@ -626,7 +626,7 @@ void D_DoAdvanceDemo() {
 
   // The Doom 3: BFG Edition version of doom2.wad does not have a
   // TITLETPIC lump. Use INTERPIC instead as a workaround.
-  if (g_doomstat_globals->gamevariant == bfgedition && !strcasecmp(pagename, "TITLEPIC")
+  if (g_doomstat_globals->gamevariant == bfgedition && iequals(pagename, "TITLEPIC")
       && W_CheckNumForName("titlepic") < 0) {
     // [crispy] use DMENUPIC instead of TITLEPIC, it's awesome
     pagename = DEH_String("DMENUPIC");
@@ -734,7 +734,7 @@ static void SetMissionForPackName(const char * pack_name) {
   };
 
   for (const auto & pack : packs) {
-    if (!strcasecmp(pack_name, pack.name)) {
+    if (iequals(pack_name, pack.name)) {
       g_doomstat_globals->gamemission = pack.mission;
       return;
     }
@@ -1246,7 +1246,7 @@ static void LoadNerveWad() {
   if (g_doomstat_globals->gamemission != doom2)
     return;
 
-  if ((num = W_GetNumForName("map01")) != -1 && (j = W_GetNumForName("map09")) != -1 && !strcasecmp(W_WadNameForLump(lumpinfo[num]), "nerve.wad") && !strcasecmp(W_WadNameForLump(lumpinfo[j]), "nerve.wad")) {
+  if ((num = W_GetNumForName("map01")) != -1 && (j = W_GetNumForName("map09")) != -1 && iequals(W_WadNameForLump(lumpinfo[num]), "nerve.wad") && iequals(W_WadNameForLump(lumpinfo[j]), "nerve.wad")) {
     g_doomstat_globals->gamemission = pack_nerve;
     DEH_AddStringReplacement("TITLEPIC", "INTERPIC");
   } else
@@ -1294,7 +1294,7 @@ static void LoadMasterlevelsWad() {
   if (g_doomstat_globals->gamemission != doom2)
     return;
 
-  if ((i = W_GetNumForName("map01")) != -1 && (j = W_GetNumForName("map21")) != -1 && !strcasecmp(W_WadNameForLump(lumpinfo[i]), "masterlevels.wad") && !strcasecmp(W_WadNameForLump(lumpinfo[j]), "masterlevels.wad")) {
+  if ((i = W_GetNumForName("map01")) != -1 && (j = W_GetNumForName("map21")) != -1 && iequals(W_WadNameForLump(lumpinfo[i]), "masterlevels.wad") && iequals(W_WadNameForLump(lumpinfo[j]), "masterlevels.wad")) {
     g_doomstat_globals->gamemission = pack_master;
   }
 }
