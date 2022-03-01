@@ -18,6 +18,7 @@
 
 #pragma once
 
+#include "cstring_view.hpp"
 #include "doomtype.hpp"
 
 //
@@ -28,11 +29,11 @@ extern char ** myargv;
 
 // Returns the position of the given parameter
 // in the arg list (0 if not found).
-int M_CheckParm(const char * check);
+int M_CheckParm(cstring_view check);
 
 // Same as M_CheckParm, but checks that num_args arguments are available
 // following the specified argument.
-int M_CheckParmWithArgs(const char * check, int num_args);
+int M_CheckParmWithArgs(cstring_view check, int num_args);
 
 void M_FindResponseFile();
 void M_AddLooseFiles();
