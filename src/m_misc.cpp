@@ -262,7 +262,7 @@ void M_ExtractFileBase(cstring_view path, char * dest) {
   const char * filename;
   int          length;
 
-  src = path.c_str() + strlen(path.c_str()) - 1;
+  src = path.c_str() + path.size() - 1;
 
   // back up until a \ or the start
   while (src != path.c_str() && *(src - 1) != DIR_SEPARATOR) {
@@ -328,8 +328,8 @@ void M_ForceLowercase(char * text) {
 //
 
 [[maybe_unused]] const char * M_StrCaseStr(cstring_view haystack, cstring_view needle) {
-  size_t haystack_len = strlen(haystack.c_str());
-  size_t needle_len   = strlen(needle.c_str());
+  size_t haystack_len = haystack.size();
+  size_t needle_len   = needle.size();
 
   if (haystack_len < needle_len) {
     return nullptr;
@@ -358,7 +358,7 @@ char * M_StringDuplicate(cstring_view orig) {
 
   if (result == nullptr) {
     I_Error("Failed to duplicate string (length %" PRIuPTR ")\n",
-            strlen(orig.c_str()));
+            orig.size());
   }
 
   return result;
@@ -371,12 +371,12 @@ char * M_StringDuplicate(cstring_view orig) {
 char * M_StringReplace(cstring_view haystack, cstring_view needle, cstring_view replacement) {
   char *       result, *dst;
   const char * p;
-  size_t       needle_len = strlen(needle.c_str());
+  size_t       needle_len = needle.size();
   size_t       result_len, dst_len;
 
   // Iterate through occurrences of 'needle' and calculate the size of
   // the new string.
-  result_len = strlen(haystack.c_str()) + 1;
+  result_len = haystack.size() + 1;
   p          = haystack.c_str();
 
   for (;;) {
@@ -386,7 +386,7 @@ char * M_StringReplace(cstring_view haystack, cstring_view needle, cstring_view 
     }
 
     p += needle_len;
-    result_len += strlen(replacement.c_str()) - needle_len;
+    result_len += replacement.size() - needle_len;
   }
 
   // Construct new string.
@@ -405,8 +405,8 @@ char * M_StringReplace(cstring_view haystack, cstring_view needle, cstring_view 
     if (!strncmp(p, needle.c_str(), needle_len)) {
       M_StringCopy(dst, replacement, dst_len);
       p += needle_len;
-      dst += strlen(replacement.c_str());
-      dst_len -= strlen(replacement.c_str());
+      dst += replacement.size();
+      dst_len -= replacement.size();
     } else {
       *dst = *p;
       ++dst;
@@ -455,15 +455,15 @@ bool M_StringConcat(char * dest, cstring_view src, size_t dest_size) {
 // Returns true if 's' begins with the specified prefix.
 
 bool M_StringStartsWith(cstring_view s, cstring_view prefix) {
-  return strlen(s.c_str()) >= strlen(prefix.c_str())
-         && strncmp(s.c_str(), prefix.c_str(), strlen(prefix.c_str())) == 0;
+  return s.size() >= prefix.size()
+         && strncmp(s.c_str(), prefix.c_str(), prefix.size()) == 0;
 }
 
 // Returns true if 's' ends with the specified suffix.
 
 bool M_StringEndsWith(cstring_view s, cstring_view suffix) {
-  return strlen(s.c_str()) >= strlen(suffix.c_str())
-         && strcmp(s.c_str() + strlen(s.c_str()) - strlen(suffix.c_str()), suffix.c_str()) == 0;
+  return s.size() >= suffix.size()
+         && strcmp(s.c_str() + s.size() - suffix.size(), suffix.c_str()) == 0;
 }
 
 // Return a newly-malloced string with all the strings given as arguments
@@ -551,7 +551,7 @@ int M_snprintf(char * buf, size_t buf_len, const char * s, ...) {
 #ifdef _WIN32
 
 char * M_OEMToUTF8(cstring_view oem) {
-  size_t    len = strlen(oem.c_str()) + 1;
+  size_t    len = oem.size() + 1;
   wchar_t * tmp;
   char *    result;
 

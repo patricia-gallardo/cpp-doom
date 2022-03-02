@@ -318,7 +318,7 @@ static char * CreateEscapedString(cstring_view original) {
     }
   }
 
-  result = static_cast<char *>(malloc(strlen(original.c_str()) + count_extras + 1));
+  result = static_cast<char *>(malloc(original.size() + count_extras + 1));
   if (!result) {
     return nullptr;
   }
@@ -512,7 +512,7 @@ int TXT_CanSelectFiles() {
 // pattern representation (like [Ww][Aa][Dd])
 //
 static char * ExpandExtension(cstring_view orig) {
-  size_t oldlen = strlen(orig.c_str());
+  size_t oldlen = orig.size();
   size_t newlen = oldlen * 4; // pathological case: 'w' => '[Ww]'
   char * newext = static_cast<char *>(malloc(static_cast<size_t>(newlen + 1)));
 
@@ -547,7 +547,7 @@ char * TXT_SelectFile(cstring_view window_title, const char ** extensions) {
   int argc     = 2;
 
   if (window_title.c_str() != nullptr) {
-    size_t len = 10 + strlen(window_title.c_str());
+    size_t len = 10 + window_title.size();
     argv[argc] = static_cast<char *>(malloc(len));
     TXT_snprintf(argv[argc], len, "--title=%s", window_title);
     ++argc;

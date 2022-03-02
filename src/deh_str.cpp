@@ -161,7 +161,7 @@ void DEH_AddStringReplacement(cstring_view from_text, cstring_view to_text) {
   if (sub != nullptr) {
     Z_Free(sub->to_text);
 
-    len          = strlen(to_text.c_str()) + 1;
+    len          = to_text.size() + 1;
     sub->to_text = zmalloc<char *>(len, PU_STATIC, nullptr);
     std::memcpy(sub->to_text, to_text.c_str(), len);
   } else {
@@ -169,11 +169,11 @@ void DEH_AddStringReplacement(cstring_view from_text, cstring_view to_text) {
     sub = zmalloc<decltype(sub)>(sizeof(*sub), PU_STATIC, 0);
 
     // We need to create our own duplicates of the provided strings.
-    len            = strlen(from_text.c_str()) + 1;
+    len            = from_text.size() + 1;
     sub->from_text = zmalloc<char *>(len, PU_STATIC, nullptr);
     std::memcpy(sub->from_text, from_text.c_str(), len);
 
-    len          = strlen(to_text.c_str()) + 1;
+    len          = to_text.size() + 1;
     sub->to_text = zmalloc<char *>(len, PU_STATIC, nullptr);
     std::memcpy(sub->to_text, to_text.c_str(), len);
 

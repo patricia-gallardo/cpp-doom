@@ -451,7 +451,7 @@ void TXT_OpenURL(cstring_view url) {
 #else
 
 void TXT_OpenURL(cstring_view url) {
-  size_t cmd_len = strlen(url.c_str()) + 30;
+  size_t cmd_len = url.size() + 30;
   char * cmd     = static_cast<char *>(malloc(cmd_len));
 
 #if defined(__MACOSX__)
