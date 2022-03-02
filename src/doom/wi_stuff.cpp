@@ -426,7 +426,7 @@ void WI_drawLF() {
       ORIGHEIGHT,
       1,
       1,
-      {0, 0, 0, 0, 0, 0, 0, 0}
+      //{0, 0, 0, 0, 0, 0, 0, 0}
     };
 
     V_DrawPatch(0, y, &tmp);
