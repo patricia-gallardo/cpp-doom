@@ -486,7 +486,7 @@ void G_BuildTiccmd(ticcmd_t * cmd, int maketic) {
   if (g_doomstat_globals->gamestate == GS_LEVEL && next_weapon != 0) {
     auto i = static_cast<size_t>(G_NextWeapon(next_weapon));
     cmd->buttons |= BT_CHANGE;
-    cmd->buttons |= static_cast<uint8_t>(i << BT_WEAPONSHIFT);
+    cmd->buttons = static_cast<uint8_t>(cmd->buttons | (i << BT_WEAPONSHIFT));
   } else {
     // Check weapon keys.
     for (size_t i = 0; i < std::size(weapon_keys); i++) {
@@ -494,7 +494,7 @@ void G_BuildTiccmd(ticcmd_t * cmd, int maketic) {
 
       if (gamekeydown[key]) {
         cmd->buttons |= BT_CHANGE;
-        cmd->buttons |= static_cast<uint8_t>(i << BT_WEAPONSHIFT);
+        cmd->buttons = static_cast<uint8_t>(cmd->buttons | (i << BT_WEAPONSHIFT));
         break;
       }
     }
