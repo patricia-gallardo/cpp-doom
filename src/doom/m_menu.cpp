@@ -1630,7 +1630,7 @@ int M_StringHeight(cstring_view string) {
   int height = SHORT(hu_font[0]->height);
   int h      = height;
   const char * str = string.c_str();
-  for (size_t i = 0; i < strlen(string.c_str()); i++)
+  for (size_t i = 0; i < string.size(); i++)
     if (str[i] == '\n') h += height;
 
   return h;

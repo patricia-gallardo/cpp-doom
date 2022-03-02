@@ -150,7 +150,7 @@ static unsigned int WaitForProcessExit(HANDLE subprocess) {
 }
 
 static void ConcatWCString(wchar_t * buf, cstring_view value) {
-  MultiByteToWideChar(CP_OEMCP, 0, value.c_str(), static_cast<int>(strlen(value.c_str()) + 1), buf + wcslen(buf), static_cast<int>(strlen(value.c_str()) + 1));
+  MultiByteToWideChar(CP_OEMCP, 0, value.c_str(), static_cast<int>(value.size() + 1), buf + wcslen(buf), static_cast<int>(value.size() + 1));
 }
 
 // Build the command line string, a wide character string of the form:
@@ -168,7 +168,7 @@ static wchar_t * BuildCommandLine(cstring_view program, cstring_view arg) {
 
   // Allocate buffer to contain result string.
 
-  result = static_cast<wchar_t *>(calloc(wcslen(exe_path) + strlen(program.c_str()) + strlen(arg.c_str()) + 6,
+  result = static_cast<wchar_t *>(calloc(wcslen(exe_path) + program.size() + arg.size() + 6,
                                          sizeof(wchar_t)));
 
   wcscpy(result, L"\"");
@@ -258,7 +258,7 @@ static char * GetFullExePath(cstring_view program) {
     result = M_StringDuplicate(program);
   } else {
     path_len = static_cast<unsigned int>(sep - myargv[0] + 1);
-    result_len = strlen(program.c_str()) + path_len + 1;
+    result_len = program.size() + path_len + 1;
     result = static_cast<char *>(malloc(result_len));
 
     M_StringCopy(result, myargv[0], result_len);

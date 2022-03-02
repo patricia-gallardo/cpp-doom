@@ -212,7 +212,7 @@ void TXT_DrawCodePageString(cstring_view s) {
     }
   }
 
-  int end_x = static_cast<int>(static_cast<unsigned long>(x) + strlen(s.c_str()));
+  int end_x = static_cast<int>(static_cast<unsigned long>(x) + s.size());
   TXT_GotoXY(end_x, y);
 }
 

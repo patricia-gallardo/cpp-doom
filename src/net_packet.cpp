@@ -253,7 +253,7 @@ void NET_WriteInt32(net_packet_t * packet, unsigned int i) {
 }
 
 void NET_WriteString(net_packet_t * packet, cstring_view string) {
-  size_t string_size = strlen(string.c_str()) + 1;
+  size_t string_size = string.size() + 1;
 
   // Increase the packet size until large enough to hold the string
 

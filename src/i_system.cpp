@@ -143,7 +143,7 @@ uint8_t * I_ZoneBase(int * size) {
 }
 
 void I_PrintBanner(cstring_view msg) {
-  size_t spaces = 35 - (strlen(msg.c_str()) / 2);
+  size_t spaces = 35 - (msg.size() / 2);
 
   for (size_t i = 0; i < spaces; ++i)
     putchar(' ');

@@ -89,7 +89,7 @@ static wad_file_t * W_Win32_OpenFile(cstring_view path) {
 
   // Open the file:
 
-  MultiByteToWideChar(CP_OEMCP, 0, path.c_str(), static_cast<int>(strlen(path.c_str()) + 1), wpath, static_cast<int>(sizeof(wpath)));
+  MultiByteToWideChar(CP_OEMCP, 0, path.c_str(), static_cast<int>(path.size() + 1), wpath, static_cast<int>(sizeof(wpath)));
 
   HANDLE handle = CreateFileW(wpath,
                               GENERIC_READ,
