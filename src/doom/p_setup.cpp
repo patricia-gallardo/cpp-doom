@@ -766,7 +766,7 @@ static void PadRejectArray(uint8_t * array, unsigned int len) {
 
   for (unsigned int i = 0; i < len && i < sizeof(rejectpad); ++i) {
     byte_num = i % 4;
-    *dest    = (rejectpad[i / 4] >> (byte_num * 8)) & 0xff;
+    *dest    = static_cast<uint8_t>((rejectpad[i / 4] >> (byte_num * 8)) & 0xff);
     ++dest;
   }
 

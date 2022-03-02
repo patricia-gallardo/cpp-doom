@@ -106,7 +106,7 @@ void I_SlamBlockHR(int x, int y, int w, int h, const uint8_t * src) {
       // and mask out the specific bit wanted.
 
       for (int i = 0; i < 4; ++i) {
-        srcbits[i] = (srcptrs[i][bit / 8] >> (7 - (bit % 8))) & 0x1;
+        srcbits[i] = static_cast<uint8_t>((srcptrs[i][bit / 8] >> (7 - (bit % 8))) & 0x1);
       }
 
       // Reassemble the pixel value

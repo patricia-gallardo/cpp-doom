@@ -2480,7 +2480,7 @@ void M_Init() {
     short vstep = ORIGHEIGHT - 32; // [crispy] ST_HEIGHT
     vstep       = static_cast<short>(vstep - captionheight);
     vstep       = static_cast<short>(vstep - (static_cast<int>(load_e::load_end) - 1) * LINEHEIGHT + SHORT(patchm->height));
-    vstep /= 3;
+    vstep       = static_cast<short>(vstep / 3);
 
     if (vstep > 0) {
       LoadDef_y = vstep + captionheight - SHORT(patchl->height) + SHORT(patchl->topoffset);
