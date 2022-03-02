@@ -184,15 +184,6 @@ static txt_button_t * GetLaunchButton() {
   case doom:
     label = "Save parameters and launch DOOM";
     break;
-  case heretic:
-    label = "Save parameters and launch Heretic";
-    break;
-  case hexen:
-    label = "Save parameters and launch Hexen";
-    break;
-  case strife:
-    label = "Save parameters and launch STRIFE!";
-    break;
   default:
     label = "Save parameters and launch game";
     break;

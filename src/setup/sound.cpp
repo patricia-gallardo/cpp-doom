@@ -61,8 +61,8 @@ i_sound_t * const g_i_sound_globals = &i_sound_s;
 static int numChannels = 8;
 static int sfxVolume   = 8;
 static int musicVolume = 8;
-static int voiceVolume = 15;
-static int show_talk   = 0;
+[[maybe_unused]] static int voiceVolume = 15;
+[[maybe_unused]] static int show_talk   = 0;
 // [crispy] values 3 and higher might reproduce DOOM.EXE more accurately,
 // but 1 is closer to "use_libsamplerate = 0" which is the default in Choco
 // and causes only a short delay at startup
@@ -144,11 +144,8 @@ void ConfigSound(void *, void *) {
                  TXT_NewRadioButton("Digital sound effects",
                                     &g_i_sound_globals->snd_sfxdevice,
                                     SNDDEVICE_SB),
-                 TXT_If(gamemission == doom || gamemission == heretic
-                            || gamemission == hexen,
+                 TXT_If(gamemission == doom,
                         TXT_NewConditional(&g_i_sound_globals->snd_sfxdevice, SNDDEVICE_SB, TXT_NewHorizBox(TXT_NewStrut(4, 0), TXT_NewCheckBox("Pitch-shifted sounds", &g_i_sound_globals->snd_pitchshift), nullptr))),
-                 TXT_If(gamemission == strife,
-                        TXT_NewConditional(&g_i_sound_globals->snd_sfxdevice, SNDDEVICE_SB, TXT_NewHorizBox(TXT_NewStrut(4, 0), TXT_NewCheckBox("Show text with voices", &show_talk), nullptr))),
 
                  TXT_NewSeparator("Music"),
                  TXT_NewRadioButton("Disabled", &g_i_sound_globals->snd_musicdevice, SNDDEVICE_NONE),
@@ -193,18 +190,13 @@ void BindSoundVariables() {
 
   M_BindIntVariable("snd_pitchshift", &g_i_sound_globals->snd_pitchshift);
 
-  if (gamemission == strife) {
-    M_BindIntVariable("voice_volume", &voiceVolume);
-    M_BindIntVariable("show_talk", &show_talk);
-  }
-
   music_pack_path   = M_StringDuplicate("");
   timidity_cfg_path = M_StringDuplicate("");
   gus_patch_path    = M_StringDuplicate("");
 
   // All versions of Heretic and Hexen did pitch-shifting.
   // Most versions of Doom did not and Strife never did.
-  g_i_sound_globals->snd_pitchshift = gamemission == heretic || gamemission == hexen;
+  g_i_sound_globals->snd_pitchshift = false;
 
   // Default sound volumes - different games use different values.
 
@@ -213,15 +205,6 @@ void BindSoundVariables() {
   default:
     sfxVolume   = 8;
     musicVolume = 8;
-    break;
-  case heretic:
-  case hexen:
-    sfxVolume   = 10;
-    musicVolume = 10;
-    break;
-  case strife:
-    sfxVolume   = 8;
-    musicVolume = 13;
     break;
   }
 }

@@ -176,11 +176,7 @@ static void AdvancedDisplayConfig(void *, void * uncast_sizes_table) {
   TXT_AddWidgets(window,
                  ar_checkbox = TXT_NewCheckBox("Force correct aspect ratio",
                                                &aspect_ratio_correct),
-                 TXT_If(gamemission == heretic || gamemission == hexen
-                            || gamemission == strife,
-                        TXT_NewCheckBox("Graphical startup", &graphical_startup)),
-                 TXT_If(gamemission == doom || gamemission == heretic
-                            || gamemission == strife,
+                 TXT_If(gamemission == doom,
                         TXT_NewCheckBox("Show ENDOOM screen on exit",
                                         &show_endoom)),
 #ifdef HAVE_LIBPNG
@@ -240,16 +236,11 @@ void BindDisplayVariables() {
   M_BindIntVariable("force_software_renderer", &force_software_renderer);
   M_BindIntVariable("max_scaling_buffer_pixels", &max_scaling_buffer_pixels);
 
-  if (gamemission == doom || gamemission == heretic
-      || gamemission == strife) {
+  if (gamemission == doom) {
     M_BindIntVariable("show_endoom", &show_endoom);
   }
 
-  if (gamemission == doom || gamemission == strife) {
+  if (gamemission == doom) {
     M_BindIntVariable("show_diskicon", &show_diskicon);
-  }
-
-  if (gamemission == heretic || gamemission == hexen || gamemission == strife) {
-    M_BindIntVariable("graphical_startup", &graphical_startup);
   }
 }
