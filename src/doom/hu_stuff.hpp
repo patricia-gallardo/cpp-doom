@@ -49,4 +49,4 @@ void HU_Drawer();
 char HU_dequeueChatChar();
 void HU_Erase();
 
-extern char * chat_macros[10];
+extern const char * chat_macros[10];

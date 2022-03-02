@@ -141,7 +141,7 @@ struct menuitem_t {
 
   // hotkey in menu
   char   alphaKey {};
-  char * alttext {}; // [crispy] alternative text for the Options menu
+  const char * alttext {}; // [crispy] alternative text for the Options menu
 };
 
 struct menu_t {
@@ -358,14 +358,14 @@ enum class options_e
 };
 
 menuitem_t OptionsMenu[] = {
-  {1,           "M_ENDGAM",     M_EndGame,        'e',                                     const_cast<char *>("End Game")        },
-  { 1,          "M_MESSG",      M_ChangeMessages, 'm',                                     const_cast<char *>("Messages: ")      },
-  { 1,          "M_DETAIL",     M_ChangeDetail,   'g',                                     const_cast<char *>("Graphic Detail: ")},
-  { 2,          "M_SCRNSZ",     M_SizeDisplay,    's',                                     const_cast<char *>("Screen Size")     },
+  {1,           "M_ENDGAM",     M_EndGame,        'e',                                     ("End Game")        },
+  { 1,          "M_MESSG",      M_ChangeMessages, 'm',                                     ("Messages: ")      },
+  { 1,          "M_DETAIL",     M_ChangeDetail,   'g',                                     ("Graphic Detail: ")},
+  { 2,          "M_SCRNSZ",     M_SizeDisplay,    's',                                     ("Screen Size")     },
   { -1,         "",             0,                '\0'                                   },
-  { 1,  "M_MSENS",        M_Mouse,              'm', const_cast<char *>("Mouse Sensitivity")                                      }, // [crispy] mouse sensitivity menu
-  { 1,   "M_SVOL",        M_Sound,              's',      const_cast<char *>("Sound Volume")},
-  { 1, "M_CRISPY", M_CrispnessCur,              'c',         const_cast<char *>("Crispness")                                      }  // [crispy] Crispness menu
+  { 1,  "M_MSENS",        M_Mouse,              'm', ("Mouse Sensitivity")                                      }, // [crispy] mouse sensitivity menu
+  { 1,   "M_SVOL",        M_Sound,              's',      ("Sound Volume")},
+  { 1, "M_CRISPY", M_CrispnessCur,              'c',         ("Crispness")                                      }  // [crispy] Crispness menu
 };
 
 menu_t OptionsDef = { static_cast<short>(options_e::opt_end), &MainDef, OptionsMenu, M_DrawOptions, 60, 37, 0 };
@@ -1161,27 +1161,27 @@ static void M_DrawCrispnessBackground() {
 
 static char crispy_menu_text[48];
 
-static void M_DrawCrispnessHeader(char * item) {
+static void M_DrawCrispnessHeader(const char * item) {
   M_snprintf(crispy_menu_text, sizeof(crispy_menu_text), "%s%s", crstr[static_cast<int>(cr_t::CR_GOLD)], item);
   M_WriteText(ORIGWIDTH / 2 - M_StringWidth(item) / 2, 12, crispy_menu_text);
 }
 
-static void M_DrawCrispnessSeparator(int y, char * item) {
+static void M_DrawCrispnessSeparator(int y, const char * item) {
   M_snprintf(crispy_menu_text, sizeof(crispy_menu_text), "%s%s", crstr[static_cast<int>(cr_t::CR_GOLD)], item);
   M_WriteText(currentMenu->x - 8, currentMenu->y + CRISPY_LINEHEIGHT * y, crispy_menu_text);
 }
 
-static void M_DrawCrispnessItem(int y, char * item, int feat, bool cond) {
+static void M_DrawCrispnessItem(int y, const char * item, int feat, bool cond) {
   M_snprintf(crispy_menu_text, sizeof(crispy_menu_text), "%s%s: %s%s", cond ? crstr[static_cast<int>(cr_t::CR_NONE)] : crstr[static_cast<int>(cr_t::CR_DARK)], item, cond ? (feat ? crstr[static_cast<int>(cr_t::CR_GREEN)] : crstr[static_cast<int>(cr_t::CR_DARK)]) : crstr[static_cast<int>(cr_t::CR_DARK)], cond && feat ? "On" : "Off");
   M_WriteText(currentMenu->x, currentMenu->y + CRISPY_LINEHEIGHT * y, crispy_menu_text);
 }
 
-static void M_DrawCrispnessMultiItem(int y, char * item, multiitem_t * multiitem, int feat, bool cond) {
+static void M_DrawCrispnessMultiItem(int y, const char * item, multiitem_t * multiitem, int feat, bool cond) {
   M_snprintf(crispy_menu_text, sizeof(crispy_menu_text), "%s%s: %s%s", cond ? crstr[static_cast<int>(cr_t::CR_NONE)] : crstr[static_cast<int>(cr_t::CR_DARK)], item, cond ? (feat ? crstr[static_cast<int>(cr_t::CR_GREEN)] : crstr[static_cast<int>(cr_t::CR_DARK)]) : crstr[static_cast<int>(cr_t::CR_DARK)], cond && feat ? multiitem[feat].name : multiitem[0].name);
   M_WriteText(currentMenu->x, currentMenu->y + CRISPY_LINEHEIGHT * y, crispy_menu_text);
 }
 
-static void M_DrawCrispnessGoto(int y, char * item) {
+static void M_DrawCrispnessGoto(int y, const char * item) {
   M_snprintf(crispy_menu_text, sizeof(crispy_menu_text), "%s%s", crstr[static_cast<int>(cr_t::CR_GOLD)], item);
   M_WriteText(currentMenu->x, currentMenu->y + CRISPY_LINEHEIGHT * y, crispy_menu_text);
 }
@@ -1189,41 +1189,41 @@ static void M_DrawCrispnessGoto(int y, char * item) {
 static void M_DrawCrispness1() {
   M_DrawCrispnessBackground();
 
-  M_DrawCrispnessHeader(const_cast<char *>("Crispness 1/4"));
+  M_DrawCrispnessHeader(("Crispness 1/4"));
 
-  M_DrawCrispnessSeparator(static_cast<int>(crispness1_e::crispness_sep_rendering), const_cast<char *>("Rendering"));
+  M_DrawCrispnessSeparator(static_cast<int>(crispness1_e::crispness_sep_rendering), ("Rendering"));
   M_DrawCrispnessItem(
       static_cast<int>(crispness1_e::crispness_hires),
-      const_cast<char *>("High Resolution Rendering"),
+      ("High Resolution Rendering"),
       crispy->hires,
       true);
-  M_DrawCrispnessMultiItem(static_cast<int>(crispness1_e::crispness_widescreen), const_cast<char *>("Widescreen Rendering"), multiitem_widescreen, crispy->widescreen, g_i_video_globals->aspect_ratio_correct);
+  M_DrawCrispnessMultiItem(static_cast<int>(crispness1_e::crispness_widescreen), ("Widescreen Rendering"), multiitem_widescreen, crispy->widescreen, g_i_video_globals->aspect_ratio_correct);
   M_DrawCrispnessItem(
       static_cast<int>(crispness1_e::crispness_uncapped),
-      const_cast<char *>("Uncapped Framerate"),
+      ("Uncapped Framerate"),
       crispy->uncapped,
       true);
   M_DrawCrispnessItem(
       static_cast<int>(crispness1_e::crispness_vsync),
-      const_cast<char *>("Enable VSync"),
+      ("Enable VSync"),
       crispy->vsync,
       !g_i_video_globals->force_software_renderer);
   M_DrawCrispnessItem(
       static_cast<int>(crispness1_e::crispness_smoothscaling),
-      const_cast<char *>("Smooth Pixel Scaling"),
+      ("Smooth Pixel Scaling"),
       crispy->smoothscaling,
       true);
 
-  M_DrawCrispnessSeparator(static_cast<int>(crispness1_e::crispness_sep_visual), const_cast<char *>("Visual"));
-  M_DrawCrispnessMultiItem(static_cast<int>(crispness1_e::crispness_coloredhud), const_cast<char *>("Colorize HUD Elements"), multiitem_coloredhud, crispy->coloredhud, true);
-  M_DrawCrispnessMultiItem(static_cast<int>(crispness1_e::crispness_translucency), const_cast<char *>("Enable Translucency"), multiitem_translucency, crispy->translucency, true);
-  M_DrawCrispnessItem(static_cast<int>(crispness1_e::crispness_smoothlight), const_cast<char *>("Smooth Diminishing Lighting"), crispy->smoothlight, true);
-  M_DrawCrispnessMultiItem(static_cast<int>(crispness1_e::crispness_brightmaps), const_cast<char *>("Apply Brightmaps to"), multiitem_brightmaps, crispy->brightmaps, true);
-  M_DrawCrispnessItem(static_cast<int>(crispness1_e::crispness_coloredblood), const_cast<char *>("Colored Blood and Corpses"), crispy->coloredblood, g_doomstat_globals->gameversion != exe_chex);
-  M_DrawCrispnessItem(static_cast<int>(crispness1_e::crispness_flipcorpses), const_cast<char *>("Randomly Mirrored Corpses"), crispy->flipcorpses, g_doomstat_globals->gameversion != exe_chex);
+  M_DrawCrispnessSeparator(static_cast<int>(crispness1_e::crispness_sep_visual), ("Visual"));
+  M_DrawCrispnessMultiItem(static_cast<int>(crispness1_e::crispness_coloredhud), ("Colorize HUD Elements"), multiitem_coloredhud, crispy->coloredhud, true);
+  M_DrawCrispnessMultiItem(static_cast<int>(crispness1_e::crispness_translucency), ("Enable Translucency"), multiitem_translucency, crispy->translucency, true);
+  M_DrawCrispnessItem(static_cast<int>(crispness1_e::crispness_smoothlight), ("Smooth Diminishing Lighting"), crispy->smoothlight, true);
+  M_DrawCrispnessMultiItem(static_cast<int>(crispness1_e::crispness_brightmaps), ("Apply Brightmaps to"), multiitem_brightmaps, crispy->brightmaps, true);
+  M_DrawCrispnessItem(static_cast<int>(crispness1_e::crispness_coloredblood), ("Colored Blood and Corpses"), crispy->coloredblood, g_doomstat_globals->gameversion != exe_chex);
+  M_DrawCrispnessItem(static_cast<int>(crispness1_e::crispness_flipcorpses), ("Randomly Mirrored Corpses"), crispy->flipcorpses, g_doomstat_globals->gameversion != exe_chex);
 
-  M_DrawCrispnessGoto(static_cast<int>(crispness1_e::crispness1_next), const_cast<char *>("Next Page >"));
-  M_DrawCrispnessGoto(static_cast<int>(crispness1_e::crispness1_prev), const_cast<char *>("< Last Page"));
+  M_DrawCrispnessGoto(static_cast<int>(crispness1_e::crispness1_next), ("Next Page >"));
+  M_DrawCrispnessGoto(static_cast<int>(crispness1_e::crispness1_prev), ("< Last Page"));
 
   dp_translation = nullptr;
 }
@@ -1231,35 +1231,35 @@ static void M_DrawCrispness1() {
 static void M_DrawCrispness2() {
   M_DrawCrispnessBackground();
 
-  M_DrawCrispnessHeader(const_cast<char *>("Crispness 2/4"));
+  M_DrawCrispnessHeader(("Crispness 2/4"));
 
-  M_DrawCrispnessSeparator(static_cast<int>(crispness2_e::crispness_sep_audible), const_cast<char *>("Audible"));
+  M_DrawCrispnessSeparator(static_cast<int>(crispness2_e::crispness_sep_audible), ("Audible"));
   M_DrawCrispnessItem(
       static_cast<int>(crispness2_e::crispness_soundfull),
-      const_cast<char *>("Play sounds in full length"),
+      ("Play sounds in full length"),
       crispy->soundfull,
       true);
   M_DrawCrispnessItem(
       static_cast<int>(crispness2_e::crispness_soundfix),
-      const_cast<char *>("Misc. Sound Fixes"),
+      ("Misc. Sound Fixes"),
       crispy->soundfix,
       true);
-  M_DrawCrispnessMultiItem(static_cast<int>(crispness2_e::crispness_sndchannels), const_cast<char *>("Sound Channels"), multiitem_sndchannels, snd_channels >> 4, g_i_sound_globals->snd_sfxdevice != SNDDEVICE_PCSPEAKER);
-  M_DrawCrispnessItem(static_cast<int>(crispness2_e::crispness_soundmono), const_cast<char *>("Mono SFX"), crispy->soundmono, true);
+  M_DrawCrispnessMultiItem(static_cast<int>(crispness2_e::crispness_sndchannels), ("Sound Channels"), multiitem_sndchannels, snd_channels >> 4, g_i_sound_globals->snd_sfxdevice != SNDDEVICE_PCSPEAKER);
+  M_DrawCrispnessItem(static_cast<int>(crispness2_e::crispness_soundmono), ("Mono SFX"), crispy->soundmono, true);
 
-  M_DrawCrispnessSeparator(static_cast<int>(crispness2_e::crispness_sep_navigational), const_cast<char *>("Navigational"));
+  M_DrawCrispnessSeparator(static_cast<int>(crispness2_e::crispness_sep_navigational), ("Navigational"));
   M_DrawCrispnessItem(
       static_cast<int>(crispness2_e::crispness_extautomap),
-      const_cast<char *>("Extended Automap colors"),
+      ("Extended Automap colors"),
       crispy->extautomap,
       true);
-  M_DrawCrispnessMultiItem(static_cast<int>(crispness2_e::crispness_automapstats), const_cast<char *>("Show Level Stats"), multiitem_widgets, crispy->automapstats, true);
-  M_DrawCrispnessMultiItem(static_cast<int>(crispness2_e::crispness_leveltime), const_cast<char *>("Show Level Time"), multiitem_widgets, crispy->leveltime, true);
-  M_DrawCrispnessMultiItem(static_cast<int>(crispness2_e::crispness_playercoords), const_cast<char *>("Show Player Coords"), multiitem_widgets, crispy->playercoords, true);
-  M_DrawCrispnessMultiItem(static_cast<int>(crispness2_e::crispness_secretmessage), const_cast<char *>("Report Revealed Secrets"), multiitem_secretmessage, crispy->secretmessage, true);
+  M_DrawCrispnessMultiItem(static_cast<int>(crispness2_e::crispness_automapstats), ("Show Level Stats"), multiitem_widgets, crispy->automapstats, true);
+  M_DrawCrispnessMultiItem(static_cast<int>(crispness2_e::crispness_leveltime), ("Show Level Time"), multiitem_widgets, crispy->leveltime, true);
+  M_DrawCrispnessMultiItem(static_cast<int>(crispness2_e::crispness_playercoords), ("Show Player Coords"), multiitem_widgets, crispy->playercoords, true);
+  M_DrawCrispnessMultiItem(static_cast<int>(crispness2_e::crispness_secretmessage), ("Report Revealed Secrets"), multiitem_secretmessage, crispy->secretmessage, true);
 
-  M_DrawCrispnessGoto(static_cast<int>(crispness2_e::crispness2_next), const_cast<char *>("Next Page >"));
-  M_DrawCrispnessGoto(static_cast<int>(crispness2_e::crispness2_prev), const_cast<char *>("< Prev Page"));
+  M_DrawCrispnessGoto(static_cast<int>(crispness2_e::crispness2_next), ("Next Page >"));
+  M_DrawCrispnessGoto(static_cast<int>(crispness2_e::crispness2_prev), ("< Prev Page"));
 
   dp_translation = nullptr;
 }
@@ -1267,36 +1267,36 @@ static void M_DrawCrispness2() {
 static void M_DrawCrispness3() {
   M_DrawCrispnessBackground();
 
-  M_DrawCrispnessHeader(const_cast<char *>("Crispness 3/4"));
+  M_DrawCrispnessHeader(("Crispness 3/4"));
 
-  M_DrawCrispnessSeparator(static_cast<int>(crispness3_e::crispness_sep_tactical), const_cast<char *>("Tactical"));
+  M_DrawCrispnessSeparator(static_cast<int>(crispness3_e::crispness_sep_tactical), ("Tactical"));
 
-  M_DrawCrispnessMultiItem(static_cast<int>(crispness3_e::crispness_freelook), const_cast<char *>("Allow Free Look"), multiitem_freelook, crispy->freelook, true);
+  M_DrawCrispnessMultiItem(static_cast<int>(crispness3_e::crispness_freelook), ("Allow Free Look"), multiitem_freelook, crispy->freelook, true);
   M_DrawCrispnessItem(
       static_cast<int>(crispness3_e::crispness_mouselook),
-      const_cast<char *>("Permanent Mouse Look"),
+      ("Permanent Mouse Look"),
       crispy->mouselook,
       true);
-  M_DrawCrispnessMultiItem(static_cast<int>(crispness3_e::crispness_bobfactor), const_cast<char *>("Player View/Weapon Bobbing"), multiitem_bobfactor, crispy->bobfactor, true);
-  M_DrawCrispnessMultiItem(static_cast<int>(crispness3_e::crispness_centerweapon), const_cast<char *>("Weapon Attack Alignment"), multiitem_centerweapon, crispy->centerweapon, crispy->bobfactor != BOBFACTOR_OFF);
-  M_DrawCrispnessItem(static_cast<int>(crispness3_e::crispness_weaponsquat), const_cast<char *>("Squat weapon down on impact"), crispy->weaponsquat, true);
-  M_DrawCrispnessItem(static_cast<int>(crispness3_e::crispness_pitch), const_cast<char *>("Weapon Recoil Pitch"), crispy->pitch, true);
+  M_DrawCrispnessMultiItem(static_cast<int>(crispness3_e::crispness_bobfactor), ("Player View/Weapon Bobbing"), multiitem_bobfactor, crispy->bobfactor, true);
+  M_DrawCrispnessMultiItem(static_cast<int>(crispness3_e::crispness_centerweapon), ("Weapon Attack Alignment"), multiitem_centerweapon, crispy->centerweapon, crispy->bobfactor != BOBFACTOR_OFF);
+  M_DrawCrispnessItem(static_cast<int>(crispness3_e::crispness_weaponsquat), ("Squat weapon down on impact"), crispy->weaponsquat, true);
+  M_DrawCrispnessItem(static_cast<int>(crispness3_e::crispness_pitch), ("Weapon Recoil Pitch"), crispy->pitch, true);
   M_DrawCrispnessItem(
       static_cast<int>(crispness3_e::crispness_neghealth),
-      const_cast<char *>("Negative Player Health"),
+      ("Negative Player Health"),
       crispy->neghealth,
       true);
   //  M_DrawCrispnessItem(crispness_extsaveg, "Extended Savegames", crispy->extsaveg, true);
 
-  M_DrawCrispnessSeparator(static_cast<int>(crispness3_e::crispness_sep_crosshair), const_cast<char *>("Crosshair"));
+  M_DrawCrispnessSeparator(static_cast<int>(crispness3_e::crispness_sep_crosshair), ("Crosshair"));
 
-  M_DrawCrispnessMultiItem(static_cast<int>(crispness3_e::crispness_crosshair), const_cast<char *>("Draw Crosshair"), multiitem_crosshair, crispy->crosshair, true);
-  M_DrawCrispnessMultiItem(static_cast<int>(crispness3_e::crispness_crosshairtype), const_cast<char *>("Crosshair Shape"), multiitem_crosshairtype, crispy->crosshairtype + 1, crispy->crosshair);
-  M_DrawCrispnessItem(static_cast<int>(crispness3_e::crispness_crosshairhealth), const_cast<char *>("Color indicates Health"), crispy->crosshairhealth, crispy->crosshair);
-  M_DrawCrispnessItem(static_cast<int>(crispness3_e::crispness_crosshairtarget), const_cast<char *>("Highlight on target"), crispy->crosshairtarget, crispy->crosshair);
+  M_DrawCrispnessMultiItem(static_cast<int>(crispness3_e::crispness_crosshair), ("Draw Crosshair"), multiitem_crosshair, crispy->crosshair, true);
+  M_DrawCrispnessMultiItem(static_cast<int>(crispness3_e::crispness_crosshairtype), ("Crosshair Shape"), multiitem_crosshairtype, crispy->crosshairtype + 1, crispy->crosshair);
+  M_DrawCrispnessItem(static_cast<int>(crispness3_e::crispness_crosshairhealth), ("Color indicates Health"), crispy->crosshairhealth, crispy->crosshair);
+  M_DrawCrispnessItem(static_cast<int>(crispness3_e::crispness_crosshairtarget), ("Highlight on target"), crispy->crosshairtarget, crispy->crosshair);
 
-  M_DrawCrispnessGoto(static_cast<int>(crispness3_e::crispness3_next), const_cast<char *>("Next Page >"));
-  M_DrawCrispnessGoto(static_cast<int>(crispness3_e::crispness3_prev), const_cast<char *>("< Prev Page"));
+  M_DrawCrispnessGoto(static_cast<int>(crispness3_e::crispness3_next), ("Next Page >"));
+  M_DrawCrispnessGoto(static_cast<int>(crispness3_e::crispness3_prev), ("< Prev Page"));
 
   dp_translation = nullptr;
 }
@@ -1304,31 +1304,31 @@ static void M_DrawCrispness3() {
 static void M_DrawCrispness4() {
   M_DrawCrispnessBackground();
 
-  M_DrawCrispnessHeader(const_cast<char *>("Crispness 4/4"));
+  M_DrawCrispnessHeader(("Crispness 4/4"));
 
-  M_DrawCrispnessSeparator(static_cast<int>(crispness4_e::crispness_sep_physical), const_cast<char *>("Physical"));
+  M_DrawCrispnessSeparator(static_cast<int>(crispness4_e::crispness_sep_physical), ("Physical"));
 
-  M_DrawCrispnessMultiItem(static_cast<int>(crispness4_e::crispness_freeaim), const_cast<char *>("Vertical Aiming"), multiitem_freeaim, crispy->freeaim, crispy->singleplayer);
-  M_DrawCrispnessMultiItem(static_cast<int>(crispness4_e::crispness_jumping), const_cast<char *>("Allow Jumping"), multiitem_jump, crispy->jump, crispy->singleplayer);
-  M_DrawCrispnessItem(static_cast<int>(crispness4_e::crispness_overunder), const_cast<char *>("Walk over/under Monsters"), crispy->overunder, crispy->singleplayer);
+  M_DrawCrispnessMultiItem(static_cast<int>(crispness4_e::crispness_freeaim), ("Vertical Aiming"), multiitem_freeaim, crispy->freeaim, crispy->singleplayer);
+  M_DrawCrispnessMultiItem(static_cast<int>(crispness4_e::crispness_jumping), ("Allow Jumping"), multiitem_jump, crispy->jump, crispy->singleplayer);
+  M_DrawCrispnessItem(static_cast<int>(crispness4_e::crispness_overunder), ("Walk over/under Monsters"), crispy->overunder, crispy->singleplayer);
   M_DrawCrispnessItem(
       static_cast<int>(crispness4_e::crispness_recoil),
-      const_cast<char *>("Weapon Recoil Thrust"),
+      ("Weapon Recoil Thrust"),
       crispy->recoil,
       crispy->singleplayer);
 
-  M_DrawCrispnessSeparator(static_cast<int>(crispness4_e::crispness_sep_demos), const_cast<char *>("Demos"));
+  M_DrawCrispnessSeparator(static_cast<int>(crispness4_e::crispness_sep_demos), ("Demos"));
 
-  M_DrawCrispnessMultiItem(static_cast<int>(crispness4_e::crispness_demotimer), const_cast<char *>("Show Demo Timer"), multiitem_demotimer, crispy->demotimer, true);
-  M_DrawCrispnessMultiItem(static_cast<int>(crispness4_e::crispness_demotimerdir), const_cast<char *>("Playback Timer Direction"), multiitem_demotimerdir, crispy->demotimerdir + 1, crispy->demotimer & DEMOTIMER_PLAYBACK);
+  M_DrawCrispnessMultiItem(static_cast<int>(crispness4_e::crispness_demotimer), ("Show Demo Timer"), multiitem_demotimer, crispy->demotimer, true);
+  M_DrawCrispnessMultiItem(static_cast<int>(crispness4_e::crispness_demotimerdir), ("Playback Timer Direction"), multiitem_demotimerdir, crispy->demotimerdir + 1, crispy->demotimer & DEMOTIMER_PLAYBACK);
   M_DrawCrispnessItem(
       static_cast<int>(crispness4_e::crispness_demobar),
-      const_cast<char *>("Show Demo Progress Bar"),
+      ("Show Demo Progress Bar"),
       crispy->demobar,
       true);
 
-  M_DrawCrispnessGoto(static_cast<int>(crispness4_e::crispness4_next), const_cast<char *>("First Page >"));
-  M_DrawCrispnessGoto(static_cast<int>(crispness4_e::crispness4_prev), const_cast<char *>("< Prev Page"));
+  M_DrawCrispnessGoto(static_cast<int>(crispness4_e::crispness4_next), ("First Page >"));
+  M_DrawCrispnessGoto(static_cast<int>(crispness4_e::crispness4_prev), ("< Prev Page"));
 
   dp_translation = nullptr;
 }
@@ -2349,7 +2349,7 @@ void M_Drawer() {
         dp_translation = cr_colors[static_cast<int>(cr_t::CR_DARK)];
 
       if (currentMenu == &OptionsDef) {
-        char * alttext = currentMenu->menuitems[i].alttext;
+        const char * alttext = currentMenu->menuitems[i].alttext;
 
         if (alttext)
           M_WriteText(x, y + 8 - (M_StringHeight(alttext) / 2), alttext);

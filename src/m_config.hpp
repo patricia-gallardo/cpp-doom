@@ -28,13 +28,13 @@ void                   M_SetConfigDir(const char * dir);
 void                   M_SetMusicPackDir();
 void                   M_BindIntVariable(cstring_view name, int * variable);
 void                   M_BindFloatVariable(cstring_view name, float * variable);
-void                   M_BindStringVariable(cstring_view name, char ** variable);
+void                   M_BindStringVariable(cstring_view name, const char ** variable);
 bool                   M_SetVariable(cstring_view name, cstring_view value);
 [[maybe_unused]] int   M_GetIntVariable(cstring_view name);
 const char *           M_GetStringVariable(cstring_view name);
 [[maybe_unused]] float M_GetFloatVariable(cstring_view name);
 void                   M_SetConfigFilenames(cstring_view main_config, cstring_view extra_config);
-char *                 M_GetSaveGameDir(cstring_view iwadname);
+const char *                 M_GetSaveGameDir(cstring_view iwadname);
 char *                 M_GetAutoloadDir(cstring_view iwadname);
 
-extern char * configdir;
+extern const char * configdir;

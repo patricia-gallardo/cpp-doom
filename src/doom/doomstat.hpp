@@ -226,7 +226,7 @@ struct doomstat_t {
 
   // File handling stuff.
   // Location where savegames are stored
-  char * savegamedir;
+  const char * savegamedir;
 
   // if true, load all graphics at level load
   bool precache; // if true, load all graphics at start

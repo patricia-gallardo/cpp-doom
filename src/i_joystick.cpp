@@ -326,7 +326,7 @@ void I_UpdateJoystick() {
 
 void I_BindJoystickVariables() {
   M_BindIntVariable("use_joystick", &usejoystick);
-  M_BindStringVariable("joystick_guid", &joystick_guid);
+  M_BindStringVariable("joystick_guid", const_cast<const char **>(&joystick_guid));
   M_BindIntVariable("joystick_index", &joystick_index);
   M_BindIntVariable("joystick_x_axis", &joystick_x_axis);
   M_BindIntVariable("joystick_y_axis", &joystick_y_axis);

@@ -170,7 +170,7 @@ static unsigned int last_resize_time;
 constexpr auto      RESIZE_DELAY = 500;
 
 static i_video_t i_video_s = {
-  .video_driver  = const_cast<char *>(""),
+  .video_driver  = (""),
   .screenvisible = true,
 
   .vanilla_keyboard_mapping = 0,
@@ -186,7 +186,7 @@ static i_video_t i_video_s = {
   .vga_porch_flash         = false,
   .force_software_renderer = false,
 
-  .window_position = const_cast<char *>("center"),
+  .window_position = ("center"),
 
   .joywait = 0,
 };

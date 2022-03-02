@@ -54,8 +54,8 @@ extern int              opl_io_port;
 
 // For native music module:
 
-extern char * music_pack_path;
-extern char * timidity_cfg_path;
+extern const char * music_pack_path;
+extern const char * timidity_cfg_path;
 
 // DOS-specific options: These are unused but should be maintained
 // so that the config file can be shared between chocolate
@@ -88,7 +88,7 @@ static i_sound_t i_sound_s = {
   .snd_samplerate      = 44100,
   .snd_cachesize       = 64 * 1024 * 1024,
   .snd_maxslicetime_ms = 28,
-  .snd_musiccmd        = const_cast<char *>(""),
+  .snd_musiccmd        = (""),
   .snd_pitchshift      = -1
 };
 i_sound_t * const g_i_sound_globals = &i_sound_s;
@@ -381,7 +381,7 @@ bool I_MusicIsPlaying() {
 }
 
 void I_BindSoundVariables() {
-  extern char * snd_dmxoption;
+  extern const char * snd_dmxoption;
   extern int    use_libsamplerate;
   extern float  libsamplerate_scale;
 

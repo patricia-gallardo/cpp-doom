@@ -376,7 +376,7 @@ void I_MidiPipe_ShutdownServer() {
 bool I_MidiPipe_InitServer() {
   TCHAR               dirname[MAX_PATH + 1];
   DWORD               dirname_len;
-  char *              module  = nullptr;
+  const char *        module  = nullptr;
   char *              cmdline = nullptr;
   char                params_buf[128];
   SECURITY_ATTRIBUTES sec_attrs;
@@ -399,7 +399,7 @@ bool I_MidiPipe_InitServer() {
   RemoveFileSpec(dirname, dirname_len);
 
   // Define the module.
-  module = const_cast<char *>(PROGRAM_PREFIX "midiproc.exe");
+  module = (PROGRAM_PREFIX "midiproc.exe");
 
   // Set up pipes
   std::memset(&sec_attrs, 0, sizeof(SECURITY_ATTRIBUTES));

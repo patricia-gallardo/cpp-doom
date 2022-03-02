@@ -43,7 +43,7 @@ struct gus_config_t {
 };
 
 static gusconf_t gusconf_s = {
-  .gus_patch_path = const_cast<char *>(""),
+  .gus_patch_path = (""),
   .gus_ram_kb     = 1024
 };
 gusconf_t * const g_gusconf_globals = &gusconf_s;

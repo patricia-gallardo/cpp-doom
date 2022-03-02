@@ -96,7 +96,7 @@ void I_StartTic();
 
 struct i_video_t {
   // SDL video driver name
-  char * video_driver;
+  const char * video_driver;
   // Flag indicating whether the screen is currently visible:
   // when the screen isnt visible, don't render the screen
   bool screenvisible;
@@ -124,7 +124,7 @@ struct i_video_t {
   int force_software_renderer;
 
   // Window position:
-  char * window_position;
+  const char * window_position;
 
   // Joystic/gamepad hysteresis
   unsigned int joywait;
