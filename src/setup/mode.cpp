@@ -71,14 +71,9 @@ static GameSelectCallback game_selected_callback;
 // Miscellaneous variables that aren't used in setup.
 
 static int          showMessages = 1;
-[[maybe_unused]] static int          screenblocks = 10;
 static int          detailLevel  = 0;
-[[maybe_unused]] static char *       savedir      = nullptr;
 static char *       executable   = nullptr;
 static const char * game_title   = "Doom";
-[[maybe_unused]] static char *       back_flat    = const_cast<char *>("F_PAVE01");
-[[maybe_unused]] static int          comport      = 0;
-[[maybe_unused]] static char *       nickname     = nullptr;
 
 static void BindMiscVariables() {
   if (gamemission == doom) {
