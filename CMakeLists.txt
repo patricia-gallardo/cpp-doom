@@ -9,6 +9,8 @@ set(CMAKE_CXX_STANDARD 20)
 
 set(CMAKE_CXX_VISIBILITY_PRESET hidden)
 
+include(cmake/toolchain.cmake)
+
 # Autotools variables
 set(top_srcdir ${CMAKE_CURRENT_SOURCE_DIR})
 set(top_builddir ${CMAKE_CURRENT_BINARY_DIR})
