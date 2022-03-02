@@ -757,7 +757,7 @@ static void OPL3_ChannelSetupAlg(opl3_channel * channel) {
 }
 
 static void OPL3_ChannelWriteC0(opl3_channel * channel, Bit8u data) {
-  channel->fb  = (data & 0x0e) >> 1;
+  channel->fb  = static_cast<Bit8u>((data & 0x0e) >> 1);
   channel->con = data & 0x01;
   channel->alg = channel->con;
   if (channel->chip->newm) {
