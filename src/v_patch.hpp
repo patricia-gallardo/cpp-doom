@@ -24,6 +24,7 @@
 // and we compose textures from the TEXTURE1/2 lists
 // of patches.
 
+// https://doomwiki.org/wiki/Picture_format
 typedef PACKED_STRUCT(
     {
       short width; // bounding box size
