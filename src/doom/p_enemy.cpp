@@ -689,7 +689,7 @@ void A_FaceTarget(mobj_t * actor) {
 // A_PosAttack
 //
 void A_PosAttack(mobj_t * actor) {
-  int angle;
+  angle_t angle;
   int damage;
   int slope;
 
@@ -697,7 +697,7 @@ void A_PosAttack(mobj_t * actor) {
     return;
 
   A_FaceTarget(actor);
-  angle = static_cast<int>(actor->angle);
+  angle = actor->angle;
   slope = P_AimLineAttack(actor, static_cast<angle_t>(angle), MISSILERANGE);
 
   S_StartSound(actor, sfx_pistol);
