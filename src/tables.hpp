@@ -56,11 +56,11 @@ const uint8_t extern gammatable[5][256];
 
 // Binary Angle Measument, BAM.
 
-constexpr auto                  ANG45   = 0x20000000;
-constexpr auto                  ANG90   = 0x40000000;
-constexpr auto                  ANG180  = 0x80000000;
-constexpr auto                  ANG270  = 0xc0000000;
-[[maybe_unused]] constexpr auto ANG_MAX = 0xffffffff;
+constexpr auto                  ANG45   = 0x20000000u;
+constexpr auto                  ANG90   = 0x40000000u;
+constexpr auto                  ANG180  = 0x80000000u;
+constexpr auto                  ANG270  = 0xc0000000u;
+[[maybe_unused]] constexpr auto ANG_MAX = 0xffffffffu;
 
 constexpr auto ANG1  = (ANG45 / 45);
 constexpr auto ANG60 = (ANG180 / 3);
