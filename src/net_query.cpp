@@ -599,12 +599,6 @@ static constexpr const char * GameDescription(int mode, int mission) {
     return "chex";
   case pack_hacx:
     return "hacx";
-  case heretic:
-    return "heretic";
-  case hexen:
-    return "hexen";
-  case strife:
-    return "strife";
   default:
     return "?";
   }

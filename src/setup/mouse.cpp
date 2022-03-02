@@ -104,10 +104,6 @@ static void ConfigExtraButtons(void *, void *) {
   AddMouseControl(buttons_table, "Strafe on", &g_m_controls_globals->mousebstrafe);
   AddMouseControl(buttons_table, "Next weapon", &g_m_controls_globals->mousebnextweapon);
 
-  if (gamemission == hexen || gamemission == strife) {
-    AddMouseControl(buttons_table, "Jump", &g_m_controls_globals->mousebjump);
-  }
-
   if (gamemission == doom) // [crispy]
   {
     AddMouseControl(buttons_table, "Quick Reverse", &g_m_controls_globals->mousebreverse);

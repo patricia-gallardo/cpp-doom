@@ -1022,7 +1022,7 @@ void ConfigJoystick(void *, void *)
                    TXT_TABLE_EMPTY(),
                    nullptr);
 
-    if (gamemission == doom || gamemission == heretic || gamemission == hexen || gamemission == strife) // [crispy]
+    if (gamemission == doom) // [crispy]
     {
         TXT_AddWidgets(window,
                    TXT_NewLabel("Look up/down"),
@@ -1058,7 +1058,7 @@ void ConfigJoystick(void *, void *)
         AddJoystickControl(window, "Speed", &g_m_controls_globals->joybspeed);
     }
 
-    if (gamemission == doom || gamemission == hexen || gamemission == strife) // [crispy]
+    if (gamemission == doom) // [crispy]
     {
         AddJoystickControl(window, "Jump", &g_m_controls_globals->joybjump);
     }

@@ -287,9 +287,6 @@ static void ConfigExtraKeys(void *, void *) {
   txt_window_t *     window;
   txt_scrollpane_t * scrollpane;
   txt_table_t *      table;
-  bool               extra_keys = gamemission == heretic
-                    || gamemission == hexen
-                    || gamemission == strife;
 
   window = TXT_NewWindow("Extra keyboard controls");
 
@@ -299,8 +296,7 @@ static void ConfigExtraKeys(void *, void *) {
 
   TXT_SetColumnWidths(table, 21, 9);
 
-  if (extra_keys || 1) // Crispy
-  {
+  // Crispy
     // When we have extra controls, a scrollable pane must be used.
 
     scrollpane = TXT_NewScrollPane(0, 13, table);
@@ -329,14 +325,6 @@ static void ConfigExtraKeys(void *, void *) {
       AddKeyControl(table, "Center view", &g_m_controls_globals->key_lookcenter);
     }
 
-    if (gamemission == heretic || gamemission == hexen) {
-      AddSectionLabel(table, "Flying", true);
-
-      AddKeyControl(table, "Fly up", &g_m_controls_globals->key_flyup);
-      AddKeyControl(table, "Fly down", &g_m_controls_globals->key_flydown);
-      AddKeyControl(table, "Fly center", &g_m_controls_globals->key_flycenter);
-    }
-
     if (gamemission != doom) {
       AddSectionLabel(table, "Inventory", true);
 
@@ -344,51 +332,7 @@ static void ConfigExtraKeys(void *, void *) {
       AddKeyControl(table, "Inventory right", &g_m_controls_globals->key_invright);
     }
 
-    if (gamemission == strife) {
-      AddKeyControl(table, "Home", &g_m_controls_globals->key_invhome);
-      AddKeyControl(table, "End", &g_m_controls_globals->key_invend);
-      AddKeyControl(table, "Query", &g_m_controls_globals->key_invquery);
-      AddKeyControl(table, "Drop", &g_m_controls_globals->key_invdrop);
-      AddKeyControl(table, "Show weapons", &g_m_controls_globals->key_invpop);
-      AddKeyControl(table, "Show mission", &g_m_controls_globals->key_mission);
-      AddKeyControl(table, "Show keys", &g_m_controls_globals->key_invkey);
-      AddKeyControl(table, "Use", &g_m_controls_globals->key_invuse);
-      AddKeyControl(table, "Use health", &g_m_controls_globals->key_usehealth);
-    } else if (gamemission == heretic || gamemission == hexen) {
-      AddKeyControl(table, "Use artifact", &g_m_controls_globals->key_useartifact);
-    }
-
-    if (gamemission == heretic) {
-      AddSectionLabel(table, "Artifacts", true);
-
-      AddKeyControl(table, "Quartz Flask", &g_m_controls_globals->key_arti_quartz);
-      AddKeyControl(table, "Mystic Urn", &g_m_controls_globals->key_arti_urn);
-      AddKeyControl(table, "Timebomb", &g_m_controls_globals->key_arti_bomb);
-      AddKeyControl(table, "Tome of Power", &g_m_controls_globals->key_arti_tome);
-      AddKeyControl(table, "Ring of Invincibility ", &g_m_controls_globals->key_arti_ring);
-      AddKeyControl(table, "Chaos Device", &g_m_controls_globals->key_arti_chaosdevice);
-      AddKeyControl(table, "Shadowsphere", &g_m_controls_globals->key_arti_shadowsphere);
-      AddKeyControl(table, "Wings of Wrath", &g_m_controls_globals->key_arti_wings);
-      AddKeyControl(table, "Torch", &g_m_controls_globals->key_arti_torch);
-    }
-
-    if (gamemission == hexen) {
-      AddSectionLabel(table, "Artifacts", true);
-
-      AddKeyControl(table, "One of each", &g_m_controls_globals->key_arti_all);
-      AddKeyControl(table, "Quartz Flask", &g_m_controls_globals->key_arti_health);
-      AddKeyControl(table, "Flechette", &g_m_controls_globals->key_arti_poisonbag);
-      AddKeyControl(table, "Disc of Repulsion", &g_m_controls_globals->key_arti_blastradius);
-      AddKeyControl(table, "Chaos Device", &g_m_controls_globals->key_arti_teleport);
-      AddKeyControl(table, "Banishment Device", &g_m_controls_globals->key_arti_teleportother);
-      AddKeyControl(table, "Porkalator", &g_m_controls_globals->key_arti_egg);
-      AddKeyControl(table, "Icon of the Defender", &g_m_controls_globals->key_arti_invulnerability);
-    }
-  } else {
-    TXT_AddWidget(window, table);
-  }
-
-  AddSectionLabel(table, "Weapons", extra_keys);
+  AddSectionLabel(table, "Weapons", false);
 
   AddKeyControl(table, "Weapon 1", &g_m_controls_globals->key_weapon1);
   AddKeyControl(table, "Weapon 2", &g_m_controls_globals->key_weapon2);
@@ -478,13 +422,6 @@ static void OtherKeysDialog(void *, void *) {
   AddKeyControl(table, "- to player 3", &g_m_controls_globals->key_multi_msgplayer[2]);
   AddKeyControl(table, "- to player 4", &g_m_controls_globals->key_multi_msgplayer[3]);
 
-  if (gamemission == hexen || gamemission == strife) {
-    AddKeyControl(table, "- to player 5", &g_m_controls_globals->key_multi_msgplayer[4]);
-    AddKeyControl(table, "- to player 6", &g_m_controls_globals->key_multi_msgplayer[5]);
-    AddKeyControl(table, "- to player 7", &g_m_controls_globals->key_multi_msgplayer[6]);
-    AddKeyControl(table, "- to player 8", &g_m_controls_globals->key_multi_msgplayer[7]);
-  }
-
   scrollpane = TXT_NewScrollPane(0, 13, table);
 
   TXT_AddWidget(window, scrollpane);
@@ -524,9 +461,7 @@ void ConfigKeyboard(void *, void *) {
   TXT_AddWidget(window, TXT_TABLE_EMPTY());
   AddKeyControl(window, "Strafe On", &g_m_controls_globals->key_strafe);
 
-  if (gamemission == hexen || gamemission == strife) {
-    AddKeyControl(window, "Jump", &g_m_controls_globals->key_jump);
-  } else if (gamemission == doom) // Crispy
+  if (gamemission == doom) // Crispy
   {
     AddKeyControl(window, "Jump [*]", &g_m_controls_globals->key_jump);
   }
