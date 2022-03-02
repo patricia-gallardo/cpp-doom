@@ -489,7 +489,7 @@ void A_Saw(mobj_t *, player_t * player, pspdef_t *) {
   // turn to face target
   angle = R_PointToAngle2(player->mo->x, player->mo->y, g_p_local_globals->linetarget->x, g_p_local_globals->linetarget->y);
   if (angle - player->mo->angle > ANG180) {
-    if (static_cast<signed int>(angle - player->mo->angle) < -ANG90 / 20)
+    if ((angle - player->mo->angle) < (0u - ANG90) / 20)
       player->mo->angle = angle + ANG90 / 21;
     else
       player->mo->angle -= ANG90 / 20;
