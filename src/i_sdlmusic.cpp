@@ -46,7 +46,7 @@ static bool sdl_was_initialized = false;
 static bool musicpaused = false;
 static int  current_music_volume;
 
-char * timidity_cfg_path = const_cast<char *>("");
+const char * timidity_cfg_path = ("");
 
 static char * temp_timidity_cfg = nullptr;
 

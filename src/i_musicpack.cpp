@@ -94,7 +94,7 @@ static bool music_initialized = false;
 
 static bool sdl_was_initialized = false;
 
-char * music_pack_path = const_cast<char *>("");
+const char * music_pack_path = ("");
 
 // If true, we are playing a substitute digital track rather than in-WAD
 // MIDI/MUS track, and file_metadata contains loop metadata.

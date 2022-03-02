@@ -45,7 +45,7 @@ struct net_client_globals_t {
   // Waiting at the initial wait screen for the game to be launched?
   bool net_waiting_for_launch {};
   // Name that we send to the server
-  char * net_player_name {};
+  const char * net_player_name {};
 
   sha1_digest_t net_server_wad_sha1sum {};
   sha1_digest_t net_server_deh_sha1sum {};

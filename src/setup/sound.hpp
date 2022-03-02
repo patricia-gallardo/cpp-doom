@@ -19,4 +19,4 @@
 void ConfigSound(void * widget, void * user_data);
 void BindSoundVariables();
 
-extern char * snd_dmxoption;
+extern const char * snd_dmxoption;

@@ -231,7 +231,7 @@ struct i_sound_t {
   // Config variable that controls the sound buffer size. We default to 28ms (1000 / 35fps = 1 buffer per tic).
   int snd_maxslicetime_ms {};
   // External command to invoke to play back music.
-  char * snd_musiccmd {};
+  const char * snd_musiccmd {};
   // Whether to vary the pitch of sound effects. Each game will set the default differently
   int snd_pitchshift {};
 };

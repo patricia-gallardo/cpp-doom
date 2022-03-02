@@ -26,104 +26,104 @@
 #include "m_crispy.hpp"
 
 multiitem_t multiitem_bobfactor[NUM_BOBFACTORS] = {
-  {BOBFACTOR_FULL, const_cast<char *>("full")},
-  { BOBFACTOR_75,  const_cast<char *>("75%") },
-  { BOBFACTOR_OFF, const_cast<char *>("off") },
+  {BOBFACTOR_FULL, ("full")},
+  { BOBFACTOR_75,  ("75%") },
+  { BOBFACTOR_OFF, ("off") },
 };
 
 multiitem_t multiitem_brightmaps[NUM_BRIGHTMAPS] = {
-  {BRIGHTMAPS_OFF,       const_cast<char *>("none") },
-  { BRIGHTMAPS_TEXTURES, const_cast<char *>("walls")},
-  { BRIGHTMAPS_SPRITES,  const_cast<char *>("items")},
-  { BRIGHTMAPS_BOTH,     const_cast<char *>("both") },
+  {BRIGHTMAPS_OFF,       ("none") },
+  { BRIGHTMAPS_TEXTURES, ("walls")},
+  { BRIGHTMAPS_SPRITES,  ("items")},
+  { BRIGHTMAPS_BOTH,     ("both") },
 };
 
 multiitem_t multiitem_centerweapon[NUM_CENTERWEAPON] = {
-  {CENTERWEAPON_OFF,     const_cast<char *>("off")     },
-  { CENTERWEAPON_CENTER, const_cast<char *>("centered")},
-  { CENTERWEAPON_BOB,    const_cast<char *>("bobbing") },
+  {CENTERWEAPON_OFF,     ("off")     },
+  { CENTERWEAPON_CENTER, ("centered")},
+  { CENTERWEAPON_BOB,    ("bobbing") },
 };
 
 multiitem_t multiitem_coloredhud[NUM_COLOREDHUD] = {
-  {COLOREDHUD_OFF,   const_cast<char *>("off")       },
-  { COLOREDHUD_BAR,  const_cast<char *>("status bar")},
-  { COLOREDHUD_TEXT, const_cast<char *>("hud texts") },
-  { COLOREDHUD_BOTH, const_cast<char *>("both")      },
+  {COLOREDHUD_OFF,   ("off")       },
+  { COLOREDHUD_BAR,  ("status bar")},
+  { COLOREDHUD_TEXT, ("hud texts") },
+  { COLOREDHUD_BOTH, ("both")      },
 };
 
 multiitem_t multiitem_crosshair[NUM_CROSSHAIRS] = {
-  {CROSSHAIR_OFF,        const_cast<char *>("off")      },
-  { CROSSHAIR_STATIC,    const_cast<char *>("static")   },
-  { CROSSHAIR_PROJECTED, const_cast<char *>("projected")},
+  {CROSSHAIR_OFF,        ("off")      },
+  { CROSSHAIR_STATIC,    ("static")   },
+  { CROSSHAIR_PROJECTED, ("projected")},
 };
 
 multiitem_t multiitem_crosshairtype[] = {
-  {-1, const_cast<char *>("none")   },
-  { 0, const_cast<char *>("cross")  },
-  { 1, const_cast<char *>("chevron")},
-  { 2, const_cast<char *>("dot")    },
+  {-1, ("none")   },
+  { 0, ("cross")  },
+  { 1, ("chevron")},
+  { 2, ("dot")    },
 };
 
 multiitem_t multiitem_freeaim[NUM_FREEAIMS] = {
-  {FREEAIM_AUTO,    const_cast<char *>("autoaim")},
-  { FREEAIM_DIRECT, const_cast<char *>("direct") },
-  { FREEAIM_BOTH,   const_cast<char *>("both")   },
+  {FREEAIM_AUTO,    ("autoaim")},
+  { FREEAIM_DIRECT, ("direct") },
+  { FREEAIM_BOTH,   ("both")   },
 };
 
 multiitem_t multiitem_demotimer[NUM_DEMOTIMERS] = {
-  {DEMOTIMER_OFF,       const_cast<char *>("off")      },
-  { DEMOTIMER_RECORD,   const_cast<char *>("recording")},
-  { DEMOTIMER_PLAYBACK, const_cast<char *>("playback") },
-  { DEMOTIMER_BOTH,     const_cast<char *>("both")     },
+  {DEMOTIMER_OFF,       ("off")      },
+  { DEMOTIMER_RECORD,   ("recording")},
+  { DEMOTIMER_PLAYBACK, ("playback") },
+  { DEMOTIMER_BOTH,     ("both")     },
 };
 
 multiitem_t multiitem_demotimerdir[] = {
-  {0,  const_cast<char *>("none")    },
-  { 1, const_cast<char *>("forward") },
-  { 2, const_cast<char *>("backward")},
+  {0,  ("none")    },
+  { 1, ("forward") },
+  { 2, ("backward")},
 };
 
 multiitem_t multiitem_freelook[NUM_FREELOOKS] = {
-  {FREELOOK_OFF,     const_cast<char *>("off")   },
-  { FREELOOK_SPRING, const_cast<char *>("spring")},
-  { FREELOOK_LOCK,   const_cast<char *>("lock")  },
+  {FREELOOK_OFF,     ("off")   },
+  { FREELOOK_SPRING, ("spring")},
+  { FREELOOK_LOCK,   ("lock")  },
 };
 
 multiitem_t multiitem_jump[NUM_JUMPS] = {
-  {JUMP_OFF,   const_cast<char *>("off") },
-  { JUMP_LOW,  const_cast<char *>("low") },
-  { JUMP_HIGH, const_cast<char *>("high")},
+  {JUMP_OFF,   ("off") },
+  { JUMP_LOW,  ("low") },
+  { JUMP_HIGH, ("high")},
 };
 
 multiitem_t multiitem_secretmessage[NUM_SECRETMESSAGE] = {
-  {SECRETMESSAGE_OFF,    const_cast<char *>("off")  },
-  { SECRETMESSAGE_ON,    const_cast<char *>("on")   },
-  { SECRETMESSAGE_COUNT, const_cast<char *>("count")},
+  {SECRETMESSAGE_OFF,    ("off")  },
+  { SECRETMESSAGE_ON,    ("on")   },
+  { SECRETMESSAGE_COUNT, ("count")},
 };
 
 multiitem_t multiitem_translucency[NUM_TRANSLUCENCY] = {
-  {TRANSLUCENCY_OFF,      const_cast<char *>("off")        },
-  { TRANSLUCENCY_MISSILE, const_cast<char *>("projectiles")},
-  { TRANSLUCENCY_ITEM,    const_cast<char *>("items")      },
-  { TRANSLUCENCY_BOTH,    const_cast<char *>("both")       },
+  {TRANSLUCENCY_OFF,      ("off")        },
+  { TRANSLUCENCY_MISSILE, ("projectiles")},
+  { TRANSLUCENCY_ITEM,    ("items")      },
+  { TRANSLUCENCY_BOTH,    ("both")       },
 };
 
 multiitem_t multiitem_sndchannels[4] = {
-  {8,   const_cast<char *>("8") },
-  { 16, const_cast<char *>("16")},
-  { 32, const_cast<char *>("32")},
+  {8,   ("8") },
+  { 16, ("16")},
+  { 32, ("32")},
 };
 
 multiitem_t multiitem_widescreen[NUM_WIDESCREEN] = {
-  {WIDESCREEN_OFF,      const_cast<char *>("off")            },
-  { WIDESCREEN_WIDE,    const_cast<char *>("on, wide HUD")   },
-  { WIDESCREEN_COMPACT, const_cast<char *>("on, compact HUD")},
+  {WIDESCREEN_OFF,      ("off")            },
+  { WIDESCREEN_WIDE,    ("on, wide HUD")   },
+  { WIDESCREEN_COMPACT, ("on, compact HUD")},
 };
 
 multiitem_t multiitem_widgets[NUM_WIDGETS] = {
-  {WIDGETS_OFF,      const_cast<char *>("never")     },
-  { WIDGETS_AUTOMAP, const_cast<char *>("in Automap")},
-  { WIDGETS_ALWAYS,  const_cast<char *>("always")    },
+  {WIDGETS_OFF,      ("never")     },
+  { WIDGETS_AUTOMAP, ("in Automap")},
+  { WIDGETS_ALWAYS,  ("always")    },
 };
 
 extern void AM_ReInit();

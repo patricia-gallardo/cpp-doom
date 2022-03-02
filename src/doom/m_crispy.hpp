@@ -21,7 +21,7 @@
 
 struct multiitem_t {
   int    value;
-  char * name;
+  const char * name;
 };
 
 extern multiitem_t multiitem_bobfactor[NUM_BOBFACTORS];

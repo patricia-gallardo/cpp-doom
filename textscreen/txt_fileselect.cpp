@@ -460,7 +460,8 @@ int TXT_CanSelectFiles() {
 
 char * TXT_SelectFile(cstring_view window_title, const char ** extensions) {
   char * argv[4];
-  char * result, *applescript;
+  char * result;
+  char *applescript;
 
   applescript = GenerateAppleScript(window_title, extensions);
   if (!applescript) {
@@ -706,11 +707,11 @@ static void InputBoxChanged(void *, void * uncast_fileselect) {
   TXT_EmitSignal(&fileselect->widget, "changed");
 }
 
-txt_fileselect_t * TXT_NewFileSelector(char ** variable, int size, cstring_view prompt, const char ** extensions) {
+txt_fileselect_t * TXT_NewFileSelector(const char ** variable, int size, cstring_view prompt, const char ** extensions) {
   auto * fileselect = create_struct<txt_fileselect_t>();
 
   TXT_InitWidget(fileselect, &txt_fileselect_class);
-  fileselect->inputbox                = TXT_NewInputBox(variable, 1024);
+  fileselect->inputbox                = TXT_NewInputBox(const_cast<char **>(variable), 1024);
   fileselect->inputbox->widget.parent = &fileselect->widget;
   fileselect->size                    = size;
   fileselect->prompt                  = prompt.c_str();
