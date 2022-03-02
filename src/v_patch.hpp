@@ -16,7 +16,17 @@
 //      Refresh/rendering module, shared data struct definitions.
 //
 
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Wc99-extensions"
 #pragma once
+
+#include <vector>
+
+#pragma warning( push )
+#pragma warning( disable : 4200 )
+
+#pragma GCC diagnostic push
+#pragma GCC diagnostic ignored "-Wpedantic"
 
 // Patches.
 // A patch holds one or more columns.
@@ -31,9 +41,13 @@ typedef PACKED_STRUCT(
       short height;
       short leftoffset;   // pixels to the left of origin
       short topoffset;    // pixels below the origin
-      int   columnofs[8]; // only [width] used
+      int   columnofs[]; // only [width] used
                           // the [0] is &columnofs[width]
     }) patch_t;
+
+#pragma GCC diagnostic pop
+
+#pragma warning( pop )
 
 // posts are runs of non masked source pixels
 typedef PACKED_STRUCT(
@@ -44,3 +58,5 @@ typedef PACKED_STRUCT(
 
 // column_t is a list of 0 or more post_t, (byte)-1 terminated
 using column_t = post_t;
+
+#pragma clang diagnostic pop
