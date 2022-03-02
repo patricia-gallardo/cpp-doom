@@ -56,8 +56,8 @@ constexpr auto FILE_ZONE_SCRIPT = 2;
 // PRIVATE FUNCTION PROTOTYPES ---------------------------------------------
 
 static void CheckOpen();
-static void OpenScript(char * name, int type);
-static void SC_OpenLump(char * name);
+static void OpenScript(const char * name, int type);
+static void SC_OpenLump(const char * name);
 static void SC_Close();
 static bool SC_Compare(cstring_view text);
 
@@ -92,7 +92,7 @@ static bool   AlreadyGot = false;
 //
 //==========================================================================
 
-static void SC_OpenLump(char * name) {
+static void SC_OpenLump(const char * name) {
   OpenScript(name, LUMP_SCRIPT);
 }
 
@@ -102,7 +102,7 @@ static void SC_OpenLump(char * name) {
 //
 //==========================================================================
 
-static void OpenScript(char * name, int type) {
+static void OpenScript(const char * name, int type) {
   SC_Close();
   if (type == LUMP_SCRIPT) { // Lump script
     ScriptLumpNum = W_GetNumForName(name);
@@ -241,7 +241,7 @@ void S_ParseMusInfo(cstring_view mapid) {
   if (W_CheckNumForName("MUSINFO") != -1) {
     int inMap = false;
 
-    SC_OpenLump(const_cast<char *>("MUSINFO"));
+    SC_OpenLump(("MUSINFO"));
 
     while (SC_GetString()) {
       if (inMap || SC_Compare(mapid)) {

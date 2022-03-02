@@ -923,7 +923,7 @@ static void R_InitTranMap() {
     unsigned char * playpal = cache_lump_name<unsigned char *>("PLAYPAL", PU_STATIC);
     FILE *          cachefp;
     char *          fname = nullptr;
-    extern char *   configdir;
+    extern const char * configdir;
 
     struct {
       unsigned char pct;

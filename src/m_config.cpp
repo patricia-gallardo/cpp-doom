@@ -45,9 +45,9 @@
 // Location where all configuration data is stored -
 // default.cfg, savegames, etc.
 
-char * configdir;
+const char * configdir;
 
-static char * autoload_path = const_cast<char *>("");
+static const char * autoload_path = ("");
 
 // Default filenames for configuration files.
 
@@ -70,7 +70,7 @@ struct default_t {
   // Pointer to the location in memory of the variable
   union {
     int *   i;
-    char ** s;
+    const char ** s;
     float * f;
   } location;
 
@@ -2560,7 +2560,7 @@ void M_BindFloatVariable(cstring_view name, float * location) {
   variable->bound      = true;
 }
 
-void M_BindStringVariable(cstring_view name, char ** location) {
+void M_BindStringVariable(cstring_view name, const char ** location) {
   default_t * variable = GetDefaultForName(name);
   assert(variable->type == DEFAULT_STRING);
 
@@ -2650,7 +2650,7 @@ void M_SetConfigDir(const char * dir) {
   // Use the directory that was passed, or find the default.
 
   if (dir != nullptr) {
-    configdir = const_cast<char *>(dir);
+    configdir = (dir);
   } else {
     configdir = GetDefaultConfigDir();
   }
@@ -2702,8 +2702,8 @@ void M_SetMusicPackDir() {
 // Creates the directory as necessary.
 //
 
-char * M_GetSaveGameDir(cstring_view iwadname) {
-  char * savegamedir = nullptr;
+const char * M_GetSaveGameDir(cstring_view iwadname) {
+  const char * savegamedir = nullptr;
 
   //!
   // @arg <directory>

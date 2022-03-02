@@ -44,24 +44,24 @@
 #include "v_trans.hpp" // [crispy] colored kills/items/secret/etc. messages
 #include "v_video.hpp" // [crispy] V_DrawPatch() et al.
 
-char * chat_macros[10] = {
-  const_cast<char *>(HUSTR_CHATMACRO0),
-  const_cast<char *>(HUSTR_CHATMACRO1),
-  const_cast<char *>(HUSTR_CHATMACRO2),
-  const_cast<char *>(HUSTR_CHATMACRO3),
-  const_cast<char *>(HUSTR_CHATMACRO4),
-  const_cast<char *>(HUSTR_CHATMACRO5),
-  const_cast<char *>(HUSTR_CHATMACRO6),
-  const_cast<char *>(HUSTR_CHATMACRO7),
-  const_cast<char *>(HUSTR_CHATMACRO8),
-  const_cast<char *>(HUSTR_CHATMACRO9)
+const char * chat_macros[10] = {
+  (HUSTR_CHATMACRO0),
+  (HUSTR_CHATMACRO1),
+  (HUSTR_CHATMACRO2),
+  (HUSTR_CHATMACRO3),
+  (HUSTR_CHATMACRO4),
+  (HUSTR_CHATMACRO5),
+  (HUSTR_CHATMACRO6),
+  (HUSTR_CHATMACRO7),
+  (HUSTR_CHATMACRO8),
+  (HUSTR_CHATMACRO9)
 };
 
-char * player_names[] = {
-  const_cast<char *>(HUSTR_PLRGREEN),
-  const_cast<char *>(HUSTR_PLRINDIGO),
-  const_cast<char *>(HUSTR_PLRBROWN),
-  const_cast<char *>(HUSTR_PLRRED)
+const char * player_names[] = {
+  (HUSTR_PLRGREEN),
+  (HUSTR_PLRINDIGO),
+  (HUSTR_PLRBROWN),
+  (HUSTR_PLRRED)
 };
 
 char                 chat_char; // remove later.
@@ -419,7 +419,7 @@ static auto HU_COORDX() {
   return ((ORIGWIDTH - 7 * hu_font['A' - HU_FONTSTART]->width) + DELTAWIDTH);
 }
 
-static void CrispyReplaceColor(char * str, const int cr, cstring_view col) {
+static void CrispyReplaceColor(const char * str, const int cr, cstring_view col) {
   char col_replace[16];
 
   if (DEH_HasStringReplacement(str)) {
@@ -489,24 +489,24 @@ void HU_Init() {
 
   if (!M_ParmExists("-nodeh")) {
     // [crispy] colorize keycard and skull key messages
-    CrispyReplaceColor(const_cast<char *>(GOTBLUECARD), static_cast<int>(cr_t::CR_BLUE), " blue ");
-    CrispyReplaceColor(const_cast<char *>(GOTBLUESKUL), static_cast<int>(cr_t::CR_BLUE), " blue ");
-    CrispyReplaceColor(const_cast<char *>(PD_BLUEO), static_cast<int>(cr_t::CR_BLUE), " blue ");
-    CrispyReplaceColor(const_cast<char *>(PD_BLUEK), static_cast<int>(cr_t::CR_BLUE), " blue ");
-    CrispyReplaceColor(const_cast<char *>(GOTREDCARD), static_cast<int>(cr_t::CR_RED), " red ");
-    CrispyReplaceColor(const_cast<char *>(GOTREDSKULL), static_cast<int>(cr_t::CR_RED), " red ");
-    CrispyReplaceColor(const_cast<char *>(PD_REDO), static_cast<int>(cr_t::CR_RED), " red ");
-    CrispyReplaceColor(const_cast<char *>(PD_REDK), static_cast<int>(cr_t::CR_RED), " red ");
-    CrispyReplaceColor(const_cast<char *>(GOTYELWCARD), static_cast<int>(cr_t::CR_GOLD), " yellow ");
-    CrispyReplaceColor(const_cast<char *>(GOTYELWSKUL), static_cast<int>(cr_t::CR_GOLD), " yellow ");
-    CrispyReplaceColor(const_cast<char *>(PD_YELLOWO), static_cast<int>(cr_t::CR_GOLD), " yellow ");
-    CrispyReplaceColor(const_cast<char *>(PD_YELLOWK), static_cast<int>(cr_t::CR_GOLD), " yellow ");
+    CrispyReplaceColor((GOTBLUECARD), static_cast<int>(cr_t::CR_BLUE), " blue ");
+    CrispyReplaceColor((GOTBLUESKUL), static_cast<int>(cr_t::CR_BLUE), " blue ");
+    CrispyReplaceColor((PD_BLUEO), static_cast<int>(cr_t::CR_BLUE), " blue ");
+    CrispyReplaceColor((PD_BLUEK), static_cast<int>(cr_t::CR_BLUE), " blue ");
+    CrispyReplaceColor((GOTREDCARD), static_cast<int>(cr_t::CR_RED), " red ");
+    CrispyReplaceColor((GOTREDSKULL), static_cast<int>(cr_t::CR_RED), " red ");
+    CrispyReplaceColor((PD_REDO), static_cast<int>(cr_t::CR_RED), " red ");
+    CrispyReplaceColor((PD_REDK), static_cast<int>(cr_t::CR_RED), " red ");
+    CrispyReplaceColor((GOTYELWCARD), static_cast<int>(cr_t::CR_GOLD), " yellow ");
+    CrispyReplaceColor((GOTYELWSKUL), static_cast<int>(cr_t::CR_GOLD), " yellow ");
+    CrispyReplaceColor((PD_YELLOWO), static_cast<int>(cr_t::CR_GOLD), " yellow ");
+    CrispyReplaceColor((PD_YELLOWK), static_cast<int>(cr_t::CR_GOLD), " yellow ");
 
     // [crispy] colorize multi-player messages
-    CrispyReplaceColor(const_cast<char *>(HUSTR_PLRGREEN), static_cast<int>(cr_t::CR_GREEN), "Green: ");
-    CrispyReplaceColor(const_cast<char *>(HUSTR_PLRINDIGO), static_cast<int>(cr_t::CR_GRAY), "Indigo: ");
-    CrispyReplaceColor(const_cast<char *>(HUSTR_PLRBROWN), static_cast<int>(cr_t::CR_GOLD), "Brown: ");
-    CrispyReplaceColor(const_cast<char *>(HUSTR_PLRRED), static_cast<int>(cr_t::CR_RED), "Red: ");
+    CrispyReplaceColor((HUSTR_PLRGREEN), static_cast<int>(cr_t::CR_GREEN), "Green: ");
+    CrispyReplaceColor((HUSTR_PLRINDIGO), static_cast<int>(cr_t::CR_GRAY), "Indigo: ");
+    CrispyReplaceColor((HUSTR_PLRBROWN), static_cast<int>(cr_t::CR_GOLD), "Brown: ");
+    CrispyReplaceColor((HUSTR_PLRRED), static_cast<int>(cr_t::CR_RED), "Red: ");
   }
 }
 

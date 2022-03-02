@@ -89,10 +89,10 @@ static const char * chex_skills[] = {
 static const char * gamemodes[] = { "Co-operative", "Deathmatch", "Deathmatch 2.0", "Deathmatch 3.0" };
 
 
-static char * net_player_name;
-static char * chat_macros[10];
+static const char * net_player_name;
+static const char * chat_macros[10];
 
-static char * wads[NUM_WADS];
+static const char * wads[NUM_WADS];
 static char * extra_params[NUM_EXTRA_PARAMS];
 static int    skill           = 2;
 static int    nomonsters      = 0;
@@ -514,7 +514,7 @@ static void OpenExtraParamsWindow(void *, void *) {
   window = TXT_NewWindow("Extra command line parameters");
 
   for (int i = 0; i < NUM_EXTRA_PARAMS; ++i) {
-    TXT_AddWidget(window, TXT_NewInputBox(&extra_params[i], 70));
+    TXT_AddWidget(window, TXT_NewInputBox(const_cast<char **>(&extra_params[i]), 70));
   }
 }
 
@@ -875,7 +875,7 @@ void MultiplayerConfig(void *, void *) {
   TXT_AddWidgets(window,
                  TXT_NewStrut(0, 1),
                  TXT_NewHorizBox(TXT_NewLabel("Player name:  "),
-                                 TXT_NewInputBox(&net_player_name, 25),
+                                 TXT_NewInputBox(const_cast<char **>(&net_player_name), 25),
                                  nullptr),
                  TXT_NewStrut(0, 1),
                  TXT_NewSeparator("Chat macros"),
@@ -891,7 +891,7 @@ void MultiplayerConfig(void *, void *) {
 
     TXT_AddWidgets(table,
                    label,
-                   TXT_NewInputBox(&chat_macros[(i + 1) % 10], 40),
+                   TXT_NewInputBox(const_cast<char **>(&chat_macros[(i + 1) % 10]), 40),
                    nullptr);
   }
 

@@ -111,14 +111,14 @@ void InitBindings() {
 // Set the name of the executable program to run the game:
 
 static void SetExecutable(mission_config_t * config) {
-  char * extension;
+  const char * extension;
 
   free(executable);
 
 #ifdef _WIN32
-  extension = const_cast<char *>(".exe");
+  extension = (".exe");
 #else
-  extension = const_cast<char *>("");
+  extension = ("");
 #endif
 
   executable = M_StringJoin(config->executable, extension, nullptr);

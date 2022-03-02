@@ -99,7 +99,7 @@ static void SensibleDefaults() {
   show_endoom                                  = 0;
   g_m_controls_globals->dclick_use             = 0;
   novert                                       = 1;
-  snd_dmxoption                                = const_cast<char *>("-opl3 -reverse");
+  snd_dmxoption                                = ("-opl3 -reverse");
   png_screenshots                              = 1;
 }
 
