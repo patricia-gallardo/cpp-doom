@@ -7,7 +7,7 @@ struct cstring_view {
 
   cstring_view(const char * str)
       : d(str)
-      , s(strlen(d)) { }
+      , s(str ? strlen(d) : 0) { }
   cstring_view(const std::string_view & str)
       : d(str.data())
       , s(str.size()) { }
@@ -33,8 +33,8 @@ struct cstring_view {
   }
 
 private:
-  const char * d;
-  std::size_t  s;
+  const char * d{ nullptr };
+  std::size_t  s{ 0 };
 };
 
 inline bool iequals(cstring_view first, cstring_view second)
