@@ -355,8 +355,6 @@ void R_MakeSpans(int          x,
 void R_DrawPlanes() {
   visplane_t * pl;
   int          light;
-  int          x;
-  int          stop;
   int          angle;
   int          lumpnum;
 
@@ -414,7 +412,7 @@ void R_DrawPlanes() {
       // [crispy] stretch sky
       if (crispy->stretchsky)
         g_r_draw_globals->dc_iscale = g_r_draw_globals->dc_iscale * g_r_draw_globals->dc_texheight / SKYSTRETCH_HEIGHT;
-      for (x = pl->minx; x <= pl->maxx; x++) {
+      for (int x = pl->minx; x <= pl->maxx; x++) {
         g_r_draw_globals->dc_yl = static_cast<int>(pl->top[x]);
         g_r_draw_globals->dc_yh = static_cast<int>(pl->bottom[x]);
 
@@ -429,11 +427,16 @@ void R_DrawPlanes() {
       continue;
     }
 
-    // regular flat
-    lumpnum = g_r_state_globals->firstflat + (swirling ? pl->picnum : g_r_state_globals->flattranslation[pl->picnum]);
-    // [crispy] add support for SMMU swirling flats
-    g_r_draw_globals->ds_source =
-        static_cast<uint8_t *>(swirling ? reinterpret_cast<unsigned char *>(R_DistortedFlat(lumpnum)) : cache_lump_num<uint8_t *>(lumpnum, PU_STATIC));
+    if (swirling) {
+      // [crispy] add support for SMMU swirling flats
+      lumpnum                     = g_r_state_globals->firstflat + pl->picnum;
+      g_r_draw_globals->ds_source = reinterpret_cast<uint8_t *>(R_DistortedFlat(lumpnum));
+    } else {
+      // regular flat
+      lumpnum                     = g_r_state_globals->firstflat + g_r_state_globals->flattranslation[pl->picnum];
+      g_r_draw_globals->ds_source = cache_lump_num<uint8_t *>(lumpnum, PU_STATIC);
+    }
+
     g_r_draw_globals->ds_brightmap = R_BrightmapForFlatNum(lumpnum - g_r_state_globals->firstflat);
 
     planeheight = std::abs(pl->height - g_r_state_globals->viewz);
@@ -447,12 +450,19 @@ void R_DrawPlanes() {
 
     planezlight = zlight[light];
 
-    pl->top[pl->maxx + 1] = 0xffffffffu; // [crispy] hires / 32-bit integer math
-    pl->top[pl->minx - 1] = 0xffffffffu; // [crispy] hires / 32-bit integer math
+    // UBSan: Clamp indexes to avoid access out of bounds
+    const int max_top_index = int(std::size(pl->top)) - 1;
+    const int min_top_index = 0;
+    const int max_limit     = std::min(pl->maxx, max_top_index - 1);
+    const int min_limit     = std::max(pl->minx, min_top_index + 1);
 
-    stop = pl->maxx + 1;
+    pl->top[max_limit + 1] = 0xffffffffu; // [crispy] hires / 32-bit integer math
+    pl->top[min_limit - 1] = 0xffffffffu; // [crispy] hires / 32-bit integer math
 
-    for (x = pl->minx; x <= stop; x++) {
+    const int stop  = max_limit + 1;
+    const int start = min_limit;
+
+    for (int x = start; x <= stop; x++) {
       R_MakeSpans(x, pl->top[x - 1], pl->bottom[x - 1], pl->top[x], pl->bottom[x]);
     }
 
