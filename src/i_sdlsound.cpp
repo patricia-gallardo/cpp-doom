@@ -399,7 +399,10 @@ static bool ExpandSoundData_SRC(sfxinfo_t * sfxinfo,
   // Do the sound conversion
 
   retn = src_simple(&src_data, SRC_ConversionMode(), 1);
-  assert(retn == 0);
+  if (retn != 0) {
+    fmt::fprintf(stderr, "SampleRate src_simple returned non zero value %d\n", retn);
+    assert(retn == 0);
+  }
 
   // Allocate the new chunk.
 
