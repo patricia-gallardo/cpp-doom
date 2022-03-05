@@ -355,7 +355,7 @@ static int SRC_ConversionMode() {
 // DWF 2008-02-10 with cleanups by Simon Howard.
 
 static bool ExpandSoundData_SRC(sfxinfo_t * sfxinfo,
-                                byte *      data,
+                                uint8_t *      data,
                                 int         samplerate,
                                 int         bits,
                                 int         length) {
