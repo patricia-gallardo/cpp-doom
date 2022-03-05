@@ -360,7 +360,7 @@ static bool ExpandSoundData_SRC(sfxinfo_t * sfxinfo,
                                 int         bits,
                                 int         length) {
   SRC_DATA src_data;
-  uint32_t i, abuf_index = 0, clipped = 0;
+  uint32_t abuf_index = 0, clipped = 0;
   //    uint32_t alen;
   int                 retn;
   int16_t *           expanded;
@@ -371,7 +371,7 @@ static bool ExpandSoundData_SRC(sfxinfo_t * sfxinfo,
   src_data.input_frames = samplecount;
   std::vector<float> data_in(samplecount);
   src_data.data_in   = data_in.data();
-  src_data.src_ratio = (double)mixer_freq / samplerate;
+  src_data.src_ratio = static_cast<double>(mixer_freq) / samplerate;
 
   // We include some extra space here in case of rounding-up.
   src_data.output_frames = src_data.src_ratio * samplecount + (mixer_freq / 4);
@@ -383,16 +383,16 @@ static bool ExpandSoundData_SRC(sfxinfo_t * sfxinfo,
   // Convert input data to floats
   // [crispy] Handle 16 bit audio data
   if (bits == 16) {
-    for (i = 0; i < samplecount; ++i) {
+    for (uint32_t i = 0; i < samplecount; ++i) {
       // Code below uses 32767, so use it here too and trust it to clip.
-      data_in[i] = (int16_t)(data[i * 2] | (data[i * 2 + 1] << 8)) / 32767.0;
+      data_in[i] = static_cast<float>(static_cast<int16_t>(data[i * 2] | (data[i * 2 + 1] << 8)) / 32767.0);
     }
   } else {
-    for (i = 0; i < length; ++i) {
+    for (int i = 0; i < length; ++i) {
       // Unclear whether 128 should be interpreted as "zero" or whether a
       // symmetrical range should be assumed.  The following assumes a
       // symmetrical range.
-      data_in[i] = data[i] / 127.5 - 1;
+      data_in[i] = static_cast<float>(data[i] / 127.5 - 1);
     }
   }
 
@@ -412,11 +412,11 @@ static bool ExpandSoundData_SRC(sfxinfo_t * sfxinfo,
   }
 
   chunk    = &snd->chunk;
-  expanded = (int16_t *)chunk->abuf;
+  expanded = reinterpret_cast<int16_t *>(chunk->abuf);
 
   // Convert the result back into 16-bit integers.
 
-  for (i = 0; i < src_data.output_frames_gen; ++i) {
+  for (long i = 0; i < src_data.output_frames_gen; ++i) {
     // libsamplerate does not limit itself to the -1.0 .. 1.0 range on
     // output, so a multiplier less than INT16_MAX (32767) is required
     // to avoid overflows or clipping.  However, the smaller the
@@ -453,8 +453,8 @@ static bool ExpandSoundData_SRC(sfxinfo_t * sfxinfo,
 
     // Left and right channels
 
-    expanded[abuf_index++] = cvtval_i;
-    expanded[abuf_index++] = cvtval_i;
+    expanded[abuf_index++] = static_cast<int16_t>(cvtval_i);
+    expanded[abuf_index++] = static_cast<int16_t>(cvtval_i);
   }
 
   if (clipped > 0) {
