@@ -40,17 +40,11 @@ find_package(fmt CONFIG REQUIRED)
 find_package(SDL2 CONFIG REQUIRED)
 find_package(sdl2-mixer CONFIG REQUIRED)
 find_package(sdl2-net CONFIG REQUIRED)
-
 find_package(SampleRate CONFIG REQUIRED)
-if(SAMPLERATE_FOUND)
-    set(HAVE_LIBSAMPLERATE TRUE)
-endif()
-
-# Check for libpng.
 find_package(PNG)
-if(PNG_FOUND)
-    set(HAVE_LIBPNG TRUE)
-endif()
+
+set(HAVE_LIBSAMPLERATE TRUE)
+set(HAVE_LIBPNG TRUE)
 
 include(CheckSymbolExists)
 include(CheckIncludeFile)
@@ -73,6 +67,32 @@ set(PROGRAM_PREFIX "${PROGRAM_SPREFIX}-")
 configure_file(src/resource.rc.in src/resource.rc)
 configure_file(src/setup-res.rc.in src/setup-res.rc)
 configure_file(src/setup/setup-manifest.xml.in src/setup/setup-manifest.xml)
+
+message(STATUS "${CMAKE_PROJECT_NAME}: Gathering DOOM_COMPILE_DEFINITIONS")
+
+set(DOOM_COMPILE_DEFINITIONS PACKAGE_TARNAME="${PACKAGE_TARNAME}" PACKAGE_STRING="${PACKAGE_STRING}" PACKAGE_NAME="${PACKAGE_NAME}" PROGRAM_PREFIX="${PROGRAM_PREFIX}" PACKAGE_VERSION="${PACKAGE_VERSION}")
+
+if(HAVE_LIBSAMPLERATE)
+    list(APPEND DOOM_COMPILE_DEFINITIONS HAVE_LIBSAMPLERATE)
+endif()
+
+if(PNG_FOUND)
+    list(APPEND DOOM_COMPILE_DEFINITIONS HAVE_LIBPNG)
+endif()
+
+if(HAVE_DIRENT_H)
+    list(APPEND DOOM_COMPILE_DEFINITIONS HAVE_DIRENT_H)
+endif()
+
+if(HAVE_DECL_STRCASECMP)
+    list(APPEND DOOM_COMPILE_DEFINITIONS HAVE_DECL_STRCASECMP)
+endif()
+
+if(HAVE_DECL_STRNCASECMP)
+    list(APPEND DOOM_COMPILE_DEFINITIONS HAVE_DECL_STRNCASECMP)
+endif()
+
+message(STATUS "${CMAKE_PROJECT_NAME}: Found DOOM_COMPILE_DEFINITIONS : ${DOOM_COMPILE_DEFINITIONS}")
 
 enable_testing()
 include_directories(utils)
