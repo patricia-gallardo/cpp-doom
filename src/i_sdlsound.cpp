@@ -375,7 +375,7 @@ static bool ExpandSoundData_SRC(sfxinfo_t * sfxinfo,
   src_data.src_ratio = static_cast<double>(mixer_freq) / samplerate;
 
   // We include some extra space here in case of rounding-up.
-  src_data.output_frames = src_data.src_ratio * samplecount + (mixer_freq / 4);
+  src_data.output_frames = static_cast<long>(src_data.src_ratio * samplecount + (mixer_freq / 4));
   std::vector<float> data_out(src_data.output_frames);
   src_data.data_out = data_out.data();
 
@@ -444,7 +444,7 @@ static bool ExpandSoundData_SRC(sfxinfo_t * sfxinfo,
 
     float cvtval_f =
         src_data.data_out[i] * libsamplerate_scale * INT16_MAX;
-    int32_t cvtval_i = cvtval_f + (cvtval_f < 0 ? -0.5 : 0.5);
+    int32_t cvtval_i = static_cast<int32_t>(cvtval_f + (cvtval_f < 0 ? -0.5 : 0.5));
 
     // Asymmetrical sound worries me, so we won't use -32768.
     if (cvtval_i < -INT16_MAX) {
