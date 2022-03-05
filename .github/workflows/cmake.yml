@@ -14,7 +14,7 @@ on:
 
 jobs:
   build:
-    name: "${{ matrix.configurations.name }} | ${{ matrix.cmake-build-target }} |  ${{ matrix.cmake-build-type }}"
+    name: "${{ matrix.configurations.name }} |  ${{ matrix.cmake-build-type }}"
     runs-on: ${{ matrix.configurations.os }}
     strategy:
       fail-fast: false
@@ -47,8 +47,7 @@ jobs:
             cmake_env: {}
             cmake_platform_option: "-A Win32"
             cache_name: "win32"
-        cmake-build-type: [Release]
-        cmake-build-target: [opl, pcsound, crispy-doom, crispy-server, crispy-setup, midiread, mus2mid, doom, setup, textscreen]
+        cmake-build-type: [Release, Debug]
 
     steps:
     - uses: actions/checkout@v2
@@ -93,7 +92,7 @@ jobs:
       working-directory: ${{runner.workspace}}/build
       shell: bash
       # Execute the build.  You can specify a specific target with "--target <NAME>"
-      run: cmake --build . --config ${{ matrix.cmake-build-type }} --target ${{ matrix.cmake-build-target }}
+      run: cmake --build . --config ${{ matrix.cmake-build-type }}
       env: ${{ matrix.configurations.cmake_env }}
 
     - name: Test
@@ -104,6 +103,6 @@ jobs:
       run: ctest -C ${{ matrix.cmake-build-type }}
 
     - name: Demo Check
-      if: matrix.configurations.os == 'ubuntu-20.04' && matrix.cmake-build-target == 'crispy-doom'
+      if: matrix.configurations.os == 'ubuntu-20.04'
       shell: bash
       run: ./demo-check.sh ${{runner.workspace}}
