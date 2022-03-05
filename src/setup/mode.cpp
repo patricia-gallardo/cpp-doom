@@ -18,7 +18,6 @@
 
 #include "doomtype.hpp"
 
-#include "config.h"
 #include "textscreen.hpp"
 
 #include "d_iwad.hpp"

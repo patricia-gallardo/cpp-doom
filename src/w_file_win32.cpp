@@ -16,8 +16,6 @@
 //	WAD I/O functions.
 //
 
-#include "config.h"
-
 #ifdef _WIN32
 
 #include <cstdio>

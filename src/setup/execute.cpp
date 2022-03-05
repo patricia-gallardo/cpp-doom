@@ -39,7 +39,6 @@
 
 #include "textscreen.hpp"
 
-#include "config.h"
 #include "execute.hpp"
 #include "m_argv.hpp"
 #include "m_config.hpp"

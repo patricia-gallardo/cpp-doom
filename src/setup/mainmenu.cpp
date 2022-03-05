@@ -17,7 +17,6 @@
 
 #include <fmt/printf.h>
 
-#include "config.h"
 #include "textscreen.hpp"
 
 #include "execute.hpp"

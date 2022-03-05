@@ -27,8 +27,6 @@
 
 #include <SDL_filesystem.h>
 
-#include "config.h"
-
 #include "doomkeys.hpp"
 #include "doomtype.hpp"
 #include "i_system.hpp"

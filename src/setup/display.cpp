@@ -26,7 +26,6 @@
 #include "mode.hpp"
 #include "textscreen.hpp"
 
-#include "config.h"
 #include "display.hpp"
 
 constexpr auto WINDOW_HELP_URL = "https://www.chocolate-doom.org/setup-display";

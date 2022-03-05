@@ -15,8 +15,6 @@
 //     OPL SDL interface.
 //
 
-#include "config.h"
-
 #include <cassert>
 #include <cstdio>
 

@@ -17,7 +17,6 @@
 
 #include <cstring>
 
-#include "config.h"
 #include "txt_main.hpp"
 
 constexpr auto                  ENDOOM_W = 80;

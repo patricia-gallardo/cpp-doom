@@ -18,7 +18,6 @@
 
 #include <fmt/printf.h>
 
-#include "config.h"
 #include "net_dedicated.hpp"
 #include "z_zone.hpp"
 

@@ -17,8 +17,6 @@
 //	System interface for sound.
 //
 
-#include "config.h"
-
 #include <array>
 #include <cassert>
 #include <cstdio>

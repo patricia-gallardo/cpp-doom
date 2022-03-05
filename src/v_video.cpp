@@ -45,7 +45,6 @@
 #include "w_wad.hpp"
 #include "z_zone.hpp"
 
-#include "config.h"
 #include "lump.hpp"
 #include "memory.hpp"
 #ifdef HAVE_LIBPNG

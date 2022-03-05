@@ -20,7 +20,6 @@
 #include <cstdlib>
 #include <cstring>
 
-#include "config.h"
 #include "i_glob.hpp"
 #include "m_misc.hpp"
 

@@ -15,8 +15,6 @@
 //     OPL Win32 native interface.
 //
 
-#include "config.h"
-
 #ifdef _WIN32
 
 #include <cassert>

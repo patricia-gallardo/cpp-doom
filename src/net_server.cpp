@@ -21,8 +21,6 @@
 
 #include <fmt/printf.h>
 
-#include "config.h"
-
 #include "d_mode.hpp"
 #include "doomtype.hpp"
 #include "i_system.hpp"

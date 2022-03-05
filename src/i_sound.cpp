@@ -20,7 +20,6 @@
 #include <fmt/printf.h>
 #include <SDL_mixer.h>
 
-#include "config.h"
 #include "gusconf.hpp"
 #include "i_sound.hpp"
 #include "i_video.hpp"
