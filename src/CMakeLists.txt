@@ -35,6 +35,7 @@ target_compile_definitions(lib_common_cpp_doom PRIVATE ${DOOM_COMPILE_DEFINITION
 target_link_libraries(lib_common_cpp_doom fmt::fmt SDL2::SDL2)
 
 add_executable("${PROGRAM_PREFIX}server" WIN32 ${COMMON_SOURCE_FILES} ${DEDSERV_FILES})
+target_compile_definitions("${PROGRAM_PREFIX}server" PRIVATE ${DOOM_COMPILE_DEFINITIONS})
 target_include_directories("${PROGRAM_PREFIX}server"
                            PRIVATE "${CMAKE_CURRENT_BINARY_DIR}/../")
 target_link_libraries("${PROGRAM_PREFIX}server" fmt::fmt SDL2::SDL2 SDL2::SDL2main SDL2::SDL2_net)
@@ -141,6 +142,7 @@ else()
     add_executable("${PROGRAM_PREFIX}doom" ${SOURCE_FILES_WITH_DEH})
 endif()
 
+target_compile_definitions("${PROGRAM_PREFIX}doom" PRIVATE ${DOOM_COMPILE_DEFINITIONS})
 target_include_directories("${PROGRAM_PREFIX}doom" PRIVATE ${GAME_INCLUDE_DIRS})
 target_link_libraries("${PROGRAM_PREFIX}doom" doom ${EXTRA_LIBS} SampleRate::samplerate)
 
@@ -172,6 +174,7 @@ else()
     add_executable("${PROGRAM_PREFIX}setup" ${SETUP_FILES} ${COMMON_SOURCE_FILES})
 endif()
 
+target_compile_definitions("${PROGRAM_PREFIX}setup" PRIVATE ${DOOM_COMPILE_DEFINITIONS})
 target_include_directories("${PROGRAM_PREFIX}setup"
                            PRIVATE "${CMAKE_CURRENT_BINARY_DIR}/../")
 target_link_libraries("${PROGRAM_PREFIX}setup" fmt::fmt SDL2::SDL2main SDL2::SDL2 SDL2::SDL2_mixer SDL2::SDL2_net setup textscreen)
@@ -182,11 +185,11 @@ if(MSVC)
 endif()
 
 add_executable(midiread midifile.cpp z_native.cpp i_system.cpp m_argv.cpp m_misc.cpp d_iwad.cpp deh_str.cpp m_config.cpp)
-target_compile_definitions(midiread PRIVATE "-DTEST")
+target_compile_definitions(midiread PRIVATE "-DTEST" ${DOOM_COMPILE_DEFINITIONS})
 target_include_directories(midiread PRIVATE "${CMAKE_CURRENT_BINARY_DIR}/../")
 target_link_libraries(midiread fmt::fmt SDL2::SDL2main SDL2::SDL2)
 
 add_executable(mus2mid mus2mid.cpp memio.cpp z_native.cpp i_system.cpp m_argv.cpp m_misc.cpp d_iwad.cpp deh_str.cpp m_config.cpp)
-target_compile_definitions(mus2mid PRIVATE "-DSTANDALONE")
+target_compile_definitions(mus2mid PRIVATE "-DSTANDALONE" ${DOOM_COMPILE_DEFINITIONS})
 target_include_directories(mus2mid PRIVATE "${CMAKE_CURRENT_BINARY_DIR}/../")
 target_link_libraries(mus2mid fmt::fmt SDL2::SDL2main SDL2::SDL2)

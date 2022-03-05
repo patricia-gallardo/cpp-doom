@@ -14,5 +14,6 @@ add_library(setup STATIC
             txt_keyinput.cpp      txt_keyinput.hpp
             txt_mouseinput.cpp    txt_mouseinput.hpp)
 
+target_compile_definitions(setup PRIVATE ${DOOM_COMPILE_DEFINITIONS})
 target_include_directories(setup PRIVATE "../" "${CMAKE_CURRENT_BINARY_DIR}/../../")
 target_link_libraries(setup textscreen fmt::fmt SDL2::SDL2 SDL2::SDL2_mixer)
