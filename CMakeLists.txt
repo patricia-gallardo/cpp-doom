@@ -70,8 +70,6 @@ string(TOLOWER "${PACKAGE_SHORTNAME}" PROGRAM_SPREFIX)
 # With a hyphen, used almost everywhere else.
 set(PROGRAM_PREFIX "${PROGRAM_SPREFIX}-")
 
-configure_file(cmake/config.h.cin config.h)
-
 configure_file(src/resource.rc.in src/resource.rc)
 configure_file(src/setup-res.rc.in src/setup-res.rc)
 configure_file(src/setup/setup-manifest.xml.in src/setup/setup-manifest.xml)
