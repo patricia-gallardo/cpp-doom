@@ -76,8 +76,9 @@ configure_file(src/resource.rc.in src/resource.rc)
 configure_file(src/setup-res.rc.in src/setup-res.rc)
 configure_file(src/setup/setup-manifest.xml.in src/setup/setup-manifest.xml)
 
+enable_testing()
 include_directories(utils)
 
-foreach(SUBDIR textscreen midiproc opl pcsound src)
+foreach(SUBDIR textscreen midiproc opl pcsound src test)
     add_subdirectory("${SUBDIR}")
 endforeach()

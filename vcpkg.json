@@ -3,6 +3,7 @@
     "name": "doom",
     "version": "0.1",
     "dependencies": [
+        "catch2",
         "fmt",
         "libpng",
         "libsamplerate",
