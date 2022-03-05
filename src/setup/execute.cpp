@@ -71,7 +71,7 @@ static char * TempFile(cstring_view s) {
   tempdir = "/tmp";
 #endif
 
-  return M_StringJoin(tempdir, DIR_SEPARATOR_S, s, nullptr);
+  return M_StringJoin(tempdir, DIR_SEPARATOR_S, s.c_str(), nullptr);
 }
 
 static int ArgumentNeedsEscape(char * arg) {

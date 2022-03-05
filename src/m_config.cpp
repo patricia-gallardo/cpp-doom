@@ -2767,7 +2767,7 @@ char * M_GetAutoloadDir(cstring_view iwadname) {
 
   M_MakeDirectory(autoload_path);
 
-  char * result = M_StringJoin(autoload_path, DIR_SEPARATOR_S, iwadname, nullptr);
+  char * result = M_StringJoin(autoload_path, DIR_SEPARATOR_S, iwadname.c_str(), nullptr);
   M_MakeDirectory(result);
 
   // TODO: Add README file

@@ -416,7 +416,7 @@ static char * CheckDirectoryHasIWAD(cstring_view dir, cstring_view iwadname) {
   if (!strcmp(dir.c_str(), ".")) {
     filename = M_StringDuplicate(iwadname);
   } else {
-    filename = M_StringJoin(dir.c_str(), DIR_SEPARATOR_S, iwadname, nullptr);
+    filename = M_StringJoin(dir.c_str(), DIR_SEPARATOR_S, iwadname.c_str(), nullptr);
   }
 
   free(probe);
@@ -669,7 +669,7 @@ char * D_FindWADByName(cstring_view name) {
 
     // Construct a string for the full path
 
-    char * path = M_StringJoin(iwad_dirs[i], DIR_SEPARATOR_S, name, nullptr);
+    char * path = M_StringJoin(iwad_dirs[i], DIR_SEPARATOR_S, name.c_str(), nullptr);
 
     probe = M_FileCaseExists(path);
     if (probe != nullptr) {
