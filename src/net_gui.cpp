@@ -22,7 +22,6 @@
 
 #include <fmt/printf.h>
 
-#include "config.h"
 #include "doomkeys.hpp"
 
 #include "i_system.hpp"

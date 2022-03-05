@@ -27,7 +27,6 @@
 
 #include "i_midipipe.hpp"
 
-#include "config.h"
 #include "i_sound.hpp"
 #include "i_timer.hpp"
 #include "m_misc.hpp"

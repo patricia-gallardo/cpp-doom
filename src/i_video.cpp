@@ -27,7 +27,6 @@
 
 #include "crispy.hpp"
 
-#include "config.h"
 #include "d_loop.hpp"
 #include "deh_str.hpp"
 #include "doomtype.hpp"

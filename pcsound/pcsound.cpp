@@ -21,7 +21,6 @@
 
 #include <fmt/printf.h>
 
-#include "config.h"
 #include "pcsound.hpp"
 #include "pcsound_internal.hpp"
 

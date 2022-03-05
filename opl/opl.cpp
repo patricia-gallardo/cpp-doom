@@ -15,8 +15,6 @@
 //     OPL interface.
 //
 
-#include "config.h"
-
 #include <cstdio>
 #include <cstdlib>
 

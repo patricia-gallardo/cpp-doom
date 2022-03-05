@@ -19,7 +19,6 @@
 #include <cstring>
 #include <fmt/printf.h>
 
-#include "config.h"
 #include "deh_main.hpp"
 #include "i_system.hpp"
 #include "i_timer.hpp"

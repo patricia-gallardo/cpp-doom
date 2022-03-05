@@ -27,7 +27,6 @@
 #include <SDL.h>
 #include <SDL_mixer.h>
 
-#include "config.h"
 #include "doomtype.hpp"
 #include "i_glob.hpp"
 #include "i_sound.hpp"

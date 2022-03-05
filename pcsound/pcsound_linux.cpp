@@ -15,8 +15,6 @@
 //    PC speaker driver for Linux.
 //
 
-#include "config.h"
-
 #ifdef HAVE_LINUX_KD_H
 
 #include <errno.h>

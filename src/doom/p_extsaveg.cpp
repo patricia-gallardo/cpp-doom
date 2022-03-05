@@ -21,7 +21,6 @@
 #include <cstdio>
 #include <cstdlib>
 
-#include "config.h"
 #include "doomstat.hpp"
 #include "doomtype.hpp"
 #include "m_misc.hpp"

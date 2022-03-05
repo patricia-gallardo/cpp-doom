@@ -20,7 +20,6 @@
 
 #include <fmt/printf.h>
 
-#include "config.h"
 #include "d_iwad.hpp"
 #include "i_glob.hpp"
 #include "i_system.hpp"

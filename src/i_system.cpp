@@ -32,8 +32,6 @@
 
 #include <SDL.h>
 
-#include "config.h"
-
 #include "doomtype.hpp"
 #include "m_argv.hpp"
 #include "m_misc.hpp"

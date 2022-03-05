@@ -16,8 +16,6 @@
 //	WAD I/O functions.
 //
 
-#include "config.h"
-
 #ifdef HAVE_MMAP
 
 #include <errno.h>

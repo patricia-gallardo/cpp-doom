@@ -25,7 +25,6 @@
 
 #include <fmt/printf.h>
 
-#include "config.h"
 #include "cstring_view.hpp"
 #include "deh_main.hpp"
 #include "doomdef.hpp"
