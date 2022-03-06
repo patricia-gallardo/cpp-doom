@@ -20,6 +20,7 @@
 
 #include <cstdarg>
 #include <cstdio>
+#include <fmt/printf.h>
 
 #include "cstring_view.hpp"
 #include "doomtype.hpp"
@@ -47,7 +48,7 @@ char *       M_StringReplace(cstring_view haystack, cstring_view needle, cstring
 // concatenated together.
 
 template <typename ...Args>
-char * M_StringJoin(const char * s, Args &&... args) {
+inline char * M_StringJoin(const char * s, Args &&... args) {
   std::string result = s;
   (result.append(args), ...);
   return strdup(result.c_str());
@@ -56,5 +57,26 @@ char * M_StringJoin(const char * s, Args &&... args) {
 bool         M_StringStartsWith(cstring_view s, cstring_view prefix);
 bool         M_StringEndsWith(cstring_view s, cstring_view suffix);
 int          M_vsnprintf(char * buf, size_t buf_len, cstring_view s, va_list args);
-int          M_snprintf(char * buf, size_t buf_len, const char * s, ...) PRINTF_ATTR(3, 4);
+
+// Safe, portable snprintf().
+template <typename... Args>
+inline size_t M_snprintf(char * buf, size_t buf_len, cstring_view fmt, Args &&... args) {
+  if (buf_len < 1) {
+    return 0;
+  }
+
+  auto copy_into_buf = [&buf, buf_len](const std::string & source) {
+    std::size_t length = source.copy(buf, buf_len - 1);
+    buf[length] = '\0';
+    cstring_view view(buf);
+    return view.size();
+  };
+
+  if constexpr (sizeof...(args) > 0) {
+    return copy_into_buf(fmt::sprintf(fmt.c_str(), args...));
+  } else {
+    return copy_into_buf(fmt.c_str());
+  }
+}
+
 char *       M_OEMToUTF8(cstring_view ansi);
