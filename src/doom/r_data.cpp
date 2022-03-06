@@ -931,7 +931,7 @@ static void R_InitTranMap() {
     } cache;
 
     tranmap = zmalloc<decltype(tranmap)>(256 * 256, PU_STATIC, 0);
-    fname   = M_StringJoin(configdir, "tranmap.dat", nullptr);
+    fname   = M_StringJoin(configdir, "tranmap.dat");
 
     // [crispy] open file readable
     if ((cachefp = fopen(fname, "rb")) &&

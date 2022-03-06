@@ -891,8 +891,7 @@ void M_QuickSave() {
   char * savegamestring = M_StringJoin(
       crstr[static_cast<int>(cr_t::CR_GOLD)],
       savegamestrings[quickSaveSlot],
-      crstr[static_cast<int>(cr_t::CR_NONE)],
-      nullptr);
+      crstr[static_cast<int>(cr_t::CR_NONE)]);
   DEH_snprintf(tempstring, sizeof(tempstring), QSPROMPT, savegamestring);
   free(savegamestring);
   M_StartMessage(tempstring, M_QuickSaveResponse, true);
@@ -927,8 +926,7 @@ void M_QuickLoad() {
   char * savegamestring = M_StringJoin(
       crstr[static_cast<int>(cr_t::CR_GOLD)],
       savegamestrings[quickSaveSlot],
-      crstr[static_cast<int>(cr_t::CR_NONE)],
-      nullptr);
+      crstr[static_cast<int>(cr_t::CR_NONE)]);
   DEH_snprintf(tempstring, sizeof(tempstring), QLPROMPT, savegamestring);
   free(savegamestring);
   M_StartMessage(tempstring, M_QuickLoadResponse, true);
@@ -2562,8 +2560,7 @@ void M_ForceLoadGame() {
                        W_WadNameForLump(savemaplumpinfo),
                        crstr[static_cast<int>(cr_t::CR_NONE)],
                        " ?\n\n",
-                       "press y or n.",
-                       nullptr) :
+                       "press y or n.") :
           M_StringJoin("This savegame requires the file\n",
                        crstr[static_cast<int>(cr_t::CR_GOLD)],
                        savewadfilename,
@@ -2571,8 +2568,7 @@ void M_ForceLoadGame() {
                        "\n",
                        "to restore a map that is\n",
                        "currently not available!\n\n",
-                       "press a key.",
-                       nullptr);
+                       "press a key.");
 
   M_StartMessage(savegwarning, M_ForceLoadGameResponse, savemaplumpinfo != nullptr);
   messageToPrint = 2;
@@ -2599,8 +2595,7 @@ void M_ConfirmDeleteGame() {
                    savegamestrings[itemOn],
                    crstr[static_cast<int>(cr_t::CR_NONE)],
                    " ?\n\n",
-                   "press y or n.",
-                   nullptr);
+                   "press y or n.");
 
   M_StartMessage(savegwarning, M_ConfirmDeleteGameResponse, true);
   messageToPrint = 2;

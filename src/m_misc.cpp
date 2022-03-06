@@ -218,7 +218,7 @@ char * M_TempFile(cstring_view s) {
   tempdir = "/tmp";
 #endif
 
-  return M_StringJoin(tempdir, DIR_SEPARATOR_S, s.c_str(), nullptr);
+  return M_StringJoin(tempdir, DIR_SEPARATOR_S, s.c_str());
 }
 
 bool M_StrToInt(cstring_view str, int * result) {
@@ -464,51 +464,6 @@ bool M_StringStartsWith(cstring_view s, cstring_view prefix) {
 bool M_StringEndsWith(cstring_view s, cstring_view suffix) {
   return s.size() >= suffix.size()
          && strcmp(s.c_str() + s.size() - suffix.size(), suffix.c_str()) == 0;
-}
-
-// Return a newly-malloced string with all the strings given as arguments
-// concatenated together.
-
-char * M_StringJoin(const char * s, ...) {
-  char *       result;
-  const char * v;
-  va_list      args;
-  size_t       result_len;
-
-  result_len = strlen(s) + 1;
-
-  va_start(args, s);
-  for (;;) {
-    v = va_arg(args, const char *);
-    if (v == nullptr) {
-      break;
-    }
-
-    result_len += strlen(v);
-  }
-  va_end(args);
-
-  result = static_cast<char *>(malloc(result_len));
-
-  if (result == nullptr) {
-    I_Error("M_StringJoin: Failed to allocate new string.");
-    return nullptr;
-  }
-
-  M_StringCopy(result, s, result_len);
-
-  va_start(args, s);
-  for (;;) {
-    v = va_arg(args, const char *);
-    if (v == nullptr) {
-      break;
-    }
-
-    M_StringConcat(result, v, result_len);
-  }
-  va_end(args);
-
-  return result;
 }
 
 // On Windows, vsnprintf() is _vsnprintf().

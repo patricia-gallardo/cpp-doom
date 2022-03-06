@@ -2490,7 +2490,7 @@ void M_LoadDefaults() {
       doom_defaults.filename = myargv[i + 1];
       fmt::printf("	default file: %s\n", doom_defaults.filename);
     } else {
-      doom_defaults.filename = M_StringJoin(configdir, default_main_config, nullptr);
+      doom_defaults.filename = M_StringJoin(configdir, default_main_config);
     }
 
     fmt::printf("saving config in %s\n", doom_defaults.filename);
@@ -2509,7 +2509,7 @@ void M_LoadDefaults() {
     fmt::printf("        extra configuration file: %s\n",
                 extra_defaults.filename);
   } else {
-    extra_defaults.filename = M_StringJoin(configdir, default_extra_config, nullptr);
+    extra_defaults.filename = M_StringJoin(configdir, default_extra_config);
   }
 
   LoadDefaultCollection(&doom_defaults);
@@ -2679,7 +2679,7 @@ void M_SetMusicPackDir() {
   }
 
   char * prefdir         = SDL_GetPrefPath("", PACKAGE_TARNAME);
-  char * music_pack_path = M_StringJoin(prefdir, "music-packs", nullptr);
+  char * music_pack_path = M_StringJoin(prefdir, "music-packs");
 
   M_MakeDirectory(prefdir);
   M_MakeDirectory(music_pack_path);
@@ -2687,7 +2687,7 @@ void M_SetMusicPackDir() {
 
   // We write a README file with some basic instructions on how to use
   // the directory.
-  char * readme_path = M_StringJoin(music_pack_path, DIR_SEPARATOR_S, "README.txt", nullptr);
+  char * readme_path = M_StringJoin(music_pack_path, DIR_SEPARATOR_S, "README.txt");
   M_WriteFile(readme_path, MUSIC_PACK_README, static_cast<int>(strlen(MUSIC_PACK_README)));
 
   free(readme_path);
@@ -2718,7 +2718,7 @@ const char * M_GetSaveGameDir(cstring_view iwadname) {
     }
 
     // add separator at end just in case
-    savegamedir = M_StringJoin(savegamedir, DIR_SEPARATOR_S, nullptr);
+    savegamedir = M_StringJoin(savegamedir, DIR_SEPARATOR_S);
 
     fmt::printf("Save directory changed to %s.\n", savegamedir);
   }
@@ -2737,12 +2737,12 @@ const char * M_GetSaveGameDir(cstring_view iwadname) {
   } else {
     // ~/.local/share/chocolate-doom/savegames
 
-    char * topdir = M_StringJoin(configdir, "savegames", nullptr);
+    char * topdir = M_StringJoin(configdir, "savegames");
     M_MakeDirectory(topdir);
 
     // eg. ~/.local/share/chocolate-doom/savegames/doom2.wad/
 
-    savegamedir = M_StringJoin(topdir, DIR_SEPARATOR_S, iwadname.c_str(), DIR_SEPARATOR_S, nullptr);
+    savegamedir = M_StringJoin(topdir, DIR_SEPARATOR_S, iwadname.c_str(), DIR_SEPARATOR_S);
 
     M_MakeDirectory(savegamedir);
 
@@ -2759,13 +2759,13 @@ const char * M_GetSaveGameDir(cstring_view iwadname) {
 char * M_GetAutoloadDir(cstring_view iwadname) {
   if (autoload_path == nullptr || strlen(autoload_path) == 0) {
     char * prefdir = SDL_GetPrefPath("", PACKAGE_TARNAME);
-    autoload_path  = M_StringJoin(prefdir, "autoload", nullptr);
+    autoload_path  = M_StringJoin(prefdir, "autoload");
     SDL_free(prefdir);
   }
 
   M_MakeDirectory(autoload_path);
 
-  char * result = M_StringJoin(autoload_path, DIR_SEPARATOR_S, iwadname.c_str(), nullptr);
+  char * result = M_StringJoin(autoload_path, DIR_SEPARATOR_S, iwadname.c_str());
   M_MakeDirectory(result);
 
   // TODO: Add README file

@@ -1092,7 +1092,7 @@ static void LoadIwadDeh() {
   if (g_doomstat_globals->gameversion == exe_chex) {
     // Look for chex.deh in the same directory as the IWAD file.
     char * dirname  = M_DirName(iwadfile);
-    char * chex_deh = M_StringJoin(dirname, DIR_SEPARATOR_S, "chex.deh", nullptr);
+    char * chex_deh = M_StringJoin(dirname, DIR_SEPARATOR_S, "chex.deh");
     free(dirname);
 
     // If the dehacked patch isn't found, try searching the WAD
@@ -1170,11 +1170,11 @@ static void LoadSigilWad() {
     };
     char * sigil_wad    = nullptr;
     char * dirname      = M_DirName(iwadfile);
-    char * sigil_shreds = M_StringJoin(dirname, DIR_SEPARATOR_S, "SIGIL_SHREDS.wad", nullptr);
+    char * sigil_shreds = M_StringJoin(dirname, DIR_SEPARATOR_S, "SIGIL_SHREDS.wad");
 
     // [crispy] load SIGIL.WAD
     for (auto sigil : sigil_wads) {
-      sigil_wad = M_StringJoin(dirname, DIR_SEPARATOR_S, sigil, nullptr);
+      sigil_wad = M_StringJoin(dirname, DIR_SEPARATOR_S, sigil);
 
       if (M_FileExists(sigil_wad)) {
         break;
@@ -1255,7 +1255,7 @@ static void LoadNerveWad() {
     if ((num = W_CheckNumForName("M_EPI1")) != -1 && (j = W_CheckNumForName("M_EPI2")) != -1 && (k = W_CheckNumForName("M_EPISOD")) != -1 && (g_doomstat_globals->gamevariant == bfgedition || (!W_IsIWADLump(lumpinfo[num]) && !W_IsIWADLump(lumpinfo[j]) && !W_IsIWADLump(lumpinfo[k])))) {
       if (strrchr(iwadfile, DIR_SEPARATOR) != nullptr) {
         char * dir                       = M_DirName(iwadfile);
-        g_doomstat_globals->nervewadfile = M_StringJoin(dir, DIR_SEPARATOR_S, "nerve.wad", nullptr);
+        g_doomstat_globals->nervewadfile = M_StringJoin(dir, DIR_SEPARATOR_S, "nerve.wad");
         free(dir);
       } else {
         g_doomstat_globals->nervewadfile = M_StringDuplicate("nerve.wad");

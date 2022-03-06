@@ -47,7 +47,7 @@ char * P_TempSaveGameFile() {
   static char * filename = nullptr;
 
   if (filename == nullptr) {
-    filename = M_StringJoin(g_doomstat_globals->savegamedir, "temp.dsg", nullptr);
+    filename = M_StringJoin(g_doomstat_globals->savegamedir, "temp.dsg");
   }
 
   return filename;

@@ -120,7 +120,7 @@ static void SetExecutable(mission_config_t * config) {
   extension = ("");
 #endif
 
-  executable = M_StringJoin(config->executable, extension, nullptr);
+  executable = M_StringJoin(config->executable, extension);
 }
 
 static void SetMission(mission_config_t * config) {
