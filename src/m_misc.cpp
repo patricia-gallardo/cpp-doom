@@ -450,15 +450,6 @@ int M_vsnprintf(char * buf, size_t buf_len, cstring_view s, va_list args) {
   return result;
 }
 
-// Safe, portable snprintf().
-int M_snprintf(char * buf, size_t buf_len, const char * s, ...) {
-  va_list args;
-  va_start(args, s);
-  int result = M_vsnprintf(buf, buf_len, s, args);
-  va_end(args);
-  return result;
-}
-
 #ifdef _WIN32
 
 char * M_OEMToUTF8(cstring_view oem) {
