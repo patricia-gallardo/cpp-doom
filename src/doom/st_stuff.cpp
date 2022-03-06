@@ -1992,7 +1992,7 @@ void ST_DrawDemoTimer(const int time) {
   const float secs = static_cast<float>(time % (60 * TICRATE)) / TICRATE;
   const int   w    = shortnum[0]->width;
 
-  int n = M_snprintf(buffer, sizeof(buffer), "%02i %05.02f", mins, secs);
+  auto n = M_snprintf(buffer, sizeof(buffer), "%02i %05.02f", mins, secs);
 
   int x = (viewwindowx >> crispy->hires) + (g_r_state_globals->scaledviewwidth >> crispy->hires) - DELTAWIDTH;
 
