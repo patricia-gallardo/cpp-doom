@@ -369,55 +369,11 @@ char * M_StringDuplicate(cstring_view orig) {
 //
 
 char * M_StringReplace(cstring_view haystack, cstring_view needle, cstring_view replacement) {
-  char *       result, *dst;
-  const char * p;
-  size_t       needle_len = needle.size();
-  size_t       result_len, dst_len;
-
-  // Iterate through occurrences of 'needle' and calculate the size of
-  // the new string.
-  result_len = haystack.size() + 1;
-  p          = haystack.c_str();
-
-  for (;;) {
-    p = strstr(p, needle.c_str());
-    if (p == nullptr) {
-      break;
-    }
-
-    p += needle_len;
-    result_len += replacement.size() - needle_len;
+  std::string result = haystack.c_str();
+  for (std::string::size_type pos{}; std::string::npos != (pos = result.find(needle.data(), pos, needle.size())); pos += replacement.size()) {
+    result.replace(pos, needle.size(), replacement.data(), replacement.size());
   }
-
-  // Construct new string.
-
-  result = static_cast<char *>(malloc(result_len));
-  if (result == nullptr) {
-    I_Error("M_StringReplace: Failed to allocate new string");
-    return nullptr;
-  }
-
-  dst     = result;
-  dst_len = result_len;
-  p       = haystack.c_str();
-
-  while (*p != '\0') {
-    if (!strncmp(p, needle.c_str(), needle_len)) {
-      M_StringCopy(dst, replacement, dst_len);
-      p += needle_len;
-      dst += replacement.size();
-      dst_len -= replacement.size();
-    } else {
-      *dst = *p;
-      ++dst;
-      --dst_len;
-      ++p;
-    }
-  }
-
-  *dst = '\0';
-
-  return result;
+  return strdup(result.c_str());
 }
 
 // Safe string copy function that works like OpenBSD's strlcpy().
