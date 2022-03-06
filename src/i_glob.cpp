@@ -52,7 +52,7 @@ static bool IsDirectory(char * dir, struct dirent * de) {
 #endif
   {
     struct stat sb { };
-    char *      filename = M_StringJoin(dir, DIR_SEPARATOR_S, de->d_name, nullptr);
+    char *      filename = M_StringJoin(dir, DIR_SEPARATOR_S, de->d_name);
     int         result   = stat(filename, &sb);
     free(filename);
 
@@ -212,7 +212,7 @@ static char * NextGlob(glob_t * glob) {
            || !MatchesAnyGlob(de->d_name, glob));
 
   // Return the fully-qualified path, not just the bare filename.
-  return M_StringJoin(glob->directory, DIR_SEPARATOR_S, de->d_name, nullptr);
+  return M_StringJoin(glob->directory, DIR_SEPARATOR_S, de->d_name);
 }
 
 static void ReadAllFilenames(glob_t * glob) {

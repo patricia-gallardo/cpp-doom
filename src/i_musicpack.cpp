@@ -614,7 +614,7 @@ static char * GetFullPath(cstring_view musicdir, cstring_view orig_path) {
 
   // Copy config filename and cut off the filename to just get the
   // parent dir.
-  char * result = M_StringJoin(musicdir.c_str(), systemized_path, nullptr);
+  char * result = M_StringJoin(musicdir.c_str(), systemized_path);
   free(systemized_path);
 
   return result;
@@ -797,11 +797,11 @@ static void LoadSubstituteConfigs() {
   // $configdir/music to look for .cfg files.
   char * musicdir = nullptr;
   if (strcmp(music_pack_path, "") != 0) {
-    musicdir = M_StringJoin(music_pack_path, DIR_SEPARATOR_S, nullptr);
+    musicdir = M_StringJoin(music_pack_path, DIR_SEPARATOR_S);
   } else if (!strcmp(configdir, "")) {
     musicdir = M_StringDuplicate("");
   } else {
-    musicdir = M_StringJoin(configdir, "music", DIR_SEPARATOR_S, nullptr);
+    musicdir = M_StringJoin(configdir, "music", DIR_SEPARATOR_S);
   }
 
   // Load all music packs, by searching for .cfg files.

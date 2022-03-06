@@ -429,7 +429,7 @@ bool I_MidiPipe_InitServer() {
   // Define the command line.  Version, Sample Rate, and handles follow
   // the executable name.
   M_snprintf(params_buf, sizeof(params_buf), "%d %Iu %Iu", g_i_sound_globals->snd_samplerate, (size_t)midi_process_in_reader, (size_t)midi_process_out_writer);
-  cmdline = M_StringJoin(module, " \"" PACKAGE_STRING "\"", " ", params_buf, nullptr);
+  cmdline = M_StringJoin(module, " \"" PACKAGE_STRING "\"", " ", params_buf);
 
   // Launch the subprocess
   std::memset(&proc_info, 0, sizeof(proc_info));

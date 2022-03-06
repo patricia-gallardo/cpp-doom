@@ -309,7 +309,7 @@ static void CheckInstallRootPaths() {
     }
 
     for (auto & root_path_subdir : root_path_subdirs) {
-      char * subpath = M_StringJoin(install_path, DIR_SEPARATOR_S, root_path_subdir, nullptr);
+      char * subpath = M_StringJoin(install_path, DIR_SEPARATOR_S, root_path_subdir);
       AddIWADDir(subpath);
     }
 
@@ -327,7 +327,7 @@ static void CheckSteamEdition() {
   }
 
   for (auto & steam_install_subdir : steam_install_subdirs) {
-    char * subpath = M_StringJoin(install_path, DIR_SEPARATOR_S, steam_install_subdir, nullptr);
+    char * subpath = M_StringJoin(install_path, DIR_SEPARATOR_S, steam_install_subdir);
     AddIWADDir(subpath);
   }
 
@@ -350,8 +350,8 @@ static void CheckSteamGUSPatches() {
     return;
   }
 
-  char * patch_path      = M_StringJoin(install_path, "\\", STEAM_BFG_GUS_PATCHES, nullptr);
-  char * test_patch_path = M_StringJoin(patch_path, "\\ACBASS.PAT", nullptr);
+  char * patch_path      = M_StringJoin(install_path, "\\", STEAM_BFG_GUS_PATCHES);
+  char * test_patch_path = M_StringJoin(patch_path, "\\ACBASS.PAT");
 
   // Does acbass.pat exist? If so, then set gus_patch_path.
   if (M_FileExists(test_patch_path)) {
@@ -416,7 +416,7 @@ static char * CheckDirectoryHasIWAD(cstring_view dir, cstring_view iwadname) {
   if (!strcmp(dir.c_str(), ".")) {
     filename = M_StringDuplicate(iwadname);
   } else {
-    filename = M_StringJoin(dir.c_str(), DIR_SEPARATOR_S, iwadname.c_str(), nullptr);
+    filename = M_StringJoin(dir.c_str(), DIR_SEPARATOR_S, iwadname.c_str());
   }
 
   free(probe);
@@ -492,14 +492,14 @@ static void AddIWADPath(cstring_view path, cstring_view suffix) {
       // as another iwad dir
       *p = '\0';
 
-      AddIWADDir(M_StringJoin(left, suffix.c_str(), nullptr));
+      AddIWADDir(M_StringJoin(left, suffix.c_str()));
       left = p + 1;
     } else {
       break;
     }
   }
 
-  AddIWADDir(M_StringJoin(left, suffix.c_str(), nullptr));
+  AddIWADDir(M_StringJoin(left, suffix.c_str()));
 
   free(dup_path);
 }
@@ -525,14 +525,14 @@ static void AddXdgDirs() {
       homedir = ("/");
     }
 
-    tmp_env = M_StringJoin(homedir, "/.local/share", nullptr);
+    tmp_env = M_StringJoin(homedir, "/.local/share");
     env     = tmp_env;
   }
 
   // We support $XDG_DATA_HOME/games/doom (which will usually be
   // ~/.local/share/games/doom) as a user-writeable extension to
   // the usual /usr/share/games/doom location.
-  AddIWADDir(M_StringJoin(env, "/games/doom", nullptr));
+  AddIWADDir(M_StringJoin(env, "/games/doom"));
   free(tmp_env);
 
   // Quote:
@@ -571,7 +571,7 @@ static void AddSteamDirs() {
   if (homedir == nullptr) {
     homedir = ("/");
   }
-  char * steampath = M_StringJoin(homedir, "/.steam/root/steamapps/common", nullptr);
+  char * steampath = M_StringJoin(homedir, "/.steam/root/steamapps/common");
 
   AddIWADPath(steampath, "/Doom 2/base");
   AddIWADPath(steampath, "/Master Levels of Doom/doom2");
@@ -669,7 +669,7 @@ char * D_FindWADByName(cstring_view name) {
 
     // Construct a string for the full path
 
-    char * path = M_StringJoin(iwad_dirs[i], DIR_SEPARATOR_S, name.c_str(), nullptr);
+    char * path = M_StringJoin(iwad_dirs[i], DIR_SEPARATOR_S, name.c_str());
 
     probe = M_FileCaseExists(path);
     if (probe != nullptr) {

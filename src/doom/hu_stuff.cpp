@@ -714,7 +714,7 @@ void HU_Start() {
   // map is from a PWAD or if the map title string has been dehacked
   if (DEH_HasStringReplacement(s) || (!W_IsIWADLump(maplumpinfo) && (!g_doomstat_globals->nervewadfile || g_doomstat_globals->gamemission != pack_nerve))) {
 
-    char * ptr = M_StringJoin(crstr[static_cast<int>(cr_t::CR_GOLD)], W_WadNameForLump(maplumpinfo), ": ", crstr[static_cast<int>(cr_t::CR_GRAY)], maplumpinfo->name, nullptr);
+    char * ptr = M_StringJoin(crstr[static_cast<int>(cr_t::CR_GOLD)], W_WadNameForLump(maplumpinfo), ": ", crstr[static_cast<int>(cr_t::CR_GRAY)], maplumpinfo->name);
     char * m   = ptr;
 
     while (*m)

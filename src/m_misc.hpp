@@ -42,7 +42,17 @@ char *       M_StringDuplicate(cstring_view orig);
 bool         M_StringCopy(char * dest, cstring_view src, size_t dest_size);
 bool         M_StringConcat(char * dest, cstring_view src, size_t dest_size);
 char *       M_StringReplace(cstring_view haystack, cstring_view needle, cstring_view replacement);
-char *       M_StringJoin(const char * s, ...);
+
+// Return a newly-malloced string with all the strings given as arguments
+// concatenated together.
+
+template <typename ...Args>
+char * M_StringJoin(const char * s, Args &&... args) {
+  std::string result = s;
+  (result.append(args), ...);
+  return strdup(result.c_str());
+}
+
 bool         M_StringStartsWith(cstring_view s, cstring_view prefix);
 bool         M_StringEndsWith(cstring_view s, cstring_view suffix);
 int          M_vsnprintf(char * buf, size_t buf_len, cstring_view s, va_list args);

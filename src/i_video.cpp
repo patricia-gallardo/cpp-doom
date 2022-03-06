@@ -878,7 +878,7 @@ void I_SetWindowTitle(cstring_view title) {
 //
 
 void I_InitWindowTitle() {
-  char * buf = M_StringJoin(window_title, " - ", PACKAGE_STRING, nullptr);
+  char * buf = M_StringJoin(window_title, " - ", PACKAGE_STRING);
   SDL_SetWindowTitle(screen, buf);
   free(buf);
 }
