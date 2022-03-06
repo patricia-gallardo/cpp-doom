@@ -275,7 +275,7 @@ static void AddSectionLabel(void * uncast_table, cstring_view title, bool add_sp
                    nullptr);
   }
 
-  M_snprintf(buf, sizeof(buf), " - %s - ", title);
+  M_snprintf(buf, sizeof(buf), " - %s - ", title.c_str());
 
   TXT_AddWidgets(table,
                  TXT_NewLabel(buf),

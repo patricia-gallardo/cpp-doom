@@ -39,7 +39,7 @@ constexpr auto MAX_STRING_LEN = 80;
 static char *line, *string;
 
 static void P_WritePackageTarname(cstring_view key) {
-  M_snprintf(line, MAX_LINE_LEN, "%s %s\n", key, PACKAGE_VERSION);
+  M_snprintf(line, MAX_LINE_LEN, "%s %s\n", key.c_str(), PACKAGE_VERSION);
   fputs(line, save_stream);
 }
 
@@ -48,7 +48,7 @@ static void P_WritePackageTarname(cstring_view key) {
 char * savewadfilename = nullptr;
 
 static void P_WriteWadFileName(cstring_view key) {
-  M_snprintf(line, MAX_LINE_LEN, "%s %s\n", key, W_WadNameForLump(maplumpinfo));
+  M_snprintf(line, MAX_LINE_LEN, "%s %s\n", key.c_str(), W_WadNameForLump(maplumpinfo));
   fputs(line, save_stream);
 }
 
@@ -69,7 +69,7 @@ static void P_ReadWadFileName(cstring_view key) {
 
 static void P_WriteExtraKills(cstring_view key) {
   if (g_doomstat_globals->extrakills) {
-    M_snprintf(line, MAX_LINE_LEN, "%s %d\n", key, g_doomstat_globals->extrakills);
+    M_snprintf(line, MAX_LINE_LEN, "%s %d\n", key.c_str(), g_doomstat_globals->extrakills);
     fputs(line, save_stream);
   }
 }
@@ -86,7 +86,7 @@ static void P_ReadExtraKills(cstring_view key) {
 
 static void P_WriteTotalLevelTimes(cstring_view key) {
   if (g_doomstat_globals->totalleveltimes) {
-    M_snprintf(line, MAX_LINE_LEN, "%s %d\n", key, g_doomstat_globals->totalleveltimes);
+    M_snprintf(line, MAX_LINE_LEN, "%s %d\n", key.c_str(), g_doomstat_globals->totalleveltimes);
     fputs(line, save_stream);
   }
 }
@@ -109,7 +109,7 @@ static void P_WriteFireFlicker(cstring_view key) {
     if (th->function == needle) {
       auto * flick = reinterpret_cast<fireflicker_t *>(th);
 
-      M_snprintf(line, MAX_LINE_LEN, "%s %d %d %d %d\n", key, static_cast<int>(flick->sector - g_r_state_globals->sectors), static_cast<int>(flick->count), static_cast<int>(flick->maxlight), static_cast<int>(flick->minlight));
+      M_snprintf(line, MAX_LINE_LEN, "%s %d %d %d %d\n", key.c_str(), static_cast<int>(flick->sector - g_r_state_globals->sectors), static_cast<int>(flick->count), static_cast<int>(flick->maxlight), static_cast<int>(flick->minlight));
       fputs(line, save_stream);
     }
   }
@@ -142,7 +142,7 @@ static void P_WriteSoundTarget(cstring_view key) {
 
   for (i = 0, sector = g_r_state_globals->sectors; i < g_r_state_globals->numsectors; i++, sector++) {
     if (sector->soundtarget) {
-      M_snprintf(line, MAX_LINE_LEN, "%s %d %d\n", key, i, P_ThinkerToIndex(reinterpret_cast<thinker_t *>(sector->soundtarget)));
+      M_snprintf(line, MAX_LINE_LEN, "%s %d %d\n", key.c_str(), i, P_ThinkerToIndex(reinterpret_cast<thinker_t *>(sector->soundtarget)));
       fputs(line, save_stream);
     }
   }
@@ -166,7 +166,7 @@ static void P_WriteOldSpecial(cstring_view key) {
 
   for (i = 0, sector = g_r_state_globals->sectors; i < g_r_state_globals->numsectors; i++, sector++) {
     if (sector->oldspecial) {
-      M_snprintf(line, MAX_LINE_LEN, "%s %d %d\n", key, i, sector->oldspecial);
+      M_snprintf(line, MAX_LINE_LEN, "%s %d %d\n", key.c_str(), i, sector->oldspecial);
       fputs(line, save_stream);
     }
   }
@@ -192,7 +192,7 @@ static void P_WriteButton(cstring_view key) {
     button_t * button = &buttonlist[i];
 
     if (button->btimer) {
-      M_snprintf(line, MAX_LINE_LEN, "%s %d %d %d %d\n", key, static_cast<int>(button->line - g_r_state_globals->lines), static_cast<int>(button->where), static_cast<int>(button->btexture), static_cast<int>(button->btimer));
+      M_snprintf(line, MAX_LINE_LEN, "%s %d %d %d %d\n", key.c_str(), static_cast<int>(button->line - g_r_state_globals->lines), static_cast<int>(button->where), static_cast<int>(button->btexture), static_cast<int>(button->btimer));
       fputs(line, save_stream);
     }
   }
@@ -219,7 +219,7 @@ static void P_WriteBrainTarget(cstring_view key) {
       auto * mo = reinterpret_cast<mobj_t *>(th);
 
       if (mo->state == &states[S_BRAINEYE1]) {
-        M_snprintf(line, MAX_LINE_LEN, "%s %d %d\n", key, numbraintargets, braintargeton);
+        M_snprintf(line, MAX_LINE_LEN, "%s %d %d\n", key.c_str(), numbraintargets, braintargeton);
         fputs(line, save_stream);
 
         // [crispy] return after the first brain spitter is found
@@ -250,7 +250,7 @@ static void P_WriteMarkPoints(cstring_view key) {
   AM_GetMarkPoints(&n, p);
 
   if (p[0] != -1) {
-    M_snprintf(line, MAX_LINE_LEN, "%s %d %ld %ld %ld %ld %ld %ld %ld %ld %ld %ld %ld %ld %ld %ld %ld %ld %ld %ld %ld %ld\n", key, n, p[0], p[1], p[2], p[3], p[4], p[5], p[6], p[7], p[8], p[9], p[10], p[11], p[12], p[13], p[14], p[15], p[16], p[17], p[18], p[19]);
+    M_snprintf(line, MAX_LINE_LEN, "%s %d %ld %ld %ld %ld %ld %ld %ld %ld %ld %ld %ld %ld %ld %ld %ld %ld %ld %ld %ld %ld\n", key.c_str(), n, p[0], p[1], p[2], p[3], p[4], p[5], p[6], p[7], p[8], p[9], p[10], p[11], p[12], p[13], p[14], p[15], p[16], p[17], p[18], p[19]);
     fputs(line, save_stream);
   }
 }
@@ -271,7 +271,7 @@ static void P_ReadMarkPoints(cstring_view key) {
 static void P_WritePlayersLookdir(cstring_view key) {
   for (int i = 0; i < MAXPLAYERS; i++) {
     if (g_doomstat_globals->playeringame[i] && g_doomstat_globals->players[i].lookdir) {
-      M_snprintf(line, MAX_LINE_LEN, "%s %d %d\n", key, i, g_doomstat_globals->players[i].lookdir);
+      M_snprintf(line, MAX_LINE_LEN, "%s %d %d\n", key.c_str(), i, g_doomstat_globals->players[i].lookdir);
       fputs(line, save_stream);
     }
   }
@@ -294,7 +294,7 @@ static void P_WriteMusInfo(cstring_view key) {
     strncpy(lump, lumpinfo[musinfo.current_item]->name, 8);
     strncpy(orig, lumpinfo[musinfo.items[0]]->name, 8);
 
-    M_snprintf(line, MAX_LINE_LEN, "%s %s %s\n", key, lump, orig);
+    M_snprintf(line, MAX_LINE_LEN, "%s %s %s\n", key.c_str(), lump, orig);
     fputs(line, save_stream);
   }
 }
