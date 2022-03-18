@@ -72,11 +72,7 @@ inline size_t M_snprintf(char * buf, size_t buf_len, cstring_view fmt, Args &&..
     return view.size();
   };
 
-  if constexpr (sizeof...(args) > 0) {
-    return copy_into_buf(fmt::sprintf(fmt.c_str(), args...));
-  } else {
-    return copy_into_buf(fmt.c_str());
-  }
+  return copy_into_buf(fmt::sprintf(fmt.c_str(), args...));
 }
 
 char *       M_OEMToUTF8(cstring_view ansi);
