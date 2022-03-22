@@ -4,10 +4,7 @@
 
 TEST_CASE("Z_Init", "[z_native]") {
   Z_Init();
-//  REQUIRE(Z_ZoneSize() == 0x2000000);
 }
-
-#if 0
 
 TEST_CASE("Z_Malloc(PU_STATIC)", "[z_native]") {
   void * ptr = Z_Malloc(10, PU_STATIC, nullptr);
@@ -38,8 +35,6 @@ TEST_CASE("Z_Malloc(PU_LEVEL) and Z_Free and Z_Malloc(PU_LEVEL)", "[z_native]") 
   REQUIRE(ptr2 != nullptr);
   REQUIRE(ptr == ptr2);
 }
-
-#else
 
 struct memblock_t {
   int          id; // = ZONEID
@@ -96,4 +91,3 @@ TEST_CASE("Z_ZOverwrite header", "[z_native]") {
   REQUIRE(where != nullptr);
   REQUIRE(*where == 0x42424242);
 }
-#endif
