@@ -35,6 +35,14 @@ TEST_CASE("Z_Malloc(PU_LEVEL) and Z_Free and Z_Malloc(PU_LEVEL)", "[z_native]") 
   REQUIRE(ptr2 != nullptr);
 }
 
+#if defined(__has_feature)
+# if __has_feature(address_sanitizer)
+#  ifndef __SANITIZE_ADDRESS__
+#   define __SANITIZE_ADDRESS__
+#  endif
+# endif
+#endif
+
 #ifndef __SANITIZE_ADDRESS__
 struct memblock_t {
   int          id; // = ZONEID
