@@ -136,6 +136,11 @@ if(PNG_FOUND)
     list(APPEND EXTRA_LIBS PNG::PNG)
 endif()
 
+add_library(lib_common_dehacked ${SOURCE_FILES_WITH_DEH})
+target_compile_definitions(lib_common_dehacked PRIVATE ${DOOM_COMPILE_DEFINITIONS})
+target_include_directories(lib_common_dehacked PRIVATE ${GAME_INCLUDE_DIRS})
+target_link_libraries(lib_common_dehacked ${EXTRA_LIBS} SampleRate::samplerate)
+
 if(WIN32)
     add_executable("${PROGRAM_PREFIX}doom" WIN32 ${SOURCE_FILES_WITH_DEH} "${CMAKE_CURRENT_BINARY_DIR}/resource.rc")
 else()
