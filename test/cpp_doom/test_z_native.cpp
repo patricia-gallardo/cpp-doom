@@ -33,7 +33,6 @@ TEST_CASE("Z_Malloc(PU_LEVEL) and Z_Free and Z_Malloc(PU_LEVEL)", "[z_native]") 
   Z_Free(ptr);
   void * ptr2 = Z_Malloc(10, PU_LEVEL, nullptr);
   REQUIRE(ptr2 != nullptr);
-  REQUIRE(ptr == ptr2);
 }
 
 struct memblock_t {
