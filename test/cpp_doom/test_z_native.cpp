@@ -35,6 +35,7 @@ TEST_CASE("Z_Malloc(PU_LEVEL) and Z_Free and Z_Malloc(PU_LEVEL)", "[z_native]") 
   REQUIRE(ptr2 != nullptr);
 }
 
+#ifndef __SANITIZE_ADDRESS__
 struct memblock_t {
   int          id; // = ZONEID
   int          tag;
@@ -90,3 +91,4 @@ TEST_CASE("Z_ZOverwrite header", "[z_native]") {
   REQUIRE(where != nullptr);
   REQUIRE(*where == 0x42424242);
 }
+#endif // !__SANITIZE_ADDRESS__
