@@ -436,7 +436,10 @@ void NET_Log(const char * fmt, ...) {
 
   fmt::fprintf(net_debug, "%8d: ", I_GetTimeMS());
   va_start(args, fmt);
+#pragma GCC diagnostic push
+#pragma GCC diagnostic ignored "-Wformat-nonliteral"
   vfprintf(net_debug, fmt, args);
+#pragma GCC diagnostic pop
   va_end(args);
   fmt::fprintf(net_debug, "\n");
 }

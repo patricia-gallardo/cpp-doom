@@ -2332,7 +2332,7 @@ static int ParseIntParameter(cstring_view strparm) {
   const char * string_param = strparm.c_str();
 
   if (string_param[0] == '0' && string_param[1] == 'x')
-    sscanf(string_param + 2, "%x", &parm);
+    sscanf(string_param + 2, "%x", reinterpret_cast<unsigned int *>(&parm));
   else
     sscanf(string_param, "%i", &parm);
 
@@ -2530,7 +2530,7 @@ static default_t * GetDefaultForName(cstring_view name) {
   // Not found? Internal error.
 
   if (result == nullptr) {
-    I_Error("Unknown configuration variable: '%s'", name);
+    I_Error("Unknown configuration variable: '%s'", name.c_str());
   }
 
   return result;

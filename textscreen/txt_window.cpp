@@ -455,7 +455,7 @@ void TXT_OpenURL(cstring_view url) {
   char * cmd     = static_cast<char *>(malloc(cmd_len));
 
 #if defined(__MACOSX__)
-  TXT_snprintf(cmd, cmd_len, "open \"%s\"", url);
+  TXT_snprintf(cmd, cmd_len, "open \"%s\"", url.c_str());
 #else
   // The Unix situation sucks as usual, but the closest thing to a
   // standard that exists is the xdg-utils package.
@@ -467,7 +467,7 @@ void TXT_OpenURL(cstring_view url) {
     return;
   }
 
-  TXT_snprintf(cmd, cmd_len, "xdg-open \"%s\"", url);
+  TXT_snprintf(cmd, cmd_len, "xdg-open \"%s\"", url.c_str());
 #endif
 
   int retval = system(cmd);

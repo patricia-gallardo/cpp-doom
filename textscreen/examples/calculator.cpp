@@ -80,7 +80,7 @@ void AddOperatorButton(txt_table_t * table, cstring_view label, operator_t op) {
   auto * op_copy = reinterpret_cast<operator_t *>(malloc(sizeof(operator_t)));
   *op_copy = op;
 
-  TXT_snprintf(buf, sizeof(buf), "  %s  ", label);
+  TXT_snprintf(buf, sizeof(buf), "  %s  ", label.c_str());
 
   TXT_AddWidget(table, TXT_NewButton2(buf, Operator, op_copy));
 }

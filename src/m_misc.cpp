@@ -176,7 +176,7 @@ bool M_WriteFile(cstring_view name, const void * source, int length) {
 int M_ReadFile(cstring_view name, uint8_t ** buffer) {
   FILE * handle = fopen(name.c_str(), "rb");
   if (handle == nullptr)
-    I_Error("Couldn't read file %s", name);
+    I_Error("Couldn't read file %s", name.c_str());
 
   // find the size of the file by seeking to the end and
   // reading the current position
@@ -188,7 +188,7 @@ int M_ReadFile(cstring_view name, uint8_t ** buffer) {
   fclose(handle);
 
   if (static_cast<long>(count) < length)
-    I_Error("Couldn't read file %s", name);
+    I_Error("Couldn't read file %s", name.c_str());
 
   buf[length] = '\0';
   *buffer     = buf;
@@ -222,9 +222,10 @@ char * M_TempFile(cstring_view s) {
 }
 
 bool M_StrToInt(cstring_view str, int * result) {
-  return sscanf(str.c_str(), " 0x%x", result) == 1
-         || sscanf(str.c_str(), " 0X%x", result) == 1
-         || sscanf(str.c_str(), " 0%o", result) == 1
+  unsigned int * res = reinterpret_cast<unsigned int *>(result);
+  return sscanf(str.c_str(), " 0x%x", res) == 1
+         || sscanf(str.c_str(), " 0X%x", res) == 1
+         || sscanf(str.c_str(), " 0%o", res) == 1
          || sscanf(str.c_str(), " %d", result) == 1;
 }
 
@@ -438,7 +439,10 @@ int M_vsnprintf(char * buf, size_t buf_len, cstring_view s, va_list args) {
   // Windows (and other OSes?) has a vsnprintf() that doesn't always
   // append a trailing \0. So we must do it, and write into a buffer
   // that is one byte shorter; otherwise this function is unsafe.
+#pragma GCC diagnostic push
+#pragma GCC diagnostic ignored "-Wformat-nonliteral"
   int result = vsnprintf(buf, buf_len, s.c_str(), args);
+#pragma GCC diagnostic pop
 
   // If truncated, change the final char in the buffer to a \0.
   // A negative result indicates a truncated buffer on Windows.

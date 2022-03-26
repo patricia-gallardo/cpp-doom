@@ -273,7 +273,7 @@ lumpindex_t W_GetNumForName(cstring_view name) {
   lumpindex_t i = W_CheckNumForName(name);
 
   if (i < 0) {
-    I_Error("W_GetNumForName: %s not found!", name);
+    I_Error("W_GetNumForName: %s not found!", name.c_str());
   }
 
   return i;
@@ -319,8 +319,8 @@ void W_ReadLump(lumpindex_t lump, void * dest) {
 
   if (c < l->size) {
     I_Error("W_ReadLump: only read %i of %i on lump %i",
-            c,
-            l->size,
+            static_cast<int>(c),
+            static_cast<int>(l->size),
             lump);
   }
 }

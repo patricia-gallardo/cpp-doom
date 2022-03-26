@@ -612,7 +612,7 @@ int W_MergeDump(cstring_view file) {
   // [crispy] open file for writing
   FILE * fp = fopen(file.c_str(), "wb");
   if (!fp) {
-    I_Error("W_MergeDump: Failed writing to file '%s'!", file);
+    I_Error("W_MergeDump: Failed writing to file '%s'!", file.c_str());
   }
 
   // [crispy] prepare directory

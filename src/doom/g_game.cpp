@@ -2361,8 +2361,12 @@ void G_DoPlayDemo() {
                            "/info/patches.php\n"
                            "    This appears to be %s.";
 
-    if (g_doomstat_globals->singledemo)
+    if (g_doomstat_globals->singledemo) {
+#pragma GCC diagnostic push
+#pragma GCC diagnostic ignored "-Wformat-nonliteral"
       I_Error(message, demoversion, G_VanillaVersionCode(), DemoVersionDescription(demoversion));
+#pragma GCC diagnostic pop
+    }
     // [crispy] make non-fatal
     else {
       fmt::fprintf(stderr, message, demoversion, G_VanillaVersionCode(), DemoVersionDescription(demoversion));

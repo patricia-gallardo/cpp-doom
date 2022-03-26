@@ -550,7 +550,7 @@ char * TXT_SelectFile(cstring_view window_title, const char ** extensions) {
   if (window_title.c_str() != nullptr) {
     size_t len = 10 + window_title.size();
     argv[argc] = static_cast<char *>(malloc(len));
-    TXT_snprintf(argv[argc], len, "--title=%s", window_title);
+    TXT_snprintf(argv[argc], len, "--title=%s", window_title.c_str());
     ++argc;
   }
 
