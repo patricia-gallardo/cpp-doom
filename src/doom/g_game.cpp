@@ -2369,7 +2369,10 @@ void G_DoPlayDemo() {
     }
     // [crispy] make non-fatal
     else {
+#pragma GCC diagnostic push
+#pragma GCC diagnostic ignored "-Wformat-nonliteral"
       fmt::fprintf(stderr, message, demoversion, G_VanillaVersionCode(), DemoVersionDescription(demoversion));
+#pragma GCC diagnostic pop
       fmt::fprintf(stderr, "\n");
       g_doomstat_globals->demoplayback = true;
       G_CheckDemoStatus();
