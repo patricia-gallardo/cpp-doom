@@ -36,7 +36,11 @@ void DEH_snprintf(char * buffer, size_t len, cstring_view fmt, Args &&... args) 
   // Windows (and other OSes?) has a vsnprintf() that doesn't always
   // append a trailing \0. So we must do it, and write into a buffer
   // that is one byte shorter; otherwise this function is unsafe.
+#pragma GCC diagnostic push
+#pragma GCC diagnostic ignored "-Wformat-nonliteral"
+#pragma GCC diagnostic ignored "-Wformat-security"
   int result = snprintf(buffer, len, fmt.c_str(), args...);
+#pragma GCC diagnostic pop
 
   // If truncated, change the final char in the buffer to a \0.
   // A negative result indicates a truncated buffer on Windows.

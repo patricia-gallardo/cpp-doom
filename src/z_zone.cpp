@@ -426,13 +426,13 @@ void Z_ChangeTag2(void * ptr, int tag, cstring_view file, int line) {
 
   if (block->id != ZONEID)
     I_Error("%s:%i: Z_ChangeTag: block without a ZONEID!",
-            file,
+            file.c_str(),
             line);
 
   if (tag >= PU_PURGELEVEL && block->user == nullptr)
     I_Error("%s:%i: Z_ChangeTag: an owner is required "
             "for purgable blocks",
-            file,
+            file.c_str(),
             line);
 
   block->tag = tag;

@@ -107,7 +107,10 @@ static void SetBuffer(txt_spincontrol_t * spincontrol) {
 
   case TXT_SPINCONTROL_FLOAT:
     FloatFormatString(spincontrol->step.f, format, sizeof(format));
+#pragma GCC diagnostic push
+#pragma GCC diagnostic ignored "-Wformat-nonliteral"
     TXT_snprintf(spincontrol->buffer, spincontrol->buffer_len, format, *spincontrol->value.f);
+#pragma GCC diagnostic pop
     break;
   }
 }

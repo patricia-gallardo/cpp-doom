@@ -93,7 +93,7 @@ static void LoadResponseFile(int argv_index, cstring_view filename) {
     while (i < size) {
       size_t k = fread(file + i, 1, static_cast<size_t>(size - i), handle);
 
-      if (ferror(handle)) { I_Error("Failed to read full contents of '%s'", filename); }
+      if (ferror(handle)) { I_Error("Failed to read full contents of '%s'", filename.c_str()); }
 
       i += k;
     }
@@ -146,7 +146,7 @@ static void LoadResponseFile(int argv_index, cstring_view filename) {
 
       if (k >= size || infile[k] == '\n') {
         I_Error("Quotes unclosed in response file '%s'",
-                filename);
+                filename.c_str());
       }
 
       // Cut off the string at the closing quote
