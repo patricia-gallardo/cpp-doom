@@ -134,7 +134,7 @@ uint8_t * I_ZoneBase(int * size) {
   i *= 2;
 
   fmt::printf("zone memory: %p, %d MiB allocated for zone\n",
-              zonemem,
+              reinterpret_cast<void*>(zonemem),
               *size >> 20); // [crispy] human-understandable zone heap size
 
   return zonemem;

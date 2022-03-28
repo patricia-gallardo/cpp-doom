@@ -490,7 +490,7 @@ txt_window_t * TXT_MessageBox(const char * title, cstring_view message, ...) {
   va_list args;
 
   va_start(args, message);
-  TXT_vsnprintf(buf, sizeof(buf), message, args);
+  TXT_vsnprintf(buf, sizeof(buf), message.c_str(), args);
   va_end(args);
 
   txt_window_t * window = TXT_NewWindow(title);

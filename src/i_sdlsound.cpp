@@ -462,7 +462,7 @@ static bool ExpandSoundData_SRC(sfxinfo_t * sfxinfo,
   }
 
   if (clipped > 0) {
-    fmt::fprintf(stderr, "Sound '%s': clipped %u samples (%0.2f %%)\n", sfxinfo->name, clipped, 400.0 * clipped / chunk->alen);
+    fmt::fprintf(stderr, "Sound '%s': clipped %u samples (%0.2f %%)\n", sfxinfo->name.c_str(), clipped, 400.0 * clipped / chunk->alen);
   }
 
   return true;
