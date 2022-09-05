@@ -1,2 +1,7 @@
-#define CATCH_CONFIG_MAIN
-#include <catch.hpp>
+#include <catch2/catch_session.hpp>
+
+int main(int argc, char* argv[])
+{
+	const int result = Catch::Session().run(argc, argv);
+	return result;
+}
