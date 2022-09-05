@@ -51,6 +51,7 @@ void G_RecordDemo(char * name);
 void G_BeginRecording();
 
 [[maybe_unused]] void G_PlayDemo(char * name);
+void                  G_CiCdDemo(char * name);
 void                  G_TimeDemo(char * name);
 bool                  G_CheckDemoStatus();
 

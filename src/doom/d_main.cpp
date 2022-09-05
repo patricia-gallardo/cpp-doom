@@ -1710,6 +1710,11 @@ void D_DoomMain() {
     p = M_CheckParmWithArgs("-timedemo", 1);
   }
 
+  if (!p) {
+    // used for cicd integration/regression testing
+    p = M_CheckParmWithArgs("-cicddemo", 1);
+  }
+
   if (p) {
     char * uc_filename = strdup(myargv[p + 1]);
     M_ForceUppercase(uc_filename);
@@ -2084,6 +2089,14 @@ void D_DoomMain() {
     G_DeferedPlayDemo(demolumpname);
     D_DoomLoop(); // never returns
   }
+
+  p = M_CheckParmWithArgs("-cicddemo", 1);
+  if (p) {
+      g_doomstat_globals->singledemo = true; // quit after one demo
+      G_CiCdDemo(demolumpname);
+      D_DoomLoop(); // never returns
+  }
+
   crispy->demowarp = 0; // [crispy] we don't play a demo, so don't skip maps
 
   p = M_CheckParmWithArgs("-timedemo", 1);

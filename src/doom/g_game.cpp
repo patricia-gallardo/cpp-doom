@@ -103,7 +103,8 @@ gameaction_t gameaction;
 bool sendpause; // send a pause event next tic
 bool sendsave;  // send a save event next tic
 
-bool timingdemo; // if true, exit with report on completion
+bool timingdemo = false; // if true, exit with report on completion
+bool cicddemo = false; // if true, exit
 int  starttime;  // for comparative timing purposes
 
 bool turbodetected[MAXPLAYERS];
@@ -2444,6 +2445,18 @@ void G_DoPlayDemo() {
 }
 
 //
+// G_CiCdDemo
+//
+void G_CiCdDemo(char * name) {
+  g_doomstat_globals->nodrawers = true;
+  cicddemo = true;
+  singletics = true;
+  
+  defdemoname = name;
+  gameaction = ga_playdemo;
+}
+
+//
 // G_TimeDemo
 //
 void G_TimeDemo(char * name) {
@@ -2474,6 +2487,10 @@ void G_TimeDemo(char * name) {
 */
 
 bool G_CheckDemoStatus() {
+  if (cicddemo) {
+    cicddemo = false;
+  }
+
   if (timingdemo) {
     const int endtime = I_GetTime();
     const int realtics = endtime - starttime;
