@@ -81,4 +81,4 @@ add_library(doom STATIC
 
 target_compile_definitions(doom PRIVATE ${DOOM_COMPILE_DEFINITIONS})
 target_include_directories(doom PRIVATE "../" "${CMAKE_CURRENT_BINARY_DIR}/../../")
-target_link_libraries(doom SDL2::SDL2 SDL2::SDL2_mixer SDL2::SDL2_net)
+target_link_libraries(doom SDL2::SDL2 SDL2_mixer::SDL2_mixer SDL2::SDL2_net)
