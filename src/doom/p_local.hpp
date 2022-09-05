@@ -22,6 +22,8 @@
 #include "r_local.hpp"
 #endif
 
+#include <limits>
+
 constexpr auto TOCENTER   = -8;
 constexpr auto AFLAG_JUMP = 0x80;
 constexpr auto FLOATSPEED = (FRACUNIT * 4);
