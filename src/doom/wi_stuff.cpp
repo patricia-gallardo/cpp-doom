@@ -288,7 +288,7 @@ static int acceleratestage;
 static int me;
 
 // specifies current state
-static stateenum_t state;
+static stateenum_t intermission_state;
 
 // contains information passed into intermission
 static wbstartstruct_t * wbs;
@@ -537,7 +537,7 @@ void WI_updateAnimatedBack() {
 
       case ANIM_LEVEL:
         // gawd-awful hack for level anims
-        if (!(state == StatCount && i == 7)
+        if (!(intermission_state == StatCount && i == 7)
             && wbs->next == a->data1) {
           a->ctr++;
           if (a->ctr == a->nanims) a->ctr--;
@@ -671,9 +671,9 @@ void WI_drawTime(int  x,
 }
 
 void WI_initNoState() {
-  state           = NoState;
-  acceleratestage = 0;
-  cnt             = 10;
+  intermission_state            = NoState;
+  acceleratestage               = 0;
+  cnt                           = 10;
 }
 
 void WI_updateNoState() {
@@ -699,9 +699,9 @@ void WI_initShowNextLoc() {
     return;
   }
 
-  state           = ShowNextLoc;
-  acceleratestage = 0;
-  cnt             = SHOWNEXTLOCDELAY * TICRATE;
+  intermission_state    = ShowNextLoc;
+  acceleratestage       = 0;
+  cnt                   = SHOWNEXTLOCDELAY * TICRATE;
 
   WI_initAnimatedBack();
 }
@@ -787,9 +787,9 @@ static int dm_frags[MAXPLAYERS][MAXPLAYERS];
 static std::array<int, MAXPLAYERS> dm_totals;
 
 void WI_initDeathmatchStats() {
-  state           = StatCount;
-  acceleratestage = 0;
-  dm_state        = 1;
+  intermission_state = StatCount;
+  acceleratestage    = 0;
+  dm_state           = 1;
 
   cnt_pause = TICRATE;
 
@@ -954,9 +954,9 @@ static int dofrags;
 static int ng_state;
 
 void WI_initNetgameStats() {
-  state           = StatCount;
-  acceleratestage = 0;
-  ng_state        = 1;
+  intermission_state    = StatCount;
+  acceleratestage       = 0;
+  ng_state              = 1;
 
   cnt_pause = TICRATE;
 
@@ -1161,9 +1161,9 @@ void WI_drawNetgameStats() {
 static int sp_state;
 
 void WI_initStats() {
-  state           = StatCount;
-  acceleratestage = 0;
-  sp_state        = 1;
+  intermission_state    = StatCount;
+  acceleratestage       = 0;
+  sp_state              = 1;
   cnt_kills[0] = cnt_items[0] = cnt_secret[0] = -1;
   cnt_time = cnt_par = -1;
   cnt_pause          = TICRATE;
@@ -1408,7 +1408,7 @@ void WI_Ticker() {
 
   WI_checkForAccelerate();
 
-  switch (state) {
+  switch (intermission_state) {
   case StatCount:
     if (g_doomstat_globals->deathmatch)
       WI_updateDeathmatchStats();
@@ -1644,7 +1644,7 @@ void WI_End() {
 }
 
 void WI_Drawer() {
-  switch (state) {
+  switch (intermission_state) {
   case StatCount:
     if (g_doomstat_globals->deathmatch)
       WI_drawDeathmatchStats();
