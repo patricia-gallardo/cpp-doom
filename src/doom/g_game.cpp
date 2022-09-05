@@ -2475,18 +2475,18 @@ void G_TimeDemo(char * name) {
 
 bool G_CheckDemoStatus() {
   if (timingdemo) {
-    //const int endtime = I_GetTime();
-    //const int realtics    = endtime - starttime;
-    //const float fps   = (static_cast<float>(gametic) * TICRATE) / static_cast<float>(realtics);
+    const int endtime = I_GetTime();
+    const int realtics = endtime - starttime;
+    const float fps = (static_cast<float>(gametic) * TICRATE) / static_cast<float>(realtics);
 
     // Prevent recursive calls
     timingdemo                       = false;
     g_doomstat_globals->demoplayback = false;
 
-    //I_Error("timed %i gametics in %i realtics (%f fps)",
-    //        gametic,
-    //        realtics,
-    //        fps);
+    I_Error("timed %i gametics in %i realtics (%f fps)",
+            gametic,
+            realtics,
+            fps);
   }
 
   if (g_doomstat_globals->demoplayback) {
