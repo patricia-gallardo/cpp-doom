@@ -1424,7 +1424,7 @@ void I_InitGraphics() {
   // setting the screen mode, so that the game doesn't start immediately
   // with the player unable to see anything.
 
-  if (g_i_video_globals->fullscreen && !g_i_video_globals->screensaver_mode) {
+  if (g_i_video_globals->fullscreen && !g_i_video_globals->screensaver_mode && !nographics) {
     SDL_Delay(static_cast<Uint32>(startup_delay));
   }
 
