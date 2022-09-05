@@ -2454,7 +2454,7 @@ void G_TimeDemo(char * name) {
   // Disable rendering the screen entirely.
   //
 
-  g_doomstat_globals->nodrawers = M_CheckParm("-nographics");
+  g_doomstat_globals->nodrawers = M_CheckParm("-nodraw");
 
   timingdemo = true;
   singletics = true;
