@@ -128,7 +128,8 @@ set(DEHACKED_SOURCE_FILES
 set(SOURCE_FILES ${COMMON_SOURCE_FILES} ${GAME_SOURCE_FILES})
 set(SOURCE_FILES_WITH_DEH ${SOURCE_FILES} ${DEHACKED_SOURCE_FILES})
 
-set(EXTRA_LIBS fmt::fmt SDL2::SDL2main SDL2::SDL2 SDL2_mixer::SDL2_mixer SDL2::SDL2_net textscreen pcsound opl)
+set(SDL2_MIXER_LIB $<IF:$<TARGET_EXISTS:SDL2_mixer::SDL2_mixer>,SDL2_mixer::SDL2_mixer,SDL2_mixer::SDL2_mixer-static>)
+set(EXTRA_LIBS fmt::fmt SDL2::SDL2main SDL2::SDL2 ${SDL2_MIXER_LIB} SDL2::SDL2_net textscreen pcsound opl)
 if(SAMPLERATE_FOUND)
     list(APPEND EXTRA_LIBS samplerate::samplerate)
 endif()
@@ -177,7 +178,7 @@ endif()
 target_compile_definitions("${PROGRAM_PREFIX}setup" PRIVATE ${DOOM_COMPILE_DEFINITIONS})
 target_include_directories("${PROGRAM_PREFIX}setup"
                            PRIVATE "${CMAKE_CURRENT_BINARY_DIR}/../")
-target_link_libraries("${PROGRAM_PREFIX}setup" fmt::fmt SDL2::SDL2main SDL2::SDL2 SDL2_mixer::SDL2_mixer SDL2::SDL2_net setup textscreen)
+target_link_libraries("${PROGRAM_PREFIX}setup" fmt::fmt SDL2::SDL2main SDL2::SDL2 ${SDL2_MIXER_LIB} SDL2::SDL2_net setup textscreen)
 
 if(MSVC)
     set_target_properties("${PROGRAM_PREFIX}setup" PROPERTIES

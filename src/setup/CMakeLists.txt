@@ -16,4 +16,6 @@ add_library(setup STATIC
 
 target_compile_definitions(setup PRIVATE ${DOOM_COMPILE_DEFINITIONS})
 target_include_directories(setup PRIVATE "../" "${CMAKE_CURRENT_BINARY_DIR}/../../")
-target_link_libraries(setup textscreen fmt::fmt SDL2::SDL2 SDL2_mixer::SDL2_mixer)
+
+set(SDL2_MIXER_LIB $<IF:$<TARGET_EXISTS:SDL2_mixer::SDL2_mixer>,SDL2_mixer::SDL2_mixer,SDL2_mixer::SDL2_mixer-static>)
+target_link_libraries(setup textscreen fmt::fmt SDL2::SDL2 ${SDL2_MIXER_LIB})

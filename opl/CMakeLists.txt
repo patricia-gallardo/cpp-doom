@@ -12,4 +12,6 @@ add_library(opl STATIC
 target_include_directories(opl
                            INTERFACE "."
                            PRIVATE "${CMAKE_CURRENT_BINARY_DIR}/../")
-target_link_libraries(opl SDL2::SDL2 SDL2_mixer::SDL2_mixer)
+
+set(SDL2_MIXER_LIB $<IF:$<TARGET_EXISTS:SDL2_mixer::SDL2_mixer>,SDL2_mixer::SDL2_mixer,SDL2_mixer::SDL2_mixer-static>)
+target_link_libraries(opl SDL2::SDL2 ${SDL2_MIXER_LIB})

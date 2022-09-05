@@ -38,7 +38,7 @@ endif()
 
 find_package(fmt CONFIG REQUIRED)
 find_package(SDL2 CONFIG REQUIRED)
-find_package(sdl2_mixer CONFIG REQUIRED)
+find_package(SDL2_mixer CONFIG REQUIRED)
 find_package(sdl2-net CONFIG REQUIRED)
 find_package(SampleRate CONFIG REQUIRED)
 find_package(PNG)
