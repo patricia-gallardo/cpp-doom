@@ -20,15 +20,15 @@ jobs:
       fail-fast: false
       matrix:
         configurations:
-          - name: Ubuntu 20.04 Clang
-            os: ubuntu-20.04
+          - name: Ubuntu 22.04 Clang
+            os: ubuntu-22.04
             cmake_env:
               CC: clang-12
               CXX: clang++-12
             cmake_platform_option: ""
             cache_name: "ubuntu-clang"
-          - name: Ubuntu 20.04 GCC
-            os: ubuntu-20.04
+          - name: Ubuntu 22.04 GCC
+            os: ubuntu-22.04
             cmake_env: {}
             cmake_platform_option: ""
             cache_name: "ubuntu-gcc"
@@ -72,7 +72,7 @@ jobs:
 #      run: echo "/home/runner/.local/bin" >> $GITHUB_PATH
 
     - name: Install Linux dependencies
-      if: matrix.configurations.os == 'ubuntu-20.04'
+      if: matrix.configurations.os == 'ubuntu-22.04'
       run: sudo apt-get update && sudo apt-get install -y libx11-dev libxrandr-dev libxi-dev libgl1-mesa-dev libudev-dev clang-12 make ninja-build cmake
 
     - name: Create Build Environment
@@ -105,6 +105,6 @@ jobs:
         CTEST_OUTPUT_ON_FAILURE: 1
 
     - name: Demo Check
-      if: matrix.configurations.os == 'ubuntu-20.04'
+      if: matrix.configurations.os == 'ubuntu-22.04'
       shell: bash
       run: ./demo-check.sh ${{runner.workspace}}
