@@ -2454,7 +2454,7 @@ void G_TimeDemo(char * name) {
   // Disable rendering the screen entirely.
   //
 
-  g_doomstat_globals->nodrawers = M_CheckParm("-nodraw");
+  g_doomstat_globals->nodrawers = M_CheckParm("-nographics");
 
   timingdemo = true;
   singletics = true;
@@ -2475,20 +2475,18 @@ void G_TimeDemo(char * name) {
 
 bool G_CheckDemoStatus() {
   if (timingdemo) {
-    int realtics;
-
-    int endtime = I_GetTime();
-    realtics    = endtime - starttime;
-    float fps   = (static_cast<float>(gametic) * TICRATE) / static_cast<float>(realtics);
+    //const int endtime = I_GetTime();
+    //const int realtics    = endtime - starttime;
+    //const float fps   = (static_cast<float>(gametic) * TICRATE) / static_cast<float>(realtics);
 
     // Prevent recursive calls
     timingdemo                       = false;
     g_doomstat_globals->demoplayback = false;
 
-    I_Error("timed %i gametics in %i realtics (%f fps)",
-            gametic,
-            realtics,
-            fps);
+    //I_Error("timed %i gametics in %i realtics (%f fps)",
+    //        gametic,
+    //        realtics,
+    //        fps);
   }
 
   if (g_doomstat_globals->demoplayback) {
