@@ -2489,6 +2489,7 @@ void G_TimeDemo(char * name) {
 bool G_CheckDemoStatus() {
   if (cicddemo) {
     cicddemo = false;
+    G_DoCompleted(); // to copy the statistics into the statdump
   }
 
   if (timingdemo) {
