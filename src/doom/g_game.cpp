@@ -105,6 +105,7 @@ bool sendsave;  // send a save event next tic
 
 bool timingdemo = false; // if true, exit with report on completion
 bool cicddemo = false; // if true, exit
+int cicddemo_statdumped = false; // cicd demos should always dump stats but only once, so if a demo naturally dumps stats then we do nothing.
 int  starttime;  // for comparative timing purposes
 
 bool turbodetected[MAXPLAYERS];
@@ -1560,6 +1561,9 @@ void G_DoCompleted() {
   // [crispy] no statdump output for ExM8
   if (g_doomstat_globals->gamemode == commercial || g_doomstat_globals->gamemap != 8) {
     StatCopy(&g_doomstat_globals->wminfo);
+    if (cicddemo) {
+      cicddemo_statdumped = true;
+    }
   }
 
   WI_Start(&g_doomstat_globals->wminfo);
@@ -2488,8 +2492,10 @@ void G_TimeDemo(char * name) {
 
 bool G_CheckDemoStatus() {
   if (cicddemo) {
+    if (!cicddemo_statdumped) {
+      G_DoCompleted(); // to copy the statistics into the statdump
+    }
     cicddemo = false;
-    G_DoCompleted(); // to copy the statistics into the statdump
   }
 
   if (timingdemo) {
