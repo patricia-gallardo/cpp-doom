@@ -1559,7 +1559,8 @@ void G_DoCompleted() {
   g_doomstat_globals->automapactive = false;
 
   // [crispy] no statdump output for ExM8
-  if (g_doomstat_globals->gamemode == commercial || g_doomstat_globals->gamemap != 8) {
+  // [cppdoom] always stat dump if in cicddemo mode
+  if (g_doomstat_globals->gamemode == commercial || cicddemo || g_doomstat_globals->gamemap != 8) {
     StatCopy(&g_doomstat_globals->wminfo);
     if (cicddemo) {
       cicddemo_statdumped = true;
