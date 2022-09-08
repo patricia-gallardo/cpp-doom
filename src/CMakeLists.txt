@@ -4,15 +4,25 @@ endforeach()
 
 # Common source files used by absolutely everything:
 
+set(GLOBAL_SOURCE_FILES
+    m_fixed.cpp             m_fixed.hpp
+)
+
 set(COMMON_SOURCE_FILES
-    crispy.cpp             crispy.hpp
+    crispy.cpp              crispy.hpp
     i_main.cpp
-    i_system.cpp           i_system.hpp
-    m_argv.cpp             m_argv.hpp
-    m_misc.cpp             m_misc.hpp)
+    i_system.cpp            i_system.hpp
+    m_argv.cpp              m_argv.hpp
+    m_misc.cpp              m_misc.hpp)
+
+# cppdoom
+# Map library code, work in progress.
+set(LIBMAP_SOURCE_FILES
+    m_bbox.cpp              m_bbox.hpp
+)
+add_library(lib_map ${GLOBAL_SOURCE_FILES} ${LIBMAP_SOURCE_FILES})
 
 # Dedicated server (chocolate-server):
-
 set(DEDSERV_FILES
     d_dedicated.cpp
     d_iwad.cpp            d_iwad.hpp
@@ -75,7 +85,6 @@ set(GAME_SOURCE_FILES
     m_cheat.cpp           m_cheat.hpp
     m_config.cpp          m_config.hpp
     m_controls.cpp        m_controls.hpp
-    m_fixed.cpp           m_fixed.hpp
     net_client.cpp        net_client.hpp
     net_common.cpp        net_common.hpp
     net_dedicated.cpp     net_dedicated.hpp
@@ -125,7 +134,7 @@ set(DEHACKED_SOURCE_FILES
 
 # Some games support dehacked patches, some don't:
 
-set(SOURCE_FILES ${COMMON_SOURCE_FILES} ${GAME_SOURCE_FILES})
+set(SOURCE_FILES ${GLOBAL_SOURCE_FILES} ${COMMON_SOURCE_FILES} ${GAME_SOURCE_FILES})
 set(SOURCE_FILES_WITH_DEH ${SOURCE_FILES} ${DEHACKED_SOURCE_FILES})
 
 set(SDL2_MIXER_LIB $<IF:$<TARGET_EXISTS:SDL2_mixer::SDL2_mixer>,SDL2_mixer::SDL2_mixer,SDL2_mixer::SDL2_mixer-static>)

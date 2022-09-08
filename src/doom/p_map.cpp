@@ -31,8 +31,8 @@
 #include "doomdef.hpp"
 #include "m_argv.hpp"
 #include "m_misc.hpp"
-#include "p_local.hpp"
 #include "p_blockmap.hpp"
+#include "p_local.hpp"
 
 #include "s_sound.hpp"
 
@@ -52,11 +52,11 @@
 
 constexpr auto DEFAULT_SPECHIT_MAGIC = 0x01C09C98;
 
-bounding_box_t  tmbbox;
-mobj_t * tmthing;
-int      tmflags;
-fixed_t  tmx;
-fixed_t  tmy;
+bounding_box_t tmbbox;
+mobj_t *       tmthing;
+int            tmflags;
+fixed_t        tmx;
+fixed_t        tmy;
 
 fixed_t tmdropoffz;
 
@@ -100,15 +100,6 @@ bool PIT_StompThing(mobj_t * thing) {
 bool P_TeleportMove(mobj_t * thing,
                     fixed_t  x,
                     fixed_t  y) {
-  int xl;
-  int xh;
-  int yl;
-  int yh;
-  int bx;
-  int by;
-
-  subsector_t * newsubsec;
-
   // kill anything occupying the position
   tmthing = thing;
   tmflags = static_cast<int>(thing->flags);
@@ -121,7 +112,7 @@ bool P_TeleportMove(mobj_t * thing,
   tmbbox.set(box_e::right, x + tmthing->radius);
   tmbbox.set(box_e::left, x - tmthing->radius);
 
-  newsubsec                      = R_PointInSubsector(x, y);
+  subsector_t * newsubsec        = R_PointInSubsector(x, y);
   g_p_local_globals->ceilingline = nullptr;
 
   // The base floor/ceiling is from the subsector
@@ -135,13 +126,13 @@ bool P_TeleportMove(mobj_t * thing,
   g_p_local_globals->numspechit = 0;
 
   // stomp on any things contacted
-  xl = (tmbbox.get(box_e::left) - g_p_local_blockmap->bmaporgx - MAXRADIUS) >> MAPBLOCKSHIFT;
-  xh = (tmbbox.get(box_e::right) - g_p_local_blockmap->bmaporgx + MAXRADIUS) >> MAPBLOCKSHIFT;
-  yl = (tmbbox.get(box_e::bottom) - g_p_local_blockmap->bmaporgy - MAXRADIUS) >> MAPBLOCKSHIFT;
-  yh = (tmbbox.get(box_e::top) - g_p_local_blockmap->bmaporgy + MAXRADIUS) >> MAPBLOCKSHIFT;
+  const int xl = (tmbbox.get(box_e::left) - g_p_local_blockmap->bmaporgx - MAXRADIUS) >> MAPBLOCKSHIFT;
+  const int xh = (tmbbox.get(box_e::right) - g_p_local_blockmap->bmaporgx + MAXRADIUS) >> MAPBLOCKSHIFT;
+  const int yl = (tmbbox.get(box_e::bottom) - g_p_local_blockmap->bmaporgy - MAXRADIUS) >> MAPBLOCKSHIFT;
+  const int yh = (tmbbox.get(box_e::top) - g_p_local_blockmap->bmaporgy + MAXRADIUS) >> MAPBLOCKSHIFT;
 
-  for (bx = xl; bx <= xh; bx++)
-    for (by = yl; by <= yh; by++)
+  for (int bx = xl; bx <= xh; bx++)
+    for (int by = yl; by <= yh; by++)
       if (!P_BlockThingsIterator(bx, by, PIT_StompThing))
         return false;
 
@@ -174,10 +165,7 @@ static void SpechitOverrun(line_t * ld);
 // Adjusts tmfloorz and tmceilingz as lines are contacted
 //
 bool PIT_CheckLine(line_t * ld) {
-  if (tmbbox.get(box_e::right) <= ld->bbox.get(box_e::left)
-      || tmbbox.get(box_e::left) >= ld->bbox.get(box_e::right)
-      || tmbbox.get(box_e::top) <= ld->bbox.get(box_e::bottom)
-      || tmbbox.get(box_e::bottom) >= ld->bbox.get(box_e::top))
+  if (tmbbox.is_outside(ld->bbox))
     return true;
 
   if (P_BoxOnLineSide(tmbbox, ld) != -1)

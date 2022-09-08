@@ -18,6 +18,10 @@
 //	[crispy] Create Blockmap
 //
 
+#pragma once
+
+#include "p_mobj.hpp"
+
 struct p_local_blockmap_t {
   // BLOCKMAP
   // Created from axis aligned bounding box

@@ -31,8 +31,33 @@ void bounding_box_t::clear() {
   set(box_e::left, std::numeric_limits<int32_t>::max());
 }
 
+bool bounding_box_t::is_outside(const bounding_box_t & other) const {
+  return get(box_e::right) <= other.get(box_e::left)
+         || get(box_e::left) >= other.get(box_e::right)
+         || get(box_e::top) <= other.get(box_e::bottom)
+         || get(box_e::bottom) >= other.get(box_e::top);
+}
+
 void bounding_box_t::set(const box_e coord, const fixed_t value) {
   box[static_cast<fixed_t>(coord)] = value;
+}
+
+void bounding_box_t::set_vertex(const fixed_t v1x, const fixed_t v1y, const fixed_t v2x, const fixed_t v2y) {
+  if (v1x < v2x) {
+    set(box_e::left, v1x);
+    set(box_e::right, v2x);
+  } else {
+    set(box_e::left, v2x);
+    set(box_e::right, v1x);
+  }
+
+  if (v1y < v2y) {
+    set(box_e::bottom, v1y);
+    set(box_e::top, v2y);
+  } else {
+    set(box_e::bottom, v2y);
+    set(box_e::top, v1y);
+  }
 }
 
 fixed_t bounding_box_t::get(const box_e coord) const {
@@ -44,6 +69,7 @@ void bounding_box_t::add(const fixed_t x, const fixed_t y) {
     set(box_e::left, x);
   else if (x > get(box_e::right))
     set(box_e::right, x);
+
   if (y < get(box_e::bottom))
     set(box_e::bottom, y);
   else if (y > get(box_e::top))

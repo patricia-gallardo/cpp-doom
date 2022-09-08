@@ -478,20 +478,7 @@ void P_LoadLineDefs_Hexen(int lump) {
         ld->slopetype = ST_NEGATIVE;
     }
 
-    if (v1->x < v2->x) {
-      ld->bbox.set(box_e::left, v1->x);
-      ld->bbox.set(box_e::right, v2->x);
-    } else {
-      ld->bbox.set(box_e::left, v2->x);
-      ld->bbox.set(box_e::right, v1->x);
-    }
-    if (v1->y < v2->y) {
-      ld->bbox.set(box_e::bottom, v1->y);
-      ld->bbox.set(box_e::top, v2->y);
-    } else {
-      ld->bbox.set(box_e::bottom, v2->y);
-      ld->bbox.set(box_e::top, v1->y);
-    }
+    ld->bbox.set_vertex(v1->x, v1->y, v2->x, v2->y);
 
     // [crispy] calculate sound origin of line to be its midpoint
     ld->soundorg.x = ld->bbox.get(box_e::left) / 2 + ld->bbox.get(box_e::right) / 2;

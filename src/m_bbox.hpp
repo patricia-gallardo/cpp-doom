@@ -34,8 +34,10 @@ enum class box_e
 struct bounding_box_t {
   fixed_t box[4] {};
 
-  void clear();
-  void set(const box_e coord, const fixed_t value);
+  void    clear();
+  bool    is_outside(const bounding_box_t & other) const;
+  void    set(const box_e coord, const fixed_t value);
+  void    set_vertex(const fixed_t v1x, const fixed_t v1y, const fixed_t v2x, const fixed_t v2y);
   fixed_t get(const box_e coord) const;
-  void add(const fixed_t x, const fixed_t y);
+  void    add(const fixed_t x, const fixed_t y);
 };
