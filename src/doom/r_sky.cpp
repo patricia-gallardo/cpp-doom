@@ -34,6 +34,9 @@
 int skytexture = -1; // [crispy] initialize
 int skytexturemid;
 
+constexpr int normal_textureid { ORIGHEIGHT / 2 * FRACUNIT };
+constexpr int stretched_texture_multiplier { -28 * FRACUNIT };
+
 //
 // R_InitSkyMap
 // Called whenever the view size changes.
@@ -44,8 +47,11 @@ void R_InitSkyMap() {
   if (skytexture == -1) {
     return;
   }
+
+  // cpp-doom: should be == ?
   if ((crispy->stretchsky = crispy->freelook || crispy->mouselook || crispy->pitch)) {
-    skytexturemid = -28 * FRACUNIT * (g_r_state_globals->textureheight[skytexture] >> FRACBITS) / SKYSTRETCH_HEIGHT;
-  } else
-    skytexturemid = ORIGHEIGHT / 2 * FRACUNIT;
+    skytexturemid = stretched_texture_multiplier * (g_r_state_globals->textureheight[skytexture] >> FRACBITS) / SKYSTRETCH_HEIGHT;
+  } else {
+    skytexturemid = normal_textureid;
+  }
 }
