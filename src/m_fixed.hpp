@@ -18,6 +18,8 @@
 
 #pragma once
 
+#include <cstdint>
+
 //
 // Fixed point, 32bit as 16.16.
 //
@@ -28,7 +30,7 @@ constexpr auto FIXED2DOUBLE(T x) {
   return (x / static_cast<double>(FRACUNIT));
 }
 
-using fixed_t = int;
+using fixed_t = int32_t;
 
 fixed_t FixedMul(fixed_t a, fixed_t b);
 fixed_t FixedDiv(fixed_t a, fixed_t b);
