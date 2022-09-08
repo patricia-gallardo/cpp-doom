@@ -36,6 +36,7 @@
 
 #include "doomdef.hpp"
 #include "p_local.hpp"
+#include "p_blockmap.hpp"
 
 #include "s_musinfo.hpp" // [crispy] S_ParseMusInfo()
 #include "s_sound.hpp"
@@ -542,6 +543,7 @@ void P_LoadSideDefs(int lump) {
 //
 // P_LoadBlockMap
 //
+// cppdoom: move to p_blockmap, it's doing the same thing
 bool P_LoadBlockMap(int lump) {
   int     i;
   int     count;
@@ -557,35 +559,35 @@ bool P_LoadBlockMap(int lump) {
   // adapted from boom202s/P_SETUP.C:1025-1076
   wadblockmaplump = zmalloc<decltype(wadblockmaplump)>(lumplen, PU_LEVEL, nullptr);
   W_ReadLump(lump, wadblockmaplump);
-  g_p_local_globals->blockmaplump = zmalloc<decltype(g_p_local_globals->blockmaplump)>(sizeof(*g_p_local_globals->blockmaplump) * static_cast<unsigned long>(count), PU_LEVEL, nullptr);
-  g_p_local_globals->blockmap     = g_p_local_globals->blockmaplump + 4;
+  g_p_local_blockmap->blockmaplump = zmalloc<decltype(g_p_local_blockmap->blockmaplump)>(sizeof(*g_p_local_blockmap->blockmaplump) * static_cast<unsigned long>(count), PU_LEVEL, nullptr);
+  g_p_local_blockmap->blockmap     = g_p_local_blockmap->blockmaplump + 4;
 
-  g_p_local_globals->blockmaplump[0] = SHORT(wadblockmaplump[0]);
-  g_p_local_globals->blockmaplump[1] = SHORT(wadblockmaplump[1]);
-  g_p_local_globals->blockmaplump[2] = static_cast<int32_t>(SHORT(wadblockmaplump[2])) & 0xffff;
-  g_p_local_globals->blockmaplump[3] = static_cast<int32_t>(SHORT(wadblockmaplump[3])) & 0xffff;
+  g_p_local_blockmap->blockmaplump[0] = SHORT(wadblockmaplump[0]);
+  g_p_local_blockmap->blockmaplump[1] = SHORT(wadblockmaplump[1]);
+  g_p_local_blockmap->blockmaplump[2] = static_cast<int32_t>(SHORT(wadblockmaplump[2])) & 0xffff;
+  g_p_local_blockmap->blockmaplump[3] = static_cast<int32_t>(SHORT(wadblockmaplump[3])) & 0xffff;
 
   // Swap all short integers to native byte ordering.
 
   for (i = 4; i < count; i++) {
     short t                            = SHORT(wadblockmaplump[i]);
-    g_p_local_globals->blockmaplump[i] = (t == -1) ? -1l : static_cast<int32_t>(t) & 0xffff;
+    g_p_local_blockmap->blockmaplump[i] = (t == -1) ? -1l : static_cast<int32_t>(t) & 0xffff;
   }
 
   Z_Free(wadblockmaplump);
 
   // Read the header
 
-  g_p_local_globals->bmaporgx   = g_p_local_globals->blockmaplump[0] << FRACBITS;
-  g_p_local_globals->bmaporgy   = g_p_local_globals->blockmaplump[1] << FRACBITS;
-  g_p_local_globals->bmapwidth  = g_p_local_globals->blockmaplump[2];
-  g_p_local_globals->bmapheight = g_p_local_globals->blockmaplump[3];
+  g_p_local_blockmap->bmaporgx   = g_p_local_blockmap->blockmaplump[0] << FRACBITS;
+  g_p_local_blockmap->bmaporgy   = g_p_local_blockmap->blockmaplump[1] << FRACBITS;
+  g_p_local_blockmap->bmapwidth  = g_p_local_blockmap->blockmaplump[2];
+  g_p_local_blockmap->bmapheight = g_p_local_blockmap->blockmaplump[3];
 
   // Clear out mobj chains
 
-  count                         = static_cast<int>(sizeof(*g_p_local_globals->blocklinks)) * g_p_local_globals->bmapwidth * g_p_local_globals->bmapheight;
-  g_p_local_globals->blocklinks = zmalloc<decltype(g_p_local_globals->blocklinks)>(count, PU_LEVEL, 0);
-  std::memset(g_p_local_globals->blocklinks, 0, static_cast<size_t>(count));
+  count                          = static_cast<int>(sizeof(*g_p_local_blockmap->blocklinks)) * g_p_local_blockmap->bmapwidth * g_p_local_blockmap->bmapheight;
+  g_p_local_blockmap->blocklinks = zmalloc<decltype(g_p_local_blockmap->blocklinks)>(count, PU_LEVEL, 0);
+  std::memset(g_p_local_blockmap->blocklinks, 0, static_cast<size_t>(count));
 
   // [crispy] (re-)create BLOCKMAP if necessary
   fmt::fprintf(stderr, ")\n");
@@ -679,19 +681,19 @@ void P_GroupLines() {
     sector->soundorg.y = (bbox[BOXTOP] + bbox[BOXBOTTOM]) / 2;
 
     // adjust bounding box to map blocks
-    block                    = (bbox[BOXTOP] - g_p_local_globals->bmaporgy + MAXRADIUS) >> MAPBLOCKSHIFT;
-    block                    = block >= g_p_local_globals->bmapheight ? g_p_local_globals->bmapheight - 1 : block;
+    block                    = (bbox[BOXTOP] - g_p_local_blockmap->bmaporgy + MAXRADIUS) >> MAPBLOCKSHIFT;
+    block                    = block >= g_p_local_blockmap->bmapheight ? g_p_local_blockmap->bmapheight - 1 : block;
     sector->blockbox[BOXTOP] = block;
 
-    block                       = (bbox[BOXBOTTOM] - g_p_local_globals->bmaporgy - MAXRADIUS) >> MAPBLOCKSHIFT;
+    block                       = (bbox[BOXBOTTOM] - g_p_local_blockmap->bmaporgy - MAXRADIUS) >> MAPBLOCKSHIFT;
     block                       = block < 0 ? 0 : block;
     sector->blockbox[BOXBOTTOM] = block;
 
-    block                      = (bbox[BOXRIGHT] - g_p_local_globals->bmaporgx + MAXRADIUS) >> MAPBLOCKSHIFT;
-    block                      = block >= g_p_local_globals->bmapwidth ? g_p_local_globals->bmapwidth - 1 : block;
+    block                      = (bbox[BOXRIGHT] - g_p_local_blockmap->bmaporgx + MAXRADIUS) >> MAPBLOCKSHIFT;
+    block                      = block >= g_p_local_blockmap->bmapwidth ? g_p_local_blockmap->bmapwidth - 1 : block;
     sector->blockbox[BOXRIGHT] = block;
 
-    block                     = (bbox[BOXLEFT] - g_p_local_globals->bmaporgx - MAXRADIUS) >> MAPBLOCKSHIFT;
+    block                     = (bbox[BOXLEFT] - g_p_local_blockmap->bmaporgx - MAXRADIUS) >> MAPBLOCKSHIFT;
     block                     = block < 0 ? 0 : block;
     sector->blockbox[BOXLEFT] = block;
   }

@@ -28,6 +28,7 @@
 
 #include "doomdef.hpp"
 #include "p_local.hpp"
+#include "p_blockmap.hpp"
 
 #include "s_sound.hpp"
 
@@ -1044,10 +1045,10 @@ void A_VileChase(mobj_t * actor) {
     viletryy =
         actor->y + actor->info->speed * yspeed[actor->movedir];
 
-    xl = (viletryx - g_p_local_globals->bmaporgx - MAXRADIUS * 2) >> MAPBLOCKSHIFT;
-    xh = (viletryx - g_p_local_globals->bmaporgx + MAXRADIUS * 2) >> MAPBLOCKSHIFT;
-    yl = (viletryy - g_p_local_globals->bmaporgy - MAXRADIUS * 2) >> MAPBLOCKSHIFT;
-    yh = (viletryy - g_p_local_globals->bmaporgy + MAXRADIUS * 2) >> MAPBLOCKSHIFT;
+    xl = (viletryx - g_p_local_blockmap->bmaporgx - MAXRADIUS * 2) >> MAPBLOCKSHIFT;
+    xh = (viletryx - g_p_local_blockmap->bmaporgx + MAXRADIUS * 2) >> MAPBLOCKSHIFT;
+    yl = (viletryy - g_p_local_blockmap->bmaporgy - MAXRADIUS * 2) >> MAPBLOCKSHIFT;
+    yh = (viletryy - g_p_local_blockmap->bmaporgy + MAXRADIUS * 2) >> MAPBLOCKSHIFT;
 
     vileobj = actor;
     for (bx = xl; bx <= xh; bx++) {

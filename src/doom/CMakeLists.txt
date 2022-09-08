@@ -35,7 +35,7 @@ add_library(doom STATIC
             m_menu.cpp        m_menu.hpp
             m_random.cpp      m_random.hpp
             p_bexptr.cpp
-            p_blockmap.cpp
+            p_blockmap.cpp    p_blockmap.hpp
             p_ceilng.cpp
             p_doors.cpp
             p_enemy.cpp

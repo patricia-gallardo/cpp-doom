@@ -32,6 +32,7 @@
 #include "m_argv.hpp"
 #include "m_misc.hpp"
 #include "p_local.hpp"
+#include "p_blockmap.hpp"
 
 #include "s_sound.hpp"
 
@@ -134,10 +135,10 @@ bool P_TeleportMove(mobj_t * thing,
   g_p_local_globals->numspechit = 0;
 
   // stomp on any things contacted
-  xl = (tmbbox[BOXLEFT] - g_p_local_globals->bmaporgx - MAXRADIUS) >> MAPBLOCKSHIFT;
-  xh = (tmbbox[BOXRIGHT] - g_p_local_globals->bmaporgx + MAXRADIUS) >> MAPBLOCKSHIFT;
-  yl = (tmbbox[BOXBOTTOM] - g_p_local_globals->bmaporgy - MAXRADIUS) >> MAPBLOCKSHIFT;
-  yh = (tmbbox[BOXTOP] - g_p_local_globals->bmaporgy + MAXRADIUS) >> MAPBLOCKSHIFT;
+  xl = (tmbbox[BOXLEFT] - g_p_local_blockmap->bmaporgx - MAXRADIUS) >> MAPBLOCKSHIFT;
+  xh = (tmbbox[BOXRIGHT] - g_p_local_blockmap->bmaporgx + MAXRADIUS) >> MAPBLOCKSHIFT;
+  yl = (tmbbox[BOXBOTTOM] - g_p_local_blockmap->bmaporgy - MAXRADIUS) >> MAPBLOCKSHIFT;
+  yh = (tmbbox[BOXTOP] - g_p_local_blockmap->bmaporgy + MAXRADIUS) >> MAPBLOCKSHIFT;
 
   for (bx = xl; bx <= xh; bx++)
     for (by = yl; by <= yh; by++)
@@ -462,10 +463,10 @@ bool P_CheckPosition(mobj_t * thing,
   // because mobj_ts are grouped into mapblocks
   // based on their origin point, and can overlap
   // into adjacent blocks by up to MAXRADIUS units.
-  xl = (tmbbox[BOXLEFT] - g_p_local_globals->bmaporgx - MAXRADIUS) >> MAPBLOCKSHIFT;
-  xh = (tmbbox[BOXRIGHT] - g_p_local_globals->bmaporgx + MAXRADIUS) >> MAPBLOCKSHIFT;
-  yl = (tmbbox[BOXBOTTOM] - g_p_local_globals->bmaporgy - MAXRADIUS) >> MAPBLOCKSHIFT;
-  yh = (tmbbox[BOXTOP] - g_p_local_globals->bmaporgy + MAXRADIUS) >> MAPBLOCKSHIFT;
+  xl = (tmbbox[BOXLEFT] - g_p_local_blockmap->bmaporgx - MAXRADIUS) >> MAPBLOCKSHIFT;
+  xh = (tmbbox[BOXRIGHT] - g_p_local_blockmap->bmaporgx + MAXRADIUS) >> MAPBLOCKSHIFT;
+  yl = (tmbbox[BOXBOTTOM] - g_p_local_blockmap->bmaporgy - MAXRADIUS) >> MAPBLOCKSHIFT;
+  yh = (tmbbox[BOXTOP] - g_p_local_blockmap->bmaporgy + MAXRADIUS) >> MAPBLOCKSHIFT;
 
   for (bx = xl; bx <= xh; bx++)
     for (by = yl; by <= yh; by++)
@@ -473,10 +474,10 @@ bool P_CheckPosition(mobj_t * thing,
         return false;
 
   // check lines
-  xl = (tmbbox[BOXLEFT] - g_p_local_globals->bmaporgx) >> MAPBLOCKSHIFT;
-  xh = (tmbbox[BOXRIGHT] - g_p_local_globals->bmaporgx) >> MAPBLOCKSHIFT;
-  yl = (tmbbox[BOXBOTTOM] - g_p_local_globals->bmaporgy) >> MAPBLOCKSHIFT;
-  yh = (tmbbox[BOXTOP] - g_p_local_globals->bmaporgy) >> MAPBLOCKSHIFT;
+  xl = (tmbbox[BOXLEFT] - g_p_local_blockmap->bmaporgx) >> MAPBLOCKSHIFT;
+  xh = (tmbbox[BOXRIGHT] - g_p_local_blockmap->bmaporgx) >> MAPBLOCKSHIFT;
+  yl = (tmbbox[BOXBOTTOM] - g_p_local_blockmap->bmaporgy) >> MAPBLOCKSHIFT;
+  yh = (tmbbox[BOXTOP] - g_p_local_blockmap->bmaporgy) >> MAPBLOCKSHIFT;
 
   for (bx = xl; bx <= xh; bx++)
     for (by = yl; by <= yh; by++)
@@ -1305,10 +1306,10 @@ void P_RadiusAttack(mobj_t * spot,
   fixed_t dist;
 
   dist       = (damage + MAXRADIUS) << FRACBITS;
-  yh         = (spot->y + dist - g_p_local_globals->bmaporgy) >> MAPBLOCKSHIFT;
-  yl         = (spot->y - dist - g_p_local_globals->bmaporgy) >> MAPBLOCKSHIFT;
-  xh         = (spot->x + dist - g_p_local_globals->bmaporgx) >> MAPBLOCKSHIFT;
-  xl         = (spot->x - dist - g_p_local_globals->bmaporgx) >> MAPBLOCKSHIFT;
+  yh         = (spot->y + dist - g_p_local_blockmap->bmaporgy) >> MAPBLOCKSHIFT;
+  yl         = (spot->y - dist - g_p_local_blockmap->bmaporgy) >> MAPBLOCKSHIFT;
+  xh         = (spot->x + dist - g_p_local_blockmap->bmaporgx) >> MAPBLOCKSHIFT;
+  xl         = (spot->x - dist - g_p_local_blockmap->bmaporgx) >> MAPBLOCKSHIFT;
   bombspot   = spot;
   bombsource = source;
   bombdamage = damage;

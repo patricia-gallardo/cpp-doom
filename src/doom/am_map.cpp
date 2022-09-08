@@ -35,6 +35,8 @@
 #include "m_controls.hpp"
 #include "m_misc.hpp"
 
+#include "p_blockmap.hpp"
+
 // Needs access to LFB.
 #include "v_video.hpp"
 
@@ -1103,9 +1105,9 @@ void AM_drawGrid(int color) {
     start -= m_h / 2;
   }
   // [crispy] fix losing grid lines near the automap boundary
-  if ((start - g_p_local_globals->bmaporgx) % (MAPBLOCKUNITS << FRACBITS))
+  if ((start - g_p_local_blockmap->bmaporgx) % (MAPBLOCKUNITS << FRACBITS))
     start += // (MAPBLOCKUNITS<<FRACBITS)
-        -((start - g_p_local_globals->bmaporgx) % (MAPBLOCKUNITS << FRACBITS));
+        -((start - g_p_local_blockmap->bmaporgx) % (MAPBLOCKUNITS << FRACBITS));
   int64_t end = m_x + m_w;
   if (crispy->automaprotate) {
     end += m_h / 2;
@@ -1134,9 +1136,9 @@ void AM_drawGrid(int color) {
     start -= m_w / 2;
   }
   // [crispy] fix losing grid lines near the automap boundary
-  if ((start - g_p_local_globals->bmaporgy) % (MAPBLOCKUNITS << FRACBITS))
+  if ((start - g_p_local_blockmap->bmaporgy) % (MAPBLOCKUNITS << FRACBITS))
     start += // (MAPBLOCKUNITS<<FRACBITS)
-        -((start - g_p_local_globals->bmaporgy) % (MAPBLOCKUNITS << FRACBITS));
+        -((start - g_p_local_blockmap->bmaporgy) % (MAPBLOCKUNITS << FRACBITS));
   end = m_y + m_h;
   if (crispy->automaprotate) {
     end += m_w / 2;

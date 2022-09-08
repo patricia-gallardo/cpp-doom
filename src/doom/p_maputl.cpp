@@ -30,6 +30,7 @@
 #include "doomdef.hpp"
 #include "doomstat.hpp"
 #include "p_local.hpp"
+#include "p_blockmap.hpp"
 
 // State.
 #include "r_state.hpp"
@@ -309,12 +310,12 @@ void P_UnsetThingPosition(mobj_t * thing) {
     if (thing->bprev)
       thing->bprev->bnext = thing->bnext;
     else {
-      blockx = (thing->x - g_p_local_globals->bmaporgx) >> MAPBLOCKSHIFT;
-      blocky = (thing->y - g_p_local_globals->bmaporgy) >> MAPBLOCKSHIFT;
+      blockx = (thing->x - g_p_local_blockmap->bmaporgx) >> MAPBLOCKSHIFT;
+      blocky = (thing->y - g_p_local_blockmap->bmaporgy) >> MAPBLOCKSHIFT;
 
-      if (blockx >= 0 && blockx < g_p_local_globals->bmapwidth
-          && blocky >= 0 && blocky < g_p_local_globals->bmapheight) {
-        g_p_local_globals->blocklinks[blocky * g_p_local_globals->bmapwidth + blockx] = thing->bnext;
+      if (blockx >= 0 && blockx < g_p_local_blockmap->bmapwidth
+          && blocky >= 0 && blocky < g_p_local_blockmap->bmapheight) {
+        g_p_local_blockmap->blocklinks[blocky * g_p_local_blockmap->bmapwidth + blockx] = thing->bnext;
       }
     }
   }
@@ -353,14 +354,14 @@ void P_SetThingPosition(mobj_t * thing) {
   // link into blockmap
   if (!(thing->flags & MF_NOBLOCKMAP)) {
     // inert things don't need to be in blockmap
-    blockx = (thing->x - g_p_local_globals->bmaporgx) >> MAPBLOCKSHIFT;
-    blocky = (thing->y - g_p_local_globals->bmaporgy) >> MAPBLOCKSHIFT;
+    blockx = (thing->x - g_p_local_blockmap->bmaporgx) >> MAPBLOCKSHIFT;
+    blocky = (thing->y - g_p_local_blockmap->bmaporgy) >> MAPBLOCKSHIFT;
 
     if (blockx >= 0
-        && blockx < g_p_local_globals->bmapwidth
+        && blockx < g_p_local_blockmap->bmapwidth
         && blocky >= 0
-        && blocky < g_p_local_globals->bmapheight) {
-      link         = &g_p_local_globals->blocklinks[blocky * g_p_local_globals->bmapwidth + blockx];
+        && blocky < g_p_local_blockmap->bmapheight) {
+      link         = &g_p_local_blockmap->blocklinks[blocky * g_p_local_blockmap->bmapwidth + blockx];
       thing->bprev = nullptr;
       thing->bnext = *link;
       if (*link)
@@ -399,16 +400,16 @@ bool P_BlockLinesIterator(int x,
 
   if (x < 0
       || y < 0
-      || x >= g_p_local_globals->bmapwidth
-      || y >= g_p_local_globals->bmapheight) {
+      || x >= g_p_local_blockmap->bmapwidth
+      || y >= g_p_local_blockmap->bmapheight) {
     return true;
   }
 
-  offset = y * g_p_local_globals->bmapwidth + x;
+  offset = y * g_p_local_blockmap->bmapwidth + x;
 
-  offset = *(g_p_local_globals->blockmap + offset);
+  offset = *(g_p_local_blockmap->blockmap + offset);
 
-  for (list = g_p_local_globals->blockmaplump + offset; *list != -1; list++) {
+  for (list = g_p_local_blockmap->blockmaplump + offset; *list != -1; list++) {
     ld = &g_r_state_globals->lines[*list];
 
     if (ld->validcount == validcount)
@@ -432,12 +433,12 @@ bool P_BlockThingsIterator(int x,
 
   if (x < 0
       || y < 0
-      || x >= g_p_local_globals->bmapwidth
-      || y >= g_p_local_globals->bmapheight) {
+      || x >= g_p_local_blockmap->bmapwidth
+      || y >= g_p_local_blockmap->bmapheight) {
     return true;
   }
 
-  for (mobj = g_p_local_globals->blocklinks[y * g_p_local_globals->bmapwidth + x];
+  for (mobj = g_p_local_blockmap->blocklinks[y * g_p_local_blockmap->bmapwidth + x];
        mobj;
        mobj = mobj->bnext) {
     if (!func(mobj))
@@ -685,12 +686,12 @@ static intercepts_overrun_t intercepts_overrun[] = {
   { 4,   nullptr,                           false                     },
   { 40,  &g_doomstat_globals->playerstarts, true                      },
   { 4,   nullptr,                           /* &blocklinks, */ false  },
-  { 4,   &g_p_local_globals->bmapwidth,     false                     },
+  { 4,   &g_p_local_blockmap->bmapwidth,    false },
   { 4,   nullptr,                           /* &blockmap, */ false    },
-  { 4,   &g_p_local_globals->bmaporgx,      false                     },
-  { 4,   &g_p_local_globals->bmaporgy,      false                     },
+  { 4,   &g_p_local_blockmap->bmaporgx,     false },
+  { 4,   &g_p_local_blockmap->bmaporgy,     false },
   { 4,   nullptr,                           /* &blockmaplump, */ false},
-  { 4,   &g_p_local_globals->bmapheight,    false                     },
+  { 4,   &g_p_local_blockmap->bmapheight,   false },
   { 0,   nullptr,                           false                     },
 };
 
@@ -796,10 +797,10 @@ bool P_PathTraverse(fixed_t x1,
   validcount++;
   g_p_local_globals->intercept_p = intercepts;
 
-  if (((x1 - g_p_local_globals->bmaporgx) & (MAPBLOCKSIZE - 1)) == 0)
+  if (((x1 - g_p_local_blockmap->bmaporgx) & (MAPBLOCKSIZE - 1)) == 0)
     x1 += FRACUNIT; // don't side exactly on a line
 
-  if (((y1 - g_p_local_globals->bmaporgy) & (MAPBLOCKSIZE - 1)) == 0)
+  if (((y1 - g_p_local_blockmap->bmaporgy) & (MAPBLOCKSIZE - 1)) == 0)
     y1 += FRACUNIT; // don't side exactly on a line
 
   g_p_local_globals->trace.x  = x1;
@@ -807,13 +808,13 @@ bool P_PathTraverse(fixed_t x1,
   g_p_local_globals->trace.dx = x2 - x1;
   g_p_local_globals->trace.dy = y2 - y1;
 
-  x1 -= g_p_local_globals->bmaporgx;
-  y1 -= g_p_local_globals->bmaporgy;
+  x1 -= g_p_local_blockmap->bmaporgx;
+  y1 -= g_p_local_blockmap->bmaporgy;
   xt1 = x1 >> MAPBLOCKSHIFT;
   yt1 = y1 >> MAPBLOCKSHIFT;
 
-  x2 -= g_p_local_globals->bmaporgx;
-  y2 -= g_p_local_globals->bmaporgy;
+  x2 -= g_p_local_blockmap->bmaporgx;
+  y2 -= g_p_local_blockmap->bmaporgy;
   xt2 = x2 >> MAPBLOCKSHIFT;
   yt2 = y2 >> MAPBLOCKSHIFT;
 

@@ -624,9 +624,9 @@ mobj_t *
 }
 
 static p_local_t p_local_s = {
-  .thinkercap = {                },
+  .thinkercap = {},
 
-  .itemrespawnque  = {                              },
+  .itemrespawnque  = {},
   .itemrespawntime = {},
   .iquehead        = 0,
   .iquetail        = 0,
@@ -637,7 +637,7 @@ static p_local_t p_local_s = {
   .openbottom = 0,
   .openrange  = 0,
   .lowfloor   = 0,
-  .trace      = {                                                                                                },
+  .trace      = {},
 
   .floatok    = false,
   .tmfloorz   = 0,
@@ -645,24 +645,16 @@ static p_local_t p_local_s = {
 
   .ceilingline = nullptr,
 
-  .spechit    = {                                                                                                                                                                                    },
+  .spechit    = {},
   .numspechit = 0,
 
   .linetarget = nullptr,
 
-  .rejectmatrix = nullptr,
-  .blockmaplump = nullptr,
-  .blockmap     = nullptr,
-  .bmapwidth    = 0,
-  .bmapheight   = 0,
-  .bmaporgx     = 0,
-  .bmaporgy     = 0,
-  .blocklinks   = nullptr,
+  .rejectmatrix  = nullptr,
+  .st_keyorskull = {},
 
-  .st_keyorskull = {                                                                                                                                                                                    },
-
-  .maxammo  = { 200,                                                                                                                                                                                     50, 300, 50 },
-  .clipammo = { 10,                                                                                                                                                                                     4, 20, 1 }
+  .maxammo  = { 200, 50, 300, 50 },
+  .clipammo = { 10, 4, 20, 1 }
 };
 
 extern p_local_t *const g_p_local_globals = &p_local_s;

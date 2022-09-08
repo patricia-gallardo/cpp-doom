@@ -279,23 +279,6 @@ struct p_local_t {
   //
   uint8_t * rejectmatrix {}; // for fast sight rejection
 
-  // BLOCKMAP
-  // Created from axis aligned bounding box
-  // of the map, a rectangular array of
-  // blocks of size ...
-  // Used to speed up collision detection
-  // by spatial subdivision in 2D.
-  //
-  // Blockmap size.
-  int32_t * blockmaplump {}; // offsets in blockmap are from here // [crispy] BLOCKMAP limit
-  int32_t * blockmap {};     // int for larger maps // [crispy] BLOCKMAP limit
-  int       bmapwidth {};
-  int       bmapheight {}; // size in mapblocks
-
-  // origin of block map
-  fixed_t   bmaporgx {};
-  fixed_t   bmaporgy {};   // origin of block map
-  mobj_t ** blocklinks {}; // for thing chains
   // [crispy] blinking key or skull in the status bar
   int st_keyorskull[3] {};
   //
