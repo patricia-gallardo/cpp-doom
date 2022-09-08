@@ -29,23 +29,26 @@
 
 // [crispy] taken from mbfsrc/P_SETUP.C:547-707, slightly adapted
 
-void P_CreateBlockMap() {
+struct map_limits_t {
   fixed_t minx = std::numeric_limits<int32_t>::max();
   fixed_t miny = std::numeric_limits<int32_t>::max();
   fixed_t maxx = std::numeric_limits<int32_t>::min();
   fixed_t maxy = std::numeric_limits<int32_t>::min();
 
-  // First find limits of map
+  void calculate_from_vertexes(vertex_t * vertexes, int count);
+};
 
-  for (int i = 0; i < g_r_state_globals->numvertexes; i++) {
-    if (g_r_state_globals->vertexes[i].x >> FRACBITS < minx)
-      minx = g_r_state_globals->vertexes[i].x >> FRACBITS;
-    else if (g_r_state_globals->vertexes[i].x >> FRACBITS > maxx)
-      maxx = g_r_state_globals->vertexes[i].x >> FRACBITS;
-    if (g_r_state_globals->vertexes[i].y >> FRACBITS < miny)
-      miny = g_r_state_globals->vertexes[i].y >> FRACBITS;
-    else if (g_r_state_globals->vertexes[i].y >> FRACBITS > maxy)
-      maxy = g_r_state_globals->vertexes[i].y >> FRACBITS;
+void map_limits_t::calculate_from_vertexes(vertex_t * vertexes, int count) {
+  // First find limits of map
+  for (int i = 0; i < count; i++) {
+    if (vertexes[i].x >> FRACBITS < minx)
+      minx = vertexes[i].x >> FRACBITS;
+    else if (vertexes[i].x >> FRACBITS > maxx)
+      maxx = vertexes[i].x >> FRACBITS;
+    if (vertexes[i].y >> FRACBITS < miny)
+      miny = vertexes[i].y >> FRACBITS;
+    else if (vertexes[i].y >> FRACBITS > maxy)
+      maxy = vertexes[i].y >> FRACBITS;
   }
 
   // [crispy] doombsp/DRAWING.M:175-178
@@ -53,13 +56,18 @@ void P_CreateBlockMap() {
   miny -= 8;
   maxx += 8;
   maxy += 8;
+}
+
+void P_CreateBlockMap() {
+  map_limits_t limits;
+  limits.calculate_from_vertexes(g_r_state_globals->vertexes, g_r_state_globals->numvertexes);
 
   // Save blockmap parameters
 
-  g_p_local_globals->bmaporgx   = minx << FRACBITS;
-  g_p_local_globals->bmaporgy   = miny << FRACBITS;
-  g_p_local_globals->bmapwidth  = ((maxx - minx) >> MAPBTOFRAC) + 1;
-  g_p_local_globals->bmapheight = ((maxy - miny) >> MAPBTOFRAC) + 1;
+  g_p_local_globals->bmaporgx   = limits.minx << FRACBITS;
+  g_p_local_globals->bmaporgy   = limits.miny << FRACBITS;
+  g_p_local_globals->bmapwidth  = ((limits.maxx - limits.minx) >> MAPBTOFRAC) + 1;
+  g_p_local_globals->bmapheight = ((limits.maxy - limits.miny) >> MAPBTOFRAC) + 1;
 
   // Compute blockmap, which is stored as a 2d array of variable-sized lists.
   //
@@ -90,8 +98,8 @@ void P_CreateBlockMap() {
       int dx, dy, diff, b;
 
       // starting coordinates
-      x = (g_r_state_globals->lines[i].v1->x >> FRACBITS) - minx;
-      y = (g_r_state_globals->lines[i].v1->y >> FRACBITS) - miny;
+      x = (g_r_state_globals->lines[i].v1->x >> FRACBITS) - limits.minx;
+      y = (g_r_state_globals->lines[i].v1->y >> FRACBITS) - limits.miny;
 
       // x-y deltas
       adx = g_r_state_globals->lines[i].dx >> FRACBITS, dx = adx < 0 ? -1 : 1;
@@ -105,7 +113,7 @@ void P_CreateBlockMap() {
       b = (y >> MAPBTOFRAC) * g_p_local_globals->bmapwidth + (x >> MAPBTOFRAC);
 
       // ending block
-      bend = (((g_r_state_globals->lines[i].v2->y >> FRACBITS) - miny) >> MAPBTOFRAC) * g_p_local_globals->bmapwidth + (((g_r_state_globals->lines[i].v2->x >> FRACBITS) - minx) >> MAPBTOFRAC);
+      bend = (((g_r_state_globals->lines[i].v2->y >> FRACBITS) - limits.miny) >> MAPBTOFRAC) * g_p_local_globals->bmapwidth + (((g_r_state_globals->lines[i].v2->x >> FRACBITS) - limits.minx) >> MAPBTOFRAC);
 
       // delta for pointer when moving across y
       dy *= g_p_local_globals->bmapwidth;
