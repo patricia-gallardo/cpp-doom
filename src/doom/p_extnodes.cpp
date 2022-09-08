@@ -172,7 +172,7 @@ void P_LoadNodes_DeePBSP(int lump) {
     for (int j = 0; j < 2; j++) {
       no->children[j] = static_cast<int>(mn->children[j]);
       for (int k = 0; k < 4; k++)
-        no->bbox[j][k] = SHORT(mn->bbox[j][k]) << FRACBITS;
+        no->bbox[j].set(static_cast<box_e>(k), SHORT(mn->bbox[j][k]) << FRACBITS);
     }
   }
 
@@ -390,7 +390,7 @@ void P_LoadNodes_ZDBSP(int lump, bool compressed) {
       no->children[j] = static_cast<int>(mn->children[j]);
 
       for (int k = 0; k < 4; k++)
-        no->bbox[j][k] = SHORT(mn->bbox[j][k]) << FRACBITS;
+        no->bbox[j].set(static_cast<box_e>(k), SHORT(mn->bbox[j][k]) << FRACBITS);
     }
   }
 
@@ -479,23 +479,23 @@ void P_LoadLineDefs_Hexen(int lump) {
     }
 
     if (v1->x < v2->x) {
-      ld->bbox[BOXLEFT]  = v1->x;
-      ld->bbox[BOXRIGHT] = v2->x;
+      ld->bbox.set(box_e::left, v1->x);
+      ld->bbox.set(box_e::right, v2->x);
     } else {
-      ld->bbox[BOXLEFT]  = v2->x;
-      ld->bbox[BOXRIGHT] = v1->x;
+      ld->bbox.set(box_e::left, v2->x);
+      ld->bbox.set(box_e::right, v1->x);
     }
     if (v1->y < v2->y) {
-      ld->bbox[BOXBOTTOM] = v1->y;
-      ld->bbox[BOXTOP]    = v2->y;
+      ld->bbox.set(box_e::bottom, v1->y);
+      ld->bbox.set(box_e::top, v2->y);
     } else {
-      ld->bbox[BOXBOTTOM] = v2->y;
-      ld->bbox[BOXTOP]    = v1->y;
+      ld->bbox.set(box_e::bottom, v2->y);
+      ld->bbox.set(box_e::top, v1->y);
     }
 
     // [crispy] calculate sound origin of line to be its midpoint
-    ld->soundorg.x = ld->bbox[BOXLEFT] / 2 + ld->bbox[BOXRIGHT] / 2;
-    ld->soundorg.y = ld->bbox[BOXTOP] / 2 + ld->bbox[BOXBOTTOM] / 2;
+    ld->soundorg.x = ld->bbox.get(box_e::left) / 2 + ld->bbox.get(box_e::right) / 2;
+    ld->soundorg.y = ld->bbox.get(box_e::top) / 2 + ld->bbox.get(box_e::bottom) / 2;
 
     ld->sidenum[0] = SHORT(mld->sidenum[0]);
     ld->sidenum[1] = SHORT(mld->sidenum[1]);

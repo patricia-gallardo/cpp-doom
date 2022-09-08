@@ -23,17 +23,19 @@
 #include "m_fixed.hpp"
 
 // Bounding box coordinate storage.
-enum
+enum class box_e
 {
-  BOXTOP,
-  BOXBOTTOM,
-  BOXLEFT,
-  BOXRIGHT
+  top,
+  bottom,
+  left,
+  right
 }; // bbox coordinates
 
-// Bounding box functions.
-void M_ClearBox(fixed_t * box);
+struct bounding_box_t {
+  fixed_t box[4] {};
 
-void M_AddToBox(fixed_t * box,
-                fixed_t   x,
-                fixed_t   y);
+  void clear();
+  void set(const box_e coord, const fixed_t value);
+  fixed_t get(const box_e coord) const;
+  void add(const fixed_t x, const fixed_t y);
+};

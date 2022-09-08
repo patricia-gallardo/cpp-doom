@@ -73,7 +73,7 @@ uint8_t * xlatab = nullptr;
 
 static pixel_t * dest_screen = nullptr;
 
-int dirtybox[4];
+bounding_box_t dirtybox;
 
 // haleyjd 08/28/10: clipping callback function for patches.
 // This is needed for Chocolate Strife, which clips patches to the screen.
@@ -87,8 +87,8 @@ void V_MarkRect(int x, int y, int width, int height) {
   // affect the update box.
 
   if (dest_screen == g_i_video_globals->I_VideoBuffer) {
-    M_AddToBox(dirtybox, x, y);
-    M_AddToBox(dirtybox, x + width - 1, y + height - 1);
+    dirtybox.add(x, y);
+    dirtybox.add(x + width - 1, y + height - 1);
   }
 }
 

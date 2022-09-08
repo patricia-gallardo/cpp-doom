@@ -31,6 +31,8 @@
 // SECTORS do store MObjs anyway.
 #include "p_mobj.hpp"
 
+#include "m_bbox.hpp"
+
 #include "i_video.hpp"
 
 #include "v_patch.hpp"
@@ -103,7 +105,7 @@ struct sector_t {
   mobj_t * soundtarget {};
 
   // mapblock bounding box for height changes
-  int blockbox[4] {};
+  bounding_box_t blockbox;
 
   // origin for any sounds played by the sector
   degenmobj_t soundorg;
@@ -205,7 +207,7 @@ struct line_t {
 
   // Neat. Another bounding box, for the extent
   //  of the LineDef.
-  fixed_t bbox[4] {};
+  bounding_box_t bbox;
 
   // To aid move clipping.
   slopetype_t slopetype { ST_HORIZONTAL };
@@ -274,7 +276,7 @@ struct node_t {
   fixed_t dy;
 
   // Bounding box for each child.
-  fixed_t bbox[2][4];
+  bounding_box_t bbox[2];
 
   // If NF_SUBSECTOR its a subsector.
   int children[2]; // [crispy] extended nodes

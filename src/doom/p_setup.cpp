@@ -322,7 +322,7 @@ void P_LoadNodes(int lump) {
       }
 
       for (int k = 0; k < 4; k++)
-        no->bbox[j][k] = SHORT(mn->bbox[j][k]) << FRACBITS;
+        no->bbox[j].set(static_cast<box_e>(k), SHORT(mn->bbox[j][k]) << FRACBITS);
     }
   }
 
@@ -457,24 +457,24 @@ void P_LoadLineDefs(int lump) {
     }
 
     if (v1->x < v2->x) {
-      ld->bbox[BOXLEFT]  = v1->x;
-      ld->bbox[BOXRIGHT] = v2->x;
+      ld->bbox.set(box_e::left, v1->x);
+      ld->bbox.set(box_e::right, v2->x);
     } else {
-      ld->bbox[BOXLEFT]  = v2->x;
-      ld->bbox[BOXRIGHT] = v1->x;
+      ld->bbox.set(box_e::left, v2->x);
+      ld->bbox.set(box_e::right, v1->x);
     }
 
     if (v1->y < v2->y) {
-      ld->bbox[BOXBOTTOM] = v1->y;
-      ld->bbox[BOXTOP]    = v2->y;
+      ld->bbox.set(box_e::bottom, v1->y);
+      ld->bbox.set(box_e::top, v2->y);
     } else {
-      ld->bbox[BOXBOTTOM] = v2->y;
-      ld->bbox[BOXTOP]    = v1->y;
+      ld->bbox.set(box_e::bottom, v2->y);
+      ld->bbox.set(box_e::top, v1->y);
     }
 
     // [crispy] calculate sound origin of line to be its midpoint
-    ld->soundorg.x = ld->bbox[BOXLEFT] / 2 + ld->bbox[BOXRIGHT] / 2;
-    ld->soundorg.y = ld->bbox[BOXTOP] / 2 + ld->bbox[BOXBOTTOM] / 2;
+    ld->soundorg.x = ld->bbox.get(box_e::left) / 2 + ld->bbox.get(box_e::right) / 2;
+    ld->soundorg.y = ld->bbox.get(box_e::top) / 2 + ld->bbox.get(box_e::bottom) / 2;
 
     ld->sidenum[0] = SHORT(mld->sidenum[0]);
     ld->sidenum[1] = SHORT(mld->sidenum[1]);
@@ -605,7 +605,7 @@ void P_GroupLines() {
   sector_t *    sector;
   subsector_t * ss;
   seg_t *       seg;
-  fixed_t       bbox[4];
+  bounding_box_t bbox;
   int           block;
 
   // look up sector number for each subsector
@@ -667,35 +667,35 @@ void P_GroupLines() {
 
   sector = g_r_state_globals->sectors;
   for (int i = 0; i < g_r_state_globals->numsectors; i++, sector++) {
-    M_ClearBox(bbox);
+    bbox.clear();
 
     for (int j = 0; j < sector->linecount; j++) {
       li = sector->lines[j];
 
-      M_AddToBox(bbox, li->v1->x, li->v1->y);
-      M_AddToBox(bbox, li->v2->x, li->v2->y);
+      bbox.add(li->v1->x, li->v1->y);
+      bbox.add(li->v2->x, li->v2->y);
     }
 
     // set the degenmobj_t to the middle of the bounding box
-    sector->soundorg.x = (bbox[BOXRIGHT] + bbox[BOXLEFT]) / 2;
-    sector->soundorg.y = (bbox[BOXTOP] + bbox[BOXBOTTOM]) / 2;
+    sector->soundorg.x = (bbox.get(box_e::right) + bbox.get(box_e::left)) / 2;
+    sector->soundorg.y = (bbox.get(box_e::top) + bbox.get(box_e::bottom)) / 2;
 
     // adjust bounding box to map blocks
-    block                    = (bbox[BOXTOP] - g_p_local_blockmap->bmaporgy + MAXRADIUS) >> MAPBLOCKSHIFT;
+    block                    = (bbox.get(box_e::top) - g_p_local_blockmap->bmaporgy + MAXRADIUS) >> MAPBLOCKSHIFT;
     block                    = block >= g_p_local_blockmap->bmapheight ? g_p_local_blockmap->bmapheight - 1 : block;
-    sector->blockbox[BOXTOP] = block;
+    sector->blockbox.set(box_e::top, block);
 
-    block                       = (bbox[BOXBOTTOM] - g_p_local_blockmap->bmaporgy - MAXRADIUS) >> MAPBLOCKSHIFT;
+    block                       = (bbox.get(box_e::bottom) - g_p_local_blockmap->bmaporgy - MAXRADIUS) >> MAPBLOCKSHIFT;
     block                       = block < 0 ? 0 : block;
-    sector->blockbox[BOXBOTTOM] = block;
+    sector->blockbox.set(box_e::bottom, block);
 
-    block                      = (bbox[BOXRIGHT] - g_p_local_blockmap->bmaporgx + MAXRADIUS) >> MAPBLOCKSHIFT;
+    block                      = (bbox.get(box_e::right) - g_p_local_blockmap->bmaporgx + MAXRADIUS) >> MAPBLOCKSHIFT;
     block                      = block >= g_p_local_blockmap->bmapwidth ? g_p_local_blockmap->bmapwidth - 1 : block;
-    sector->blockbox[BOXRIGHT] = block;
+    sector->blockbox.set(box_e::right, block);
 
-    block                     = (bbox[BOXLEFT] - g_p_local_blockmap->bmaporgx - MAXRADIUS) >> MAPBLOCKSHIFT;
+    block                     = (bbox.get(box_e::left) - g_p_local_blockmap->bmaporgx - MAXRADIUS) >> MAPBLOCKSHIFT;
     block                     = block < 0 ? 0 : block;
-    sector->blockbox[BOXLEFT] = block;
+    sector->blockbox.set(box_e::left, block);
   }
 }
 

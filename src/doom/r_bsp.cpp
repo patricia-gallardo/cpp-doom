@@ -355,15 +355,10 @@ int checkcoord[12][4] = {
   { 2,   1, 3,0}
 };
 
-bool R_CheckBBox(fixed_t * bspcoord) {
+bool R_CheckBBox(const bounding_box_t& bspcoord) {
   int boxx;
   int boxy;
   int boxpos;
-
-  fixed_t x1;
-  fixed_t y1;
-  fixed_t x2;
-  fixed_t y2;
 
   angle_t angle1;
   angle_t angle2;
@@ -377,16 +372,16 @@ bool R_CheckBBox(fixed_t * bspcoord) {
 
   // Find the corners of the box
   // that define the edges from current viewpoint.
-  if (g_r_state_globals->viewx <= bspcoord[BOXLEFT])
+  if (g_r_state_globals->viewx <= bspcoord.get(box_e::left))
     boxx = 0;
-  else if (g_r_state_globals->viewx < bspcoord[BOXRIGHT])
+  else if (g_r_state_globals->viewx < bspcoord.get(box_e::right))
     boxx = 1;
   else
     boxx = 2;
 
-  if (g_r_state_globals->viewy >= bspcoord[BOXTOP])
+  if (g_r_state_globals->viewy >= bspcoord.get(box_e::top))
     boxy = 0;
-  else if (g_r_state_globals->viewy > bspcoord[BOXBOTTOM])
+  else if (g_r_state_globals->viewy > bspcoord.get(box_e::bottom))
     boxy = 1;
   else
     boxy = 2;
@@ -395,10 +390,10 @@ bool R_CheckBBox(fixed_t * bspcoord) {
   if (boxpos == 5)
     return true;
 
-  x1 = bspcoord[checkcoord[boxpos][0]];
-  y1 = bspcoord[checkcoord[boxpos][1]];
-  x2 = bspcoord[checkcoord[boxpos][2]];
-  y2 = bspcoord[checkcoord[boxpos][3]];
+  const fixed_t x1 = bspcoord.get(static_cast<box_e>(checkcoord[boxpos][0]));
+  const fixed_t y1 = bspcoord.get(static_cast<box_e>(checkcoord[boxpos][1]));
+  const fixed_t x2 = bspcoord.get(static_cast<box_e>(checkcoord[boxpos][2]));
+  const fixed_t y2 = bspcoord.get(static_cast<box_e>(checkcoord[boxpos][3]));
 
   // check clip list for an open space
   angle1 = R_PointToAngleCrispy(x1, y1) - g_r_state_globals->viewangle;

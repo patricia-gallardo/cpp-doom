@@ -22,6 +22,8 @@
 
 #include "doomtype.hpp"
 
+#include "m_bbox.hpp"
+
 // Needed because we are refering to patches.
 #include "v_patch.hpp"
 
@@ -31,7 +33,7 @@
 
 //#define CENTERY (SCREENHEIGHT / 2)
 
-extern int dirtybox[4];
+extern bounding_box_t dirtybox;
 
 extern uint8_t * tinttable;
 extern uint8_t * dp_translation;

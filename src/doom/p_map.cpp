@@ -52,7 +52,7 @@
 
 constexpr auto DEFAULT_SPECHIT_MAGIC = 0x01C09C98;
 
-fixed_t  tmbbox[4];
+bounding_box_t  tmbbox;
 mobj_t * tmthing;
 int      tmflags;
 fixed_t  tmx;
@@ -116,10 +116,10 @@ bool P_TeleportMove(mobj_t * thing,
   tmx = x;
   tmy = y;
 
-  tmbbox[BOXTOP]    = y + tmthing->radius;
-  tmbbox[BOXBOTTOM] = y - tmthing->radius;
-  tmbbox[BOXRIGHT]  = x + tmthing->radius;
-  tmbbox[BOXLEFT]   = x - tmthing->radius;
+  tmbbox.set(box_e::top, y + tmthing->radius);
+  tmbbox.set(box_e::bottom, y - tmthing->radius);
+  tmbbox.set(box_e::right, x + tmthing->radius);
+  tmbbox.set(box_e::left, x - tmthing->radius);
 
   newsubsec                      = R_PointInSubsector(x, y);
   g_p_local_globals->ceilingline = nullptr;
@@ -135,10 +135,10 @@ bool P_TeleportMove(mobj_t * thing,
   g_p_local_globals->numspechit = 0;
 
   // stomp on any things contacted
-  xl = (tmbbox[BOXLEFT] - g_p_local_blockmap->bmaporgx - MAXRADIUS) >> MAPBLOCKSHIFT;
-  xh = (tmbbox[BOXRIGHT] - g_p_local_blockmap->bmaporgx + MAXRADIUS) >> MAPBLOCKSHIFT;
-  yl = (tmbbox[BOXBOTTOM] - g_p_local_blockmap->bmaporgy - MAXRADIUS) >> MAPBLOCKSHIFT;
-  yh = (tmbbox[BOXTOP] - g_p_local_blockmap->bmaporgy + MAXRADIUS) >> MAPBLOCKSHIFT;
+  xl = (tmbbox.get(box_e::left) - g_p_local_blockmap->bmaporgx - MAXRADIUS) >> MAPBLOCKSHIFT;
+  xh = (tmbbox.get(box_e::right) - g_p_local_blockmap->bmaporgx + MAXRADIUS) >> MAPBLOCKSHIFT;
+  yl = (tmbbox.get(box_e::bottom) - g_p_local_blockmap->bmaporgy - MAXRADIUS) >> MAPBLOCKSHIFT;
+  yh = (tmbbox.get(box_e::top) - g_p_local_blockmap->bmaporgy + MAXRADIUS) >> MAPBLOCKSHIFT;
 
   for (bx = xl; bx <= xh; bx++)
     for (by = yl; by <= yh; by++)
@@ -174,10 +174,10 @@ static void SpechitOverrun(line_t * ld);
 // Adjusts tmfloorz and tmceilingz as lines are contacted
 //
 bool PIT_CheckLine(line_t * ld) {
-  if (tmbbox[BOXRIGHT] <= ld->bbox[BOXLEFT]
-      || tmbbox[BOXLEFT] >= ld->bbox[BOXRIGHT]
-      || tmbbox[BOXTOP] <= ld->bbox[BOXBOTTOM]
-      || tmbbox[BOXBOTTOM] >= ld->bbox[BOXTOP])
+  if (tmbbox.get(box_e::right) <= ld->bbox.get(box_e::left)
+      || tmbbox.get(box_e::left) >= ld->bbox.get(box_e::right)
+      || tmbbox.get(box_e::top) <= ld->bbox.get(box_e::bottom)
+      || tmbbox.get(box_e::bottom) >= ld->bbox.get(box_e::top))
     return true;
 
   if (P_BoxOnLineSide(tmbbox, ld) != -1)
@@ -423,26 +423,18 @@ bool PIT_CheckThing(mobj_t * thing) {
 bool P_CheckPosition(mobj_t * thing,
                      fixed_t  x,
                      fixed_t  y) {
-  int           xl;
-  int           xh;
-  int           yl;
-  int           yh;
-  int           bx;
-  int           by;
-  subsector_t * newsubsec;
-
   tmthing = thing;
   tmflags = static_cast<int>(thing->flags);
 
   tmx = x;
   tmy = y;
 
-  tmbbox[BOXTOP]    = y + tmthing->radius;
-  tmbbox[BOXBOTTOM] = y - tmthing->radius;
-  tmbbox[BOXRIGHT]  = x + tmthing->radius;
-  tmbbox[BOXLEFT]   = x - tmthing->radius;
+  tmbbox.set(box_e::top, y + tmthing->radius);
+  tmbbox.set(box_e::bottom, y - tmthing->radius);
+  tmbbox.set(box_e::right, x + tmthing->radius);
+  tmbbox.set(box_e::left, x - tmthing->radius);
 
-  newsubsec                      = R_PointInSubsector(x, y);
+  subsector_t * newsubsec        = R_PointInSubsector(x, y);
   g_p_local_globals->ceilingline = nullptr;
 
   // The base floor / ceiling is from the subsector
@@ -463,24 +455,24 @@ bool P_CheckPosition(mobj_t * thing,
   // because mobj_ts are grouped into mapblocks
   // based on their origin point, and can overlap
   // into adjacent blocks by up to MAXRADIUS units.
-  xl = (tmbbox[BOXLEFT] - g_p_local_blockmap->bmaporgx - MAXRADIUS) >> MAPBLOCKSHIFT;
-  xh = (tmbbox[BOXRIGHT] - g_p_local_blockmap->bmaporgx + MAXRADIUS) >> MAPBLOCKSHIFT;
-  yl = (tmbbox[BOXBOTTOM] - g_p_local_blockmap->bmaporgy - MAXRADIUS) >> MAPBLOCKSHIFT;
-  yh = (tmbbox[BOXTOP] - g_p_local_blockmap->bmaporgy + MAXRADIUS) >> MAPBLOCKSHIFT;
+  int xl = (tmbbox.get(box_e::left) - g_p_local_blockmap->bmaporgx - MAXRADIUS) >> MAPBLOCKSHIFT;
+  int xh = (tmbbox.get(box_e::right) - g_p_local_blockmap->bmaporgx + MAXRADIUS) >> MAPBLOCKSHIFT;
+  int yl = (tmbbox.get(box_e::bottom) - g_p_local_blockmap->bmaporgy - MAXRADIUS) >> MAPBLOCKSHIFT;
+  int yh = (tmbbox.get(box_e::top) - g_p_local_blockmap->bmaporgy + MAXRADIUS) >> MAPBLOCKSHIFT;
 
-  for (bx = xl; bx <= xh; bx++)
-    for (by = yl; by <= yh; by++)
+  for (int bx = xl; bx <= xh; bx++)
+    for (int by = yl; by <= yh; by++)
       if (!P_BlockThingsIterator(bx, by, PIT_CheckThing))
         return false;
 
   // check lines
-  xl = (tmbbox[BOXLEFT] - g_p_local_blockmap->bmaporgx) >> MAPBLOCKSHIFT;
-  xh = (tmbbox[BOXRIGHT] - g_p_local_blockmap->bmaporgx) >> MAPBLOCKSHIFT;
-  yl = (tmbbox[BOXBOTTOM] - g_p_local_blockmap->bmaporgy) >> MAPBLOCKSHIFT;
-  yh = (tmbbox[BOXTOP] - g_p_local_blockmap->bmaporgy) >> MAPBLOCKSHIFT;
+  xl = (tmbbox.get(box_e::left) - g_p_local_blockmap->bmaporgx) >> MAPBLOCKSHIFT;
+  xh = (tmbbox.get(box_e::right) - g_p_local_blockmap->bmaporgx) >> MAPBLOCKSHIFT;
+  yl = (tmbbox.get(box_e::bottom) - g_p_local_blockmap->bmaporgy) >> MAPBLOCKSHIFT;
+  yh = (tmbbox.get(box_e::top) - g_p_local_blockmap->bmaporgy) >> MAPBLOCKSHIFT;
 
-  for (bx = xl; bx <= xh; bx++)
-    for (by = yl; by <= yh; by++)
+  for (int bx = xl; bx <= xh; bx++)
+    for (int by = yl; by <= yh; by++)
       if (!P_BlockLinesIterator(bx, by, PIT_CheckLine))
         return false;
 
@@ -1410,15 +1402,12 @@ bool PIT_ChangeSector(mobj_t * thing) {
 //
 bool P_ChangeSector(sector_t * sector,
                     bool       crunch) {
-  int x;
-  int y;
-
   nofit       = false;
   crushchange = crunch;
 
   // re-check heights for all things near the moving sector
-  for (x = sector->blockbox[BOXLEFT]; x <= sector->blockbox[BOXRIGHT]; x++)
-    for (y = sector->blockbox[BOXBOTTOM]; y <= sector->blockbox[BOXTOP]; y++)
+  for (int x = sector->blockbox.get(box_e::left); x <= sector->blockbox.get(box_e::right); x++)
+    for (int y = sector->blockbox.get(box_e::bottom); y <= sector->blockbox.get(box_e::top); y++)
       P_BlockThingsIterator(x, y, PIT_ChangeSector);
 
   return nofit;
@@ -1463,7 +1452,7 @@ static void SpechitOverrun(line_t * ld) {
   case 10:
   case 11:
   case 12:
-    tmbbox[g_p_local_globals->numspechit - 9] = static_cast<fixed_t>(addr);
+    tmbbox.set(static_cast<box_e>(g_p_local_globals->numspechit - 9), static_cast<fixed_t>(addr));
     break;
   case 13:
     crushchange = addr;
