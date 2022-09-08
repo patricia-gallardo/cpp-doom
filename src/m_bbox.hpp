@@ -13,7 +13,7 @@
 // GNU General Public License for more details.
 //
 // DESCRIPTION:
-//    Nil.
+//    Bounding box
 //
 
 #pragma once
@@ -21,6 +21,8 @@
 #include <climits>
 
 #include "m_fixed.hpp"
+
+// cppdoom todo, add namespace.
 
 // Bounding box coordinate storage.
 enum class box_e
