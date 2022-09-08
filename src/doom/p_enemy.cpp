@@ -24,11 +24,12 @@
 #include <fmt/printf.h>
 
 #include "i_system.hpp"
+#include "m_mapmath.hpp"
 #include "m_random.hpp"
 
 #include "doomdef.hpp"
-#include "p_local.hpp"
 #include "p_blockmap.hpp"
+#include "p_local.hpp"
 
 #include "s_sound.hpp"
 
@@ -157,7 +158,7 @@ bool P_CheckMeleeRange(mobj_t * actor) {
     return false;
 
   mobj_t * pl   = actor->target;
-  fixed_t  dist = P_AproxDistance(pl->x - actor->x, pl->y - actor->y);
+  fixed_t  dist = map::approx_distance(pl->x - actor->x, pl->y - actor->y);
 
   if (g_doomstat_globals->gameversion <= exe_doom_1_2)
     range = MELEERANGE;
@@ -200,8 +201,8 @@ bool P_CheckMissileRange(mobj_t * actor) {
     return false; // do not attack yet
 
   // OPTIMIZE: get this from a global checksight
-  dist = P_AproxDistance(actor->x - actor->target->x,
-                         actor->y - actor->target->y)
+  dist = map::approx_distance(actor->x - actor->target->x,
+                              actor->y - actor->target->y)
          - 64 * FRACUNIT;
 
   if (!actor->info->meleestate)
@@ -461,8 +462,8 @@ bool P_LookForPlayers(mobj_t * actor,
                    - actor->angle;
 
       if (an > ANG90 && an < ANG270) {
-        fixed_t dist = P_AproxDistance(player->mo->x - actor->x,
-                                       player->mo->y - actor->y);
+        fixed_t dist = map::approx_distance(player->mo->x - actor->x,
+                                            player->mo->y - actor->y);
         // if real close, react anyway
         if (dist > MELEERANGE)
           continue; // behind back
@@ -691,8 +692,8 @@ void A_FaceTarget(mobj_t * actor) {
 //
 void A_PosAttack(mobj_t * actor) {
   angle_t angle;
-  int damage;
-  int slope;
+  int     damage;
+  int     slope;
 
   if (!actor->target)
     return;
@@ -945,8 +946,8 @@ void A_Tracer(mobj_t * actor) {
   actor->momy = FixedMul(actor->info->speed, finesine[exact]);
 
   // change slope
-  dist = P_AproxDistance(dest->x - actor->x,
-                         dest->y - actor->y);
+  dist = map::approx_distance(dest->x - actor->x,
+                              dest->y - actor->y);
 
   dist = dist / actor->info->speed;
 
@@ -1292,7 +1293,7 @@ void A_SkullAttack(mobj_t * actor) {
   an          = actor->angle >> ANGLETOFINESHIFT;
   actor->momx = FixedMul(SKULLSPEED, finecosine[an]);
   actor->momy = FixedMul(SKULLSPEED, finesine[an]);
-  dist        = P_AproxDistance(dest->x - actor->x, dest->y - actor->y);
+  dist        = map::approx_distance(dest->x - actor->x, dest->y - actor->y);
   dist        = dist / SKULLSPEED;
 
   if (dist < 1)

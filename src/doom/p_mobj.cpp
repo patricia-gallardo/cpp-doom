@@ -23,6 +23,7 @@
 #include "i_system.hpp"
 #include "z_zone.hpp"
 #include "m_random.hpp"
+#include "m_mapmath.hpp"
 
 #include "doomdef.hpp"
 #include "p_local.hpp"
@@ -281,7 +282,7 @@ void P_ZMovement(mobj_t *mo) {
     // float down towards target if too close
     if (!(mo->flags & MF_SKULLFLY)
         && !(mo->flags & MF_INFLOAT)) {
-      dist = P_AproxDistance(mo->x - mo->target->x,
+      dist = map::approx_distance(mo->x - mo->target->x,
                              mo->y - mo->target->y);
 
       delta = (mo->target->z + (mo->height >> 1)) - mo->z;
@@ -1100,7 +1101,7 @@ mobj_t *
   th->momx = FixedMul(th->info->speed, finecosine[an]);
   th->momy = FixedMul(th->info->speed, finesine[an]);
 
-  dist = P_AproxDistance(dest->x - source->x, dest->y - source->y);
+  dist = map::approx_distance(dest->x - source->x, dest->y - source->y);
   dist = dist / th->info->speed;
 
   if (dist < 1)

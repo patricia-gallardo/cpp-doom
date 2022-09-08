@@ -19,6 +19,7 @@ set(COMMON_SOURCE_FILES
 # Map library code, work in progress.
 set(LIBMAP_SOURCE_FILES
     m_bbox.cpp              m_bbox.hpp
+    m_mapmath.cpp           m_mapmath.hpp
 )
 add_library(lib_map ${GLOBAL_SOURCE_FILES} ${LIBMAP_SOURCE_FILES})
 
@@ -138,7 +139,7 @@ set(SOURCE_FILES ${GLOBAL_SOURCE_FILES} ${COMMON_SOURCE_FILES} ${GAME_SOURCE_FIL
 set(SOURCE_FILES_WITH_DEH ${SOURCE_FILES} ${DEHACKED_SOURCE_FILES})
 
 set(SDL2_MIXER_LIB $<IF:$<TARGET_EXISTS:SDL2_mixer::SDL2_mixer>,SDL2_mixer::SDL2_mixer,SDL2_mixer::SDL2_mixer-static>)
-set(EXTRA_LIBS fmt::fmt SDL2::SDL2main SDL2::SDL2 ${SDL2_MIXER_LIB} SDL2::SDL2_net textscreen pcsound opl)
+set(EXTRA_LIBS fmt::fmt SDL2::SDL2main SDL2::SDL2 ${SDL2_MIXER_LIB} SDL2::SDL2_net lib_map textscreen pcsound opl)
 if(SAMPLERATE_FOUND)
     list(APPEND EXTRA_LIBS samplerate::samplerate)
 endif()

@@ -26,6 +26,7 @@
 
 #include "i_system.hpp" // [crispy] I_Realloc()
 #include "m_bbox.hpp"
+#include "m_mapmath.hpp"
 
 #include "doomdef.hpp"
 #include "doomstat.hpp"
@@ -34,57 +35,6 @@
 
 // State.
 #include "r_state.hpp"
-
-//
-// P_AproxDistance
-// Gives an estimation of distance (not exact)
-//
-
-fixed_t
-    P_AproxDistance(fixed_t dx,
-                    fixed_t dy) {
-  dx = std::abs(dx);
-  dy = std::abs(dy);
-  if (dx < dy)
-    return dx + dy - (dx >> 1);
-  return dx + dy - (dy >> 1);
-}
-
-//
-// P_PointOnLineSide
-// Returns 0 or 1
-//
-int P_PointOnLineSide(fixed_t  x,
-                      fixed_t  y,
-                      line_t * line) {
-  fixed_t dx;
-  fixed_t dy;
-  fixed_t left;
-  fixed_t right;
-
-  if (!line->dx) {
-    if (x <= line->v1->x)
-      return line->dy > 0;
-
-    return line->dy < 0;
-  }
-  if (!line->dy) {
-    if (y <= line->v1->y)
-      return line->dx < 0;
-
-    return line->dx > 0;
-  }
-
-  dx = (x - line->v1->x);
-  dy = (y - line->v1->y);
-
-  left  = FixedMul(line->dy >> FRACBITS, dx);
-  right = FixedMul(dy, line->dx >> FRACBITS);
-
-  if (right < left)
-    return 0; // front side
-  return 1;   // back side
-}
 
 //
 // P_BoxOnLineSide
@@ -116,13 +66,13 @@ int P_BoxOnLineSide(const bounding_box_t& tmbox,
     break;
 
   case ST_POSITIVE:
-    p1 = P_PointOnLineSide(tmbox.get(box_e::left), tmbox.get(box_e::top), ld);
-    p2 = P_PointOnLineSide(tmbox.get(box_e::right), tmbox.get(box_e::bottom), ld);
+    p1 = map::point_on_line_side(tmbox.get(box_e::left), tmbox.get(box_e::top), ld->dx, ld->dy, ld->v1->x, ld->v1->y);
+    p2 = map::point_on_line_side(tmbox.get(box_e::right), tmbox.get(box_e::bottom), ld->dx, ld->dy, ld->v1->x, ld->v1->y);
     break;
 
   case ST_NEGATIVE:
-    p1 = P_PointOnLineSide(tmbox.get(box_e::right), tmbox.get(box_e::top), ld);
-    p2 = P_PointOnLineSide(tmbox.get(box_e::left), tmbox.get(box_e::bottom), ld);
+    p1 = map::point_on_line_side(tmbox.get(box_e::right), tmbox.get(box_e::top), ld->dx, ld->dy, ld->v1->x, ld->v1->y);
+    p2 = map::point_on_line_side(tmbox.get(box_e::left), tmbox.get(box_e::bottom), ld->dx, ld->dy, ld->v1->x, ld->v1->y);
     break;
   }
 
@@ -497,8 +447,8 @@ bool PIT_AddLineIntercepts(line_t * ld) {
     s1 = P_PointOnDivlineSide(ld->v1->x, ld->v1->y, &g_p_local_globals->trace);
     s2 = P_PointOnDivlineSide(ld->v2->x, ld->v2->y, &g_p_local_globals->trace);
   } else {
-    s1 = P_PointOnLineSide(g_p_local_globals->trace.x, g_p_local_globals->trace.y, ld);
-    s2 = P_PointOnLineSide(g_p_local_globals->trace.x + g_p_local_globals->trace.dx, g_p_local_globals->trace.y + g_p_local_globals->trace.dy, ld);
+    s1 = map::point_on_line_side(g_p_local_globals->trace.x, g_p_local_globals->trace.y, ld->dx, ld->dy, ld->v1->x, ld->v1->y);
+    s2 = map::point_on_line_side(g_p_local_globals->trace.x + g_p_local_globals->trace.dx, g_p_local_globals->trace.y + g_p_local_globals->trace.dy, ld->dx, ld->dy, ld->v1->x, ld->v1->y);
   }
 
   if (s1 == s2)

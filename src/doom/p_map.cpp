@@ -27,6 +27,7 @@
 #include "i_system.hpp"
 #include "m_bbox.hpp"
 #include "m_random.hpp"
+#include "m_mapmath.hpp"
 
 #include "doomdef.hpp"
 #include "m_argv.hpp"
@@ -366,8 +367,8 @@ bool PIT_CheckThing(mobj_t * thing) {
       if (tmx == tmthing->x && tmy == tmthing->y) {
         unblocking = true;
       } else {
-        fixed_t newdist = P_AproxDistance(thing->x - tmx, thing->y - tmy);
-        fixed_t olddist = P_AproxDistance(thing->x - tmthing->x, thing->y - tmthing->y);
+        fixed_t newdist = map::approx_distance(thing->x - tmx, thing->y - tmy);
+        fixed_t olddist = map::approx_distance(thing->x - tmthing->x, thing->y - tmthing->y);
 
         if (newdist > olddist) {
           unblocking = (tmthing->z < thing->z + thing->height
@@ -522,8 +523,8 @@ bool P_TryMove(mobj_t * thing,
     while (g_p_local_globals->numspechit--) {
       // see if the line was crossed
       ld      = g_p_local_globals->spechit[g_p_local_globals->numspechit];
-      side    = P_PointOnLineSide(thing->x, thing->y, ld);
-      oldside = P_PointOnLineSide(oldx, oldy, ld);
+      side    = map::point_on_line_side(thing->x, thing->y, ld->dx, ld->dy, ld->v1->x, ld->v1->y);
+      oldside = map::point_on_line_side(oldx, oldy, ld->dx, ld->dy, ld->v1->x, ld->v1->y);
       if (side != oldside) {
         if (ld->special)
           P_CrossSpecialLine(static_cast<int>(ld - g_r_state_globals->lines), oldside, thing);
@@ -610,7 +611,7 @@ void P_HitSlideLine(line_t * ld) {
     return;
   }
 
-  side = P_PointOnLineSide(slidemo->x, slidemo->y, ld);
+  side = map::point_on_line_side(slidemo->x, slidemo->y, ld->dx, ld->dy, ld->v1->x, ld->v1->y);
 
   lineangle = R_PointToAngle2(0, 0, ld->dx, ld->dy);
 
@@ -627,7 +628,7 @@ void P_HitSlideLine(line_t * ld) {
   lineangle >>= ANGLETOFINESHIFT;
   deltaangle >>= ANGLETOFINESHIFT;
 
-  movelen = P_AproxDistance(tmxmove, tmymove);
+  movelen = map::approx_distance(tmxmove, tmymove);
   newlen  = FixedMul(movelen, finecosine[deltaangle]);
 
   tmxmove = FixedMul(newlen, finecosine[lineangle]);
@@ -646,7 +647,7 @@ bool PTR_SlideTraverse(intercept_t * in) {
   li = in->d.line;
 
   if (!(li->flags & ML_TWOSIDED)) {
-    if (P_PointOnLineSide(slidemo->x, slidemo->y, li)) {
+    if (map::point_on_line_side(slidemo->x, slidemo->y, li->dx, li->dy, li->v1->x, li->v1->y)) {
       // don't hit the back side
       return true;
     }
@@ -962,7 +963,7 @@ bool PTR_ShootTraverse(intercept_t * in) {
     // its spawning sector's floor or ceiling, respectively, and move its
     // coordinates to the point where the trajectory hits the plane
     if (aimslope) {
-      const int lineside = P_PointOnLineSide(x, y, li);
+      const int lineside = map::point_on_line_side(x, y, li->dx, li->dy, li->v1->x, li->v1->y);
       int       side;
 
       if ((side = li->sidenum[lineside]) != NO_INDEX) {
@@ -1188,7 +1189,7 @@ bool PTR_UseTraverse(intercept_t * in) {
   }
 
   side = 0;
-  if (P_PointOnLineSide(usething->x, usething->y, in->d.line) == 1)
+  if (map::point_on_line_side(usething->x, usething->y, in->d.line->dx, in->d.line->dy, in->d.line->v1->x, in->d.line->v1->y))
     side = 1;
 
   //	return false;		// don't use back side

@@ -19,6 +19,7 @@
 //
 
 #include "m_random.hpp"
+#include "m_mapmath.hpp"
 #include "p_local.hpp"
 #include "s_sound.hpp"
 
@@ -61,7 +62,7 @@ void A_Mushroom(mobj_t * actor) {
       mobj_t target = *actor, *mo = nullptr;
       target.x += i << FRACBITS; // Aim in many directions from source
       target.y += j << FRACBITS;
-      target.z += P_AproxDistance(i, j) * misc1;             // Aim fairly high
+      target.z += map::approx_distance(i, j) * misc1;             // Aim fairly high
       mo       = P_SpawnMissile(actor, &target, MT_FATSHOT); // Launch fireball
       mo->momx = FixedMul(mo->momx, misc2);
       mo->momy = FixedMul(mo->momy, misc2); // Slow down a bit
