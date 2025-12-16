@@ -36,15 +36,15 @@ TEST_CASE("Z_Malloc(PU_LEVEL) and Z_Free and Z_Malloc(PU_LEVEL)", "[z_native]") 
 }
 
 // Some compilers don't define __SANITIZE_ADDRESS__
-#if defined(__has_feature)
-# if __has_feature(address_sanitizer)
-#  if !defined(__SANITIZE_ADDRESS__)
-#   define __SANITIZE_ADDRESS__ // NOLINT
-#  endif // !defined(__SANITIZE_ADDRESS__)
-# endif // __has_feature(address_sanitizer)
-#endif // __has_feature
-
-#ifndef __SANITIZE_ADDRESS__
+//#if defined(__has_feature)
+//# if __has_feature(address_sanitizer)
+//#  if !defined(__SANITIZE_ADDRESS__)
+//#   define __SANITIZE_ADDRESS__ // NOLINT
+//#  endif // !defined(__SANITIZE_ADDRESS__)
+//# endif // __has_feature(address_sanitizer)
+//#endif // __has_feature
+//
+//#ifndef __SANITIZE_ADDRESS__
 struct memblock_t {
   int          id; // = ZONEID
   int          tag;
@@ -100,4 +100,4 @@ TEST_CASE("Z_ZOverwrite header", "[z_native]") {
   REQUIRE(where != nullptr);
   REQUIRE(*where == 0x42424242);
 }
-#endif // !__SANITIZE_ADDRESS__
+//#endif // !__SANITIZE_ADDRESS__

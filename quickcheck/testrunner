@@ -1,0 +1,37 @@
+#!/bin/bash
+
+set -eu
+
+tmp=$(mktemp -d)
+ORIGDIR=$PWD
+cd "$tmp"
+
+unzip -oq "$ORIGDIR/miniwad.zip"
+
+while [ $# -gt 1 ] && [ "$1" != "--" ]; do
+	unzip -oq "$ORIGDIR/$1"
+	shift
+done
+if [ "$1" != "--" ]; then
+	echo "ZIP list not terminated with --." >>/dev/stderr
+	rm -rf "$tmp"
+fi
+shift
+
+SDL_VIDEODRIVER=dummy
+export SDL_VIDEODRIVER
+
+$SOURCE_PORT -iwad miniwad.wad \
+             -mb 32 \
+             -nodraw -noblit -nosound -noautoload -nogui -nograbmouse \
+             -statdump statdump.txt \
+	     "$@" >log.txt >>errs.txt || true
+
+if [ ! -e statdump.txt ]; then
+	(echo "No statdump output produced.";
+	 cat log.txt; cat errs.txt) >/dev/stderr
+else
+	cat statdump.txt
+fi
+
+rm -rf "$tmp"

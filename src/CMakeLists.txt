@@ -32,7 +32,7 @@ set(DEDSERV_FILES
 
 add_library(lib_common_cpp_doom ${COMMON_SOURCE_FILES} ${DEDSERV_FILES})
 target_compile_definitions(lib_common_cpp_doom PRIVATE ${DOOM_COMPILE_DEFINITIONS})
-target_link_libraries(lib_common_cpp_doom fmt::fmt SDL2::SDL2)
+target_link_libraries(lib_common_cpp_doom fmt::fmt SDL2::SDL2 SDL2::SDL2_net)
 
 add_executable("${PROGRAM_PREFIX}server" WIN32 ${COMMON_SOURCE_FILES} ${DEDSERV_FILES})
 target_compile_definitions("${PROGRAM_PREFIX}server" PRIVATE ${DOOM_COMPILE_DEFINITIONS})
